@@ -36,75 +36,60 @@ AFM - Animation File Manager Version 1.00 Copyright (C) 1993 Lo Yuan Tsung 09/29
           frameCount = (offsets[0] - 8) / 4   ← 自洽驗證
 ```
 
-每幀:
+每幀 **13-byte 標頭** + RLE 像素(第 3 輪反組譯 + 視覺驗證,**已完整破解**):
 
 ```
-+0   uint16 LE  width
-+2   uint16 LE  height
-+4   …          壓縮像素(RLE,透明變體 — 見下「未解」)
++0   uint16 LE  boundW    顯示 / 外框寬(同一動畫內固定)
++2   uint16 LE  boundH    顯示 / 外框高(逐幀微調,用於對齊)
++4   uint16 LE  = 0
++6   uint16 LE  = 2
++8   uint8      = 0
++9   uint16 LE  W         點陣解碼寬(realW)
++11  uint16 LE  H         點陣解碼高(realH)
++13  …          RLE 像素(解碼到 W×H)
 ```
 
-**驗證實例**:
-- `FIGANI_000`:frameCount=4，四幀皆約 167×75(同尺寸 → 連續動作幀)。
-- `FIGANI_001`:frameCount=11，幀尺寸 167×75→206×45→… 多姿勢動畫。
-- `(first_offset-8)/4` 與 `+0` 的 frameCount 在多個樣本一致 → 結構正確。
+> 解碼器(`FD2.EXE` `0x4F43D`)的呼叫端傳入 **frame+9**,故它 `lodsw` 讀到的正是 realW / realH,
+> 再從 +13 解 RLE。前 9 byte(boundW, boundH, 0, 2, 0)是呼叫端用於畫面定位的 metadata。
 
-**3-byte 迷你資源**(如 `FIGANI_002` = `00 00 0A`):散落在動畫之間，推測為**群組分隔 / 索引標記**
-(把 409 個資源切成「角色 → 招式 → 幀組」),非動畫本體。[假設]
+**3-byte 迷你資源**(如 `FIGANI_002` = `00 00 0A`):動畫之間的群組分隔 / 索引標記,非動畫本體。
 
-## 幀像素 codec — 第 3 輪調查紀錄(尚未攻破)
+## 幀像素 codec(已完整破解)
 
-逐幀拆解卡在「幀像素的壓縮 codec」。第 3 輪已排除多種假設，紀錄如下供後續接手:
+從 `FD2.EXE` 反組譯出的 **sprite RLE**。解碼器家族落在 `0x4E000`–`0x4F800`
+(以 `rep stosb`/`rep movsb` 叢集定位):`0x4EB52` 等為固定 24×24 版(地圖單位 sprite),
+**`0x4F43D` 為參數化版**(用 `[0x27B4]` 每列重設寬、`[0x27B6]` 為列數)——FIGANI 戰鬥動畫即用此版。
 
-**已知事實**
-- 幀像素**不是**背景用的 RLE(`05-…`):用背景 RLE 解 `FIGANI_000` 幀0 只得 9203/12525 像素，
-  渲染為水平亂條(逐列有結構但會 desync) → 確認是**另一套、逐列(per-row)** 的格式。
-- 像素色值用滿 **0–255 全域**(含 0x80–0xFF) → **不能**用「高位元=命令」來區分命令與像素;必有專屬 escape。
-- `0xFE` 是最頻繁的 byte(幀0 出現 1161 次,佔 22%),且**連續長度只有 1(875×)或 2(143×)**,
-  其後接「正常像素色值」(分布與一般像素相同)。→ `0xFE` **不是** bulk 透明 run 的計數碼。
-- 同一動畫不同 pose 的幀(`FIGANI_000` 幀0/幀1)**前 13 byte 完全相同**:
-  `00 00 02 00 00 67 00 75 00 c0 02 fe ff` → 此前綴疑為**每幀子標頭 / 列結構**,非像素。
-
-**已排除的假設**:① 背景 RLE 直接套用;② `0xFE n`=透明 run(過量 10×);
-③ `0x80–0xFD`=run-of-next(過量 3×,因像素本就用高色值);④ `0xFF`/列尾(僅 3 次)。
-
-**下一步(正解路徑)= 用反組譯當 oracle**
-靜態猜 codec 已達合理上限,改從 `FD2.EXE` 反組譯**真正的 sprite 解碼迴圈**(Watcom C,
-保護模式 LE)。第 3 輪反組譯進度(capstone in docker):
-- `3C FE`(cmp al,0xFE)在 EXE 僅 1 處且為 `call` 位移之**假命中** → escape 檢查不走 `cmp al,0xFE`。
-- `0x12cb0` 經反組譯確認為**純矩形列複製**(`for row: memcpy(dst,src,w); src+=src_stride; dst+=dst_stride`),
-  **無透明、無 RLE** → frame 在進此 blit **之前**就已被另一個函式解壓成線性像素 buffer。
-- 故 **decompressor 是獨立函式**,需從「誰填 `0x12cb0` 的 src 參數」回溯。
-
-**已定位 sprite 解碼器家族(capstone 反組譯,第 3 輪)**
-`rep stosb`/`rep movsb` 密集叢集落在 **`0x4E000`–`0x4F800`**(正是動畫播放器呼叫的函式群)。
-其中 `0x4EB52` 為 **24×24 sprite RLE 解碼器**,已逐指令還原其文法:
+文法(控制 byte `c`:高 2 bit = 模式,低 6 bit → `count = (c & 0x3F) + 1`):
 
 ```
-edx = dst_stride - 24       ; 每列寫完跳 stride
-bh  = 24 (每列剩餘寬), bl = 24 (列數)
-迴圈讀控制 byte c:
-  高 2 bit = 模式, 低 6 bit:count = (c & 0x3F) + 1
-    00xxxxxx  色彩 run     : 讀 1 像素, rep stosb count 次
-    01xxxxxx  dither/scaled: 讀 1 像素, 隔位寫(inc edi;stosb), 佔 2×count 寬
-    10xxxxxx  literal      : 讀 count 個像素原樣寫
-    11xxxxxx  透明 skip    : add edi,count(不寫,留底=透明)
-  bh -= count;歸零換列(add edi,edx;dec bl)
-像素經 [ebp+eax] 調色 remap 表轉換。
+00xxxxxx  色彩 run    讀 1 像素, 重複 count 次
+01xxxxxx  dither/陰影  讀 1 像素, 輸出 [透明,值]×count(隔位寫, 佔 2×count 寬)— 地面陰影即此
+10xxxxxx  literal     讀 count 個像素原樣
+11xxxxxx  透明 skip    跳過 count(留底 = 透明)
+每列以 bx=W 遞減追蹤;歸零換列(寫到螢幕 buffer 時 += stride−W)。
 ```
 
-**狀態**:此 24×24 文法套用到 FIGANI(167 寬)能精確消耗位元組,但渲染仍為橫條(垂直相關峰值
-偏離宣告寬度)→ FIGANI 戰鬥動畫用的是**同家族的另一個參數化變體**(非 24×24 那支),
-其模式/位元配置需再反組譯 `0x4E000–0x4F800` 內對應函式確認。工具 `tools/decode_sprite.py`
-已實作 24×24 文法,待對映正確變體後即可逐幀輸出 PNG。
+調色盤:FDOTHER 資源 #0;透明色 = index 0。
 
-> 重大進展:codec 從「完全未知」→「解碼器家族已定位、24×24 變體文法已逐指令還原」。
-> 剩最後一哩:FIGANI 專屬變體的精確模式表。不偽造輸出,待對齊後再產圖。
+**驗證(視覺)**:`FIGANI_000` 解出 4 幀皆為「持劍騎士(藍灰盔甲 + 紅披風)」連續動作,
+`FIGANI_001` 解出 11 幀完整揮劍攻擊(含黃色斬擊特效),地面 dither 陰影正確。
+**全 `FIGANI.DAT`:264 個動畫、合計 2118 幀,全部可解。** 工具 `tools/decode_figani.py`
+(`frames` 出 PNG 序列 / `gif` 出動畫 / `info` 印幀資訊)。
 
-## 其餘未解(後輪)
-- **每幀前置欄位**:部分動畫(`FIGANI_013`)直接讀 W,H 得 H=0,顯示每幀資料前可能有繪製位移(x,y)/旗標。
-- **標頭 +4 / +6 欄位**:疑為播放速度 / 迴圈 / 對齊基準。
-- **ANI 完整 AFM 檔格式**:資源 #0 的 AFM 檔頭與 `FIGANI` 的關係。
+## 破解歷程(供方法論參考)
 
-> 完成定義:能把任一 `FIGANI` 動畫逐幀解出透明 sprite、依序輸出 PNG 序列 / GIF。
-> 屆時上面「未攻破」段落改寫為「已驗證」,被推翻的假設一併刪除(誠實揭露,不偽造輸出)。
+此 codec 是本專案最硬的一關,歷程值得留存:
+1. 純資料靜態猜測(~8 種 RLE 假設)全失敗 → 確認「byte 消耗對齊 ≠ 解碼正確」需視覺驗證。
+2. capstone(docker)反組譯,以 `rep stosb`/`rep movsb` 叢集定位解碼器家族。
+3. 還原 24×24 版文法 → 套 FIGANI 仍橫條 → 找到參數化版 `0x4F43D`(讀 `[0x27B4]` 寬)。
+4. 垂直相關分析發現真實寬 ≈103 而非標頭首欄 167 → 回頭解出 **13-byte 幀標頭**(realW/H 在 +9/+11)。
+5. 從 +13、用 realW 解 RLE → 騎士 sprite 完美還原。
+
+> 已推翻的舊假設(誠實揭露):`0xFE 為透明 escape`(實為控制 byte 高 2 bit=11)、
+> `首欄 167 為解碼寬`(實為外框寬,真實寬在 +9)。
+
+## 其餘待辦(後輪)
+- 把 264 動畫對應到遊戲招式 / 角色(命名)。
+- `ANI.DAT` 完整 AFM 檔格式(過場動畫)與 `FIGANI` 的關係。
+- 調色 remap 表(部分 24×24 變體用 `[ebp+eax]` 重新著色,推測為陣營 / 受傷閃色)。

@@ -59,6 +59,17 @@ DOS 原生不顯示中文。當年漢堂的做法是**自帶一套點陣字型 +
 
 ![自製字型字模表](docs/figures/font_atlas.png)
 
+## 戰鬥動畫 codec 全破：2118 幀逐幀還原
+
+全專案最硬的一關。原版自製動畫工具 **AFM（作者 Lo Yuan Tsung, 1993）** 的戰鬥動畫，
+用一套 4 模式 sprite RLE 壓縮。經 capstone 反組譯 `FD2.EXE` 的解碼器（`0x4F43D`）、
+解出每幀 13-byte 標頭、再以垂直相關分析校正真實寬度，**完整還原**：
+
+![騎士揮劍攻擊動畫](docs/figures/figani_knight.png)
+
+`FIGANI.DAT` 共 **264 個動畫、2118 幀全部可解**。工具 `tools/decode_figani.py` 可輸出 PNG 序列或 GIF。
+codec 與破解歷程見 [`06-animation-format.md`](docs/knowledge-base/06-animation-format.md)。
+
 ### 為台灣留一份技術紀念
 
 逆向過程中，在動畫資料裡找到當年漢堂程式設計師自製工具的署名：
