@@ -31,7 +31,8 @@
 - [x] **音樂播放與場景切換**機制(AIL XMIDI 序列)→ `12-…`
 - [x] **戰場選單與行動系統**(行動狀態機/選單游標/Get_EasyMagic)→ `13-…`
 - [x] README 知識庫總索引(可點選分類)
-- [~] 逐章轉錄劇情為文字(本機 `extracted/story/序章_transcript.md`):**序章+第2+第3章完成(3/35)**,其餘 30 章逐輪續做
+- [x] **glyph→Unicode 對照表完成(1824/1824,100%)** → `docs/data/glyph_map.json`(含數字/英文/漢字/標點/機器人雙字元代號)
+- [x] **全 35 章劇情轉錄完成**:自動解碼成含說話者的 UTF-8 → 本機 `extracted/story/full_story_auto.md`(1450 句);序章~第3章另有人工精校
 - [x] **按鍵綁定**(Enter/Space 確認、ESC 取消、方向鍵)反組譯 → `13-…`
 - [x] **Get_EasyMagic** 法術面板反組譯(0x18ED0)→ `13-…`
 - [x] **場景→曲號對映**:play_bgm(0x26777)+ 32 處呼叫 track 反組譯 → `12-…`
