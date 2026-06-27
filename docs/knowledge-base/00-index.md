@@ -19,6 +19,8 @@
 | `09-story-and-dialogue.md` | 劇情/對話結構(說話者+控制碼)與抽取方法 | 第 3 輪 RE |
 | `10-sprite-rendering-camp-and-state.md` | 敵/我方與狀態的動畫機制(解碼器變體/陣營著色/面向) | 第 3 輪 RE(反組譯) |
 | `11-enemy-ai.md` | 戰場 AI:敵人/NPC 行動決策(目標評分/移動/地形) | 第 3 輪 RE(反組譯) |
+| `12-music-playback-and-scene.md` | 音樂播放(Miles AIL/XMIDI 序列)與場景切換換曲 | 第 3 輪 RE(反組譯) |
+| `13-battle-menu-system.md` | 戰場選單與行動系統(行動狀態機/選單游標/Get_EasyMagic) | 第 3 輪 RE(反組譯) |
 | `90-re-plan.md` | 分階段逆向與重製計畫 | 規劃 |
 | `91-worklist.md` | 逐輪 worklist(依序執行) | 逐輪更新 |
 | `99-reflections-log.md` | 逐輪反思日誌(lessons learned) | 逐輪更新 |
