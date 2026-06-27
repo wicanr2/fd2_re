@@ -70,9 +70,13 @@ AFM - Animation File Manager Version 1.00 Copyright (C) 1993 Lo Yuan Tsung 09/29
 
 **下一步(正解路徑)= 用反組譯當 oracle**
 靜態猜 codec 已達合理上限,改從 `FD2.EXE` 反組譯**真正的 sprite 解碼迴圈**(Watcom C,
-保護模式 LE)。注意:`3C FE`(cmp al,0xFE)在 EXE 僅 1 處且為 `call` 位移之**假命中**,
-代表 escape 檢查不走該指令——需用 Ghidra 反組譯讀 FIGANI 的繪圖函式,逐指令還原 codec。
-(全螢幕動畫 blit 在 `0x2d7xx` 一帶:推 `0x140`/`0xc8`、寫 `0xA0000`,可由此回溯解碼來源。)
+保護模式 LE)。第 3 輪反組譯進度(capstone in docker):
+- `3C FE`(cmp al,0xFE)在 EXE 僅 1 處且為 `call` 位移之**假命中** → escape 檢查不走 `cmp al,0xFE`。
+- `0x12cb0` 經反組譯確認為**純矩形列複製**(`for row: memcpy(dst,src,w); src+=src_stride; dst+=dst_stride`),
+  **無透明、無 RLE** → frame 在進此 blit **之前**就已被另一個函式解壓成線性像素 buffer。
+- 故 **decompressor 是獨立函式**,需從「誰填 `0x12cb0` 的 src 參數」回溯。linear 反組譯在 350KB
+  Watcom binary 難追交叉引用 → 下一輪上 **Ghidra headless**(docker)做 auto-analysis + 反編譯,
+  找讀取 frame `W,H` 標頭並逐列輸出的解壓函式,逐指令還原 codec。
 
 ## 其餘未解(後輪)
 - **每幀前置欄位**:部分動畫(`FIGANI_013`)直接讀 W,H 得 H=0,顯示每幀資料前可能有繪製位移(x,y)/旗標。
