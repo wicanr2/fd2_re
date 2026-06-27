@@ -74,9 +74,32 @@ AFM - Animation File Manager Version 1.00 Copyright (C) 1993 Lo Yuan Tsung 09/29
 - `3C FE`(cmp al,0xFE)在 EXE 僅 1 處且為 `call` 位移之**假命中** → escape 檢查不走 `cmp al,0xFE`。
 - `0x12cb0` 經反組譯確認為**純矩形列複製**(`for row: memcpy(dst,src,w); src+=src_stride; dst+=dst_stride`),
   **無透明、無 RLE** → frame 在進此 blit **之前**就已被另一個函式解壓成線性像素 buffer。
-- 故 **decompressor 是獨立函式**,需從「誰填 `0x12cb0` 的 src 參數」回溯。linear 反組譯在 350KB
-  Watcom binary 難追交叉引用 → 下一輪上 **Ghidra headless**(docker)做 auto-analysis + 反編譯,
-  找讀取 frame `W,H` 標頭並逐列輸出的解壓函式,逐指令還原 codec。
+- 故 **decompressor 是獨立函式**,需從「誰填 `0x12cb0` 的 src 參數」回溯。
+
+**已定位 sprite 解碼器家族(capstone 反組譯,第 3 輪)**
+`rep stosb`/`rep movsb` 密集叢集落在 **`0x4E000`–`0x4F800`**(正是動畫播放器呼叫的函式群)。
+其中 `0x4EB52` 為 **24×24 sprite RLE 解碼器**,已逐指令還原其文法:
+
+```
+edx = dst_stride - 24       ; 每列寫完跳 stride
+bh  = 24 (每列剩餘寬), bl = 24 (列數)
+迴圈讀控制 byte c:
+  高 2 bit = 模式, 低 6 bit:count = (c & 0x3F) + 1
+    00xxxxxx  色彩 run     : 讀 1 像素, rep stosb count 次
+    01xxxxxx  dither/scaled: 讀 1 像素, 隔位寫(inc edi;stosb), 佔 2×count 寬
+    10xxxxxx  literal      : 讀 count 個像素原樣寫
+    11xxxxxx  透明 skip    : add edi,count(不寫,留底=透明)
+  bh -= count;歸零換列(add edi,edx;dec bl)
+像素經 [ebp+eax] 調色 remap 表轉換。
+```
+
+**狀態**:此 24×24 文法套用到 FIGANI(167 寬)能精確消耗位元組,但渲染仍為橫條(垂直相關峰值
+偏離宣告寬度)→ FIGANI 戰鬥動畫用的是**同家族的另一個參數化變體**(非 24×24 那支),
+其模式/位元配置需再反組譯 `0x4E000–0x4F800` 內對應函式確認。工具 `tools/decode_sprite.py`
+已實作 24×24 文法,待對映正確變體後即可逐幀輸出 PNG。
+
+> 重大進展:codec 從「完全未知」→「解碼器家族已定位、24×24 變體文法已逐指令還原」。
+> 剩最後一哩:FIGANI 專屬變體的精確模式表。不偽造輸出,待對齊後再產圖。
 
 ## 其餘未解(後輪)
 - **每幀前置欄位**:部分動畫(`FIGANI_013`)直接讀 W,H 得 H=0,顯示每幀資料前可能有繪製位移(x,y)/旗標。
