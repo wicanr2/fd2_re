@@ -73,3 +73,26 @@
 - 修正:`sprite 用背景 RLE 的透明變體` 的樂觀假設 → 已知是**另一套逐列格式**,codec 待反組譯。
 
 **下一輪起點**:反組譯 FIGANI sprite 解碼器 → 動畫逐幀輸出(使用者要求);glyph→Unicode 對照表。
+
+## 第 3 輪(續)— 反組譯定位 sprite 解碼器家族(2026-06-28)
+
+**做了什麼**
+- capstone(docker uv)反組譯 `FD2.EXE`。用 **`rep stosb`/`rep movsb` 叢集**當錨點,
+  定位 sprite 解碼器家族於 **`0x4E000`–`0x4F800`**(動畫播放器呼叫的函式群)。
+- 逐指令還原 `0x4EB52`(24×24 sprite 解碼器)的 **4 模式 RLE 文法**:
+  高 2 bit=模式(色彩run/dither/literal/透明skip),低 6 bit=count−1,`[ebp+eax]` 調色 remap。
+- 排除誤判:`0x12CB0`=純矩形 blit、`0x4EE31`=flood-fill、`3C FE`=call 位移假命中。
+
+**學到 / 驗證**
+- **`rep stosb`/`rep movsb` 是定位 RLE blitter 的最佳靜態錨點**(比 `cmp al,imm` 可靠;
+  RLE 解壓器幾乎必用串指令做 run/literal)。
+- 反組譯當 oracle 確實突破了純資料猜測的死局:從「codec 完全未知」→「家族定位 + 24×24 文法逐指令還原」。
+- **byte 消耗對齊 ≠ 解碼正確**:24×24 文法套 FIGANI 能精確消耗位元組,但垂直相關顯示像素未對齊
+  → FIGANI 用同家族**另一參數化變體**,不可因「長度對」就斷定 codec 正確(需視覺 + 相關雙重驗證)。
+
+**推翻的舊結論**
+- 修正:`0xFE 是 sprite 透明 escape`(第 3 輪前段假設)→ 實際透明是**控制 byte 高 2 bit = 11**,
+  非單一 0xFE 值;sprite codec 是 2-bit 模式 RLE,非 escape-byte 制。
+
+**下一輪起點**:反組譯 `0x4E000–0x4F800` 內 FIGANI 用的參數化變體(確認其模式/位元表),
+完成逐幀 PNG 輸出;glyph→Unicode 對照表;FDSHAP tile stride 收尾。
