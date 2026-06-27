@@ -79,16 +79,28 @@ codec 與破解歷程見 [`06-animation-format.md`](docs/knowledge-base/06-anima
 我們把破解出的每一項技術都整理成保存品質的文件，記錄 1995 年台灣團隊怎麼做一款 DOS 遊戲：
 [開發工具考證](docs/knowledge-base/04-original-toolchain.md)、[圖像壓縮](docs/knowledge-base/05-image-compression-format.md)、[動畫機制](docs/knowledge-base/06-animation-format.md)、[音樂格式](docs/knowledge-base/07-music-xmidi-format.md)。
 
-## 知識庫
+## 知識庫總索引
 
-逆向發現逐輪累積在 [`docs/knowledge-base/`](docs/knowledge-base/)，每輪同步更新、錯誤知識即時修正：
+逆向發現逐輪累積在 [`docs/knowledge-base/`](docs/knowledge-base/)，每輪同步更新、錯誤知識即時修正。
+`04`–`11` 同時是「1995 年台灣怎麼做遊戲」的技術保存紀錄。
 
-- [`00-index.md`](docs/knowledge-base/00-index.md) — 索引與標註慣例
-- [`01-container-and-asset-formats.md`](docs/knowledge-base/01-container-and-asset-formats.md) — 容器與資產格式(第 1 輪)
-- [`02-game-data-reference.md`](docs/knowledge-base/02-game-data-reference.md) — 裝備/法術/人物/公式(攻略萃取)
-- [`03-exe-and-data-structures.md`](docs/knowledge-base/03-exe-and-data-structures.md) — EXE 資料表 offset 與單位/物品/法術/地圖結構
-- [`90-re-plan.md`](docs/knowledge-base/90-re-plan.md) — 分階段逆向與重製計畫
-- [`99-reflections-log.md`](docs/knowledge-base/99-reflections-log.md) — 逐輪反思日誌
+**資產格式**
+- [`01` 容器與資產格式](docs/knowledge-base/01-container-and-asset-formats.md) — `.DAT` 容器、圖像/調色盤/地形
+- [`05` 圖像 RLE 壓縮](docs/knowledge-base/05-image-compression-format.md) — 壓縮演算法完整規格
+- [`06` 動畫機制(AFM)](docs/knowledge-base/06-animation-format.md) — sprite RLE codec、2118 幀逐幀還原
+- [`07` 音樂 XMIDI](docs/knowledge-base/07-music-xmidi-format.md) — Miles AIL、轉標準 MIDI
+- [`08` 文本與自製中文字型](docs/knowledge-base/08-text-and-font-format.md) — 字模索引 + 16×16 字型
+
+**遊戲邏輯 / 機制**
+- [`03` EXE 資料表與資料結構](docs/knowledge-base/03-exe-and-data-structures.md) — 數值表 offset、單位/物品/法術/地圖結構
+- [`09` 劇情與對話](docs/knowledge-base/09-story-and-dialogue.md) — 對話結構、說話者、抽取方法
+- [`10` Sprite 繪製:敵/我方與狀態](docs/knowledge-base/10-sprite-rendering-camp-and-state.md) — 陣營著色、解碼器變體、面向
+- [`11` 戰場 AI:敵人/NPC 行動決策](docs/knowledge-base/11-enemy-ai.md) — 目標評分、移動、地形評估
+
+**參考 / 規劃**
+- [`00` 索引與標註慣例](docs/knowledge-base/00-index.md) ・ [`02` 裝備/法術/人物/公式(攻略)](docs/knowledge-base/02-game-data-reference.md)
+- [`04` 當年開發工具考證](docs/knowledge-base/04-original-toolchain.md) ・ [`90` 逆向與重製計畫](docs/knowledge-base/90-re-plan.md)
+- [`91` Worklist](docs/knowledge-base/91-worklist.md) ・ [`99` 逐輪反思日誌](docs/knowledge-base/99-reflections-log.md)
 
 ## 重製目標(規劃中)
 
