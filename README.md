@@ -35,6 +35,27 @@ python3 tools/unpack_dat.py --list  FLAME2/TITLE.DAT
 python3 tools/unpack_dat.py --all   FLAME2/  extracted/
 ```
 
+## 第 2 輪成果：圖像 / 音樂 / 數值 / 工具考證
+
+**圖像壓縮全破** — 還原出遊戲標題畫面與所有戰鬥背景：
+
+![還原的標題畫面](docs/figures/title.png)
+
+![還原的戰鬥背景](docs/figures/backgrounds.png)
+
+- **RLE 壓縮**破解(`c≥0x80` literal / `c<0x80` run)+ VGA 256 色調色盤 → 約 125 張全幅圖可解。詳見 [`05-image-compression-format.md`](docs/knowledge-base/05-image-compression-format.md)。
+- **音樂**確認為 Miles AIL 的 **XMIDI**，寫 `tools/xmi2mid.py` 轉出 15 首標準 MIDI(音符平衡、tempo 保留)。詳見 [`07-music-xmidi-format.md`](docs/knowledge-base/07-music-xmidi-format.md)。
+- **EXE 數值表**全部 dump 並對攻略自驗通過(物品 215 / 法術 36 / 敵我單位 68 / 升級成長…)，連攻略原本缺的法術數值編號都還原了。見 [`docs/data/exe_tables/`](docs/data/exe_tables/)。
+
+### 為台灣留一份技術紀念
+
+逆向過程中，在動畫資料裡找到當年漢堂程式設計師自製工具的署名：
+
+> **AFM — Animation File Manager Version 1.00　Copyright (C) 1993 Lo Yuan Tsung**
+
+我們把破解出的每一項技術都整理成保存品質的文件，記錄 1995 年台灣團隊怎麼做一款 DOS 遊戲：
+[開發工具考證](docs/knowledge-base/04-original-toolchain.md)、[圖像壓縮](docs/knowledge-base/05-image-compression-format.md)、[動畫機制](docs/knowledge-base/06-animation-format.md)、[音樂格式](docs/knowledge-base/07-music-xmidi-format.md)。
+
 ## 知識庫
 
 逆向發現逐輪累積在 [`docs/knowledge-base/`](docs/knowledge-base/)，每輪同步更新、錯誤知識即時修正：
