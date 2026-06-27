@@ -44,10 +44,36 @@ AIL_map_sequence_channel(...)          聲道對映
 3. 從 FDMUS.DAT 取該場景對應曲 → AIL_init_sequence → AIL_start_sequence
 ```
 
-- **15 首 XMI**(見 `07-…`)對應不同場景:長曲(FDMUS_008 250 拍等)= 戰鬥 / 地圖 BGM;
-  短曲(FDMUS_016 5 拍、FDMUS_017 15 拍)= 勝利 / 事件提示樂句(播一次不迴圈)。
-- **場景 → 曲目對應表**:由遊戲流程碼在切場景時指定曲號。[推定] 應有一張「章節/場景 → FDMUS 序號」
-  常數表;確切對應待反組譯場景載入碼補上(後輪)。
+### `play_bgm(flag, track)` — 已反組譯(`0x26777`)
+
+切場景換曲走同一個函式 `play_bgm`(`0x26777`):
+
+```
+play_bgm(flag, track):
+    if track == 目前曲號 [0x1A11]:  直接 return(同曲不重播)
+    [0x1A11] = track                 記錄目前曲號
+    if track == -1 (0xFF):           停曲(釋放序列,call 0x3BBD4)
+    else:                            釋放舊曲 → 從 FDMUS.DAT 載入第 track 個資源(call 0x11FBA)
+                                     → AIL init + start sequence(handle [0x3BFF], buffer [0x3EE0])
+```
+
+- **`[0x1A11]`** = 目前播放曲號(全域)。**`track = -1`** = 停止音樂(場景轉換常先停曲)。
+- `track` 即 **FDMUS.DAT 的資源索引**(見 `07-…`;偶數位多為 3-byte 分隔,奇數位為 XMI)。
+
+### 場景 → 曲號(實測 32 處 `play_bgm` 呼叫的 track 立即數)
+
+| track | 呼叫位置(file offset) | 推定場景 |
+|---|---|---|
+| `-1`(停曲) | 0x1B049 / 0x1B31D / 0x26F28 / 0x335BB … 多處 | 場景切換前停曲 |
+| 4 | 0x2D3CF(ANI 播放器一帶) | 片頭 / 過場 |
+| 18 | 0x26BB5 / 0x2CFF5 | 戰鬥(大曲 FDMUS_018) |
+| 11 | 0x2E0B6 / 0x31E06 / 0x3235D / 0x33217(最常用) | 世界地圖 / 一般場景 |
+| 10 | 0x2DB34 / 0x2E0F9 | 城鎮 / 劇情 |
+| 13 / 15 / 16 / 17 | 0x2E099 / 0x2E0E2 / 0x32344 / 0x31DF5 | 各特定場景 / 事件 |
+
+> 機制已確定:遊戲流程碼在切場景時呼叫 `play_bgm(_, track)` 指定曲號。各 track 的「確切場景名」
+> 需把呼叫端函式對應到遊戲狀態(片頭 / 世界圖 / 城鎮 / 戰鬥 / 劇情)後補全;上表為依呼叫位置的推定。
+> 短曲(勝利 / 事件提示)應以非迴圈方式播放(loop_count=1),待確認。
 
 ## 音效(SFX)
 
@@ -65,6 +91,10 @@ AIL_map_sequence_channel(...)          聲道對映
 | `.DIG` 取樣 SFX | WAV/OGG 音效 |
 
 ## 待辦(後輪)
-- 反組譯場景載入碼,dump「場景 → FDMUS 曲號」對應表。
+- ✅ 「場景 → FDMUS 曲號」對映:`play_bgm`(0x26777)+ 32 處呼叫 track 已反組譯(見上表)。
+- 把各 track 呼叫端對應到確切遊戲狀態名(片頭/世界圖/城鎮/戰鬥/劇情)。
 - 確認短曲(勝利/事件)是否 loop_count=1(播一次)。
 - SFX 取樣資源位置與「事件 → 音效」對應。
+
+> 工具:`tools/le_xref.py`(解析 LE object/fixup,做字串 xref 與相對呼叫端搜尋)——
+> 本輪 scene→track 即用它從 `FDMUS.DAT` 字串 xref 追到 `play_bgm`。
