@@ -15,11 +15,12 @@
 | `05-image-compression-format.md` | **圖像 RLE 壓縮格式**完整規格 | 第 2 輪 RE(視覺驗證) |
 | `06-animation-format.md` | **動畫機制(AFM)**容器與幀結構 | 第 2–3 輪 RE |
 | `07-music-xmidi-format.md` | **音樂 XMIDI 格式**與轉換 | 第 2 輪 RE(結構驗證) |
+| `08-text-and-font-format.md` | **文本格式 + 自製 16×16 字型**(可還原中文) | 第 3 輪 RE(視覺驗證) |
 | `90-re-plan.md` | 分階段逆向與重製計畫 | 規劃 |
 | `91-worklist.md` | 逐輪 worklist(依序執行) | 逐輪更新 |
 | `99-reflections-log.md` | 逐輪反思日誌(lessons learned) | 逐輪更新 |
 
-> `04`–`07` 同時是「1995 年台灣怎麼做遊戲」的技術保存紀錄。對應工具在 `tools/`。
+> `04`–`08` 同時是「1995 年台灣怎麼做遊戲」的技術保存紀錄。對應工具在 `tools/`。
 
 ## 標註慣例
 

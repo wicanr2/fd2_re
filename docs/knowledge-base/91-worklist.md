@@ -20,8 +20,9 @@
 - [x] **動畫機制結構**:AFM 容器 + FIGANI 幀封裝(幀數自描述 + offset 表)→ `06-animation-format.md`
 
 ## 第 3 輪 🟡(進行中)
-- [ ] **動畫逐幀拆解**:破解 sprite 透明 RLE 變體,把每個 FIGANI/FDSHAP 幀輸出成 PNG 序列並紀錄 ← 使用者明確要求
-- [ ] **文本解碼**:確認 `FDTXT` 是否 Big5,傾印章節文本
+- [x] **文本解碼**:破解 FDTXT(uint16 glyph 索引 + 控制碼 + 0xFFFF)+ 找到自製字型(FDOTHER_004,16×16 1bpp,1824 字模),**還原可讀中文** → `08-text-and-font-format.md`、`tools/decode_text.py`
+- [ ] **動畫逐幀拆解**:sprite 像素 codec 未破(已排除多假設,改走反組譯 oracle)← 使用者明確要求,接續中
+- [ ] 建 glyph id → Unicode 對照表(讓文本可全文檢索 / 翻譯)
 - [ ] `DATO`(立繪)/`FDSHAP` 24×24 圖塊集解碼
 - [ ] 寫一篇總覽:「1995 年台灣怎麼做遊戲 — 炎龍騎士團2 技術全紀錄」
 
