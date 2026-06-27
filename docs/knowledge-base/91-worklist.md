@@ -23,7 +23,13 @@
 - [x] **文本解碼**:破解 FDTXT(uint16 glyph 索引 + 控制碼 + 0xFFFF)+ 找到自製字型(FDOTHER_004,16×16 1bpp,1824 字模),**還原可讀中文** → `08-text-and-font-format.md`、`tools/decode_text.py`
 - [x] **動畫逐幀拆解**:✅ **完整破解**!反組譯參數化解碼器 0x4F43D + 解出 13-byte 幀標頭(realW/H 在 +9/+11)+
       4 模式 RLE → `tools/decode_figani.py` 把 **264 動畫 2118 幀**全部解出(騎士揮劍動畫視覺驗證)← 使用者明確要求,完成
+- [x] **持久素材抽取**:`tools/extract_all.py` → 本機 `extracted/`(raw/images/animations/music/fonts);**不入版控**
+- [x] **劇情/對話結構解出**:[控制碼][說話者肖像ID][『][對白][』];全 35 章渲染成可讀 PNG(`extracted/story/`)→ `09-…`
+- [x] **序章(FDTXT_001)逐章轉錄完成**(`extracted/story/序章_transcript.md`,本機)
+- [x] **敵/我方動畫機制文件**:解碼器變體家族(全彩/remap調色/silhouette/dither)+ 陣營/面向 → `10-…`
+- [ ] 逐章轉錄其餘 32 章(FDTXT_002~033)為文字(本機),逐輪推進
 - [ ] 建 glyph id → Unicode 對照表(讓文本可全文檢索 / 翻譯)
+- [ ] 確認「BB 陣營 → remap 表」對應,dump 各陣營 remap 表還原配色
 - [ ] `DATO`(立繪)/`FDSHAP` 24×24 圖塊集解碼
       (FDSHAP_000 raw 渲染已見正確地形色:草綠/水藍/土褐,但有對角歪斜 → tile stride / 是否壓縮待校準)
 - [ ] 寫一篇總覽:「1995 年台灣怎麼做遊戲 — 炎龍騎士團2 技術全紀錄」
