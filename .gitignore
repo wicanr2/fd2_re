@@ -1,0 +1,33 @@
+# === 版權保護:原版遊戲本體與素材一律不納入版控、不散布 ===
+# 公開倉庫只給「引擎 + 工具 + 知識庫」,玩家須自備合法原版。
+org_game/
+extracted/
+*.SAV
+
+# 原版資產副檔名(保險,避免誤加)
+*.DAT
+*.EXE
+*.MDI
+*.DIG
+*.B24
+*.BNK
+*.OPL
+*.AD
+*.ico
+*.bin
+*.cue
+*.rar
+
+# 青衫攻略離線鏡像:著作權屬原作者,公開倉庫只留致謝+連結(references/README.md),
+# 不轉載原文與圖片;知識庫 docs/ 為結構化衍生(遊戲數值,標註出處)。
+references/html/
+references/text/
+
+# === 一般忽略 ===
+__pycache__/
+*.pyc
+.DS_Store
+*.swp
+node_modules/
+build/
+dist/

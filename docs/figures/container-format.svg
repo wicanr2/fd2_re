@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="430" font-family="monospace" font-size="13">
+  <rect width="760" height="430" fill="#0f1117"/>
+  <text x="20" y="34" fill="#e6e6e6" font-size="18" font-weight="bold">炎龍騎士團2 · .DAT 通用容器格式 (第 1 輪 RE)</text>
+  <text x="20" y="56" fill="#8aa0b4" font-size="12">FLAME2/ 下 12 個 .DAT 全部共用此結構 · tools/unpack_dat.py 一支吃全部</text>
+
+  <!-- file bar -->
+  <g>
+    <rect x="20" y="80" width="110" height="44" fill="#b5651d" stroke="#222"/>
+    <text x="30" y="100" fill="#fff">magic</text>
+    <text x="30" y="117" fill="#fff">"LLLLLL"</text>
+
+    <rect x="130" y="80" width="300" height="44" fill="#2d6a8f" stroke="#222"/>
+    <text x="140" y="100" fill="#fff">uint32[N] LE  offset 目錄</text>
+    <text x="140" y="117" fill="#cfe6f5" font-size="11">N = (offsets[0] - 6) / 4</text>
+
+    <rect x="430" y="80" width="100" height="44" fill="#3f7d4f" stroke="#222"/>
+    <text x="445" y="106" fill="#fff">res #0</text>
+    <rect x="530" y="80" width="80" height="44" fill="#4f8d5f" stroke="#222"/>
+    <text x="545" y="106" fill="#fff">res #1</text>
+    <rect x="610" y="80" width="60" height="44" fill="#3f7d4f" stroke="#222"/>
+    <text x="622" y="106" fill="#fff">…</text>
+    <rect x="670" y="80" width="70" height="44" fill="#4f8d5f" stroke="#222"/>
+    <text x="680" y="106" fill="#fff">res #N-1</text>
+  </g>
+  <text x="20" y="72" fill="#666" font-size="11">+0</text>
+  <text x="130" y="72" fill="#666" font-size="11">+6</text>
+
+  <!-- arrows from directory to resources -->
+  <g stroke="#2d6a8f" stroke-width="1.5" fill="none" opacity="0.8">
+    <path d="M180 124 L 460 140"/>
+    <path d="M260 124 L 560 140"/>
+    <path d="M340 124 L 695 140"/>
+  </g>
+  <text x="430" y="158" fill="#8aa0b4" font-size="11">每個 offset 指向一個 sub-resource;單調遞增,最後一個延伸到檔尾</text>
+
+  <!-- resource table -->
+  <text x="20" y="200" fill="#e6e6e6" font-size="14" font-weight="bold">已解出資源 (~1000 個)</text>
+  <g fill="#cfd6dd" font-size="12">
+    <text x="20"  y="224">FIGANI.DAT  409  戰鬥動畫</text>
+    <text x="20"  y="244">DATO.DAT    137  立繪/肖像</text>
+    <text x="20"  y="264">FDOTHER.DAT 104  雜項+調色盤</text>
+    <text x="20"  y="284">FDFIELD.DAT 100  地圖</text>
+    <text x="280" y="224">FDSHAP.DAT   67  圖塊+地形表</text>
+    <text x="280" y="244">BG.DAT       57  戰鬥背景</text>
+    <text x="280" y="264">TAI.DAT      57  待定</text>
+    <text x="280" y="284">FDTXT.DAT    35  章節文本</text>
+    <text x="540" y="224">FDMUS.DAT    21  音樂</text>
+    <text x="540" y="244">ANI.DAT      10  動畫</text>
+    <text x="540" y="264">TITLE.DAT     8  標題圖</text>
+  </g>
+
+  <!-- verified findings -->
+  <text x="20" y="324" fill="#e6e6e6" font-size="14" font-weight="bold">已驗證資產特徵</text>
+  <g fill="#9fd0a8" font-size="12">
+    <text x="20" y="348">▸ 圖像: uint16 寬高開頭 — TITLE 320×200 · BG 320×100 · 圖塊 24×24 (VGA 13h)</text>
+    <text x="20" y="368">▸ 調色盤: FDOTHER_000 = 768B = 256 色 ×RGB(6-bit, ≤0x3F)</text>
+    <text x="20" y="388">▸ 文本: FDTXT 兩層 — 資源內含 uint16 字串次目錄 (Big5?)</text>
+    <text x="20" y="408">▸ 地形表: FDSHAP@0x2422E = 300 格 ×4B — 與青衫攻略 modify2 交叉吻合 ✓</text>
+  </g>
+</svg>
