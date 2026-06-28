@@ -93,6 +93,23 @@ hdl:D  a  D  D  D  D  D  D  D  b  D  c  d  D  e  f  g  h  i  j  k  L  m  D  n  o
 - 已抽出的原語正好是 DSL 的詞彙:`when unit[i].flag` / `when turn>=N` → `spawn` / `dialogue` / `win` / `event`。
 - default handler(11 章)= 最簡單的「殲滅即勝」,重製預設規則即可;18 個特殊 handler 是需要逐關重建的事件腳本。
 
+## 7.5 戰場單位有兩個來源:FDFIELD roster vs 事件進場(2026-06-28 證實)
+
+掃全 12 關 FDFIELD `own`(己方)roster,**沒有任何一關含索爾(id0)/亞雷斯(4)/悠妮(9)等主角**;
+**序章(ch0 = map2,因進戰場 map=[0x53c03]×3+2)的 own roster 是空的**(ally 僅鐵諾 NPC)。
+→ 戰場單位是**雙來源**:
+
+| 來源 | 內容 | 機制 |
+|---|---|---|
+| **FDFIELD roster** | 每關固定的敵人 + 部分配角/ally(各關 map<N>) | 開場直接擺位 |
+| **隊伍名冊 `[0x53bf7]` + 事件** | 玩家主角隊(索爾等) | **由 pre-battle cutscene / 事件腳本動態進場** |
+
+**序章開場演出(實機)**:索爾/亞雷斯/妮雅/蓋亞**從戰場邊緣移動進入中央 → 觸發對話**,
+之後才進入可操作戰鬥。即序章不是「擺好棋子開打」,而是 scripted 入場 cutscene(對應 ch0 pre-battle handler 0x3231b)。
+
+**對 remake 的意義**:`export_units.py` 目前只導 FDFIELD roster(配角/敵人),**玩家主角隊要另從隊伍名冊注入**;
+序章要實作「單位從邊緣走入 + 對話」的進場演出(事件腳本 DSL 的 `spawn`+`move`+`dialogue` 節點),不能只靠 map_units.json。
+
 ## 8. 受阻 / 待續
 
 - **[已解,見 doc 26]** ~~18 handler 逐章語意 + 動作函式~~ → 全挖完:handler 無動作函式(只條件→設碼+繪圖);條件原語 `unit_flag`/`roster_has`/回合;機器可讀 `docs/data/battle_events.json`。
