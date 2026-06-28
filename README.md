@@ -123,8 +123,18 @@ codec 與破解歷程見 [`06-animation-format.md`](docs/knowledge-base/06-anima
 
 ## 🎮 重製已開工(Go/Ebiten,桌面/Web/手機)
 
-[`remake/`](remake/) 是 Go/Ebiten 重製。**MVP 垂直切片**:載入序章戰場 → hi-res 渲染 → 方向鍵/WASD/觸控移動游標。
-**本機桌面執行檔已建成(Linux ELF 10.8MB);WASM 也可編譯(10.5MB)**。可行性 [`20`](docs/knowledge-base/20-first-principles-feasibility.md)、架構 [`21`](docs/knowledge-base/21-go-ebiten-remake-plan.md)。
+[`remake/`](remake/) 是 Go/Ebiten 重製。**本機桌面 ELF 已建成;第一關「初試身手」已可跑**,
+全部對照**原版實機(dosbox)+ 青衫攻略 + 反組譯**還原,不憑空:
+
+- **事件進場**:主角隊(索爾/亞雷斯/悠妮/蓋亞)從戰場邊緣**行軍進場**;哈諾哈瓦特第 3 回合從房子、
+  敵援軍第 4 回合、海盜頭目第 5 回合、警備隊第 6 回合**各按回合登場** —— 對照青衫攻略,資料來自
+  反組譯 FDFIELD `turn_events`(原版事件腳本竟在資料而非 EXE,見 [`25`](docs/knowledge-base/25-battle-event-system.md))。
+- **對話系統**:TTF 中文台詞 + DATO 大頭像 + **嘴型開合**(反組譯 `0x16d00` 狀態機,[`14`](docs/knowledge-base/14-text-control-codes.md))+ 全形『』。
+- **戰棋核心**:flood-fill 移動、攻擊結算(青衫傷害公式)、評分式敵方 AI、勝負判定。
+- **原版素材動畫**:FDICON 4 方向走動分鏡(行軍)、FIGANI 全身攻擊分鏡。
+- **角色 sprite = 肖像 = id 恆等**機制(反組譯角色表 `[0x55BA1]`,[`31`](docs/knowledge-base/31-map-unit-sprites-fdicon.md))。
+
+可行性 [`20`](docs/knowledge-base/20-first-principles-feasibility.md)、架構 [`21`](docs/knowledge-base/21-go-ebiten-remake-plan.md)。(WASM 也可編譯。)
 
 ### ✨ 重製的核心增值:可擴展事件系統(不只是複刻)
 
