@@ -14,7 +14,9 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"image"
+	"image/color"
 	_ "image/png"
 	"log"
 	"os"
@@ -22,6 +24,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
 
 const (
@@ -40,14 +43,27 @@ type MapData struct {
 }
 
 type Game struct {
-	m        *MapData
-	tileset  *ebiten.Image
-	tiles    []*ebiten.Image // 切好的圖塊
-	curX     int
-	curY     int
-	camX     float64
-	camY     float64
-	loadErr  string
+	m       *MapData
+	tileset *ebiten.Image
+	tiles   []*ebiten.Image // 切好的圖塊
+	st      *battle.State    // 戰鬥狀態(單位)
+	curX    int
+	curY    int
+	camX    float64
+	camY    float64
+	loadErr string
+}
+
+// 陣營顏色(M1 暫用色塊,M2/sprite 後換真圖)。
+func campColor(c battle.Camp) color.RGBA {
+	switch c {
+	case battle.Own:
+		return color.RGBA{0x40, 0x80, 0xff, 0xff} // 藍
+	case battle.Ally:
+		return color.RGBA{0x40, 0xc0, 0x40, 0xff} // 綠
+	default:
+		return color.RGBA{0xe0, 0x40, 0x40, 0xff} // 紅
+	}
 }
 
 func (g *Game) tileAt(idx int) *ebiten.Image {
@@ -138,11 +154,56 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			screen.DrawImage(t, op)
 		}
 	}
+	// 單位層(M1:陣營色塊 + HP bar)
+	if g.st != nil {
+		for _, u := range g.st.Units {
+			if !u.Alive() {
+				continue
+			}
+			ux := float64(u.X*tw) - g.camX
+			uy := float64(u.Y*th) - g.camY
+			if ux < -float64(tw) || ux > logicalW || uy < -float64(th) || uy > logicalH {
+				continue
+			}
+			drawUnit(screen, ux, uy, float64(tw), float64(th), campColor(u.Camp), u)
+		}
+	}
 	// 游標(白框)
 	curPx := float64(g.curX*tw) - g.camX
 	curPy := float64(g.curY*th) - g.camY
 	drawCursor(screen, curPx, curPy, float64(tw), float64(th))
-	ebitenutil.DebugPrint(screen, "炎龍騎士團2 重製 MVP — 方向鍵/WASD/觸控移動游標")
+	// 狀態列:選中單位資訊(中文職業名待 M2 TTF)
+	info := "炎龍騎士團2 — M1 戰棋核心 / 方向鍵·WASD·觸控移動游標"
+	if g.st != nil {
+		info += fmt.Sprintf("  回合%d  我方%d 友%d 敵%d",
+			g.st.Turn, g.st.AliveCount(battle.Own), g.st.AliveCount(battle.Ally), g.st.AliveCount(battle.Enemy))
+		if u := g.st.UnitAt(g.curX, g.curY); u != nil {
+			info += fmt.Sprintf("\n[%d,%d] %s Lv%d HP%d/%d AP%d DP%d MV%d",
+				u.X, u.Y, u.Camp, u.Lv, u.HP, u.MaxHP, u.AP, u.DP, u.MV)
+		}
+	}
+	ebitenutil.DebugPrint(screen, info)
+}
+
+// drawUnit 畫一個單位(M1:內縮色塊 + 頂部 HP bar)。
+func drawUnit(dst *ebiten.Image, x, y, w, h float64, col color.RGBA, u *battle.Unit) {
+	pad := 3.0
+	body := ebiten.NewImage(int(w-2*pad), int(h-2*pad))
+	body.Fill(col)
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(x+pad, y+pad)
+	dst.DrawImage(body, op)
+	// HP bar
+	bw := w - 2*pad
+	frac := float64(u.HP) / float64(u.MaxHP)
+	if frac < 0 {
+		frac = 0
+	}
+	bar := ebiten.NewImage(int(bw*frac)+1, 2)
+	bar.Fill(color.RGBA{0x30, 0xff, 0x30, 0xff})
+	op2 := &ebiten.DrawImageOptions{}
+	op2.GeoM.Translate(x+pad, y+pad-3)
+	dst.DrawImage(bar, op2)
 }
 
 func drawCursor(dst *ebiten.Image, x, y, w, h float64) {
@@ -201,6 +262,12 @@ func loadGame() *Game {
 		g.tiles = append(g.tiles, g.tileset.SubImage(r).(*ebiten.Image))
 	}
 	g.m = &m
+	// 載入單位(M1)
+	if st, err := battle.Load("assets/map0_units.json"); err == nil {
+		g.st = st
+	} else if g.loadErr == "" {
+		g.loadErr = "units: " + err.Error()
+	}
 	return g
 }
 

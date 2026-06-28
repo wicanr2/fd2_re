@@ -232,3 +232,17 @@
 - **對重製**:事件可資料驅動(battle_events.json + roster + FDTXT),引擎不為任一關寫死分支。
 
 **下一輪起點**:挖各章動作函式(0x33499…)+ 單位 idx→角色對應,補完事件語意;接 ScenarioRunner。
+
+## 第 11 輪 — remake M1 開工:單位資料模型 + 渲染(2026-06-28)
+
+**做了什麼**
+- `tools/export_units.py`:序章單位 = FDFIELD roster(camp/cls/lv)+ 出場座標(positions)+ EXE 數值表(hp/ap/dp/mv)→ `remake/assets/map0_units.json`(本機)。
+- `remake/internal/battle/model.go`:Unit/Camp/State + `Load()`;`Alive()`=HP>0(對映原版 byte+5 bit0)、`Acted`(bit7)。
+- `cmd/fd2/main.go`:在 MVP 地圖上畫單位層(陣營色塊 我方藍/友綠/敵紅 + HP bar),游標選中顯示 Lv/HP/AP/DP/MV + 回合與各陣營存活數。
+- headless test(`model_test.go`)驗證序章:own=2 ally=4 enemy=24,我方落部署格、HP/MV 合理、UnitAt 排除陣亡 → 全綠。桌面 ELF 建置成功。
+
+**學到 / 驗證**
+- 三方資料(FDFIELD roster + 出場座標 + EXE 數值)組成引擎 units.json,引擎只認 JSON → 資料/引擎解耦(doc 30 管線)。
+- Ebiten 邏輯層(battle package 不 import ebiten)可純 headless 測試,不需 display → M1-8 回歸基礎。
+
+**下一輪起點**:M1-3 flood-fill 移動範圍 + M1-4 戰場選單(移動/攻擊/待機)。

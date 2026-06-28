@@ -94,8 +94,8 @@
 
 ## M1 — 戰棋核心(下一個,讓它「能玩一場戰鬥」)
 > 驗收:能部署我方、選單下指令、移動(flood-fill 範圍)、攻擊結算傷害、敵方 AI 回合、判定勝敗。
-- [ ] 資料模型:Unit(HP/攻防/移動力/陣營/位置)、Terrain(地形係數)、BattleState(回合/階段)
-- [ ] 從 `maps_metadata.json` 載入單位 roster + 出場位置(原版序章戰場)
+- [x] 資料模型:Unit(HP/攻防/移動力/陣營/位置/alive/acted)、BattleState(回合/單位) → `remake/internal/battle/model.go`
+- [x] 單位資料管線 `tools/export_units.py`(roster+座標+EXE數值→units.json)+ 引擎載入並渲染(陣營色塊+HP bar+選中資訊)+ headless test 全綠
 - [ ] 移動:flood-fill 可達範圍(扣地形成本)+ 高亮 + 路徑
 - [ ] 戰場選單狀態機(移動/攻擊/待機/道具/結束),對齊 `13`(游標/Enter/ESC)
 - [ ] 攻擊結算:套**青衫公式**(物理/劍技/法術/恢復+命中+暴擊+經驗,doc 02 §4 = 實作依據)+ EXE 數值表(`03`)
