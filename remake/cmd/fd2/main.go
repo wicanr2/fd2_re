@@ -19,6 +19,7 @@ import (
 	"image/color"
 	"image/png"
 	"log"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"sort"
@@ -53,6 +54,8 @@ type Game struct {
 	sc      *battle.Scenario   // 劇本(事件系統,doc 29)
 	dialog  []battle.DialogLine // 待顯示對話(事件產生,含說話者)
 	portraits map[int][]*ebiten.Image // DATO 頭像:肖像 id → 4 嘴型幀
+	mouthOpen  bool // 嘴型動畫狀態(原版 0x16d00:m0閉/m3開)
+	mouthTimer int  // 閉嘴倒數(原版 rand%30+2 tick)
 	curX    int
 	curY    int
 	camX    float64
@@ -219,6 +222,15 @@ func (g *Game) tileAt(idx int) *ebiten.Image {
 
 func (g *Game) Update() error {
 	g.frame++
+	// 嘴型動畫(忠實原版 0x16d00,doc14):每 2 frame 一 tick;閉嘴隨機 2-31 tick、開嘴一瞬
+	if len(g.dialog) > 0 && g.frame%2 == 0 {
+		if g.mouthOpen {
+			g.mouthOpen = false
+			g.mouthTimer = rand.Intn(30) + 2
+		} else if g.mouthTimer--; g.mouthTimer <= 0 {
+			g.mouthOpen = true
+		}
+	}
 	// 截圖模式:到指定幀後自動退出(畫面已於 Draw 存檔)
 	if g.shotPath != "" {
 		if g.frame == 1 {
@@ -406,11 +418,15 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			tx := 16.0
 			// 左頭像(嘴型:目前 m0 靜態;開合動畫節奏待 RE 原版確認)
 			if fr := g.portraits[dl.Speaker]; len(fr) > 0 {
+				mi := 0 // 嘴型:m0 閉 / m3 開(原版 0x16559,doc14)
+				if g.mouthOpen && len(fr) > 3 {
+					mi = 3
+				}
 				s := (boxH - 16) / 80.0
 				po := &ebiten.DrawImageOptions{}
 				po.GeoM.Scale(s, s)
 				po.GeoM.Translate(12, top+8)
-				screen.DrawImage(fr[0], po)
+				screen.DrawImage(fr[mi], po)
 				tx = 12 + 80*s + 14
 			}
 			g.font.Draw(screen, "『"+toFullWidth(dl.Text)+"』", tx, top+18, 1.6, color.RGBA{0xff, 0xff, 0xf0, 0xff})
