@@ -23,6 +23,11 @@ import parse_field
 
 EXE_UNIT = os.path.join(os.path.dirname(__file__), "..", "docs", "data", "exe_tables", "unit.json")
 
+# portrait → FDICON 角色組(地圖 Q 版小人,每組 12=4方向×3幀);
+# 精確 Z1 圖形對應待反組譯,先用原版截圖 oracle 粗對(可校)。組 0=紅帽、1=藍帽、9=紅髮、2=灰甲機器人…
+PORTRAIT_TO_GROUP = {3: 0, 1: 1}
+DEFAULT_GROUP = {"own": 0, "ally": 9, "enemy": 8}
+
 
 def base_stats(exe, race, cls):
     for u in exe:
@@ -42,22 +47,21 @@ def main(argv):
     info = parse_field.parse_map(raw, m)
     exe = json.load(open(EXE_UNIT, encoding="utf-8"))
 
+    # positions[i] 對應 roster[i](index 對齊;肖像 0=己方部署堆疊,額外的 0 格=可部署格)
     positions = info.get("positions", [])           # [X,Y,肖像]
     own_cells = [{"x": x, "y": y} for (x, y, p) in positions if p == 0]
-    enemy_pos = [(x, y, p) for (x, y, p) in positions if p != 0]
 
     units = []
-    ei = 0
-    for u in info["units"]:
+    for i, u in enumerate(info["units"]):
         bs = base_stats(exe, u["race"], u["cls"])
         rec = {
             "camp": u["camp"], "cls": u["cls"], "cls_name": bs.get("cls_name", ""),
             "lv": u["lv"], "portrait": u["portrait"], "spawn_turn": u.get("spawn_turn", 0),
             "hp": bs["hp"], "mp": bs["mp"], "ap": bs["ap"], "dp": bs["dp"], "mv": bs["mv"],
+            "fig": PORTRAIT_TO_GROUP.get(u["portrait"], DEFAULT_GROUP.get(u["camp"], 0)),
         }
-        # 敵/友單位配出場座標(按順序),己方由部署格決定不在此固定
-        if u["camp"] != "own" and ei < len(enemy_pos):
-            rec["x"], rec["y"], _ = enemy_pos[ei]; ei += 1
+        if i < len(positions):                       # 固定出場座標(我方會被引擎改放部署格)
+            rec["x"], rec["y"] = positions[i][0], positions[i][1]
         units.append(rec)
 
     res = {"map": m, "w": info["w"], "h": info["h"],

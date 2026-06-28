@@ -20,6 +20,8 @@ import (
 	"image/png"
 	"log"
 	"os"
+	"path/filepath"
+	"sort"
 	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -59,6 +61,74 @@ type Game struct {
 	shotFrame int
 	shotCurX  int // 截圖時把游標放這(FD2_SHOT_CUR=x,y)
 	shotCurY  int
+	shotSel   bool // 截圖前自動選取游標單位(FD2_SHOT_SELECT=1)
+	// 選取狀態
+	sel   *battle.Unit
+	reach map[battle.Cell]bool
+	// 地圖單位 sprite(FIGANI 待機分鏡):fig index → 幀序列
+	sprites map[int][]*ebiten.Image
+}
+
+
+// loadSprites 載入 assets/sprites/fig_NNN_fMM.png,按 fig index 分組成幀序列。
+func loadSprites() map[int][]*ebiten.Image {
+	out := map[int][]*ebiten.Image{}
+	files, _ := filepath.Glob("assets/sprites/fig_*_f*.png")
+	type fr struct {
+		idx, fno int
+		img      *ebiten.Image
+	}
+	var frs []fr
+	for _, fp := range files {
+		var idx, fno int
+		if _, e := fmt.Sscanf(filepath.Base(fp), "fig_%d_f%d.png", &idx, &fno); e != nil {
+			continue
+		}
+		raw, e := os.ReadFile(fp)
+		if e != nil {
+			continue
+		}
+		im, _, e := image.Decode(bytes.NewReader(raw))
+		if e != nil {
+			continue
+		}
+		frs = append(frs, fr{idx, fno, ebiten.NewImageFromImage(im)})
+	}
+	sort.Slice(frs, func(i, j int) bool {
+		if frs[i].idx != frs[j].idx {
+			return frs[i].idx < frs[j].idx
+		}
+		return frs[i].fno < frs[j].fno
+	})
+	for _, f := range frs {
+		out[f.idx] = append(out[f.idx], f.img)
+	}
+	return out
+}
+
+// confirm 處理 Enter/Space:選取我方單位顯示移動範圍,或移動到可達格 / 原地待機。
+func (g *Game) confirm() {
+	if g.st == nil {
+		return
+	}
+	cur := battle.Cell{X: g.curX, Y: g.curY}
+	if g.sel == nil {
+		u := g.st.UnitAt(g.curX, g.curY)
+		if u != nil && u.Camp == battle.Own && !u.Acted {
+			g.sel = u
+			g.reach = g.st.Reachable(u)
+		}
+		return
+	}
+	switch {
+	case g.curX == g.sel.X && g.curY == g.sel.Y: // 原地待機
+		g.sel.Acted = true
+		g.sel, g.reach = nil, nil
+	case g.reach[cur] && g.st.UnitAt(g.curX, g.curY) == nil: // 移動
+		g.sel.X, g.sel.Y = g.curX, g.curY
+		g.sel.Acted = true
+		g.sel, g.reach = nil, nil
+	}
 }
 
 // 陣營顏色(M1 暫用色塊,M2/sprite 後換真圖)。
@@ -84,8 +154,13 @@ func (g *Game) Update() error {
 	g.frame++
 	// 截圖模式:到指定幀後自動退出(畫面已於 Draw 存檔)
 	if g.shotPath != "" {
-		if g.frame == 1 && (g.shotCurX != 0 || g.shotCurY != 0) {
-			g.curX, g.curY = g.shotCurX, g.shotCurY
+		if g.frame == 1 {
+			if g.shotCurX != 0 || g.shotCurY != 0 {
+				g.curX, g.curY = g.shotCurX, g.shotCurY
+			}
+			if g.shotSel {
+				g.confirm()
+			}
 		}
 		if g.frame > g.shotFrame {
 			return ebiten.Termination
@@ -125,6 +200,13 @@ func (g *Game) Update() error {
 	}
 	if g.curY >= g.m.H {
 		g.curY = g.m.H - 1
+	}
+	// 選取 / 移動 / 取消
+	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace) {
+		g.confirm()
+	}
+	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		g.sel, g.reach = nil, nil
 	}
 	// 相機跟隨游標(置中,夾在地圖內)
 	g.camX = float64(g.curX*g.m.TileW - logicalW/2 + g.m.TileW/2)
@@ -171,7 +253,17 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			screen.DrawImage(t, op)
 		}
 	}
-	// 單位層(M1:陣營色塊 + HP bar)
+	// 移動範圍高亮(已選單位:藍色半透明格)
+	if g.sel != nil {
+		hl := ebiten.NewImage(tw, th)
+		hl.Fill(color.RGBA{0x40, 0x80, 0xff, 0x66})
+		for c := range g.reach {
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Translate(float64(c.X*tw)-g.camX, float64(c.Y*th)-g.camY)
+			screen.DrawImage(hl, op)
+		}
+	}
+	// 單位層(M1:FIGANI 待機動畫 sprite + 陣營腳標 + HP bar;無 sprite 退回色塊)
 	if g.st != nil {
 		for _, u := range g.st.Units {
 			if !u.Alive() {
@@ -182,7 +274,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			if ux < -float64(tw) || ux > logicalW || uy < -float64(th) || uy > logicalH {
 				continue
 			}
-			drawUnit(screen, ux, uy, float64(tw), float64(th), campColor(u.Camp), u)
+			g.drawUnitSprite(screen, ux, uy, float64(tw), float64(th), u)
 		}
 	}
 	// 游標(白框)
@@ -221,7 +313,44 @@ func saveShot(img *ebiten.Image, path string) {
 	log.Println("screenshot ->", path)
 }
 
-// drawUnit 畫一個單位(M1:內縮色塊 + 頂部 HP bar)。
+// drawUnitSprite 畫一個單位:腳下陣營標記 + FIGANI 待機動畫 sprite(縮放/底部對齊/循環)+ HP bar。
+func (g *Game) drawUnitSprite(screen *ebiten.Image, x, y, w, h float64, u *battle.Unit) {
+	// 腳下陣營色標(敵我同 sprite,靠此區分)
+	mark := ebiten.NewImage(int(w)-6, 4)
+	mc := campColor(u.Camp)
+	mark.Fill(mc)
+	om := &ebiten.DrawImageOptions{}
+	om.GeoM.Translate(x+3, y+h-3)
+	screen.DrawImage(mark, om)
+
+	frames := g.sprites[u.Fig]
+	if len(frames) > 0 {
+		img := frames[(g.frame/12)%len(frames)] // 待機循環(手擺動;每 12 幀換一張)
+		// FDICON 24×24 = 格大小,直接貼;略上移讓單位「站」在格上
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(x, y-4)
+		if u.Acted {
+			op.ColorScale.Scale(0.55, 0.55, 0.6, 1) // 已行動變暗(對映原版灰階)
+		}
+		screen.DrawImage(img, op)
+	} else {
+		drawUnit(screen, x, y, w, h, mc, u) // fallback 色塊
+		return
+	}
+	// HP bar(格頂)
+	bw := w - 6
+	frac := float64(u.HP) / float64(u.MaxHP)
+	if frac < 0 {
+		frac = 0
+	}
+	bar := ebiten.NewImage(int(bw*frac)+1, 2)
+	bar.Fill(color.RGBA{0x30, 0xff, 0x30, 0xff})
+	ob := &ebiten.DrawImageOptions{}
+	ob.GeoM.Translate(x+3, y+1)
+	screen.DrawImage(bar, ob)
+}
+
+// drawUnit 畫一個單位(fallback:內縮色塊 + 頂部 HP bar)。
 func drawUnit(dst *ebiten.Image, x, y, w, h float64, col color.RGBA, u *battle.Unit) {
 	pad := 3.0
 	body := ebiten.NewImage(int(w-2*pad), int(h-2*pad))
@@ -313,6 +442,7 @@ func loadGame() *Game {
 	} else if g.loadErr == "" {
 		g.loadErr = "units: " + err.Error()
 	}
+	g.sprites = loadSprites()
 	return g
 }
 

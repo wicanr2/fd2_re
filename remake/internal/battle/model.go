@@ -39,6 +39,7 @@ type Unit struct {
 	AP, DP   int
 	MV       int // 移動力
 	Portrait int
+	Fig      int // 地圖 sprite = FIGANI 動畫 index(待機分鏡)
 	X, Y     int
 	Acted    bool // 本回合已行動(原版 byte[+5] bit7)
 }
@@ -95,6 +96,7 @@ type unitsFile struct {
 		DP       int    `json:"dp"`
 		MV       int    `json:"mv"`
 		Portrait int    `json:"portrait"`
+		Fig      int    `json:"fig"`
 		X        int    `json:"x"`
 		Y        int    `json:"y"`
 	} `json:"units"`
@@ -128,7 +130,7 @@ func Load(path string) (*State, error) {
 		nu := &Unit{
 			Camp: camp, ClsName: u.ClsName, Lv: u.Lv,
 			HP: u.HP, MaxHP: u.HP, MP: u.MP, AP: u.AP, DP: u.DP, MV: u.MV,
-			Portrait: u.Portrait, X: u.X, Y: u.Y,
+			Portrait: u.Portrait, Fig: u.Fig, X: u.X, Y: u.Y,
 		}
 		if camp == Own { // 我方放部署格
 			if ownIdx < len(f.OwnDeploy) {
