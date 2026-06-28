@@ -120,14 +120,13 @@ remake 把角色做成**單一資料表**(face 與 sprite 是兩個欄位,經 po
 
 ## 8. 受阻 / 待校
 
-- **[進行中] portrait→sprite組 映射機制**,反組譯已縮小但未鎖定:
-  - sprite組 = `unit[+2]` = `call 0x11019(unit[+7])` 的回傳;`unit[+7]` 從**我方名冊**(`[0x53bf7]`,存檔載入)memcpy,敵方從 roster。
-  - `0x11019` = 「載入第 N 組的 12 幀」(`imul ×0xc`),**輸入本身就是 sprite組 id**,非 portrait→組 查表。
-  - map0 roster 26B 確認**無 sprite組 byte**(全 portrait96/race1/cls1 + 物品法術填充)→ sprite組不在 roster。
-  - 故 mapping 在更深的「`unit[+7]` 怎麼得到組 id」:我方從名冊 `[0x53bf7]`(存檔初始隊伍)、敵方從某處 by portrait/race-cls;**單位建立鏈需專門一輪靜追**(本輪繞太久,先停)。
-  - 已知映射點:portrait 0–9 → 組 0–9(恆等)、**portrait 67(龍人)→ 組 17**(非恆等)。
-  - **搜尋失敗**:EXE data 段找不到「byte 表 / struct 表」使 [0..9]=0..9 且 [67]=17 → mapping **不是單一連續表**,而是存在「角色/單位定義」(名冊/roster 的獨立欄位)。
-  - **下一步**:反組譯 `unit[+7]` 的最終來源 ——(a) 我方:存檔/初始隊伍表怎麼填 sprite組;(b) 敵方:roster 26B 哪個 byte = sprite組。鎖定後即得完整 portrait↔組 對照。
+- **[已鎖定] sprite組機制 = 單位結構欄位 `unit[+7]`(非 portrait 公式)**:
+  - 反組譯單位建立(0x10a5b 迴圈)+ `0x11019`:`call 0x11019(FDICON_buf, unit[+7])`,內部 `esi=[esp+0x4c]=unit[+7]`,`imul esi,0xc`(組×12)載入該組 12 幀;回傳 `edx`→`unit[+2]`(繪製用組,0x12831)。
+  - **sprite組 id 是每單位/角色預存的欄位 `unit[+7]`**,從出場模板 `[0x53bf7]` memcpy,**不是從 portrait 算**。
+  - 故「恆等」(0–9/68/96/97)只是**角色定義時 sprite組 剛好=portrait** 的巧合;**龍人系不同步**:凱拉斯 portrait67 但 sprite組=17(轉職前)/49(轉職後)。
+  - map0 roster 26B 無 sprite組 byte(它在出場模板/角色定義層,非 FDFIELD roster);搜不到「portrait→組」連續表也因此(根本沒這種表)。
+  - **remake 對映**:每角色 characters.json 獨立存 `sprite_group`(= 原版 unit[+7]),與 portrait/face 分開;值從「視覺對照 + 已知點(0-9恆等、67→17/49)」或續追出場模板 `[0x53bf7]` 填值處建表。
+  - **轉職**:改 `unit[+7]`(切 sprite 組);凱拉斯 17→49 即一例。
 - **[線索] 廢案人物**:FDICON 有些組**沒畫滿 12 格**(未採用角色,僅部分方向/幀);因 sprite 用「組×12 + 方向×3 + 幀」定位,廢案組仍佔 12 格 stride(部分空/重複)。未來可挖廢案角色來用(加新人素材庫)。
 - **[M2 待做]** 對話框**嘴型動畫**:DATO_N 的 m0~m3 對話時播放(嘴開合 + 眨眼)。哪幀=閉嘴/開嘴/眨眼、播放節奏(隨文字推進?固定循環?)待反組譯文字渲染器(0x16D00 區,doc 14)確認;M2 對話層實作。
 - 方向:目前只導「面向下」待機;4 方向(走動/面敵)待加。
