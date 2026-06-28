@@ -138,7 +138,9 @@
 - [ ] 玩家向 README(圖文並茂,突顯貢獻)+ 工程文件分離
 
 ## 擴充(M4 之後,擺脫原版固定 33 路線)
-- [ ] 自創戰場 + 自訂劇本(用 `19` 腳本系統)
+- [x] **可擴展事件系統規劃** → `29`:trigger/when/do DSL + 文本事件控制碼 `{{}}`;條件/動作 Registry 可註冊;原版 30 關可表達+自創戰役
+- [ ] 實作 EventSystem(ConditionRegistry/ActionRegistry)+ DialoguePlayer 解析 `{{}}`
+- [ ] 自創戰場 + 自訂劇本(用 `19`+`29` 系統)
 - [ ] 多分支劇情線 / 多結局
 - [ ] 編碼器回寫中文(`encode_text.py`)做在地化/二創
 

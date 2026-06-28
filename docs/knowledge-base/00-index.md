@@ -35,6 +35,7 @@
 | `26-per-chapter-event-handlers.md` | 逐關事件 handler 細節 + 腳本化對照(battle_events.json,供 remake 去 hardcoding) | 反組譯 |
 | `27-combat-rules-and-validation-checklist.md` | 戰鬥規則來源(青衫公式)+ 需動態實機驗證清單 + 回合無上限需求 | 規劃 |
 | `28-chapter-objectives-and-recruits.md` | 全 30 關勝利/失敗/加入條件(攻略 ground truth × handler 驗證) | 規劃 |
+| `29-remake-extensible-event-system.md` | remake 可擴展事件系統(trigger/when/do DSL + 事件控制碼) | 規劃 |
 | `15-how-fd2-was-made-1995.md` | **總覽:1995 年怎麼做出炎龍騎士團2**(綜合全紀錄) | 綜合 |
 | `90-re-plan.md` | 分階段逆向與重製計畫 | 規劃 |
 | `91-worklist.md` | 逐輪 worklist(依序執行) | 逐輪更新 |
