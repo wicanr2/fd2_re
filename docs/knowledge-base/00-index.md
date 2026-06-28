@@ -23,6 +23,7 @@
 | `13-battle-menu-system.md` | 戰場選單與行動系統(行動狀態機/選單游標/Get_EasyMagic) | 第 3 輪 RE(反組譯) |
 | `14-text-control-codes.md` | 文本控制碼與對話框機制(開框/頭像/換行/翻頁) | 第 5 輪 RE(反組譯) |
 | `16-audio-synthesis-soundfont-mt32.md` | 音色合成:SoundFont/MT-32/版本切換(含 MDI 驅動說明) | 評估+RE |
+| `17-scenario-expansion-evaluation.md` | 擴充劇本/玩法(戰場/對話/商店/機制)可行性評估 | 評估 |
 | `15-how-fd2-was-made-1995.md` | **總覽:1995 年怎麼做出炎龍騎士團2**(綜合全紀錄) | 綜合 |
 | `90-re-plan.md` | 分階段逆向與重製計畫 | 規劃 |
 | `91-worklist.md` | 逐輪 worklist(依序執行) | 逐輪更新 |
