@@ -107,7 +107,8 @@ def main(av):
     if av[2] == 'json':
         import json
         SKIP = {0x36cd7, 0x205be, 0x205da, 0x1088d, 0x111ba, 0x375c0, 0x37416, 0x37244}
-        COND = {0x3453e: 'unit_dead', 0x33499: 'roster_has'}  # 條件查詢原語(非動作)
+        COND = {0x3453e: 'unit_flag', 0x33499: 'roster_has'}  # 條件查詢原語(非動作)
+        # 0x3453e(idx) = 查單位 [0x53a45]+idx*0x50+5 的 bit0(狀態旗標,初始=1;語意未定:存活/在場)
         hs = [(i, fx.get(0x51b19 + i * 4)) for i in range(30)]
         uniq = sorted(set(t for _, t in hs if t))
         cache = {}
@@ -140,7 +141,7 @@ def main(av):
                 cache[t] = {
                     'handler': hex(t),
                     'is_default': t == 0x205b4,
-                    'trigger_units_dead': sorted(set(units)),  # 需陣亡才觸發的單位 idx(0x3453e)
+                    'trigger_units_flag': sorted(set(units)),  # 0x3453e 查的單位 idx(+5 bit0 狀態旗標)
                     'result_codes': sorted(set(codes)),         # 1=中途事件 2=特殊勝利
                     'draw_scene': draw,                          # 是否繪事件畫面(0x15f84)
                     'extra_conditions': sorted(set(conds)),      # 其他條件查詢原語

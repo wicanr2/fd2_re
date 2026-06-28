@@ -3,7 +3,7 @@
   "chapter": 0,
   "handler": "0x205b4",
   "is_default": true,
-  "trigger_units_dead": [],
+  "trigger_units_flag": [],
   "result_codes": [
    1,
    2
@@ -16,7 +16,7 @@
   "chapter": 1,
   "handler": "0x206c5",
   "is_default": false,
-  "trigger_units_dead": [],
+  "trigger_units_flag": [],
   "result_codes": [
    1
   ],
@@ -28,7 +28,7 @@
   "chapter": 2,
   "handler": "0x205b4",
   "is_default": true,
-  "trigger_units_dead": [],
+  "trigger_units_flag": [],
   "result_codes": [
    1,
    2
@@ -41,7 +41,7 @@
   "chapter": 3,
   "handler": "0x205b4",
   "is_default": true,
-  "trigger_units_dead": [],
+  "trigger_units_flag": [],
   "result_codes": [
    1,
    2
@@ -54,7 +54,7 @@
   "chapter": 4,
   "handler": "0x205b4",
   "is_default": true,
-  "trigger_units_dead": [],
+  "trigger_units_flag": [],
   "result_codes": [
    1,
    2
@@ -67,7 +67,7 @@
   "chapter": 5,
   "handler": "0x205b4",
   "is_default": true,
-  "trigger_units_dead": [],
+  "trigger_units_flag": [],
   "result_codes": [
    1,
    2
@@ -80,7 +80,7 @@
   "chapter": 6,
   "handler": "0x205b4",
   "is_default": true,
-  "trigger_units_dead": [],
+  "trigger_units_flag": [],
   "result_codes": [
    1,
    2
@@ -93,7 +93,7 @@
   "chapter": 7,
   "handler": "0x205b4",
   "is_default": true,
-  "trigger_units_dead": [],
+  "trigger_units_flag": [],
   "result_codes": [
    1,
    2
@@ -106,7 +106,7 @@
   "chapter": 8,
   "handler": "0x205b4",
   "is_default": true,
-  "trigger_units_dead": [],
+  "trigger_units_flag": [],
   "result_codes": [
    1,
    2
@@ -119,7 +119,7 @@
   "chapter": 9,
   "handler": "0x20707",
   "is_default": false,
-  "trigger_units_dead": [
+  "trigger_units_flag": [
    50,
    51
   ],
@@ -134,7 +134,7 @@
   "chapter": 10,
   "handler": "0x205b4",
   "is_default": true,
-  "trigger_units_dead": [],
+  "trigger_units_flag": [],
   "result_codes": [
    1,
    2
@@ -147,7 +147,7 @@
   "chapter": 11,
   "handler": "0x2073d",
   "is_default": false,
-  "trigger_units_dead": [
+  "trigger_units_flag": [
    14
   ],
   "result_codes": [
@@ -161,7 +161,7 @@
   "chapter": 12,
   "handler": "0x20765",
   "is_default": false,
-  "trigger_units_dead": [
+  "trigger_units_flag": [
    48,
    59
   ],
@@ -176,7 +176,7 @@
   "chapter": 13,
   "handler": "0x205b4",
   "is_default": true,
-  "trigger_units_dead": [],
+  "trigger_units_flag": [],
   "result_codes": [
    1,
    2
@@ -189,7 +189,7 @@
   "chapter": 14,
   "handler": "0x20822",
   "is_default": false,
-  "trigger_units_dead": [
+  "trigger_units_flag": [
    64
   ],
   "result_codes": [
@@ -203,7 +203,7 @@
   "chapter": 15,
   "handler": "0x2084a",
   "is_default": false,
-  "trigger_units_dead": [
+  "trigger_units_flag": [
    65
   ],
   "result_codes": [
@@ -217,7 +217,7 @@
   "chapter": 16,
   "handler": "0x20872",
   "is_default": false,
-  "trigger_units_dead": [
+  "trigger_units_flag": [
    52
   ],
   "result_codes": [
@@ -233,7 +233,7 @@
   "chapter": 17,
   "handler": "0x208cf",
   "is_default": false,
-  "trigger_units_dead": [
+  "trigger_units_flag": [
    16,
    17,
    52
@@ -244,7 +244,7 @@
   ],
   "draw_scene": false,
   "extra_conditions": [
-   "unit_dead"
+   "unit_flag"
   ],
   "action_fns": []
  },
@@ -252,7 +252,7 @@
   "chapter": 18,
   "handler": "0x20926",
   "is_default": false,
-  "trigger_units_dead": [
+  "trigger_units_flag": [
    64
   ],
   "result_codes": [
@@ -266,7 +266,7 @@
   "chapter": 19,
   "handler": "0x20957",
   "is_default": false,
-  "trigger_units_dead": [
+  "trigger_units_flag": [
    10,
    48,
    52
@@ -283,7 +283,7 @@
   "chapter": 20,
   "handler": "0x20a51",
   "is_default": false,
-  "trigger_units_dead": [
+  "trigger_units_flag": [
    16,
    17
   ],
@@ -298,13 +298,13 @@
   "chapter": 21,
   "handler": "0x20a87",
   "is_default": false,
-  "trigger_units_dead": [],
+  "trigger_units_flag": [],
   "result_codes": [
    1
   ],
   "draw_scene": false,
   "extra_conditions": [
-   "unit_dead"
+   "unit_flag"
   ],
   "action_fns": []
  },
@@ -312,7 +312,7 @@
   "chapter": 22,
   "handler": "0x20aaf",
   "is_default": false,
-  "trigger_units_dead": [
+  "trigger_units_flag": [
    16,
    17,
    18
@@ -323,7 +323,7 @@
   ],
   "draw_scene": false,
   "extra_conditions": [
-   "unit_dead"
+   "unit_flag"
   ],
   "action_fns": []
  },
@@ -331,7 +331,7 @@
   "chapter": 23,
   "handler": "0x205b4",
   "is_default": true,
-  "trigger_units_dead": [],
+  "trigger_units_flag": [],
   "result_codes": [
    1,
    2
@@ -344,7 +344,7 @@
   "chapter": 24,
   "handler": "0x20b14",
   "is_default": false,
-  "trigger_units_dead": [
+  "trigger_units_flag": [
    16
   ],
   "result_codes": [
@@ -358,13 +358,13 @@
   "chapter": 25,
   "handler": "0x20b3c",
   "is_default": false,
-  "trigger_units_dead": [],
+  "trigger_units_flag": [],
   "result_codes": [
    1
   ],
   "draw_scene": false,
   "extra_conditions": [
-   "unit_dead"
+   "unit_flag"
   ],
   "action_fns": []
  },
@@ -372,13 +372,13 @@
   "chapter": 26,
   "handler": "0x20a87",
   "is_default": false,
-  "trigger_units_dead": [],
+  "trigger_units_flag": [],
   "result_codes": [
    1
   ],
   "draw_scene": false,
   "extra_conditions": [
-   "unit_dead"
+   "unit_flag"
   ],
   "action_fns": []
  },
@@ -386,13 +386,13 @@
   "chapter": 27,
   "handler": "0x20a87",
   "is_default": false,
-  "trigger_units_dead": [],
+  "trigger_units_flag": [],
   "result_codes": [
    1
   ],
   "draw_scene": false,
   "extra_conditions": [
-   "unit_dead"
+   "unit_flag"
   ],
   "action_fns": []
  },
@@ -400,7 +400,7 @@
   "chapter": 28,
   "handler": "0x20b72",
   "is_default": false,
-  "trigger_units_dead": [
+  "trigger_units_flag": [
    40
   ],
   "result_codes": [
@@ -415,7 +415,7 @@
   "chapter": 29,
   "handler": "0x20bf5",
   "is_default": false,
-  "trigger_units_dead": [
+  "trigger_units_flag": [
    20
   ],
   "result_codes": [
