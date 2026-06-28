@@ -22,7 +22,7 @@
 | 檔案 | 大小 | 資源數 | 內容(推定) |
 |---|---:|---:|---|
 | `FIGANI.DAT` | 15.3 MB | 409 | 戰鬥動畫(最大宗) |
-| `DATO.DAT` | 1.98 MB | 137 | **人物頭像 / 肖像**(已確認:`0xFFEF` 對話框由此載頭像,見 `09`) |
+| `DATO.DAT` | 1.98 MB | 137 | **人物頭像**(已解:每資源 4 幀講話嘴型 80×80,見下 §7) |
 | `FDOTHER.DAT` | 3.38 MB | 104 | 雜項(含調色盤、UI) |
 | `FDFIELD.DAT` | 243 KB | 100 | 地圖資料 |
 | `FDSHAP.DAT` | 3.56 MB | 67 | 地形 / sprite 圖塊 + 地形控制表 |
@@ -103,3 +103,21 @@ byte2  戰鬥背景編號  uint16 LE
 
 `*.MDI` / `*.DIG` / `SAMPLE.*` / `DOS4GW.EXE` / `SETSOUND.EXE` 屬 Miles Sound System(AIL)
 驅動與 DOS extender，非遊戲內容；重製時以現代音訊管線取代，毋須逆向。
+
+## 7. 人物頭像格式(DATO.DAT)[已驗證]
+
+`DATO.DAT`(137 資源)= 對話頭像。每資源:
+
+```
++0  uint32[4]   4 個子圖 offset(= 講話時的 4 種嘴型幀)
+各子圖: uint16 W, uint16 H(多為 80×80), 然後 RLE 像素
+```
+
+RLE codec(反組譯 `0x4F716`,比 sprite 簡單,無透明):
+```
+讀 byte b:  b <= 0xC0 → 字面像素(值=b);  b > 0xC0 → run,重複 (b-0xC0) 次下一 byte
+```
+
+頭像索引 = 肖像 ID(`DATO_000`=索爾、`001`=哈諾…對上 memory.md 肖像表,已逐張驗證)。
+對話框由控制碼 `0xFFEF` 依說話者肖像 ID 載入對應頭像(見 `14-text-control-codes`)。
+工具 `tools/decode_dato.py`;全 136 頭像 ×4 幀已匯出本機 `extracted/portraits/`。
