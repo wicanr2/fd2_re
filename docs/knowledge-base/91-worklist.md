@@ -51,8 +51,10 @@
 - [x] 寫一篇總覽:「1995 年怎麼做出炎龍騎士團2」→ `15`
 - [ ] 寫一篇總覽:「1995 年台灣怎麼做遊戲 — 炎龍騎士團2 技術全紀錄」
 
+- [x] **FDFIELD 三段完整解析**:構成(地形)/控制(出場數/回合事件/寶箱/敵我roster)/出場位置;全33圖 metadata → 本機 `extracted/maps/maps_metadata.json`;`tools/parse_field.py`
+
 ## 第 4 輪以後(暫定)
-- [ ] 地圖格式完整解析(FDFIELD 三段對齊)→ 渲染第一張可視地圖
+- [x] 地圖格式完整解析(FDFIELD 三段)+ 渲染全 33 圖(見上)
 - [ ] 反組譯戰鬥/命中/傷害/AI 演算法(Ghidra)，與攻略公式交叉驗證
 - [ ] `FD2.SAV` 存檔加密/格式破解、`FDICON.B24` 格式
 - [ ] SoundFont 試聽 + tempo 校準、TIMB→GM 配器對應
