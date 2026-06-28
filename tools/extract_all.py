@@ -116,7 +116,29 @@ def main(argv):
         decode_text.font_atlas(fontres, os.path.join(fontdir, "atlas.png"))
         log.append("fonts/ : atlas.png(1824 字模 16×16 自製字型)")
 
-    # 6. INDEX
+    # 6. 人物頭像(DATO)
+    try:
+        import decode_dato
+        portdir = os.path.join(OUT, "portraits")
+        np = 0
+        for f in sorted(glob.glob(os.path.join(raw, "DATO", "*.bin"))):
+            if decode_dato.frames(f):
+                decode_dato.save(f, palp, portdir); np += 1
+        log.append(f"portraits/ : {np} 個人物頭像(各 4 嘴型幀)")
+    except Exception as e:
+        log.append(f"portraits/ : 略過({e})")
+
+    # 7. 戰場地圖(FDFIELD + FDSHAP)
+    try:
+        import extract_maps
+        mapdir = os.path.join(OUT, "maps")
+        os.makedirs(mapdir, exist_ok=True)
+        extract_maps.main(["extract_maps", raw, palp, mapdir])
+        log.append(f"maps/ : 全部戰場地圖(FDFIELD×FDSHAP tileset)")
+    except Exception as e:
+        log.append(f"maps/ : 略過({e})")
+
+    # 8. INDEX
     with open(os.path.join(OUT, "INDEX.md"), "w", encoding="utf-8") as fp:
         fp.write("# 炎龍騎士團2 — 抽取素材清單\n\n")
         fp.write("> 全為漢堂國際遊戲著作權內容,僅本機研究/重製用,不散布。\n\n")

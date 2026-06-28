@@ -44,8 +44,11 @@
 - [x] **陣營/狀態 remap 配色**:確認 LUT 來源=FDOTHER 資源#3(LMI1,23張256-byte LUT),dump 並套用展示(LUT0灰=已行動…)→ `10`;BB→LUT索引精確對應待續
 - [x] **DATO 頭像全解**(136×4嘴型幀)→ `01`§7;**Unicode→glyph 反向表+編碼器**(round-trip 100%)→ `tools/encode_text.py`
 - [ ] 各 track 呼叫端對應確切遊戲狀態名(片頭/世界圖/城鎮/戰鬥/劇情)
-- [ ] `DATO`(立繪)/`FDSHAP` 24×24 圖塊集解碼
-      (FDSHAP_000 raw 渲染已見正確地形色:草綠/水藍/土褐,但有對角歪斜 → tile stride / 是否壓縮待校準)
+- [x] **FDSHAP 圖塊庫解碼**:標頭 count + u32 offset 表 + bg-RLE 24×24;~300 tiles/tileset → `01`§8
+- [x] **全 33 張戰場地圖抽取**:FDFIELD×FDSHAP(配對 map N→FDSHAP[2N],索引驗證全通過)→ 本機 `extracted/maps/`;`tools/extract_maps.py`、`render_map.py`
+- [x] **FDICON.B24** = 1680 個 24×24 圖示 tileset(同 FDSHAP 格式,無 LLLLLL 外殼)
+- [x] **TAI.DAT** = WxH 圖像(sprite-RLE,如 155×42);多為 UI/特殊圖
+- [x] 寫一篇總覽:「1995 年怎麼做出炎龍騎士團2」→ `15`
 - [ ] 寫一篇總覽:「1995 年台灣怎麼做遊戲 — 炎龍騎士團2 技術全紀錄」
 
 ## 第 4 輪以後(暫定)
