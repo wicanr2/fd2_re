@@ -148,7 +148,8 @@
 - [x] **標題序列**:角色立繪 5 幀(FDOTHER #0x45-0x49,320×147)垂直捲動(非旋轉)+ FLAME DRAGON logo(#7 sub0)+ 主選單;**解碼器當 oracle 解圖視覺驗證** → `23`
 - [x] **主選單機制**:輸入迴圈/scancode dispatch(↑0x48/↓0x50/Enter/Space)/游標 wrap → `23`
 - [x] **新遊戲→開場對話→自動進戰場**:[0x53c03] 章節驅動,cutscene 0x3231b(與前代主角對話)→ 戰場地圖=章節*3+2(自動串接)→ `23`
-- [ ] (補)cutscene→0x10010 精確相位呼叫點(需 call-graph 遞迴反組譯工具,取代線性 sweep)
+- [x] **call-graph 遞迴反組譯工具** `tools/callgraph_le.py`(可達集/callers/rpath/funcof/jtab)→ `24`
+- [x] **釘死 cutscene→戰場鏈**:0x10010 真 caller=0x1a251/0x26130,路徑 main→0x25ebb→0x10010,獨立驗證章節跳表(修 data 段 fixup)→ `24`;排除偽命中 0x1b051/0x26f30
 - [ ] (補)更新 doc 12:修正「main=0x10000」、補章節→BGM 表 0x51e63 精確曲號
 
 ## 完成定義(反組譯研究)
