@@ -22,6 +22,7 @@
 | `12-music-playback-and-scene.md` | 音樂播放(Miles AIL/XMIDI 序列)與場景切換換曲 | 第 3 輪 RE(反組譯) |
 | `13-battle-menu-system.md` | 戰場選單與行動系統(行動狀態機/選單游標/Get_EasyMagic) | 第 3 輪 RE(反組譯) |
 | `14-text-control-codes.md` | 文本控制碼與對話框機制(開框/頭像/換行/翻頁) | 第 5 輪 RE(反組譯) |
+| `15-how-fd2-was-made-1995.md` | **總覽:1995 年怎麼做出炎龍騎士團2**(綜合全紀錄) | 綜合 |
 | `90-re-plan.md` | 分階段逆向與重製計畫 | 規劃 |
 | `91-worklist.md` | 逐輪 worklist(依序執行) | 逐輪更新 |
 | `99-reflections-log.md` | 逐輪反思日誌(lessons learned) | 逐輪更新 |
