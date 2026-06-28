@@ -127,8 +127,17 @@ remake 把角色做成**單一資料表**(face 與 sprite 是兩個欄位,經 po
   - map0 roster 26B 無 sprite組 byte(它在出場模板/角色定義層,非 FDFIELD roster);搜不到「portrait→組」連續表也因此(根本沒這種表)。
   - **remake 對映**:每角色 characters.json 獨立存 `sprite_group`(= 原版 unit[+7]),與 portrait/face 分開;值從「視覺對照 + 已知點(0-9恆等、67→17/49)」或續追出場模板 `[0x53bf7]` 填值處建表。
   - **轉職**:改 `unit[+7]`(切 sprite 組);凱拉斯 17→49 即一例。
-  - **青衫 modify 查證(2026-06-28)**:roster 26B(modify2 §7)**無 sprite組欄**;角色屬性表 `[0x55BA1]`(24B/人物,RA/CL/LV/HP/MP/MV/法術/裝備/AP/DP/DX)byte 0–4 也非 sprite組(值非 0,1,2…序列)。→ **sprite組 不在任何靜態表**,是出場模板 `[0x53bf7]` 建立時由程式邏輯(by 肖像/職業 + 龍人系特例 + 轉職)填的 runtime 值。
-  - **實用結論**:精確 portrait↔sprite組 對照用「**視覺對照 + 已知點**」建表最快(0–9/68/96/97 恆等、67 凱拉斯→17/49…);完整反組譯填值邏輯(出場模板建立鏈)留待需要時。
+  - **【重大突破 2026-06-28】sprite組 = 角色在 `[0x55BA1]` 角色定義表的 index(定義/出場順序),不是 portrait!**
+    - `[0x55BA1]` = 32 個我方角色定義槽(24B/角色,`0x300`=32×24 整除;byte0=RA 種族、byte1=CL 職業、byte2=LV、byte3=base HP…)。**表的 index(0–31)= 角色 id = 未轉職 sprite組**;`unit[+7]` 即在出場模板建立時由此 index 填入。
+    - 驗證鏈:index0–9 的 RA/CL/LV 完全對上索爾→悠妮(sprite組0–9);**index17 = RA4 龍人 = 凱拉斯**,對應 FDICON 組17(icon_0204–0215,放大確認為棕紅龍人戰士 4方向×3幀)── 印證凱拉斯 sprite組=17(=index),face肖像才是 67。
+    - **龍人系 RA4 = index 16/17/26/27**(四個龍人槽,實機確認「龍人有好幾個」)。
+    - **前 9 個恆等的真相**:index0–9 剛好 portrait 也=0–9,故「組=portrait」與「組=index」在前段無法區分;凱拉斯(index17 ≠ portrait67)才是判別點,證明 **mapping 基準是 index 不是 portrait**。
+    - **敵方/通用單位**:不在 32 角色表內,sprite組 = portrait(恆等到 FDICON 後段,如士兵組68、盜賊組96)。
+    - **轉職**:改 `unit[+7]` 到「轉職後職業對應的 sprite組」(凱拉斯 17→49,FDICON 後段)── 「職業↔sprite」洞察在**轉職後**成立。
+    - 產物:`docs/data/exe_tables/characters.json`(32 角色 index/sprite_group/race/cls/lv/base_hp + 已知名),remake 加新人即用此表。
+    - CL→職業名(已確認):1=劍士、2=戰士、5=僧侶、9=劍聖、11=英雄(modify1)、12=魔戰士、15=龍騎士;其餘 CL 碼待補。
+  - **青衫 modify 佐證**:roster 26B(modify2 §7)與角色表 byte0–4 都**無獨立 sprite組欄** → sprite組就是「角色在表中的位置序」本身,無需額外欄位(印證上面的 index 結論)。
+  - **待補**:我方各角色 portrait→index 完整對照(前9 恆等 + 凱拉斯67→17 已知;index10–31 的 face肖像逐一確認)。
   - **肖像→角色名補充**(modify1 §8):12=蜜蒂、13=羅德曼、22=劍聖鐵諾(轉職後肖像也變)。
 - **[線索] 廢案人物**:FDICON 有些組**沒畫滿 12 格**(未採用角色,僅部分方向/幀);因 sprite 用「組×12 + 方向×3 + 幀」定位,廢案組仍佔 12 格 stride(部分空/重複)。未來可挖廢案角色來用(加新人素材庫)。
 - **[M2 待做]** 對話框**嘴型動畫**:DATO_N 的 m0~m3 對話時播放(嘴開合 + 眨眼)。哪幀=閉嘴/開嘴/眨眼、播放節奏(隨文字推進?固定循環?)待反組譯文字渲染器(0x16D00 區,doc 14)確認;M2 對話層實作。
