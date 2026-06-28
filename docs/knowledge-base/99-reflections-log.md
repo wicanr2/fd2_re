@@ -167,7 +167,7 @@
 **做了什麼**
 - **FDSHAP 圖塊 + 地圖渲染**:發現圖塊 offset 表(原逐塊累積解會漂移→地圖亂掉);修正後全 33 戰場正確渲染。
 - **FDFIELD 三段完整解析**:構成/控制/出場 → 全 33 圖 metadata(出場數/回合事件/寶箱/敵我roster/座標)。
-- **FDICON.B24**=1680 個 24×24 圖示 tileset(同 FDSHAP 格式);**TAI.DAT**=WxH 圖像(sprite-RLE)。
+- **FDICON.B24**=1680 個 24×24 **地圖單位 sprite**(sprite 4-mode RLE 含透明,**非 FDSHAP bg-RLE**;第 12 輪/doc 31 修正);**TAI.DAT**=WxH 圖像(sprite-RLE)。
 - **DATO 頭像**=4 嘴型幀(codec 0x4F716);**Unicode→glyph 反向表 + 編碼器**(round-trip 100%)。
 - **remap LUT**=FDOTHER#3(LMI1,23 張),LUT 索引走全域狀態表(地形/場景 tint)。
 - **音訊評估 + MT-32 實證**(doc 16):解釋 SoundFont、回答 MT32MPU.MDI(經 MPU-401 驅動外接 MT-32);
