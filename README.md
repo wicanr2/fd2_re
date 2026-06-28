@@ -109,9 +109,11 @@ codec 與破解歷程見 [`06-animation-format.md`](docs/knowledge-base/06-anima
 - [`18` 字型現代化規劃:UTF-8 + TTF](docs/knowledge-base/18-font-modernization-utf8-ttf-plan.md) — 重製改用 TTF 渲染的計畫
 - [`19` 劇本/關卡腳本系統設計](docs/knowledge-base/19-scenario-script-system-design.md) — 可分支節點圖、敗北路線、自創戰場(`docs/data/campaign_sample.json`)
 - [`20` 第一性原理:重製可行性確認](docs/knowledge-base/20-first-principles-feasibility.md) ・ [`21` Go/Ebiten 重製架構](docs/knowledge-base/21-go-ebiten-remake-plan.md) ・ [`22` 重製技術驗證](docs/knowledge-base/22-remake-tech-validation.md)
-- [`23` 開機/標題動畫/主選單/劇情自動過場](docs/knowledge-base/23-boot-title-and-scenario-flow.md) — 反組譯頂層狀態機([0x53c03] 章節驅動)+ 解圖驗證標題立繪捲動與 FLAME DRAGON logo
-- [`24` Call-graph 逐步反組譯紀錄](docs/knowledge-base/24-callgraph-analysis-log.md) — 遞迴可達反組譯釘死 cutscene→戰場鏈,排除線性 sweep 偽命中
-- [`25` 戰場事件系統](docs/knowledge-base/25-battle-event-system.md) — 第三張章節跳表 0x51b19 + 事件原語;FD2 事件是每章硬編碼 handler(非 byte-code VM)
+
+**引擎控制流 / 深度反組譯(第 5–7 輪)**
+- [`23` 開機/標題動畫/主選單/劇情自動過場](docs/knowledge-base/23-boot-title-and-scenario-flow.md) — 頂層狀態機(真 main 0x25bf4、`[0x53c03]` 章節驅動)+ 解圖驗證標題立繪捲動與 FLAME DRAGON logo
+- [`24` Call-graph 逐步反組譯紀錄](docs/knowledge-base/24-callgraph-analysis-log.md) — 遞迴可達反組譯釘死 cutscene→戰場鏈、`[0x53ecc]` 戰役迴圈狀態機,排除線性 sweep 偽命中
+- [`25` 戰場事件系統](docs/knowledge-base/25-battle-event-system.md) — 三張章節跳表(`0x51b19`/`0x51d71`/`0x51de9`)+ 事件原語;FD2 事件是每章硬編碼 handler(非 byte-code VM)
 
 **參考 / 規劃**
 - [`00` 索引與標註慣例](docs/knowledge-base/00-index.md) ・ [`02` 裝備/法術/人物/公式(攻略)](docs/knowledge-base/02-game-data-reference.md)
@@ -132,14 +134,49 @@ codec 與破解歷程見 [`06-animation-format.md`](docs/knowledge-base/06-anima
 
 兩者共用同一份從原版還原的資料與規則。詳見 [`90-re-plan.md`](docs/knowledge-base/90-re-plan.md)。
 
+## 逆向工具索引
+
+全部在 [`tools/`](tools/),Python(走 docker uv/capstone,不污染系統)或 shell。資產輸出到本機 `extracted/`(不入庫)。
+
+**解包 / 解碼(資產 → PNG/MIDI)**
+| 工具 | 用途 |
+|---|---|
+| `unpack_dat.py` | 解 `.DAT` 的 LLLLLL 容器(`--list` / `--all`) |
+| `decode_image.py` | 圖像 RLE 解碼(背景/標題圖) |
+| `decode_figani.py` | 戰鬥動畫 sprite RLE(4-mode)逐幀解碼 |
+| `decode_sprite.py` / `decode_dato.py` | sprite / DATO 人物頭像解碼 |
+| `dump_remap.py` | FDOTHER#3 LMI1 陣營/狀態著色 LUT |
+| `font_grid.py` | 自製字型 16×16 字模網格匯出 |
+
+**反組譯(DOS4GW LE)**
+| 工具 | 用途 |
+|---|---|
+| `disasm_le.py` | LE 反組譯(`dis`/`range`/`calls`/`refs`,標 fixup target) |
+| `callgraph_le.py` | 遞迴可達 call-graph(`reach`/`callers`/`rpath`/`funcof`/`jtab`)— 釘 caller、解跳表 |
+| `le_xref.py` | LE fixup 重定位 + 字串/資料 xref |
+| `dump_exe_tables.py` | EXE 數值表 dump(單位/物品/法術/成長) |
+
+**地圖 / 文本 / 音訊**
+| 工具 | 用途 |
+|---|---|
+| `parse_field.py` / `extract_maps.py` / `render_map.py` | FDFIELD 三段解析、全戰場抽取與渲染 |
+| `export_engine_assets.py` | 戰場 → 引擎資產(tileset.png + map.json) |
+| `decode_text.py` / `encode_text.py` | 文本 glyph↔Unicode 解碼 / 回寫編碼 |
+| `decode_story_text.py` / `render_story.py` | 全 35 章劇情解碼成 UTF-8 / 渲染 |
+| `xmi2mid.py` / `export_mt32.sh` / `export_music_ogg.sh` | XMIDI→MIDI、MT-32 渲染、預錄 OGG |
+| `extract_all.py` | 一鍵重生 `extracted/`(所有素材) |
+
 ## 倉庫結構
 
 ```
-docs/knowledge-base/   逆向知識庫(逐輪累積)
+docs/knowledge-base/   逆向知識庫(00–25 逐輪累積 + 90/91/99 計畫)
+docs/data/             結構化資料(glyph_map.json、campaign_sample.json…)
 docs/figures/          圖解(SVG + PNG)
-tools/                 逆向工具(unpack_dat.py …)
+tools/                 逆向工具(見上「逆向工具索引」)
+remake/                Go/Ebiten 重製(引擎碼入庫,資產不入庫)
 references/README.md   青衫攻略致謝與連結(原文不轉載)
 org_game/              原版本體與素材(.gitignore,不散布)
+extracted/             抽取素材(.gitignore,由 tools/extract_all.py 重生)
 ```
 
 ## 致謝與版權
