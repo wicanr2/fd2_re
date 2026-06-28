@@ -103,7 +103,14 @@ FD2 XMI(FDMUS.DAT)  → tools/xmi2mid.py → 標準 MIDI
 > 對「保存原味」而言:**MT-32 版最接近 1995 年高階玩家聽到的聲音**(因 FD2 為其編寫),值得做為旗艦音源;
 > SoundFont 版提供彈性與低門檻;FM 版還原最普及的聲霸卡聽感。三者並存,玩家自選。
 
+## 重製版發行:預錄 OGG(MT-32 音源)
+
+MT-32 要靠 Roland 版權 ROM 即時模擬,不便內建。**做法:用 ROM 預先錄成 OGG 隨重製散布**——
+玩家不需 ROM 即可聽到道地 MT-32 音色。已實做:15 首全轉 OGG(113MB WAV → 14MB OGG,libvorbis q4 44.1kHz)。
+BGM 迴圈由引擎處理(整曲 loop;之後可補 loop 點 metadata)。
+
 ## 工具
+- `tools/export_music_ogg.sh <raw/FDMUS> <ROM> <out>`:全管線 XMI→MIDI→munt(MT-32)→OGG(發行用)。
 - `tools/export_mt32.sh <raw/FDMUS> <ROM目錄> <out>`:XMI→MIDI→munt 全自動渲染 MT-32 WAV。
 - `tools/xmi2mid.py`:XMI→標準 MIDI(SoundFont / 其他合成器共用)。
 
