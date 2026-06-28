@@ -119,7 +119,9 @@ remake 把角色做成**單一資料表**(face 與 sprite 是兩個欄位,經 po
 
 - **[進行中] portrait→sprite組 映射機制**,反組譯已縮小但未鎖定:
   - sprite組 = `unit[+2]` = `call 0x11019(unit[+7])` 的回傳;`unit[+7]` 從**我方名冊**(`[0x53bf7]`,存檔載入)memcpy,敵方從 roster。
-  - `0x11019` 是「載入該角色 12 幀 sprite」大函式(malloc + `imul ×0xc` 組×12 + offset 表),非單純查表。
+  - `0x11019` = 「載入第 N 組的 12 幀」(`imul ×0xc`),**輸入本身就是 sprite組 id**,非 portrait→組 查表。
+  - map0 roster 26B 確認**無 sprite組 byte**(全 portrait96/race1/cls1 + 物品法術填充)→ sprite組不在 roster。
+  - 故 mapping 在更深的「`unit[+7]` 怎麼得到組 id」:我方從名冊 `[0x53bf7]`(存檔初始隊伍)、敵方從某處 by portrait/race-cls;**單位建立鏈需專門一輪靜追**(本輪繞太久,先停)。
   - 已知映射點:portrait 0–9 → 組 0–9(恆等)、**portrait 67(龍人)→ 組 17**(非恆等)。
   - **搜尋失敗**:EXE data 段找不到「byte 表 / struct 表」使 [0..9]=0..9 且 [67]=17 → mapping **不是單一連續表**,而是存在「角色/單位定義」(名冊/roster 的獨立欄位)。
   - **下一步**:反組譯 `unit[+7]` 的最終來源 ——(a) 我方:存檔/初始隊伍表怎麼填 sprite組;(b) 敵方:roster 26B 哪個 byte = sprite組。鎖定後即得完整 portrait↔組 對照。
