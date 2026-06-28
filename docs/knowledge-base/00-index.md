@@ -31,6 +31,7 @@
 | `22-remake-tech-validation.md` | 重製技術驗證(桌面 ELF + WASM + 資產管線實證) | 確認 |
 | `23-boot-title-and-scenario-flow.md` | 開機/標題動畫/主選單/劇情自動過場(反組譯+解圖驗證) | 反組譯 |
 | `24-callgraph-analysis-log.md` | Call-graph 逐步反組譯紀錄(釘死 cutscene→戰場鏈,排除偽命中) | 反組譯 |
+| `25-battle-event-system.md` | 戰場事件系統:章節 handler 跳表 0x51b19 + 事件原語(非 byte-code) | 反組譯 |
 | `15-how-fd2-was-made-1995.md` | **總覽:1995 年怎麼做出炎龍騎士團2**(綜合全紀錄) | 綜合 |
 | `90-re-plan.md` | 分階段逆向與重製計畫 | 規劃 |
 | `91-worklist.md` | 逐輪 worklist(依序執行) | 逐輪更新 |
