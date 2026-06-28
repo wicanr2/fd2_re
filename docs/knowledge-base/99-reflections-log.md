@@ -260,4 +260,6 @@
 - **FDICON=地圖單位 / FIGANI=戰鬥全身**,兩套分工別混(之前誤用 FIGANI 當地圖單位)。
 - 原版實機截圖是最強 oracle:一眼定位「該找什麼 sprite」。
 
-**下一輪起點**:`portrait → FDICON 組` 對應校正(反組譯 Z1 圖形欄位,或逐關截圖 oracle);4 方向 sprite;戰棋核心 M1-5 攻擊。
+**★ 重大突破(反組譯確認)**:繪製碼 0x128e0–0x12932 鎖死 **sprite index = 組×12 + 方向×3 + 幀**,組=`unit[+2]`(角色 id)。配視覺 11/11 → **統一編號:id N → DATO_N 頭像 + FDICON 組 N sprite**;對應 fig=portrait(恆等)。remake 可用單一 characters.json 加新角色(doc 31 §6/§7)。
+
+**下一輪起點**:4 方向/走動 sprite;characters.json 統一表;M1-5 攻擊結算。
