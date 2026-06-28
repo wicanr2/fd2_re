@@ -107,7 +107,7 @@ def main(av):
     if av[2] == 'json':
         import json
         SKIP = {0x36cd7, 0x205be, 0x205da, 0x1088d, 0x111ba, 0x375c0, 0x37416, 0x37244}
-        COND = {0x3453e: 'unit_dead', 0x33499: 'tile/attr_query'}  # 條件查詢原語(非動作)
+        COND = {0x3453e: 'unit_dead', 0x33499: 'roster_has'}  # 條件查詢原語(非動作)
         hs = [(i, fx.get(0x51b19 + i * 4)) for i in range(30)]
         uniq = sorted(set(t for _, t in hs if t))
         cache = {}
