@@ -260,6 +260,8 @@
 - **FDICON=地圖單位 / FIGANI=戰鬥全身**,兩套分工別混(之前誤用 FIGANI 當地圖單位)。
 - 原版實機截圖是最強 oracle:一眼定位「該找什麼 sprite」。
 
-**★ 重大突破(反組譯確認)**:繪製碼 0x128e0–0x12932 鎖死 **sprite index = 組×12 + 方向×3 + 幀**,組=`unit[+2]`(經 0x11019)。**修正(第13輪,使用者抓到)**:portrait(face)≠sprite組(67→組17,非組67),非恆等;face=unit[+1]、sprite組=unit[+2] 獨立,portrait→組需映射(機制反組譯中)。remake characters.json 用 portrait→組 映射表加新角色(doc 31 §6/§7)。
+**★ 重大突破(反組譯確認)**:繪製碼 0x128e0–0x12932 鎖死 **sprite index = 組×12 + 方向×3 + 幀**,組=`unit[+2]`(經 0x11019)。~~修正(第13輪):portrait≠sprite組(67→組17,非恆等),portrait→組需映射~~ ← **此第13輪結論第14輪已作廢**(見下)。
 
-**下一輪起點**:4 方向/走動 sprite;characters.json 統一表;M1-5 攻擊結算。
+**★★ 第14輪定論(青衫 memory.md 權威 + 自我糾錯)**:**角色 id = 肖像(FA `+0x0F`)= sprite組(Z1 `+0x0A`)= 角色,基本態三者恆等**。memory.md 肖像編號表 0x00–0x1F = 32 我方角色名,對上角色表 `[0x55BA1]` index(職業 32/32 吻合)。**凱拉斯 = id16(龍劍士),不是 67/17**。第13輪「非恆等」整條錯,根因:**我把 DATO_067 誤當凱拉斯(它不是)+ 用 index17 循環論證**;中途還一度錯成「sprite組=角色定義 index 非 portrait」。教訓:① 撞到「打破規律的特例」先查權威資料(攻略 memory.md 早有全表)再反組譯,別急著建「例外映射表」;② 用「自己未證實的角色↔檔名對應(DATO_067=凱拉斯)」當前提 → 一錯到底,循環論證最危險;③ 攻略 memory.md/職業表 = ground truth,優先於我的視覺猜測。產物 `characters.json`(恆等)。
+
+**下一輪起點**:4 方向/走動 sprite;characters.json 已成型(32 角色);M1-5 攻擊結算;轉職碼確認(肖像/sprite組是否切組)。
