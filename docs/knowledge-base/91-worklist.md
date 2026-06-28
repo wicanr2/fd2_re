@@ -67,7 +67,10 @@
 ## 重製前置(規劃/實作)
 - [x] **音樂預錄 OGG**(MT-32 音源):15 首 → 本機 `extracted/music_ogg/`;`tools/export_music_ogg.sh`
 - [x] **字型現代化規劃**(UTF-8 + TTF render)→ `18`(計畫:文字資料化 + TTF + 雙字型模式)
+- [x] **劇本/關卡腳本系統設計**(可分支節點圖/敗北路線/商店/旗標)→ `19` + `docs/data/campaign_sample.json`
 - [ ] 實作:`decode_story_text.py --script-json`(35 章 → UTF-8 script);重製文字層 TTF render
+- [ ] 實作:從原版資料自動生成「線性 campaign.json」(parse_field + 劇情 + 商店)→ 原版模式
+- [ ] 實作:引擎 ScenarioRunner 狀態機(節點/轉場/旗標)
 - [ ] 重製垂直切片:讀真資料(地圖/頭像/OGG/UTF-8腳本)畫出第一張可走地圖 + 對話
 
 ## 完成定義(反組譯研究)

@@ -1,0 +1,104 @@
+{
+  "_comment": "炎龍騎士團2 重製 — campaign 腳本系統範例(見 docs/knowledge-base/19)。節點圖:可分支、有敗北路線。引用原版資源 id(玩家自備原版);新增節點為衍生創作。這是 schema 示範,非完整劇本。",
+  "title": "炎龍騎士團2(範例 campaign)",
+  "start": "story_prologue",
+  "flags": { "saved_teno": false, "captured_once": false },
+
+  "nodes": {
+    "story_prologue": {
+      "type": "story",
+      "script": "chapters/ch01.script.json",
+      "bgm": "FDMUS_001",
+      "next": "battle_prologue"
+    },
+
+    "battle_prologue": {
+      "type": "battle",
+      "map": { "field": "FDFIELD_000", "tileset": "FDSHAP_000" },
+      "deploy_max": 4,
+      "units_ref": "maps_metadata[0]",
+      "victory": { "type": "defeat_all" },
+      "defeat":  { "type": "all_own_dead" },
+      "bgm": "FDMUS_008",
+      "win_bgm": "FDMUS_016",
+      "on_win":  "shop_rodo",
+      "on_lose": "battle_retreat"
+    },
+
+    "battle_retreat": {
+      "_note": "敗北路線:不是 game over,而是撤退戰 → 被俘劇情 → 再回主線(原版做不到)",
+      "type": "battle",
+      "map": { "field": "FDFIELD_000", "tileset": "FDSHAP_000" },
+      "deploy_max": 4,
+      "units_ref": "maps_metadata[0]",
+      "victory": { "type": "escape", "point": [0, 0] },
+      "defeat":  { "type": "all_own_dead" },
+      "bgm": "FDMUS_011",
+      "on_win":  "story_captured",
+      "on_lose": "gameover"
+    },
+    "story_captured": {
+      "type": "story",
+      "script": "chapters/ch01_defeat.script.json",
+      "set_flags": { "captured_once": true },
+      "next": "shop_rodo"
+    },
+
+    "shop_rodo": {
+      "type": "shop",
+      "shop_ref": "exe_shop[chapter=1]",
+      "kinds": ["weapon", "item", "secret"],
+      "next": "choice_route"
+    },
+
+    "choice_route": {
+      "_note": "岔路選擇:走山路/海路 → 不同戰場序列(擴充示範)",
+      "type": "choice",
+      "prompt": "要走山路還是海路?",
+      "options": [
+        { "label": "山路", "to": "battle_ch2_mountain" },
+        { "label": "海路", "to": "battle_ch2_sea" }
+      ]
+    },
+
+    "battle_ch2_mountain": {
+      "type": "battle",
+      "map": { "field": "FDFIELD_003", "tileset": "FDSHAP_006" },
+      "deploy_max": 5,
+      "units_ref": "maps_metadata[1]",
+      "victory": { "type": "defeat_boss", "unit": 0 },
+      "defeat":  { "type": "all_own_dead" },
+      "bgm": "FDMUS_008",
+      "pre": "story_ch2",
+      "on_win":  "ending_demo",
+      "on_lose": "gameover"
+    },
+    "battle_ch2_sea": {
+      "type": "battle",
+      "map": { "field": "FDFIELD_006", "tileset": "FDSHAP_012" },
+      "deploy_max": 5,
+      "units_ref": "maps_metadata[2]",
+      "victory": { "type": "survive_turns", "n": 10 },
+      "defeat":  { "type": "all_own_dead" },
+      "bgm": "FDMUS_013",
+      "pre": "story_ch2",
+      "on_win":  "ending_demo",
+      "on_lose": "gameover"
+    },
+
+    "story_ch2": { "type": "story", "script": "chapters/ch02.script.json", "next": "@return" },
+
+    "ending_demo": {
+      "type": "ending",
+      "script": "chapters/ending_demo.script.json",
+      "variants": [
+        { "if": "flags.captured_once == true", "script": "chapters/ending_captured.script.json" }
+      ]
+    },
+    "gameover": { "type": "ending", "script": "chapters/gameover.script.json" }
+  },
+
+  "transition_rules": {
+    "_doc": "battle 用 on_win/on_lose;story/shop/event 用 next;choice 用 options[].to;條件用 {to, if}。@return = 回到 pre 的呼叫點。旗標寫 set_flags,讀用 if 字串(flags.x == y)。存檔 = {current 節點 id, flags, 隊伍, 物品}。"
+  }
+}

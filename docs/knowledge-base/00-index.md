@@ -25,6 +25,7 @@
 | `16-audio-synthesis-soundfont-mt32.md` | 音色合成:SoundFont/MT-32/版本切換(含 MDI 驅動說明) | 評估+RE |
 | `17-scenario-expansion-evaluation.md` | 擴充劇本/玩法(戰場/對話/商店/機制)可行性評估 | 評估 |
 | `18-font-modernization-utf8-ttf-plan.md` | 字型現代化規劃:UTF-8 + TTF 渲染(重製) | 規劃 |
+| `19-scenario-script-system-design.md` | 劇本/關卡腳本系統設計(可分支節點圖/敗北路線/擴充) | 設計 |
 | `15-how-fd2-was-made-1995.md` | **總覽:1995 年怎麼做出炎龍騎士團2**(綜合全紀錄) | 綜合 |
 | `90-re-plan.md` | 分階段逆向與重製計畫 | 規劃 |
 | `91-worklist.md` | 逐輪 worklist(依序執行) | 逐輪更新 |
