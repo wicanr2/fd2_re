@@ -555,7 +555,12 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		if len(g.dialog) > 0 { // 底部對話框:左頭像 + 右文字(原版佈局,real_pic)
 			dl := g.dialog[len(g.dialog)-1]
 			boxH := 120.0 // 原版約佔底部 1/4~1/3
+			// 依說話者切上/下框 + 左/右頭像(對照原版 orig_02_dialog:我方下框左頭像、對方/NPC 上框右頭像)
+			upper := dl.Speaker >= 32 // >=32 為對方/敵/NPC(我方角色 id 0-31)
 			top := float64(logicalH) - boxH
+			if upper {
+				top = 0
+			}
 			box := ebiten.NewImage(logicalW, int(boxH))
 			box.Fill(color.RGBA{0x10, 0x18, 0x48, 0xf2})
 			op := &ebiten.DrawImageOptions{}
@@ -564,21 +569,30 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			edge := ebiten.NewImage(logicalW, 2)
 			edge.Fill(color.RGBA{0xc8, 0xa0, 0x40, 0xff})
 			oe := &ebiten.DrawImageOptions{}
-			oe.GeoM.Translate(0, top)
+			edgeY := top
+			if upper {
+				edgeY = top + boxH - 2
+			}
+			oe.GeoM.Translate(0, edgeY)
 			screen.DrawImage(edge, oe)
-			tx := 16.0
-			// 左大頭像(側臉半身,佔框高滿版,對照原版 orig_02_dialog;嘴型 m0閉/m3開)
+			// 頭像:我方左、對方右(側臉半身,佔框高滿版;嘴型 m0閉/m3開)
+			s := boxH / 80.0
+			hx, tx := 6.0, 6.0+80*s+12
+			if upper { // 右頭像,文字在左
+				hx = float64(logicalW) - 6 - 80*s
+				tx = 16
+			}
 			if fr := g.portraits[dl.Speaker]; len(fr) > 0 {
 				mi := 0
 				if g.mouthOpen && len(fr) > 3 {
 					mi = 3
 				}
-				s := boxH / 80.0 // 滿框高
 				po := &ebiten.DrawImageOptions{}
 				po.GeoM.Scale(s, s)
-				po.GeoM.Translate(6, top)
+				po.GeoM.Translate(hx, top)
 				screen.DrawImage(fr[mi], po)
-				tx = 6 + 80*s + 12
+			} else {
+				tx = 16
 			}
 			g.font.Draw(screen, "『"+toFullWidth(dl.Text)+"』", tx, top+24, 1.7, color.RGBA{0xf0, 0xf4, 0xff, 0xff})
 		}
