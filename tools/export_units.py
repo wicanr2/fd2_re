@@ -23,10 +23,10 @@ import parse_field
 
 EXE_UNIT = os.path.join(os.path.dirname(__file__), "..", "docs", "data", "exe_tables", "unit.json")
 
-# portrait → FDICON 角色組(地圖 Q 版小人,每組 12=4方向×3幀);
-# 精確 Z1 圖形對應待反組譯,先用原版截圖 oracle 粗對(可校)。組 0=紅帽、1=藍帽、9=紅髮、2=灰甲機器人…
-PORTRAIT_TO_GROUP = {3: 0, 1: 1}
-DEFAULT_GROUP = {"own": 0, "ally": 9, "enemy": 8}
+# 地圖 sprite 組 = portrait(DATO 角色 id),已反組譯確認(doc 31):
+#   繪製碼 0x12831 組=unit[+2](角色 id);0x1291e ×12;0x12926 方向×3 →
+#   FDICON sprite index = 組×12 + 方向×3 + 幀。組==portrait(視覺 11/11 + 統一編號)。
+#   故 fig = portrait 直接(恆等),不需對應表。
 
 
 def base_stats(exe, race, cls):
@@ -58,7 +58,7 @@ def main(argv):
             "camp": u["camp"], "cls": u["cls"], "cls_name": bs.get("cls_name", ""),
             "lv": u["lv"], "portrait": u["portrait"], "spawn_turn": u.get("spawn_turn", 0),
             "hp": bs["hp"], "mp": bs["mp"], "ap": bs["ap"], "dp": bs["dp"], "mv": bs["mv"],
-            "fig": PORTRAIT_TO_GROUP.get(u["portrait"], DEFAULT_GROUP.get(u["camp"], 0)),
+            "fig": u["portrait"],  # 反組譯確認:sprite 組 = portrait(角色 id 恆等)
         }
         if i < len(positions):                       # 固定出場座標(我方會被引擎改放部署格)
             rec["x"], rec["y"] = positions[i][0], positions[i][1]
