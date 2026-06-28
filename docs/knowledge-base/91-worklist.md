@@ -41,7 +41,8 @@
       FFFE=換行、FFFD=翻頁等鍵、FFFF=結束 → `09`;副產物確認 **DATO.DAT=人物頭像**
 - [x] **劇情校對**:解碼自驗 + 上下文揪出 14 處形近字模誤判並修正
       (脅/實/黨/費/鍛/輩/辭/摸/牢/樁/紮/襲/態/責)
-- [ ] 確認「BB 陣營 → remap 表」對應,dump 各陣營 remap 表還原配色
+- [x] **陣營/狀態 remap 配色**:確認 LUT 來源=FDOTHER 資源#3(LMI1,23張256-byte LUT),dump 並套用展示(LUT0灰=已行動…)→ `10`;BB→LUT索引精確對應待續
+- [x] **DATO 頭像全解**(136×4嘴型幀)→ `01`§7;**Unicode→glyph 反向表+編碼器**(round-trip 100%)→ `tools/encode_text.py`
 - [ ] 各 track 呼叫端對應確切遊戲狀態名(片頭/世界圖/城鎮/戰鬥/劇情)
 - [ ] `DATO`(立繪)/`FDSHAP` 24×24 圖塊集解碼
       (FDSHAP_000 raw 渲染已見正確地形色:草綠/水藍/土褐,但有對角歪斜 → tile stride / 是否壓縮待校準)
