@@ -50,8 +50,9 @@ type Game struct {
 	tileset *ebiten.Image
 	tiles   []*ebiten.Image // 切好的圖塊
 	st      *battle.State    // 戰鬥狀態(單位)
-	sc      *battle.Scenario // 劇本(事件系統,doc 29)
-	dialog  []string         // 待顯示對話(事件產生;Goal 對話系統再做成框)
+	sc      *battle.Scenario   // 劇本(事件系統,doc 29)
+	dialog  []battle.DialogLine // 待顯示對話(事件產生,含說話者)
+	portraits map[int][]*ebiten.Image // DATO 頭像:肖像 id → 4 嘴型幀
 	curX    int
 	curY    int
 	camX    float64
@@ -70,6 +71,7 @@ type Game struct {
 	reach map[battle.Cell]bool
 	// 地圖單位 sprite(FIGANI 待機分鏡):fig index → 幀序列
 	sprites map[int][]*ebiten.Image
+	font    *Font // 原版點陣中文字型(doc 08)
 }
 
 
@@ -107,6 +109,68 @@ func loadSprites() map[int][]*ebiten.Image {
 		out[f.idx] = append(out[f.idx], f.img)
 	}
 	return out
+}
+
+// loadPortraits 載入 assets/portraits/DATO_NNN_mM.png,按肖像 id 分組成 4 嘴型幀。
+func loadPortraits() map[int][]*ebiten.Image {
+	out := map[int][]*ebiten.Image{}
+	files, _ := filepath.Glob("assets/portraits/DATO_*_m*.png")
+	type fr struct {
+		id, m int
+		img   *ebiten.Image
+	}
+	var frs []fr
+	for _, fp := range files {
+		var id, m int
+		if _, e := fmt.Sscanf(filepath.Base(fp), "DATO_%d_m%d.png", &id, &m); e != nil {
+			continue
+		}
+		raw, e := os.ReadFile(fp)
+		if e != nil {
+			continue
+		}
+		im, _, e := image.Decode(bytes.NewReader(raw))
+		if e != nil {
+			continue
+		}
+		frs = append(frs, fr{id, m, ebiten.NewImageFromImage(im)})
+	}
+	sort.Slice(frs, func(i, j int) bool {
+		if frs[i].id != frs[j].id {
+			return frs[i].id < frs[j].id
+		}
+		return frs[i].m < frs[j].m
+	})
+	for _, f := range frs {
+		out[f.id] = append(out[f.id], f.img)
+	}
+	return out
+}
+
+// toFullWidth 把半形標點轉全形(中文排版 + 避開部分 face 缺半形 ASCII glyph)。
+func toFullWidth(s string) string {
+	r := []rune(s)
+	for i, c := range r {
+		switch c {
+		case ',':
+			r[i] = '，'
+		case '!':
+			r[i] = '！'
+		case ':':
+			r[i] = '：'
+		case '?':
+			r[i] = '？'
+		case ';':
+			r[i] = '；'
+		case '.':
+			r[i] = '。'
+		case '(':
+			r[i] = '（'
+		case ')':
+			r[i] = '）'
+		}
+	}
+	return string(r)
 }
 
 // confirm 處理 Enter/Space:選取我方單位顯示移動範圍,或移動到可達格 / 原地待機。
@@ -308,10 +372,50 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			info += "  (Tab:結束回合)"
 		}
 	}
-	if len(g.dialog) > 0 { // 事件對話(Goal 對話系統會做成框+頭像;此處先單行)
-		info += "\n💬 " + g.dialog[len(g.dialog)-1]
-	}
 	ebitenutil.DebugPrint(screen, info)
+
+	// 中文層(原版點陣字型,doc 08):選中單位名 + 對話框(DebugPrint 不支援中文)
+	if g.font != nil {
+		if g.st != nil { // 選中單位中文名(放游標格上方,避開頂部 DebugPrint)
+			if u := g.st.UnitAt(g.curX, g.curY); u != nil {
+				nm := u.Name
+				if nm == "" {
+					nm = u.ClsName
+				}
+				if nm != "" {
+					nx := float64(g.curX*tw) - g.camX
+					ny := float64(g.curY*th) - g.camY - 18
+					g.font.Draw(screen, nm, nx, ny, 1.0, color.RGBA{0xff, 0xeb, 0x78, 0xff})
+				}
+			}
+		}
+		if len(g.dialog) > 0 { // 底部對話框:左頭像 + 右文字(原版佈局,real_pic)
+			dl := g.dialog[len(g.dialog)-1]
+			boxH := 108.0 // 原版約佔底部 1/4~1/3
+			top := float64(logicalH) - boxH
+			box := ebiten.NewImage(logicalW, int(boxH))
+			box.Fill(color.RGBA{0x10, 0x18, 0x48, 0xf0})
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Translate(0, top)
+			screen.DrawImage(box, op)
+			edge := ebiten.NewImage(logicalW, 2)
+			edge.Fill(color.RGBA{0xc8, 0xa0, 0x40, 0xff})
+			oe := &ebiten.DrawImageOptions{}
+			oe.GeoM.Translate(0, top)
+			screen.DrawImage(edge, oe)
+			tx := 16.0
+			// 左頭像(嘴型:目前 m0 靜態;開合動畫節奏待 RE 原版確認)
+			if fr := g.portraits[dl.Speaker]; len(fr) > 0 {
+				s := (boxH - 16) / 80.0
+				po := &ebiten.DrawImageOptions{}
+				po.GeoM.Scale(s, s)
+				po.GeoM.Translate(12, top+8)
+				screen.DrawImage(fr[0], po)
+				tx = 12 + 80*s + 14
+			}
+			g.font.Draw(screen, "『"+toFullWidth(dl.Text)+"』", tx, top+18, 1.6, color.RGBA{0xff, 0xff, 0xf0, 0xff})
+		}
+	}
 
 	// 截圖鉤子:指定幀把畫面存 PNG(無人值守驗證用)
 	if g.shotPath != "" && g.frame == g.shotFrame {
@@ -477,6 +581,8 @@ func loadGame() *Game {
 		}
 	}
 	g.sprites = loadSprites()
+	g.portraits = loadPortraits()
+	g.font = loadFont()
 	return g
 }
 

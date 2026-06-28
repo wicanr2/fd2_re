@@ -2,69 +2,199 @@
   "chapter": 1,
   "name": "初試身手",
   "map": 0,
-  "initial_groups": [1, 2, 10, 11],
-  "party": [
-    {"name": "索爾",   "cls": "劍士", "fig": 0,  "portrait": 0,  "lv": 1, "hp": 42, "mp": 0,  "ap": 20, "dp": 12, "mv": 6},
-    {"name": "亞雷斯", "cls": "騎士", "fig": 4,  "portrait": 4,  "lv": 1, "hp": 48, "mp": 0,  "ap": 22, "dp": 14, "mv": 7},
-    {"name": "悠妮",   "cls": "法師", "fig": 9,  "portrait": 9,  "lv": 1, "hp": 28, "mp": 16, "ap": 10, "dp": 8,  "mv": 5},
-    {"name": "蓋亞",   "cls": "機兵", "fig": 30, "portrait": 30, "lv": 1, "hp": 50, "mp": 0,  "ap": 26, "dp": 14, "mv": 6}
+  "initial_groups": [
+    1,
+    2,
+    10,
+    11
   ],
-  "deploy_cells": [[7, 20], [10, 21], [8, 22], [11, 23]],
+  "party": [
+    {
+      "name": "索爾",
+      "cls": "劍士",
+      "fig": 0,
+      "portrait": 0,
+      "lv": 1,
+      "hp": 42,
+      "mp": 0,
+      "ap": 20,
+      "dp": 12,
+      "mv": 6
+    },
+    {
+      "name": "亞雷斯",
+      "cls": "騎士",
+      "fig": 4,
+      "portrait": 4,
+      "lv": 1,
+      "hp": 48,
+      "mp": 0,
+      "ap": 22,
+      "dp": 14,
+      "mv": 7
+    },
+    {
+      "name": "悠妮",
+      "cls": "法師",
+      "fig": 9,
+      "portrait": 9,
+      "lv": 1,
+      "hp": 28,
+      "mp": 16,
+      "ap": 10,
+      "dp": 8,
+      "mv": 5
+    },
+    {
+      "name": "蓋亞",
+      "cls": "機兵",
+      "fig": 30,
+      "portrait": 30,
+      "lv": 1,
+      "hp": 50,
+      "mp": 0,
+      "ap": 26,
+      "dp": 14,
+      "mv": 6
+    }
+  ],
+  "deploy_cells": [
+    [
+      7,
+      20
+    ],
+    [
+      10,
+      21
+    ],
+    [
+      8,
+      22
+    ],
+    [
+      11,
+      23
+    ]
+  ],
   "events": [
     {
       "id": "opening",
       "trigger": "on_battle_start",
       "once": true,
       "do": [
-        {"type": "spawn_party"},
-        {"type": "dialogue", "text": "索爾:海邊有海盜出沒,大家小心!"}
+        {
+          "type": "spawn_party"
+        },
+        {
+          "type": "dialogue",
+          "text": "累死了,大家休息一下吧!",
+          "speaker": 0
+        }
       ]
     },
     {
       "id": "hano_hawat_join",
       "trigger": "on_turn_end",
-      "when": {"turn": 3},
+      "when": {
+        "turn": 3
+      },
       "once": true,
       "do": [
-        {"type": "spawn_group", "groups": [3, 7], "camp": "ally", "act_immediately": false},
-        {"type": "dialogue", "text": "哈瓦特:讓我們父子也來幫忙!"}
+        {
+          "type": "spawn_group",
+          "groups": [
+            3,
+            7
+          ],
+          "camp": "ally",
+          "act_immediately": false
+        },
+        {
+          "type": "dialogue",
+          "text": "真是的,吵的要命,到底在搞什麼..",
+          "speaker": 3
+        }
       ]
     },
     {
       "id": "enemy_reinforce",
       "trigger": "on_turn_end",
-      "when": {"turn": 4},
+      "when": {
+        "turn": 4
+      },
       "once": true,
       "do": [
-        {"type": "spawn_group", "groups": [4], "camp": "enemy"}
+        {
+          "type": "spawn_group",
+          "groups": [
+            4
+          ],
+          "camp": "enemy"
+        }
       ]
     },
     {
       "id": "pirate_boss",
       "trigger": "on_turn_end",
-      "when": {"turn": 5},
+      "when": {
+        "turn": 5
+      },
       "once": true,
       "do": [
-        {"type": "spawn_group", "groups": [5], "camp": "enemy"},
-        {"type": "dialogue", "text": "海盜頭目:臭小子,休想活著離開!"}
+        {
+          "type": "spawn_group",
+          "groups": [
+            5
+          ],
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "text": "連這些小鬼都收拾不了,還要勞動老大我出馬!",
+          "speaker": 71
+        }
       ]
     },
     {
       "id": "coast_guard",
       "trigger": "on_turn_end",
-      "when": {"turn": 6},
+      "when": {
+        "turn": 6
+      },
       "once": true,
       "do": [
-        {"type": "spawn_group", "groups": [6], "camp": "ally", "act_immediately": true}
+        {
+          "type": "spawn_group",
+          "groups": [
+            6
+          ],
+          "camp": "ally",
+          "act_immediately": true
+        },
+        {
+          "type": "dialogue",
+          "speaker": 7,
+          "text": "消滅肆虐沿海的海盜是我們的職責,交給我們!"
+        }
       ]
     },
     {
       "id": "hawat_berserk",
       "trigger": "on_unit_death",
-      "when": {"unit_dead": "哈諾"},
+      "when": {
+        "unit_dead": "哈諾"
+      },
       "do": [
-        {"type": "set_ai", "unit": "哈瓦特", "mode": "berserk"},
-        {"type": "dialogue", "text": "哈瓦特:哈諾——!可惡的海盜,我跟你們拼了!"}
+        {
+          "type": "set_ai",
+          "unit": "哈瓦特",
+          "mode": "berserk"
+        },
+        {
+          "type": "dialogue",
+          "text": "你們這些該死的海盜,竟敢砍傷我兒子,我和你們拼了!",
+          "speaker": 3
+        }
       ]
     }
   ]

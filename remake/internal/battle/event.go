@@ -57,10 +57,17 @@ type Action struct {
 	Groups         []int  `json:"groups,omitempty"`          // spawn_group 的波次
 	Camp           string `json:"camp,omitempty"`            // 增援陣營(改為)
 	ActImmediately bool   `json:"act_immediately,omitempty"` // 增援當回合可動(青衫「立即行動」)
-	Text           string `json:"text,omitempty"`            // dialogue 文本(暫單行;Goal 對話系統再擴充)
+	Speaker        int    `json:"speaker"`                   // dialogue 說話者(DATO 肖像 id;-1=旁白)
+	Text           string `json:"text,omitempty"`            // dialogue 文本
 	Flag           string `json:"flag,omitempty"`            // set_flag
 	Unit           string `json:"unit,omitempty"`            // set_ai 目標
 	Mode           string `json:"mode,omitempty"`            // set_ai 模式(berserk…)
+}
+
+// DialogLine 一句對話(說話者肖像 + 文本),供 UI 畫頭像+嘴型+文字。
+type DialogLine struct {
+	Speaker int
+	Text    string
 }
 
 // LoadScenario 讀 scenario JSON。
@@ -78,7 +85,7 @@ func LoadScenario(path string) (*Scenario, error) {
 
 // Setup 套用劇本初始狀態:把非 initial_groups 的單位設為待命(OnField=false)。
 // 然後觸發 on_battle_start(主角隊進場 + 開場對話)。回傳開場要播的對話。
-func (sc *Scenario) Setup(st *State) []string {
+func (sc *Scenario) Setup(st *State) []DialogLine {
 	if len(sc.InitialGroups) > 0 {
 		init := map[int]bool{}
 		for _, g := range sc.InitialGroups {
@@ -93,10 +100,10 @@ func (sc *Scenario) Setup(st *State) []string {
 	return sc.Fire(st, "on_battle_start", "")
 }
 
-// Fire 對某 trigger 評估所有事件,執行符合者的動作。回傳要播的對話文本。
+// Fire 對某 trigger 評估所有事件,執行符合者的動作。回傳要播的對話(含說話者)。
 // ctxUnit:on_unit_death 時傳陣亡者名。
-func (sc *Scenario) Fire(st *State, trigger, ctxUnit string) []string {
-	var dialogues []string
+func (sc *Scenario) Fire(st *State, trigger, ctxUnit string) []DialogLine {
+	var dialogues []DialogLine
 	for i := range sc.Events {
 		e := &sc.Events[i]
 		if e.Trigger != trigger || (e.Once && e.fired) {
@@ -107,8 +114,8 @@ func (sc *Scenario) Fire(st *State, trigger, ctxUnit string) []string {
 		}
 		e.fired = true
 		for _, a := range e.Do {
-			if d := sc.exec(st, a); d != "" {
-				dialogues = append(dialogues, d)
+			if dl, ok := sc.exec(st, a); ok {
+				dialogues = append(dialogues, dl)
 			}
 		}
 	}
@@ -129,8 +136,8 @@ func (w *When) match(st *State, ctxUnit string) bool {
 	return true
 }
 
-// exec 執行單一動作(可擴充:加 case)。回傳非空字串表示要播的對話。
-func (sc *Scenario) exec(st *State, a Action) string {
+// exec 執行單一動作(可擴充:加 case)。回傳 (對話, true) 表示要播對話。
+func (sc *Scenario) exec(st *State, a Action) (DialogLine, bool) {
 	switch a.Type {
 	case "spawn_party": // 主角隊從隊伍名冊進場到部署格(doc 25 雙來源)
 		for i, pm := range sc.Party {
@@ -152,11 +159,11 @@ func (sc *Scenario) exec(st *State, a Action) string {
 			st.SpawnGroup(g, camp, a.Camp != "", a.ActImmediately)
 		}
 	case "dialogue":
-		return a.Text
+		return DialogLine{Speaker: a.Speaker, Text: a.Text}, true
 	case "set_flag":
 		st.Flags[a.Flag] = true
 	case "set_ai":
 		st.Flags["ai_"+a.Unit+"_"+a.Mode] = true // 簡化:旗標記錄,AI 層讀(doc 11)
 	}
-	return ""
+	return DialogLine{}, false
 }
