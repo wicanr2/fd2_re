@@ -28,6 +28,7 @@
 | `19-scenario-script-system-design.md` | 劇本/關卡腳本系統設計(可分支節點圖/敗北路線/擴充) | 設計 |
 | `20-first-principles-feasibility.md` | 第一性原理:重製可行性再確認 | 確認 |
 | `21-go-ebiten-remake-plan.md` | Go/Ebiten 重製架構規劃(桌面/Web/手機) | 規劃 |
+| `22-remake-tech-validation.md` | 重製技術驗證(桌面 ELF + WASM + 資產管線實證) | 確認 |
 | `15-how-fd2-was-made-1995.md` | **總覽:1995 年怎麼做出炎龍騎士團2**(綜合全紀錄) | 綜合 |
 | `90-re-plan.md` | 分階段逆向與重製計畫 | 規劃 |
 | `91-worklist.md` | 逐輪 worklist(依序執行) | 逐輪更新 |

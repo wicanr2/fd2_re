@@ -3,7 +3,8 @@
 一套程式碼跑**桌面 / 網頁(WASM)/ 手機**的 FD2 重製。設計見 [`../docs/knowledge-base/21-go-ebiten-remake-plan.md`](../docs/knowledge-base/21-go-ebiten-remake-plan.md)。
 
 > **狀態**:MVP 垂直切片——載入序章戰場(tileset + 地圖)→ hi-res 渲染 → 方向鍵 / WASD / 觸控移動游標、相機跟隨。
-> WASM 已可編譯(10.5MB)。後續見 `21` 里程碑(戰棋核心 → 文字 → 音訊 → ScenarioRunner → 跨平台)。
+> **本機桌面執行檔已建成**(Linux ELF 10.8MB);WASM 也可編譯(10.5MB)。技術驗證見 [`22`](../docs/knowledge-base/22-remake-tech-validation.md)。
+> 後續里程碑見 [`91-worklist`](../docs/knowledge-base/91-worklist.md) 重製區(M1 戰棋核心 → 文字 → 音訊 → 腳本 → 內容 → 跨平台打包)。
 
 ## 資產(玩家自備原版)
 
