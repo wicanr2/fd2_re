@@ -1,0 +1,10 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
+<title>炎龍騎士團2 重製 (fd2_re)</title>
+<style>body{margin:0;background:#111;color:#ccc;font-family:sans-serif;text-align:center}
+canvas{image-rendering:pixelated}h3{padding:8px;margin:0}</style></head>
+<body><h3>炎龍騎士團2 重製 — Go/Ebiten WASM (序章戰場 MVP)</h3>
+<script src="wasm_exec.js"></script>
+<script>
+const go=new Go();
+WebAssembly.instantiateStreaming(fetch("fd2.wasm"),go.importObject).then(r=>go.run(r.instance));
+</script></body></html>

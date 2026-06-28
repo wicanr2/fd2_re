@@ -71,7 +71,13 @@
 - [ ] 實作:`decode_story_text.py --script-json`(35 章 → UTF-8 script);重製文字層 TTF render
 - [ ] 實作:從原版資料自動生成「線性 campaign.json」(parse_field + 劇情 + 商店)→ 原版模式
 - [ ] 實作:引擎 ScenarioRunner 狀態機(節點/轉場/旗標)
-- [ ] 重製垂直切片:讀真資料(地圖/頭像/OGG/UTF-8腳本)畫出第一張可走地圖 + 對話
+- [x] **第一性原理可行性確認** → `20`(9 項必要能力全具備,降為工程整合)
+- [x] **Go/Ebiten 重製架構規劃** → `21`(桌面/Web/手機)
+- [x] **重製 MVP 垂直切片**:Ebiten 載入序章地圖+渲染+游標(方向鍵/WASD/觸控);**WASM 編譯成功(10.5MB)** → `remake/`
+- [ ] 戰棋核心(部署/移動 flood-fill/攻擊/AI 回合/勝敗)
+- [ ] TTF 文字層 + 對話框(接 script.json + DATO 頭像)
+- [ ] OGG 音訊 + ScenarioRunner 串流程(campaign.json)
+- [ ] WASM 上網頁 / Android APK
 
 ## 完成定義(反組譯研究)
 全部資產格式可解(解包+解壓+轉現代格式)、核心數值表全 dump 並驗證、
