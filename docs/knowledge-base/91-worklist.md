@@ -153,9 +153,9 @@
 - [x] **call-graph 遞迴反組譯工具** `tools/callgraph_le.py`(可達集/callers/rpath/funcof/jtab)→ `24`
 - [x] **釘死 cutscene→戰場鏈**:0x10010 真 caller=0x1a251/0x26130,路徑 main→0x25ebb→0x10010,獨立驗證章節跳表(修 data 段 fixup)→ `24`;排除偽命中 0x1b051/0x26f30
 - [x] **[0x53ecc] 戰後/事件完整狀態機**:事件解譯器(0x205c9-0x20c64,28處設1/2)↔戰役迴圈(==1進世界圖/中場 0x22e5c、==2勝利→戰後跳表+結局判定+下一章)→ `24`§6
-- [x] **挖完事件指令集** → `25`:第三張章節跳表 0x51b19(戰場事件,30章/18 handler)、FD2 事件=每章 C handler 非 byte-code、事件原語(0x3453e 查單位/0x205be prologue/[0x53ec8] 回合)
+- [x] **挖完事件指令集** → `25`:第三張章節跳表 0x51b19(戰場事件,30章/18 handler)、FD2 事件=每章 C handler 非 byte-code、事件原語(0x3453e 查單位/0x205be prologue/回合數=[0x53bef])
 - [x] **逐關挖 18 特殊 handler** → `26` + `tools/event_handler_dump.py` + `docs/data/battle_events.json`(30章條件→動作,供 remake 去 hardcoding)
-- [x] **補完事件語意**:`0x3453e(idx)=unit_dead?`([0x53a45]+idx*0x50+5 bit0=陣亡,章17 Boss死→勝利驗證);`0x33499`=另一條件查詢(查 [0x53bf7]);**handler 無動作函式**(只條件→設碼+繪圖)→ `25`/`26` 回填
+- [x] **補完事件語意**:`0x3453e(idx)=unit_state`([0x53a45]+idx*0x50+5 bit0=**存活**;使用者確認,非陣亡);`0x33499`=roster_has(查 [0x53bf7] 我方名冊);**handler 無動作函式**(只條件→設碼+繪圖)→ `25`/`26` 回填
 - [x] **反思日誌補第 7-10 輪** → `99`
 - [x] **挖完 `[0x53bf7]` 表語意**:不是 tile,是**我方隊伍名冊**(32槽×0x50B);`0x33499(id)=roster_has(id)` 查 byte[+8]==角色ID(章16 用)→ `25`/`26` 回填;兩單位陣列釐清([0x53a45]96槽全場 / [0x53bf7]32槽名冊)
 - [x] **回合計數釐清**:`[0x53bef]`=回合數(開始1/inc/cmp N),`[0x53ec8]`=累積計數(非回合);**修正前輪把 [0x53ec8] 當回合**+**撤回 byte+5=陣亡**(初始化=1=狀態旗標)→ `25`/`26` 回填

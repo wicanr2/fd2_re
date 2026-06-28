@@ -125,6 +125,19 @@ codec 與破解歷程見 [`06-animation-format.md`](docs/knowledge-base/06-anima
 [`remake/`](remake/) 是 Go/Ebiten 重製。**MVP 垂直切片**:載入序章戰場 → hi-res 渲染 → 方向鍵/WASD/觸控移動游標。
 **本機桌面執行檔已建成(Linux ELF 10.8MB);WASM 也可編譯(10.5MB)**。可行性 [`20`](docs/knowledge-base/20-first-principles-feasibility.md)、架構 [`21`](docs/knowledge-base/21-go-ebiten-remake-plan.md)。
 
+### ✨ 重製的核心增值:可擴展事件系統(不只是複刻)
+
+原版每關事件是**編進 EXE 的 C 函式**(改一個事件就得改程式重編);我們把它反組譯出機制後,在 remake 做成
+**開放的資料驅動事件系統** —— `trigger → when → do` 三層 DSL + 文本內嵌 **事件控制碼 `{{verb:args}}`**:
+
+```
+索爾:這座城就交給你們了…{{flag:set:city_handed}}
+{{branch: "追上去" -> [spawn:hanno@10,4]   "留下防守" -> [spawn_wave:defenders]}}
+```
+
+→ 新增事件、分支劇情、自創戰役**只要寫資料,零引擎改動**;原版 30 關用同一套 DSL 忠實重現,同引擎也能跑
+玩家自製戰役。完整設計見 [`29` 可擴展事件系統](docs/knowledge-base/29-remake-extensible-event-system.md)。這是 remake 相對原版「擺脫固定 33 路線」的關鍵。
+
 ## 重製目標(規劃中)
 
 | 技術棧 | 目標平台 | 參考專案 |
