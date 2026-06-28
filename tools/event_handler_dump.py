@@ -107,6 +107,7 @@ def main(av):
     if av[2] == 'json':
         import json
         SKIP = {0x36cd7, 0x205be, 0x205da, 0x1088d, 0x111ba, 0x375c0, 0x37416, 0x37244}
+        COND = {0x3453e: 'unit_dead', 0x33499: 'tile/attr_query'}  # 條件查詢原語(非動作)
         hs = [(i, fx.get(0x51b19 + i * 4)) for i in range(30)]
         uniq = sorted(set(t for _, t in hs if t))
         cache = {}
@@ -116,7 +117,7 @@ def main(av):
                 continue
             if t not in cache:
                 end = min([u for u in uniq if u > t] + [t + 0x300])
-                units, codes, draw, acts = [], [], False, []
+                units, codes, draw, acts, conds = [], [], False, [], []
                 lastpush = None
                 for ins in dump(cg, fx, t, end):
                     m, op = ins.mnemonic, ins.op_str
@@ -126,6 +127,8 @@ def main(av):
                         tt = int(op, 16)
                         if tt == 0x3453e and lastpush is not None and lastpush < 0x100:
                             units.append(lastpush)
+                        elif tt in COND:
+                            conds.append(COND[tt])
                         elif tt == 0x15f84:
                             draw = True
                         elif tt not in SKIP:
@@ -137,10 +140,11 @@ def main(av):
                 cache[t] = {
                     'handler': hex(t),
                     'is_default': t == 0x205b4,
-                    'trigger_units': sorted(set(units)),
-                    'result_codes': sorted(set(codes)),
-                    'draw_scene': draw,
-                    'action_fns': sorted(set(acts)),
+                    'trigger_units_dead': sorted(set(units)),  # 需陣亡才觸發的單位 idx(0x3453e)
+                    'result_codes': sorted(set(codes)),         # 1=中途事件 2=特殊勝利
+                    'draw_scene': draw,                          # 是否繪事件畫面(0x15f84)
+                    'extra_conditions': sorted(set(conds)),      # 其他條件查詢原語
+                    'action_fns': sorted(set(acts)),             # 真動作函式(經修正後多為空)
                 }
             out.append({'chapter': i, **cache[t]})
         print(json.dumps(out, ensure_ascii=False, indent=1))

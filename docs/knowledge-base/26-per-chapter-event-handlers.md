@@ -11,15 +11,23 @@
 
 | 原語(EXE) | 語意 | DSL 對應 |
 |---|---|---|
-| `0x3453e(idx)` | 查單位 #idx 狀態:`[0x53a45 單位陣列][idx+5] & 1` | `unit_state(idx)` [驗];bit0 語意=陣亡/到達 [推] |
-| 迴圈 `for idx in a..b: 0x3453e` | 查一段單位群 | `units_in_range(a,b)` [驗] |
+| `0x3453e(idx)` | **unit_dead?(idx)**:第 idx 單位(位址 = `[0x53a45] + idx*0x50 + 5`)的 `byte[+5] bit0` = **陣亡旗標** | `unit_dead(idx)` [驗] |
+| 迴圈 `for idx in a..b: 0x3453e` | 查一段單位群是否(全)陣亡 | `units_in_range(a,b)` [驗] |
+| `0x33499(arg)` | 另一條件查詢:查表 `[0x53bf7]`(步長 2,+8)`byte == arg` | `tile/attr_query` [驗];語意 [推] |
 | `cmp [0x53bef], N` | 比較回合/進度計數 | `turn >= N` [推] |
 | `mov [0x53ecc], 1` | 觸發中途事件(→ 戰役迴圈進世界地圖/中場) | `do: story_event` [驗] |
 | `mov [0x53ecc], 2` | 達成(特殊)勝利條件 | `do: victory` [驗] |
 | `call 0x15f84(…,資源)` | 繪事件全螢幕畫面 | `do: show_scene(res)` [驗] |
 | default 尾段 `0x2067e` | 遍歷單位陣列做標準勝敗(殲滅即勝) | `default_win: annihilate` [驗] |
 
-> 單位索引是**戰場單位陣列的全域 index**(我方 + 敵方 + NPC,每單位 0x50B);小 idx(0–25)多為我方、較大(0x30+)多為敵方/NPC [推]。對應到角色名需配合各章 roster(`extracted/maps/maps_metadata.json`)。
+**`0x3453e` 全貌(已驗證)**:`idx*4 + idx = idx*5`,再 `<<4` = `idx*0x50`(單位結構大小)+ 基底 + 5 → 取 bit0。
+**bit0 = 陣亡** 由章 17 證實:`unit_dead?(52)==1 → je 跳過、fall-through 設 [0x53ecc]=2`,即「Boss #52 陣亡 → 勝利」。
+
+> **關鍵結論:戰場事件 handler 不含任何「動作函式」**(`battle_events.json` 全部 `action_fns` 為空)——
+> handler 只做「**條件查詢(unit_dead / tile_query / 回合)→ 設碼(1/2)+ 可選繪圖**」。
+> 增援、對話、劇情演出都在「碼 1 → 戰役迴圈 → 世界地圖/中場 → 章節跳表(0x51d71/0x51de9)劇情」後續發生,**不在戰場 handler 內**。這讓重製大幅簡化:handler 邏輯純粹是判定。
+
+> 單位索引是**戰場單位陣列 `[0x53a45]` 的全域 index**(我方 + 敵方 + NPC,每單位 0x50B);對應到角色名需配合各章 roster(`extracted/maps/maps_metadata.json` 的 `units`,含 camp/portrait/race/cls/lv)。我方/敵方在陣列中的精確分界(我方槽數 M)未隔離驗證 → 重製時自行定義單位陣列,trigger 用「具名單位 / 陣營」表達即可,不必對齊原版 idx。
 
 ## 2. 全 30 章 handler 對照表 [驗]
 
@@ -70,13 +78,12 @@
 {
   "default_win": "annihilate",          // 無事件觸發 → 標準殲滅判定(對應 default handler)
   "events": [
-    { "when": { "unit_state": [16, 17] }, "do": "story_event" },   // [0x53ecc]=1
-    { "when": { "unit_state": [52] },      "do": "victory",        // [0x53ecc]=2
-      "scene": null }
+    { "when": { "unit_dead": [16, 17] }, "do": "story_event" },   // [0x53ecc]=1
+    { "when": { "unit_dead": [52] },      "do": "victory" }        // [0x53ecc]=2(擊敗 Boss 即勝)
   ]
 }
 ```
-- `when.unit_state:[…]` / `units_in_range:[a,b]` / `turn>=N` ← 對應原語
+- `when.unit_dead:[…]` / `units_in_range:[a,b]` / `turn>=N` ← 對應原語
 - `do: story_event | victory | show_scene` ← 對應 `[0x53ecc]` 與 `0x15f84`
 - 11 個 default 章 → 直接 `{"default_win":"annihilate","events":[]}`,零工作量
 - 18 個特殊章 → 用上表填 `events`,**逐關資料化,無一行 hardcode**
@@ -93,10 +100,10 @@
 
 ## 6. 受阻 / 待驗(誠實標註)
 
-- **[推]** 單位狀態 `byte[+5] bit0` 確切語意(陣亡 / 抵達指定格 / 某 buff)未隔離驗證——影響 `unit_state` 的條件語意。建議重製時以「該單位是否陣亡」為起點,再對齊原版實機行為。
-- **[阻]** 迴圈查的單位群(章 1/12/19/21/25)精確 idx 範圍見逐指令 dump(章1=5–10、章12=<12、章19=<46);`battle_events.json` 對迴圈索引只標記 `action_fns` 含 `0x3453e`,未展開範圍(迴圈變數非立即數)。
-- **[阻]** 各章特殊動作函式(章16 `0x33499` 等)是增援 / 對話 / 特效未逐一反組譯——逐關重製時按需挖。
-- **[阻]** 單位全域 idx → 角色/敵人名 對應,需逐章配 roster 比對。
-- **[推]** `[0x53bef]` = 回合 / 進度計數(章12 cmp5、章18 cmp6);與 `[0x53ec8]`(doc 25,clamp 99)的關係待釐清。
+- **[已驗]** ~~單位 byte[+5] bit0 語意~~ → **= 陣亡旗標**(章17 Boss#52 陣亡→勝利,je/fall-through 方向證實)。
+- **[已驗]** ~~章16 `0x33499` 是動作?~~ → **不是動作,是條件查詢**(查表 `[0x53bf7]`);全 30 章 handler 的 `action_fns` 皆空 → **handler 無動作函式,只做條件判斷 + 設碼 + 繪圖**。
+- **[阻]** 迴圈查的單位群(章 1/12/19/21/25)精確 idx 範圍見逐指令 dump(章1=5–10、章12=<12、章19=<46);`battle_events.json` 的 `trigger_units_dead` 只收立即數 push,迴圈索引另記於 `extra_conditions: unit_dead`。
+- **[阻]** 單位全域 idx → 角色/敵人名 對應:需逐章配 roster(`maps_metadata.json` units)+ 確認我方槽數 M;重製可略過(自定義單位陣列,用具名單位)。
+- **[推]** `0x33499` 查的 `[0x53bf7]` 表語意(地圖格事件 / 單位附加屬性);`[0x53bef]`/`[0x53ec8]` 回合計數關係。
 
 > 相關:doc 25(事件系統架構)· doc 24(戰役迴圈 [0x53ecc] 狀態機)· doc 19(腳本系統)· doc 09(劇情)· doc 03(單位結構/roster)。工具:`tools/event_handler_dump.py`;資料:`docs/data/battle_events.json`。
