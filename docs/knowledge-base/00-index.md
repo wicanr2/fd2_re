@@ -37,6 +37,7 @@
 | `28-chapter-objectives-and-recruits.md` | 全 30 關勝利/失敗/加入條件(攻略 ground truth × handler 驗證) | 規劃 |
 | `29-remake-extensible-event-system.md` | remake 可擴展事件系統(trigger/when/do DSL + 事件控制碼) | 規劃 |
 | `30-remake-work-breakdown.md` | remake 工作拆解 WBS(模組/資料管線/WP/衝刺) | 規劃 |
+| `31-map-unit-sprites-fdicon.md` | 地圖單位 sprite:FDICON Q版小人(1680×24×24)+ 待機動畫 | 反組譯 |
 | `15-how-fd2-was-made-1995.md` | **總覽:1995 年怎麼做出炎龍騎士團2**(綜合全紀錄) | 綜合 |
 | `90-re-plan.md` | 分階段逆向與重製計畫 | 規劃 |
 | `91-worklist.md` | 逐輪 worklist(依序執行) | 逐輪更新 |

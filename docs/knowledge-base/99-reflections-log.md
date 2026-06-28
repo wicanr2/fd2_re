@@ -246,3 +246,18 @@
 - Ebiten 邏輯層(battle package 不 import ebiten)可純 headless 測試,不需 display → M1-8 回歸基礎。
 
 **下一輪起點**:M1-3 flood-fill 移動範圍 + M1-4 戰場選單(移動/攻擊/待機)。
+
+## 第 12 輪 — 地圖單位 sprite 找對來源:FDICON Q 版小人(2026-06-28)
+
+**做了什麼**
+- 使用者提供**原版實機截圖**(`real_pic/`,rulebook 64 oracle)→ 確認地圖單位是 **Q 版大頭小人**,非 FIGANI 全身。
+- `0x4EB52`(24×24 場景單位解碼器)caller 是間接呼叫追不到 → 改 screenshot oracle 反推資源。
+- 發現 **`FDICON.B24` = 1680 個 24×24 地圖單位 sprite**(header tw/th/count+offset 表;tile 用 **sprite 4-mode RLE 含透明**);`tools/decode_fdicon.py` 解出全部 Q 版小人。每角色組=12(4方向×3待機幀,手擺)。
+- 引擎改用 FDICON:24×24 直貼格 + 待機循環 + 陣營腳標 → `31`。
+
+**學到 / 推翻**
+- **解碼失敗 ≠ 斷言錯**:FDICON「1680×24×24」斷言是對的,錯在用 bg-RLE 解(該用 sprite-RLE)→ 換對 codec 即解;一度想把對的斷言改「待確認」,被使用者打斷糾回。
+- **FDICON=地圖單位 / FIGANI=戰鬥全身**,兩套分工別混(之前誤用 FIGANI 當地圖單位)。
+- 原版實機截圖是最強 oracle:一眼定位「該找什麼 sprite」。
+
+**下一輪起點**:`portrait → FDICON 組` 對應校正(反組譯 Z1 圖形欄位,或逐關截圖 oracle);4 方向 sprite;戰棋核心 M1-5 攻擊。
