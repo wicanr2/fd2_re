@@ -1,8 +1,11 @@
 # 29 — remake 可擴展事件系統規劃(從封閉 handler 到開放 DSL + 事件控制碼)
 
-> 原版 FD2 的事件是**每章一個編進 EXE 的 C handler**(doc 25/26):條件(`unit_state`/`roster_has`/回合)→ 設碼。優點是省事,**缺點是封閉**——改一個事件就要改程式、重編譯,玩家無從擴充。
-> remake 的目標:把同一套機制**資料化 + 開放**,讓「新增事件」變成寫資料(JSON/腳本 + 文本內嵌**事件控制碼**),引擎不為任何一關寫死分支。本篇規劃這套系統。
-> 承接:doc 19(腳本系統)· doc 26(原版事件原語)· doc 28(關卡目標)· doc 14(原版文本控制碼)。
+> **原版 FD2 事件其實是雙層(2026-06-29 更正)**:
+> ① **資料層 = FDFIELD.DAT 控制段 `turn_events[16]`**(每條 `turn u8 + 全域事件id u8 + 陣營 u8`):記「第幾回合、觸發哪個事件、增援是友(1)/敵(0)/特殊(2)」;增援單位在 roster 標 `group`(b21),座標在出場位置段(地圖角落)。
+> ② **判定層 = 編進 EXE 的每章 handler**(doc 25/26):只管勝負條件(`unit_state`/`roster_has`/回合)→ 設碼。
+> 即「**動作(增援/演出)在資料,判定在程式**」——這也是為何 doc26 發現 handler「無動作函式」。優點是增援可資料化,**缺點仍封閉**:事件 id 語意、進場演出、對話綁定都寫死在 EXE,玩家無從擴充。
+> remake 目標:把整套機制**資料化 + 開放**,新增事件 = 寫資料(JSON + 文本內嵌**事件控制碼**),引擎不為任何一關寫死分支。
+> 承接:doc 19(腳本系統)· doc 25/26(原版事件)· doc 28(關卡目標)· doc 14(原版文本控制碼)。資料:`tools/parse_field.py` 解 turn_events/group。
 
 ## 1. 設計原則
 
@@ -154,4 +157,48 @@ ScenarioRunner (campaign 流程,doc 19)
 
 → 原版 30 關用本 DSL 重現(忠實模式),同一引擎也能跑**完全自創的戰役**——這就是 remake 相對原版的核心增值,呼應 worklist「擺脫原版固定 33 路線」。
 
-> 相關:doc 19(腳本系統設計)· doc 26(原版事件原語=DSL 詞彙來源)· doc 28(原版關卡目標)· doc 14(原版文本控制碼)· doc 21(Go/Ebiten 架構)。
+## 11. 第1章「初試身手」完整 DSL 實例(原版 FDFIELD → remake,當實作藍本)
+
+原版 map0 的 `turn_events`(T3友/T4敵/T5敵/T6友)+ 青衫 ground truth,用本 DSL 完整表達。
+**主角隊(索爾/亞雷斯/妮雅/蓋亞)不在 FDFIELD roster → 由 `on_battle_start` 事件進場**;
+哈諾/哈瓦特雖在 roster(group 3/7)但 T3 才登場;敵援軍/海盜頭目/警備隊按回合各從角落出。
+
+```jsonc
+// remake/assets/scenarios/ch01.json
+{
+  "chapter": 1, "name": "初試身手", "map": 0,
+  "win":  { "all_enemies_dead": true },
+  "lose": { "unit_dead": "sol" },
+  "deploy": { "cells": [[7,20],[10,21],[8,22],[11,23]] },   // 原版 positions 肖像0 的4格
+  "events": [
+    { "id":"opening", "trigger":"on_battle_start", "once":true, "do":[
+        // 主角隊從戰場下緣行軍到部署格(進場演出)→ 對話
+        {"spawn_march": {"units":["sol","ares","nia","gaia"], "from":"edge_bottom", "to":"deploy"}},
+        {"dialogue":"ch1_opening"}
+    ]},
+    { "id":"hano_join", "trigger":"on_turn_end", "when":{"turn==":3}, "once":true, "do":[
+        {"spawn_wave":{"units":["hawat","hano"], "camp":"ally", "at":[[11,11],[11,11]]}}, // 從中央房子
+        {"dialogue":"ch1_hano_join"}, {"recruit":"hano"}
+    ]},
+    { "id":"enemy_reinf", "trigger":"on_turn_end", "when":{"turn==":4}, "once":true, "do":[
+        {"spawn_wave":{"group":4, "camp":"enemy", "at":"corner_br"}}          // 敵援軍 右下
+    ]},
+    { "id":"pirate_boss", "trigger":"on_turn_end", "when":{"turn==":5}, "once":true, "do":[
+        {"spawn_wave":{"group":5, "camp":"enemy", "at":"corner_bl"}},         // 海盜頭目+屬下 左下
+        {"dialogue":"ch1_pirate"}
+    ]},
+    { "id":"guard_reinf", "trigger":"on_turn_end", "when":{"turn==":6}, "once":true, "do":[
+        {"spawn_wave":{"group":6, "camp":"ally", "at":"corner_tr", "act_immediately":true}} // 警備隊 右上,立即行動
+    ]},
+    { "id":"hawat_berserk", "trigger":"on_unit_death", "when":{"unit_dead":"hano"}, "do":[
+        {"set_ai":{"unit":"hawat","mode":"berserk"}}, {"dialogue":"ch1_hawat_berserk"}
+    ]}
+  ]
+}
+```
+
+本實例**新增三個可擴充動作**(往 ActionRegistry 註冊即可,印證開放性):
+`spawn_march`(從邊緣行軍進場演出)· `act_immediately`(增援當回合可動,對應青衫「立即行動」)· `set_ai:berserk`(哈諾死→哈瓦特暴走)。
+→ 原版寫死的進場/暴走,在 remake 全是資料 + 註冊函式;這份 ch01.json 即 task #8 的實作目標。
+
+> 相關:doc 19(腳本系統設計)· doc 25/26(原版事件)· doc 28(原版關卡目標)· doc 14(原版文本控制碼)· doc 21(Go/Ebiten 架構)。

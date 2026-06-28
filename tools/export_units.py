@@ -56,7 +56,7 @@ def main(argv):
         bs = base_stats(exe, u["race"], u["cls"])
         rec = {
             "camp": u["camp"], "cls": u["cls"], "cls_name": bs.get("cls_name", ""),
-            "lv": u["lv"], "portrait": u["portrait"], "spawn_turn": u.get("spawn_turn", 0),
+            "lv": u["lv"], "portrait": u["portrait"], "group": u.get("group", 0),
             "hp": bs["hp"], "mp": bs["mp"], "ap": bs["ap"], "dp": bs["dp"], "mv": bs["mv"],
             "fig": u["portrait"],  # 反組譯確認:sprite 組 = portrait(角色 id 恆等)
         }
