@@ -37,7 +37,10 @@
 - [x] **Get_EasyMagic** 法術面板反組譯(0x18ED0)→ `13-…`
 - [x] **場景→曲號對映**:play_bgm(0x26777)+ 32 處呼叫 track 反組譯 → `12-…`
 - [x] **LE fixup xref 工具**(`tools/le_xref.py`)解開 DOS4GW 重定位,可做 data xref
-- [ ] 建 glyph id → Unicode 對照表(讓文本可全文檢索 / 翻譯)
+- [x] **控制碼語意還原**(反組譯文本渲染器 0x16D00-0x17200):FFEF/EE/ED/EC=開對話框(FFEF 帶 DATO 頭像)、
+      FFFE=換行、FFFD=翻頁等鍵、FFFF=結束 → `09`;副產物確認 **DATO.DAT=人物頭像**
+- [x] **劇情校對**:解碼自驗 + 上下文揪出 14 處形近字模誤判並修正
+      (脅/實/黨/費/鍛/輩/辭/摸/牢/樁/紮/襲/態/責)
 - [ ] 確認「BB 陣營 → remap 表」對應,dump 各陣營 remap 表還原配色
 - [ ] 各 track 呼叫端對應確切遊戲狀態名(片頭/世界圖/城鎮/戰鬥/劇情)
 - [ ] `DATO`(立繪)/`FDSHAP` 24×24 圖塊集解碼
