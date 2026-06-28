@@ -18,7 +18,7 @@ from decode_image import load_palette
 
 ICON = "org_game/炎龍騎士團/FLAME2/FDICON.B24"
 DEFAULT_PAL = "extracted/raw/FDOTHER/FDOTHER_000.bin"
-DIR_DOWN = (0, 1, 2)  # 面向下的 3 待機幀
+FRAMES = range(12)  # 全 12 幀:4 方向(下/左/上/右)× 3(站/抬左/抬右),供走動分鏡
 
 
 def main(argv):
@@ -33,14 +33,14 @@ def main(argv):
     total = 0
     for grp in grps:
         base = grp * 12
-        for k, f in enumerate(DIR_DOWN):
-            idx = base + f
+        for k in FRAMES:  # 導全 12 幀(fig_<grp>_f00..f11 = dir*3+frame),drawUnitSprite 按 Dir 取
+            idx = base + k
             if idx >= cnt:
                 continue
             tile_img(d, tw, th, offs, idx, cnt, pal).save(
                 os.path.join(out, f"fig_{grp:03d}_f{k:02d}.png"))
             total += 1
-    print(f"導出 {total} 幀({len(grps)} 角色組,FDICON 24×24)-> {out}")
+    print(f"導出 {total} 幀({len(grps)} 角色組 × 12,FDICON 24×24)-> {out}")
     return 0
 
 

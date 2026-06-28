@@ -45,6 +45,9 @@ type Unit struct {
 	Acted    bool // 本回合已行動(原版 byte[+5] bit7)
 	Group    int  // 出場波次(原版 FDFIELD b21;事件按 group 放出,doc 25/29)
 	OnField  bool // 是否已登場(事件進場機制:false=待命,尚未出現在戰場,doc 25)
+	Dir      int     // 朝向:0下 1左 2上 3右(原版 Z2,FDICON 方向幀)
+	OffX     float64 // 行軍/移動的像素位移(顯示用;0=正在格上)
+	OffY     float64 // 進場時從邊緣滑入,漸減到 0
 }
 
 // Alive 對映原版 byte[+5] bit0(HP>0,doc 27)。
@@ -167,6 +170,7 @@ func (s *State) SpawnGroup(group int, camp Camp, changeCamp, act bool) int {
 	for _, u := range s.Units {
 		if u.Group == group && !u.OnField {
 			u.OnField = true
+			u.OffY = -56 // 增援進場:從上方滑入(spawn_march)
 			if changeCamp {
 				u.Camp = camp
 			}

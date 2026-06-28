@@ -151,6 +151,7 @@ func (sc *Scenario) exec(st *State, a Action) (DialogLine, bool) {
 				Camp: Own, Name: pm.Name, ClsName: pm.Cls, Lv: pm.Lv,
 				HP: pm.HP, MaxHP: pm.HP, MP: pm.MP, AP: pm.AP, DP: pm.DP, MV: pm.MV,
 				Portrait: pm.Portrait, Fig: pm.Fig, X: x, Y: y, OnField: true,
+				OffY: 160, Dir: 2, // 進場:從戰場下緣(螢幕外)朝上行軍滑入部署格(spawn_march)
 			})
 		}
 	case "spawn_group": // 增援登場(原版 turn_events;doc 25)

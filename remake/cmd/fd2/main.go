@@ -254,6 +254,24 @@ func (g *Game) tileAt(idx int) *ebiten.Image {
 
 func (g *Game) Update() error {
 	g.frame++
+	// 行軍動畫(spawn_march):進場位移緩動歸零,到位轉正面待機
+	if g.st != nil {
+		for _, u := range g.st.Units {
+			if u.OffX != 0 {
+				u.OffX *= 0.85
+				if u.OffX < 1 && u.OffX > -1 {
+					u.OffX = 0
+				}
+			}
+			if u.OffY != 0 {
+				u.OffY *= 0.85
+				if u.OffY < 1 && u.OffY > -1 {
+					u.OffY = 0
+					u.Dir = 0 // 到位面向鏡頭待機
+				}
+			}
+		}
+	}
 	// 嘴型動畫(忠實原版 0x16d00,doc14):每 2 frame 一 tick;閉嘴隨機 2-31 tick、開嘴一瞬
 	if len(g.dialog) > 0 && g.frame%2 == 0 {
 		if g.mouthOpen {
@@ -497,41 +515,28 @@ func saveShot(img *ebiten.Image, path string) {
 	log.Println("screenshot ->", path)
 }
 
-// drawUnitSprite 畫一個單位:腳下陣營標記 + FIGANI 待機動畫 sprite(縮放/底部對齊/循環)+ HP bar。
+// drawUnitSprite 畫一個單位:純 FDICON Q 版 sprite(原版無 HP bar/腳標,還原乾淨)。
+// 用方向走動分鏡(FDICON 12幀=4方向×3:站/抬左手/抬右手);行軍時套用 OffX/OffY 位移。
 func (g *Game) drawUnitSprite(screen *ebiten.Image, x, y, w, h float64, u *battle.Unit) {
-	// 腳下陣營色標(敵我同 sprite,靠此區分)
-	mark := ebiten.NewImage(int(w)-6, 4)
-	mc := campColor(u.Camp)
-	mark.Fill(mc)
-	om := &ebiten.DrawImageOptions{}
-	om.GeoM.Translate(x+3, y+h-3)
-	screen.DrawImage(mark, om)
-
+	x += u.OffX // 行軍/移動位移
+	y += u.OffY
 	frames := g.sprites[u.Fig]
-	if len(frames) > 0 {
-		img := frames[(g.frame/12)%len(frames)] // 待機循環(手擺動;每 12 幀換一張)
-		// FDICON 24×24 = 格大小,直接貼;略上移讓單位「站」在格上
-		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(x, y-4)
-		if u.Acted {
-			op.ColorScale.Scale(0.55, 0.55, 0.6, 1) // 已行動變暗(對映原版灰階)
-		}
-		screen.DrawImage(img, op)
-	} else {
-		drawUnit(screen, x, y, w, h, mc, u) // fallback 色塊
+	if len(frames) == 0 {
+		drawUnit(screen, x, y, w, h, campColor(u.Camp), u) // fallback 色塊
 		return
 	}
-	// HP bar(格頂)
-	bw := w - 6
-	frac := float64(u.HP) / float64(u.MaxHP)
-	if frac < 0 {
-		frac = 0
+	// 方向走動幀:dir(0下1左2上3右)×3 + 走動相位;不足 12 幀(只導下方向)則退回
+	f := (g.frame / 8) % 3
+	idx := u.Dir*3 + f
+	if idx >= len(frames) {
+		idx = f % len(frames)
 	}
-	bar := ebiten.NewImage(int(bw*frac)+1, 2)
-	bar.Fill(color.RGBA{0x30, 0xff, 0x30, 0xff})
-	ob := &ebiten.DrawImageOptions{}
-	ob.GeoM.Translate(x+3, y+1)
-	screen.DrawImage(bar, ob)
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(x, y-4) // 略上移讓單位「站」在格上
+	if u.Acted {
+		op.ColorScale.Scale(0.55, 0.55, 0.6, 1) // 已行動變暗(對映原版灰階)
+	}
+	screen.DrawImage(frames[idx], op)
 }
 
 // drawUnit 畫一個單位(fallback:內縮色塊 + 頂部 HP bar)。
@@ -652,8 +657,10 @@ func (g *Game) endTurn() {
 	if g.st == nil || g.result != "" {
 		return
 	}
-	g.st.AITurn() // 敵方 + 友軍 NPC 行動(combat.go)
-	g.checkResult()
+	if g.shotPath == "" { // 截圖驗證模式不跑 AI(純看進場/事件,免站著被打死)
+		g.st.AITurn() // 敵方 + 友軍 NPC 行動(combat.go)
+		g.checkResult()
+	}
 	if g.sc != nil { // on_turn_end 事件(增援/對話)
 		g.dialog = append(g.dialog, g.sc.Fire(g.st, "on_turn_end", "")...)
 	}
