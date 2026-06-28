@@ -69,7 +69,7 @@
 | `TITLE_000` | 320×200 | RLE | 遊戲標題畫面 |
 | `BG_003` | 320×100 | RLE | 戰鬥背景(山脈) |
 | `FDOTHER_015` | 320×200 | 未壓縮 | 熔岩材質 |
-| `FDSHAP_000` | 24×24 起 | 待解(sprite) | 24×24 圖塊集，~256 格 |
+| `FDSHAP_000` | 24×24 tile | RLE tileset | ~300 個 bg-RLE 壓縮 24×24 地形圖塊(見 §8) |
 
 **覆蓋**：背景/標題類全幅圖 ~125 張已可解(本節 RLE)。其他資產用各自的 codec,均已解:
 `FIGANI` 戰鬥動畫(4 模式 sprite RLE,見 `06`)、`DATO` 頭像(高值-run RLE,見 §7)。
@@ -122,3 +122,20 @@ RLE codec(反組譯 `0x4F716`,比 sprite 簡單,無透明):
 頭像索引 = 肖像 ID(`DATO_000`=索爾、`001`=哈諾…對上 memory.md 肖像表,已逐張驗證)。
 對話框由控制碼 `0xFFEF` 依說話者肖像 ID 載入對應頭像(見 `14-text-control-codes`)。
 工具 `tools/decode_dato.py`;全 136 頭像 ×4 幀已匯出本機 `extracted/portraits/`。
+
+## 8. 地圖圖塊庫(FDSHAP tileset)+ 地圖渲染 [已驗證]
+
+`FDSHAP.DAT` 資源「大 / 1200B」交替成對:大資源 = **tileset**,1200B = 該 tileset 的地形控制表(§5,300×4)。
+
+tileset 標頭 + **圖塊 offset 表**(關鍵,逐塊累積解會漂移):
+```
++0  u16 tileW(24)   +2 u16 tileH(24)   +4 u16 count
++6  u32[count] 圖塊 offset(首個 = 6+count*4 = 表尾)
+各圖塊: bg-RLE 壓縮的 24×24(解到 576 px,RLE 同 §2)
+```
+
+**地圖**(`FDFIELD.DAT`,每地圖 3 資源,見 `03`):構成資源 = u16 W, u16 H, 然後每格 (u16 地形索引, u16 事件)。
+地形索引 → tileset 圖塊。**配對**:地圖 N 用 FDSHAP 第 N 個大資源(資源序 2N)。
+
+`tools/render_map.py` 已可把任一地圖渲染成 PNG。實測序章小島(map 0,24×24)、城鎮(map 1)等皆正確還原
+(海洋/沙灘/草地/松林/屋舍/石板路)。地圖渲染輸出於本機 `extracted/maps/`。
