@@ -91,6 +91,7 @@ def render_frame(w, h, body, pal, trans=0):
     px = decode_rle(body, w, h, trans)
     im = Image.frombytes("P", (w, h), px)
     im.putpalette(pal)
+    im.info["transparency"] = trans  # index trans(預設0)為透明,convert RGBA 時轉 alpha=0
     return im
 
 
@@ -102,7 +103,7 @@ def cmd_frames(src, palp, outdir):
     frames = parse_anim(d)
     for fi, (w, h, body) in enumerate(frames):
         im = render_frame(w, h, body, pal)
-        im.convert("RGB").save(os.path.join(outdir, f"{base}_f{fi:02d}.png"))
+        im.convert("RGBA").save(os.path.join(outdir, f"{base}_f{fi:02d}.png"))  # 保留透明背景
     print(f"{base}: {len(frames)} 幀 -> {outdir}")
 
 
