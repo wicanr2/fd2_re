@@ -75,9 +75,18 @@ type Game struct {
 	moved  bool   // 已選單位是否移動完(進入攻擊階段)
 	result string // 勝負:""/win/lose
 	msg    string // 短訊息(攻擊傷害等)
-	// 地圖單位 sprite(FIGANI 待機分鏡):fig index → 幀序列
+	// 地圖單位 sprite(FDICON 待機分鏡):fig index → 幀序列
 	sprites map[int][]*ebiten.Image
-	font    *Font // 原版點陣中文字型(doc 08)
+	figani  map[int][]*ebiten.Image // 攻擊全身動畫(FIGANI):fig → 幀序列
+	atk     *atkAnim                // 進行中的攻擊演出
+	font    *Font                   // 原版點陣中文字型(doc 08)
+}
+
+// atkAnim 攻擊演出狀態:在攻擊者格放 FIGANI 全身分鏡,目標閃白。
+type atkAnim struct {
+	fig            int // 攻擊者 FIGANI
+	ax, ay, tx, ty int // 攻擊者格 / 目標格
+	timer, total   int
 }
 
 
@@ -153,6 +162,42 @@ func loadPortraits() map[int][]*ebiten.Image {
 	return out
 }
 
+// loadFIGANI 載入 assets/figani/FIGANI_NNN_fNN.png,按 fig id 分組成攻擊全身分鏡。
+func loadFIGANI() map[int][]*ebiten.Image {
+	out := map[int][]*ebiten.Image{}
+	files, _ := filepath.Glob("assets/figani/FIGANI_*_f*.png")
+	type fr struct {
+		id, f int
+		img   *ebiten.Image
+	}
+	var frs []fr
+	for _, fp := range files {
+		var id, f int
+		if _, e := fmt.Sscanf(filepath.Base(fp), "FIGANI_%d_f%d.png", &id, &f); e != nil {
+			continue
+		}
+		raw, e := os.ReadFile(fp)
+		if e != nil {
+			continue
+		}
+		im, _, e := image.Decode(bytes.NewReader(raw))
+		if e != nil {
+			continue
+		}
+		frs = append(frs, fr{id, f, ebiten.NewImageFromImage(im)})
+	}
+	sort.Slice(frs, func(i, j int) bool {
+		if frs[i].id != frs[j].id {
+			return frs[i].id < frs[j].id
+		}
+		return frs[i].f < frs[j].f
+	})
+	for _, f := range frs {
+		out[f.id] = append(out[f.id], f.img)
+	}
+	return out
+}
+
 // toFullWidth 把半形標點轉全形(中文排版 + 避開部分 face 缺半形 ASCII glyph)。
 func toFullWidth(s string) string {
 	r := []rune(s)
@@ -177,6 +222,28 @@ func toFullWidth(s string) string {
 		}
 	}
 	return string(r)
+}
+
+func absInt(v int) int {
+	if v < 0 {
+		return -v
+	}
+	return v
+}
+
+// dirToward 從 (ax,ay) 朝 (tx,ty) 的方向:0下 1左 2上 3右(FDICON 方向幀)。
+func dirToward(ax, ay, tx, ty int) int {
+	dx, dy := tx-ax, ty-ay
+	if absInt(dx) > absInt(dy) {
+		if dx > 0 {
+			return 3
+		}
+		return 1
+	}
+	if dy > 0 {
+		return 0
+	}
+	return 2
 }
 
 // confirm 處理 Enter/Space:選取我方單位顯示移動範圍,或移動到可達格 / 原地待機。
@@ -209,12 +276,15 @@ func (g *Game) confirm() {
 	// 攻擊階段:游標在相鄰敵 → 攻擊;在自己格 → 待命
 	if tgt := g.st.UnitAt(g.curX, g.curY); tgt != nil && tgt != g.sel &&
 		tgt.Camp != battle.Own && g.st.InAttackRange(g.sel, g.curX, g.curY) {
+		// 攻擊者面向目標(FDICON 方向幀)
+		g.sel.Dir = dirToward(g.sel.X, g.sel.Y, g.curX, g.curY)
 		dmg := g.st.Attack(g.sel, tgt)
 		nm := tgt.Name
 		if nm == "" {
 			nm = tgt.ClsName
 		}
 		g.msg = fmt.Sprintf("%s 攻擊 %s,造成 %d 傷害", g.sel.Name, nm, dmg)
+		g.atk = &atkAnim{fig: g.sel.Fig, ax: g.sel.X, ay: g.sel.Y, tx: tgt.X, ty: tgt.Y, timer: 28, total: 28}
 		g.sel, g.reach, g.moved = nil, nil, false
 		g.checkResult()
 	} else if g.curX == g.sel.X && g.curY == g.sel.Y { // 原地待命
@@ -254,6 +324,13 @@ func (g *Game) tileAt(idx int) *ebiten.Image {
 
 func (g *Game) Update() error {
 	g.frame++
+	// 攻擊演出推進(FIGANI 全身分鏡;演出期間鎖玩家輸入)
+	if g.atk != nil {
+		g.atk.timer--
+		if g.atk.timer <= 0 {
+			g.atk = nil
+		}
+	}
 	// 行軍動畫(spawn_march):進場位移緩動歸零,到位轉正面待機
 	if g.st != nil {
 		for _, u := range g.st.Units {
@@ -292,6 +369,10 @@ func (g *Game) Update() error {
 			}
 			if g.shotSel {
 				g.confirm()
+			}
+			if v := os.Getenv("FD2_SHOT_ATTACK"); v != "" { // 在游標格演出某 fig 的 FIGANI 攻擊(驗證用)
+				fig, _ := strconv.Atoi(v)
+				g.atk = &atkAnim{fig: fig, ax: g.curX, ay: g.curY, tx: g.curX + 1, ty: g.curY, timer: 60, total: 60}
 			}
 		}
 		if g.frame > g.shotFrame {
@@ -411,6 +492,26 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				continue
 			}
 			g.drawUnitSprite(screen, ux, uy, float64(tw), float64(th), u)
+		}
+	}
+	// 攻擊演出:目標閃白 + 攻擊者格上播 FIGANI 全身分鏡(原版攻擊動畫)
+	if g.atk != nil {
+		if fr := g.figani[g.atk.fig]; len(fr) > 0 {
+			prog := g.atk.total - g.atk.timer
+			img := fr[(absInt(prog)/4)%len(fr)]
+			b := img.Bounds()
+			ax := float64(g.atk.ax*tw) - g.camX
+			ay := float64(g.atk.ay*th) - g.camY
+			op := &ebiten.DrawImageOptions{} // 全身大圖:底部對齊格、水平置中
+			op.GeoM.Translate(ax+(float64(tw)-float64(b.Dx()))/2, ay+float64(th)-float64(b.Dy()))
+			screen.DrawImage(img, op)
+		}
+		if (g.frame/3)%2 == 0 { // 目標閃白
+			fl := ebiten.NewImage(tw, th)
+			fl.Fill(color.RGBA{0xff, 0xff, 0xff, 0x90})
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Translate(float64(g.atk.tx*tw)-g.camX, float64(g.atk.ty*th)-g.camY)
+			screen.DrawImage(fl, op)
 		}
 	}
 	// 游標(白框)
@@ -647,6 +748,7 @@ func loadGame() *Game {
 	}
 	g.sprites = loadSprites()
 	g.portraits = loadPortraits()
+	g.figani = loadFIGANI()
 	g.font = loadFont()
 	return g
 }
