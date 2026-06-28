@@ -82,11 +82,15 @@ type Game struct {
 	font    *Font                   // 原版點陣中文字型(doc 08)
 }
 
-// atkAnim 攻擊演出狀態:在攻擊者格放 FIGANI 全身分鏡,目標閃白。
+// atkAnim 全螢幕戰鬥演出(對照原版 orig_05:守方左/攻方右土台/斬擊弧/血條/閃紅抽血)。
 type atkAnim struct {
-	fig            int // 攻擊者 FIGANI
-	ax, ay, tx, ty int // 攻擊者格 / 目標格
-	timer, total   int
+	atkFig, defFig   int    // 攻方(右土台)/ 守方(左)FIGANI
+	atkName, defName string // 名字(資訊條)
+	atkHP, atkMax    int
+	defLV            int
+	defHP0, defHP1   int // 守方攻擊前/後 HP(impact 抽乾動畫)
+	defMax           int
+	timer, total     int
 }
 
 
@@ -278,13 +282,20 @@ func (g *Game) confirm() {
 		tgt.Camp != battle.Own && g.st.InAttackRange(g.sel, g.curX, g.curY) {
 		// 攻擊者面向目標(FDICON 方向幀)
 		g.sel.Dir = dirToward(g.sel.X, g.sel.Y, g.curX, g.curY)
-		dmg := g.st.Attack(g.sel, tgt)
 		nm := tgt.Name
 		if nm == "" {
 			nm = tgt.ClsName
 		}
-		g.msg = fmt.Sprintf("%s 攻擊 %s,造成 %d 傷害", g.sel.Name, nm, dmg)
-		g.atk = &atkAnim{fig: g.sel.Fig, ax: g.sel.X, ay: g.sel.Y, tx: tgt.X, ty: tgt.Y, timer: 28, total: 28}
+		anm := g.sel.Name
+		if anm == "" {
+			anm = g.sel.ClsName
+		}
+		defHP0 := tgt.HP
+		dmg := g.st.Attack(g.sel, tgt)
+		g.msg = fmt.Sprintf("%s 攻擊 %s,造成 %d 傷害", anm, nm, dmg)
+		g.atk = &atkAnim{atkFig: g.sel.Fig, defFig: tgt.Fig, atkName: anm, defName: nm,
+			atkHP: g.sel.HP, atkMax: g.sel.MaxHP, defLV: tgt.Lv,
+			defHP0: defHP0, defHP1: tgt.HP, defMax: tgt.MaxHP, timer: 48, total: 48}
 		g.sel, g.reach, g.moved = nil, nil, false
 		g.checkResult()
 	} else if g.curX == g.sel.X && g.curY == g.sel.Y { // 原地待命
@@ -370,9 +381,10 @@ func (g *Game) Update() error {
 			if g.shotSel {
 				g.confirm()
 			}
-			if v := os.Getenv("FD2_SHOT_ATTACK"); v != "" { // 在游標格演出某 fig 的 FIGANI 攻擊(驗證用)
+			if v := os.Getenv("FD2_SHOT_ATTACK"); v != "" { // 全螢幕戰鬥演出(驗證用):索爾打盜賊
 				fig, _ := strconv.Atoi(v)
-				g.atk = &atkAnim{fig: fig, ax: g.curX, ay: g.curY, tx: g.curX + 1, ty: g.curY, timer: 60, total: 60}
+				g.atk = &atkAnim{atkFig: fig, defFig: 96, atkName: "索爾", defName: "盜賊",
+					atkHP: 42, atkMax: 42, defLV: 2, defHP0: 28, defHP1: 8, defMax: 36, timer: 30, total: 48}
 			}
 		}
 		if g.frame > g.shotFrame {
@@ -450,6 +462,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		ebitenutil.DebugPrint(screen, "FD2 重製 MVP\n缺 assets/(tileset.png + map.json)\n用 tools/export_engine_assets.py 產生\n"+g.loadErr)
 		return
 	}
+	// 攻擊演出:切全螢幕戰鬥畫面(蓋地圖,對照原版 orig_05 全螢幕戰鬥)
+	if g.atk != nil {
+		g.drawBattleScene(screen)
+		if g.shotPath != "" && g.frame == g.shotFrame {
+			saveShot(screen, g.shotPath)
+		}
+		return
+	}
 	tw, th := g.m.TileW, g.m.TileH
 	// 只畫可見範圍
 	x0 := int(g.camX) / tw
@@ -492,26 +512,6 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				continue
 			}
 			g.drawUnitSprite(screen, ux, uy, float64(tw), float64(th), u)
-		}
-	}
-	// 攻擊演出:目標閃白 + 攻擊者格上播 FIGANI 全身分鏡(原版攻擊動畫)
-	if g.atk != nil {
-		if fr := g.figani[g.atk.fig]; len(fr) > 0 {
-			prog := g.atk.total - g.atk.timer
-			img := fr[(absInt(prog)/4)%len(fr)]
-			b := img.Bounds()
-			ax := float64(g.atk.ax*tw) - g.camX
-			ay := float64(g.atk.ay*th) - g.camY
-			op := &ebiten.DrawImageOptions{} // 全身大圖:底部對齊格、水平置中
-			op.GeoM.Translate(ax+(float64(tw)-float64(b.Dx()))/2, ay+float64(th)-float64(b.Dy()))
-			screen.DrawImage(img, op)
-		}
-		if (g.frame/3)%2 == 0 { // 目標閃白
-			fl := ebiten.NewImage(tw, th)
-			fl.Fill(color.RGBA{0xff, 0xff, 0xff, 0x90})
-			op := &ebiten.DrawImageOptions{}
-			op.GeoM.Translate(float64(g.atk.tx*tw)-g.camX, float64(g.atk.ty*th)-g.camY)
-			screen.DrawImage(fl, op)
 		}
 	}
 	// 游標(白框)
@@ -628,6 +628,82 @@ func saveShot(img *ebiten.Image, path string) {
 		return
 	}
 	log.Println("screenshot ->", path)
+}
+
+// drawBattleScene 全螢幕戰鬥演出(對照原版 orig_05:守方左面右/攻方右土台/斬擊弧/血條/命中閃紅抽血)。
+func (g *Game) drawBattleScene(screen *ebiten.Image) {
+	a := g.atk
+	prog := a.total - a.timer
+	screen.Fill(color.RGBA{0x6a, 0x80, 0x78, 0xff}) // 天空/遠景
+	ground := ebiten.NewImage(logicalW, logicalH/2+40)
+	ground.Fill(color.RGBA{0x3c, 0x5a, 0x32, 0xff}) // 草地
+	og := &ebiten.DrawImageOptions{}
+	og.GeoM.Translate(0, float64(logicalH)/2-40)
+	screen.DrawImage(ground, og)
+	const sc = 2.6
+	groundY := float64(logicalH) - 40
+	// 守方(左,水平翻轉面右,站立幀);命中階段閃紅
+	if fr := g.figani[a.defFig]; len(fr) > 0 {
+		img := fr[0]
+		b := img.Bounds()
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Scale(-sc, sc)
+		op.GeoM.Translate(110+float64(b.Dx())*sc, groundY-float64(b.Dy())*sc)
+		if prog >= 24 && prog < 38 && (g.frame/2)%2 == 0 {
+			op.ColorScale.Scale(1.8, 0.3, 0.3, 1)
+		}
+		screen.DrawImage(img, op)
+	}
+	// 攻方(右,圓土台,揮擊序列)
+	cx := float64(logicalW) - 165
+	plat := ebiten.NewImage(120, 22)
+	plat.Fill(color.RGBA{0x4a, 0x6a, 0x3a, 0xff})
+	opP := &ebiten.DrawImageOptions{}
+	opP.GeoM.Translate(cx-60, groundY-6)
+	screen.DrawImage(plat, opP)
+	if fr := g.figani[a.atkFig]; len(fr) > 0 {
+		img := fr[(prog/4)%len(fr)]
+		b := img.Bounds()
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Scale(sc, sc)
+		op.GeoM.Translate(cx-float64(b.Dx())*sc/2, groundY-float64(b.Dy())*sc)
+		screen.DrawImage(img, op)
+	}
+	// swing 白斬擊弧
+	if prog >= 12 && prog < 28 {
+		arc := ebiten.NewImage(190, 64)
+		arc.Fill(color.RGBA{0xff, 0xff, 0xff, 0x60})
+		oa := &ebiten.DrawImageOptions{}
+		oa.GeoM.Translate(float64(logicalW)/2-60, 96)
+		screen.DrawImage(arc, oa)
+	}
+	if g.font != nil { // 守方資訊左下、攻方右上(對照原版血條位置)
+		dhp := a.defHP0
+		if prog >= 26 {
+			dhp = a.defHP1
+		}
+		drawHPPanel(screen, g.font, 8, float64(logicalH)-56, a.defName, dhp, a.defMax)
+		drawHPPanel(screen, g.font, float64(logicalW)-184, 8, a.atkName, a.atkHP, a.atkMax)
+	}
+}
+
+func drawHPPanel(screen *ebiten.Image, f *Font, x, y float64, name string, hp, mx int) {
+	panel := ebiten.NewImage(176, 48)
+	panel.Fill(color.RGBA{0x10, 0x20, 0x50, 0xe0})
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(x, y)
+	screen.DrawImage(panel, op)
+	f.Draw(screen, name, x+8, y+3, 1.0, color.RGBA{0xff, 0xeb, 0x78, 0xff})
+	frac := float64(hp) / float64(mx)
+	if frac < 0 {
+		frac = 0
+	}
+	bar := ebiten.NewImage(int(150*frac)+1, 7)
+	bar.Fill(color.RGBA{0xf0, 0xd0, 0x40, 0xff})
+	ob := &ebiten.DrawImageOptions{}
+	ob.GeoM.Translate(x+10, y+30)
+	screen.DrawImage(bar, ob)
+	f.Draw(screen, fmt.Sprintf("HP%d", hp), x+10, y+26, 0.7, color.RGBA{0xff, 0xff, 0xff, 0xff})
 }
 
 // drawUnitSprite 畫一個單位:純 FDICON Q 版 sprite(原版無 HP bar/腳標,還原乾淨)。
