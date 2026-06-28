@@ -38,3 +38,8 @@ dist/
 
 # FIGANI 動畫批次匯出(遊戲美術,不散布;用 tools/decode_figani.py 自行重生)
 docs/figures/animations/
+
+# MT-32/音訊渲染輸出(遊戲音樂;ROM 渲染結果不散布)
+*.wav
+*.ROM
+music_mt32/
