@@ -70,8 +70,11 @@ type Game struct {
 	shotCurY  int
 	shotSel   bool // 截圖前自動選取游標單位(FD2_SHOT_SELECT=1)
 	// 選取狀態
-	sel   *battle.Unit
-	reach map[battle.Cell]bool
+	sel    *battle.Unit
+	reach  map[battle.Cell]bool
+	moved  bool   // 已選單位是否移動完(進入攻擊階段)
+	result string // 勝負:""/win/lose
+	msg    string // 短訊息(攻擊傷害等)
 	// 地圖單位 sprite(FIGANI 待機分鏡):fig index → 幀序列
 	sprites map[int][]*ebiten.Image
 	font    *Font // 原版點陣中文字型(doc 08)
@@ -182,22 +185,51 @@ func (g *Game) confirm() {
 		return
 	}
 	cur := battle.Cell{X: g.curX, Y: g.curY}
-	if g.sel == nil {
+	if g.sel == nil { // 選我方單位
 		u := g.st.UnitAt(g.curX, g.curY)
 		if u != nil && u.Camp == battle.Own && !u.Acted {
 			g.sel = u
+			g.moved = false
 			g.reach = g.st.Reachable(u)
 		}
 		return
 	}
-	switch {
-	case g.curX == g.sel.X && g.curY == g.sel.Y: // 原地待機
+	if !g.moved { // 移動階段
+		switch {
+		case g.curX == g.sel.X && g.curY == g.sel.Y: // 原地 → 不移動,進攻擊/待命階段
+			g.moved = true
+			g.reach = nil
+		case g.reach[cur] && g.st.UnitAt(g.curX, g.curY) == nil: // 移動到可達空格
+			g.sel.X, g.sel.Y = g.curX, g.curY
+			g.moved = true
+			g.reach = nil
+		}
+		return
+	}
+	// 攻擊階段:游標在相鄰敵 → 攻擊;在自己格 → 待命
+	if tgt := g.st.UnitAt(g.curX, g.curY); tgt != nil && tgt != g.sel &&
+		tgt.Camp != battle.Own && g.st.InAttackRange(g.sel, g.curX, g.curY) {
+		dmg := g.st.Attack(g.sel, tgt)
+		nm := tgt.Name
+		if nm == "" {
+			nm = tgt.ClsName
+		}
+		g.msg = fmt.Sprintf("%s 攻擊 %s,造成 %d 傷害", g.sel.Name, nm, dmg)
+		g.sel, g.reach, g.moved = nil, nil, false
+		g.checkResult()
+	} else if g.curX == g.sel.X && g.curY == g.sel.Y { // 原地待命
 		g.sel.Acted = true
-		g.sel, g.reach = nil, nil
-	case g.reach[cur] && g.st.UnitAt(g.curX, g.curY) == nil: // 移動
-		g.sel.X, g.sel.Y = g.curX, g.curY
-		g.sel.Acted = true
-		g.sel, g.reach = nil, nil
+		g.sel, g.reach, g.moved = nil, nil, false
+	}
+}
+
+// checkResult 檢查勝負(失敗條件:索爾死;勝利:敵全滅,doc28 第1章)。
+func (g *Game) checkResult() {
+	if g.result != "" || g.sc == nil {
+		return
+	}
+	if r := g.st.Result("索爾"); r != "" {
+		g.result = r
 	}
 }
 
@@ -403,10 +435,10 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		}
 		if len(g.dialog) > 0 { // 底部對話框:左頭像 + 右文字(原版佈局,real_pic)
 			dl := g.dialog[len(g.dialog)-1]
-			boxH := 108.0 // 原版約佔底部 1/4~1/3
+			boxH := 120.0 // 原版約佔底部 1/4~1/3
 			top := float64(logicalH) - boxH
 			box := ebiten.NewImage(logicalW, int(boxH))
-			box.Fill(color.RGBA{0x10, 0x18, 0x48, 0xf0})
+			box.Fill(color.RGBA{0x10, 0x18, 0x48, 0xf2})
 			op := &ebiten.DrawImageOptions{}
 			op.GeoM.Translate(0, top)
 			screen.DrawImage(box, op)
@@ -416,20 +448,32 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			oe.GeoM.Translate(0, top)
 			screen.DrawImage(edge, oe)
 			tx := 16.0
-			// 左頭像(嘴型:目前 m0 靜態;開合動畫節奏待 RE 原版確認)
+			// 左大頭像(側臉半身,佔框高滿版,對照原版 orig_02_dialog;嘴型 m0閉/m3開)
 			if fr := g.portraits[dl.Speaker]; len(fr) > 0 {
-				mi := 0 // 嘴型:m0 閉 / m3 開(原版 0x16559,doc14)
+				mi := 0
 				if g.mouthOpen && len(fr) > 3 {
 					mi = 3
 				}
-				s := (boxH - 16) / 80.0
+				s := boxH / 80.0 // 滿框高
 				po := &ebiten.DrawImageOptions{}
 				po.GeoM.Scale(s, s)
-				po.GeoM.Translate(12, top+8)
+				po.GeoM.Translate(6, top)
 				screen.DrawImage(fr[mi], po)
-				tx = 12 + 80*s + 14
+				tx = 6 + 80*s + 12
 			}
-			g.font.Draw(screen, "『"+toFullWidth(dl.Text)+"』", tx, top+18, 1.6, color.RGBA{0xff, 0xff, 0xf0, 0xff})
+			g.font.Draw(screen, "『"+toFullWidth(dl.Text)+"』", tx, top+24, 1.7, color.RGBA{0xf0, 0xf4, 0xff, 0xff})
+		}
+		if g.msg != "" && len(g.dialog) == 0 { // 攻擊等短訊(無對話框時)
+			g.font.Draw(screen, g.msg, 8, float64(logicalH)-30, 1.2, color.RGBA{0xff, 0xf0, 0xb4, 0xff})
+		}
+		if g.result != "" { // 勝負(中央大字)
+			t := "勝　利"
+			c := color.RGBA{0xff, 0xdc, 0x50, 0xff}
+			if g.result == "lose" {
+				t = "敗　北"
+				c = color.RGBA{0xff, 0x70, 0x70, 0xff}
+			}
+			g.font.Draw(screen, t, float64(logicalW)/2-78, float64(logicalH)/2-30, 3.0, c)
 		}
 	}
 
@@ -605,17 +649,20 @@ func loadGame() *Game {
 // endTurn 結束當前回合:觸發 on_turn_end 事件(增援等),回合 +1,清除已行動。
 // 回合無上限(doc 27);只由劇本事件決定勝負。
 func (g *Game) endTurn() {
-	if g.st == nil {
+	if g.st == nil || g.result != "" {
 		return
 	}
-	if g.sc != nil {
+	g.st.AITurn() // 敵方 + 友軍 NPC 行動(combat.go)
+	g.checkResult()
+	if g.sc != nil { // on_turn_end 事件(增援/對話)
 		g.dialog = append(g.dialog, g.sc.Fire(g.st, "on_turn_end", "")...)
 	}
 	g.st.Turn++
 	for _, u := range g.st.Units {
 		u.Acted = false
 	}
-	g.sel, g.reach = nil, nil
+	g.sel, g.reach, g.moved = nil, nil, false
+	g.checkResult()
 }
 
 func main() {
