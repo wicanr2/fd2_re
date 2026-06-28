@@ -17,9 +17,10 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	_ "image/png"
+	"image/png"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -52,6 +53,12 @@ type Game struct {
 	camX    float64
 	camY    float64
 	loadErr string
+	// 截圖鉤子(FD2_SHOT=path 啟用):第 shotFrame 幀存 PNG 後自動退出(有界,供無人值守驗證)
+	frame     int
+	shotPath  string
+	shotFrame int
+	shotCurX  int // 截圖時把游標放這(FD2_SHOT_CUR=x,y)
+	shotCurY  int
 }
 
 // 陣營顏色(M1 暫用色塊,M2/sprite 後換真圖)。
@@ -74,6 +81,16 @@ func (g *Game) tileAt(idx int) *ebiten.Image {
 }
 
 func (g *Game) Update() error {
+	g.frame++
+	// 截圖模式:到指定幀後自動退出(畫面已於 Draw 存檔)
+	if g.shotPath != "" {
+		if g.frame == 1 && (g.shotCurX != 0 || g.shotCurY != 0) {
+			g.curX, g.curY = g.shotCurX, g.shotCurY
+		}
+		if g.frame > g.shotFrame {
+			return ebiten.Termination
+		}
+	}
 	if g.m == nil {
 		return nil
 	}
@@ -183,6 +200,25 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		}
 	}
 	ebitenutil.DebugPrint(screen, info)
+
+	// 截圖鉤子:指定幀把畫面存 PNG(無人值守驗證用)
+	if g.shotPath != "" && g.frame == g.shotFrame {
+		saveShot(screen, g.shotPath)
+	}
+}
+
+func saveShot(img *ebiten.Image, path string) {
+	f, err := os.Create(path)
+	if err != nil {
+		log.Println("shot:", err)
+		return
+	}
+	defer f.Close()
+	if err := png.Encode(f, img); err != nil { // *ebiten.Image 實作 image.Image
+		log.Println("shot encode:", err)
+		return
+	}
+	log.Println("screenshot ->", path)
 }
 
 // drawUnit 畫一個單位(M1:內縮色塊 + 頂部 HP bar)。
@@ -226,7 +262,16 @@ func (g *Game) Layout(outsideW, outsideH int) (int, int) {
 }
 
 func loadGame() *Game {
-	g := &Game{}
+	g := &Game{shotFrame: 20}
+	g.shotPath = os.Getenv("FD2_SHOT")
+	if v := os.Getenv("FD2_SHOT_FRAME"); v != "" {
+		if n, e := strconv.Atoi(v); e == nil {
+			g.shotFrame = n
+		}
+	}
+	if v := os.Getenv("FD2_SHOT_CUR"); v != "" {
+		fmt.Sscanf(v, "%d,%d", &g.shotCurX, &g.shotCurY)
+	}
 	raw, err := os.ReadFile("assets/map.json")
 	if err != nil {
 		g.loadErr = err.Error()
