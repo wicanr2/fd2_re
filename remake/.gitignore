@@ -1,5 +1,8 @@
 # 遊戲資產(玩家自備原版後由 tools/ 產生)+ 建置產物,不入庫;引擎原始碼才入庫
-assets/
+# 用 assets/* 擋「內容」(map.json/units.json/sprites/tileset 等 ROM 衍生),但保留目錄例外能力
+assets/*
+# 例外:原創劇本(可擴充事件 DSL 實例,非 ROM 衍生素材)入庫
+!assets/scenarios/
 web/assets/
 web/fd2.wasm
 *.wasm

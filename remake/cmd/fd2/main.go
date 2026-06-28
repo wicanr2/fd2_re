@@ -50,6 +50,8 @@ type Game struct {
 	tileset *ebiten.Image
 	tiles   []*ebiten.Image // 切好的圖塊
 	st      *battle.State    // 戰鬥狀態(單位)
+	sc      *battle.Scenario // 劇本(事件系統,doc 29)
+	dialog  []string         // 待顯示對話(事件產生;Goal 對話系統再做成框)
 	curX    int
 	curY    int
 	camX    float64
@@ -59,6 +61,7 @@ type Game struct {
 	frame     int
 	shotPath  string
 	shotFrame int
+	shotTurn  int // 截圖前自動推進到第 N 回合(FD2_SHOT_TURN,驗證增援進場)
 	shotCurX  int // 截圖時把游標放這(FD2_SHOT_CUR=x,y)
 	shotCurY  int
 	shotSel   bool // 截圖前自動選取游標單位(FD2_SHOT_SELECT=1)
@@ -155,6 +158,9 @@ func (g *Game) Update() error {
 	// 截圖模式:到指定幀後自動退出(畫面已於 Draw 存檔)
 	if g.shotPath != "" {
 		if g.frame == 1 {
+			for i := 0; i < g.shotTurn; i++ { // 推進 N 個回合(觸發增援事件),驗證進場
+				g.endTurn()
+			}
 			if g.shotCurX != 0 || g.shotCurY != 0 {
 				g.curX, g.curY = g.shotCurX, g.shotCurY
 			}
@@ -207,6 +213,10 @@ func (g *Game) Update() error {
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 		g.sel, g.reach = nil, nil
+	}
+	// Tab:結束回合(觸發 on_turn_end 增援事件)。正式版改我方全動完自動結束。
+	if inpututil.IsKeyJustPressed(ebiten.KeyTab) {
+		g.endTurn()
 	}
 	// 相機跟隨游標(置中,夾在地圖內)
 	g.camX = float64(g.curX*g.m.TileW - logicalW/2 + g.m.TileW/2)
@@ -266,7 +276,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	// 單位層(M1:FIGANI 待機動畫 sprite + 陣營腳標 + HP bar;無 sprite 退回色塊)
 	if g.st != nil {
 		for _, u := range g.st.Units {
-			if !u.Alive() {
+			if !u.OnField || !u.Alive() { // 待命(未進場)單位不畫
 				continue
 			}
 			ux := float64(u.X*tw) - g.camX
@@ -287,9 +297,19 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		info += fmt.Sprintf("  回合%d  我方%d 友%d 敵%d",
 			g.st.Turn, g.st.AliveCount(battle.Own), g.st.AliveCount(battle.Ally), g.st.AliveCount(battle.Enemy))
 		if u := g.st.UnitAt(g.curX, g.curY); u != nil {
-			info += fmt.Sprintf("\n[%d,%d] %s Lv%d HP%d/%d AP%d DP%d MV%d",
-				u.X, u.Y, u.Camp, u.Lv, u.HP, u.MaxHP, u.AP, u.DP, u.MV)
+			nm := u.Name
+			if nm == "" {
+				nm = u.ClsName
+			}
+			info += fmt.Sprintf("\n[%d,%d] %s %s Lv%d HP%d/%d AP%d DP%d MV%d",
+				u.X, u.Y, u.Camp, nm, u.Lv, u.HP, u.MaxHP, u.AP, u.DP, u.MV)
 		}
+		if g.sc != nil {
+			info += "  (Tab:結束回合)"
+		}
+	}
+	if len(g.dialog) > 0 { // 事件對話(Goal 對話系統會做成框+頭像;此處先單行)
+		info += "\n💬 " + g.dialog[len(g.dialog)-1]
 	}
 	ebitenutil.DebugPrint(screen, info)
 
@@ -401,6 +421,11 @@ func loadGame() *Game {
 	if v := os.Getenv("FD2_SHOT_CUR"); v != "" {
 		fmt.Sscanf(v, "%d,%d", &g.shotCurX, &g.shotCurY)
 	}
+	if v := os.Getenv("FD2_SHOT_TURN"); v != "" {
+		if n, e := strconv.Atoi(v); e == nil {
+			g.shotTurn = n
+		}
+	}
 	raw, err := os.ReadFile("assets/map.json")
 	if err != nil {
 		g.loadErr = err.Error()
@@ -442,8 +467,33 @@ func loadGame() *Game {
 	} else if g.loadErr == "" {
 		g.loadErr = "units: " + err.Error()
 	}
+	// 載入劇本 + 套用初始(待命 group + on_battle_start 主角隊進場,doc 25/29)
+	if g.st != nil {
+		if sc, err := battle.LoadScenario("assets/scenarios/ch01.json"); err == nil {
+			g.sc = sc
+			g.dialog = append(g.dialog, sc.Setup(g.st)...)
+		} else if g.loadErr == "" {
+			g.loadErr = "scenario: " + err.Error()
+		}
+	}
 	g.sprites = loadSprites()
 	return g
+}
+
+// endTurn 結束當前回合:觸發 on_turn_end 事件(增援等),回合 +1,清除已行動。
+// 回合無上限(doc 27);只由劇本事件決定勝負。
+func (g *Game) endTurn() {
+	if g.st == nil {
+		return
+	}
+	if g.sc != nil {
+		g.dialog = append(g.dialog, g.sc.Fire(g.st, "on_turn_end", "")...)
+	}
+	g.st.Turn++
+	for _, u := range g.st.Units {
+		u.Acted = false
+	}
+	g.sel, g.reach = nil, nil
 }
 
 func main() {
