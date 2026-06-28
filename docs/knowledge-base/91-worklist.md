@@ -46,7 +46,7 @@
 - [ ] 各 track 呼叫端對應確切遊戲狀態名(片頭/世界圖/城鎮/戰鬥/劇情)
 - [x] **FDSHAP 圖塊庫解碼**:標頭 count + u32 offset 表 + bg-RLE 24×24;~300 tiles/tileset → `01`§8
 - [x] **全 33 張戰場地圖抽取**:FDFIELD×FDSHAP(配對 map N→FDSHAP[2N],索引驗證全通過)→ 本機 `extracted/maps/`;`tools/extract_maps.py`、`render_map.py`
-- [x] **FDICON.B24** = 1680 個 24×24 圖示 tileset(同 FDSHAP 格式,無 LLLLLL 外殼)
+- [x] **FDICON.B24** = 1680 個 24×24 **地圖單位 Q版小人 sprite**(sprite 4-mode RLE 含透明,**非 FDSHAP bg-RLE**;每角色組12=4方向×3幀)→ `31`
 - [x] **TAI.DAT** = WxH 圖像(sprite-RLE,如 155×42);多為 UI/特殊圖
 - [x] 寫一篇總覽:「1995 年怎麼做出炎龍騎士團2」→ `15`
 - [ ] 寫一篇總覽:「1995 年台灣怎麼做遊戲 — 炎龍騎士團2 技術全紀錄」
@@ -56,7 +56,7 @@
 ## 第 4 輪以後(暫定)
 - [x] 地圖格式完整解析(FDFIELD 三段)+ 渲染全 33 圖(見上)
 - [ ] 反組譯戰鬥/命中/傷害/AI 演算法(Ghidra)，與攻略公式交叉驗證
-- [x] `FDICON.B24`=1680個24×24圖示tileset;`TAI.DAT`=WxH圖像(sprite-RLE)
+- [x] `FDICON.B24`=1680個24×24地圖單位sprite(sprite-RLE,見 `31`);`TAI.DAT`=WxH圖像(sprite-RLE)
 - [~] `FD2.SAV` 存檔:熵7.99=強加密/壓縮,無結構;破解需反組譯存檔加解密常式(大工程)。重製用自有存檔格式 → 低優先
 - [x] **音色合成評估+MT-32實證**(SoundFont/MT-32/版本切換,munt渲染15首)→ `16`
 - [x] **擴充劇本/玩法可行性評估**(戰場/對話/商店/機制)→ `17`
