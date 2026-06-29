@@ -663,8 +663,8 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		op.GeoM.Translate(0, 100)
 		screen.DrawImage(g.bg, op)
 	}
-	// 攻方腳下橢圓草地(orig x230–310,y165–185 → ×2 中心(540,352) rx82 ry20)
-	drawEllipse(screen, 540, 352, 82, 20, color.RGBA{0x3a, 0x52, 0x2c, 0xff})
+	// 攻方腳下圓圈陰影 = FIGANI sprite 自帶的 dither 網點陰影(doc06 codec 01 模式,
+	// doc35 §3.3 修正:非 BG 層、非程式畫純色),畫 figure 時自動帶出,不另畫橢圓。
 	const sc = 2.0 // doc35:無 runtime 縮放,FIGANI 原生尺寸 ×2(原版 320→畫布 640)
 	// 守方盜賊(左;FIGANI_288 原圖已面右朝攻方,不翻轉;底中心 orig(90,150)→×2(180,300))
 	if fr := g.figani[a.defFig]; len(fr) > 0 {
@@ -751,14 +751,6 @@ func drawBattlePanel(screen *ebiten.Image, f *Font, x, y, w, h float64, name str
 	f.Draw(screen, "MP", x+10, y+h*0.72, 1.0, white)
 	drawStatBar(screen, barX, y+h*0.77, barW, float64(mp)/float64(mpmx), color.RGBA{0xc0, 0x28, 0x28, 0xff})
 	f.Draw(screen, fmt.Sprintf("%03d", mp), x+w-42, y+h*0.72, 1.0, white)
-}
-
-// drawEllipse 填充橢圓(攻方腳下草地圈;逐行水平線)。
-func drawEllipse(screen *ebiten.Image, cx, cy, rx, ry float64, c color.RGBA) {
-	for dy := -ry; dy <= ry; dy++ {
-		w := rx * math.Sqrt(1-dy*dy/(ry*ry))
-		vector.StrokeLine(screen, float32(cx-w), float32(cy+dy), float32(cx+w), float32(cy+dy), 1.2, c, false)
-	}
 }
 
 // drawStatBar 狀態條(暗槽 + 填充)。

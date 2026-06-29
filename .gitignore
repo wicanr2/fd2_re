@@ -36,6 +36,14 @@ node_modules/
 build/
 dist/
 
+# 版權:原版實機截圖 / 宣傳圖(漢堂),只本機對照用,不入庫
+real_pic/
+
+# Go build cache / 編譯產物(不入庫)
+remake/.gocache/
+remake/fd2-linux
+*.gocache/
+
 # FIGANI 動畫批次匯出(遊戲美術,不散布;用 tools/decode_figani.py 自行重生)
 docs/figures/animations/
 
