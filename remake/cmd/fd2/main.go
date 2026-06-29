@@ -80,6 +80,7 @@ type Game struct {
 	figani  map[int][]*ebiten.Image // 攻擊全身動畫(FIGANI):fig → 幀序列
 	atk     *atkAnim                // 進行中的攻擊演出
 	bg      *ebiten.Image           // 戰鬥背景(BG.DAT,by 戰場;map0=BG_004 森林)
+	tai     *ebiten.Image           // 我方腳下台座(TAI.DAT;0x29164 載 0x28c46,doc35 §3.3)
 	font    *Font                   // 原版點陣中文字型(doc 08)
 }
 
@@ -693,7 +694,16 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		}
 		screen.DrawImage(img, op)
 	}
-	// (3) 我方亞雷斯 figure(背影+土台;蓋住狀態欄);程式量 orig 土台中心 x≈238 y≈185(@320)
+	// (2.5) 我方台座(TAI_004 綠草橢圓;在 figure 下、狀態欄上;中心對亞雷斯腳 orig(238,185)→×2)
+	if g.tai != nil {
+		tb := g.tai.Bounds()
+		tw, th := float64(tb.Dx())*sc, float64(tb.Dy())*sc
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Scale(sc, sc)
+		op.GeoM.Translate(476-tw/2, 370-th/2)
+		screen.DrawImage(g.tai, op)
+	}
+	// (3) 我方亞雷斯 figure(背影,踩台座;蓋住狀態欄);程式量 orig 土台中心 x≈238 y≈185(@320)
 	if fr := g.figani[a.atkFig]; len(fr) > 0 {
 		// 攻擊幀序播放(不循環,停末幀);windup→揮砍。截圖對照階段落在 f01(orig_05 windup)
 		fi := prog / 4
@@ -907,6 +917,11 @@ func loadGame() *Game {
 	if raw, e := os.ReadFile("assets/bg/bg.png"); e == nil { // 戰鬥背景(BG.DAT)
 		if im, _, e2 := image.Decode(bytes.NewReader(raw)); e2 == nil {
 			g.bg = ebiten.NewImageFromImage(im)
+		}
+	}
+	if raw, e := os.ReadFile("assets/tai/tai_004.png"); e == nil { // 我方台座(TAI_004 綠草橢圓)
+		if im, _, e2 := image.Decode(bytes.NewReader(raw)); e2 == nil {
+			g.tai = ebiten.NewImageFromImage(im)
 		}
 	}
 	g.font = loadFont()
