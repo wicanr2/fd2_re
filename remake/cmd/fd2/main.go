@@ -706,7 +706,7 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 			dhp = a.defHP0 + int(float64(a.defHP1-a.defHP0)*t)
 		}
 		drawBattlePanel(screen, g.font, 320, 0, 320, 84, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP) // 攻方右上貼頂(orig 160,2,160,40 ×2)
-		drawBattlePanel(screen, g.font, 0, 300, 320, 84, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 敵方左下(往上切齊 orig y150@320×2=300)
+		drawBattlePanel(screen, g.font, 0, 306, 320, 84, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 敵方左下(orig 欄頂離 150 線有 ~3px@320 空隙 → y153@320×2=306)
 	}
 }
 
