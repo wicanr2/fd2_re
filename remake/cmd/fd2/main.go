@@ -666,14 +666,14 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 	// 攻方腳下橢圓草地(orig x230–310,y165–185 → ×2 中心(540,352) rx82 ry20)
 	drawEllipse(screen, 540, 352, 82, 20, color.RGBA{0x3a, 0x52, 0x2c, 0xff})
 	const sc = 2.0 // doc35:無 runtime 縮放,FIGANI 原生尺寸 ×2(原版 320→畫布 640)
-	// 守方盜賊(左,翻轉面右;底中心 orig(90,150)→×2(180,300))
+	// 守方盜賊(左;FIGANI_288 原圖已面右朝攻方,不翻轉;底中心 orig(90,150)→×2(180,300))
 	if fr := g.figani[a.defFig]; len(fr) > 0 {
 		img := fr[0]
 		b := img.Bounds()
 		fw, fh := float64(b.Dx())*sc, float64(b.Dy())*sc
 		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Scale(-sc, sc)
-		op.GeoM.Translate(180+fw/2, 300-fh)
+		op.GeoM.Scale(sc, sc)
+		op.GeoM.Translate(180-fw/2, 300-fh)
 		if prog >= 22 && prog < 40 {
 			op.ColorScale.Scale(2.2, 0.0, 0.0, 1)
 		}
