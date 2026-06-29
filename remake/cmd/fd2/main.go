@@ -689,7 +689,7 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		fw, fh := float64(b.Dx())*sc, float64(b.Dy())*sc
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)
-		op.GeoM.Translate(140-fw/2, 296-fh) // 敵方盜賊:使用者校正,往下對齊(頭頂偏上 276→296)
+		op.GeoM.Translate(80-fw/2, 296-fh) // 敵方盜賊:網格量 v26 中心x92 vs orig x63,往左對齊(140→80)
 		if prog >= 22 && prog < 40 {
 			op.ColorScale.Scale(2.2, 0.0, 0.0, 1)
 		}
