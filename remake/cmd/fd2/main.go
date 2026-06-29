@@ -705,8 +705,8 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 			}
 			dhp = a.defHP0 + int(float64(a.defHP1-a.defHP0)*t)
 		}
-		drawBattlePanel(screen, g.font, 320, 8, 320, 80, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP) // 攻方右上(orig 160,5,160,40 ×2)
-		drawBattlePanel(screen, g.font, 0, 320, 320, 80, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 守方左下(orig 0,160,160,40 ×2)
+		drawBattlePanel(screen, g.font, 320, 0, 320, 84, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP) // 攻方右上貼頂(orig 160,2,160,40 ×2)
+		drawBattlePanel(screen, g.font, 0, 312, 320, 84, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 守方左下(orig 0,157,160,40 ×2)
 	}
 }
 
@@ -732,20 +732,20 @@ func drawBattlePanel(screen *ebiten.Image, f *Font, x, y, w, h float64, name str
 	fillRect(x+w-2, y, 2, h, dk) // 右
 	white := color.RGBA{0xff, 0xff, 0xff, 0xff}
 	lab := color.RGBA{0x88, 0xc0, 0xf0, 0xff} // HP/MP 標籤淺藍(orig)
-	f.Draw(screen, name, x+10, y+5, 1.5, color.RGBA{0xe0, 0xee, 0xff, 0xff}) // 名(左上,大)
+	f.Draw(screen, name, x+10, y+4, 1.3, color.RGBA{0xe0, 0xee, 0xff, 0xff}) // 名(左上)
 	if lv > 0 {
-		f.Draw(screen, fmt.Sprintf("LV‧%02d", lv), x+w-86, y+8, 1.1, white)
+		f.Draw(screen, fmt.Sprintf("LV‧%02d", lv), x+w-86, y+6, 1.1, white)
 	}
 	barX, barW := x+54, w-104
-	f.Draw(screen, "HP", x+10, y+h*0.42, 1.0, lab)
-	drawStatBar(screen, barX, y+h*0.47, barW, float64(hp)/float64(mx), color.RGBA{0xf0, 0xc8, 0x30, 0xff})
-	f.Draw(screen, fmt.Sprintf("%03d", hp), x+w-42, y+h*0.42, 1.0, white)
+	f.Draw(screen, "HP", x+10, y+h*0.45, 1.0, lab)
+	drawStatBar(screen, barX, y+h*0.49, barW, float64(hp)/float64(mx), color.RGBA{0xf0, 0xc8, 0x30, 0xff})
+	f.Draw(screen, fmt.Sprintf("%03d", hp), x+w-42, y+h*0.45, 1.0, white)
 	mpmx := mp
 	if mpmx < 1 {
 		mpmx = 1
 	}
 	f.Draw(screen, "MP", x+10, y+h*0.72, 1.0, lab)
-	drawStatBar(screen, barX, y+h*0.77, barW, float64(mp)/float64(mpmx), color.RGBA{0xc0, 0x28, 0x28, 0xff})
+	drawStatBar(screen, barX, y+h*0.76, barW, float64(mp)/float64(mpmx), color.RGBA{0xc0, 0x28, 0x28, 0xff})
 	f.Draw(screen, fmt.Sprintf("%03d", mp), x+w-42, y+h*0.72, 1.0, white)
 }
 
