@@ -672,8 +672,8 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		fw, fh := float64(b.Dx())*sc, float64(b.Dy())*sc
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)
-		// 網格量測:orig 守方盜賊人物中心 x≈70,腳底 y≈135(@320)→ ×2;sprite 內人物偏右故圖中心再左移
-		op.GeoM.Translate(110-fw/2, 270-fh)
+		// 敵方盜賊(正面);密集格線對齊 orig:腳底 y≈135(@320)→ 276@640
+		op.GeoM.Translate(110-fw/2, 276-fh)
 		if prog >= 22 && prog < 40 {
 			op.ColorScale.Scale(2.2, 0.0, 0.0, 1)
 		}
@@ -691,8 +691,8 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		fw, fh := float64(b.Dx())*sc, float64(b.Dy())*sc
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)
-		// 網格量測:orig 攻方亞雷斯腳底 y≈175(@320 站土台);FIGANI_013 圖底有陰影 padding 故下放
-		op.GeoM.Translate(410-fw/2, 380-fh)
+		// 我方亞雷斯(背影+土台);程式量 orig 土台中心 x≈238 y≈185(@320)→ ×2 對齊
+		op.GeoM.Translate(476-fw/2, 390-fh)
 		screen.DrawImage(img, op)
 	}
 	// 白斬擊弧 = FIGANI_013 攻擊幀自帶(燒在 sprite 像素裡),不另用 vector 程式畫(對照 orig_05 確認)。
@@ -706,7 +706,7 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 			dhp = a.defHP0 + int(float64(a.defHP1-a.defHP0)*t)
 		}
 		drawBattlePanel(screen, g.font, 320, 0, 320, 84, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP) // 攻方右上貼頂(orig 160,2,160,40 ×2)
-		drawBattlePanel(screen, g.font, 0, 312, 320, 84, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 守方左下(orig 0,157,160,40 ×2)
+		drawBattlePanel(screen, g.font, 0, 300, 320, 84, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 敵方左下(往上切齊 orig y150@320×2=300)
 	}
 }
 
