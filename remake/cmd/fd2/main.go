@@ -19,6 +19,7 @@ import (
 	"image/color"
 	"image/png"
 	"log"
+	"math"
 	"math/rand"
 	"os"
 	"path/filepath"
@@ -28,6 +29,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/vector"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
 
@@ -649,8 +651,8 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(-sc, sc)
 		op.GeoM.Translate(110+float64(b.Dx())*sc, groundY-float64(b.Dy())*sc)
-		if prog >= 24 && prog < 38 && (g.frame/2)%2 == 0 {
-			op.ColorScale.Scale(1.8, 0.3, 0.3, 1)
+		if prog >= 22 && prog < 40 { // 命中:整體純紅剪影(對照原版 impact)
+			op.ColorScale.Scale(2.2, 0.0, 0.0, 1)
 		}
 		screen.DrawImage(img, op)
 	}
@@ -669,18 +671,34 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		op.GeoM.Translate(cx-float64(b.Dx())*sc/2, groundY-float64(b.Dy())*sc)
 		screen.DrawImage(img, op)
 	}
-	// swing 白斬擊弧
-	if prog >= 12 && prog < 28 {
-		arc := ebiten.NewImage(190, 64)
-		arc.Fill(color.RGBA{0xff, 0xff, 0xff, 0x60})
-		oa := &ebiten.DrawImageOptions{}
-		oa.GeoM.Translate(float64(logicalW)/2-60, 96)
-		screen.DrawImage(arc, oa)
+	// swing/impact 大白斬擊弧:從右上揮掃到左(對照原版 orig_05,粗白弧)
+	if prog >= 12 && prog < 34 {
+		cxA, cyA := float64(logicalW)*0.46, float64(logicalH)*0.62
+		r := 230.0
+		seg := 14
+		a0, a1 := -0.15, 1.25 // 弧角範圍(弧度,右上→左)
+		alpha := uint8(0xb0)
+		if prog >= 26 {
+			alpha = 0x60 // 收尾淡出
+		}
+		for i := 0; i < seg; i++ {
+			t0 := a0 + (a1-a0)*float64(i)/float64(seg)
+			t1 := a0 + (a1-a0)*float64(i+1)/float64(seg)
+			x0 := cxA + r*math.Cos(t0)
+			y0 := cyA - r*math.Sin(t0)
+			x1 := cxA + r*math.Cos(t1)
+			y1 := cyA - r*math.Sin(t1)
+			vector.StrokeLine(screen, float32(x0), float32(y0), float32(x1), float32(y1), 14, color.RGBA{0xff, 0xff, 0xf0, alpha}, true)
+		}
 	}
 	if g.font != nil { // 守方資訊左下、攻方右上(對照原版血條位置)
-		dhp := a.defHP0
-		if prog >= 26 {
-			dhp = a.defHP1
+		dhp := a.defHP0 // 命中時 HP 漸抽(defHP0→defHP1)
+		if prog >= 24 {
+			t := float64(prog-24) / 12
+			if t > 1 {
+				t = 1
+			}
+			dhp = a.defHP0 + int(float64(a.defHP1-a.defHP0)*t)
 		}
 		drawHPPanel(screen, g.font, 8, float64(logicalH)-56, a.defName, dhp, a.defMax)
 		drawHPPanel(screen, g.font, float64(logicalW)-184, 8, a.atkName, a.atkHP, a.atkMax)
