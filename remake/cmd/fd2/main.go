@@ -96,18 +96,10 @@ type atkAnim struct {
 }
 
 
-// figaniID:FDICON 地圖組號 → 角色 id(DATO/FIGANI 用,敵方非恆等)。未列=恆等(我方 + 士兵等)。
-// 反組譯:FIGANI index = 角色id×3(doc06)。敵方地圖組 ≠ 角色id(盜賊組96→id70)。
-var figaniID = map[int]int{96: 76, 97: 71, 103: 77} // 盜賊/豹人頭目/騎士
-
-// figaniIndex 由單位地圖組號算 FIGANI 起始 index(角色id × 3,doc06)。
-func figaniIndex(fig int) int {
-	id := fig
-	if v, ok := figaniID[fig]; ok {
-		id = v
-	}
-	return id * 3
-}
+// figaniIndex:戰鬥全身動畫 FIGANI index = FDICON組 × 3(恆等,反組譯 0x2884c:unit[+7]×3;doc06)。
+// unit[+7]=FDICON組(0x11019 ×12→地圖sprite、0x2884c ×3→FIGANI,同一欄)。我方敵方統一:
+// 索爾組0→FIGANI0、亞雷斯組4→12、盜賊組96→288。地圖組=FIGANI/3,不需對應表。
+func figaniIndex(fig int) int { return fig * 3 }
 
 // loadSprites 載入 assets/sprites/fig_NNN_fMM.png,按 fig index 分組成幀序列。
 func loadSprites() map[int][]*ebiten.Image {
