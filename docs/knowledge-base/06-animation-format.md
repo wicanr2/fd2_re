@@ -93,3 +93,17 @@ AFM - Animation File Manager Version 1.00 Copyright (C) 1993 Lo Yuan Tsung 09/29
 - 把 264 動畫對應到遊戲招式 / 角色(命名)。
 - `ANI.DAT` 完整 AFM 檔格式(過場動畫)與 `FIGANI` 的關係。
 - 調色 remap 表(部分 24×24 變體用 `[ebp+eax]` 重新著色,推測為陣營 / 受傷閃色)。
+
+## 戰鬥動畫組成機制(FIGANI index,反組譯 2026-06-29)
+
+codec 解碼(上述)只還原「幀→圖」;**「哪個單位用哪個 FIGANI」的組成機制**反組譯如下:
+- 戰鬥演出載入碼 `0x287b5`+:`movzx esi, [ebx+7]`(讀單位結構 `unit[+7]`),
+  `0x2884c` `mov eax,esi; shl eax,2; sub eax,esi`(= esi×4−esi = **esi×3**)→ `push`+FIGANI 字串(`0x52388`)`call 0x111ba` 組檔名。
+- 即 **FIGANI index = `unit[+7]` × 3**;`inc ebx` 後再載 `×3+1` → 每角色**兩個攻擊動作幀組**(3N、3N+1,3N+2 留空)。
+- **`unit[+7]` = 角色 id**(FIGANI/DATO 共用),**≠ FDICON 地圖組號**:
+  - 我方角色 id=組(恆等,索爾 id0→組0→FIGANI0);
+  - **敵方不恆等**:盜賊地圖 FDICON 組96、但角色 id=70(DATO_070)→ FIGANI 70×3=**210**(實測 FIGANI_210=盜賊 ✓)。
+- **remake 對映**:戰鬥全身動畫要用 `figani[角色id × 3]`,角色 id 取單位的 DATO 肖像 id(非地圖 sprite 組)。
+  我方 id=組;敵方需「FDICON 組 → 角色 id(DATO)」對應(如盜賊組96→id70)。
+
+> 教訓:做戰鬥動畫前要先 RE 組成機制(本節),別只靠 codec 解碼 + 視覺猜 index → 會猜成「索爾打索爾」。
