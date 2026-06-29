@@ -662,24 +662,38 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		op.GeoM.Translate(0, 100)
 		screen.DrawImage(g.bg, op)
 	}
-	// 攻方腳下圓圈陰影 = FIGANI sprite 自帶的 dither 網點陰影(doc06 codec 01 模式,
-	// doc35 §3.3 修正:非 BG 層、非程式畫純色),畫 figure 時自動帶出,不另畫橢圓。
+	// 繪製順序(doc35 §4 RE:演出 0x28a6c 內「狀態欄 0x2a289(0x28ce7/0x28d62)先畫、
+	// figure(0x28e76 起 0x29164/0x2939d)後畫」→ figure z-order 高於狀態欄,動畫蓋住欄、動畫完整)。
 	const sc = 2.0 // doc35:無 runtime 縮放,FIGANI 原生尺寸 ×2(原版 320→畫布 640)
-	// 守方盜賊(左;FIGANI_288 原圖已面右朝攻方,不翻轉;底中心 orig(90,150)→×2(180,300))
+
+	// (1) 狀態欄先畫(會被 figure 蓋住一部分,如原版)
+	if g.font != nil {
+		dhp := a.defHP0 // 命中時 HP 漸抽(defHP0→defHP1)
+		if prog >= 24 {
+			t := float64(prog-24) / 12
+			if t > 1 {
+				t = 1
+			}
+			dhp = a.defHP0 + int(float64(a.defHP1-a.defHP0)*t)
+		}
+		drawBattlePanel(screen, g.font, 320, 8, 320, 84, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP) // 我方亞雷斯右上(離頂 y8 留間隔,對齊原版)
+		drawBattlePanel(screen, g.font, 0, 306, 320, 84, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 敵方盜賊左下(離 150 線 ~3px 空隙)
+	}
+
+	// (2) 敵方盜賊 figure(正面;蓋住狀態欄);密集格線對齊 orig:腳底 y≈135(@320)→ 276@640
 	if fr := g.figani[a.defFig]; len(fr) > 0 {
 		img := fr[0]
 		b := img.Bounds()
 		fw, fh := float64(b.Dx())*sc, float64(b.Dy())*sc
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)
-		// 敵方盜賊(正面);密集格線對齊 orig:腳底 y≈135(@320)→ 276@640
 		op.GeoM.Translate(110-fw/2, 276-fh)
 		if prog >= 22 && prog < 40 {
 			op.ColorScale.Scale(2.2, 0.0, 0.0, 1)
 		}
 		screen.DrawImage(img, op)
 	}
-	// 攻方亞雷斯(右下,底中心 orig(250,175)→×2(500,350))
+	// (3) 我方亞雷斯 figure(背影+土台;蓋住狀態欄);程式量 orig 土台中心 x≈238 y≈185(@320)
 	if fr := g.figani[a.atkFig]; len(fr) > 0 {
 		// 攻擊幀序播放(不循環,停末幀);windup→揮砍。截圖對照階段落在 f01(orig_05 windup)
 		fi := prog / 4
@@ -691,22 +705,8 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		fw, fh := float64(b.Dx())*sc, float64(b.Dy())*sc
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)
-		// 我方亞雷斯(背影+土台);程式量 orig 土台中心 x≈238 y≈185(@320)→ ×2 對齊
 		op.GeoM.Translate(476-fw/2, 390-fh)
 		screen.DrawImage(img, op)
-	}
-	// 白斬擊弧 = FIGANI_013 攻擊幀自帶(燒在 sprite 像素裡),不另用 vector 程式畫(對照 orig_05 確認)。
-	if g.font != nil { // 守方資訊左下、攻方右上(對照原版血條位置)
-		dhp := a.defHP0 // 命中時 HP 漸抽(defHP0→defHP1)
-		if prog >= 24 {
-			t := float64(prog-24) / 12
-			if t > 1 {
-				t = 1
-			}
-			dhp = a.defHP0 + int(float64(a.defHP1-a.defHP0)*t)
-		}
-		drawBattlePanel(screen, g.font, 320, 0, 320, 84, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP) // 攻方右上貼頂(orig 160,2,160,40 ×2)
-		drawBattlePanel(screen, g.font, 0, 306, 320, 84, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 敵方左下(orig 欄頂離 150 線有 ~3px@320 空隙 → y153@320×2=306)
 	}
 }
 
