@@ -404,7 +404,7 @@ func (g *Game) Update() error {
 				// 攻方用攻擊動作1(組×3+1=FIGANI_013):含揮劍白斬擊弧 + 腳下大 dither 土台陰影(對齊 orig_05)
 				g.atk = &atkAnim{atkFig: figaniIndex(fig) + 1, defFig: figaniIndex(96), atkName: "亞雷斯", defName: "盜賊",
 					atkHP: 48, atkMax: 48, atkLV: 1, atkMP: 0, defLV: 2, defMP: 0,
-					defHP0: 28, defHP1: 8, defMax: 36, timer: 48, total: 48}
+					defHP0: 28, defHP1: 8, defMax: 30, timer: 48, total: 48}
 			}
 		}
 		if g.frame > g.shotFrame {
@@ -732,11 +732,11 @@ func drawBattlePanel(screen *ebiten.Image, f *Font, x, y, w, h float64, name str
 	fillRect(x+w-2, y, 2, h, dk) // 右
 	white := color.RGBA{0xff, 0xff, 0xff, 0xff}
 	lab := color.RGBA{0x88, 0xc0, 0xf0, 0xff} // HP/MP 標籤淺藍(orig)
-	f.Draw(screen, name, x+10, y+4, 1.3, color.RGBA{0xe0, 0xee, 0xff, 0xff}) // 名(左上)
+	f.Draw(screen, name, x+10, y+3, 1.7, color.RGBA{0xe0, 0xee, 0xff, 0xff}) // 名(左上,放大對齊原版 16px 點陣字)
 	if lv > 0 {
 		f.Draw(screen, fmt.Sprintf("LV‧%02d", lv), x+w-86, y+6, 1.1, white)
 	}
-	barX, barW := x+54, w-104
+	barX, barW := x+44, w-86 // 血條加長:緊接 HP 標籤後一路到數字前(對齊原版幾乎佔滿欄寬)
 	f.Draw(screen, "HP", x+10, y+h*0.45, 1.0, lab)
 	drawStatBar(screen, barX, y+h*0.49, barW, float64(hp)/float64(mx), color.RGBA{0xf0, 0xc8, 0x30, 0xff})
 	f.Draw(screen, fmt.Sprintf("%03d", hp), x+w-42, y+h*0.45, 1.0, white)
