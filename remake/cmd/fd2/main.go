@@ -710,37 +710,46 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 	}
 }
 
-// drawBattlePanel 原版戰鬥狀態欄(對照 orig_05:深藍框+淺藍立體邊+名+LV‧NN右上+HP黃條+MP紅條+數字右)。
+// drawBattlePanel 原版戰鬥狀態欄(對照 orig_05:深藍底 + 左上亮白 raised bevel 立體框 +
+// 名/LV‧NN右上 + HP亮黃條 + MP暗紅條 + 數字白右對齊;HP/MP標籤淺藍)。
+// ⚠ 框 bevel 來源未 RE 確認(doc35 §4 只 RE 到狀態條=色盤、name/LV/HP/MP=預渲染圖塊,框底未追);
+// 暫用程式 bevel 近似 orig 視覺(規則純色非紋理,合理近似),確認是素材後再換。
 func drawBattlePanel(screen *ebiten.Image, f *Font, x, y, w, h float64, name string, lv, hp, mx, mp int) {
-	panel := ebiten.NewImage(int(w), int(h))
-	panel.Fill(color.RGBA{0x30, 0x50, 0x98, 0xf2})
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(x, y)
-	screen.DrawImage(panel, op)
-	edge := ebiten.NewImage(int(w), 2) // 上亮邊(立體框)
-	edge.Fill(color.RGBA{0x98, 0xc0, 0xf0, 0xff})
-	oe := &ebiten.DrawImageOptions{}
-	oe.GeoM.Translate(x, y)
-	screen.DrawImage(edge, oe)
-	f.Draw(screen, name, x+10, y+5, 1.5, color.RGBA{0xc8, 0xe0, 0xff, 0xff}) // 名(左上,大)
+	fillRect := func(bx, by, bw, bh float64, c color.RGBA) {
+		im := ebiten.NewImage(int(bw), int(bh))
+		im.Fill(c)
+		o := &ebiten.DrawImageOptions{}
+		o.GeoM.Translate(bx, by)
+		screen.DrawImage(im, o)
+	}
+	fillRect(x, y, w, h, color.RGBA{0x28, 0x44, 0x84, 0xff}) // 深藍底
+	// raised bevel(光源左上):左+上亮白藍、右+下暗藍
+	lt := color.RGBA{0xb0, 0xc8, 0xe8, 0xff}
+	dk := color.RGBA{0x10, 0x20, 0x48, 0xff}
+	fillRect(x, y, w, 2, lt)     // 上
+	fillRect(x, y, 2, h, lt)     // 左
+	fillRect(x, y+h-2, w, 2, dk) // 下
+	fillRect(x+w-2, y, 2, h, dk) // 右
+	white := color.RGBA{0xff, 0xff, 0xff, 0xff}
+	lab := color.RGBA{0x88, 0xc0, 0xf0, 0xff} // HP/MP 標籤淺藍(orig)
+	f.Draw(screen, name, x+10, y+5, 1.5, color.RGBA{0xe0, 0xee, 0xff, 0xff}) // 名(左上,大)
 	if lv > 0 {
-		f.Draw(screen, fmt.Sprintf("LV‧%02d", lv), x+w-86, y+8, 1.1, color.RGBA{0xff, 0xff, 0xff, 0xff})
+		f.Draw(screen, fmt.Sprintf("LV‧%02d", lv), x+w-86, y+8, 1.1, white)
 	}
 	barX, barW := x+54, w-104
-	white := color.RGBA{0xff, 0xff, 0xff, 0xff}
-	f.Draw(screen, "HP", x+10, y+h*0.42, 1.0, white)
+	f.Draw(screen, "HP", x+10, y+h*0.42, 1.0, lab)
 	drawStatBar(screen, barX, y+h*0.47, barW, float64(hp)/float64(mx), color.RGBA{0xf0, 0xc8, 0x30, 0xff})
 	f.Draw(screen, fmt.Sprintf("%03d", hp), x+w-42, y+h*0.42, 1.0, white)
 	mpmx := mp
 	if mpmx < 1 {
 		mpmx = 1
 	}
-	f.Draw(screen, "MP", x+10, y+h*0.72, 1.0, white)
+	f.Draw(screen, "MP", x+10, y+h*0.72, 1.0, lab)
 	drawStatBar(screen, barX, y+h*0.77, barW, float64(mp)/float64(mpmx), color.RGBA{0xc0, 0x28, 0x28, 0xff})
 	f.Draw(screen, fmt.Sprintf("%03d", mp), x+w-42, y+h*0.72, 1.0, white)
 }
 
-// drawStatBar 狀態條(暗槽 + 填充)。
+// drawStatBar 狀態條(暗槽 + 填充);暗槽 = 填充色暗版(對照 orig:空槽呈暗黃/暗紅,非統一黑)。
 func drawStatBar(screen *ebiten.Image, x, y, w, frac float64, c color.RGBA) {
 	if frac < 0 {
 		frac = 0
@@ -749,7 +758,7 @@ func drawStatBar(screen *ebiten.Image, x, y, w, frac float64, c color.RGBA) {
 		frac = 1
 	}
 	slot := ebiten.NewImage(int(w), 9)
-	slot.Fill(color.RGBA{0x18, 0x18, 0x28, 0xff})
+	slot.Fill(color.RGBA{c.R / 4, c.G / 4, c.B / 4, 0xff}) // 暗槽=填充色暗版
 	os := &ebiten.DrawImageOptions{}
 	os.GeoM.Translate(x, y)
 	screen.DrawImage(slot, os)
