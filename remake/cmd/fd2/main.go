@@ -98,7 +98,7 @@ type atkAnim struct {
 
 // figaniID:FDICON 地圖組號 → 角色 id(DATO/FIGANI 用,敵方非恆等)。未列=恆等(我方 + 士兵等)。
 // 反組譯:FIGANI index = 角色id×3(doc06)。敵方地圖組 ≠ 角色id(盜賊組96→id70)。
-var figaniID = map[int]int{96: 70, 97: 71, 103: 77} // 盜賊/豹人頭目/騎士
+var figaniID = map[int]int{96: 76, 97: 71, 103: 77} // 盜賊/豹人頭目/騎士
 
 // figaniIndex 由單位地圖組號算 FIGANI 起始 index(角色id × 3,doc06)。
 func figaniIndex(fig int) int {
@@ -398,8 +398,8 @@ func (g *Game) Update() error {
 			}
 			if v := os.Getenv("FD2_SHOT_ATTACK"); v != "" { // 全螢幕戰鬥演出(驗證用):索爾打盜賊
 				fig, _ := strconv.Atoi(v)
-				g.atk = &atkAnim{atkFig: figaniIndex(fig), defFig: figaniIndex(96), atkName: "索爾", defName: "盜賊",
-					atkHP: 42, atkMax: 42, defLV: 2, defHP0: 28, defHP1: 8, defMax: 36, timer: 30, total: 48}
+				g.atk = &atkAnim{atkFig: figaniIndex(fig), defFig: figaniIndex(96), atkName: "亞雷斯", defName: "盜賊",
+					atkHP: 48, atkMax: 48, defLV: 2, defHP0: 28, defHP1: 8, defMax: 36, timer: 48, total: 48}
 			}
 		}
 		if g.frame > g.shotFrame {
