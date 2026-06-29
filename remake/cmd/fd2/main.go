@@ -657,22 +657,21 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 	prog := a.total - a.timer
 	// 背景:遠景天空 + 戰場地形 tile(草地)平鋪(跟戰場資料有關,對照 orig_05;確切地形物件/遠景樹待續RE)
 	// 背景:BG.DAT 森林(戰鬥背景 = 戰場資料對應 BG;map0=BG_004)。320×100 拉伸填上 2/3,草地 tile 補地面
+	screen.Fill(color.RGBA{0x5c, 0x6e, 0x66, 0xff}) // 天空(BG 上緣以上)
 	if g.bg != nil {
-		op := &ebiten.DrawImageOptions{}
-		bb := g.bg.Bounds()
-		op.GeoM.Scale(float64(logicalW)/float64(bb.Dx()), 280.0/float64(bb.Dy()))
+		op := &ebiten.DrawImageOptions{} // doc35:BG 320×100 原生貼 (0,50) → 本畫布×2 = 640×200 貼 (0,100)
+		op.GeoM.Scale(2, 2)
+		op.GeoM.Translate(0, 100)
 		screen.DrawImage(g.bg, op)
-	} else {
-		screen.Fill(color.RGBA{0x5c, 0x6e, 0x66, 0xff})
 	}
-	terr := a.terrain // 地面草地補(接 BG 下緣到底)
+	terr := a.terrain // 地面草地補(接 BG 下緣 300 到底)
 	if terr <= 0 || terr >= len(g.tiles) {
 		terr = 52
 	}
 	if terr < len(g.tiles) && g.tiles[terr] != nil {
 		gt := g.tiles[terr]
 		gw, gh := gt.Bounds().Dx(), gt.Bounds().Dy()
-		for yy := 252; yy < logicalH; yy += gh {
+		for yy := 296; yy < logicalH; yy += gh {
 			for xx := 0; xx < logicalW; xx += gw {
 				op := &ebiten.DrawImageOptions{}
 				op.GeoM.Translate(float64(xx), float64(yy))
@@ -680,36 +679,27 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 			}
 		}
 	}
-	// 對照 orig_05 網格量測(640×480→本畫布×0.833):守方盜賊左上偏小、攻方亞雷斯右下站土台偏大(景深)
-	// 守方盜賊(左,翻轉面右,腳 y≈258、中心 x≈130、sc1.63);命中閃紅
+	// 守/攻 FIGANI(doc35:blit 原生尺寸,**無 runtime 縮放**;守小攻大來自素材本身)。
+	// 統一 sc=2.0(原版 320→本畫布 640,×2);左上座標對照 orig_05(守左、攻右,左右由 [unit+6] 旗標,doc35 §2.2)
+	const sc = 2.0
+	// 守方(左,翻轉面右;命中閃紅 — 原版閃紅是 VGA 色盤,remake 暫用 ColorScale)
 	if fr := g.figani[a.defFig]; len(fr) > 0 {
-		const scDef = 1.63
-		gyDef := 258.0
 		img := fr[0]
 		b := img.Bounds()
 		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Scale(-scDef, scDef)
-		op.GeoM.Translate(130+float64(b.Dx())*scDef/2, gyDef-float64(b.Dy())*scDef)
+		op.GeoM.Scale(-sc, sc)
+		op.GeoM.Translate(44+float64(b.Dx())*sc, 78) // 左上(44,78)
 		if prog >= 22 && prog < 40 {
 			op.ColorScale.Scale(2.2, 0.0, 0.0, 1)
 		}
 		screen.DrawImage(img, op)
 	}
-	// 橢圓土台(右下,中心 x≈480、y≈352)
-	plat := ebiten.NewImage(150, 22)
-	plat.Fill(color.RGBA{0x46, 0x58, 0x30, 0xff})
-	opP := &ebiten.DrawImageOptions{}
-	opP.GeoM.Translate(480-75, 350)
-	screen.DrawImage(plat, opP)
-	// 攻方亞雷斯(右下,腳 y≈367 站土台、中心 x≈480、sc2.0、揮擊序列)
+	// 攻方(右,原生尺寸×2;揮擊序列。原版每幀內嵌 (dx,dy),remake 暫用序列循環)
 	if fr := g.figani[a.atkFig]; len(fr) > 0 {
-		const scAtk = 2.0
-		gyAtk := 367.0
 		img := fr[(prog/4)%len(fr)]
-		b := img.Bounds()
 		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Scale(scAtk, scAtk)
-		op.GeoM.Translate(480-float64(b.Dx())*scAtk/2, gyAtk-float64(b.Dy())*scAtk)
+		op.GeoM.Scale(sc, sc)
+		op.GeoM.Translate(360, 24) // 左上(360,24)
 		screen.DrawImage(img, op)
 	}
 	// swing/impact 大白斬擊弧:從右上揮掃到左(對照原版 orig_05,粗白弧)
