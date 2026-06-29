@@ -183,7 +183,7 @@
 - [x] **z-order RE**:演出順序狀態欄(0x28ce7/0x28d62)先、figure(0x28e76/9a/ee0)後 → figure 蓋住狀態欄;remake 改 BG→狀態欄→figure → `35`§4.-1
 - [x] **狀態欄機制 RE**(agent):真繪製器 0x18c6d(非 0x29164);框=素材sprite、HP=逐欄cell(len=curHP×101/maxHP)、名=16×16點陣字、數值=6px digit cell → `35`§4
 - [x] **清除錯誤斷言**:土台正名 FIGANI自帶→**TAI.DAT 台座**(0x29164 載 0x28c46);figure-X=word[unit+0x40] 誤讀;對話框開框碼 0x16F40
-- [ ] **① TAI.DAT 台座解碼 + remake 貼上**(土台真素材;TAI_004/005=154/155×42 sprite-RLE,decode_figani 解,貼我方腳下)← **下一步**
+- [x] **① TAI.DAT 台座解碼 + remake 貼上** ✅(v23):TAI_004=154×42 綠草橢圓台座(decode_sprite 解 body[4:],index0透明17%);remake 載 tai_004.png 貼我方腳下(z:狀態欄<台座<figure);對齊 orig 取代偏灰 dither。確切 entry↔職業/地形對映待後續
 - [ ] **② 複查 `+0x40` 衝突**:agent-A「+0x40=戰場格 X(lunge)」vs agent-B「+0x40=當前HP」相反,影響 figure 位置可信度 → `35`§2.2 標複查
 - [ ] **③ 狀態欄框/HP 改用素材**:抽 [0x53a81] UI 容器的面板 sprite + 漸層血條 cell(目前 remake 程式畫近似)
 - [ ] **④ BG 草地延伸到 figure 腳下**(讓台座/陰影疊綠草,非黑底)
