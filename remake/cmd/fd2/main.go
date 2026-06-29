@@ -19,7 +19,6 @@ import (
 	"image/color"
 	"image/png"
 	"log"
-	"math"
 	"math/rand"
 	"os"
 	"path/filepath"
@@ -29,7 +28,6 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
-	"github.com/hajimehoshi/ebiten/v2/vector"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
 
@@ -401,9 +399,10 @@ func (g *Game) Update() error {
 			if g.shotSel {
 				g.confirm()
 			}
-			if v := os.Getenv("FD2_SHOT_ATTACK"); v != "" { // 全螢幕戰鬥演出(驗證用):索爾打盜賊
+			if v := os.Getenv("FD2_SHOT_ATTACK"); v != "" { // 全螢幕戰鬥演出(驗證用):亞雷斯打盜賊
 				fig, _ := strconv.Atoi(v)
-				g.atk = &atkAnim{atkFig: figaniIndex(fig), defFig: figaniIndex(96), atkName: "亞雷斯", defName: "盜賊",
+				// 攻方用攻擊動作1(組×3+1=FIGANI_013):含揮劍白斬擊弧 + 腳下大 dither 土台陰影(對齊 orig_05)
+				g.atk = &atkAnim{atkFig: figaniIndex(fig) + 1, defFig: figaniIndex(96), atkName: "亞雷斯", defName: "盜賊",
 					atkHP: 48, atkMax: 48, atkLV: 1, atkMP: 0, defLV: 2, defMP: 0,
 					defHP0: 28, defHP1: 8, defMax: 36, timer: 48, total: 48}
 			}
@@ -673,7 +672,8 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		fw, fh := float64(b.Dx())*sc, float64(b.Dy())*sc
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)
-		op.GeoM.Translate(180-fw/2, 300-fh)
+		// 網格量測:orig 守方盜賊人物中心 x≈70,腳底 y≈135(@320)→ ×2;sprite 內人物偏右故圖中心再左移
+		op.GeoM.Translate(110-fw/2, 270-fh)
 		if prog >= 22 && prog < 40 {
 			op.ColorScale.Scale(2.2, 0.0, 0.0, 1)
 		}
@@ -681,34 +681,21 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 	}
 	// 攻方亞雷斯(右下,底中心 orig(250,175)→×2(500,350))
 	if fr := g.figani[a.atkFig]; len(fr) > 0 {
-		img := fr[(prog/4)%len(fr)]
+		// 攻擊幀序播放(不循環,停末幀);windup→揮砍。截圖對照階段落在 f01(orig_05 windup)
+		fi := prog / 4
+		if fi >= len(fr) {
+			fi = len(fr) - 1
+		}
+		img := fr[fi]
 		b := img.Bounds()
 		fw, fh := float64(b.Dx())*sc, float64(b.Dy())*sc
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)
-		op.GeoM.Translate(500-fw/2, 350-fh)
+		// 網格量測:orig 攻方亞雷斯腳底 y≈175(@320 站土台);FIGANI_013 圖底有陰影 padding 故下放
+		op.GeoM.Translate(410-fw/2, 380-fh)
 		screen.DrawImage(img, op)
 	}
-	// swing/impact 大白斬擊弧:從右上揮掃到左(對照原版 orig_05,粗白弧)
-	if prog >= 12 && prog < 34 {
-		cxA, cyA := float64(logicalW)*0.46, float64(logicalH)*0.62
-		r := 230.0
-		seg := 14
-		a0, a1 := -0.15, 1.25 // 弧角範圍(弧度,右上→左)
-		alpha := uint8(0xb0)
-		if prog >= 26 {
-			alpha = 0x60 // 收尾淡出
-		}
-		for i := 0; i < seg; i++ {
-			t0 := a0 + (a1-a0)*float64(i)/float64(seg)
-			t1 := a0 + (a1-a0)*float64(i+1)/float64(seg)
-			x0 := cxA + r*math.Cos(t0)
-			y0 := cyA - r*math.Sin(t0)
-			x1 := cxA + r*math.Cos(t1)
-			y1 := cyA - r*math.Sin(t1)
-			vector.StrokeLine(screen, float32(x0), float32(y0), float32(x1), float32(y1), 14, color.RGBA{0xff, 0xff, 0xf0, alpha}, true)
-		}
-	}
+	// 白斬擊弧 = FIGANI_013 攻擊幀自帶(燒在 sprite 像素裡),不另用 vector 程式畫(對照 orig_05 確認)。
 	if g.font != nil { // 守方資訊左下、攻方右上(對照原版血條位置)
 		dhp := a.defHP0 // 命中時 HP 漸抽(defHP0→defHP1)
 		if prog >= 24 {
