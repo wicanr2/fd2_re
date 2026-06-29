@@ -655,51 +655,38 @@ func saveShot(img *ebiten.Image, path string) {
 func (g *Game) drawBattleScene(screen *ebiten.Image) {
 	a := g.atk
 	prog := a.total - a.timer
-	// 背景:遠景天空 + 戰場地形 tile(草地)平鋪(跟戰場資料有關,對照 orig_05;確切地形物件/遠景樹待續RE)
-	// 背景:BG.DAT 森林(戰鬥背景 = 戰場資料對應 BG;map0=BG_004)。320×100 拉伸填上 2/3,草地 tile 補地面
-	screen.Fill(color.RGBA{0x5c, 0x6e, 0x66, 0xff}) // 天空(BG 上緣以上)
-	if g.bg != nil {
-		op := &ebiten.DrawImageOptions{} // doc35:BG 320×100 原生貼 (0,50) → 本畫布×2 = 640×200 貼 (0,100)
+	// 原版 320×200 精確 layout(網格量測)→ 本畫布 ×2。黑底(畫面外圍黑邊)
+	screen.Fill(color.RGBA{0, 0, 0, 0xff})
+	if g.bg != nil { // BG(doc35:320×100 原生貼 (0,50) → ×2 貼 (0,100))
+		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(2, 2)
 		op.GeoM.Translate(0, 100)
 		screen.DrawImage(g.bg, op)
 	}
-	terr := a.terrain // 地面草地補(接 BG 下緣 300 到底)
-	if terr <= 0 || terr >= len(g.tiles) {
-		terr = 52
-	}
-	if terr < len(g.tiles) && g.tiles[terr] != nil {
-		gt := g.tiles[terr]
-		gw, gh := gt.Bounds().Dx(), gt.Bounds().Dy()
-		for yy := 296; yy < logicalH; yy += gh {
-			for xx := 0; xx < logicalW; xx += gw {
-				op := &ebiten.DrawImageOptions{}
-				op.GeoM.Translate(float64(xx), float64(yy))
-				screen.DrawImage(gt, op)
-			}
-		}
-	}
-	// 守/攻 FIGANI(doc35:blit 原生尺寸,**無 runtime 縮放**;守小攻大來自素材本身)。
-	// 統一 sc=2.0(原版 320→本畫布 640,×2);左上座標對照 orig_05(守左、攻右,左右由 [unit+6] 旗標,doc35 §2.2)
-	const sc = 2.0
-	// 守方(左,翻轉面右;命中閃紅 — 原版閃紅是 VGA 色盤,remake 暫用 ColorScale)
+	// 攻方腳下橢圓草地(orig x230–310,y165–185 → ×2 中心(540,352) rx82 ry20)
+	drawEllipse(screen, 540, 352, 82, 20, color.RGBA{0x3a, 0x52, 0x2c, 0xff})
+	const sc = 2.0 // doc35:無 runtime 縮放,FIGANI 原生尺寸 ×2(原版 320→畫布 640)
+	// 守方盜賊(左,翻轉面右;底中心 orig(90,150)→×2(180,300))
 	if fr := g.figani[a.defFig]; len(fr) > 0 {
 		img := fr[0]
 		b := img.Bounds()
+		fw, fh := float64(b.Dx())*sc, float64(b.Dy())*sc
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(-sc, sc)
-		op.GeoM.Translate(44+float64(b.Dx())*sc, 78) // 左上(44,78)
+		op.GeoM.Translate(180+fw/2, 300-fh)
 		if prog >= 22 && prog < 40 {
 			op.ColorScale.Scale(2.2, 0.0, 0.0, 1)
 		}
 		screen.DrawImage(img, op)
 	}
-	// 攻方(右,原生尺寸×2;揮擊序列。原版每幀內嵌 (dx,dy),remake 暫用序列循環)
+	// 攻方亞雷斯(右下,底中心 orig(250,175)→×2(500,350))
 	if fr := g.figani[a.atkFig]; len(fr) > 0 {
 		img := fr[(prog/4)%len(fr)]
+		b := img.Bounds()
+		fw, fh := float64(b.Dx())*sc, float64(b.Dy())*sc
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)
-		op.GeoM.Translate(360, 24) // 左上(360,24)
+		op.GeoM.Translate(500-fw/2, 350-fh)
 		screen.DrawImage(img, op)
 	}
 	// swing/impact 大白斬擊弧:從右上揮掃到左(對照原版 orig_05,粗白弧)
@@ -731,8 +718,8 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 			}
 			dhp = a.defHP0 + int(float64(a.defHP1-a.defHP0)*t)
 		}
-		drawBattlePanel(screen, g.font, 322, 6, 312, 62, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP)  // 攻方右上
-		drawBattlePanel(screen, g.font, 6, 288, 300, 94, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 守方左下
+		drawBattlePanel(screen, g.font, 320, 8, 320, 80, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP) // 攻方右上(orig 160,5,160,40 ×2)
+		drawBattlePanel(screen, g.font, 0, 320, 320, 80, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 守方左下(orig 0,160,160,40 ×2)
 	}
 }
 
@@ -764,6 +751,14 @@ func drawBattlePanel(screen *ebiten.Image, f *Font, x, y, w, h float64, name str
 	f.Draw(screen, "MP", x+10, y+h*0.72, 1.0, white)
 	drawStatBar(screen, barX, y+h*0.77, barW, float64(mp)/float64(mpmx), color.RGBA{0xc0, 0x28, 0x28, 0xff})
 	f.Draw(screen, fmt.Sprintf("%03d", mp), x+w-42, y+h*0.72, 1.0, white)
+}
+
+// drawEllipse 填充橢圓(攻方腳下草地圈;逐行水平線)。
+func drawEllipse(screen *ebiten.Image, cx, cy, rx, ry float64, c color.RGBA) {
+	for dy := -ry; dy <= ry; dy++ {
+		w := rx * math.Sqrt(1-dy*dy/(ry*ry))
+		vector.StrokeLine(screen, float32(cx-w), float32(cy+dy), float32(cx+w), float32(cy+dy), 1.2, c, false)
+	}
 }
 
 // drawStatBar 狀態條(暗槽 + 填充)。
