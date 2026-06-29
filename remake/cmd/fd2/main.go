@@ -81,6 +81,7 @@ type Game struct {
 	atk     *atkAnim                // 進行中的攻擊演出
 	bg      *ebiten.Image           // 戰鬥背景(BG.DAT,by 戰場;map0=BG_004 森林)
 	tai     *ebiten.Image           // 我方腳下台座(TAI.DAT;0x29164 載 0x28c46,doc35 §3.3)
+	panel   *ebiten.Image           // 狀態欄框素材(FDOTHER#5 LMI1 #22,149×42;含bevel+HP/MP標籤+槽,doc35 §4)
 	font    *Font                   // 原版點陣中文字型(doc 08)
 }
 
@@ -677,8 +678,8 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 			}
 			dhp = a.defHP0 + int(float64(a.defHP1-a.defHP0)*t)
 		}
-		drawBattlePanel(screen, g.font, 320, 8, 320, 84, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP) // 我方亞雷斯右上(離頂 y8 留間隔,對齊原版)
-		drawBattlePanel(screen, g.font, 0, 306, 320, 84, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 敵方盜賊左下(離 150 線 ~3px 空隙)
+		drawBattlePanel(screen, g.font, g.panel, 320, 8, 320, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP) // 我方亞雷斯右上(離頂 y8 留間隔)
+		drawBattlePanel(screen, g.font, g.panel, 0, 306, 320, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 敵方盜賊左下(離 150 線 ~3px 空隙)
 	}
 
 	// (2) 敵方盜賊 figure(正面;蓋住狀態欄);密集格線對齊 orig:腳底 y≈135(@320)→ 276@640
@@ -688,7 +689,7 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		fw, fh := float64(b.Dx())*sc, float64(b.Dy())*sc
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)
-		op.GeoM.Translate(110-fw/2, 276-fh)
+		op.GeoM.Translate(140-fw/2, 276-fh) // 敵方盜賊:使用者校正往右(110→140)
 		if prog >= 22 && prog < 40 {
 			op.ColorScale.Scale(2.2, 0.0, 0.0, 1)
 		}
@@ -715,48 +716,60 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		fw, fh := float64(b.Dx())*sc, float64(b.Dy())*sc
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)
-		op.GeoM.Translate(476-fw/2, 390-fh)
+		op.GeoM.Translate(426-fw/2, 390-fh) // 我方亞雷斯:使用者校正往左(476→426)
 		screen.DrawImage(img, op)
 	}
 }
 
-// drawBattlePanel 原版戰鬥狀態欄(對照 orig_05:深藍底 + 左上亮白 raised bevel 立體框 +
-// 名/LV‧NN右上 + HP亮黃條 + MP暗紅條 + 數字白右對齊;HP/MP標籤淺藍)。
-// ⚠ 框 bevel 來源未 RE 確認(doc35 §4 只 RE 到狀態條=色盤、name/LV/HP/MP=預渲染圖塊,框底未追);
-// 暫用程式 bevel 近似 orig 視覺(規則純色非紋理,合理近似),確認是素材後再換。
-func drawBattlePanel(screen *ebiten.Image, f *Font, x, y, w, h float64, name string, lv, hp, mx, mp int) {
+// drawBattlePanel 原版戰鬥狀態欄:用 FDOTHER#5 LMI1 #22 框素材(149×42,含 bevel + HP/MP標籤 +
+// LV‧ + 血條槽,codec 反組譯 0x4e916 破解,doc35 §4),只疊上名字 / LV數字 / 血條填充 / HP-MP數值。
+// 框內槽 native:HP y22-26、MP y31-35、x26-145(量測)。
+func drawBattlePanel(screen *ebiten.Image, f *Font, panel *ebiten.Image, x, y, w float64, name string, lv, hp, mx, mp int) {
+	const fnW = 149.0 // 框 native 寬
+	sc := w / fnW
 	fillRect := func(bx, by, bw, bh float64, c color.RGBA) {
+		if bw < 1 {
+			return
+		}
 		im := ebiten.NewImage(int(bw), int(bh))
 		im.Fill(c)
 		o := &ebiten.DrawImageOptions{}
 		o.GeoM.Translate(bx, by)
 		screen.DrawImage(im, o)
 	}
-	fillRect(x, y, w, h, color.RGBA{0x28, 0x44, 0x84, 0xff}) // 深藍底
-	// raised bevel(光源左上):左+上亮白藍、右+下暗藍
-	lt := color.RGBA{0xb0, 0xc8, 0xe8, 0xff}
-	dk := color.RGBA{0x10, 0x20, 0x48, 0xff}
-	fillRect(x, y, w, 2, lt)     // 上
-	fillRect(x, y, 2, h, lt)     // 左
-	fillRect(x, y+h-2, w, 2, dk) // 下
-	fillRect(x+w-2, y, 2, h, dk) // 右
-	white := color.RGBA{0xff, 0xff, 0xff, 0xff}
-	lab := color.RGBA{0x88, 0xc0, 0xf0, 0xff} // HP/MP 標籤淺藍(orig)
-	f.Draw(screen, name, x+10, y+3, 1.7, color.RGBA{0xe0, 0xee, 0xff, 0xff}) // 名(左上,放大對齊原版 16px 點陣字)
-	if lv > 0 {
-		f.Draw(screen, fmt.Sprintf("LV‧%02d", lv), x+w-86, y+6, 1.1, white)
+	if panel != nil { // 框素材(bevel + HP/MP標籤 + LV‧ + 槽 全來自原版);提亮(palette 渲染偏暗)
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Scale(sc, sc)
+		op.GeoM.Translate(x, y)
+		op.ColorScale.Scale(1.55, 1.55, 1.7, 1)
+		screen.DrawImage(panel, op)
 	}
-	barX, barW := x+44, w-86 // 血條加長:緊接 HP 標籤後一路到數字前(對齊原版幾乎佔滿欄寬)
-	f.Draw(screen, "HP", x+10, y+h*0.45, 1.0, lab)
-	drawStatBar(screen, barX, y+h*0.49, barW, float64(hp)/float64(mx), color.RGBA{0xf0, 0xc8, 0x30, 0xff})
-	f.Draw(screen, fmt.Sprintf("%03d", hp), x+w-42, y+h*0.45, 1.0, white)
+	white := color.RGBA{0xff, 0xff, 0xff, 0xff}
+	// 血條填充(槽 native 量測:x21–123 寬102、HP y22、MP y31、高5;靠左對齊槽左端)
+	slotX, slotW := x+21*sc, 102*sc
+	hpF := float64(hp) / float64(mx)
+	if hpF > 1 {
+		hpF = 1
+	} else if hpF < 0 {
+		hpF = 0
+	}
+	fillRect(slotX, y+22*sc, slotW*hpF, 5*sc, color.RGBA{0xf0, 0xc8, 0x30, 0xff}) // HP 黃(靠左)
 	mpmx := mp
 	if mpmx < 1 {
 		mpmx = 1
 	}
-	f.Draw(screen, "MP", x+10, y+h*0.72, 1.0, lab)
-	drawStatBar(screen, barX, y+h*0.76, barW, float64(mp)/float64(mpmx), color.RGBA{0xc0, 0x28, 0x28, 0xff})
-	f.Draw(screen, fmt.Sprintf("%03d", mp), x+w-42, y+h*0.72, 1.0, white)
+	mpF := float64(mp) / float64(mpmx)
+	if mpF > 1 {
+		mpF = 1
+	}
+	fillRect(slotX, y+31*sc, slotW*mpF, 5*sc, color.RGBA{0xe0, 0x48, 0x48, 0xff}) // MP 紅(靠左)
+	// 名字(框內左上)+ LV 數字(框 LV‧ 後)+ 血量數值(槽右端 x125 native)
+	f.Draw(screen, name, x+8*sc, y+1*sc, 0.85*sc, color.RGBA{0xe0, 0xee, 0xff, 0xff})
+	if lv > 0 {
+		f.Draw(screen, fmt.Sprintf("%02d", lv), x+122*sc, y+3*sc, 0.5*sc, white)
+	}
+	f.Draw(screen, fmt.Sprintf("%03d", hp), x+125*sc, y+21*sc, 0.42*sc, white)
+	f.Draw(screen, fmt.Sprintf("%03d", mp), x+125*sc, y+30*sc, 0.42*sc, white)
 }
 
 // drawStatBar 狀態條(暗槽 + 填充);暗槽 = 填充色暗版(對照 orig:空槽呈暗黃/暗紅,非統一黑)。
@@ -922,6 +935,11 @@ func loadGame() *Game {
 	if raw, e := os.ReadFile("assets/tai/tai_004.png"); e == nil { // 我方台座(TAI_004 綠草橢圓)
 		if im, _, e2 := image.Decode(bytes.NewReader(raw)); e2 == nil {
 			g.tai = ebiten.NewImageFromImage(im)
+		}
+	}
+	if raw, e := os.ReadFile("assets/ui/panel.png"); e == nil { // 狀態欄框(LMI1 #22)
+		if im, _, e2 := image.Decode(bytes.NewReader(raw)); e2 == nil {
+			g.panel = ebiten.NewImageFromImage(im)
 		}
 	}
 	g.font = loadFont()
