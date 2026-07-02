@@ -19,13 +19,53 @@
   map30/31/32 目前沒有對應的攻略章(30 章戰鬥 vs 33 張圖,差 3 張非戰鬥/分支圖),
   本工具不生成節點去用它們——見檔尾 warm hand-off 註記。
 
-本輪範圍(刻意不做的部分,別誤以為漏做):
+本輪範圍(v1/v2 刻意不做的部分,別誤以為漏做):
   - 不寫逐章劇情全文,story 節點只放「章節標題 + 目標句」(1-2 句,doc28 摘要)。
-  - 不做主角隊招募(莉希亞/鐵諾/瑪琳…doc28 第5欄)狀態機、不做逐章成長曲線
-    (party 數值/spells 全章固定沿用 ch01),亦屬下一輪。
-  - 不做回合制增援(events 只放 on_battle_start→spawn_party);每章 initial_groups
-    全開(units.json 全部真實分組一次到齊),原版 turn_events 的分批增援節奏
-    留給下一輪逐章核對 doc28/turn_events 後補。
+
+v3 新增(本輪):
+  - **招募**:依 doc28 第5欄「加入角色」名單,party 逐章累積(第 N 章 party = 基礎4人
+    + 前面各章已加入角色;當章新加入者不算進當章 party,對映 ch01 哈諾/哈瓦特 T3 才
+    登場的既有模式)。數值查 docs/data/exe_tables/characters.json(真實 RE 資料);
+    查無角色(doc28 名稱與 characters.json 對不上者,已知僅「達可塞」一例,見
+    NAME_ALIASES)或重複加入(如 doc28 萊汀在 ch9/ch10 各出現一次)皆跳過並列印列冊。
+  - **成長(粗略,非精確)**:等級 `lv = max(角色初始lv, 章數//2)`(近似節奏,非原版精確
+    經驗值曲線)。HP 用 characters.json base_hp(真實資料)+ growth.json 逐級平均增量
+    (真實資料,idx 與 characters.json index 對齊,已核對);AP/DP/MV/MP **無逐角色
+    base table 可查**(unit.json 68 筆是另一張表,idx 對不上 characters.json 的 32
+    名角色,已實測排除),對基礎4人(索爾/亞雷斯/悠妮/蓋亞)用 ch01.json 已知 lv1
+    真實數值 + growth.json 逐級增量;對其餘角色用「HP 比例粗算」(比例學習自基礎4人
+    ap/hp≈0.48、dp/hp≈0.286、法系 mp/hp≈0.55,見 build_recruit_stats())——**這段是
+    近似值,不是反組譯結果**,精確 base table 待未來補 RE。
+  - **回合增援:本輪不做,非漏做,是撞牆後的判斷**——見下方「RE 撞牆記錄」。
+
+## RE 撞牆記錄:為何 v3 不做「回合增援」spawn_group(2026-07 gen_campaign v3)
+
+派工時以為 `docs/data/battle_events.json` 是「30 章回合事件 dump(條件→動作)」,可以
+直接轉成 chNN.json 的 `spawn_group` 事件。**核實後這個假設是錯的**:battle_events.json
+其實是 doc26 的 handler「勝負判定」metadata(is_default/result_codes/extra_conditions/
+trigger_units_flag),30 章裡只有 7 章有 `roster_has`/`unit_flag` 這種條件字串,**完全沒有
+turn/group 欄位**——它跟「第幾回合誰增援」無關。
+
+真正的回合增援資料在 **FDFIELD.DAT 控制段**(`tools/parse_field.py` 的 `turn_events`:
+每條 `turn u8 + 全域event_id u8 + camp u8`),ch01.json 現有的 T3/T4/T5/T6 事件就是從這裡
+配合青衫攻略人工核對出來的(doc29 §11 記載「當實作藍本」,唯一一份有 ground truth 核對過
+的關卡)。**已把全 30 章 turn_events 真實資料(2026-07 用 parse_field.py 重新 dump)存進
+`docs/data/turn_events.json`**(每筆含 map/chapter + turn_events[]:turn/event_id/camp),
+供下一輪專門的 `0x22e5c`(event_id→實際 group 清單)反組譯任務使用。
+
+卡點:turn_events 只給「第幾回合 + 敵/友/特殊」三個欄位,**不給「具體哪個 unit group」**。
+用 map0(=ch1,唯一有人工核對過的正解)反向驗證了兩種機械式分配法都失敗:
+  - 「群組座標聚類」:group3/7 兩個 1 人小隊確實共用座標 (11,11)(印證聚類本身有效),
+    但「哪一波該留在場上 vs 哪一波該延後登場」這件事,座標和 group 編號都測不出規律——
+    真正的增援是 group4/5(數字比較大),但初始群卻包含 group1/2/10/11 這種數字更小或
+    更大都有的組合,沒有單調規則。
+  - 「group 編號升冪對應 turn 升冪」:對 map0 給出 group1→T4、group2→T5,但正解其實是
+    group4→T4、group5→T5,group1/2 應留在初始——直接測試失敗,不是理論推測。
+  → 這條資訊(event_id → 實際 group 清單)大概率藏在 doc25 §6 提到但尚未反組譯的
+  world-map/中場 handler(`0x22e5c`,標記 `[阻]`),不在 FDFIELD 資料裡,純資料驅動猜不出來。
+  硬套會產出「看起來資料驅動、實際是編出來的」假 RE 事實,違反本專案「保全歷史」的紅線
+  (rulebook 83),所以這輪**不做**,新生成的 ch02-30 initial_groups 維持 v2「全開」安全預設
+  (原地圖真實分組全部開局在場,不精確還原原版分波節奏,但不會播錯資料)。
 
 scenario stub(chNN.json,ch2-30 本輪新生成,見 build_scenario_stub()):
   - party:沿用 ch01.json 的 4 人數值/spells(index 對齊,不做逐章成長)。
@@ -57,12 +97,29 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REMAKE = os.path.join(ROOT, "remake")
 DOC28 = os.path.join(ROOT, "docs", "knowledge-base", "28-chapter-objectives-and-recruits.md")
 SHOPS_JSON = os.path.join(ROOT, "docs", "data", "shops.json")
+CHARACTERS_JSON = os.path.join(ROOT, "docs", "data", "exe_tables", "characters.json")
+GROWTH_JSON = os.path.join(ROOT, "docs", "data", "exe_tables", "growth.json")
 OUT_PATH = os.path.join(REMAKE, "assets", "scenarios", "campaign_full.json")
 
 BGM_BATTLE = "FDMUS_018"  # 戰鬥(doc12:track 18,實測 32 處 play_bgm 呼叫)
 BGM_STORY = "FDMUS_010"   # 城鎮/劇情(doc12:track 10)
 
 TOTAL_CHAPTERS = 30  # battle_events.json 的 chapter 0..29(= 攻略 30 關)
+
+# doc28 加入角色名單的用字與 characters.json 對不上的少數例外(核對後只有這一筆)。
+NAME_ALIASES = {"達可塞": "達克賽"}
+
+# 無逐角色 AP/DP/MV/MP base table 可查(unit.json 68 筆是另一張表,idx 對不上
+# characters.json 的 32 名角色,已實測排除)。用基礎4人(索爾/亞雷斯/悠妮/蓋亞)的
+# ch01.json 已知真實數值反推 HP 比例,近似套用到其餘角色 —— 這段是近似值不是 RE 結果。
+CASTER_CLASSES = {"法師", "大法師", "僧侶", "祭師", "聖者"}
+MV_BY_CLASS = {"騎士": 7, "聖騎士": 7, "龍騎士": 7, "神射手": 6,
+               "法師": 5, "大法師": 5, "僧侶": 5, "祭師": 5, "聖者": 5}
+DEFAULT_MV = 6
+AP_HP_RATIO_CASTER = 0.36
+AP_HP_RATIO_NORMAL = 0.48
+DP_HP_RATIO = 0.286
+MP_HP_RATIO_CASTER = 0.55
 
 
 def parse_doc28(path: str) -> list[dict]:
@@ -119,10 +176,115 @@ def load_shops_by_chapter(path: str) -> dict[int, list[dict]]:
 
 
 def load_ch01_party() -> list[dict]:
-    """讀既有人工版 ch01.json 的 party 區塊,ch2-30 stub 沿用同一份數值/spells。"""
+    """讀既有人工版 ch01.json 的 party 區塊(基礎4人,含 ch01 已知真實 lv1 數值)。"""
     ch01_path = os.path.join(REMAKE, "assets", "scenarios", "ch01.json")
     with open(ch01_path, encoding="utf-8") as f:
         return json.load(f)["party"]
+
+
+def load_characters(path: str) -> dict[str, dict]:
+    """讀 characters.json,回傳 name -> record(含 index,供對齊 growth.json idx)。"""
+    with open(path, encoding="utf-8") as f:
+        rows = json.load(f)
+    return {r["name"]: r for r in rows}
+
+
+def load_growth(path: str) -> dict[int, dict]:
+    """讀 growth.json,回傳 idx -> 逐級增量 record(ap/dp/dx/hp/mp 皆 [min,max])。"""
+    with open(path, encoding="utf-8") as f:
+        rows = json.load(f)
+    return {r["idx"]: r for r in rows}
+
+
+def _avg(rng: list[int]) -> float:
+    return (rng[0] + rng[1]) / 2
+
+
+def parse_recruit_names(raw: str) -> list[str]:
+    """doc28 第5欄「加入角色」→ 乾淨角色名清單(去條件括號、拆多人)。"""
+    if not raw or raw.strip() in ("—", "-", ""):
+        return []
+    text = re.sub(r"[\(（][^\)）]*[\)）]", "", raw)
+    parts = re.split(r"[、;,]", text)
+    return [NAME_ALIASES.get(p.strip(), p.strip()) for p in parts if p.strip() and p.strip() != "—"]
+
+
+def build_base4_stats(
+    base4_by_name: dict[str, dict],
+    characters_by_name: dict[str, dict],
+    growth_by_idx: dict[int, dict],
+    name: str,
+    chapter: int,
+) -> dict:
+    """基礎4人(索爾/亞雷斯/悠妮/蓋亞):ch01.json 已知 lv1 真實數值 + growth.json 逐級真實增量。"""
+    base = base4_by_name[name]
+    char = characters_by_name.get(name)
+    lv = max(1, chapter // 2)
+    levels = max(0, lv - 1)
+    growth = growth_by_idx.get(char["index"]) if char else None
+    hp, ap, dp, mp = base["hp"], base["ap"], base["dp"], base["mp"]
+    if growth and levels:
+        hp += round(levels * _avg(growth["hp"]))
+        ap += round(levels * _avg(growth["ap"]))
+        dp += round(levels * _avg(growth["dp"]))
+        mp += round(levels * _avg(growth["mp"]))
+    return {
+        "name": name, "cls": base["cls"], "fig": base["fig"], "portrait": base["portrait"],
+        "lv": lv, "hp": hp, "mp": mp, "ap": ap, "dp": dp, "mv": base["mv"],
+        **({"spells": base["spells"]} if "spells" in base else {}),
+    }
+
+
+def build_recruit_stats(
+    char: dict, growth_by_idx: dict[int, dict], chapter: int,
+) -> dict:
+    """招募角色(非基礎4人):characters.json 真實 base_hp + growth.json 真實逐級 HP 增量;
+    AP/DP/MV/MP 無逐角色 base table,用「HP 比例粗算」近似(見檔頭 RE 撞牆記錄同段落說明)。
+    """
+    initial_lv, initial_hp = char["lv"], char["base_hp"]
+    lv = max(initial_lv, chapter // 2)
+    levels = max(0, lv - initial_lv)
+    growth = growth_by_idx.get(char["index"])
+    hp = initial_hp
+    if growth and levels:
+        hp += round(levels * _avg(growth["hp"]))
+    is_caster = char["cls_name"] in CASTER_CLASSES
+    ap_ratio = AP_HP_RATIO_CASTER if is_caster else AP_HP_RATIO_NORMAL
+    return {
+        "name": char["name"], "cls": char["cls_name"],
+        "fig": char["sprite_group"], "portrait": char["face_portrait"],
+        "lv": lv, "hp": hp,
+        "mp": round(hp * MP_HP_RATIO_CASTER) if is_caster else 0,
+        "ap": round(hp * ap_ratio), "dp": round(hp * DP_HP_RATIO),
+        "mv": MV_BY_CLASS.get(char["cls_name"], DEFAULT_MV),
+    }
+
+
+def build_recruit_plan(
+    rows: list[dict], characters_by_name: dict[str, dict], base4_names: set[str]
+) -> tuple[dict[int, list[str]], list[str]]:
+    """doc28 第5欄逐章解析加入名單,回傳 (chapter -> 新加入角色名清單, 跳過列冊)。
+
+    跳過情形:doc28 名稱在 characters.json 查無(alias 表已處理已知例外)、
+    或角色已在先前章節加入過(如 doc28 萊汀在 ch9/ch10 各出現一次,以先出現者為準)。
+    """
+    plan: dict[int, list[str]] = {}
+    skipped: list[str] = []
+    already = set(base4_names)
+    for row in rows:
+        names = parse_recruit_names(row["recruit"])
+        joined_this_chapter = []
+        for name in names:
+            if name in already:
+                skipped.append(f"ch{row['c']:02d}:{name}(重複加入,已在先前章節列入 party,跳過)")
+                continue
+            if name not in characters_by_name:
+                skipped.append(f"ch{row['c']:02d}:{name}(characters.json 查無此名,跳過)")
+                continue
+            joined_this_chapter.append(name)
+            already.add(name)
+        plan[row["c"]] = joined_this_chapter
+    return plan, skipped
 
 
 def spiral_offsets(max_r: int):
@@ -208,12 +370,18 @@ def goal_sentence(row: dict) -> str:
 
 
 def build_campaign(
-    rows: list[dict], shops_by_ch: dict[int, list[dict]]
-) -> tuple[dict, dict[str, str]]:
+    rows: list[dict], shops_by_ch: dict[int, list[dict]],
+    characters_by_name: dict[str, dict], growth_by_idx: dict[int, dict],
+) -> tuple[dict, dict[str, str], dict[int, list[str]], list[str]]:
     nodes: dict[str, dict] = {}
     flags: dict[str, bool] = {}
-    party = load_ch01_party()
+    base4 = load_ch01_party()
+    base4_by_name = {m["name"]: m for m in base4}
+    base4_order = [m["name"] for m in base4]
     scenario_sources: dict[str, str] = {}  # chNN -> 'ch01(既有)' / 'metadata' / 'metadata+fallback_spiral'
+
+    recruit_plan, skipped_recruits = build_recruit_plan(rows, characters_by_name, set(base4_order))
+    joined_so_far: list[str] = []  # 前面各章已加入角色(不含當章新加入者,對映 party 累積規格)
 
     for row in rows:
         c = row["c"]
@@ -221,6 +389,12 @@ def build_campaign(
         map_idx = c - 1  # 順序對應(見檔頭說明);ch1(c=1)→map0,與唯一已驗證資料點一致
         map_dir = f"assets/maps/map{map_idx}"
         units_path = f"assets/maps/map{map_idx}/map{map_idx}_units.json"
+
+        # --- 本章 party:基礎4人(逐章成長)+ 前面各章已加入角色(逐章成長,近似值見檔頭) ---
+        party = (
+            [build_base4_stats(base4_by_name, characters_by_name, growth_by_idx, name, c) for name in base4_order]
+            + [build_recruit_stats(characters_by_name[name], growth_by_idx, c) for name in joined_so_far]
+        )
 
         # --- scenario stub(主角隊進場+部署格+分組全開;見 build_scenario_stub()) ---
         scenario_path = f"assets/scenarios/ch{cid}.json"
@@ -233,6 +407,8 @@ def build_campaign(
             with open(out_scn, "w", encoding="utf-8") as f:
                 json.dump(scenario, f, ensure_ascii=False, indent=2)
                 f.write("\n")
+
+        joined_so_far.extend(recruit_plan.get(c, []))  # 當章新加入者從下一章開始才算進 party
 
         story_id = f"story_ch{cid}"
         battle_id = f"battle_ch{cid}"
@@ -359,7 +535,7 @@ def build_campaign(
         "flags": flags,
         "nodes": nodes,
     }
-    return campaign, scenario_sources
+    return campaign, scenario_sources, recruit_plan, skipped_recruits
 
 
 def validate(campaign: dict) -> list[str]:
@@ -444,7 +620,11 @@ def validate(campaign: dict) -> list[str]:
 def main():
     rows = parse_doc28(DOC28)
     shops_by_ch = load_shops_by_chapter(SHOPS_JSON)
-    campaign, scenario_sources = build_campaign(rows, shops_by_ch)
+    characters_by_name = load_characters(CHARACTERS_JSON)
+    growth_by_idx = load_growth(GROWTH_JSON)
+    campaign, scenario_sources, recruit_plan, skipped_recruits = build_campaign(
+        rows, shops_by_ch, characters_by_name, growth_by_idx
+    )
 
     os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
     with open(OUT_PATH, "w", encoding="utf-8") as f:
@@ -469,6 +649,16 @@ def main():
     if n_fb:
         fb_chs = [cid for cid, src in scenario_sources.items() if src == "metadata+fallback_spiral"]
         print(f"  fallback 章節:{sorted(fb_chs)}")
+
+    n_recruited = sum(len(v) for v in recruit_plan.values())
+    print(f"\n招募:doc28 名單解析出 {n_recruited} 名新加入角色(不含基礎4人)")
+    for c in sorted(recruit_plan):
+        if recruit_plan[c]:
+            print(f"  ch{c:02d}: {'、'.join(recruit_plan[c])}")
+    if skipped_recruits:
+        print(f"  列冊跳過 {len(skipped_recruits)} 筆:")
+        for s in skipped_recruits:
+            print(f"    - {s}")
 
     # JSON 合法性(已用 json.dump 產生,這裡重讀一次確保可被 json.load 解析)
     with open(OUT_PATH, encoding="utf-8") as f:
