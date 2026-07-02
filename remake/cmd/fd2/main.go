@@ -65,6 +65,7 @@ type Game struct {
 	scrollY     float64 // 捲動來源列(535→0)
 	titleSel    int
 	titleFlash  int
+	titleTick   int
 	// radial 指令環(原版 4 圖示十字繞單位,doc13 [0x3C57]:↑0/←1/→2/↓3)+ 法術
 	ring      bool
 	ringSel   int

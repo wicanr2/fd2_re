@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"fmt"
 	"image"
+	"image/color"
 	"os"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -55,6 +56,13 @@ func (g *Game) titleUpdate() bool {
 		g.scrollY -= 1.5 // 捲動速度(原版逐列複製;待 dosbox 錄影校)
 		anyKey := len(inpututil.AppendJustPressedKeys(nil)) > 0
 		if g.scrollY <= 0 || anyKey {
+			g.titlePhase = "logozoom" // dosbox 實拍(doc23 §2.4):紅閃→「2」縮入→白閃→選單
+			g.titleTick = 0
+		}
+		return true
+	case "logozoom":
+		g.titleTick++
+		if g.titleTick > 50 || len(inpututil.AppendJustPressedKeys(nil)) > 0 { // 紅閃12+縮放30+白閃8
 			g.titlePhase = "menu"
 			g.titleSel = 0
 		}
@@ -100,6 +108,28 @@ func (g *Game) drawTitle(screen *ebiten.Image) {
 			op.ColorScale.Scale(float32(fade), float32(fade), float32(fade), 1)
 		}
 		screen.DrawImage(ta.scroll, op)
+	case "logozoom":
+		t := g.titleTick
+		switch {
+		case t <= 12: // 全螢幕紅閃(實拍:硬切純紅)
+			screen.Fill(color.RGBA{0xc8, 0x10, 0x10, 0xff})
+		case t <= 42: // 標題縮放進場(3.0→1.0,~0.5s;實拍「2」縮入之近似——單獨「2」圖層待 ANI RE)
+			p := float64(t-12) / 30
+			sc := 2 * (3 - 2*p) // 6→2
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Translate(-160, -100) // 以畫面中心縮放
+			op.GeoM.Scale(sc, sc)
+			op.GeoM.Translate(320, 200)
+			screen.DrawImage(ta.title, op)
+		default: // 全螢幕白閃(bloom)
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Scale(2, 2)
+			screen.DrawImage(ta.title, op)
+			w := ebiten.NewImage(logicalW, logicalH)
+			a := uint8(255 - (t-42)*30)
+			w.Fill(color.RGBA{a, a, a, a})
+			screen.DrawImage(w, nil)
+		}
 	case "menu":
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(2, 2)
@@ -117,7 +147,7 @@ func (g *Game) drawTitle(screen *ebiten.Image) {
 			b := it.Bounds()
 			iop := &ebiten.DrawImageOptions{}
 			iop.GeoM.Scale(2, 2)
-			iop.GeoM.Translate(float64((320-b.Dx())/2*2), float64((166+i*12)*2)) // 置中,y=166/178/190@320(避開卷軸副標;待 dosbox 校)
+			iop.GeoM.Translate(float64((320-b.Dx())/2*2), float64((162+i*9)*2)) // dosbox 實拍座標:y=162/171/180、間距9@320
 			screen.DrawImage(it, iop)
 		}
 	}
