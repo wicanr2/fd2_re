@@ -15,12 +15,29 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/wicanr2/fd2_re/remake/internal/afm"
 )
 
 type titleAssets struct {
 	scroll *ebiten.Image    // 320×735 立繪
 	title  *ebiten.Image    // 320×200 標題畫面
 	items  [3][2]*ebiten.Image // START/LOAD/CONTINUE ×(未選/選中)
+	aniPath string          // 玩家自備 ANI.DAT 路徑(""=無,退回捲動 fallback)
+}
+
+// cutSeq — 開場過場的 AFM 資源播放順序(dosbox 實拍分鏡,doc23 §2.4 / doc39):
+// 守護者→索爾→屠龍→二角→滿月→騎馬夜行→隊伍群像→金鎖→標題「2」logo。
+// 精確排程(播放器 5 呼叫點對應哪段)仍是 RE 缺口,inter-scene 節奏用近似值。
+var cutSeq = []int{3, 4, 5, 6, 2, 7, 8, 0, 1}
+
+// cutTicksPerFrame — 過場每幀停留 tick(60fps;289 幀/~32s≈6)。近似,待播放器排程 RE 校正。
+const cutTicksPerFrame = 6
+
+// aniCandidates 找玩家自備 ANI.DAT(未夾帶版權素材,執行期解碼)。
+var aniCandidates = []string{
+	"assets/ANI.DAT",
+	"../org_game/炎龍騎士團/FLAME2/ANI.DAT",
+	"org_game/炎龍騎士團/FLAME2/ANI.DAT",
 }
 
 func loadTitleAssets() *titleAssets {
@@ -43,12 +60,71 @@ func loadTitleAssets() *titleAssets {
 	if t.scroll == nil || t.title == nil {
 		return nil // 素材缺(玩家未自備)→ 跳過開頭直接進遊戲
 	}
+	if p := os.Getenv("FD2_ANI"); p != "" {
+		aniCandidates = append([]string{p}, aniCandidates...)
+	}
+	for _, p := range aniCandidates {
+		if _, err := os.Stat(p); err == nil {
+			t.aniPath = p
+			break
+		}
+	}
 	return t
+}
+
+// loadCutClip 執行期解碼 cutSeq 的第 idx 個 AFM 資源為 ebiten 影格。失敗回 nil。
+func (g *Game) loadCutClip(idx int) []*ebiten.Image {
+	if idx < 0 || idx >= len(cutSeq) || g.titleAssets.aniPath == "" {
+		return nil
+	}
+	clip, err := afm.DecodeResource(g.titleAssets.aniPath, cutSeq[idx])
+	if err != nil {
+		return nil
+	}
+	out := make([]*ebiten.Image, len(clip.Frames))
+	for i, f := range clip.Frames {
+		out[i] = ebiten.NewImageFromImage(f)
+	}
+	return out
 }
 
 // titleUpdate 處理開頭動畫/主選單輸入。回傳 true = 仍在 title 流程。
 func (g *Game) titleUpdate() bool {
 	switch g.titlePhase {
+	case "cutscene":
+		if g.cutCur == nil { // 進入或切到下一幕:載入該資源
+			g.cutCur = g.loadCutClip(g.cutIdx)
+			g.cutFrame, g.cutTick = 0, 0
+			if g.cutCur == nil { // 該幕解碼失敗 → 跳過整段過場
+				g.titlePhase = "menu"
+				g.titleSel = 0
+				return true
+			}
+		}
+		if g.cutIdx == 0 && g.cutFrame == 0 && g.cutTick == 0 {
+			g.playBGM("FDMUS_004") // 開場配樂(曲號待實聽驗證)
+		}
+		// 任意鍵跳過整段過場 → 直接進選單
+		if len(inpututil.AppendJustPressedKeys(nil)) > 0 {
+			g.titlePhase = "menu"
+			g.titleSel = 0
+			g.cutCur = nil
+			return true
+		}
+		g.cutTick++
+		if g.cutTick >= cutTicksPerFrame {
+			g.cutTick = 0
+			g.cutFrame++
+			if g.cutFrame >= len(g.cutCur) { // 該幕播完 → 下一幕
+				g.cutIdx++
+				g.cutCur = nil
+				if g.cutIdx >= len(cutSeq) { // 全部播完 → 選單(logo「2」即最後一幕)
+					g.titlePhase = "menu"
+					g.titleSel = 0
+				}
+			}
+		}
+		return true
 	case "scroll":
 		if g.scrollY >= 534 { // 開場即配樂(使用者記憶:登登登登磅礡進場;曲號待 dosbox 對照)
 			g.playBGM("FDMUS_004")
@@ -99,6 +175,12 @@ func (g *Game) titleUpdate() bool {
 func (g *Game) drawTitle(screen *ebiten.Image) {
 	ta := g.titleAssets
 	switch g.titlePhase {
+	case "cutscene":
+		if g.cutCur != nil && g.cutFrame < len(g.cutCur) {
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Scale(2, 2)
+			screen.DrawImage(g.cutCur[g.cutFrame], op)
+		}
 	case "scroll":
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(2, 2)

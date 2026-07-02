@@ -66,6 +66,11 @@ type Game struct {
 	titleSel    int
 	titleFlash  int
 	titleTick   int
+	// 開場 AFM 過場(title.go cutscene phase)
+	cutIdx   int
+	cutFrame int
+	cutTick  int
+	cutCur   []*ebiten.Image
 	// radial 指令環(原版 4 圖示十字繞單位,doc13 [0x3C57]:↑0/←1/→2/↓3)+ 法術
 	ring      bool
 	ringSel   int
@@ -1740,8 +1745,12 @@ func loadGame() *Game {
 	if os.Getenv("FD2_TITLE") == "1" || (g.shotPath == "" && os.Getenv("FD2_TITLE") != "0") { // 開頭動畫+主選單(headless 截圖預設跳過)
 		if ta := loadTitleAssets(); ta != nil {
 			g.titleAssets = ta
-			g.titlePhase = "scroll"
-			g.scrollY = 535
+			if ta.aniPath != "" && os.Getenv("FD2_NOCUT") == "" {
+				g.titlePhase = "cutscene" // 有 ANI.DAT:播完整 AFM 開場過場
+			} else {
+				g.titlePhase = "scroll" // 無 ANI.DAT:退回 FDOTHER 立繪捲動+logozoom
+				g.scrollY = 535
+			}
 		}
 	}
 	if cp := os.Getenv("FD2_CAMPAIGN"); cp != "" { // 劇本節點圖模式(doc 19;放最後,story 對白不被開場 Setup 蓋掉)
