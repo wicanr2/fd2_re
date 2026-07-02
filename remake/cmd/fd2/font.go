@@ -31,8 +31,12 @@ var fontPaths = []string{
 
 const fontSize = 18.0
 
-// loadFont 載入 CJK TTF/ttc。失敗回 nil。
-func loadFont() *Font {
+// loadFont 載入 CJK TTF/ttc(預設 18px)。失敗回 nil。
+func loadFont() *Font { return loadFontSized(fontSize) }
+
+// loadFontSized 以指定像素尺寸建 face:目標尺寸直接 rasterize + scale 1.0 繪製,
+// 避免非整數 GeoM 縮放造成的重採樣模糊(狀態欄名字/數字用)。
+func loadFontSized(size float64) *Font {
 	var data []byte
 	for _, p := range fontPaths {
 		if d, e := os.ReadFile(p); e == nil {
@@ -43,7 +47,7 @@ func loadFont() *Font {
 	if data == nil {
 		return nil
 	}
-	opts := &opentype.FaceOptions{Size: fontSize, DPI: 72, Hinting: font.HintingFull}
+	opts := &opentype.FaceOptions{Size: size, DPI: 72, Hinting: font.HintingFull}
 	var face font.Face
 	if coll, err := opentype.ParseCollection(data); err == nil { // ttc
 		if sf, e := coll.Font(0); e == nil {
