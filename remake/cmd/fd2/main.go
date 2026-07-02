@@ -59,6 +59,12 @@ type Game struct {
 	walk    *walkAnim           // 移動動畫(沿路徑逐格走,FDICON 方向幀)
 	camp    *campaign.Runner    // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
 	campSel int                 // choice 節點游標
+	// 開頭動畫/主選單(title.go,doc23)
+	titleAssets *titleAssets
+	titlePhase  string  // "scroll"→"menu"→""(進遊戲)
+	scrollY     float64 // 捲動來源列(535→0)
+	titleSel    int
+	titleFlash  int
 	// radial 指令環(原版 4 圖示十字繞單位,doc13 [0x3C57]:↑0/←1/→2/↓3)+ 法術
 	ring      bool
 	ringSel   int
@@ -790,6 +796,14 @@ func (g *Game) tileAt(idx int) *ebiten.Image {
 
 func (g *Game) Update() error {
 	g.frame++
+	if g.titlePhase != "" {
+		if g.titleUpdate() {
+			if g.shotPath != "" && g.frame > g.shotFrame { // 截圖模式在 title 也要能退出
+				return ebiten.Termination
+			}
+			return nil
+		}
+	}
 	// 攻擊演出推進(FIGANI 全身分鏡;演出期間鎖玩家輸入)
 	if g.atk != nil {
 		g.atk.timer--
@@ -992,6 +1006,13 @@ func clamp(v *float64, lo, hi float64) {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
+	if g.titlePhase != "" {
+		g.drawTitle(screen)
+		if g.shotPath != "" && g.frame == g.shotFrame {
+			saveShot(screen, g.shotPath)
+		}
+		return
+	}
 	if g.m == nil {
 		ebitenutil.DebugPrint(screen, "FD2 重製 MVP\n缺 assets/(tileset.png + map.json)\n用 tools/export_engine_assets.py 產生\n"+g.loadErr)
 		return
@@ -1715,6 +1736,13 @@ func loadGame() *Game {
 	g.sfx = loadSFX()
 	g.sfxSwing = loadWav("assets/sfx/battle_48_00.wav") // 共用揮擊音(逐招對照後按池切換)
 	// 戰場 BGM:doc12 推定 track18=戰鬥被使用者實聽推翻(18=商店音樂);戰鬥曲號待聽辨,先不播錯曲
+	if os.Getenv("FD2_TITLE") == "1" || (g.shotPath == "" && os.Getenv("FD2_TITLE") != "0") { // 開頭動畫+主選單(headless 截圖預設跳過)
+		if ta := loadTitleAssets(); ta != nil {
+			g.titleAssets = ta
+			g.titlePhase = "scroll"
+			g.scrollY = 535
+		}
+	}
 	if cp := os.Getenv("FD2_CAMPAIGN"); cp != "" { // 劇本節點圖模式(doc 19;放最後,story 對白不被開場 Setup 蓋掉)
 		if cp == "1" {
 			cp = "assets/scenarios/campaign.json"
