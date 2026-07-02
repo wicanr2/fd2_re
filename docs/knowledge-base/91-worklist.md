@@ -188,6 +188,37 @@
 - [x] **③ 狀態欄框/HP 用真素材** ✅(v25-26):破解 FDOTHER#5 LMI1 sub-sprite codec(反組譯 0x4e916:c≤0xC0 literal/c>0xC0 run,新 codec,`tools/decode_lmi.py`);框=#22(149×42 含bevel+標籤+槽)貼 panel.png、血條 cell=#27-30;修 HP靠左(槽 x21-123)/提亮/數字對位。doc35 §4.2.5。盜賊 y 軸對齊(276→296,頭頂偏上一排)
 - [ ] **④ BG 草地延伸到 figure 腳下**(讓台座/陰影疊綠草,非黑底)
 
+## 第 7 輪 ✅(戰鬥演出資料驅動 + 像素級收官,2026-07-02)
+> 從「手調對齊」進化到「原版資料驅動」;README 對外展示;全部 push(commit 至 a42ee4a+)。
+- [x] **[重大] FIGANI 幀標頭 +0/+2 = 每幀絕對螢幕座標 (dx,dy)@320**(修 doc06 錯誤標註「boundW/boundH」):
+      f01=(141,3)/盜賊=(16,41) 與模板匹配 orig 落點完全一致 → 走位/伸擊/突刺全在資料,引擎照貼即可
+- [x] **戰鬥演出資料驅動重寫**:meta.json(22 個 FIGANI 全幀 dx,dy)+ loadFigMeta;刪 lunge/錨點手調;
+      FIGANI_013 15幀=f01-f10旋轉蓄力/f11黃劈擊/f12-14突刺;盜賊 4 幀待機呼吸
+- [x] **打擊感**:命中=全紅剪影交替閃(redSilhouette,orig=VGA色盤閃紅)+ HP 命中窗快抽;5 階段對照 orig 全對上
+- [x] **通用化**:newAtkAnim 建構器(所有角色同管線:攻=組×3+1/守=組×3;演出長度隨幀數;命中幀=倒數第4幀通用推定)
+- [x] **播放速度接口**:FD2_BATTLE_FPT 環境變數(tick/幀,預設3)+ atkAnim.fpt
+- [x] **像素級對齊(模板匹配法)**:三 figure+台座+狀態欄框+三處數字 全部 err=0 且 dx=dy=0;
+      狀態欄=原生 149×42 blit(敵(0,154)/我(171,4))、數字=LMI1 #31-40 素材(#42-51綠/#119-128黃=滿血變色)、
+      LMI1 混雙 codec(框 0x4e916/小cell 4-mode)、VGA 6-bit palette ×4(decode_lmi 修正)
+- [x] **README 對外展示**:battle_restore.gif(orig|remake 同步+網格)、battle_storyboard.png(5階段分鏡)、
+      battle_restore_grid.png(網格驗證);新增「戰鬥演出:像素級 1:1 還原」節
+- [x] **FD2_SHOT_SERIES 逐幀截圖鉤子**(GIF/分鏡素材管線)
+- [x] 名字=TTF 28px+深藍描邊(~85%,既定決策:只有狀態欄數字用點陣素材,其他文字 TTF)
+
+## 第 8 輪 🟡(remake 玩法系統盤點與補完 — 2026-07-02 盤點)
+> 使用者指示:檢視腳本系統一路到移動/觸發戰鬥/魔法,盤點缺口逐項補。
+- [x] 盤點完成(見下缺口清單)
+- [ ] **腳本系統 campaign(M4 主體)**:ScenarioRunner 節點圖(battle/story/choice/event/ending)+
+      旗標 + 敗北路線 + campaign.json;doc19 設計已備,引擎未實作 ← **進行中**
+- [ ] **移動動畫**:玩家/AI 移動=瞬移,缺「沿路徑逐格走 + FDICON 方向走動幀」(素材/easing 都有,缺 path walk)
+- [ ] **魔法系統**:完全未實作——法術選單(radial 指令環,doc13 0x18ED0)、MP 消耗、青衫法術公式、
+      法術特效動畫(FIGANI 內含法術特效,可沿用資料驅動管線)
+- [ ] **音樂**:15 首 OGG 已備(extracted/music_ogg,本機);remake 零音訊 code——缺 ebiten/audio 播放器 +
+      場景→曲號(doc12 play_bgm 32 呼叫點已 RE)
+- [ ] **音效 SFX**:org_game 只有 .DIG 驅動(Miles 驅動非音效資料);**音效資料在哪未 RE**(可能在 .DAT/EXE 內)← 需先 RE
+- [ ] radial 指令環 UI(原版 4 圖示十字,doc13;目前直接游標攻擊)
+- [ ] 存檔/讀檔(自有格式)
+
 ## 完成定義(反組譯研究)
 全部資產格式可解(解包+解壓+轉現代格式)、核心數值表全 dump 並驗證、
 主要遊戲規則演算法(戰鬥/移動/升級/AI)有反組譯依據、地圖可渲染、文本可讀可改。

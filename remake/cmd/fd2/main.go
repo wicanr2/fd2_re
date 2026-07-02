@@ -100,6 +100,7 @@ type atkAnim struct {
 	defHP0, defHP1   int // 守方攻擊前/後 HP(impact 抽乾動畫)
 	defMax           int
 	timer, total     int
+	fpt              int // 播放速度(tick/幀;FD2_BATTLE_FPT 可調)
 	terrain          int // 攻擊格地形索引(戰鬥背景 = 戰場地形,跟 FDFIELD 戰場資料有關)
 }
 
@@ -110,6 +111,31 @@ func (g *Game) terrainAt(x, y int) int {
 		return -1
 	}
 	return g.m.Tiles[y*g.m.W+x]
+}
+
+// battleFPT 戰鬥演出播放速度(tick/幀):環境變數 FD2_BATTLE_FPT 可調(調慢=數字大),預設 3。
+func battleFPT() int {
+	if v, e := strconv.Atoi(os.Getenv("FD2_BATTLE_FPT")); e == nil && v > 0 {
+		return v
+	}
+	return 3
+}
+
+// newAtkAnim 建立全螢幕戰鬥演出(所有角色通用):攻方=攻擊動作(組×3+1)、守方=待機(組×3),
+// 演出長度=幀數×fpt+尾段停格;位置/走位由 FIGANI 幀內嵌 (dx,dy) 資料驅動(doc06)。
+func (g *Game) newAtkAnim(atkGroup, defGroup int, atkName, defName string,
+	atkHP, atkMax, atkLV, atkMP, defLV, defMP, defHP0, defHP1, defMax, terrain int) *atkAnim {
+	fpt := battleFPT()
+	af := figaniIndex(atkGroup) + 1
+	n := len(g.figani[af])
+	if n == 0 {
+		n = 15
+	}
+	total := (n + 4) * fpt // 尾段停格 4 幀時間
+	return &atkAnim{atkFig: af, defFig: figaniIndex(defGroup), atkName: atkName, defName: defName,
+		atkHP: atkHP, atkMax: atkMax, atkLV: atkLV, atkMP: atkMP, defLV: defLV, defMP: defMP,
+		defHP0: defHP0, defHP1: defHP1, defMax: defMax, timer: total, total: total,
+		fpt: fpt, terrain: terrain}
 }
 
 // figaniIndex:戰鬥全身動畫 FIGANI index = FDICON組 × 3(恆等,反組譯 0x2884c:unit[+7]×3;doc06)。
@@ -336,11 +362,9 @@ func (g *Game) confirm() {
 		defHP0 := tgt.HP
 		dmg := g.st.Attack(g.sel, tgt)
 		g.msg = fmt.Sprintf("%s 攻擊 %s,造成 %d 傷害", anm, nm, dmg)
-		g.atk = &atkAnim{atkFig: figaniIndex(g.sel.Fig), defFig: figaniIndex(tgt.Fig), atkName: anm, defName: nm,
-			atkHP: g.sel.HP, atkMax: g.sel.MaxHP, atkLV: g.sel.Lv, atkMP: g.sel.MP,
-			defLV: tgt.Lv, defMP: tgt.MP,
-			defHP0: defHP0, defHP1: tgt.HP, defMax: tgt.MaxHP, timer: 48, total: 48,
-			terrain: g.terrainAt(g.curX, g.curY)} // 戰鬥背景 = 守方格地形(FDFIELD)
+		g.atk = g.newAtkAnim(g.sel.Fig, tgt.Fig, anm, nm,
+			g.sel.HP, g.sel.MaxHP, g.sel.Lv, g.sel.MP, tgt.Lv, tgt.MP,
+			defHP0, tgt.HP, tgt.MaxHP, g.terrainAt(g.curX, g.curY)) // 戰鬥背景 = 守方格地形
 		g.sel, g.reach, g.moved = nil, nil, false
 		g.checkResult()
 	} else if g.curX == g.sel.X && g.curY == g.sel.Y { // 原地待命
@@ -428,10 +452,7 @@ func (g *Game) Update() error {
 			}
 			if v := os.Getenv("FD2_SHOT_ATTACK"); v != "" { // 全螢幕戰鬥演出(驗證用):亞雷斯打盜賊
 				fig, _ := strconv.Atoi(v)
-				// 攻方用攻擊動作1(組×3+1=FIGANI_013):含揮劍白斬擊弧 + 腳下大 dither 土台陰影(對齊 orig_05)
-				g.atk = &atkAnim{atkFig: figaniIndex(fig) + 1, defFig: figaniIndex(96), atkName: "亞雷斯", defName: "盜賊",
-					atkHP: 48, atkMax: 48, atkLV: 1, atkMP: 0, defLV: 2, defMP: 0,
-					defHP0: 28, defHP1: 8, defMax: 28, timer: 48, total: 48}
+				g.atk = g.newAtkAnim(fig, 96, "亞雷斯", "盜賊", 48, 48, 1, 0, 2, 0, 28, 8, 28, 0)
 			}
 		}
 		if g.shotSeries != "" { // 逐幀模式:演出播完才退出
@@ -721,16 +742,23 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 	// figure(0x28e76 起 0x29164/0x2939d)後畫」→ figure z-order 高於狀態欄,動畫蓋住欄、動畫完整)。
 	const sc = 2.0 // doc35:無 runtime 縮放,FIGANI 原生尺寸 ×2(原版 320→畫布 640)
 
-	// 資料驅動動畫(doc06):每幀貼在幀標頭內嵌的絕對螢幕座標 (dx,dy)@320 ×2,
-	// 走位/伸擊/突刺全在資料裡(FIGANI_013:f01-f10 旋轉蓄力、f11 黃劈擊弧、f12-14 突刺)。
-	// 攻方 15 幀 / 48 tick → 每 3 tick 一幀;f11(劈中)落在 prog 33 → 命中窗 33-41(紅閃+抽血)。
+	// 資料驅動動畫(doc06,所有角色通用):每幀貼幀標頭內嵌的絕對螢幕座標 (dx,dy)@320 ×2,
+	// 走位/伸擊/突刺全在資料裡。播放速度 = a.fpt(tick/幀,FD2_BATTLE_FPT 可調);
+	// 命中幀 = 攻擊動畫的倒數第 4 幀(FIGANI_013:f11 黃劈擊弧,其後 3 幀為突刺收勢——通用推定)。
 	atkFrames := g.figani[a.atkFig]
-	fpt := 3 // ticks per frame
+	fpt := a.fpt
+	if fpt < 1 {
+		fpt = 3
+	}
 	atkFi := prog / fpt
 	if len(atkFrames) > 0 && atkFi >= len(atkFrames) {
 		atkFi = len(atkFrames) - 1
 	}
-	impactS := 11 * fpt
+	impactFi := len(atkFrames) - 4
+	if impactFi < 1 {
+		impactFi = 1
+	}
+	impactS := impactFi * fpt
 	impactE := impactS + 8
 	// (1) 狀態欄先畫(會被 figure 蓋住一部分,如原版)
 	if g.font != nil {
