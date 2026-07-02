@@ -87,18 +87,47 @@
 字串本體**不是 Big5**,而是**自製字型的 uint16 glyph 索引** + 控制碼 + `0xFFFF` 結尾(第 3 輪已破解,
 見 `08-text-and-font-format.md`)。這是中文化的核心改寫點。
 
-## 5. 地形控制表 [已驗證，交叉印證攻略]
+## 5. 地形控制表 [已驗證，交叉印證攻略；第 8 輪補完 MoveCost 語意]
 
 `FDSHAP_001` = 1200 bytes = 300 格 × 4 byte，其檔內偏移 `0x2422E` **正好等於**青衫攻略
 modify2 宣稱的「地形控制資料 2422Eh」。每格 4 byte：
 
 ```
 byte0  寶箱資訊  bit5(0x20)=寶箱  bit6(0x40)=隱藏物品
-byte1  移動資訊  0=正常(AP+5) 1/5=不可移動 2=騎士減速 3=全體減速 4=全體大減速
-byte2  戰鬥背景編號  uint16 LE
+byte1  移動資訊(代碼 0-5,語意見下表)
+byte2-3 戰鬥背景編號  uint16 LE
 ```
 
 實測前段多為 `00 00 04 00`(無寶箱、正常地形、背景#4)，與格式相符。
+
+**per-tile 確認,表格大小非固定 300**:`FDSHAP.DAT` 67 資源以「大資源(tileset)/小資源
+(本表)」交替成對,資源 2N=tileset N 圖塊庫、2N+1=其地形控制表,index 與 tile index **1:1**
+(實測 map0 每個出現過的 tile index 查表值都與圖上看到的地形吻合——水域邊界=move 1、中央
+密集樹林=move 2、平地=move 0)。表格長度 = 該資源檔案大小/4,**不是每個 tileset 都 300 格**
+(實測 96~400 格不等,如 `FDSHAP_015`=400 格對應 384-tile tileset、`FDSHAP_049`=180 格但對應
+tileset 有 192 tile——後者代表少數 tile index 查不到地形資料,匯出時需邊界檢查回退預設值)。
+`0x2422E` 只是**某一個特定 tileset**(map0 用的那個)的表位置,不可套用到其他 33 張地圖;
+每張地圖各自要用配對的 `2N+1` 資源查表。工具:`tools/dump_terrain_table.py` → 全 33 tileset
+dump 成 `docs/data/exe_tables/terrain.json`。
+
+**移動代碼(byte1)語意** — 靜態值域(青衫攻略 modify2.md)與 `references/text/notes.md`
+玩家攻略「地形移動力/攻防影響」表交叉驗證,AP/DP 修正數值完全吻合(第一性原理:兩份獨立
+來源在同一組數字上收斂,可信度遠高於單一來源):
+
+| 代碼 | modify2 靜態定義(AP/DP) | notes.md 對應地形(步行/騎兵/飛行 MV 扣減) |
+|---|---|---|
+| 0 | 正常(AP+5%,DP+0) | 一般·草地平地(-1/-1/-1) |
+| 1 | 不可移動(AP+0,DP+0) | (水/深淵類,notes.md 未列——不可進入) |
+| 2 | 騎士減速(AP-5%,DP+10%) | 森林·僅騎兵(-1/**-2**/-1,AP/DP 與 notes.md 森林列完全吻合) |
+| 3 | 全體減速(AP-5%,DP+10%) | AP/DP 同代碼 2,但影響「所有人物」非僅騎士;notes.md 未拆出對應地形名,**地形名存疑** |
+| 4 | 全體大減速(AP-5%,DP-5%) | 沼澤(-2/-3/-1,AP/DP 與 notes.md 沼澤列完全吻合) |
+| 5 | 不可移動(AP+0,DP+0) | (同代碼 1 效果,可能是另一種障礙如牆/建築) |
+
+**remake 接線**(worklist 第 8 輪「地形屬性接線」):`tools/export_engine_assets.py` 只用
+上表「步行」扣減换算 per-tile `MoveCost`(0→1、1/5→99=視同不可通行、2/3→1、4→2),寫入
+`map.json` 的 `"cost"[]`;`battle.State.MoveCost` 查表,不可通行地形靠 cost 遠大於任何 MV
+自然被 `Reachable`/`Path` 濾掉,不需要另外特判「牆」。**尚未接的部分**:騎兵/飛行的差異扣減
+(remake `Unit` 還沒有兵種欄位)、地形 AP/DP 戰鬥加成(僅 MoveCost,戰鬥傷害公式暫未套用)。
 
 ## 6. 音效驅動(非遊戲資料)
 

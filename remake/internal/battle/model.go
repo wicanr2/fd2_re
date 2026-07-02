@@ -7,6 +7,7 @@ package battle
 import (
 	"encoding/json"
 	"os"
+	"path/filepath"
 )
 
 // Camp 陣營。
@@ -121,6 +122,9 @@ type State struct {
 	OwnDeploy []Cell          // 我方可部署格
 	Turn      int             // 回合數(無上限,doc 27;只由劇本事件限制)
 	Flags     map[string]bool // 事件旗標(跨事件/跨關劇情狀態,doc 29)
+	Cost      []int           // per-tile 移動成本(len==W*H;index=y*W+x;nil=尚無地形資料,MoveCost 全回 1)
+	// 來源:tools/export_engine_assets.py 依地形控制表(doc01 §5)換算,由 Load 讀同目錄
+	// map.json 的 "cost" 陣列自動接上(worklist 第 8 輪「地形屬性接線」)。
 }
 
 // Cell 格子座標。
@@ -219,7 +223,33 @@ func Load(path string) (*State, error) {
 		// FDFIELD 的 own(如哈諾/哈瓦特)用自己的出場座標(房子位置),由事件按回合放出。
 		st.Units = append(st.Units, nu)
 	}
+	st.Cost = loadTerrainCost(filepath.Join(filepath.Dir(path), "map.json"), f.W, f.H)
 	return st, nil
+}
+
+// mapCostFile map.json 裡跟地形成本相關的欄位(其餘欄位 main.go 的 MapData 自己讀,這裡只挑 cost 用)。
+type mapCostFile struct {
+	W    int   `json:"w"`
+	H    int   `json:"h"`
+	Cost []int `json:"cost"`
+}
+
+// loadTerrainCost 嘗試讀 units.json 同目錄的 map.json,取其 "cost" 陣列(tools/
+// export_engine_assets.py 產生;doc01 §5 地形控制表換算)。檔案不存在、沒有 cost 欄位、
+// 或尺寸對不上 units.json 的 w/h,一律回 nil(MoveCost 退回全平地=1,不 fail Load)。
+func loadTerrainCost(mapJSONPath string, w, h int) []int {
+	raw, err := os.ReadFile(mapJSONPath)
+	if err != nil {
+		return nil
+	}
+	var m mapCostFile
+	if err := json.Unmarshal(raw, &m); err != nil {
+		return nil
+	}
+	if len(m.Cost) == 0 || m.W != w || m.H != h || len(m.Cost) != w*h {
+		return nil
+	}
+	return m.Cost
 }
 
 // AddUnit 把一個單位加入戰場(事件 spawn / 主角隊進場用)。

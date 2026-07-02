@@ -312,7 +312,15 @@
 - [ ] 劇情編輯器:對白+事件表單+商店(下拉=event.go 現行能力,`38` §3.3)
 - [ ] 編輯器能力清單同步:Go --dump-registry
 - [ ] campaign 節點圖編輯器(拖線/旗標/敗北路線可視化)
-- [ ] 地形屬性接線(MoveCost tile→成本表;編輯器地形面板依賴)
+- [x] **地形屬性接線**:地形控制表 per-tile 確認(300~400 格不等,非固定 300;
+      `tools/dump_terrain_table.py` → `docs/data/exe_tables/terrain.json`,33 tileset 全 dump)。
+      移動代碼(byte1,0-5)語意用 references/text/notes.md 玩家攻略「地形移動力/攻防影響」表
+      交叉驗證 AP/DP 數值全吻合(森林 code2/3 = -5%/+10%、沼澤 code4 = -5%/-5%)。
+      `tools/export_engine_assets.py` 換算 per-tile 步行成本寫入 map.json `"cost"[]`;
+      `battle.State.Cost` + `MoveCost` 查表(`remake/internal/battle/move.go`),`Load()` 自動讀
+      units.json 同目錄 map.json 接上(main.go 未改動)。全 33 圖 + 頂層 map0 重新匯出。
+      新增 6 個測試(`move_test.go`)。**限制**:僅步行成本,騎兵/飛行差異(notes.md 另有數字)
+      待 Unit 加兵種欄位才能接;地形 AP/DP 戰鬥加成本輪未接。
 - [ ] **0x22e5c RE**(world-map handler:event_id→group 對應)→ 接回合增援
 - [ ] ch04-33 劇情文本精校(30 章,PNG 人眼轉錄;對白已可入庫)
 - [ ] 視窗縮放 filter 查證(可能 linear 暈染,tile-debug 提醒)
