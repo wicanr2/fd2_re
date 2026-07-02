@@ -49,3 +49,50 @@ func (s *State) InAttackRange(u *Unit, tx, ty int) bool {
 	}
 	return dx+dy == 1
 }
+
+// Path 回傳 u 走到 (tx,ty) 的逐格路徑(含起點;BFS,同 Reachable 規則)。不可達回 nil。
+func (s *State) Path(u *Unit, tx, ty int) []Cell {
+	start := Cell{X: u.X, Y: u.Y}
+	goal := Cell{X: tx, Y: ty}
+	if start == goal {
+		return []Cell{start}
+	}
+	cost := map[Cell]int{start: 0}
+	par := map[Cell]Cell{}
+	q := []Cell{start}
+	for len(q) > 0 {
+		c := q[0]
+		q = q[1:]
+		if cost[c] >= u.MV {
+			continue
+		}
+		for _, d := range [][2]int{{0, -1}, {0, 1}, {-1, 0}, {1, 0}} {
+			nx, ny := c.X+d[0], c.Y+d[1]
+			if nx < 0 || ny < 0 || nx >= s.W || ny >= s.H {
+				continue
+			}
+			nc := Cell{X: nx, Y: ny}
+			if _, seen := cost[nc]; seen {
+				continue
+			}
+			if o := s.UnitAt(nx, ny); o != nil && o != u {
+				continue
+			}
+			nco := cost[c] + s.MoveCost(nx, ny)
+			if nco <= u.MV {
+				cost[nc] = nco
+				par[nc] = c
+				q = append(q, nc)
+			}
+		}
+	}
+	if _, ok := cost[goal]; !ok {
+		return nil
+	}
+	path := []Cell{goal}
+	for p := goal; p != start; {
+		p = par[p]
+		path = append([]Cell{p}, path...)
+	}
+	return path
+}

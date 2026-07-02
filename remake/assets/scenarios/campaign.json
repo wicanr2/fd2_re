@@ -1,0 +1,43 @@
+{
+  "title": "炎龍騎士團2 — 第一章(campaign 節點圖)",
+  "start": "intro",
+  "flags": { "retried": false },
+  "nodes": {
+    "intro": {
+      "type": "story",
+      "lines": [
+        { "speaker": 4, "text": "索爾大人,盜賊團出現在羅德鎮外,鎮民正在求援!" },
+        { "speaker": 0, "text": "知道了。大家隨我出擊——初試身手的時候到了!" }
+      ],
+      "next": "battle_ch01"
+    },
+    "battle_ch01": {
+      "type": "battle",
+      "units": "assets/map0_units.json",
+      "scenario": "assets/scenarios/ch01.json",
+      "on_win": "victory",
+      "on_lose": "retreat"
+    },
+    "retreat": {
+      "type": "story",
+      "set_flags": { "retried": true },
+      "lines": [
+        { "speaker": 0, "text": "撤退!先回鎮上整頓,再找機會反擊…" },
+        { "speaker": 4, "text": "可惡…下次一定討回來!" }
+      ],
+      "next": "battle_ch01"
+    },
+    "victory": {
+      "type": "story",
+      "lines": [
+        { "speaker": 0, "text": "打贏了!羅德鎮暫時安全了。" },
+        { "speaker": 9, "text": "太好了…大家都平安真是萬幸。" }
+      ],
+      "next": "end_demo"
+    },
+    "end_demo": {
+      "type": "ending",
+      "text": "第一章 完 — campaign 節點圖示範(敗北 → 撤退 → 再戰)"
+    }
+  }
+}

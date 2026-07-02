@@ -29,6 +29,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
 
 const (
@@ -53,6 +54,9 @@ type Game struct {
 	st      *battle.State    // 戰鬥狀態(單位)
 	sc      *battle.Scenario   // 劇本(事件系統,doc 29)
 	dialog  []battle.DialogLine // 待顯示對話(事件產生,含說話者)
+	walk    *walkAnim           // 移動動畫(沿路徑逐格走,FDICON 方向幀)
+	camp    *campaign.Runner    // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
+	campSel int                 // choice 節點游標
 	portraits map[int][]*ebiten.Image // DATO 頭像:肖像 id → 4 嘴型幀
 	mouthOpen  bool // 嘴型動畫狀態(原版 0x16d00:m0閉/m3開)
 	mouthTimer int  // 閉嘴倒數(原版 rand%30+2 tick)
@@ -111,6 +115,110 @@ func (g *Game) terrainAt(x, y int) int {
 		return -1
 	}
 	return g.m.Tiles[y*g.m.W+x]
+}
+
+// ── campaign(劇本節點圖,doc 19)引擎接線 ──────────────────────────
+
+// enterNode 進入 camp 目前節點:story→掛對白、battle→重開戰場、event→套旗標直通、choice/ending→等輸入。
+func (g *Game) enterNode() {
+	if g.camp == nil {
+		return
+	}
+	n := g.camp.Node()
+	if n == nil {
+		return // 流程結束(game over)
+	}
+	switch n.Type {
+	case "story":
+		g.dialog = nil
+		for i := len(n.Lines) - 1; i >= 0; i-- { // 反序堆疊:顯示取末端,Enter 逐句 pop
+			g.dialog = append(g.dialog, battle.DialogLine{Speaker: n.Lines[i].Speaker, Text: n.Lines[i].Text})
+		}
+	case "battle":
+		g.resetBattle(n.Units, n.Scenario)
+	case "event":
+		g.camp.Advance("")
+		g.enterNode()
+	case "choice":
+		g.campSel = 0
+	}
+}
+
+// resetBattle 重開一場戰鬥(campaign battle 節點;敗北重試也走這裡)。
+func (g *Game) resetBattle(unitsPath, scnPath string) {
+	if unitsPath == "" {
+		unitsPath = "assets/map0_units.json"
+	}
+	if scnPath == "" {
+		scnPath = "assets/scenarios/ch01.json"
+	}
+	if st, err := battle.Load(unitsPath); err == nil {
+		g.st = st
+	}
+	g.result, g.sel, g.reach, g.moved = "", nil, nil, false
+	g.atk, g.walk, g.dialog, g.msg = nil, nil, nil, ""
+	if g.st != nil {
+		if sc, err := battle.LoadScenario(scnPath); err == nil {
+			g.sc = sc
+			g.dialog = append(g.dialog, sc.Setup(g.st)...)
+		}
+	}
+}
+
+// campInput 處理 campaign 節點的輸入。回傳 true = 已攔截(擋掉戰場一般輸入)。
+func (g *Game) campInput() bool {
+	if g.camp == nil {
+		return false
+	}
+	enter := inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)
+	n := g.camp.Node()
+	if n == nil {
+		return true // game over:鎖定
+	}
+	switch n.Type {
+	case "story":
+		if enter {
+			if len(g.dialog) > 0 {
+				g.dialog = g.dialog[:len(g.dialog)-1]
+			}
+			if len(g.dialog) == 0 {
+				g.camp.Advance("")
+				g.enterNode()
+			}
+		}
+		return true
+	case "choice":
+		vis := g.camp.Visible()
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.campSel > 0 {
+			g.campSel--
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.campSel < len(vis)-1 {
+			g.campSel++
+		}
+		if enter && len(vis) > 0 {
+			g.camp.Advance(fmt.Sprintf("opt%d", g.campSel))
+			g.enterNode()
+		}
+		return true
+	case "ending":
+		return true
+	case "battle":
+		if g.result != "" && enter { // 勝敗後 Enter → 依結果轉場(敗北可走敗北路線)
+			g.camp.Advance(g.result)
+			g.enterNode()
+			return true
+		}
+		return false // 戰鬥照常
+	}
+	return false
+}
+
+// walkAnim 沿路徑逐格行走(玩家/AI 移動;FDICON 方向走動幀 + OffX/OffY 內插)。
+type walkAnim struct {
+	u    *battle.Unit
+	path []battle.Cell // 含起點
+	seg  int           // 目前段:path[seg] → path[seg+1]
+	t    float64       // 段內進度 0→1
 }
 
 // battleFPT 戰鬥演出播放速度(tick/幀):環境變數 FD2_BATTLE_FPT 可調(調慢=數字大),預設 3。
@@ -321,7 +429,7 @@ func dirToward(ax, ay, tx, ty int) int {
 
 // confirm 處理 Enter/Space:選取我方單位顯示移動範圍,或移動到可達格 / 原地待機。
 func (g *Game) confirm() {
-	if g.st == nil {
+	if g.st == nil || g.walk != nil {
 		return
 	}
 	cur := battle.Cell{X: g.curX, Y: g.curY}
@@ -339,9 +447,13 @@ func (g *Game) confirm() {
 		case g.curX == g.sel.X && g.curY == g.sel.Y: // 原地 → 不移動,進攻擊/待命階段
 			g.moved = true
 			g.reach = nil
-		case g.reach[cur] && g.st.UnitAt(g.curX, g.curY) == nil: // 移動到可達空格
-			g.sel.X, g.sel.Y = g.curX, g.curY
-			g.moved = true
+		case g.reach[cur] && g.st.UnitAt(g.curX, g.curY) == nil: // 移動到可達空格:沿路徑逐格走
+			if p := g.st.Path(g.sel, g.curX, g.curY); len(p) >= 2 {
+				g.walk = &walkAnim{u: g.sel, path: p}
+			} else { // 理論上不會(reach 內必可達),保底瞬移
+				g.sel.X, g.sel.Y = g.curX, g.curY
+				g.moved = true
+			}
 			g.reach = nil
 		}
 		return
@@ -429,6 +541,27 @@ func (g *Game) Update() error {
 			}
 		}
 	}
+	// 移動動畫:沿路徑逐格走(方向幀 + OffX/OffY 內插;走完進入攻擊/待命階段)
+	if w := g.walk; w != nil && g.m != nil {
+		w.t += 0.22 // ~4-5 tick/格
+		for w.t >= 1 && w.seg < len(w.path)-1 {
+			w.t--
+			w.seg++
+		}
+		if w.seg >= len(w.path)-1 { // 到位
+			last := w.path[len(w.path)-1]
+			w.u.X, w.u.Y = last.X, last.Y
+			w.u.OffX, w.u.OffY = 0, 0
+			g.walk = nil
+			g.moved = true
+		} else {
+			a, b := w.path[w.seg], w.path[w.seg+1]
+			w.u.Dir = dirToward(a.X, a.Y, b.X, b.Y)
+			w.u.X, w.u.Y = b.X, b.Y // 單位掛在目標格,Off 從來源格內插到 0
+			w.u.OffX = float64((a.X-b.X)*g.m.TileW) * (1 - w.t)
+			w.u.OffY = float64((a.Y-b.Y)*g.m.TileH) * (1 - w.t)
+		}
+	}
 	// 嘴型動畫(忠實原版 0x16d00,doc14):每 2 frame 一 tick;閉嘴隨機 2-31 tick、開嘴一瞬
 	if len(g.dialog) > 0 && g.frame%2 == 0 {
 		if g.mouthOpen {
@@ -464,6 +597,9 @@ func (g *Game) Update() error {
 		}
 	}
 	if g.m == nil {
+		return nil
+	}
+	if g.campInput() { // campaign 節點(story/choice/ending/勝敗轉場)攔截輸入
 		return nil
 	}
 	// 游標移動:方向鍵 / WASD / 觸控
@@ -679,12 +815,56 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				c = color.RGBA{0xff, 0x70, 0x70, 0xff}
 			}
 			g.font.Draw(screen, t, float64(logicalW)/2-78, float64(logicalH)/2-30, 3.0, c)
+			if g.camp != nil {
+				g.font.Draw(screen, "按 Enter 繼續", float64(logicalW)/2-70, float64(logicalH)/2+36, 1.0,
+					color.RGBA{0xe0, 0xe0, 0xe0, 0xff})
+			}
 		}
 	}
+	g.drawCampaignUI(screen)
 
 	// 截圖鉤子:指定幀把畫面存 PNG(無人值守驗證用)
 	if g.shotPath != "" && g.frame == g.shotFrame {
 		saveShot(screen, g.shotPath)
+	}
+}
+
+// drawCampaignUI campaign 節點 UI:choice 選單 / ending 結語 / game over。
+func (g *Game) drawCampaignUI(screen *ebiten.Image) {
+	if g.camp == nil || g.font == nil {
+		return
+	}
+	n := g.camp.Node()
+	fillBox := func(x, y, w, h float64) {
+		box := ebiten.NewImage(int(w), int(h))
+		box.Fill(color.RGBA{0x10, 0x1c, 0x40, 0xe8})
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(x, y)
+		screen.DrawImage(box, op)
+	}
+	switch {
+	case n == nil: // 流程結束(無敗北路線的 game over)
+		fillBox(0, float64(logicalH)/2-40, float64(logicalW), 80)
+		g.font.Draw(screen, "GAME OVER", float64(logicalW)/2-90, float64(logicalH)/2-20, 2.0,
+			color.RGBA{0xff, 0x70, 0x70, 0xff})
+	case n.Type == "choice":
+		vis := g.camp.Visible()
+		h := 60 + float64(len(vis))*28
+		fillBox(160, 120, 320, h)
+		g.font.Draw(screen, n.Prompt, 176, 130, 1.1, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+		for i, o := range vis {
+			c := color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
+			pre := "　"
+			if i == g.campSel {
+				c = color.RGBA{0xff, 0xff, 0xff, 0xff}
+				pre = "▶"
+			}
+			g.font.Draw(screen, pre+o.Label, 190, 162+float64(i)*28, 1.0, c)
+		}
+	case n.Type == "ending":
+		fillBox(0, float64(logicalH)/2-60, float64(logicalW), 120)
+		g.font.Draw(screen, n.Text, float64(logicalW)/2-float64(len([]rune(n.Text)))*9, float64(logicalH)/2-30, 1.4,
+			color.RGBA{0xff, 0xe0, 0x90, 0xff})
 	}
 }
 
@@ -1078,6 +1258,17 @@ func loadGame() *Game {
 			if im, _, e2 := image.Decode(bytes.NewReader(raw)); e2 == nil {
 				g.digits[k] = ebiten.NewImageFromImage(im)
 			}
+		}
+	}
+	if cp := os.Getenv("FD2_CAMPAIGN"); cp != "" { // 劇本節點圖模式(doc 19;放最後,story 對白不被開場 Setup 蓋掉)
+		if cp == "1" {
+			cp = "assets/scenarios/campaign.json"
+		}
+		if c, err := campaign.Load(cp); err == nil {
+			g.camp = campaign.NewRunner(c)
+			g.enterNode()
+		} else {
+			g.loadErr = "campaign: " + err.Error()
 		}
 	}
 	return g
