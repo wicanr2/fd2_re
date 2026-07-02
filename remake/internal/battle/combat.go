@@ -8,7 +8,8 @@ package battle
 // Attack 近戰結算:dmg = max(1, AP-DP)。扣血、標記已行動。回傳傷害。
 // 註:青衫「dmg≤2」是 AI「不值得打」門檻(doc11),非玩家不能打;玩家攻擊至少造成 1。
 func (s *State) Attack(a, d *Unit) int {
-	dmg := a.AP - d.DP
+	// AP/DP 含輔助法術 Buff(魔刃/魔鎧,doc02 §6.4)
+	dmg := a.EffectiveAP() - d.EffectiveDP()
 	if dmg < 1 {
 		dmg = 1
 	}
@@ -94,7 +95,7 @@ func (s *State) aiActUnit(u *Unit) {
 // AITurn 讓所有非玩家、已登場、未行動的單位(敵 + 友軍 NPC)各行動一次。
 func (s *State) AITurn() {
 	for _, u := range s.Units {
-		if !u.OnField || !u.Alive() || u.Camp == Own || u.Acted {
+		if !u.OnField || !u.Alive() || u.Camp == Own || u.Acted || u.Paralyzed {
 			continue
 		}
 		s.aiActUnit(u)
@@ -134,7 +135,7 @@ type AIPlan struct {
 // 全部動完回 nil。決策邏輯同 aiActUnit(doc11 評分式)。
 func (s *State) NextAIPlan() *AIPlan {
 	for _, u := range s.Units {
-		if !u.OnField || !u.Alive() || u.Camp == Own || u.Acted {
+		if !u.OnField || !u.Alive() || u.Camp == Own || u.Acted || u.Paralyzed {
 			continue
 		}
 		var best *Unit

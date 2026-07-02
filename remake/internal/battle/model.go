@@ -49,10 +49,70 @@ type Unit struct {
 	Dir      int     // 朝向:0下 1左 2上 3右(原版 Z2,FDICON 方向幀)
 	OffX     float64 // 行軍/移動的像素位移(顯示用;0=正在格上)
 	OffY     float64 // 進場時從邊緣滑入,漸減到 0
+
+	// ---- 輔助法術暫時狀態(doc02 §6.4;施放邏輯見 magic.go CastArea/applySpell)----
+	BuffAPPct int // 魔刃術:AP 加成百分比
+	BuffDPPct int // 魔鎧術:DP 加成百分比
+	BuffHit   int // 風行術:HIT 加成
+	BuffEV    int // 風行術:EV 加成
+	BuffTurns int // 上述加成共用剩餘回合數(原版三招各自可疊加回合,重製簡化成單一計時器)
+
+	Sealed    bool // 封咒術:禁止施法
+	SealTurns int
+
+	Poisoned    bool // 毒擊術:每回合扣 MaxHP 的 10%(doc02 §6.4)
+	PoisonTurns int
+
+	Paralyzed     bool // 麻痺術:無法行動(是否擋下行動由呼叫端 UI/AI 檢查此欄位)
+	ParalyzeTurns int
 }
 
 // Alive 對映原版 byte[+5] bit0(HP>0,doc 27)。
 func (u *Unit) Alive() bool { return u.HP > 0 }
+
+// EffectiveAP/EffectiveDP 套用魔刃術/魔鎧術暫時加成後的攻防值。
+// 註:combat.go 的 Attack 目前仍直接用 AP/DP(未接線,由後續整合工作處理)。
+func (u *Unit) EffectiveAP() int { return u.AP + u.AP*u.BuffAPPct/100 }
+func (u *Unit) EffectiveDP() int { return u.DP + u.DP*u.BuffDPPct/100 }
+
+// TickStatus 回合結束時呼叫一次:遞減暫時狀態剩餘回合、套用毒擊持續傷害、到期清除。
+// (doc02 §6.4:毒擊每回合 -10% HP;各項加成/異常 2–4 回合到期消失。)
+func (u *Unit) TickStatus() {
+	if u.BuffTurns > 0 {
+		u.BuffTurns--
+		if u.BuffTurns == 0 {
+			u.BuffAPPct, u.BuffDPPct, u.BuffHit, u.BuffEV = 0, 0, 0, 0
+		}
+	}
+	if u.SealTurns > 0 {
+		u.SealTurns--
+		if u.SealTurns == 0 {
+			u.Sealed = false
+		}
+	}
+	if u.Poisoned {
+		dmg := u.MaxHP / 10
+		if dmg < 1 {
+			dmg = 1
+		}
+		u.HP -= dmg
+		if u.HP < 0 {
+			u.HP = 0
+		}
+	}
+	if u.PoisonTurns > 0 {
+		u.PoisonTurns--
+		if u.PoisonTurns == 0 {
+			u.Poisoned = false
+		}
+	}
+	if u.ParalyzeTurns > 0 {
+		u.ParalyzeTurns--
+		if u.ParalyzeTurns == 0 {
+			u.Paralyzed = false
+		}
+	}
+}
 
 // State 一場戰鬥的狀態。
 type State struct {

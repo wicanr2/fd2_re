@@ -24,6 +24,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strconv"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -70,7 +71,8 @@ type Game struct {
 	bgmCur    string
 	sfx                map[int][]byte // SFX PCM(doc36 FDOTHER#31 14樣本)
 	prevCurX, prevCurY int            // 游標移動音偵測
-	aiBusy    bool     // AI 回合進行中(逐單位行走動畫)
+	aiBusy    bool       // AI 回合進行中(逐單位行走動畫)
+	rng       *rand.Rand // 施法擲骰(FD2_SEED 可固定,headless 重現)
 	gold      int      // 金幣(商店)
 	items     []string // 隊伍道具(名稱;道具效果待實裝)
 	shopSel   int      // 商店游標
@@ -325,7 +327,11 @@ func (g *Game) ringInput() bool {
 			g.msg = "攻擊:選擇相鄰目標"
 		case 2: // 魔法(有法術者)/狀態
 			if len(g.sel.Spells) > 0 {
-				g.ring, g.spellOpen, g.spellSel = false, true, 0
+				if g.sel.Sealed {
+					g.msg = "被封咒,無法施法!"
+				} else {
+					g.ring, g.spellOpen, g.spellSel = false, true, 0
+				}
 			} else {
 				g.msg = fmt.Sprintf("%s Lv%d HP%d/%d MP%d AP%d DP%d",
 					g.sel.Name, g.sel.Lv, g.sel.HP, g.sel.MaxHP, g.sel.MP, g.sel.AP, g.sel.DP)
@@ -570,6 +576,10 @@ func (g *Game) confirm() {
 	cur := battle.Cell{X: g.curX, Y: g.curY}
 	if g.sel == nil { // 選我方單位
 		u := g.st.UnitAt(g.curX, g.curY)
+		if u != nil && u.Camp == battle.Own && u.Paralyzed {
+			g.msg = "麻痺中,無法行動!"
+			return
+		}
 		if u != nil && u.Camp == battle.Own && !u.Acted {
 			g.sel = u
 			g.moved = false
@@ -577,33 +587,59 @@ func (g *Game) confirm() {
 		}
 		return
 	}
-	if g.castSp != nil { // 施法目標選擇:游標在射程內的合法目標 → 施放
+	if g.castSp != nil { // 施法目標選擇:游標=施放中心(AoE 可指空地;單體需單位)→ CastArea 結算
 		sp := *g.castSp
-		tgt := g.st.UnitAt(g.curX, g.curY)
-		okCamp := tgt != nil && ((sp.Target == 0 && tgt.Camp != battle.Own) || (sp.Target == 1 && tgt.Camp == battle.Own))
-		if okCamp && g.st.InCastRange(g.sel, sp, g.curX, g.curY) {
-			amt := g.st.Cast(g.sel, tgt, sp)
-			if amt < 0 {
-				g.msg = "MP 不足!"
+		if !g.st.InCastRange(g.sel, sp, g.curX, g.curY) {
+			return
+		}
+		if sp.Range == 0 { // 單體:中心格需有合法目標
+			tgt := g.st.UnitAt(g.curX, g.curY)
+			okCamp := tgt != nil && ((sp.Target == 0 && tgt.Camp != battle.Own) || (sp.Target == 1 && tgt.Camp == battle.Own))
+			if !okCamp {
 				return
 			}
+		}
+		results := g.st.CastArea(g.sel, g.curX, g.curY, sp, g.rng)
+		if results == nil {
+			g.msg = "MP 不足或被封咒!"
+			return
+		}
+		// 訊息彙總 + 單體攻擊接全螢幕演出
+		hitN, missN, total := 0, 0, 0
+		var first *battle.CastResult
+		for i := range results {
+			if results[i].Missed {
+				missN++
+				continue
+			}
+			hitN++
+			total += results[i].Amount
+			if first == nil {
+				first = &results[i]
+			}
+		}
+		verb := "造成"
+		if sp.Target == 1 {
+			verb = "回復"
+		}
+		g.msg = fmt.Sprintf("%s 施放 %s:命中 %d(%s %d)", g.sel.Name, sp.Name, hitN, verb, total)
+		if missN > 0 {
+			g.msg += fmt.Sprintf("、Miss %d", missN)
+		}
+		if sp.Target == 0 && first != nil && first.Amount > 0 { // 攻擊法術演出(首目標)
+			tgt := first.Target
 			nm := tgt.Name
 			if nm == "" {
 				nm = tgt.ClsName
 			}
-			if sp.Target == 1 {
-				g.msg = fmt.Sprintf("%s 對 %s 施放 %s,回復 %d", g.sel.Name, nm, sp.Name, amt)
-			} else {
-				g.msg = fmt.Sprintf("%s 對 %s 施放 %s,造成 %d 傷害", g.sel.Name, nm, sp.Name, amt)
-				g.atk = g.newAtkAnim(g.sel.Fig, tgt.Fig, g.sel.Name, nm,
-					g.sel.HP, g.sel.MaxHP, g.sel.Lv, g.sel.MP, tgt.Lv, tgt.MP,
-					tgt.HP+amt, tgt.HP, tgt.MaxHP, g.terrainAt(g.curX, g.curY), true)
-			}
-			g.sel.Acted = true
-			g.sel.Dir = dirToward(g.sel.X, g.sel.Y, g.curX, g.curY)
-			g.castSp, g.sel, g.reach, g.moved = nil, nil, nil, false
-			g.checkResult()
+			g.atk = g.newAtkAnim(g.sel.Fig, tgt.Fig, g.sel.Name, nm,
+				g.sel.HP, g.sel.MaxHP, g.sel.Lv, g.sel.MP, tgt.Lv, tgt.MP,
+				tgt.HP+first.Amount, tgt.HP, tgt.MaxHP, g.terrainAt(tgt.X, tgt.Y), true)
 		}
+		g.sel.Acted = true
+		g.sel.Dir = dirToward(g.sel.X, g.sel.Y, g.curX, g.curY)
+		g.castSp, g.sel, g.reach, g.moved = nil, nil, nil, false
+		g.checkResult()
 		return
 	}
 	if !g.moved { // 移動階段
@@ -1626,6 +1662,11 @@ func loadGame() *Game {
 		}
 	}
 	g.gold = 1000 // 初始金幣(商店用;原版開局金額待對照)
+	seed := time.Now().UnixNano()
+	if v, e := strconv.ParseInt(os.Getenv("FD2_SEED"), 10, 64); e == nil {
+		seed = v
+	}
+	g.rng = rand.New(rand.NewSource(seed))
 	g.sfx = loadSFX()
 	g.playBGM("FDMUS_018") // 戰場 BGM(doc12 實測 track 18;campaign 模式由節點 bgm 覆蓋)
 	if cp := os.Getenv("FD2_CAMPAIGN"); cp != "" { // 劇本節點圖模式(doc 19;放最後,story 對白不被開場 Setup 蓋掉)
@@ -1669,6 +1710,7 @@ func (g *Game) finishTurn() {
 	g.st.Turn++
 	for _, u := range g.st.Units {
 		u.Acted = false
+		u.TickStatus() // buff/封咒/中毒/麻痺回合遞減+中毒扣血(doc02 §6.4)
 	}
 	g.sel, g.reach, g.moved = nil, nil, false
 	g.checkResult()
