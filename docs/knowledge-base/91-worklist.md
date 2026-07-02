@@ -345,6 +345,23 @@
 - [ ] ch21/22 \$reg_or_mem 增援 eax 來源 RE(6 筆)
 - [ ] ch09-33 文本(批次進行中:09-13 執行中)
 
+## 第 14 輪 ✅(AFM 完全破解+開場過場端到端+文本過半)
+- [x] **AFM 格式完全破解**(sonnet):10-opcode 增量繪圖 VM(Lo Yuan Tsung 1993);
+      派發 0x36c9e/跳表 0x5276a/framebuffer=VGA 0xA0000;289 幀(9 資源)逐位元組驗證;
+      decode_ani.py;視覺全命中 dosbox 分鏡(屠龍/logo/金鎖…)→ doc39
+- [x] **Go AFM VM 移植+開場接入**(旗艦):internal/afm(容器+VM);執行期解玩家 ANI.DAT
+      (不夾帶版權幀);title cutscene 9 幕串接進選單;afm_test 驗幀數 96/51/35;
+      無 ANI.DAT 退回 FDOTHER 捲動 fallback
+- [x] **AFM 播放器排程 RE**(sonnet):play_afm(index,delayMs,skippable);毫秒校準 0x3dc9f;
+      5 呼叫點釘死(開場 3/4/5/6/7/8/0/1,delay 90-15ms;idx0/2=章節過場非開場);
+      title.go 換真值排程(拿掉月亮 idx2、各幕 delay、skippable 旗標)
+- [x] **ch14-18 文本**(sonnet):229 句;ch01-18 累計 747 句;ch18 永久劇情死亡標記
+- [ ] **0x1f73f FDOTHER 靜態 blit RE**:疑分鏡⑥浮空城⑨惡魔臉來源(ani-sched 附帶發現)
+- [ ] 開場配樂曲號實聽(容器 nosound;使用者聽辨)
+- [ ] ch19-33 文本(19-23 執行中)
+- [ ] ch21/22 \$reg_or_mem 增援 eax 來源 RE(6 筆)
+- [ ] speaker 代碼表 EXE RE(驗證字母碼場景本地表假設)
+
 ## 完成定義(反組譯研究)
 全部資產格式可解(解包+解壓+轉現代格式)、核心數值表全 dump 並驗證、
 主要遊戲規則演算法(戰鬥/移動/升級/AI)有反組譯依據、地圖可渲染、文本可讀可改。
