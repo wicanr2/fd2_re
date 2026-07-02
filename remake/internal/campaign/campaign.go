@@ -34,6 +34,7 @@ type Node struct {
 	Type     string          `json:"type"`
 	Lines    []Line          `json:"lines,omitempty"`    // story:對白
 	Scenario string          `json:"scenario,omitempty"` // battle:戰場事件劇本檔
+	Map      string          `json:"map,omitempty"`      // battle:戰場資產目錄(assets/maps/mapN;空=沿用當前)
 	Units    string          `json:"units,omitempty"`    // battle:單位配置檔
 	BGM      string          `json:"bgm,omitempty"`
 	Next     string          `json:"next,omitempty"`     // story/event

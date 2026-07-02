@@ -157,6 +157,11 @@ func (g *Game) enterNode() {
 			g.dialog = append(g.dialog, battle.DialogLine{Speaker: n.Lines[i].Speaker, Text: n.Lines[i].Text})
 		}
 	case "battle":
+		if n.Map != "" { // 指定戰場(assets/maps/mapN;全 33 圖已匯出)
+			if err := g.loadMap(n.Map); err != nil {
+				g.loadErr = "map: " + err.Error()
+			}
+		}
 		g.resetBattle(n.Units, n.Scenario)
 	case "event":
 		g.camp.Advance("")
@@ -360,6 +365,43 @@ const (
 	sfxConfirm = 1 // 確認
 	sfxHit     = 3 // 攻擊命中
 )
+
+// loadMap 載入一張戰場(dir 下的 map.json + tileset.png,並切圖塊)。
+// dir 例:"assets"(map0 舊結構)或 "assets/maps/map3"(全 33 圖匯出結構)。
+func (g *Game) loadMap(dir string) error {
+	raw, err := os.ReadFile(dir + "/map.json")
+	if err != nil {
+		return err
+	}
+	var m MapData
+	if err := json.Unmarshal(raw, &m); err != nil {
+		return err
+	}
+	pngRaw, err := os.ReadFile(dir + "/tileset.png")
+	if err != nil {
+		return err
+	}
+	img, _, err := image.Decode(bytes.NewReader(pngRaw))
+	if err != nil {
+		return err
+	}
+	g.tileset = ebiten.NewImageFromImage(img)
+	g.tiles = nil
+	tsW := g.tileset.Bounds().Dx()
+	cols := m.Cols
+	if cols == 0 {
+		cols = tsW / m.TileW
+	}
+	n := (g.tileset.Bounds().Dy() / m.TileH) * cols
+	for i := 0; i < n; i++ {
+		sx := (i % cols) * m.TileW
+		sy := (i / cols) * m.TileH
+		r := image.Rect(sx, sy, sx+m.TileW, sy+m.TileH)
+		g.tiles = append(g.tiles, g.tileset.SubImage(r).(*ebiten.Image))
+	}
+	g.m = &m
+	return nil
+}
 
 // battleFPT 戰鬥演出播放速度(tick/幀):環境變數 FD2_BATTLE_FPT 可調(調慢=數字大),預設 3。
 func battleFPT() int {
@@ -1567,41 +1609,10 @@ func loadGame() *Game {
 			g.shotTurn = n
 		}
 	}
-	raw, err := os.ReadFile("assets/map.json")
-	if err != nil {
+	if err := g.loadMap("assets"); err != nil {
 		g.loadErr = err.Error()
 		return g
 	}
-	var m MapData
-	if err := json.Unmarshal(raw, &m); err != nil {
-		g.loadErr = err.Error()
-		return g
-	}
-	pngRaw, err := os.ReadFile("assets/tileset.png")
-	if err != nil {
-		g.loadErr = err.Error()
-		return g
-	}
-	img, _, err := image.Decode(bytes.NewReader(pngRaw))
-	if err != nil {
-		g.loadErr = err.Error()
-		return g
-	}
-	g.tileset = ebiten.NewImageFromImage(img)
-	// 切圖塊
-	tsW := g.tileset.Bounds().Dx()
-	cols := m.Cols
-	if cols == 0 {
-		cols = tsW / m.TileW
-	}
-	n := (g.tileset.Bounds().Dy() / m.TileH) * cols
-	for i := 0; i < n; i++ {
-		sx := (i % cols) * m.TileW
-		sy := (i / cols) * m.TileH
-		r := image.Rect(sx, sy, sx+m.TileW, sy+m.TileH)
-		g.tiles = append(g.tiles, g.tileset.SubImage(r).(*ebiten.Image))
-	}
-	g.m = &m
 	// 載入單位(M1)
 	if st, err := battle.Load("assets/map0_units.json"); err == nil {
 		g.st = st
