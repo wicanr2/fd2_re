@@ -33,6 +33,7 @@ type PartyMember struct {
 	DP       int    `json:"dp"`
 	MV       int    `json:"mv"`
 	Lv       int    `json:"lv"`
+	Spells   []int  `json:"spells"` // 已習得法術 id(spell.json)
 }
 
 // Event 一條事件規則。
@@ -150,7 +151,7 @@ func (sc *Scenario) exec(st *State, a Action) (DialogLine, bool) {
 			st.AddUnit(&Unit{
 				Camp: Own, Name: pm.Name, ClsName: pm.Cls, Lv: pm.Lv,
 				HP: pm.HP, MaxHP: pm.HP, MP: pm.MP, AP: pm.AP, DP: pm.DP, MV: pm.MV,
-				Portrait: pm.Portrait, Fig: pm.Fig, X: x, Y: y, OnField: true,
+				Portrait: pm.Portrait, Fig: pm.Fig, X: x, Y: y, OnField: true, Spells: pm.Spells,
 				OffY: 160, Dir: 2, // 進場:從戰場下緣(螢幕外)朝上行軍滑入部署格(spawn_march)
 			})
 		}

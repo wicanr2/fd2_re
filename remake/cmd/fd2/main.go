@@ -57,6 +57,14 @@ type Game struct {
 	walk    *walkAnim           // 移動動畫(沿路徑逐格走,FDICON 方向幀)
 	camp    *campaign.Runner    // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
 	campSel int                 // choice 節點游標
+	// radial 指令環(原版 4 圖示十字繞單位,doc13 [0x3C57]:↑0/←1/→2/↓3)+ 法術
+	ring      bool
+	ringSel   int
+	ringIcons [4]*ebiten.Image // 0上=道具 1左=攻擊 2右=魔法/狀態 3下=待機
+	spellOpen bool
+	spellSel  int
+	castSp    *battle.Spell // 施法目標選擇中
+	spells    []battle.Spell
 	portraits map[int][]*ebiten.Image // DATO 頭像:肖像 id → 4 嘴型幀
 	mouthOpen  bool // 嘴型動畫狀態(原版 0x16d00:m0閉/m3開)
 	mouthTimer int  // 閉嘴倒數(原版 rand%30+2 tick)
@@ -212,6 +220,87 @@ func (g *Game) campInput() bool {
 		return false // 戰鬥照常
 	}
 	return false
+}
+
+// ringInput radial 指令環 + 法術選單輸入。回傳 true = 已攔截。
+// 方向配對(↑0道具/←1攻擊/→2魔法或狀態/↓3待機)為可玩性配置;原版方向↔指令待 dosbox 驗證(worklist)。
+func (g *Game) ringInput() bool {
+	enter := inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)
+	esc := inpututil.IsKeyJustPressed(ebiten.KeyEscape)
+	if g.spellOpen { // 法術選單
+		if g.sel == nil {
+			g.spellOpen = false
+			return false
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.spellSel > 0 {
+			g.spellSel--
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.spellSel < len(g.sel.Spells)-1 {
+			g.spellSel++
+		}
+		if esc {
+			g.spellOpen, g.ring = false, true
+		}
+		if enter && g.spellSel < len(g.sel.Spells) {
+			id := g.sel.Spells[g.spellSel]
+			for i := range g.spells {
+				if g.spells[i].ID == id {
+					if g.sel.MP < g.spells[i].MP {
+						g.msg = "MP 不足!"
+						return true
+					}
+					g.castSp = &g.spells[i]
+					g.spellOpen = false
+					g.msg = fmt.Sprintf("%s:選擇目標(射程 %d)", g.spells[i].Name, g.spells[i].Dist)
+					break
+				}
+			}
+		}
+		return true
+	}
+	if !g.ring || g.sel == nil {
+		return false
+	}
+	// 環導航(doc13 [0x3C57]:↑0/←1/→2/↓3)
+	if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
+		g.ringSel = 0
+	}
+	if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
+		g.ringSel = 1
+	}
+	if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+		g.ringSel = 2
+	}
+	if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
+		g.ringSel = 3
+	}
+	if esc { // ESC = 待機(結束該單位行動)
+		g.ring = false
+		g.sel.Acted = true
+		g.sel, g.reach, g.moved = nil, nil, false
+		return true
+	}
+	if enter {
+		switch g.ringSel {
+		case 0: // 道具(未實裝)
+			g.msg = "道具:尚未實裝"
+		case 1: // 攻擊 → 關環,進選目標(游標相鄰敵)
+			g.ring = false
+			g.msg = "攻擊:選擇相鄰目標"
+		case 2: // 魔法(有法術者)/狀態
+			if len(g.sel.Spells) > 0 {
+				g.ring, g.spellOpen, g.spellSel = false, true, 0
+			} else {
+				g.msg = fmt.Sprintf("%s Lv%d HP%d/%d MP%d AP%d DP%d",
+					g.sel.Name, g.sel.Lv, g.sel.HP, g.sel.MaxHP, g.sel.MP, g.sel.AP, g.sel.DP)
+			}
+		case 3: // 待機
+			g.ring = false
+			g.sel.Acted = true
+			g.sel, g.reach, g.moved = nil, nil, false
+		}
+	}
+	return true
 }
 
 // walkAnim 沿路徑逐格行走(玩家/AI 移動;FDICON 方向走動幀 + OffX/OffY 內插)。
@@ -443,17 +532,48 @@ func (g *Game) confirm() {
 		}
 		return
 	}
+	if g.castSp != nil { // 施法目標選擇:游標在射程內的合法目標 → 施放
+		sp := *g.castSp
+		tgt := g.st.UnitAt(g.curX, g.curY)
+		okCamp := tgt != nil && ((sp.Target == 0 && tgt.Camp != battle.Own) || (sp.Target == 1 && tgt.Camp == battle.Own))
+		if okCamp && g.st.InCastRange(g.sel, sp, g.curX, g.curY) {
+			amt := g.st.Cast(g.sel, tgt, sp)
+			if amt < 0 {
+				g.msg = "MP 不足!"
+				return
+			}
+			nm := tgt.Name
+			if nm == "" {
+				nm = tgt.ClsName
+			}
+			if sp.Target == 1 {
+				g.msg = fmt.Sprintf("%s 對 %s 施放 %s,回復 %d", g.sel.Name, nm, sp.Name, amt)
+			} else {
+				g.msg = fmt.Sprintf("%s 對 %s 施放 %s,造成 %d 傷害", g.sel.Name, nm, sp.Name, amt)
+				g.atk = g.newAtkAnim(g.sel.Fig, tgt.Fig, g.sel.Name, nm,
+					g.sel.HP, g.sel.MaxHP, g.sel.Lv, g.sel.MP, tgt.Lv, tgt.MP,
+					tgt.HP+amt, tgt.HP, tgt.MaxHP, g.terrainAt(g.curX, g.curY))
+			}
+			g.sel.Acted = true
+			g.sel.Dir = dirToward(g.sel.X, g.sel.Y, g.curX, g.curY)
+			g.castSp, g.sel, g.reach, g.moved = nil, nil, nil, false
+			g.checkResult()
+		}
+		return
+	}
 	if !g.moved { // 移動階段
 		switch {
-		case g.curX == g.sel.X && g.curY == g.sel.Y: // 原地 → 不移動,進攻擊/待命階段
+		case g.curX == g.sel.X && g.curY == g.sel.Y: // 原地 → 不移動,開指令環
 			g.moved = true
 			g.reach = nil
+			g.ring, g.ringSel = true, 1
 		case g.reach[cur] && g.st.UnitAt(g.curX, g.curY) == nil: // 移動到可達空格:沿路徑逐格走
 			if p := g.st.Path(g.sel, g.curX, g.curY); len(p) >= 2 {
 				g.walk = &walkAnim{u: g.sel, path: p}
 			} else { // 理論上不會(reach 內必可達),保底瞬移
 				g.sel.X, g.sel.Y = g.curX, g.curY
 				g.moved = true
+				g.ring, g.ringSel = true, 1
 			}
 			g.reach = nil
 		}
@@ -549,12 +669,13 @@ func (g *Game) Update() error {
 			w.t--
 			w.seg++
 		}
-		if w.seg >= len(w.path)-1 { // 到位
+		if w.seg >= len(w.path)-1 { // 到位 → 開指令環
 			last := w.path[len(w.path)-1]
 			w.u.X, w.u.Y = last.X, last.Y
 			w.u.OffX, w.u.OffY = 0, 0
 			g.walk = nil
 			g.moved = true
+			g.ring, g.ringSel = true, 1
 		} else {
 			a, b := w.path[w.seg], w.path[w.seg+1]
 			w.u.Dir = dirToward(a.X, a.Y, b.X, b.Y)
@@ -584,6 +705,19 @@ func (g *Game) Update() error {
 			if g.shotSel {
 				g.confirm()
 			}
+			if os.Getenv("FD2_SHOT_RING") != "" { // 截圖驗證:選單位後原地開指令環
+				g.dialog = nil // 清開場對白(避免蓋住環)
+				g.confirm()
+				g.confirm()
+			}
+			if os.Getenv("FD2_SHOT_SPELL") != "" { // 截圖驗證:開法術選單
+				g.dialog = nil
+				g.confirm()
+				g.confirm()
+				if g.sel != nil && len(g.sel.Spells) > 0 {
+					g.ring, g.spellOpen, g.spellSel = false, true, 0
+				}
+			}
 			if v := os.Getenv("FD2_SHOT_ATTACK"); v != "" { // 全螢幕戰鬥演出(驗證用):亞雷斯打盜賊
 				fig, _ := strconv.Atoi(v)
 				g.atk = g.newAtkAnim(fig, 96, "亞雷斯", "盜賊", 48, 48, 1, 0, 2, 0, 28, 8, 28, 0)
@@ -600,8 +734,23 @@ func (g *Game) Update() error {
 	if g.m == nil {
 		return nil
 	}
+	// 相機跟隨游標(置中,夾在地圖內;先於各攔截,避免環/選單開啟時相機停擺)
+	g.camX = float64(g.curX*g.m.TileW - logicalW/2 + g.m.TileW/2)
+	g.camY = float64(g.curY*g.m.TileH - logicalH/2 + g.m.TileH/2)
+	clamp(&g.camX, 0, float64(g.m.W*g.m.TileW-logicalW))
+	clamp(&g.camY, 0, float64(g.m.H*g.m.TileH-logicalH))
 	if g.campInput() { // campaign 節點(story/choice/ending/勝敗轉場)攔截輸入
 		return nil
+	}
+	if g.ringInput() { // radial 指令環 / 法術選單
+		return nil
+	}
+	if g.castSp != nil { // 施法目標選擇:ESC 取消回環
+		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+			g.castSp = nil
+			g.ring = true
+			return nil
+		}
 	}
 	// 游標移動:方向鍵 / WASD / 觸控
 	if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) || inpututil.IsKeyJustPressed(ebiten.KeyA) {
@@ -708,6 +857,19 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			op.GeoM.Translate(float64(c.X*tw)-g.camX, float64(c.Y*th)-g.camY)
 			screen.DrawImage(hl, op)
 		}
+		if g.castSp != nil { // 施法射程高亮(紫)
+			ch := ebiten.NewImage(tw, th)
+			ch.Fill(color.RGBA{0xa0, 0x50, 0xe0, 0x5c})
+			for y := 0; y < g.m.H; y++ {
+				for x := 0; x < g.m.W; x++ {
+					if g.st.InCastRange(g.sel, *g.castSp, x, y) {
+						op := &ebiten.DrawImageOptions{}
+						op.GeoM.Translate(float64(x*tw)-g.camX, float64(y*th)-g.camY)
+						screen.DrawImage(ch, op)
+					}
+				}
+			}
+		}
 	}
 	// 單位層(M1:FIGANI 待機動畫 sprite + 陣營腳標 + HP bar;無 sprite 退回色塊)
 	if g.st != nil {
@@ -761,6 +923,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				}
 			}
 		}
+		g.drawRing(screen)
+		g.drawSpellMenu(screen)
 		if len(g.dialog) > 0 { // 對話框:原版素材(FDOTHER#5 LMI1 #21,310×99 素藍細邊框)+ orig 量測佈局
 			dl := g.dialog[len(g.dialog)-1]
 			// 依說話者切上/下框 + 左/右頭像(對照原版 orig_02_dialog:我方下框左頭像、對方/NPC 上框右頭像)
@@ -848,6 +1012,82 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	// 截圖鉤子:指定幀把畫面存 PNG(無人值守驗證用)
 	if g.shotPath != "" && g.frame == g.shotFrame {
 		saveShot(screen, g.shotPath)
+	}
+}
+
+// drawRing radial 指令環(原版 4 圖示十字繞單位,orig_04;圖示=原版截圖裁出素材)。
+func (g *Game) drawRing(screen *ebiten.Image) {
+	if !g.ring || g.sel == nil || g.m == nil {
+		return
+	}
+	tw, th := g.m.TileW, g.m.TileH
+	ux := float64(g.sel.X*tw) - g.camX
+	uy := float64(g.sel.Y*th) - g.camY
+	const iw, ih = 56.0, 52.0 // 28×26 ×2
+	pos := [4][2]float64{ // 0上 1左 2右 3下
+		{ux + float64(tw)/2 - iw/2, uy - ih - 6},
+		{ux - iw - 6, uy + float64(th)/2 - ih/2},
+		{ux + float64(tw) + 6, uy + float64(th)/2 - ih/2},
+		{ux + float64(tw)/2 - iw/2, uy + float64(th) + 6},
+	}
+	border := func(x, y float64, c color.RGBA) {
+		for _, r := range [][4]float64{{x - 3, y - 3, iw + 6, 3}, {x - 3, y + ih, iw + 6, 3},
+			{x - 3, y, 3, ih}, {x + iw, y, 3, ih}} {
+			b := ebiten.NewImage(int(r[2]), int(r[3]))
+			b.Fill(c)
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Translate(r[0], r[1])
+			screen.DrawImage(b, op)
+		}
+	}
+	for i, ic := range g.ringIcons {
+		if ic == nil {
+			continue
+		}
+		x, y := pos[i][0], pos[i][1]
+		if i == g.ringSel { // 選中:橘黃框(orig 選中樣式)
+			border(x, y, color.RGBA{0xff, 0xa8, 0x20, 0xff})
+		}
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Scale(2, 2)
+		op.GeoM.Translate(x, y)
+		screen.DrawImage(ic, op)
+	}
+}
+
+// drawSpellMenu 法術選單(名稱 + MP;↑↓選、Enter 施放、ESC 回環)。
+func (g *Game) drawSpellMenu(screen *ebiten.Image) {
+	if !g.spellOpen || g.sel == nil || g.font == nil {
+		return
+	}
+	h := 44 + float64(len(g.sel.Spells))*30
+	box := ebiten.NewImage(230, int(h))
+	box.Fill(color.RGBA{0x10, 0x1c, 0x40, 0xee})
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(20, 60)
+	screen.DrawImage(box, op)
+	g.font.Draw(screen, fmt.Sprintf("法術  MP %d", g.sel.MP), 34, 68, 1.0, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+	for i, id := range g.sel.Spells {
+		var sp *battle.Spell
+		for k := range g.spells {
+			if g.spells[k].ID == id {
+				sp = &g.spells[k]
+				break
+			}
+		}
+		if sp == nil {
+			continue
+		}
+		c := color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
+		pre := "　"
+		if i == g.spellSel {
+			c = color.RGBA{0xff, 0xff, 0xff, 0xff}
+			pre = "▶"
+		}
+		if g.sel.MP < sp.MP {
+			c = color.RGBA{0x80, 0x80, 0x90, 0xff} // MP 不足變暗
+		}
+		g.font.Draw(screen, fmt.Sprintf("%s%s  MP%d", pre, sp.Name, sp.MP), 32, 96+float64(i)*30, 1.0, c)
 	}
 }
 
@@ -1276,6 +1516,16 @@ func loadGame() *Game {
 		if im, _, e2 := image.Decode(bytes.NewReader(raw)); e2 == nil {
 			g.dlgBox = ebiten.NewImageFromImage(im)
 		}
+	}
+	for i, nm := range []string{"item", "attack", "status", "wait"} { // 指令環圖示(orig_04 截圖 oracle 裁出)
+		if raw, e := os.ReadFile("assets/ui/ring_" + nm + ".png"); e == nil {
+			if im, _, e2 := image.Decode(bytes.NewReader(raw)); e2 == nil {
+				g.ringIcons[i] = ebiten.NewImageFromImage(im)
+			}
+		}
+	}
+	if sp, e := battle.LoadSpells("assets/spells.json"); e == nil { // 法術表(EXE dump)
+		g.spells = sp
 	}
 	g.font = loadFont()
 	// 狀態欄名字專用整數尺寸 face(scale 1.0 繪製,避免非整數縮放模糊);orig 名墨高 13px→face 28

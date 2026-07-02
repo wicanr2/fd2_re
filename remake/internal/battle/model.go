@@ -45,6 +45,7 @@ type Unit struct {
 	Acted    bool // 本回合已行動(原版 byte[+5] bit7)
 	Group    int  // 出場波次(原版 FDFIELD b21;事件按 group 放出,doc 25/29)
 	OnField  bool // 是否已登場(事件進場機制:false=待命,尚未出現在戰場,doc 25)
+	Spells   []int   // 已習得法術 id(spell.json;原版 M1-M5 bitfield 展開)
 	Dir      int     // 朝向:0下 1左 2上 3右(原版 Z2,FDICON 方向幀)
 	OffX     float64 // 行軍/移動的像素位移(顯示用;0=正在格上)
 	OffY     float64 // 進場時從邊緣滑入,漸減到 0
@@ -112,6 +113,7 @@ type unitsFile struct {
 		Lv       int    `json:"lv"`
 		HP       int    `json:"hp"`
 		MP       int    `json:"mp"`
+		Spells   []int  `json:"spells"`
 		AP       int    `json:"ap"`
 		DP       int    `json:"dp"`
 		MV       int    `json:"mv"`
@@ -150,7 +152,7 @@ func Load(path string) (*State, error) {
 		nu := &Unit{
 			Camp: camp, Name: u.Name, ClsName: u.ClsName, Lv: u.Lv,
 			HP: u.HP, MaxHP: u.HP, MP: u.MP, AP: u.AP, DP: u.DP, MV: u.MV,
-			Portrait: u.Portrait, Fig: u.Fig, X: u.X, Y: u.Y,
+			Portrait: u.Portrait, Fig: u.Fig, X: u.X, Y: u.Y, Spells: u.Spells,
 			Group: u.Group, OnField: true, // 預設登場;Scenario 會把待命 group 設 false
 		}
 		// 註:不再自動把 own 塞部署格 — 部署格保留給 scenario 主角隊(spawn_party);

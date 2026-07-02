@@ -3,6 +3,8 @@
 assets/*
 # 例外:原創劇本(可擴充事件 DSL 實例,非 ROM 衍生素材)入庫
 !assets/scenarios/
+# 例外:法術表(EXE dump 數值,已在 docs/data 公開)
+!assets/spells.json
 web/assets/
 web/fd2.wasm
 *.wasm
