@@ -87,6 +87,7 @@ type Game struct {
 	bg      *ebiten.Image           // 戰鬥背景(BG.DAT,by 戰場;map0=BG_004 森林)
 	tai     *ebiten.Image           // 我方腳下台座(TAI.DAT;0x29164 載 0x28c46,doc35 §3.3)
 	panel   *ebiten.Image           // 狀態欄框素材(FDOTHER#5 LMI1 #22,149×42;含bevel+HP/MP標籤+槽,doc35 §4)
+	dlgBox  *ebiten.Image           // 對話框框素材(FDOTHER#5 LMI1 #21,310×99;orig 下框(5,112)@320)
 	fontNm  *Font                   // 狀態欄名字(整數尺寸 face,scale1 銳利)
 	digits  [10]*ebiten.Image       // 狀態欄數字 0-9(LMI1 #31-40 原版 digit cell,白/藍影)
 	redSil  map[*ebiten.Image]*ebiten.Image // 命中閃紅的全紅剪影快取(orig=VGA 色盤閃紅)
@@ -760,35 +761,37 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				}
 			}
 		}
-		if len(g.dialog) > 0 { // 底部對話框:左頭像 + 右文字(原版佈局,real_pic)
+		if len(g.dialog) > 0 { // 對話框:原版素材(FDOTHER#5 LMI1 #21,310×99 素藍細邊框)+ orig 量測佈局
 			dl := g.dialog[len(g.dialog)-1]
-			boxH := 120.0 // 原版約佔底部 1/4~1/3
 			// 依說話者切上/下框 + 左/右頭像(對照原版 orig_02_dialog:我方下框左頭像、對方/NPC 上框右頭像)
 			upper := dl.Speaker >= 32 // >=32 為對方/敵/NPC(我方角色 id 0-31)
-			top := float64(logicalH) - boxH
+			// 框位置:模板匹配 orig 下框 (5,112)@320(底部裁 11px 超出畫面,原版如此);上框鏡射 y=-11
+			bx, by := 10.0, 224.0
 			if upper {
-				top = 0
+				by = -22
 			}
-			box := ebiten.NewImage(logicalW, int(boxH))
-			box.Fill(color.RGBA{0x10, 0x18, 0x48, 0xf2})
-			op := &ebiten.DrawImageOptions{}
-			op.GeoM.Translate(0, top)
-			screen.DrawImage(box, op)
-			edge := ebiten.NewImage(logicalW, 2)
-			edge.Fill(color.RGBA{0xc8, 0xa0, 0x40, 0xff})
-			oe := &ebiten.DrawImageOptions{}
-			edgeY := top
+			top := by
+			if g.dlgBox != nil {
+				op := &ebiten.DrawImageOptions{}
+				op.GeoM.Scale(2, 2)
+				op.GeoM.Translate(bx, by)
+				screen.DrawImage(g.dlgBox, op)
+			} else { // 無素材 fallback:純色框
+				box := ebiten.NewImage(620, 198)
+				box.Fill(color.RGBA{0x2c, 0x44, 0x84, 0xf2})
+				op := &ebiten.DrawImageOptions{}
+				op.GeoM.Translate(bx, by)
+				screen.DrawImage(box, op)
+			}
+			// 頭像:大側臉,我方左(頭頂凸出框頂)、對方右(orig 佈局);嘴型 m0閉/m3開
+			const ps = 2.6 // 80×80 DATO → ~208px(對照 orig 側臉高)
+			hx, tx, ty := 16.0, 216.0, by+24
+			hy := float64(logicalH) - 80*ps // 下框:底對齊畫布底
 			if upper {
-				edgeY = top + boxH - 2
-			}
-			oe.GeoM.Translate(0, edgeY)
-			screen.DrawImage(edge, oe)
-			// 頭像:我方左、對方右(側臉半身,佔框高滿版;嘴型 m0閉/m3開)
-			s := boxH / 80.0
-			hx, tx := 6.0, 6.0+80*s+12
-			if upper { // 右頭像,文字在左
-				hx = float64(logicalW) - 6 - 80*s
-				tx = 16
+				hx = float64(logicalW) - 16 - 80*ps
+				hy = -14 // 上框:頭像貼頂,臉朝下框
+				tx = 32
+				ty = by + 46
 			}
 			if fr := g.portraits[dl.Speaker]; len(fr) > 0 {
 				mi := 0
@@ -796,13 +799,32 @@ func (g *Game) Draw(screen *ebiten.Image) {
 					mi = 3
 				}
 				po := &ebiten.DrawImageOptions{}
-				po.GeoM.Scale(s, s)
-				po.GeoM.Translate(hx, top)
+				if upper { // 上框頭像水平鏡像(面左朝文字;原版下框走 0x4E8E1 鏡像 blit、上框 0x4E8AF,doc14/35)
+					po.GeoM.Scale(-ps, ps)
+					po.GeoM.Translate(hx+80*ps, hy)
+				} else {
+					po.GeoM.Scale(ps, ps)
+					po.GeoM.Translate(hx, hy)
+				}
 				screen.DrawImage(fr[mi], po)
 			} else {
-				tx = 16
+				tx = 32
 			}
-			g.font.Draw(screen, "『"+toFullWidth(dl.Text)+"』", tx, top+24, 1.7, color.RGBA{0xf0, 0xf4, 0xff, 0xff})
+			// 自動換行(框右緣內;原版每框最多 3 行,doc14)
+			txt := []rune("『" + toFullWidth(dl.Text) + "』")
+			perLine := int((bx + 620 - 16 - tx) / (fontSize * 1.7)) // 全形字寬 ≈ fontSize×scale
+			if perLine < 1 {
+				perLine = 1
+			}
+			for i := 0; len(txt) > 0 && i < 3; i++ {
+				n := perLine
+				if n > len(txt) {
+					n = len(txt)
+				}
+				g.font.Draw(screen, string(txt[:n]), tx, ty+float64(i)*38, 1.7, color.RGBA{0xf0, 0xf4, 0xff, 0xff})
+				txt = txt[n:]
+			}
+			_ = top
 		}
 		if g.msg != "" && len(g.dialog) == 0 { // 攻擊等短訊(無對話框時)
 			g.font.Draw(screen, g.msg, 8, float64(logicalH)-30, 1.2, color.RGBA{0xff, 0xf0, 0xb4, 0xff})
@@ -1248,6 +1270,11 @@ func loadGame() *Game {
 	if raw, e := os.ReadFile("assets/ui/panel.png"); e == nil { // 狀態欄框(LMI1 #22)
 		if im, _, e2 := image.Decode(bytes.NewReader(raw)); e2 == nil {
 			g.panel = ebiten.NewImageFromImage(im)
+		}
+	}
+	if raw, e := os.ReadFile("assets/ui/dialog.png"); e == nil { // 對話框框(LMI1 #21)
+		if im, _, e2 := image.Decode(bytes.NewReader(raw)); e2 == nil {
+			g.dlgBox = ebiten.NewImageFromImage(im)
 		}
 	}
 	g.font = loadFont()
