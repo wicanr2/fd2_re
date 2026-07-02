@@ -149,6 +149,32 @@ codec 與破解歷程見 [`06-animation-format.md`](docs/knowledge-base/06-anima
 → 新增事件、分支劇情、自創戰役**只要寫資料,零引擎改動**;原版 30 關用同一套 DSL 忠實重現,同引擎也能跑
 玩家自製戰役。完整設計見 [`29` 可擴展事件系統](docs/knowledge-base/29-remake-extensible-event-system.md)。這是 remake 相對原版「擺脫固定 33 路線」的關鍵。
 
+### ⚔️ 戰鬥演出:像素級 1:1 還原(左原版 / 右重製,同步播放)
+
+![戰鬥演出還原對照](docs/figures/battle_restore.gif)
+
+全螢幕攻擊演出(亞雷斯 vs 盜賊)對照原版逐幀還原。**動畫不是手調的**——反組譯出關鍵機制後,
+整段演出由**原版資料驅動**:
+
+- **每幀自帶絕對螢幕座標**:FIGANI 幀標頭 +0/+2 就是該幀的 (x,y)@320×200——旋轉蓄力、劈擊、
+  突刺的「走位」全燒在資料裡,引擎每幀照著貼即可([`06`](docs/knowledge-base/06-animation-format.md))。
+- **無 runtime 縮放 / 翻轉**:守方小、攻方大、朝向,全是美術畫進素材(blit `0x4e63d` 原生尺寸,[`35`](docs/knowledge-base/35-battle-animation-rendering.md))。
+- **狀態欄 = 素材拼裝**:框(FDOTHER#5 LMI1 #22,codec `0x4e916` 破解)+ 數字 cell(#31-40)+
+  血條逐欄填充;**框與數字經模板匹配驗證與原版像素全等(err=0)**。
+- **命中閃紅 = VGA DAC 色盤操作**(`0x11d40`):重製以全紅剪影交替重現。
+- **我方腳下台座 = TAI.DAT 獨立素材**(`0x29164` 載入;我方背影+台座 / 敵方正面的固定視角設計)。
+
+五階段分鏡對照(蓄力 → 大弧 → 劈中 → 突刺 → 收勢):
+
+![戰鬥五階段分鏡](docs/figures/battle_storyboard.png)
+
+網格量測驗證(10px 網格;figure / 台座 / 狀態欄以 sprite 模板匹配確認 dx=dy=0):
+
+![網格對照驗證](docs/figures/battle_restore_grid.png)
+
+> 對齊方法論:**不用 debugger**(DOSBox vanilla 無法 dump)——以「已破解的解碼器 + 原版截圖」當
+> oracle,用 sprite 模板匹配反推每個元素的精確落點,再回頭從反組譯確認機制(如幀內嵌座標)。
+
 ## 重製目標(規劃中)
 
 | 技術棧 | 目標平台 | 參考專案 |
