@@ -258,6 +258,24 @@
 - [ ] 33 關 campaign 自動生成(parse_field+劇情+商店串鏈,M4 工具)
 - [ ] UI 音效 index 2-0xb 語意畫面實測
 
+## 第 10 輪 ✅(3-subagent 續批:全流程骨架/素材滿覆蓋/戰鬥音效)
+- [x] **全 30 章 campaign 生成器**(sonnet):gen_campaign.py→campaign_full.json(183 節點,
+      雙重驗證 python+真 campaign.Load;章→map 順序對應依據誠實);旗艦修 resetBattle fallback
+      (scenario 空不再錯載 ch01 → roster 全員登場);ch02/map1 實測 33 單位 ✓
+- [x] **sprite/頭像滿覆蓋**(haiku):96 組×12 幀 sprite(全 33 圖需求);旗艦補 5 敵方頭像→384 全滿;
+      map3 實測全真 sprite
+- [x] **戰鬥音效池 RE**(sonnet):FDOTHER #48-53/64/78/88 九候選 42 WAV(七池 sub0 相同=共用
+      揮擊音,md5 抽驗 ✓);[0x5411f] 載入點 0x028110(index=招式id→byte陣列動態);
+      **位址勘誤:doc36 全篇 0x11fba→0x111ba**(對齊 doc35)
+- [x] **全域文字銳利化**(旗艦):font.go per-尺寸 face 快取,所有 Draw 呼叫自動銳利(糊字根因=非整數縮放)
+- [x] **BGM 修正(使用者實聽 oracle)**:FDMUS_018=商店(推翻 doc12「戰鬥」推定);戰鬥曲撤下待聽辨
+- [x] **派工 SOP 入 rule**:rulebook/45 新節(haiku=資料/sonnet=RE·套件/旗艦=架構·把關;prompt 要素;把關不可省)
+- [ ] **每章 scenario stub**(ch2-30「能玩」關鍵):party 延續+deploy_cells+initial_groups 全開
+      (gen_campaign 擴充,回合增援事件之後疊)← 下輪首位
+- [ ] 戰鬥曲號聽辨(使用者)+ 各 track 逐曲實聽修正 doc12
+- [ ] 戰鬥 SFX:index 陣列填值上游、#48-64 逐招對照、remake 接入(atkAnim 命中掛 battle 池)
+- [ ] UI 音效 index 2-0xb 語意畫面實測
+
 ## 完成定義(反組譯研究)
 全部資產格式可解(解包+解壓+轉現代格式)、核心數值表全 dump 並驗證、
 主要遊戲規則演算法(戰鬥/移動/升級/AI)有反組譯依據、地圖可渲染、文本可讀可改。
