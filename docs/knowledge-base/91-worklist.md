@@ -221,7 +221,10 @@
       法術特效動畫(FIGANI 內含法術特效,可沿用資料驅動管線)
 - [x] **音樂** ✅(e09c68c):audio.go(ebiten/audio+vorbis;忠實 play_bgm 0x26777:同曲不重播/換曲釋放/
       無限迴圈);campaign 節點 bgm 驅動;FD2_MUTE 靜默。待:非 campaign 模式場景→曲號自動對映(doc12 表)
-- [ ] **音效 SFX**:org_game 只有 .DIG 驅動(Miles 驅動非音效資料);**音效資料在哪未 RE**(可能在 .DAT/EXE 內)← 需先 RE
+- [ ] **音效 SFX**:資料位置已 RE ✅(doc36):`FDOTHER.DAT` 資源 #31(巢狀 `LLLLLL` 容器,14 個 8-bit
+      unsigned mono raw PCM 子樣本)+ 戰鬥音效動態 index(同檔案,依攻擊資料決定 index);播放走
+      `AIL_init/set_sample_address/set_sample_loop_count/start_sample`(0x26896/0x26945)。
+      待:14 子樣本→UI事件對照、戰鬥動態 index 表還原、remake 端接入(SDL_mixer/ebiten audio)
 - [x] **radial 指令環** ✅(3c618c4):orig_04 截圖裁 4 圖示(道具/攻擊/狀態/待機),十字繞單位+選中橘框;
       ↑←→↓+Enter/ESC(doc13 [0x3C57]);移動到位自動開環。待:方向↔指令原版精確配對 dosbox 驗證、
       道具 stub、左下 A+05/D+00 攻防預覽小欄
