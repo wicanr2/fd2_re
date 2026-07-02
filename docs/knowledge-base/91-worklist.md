@@ -325,6 +325,23 @@
 - [ ] ch04-33 劇情文本精校(30 章,PNG 人眼轉錄;對白已可入庫)
 - [ ] 視窗縮放 filter 查證(可能 linear 暈染,tile-debug 提醒)
 
+## 第 13 輪 ✅(增援打通/地形/開場實機裁決/文本流水線)
+- [x] **回合增援機制全解**(sonnet):0x51b91 58-entry 跳表(0x22e5c 排除);map0 4/4 ground truth;
+      extract_event_id_groups.py;turn_events.json 補 groups
+- [x] **gen v4 增援疊入**(sonnet):18 章 35 筆 spawn_group(turn 精確比對=原版語意);
+      \$turn_counter 展開(3 圖核對);6 筆 \$reg_or_mem 列冊待解;ch08 T0/T4 實跑增援登場 ✓
+- [x] **地形接線**(sonnet):FDSHAP 2N/2N+1 配對地形表(4B:寶箱/移動代碼/**戰鬥背景編號**
+      =doc35 地形→BG 對應解!);MoveCost 查表+6 測試;main.go 零改動。騎兵/飛行差異待兵種欄位
+- [x] **ch04-08 文本**(sonnet):177 句入庫;speaker 編碼文獻化(0-9,A-V→face_portrait)
+- [x] **dosbox 開場實機裁決**(sonnet):logo=縮放進場(使用者記憶證實,推翻 doc23 [驗]);
+      開場實為 32.3 秒多幕過場(疑 ANI.DAT 驅動,新缺口);選單座標/硬切閃光轉場
+- [x] **title 修正**(旗艦):logozoom phase(紅閃→縮入→白閃)+選單實拍座標
+- [ ] **ANI.DAT RE**(2.4MB 未拆):32 秒開場多幕過場(守護者/屠龍/騎馬夜行/浮空城/金鎖/惡魔臉)
+      +「2」獨立圖層;AFM 格式(doc06 容器已知)← 開場完整還原的關鍵
+- [ ] 開場配樂曲號實聽驗證(容器 nosound 無法驗;使用者聽辨)
+- [ ] ch21/22 \$reg_or_mem 增援 eax 來源 RE(6 筆)
+- [ ] ch09-33 文本(批次進行中:09-13 執行中)
+
 ## 完成定義(反組譯研究)
 全部資產格式可解(解包+解壓+轉現代格式)、核心數值表全 dump 並驗證、
 主要遊戲規則演算法(戰鬥/移動/升級/AI)有反組譯依據、地圖可渲染、文本可讀可改。
