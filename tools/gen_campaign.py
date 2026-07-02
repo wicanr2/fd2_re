@@ -21,20 +21,30 @@
 
 本輪範圍(刻意不做的部分,別誤以為漏做):
   - 不寫逐章劇情全文,story 節點只放「章節標題 + 目標句」(1-2 句,doc28 摘要)。
-  - 不生成 remake/assets/scenarios/chNN.json(逐章 Scenario:party/initial_groups/
-    deploy_cells/回合事件)。campaign.go 的 resetBattle() 在 Scenario 路徑空字串時
-    會 fallback 到 assets/scenarios/ch01.json——這對 chapter 2-30 是錯的(ch01 的
-    initial_groups=[1,2,10,11] 只適用 map0,套到別張圖會把不在該清單的分組錯誤設成
-    OnField=false,主角隊 Party/DeployCells 也是 ch01 專屬)。这是刻意保留給下一輪
-    的已知缺口,不在本工具動手範圍(worklist 指示只能動 gen_campaign.py 與
-    campaign_full.json 兩個檔案,不能新增 29 個 scenario stub)。
-  - 不做主角隊招募(莉希亞/鐵諾/瑪琳…doc28 第5欄)狀態機,亦屬下一輪。
+  - 不做主角隊招募(莉希亞/鐵諾/瑪琳…doc28 第5欄)狀態機、不做逐章成長曲線
+    (party 數值/spells 全章固定沿用 ch01),亦屬下一輪。
+  - 不做回合制增援(events 只放 on_battle_start→spawn_party);每章 initial_groups
+    全開(units.json 全部真實分組一次到齊),原版 turn_events 的分批增援節奏
+    留給下一輪逐章核對 doc28/turn_events 後補。
+
+scenario stub(chNN.json,ch2-30 本輪新生成,見 build_scenario_stub()):
+  - party:沿用 ch01.json 的 4 人數值/spells(index 對齊,不做逐章成長)。
+  - deploy_cells:優先取 mapN_units.json 的 own_deploy(= FDFIELD 出場位置資源
+    portrait==0 格,tools/export_units.py 萃取,map0 版本已與人工核對過的 ch01.json
+    完全吻合——ground truth)。own_deploy 部分地圖有重複座標/與真實單位重疊
+    (資料本身如此,非解析 bug),先去重+濾重疊,不足 4 格再用 spiral 保底搜尋
+    (見 pick_deploy_cells());三層資料來源標記 metadata / metadata+fallback_spiral。
+  - initial_groups:units.json 全部真實 group(**排除 group==255**——實測每張圖的
+    255 群體固定堆疊在同一座標點,是資料裡的未用槽位/padding,非真實出場波次,
+    見 tools/parse_field.py b21=group 註解 + 逐圖驗證)。
+  - ch01 沿用既有人工版 assets/scenarios/ch01.json,不覆寫。
 
 用法:
     python3 tools/gen_campaign.py
 輸出:
-    remake/assets/scenarios/campaign_full.json
-    + 終端列印驗證結果(節點數/轉場完整性/資產檔案存在性)
+    remake/assets/scenarios/campaign_full.json(battle 節點含 scenario 欄位)
+    remake/assets/scenarios/ch02.json ~ ch30.json(新生成)
+    + 終端列印驗證結果(節點數/轉場完整性/資產檔案存在性/scenario 資料來源統計)
 """
 from __future__ import annotations
 
@@ -108,6 +118,87 @@ def load_shops_by_chapter(path: str) -> dict[int, list[dict]]:
     return by_ch
 
 
+def load_ch01_party() -> list[dict]:
+    """讀既有人工版 ch01.json 的 party 區塊,ch2-30 stub 沿用同一份數值/spells。"""
+    ch01_path = os.path.join(REMAKE, "assets", "scenarios", "ch01.json")
+    with open(ch01_path, encoding="utf-8") as f:
+        return json.load(f)["party"]
+
+
+def spiral_offsets(max_r: int):
+    """以 (0,0) 為中心,由近到遠的方格螺旋座標偏移量(含自身)。"""
+    yield (0, 0)
+    for r in range(1, max_r + 1):
+        for dx in range(-r, r + 1):
+            for dy in range(-r, r + 1):
+                if max(abs(dx), abs(dy)) == r:
+                    yield (dx, dy)
+
+
+def pick_deploy_cells(
+    own_deploy: list[dict], occupied: set[tuple[int, int]], w: int, h: int, n: int
+) -> tuple[list[tuple[int, int]], str]:
+    """從 mapN_units.json 的 own_deploy(FDFIELD 出場位置,portrait==0 格)挑 n 個部署格。
+
+    own_deploy 部分地圖本身就有重複座標,或座標與「全開」後的真實單位重疊
+    (見檔頭說明,不是解析錯誤)。優先去重+濾重疊+界內取滿 n 個(source='metadata');
+    不足時以第一個 own_deploy 格為錨點做螺旋搜尋補足空格(source='metadata+fallback_spiral',
+    worklist 要求的保底邏輯——目前 30 章實測皆有 own_deploy 可用,此路徑只在座標退化
+    〔如整批重複同一點〕時觸發)。
+    """
+    seen: set[tuple[int, int]] = set()
+    clean: list[tuple[int, int]] = []
+    for c in own_deploy:
+        pt = (c["x"], c["y"])
+        if pt in seen or pt in occupied or not (0 <= pt[0] < w and 0 <= pt[1] < h):
+            continue
+        seen.add(pt)
+        clean.append(pt)
+        if len(clean) >= n:
+            return clean, "metadata"
+
+    anchor = (own_deploy[0]["x"], own_deploy[0]["y"]) if own_deploy else (w // 2, h - 1)
+    for dx, dy in spiral_offsets(max(w, h)):
+        pt = (anchor[0] + dx, anchor[1] + dy)
+        if pt in seen or pt in occupied or not (0 <= pt[0] < w and 0 <= pt[1] < h):
+            continue
+        seen.add(pt)
+        clean.append(pt)
+        if len(clean) >= n:
+            break
+    return clean[:n], "metadata+fallback_spiral"
+
+
+def build_scenario_stub(c: int, map_idx: int, title: str, party: list[dict]) -> tuple[dict, str]:
+    """為攻略章 c(對映 map_idx)生成 scenario stub(party 進場+部署格+分組全開)。"""
+    units_path = os.path.join(REMAKE, "assets", "maps", f"map{map_idx}", f"map{map_idx}_units.json")
+    with open(units_path, encoding="utf-8") as f:
+        md = json.load(f)
+
+    real_units = [u for u in md["units"] if u.get("group", 0) != 255]  # 排除 255 padding 槽位
+    occupied = {(u["x"], u["y"]) for u in real_units}
+    cells, source = pick_deploy_cells(md.get("own_deploy", []), occupied, md["w"], md["h"], len(party))
+    groups = sorted({u["group"] for u in real_units})
+
+    scenario = {
+        "chapter": c,
+        "name": title,
+        "map": map_idx,
+        "initial_groups": groups,
+        "party": party,
+        "deploy_cells": [[x, y] for x, y in cells],
+        "events": [
+            {
+                "id": "opening",
+                "trigger": "on_battle_start",
+                "once": True,
+                "do": [{"type": "spawn_party"}],
+            }
+        ],
+    }
+    return scenario, source
+
+
 def goal_sentence(row: dict) -> str:
     win = row["win"] if row["win"] and row["win"] != "—" else "敵全滅"
     text = f"目標:{win}。"
@@ -116,9 +207,13 @@ def goal_sentence(row: dict) -> str:
     return text
 
 
-def build_campaign(rows: list[dict], shops_by_ch: dict[int, list[dict]]) -> dict:
+def build_campaign(
+    rows: list[dict], shops_by_ch: dict[int, list[dict]]
+) -> tuple[dict, dict[str, str]]:
     nodes: dict[str, dict] = {}
     flags: dict[str, bool] = {}
+    party = load_ch01_party()
+    scenario_sources: dict[str, str] = {}  # chNN -> 'ch01(既有)' / 'metadata' / 'metadata+fallback_spiral'
 
     for row in rows:
         c = row["c"]
@@ -126,6 +221,18 @@ def build_campaign(rows: list[dict], shops_by_ch: dict[int, list[dict]]) -> dict
         map_idx = c - 1  # 順序對應(見檔頭說明);ch1(c=1)→map0,與唯一已驗證資料點一致
         map_dir = f"assets/maps/map{map_idx}"
         units_path = f"assets/maps/map{map_idx}/map{map_idx}_units.json"
+
+        # --- scenario stub(主角隊進場+部署格+分組全開;見 build_scenario_stub()) ---
+        scenario_path = f"assets/scenarios/ch{cid}.json"
+        if c == 1:
+            scenario_sources[cid] = "ch01(既有人工版,未覆寫)"
+        else:
+            scenario, source = build_scenario_stub(c, map_idx, row["title"], party)
+            scenario_sources[cid] = source
+            out_scn = os.path.join(REMAKE, "assets", "scenarios", f"ch{cid}.json")
+            with open(out_scn, "w", encoding="utf-8") as f:
+                json.dump(scenario, f, ensure_ascii=False, indent=2)
+                f.write("\n")
 
         story_id = f"story_ch{cid}"
         battle_id = f"battle_ch{cid}"
@@ -215,6 +322,7 @@ def build_campaign(rows: list[dict], shops_by_ch: dict[int, list[dict]]) -> dict
             "bgm": BGM_BATTLE,
             "map": map_dir,
             "units": units_path,
+            "scenario": scenario_path,
             "on_win": after_battle_id,
             "on_lose": retreat_id,
         }
@@ -245,12 +353,13 @@ def build_campaign(rows: list[dict], shops_by_ch: dict[int, list[dict]]) -> dict
         if n.get("type") == "shop" and n.get("next") is None:
             raise SystemExit(f"內部錯誤:shop 節點 next 未串接 {n}")
 
-    return {
+    campaign = {
         "title": "炎龍騎士團2 — 全 30 章線性 campaign(自動生成)",
         "start": "story_ch01",
         "flags": flags,
         "nodes": nodes,
     }
+    return campaign, scenario_sources
 
 
 def validate(campaign: dict) -> list[str]:
@@ -288,6 +397,27 @@ def validate(campaign: dict) -> list[str]:
                 abs_units = os.path.join(REMAKE, units_path)
                 if not os.path.isfile(abs_units):
                     problems.append(f"battle 節點 {nid!r} 的 units 檔不存在:{units_path}")
+            scn_path = n.get("scenario")
+            if scn_path:
+                abs_scn = os.path.join(REMAKE, scn_path)
+                if not os.path.isfile(abs_scn):
+                    problems.append(f"battle 節點 {nid!r} 的 scenario 檔不存在:{scn_path}")
+                elif units_path and os.path.isfile(os.path.join(REMAKE, units_path)):
+                    with open(abs_scn, encoding="utf-8") as f:
+                        sc = json.load(f)
+                    with open(os.path.join(REMAKE, units_path), encoding="utf-8") as f:
+                        um = json.load(f)
+                    w, h = um["w"], um["h"]
+                    occupied = {(u["x"], u["y"]) for u in um["units"] if u.get("group", 0) != 255}
+                    seen_cells: set[tuple[int, int]] = set()
+                    for x, y in sc.get("deploy_cells", []):
+                        if not (0 <= x < w and 0 <= y < h):
+                            problems.append(f"scenario {scn_path!r} 部署格越界:({x},{y}) vs {w}x{h}")
+                        if (x, y) in occupied:
+                            problems.append(f"scenario {scn_path!r} 部署格 ({x},{y}) 與真實單位重疊")
+                        if (x, y) in seen_cells:
+                            problems.append(f"scenario {scn_path!r} 部署格重複:({x},{y})")
+                        seen_cells.add((x, y))
 
     # 可達性檢查(從 start 走一遍,確保沒有孤兒/斷鏈節點——不算 hard error,只警示)
     seen = set()
@@ -314,7 +444,7 @@ def validate(campaign: dict) -> list[str]:
 def main():
     rows = parse_doc28(DOC28)
     shops_by_ch = load_shops_by_chapter(SHOPS_JSON)
-    campaign = build_campaign(rows, shops_by_ch)
+    campaign, scenario_sources = build_campaign(rows, shops_by_ch)
 
     os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
     with open(OUT_PATH, "w", encoding="utf-8") as f:
@@ -330,6 +460,15 @@ def main():
     print(f"寫出 {OUT_PATH}")
     print(f"章數:{TOTAL_CHAPTERS}  節點總數:{n_nodes}")
     print(f"  battle={n_battle} shop={n_shop} choice={n_choice} story={n_story} ending=1")
+
+    n_new_scn = sum(1 for cid, src in scenario_sources.items() if cid != "01")
+    n_meta = sum(1 for cid, src in scenario_sources.items() if src == "metadata")
+    n_fb = sum(1 for cid, src in scenario_sources.items() if src == "metadata+fallback_spiral")
+    print(f"scenario stub:新生成 {n_new_scn} 章(ch02-ch{TOTAL_CHAPTERS:02d})"
+          f"  來源=metadata:{n_meta}  metadata+fallback_spiral:{n_fb}")
+    if n_fb:
+        fb_chs = [cid for cid, src in scenario_sources.items() if src == "metadata+fallback_spiral"]
+        print(f"  fallback 章節:{sorted(fb_chs)}")
 
     # JSON 合法性(已用 json.dump 產生,這裡重讀一次確保可被 json.load 解析)
     with open(OUT_PATH, encoding="utf-8") as f:

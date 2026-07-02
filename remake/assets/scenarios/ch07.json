@@ -1,0 +1,94 @@
+{
+  "chapter": 7,
+  "name": "往王城途中",
+  "map": 6,
+  "initial_groups": [
+    1,
+    2
+  ],
+  "party": [
+    {
+      "name": "索爾",
+      "cls": "劍士",
+      "fig": 0,
+      "portrait": 0,
+      "lv": 1,
+      "hp": 42,
+      "mp": 0,
+      "ap": 20,
+      "dp": 12,
+      "mv": 6
+    },
+    {
+      "name": "亞雷斯",
+      "cls": "騎士",
+      "fig": 4,
+      "portrait": 4,
+      "lv": 1,
+      "hp": 48,
+      "mp": 0,
+      "ap": 22,
+      "dp": 14,
+      "mv": 7
+    },
+    {
+      "name": "悠妮",
+      "cls": "法師",
+      "fig": 9,
+      "portrait": 9,
+      "lv": 1,
+      "hp": 28,
+      "mp": 16,
+      "ap": 10,
+      "dp": 8,
+      "mv": 5,
+      "spells": [
+        0,
+        4,
+        13
+      ]
+    },
+    {
+      "name": "蓋亞",
+      "cls": "機兵",
+      "fig": 30,
+      "portrait": 30,
+      "lv": 1,
+      "hp": 50,
+      "mp": 0,
+      "ap": 26,
+      "dp": 14,
+      "mv": 6
+    }
+  ],
+  "deploy_cells": [
+    [
+      10,
+      32
+    ],
+    [
+      15,
+      30
+    ],
+    [
+      12,
+      31
+    ],
+    [
+      13,
+      29
+    ]
+  ],
+  "events": [
+    {
+      "id": "opening",
+      "trigger": "on_battle_start",
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_party"
+        }
+      ]
+    }
+  ]
+}

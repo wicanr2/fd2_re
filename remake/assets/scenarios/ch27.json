@@ -1,0 +1,98 @@
+{
+  "chapter": 27,
+  "name": "命運的交會點",
+  "map": 26,
+  "initial_groups": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "party": [
+    {
+      "name": "索爾",
+      "cls": "劍士",
+      "fig": 0,
+      "portrait": 0,
+      "lv": 1,
+      "hp": 42,
+      "mp": 0,
+      "ap": 20,
+      "dp": 12,
+      "mv": 6
+    },
+    {
+      "name": "亞雷斯",
+      "cls": "騎士",
+      "fig": 4,
+      "portrait": 4,
+      "lv": 1,
+      "hp": 48,
+      "mp": 0,
+      "ap": 22,
+      "dp": 14,
+      "mv": 7
+    },
+    {
+      "name": "悠妮",
+      "cls": "法師",
+      "fig": 9,
+      "portrait": 9,
+      "lv": 1,
+      "hp": 28,
+      "mp": 16,
+      "ap": 10,
+      "dp": 8,
+      "mv": 5,
+      "spells": [
+        0,
+        4,
+        13
+      ]
+    },
+    {
+      "name": "蓋亞",
+      "cls": "機兵",
+      "fig": 30,
+      "portrait": 30,
+      "lv": 1,
+      "hp": 50,
+      "mp": 0,
+      "ap": 26,
+      "dp": 14,
+      "mv": 6
+    }
+  ],
+  "deploy_cells": [
+    [
+      15,
+      56
+    ],
+    [
+      14,
+      55
+    ],
+    [
+      14,
+      56
+    ],
+    [
+      15,
+      55
+    ]
+  ],
+  "events": [
+    {
+      "id": "opening",
+      "trigger": "on_battle_start",
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_party"
+        }
+      ]
+    }
+  ]
+}
