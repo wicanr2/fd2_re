@@ -70,6 +70,34 @@ func loadSFX() map[int][]byte {
 	return out
 }
 
+// loadWav 載單一 WAV 為 PCM bytes(戰鬥池等零散樣本用)。失敗回 nil。
+func loadWav(path string) []byte {
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return nil
+	}
+	if audioCtx == nil {
+		audioCtx = audio.NewContext(44100)
+	}
+	s, err := wav.DecodeWithSampleRate(44100, bytes.NewReader(raw))
+	if err != nil {
+		return nil
+	}
+	b, err := io.ReadAll(s)
+	if err != nil {
+		return nil
+	}
+	return b
+}
+
+// playRaw 直接播 PCM bytes(nil 安全)。
+func (g *Game) playRaw(b []byte) {
+	if b == nil || audioCtx == nil || os.Getenv("FD2_MUTE") != "" || g.shotPath != "" {
+		return
+	}
+	audio.NewPlayerFromBytes(audioCtx, b).Play()
+}
+
 // playSFX 播一個音效(疊播;原版雙 handle 0x26896/0x26945 可同時兩個,這裡不限)。
 func (g *Game) playSFX(id int) {
 	if g.sfx == nil || os.Getenv("FD2_MUTE") != "" || g.shotPath != "" {

@@ -70,6 +70,7 @@ type Game struct {
 	bgm       *audio.Player // BGM(doc12 play_bgm 語意:同曲不重播)
 	bgmCur    string
 	sfx                map[int][]byte // SFX PCM(doc36 FDOTHER#31 14樣本)
+	sfxSwing           []byte         // 戰鬥揮擊/命中共用音(doc36 戰鬥池 #48-64 sub0,七池相同)
 	prevCurX, prevCurY int            // 游標移動音偵測
 	aiBusy    bool       // AI 回合進行中(逐單位行走動畫)
 	rng       *rand.Rand // 施法擲骰(FD2_SEED 可固定,headless 重現)
@@ -766,7 +767,11 @@ func (g *Game) Update() error {
 		g.atk.timer--
 		a := g.atk
 		if a != nil && a.fpt > 0 && a.total-a.timer == (len(g.figani[a.atkFig])-4)*a.fpt {
-			g.playSFX(sfxHit) // 命中幀(劈中)音效
+			if g.sfxSwing != nil {
+				g.playRaw(g.sfxSwing) // 戰鬥池共用揮擊音(真素材)
+			} else {
+				g.playSFX(sfxHit) // 保底
+			}
 		}
 		if g.atk.timer <= 0 {
 			g.atk = nil
@@ -1680,6 +1685,7 @@ func loadGame() *Game {
 	}
 	g.rng = rand.New(rand.NewSource(seed))
 	g.sfx = loadSFX()
+	g.sfxSwing = loadWav("assets/sfx/battle_48_00.wav") // 共用揮擊音(逐招對照後按池切換)
 	// 戰場 BGM:doc12 推定 track18=戰鬥被使用者實聽推翻(18=商店音樂);戰鬥曲號待聽辨,先不播錯曲
 	if cp := os.Getenv("FD2_CAMPAIGN"); cp != "" { // 劇本節點圖模式(doc 19;放最後,story 對白不被開場 Setup 蓋掉)
 		if cp == "1" {
