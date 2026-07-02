@@ -1,0 +1,78 @@
+{
+  "_meta": {
+    "purpose": "戰鬥招式/單位 → SFX 池(FDOTHER.DAT 資源)對照,供 remake 音效系統參考",
+    "round": 11,
+    "status": "部分完成 — index2(真正 SFX table_ptr 的填值來源)未能靜態釘死到單一表,詳見 notes",
+    "related_doc": "docs/knowledge-base/36-sfx-audio-data.md 第 10/11 輪"
+  },
+  "control_flow": {
+    "load_site": {
+      "linear": "0x028110-0x028156",
+      "function_entry": "0x027fc9",
+      "desc": "戰鬥招式資源載入函式:兩個參數 [esp+0x4c]=單位idx(進[0x53a45]+idx*80 隊伍表)、[esp+0x50]=招式/動作id",
+      "call1": {
+        "addr": "0x028129",
+        "index_formula": "招式id + 0x21",
+        "result_reg": "edi",
+        "target": "call 0x111ba(FDOTHER.DAT, index1, 0)",
+        "confirmed_use": "未確認 SFX 用途,疑為招式動畫/特效資料(non-SFX)"
+      },
+      "call2": {
+        "addr": "0x02814e",
+        "index_formula": "byte ptr [esp + 招式id - 0xc]  (讀取位址於函式 0x027fc9 自己的區域性堆疊,esp 為該函式 prologue 後基準)",
+        "result_reg": "eax -> [0x5411f]",
+        "target": "call 0x111ba(FDOTHER.DAT, index2, 0)",
+        "confirmed_use": "確認為真正 SFX table_ptr([0x5411f] 後續餵給 play_sfx_a/play_sfx_b)"
+      }
+    },
+    "caller_of_0x027fc9": {
+      "addr": "0x02a7ce",
+      "function_entry": "0x02a6bd",
+      "note": "招式id 實際上 = 0x02a6bd 的第2參數(讀進 ebp,0x02a6d1),只有 ebp>=0x20 時才會呼叫 0x027fc9(0x02a7b3 cmp ebp,0x20;jl skip)"
+    },
+    "callers_of_0x02a6bd": [
+      {
+        "addr": "0x015400",
+        "function_entry": "0x015311",
+        "id_source": "edi = 回傳值 of call 0x014818(0x015381)",
+        "note": "0x014818 反組譯結果是「AoE/範圍距離標記」函式(在 [0x53a51] 地圖旗標陣列寫 0xff,依 [0x3ac1]/[0x3ac5] 地圖寬高與半徑判斷),不是單純的招式id查表;此路徑的 id 語意存疑,未完全解出真正 return 語意(未追到函式真正 ret 位址)"
+      },
+      {
+        "addr": "0x01d43c",
+        "function_entry": "0x01cff0",
+        "id_source": "byte ptr [esp + [0x3c57] + 0xd0]  (區域性陣列,[0x3c57]為目前步驟計數器)",
+        "note": "此路徑同一函式內有一個平行陣列 [esp+0xc8+counter](攻擊類型碼,比對 9/0x17/0x18/0x1b/0x1e)已找到填值來源(見 known_move_bitmask_decoder);但 [esp+0xd0+counter] 陣列本身填值來源本輪未追出(不是同一次 call 0x1c269 填的,是獨立陣列)"
+      }
+    ]
+  },
+  "known_move_bitmask_decoder": {
+    "function": "0x01c269",
+    "desc": "把單位資料表(base [0x53a45]+idx*80)offset +0x1a 起的 5 bytes(40-bit)逐位元掃描,每個「已設定」的 bit 對應一個招式/技能編號(0-39,計算方式 byte_idx*8+bit_pos),依序寫入呼叫端提供的緊密陣列(呼叫端 0x01cff0 傳入 &[esp+0xc8])",
+      "evidence": [
+        "0x01c280-0x01c294: ebp = [0x53a45] + idx*4*4+idx*16(= idx*80,與全專案既有 stride 80 公式一致)",
+        "0x01c2a7: movzx edi, byte ptr [edi(loop i=0..4) + ebp + 0x1a]",
+        "0x01c2ae-0x01c2d1: 內層迴圈 bit=0..7,test dl,1 判斷該 bit 是否設定,設定則寫 cl=i*8+bit 到輸出陣列並遞增輸出計數"
+      ],
+    "caveat": "unit+0x1a 與 doc03 記載的『M1..M5 五組法術 bitfield』在 unit+0x22 不同 offset(相差 8 bytes,落在 doc03 IT×8 物品欄位範圍內)。可能是 doc03 offset 基準點與本輪反組譯用的原始陣列指標有 8 bytes 系統性差異(值得下一輪核對),也可能兩者本來就是不同的兩個 bitfield(招式/技能 vs 法術)。本輪不臆測,標記待確認。"
+  },
+  "candidate_sfx_resource_pools": {
+    "source": "第10輪 PCM 特徵掃描(doc36),與本輪 control-flow trace 為獨立證據",
+    "pools": {
+      "48": "候選(sub0 與 49-53/64 共用揮擊音),未逐一證實常數/動態載入點",
+      "49": "候選,同上",
+      "50": "候選,同上",
+      "51": "候選,同上",
+      "52": "候選,同上",
+      "53": "候選,同上",
+      "64": "候選,同上",
+      "78": "候選(只有 1 個真樣本)",
+      "88": "唯一直接反組譯證實:linear 0x033987,常數 index=0x58(=88),非攻擊路徑,疑為固定特效/事件演出"
+    },
+    "common_sub0": "資源 #48/49/50/51/52/53/64 的 sub0 逐位元組相同(len=4182,mean=122.2,range=[47,204]),疑為所有武器/職業分類共用的通用揮擊/命中音;各池另帶自己專屬的少數幾個音效"
+  },
+  "unresolved": [
+    "0x027fc9 內 index2 = byte[esp+id-0xc] 在該函式自己的堆疊框架中,並非一個編譯器宣告的穩定陣列(該區域落在宣告的 0x38-byte 區域之外或邊界上);其真實填值來源需要往上追到呼叫鏈更早處的一個尚未定位的陣列(候選:0x01cff0 的 [esp+0xd0+counter] 陣列,填值函式未知)",
+    "招式id 的兩條不同呼叫路徑(0x015400 經 0x014818 / 0x01d43c 經未知陣列)語意可能不同,不能假設同一套 id→resource 對照",
+    "unit+0x1a(本輪發現的 40-bit 已知招式/技能遮罩)與 doc03 unit+0x22(法術 bitfield)的關係(是否為同一表、offset是否有系統性8-byte差異)"
+  ]
+}
