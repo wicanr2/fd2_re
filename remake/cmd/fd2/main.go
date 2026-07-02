@@ -27,6 +27,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
@@ -65,6 +66,11 @@ type Game struct {
 	spellSel  int
 	castSp    *battle.Spell // 施法目標選擇中
 	spells    []battle.Spell
+	bgm       *audio.Player // BGM(doc12 play_bgm 語意:同曲不重播)
+	bgmCur    string
+	gold      int      // 金幣(商店)
+	items     []string // 隊伍道具(名稱;道具效果待實裝)
+	shopSel   int      // 商店游標
 	portraits map[int][]*ebiten.Image // DATO 頭像:肖像 id → 4 嘴型幀
 	mouthOpen  bool // 嘴型動畫狀態(原版 0x16d00:m0閉/m3開)
 	mouthTimer int  // 閉嘴倒數(原版 rand%30+2 tick)
@@ -137,6 +143,7 @@ func (g *Game) enterNode() {
 	if n == nil {
 		return // 流程結束(game over)
 	}
+	g.playBGM(n.BGM)
 	switch n.Type {
 	case "story":
 		g.dialog = nil
@@ -150,6 +157,8 @@ func (g *Game) enterNode() {
 		g.enterNode()
 	case "choice":
 		g.campSel = 0
+	case "shop":
+		g.shopSel = 0
 	}
 }
 
@@ -206,6 +215,29 @@ func (g *Game) campInput() bool {
 		}
 		if enter && len(vis) > 0 {
 			g.camp.Advance(fmt.Sprintf("opt%d", g.campSel))
+			g.enterNode()
+		}
+		return true
+	case "shop":
+		goods := g.camp.ShopGoods()
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.shopSel > 0 {
+			g.shopSel--
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.shopSel < len(goods)-1 {
+			g.shopSel++
+		}
+		if enter && g.shopSel < len(goods) { // 購買
+			gd := goods[g.shopSel]
+			if g.gold >= gd.Price {
+				g.gold -= gd.Price
+				g.items = append(g.items, gd.Name)
+				g.msg = fmt.Sprintf("買下 %s(-%d G)", gd.Name, gd.Price)
+			} else {
+				g.msg = "金幣不足!"
+			}
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) { // 離店
+			g.camp.Advance("")
 			g.enterNode()
 		}
 		return true
@@ -739,6 +771,12 @@ func (g *Game) Update() error {
 	g.camY = float64(g.curY*g.m.TileH - logicalH/2 + g.m.TileH/2)
 	clamp(&g.camX, 0, float64(g.m.W*g.m.TileW-logicalW))
 	clamp(&g.camY, 0, float64(g.m.H*g.m.TileH-logicalH))
+	if inpututil.IsKeyJustPressed(ebiten.KeyF5) { // 快速存檔(節點邊界語意:存 campaign 進度)
+		g.saveGame()
+	}
+	if inpututil.IsKeyJustPressed(ebiten.KeyF9) { // 快速讀檔
+		g.loadGame()
+	}
 	if g.campInput() { // campaign 節點(story/choice/ending/勝敗轉場)攔截輸入
 		return nil
 	}
@@ -1122,6 +1160,24 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 				pre = "▶"
 			}
 			g.font.Draw(screen, pre+o.Label, 190, 162+float64(i)*28, 1.0, c)
+		}
+	case n.Type == "shop":
+		goods := g.camp.ShopGoods()
+		h := 76 + float64(len(goods))*30
+		fillBox(140, 60, 360, h)
+		g.font.Draw(screen, fmt.Sprintf("商店　持有 %d G(Enter 購買/ESC 離開)", g.gold), 156, 70, 1.0,
+			color.RGBA{0xff, 0xe0, 0x90, 0xff})
+		for i, gd := range goods {
+			c := color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
+			pre := "　"
+			if i == g.shopSel {
+				c = color.RGBA{0xff, 0xff, 0xff, 0xff}
+				pre = "▶"
+			}
+			if g.gold < gd.Price {
+				c = color.RGBA{0x80, 0x80, 0x90, 0xff}
+			}
+			g.font.Draw(screen, fmt.Sprintf("%s%s  %d G", pre, gd.Name, gd.Price), 156, 100+float64(i)*30, 1.0, c)
 		}
 	case n.Type == "ending":
 		fillBox(0, float64(logicalH)/2-60, float64(logicalW), 120)
@@ -1537,12 +1593,19 @@ func loadGame() *Game {
 			}
 		}
 	}
+	g.gold = 1000 // 初始金幣(商店用;原版開局金額待對照)
 	if cp := os.Getenv("FD2_CAMPAIGN"); cp != "" { // 劇本節點圖模式(doc 19;放最後,story 對白不被開場 Setup 蓋掉)
 		if cp == "1" {
 			cp = "assets/scenarios/campaign.json"
 		}
 		if c, err := campaign.Load(cp); err == nil {
 			g.camp = campaign.NewRunner(c)
+			if n := os.Getenv("FD2_CAMP_NODE"); n != "" { // 驗證鉤子:直接跳指定節點
+				if _, ok := c.Nodes[n]; ok {
+					g.camp.Cur = n
+					g.camp.Flags["found_secret"] = os.Getenv("FD2_CAMP_SECRET") != ""
+				}
+			}
 			g.enterNode()
 		} else {
 			g.loadErr = "campaign: " + err.Error()

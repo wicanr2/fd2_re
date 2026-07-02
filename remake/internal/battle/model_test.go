@@ -29,17 +29,8 @@ func TestLoadSerial0(t *testing.T) {
 		if u.MV <= 0 {
 			t.Errorf("%s 單位移動力 = %d", u.Camp, u.MV)
 		}
-		if u.Camp == Own { // 我方須落在部署格
-			ok := false
-			for _, c := range st.OwnDeploy {
-				if c.X == u.X && c.Y == u.Y {
-					ok = true
-				}
-			}
-			if !ok {
-				t.Errorf("我方單位不在部署格 @%d,%d", u.X, u.Y)
-			}
-		}
+		// 註:own 不再自動塞部署格(部署格保留給 scenario spawn_party 主角隊,
+		// 見 Load 內註解);units.json 的 own 沿用檔案座標,不驗部署格。
 	}
 	// UnitAt + Alive
 	u0 := st.Units[0]

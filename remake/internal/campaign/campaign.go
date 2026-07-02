@@ -22,7 +22,14 @@ type Option struct {
 	If    string `json:"if,omitempty"`
 }
 
-// Node 節點。Type: story / battle / choice / event / ending。
+// Good 商店商品(名稱/價格;id 對映 EXE item.json)。
+type Good struct {
+	ID    int    `json:"id"`
+	Name  string `json:"name"`
+	Price int    `json:"price"`
+}
+
+// Node 節點。Type: story / battle / choice / event / shop / ending。
 type Node struct {
 	Type     string          `json:"type"`
 	Lines    []Line          `json:"lines,omitempty"`    // story:對白
@@ -35,7 +42,10 @@ type Node struct {
 	Prompt   string          `json:"prompt,omitempty"`   // choice
 	Options  []Option        `json:"options,omitempty"`  // choice
 	SetFlags map[string]bool `json:"set_flags,omitempty"`
-	Text     string          `json:"text,omitempty"` // ending:結語
+	Text     string          `json:"text,omitempty"`      // ending:結語
+	Goods    []Good          `json:"goods,omitempty"`     // shop:商品
+	Secret   []Good          `json:"secret,omitempty"`    // shop:祕密商店商品
+	SecretIf string          `json:"secret_if,omitempty"` // shop:旗標為真才開祕密商品(原版祕密商店機制)
 }
 
 // Campaign 整張節點圖。
@@ -114,6 +124,16 @@ func (r *Runner) Visible() []Option {
 	return out
 }
 
+// ShopGoods shop 節點的商品(祕密商店:SecretIf 旗標為真時加開 Secret 商品)。
+func (r *Runner) ShopGoods() []Good {
+	n := r.Node()
+	out := append([]Good{}, n.Goods...)
+	if n.SecretIf != "" && r.Flags[n.SecretIf] {
+		out = append(out, n.Secret...)
+	}
+	return out
+}
+
 // Advance 依結果離開目前節點:套用 set_flags,回傳下一節點 id(""=流程結束/game over)。
 // outcome:story/event→忽略;battle→"win"/"lose";choice→"optN"(過濾後 index)。
 func (r *Runner) Advance(outcome string) string {
@@ -141,7 +161,7 @@ func (r *Runner) Advance(outcome string) string {
 		}
 	case "ending":
 		next = ""
-	default: // story / event
+	default: // story / event / shop
 		next = n.Next
 	}
 	r.Cur = next
