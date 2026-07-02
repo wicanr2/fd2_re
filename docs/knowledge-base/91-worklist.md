@@ -222,7 +222,14 @@
 - [ ] **音樂**:15 首 OGG 已備(extracted/music_ogg,本機);remake 零音訊 code——缺 ebiten/audio 播放器 +
       場景→曲號(doc12 play_bgm 32 呼叫點已 RE)
 - [ ] **音效 SFX**:org_game 只有 .DIG 驅動(Miles 驅動非音效資料);**音效資料在哪未 RE**(可能在 .DAT/EXE 內)← 需先 RE
-- [ ] radial 指令環 UI(原版 4 圖示十字,doc13;目前直接游標攻擊)
+- [x] **radial 指令環** ✅(3c618c4):orig_04 截圖裁 4 圖示(道具/攻擊/狀態/待機),十字繞單位+選中橘框;
+      ↑←→↓+Enter/ESC(doc13 [0x3C57]);移動到位自動開環。待:方向↔指令原版精確配對 dosbox 驗證、
+      道具 stub、左下 A+05/D+00 攻防預覽小欄
+- [x] **魔法系統** ✅(3c618c4):magic.go(spells.json=EXE dump 36條+M1-M5名稱表;InCastRange/Cast
+      固定表值傷害/治療capMax);悠妮火炎/電擊/治療;法術選單→射程紫高亮→施放接戰鬥演出+扣MP。
+      待:法術特效 FIGANI 對映(演出暫用攻擊動作)、AoE(range>0)、命中率、輔助系(魔刃/風行…)效果
+- [ ] **祕密商店機制還原**(使用者指定):原版各章祕密商店(青衫攻略有位置/品項表)→ campaign shop 節點
+      kinds=[weapon,item,secret];EXE 商店表(doc03)+ 進入條件 RE 待查
 - [ ] 存檔/讀檔(自有格式)
 
 ## 完成定義(反組譯研究)
