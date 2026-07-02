@@ -359,11 +359,13 @@ type walkAnim struct {
 	then func()        // 走完回呼(nil=玩家預設:開指令環)
 }
 
-// SFX 事件 index(doc36;初值為推定,待「事件→樣本對照」RE 校正)
+// SFX 事件 index(doc36 第 9 輪對照:index 0=游標移動已確認(5 處方向鍵分支證據);
+// 0xc=「已選定」旗標伴隨音(疑確認,handle B 疊播)。戰鬥命中音屬另一獨立池
+// ([0x5411f] 動態子容器,尚未導出)——暫用 UI 池 sfx_03(長音)代打,待戰鬥池導出換正。
 const (
-	sfxCursor  = 0 // 游標移動
-	sfxConfirm = 1 // 確認
-	sfxHit     = 3 // 攻擊命中
+	sfxCursor  = 0
+	sfxConfirm = 12
+	sfxHit     = 3 // ⚠ 暫代(真戰鬥音效池待導出)
 )
 
 // loadMap 載入一張戰場(dir 下的 map.json + tileset.png,並切圖塊)。
