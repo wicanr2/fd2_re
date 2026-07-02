@@ -154,8 +154,14 @@ func (g *Game) enterNode() {
 	switch n.Type {
 	case "story":
 		g.dialog = nil
-		for i := len(n.Lines) - 1; i >= 0; i-- { // 反序堆疊:顯示取末端,Enter 逐句 pop
-			g.dialog = append(g.dialog, battle.DialogLine{Speaker: n.Lines[i].Speaker, Text: n.Lines[i].Text})
+		lines := n.Lines
+		if n.Script != "" { // 本機劇情文本檔(assets/story/chNN.json,人工精校;無檔 fallback 內嵌 lines)
+			if ls := loadStoryScript(n.Script); len(ls) > 0 {
+				lines = ls
+			}
+		}
+		for i := len(lines) - 1; i >= 0; i-- { // 反序堆疊:顯示取末端,Enter 逐句 pop
+			g.dialog = append(g.dialog, battle.DialogLine{Speaker: lines[i].Speaker, Text: lines[i].Text})
 		}
 	case "battle":
 		if n.Map != "" { // 指定戰場(assets/maps/mapN;全 33 圖已匯出)
@@ -539,6 +545,28 @@ func loadFIGANI() map[int][]*ebiten.Image {
 	})
 	for _, f := range frs {
 		out[f.id] = append(out[f.id], f.img)
+	}
+	return out
+}
+
+// loadStoryScript 讀本機劇情文本檔(story-pipe 管線輸出:{"scenes":[{"lines":[{speaker,text}]}]}),
+// 攤平全部 scenes 的 lines。檔案缺失(玩家未自備素材)回 nil → 節點 fallback 內嵌 lines。
+func loadStoryScript(path string) []campaign.Line {
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return nil
+	}
+	var f struct {
+		Scenes []struct {
+			Lines []campaign.Line `json:"lines"`
+		} `json:"scenes"`
+	}
+	if json.Unmarshal(raw, &f) != nil {
+		return nil
+	}
+	var out []campaign.Line
+	for _, sc := range f.Scenes {
+		out = append(out, sc.Lines...)
 	}
 	return out
 }
