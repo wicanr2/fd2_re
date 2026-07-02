@@ -178,15 +178,14 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 	if unitsPath == "" {
 		unitsPath = "assets/map0_units.json"
 	}
-	if scnPath == "" {
-		scnPath = "assets/scenarios/ch01.json"
-	}
 	if st, err := battle.Load(unitsPath); err == nil {
 		g.st = st
 	}
 	g.result, g.sel, g.reach, g.moved = "", nil, nil, false
 	g.atk, g.walk, g.dialog, g.msg = nil, nil, nil, ""
-	if g.st != nil {
+	g.sc = nil // scenario 空 = 無劇本(FDFIELD roster 全員照 units.json 登場;不 fallback ch01——
+	// ch01 的 initial_groups/party/deploy 是 map0 專屬,錯配到他章會讓單位消失。每章 stub 見 worklist)
+	if g.st != nil && scnPath != "" {
 		if sc, err := battle.LoadScenario(scnPath); err == nil {
 			g.sc = sc
 			g.dialog = append(g.dialog, sc.Setup(g.st)...)
