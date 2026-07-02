@@ -59,14 +59,19 @@
       "type": "shop",
       "bgm": "FDMUS_004",
       "goods": [
-        { "id": 1, "name": "鐵劍", "price": 250 },
-        { "id": 40, "name": "皮盾", "price": 180 },
-        { "id": 60, "name": "藥草", "price": 50 }
+        { "id": 1, "name": "布衣", "price": 50 },
+        { "id": 40, "name": "旅行裝", "price": 500 },
+        { "id": 41, "name": "皮甲", "price": 300 },
+        { "id": 42, "name": "法師袍", "price": 750 },
+        { "id": 60, "name": "藥草", "price": 10 }
       ],
       "secret_if": "found_secret",
       "secret": [
-        { "id": 5, "name": "祕銀劍", "price": 1200 },
-        { "id": 70, "name": "妖精藥", "price": 800 }
+        { "id": 2, "name": "闊劍", "price": 250 },
+        { "id": 3, "name": "長戟", "price": 1200 },
+        { "id": 4, "name": "釘頭鎚", "price": 180 },
+        { "id": 5, "name": "回復劑", "price": 80 },
+        { "id": 41, "name": "皮甲", "price": 300 }
       ],
       "next": "end_demo"
     },

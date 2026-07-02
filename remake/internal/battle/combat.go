@@ -122,3 +122,70 @@ func (s *State) Result(protect string) string {
 	}
 	return ""
 }
+
+// AIPlan 一個 AI 單位的行動計畫(決策與執行分離,供引擎逐單位播放移動動畫後才結算)。
+type AIPlan struct {
+	U      *Unit
+	Path   []Cell // 含起點;len>=2 = 要移動(引擎播行走動畫)
+	Target *Unit  // 到位後攻擊目標(nil = 僅移動/待機)
+}
+
+// NextAIPlan 找下一個未行動的 AI 單位並產生行動計畫(不執行、不設 Acted);
+// 全部動完回 nil。決策邏輯同 aiActUnit(doc11 評分式)。
+func (s *State) NextAIPlan() *AIPlan {
+	for _, u := range s.Units {
+		if !u.OnField || !u.Alive() || u.Camp == Own || u.Acted {
+			continue
+		}
+		var best *Unit
+		bestScore := -1 << 30
+		for _, t := range s.Units {
+			if !t.OnField || !t.Alive() || !hostile(u, t) {
+				continue
+			}
+			dmg := u.AP - t.DP
+			score := dmg
+			if dmg >= t.HP {
+				score = dmg*2 + 1000
+			}
+			score = score*100 - manhattan(u.X, u.Y, t.X, t.Y)
+			if score > bestScore {
+				bestScore = score
+				best = t
+			}
+		}
+		if best == nil {
+			return &AIPlan{U: u}
+		}
+		if s.InAttackRange(u, best.X, best.Y) {
+			return &AIPlan{U: u, Target: best}
+		}
+		reach := s.Reachable(u)
+		dstX, dstY := u.X, u.Y
+		bestD := manhattan(u.X, u.Y, best.X, best.Y)
+		for c := range reach {
+			if s.UnitAt(c.X, c.Y) != nil {
+				continue
+			}
+			d := manhattan(c.X, c.Y, best.X, best.Y)
+			if d < bestD {
+				bestD = d
+				dstX, dstY = c.X, c.Y
+			}
+		}
+		p := &AIPlan{U: u, Path: s.Path(u, dstX, dstY)}
+		// 到位後若可攻擊 best,帶上目標(引擎走完動畫再結算)
+		du, dv := dstX-best.X, dstY-best.Y
+		if du < 0 {
+			du = -du
+		}
+		if dv < 0 {
+			dv = -dv
+		}
+		if du+dv == 1 {
+			p.Target = best
+		}
+		return p
+	}
+	return nil
+}

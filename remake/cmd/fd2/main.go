@@ -68,6 +68,7 @@ type Game struct {
 	spells    []battle.Spell
 	bgm       *audio.Player // BGM(doc12 play_bgm 語意:同曲不重播)
 	bgmCur    string
+	aiBusy    bool     // AI 回合進行中(逐單位行走動畫)
 	gold      int      // 金幣(商店)
 	items     []string // 隊伍道具(名稱;道具效果待實裝)
 	shopSel   int      // 商店游標
@@ -119,7 +120,8 @@ type atkAnim struct {
 	defHP0, defHP1   int // 守方攻擊前/後 HP(impact 抽乾動畫)
 	defMax           int
 	timer, total     int
-	fpt              int // 播放速度(tick/幀;FD2_BATTLE_FPT 可調)
+	fpt              int  // 播放速度(tick/幀;FD2_BATTLE_FPT 可調)
+	atkOwn           bool // 攻方是否我方(狀態欄按陣營:我方欄右上/敵方欄左下)
 	terrain          int // 攻擊格地形索引(戰鬥背景 = 戰場地形,跟 FDFIELD 戰場資料有關)
 }
 
@@ -341,6 +343,7 @@ type walkAnim struct {
 	path []battle.Cell // 含起點
 	seg  int           // 目前段:path[seg] → path[seg+1]
 	t    float64       // 段內進度 0→1
+	then func()        // 走完回呼(nil=玩家預設:開指令環)
 }
 
 // battleFPT 戰鬥演出播放速度(tick/幀):環境變數 FD2_BATTLE_FPT 可調(調慢=數字大),預設 3。
@@ -354,7 +357,7 @@ func battleFPT() int {
 // newAtkAnim 建立全螢幕戰鬥演出(所有角色通用):攻方=攻擊動作(組×3+1)、守方=待機(組×3),
 // 演出長度=幀數×fpt+尾段停格;位置/走位由 FIGANI 幀內嵌 (dx,dy) 資料驅動(doc06)。
 func (g *Game) newAtkAnim(atkGroup, defGroup int, atkName, defName string,
-	atkHP, atkMax, atkLV, atkMP, defLV, defMP, defHP0, defHP1, defMax, terrain int) *atkAnim {
+	atkHP, atkMax, atkLV, atkMP, defLV, defMP, defHP0, defHP1, defMax, terrain int, atkOwn bool) *atkAnim {
 	fpt := battleFPT()
 	af := figaniIndex(atkGroup) + 1
 	n := len(g.figani[af])
@@ -365,7 +368,7 @@ func (g *Game) newAtkAnim(atkGroup, defGroup int, atkName, defName string,
 	return &atkAnim{atkFig: af, defFig: figaniIndex(defGroup), atkName: atkName, defName: defName,
 		atkHP: atkHP, atkMax: atkMax, atkLV: atkLV, atkMP: atkMP, defLV: defLV, defMP: defMP,
 		defHP0: defHP0, defHP1: defHP1, defMax: defMax, timer: total, total: total,
-		fpt: fpt, terrain: terrain}
+		fpt: fpt, terrain: terrain, atkOwn: atkOwn}
 }
 
 // figaniIndex:戰鬥全身動畫 FIGANI index = FDICON組 × 3(恆等,反組譯 0x2884c:unit[+7]×3;doc06)。
@@ -584,7 +587,7 @@ func (g *Game) confirm() {
 				g.msg = fmt.Sprintf("%s 對 %s 施放 %s,造成 %d 傷害", g.sel.Name, nm, sp.Name, amt)
 				g.atk = g.newAtkAnim(g.sel.Fig, tgt.Fig, g.sel.Name, nm,
 					g.sel.HP, g.sel.MaxHP, g.sel.Lv, g.sel.MP, tgt.Lv, tgt.MP,
-					tgt.HP+amt, tgt.HP, tgt.MaxHP, g.terrainAt(g.curX, g.curY))
+					tgt.HP+amt, tgt.HP, tgt.MaxHP, g.terrainAt(g.curX, g.curY), true)
 			}
 			g.sel.Acted = true
 			g.sel.Dir = dirToward(g.sel.X, g.sel.Y, g.curX, g.curY)
@@ -629,7 +632,7 @@ func (g *Game) confirm() {
 		g.msg = fmt.Sprintf("%s 攻擊 %s,造成 %d 傷害", anm, nm, dmg)
 		g.atk = g.newAtkAnim(g.sel.Fig, tgt.Fig, anm, nm,
 			g.sel.HP, g.sel.MaxHP, g.sel.Lv, g.sel.MP, tgt.Lv, tgt.MP,
-			defHP0, tgt.HP, tgt.MaxHP, g.terrainAt(g.curX, g.curY)) // 戰鬥背景 = 守方格地形
+			defHP0, tgt.HP, tgt.MaxHP, g.terrainAt(g.curX, g.curY), true) // 戰鬥背景 = 守方格地形
 		g.sel, g.reach, g.moved = nil, nil, false
 		g.checkResult()
 	} else if g.curX == g.sel.X && g.curY == g.sel.Y { // 原地待命
@@ -701,13 +704,17 @@ func (g *Game) Update() error {
 			w.t--
 			w.seg++
 		}
-		if w.seg >= len(w.path)-1 { // 到位 → 開指令環
+		if w.seg >= len(w.path)-1 { // 到位
 			last := w.path[len(w.path)-1]
 			w.u.X, w.u.Y = last.X, last.Y
 			w.u.OffX, w.u.OffY = 0, 0
 			g.walk = nil
-			g.moved = true
-			g.ring, g.ringSel = true, 1
+			if w.then != nil { // AI:走完執行攻擊/收尾
+				w.then()
+			} else { // 玩家:開指令環
+				g.moved = true
+				g.ring, g.ringSel = true, 1
+			}
 		} else {
 			a, b := w.path[w.seg], w.path[w.seg+1]
 			w.u.Dir = dirToward(a.X, a.Y, b.X, b.Y)
@@ -716,6 +723,7 @@ func (g *Game) Update() error {
 			w.u.OffY = float64((a.Y-b.Y)*g.m.TileH) * (1 - w.t)
 		}
 	}
+	g.aiStep() // AI 回合驅動(aiBusy 時逐單位行走→攻擊演出)
 	// 嘴型動畫(忠實原版 0x16d00,doc14):每 2 frame 一 tick;閉嘴隨機 2-31 tick、開嘴一瞬
 	if len(g.dialog) > 0 && g.frame%2 == 0 {
 		if g.mouthOpen {
@@ -752,7 +760,7 @@ func (g *Game) Update() error {
 			}
 			if v := os.Getenv("FD2_SHOT_ATTACK"); v != "" { // 全螢幕戰鬥演出(驗證用):亞雷斯打盜賊
 				fig, _ := strconv.Atoi(v)
-				g.atk = g.newAtkAnim(fig, 96, "亞雷斯", "盜賊", 48, 48, 1, 0, 2, 0, 28, 8, 28, 0)
+				g.atk = g.newAtkAnim(fig, 96, "亞雷斯", "盜賊", 48, 48, 1, 0, 2, 0, 28, 8, 28, 0, true)
 			}
 		}
 		if g.shotSeries != "" { // 逐幀模式:演出播完才退出
@@ -1269,8 +1277,14 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 			dhp = a.defHP0 + int(float64(a.defHP1-a.defHP0)*t)
 		}
 		// 位置=模板匹配 orig:我方 (171,4)@320、敵方 (0,154)@320(下欄匹配 err=0 像素全等)
-		g.drawBattlePanel(screen, 342, 8, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP) // 我方亞雷斯右上
-		g.drawBattlePanel(screen, 0, 308, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 敵方盜賊左下
+		// 欄位按「陣營」分:我方欄右上、敵方欄左下(atkOwn=false 表敵攻我,資料對調)
+		if a.atkOwn {
+			g.drawBattlePanel(screen, 342, 8, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP) // 我方(攻)右上
+			g.drawBattlePanel(screen, 0, 308, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 敵方(守)左下
+		} else {
+			g.drawBattlePanel(screen, 342, 8, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 我方(守)右上
+			g.drawBattlePanel(screen, 0, 308, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP) // 敵方(攻)左下
+		}
 	}
 
 	// (2) 敵方盜賊 figure(正面;蓋住狀態欄):4 幀待機呼吸循環,貼各幀內嵌 (dx,dy)
@@ -1617,14 +1631,19 @@ func loadGame() *Game {
 // endTurn 結束當前回合:觸發 on_turn_end 事件(增援等),回合 +1,清除已行動。
 // 回合無上限(doc 27);只由劇本事件決定勝負。
 func (g *Game) endTurn() {
-	if g.st == nil || g.result != "" {
+	if g.st == nil || g.result != "" || g.aiBusy {
 		return
 	}
-	if g.shotPath == "" { // 截圖驗證模式不跑 AI(純看進場/事件,免站著被打死)
-		g.st.AITurn() // 敵方 + 友軍 NPC 行動(combat.go)
-		g.checkResult()
+	if g.shotPath == "" || os.Getenv("FD2_SHOT_AI") != "" { // 截圖模式預設跳 AI;FD2_SHOT_AI=1 強制驗證 AI 行走
+		g.aiBusy = true // AI 階段:逐單位行走動畫(Update 內 aiStep 驅動),播完 finishTurn
+		return
 	}
-	if g.sc != nil { // on_turn_end 事件(增援/對話)
+	g.finishTurn()
+}
+
+// finishTurn 回合收尾:on_turn_end 事件(增援/對話)、回合 +1、清已行動。
+func (g *Game) finishTurn() {
+	if g.sc != nil {
 		g.dialog = append(g.dialog, g.sc.Fire(g.st, "on_turn_end", "")...)
 	}
 	g.st.Turn++
@@ -1633,6 +1652,54 @@ func (g *Game) endTurn() {
 	}
 	g.sel, g.reach, g.moved = nil, nil, false
 	g.checkResult()
+}
+
+// aiStep AI 回合驅動:一次取一個單位的行動計畫,播行走動畫→到位攻擊(全螢幕演出)。
+// 全單位動完 → finishTurn。
+func (g *Game) aiStep() {
+	if !g.aiBusy || g.walk != nil || g.atk != nil || g.result != "" {
+		if g.result != "" {
+			g.aiBusy = false
+		}
+		return
+	}
+	plan := g.st.NextAIPlan()
+	if plan == nil {
+		g.aiBusy = false
+		g.finishTurn()
+		return
+	}
+	u := plan.U
+	act := func() {
+		if plan.Target != nil && plan.Target.Alive() {
+			tgt := plan.Target
+			u.Dir = dirToward(u.X, u.Y, tgt.X, tgt.Y)
+			nm, anm := tgt.Name, u.Name
+			if nm == "" {
+				nm = tgt.ClsName
+			}
+			if anm == "" {
+				anm = u.ClsName
+			}
+			hp0 := tgt.HP
+			dmg := g.st.Attack(u, tgt)
+			g.msg = fmt.Sprintf("%s 攻擊 %s,造成 %d 傷害", anm, nm, dmg)
+			g.atk = g.newAtkAnim(u.Fig, tgt.Fig, anm, nm,
+				u.HP, u.MaxHP, u.Lv, u.MP, tgt.Lv, tgt.MP,
+				hp0, tgt.HP, tgt.MaxHP, g.terrainAt(tgt.X, tgt.Y), u.Camp == battle.Own)
+			g.checkResult()
+		}
+		u.Acted = true
+	}
+	if len(plan.Path) >= 2 {
+		if os.Getenv("FD2_SHOT_AI") != "" {
+			log.Printf("AI walk: %s(%d,%d)→(%d,%d) 段數%d 目標=%v", u.ClsName, plan.Path[0].X, plan.Path[0].Y,
+				plan.Path[len(plan.Path)-1].X, plan.Path[len(plan.Path)-1].Y, len(plan.Path)-1, plan.Target != nil)
+		}
+		g.walk = &walkAnim{u: u, path: plan.Path, then: act}
+	} else {
+		act()
+	}
 }
 
 func main() {
