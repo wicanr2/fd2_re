@@ -208,9 +208,13 @@
 ## 第 8 輪 🟡(remake 玩法系統盤點與補完 — 2026-07-02 盤點)
 > 使用者指示:檢視腳本系統一路到移動/觸發戰鬥/魔法,盤點缺口逐項補。
 - [x] 盤點完成(見下缺口清單)
-- [ ] **腳本系統 campaign(M4 主體)**:ScenarioRunner 節點圖(battle/story/choice/event/ending)+
-      旗標 + 敗北路線 + campaign.json;doc19 設計已備,引擎未實作 ← **進行中**
-- [ ] **移動動畫**:玩家/AI 移動=瞬移,缺「沿路徑逐格走 + FDICON 方向走動幀」(素材/easing 都有,缺 path walk)
+- [x] **腳本系統 campaign(M4 骨架)** ✅(74bf386):internal/campaign(節點圖 Runner:story/battle/
+      choice/event/ending + 旗標 + 敗北路線 + choice 條件選項;單測3條);引擎接線(FD2_CAMPAIGN=1、
+      enterNode/campInput/drawCampaignUI、勝敗 Enter 轉場、resetBattle 重試);campaign.json 第一章示範
+      (敗北→撤退設旗標→再戰)。待續:商店節點、存檔、原版 33 關自動生成 campaign
+- [x] **移動動畫** ✅(74bf386):battle.Path(BFS 路徑)+ walkAnim 沿路徑逐格走(方向幀+OffX/Y 內插,
+      ~4-5 tick/格,走完進攻擊/待命,期間鎖輸入);AI 移動沿用瞬移(待接同管線)
+- [ ] internal/battle 預存在測試失敗(model_test.go:40 部署格 @11,11,非本輪造成)待查
 - [ ] **魔法系統**:完全未實作——法術選單(radial 指令環,doc13 0x18ED0)、MP 消耗、青衫法術公式、
       法術特效動畫(FIGANI 內含法術特效,可沿用資料驅動管線)
 - [ ] **音樂**:15 首 OGG 已備(extracted/music_ogg,本機);remake 零音訊 code——缺 ebiten/audio 播放器 +
