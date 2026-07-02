@@ -689,19 +689,20 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		fw, fh := float64(b.Dx())*sc, float64(b.Dy())*sc
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)
-		op.GeoM.Translate(110-fw/2, 296-fh) // 敵方盜賊:網格量 v28 中心x85 vs orig x60,往左 25px(160→110)
+		// 敵方盜賊:模板匹配精確定位(FIGANI_288 在 orig_05 的 sprite 左上=(16,41)@320 → ×2=(32,82))
+		op.GeoM.Translate(155-fw/2, 302-fh)
 		if prog >= 22 && prog < 40 {
 			op.ColorScale.Scale(2.2, 0.0, 0.0, 1)
 		}
 		screen.DrawImage(img, op)
 	}
-	// (2.5) 我方台座(TAI_004 綠草橢圓;在 figure 下、狀態欄上;中心對亞雷斯腳 orig(238,185)→×2)
+	// (2.5) 我方台座(TAI_004;模板匹配 orig 台座左上=(165,157)@320 → ×2=(330,314))
 	if g.tai != nil {
 		tb := g.tai.Bounds()
 		tw, th := float64(tb.Dx())*sc, float64(tb.Dy())*sc
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)
-		op.GeoM.Translate(476-tw/2, 370-th/2)
+		op.GeoM.Translate(482-tw/2, 356-th/2)
 		screen.DrawImage(g.tai, op)
 	}
 	// (3) 我方亞雷斯 figure(背影,踩台座;蓋住狀態欄);程式量 orig 土台中心 x≈238 y≈185(@320)
@@ -716,7 +717,8 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		fw, fh := float64(b.Dx())*sc, float64(b.Dy())*sc
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)
-		op.GeoM.Translate(426-fw/2, 390-fh) // 我方亞雷斯:使用者校正往左(476→426)
+		// 我方亞雷斯:模板匹配精確定位(FIGANI_013_f01 在 orig_05 的 sprite 左上=(141,3)@320 → ×2=(282,6))
+		op.GeoM.Translate(461-fw/2, 384-fh)
 		screen.DrawImage(img, op)
 	}
 }
