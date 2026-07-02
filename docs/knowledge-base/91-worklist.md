@@ -276,6 +276,22 @@
 - [ ] 戰鬥 SFX:index 陣列填值上游、#48-64 逐招對照、remake 接入(atkAnim 命中掛 battle 池)
 - [ ] UI 音效 index 2-0xb 語意畫面實測
 
+## 第 11 輪 ✅(campaign 全 30 章能玩 + SFX 收線)
+- [x] **ch2-30 scenario stub**(sonnet):29 個 chNN.json(party 4 人/deploy=own_deploy 真資料
+      (9 章資源瑕疵 spiral fallback)/groups 全開排除 group==255 padding);campaign_full 30/30
+      掛 scenario(含修 ch01 campaign 模式沒主角隊的壞點);三層驗證+3 章實跑
+      → **全 30 章一條龍可玩**(FD2_CAMPAIGN=assets/scenarios/campaign_full.json)
+- [x] **戰鬥命中音接真素材**(旗艦):battle 池共用揮擊音(#48 sub0)接命中幀;loadWav/playRaw
+- [x] **SFX index2 追蹤**(sonnet,部分解出誠實標記):真路徑=0x01cff0 [esp+計數+0xd0](填值待追);
+      **意外收穫:0x1c269=單位 40-bit 招式遮罩解碼器(unit+0x1a)**=「單位學會哪些招式」真實結構;
+      battle_sfx_map.json 骨架。依「夠用就停」:+0xd0 續追降低優先(共用音已可用)
+- [x] 聽辨清單(extracted/music_ogg/聽辨清單.md,待使用者逐曲填)
+- [ ] 戰鬥曲/勝利曲聽辨(使用者)
+- [ ] party 數值成長/招募(doc28 加入條件)、回合增援事件疊到 stub
+- [ ] ch10 等圖少數 tile 雜色查因
+- [ ] unit+0x1a(招式表)vs doc03 +0x22(法術表)offset 差異查證
+- [ ] +0xd0 陣列填值(逐招音效對照,低優先)
+
 ## 完成定義(反組譯研究)
 全部資產格式可解(解包+解壓+轉現代格式)、核心數值表全 dump 並驗證、
 主要遊戲規則演算法(戰鬥/移動/升級/AI)有反組譯依據、地圖可渲染、文本可讀可改。
