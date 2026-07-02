@@ -239,6 +239,25 @@
       原版祕密商店進入方式 RE(攻略#16 方向鍵位置)
 - [x] 存檔/讀檔 ✅(e09c68c):save.go 自有 JSON(節點/旗標/金幣/道具),F5/F9,節點邊界語意
 
+## 第 9 輪 ✅(3-subagent 成本分工;haiku=資料/sonnet=RE·套件/旗艦=架構·驗收)
+> 策略(rulebook/45):簡單工作派便宜模型,旗艦只做架構與把關;每件交付先抽驗再 commit。
+- [x] **商店品項表**(haiku):docs/data/shops.json 69家/23祕密(含進入方式「酒店前Shift+F1」等);campaign 換真值
+- [x] **SFX 破案**(sonnet):FDOTHER#31=14×8bit PCM+AIL 鏈 → doc36;WAV 導出(export_sfx.py,11025Hz 負向證據);
+      **index0=游標音確認**(5處方向鍵分支);戰鬥音效=另一獨立池([0x5411f])待導出
+- [x] **法術特效定論**(sonnet):不存在法術id→FIGANI對映(0x28784 不讀 spell_id;火花燒在角色幀)→ doc37;
+      remake 施法用角色動畫=與原版一致,結案
+- [x] **魔法完整版**(sonnet battle 層+旗艦接線):CastArea AoE/命中擲骰(hit=0必中規則)/輔助法術
+      (魔刃/魔鎧/風行 doc02 明文值)/毒麻封咒行動術/combo;13 單測;引擎:Buff 進 Attack、TickStatus、
+      AoE 指空地、FD2_SEED。缺口列冊:風妖精 dmg=0 矛盾、劍技倍率表、傳送 UI
+- [x] **全 33 戰場匯出**(haiku):remake/assets/maps/map1-32(96 檔,抽驗 3 圖合法);
+      旗艦接線 loadMap(dir)+campaign battle.map 欄位(map3 實測換圖)
+- [x] **AI 行走+敵攻我演出**(旗艦):NextAIPlan 決策執行分離+aiStep;atkOwn 欄位按陣營
+- [x] **SFX 引擎接入**(旗艦):loadSFX/playSFX+游標/確認/命中掛點(命中暫代,待戰鬥池)
+- [ ] 戰鬥音效池([0x5411f] 動態子容器)導出+逐招對照
+- [ ] 非 map0 角色 sprite 組匯出(換圖後 fallback 色塊)
+- [ ] 33 關 campaign 自動生成(parse_field+劇情+商店串鏈,M4 工具)
+- [ ] UI 音效 index 2-0xb 語意畫面實測
+
 ## 完成定義(反組譯研究)
 全部資產格式可解(解包+解壓+轉現代格式)、核心數值表全 dump 並驗證、
 主要遊戲規則演算法(戰鬥/移動/升級/AI)有反組譯依據、地圖可渲染、文本可讀可改。
