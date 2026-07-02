@@ -3,11 +3,7 @@
   "name": "在天空的彼方",
   "map": 23,
   "initial_groups": [
-    1,
-    2,
-    4,
-    7,
-    10
+    1
   ],
   "party": [
     {
@@ -458,6 +454,74 @@
       "do": [
         {
           "type": "spawn_party"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch24_e54_t2",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 2
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            2
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch24_e54_t4",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 4
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            4
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch24_e54_t7",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 7
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            7
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch24_e54_t10",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 10
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            10
+          ],
+          "camp": "enemy"
         }
       ]
     }

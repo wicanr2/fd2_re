@@ -3,8 +3,7 @@
   "name": "往王城途中",
   "map": 6,
   "initial_groups": [
-    1,
-    2
+    1
   ],
   "party": [
     {
@@ -167,6 +166,23 @@
       "do": [
         {
           "type": "spawn_party"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch07_e25_t10",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 10
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            2
+          ],
+          "camp": "enemy"
         }
       ]
     }

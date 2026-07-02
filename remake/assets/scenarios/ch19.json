@@ -3,8 +3,7 @@
   "name": "黑暗中的狙擊",
   "map": 18,
   "initial_groups": [
-    0,
-    1
+    0
   ],
   "party": [
     {
@@ -343,6 +342,23 @@
       "do": [
         {
           "type": "spawn_party"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch19_e46_t6",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 6
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            1
+          ],
+          "camp": "ally"
         }
       ]
     }

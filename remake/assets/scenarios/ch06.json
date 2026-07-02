@@ -4,7 +4,6 @@
   "map": 5,
   "initial_groups": [
     0,
-    1,
     2,
     3
   ],
@@ -153,6 +152,23 @@
       "do": [
         {
           "type": "spawn_party"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch06_e22_t15",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 15
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            1
+          ],
+          "camp": "special"
         }
       ]
     }

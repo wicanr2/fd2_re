@@ -5,12 +5,6 @@
   "initial_groups": [
     0,
     1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
     8,
     9,
     10
@@ -192,6 +186,108 @@
       "do": [
         {
           "type": "spawn_party"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch08_e27_t2",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 2
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            2
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch08_e27_t3",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 3
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            3
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch08_e27_t4",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 4
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            4
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch08_e27_t5",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 5
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            5
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch08_e27_t6",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 6
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            6
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch08_e27_t7",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 7
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            7
+          ],
+          "camp": "enemy"
         }
       ]
     }

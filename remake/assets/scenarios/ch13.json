@@ -4,8 +4,7 @@
   "map": 12,
   "initial_groups": [
     0,
-    1,
-    2
+    1
   ],
   "party": [
     {
@@ -264,6 +263,23 @@
       "do": [
         {
           "type": "spawn_party"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch13_e7_t9",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 9
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            2
+          ],
+          "camp": "enemy"
         }
       ]
     }

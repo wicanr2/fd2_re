@@ -38,6 +38,23 @@ v3 新增(本輪):
     近似值,不是反組譯結果**,精確 base table 待未來補 RE。
   - **回合增援:本輪不做,非漏做,是撞牆後的判斷**——見下方「RE 撞牆記錄」。
 
+v4 新增(本輪,接續 v3 撞牆點):
+  - **回合增援真資料疊入**:v3 撞牆點(event_id → group 清單)已在後續反組譯輪解開
+    (doc25 §6.1:消費點 `0x1a813` + 全域 event_id 跳表 `0x51b91` + spawn 原語 `0x10b4e`),
+    `docs/data/turn_events.json` 已補上全 30 章的 `groups`/`handler` 真實資料,
+    map0 ground truth 4/4 驗證通過。本輪把這批真資料疊進 ch02-30 的 scenario:
+    對每筆有具體 group 的記錄,加 `on_turn_end` + `spawn_group` 事件(寫法比照 ch01.json
+    既有事件),並把該 group 從 `initial_groups` 移除(改為回合增援登場,不再全部開局在場)。
+    見 `apply_reinforcements()`。
+  - **三種 groups 值**:整數清單(直接可用)/ `$turn_counter[0x53bef]`(動態=觸發當下回合數,
+    因每筆記錄本身即為單回合觸發實例,直接拿該筆 `turn` 當 group 即可——用 map7/23/25 的
+    真實 group 集合核對過,turn 值與圖上 group 編號完全對得上,見 doc25 §6.1)/
+    其他動態值(如 `$reg_or_mem(eax)`,event_id 47/49,暫存器值無法靜態解析)。
+  - **安全網(寧可全開也不要單位消失)**:單筆記錄任一 group 不存在於該章 units.json →
+    整筆退回列冊,不動 initial_groups;全部有效記錄套用後 initial_groups 會清空 →
+    整章退回列冊,維持 v2 全開安全預設。無 spawn handler 的記錄(對話/AI類,groups 為空)
+    直接列冊跳過。
+
 ## RE 撞牆記錄:為何 v3 不做「回合增援」spawn_group(2026-07 gen_campaign v3)
 
 派工時以為 `docs/data/battle_events.json` 是「30 章回合事件 dump(條件→動作)」,可以
@@ -99,6 +116,7 @@ DOC28 = os.path.join(ROOT, "docs", "knowledge-base", "28-chapter-objectives-and-
 SHOPS_JSON = os.path.join(ROOT, "docs", "data", "shops.json")
 CHARACTERS_JSON = os.path.join(ROOT, "docs", "data", "exe_tables", "characters.json")
 GROWTH_JSON = os.path.join(ROOT, "docs", "data", "exe_tables", "growth.json")
+TURN_EVENTS_JSON = os.path.join(ROOT, "docs", "data", "turn_events.json")
 OUT_PATH = os.path.join(REMAKE, "assets", "scenarios", "campaign_full.json")
 
 BGM_BATTLE = "FDMUS_018"  # 戰鬥(doc12:track 18,實測 32 處 play_bgm 呼叫)
@@ -331,8 +349,87 @@ def pick_deploy_cells(
     return clean[:n], "metadata+fallback_spiral"
 
 
-def build_scenario_stub(c: int, map_idx: int, title: str, party: list[dict]) -> tuple[dict, str]:
-    """為攻略章 c(對映 map_idx)生成 scenario stub(party 進場+部署格+分組全開)。"""
+def load_turn_events(path: str) -> dict[int, list[dict]]:
+    """讀 turn_events.json,回傳 chapter -> turn_events[] (見 doc25 §6.1)。"""
+    with open(path, encoding="utf-8") as f:
+        rows = json.load(f)
+    return {row["chapter"]: row["turn_events"] for row in rows}
+
+
+def apply_reinforcements(
+    scenario: dict, records: list[dict], map_groups: set[int], cid: str
+) -> tuple[int, list[str]]:
+    """把 turn_events.json 該章記錄疊進 scenario:initial_groups 移除對應 group +
+    events 加 on_turn_end/spawn_group(機制見 doc25 §6.1、消費點 0x1a813,ground truth
+    見 map0 4/4 驗證;寫法比照 ch01.json 既有事件——`when.turn` 是精確比對,非 turn_gte,
+    對映反組譯 0x01a844 `cmp edx,[0x53bef]` 精確比對、event.go `When.match()` 同語意)。
+
+    三種記錄類型:
+      - groups 為整數清單 → 直接可用。
+      - groups==["$turn_counter[0x53bef]"](event_id 27/54/57)→ 動態值 = 觸發當下回合數,
+        因每筆記錄本身已是單回合觸發實例,直接以該筆 turn 當 group(已用 map7/23/25 的
+        真實 group 集合核對過,turn 值與圖上 group 編號完全對得上)。
+      - 其他動態值(如 $reg_or_mem(eax),event_id 47/49)→ 無法靜態解析實際 group,跳過列冊。
+      - groups==[] → 無 spawn handler(對話/AI類),跳過列冊。
+
+    安全網(寧可全開也不要單位消失):
+      - 單筆記錄內任一 group 不存在於該章 units.json → 整筆退回列冊,不動 initial_groups。
+      - 全部有效記錄套用後 initial_groups 會變空 → 整章退回列冊(維持 v2 全開安全預設)。
+    """
+    skipped: list[str] = []
+    candidates: list[tuple[int, int, str, list[int]]] = []  # turn, event_id, camp, groups
+
+    for rec in records:
+        groups_raw = rec["groups"]
+        turn, event_id, camp = rec["turn"], rec["event_id"], rec["camp"]
+        if not groups_raw:
+            skipped.append(f"ch{cid}:event{event_id}@T{turn}(無 spawn handler/對話類,跳過)")
+            continue
+        if groups_raw == ["$turn_counter[0x53bef]"]:
+            resolved = [turn]
+        elif all(isinstance(g, int) for g in groups_raw):
+            resolved = list(groups_raw)
+        else:
+            skipped.append(f"ch{cid}:event{event_id}@T{turn}(動態值{groups_raw!r}無法靜態解析,跳過)")
+            continue
+        missing = [g for g in resolved if g not in map_groups]
+        if missing:
+            skipped.append(
+                f"ch{cid}:event{event_id}@T{turn} groups={resolved}(含 map 不存在的 group{missing},整筆退回列冊)"
+            )
+            continue
+        candidates.append((turn, event_id, camp, resolved))
+
+    if not candidates:
+        return 0, skipped
+
+    reinforce_groups = {g for _, _, _, gs in candidates for g in gs}
+    remaining_initial = [g for g in scenario["initial_groups"] if g not in reinforce_groups]
+    if scenario["initial_groups"] and not remaining_initial:
+        skipped.append(
+            f"ch{cid}: 全部 {len(candidates)} 筆增援套用後 initial_groups 會清空,"
+            "整章退回列冊(維持全開安全預設)"
+        )
+        return 0, skipped
+
+    scenario["initial_groups"] = remaining_initial
+    for turn, event_id, camp, gs in candidates:
+        scenario["events"].append(
+            {
+                "id": f"reinforce_ch{cid}_e{event_id}_t{turn}",
+                "trigger": "on_turn_end",
+                "when": {"turn": turn},
+                "once": True,
+                "do": [{"type": "spawn_group", "groups": sorted(gs), "camp": camp}],
+            }
+        )
+    return len(candidates), skipped
+
+
+def build_scenario_stub(
+    c: int, map_idx: int, title: str, party: list[dict], turn_records: list[dict]
+) -> tuple[dict, str, int, list[str]]:
+    """為攻略章 c(對映 map_idx)生成 scenario stub(party 進場+部署格+回合增援疊入)。"""
     units_path = os.path.join(REMAKE, "assets", "maps", f"map{map_idx}", f"map{map_idx}_units.json")
     with open(units_path, encoding="utf-8") as f:
         md = json.load(f)
@@ -358,7 +455,8 @@ def build_scenario_stub(c: int, map_idx: int, title: str, party: list[dict]) -> 
             }
         ],
     }
-    return scenario, source
+    n_reinforced, skipped = apply_reinforcements(scenario, turn_records, set(groups), f"{c:02d}")
+    return scenario, source, n_reinforced, skipped
 
 
 def goal_sentence(row: dict) -> str:
@@ -372,13 +470,16 @@ def goal_sentence(row: dict) -> str:
 def build_campaign(
     rows: list[dict], shops_by_ch: dict[int, list[dict]],
     characters_by_name: dict[str, dict], growth_by_idx: dict[int, dict],
-) -> tuple[dict, dict[str, str], dict[int, list[str]], list[str]]:
+    turn_events_by_ch: dict[int, list[dict]],
+) -> tuple[dict, dict[str, str], dict[int, list[str]], list[str], dict[str, int], list[str]]:
     nodes: dict[str, dict] = {}
     flags: dict[str, bool] = {}
     base4 = load_ch01_party()
     base4_by_name = {m["name"]: m for m in base4}
     base4_order = [m["name"] for m in base4]
     scenario_sources: dict[str, str] = {}  # chNN -> 'ch01(既有)' / 'metadata' / 'metadata+fallback_spiral'
+    reinforce_counts: dict[str, int] = {}  # chNN -> 疊入的增援事件筆數
+    reinforce_skipped: list[str] = []  # 全 30 章列冊跳過統計
 
     recruit_plan, skipped_recruits = build_recruit_plan(rows, characters_by_name, set(base4_order))
     joined_so_far: list[str] = []  # 前面各章已加入角色(不含當章新加入者,對映 party 累積規格)
@@ -401,8 +502,12 @@ def build_campaign(
         if c == 1:
             scenario_sources[cid] = "ch01(既有人工版,未覆寫)"
         else:
-            scenario, source = build_scenario_stub(c, map_idx, row["title"], party)
+            scenario, source, n_reinforced, skipped = build_scenario_stub(
+                c, map_idx, row["title"], party, turn_events_by_ch.get(c, [])
+            )
             scenario_sources[cid] = source
+            reinforce_counts[cid] = n_reinforced
+            reinforce_skipped.extend(skipped)
             out_scn = os.path.join(REMAKE, "assets", "scenarios", f"ch{cid}.json")
             with open(out_scn, "w", encoding="utf-8") as f:
                 json.dump(scenario, f, ensure_ascii=False, indent=2)
@@ -535,7 +640,7 @@ def build_campaign(
         "flags": flags,
         "nodes": nodes,
     }
-    return campaign, scenario_sources, recruit_plan, skipped_recruits
+    return campaign, scenario_sources, recruit_plan, skipped_recruits, reinforce_counts, reinforce_skipped
 
 
 def validate(campaign: dict) -> list[str]:
@@ -622,8 +727,9 @@ def main():
     shops_by_ch = load_shops_by_chapter(SHOPS_JSON)
     characters_by_name = load_characters(CHARACTERS_JSON)
     growth_by_idx = load_growth(GROWTH_JSON)
-    campaign, scenario_sources, recruit_plan, skipped_recruits = build_campaign(
-        rows, shops_by_ch, characters_by_name, growth_by_idx
+    turn_events_by_ch = load_turn_events(TURN_EVENTS_JSON)
+    campaign, scenario_sources, recruit_plan, skipped_recruits, reinforce_counts, reinforce_skipped = build_campaign(
+        rows, shops_by_ch, characters_by_name, growth_by_idx, turn_events_by_ch
     )
 
     os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
@@ -658,6 +764,17 @@ def main():
     if skipped_recruits:
         print(f"  列冊跳過 {len(skipped_recruits)} 筆:")
         for s in skipped_recruits:
+            print(f"    - {s}")
+
+    n_reinforce_events = sum(reinforce_counts.values())
+    n_reinforce_chapters = sum(1 for n in reinforce_counts.values() if n > 0)
+    print(f"\n回合增援:{n_reinforce_chapters} 章疊入共 {n_reinforce_events} 筆 spawn_group 事件")
+    for cid in sorted(reinforce_counts):
+        if reinforce_counts[cid] > 0:
+            print(f"  ch{cid}: {reinforce_counts[cid]} 筆")
+    if reinforce_skipped:
+        print(f"  列冊跳過 {len(reinforce_skipped)} 筆:")
+        for s in reinforce_skipped:
             print(f"    - {s}")
 
     # JSON 合法性(已用 json.dump 產生,這裡重讀一次確保可被 json.load 解析)

@@ -3,8 +3,7 @@
   "name": "往塞拉村途中",
   "map": 2,
   "initial_groups": [
-    1,
-    2
+    1
   ],
   "party": [
     {
@@ -119,6 +118,23 @@
       "do": [
         {
           "type": "spawn_party"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch03_e9_t3",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 3
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            2
+          ],
+          "camp": "special"
         }
       ]
     }

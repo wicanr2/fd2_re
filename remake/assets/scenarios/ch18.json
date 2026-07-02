@@ -3,8 +3,7 @@
   "name": "遙遠的彼岸",
   "map": 17,
   "initial_groups": [
-    0,
-    1
+    0
   ],
   "party": [
     {
@@ -311,6 +310,23 @@
       "do": [
         {
           "type": "spawn_party"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch18_e42_t8",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 8
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            1
+          ],
+          "camp": "enemy"
         }
       ]
     }

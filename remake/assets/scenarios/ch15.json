@@ -3,8 +3,7 @@
   "name": "拉卡湖的激戰",
   "map": 14,
   "initial_groups": [
-    0,
-    1
+    0
   ],
   "party": [
     {
@@ -263,6 +262,23 @@
       "do": [
         {
           "type": "spawn_party"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch15_e38_t7",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 7
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            1
+          ],
+          "camp": "enemy"
         }
       ]
     }

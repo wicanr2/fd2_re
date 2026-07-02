@@ -3,8 +3,7 @@
   "name": "洞窟中的激戰",
   "map": 9,
   "initial_groups": [
-    0,
-    1
+    0
   ],
   "party": [
     {
@@ -215,6 +214,23 @@
       "do": [
         {
           "type": "spawn_party"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch10_e32_t5",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 5
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            1
+          ],
+          "camp": "ally"
         }
       ]
     }

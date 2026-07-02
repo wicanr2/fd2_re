@@ -5,7 +5,6 @@
   "initial_groups": [
     0,
     1,
-    2,
     3
   ],
   "party": [
@@ -425,6 +424,23 @@
       "do": [
         {
           "type": "spawn_party"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch22_e50_t5",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 5
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            2
+          ],
+          "camp": "special"
         }
       ]
     }

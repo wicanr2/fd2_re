@@ -4,7 +4,6 @@
   "map": 24,
   "initial_groups": [
     0,
-    1,
     2
   ],
   "party": [
@@ -456,6 +455,23 @@
       "do": [
         {
           "type": "spawn_party"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch25_e56_t6",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 6
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            1
+          ],
+          "camp": "ally"
         }
       ]
     }

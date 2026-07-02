@@ -3,8 +3,7 @@
   "name": "塞拉村前",
   "map": 3,
   "initial_groups": [
-    1,
-    2
+    1
   ],
   "party": [
     {
@@ -135,6 +134,23 @@
       "do": [
         {
           "type": "spawn_party"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch04_e11_t4",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 4
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            2
+          ],
+          "camp": "ally"
         }
       ]
     }

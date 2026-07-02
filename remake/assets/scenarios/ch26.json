@@ -4,16 +4,7 @@
   "map": 25,
   "initial_groups": [
     0,
-    1,
-    2,
-    4,
-    6,
-    8,
-    10,
-    12,
-    15,
-    16,
-    17
+    1
   ],
   "party": [
     {
@@ -496,6 +487,159 @@
       "do": [
         {
           "type": "spawn_party"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch26_e57_t2",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 2
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            2
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch26_e57_t4",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 4
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            4
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch26_e57_t6",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 6
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            6
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch26_e57_t8",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 8
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            8
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch26_e57_t10",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 10
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            10
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch26_e57_t12",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 12
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            12
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch26_e57_t15",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 15
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            15
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch26_e57_t16",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 16
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            16
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch26_e57_t17",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 17
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            17
+          ],
+          "camp": "enemy"
         }
       ]
     }
