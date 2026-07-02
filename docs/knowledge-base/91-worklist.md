@@ -292,6 +292,31 @@
 - [ ] unit+0x1a(招式表)vs doc03 +0x22(法術表)offset 差異查證
 - [ ] +0xd0 陣列填值(逐招音效對照,低優先)
 
+## 第 12 輪 ✅(招募成長/劇情文本/編輯器規劃/政策更新)
+- [x] **gen_campaign v3**(sonnet):26 角色 21 章招募累積(ch30 全 30 人)+ 成長(HP 真表值,
+      AP/DP 近似明標);**增援誠實跳過**(battle_events.json 實為勝負 metadata、
+      event_id→group 卡未反組譯 0x22e5c,經 ch01 ground truth 反測拒絕硬湊)→
+      docs/data/turn_events.json 真資料 dump + doc26 防誤用註記
+- [x] **story 管線**(sonnet):story_to_script.py,ch01-03 精校文本 156 句(speaker 對映 78-85%);
+      引擎 story script 載入(旗艦:Node.Script+loadStoryScript,無檔 fallback)
+- [x] **著作權政策更新(使用者 2026-07-03)**:FD2 版權過期,**對白文本開放入庫**
+      (assets/story/ 例外;ch01.json 恢復原文);圖像/音樂/binary 仍本機
+- [x] **tile 雜色結案**(sonnet):非 bug——map9 黑塊紫紋=原版地底裂谷美術;
+      全 33 圖 index 零越界、匯出 vs oracle 逐像素 0 差異
+- [x] **編輯器規劃**(sonnet)→ `38`:選型=獨立網頁單檔編輯器(File System Access API;
+      不做 Ebiten 內建=避免編輯器複雜度混入引擎/不外包 Tiled=劇情事件無對應工具);
+      MVP=戰場編輯(產物零轉換直接引擎載入);地基發現:MoveCost 未接地形、
+      event.go 實作僅 doc29 願景子集(表單以實作為準+--dump-registry 同步)
+- [ ] **戰場編輯器 MVP**:網頁單檔 HTML/JS,tile 繪製+單位擺放+部署格;FSA API 讀寫 assets/maps;
+      驗收=引擎零轉換載入(細節 `38`)
+- [ ] 劇情編輯器:對白+事件表單+商店(下拉=event.go 現行能力,`38` §3.3)
+- [ ] 編輯器能力清單同步:Go --dump-registry
+- [ ] campaign 節點圖編輯器(拖線/旗標/敗北路線可視化)
+- [ ] 地形屬性接線(MoveCost tile→成本表;編輯器地形面板依賴)
+- [ ] **0x22e5c RE**(world-map handler:event_id→group 對應)→ 接回合增援
+- [ ] ch04-33 劇情文本精校(30 章,PNG 人眼轉錄;對白已可入庫)
+- [ ] 視窗縮放 filter 查證(可能 linear 暈染,tile-debug 提醒)
+
 ## 完成定義(反組譯研究)
 全部資產格式可解(解包+解壓+轉現代格式)、核心數值表全 dump 並驗證、
 主要遊戲規則演算法(戰鬥/移動/升級/AI)有反組譯依據、地圖可渲染、文本可讀可改。
