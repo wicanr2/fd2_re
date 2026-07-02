@@ -216,11 +216,11 @@
       (敗北→撤退設旗標→再戰)。待續:商店節點、存檔、原版 33 關自動生成 campaign
 - [x] **移動動畫** ✅(74bf386):battle.Path(BFS 路徑)+ walkAnim 沿路徑逐格走(方向幀+OffX/Y 內插,
       ~4-5 tick/格,走完進攻擊/待命,期間鎖輸入);AI 移動沿用瞬移(待接同管線)
-- [ ] internal/battle 預存在測試失敗(model_test.go:40 部署格 @11,11,非本輪造成)待查
+- [x] internal/battle 測試失敗已修 ✅(e09c68c):部署格斷言=舊設計殘留,對齊現行(部署格屬 spawn_party)
 - [ ] **魔法系統**:完全未實作——法術選單(radial 指令環,doc13 0x18ED0)、MP 消耗、青衫法術公式、
       法術特效動畫(FIGANI 內含法術特效,可沿用資料驅動管線)
-- [ ] **音樂**:15 首 OGG 已備(extracted/music_ogg,本機);remake 零音訊 code——缺 ebiten/audio 播放器 +
-      場景→曲號(doc12 play_bgm 32 呼叫點已 RE)
+- [x] **音樂** ✅(e09c68c):audio.go(ebiten/audio+vorbis;忠實 play_bgm 0x26777:同曲不重播/換曲釋放/
+      無限迴圈);campaign 節點 bgm 驅動;FD2_MUTE 靜默。待:非 campaign 模式場景→曲號自動對映(doc12 表)
 - [ ] **音效 SFX**:org_game 只有 .DIG 驅動(Miles 驅動非音效資料);**音效資料在哪未 RE**(可能在 .DAT/EXE 內)← 需先 RE
 - [x] **radial 指令環** ✅(3c618c4):orig_04 截圖裁 4 圖示(道具/攻擊/狀態/待機),十字繞單位+選中橘框;
       ↑←→↓+Enter/ESC(doc13 [0x3C57]);移動到位自動開環。待:方向↔指令原版精確配對 dosbox 驗證、
@@ -228,9 +228,10 @@
 - [x] **魔法系統** ✅(3c618c4):magic.go(spells.json=EXE dump 36條+M1-M5名稱表;InCastRange/Cast
       固定表值傷害/治療capMax);悠妮火炎/電擊/治療;法術選單→射程紫高亮→施放接戰鬥演出+扣MP。
       待:法術特效 FIGANI 對映(演出暫用攻擊動作)、AoE(range>0)、命中率、輔助系(魔刃/風行…)效果
-- [ ] **祕密商店機制還原**(使用者指定):原版各章祕密商店(青衫攻略有位置/品項表)→ campaign shop 節點
-      kinds=[weapon,item,secret];EXE 商店表(doc03)+ 進入條件 RE 待查
-- [ ] 存檔/讀檔(自有格式)
+- [x] **商店+祕密商店** ✅(e09c68c):campaign shop 節點(goods/secret/secret_if 旗標解鎖=原版機制);
+      商店 UI(金幣/購買/ESC);demo 打聽→解鎖祕銀劍。待:原版各章實際品項/價格表(青衫)、賣出、裝備、
+      原版祕密商店進入方式 RE(攻略#16 方向鍵位置)
+- [x] 存檔/讀檔 ✅(e09c68c):save.go 自有 JSON(節點/旗標/金幣/道具),F5/F9,節點邊界語意
 
 ## 完成定義(反組譯研究)
 全部資產格式可解(解包+解壓+轉現代格式)、核心數值表全 dump 並驗證、
