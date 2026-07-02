@@ -83,8 +83,7 @@ type Game struct {
 	tai     *ebiten.Image           // 我方腳下台座(TAI.DAT;0x29164 載 0x28c46,doc35 §3.3)
 	panel   *ebiten.Image           // 狀態欄框素材(FDOTHER#5 LMI1 #22,149×42;含bevel+HP/MP標籤+槽,doc35 §4)
 	fontNm  *Font                   // 狀態欄名字(整數尺寸 face,scale1 銳利)
-	fontLv  *Font                   // 狀態欄 LV 數字
-	fontNum *Font                   // 狀態欄 HP/MP 數值
+	digits  [10]*ebiten.Image       // 狀態欄數字 0-9(LMI1 #31-40 原版 digit cell,白/藍影)
 	font    *Font                   // 原版點陣中文字型(doc 08)
 }
 
@@ -776,24 +775,34 @@ func (g *Game) drawBattlePanel(screen *ebiten.Image, x, y float64, name string, 
 		color.RGBA{0xf0, 0x70, 0x60, 0xff}, color.RGBA{0xc8, 0x28, 0x20, 0xff}) // MP 紅
 	// 排版(對照 orig 放大量測,native):名(8,2) 16px;LV數字接框內「LV‧」後(133,3) 9px;
 	// HP/MP 數值與槽同列(125,20)/(125,29) 8px
-	// 名字/數字用整數尺寸 face + scale 1.0(銳利);座標取整對齊像素格;
-	// -3/-4 canvas 補 TTF 內部 leading(墨跡頂比 y 低),對齊 orig:名墨頂 local2、LV local2、數值 local17
+	_ = white
+	// 名字:TTF + 深藍描邊(仿原版點陣的暗邊;字形風格為 TTF 既定決策,非像素級)
 	if g.fontNm != nil {
-		g.fontNm.Draw(screen, name, rnd(x+8*sc), rnd(y+2*sc)-2, 1.0, color.RGBA{0xe0, 0xee, 0xff, 0xff})
-	}
-	// 數字雙重描繪(+1px)仿原版粗點陣數字
-	bold := func(f *Font, s string, bx, by float64) {
-		if f == nil {
-			return
+		nx, ny := rnd(x+8*sc), rnd(y+2*sc)-2
+		dk := color.RGBA{0x20, 0x30, 0x60, 0xff}
+		for _, o := range [][2]float64{{-2, 0}, {2, 0}, {0, -2}, {0, 2}, {2, 2}} {
+			g.fontNm.Draw(screen, name, nx+o[0], ny+o[1], 1.0, dk)
 		}
-		f.Draw(screen, s, rnd(bx), rnd(by), 1.0, white)
-		f.Draw(screen, s, rnd(bx)+1, rnd(by), 1.0, white)
+		g.fontNm.Draw(screen, name, nx, ny, 1.0, color.RGBA{0xe0, 0xee, 0xff, 0xff})
 	}
+	// 數字:原版 digit cell 素材(6×8,advance 7px native),100% 還原
+	drawNum := func(s string, nxN, nyN float64) {
+		for k, ch := range s {
+			if ch < '0' || ch > '9' || g.digits[ch-'0'] == nil {
+				continue
+			}
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Scale(sc, sc)
+			op.GeoM.Translate(x+(nxN+float64(k)*7)*sc, y+nyN*sc)
+			screen.DrawImage(g.digits[ch-'0'], op)
+		}
+	}
+	// 位置=模板匹配 orig 定位(LV/HP/MP 首位數字 local (132,4)/(126,21)/(126,30),advance 7)
 	if lv > 0 {
-		bold(g.fontLv, fmt.Sprintf("%02d", lv), x+133*sc, y+2*sc-4)
+		drawNum(fmt.Sprintf("%02d", lv), 132, 4)
 	}
-	bold(g.fontNum, fmt.Sprintf("%03d", hp), x+125*sc, y+19*sc-4)
-	bold(g.fontNum, fmt.Sprintf("%03d", mp), x+125*sc, y+28*sc-4)
+	drawNum(fmt.Sprintf("%03d", hp), 126, 21)
+	drawNum(fmt.Sprintf("%03d", mp), 126, 30)
 }
 
 // drawStatBar 狀態條(暗槽 + 填充);暗槽 = 填充色暗版(對照 orig:空槽呈暗黃/暗紅,非統一黑)。
@@ -967,11 +976,15 @@ func loadGame() *Game {
 		}
 	}
 	g.font = loadFont()
-	// 狀態欄專用整數尺寸 face(scale 1.0 繪製,避免非整數縮放模糊);
-	// 框原生 ×2;CJK 墨跡約滿 em 框:orig 名墨高 13px→face 28、LV 9px→18、數值 8px→16
+	// 狀態欄名字專用整數尺寸 face(scale 1.0 繪製,避免非整數縮放模糊);orig 名墨高 13px→face 28
 	g.fontNm = loadFontSized(28)
-	g.fontLv = loadFontSized(18)
-	g.fontNum = loadFontSized(16)
+	for k := 0; k < 10; k++ { // 原版數字 cell(LMI1 #31-40)
+		if raw, e := os.ReadFile(fmt.Sprintf("assets/ui/digit_%d.png", k)); e == nil {
+			if im, _, e2 := image.Decode(bytes.NewReader(raw)); e2 == nil {
+				g.digits[k] = ebiten.NewImageFromImage(im)
+			}
+		}
+	}
 	return g
 }
 
