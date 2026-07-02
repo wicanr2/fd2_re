@@ -1608,6 +1608,7 @@ func loadGame() *Game {
 		}
 	}
 	g.gold = 1000 // 初始金幣(商店用;原版開局金額待對照)
+	g.playBGM("FDMUS_018") // 戰場 BGM(doc12 實測 track 18;campaign 模式由節點 bgm 覆蓋)
 	if cp := os.Getenv("FD2_CAMPAIGN"); cp != "" { // 劇本節點圖模式(doc 19;放最後,story 對白不被開場 Setup 蓋掉)
 		if cp == "1" {
 			cp = "assets/scenarios/campaign.json"
