@@ -681,8 +681,9 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 			}
 			dhp = a.defHP0 + int(float64(a.defHP1-a.defHP0)*t)
 		}
-		g.drawBattlePanel(screen, 320, 8, 320, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP) // 我方亞雷斯右上(離頂 y8 留間隔)
-		g.drawBattlePanel(screen, 0, 306, 320, a.defName, a.defLV, dhp, a.defMax, a.defMP)    // 敵方盜賊左下(離 150 線 ~3px 空隙)
+		// 位置=模板匹配 orig:我方 (171,4)@320、敵方 (0,154)@320(下欄匹配 err=0 像素全等)
+		g.drawBattlePanel(screen, 342, 8, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP) // 我方亞雷斯右上
+		g.drawBattlePanel(screen, 0, 308, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 敵方盜賊左下
 	}
 
 	// (2) 敵方盜賊 figure(正面;蓋住狀態欄);密集格線對齊 orig:腳底 y≈135(@320)→ 276@640
@@ -729,10 +730,10 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 // drawBattlePanel 原版戰鬥狀態欄:用 FDOTHER#5 LMI1 #22 框素材(149×42,含 bevel + HP/MP標籤 +
 // LV‧ + 血條槽,codec 反組譯 0x4e916 破解,doc35 §4),只疊上名字 / LV數字 / 血條填充 / HP-MP數值。
 // 框內槽 native:HP y22-26、MP y31-35、x26-145(量測)。
-func (g *Game) drawBattlePanel(screen *ebiten.Image, x, y, w float64, name string, lv, hp, mx, mp int) {
+func (g *Game) drawBattlePanel(screen *ebiten.Image, x, y float64, name string, lv, hp, mx, mp int) {
 	panel := g.panel
-	const fnW = 149.0 // 框 native 寬
-	sc := w / fnW
+	// orig 是 149×42 原生尺寸 blit(非拉伸滿半屏;網格比對 v37 抓到的差異)→ 固定 ×2
+	const sc = 2.0
 	fillRect := func(bx, by, bw, bh float64, c color.RGBA) {
 		if bw < 1 {
 			return
@@ -775,9 +776,10 @@ func (g *Game) drawBattlePanel(screen *ebiten.Image, x, y, w float64, name strin
 		color.RGBA{0xf0, 0x70, 0x60, 0xff}, color.RGBA{0xc8, 0x28, 0x20, 0xff}) // MP 紅
 	// 排版(對照 orig 放大量測,native):名(8,2) 16px;LV數字接框內「LV‧」後(133,3) 9px;
 	// HP/MP 數值與槽同列(125,20)/(125,29) 8px
-	// 名字/數字用整數尺寸 face + scale 1.0(銳利);座標取整對齊像素格
+	// 名字/數字用整數尺寸 face + scale 1.0(銳利);座標取整對齊像素格;
+	// -3/-4 canvas 補 TTF 內部 leading(墨跡頂比 y 低),對齊 orig:名墨頂 local2、LV local2、數值 local17
 	if g.fontNm != nil {
-		g.fontNm.Draw(screen, name, rnd(x+8*sc), rnd(y+2*sc), 1.0, color.RGBA{0xe0, 0xee, 0xff, 0xff})
+		g.fontNm.Draw(screen, name, rnd(x+8*sc), rnd(y+2*sc)-2, 1.0, color.RGBA{0xe0, 0xee, 0xff, 0xff})
 	}
 	// 數字雙重描繪(+1px)仿原版粗點陣數字
 	bold := func(f *Font, s string, bx, by float64) {
@@ -788,10 +790,10 @@ func (g *Game) drawBattlePanel(screen *ebiten.Image, x, y, w float64, name strin
 		f.Draw(screen, s, rnd(bx)+1, rnd(by), 1.0, white)
 	}
 	if lv > 0 {
-		bold(g.fontLv, fmt.Sprintf("%02d", lv), x+133*sc, y+2*sc)
+		bold(g.fontLv, fmt.Sprintf("%02d", lv), x+133*sc, y+2*sc-4)
 	}
-	bold(g.fontNum, fmt.Sprintf("%03d", hp), x+125*sc, y+19*sc)
-	bold(g.fontNum, fmt.Sprintf("%03d", mp), x+125*sc, y+28*sc)
+	bold(g.fontNum, fmt.Sprintf("%03d", hp), x+125*sc, y+19*sc-4)
+	bold(g.fontNum, fmt.Sprintf("%03d", mp), x+125*sc, y+28*sc-4)
 }
 
 // drawStatBar 狀態條(暗槽 + 填充);暗槽 = 填充色暗版(對照 orig:空槽呈暗黃/暗紅,非統一黑)。
@@ -966,10 +968,10 @@ func loadGame() *Game {
 	}
 	g.font = loadFont()
 	// 狀態欄專用整數尺寸 face(scale 1.0 繪製,避免非整數縮放模糊);
-	// native(@149寬框)×sc(320/149≈2.147):名16px→34、LV 9px→19、數值8px→17
-	g.fontNm = loadFontSized(34)
-	g.fontLv = loadFontSized(19)
-	g.fontNum = loadFontSized(17)
+	// 框原生 ×2;CJK 墨跡約滿 em 框:orig 名墨高 13px→face 28、LV 9px→18、數值 8px→16
+	g.fontNm = loadFontSized(28)
+	g.fontLv = loadFontSized(18)
+	g.fontNum = loadFontSized(16)
 	return g
 }
 
