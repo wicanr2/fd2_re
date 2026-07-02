@@ -48,8 +48,10 @@ def decode_pixels(body, total):
 
 
 def load_palette(path):
+    """VGA DAC 6-bit(0-63)→ 8-bit:(v<<2)|(v>>4),同 decode_sprite。"""
     p = open(path, "rb").read()
-    return [(p[i * 3], p[i * 3 + 1], p[i * 3 + 2]) for i in range(256)]
+    return [tuple((v << 2) | (v >> 4) for v in (p[i * 3], p[i * 3 + 1], p[i * 3 + 2]))
+            for i in range(256)]
 
 
 def sub_to_png(d, offs, idx, prgb, out_path):

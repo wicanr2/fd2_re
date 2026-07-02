@@ -406,7 +406,7 @@ func (g *Game) Update() error {
 				// 攻方用攻擊動作1(組×3+1=FIGANI_013):含揮劍白斬擊弧 + 腳下大 dither 土台陰影(對齊 orig_05)
 				g.atk = &atkAnim{atkFig: figaniIndex(fig) + 1, defFig: figaniIndex(96), atkName: "亞雷斯", defName: "盜賊",
 					atkHP: 48, atkMax: 48, atkLV: 1, atkMP: 0, defLV: 2, defMP: 0,
-					defHP0: 28, defHP1: 8, defMax: 30, timer: 48, total: 48}
+					defHP0: 28, defHP1: 8, defMax: 28, timer: 48, total: 48}
 			}
 		}
 		if g.frame > g.shotFrame {
@@ -739,39 +739,49 @@ func drawBattlePanel(screen *ebiten.Image, f *Font, panel *ebiten.Image, x, y, w
 		o.GeoM.Translate(bx, by)
 		screen.DrawImage(im, o)
 	}
-	if panel != nil { // 框素材(bevel + HP/MP標籤 + LV‧ + 槽 全來自原版);提亮(palette 渲染偏暗)
+	if panel != nil { // 框素材(bevel + HP/MP標籤 + LV‧ + 槽 全來自原版;palette 已 6→8bit 校正)
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)
 		op.GeoM.Translate(x, y)
-		op.ColorScale.Scale(1.55, 1.55, 1.7, 1)
 		screen.DrawImage(panel, op)
 	}
 	white := color.RGBA{0xff, 0xff, 0xff, 0xff}
-	// 血條填充(槽 native 量測:x21–123 寬102、HP y22、MP y31、高5;靠左對齊槽左端)
+	// 血條填充(槽 native 量測:x21–123 寬102、HP y22–26、MP y31–35 各5列;靠左對齊槽左端)
+	// 高度用四捨五入避免 int 截斷造成槽上下露紅邊
+	rnd := func(v float64) float64 { return float64(int(v + 0.5)) }
 	slotX, slotW := x+21*sc, 102*sc
-	hpF := float64(hp) / float64(mx)
-	if hpF > 1 {
-		hpF = 1
-	} else if hpF < 0 {
-		hpF = 0
+	slotH, lightH := rnd(5*sc), rnd(1*sc)
+	drawFill := func(slotY, frac float64, light, body color.RGBA) {
+		if frac > 1 {
+			frac = 1
+		} else if frac < 0 {
+			frac = 0
+		}
+		w := rnd(slotW * frac)
+		fillRect(slotX, slotY, w, lightH, light)             // 頂邊亮(orig 漸層)
+		fillRect(slotX, slotY+lightH, w, slotH-lightH, body) // 本體
 	}
-	fillRect(slotX, y+22*sc, slotW*hpF, 5*sc, color.RGBA{0xf0, 0xc8, 0x30, 0xff}) // HP 黃(靠左)
+	drawFill(rnd(y+22*sc), float64(hp)/float64(mx),
+		color.RGBA{0xf8, 0xe8, 0x80, 0xff}, color.RGBA{0xf0, 0xc8, 0x30, 0xff}) // HP 黃
 	mpmx := mp
 	if mpmx < 1 {
 		mpmx = 1
 	}
-	mpF := float64(mp) / float64(mpmx)
-	if mpF > 1 {
-		mpF = 1
+	drawFill(rnd(y+31*sc), float64(mp)/float64(mpmx),
+		color.RGBA{0xf0, 0x70, 0x60, 0xff}, color.RGBA{0xc8, 0x28, 0x20, 0xff}) // MP 紅
+	// 排版(對照 orig 放大量測,native):名(8,2) 16px;LV數字接框內「LV‧」後(133,3) 9px;
+	// HP/MP 數值與槽同列(125,20)/(125,29) 8px
+	f.Draw(screen, name, x+8*sc, y+2*sc, 0.85*sc, color.RGBA{0xe0, 0xee, 0xff, 0xff})
+	// 數字雙重描繪(+1px)仿原版粗點陣數字
+	bold := func(s string, bx, by, bsc float64) {
+		f.Draw(screen, s, bx, by, bsc, white)
+		f.Draw(screen, s, bx+1, by, bsc, white)
 	}
-	fillRect(slotX, y+31*sc, slotW*mpF, 5*sc, color.RGBA{0xe0, 0x48, 0x48, 0xff}) // MP 紅(靠左)
-	// 名字(框內左上)+ LV 數字(框 LV‧ 後)+ 血量數值(槽右端 x125 native)
-	f.Draw(screen, name, x+8*sc, y+1*sc, 0.85*sc, color.RGBA{0xe0, 0xee, 0xff, 0xff})
 	if lv > 0 {
-		f.Draw(screen, fmt.Sprintf("%02d", lv), x+122*sc, y+3*sc, 0.5*sc, white)
+		bold(fmt.Sprintf("%02d", lv), x+133*sc, y+2*sc, 0.55*sc)
 	}
-	f.Draw(screen, fmt.Sprintf("%03d", hp), x+125*sc, y+21*sc, 0.42*sc, white)
-	f.Draw(screen, fmt.Sprintf("%03d", mp), x+125*sc, y+30*sc, 0.42*sc, white)
+	bold(fmt.Sprintf("%03d", hp), x+125*sc, y+19*sc, 0.44*sc)
+	bold(fmt.Sprintf("%03d", mp), x+125*sc, y+28*sc, 0.44*sc)
 }
 
 // drawStatBar 狀態條(暗槽 + 填充);暗槽 = 填充色暗版(對照 orig:空槽呈暗黃/暗紅,非統一黑)。
