@@ -1,20 +1,29 @@
 {
   "title": "炎龍騎士團2 — 第一章(campaign 節點圖)",
   "start": "intro",
-  "flags": { "retried": false, "found_secret": false },
+  "flags": {
+    "retried": false,
+    "found_secret": false
+  },
   "nodes": {
     "intro": {
       "type": "story",
       "bgm": "FDMUS_010",
       "lines": [
-        { "speaker": 4, "text": "索爾大人,盜賊團出現在羅德鎮外,鎮民正在求援!" },
-        { "speaker": 0, "text": "知道了。大家隨我出擊——初試身手的時候到了!" }
+        {
+          "speaker": 4,
+          "text": "索爾大人,盜賊團出現在羅德鎮外,鎮民正在求援!"
+        },
+        {
+          "speaker": 0,
+          "text": "知道了。大家隨我出擊——初試身手的時候到了!"
+        }
       ],
       "next": "battle_ch01"
     },
     "battle_ch01": {
       "type": "battle",
-      "bgm": "FDMUS_018",
+      "bgm": "",
       "units": "assets/map0_units.json",
       "scenario": "assets/scenarios/ch01.json",
       "on_win": "victory",
@@ -23,10 +32,18 @@
     "retreat": {
       "type": "story",
       "bgm": "FDMUS_011",
-      "set_flags": { "retried": true },
+      "set_flags": {
+        "retried": true
+      },
       "lines": [
-        { "speaker": 0, "text": "撤退!先回鎮上整頓,再找機會反擊…" },
-        { "speaker": 4, "text": "可惡…下次一定討回來!" }
+        {
+          "speaker": 0,
+          "text": "撤退!先回鎮上整頓,再找機會反擊…"
+        },
+        {
+          "speaker": 4,
+          "text": "可惡…下次一定討回來!"
+        }
       ],
       "next": "battle_ch01"
     },
@@ -34,8 +51,14 @@
       "type": "story",
       "bgm": "FDMUS_016",
       "lines": [
-        { "speaker": 0, "text": "打贏了!羅德鎮暫時安全了。" },
-        { "speaker": 9, "text": "太好了…大家都平安真是萬幸。" }
+        {
+          "speaker": 0,
+          "text": "打贏了!羅德鎮暫時安全了。"
+        },
+        {
+          "speaker": 9,
+          "text": "太好了…大家都平安真是萬幸。"
+        }
       ],
       "next": "choice_town"
     },
@@ -43,35 +66,86 @@
       "type": "choice",
       "prompt": "進城補給前,要做什麼?",
       "options": [
-        { "label": "四處打聽消息", "to": "rumor" },
-        { "label": "直接進武器店", "to": "shop_rodo" }
+        {
+          "label": "四處打聽消息",
+          "to": "rumor"
+        },
+        {
+          "label": "直接進武器店",
+          "to": "shop_rodo"
+        }
       ]
     },
     "rumor": {
       "type": "story",
-      "set_flags": { "found_secret": true },
+      "set_flags": {
+        "found_secret": true
+      },
       "lines": [
-        { "speaker": 9, "text": "聽說武器店老闆有些不擺在檯面上的好東西…" }
+        {
+          "speaker": 9,
+          "text": "聽說武器店老闆有些不擺在檯面上的好東西…"
+        }
       ],
       "next": "shop_rodo"
     },
     "shop_rodo": {
       "type": "shop",
-      "bgm": "FDMUS_010",
+      "bgm": "FDMUS_018",
       "goods": [
-        { "id": 1, "name": "布衣", "price": 50 },
-        { "id": 40, "name": "旅行裝", "price": 500 },
-        { "id": 41, "name": "皮甲", "price": 300 },
-        { "id": 42, "name": "法師袍", "price": 750 },
-        { "id": 60, "name": "藥草", "price": 10 }
+        {
+          "id": 1,
+          "name": "布衣",
+          "price": 50
+        },
+        {
+          "id": 40,
+          "name": "旅行裝",
+          "price": 500
+        },
+        {
+          "id": 41,
+          "name": "皮甲",
+          "price": 300
+        },
+        {
+          "id": 42,
+          "name": "法師袍",
+          "price": 750
+        },
+        {
+          "id": 60,
+          "name": "藥草",
+          "price": 10
+        }
       ],
       "secret_if": "found_secret",
       "secret": [
-        { "id": 2, "name": "闊劍", "price": 250 },
-        { "id": 3, "name": "長戟", "price": 1200 },
-        { "id": 4, "name": "釘頭鎚", "price": 180 },
-        { "id": 5, "name": "回復劑", "price": 80 },
-        { "id": 41, "name": "皮甲", "price": 300 }
+        {
+          "id": 2,
+          "name": "闊劍",
+          "price": 250
+        },
+        {
+          "id": 3,
+          "name": "長戟",
+          "price": 1200
+        },
+        {
+          "id": 4,
+          "name": "釘頭鎚",
+          "price": 180
+        },
+        {
+          "id": 5,
+          "name": "回復劑",
+          "price": 80
+        },
+        {
+          "id": 41,
+          "name": "皮甲",
+          "price": 300
+        }
       ],
       "next": "end_demo"
     },

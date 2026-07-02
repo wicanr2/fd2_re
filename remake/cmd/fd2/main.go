@@ -1681,7 +1681,7 @@ func loadGame() *Game {
 	}
 	g.rng = rand.New(rand.NewSource(seed))
 	g.sfx = loadSFX()
-	g.playBGM("FDMUS_018") // 戰場 BGM(doc12 實測 track 18;campaign 模式由節點 bgm 覆蓋)
+	// 戰場 BGM:doc12 推定 track18=戰鬥被使用者實聽推翻(18=商店音樂);戰鬥曲號待聽辨,先不播錯曲
 	if cp := os.Getenv("FD2_CAMPAIGN"); cp != "" { // 劇本節點圖模式(doc 19;放最後,story 對白不被開場 Setup 蓋掉)
 		if cp == "1" {
 			cp = "assets/scenarios/campaign.json"
