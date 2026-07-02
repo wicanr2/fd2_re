@@ -68,6 +68,8 @@ type Game struct {
 	spells    []battle.Spell
 	bgm       *audio.Player // BGM(doc12 play_bgm 語意:同曲不重播)
 	bgmCur    string
+	sfx                map[int][]byte // SFX PCM(doc36 FDOTHER#31 14樣本)
+	prevCurX, prevCurY int            // 游標移動音偵測
 	aiBusy    bool     // AI 回合進行中(逐單位行走動畫)
 	gold      int      // 金幣(商店)
 	items     []string // 隊伍道具(名稱;道具效果待實裝)
@@ -346,6 +348,13 @@ type walkAnim struct {
 	then func()        // 走完回呼(nil=玩家預設:開指令環)
 }
 
+// SFX 事件 index(doc36;初值為推定,待「事件→樣本對照」RE 校正)
+const (
+	sfxCursor  = 0 // 游標移動
+	sfxConfirm = 1 // 確認
+	sfxHit     = 3 // 攻擊命中
+)
+
 // battleFPT 戰鬥演出播放速度(tick/幀):環境變數 FD2_BATTLE_FPT 可調(調慢=數字大),預設 3。
 func battleFPT() int {
 	if v, e := strconv.Atoi(os.Getenv("FD2_BATTLE_FPT")); e == nil && v > 0 {
@@ -557,6 +566,7 @@ func (g *Game) confirm() {
 	if g.st == nil || g.walk != nil {
 		return
 	}
+	g.playSFX(sfxConfirm)
 	cur := battle.Cell{X: g.curX, Y: g.curY}
 	if g.sel == nil { // 選我方單位
 		u := g.st.UnitAt(g.curX, g.curY)
@@ -675,6 +685,10 @@ func (g *Game) Update() error {
 	// 攻擊演出推進(FIGANI 全身分鏡;演出期間鎖玩家輸入)
 	if g.atk != nil {
 		g.atk.timer--
+		a := g.atk
+		if a != nil && a.fpt > 0 && a.total-a.timer == (len(g.figani[a.atkFig])-4)*a.fpt {
+			g.playSFX(sfxHit) // 命中幀(劈中)音效
+		}
 		if g.atk.timer <= 0 {
 			g.atk = nil
 		}
@@ -773,6 +787,10 @@ func (g *Game) Update() error {
 	}
 	if g.m == nil {
 		return nil
+	}
+	if g.curX != g.prevCurX || g.curY != g.prevCurY { // 游標移動音
+		g.playSFX(sfxCursor)
+		g.prevCurX, g.prevCurY = g.curX, g.curY
 	}
 	// 相機跟隨游標(置中,夾在地圖內;先於各攔截,避免環/選單開啟時相機停擺)
 	g.camX = float64(g.curX*g.m.TileW - logicalW/2 + g.m.TileW/2)
@@ -1608,6 +1626,7 @@ func loadGame() *Game {
 		}
 	}
 	g.gold = 1000 // 初始金幣(商店用;原版開局金額待對照)
+	g.sfx = loadSFX()
 	g.playBGM("FDMUS_018") // 戰場 BGM(doc12 實測 track 18;campaign 模式由節點 bgm 覆蓋)
 	if cp := os.Getenv("FD2_CAMPAIGN"); cp != "" { // 劇本節點圖模式(doc 19;放最後,story 對白不被開場 Setup 蓋掉)
 		if cp == "1" {

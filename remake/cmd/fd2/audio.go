@@ -4,10 +4,13 @@ package main
 
 import (
 	"bytes"
+	"fmt"
+	"io"
 	"os"
 
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/hajimehoshi/ebiten/v2/audio/vorbis"
+	"github.com/hajimehoshi/ebiten/v2/audio/wav"
 )
 
 var audioCtx *audio.Context
@@ -39,4 +42,42 @@ func (g *Game) playBGM(track string) {
 	g.bgm = p
 	g.bgmCur = track
 	p.Play()
+}
+
+// ── SFX(doc36:FDOTHER#31 的 14 個 PCM 樣本,tools/export_sfx.py 導出 WAV)──
+
+// loadSFX 載入 assets/sfx/sfx_NN.wav 為 PCM bytes(解碼一次,播放時 NewPlayerFromBytes)。
+func loadSFX() map[int][]byte {
+	out := map[int][]byte{}
+	for i := 0; i < 14; i++ {
+		raw, err := os.ReadFile(fmt.Sprintf("assets/sfx/sfx_%02d.wav", i))
+		if err != nil {
+			continue
+		}
+		if audioCtx == nil {
+			audioCtx = audio.NewContext(44100)
+		}
+		s, err := wav.DecodeWithSampleRate(44100, bytes.NewReader(raw))
+		if err != nil {
+			continue
+		}
+		b, err := io.ReadAll(s)
+		if err != nil {
+			continue
+		}
+		out[i] = b
+	}
+	return out
+}
+
+// playSFX 播一個音效(疊播;原版雙 handle 0x26896/0x26945 可同時兩個,這裡不限)。
+func (g *Game) playSFX(id int) {
+	if g.sfx == nil || os.Getenv("FD2_MUTE") != "" || g.shotPath != "" {
+		return
+	}
+	b, ok := g.sfx[id]
+	if !ok || audioCtx == nil {
+		return
+	}
+	audio.NewPlayerFromBytes(audioCtx, b).Play()
 }
