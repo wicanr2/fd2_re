@@ -63,8 +63,9 @@ type Game struct {
 	loadErr string
 	// 截圖鉤子(FD2_SHOT=path 啟用):第 shotFrame 幀存 PNG 後自動退出(有界,供無人值守驗證)
 	frame     int
-	shotPath  string
-	shotFrame int
+	shotPath   string
+	shotFrame  int
+	shotSeries string // 逐幀截圖目錄(FD2_SHOT_SERIES):戰鬥演出每幀存 frame_NN.png,演出結束自動退出
 	shotTurn  int // 截圖前自動推進到第 N 回合(FD2_SHOT_TURN,驗證增援進場)
 	shotCurX  int // 截圖時把游標放這(FD2_SHOT_CUR=x,y)
 	shotCurY  int
@@ -84,6 +85,8 @@ type Game struct {
 	panel   *ebiten.Image           // 狀態欄框素材(FDOTHER#5 LMI1 #22,149×42;含bevel+HP/MP標籤+槽,doc35 §4)
 	fontNm  *Font                   // 狀態欄名字(整數尺寸 face,scale1 銳利)
 	digits  [10]*ebiten.Image       // 狀態欄數字 0-9(LMI1 #31-40 原版 digit cell,白/藍影)
+	redSil  map[*ebiten.Image]*ebiten.Image // 命中閃紅的全紅剪影快取(orig=VGA 色盤閃紅)
+	figMeta map[int][][2]int                // FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(doc06;動畫走位全靠它)
 	font    *Font                   // 原版點陣中文字型(doc 08)
 }
 
@@ -218,6 +221,26 @@ func loadFIGANI() map[int][]*ebiten.Image {
 	})
 	for _, f := range frs {
 		out[f.id] = append(out[f.id], f.img)
+	}
+	return out
+}
+
+// loadFigMeta 載入 FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(assets/figani/meta.json;doc06:
+// 幀標頭 +0/+2,動畫的走位/伸擊/突刺全靠逐幀 (dx,dy) 變化,引擎不需錨點/位移計算)。
+func loadFigMeta() map[int][][2]int {
+	out := map[int][][2]int{}
+	raw, err := os.ReadFile("assets/figani/meta.json")
+	if err != nil {
+		return out
+	}
+	var m map[string][][2]int
+	if json.Unmarshal(raw, &m) != nil {
+		return out
+	}
+	for k, v := range m {
+		if id, e := strconv.Atoi(k); e == nil {
+			out[id] = v
+		}
 	}
 	return out
 }
@@ -411,7 +434,11 @@ func (g *Game) Update() error {
 					defHP0: 28, defHP1: 8, defMax: 28, timer: 48, total: 48}
 			}
 		}
-		if g.frame > g.shotFrame {
+		if g.shotSeries != "" { // 逐幀模式:演出播完才退出
+			if g.frame > 2 && g.atk == nil {
+				return ebiten.Termination
+			}
+		} else if g.frame > g.shotFrame {
 			return ebiten.Termination
 		}
 	}
@@ -640,6 +667,30 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	}
 }
 
+// redSilhouette 全紅剪影(快取):orig 命中閃紅=VGA DAC 把 sprite 色盤整組設紅(0x11d40),
+// 是整片飽和紅,非乘法調色 → 逐像素把非透明處塗紅,一次生成後快取。
+func (g *Game) redSilhouette(src *ebiten.Image) *ebiten.Image {
+	if g.redSil == nil {
+		g.redSil = map[*ebiten.Image]*ebiten.Image{}
+	}
+	if r, ok := g.redSil[src]; ok {
+		return r
+	}
+	b := src.Bounds()
+	out := image.NewRGBA(image.Rect(0, 0, b.Dx(), b.Dy()))
+	for y := 0; y < b.Dy(); y++ {
+		for x := 0; x < b.Dx(); x++ {
+			_, _, _, al := src.At(b.Min.X+x, b.Min.Y+y).RGBA()
+			if al > 0x4000 {
+				out.Set(x, y, color.RGBA{0xd0, 0x10, 0x10, 0xff})
+			}
+		}
+	}
+	r := ebiten.NewImageFromImage(out)
+	g.redSil[src] = r
+	return r
+}
+
 func saveShot(img *ebiten.Image, path string) {
 	f, err := os.Create(path)
 	if err != nil {
@@ -670,11 +721,22 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 	// figure(0x28e76 起 0x29164/0x2939d)後畫」→ figure z-order 高於狀態欄,動畫蓋住欄、動畫完整)。
 	const sc = 2.0 // doc35:無 runtime 縮放,FIGANI 原生尺寸 ×2(原版 320→畫布 640)
 
+	// 資料驅動動畫(doc06):每幀貼在幀標頭內嵌的絕對螢幕座標 (dx,dy)@320 ×2,
+	// 走位/伸擊/突刺全在資料裡(FIGANI_013:f01-f10 旋轉蓄力、f11 黃劈擊弧、f12-14 突刺)。
+	// 攻方 15 幀 / 48 tick → 每 3 tick 一幀;f11(劈中)落在 prog 33 → 命中窗 33-41(紅閃+抽血)。
+	atkFrames := g.figani[a.atkFig]
+	fpt := 3 // ticks per frame
+	atkFi := prog / fpt
+	if len(atkFrames) > 0 && atkFi >= len(atkFrames) {
+		atkFi = len(atkFrames) - 1
+	}
+	impactS := 11 * fpt
+	impactE := impactS + 8
 	// (1) 狀態欄先畫(會被 figure 蓋住一部分,如原版)
 	if g.font != nil {
-		dhp := a.defHP0 // 命中時 HP 漸抽(defHP0→defHP1)
-		if prog >= 24 {
-			t := float64(prog-24) / 12
+		dhp := a.defHP0 // 命中當下快抽(orig impact 幀 HP 已抽完)
+		if prog >= impactS {
+			t := float64(prog-impactS) / float64(impactE-impactS)
 			if t > 1 {
 				t = 1
 			}
@@ -685,18 +747,21 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		g.drawBattlePanel(screen, 0, 308, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 敵方盜賊左下
 	}
 
-	// (2) 敵方盜賊 figure(正面;蓋住狀態欄);密集格線對齊 orig:腳底 y≈135(@320)→ 276@640
+	// (2) 敵方盜賊 figure(正面;蓋住狀態欄):4 幀待機呼吸循環,貼各幀內嵌 (dx,dy)
 	if fr := g.figani[a.defFig]; len(fr) > 0 {
-		img := fr[0]
-		b := img.Bounds()
-		fw, fh := float64(b.Dx())*sc, float64(b.Dy())*sc
+		fi := (prog / 6) % len(fr)
+		img := fr[fi]
+		// 命中閃紅:整片飽和紅剪影(orig=VGA 色盤整組設紅,非乘法調色),快速交替閃
+		if prog >= impactS && prog < impactE && (prog/2)%2 == 0 {
+			img = g.redSilhouette(img)
+		}
+		dx, dy := 16.0, 41.0
+		if m := g.figMeta[a.defFig]; fi < len(m) {
+			dx, dy = float64(m[fi][0]), float64(m[fi][1])
+		}
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)
-		// 敵方盜賊:模板匹配精確定位(FIGANI_288 在 orig_05 的 sprite 左上=(16,41)@320 → ×2=(32,82))
-		op.GeoM.Translate(155-fw/2, 302-fh)
-		if prog >= 22 && prog < 40 {
-			op.ColorScale.Scale(2.2, 0.0, 0.0, 1)
-		}
+		op.GeoM.Translate(dx*sc, dy*sc)
 		screen.DrawImage(img, op)
 	}
 	// (2.5) 我方台座(TAI_004;模板匹配 orig 台座左上=(165,157)@320 → ×2=(330,314))
@@ -708,21 +773,21 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		op.GeoM.Translate(482-tw/2, 356-th/2)
 		screen.DrawImage(g.tai, op)
 	}
-	// (3) 我方亞雷斯 figure(背影,踩台座;蓋住狀態欄);程式量 orig 土台中心 x≈238 y≈185(@320)
-	if fr := g.figani[a.atkFig]; len(fr) > 0 {
-		// 攻擊幀序播放(不循環,停末幀);windup→揮砍。截圖對照階段落在 f01(orig_05 windup)
-		fi := prog / 4
-		if fi >= len(fr) {
-			fi = len(fr) - 1
+	// (3) 我方亞雷斯 figure(背影,踩台座;蓋住狀態欄):攻擊幀序播放(停末幀=突刺收勢),
+	// 位置=各幀內嵌 (dx,dy)(f11 劈擊伸左、f12-14 突刺,走位在資料裡,不需 lunge 計算)
+	if len(atkFrames) > 0 {
+		img := atkFrames[atkFi]
+		dx, dy := 141.0, 3.0
+		if m := g.figMeta[a.atkFig]; atkFi < len(m) {
+			dx, dy = float64(m[atkFi][0]), float64(m[atkFi][1])
 		}
-		img := fr[fi]
-		b := img.Bounds()
-		fw, fh := float64(b.Dx())*sc, float64(b.Dy())*sc
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)
-		// 我方亞雷斯:模板匹配精確定位(FIGANI_013_f01 在 orig_05 的 sprite 左上=(141,3)@320 → ×2=(282,6))
-		op.GeoM.Translate(461-fw/2, 384-fh)
+		op.GeoM.Translate(dx*sc, dy*sc)
 		screen.DrawImage(img, op)
+	}
+	if g.shotSeries != "" { // 逐幀截圖(GIF/分鏡素材)
+		saveShot(screen, fmt.Sprintf("%s/frame_%02d.png", g.shotSeries, prog))
 	}
 }
 
@@ -894,6 +959,7 @@ func (g *Game) Layout(outsideW, outsideH int) (int, int) {
 func loadGame() *Game {
 	g := &Game{shotFrame: 20}
 	g.shotPath = os.Getenv("FD2_SHOT")
+	g.shotSeries = os.Getenv("FD2_SHOT_SERIES")
 	if v := os.Getenv("FD2_SHOT_FRAME"); v != "" {
 		if n, e := strconv.Atoi(v); e == nil {
 			g.shotFrame = n
@@ -960,6 +1026,7 @@ func loadGame() *Game {
 	g.sprites = loadSprites()
 	g.portraits = loadPortraits()
 	g.figani = loadFIGANI()
+	g.figMeta = loadFigMeta()
 	if raw, e := os.ReadFile("assets/bg/bg.png"); e == nil { // 戰鬥背景(BG.DAT)
 		if im, _, e2 := image.Decode(bytes.NewReader(raw)); e2 == nil {
 			g.bg = ebiten.NewImageFromImage(im)

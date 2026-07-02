@@ -39,8 +39,8 @@ AFM - Animation File Manager Version 1.00 Copyright (C) 1993 Lo Yuan Tsung 09/29
 每幀 **13-byte 標頭** + RLE 像素(第 3 輪反組譯 + 視覺驗證,**已完整破解**):
 
 ```
-+0   uint16 LE  boundW    顯示 / 外框寬(同一動畫內固定)
-+2   uint16 LE  boundH    顯示 / 外框高(逐幀微調,用於對齊)
++0   int16 LE   dx        該幀「絕對螢幕 X」(320×200 系統)
++2   int16 LE   dy        該幀「絕對螢幕 Y」
 +4   uint16 LE  = 0
 +6   uint16 LE  = 2
 +8   uint8      = 0
@@ -50,7 +50,12 @@ AFM - Animation File Manager Version 1.00 Copyright (C) 1993 Lo Yuan Tsung 09/29
 ```
 
 > 解碼器(`FD2.EXE` `0x4F43D`)的呼叫端傳入 **frame+9**,故它 `lodsw` 讀到的正是 realW / realH,
-> 再從 +13 解 RLE。前 9 byte(boundW, boundH, 0, 2, 0)是呼叫端用於畫面定位的 metadata。
+> 再從 +13 解 RLE。
+> ⚠ **修正舊錯誤標註「+0/+2 = boundW/boundH 外框寬高」**:實為**每幀絕對螢幕座標 (dx,dy)**
+> (0x2935b 讀 word[+0]/[+2] 當幀位移,doc35;實證:FIGANI_013 f01=(141,3)、FIGANI_288 f00=(16,41)
+> 與 orig 截圖模板匹配的 sprite 落點**完全一致**)。**戰鬥演出的走位/伸擊/突刺全靠逐幀 (dx,dy) 變化**
+> (如 013:f11 劈擊 dx=89 伸向左、f12-14 突刺 dy 38→63),引擎只要每幀貼在 (dx,dy),不需任何錨點/位移計算。
+> remake 資產管線須把 (dx,dy) 一併導出(`remake/assets/figani/meta.json`),別只導像素。
 
 **3-byte 迷你資源**(如 `FIGANI_002` = `00 00 0A`):動畫之間的群組分隔 / 索引標記,非動畫本體。
 
