@@ -1,0 +1,387 @@
+{
+ "0": {
+  "handler": "0x341db",
+  "spawns": [
+   {
+    "group": 3,
+    "via": "spawn_group"
+   },
+   {
+    "group": 7,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "1": {
+  "handler": "0x342b5",
+  "spawns": [
+   {
+    "group": 4,
+    "via": "spawn_group_with_intro"
+   }
+  ]
+ },
+ "2": {
+  "handler": "0x3431d",
+  "spawns": [
+   {
+    "group": 5,
+    "via": "spawn_group_with_intro"
+   }
+  ]
+ },
+ "3": {
+  "handler": "0x34377",
+  "spawns": [
+   {
+    "group": 6,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "4": {
+  "handler": "0x343e2",
+  "spawns": []
+ },
+ "5": {
+  "handler": "0x34d68",
+  "spawns": []
+ },
+ "6": {
+  "handler": "0x34422",
+  "spawns": [
+   {
+    "group": 3,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "7": {
+  "handler": "0x34d72",
+  "spawns": [
+   {
+    "group": 2,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "8": {
+  "handler": "0x34dcd",
+  "spawns": []
+ },
+ "9": {
+  "handler": "0x344c2",
+  "spawns": [
+   {
+    "group": 2,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "10": {
+  "handler": "0x34e3b",
+  "spawns": []
+ },
+ "11": {
+  "handler": "0x34565",
+  "spawns": [
+   {
+    "group": 2,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "12": {
+  "handler": "0x34594",
+  "spawns": []
+ },
+ "13": {
+  "handler": "0x34e90",
+  "spawns": []
+ },
+ "14": {
+  "handler": "0x345ea",
+  "spawns": []
+ },
+ "15": {
+  "handler": "0x3462e",
+  "spawns": [
+   {
+    "group": 2,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "16": {
+  "handler": "0x34696",
+  "spawns": [
+   {
+    "group": 3,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "17": {
+  "handler": "0x346c8",
+  "spawns": []
+ },
+ "18": {
+  "handler": "0x34f02",
+  "spawns": []
+ },
+ "19": {
+  "handler": "0x34716",
+  "spawns": []
+ },
+ "20": {
+  "handler": "0x347b1",
+  "spawns": []
+ },
+ "21": {
+  "handler": "0x347d9",
+  "spawns": []
+ },
+ "22": {
+  "handler": "0x34819",
+  "spawns": [
+   {
+    "group": 1,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "23": {
+  "handler": "0x34844",
+  "spawns": [
+   {
+    "group": 2,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "24": {
+  "handler": "0x348fc",
+  "spawns": []
+ },
+ "25": {
+  "handler": "0x34924",
+  "spawns": [
+   {
+    "group": 2,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "26": {
+  "handler": "0x3499b",
+  "spawns": []
+ },
+ "27": {
+  "handler": "0x349d9",
+  "spawns": [
+   {
+    "group": "$turn_counter[0x53bef]",
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "28": {
+  "handler": "0x34a0e",
+  "spawns": []
+ },
+ "29": {
+  "handler": "0x34a3c",
+  "spawns": []
+ },
+ "30": {
+  "handler": "0x34a7a",
+  "spawns": [
+   {
+    "group": 1,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "31": {
+  "handler": "0x34b5d",
+  "spawns": [
+   {
+    "group": "$reg_or_mem(eax)",
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "32": {
+  "handler": "0x34be2",
+  "spawns": [
+   {
+    "group": 1,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "33": {
+  "handler": "0x34c1e",
+  "spawns": []
+ },
+ "34": {
+  "handler": "0x34c6c",
+  "spawns": []
+ },
+ "35": {
+  "handler": "0x34c76",
+  "spawns": [
+   {
+    "group": 2,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "36": {
+  "handler": "0x34cb3",
+  "spawns": []
+ },
+ "37": {
+  "handler": "0x34ccc",
+  "spawns": [
+   {
+    "group": 3,
+    "via": "spawn_group"
+   },
+   {
+    "group": 4,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "38": {
+  "handler": "0x34f42",
+  "spawns": [
+   {
+    "group": 1,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "39": {
+  "handler": "0x34f74",
+  "spawns": []
+ },
+ "40": {
+  "handler": "0x34fcb",
+  "spawns": [
+   {
+    "group": 2,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "41": {
+  "handler": "0x34ff0",
+  "spawns": []
+ },
+ "42": {
+  "handler": "0x3505f",
+  "spawns": [
+   {
+    "group": 1,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "43": {
+  "handler": "0x35091",
+  "spawns": []
+ },
+ "44": {
+  "handler": "0x350a4",
+  "spawns": []
+ },
+ "45": {
+  "handler": "0x350b9",
+  "spawns": []
+ },
+ "46": {
+  "handler": "0x350cc",
+  "spawns": [
+   {
+    "group": 1,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "47": {
+  "handler": "0x35112",
+  "spawns": [
+   {
+    "group": "$reg_or_mem(eax)",
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "48": {
+  "handler": "0x351c6",
+  "spawns": []
+ },
+ "49": {
+  "handler": "0x351e9",
+  "spawns": [
+   {
+    "group": "$reg_or_mem(eax)",
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "50": {
+  "handler": "0x35261",
+  "spawns": [
+   {
+    "group": 2,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "51": {
+  "handler": "0x3529a",
+  "spawns": []
+ },
+ "52": {
+  "handler": "0x352e2",
+  "spawns": []
+ },
+ "53": {
+  "handler": "0x35321",
+  "spawns": []
+ },
+ "54": {
+  "handler": "0x3535d",
+  "spawns": [
+   {
+    "group": "$turn_counter[0x53bef]",
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "55": {
+  "handler": "0x353da",
+  "spawns": []
+ },
+ "56": {
+  "handler": "0x35487",
+  "spawns": [
+   {
+    "group": 1,
+    "via": "spawn_group"
+   }
+  ]
+ },
+ "57": {
+  "handler": "0x354dd",
+  "spawns": [
+   {
+    "group": "$turn_counter[0x53bef]",
+    "via": "spawn_group"
+   }
+  ]
+ }
+}

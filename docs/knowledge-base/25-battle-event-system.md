@@ -74,16 +74,80 @@ hdl:D  a  D  D  D  D  D  D  D  b  D  c  d  D  e  f  g  h  i  j  k  L  m  D  n  o
 ```
 戰場迴圈 0x117e7
   ├ 跑戰鬥(行動 0x18890…)
-  ├ [0x53bef] 回合數(開始=1,回合切換 inc);[0x53ec8] 累積計數 clamp 99
-  └ call [章節*4+0x51b19]           ; ★本篇:章節戰場事件 handler
-       ├ default 0x205b4 → [0x53ecc]=2(敵滅→勝利)
-       └ 特殊章 handler → 查單位/回合(0x3453e、[0x53a45]、[0x53ec8])
-                          → [0x53ecc]=1(增援/劇情)或 2(特殊勝利)
+  ├ [0x53bef] 回合數(開始=1,回合切換 inc,inc 點 0x1a5b9);[0x53ec8] 累積計數 clamp 99
+  ├ call [章節*4+0x51b19]           ; 章節戰場事件 handler(勝負判定,見上)
+  └ call 0x1a813(camp_filter)       ; ★turn_events 消費點(見 §6.1),3 處呼叫點各帶 camp=1/0/2
+       └ default 0x205b4 → [0x53ecc]=2(敵滅→勝利)
               │
 戰役迴圈(doc 24 §6)讀 [0x53ecc]
-  ├ ==1 → 世界地圖/中場 0x22e5c → 清0 → 續打
+  ├ ==1 → 世界地圖/中場 0x22e5c(章1專屬固定過場,非資料驅動,見 §6.1 修正) → 清0 → 續打
   └ ==2 → 戰後跳表 0x51de9[章節] → 結局判定 0x2cad7 → 下一章跳表 0x51d71[章節]
 ```
+
+## 6.1 turn_events.event_id → group 消費機制(已解,取代先前 [阻] 的 `0x22e5c` 猜測)
+
+> **修正**:§8 先前把 `0x22e5c` 列為「turn_events 消費點,待解」。call-graph 驗證(`callgraph_le.py callers 0x22e5c`)
+> 顯示它唯一 caller 是 `0x25de5`(戰役主迴圈:`[0x53ecc]==1` 時呼叫),且函式體內只操作固定的圖片/文字資源
+> (`0x51a4d`、`0x520ba` 等常數位址),不觸碰 FDFIELD 控制段——**它是「第1章專屬、寫死的中場過場演出」**,
+> 與 turn_events 資料無關。真正消費點在下面的 `0x1a813`。[驗]
+
+**呼叫鏈(3 處呼叫點,camp 過濾)**:
+
+| 呼叫點 | camp 參數 | 時機 |
+|---|---|---|
+| `0x1a4c7` | 1(ally) | 玩家(ally)回合結束後 |
+| `0x1a554` | 0(enemy) | 敵方(AI)回合結束後 |
+| `0x1a78d` | 2(special) | 同一世界地圖/戰場迴圈的另一檢查點 |
+
+**`0x1a813(camp_filter)`**(turn_events 掃描迴圈):
+
+```
+0x01a813  ...
+0x01a828  cmp ebx, 0x10            ; 迴圈 16 筆(FDFIELD turn_events[16])
+0x01a831  mov ecx, [0x53a55]       ; ecx = FDFIELD 控制段 runtime 基底
+0x01a83e  add eax, ecx             ; eax = ecx + i*3        (3B/筆,對齊 parse_field.py)
+0x01a840  movzx edx, byte[eax+3]   ; edx = turn_events[i].turn   (ecx+3=跳過3B header)
+0x01a844  cmp edx, [0x53bef]       ; == 目前回合數?
+0x01a84a  jne next
+0x01a84c  movzx edx, byte[eax+5]   ; edx = turn_events[i].camp
+0x01a850  cmp edx, esi             ; == camp_filter(呼叫端傳入)?
+0x01a852  jne next
+0x01a854  movzx eax, byte[eax+4]   ; eax = turn_events[i].event_id ★
+0x01a858  push 0
+0x01a85a  call [eax*4 + 0x51b91]   ; ★★★ event_id → handler 跳表(58 entry,id 0-57 全域)
+```
+
+即:`turn==目前回合` 且 `camp==呼叫端 filter` 的記錄,取其 `event_id`,呼叫 `[event_id*4+0x51b91]`。
+`0x51b91` 是**與 §1 的 `0x51b19`(章節×30)不同的另一張跳表**——**全域 event_id×58**,`jtab` 解出全 58 entry(0x341db…0x354dd)。[驗]
+
+**event_id handler 內部(同 §2 結論:仍是硬編碼函式,非 byte-code)**:handler 呼叫兩個 spawn 原語:
+
+| 原語 | linear | 作用 |
+|---|---|---|
+| `spawn_group(group_id)` | `0x10b4e` | 掃 FDFIELD 控制段 units 陣列(`[0x53a55]+0x83 + k*0x1a`,stride 26B=FDFIELD 單位記錄大小,欄位 `+0x15`=b21=group)找 `unit.group==group_id` 者啟用(offset `0x83`=3+48+32+48,正好是 header+turn_events+保留+chests,對齊 `parse_field.py` 的 units 起點)。[驗] |
+| `spawn_group_with_intro(group_id)` | `0x32999` | 先繪 portrait(`0x51a4d`)+ 對話文字,再內部呼叫 `0x10b4e(group_id)`。用於敵方頭目類「先喊話再出場」。[驗] |
+
+`group_id` 引數**通常是 handler 裡的字面常數**(如 event_id0 呼叫 `push 3;call 0x10b4e` 和 `push 7;call 0x10b4e` → 兩個 group);
+少數 handler(event_id 27/54/57)用**動態值 `[0x53bef]`(目前回合數本身)當 group_id**——對應 `turn_events.json` 中同一
+`event_id` 在連續多回合重複出現(如 map7/章8 的 event_id27 於 turn 2-7 各出現一次):每回合觸發同一 handler,
+但 group_id=當下回合數,達成「每回合多放一波、group 編號＝回合數」的遞增增援。[驗]
+
+**工具**:`tools/extract_event_id_groups.py` 走訪 58 個 handler 自身的 basic-block 鏈(call 過站不進入、遇 ret 停止,
+避免線性 sweep 漂移),擷取 `push <group_id>; call spawn_group[_with_intro]`,輸出 `docs/data/event_id_groups.json`。
+58 個 handler 中 20 個解出字面 group、5 個解出動態(`$turn_counter`)、其餘 33 個掃描視窗內無 spawn 呼叫
+(推測為純對話/AI模式切換/目標判定類事件,無新單位進場)。[驗/推]
+
+**map0/章1 ground truth 全部驗證通過(4/4)**:對照 `remake/assets/scenarios/ch01.json`(青衫核對過的正解)——
+
+| turn_events(map0) | event_id | handler | 解出 group | ch01.json 正解 | 結果 |
+|---|---|---|---|---|---|
+| T3, camp=ally | 0 | 0x341db | {3, 7} | `hano_hawat_join`: groups[3,7] | ✓ |
+| T4, camp=enemy | 1 | 0x342b5 | {4} | `enemy_reinforce`: groups[4] | ✓ |
+| T5, camp=enemy | 2 | 0x3431d | {5} | `pirate_boss`: groups[5] | ✓ |
+| T6, camp=ally | 3 | 0x34377 | {6} | `coast_guard`: groups[6] | ✓ |
+
+group 數字、單筆 vs 雙筆(T3 兩組)、觸發回合、camp 全部吻合。`docs/data/turn_events.json` 已補上
+`groups`/`handler` 欄位(全 30 章)。
 
 ## 7. 對重製(Go/Ebiten ScenarioRunner)的意義
 
@@ -118,6 +182,10 @@ hdl:D  a  D  D  D  D  D  D  D  b  D  c  d  D  e  f  g  h  i  j  k  L  m  D  n  o
 
 ## 8. 受阻 / 待續
 
+- **[已解,見 §6.1]** ~~`turn_events.event_id → group` 對應機制(先前疑 `0x22e5c`,未解)~~ →
+  真正消費點是 `0x1a813`(3 呼叫點 camp filter)+ 全域 `event_id` 跳表 `0x51b91`(58 entry)+
+  spawn 原語 `0x10b4e`/`0x32999`;`0x22e5c` 只是第1章專屬固定過場,與 turn_events 無關。
+  map0/章1 ground truth 4/4 驗證通過,`docs/data/turn_events.json` 已補 `groups` 欄。
 - **[已解,見 doc 26]** ~~18 handler 逐章語意 + 動作函式~~ → 全挖完:handler 無動作函式(只條件→設碼+繪圖);條件原語 `unit_flag`/`roster_has`/回合;機器可讀 `docs/data/battle_events.json`。
 - **[修正]** byte(+5)bit0 **非陣亡**(初始化=1);= 狀態旗標(存活/在場?)語意待驗。回合數=`[0x53bef]`(非 `[0x53ec8]`,後者為累積計數)。詳見 doc 26。
 - **修正 doc 24**:§6 稱「事件腳本解譯器(大函式 0x205c9–0x20c64)」用詞不精確 → 實為**章節戰場事件 handler 表 0x51b19,各 handler 在 0x205b4–0x20bf5**(非單一解譯器,非 byte-code)。已於 doc 24 §6.3 附註。

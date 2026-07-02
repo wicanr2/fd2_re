@@ -6,22 +6,39 @@
    {
     "turn": 3,
     "event_id": 0,
-    "camp": "ally"
+    "camp": "ally",
+    "groups": [
+     3,
+     7
+    ],
+    "handler": "0x341db"
    },
    {
     "turn": 4,
     "event_id": 1,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     4
+    ],
+    "handler": "0x342b5"
    },
    {
     "turn": 5,
     "event_id": 2,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     5
+    ],
+    "handler": "0x3431d"
    },
    {
     "turn": 6,
     "event_id": 3,
-    "camp": "ally"
+    "camp": "ally",
+    "groups": [
+     6
+    ],
+    "handler": "0x34377"
    }
   ]
  },
@@ -32,7 +49,11 @@
    {
     "turn": 3,
     "event_id": 6,
-    "camp": "ally"
+    "camp": "ally",
+    "groups": [
+     3
+    ],
+    "handler": "0x34422"
    }
   ]
  },
@@ -43,7 +64,11 @@
    {
     "turn": 3,
     "event_id": 9,
-    "camp": "special"
+    "camp": "special",
+    "groups": [
+     2
+    ],
+    "handler": "0x344c2"
    }
   ]
  },
@@ -54,7 +79,11 @@
    {
     "turn": 4,
     "event_id": 11,
-    "camp": "ally"
+    "camp": "ally",
+    "groups": [
+     2
+    ],
+    "handler": "0x34565"
    }
   ]
  },
@@ -65,22 +94,34 @@
    {
     "turn": 3,
     "event_id": 14,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [],
+    "handler": "0x345ea"
    },
    {
     "turn": 4,
     "event_id": 15,
-    "camp": "ally"
+    "camp": "ally",
+    "groups": [
+     2
+    ],
+    "handler": "0x3462e"
    },
    {
     "turn": 7,
     "event_id": 16,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     3
+    ],
+    "handler": "0x34696"
    },
    {
     "turn": 8,
     "event_id": 17,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [],
+    "handler": "0x346c8"
    }
   ]
  },
@@ -91,17 +132,25 @@
    {
     "turn": 5,
     "event_id": 20,
-    "camp": "special"
+    "camp": "special",
+    "groups": [],
+    "handler": "0x347b1"
    },
    {
     "turn": 10,
     "event_id": 21,
-    "camp": "special"
+    "camp": "special",
+    "groups": [],
+    "handler": "0x347d9"
    },
    {
     "turn": 15,
     "event_id": 22,
-    "camp": "special"
+    "camp": "special",
+    "groups": [
+     1
+    ],
+    "handler": "0x34819"
    }
   ]
  },
@@ -112,7 +161,11 @@
    {
     "turn": 10,
     "event_id": 25,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     2
+    ],
+    "handler": "0x34924"
    }
   ]
  },
@@ -123,37 +176,63 @@
    {
     "turn": 2,
     "event_id": 27,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x349d9"
    },
    {
     "turn": 3,
     "event_id": 27,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x349d9"
    },
    {
     "turn": 4,
     "event_id": 27,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x349d9"
    },
    {
     "turn": 5,
     "event_id": 27,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x349d9"
    },
    {
     "turn": 6,
     "event_id": 27,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x349d9"
    },
    {
     "turn": 7,
     "event_id": 27,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x349d9"
    },
    {
     "turn": 15,
     "event_id": 28,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [],
+    "handler": "0x34a0e"
    }
   ]
  },
@@ -169,12 +248,18 @@
    {
     "turn": 5,
     "event_id": 32,
-    "camp": "ally"
+    "camp": "ally",
+    "groups": [
+     1
+    ],
+    "handler": "0x34be2"
    },
    {
     "turn": 20,
     "event_id": 33,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [],
+    "handler": "0x34c1e"
    }
   ]
  },
@@ -190,12 +275,18 @@
    {
     "turn": 1,
     "event_id": 35,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     2
+    ],
+    "handler": "0x34c76"
    },
    {
     "turn": 5,
     "event_id": 36,
-    "camp": "ally"
+    "camp": "ally",
+    "groups": [],
+    "handler": "0x34cb3"
    }
   ]
  },
@@ -206,12 +297,18 @@
    {
     "turn": 4,
     "event_id": 5,
-    "camp": "ally"
+    "camp": "ally",
+    "groups": [],
+    "handler": "0x34d68"
    },
    {
     "turn": 9,
     "event_id": 7,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     2
+    ],
+    "handler": "0x34d72"
    }
   ]
  },
@@ -227,17 +324,25 @@
    {
     "turn": 4,
     "event_id": 13,
-    "camp": "ally"
+    "camp": "ally",
+    "groups": [],
+    "handler": "0x34e90"
    },
    {
     "turn": 9,
     "event_id": 18,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [],
+    "handler": "0x34f02"
    },
    {
     "turn": 7,
     "event_id": 38,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     1
+    ],
+    "handler": "0x34f42"
    }
   ]
  },
@@ -253,7 +358,11 @@
    {
     "turn": 4,
     "event_id": 40,
-    "camp": "ally"
+    "camp": "ally",
+    "groups": [
+     2
+    ],
+    "handler": "0x34fcb"
    }
   ]
  },
@@ -264,12 +373,18 @@
    {
     "turn": 3,
     "event_id": 43,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [],
+    "handler": "0x35091"
    },
    {
     "turn": 8,
     "event_id": 42,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     1
+    ],
+    "handler": "0x3505f"
    }
   ]
  },
@@ -280,17 +395,25 @@
    {
     "turn": 4,
     "event_id": 44,
-    "camp": "special"
+    "camp": "special",
+    "groups": [],
+    "handler": "0x350a4"
    },
    {
     "turn": 6,
     "event_id": 46,
-    "camp": "ally"
+    "camp": "ally",
+    "groups": [
+     1
+    ],
+    "handler": "0x350cc"
    },
    {
     "turn": 10,
     "event_id": 45,
-    "camp": "special"
+    "camp": "special",
+    "groups": [],
+    "handler": "0x350b9"
    }
   ]
  },
@@ -306,27 +429,45 @@
    {
     "turn": 2,
     "event_id": 47,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$reg_or_mem(eax)"
+    ],
+    "handler": "0x35112"
    },
    {
     "turn": 3,
     "event_id": 48,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [],
+    "handler": "0x351c6"
    },
    {
     "turn": 4,
     "event_id": 47,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$reg_or_mem(eax)"
+    ],
+    "handler": "0x35112"
    },
    {
     "turn": 6,
     "event_id": 47,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$reg_or_mem(eax)"
+    ],
+    "handler": "0x35112"
    },
    {
     "turn": 8,
     "event_id": 47,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$reg_or_mem(eax)"
+    ],
+    "handler": "0x35112"
    }
   ]
  },
@@ -337,17 +478,29 @@
    {
     "turn": 3,
     "event_id": 49,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$reg_or_mem(eax)"
+    ],
+    "handler": "0x351e9"
    },
    {
     "turn": 5,
     "event_id": 50,
-    "camp": "special"
+    "camp": "special",
+    "groups": [
+     2
+    ],
+    "handler": "0x35261"
    },
    {
     "turn": 7,
     "event_id": 49,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$reg_or_mem(eax)"
+    ],
+    "handler": "0x351e9"
    }
   ]
  },
@@ -358,22 +511,30 @@
    {
     "turn": 13,
     "event_id": 52,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [],
+    "handler": "0x352e2"
    },
    {
     "turn": 15,
     "event_id": 52,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [],
+    "handler": "0x352e2"
    },
    {
     "turn": 18,
     "event_id": 52,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [],
+    "handler": "0x352e2"
    },
    {
     "turn": 22,
     "event_id": 52,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [],
+    "handler": "0x352e2"
    }
   ]
  },
@@ -384,22 +545,38 @@
    {
     "turn": 2,
     "event_id": 54,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x3535d"
    },
    {
     "turn": 4,
     "event_id": 54,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x3535d"
    },
    {
     "turn": 7,
     "event_id": 54,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x3535d"
    },
    {
     "turn": 10,
     "event_id": 54,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x3535d"
    }
   ]
  },
@@ -410,7 +587,11 @@
    {
     "turn": 6,
     "event_id": 56,
-    "camp": "ally"
+    "camp": "ally",
+    "groups": [
+     1
+    ],
+    "handler": "0x35487"
    }
   ]
  },
@@ -421,47 +602,83 @@
    {
     "turn": 2,
     "event_id": 57,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x354dd"
    },
    {
     "turn": 4,
     "event_id": 57,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x354dd"
    },
    {
     "turn": 6,
     "event_id": 57,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x354dd"
    },
    {
     "turn": 8,
     "event_id": 57,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x354dd"
    },
    {
     "turn": 10,
     "event_id": 57,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x354dd"
    },
    {
     "turn": 12,
     "event_id": 57,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x354dd"
    },
    {
     "turn": 15,
     "event_id": 57,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x354dd"
    },
    {
     "turn": 16,
     "event_id": 57,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x354dd"
    },
    {
     "turn": 17,
     "event_id": 57,
-    "camp": "enemy"
+    "camp": "enemy",
+    "groups": [
+     "$turn_counter[0x53bef]"
+    ],
+    "handler": "0x354dd"
    }
   ]
  },
