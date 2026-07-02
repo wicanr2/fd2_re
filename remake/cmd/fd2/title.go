@@ -25,13 +25,15 @@ type titleAssets struct {
 	aniPath string          // 玩家自備 ANI.DAT 路徑(""=無,退回捲動 fallback)
 }
 
-// cutSeq — 開場過場的 AFM 資源播放順序(dosbox 實拍分鏡,doc23 §2.4 / doc39):
-// 守護者→索爾→屠龍→二角→滿月→騎馬夜行→隊伍群像→金鎖→標題「2」logo。
-// 精確排程(播放器 5 呼叫點對應哪段)仍是 RE 缺口,inter-scene 節奏用近似值。
-var cutSeq = []int{3, 4, 5, 6, 2, 7, 8, 0, 1}
-
-// cutTicksPerFrame — 過場每幀停留 tick(60fps;289 幀/~32s≈6)。近似,待播放器排程 RE 校正。
-const cutTicksPerFrame = 6
+// 開場過場排程 — 反組譯 play_afm 5 呼叫點真值(doc39 §10,ani-sched):
+// title_seq 0x1f894 依序播 ANI.DAT 資源 3→4→5→6→7→8→0→(擦除)→1
+// (守護者→索爾→屠龍→二角→騎馬夜行→群像→金鎖→標題「2」logo)。
+// ANI_002(月亮)非開場(是 ch26/29 勝利過場),不在序內。
+// 各幕 delayMs 90/90/50/90/50/90/15/15 → 60fps tick(delayMs≈16.7ms/tick,四捨五入)。
+// skippable:僅首幕(idx3)與 logo(idx1)可按鍵跳過,中間 5 段原版不可跳。
+var cutSeq = []int{3, 4, 5, 6, 7, 8, 0, 1}
+var cutDelayTick = []int{5, 5, 3, 5, 3, 5, 1, 1}
+var cutSkippable = []bool{true, false, false, false, false, false, false, true}
 
 // aniCandidates 找玩家自備 ANI.DAT(未夾帶版權素材,執行期解碼)。
 var aniCandidates = []string{
@@ -104,15 +106,17 @@ func (g *Game) titleUpdate() bool {
 		if g.cutIdx == 0 && g.cutFrame == 0 && g.cutTick == 0 {
 			g.playBGM("FDMUS_004") // 開場配樂(曲號待實聽驗證)
 		}
-		// 任意鍵跳過整段過場 → 直接進選單
-		if len(inpututil.AppendJustPressedKeys(nil)) > 0 {
+		// 按鍵跳過:僅首幕/logo 可跳(原版 skippable 旗標);中間段不可跳。
+		// ESC 一律可跳整段(remake 便利,非原版行為)。
+		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) ||
+			(cutSkippable[g.cutIdx] && len(inpututil.AppendJustPressedKeys(nil)) > 0) {
 			g.titlePhase = "menu"
 			g.titleSel = 0
 			g.cutCur = nil
 			return true
 		}
 		g.cutTick++
-		if g.cutTick >= cutTicksPerFrame {
+		if g.cutTick >= cutDelayTick[g.cutIdx] {
 			g.cutTick = 0
 			g.cutFrame++
 			if g.cutFrame >= len(g.cutCur) { // 該幕播完 → 下一幕
