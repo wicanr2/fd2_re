@@ -69,6 +69,17 @@ type Unit struct {
 
 	Paralyzed     bool // 麻痺術:無法行動(是否擋下行動由呼叫端 UI/AI 檢查此欄位)
 	ParalyzeTurns int
+
+	// ---- 經驗值/升級(doc02 §4.5/§4.6;doc03 0x43;實作見 growth.go)----
+	DX int // 速度(doc03 0x46;影響 HIT/EV 的原始欄位,但 remake 尚無 DX→HIT/EV 合成公式
+	// (doc42:HIT/EV 現為 export_units.py 固定近似值),故 DX 目前只累加成長值供未來接線,
+	// 尚未實際影響命中/閃避。
+	Exp float64 // 目前經驗值(滿 100 升級,doc03 0x43「EX 經驗」);用 float64 累加,避免
+	// 攻擊/法術公式算出的小數經驗(如 40/施法者等級)逐次相加時被提早捨去。
+	ExpPerLevel int // 本單位每級可給出的經驗值(doc02 §4.5「守方每級經驗」;來源 EXE
+	// 敵/友單位表 EX 欄,docs/data/exe_tables/unit.json,由 export_units.py 依 (race,cls)
+	// 帶入 units.json 的 "ex" 欄;舊版(尚未重新匯出的)units.json 無此欄則為 0,
+	// 該次攻擊經驗值算出 0,見 growth.go AttackExp 註解)
 }
 
 // Alive 對映原版 byte[+5] bit0(HP>0,doc 27)。
@@ -178,24 +189,26 @@ type unitsFile struct {
 	H         int    `json:"h"`
 	OwnDeploy []Cell `json:"own_deploy"`
 	Units     []struct {
-		Camp     string `json:"camp"`
-		Name     string `json:"name"`
-		ClsName  string `json:"cls_name"`
-		Lv       int    `json:"lv"`
-		HP       int    `json:"hp"`
-		MP       int    `json:"mp"`
-		Spells   []int  `json:"spells"`
-		AP       int    `json:"ap"`
-		DP       int    `json:"dp"`
-		HIT      int    `json:"hit"`
-		EV       int    `json:"ev"`
-		Crit     int    `json:"crit"`
-		MV       int    `json:"mv"`
-		Portrait int    `json:"portrait"`
-		Fig      int    `json:"fig"`
-		Group    int    `json:"group"`
-		X        int    `json:"x"`
-		Y        int    `json:"y"`
+		Camp    string `json:"camp"`
+		Name    string `json:"name"`
+		ClsName string `json:"cls_name"`
+		Lv      int    `json:"lv"`
+		HP      int    `json:"hp"`
+		MP      int    `json:"mp"`
+		Spells  []int  `json:"spells"`
+		AP      int    `json:"ap"`
+		DP      int    `json:"dp"`
+		HIT     int    `json:"hit"`
+		EV      int    `json:"ev"`
+		Crit    int    `json:"crit"`
+		MV      int    `json:"mv"`
+		Ex      int    `json:"ex"` // 每級經驗(doc02 §4.5「守方每級經驗」;export_units.py 新增欄,
+		// 舊版 units.json 沒有此欄時 json.Unmarshal 留 0,見 Unit.ExpPerLevel 註解)
+		Portrait int `json:"portrait"`
+		Fig      int `json:"fig"`
+		Group    int `json:"group"`
+		X        int `json:"x"`
+		Y        int `json:"y"`
 	} `json:"units"`
 }
 
@@ -226,7 +239,7 @@ func Load(path string) (*State, error) {
 		nu := &Unit{
 			Camp: camp, Name: u.Name, ClsName: u.ClsName, Lv: u.Lv,
 			HP: u.HP, MaxHP: u.HP, MP: u.MP, AP: u.AP, DP: u.DP, MV: u.MV,
-			HIT: u.HIT, EV: u.EV, CritPct: u.Crit,
+			HIT: u.HIT, EV: u.EV, CritPct: u.Crit, ExpPerLevel: u.Ex,
 			Portrait: u.Portrait, Fig: u.Fig, X: u.X, Y: u.Y, Spells: u.Spells,
 			Group: u.Group, OnField: true, // 預設登場;Scenario 會把待命 group 設 false
 		}

@@ -9,7 +9,7 @@
 輸出 <out>/map<N>_units.json:
   { "map","w","h",
     "own_deploy":[{x,y}...],                       # 己方可部署格(肖像==0)
-    "units":[ {camp,cls,cls_name,lv,hp,mp,ap,dp,hit,ev,crit,mv,portrait,x,y} ... ] }
+    "units":[ {camp,cls,cls_name,lv,hp,mp,ap,dp,hit,ev,crit,mv,ex,portrait,x,y} ... ] }
 
 數值:以 (race,cls) 查 EXE base;查不到則用 race 任一 cls 近似,再不到給保底值。
 重製 Unit 用此 json;原版資產(著作權)只在本機,不入庫。
@@ -86,6 +86,11 @@ def main(argv):
             "hp": bs["hp"], "mp": bs["mp"], "ap": bs["ap"], "dp": bs["dp"], "mv": bs["mv"],
             "hit": DEFAULT_HIT, "ev": DEFAULT_EV, "crit": crit_by_cls(resist_crit, u["cls"]),
             "fig": u["portrait"],  # 反組譯確認:sprite 組 = portrait(角色 id 恆等)
+            # ex:每級經驗(doc02 §4.5「守方每級經驗」;worklist 第 9 輪經驗值系統補接線)。
+            # 與 hp/mp/ap/dp/mv 用同一顆 base_stats() (race,cls) 查表——同一份已驗證 EXE
+            # 資料(docs/data/exe_tables/unit.json),同一種「該表多筆同 (race,cls) 只取第一筆」
+            # 近似(既有限制,見 base_stats() docstring),非另外新造的猜測值。
+            "ex": bs.get("ex", 0),
         }
         if i < len(positions):                       # 固定出場座標(我方會被引擎改放部署格)
             rec["x"], rec["y"] = positions[i][0], positions[i][1]

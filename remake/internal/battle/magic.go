@@ -79,8 +79,14 @@ func (s *State) InCastRange(u *Unit, sp Spell, tx, ty int) bool {
 // CastResult 一次法術對單一目標的結算結果。
 type CastResult struct {
 	Target *Unit
-	Amount int  // 傷害或治療量(正值);Miss 或無數值效果(如純狀態施加)回 0
+	Amount int // 傷害或治療量(正值);Miss 或無數值效果(如純狀態施加)回 0
 	Missed bool
+
+	// ExpGained/LevelUps:施法者這整次施法(可能命中多個目標)總共取得的經驗值/升級事件
+	// (doc02 §4.5;見 growth.go、awardCastExp)。同一次 CastArea 呼叫回傳的每筆 CastResult
+	// 都帶相同的彙總值(不是逐目標拆分),方便呼叫端(main.go)只看第一筆或任一筆都能取得。
+	ExpGained float64
+	LevelUps  []LevelUpEvent
 }
 
 // engineRand 供舊版 Cast() 相容介面使用的內部亂數源(引擎呼叫此簽名時未注入 rng)。
@@ -151,7 +157,16 @@ func (s *State) CastArea(caster *Unit, cx, cy int, sp Spell, rng *rand.Rand) []C
 	caster.MP -= sp.MP
 
 	if sp.Target != 0 && sp.Target != 1 {
-		return []CastResult{{Target: caster, Amount: 0, Missed: false}}
+		// 特殊定位類法術(目前只有 23 傳送術)不掃場上單位,定位邏輯留給地圖 UI(見上方註解)。
+		// 傳送術經驗值(doc02 §4.5「傳送術」列)沒有真正的「受法者」可掃(現況等同施法者傳送
+		// 自己),以施法者自身等級當受法者等級——這是配合現有「待實裝」定位邏輯的近似,不是
+		// 完整傳送機制,見 doc42 gap 追蹤。
+		exp, levelUps := 0.0, []LevelUpEvent(nil)
+		if sp.ID == 23 && (caster.Camp == Own || caster.Camp == Ally) {
+			exp = TeleportExp(caster.Lv, caster.Lv)
+			levelUps = GainExp(caster, exp, rng)
+		}
+		return []CastResult{{Target: caster, Amount: 0, Missed: false, ExpGained: exp, LevelUps: levelUps}}
 	}
 
 	var results []CastResult
@@ -168,7 +183,90 @@ func (s *State) CastArea(caster *Unit, cx, cy int, sp Spell, rng *rand.Rand) []C
 		}
 		results = append(results, s.applySpell(caster, u, sp, rng))
 	}
+
+	if caster.Camp == Own || caster.Camp == Ally {
+		exp := awardCastExp(caster, sp, results)
+		levelUps := GainExp(caster, exp, rng)
+		for i := range results {
+			results[i].ExpGained = exp
+			results[i].LevelUps = levelUps
+		}
+	}
 	return results
+}
+
+// awardCastExp 依 doc02 §4.5 逐條公式,把一次 CastArea(可能命中多個目標)的經驗值加總
+// (見 growth.go 檔頭表)。封咒術(22)、破壞神(34)、暗邪鬼(35)doc02 沒列經驗公式,不編造,
+// 回 0——這是誠實的「文件未涵蓋」,不是漏做。
+func awardCastExp(caster *Unit, sp Spell, results []CastResult) float64 {
+	switch sp.ID {
+	case 17, 18, 19: // 魔刃術/魔鎧術/風行術:2 × Σ(受法者等級/施法者等級)
+		sum := 0.0
+		for _, r := range results {
+			if r.Missed {
+				continue
+			}
+			sum += buffExpTerm(caster.Lv, r.Target.Lv)
+		}
+		return 2 * sum
+	case 20, 21: // 解毒術/祛麻術:Σ(40×9/受法者總HP) × (受法者等級/施法者等級)
+		sum := 0.0
+		for _, r := range results {
+			if r.Missed {
+				continue
+			}
+			sum += statusExpTerm(caster.Lv, r.Target.Lv, r.Target.MaxHP)
+		}
+		return sum
+	case 25: // 行動術:8 × (受法者等級/施法者等級),單體
+		for _, r := range results {
+			if !r.Missed {
+				return ActionExp(caster.Lv, r.Target.Lv)
+			}
+		}
+		return 0
+	case 26, 27: // 毒擊術/麻痺術:同解毒/祛麻同一公式(doc02 §4.5 兩列共用同一式子)
+		sum := 0.0
+		for _, r := range results {
+			if r.Missed {
+				continue
+			}
+			sum += statusExpTerm(caster.Lv, r.Target.Lv, r.Target.MaxHP)
+		}
+		return sum
+	case 22, 34, 35: // 封咒術/破壞神/暗邪鬼:doc02 §4.5 未列公式,不編造,見函式註解
+		return 0
+	case 23, 24, 28, 29, 30, 31: // 傳送術(另有早退路徑處理)/劍技(待實裝加乘率)/未知法術
+		return 0
+	}
+	if sp.Target == 1 { // 一般治療:治療/回復/再生/神恩/風妖精(doc02 §4.4/§6.3)
+		sum := 0.0
+		for _, r := range results {
+			if r.Missed {
+				continue
+			}
+			sum += healExpTerm(r.Amount, r.Target.MaxHP, r.Target.Lv)
+		}
+		if caster.Lv <= 0 {
+			return 0
+		}
+		return 40 / float64(caster.Lv) * sum
+	}
+	// 一般攻擊型法術(火炎/烈炎/炎龍…):doc02 §4.5 只列「攻擊」一條物理攻擊公式,未另立
+	// 法術攻擊經驗值條目——以同一條「攻擊」公式套用(defExpPerLv 來源與近戰攻擊相同,
+	// Unit.ExpPerLevel),對死亡目標同樣視同傷害HP=總HP。
+	sum := 0.0
+	for _, r := range results {
+		if r.Missed {
+			continue
+		}
+		dmgForExp := r.Amount
+		if r.Target.HP == 0 {
+			dmgForExp = r.Target.MaxHP
+		}
+		sum += AttackExp(caster.Lv, r.Target.Lv, dmgForExp, r.Target.MaxHP, r.Target.ExpPerLevel)
+	}
+	return sum
 }
 
 // applySpell 對單一已篩選過陣營/範圍的目標套用法術效果:先判命中,再依法術 ID 分派效果。

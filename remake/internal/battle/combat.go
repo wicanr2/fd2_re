@@ -19,6 +19,9 @@ type AttackResult struct {
 	Amount int // 實際傷害;Miss 時為 0
 	Missed bool
 	Crit   bool
+
+	ExpGained float64        // 攻方本次取得的經驗值(doc02 §4.5「攻擊」列;僅 Own/Ally 攻方會 >0,見 growth.go)
+	LevelUps  []LevelUpEvent // 攻方因本次經驗值連續升級的事件(通常 0 或 1 筆,經驗值夠大可多筆)
 }
 
 // Attack 舊版相容介面(main.go 目前呼叫此簽名):結算一次近戰攻擊,回傳實際傷害
@@ -65,7 +68,22 @@ func (s *State) AttackWithRNG(a, d *Unit, rng *rand.Rand) AttackResult {
 	if d.HP < 0 {
 		d.HP = 0
 	}
-	return AttackResult{Amount: dmg, Crit: crit}
+
+	// 經驗值(doc02 §4.5「攻擊」列,growth.go AttackExp):致死視同傷害HP=總HP。
+	// 只有 Own/Ally 攻方才計算/回報經驗值(見 growth.go 檔頭說明);Enemy 攻方 ExpGained
+	// 恆為 0,不是先算出來又被 GainExp 悄悄丟棄。
+	var exp float64
+	var levelUps []LevelUpEvent
+	if a.Camp == Own || a.Camp == Ally {
+		dmgForExp := dmg
+		if d.HP == 0 {
+			dmgForExp = d.MaxHP
+		}
+		exp = AttackExp(a.Lv, d.Lv, dmgForExp, d.MaxHP, d.ExpPerLevel)
+		levelUps = GainExp(a, exp, rng)
+	}
+
+	return AttackResult{Amount: dmg, Crit: crit, ExpGained: exp, LevelUps: levelUps}
 }
 
 // rollsHitPct 物理攻擊命中率擲骰(doc02 §4.1「命中率=(攻方HIT-守方EV)%」)。
