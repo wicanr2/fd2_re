@@ -19,12 +19,12 @@ var audioCtx *audio.Context
 // (單資料夾佈局的舊行為/玩家只備一套時)。
 func musicPath(source, track string) string {
 	if source != "" {
-		p := "assets/music_" + source + "/" + track + ".ogg"
+		p := assetPath("assets/music_" + source + "/" + track + ".ogg")
 		if _, err := os.Stat(p); err == nil {
 			return p
 		}
 	}
-	return "assets/music/" + track + ".ogg"
+	return assetPath("assets/music/" + track + ".ogg")
 }
 
 // playBGM 播指定曲(如 "FDMUS_008");同曲不重播;檔案缺失/解碼失敗靜默略過。
@@ -62,7 +62,7 @@ func (g *Game) playBGM(track string) {
 func loadSFX() map[int][]byte {
 	out := map[int][]byte{}
 	for i := 0; i < 14; i++ {
-		raw, err := os.ReadFile(fmt.Sprintf("assets/sfx/sfx_%02d.wav", i))
+		raw, err := os.ReadFile(assetPath(fmt.Sprintf("assets/sfx/sfx_%02d.wav", i)))
 		if err != nil {
 			continue
 		}
@@ -84,7 +84,7 @@ func loadSFX() map[int][]byte {
 
 // loadWav 載單一 WAV 為 PCM bytes(戰鬥池等零散樣本用)。失敗回 nil。
 func loadWav(path string) []byte {
-	raw, err := os.ReadFile(path)
+	raw, err := os.ReadFile(assetPath(path))
 	if err != nil {
 		return nil
 	}

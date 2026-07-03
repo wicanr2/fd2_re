@@ -12,6 +12,7 @@ import (
 	"image"
 	"image/color"
 	"os"
+	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -60,7 +61,7 @@ var aniCandidates = []string{
 
 func loadTitleAssets() *titleAssets {
 	ld := func(p string) *ebiten.Image {
-		raw, err := os.ReadFile(p)
+		raw, err := os.ReadFile(assetPath(p))
 		if err != nil {
 			return nil
 		}
@@ -84,8 +85,12 @@ func loadTitleAssets() *titleAssets {
 		aniCandidates = append([]string{p}, aniCandidates...)
 	}
 	for _, p := range aniCandidates {
-		if _, err := os.Stat(p); err == nil {
-			t.aniPath = p
+		rp := p
+		if strings.HasPrefix(p, "assets/") { // ANI.DAT 是玩家自備版權檔,走 XDG/APPDIR 三層查找;
+			rp = assetPath(p) // 開發時的 "../org_game/..." 相對路徑保持原樣(cwd 相對,不套三層)
+		}
+		if _, err := os.Stat(rp); err == nil {
+			t.aniPath = rp
 			break
 		}
 	}

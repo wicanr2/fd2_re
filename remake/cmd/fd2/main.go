@@ -205,7 +205,7 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 	if unitsPath == "" {
 		unitsPath = "assets/map0_units.json"
 	}
-	if st, err := battle.Load(unitsPath); err == nil {
+	if st, err := battle.Load(assetPath(unitsPath)); err == nil {
 		g.st = st
 	}
 	g.result, g.sel, g.reach, g.moved = "", nil, nil, false
@@ -213,7 +213,7 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 	g.sc = nil // scenario 空 = 無劇本(FDFIELD roster 全員照 units.json 登場;不 fallback ch01——
 	// ch01 的 initial_groups/party/deploy 是 map0 專屬,錯配到他章會讓單位消失。每章 stub 見 worklist)
 	if g.st != nil && scnPath != "" {
-		if sc, err := battle.LoadScenario(scnPath); err == nil {
+		if sc, err := battle.LoadScenario(assetPath(scnPath)); err == nil {
 			g.sc = sc
 			g.dialog = append(g.dialog, sc.Setup(g.st)...)
 		}
@@ -397,6 +397,7 @@ const (
 // loadMap 載入一張戰場(dir 下的 map.json + tileset.png,並切圖塊)。
 // dir 例:"assets"(map0 舊結構)或 "assets/maps/map3"(全 33 圖匯出結構)。
 func (g *Game) loadMap(dir string) error {
+	dir = assetPath(dir)
 	raw, err := os.ReadFile(dir + "/map.json")
 	if err != nil {
 		return err
@@ -464,7 +465,7 @@ func figaniIndex(fig int) int { return fig * 3 }
 // loadSprites 載入 assets/sprites/fig_NNN_fMM.png,按 fig index 分組成幀序列。
 func loadSprites() map[int][]*ebiten.Image {
 	out := map[int][]*ebiten.Image{}
-	files, _ := filepath.Glob("assets/sprites/fig_*_f*.png")
+	files := assetGlob("assets/sprites/fig_*_f*.png")
 	type fr struct {
 		idx, fno int
 		img      *ebiten.Image
@@ -500,7 +501,7 @@ func loadSprites() map[int][]*ebiten.Image {
 // loadPortraits 載入 assets/portraits/DATO_NNN_mM.png,按肖像 id 分組成 4 嘴型幀。
 func loadPortraits() map[int][]*ebiten.Image {
 	out := map[int][]*ebiten.Image{}
-	files, _ := filepath.Glob("assets/portraits/DATO_*_m*.png")
+	files := assetGlob("assets/portraits/DATO_*_m*.png")
 	type fr struct {
 		id, m int
 		img   *ebiten.Image
@@ -536,7 +537,7 @@ func loadPortraits() map[int][]*ebiten.Image {
 // loadFIGANI 載入 assets/figani/FIGANI_NNN_fNN.png,按 fig id 分組成攻擊全身分鏡。
 func loadFIGANI() map[int][]*ebiten.Image {
 	out := map[int][]*ebiten.Image{}
-	files, _ := filepath.Glob("assets/figani/FIGANI_*_f*.png")
+	files := assetGlob("assets/figani/FIGANI_*_f*.png")
 	type fr struct {
 		id, f int
 		img   *ebiten.Image
@@ -572,7 +573,7 @@ func loadFIGANI() map[int][]*ebiten.Image {
 // loadStoryScript 讀本機劇情文本檔(story-pipe 管線輸出:{"scenes":[{"lines":[{speaker,text}]}]}),
 // 攤平全部 scenes 的 lines。檔案缺失(玩家未自備素材)回 nil → 節點 fallback 內嵌 lines。
 func loadStoryScript(path string) []campaign.Line {
-	raw, err := os.ReadFile(path)
+	raw, err := os.ReadFile(assetPath(path))
 	if err != nil {
 		return nil
 	}
@@ -595,7 +596,7 @@ func loadStoryScript(path string) []campaign.Line {
 // 幀標頭 +0/+2,動畫的走位/伸擊/突刺全靠逐幀 (dx,dy) 變化,引擎不需錨點/位移計算)。
 func loadFigMeta() map[int][][2]int {
 	out := map[int][][2]int{}
-	raw, err := os.ReadFile("assets/figani/meta.json")
+	raw, err := os.ReadFile(assetPath("assets/figani/meta.json"))
 	if err != nil {
 		return out
 	}
@@ -1045,6 +1046,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	}
 	if g.m == nil {
 		ebitenutil.DebugPrint(screen, "FD2 重製 MVP\n缺 assets/(tileset.png + map.json)\n用 tools/export_engine_assets.py 產生\n"+g.loadErr)
+		if g.shotPath != "" && g.frame == g.shotFrame { // 打包驗證:資產缺失時也要能截圖存證(舊版此分支漏存,見打包 worklist)
+			saveShot(screen, g.shotPath)
+		}
 		return
 	}
 	// 攻擊演出:切全螢幕戰鬥畫面(蓋地圖,對照原版 orig_05 全螢幕戰鬥)
@@ -1710,14 +1714,14 @@ func loadGame() *Game {
 		return g
 	}
 	// 載入單位(M1)
-	if st, err := battle.Load("assets/map0_units.json"); err == nil {
+	if st, err := battle.Load(assetPath("assets/map0_units.json")); err == nil {
 		g.st = st
 	} else if g.loadErr == "" {
 		g.loadErr = "units: " + err.Error()
 	}
 	// 載入劇本 + 套用初始(待命 group + on_battle_start 主角隊進場,doc 25/29)
 	if g.st != nil {
-		if sc, err := battle.LoadScenario("assets/scenarios/ch01.json"); err == nil {
+		if sc, err := battle.LoadScenario(assetPath("assets/scenarios/ch01.json")); err == nil {
 			g.sc = sc
 			g.dialog = append(g.dialog, sc.Setup(g.st)...)
 		} else if g.loadErr == "" {
@@ -1728,41 +1732,41 @@ func loadGame() *Game {
 	g.portraits = loadPortraits()
 	g.figani = loadFIGANI()
 	g.figMeta = loadFigMeta()
-	if raw, e := os.ReadFile("assets/bg/bg.png"); e == nil { // 戰鬥背景(BG.DAT)
+	if raw, e := os.ReadFile(assetPath("assets/bg/bg.png")); e == nil { // 戰鬥背景(BG.DAT)
 		if im, _, e2 := image.Decode(bytes.NewReader(raw)); e2 == nil {
 			g.bg = ebiten.NewImageFromImage(im)
 		}
 	}
-	if raw, e := os.ReadFile("assets/tai/tai_004.png"); e == nil { // 我方台座(TAI_004 綠草橢圓)
+	if raw, e := os.ReadFile(assetPath("assets/tai/tai_004.png")); e == nil { // 我方台座(TAI_004 綠草橢圓)
 		if im, _, e2 := image.Decode(bytes.NewReader(raw)); e2 == nil {
 			g.tai = ebiten.NewImageFromImage(im)
 		}
 	}
-	if raw, e := os.ReadFile("assets/ui/panel.png"); e == nil { // 狀態欄框(LMI1 #22)
+	if raw, e := os.ReadFile(assetPath("assets/ui/panel.png")); e == nil { // 狀態欄框(LMI1 #22)
 		if im, _, e2 := image.Decode(bytes.NewReader(raw)); e2 == nil {
 			g.panel = ebiten.NewImageFromImage(im)
 		}
 	}
-	if raw, e := os.ReadFile("assets/ui/dialog.png"); e == nil { // 對話框框(LMI1 #21)
+	if raw, e := os.ReadFile(assetPath("assets/ui/dialog.png")); e == nil { // 對話框框(LMI1 #21)
 		if im, _, e2 := image.Decode(bytes.NewReader(raw)); e2 == nil {
 			g.dlgBox = ebiten.NewImageFromImage(im)
 		}
 	}
 	for i, nm := range []string{"item", "attack", "status", "wait"} { // 指令環圖示(orig_04 截圖 oracle 裁出)
-		if raw, e := os.ReadFile("assets/ui/ring_" + nm + ".png"); e == nil {
+		if raw, e := os.ReadFile(assetPath("assets/ui/ring_" + nm + ".png")); e == nil {
 			if im, _, e2 := image.Decode(bytes.NewReader(raw)); e2 == nil {
 				g.ringIcons[i] = ebiten.NewImageFromImage(im)
 			}
 		}
 	}
-	if sp, e := battle.LoadSpells("assets/spells.json"); e == nil { // 法術表(EXE dump)
+	if sp, e := battle.LoadSpells(assetPath("assets/spells.json")); e == nil { // 法術表(EXE dump)
 		g.spells = sp
 	}
 	g.font = loadFont()
 	// 狀態欄名字專用整數尺寸 face(scale 1.0 繪製,避免非整數縮放模糊);orig 名墨高 13px→face 28
 	g.fontNm = loadFontSized(28)
 	for k := 0; k < 10; k++ { // 原版數字 cell(LMI1 #31-40)
-		if raw, e := os.ReadFile(fmt.Sprintf("assets/ui/digit_%d.png", k)); e == nil {
+		if raw, e := os.ReadFile(assetPath(fmt.Sprintf("assets/ui/digit_%d.png", k))); e == nil {
 			if im, _, e2 := image.Decode(bytes.NewReader(raw)); e2 == nil {
 				g.digits[k] = ebiten.NewImageFromImage(im)
 			}
@@ -1795,7 +1799,7 @@ func loadGame() *Game {
 		if cp == "1" {
 			cp = "assets/scenarios/campaign.json"
 		}
-		if c, err := campaign.Load(cp); err == nil {
+		if c, err := campaign.Load(assetPath(cp)); err == nil {
 			g.camp = campaign.NewRunner(c)
 			if n := os.Getenv("FD2_CAMP_NODE"); n != "" { // 驗證鉤子:直接跳指定節點
 				if _, ok := c.Nodes[n]; ok {

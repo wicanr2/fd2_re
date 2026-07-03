@@ -9,7 +9,8 @@ import (
 	"os"
 )
 
-const settingsPath = "fd2_settings.json"
+// settingsPath 設定檔位置:$XDG_DATA_HOME/fd2_re/fd2_settings.json(理由同 savePath,見 assets.go)。
+func settingsPath() string { return userDataPath("fd2_settings.json") }
 
 // bgmSources 可切換音源(對應 assets/music_<id>/ 資料夾)。
 var bgmSources = []string{"fm", "mt32"}
@@ -26,7 +27,7 @@ type settings struct {
 // loadSettings 讀 fd2_settings.json;無檔/不合法回預設(fm=出廠 Sound Blaster)。
 func loadSettings() settings {
 	s := settings{BGMSource: "fm"}
-	if raw, err := os.ReadFile(settingsPath); err == nil {
+	if raw, err := os.ReadFile(settingsPath()); err == nil {
 		json.Unmarshal(raw, &s)
 	}
 	if bgmSourceName[s.BGMSource] == "" {
@@ -37,7 +38,7 @@ func loadSettings() settings {
 
 func saveSettings(s settings) {
 	if raw, err := json.MarshalIndent(s, "", " "); err == nil {
-		os.WriteFile(settingsPath, raw, 0o644)
+		os.WriteFile(settingsPath(), raw, 0o644)
 	}
 }
 

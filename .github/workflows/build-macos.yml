@@ -1,0 +1,95 @@
+# build-macos.yml — macOS 桌面版打包草稿(未在真機/CI 跑過,見 docs/knowledge-base/41-packaging.md §4)。
+#
+# 為什麼 macOS 不能像 AppImage/Windows 那樣純 Linux docker 跨編:
+#   Go CGO 需要目標平台的 C 工具鏈與 SDK;macOS 的 Cocoa/OpenGL framework header 只在 macOS SDK 裡,
+#   Apple SDK EULA 也限制只能在 Apple 硬體上編譯 macOS binary。跨編需要 osxcross(重,還要處理 SDK 授權),
+#   不如借用 GitHub Actions 的 macos-14(Apple Silicon)runner 直接編——每月 6 小時免費額度綽綽有餘。
+#
+# 好消息:Ebiten 的 macOS 後端吃系統內建 Cocoa/OpenGL framework,不像 SDL2/C++ 老遊戲那樣要
+# 從源碼編一堆 .dylib 再用 dylibbundler 打包(見 mac-app-cross-pack skill)——go build 出來的
+# binary 幾乎不依賴第三方動態庫,.app 打包大幅簡化。
+#
+# 版權資產一樣不 ship:.app 裡只放 assets/scenarios、assets/story、assets/spells.json
+# (跟 AppImage/Windows 同一份"已入庫內容"清單)。玩家自備原版跑 tools/export_engine_assets.py,
+# 產出放 $XDG_DATA_HOME/fd2_re/assets/(macOS 沒有 XDG 慣例目錄,但 cmd/fd2/assets.go 的
+# userDataDir() 在 XDG_DATA_HOME 未設時 fallback 到 $HOME/.local/share/,Go 標準庫在 macOS 上
+# 運作正常,不需要另外改成 ~/Library/Application Support——沿用同一套邏輯即可)。
+name: Build macOS Universal
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*-mac']
+
+jobs:
+  build:
+    runs-on: macos-14   # Apple Silicon runner;免費額度 6 小時/月(2026 現行方案)
+    defaults:
+      run:
+        working-directory: remake
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Build arm64 slice(runner 原生架構)
+        run: |
+          CGO_ENABLED=1 GOARCH=arm64 go build -trimpath -ldflags="-s -w" \
+            -o dist_arm64/fd2 ./cmd/fd2
+
+      - name: Build amd64 slice(系統 clang 內建 universal 工具鏈,-arch x86_64 跨架構編譯)
+        run: |
+          CGO_ENABLED=1 GOARCH=amd64 \
+          CGO_CFLAGS="-arch x86_64" CGO_LDFLAGS="-arch x86_64" \
+            go build -trimpath -ldflags="-s -w" -o dist_amd64/fd2 ./cmd/fd2
+
+      - name: lipo 合併成 universal binary
+        run: |
+          mkdir -p "packaging/dist/FD2.app/Contents/MacOS"
+          lipo -create dist_arm64/fd2 dist_amd64/fd2 \
+            -output "packaging/dist/FD2.app/Contents/MacOS/fd2"
+          lipo -info "packaging/dist/FD2.app/Contents/MacOS/fd2"   # 驗證雙弧,非雙弧就該讓這步失敗
+
+      - name: 組 .app bundle(Info.plist + 已入庫資產 + 圖示)
+        run: |
+          APP=packaging/dist/FD2.app
+          mkdir -p "$APP/Contents/Resources/assets/scenarios" "$APP/Contents/Resources/assets/story"
+          cp -r assets/scenarios/. "$APP/Contents/Resources/assets/scenarios/"
+          cp -r assets/story/.    "$APP/Contents/Resources/assets/story/"
+          cp assets/spells.json   "$APP/Contents/Resources/assets/spells.json"
+          cp packaging/fd2.png    "$APP/Contents/Resources/fd2.icns" || true  # TODO: 需轉 .icns(iconutil),目前先放 png 佔位
+          cat > "$APP/Contents/Info.plist" <<'PLIST'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>CFBundleExecutable</key><string>fd2</string>
+            <key>CFBundleIdentifier</key><string>tw.wicanr2.fd2re</string>
+            <key>CFBundleName</key><string>炎龍騎士團2 重製</string>
+            <key>CFBundlePackageType</key><string>APPL</string>
+            <key>CFBundleShortVersionString</key><string>0.1</string>
+            <key>NSHighResolutionCapable</key><true/>
+          </dict></plist>
+          PLIST
+          chmod +x "$APP/Contents/MacOS/fd2"
+
+      - name: 產 .dmg(APFS,CI 上直接 hdiutil)+ .tar.gz(雙保險,見 mac-app-cross-pack skill §1.6)
+        run: |
+          cd packaging/dist
+          hdiutil create -volname "FD2" -srcfolder FD2.app -ov -format UDZO FD2-mac.dmg
+          tar czf FD2-mac.tar.gz FD2.app
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fd2-macos-universal
+          path: |
+            remake/packaging/dist/FD2-mac.dmg
+            remake/packaging/dist/FD2-mac.tar.gz
+          if-no-files-found: error
+
+# 未驗證項目(需要真的跑一次這個 workflow 才能確認,見 41-packaging.md §4「已知落差」):
+#   - CGO_CFLAGS="-arch x86_64" 跨架構編譯在 ebiten 的 cgo(purego/oto 音訊)是否真的乾淨過關
+#     (未在 macOS 實機測過,只是沿用 Go 官方文件的已知模式)。
+#   - fd2.icns 目前是佔位;正式版要用 packaging/gen_icon.py 產的 fd2.png 跑 iconutil 轉 .icns。
+#   - 未簽署 app 在使用者端會被 Gatekeeper 擋,需要 `xattr -dr com.apple.quarantine FD2.app`
+#     (README 待補這段安裝說明,同 mac-app-cross-pack skill 段 3)。

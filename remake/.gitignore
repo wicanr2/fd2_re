@@ -12,3 +12,6 @@ web/fd2.wasm
 *.wasm
 fd2-linux
 /fd2
+fd2-verify
+# 打包產物(AppImage/exe/dmg + linuxdeploy/appimagetool 快取):可重跑腳本重建,不入庫
+packaging/dist/

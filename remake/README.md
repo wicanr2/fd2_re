@@ -44,11 +44,31 @@ docker run --rm -v "$PWD":/src -w /src golang:1.22-bookworm bash -c '
 ### 手機(Android)
 `ebitenmobile bind` → `.aar` → Gradle 打 APK(觸控已支援;見 `21`)。
 
+## 打包散布版本
+
+詳細設計/版權資產分離規則見 [`41-packaging`](../docs/knowledge-base/41-packaging.md)。
+
+```bash
+cd remake
+./packaging/build-appimage.sh   # Linux AppImage(已驗證可 headless 執行)
+./packaging/build-windows.sh    # Windows exe(已編譯,執行未在真機驗證)
+```
+
+macOS 走 GitHub Actions(`.github/workflows/build-macos.yml`,草稿未跑過)——Go CGO 跨編 macOS
+需要 Apple SDK,不像 Linux/Windows 能純 docker 跨編,借用 `macos-14` runner 原生編譯。
+
+打包內容只含**已入庫的原創資產**(`assets/scenarios/`、`assets/story/`、`assets/spells.json`);
+`maps`/`sprites`/`music`/`portraits` 等 ROM 衍生素材是版權物,不隨散布物打包。玩家需自備原版跑
+`tools/export_engine_assets.py` 等工具,把產出放到 `$XDG_DATA_HOME/fd2_re/assets/`
+(預設 `~/.local/share/fd2_re/assets/`;Windows 走 exe 旁的 `assets/` 資料夾,見 `41` §3)。
+
 ## 結構
 ```
-cmd/fd2/main.go   進入點 + MVP(地圖渲染 + 游標 + 輸入)
-web/              WASM harness(index.html + wasm_exec.js)
-assets/           遊戲資產(gitignore,自備原版產生)
+cmd/fd2/main.go     進入點 + MVP(地圖渲染 + 游標 + 輸入)
+cmd/fd2/assets.go   資產路徑解析層(唯讀 XDG/APPDIR/cwd 三層 + 可寫 XDG 存檔/設定)
+web/                WASM harness(index.html + wasm_exec.js)
+assets/             遊戲資產(gitignore,自備原版產生;scenarios/story/spells.json 例外入庫)
+packaging/          AppImage/Windows 打包腳本 + 素材(見 `41-packaging`)
 ```
 
 ## 操作(MVP)

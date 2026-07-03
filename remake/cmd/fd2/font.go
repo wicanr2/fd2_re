@@ -45,7 +45,7 @@ func loadFont() *Font { return loadFontSized(fontSize) }
 func loadFontSized(size float64) *Font {
 	var data []byte
 	for _, p := range fontPaths {
-		if d, e := os.ReadFile(p); e == nil {
+		if d, e := os.ReadFile(assetPath(p)); e == nil {
 			data = d
 			break
 		}

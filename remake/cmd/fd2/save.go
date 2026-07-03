@@ -7,7 +7,8 @@ import (
 	"os"
 )
 
-const savePath = "fd2_save.json"
+// savePath 存檔位置:$XDG_DATA_HOME/fd2_re/fd2_save.json(唯讀 AppImage mount 內無法寫 cwd,見 assets.go)。
+func savePath() string { return userDataPath("fd2_save.json") }
 
 type saveData struct {
 	Node  string          `json:"node"`
@@ -26,7 +27,7 @@ func (g *Game) saveGame() {
 	if err != nil {
 		return
 	}
-	if os.WriteFile(savePath, raw, 0o644) == nil {
+	if os.WriteFile(savePath(), raw, 0o644) == nil {
 		g.msg = "已存檔(" + g.camp.Cur + ")"
 	}
 }
@@ -35,7 +36,7 @@ func (g *Game) loadGame() {
 	if g.camp == nil {
 		return
 	}
-	raw, err := os.ReadFile(savePath)
+	raw, err := os.ReadFile(savePath())
 	if err != nil {
 		g.msg = "無存檔"
 		return

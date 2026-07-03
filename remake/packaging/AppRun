@@ -1,0 +1,12 @@
+#!/bin/bash
+# AppRun — 炎龍騎士團2 remake AppImage 進入點。
+#
+# AppImage runtime 執行 AppImage 時,會在 exec 本檔「之前」把 $APPDIR 設成掛載的唯讀
+# squashfs 根目錄——引擎的資產路徑解析層(cmd/fd2/assets.go: assetPath)靠這個變數找唯讀基底
+# (assets/scenarios/、assets/story/、assets/spells.json,見打包時複製清單)。
+# 直接執行「解壓後的 AppDir/AppRun」測試(未經 squashfs 打包,runtime 不會自動設 APPDIR)時,
+# 這裡用自己的所在目錄補上,行為與正式 AppImage 執行一致。
+set -e
+HERE="$(dirname "$(readlink -f "${0}")")"
+export APPDIR="${APPDIR:-$HERE}"
+exec "${APPDIR}/usr/bin/fd2" "$@"

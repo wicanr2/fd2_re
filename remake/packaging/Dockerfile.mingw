@@ -1,0 +1,6 @@
+# Dockerfile.mingw — golang:1.22-bookworm + mingw-w64,供 CGO 跨編 Windows .exe(Ebiten 需要 CGO)。
+# 建置一次快取成 image,避免每次 build-windows.sh 都重裝套件。
+FROM golang:1.22-bookworm
+RUN apt-get update -qq && apt-get install -y -qq \
+    gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 \
+    && rm -rf /var/lib/apt/lists/*
