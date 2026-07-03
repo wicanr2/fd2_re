@@ -199,6 +199,47 @@ flowchart TB
 - 分工的另一層意義:`gen_campaign.py` 的近似值/RE 撞牆記錄(例如回合增援 group 分配)只影響「自動生成」路徑;
   使用者若想要更精確的原版重現,可以在編輯器裡手動核對青衫攻略後修正,不需要等 RE 進度追上才能玩到位。
 
+## 6.5 編輯器與「已打包遊戲」的整合(AppImage / 桌面版)
+
+使用者提問:**若把遊戲打成 AppImage、又附一個戰場/劇情編輯器,編輯器要怎麼編輯「已打包進去」的現有劇本?**
+核心矛盾是 **AppImage 是唯讀的**(掛載成 read-only squashfs),包在裡面的 `assets/scenarios/*.json` 不能就地改。
+
+### 解法:唯讀基底 + 可寫覆蓋層(override),遊戲「使用者資料優先」載入
+
+這是模組類遊戲的標準模式,分三層:
+
+1. **唯讀基底(打包在 AppImage 內)**:原版還原的 `campaign_full.json` + `chNN.json` + `assets/`。永不被寫入。
+2. **可寫使用者資料夾(XDG)**:`$XDG_DATA_HOME/fd2_re/`(預設 `~/.local/share/fd2_re/`)。編輯器只寫這裡;
+   存檔 `fd2_save.json`、設定 `fd2_settings.json` 也必須搬來這裡(**現在寫在 cwd,在唯讀 AppImage 內會失敗**)。
+3. **載入順序 = 覆蓋層優先**:遊戲讀某 scenario 時,先找使用者資料夾,有就用(= 玩家編輯過的版本「遮蔽」基底),
+   沒有才 fallback 到 AppImage 內的唯讀基底。
+
+### 「編輯現有劇本」= 複製後編輯(copy-on-write)
+
+- 編輯器要編某個內建章節 → 把該 `chNN.json` 從唯讀基底**複製一份到使用者資料夾**,在副本上編輯、存回使用者資料夾。
+- 之後遊戲載入該章 → 命中使用者資料夾的副本(而非基底)→ 編輯生效。
+- 「還原成原版」= 刪掉使用者資料夾裡那個覆蓋檔即可(基底永遠在)。
+
+### 引擎要配合的改動(打包前置,和 AppImage 本來就需要的一致)
+
+| 改動 | 原因 |
+|---|---|
+| **資產路徑解析層**:唯讀資產走 `$APPDIR/`(AppImage 掛載根)、可寫檔走 XDG 資料夾;載入 scenario 時「XDG→APPDIR」兩段查找 | 目前全用 cwd 相對 `assets/...`(見 `save.go`/`settings.go`/`main.go` 的 `os.ReadFile("assets/...")`),在唯讀 AppImage 內既讀不到也寫不了 |
+| **存檔/設定改寫 XDG**:`fd2_save.json`/`fd2_settings.json` → `$XDG_DATA_HOME/fd2_re/` | 唯讀 mount 無法在 cwd 寫檔 |
+| **`--dump-registry`**(§3.3):吐出 `event.go` 現行 trigger/when/action 清單 | 編輯器表單選項據此動態生成,不超前引擎能力 |
+
+### 編輯器怎麼拿到基底來編
+
+編輯器是**獨立單檔網頁**(§4 選型),用 File System Access API 開資料夾:
+
+- **桌面**:遊戲選單加「開啟編輯器」→ 開瀏覽器指向本機編輯器 HTML,授權它讀寫使用者資料夾;
+  第一次編某內建章時,由遊戲端(或編輯器透過一個 `--export-base` 指令)把唯讀基底的該檔複製進使用者資料夾當起點。
+- **完全離線**:編輯器也可直接讀玩家自己跑 `gen_campaign.py` 產出的那份 `assets/scenarios/`(未打包情境),
+  這時沒有唯讀/可寫之分,直接原地編輯。
+
+一句話總結:**打包時資料分兩層(唯讀基底 + 可寫覆蓋),遊戲與編輯器都走「使用者資料優先」;編輯內建劇本 = 複製到可寫層再改。**
+這同時解掉「AppImage 存檔寫不進去」的既有隱患——所以資產路徑解析層是打包(不管有沒有編輯器)都要先做的地基。
+
 ## 7. worklist 建議條目(可直接貼進 `91-worklist.md`)
 
 ```markdown
