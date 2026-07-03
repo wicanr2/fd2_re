@@ -22,18 +22,33 @@ type titleAssets struct {
 	scroll *ebiten.Image    // 320×735 立繪
 	title  *ebiten.Image    // 320×200 標題畫面
 	items  [3][2]*ebiten.Image // START/LOAD/CONTINUE ×(未選/選中)
+	cutStatic [2]*ebiten.Image // 靜態幕:0=守護者(FDOTHER#100)、1=浮空城(#75)
 	aniPath string          // 玩家自備 ANI.DAT 路徑(""=無,退回捲動 fallback)
 }
 
-// 開場過場排程 — 反組譯 play_afm 5 呼叫點真值(doc39 §10,ani-sched):
-// title_seq 0x1f894 依序播 ANI.DAT 資源 3→4→5→6→7→8→0→(擦除)→1
-// (守護者→索爾→屠龍→二角→騎馬夜行→群像→金鎖→標題「2」logo)。
-// ANI_002(月亮)非開場(是 ch26/29 勝利過場),不在序內。
-// 各幕 delayMs 90/90/50/90/50/90/15/15 → 60fps tick(delayMs≈16.7ms/tick,四捨五入)。
-// skippable:僅首幕(idx3)與 logo(idx1)可按鍵跳過,中間 5 段原版不可跳。
-var cutSeq = []int{3, 4, 5, 6, 7, 8, 0, 1}
-var cutDelayTick = []int{5, 5, 3, 5, 3, 5, 1, 1}
-var cutSkippable = []bool{true, false, false, false, false, false, false, true}
+// 開場過場腳本 — 反組譯真值(doc39 §10 ani-sched + doc23 §2.4⑥ ani-fdother):
+// AFM 動畫幕(從 ANI.DAT 執行期解碼)與 FDOTHER 靜態幕(0x1f73f)交錯,依 title_seq
+// 捲動觸發序穿插。AFM delayMs 90/50/15→60fps tick;靜態幕 hold≈BIOS tick 忙等短停+淡入。
+// skippable:僅首幕(守護者前 AFM#3)與末幕 logo(AFM#1)可按鍵跳,中間原版不可跳。
+type cutStep struct {
+	kind  string // "afm"=ANI.DAT 動畫幕 / "static"=FDOTHER 靜態幕
+	res   int    // afm:ANI.DAT 資源號 / static:cutStatic 索引(0 守護者/1 浮空城)
+	tick  int    // afm:每幀停留 tick / static:整幕 hold tick
+	skip  bool   // 是否可按鍵跳過
+}
+
+var cutScript = []cutStep{
+	{"afm", 3, 5, true},     // 守護者(動畫)
+	{"static", 0, 45, false}, // ①守護者靜態收尾(FDOTHER#100,esi=0x1c2)
+	{"afm", 4, 5, false},    // 索爾
+	{"afm", 5, 3, false},    // 屠龍
+	{"afm", 6, 5, false},    // 二角
+	{"afm", 7, 3, false},    // 騎馬夜行
+	{"afm", 8, 5, false},    // 群像
+	{"afm", 0, 1, false},    // 金鎖(96 幀)
+	{"static", 1, 60, false}, // ⑥滿月浮空城(FDOTHER#75,esi=0x0a,含 +1000ms 停留)
+	{"afm", 1, 1, true},     // 標題「2」logo
+}
 
 // aniCandidates 找玩家自備 ANI.DAT(未夾帶版權素材,執行期解碼)。
 var aniCandidates = []string{
@@ -59,6 +74,8 @@ func loadTitleAssets() *titleAssets {
 		t.items[i][0] = ld(fmt.Sprintf("assets/title/menu_%d.png", i*2+1))
 		t.items[i][1] = ld(fmt.Sprintf("assets/title/menu_%d.png", i*2+2))
 	}
+	t.cutStatic[0] = ld("assets/title/cut_guardian.png") // 缺→該靜態幕自動跳過
+	t.cutStatic[1] = ld("assets/title/cut_castle.png")
 	if t.scroll == nil || t.title == nil {
 		return nil // 素材缺(玩家未自備)→ 跳過開頭直接進遊戲
 	}
@@ -74,12 +91,12 @@ func loadTitleAssets() *titleAssets {
 	return t
 }
 
-// loadCutClip 執行期解碼 cutSeq 的第 idx 個 AFM 資源為 ebiten 影格。失敗回 nil。
-func (g *Game) loadCutClip(idx int) []*ebiten.Image {
-	if idx < 0 || idx >= len(cutSeq) || g.titleAssets.aniPath == "" {
+// loadCutClip 執行期解碼指定 ANI.DAT 資源號為 ebiten 影格。失敗回 nil。
+func (g *Game) loadCutClip(res int) []*ebiten.Image {
+	if g.titleAssets.aniPath == "" {
 		return nil
 	}
-	clip, err := afm.DecodeResource(g.titleAssets.aniPath, cutSeq[idx])
+	clip, err := afm.DecodeResource(g.titleAssets.aniPath, res)
 	if err != nil {
 		return nil
 	}
@@ -90,42 +107,64 @@ func (g *Game) loadCutClip(idx int) []*ebiten.Image {
 	return out
 }
 
+// cutAdvance 前進到下一步驟(重置該步狀態);全部播完 → 進選單。
+func (g *Game) cutAdvance() {
+	g.cutIdx++
+	g.cutCur = nil
+	g.cutFrame, g.cutTick = 0, 0
+	if g.cutIdx >= len(cutScript) {
+		g.titlePhase = "menu"
+		g.titleSel = 0
+	}
+}
+
 // titleUpdate 處理開頭動畫/主選單輸入。回傳 true = 仍在 title 流程。
 func (g *Game) titleUpdate() bool {
 	switch g.titlePhase {
 	case "cutscene":
-		if g.cutCur == nil { // 進入或切到下一幕:載入該資源
-			g.cutCur = g.loadCutClip(g.cutIdx)
-			g.cutFrame, g.cutTick = 0, 0
-			if g.cutCur == nil { // 該幕解碼失敗 → 跳過整段過場
-				g.titlePhase = "menu"
-				g.titleSel = 0
-				return true
-			}
+		if g.cutIdx >= len(cutScript) {
+			g.titlePhase = "menu"
+			g.titleSel = 0
+			return true
 		}
+		step := cutScript[g.cutIdx]
 		if g.cutIdx == 0 && g.cutFrame == 0 && g.cutTick == 0 {
 			g.playBGM("FDMUS_004") // 開場配樂(曲號待實聽驗證)
 		}
-		// 按鍵跳過:僅首幕/logo 可跳(原版 skippable 旗標);中間段不可跳。
-		// ESC 一律可跳整段(remake 便利,非原版行為)。
+		// 按鍵跳過:該步 skippable 才可按任意鍵跳(原版旗標);ESC 一律跳整段(remake 便利)。
 		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) ||
-			(cutSkippable[g.cutIdx] && len(inpututil.AppendJustPressedKeys(nil)) > 0) {
+			(step.skip && len(inpututil.AppendJustPressedKeys(nil)) > 0) {
 			g.titlePhase = "menu"
 			g.titleSel = 0
 			g.cutCur = nil
 			return true
 		}
+		if step.kind == "static" { // FDOTHER 靜態幕:hold step.tick 個 tick
+			if g.titleAssets.cutStatic[step.res] == nil { // 素材缺 → 跳過此幕
+				g.cutAdvance()
+				return true
+			}
+			g.cutTick++
+			if g.cutTick >= step.tick {
+				g.cutAdvance()
+			}
+			return true
+		}
+		// AFM 動畫幕
+		if g.cutCur == nil { // 進入此幕:執行期解碼
+			g.cutCur = g.loadCutClip(step.res)
+			g.cutFrame, g.cutTick = 0, 0
+			if g.cutCur == nil { // 解碼失敗 → 跳過此幕(不整段中止)
+				g.cutAdvance()
+				return true
+			}
+		}
 		g.cutTick++
-		if g.cutTick >= cutDelayTick[g.cutIdx] {
+		if g.cutTick >= step.tick {
 			g.cutTick = 0
 			g.cutFrame++
-			if g.cutFrame >= len(g.cutCur) { // 該幕播完 → 下一幕
-				g.cutIdx++
-				g.cutCur = nil
-				if g.cutIdx >= len(cutSeq) { // 全部播完 → 選單(logo「2」即最後一幕)
-					g.titlePhase = "menu"
-					g.titleSel = 0
-				}
+			if g.cutFrame >= len(g.cutCur) { // 此幕播完 → 下一步
+				g.cutAdvance()
 			}
 		}
 		return true
@@ -180,9 +219,16 @@ func (g *Game) drawTitle(screen *ebiten.Image) {
 	ta := g.titleAssets
 	switch g.titlePhase {
 	case "cutscene":
-		if g.cutCur != nil && g.cutFrame < len(g.cutCur) {
-			op := &ebiten.DrawImageOptions{}
-			op.GeoM.Scale(2, 2)
+		if g.cutIdx >= len(cutScript) {
+			return
+		}
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Scale(2, 2)
+		if step := cutScript[g.cutIdx]; step.kind == "static" {
+			if img := ta.cutStatic[step.res]; img != nil {
+				screen.DrawImage(img, op)
+			}
+		} else if g.cutCur != nil && g.cutFrame < len(g.cutCur) {
 			screen.DrawImage(g.cutCur[g.cutFrame], op)
 		}
 	case "scroll":
