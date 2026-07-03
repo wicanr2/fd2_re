@@ -47,7 +47,8 @@ var cutScript = []cutStep{
 	{"afm", 8, 5, false},    // 群像
 	{"afm", 0, 1, false},    // 金鎖(96 幀)
 	{"static", 1, 60, false}, // ⑥滿月浮空城(FDOTHER#75,esi=0x0a,含 +1000ms 停留)
-	{"afm", 1, 1, true},     // 標題「2」logo
+	{"scroll", 0, 220, false}, // 魔王立繪垂直捲動(FDOTHER#0x45-49),捲到頂露出⑨惡魔臉特寫(doc23 §2.4⑦)
+	{"afm", 1, 1, true},      // 標題「2」logo(硬切紅閃光後)
 }
 
 // aniCandidates 找玩家自備 ANI.DAT(未夾帶版權素材,執行期解碼)。
@@ -150,6 +151,19 @@ func (g *Game) titleUpdate() bool {
 			}
 			return true
 		}
+		if step.kind == "scroll" { // 魔王立繪垂直捲動,捲到頂(惡魔臉)→ 下一幕
+			if g.titleAssets.scroll == nil {
+				g.cutAdvance()
+				return true
+			}
+			g.cutTick++
+			g.scrollY = 535 * (1 - float64(g.cutTick)/float64(step.tick)) // 535→0(底→頂)
+			if g.cutTick >= step.tick {
+				g.scrollY = 0
+				g.cutAdvance()
+			}
+			return true
+		}
 		// AFM 動畫幕
 		if g.cutCur == nil { // 進入此幕:執行期解碼
 			g.cutCur = g.loadCutClip(step.res)
@@ -224,12 +238,20 @@ func (g *Game) drawTitle(screen *ebiten.Image) {
 		}
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(2, 2)
-		if step := cutScript[g.cutIdx]; step.kind == "static" {
+		switch step := cutScript[g.cutIdx]; {
+		case step.kind == "static":
 			if img := ta.cutStatic[step.res]; img != nil {
 				screen.DrawImage(img, op)
 			}
-		} else if g.cutCur != nil && g.cutFrame < len(g.cutCur) {
-			screen.DrawImage(g.cutCur[g.cutFrame], op)
+		case step.kind == "scroll":
+			if ta.scroll != nil {
+				op.GeoM.Translate(0, -g.scrollY*2) // 視窗=大圖 y=scrollY 起 200 列
+				screen.DrawImage(ta.scroll, op)
+			}
+		default:
+			if g.cutCur != nil && g.cutFrame < len(g.cutCur) {
+				screen.DrawImage(g.cutCur[g.cutFrame], op)
+			}
 		}
 	case "scroll":
 		op := &ebiten.DrawImageOptions{}
