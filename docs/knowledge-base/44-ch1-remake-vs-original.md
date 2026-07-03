@@ -1,22 +1,33 @@
 # 44 — 第一章「初試身手」：原版正確序列 × remake 錯誤清單
 
-> 目的：回應使用者實玩 remake 回報的 5 項疑點，逐項對照**原版 dosbox 實機**（沿用
+> 目的：回應使用者實玩 remake 回報的疑點（開場劇情缺口、增援時序、職業名稱錯位、站位/朝向），
+> 逐項對照**使用者提供的原版遊玩錄影**（`video/fd2-ch1.mp4`）+ **原版 dosbox 實機**（沿用
 > `extracted/orig_play_notes.md` 與 `docs/knowledge-base/25-battle-event-system.md §7.5.1` 同一輪
-> 今日已完成的連拍，未重複開新 dosbox session）與**青衫攻略**（`references/text/fd2.md`），
-> 核對 remake 程式碼/資料（`remake/assets/scenarios/ch01.json`、`campaign_full.json`、
-> `remake/assets/maps/map0/map0_units.json`）。唯讀稽核，未修改任何程式碼、未 commit。
+> 今日已完成的連拍，未重複開新 dosbox session）+ **青衫攻略**（`references/text/fd2.md`，三方 ground
+> truth 互相印證），核對 remake 程式碼/資料（`remake/assets/scenarios/ch01.json`、`campaign_full.json`、
+> `remake/assets/maps/map0/map0_units.json`、`tools/export_units.py`）。唯讀稽核，未修改任何程式碼、未 commit。
 
-## 0. 證據來源（避免重工，見規則 63/64）
+## 0. 證據來源（避免重工，見規則 63/64；影片與青衫攻略並列 ground truth）
 
+- **使用者提供的原版遊玩錄影（最高優先 ground truth）**：`video/fd2-ch1.mp4`（71 分）。已抽每 15 秒一幀
+  存 `extracted/story/ref_video/f_001.png`–`f_040.png`（前10分）+ contact sheet `_contact.png`；
+  本輪針對第一戰（7:50–9:20）另用 ffmpeg 抽每 2 秒細幀存 `extracted/story/ref_video/fine/t001.png`–`t045.png`
+  + `_fine_contact.png`，用來讀取戰鬥狀態欄的**單位名稱文字**（見 §2.5）。
 - **dosbox 實機**：`extracted/remake_shots/orig_0*.png`（標題→對話→戰場→攻擊演出全流程）
   + `extracted/story/staging_dosbox/{proof_01,proof_02,proof_03}.png` + `seq/`（220+ 張連拍，序章開場）。
   兩批連拍皆為**今日**（2026-07-03）稍早已完成的實機截圖，本篇直接引用、疊加分析，不重跑 dosbox。
 - **EXE 靜態反組譯**：`docs/knowledge-base/25-battle-event-system.md`（§6 turn_events 全 30 章反組譯
-  + §7.5.1 章節0 handler `0x3231b` 逐指令複驗）、`docs/data/turn_events.json`（EXE dump，非猜測）。
-- **青衫攻略**：`references/text/fd2.md` 第1章。
+  + §7.5.1 章節0 handler `0x3231b` 逐指令複驗）、`docs/data/turn_events.json`（EXE dump，非猜測）、
+  `docs/data/exe_tables/unit.json`（(race,cls)→基礎數值/職業名表）、`tools/dump_exe_tables.py`（該表產生器）、
+  `tools/parse_field.py`（FDFIELD roster 逐位元組解析）。
+- **青衫攻略（與影片並列 ground truth，數值/時序/職業名/敵方組成權威）**：`references/text/fd2.md` 第1章、
+  `docs/knowledge-base/28-chapter-objectives-and-recruits.md`。
 - **原始劇本文字**：`extracted/story/full_story_auto.md`（FDTXT 全 34 個資源自動解碼，1450+ 句）。
 - **remake 程式碼/資料**：`remake/assets/scenarios/{campaign_full.json,ch01.json}`、
-  `remake/assets/maps/map0/map0_units.json`、`remake/internal/battle/event.go`。
+  `remake/assets/maps/map0/map0_units.json`、`remake/internal/battle/event.go`、`tools/export_units.py`。
+
+> 分工採用使用者指定的方式：**影片 = 視覺/序列/站位/朝向權威(逐幀看)；青衫攻略 = 數值/時序/職業名/
+> 敵方組成/增援回合權威(文字)**。以下每項落差盡量同時附兩邊證據。
 
 ---
 
@@ -27,11 +38,14 @@
 原版章節0 handler（`0x3231b`）**不是**單純載入「資源=章節+1」，而是先後暫借章節值切到兩個
 獨立資源（doc23 §4、doc25 §7.5.1 已用靜態反組譯 + 今日 dosbox 複驗釘死）：
 
-| 順序 | 資源 | 內容 | dosbox 證據 | 劇本文字證據 |
-|---|---|---|---|---|
-| ① | `FDTXT_033`（chapter=0x20 暫借值+1） | **王城·父子送別**：父王（羅特帝亞國王）召見索爾，欲傳位給他；索爾自承是義子、無血緣，力辭；父王堅持「屬於強者的時代」，命三日後回覆；索爾告退，之後被亞雷斯撞見獨自苦惱 | `orig_02_dialog_01_sol.png`「兒臣索爾，晉見父王陛下。」、`orig_02_dialog_02_king.png`（國王頭像右上，3行台詞） | `full_story_auto.md:4918-5034`（原文一字不差對上截圖字幕） |
-| ② | `FDTXT_032`（chapter=0x1f 暫借值+1） | **草地小憩 → 比劍邀約 → 悠妮/蓋亞加入**：索爾找亞雷斯再比劍被婉拒 → 兩人發現昏倒的悠妮，蓋亞（機兵，「主人」+「慣性導航系統」台詞確認是機器人守衛非人類）在旁戒備 → 悠妮失憶、記得「從很遠的地方（馬拉大陸）來」、噩夢閃回 → 索爾堅持送她回馬拉大陸，亞雷斯一度反對後同意同行 → 決定啟程 | `proof_01_field_rest.png`（草地上兩人對話「怎麼啦？你」）、`orig_02_dialog_03_ares.png`「拜託，今天休息吧！」、`orig_02_dialog_05_yuni.png`「我們..是從哪裡來的?」 | `full_story_auto.md:4828-4915` |
-| ③ | `FDTXT_001` | **抵達馬拉大陸外海小島 → 遭遇海盜 → 哈瓦特/哈諾出手相助**（已有精校轉錄，見 `extracted/story/序章_transcript.md`） | `proof_02_pirate_prebattle.png`（索爾/悠妮/蓋亞 + 3 海盜 + 1 機械兵已在最終戰鬥位置對峙）、`orig_02_dialog_04_pirate.png` | `full_story_auto.md:637-823` |
+| 順序 | 資源 | 內容 | dosbox 證據 | 影片證據 | 劇本文字證據 |
+|---|---|---|---|---|---|
+| ① | `FDTXT_033`（chapter=0x20 暫借值+1） | **王城·父子送別**：紅毯王座廳，父王（羅特帝亞國王，藍髮八字鬍）與王后並坐雙王座召見索爾，欲傳位給他；索爾自承是義子、無血緣，力辭；父王堅持「屬於強者的時代」，命三日後回覆；索爾告退，之後被亞雷斯撞見獨自苦惱 | `orig_02_dialog_01_sol.png`「兒臣索爾，晉見父王陛下。」、`orig_02_dialog_02_king.png`（國王頭像右上，3行台詞） | `ref_video/f_004.png`（父王特寫「你。這一陣子國務繁忙，我們父子兩個也很久沒聚聚了」）、`ref_video/f_006.png`（雙王座紅毯全景，索爾跪拜，字幕「兒臣以為應該由皇弟迪恩來繼承王位....」——與 FDTXT_033 原文逐字對上） | `full_story_auto.md:4918-5034`（原文一字不差對上截圖字幕） |
+| ② | `FDTXT_032`（chapter=0x1f 暫借值+1） | **草地小憩 → 比劍邀約 → 悠妮/蓋亞加入**：索爾找亞雷斯再比劍被婉拒 → 兩人發現昏倒的悠妮，蓋亞（機兵，「主人」+「慣性導航系統」台詞確認是機器人守衛非人類）在旁戒備 → 悠妮失憶、記得「從很遠的地方（馬拉大陸）來」、噩夢閃回 → 索爾堅持送她回馬拉大陸，亞雷斯一度反對後同意同行 → 決定啟程 | `proof_01_field_rest.png`（草地上兩人對話「怎麼啦？你」）、`orig_02_dialog_03_ares.png`「拜託，今天休息吧！」、`orig_02_dialog_05_yuni.png`「我們..是從哪裡來的?」 | contact sheet 第2、3列（草地+對話框，索爾/亞雷斯/紅髮悠妮） | `full_story_auto.md:4828-4915` |
+| ③ | `FDTXT_001` | **抵達馬拉大陸外海小島 → 遭遇海盜 → 哈瓦特/哈諾出手相助**（已有精校轉錄，見 `extracted/story/序章_transcript.md`） | `proof_02_pirate_prebattle.png`（索爾/悠妮/蓋亞 + 3 海盜 + 1 機械兵已在最終戰鬥位置對峙）、`orig_02_dialog_04_pirate.png` | `ref_video/fine/t030.png`（哈瓦特特寫「『真是的，吵的要命」，與 FDTXT_001 逐字對上） | `full_story_auto.md:637-823` |
+
+> 兩段獨立捕捉（今日 dosbox 連拍 + 使用者提供的原版錄影）在①③兩段的字幕文字**逐字吻合**，
+> 互為交叉驗證，非單一來源的巧合。
 
 > **speaker 標註提醒**：①②兩段資源的自動解碼**說話者標籤有已知誤判**（如②把悠妮的台詞標成
 > 「亞雷斯」、把蓋亞的台詞標成「哈瓦特」——內容本身「主人／慣性導航系統」與「悠妮失憶」清楚指向
@@ -119,16 +133,82 @@ HP18/AP5/DP2 極弱）與 group 11（3×「聖騎士」，portrait 103，HP44/AP
 高階敵種在第一章開場現身，破壞難度曲線與角色識別（青衫攻略/原版截圖均確認第一章敵方視覺
 統一是紅頭巾海盜）。此項與 2.1 同一根因，**修 2.1 即一併修正**，不需獨立改動。
 
-### 2.4 主角隊位置/朝向：位置正確，朝向未實作（低，非 bug）
+### 2.4【高，根因已定位】職業名稱錯位：remake 顯示「劍士/聖騎士」，原版顯示「盜賊/士兵」
 
-- **位置**：`ch01.json` 的 `deploy_cells`（`[[7,20],[10,21],[8,22],[11,23]]`）與
-  `map0_units.json` 的 `own_deploy` 完全一致，後者是直接從原版 FDFIELD「出場位置」資源匯出
-  （doc23 §4：FDFIELD 每張地圖含構成/控制+寶箱/出場位置 3 個資源），**位置本身對齊原版，無需修正**。
-- **朝向**：`remake/internal/battle/event.go`、`model.go` 全域搜尋 `Facing`/`Direction` **零命中**——
-  remake 的 Unit 資料結構完全沒有「朝向」欄位，主角隊固定用同一張預設朝向 sprite。原版是否有
-  進場朝向規則，本輪未見對應的 EXE 反組譯記錄，不確定原版本身是否有此機制（§1.2 已確認原版
-  「直接定位、無移動」，若原版單位貼圖本身也不分朝向，則remake 現狀就已一致）。**列為低優先、
-  待後續 RE 是否有朝向機制後再決定要不要補**，不在本篇判為明確 bug。
+**現象（使用者實測回報）**：remake 戰鬥中單位職業名顯示錯誤——原版**海盜**類單位，remake 顯示
+**劍士**；原版**士兵**類單位，remake 顯示**聖騎士**。
+
+**影片直接證據（決定性）**：`ref_video/fine/t013.png`/`t014.png`/`t022.png`（見 §0，7:50-9:20 精抽幀）
+清楚拍到原版戰鬥全螢幕演出的狀態欄文字——蓋亞（我方）攻擊海盜單位時，對方狀態欄**明字顯示
+「盜賊　LV·02」**（非「劍士」）。三幀（t013/t014/t022）分別是蓋亞×2 次攻擊 + 索爾×1 次攻擊同一敵人，
+「盜賊」字樣**逐幀重複出現，非單幀誤讀**。青衫攻略同步佐證：第一章敵方欄位全程只用「盜賊/海盜頭目」
+稱呼，全篇「聖騎士」字樣第一次出現在遠後段章節（`references/text/fd2.md:999`「聖騎士蘭斯洛特」，
+第18章加入角色，非第一章敵人）。
+
+**remake 現況**：`map0_units.json`（`export_units.py` 匯出）group1/2（portrait 96，即上述被攻擊的海盜）
+`cls_name` 欄位是 `"劍士"`；group11（portrait 103）是 `"聖騎士"`。
+
+**根因（已用原始位元組資料鎖定）**：
+
+1. `tools/parse_field.py` 從 FDFIELD 控制段直接讀出每個單位的 `race`/`cls` 兩個原始欄位（26 位元組
+   roster 記錄的 byte2/byte3，非衍生值）。實測 map0 全部單位：海盜（portrait96/97）、哈瓦特（portrait3）、
+   哈諾（portrait1）、T6 海防隊員（portrait68）**全部是 `(race=1, cls=1)`**——四種完全不同、視覺/敘事
+   毫無關聯的角色，共用同一組 `(race,cls)`。這證明 `(race,cls)` 是**戰鬥數值的機械式範本索引**
+   （HP/AP/DP/MV 從哪張表抄),不是單位的顯示名稱來源。
+2. `tools/export_units.py` 的 `cls_name` 卻直接拿 `(race,cls)` 去查 `docs/data/exe_tables/unit.json`
+   的 `cls_name` 欄位——而該表的 `cls_name` 是 `tools/dump_exe_tables.py` 用**玩家轉職職業表**
+   `CLASS_NAMES = ["龍","劍士","戰士","騎士",...,"聖騎士",...]`（25 個玩家職業 + 1 個「龍」，逐位元組
+   對上 FDTXT_000 該段名單，經 dump 值與 doc02 §7.2 人物成長表交叉驗證吻合，這張表本身沒有錯）填出來的。
+   `cls=1` 對到 `CLASS_NAMES[1]="劍士"`,`cls=11` 對到 `CLASS_NAMES[11]="聖騎士"`——**但這張表的用途
+   是幫玩家角色（索爾/亞雷斯/…）算轉職後的屬性成長，不是給敵方/NPC 單位取顯示名字**。`doc02` 全篇
+   「聖騎士」的每一筆出現（亞雷斯/洛娜/萊汀/蘭斯洛特轉職）都在玩家轉職語境，從未出現在敵方/怪物語境
+   （已逐筆核對 `docs/knowledge-base/02-game-data-reference.md`）。
+3. 換句話說：**`export_units.py` 把「玩家轉職職業表」誤當「敵方/NPC 顯示名稱表」在用**——這張表對
+   「玩家角色算數值」是對的（remake 的 `growth.go` 用它算轉職成長已交叉驗證過），但拿來當**敵方單位
+   UI 顯示名稱**是誤用。真正的顯示名稱（盜賊/士兵/…）另有來源，目前最可能的線索是 `portrait` 欄位——
+   `docs/knowledge-base/31-map-unit-sprites-fdicon.md` 已證實「地圖 sprite 組 = portrait 恆等」且已有
+   兩筆獨立驗證的 portrait→名稱對應（`68→一般士兵`、`96–107 組→綠衣盜賊`，與本輪影片實測的
+   「portrait96＝盜賊」完全吻合），加上 FDTXT_000 另一段「士兵/精英戰士/…/盜賊/盜賊頭目/…」的
+   NPC/怪物名單（54 筆，`extracted/story/full_story_auto.md:41-99`），兩者對得上就是正確的顯示名稱表。
+
+**修復建議**：`export_units.py` 的 `cls_name` 欄位改成**用 `portrait` 查一張新的「portrait→顯示名稱」
+表**（延伸 doc31 已有的兩筆對應，逐一比對 FDTXT_000 的 54 筆 NPC/怪物名單，需要再一輪針對性 RE 補齊
+portrait 96/97/103/76/68 等第一章用到的全部 portrait 的正確名稱)，`(race,cls)` 繼續專職算數值
+（HP/AP/DP/MV/暴擊，這條路徑本身正確不要動）,兩者分離。**不建議**直接改 `dump_exe_tables.py` 的
+`CLASS_NAMES` 表——那張表對玩家轉職是正確的，錯的是「拿它給敵方單位命名」這個用法本身。
+
+**未完全坐實的部分（誠實標記）**：「士兵→聖騎士」這組使用者回報，本輪**找到了完全相同性質的根因
+機制**（`cls=11` 查到玩家表的「聖騎士」)，但**未在影片中直接拍到「士兵」字樣的敵方狀態欄畫面**
+（t013/t014/t022 三幀都是同一隻「盜賊」被攻擊；含疑似 portrait76/103 單位的畫面——`ref_video/f_035.png`、
+`fine/t028.png`、`t030.png`——目前只看到兩個灰色/藍白裝甲人形站在哈瓦特小屋旁的石徑兩側、連續多幀
+不動，較像**裝飾性守衛雕像**而非可戰鬥單位，本輪未能確認它們是否會參戰、參戰時狀態欄文字為何）。
+「聖騎士」機制性錯用本身已用 doc02 交叉驗證坐實，「士兵」這個具體對照詞待下一輪影片/dosbox 補一張
+明確的敵方狀態欄截圖。
+
+### 2.5 主角隊位置/朝向：區域正確，逐人格位分配未獨立驗證；朝向欄位存在但預設值未驗證（中，部分澄清）
+
+> 修正前版本的誤判：先前版本聲稱「remake Unit 結構完全沒有朝向欄位」——**這是錯的**，
+> 已修正如下（搜尋關鍵字漏抓 `Dir`，只搜了 `Facing`/`Direction`）。
+
+- **位置（區域級別已驗證，逐人精確分配未驗證）**：`ch01.json` 的 `deploy_cells`
+  （`[[7,20],[10,21],[8,22],[11,23]]`）與 `map0_units.json` 的 `own_deploy` 完全一致，後者直接來自
+  原版 FDFIELD「出場位置」資源第3段（doc23 §4）。本輪把 `map0.json` 地形+全部 group 座標渲染成標註圖
+  （`extracted/story/ref_video/map0_annotated.png`,本機,未入庫）核對：`own_deploy` 4 格落在地圖南側沙洲旁的泥地，
+  緊鄰 group2 海盜（(0-4,21-23)，同樣濱海）與哈瓦特小屋（(11,11)，隔一段距離）——**區域位置與影片
+  （`ref_video/f_029.png`：索爾/亞雷斯聚在一起、悠妮偏右、蓋亞在更右側，海盜在沙灘/水邊)、dosbox
+  （`orig_03_battle_start.png`）呈現的「主角隊在草地/泥地、海盜貼著水岸」大致吻合**，方向正確。
+  **但**：原始 FDFIELD 的 4 個 `own_deploy` 格是**無名格**（只標記「這裡可站己方」，格式上没有綁定
+  「哪一格給哪個角色」)，remake `event.go:151-157` 目前用**陣列順序**寫死指定（`party[0]索爾→
+  deploy_cells[0]`、`party[1]亞雷斯→[1]`…）。這個「順序=索爾/亞雷斯/悠妮/蓋亞」的假設**本輪未找到
+  獨立的靜態或影片逐格證據直接驗證**（影片能看出四人的相對聚落關係，但無法反推對應到 FDFIELD 的
+  哪一個確切座標，因為原始資料本身不記角色身分）。**不判定為確定 bug，但也不能背書為確定正確**，
+  建議下一輪如需要逐人像素級核對，用影片戰鬥開始瞬間的畫面反推攝影機偏移，或反組譯章節0 handler
+  裡「主角隊 4 次 `0x10b4e` 呼叫」各自的座標引數（doc25 §7.5.1 只確認了呼叫存在與「直接定位」，
+  未逐一展開四個呼叫各自的座標值)。
+- **朝向**：`remake/internal/battle/model.go:53` 有 `Dir int // 朝向:0下 1左 2上 3右`欄位，
+  `event.go:162` 主角隊進場時 `Dir: 0`（下／面向鏡頭）寫死。影片 `f_029.png`/`fine/t013.png` 等幀顯示
+  的角色 sprite 確實接近「正面朝下」姿態，與 `Dir:0` 不衝突,但本輪未逐一比對 4 名主角個別朝向
+  （可能各自不同，如 87 度側身)，**維持中優先、待後續逐人比對**，不算已證實的 bug，也不算已證實正確。
 
 ---
 
@@ -137,9 +217,11 @@ HP18/AP5/DP2 極弱）與 group 11（3×「聖騎士」，portrait 103，HP44/AP
 | 優先度 | 項目 | 工作量估計 | 依據 |
 |---|---|---|---|
 | 1 | **`ch01.json` `initial_groups` 移除 `10, 11`**（§2.1） | 極小：改 1 行 JSON | 三方交叉證據（turn_events.json 全域搜尋、doc25 §7.5.1 反組譯、青衫攻略）一致排除 |
-| 2 | **補開場三幕劇情**（§2.2）| 中：3 個 story 節點 + 對白文字（②③已有現成文字，①需校正 speaker） | dosbox 截圖 + FDTXT 原文逐句對應，內容已齊全，缺的是接進 remake |
-| 3 | （隨 1 一併解決）敵方組成回歸純海盜（§2.3）| 0（附帶效果） | 同上 |
-| 4 | 朝向機制（§2.4）| 待評估：先確認原版是否真有此機制 | 目前無反組譯依據，暫不判定為 bug |
+| 2 | **職業名稱來源改用 portrait 查表，不用 (race,cls)**（§2.4） | 中：新建 portrait→名稱表（先補第一章用到的 96/97/103/76/68 等）+ 改 `export_units.py` 一處查表邏輯 | 影片狀態欄「盜賊」文字直接證據 + doc02 全篇交叉驗證「聖騎士」只用於玩家轉職語境,根因機制已鎖定 |
+| 3 | **補開場三幕劇情**（§2.2）| 中：3 個 story 節點 + 對白文字（②③已有現成文字，①需校正 speaker） | dosbox 截圖 + 影片 + FDTXT 原文三方逐句對應，內容已齊全，缺的是接進 remake |
+| 4 | （隨 1 一併解決）敵方組成回歸純海盜（§2.3）| 0（附帶效果） | 同上 |
+| 5 | 主角隊逐人格位分配精確驗證（§2.5 位置部分）| 中：需反組譯章節0 handler 四次 `0x10b4e` 呼叫的座標引數，或影片逐幀反推攝影機偏移 | 現況「區域正確」已驗證,「逐人對應哪一格」未獨立驗證,非確定 bug |
+| 6 | 朝向（Dir）預設值逐人驗證（§2.5 朝向部分）| 中：需影片逐一比對 4 名主角個別朝向 | Dir 欄位存在且有預設值(0),未逐人比對正確性 |
 
 ## 4. 未盡事項
 
@@ -147,10 +229,20 @@ HP18/AP5/DP2 極弱）與 group 11（3×「聖騎士」，portrait 103，HP44/AP
   「這句是誰說的」標註），建議下一輪與「speaker→頭像機制 RE」的既有已知風險一併處理。
 - group 10/11 在原版究竟是否有其他觸發路徑（例如某個尚未反組譯的分支/世界地圖 handler），
   本輪只確認了「turn_events 與章節0 cutscene 這兩條已知路徑都不會觸發它們」，未做窮舉排除；
-  如果之後想讓這兩組「聖騎士/戰士」在原版真的會用到的地方登場，需要另開反組譯任務。
-- 朝向（facing）機制原版是否存在、如何運作，本輪未反組譯，留待後續。
+  影片 `f_035.png`/`fine/t028.png`/`t030.png` 拍到兩個灰色/藍白裝甲人形站在哈瓦特小屋旁石徑兩側，
+  連續多幀不動，較像**裝飾性守衛雕像**，但未能確認是否真的是 group10/11 對應的視覺、是否會參戰。
+  如果之後想讓這兩組在原版真的會用到的地方登場（或確認它們就是純裝飾物、remake 完全不用管），
+  需要另開反組譯/影片追蹤任務。
+- 「士兵」這個具體職業名詞待下一輪影片/dosbox 補一張明確的敵方狀態欄截圖（本輪只坐實「聖騎士」
+  誤用機制，「盜賊」已有逐幀影片文字證據，「士兵」目前只有 doc31 的既有記錄佐證，未在本輪影片重新
+  拍到)。
+- 朝向（Dir）欄位存在（`model.go:53`），預設值 `0` 在集中比對下與影片大致不衝突，但未逐人像素級驗證。
+- 主角隊逐人（索爾/亞雷斯/悠妮/蓋亞）→ `deploy_cells` 逐格精確對應關係，原始 FDFIELD 資料本身是
+  無名格,本輪未找到可獨立驗證此對應順序的靜態或影片證據，留待後續（見 §2.5、優先序表 5）。
 
 > 相關：`docs/knowledge-base/25-battle-event-system.md`（§7.5.1 staging 反組譯+dosbox 複驗）、
 > `docs/knowledge-base/28-chapter-objectives-and-recruits.md`（青衫30關目標表）、
+> `docs/knowledge-base/31-map-unit-sprites-fdicon.md`（portrait→sprite組對應，職業名根因引用）、
 > `docs/knowledge-base/42-re-vs-remake-gap-audit.md`（機制落差稽核，本篇補的是「內容/資料層」落差，
-> 非機制層）、`extracted/orig_play_notes.md`（今日 dosbox 實機筆記）。
+> 非機制層）、`extracted/orig_play_notes.md`（今日 dosbox 實機筆記）、
+> `video/fd2-ch1.mp4` + `extracted/story/ref_video/`（使用者提供原版錄影 + 抽幀，本機不入庫）。
