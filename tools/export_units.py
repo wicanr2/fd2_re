@@ -53,6 +53,23 @@ def crit_by_cls(resist_crit, cls):
 #   FDICON sprite index = 組×12 + 方向×3 + 幀。組==portrait(視覺 11/11 + 統一編號)。
 #   故 fig = portrait 直接(恆等),不需對應表。
 
+# 職業名(cls_name)顯示錯位 bug 根因(worklist 第 8 輪職業名映射修復):
+#   exe unit.json 的 cls_name 是 CLASS_NAMES[cls]——「機械職業(戰鬥動畫/成長曲線用)」,
+#   如劍士/戰士/騎士,經確認對照 modify2.md §7 職業魔抗/暴擊表 26 筆全部吻合,這個表本身沒錯。
+#   但 modify2.md §8「敵/友單位」表證實同一 (race,cls) 會被多個不同「敘事身分」共用
+#   (如 race1,cls2 同時是 士兵/傭兵/精英戰士/鎧甲武士/黑暗戰士/狂戰士 六種不同 NPC),
+#   而 map0 實測第一章海盜/士兵的 (race,cls) 甚至是 (1,1)——單位表裡唯一對到的是「黑暗殺手」
+#   (idx31,與海盜/士兵毫無關係),base_stats() 取第一筆造成顯示「劍士」這種不相干的機械職業名。
+#   ∴ CLASS_NAMES[cls] 只適合當「查不到時的機械職業名 fallback」,不能當敘事身分名。
+#   真正的敘事身分綁在 portrait(= DATO 角色 id,doc31 §8「已定論」:士兵68、盜賊96、頭目97),
+#   故用 portrait 覆寫表,查得到就蓋掉 cls_name;查不到(其餘怪物尚未逐一 RE portrait 對照,
+#   留待後續章節逐步補)才落回 CLASS_NAMES[cls] 舊行為,不影響其他已正常顯示的單位。
+PORTRAIT_CLS_NAME = {
+    68: "士兵",     # doc31 §8:友軍海防隊員(第一章 T6 增援,portrait 68)
+    96: "盜賊",     # doc31 §8:第一章開場敵方(俗稱「海盜」,青衫攻略敵方列表寫「LV2盜賊」)
+    97: "盜賊頭目",  # doc31 §8:第一章 T5 增援首領(青衫攻略「LV3海盜頭目」)
+}
+
 
 def base_stats(exe, race, cls):
     for u in exe:
@@ -80,8 +97,9 @@ def main(argv):
     units = []
     for i, u in enumerate(info["units"]):
         bs = base_stats(exe, u["race"], u["cls"])
+        cls_name = PORTRAIT_CLS_NAME.get(u["portrait"], bs.get("cls_name", ""))
         rec = {
-            "camp": u["camp"], "cls": u["cls"], "cls_name": bs.get("cls_name", ""),
+            "camp": u["camp"], "cls": u["cls"], "cls_name": cls_name,
             "lv": u["lv"], "portrait": u["portrait"], "group": u.get("group", 0),
             "hp": bs["hp"], "mp": bs["mp"], "ap": bs["ap"], "dp": bs["dp"], "mv": bs["mv"],
             "hit": DEFAULT_HIT, "ev": DEFAULT_EV, "crit": crit_by_cls(resist_crit, u["cls"]),
