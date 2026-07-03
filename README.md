@@ -123,18 +123,41 @@ codec 與破解歷程見 [`06-animation-format.md`](docs/knowledge-base/06-anima
 
 ## 🎮 重製已開工(Go/Ebiten,桌面/Web/手機)
 
-[`remake/`](remake/) 是 Go/Ebiten 重製。**本機桌面 ELF 已建成;第一關「初試身手」已可跑**,
+[`remake/`](remake/) 是 Go/Ebiten 重製。**開場動畫 → 主選單 → 全 30 章戰役已一條龍可跑**,
 全部對照**原版實機(dosbox)+ 青衫攻略 + 反組譯**還原,不憑空:
 
-- **事件進場**:主角隊(索爾/亞雷斯/悠妮/蓋亞)從戰場邊緣**行軍進場**;哈諾哈瓦特第 3 回合從房子、
-  敵援軍第 4 回合、海盜頭目第 5 回合、警備隊第 6 回合**各按回合登場** —— 對照青衫攻略,資料來自
-  反組譯 FDFIELD `turn_events`(原版事件腳本竟在資料而非 EXE,見 [`25`](docs/knowledge-base/25-battle-event-system.md))。
-- **對話系統**:TTF 中文台詞 + DATO 大頭像 + **嘴型開合**(反組譯 `0x16d00` 狀態機,[`14`](docs/knowledge-base/14-text-control-codes.md))+ 全形『』。
-- **戰棋核心**:flood-fill 移動、攻擊結算(青衫傷害公式)、評分式敵方 AI、勝負判定。
-- **原版素材動畫**:FDICON 4 方向走動分鏡(行軍)、FIGANI 全身攻擊分鏡。
-- **角色 sprite = 肖像 = id 恆等**機制(反組譯角色表 `[0x55BA1]`,[`31`](docs/knowledge-base/31-map-unit-sprites-fdicon.md))。
+- **開場動畫**:33 秒多幕過場(守護者→屠龍→騎馬夜行→標題 logo)由**反組譯出的 AFM 動畫 VM**
+  執行期解碼玩家自己的 `ANI.DAT` 播出(見下節);主選單 START/LOAD/CONTINUE。
+- **全 30 章戰役**:節點圖驅動(戰鬥/劇情/選擇/商店/結局 + 旗標 + 敗北路線);隊伍**隨劇情招募成長**
+  (序章 4 人 → 終章 30 人);**回合增援**按原版事件表登場(反組譯 58-entry 跳表 `0x51b91`)。
+- **事件進場**:主角隊從戰場邊緣**行軍進場**;增援各按回合登場 —— 資料來自反組譯 FDFIELD
+  `turn_events`(原版事件腳本竟在資料而非 EXE,見 [`25`](docs/knowledge-base/25-battle-event-system.md))。
+- **對話系統**:TTF 中文台詞 + DATO 大頭像 + **嘴型開合**(反組譯 `0x16d00` 狀態機,[`14`](docs/knowledge-base/14-text-control-codes.md))+ 全形『』;**全 33 章劇情文本 1452 句**逐句轉錄。
+- **戰棋核心**:flood-fill 移動 + **地形移動成本**(反組譯 FDSHAP 地形表)、攻擊結算(青衫公式)、
+  評分式敵方 AI、**魔法系統**(AoE / buff / 毒麻封咒)、勝負判定。
+- **玩法系統**:radial 指令環、商店(含祕密商店)、存讀檔(F5/F9)、BGM + 音效(反組譯自 FDOTHER)。
 
 可行性 [`20`](docs/knowledge-base/20-first-principles-feasibility.md)、架構 [`21`](docs/knowledge-base/21-go-ebiten-remake-plan.md)。(WASM 也可編譯。)
+
+### 🎬 開場動畫:一個 1993 年的「繪圖位元組碼 VM」
+
+開場那段「氣勢磅礡」的過場,反組譯後發現不是逐幀點陣圖,而是漢堂自製動畫工具
+**AFM(Animation File Manager v1.00,Lo Yuan Tsung 1993)** 的產物——本質是一台
+**10-opcode 的增量繪圖虛擬機**:每一幀是一小段位元組碼腳本,對「上一幀殘留的畫面」做
+疊加操作(整屏 RLE / 局部貼圖 / 調色盤更新),**不清空重畫**。這是那個年代用小體積驅動
+大畫面的經典差分壓縮設計(96 幀的金鎖動畫僅約 1MB,而非 96×64000=6MB 的全幀陣列)。
+
+```
+每幀:  [compSize u16][cmdCount u16][保留×2]  後接 cmdCount 條指令
+指令:  op 0-3 → 操作 768B 調色盤(填/載入/RLE/局部貼補)
+        op 4-9 → 直寫 VGA 0xA0000(填/載入/RLE/單點/區段填/區段貼圖)
+```
+
+派發器 `0x36c9e` + 跳表 `0x5276a`;播放器 `0x020421(index, delayMs, skippable)`,
+`delayMs` 是真毫秒(開機時 `0x3dc9f` 用 INT21h 量測機器速度做忙等校準)。289 幀
+(9 個資源)逐位元組驗證無誤,已**移植成純 Go VM**([`internal/afm`](remake/internal/afm/))在
+remake 執行期直接解玩家自備的 `ANI.DAT`——引擎本身不夾帶任何版權畫格。完整格式與位址見
+[`39` AFM 動畫 VM](docs/knowledge-base/39-ani-afm-format.md)。
 
 ### ✨ 重製的核心增值:可擴展事件系統(不只是複刻)
 
@@ -175,12 +198,12 @@ codec 與破解歷程見 [`06-animation-format.md`](docs/knowledge-base/06-anima
 > 對齊方法論:**不用 debugger**(DOSBox vanilla 無法 dump)——以「已破解的解碼器 + 原版截圖」當
 > oracle,用 sprite 模板匹配反推每個元素的精確落點,再回頭從反組譯確認機制(如幀內嵌座標)。
 
-## 重製目標(規劃中)
+## 重製目標
 
-| 技術棧 | 目標平台 | 參考專案 |
-|---|---|---|
-| **SDL2 + C++** | 桌面(Linux/Windows/Mac) | 精訊《勇者鬥惡龍三》重製 |
-| **Go / Ebiten** | Web(WASM) / Android | 《魔法大帝》重製 |
+| 技術棧 | 目標平台 | 狀態 | 參考專案 |
+|---|---|---|---|
+| **Go / Ebiten** | Web(WASM) / Android | **開發中**(全 30 章可跑) | 《魔法大帝》重製 |
+| **SDL2 + C++** | 桌面(Linux/Windows/Mac) | 規劃中 | 精訊《勇者鬥惡龍三》重製 |
 
 兩者共用同一份從原版還原的資料與規則。詳見 [`90-re-plan.md`](docs/knowledge-base/90-re-plan.md)。
 
