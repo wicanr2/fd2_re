@@ -83,6 +83,8 @@ type Game struct {
 	bgmCur    string
 	bgmSource string // 音源設定 "fm"/"mt32"(settings.go;F2 切換)
 	debug     bool   // F3:開發除錯 HUD(座標/陣營原文等)
+	banner    string // 回合橫幅文字(PLAYER/ENEMY PHASE)
+	bannerT   int    // 橫幅剩餘 tick
 	sfx                map[int][]byte // SFX PCM(doc36 FDOTHER#31 14樣本)
 	sfxSwing           []byte         // 戰鬥揮擊音(doc36 戰鬥池 #48-64 sub0,七池共用)
 	sfxImpact          []byte         // 命中音(近似:最短最尖池;attack_id→sfx 對照表 doc36 未 RE)
@@ -128,6 +130,7 @@ type Game struct {
 	digits  [10]*ebiten.Image       // 狀態欄數字 0-9(LMI1 #31-40 原版 digit cell,白/藍影)
 	redSil  map[*ebiten.Image]*ebiten.Image // 命中閃紅的全紅剪影快取(orig=VGA 色盤閃紅)
 	redFlash *ebiten.Image                  // 命中全螢幕紅罩(orig=DAC 整組色盤設紅→整片泛紅)
+	dim      *ebiten.Image                  // 全螢幕暗化/底板共用(回合橫幅、單位面板)
 	figMeta map[int][][2]int                // FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(doc06;動畫走位全靠它)
 	font    *Font                   // 原版點陣中文字型(doc 08)
 }
@@ -813,6 +816,9 @@ func (g *Game) Update() error {
 	if inpututil.IsKeyJustPressed(ebiten.KeyF3) { // 全域:開發除錯 HUD 開關
 		g.debug = !g.debug
 	}
+	if g.bannerT > 0 {
+		g.bannerT--
+	}
 	if g.titlePhase != "" {
 		if g.titleUpdate() {
 			if g.shotPath != "" && g.frame > g.shotFrame { // 截圖模式在 title 也要能退出
@@ -1110,26 +1116,17 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	curPx := float64(g.curX*tw) - g.camX
 	curPy := float64(g.curY*th) - g.camY
 	drawCursor(screen, curPx, curPy, float64(tw), float64(th))
-	// 狀態列:回合 + 戰況(乾淨 TTF,取代舊 DebugPrint 除錯字;F3 開詳細除錯)
+	// HUD(對照原版 orig_04/08):游標單位資訊=左下面板(非常駐頂列);回合切換=中央大字橫幅。
 	if g.st != nil && g.font != nil {
-		g.font.Draw(screen, fmt.Sprintf("回合 %d   我方 %d  友 %d  敵 %d",
-			g.st.Turn, g.st.AliveCount(battle.Own), g.st.AliveCount(battle.Ally), g.st.AliveCount(battle.Enemy)),
-			6, 4, 0.9, color.RGBA{0xf0, 0xf4, 0xff, 0xe0})
-		if u := g.st.UnitAt(g.curX, g.curY); u != nil { // 游標所指單位數值(右上)
-			nm := u.Name
-			if nm == "" {
-				nm = u.ClsName
-			}
-			stat := fmt.Sprintf("%s  Lv%d  HP%d/%d  AP%d DP%d MV%d", nm, u.Lv, u.HP, u.MaxHP, u.AP, u.DP, u.MV)
-			g.font.Draw(screen, stat, float64(logicalW)-g.font.Width(stat, 0.9)-6, 4, 0.9,
-				color.RGBA{0xff, 0xeb, 0x9a, 0xe0})
+		if u := g.st.UnitAt(g.curX, g.curY); u != nil { // 左下單位面板(orig 樣式)
+			g.drawUnitHUD(screen, u)
 		}
-		if g.debug { // F3:詳細除錯(座標/陣營原文)
-			if u := g.st.UnitAt(g.curX, g.curY); u != nil {
-				ebitenutil.DebugPrintAt(screen, fmt.Sprintf("[%d,%d] %s", u.X, u.Y, u.Camp), 6, 20)
-			}
+		if g.debug { // F3:詳細除錯(回合/戰況/座標)
+			ebitenutil.DebugPrintAt(screen, fmt.Sprintf("T%d own%d ally%d enemy%d",
+				g.st.Turn, g.st.AliveCount(battle.Own), g.st.AliveCount(battle.Ally), g.st.AliveCount(battle.Enemy)), 6, 4)
 		}
 	}
+	g.drawPhaseBanner(screen) // 回合橫幅(PLAYER/ENEMY PHASE,transient)
 
 	// 中文層(原版點陣字型,doc 08):選中單位名 + 對話框(DebugPrint 不支援中文)
 	if g.font != nil {
@@ -1816,12 +1813,65 @@ func loadGame() *Game {
 
 // endTurn 結束當前回合:觸發 on_turn_end 事件(增援等),回合 +1,清除已行動。
 // 回合無上限(doc 27);只由劇本事件決定勝負。
+// showBanner 觸發回合橫幅(~90 tick=1.5s;截圖模式不顯以免擋驗證畫面)。
+func (g *Game) showBanner(s string) {
+	if g.shotPath != "" {
+		return
+	}
+	g.banner, g.bannerT = s, 90
+}
+
+// drawPhaseBanner 回合橫幅:暗化地圖 + 中央金字(對照原版 orig_08 PLAYER PHASE)。
+func (g *Game) drawPhaseBanner(screen *ebiten.Image) {
+	if g.bannerT <= 0 || g.banner == "" || g.font == nil {
+		return
+	}
+	a := 1.0
+	if g.bannerT < 20 { // 末段淡出
+		a = float64(g.bannerT) / 20
+	}
+	if g.dim == nil {
+		g.dim = ebiten.NewImage(logicalW, logicalH)
+		g.dim.Fill(color.RGBA{0, 0, 0, 0xff})
+	}
+	op := &ebiten.DrawImageOptions{}
+	op.ColorScale.ScaleAlpha(float32(0.45 * a)) // 暗化地圖
+	screen.DrawImage(g.dim, op)
+	w := g.font.Width(g.banner, 2.2)
+	c := color.RGBA{uint8(0xff * a), uint8(0xc8 * a), uint8(0x50 * a), uint8(0xff * a)} // 金字(ColorScale 已預乘)
+	g.font.Draw(screen, g.banner, (float64(logicalW)-w)/2, float64(logicalH)/2-24, 2.2, c)
+}
+
+// drawUnitHUD 左下單位資訊面板(對照原版 orig_04:小圖示+等級+HP+AP/DP)。
+func (g *Game) drawUnitHUD(screen *ebiten.Image, u *battle.Unit) {
+	nm := u.Name
+	if nm == "" {
+		nm = u.ClsName
+	}
+	// 半透明底板
+	if g.dim == nil {
+		g.dim = ebiten.NewImage(logicalW, logicalH)
+		g.dim.Fill(color.RGBA{0, 0, 0, 0xff})
+	}
+	bw, bh := 230.0, 78.0
+	bx, by := 6.0, float64(logicalH)-bh-6
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Scale(bw/float64(logicalW), bh/float64(logicalH))
+	op.GeoM.Translate(bx, by)
+	op.ColorScale.ScaleAlpha(0.62)
+	screen.DrawImage(g.dim, op)
+	g.font.Draw(screen, fmt.Sprintf("%s  Lv%d", nm, u.Lv), bx+10, by+8, 1.0, color.RGBA{0xff, 0xf0, 0xb4, 0xff})
+	g.font.Draw(screen, fmt.Sprintf("HP %d/%d", u.HP, u.MaxHP), bx+10, by+30, 0.9, color.RGBA{0xf0, 0xf4, 0xff, 0xff})
+	g.font.Draw(screen, fmt.Sprintf("AP %d  DP %d  MV %d", u.AP, u.DP, u.MV), bx+10, by+52, 0.9, color.RGBA{0xc8, 0xe0, 0xff, 0xff})
+}
+
 func (g *Game) endTurn() {
 	if g.st == nil || g.result != "" || g.aiBusy {
 		return
 	}
 	if g.shotPath == "" || os.Getenv("FD2_SHOT_AI") != "" { // 截圖模式預設跳 AI;FD2_SHOT_AI=1 強制驗證 AI 行走
 		g.aiBusy = true // AI 階段:逐單位行走動畫(Update 內 aiStep 驅動),播完 finishTurn
+		g.showBanner("ENEMY PHASE")
 		return
 	}
 	g.finishTurn()
@@ -1836,6 +1886,9 @@ func (g *Game) finishTurn() {
 	for _, u := range g.st.Units {
 		u.Acted = false
 		u.TickStatus() // buff/封咒/中毒/麻痺回合遞減+中毒扣血(doc02 §6.4)
+	}
+	if g.result == "" {
+		g.showBanner("PLAYER PHASE")
 	}
 	g.sel, g.reach, g.moved = nil, nil, false
 	g.checkResult()
