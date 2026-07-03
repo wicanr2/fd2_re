@@ -129,7 +129,7 @@ func (g *Game) titleUpdate() bool {
 		}
 		step := cutScript[g.cutIdx]
 		if g.cutIdx == 0 && g.cutFrame == 0 && g.cutTick == 0 {
-			g.playBGM("FDMUS_004") // 開場配樂(曲號待實聽驗證)
+			g.playBGM("FDMUS_018") // 開場/標題曲(RE 確認:boot 0x025db5 play_bgm(0,18),doc12 §15)
 		}
 		// 按鍵跳過:該步 skippable 才可按任意鍵跳(原版旗標);ESC 一律跳整段(remake 便利)。
 		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) ||
@@ -170,7 +170,7 @@ func (g *Game) titleUpdate() bool {
 		return true
 	case "scroll":
 		if g.scrollY >= 534 { // 開場即配樂(使用者記憶:登登登登磅礡進場;曲號待 dosbox 對照)
-			g.playBGM("FDMUS_004")
+			g.playBGM("FDMUS_018") // 同開場曲(RE 確認,取代舊猜測 FDMUS_004)
 		}
 		g.scrollY -= 1.5 // 捲動速度(原版逐列複製;待 dosbox 錄影校)
 		anyKey := len(inpututil.AppendJustPressedKeys(nil)) > 0
