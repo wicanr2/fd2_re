@@ -82,6 +82,7 @@ type Game struct {
 	bgm       *audio.Player // BGM(doc12 play_bgm 語意:同曲不重播)
 	bgmCur    string
 	bgmSource string // 音源設定 "fm"/"mt32"(settings.go;F2 切換)
+	debug     bool   // F3:開發除錯 HUD(座標/陣營原文等)
 	sfx                map[int][]byte // SFX PCM(doc36 FDOTHER#31 14樣本)
 	sfxSwing           []byte         // 戰鬥揮擊/命中共用音(doc36 戰鬥池 #48-64 sub0,七池相同)
 	prevCurX, prevCurY int            // 游標移動音偵測
@@ -806,6 +807,9 @@ func (g *Game) Update() error {
 	if inpututil.IsKeyJustPressed(ebiten.KeyF2) { // 全域:切換音源(MT-32 / Sound Blaster)
 		g.cycleBGMSource()
 	}
+	if inpututil.IsKeyJustPressed(ebiten.KeyF3) { // 全域:開發除錯 HUD 開關
+		g.debug = !g.debug
+	}
 	if g.titlePhase != "" {
 		if g.titleUpdate() {
 			if g.shotPath != "" && g.frame > g.shotFrame { // 截圖模式在 title 也要能退出
@@ -1096,24 +1100,26 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	curPx := float64(g.curX*tw) - g.camX
 	curPy := float64(g.curY*th) - g.camY
 	drawCursor(screen, curPx, curPy, float64(tw), float64(th))
-	// 狀態列:選中單位資訊(中文職業名待 M2 TTF)
-	info := "炎龍騎士團2 — M1 戰棋核心 / 方向鍵·WASD·觸控移動游標"
-	if g.st != nil {
-		info += fmt.Sprintf("  回合%d  我方%d 友%d 敵%d",
-			g.st.Turn, g.st.AliveCount(battle.Own), g.st.AliveCount(battle.Ally), g.st.AliveCount(battle.Enemy))
-		if u := g.st.UnitAt(g.curX, g.curY); u != nil {
+	// 狀態列:回合 + 戰況(乾淨 TTF,取代舊 DebugPrint 除錯字;F3 開詳細除錯)
+	if g.st != nil && g.font != nil {
+		g.font.Draw(screen, fmt.Sprintf("回合 %d   我方 %d  友 %d  敵 %d",
+			g.st.Turn, g.st.AliveCount(battle.Own), g.st.AliveCount(battle.Ally), g.st.AliveCount(battle.Enemy)),
+			6, 4, 0.9, color.RGBA{0xf0, 0xf4, 0xff, 0xe0})
+		if u := g.st.UnitAt(g.curX, g.curY); u != nil { // 游標所指單位數值(右上)
 			nm := u.Name
 			if nm == "" {
 				nm = u.ClsName
 			}
-			info += fmt.Sprintf("\n[%d,%d] %s %s Lv%d HP%d/%d AP%d DP%d MV%d",
-				u.X, u.Y, u.Camp, nm, u.Lv, u.HP, u.MaxHP, u.AP, u.DP, u.MV)
+			stat := fmt.Sprintf("%s  Lv%d  HP%d/%d  AP%d DP%d MV%d", nm, u.Lv, u.HP, u.MaxHP, u.AP, u.DP, u.MV)
+			g.font.Draw(screen, stat, float64(logicalW)-g.font.Width(stat, 0.9)-6, 4, 0.9,
+				color.RGBA{0xff, 0xeb, 0x9a, 0xe0})
 		}
-		if g.sc != nil {
-			info += "  (Tab:結束回合)"
+		if g.debug { // F3:詳細除錯(座標/陣營原文)
+			if u := g.st.UnitAt(g.curX, g.curY); u != nil {
+				ebitenutil.DebugPrintAt(screen, fmt.Sprintf("[%d,%d] %s", u.X, u.Y, u.Camp), 6, 20)
+			}
 		}
 	}
-	ebitenutil.DebugPrint(screen, info)
 
 	// 中文層(原版點陣字型,doc 08):選中單位名 + 對話框(DebugPrint 不支援中文)
 	if g.font != nil {
