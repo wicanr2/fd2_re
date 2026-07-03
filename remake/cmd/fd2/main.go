@@ -84,7 +84,9 @@ type Game struct {
 	bgmSource string // 音源設定 "fm"/"mt32"(settings.go;F2 切換)
 	debug     bool   // F3:開發除錯 HUD(座標/陣營原文等)
 	sfx                map[int][]byte // SFX PCM(doc36 FDOTHER#31 14樣本)
-	sfxSwing           []byte         // 戰鬥揮擊/命中共用音(doc36 戰鬥池 #48-64 sub0,七池相同)
+	sfxSwing           []byte         // 戰鬥揮擊音(doc36 戰鬥池 #48-64 sub0,七池共用)
+	sfxImpact          []byte         // 命中音(近似:最短最尖池;attack_id→sfx 對照表 doc36 未 RE)
+	sfxDeath           []byte         // 陣亡/重擊音(近似:最長池)
 	prevCurX, prevCurY int            // 游標移動音偵測
 	aiBusy    bool       // AI 回合進行中(逐單位行走動畫)
 	rng       *rand.Rand // 施法擲骰(FD2_SEED 可固定,headless 重現)
@@ -822,12 +824,18 @@ func (g *Game) Update() error {
 	if g.atk != nil {
 		g.atk.timer--
 		a := g.atk
-		if a != nil && a.fpt > 0 && a.total-a.timer == (len(g.figani[a.atkFig])-4)*a.fpt {
-			if g.sfxSwing != nil {
-				g.playRaw(g.sfxSwing) // 戰鬥池共用揮擊音(真素材)
-			} else {
-				g.playSFX(sfxHit) // 保底
+		if a.fpt > 0 { // 三段音效(== 比對每 tick 遞增的 prog,各觸發一次)
+			prog := a.total - a.timer
+			swingAt := (len(g.figani[a.atkFig]) - 4) * a.fpt
+			switch prog {
+			case swingAt: // 揮擊(蓄力揮出)
+				g.playRaw(g.sfxSwing)
+			case swingAt + 3*a.fpt: // 命中(劈中、守方 HP 抽乾)
+				g.playRaw(g.sfxImpact)
 			}
+		}
+		if a.timer == a.fpt && a.defHP1 <= 0 { // 收勢那幀:守方陣亡音
+			g.playRaw(g.sfxDeath)
 		}
 		if g.atk.timer <= 0 {
 			g.atk = nil
@@ -1754,7 +1762,10 @@ func loadGame() *Game {
 	}
 	g.rng = rand.New(rand.NewSource(seed))
 	g.sfx = loadSFX()
-	g.sfxSwing = loadWav("assets/sfx/battle_48_00.wav") // 共用揮擊音(逐招對照後按池切換)
+	// 戰鬥音效:揮擊/命中/陣亡三段(真素材;attack_id→池 精確對照 doc36 未 RE,故命中/陣亡池為近似選擇)
+	g.sfxSwing = loadWav("assets/sfx/battle_48_00.wav")  // 揮擊(池 sub0,七池共用)
+	g.sfxImpact = loadWav("assets/sfx/battle_64_00.wav") // 命中(最短最尖池)
+	g.sfxDeath = loadWav("assets/sfx/battle_88_00.wav")  // 陣亡/重擊(最長池)
 	// 戰場 BGM:doc12 推定 track18=戰鬥被使用者實聽推翻(18=商店音樂);戰鬥曲號待聽辨,先不播錯曲
 	if os.Getenv("FD2_TITLE") == "1" || (g.shotPath == "" && os.Getenv("FD2_TITLE") != "0") { // 開頭動畫+主選單(headless 截圖預設跳過)
 		if ta := loadTitleAssets(); ta != nil {
