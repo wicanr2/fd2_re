@@ -356,12 +356,19 @@
       5 呼叫點釘死(開場 3/4/5/6/7/8/0/1,delay 90-15ms;idx0/2=章節過場非開場);
       title.go 換真值排程(拿掉月亮 idx2、各幕 delay、skippable 旗標)
 - [x] **ch14-18 文本**(sonnet):229 句;ch01-18 累計 747 句;ch18 永久劇情死亡標記
-- [ ] **0x1f73f FDOTHER 靜態 blit RE**:疑分鏡⑥浮空城⑨惡魔臉來源(ani-sched 附帶發現)
-- [ ] 開場配樂曲號實聽(容器 nosound;使用者聽辨)
+- [x] **0x1f73f FDOTHER 靜態幕 RE**(sonnet):開場 2 幕靜態=①守護者(#100+pal#99,esi=0x1c2)
+      +⑥滿月浮空城(#75+pal#76,esi=0x0a,dosbox frame168-173 逐像素吻合);機制 memset黑→
+      載調色盤→blit→淡入→BIOS tick 忙等(修正原 KB「BGM/SFX」誤判);⑨惡魔臉排除是 0x1f73f(待下輪)
+- [x] **開場過場插 2 靜態幕**(旗艦):cutScript AFM+static 交錯腳本;frame165 守護者/frame645 浮空城驗證
 - [x] **全 33 章劇情文本完成**(sonnet 流水線 6 批):ch01-33 共 1452 句;
       speaker 場景本地表現象文獻化;身世真相(悠妮=ASR-07/大魔王=ASR-06)
+- [x] **speaker→頭像機制 RE**(sonnet):0xFFEF operand→0x12C60 查[0x53A45]/[0x53BF7] byte[+7]=DATO;
+      三推論裁決(①部分成立=陣列重填+雙定址②怪物表不成立③字母碼是 render_story.py operand 洩漏 bug);
+      **story JSON 零修改**(現行最忠實);修 render_story.py operand-skip;doc14 修正
+- [ ] **開場配樂曲號 RE**(bgm-title 執行中):play_bgm 開場鏈曲號→FDMUS 檔(取代猜測 FDMUS_004)
+- [ ] 開場分鏡⑨惡魔臉來源 RE(疑另一機制或 ANI.DAT)
 - [ ] ch21/22 \$reg_or_mem 增援 eax 來源 RE(6 筆)
-- [ ] speaker 代碼表 EXE RE(驗證字母碼場景本地表假設)
+- [ ] 待展開(位址已釘):0x3453E 額外檢查、tag==0x27 sentinel、[0x53BF7] 表用途
 
 ## 完成定義(反組譯研究)
 全部資產格式可解(解包+解壓+轉現代格式)、核心數值表全 dump 並驗證、
