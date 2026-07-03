@@ -1,8 +1,11 @@
 // title.go — 開頭動畫 + 主選單(忠實 doc23 反組譯):
 // ① 魔王立繪 320×735(FDOTHER #0x45-0x49 五幀直疊)由下往上垂直捲動(視窗 200 高,
-//    src y=535→0,原版 0x1fa85;任意鍵跳過)+ 淡入(0x1f525 palette fade 對映 ColorScale)。
+//
+//	src y=535→0,原版 0x1fa85;任意鍵跳過)+ 淡入(0x1f525 palette fade 對映 ColorScale)。
+//
 // ② 抹除轉場 → 標題畫面(FDOTHER #7 sub0,FLAME DRAGON logo,palette=FDOTHER #8)
-//    + 三選單項 START/LOAD/CONTINUE(#7 sub1-6 未選/選中素材)。
+//   - 三選單項 START/LOAD/CONTINUE(#7 sub1-6 未選/選中素材)。
+//
 // ③ 選單:↑↓ wrap+游標音、Enter 確認(選中項閃 4 次,0x1fe2c);無 ESC 分支(doc23 §3)。
 package main
 
@@ -12,6 +15,7 @@ import (
 	"image"
 	"image/color"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -20,11 +24,11 @@ import (
 )
 
 type titleAssets struct {
-	scroll *ebiten.Image    // 320×735 立繪
-	title  *ebiten.Image    // 320×200 標題畫面
-	items  [3][2]*ebiten.Image // START/LOAD/CONTINUE ×(未選/選中)
-	cutStatic [2]*ebiten.Image // 靜態幕:0=守護者(FDOTHER#100)、1=浮空城(#75)
-	aniPath string          // 玩家自備 ANI.DAT 路徑(""=無,退回捲動 fallback)
+	scroll    *ebiten.Image       // 320×735 立繪
+	title     *ebiten.Image       // 320×200 標題畫面
+	items     [3][2]*ebiten.Image // START/LOAD/CONTINUE ×(未選/選中)
+	cutStatic [2]*ebiten.Image    // 靜態幕:0=守護者(FDOTHER#100)、1=浮空城(#75)
+	aniPath   string              // 玩家自備 ANI.DAT 路徑(""=無,退回捲動 fallback)
 }
 
 // 開場過場腳本 — 反組譯真值(doc39 §10 ani-sched + doc23 §2.4⑥ ani-fdother):
@@ -32,24 +36,24 @@ type titleAssets struct {
 // 捲動觸發序穿插。AFM delayMs 90/50/15→60fps tick;靜態幕 hold≈BIOS tick 忙等短停+淡入。
 // skippable:僅首幕(守護者前 AFM#3)與末幕 logo(AFM#1)可按鍵跳,中間原版不可跳。
 type cutStep struct {
-	kind  string // "afm"=ANI.DAT 動畫幕 / "static"=FDOTHER 靜態幕
-	res   int    // afm:ANI.DAT 資源號 / static:cutStatic 索引(0 守護者/1 浮空城)
-	tick  int    // afm:每幀停留 tick / static:整幕 hold tick
-	skip  bool   // 是否可按鍵跳過
+	kind string // "afm"=ANI.DAT 動畫幕 / "static"=FDOTHER 靜態幕
+	res  int    // afm:ANI.DAT 資源號 / static:cutStatic 索引(0 守護者/1 浮空城)
+	tick int    // afm:每幀停留 tick / static:整幕 hold tick
+	skip bool   // 是否可按鍵跳過
 }
 
 var cutScript = []cutStep{
-	{"afm", 3, 5, true},     // 守護者(動畫)
-	{"static", 0, 45, false}, // ①守護者靜態收尾(FDOTHER#100,esi=0x1c2)
-	{"afm", 4, 5, false},    // 索爾
-	{"afm", 5, 3, false},    // 屠龍
-	{"afm", 6, 5, false},    // 二角
-	{"afm", 7, 3, false},    // 騎馬夜行
-	{"afm", 8, 5, false},    // 群像
-	{"afm", 0, 1, false},    // 金鎖(96 幀)
-	{"static", 1, 60, false}, // ⑥滿月浮空城(FDOTHER#75,esi=0x0a,含 +1000ms 停留)
+	{"afm", 3, 5, true},       // 守護者(動畫)
+	{"static", 0, 45, false},  // ①守護者靜態收尾(FDOTHER#100,esi=0x1c2)
+	{"afm", 4, 5, false},      // 索爾
+	{"afm", 5, 3, false},      // 屠龍
+	{"afm", 6, 5, false},      // 二角
+	{"afm", 7, 3, false},      // 騎馬夜行
+	{"afm", 8, 5, false},      // 群像
+	{"afm", 0, 1, false},      // 金鎖(96 幀)
+	{"static", 1, 60, false},  // ⑥滿月浮空城(FDOTHER#75,esi=0x0a,含 +1000ms 停留)
 	{"scroll", 0, 220, false}, // 魔王立繪垂直捲動(FDOTHER#0x45-49),捲到頂露出⑨惡魔臉特寫(doc23 §2.4⑦)
-	{"afm", 1, 1, true},      // 標題「2」logo(硬切紅閃光後)
+	{"afm", 1, 1, true},       // 標題「2」logo(硬切紅閃光後)
 }
 
 // aniCandidates 找玩家自備 ANI.DAT(未夾帶版權素材,執行期解碼)。
@@ -79,15 +83,25 @@ func loadTitleAssets() *titleAssets {
 	t.cutStatic[0] = ld("assets/title/cut_guardian.png") // 缺→該靜態幕自動跳過
 	t.cutStatic[1] = ld("assets/title/cut_castle.png")
 	if t.scroll == nil || t.title == nil {
-		return nil // 素材缺(玩家未自備)→ 跳過開頭直接進遊戲
+		// 素材缺(玩家未自備,或 cwd 不是 remake/ 導致相對路徑解不到)→ 跳過開頭直接進遊戲。
+		// playfix #2:silent 失敗很難查,留診斷訊息(不影響行為,只在 stderr 印一行)。
+		cwd, _ := os.Getwd()
+		fmt.Fprintf(os.Stderr, "fd2: 開場素材缺失(scroll=%v title=%v,cwd=%s,exeDir=%s)→ 跳過開頭動畫\n",
+			t.scroll != nil, t.title != nil, cwd, exeDir())
+		return nil
 	}
 	if p := os.Getenv("FD2_ANI"); p != "" {
 		aniCandidates = append([]string{p}, aniCandidates...)
 	}
 	for _, p := range aniCandidates {
 		rp := p
-		if strings.HasPrefix(p, "assets/") { // ANI.DAT 是玩家自備版權檔,走 XDG/APPDIR 三層查找;
-			rp = assetPath(p) // 開發時的 "../org_game/..." 相對路徑保持原樣(cwd 相對,不套三層)
+		if strings.HasPrefix(p, "assets/") { // ANI.DAT 是玩家自備版權檔,走四層查找(含 exeDir)
+			rp = assetPath(p)
+		} else if _, err := os.Stat(rp); err != nil && exeDir() != "" {
+			// 開發時的 "../org_game/..." 是 cwd 相對路徑;cwd 不是 remake/ 時額外試執行檔目錄。
+			if _, err2 := os.Stat(filepath.Join(exeDir(), p)); err2 == nil {
+				rp = filepath.Join(exeDir(), p)
+			}
 		}
 		if _, err := os.Stat(rp); err == nil {
 			t.aniPath = rp

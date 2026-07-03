@@ -2,11 +2,13 @@
 //
 // 目標:證明「Go/Ebiten 跑得起來,且讀得到我們逆向出的資料」。
 // 本切片:載入一張戰場(tileset PNG + 地圖 JSON)→ 用 hi-res 畫布渲染 →
-//         方向鍵 / WASD / 觸控移動游標,相機跟隨。桌面 / Web(WASM)/ 手機共用。
+//
+//	方向鍵 / WASD / 觸控移動游標,相機跟隨。桌面 / Web(WASM)/ 手機共用。
 //
 // 資產(玩家自備原版後由 tools/ 產生,不隨庫散布):
-//   assets/tileset.png  一張 24×24 圖塊的網格圖(cols 欄)
-//   assets/map.json     {"w","h","tileW","tileH","cols","tiles":[地形索引...]}
+//
+//	assets/tileset.png  一張 24×24 圖塊的網格圖(cols 欄)
+//	assets/map.json     {"w","h","tileW","tileH","cols","tiles":[地形索引...]}
 //
 // 建置:見 remake/README.md(docker golang;WASM / 桌面 / 手機)。
 package main
@@ -27,8 +29,8 @@ import (
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/audio"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
@@ -52,9 +54,9 @@ type MapData struct {
 type Game struct {
 	m       *MapData
 	tileset *ebiten.Image
-	tiles   []*ebiten.Image // 切好的圖塊
-	st      *battle.State    // 戰鬥狀態(單位)
-	sc      *battle.Scenario   // 劇本(事件系統,doc 29)
+	tiles   []*ebiten.Image     // 切好的圖塊
+	st      *battle.State       // 戰鬥狀態(單位)
+	sc      *battle.Scenario    // 劇本(事件系統,doc 29)
 	dialog  []battle.DialogLine // 待顯示對話(事件產生,含說話者)
 	walk    *walkAnim           // 移動動畫(沿路徑逐格走,FDICON 方向幀)
 	camp    *campaign.Runner    // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
@@ -72,67 +74,68 @@ type Game struct {
 	cutTick  int
 	cutCur   []*ebiten.Image
 	// radial 指令環(原版 4 圖示十字繞單位,doc13 [0x3C57]:↑0/←1/→2/↓3)+ 法術
-	ring      bool
-	ringSel   int
-	ringIcons [4]*ebiten.Image // 0上=道具 1左=攻擊 2右=魔法/狀態 3下=待機
-	spellOpen bool
-	spellSel  int
-	castSp    *battle.Spell // 施法目標選擇中
-	spells    []battle.Spell
-	bgm       *audio.Player // BGM(doc12 play_bgm 語意:同曲不重播)
-	bgmCur    string
-	bgmSource string // 音源設定 "fm"/"mt32"(settings.go;F2 切換)
-	debug     bool   // F3:開發除錯 HUD(座標/陣營原文等)
-	banner    string // 回合橫幅文字(PLAYER/ENEMY PHASE)
-	bannerT   int    // 橫幅剩餘 tick
-	sfx                map[int][]byte // SFX PCM(doc36 FDOTHER#31 14樣本)
-	sfxSwing           []byte         // 戰鬥揮擊音(doc36 戰鬥池 #48-64 sub0,七池共用)
-	sfxImpact          []byte         // 命中音(近似:最短最尖池;attack_id→sfx 對照表 doc36 未 RE)
-	sfxDeath           []byte         // 陣亡/重擊音(近似:最長池)
-	prevCurX, prevCurY int            // 游標移動音偵測
-	aiBusy    bool       // AI 回合進行中(逐單位行走動畫)
-	rng       *rand.Rand // 施法擲骰(FD2_SEED 可固定,headless 重現)
-	gold      int      // 金幣(商店)
-	items     []string // 隊伍道具(名稱;道具效果待實裝)
-	shopSel   int      // 商店游標
-	portraits map[int][]*ebiten.Image // DATO 頭像:肖像 id → 4 嘴型幀
-	mouthOpen  bool // 嘴型動畫狀態(原版 0x16d00:m0閉/m3開)
-	mouthTimer int  // 閉嘴倒數(原版 rand%30+2 tick)
-	curX    int
-	curY    int
-	camX    float64
-	camY    float64
-	loadErr string
+	ring               bool
+	ringSel            int
+	ringIcons          [4]*ebiten.Image // 0上=道具 1左=攻擊 2右=魔法/狀態 3下=待機
+	spellOpen          bool
+	spellSel           int
+	castSp             *battle.Spell // 施法目標選擇中
+	spells             []battle.Spell
+	bgm                *audio.Player // BGM(doc12 play_bgm 語意:同曲不重播)
+	bgmCur             string
+	bgmSource          string                  // 音源設定 "fm"/"mt32"(settings.go;F2 切換)
+	debug              bool                    // F3:開發除錯 HUD(座標/陣營原文等)
+	banner             string                  // 回合橫幅文字(PLAYER/ENEMY PHASE)
+	bannerT            int                     // 橫幅剩餘 tick
+	sfx                map[int][]byte          // SFX PCM(doc36 FDOTHER#31 14樣本)
+	sfxSwing           []byte                  // 戰鬥揮擊音(doc36 戰鬥池 #48-64 sub0,七池共用)
+	sfxImpact          []byte                  // 命中音(近似:最短最尖池;attack_id→sfx 對照表 doc36 未 RE)
+	sfxDeath           []byte                  // 陣亡/重擊音(近似:最長池)
+	prevCurX, prevCurY int                     // 游標移動音偵測
+	aiBusy             bool                    // AI 回合進行中(逐單位行走動畫)
+	rng                *rand.Rand              // 施法擲骰(FD2_SEED 可固定,headless 重現)
+	gold               int                     // 金幣(商店)
+	items              []string                // 隊伍道具(名稱;道具效果待實裝)
+	shopSel            int                     // 商店游標
+	portraits          map[int][]*ebiten.Image // DATO 頭像:肖像 id → 4 嘴型幀
+	mouthOpen          bool                    // 嘴型動畫狀態(原版 0x16d00:m0閉/m3開)
+	mouthTimer         int                     // 閉嘴倒數(原版 rand%30+2 tick)
+	curX               int
+	curY               int
+	camX               float64
+	camY               float64
+	loadErr            string
 	// 截圖鉤子(FD2_SHOT=path 啟用):第 shotFrame 幀存 PNG 後自動退出(有界,供無人值守驗證)
-	frame     int
+	frame      int
 	shotPath   string
 	shotFrame  int
 	shotSeries string // 逐幀截圖目錄(FD2_SHOT_SERIES):戰鬥演出每幀存 frame_NN.png,演出結束自動退出
-	shotTurn  int // 截圖前自動推進到第 N 回合(FD2_SHOT_TURN,驗證增援進場)
-	shotCurX  int // 截圖時把游標放這(FD2_SHOT_CUR=x,y)
-	shotCurY  int
-	shotSel   bool // 截圖前自動選取游標單位(FD2_SHOT_SELECT=1)
+	shotTurn   int    // 截圖前自動推進到第 N 回合(FD2_SHOT_TURN,驗證增援進場)
+	shotCurX   int    // 截圖時把游標放這(FD2_SHOT_CUR=x,y)
+	shotCurY   int
+	shotSel    bool // 截圖前自動選取游標單位(FD2_SHOT_SELECT=1)
 	// 選取狀態
-	sel    *battle.Unit
-	reach  map[battle.Cell]bool
-	moved  bool   // 已選單位是否移動完(進入攻擊階段)
-	result string // 勝負:""/win/lose
-	msg    string // 短訊息(攻擊傷害等)
+	sel                *battle.Unit
+	reach              map[battle.Cell]bool
+	selOrigX, selOrigY int    // 選取單位當下的原始格(ESC 取消移動時退回,playfix #4)
+	moved              bool   // 已選單位是否移動完(進入攻擊階段)
+	result             string // 勝負:""/win/lose
+	msg                string // 短訊息(攻擊傷害等)
 	// 地圖單位 sprite(FDICON 待機分鏡):fig index → 幀序列
-	sprites map[int][]*ebiten.Image
-	figani  map[int][]*ebiten.Image // 攻擊全身動畫(FIGANI):fig → 幀序列
-	atk     *atkAnim                // 進行中的攻擊演出
-	bg      *ebiten.Image           // 戰鬥背景(BG.DAT,by 戰場;map0=BG_004 森林)
-	tai     *ebiten.Image           // 我方腳下台座(TAI.DAT;0x29164 載 0x28c46,doc35 §3.3)
-	panel   *ebiten.Image           // 狀態欄框素材(FDOTHER#5 LMI1 #22,149×42;含bevel+HP/MP標籤+槽,doc35 §4)
-	dlgBox  *ebiten.Image           // 對話框框素材(FDOTHER#5 LMI1 #21,310×99;orig 下框(5,112)@320)
-	fontNm  *Font                   // 狀態欄名字(整數尺寸 face,scale1 銳利)
-	digits  [10]*ebiten.Image       // 狀態欄數字 0-9(LMI1 #31-40 原版 digit cell,白/藍影)
-	redSil  map[*ebiten.Image]*ebiten.Image // 命中閃紅的全紅剪影快取(orig=VGA 色盤閃紅)
-	redFlash *ebiten.Image                  // 命中全螢幕紅罩(orig=DAC 整組色盤設紅→整片泛紅)
-	dim      *ebiten.Image                  // 全螢幕暗化/底板共用(回合橫幅、單位面板)
-	figMeta map[int][][2]int                // FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(doc06;動畫走位全靠它)
-	font    *Font                   // 原版點陣中文字型(doc 08)
+	sprites  map[int][]*ebiten.Image
+	figani   map[int][]*ebiten.Image         // 攻擊全身動畫(FIGANI):fig → 幀序列
+	atk      *atkAnim                        // 進行中的攻擊演出
+	bg       *ebiten.Image                   // 戰鬥背景(BG.DAT,by 戰場;map0=BG_004 森林)
+	tai      *ebiten.Image                   // 我方腳下台座(TAI.DAT;0x29164 載 0x28c46,doc35 §3.3)
+	panel    *ebiten.Image                   // 狀態欄框素材(FDOTHER#5 LMI1 #22,149×42;含bevel+HP/MP標籤+槽,doc35 §4)
+	dlgBox   *ebiten.Image                   // 對話框框素材(FDOTHER#5 LMI1 #21,310×99;orig 下框(5,112)@320)
+	fontNm   *Font                           // 狀態欄名字(整數尺寸 face,scale1 銳利)
+	digits   [10]*ebiten.Image               // 狀態欄數字 0-9(LMI1 #31-40 原版 digit cell,白/藍影)
+	redSil   map[*ebiten.Image]*ebiten.Image // 命中閃紅的全紅剪影快取(orig=VGA 色盤閃紅)
+	redFlash *ebiten.Image                   // 命中全螢幕紅罩(orig=DAC 整組色盤設紅→整片泛紅)
+	dim      *ebiten.Image                   // 全螢幕暗化/底板共用(回合橫幅、單位面板)
+	figMeta  map[int][][2]int                // FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(doc06;動畫走位全靠它)
+	font     *Font                           // 原版點陣中文字型(doc 08)
 }
 
 // atkAnim 全螢幕戰鬥演出(對照原版 orig_05:守方左/攻方右土台/斬擊弧/血條/閃紅抽血)。
@@ -147,9 +150,8 @@ type atkAnim struct {
 	timer, total     int
 	fpt              int  // 播放速度(tick/幀;FD2_BATTLE_FPT 可調)
 	atkOwn           bool // 攻方是否我方(狀態欄按陣營:我方欄右上/敵方欄左下)
-	terrain          int // 攻擊格地形索引(戰鬥背景 = 戰場地形,跟 FDFIELD 戰場資料有關)
+	terrain          int  // 攻擊格地形索引(戰鬥背景 = 戰場地形,跟 FDFIELD 戰場資料有關)
 }
-
 
 // terrainAt 回傳某格的地形索引(戰鬥背景用;越界回 -1)。
 func (g *Game) terrainAt(x, y int) int {
@@ -216,7 +218,28 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 		if sc, err := battle.LoadScenario(assetPath(scnPath)); err == nil {
 			g.sc = sc
 			g.dialog = append(g.dialog, sc.Setup(g.st)...)
+			g.focusOnParty()
 		}
+	}
+}
+
+// focusOnParty 開局/戰鬥重開後把游標(=鏡頭中心)移到我方主角隊進場位置的重心。
+// 原鏡頭預設停在 (0,0),主角隊 spawn_march 行軍滑入時人在畫面外,玩家完全看不到
+// 「一行人走到定位」這段(playfix #3);鏡頭對準後行軍滑入才會落在可視範圍內。
+func (g *Game) focusOnParty() {
+	if g.st == nil {
+		return
+	}
+	n, sx, sy := 0, 0, 0
+	for _, u := range g.st.Units {
+		if u.Camp == battle.Own && u.OnField {
+			sx += u.X
+			sy += u.Y
+			n++
+		}
+	}
+	if n > 0 {
+		g.curX, g.curY = sx/n, sy/n
 	}
 }
 
@@ -343,10 +366,17 @@ func (g *Game) ringInput() bool {
 	if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
 		g.ringSel = 3
 	}
-	if esc { // ESC = 待機(結束該單位行動)
+	if esc { // ESC = 取消(doc13):退回移動前位置,回到「選此單位待移動」;原地開環(未移動)則直接取消選取
 		g.ring = false
-		g.sel.Acted = true
-		g.sel, g.reach, g.moved = nil, nil, false
+		if g.sel.X == g.selOrigX && g.sel.Y == g.selOrigY {
+			g.sel, g.reach, g.moved = nil, nil, false
+		} else {
+			g.sel.X, g.sel.Y = g.selOrigX, g.selOrigY
+			g.sel.OffX, g.sel.OffY = 0, 0
+			g.moved = false
+			g.reach = g.st.Reachable(g.sel)
+			g.curX, g.curY = g.sel.X, g.sel.Y
+		}
 		return true
 	}
 	if enter {
@@ -677,6 +707,7 @@ func (g *Game) confirm() {
 			g.sel = u
 			g.moved = false
 			g.reach = g.st.Reachable(u)
+			g.selOrigX, g.selOrigY = u.X, u.Y // 記移動前位置(ESC 取消退回,playfix #4)
 		}
 		return
 	}
@@ -878,6 +909,8 @@ func (g *Game) Update() error {
 			last := w.path[len(w.path)-1]
 			w.u.X, w.u.Y = last.X, last.Y
 			w.u.OffX, w.u.OffY = 0, 0
+			// Dir 不重設:保留最後一段的移動朝向(playfix #8 回報「走完又轉回正面朝玩家」是 bug,
+			// 原版待機朝向未 RE 出確切規則,查無反例前用「維持最後移動方向」為合理預設)
 			g.walk = nil
 			if w.then != nil { // AI:走完執行攻擊/收尾
 				w.then()
@@ -979,17 +1012,17 @@ func (g *Game) Update() error {
 			return nil
 		}
 	}
-	// 游標移動:方向鍵 / WASD / 觸控
-	if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) || inpututil.IsKeyJustPressed(ebiten.KeyA) {
+	// 游標移動:方向鍵 / WASD(按住持續移動,keyRepeat)/ 觸控
+	if keyRepeat(ebiten.KeyArrowLeft) || keyRepeat(ebiten.KeyA) {
 		g.curX--
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) || inpututil.IsKeyJustPressed(ebiten.KeyD) {
+	if keyRepeat(ebiten.KeyArrowRight) || keyRepeat(ebiten.KeyD) {
 		g.curX++
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) || inpututil.IsKeyJustPressed(ebiten.KeyW) {
+	if keyRepeat(ebiten.KeyArrowUp) || keyRepeat(ebiten.KeyW) {
 		g.curY--
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) || inpututil.IsKeyJustPressed(ebiten.KeyS) {
+	if keyRepeat(ebiten.KeyArrowDown) || keyRepeat(ebiten.KeyS) {
 		g.curY++
 	}
 	// 觸控:點哪格移到哪格
@@ -1016,7 +1049,11 @@ func (g *Game) Update() error {
 		g.confirm()
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-		g.sel, g.reach = nil, nil
+		if g.sel != nil && g.moved { // 已移動、正在選攻擊目標:退回指令環(取消一層,doc13;ring 的 ESC 才真正退回原位)
+			g.ring = true
+		} else {
+			g.sel, g.reach = nil, nil
+		}
 	}
 	// Tab:結束回合(觸發 on_turn_end 增援事件)。正式版改我方全動完自動結束。
 	if inpututil.IsKeyJustPressed(ebiten.KeyTab) {
@@ -1028,6 +1065,22 @@ func (g *Game) Update() error {
 	clamp(&g.camX, 0, float64(g.m.W*g.m.TileW-logicalW))
 	clamp(&g.camY, 0, float64(g.m.H*g.m.TileH-logicalH))
 	return nil
+}
+
+// keyRepeat 方向鍵按住持續觸發(playfix #1):首次按下立即動一格,按住 12 tick 後
+// 每 5 tick 再動一格(可玩性手感參數,原版掃描碼節奏未逐格量測,見 doc13 §游標)。
+func keyRepeat(k ebiten.Key) bool {
+	d := inpututil.KeyPressDuration(k)
+	if d == 0 {
+		return false
+	}
+	if d == 1 {
+		return true
+	}
+	if d < 12 {
+		return false
+	}
+	return (d-12)%5 == 0
 }
 
 func clamp(v *float64, lo, hi float64) {
@@ -1128,10 +1181,13 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			g.drawUnitSprite(screen, ux, uy, float64(tw), float64(th), u)
 		}
 	}
-	// 游標(白框)
+	// 游標(白框):指令環/法術選單開啟時不顯示(原版該狀態下選取指示只在環上的選中圖示,
+	// 常駐白框會疊在中央、與環的選中框混淆,見 playfix #5)
 	curPx := float64(g.curX*tw) - g.camX
 	curPy := float64(g.curY*th) - g.camY
-	drawCursor(screen, curPx, curPy, float64(tw), float64(th))
+	if !g.ring && !g.spellOpen {
+		drawCursor(screen, curPx, curPy, float64(tw), float64(th))
+	}
 	// HUD(對照原版 orig_04/08):游標單位資訊=左下面板(非常駐頂列);回合切換=中央大字橫幅。
 	if g.st != nil && g.font != nil {
 		if u := g.st.UnitAt(g.curX, g.curY); u != nil { // 左下單位面板(orig 樣式)
@@ -1260,8 +1316,17 @@ func (g *Game) drawRing(screen *ebiten.Image) {
 	tw, th := g.m.TileW, g.m.TileH
 	ux := float64(g.sel.X*tw) - g.camX
 	uy := float64(g.sel.Y*th) - g.camY
+	// 行動中單位標記 + 補畫其 sprite 在最上層:部署較密的隊形下,鄰格友軍的 sprite
+	// 可能探進環的中央空隙,讓人誤以為環中央是別的角色(playfix #5)。用橘色底標記
+	// 「這是誰在動」+ 把 g.sel 自己的 sprite 疊到最上層,消除歧義。
+	mark := ebiten.NewImage(tw, th)
+	mark.Fill(color.RGBA{0xff, 0xa8, 0x20, 0x50})
+	mop := &ebiten.DrawImageOptions{}
+	mop.GeoM.Translate(ux, uy)
+	screen.DrawImage(mark, mop)
+	g.drawUnitSprite(screen, ux, uy, float64(tw), float64(th), g.sel)
 	const iw, ih = 56.0, 52.0 // 28×26 ×2
-	pos := [4][2]float64{ // 0上 1左 2右 3下
+	pos := [4][2]float64{     // 0上 1左 2右 3下
 		{ux + float64(tw)/2 - iw/2, uy - ih - 6},
 		{ux - iw - 6, uy + float64(th)/2 - ih/2},
 		{ux + float64(tw) + 6, uy + float64(th)/2 - ih/2},
@@ -1736,6 +1801,7 @@ func loadGame() *Game {
 		if sc, err := battle.LoadScenario(assetPath("assets/scenarios/ch01.json")); err == nil {
 			g.sc = sc
 			g.dialog = append(g.dialog, sc.Setup(g.st)...)
+			g.focusOnParty()
 		} else if g.loadErr == "" {
 			g.loadErr = "scenario: " + err.Error()
 		}
@@ -1858,27 +1924,19 @@ func (g *Game) drawPhaseBanner(screen *ebiten.Image) {
 	g.font.Draw(screen, g.banner, (float64(logicalW)-w)/2, float64(logicalH)/2-24, 2.2, c)
 }
 
-// drawUnitHUD 左下單位資訊面板(對照原版 orig_04:小圖示+等級+HP+AP/DP)。
+// drawUnitHUD 左下單位資訊面板。改沿用 drawBattlePanel 同一份原版框素材(FDOTHER#5
+// LMI1 #22,doc35 §4)而非自訂半透明黑框,地圖上與全螢幕戰鬥的單位欄才是同一套視覺
+// (playfix #6:對照 orig_04/orig_07,原版狀態欄一律走這個框,remake 先前地圖版沒沿用)。
+// AP/DP/MV 素材未涵蓋(框只留 HP/MP 槽),另加一行文字補在框下方。
 func (g *Game) drawUnitHUD(screen *ebiten.Image, u *battle.Unit) {
 	nm := u.Name
 	if nm == "" {
 		nm = u.ClsName
 	}
-	// 半透明底板
-	if g.dim == nil {
-		g.dim = ebiten.NewImage(logicalW, logicalH)
-		g.dim.Fill(color.RGBA{0, 0, 0, 0xff})
-	}
-	bw, bh := 230.0, 78.0
-	bx, by := 6.0, float64(logicalH)-bh-6
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Scale(bw/float64(logicalW), bh/float64(logicalH))
-	op.GeoM.Translate(bx, by)
-	op.ColorScale.ScaleAlpha(0.62)
-	screen.DrawImage(g.dim, op)
-	g.font.Draw(screen, fmt.Sprintf("%s  Lv%d", nm, u.Lv), bx+10, by+8, 1.0, color.RGBA{0xff, 0xf0, 0xb4, 0xff})
-	g.font.Draw(screen, fmt.Sprintf("HP %d/%d", u.HP, u.MaxHP), bx+10, by+30, 0.9, color.RGBA{0xf0, 0xf4, 0xff, 0xff})
-	g.font.Draw(screen, fmt.Sprintf("AP %d  DP %d  MV %d", u.AP, u.DP, u.MV), bx+10, by+52, 0.9, color.RGBA{0xc8, 0xe0, 0xff, 0xff})
+	const bh = 84.0 // 149×42 原生 ×2
+	bx, by := 6.0, float64(logicalH)-bh-6-20
+	g.drawBattlePanel(screen, bx, by, nm, u.Lv, u.HP, u.MaxHP, u.MP)
+	g.font.Draw(screen, fmt.Sprintf("AP %d  DP %d  MV %d", u.AP, u.DP, u.MV), bx+8, by+bh+2, 0.9, color.RGBA{0xc8, 0xe0, 0xff, 0xff})
 }
 
 func (g *Game) endTurn() {
