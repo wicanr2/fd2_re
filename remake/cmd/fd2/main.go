@@ -223,9 +223,11 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 	}
 }
 
-// focusOnParty 開局/戰鬥重開後把游標(=鏡頭中心)移到我方主角隊進場位置的重心。
-// 原鏡頭預設停在 (0,0),主角隊 spawn_march 行軍滑入時人在畫面外,玩家完全看不到
-// 「一行人走到定位」這段(playfix #3);鏡頭對準後行軍滑入才會落在可視範圍內。
+// focusOnParty 開局/戰鬥重開後把游標(=鏡頭中心)移到我方主角隊部署格的重心。
+// 原鏡頭預設停在 (0,0),不對準的話玩家開局完全看不到主角隊(playfix #3)。
+// 主角隊為直接定位(doc 25 §7.5.1,無進場動畫,見 event.go spawn_party 註解),此函式純粹是
+// 「鏡頭對準部隊」的合理預設,不是重現原版鏡頭運鏡(原版 0x3231b 用 0x13185/0x32999 對特定群組做
+// 攝影機平移 reveal,是鏡頭動不是單位動,且未對主角隊做;dosbox 複驗全序章無任何單位行走動畫)。
 func (g *Game) focusOnParty() {
 	if g.st == nil {
 		return
@@ -1194,8 +1196,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			g.drawUnitHUD(screen, u)
 		}
 		if g.debug { // F3:詳細除錯(回合/戰況/座標)
-			ebitenutil.DebugPrintAt(screen, fmt.Sprintf("T%d own%d ally%d enemy%d",
-				g.st.Turn, g.st.AliveCount(battle.Own), g.st.AliveCount(battle.Ally), g.st.AliveCount(battle.Enemy)), 6, 4)
+			ebitenutil.DebugPrintAt(screen, fmt.Sprintf("T%d own%d ally%d enemy%d cur(%d,%d)",
+				g.st.Turn, g.st.AliveCount(battle.Own), g.st.AliveCount(battle.Ally), g.st.AliveCount(battle.Enemy), g.curX, g.curY), 6, 4)
 		}
 	}
 	g.drawPhaseBanner(screen) // 回合橫幅(PLAYER/ENEMY PHASE,transient)
