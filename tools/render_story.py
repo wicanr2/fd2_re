@@ -52,6 +52,11 @@ def lay_out(strings):
             if c >= 0xFF00:        # 對話控制碼 → 換行
                 if line:
                     rows.append(line); line = []
+                # -17..-20(0xFFEC-0xFFEF)後接一個 operand word=說話者 id/idx。
+                # 原版渲染器 0x15F84 把它當二進位參數消耗、從不畫出(見 doc40)。
+                # 早期漏跳→id 洩漏成字模,被誤認成「說話者字母代號」,務必跳過。
+                if 0xFFEC <= c <= 0xFFEF and i + 1 < n:
+                    i += 1
             else:
                 line.append(c)
                 if len(line) >= COLS:
