@@ -14,9 +14,9 @@ import (
 type Camp int
 
 const (
-	Own Camp = iota // 我方(玩家)
-	Ally            // 友軍 NPC
-	Enemy           // 敵方
+	Own   Camp = iota // 我方(玩家)
+	Ally              // 友軍 NPC
+	Enemy             // 敵方
 )
 
 func (c Camp) String() string {
@@ -32,20 +32,23 @@ func (c Camp) String() string {
 
 // Unit 戰場單位。數值來自 EXE 表(doc 03);狀態旗標對映原版 byte[+5](doc 27)。
 type Unit struct {
-	Camp     Camp
-	Name     string // 角色名(characters.json;敵方多為職業名)
-	ClsName  string // 職業名(中文,M2 TTF 才顯示)
-	Lv       int
+	Camp      Camp
+	Name      string // 角色名(characters.json;敵方多為職業名)
+	ClsName   string // 職業名(中文,M2 TTF 才顯示)
+	Lv        int
 	HP, MaxHP int
-	MP       int
-	AP, DP   int
+	MP        int
+	AP, DP    int
+	HIT, EV   int // 命中/閃避基礎值(doc02 §2;doc03:EXE 內為「衍生值」非表格原始欄位,
+	// 敵/友單位 10B 表無此欄,export_units.py 暫用固定近似值,見該檔頭註解)
+	CritPct  int // 暴擊率(doc03 職業暴擊率表 0x5219B,resist_crit.json,依 class 已驗證吻合 doc02 §7.2)
 	MV       int // 移動力
 	Portrait int
-	Fig      int  // 地圖 sprite 組(= 角色 id,恆等,doc 31)
+	Fig      int // 地圖 sprite 組(= 角色 id,恆等,doc 31)
 	X, Y     int
-	Acted    bool // 本回合已行動(原版 byte[+5] bit7)
-	Group    int  // 出場波次(原版 FDFIELD b21;事件按 group 放出,doc 25/29)
-	OnField  bool // 是否已登場(事件進場機制:false=待命,尚未出現在戰場,doc 25)
+	Acted    bool    // 本回合已行動(原版 byte[+5] bit7)
+	Group    int     // 出場波次(原版 FDFIELD b21;事件按 group 放出,doc 25/29)
+	OnField  bool    // 是否已登場(事件進場機制:false=待命,尚未出現在戰場,doc 25)
 	Spells   []int   // 已習得法術 id(spell.json;原版 M1-M5 bitfield 展開)
 	Dir      int     // 朝向:0下 1左 2上 3右(原版 Z2,FDICON 方向幀)
 	OffX     float64 // 行軍/移動的像素位移(顯示用;0=正在格上)
@@ -71,10 +74,14 @@ type Unit struct {
 // Alive 對映原版 byte[+5] bit0(HP>0,doc 27)。
 func (u *Unit) Alive() bool { return u.HP > 0 }
 
-// EffectiveAP/EffectiveDP 套用魔刃術/魔鎧術暫時加成後的攻防值。
-// 註:combat.go 的 Attack 目前仍直接用 AP/DP(未接線,由後續整合工作處理)。
+// EffectiveAP/EffectiveDP 套用魔刃術/魔鎧術暫時加成後的攻防值。地形% 修正另外在
+// combat.go AttackWithRNG 套用(取決於單位當下座標,不是固定加成,不適合放在這裡)。
 func (u *Unit) EffectiveAP() int { return u.AP + u.AP*u.BuffAPPct/100 }
 func (u *Unit) EffectiveDP() int { return u.DP + u.DP*u.BuffDPPct/100 }
+
+// EffectiveHIT/EffectiveEV 套用風行術(HIT+15,EV+15)暫時加成後的命中/閃避值(doc02 §6.4)。
+func (u *Unit) EffectiveHIT() int { return u.HIT + u.BuffHit }
+func (u *Unit) EffectiveEV() int  { return u.EV + u.BuffEV }
 
 // TickStatus 回合結束時呼叫一次:遞減暫時狀態剩餘回合、套用毒擊持續傷害、到期清除。
 // (doc02 §6.4:毒擊每回合 -10% HP;各項加成/異常 2–4 回合到期消失。)
@@ -180,6 +187,9 @@ type unitsFile struct {
 		Spells   []int  `json:"spells"`
 		AP       int    `json:"ap"`
 		DP       int    `json:"dp"`
+		HIT      int    `json:"hit"`
+		EV       int    `json:"ev"`
+		Crit     int    `json:"crit"`
 		MV       int    `json:"mv"`
 		Portrait int    `json:"portrait"`
 		Fig      int    `json:"fig"`
@@ -216,6 +226,7 @@ func Load(path string) (*State, error) {
 		nu := &Unit{
 			Camp: camp, Name: u.Name, ClsName: u.ClsName, Lv: u.Lv,
 			HP: u.HP, MaxHP: u.HP, MP: u.MP, AP: u.AP, DP: u.DP, MV: u.MV,
+			HIT: u.HIT, EV: u.EV, CritPct: u.Crit,
 			Portrait: u.Portrait, Fig: u.Fig, X: u.X, Y: u.Y, Spells: u.Spells,
 			Group: u.Group, OnField: true, // 預設登場;Scenario 會把待命 group 設 false
 		}

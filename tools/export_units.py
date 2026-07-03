@@ -9,10 +9,22 @@
 輸出 <out>/map<N>_units.json:
   { "map","w","h",
     "own_deploy":[{x,y}...],                       # 己方可部署格(肖像==0)
-    "units":[ {camp,cls,cls_name,lv,hp,mp,ap,dp,mv,portrait,x,y} ... ] }
+    "units":[ {camp,cls,cls_name,lv,hp,mp,ap,dp,hit,ev,crit,mv,portrait,x,y} ... ] }
 
 數值:以 (race,cls) 查 EXE base;查不到則用 race 任一 cls 近似,再不到給保底值。
 重製 Unit 用此 json;原版資產(著作權)只在本機,不入庫。
+
+hit/ev/crit(worklist 第 8 輪 gap-audit doc42 第 1 項補欄,doc02 §4.1 物理攻擊公式需要):
+  - crit:職業暴擊率,查 docs/data/exe_tables/resist_crit.json(EXE 0x5219B 反組譯,已與
+    doc02 §7.2 人物成長表交叉驗證吻合,如劍士5%/騎士3%/法師3%),查不到(單位表 cls 超出
+    26 種玩家職業,如怪物專屬職業)一律 0(保守預設,非文件明確值)。
+  - hit/ev:doc03 明確記載這是「衍生值(由上面計算,直接改無效)」——由 DX + 已裝備武器/
+    護甲的 HIT/EV(item.json)在遊戲執行時合成,**不是**「敵/友單位 10B」表的原始欄位
+    (該表只有 RA/CL/HP/MP/AP/DP/DX/MV/EX,無 HIT/EV 欄)。remake 尚無裝備系統(doc42 gap
+    #12),也沒有敵方武器指定資料可用,故此處用固定近似值(DEFAULT_HIT/DEFAULT_EV,取
+    item.json 早期武器/護甲數值的中位數區間),而非反組譯或計算所得——doc42 稱「只是
+    匯出腳本未取用」不完全準確,實際是來源表本身缺這兩欄,待裝備系統/HIT-EV 合成公式
+    RE 出來後再取代此近似值。
 
 用法:
   python3 export_units.py <extracted/raw> <map_index> <out_dir>
@@ -22,6 +34,19 @@ sys.path.insert(0, os.path.dirname(__file__))
 import parse_field
 
 EXE_UNIT = os.path.join(os.path.dirname(__file__), "..", "docs", "data", "exe_tables", "unit.json")
+EXE_RESIST_CRIT = os.path.join(os.path.dirname(__file__), "..", "docs", "data", "exe_tables", "resist_crit.json")
+
+# HIT/EV 固定近似值(見檔頭註解:來源表本身無此欄,待裝備系統/合成公式 RE 出來後取代)。
+# 落點取 item.json 早期刀劍/防具 HIT(90~100 區間)、EV(5~10 區間)的中位數。
+DEFAULT_HIT = 90
+DEFAULT_EV = 5
+
+
+def crit_by_cls(resist_crit, cls):
+    for e in resist_crit:
+        if e.get("cls") == cls:
+            return e.get("crit_pct", 0)
+    return 0  # 查不到(如怪物專屬職業,超出 26 種玩家職業表)保守回 0
 
 # 地圖 sprite 組 = portrait(DATO 角色 id),已反組譯確認(doc 31):
 #   繪製碼 0x12831 組=unit[+2](角色 id);0x1291e ×12;0x12926 方向×3 →
@@ -46,6 +71,7 @@ def main(argv):
     os.makedirs(out, exist_ok=True)
     info = parse_field.parse_map(raw, m)
     exe = json.load(open(EXE_UNIT, encoding="utf-8"))
+    resist_crit = json.load(open(EXE_RESIST_CRIT, encoding="utf-8"))
 
     # positions[i] 對應 roster[i](index 對齊;肖像 0=己方部署堆疊,額外的 0 格=可部署格)
     positions = info.get("positions", [])           # [X,Y,肖像]
@@ -58,6 +84,7 @@ def main(argv):
             "camp": u["camp"], "cls": u["cls"], "cls_name": bs.get("cls_name", ""),
             "lv": u["lv"], "portrait": u["portrait"], "group": u.get("group", 0),
             "hp": bs["hp"], "mp": bs["mp"], "ap": bs["ap"], "dp": bs["dp"], "mv": bs["mv"],
+            "hit": DEFAULT_HIT, "ev": DEFAULT_EV, "crit": crit_by_cls(resist_crit, u["cls"]),
             "fig": u["portrait"],  # 反組譯確認:sprite 組 = portrait(角色 id 恆等)
         }
         if i < len(positions):                       # 固定出場座標(我方會被引擎改放部署格)

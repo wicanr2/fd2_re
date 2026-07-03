@@ -1,15 +1,63 @@
 // combat.go — 戰鬥結算 + 敵方 AI + 勝負(M1)。
 //
-// 傷害公式對映青衫/反組譯(doc 02/11/27):dmg = AP' − DP'(地形% 之後接);
-// AI 評分式(doc 11 0x15140):選能對最有價值目標造成最大傷害的落點,dmg≤2 略過。
+// 傷害公式對映青衫/反組譯(doc 02 §4.1、doc 11、doc 27 checklist):
+//
+//	命中率 = (攻方HIT − 守方EV)%
+//	暴擊時 DP = 守方DP/2(取整)
+//	AP = AP×(1+攻方地形AP%)、DP = DP×(1+守方地形DP%)(取整,terrain.go)
+//	最大傷害 = AP − DP;實際傷害 = 最大傷害×0.9 ～ 最大傷害-1(亂數,magic.go randomizeAmount)
+//
+// AI 評分式(doc 11 0x15140):選能對最有價值目標造成最大傷害的落點,dmg≤2 略過,
+// 現含地形% 修正(doc42 gap-audit 第 5 項)。
 // 演出動畫(FIGANI/移動)後補;此處先把邏輯層做對,讓第一關可玩。
 package battle
 
-// Attack 近戰結算:dmg = max(1, AP-DP)。扣血、標記已行動。回傳傷害。
-// 註:青衫「dmg≤2」是 AI「不值得打」門檻(doc11),非玩家不能打;玩家攻擊至少造成 1。
+import "math/rand"
+
+// AttackResult 一次近戰攻擊的完整結算結果(doc02 §4.1)。
+type AttackResult struct {
+	Amount int // 實際傷害;Miss 時為 0
+	Missed bool
+	Crit   bool
+}
+
+// Attack 舊版相容介面(main.go 目前呼叫此簽名):結算一次近戰攻擊,回傳實際傷害
+// (Miss 時回 0)。內部呼叫 AttackWithRNG,用 magic.go 共用的 engineRand。
+// 測試/需要確定性結果一律走 AttackWithRNG 並自行注入 *rand.Rand(同 magic.go Cast/CastArea 慣例)。
 func (s *State) Attack(a, d *Unit) int {
-	// AP/DP 含輔助法術 Buff(魔刃/魔鎧,doc02 §6.4)
-	dmg := a.EffectiveAP() - d.EffectiveDP()
+	return s.AttackWithRNG(a, d, engineRand).Amount
+}
+
+// AttackWithRNG 近戰攻擊完整結算(doc02 §4.1、doc27 checklist、doc11 地形修正)。
+// 命中率、暴擊、地形% 修正、傷害隨機化皆對照青衫攻略 notes.md 逐條實作,詳見檔頭註解與
+// terrain.go/model.go EffectiveHIT/EffectiveEV。恆標記已行動,不論命中與否
+// (原版「攻擊」是一個已耗用的行動,miss 不退還行動權)。
+func (s *State) AttackWithRNG(a, d *Unit, rng *rand.Rand) AttackResult {
+	a.Acted = true
+
+	// 命中率 = (攻方HIT − 守方EV)%;含風行術 HIT/EV 加成(EffectiveHIT/EffectiveEV)。
+	hitPct := a.EffectiveHIT() - d.EffectiveEV()
+	if !rollsHitPct(hitPct, rng) {
+		return AttackResult{Missed: true}
+	}
+
+	crit := a.CritPct > 0 && rng.Intn(100) < a.CritPct
+
+	// AP/DP 含輔助法術 Buff(魔刃/魔鎧,doc02 §6.4);暴擊先讓 DP 減半,再套地形% —
+	// notes.md 公式順序:「暴擊時 DP=守方DP/2」在「DP=DP×(1+地形%)」之前。
+	ap := a.EffectiveAP()
+	dp := d.EffectiveDP()
+	if crit {
+		dp /= 2
+	}
+	atkAPPct, _ := s.TerrainAPDPPct(a.X, a.Y)
+	_, defDPPct := s.TerrainAPDPPct(d.X, d.Y)
+	ap = ap * (100 + atkAPPct) / 100
+	dp = dp * (100 + defDPPct) / 100
+
+	max := ap - dp
+	dmg := randomizeAmount(max, rng)
+	// 青衫「dmg≤2」是 AI「不值得打」門檻(doc11),非玩家攻擊下限;玩家命中至少造成 1。
 	if dmg < 1 {
 		dmg = 1
 	}
@@ -17,8 +65,21 @@ func (s *State) Attack(a, d *Unit) int {
 	if d.HP < 0 {
 		d.HP = 0
 	}
-	a.Acted = true
-	return dmg
+	return AttackResult{Amount: dmg, Crit: crit}
+}
+
+// rollsHitPct 物理攻擊命中率擲骰(doc02 §4.1「命中率=(攻方HIT-守方EV)%」)。
+// 與 magic.go rollsHit 語意不同:那裡的 hit<=0 是資料矛盾下的「必中」特例(法術表 dump
+// 值本身有衝突,見該檔案檔頭說明);這裡 pct<=0 是公式算出來的合法結果(HIT 追不上 EV),
+// 依公式原意視為必定 miss,不套用那條特例。
+func rollsHitPct(pct int, rng *rand.Rand) bool {
+	if pct <= 0 {
+		return false
+	}
+	if pct >= 100 {
+		return true
+	}
+	return rng.Intn(100) < pct
 }
 
 // hostile 判斷 a 是否視 b 為攻擊對象(同一套 AI,依陣營;doc11)。
@@ -42,6 +103,22 @@ func abs(v int) int {
 
 func manhattan(ax, ay, bx, by int) int { return abs(ax-bx) + abs(ay-by) }
 
+// estDamage AI 評分用的預估傷害(doc11 0x15140 反組譯公式):
+//
+//	myAP'  = myAP  × 地形AP%[u當下座標] / 100
+//	tarDP' = tarDP × 地形DP%[t當下座標] / 100
+//	估計傷害 = myAP' − tarDP'
+//
+// 只是選目標用的估值,不擲骰(不含命中率/暴擊/傷害隨機化——那些留給 AttackWithRNG 實際結算,
+// doc42 gap-audit 第 5 項只要求 AI 評分補上地形%,未要求 AI 決策也模擬命中/暴擊機率)。
+func (s *State) estDamage(u, t *Unit) int {
+	apPct, _ := s.TerrainAPDPPct(u.X, u.Y)
+	_, dpPct := s.TerrainAPDPPct(t.X, t.Y)
+	ap := u.AP * (100 + apPct) / 100
+	dp := t.DP * (100 + dpPct) / 100
+	return ap - dp
+}
+
 // aiActUnit 一個 AI 單位的行動:挑最佳目標,移到相鄰可達格,能打就打(doc11 評分式簡化版)。
 func (s *State) aiActUnit(u *Unit) {
 	// 1. 找最佳目標:可造成最大傷害者(dmg×擊殺加成);dmg≤2 視為不值得(但仍可能當移動目標)
@@ -51,7 +128,7 @@ func (s *State) aiActUnit(u *Unit) {
 		if !t.OnField || !t.Alive() || !hostile(u, t) {
 			continue
 		}
-		dmg := u.AP - t.DP
+		dmg := s.estDamage(u, t)
 		score := dmg
 		if dmg >= t.HP { // 可擊殺 → 最高優先(doc11 prio 0x12)
 			score = dmg*2 + 1000
@@ -144,7 +221,7 @@ func (s *State) NextAIPlan() *AIPlan {
 			if !t.OnField || !t.Alive() || !hostile(u, t) {
 				continue
 			}
-			dmg := u.AP - t.DP
+			dmg := s.estDamage(u, t)
 			score := dmg
 			if dmg >= t.HP {
 				score = dmg*2 + 1000
