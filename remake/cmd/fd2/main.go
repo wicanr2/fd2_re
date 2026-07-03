@@ -127,6 +127,7 @@ type Game struct {
 	fontNm  *Font                   // 狀態欄名字(整數尺寸 face,scale1 銳利)
 	digits  [10]*ebiten.Image       // 狀態欄數字 0-9(LMI1 #31-40 原版 digit cell,白/藍影)
 	redSil  map[*ebiten.Image]*ebiten.Image // 命中閃紅的全紅剪影快取(orig=VGA 色盤閃紅)
+	redFlash *ebiten.Image                  // 命中全螢幕紅罩(orig=DAC 整組色盤設紅→整片泛紅)
 	figMeta map[int][][2]int                // FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(doc06;動畫走位全靠它)
 	font    *Font                   // 原版點陣中文字型(doc 08)
 }
@@ -1494,6 +1495,9 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 	// 位置=各幀內嵌 (dx,dy)(f11 劈擊伸左、f12-14 突刺,走位在資料裡,不需 lunge 計算)
 	if len(atkFrames) > 0 {
 		img := atkFrames[atkFi]
+		if prog >= impactS && prog < impactE && (prog/2)%2 == 0 {
+			img = g.redSilhouette(img) // 命中閃紅:攻方也閃(orig_05_03 攻方紅剪影)
+		}
 		dx, dy := 141.0, 3.0
 		if m := g.figMeta[a.atkFig]; atkFi < len(m) {
 			dx, dy = float64(m[atkFi][0]), float64(m[atkFi][1])
@@ -1502,6 +1506,16 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		op.GeoM.Scale(sc, sc)
 		op.GeoM.Translate(dx*sc, dy*sc)
 		screen.DrawImage(img, op)
+	}
+	// (4) 命中全螢幕紅閃:orig VGA DAC 整組色盤設紅→整片泛紅(非只 sprite);快速閃
+	if prog >= impactS && prog < impactE && (prog/2)%2 == 0 {
+		if g.redFlash == nil {
+			g.redFlash = ebiten.NewImage(logicalW, logicalH)
+			g.redFlash.Fill(color.RGBA{0xff, 0x28, 0x28, 0xff})
+		}
+		op := &ebiten.DrawImageOptions{}
+		op.ColorScale.ScaleAlpha(0.3) // 半透明紅罩(整片泛紅、不全遮)
+		screen.DrawImage(g.redFlash, op)
 	}
 	if g.shotSeries != "" { // 逐幀截圖(GIF/分鏡素材)
 		saveShot(screen, fmt.Sprintf("%s/frame_%02d.png", g.shotSeries, prog))
