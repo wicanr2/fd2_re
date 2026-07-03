@@ -81,6 +81,7 @@ type Game struct {
 	spells    []battle.Spell
 	bgm       *audio.Player // BGM(doc12 play_bgm 語意:同曲不重播)
 	bgmCur    string
+	bgmSource string // 音源設定 "fm"/"mt32"(settings.go;F2 切換)
 	sfx                map[int][]byte // SFX PCM(doc36 FDOTHER#31 14樣本)
 	sfxSwing           []byte         // 戰鬥揮擊/命中共用音(doc36 戰鬥池 #48-64 sub0,七池相同)
 	prevCurX, prevCurY int            // 游標移動音偵測
@@ -802,6 +803,9 @@ func (g *Game) tileAt(idx int) *ebiten.Image {
 
 func (g *Game) Update() error {
 	g.frame++
+	if inpututil.IsKeyJustPressed(ebiten.KeyF2) { // 全域:切換音源(MT-32 / Sound Blaster)
+		g.cycleBGMSource()
+	}
 	if g.titlePhase != "" {
 		if g.titleUpdate() {
 			if g.shotPath != "" && g.frame > g.shotFrame { // 截圖模式在 title 也要能退出
@@ -1655,6 +1659,10 @@ func (g *Game) Layout(outsideW, outsideH int) (int, int) {
 
 func loadGame() *Game {
 	g := &Game{shotFrame: 20}
+	g.bgmSource = loadSettings().BGMSource // 音源設定(預設 fm=Sound Blaster)
+	if v := os.Getenv("FD2_BGM_SOURCE"); v != "" && bgmSourceName[v] != "" {
+		g.bgmSource = v // 覆寫(截圖/測試用)
+	}
 	g.shotPath = os.Getenv("FD2_SHOT")
 	g.shotSeries = os.Getenv("FD2_SHOT_SERIES")
 	if v := os.Getenv("FD2_SHOT_FRAME"); v != "" {

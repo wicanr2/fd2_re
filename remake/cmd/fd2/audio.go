@@ -15,13 +15,25 @@ import (
 
 var audioCtx *audio.Context
 
+// musicPath 依音源設定回傳曲檔路徑:assets/music_<source>/,缺檔則 fallback 到 assets/music/
+// (單資料夾佈局的舊行為/玩家只備一套時)。
+func musicPath(source, track string) string {
+	if source != "" {
+		p := "assets/music_" + source + "/" + track + ".ogg"
+		if _, err := os.Stat(p); err == nil {
+			return p
+		}
+	}
+	return "assets/music/" + track + ".ogg"
+}
+
 // playBGM 播指定曲(如 "FDMUS_008");同曲不重播;檔案缺失/解碼失敗靜默略過。
 // FD2_MUTE=1 或截圖模式(headless 無音訊裝置)不播。
 func (g *Game) playBGM(track string) {
 	if track == "" || track == g.bgmCur || os.Getenv("FD2_MUTE") != "" || g.shotPath != "" {
 		return
 	}
-	raw, err := os.ReadFile("assets/music/" + track + ".ogg")
+	raw, err := os.ReadFile(musicPath(g.bgmSource, track))
 	if err != nil {
 		return
 	}
