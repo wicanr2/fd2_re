@@ -238,6 +238,79 @@ logo 落地那一瞬的短促起手曲,隨後畫面接續(角色/城堡等更多
 標 [推],留給下一輪如需要「戰前準備畫面 BGM」時複核(方法:找 `0x1a4fc` 函式的 caller,
 釘死是哪個具體選單畫面)。
 
+## MT-32 真 ROM 合成校音(第15輪)
+
+> 任務:用使用者提供的**真 Roland MT-32 v1.07 ROM**(`/home/anr2/cht/mt32/`,本機,不外流)重錄全 15 首
+> BGM,排查「氣勢偏弱」的主觀回報是否為技術缺陷(reverb 沒開?增益太低?)。
+
+### 結論:不是 reverb 沒開,是 3 首曲跨曲峰值沒對齊
+
+**① Reverb 排查——已排除**:`munt-smf2wav` 沒有「關閉 reverb」的旗標,預設輸出就是「乾聲+濕聲」
+混音(對應 MT-32 開機預設 Reverb=ON、Room、Time/Level 中值)。用 `-w 4 -w 5` 把純 reverb-wet
+stream 單獨 dump 出來實測(FDMUS_018):非靜音,RMS≈1510(16-bit 全幅 32767 的 4.6%),
+證實**混音裡確實有殘響尾音**,不是漏開。原始 XMI 轉出的 MIDI 也完全沒有 CC91(reverb send)
+或 sysex 覆寫——代表遊戲原始資料就是「吃 MT-32 開機預設殘響」,munt 預設行為正確還原此意圖。
+
+**② 增益排查——找到真根因**:用 `ffmpeg -af volumedetect` 逐曲量測舊版(`extracted/music_ogg/`)
+15 首峰值(max_volume)與均量(mean_volume):
+
+| 曲目 | 舊版 mean/max(dB) | 備註 |
+|---|---|---|
+| FDMUS_011 | -15.3 / **-2.9** | 明顯離頂,浪費近 3dB |
+| FDMUS_013 | -20.4 / **-3.5** | 離頂最多,聽感最弱 |
+| FDMUS_014 | -18.3 / **-2.1** | 離頂 |
+| 其餘 12 首 | 各異 / **0.0(頂滿)** | 本來就已用滿峰值,音量差是曲子本身編制疏密不同(非 bug) |
+
+**FDMUS_011/013/014 這 3 首從沒把 munt 渲染出的動態空間用滿**——這才是「聽起來氣勢弱」的實際
+可測差異,其餘 12 首峰值早已頂到 0dBFS,音量落差是**音樂編制本身**(疏密/聲部數)造成,
+不是管線缺陷,不該用動態壓縮硬拉平(會失真、不還原)。
+
+### 修法:線性峰值正規化(non-destructive,不用 loudnorm 動態壓縮)
+
+`tools/export_music_ogg.sh` 新增:量測每曲 munt 原始 WAV 的 `max_volume`,計算單一線性增益值
+補到目標峰值(預設 **-1.0dBFS**,非 0dBFS——libvorbis 有損編碼會有 inter-sample true-peak
+overshoot,量測 v2 成品發現同一目標峰值編碼後實際落在 -1.3~0.0dBFS 之間飄動,故用 -1dBFS
+留安全餘裕、避免解碼後削頂失真)。**只做等比例增益,不動態壓縮**——已頂滿的曲子相對安靜,
+離頂的曲子按原比例補滿,曲子內部的強弱對比完全保留。
+
+修法效果(舊 mean → v2 mean):FDMUS_011 -15.3→-13.4dB(+1.9)、FDMUS_013 -20.4→-17.9dB(+2.5)、
+FDMUS_014 -18.3→-17.0dB(+1.3);其餘 12 首因目標峰值從 0→-1dBFS,mean 普遍降約 1dB(安全餘裕的
+代價,聽感差異可忽略,換來不削頂)。
+
+> ⚠ 踩過的坑:第一版腳本用 `grep -oE '\-?[0-9.]+' | head -1` 從 ffmpeg log 行抓 `max_volume`,
+> 但該行開頭有 `[Parsed_volumedetect_0 @ 0x5f073f...]` hex 位址,`head -1` 誤抓位址裡的數字
+> 當成峰值,算出離譜增益(部分曲不升反降)。改用 `sed -E 's/.*max_volume:[[:space:]]*(-?[0-9.]+) dB.*/\1/'`
+> 錨定欄位名稱後才修正。
+
+### v1.07 vs CM-32L 對照(FDMUS_018 標題曲,同一 MIDI、同峰值正規化目標)
+
+| ROM | mean(dB) | RMS(dB) | Crest factor | 高頻(>4kHz)mean(dB) |
+|---|---|---|---|---|
+| MT-32 v1.07 | -10.4 | -10.36 | 3.70 | -34.5 |
+| CM-32L v1.02 | -9.9 | -9.94 | 3.43 | -34.5 |
+
+CM-32L 版整體 RMS 高約 0.4dB、crest factor 較低(3.43 對 3.70,代表能量分布更連續、較不「一波一波」)——
+量測上支撐「CM-32L 音色較飽滿」的印象,但**高頻能量完全相同**(不是更明亮/更亮眼,是更「厚」)。
+差異幅度不大(<0.5dB RMS 級),CM-32L 是加分但非戲劇性改變;根因是 CM-32L 出廠音色表比 MT-32
+更豐富,同一 program-change 號碼在兩顆 ROM 對應到不同(通常更飽滿)的出廠音色。
+
+### ROM 正名(munt 要求固定檔名)
+
+munt 用 `-m <目錄>` 掃描目錄內容,靠檔名比對版本(非用戶自訂路徑),故渲染前需在暫存目錄放
+`MT32_CONTROL.ROM`+`MT32_PCM.ROM`(或 `CM32L_CONTROL.ROM`+`CM32L_PCM.ROM`)正名複本/symlink,
+指向 `/home/anr2/cht/mt32/` 內實際版本檔(如 `MT32_CONTROL.1987-10-07.v1.07.ROM`)。
+
+### 全量產指令
+
+```bash
+# MT-32(15 首,峰值正規化至 -1.0dBFS,預設)
+./tools/export_music_ogg.sh extracted/raw/FDMUS <ROM正名目錄> extracted/music_ogg_v2 4 -1.0 mt32
+# CM-32L 對照(machine-id 換 cm32l,ROM 目錄換 CM32L_CONTROL.ROM+CM32L_PCM.ROM)
+./tools/export_music_ogg.sh extracted/raw/FDMUS <CM32L正名目錄> extracted/music_ogg_v2_cm32l 4 -1.0 cm32l
+```
+
+輸出:`extracted/music_ogg_v2/`(本機,15 首 mt32 + `FDMUS_018_cm32l.ogg` 對照樣本;皆不入庫)。
+
 ## 音效(SFX)
 
 戰鬥打擊 / 施法 / 選單操作音用數位取樣,走 `.DIG` 管線:
