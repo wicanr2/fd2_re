@@ -136,6 +136,8 @@ codec 與破解歷程見 [`06-animation-format.md`](docs/knowledge-base/06-anima
 - **戰棋核心**:flood-fill 移動 + **地形移動成本**(反組譯 FDSHAP 地形表)、攻擊結算(青衫公式)、
   評分式敵方 AI、**魔法系統**(AoE / buff / 毒麻封咒)、勝負判定。
 - **玩法系統**:radial 指令環、商店(含祕密商店)、存讀檔(F5/F9)、BGM + 音效(反組譯自 FDOTHER)。
+- **音源可切換**(F2):**Roland MT-32**(真 ROM 經 munt 渲染)⇄ **Sound Blaster / AdLib FM**
+  (遊戲自帶 `SAMPLE.AD` 音色庫經 OPL 渲染)——還原原版 `SETSOUND` 選音效卡的體驗,見下節。
 
 可行性 [`20`](docs/knowledge-base/20-first-principles-feasibility.md)、架構 [`21`](docs/knowledge-base/21-go-ebiten-remake-plan.md)。(WASM 也可編譯。)
 
@@ -158,6 +160,21 @@ codec 與破解歷程見 [`06-animation-format.md`](docs/knowledge-base/06-anima
 (9 個資源)逐位元組驗證無誤,已**移植成純 Go VM**([`internal/afm`](remake/internal/afm/))在
 remake 執行期直接解玩家自備的 `ANI.DAT`——引擎本身不夾帶任何版權畫格。完整格式與位址見
 [`39` AFM 動畫 VM](docs/knowledge-base/39-ani-afm-format.md)。
+
+### 🎵 音樂:兩種音源、每首都溯源到呼叫點
+
+原版音樂是 Miles AIL 的 XMIDI 序列,靠音效卡即時合成——**同一首曲子在不同音效卡上是不同聲音**。
+本專案把「哪個場景播哪首曲」與「怎麼合成」兩件事都反組譯還原:
+
+- **曲號溯源**:`play_bgm`(`0x25977`)全 32 處呼叫逐一反組譯,把「場景 → 曲號」釘死到呼叫點,
+  不靠聽曲風猜:**標題曲**=track 18(boot 鏈唯一呼叫)、**戰鬥曲**=每章查表(`0x51e63`,主戰曲
+  穿插特定章)、**城鎮/商店**=track 10。過程推翻了兩個憑印象的舊推定(見 [`12`](docs/knowledge-base/12-music-playback-and-scene.md))。
+- **兩種音源、可即時切換(F2)**:
+  - **Roland MT-32** —— XMI → MIDI → [munt](https://github.com/munt/munt)(真 Roland ROM 逐週期模擬)。音色圓潤、偏管弦。
+  - **Sound Blaster / AdLib(FM)** —— 用遊戲**自帶的** `SAMPLE.AD` FM 音色庫:自寫
+    [`gtl2wopl.py`](tools/gtl2wopl.py) 把 Miles AIL 音色庫轉成 WOPL,經 libADLMIDI(Nuked OPL3)渲染。
+    這是原版**出廠預設**音效卡、多數玩家記憶中的聲音——量測上頻譜重心是 MT-32 版的 2.6 倍,更亮更有衝擊感。
+- 兩套皆**玩家自備原版檔案在本機渲染**(ROM / 音色庫都不隨倉庫散布),引擎只提供管線與切換。
 
 ### ✨ 重製的核心增值:可擴展事件系統(不只是複刻)
 
