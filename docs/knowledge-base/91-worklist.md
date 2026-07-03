@@ -370,6 +370,21 @@
 - [ ] ch21/22 \$reg_or_mem 增援 eax 來源 RE(6 筆)
 - [ ] 待展開(位址已釘):0x3453E 額外檢查、tag==0x27 sentinel、[0x53BF7] 表用途
 
+## ⚠ 誠實揭露:全 33 章劇情文本「轉錄完成但從未接進遊戲」(2026-07-03 使用者質疑後查證)
+
+**症狀**:remake 每章開場只顯示 2 句佔位(「第N章:.../目標:...」),1452 句真對白全沒播。
+**查證**:campaign_full.json 的 **83 個 story 節點,`script` 欄全部是空的**(0/83 接真對白檔),
+而 `assets/story/ch01~33.json` 的 33 章 1452 句轉錄**全都在、全躺著沒用**。
+**根因**:各自完成、接線沒人做——
+- 「全 33 章文本完成」(story 流水線 6 批)✓ 真的轉錄好了
+- 「全 30 章可玩 / campaign 183 節點」(gen_campaign)✓ 節點生成了
+- **但 gen_campaign 生成 story 節點時從沒接 `script` 欄** → 兩者從未連起來 ✗
+**教訓**:子系統各自報「完成」不等於整合完成;跨模組「接線」要獨立驗(truth-in-code,
+配 rulebook/63)。使用者實玩才揭露——沒實玩/沒查,文件會一直顯示「完成」。
+**修法**:story_chNN 節點加 `script:assets/story/chNN.json`;gen_campaign 修+重生成 → 全章接通。
+- [x] ch01 開場三幕(王城父子/草地悠妮蓋亞/遇海盜)手動接線+轉錄 FDTXT_033/032(intro-scenes)
+- [ ] ch02-33 全章 story 節點接 script(gen_campaign 修+重生成)— 等 ch01 落地後做
+
 ## 待辦:實測回饋(使用者 playtest,2026-07-03)
 - [ ] **開場過場節奏 3x 太快 RE**(dragon-fx2 DOS 對比發現,doc39 §10.8):原版魔王立繪捲動
       (esi535→0)貫穿全開場、與各 AFM 幕交錯(暫停播幕→續捲),貢獻 ~16s 延遲;remake 把捲動
