@@ -119,8 +119,18 @@ GROWTH_JSON = os.path.join(ROOT, "docs", "data", "exe_tables", "growth.json")
 TURN_EVENTS_JSON = os.path.join(ROOT, "docs", "data", "turn_events.json")
 OUT_PATH = os.path.join(REMAKE, "assets", "scenarios", "campaign_full.json")
 
-BGM_BATTLE = "FDMUS_018"  # 戰鬥(doc12:track 18,實測 32 處 play_bgm 呼叫)
-BGM_STORY = "FDMUS_010"   # 城鎮/劇情(doc12:track 10)
+# 戰鬥 BGM = 每章查表(反組譯 0x51e63,doc12 §戰鬥/商店 BGM;bgm-battle-shop 第15輪)。
+# 章節 0-based(ch c → index c-1)。FDMUS_019 主戰曲(18/30 章),003/004/008 穿插特定章。
+# ⚠ 舊 BGM_BATTLE=FDMUS_018 是誤用(018 已確認=標題曲,使用者實聽 2026-07-03)。
+BGM_BATTLE_TABLE = [
+    "FDMUS_019", "FDMUS_019", "FDMUS_019", "FDMUS_019", "FDMUS_003",
+    "FDMUS_019", "FDMUS_019", "FDMUS_019", "FDMUS_003", "FDMUS_004",
+    "FDMUS_019", "FDMUS_019", "FDMUS_019", "FDMUS_019", "FDMUS_003",
+    "FDMUS_019", "FDMUS_004", "FDMUS_019", "FDMUS_019", "FDMUS_003",
+    "FDMUS_019", "FDMUS_003", "FDMUS_004", "FDMUS_019", "FDMUS_003",
+    "FDMUS_019", "FDMUS_004", "FDMUS_019", "FDMUS_019", "FDMUS_008",
+]
+BGM_STORY = "FDMUS_010"   # 城鎮/劇情/商店(doc12:track 10,反組譯 0x2cd34/0x2d2f9 確認)
 
 TOTAL_CHAPTERS = 30  # battle_events.json 的 chapter 0..29(= 攻略 30 關)
 
@@ -600,7 +610,7 @@ def build_campaign(
 
         nodes[battle_id] = {
             "type": "battle",
-            "bgm": BGM_BATTLE,
+            "bgm": BGM_BATTLE_TABLE[(c - 1) % len(BGM_BATTLE_TABLE)],
             "map": map_dir,
             "units": units_path,
             "scenario": scenario_path,
