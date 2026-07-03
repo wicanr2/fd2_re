@@ -221,6 +221,38 @@ group 數字、單筆 vs 雙筆(T3 兩組)、觸發回合、camp 全部吻合。
 且 roster 內單位也可能帶「進場回合」(哈諾/哈瓦特 T3);第一戰要實作「單位從邊緣走入 + 對話」的進場演出
 (事件腳本 DSL 的 `spawn`+`move`+`dialogue`+`when turn>=N` 節點),不能只靠 map_units.json。
 
+## 7.6 戰場視窗固定 13×8 格,原版無「地圖比視窗窄」的清背景邏輯(2026-07-03,反組譯)
+
+remake 內部畫布 640×400(2x hi-res,tile 維持原生 24px),map0(24×24 格)在此畫布下比可視寬度窄
+(576<640),右緣露出「畫面外」的區域;為了確認 remake 該填什麼色,反組譯原版戰場重繪鏈:
+
+- **主重繪函式 `0x11cac`**(每幀呼叫,`0x10010`「戰場設置」進場後的主迴圈 call):依序呼叫
+  `0x1297d`(捲動動畫計數器)→ `0x11eee`(地形層)→ `0x122dc`(移動範圍高亮疊圖)→ `0x127a9`(單位層,
+  含 `0x129ec` 收尾)→ `0x1acf3`(游標/UI)→ `0x11eb0`(present)。work buffer stride **0x1c8=456**
+  (與 doc 35 攻擊演出的 0x280=640 不同,tactical 另有獨立合成 buffer)。
+- **地形層 `0x11eee`**:對「一般章節」(排除 9/0x18/0x19/0x1c/0x1d 世界地圖類與 0x11/0x15/0x16/0x17/0x1b
+  過場標題類,那幾類走不同的 BG 貼圖分支),直接落入逐格迴圈(inline,0x12164–0x1222f):
+  ```
+  for row in 0..<8:              ; 高度計數硬編碼 8(0x011cd4 push 8)
+    for col in 0..<13:           ; 寬度計數硬編碼 0xd=13(0x011cd6 push 0xd)
+      idx = (row+camY)*[0x53ac1](地圖寬) + (col+camX)   ; camX/camY = [0x53aa9]/[0x53aad](捲動原點)
+      entry = FDFIELD[idx*4 + [0x3a51]]                  ; [0x3a51] = FDFIELD.DAT 載入基底(le_xref 驗證)
+      call 0x4deda / 0x4dcc6(dst, tile_sprite, stride)    ; 無條件 blit,兩者僅差是否轉透明色 0xFF
+  ```
+  **13×8 格 × 24px = 312×192px**,與 present 呼叫的視窗尺寸(`0x011d12 push 0xc0` / `0x011d17 push 0x138`
+  = 192/312)吻合 → **原版戰場視窗永遠固定 13×8 格,不隨地圖尺寸縮放**。
+- **關鍵:整個地形迴圈裡沒有任何 `memset`/fillrect/rect 原語**(比對戰鬥演出 doc35 §3 同一結論:
+  「無 fillrect/circle」)——每格永遠呼叫 blit,**沒有「地圖格不存在就清某色」的分支**。
+- **驗證:原版全 34 張地圖沒有一張窄於視窗**(`extracted/maps/maps_metadata.json` 全量掃描:
+  最小寬 18 格 map2、最小高 20 格 map3,皆 ≥ 13×8)。→ **「地圖比視窗窄」在原版從未觸發過**,
+  因此原版壓根沒有為這個情境寫清背景/邊框邏輯,不是「找不到」,是**這段代碼從未被需要過**。
+  remake 會撞到這情境,純粹是 remake 自己選了比原版視窗寬的 FOV(640px、tile 仍 24px 原生尺寸
+  ≈ 26.7 格可視寬,大於任何原版地圖或原版 13 格視窗)——**這是 remake 設計決策造成的新情境,不是
+  移植失真**。
+- **remake 對齊**:`cmd/fd2/main.go` 的 `screen.Fill(黑)` 在地圖繪製前打底,合理(無原版行為可循,
+  黑色純粹是視覺乾淨的預設,非「原版就是這樣填」)。已截圖確認(`extracted/remake_shots/map0_edge_test.png`)
+  map0 右緣為乾淨黑邊,非殘影黃白。
+
 ## 8. 受阻 / 待續
 
 - **[已解,見 §6.1]** ~~`turn_events.event_id → group` 對應機制(先前疑 `0x22e5c`,未解)~~ →

@@ -1059,6 +1059,12 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		}
 		return
 	}
+	// 清背景:地圖比畫面窄時右/上下留黑邊(非殘影黃白)。
+	// RE 結論(0x11eee 地形迴圈,doc 見 knowledge-base/25):原版戰場視窗固定 13×8 格(312×192px)、
+	// 逐格 blit 全無 memset/fillrect,且全 34 張地圖最小 18×20 格恆大於視窗——這個「地圖比視窗窄」情境
+	// 原版從未觸發,無「原版清色」可對齊;黑色是 remake 自訂 FOV(640 寬、tile 維持原生 24px)才會露出的
+	// 邊,選黑純為視覺乾淨、非還原原版行為。
+	screen.Fill(color.RGBA{0, 0, 0, 0xff})
 	tw, th := g.m.TileW, g.m.TileH
 	// 只畫可見範圍
 	x0 := int(g.camX) / tw
