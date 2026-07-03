@@ -1168,13 +1168,13 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				op.GeoM.Translate(bx, by)
 				screen.DrawImage(box, op)
 			}
-			// 頭像:大側臉,我方左(頭頂凸出框頂)、對方右(orig 佈局);嘴型 m0閉/m3開
-			const ps = 2.6 // 80×80 DATO → ~208px(對照 orig 側臉高)
+			// 頭像:側臉,收進框內(不凸出框頂),臉朝文字(對照 orig_02:我方左朝右、對方上框右朝左)。
+			const ps = 2.1 // 80×80 DATO → 168px,收進框高(~176px)內
 			hx, tx, ty := 16.0, 216.0, by+24
-			hy := float64(logicalH) - 80*ps // 下框:底對齊畫布底
+			hy := float64(logicalH) - 80*ps - 8 // 下框:頭像底距畫布底 8px,頭頂在框內
 			if upper {
 				hx = float64(logicalW) - 16 - 80*ps
-				hy = -14 // 上框:頭像貼頂,臉朝下框
+				hy = by + 12 // 上框:頭像收在框內(頭頂距框頂 12px)
 				tx = 32
 				ty = by + 46
 			}
@@ -1183,13 +1183,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				if g.mouthOpen && len(fr) > 3 {
 					mi = 3
 				}
+				// 原生 DATO 面朝右;要臉朝文字:下框(頭像在左)朝右=鏡像、上框(頭像在右)朝左=不鏡像。
 				po := &ebiten.DrawImageOptions{}
-				if upper { // 上框頭像水平鏡像(面左朝文字;原版下框走 0x4E8E1 鏡像 blit、上框 0x4E8AF,doc14/35)
-					po.GeoM.Scale(-ps, ps)
-					po.GeoM.Translate(hx+80*ps, hy)
-				} else {
+				if upper { // 上框:頭像在右,臉朝左文字 → 原生朝右不鏡像
 					po.GeoM.Scale(ps, ps)
 					po.GeoM.Translate(hx, hy)
+				} else { // 下框:頭像在左,臉朝右文字 → 鏡像
+					po.GeoM.Scale(-ps, ps)
+					po.GeoM.Translate(hx+80*ps, hy)
 				}
 				screen.DrawImage(fr[mi], po)
 			} else {
