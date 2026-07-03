@@ -164,6 +164,57 @@ DOS/4GW entry 0x3c964 ──► Watcom CRT ──► main 0x25bf4
 
 不是漸變淡出淡入的柔和轉場,是**兩段硬切閃光**:故事過場最後一幕(紅光惡魔臉特寫)**直接切成全螢幕純紅色**(frame_185–186,無漸變過程,一幀之內從有內容變全紅),隔一幀黑幀後「2」開始縮放進場(見①),縮放定位完成後**再一次全螢幕泛白閃光**(frame_192,bloom 效果),然後色板才收斂到最終橘紅漸層畫面。兩次閃光(紅/白)夾住 logo 縮放動作,是典型「衝擊感」轉場手法,不是 doc23 §2.1 描述的「BG.DAT 抹除轉場」那種漸進式擦除——**抹除轉場可能用在別的段落轉換,不是這裡**(本輪未逐一比對每個分鏡間的轉場手法是否都一致,只確認了「捲動→標題」這一段是閃光式)。
 
+### ⑥ `0x1f73f`:FDOTHER 靜態全螢幕幕(第14輪反組譯,補 doc39 §10.7 待補項)[驗]
+
+> 承接 doc39 §10.5/§10.7:title_seq 捲動迴圈內 `esi==0x1c2`(450)與 `esi==0xa`(10)各觸發一次
+> `call 0x1f73f(esi,edi,idxA,idxB)`,是**獨立於 ANI.DAT/AFM VM 的第二套顯示機制**——不播動畫,
+> 是「黑幕 → 全螢幕靜態圖 blit → 調色盤淡入 → 停留 → 復原捲動畫面」的一次性插播。純靜態反組譯
+> (規則 62)逐指令 esp-relative 反推(`push N; call 0x36cd7` 經查證是 Watcom 堆疊 guard-page 探測,
+> **對 esp 淨效果為 0**,不是配置區域變數——與 doc39 §10 的 esp_rel 校正同一教訓,別假設常見慣例)。
+
+**`0x1f73f` 完整流程**(cdecl,呼叫端 push 順序 `esi,edi,idxA,idxB` 反推出形參序
+`(idxB, idxA, edi, esi)`,對應 `[esp+4]..[esp+0x10]`):
+
+```
+1. memset(0xA0000, 0, 0xFA00)                          ; 清 VGA 畫面(320×200=64000B 全黑)
+2. load("FDOTHER.DAT", oldbuf=[cache 0x53a65], idxA)    ; idxA → 覆寫進既有快取(調色盤,見下)
+3. load("FDOTHER.DAT", oldbuf=0, idxB)                  ; idxB → 全新配置(全螢幕圖,見下)
+4. blit(eax=idxB圖指標, 0,0, 0xA0000, 0x140, -1)         ; 0x4e63d 全螢幕 blit(320×200)
+5. call 0x1f525                                          ; 調色盤淡入
+6. wait_ticks(1); wait_ticks(6)                          ; ⚠0x17aa9 是 tick 計數忙等(讀全域計數器
+                                                            [0x46c],非 doc39 §10.7 原猜測的 BGM/SFX——
+                                                            本輪修正)
+7. call 0x1f882                                          ; 同步/vsync 輔助(語意同 doc39 §10.7 未展開)
+8. load("FDOTHER.DAT", oldbuf=[cache], idx=0x65)         ; 重載 #0x65(標準 768B 淡入調色盤)進快取
+9. addr = edi + esi*320                                  ; edi/esi = title_seq 傳入的捲動緩衝基址/列號
+10. copy_rect(dst=0xA0000, dst_w=0x140, src=addr, 0x140, 0x140, 0xc8)  ; 0x11eb0,320×200
+    → 復原插播前 title_seq 自己正在捲動的那一幀
+11. call 0x1f525                                          ; 再次調色盤淡入
+```
+
+**idxA/idxB 語意查證**(讀 `extracted/raw/FDOTHER/` 實體 header 確認,非猜測):
+
+| 觸發 esi | idxA(載入快取) | idxB(全螢幕 blit) | idxA 檔案 header | idxB 檔案 header |
+|---|---|---|---|---|
+| `0x1c2`(450) | `0x63`(99) | `0x64`(100) | `FDOTHER_099.bin` 768B(**調色盤**,無 w/h 頭) | `FDOTHER_100.bin` header `40 01 c8 00`=320×200 |
+| `0xa`(10) | `0x4c`(76) | `0x4b`(75) | `FDOTHER_076.bin` 768B(**調色盤**) | `FDOTHER_075.bin` header `40 01 c8 00`=320×200 |
+
+→ **idxA 一律是 idxB 的專屬 768B 調色盤**(同 #0x65 的 6-bit RGB 格式),不是另一張圖——doc39 §10.4
+早先把 `#0x63`(99)註記為「紅底背景」是描述它套用後的視覺效果(調色盤偏紅),不是獨立圖層,本節校正
+用詞但不推翻結論。
+
+**視覺比對(規則 64:已破解 sprite RLE 解碼器 `decode_sprite.py` 當 oracle,配對應調色盤解出)**:
+
+- `idxB=0x64/#100` + `idxA=0x63/#99` 調色盤 → 解出**紅底盔甲守護者半身像**(`extracted/title_re/fdother_static/fdother100_guardian_pal099.png`,本機)。比對 dosbox `frame_012–014/027–028`(§2.4③ item①「守護者盔甲全身像細節」),構圖/色調一致。**結論:`esi==0x1c2` 這幕 = item①守護者的靜態收尾畫面,不是 doc39 §10.7 原猜測的「分鏡⑨惡魔臉」**。
+- `idxB=0x4b/#75` + `idxA=0x4c/#76` 調色盤 → 解出**滿月前浮空城剪影**(`extracted/title_re/fdother_static/fdother075_floating_castle_pal076.png`,本機)。與 dosbox `frame_168–173`(§2.4③ item⑥「浮空城剪影疊在滿月前」)**逐像素構圖/配色吻合**(月面斑紋位置、城堡剪影輪廓、下方水波紋理皆對上)。**結論:`esi==0xa` 這幕 = item⑥浮空城,確認**。
+
+**修正 doc39 §10.7 待補項**:`0x1f73f` 只在 title_seq 內被呼叫兩次(全域 `calls 0x1f73f` 僅命中
+`0x1fbaf` 一處呼叫指令,兩個觸發點共用同一條 `call`,同 §10.5 wrapper 模式),對應**恰好兩幕**靜態圖
+(守護者 #100、浮空城 #75)。**item⑨「惡魔臉特寫」(dosbox frame_184)不是這兩幕之一**——實測解出的
+兩張圖內容與 frame_184 的紅色鬼臉特寫完全不同構圖,`0x1f73f` 的呼叫點也已窮舉(僅 2 處),排除
+「還有第三個未觸發到的 idx 組合」的可能。**item⑨ 來源仍待查**,推測仍在 ANI.DAT(doc23 §2.4③已標記
+「這整段故事過場疑似另有 ANI.DAT 驅動」的缺口內),不是 FDOTHER 靜態 blit 機制,不可再套本節結論。
+
 ---
 
 ## 3. 主選單機制(A 之二)[驗]
