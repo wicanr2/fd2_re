@@ -431,9 +431,10 @@
     "event_id": 47,
     "camp": "enemy",
     "groups": [
-     "$reg_or_mem(eax)"
+     1
     ],
-    "handler": "0x35112"
+    "handler": "0x35112",
+    "group_formula": "floor(turn_counter/2) via signed-div-by-2 idiom at handler+0x0a..0x12 (edx=eax>>31;eax-=edx;eax>>=1), eax=[0x53bef] turn counter"
    },
    {
     "turn": 3,
@@ -447,27 +448,30 @@
     "event_id": 47,
     "camp": "enemy",
     "groups": [
-     "$reg_or_mem(eax)"
+     2
     ],
-    "handler": "0x35112"
+    "handler": "0x35112",
+    "group_formula": "floor(turn_counter/2) via signed-div-by-2 idiom at handler+0x0a..0x12 (edx=eax>>31;eax-=edx;eax>>=1), eax=[0x53bef] turn counter"
    },
    {
     "turn": 6,
     "event_id": 47,
     "camp": "enemy",
     "groups": [
-     "$reg_or_mem(eax)"
+     3
     ],
-    "handler": "0x35112"
+    "handler": "0x35112",
+    "group_formula": "floor(turn_counter/2) via signed-div-by-2 idiom at handler+0x0a..0x12 (edx=eax>>31;eax-=edx;eax>>=1), eax=[0x53bef] turn counter"
    },
    {
     "turn": 8,
     "event_id": 47,
     "camp": "enemy",
     "groups": [
-     "$reg_or_mem(eax)"
+     4
     ],
-    "handler": "0x35112"
+    "handler": "0x35112",
+    "group_formula": "floor(turn_counter/2) via signed-div-by-2 idiom at handler+0x0a..0x12 (edx=eax>>31;eax-=edx;eax>>=1), eax=[0x53bef] turn counter"
    }
   ]
  },
@@ -480,9 +484,10 @@
     "event_id": 49,
     "camp": "enemy",
     "groups": [
-     "$reg_or_mem(eax)"
+     1
     ],
-    "handler": "0x351e9"
+    "handler": "0x351e9",
+    "group_formula": "floor(turn_counter/2) via signed-div-by-2 idiom at handler+0x0a..0x12 (edx=eax>>31;eax-=edx;eax>>=1), eax=[0x53bef] turn counter"
    },
    {
     "turn": 5,
@@ -498,9 +503,10 @@
     "event_id": 49,
     "camp": "enemy",
     "groups": [
-     "$reg_or_mem(eax)"
+     3
     ],
-    "handler": "0x351e9"
+    "handler": "0x351e9",
+    "group_formula": "floor(turn_counter/2) via signed-div-by-2 idiom at handler+0x0a..0x12 (edx=eax>>31;eax-=edx;eax>>=1), eax=[0x53bef] turn counter"
    }
   ]
  },

@@ -3,11 +3,7 @@
   "name": "亞述森林",
   "map": 20,
   "initial_groups": [
-    0,
-    1,
-    2,
-    3,
-    4
+    0
   ],
   "party": [
     {
@@ -394,6 +390,74 @@
       "do": [
         {
           "type": "spawn_party"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch21_e47_t2",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 2
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            1
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch21_e47_t4",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 4
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            2
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch21_e47_t6",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 6
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            3
+          ],
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch21_e47_t8",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 8
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            4
+          ],
+          "camp": "enemy"
         }
       ]
     }

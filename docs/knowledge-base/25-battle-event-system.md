@@ -137,6 +137,47 @@ hdl:D  a  D  D  D  D  D  D  D  b  D  c  d  D  e  f  g  h  i  j  k  L  m  D  n  o
 58 個 handler 中 20 個解出字面 group、5 個解出動態(`$turn_counter`)、其餘 33 個掃描視窗內無 spawn 呼叫
 (推測為純對話/AI模式切換/目標判定類事件,無新單位進場)。[驗/推]
 
+### 6.1.1 ch21/ch22 動態增援(event_id 47/49)eax 來源解密 [驗]
+
+gen-campaign v4 report 留下 6 筆「`groups: [$reg_or_mem(eax)]`」——`spawn_group(eax)` 的 `eax` 來自暫存器計算,
+非字面常數,擷取器放棄。反組譯 event_id 47(`0x35112`,ch21/map20)與 event_id 49(`0x351e9`,ch22/map21)的
+handler 本體,兩者在 `call 0x10b4e` 前的計算完全同構:
+
+```
+0x03511c  mov  eax, [0x53bef]   ; eax = 回合數(turn counter)
+0x035121  mov  edx, eax
+0x035123  sar  edx, 0x1f        ; edx = eax 符號位擴散(正數→0,負數→-1)
+0x035126  sub  eax, edx         ; 負數時 +1(修正無條件捨去→趨零捨去)
+0x035128  sar  eax, 1           ; eax >>= 1(算術右移)
+0x03512a  push eax
+0x03512b  call 0x10b4e          ; spawn_group(eax)
+```
+
+這是編譯器產生「有號數除以 2」的標準慣用法(`sar edx,31; sub eax,edx; sar eax,1`),保證負數也趨零捨去;
+`[0x53bef]` 恆為正(回合數 1,2,3…),故實際等價於 **`group_id = turn_counter DIV 2`(無條件捨去)**。
+event_id 49(0x351e9)同一段位移量(handler+0x0a..0x12)逐位元組相同,同一公式。[驗]
+
+**ch21(map0→map20)/ch22(map21)套公式,對照 ground truth(`remake/assets/maps/map20|21_units.json` 實際存在的 group)**:
+
+| 章 | turn | event_id | 公式算出 group | map units.json 該 group 存在? | camp |
+|---|---|---|---|---|---|
+| 21(map20) | 2 | 47 | 1 | ✓(4 單位) | enemy |
+| 21(map20) | 4 | 47 | 2 | ✓(4 單位) | enemy |
+| 21(map20) | 6 | 47 | 3 | ✓(4 單位) | enemy |
+| 21(map20) | 8 | 47 | 4 | ✓(4 單位) | enemy |
+| 22(map21) | 3 | 49 | 1 | ✓(6 單位) | enemy |
+| 22(map21) | 7 | 49 | 3 | ✓(6 單位) | enemy |
+
+map20 實際 group 集合 `{0,1,2,3,4,255}`、map21 `{0,1,2,3,255}`——`turn/2` 算出的 1/2/3/4 與 1/3 恰好全部落在
+存在的 group 內,且 map21 的 group2 對應另一筆已解出的字面事件(event_id50,turn5,camp=special,groups=[2],
+own 陣營)不衝突,6/6 全部吻合。**已用 `tools/extract_event_id_groups.py` 的同款 basic-block walk 手動核對兩
+handler 反組譯,非猜測**;`docs/data/turn_events.json` 對應 6 筆已把 `groups` 從 `$reg_or_mem(eax)` 換成算出的
+整數,並補 `group_formula` 欄位記錄機制。
+
+> 與 §6.1「5 個解出動態(`$turn_counter`,即 group=回合數本身)」是**不同公式**:event27/54/57 是 `group=turn`,
+> event47/49 是 `group=turn÷2`——同樣的「回合數驅動遞增 group」設計母題,但除以 2 是因為這兩章每 2 回合才觸發
+> 一次(turn events 只登記偶數/隔輪回合),group 编號仍要對齊「第幾波」而非「第幾回合」。
+
 **map0/章1 ground truth 全部驗證通過(4/4)**:對照 `remake/assets/scenarios/ch01.json`(青衫核對過的正解)——
 
 | turn_events(map0) | event_id | handler | 解出 group | ch01.json 正解 | 結果 |

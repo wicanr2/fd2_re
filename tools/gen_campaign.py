@@ -49,7 +49,8 @@ v4 新增(本輪,接續 v3 撞牆點):
   - **三種 groups 值**:整數清單(直接可用)/ `$turn_counter[0x53bef]`(動態=觸發當下回合數,
     因每筆記錄本身即為單回合觸發實例,直接拿該筆 `turn` 當 group 即可——用 map7/23/25 的
     真實 group 集合核對過,turn 值與圖上 group 編號完全對得上,見 doc25 §6.1)/
-    其他動態值(如 `$reg_or_mem(eax)`,event_id 47/49,暫存器值無法靜態解析)。
+    event_id 47/49(ch21/22)原標「eax 無法靜態解析」現已解=回合數÷2(doc25 §6.1.1),
+    turn_events.json 已換字面整數,走「整數清單」分支納入。
   - **安全網(寧可全開也不要單位消失)**:單筆記錄任一 group 不存在於該章 units.json →
     整筆退回列冊,不動 initial_groups;全部有效記錄套用後 initial_groups 會清空 →
     整章退回列冊,維持 v2 全開安全預設。無 spawn handler 的記錄(對話/AI類,groups 為空)
@@ -379,7 +380,8 @@ def apply_reinforcements(
       - groups==["$turn_counter[0x53bef]"](event_id 27/54/57)→ 動態值 = 觸發當下回合數,
         因每筆記錄本身已是單回合觸發實例,直接以該筆 turn 當 group(已用 map7/23/25 的
         真實 group 集合核對過,turn 值與圖上 group 編號完全對得上)。
-      - 其他動態值(如 $reg_or_mem(eax),event_id 47/49)→ 無法靜態解析實際 group,跳過列冊。
+      - event_id 47/49(ch21/22)eax 已解:= 回合數÷2(有號除2,doc25 §6.1.1),turn_events.json
+        已換成字面整數 group,落入下方「整數清單」分支直接納入(非再跳過)。
       - groups==[] → 無 spawn handler(對話/AI類),跳過列冊。
 
     安全網(寧可全開也不要單位消失):
