@@ -966,6 +966,12 @@ func (g *Game) Update() error {
 	if g.ringInput() { // radial 指令環 / 法術選單
 		return nil
 	}
+	if len(g.dialog) > 0 { // 戰鬥起手對白(g.camp==nil 直接開局,或 campaign battle 節點無 story 攔截):Enter/Space 逐句清除
+		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace) {
+			g.dialog = g.dialog[:len(g.dialog)-1]
+		}
+		return nil
+	}
 	if g.castSp != nil { // 施法目標選擇:ESC 取消回環
 		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 			g.castSp = nil
