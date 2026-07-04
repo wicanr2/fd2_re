@@ -766,7 +766,7 @@ func (g *Game) campInput() bool {
 // 方向配對(↑0道具/←1攻擊/→2魔法或狀態/↓3待機)為可玩性配置;原版方向↔指令待 dosbox 驗證(worklist)。
 func (g *Game) ringInput() bool {
 	enter := inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)
-	esc := inpututil.IsKeyJustPressed(ebiten.KeyEscape)
+	esc := inpututil.IsKeyJustPressed(ebiten.KeyEscape) || inpututil.IsKeyJustPressed(ebiten.KeyBackspace)
 	if g.spellOpen { // 法術選單
 		if g.sel == nil {
 			g.spellOpen = false
@@ -816,6 +816,7 @@ func (g *Game) ringInput() bool {
 	}
 	if esc { // ESC = 取消(doc13):退回移動前位置,回到「選此單位待移動」;原地開環(未移動)則直接取消選取
 		g.ring = false
+		g.msg = ""
 		if g.sel.X == g.selOrigX && g.sel.Y == g.selOrigY {
 			g.sel, g.reach, g.moved = nil, nil, false
 		} else {
@@ -1546,11 +1547,13 @@ func (g *Game) Update() error {
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace) {
 		g.confirm()
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) || inpututil.IsKeyJustPressed(ebiten.KeyBackspace) {
 		if g.sel != nil && g.moved { // 已移動、正在選攻擊目標:退回指令環(取消一層,doc13;ring 的 ESC 才真正退回原位)
 			g.ring = true
+			g.msg = ""
 		} else {
 			g.sel, g.reach = nil, nil
+			g.msg = ""
 		}
 	}
 	// Tab:結束回合(觸發 on_turn_end 增援事件)。正式版改我方全動完自動結束。
