@@ -64,6 +64,9 @@ def crit_by_cls(resist_crit, cls):
 #   真正的敘事身分綁在 portrait(= DATO 角色 id,doc31 §8「已定論」:士兵68、盜賊96、頭目97),
 #   故用 portrait 覆寫表,查得到就蓋掉 cls_name;查不到(其餘怪物尚未逐一 RE portrait 對照,
 #   留待後續章節逐步補)才落回 CLASS_NAMES[cls] 舊行為,不影響其他已正常顯示的單位。
+# 完整 portrait id → 角色名總表(0-135,含證據等級)見 docs/data/portrait_names.json +
+# docs/knowledge-base/49-character-id-name-table.md(對話反推法,獨立交叉驗證了 68/96/97,
+# 另新增 126=ASR-06;同文件說明為何其餘多數怪物 id 目前無法只靠對話反推解出)。
 PORTRAIT_CLS_NAME = {
     68: "士兵",     # doc31 §8:友軍海防隊員(第一章 T6 增援,portrait 68)
     96: "盜賊",     # doc31 §8:第一章開場敵方(俗稱「海盜」,青衫攻略敵方列表寫「LV2盜賊」)
