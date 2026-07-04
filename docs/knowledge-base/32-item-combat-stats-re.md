@@ -30,10 +30,42 @@
 - 裝備自帶法術不耗 MP、但施放無經驗(item.md)。賣價 = 原價 75 折。
 - 單位 roster 26B 含 **物品×8 + 法術×8**(parse_field;即每單位 8 裝備欄 + 8 法術欄)。
 
+## 3.5 主角隊起始武器 + AP/HIT/EV 合成公式 [驗](worklist 第8輪後,對 orig_07 截圖逐位吻合)
+
+**人物出場屬性表**(modify2 §4,EXE `0x55BA1`,anchor `01 01 01 2A`,24B/人物,順序同 growth 表 §5):
+`RA(1) CL(1) LV(1) HP(u16) MP(u16) MV(1) MG(4) IT(6) AP(u16) DP(u16) DX(u16)`。IT[0]=起始武器 id、
+IT[1]=起始防具 id(FDFIELD 出場人物資訊同款慣例:前兩個固定武器+防具)。此表 `dump_exe_tables.py` 尚未收錄
+(anchor 早已定義,缺 `dump_char()`),本輪用臨時腳本直讀驗證,未來若需其他角色可補上該函式。
+
+索爾(idx0)/亞雷斯(idx4)/悠妮(idx9)/蓋亞(idx30,索引與 growth 表 §5 一致)起始武器/防具:
+
+| 角色 | 職業 | 武器 id | 武器 | 防具 id | 防具 |
+|---|---|---|---|---|---|
+| 索爾 | 劍士 | 0x00 | 短劍(AP10 HIT95) | 0x84 | 皮甲(DP8) |
+| 亞雷斯 | 騎士 | 0x14 | 刺矛(AP20 HIT90 射程1-2) | 0x80 | 布衣(DP2) |
+| 悠妮 | 法師 | 0x34 | 長棍(AP8 HIT85) | 0xA4 | 長袍(DP5) |
+| 蓋亞 | 機兵 | 0x48 | 威力手臂(AP15 HIT90) | 0xB2 | 戰鬥裝甲(DP8) |
+
+**合成公式(對 `extracted/remake_shots/orig_07_unit_status.png` 索爾逐位吻合,LV·01 DX·002 HIT·097 AP·016 EV·002 DP·012)**:
+
+```
+角色底值(空身無裝備,list.md §7.3 交叉驗證) = char表base + LV×growth_min(AP/DP同理;HP/MP用(LV-1))
+有效 AP  = 角色底 AP + 武器.ap                  (索爾 6+10=16 ✓)
+有效 DP  = 角色底 DP + 防具.dp                  (索爾 4+8=12 ✓)
+有效 HIT = 角色底 DX + 武器.hit                 (索爾 2+95=97 ✓ ←關鍵發現:item表HIT/EV是「增值」,非絕對值)
+有效 EV  = 角色底 DX + 防具.ev                  (索爾 2+0=2  ✓;起始4件防具ev皆為0)
+```
+
+四人算出:索爾 AP16/DP12/HIT97/EV2/crit5%;亞雷斯 AP26/DP6/HIT92/EV2/crit3%;
+悠妮 AP11/DP7/HIT86/EV1/crit3%;蓋亞 AP22/DP14/HIT92/EV2/crit0%(resist_crit.json 依職業)。
+已串進 `internal/battle/event.go` PartyMember(新增 HIT/EV/CritPct 欄位 + spawn_party 賦值)與
+`assets/scenarios/ch01.json`,修好主角隊 HIT=0 導致 100% miss / 0 傷害的問題。
+
+> 此發現直接解答下方原「[阻] 裝備加成精確公式」——至少對「基礎四圍(AP/DP/HIT/EV)如何疊加裝備」已鎖死
+> (DX 是 HIT/EV 的底值來源,item 表 HIT/EV 欄是疊加增量);轉職後 DX 底值/其他角色武器仍待逐一 RE。
+
 ## 4. 待續(需後續輪次)[阻]
 
-- **[阻] 裝備加成精確公式**:`有效 AP = base(class) + Σ 裝備武器 ap` 的累加點,夾在攻擊執行大函式(0x15a..)內,
-  與繪製(0x4e040)/地圖掃描(0x14818)交織,AP/DP 來源經多層 call;需 call-graph 系統追 `[0x53c27]` 寫入前的計算鏈才能鎖死。
 - **[阻] 表 base-relative 存取**:item/unit/growth 表(0x540ac…)在 code 中以「obj2 基底(reg)+ offset」讀,
   絕對位址不經 fixup → 不能用 `refs` 直接找讀取點,要追基底暫存載入處。
 - **[阻] 物品使用效果碼**:藥水回血量、卷軸效果、轉職道具的程式邏輯未反組譯。

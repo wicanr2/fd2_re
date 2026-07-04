@@ -31,6 +31,9 @@ type PartyMember struct {
 	MP       int    `json:"mp"`
 	AP       int    `json:"ap"`
 	DP       int    `json:"dp"`
+	HIT      int    `json:"hit"`  // 命中(doc32:DX+起始武器HIT增值,對照orig_07_unit_status.png逐位驗證)
+	EV       int    `json:"ev"`   // 閃避(doc32:DX+起始防具EV增值;起始4件防具EV增值皆為0)
+	CritPct  int    `json:"crit"` // 暴擊率(resist_crit.json 依角色職業)
 	MV       int    `json:"mv"`
 	AtkMin   int    `json:"atk_min"` // 攻擊距離下限(0=預設1;doc32 weapon_range.json)
 	AtkMax   int    `json:"atk_max"` // 攻擊距離上限(0=預設1;如亞雷斯騎士槍type3=2)
@@ -160,6 +163,7 @@ func (sc *Scenario) exec(st *State, a Action) (DialogLine, bool) {
 			st.AddUnit(&Unit{
 				Camp: Own, Name: pm.Name, ClsName: pm.Cls, Lv: pm.Lv,
 				HP: pm.HP, MaxHP: pm.HP, MP: pm.MP, AP: pm.AP, DP: pm.DP, MV: pm.MV,
+				HIT: pm.HIT, EV: pm.EV, CritPct: pm.CritPct,
 				AtkMin: pm.AtkMin, AtkMax: pm.AtkMax,
 				Portrait: pm.Portrait, Fig: pm.Fig, X: x, Y: y, OnField: true, Spells: pm.Spells,
 				Dir: 0, // 直接定位,面向鏡頭待機(無進場動畫)
