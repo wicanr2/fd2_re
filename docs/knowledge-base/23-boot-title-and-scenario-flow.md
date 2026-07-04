@@ -299,7 +299,7 @@ python3 tools/decode_sprite.py 用 body=FDOTHER_069.bin[4:] / FDOTHER_070.bin[4:
         │
 章節0 處理器 0x3231b = 開場序章 cutscene  ←★「與前代主角對話」在此
    ├ [0x53c03]=0x20; call 0x205da                    ; 暫借章節值=32 → 0x1088d(32) 載 FDTXT#33 + FDFIELD 組32(res 96/97/98)
-   ├ 0x15f84 ×N + 0x13185 逐段對白+攝影機平移         ; 15 次 pan(王城)/13 次 pan(草地),見下方修正
+   ├ 0x15f84 ×N + 0x13185 逐段對白+攝影機平移         ; ⚠ 本行原語身分已被 doc47 修正,見下方 2026-07-04 更正
    ├ play_bgm(0x0b)                                   ; 序章配樂
    ├ [0x53c03]=0x1f; call 0x205da                     ; 暫借章節值=31 → 0x1088d(31) 載 FDTXT#32 + FDFIELD 組31
    ├ push 0x5a..0x69; call 0x1366a (逐段)             ;★ 逐段播對白(王城/草地場次)
@@ -316,7 +316,18 @@ python3 tools/decode_sprite.py 用 body=FDOTHER_069.bin[4:] / FDOTHER_070.bin[4:
 > 縱向拼接),即序幕「王城傳位」「草地邂逅悠妮蓋亞」兩幕的真正背景——與戰場共用同一 tile 渲染器,不是另開的圖片
 > 系統。已渲染驗證(`extracted/maps/map32.png`,432×1224)逐像素對齊 dosbox 參考圖 `extracted/remake_shots/
 > orig_02_dialog_02_king.png` 與使用者原版錄影 `extracted/story/ref_video/f_006.png`(雙王座+紅毯+拱窗)。
-> 15 次/13 次 `0x13185(2)` 分別對應王城、草地兩場次的鏡頭平移(方向與逐格細節未完全反組譯,不影響背景圖結論)。
+> ~~15 次/13 次 `0x13185(2)` 分別對應王城、草地兩場次的鏡頭平移~~(已修正,見下)。
+>
+> **更正(2026-07-04,doc47 序章 handler 逐 beat 全轉錄,推翻本節部分原語判讀)**:
+> - `0x15f84(txtbuf,idx,…)` 不是「逐格貼序幕影像」——是**對白播放器**(讀 [0x53a79] 當前章 FDTXT
+>   offset 表第 idx 條,逐字渲染、處理 0xFFFD 翻頁)。序章 part1 的 idx 0..5 = FDTXT_033 六條字串。
+> - `0x13185(2)` ×15/×13 是**淡變步進**,不是 pan。真正的鏡頭平移是 **`0x135dd(col,row)`**(逐格
+>   平滑捲動,先欄後列)——**王城→草地的轉場=`0x135dd(0,43)` 同 map32 直接平移下去,非淡出換景**。
+> - `0x1366a(id)` 不是「逐段播對白」——是**演出(acting)播放器**:[0x627d8+id*4] 取資源,
+>   格式=[幀數]+每幀(拍數,N)+(單位idx,姿態)×N,逐 tick 寫單位 +3/+4 並重繪=走位/擋路/姿態機制本體
+>   (acting 資源所在容器尚未定位,見 doc47 §5)。
+> - `0x112a5(0/9/4/0x1e)`=索爾/悠妮/亞雷斯/蓋亞**入隊**(時點=密林幕後、海島幕前)。
+> - 完整 beat 序列與 remake 修正指示 → **doc47**。
 > 序幕最後 `[0x53c03]=0` 還原真章節後**再呼叫一次 0x205da**,重載真正的 FDTXT#1 + FDFIELD 組0(= map0,小島),
 > 「遇海盜」對白(`push 0x5a..0x62; call 0x1366a` + `0x32999` 平移)疊在**真戰場地圖 map0** 上,並非另一張複合圖——
 > 與後續 `battle_ch01` 進的是同一張地圖。remake 對應實作見 `remake/internal/campaign/campaign.go`(Node.Map/CamX/CamY,
