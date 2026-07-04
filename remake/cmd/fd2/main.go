@@ -70,6 +70,10 @@ type Game struct {
 	storyView        *ebiten.Image       // story 場景離屏世界層(320×200,放大 storyZoom 倍貼上畫布;2-1 原版取景)
 	walkFirst        bool                // 本節點:進場走位走完才顯示對白(campaign.Node.WalkFirst)
 	followWalk       bool                // 本節點:走位期間鏡頭跟隨走位者(campaign.Node.FollowWalk)
+	camMaxY          float64             // 本節點:鏡頭 Y 上限(campaign.Node.CamMaxY;0=不限)
+	dlgShown         int                 // 對話框目前顯示的說話者(dlgNone=無;換人時播縮/展動畫)
+	dlgPhase         int                 // 對話框動畫相位:0=常態 1=縮小(換人前收合) 2=展開
+	dlgT             int                 // 對話框動畫相位內計時(幀)
 	fade             *storyFade          // 場景淡出/淡入轉場(doc46 §5.2)
 	walk             *walkAnim           // 移動動畫(沿路徑逐格走,FDICON 方向幀)
 	camp             *campaign.Runner    // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
@@ -223,9 +227,25 @@ func (g *Game) advanceStoryNode(n *campaign.Node) {
 }
 
 // stepStoryWalks 逐幀推進場景走位動畫佇列,完成的 job 更新最終座標、呼叫 then 後移除。
+// 走位沿格線(先長軸後短軸,不斜切)——原版單位走位以戰場格為單位軸向移動
+// (使用者回饋 2026-07-04 #4:「走路沒照著格子走」=舊版起訖點直線內插會斜切格線)。
 func (g *Game) stepStoryWalks() {
 	if len(g.storyWalks) == 0 {
 		return
+	}
+	sgn := func(v int) float64 {
+		if v > 0 {
+			return 1
+		} else if v < 0 {
+			return -1
+		}
+		return 0
+	}
+	absi := func(v int) int {
+		if v < 0 {
+			return -v
+		}
+		return v
 	}
 	live := g.storyWalks[:0]
 	for _, w := range g.storyWalks {
@@ -235,10 +255,34 @@ func (g *Game) stepStoryWalks() {
 			frac = 1
 		}
 		u := &g.storyActors[w.actor]
-		u.OffX = float64(w.fromX-w.toX) * float64(g.m.TileW) * (1 - frac)
-		u.OffY = float64(w.fromY-w.toY) * float64(g.m.TileH) * (1 - frac)
-		u.Dir = dirToward(w.fromX, w.fromY, w.toX, w.toY)
-		u.X, u.Y = w.toX, w.toY // 掛在終點格,Off 從起點內插到 0(同 walkAnim 慣例)
+		dx, dy := w.toX-w.fromX, w.toY-w.fromY
+		adx, ady := absi(dx), absi(dy)
+		total := adx + ady // 曼哈頓距離(格)
+		if total == 0 {
+			total = 1
+		}
+		dist := frac * float64(total) // 已走格數(含小數)
+		var cx, cy float64            // 相對起點的位移(格)
+		if adx >= ady {               // 先走長軸,再走短軸(格線行走)
+			if dist <= float64(adx) {
+				cx, cy = dist*sgn(dx), 0
+				u.Dir = dirToward(0, 0, dx, 0)
+			} else {
+				cx, cy = float64(dx), (dist-float64(adx))*sgn(dy)
+				u.Dir = dirToward(0, 0, 0, dy)
+			}
+		} else {
+			if dist <= float64(ady) {
+				cx, cy = 0, dist*sgn(dy)
+				u.Dir = dirToward(0, 0, 0, dy)
+			} else {
+				cx, cy = (dist-float64(ady))*sgn(dx), float64(dy)
+				u.Dir = dirToward(0, 0, dx, 0)
+			}
+		}
+		u.X, u.Y = w.toX, w.toY // 掛在終點格,Off 為「當前位置-終點」(同 walkAnim 慣例)
+		u.OffX = (float64(w.fromX) + cx - float64(w.toX)) * float64(g.m.TileW)
+		u.OffY = (float64(w.fromY) + cy - float64(w.toY)) * float64(g.m.TileH)
 		if w.t >= w.frames {
 			u.OffX, u.OffY = 0, 0
 			if w.then != nil {
@@ -249,6 +293,38 @@ func (g *Game) stepStoryWalks() {
 		live = append(live, w)
 	}
 	g.storyWalks = live
+}
+
+// ── 對話框切換動畫(使用者回饋 2026-07-04 #3:換人說話時框先收合再展開)──
+const dlgNone = -999    // dlgShown 無框哨兵
+const dlgAnimFrames = 7 // 縮/展各自幀數(~0.12s@60fps)
+
+// stepDlgAnim 逐幀推進對話框縮/展動畫:首句直接展開;說話者變更先縮(phase1)再換人展開(phase2)。
+func (g *Game) stepDlgAnim() {
+	show := len(g.dialog) > 0 && !(g.storyBG && g.walkFirst && len(g.storyWalks) > 0)
+	if !show {
+		g.dlgShown, g.dlgPhase, g.dlgT = dlgNone, 0, 0
+		return
+	}
+	cur := g.dialog[len(g.dialog)-1].Speaker
+	switch g.dlgPhase {
+	case 0:
+		if g.dlgShown == dlgNone { // 首句:直接展開
+			g.dlgShown, g.dlgPhase, g.dlgT = cur, 2, 0
+		} else if cur != g.dlgShown { // 換人:先收合
+			g.dlgPhase, g.dlgT = 1, 0
+		}
+	case 1:
+		g.dlgT++
+		if g.dlgT >= dlgAnimFrames {
+			g.dlgShown, g.dlgPhase, g.dlgT = cur, 2, 0
+		}
+	case 2:
+		g.dlgT++
+		if g.dlgT >= dlgAnimFrames {
+			g.dlgPhase, g.dlgT = 0, 0
+		}
+	}
 }
 
 // terrainAt 回傳某格的地形索引(戰鬥背景用;越界回 -1)。
@@ -274,7 +350,8 @@ func (g *Game) enterNode() {
 	g.storyBG = false // 預設離開場景背景模式;story+Map 節點下面再開回
 	g.storyWalks = nil
 	g.storyAutoAdvance = 0
-	g.walkFirst, g.followWalk = false, false
+	g.walkFirst, g.followWalk, g.camMaxY = false, false, 0
+	g.dlgShown, g.dlgPhase, g.dlgT = dlgNone, 0, 0
 	switch n.Type {
 	case "story":
 		g.dialog = nil
@@ -294,6 +371,7 @@ func (g *Game) enterNode() {
 			g.st, g.sel = nil, nil // 清殘留單位/選取(避免上一戰場畫面疊在新背景上)
 			g.storyBG = true
 			g.walkFirst, g.followWalk = n.WalkFirst, n.FollowWalk
+			g.camMaxY = float64(n.CamMaxY)
 			g.camX, g.camY = float64(n.CamX), float64(n.CamY)
 			g.storyActors = nil
 			for _, a := range n.Actors { // cutscene 靜態擺位(國王/王后/主角等),無 AI/戰鬥邏輯
@@ -1121,6 +1199,7 @@ func (g *Game) Update() error {
 		return nil
 	}
 	g.stepStoryWalks() // 場景走位動畫(doc46 §5.3);storyWalks 為空時內部直接返回
+	g.stepDlgAnim()    // 對話框換人縮/展動畫(使用者回饋 #3)
 	if g.fade != nil { // 場景淡出/淡入轉場(doc46 §5.2)
 		g.fade.t++
 		if g.fade.t >= g.fade.total {
@@ -1159,6 +1238,9 @@ func (g *Game) Update() error {
 			g.camY = float64(u.Y*g.m.TileH) + u.OffY + float64(g.m.TileH)/2 - float64(vh)/2
 			clamp(&g.camX, 0, float64(g.m.W*g.m.TileW-vw))
 			clamp(&g.camY, 0, float64(g.m.H*g.m.TileH-vh))
+			if g.camMaxY > 0 && g.camY > g.camMaxY { // 場景鏡頭上限(王座廳擋草地;走位者可從畫面外走入)
+				g.camY = g.camMaxY
+			}
 		}
 	} else {
 		g.camX = float64(g.curX*g.m.TileW - logicalW/2 + g.m.TileW/2)
@@ -1418,12 +1500,21 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		}
 		g.drawRing(screen)
 		g.drawSpellMenu(screen)
-		if len(g.dialog) > 0 && !(g.storyBG && g.walkFirst && len(g.storyWalks) > 0) {
+		if len(g.dialog) > 0 && !(g.storyBG && g.walkFirst && len(g.storyWalks) > 0) && g.dlgShown != dlgNone {
 			// 對話框:原版素材(FDOTHER#5 LMI1 #21,310×99 素藍細邊框)+ orig 量測佈局。
 			// walk_first 節點在進場走位期間不顯示(2-1:原版索爾走到王座前對話框才出現)。
+			// 換人說話:框先垂直收合再展開(stepDlgAnim 相位;使用者回饋 #3),相位中不畫文字/頭像。
 			dl := g.dialog[len(g.dialog)-1]
+			sc := 1.0 // 垂直縮放(1=常態)
+			switch g.dlgPhase {
+			case 1:
+				sc = 1 - float64(g.dlgT)/float64(dlgAnimFrames)
+			case 2:
+				sc = float64(g.dlgT) / float64(dlgAnimFrames)
+			}
 			// 依說話者切上/下框 + 左/右頭像(對照原版 orig_02_dialog:我方下框左頭像、對方/NPC 上框右頭像)
-			upper := dl.Speaker >= 32 // >=32 為對方/敵/NPC(我方角色 id 0-31)
+			// 相位中(收合舊框)以 dlgShown 為準,避免框在收合前就跳到新說話者的位置。
+			upper := g.dlgShown >= 32 // >=32 為對方/敵/NPC(我方角色 id 0-31)
 			// 框位置:模板匹配 orig 下框 (5,112)@320(底部裁 11px 超出畫面,原版如此);上框鏡射 y=-11
 			bx, by := 10.0, 224.0
 			if upper {
@@ -1432,57 +1523,60 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			top := by
 			if g.dlgBox != nil {
 				op := &ebiten.DrawImageOptions{}
-				op.GeoM.Scale(2, 2)
-				op.GeoM.Translate(bx, by)
+				op.GeoM.Scale(2, 2*sc)
+				op.GeoM.Translate(bx, by+(1-sc)*99) // 以框垂直中心收合
 				screen.DrawImage(g.dlgBox, op)
 			} else { // 無素材 fallback:純色框
 				box := ebiten.NewImage(620, 198)
 				box.Fill(color.RGBA{0x2c, 0x44, 0x84, 0xf2})
 				op := &ebiten.DrawImageOptions{}
-				op.GeoM.Translate(bx, by)
+				op.GeoM.Scale(1, sc)
+				op.GeoM.Translate(bx, by+(1-sc)*99)
 				screen.DrawImage(box, op)
 			}
-			// 頭像:側臉,收進框內(不凸出框頂),臉朝文字(對照 orig_02:我方左朝右、對方上框右朝左)。
-			const ps = 2.1 // 80×80 DATO → 168px,收進框高(~176px)內
-			hx, tx, ty := 16.0, 216.0, by+24
-			hy := float64(logicalH) - 80*ps - 8 // 下框:頭像底距畫布底 8px,頭頂在框內
-			if upper {
-				hx = float64(logicalW) - 16 - 80*ps
-				hy = by + 12 // 上框:頭像收在框內(頭頂距框頂 12px)
-				tx = 32
-				ty = by + 46
-			}
-			if fr := g.portraits[dl.Speaker]; len(fr) > 0 {
-				mi := 0
-				if g.mouthOpen && len(fr) > 3 {
-					mi = 3
+			if g.dlgPhase == 0 { // 縮/展相位中不畫頭像與文字
+				// 頭像:側臉,收進框內(不凸出框頂),臉朝文字(對照 orig_02:我方左朝右、對方上框右朝左)。
+				const ps = 2.1 // 80×80 DATO → 168px,收進框高(~176px)內
+				hx, tx, ty := 16.0, 216.0, by+24
+				hy := float64(logicalH) - 80*ps - 8 // 下框:頭像底距畫布底 8px,頭頂在框內
+				if upper {
+					hx = float64(logicalW) - 16 - 80*ps
+					hy = by + 12 // 上框:頭像收在框內(頭頂距框頂 12px)
+					tx = 32
+					ty = by + 46
 				}
-				// 原生 DATO 面朝右;要臉朝文字:下框(頭像在左)朝右=鏡像、上框(頭像在右)朝左=不鏡像。
-				po := &ebiten.DrawImageOptions{}
-				if upper { // 上框:頭像在右,臉朝左文字 → 原生朝右不鏡像
-					po.GeoM.Scale(ps, ps)
-					po.GeoM.Translate(hx, hy)
-				} else { // 下框:頭像在左,臉朝右文字 → 鏡像
-					po.GeoM.Scale(-ps, ps)
-					po.GeoM.Translate(hx+80*ps, hy)
+				if fr := g.portraits[dl.Speaker]; len(fr) > 0 {
+					mi := 0
+					if g.mouthOpen && len(fr) > 3 {
+						mi = 3
+					}
+					// 原生 DATO 面朝右;要臉朝文字:下框(頭像在左)朝右=鏡像、上框(頭像在右)朝左=不鏡像。
+					po := &ebiten.DrawImageOptions{}
+					if upper { // 上框:頭像在右,臉朝左文字 → 原生朝右不鏡像
+						po.GeoM.Scale(ps, ps)
+						po.GeoM.Translate(hx, hy)
+					} else { // 下框:頭像在左,臉朝右文字 → 鏡像
+						po.GeoM.Scale(-ps, ps)
+						po.GeoM.Translate(hx+80*ps, hy)
+					}
+					screen.DrawImage(fr[mi], po)
+				} else {
+					tx = 32
 				}
-				screen.DrawImage(fr[mi], po)
-			} else {
-				tx = 32
-			}
-			// 自動換行(框右緣內;原版每框最多 3 行,doc14)
-			txt := []rune("『" + toFullWidth(dl.Text) + "』")
-			perLine := int((bx + 620 - 16 - tx) / (fontSize * 1.7)) // 全形字寬 ≈ fontSize×scale
-			if perLine < 1 {
-				perLine = 1
-			}
-			for i := 0; len(txt) > 0 && i < 3; i++ {
-				n := perLine
-				if n > len(txt) {
-					n = len(txt)
+				// 自動換行(框右緣內;原版每框最多 3 行,doc14)
+				txt := []rune("『" + toFullWidth(dl.Text) + "』")
+				perLine := int((bx + 620 - 16 - tx) / (fontSize * 1.7)) // 全形字寬 ≈ fontSize×scale
+				if perLine < 1 {
+					perLine = 1
 				}
-				g.font.Draw(screen, string(txt[:n]), tx, ty+float64(i)*38, 1.7, color.RGBA{0xf0, 0xf4, 0xff, 0xff})
-				txt = txt[n:]
+				for i := 0; len(txt) > 0 && i < 3; i++ {
+					n := perLine
+					if n > len(txt) {
+						n = len(txt)
+					}
+					g.font.Draw(screen, string(txt[:n]), tx, ty+float64(i)*38, 1.7, color.RGBA{0xf0, 0xf4, 0xff, 0xff})
+					txt = txt[n:]
+				}
 			}
 			_ = top
 		}
