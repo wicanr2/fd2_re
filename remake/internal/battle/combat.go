@@ -137,7 +137,7 @@ func (s *State) estDamage(u, t *Unit) int {
 	return ap - dp
 }
 
-// aiActUnit 一個 AI 單位的行動:挑最佳目標,移到相鄰可達格,能打就打(doc11 評分式簡化版)。
+// aiActUnit 一個 AI 單位的行動:挑最佳目標,移到攻擊範圍內可達格,能打就打(doc11 評分式簡化版)。
 func (s *State) aiActUnit(u *Unit) {
 	// 1. 找最佳目標:可造成最大傷害者(dmg×擊殺加成);dmg≤2 視為不值得(但仍可能當移動目標)
 	var best *Unit
@@ -161,7 +161,7 @@ func (s *State) aiActUnit(u *Unit) {
 	if best == nil {
 		return
 	}
-	// 2. 已相鄰 → 直接打
+	// 2. 已在攻擊範圍內(InAttackRange 依武器射程判定,doc32) → 直接打
 	if s.InAttackRange(u, best.X, best.Y) {
 		s.Attack(u, best)
 		return

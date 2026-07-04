@@ -832,9 +832,9 @@ func (g *Game) ringInput() bool {
 		switch g.ringSel {
 		case 0: // 道具(未實裝)
 			g.msg = "道具:尚未實裝"
-		case 1: // 攻擊 → 關環,進選目標(游標相鄰敵)
+		case 1: // 攻擊 → 關環,進選目標(游標移到攻擊範圍內的敵人;範圍依武器射程,doc32)
 			g.ring = false
-			g.msg = "攻擊:選擇相鄰目標"
+			g.msg = "攻擊:選擇目標"
 		case 2: // 魔法(有法術者)/狀態
 			if len(g.sel.Spells) > 0 {
 				if g.sel.Sealed {
@@ -1245,7 +1245,7 @@ func (g *Game) confirm() {
 		}
 		return
 	}
-	// 攻擊階段:游標在相鄰敵 → 攻擊;在自己格 → 待命
+	// 攻擊階段:游標在攻擊範圍內的敵 → 攻擊;在自己格 → 待命
 	if tgt := g.st.UnitAt(g.curX, g.curY); tgt != nil && tgt != g.sel &&
 		tgt.Camp != battle.Own && g.st.InAttackRange(g.sel, g.curX, g.curY) {
 		// 攻擊者面向目標(FDICON 方向幀)
@@ -1426,6 +1426,20 @@ func (g *Game) Update() error {
 				g.dialog = nil // 清開場對白(避免蓋住演出)
 				fig, _ := strconv.Atoi(v)
 				g.atk = g.newAtkAnim(fig, 96, "亞雷斯", "盜賊", 48, 48, 1, 0, 2, 0, 28, 8, 28, 0, true)
+			}
+			if os.Getenv("FD2_SHOT_ATKSEL") != "" { // 截圖驗證:選單位→原地開環→模擬環選「攻擊」(ringSel==1)
+				// 關環,進攻擊目標選擇階段(驗證武器攻擊距離高亮,doc32;搭配 FD2_SHOT_CUR 指定選哪個單位)。
+				// 環的 case1 本身由 ringInput() 真實按鍵觸發(inpututil 偵測,截圖模式無法送假按鍵),
+				// 這裡直接複製 case1 的狀態轉移(g.ring=false),不能改呼叫 g.confirm() 三次
+				// (ring 開啟時 confirm() 不會攔下,會落到「在自己格→待命」把 g.sel 清掉)。
+				g.dialog = nil
+				g.confirm() // 選取游標上的單位
+				g.confirm() // 原地(游標未動)→ 開指令環(moved=true, ring=true, ringSel=1)
+				g.ring = false
+				g.msg = "攻擊:選擇目標"
+				if v := os.Getenv("FD2_SHOT_CUR2"); v != "" { // 進攻擊階段後把游標挪開(驗證高亮不被HUD面板擋住)
+					fmt.Sscanf(v, "%d,%d", &g.curX, &g.curY)
+				}
 			}
 		}
 		if g.shotSeries != "" { // 逐幀模式:演出播完才退出
@@ -1673,6 +1687,21 @@ func (g *Game) Draw(screen *ebiten.Image) {
 						op := &ebiten.DrawImageOptions{}
 						op.GeoM.Translate(float64(x*tw)-g.camX, float64(y*th)-g.camY)
 						target.DrawImage(ch, op)
+					}
+				}
+			}
+		}
+		// 攻擊射程高亮(紅;已移動、選攻擊、尚未選中目標的階段,doc32 武器攻擊距離接線 —
+		// 沒有這格高亮,槍兵2格射程會「打得到但畫面看不出範圍」)
+		if g.castSp == nil && g.moved && !g.ring && !g.spellOpen {
+			ah := ebiten.NewImage(tw, th)
+			ah.Fill(color.RGBA{0xe0, 0x30, 0x30, 0x5c})
+			for y := 0; y < g.m.H; y++ {
+				for x := 0; x < g.m.W; x++ {
+					if g.st.InAttackRange(g.sel, x, y) {
+						op := &ebiten.DrawImageOptions{}
+						op.GeoM.Translate(float64(x*tw)-g.camX, float64(y*th)-g.camY)
+						target.DrawImage(ah, op)
 					}
 				}
 			}

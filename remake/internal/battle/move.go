@@ -47,7 +47,9 @@ func (s *State) MoveCost(x, y int) int {
 	return s.Cost[y*s.W+x]
 }
 
-// InAttackRange 目標是否在攻擊範圍(M1:相鄰 4 格的近戰;遠程之後加)。
+// InAttackRange 目標是否在攻擊範圍(曼哈頓距離落在 [AtkMin,AtkMax] 內;doc32 依武器
+// type 決定,如騎士槍type3=[1,2]。AtkMin/AtkMax 未設(0)一律視為預設 1,等同舊版
+// 「只查相鄰 4 格」行為不變)。
 func (s *State) InAttackRange(u *Unit, tx, ty int) bool {
 	dx, dy := tx-u.X, ty-u.Y
 	if dx < 0 {
@@ -56,7 +58,15 @@ func (s *State) InAttackRange(u *Unit, tx, ty int) bool {
 	if dy < 0 {
 		dy = -dy
 	}
-	return dx+dy == 1
+	d := dx + dy
+	min, max := u.AtkMin, u.AtkMax
+	if min == 0 {
+		min = 1
+	}
+	if max == 0 {
+		max = 1
+	}
+	return d >= min && d <= max
 }
 
 // Path 回傳 u 走到 (tx,ty) 的逐格路徑(含起點;BFS,同 Reachable 規則)。不可達回 nil。

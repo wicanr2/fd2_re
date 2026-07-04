@@ -25,13 +25,15 @@ type Scenario struct {
 type PartyMember struct {
 	Name     string `json:"name"`
 	Cls      string `json:"cls"`
-	Fig      int    `json:"fig"`      // sprite 組 = 角色 id(恆等,doc 31)
+	Fig      int    `json:"fig"` // sprite 組 = 角色 id(恆等,doc 31)
 	Portrait int    `json:"portrait"`
 	HP       int    `json:"hp"`
 	MP       int    `json:"mp"`
 	AP       int    `json:"ap"`
 	DP       int    `json:"dp"`
 	MV       int    `json:"mv"`
+	AtkMin   int    `json:"atk_min"` // 攻擊距離下限(0=預設1;doc32 weapon_range.json)
+	AtkMax   int    `json:"atk_max"` // 攻擊距離上限(0=預設1;如亞雷斯騎士槍type3=2)
 	Lv       int    `json:"lv"`
 	Spells   []int  `json:"spells"` // 已習得法術 id(spell.json)
 }
@@ -158,6 +160,7 @@ func (sc *Scenario) exec(st *State, a Action) (DialogLine, bool) {
 			st.AddUnit(&Unit{
 				Camp: Own, Name: pm.Name, ClsName: pm.Cls, Lv: pm.Lv,
 				HP: pm.HP, MaxHP: pm.HP, MP: pm.MP, AP: pm.AP, DP: pm.DP, MV: pm.MV,
+				AtkMin: pm.AtkMin, AtkMax: pm.AtkMax,
 				Portrait: pm.Portrait, Fig: pm.Fig, X: x, Y: y, OnField: true, Spells: pm.Spells,
 				Dir: 0, // 直接定位,面向鏡頭待機(無進場動畫)
 			})

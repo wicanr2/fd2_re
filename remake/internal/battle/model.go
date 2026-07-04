@@ -43,6 +43,8 @@ type Unit struct {
 	// 敵/友單位 10B 表無此欄,export_units.py 暫用固定近似值,見該檔頭註解)
 	CritPct  int // 暴擊率(doc03 職業暴擊率表 0x5219B,resist_crit.json,依 class 已驗證吻合 doc02 §7.2)
 	MV       int // 移動力
+	AtkMin   int // 近戰攻擊距離下限(曼哈頓距離;0 視為預設 1,doc32 weapon_range.json 依武器 type 決定)
+	AtkMax   int // 近戰攻擊距離上限(0 視為預設 1;例:騎士槍type3=2,doc32)
 	Portrait int
 	Fig      int // 地圖 sprite 組(= 角色 id,恆等,doc 31)
 	X, Y     int
@@ -202,7 +204,9 @@ type unitsFile struct {
 		EV      int    `json:"ev"`
 		Crit    int    `json:"crit"`
 		MV      int    `json:"mv"`
-		Ex      int    `json:"ex"` // 每級經驗(doc02 §4.5「守方每級經驗」;export_units.py 新增欄,
+		AtkMin  int    `json:"atk_min"` // 攻擊距離下限(0=預設1;沒此欄的舊版 units.json 一律 0,doc32)
+		AtkMax  int    `json:"atk_max"` // 攻擊距離上限(0=預設1)
+		Ex      int    `json:"ex"`      // 每級經驗(doc02 §4.5「守方每級經驗」;export_units.py 新增欄,
 		// 舊版 units.json 沒有此欄時 json.Unmarshal 留 0,見 Unit.ExpPerLevel 註解)
 		Portrait int `json:"portrait"`
 		Fig      int `json:"fig"`
@@ -240,6 +244,7 @@ func Load(path string) (*State, error) {
 			Camp: camp, Name: u.Name, ClsName: u.ClsName, Lv: u.Lv,
 			HP: u.HP, MaxHP: u.HP, MP: u.MP, AP: u.AP, DP: u.DP, MV: u.MV,
 			HIT: u.HIT, EV: u.EV, CritPct: u.Crit, ExpPerLevel: u.Ex,
+			AtkMin: u.AtkMin, AtkMax: u.AtkMax,
 			Portrait: u.Portrait, Fig: u.Fig, X: u.X, Y: u.Y, Spells: u.Spells,
 			Group: u.Group, OnField: true, // 預設登場;Scenario 會把待命 group 設 false
 		}
