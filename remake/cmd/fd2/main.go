@@ -1438,10 +1438,10 @@ func (g *Game) Update() error {
 	if g.m == nil {
 		return nil
 	}
-	g.stepStoryWalks() // 場景走位動畫(doc46 §5.3);storyWalks 為空時內部直接返回
-	g.stepActJob()     // beat「act」姿態循環(doc50);actJob 為空時內部直接返回
-	g.stepDlgAnim()    // 對話框換人縮/展動畫(使用者回饋 #3)
-	g.stepFade() // 場景淡出/淡入轉場(doc46 §5.2;beat「fade」兩個方向都靠 then 接回下一拍)
+	g.stepStoryWalks()                           // 場景走位動畫(doc46 §5.3);storyWalks 為空時內部直接返回
+	g.stepActJob()                               // beat「act」姿態循環(doc50);actJob 為空時內部直接返回
+	g.stepDlgAnim()                              // 對話框換人縮/展動畫(使用者回饋 #3)
+	g.stepFade()                                 // 場景淡出/淡入轉場(doc46 §5.2;beat「fade」兩個方向都靠 then 接回下一拍)
 	if g.camp != nil && g.storyAutoAdvance > 0 { // 無對白節點自動轉場倒數(行軍蒙太奇)
 		g.storyAutoAdvance--
 		if g.storyAutoAdvance == 0 {

@@ -58,20 +58,15 @@
  },
  "nodes": {
   "story_ch01_palace_throne": {
-   "type": "story",
+   "type": "cutscene",
    "bgm": "FDMUS_010",
    "script": "assets/story/ch00_palace.json",
    "scene": "王座廳,傳位",
-   "lines": [
-    {
-     "speaker": -1,
-     "text": "第1章:初試身手"
-    }
-   ],
    "next": "story_ch01_palace_path",
    "map": "assets/maps/map32",
-   "cam_x": 44,
-   "cam_y": 808,
+   "cam_x": 0,
+   "cam_y": 0,
+   "cam_max_y": 808,
    "actors": [
     {
      "fig": 48,
@@ -184,34 +179,26 @@
     {
      "fig": 0,
      "x": 8,
-     "y": 8,
-     "dir": 2,
-     "from_x": 8,
-     "from_y": 42,
-     "walk_frames": 450
+     "y": 42,
+     "dir": 2
     }
    ],
-   "exit_walk": {
-    "fig": 0,
-    "to_x": 8,
-    "to_y": 14,
-    "frames": 90
-   },
-   "walk_first": true,
-   "follow_walk": true,
-   "cam_max_y": 808
+   "beats": [
+    { "op": "pan", "x": 72, "y": 480, "frames": 60 },
+    { "op": "walk", "fig": 0, "x": 8, "y": 21, "frames": 278, "follow": true },
+    { "op": "dialog", "line": 0, "count": 1 },
+    { "op": "pan", "x": 72, "y": 120, "frames": 45 },
+    { "op": "dialog", "line": 1, "count": 1 },
+    { "op": "pan", "x": 72, "y": 0, "frames": 39 },
+    { "op": "dialog", "line": 2, "count": 17 },
+    { "op": "walk", "fig": 0, "x": 8, "y": 14, "frames": 90 }
+   ]
   },
   "story_ch01_palace_path": {
-   "type": "story",
+   "type": "cutscene",
    "bgm": "FDMUS_010",
    "script": "assets/story/ch00_palace.json",
    "scene": "王城一隅,亞雷斯撞見",
-   "lines": [
-    {
-     "speaker": -1,
-     "text": "第1章:初試身手"
-    }
-   ],
    "next": "story_ch01_forest_duel",
    "map": "assets/maps/map32",
    "cam_x": 56,
@@ -230,26 +217,26 @@
      "dir": 1
     }
    ],
+   "beats": [
+    { "op": "dialog", "line": 0, "count": 22 }
+   ],
    "exit_walks": [
     { "fig": 0, "to_x": 6, "to_y": 48, "frames": 60 },
     { "fig": 4, "to_x": 15, "to_y": 49, "frames": 60 }
    ]
   },
   "story_ch01_forest_duel": {
-   "type": "story",
+   "type": "cutscene",
    "bgm": "FDMUS_010",
    "script": "assets/story/ch00_meadow.json",
    "scene": "比劍邀約",
-   "lines": [
-    {
-     "speaker": -1,
-     "text": "第1章:初試身手"
-    }
-   ],
    "next": "story_ch01_forest_discover",
    "map": "assets/maps/map31",
    "cam_x": 160,
    "cam_y": 1020,
+   "beats": [
+    { "op": "dialog", "line": 0, "count": 5 }
+   ],
    "actors": [
     {
      "fig": 0,
