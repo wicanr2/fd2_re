@@ -1,63 +1,120 @@
-# 炎龍騎士團2 逆向工程知識庫 — 索引
+# 炎龍騎士團2 逆向工程知識庫 — 索引(問題導向路由)
 
-> 《炎龍騎士團2》(Flame Dragon Knight 2)，漢堂國際 1995，DOS / DOS4GW 保護模式。
-> 本知識庫由逆向工程逐輪累積。**每一輪的 RE 發現與反思都必須寫進這裡**；
-> 後輪推翻前輪結論時，回去修正或刪除舊敘述，不堆積矛盾。
+> 《炎龍騎士團2》(Flame Dragon Knight 2),漢堂國際 1995,DOS / DOS4GW 保護模式。
+> 由逆向工程逐輪累積。**每輪 RE 發現與反思都寫進這裡**;後輪推翻前輪時回去修正/刪除,不堆矛盾。
+>
+> **用法**:先看下面「§A 問題 → 查哪份」路由表定位;§B 完整文件清單;§C 機器可讀資料(別忘了用)。
 
-## 文件清單
+---
 
-| 檔案 | 內容 | 主要來源 |
-|---|---|---|
-| `01-container-and-asset-formats.md` | `.DAT` 容器格式、圖像/調色盤/文本/地形資產格式 | 第 1 輪 RE(實檔驗證) |
-| `02-game-data-reference.md` | 裝備/法術/人物/屬性/公式一覽 | 青衫攻略萃取 |
-| `03-exe-and-data-structures.md` | `FD2.EXE` 內資料表 offset、單位/物品/法術/地圖結構 | 青衫攻略 + 實檔驗證 |
-| `04-original-toolchain.md` | **當年開發工具考證**(Watcom/DOS4GW/Miles AIL/AFM) | 第 2 輪 binary 取證 |
-| `05-image-compression-format.md` | **圖像 RLE 壓縮格式**完整規格 | 第 2 輪 RE(視覺驗證) |
-| `06-animation-format.md` | **動畫機制(AFM)**容器與幀結構 | 第 2–3 輪 RE |
-| `07-music-xmidi-format.md` | **音樂 XMIDI 格式**與轉換 | 第 2 輪 RE(結構驗證) |
-| `08-text-and-font-format.md` | **文本格式 + 自製 16×16 字型**(可還原中文) | 第 3 輪 RE(視覺驗證) |
-| `09-story-and-dialogue.md` | 劇情/對話結構(說話者+控制碼)與抽取方法 | 第 3 輪 RE |
-| `10-sprite-rendering-camp-and-state.md` | 敵/我方與狀態的動畫機制(解碼器變體/陣營著色/面向) | 第 3 輪 RE(反組譯) |
-| `11-enemy-ai.md` | 戰場 AI:敵人/NPC 行動決策(目標評分/移動/地形) | 第 3 輪 RE(反組譯) |
-| `12-music-playback-and-scene.md` | 音樂播放(Miles AIL/XMIDI 序列)與場景切換換曲 | 第 3 輪 RE(反組譯) |
-| `13-battle-menu-system.md` | 戰場選單與行動系統(行動狀態機/選單游標/Get_EasyMagic) | 第 3 輪 RE(反組譯) |
-| `14-text-control-codes.md` | 文本控制碼與對話框機制(開框/頭像/換行/翻頁) | 第 5 輪 RE(反組譯) |
-| `16-audio-synthesis-soundfont-mt32.md` | 音色合成:SoundFont/MT-32/版本切換(含 MDI 驅動說明) | 評估+RE |
-| `17-scenario-expansion-evaluation.md` | 擴充劇本/玩法(戰場/對話/商店/機制)可行性評估 | 評估 |
-| `18-font-modernization-utf8-ttf-plan.md` | 字型現代化規劃:UTF-8 + TTF 渲染(重製) | 規劃 |
-| `19-scenario-script-system-design.md` | 劇本/關卡腳本系統設計(可分支節點圖/敗北路線/擴充) | 設計 |
-| `20-first-principles-feasibility.md` | 第一性原理:重製可行性再確認 | 確認 |
-| `21-go-ebiten-remake-plan.md` | Go/Ebiten 重製架構規劃(桌面/Web/手機) | 規劃 |
-| `22-remake-tech-validation.md` | 重製技術驗證(桌面 ELF + WASM + 資產管線實證) | 確認 |
-| `23-boot-title-and-scenario-flow.md` | 開機/標題動畫/主選單/劇情自動過場(反組譯+解圖驗證) | 反組譯 |
-| `24-callgraph-analysis-log.md` | Call-graph 逐步反組譯紀錄(釘死 cutscene→戰場鏈,排除偽命中) | 反組譯 |
-| `25-battle-event-system.md` | 戰場事件系統:章節 handler 跳表 0x51b19 + 事件原語(非 byte-code) | 反組譯 |
-| `26-per-chapter-event-handlers.md` | 逐關事件 handler 細節 + 腳本化對照(battle_events.json,供 remake 去 hardcoding) | 反組譯 |
-| `27-combat-rules-and-validation-checklist.md` | 戰鬥規則來源(青衫公式)+ 需動態實機驗證清單 + 回合無上限需求 | 規劃 |
-| `28-chapter-objectives-and-recruits.md` | 全 30 關勝利/失敗/加入條件(攻略 ground truth × handler 驗證) | 規劃 |
-| `29-remake-extensible-event-system.md` | remake 可擴展事件系統(trigger/when/do DSL + 事件控制碼) | 規劃 |
-| `30-remake-work-breakdown.md` | remake 工作拆解 WBS(模組/資料管線/WP/衝刺) | 規劃 |
-| `31-map-unit-sprites-fdicon.md` | 地圖單位 sprite:FDICON Q版小人(1680×24×24)+ 待機動畫 | 反組譯 |
-| `32-item-combat-stats-re.md` | 物品/戰鬥數值反組譯(物品表/傷害鏈;裝備加成待續) | 反組譯 |
-| `36-sfx-audio-data.md` | **音效(SFX)資料位置與格式**:`FDOTHER.DAT` #31 巢狀容器 = 8-bit unsigned PCM | 反組譯 |
-| `15-how-fd2-was-made-1995.md` | **總覽:1995 年怎麼做出炎龍騎士團2**(綜合全紀錄) | 綜合 |
-| `90-re-plan.md` | 分階段逆向與重製計畫 | 規劃 |
-| `91-worklist.md` | 逐輪 worklist(依序執行) | 逐輪更新 |
-| `99-reflections-log.md` | 逐輪反思日誌(lessons learned) | 逐輪更新 |
+## §A 問題 → 查哪份文件(路由表)
 
-> `04`–`08` 同時是「1995 年台灣怎麼做遊戲」的技術保存紀錄。對應工具在 `tools/`。
+### 過場 / 開場動畫 / 劇情演出(近期主線)
+| 我想知道… | 查 |
+|---|---|
+| 第一章**開場**逐幕時間軸(王座廳→草地→密林→行軍→海島)、remake 差異 | **`46`**(影片 ground truth,最準的視覺時間軸) |
+| 開場 handler `0x3231b` **完整指令序列**(每 beat 的 call+參數+語意) | **`47`**(§3/§7 逐 beat 全轉錄) |
+| 過場**原語**(pan/走位/對白/演出/spawn/入隊)怎麼運作、位址 | `47` §2 + `50` §1 |
+| 「兩套腳本系統」——開場 cutscene vs 戰鬥中事件對話,界線在哪 | **`52`** §0(**先讀這個再碰過場**) |
+| 某句對白**第幾回合/什麼事件**觸發(哈諾/海盜頭目/海防隊) | **`ch01.json` events** + `26` + `battle_events.json` + `52` §1.2 |
+| 索爾四人**怎麼進戰場**(進場動畫/站位) | `52` §1.1 + `46` §4(⚠ 進場動畫細節待 dosbox 定稿) |
+| 「走位」機制(單位步進 vs 鏡頭移動)、單位結構欄位 +0/+1/+3/+4 | `47` §9(dosbox 實測閉環) |
+| remake 過場**引擎**(BeatRunner / cutscene 節點 / beats DSL)怎麼設計 | **`50`**(§2 DSL,§3 全33關管線) |
+| 全 33 關過場 beats(機器可讀) | `docs/data/chapter_beats/chNN_{pre,post}.json` |
+| 開機/標題/主選單/劇情自動過場流程(反組譯) | `23` + `39`(ANI.DAT AFM 開場) |
+
+### 角色 / 單位 / 數值
+| 我想知道… | 查 |
+|---|---|
+| portrait/char id → **角色名** | **`49`** + `docs/data/portrait_names.json`(證據分級) |
+| 說話者 id 兩種定址(-17/-18 全域 vs -19/-20 場景) | `40` |
+| 職業名顯示錯位(海盜→劍士 bug) | `45` |
+| **武器/攻擊範圍/物品數值**(靜態表,不需 debugger) | `32` + `02` + `03`(青衫+反組譯) |
+| **法術**(id→特效、效果、面板) | `37` + `02` + `13`(Get_EasyMagic) |
+| 戰鬥公式(命中/暴擊/傷害/**成長**) | `02` §4 + `27` + `internal/battle/growth.go` |
+| 敵/NPC **AI** 決策 | `11` |
+| 全 30 關**目標/勝敗/加入條件** | `28` + `docs/data/battle_events.json` |
+| 逐關戰鬥事件 handler 細節 | `25`(機制)+ `26`(逐關)+ `battle_events.json` |
+| 地圖單位 sprite(FDICON Q版小人/待機動畫) | `31` |
+
+### 資產格式(RE 完成度高)
+| 我想知道… | 查 |
+|---|---|
+| `.DAT` 容器 / 圖像 / 調色盤 / 地形格式 | `01` |
+| 圖像 RLE 壓縮 | `05` |
+| 動畫(FIGANI/AFM)格式 | `06` + `39`(ANI.DAT) |
+| 全螢幕戰鬥演出繪圖 | `35` |
+| 文本 / 自製字型 / 控制碼 | `08` + `09` + `14` |
+| 音樂 XMIDI / 播放換曲 / 音色(SoundFont/MT-32) | `07` + `12` + `16` |
+| 音效 SFX 資料 | `36` + `docs/data/battle_sfx_map.json` |
+| EXE 資料表 offset / 核心結構 | `03` |
+
+### remake(Go/Ebiten)
+| 我想知道… | 查 |
+|---|---|
+| 重製架構 / 三平台 / 工作拆解 | `21` + `30` + `22`(技術驗證) |
+| 字型現代化(UTF-8/TTF) | `18` |
+| 劇本/事件系統設計(節點圖/可擴展 DSL) | `19` + `29` |
+| **試玩落差清單**(結束回合/武器射程/法術/狀態欄/對話框) | **`51`**(最新)+ `42` + `44` |
+| 打包(AppImage/Win/macOS) | `41` |
+| 編輯器設計 | `38` |
+| 可行性 / 第一性原理 | `20` |
+
+### 工具 / 方法
+| 我想做… | 查 |
+|---|---|
+| **dosbox-x debugger**(建置/BP trace/dump/BPLM 判死) | **`48`** |
+| Call-graph 反組譯方法紀錄 | `24` |
+| 當年開發工具考證 | `04` |
+| 「1995 年怎麼做這遊戲」總覽 | `15` |
+
+### 專案管理
+| | 查 |
+|---|---|
+| 這輪做什麼 / 待辦 | `91`(worklist) |
+| 逐輪反思 / 踩雷 | `99`(reflections) |
+| 計畫 | `90` |
+
+---
+
+## §B 完整文件清單(依編號)
+
+`01`容器/資產 · `02`遊戲數值(青衫) · `03`EXE表/結構 · `04`開發工具考證 · `05`圖像RLE · `06`動畫AFM ·
+`07`XMIDI · `08`文本/字型 · `09`劇情/對話 · `10`sprite著色/狀態 · `11`AI · `12`音樂播放/場景 ·
+`13`戰場選單 · `14`文本控制碼 · `15`1995怎麼做(總覽) · `16`音色合成 · `17`擴充可行性 · `18`字型現代化 ·
+`19`劇本系統設計 · `20`第一性原理可行性 · `21`Go/Ebiten架構 · `22`技術驗證 · `23`開機/標題/過場流程 ·
+`24`callgraph紀錄 · `25`戰場事件系統 · `26`逐關事件handler · `27`戰鬥規則+驗證清單 · `28`全30關目標 ·
+`29`可擴展事件系統 · `30`工作拆解WBS · `31`FDICON地圖sprite · `32`物品/戰鬥數值 · `35`戰鬥演出繪圖 ·
+`36`SFX · `37`法術特效對映 · `38`編輯器設計 · `39`ANI.DAT AFM · `40`說話者→頭像查表 · `41`打包 ·
+`42`RE-vs-remake稽核 · `44`第一章對照 · `45`職業名錯位 · `46`第一章開場時間軸 · `47`序章handler全轉錄 ·
+`48`dosbox-x debugger · `49`char id→角色名 · `50`過場腳本系統設計 · `51`試玩落差R2 · `52`戰場分鏡+兩套系統 ·
+`90`計畫 · `91`worklist · `99`反思
+
+(缺號 33/34/43 = 曾用後併入他篇或未建。)
+
+---
+
+## §C 機器可讀資料 + 本機 dump(別忘了用!)
+
+**入庫(`docs/data/`,可公開整理)**:
+- `chapter_beats/chNN_{pre,post}.json`(+`_stats.json`)— 全 33 關過場 beats(系統 A),`50` 產出
+- `battle_events.json` — 全 30 關戰鬥事件(系統 B),`26` 產出
+- `portrait_names.json` — char id→角色名(證據分級),`49`
+- `turn_events.json` / `event_id_groups.json` / `shops.json` / `battle_sfx_map.json` — 事件/商店/音效
+- `glyph_map.json` / `unicode_to_glyph.json` — 字型對照
+- `exe_tables/` — EXE dump 出的數值表
+- `campaign_sample.json` — 節點圖範例
+
+**本機 dump(`extracted/`,gitignore,版權物,不上 GitHub)**:
+- **`dosbox_dump/acting_decoded/acting_decoded_throne.txt`** — **74 筆演出(acting)完整解碼**(每 id 的幀/拍數/單位/pose)。
+  ⚠ **這份已解出但 remake 尚未接用**(BeatRunner `act` 目前只是方向切換近似)——接上它才能忠實重現原版演出。
+- `dosbox_dump/out/*.bin` — 單位陣列槽 dump、acting 資源原始 bytes、鏡頭/單位數快照(`47`/`48` 實測證據)
+- `extracted/maps/` `extracted/images/` `extracted/story/` 等 — 解出的地圖/圖/劇情文本(玩家自備原版跑 tools 解)
+
+---
 
 ## 標註慣例
+- **[已驗證]** 原版實檔/反組譯/dosbox 交叉確認 · **[假設]** 待後輪確認/推翻 · **[攻略]** 青衫玩家觀測(實作以反組譯為準)
 
-- **[已驗證]** — 已在原版實檔 / 反組譯交叉確認。
-- **[假設]** — 合理推論但尚未驗證，後輪需確認或推翻。
-- **[攻略]** — 來自青衫攻略的玩家觀測值，實作時以反組譯為準。
-
-## 原始素材位置(不納入 git，不散布)
-
-- 遊戲本體：`org_game/炎龍騎士團/FLAME2/`(`FD2.EXE` + `*.DAT` 資產 + Miles 音效驅動)
-- 攻略備份：`references/`(青衫圖文攻略離線鏡像)
-
-## 工具
-
-- `tools/unpack_dat.py` — 通用 `.DAT` 容器解包器(第 1 輪)。
+## 原始素材(不入 git,不散布)
+- 遊戲本體 `org_game/炎龍騎士團/FLAME2/` · 攻略鏡像 `references/` · 原版錄影 `video/`(ground truth)
