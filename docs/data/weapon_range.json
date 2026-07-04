@@ -1,0 +1,1654 @@
+{
+  "_meta": {
+    "說明": "武器攻擊距離[min,max]。主證據=item.json range[2]欄直讀(dump_exe_tables.py 逐筆解 EXE bytes,非猜測/外推)。每 type 的「標準射程」取該 type 中『item.md 無射程修正註記』物品的 range 值(若這些物品彼此不一致則標 conflict,不取眾數蓋牌);有註記物品(射程±N/N格攻距)則核對其 range 是否等於「標準值套用該修正」,逐筆記錄比對結果。215 筆物品全數交叉,僅 0x4F 光束砲語意存疑。",
+    "來源腳本": "tools/dump_exe_tables.py",
+    "交叉驗證": "references/text/item.md(青衫攻略射程/格攻距註記)"
+  },
+  "type_standard_range": {
+    "1": {
+      "category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "range": [
+        1,
+        1
+      ],
+      "confidence": "high",
+      "n_no_note": 20,
+      "n_total": 24,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 由該type中20筆『item.md無射程修正註記』物品的range值一致得出(非眾數猜測,是無修正物品的實際直讀值)"
+    },
+    "3": {
+      "category": "槍矛(刺矛~聖之槍,0x14-0x1F)",
+      "range": [
+        1,
+        2
+      ],
+      "confidence": "high",
+      "n_no_note": 11,
+      "n_total": 12,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 由該type中11筆『item.md無射程修正註記』物品的range值一致得出(非眾數猜測,是無修正物品的實際直讀值)"
+    },
+    "4": {
+      "category": "斧鎚(手斧~魔神斧,0x20-0x2B)",
+      "range": [
+        1,
+        1
+      ],
+      "confidence": "high",
+      "n_no_note": 11,
+      "n_total": 12,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 由該type中11筆『item.md無射程修正註記』物品的range值一致得出(非眾數猜測,是無修正物品的實際直讀值)"
+    },
+    "5": {
+      "category": "弓(短弓~風神弓+十字弓/水晶弓/火神弓,0x2C-0x33,0x61,0x62,0x68)",
+      "range": [
+        2,
+        4
+      ],
+      "confidence": "high",
+      "n_no_note": 4,
+      "n_total": 11,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 由該type中4筆『item.md無射程修正註記』物品的range值一致得出(非眾數猜測,是無修正物品的實際直讀值); item.md明文標準射程=[2, 4],與直讀基準一致"
+    },
+    "6": {
+      "category": "棍棒/法杖(長棍~光之杖,0x34-0x3D)",
+      "range": [
+        1,
+        1
+      ],
+      "confidence": "high",
+      "n_no_note": 10,
+      "n_total": 11,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 由該type中10筆『item.md無射程修正註記』物品的range值一致得出(非眾數猜測,是無修正物品的實際直讀值)"
+    },
+    "7": {
+      "category": "爪/指環(鐵指套~魔龍爪,0x3E-0x47)",
+      "range": [
+        1,
+        1
+      ],
+      "confidence": "high",
+      "n_no_note": 11,
+      "n_total": 11,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 由該type中11筆『item.md無射程修正註記』物品的range值一致得出(非眾數猜測,是無修正物品的實際直讀值)"
+    },
+    "8": {
+      "category": "機兵手臂(威力手臂~衝擊手臂,0x48-0x4B)",
+      "range": [
+        1,
+        1
+      ],
+      "confidence": "high",
+      "n_no_note": 2,
+      "n_total": 4,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 由該type中2筆『item.md無射程修正註記』物品的range值一致得出(非眾數猜測,是無修正物品的實際直讀值)"
+    },
+    "9": {
+      "category": "光束劍(0x4C)",
+      "range": [
+        1,
+        1
+      ],
+      "confidence": "high",
+      "n_no_note": 1,
+      "n_total": 1,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 由該type中1筆『item.md無射程修正註記』物品的range值一致得出(非眾數猜測,是無修正物品的實際直讀值)"
+    },
+    "10": {
+      "category": "狙擊槍(0x4D)",
+      "range": null,
+      "confidence": "unknown",
+      "n_no_note": 0,
+      "n_total": 1,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 此type所有物品item.md皆有射程修正註記,無「無修正」基準物可定標準值;不猜測,標unknown"
+    },
+    "11": {
+      "category": "光束槍(0x4E)",
+      "range": null,
+      "confidence": "unknown",
+      "n_no_note": 0,
+      "n_total": 1,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 此type所有物品item.md皆有射程修正註記,無「無修正」基準物可定標準值;不猜測,標unknown"
+    },
+    "12": {
+      "category": "光束砲(0x4F)",
+      "range": null,
+      "confidence": "unknown",
+      "n_no_note": 0,
+      "n_total": 1,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 此type所有物品item.md皆有射程修正註記,無「無修正」基準物可定標準值;不猜測,標unknown"
+    },
+    "13": {
+      "category": "拳頭(0x50)",
+      "range": [
+        1,
+        1
+      ],
+      "confidence": "high",
+      "n_no_note": 1,
+      "n_total": 1,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 由該type中1筆『item.md無射程修正註記』物品的range值一致得出(非眾數猜測,是無修正物品的實際直讀值)"
+    },
+    "14": {
+      "category": "利爪(0x51)",
+      "range": [
+        1,
+        1
+      ],
+      "confidence": "high",
+      "n_no_note": 1,
+      "n_total": 1,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 由該type中1筆『item.md無射程修正註記』物品的range值一致得出(非眾數猜測,是無修正物品的實際直讀值)"
+    },
+    "15": {
+      "category": "觸手(0x52)",
+      "range": null,
+      "confidence": "unknown",
+      "n_no_note": 0,
+      "n_total": 1,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 此type所有物品item.md皆有射程修正註記,無「無修正」基準物可定標準值;不猜測,標unknown"
+    },
+    "16": {
+      "category": "巨岩手臂(0x53)",
+      "range": [
+        1,
+        1
+      ],
+      "confidence": "high",
+      "n_no_note": 1,
+      "n_total": 1,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 由該type中1筆『item.md無射程修正註記』物品的range值一致得出(非眾數猜測,是無修正物品的實際直讀值)"
+    },
+    "17": {
+      "category": "激水砲(0x54)",
+      "range": null,
+      "confidence": "unknown",
+      "n_no_note": 0,
+      "n_total": 1,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 此type所有物品item.md皆有射程修正註記,無「無修正」基準物可定標準值;不猜測,標unknown"
+    },
+    "18": {
+      "category": "風牙斬(0x55)",
+      "range": null,
+      "confidence": "unknown",
+      "n_no_note": 0,
+      "n_total": 1,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 此type所有物品item.md皆有射程修正註記,無「無修正」基準物可定標準值;不猜測,標unknown"
+    },
+    "19": {
+      "category": "魔燄波(0x56)",
+      "range": null,
+      "confidence": "unknown",
+      "n_no_note": 0,
+      "n_total": 1,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 此type所有物品item.md皆有射程修正註記,無「無修正」基準物可定標準值;不猜測,標unknown"
+    },
+    "20": {
+      "category": "空雷震(0x57)",
+      "range": [
+        1,
+        1
+      ],
+      "confidence": "high",
+      "n_no_note": 1,
+      "n_total": 1,
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 由該type中1筆『item.md無射程修正註記』物品的range值一致得出(非眾數猜測,是無修正物品的實際直讀值)"
+    }
+  },
+  "weapons": {
+    "0x00_短劍": {
+      "id": 0,
+      "name": "短劍",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 10,
+      "hit": 95,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 010  HIT 095",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x01_闊劍": {
+      "id": 1,
+      "name": "闊劍",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 20,
+      "hit": 95,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 020  HIT 095",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x02_長劍": {
+      "id": 2,
+      "name": "長劍",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 40,
+      "hit": 90,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 040  HIT 090",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x03_巨劍": {
+      "id": 3,
+      "name": "巨劍",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 65,
+      "hit": 85,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 065  HIT 085",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x04_黑暗劍": {
+      "id": 4,
+      "name": "黑暗劍",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 90,
+      "hit": 85,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 090  HIT 085          10%中毒",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x05_戰士劍": {
+      "id": 5,
+      "name": "戰士劍",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 110,
+      "hit": 90,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 110  HIT 090",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x06_巨魔劍": {
+      "id": 6,
+      "name": "巨魔劍",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 135,
+      "hit": 90,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 135  HIT 090",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x07_斬鐵劍": {
+      "id": 7,
+      "name": "斬鐵劍",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 150,
+      "hit": 120,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 150  HIT 120          30%暴擊",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x08_流水劍": {
+      "id": 8,
+      "name": "流水劍",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 240,
+      "hit": 100,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 240  HIT 100",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x09_大地之劍": {
+      "id": 9,
+      "name": "大地之劍",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 280,
+      "hit": 100,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 280  HIT 100",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x0a_龍神劍": {
+      "id": 10,
+      "name": "龍神劍",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 320,
+      "hit": 120,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 320  HIT 120",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x0b_炎龍劍": {
+      "id": 11,
+      "name": "炎龍劍",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 400,
+      "hit": 120,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 400  HIT 120  DP 030  30%暴擊  使用有炎龍術效果(距3範1)  (刀劍系最強武器)",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x0c_小刀": {
+      "id": 12,
+      "name": "小刀",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 8,
+      "hit": 100,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 008  HIT 100",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x0d_匕首": {
+      "id": 13,
+      "name": "匕首",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 20,
+      "hit": 90,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 020  HIT 090",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x0e_淬毒刀": {
+      "id": 14,
+      "name": "淬毒刀",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 50,
+      "hit": 95,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 050  HIT 095          30%中毒",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x0f_盜賊匕首": {
+      "id": 15,
+      "name": "盜賊匕首",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 80,
+      "hit": 120,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 080  HIT 120",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x10_暗殺刀": {
+      "id": 16,
+      "name": "暗殺刀",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 120,
+      "hit": 120,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 120  HIT 120",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x11_護手刀": {
+      "id": 17,
+      "name": "護手刀",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 150,
+      "hit": 100,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 150  HIT 100  DP 030",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x12_忍者刀": {
+      "id": 18,
+      "name": "忍者刀",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 165,
+      "hit": 90,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 165  HIT 090          05%暴擊",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x13_地獄刀": {
+      "id": 19,
+      "name": "地獄刀",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 200,
+      "hit": 120,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 200  HIT 120",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x63_雷神鞭": {
+      "id": 99,
+      "name": "雷神鞭",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 200,
+      "hit": 95,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 200  HIT 095          2格攻距  使用有轟雷術效果(距3範1)",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 標準射程[1, 1]套用本物品修正註記「AP 200  HIT 095          2格攻距  使用有轟雷術效果(距3範1)」比對:實際直讀range=[1, 2]"
+    },
+    "0x67_火焰": {
+      "id": 103,
+      "name": "火焰",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 350,
+      "hit": 170,
+      "range": [
+        1,
+        3
+      ],
+      "note_md": "AP 350  HIT 170          3格攻距",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 標準射程[1, 1]套用本物品修正註記「AP 350  HIT 170          3格攻距」比對:實際直讀range=[1, 3]"
+    },
+    "0x6a_冰焰": {
+      "id": 106,
+      "name": "冰焰",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 350,
+      "hit": 170,
+      "range": [
+        1,
+        3
+      ],
+      "note_md": "AP 350  HIT 170          3格攻距",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 標準射程[1, 1]套用本物品修正註記「AP 350  HIT 170          3格攻距」比對:實際直讀range=[1, 3]"
+    },
+    "0x6b_黑暗波": {
+      "id": 107,
+      "name": "黑暗波",
+      "type": 1,
+      "type_category": "劍/刀(短劍~黑暗波,0x00-0x13,0x63,0x67,0x6a,0x6b)",
+      "ap": 400,
+      "hit": 103,
+      "range": [
+        1,
+        3
+      ],
+      "note_md": "AP 400  HIT 103          3格攻距",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 標準射程[1, 1]套用本物品修正註記「AP 400  HIT 103          3格攻距」比對:實際直讀range=[1, 3]"
+    },
+    "0x14_刺矛": {
+      "id": 20,
+      "name": "刺矛",
+      "type": 3,
+      "type_category": "槍矛(刺矛~聖之槍,0x14-0x1F)",
+      "ap": 20,
+      "hit": 90,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 020  HIT 090          (槍矛類一律2格攻距)",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 標準射程[1, 2]套用本物品修正註記「AP 020  HIT 090          (槍矛類一律2格攻距)」比對:實際直讀range=[1, 2]"
+    },
+    "0x15_騎槍": {
+      "id": 21,
+      "name": "騎槍",
+      "type": 3,
+      "type_category": "槍矛(刺矛~聖之槍,0x14-0x1F)",
+      "ap": 28,
+      "hit": 90,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 028  HIT 090",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x16_長戟": {
+      "id": 22,
+      "name": "長戟",
+      "type": 3,
+      "type_category": "槍矛(刺矛~聖之槍,0x14-0x1F)",
+      "ap": 50,
+      "hit": 85,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 050  HIT 085",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x17_先鋒矛": {
+      "id": 23,
+      "name": "先鋒矛",
+      "type": 3,
+      "type_category": "槍矛(刺矛~聖之槍,0x14-0x1F)",
+      "ap": 85,
+      "hit": 90,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 085  HIT 090",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x18_斬馬刀": {
+      "id": 24,
+      "name": "斬馬刀",
+      "type": 3,
+      "type_category": "槍矛(刺矛~聖之槍,0x14-0x1F)",
+      "ap": 120,
+      "hit": 85,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 120  HIT 085",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x19_惡魔之矛": {
+      "id": 25,
+      "name": "惡魔之矛",
+      "type": 3,
+      "type_category": "槍矛(刺矛~聖之槍,0x14-0x1F)",
+      "ap": 150,
+      "hit": 100,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 150  HIT 100",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x1a_黃金之戟": {
+      "id": 26,
+      "name": "黃金之戟",
+      "type": 3,
+      "type_category": "槍矛(刺矛~聖之槍,0x14-0x1F)",
+      "ap": 190,
+      "hit": 90,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 190  HIT 090",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x1b_龍之槍": {
+      "id": 27,
+      "name": "龍之槍",
+      "type": 3,
+      "type_category": "槍矛(刺矛~聖之槍,0x14-0x1F)",
+      "ap": 240,
+      "hit": 100,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 240  HIT 100",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x1c_破魔槍": {
+      "id": 28,
+      "name": "破魔槍",
+      "type": 3,
+      "type_category": "槍矛(刺矛~聖之槍,0x14-0x1F)",
+      "ap": 280,
+      "hit": 110,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 280  HIT 110",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x1d_戰神戟": {
+      "id": 29,
+      "name": "戰神戟",
+      "type": 3,
+      "type_category": "槍矛(刺矛~聖之槍,0x14-0x1F)",
+      "ap": 400,
+      "hit": 120,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 400  HIT 120  DP 020           使用有轟雷術效果(距3範2)  (騎士系最強武器)",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x1e_聖之槍": {
+      "id": 30,
+      "name": "聖之槍",
+      "type": 3,
+      "type_category": "槍矛(刺矛~聖之槍,0x14-0x1F)",
+      "ap": 150,
+      "hit": 100,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 150  HIT 100          20%暴擊",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x1f_巨神戟": {
+      "id": 31,
+      "name": "巨神戟",
+      "type": 3,
+      "type_category": "槍矛(刺矛~聖之槍,0x14-0x1F)",
+      "ap": 320,
+      "hit": 100,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 320  HIT 100",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x20_手斧": {
+      "id": 32,
+      "name": "手斧",
+      "type": 4,
+      "type_category": "斧鎚(手斧~魔神斧,0x20-0x2B)",
+      "ap": 20,
+      "hit": 95,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 020  HIT 095",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x21_迴旋斧": {
+      "id": 33,
+      "name": "迴旋斧",
+      "type": 4,
+      "type_category": "斧鎚(手斧~魔神斧,0x20-0x2B)",
+      "ap": 35,
+      "hit": 90,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 035  HIT 090          2格攻距",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 標準射程[1, 1]套用本物品修正註記「AP 035  HIT 090          2格攻距」比對:實際直讀range=[1, 2]"
+    },
+    "0x22_戰斧": {
+      "id": 34,
+      "name": "戰斧",
+      "type": 4,
+      "type_category": "斧鎚(手斧~魔神斧,0x20-0x2B)",
+      "ap": 60,
+      "hit": 90,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 060  HIT 090",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x23_戰鎚": {
+      "id": 35,
+      "name": "戰鎚",
+      "type": 4,
+      "type_category": "斧鎚(手斧~魔神斧,0x20-0x2B)",
+      "ap": 90,
+      "hit": 85,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 090  HIT 085",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x24_巨斧": {
+      "id": 36,
+      "name": "巨斧",
+      "type": 4,
+      "type_category": "斧鎚(手斧~魔神斧,0x20-0x2B)",
+      "ap": 120,
+      "hit": 85,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 120  HIT 085",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x25_血之斧": {
+      "id": 37,
+      "name": "血之斧",
+      "type": 4,
+      "type_category": "斧鎚(手斧~魔神斧,0x20-0x2B)",
+      "ap": 145,
+      "hit": 85,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 145  HIT 085",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x26_閃電鎚": {
+      "id": 38,
+      "name": "閃電鎚",
+      "type": 4,
+      "type_category": "斧鎚(手斧~魔神斧,0x20-0x2B)",
+      "ap": 180,
+      "hit": 100,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 180  HIT 100                   使用有烈炎術效果(距2範1)",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x27_狂暴之斧": {
+      "id": 39,
+      "name": "狂暴之斧",
+      "type": 4,
+      "type_category": "斧鎚(手斧~魔神斧,0x20-0x2B)",
+      "ap": 225,
+      "hit": 100,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 225  HIT 100          10%暴擊",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x28_光之斧": {
+      "id": 40,
+      "name": "光之斧",
+      "type": 4,
+      "type_category": "斧鎚(手斧~魔神斧,0x20-0x2B)",
+      "ap": 300,
+      "hit": 100,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 300  HIT 100                   使用HP+100(距2範1)",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x29_力量之斧": {
+      "id": 41,
+      "name": "力量之斧",
+      "type": 4,
+      "type_category": "斧鎚(手斧~魔神斧,0x20-0x2B)",
+      "ap": 340,
+      "hit": 100,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 340  HIT 100",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x2a_大地之鎚": {
+      "id": 42,
+      "name": "大地之鎚",
+      "type": 4,
+      "type_category": "斧鎚(手斧~魔神斧,0x20-0x2B)",
+      "ap": 380,
+      "hit": 100,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 380  HIT 100",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x2b_魔神斧": {
+      "id": 43,
+      "name": "魔神斧",
+      "type": 4,
+      "type_category": "斧鎚(手斧~魔神斧,0x20-0x2B)",
+      "ap": 400,
+      "hit": 80,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 400  HIT 080          80%暴擊                            (戰士系最強武器)",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x2c_短弓": {
+      "id": 44,
+      "name": "短弓",
+      "type": 5,
+      "type_category": "弓(短弓~風神弓+十字弓/水晶弓/火神弓,0x2C-0x33,0x61,0x62,0x68)",
+      "ap": 20,
+      "hit": 95,
+      "range": [
+        2,
+        3
+      ],
+      "note_md": "AP 020  HIT 095          射程-1 (標準射程=2-4)",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 標準射程[2, 4]套用本物品修正註記「AP 020  HIT 095          射程-1 (標準射程=2-4)」比對:實際直讀range=[2, 3]"
+    },
+    "0x2d_長弓": {
+      "id": 45,
+      "name": "長弓",
+      "type": 5,
+      "type_category": "弓(短弓~風神弓+十字弓/水晶弓/火神弓,0x2C-0x33,0x61,0x62,0x68)",
+      "ap": 40,
+      "hit": 90,
+      "range": [
+        2,
+        4
+      ],
+      "note_md": "AP 040  HIT 090",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x2e_黑暗弓": {
+      "id": 46,
+      "name": "黑暗弓",
+      "type": 5,
+      "type_category": "弓(短弓~風神弓+十字弓/水晶弓/火神弓,0x2C-0x33,0x61,0x62,0x68)",
+      "ap": 75,
+      "hit": 85,
+      "range": [
+        2,
+        4
+      ],
+      "note_md": "AP 075  HIT 085          10%中毒",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x2f_巨弓": {
+      "id": 47,
+      "name": "巨弓",
+      "type": 5,
+      "type_category": "弓(短弓~風神弓+十字弓/水晶弓/火神弓,0x2C-0x33,0x61,0x62,0x68)",
+      "ap": 110,
+      "hit": 80,
+      "range": [
+        2,
+        5
+      ],
+      "note_md": "AP 110  HIT 080          射程+1",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 標準射程[2, 4]套用本物品修正註記「AP 110  HIT 080          射程+1」比對:實際直讀range=[2, 5]"
+    },
+    "0x30_精靈弓": {
+      "id": 48,
+      "name": "精靈弓",
+      "type": 5,
+      "type_category": "弓(短弓~風神弓+十字弓/水晶弓/火神弓,0x2C-0x33,0x61,0x62,0x68)",
+      "ap": 130,
+      "hit": 100,
+      "range": [
+        2,
+        4
+      ],
+      "note_md": "AP 130  HIT 100",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x31_狙擊弓": {
+      "id": 49,
+      "name": "狙擊弓",
+      "type": 5,
+      "type_category": "弓(短弓~風神弓+十字弓/水晶弓/火神弓,0x2C-0x33,0x61,0x62,0x68)",
+      "ap": 155,
+      "hit": 120,
+      "range": [
+        2,
+        5
+      ],
+      "note_md": "AP 155  HIT 120          射程+1,10%暴擊",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 標準射程[2, 4]套用本物品修正註記「AP 155  HIT 120          射程+1,10%暴擊」比對:實際直讀range=[2, 5]"
+    },
+    "0x32_封魔弓": {
+      "id": 50,
+      "name": "封魔弓",
+      "type": 5,
+      "type_category": "弓(短弓~風神弓+十字弓/水晶弓/火神弓,0x2C-0x33,0x61,0x62,0x68)",
+      "ap": 250,
+      "hit": 100,
+      "range": [
+        2,
+        5
+      ],
+      "note_md": "AP 250  HIT 100          射程+1",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 標準射程[2, 4]套用本物品修正註記「AP 250  HIT 100          射程+1」比對:實際直讀range=[2, 5]"
+    },
+    "0x33_風神弓": {
+      "id": 51,
+      "name": "風神弓",
+      "type": 5,
+      "type_category": "弓(短弓~風神弓+十字弓/水晶弓/火神弓,0x2C-0x33,0x61,0x62,0x68)",
+      "ap": 400,
+      "hit": 120,
+      "range": [
+        2,
+        6
+      ],
+      "note_md": "AP 400  HIT 120  DP040   射程+2   使用有神雷術效果(距2範1)  (弓兵系最強武器)",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 標準射程[2, 4]套用本物品修正註記「AP 400  HIT 120  DP040   射程+2   使用有神雷術效果(距2範1)  (弓兵系最強武器)」比對:實際直讀range=[2, 6]"
+    },
+    "0x61_十字弓": {
+      "id": 97,
+      "name": "十字弓",
+      "type": 5,
+      "type_category": "弓(短弓~風神弓+十字弓/水晶弓/火神弓,0x2C-0x33,0x61,0x62,0x68)",
+      "ap": 180,
+      "hit": 90,
+      "range": [
+        2,
+        4
+      ],
+      "note_md": "AP 180  HIT 090",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x62_水晶弓": {
+      "id": 98,
+      "name": "水晶弓",
+      "type": 5,
+      "type_category": "弓(短弓~風神弓+十字弓/水晶弓/火神弓,0x2C-0x33,0x61,0x62,0x68)",
+      "ap": 210,
+      "hit": 90,
+      "range": [
+        2,
+        5
+      ],
+      "note_md": "AP 210  HIT 090          射程+1",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 標準射程[2, 4]套用本物品修正註記「AP 210  HIT 090          射程+1」比對:實際直讀range=[2, 5]"
+    },
+    "0x68_火神弓": {
+      "id": 104,
+      "name": "火神弓",
+      "type": 5,
+      "type_category": "弓(短弓~風神弓+十字弓/水晶弓/火神弓,0x2C-0x33,0x61,0x62,0x68)",
+      "ap": 310,
+      "hit": 120,
+      "range": [
+        2,
+        5
+      ],
+      "note_md": "AP 310  HIT 120          射程+1",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 標準射程[2, 4]套用本物品修正註記「AP 310  HIT 120          射程+1」比對:實際直讀range=[2, 5]"
+    },
+    "0x34_長棍": {
+      "id": 52,
+      "name": "長棍",
+      "type": 6,
+      "type_category": "棍棒/法杖(長棍~光之杖,0x34-0x3D)",
+      "ap": 8,
+      "hit": 85,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 008  HIT 085",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x35_釘頭鎚": {
+      "id": 53,
+      "name": "釘頭鎚",
+      "type": 6,
+      "type_category": "棍棒/法杖(長棍~光之杖,0x34-0x3D)",
+      "ap": 25,
+      "hit": 80,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 025  HIT 080",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x36_巨鎚": {
+      "id": 54,
+      "name": "巨鎚",
+      "type": 6,
+      "type_category": "棍棒/法杖(長棍~光之杖,0x34-0x3D)",
+      "ap": 60,
+      "hit": 80,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 060  HIT 080",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x37_槤枷": {
+      "id": 55,
+      "name": "槤枷",
+      "type": 6,
+      "type_category": "棍棒/法杖(長棍~光之杖,0x34-0x3D)",
+      "ap": 80,
+      "hit": 80,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 080  HIT 080          2格攻距",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 標準射程[1, 1]套用本物品修正註記「AP 080  HIT 080          2格攻距」比對:實際直讀range=[1, 2]"
+    },
+    "0x38_魔法杖": {
+      "id": 56,
+      "name": "魔法杖",
+      "type": 6,
+      "type_category": "棍棒/法杖(長棍~光之杖,0x34-0x3D)",
+      "ap": 120,
+      "hit": 90,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 120  HIT 090                   使用有火炎術效果(距2範0)",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x39_封咒杖": {
+      "id": 57,
+      "name": "封咒杖",
+      "type": 6,
+      "type_category": "棍棒/法杖(長棍~光之杖,0x34-0x3D)",
+      "ap": 150,
+      "hit": 90,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 150  HIT 090                   使用有封咒術效果(距3範0)",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x3a_力之杖": {
+      "id": 58,
+      "name": "力之杖",
+      "type": 6,
+      "type_category": "棍棒/法杖(長棍~光之杖,0x34-0x3D)",
+      "ap": 180,
+      "hit": 90,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 180  HIT 090                   使用HP+300(距2範0)",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x3b_黑暗杖": {
+      "id": 59,
+      "name": "黑暗杖",
+      "type": 6,
+      "type_category": "棍棒/法杖(長棍~光之杖,0x34-0x3D)",
+      "ap": 220,
+      "hit": 120,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 220  HIT 120          30%中毒",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x3c_龍之杖": {
+      "id": 60,
+      "name": "龍之杖",
+      "type": 6,
+      "type_category": "棍棒/法杖(長棍~光之杖,0x34-0x3D)",
+      "ap": 280,
+      "hit": 120,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 280  HIT 120                   使用有炎龍術效果(距2範0)",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x3d_光之杖": {
+      "id": 61,
+      "name": "光之杖",
+      "type": 6,
+      "type_category": "棍棒/法杖(長棍~光之杖,0x34-0x3D)",
+      "ap": 400,
+      "hit": 140,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 400  HIT 140  DP 050  EV 010   使用有神恩術效果(距3範2)  (僧侶系最強武器)",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x65_傳送法杖": {
+      "id": 101,
+      "name": "傳送法杖",
+      "type": 6,
+      "type_category": "棍棒/法杖(長棍~光之杖,0x34-0x3D)",
+      "ap": 200,
+      "hit": 100,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 200  HIT 100                   使用有傳送術效果(距1範0)  (希爾法專用)",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x3e_鐵指套": {
+      "id": 62,
+      "name": "鐵指套",
+      "type": 7,
+      "type_category": "爪/指環(鐵指套~魔龍爪,0x3E-0x47)",
+      "ap": 20,
+      "hit": 100,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 020  HIT 100",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x3f_鐵爪": {
+      "id": 63,
+      "name": "鐵爪",
+      "type": 7,
+      "type_category": "爪/指環(鐵指套~魔龍爪,0x3E-0x47)",
+      "ap": 50,
+      "hit": 90,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 050  HIT 090",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x40_皇帝指環": {
+      "id": 64,
+      "name": "皇帝指環",
+      "type": 7,
+      "type_category": "爪/指環(鐵指套~魔龍爪,0x3E-0x47)",
+      "ap": 80,
+      "hit": 95,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 080  HIT 095",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x41_毒爪": {
+      "id": 65,
+      "name": "毒爪",
+      "type": 7,
+      "type_category": "爪/指環(鐵指套~魔龍爪,0x3E-0x47)",
+      "ap": 100,
+      "hit": 90,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 100  HIT 090          20%中毒",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x42_殭屍爪": {
+      "id": 66,
+      "name": "殭屍爪",
+      "type": 7,
+      "type_category": "爪/指環(鐵指套~魔龍爪,0x3E-0x47)",
+      "ap": 175,
+      "hit": 95,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 175  HIT 095          20%中毒",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x43_碎岩爪": {
+      "id": 67,
+      "name": "碎岩爪",
+      "type": 7,
+      "type_category": "爪/指環(鐵指套~魔龍爪,0x3E-0x47)",
+      "ap": 150,
+      "hit": 110,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 150  HIT 110",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x44_金鋼指環": {
+      "id": 68,
+      "name": "金鋼指環",
+      "type": 7,
+      "type_category": "爪/指環(鐵指套~魔龍爪,0x3E-0x47)",
+      "ap": 200,
+      "hit": 120,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 200  HIT 120",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x45_裂刃爪": {
+      "id": 69,
+      "name": "裂刃爪",
+      "type": 7,
+      "type_category": "爪/指環(鐵指套~魔龍爪,0x3E-0x47)",
+      "ap": 240,
+      "hit": 100,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 240  HIT 100          20%暴擊",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x46_巨神指環": {
+      "id": 70,
+      "name": "巨神指環",
+      "type": 7,
+      "type_category": "爪/指環(鐵指套~魔龍爪,0x3E-0x47)",
+      "ap": 280,
+      "hit": 110,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 280  HIT 110",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x47_魔龍爪": {
+      "id": 71,
+      "name": "魔龍爪",
+      "type": 7,
+      "type_category": "爪/指環(鐵指套~魔龍爪,0x3E-0x47)",
+      "ap": 400,
+      "hit": 140,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 400  HIT 140  DP030   雙擊                               (武者系最強武器)",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x69_鬥神指環": {
+      "id": 105,
+      "name": "鬥神指環",
+      "type": 7,
+      "type_category": "爪/指環(鐵指套~魔龍爪,0x3E-0x47)",
+      "ap": 330,
+      "hit": 100,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 330  HIT 100",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x48_威力手臂": {
+      "id": 72,
+      "name": "威力手臂",
+      "type": 8,
+      "type_category": "機兵手臂(威力手臂~衝擊手臂,0x48-0x4B)",
+      "ap": 15,
+      "hit": 90,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 015  HIT 090",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x49_金鋼手臂": {
+      "id": 73,
+      "name": "金鋼手臂",
+      "type": 8,
+      "type_category": "機兵手臂(威力手臂~衝擊手臂,0x48-0x4B)",
+      "ap": 100,
+      "hit": 85,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 100  HIT 085",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x4a_雷神手臂": {
+      "id": 74,
+      "name": "雷神手臂",
+      "type": 8,
+      "type_category": "機兵手臂(威力手臂~衝擊手臂,0x48-0x4B)",
+      "ap": 240,
+      "hit": 80,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 240  HIT 080          2格攻距",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 標準射程[1, 1]套用本物品修正註記「AP 240  HIT 080          2格攻距」比對:實際直讀range=[1, 2]"
+    },
+    "0x4b_衝擊手臂": {
+      "id": 75,
+      "name": "衝擊手臂",
+      "type": 8,
+      "type_category": "機兵手臂(威力手臂~衝擊手臂,0x48-0x4B)",
+      "ap": 360,
+      "hit": 100,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 360  HIT 100          2格攻距                            (機兵系最強武器)",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); 標準射程[1, 1]套用本物品修正註記「AP 360  HIT 100          2格攻距                            (機兵系最強武器)」比對:實際直讀range=[1, 2]"
+    },
+    "0x4c_光束劍": {
+      "id": 76,
+      "name": "光束劍",
+      "type": 9,
+      "type_category": "光束劍(0x4C)",
+      "ap": 200,
+      "hit": 150,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 200  HIT 150",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x4d_狙擊槍": {
+      "id": 77,
+      "name": "狙擊槍",
+      "type": 10,
+      "type_category": "狙擊槍(0x4D)",
+      "ap": 200,
+      "hit": 150,
+      "range": [
+        2,
+        6
+      ],
+      "note_md": "AP 200  HIT 150          射程+2",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x4e_光束槍": {
+      "id": 78,
+      "name": "光束槍",
+      "type": 11,
+      "type_category": "光束槍(0x4E)",
+      "ap": 200,
+      "hit": 150,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 200  HIT 150          2格攻距",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x4f_光束砲": {
+      "id": 79,
+      "name": "光束砲",
+      "type": 12,
+      "type_category": "光束砲(0x4F)",
+      "ap": 450,
+      "hit": 80,
+      "range": [
+        0,
+        0
+      ],
+      "note_md": "AP 450  HIT 080                   使用有天火術效果(直線距15範4)",
+      "confidence": "conflict",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊); ⚠ item.md描述「直線距15範4」疑為裝備自帶天火術效果的施法距離(非本體近戰攻擊距離),item.json range[0,0]可能代表此欄未使用/攻擊改走連動法術的range(spell.json);兩者語意不同不可互代,待反組譯攻擊執行鏈(0x15xxx)確認前不猜測選一個"
+    },
+    "0x50_拳頭": {
+      "id": 80,
+      "name": "拳頭",
+      "type": 13,
+      "type_category": "拳頭(0x50)",
+      "ap": 115,
+      "hit": 100,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 115  HIT 100",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x51_利爪": {
+      "id": 81,
+      "name": "利爪",
+      "type": 14,
+      "type_category": "利爪(0x51)",
+      "ap": 200,
+      "hit": 110,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 200  HIT 110",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x52_觸手": {
+      "id": 82,
+      "name": "觸手",
+      "type": 15,
+      "type_category": "觸手(0x52)",
+      "ap": 300,
+      "hit": 70,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 300  HIT 070          2格攻距",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x53_巨岩手臂": {
+      "id": 83,
+      "name": "巨岩手臂",
+      "type": 16,
+      "type_category": "巨岩手臂(0x53)",
+      "ap": 240,
+      "hit": 130,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 240  HIT 130",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x54_激水砲": {
+      "id": 84,
+      "name": "激水砲",
+      "type": 17,
+      "type_category": "激水砲(0x54)",
+      "ap": 200,
+      "hit": 90,
+      "range": [
+        1,
+        3
+      ],
+      "note_md": "AP 200  HIT 090          3格攻距",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x55_風牙斬": {
+      "id": 85,
+      "name": "風牙斬",
+      "type": 18,
+      "type_category": "風牙斬(0x55)",
+      "ap": 200,
+      "hit": 120,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 200  HIT 120          2格攻距",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x56_魔燄波": {
+      "id": 86,
+      "name": "魔燄波",
+      "type": 19,
+      "type_category": "魔燄波(0x56)",
+      "ap": 250,
+      "hit": 120,
+      "range": [
+        1,
+        2
+      ],
+      "note_md": "AP 250  HIT 120          2格攻距",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    },
+    "0x57_空雷震": {
+      "id": 87,
+      "name": "空雷震",
+      "type": 20,
+      "type_category": "空雷震(0x57)",
+      "ap": 360,
+      "hit": 150,
+      "range": [
+        1,
+        1
+      ],
+      "note_md": "AP 360  HIT 150",
+      "confidence": "high",
+      "source": "直讀 item.json range[2](dump_exe_tables.py,EXE 0x540ac起,每筆23B,R1R2位元組;anchor已驗證對齊)"
+    }
+  }
+}
