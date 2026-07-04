@@ -74,6 +74,8 @@ type Node struct {
 	// 空=舊行為,整份 Script 攤平全部 scenes 成一條對白隊列——別讓一個節點播完整份劇本)
 	ExitWalk    *ActorWalk      `json:"exit_walk,omitempty"`    // story:對白播完、換場前先走一段路再淡出(doc46 §5.3)
 	AutoAdvance int             `json:"auto_advance,omitempty"` // story:無對白/Script 時,進節點後幾幀自動轉場(doc46 行軍蒙太奇)
+	WalkFirst   bool            `json:"walk_first,omitempty"`   // story:進場走位全走完才顯示對白(2-1:王座廳索爾沿紅毯走到王座前對話框才出現)
+	FollowWalk  bool            `json:"follow_walk,omitempty"`  // story:走位期間鏡頭鎖定跟隨走位者(原版 13×8 格視野長廊運鏡,doc25 0x11eee)
 	BGM         string          `json:"bgm,omitempty"`
 	Next        string          `json:"next,omitempty"`    // story/event
 	OnWin       string          `json:"on_win,omitempty"`  // battle

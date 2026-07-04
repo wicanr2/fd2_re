@@ -39,6 +39,11 @@ import (
 const (
 	logicalW = 640 // hi-res 內部畫布(CJK/觀感原則:拉畫布、別縮字)
 	logicalH = 400
+	// storyZoom:story 場景(cutscene)世界層放大倍率。原版視窗固定 13×8 格
+	// (312×192px @320×200,doc25 0x11eee),remake 戰場自訂 640 寬 FOV 一屏裝下整廳,
+	// 走入/運鏡完全失去意義(使用者 2-1);story 場景世界層 2×(48px/格,視野 13.3×8.3 格)
+	// 即還原原版取景與長廊運鏡。戰場是否同步 2× 另議(動 HUD/指令環佈局,worklist)。
+	storyZoom = 2
 )
 
 // MapData 對應 assets/map.json(由 tools/export_engine_assets.py 產生)。
@@ -62,6 +67,9 @@ type Game struct {
 	storyActors      []battle.Unit       // storyBG 場景上的靜態 NPC/主角擺位(doc23 §4;cutscene 用,無 AI/戰鬥邏輯)
 	storyWalks       []*storyWalkJob     // 場景走位動畫佇列(doc46 §5.3);逐幀推進、完成後移除
 	storyAutoAdvance int                 // story 節點無對白時的自動轉場倒數幀(doc46 行軍蒙太奇,0=不自動)
+	storyView        *ebiten.Image       // story 場景離屏世界層(320×200,放大 storyZoom 倍貼上畫布;2-1 原版取景)
+	walkFirst        bool                // 本節點:進場走位走完才顯示對白(campaign.Node.WalkFirst)
+	followWalk       bool                // 本節點:走位期間鏡頭跟隨走位者(campaign.Node.FollowWalk)
 	fade             *storyFade          // 場景淡出/淡入轉場(doc46 §5.2)
 	walk             *walkAnim           // 移動動畫(沿路徑逐格走,FDICON 方向幀)
 	camp             *campaign.Runner    // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
@@ -266,6 +274,7 @@ func (g *Game) enterNode() {
 	g.storyBG = false // 預設離開場景背景模式;story+Map 節點下面再開回
 	g.storyWalks = nil
 	g.storyAutoAdvance = 0
+	g.walkFirst, g.followWalk = false, false
 	switch n.Type {
 	case "story":
 		g.dialog = nil
@@ -284,6 +293,7 @@ func (g *Game) enterNode() {
 			}
 			g.st, g.sel = nil, nil // 清殘留單位/選取(避免上一戰場畫面疊在新背景上)
 			g.storyBG = true
+			g.walkFirst, g.followWalk = n.WalkFirst, n.FollowWalk
 			g.camX, g.camY = float64(n.CamX), float64(n.CamY)
 			g.storyActors = nil
 			for _, a := range n.Actors { // cutscene 靜態擺位(國王/王后/主角等),無 AI/戰鬥邏輯
@@ -1139,7 +1149,18 @@ func (g *Game) Update() error {
 	}
 	// 相機跟隨游標(置中,夾在地圖內;先於各攔截,避免環/選單開啟時相機停擺)
 	// storyBG 場景背景模式鏡頭固定(enterNode 已設 CamX/CamY),不跟游標走。
-	if !g.storyBG {
+	// FollowWalk 節點例外:走位期間鏡頭鎖定走位者(原版長廊運鏡,2-1;視野=320×200 世界px)。
+	if g.storyBG {
+		if g.followWalk && len(g.storyWalks) > 0 {
+			w := g.storyWalks[0]
+			u := &g.storyActors[w.actor]
+			vw, vh := logicalW/storyZoom, logicalH/storyZoom
+			g.camX = float64(u.X*g.m.TileW) + u.OffX + float64(g.m.TileW)/2 - float64(vw)/2
+			g.camY = float64(u.Y*g.m.TileH) + u.OffY + float64(g.m.TileH)/2 - float64(vh)/2
+			clamp(&g.camX, 0, float64(g.m.W*g.m.TileW-vw))
+			clamp(&g.camY, 0, float64(g.m.H*g.m.TileH-vh))
+		}
+	} else {
 		g.camX = float64(g.curX*g.m.TileW - logicalW/2 + g.m.TileW/2)
 		g.camY = float64(g.curY*g.m.TileH - logicalH/2 + g.m.TileH/2)
 		clamp(&g.camX, 0, float64(g.m.W*g.m.TileW-logicalW))
@@ -1282,12 +1303,22 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	// 原版從未觸發,無「原版清色」可對齊;黑色是 remake 自訂 FOV(640 寬、tile 維持原生 24px)才會露出的
 	// 邊,選黑純為視覺乾淨、非還原原版行為。
 	screen.Fill(color.RGBA{0, 0, 0, 0xff})
+	// story 場景世界層走 320×200 離屏再放大 storyZoom 倍(還原原版 13×8 格取景,2-1);
+	// 戰場維持原有 640×400 直繪。對話框/HUD/淡幕仍畫在 screen 原生解析度。
+	target, viewW, viewH := screen, logicalW, logicalH
+	if g.storyBG {
+		if g.storyView == nil {
+			g.storyView = ebiten.NewImage(logicalW/storyZoom, logicalH/storyZoom)
+		}
+		g.storyView.Fill(color.RGBA{0, 0, 0, 0xff})
+		target, viewW, viewH = g.storyView, logicalW/storyZoom, logicalH/storyZoom
+	}
 	tw, th := g.m.TileW, g.m.TileH
 	// 只畫可見範圍
 	x0 := int(g.camX) / tw
 	y0 := int(g.camY) / th
-	x1 := (int(g.camX)+logicalW)/tw + 1
-	y1 := (int(g.camY)+logicalH)/th + 1
+	x1 := (int(g.camX)+viewW)/tw + 1
+	y1 := (int(g.camY)+viewH)/th + 1
 	for cy := y0; cy <= y1 && cy < g.m.H; cy++ {
 		for cx := x0; cx <= x1 && cx < g.m.W; cx++ {
 			if cy < 0 || cx < 0 {
@@ -1299,7 +1330,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			}
 			op := &ebiten.DrawImageOptions{}
 			op.GeoM.Translate(float64(cx*tw)-g.camX, float64(cy*th)-g.camY)
-			screen.DrawImage(t, op)
+			target.DrawImage(t, op)
 		}
 	}
 	// 移動範圍高亮(已選單位:藍色半透明格)
@@ -1309,7 +1340,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		for c := range g.reach {
 			op := &ebiten.DrawImageOptions{}
 			op.GeoM.Translate(float64(c.X*tw)-g.camX, float64(c.Y*th)-g.camY)
-			screen.DrawImage(hl, op)
+			target.DrawImage(hl, op)
 		}
 		if g.castSp != nil { // 施法射程高亮(紫)
 			ch := ebiten.NewImage(tw, th)
@@ -1319,7 +1350,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 					if g.st.InCastRange(g.sel, *g.castSp, x, y) {
 						op := &ebiten.DrawImageOptions{}
 						op.GeoM.Translate(float64(x*tw)-g.camX, float64(y*th)-g.camY)
-						screen.DrawImage(ch, op)
+						target.DrawImage(ch, op)
 					}
 				}
 			}
@@ -1333,10 +1364,10 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			}
 			ux := float64(u.X*tw) - g.camX
 			uy := float64(u.Y*th) - g.camY
-			if ux < -float64(tw) || ux > logicalW || uy < -float64(th) || uy > logicalH {
+			if ux < -float64(tw) || ux > float64(viewW) || uy < -float64(th) || uy > float64(viewH) {
 				continue
 			}
-			g.drawUnitSprite(screen, ux, uy, float64(tw), float64(th), u)
+			g.drawUnitSprite(target, ux, uy, float64(tw), float64(th), u)
 		}
 	}
 	// storyBG 場景靜態角色(doc23 §4:王座廳國王/王后/主角等 cutscene 擺位,同一 sprite 繪法無戰鬥邏輯)
@@ -1344,7 +1375,12 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		u := &g.storyActors[i]
 		ux := float64(u.X*tw) - g.camX
 		uy := float64(u.Y*th) - g.camY
-		g.drawUnitSprite(screen, ux, uy, float64(tw), float64(th), u)
+		g.drawUnitSprite(target, ux, uy, float64(tw), float64(th), u)
+	}
+	if g.storyBG { // 離屏世界層放大貼回畫布(48px/格,原版取景)
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Scale(storyZoom, storyZoom)
+		screen.DrawImage(g.storyView, op)
 	}
 	// 游標(白框):指令環/法術選單開啟時不顯示(原版該狀態下選取指示只在環上的選中圖示,
 	// 常駐白框會疊在中央、與環的選中框混淆,見 playfix #5)
@@ -1382,7 +1418,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		}
 		g.drawRing(screen)
 		g.drawSpellMenu(screen)
-		if len(g.dialog) > 0 { // 對話框:原版素材(FDOTHER#5 LMI1 #21,310×99 素藍細邊框)+ orig 量測佈局
+		if len(g.dialog) > 0 && !(g.storyBG && g.walkFirst && len(g.storyWalks) > 0) {
+			// 對話框:原版素材(FDOTHER#5 LMI1 #21,310×99 素藍細邊框)+ orig 量測佈局。
+			// walk_first 節點在進場走位期間不顯示(2-1:原版索爾走到王座前對話框才出現)。
 			dl := g.dialog[len(g.dialog)-1]
 			// 依說話者切上/下框 + 左/右頭像(對照原版 orig_02_dialog:我方下框左頭像、對方/NPC 上框右頭像)
 			upper := dl.Speaker >= 32 // >=32 為對方/敵/NPC(我方角色 id 0-31)

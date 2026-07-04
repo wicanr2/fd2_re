@@ -1,3684 +1,3861 @@
 {
-  "title": "炎龍騎士團2 — 全 30 章線性 campaign(自動生成)",
-  "start": "story_ch01_palace_throne",
-  "flags": {
-    "retried_ch01": false,
-    "found_secret_ch02": false,
-    "retried_ch02": false,
-    "found_secret_ch03": false,
-    "retried_ch03": false,
-    "found_secret_ch04": false,
-    "retried_ch04": false,
-    "found_secret_ch05": false,
-    "retried_ch05": false,
-    "found_secret_ch06": false,
-    "retried_ch06": false,
-    "found_secret_ch07": false,
-    "retried_ch07": false,
-    "found_secret_ch08": false,
-    "retried_ch08": false,
-    "found_secret_ch09": false,
-    "retried_ch09": false,
-    "found_secret_ch10": false,
-    "retried_ch10": false,
-    "found_secret_ch11": false,
-    "retried_ch11": false,
-    "found_secret_ch12": false,
-    "retried_ch12": false,
-    "found_secret_ch13": false,
-    "retried_ch13": false,
-    "found_secret_ch14": false,
-    "retried_ch14": false,
-    "found_secret_ch15": false,
-    "retried_ch15": false,
-    "found_secret_ch16": false,
-    "retried_ch16": false,
-    "found_secret_ch17": false,
-    "retried_ch17": false,
-    "found_secret_ch18": false,
-    "retried_ch18": false,
-    "found_secret_ch19": false,
-    "retried_ch19": false,
-    "found_secret_ch20": false,
-    "retried_ch20": false,
-    "found_secret_ch21": false,
-    "retried_ch21": false,
-    "found_secret_ch22": false,
-    "retried_ch22": false,
-    "retried_ch23": false,
-    "retried_ch24": false,
-    "retried_ch25": false,
-    "found_secret_ch26": false,
-    "retried_ch26": false,
-    "found_secret_ch27": false,
-    "retried_ch27": false,
-    "retried_ch28": false,
-    "retried_ch29": false,
-    "retried_ch30": false
-  },
-  "nodes": {
-    "story_ch01_palace_throne": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "script": "assets/story/ch00_palace.json",
-      "scene": "王座廳,傳位",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第1章:初試身手"
-        }
-      ],
-      "next": "story_ch01_palace_path",
-      "map": "assets/maps/map32",
-      "cam_x": -104,
-      "cam_y": 0,
-      "actors": [
-        { "fig": 48, "x": 7, "y": 5, "dir": 0 },
-        { "fig": 66, "x": 10, "y": 5, "dir": 0 },
-        { "fig": 0, "x": 8, "y": 8, "dir": 2 }
-      ],
-      "exit_walk": { "fig": 0, "to_x": 8, "to_y": 14, "frames": 90 }
-    },
-    "story_ch01_palace_path": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "script": "assets/story/ch00_palace.json",
-      "scene": "王城一隅,亞雷斯撞見",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第1章:初試身手"
-        }
-      ],
-      "next": "story_ch01_forest_duel",
-      "map": "assets/maps/map32",
-      "cam_x": -104,
-      "cam_y": 824,
-      "actors": [
-        { "fig": 0, "x": 8, "y": 42, "dir": 0 },
-        { "fig": 4, "x": 9, "y": 43, "dir": 1 }
-      ]
-    },
-    "story_ch01_forest_duel": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "script": "assets/story/ch00_meadow.json",
-      "scene": "比劍邀約",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第1章:初試身手"
-        }
-      ],
-      "next": "story_ch01_forest_discover",
-      "map": "assets/maps/map31",
-      "cam_x": 0,
-      "cam_y": 1000,
-      "actors": [
-        { "fig": 0, "x": 19, "y": 46, "dir": 0 },
-        { "fig": 4, "x": 19, "y": 47, "dir": 2 }
-      ]
-    },
-    "story_ch01_forest_discover": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "script": "assets/story/ch00_meadow.json",
-      "scene": "發現悠妮與蓋亞",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第1章:初試身手"
-        }
-      ],
-      "next": "story_ch01_march",
-      "map": "assets/maps/map31",
-      "cam_x": 0,
-      "cam_y": 1000,
-      "actors": [
-        { "fig": 30, "x": 5, "y": 43, "dir": 0 },
-        { "fig": 9, "x": 5, "y": 44, "dir": 0 },
-        { "fig": 0, "x": 6, "y": 44, "dir": 1, "from_x": 19, "from_y": 46, "walk_frames": 150 },
-        { "fig": 4, "x": 7, "y": 44, "dir": 1, "from_x": 19, "from_y": 47, "walk_frames": 150 }
-      ]
-    },
-    "story_ch01_march": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "next": "story_ch01",
-      "map": "assets/maps/map0",
-      "cam_x": 0,
-      "cam_y": 76,
-      "auto_advance": 180,
-      "actors": [
-        { "fig": 0, "x": 10, "y": 14, "dir": 1, "from_x": 16, "from_y": 8, "walk_frames": 170 }
-      ]
-    },
-    "story_ch01": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "script": "assets/story/ch01.json",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。"
-        }
-      ],
-      "next": "battle_ch01",
-      "map": "assets/maps/map0",
-      "cam_x": -32,
-      "cam_y": 88
-    },
-    "battle_ch01": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map0",
-      "units": "assets/maps/map0/map0_units.json",
-      "scenario": "assets/scenarios/ch01.json",
-      "on_win": "story_ch02",
-      "on_lose": "retreat_ch01"
-    },
-    "retreat_ch01": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch01": true
-      },
-      "next": "battle_ch01"
-    },
-    "story_ch02": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第2章:羅德鎮"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。務必保護「村民全滅」存活。"
-        }
-      ],
-      "next": "battle_ch02"
-    },
-    "shop_ch02_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "布衣",
-          "price": 50
-        },
-        {
-          "name": "旅行裝",
-          "price": 500
-        },
-        {
-          "name": "皮甲",
-          "price": 300
-        },
-        {
-          "name": "法師袍",
-          "price": 750
-        }
-      ],
-      "next": "shop_ch02_item"
-    },
-    "shop_ch02_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "藥草",
-          "price": 10
-        }
-      ],
-      "next": "story_ch03",
-      "secret_if": "found_secret_ch02",
-      "secret": [
-        {
-          "name": "闊劍",
-          "price": 250
-        },
-        {
-          "name": "長戟",
-          "price": 1200
-        },
-        {
-          "name": "釘頭鎚",
-          "price": 180
-        },
-        {
-          "name": "藥草",
-          "price": 10
-        },
-        {
-          "name": "回復劑",
-          "price": 80
-        },
-        {
-          "name": "皮甲",
-          "price": 300
-        }
-      ]
-    },
-    "choice_ch02": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch02"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch02_weapon"
-        }
-      ]
-    },
-    "rumor_ch02": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(酒店前按Shift+F1鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch02": true
-      },
-      "next": "shop_ch02_weapon"
-    },
-    "battle_ch02": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map1",
-      "units": "assets/maps/map1/map1_units.json",
-      "scenario": "assets/scenarios/ch02.json",
-      "on_win": "choice_ch02",
-      "on_lose": "retreat_ch02"
-    },
-    "retreat_ch02": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch02": true
-      },
-      "next": "battle_ch02"
-    },
-    "story_ch03": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第3章:往塞拉村途中"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。"
-        }
-      ],
-      "next": "battle_ch03"
-    },
-    "shop_ch03_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "短劍",
-          "price": 50
-        },
-        {
-          "name": "闊劍",
-          "price": 250
-        },
-        {
-          "name": "手斧",
-          "price": 300
-        },
-        {
-          "name": "皮甲",
-          "price": 300
-        },
-        {
-          "name": "法師袍",
-          "price": 750
-        }
-      ],
-      "next": "shop_ch03_item"
-    },
-    "shop_ch03_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "藥草",
-          "price": 10
-        }
-      ],
-      "next": "story_ch04",
-      "secret_if": "found_secret_ch03",
-      "secret": [
-        {
-          "name": "回復劑",
-          "price": 80
-        },
-        {
-          "name": "魔法水",
-          "price": 1000
-        }
-      ]
-    },
-    "choice_ch03": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch03"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch03_weapon"
-        }
-      ]
-    },
-    "rumor_ch03": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(武器店前按Ctrl+F2鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch03": true
-      },
-      "next": "shop_ch03_weapon"
-    },
-    "battle_ch03": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map2",
-      "units": "assets/maps/map2/map2_units.json",
-      "scenario": "assets/scenarios/ch03.json",
-      "on_win": "choice_ch03",
-      "on_lose": "retreat_ch03"
-    },
-    "retreat_ch03": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch03": true
-      },
-      "next": "battle_ch03"
-    },
-    "story_ch04": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第4章:塞拉村前"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。"
-        }
-      ],
-      "next": "battle_ch04"
-    },
-    "shop_ch04_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "闊劍",
-          "price": 250
-        },
-        {
-          "name": "迴旋斧",
-          "price": 800
-        },
-        {
-          "name": "長弓",
-          "price": 500
-        },
-        {
-          "name": "釘頭鎚",
-          "price": 180
-        },
-        {
-          "name": "旅行裝",
-          "price": 500
-        },
-        {
-          "name": "皮甲",
-          "price": 300
-        },
-        {
-          "name": "硬皮甲",
-          "price": 800
-        },
-        {
-          "name": "法師袍",
-          "price": 750
-        }
-      ],
-      "next": "shop_ch04_item"
-    },
-    "shop_ch04_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "藥草",
-          "price": 10
-        },
-        {
-          "name": "回復劑",
-          "price": 80
-        }
-      ],
-      "next": "story_ch05",
-      "secret_if": "found_secret_ch04",
-      "secret": [
-        {
-          "name": "風精之羽",
-          "price": 20000
-        },
-        {
-          "name": "魔法水",
-          "price": 1000
-        }
-      ]
-    },
-    "choice_ch04": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch04"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch04_weapon"
-        }
-      ]
-    },
-    "rumor_ch04": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(出口前按Alt+F3鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch04": true
-      },
-      "next": "shop_ch04_weapon"
-    },
-    "battle_ch04": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map3",
-      "units": "assets/maps/map3/map3_units.json",
-      "scenario": "assets/scenarios/ch04.json",
-      "on_win": "choice_ch04",
-      "on_lose": "retreat_ch04"
-    },
-    "retreat_ch04": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch04": true
-      },
-      "next": "battle_ch04"
-    },
-    "story_ch05": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第5章:塞拉村"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:消滅卡特那。"
-        }
-      ],
-      "next": "battle_ch05"
-    },
-    "shop_ch05_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "闊劍",
-          "price": 250
-        },
-        {
-          "name": "長劍",
-          "price": 800
-        },
-        {
-          "name": "刺矛",
-          "price": 80
-        },
-        {
-          "name": "騎槍",
-          "price": 400
-        },
-        {
-          "name": "硬皮甲",
-          "price": 800
-        },
-        {
-          "name": "環狀甲",
-          "price": 1000
-        }
-      ],
-      "next": "shop_ch05_item"
-    },
-    "shop_ch05_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "藥草",
-          "price": 10
-        },
-        {
-          "name": "回復劑",
-          "price": 80
-        },
-        {
-          "name": "解毒劑",
-          "price": 20
-        }
-      ],
-      "next": "story_ch06",
-      "secret_if": "found_secret_ch05",
-      "secret": [
-        {
-          "name": "力量藥水",
-          "price": 10000
-        },
-        {
-          "name": "耐力藥水",
-          "price": 10000
-        },
-        {
-          "name": "速度藥水",
-          "price": 10000
-        },
-        {
-          "name": "生命之實",
-          "price": 10000
-        }
-      ]
-    },
-    "choice_ch05": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch05"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch05_weapon"
-        }
-      ]
-    },
-    "rumor_ch05": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(道具店前按Shift+F4鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch05": true
-      },
-      "next": "shop_ch05_weapon"
-    },
-    "battle_ch05": {
-      "type": "battle",
-      "bgm": "FDMUS_003",
-      "map": "assets/maps/map4",
-      "units": "assets/maps/map4/map4_units.json",
-      "scenario": "assets/scenarios/ch05.json",
-      "on_win": "choice_ch05",
-      "on_lose": "retreat_ch05"
-    },
-    "retreat_ch05": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch05": true
-      },
-      "next": "battle_ch05"
-    },
-    "story_ch06": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第6章:普里茲港"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。"
-        }
-      ],
-      "next": "battle_ch06"
-    },
-    "shop_ch06_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "闊劍",
-          "price": 250
-        },
-        {
-          "name": "長劍",
-          "price": 800
-        },
-        {
-          "name": "刺矛",
-          "price": 80
-        },
-        {
-          "name": "騎槍",
-          "price": 400
-        },
-        {
-          "name": "迴旋斧",
-          "price": 800
-        },
-        {
-          "name": "短弓",
-          "price": 100
-        },
-        {
-          "name": "長弓",
-          "price": 500
-        },
-        {
-          "name": "鎖子甲",
-          "price": 3600
-        },
-        {
-          "name": "夜行裝",
-          "price": 3200
-        },
-        {
-          "name": "僧侶袍",
-          "price": 1800
-        }
-      ],
-      "next": "shop_ch06_item"
-    },
-    "shop_ch06_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "藥草",
-          "price": 10
-        },
-        {
-          "name": "回復劑",
-          "price": 80
-        },
-        {
-          "name": "解毒劑",
-          "price": 20
-        }
-      ],
-      "next": "story_ch07",
-      "secret_if": "found_secret_ch06",
-      "secret": [
-        {
-          "name": "再生藥",
-          "price": 300
-        },
-        {
-          "name": "魔法水",
-          "price": 1000
-        }
-      ]
-    },
-    "choice_ch06": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch06"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch06_weapon"
-        }
-      ]
-    },
-    "rumor_ch06": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(教會前按Ctrl+F5鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch06": true
-      },
-      "next": "shop_ch06_weapon"
-    },
-    "battle_ch06": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map5",
-      "units": "assets/maps/map5/map5_units.json",
-      "scenario": "assets/scenarios/ch06.json",
-      "on_win": "choice_ch06",
-      "on_lose": "retreat_ch06"
-    },
-    "retreat_ch06": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch06": true
-      },
-      "next": "battle_ch06"
-    },
-    "story_ch07": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第7章:往王城途中"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。"
-        }
-      ],
-      "next": "battle_ch07"
-    },
-    "shop_ch07_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "闊劍",
-          "price": 250
-        },
-        {
-          "name": "長劍",
-          "price": 800
-        },
-        {
-          "name": "騎槍",
-          "price": 400
-        },
-        {
-          "name": "長戟",
-          "price": 1200
-        },
-        {
-          "name": "迴旋斧",
-          "price": 800
-        },
-        {
-          "name": "戰斧",
-          "price": 800
-        },
-        {
-          "name": "長弓",
-          "price": 500
-        },
-        {
-          "name": "釘頭鎚",
-          "price": 180
-        },
-        {
-          "name": "巨鎚",
-          "price": 640
-        },
-        {
-          "name": "硬皮甲",
-          "price": 800
-        },
-        {
-          "name": "夜行裝",
-          "price": 3200
-        },
-        {
-          "name": "鎖子甲",
-          "price": 3600
-        }
-      ],
-      "next": "shop_ch07_item"
-    },
-    "shop_ch07_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "藥草",
-          "price": 10
-        },
-        {
-          "name": "回復劑",
-          "price": 80
-        }
-      ],
-      "next": "story_ch08",
-      "secret_if": "found_secret_ch07",
-      "secret": [
-        {
-          "name": "聖者之戒",
-          "price": 5000
-        },
-        {
-          "name": "心眼之書",
-          "price": 5000
-        },
-        {
-          "name": "白金勳章",
-          "price": 5000
-        },
-        {
-          "name": "飛龍卵",
-          "price": 100
-        }
-      ]
-    },
-    "choice_ch07": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch07"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch07_weapon"
-        }
-      ]
-    },
-    "rumor_ch07": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(酒店前按Alt+F6鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch07": true
-      },
-      "next": "shop_ch07_weapon"
-    },
-    "battle_ch07": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map6",
-      "units": "assets/maps/map6/map6_units.json",
-      "scenario": "assets/scenarios/ch07.json",
-      "on_win": "choice_ch07",
-      "on_lose": "retreat_ch07"
-    },
-    "retreat_ch07": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch07": true
-      },
-      "next": "battle_ch07"
-    },
-    "story_ch08": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第8章:王城前的戰鬥"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。"
-        }
-      ],
-      "next": "battle_ch08"
-    },
-    "shop_ch08_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "長劍",
-          "price": 800
-        },
-        {
-          "name": "巨劍",
-          "price": 1500
-        },
-        {
-          "name": "騎槍",
-          "price": 400
-        },
-        {
-          "name": "長戟",
-          "price": 1200
-        },
-        {
-          "name": "長弓",
-          "price": 500
-        },
-        {
-          "name": "戰斧",
-          "price": 800
-        },
-        {
-          "name": "巨鎚",
-          "price": 640
-        },
-        {
-          "name": "夜行裝",
-          "price": 3200
-        },
-        {
-          "name": "鎖子甲",
-          "price": 3600
-        },
-        {
-          "name": "僧侶袍",
-          "price": 1800
-        }
-      ],
-      "next": "shop_ch08_item"
-    },
-    "shop_ch08_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "藥草",
-          "price": 10
-        },
-        {
-          "name": "回復劑",
-          "price": 80
-        }
-      ],
-      "next": "story_ch09",
-      "secret_if": "found_secret_ch08",
-      "secret": [
-        {
-          "name": "黑暗劍",
-          "price": 2400
-        },
-        {
-          "name": "先鋒矛",
-          "price": 1800
-        },
-        {
-          "name": "再生藥",
-          "price": 300
-        },
-        {
-          "name": "魔法水",
-          "price": 1000
-        }
-      ]
-    },
-    "choice_ch08": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch08"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch08_weapon"
-        }
-      ]
-    },
-    "rumor_ch08": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(武器店前按Shift+F7鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch08": true
-      },
-      "next": "shop_ch08_weapon"
-    },
-    "battle_ch08": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map7",
-      "units": "assets/maps/map7/map7_units.json",
-      "scenario": "assets/scenarios/ch08.json",
-      "on_win": "choice_ch08",
-      "on_lose": "retreat_ch08"
-    },
-    "retreat_ch08": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch08": true
-      },
-      "next": "battle_ch08"
-    },
-    "story_ch09": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第9章:騎士的抉擇"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。"
-        }
-      ],
-      "next": "battle_ch09"
-    },
-    "shop_ch09_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "巨劍",
-          "price": 1500
-        },
-        {
-          "name": "長戟",
-          "price": 1200
-        },
-        {
-          "name": "戰鎚",
-          "price": 2000
-        },
-        {
-          "name": "黑暗弓",
-          "price": 1800
-        },
-        {
-          "name": "鐵爪",
-          "price": 850
-        },
-        {
-          "name": "魔法皮甲",
-          "price": 4000
-        },
-        {
-          "name": "鱗甲",
-          "price": 5800
-        },
-        {
-          "name": "武鬥裝",
-          "price": 1200
-        }
-      ],
-      "next": "shop_ch09_item"
-    },
-    "shop_ch09_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "藥草",
-          "price": 10
-        },
-        {
-          "name": "回復劑",
-          "price": 80
-        }
-      ],
-      "next": "story_ch10",
-      "secret_if": "found_secret_ch09",
-      "secret": [
-        {
-          "name": "再生藥",
-          "price": 300
-        },
-        {
-          "name": "魔法水",
-          "price": 1000
-        }
-      ]
-    },
-    "choice_ch09": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch09"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch09_weapon"
-        }
-      ]
-    },
-    "rumor_ch09": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(出口前按Ctrl+F8鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch09": true
-      },
-      "next": "shop_ch09_weapon"
-    },
-    "battle_ch09": {
-      "type": "battle",
-      "bgm": "FDMUS_003",
-      "map": "assets/maps/map8",
-      "units": "assets/maps/map8/map8_units.json",
-      "scenario": "assets/scenarios/ch09.json",
-      "on_win": "choice_ch09",
-      "on_lose": "retreat_ch09"
-    },
-    "retreat_ch09": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch09": true
-      },
-      "next": "battle_ch09"
-    },
-    "story_ch10": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第10章:洞窟中的激戰"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。務必保護「索菲亞、卡納恩三世」存活。"
-        }
-      ],
-      "next": "battle_ch10"
-    },
-    "shop_ch10_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "巨劍",
-          "price": 1500
-        },
-        {
-          "name": "戰鎚",
-          "price": 2000
-        },
-        {
-          "name": "黑暗弓",
-          "price": 1800
-        },
-        {
-          "name": "巨鎚",
-          "price": 640
-        },
-        {
-          "name": "鐵爪",
-          "price": 850
-        },
-        {
-          "name": "魔法皮甲",
-          "price": 4000
-        },
-        {
-          "name": "鱗甲",
-          "price": 5800
-        },
-        {
-          "name": "祭司袍",
-          "price": 6400
-        }
-      ],
-      "next": "shop_ch10_item"
-    },
-    "shop_ch10_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "藥草",
-          "price": 10
-        },
-        {
-          "name": "回復劑",
-          "price": 80
-        },
-        {
-          "name": "解毒劑",
-          "price": 20
-        }
-      ],
-      "next": "story_ch11",
-      "secret_if": "found_secret_ch10",
-      "secret": [
-        {
-          "name": "生命之實",
-          "price": 10000
-        },
-        {
-          "name": "魔力水晶",
-          "price": 10000
-        }
-      ]
-    },
-    "choice_ch10": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch10"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch10_weapon"
-        }
-      ]
-    },
-    "rumor_ch10": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(道具店前按Alt+F9鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch10": true
-      },
-      "next": "shop_ch10_weapon"
-    },
-    "battle_ch10": {
-      "type": "battle",
-      "bgm": "FDMUS_004",
-      "map": "assets/maps/map9",
-      "units": "assets/maps/map9/map9_units.json",
-      "scenario": "assets/scenarios/ch10.json",
-      "on_win": "choice_ch10",
-      "on_lose": "retreat_ch10"
-    },
-    "retreat_ch10": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch10": true
-      },
-      "next": "battle_ch10"
-    },
-    "story_ch11": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第11章:幻之森林"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。"
-        }
-      ],
-      "next": "battle_ch11"
-    },
-    "shop_ch11_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "巨劍",
-          "price": 1500
-        },
-        {
-          "name": "黑暗劍",
-          "price": 2400
-        },
-        {
-          "name": "先鋒矛",
-          "price": 1800
-        },
-        {
-          "name": "斬馬刀",
-          "price": 4400
-        },
-        {
-          "name": "皇帝指環",
-          "price": 1200
-        },
-        {
-          "name": "盜賊之衣",
-          "price": 7800
-        },
-        {
-          "name": "連環鋼甲",
-          "price": 8400
-        },
-        {
-          "name": "武鬥裝",
-          "price": 1200
-        }
-      ],
-      "next": "shop_ch11_item"
-    },
-    "shop_ch11_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "藥草",
-          "price": 10
-        },
-        {
-          "name": "回復劑",
-          "price": 80
-        }
-      ],
-      "next": "story_ch12",
-      "secret_if": "found_secret_ch11",
-      "secret": [
-        {
-          "name": "再生藥",
-          "price": 300
-        },
-        {
-          "name": "魔法水",
-          "price": 1000
-        }
-      ]
-    },
-    "choice_ch11": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch11"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch11_weapon"
-        }
-      ]
-    },
-    "rumor_ch11": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(教會前按Shift+F10鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch11": true
-      },
-      "next": "shop_ch11_weapon"
-    },
-    "battle_ch11": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map10",
-      "units": "assets/maps/map10/map10_units.json",
-      "scenario": "assets/scenarios/ch11.json",
-      "on_win": "choice_ch11",
-      "on_lose": "retreat_ch11"
-    },
-    "retreat_ch11": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch11": true
-      },
-      "next": "battle_ch11"
-    },
-    "story_ch12": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第12章:北山道"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。務必保護「米亞斯多德」存活。"
-        }
-      ],
-      "next": "battle_ch12"
-    },
-    "shop_ch12_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "黑暗劍",
-          "price": 2400
-        },
-        {
-          "name": "斬馬刀",
-          "price": 4400
-        },
-        {
-          "name": "巨斧",
-          "price": 3200
-        },
-        {
-          "name": "槤枷",
-          "price": 1000
-        },
-        {
-          "name": "皇帝指環",
-          "price": 1200
-        },
-        {
-          "name": "盜賊之衣",
-          "price": 7800
-        },
-        {
-          "name": "連環鋼甲",
-          "price": 8400
-        },
-        {
-          "name": "武鬥裝",
-          "price": 1200
-        }
-      ],
-      "next": "shop_ch12_item"
-    },
-    "shop_ch12_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "藥草",
-          "price": 10
-        },
-        {
-          "name": "回復劑",
-          "price": 80
-        }
-      ],
-      "next": "story_ch13",
-      "secret_if": "found_secret_ch12",
-      "secret": [
-        {
-          "name": "再生藥",
-          "price": 300
-        },
-        {
-          "name": "魔法水",
-          "price": 1000
-        }
-      ]
-    },
-    "choice_ch12": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch12"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch12_weapon"
-        }
-      ]
-    },
-    "rumor_ch12": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(酒店前按Ctrl+F1鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch12": true
-      },
-      "next": "shop_ch12_weapon"
-    },
-    "battle_ch12": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map11",
-      "units": "assets/maps/map11/map11_units.json",
-      "scenario": "assets/scenarios/ch12.json",
-      "on_win": "choice_ch12",
-      "on_lose": "retreat_ch12"
-    },
-    "retreat_ch12": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch12": true
-      },
-      "next": "battle_ch12"
-    },
-    "story_ch13": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第13章:哈斯米爾之戰"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。務必保護「精靈族全滅」存活。"
-        }
-      ],
-      "next": "battle_ch13"
-    },
-    "shop_ch13_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "戰士劍",
-          "price": 4200
-        },
-        {
-          "name": "斬馬刀",
-          "price": 4400
-        },
-        {
-          "name": "巨斧",
-          "price": 3200
-        },
-        {
-          "name": "巨弓",
-          "price": 4800
-        },
-        {
-          "name": "盜賊之衣",
-          "price": 7800
-        },
-        {
-          "name": "連環鋼甲",
-          "price": 8400
-        },
-        {
-          "name": "聖者袍",
-          "price": 11200
-        },
-        {
-          "name": "武鬥裝",
-          "price": 1200
-        }
-      ],
-      "next": "shop_ch13_item"
-    },
-    "shop_ch13_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "回復劑",
-          "price": 80
-        },
-        {
-          "name": "再生藥",
-          "price": 300
-        },
-        {
-          "name": "解毒劑",
-          "price": 20
-        },
-        {
-          "name": "退麻劑",
-          "price": 20
-        }
-      ],
-      "next": "story_ch14",
-      "secret_if": "found_secret_ch13",
-      "secret": [
-        {
-          "name": "斬鐵劍",
-          "price": 9600
-        },
-        {
-          "name": "聖之槍",
-          "price": 24000
-        }
-      ]
-    },
-    "choice_ch13": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch13"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch13_weapon"
-        }
-      ]
-    },
-    "rumor_ch13": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(武器店前按Alt+F2鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch13": true
-      },
-      "next": "shop_ch13_weapon"
-    },
-    "battle_ch13": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map12",
-      "units": "assets/maps/map12/map12_units.json",
-      "scenario": "assets/scenarios/ch13.json",
-      "on_win": "choice_ch13",
-      "on_lose": "retreat_ch13"
-    },
-    "retreat_ch13": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch13": true
-      },
-      "next": "battle_ch13"
-    },
-    "story_ch14": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第14章:平原的會戰"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。"
-        }
-      ],
-      "next": "battle_ch14"
-    },
-    "shop_ch14_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "戰士劍",
-          "price": 4200
-        },
-        {
-          "name": "惡魔之矛",
-          "price": 6000
-        },
-        {
-          "name": "巨斧",
-          "price": 3200
-        },
-        {
-          "name": "巨弓",
-          "price": 4800
-        },
-        {
-          "name": "忍者裝",
-          "price": 9600
-        },
-        {
-          "name": "合金鎖甲",
-          "price": 10800
-        },
-        {
-          "name": "聖者袍",
-          "price": 11200
-        },
-        {
-          "name": "鬥士服",
-          "price": 5600
-        }
-      ],
-      "next": "shop_ch14_item"
-    },
-    "shop_ch14_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "回復劑",
-          "price": 80
-        },
-        {
-          "name": "再生藥",
-          "price": 300
-        },
-        {
-          "name": "解毒劑",
-          "price": 20
-        },
-        {
-          "name": "退麻劑",
-          "price": 20
-        }
-      ],
-      "next": "story_ch15",
-      "secret_if": "found_secret_ch14",
-      "secret": [
-        {
-          "name": "再生藥",
-          "price": 300
-        },
-        {
-          "name": "飛龍卵",
-          "price": 100
-        }
-      ]
-    },
-    "choice_ch14": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch14"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch14_weapon"
-        }
-      ]
-    },
-    "rumor_ch14": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(出口前按Shift+F3鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch14": true
-      },
-      "next": "shop_ch14_weapon"
-    },
-    "battle_ch14": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map13",
-      "units": "assets/maps/map13/map13_units.json",
-      "scenario": "assets/scenarios/ch14.json",
-      "on_win": "choice_ch14",
-      "on_lose": "retreat_ch14"
-    },
-    "retreat_ch14": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch14": true
-      },
-      "next": "battle_ch14"
-    },
-    "story_ch15": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第15章:拉卡湖的激戰"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。務必保護「賽可邦勒」存活。"
-        }
-      ],
-      "next": "battle_ch15"
-    },
-    "shop_ch15_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "巨魔劍",
-          "price": 7800
-        },
-        {
-          "name": "惡魔之矛",
-          "price": 6000
-        },
-        {
-          "name": "血之斧",
-          "price": 5600
-        },
-        {
-          "name": "精靈弓",
-          "price": 7200
-        },
-        {
-          "name": "忍者裝",
-          "price": 9600
-        },
-        {
-          "name": "合金鎖甲",
-          "price": 10800
-        },
-        {
-          "name": "聖者袍",
-          "price": 11200
-        },
-        {
-          "name": "鬥士服",
-          "price": 5600
-        }
-      ],
-      "next": "shop_ch15_item"
-    },
-    "shop_ch15_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "回復劑",
-          "price": 80
-        },
-        {
-          "name": "再生藥",
-          "price": 300
-        },
-        {
-          "name": "解毒劑",
-          "price": 20
-        },
-        {
-          "name": "退麻劑",
-          "price": 20
-        }
-      ],
-      "next": "story_ch16",
-      "secret_if": "found_secret_ch15",
-      "secret": [
-        {
-          "name": "神聖之水",
-          "price": 800
-        },
-        {
-          "name": "水晶粒",
-          "price": 5000
-        }
-      ]
-    },
-    "choice_ch15": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch15"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch15_weapon"
-        }
-      ]
-    },
-    "rumor_ch15": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(道具店前按Ctrl+F4鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch15": true
-      },
-      "next": "shop_ch15_weapon"
-    },
-    "battle_ch15": {
-      "type": "battle",
-      "bgm": "FDMUS_003",
-      "map": "assets/maps/map14",
-      "units": "assets/maps/map14/map14_units.json",
-      "scenario": "assets/scenarios/ch15.json",
-      "on_win": "choice_ch15",
-      "on_lose": "retreat_ch15"
-    },
-    "retreat_ch15": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch15": true
-      },
-      "next": "battle_ch15"
-    },
-    "story_ch16": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第16章:冰原之戰"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。務必保護「蜜蒂」存活。"
-        }
-      ],
-      "next": "battle_ch16"
-    },
-    "shop_ch16_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "巨魔劍",
-          "price": 7800
-        },
-        {
-          "name": "惡魔之矛",
-          "price": 6000
-        },
-        {
-          "name": "血之斧",
-          "price": 5600
-        },
-        {
-          "name": "精靈弓",
-          "price": 7200
-        },
-        {
-          "name": "忍者裝",
-          "price": 9600
-        },
-        {
-          "name": "合金鎖甲",
-          "price": 10800
-        },
-        {
-          "name": "霧之袍",
-          "price": 16400
-        }
-      ],
-      "next": "shop_ch16_item"
-    },
-    "shop_ch16_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "回復劑",
-          "price": 80
-        },
-        {
-          "name": "再生藥",
-          "price": 300
-        },
-        {
-          "name": "解毒劑",
-          "price": 20
-        },
-        {
-          "name": "退麻劑",
-          "price": 20
-        }
-      ],
-      "next": "story_ch17",
-      "secret_if": "found_secret_ch16",
-      "secret": [
-        {
-          "name": "生命之實",
-          "price": 10000
-        },
-        {
-          "name": "魔力水晶",
-          "price": 10000
-        },
-        {
-          "name": "力量藥水",
-          "price": 10000
-        },
-        {
-          "name": "耐力藥水",
-          "price": 10000
-        }
-      ]
-    },
-    "choice_ch16": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch16"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch16_weapon"
-        }
-      ]
-    },
-    "rumor_ch16": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(教會前按Alt+F5鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch16": true
-      },
-      "next": "shop_ch16_weapon"
-    },
-    "battle_ch16": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map15",
-      "units": "assets/maps/map15/map15_units.json",
-      "scenario": "assets/scenarios/ch16.json",
-      "on_win": "choice_ch16",
-      "on_lose": "retreat_ch16"
-    },
-    "retreat_ch16": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch16": true
-      },
-      "next": "battle_ch16"
-    },
-    "story_ch17": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第17章:血與冰之刃"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。"
-        }
-      ],
-      "next": "battle_ch17"
-    },
-    "shop_ch17_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "暗殺刀",
-          "price": 5000
-        },
-        {
-          "name": "惡魔之矛",
-          "price": 6000
-        },
-        {
-          "name": "血之斧",
-          "price": 5600
-        },
-        {
-          "name": "狙擊弓",
-          "price": 12000
-        },
-        {
-          "name": "魔法杖",
-          "price": 5600
-        },
-        {
-          "name": "毒爪",
-          "price": 3600
-        },
-        {
-          "name": "潛行服",
-          "price": 12000
-        },
-        {
-          "name": "魔法鱗甲",
-          "price": 13200
-        },
-        {
-          "name": "霧之袍",
-          "price": 16400
-        },
-        {
-          "name": "鎧甲",
-          "price": 12000
-        }
-      ],
-      "next": "shop_ch17_item"
-    },
-    "shop_ch17_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "回復劑",
-          "price": 80
-        },
-        {
-          "name": "再生藥",
-          "price": 300
-        },
-        {
-          "name": "解毒劑",
-          "price": 20
-        },
-        {
-          "name": "退麻劑",
-          "price": 20
-        }
-      ],
-      "next": "story_ch18",
-      "secret_if": "found_secret_ch17",
-      "secret": [
-        {
-          "name": "神聖之水",
-          "price": 800
-        },
-        {
-          "name": "水晶粒",
-          "price": 5000
-        },
-        {
-          "name": "十字弓",
-          "price": 8800
-        }
-      ]
-    },
-    "choice_ch17": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch17"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch17_weapon"
-        }
-      ]
-    },
-    "rumor_ch17": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(酒店前按Shift+F5鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch17": true
-      },
-      "next": "shop_ch17_weapon"
-    },
-    "battle_ch17": {
-      "type": "battle",
-      "bgm": "FDMUS_004",
-      "map": "assets/maps/map16",
-      "units": "assets/maps/map16/map16_units.json",
-      "scenario": "assets/scenarios/ch17.json",
-      "on_win": "choice_ch17",
-      "on_lose": "retreat_ch17"
-    },
-    "retreat_ch17": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch17": true
-      },
-      "next": "battle_ch17"
-    },
-    "story_ch18": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第18章:遙遠的彼岸"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:黑暗騎士死亡。務必保護「約拿、蘭斯洛特」存活。"
-        }
-      ],
-      "next": "battle_ch18"
-    },
-    "shop_ch18_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "忍者刀",
-          "price": 8800
-        },
-        {
-          "name": "黃金之戟",
-          "price": 8800
-        },
-        {
-          "name": "閃電鎚",
-          "price": 12500
-        },
-        {
-          "name": "狙擊弓",
-          "price": 12000
-        },
-        {
-          "name": "魔法杖",
-          "price": 5600
-        },
-        {
-          "name": "毒爪",
-          "price": 3600
-        },
-        {
-          "name": "潛行服",
-          "price": 12000
-        },
-        {
-          "name": "魔法鱗甲",
-          "price": 13200
-        },
-        {
-          "name": "霧之袍",
-          "price": 16400
-        },
-        {
-          "name": "鎧甲",
-          "price": 12000
-        },
-        {
-          "name": "武者鎧甲",
-          "price": 11000
-        }
-      ],
-      "next": "shop_ch18_item"
-    },
-    "shop_ch18_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "回復劑",
-          "price": 80
-        },
-        {
-          "name": "再生藥",
-          "price": 300
-        },
-        {
-          "name": "解毒劑",
-          "price": 20
-        },
-        {
-          "name": "退麻劑",
-          "price": 20
-        }
-      ],
-      "next": "story_ch19",
-      "secret_if": "found_secret_ch18",
-      "secret": [
-        {
-          "name": "力之杖",
-          "price": 10000
-        },
-        {
-          "name": "水晶粒",
-          "price": 5000
-        }
-      ]
-    },
-    "choice_ch18": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch18"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch18_weapon"
-        }
-      ]
-    },
-    "rumor_ch18": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(武器店前按Ctrl+F7鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch18": true
-      },
-      "next": "shop_ch18_weapon"
-    },
-    "battle_ch18": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map17",
-      "units": "assets/maps/map17/map17_units.json",
-      "scenario": "assets/scenarios/ch18.json",
-      "on_win": "choice_ch18",
-      "on_lose": "retreat_ch18"
-    },
-    "retreat_ch18": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch18": true
-      },
-      "next": "battle_ch18"
-    },
-    "story_ch19": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第19章:黑暗中的狙擊"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。務必保護「巴拿羅西亞」存活。"
-        }
-      ],
-      "next": "battle_ch19"
-    },
-    "shop_ch19_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "忍者刀",
-          "price": 8800
-        },
-        {
-          "name": "黃金之戟",
-          "price": 8800
-        },
-        {
-          "name": "閃電鎚",
-          "price": 12500
-        },
-        {
-          "name": "十字弓",
-          "price": 8800
-        },
-        {
-          "name": "魔法杖",
-          "price": 5600
-        },
-        {
-          "name": "碎岩爪",
-          "price": 7800
-        },
-        {
-          "name": "神秘裝",
-          "price": 14400
-        },
-        {
-          "name": "血環甲",
-          "price": 15600
-        },
-        {
-          "name": "霧之袍",
-          "price": 16400
-        },
-        {
-          "name": "銀鎧甲",
-          "price": 15000
-        },
-        {
-          "name": "武者鎧甲",
-          "price": 11000
-        }
-      ],
-      "next": "shop_ch19_item"
-    },
-    "shop_ch19_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "回復劑",
-          "price": 80
-        },
-        {
-          "name": "再生藥",
-          "price": 300
-        },
-        {
-          "name": "解毒劑",
-          "price": 20
-        },
-        {
-          "name": "退麻劑",
-          "price": 20
-        }
-      ],
-      "next": "story_ch20",
-      "secret_if": "found_secret_ch19",
-      "secret": [
-        {
-          "name": "神聖之水",
-          "price": 800
-        },
-        {
-          "name": "水晶粒",
-          "price": 5000
-        }
-      ]
-    },
-    "choice_ch19": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch19"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch19_weapon"
-        }
-      ]
-    },
-    "rumor_ch19": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(出口前按Alt+F8鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch19": true
-      },
-      "next": "shop_ch19_weapon"
-    },
-    "battle_ch19": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map18",
-      "units": "assets/maps/map18/map18_units.json",
-      "scenario": "assets/scenarios/ch19.json",
-      "on_win": "choice_ch19",
-      "on_lose": "retreat_ch19"
-    },
-    "retreat_ch19": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch19": true
-      },
-      "next": "battle_ch19"
-    },
-    "story_ch20": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第20章:死亡般的沈寂"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:沼澤怪物外敵全滅。務必保護「謝多、精靈全滅」存活。"
-        }
-      ],
-      "next": "battle_ch20"
-    },
-    "shop_ch20_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "忍者刀",
-          "price": 8800
-        },
-        {
-          "name": "黃金之戟",
-          "price": 8800
-        },
-        {
-          "name": "閃電鎚",
-          "price": 12500
-        },
-        {
-          "name": "十字弓",
-          "price": 8800
-        },
-        {
-          "name": "封咒杖",
-          "price": 8800
-        },
-        {
-          "name": "碎岩爪",
-          "price": 7800
-        },
-        {
-          "name": "神秘裝",
-          "price": 14400
-        },
-        {
-          "name": "血環甲",
-          "price": 15600
-        },
-        {
-          "name": "黑暗之袍",
-          "price": 18000
-        },
-        {
-          "name": "銀鎧甲",
-          "price": 15000
-        },
-        {
-          "name": "妖魔鬥服",
-          "price": 18000
-        }
-      ],
-      "next": "shop_ch20_item"
-    },
-    "shop_ch20_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "回復劑",
-          "price": 80
-        },
-        {
-          "name": "再生藥",
-          "price": 300
-        },
-        {
-          "name": "神聖之水",
-          "price": 800
-        },
-        {
-          "name": "解毒劑",
-          "price": 20
-        },
-        {
-          "name": "退麻劑",
-          "price": 20
-        }
-      ],
-      "next": "story_ch21",
-      "secret_if": "found_secret_ch20",
-      "secret": [
-        {
-          "name": "神聖之水",
-          "price": 800
-        },
-        {
-          "name": "水晶粒",
-          "price": 5000
-        }
-      ]
-    },
-    "choice_ch20": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch20"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch20_weapon"
-        }
-      ]
-    },
-    "rumor_ch20": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(道具店前按Shift+F9鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch20": true
-      },
-      "next": "shop_ch20_weapon"
-    },
-    "battle_ch20": {
-      "type": "battle",
-      "bgm": "FDMUS_003",
-      "map": "assets/maps/map19",
-      "units": "assets/maps/map19/map19_units.json",
-      "scenario": "assets/scenarios/ch20.json",
-      "on_win": "choice_ch20",
-      "on_lose": "retreat_ch20"
-    },
-    "retreat_ch20": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch20": true
-      },
-      "next": "battle_ch20"
-    },
-    "story_ch21": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第21章:亞述森林"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。務必保護「羅蘭、希爾法」存活。"
-        }
-      ],
-      "next": "battle_ch21"
-    },
-    "shop_ch21_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "地獄刀",
-          "price": 14800
-        },
-        {
-          "name": "黃金之戟",
-          "price": 8800
-        },
-        {
-          "name": "狂暴之斧",
-          "price": 12800
-        },
-        {
-          "name": "十字弓",
-          "price": 8800
-        },
-        {
-          "name": "封咒杖",
-          "price": 8800
-        },
-        {
-          "name": "金鋼指環",
-          "price": 11200
-        },
-        {
-          "name": "暗殺服",
-          "price": 20000
-        },
-        {
-          "name": "金鋼鎖甲",
-          "price": 22000
-        },
-        {
-          "name": "黑暗之袍",
-          "price": 18000
-        },
-        {
-          "name": "魔法鎧甲",
-          "price": 20000
-        },
-        {
-          "name": "妖魔鬥服",
-          "price": 18000
-        }
-      ],
-      "next": "shop_ch21_item"
-    },
-    "shop_ch21_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "回復劑",
-          "price": 80
-        },
-        {
-          "name": "再生藥",
-          "price": 300
-        },
-        {
-          "name": "神聖之水",
-          "price": 800
-        },
-        {
-          "name": "解毒劑",
-          "price": 20
-        },
-        {
-          "name": "退麻劑",
-          "price": 20
-        }
-      ],
-      "next": "story_ch22",
-      "secret_if": "found_secret_ch21",
-      "secret": [
-        {
-          "name": "封魔弓",
-          "price": 20000
-        },
-        {
-          "name": "裂刃爪",
-          "price": 13200
-        }
-      ]
-    },
-    "choice_ch21": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch21"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch21_weapon"
-        }
-      ]
-    },
-    "rumor_ch21": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(教會前按Ctrl+F10鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch21": true
-      },
-      "next": "shop_ch21_weapon"
-    },
-    "battle_ch21": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map20",
-      "units": "assets/maps/map20/map20_units.json",
-      "scenario": "assets/scenarios/ch21.json",
-      "on_win": "choice_ch21",
-      "on_lose": "retreat_ch21"
-    },
-    "retreat_ch21": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch21": true
-      },
-      "next": "battle_ch21"
-    },
-    "story_ch22": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第22章:遠古呼喚"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。務必保護「希爾法」存活。"
-        }
-      ],
-      "next": "battle_ch22"
-    },
-    "shop_ch22_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "地獄刀",
-          "price": 14800
-        },
-        {
-          "name": "龍之槍",
-          "price": 11200
-        },
-        {
-          "name": "狂暴之斧",
-          "price": 12800
-        },
-        {
-          "name": "水晶弓",
-          "price": 13500
-        },
-        {
-          "name": "封咒杖",
-          "price": 8800
-        },
-        {
-          "name": "金鋼指環",
-          "price": 11200
-        },
-        {
-          "name": "暗殺服",
-          "price": 20000
-        },
-        {
-          "name": "金鋼鎖甲",
-          "price": 22000
-        },
-        {
-          "name": "地之袍",
-          "price": 20000
-        },
-        {
-          "name": "魔法鎧甲",
-          "price": 20000
-        },
-        {
-          "name": "鬥士護甲",
-          "price": 20000
-        }
-      ],
-      "next": "shop_ch22_item"
-    },
-    "shop_ch22_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "回復劑",
-          "price": 80
-        },
-        {
-          "name": "再生藥",
-          "price": 300
-        },
-        {
-          "name": "神聖之水",
-          "price": 800
-        },
-        {
-          "name": "解毒劑",
-          "price": 20
-        },
-        {
-          "name": "退麻劑",
-          "price": 20
-        }
-      ],
-      "next": "story_ch23",
-      "secret_if": "found_secret_ch22",
-      "secret": [
-        {
-          "name": "神聖之水",
-          "price": 800
-        },
-        {
-          "name": "水晶粒",
-          "price": 5000
-        }
-      ]
-    },
-    "choice_ch22": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch22"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch22_weapon"
-        }
-      ]
-    },
-    "rumor_ch22": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(酒店前按Alt+F1鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch22": true
-      },
-      "next": "shop_ch22_weapon"
-    },
-    "battle_ch22": {
-      "type": "battle",
-      "bgm": "FDMUS_003",
-      "map": "assets/maps/map21",
-      "units": "assets/maps/map21/map21_units.json",
-      "scenario": "assets/scenarios/ch22.json",
-      "on_win": "choice_ch22",
-      "on_lose": "retreat_ch22"
-    },
-    "retreat_ch22": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch22": true
-      },
-      "next": "battle_ch22"
-    },
-    "story_ch23": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第23章:向天空之旅"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:擊毀機甲隊長。務必保護「希爾法、卡里斯、羅德曼」存活。"
-        }
-      ],
-      "next": "battle_ch23"
-    },
-    "battle_ch23": {
-      "type": "battle",
-      "bgm": "FDMUS_004",
-      "map": "assets/maps/map22",
-      "units": "assets/maps/map22/map22_units.json",
-      "scenario": "assets/scenarios/ch23.json",
-      "on_win": "story_ch24",
-      "on_lose": "retreat_ch23"
-    },
-    "retreat_ch23": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch23": true
-      },
-      "next": "battle_ch23"
-    },
-    "story_ch24": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第24章:在天空的彼方"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。"
-        }
-      ],
-      "next": "battle_ch24"
-    },
-    "battle_ch24": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map23",
-      "units": "assets/maps/map23/map23_units.json",
-      "scenario": "assets/scenarios/ch24.json",
-      "on_win": "story_ch25",
-      "on_lose": "retreat_ch24"
-    },
-    "retreat_ch24": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch24": true
-      },
-      "next": "battle_ch24"
-    },
-    "story_ch25": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第25章:火焰的審判"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。務必保護「聖寇拉斯」存活。"
-        }
-      ],
-      "next": "battle_ch25"
-    },
-    "battle_ch25": {
-      "type": "battle",
-      "bgm": "FDMUS_003",
-      "map": "assets/maps/map24",
-      "units": "assets/maps/map24/map24_units.json",
-      "scenario": "assets/scenarios/ch25.json",
-      "on_win": "story_ch26",
-      "on_lose": "retreat_ch25"
-    },
-    "retreat_ch25": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch25": true
-      },
-      "next": "battle_ch25"
-    },
-    "story_ch26": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第26章:未知的迴廊"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:敵全滅。務必保護「悠妮、亞奇梅吉」存活。"
-        }
-      ],
-      "next": "battle_ch26"
-    },
-    "shop_ch26_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "大地之劍",
-          "price": 18000
-        },
-        {
-          "name": "破魔槍",
-          "price": 16000
-        },
-        {
-          "name": "力量之斧",
-          "price": 22000
-        },
-        {
-          "name": "封魔弓",
-          "price": 20000
-        },
-        {
-          "name": "龍之杖",
-          "price": 22400
-        },
-        {
-          "name": "巨神指環",
-          "price": 17500
-        },
-        {
-          "name": "惡魔皮甲",
-          "price": 30000
-        },
-        {
-          "name": "力量鎖甲",
-          "price": 36000
-        },
-        {
-          "name": "聖鎧甲",
-          "price": 42000
-        },
-        {
-          "name": "天之袍",
-          "price": 32000
-        },
-        {
-          "name": "武神護甲",
-          "price": 34000
-        }
-      ],
-      "next": "shop_ch26_item"
-    },
-    "shop_ch26_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "再生藥",
-          "price": 300
-        },
-        {
-          "name": "神聖之水",
-          "price": 800
-        },
-        {
-          "name": "解毒劑",
-          "price": 20
-        },
-        {
-          "name": "退麻劑",
-          "price": 20
-        }
-      ],
-      "next": "story_ch27",
-      "secret_if": "found_secret_ch26",
-      "secret": [
-        {
-          "name": "神聖之水",
-          "price": 800
-        },
-        {
-          "name": "水晶粒",
-          "price": 5000
-        },
-        {
-          "name": "光之斧",
-          "price": 15500
-        }
-      ]
-    },
-    "choice_ch26": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch26"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch26_weapon"
-        }
-      ]
-    },
-    "rumor_ch26": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(教會前按Shift+F5鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch26": true
-      },
-      "next": "shop_ch26_weapon"
-    },
-    "battle_ch26": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map25",
-      "units": "assets/maps/map25/map25_units.json",
-      "scenario": "assets/scenarios/ch26.json",
-      "on_win": "choice_ch26",
-      "on_lose": "retreat_ch26"
-    },
-    "retreat_ch26": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch26": true
-      },
-      "next": "battle_ch26"
-    },
-    "story_ch27": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第27章:命運的交會點"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:擊毀機甲隊長。務必保護「悠妮」存活。"
-        }
-      ],
-      "next": "battle_ch27"
-    },
-    "shop_ch27_weapon": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "龍神劍",
-          "price": 25000
-        },
-        {
-          "name": "巨神戟",
-          "price": 24000
-        },
-        {
-          "name": "大地之鎚",
-          "price": 28000
-        },
-        {
-          "name": "火神弓",
-          "price": 32000
-        },
-        {
-          "name": "龍之杖",
-          "price": 22400
-        },
-        {
-          "name": "鬥神指環",
-          "price": 25800
-        },
-        {
-          "name": "雷神服",
-          "price": 42000
-        },
-        {
-          "name": "惡魔鱗甲",
-          "price": 45000
-        },
-        {
-          "name": "大地鎧甲",
-          "price": 50000
-        },
-        {
-          "name": "天之袍",
-          "price": 32000
-        },
-        {
-          "name": "武神護甲",
-          "price": 34000
-        }
-      ],
-      "next": "shop_ch27_item"
-    },
-    "shop_ch27_item": {
-      "type": "shop",
-      "bgm": "FDMUS_010",
-      "goods": [
-        {
-          "name": "神聖之水",
-          "price": 800
-        },
-        {
-          "name": "水晶粒",
-          "price": 5000
-        }
-      ],
-      "next": "story_ch28",
-      "secret_if": "found_secret_ch27",
-      "secret": [
-        {
-          "name": "神聖之水",
-          "price": 800
-        },
-        {
-          "name": "水晶粒",
-          "price": 5000
-        }
-      ]
-    },
-    "choice_ch27": {
-      "type": "choice",
-      "prompt": "進城前要不要先打聽消息?",
-      "options": [
-        {
-          "label": "打聽消息",
-          "to": "rumor_ch27"
-        },
-        {
-          "label": "直接進城採買",
-          "to": "shop_ch27_weapon"
-        }
-      ]
-    },
-    "rumor_ch27": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "聽說這裡有不擺在檯面上的好東西……(酒店前按Ctrl+F6鍵)"
-        }
-      ],
-      "set_flags": {
-        "found_secret_ch27": true
-      },
-      "next": "shop_ch27_weapon"
-    },
-    "battle_ch27": {
-      "type": "battle",
-      "bgm": "FDMUS_004",
-      "map": "assets/maps/map26",
-      "units": "assets/maps/map26/map26_units.json",
-      "scenario": "assets/scenarios/ch27.json",
-      "on_win": "choice_ch27",
-      "on_lose": "retreat_ch27"
-    },
-    "retreat_ch27": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch27": true
-      },
-      "next": "battle_ch27"
-    },
-    "story_ch28": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第28章:探索者"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:擊毀機甲隊長。務必保護「悠妮」存活。"
-        }
-      ],
-      "next": "battle_ch28"
-    },
-    "battle_ch28": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map27",
-      "units": "assets/maps/map27/map27_units.json",
-      "scenario": "assets/scenarios/ch28.json",
-      "on_win": "story_ch29",
-      "on_lose": "retreat_ch28"
-    },
-    "retreat_ch28": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch28": true
-      },
-      "next": "battle_ch28"
-    },
-    "story_ch29": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第29章:探索者(防衛)"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:解除防衛系統。務必保護「悠妮」存活。"
-        }
-      ],
-      "next": "battle_ch29"
-    },
-    "battle_ch29": {
-      "type": "battle",
-      "bgm": "FDMUS_019",
-      "map": "assets/maps/map28",
-      "units": "assets/maps/map28/map28_units.json",
-      "scenario": "assets/scenarios/ch29.json",
-      "on_win": "story_ch30",
-      "on_lose": "retreat_ch29"
-    },
-    "retreat_ch29": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch29": true
-      },
-      "next": "battle_ch29"
-    },
-    "story_ch30": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "第30章:傳說的終章"
-        },
-        {
-          "speaker": -1,
-          "text": "目標:空魔神死亡。務必保護「悠妮」存活。"
-        }
-      ],
-      "next": "battle_ch30"
-    },
-    "battle_ch30": {
-      "type": "battle",
-      "bgm": "FDMUS_008",
-      "map": "assets/maps/map29",
-      "units": "assets/maps/map29/map29_units.json",
-      "scenario": "assets/scenarios/ch30.json",
-      "on_win": "ending",
-      "on_lose": "retreat_ch30"
-    },
-    "retreat_ch30": {
-      "type": "story",
-      "bgm": "FDMUS_010",
-      "lines": [
-        {
-          "speaker": -1,
-          "text": "撤退!先回頭整頓,再找機會反攻……"
-        }
-      ],
-      "set_flags": {
-        "retried_ch30": true
-      },
-      "next": "battle_ch30"
-    },
-    "ending": {
-      "type": "ending",
-      "text": "傳說的終章——空魔神殞落,炎龍騎士團的旅程至此告一段落。(campaign_full.json 自動生成 v1:節點骨架完整,逐章劇情全文/回合事件/主角隊招募待下一輪補完)"
+ "title": "炎龍騎士團2 — 全 30 章線性 campaign(自動生成)",
+ "start": "story_ch01_palace_throne",
+ "flags": {
+  "retried_ch01": false,
+  "found_secret_ch02": false,
+  "retried_ch02": false,
+  "found_secret_ch03": false,
+  "retried_ch03": false,
+  "found_secret_ch04": false,
+  "retried_ch04": false,
+  "found_secret_ch05": false,
+  "retried_ch05": false,
+  "found_secret_ch06": false,
+  "retried_ch06": false,
+  "found_secret_ch07": false,
+  "retried_ch07": false,
+  "found_secret_ch08": false,
+  "retried_ch08": false,
+  "found_secret_ch09": false,
+  "retried_ch09": false,
+  "found_secret_ch10": false,
+  "retried_ch10": false,
+  "found_secret_ch11": false,
+  "retried_ch11": false,
+  "found_secret_ch12": false,
+  "retried_ch12": false,
+  "found_secret_ch13": false,
+  "retried_ch13": false,
+  "found_secret_ch14": false,
+  "retried_ch14": false,
+  "found_secret_ch15": false,
+  "retried_ch15": false,
+  "found_secret_ch16": false,
+  "retried_ch16": false,
+  "found_secret_ch17": false,
+  "retried_ch17": false,
+  "found_secret_ch18": false,
+  "retried_ch18": false,
+  "found_secret_ch19": false,
+  "retried_ch19": false,
+  "found_secret_ch20": false,
+  "retried_ch20": false,
+  "found_secret_ch21": false,
+  "retried_ch21": false,
+  "found_secret_ch22": false,
+  "retried_ch22": false,
+  "retried_ch23": false,
+  "retried_ch24": false,
+  "retried_ch25": false,
+  "found_secret_ch26": false,
+  "retried_ch26": false,
+  "found_secret_ch27": false,
+  "retried_ch27": false,
+  "retried_ch28": false,
+  "retried_ch29": false,
+  "retried_ch30": false
+ },
+ "nodes": {
+  "story_ch01_palace_throne": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "script": "assets/story/ch00_palace.json",
+   "scene": "王座廳,傳位",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第1章:初試身手"
     }
+   ],
+   "next": "story_ch01_palace_path",
+   "map": "assets/maps/map32",
+   "cam_x": 44,
+   "cam_y": 920,
+   "actors": [
+    {
+     "fig": 48,
+     "x": 7,
+     "y": 5,
+     "dir": 0
+    },
+    {
+     "fig": 66,
+     "x": 10,
+     "y": 5,
+     "dir": 0
+    },
+    {
+     "fig": 68,
+     "x": 5,
+     "y": 21,
+     "dir": 3
+    },
+    {
+     "fig": 68,
+     "x": 12,
+     "y": 21,
+     "dir": 1
+    },
+    {
+     "fig": 68,
+     "x": 12,
+     "y": 14,
+     "dir": 1
+    },
+    {
+     "fig": 68,
+     "x": 5,
+     "y": 14,
+     "dir": 3
+    },
+    {
+     "fig": 68,
+     "x": 6,
+     "y": 24,
+     "dir": 3
+    },
+    {
+     "fig": 68,
+     "x": 11,
+     "y": 24,
+     "dir": 1
+    },
+    {
+     "fig": 68,
+     "x": 6,
+     "y": 32,
+     "dir": 3
+    },
+    {
+     "fig": 68,
+     "x": 11,
+     "y": 32,
+     "dir": 1
+    },
+    {
+     "fig": 69,
+     "x": 6,
+     "y": 36,
+     "dir": 3
+    },
+    {
+     "fig": 69,
+     "x": 11,
+     "y": 36,
+     "dir": 1
+    },
+    {
+     "fig": 69,
+     "x": 5,
+     "y": 16,
+     "dir": 3
+    },
+    {
+     "fig": 69,
+     "x": 12,
+     "y": 16,
+     "dir": 1
+    },
+    {
+     "fig": 69,
+     "x": 6,
+     "y": 28,
+     "dir": 3
+    },
+    {
+     "fig": 69,
+     "x": 11,
+     "y": 28,
+     "dir": 1
+    },
+    {
+     "fig": 69,
+     "x": 6,
+     "y": 40,
+     "dir": 3
+    },
+    {
+     "fig": 69,
+     "x": 11,
+     "y": 40,
+     "dir": 1
+    },
+    {
+     "fig": 0,
+     "x": 8,
+     "y": 8,
+     "dir": 2,
+     "from_x": 8,
+     "from_y": 42,
+     "walk_frames": 450
+    }
+   ],
+   "exit_walk": {
+    "fig": 0,
+    "to_x": 8,
+    "to_y": 14,
+    "frames": 90
+   },
+   "walk_first": true,
+   "follow_walk": true
+  },
+  "story_ch01_palace_path": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "script": "assets/story/ch00_palace.json",
+   "scene": "王城一隅,亞雷斯撞見",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第1章:初試身手"
+    }
+   ],
+   "next": "story_ch01_forest_duel",
+   "map": "assets/maps/map32",
+   "cam_x": 56,
+   "cam_y": 1024,
+   "actors": [
+    {
+     "fig": 0,
+     "x": 4,
+     "y": 46,
+     "dir": 3
+    },
+    {
+     "fig": 4,
+     "x": 13,
+     "y": 47,
+     "dir": 1
+    }
+   ]
+  },
+  "story_ch01_forest_duel": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "script": "assets/story/ch00_meadow.json",
+   "scene": "比劍邀約",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第1章:初試身手"
+    }
+   ],
+   "next": "story_ch01_forest_discover",
+   "map": "assets/maps/map31",
+   "cam_x": 160,
+   "cam_y": 1020,
+   "actors": [
+    {
+     "fig": 0,
+     "x": 19,
+     "y": 46,
+     "dir": 0
+    },
+    {
+     "fig": 4,
+     "x": 19,
+     "y": 47,
+     "dir": 2
+    }
+   ]
+  },
+  "story_ch01_forest_discover": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "script": "assets/story/ch00_meadow.json",
+   "scene": "發現悠妮與蓋亞",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第1章:初試身手"
+    }
+   ],
+   "next": "story_ch01_march",
+   "map": "assets/maps/map31",
+   "cam_x": 160,
+   "cam_y": 1020,
+   "actors": [
+    {
+     "fig": 30,
+     "x": 5,
+     "y": 43,
+     "dir": 0
+    },
+    {
+     "fig": 9,
+     "x": 5,
+     "y": 44,
+     "dir": 0
+    },
+    {
+     "fig": 0,
+     "x": 6,
+     "y": 44,
+     "dir": 1,
+     "from_x": 19,
+     "from_y": 46,
+     "walk_frames": 150
+    },
+    {
+     "fig": 4,
+     "x": 7,
+     "y": 44,
+     "dir": 1,
+     "from_x": 19,
+     "from_y": 47,
+     "walk_frames": 150
+    }
+   ],
+   "follow_walk": true
+  },
+  "story_ch01_march": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "next": "story_ch01",
+   "map": "assets/maps/map0",
+   "cam_x": 236,
+   "cam_y": 104,
+   "auto_advance": 180,
+   "actors": [
+    {
+     "fig": 0,
+     "x": 10,
+     "y": 14,
+     "dir": 1,
+     "from_x": 16,
+     "from_y": 8,
+     "walk_frames": 170
+    }
+   ],
+   "follow_walk": true
+  },
+  "story_ch01": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "script": "assets/story/ch01.json",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。"
+    }
+   ],
+   "next": "battle_ch01",
+   "map": "assets/maps/map0",
+   "cam_x": 164,
+   "cam_y": 32
+  },
+  "battle_ch01": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map0",
+   "units": "assets/maps/map0/map0_units.json",
+   "scenario": "assets/scenarios/ch01.json",
+   "on_win": "story_ch02",
+   "on_lose": "retreat_ch01"
+  },
+  "retreat_ch01": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch01": true
+   },
+   "next": "battle_ch01"
+  },
+  "story_ch02": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第2章:羅德鎮"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。務必保護「村民全滅」存活。"
+    }
+   ],
+   "next": "battle_ch02"
+  },
+  "shop_ch02_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "布衣",
+     "price": 50
+    },
+    {
+     "name": "旅行裝",
+     "price": 500
+    },
+    {
+     "name": "皮甲",
+     "price": 300
+    },
+    {
+     "name": "法師袍",
+     "price": 750
+    }
+   ],
+   "next": "shop_ch02_item"
+  },
+  "shop_ch02_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "藥草",
+     "price": 10
+    }
+   ],
+   "next": "story_ch03",
+   "secret_if": "found_secret_ch02",
+   "secret": [
+    {
+     "name": "闊劍",
+     "price": 250
+    },
+    {
+     "name": "長戟",
+     "price": 1200
+    },
+    {
+     "name": "釘頭鎚",
+     "price": 180
+    },
+    {
+     "name": "藥草",
+     "price": 10
+    },
+    {
+     "name": "回復劑",
+     "price": 80
+    },
+    {
+     "name": "皮甲",
+     "price": 300
+    }
+   ]
+  },
+  "choice_ch02": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch02"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch02_weapon"
+    }
+   ]
+  },
+  "rumor_ch02": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(酒店前按Shift+F1鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch02": true
+   },
+   "next": "shop_ch02_weapon"
+  },
+  "battle_ch02": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map1",
+   "units": "assets/maps/map1/map1_units.json",
+   "scenario": "assets/scenarios/ch02.json",
+   "on_win": "choice_ch02",
+   "on_lose": "retreat_ch02"
+  },
+  "retreat_ch02": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch02": true
+   },
+   "next": "battle_ch02"
+  },
+  "story_ch03": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第3章:往塞拉村途中"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。"
+    }
+   ],
+   "next": "battle_ch03"
+  },
+  "shop_ch03_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "短劍",
+     "price": 50
+    },
+    {
+     "name": "闊劍",
+     "price": 250
+    },
+    {
+     "name": "手斧",
+     "price": 300
+    },
+    {
+     "name": "皮甲",
+     "price": 300
+    },
+    {
+     "name": "法師袍",
+     "price": 750
+    }
+   ],
+   "next": "shop_ch03_item"
+  },
+  "shop_ch03_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "藥草",
+     "price": 10
+    }
+   ],
+   "next": "story_ch04",
+   "secret_if": "found_secret_ch03",
+   "secret": [
+    {
+     "name": "回復劑",
+     "price": 80
+    },
+    {
+     "name": "魔法水",
+     "price": 1000
+    }
+   ]
+  },
+  "choice_ch03": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch03"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch03_weapon"
+    }
+   ]
+  },
+  "rumor_ch03": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(武器店前按Ctrl+F2鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch03": true
+   },
+   "next": "shop_ch03_weapon"
+  },
+  "battle_ch03": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map2",
+   "units": "assets/maps/map2/map2_units.json",
+   "scenario": "assets/scenarios/ch03.json",
+   "on_win": "choice_ch03",
+   "on_lose": "retreat_ch03"
+  },
+  "retreat_ch03": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch03": true
+   },
+   "next": "battle_ch03"
+  },
+  "story_ch04": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第4章:塞拉村前"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。"
+    }
+   ],
+   "next": "battle_ch04"
+  },
+  "shop_ch04_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "闊劍",
+     "price": 250
+    },
+    {
+     "name": "迴旋斧",
+     "price": 800
+    },
+    {
+     "name": "長弓",
+     "price": 500
+    },
+    {
+     "name": "釘頭鎚",
+     "price": 180
+    },
+    {
+     "name": "旅行裝",
+     "price": 500
+    },
+    {
+     "name": "皮甲",
+     "price": 300
+    },
+    {
+     "name": "硬皮甲",
+     "price": 800
+    },
+    {
+     "name": "法師袍",
+     "price": 750
+    }
+   ],
+   "next": "shop_ch04_item"
+  },
+  "shop_ch04_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "藥草",
+     "price": 10
+    },
+    {
+     "name": "回復劑",
+     "price": 80
+    }
+   ],
+   "next": "story_ch05",
+   "secret_if": "found_secret_ch04",
+   "secret": [
+    {
+     "name": "風精之羽",
+     "price": 20000
+    },
+    {
+     "name": "魔法水",
+     "price": 1000
+    }
+   ]
+  },
+  "choice_ch04": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch04"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch04_weapon"
+    }
+   ]
+  },
+  "rumor_ch04": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(出口前按Alt+F3鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch04": true
+   },
+   "next": "shop_ch04_weapon"
+  },
+  "battle_ch04": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map3",
+   "units": "assets/maps/map3/map3_units.json",
+   "scenario": "assets/scenarios/ch04.json",
+   "on_win": "choice_ch04",
+   "on_lose": "retreat_ch04"
+  },
+  "retreat_ch04": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch04": true
+   },
+   "next": "battle_ch04"
+  },
+  "story_ch05": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第5章:塞拉村"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:消滅卡特那。"
+    }
+   ],
+   "next": "battle_ch05"
+  },
+  "shop_ch05_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "闊劍",
+     "price": 250
+    },
+    {
+     "name": "長劍",
+     "price": 800
+    },
+    {
+     "name": "刺矛",
+     "price": 80
+    },
+    {
+     "name": "騎槍",
+     "price": 400
+    },
+    {
+     "name": "硬皮甲",
+     "price": 800
+    },
+    {
+     "name": "環狀甲",
+     "price": 1000
+    }
+   ],
+   "next": "shop_ch05_item"
+  },
+  "shop_ch05_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "藥草",
+     "price": 10
+    },
+    {
+     "name": "回復劑",
+     "price": 80
+    },
+    {
+     "name": "解毒劑",
+     "price": 20
+    }
+   ],
+   "next": "story_ch06",
+   "secret_if": "found_secret_ch05",
+   "secret": [
+    {
+     "name": "力量藥水",
+     "price": 10000
+    },
+    {
+     "name": "耐力藥水",
+     "price": 10000
+    },
+    {
+     "name": "速度藥水",
+     "price": 10000
+    },
+    {
+     "name": "生命之實",
+     "price": 10000
+    }
+   ]
+  },
+  "choice_ch05": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch05"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch05_weapon"
+    }
+   ]
+  },
+  "rumor_ch05": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(道具店前按Shift+F4鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch05": true
+   },
+   "next": "shop_ch05_weapon"
+  },
+  "battle_ch05": {
+   "type": "battle",
+   "bgm": "FDMUS_003",
+   "map": "assets/maps/map4",
+   "units": "assets/maps/map4/map4_units.json",
+   "scenario": "assets/scenarios/ch05.json",
+   "on_win": "choice_ch05",
+   "on_lose": "retreat_ch05"
+  },
+  "retreat_ch05": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch05": true
+   },
+   "next": "battle_ch05"
+  },
+  "story_ch06": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第6章:普里茲港"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。"
+    }
+   ],
+   "next": "battle_ch06"
+  },
+  "shop_ch06_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "闊劍",
+     "price": 250
+    },
+    {
+     "name": "長劍",
+     "price": 800
+    },
+    {
+     "name": "刺矛",
+     "price": 80
+    },
+    {
+     "name": "騎槍",
+     "price": 400
+    },
+    {
+     "name": "迴旋斧",
+     "price": 800
+    },
+    {
+     "name": "短弓",
+     "price": 100
+    },
+    {
+     "name": "長弓",
+     "price": 500
+    },
+    {
+     "name": "鎖子甲",
+     "price": 3600
+    },
+    {
+     "name": "夜行裝",
+     "price": 3200
+    },
+    {
+     "name": "僧侶袍",
+     "price": 1800
+    }
+   ],
+   "next": "shop_ch06_item"
+  },
+  "shop_ch06_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "藥草",
+     "price": 10
+    },
+    {
+     "name": "回復劑",
+     "price": 80
+    },
+    {
+     "name": "解毒劑",
+     "price": 20
+    }
+   ],
+   "next": "story_ch07",
+   "secret_if": "found_secret_ch06",
+   "secret": [
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "魔法水",
+     "price": 1000
+    }
+   ]
+  },
+  "choice_ch06": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch06"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch06_weapon"
+    }
+   ]
+  },
+  "rumor_ch06": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(教會前按Ctrl+F5鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch06": true
+   },
+   "next": "shop_ch06_weapon"
+  },
+  "battle_ch06": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map5",
+   "units": "assets/maps/map5/map5_units.json",
+   "scenario": "assets/scenarios/ch06.json",
+   "on_win": "choice_ch06",
+   "on_lose": "retreat_ch06"
+  },
+  "retreat_ch06": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch06": true
+   },
+   "next": "battle_ch06"
+  },
+  "story_ch07": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第7章:往王城途中"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。"
+    }
+   ],
+   "next": "battle_ch07"
+  },
+  "shop_ch07_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "闊劍",
+     "price": 250
+    },
+    {
+     "name": "長劍",
+     "price": 800
+    },
+    {
+     "name": "騎槍",
+     "price": 400
+    },
+    {
+     "name": "長戟",
+     "price": 1200
+    },
+    {
+     "name": "迴旋斧",
+     "price": 800
+    },
+    {
+     "name": "戰斧",
+     "price": 800
+    },
+    {
+     "name": "長弓",
+     "price": 500
+    },
+    {
+     "name": "釘頭鎚",
+     "price": 180
+    },
+    {
+     "name": "巨鎚",
+     "price": 640
+    },
+    {
+     "name": "硬皮甲",
+     "price": 800
+    },
+    {
+     "name": "夜行裝",
+     "price": 3200
+    },
+    {
+     "name": "鎖子甲",
+     "price": 3600
+    }
+   ],
+   "next": "shop_ch07_item"
+  },
+  "shop_ch07_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "藥草",
+     "price": 10
+    },
+    {
+     "name": "回復劑",
+     "price": 80
+    }
+   ],
+   "next": "story_ch08",
+   "secret_if": "found_secret_ch07",
+   "secret": [
+    {
+     "name": "聖者之戒",
+     "price": 5000
+    },
+    {
+     "name": "心眼之書",
+     "price": 5000
+    },
+    {
+     "name": "白金勳章",
+     "price": 5000
+    },
+    {
+     "name": "飛龍卵",
+     "price": 100
+    }
+   ]
+  },
+  "choice_ch07": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch07"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch07_weapon"
+    }
+   ]
+  },
+  "rumor_ch07": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(酒店前按Alt+F6鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch07": true
+   },
+   "next": "shop_ch07_weapon"
+  },
+  "battle_ch07": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map6",
+   "units": "assets/maps/map6/map6_units.json",
+   "scenario": "assets/scenarios/ch07.json",
+   "on_win": "choice_ch07",
+   "on_lose": "retreat_ch07"
+  },
+  "retreat_ch07": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch07": true
+   },
+   "next": "battle_ch07"
+  },
+  "story_ch08": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第8章:王城前的戰鬥"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。"
+    }
+   ],
+   "next": "battle_ch08"
+  },
+  "shop_ch08_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "長劍",
+     "price": 800
+    },
+    {
+     "name": "巨劍",
+     "price": 1500
+    },
+    {
+     "name": "騎槍",
+     "price": 400
+    },
+    {
+     "name": "長戟",
+     "price": 1200
+    },
+    {
+     "name": "長弓",
+     "price": 500
+    },
+    {
+     "name": "戰斧",
+     "price": 800
+    },
+    {
+     "name": "巨鎚",
+     "price": 640
+    },
+    {
+     "name": "夜行裝",
+     "price": 3200
+    },
+    {
+     "name": "鎖子甲",
+     "price": 3600
+    },
+    {
+     "name": "僧侶袍",
+     "price": 1800
+    }
+   ],
+   "next": "shop_ch08_item"
+  },
+  "shop_ch08_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "藥草",
+     "price": 10
+    },
+    {
+     "name": "回復劑",
+     "price": 80
+    }
+   ],
+   "next": "story_ch09",
+   "secret_if": "found_secret_ch08",
+   "secret": [
+    {
+     "name": "黑暗劍",
+     "price": 2400
+    },
+    {
+     "name": "先鋒矛",
+     "price": 1800
+    },
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "魔法水",
+     "price": 1000
+    }
+   ]
+  },
+  "choice_ch08": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch08"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch08_weapon"
+    }
+   ]
+  },
+  "rumor_ch08": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(武器店前按Shift+F7鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch08": true
+   },
+   "next": "shop_ch08_weapon"
+  },
+  "battle_ch08": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map7",
+   "units": "assets/maps/map7/map7_units.json",
+   "scenario": "assets/scenarios/ch08.json",
+   "on_win": "choice_ch08",
+   "on_lose": "retreat_ch08"
+  },
+  "retreat_ch08": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch08": true
+   },
+   "next": "battle_ch08"
+  },
+  "story_ch09": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第9章:騎士的抉擇"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。"
+    }
+   ],
+   "next": "battle_ch09"
+  },
+  "shop_ch09_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "巨劍",
+     "price": 1500
+    },
+    {
+     "name": "長戟",
+     "price": 1200
+    },
+    {
+     "name": "戰鎚",
+     "price": 2000
+    },
+    {
+     "name": "黑暗弓",
+     "price": 1800
+    },
+    {
+     "name": "鐵爪",
+     "price": 850
+    },
+    {
+     "name": "魔法皮甲",
+     "price": 4000
+    },
+    {
+     "name": "鱗甲",
+     "price": 5800
+    },
+    {
+     "name": "武鬥裝",
+     "price": 1200
+    }
+   ],
+   "next": "shop_ch09_item"
+  },
+  "shop_ch09_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "藥草",
+     "price": 10
+    },
+    {
+     "name": "回復劑",
+     "price": 80
+    }
+   ],
+   "next": "story_ch10",
+   "secret_if": "found_secret_ch09",
+   "secret": [
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "魔法水",
+     "price": 1000
+    }
+   ]
+  },
+  "choice_ch09": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch09"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch09_weapon"
+    }
+   ]
+  },
+  "rumor_ch09": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(出口前按Ctrl+F8鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch09": true
+   },
+   "next": "shop_ch09_weapon"
+  },
+  "battle_ch09": {
+   "type": "battle",
+   "bgm": "FDMUS_003",
+   "map": "assets/maps/map8",
+   "units": "assets/maps/map8/map8_units.json",
+   "scenario": "assets/scenarios/ch09.json",
+   "on_win": "choice_ch09",
+   "on_lose": "retreat_ch09"
+  },
+  "retreat_ch09": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch09": true
+   },
+   "next": "battle_ch09"
+  },
+  "story_ch10": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第10章:洞窟中的激戰"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。務必保護「索菲亞、卡納恩三世」存活。"
+    }
+   ],
+   "next": "battle_ch10"
+  },
+  "shop_ch10_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "巨劍",
+     "price": 1500
+    },
+    {
+     "name": "戰鎚",
+     "price": 2000
+    },
+    {
+     "name": "黑暗弓",
+     "price": 1800
+    },
+    {
+     "name": "巨鎚",
+     "price": 640
+    },
+    {
+     "name": "鐵爪",
+     "price": 850
+    },
+    {
+     "name": "魔法皮甲",
+     "price": 4000
+    },
+    {
+     "name": "鱗甲",
+     "price": 5800
+    },
+    {
+     "name": "祭司袍",
+     "price": 6400
+    }
+   ],
+   "next": "shop_ch10_item"
+  },
+  "shop_ch10_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "藥草",
+     "price": 10
+    },
+    {
+     "name": "回復劑",
+     "price": 80
+    },
+    {
+     "name": "解毒劑",
+     "price": 20
+    }
+   ],
+   "next": "story_ch11",
+   "secret_if": "found_secret_ch10",
+   "secret": [
+    {
+     "name": "生命之實",
+     "price": 10000
+    },
+    {
+     "name": "魔力水晶",
+     "price": 10000
+    }
+   ]
+  },
+  "choice_ch10": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch10"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch10_weapon"
+    }
+   ]
+  },
+  "rumor_ch10": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(道具店前按Alt+F9鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch10": true
+   },
+   "next": "shop_ch10_weapon"
+  },
+  "battle_ch10": {
+   "type": "battle",
+   "bgm": "FDMUS_004",
+   "map": "assets/maps/map9",
+   "units": "assets/maps/map9/map9_units.json",
+   "scenario": "assets/scenarios/ch10.json",
+   "on_win": "choice_ch10",
+   "on_lose": "retreat_ch10"
+  },
+  "retreat_ch10": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch10": true
+   },
+   "next": "battle_ch10"
+  },
+  "story_ch11": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第11章:幻之森林"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。"
+    }
+   ],
+   "next": "battle_ch11"
+  },
+  "shop_ch11_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "巨劍",
+     "price": 1500
+    },
+    {
+     "name": "黑暗劍",
+     "price": 2400
+    },
+    {
+     "name": "先鋒矛",
+     "price": 1800
+    },
+    {
+     "name": "斬馬刀",
+     "price": 4400
+    },
+    {
+     "name": "皇帝指環",
+     "price": 1200
+    },
+    {
+     "name": "盜賊之衣",
+     "price": 7800
+    },
+    {
+     "name": "連環鋼甲",
+     "price": 8400
+    },
+    {
+     "name": "武鬥裝",
+     "price": 1200
+    }
+   ],
+   "next": "shop_ch11_item"
+  },
+  "shop_ch11_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "藥草",
+     "price": 10
+    },
+    {
+     "name": "回復劑",
+     "price": 80
+    }
+   ],
+   "next": "story_ch12",
+   "secret_if": "found_secret_ch11",
+   "secret": [
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "魔法水",
+     "price": 1000
+    }
+   ]
+  },
+  "choice_ch11": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch11"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch11_weapon"
+    }
+   ]
+  },
+  "rumor_ch11": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(教會前按Shift+F10鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch11": true
+   },
+   "next": "shop_ch11_weapon"
+  },
+  "battle_ch11": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map10",
+   "units": "assets/maps/map10/map10_units.json",
+   "scenario": "assets/scenarios/ch11.json",
+   "on_win": "choice_ch11",
+   "on_lose": "retreat_ch11"
+  },
+  "retreat_ch11": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch11": true
+   },
+   "next": "battle_ch11"
+  },
+  "story_ch12": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第12章:北山道"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。務必保護「米亞斯多德」存活。"
+    }
+   ],
+   "next": "battle_ch12"
+  },
+  "shop_ch12_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "黑暗劍",
+     "price": 2400
+    },
+    {
+     "name": "斬馬刀",
+     "price": 4400
+    },
+    {
+     "name": "巨斧",
+     "price": 3200
+    },
+    {
+     "name": "槤枷",
+     "price": 1000
+    },
+    {
+     "name": "皇帝指環",
+     "price": 1200
+    },
+    {
+     "name": "盜賊之衣",
+     "price": 7800
+    },
+    {
+     "name": "連環鋼甲",
+     "price": 8400
+    },
+    {
+     "name": "武鬥裝",
+     "price": 1200
+    }
+   ],
+   "next": "shop_ch12_item"
+  },
+  "shop_ch12_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "藥草",
+     "price": 10
+    },
+    {
+     "name": "回復劑",
+     "price": 80
+    }
+   ],
+   "next": "story_ch13",
+   "secret_if": "found_secret_ch12",
+   "secret": [
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "魔法水",
+     "price": 1000
+    }
+   ]
+  },
+  "choice_ch12": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch12"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch12_weapon"
+    }
+   ]
+  },
+  "rumor_ch12": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(酒店前按Ctrl+F1鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch12": true
+   },
+   "next": "shop_ch12_weapon"
+  },
+  "battle_ch12": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map11",
+   "units": "assets/maps/map11/map11_units.json",
+   "scenario": "assets/scenarios/ch12.json",
+   "on_win": "choice_ch12",
+   "on_lose": "retreat_ch12"
+  },
+  "retreat_ch12": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch12": true
+   },
+   "next": "battle_ch12"
+  },
+  "story_ch13": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第13章:哈斯米爾之戰"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。務必保護「精靈族全滅」存活。"
+    }
+   ],
+   "next": "battle_ch13"
+  },
+  "shop_ch13_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "戰士劍",
+     "price": 4200
+    },
+    {
+     "name": "斬馬刀",
+     "price": 4400
+    },
+    {
+     "name": "巨斧",
+     "price": 3200
+    },
+    {
+     "name": "巨弓",
+     "price": 4800
+    },
+    {
+     "name": "盜賊之衣",
+     "price": 7800
+    },
+    {
+     "name": "連環鋼甲",
+     "price": 8400
+    },
+    {
+     "name": "聖者袍",
+     "price": 11200
+    },
+    {
+     "name": "武鬥裝",
+     "price": 1200
+    }
+   ],
+   "next": "shop_ch13_item"
+  },
+  "shop_ch13_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "回復劑",
+     "price": 80
+    },
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "解毒劑",
+     "price": 20
+    },
+    {
+     "name": "退麻劑",
+     "price": 20
+    }
+   ],
+   "next": "story_ch14",
+   "secret_if": "found_secret_ch13",
+   "secret": [
+    {
+     "name": "斬鐵劍",
+     "price": 9600
+    },
+    {
+     "name": "聖之槍",
+     "price": 24000
+    }
+   ]
+  },
+  "choice_ch13": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch13"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch13_weapon"
+    }
+   ]
+  },
+  "rumor_ch13": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(武器店前按Alt+F2鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch13": true
+   },
+   "next": "shop_ch13_weapon"
+  },
+  "battle_ch13": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map12",
+   "units": "assets/maps/map12/map12_units.json",
+   "scenario": "assets/scenarios/ch13.json",
+   "on_win": "choice_ch13",
+   "on_lose": "retreat_ch13"
+  },
+  "retreat_ch13": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch13": true
+   },
+   "next": "battle_ch13"
+  },
+  "story_ch14": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第14章:平原的會戰"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。"
+    }
+   ],
+   "next": "battle_ch14"
+  },
+  "shop_ch14_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "戰士劍",
+     "price": 4200
+    },
+    {
+     "name": "惡魔之矛",
+     "price": 6000
+    },
+    {
+     "name": "巨斧",
+     "price": 3200
+    },
+    {
+     "name": "巨弓",
+     "price": 4800
+    },
+    {
+     "name": "忍者裝",
+     "price": 9600
+    },
+    {
+     "name": "合金鎖甲",
+     "price": 10800
+    },
+    {
+     "name": "聖者袍",
+     "price": 11200
+    },
+    {
+     "name": "鬥士服",
+     "price": 5600
+    }
+   ],
+   "next": "shop_ch14_item"
+  },
+  "shop_ch14_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "回復劑",
+     "price": 80
+    },
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "解毒劑",
+     "price": 20
+    },
+    {
+     "name": "退麻劑",
+     "price": 20
+    }
+   ],
+   "next": "story_ch15",
+   "secret_if": "found_secret_ch14",
+   "secret": [
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "飛龍卵",
+     "price": 100
+    }
+   ]
+  },
+  "choice_ch14": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch14"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch14_weapon"
+    }
+   ]
+  },
+  "rumor_ch14": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(出口前按Shift+F3鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch14": true
+   },
+   "next": "shop_ch14_weapon"
+  },
+  "battle_ch14": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map13",
+   "units": "assets/maps/map13/map13_units.json",
+   "scenario": "assets/scenarios/ch14.json",
+   "on_win": "choice_ch14",
+   "on_lose": "retreat_ch14"
+  },
+  "retreat_ch14": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch14": true
+   },
+   "next": "battle_ch14"
+  },
+  "story_ch15": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第15章:拉卡湖的激戰"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。務必保護「賽可邦勒」存活。"
+    }
+   ],
+   "next": "battle_ch15"
+  },
+  "shop_ch15_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "巨魔劍",
+     "price": 7800
+    },
+    {
+     "name": "惡魔之矛",
+     "price": 6000
+    },
+    {
+     "name": "血之斧",
+     "price": 5600
+    },
+    {
+     "name": "精靈弓",
+     "price": 7200
+    },
+    {
+     "name": "忍者裝",
+     "price": 9600
+    },
+    {
+     "name": "合金鎖甲",
+     "price": 10800
+    },
+    {
+     "name": "聖者袍",
+     "price": 11200
+    },
+    {
+     "name": "鬥士服",
+     "price": 5600
+    }
+   ],
+   "next": "shop_ch15_item"
+  },
+  "shop_ch15_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "回復劑",
+     "price": 80
+    },
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "解毒劑",
+     "price": 20
+    },
+    {
+     "name": "退麻劑",
+     "price": 20
+    }
+   ],
+   "next": "story_ch16",
+   "secret_if": "found_secret_ch15",
+   "secret": [
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "水晶粒",
+     "price": 5000
+    }
+   ]
+  },
+  "choice_ch15": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch15"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch15_weapon"
+    }
+   ]
+  },
+  "rumor_ch15": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(道具店前按Ctrl+F4鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch15": true
+   },
+   "next": "shop_ch15_weapon"
+  },
+  "battle_ch15": {
+   "type": "battle",
+   "bgm": "FDMUS_003",
+   "map": "assets/maps/map14",
+   "units": "assets/maps/map14/map14_units.json",
+   "scenario": "assets/scenarios/ch15.json",
+   "on_win": "choice_ch15",
+   "on_lose": "retreat_ch15"
+  },
+  "retreat_ch15": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch15": true
+   },
+   "next": "battle_ch15"
+  },
+  "story_ch16": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第16章:冰原之戰"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。務必保護「蜜蒂」存活。"
+    }
+   ],
+   "next": "battle_ch16"
+  },
+  "shop_ch16_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "巨魔劍",
+     "price": 7800
+    },
+    {
+     "name": "惡魔之矛",
+     "price": 6000
+    },
+    {
+     "name": "血之斧",
+     "price": 5600
+    },
+    {
+     "name": "精靈弓",
+     "price": 7200
+    },
+    {
+     "name": "忍者裝",
+     "price": 9600
+    },
+    {
+     "name": "合金鎖甲",
+     "price": 10800
+    },
+    {
+     "name": "霧之袍",
+     "price": 16400
+    }
+   ],
+   "next": "shop_ch16_item"
+  },
+  "shop_ch16_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "回復劑",
+     "price": 80
+    },
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "解毒劑",
+     "price": 20
+    },
+    {
+     "name": "退麻劑",
+     "price": 20
+    }
+   ],
+   "next": "story_ch17",
+   "secret_if": "found_secret_ch16",
+   "secret": [
+    {
+     "name": "生命之實",
+     "price": 10000
+    },
+    {
+     "name": "魔力水晶",
+     "price": 10000
+    },
+    {
+     "name": "力量藥水",
+     "price": 10000
+    },
+    {
+     "name": "耐力藥水",
+     "price": 10000
+    }
+   ]
+  },
+  "choice_ch16": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch16"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch16_weapon"
+    }
+   ]
+  },
+  "rumor_ch16": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(教會前按Alt+F5鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch16": true
+   },
+   "next": "shop_ch16_weapon"
+  },
+  "battle_ch16": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map15",
+   "units": "assets/maps/map15/map15_units.json",
+   "scenario": "assets/scenarios/ch16.json",
+   "on_win": "choice_ch16",
+   "on_lose": "retreat_ch16"
+  },
+  "retreat_ch16": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch16": true
+   },
+   "next": "battle_ch16"
+  },
+  "story_ch17": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第17章:血與冰之刃"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。"
+    }
+   ],
+   "next": "battle_ch17"
+  },
+  "shop_ch17_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "暗殺刀",
+     "price": 5000
+    },
+    {
+     "name": "惡魔之矛",
+     "price": 6000
+    },
+    {
+     "name": "血之斧",
+     "price": 5600
+    },
+    {
+     "name": "狙擊弓",
+     "price": 12000
+    },
+    {
+     "name": "魔法杖",
+     "price": 5600
+    },
+    {
+     "name": "毒爪",
+     "price": 3600
+    },
+    {
+     "name": "潛行服",
+     "price": 12000
+    },
+    {
+     "name": "魔法鱗甲",
+     "price": 13200
+    },
+    {
+     "name": "霧之袍",
+     "price": 16400
+    },
+    {
+     "name": "鎧甲",
+     "price": 12000
+    }
+   ],
+   "next": "shop_ch17_item"
+  },
+  "shop_ch17_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "回復劑",
+     "price": 80
+    },
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "解毒劑",
+     "price": 20
+    },
+    {
+     "name": "退麻劑",
+     "price": 20
+    }
+   ],
+   "next": "story_ch18",
+   "secret_if": "found_secret_ch17",
+   "secret": [
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "水晶粒",
+     "price": 5000
+    },
+    {
+     "name": "十字弓",
+     "price": 8800
+    }
+   ]
+  },
+  "choice_ch17": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch17"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch17_weapon"
+    }
+   ]
+  },
+  "rumor_ch17": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(酒店前按Shift+F5鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch17": true
+   },
+   "next": "shop_ch17_weapon"
+  },
+  "battle_ch17": {
+   "type": "battle",
+   "bgm": "FDMUS_004",
+   "map": "assets/maps/map16",
+   "units": "assets/maps/map16/map16_units.json",
+   "scenario": "assets/scenarios/ch17.json",
+   "on_win": "choice_ch17",
+   "on_lose": "retreat_ch17"
+  },
+  "retreat_ch17": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch17": true
+   },
+   "next": "battle_ch17"
+  },
+  "story_ch18": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第18章:遙遠的彼岸"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:黑暗騎士死亡。務必保護「約拿、蘭斯洛特」存活。"
+    }
+   ],
+   "next": "battle_ch18"
+  },
+  "shop_ch18_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "忍者刀",
+     "price": 8800
+    },
+    {
+     "name": "黃金之戟",
+     "price": 8800
+    },
+    {
+     "name": "閃電鎚",
+     "price": 12500
+    },
+    {
+     "name": "狙擊弓",
+     "price": 12000
+    },
+    {
+     "name": "魔法杖",
+     "price": 5600
+    },
+    {
+     "name": "毒爪",
+     "price": 3600
+    },
+    {
+     "name": "潛行服",
+     "price": 12000
+    },
+    {
+     "name": "魔法鱗甲",
+     "price": 13200
+    },
+    {
+     "name": "霧之袍",
+     "price": 16400
+    },
+    {
+     "name": "鎧甲",
+     "price": 12000
+    },
+    {
+     "name": "武者鎧甲",
+     "price": 11000
+    }
+   ],
+   "next": "shop_ch18_item"
+  },
+  "shop_ch18_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "回復劑",
+     "price": 80
+    },
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "解毒劑",
+     "price": 20
+    },
+    {
+     "name": "退麻劑",
+     "price": 20
+    }
+   ],
+   "next": "story_ch19",
+   "secret_if": "found_secret_ch18",
+   "secret": [
+    {
+     "name": "力之杖",
+     "price": 10000
+    },
+    {
+     "name": "水晶粒",
+     "price": 5000
+    }
+   ]
+  },
+  "choice_ch18": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch18"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch18_weapon"
+    }
+   ]
+  },
+  "rumor_ch18": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(武器店前按Ctrl+F7鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch18": true
+   },
+   "next": "shop_ch18_weapon"
+  },
+  "battle_ch18": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map17",
+   "units": "assets/maps/map17/map17_units.json",
+   "scenario": "assets/scenarios/ch18.json",
+   "on_win": "choice_ch18",
+   "on_lose": "retreat_ch18"
+  },
+  "retreat_ch18": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch18": true
+   },
+   "next": "battle_ch18"
+  },
+  "story_ch19": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第19章:黑暗中的狙擊"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。務必保護「巴拿羅西亞」存活。"
+    }
+   ],
+   "next": "battle_ch19"
+  },
+  "shop_ch19_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "忍者刀",
+     "price": 8800
+    },
+    {
+     "name": "黃金之戟",
+     "price": 8800
+    },
+    {
+     "name": "閃電鎚",
+     "price": 12500
+    },
+    {
+     "name": "十字弓",
+     "price": 8800
+    },
+    {
+     "name": "魔法杖",
+     "price": 5600
+    },
+    {
+     "name": "碎岩爪",
+     "price": 7800
+    },
+    {
+     "name": "神秘裝",
+     "price": 14400
+    },
+    {
+     "name": "血環甲",
+     "price": 15600
+    },
+    {
+     "name": "霧之袍",
+     "price": 16400
+    },
+    {
+     "name": "銀鎧甲",
+     "price": 15000
+    },
+    {
+     "name": "武者鎧甲",
+     "price": 11000
+    }
+   ],
+   "next": "shop_ch19_item"
+  },
+  "shop_ch19_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "回復劑",
+     "price": 80
+    },
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "解毒劑",
+     "price": 20
+    },
+    {
+     "name": "退麻劑",
+     "price": 20
+    }
+   ],
+   "next": "story_ch20",
+   "secret_if": "found_secret_ch19",
+   "secret": [
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "水晶粒",
+     "price": 5000
+    }
+   ]
+  },
+  "choice_ch19": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch19"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch19_weapon"
+    }
+   ]
+  },
+  "rumor_ch19": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(出口前按Alt+F8鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch19": true
+   },
+   "next": "shop_ch19_weapon"
+  },
+  "battle_ch19": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map18",
+   "units": "assets/maps/map18/map18_units.json",
+   "scenario": "assets/scenarios/ch19.json",
+   "on_win": "choice_ch19",
+   "on_lose": "retreat_ch19"
+  },
+  "retreat_ch19": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch19": true
+   },
+   "next": "battle_ch19"
+  },
+  "story_ch20": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第20章:死亡般的沈寂"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:沼澤怪物外敵全滅。務必保護「謝多、精靈全滅」存活。"
+    }
+   ],
+   "next": "battle_ch20"
+  },
+  "shop_ch20_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "忍者刀",
+     "price": 8800
+    },
+    {
+     "name": "黃金之戟",
+     "price": 8800
+    },
+    {
+     "name": "閃電鎚",
+     "price": 12500
+    },
+    {
+     "name": "十字弓",
+     "price": 8800
+    },
+    {
+     "name": "封咒杖",
+     "price": 8800
+    },
+    {
+     "name": "碎岩爪",
+     "price": 7800
+    },
+    {
+     "name": "神秘裝",
+     "price": 14400
+    },
+    {
+     "name": "血環甲",
+     "price": 15600
+    },
+    {
+     "name": "黑暗之袍",
+     "price": 18000
+    },
+    {
+     "name": "銀鎧甲",
+     "price": 15000
+    },
+    {
+     "name": "妖魔鬥服",
+     "price": 18000
+    }
+   ],
+   "next": "shop_ch20_item"
+  },
+  "shop_ch20_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "回復劑",
+     "price": 80
+    },
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "解毒劑",
+     "price": 20
+    },
+    {
+     "name": "退麻劑",
+     "price": 20
+    }
+   ],
+   "next": "story_ch21",
+   "secret_if": "found_secret_ch20",
+   "secret": [
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "水晶粒",
+     "price": 5000
+    }
+   ]
+  },
+  "choice_ch20": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch20"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch20_weapon"
+    }
+   ]
+  },
+  "rumor_ch20": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(道具店前按Shift+F9鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch20": true
+   },
+   "next": "shop_ch20_weapon"
+  },
+  "battle_ch20": {
+   "type": "battle",
+   "bgm": "FDMUS_003",
+   "map": "assets/maps/map19",
+   "units": "assets/maps/map19/map19_units.json",
+   "scenario": "assets/scenarios/ch20.json",
+   "on_win": "choice_ch20",
+   "on_lose": "retreat_ch20"
+  },
+  "retreat_ch20": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch20": true
+   },
+   "next": "battle_ch20"
+  },
+  "story_ch21": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第21章:亞述森林"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。務必保護「羅蘭、希爾法」存活。"
+    }
+   ],
+   "next": "battle_ch21"
+  },
+  "shop_ch21_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "地獄刀",
+     "price": 14800
+    },
+    {
+     "name": "黃金之戟",
+     "price": 8800
+    },
+    {
+     "name": "狂暴之斧",
+     "price": 12800
+    },
+    {
+     "name": "十字弓",
+     "price": 8800
+    },
+    {
+     "name": "封咒杖",
+     "price": 8800
+    },
+    {
+     "name": "金鋼指環",
+     "price": 11200
+    },
+    {
+     "name": "暗殺服",
+     "price": 20000
+    },
+    {
+     "name": "金鋼鎖甲",
+     "price": 22000
+    },
+    {
+     "name": "黑暗之袍",
+     "price": 18000
+    },
+    {
+     "name": "魔法鎧甲",
+     "price": 20000
+    },
+    {
+     "name": "妖魔鬥服",
+     "price": 18000
+    }
+   ],
+   "next": "shop_ch21_item"
+  },
+  "shop_ch21_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "回復劑",
+     "price": 80
+    },
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "解毒劑",
+     "price": 20
+    },
+    {
+     "name": "退麻劑",
+     "price": 20
+    }
+   ],
+   "next": "story_ch22",
+   "secret_if": "found_secret_ch21",
+   "secret": [
+    {
+     "name": "封魔弓",
+     "price": 20000
+    },
+    {
+     "name": "裂刃爪",
+     "price": 13200
+    }
+   ]
+  },
+  "choice_ch21": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch21"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch21_weapon"
+    }
+   ]
+  },
+  "rumor_ch21": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(教會前按Ctrl+F10鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch21": true
+   },
+   "next": "shop_ch21_weapon"
+  },
+  "battle_ch21": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map20",
+   "units": "assets/maps/map20/map20_units.json",
+   "scenario": "assets/scenarios/ch21.json",
+   "on_win": "choice_ch21",
+   "on_lose": "retreat_ch21"
+  },
+  "retreat_ch21": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch21": true
+   },
+   "next": "battle_ch21"
+  },
+  "story_ch22": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第22章:遠古呼喚"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。務必保護「希爾法」存活。"
+    }
+   ],
+   "next": "battle_ch22"
+  },
+  "shop_ch22_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "地獄刀",
+     "price": 14800
+    },
+    {
+     "name": "龍之槍",
+     "price": 11200
+    },
+    {
+     "name": "狂暴之斧",
+     "price": 12800
+    },
+    {
+     "name": "水晶弓",
+     "price": 13500
+    },
+    {
+     "name": "封咒杖",
+     "price": 8800
+    },
+    {
+     "name": "金鋼指環",
+     "price": 11200
+    },
+    {
+     "name": "暗殺服",
+     "price": 20000
+    },
+    {
+     "name": "金鋼鎖甲",
+     "price": 22000
+    },
+    {
+     "name": "地之袍",
+     "price": 20000
+    },
+    {
+     "name": "魔法鎧甲",
+     "price": 20000
+    },
+    {
+     "name": "鬥士護甲",
+     "price": 20000
+    }
+   ],
+   "next": "shop_ch22_item"
+  },
+  "shop_ch22_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "回復劑",
+     "price": 80
+    },
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "解毒劑",
+     "price": 20
+    },
+    {
+     "name": "退麻劑",
+     "price": 20
+    }
+   ],
+   "next": "story_ch23",
+   "secret_if": "found_secret_ch22",
+   "secret": [
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "水晶粒",
+     "price": 5000
+    }
+   ]
+  },
+  "choice_ch22": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch22"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch22_weapon"
+    }
+   ]
+  },
+  "rumor_ch22": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(酒店前按Alt+F1鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch22": true
+   },
+   "next": "shop_ch22_weapon"
+  },
+  "battle_ch22": {
+   "type": "battle",
+   "bgm": "FDMUS_003",
+   "map": "assets/maps/map21",
+   "units": "assets/maps/map21/map21_units.json",
+   "scenario": "assets/scenarios/ch22.json",
+   "on_win": "choice_ch22",
+   "on_lose": "retreat_ch22"
+  },
+  "retreat_ch22": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch22": true
+   },
+   "next": "battle_ch22"
+  },
+  "story_ch23": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第23章:向天空之旅"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:擊毀機甲隊長。務必保護「希爾法、卡里斯、羅德曼」存活。"
+    }
+   ],
+   "next": "battle_ch23"
+  },
+  "battle_ch23": {
+   "type": "battle",
+   "bgm": "FDMUS_004",
+   "map": "assets/maps/map22",
+   "units": "assets/maps/map22/map22_units.json",
+   "scenario": "assets/scenarios/ch23.json",
+   "on_win": "story_ch24",
+   "on_lose": "retreat_ch23"
+  },
+  "retreat_ch23": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch23": true
+   },
+   "next": "battle_ch23"
+  },
+  "story_ch24": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第24章:在天空的彼方"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。"
+    }
+   ],
+   "next": "battle_ch24"
+  },
+  "battle_ch24": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map23",
+   "units": "assets/maps/map23/map23_units.json",
+   "scenario": "assets/scenarios/ch24.json",
+   "on_win": "story_ch25",
+   "on_lose": "retreat_ch24"
+  },
+  "retreat_ch24": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch24": true
+   },
+   "next": "battle_ch24"
+  },
+  "story_ch25": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第25章:火焰的審判"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。務必保護「聖寇拉斯」存活。"
+    }
+   ],
+   "next": "battle_ch25"
+  },
+  "battle_ch25": {
+   "type": "battle",
+   "bgm": "FDMUS_003",
+   "map": "assets/maps/map24",
+   "units": "assets/maps/map24/map24_units.json",
+   "scenario": "assets/scenarios/ch25.json",
+   "on_win": "story_ch26",
+   "on_lose": "retreat_ch25"
+  },
+  "retreat_ch25": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch25": true
+   },
+   "next": "battle_ch25"
+  },
+  "story_ch26": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第26章:未知的迴廊"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:敵全滅。務必保護「悠妮、亞奇梅吉」存活。"
+    }
+   ],
+   "next": "battle_ch26"
+  },
+  "shop_ch26_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "大地之劍",
+     "price": 18000
+    },
+    {
+     "name": "破魔槍",
+     "price": 16000
+    },
+    {
+     "name": "力量之斧",
+     "price": 22000
+    },
+    {
+     "name": "封魔弓",
+     "price": 20000
+    },
+    {
+     "name": "龍之杖",
+     "price": 22400
+    },
+    {
+     "name": "巨神指環",
+     "price": 17500
+    },
+    {
+     "name": "惡魔皮甲",
+     "price": 30000
+    },
+    {
+     "name": "力量鎖甲",
+     "price": 36000
+    },
+    {
+     "name": "聖鎧甲",
+     "price": 42000
+    },
+    {
+     "name": "天之袍",
+     "price": 32000
+    },
+    {
+     "name": "武神護甲",
+     "price": 34000
+    }
+   ],
+   "next": "shop_ch26_item"
+  },
+  "shop_ch26_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "解毒劑",
+     "price": 20
+    },
+    {
+     "name": "退麻劑",
+     "price": 20
+    }
+   ],
+   "next": "story_ch27",
+   "secret_if": "found_secret_ch26",
+   "secret": [
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "水晶粒",
+     "price": 5000
+    },
+    {
+     "name": "光之斧",
+     "price": 15500
+    }
+   ]
+  },
+  "choice_ch26": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch26"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch26_weapon"
+    }
+   ]
+  },
+  "rumor_ch26": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(教會前按Shift+F5鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch26": true
+   },
+   "next": "shop_ch26_weapon"
+  },
+  "battle_ch26": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map25",
+   "units": "assets/maps/map25/map25_units.json",
+   "scenario": "assets/scenarios/ch26.json",
+   "on_win": "choice_ch26",
+   "on_lose": "retreat_ch26"
+  },
+  "retreat_ch26": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch26": true
+   },
+   "next": "battle_ch26"
+  },
+  "story_ch27": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第27章:命運的交會點"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:擊毀機甲隊長。務必保護「悠妮」存活。"
+    }
+   ],
+   "next": "battle_ch27"
+  },
+  "shop_ch27_weapon": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "龍神劍",
+     "price": 25000
+    },
+    {
+     "name": "巨神戟",
+     "price": 24000
+    },
+    {
+     "name": "大地之鎚",
+     "price": 28000
+    },
+    {
+     "name": "火神弓",
+     "price": 32000
+    },
+    {
+     "name": "龍之杖",
+     "price": 22400
+    },
+    {
+     "name": "鬥神指環",
+     "price": 25800
+    },
+    {
+     "name": "雷神服",
+     "price": 42000
+    },
+    {
+     "name": "惡魔鱗甲",
+     "price": 45000
+    },
+    {
+     "name": "大地鎧甲",
+     "price": 50000
+    },
+    {
+     "name": "天之袍",
+     "price": 32000
+    },
+    {
+     "name": "武神護甲",
+     "price": 34000
+    }
+   ],
+   "next": "shop_ch27_item"
+  },
+  "shop_ch27_item": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "水晶粒",
+     "price": 5000
+    }
+   ],
+   "next": "story_ch28",
+   "secret_if": "found_secret_ch27",
+   "secret": [
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "水晶粒",
+     "price": 5000
+    }
+   ]
+  },
+  "choice_ch27": {
+   "type": "choice",
+   "prompt": "進城前要不要先打聽消息?",
+   "options": [
+    {
+     "label": "打聽消息",
+     "to": "rumor_ch27"
+    },
+    {
+     "label": "直接進城採買",
+     "to": "shop_ch27_weapon"
+    }
+   ]
+  },
+  "rumor_ch27": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "聽說這裡有不擺在檯面上的好東西……(酒店前按Ctrl+F6鍵)"
+    }
+   ],
+   "set_flags": {
+    "found_secret_ch27": true
+   },
+   "next": "shop_ch27_weapon"
+  },
+  "battle_ch27": {
+   "type": "battle",
+   "bgm": "FDMUS_004",
+   "map": "assets/maps/map26",
+   "units": "assets/maps/map26/map26_units.json",
+   "scenario": "assets/scenarios/ch27.json",
+   "on_win": "choice_ch27",
+   "on_lose": "retreat_ch27"
+  },
+  "retreat_ch27": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch27": true
+   },
+   "next": "battle_ch27"
+  },
+  "story_ch28": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第28章:探索者"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:擊毀機甲隊長。務必保護「悠妮」存活。"
+    }
+   ],
+   "next": "battle_ch28"
+  },
+  "battle_ch28": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map27",
+   "units": "assets/maps/map27/map27_units.json",
+   "scenario": "assets/scenarios/ch28.json",
+   "on_win": "story_ch29",
+   "on_lose": "retreat_ch28"
+  },
+  "retreat_ch28": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch28": true
+   },
+   "next": "battle_ch28"
+  },
+  "story_ch29": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第29章:探索者(防衛)"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:解除防衛系統。務必保護「悠妮」存活。"
+    }
+   ],
+   "next": "battle_ch29"
+  },
+  "battle_ch29": {
+   "type": "battle",
+   "bgm": "FDMUS_019",
+   "map": "assets/maps/map28",
+   "units": "assets/maps/map28/map28_units.json",
+   "scenario": "assets/scenarios/ch29.json",
+   "on_win": "story_ch30",
+   "on_lose": "retreat_ch29"
+  },
+  "retreat_ch29": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch29": true
+   },
+   "next": "battle_ch29"
+  },
+  "story_ch30": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "第30章:傳說的終章"
+    },
+    {
+     "speaker": -1,
+     "text": "目標:空魔神死亡。務必保護「悠妮」存活。"
+    }
+   ],
+   "next": "battle_ch30"
+  },
+  "battle_ch30": {
+   "type": "battle",
+   "bgm": "FDMUS_008",
+   "map": "assets/maps/map29",
+   "units": "assets/maps/map29/map29_units.json",
+   "scenario": "assets/scenarios/ch30.json",
+   "on_win": "ending",
+   "on_lose": "retreat_ch30"
+  },
+  "retreat_ch30": {
+   "type": "story",
+   "bgm": "FDMUS_010",
+   "lines": [
+    {
+     "speaker": -1,
+     "text": "撤退!先回頭整頓,再找機會反攻……"
+    }
+   ],
+   "set_flags": {
+    "retried_ch30": true
+   },
+   "next": "battle_ch30"
+  },
+  "ending": {
+   "type": "ending",
+   "text": "傳說的終章——空魔神殞落,炎龍騎士團的旅程至此告一段落。(campaign_full.json 自動生成 v1:節點骨架完整,逐章劇情全文/回合事件/主角隊招募待下一輪補完)"
   }
+ }
 }
