@@ -23,6 +23,13 @@ fi
 
 export FD2_CAMPAIGN="assets/scenarios/campaign_full.json"
 
+# [dev] 清掉 XDG 快取內的「原創內容」影子(scenarios/story),強制解析到 repo。
+# 為什麼:assetPath() XDG 優先是給「版權衍生素材(sprites/maps/music)+ 玩家編輯版」覆蓋用;
+# scenarios/story 是 repo 原創內容,不該被 XDG 舊影子蓋掉(否則改了 repo 卻跑到舊 initial_groups
+# → 援軍一開始就出現等 stale bug)。dev 一律 repo 為真相,故啟動前先清影子。版權素材層不動。
+XDG_ASSETS="${XDG_DATA_HOME:-$HOME/.local/share}/fd2_re/assets"
+rm -rf "$XDG_ASSETS/scenarios" "$XDG_ASSETS/story" 2>/dev/null || true
+
 if [ "${1:-}" = "--shot" ]; then
   # 截圖驗證模式:./play.sh --shot out.png 120
   export FD2_MUTE=1

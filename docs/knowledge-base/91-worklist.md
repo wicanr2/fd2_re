@@ -416,6 +416,17 @@
       真根因疑「治療系法術 target=1 無全螢幕演出(只文字)」→ 打治療咒後緊接敵方攻擊演出,
       被誤認成法術效果延遲出現。修法需先 RE 原版治療咒視覺(閃光/數字浮現/僅改血條),
       或使用者釐清實際現象,不瞎編視覺
+- [x] **序章場景轉換打通**(2026-07-04,使用者驗收 OK,commit 2c5adda):王座廳/草地/遇海盜改用
+      真 tile 地圖背景(map32/map0)+ 固定鏡頭,非戰鬥圖。RE 定論:0x3231b 暫借章節32 載 FDFIELD
+      組32(紅毯雙王座→長廊→草地縱向拼接),與戰場共用 tile 渲染器。story.Node 加 Map+CamX/CamY,
+      main.go 加 storyBG 鎖鏡頭/擋游標。→ `23-boot-title-and-scenario-flow.md` §4
+- [x] **援軍 stale-cache bug 根因修復**(2026-07-04,使用者報「援軍不該一開始出現在地圖上」):
+      根因非 code bug——`~/.local/share/fd2_re/assets/scenarios/ch01.json` 是舊版 `initial_groups=[1,2,10,11]`,
+      XDG 快取層優先蓋掉 repo 已修正的 `[1,2]` → group 10/11 開場即 OnField=true 出現。**治本**:XDG 是給
+      版權衍生素材(sprites/maps/music)+ 玩家編輯版覆蓋用,scenarios/story 是原創內容不該進 XDG;已刪 XDG
+      scenarios/story 影子 + play.sh 每次啟動先清,dev 一律以 repo 為真相。→ 記憶 `fd2-intro-cutscene-bg-and-userdata-cache`
+- [~] **王座廳 NPC 擺位**(cutscene-bg 執行中):國王/王后坐王座 + 索爾站紅毯中央,對照 f_006.png;
+      story 節點加 actor 擺位欄。RE 查 FDFIELD 組32 是否帶 NPC roster(sprite id/cell 直接來自原版)
 
 ## 完成定義(反組譯研究)
 全部資產格式可解(解包+解壓+轉現代格式)、核心數值表全 dump 並驗證、
