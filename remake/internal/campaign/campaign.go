@@ -33,11 +33,28 @@ type Good struct {
 // Fig=地圖 sprite 組 id(同 battle.Unit.Fig,恆等於角色 id,doc31);Dir:0下1左2上3右。
 // 座標/肖像多可直接取自 FDFIELD 該地圖出場位置段(見 tools/parse_field.py positions),
 // 見 doc23 §4 補述(map32 王座廳:國王portrait48@(7,5)/王后portrait66@(10,5))。
+//
+// FromX/FromY/WalkFrames(doc46 §5.3,走位動畫):若 WalkFrames>0 且 From 與 X/Y 不同,
+// 進節點時該角色從 (FromX,FromY) 走位到 (X,Y),耗時 WalkFrames 幀(60fps);
+// 例:map31 密林「發現悠妮與蓋亞」一幕,索爾/亞雷斯從比劍點走到發現點(FDFIELD 出場位置證實
+// 兩組座標相距 14 格,非同格瞬移,見 doc46 §2)。
 type Actor struct {
-	Fig int `json:"fig"`
-	X   int `json:"x"`
-	Y   int `json:"y"`
-	Dir int `json:"dir,omitempty"`
+	Fig        int `json:"fig"`
+	X          int `json:"x"`
+	Y          int `json:"y"`
+	Dir        int `json:"dir,omitempty"`
+	FromX      int `json:"from_x,omitempty"`
+	FromY      int `json:"from_y,omitempty"`
+	WalkFrames int `json:"walk_frames,omitempty"`
+}
+
+// ActorWalk 節點「退場」走位動畫(doc46 §5.3):對白播完、換場前,已在場的 actor 先走一段路
+// 再淡出(例:王座廳索爾對白說完沿紅毯走下場,~1.5s)。Fig 指定 Node.Actors 裡哪一個角色。
+type ActorWalk struct {
+	Fig    int `json:"fig"`
+	ToX    int `json:"to_x"`
+	ToY    int `json:"to_y"`
+	Frames int `json:"frames"`
 }
 
 // Node 節點。Type: story / battle / choice / event / shop / ending。
@@ -49,21 +66,25 @@ type Node struct {
 	Map      string `json:"map,omitempty"`      // battle:戰場資產目錄;story:場景背景圖(doc23 §4:
 	// 原版序幕王城/草地背景是 FDFIELD map32 複合場景,與戰場同一渲染器非另開圖片系統;
 	// story 填同一 assets/maps/mapN 目錄即可換場景背景;battle 空=沿用當前)
-	Units    string          `json:"units,omitempty"` // battle:單位配置檔
-	CamX     int             `json:"cam_x,omitempty"` // story+Map:固定鏡頭像素座標(場景不跟游標走,取代預設 focusOnParty)
-	CamY     int             `json:"cam_y,omitempty"`
-	Actors   []Actor         `json:"actors,omitempty"` // story+Map:場景背景上的靜態角色擺位
-	BGM      string          `json:"bgm,omitempty"`
-	Next     string          `json:"next,omitempty"`    // story/event
-	OnWin    string          `json:"on_win,omitempty"`  // battle
-	OnLose   string          `json:"on_lose,omitempty"` // battle(敗北路線;空=game over)
-	Prompt   string          `json:"prompt,omitempty"`  // choice
-	Options  []Option        `json:"options,omitempty"` // choice
-	SetFlags map[string]bool `json:"set_flags,omitempty"`
-	Text     string          `json:"text,omitempty"`      // ending:結語
-	Goods    []Good          `json:"goods,omitempty"`     // shop:商品
-	Secret   []Good          `json:"secret,omitempty"`    // shop:祕密商店商品
-	SecretIf string          `json:"secret_if,omitempty"` // shop:旗標為真才開祕密商品(原版祕密商店機制)
+	Units  string  `json:"units,omitempty"` // battle:單位配置檔
+	CamX   int     `json:"cam_x,omitempty"` // story+Map:固定鏡頭像素座標(場景不跟游標走,取代預設 focusOnParty)
+	CamY   int     `json:"cam_y,omitempty"`
+	Actors []Actor `json:"actors,omitempty"` // story+Map:場景背景上的靜態角色擺位
+	Scene  string  `json:"scene,omitempty"`  // story+Script:只取 Script 檔裡 label 對映的那個 scene(doc46 §5.2;
+	// 空=舊行為,整份 Script 攤平全部 scenes 成一條對白隊列——別讓一個節點播完整份劇本)
+	ExitWalk    *ActorWalk      `json:"exit_walk,omitempty"`    // story:對白播完、換場前先走一段路再淡出(doc46 §5.3)
+	AutoAdvance int             `json:"auto_advance,omitempty"` // story:無對白/Script 時,進節點後幾幀自動轉場(doc46 行軍蒙太奇)
+	BGM         string          `json:"bgm,omitempty"`
+	Next        string          `json:"next,omitempty"`    // story/event
+	OnWin       string          `json:"on_win,omitempty"`  // battle
+	OnLose      string          `json:"on_lose,omitempty"` // battle(敗北路線;空=game over)
+	Prompt      string          `json:"prompt,omitempty"`  // choice
+	Options     []Option        `json:"options,omitempty"` // choice
+	SetFlags    map[string]bool `json:"set_flags,omitempty"`
+	Text        string          `json:"text,omitempty"`      // ending:結語
+	Goods       []Good          `json:"goods,omitempty"`     // shop:商品
+	Secret      []Good          `json:"secret,omitempty"`    // shop:祕密商店商品
+	SecretIf    string          `json:"secret_if,omitempty"` // shop:旗標為真才開祕密商品(原版祕密商店機制)
 }
 
 // Campaign 整張節點圖。

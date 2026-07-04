@@ -52,17 +52,20 @@ type MapData struct {
 }
 
 type Game struct {
-	m           *MapData
-	tileset     *ebiten.Image
-	tiles       []*ebiten.Image     // 切好的圖塊
-	st          *battle.State       // 戰鬥狀態(單位)
-	sc          *battle.Scenario    // 劇本(事件系統,doc 29)
-	dialog      []battle.DialogLine // 待顯示對話(事件產生,含說話者)
-	storyBG     bool                // 場景背景模式(story 節點指定 Map):鏡頭固定不跟游標,不畫單位/游標/HUD(doc23 §4)
-	storyActors []battle.Unit       // storyBG 場景上的靜態 NPC/主角擺位(doc23 §4;cutscene 用,無 AI/戰鬥邏輯)
-	walk        *walkAnim           // 移動動畫(沿路徑逐格走,FDICON 方向幀)
-	camp        *campaign.Runner    // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
-	campSel     int                 // choice 節點游標
+	m                *MapData
+	tileset          *ebiten.Image
+	tiles            []*ebiten.Image     // 切好的圖塊
+	st               *battle.State       // 戰鬥狀態(單位)
+	sc               *battle.Scenario    // 劇本(事件系統,doc 29)
+	dialog           []battle.DialogLine // 待顯示對話(事件產生,含說話者)
+	storyBG          bool                // 場景背景模式(story 節點指定 Map):鏡頭固定不跟游標,不畫單位/游標/HUD(doc23 §4)
+	storyActors      []battle.Unit       // storyBG 場景上的靜態 NPC/主角擺位(doc23 §4;cutscene 用,無 AI/戰鬥邏輯)
+	storyWalks       []*storyWalkJob     // 場景走位動畫佇列(doc46 §5.3);逐幀推進、完成後移除
+	storyAutoAdvance int                 // story 節點無對白時的自動轉場倒數幀(doc46 行軍蒙太奇,0=不自動)
+	fade             *storyFade          // 場景淡出/淡入轉場(doc46 §5.2)
+	walk             *walkAnim           // 移動動畫(沿路徑逐格走,FDICON 方向幀)
+	camp             *campaign.Runner    // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
+	campSel          int                 // choice 節點游標
 	// 開頭動畫/主選單(title.go,doc23)
 	titleAssets *titleAssets
 	titlePhase  string  // "scroll"→"menu"→""(進遊戲)
@@ -155,6 +158,91 @@ type atkAnim struct {
 	terrain          int  // 攻擊格地形索引(戰鬥背景 = 戰場地形,跟 FDFIELD 戰場資料有關)
 }
 
+// storyWalkJob 場景走位動畫(doc46 §5.3):cutscene 固定路徑位移,非玩家可控,重用
+// battle.Unit.OffX/OffY/Dir 插值(同行軍/移動動畫的畫法),完成時呼叫 then(可為 nil)。
+type storyWalkJob struct {
+	actor        int // g.storyActors 索引
+	fromX, fromY int
+	toX, toY     int
+	t, frames    int
+	then         func()
+}
+
+// storyFade 場景淡出/淡入轉場(doc46 §5.2):story 節點換場時不硬切。out=true 淡出(變黑)、
+// false 淡入(轉亮);淡出走完觸發 then(通常是換節點/換擺位),淡入走完自動清除。
+type storyFade struct {
+	out   bool
+	t     int
+	total int
+	then  func()
+}
+
+// storyFadeFrames 淡出/淡入各自幀數(60fps;doc46 要求 0.5–1s,先做快版 0.6s,實測後可調)。
+const storyFadeFrames = 36
+
+// startFadeTransition 淡出 storyFadeFrames 幀 → 執行 action(通常是 Advance+enterNode 或
+// 換擺位)→ 淡入 storyFadeFrames 幀。
+func (g *Game) startFadeTransition(action func()) {
+	g.fade = &storyFade{out: true, total: storyFadeFrames, then: func() {
+		action()
+		g.fade = &storyFade{out: false, total: storyFadeFrames}
+	}}
+}
+
+// advanceStoryNode 對白播完離開 story 節點:若節點設 ExitWalk,先讓對應 actor 走一段路
+// (doc46 §5.3,例:索爾沿紅毯走下場)再淡出換場;否則直接淡出換場。
+func (g *Game) advanceStoryNode(n *campaign.Node) {
+	doAdvance := func() {
+		g.startFadeTransition(func() {
+			g.camp.Advance("")
+			g.enterNode()
+		})
+	}
+	if n.ExitWalk != nil {
+		for i := range g.storyActors {
+			if g.storyActors[i].Fig == n.ExitWalk.Fig {
+				u := &g.storyActors[i]
+				g.storyWalks = append(g.storyWalks, &storyWalkJob{
+					actor: i, fromX: u.X, fromY: u.Y,
+					toX: n.ExitWalk.ToX, toY: n.ExitWalk.ToY,
+					frames: n.ExitWalk.Frames, then: doAdvance,
+				})
+				return
+			}
+		}
+	}
+	doAdvance()
+}
+
+// stepStoryWalks 逐幀推進場景走位動畫佇列,完成的 job 更新最終座標、呼叫 then 後移除。
+func (g *Game) stepStoryWalks() {
+	if len(g.storyWalks) == 0 {
+		return
+	}
+	live := g.storyWalks[:0]
+	for _, w := range g.storyWalks {
+		w.t++
+		frac := float64(w.t) / float64(w.frames)
+		if frac > 1 {
+			frac = 1
+		}
+		u := &g.storyActors[w.actor]
+		u.OffX = float64(w.fromX-w.toX) * float64(g.m.TileW) * (1 - frac)
+		u.OffY = float64(w.fromY-w.toY) * float64(g.m.TileH) * (1 - frac)
+		u.Dir = dirToward(w.fromX, w.fromY, w.toX, w.toY)
+		u.X, u.Y = w.toX, w.toY // 掛在終點格,Off 從起點內插到 0(同 walkAnim 慣例)
+		if w.t >= w.frames {
+			u.OffX, u.OffY = 0, 0
+			if w.then != nil {
+				w.then()
+			}
+			continue // 不放回 live,即移除
+		}
+		live = append(live, w)
+	}
+	g.storyWalks = live
+}
+
 // terrainAt 回傳某格的地形索引(戰鬥背景用;越界回 -1)。
 func (g *Game) terrainAt(x, y int) int {
 	if g.m == nil || x < 0 || y < 0 || x >= g.m.W || y >= g.m.H {
@@ -176,12 +264,14 @@ func (g *Game) enterNode() {
 	}
 	g.playBGM(n.BGM)
 	g.storyBG = false // 預設離開場景背景模式;story+Map 節點下面再開回
+	g.storyWalks = nil
+	g.storyAutoAdvance = 0
 	switch n.Type {
 	case "story":
 		g.dialog = nil
 		lines := n.Lines
 		if n.Script != "" { // 本機劇情文本檔(assets/story/chNN.json,人工精校;無檔 fallback 內嵌 lines)
-			if ls := loadStoryScript(n.Script); len(ls) > 0 {
+			if ls := loadStoryScript(n.Script, n.Scene); len(ls) > 0 {
 				lines = ls
 			}
 		}
@@ -197,10 +287,21 @@ func (g *Game) enterNode() {
 			g.camX, g.camY = float64(n.CamX), float64(n.CamY)
 			g.storyActors = nil
 			for _, a := range n.Actors { // cutscene 靜態擺位(國王/王后/主角等),無 AI/戰鬥邏輯
-				g.storyActors = append(g.storyActors, battle.Unit{Fig: a.Fig, X: a.X, Y: a.Y, Dir: a.Dir, OnField: true})
+				u := battle.Unit{Fig: a.Fig, X: a.X, Y: a.Y, Dir: a.Dir, OnField: true}
+				g.storyActors = append(g.storyActors, u)
+				if a.WalkFrames > 0 && (a.FromX != a.X || a.FromY != a.Y) { // 進場走位(doc46 §5.3)
+					idx := len(g.storyActors) - 1
+					g.storyWalks = append(g.storyWalks, &storyWalkJob{
+						actor: idx, fromX: a.FromX, fromY: a.FromY,
+						toX: a.X, toY: a.Y, frames: a.WalkFrames,
+					})
+				}
 			}
 		} else {
 			g.storyActors = nil
+		}
+		if len(lines) == 0 && n.AutoAdvance > 0 { // 無對白節點(行軍蒙太奇):進場後自動倒數轉場
+			g.storyAutoAdvance = n.AutoAdvance
 		}
 	case "battle":
 		if n.Map != "" { // 指定戰場(assets/maps/mapN;全 33 圖已匯出)
@@ -274,13 +375,13 @@ func (g *Game) campInput() bool {
 	}
 	switch n.Type {
 	case "story":
-		if enter {
+		// 淡出/淡入或走位動畫進行中(doc46 §5.2/§5.3)不接受輸入,避免重複觸發轉場。
+		if enter && g.fade == nil && len(g.storyWalks) == 0 {
 			if len(g.dialog) > 0 {
 				g.dialog = g.dialog[:len(g.dialog)-1]
 			}
 			if len(g.dialog) == 0 {
-				g.camp.Advance("")
-				g.enterNode()
+				g.advanceStoryNode(n)
 			}
 		}
 		return true
@@ -619,26 +720,38 @@ func loadFIGANI() map[int][]*ebiten.Image {
 	return out
 }
 
-// loadStoryScript 讀本機劇情文本檔(story-pipe 管線輸出:{"scenes":[{"lines":[{speaker,text}]}]}),
-// 攤平全部 scenes 的 lines。檔案缺失(玩家未自備素材)回 nil → 節點 fallback 內嵌 lines。
-func loadStoryScript(path string) []campaign.Line {
+// loadStoryScript 讀本機劇情文本檔(story-pipe 管線輸出:{"scenes":[{"label","lines":[{speaker,text}]}]})。
+// scene 為空:舊行為,攤平全部 scenes 的 lines(整份劇本塞一個節點,ch02-33 尚未逐段接線時的 fallback)。
+// scene 非空(doc46 §5.2):只取 label 對映的那一段——**每個 story 節點播一段,別把整份劇本攤平**,
+// 才能讓場景/鏡頭/擺位跟著劇情分段切換,不會「一次播完才進戰場」。找不到該 label 時回 nil(呼叫端
+// fallback 用節點內嵌 Lines,不會靜默播錯段)。檔案缺失(玩家未自備素材)同樣回 nil。
+func loadStoryScript(path, scene string) []campaign.Line {
 	raw, err := os.ReadFile(assetPath(path))
 	if err != nil {
 		return nil
 	}
 	var f struct {
 		Scenes []struct {
+			Label string          `json:"label"`
 			Lines []campaign.Line `json:"lines"`
 		} `json:"scenes"`
 	}
 	if json.Unmarshal(raw, &f) != nil {
 		return nil
 	}
-	var out []campaign.Line
-	for _, sc := range f.Scenes {
-		out = append(out, sc.Lines...)
+	if scene == "" {
+		var out []campaign.Line
+		for _, sc := range f.Scenes {
+			out = append(out, sc.Lines...)
+		}
+		return out
 	}
-	return out
+	for _, sc := range f.Scenes {
+		if sc.Label == scene {
+			return sc.Lines
+		}
+	}
+	return nil
 }
 
 // loadFigMeta 載入 FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(assets/figani/meta.json;doc06:
@@ -997,6 +1110,29 @@ func (g *Game) Update() error {
 	if g.m == nil {
 		return nil
 	}
+	g.stepStoryWalks() // 場景走位動畫(doc46 §5.3);storyWalks 為空時內部直接返回
+	if g.fade != nil { // 場景淡出/淡入轉場(doc46 §5.2)
+		g.fade.t++
+		if g.fade.t >= g.fade.total {
+			if g.fade.out {
+				cb := g.fade.then
+				g.fade = nil
+				if cb != nil {
+					cb()
+				}
+			} else {
+				g.fade = nil
+			}
+		}
+	}
+	if g.camp != nil && g.storyAutoAdvance > 0 { // 無對白節點自動轉場倒數(行軍蒙太奇)
+		g.storyAutoAdvance--
+		if g.storyAutoAdvance == 0 {
+			if n := g.camp.Node(); n != nil {
+				g.advanceStoryNode(n)
+			}
+		}
+	}
 	if g.curX != g.prevCurX || g.curY != g.prevCurY { // 游標移動音
 		g.playSFX(sfxCursor)
 		g.prevCurX, g.prevCurY = g.curX, g.curY
@@ -1330,6 +1466,18 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		}
 	}
 	g.drawCampaignUI(screen)
+
+	// 場景淡出/淡入轉場(doc46 §5.2):全螢幕黑色疊層,alpha 隨 fade.t 漸變。
+	if g.fade != nil {
+		frac := float64(g.fade.t) / float64(g.fade.total)
+		alpha := frac
+		if !g.fade.out {
+			alpha = 1 - frac
+		}
+		ov := ebiten.NewImage(logicalW, logicalH)
+		ov.Fill(color.RGBA{0, 0, 0, uint8(alpha * 0xff)})
+		screen.DrawImage(ov, &ebiten.DrawImageOptions{})
+	}
 
 	// 截圖鉤子:指定幀把畫面存 PNG(無人值守驗證用)
 	if g.shotPath != "" && g.frame == g.shotFrame {

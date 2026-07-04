@@ -419,6 +419,32 @@
       其實只是撞到同一個 clamp 上限,不是機制真的沒用,下次遇到「怎麼測都一樣」先檢查 clamp 範圍。
       → doc44 §2.5 定案(信心分級:格子=FDFIELD 直讀高信心,逐人配對=影片外觀反推中高信心非鐵證)。
 - [ ] ch02-33 全章 story 節點接 script(gen_campaign 修+重生成)— 等 ch01 落地後做
+- 🟡 **ch01 開場 Phase 2 實作(doc46 D1-D6,2026-07-04,待使用者驗收才打勾)**:使用者三輪回報後
+      team-lead 先做「原版開場逐幕時間軸」(doc46)才動手,這輪照時間軸把 D1-D6 全部實作:
+      **D1/D2 背景重構**:`story_ch01_palace` 拆成 `story_ch01_palace_throne`(map32 王座廳)+
+      `story_ch01_palace_path`(map32 草地小徑,原「meadow」節點誤用棚)兩幕,`story_ch01_meadow`
+      **改名為 `story_ch01_forest_duel`+`story_ch01_forest_discover`,背景從 map32 改指 map31 密林**
+      (先前張冠李戴的核心 bug);map31 actor 用 FDFIELD roster 直讀(索爾19,46/亞雷斯19,47/
+      蓋亞5,43/悠妮5,44);`portrait75`(出場位置表與悠妮同格的曖昧一筆)查了 `references/text/
+      memory.md` 肖像表(00-41 已命名角色)確認 0x4B 不在表列範圍,判定非已知隊友,**未擺放**,
+      按指示標記待查非瞎擺。**D4 行軍蒙太奇**:新增 `story_ch01_march`(map0,無對白,`auto_advance`
+      180 幀自動轉場,索爾走位代表隊伍,簡化版,doc 誠實標「近似非逐幀重現」)。
+      **D5 分段播放(核心)**:`campaign.Node` 加 `Scene` 欄(只取 Script 檔 `scenes[]` 裡 label
+      對映的那一段,不再攤平全部劇本);改「每段一個 story 節點」而非 Node 內 sub-scenes,
+      保留 `FD2_CAMP_NODE` 可跳任一幕驗證。**D6 走位動畫**:`campaign.Actor` 加
+      `FromX/FromY/WalkFrames`(進場走位,重用 `battle.Unit.OffX/OffY` 插值)、`Node.ExitWalk`
+      (退場走位,索爾沿紅毯走下場~1.5s);新增泛用**淡出/淡入轉場**(`storyFade`,0.6s/次,
+      story 節點間一律套用,不再硬切)。**除錯插曲**:forest_duel 一度以為亞雷斯(fig4)沒畫出來,
+      加 debug 座標印字才確認兩個 actor 都在正確位置、只是 FDFIELD 給的座標剛好只差 1 格(y46/47)
+      造成兩張 24×24 sprite 緊貼——不是 bug,是資料本身就這麼緊,已移除 debug 印字。
+      驗證:每幕獨立截圖 + 相鄰幕轉場(throne→path 含退場走位+淡出淡入全程截圖)+
+      discover 幕走位動畫三階段截圖(進場遠/中/抵達)+ march 幕靜默→自動轉場→抵達海島全程截圖,
+      build+test 綠、gofmt 乾淨。**D8(戰前 MAP/TURN 資訊畫面+行軍確認 UI)不在本輪範圍,已登記獨立項**。
+      → doc25 §7.5.1 已修正範圍(戰場進場直接定位仍成立;cutscene 幕內走位是另一機制,已推翻舊結論)。
+- [ ] **D8:戰前 UI**(doc46 附帶發現,team-lead 裁定另開項不與本輪合併):原版每場戰鬥開局有
+      「MAP·NN TURN·NNN,勝利/失敗條件,ENEMY/FRIEND/NPC 數」資訊畫面 + 「決定要行軍嗎?YES/NO」
+      確認,remake `resetBattle` 目前直接進場沒有這兩個畫面。低優先,等 ch1 開場核心問題(D1-D6)
+      使用者驗收後再排。
 
 ## 待辦:實測回饋(使用者 playtest,2026-07-03)
 - [ ] **開場過場節奏 3x 太快 RE**(dragon-fx2 DOS 對比發現,doc39 §10.8):原版魔王立繪捲動

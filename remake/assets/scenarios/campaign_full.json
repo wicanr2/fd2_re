@@ -1,6 +1,6 @@
 {
   "title": "炎龍騎士團2 — 全 30 章線性 campaign(自動生成)",
-  "start": "story_ch01_palace",
+  "start": "story_ch01_palace_throne",
   "flags": {
     "retried_ch01": false,
     "found_secret_ch02": false,
@@ -57,17 +57,18 @@
     "retried_ch30": false
   },
   "nodes": {
-    "story_ch01_palace": {
+    "story_ch01_palace_throne": {
       "type": "story",
       "bgm": "FDMUS_010",
       "script": "assets/story/ch00_palace.json",
+      "scene": "王座廳,傳位",
       "lines": [
         {
           "speaker": -1,
           "text": "第1章:初試身手"
         }
       ],
-      "next": "story_ch01_meadow",
+      "next": "story_ch01_palace_path",
       "map": "assets/maps/map32",
       "cam_x": -104,
       "cam_y": 0,
@@ -75,22 +76,82 @@
         { "fig": 48, "x": 7, "y": 5, "dir": 0 },
         { "fig": 66, "x": 10, "y": 5, "dir": 0 },
         { "fig": 0, "x": 8, "y": 8, "dir": 2 }
-      ]
+      ],
+      "exit_walk": { "fig": 0, "to_x": 8, "to_y": 14, "frames": 90 }
     },
-    "story_ch01_meadow": {
+    "story_ch01_palace_path": {
       "type": "story",
       "bgm": "FDMUS_010",
-      "script": "assets/story/ch00_meadow.json",
+      "script": "assets/story/ch00_palace.json",
+      "scene": "王城一隅,亞雷斯撞見",
       "lines": [
         {
           "speaker": -1,
           "text": "第1章:初試身手"
         }
       ],
-      "next": "story_ch01",
+      "next": "story_ch01_forest_duel",
       "map": "assets/maps/map32",
       "cam_x": -104,
-      "cam_y": 824
+      "cam_y": 824,
+      "actors": [
+        { "fig": 0, "x": 8, "y": 42, "dir": 0 },
+        { "fig": 4, "x": 9, "y": 43, "dir": 1 }
+      ]
+    },
+    "story_ch01_forest_duel": {
+      "type": "story",
+      "bgm": "FDMUS_010",
+      "script": "assets/story/ch00_meadow.json",
+      "scene": "比劍邀約",
+      "lines": [
+        {
+          "speaker": -1,
+          "text": "第1章:初試身手"
+        }
+      ],
+      "next": "story_ch01_forest_discover",
+      "map": "assets/maps/map31",
+      "cam_x": 0,
+      "cam_y": 1000,
+      "actors": [
+        { "fig": 0, "x": 19, "y": 46, "dir": 0 },
+        { "fig": 4, "x": 19, "y": 47, "dir": 2 }
+      ]
+    },
+    "story_ch01_forest_discover": {
+      "type": "story",
+      "bgm": "FDMUS_010",
+      "script": "assets/story/ch00_meadow.json",
+      "scene": "發現悠妮與蓋亞",
+      "lines": [
+        {
+          "speaker": -1,
+          "text": "第1章:初試身手"
+        }
+      ],
+      "next": "story_ch01_march",
+      "map": "assets/maps/map31",
+      "cam_x": 0,
+      "cam_y": 1000,
+      "actors": [
+        { "fig": 30, "x": 5, "y": 43, "dir": 0 },
+        { "fig": 9, "x": 5, "y": 44, "dir": 0 },
+        { "fig": 0, "x": 6, "y": 44, "dir": 1, "from_x": 19, "from_y": 46, "walk_frames": 150 },
+        { "fig": 4, "x": 7, "y": 44, "dir": 1, "from_x": 19, "from_y": 47, "walk_frames": 150 }
+      ]
+    },
+    "story_ch01_march": {
+      "type": "story",
+      "bgm": "FDMUS_010",
+      "next": "story_ch01",
+      "map": "assets/maps/map0",
+      "cam_x": 0,
+      "cam_y": 76,
+      "auto_advance": 180,
+      "actors": [
+        { "fig": 0, "x": 10, "y": 14, "dir": 1, "from_x": 16, "from_y": 8, "walk_frames": 170 }
+      ]
     },
     "story_ch01": {
       "type": "story",
