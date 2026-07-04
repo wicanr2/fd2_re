@@ -16,10 +16,11 @@ cd "$(dirname "$(readlink -f "$0")")"   # 切到 remake/
 
 BIN=./fd2-linux
 if [ ! -x "$BIN" ]; then
-  echo "找不到 $BIN,先 build:"
-  echo "  docker run --rm -v \$PWD:/src -w /src -e GOCACHE=/src/.gocache fd2-build go build -o fd2-linux ./cmd/fd2"
+  echo "找不到 $BIN,先 build(產物帶 build 時間戳,方便回報用哪版測):"
+  echo "  ./build.sh   # docker 建置 → fd2-linux-YYYYMMDD-HHMM + fd2-linux 軟連結"
   exit 1
 fi
+echo "本次執行版本:$(readlink -f "$BIN" | xargs basename)"
 
 export FD2_CAMPAIGN="assets/scenarios/campaign_full.json"
 
