@@ -322,6 +322,19 @@ python3 tools/decode_sprite.py 用 body=FDOTHER_069.bin[4:] / FDOTHER_070.bin[4:
 > 與後續 `battle_ch01` 進的是同一張地圖。remake 對應實作見 `remake/internal/campaign/campaign.go`(Node.Map/CamX/CamY,
 > story 節點可指定固定鏡頭背景圖)與 `remake/cmd/fd2/main.go`(`storyBG` 模式);`campaign_full.json` 的
 > `story_ch01_palace`/`story_ch01_meadow` 指到 `assets/maps/map32`(cam_y=0/824),`story_ch01` 指到 `assets/maps/map0`。
+>
+> **補述(2026-07,王座廳 NPC 擺位 RE)**:FDFIELD 組32 的「出場位置」段(資源98,`tools/parse_field.py extracted/raw 32`)
+> 直接帶了場景 NPC 的座標+肖像,與戰場單位 roster 同格式(u16 X, u16 Y, u16 肖像):
+> **國王(portrait48)@(7,5)、王后(portrait66)@(10,5)**——兩張並排的王座,列印驗證 portrait48/66 頭像
+> (`extracted/portraits/DATO_048_m0.png`/`DATO_066_m0.png`)分別是戴冠鬍鬚男性、紫髮女性,對照
+> `extracted/story/ref_video/f_006.png` 左王座男/右王座女完全吻合。另在草地區段(row42/46/47)有
+> portrait0(索爾,camp own,×2 個位置)+ portrait4(亞雷斯)+16 個 portrait68/69 走廊守衛(row14-40,
+> 逐行對稱佈署,對應影片長廊可見的士兵/機兵哨兵)。**索爾在王座廳本身這格「出場位置」列表中沒有對應項**
+> (只有王座上的國王/王后兩筆),他站紅毯中央面向王座的畫面研判是走另一條「登場單位」路徑(0x3231b 內
+> `push 1/3/5; call 0x10b4e` 三次呼叫,見上方主流程),未逐一 RE 對應關係;remake 目視 f_006 定位補上
+> (fig0 @(8,8) dir2=面向北方王座),非 FDFIELD 直讀,已在 campaign_full.json 註記待未來精確化。
+> remake 擺位機制:`campaign.Actor{Fig,X,Y,Dir}` + `Node.Actors`(story+Map 節點專用,純靜態展示,
+> 複用 `battle.Unit`/`drawUnitSprite` 畫法但不掛戰鬥邏輯),`story_ch01_palace` 已接 3 個 actor(國王/王后/索爾)。
         │
 driver 0x25ebb 內續行 → 進入戰場設置 0x10010(0x26130)
    └ 戰場地圖編號 = [0x53c03]*3 + 2   (0x10b9e)       ;★ 不是寫死常數,由章節推導

@@ -52,16 +52,17 @@ type MapData struct {
 }
 
 type Game struct {
-	m       *MapData
-	tileset *ebiten.Image
-	tiles   []*ebiten.Image     // 切好的圖塊
-	st      *battle.State       // 戰鬥狀態(單位)
-	sc      *battle.Scenario    // 劇本(事件系統,doc 29)
-	dialog  []battle.DialogLine // 待顯示對話(事件產生,含說話者)
-	storyBG bool                // 場景背景模式(story 節點指定 Map):鏡頭固定不跟游標,不畫單位/游標/HUD(doc23 §4)
-	walk    *walkAnim           // 移動動畫(沿路徑逐格走,FDICON 方向幀)
-	camp    *campaign.Runner    // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
-	campSel int                 // choice 節點游標
+	m           *MapData
+	tileset     *ebiten.Image
+	tiles       []*ebiten.Image     // 切好的圖塊
+	st          *battle.State       // 戰鬥狀態(單位)
+	sc          *battle.Scenario    // 劇本(事件系統,doc 29)
+	dialog      []battle.DialogLine // 待顯示對話(事件產生,含說話者)
+	storyBG     bool                // 場景背景模式(story 節點指定 Map):鏡頭固定不跟游標,不畫單位/游標/HUD(doc23 §4)
+	storyActors []battle.Unit       // storyBG 場景上的靜態 NPC/主角擺位(doc23 §4;cutscene 用,無 AI/戰鬥邏輯)
+	walk        *walkAnim           // 移動動畫(沿路徑逐格走,FDICON 方向幀)
+	camp        *campaign.Runner    // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
+	campSel     int                 // choice 節點游標
 	// 開頭動畫/主選單(title.go,doc23)
 	titleAssets *titleAssets
 	titlePhase  string  // "scroll"→"menu"→""(進遊戲)
@@ -194,6 +195,12 @@ func (g *Game) enterNode() {
 			g.st, g.sel = nil, nil // 清殘留單位/選取(避免上一戰場畫面疊在新背景上)
 			g.storyBG = true
 			g.camX, g.camY = float64(n.CamX), float64(n.CamY)
+			g.storyActors = nil
+			for _, a := range n.Actors { // cutscene 靜態擺位(國王/王后/主角等),無 AI/戰鬥邏輯
+				g.storyActors = append(g.storyActors, battle.Unit{Fig: a.Fig, X: a.X, Y: a.Y, Dir: a.Dir, OnField: true})
+			}
+		} else {
+			g.storyActors = nil
 		}
 	case "battle":
 		if n.Map != "" { // 指定戰場(assets/maps/mapN;全 33 圖已匯出)
@@ -1195,6 +1202,13 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			}
 			g.drawUnitSprite(screen, ux, uy, float64(tw), float64(th), u)
 		}
+	}
+	// storyBG 場景靜態角色(doc23 §4:王座廳國王/王后/主角等 cutscene 擺位,同一 sprite 繪法無戰鬥邏輯)
+	for i := range g.storyActors {
+		u := &g.storyActors[i]
+		ux := float64(u.X*tw) - g.camX
+		uy := float64(u.Y*th) - g.camY
+		g.drawUnitSprite(screen, ux, uy, float64(tw), float64(th), u)
 	}
 	// 游標(白框):指令環/法術選單開啟時不顯示(原版該狀態下選取指示只在環上的選中圖示,
 	// 常駐白框會疊在中央、與環的選中框混淆,見 playfix #5)

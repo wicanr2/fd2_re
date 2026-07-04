@@ -70,7 +70,12 @@
       "next": "story_ch01_meadow",
       "map": "assets/maps/map32",
       "cam_x": -104,
-      "cam_y": 0
+      "cam_y": 0,
+      "actors": [
+        { "fig": 48, "x": 7, "y": 5, "dir": 0 },
+        { "fig": 66, "x": 10, "y": 5, "dir": 0 },
+        { "fig": 0, "x": 8, "y": 8, "dir": 2 }
+      ]
     },
     "story_ch01_meadow": {
       "type": "story",

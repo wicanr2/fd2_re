@@ -394,7 +394,19 @@
       **教訓**:另一 agent 曾提案「背景已在 BG_BG_\*.png,只需配對」,經抽樣檢視(320×100 全景走廊,
       無王座/紅毯任何痕跡)證偽——套用前先驗證,不可盲信「已抽出」的斷言(rulebook 62)。
       另踩雷:`~/.local/share/fd2_re/assets/`(玩家/測試用資產覆蓋目錄,`assetPath()` 優先讀它)有舊版
-      campaign_full.json 快取(缺 ch00_palace/meadow 分幕),測試前先同步 repo 最新版才看得到真結果。
+      campaign_full.json 快取(缺 ch00_palace/meadow 分幕),測試前先同步 repo 最新版才看得到真結果
+      (使用者已驗收+ commit;team-lead 另修 play.sh 每次啟動先清 XDG scenarios/story 影子,一勞永逸)。
+- [x] **王座廳 NPC 擺位**(使用者驗收背景後指出「王座是空的、索爾沒出現」,2026-07-04):RE 出 FDFIELD 組32
+      出場位置段(資源98)直帶場景 NPC 座標+肖像,同戰場單位 roster 格式;**國王 portrait48@(7,5)+
+      王后 portrait66@(10,5)** 頭像圖核對(`DATO_048/066_m0.png`=戴冠鬍鬚男/紫髮女)完全對上
+      `f_006.png` 左王/右后。索爾在該格出場位置表無對應項(原版走 0x3231b 內 `push1/3/5;call 0x10b4e`
+      另一條登場路徑,未逐一 RE),故索爾位置(fig0 @(8,8) dir2)是目視 f_006 定位、非 FDFIELD 直讀,
+      已在 doc23/campaign_full.json 誠實標記。remake 加 `campaign.Actor{Fig,X,Y,Dir}`+`Node.Actors`
+      (story+Map 節點靜態擺位,複用 battle.Unit/drawUnitSprite 畫法、無戰鬥邏輯),`story_ch01_palace`
+      接 3 actor。截圖對照 f_006 吻合(國王/王后坐正確王座、索爾紅毯中央背對鏡頭)。
+      **順帶發現**(未實作,留給 ch02-33 接線時參考):同一出場位置表在草地段(row42/46/47)另有
+      portrait0×2(索爾+疑似另一己方角色)+portrait4(亞雷斯)+16 個 portrait68/69 走廊守衛,
+      可比照本次做法補草地/走廊 NPC。
 - [ ] ch02-33 全章 story 節點接 script(gen_campaign 修+重生成)— 等 ch01 落地後做
 
 ## 待辦:實測回饋(使用者 playtest,2026-07-03)

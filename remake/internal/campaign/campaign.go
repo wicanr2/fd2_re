@@ -29,6 +29,17 @@ type Good struct {
 	Price int    `json:"price"`
 }
 
+// Actor story+Map 場景背景上的靜態角色(cutscene NPC/主角,無 AI/戰鬥邏輯,純擺位;
+// Fig=地圖 sprite 組 id(同 battle.Unit.Fig,恆等於角色 id,doc31);Dir:0下1左2上3右。
+// 座標/肖像多可直接取自 FDFIELD 該地圖出場位置段(見 tools/parse_field.py positions),
+// 見 doc23 §4 補述(map32 王座廳:國王portrait48@(7,5)/王后portrait66@(10,5))。
+type Actor struct {
+	Fig int `json:"fig"`
+	X   int `json:"x"`
+	Y   int `json:"y"`
+	Dir int `json:"dir,omitempty"`
+}
+
 // Node 節點。Type: story / battle / choice / event / shop / ending。
 type Node struct {
 	Type     string `json:"type"`
@@ -41,6 +52,7 @@ type Node struct {
 	Units    string          `json:"units,omitempty"` // battle:單位配置檔
 	CamX     int             `json:"cam_x,omitempty"` // story+Map:固定鏡頭像素座標(場景不跟游標走,取代預設 focusOnParty)
 	CamY     int             `json:"cam_y,omitempty"`
+	Actors   []Actor         `json:"actors,omitempty"` // story+Map:場景背景上的靜態角色擺位
 	BGM      string          `json:"bgm,omitempty"`
 	Next     string          `json:"next,omitempty"`    // story/event
 	OnWin    string          `json:"on_win,omitempty"`  // battle
