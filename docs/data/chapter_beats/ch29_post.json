@@ -90,15 +90,13 @@
    "args": []
   },
   {
-   "op": "unknown",
+   "op": "load_ch_text",
    "addr": "0x25870",
    "target": "0x1088d",
-   "args": [
-    "dword ptr [0x3c03]"
-   ]
+   "args": []
   },
   {
-   "op": "unknown",
+   "op": "redraw",
    "addr": "0x258b6",
    "target": "0x11cac",
    "args": [
@@ -132,7 +130,7 @@
    }
   },
   {
-   "op": "unknown",
+   "op": "redraw",
    "addr": "0x258ea",
    "target": "0x11cac",
    "args": [

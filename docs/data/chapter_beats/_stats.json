@@ -19,7 +19,8 @@
     "join": 4,
     "delay": 4,
     "reveal_b": 2,
-    "unknown": 3
+    "redraw": 1,
+    "unknown": 2
    }
   },
   {
@@ -45,7 +46,8 @@
     "delay": 5,
     "dialog": 3,
     "spawn": 2,
-    "unknown": 3
+    "redraw": 1,
+    "unknown": 2
    }
   },
   {
@@ -84,7 +86,8 @@
    "handler": "0x230f2",
    "n_beats": 6,
    "ops": {
-    "unknown": 3,
+    "unknown": 2,
+    "unit_alive": 1,
     "dialog": 2,
     "join": 1
    }
@@ -124,8 +127,9 @@
     "pan": 2,
     "delay": 2,
     "spawn": 1,
-    "unknown": 3,
-    "act": 2
+    "redraw": 1,
+    "act": 2,
+    "unknown": 2
    }
   },
   {
@@ -179,7 +183,8 @@
    "handler": "0x232e8",
    "n_beats": 6,
    "ops": {
-    "unknown": 3,
+    "unknown": 2,
+    "unit_alive": 1,
     "dialog": 2,
     "join": 1
    }
@@ -200,9 +205,9 @@
    "chapter": 7,
    "tag": "post",
    "handler": "0x234bb",
-   "n_beats": 7,
+   "n_beats": 6,
    "ops": {
-    "unknown": 3,
+    "unknown": 2,
     "dialog": 2,
     "act": 2
    }
@@ -247,7 +252,8 @@
    "handler": "0x235f9",
    "n_beats": 11,
    "ops": {
-    "unknown": 4,
+    "unknown": 3,
+    "redraw": 1,
     "palfade": 1,
     "delay": 1,
     "dialog": 2,
@@ -352,10 +358,11 @@
    "n_beats": 8,
    "ops": {
     "loadch_call": 1,
-    "unknown": 2,
+    "roster_has": 1,
     "dialog": 3,
     "pan": 1,
-    "act": 1
+    "act": 1,
+    "unknown": 1
    }
   },
   {
@@ -364,8 +371,9 @@
    "handler": "0x239bd",
    "n_beats": 3,
    "ops": {
-    "unknown": 2,
-    "dialog": 1
+    "roster_has": 1,
+    "dialog": 1,
+    "unknown": 1
    }
   },
   {
@@ -381,7 +389,8 @@
    "handler": "0x23a0a",
    "n_beats": 8,
    "ops": {
-    "unknown": 3,
+    "unknown": 2,
+    "unit_alive": 1,
     "dialog": 3,
     "act": 1,
     "join": 1
@@ -394,7 +403,7 @@
    "n_beats": 3,
    "ops": {
     "loadch_call": 1,
-    "unknown": 1,
+    "roster_has": 1,
     "spawn": 1
    }
   },
@@ -404,7 +413,8 @@
    "handler": "0x23b5f",
    "n_beats": 15,
    "ops": {
-    "unknown": 3,
+    "unknown": 2,
+    "roster_has": 1,
     "dialog": 4,
     "pan": 2,
     "spawn": 2,
@@ -466,7 +476,8 @@
    "handler": "0x23e74",
    "n_beats": 19,
    "ops": {
-    "unknown": 4,
+    "unknown": 3,
+    "redraw": 1,
     "palfade": 1,
     "delay": 1,
     "dialog": 6,
@@ -508,9 +519,9 @@
    "chapter": 21,
    "tag": "post",
    "handler": "0x244b6",
-   "n_beats": 13,
+   "n_beats": 11,
    "ops": {
-    "unknown": 5,
+    "unknown": 3,
     "dialog": 3,
     "act": 2,
     "pan": 2,
@@ -526,7 +537,8 @@
     "loadch_call": 1,
     "reveal_a": 1,
     "pan": 3,
-    "unknown": 7,
+    "unknown": 5,
+    "redraw": 2,
     "delay": 4,
     "dialog": 5,
     "act": 3,
@@ -539,12 +551,14 @@
    "handler": "0x24754",
    "n_beats": 42,
    "ops": {
-    "unknown": 16,
+    "unknown": 12,
     "dialog": 10,
     "join": 2,
     "act": 6,
     "reveal_a": 2,
     "delay": 4,
+    "load_res": 3,
+    "load_ch_bg": 1,
     "pan": 2
    }
   },
@@ -565,22 +579,25 @@
    "chapter": 23,
    "tag": "post",
    "handler": "0x24c1e",
-   "n_beats": 11,
+   "n_beats": 10,
    "ops": {
     "dialog": 2,
-    "unknown": 9
+    "redraw": 2,
+    "unknown": 6
    }
   },
   {
    "chapter": 24,
    "tag": "pre",
    "handler": "0x3396a",
-   "n_beats": 18,
+   "n_beats": 17,
    "ops": {
     "loadch_call": 1,
-    "unknown": 11,
+    "load_res": 1,
     "pan": 1,
     "dialog": 2,
+    "play_sfx": 4,
+    "unknown": 5,
     "delay": 3
    }
   },
@@ -637,9 +654,9 @@
    "chapter": 26,
    "tag": "post",
    "handler": "0x250cc",
-   "n_beats": 38,
+   "n_beats": 36,
    "ops": {
-    "unknown": 18,
+    "unknown": 16,
     "dialog": 9,
     "act": 5,
     "pan": 1,
@@ -655,7 +672,8 @@
     "loadch_call": 1,
     "reveal_a": 1,
     "pan": 1,
-    "unknown": 6,
+    "unknown": 5,
+    "redraw": 1,
     "delay": 1,
     "act": 3,
     "dialog": 1
@@ -685,10 +703,10 @@
    "chapter": 28,
    "tag": "post",
    "handler": "0x2548c",
-   "n_beats": 40,
+   "n_beats": 39,
    "ops": {
     "dialog": 6,
-    "unknown": 19,
+    "unknown": 18,
     "spawn": 1,
     "pan": 1,
     "delay": 13
@@ -713,27 +731,25 @@
    "handler": "0x25757",
    "n_beats": 20,
    "ops": {
-    "unknown": 11,
+    "unknown": 8,
     "dialog": 4,
     "act": 2,
     "pan": 2,
+    "load_ch_text": 1,
+    "redraw": 2,
     "delay": 1
    }
   }
  ],
  "unknown_targets": {
-  "0x11cac": 12,
   "0x134e4": 8,
   "0x12d7b": 5,
   "0x11506": 24,
   "0x1c220": 2,
-  "0x3453e": 3,
   "0x233c6": 15,
   "0x11d40": 2,
-  "0x375c0": 8,
   "0x1f882": 4,
   "0x13536": 2,
-  "0x33499": 4,
   "0x31860": 2,
   "0x1b8e7": 1,
   "0x24336": 1,
@@ -743,12 +759,9 @@
   "0x24bde": 1,
   "0x2189a": 3,
   "0x24b4d": 15,
-  "0x111ba": 4,
   "0x4dbfc": 1,
-  "0x10652": 1,
   "0x17aa9": 3,
   "0x24d22": 2,
-  "0x25a96": 4,
   "0x25052": 6,
   "0x25089": 4,
   "0x1c2da": 1,
@@ -758,7 +771,6 @@
   "0x35bba": 1,
   "0x12cea": 2,
   "0x35e5a": 4,
-  "0x33f78": 7,
-  "0x1088d": 1
+  "0x33f78": 7
  }
 }

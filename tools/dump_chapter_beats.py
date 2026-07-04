@@ -40,8 +40,17 @@ PRIM = {
     0x32975: ('reveal_a', 1),  # 攝影機 reveal 族之一
     0x32999: ('reveal_b', 1),  # 攝影機 reveal 族之二
     0x205da: ('loadch_call', 0),  # 章節載入呼叫本身 0 參數;章節號由前面 mov [0x3c03] 設定,見 loadch_var
+    # 本輪(2026-07-04)unknown×既有原語表交叉補上(event_handler_dump.py PRIM/VAR + doc25/26):
+    0x3453e: ('unit_alive', 1),   # (idx) 查 [0x53a45]+idx*0x50+5 bit0(doc25/26 已知)
+    0x33499: ('roster_has', 1),   # (char_id) 查我方名冊 [0x53bf7](doc26 已知)
+    0x111ba: ('load_res', 0),     # 載資源(純 fopen/fseek/fread,doc47 §5 已知,參數個數未逐一核對)
+    0x25a96: ('play_sfx', 1),     # 播音效(event_handler_dump.py 已知,參數個數未逐一核對)
+    0x1088d: ('load_ch_text', 0), # 載章節文本資源(doc47/event_handler_dump.py 已知)
+    0x10652: ('load_ch_bg', 0),   # 載章節大圖(doc47 §5 已知)
+    0x11cac: ('redraw', 1),       # 主重繪函式,每幀呼叫(doc25 已知「每幀呼叫」)
 }
-SKIP = {0x36cd7}  # __STK(編譯器堆疊探測),非原語
+# 非原語(編譯器插入的堆疊探測/輔助函式),線性掃描時直接跳過、清空 pushes 不記 beat:
+SKIP = {0x36cd7, 0x375c0}  # 0x375c0 本輪核對過等同 event_handler_dump.py 的 SKIP 清單
 
 
 def dump_range(cg, start, end):
