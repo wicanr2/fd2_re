@@ -1,0 +1,59 @@
+{
+ "handler": "0x333f5",
+ "beats": [
+  {
+   "op": "loadch_call",
+   "addr": "0x333ff",
+   "target": "0x205da",
+   "args": []
+  },
+  {
+   "op": "pan",
+   "addr": "0x33408",
+   "target": "0x135dd",
+   "args": [
+    4,
+    4
+   ]
+  },
+  {
+   "op": "spawn",
+   "addr": "0x33419",
+   "target": "0x10b4e",
+   "args": [
+    1
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x3342a",
+   "target": "0x1366a",
+   "args": [
+    40
+   ]
+  },
+  {
+   "op": "pan",
+   "addr": "0x33436",
+   "target": "0x135dd",
+   "args": [
+    11,
+    40
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x33440",
+   "target": "0x1366a",
+   "args": [
+    41
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x33448",
+   "target": "0x134e4",
+   "args": []
+  }
+ ]
+}

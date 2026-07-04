@@ -1,0 +1,158 @@
+{
+ "handler": "0x240fa",
+ "beats": [
+  {
+   "op": "unknown",
+   "addr": "0x2415b",
+   "target": "0x233c6",
+   "args": [
+    "ebx",
+    "esi",
+    "edi",
+    10,
+    14,
+    1,
+    14,
+    23,
+    25,
+    24,
+    "ebx",
+    "eax",
+    "eax",
+    "eax"
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x24182",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    5
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x241bd",
+   "target": "0x31860",
+   "args": [
+    "edx",
+    "eax"
+   ],
+   "repeat_hint": {
+    "loop_back_to": "0x241a8",
+    "limit": -1
+   }
+  },
+  {
+   "op": "unknown",
+   "addr": "0x24209",
+   "target": "0x31860",
+   "args": [
+    "eax",
+    "ebx"
+   ],
+   "repeat_hint": {
+    "loop_back_to": "0x241f4",
+    "limit": -1
+   }
+  },
+  {
+   "op": "unknown",
+   "addr": "0x24218",
+   "target": "0x1b8e7",
+   "args": [
+    "eax",
+    "ebx"
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x24224",
+   "target": "0x1c220",
+   "args": [
+    100
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x2424b",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    7
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x2425f",
+   "target": "0x1366a",
+   "args": [
+    63
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x24286",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    8
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x2429a",
+   "target": "0x1366a",
+   "args": [
+    64
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x242c1",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    9
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x242c9",
+   "target": "0x24336",
+   "args": []
+  },
+  {
+   "op": "dialog",
+   "addr": "0x24308",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    6
+   ]
+  },
+  {
+   "op": "join",
+   "addr": "0x24312",
+   "target": "0x112a5",
+   "args": [
+    24
+   ]
+  },
+  {
+   "op": "join",
+   "addr": "0x2431c",
+   "target": "0x112a5",
+   "args": [
+    23
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x24324",
+   "target": "0x11506",
+   "args": []
+  }
+ ]
+}

@@ -1,0 +1,161 @@
+{
+ "handler": "0x33af1",
+ "beats": [
+  {
+   "op": "loadch_call",
+   "addr": "0x33afb",
+   "target": "0x205da",
+   "args": []
+  },
+  {
+   "op": "pan",
+   "addr": "0x33b04",
+   "target": "0x135dd",
+   "args": [
+    9,
+    49
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x33b0e",
+   "target": "0x1366a",
+   "args": [
+    76
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x33b35",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    0
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x33b3f",
+   "target": "0x24b14",
+   "args": [
+    100
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x33b6b",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    3
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x33b92",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    4
+   ]
+  },
+  {
+   "op": "pan",
+   "addr": "0x33b9e",
+   "target": "0x135dd",
+   "args": [
+    9,
+    49
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x33bb9",
+   "target": "0x24618",
+   "args": [
+    2,
+    2,
+    "eax",
+    "dword ptr [0x3ab9]"
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x33bca",
+   "target": "0x11df2",
+   "args": [
+    0,
+    255,
+    0
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x33bf1",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    5
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x33c09",
+   "target": "0x24618",
+   "args": [
+    2,
+    2,
+    "dword ptr [0x3abd]",
+    "dword ptr [0x3ab9]"
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x33c1a",
+   "target": "0x11df2",
+   "args": [
+    0,
+    255,
+    0
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x33c24",
+   "target": "0x1366a",
+   "args": [
+    81
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x33c4b",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    6
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x33c66",
+   "target": "0x24618",
+   "args": [
+    2,
+    2,
+    "dword ptr [0x3abd]",
+    "eax"
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x33c77",
+   "target": "0x11df2",
+   "args": [
+    0,
+    255,
+    0
+   ]
+  }
+ ]
+}

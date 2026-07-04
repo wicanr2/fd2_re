@@ -1,0 +1,87 @@
+{
+ "handler": "0x23a0a",
+ "beats": [
+  {
+   "op": "unknown",
+   "addr": "0x23a5e",
+   "target": "0x233c6",
+   "args": [
+    "ebx",
+    "esi",
+    "edi",
+    25,
+    22,
+    2,
+    30,
+    28,
+    65,
+    15,
+    0,
+    0,
+    "eax",
+    "eax"
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x23a74",
+   "target": "0x3453e",
+   "args": [
+    "eax"
+   ],
+   "repeat_hint": {
+    "loop_back_to": "0x23a6a",
+    "limit": null
+   }
+  },
+  {
+   "op": "unknown",
+   "addr": "0x23a95",
+   "target": "0x11506",
+   "args": []
+  },
+  {
+   "op": "dialog",
+   "addr": "0x23adc",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    2
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x23af0",
+   "target": "0x1366a",
+   "args": [
+    49
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x23b17",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    3
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x23b40",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    4
+   ]
+  },
+  {
+   "op": "join",
+   "addr": "0x23b4a",
+   "target": "0x112a5",
+   "args": [
+    18
+   ]
+  }
+ ]
+}

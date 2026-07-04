@@ -1,0 +1,108 @@
+{
+ "handler": "0x23cd5",
+ "beats": [
+  {
+   "op": "unknown",
+   "addr": "0x23d15",
+   "target": "0x11506",
+   "args": [
+    "esi",
+    "edi"
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x23d39",
+   "target": "0x233c6",
+   "args": [
+    4,
+    18,
+    1,
+    8,
+    25,
+    17,
+    16,
+    0,
+    "eax",
+    "eax",
+    "eax"
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x23d60",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    7
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x23d74",
+   "target": "0x1366a",
+   "args": [
+    56
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x23d9b",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    8
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x23daf",
+   "target": "0x1366a",
+   "args": [
+    57
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x23dd6",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    9
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x23dea",
+   "target": "0x1366a",
+   "args": [
+    58
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x23e11",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    10
+   ]
+  },
+  {
+   "op": "join",
+   "addr": "0x23e1b",
+   "target": "0x112a5",
+   "args": [
+    21
+   ]
+  },
+  {
+   "op": "join",
+   "addr": "0x23e25",
+   "target": "0x112a5",
+   "args": [
+    7
+   ]
+  }
+ ]
+}

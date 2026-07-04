@@ -1,0 +1,342 @@
+{
+ "handler": "0x250cc",
+ "beats": [
+  {
+   "op": "unknown",
+   "addr": "0x25141",
+   "target": "0x233c6",
+   "args": [
+    "ebx",
+    "esi",
+    "edi",
+    8,
+    9,
+    0,
+    0,
+    0,
+    0,
+    15,
+    0,
+    2,
+    "eax",
+    "eax"
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x25168",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    8
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x2517c",
+   "target": "0x1366a",
+   "args": [
+    82
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x25186",
+   "target": "0x24b14",
+   "args": [
+    100
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x251b6",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    9
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x251ca",
+   "target": "0x1366a",
+   "args": [
+    83
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x251f1",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    10
+   ]
+  },
+  {
+   "op": "pan",
+   "addr": "0x25207",
+   "target": "0x135dd",
+   "args": [
+    9,
+    8
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x25211",
+   "target": "0x1366a",
+   "args": [
+    84
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x25238",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    11
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x25244",
+   "target": "0x25052",
+   "args": [
+    5,
+    80
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x2526b",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    12
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x25277",
+   "target": "0x25052",
+   "args": [
+    4,
+    80
+   ]
+  },
+  {
+   "op": "delay",
+   "addr": "0x25284",
+   "target": "0x375b2",
+   "args": [
+    500
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x25290",
+   "target": "0x25052",
+   "args": [
+    3,
+    80
+   ]
+  },
+  {
+   "op": "delay",
+   "addr": "0x2529d",
+   "target": "0x375b2",
+   "args": [
+    250
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x252a9",
+   "target": "0x25052",
+   "args": [
+    2,
+    80
+   ]
+  },
+  {
+   "op": "delay",
+   "addr": "0x252b3",
+   "target": "0x375b2",
+   "args": [
+    100
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x252bf",
+   "target": "0x25052",
+   "args": [
+    2,
+    80
+   ]
+  },
+  {
+   "op": "delay",
+   "addr": "0x252c9",
+   "target": "0x375b2",
+   "args": [
+    50
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x252d5",
+   "target": "0x25052",
+   "args": [
+    2,
+    80
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x252ee",
+   "target": "0x24618",
+   "args": [
+    10,
+    10,
+    "eax",
+    "dword ptr [0x3ab9]"
+   ]
+  },
+  {
+   "op": "delay",
+   "addr": "0x252fb",
+   "target": "0x375b2",
+   "args": [
+    500
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x25312",
+   "target": "0x375c0",
+   "args": [
+    64000,
+    255,
+    655360
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x2531a",
+   "target": "0x1f882",
+   "args": []
+  },
+  {
+   "op": "unknown",
+   "addr": "0x2532b",
+   "target": "0x375c0",
+   "args": [
+    64000,
+    0,
+    655360
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x25333",
+   "target": "0x11506",
+   "args": []
+  },
+  {
+   "op": "unknown",
+   "addr": "0x2533e",
+   "target": "0x25089",
+   "args": []
+  },
+  {
+   "op": "dialog",
+   "addr": "0x25367",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    13
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x2537b",
+   "target": "0x1366a",
+   "args": [
+    84
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x253a2",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    14
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x253b6",
+   "target": "0x1366a",
+   "args": [
+    82
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x253dd",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    15
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x253fa",
+   "target": "0x1c2da",
+   "args": [
+    "eax",
+    1,
+    19,
+    0
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x2541f",
+   "target": "0x22253",
+   "args": [
+    "edx",
+    "eax",
+    255,
+    255,
+    1
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x25446",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    16
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x25458",
+   "target": "0x25089",
+   "args": []
+  },
+  {
+   "op": "unknown",
+   "addr": "0x2545d",
+   "target": "0x2bce5",
+   "args": []
+  }
+ ]
+}

@@ -1,0 +1,63 @@
+{
+ "handler": "0x238dc",
+ "beats": [
+  {
+   "op": "spawn",
+   "addr": "0x2391b",
+   "target": "0x10b4e",
+   "args": [
+    1
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x23942",
+   "target": "0x233c6",
+   "args": [
+    10,
+    12,
+    0,
+    0,
+    0,
+    0,
+    15,
+    0,
+    "eax",
+    "eax",
+    "eax"
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x23969",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    2
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x2397d",
+   "target": "0x1366a",
+   "args": [
+    47
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x239a4",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    3
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x239ac",
+   "target": "0x11506",
+   "args": []
+  }
+ ]
+}

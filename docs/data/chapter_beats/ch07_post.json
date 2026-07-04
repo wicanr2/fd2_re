@@ -1,0 +1,79 @@
+{
+ "handler": "0x234bb",
+ "beats": [
+  {
+   "op": "unknown",
+   "addr": "0x234fe",
+   "target": "0x233c6",
+   "args": [
+    "esi",
+    "edi",
+    14,
+    8,
+    0,
+    16,
+    14,
+    28,
+    9,
+    0,
+    2,
+    "eax",
+    "eax"
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x23525",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    3
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x23539",
+   "target": "0x1366a",
+   "args": [
+    33
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x23560",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    4
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x2357e",
+   "target": "0x1366a",
+   "args": [
+    34
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x23599",
+   "target": "0x11d40",
+   "args": [
+    64,
+    255,
+    0
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x235ad",
+   "target": "0x375c0",
+   "args": [
+    64000,
+    0,
+    655360
+   ]
+  }
+ ]
+}

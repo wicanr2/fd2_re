@@ -1,0 +1,35 @@
+{
+ "handler": "0x335aa",
+ "beats": [
+  {
+   "op": "loadch_call",
+   "addr": "0x335b4",
+   "target": "0x205da",
+   "args": [],
+   "repeat_hint": {
+    "loop_back_to": "0x3344d",
+    "limit": null
+   }
+  },
+  {
+   "op": "unknown",
+   "addr": "0x335bb",
+   "target": "0x33499",
+   "args": [
+    18
+   ],
+   "repeat_hint": {
+    "loop_back_to": "0x3344d",
+    "limit": null
+   }
+  },
+  {
+   "op": "spawn",
+   "addr": "0x335cd",
+   "target": "0x10b4e",
+   "args": [
+    1
+   ]
+  }
+ ]
+}

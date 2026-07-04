@@ -1,0 +1,62 @@
+{
+ "handler": "0x24df2",
+ "beats": [
+  {
+   "op": "dialog",
+   "addr": "0x24e1b",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    6
+   ]
+  },
+  {
+   "op": "pan",
+   "addr": "0x24e27",
+   "target": "0x135dd",
+   "args": [
+    4,
+    16
+   ]
+  },
+  {
+   "op": "spawn",
+   "addr": "0x24e31",
+   "target": "0x10b4e",
+   "args": [
+    2
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x24e3b",
+   "target": "0x1366a",
+   "args": [
+    75
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x24e62",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    7
+   ]
+  },
+  {
+   "op": "join",
+   "addr": "0x24e6c",
+   "target": "0x112a5",
+   "args": [
+    26
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x24e74",
+   "target": "0x11506",
+   "args": []
+  }
+ ]
+}

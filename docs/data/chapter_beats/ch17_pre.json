@@ -1,0 +1,55 @@
+{
+ "handler": "0x335da",
+ "beats": [
+  {
+   "op": "loadch_call",
+   "addr": "0x335e4",
+   "target": "0x205da",
+   "args": []
+  },
+  {
+   "op": "dialog",
+   "addr": "0x33608",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    0
+   ]
+  },
+  {
+   "op": "pan",
+   "addr": "0x3361e",
+   "target": "0x135dd",
+   "args": [
+    16,
+    4
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x33628",
+   "target": "0x1366a",
+   "args": [
+    54
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x3364f",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    1
+   ]
+  },
+  {
+   "op": "pan",
+   "addr": "0x33665",
+   "target": "0x135dd",
+   "args": [
+    16,
+    4
+   ]
+  }
+ ]
+}

@@ -1,0 +1,66 @@
+{
+ "handler": "0x230f2",
+ "beats": [
+  {
+   "op": "unknown",
+   "addr": "0x23126",
+   "target": "0x11506",
+   "args": [
+    "esi",
+    "edi"
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x2312d",
+   "target": "0x3453e",
+   "args": [
+    6
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x23158",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    6
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x2317e",
+   "target": "0x233c6",
+   "args": [
+    "eax",
+    2,
+    "eax",
+    "eax",
+    "eax",
+    "eax",
+    6,
+    "eax",
+    "eax",
+    "eax",
+    "eax"
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x231a5",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    7
+   ]
+  },
+  {
+   "op": "join",
+   "addr": "0x231af",
+   "target": "0x112a5",
+   "args": [
+    2
+   ]
+  }
+ ]
+}

@@ -1,0 +1,47 @@
+{
+ "handler": "0x33dba",
+ "beats": [
+  {
+   "op": "loadch_call",
+   "addr": "0x33dc4",
+   "target": "0x205da",
+   "args": []
+  },
+  {
+   "op": "pan",
+   "addr": "0x33dd7",
+   "target": "0x135dd",
+   "args": [
+    9,
+    56
+   ]
+  },
+  {
+   "op": "act",
+   "addr": "0x33de1",
+   "target": "0x1366a",
+   "args": [
+    86
+   ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x33e08",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    7
+   ]
+  },
+  {
+   "op": "unknown",
+   "addr": "0x33e16",
+   "target": "0x35822",
+   "args": [
+    8,
+    19,
+    9
+   ]
+  }
+ ]
+}
