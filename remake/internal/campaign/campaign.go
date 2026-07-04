@@ -72,11 +72,13 @@ type Node struct {
 	Actors []Actor `json:"actors,omitempty"` // story+Map:場景背景上的靜態角色擺位
 	Scene  string  `json:"scene,omitempty"`  // story+Script:只取 Script 檔裡 label 對映的那個 scene(doc46 §5.2;
 	// 空=舊行為,整份 Script 攤平全部 scenes 成一條對白隊列——別讓一個節點播完整份劇本)
-	ExitWalk    *ActorWalk `json:"exit_walk,omitempty"`    // story:對白播完、換場前先走一段路再淡出(doc46 §5.3)
-	AutoAdvance int        `json:"auto_advance,omitempty"` // story:無對白/Script 時,進節點後幾幀自動轉場(doc46 行軍蒙太奇)
-	WalkFirst   bool       `json:"walk_first,omitempty"`   // story:進場走位全走完才顯示對白(2-1:王座廳索爾沿紅毯走到王座前對話框才出現)
-	FollowWalk  bool       `json:"follow_walk,omitempty"`  // story:走位期間鏡頭鎖定跟隨走位者(原版 13×8 格視野長廊運鏡,doc25 0x11eee)
-	CamMaxY     int        `json:"cam_max_y,omitempty"`    // story:鏡頭 Y 上限(px;0=不限)。王座廳=808 擋住 map32 底部草地段
+	ExitWalk  *ActorWalk  `json:"exit_walk,omitempty"`  // story:對白播完、換場前先走一段路再淡出(doc46 §5.3;單一角色)
+	ExitWalks []ActorWalk `json:"exit_walks,omitempty"` // 同上,多角色一起退場(使用者回饋 2026-07-04 #A:
+	// 影片證實草地小徑幕結尾索爾+亞雷斯兩人一起走離,非單人;ExitWalk/ExitWalks 可並用,全部走完才轉場)
+	AutoAdvance int  `json:"auto_advance,omitempty"` // story:無對白/Script 時,進節點後幾幀自動轉場(doc46 行軍蒙太奇)
+	WalkFirst   bool `json:"walk_first,omitempty"`   // story:進場走位全走完才顯示對白(2-1:王座廳索爾沿紅毯走到王座前對話框才出現)
+	FollowWalk  bool `json:"follow_walk,omitempty"`  // story:走位期間鏡頭鎖定跟隨走位者(原版 13×8 格視野長廊運鏡,doc25 0x11eee)
+	CamMaxY     int  `json:"cam_max_y,omitempty"`    // story:鏡頭 Y 上限(px;0=不限)。王座廳=808 擋住 map32 底部草地段
 	// (原版第一幕畫面無草地,索爾從畫面外沿紅毯走入,使用者回饋 2026-07-04 #1)
 	BGM      string          `json:"bgm,omitempty"`
 	Next     string          `json:"next,omitempty"`    // story/event

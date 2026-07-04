@@ -215,7 +215,7 @@
    "next": "story_ch01_forest_duel",
    "map": "assets/maps/map32",
    "cam_x": 56,
-   "cam_y": 1024,
+   "cam_y": 1032,
    "actors": [
     {
      "fig": 0,
@@ -229,6 +229,10 @@
      "y": 47,
      "dir": 1
     }
+   ],
+   "exit_walks": [
+    { "fig": 0, "to_x": 6, "to_y": 48, "frames": 60 },
+    { "fig": 4, "to_x": 15, "to_y": 49, "frames": 60 }
    ]
   },
   "story_ch01_forest_duel": {

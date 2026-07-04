@@ -201,8 +201,9 @@ func (g *Game) startFadeTransition(action func()) {
 	}}
 }
 
-// advanceStoryNode 對白播完離開 story 節點:若節點設 ExitWalk,先讓對應 actor 走一段路
-// (doc46 §5.3,例:索爾沿紅毯走下場)再淡出換場;否則直接淡出換場。
+// advanceStoryNode 對白播完離開 story 節點:若節點設 ExitWalk(s),先讓對應 actor(可多人,
+// 使用者回饋 #A:草地小徑幕結尾索爾+亞雷斯一起走離)全部走完一段路(doc46 §5.3)再淡出換場;
+// 否則直接淡出換場。多個 exit walk 共用同一個「全部走完才轉場」計數器,不是走完第一個就轉場。
 func (g *Game) advanceStoryNode(n *campaign.Node) {
 	doAdvance := func() {
 		g.startFadeTransition(func() {
@@ -210,20 +211,35 @@ func (g *Game) advanceStoryNode(n *campaign.Node) {
 			g.enterNode()
 		})
 	}
+	var walks []campaign.ActorWalk
 	if n.ExitWalk != nil {
+		walks = append(walks, *n.ExitWalk)
+	}
+	walks = append(walks, n.ExitWalks...)
+	if len(walks) == 0 {
+		doAdvance()
+		return
+	}
+	remaining := len(walks)
+	onDone := func() {
+		remaining--
+		if remaining == 0 {
+			doAdvance()
+		}
+	}
+	for _, ew := range walks {
 		for i := range g.storyActors {
-			if g.storyActors[i].Fig == n.ExitWalk.Fig {
+			if g.storyActors[i].Fig == ew.Fig {
 				u := &g.storyActors[i]
 				g.storyWalks = append(g.storyWalks, &storyWalkJob{
 					actor: i, fromX: u.X, fromY: u.Y,
-					toX: n.ExitWalk.ToX, toY: n.ExitWalk.ToY,
-					frames: n.ExitWalk.Frames, then: doAdvance,
+					toX: ew.ToX, toY: ew.ToY,
+					frames: ew.Frames, then: onDone,
 				})
-				return
+				break
 			}
 		}
 	}
-	doAdvance()
 }
 
 // stepStoryWalks 逐幀推進場景走位動畫佇列,完成的 job 更新最終座標、呼叫 then 後移除。
