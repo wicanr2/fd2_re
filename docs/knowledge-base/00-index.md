@@ -25,6 +25,7 @@
 | 某關**事件骨架**(第幾回合/增援/加入/勝敗)——還原 chNN.json 的 ground truth | **青衫攻略 `references/text/fd2-walkthrough-index.md`**(30 關分關卡索引)+ 全文 `references/text/fd2.md` |
 | 某句對白**第幾回合/什麼事件**觸發(哈諾/海盜頭目/海防隊) | 青衫索引(時機)+ **`ch01.json` events**(Fable5 RE 範本)+ `26` + `battle_events.json` + `52` §1.2 |
 | 索爾四人**怎麼進戰場**(進場動畫/站位) | `52` §1.1 + `46` §4(⚠ 進場動畫細節待 dosbox 定稿) |
+| acting pose 語意(影片oracle反推:pose≠位移是原地姿態;個別值未解) | `54` |
 | 「走位」機制(單位步進 vs 鏡頭移動)、單位結構欄位 +0/+1/+3/+4 | `47` §9(dosbox 實測閉環) |
 | remake 過場**引擎**(BeatRunner / cutscene 節點 / beats DSL)怎麼設計 | **`50`**(§2 DSL,§3 全33關管線) |
 | 全 33 關過場 beats(機器可讀) | `docs/data/chapter_beats/chNN_{pre,post}.json` |
@@ -94,7 +95,7 @@
 `29`可擴展事件系統 · `30`工作拆解WBS · `31`FDICON地圖sprite · `32`物品/戰鬥數值 · `35`戰鬥演出繪圖 ·
 `36`SFX · `37`法術特效對映 · `38`編輯器設計 · `39`ANI.DAT AFM · `40`說話者→頭像查表 · `41`打包 ·
 `42`RE-vs-remake稽核 · `44`第一章對照 · `45`職業名錯位 · `46`第一章開場時間軸 · `47`序章handler全轉錄 ·
-`48`dosbox-x debugger · `49`char id→角色名 · `50`過場腳本系統設計 · `51`試玩落差R2 · `52`戰場分鏡+兩套系統 · `53`START→ch1回合1 RE來源表 ·
+`48`dosbox-x debugger · `49`char id→角色名 · `50`過場腳本系統設計 · `51`試玩落差R2 · `52`戰場分鏡+兩套系統 · `53`START→ch1回合1 RE來源表 · `54`acting pose語意 ·
 `90`計畫 · `91`worklist · `99`反思
 
 (缺號 33/34/43 = 曾用後併入他篇或未建。)
