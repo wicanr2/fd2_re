@@ -57,7 +57,48 @@ type ActorWalk struct {
 	Frames int `json:"frames"`
 }
 
-// Node 節點。Type: story / battle / choice / event / shop / ending。
+// Beat 過場原語(doc 50 §1/§2):cutscene 節點的 beats 是一條平面序列,依序執行,
+// 一比一對映原版 EXE handler 的呼叫序列(LOADCH/PAN/TXT/ACT/SPAWN/JOIN/BGM/FADE/DELAY)。
+// 每個 op 只用到自己相關的欄位,其餘留零值即可(同 Node 的稀疏欄位風格)。
+type Beat struct {
+	Op string `json:"op"` // pan/walk/dialog/act/spawn/join/bgm/fade/delay
+
+	// pan/walk 共用:目標格(walk 用 X/Y 當終點);pan 的 X/Y 沿用 Node.CamX/CamY 語意——
+	// 已由畫面回饋校準的「像素座標」,不是 doc47 §3 原始 grid(col,row)值(grid→px 未逐點驗證,
+	// 不自行換算,見 rulebook 62)。
+	X      int  `json:"x,omitempty"`
+	Y      int  `json:"y,omitempty"`
+	FromX  int  `json:"from_x,omitempty"` // walk 起點;省略=沿用該角色目前座標(接續上一拍)
+	FromY  int  `json:"from_y,omitempty"`
+	Fig    int  `json:"fig,omitempty"`    // walk/act:對應 Node.Actors 裡的角色(依 Fig 尋找,同 ActorWalk)
+	Frames int  `json:"frames,omitempty"` // pan/walk/fade 位移或漸變幀數;delay 用幀數(見 Ms)
+	Follow bool `json:"follow,omitempty"` // walk:走位期間鏡頭鎖定跟隨(doc47 §9,同 Node.FollowWalk 機制)
+
+	// act:單位原地播 pose 序列(姿態循環,無位移)。remake 尚未把 74 筆 acting 資源解碼幀接上
+	// 引擎播放(doc47 §5 未解),此處以「方向切換」近似演出節奏(見 main.go stepActJob 註解),
+	// 非真實原版動畫——給悠妮昏迷轉向/蓋亞阻擋等簡單姿態用,不得當作已還原的 acting 播放器。
+	Poses      []int `json:"poses,omitempty"`
+	PoseFrames int   `json:"pose_frames,omitempty"` // 每個 pose 停留幀數(預設見 main.go)
+
+	// dialog:章文本第 Line 條起連續 Count 句(Count 省略=1)。Line 對應目前節點 Script+Scene
+	// 載入的那份 lines(同 Node.Scene 語意),不是 FDTXT 原始 idx(譯文精校版常把一條原文拆成
+	// 多句對白,見 doc47 §7 教訓:機制懂了但內容沒逐句對齊前不假裝一一對應)。
+	Line  int `json:"line,omitempty"`
+	Count int `json:"count,omitempty"`
+
+	Group int    `json:"group,omitempty"` // spawn:群組編號(doc25 spawn(g));remake 無群組資料表,僅記錄,見 main.go stub 註解
+	Track string `json:"track,omitempty"` // bgm:曲目 id(對映 assets/bgm)
+
+	Out bool `json:"out,omitempty"` // fade:true=淡出 false=淡入(重用 storyFade,doc46 §5.2)
+
+	Ms int `json:"ms,omitempty"` // delay:毫秒(原版 0x375b2 語意);換算成 60fps 幀數,Frames 優先
+}
+
+// Node 節點。Type: story / cutscene / battle / choice / event / shop / ending。
+// cutscene(doc 50):story 的 beats 驅動版——用 Beats 一比一承接原版章 handler 的原語序列,
+// 對白與走位/演出天然交錯(平面序列,非「一幕一段」)。Map/Actors/BGM/ExitWalk(s) 等欄位與
+// story 共用同一套場景設置(進節點時的初始擺位、退場走位、淡出轉場),Beats 只負責節點「進行中」
+// 的编排;story 節點型別保留相容,兩者可並存於同一 campaign(逐步遷移,doc50 §2)。
 type Node struct {
 	Type     string `json:"type"`
 	Lines    []Line `json:"lines,omitempty"`    // story:對白(內嵌;Script 有檔時被覆蓋)
@@ -74,11 +115,13 @@ type Node struct {
 	// 空=舊行為,整份 Script 攤平全部 scenes 成一條對白隊列——別讓一個節點播完整份劇本)
 	ExitWalk  *ActorWalk  `json:"exit_walk,omitempty"`  // story:對白播完、換場前先走一段路再淡出(doc46 §5.3;單一角色)
 	ExitWalks []ActorWalk `json:"exit_walks,omitempty"` // 同上,多角色一起退場(使用者回饋 2026-07-04 #A:
-	// 影片證實草地小徑幕結尾索爾+亞雷斯兩人一起走離,非單人;ExitWalk/ExitWalks 可並用,全部走完才轉場)
-	AutoAdvance int  `json:"auto_advance,omitempty"` // story:無對白/Script 時,進節點後幾幀自動轉場(doc46 行軍蒙太奇)
-	WalkFirst   bool `json:"walk_first,omitempty"`   // story:進場走位全走完才顯示對白(2-1:王座廳索爾沿紅毯走到王座前對話框才出現)
-	FollowWalk  bool `json:"follow_walk,omitempty"`  // story:走位期間鏡頭鎖定跟隨走位者(原版 13×8 格視野長廊運鏡,doc25 0x11eee)
-	CamMaxY     int  `json:"cam_max_y,omitempty"`    // story:鏡頭 Y 上限(px;0=不限)。王座廳=808 擋住 map32 底部草地段
+	// 影片證實草地小徑幕結尾索爾+亞雷斯兩人一起走離,非單人;ExitWalk/ExitWalks 可並用,全部走完才轉場;
+	// 同時多角色並行走位不在 Beat.walk 的單角色設計內,cutscene 節點結束時仍沿用本欄位,不重造輪子)
+	Beats       []Beat `json:"beats,omitempty"`        // cutscene:過場原語序列(doc 50);Beats 跑完後走 ExitWalk(s)+淡出+Advance,同 story 節點收尾
+	AutoAdvance int    `json:"auto_advance,omitempty"` // story:無對白/Script 時,進節點後幾幀自動轉場(doc46 行軍蒙太奇)
+	WalkFirst   bool   `json:"walk_first,omitempty"`   // story:進場走位全走完才顯示對白(2-1:王座廳索爾沿紅毯走到王座前對話框才出現)
+	FollowWalk  bool   `json:"follow_walk,omitempty"`  // story:走位期間鏡頭鎖定跟隨走位者(原版 13×8 格視野長廊運鏡,doc25 0x11eee)
+	CamMaxY     int    `json:"cam_max_y,omitempty"`    // story:鏡頭 Y 上限(px;0=不限)。王座廳=808 擋住 map32 底部草地段
 	// (原版第一幕畫面無草地,索爾從畫面外沿紅毯走入,使用者回饋 2026-07-04 #1)
 	BGM      string          `json:"bgm,omitempty"`
 	Next     string          `json:"next,omitempty"`    // story/event

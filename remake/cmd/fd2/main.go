@@ -69,8 +69,14 @@ type Game struct {
 	storyAutoAdvance int                 // story 節點無對白時的自動轉場倒數幀(doc46 行軍蒙太奇,0=不自動)
 	storyView        *ebiten.Image       // story 場景離屏世界層(320×200,放大 storyZoom 倍貼上畫布;2-1 原版取景)
 	walkFirst        bool                // 本節點:進場走位走完才顯示對白(campaign.Node.WalkFirst)
-	followWalk       bool                // 本節點:走位期間鏡頭跟隨走位者(campaign.Node.FollowWalk)
+	followWalk       bool                // 本節點:走位期間鏡頭跟隨走位者(campaign.Node.FollowWalk;beat walk 依 Follow 逐拍設值)
 	camMaxY          float64             // 本節點:鏡頭 Y 上限(campaign.Node.CamMaxY;0=不限)
+	camPan           *camPanJob          // beat「pan」進行中(doc50 §1);storyBG 專用,與 followWalk 互斥
+	actJob           *actPoseJob         // beat「act」進行中(近似姿態循環,見 actPoseJob 註解)
+	beats            []campaign.Beat     // 目前 cutscene 節點的過場原語序列(doc50 §2)
+	beatIdx          int                 // 目前執行到第幾拍(-1=尚未開始)
+	beatDelay        int                 // beat「delay」剩餘幀數(0=非等待中)
+	campLines        []campaign.Line     // cutscene 節點載入的章文本(dialog beat 依 Line/Count 取子段)
 	dlgShown         int                 // 對話框目前顯示的說話者(dlgNone=無;換人時播縮/展動畫)
 	dlgPhase         int                 // 對話框動畫相位:0=常態 1=縮小(換人前收合) 2=展開
 	dlgT             int                 // 對話框動畫相位內計時(幀)
@@ -181,7 +187,7 @@ type storyWalkJob struct {
 }
 
 // storyFade 場景淡出/淡入轉場(doc46 §5.2):story 節點換場時不硬切。out=true 淡出(變黑)、
-// false 淡入(轉亮);淡出走完觸發 then(通常是換節點/換擺位),淡入走完自動清除。
+// false 淡入(轉亮);走完(不分 out/in)觸發 then(可為 nil;beat fade 靠它接回下一拍)。
 type storyFade struct {
 	out   bool
 	t     int
@@ -191,6 +197,26 @@ type storyFade struct {
 
 // storyFadeFrames 淡出/淡入各自幀數(60fps;doc46 要求 0.5–1s,先做快版 0.6s,實測後可調)。
 const storyFadeFrames = 36
+
+// camPanJob beat「pan」原語(doc50 §1 0x135dd):鏡頭平滑位移到目標像素座標,線性內插,
+// 走完呼叫 g.beatAdvance 進下一拍。與 followWalk 鏡頭跟隨互斥(beats 序列同時只有一拍在跑)。
+type camPanJob struct {
+	fromX, fromY float64
+	toX, toY     float64
+	t, frames    int
+}
+
+// actPoseJob beat「act」原語近似實作(doc50 §1 0x1366a):原地依序切換 poses(方向值 0-3)
+// 模擬姿態循環,每個 pose 停留 frames 幀,循環完呼叫 then。**非**原版 acting 幀播放器——
+// 74 筆 acting 資源已解碼但幀內容(逐 tick 姿態/位移)尚未接上引擎(doc47 §5 未解),
+// 這裡只用既有「方向→sprite 幀」機制做輕量近似,足敷「原地轉向」類簡單演出。
+type actPoseJob struct {
+	actor  int
+	poses  []int
+	frames int
+	t, idx int
+	then   func()
+}
 
 // startFadeTransition 淡出 storyFadeFrames 幀 → 執行 action(通常是 Advance+enterNode 或
 // 換擺位)→ 淡入 storyFadeFrames 幀。
@@ -311,6 +337,186 @@ func (g *Game) stepStoryWalks() {
 	g.storyWalks = live
 }
 
+// stepFade 逐幀推進場景淡出/淡入(storyFade,doc46 §5.2):走完(不分 out/in)呼叫 then;
+// g.fade 為空時內部直接返回(同 stepStoryWalks/stepActJob/stepCamPan 慣例)。
+func (g *Game) stepFade() {
+	if g.fade == nil {
+		return
+	}
+	g.fade.t++
+	if g.fade.t >= g.fade.total {
+		cb := g.fade.then
+		g.fade = nil
+		if cb != nil {
+			cb()
+		}
+	}
+}
+
+// stepCamPan 逐幀推進 beat「pan」鏡頭位移(camPanJob,doc50 0x135dd):線性內插到目標像素座標,
+// 走完清除 job、接下一拍;camPan 為空時內部直接返回(同 stepStoryWalks/stepActJob 慣例)。
+func (g *Game) stepCamPan() {
+	j := g.camPan
+	if j == nil {
+		return
+	}
+	j.t++
+	frac := float64(j.t) / float64(j.frames)
+	if frac > 1 {
+		frac = 1
+	}
+	g.camX = j.fromX + (j.toX-j.fromX)*frac
+	g.camY = j.fromY + (j.toY-j.fromY)*frac
+	if g.camMaxY > 0 && g.camY > g.camMaxY {
+		g.camY = g.camMaxY
+	}
+	if j.t >= j.frames {
+		g.camPan = nil
+		g.beatAdvance()
+	}
+}
+
+// stepActJob 逐幀推進 beat「act」姿態循環(actPoseJob):每 frames 幀切下一個 pose,
+// 循環完呼叫 then(見 actPoseJob 型別註解——近似演出,非原版 acting 幀播放器)。
+func (g *Game) stepActJob() {
+	j := g.actJob
+	if j == nil {
+		return
+	}
+	u := &g.storyActors[j.actor]
+	u.Dir = j.poses[j.idx]
+	j.t++
+	if j.t >= j.frames {
+		j.t = 0
+		j.idx++
+		if j.idx >= len(j.poses) {
+			g.actJob = nil
+			if j.then != nil {
+				j.then()
+			}
+		}
+	}
+}
+
+// ── BeatRunner(doc50):cutscene 節點的過場原語序列引擎 ──────────────
+// beats 是平面序列,一次只有一拍在跑(pan/walk/dialog/act/fade/delay 皆為阻塞拍,
+// 完成後呼叫 beatAdvance 進下一拍;spawn/join/bgm 為非阻塞拍,beatStart 內直接連呼
+// beatAdvance)。全部跑完後比照 story 節點收尾:先走 ExitWalk(s)、再淡出、Advance、enterNode
+// (advanceStoryNode 已實作,直接重用,不重造輪子)。
+
+// beatAdvance 進下一拍;序列跑完則走節點收尾流程。
+func (g *Game) beatAdvance() {
+	g.beatIdx++
+	if g.beatIdx >= len(g.beats) {
+		g.followWalk = false // 走位跟焦只在 walk 拍內有效,收尾(ExitWalk/淡出)一律鏡頭固定
+		if n := g.camp.Node(); n != nil {
+			g.advanceStoryNode(n)
+		}
+		return
+	}
+	g.beatStart(g.beats[g.beatIdx])
+}
+
+// beatStart 依原語種類啟動目前這一拍(狀態掛到 g.camPan/g.storyWalks/g.dialog/g.actJob/
+// g.fade/g.beatDelay,交給 Update 既有機制逐幀推進)。找不到對應角色 / 資料缺漏時直接跳拍
+// 並記到 loadErr,不讓整個過場卡死(誠實 stub,勝過假裝完成)。
+func (g *Game) beatStart(b campaign.Beat) {
+	if b.Op != "walk" { // 鏡頭跟焦只在 walk 拍內有效(見下),其餘拍一律不跟焦
+		g.followWalk = false
+	}
+	findActor := func(fig int) int {
+		for i := range g.storyActors {
+			if g.storyActors[i].Fig == fig {
+				return i
+			}
+		}
+		return -1
+	}
+	switch b.Op {
+	case "pan":
+		frames := b.Frames
+		if frames == 0 {
+			frames = 30
+		}
+		g.camPan = &camPanJob{fromX: g.camX, fromY: g.camY, toX: float64(b.X), toY: float64(b.Y), frames: frames}
+	case "walk":
+		idx := findActor(b.Fig)
+		if idx < 0 {
+			g.loadErr = fmt.Sprintf("beat walk:找不到 fig=%d", b.Fig)
+			g.beatAdvance()
+			return
+		}
+		u := &g.storyActors[idx]
+		fromX, fromY := b.FromX, b.FromY
+		if fromX == 0 && fromY == 0 { // 未指定起點:沿用角色目前座標(接續上一拍)
+			fromX, fromY = u.X, u.Y
+		}
+		frames := b.Frames
+		if frames == 0 {
+			frames = 60
+		}
+		g.followWalk = b.Follow
+		g.storyWalks = append(g.storyWalks, &storyWalkJob{
+			actor: idx, fromX: fromX, fromY: fromY,
+			toX: b.X, toY: b.Y, frames: frames, then: g.beatAdvance,
+		})
+	case "dialog":
+		n := b.Count
+		if n <= 0 {
+			n = 1
+		}
+		end := b.Line + n
+		if end > len(g.campLines) {
+			end = len(g.campLines)
+		}
+		g.dialog = nil
+		for i := end - 1; i >= b.Line && i >= 0; i-- { // 反序堆疊(同 enterNode story 分支慣例)
+			ln := g.campLines[i]
+			g.dialog = append(g.dialog, battle.DialogLine{Speaker: ln.Speaker, Text: ln.Text})
+		}
+		if len(g.dialog) == 0 { // line/count 對不到資料:跳拍避免卡死
+			g.loadErr = fmt.Sprintf("beat dialog:line=%d count=%d 對不到 campLines(len=%d)", b.Line, n, len(g.campLines))
+			g.beatAdvance()
+		}
+	case "act":
+		idx := findActor(b.Fig)
+		if idx < 0 || len(b.Poses) == 0 {
+			g.beatAdvance()
+			return
+		}
+		frames := b.PoseFrames
+		if frames == 0 {
+			frames = 30
+		}
+		g.actJob = &actPoseJob{actor: idx, poses: b.Poses, frames: frames, then: g.beatAdvance}
+	case "spawn", "join":
+		// 資料面已由 Node.Actors(擺位)/battle 單位配置驅動,原語在 remake 僅記錄一致性,
+		// 無額外執行效果(stub,對映 doc50 §4「原語身分 vs 內容轉錄」的誠實分工)。
+		g.beatAdvance()
+	case "bgm":
+		g.playBGM(b.Track)
+		g.beatAdvance()
+	case "fade":
+		frames := b.Frames
+		if frames == 0 {
+			frames = storyFadeFrames
+		}
+		g.fade = &storyFade{out: b.Out, total: frames, then: g.beatAdvance}
+	case "delay":
+		frames := b.Frames
+		if frames == 0 && b.Ms > 0 {
+			frames = b.Ms * 60 / 1000
+		}
+		if frames <= 0 {
+			frames = 1
+		}
+		g.beatDelay = frames
+	default:
+		g.loadErr = "beat:未知原語 " + b.Op
+		g.beatAdvance()
+	}
+}
+
 // ── 對話框切換動畫(使用者回饋 2026-07-04 #3:換人說話時框先收合再展開)──
 const dlgNone = -999    // dlgShown 無框哨兵
 const dlgAnimFrames = 7 // 縮/展各自幀數(~0.12s@60fps)
@@ -367,9 +573,10 @@ func (g *Game) enterNode() {
 	g.storyWalks = nil
 	g.storyAutoAdvance = 0
 	g.walkFirst, g.followWalk, g.camMaxY = false, false, 0
+	g.camPan, g.actJob, g.beats, g.beatIdx, g.beatDelay = nil, nil, nil, -1, 0
 	g.dlgShown, g.dlgPhase, g.dlgT = dlgNone, 0, 0
 	switch n.Type {
-	case "story":
+	case "story", "cutscene": // cutscene(doc50):同一套場景設置,進行中改由 Beats 驅動(見下)
 		g.dialog = nil
 		lines := n.Lines
 		if n.Script != "" { // 本機劇情文本檔(assets/story/chNN.json,人工精校;無檔 fallback 內嵌 lines)
@@ -377,8 +584,11 @@ func (g *Game) enterNode() {
 				lines = ls
 			}
 		}
-		for i := len(lines) - 1; i >= 0; i-- { // 反序堆疊:顯示取末端,Enter 逐句 pop
-			g.dialog = append(g.dialog, battle.DialogLine{Speaker: lines[i].Speaker, Text: lines[i].Text})
+		g.campLines = lines // cutscene dialog beat 依 Line/Count 取子段;story 節點也存一份備用
+		if n.Type == "story" {
+			for i := len(lines) - 1; i >= 0; i-- { // 反序堆疊:顯示取末端,Enter 逐句 pop
+				g.dialog = append(g.dialog, battle.DialogLine{Speaker: lines[i].Speaker, Text: lines[i].Text})
+			}
 		}
 		if n.Map != "" { // 場景背景圖(doc23 §4:序幕王城/草地= FDFIELD map32 複合場景,非戰場地圖疊對白)
 			if err := g.loadMap(n.Map); err != nil {
@@ -404,7 +614,10 @@ func (g *Game) enterNode() {
 		} else {
 			g.storyActors = nil
 		}
-		if len(lines) == 0 && n.AutoAdvance > 0 { // 無對白節點(行軍蒙太奇):進場後自動倒數轉場
+		if n.Type == "cutscene" {
+			g.beats = n.Beats
+			g.beatAdvance() // beatIdx -1 → 0,啟動第一拍(doc50 BeatRunner)
+		} else if len(lines) == 0 && n.AutoAdvance > 0 { // 無對白節點(行軍蒙太奇):進場後自動倒數轉場
 			g.storyAutoAdvance = n.AutoAdvance
 		}
 	case "battle":
@@ -486,6 +699,17 @@ func (g *Game) campInput() bool {
 			}
 			if len(g.dialog) == 0 {
 				g.advanceStoryNode(n)
+			}
+		}
+		return true
+	case "cutscene":
+		// BeatRunner 驅動:目前這一拍是不是「等對白播完」全看 g.dialog 是否非空
+		// (只有 dialog beat 會填它),其餘拍(pan/walk/act/fade/delay)Enter 無作用,
+		// 交給 Update 各自的計時/佇列機制推進,不在這裡搶著 advance。
+		if enter && len(g.dialog) > 0 {
+			g.dialog = g.dialog[:len(g.dialog)-1]
+			if len(g.dialog) == 0 {
+				g.beatAdvance()
 			}
 		}
 		return true
@@ -1215,27 +1439,21 @@ func (g *Game) Update() error {
 		return nil
 	}
 	g.stepStoryWalks() // 場景走位動畫(doc46 §5.3);storyWalks 為空時內部直接返回
+	g.stepActJob()     // beat「act」姿態循環(doc50);actJob 為空時內部直接返回
 	g.stepDlgAnim()    // 對話框換人縮/展動畫(使用者回饋 #3)
-	if g.fade != nil { // 場景淡出/淡入轉場(doc46 §5.2)
-		g.fade.t++
-		if g.fade.t >= g.fade.total {
-			if g.fade.out {
-				cb := g.fade.then
-				g.fade = nil
-				if cb != nil {
-					cb()
-				}
-			} else {
-				g.fade = nil
-			}
-		}
-	}
+	g.stepFade() // 場景淡出/淡入轉場(doc46 §5.2;beat「fade」兩個方向都靠 then 接回下一拍)
 	if g.camp != nil && g.storyAutoAdvance > 0 { // 無對白節點自動轉場倒數(行軍蒙太奇)
 		g.storyAutoAdvance--
 		if g.storyAutoAdvance == 0 {
 			if n := g.camp.Node(); n != nil {
 				g.advanceStoryNode(n)
 			}
+		}
+	}
+	if g.beatDelay > 0 { // beat「delay」倒數(doc50 0x375b2)
+		g.beatDelay--
+		if g.beatDelay == 0 {
+			g.beatAdvance()
 		}
 	}
 	if g.curX != g.prevCurX || g.curY != g.prevCurY { // 游標移動音
@@ -1246,7 +1464,10 @@ func (g *Game) Update() error {
 	// storyBG 場景背景模式鏡頭固定(enterNode 已設 CamX/CamY),不跟游標走。
 	// FollowWalk 節點例外:走位期間鏡頭鎖定走位者(原版長廊運鏡,2-1;視野=320×200 世界px)。
 	if g.storyBG {
-		if g.followWalk && len(g.storyWalks) > 0 {
+		switch {
+		case g.camPan != nil: // beat「pan」進行中(doc50 0x135dd):線性內插到目標,走完接下一拍
+			g.stepCamPan()
+		case g.followWalk && len(g.storyWalks) > 0:
 			w := g.storyWalks[0]
 			u := &g.storyActors[w.actor]
 			vw, vh := logicalW/storyZoom, logicalH/storyZoom
