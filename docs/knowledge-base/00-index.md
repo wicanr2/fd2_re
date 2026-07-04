@@ -16,7 +16,8 @@
 | 開場 handler `0x3231b` **完整指令序列**(每 beat 的 call+參數+語意) | **`47`**(§3/§7 逐 beat 全轉錄) |
 | 過場**原語**(pan/走位/對白/演出/spawn/入隊)怎麼運作、位址 | `47` §2 + `50` §1 |
 | 「兩套腳本系統」——開場 cutscene vs 戰鬥中事件對話,界線在哪 | **`52`** §0(**先讀這個再碰過場**) |
-| 某句對白**第幾回合/什麼事件**觸發(哈諾/海盜頭目/海防隊) | **`ch01.json` events** + `26` + `battle_events.json` + `52` §1.2 |
+| 某關**事件骨架**(第幾回合/增援/加入/勝敗)——還原 chNN.json 的 ground truth | **青衫攻略 `references/text/fd2-walkthrough-index.md`**(30 關分關卡索引)+ 全文 `references/text/fd2.md` |
+| 某句對白**第幾回合/什麼事件**觸發(哈諾/海盜頭目/海防隊) | 青衫索引(時機)+ **`ch01.json` events**(Fable5 RE 範本)+ `26` + `battle_events.json` + `52` §1.2 |
 | 索爾四人**怎麼進戰場**(進場動畫/站位) | `52` §1.1 + `46` §4(⚠ 進場動畫細節待 dosbox 定稿) |
 | 「走位」機制(單位步進 vs 鏡頭移動)、單位結構欄位 +0/+1/+3/+4 | `47` §9(dosbox 實測閉環) |
 | remake 過場**引擎**(BeatRunner / cutscene 節點 / beats DSL)怎麼設計 | **`50`**(§2 DSL,§3 全33關管線) |
@@ -112,6 +113,16 @@
 - `extracted/maps/` `extracted/images/` `extracted/story/` 等 — 解出的地圖/圖/劇情文本(玩家自備原版跑 tools 解)
 
 ---
+
+## §D 還原 chNN.json 的工作流(核心目標)
+
+remake 每關的劇本檔 `remake/assets/scenarios/chNN.json` = **事件骨架 + 對白文字**兩者合成:
+
+1. **事件骨架**(何時發生什麼)← **青衫攻略**(`references/text/fd2-walkthrough-index.md`,每關的回合時機/增援/
+   加入/勝敗,ground truth)+ `battle_events.json`(反組譯的 handler 條件,交叉驗證)。
+2. **對白文字**← FDTXT 轉錄(`extracted/story/`,全 1533 句)。
+3. **範本**:**`ch01.json` 是 Fable 5 RE 建立的黃金範本**——其餘 ch02~30 照它的結構(events: trigger/when/do,
+   dialogue speaker+text)仿製。系統 A(開場過場)進 cutscene 節點;系統 B(戰鬥中事件)進 scenario events(doc52)。
 
 ## 標註慣例
 - **[已驗證]** 原版實檔/反組譯/dosbox 交叉確認 · **[假設]** 待後輪確認/推翻 · **[攻略]** 青衫玩家觀測(實作以反組譯為準)
