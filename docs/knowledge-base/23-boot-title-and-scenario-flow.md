@@ -298,14 +298,30 @@ python3 tools/decode_sprite.py 用 body=FDOTHER_069.bin[4:] / FDOTHER_070.bin[4:
    └ call [ 0*4 + 0x51d71 ] = 0x3231b               ; 章節0「戰前/劇情」處理器
         │
 章節0 處理器 0x3231b = 開場序章 cutscene  ←★「與前代主角對話」在此
-   ├ [0x53c03]=0x20; call 0x205da                    ; 暫借章節值切到 FDTXT 序幕「影像」資源
-   ├ 0x15f84 ×N + 0x13185 淡入                        ; 逐格貼開場畫面
+   ├ [0x53c03]=0x20; call 0x205da                    ; 暫借章節值=32 → 0x1088d(32) 載 FDTXT#33 + FDFIELD 組32(res 96/97/98)
+   ├ 0x15f84 ×N + 0x13185 逐段對白+攝影機平移         ; 15 次 pan(王城)/13 次 pan(草地),見下方修正
    ├ play_bgm(0x0b)                                   ; 序章配樂
-   ├ [0x53c03]=0x1f; call 0x205da                     ; 切到 FDTXT 序幕「對話」資源
-   ├ push 0x5a..0x69; call 0x1366a (逐段)             ;★ 逐段播對白(渡海/海盜/哈瓦特父子等 beats)
+   ├ [0x53c03]=0x1f; call 0x205da                     ; 暫借章節值=31 → 0x1088d(31) 載 FDTXT#32 + FDFIELD 組31
+   ├ push 0x5a..0x69; call 0x1366a (逐段)             ;★ 逐段播對白(王城/草地場次)
    │      └ 對白走文本渲染器 0x16D00 區;控制碼 0xFFEF 依說話者 ID 從 DATO.DAT 載入頭像(doc 14)
-   ├ call 0x10b4e (載入登場單位 roster)
+   ├ call 0x10b4e (載入登場單位 roster,push1/3/5/2 = 各場次登場 NPC 組:王座父王母后/悠妮蓋亞等)
+   ├ [0x53c03]=0                                      ;★ 還原真章節 0(0x327eb)→ call 0x205da 重載「真」FDTXT#1+FDFIELD組0(map0=小島)
+   ├ push 0x5a..0x62; call 0x1366a + 0x32999 平移(逐段)  ; 遇海盜對白,疊在「真」戰場地圖 map0 上(非虛構背景)
    └ ret                                              ; cutscene 結束 → 回 driver 0x25ebb 內續行(非相位機,見 doc 24)
+
+> **修正(2026-07,團隊二輪 RE,背景圖 bug 排查後補正)**:早先誤記「[0x53c03]=0x20 切到 FDTXT 序幕『影像』資源」——
+> **FDTXT 從未含圖像**(doc09 已證實純文字容器),0x205da 實際呼叫 `0x1088d(暫借章節)`,而 `0x1088d` 本體
+> 與真實戰場章節載入**完全同一函式**:同時載 FDTXT 文本(章節+1)**與** FDFIELD 地圖三資源(章節×3+{0,1,2})。
+> 暫借章節=32 時載入的 **FDFIELD 組32(資源96/97/98)= 一張 18×51 格複合地圖**(紅毯雙王座廳 → 長廊 → 城外草地
+> 縱向拼接),即序幕「王城傳位」「草地邂逅悠妮蓋亞」兩幕的真正背景——與戰場共用同一 tile 渲染器,不是另開的圖片
+> 系統。已渲染驗證(`extracted/maps/map32.png`,432×1224)逐像素對齊 dosbox 參考圖 `extracted/remake_shots/
+> orig_02_dialog_02_king.png` 與使用者原版錄影 `extracted/story/ref_video/f_006.png`(雙王座+紅毯+拱窗)。
+> 15 次/13 次 `0x13185(2)` 分別對應王城、草地兩場次的鏡頭平移(方向與逐格細節未完全反組譯,不影響背景圖結論)。
+> 序幕最後 `[0x53c03]=0` 還原真章節後**再呼叫一次 0x205da**,重載真正的 FDTXT#1 + FDFIELD 組0(= map0,小島),
+> 「遇海盜」對白(`push 0x5a..0x62; call 0x1366a` + `0x32999` 平移)疊在**真戰場地圖 map0** 上,並非另一張複合圖——
+> 與後續 `battle_ch01` 進的是同一張地圖。remake 對應實作見 `remake/internal/campaign/campaign.go`(Node.Map/CamX/CamY,
+> story 節點可指定固定鏡頭背景圖)與 `remake/cmd/fd2/main.go`(`storyBG` 模式);`campaign_full.json` 的
+> `story_ch01_palace`/`story_ch01_meadow` 指到 `assets/maps/map32`(cam_y=0/824),`story_ch01` 指到 `assets/maps/map0`。
         │
 driver 0x25ebb 內續行 → 進入戰場設置 0x10010(0x26130)
    └ 戰場地圖編號 = [0x53c03]*3 + 2   (0x10b9e)       ;★ 不是寫死常數,由章節推導
@@ -337,7 +353,7 @@ driver 0x25ebb 內續行 → 進入戰場設置 0x10010(0x26130)
 | `0x51d71` | **章節→戰前/劇情處理器跳表**(ch0=0x3231b) | [驗] |
 | `0x51de9` | **章節→戰後/勝利處理器跳表**(ch0=0x22ef6) | [驗] |
 | `0x3231b` | **章節0 = 開場序章 cutscene**(與前代主角對話) | [驗] |
-| `0x205da`/`0x1088d` | load_chapter / 章節文本載入器(FDTXT 資源=章節+1) | [驗] |
+| `0x205da`/`0x1088d` | load_chapter:**同時**載 FDTXT 文本(資源=章節+1)**與** FDFIELD 地圖三資源(章節×3+{0,1,2});序幕暫借章節 32/31 藉此偷渡 map32 複合背景(見上方修正) | [驗] |
 | `0x1366a` | 對白逐段播放器(走文本渲染器 0x16D00) | [驗] |
 | `0x10010` | 進入戰場/戰棋場景設置 | [驗] |
 | `0x10b9e` | **戰場地圖編號 = [0x53c03]*3+2** | [驗] |

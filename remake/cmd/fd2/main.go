@@ -58,6 +58,7 @@ type Game struct {
 	st      *battle.State       // 戰鬥狀態(單位)
 	sc      *battle.Scenario    // 劇本(事件系統,doc 29)
 	dialog  []battle.DialogLine // 待顯示對話(事件產生,含說話者)
+	storyBG bool                // 場景背景模式(story 節點指定 Map):鏡頭固定不跟游標,不畫單位/游標/HUD(doc23 §4)
 	walk    *walkAnim           // 移動動畫(沿路徑逐格走,FDICON 方向幀)
 	camp    *campaign.Runner    // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
 	campSel int                 // choice 節點游標
@@ -173,6 +174,7 @@ func (g *Game) enterNode() {
 		return // 流程結束(game over)
 	}
 	g.playBGM(n.BGM)
+	g.storyBG = false // 預設離開場景背景模式;story+Map 節點下面再開回
 	switch n.Type {
 	case "story":
 		g.dialog = nil
@@ -184,6 +186,14 @@ func (g *Game) enterNode() {
 		}
 		for i := len(lines) - 1; i >= 0; i-- { // 反序堆疊:顯示取末端,Enter 逐句 pop
 			g.dialog = append(g.dialog, battle.DialogLine{Speaker: lines[i].Speaker, Text: lines[i].Text})
+		}
+		if n.Map != "" { // 場景背景圖(doc23 §4:序幕王城/草地= FDFIELD map32 複合場景,非戰場地圖疊對白)
+			if err := g.loadMap(n.Map); err != nil {
+				g.loadErr = "map: " + err.Error()
+			}
+			g.st, g.sel = nil, nil // 清殘留單位/選取(避免上一戰場畫面疊在新背景上)
+			g.storyBG = true
+			g.camX, g.camY = float64(n.CamX), float64(n.CamY)
 		}
 	case "battle":
 		if n.Map != "" { // 指定戰場(assets/maps/mapN;全 33 圖已匯出)
@@ -985,10 +995,13 @@ func (g *Game) Update() error {
 		g.prevCurX, g.prevCurY = g.curX, g.curY
 	}
 	// 相機跟隨游標(置中,夾在地圖內;先於各攔截,避免環/選單開啟時相機停擺)
-	g.camX = float64(g.curX*g.m.TileW - logicalW/2 + g.m.TileW/2)
-	g.camY = float64(g.curY*g.m.TileH - logicalH/2 + g.m.TileH/2)
-	clamp(&g.camX, 0, float64(g.m.W*g.m.TileW-logicalW))
-	clamp(&g.camY, 0, float64(g.m.H*g.m.TileH-logicalH))
+	// storyBG 場景背景模式鏡頭固定(enterNode 已設 CamX/CamY),不跟游標走。
+	if !g.storyBG {
+		g.camX = float64(g.curX*g.m.TileW - logicalW/2 + g.m.TileW/2)
+		g.camY = float64(g.curY*g.m.TileH - logicalH/2 + g.m.TileH/2)
+		clamp(&g.camX, 0, float64(g.m.W*g.m.TileW-logicalW))
+		clamp(&g.camY, 0, float64(g.m.H*g.m.TileH-logicalH))
+	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyF5) { // 快速存檔(節點邊界語意:存 campaign 進度)
 		g.saveGame()
 	}
@@ -1187,7 +1200,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	// 常駐白框會疊在中央、與環的選中框混淆,見 playfix #5)
 	curPx := float64(g.curX*tw) - g.camX
 	curPy := float64(g.curY*th) - g.camY
-	if !g.ring && !g.spellOpen {
+	if !g.ring && !g.spellOpen && !g.storyBG {
 		drawCursor(screen, curPx, curPy, float64(tw), float64(th))
 	}
 	// HUD(對照原版 orig_04/08):游標單位資訊=左下面板(非常駐頂列);回合切換=中央大字橫幅。

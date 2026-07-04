@@ -67,7 +67,10 @@
           "text": "第1章:初試身手"
         }
       ],
-      "next": "story_ch01_meadow"
+      "next": "story_ch01_meadow",
+      "map": "assets/maps/map32",
+      "cam_x": -104,
+      "cam_y": 0
     },
     "story_ch01_meadow": {
       "type": "story",
@@ -79,7 +82,10 @@
           "text": "第1章:初試身手"
         }
       ],
-      "next": "story_ch01"
+      "next": "story_ch01",
+      "map": "assets/maps/map32",
+      "cam_x": -104,
+      "cam_y": 824
     },
     "story_ch01": {
       "type": "story",
@@ -91,7 +97,10 @@
           "text": "目標:敵全滅。"
         }
       ],
-      "next": "battle_ch01"
+      "next": "battle_ch01",
+      "map": "assets/maps/map0",
+      "cam_x": -32,
+      "cam_y": 88
     },
     "battle_ch01": {
       "type": "battle",

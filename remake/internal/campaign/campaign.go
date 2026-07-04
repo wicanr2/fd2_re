@@ -31,18 +31,22 @@ type Good struct {
 
 // Node 節點。Type: story / battle / choice / event / shop / ending。
 type Node struct {
-	Type     string          `json:"type"`
-	Lines    []Line          `json:"lines,omitempty"`    // story:對白(內嵌;Script 有檔時被覆蓋)
-	Script   string          `json:"script,omitempty"`   // story:本機劇情文本檔(assets/story/chNN.json,不入庫)
-	Scenario string          `json:"scenario,omitempty"` // battle:戰場事件劇本檔
-	Map      string          `json:"map,omitempty"`      // battle:戰場資產目錄(assets/maps/mapN;空=沿用當前)
-	Units    string          `json:"units,omitempty"`    // battle:單位配置檔
+	Type     string `json:"type"`
+	Lines    []Line `json:"lines,omitempty"`    // story:對白(內嵌;Script 有檔時被覆蓋)
+	Script   string `json:"script,omitempty"`   // story:本機劇情文本檔(assets/story/chNN.json,不入庫)
+	Scenario string `json:"scenario,omitempty"` // battle:戰場事件劇本檔
+	Map      string `json:"map,omitempty"`      // battle:戰場資產目錄;story:場景背景圖(doc23 §4:
+	// 原版序幕王城/草地背景是 FDFIELD map32 複合場景,與戰場同一渲染器非另開圖片系統;
+	// story 填同一 assets/maps/mapN 目錄即可換場景背景;battle 空=沿用當前)
+	Units    string          `json:"units,omitempty"` // battle:單位配置檔
+	CamX     int             `json:"cam_x,omitempty"` // story+Map:固定鏡頭像素座標(場景不跟游標走,取代預設 focusOnParty)
+	CamY     int             `json:"cam_y,omitempty"`
 	BGM      string          `json:"bgm,omitempty"`
-	Next     string          `json:"next,omitempty"`     // story/event
-	OnWin    string          `json:"on_win,omitempty"`   // battle
-	OnLose   string          `json:"on_lose,omitempty"`  // battle(敗北路線;空=game over)
-	Prompt   string          `json:"prompt,omitempty"`   // choice
-	Options  []Option        `json:"options,omitempty"`  // choice
+	Next     string          `json:"next,omitempty"`    // story/event
+	OnWin    string          `json:"on_win,omitempty"`  // battle
+	OnLose   string          `json:"on_lose,omitempty"` // battle(敗北路線;空=game over)
+	Prompt   string          `json:"prompt,omitempty"`  // choice
+	Options  []Option        `json:"options,omitempty"` // choice
 	SetFlags map[string]bool `json:"set_flags,omitempty"`
 	Text     string          `json:"text,omitempty"`      // ending:結語
 	Goods    []Good          `json:"goods,omitempty"`     // shop:商品

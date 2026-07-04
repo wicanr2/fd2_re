@@ -383,6 +383,18 @@
 配 rulebook/63)。使用者實玩才揭露——沒實玩/沒查,文件會一直顯示「完成」。
 **修法**:story_chNN 節點加 `script:assets/story/chNN.json`;gen_campaign 修+重生成 → 全章接通。
 - [x] ch01 開場三幕(王城父子/草地悠妮蓋亞/遇海盜)手動接線+轉錄 FDTXT_033/032(intro-scenes)
+- [x] **ch01 開場三幕背景圖 RE+接線**(使用者實測發現對白疊在戰場地圖上,非王座廳/草地,2026-07-04):
+      RE 修正 doc23 §4 誤記(「FDTXT 序幕『影像』資源」不存在,FDTXT 純文字)——真正背景是
+      **暫借章節 32 時 `0x1088d` 順帶載的 FDFIELD 組32(資源96/97/98)= 18×51 複合地圖**(王座廳→長廊→
+      草地),與戰場同一 tile 渲染器;已渲染驗證(`extracted/maps/map32.png`)逐像素對齊 dosbox 參考圖
+      + 使用者原版錄影。序幕尾端 `[0x53c03]=0` 還原真章節,「遇海盜」對白疊在**真戰場地圖 map0**(非另一
+      張圖)。remake 加 `campaign.Node.Map/CamX/CamY`(story 節點固定鏡頭背景圖)+ `main.go` `storyBG` 模式
+      (鏡頭不跟游標、不畫單位/游標/HUD);`campaign_full.json` 三節點接線(palace/meadow→map32,
+      pirate→map0)。截圖驗證王城幕=雙王座紅毯廳(對照 orig_02_dialog_02_king.png)。
+      **教訓**:另一 agent 曾提案「背景已在 BG_BG_\*.png,只需配對」,經抽樣檢視(320×100 全景走廊,
+      無王座/紅毯任何痕跡)證偽——套用前先驗證,不可盲信「已抽出」的斷言(rulebook 62)。
+      另踩雷:`~/.local/share/fd2_re/assets/`(玩家/測試用資產覆蓋目錄,`assetPath()` 優先讀它)有舊版
+      campaign_full.json 快取(缺 ch00_palace/meadow 分幕),測試前先同步 repo 最新版才看得到真結果。
 - [ ] ch02-33 全章 story 節點接 script(gen_campaign 修+重生成)— 等 ch01 落地後做
 
 ## 待辦:實測回饋(使用者 playtest,2026-07-03)
