@@ -89,3 +89,24 @@ python3 tools/render_story.py --all extracted/raw/FDTXT \
 中段轉職、世界各地;後段**天空之城機器人篇**(機甲守衛以型號代號 73/C2/A1 等對話,悠妮一度被機械控制)。
 結局眾人保住世界、返鄉,希莉亞請父王(王國)辦慶功宴(印證其公主身份)。
 完整逐章見本機 `extracted/story/full_story_auto.md`。
+
+## remake 對話框渲染規則(cmd/fd2/main.go;使用者實玩逐項校正 2026-07-05)
+
+原版對照:我方(角色 id 0–31)= **下框、頭像在左**;對方/NPC(id≥32,如父王48/王后66)= **上框、頭像在右**;
+頭像側臉朝文字。以下為對原版截圖逐項修正的規則(commit 57c0e30 / dc5ebb1 / b81268d):
+
+- **文字寬 vs 頭像**:文字換行右緣須**止於頭像側之前**,不得覆蓋頭像。下框到框右緣;上框(頭像在右)
+  到頭像左緣前 8px(`rightEdge = hx-8`)。原版父王對話文字佔左~60%、碰頭像前換行(orig 18-02-20)。
+- **框位置(框高 198,logicalH=400)**:下框 `by=198`(底邊 396 在畫面內);上框 `by=4`(頂邊在畫面內)。
+  舊值(下 224/上 -22)使邊線出畫面看不到。頭像垂直置中框內 `hy=by+(198-168)/2`,不凸出框上下邊。
+- **框內底色 = 頭像底色漸層**:頭像背景是漸層藍(頂 40,69,138 → 底 56,85,154);框素材 `assets/ui/dialog.png`
+  內部均勻 56,85,154(僅等於頭像底部亮色)。故框內疊同一漸層(`g.dlgGrad`),消除頭像↔框接縫色差。
+- **[HARD] 長對白分頁,不截斷**:一句 >3 顯示行要**分頁**(每頁 3 行),Enter 有下一頁先翻頁、翻完才換句。
+  王座對白多句超 3 行(line6/12/14/15/17…,如 line17 57字=5行=2頁)。抽 `dlgWrap`(繪製與分頁共用換行)
+  + `dlgPageCount` + `dlgAdvance`(翻頁/pop),`g.dlgPage` 記頁碼、新對白歸零。**舊碼繪製迴圈 `i<3` 只畫 3 行
+  其餘丟棄 → 後半永遠看不到**(使用者實玩抓到)。回歸測試 `cmd/fd2/dlg_test.go`(需 xvfb 跑,ebiten init 要顯示器)。
+- **面向**:cutscene 角色 dir 預設 0(下,面向玩家);走位者走完面向 actor 目標 dir(進場走位=`a.Dir`,
+  如亞雷斯走到索爾旁面向他);詳見 doc47 §11 面向通用規則。
+- **驗證法**:`FD2_CAMPAIGN=… FD2_CAMP_NODE=<node> FD2_SHOT=out.png FD2_SHOT_FRAME=N`(headless,host xvfb+llvmpipe);
+  長對白翻頁用 xdotool 送 Enter。⚠ 軟體渲染 fps≠60,`FD2_SHOT_FRAME`(遊戲幀)與 wall-clock 送鍵易對不上,
+  優先 Go 測試(確定性)驗邏輯、截圖驗版面(見記憶 [[fd2-goal-and-no-speculation-rule]] 採樣率不準)。
