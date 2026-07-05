@@ -176,7 +176,7 @@
 - [~] 單位 0x50B 結構:+5(bit0存活/bit7已行動)/+8角色ID/+0/+1/+2/+6/+0x31 已解;完整逐欄佈局 [阻](remake 用自有 struct,不需)
 - [ ] (補)更新 doc 12:修正「main=0x10000」、補章節→BGM 表 0x51e63 精確曲號
 
-## 第 6 輪 🟡(戰鬥全螢幕演出畫面 1:1 還原 — 使用者逐項對照)
+## 第 6 輪 ✅(戰鬥全螢幕演出畫面 1:1 還原 — 使用者逐項對照;①-④ 全完成 2026-07-05)
 > 目標:remake 戰鬥攻擊演出(orig_05)像素級對齊原版。方法=**密集網格疊圖 oracle**(見記憶 pixel-align)+ 反組譯確認機制,**無 dosbox debugger**(0.74 vanilla 不能 dump)。
 - [x] **完整 RE 戰鬥演出繪圖機制** → `35`:演出主函式 0x28a6c、blit 0x4e63d(無縮放/無翻轉,尺寸朝向燒進素材)、固定錨點(164,157)、phase [0x540ff]、BG 多層(0x52381=BG.DAT)、戰場→BG 表 0x52363
 - [x] **figure 幀/姿態**:我方亞雷斯=攻擊動作1 `FIGANI_013_f01`(組×3+1,人眼確認);幀序播放;守方不翻轉(FIGANI_288 原圖面右)
@@ -190,7 +190,7 @@
 - [x] **① TAI.DAT 台座解碼 + remake 貼上** ✅(v23):TAI_004=154×42 綠草橢圓台座(decode_sprite 解 body[4:],index0透明17%);remake 載 tai_004.png 貼我方腳下(z:狀態欄<台座<figure);對齊 orig 取代偏灰 dither。確切 entry↔職業/地形對映待後續
 - [x] **② 複查 `+0x40` 衝突** ✅(第一性原理):**+0x40=當前HP**(0x18c98 血條 `word[+0x40]×101/word[+0x42]`=HP% 鐵證);figure lunge 位置實際讀 **+0x48/+0x4a 螢幕投影**(0x29f72 不用+0x40);agent-A「戰場格X」誤標已清。+0x44/46=MP/maxMP。doc35 §2.2/§4/§7 全修正
 - [x] **③ 狀態欄框/HP 用真素材** ✅(v25-26):破解 FDOTHER#5 LMI1 sub-sprite codec(反組譯 0x4e916:c≤0xC0 literal/c>0xC0 run,新 codec,`tools/decode_lmi.py`);框=#22(149×42 含bevel+標籤+槽)貼 panel.png、血條 cell=#27-30;修 HP靠左(槽 x21-123)/提亮/數字對位。doc35 §4.2.5。盜賊 y 軸對齊(276→296,頭頂偏上一排)
-- [ ] **④ BG 草地延伸到 figure 腳下**(讓台座/陰影疊綠草,非黑底)
+- [x] **④ BG 草地延伸到 figure 腳下** ✅(2026-07-05 使用者確認 `docs/figures/battle_restore_grid.png` 網格對照:左原版/右 remake 兩邊草地都延伸到 figure 腳下、台座疊綠草非黑底,一致)
 
 ## 第 7 輪 ✅(戰鬥演出資料驅動 + 像素級收官,2026-07-02)
 > 從「手調對齊」進化到「原版資料驅動」;README 對外展示;全部 push(commit 至 a42ee4a+)。
