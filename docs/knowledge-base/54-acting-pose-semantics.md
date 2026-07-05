@@ -1,5 +1,7 @@
 # 54 — acting pose 語意:用原版影片當 oracle 反推(rulebook 64)
 
+> **⭐ acting 機制結論已併入 `doc50` §1.2(acting=原地姿態/幀動畫,不搬格子;走位=step家族/0x13488)。本檔僅保留 dosbox 實測原始記錄當佐證。**
+
 > 任務:doc47 §2/§9 已定案 acting 播放器(`0x1366a`)每幀寫 `unit[+3]`=pose、`unit[+4]`=tick 倒數,
 > 但 pose **代表什麼視覺意義**、acting 的 `unit` 索引對到**哪個角色**、pose 與 doc31 的
 > `方向(+0x0B)`/`跑步動作幀(+0x0C)` 怎麼分工——三者當時都標「未解」。本篇用**已知輸出(原版
