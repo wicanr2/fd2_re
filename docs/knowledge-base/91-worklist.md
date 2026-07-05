@@ -19,7 +19,7 @@
 - [x] **音樂解析**:確認 XMIDI,`tools/xmi2mid.py` 轉 15 首標準 MIDI(note 平衡、tempo 直通)→ `07-music-xmidi-format.md`
 - [x] **動畫機制結構**:AFM 容器 + FIGANI 幀封裝(幀數自描述 + offset 表)→ `06-animation-format.md`
 
-## 第 3 輪 🟡(進行中)
+## 第 3 輪 ✅(核心全完成;2 零星項 2026-07-05 核實已完成補勾)
 - [x] **文本解碼**:破解 FDTXT(uint16 glyph 索引 + 控制碼 + 0xFFFF)+ 找到自製字型(FDOTHER_004,16×16 1bpp,1824 字模),**還原可讀中文** → `08-text-and-font-format.md`、`tools/decode_text.py`
 - [x] **動畫逐幀拆解**:✅ **完整破解**!反組譯參數化解碼器 0x4F43D + 解出 13-byte 幀標頭(realW/H 在 +9/+11)+
       4 模式 RLE → `tools/decode_figani.py` 把 **264 動畫 2118 幀**全部解出(騎士揮劍動畫視覺驗證)← 使用者明確要求,完成
@@ -43,13 +43,13 @@
       (脅/實/黨/費/鍛/輩/辭/摸/牢/樁/紮/襲/態/責)
 - [x] **陣營/狀態 remap 配色**:確認 LUT 來源=FDOTHER 資源#3(LMI1,23張256-byte LUT),dump 並套用展示(LUT0灰=已行動…)→ `10`;BB→LUT索引精確對應待續
 - [x] **DATO 頭像全解**(136×4嘴型幀)→ `01`§7;**Unicode→glyph 反向表+編碼器**(round-trip 100%)→ `tools/encode_text.py`
-- [ ] 各 track 呼叫端對應確切遊戲狀態名(片頭/世界圖/城鎮/戰鬥/劇情)
+- [x] 各 track 呼叫端對應確切遊戲狀態名(片頭/世界圖/城鎮/戰鬥/劇情)→ doc12「場景切換時的換曲」已列 5 狀態對映(2026-07-05 核實)
 - [x] **FDSHAP 圖塊庫解碼**:標頭 count + u32 offset 表 + bg-RLE 24×24;~300 tiles/tileset → `01`§8
 - [x] **全 33 張戰場地圖抽取**:FDFIELD×FDSHAP(配對 map N→FDSHAP[2N],索引驗證全通過)→ 本機 `extracted/maps/`;`tools/extract_maps.py`、`render_map.py`
 - [x] **FDICON.B24** = 1680 個 24×24 **地圖單位 Q版小人 sprite**(sprite 4-mode RLE 含透明,**非 FDSHAP bg-RLE**;每角色組12=4方向×3幀)→ `31`
 - [x] **TAI.DAT** = WxH 圖像(sprite-RLE,如 155×42);多為 UI/特殊圖
 - [x] 寫一篇總覽:「1995 年怎麼做出炎龍騎士團2」→ `15`
-- [ ] 寫一篇總覽:「1995 年台灣怎麼做遊戲 — 炎龍騎士團2 技術全紀錄」
+- [x] 寫一篇總覽:「1995 年台灣怎麼做遊戲 — 炎龍騎士團2 技術全紀錄」→ `docs/knowledge-base/15-how-fd2-was-made-1995.md`(2026-07-05 核實存在)
 
 - [x] **FDFIELD 三段完整解析**:構成(地形)/控制(出場數/回合事件/寶箱/敵我roster)/出場位置;全33圖 metadata → 本機 `extracted/maps/maps_metadata.json`;`tools/parse_field.py`
 
@@ -209,7 +209,7 @@
 - [x] **FD2_SHOT_SERIES 逐幀截圖鉤子**(GIF/分鏡素材管線)
 - [x] 名字=TTF 28px+深藍描邊(~85%,既定決策:只有狀態欄數字用點陣素材,其他文字 TTF)
 
-## 第 8 輪 🟡(remake 玩法系統盤點與補完 — 2026-07-02 盤點)
+## 第 8 輪 ✅(remake 玩法系統盤點與補完 — 魔法/SFX 已於第7-11輪補完,2026-07-05 核實補勾)
 > 使用者指示:檢視腳本系統一路到移動/觸發戰鬥/魔法,盤點缺口逐項補。
 - [x] 盤點完成(見下缺口清單)
 - [x] **腳本系統 campaign(M4 骨架)** ✅(74bf386):internal/campaign(節點圖 Runner:story/battle/
@@ -219,11 +219,11 @@
 - [x] **移動動畫** ✅(74bf386):battle.Path(BFS 路徑)+ walkAnim 沿路徑逐格走(方向幀+OffX/Y 內插,
       ~4-5 tick/格,走完進攻擊/待命,期間鎖輸入);AI 移動沿用瞬移(待接同管線)
 - [x] internal/battle 測試失敗已修 ✅(e09c68c):部署格斷言=舊設計殘留,對齊現行(部署格屬 spawn_party)
-- [ ] **魔法系統**:完全未實作——法術選單(radial 指令環,doc13 0x18ED0)、MP 消耗、青衫法術公式、
+- [x] **魔法系統** ✅(第7-8輪完成,commit 3c618c4/74366fa:radial 指令環+法術+MP+青衫公式;code: ringInput/castSp/spells.json)——原盤點:法術選單(radial 指令環,doc13 0x18ED0)、MP 消耗、青衫法術公式、
       法術特效動畫(FIGANI 內含法術特效,可沿用資料驅動管線)
 - [x] **音樂** ✅(e09c68c):audio.go(ebiten/audio+vorbis;忠實 play_bgm 0x26777:同曲不重播/換曲釋放/
       無限迴圈);campaign 節點 bgm 驅動;FD2_MUTE 靜默。待:非 campaign 模式場景→曲號自動對映(doc12 表)
-- [ ] **音效 SFX**:資料位置已 RE ✅(doc36):`FDOTHER.DAT` 資源 #31(巢狀 `LLLLLL` 容器,14 個 8-bit
+- [x] **音效 SFX** ✅(第8-11輪完成,cmd/fd2/audio.go;commit e09c68c 音樂+SFX 收線)。資料位置 RE(doc36):`FDOTHER.DAT` 資源 #31(巢狀 `LLLLLL` 容器,14 個 8-bit
       unsigned mono raw PCM 子樣本)+ 戰鬥音效動態 index(同檔案,依攻擊資料決定 index);播放走
       `AIL_init/set_sample_address/set_sample_loop_count/start_sample`(0x26896/0x26945)。
       待:14 子樣本→UI事件對照、戰鬥動態 index 表還原、remake 端接入(SDL_mixer/ebiten audio)
@@ -492,11 +492,12 @@
 - [x] **長對白分頁不截斷**:>3 行分頁,Enter 先翻頁翻完才換句;dlgWrap/dlgPageCount/dlgAdvance + dlgPage;
       Go 測試 dlg_test.go 驗全文保全(b81268d)→ doc09
 - [x] **進場走位面向修正**:走完面向 actor 目標 dir(亞雷斯走到索爾旁面向他),storyWalkJob.finalDir(aaf5020)→ doc47 §11
-- [ ] **⬜ 對話分頁捲動動畫**(使用者要求 2026-07-05):目前翻頁是「瞬間切換」到下一頁;
-      要改成**捲動動畫**——按 Enter 時當前 3 行往上捲出、下一頁 3 行從底部捲入(垂直平滑位移)。
-      實作方向:繪製時對「當前頁尾行 + 下一頁首行」做 y 位移插值(一個 dlgScrollT 計時器,翻頁時啟動、
-      數幀內把文字 y 偏移從 0 → -行高×N,期間 clip 在框內)。需先確認原版是否真有捲動動畫(觀察實機/影片),
-      有的話對齊其速度;沒有就當作 remake 觀感增強(標註非 RE)。動 `main.go` 對話繪製 + dlgAdvance。
+- [ ] **⬜ 對話分頁捲動動畫**(使用者要求 2026-07-05;**原版確認有:文字往上捲**):
+      目前翻頁是「瞬間切換」;要改成**平滑往上捲動**——按 Enter 翻頁時,當前內容往上捲出、下一頁從底部捲入。
+      **使用者明示:不用依賴原版機制,自己寫平滑捲動即可**(原版有此效果,但捲動速度/幀數自訂,非 RE 值)。
+      實作方向:翻頁時啟一個 `dlgScrollT` 計時器(數幀),繪製時把文字整體 y 偏移從 0 平滑插到 -行高×3、
+      同時畫「當前頁下移出 + 下一頁自底部進」,期間 clip 在框內矩形;捲完才定位到新頁。
+      動 `cmd/fd2/main.go` 對話繪製區 + `dlgAdvance`(翻頁時觸發捲動而非瞬間 dlgPage++)。
 - [~] **handler 後半段 beats 解碼**(sonnet subagent 執行中 acb94c2):庭院/森林段走位/對話/fade 編排,
       供重建 palace_path/forest 節點(Ares 進場對話框位置、逐段走位轉向、索爾練劍、領頭跟隨、fade 換場)
 
