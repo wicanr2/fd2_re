@@ -51,10 +51,11 @@ type Actor struct {
 // ActorWalk 節點「退場」走位動畫(doc46 §5.3):對白播完、換場前,已在場的 actor 先走一段路
 // 再淡出(例:王座廳索爾對白說完沿紅毯走下場,~1.5s)。Fig 指定 Node.Actors 裡哪一個角色。
 type ActorWalk struct {
-	Fig    int `json:"fig"`
-	ToX    int `json:"to_x"`
-	ToY    int `json:"to_y"`
-	Frames int `json:"frames"`
+	Fig    int  `json:"fig"`
+	ToX    int  `json:"to_x"`
+	ToY    int  `json:"to_y"`
+	Frames int  `json:"frames"`
+	Dir    *int `json:"dir,omitempty"` // 走完後面向(指標,nil=保留走位末向;指定則覆蓋,如索爾走到亞雷斯旁定住面右)
 }
 
 // Beat 過場原語(doc 50 §1/§2):cutscene 節點的 beats 是一條平面序列,依序執行,
@@ -86,6 +87,11 @@ type Beat struct {
 	// 多句對白,見 doc47 §7 教訓:機制懂了但內容沒逐句對齊前不假裝一一對應)。
 	Line  int `json:"line,omitempty"`
 	Count int `json:"count,omitempty"`
+
+	// Upper:dialog 對話框上下位置覆蓋(指標,nil=沿用預設規則「說話者 id>=32 走上框」)。
+	// 草地撞見幕實測(doc55 截圖 18-03-10):亞雷斯(id4,<32)進場那句仍走上框——原版並非單純按
+	// id 分上下框,推測與進場/位置有關,尚未逆得通則;先開這個 per-beat 覆蓋做最小修正,別動全域規則。
+	Upper *bool `json:"upper,omitempty"`
 
 	Group int    `json:"group,omitempty"` // spawn:群組編號(doc25 spawn(g));remake 無群組資料表,僅記錄,見 main.go stub 註解
 	Track string `json:"track,omitempty"` // bgm:曲目 id(對映 assets/bgm)

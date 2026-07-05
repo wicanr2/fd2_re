@@ -74,6 +74,7 @@ type Action struct {
 type DialogLine struct {
 	Speaker int
 	Text    string
+	Upper   *bool // 對話框上下位置覆蓋(nil=沿用預設「id>=32 走上框」規則;見 campaign.Beat.Upper)
 }
 
 // LoadScenario 讀 scenario JSON。

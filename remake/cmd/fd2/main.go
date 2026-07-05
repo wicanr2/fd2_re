@@ -78,6 +78,7 @@ type Game struct {
 	beatDelay        int                 // beat「delay」剩餘幀數(0=非等待中)
 	campLines        []campaign.Line     // cutscene 節點載入的章文本(dialog beat 依 Line/Count 取子段)
 	dlgShown         int                 // 對話框目前顯示的說話者(dlgNone=無;換人時播縮/展動畫)
+	dlgUpper         *bool               // 與 dlgShown 同步的上/下框覆蓋(來自 DialogLine.Upper;nil=沿用預設規則)
 	dlgPhase         int                 // 對話框動畫相位:0=常態 1=縮小(換人前收合) 2=展開
 	dlgT             int                 // 對話框動畫相位內計時(幀)
 	dlgPage          int                 // 目前對白的頁碼(0起);一句>3行時分頁,Enter 先翻頁翻完才換句(使用者回饋 2026-07-05)
@@ -260,10 +261,14 @@ func (g *Game) advanceStoryNode(n *campaign.Node) {
 		for i := range g.storyActors {
 			if g.storyActors[i].Fig == ew.Fig {
 				u := &g.storyActors[i]
+				finalDir := -1 // 預設保留走位末段方向;ew.Dir 指定則覆蓋(如索爾走到亞雷斯旁定住面右)
+				if ew.Dir != nil {
+					finalDir = *ew.Dir
+				}
 				g.storyWalks = append(g.storyWalks, &storyWalkJob{
 					actor: i, fromX: u.X, fromY: u.Y,
 					toX: ew.ToX, toY: ew.ToY,
-					frames: ew.Frames, finalDir: -1, then: onDone,
+					frames: ew.Frames, finalDir: finalDir, then: onDone,
 				})
 				break
 			}
@@ -483,7 +488,7 @@ func (g *Game) beatStart(b campaign.Beat) {
 		g.dlgPage = 0 // 新對白從第一頁起
 		for i := end - 1; i >= b.Line && i >= 0; i-- { // 反序堆疊(同 enterNode story 分支慣例)
 			ln := g.campLines[i]
-			g.dialog = append(g.dialog, battle.DialogLine{Speaker: ln.Speaker, Text: ln.Text})
+			g.dialog = append(g.dialog, battle.DialogLine{Speaker: ln.Speaker, Text: ln.Text, Upper: b.Upper})
 		}
 		if len(g.dialog) == 0 { // line/count 對不到資料:跳拍避免卡死
 			g.loadErr = fmt.Sprintf("beat dialog:line=%d count=%d 對不到 campLines(len=%d)", b.Line, n, len(g.campLines))
@@ -595,6 +600,7 @@ func (g *Game) stepDlgAnim() {
 	case 0:
 		if g.dlgShown == dlgNone { // 首句:直接展開
 			g.dlgShown, g.dlgPhase, g.dlgT = cur, 2, 0
+			g.dlgUpper = g.dialog[len(g.dialog)-1].Upper
 		} else if cur != g.dlgShown { // 換人:先收合
 			g.dlgPhase, g.dlgT = 1, 0
 		}
@@ -602,6 +608,7 @@ func (g *Game) stepDlgAnim() {
 		g.dlgT++
 		if g.dlgT >= dlgAnimFrames {
 			g.dlgShown, g.dlgPhase, g.dlgT = cur, 2, 0
+			g.dlgUpper = g.dialog[len(g.dialog)-1].Upper
 		}
 	case 2:
 		g.dlgT++
@@ -637,6 +644,7 @@ func (g *Game) enterNode() {
 	g.walkFirst, g.followWalk, g.camMaxY = false, false, 0
 	g.camPan, g.actJob, g.beats, g.beatIdx, g.beatDelay = nil, nil, nil, -1, 0
 	g.dlgShown, g.dlgPhase, g.dlgT = dlgNone, 0, 0
+	g.dlgUpper = nil
 	switch n.Type {
 	case "story", "cutscene": // cutscene(doc50):同一套場景設置,進行中改由 Beats 驅動(見下)
 		g.dialog = nil
@@ -1844,6 +1852,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			// 依說話者切上/下框 + 左/右頭像(對照原版 orig_02_dialog:我方下框左頭像、對方/NPC 上框右頭像)
 			// 相位中(收合舊框)以 dlgShown 為準,避免框在收合前就跳到新說話者的位置。
 			upper := g.dlgShown >= 32 // >=32 為對方/敵/NPC(我方角色 id 0-31)
+			if g.dlgUpper != nil {    // per-line 覆蓋(campaign.Beat.Upper,doc55 草地幕亞雷斯進場句例外)
+				upper = *g.dlgUpper
+			}
 			// 框位置:模板匹配 orig 下框 (5,112)@320(底部裁 11px 超出畫面,原版如此);上框鏡射 y=-11
 			bx, by := 10.0, 198.0 // 下框上移使底邊396在畫面內(原224底邊422出畫面,使用者回饋2026-07-05)
 			if upper {

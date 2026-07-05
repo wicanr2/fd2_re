@@ -236,26 +236,41 @@
     },
     {
      "fig": 4,
-     "x": 7,
-     "y": 46,
+     "x": 11,
+     "y": 47,
      "dir": 1,
      "from_x": 13,
      "from_y": 47,
-     "walk_frames": 120
+     "walk_frames": 40
     }
    ],
    "beats": [
     {
      "op": "dialog",
      "line": 0,
-     "count": 22
+     "count": 1,
+     "upper": true
+    },
+    {
+     "op": "walk",
+     "fig": 4,
+     "x": 8,
+     "y": 46,
+     "frames": 70,
+     "dir": 1
+    },
+    {
+     "op": "dialog",
+     "line": 1,
+     "count": 21
     }
    ],
    "exit_walk": {
     "fig": 0,
     "to_x": 7,
     "to_y": 47,
-    "frames": 85
+    "frames": 85,
+    "dir": 3
    }
   },
   "story_ch01_forest_duel": {
