@@ -80,6 +80,7 @@ type Game struct {
 	dlgShown         int                 // 對話框目前顯示的說話者(dlgNone=無;換人時播縮/展動畫)
 	dlgPhase         int                 // 對話框動畫相位:0=常態 1=縮小(換人前收合) 2=展開
 	dlgT             int                 // 對話框動畫相位內計時(幀)
+	dlgPage          int                 // 目前對白的頁碼(0起);一句>3行時分頁,Enter 先翻頁翻完才換句(使用者回饋 2026-07-05)
 	fade             *storyFade          // 場景淡出/淡入轉場(doc46 §5.2)
 	walk             *walkAnim           // 移動動畫(沿路徑逐格走,FDICON 方向幀)
 	camp             *campaign.Runner    // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
@@ -479,6 +480,7 @@ func (g *Game) beatStart(b campaign.Beat) {
 			end = len(g.campLines)
 		}
 		g.dialog = nil
+		g.dlgPage = 0 // 新對白從第一頁起
 		for i := end - 1; i >= b.Line && i >= 0; i-- { // 反序堆疊(同 enterNode story 分支慣例)
 			ln := g.campLines[i]
 			g.dialog = append(g.dialog, battle.DialogLine{Speaker: ln.Speaker, Text: ln.Text})
@@ -524,6 +526,57 @@ func (g *Game) beatStart(b campaign.Beat) {
 		g.loadErr = "beat:未知原語 " + b.Op
 		g.beatAdvance()
 	}
+}
+
+// dlgWrap 把一句對白依框寬換行成顯示列(繪製與 Enter 分頁共用同一套,確保頁數一致)。
+// 換行寬度與繪製碼一致:下框到框右緣;上框(說話者 id>=32,頭像在右)止於頭像左緣前。
+func dlgWrap(dl battle.DialogLine) []string {
+	const ps = 2.1
+	upper := dl.Speaker >= 32
+	bx, tx := 10.0, 216.0
+	rightEdge := bx + 620 - 16
+	if upper {
+		tx = 32
+		rightEdge = (float64(logicalW) - 16 - 80*ps) - 8 // 頭像左緣前 8px
+	}
+	perLine := int((rightEdge - tx) / (fontSize * 1.7))
+	if perLine < 1 {
+		perLine = 1
+	}
+	txt := []rune("『" + toFullWidth(dl.Text) + "』")
+	var lines []string
+	for len(txt) > 0 {
+		nn := perLine
+		if nn > len(txt) {
+			nn = len(txt)
+		}
+		lines = append(lines, string(txt[:nn]))
+		txt = txt[nn:]
+	}
+	return lines
+}
+
+// dlgPageCount 該句對白的總頁數(每頁最多 3 行)。
+func dlgPageCount(dl battle.DialogLine) int {
+	n := (len(dlgWrap(dl)) + 2) / 3
+	if n < 1 {
+		n = 1
+	}
+	return n
+}
+
+// dlgAdvance 處理 Enter:目前句還有下一頁就翻頁(回 false,不換句);翻完(或本就單頁)就 pop
+// 到下一句、頁碼歸零(回 true=已換句)。修長對白被截斷丟棄的 bug(使用者回饋 2026-07-05)。
+func (g *Game) dlgAdvance() bool {
+	if len(g.dialog) > 0 && g.dlgPage+1 < dlgPageCount(g.dialog[len(g.dialog)-1]) {
+		g.dlgPage++
+		return false
+	}
+	if len(g.dialog) > 0 {
+		g.dialog = g.dialog[:len(g.dialog)-1]
+	}
+	g.dlgPage = 0
+	return true
 }
 
 // ── 對話框切換動畫(使用者回饋 2026-07-04 #3:換人說話時框先收合再展開)──
@@ -587,6 +640,7 @@ func (g *Game) enterNode() {
 	switch n.Type {
 	case "story", "cutscene": // cutscene(doc50):同一套場景設置,進行中改由 Beats 驅動(見下)
 		g.dialog = nil
+		g.dlgPage = 0 // 新對白從第一頁起
 		lines := n.Lines
 		if n.Script != "" { // 本機劇情文本檔(assets/story/chNN.json,人工精校;無檔 fallback 內嵌 lines)
 			if ls := loadStoryScript(n.Script, n.Scene); len(ls) > 0 {
@@ -704,10 +758,7 @@ func (g *Game) campInput() bool {
 	case "story":
 		// 淡出/淡入或走位動畫進行中(doc46 §5.2/§5.3)不接受輸入,避免重複觸發轉場。
 		if enter && g.fade == nil && len(g.storyWalks) == 0 {
-			if len(g.dialog) > 0 {
-				g.dialog = g.dialog[:len(g.dialog)-1]
-			}
-			if len(g.dialog) == 0 {
+			if g.dlgAdvance() && len(g.dialog) == 0 { // 翻頁優先;翻完換句、句盡才進下一節點
 				g.advanceStoryNode(n)
 			}
 		}
@@ -717,8 +768,7 @@ func (g *Game) campInput() bool {
 		// (只有 dialog beat 會填它),其餘拍(pan/walk/act/fade/delay)Enter 無作用,
 		// 交給 Update 各自的計時/佇列機制推進,不在這裡搶著 advance。
 		if enter && len(g.dialog) > 0 {
-			g.dialog = g.dialog[:len(g.dialog)-1]
-			if len(g.dialog) == 0 {
+			if g.dlgAdvance() && len(g.dialog) == 0 { // 翻頁優先;翻完換句、句盡才進下一拍
 				g.beatAdvance()
 			}
 		}
@@ -1524,7 +1574,7 @@ func (g *Game) Update() error {
 	}
 	if len(g.dialog) > 0 { // 戰鬥起手對白(g.camp==nil 直接開局,或 campaign battle 節點無 story 攔截):Enter/Space 逐句清除
 		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace) {
-			g.dialog = g.dialog[:len(g.dialog)-1]
+			g.dlgAdvance() // 翻頁優先,翻完換句(長對白分頁,不截斷)
 		}
 		return nil
 	}
@@ -1857,24 +1907,11 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				} else {
 					tx = 32
 				}
-				// 自動換行(原版每框最多 3 行,doc14)。下框文字到框右緣;
-				// 上框頭像在右,文字須止於頭像左緣前、不得覆蓋頭像(對照原版父王對話 orig 18-02-20)。
-				txt := []rune("『" + toFullWidth(dl.Text) + "』")
-				rightEdge := bx + 620 - 16
-				if upper {
-					rightEdge = hx - 8 // 頭像左緣前留 8px
-				}
-				perLine := int((rightEdge - tx) / (fontSize * 1.7)) // 全形字寬 ≈ fontSize×scale
-				if perLine < 1 {
-					perLine = 1
-				}
-				for i := 0; len(txt) > 0 && i < 3; i++ {
-					n := perLine
-					if n > len(txt) {
-						n = len(txt)
-					}
-					g.font.Draw(screen, string(txt[:n]), tx, ty+float64(i)*38, 1.7, color.RGBA{0xf0, 0xf4, 0xff, 0xff})
-					txt = txt[n:]
+				// 自動換行(dlgWrap 與 Enter 分頁共用)。每頁最多 3 行,超過分頁,渲染目前頁 g.dlgPage。
+				lines := dlgWrap(dl)
+				start := g.dlgPage * 3
+				for i := 0; i < 3 && start+i < len(lines); i++ {
+					g.font.Draw(screen, lines[start+i], tx, ty+float64(i)*38, 1.7, color.RGBA{0xf0, 0xf4, 0xff, 0xff})
 				}
 			}
 			_ = top
