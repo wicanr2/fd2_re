@@ -22,7 +22,7 @@
 | `LOADCH` (0x205da) | 載章節地圖+文本(章節變數驅動) | 節點 map/script 欄 |
 | `PAN(col,row)` (0x135dd) | 平滑鏡頭平移到格 | beat op:pan |
 | `TXT(idx)` (0x15f84) | 播章文本第 idx 條(開框/頭像/翻頁) | beat op:dialog |
-| `ACT(id)` (0x1366a) | 演出:批次設單位 pose/觸發走位,N 拍 | beat op:act(walk/pose) |
+| `ACT(id)` (0x1366a) | 演出:批次設單位 pose/幀動畫,N 拍(**不搬格子**;走位=step家族/0x13488) | beat op:act(pose) |
 | `SPAWN(g)` (0x10b4e) | 群組 g 登場 | beat op:spawn |
 | `JOIN(char)` (0x112a5) | 角色入隊伍名冊 | beat op:join |
 | `BGM(track)` (0x25977) | 配樂切換/停止 | beat op:bgm |
