@@ -1832,9 +1832,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				} else {
 					tx = 32
 				}
-				// 自動換行(框右緣內;原版每框最多 3 行,doc14)
+				// 自動換行(原版每框最多 3 行,doc14)。下框文字到框右緣;
+				// 上框頭像在右,文字須止於頭像左緣前、不得覆蓋頭像(對照原版父王對話 orig 18-02-20)。
 				txt := []rune("『" + toFullWidth(dl.Text) + "』")
-				perLine := int((bx + 620 - 16 - tx) / (fontSize * 1.7)) // 全形字寬 ≈ fontSize×scale
+				rightEdge := bx + 620 - 16
+				if upper {
+					rightEdge = hx - 8 // 頭像左緣前留 8px
+				}
+				perLine := int((rightEdge - tx) / (fontSize * 1.7)) // 全形字寬 ≈ fontSize×scale
 				if perLine < 1 {
 					perLine = 1
 				}
