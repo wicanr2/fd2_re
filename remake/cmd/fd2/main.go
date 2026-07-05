@@ -110,6 +110,8 @@ type Game struct {
 	bgmCur             string
 	bgmSource          string                  // 音源設定 "fm"/"mt32"(settings.go;F2 切換)
 	debug              bool                    // F3:開發除錯 HUD(座標/陣營原文等)
+	unitLabels         bool                    // FD2_UNIT_LABELS=1:cutscene sprite 左上標 [idx]fig+名+座標(協助回報/對映原版 slot)
+	cutsceneLog        bool                    // FD2_CUTSCENE_LOG=1:過場 node/beat/走位逐步 log 到 stderr(協助對原版資料比對)
 	banner             string                  // 回合橫幅文字(PLAYER/ENEMY PHASE)
 	bannerT            int                     // 橫幅剩餘 tick
 	sfx                map[int][]byte          // SFX PCM(doc36 FDOTHER#31 14樣本)
@@ -338,6 +340,10 @@ func (g *Game) stepStoryWalks() {
 			if w.finalDir >= 0 { // 走完面向目標(如 Ares 走到索爾旁面向他),不停在走位末段的短軸方向
 				u.Dir = w.finalDir
 			}
+			if g.cutsceneLog { // FD2_CUTSCENE_LOG:印走位完成(誰、從哪到哪、末向),對原版走位比對
+				fmt.Fprintf(os.Stderr, "[cutscene] walk done: %s (%d,%d)->(%d,%d) dir=%d\n",
+					figName(u.Fig), w.fromX, w.fromY, w.toX, w.toY, u.Dir)
+			}
 			if w.then != nil {
 				w.then()
 			}
@@ -431,7 +437,32 @@ func (g *Game) beatAdvance() {
 // beatStart 依原語種類啟動目前這一拍(狀態掛到 g.camPan/g.storyWalks/g.dialog/g.actJob/
 // g.fade/g.beatDelay,交給 Update 既有機制逐幀推進)。找不到對應角色 / 資料缺漏時直接跳拍
 // 並記到 loadErr,不讓整個過場卡死(誠實 stub,勝過假裝完成)。
+// figName cutscene sprite 標號用:fig id → 角色名(協助使用者回報 + 對映原版 slot)。
+func figName(fig int) string {
+	switch fig {
+	case 0:
+		return "索爾"
+	case 4:
+		return "亞雷斯"
+	case 9:
+		return "悠妮"
+	case 30:
+		return "蓋亞"
+	case 48:
+		return "國王"
+	case 66:
+		return "王后"
+	case 68, 69:
+		return "守衛"
+	}
+	return fmt.Sprintf("fig%d", fig)
+}
+
 func (g *Game) beatStart(b campaign.Beat) {
+	if g.cutsceneLog { // FD2_CUTSCENE_LOG:印每一拍(op+參數),對原版 handler beat 序列比對
+		fmt.Fprintf(os.Stderr, "[cutscene] beat op=%s fig=%d x=%d y=%d frames=%d line=%d count=%d\n",
+			b.Op, b.Fig, b.X, b.Y, b.Frames, b.Line, b.Count)
+	}
 	if b.Op != "walk" { // 鏡頭跟焦只在 walk 拍內有效(見下),其餘拍一律不跟焦
 		g.followWalk = false
 	}
@@ -685,6 +716,12 @@ func (g *Game) enterNode() {
 			}
 		} else {
 			g.storyActors = nil
+		}
+		if g.cutsceneLog { // FD2_CUTSCENE_LOG:進場印節點 + 每個 actor(idx/名/座標/dir)
+			fmt.Fprintf(os.Stderr, "[cutscene] === node %q map=%s cam=(%d,%d) ===\n", g.camp.Cur, n.Map, n.CamX, n.CamY)
+			for i, a := range g.storyActors {
+				fmt.Fprintf(os.Stderr, "[cutscene]   actor[%d] %s (%d,%d) dir=%d\n", i, figName(a.Fig), a.X, a.Y, a.Dir)
+			}
 		}
 		if n.Type == "cutscene" {
 			g.beats = n.Beats
@@ -1800,6 +1837,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(storyZoom, storyZoom)
 		screen.DrawImage(g.storyView, op)
+		if g.unitLabels { // FD2_UNIT_LABELS:cutscene sprite 左上標 [idx]名(x,y)dDir,協助回報/對映原版 slot
+			for i := range g.storyActors {
+				u := &g.storyActors[i]
+				sx := (float64(u.X*tw) - g.camX + u.OffX) * storyZoom
+				sy := (float64(u.Y*th) - g.camY + u.OffY) * storyZoom
+				ebitenutil.DebugPrintAt(screen, fmt.Sprintf("[%d]f%d(%d,%d)d%d", i, u.Fig, u.X, u.Y, u.Dir), int(sx), int(sy)-14)
+			}
+		}
 	}
 	// 游標(白框):指令環/法術選單開啟時不顯示(原版該狀態下選取指示只在環上的選中圖示,
 	// 常駐白框會疊在中央、與環的選中框混淆,見 playfix #5)
@@ -2427,6 +2472,8 @@ func loadGame() *Game {
 	if v := os.Getenv("FD2_BGM_SOURCE"); v != "" && bgmSourceName[v] != "" {
 		g.bgmSource = v // 覆寫(截圖/測試用)
 	}
+	g.unitLabels = os.Getenv("FD2_UNIT_LABELS") != ""
+	g.cutsceneLog = os.Getenv("FD2_CUTSCENE_LOG") != ""
 	g.shotPath = os.Getenv("FD2_SHOT")
 	g.shotSeries = os.Getenv("FD2_SHOT_SERIES")
 	if v := os.Getenv("FD2_SHOT_FRAME"); v != "" {
