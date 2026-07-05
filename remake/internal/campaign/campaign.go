@@ -73,6 +73,7 @@ type Beat struct {
 	Fig    int  `json:"fig,omitempty"`    // walk/act:對應 Node.Actors 裡的角色(依 Fig 尋找,同 ActorWalk)
 	Frames int  `json:"frames,omitempty"` // pan/walk/fade 位移或漸變幀數;delay 用幀數(見 Ms)
 	Follow bool `json:"follow,omitempty"` // walk:走位期間鏡頭鎖定跟隨(doc47 §9,同 Node.FollowWalk 機制)
+	Dir    *int `json:"dir,omitempty"`    // walk:走完後面向(指標,nil=保留走位末向;指定則面向它,如索爾走前面轉身面向亞雷斯)
 
 	// act:單位原地播 pose 序列(姿態循環,無位移)。remake 尚未把 74 筆 acting 資源解碼幀接上
 	// 引擎播放(doc47 §5 未解),此處以「方向切換」近似演出節奏(見 main.go stepActJob 註解),

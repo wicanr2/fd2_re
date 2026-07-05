@@ -183,6 +183,7 @@ type storyWalkJob struct {
 	fromX, fromY int
 	toX, toY     int
 	t, frames    int
+	finalDir     int // 走完後面向(-1=保留走位末向;>=0=設定,如進場走位面向 actor 目標 dir)
 	then         func()
 }
 
@@ -260,7 +261,7 @@ func (g *Game) advanceStoryNode(n *campaign.Node) {
 				g.storyWalks = append(g.storyWalks, &storyWalkJob{
 					actor: i, fromX: u.X, fromY: u.Y,
 					toX: ew.ToX, toY: ew.ToY,
-					frames: ew.Frames, then: onDone,
+					frames: ew.Frames, finalDir: -1, then: onDone,
 				})
 				break
 			}
@@ -327,6 +328,9 @@ func (g *Game) stepStoryWalks() {
 		u.OffY = (float64(w.fromY) + cy - float64(w.toY)) * float64(g.m.TileH)
 		if w.t >= w.frames {
 			u.OffX, u.OffY = 0, 0
+			if w.finalDir >= 0 { // 走完面向目標(如 Ares 走到索爾旁面向他),不停在走位末段的短軸方向
+				u.Dir = w.finalDir
+			}
 			if w.then != nil {
 				w.then()
 			}
@@ -456,9 +460,13 @@ func (g *Game) beatStart(b campaign.Beat) {
 			frames = 60
 		}
 		g.followWalk = b.Follow
+		bdir := -1 // beat walk 面向:預設保留走位末向(如索爾往上走完仍面上);b.Dir 指定則走完面向它
+		if b.Dir != nil {
+			bdir = *b.Dir
+		}
 		g.storyWalks = append(g.storyWalks, &storyWalkJob{
 			actor: idx, fromX: fromX, fromY: fromY,
-			toX: b.X, toY: b.Y, frames: frames, then: g.beatAdvance,
+			toX: b.X, toY: b.Y, frames: frames, finalDir: bdir, then: g.beatAdvance,
 		})
 	case "dialog":
 		n := b.Count
@@ -608,6 +616,7 @@ func (g *Game) enterNode() {
 					g.storyWalks = append(g.storyWalks, &storyWalkJob{
 						actor: idx, fromX: a.FromX, fromY: a.FromY,
 						toX: a.X, toY: a.Y, frames: a.WalkFrames,
+						finalDir: a.Dir, // 進場走完面向 actor 宣告的 dir(如 Ares 面向索爾)
 					})
 				}
 			}
