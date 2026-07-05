@@ -7,6 +7,12 @@ assets/*
 !assets/story/
 # 例外:法術表(EXE dump 數值,已在 docs/data 公開)
 !assets/spells.json
+# 例外:地圖的 RE 資料 JSON(units.json 單位數值/座標、map.json tile 索引/佈局)——
+# 這些是我們反組譯自己產生的資料文檔,非版權(使用者 2026-07-04 明示)。
+# 但同目錄的 tileset.png 是遊戲美術=版權,維持不入庫(下面 *.png 規則擋掉)。
+!assets/maps/
+assets/maps/*/*.png
+assets/maps/*/*.ogg
 web/assets/
 web/fd2.wasm
 *.wasm
