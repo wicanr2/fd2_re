@@ -114,9 +114,10 @@ type Node struct {
 	Scene  string  `json:"scene,omitempty"`  // story+Script:只取 Script 檔裡 label 對映的那個 scene(doc46 §5.2;
 	// 空=舊行為,整份 Script 攤平全部 scenes 成一條對白隊列——別讓一個節點播完整份劇本)
 	ExitWalk  *ActorWalk  `json:"exit_walk,omitempty"`  // story:對白播完、換場前先走一段路再淡出(doc46 §5.3;單一角色)
-	ExitWalks []ActorWalk `json:"exit_walks,omitempty"` // 同上,多角色一起退場(使用者回饋 2026-07-04 #A:
-	// 影片證實草地小徑幕結尾索爾+亞雷斯兩人一起走離,非單人;ExitWalk/ExitWalks 可並用,全部走完才轉場;
-	// 同時多角色並行走位不在 Beat.walk 的單角色設計內,cutscene 節點結束時仍沿用本欄位,不重造輪子)
+	ExitWalks []ActorWalk `json:"exit_walks,omitempty"` // 多角色同時退場(全部走完才轉場)。
+	// ⚠ 更正(doc55 逐幀量測 2026-07-05):早前「草地幕兩人一起走離」是錯的——實測=亞雷斯對話中先走近、
+	// 索爾對話後才單獨走到亞雷斯旁、隨即淡出(無一起走離畫面)。草地幕已改「亞雷斯進場走位+索爾單人 ExitWalk」;
+	// 本欄保留供其他真有「多人同時退場」的幕使用;並行多角色不在 Beat.walk 單角色設計內,收尾沿用本欄不重造輪子)
 	Beats       []Beat `json:"beats,omitempty"`        // cutscene:過場原語序列(doc 50);Beats 跑完後走 ExitWalk(s)+淡出+Advance,同 story 節點收尾
 	AutoAdvance int    `json:"auto_advance,omitempty"` // story:無對白/Script 時,進節點後幾幀自動轉場(doc46 行軍蒙太奇)
 	WalkFirst   bool   `json:"walk_first,omitempty"`   // story:進場走位全走完才顯示對白(2-1:王座廳索爾沿紅毯走到王座前對話框才出現)

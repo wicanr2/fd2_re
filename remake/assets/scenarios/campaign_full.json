@@ -184,14 +184,54 @@
     }
    ],
    "beats": [
-    { "op": "pan", "x": 72, "y": 816, "frames": 60 },
-    { "op": "walk", "fig": 0, "x": 8, "y": 21, "frames": 278, "follow": true },
-    { "op": "dialog", "line": 0, "count": 1 },
-    { "op": "pan", "x": 72, "y": 120, "frames": 45 },
-    { "op": "dialog", "line": 1, "count": 1 },
-    { "op": "pan", "x": 72, "y": 0, "frames": 39 },
-    { "op": "dialog", "line": 2, "count": 17 },
-    { "op": "walk", "fig": 0, "x": 8, "y": 14, "frames": 90 }
+    {
+     "op": "pan",
+     "x": 72,
+     "y": 816,
+     "frames": 60
+    },
+    {
+     "op": "walk",
+     "fig": 0,
+     "x": 8,
+     "y": 21,
+     "frames": 278,
+     "follow": true
+    },
+    {
+     "op": "dialog",
+     "line": 0,
+     "count": 1
+    },
+    {
+     "op": "pan",
+     "x": 72,
+     "y": 120,
+     "frames": 45
+    },
+    {
+     "op": "dialog",
+     "line": 1,
+     "count": 1
+    },
+    {
+     "op": "pan",
+     "x": 72,
+     "y": 0,
+     "frames": 39
+    },
+    {
+     "op": "dialog",
+     "line": 2,
+     "count": 17
+    },
+    {
+     "op": "walk",
+     "fig": 0,
+     "x": 8,
+     "y": 14,
+     "frames": 90
+    }
    ]
   },
   "story_ch01_palace_path": {
@@ -212,18 +252,27 @@
     },
     {
      "fig": 4,
-     "x": 13,
-     "y": 47,
-     "dir": 1
+     "x": 8,
+     "y": 46,
+     "dir": 1,
+     "from_x": 13,
+     "from_y": 47,
+     "walk_frames": 120
     }
    ],
    "beats": [
-    { "op": "dialog", "line": 0, "count": 22 }
+    {
+     "op": "dialog",
+     "line": 0,
+     "count": 22
+    }
    ],
-   "exit_walks": [
-    { "fig": 0, "to_x": 6, "to_y": 48, "frames": 60 },
-    { "fig": 4, "to_x": 15, "to_y": 49, "frames": 60 }
-   ]
+   "exit_walk": {
+    "fig": 0,
+    "to_x": 8,
+    "to_y": 47,
+    "frames": 85
+   }
   },
   "story_ch01_forest_duel": {
    "type": "cutscene",
@@ -235,7 +284,11 @@
    "cam_x": 160,
    "cam_y": 1020,
    "beats": [
-    { "op": "dialog", "line": 0, "count": 5 }
+    {
+     "op": "dialog",
+     "line": 0,
+     "count": 5
+    }
    ],
    "actors": [
     {
