@@ -66,6 +66,12 @@
 
 **[釘死 2026-07-05]acting 不是走位機制**:反查 0x1366a 本體只呼叫 0x127e0(繪製)+0x11cac(重繪)+blit,**不寫 unit +0/+1(格子)、不呼叫 step 家族**。acting 只做「原地姿態/幀動畫」(擺姿勢/揮劍/循環),搬格子的走位另由 §1.1 的 step 家族/0x13488。（doc54 早已記對:acting=節拍器、走位由引擎步進座標。）
 
+**[資料面直接證實 2026-07-05,靜態讀 dump 非 dosbox]**:讀 74 筆解碼 acting(`extracted/dosbox_dump/acting_decoded/`),
+草地幕 0x65~0x69 **全部只有 (unit,pose) 面向,無任何格子位移**:0x65=units 0-15 全 pose2(上,定場)、
+0x66/0x67=units 16&17 面向循環、**0x69(帶他離開)=unit16 設 pose3(右,領頭面向)**。⟹ acting 給面向,
+走位(格子位移)是另一套(step家族/0x13488)。「帶他離開」還原 = acting 面向右 + 使用者截圖(往右走+淡出),
+由上而下對應即可(見 doc44 §5、記憶 no-speculation §6)。
+
 **acting 資源(74 筆,id 0x50–0x99)**:執行期 base=0x207718,已全 dump+解碼(dosbox,本機 `extracted/dosbox_dump/`)。⚠ **原始靜態容器未定位**(§5)——但**影響低**:acting=姿態動畫,remake 用自有 sprite 動畫近似即可,不 RE 也能做(使用者 2026-07-05 確認;需要時再給影片觀察)。
 
 ## 2. remake Beat DSL(campaign 節點新形態)
