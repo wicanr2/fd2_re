@@ -29,6 +29,7 @@
 | acting 機制(=原地姿態/幀動畫,**不搬格子**) | **`50` §1.2**(`54` 僅存 dosbox 實測原始記錄) |
 | 「走位」機制(step家族4方向+路徑走位0x13488)、單位欄位 +0/+1/+3/+4、面向規則 | **`50` §1.1** |
 | remake 過場**引擎**(BeatRunner / cutscene 節點 / beats DSL)怎麼設計 | **`50`**(§2 DSL,§3 全33關管線) |
+| **某一幕的原始資料×解讀**(handler beat 反組譯 + acting hex+解碼 + roster + campaign 對映 + 可疑點,供人工覆核) | `scene-decode/ch1-throne.md`(皇宮)、`scene-decode/ch1-meadow.md`(草地);每幕一份 |
 | 全 33 關過場 beats(機器可讀) | `docs/data/chapter_beats/chNN_{pre,post}.json` |
 | 開機/標題/主選單/劇情自動過場流程(反組譯) | `23` + `39`(ANI.DAT AFM 開場) |
 
