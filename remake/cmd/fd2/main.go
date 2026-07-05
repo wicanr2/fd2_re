@@ -152,6 +152,7 @@ type Game struct {
 	tai      *ebiten.Image                   // 我方腳下台座(TAI.DAT;0x29164 載 0x28c46,doc35 §3.3)
 	panel    *ebiten.Image                   // 狀態欄框素材(FDOTHER#5 LMI1 #22,149×42;含bevel+HP/MP標籤+槽,doc35 §4)
 	dlgBox   *ebiten.Image                   // 對話框框素材(FDOTHER#5 LMI1 #21,310×99;orig 下框(5,112)@320)
+	dlgGrad  *ebiten.Image                   // 對話框內部漸層(比對頭像底色 40,69,138→56,85,154 消接縫色差;lazy 建)
 	fontNm   *Font                           // 狀態欄名字(整數尺寸 face,scale1 銳利)
 	digits   [10]*ebiten.Image               // 狀態欄數字 0-9(LMI1 #31-40 原版 digit cell,白/藍影)
 	redSil   map[*ebiten.Image]*ebiten.Image // 命中閃紅的全紅剪影快取(orig=VGA 色盤閃紅)
@@ -1794,9 +1795,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			// 相位中(收合舊框)以 dlgShown 為準,避免框在收合前就跳到新說話者的位置。
 			upper := g.dlgShown >= 32 // >=32 為對方/敵/NPC(我方角色 id 0-31)
 			// 框位置:模板匹配 orig 下框 (5,112)@320(底部裁 11px 超出畫面,原版如此);上框鏡射 y=-11
-			bx, by := 10.0, 224.0
+			bx, by := 10.0, 198.0 // 下框上移使底邊396在畫面內(原224底邊422出畫面,使用者回饋2026-07-05)
 			if upper {
-				by = -22
+				by = 4 // 上框下移使頂邊4在畫面內(原-22頂邊出畫面)
 			}
 			top := by
 			if g.dlgBox != nil {
@@ -1813,13 +1814,28 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				screen.DrawImage(box, op)
 			}
 			if g.dlgPhase == 0 { // 縮/展相位中不畫頭像與文字
+				// 框內部漸層:與頭像底色同一漸層(頂 40,69,138 → 底 56,85,154),消除頭像↔框接縫色差
+				// (使用者回饋 2026-07-05)。疊在框素材上、頭像/文字之下。
+				if g.dlgGrad == nil {
+					const gh = 198
+					gi := ebiten.NewImage(1, gh)
+					for y := 0; y < gh; y++ {
+						f := float64(y) / float64(gh-1)
+						gi.Set(0, y, color.RGBA{
+							uint8(40 + (56-40)*f), uint8(69 + (85-69)*f), uint8(138 + (154-138)*f), 255})
+					}
+					g.dlgGrad = gi
+				}
+				gop := &ebiten.DrawImageOptions{}
+				gop.GeoM.Scale(620-16, 182.0/198.0) // 1×198 → 內部 604×182(框邊界內縮 8px)
+				gop.GeoM.Translate(bx+8, by+8)
+				screen.DrawImage(g.dlgGrad, gop)
 				// 頭像:側臉,收進框內(不凸出框頂),臉朝文字(對照 orig_02:我方左朝右、對方上框右朝左)。
 				const ps = 2.1 // 80×80 DATO → 168px,收進框高(~176px)內
 				hx, tx, ty := 16.0, 216.0, by+24
-				hy := float64(logicalH) - 80*ps - 8 // 下框:頭像底距畫布底 8px,頭頂在框內
+				hy := by + (198-80*ps)/2 // 頭像垂直置中於框內(框高198,頭像168),不凸出框上下邊
 				if upper {
 					hx = float64(logicalW) - 16 - 80*ps
-					hy = by + 12 // 上框:頭像收在框內(頭頂距框頂 12px)
 					tx = 32
 					ty = by + 46
 				}
