@@ -146,11 +146,12 @@ type Node struct {
 	// ⚠ 更正(doc55 逐幀量測 2026-07-05):早前「草地幕兩人一起走離」是錯的——實測=亞雷斯對話中先走近、
 	// 索爾對話後才單獨走到亞雷斯旁、隨即淡出(無一起走離畫面)。草地幕已改「亞雷斯進場走位+索爾單人 ExitWalk」;
 	// 本欄保留供其他真有「多人同時退場」的幕使用;並行多角色不在 Beat.walk 單角色設計內,收尾沿用本欄不重造輪子)
-	Beats       []Beat `json:"beats,omitempty"`        // cutscene:過場原語序列(doc 50);Beats 跑完後走 ExitWalk(s)+淡出+Advance,同 story 節點收尾
-	AutoAdvance int    `json:"auto_advance,omitempty"` // story:無對白/Script 時,進節點後幾幀自動轉場(doc46 行軍蒙太奇)
-	WalkFirst   bool   `json:"walk_first,omitempty"`   // story:進場走位全走完才顯示對白(2-1:王座廳索爾沿紅毯走到王座前對話框才出現)
-	FollowWalk  bool   `json:"follow_walk,omitempty"`  // story:走位期間鏡頭鎖定跟隨走位者(原版 13×8 格視野長廊運鏡,doc25 0x11eee)
-	CamMaxY     int    `json:"cam_max_y,omitempty"`    // story:鏡頭 Y 上限(px;0=不限)。王座廳=808 擋住 map32 底部草地段
+	Beats          []Beat `json:"beats,omitempty"`           // cutscene:過場原語序列(doc 50);Beats 跑完後走 ExitWalk(s)+淡出+Advance,同 story 節點收尾
+	HandlerBinding string `json:"handler_binding,omitempty"` // cutscene:editable handler binding; runtime must reject unresolved compile issues
+	AutoAdvance    int    `json:"auto_advance,omitempty"`    // story:無對白/Script 時,進節點後幾幀自動轉場(doc46 行軍蒙太奇)
+	WalkFirst      bool   `json:"walk_first,omitempty"`      // story:進場走位全走完才顯示對白(2-1:王座廳索爾沿紅毯走到王座前對話框才出現)
+	FollowWalk     bool   `json:"follow_walk,omitempty"`     // story:走位期間鏡頭鎖定跟隨走位者(原版 13×8 格視野長廊運鏡,doc25 0x11eee)
+	CamMaxY        int    `json:"cam_max_y,omitempty"`       // story:鏡頭 Y 上限(px;0=不限)。王座廳=808 擋住 map32 底部草地段
 	// (原版第一幕畫面無草地,索爾從畫面外沿紅毯走入,使用者回饋 2026-07-04 #1)
 	BGM      string          `json:"bgm,omitempty"`
 	Next     string          `json:"next,omitempty"`    // story/event
