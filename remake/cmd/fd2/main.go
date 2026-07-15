@@ -215,12 +215,13 @@ type storyFade struct {
 // storyFadeFrames 淡出/淡入各自幀數(60fps;doc46 要求 0.5–1s,先做快版 0.6s,實測後可調)。
 const storyFadeFrames = 36
 
-// camPanJob beat「pan」原語(doc50 §1 0x135dd):鏡頭平滑位移到目標像素座標,線性內插,
-// 走完呼叫 g.beatAdvance 進下一拍。與 followWalk 鏡頭跟隨互斥(beats 序列同時只有一拍在跑)。
+// camPanJob beat「pan」原語。tileStep 精確重現 0x135dd：先 X 後 Y、每 tick
+// 移一個 tile 並 redraw；舊 authored scenes 保留 frames 線性內插相容模式。
 type camPanJob struct {
 	fromX, fromY float64
 	toX, toY     float64
 	t, frames    int
+	tileStep     bool
 }
 
 // focusUnitJob 保留 0x12cea 的阻塞移動目標。原版每輪只移動一格，X 到位後才移 Y；
@@ -398,11 +399,37 @@ func (g *Game) stepFade() {
 	}
 }
 
-// stepCamPan 逐幀推進 beat「pan」鏡頭位移(camPanJob,doc50 0x135dd):線性內插到目標像素座標,
-// 走完清除 job、接下一拍;camPan 為空時內部直接返回(同 stepStoryWalks/stepActJob 慣例)。
+// stepCamPan 逐幀推進 beat「pan」鏡頭位移；原版模式逐 tile、X-first，
+// 相容模式線性內插。走完清除 job 並接下一拍。
 func (g *Game) stepCamPan() {
 	j := g.camPan
 	if j == nil {
+		return
+	}
+	if j.tileStep {
+		step := func(current, target float64, tile int) float64 {
+			if current < target {
+				current += float64(tile)
+				if current > target {
+					current = target
+				}
+			} else if current > target {
+				current -= float64(tile)
+				if current < target {
+					current = target
+				}
+			}
+			return current
+		}
+		if g.camX != j.toX {
+			g.camX = step(g.camX, j.toX, g.m.TileW)
+		} else if g.camY != j.toY {
+			g.camY = step(g.camY, j.toY, g.m.TileH)
+		}
+		if g.camX == j.toX && g.camY == j.toY {
+			g.camPan = nil
+			g.beatAdvance()
+		}
 		return
 	}
 	j.t++
@@ -723,7 +750,7 @@ func (g *Game) beatStart(b campaign.Beat) {
 		if frames == 0 {
 			frames = 30
 		}
-		g.camPan = &camPanJob{fromX: g.camX, fromY: g.camY, toX: float64(b.X), toY: float64(b.Y), frames: frames}
+		g.camPan = &camPanJob{fromX: g.camX, fromY: g.camY, toX: float64(b.X), toY: float64(b.Y), frames: frames, tileStep: b.TileStep}
 	case "walk":
 		idx := findActor(b.Fig)
 		if idx < 0 {
@@ -1341,8 +1368,13 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 			// direct chapter/debug start has no JOIN history and therefore keeps
 			// the authored scenario party intact.
 			filterScenarioParty(sc, g.partyMembers)
+			if err := reorderScenarioParty(sc, g.partyJoinOrder); err != nil {
+				g.loadErr = "scenario party order: " + err.Error()
+				return
+			}
 			g.sc = sc
 			g.dialog = append(g.dialog, sc.Setup(g.st)...)
+			g.applyScenarioPartyJoins()
 			g.applyPersistentParty(g.st)
 			g.focusOnParty()
 		}
@@ -1415,11 +1447,15 @@ func (g *Game) syncPartyFromBattle() error {
 		g.partyRoster = make(map[int]battle.Unit)
 	}
 	for _, current := range g.st.Units {
-		if current == nil || current.Camp != battle.Own {
+		if current == nil {
 			continue
 		}
 		id := current.Fig
-		if len(g.partyMembers) != 0 && !g.partyMembers[id] {
+		if len(g.partyMembers) != 0 {
+			if !g.partyMembers[id] {
+				continue
+			}
+		} else if current.Camp != battle.Own {
 			continue
 		}
 		snapshot := *current
@@ -1442,6 +1478,25 @@ func (g *Game) syncPartyFromBattle() error {
 		g.partyRoster[id] = snapshot
 	}
 	return nil
+}
+
+func (g *Game) applyScenarioPartyJoins() {
+	if g.sc == nil {
+		return
+	}
+	for _, id := range g.sc.TakePartyJoins() {
+		if !campaign.JoinableCharacterID(id) {
+			g.loadErr = fmt.Sprintf("scenario join_party:非法 player char_id=%d", id)
+			continue
+		}
+		if g.partyMembers == nil {
+			g.partyMembers = make(map[int]bool)
+		}
+		if !g.partyMembers[id] {
+			g.partyMembers[id] = true
+			g.partyJoinOrder = append(g.partyJoinOrder, id)
+		}
+	}
 }
 
 // filterScenarioParty applies the campaign's JOIN membership to a freshly
@@ -1470,11 +1525,11 @@ func filterScenarioParty(sc *battle.Scenario, members map[int]bool) {
 	}
 }
 
-// reorderScenarioParty applies the original JOIN chronology to a cutscene
-// party. Battle deployment keeps the scenario's authored order; this adapter
-// is used only by LOADCH because original acting addresses the current unit
-// array by construction slot. Chapter 0 proves the order 0,9,4,30 rather than
-// the battle UI order 0,4,9,30.
+// reorderScenarioParty applies the original JOIN chronology before either a
+// battle or handler cutscene constructs its runtime unit array. Deployment
+// cells stay attached to their characters; only slot construction changes.
+// Chapter 0 proves the order 0,9,4,30 rather than the authored battle-UI order
+// 0,4,9,30, and later acting/post handlers address those construction slots.
 func reorderScenarioParty(sc *battle.Scenario, joinOrder []int) error {
 	if sc == nil || len(joinOrder) == 0 {
 		return nil
@@ -3373,6 +3428,7 @@ func loadGame() *Game {
 					if turn, err := strconv.Atoi(os.Getenv("FD2_CAMP_PREP_TURN")); err == nil && turn > 0 && g.st != nil && g.sc != nil {
 						g.st.Turn = turn
 						g.sc.Fire(g.st, "on_turn_end", "")
+						g.applyScenarioPartyJoins()
 					}
 					if group, err := strconv.Atoi(os.Getenv("FD2_CAMP_PREP_DEAD_GROUP")); err == nil && g.st != nil {
 						for _, unit := range g.st.Units {
@@ -3459,6 +3515,7 @@ func (g *Game) endTurn() {
 func (g *Game) finishTurn() {
 	if g.sc != nil {
 		g.dialog = append(g.dialog, g.sc.Fire(g.st, "on_turn_end", "")...)
+		g.applyScenarioPartyJoins()
 	}
 	g.st.Turn++
 	for _, u := range g.st.Units {

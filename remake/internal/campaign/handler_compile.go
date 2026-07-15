@@ -6,9 +6,10 @@ import "fmt"
 // mapping.  Handler scripts deliberately retain the original grid coordinate;
 // there is no assumed global grid-to-pixel formula.
 type HandlerPoint struct {
-	X      int `json:"x"`
-	Y      int `json:"y"`
-	Frames int `json:"frames,omitempty"`
+	X        int  `json:"x"`
+	Y        int  `json:"y"`
+	Frames   int  `json:"frames,omitempty"`
+	TileStep bool `json:"tile_step,omitempty"`
 }
 
 // HandlerDialog identifies the authored remake line(s) corresponding to one
@@ -199,7 +200,7 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 				continue
 			}
 			beat := runtime(input, "pan")
-			beat.X, beat.Y, beat.Frames = p.X, p.Y, p.Frames
+			beat.X, beat.Y, beat.Frames, beat.TileStep = p.X, p.Y, p.Frames, p.TileStep
 			beats = append(beats, beat)
 		case "dialog":
 			if bindings.Dialog == nil {

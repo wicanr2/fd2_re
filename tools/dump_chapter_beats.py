@@ -57,8 +57,25 @@ PRIM = {
 SKIP = {0x36cd7, 0x375c0}  # 0x375c0 本輪核對過等同 event_handler_dump.py 的 SKIP 清單
 
 
-def dump_range(cg, start, end):
-    """遞迴走 jcc/jmp 到 ret(不跟 call),仿 event_handler_dump.py 的 dump()。"""
+def _direct_target(ins):
+    if ins.mnemonic == 'jmp' or ins.mnemonic.startswith('j'):
+        if ins.op_str.startswith('0x'):
+            return int(ins.op_str, 16)
+    return None
+
+
+def dump_range(cg, start, end, obj_end=OBJ1_END):
+    """Walk one handler plus every explicitly reached shared-tail block.
+
+    ``end`` is the next jump-table handler entry, so ordinary fallthrough must
+    stop there. Watcom also de-duplicates handler suffixes: a local body can
+    jump beyond that boundary (or backwards from a later handler) to a block
+    which performs dialog/reset/focus and returns. Earlier extraction discarded
+    those reachable blocks. Keep local instructions address-sorted for the
+    existing structured-branch recognizer, then append external blocks in CFG
+    discovery order so a backwards shared tail still executes after its caller.
+    Calls are never followed.
+    """
     out = {}
     stack = [start]
     while stack:
@@ -82,7 +99,41 @@ def dump_range(cg, start, end):
                 a = nxt
             else:
                 a = nxt
-    return [out[k] for k in sorted(out)]
+    local = [out[k] for k in sorted(out)]
+    external = []
+    queue = []
+    for ins in local:
+        target = _direct_target(ins)
+        if target is not None and not (start <= target < end):
+            queue.append(target)
+
+    # A malformed target must not turn an exporter run into an unbounded code
+    # walk. Real shared tails are tiny and terminate in RET/JMP; 4096 decoded
+    # instructions is a deliberately generous fail-safe.
+    budget = 4096
+    while queue and budget > 0:
+        a = queue.pop(0)
+        while a is not None and a not in out and 0 <= a < obj_end and budget > 0:
+            ins = cg._insn(a)
+            if not ins:
+                break
+            out[a] = ins
+            external.append(ins)
+            budget -= 1
+            m = ins.mnemonic
+            nxt = a + ins.size
+            if m in ('ret', 'retn', 'retf'):
+                a = None
+            elif m == 'jmp':
+                a = _direct_target(ins)
+            elif m.startswith('j'):
+                target = _direct_target(ins)
+                if target is not None and target not in out:
+                    queue.append(target)
+                a = nxt
+            else:
+                a = nxt
+    return local + external
 
 
 def _push_value(op):

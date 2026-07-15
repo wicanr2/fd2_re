@@ -6,8 +6,8 @@
   "story_index_map": "remake/assets/cutscenes/dialogue-index/count-aligned.json",
   "summary": {
     "handler_count": 60,
-    "dialogue_context_count": 78,
-    "skipped_dialogue_count": 68
+    "dialogue_context_count": 81,
+    "skipped_dialogue_count": 89
   },
   "handlers": [
     {
@@ -93,6 +93,14 @@
           "text_index": 2,
           "message": "loadch chapter is not an immediate value",
           "context_origin_addr": "0x32d22"
+        },
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x3320c",
+          "source_dat": null,
+          "text_index": 3,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x32d22"
         }
       ],
       "loadch_events": [
@@ -161,6 +169,14 @@
           "text_index": 2,
           "message": "loadch chapter is not an immediate value",
           "context_origin_addr": "0x32e96"
+        },
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x33133",
+          "source_dat": null,
+          "text_index": 3,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x32e96"
         }
       ],
       "loadch_events": [
@@ -196,6 +212,14 @@
           "source_addr": "0x32ff6",
           "source_dat": null,
           "text_index": 0,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x32fbc"
+        },
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x33133",
+          "source_dat": null,
+          "text_index": 1,
           "message": "loadch chapter is not an immediate value",
           "context_origin_addr": "0x32fbc"
         }
@@ -277,7 +301,7 @@
       "chapter": 5,
       "initial_source_dat": "FDTXT_006",
       "initial_context_kind": "handler_chapter",
-      "dialogue_context_count": 0,
+      "dialogue_context_count": 1,
       "skipped_dialogs": [],
       "loadch_events": []
     },
@@ -288,7 +312,16 @@
       "initial_source_dat": "FDTXT_006",
       "initial_context_kind": "handler_chapter",
       "dialogue_context_count": 0,
-      "skipped_dialogs": [],
+      "skipped_dialogs": [
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x3320c",
+          "source_dat": null,
+          "text_index": 0,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x33155"
+        }
+      ],
       "loadch_events": [
         {
           "source_addr": "0x33155",
@@ -369,6 +402,14 @@
           "text_index": 0,
           "message": "loadch chapter is not an immediate value",
           "context_origin_addr": "0x33223"
+        },
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x33133",
+          "source_dat": null,
+          "text_index": 1,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x33223"
         }
       ],
       "loadch_events": [
@@ -387,7 +428,7 @@
       "chapter": 8,
       "initial_source_dat": "FDTXT_009",
       "initial_context_kind": "handler_chapter",
-      "dialogue_context_count": 0,
+      "dialogue_context_count": 1,
       "skipped_dialogs": [],
       "loadch_events": []
     },
@@ -443,7 +484,16 @@
       "initial_source_dat": "FDTXT_010",
       "initial_context_kind": "handler_chapter",
       "dialogue_context_count": 0,
-      "skipped_dialogs": [],
+      "skipped_dialogs": [
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x3320c",
+          "source_dat": null,
+          "text_index": 0,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x33335"
+        }
+      ],
       "loadch_events": [
         {
           "source_addr": "0x33335",
@@ -487,6 +537,14 @@
           "text_index": 1,
           "message": "loadch chapter is not an immediate value",
           "context_origin_addr": "0x33371"
+        },
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x33133",
+          "source_dat": null,
+          "text_index": 2,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x33371"
         }
       ],
       "loadch_events": [
@@ -516,7 +574,16 @@
       "initial_source_dat": "FDTXT_012",
       "initial_context_kind": "handler_chapter",
       "dialogue_context_count": 0,
-      "skipped_dialogs": [],
+      "skipped_dialogs": [
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x3320c",
+          "source_dat": null,
+          "text_index": 0,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x333ff"
+        }
+      ],
       "loadch_events": [
         {
           "source_addr": "0x333ff",
@@ -552,7 +619,16 @@
       "initial_source_dat": "FDTXT_013",
       "initial_context_kind": "handler_chapter",
       "dialogue_context_count": 0,
-      "skipped_dialogs": [],
+      "skipped_dialogs": [
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x3320c",
+          "source_dat": null,
+          "text_index": 0,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x33475"
+        }
+      ],
       "loadch_events": [
         {
           "source_addr": "0x33475",
@@ -580,7 +656,16 @@
       "initial_source_dat": "FDTXT_014",
       "initial_context_kind": "handler_chapter",
       "dialogue_context_count": 0,
-      "skipped_dialogs": [],
+      "skipped_dialogs": [
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x3320c",
+          "source_dat": null,
+          "text_index": 0,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x33486"
+        }
+      ],
       "loadch_events": [
         {
           "source_addr": "0x33486",
@@ -666,8 +751,25 @@
       "initial_source_dat": "FDTXT_016",
       "initial_context_kind": "handler_chapter",
       "dialogue_context_count": 0,
-      "skipped_dialogs": [],
-      "loadch_events": []
+      "skipped_dialogs": [
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x3320c",
+          "source_dat": null,
+          "text_index": 0,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x33475"
+        }
+      ],
+      "loadch_events": [
+        {
+          "source_addr": "0x33475",
+          "chapter": null,
+          "kind": "fdtxt_context_unresolved",
+          "source_dat": null,
+          "message": "loadch chapter is not an immediate value"
+        }
+      ]
     },
     {
       "handler_file": "ch16_post.json",
@@ -686,7 +788,16 @@
       "initial_source_dat": "FDTXT_017",
       "initial_context_kind": "handler_chapter",
       "dialogue_context_count": 0,
-      "skipped_dialogs": [],
+      "skipped_dialogs": [
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x3320c",
+          "source_dat": null,
+          "text_index": 0,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x335b4"
+        }
+      ],
       "loadch_events": [
         {
           "source_addr": "0x335b4",
@@ -738,6 +849,14 @@
           "text_index": 1,
           "message": "loadch chapter is not an immediate value",
           "context_origin_addr": "0x335e4"
+        },
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x33133",
+          "source_dat": null,
+          "text_index": 2,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x335e4"
         }
       ],
       "loadch_events": [
@@ -767,8 +886,25 @@
       "initial_source_dat": "FDTXT_019",
       "initial_context_kind": "handler_chapter",
       "dialogue_context_count": 0,
-      "skipped_dialogs": [],
-      "loadch_events": []
+      "skipped_dialogs": [
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x3320c",
+          "source_dat": null,
+          "text_index": 0,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x33475"
+        }
+      ],
+      "loadch_events": [
+        {
+          "source_addr": "0x33475",
+          "chapter": null,
+          "kind": "fdtxt_context_unresolved",
+          "source_dat": null,
+          "message": "loadch chapter is not an immediate value"
+        }
+      ]
     },
     {
       "handler_file": "ch19_post.json",
@@ -787,8 +923,25 @@
       "initial_source_dat": "FDTXT_020",
       "initial_context_kind": "handler_chapter",
       "dialogue_context_count": 0,
-      "skipped_dialogs": [],
-      "loadch_events": []
+      "skipped_dialogs": [
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x3320c",
+          "source_dat": null,
+          "text_index": 0,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x33475"
+        }
+      ],
+      "loadch_events": [
+        {
+          "source_addr": "0x33475",
+          "chapter": null,
+          "kind": "fdtxt_context_unresolved",
+          "source_dat": null,
+          "message": "loadch chapter is not an immediate value"
+        }
+      ]
     },
     {
       "handler_file": "ch20_post.json",
@@ -807,8 +960,25 @@
       "initial_source_dat": "FDTXT_021",
       "initial_context_kind": "handler_chapter",
       "dialogue_context_count": 0,
-      "skipped_dialogs": [],
-      "loadch_events": []
+      "skipped_dialogs": [
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x3320c",
+          "source_dat": null,
+          "text_index": 0,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x33475"
+        }
+      ],
+      "loadch_events": [
+        {
+          "source_addr": "0x33475",
+          "chapter": null,
+          "kind": "fdtxt_context_unresolved",
+          "source_dat": null,
+          "message": "loadch chapter is not an immediate value"
+        }
+      ]
     },
     {
       "handler_file": "ch21_post.json",
@@ -827,7 +997,16 @@
       "initial_source_dat": "FDTXT_022",
       "initial_context_kind": "handler_chapter",
       "dialogue_context_count": 0,
-      "skipped_dialogs": [],
+      "skipped_dialogs": [
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x3320c",
+          "source_dat": null,
+          "text_index": 0,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x33688"
+        }
+      ],
       "loadch_events": [
         {
           "source_addr": "0x33688",
@@ -940,6 +1119,14 @@
           "text_index": 0,
           "message": "loadch chapter is not an immediate value",
           "context_origin_addr": "0x338ce"
+        },
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x3320c",
+          "source_dat": null,
+          "text_index": 1,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x338ce"
         }
       ],
       "loadch_events": [
@@ -1050,7 +1237,16 @@
       "initial_source_dat": "FDTXT_026",
       "initial_context_kind": "handler_chapter",
       "dialogue_context_count": 0,
-      "skipped_dialogs": [],
+      "skipped_dialogs": [
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x33133",
+          "source_dat": null,
+          "text_index": 0,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x33ab8"
+        }
+      ],
       "loadch_events": [
         {
           "source_addr": "0x33ab8",
@@ -1182,6 +1378,14 @@
           "text_index": 6,
           "message": "loadch chapter is not an immediate value",
           "context_origin_addr": "0x33afb"
+        },
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x33133",
+          "source_dat": null,
+          "text_index": 7,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x33afb"
         }
       ],
       "loadch_events": [
@@ -1200,7 +1404,7 @@
       "chapter": 27,
       "initial_source_dat": "FDTXT_028",
       "initial_context_kind": "handler_chapter",
-      "dialogue_context_count": 0,
+      "dialogue_context_count": 1,
       "skipped_dialogs": [],
       "loadch_events": []
     },
@@ -1297,6 +1501,14 @@
           "source_addr": "0x33e08",
           "source_dat": null,
           "text_index": 7,
+          "message": "loadch chapter is not an immediate value",
+          "context_origin_addr": "0x33dc4"
+        },
+        {
+          "kind": "unproven_fdtxt_context",
+          "source_addr": "0x33133",
+          "source_dat": null,
+          "text_index": 8,
           "message": "loadch chapter is not an immediate value",
           "context_origin_addr": "0x33dc4"
         }

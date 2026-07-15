@@ -77,3 +77,39 @@ func TestChapter2RuntimeAppendOrderMatchesOriginalHandlerSlots(t *testing.T) {
 		}
 	}
 }
+
+func TestChapter1Turn3JoinsHanoBeforeSpawningHisGroup(t *testing.T) {
+	st, err := Load("../../assets/maps/map0/map0_units.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sc, err := LoadScenario("../../assets/scenarios/ch01.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sc.Setup(st)
+	st.Turn = 3
+	sc.Fire(st, "on_turn_end", "")
+	joins := sc.TakePartyJoins()
+	if len(joins) != 1 || joins[0] != 1 {
+		t.Fatalf("turn3 joins=%#v, want Hano char1", joins)
+	}
+	var hano, hawat *Unit
+	for _, unit := range st.Units {
+		if unit.Fig == 1 {
+			hano = unit
+		}
+		if unit.Fig == 3 {
+			hawat = unit
+		}
+	}
+	if hano == nil || !hano.OnField || hano.Camp != Own {
+		t.Fatalf("Hano spawn = %#v, want recruited OWN unit", hano)
+	}
+	if hawat == nil || !hawat.OnField || hawat.Camp != Ally {
+		t.Fatalf("Hawat spawn = %#v, want allied NPC", hawat)
+	}
+	if got := sc.TakePartyJoins(); len(got) != 0 {
+		t.Fatalf("party joins were not consumed: %#v", got)
+	}
+}

@@ -55,6 +55,38 @@
         "addr": "0x33665",
         "target": "0x135dd"
       }
+    },
+    {
+      "op": "act",
+      "acting_id": 55,
+      "source": {
+        "addr": "0x3310c",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 2,
+      "source": {
+        "addr": "0x33133",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "reset_pose",
+      "source": {
+        "addr": "0x3313b",
+        "target": "0x134e4"
+      }
+    },
+    {
+      "op": "focus_unit",
+      "source": {
+        "addr": "0x33142",
+        "target": "0x12d7b"
+      },
+      "unit_slot": 0
     }
   ],
   "diagnostics": {

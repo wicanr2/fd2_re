@@ -255,7 +255,12 @@ runtime 位址」與錯 context table dump，不是 entry breakpoint 本身。
    尚未證實的 native call **保留為 `unknown`**，不可靜默丟失或猜譯。ch0(序章)仍逐項
    對照 doc47 §7；其中迴圈由 parser 自動辨識，精確匯成
    `scroll_step(unit_slot:2,repeat:15)` 與 `repeat:13`。**slot 不是方向**：它是 0x13185
-   跟隨／捲動畫面所跟的原版 unit slot，必須由 binding 指向 remake actor。
+   跟隨／捲動畫面所跟的原版 unit slot，必須由 binding 指向 remake actor。2026-07-16 修正
+   exporter 的 handler 邊界假設：Watcom 會讓多個 entry `jmp` 到下一個 entry 之外、甚至較低位址的
+   deduplicated shared tail；現在只追顯式 CFG edge（不追普通 fallthrough），local body 依位址排序後
+   再依發現順序接 external blocks。60 支 handler 因而由 **624 增至 701 個 top-level beats**，
+   `ch01_pre` 等過去被截掉的最後 dialog/focus 不再消失；兩個合成 CFG regression 固定跨下一 entry
+   與 backwards tail 的順序。
 2. 編譯層：`campaign.CompileHandlerScript` 將 editable handler script + 已驗證的章文本／
    FDFIELD roster mapping → map-specific runtime `Beat`。它能直接 lower `delay` 與已證實的
    `bgm`（`track=-1` → `bgm_stop`）；`loadch` 則要求同一個 address-keyed override 同時提供
@@ -263,9 +268,11 @@ runtime 位址」與錯 context table dump，不是 entry breakpoint 本身。
    `Beat.LoadCH`。BeatRunner 先驗證名冊／文本，再切圖；若 binding 有 `party_scenario`，先依 JOIN
    chronology 建立 persistent party slots，接著才按 FDFIELD group materialize/append 到 `storyActors`；
    缺任何一項就 issue／runtime fail-closed，絕不把 `0x205da` 偷降級為 map-only
-   或 no-op。檔名 `ch05` 是玩家章節名，但原版 resource chapter 是 4（故 map4、FDTXT_005），
-   不可由檔名猜，必須在 binding 寫明。首個完整垂直切片是
-   `bindings/ch05_pre.json` 的 `0x33155`，可編譯成唯一一個完整 loadch beat。
+   或 no-op。handler 檔名是**零起算 jump-table index**：`ch05_pre` 在 table index 5，driver 呼叫時
+   global chapter 也是 5，因此 `0x33155` 選的是 map5 / FDTXT_006 / `ch06.json`；舊 binding 把它
+   誤接到玩家第五章 map4/FDTXT_005，已撤下 campaign consumer。shared-tail 修正也證明它不是
+   「唯一 loadch beat」，後面還有 `dialog #0 @0x3320c → focus slot0 @0x33142`；在第六章 persistent
+   party JOIN chronology 尚未逐項釘死前保持 compile issue，不能假裝 complete。
 　　`pan/dialog/act` 一律要求**以 `source.addr` 鍵控的**
 　　顯式 mapper，分別避免猜 grid→pixel、FDTXT idx→譯文行、acting id→角色。`spawn`
 　　現已由 loadch roster 的 FDFIELD group 直接 lower；`join` 只接受原版 0–31 的我方名冊

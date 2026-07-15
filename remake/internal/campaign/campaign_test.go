@@ -111,11 +111,15 @@ func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 		t.Fatalf("grass Ares walks missing: %#v", grass.Beats)
 	}
 	ch05 := c.Nodes["story_ch05"]
-	if ch05 == nil || ch05.Type != "cutscene" || ch05.HandlerBinding != "assets/cutscenes/bindings/ch05_pre.json" || ch05.Next != "battle_ch05" {
-		t.Fatalf("ch05 should execute its complete editable pre-handler: %#v", ch05)
+	if ch05 == nil || ch05.Type != "cutscene" || ch05.HandlerBinding != "" || ch05.Next != "battle_ch05" {
+		t.Fatalf("player chapter 5 must not execute zero-based handler ch05 (chapter 6): %#v", ch05)
 	}
 	battle2, post2 := c.Nodes["battle_ch02"], c.Nodes["story_ch02_post"]
 	if battle2 == nil || battle2.OnWin != "story_ch02_post" || post2 == nil || post2.Type != "cutscene" || post2.HandlerBinding != "assets/cutscenes/bindings/ch01_post.json" || post2.Next != "choice_ch02" {
 		t.Fatalf("chapter2 battle must flow through editable post handler: battle=%#v post=%#v", battle2, post2)
+	}
+	previousPost, pre2 := c.Nodes["story_ch02"], c.Nodes["story_ch02_pre"]
+	if previousPost == nil || previousPost.HandlerBinding != "assets/cutscenes/bindings/ch00_post.json" || previousPost.Next != "story_ch02_pre" || pre2 == nil || pre2.HandlerBinding != "assets/cutscenes/bindings/ch01_pre.json" || pre2.Next != "battle_ch02" {
+		t.Fatalf("chapter2 must preserve post→pre→battle handlers: previous=%#v pre=%#v", previousPost, pre2)
 	}
 }

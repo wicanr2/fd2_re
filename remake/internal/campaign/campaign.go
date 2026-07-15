@@ -128,16 +128,17 @@ type Beat struct {
 	// pan/walk 共用:目標格(walk 用 X/Y 當終點);pan 的 X/Y 沿用 Node.CamX/CamY 語意——
 	// 已由畫面回饋校準的「像素座標」,不是 doc47 §3 原始 grid(col,row)值(grid→px 未逐點驗證,
 	// 不自行換算,見 rulebook 62)。
-	X      int  `json:"x,omitempty"`
-	Y      int  `json:"y,omitempty"`
-	FromX  int  `json:"from_x,omitempty"` // walk 起點;省略=沿用該角色目前座標(接續上一拍)
-	FromY  int  `json:"from_y,omitempty"`
-	Fig    int  `json:"fig,omitempty"`    // walk/act:對應 Node.Actors 裡的角色(依 Fig 尋找,同 ActorWalk)
-	Slot   *int `json:"slot,omitempty"`   // original runtime unit-array slot; identity-critical handler primitives only
-	Frames int  `json:"frames,omitempty"` // pan/walk/fade 位移或漸變幀數;delay 用幀數(見 Ms)
-	Follow bool `json:"follow,omitempty"` // walk:走位期間鏡頭鎖定跟隨(doc47 §9,同 Node.FollowWalk 機制)
-	Dir    *int `json:"dir,omitempty"`    // walk:走完後面向(指標,nil=保留走位末向;指定則面向它,如索爾走前面轉身面向亞雷斯)
-	Steps  int  `json:"steps,omitempty"`  // scroll_step:原版 0x13185 的重複上移格數
+	X        int  `json:"x,omitempty"`
+	Y        int  `json:"y,omitempty"`
+	FromX    int  `json:"from_x,omitempty"` // walk 起點;省略=沿用該角色目前座標(接續上一拍)
+	FromY    int  `json:"from_y,omitempty"`
+	Fig      int  `json:"fig,omitempty"`       // walk/act:對應 Node.Actors 裡的角色(依 Fig 尋找,同 ActorWalk)
+	Slot     *int `json:"slot,omitempty"`      // original runtime unit-array slot; identity-critical handler primitives only
+	Frames   int  `json:"frames,omitempty"`    // pan/walk/fade 位移或漸變幀數;delay 用幀數(見 Ms)
+	TileStep bool `json:"tile_step,omitempty"` // pan:0x135dd 每 tick 先 X 後 Y 移一個 tile
+	Follow   bool `json:"follow,omitempty"`    // walk:走位期間鏡頭鎖定跟隨(doc47 §9,同 Node.FollowWalk 機制)
+	Dir      *int `json:"dir,omitempty"`       // walk:走完後面向(指標,nil=保留走位末向;指定則面向它,如索爾走前面轉身面向亞雷斯)
+	Steps    int  `json:"steps,omitempty"`     // scroll_step:原版 0x13185 的重複上移格數
 
 	// act:Acting 非空時播放原版 acting frame 的行為轉錄：正常 frame 每 Beat 依 Pose 搬一格，
 	// special frame 只原地換姿態(doc50 §1.2)。Poses/PoseFrames 是舊的原地姿態近似欄位，

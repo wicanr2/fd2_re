@@ -1,6 +1,7 @@
 package campaign
 
 import (
+	"fmt"
 	"path/filepath"
 	"testing"
 )
@@ -542,61 +543,57 @@ func TestCompileRuntimeContextSpawnExpandsActingSlotFrontier(t *testing.T) {
 	}
 }
 
-func TestHandlerBindingResolvesStrictStoryIndexContext(t *testing.T) {
-	binding, err := LoadHandlerBinding("../../assets/cutscenes/bindings/ch01_pre.json")
-	if err != nil {
-		t.Fatal(err)
+func TestCompileCompleteChapter1PreUsesChapter2ContextAndSharedTail(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch01_pre.json")
+	if err != nil || len(issues) != 0 {
+		t.Fatalf("ch01_pre err=%v issues=%#v", err, issues)
 	}
-	script, err := LoadHandlerScript("../../assets/cutscenes/handlers/ch01_pre.json")
-	if err != nil {
-		t.Fatal(err)
+	if len(beats) != 38 {
+		t.Fatalf("ch01_pre compiled beats=%d, want 22 source beats with 4 dialogs expanded 4→20", len(beats))
 	}
-	beats, issues := CompileHandlerScript(script, binding.CompilerBindings())
-	if len(issues) == 0 {
-		t.Fatal("partial ch01 binding unexpectedly compiled whole handler")
-	}
-	dialogBeats := make([]Beat, 0)
+	dialogs := make([]Beat, 0, 20)
+	seen := map[string]Beat{}
 	for _, beat := range beats {
+		seen[beat.Source] = beat
 		if beat.Op == "dialog" {
-			dialogBeats = append(dialogBeats, beat)
+			dialogs = append(dialogs, beat)
 		}
 	}
-	if len(dialogBeats) != 19 {
-		t.Fatalf("indexed ch01 dialog beats = %d, want 5+2+12", len(dialogBeats))
+	if len(dialogs) != 20 {
+		t.Fatalf("FDTXT_002 #0..3 dialogs=%d, want 1+3+6+10", len(dialogs))
 	}
-	if dialogBeats[0].Line != 0 || dialogBeats[0].Count != 0 {
-		t.Fatalf("FDTXT #0 first line = %#v", dialogBeats[0])
+	for i, start := range []int{0, 1, 4, 10} {
+		if dialogs[start].Line != start || dialogs[start].Script != "ch02.json" || dialogs[start].SceneIndex == nil || *dialogs[start].SceneIndex != 0 {
+			t.Fatalf("dialog group %d start = %#v", i, dialogs[start])
+		}
 	}
-	if dialogBeats[5].Line != 0 || dialogBeats[7].Line != 2 {
-		t.Fatalf("FDTXT #1/#2 line starts = %#v", dialogBeats[5:8])
+	if dialogs[0].Source != "0x32d66" || dialogs[1].Source != "0x32dbb" || dialogs[4].Source != "0x32e24" || dialogs[10].Source != "0x3320c" {
+		t.Fatalf("chapter2 dialog source groups drifted: %#v", dialogs)
 	}
-	if dialogBeats[0].Source != "0x32d66" || dialogBeats[5].Source != "0x32dbb" || dialogBeats[7].Source != "0x32e24" {
-		t.Fatalf("indexed dialogue sources lost: %#v", dialogBeats)
+	load := seen["0x32d22"]
+	if load.LoadCH == nil || load.LoadCH.Chapter != 1 || load.LoadCH.Map != "assets/maps/map1" || load.LoadCH.Script != "assets/story/ch02.json" || load.LoadCH.PartyScenario != "assets/scenarios/ch02.json" || fmt.Sprint(load.LoadCH.PartyOrder) != "[0 9 4 30 1]" {
+		t.Fatalf("ch01_pre LOADCH = %#v", load.LoadCH)
 	}
-	dialog, ok := binding.indexedDialog(HandlerBeat{Source: HandlerSource{Addr: "0x32dbb"}, TextIndex: float64(1)})
-	if !ok || dialog.Script != "ch01.json" || dialog.Scene != "海盜出現" || dialog.SceneIndex == nil || *dialog.SceneIndex != 1 || len(dialog.Lines) != 2 {
-		t.Fatalf("indexed dialog context = %#v", dialog)
+	if first, second := seen["0x32d2b"], seen["0x32e3f"]; !first.TileStep || first.X != 312 || first.Y != 264 || !second.TileStep || second.X != 144 || second.Y != 288 {
+		t.Fatalf("ch01_pre PAN mappings = %#v / %#v", first, second)
 	}
-	if dialogBeats[5].Script != "ch01.json" || dialogBeats[5].Scene != "海盜出現" || dialogBeats[5].SceneIndex == nil || *dialogBeats[5].SceneIndex != 1 {
-		t.Fatalf("compiled dialog context lost: %#v", dialogBeats[5])
-	}
-	if _, ok := binding.indexedDialog(HandlerBeat{Source: HandlerSource{Addr: "0x32d66"}, TextIndex: float64(999)}); ok {
-		t.Fatal("out-of-range text index unexpectedly resolved")
+	if focus := seen["0x33142"]; focus.Op != "focus_unit" || focus.Slot == nil || *focus.Slot != 0 {
+		t.Fatalf("shared-tail focus missing: %#v", focus)
 	}
 }
 
-func TestCompileCompleteLoadCHBinding(t *testing.T) {
+func TestCompileLoadCHBindingExposesSharedTailDialogueGap(t *testing.T) {
 	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch05_pre.json")
-	if err != nil || len(issues) != 0 {
+	if err != nil || len(issues) != 1 || issues[0].Op != "dialog" || issues[0].Source.Addr != "0x3320c" {
 		t.Fatalf("ch05 loadch binding err=%v issues=%#v", err, issues)
 	}
-	if len(beats) != 1 || beats[0].Op != "loadch" || beats[0].Source != "0x33155" || beats[0].LoadCH == nil {
+	if len(beats) != 2 || beats[0].Op != "loadch" || beats[0].Source != "0x33155" || beats[0].LoadCH == nil || beats[1].Op != "focus_unit" || beats[1].Source != "0x33142" {
 		t.Fatalf("ch05 loadch beat = %#v", beats)
 	}
 	state := beats[0].LoadCH
-	// Handler file labels are player-facing (one-origin), while original
-	// LOADCH/FDFIELD chapter ids are zero-origin: ch05 loads map4/FDTXT_005.
-	if state.Chapter != 4 || state.Map != "assets/maps/map4" || state.Roster != "assets/maps/map4/map4_units.json" || state.SlotCount != 30 || state.Script != "assets/story/ch05.json" {
+	// Handler filenames are jump-table indices. Index 5 leaves the global
+	// chapter at 5, so LOADCH selects map5 and FDTXT_006/ch06, not map4/ch05.
+	if state.Chapter != 5 || state.Map != "assets/maps/map5" || state.Roster != "assets/maps/map5/map5_units.json" || state.SlotCount != 40 || state.Script != "assets/story/ch06.json" {
 		t.Fatalf("ch05 loadch state = %#v", state)
 	}
 }
@@ -665,6 +662,7 @@ func TestCompileGeneratedHandlerBindingsCompletionFrontier(t *testing.T) {
 	complete := map[string]bool{
 		"ch00_post.json": true, "ch03_post.json": true,
 		"ch10_post.json": true, "ch18_post.json": true,
+		"ch27_post.json": true,
 	}
 	for _, path := range paths {
 		_, issues, err := CompileHandlerBinding(path)

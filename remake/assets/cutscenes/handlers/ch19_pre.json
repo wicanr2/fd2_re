@@ -3,7 +3,33 @@
   "chapter": 19,
   "phase": "pre",
   "handler": "0x33674",
-  "beats": [],
+  "beats": [
+    {
+      "op": "loadch",
+      "source": {
+        "addr": "0x33475",
+        "target": "0x205da"
+      },
+      "chapter_expr": null
+    },
+    {
+      "op": "dialog",
+      "text_index": 0,
+      "source": {
+        "addr": "0x3320c",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "focus_unit",
+      "source": {
+        "addr": "0x33142",
+        "target": "0x12d7b"
+      },
+      "unit_slot": 0
+    }
+  ],
   "diagnostics": {
     "unknown_ops": 0
   }

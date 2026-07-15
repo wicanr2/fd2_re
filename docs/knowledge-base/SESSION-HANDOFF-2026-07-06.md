@@ -63,12 +63,23 @@
 > build 與 Xvfb branch/PAN/SPAWN/ACT14 截圖均通過。戰後演出中因 save 尚不序列化 battle array，
 > F5 會明確拒絕，下一節點恢復可存。詳見 `doc50 §3.6`。
 
+> **2026-07-16 第十次 Codex 更新（shared tail + 第二章戰前）**：修正 exporter 把「下一個 jump-table
+> entry」誤當 CFG 絕對終點的問題；原版多支 handler 會跳到邊界外／較低位址的共用尾段。60 支
+> handler 重新機械輸出後 top-level beats **624→701**，unknown **107→108**；兩個合成 CFG 測試固定
+> external/backwards shared-tail 順序。`ch01_pre` 現完整包含尾端 `FDTXT_002 #3` 與 focus(slot0)，
+> 四段原版字串展開 20 句、compiler 0 issues；兩段 PAN 依 `0x135dd` 改為 X-first、每次一 tile 的
+> `tile_step`。另由 battle-event caller `0x341e6 push 1; call 0x112a5` 定案哈諾在 turn3 JOIN，
+> persistent party 順序為 `[索爾0,悠妮9,亞雷斯4,蓋亞30,哈諾1]`，再 materialize group3；campaign
+> 已接成 `ch00_post → ch01_pre → battle_ch02`。同時撤回舊的 `ch05_pre=玩家第五章` 假設：它是
+> 零起算 table index5，實際選 map5/FDTXT_006（玩家第六章），其 shared dialog 與後期 JOIN chronology
+> 尚未閉合，所以不再冒充 campaign complete consumer。詳見 `doc50 §3`。
+
 ## 0. 目前焦點(接手就做這裡)
-`ch00_pre`、`ch00_post`、`ch01_post` 已成為前三個 campaign 實際 consumer；ch01 post 的 branch、
+`ch00_pre`、`ch00_post`、`ch01_pre`、`ch01_post` 已成為前四個 campaign 實際 consumer；ch01 post 的 branch、
 reward、61-utterance FDTXT_002、dynamic speaker slots、PAN、SPAWN4、ACT14..16、JOIN/sync/chapter tail
-均已完整 lower 且 compiler **0 issues**。下一個具體焦點應移到 **ch01_pre** 剩餘非 dialog ops，讓
-第二章的戰前 handler 也取代現有舊 story/stub，或依 completion frontier 選擇下一個能最短閉合的
-handler。下方「草地深層未解」是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，
+與第二章戰前 handler 均已完整 lower 且 compiler **0 issues**。下一個具體焦點應依 completion
+frontier 選擇下一個能最短閉合的原版 handler，優先處理 `ch02_pre` 的 shared tail／acting／文本，
+並繼續補齊 battle-event JOIN chronology。下方「草地深層未解」是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，
 不得再當目前 blocker。
 
 ## 1. 這段 session 做完的事

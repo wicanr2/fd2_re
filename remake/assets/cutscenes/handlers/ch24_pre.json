@@ -162,9 +162,30 @@
         "target": "0x12d7b"
       },
       "unit_slot": 0
+    },
+    {
+      "op": "play_sfx",
+      "args": [
+        "dword ptr [0x3b13]"
+      ],
+      "source": {
+        "addr": "0x1d50a",
+        "target": "0x25a96"
+      }
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x37416",
+      "raw_args": [
+        "dword ptr [0x3b13]"
+      ],
+      "source": {
+        "addr": "0x1a80a",
+        "target": "0x37416"
+      }
     }
   ],
   "diagnostics": {
-    "unknown_ops": 4
+    "unknown_ops": 5
   }
 }

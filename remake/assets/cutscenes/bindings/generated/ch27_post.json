@@ -2,6 +2,11 @@
   "schema_version": 1,
   "handler_script": "../../handlers/ch27_post.json",
   "story_index_map": "../../dialogue-index/count-aligned.json",
-  "dialogue_contexts": {},
+  "dialogue_contexts": {
+    "0x231e5": {
+      "source_dat": "FDTXT_028",
+      "script": "ch28.json"
+    }
+  },
   "overrides": {}
 }

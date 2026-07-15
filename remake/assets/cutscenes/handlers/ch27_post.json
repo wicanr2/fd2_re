@@ -3,7 +3,24 @@
   "chapter": 27,
   "phase": "post",
   "handler": "0x25464",
-  "beats": [],
+  "beats": [
+    {
+      "op": "dialog",
+      "text_index": 7,
+      "source": {
+        "addr": "0x231e5",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "sync_party",
+      "source": {
+        "addr": "0x231ed",
+        "target": "0x11506"
+      }
+    }
+  ],
   "diagnostics": {
     "unknown_ops": 0
   }

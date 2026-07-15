@@ -85,6 +85,28 @@ func TestBeatPanMovesCamera(t *testing.T) {
 	}
 }
 
+func TestBeatPanTileStepMatchesOriginalXFirstRedrawOrder(t *testing.T) {
+	g := newBeatTestGame(t, []campaign.Beat{{Op: "pan", X: 72, Y: 48, TileStep: true}})
+	g.camX, g.camY = 0, 0
+	g.beatAdvance()
+	g.tick(2)
+	if g.camX != 48 || g.camY != 0 || g.camPan == nil {
+		t.Fatalf("0x135dd first two redraws camera=(%v,%v) job=%#v, want X-only (48,0)", g.camX, g.camY, g.camPan)
+	}
+	g.tick(1)
+	if g.camX != 72 || g.camY != 0 {
+		t.Fatalf("0x135dd must finish X before Y: (%v,%v)", g.camX, g.camY)
+	}
+	g.tick(1)
+	if g.camX != 72 || g.camY != 24 {
+		t.Fatalf("first Y redraw = (%v,%v), want (72,24)", g.camX, g.camY)
+	}
+	g.tick(1)
+	if g.camX != 72 || g.camY != 48 || g.camPan != nil {
+		t.Fatalf("tile-step pan finish = (%v,%v) job=%#v", g.camX, g.camY, g.camPan)
+	}
+}
+
 func TestBeatWalkMovesActorAndAdvances(t *testing.T) {
 	g := newBeatTestGame(t, []campaign.Beat{
 		{Op: "walk", Fig: 0, X: 5, Y: 1, Frames: 5, Follow: true},
@@ -571,6 +593,32 @@ func TestBeatSyncPartyPersistsProgressAndClearsBattleState(t *testing.T) {
 	}
 }
 
+func TestScenarioJoinPersistsRecruitedAllyThroughPostBattleSync(t *testing.T) {
+	g := &Game{
+		partyMembers:   map[int]bool{0: true},
+		partyJoinOrder: []int{0},
+		sc:             &battle.Scenario{},
+		st: &battle.State{Units: []*battle.Unit{
+			{Camp: battle.Own, Fig: 0, HP: 10, MaxHP: 10},
+			{Camp: battle.Ally, Fig: 1, Name: "哈諾", Lv: 3, HP: 17, MaxHP: 36},
+		}},
+	}
+	// Model the scenario-owned JOIN effect separately from the spawned unit's
+	// current camp; permanent membership, not camp colour, controls persistence.
+	g.sc.Events = []battle.Event{{Trigger: "on_turn_end", Do: []battle.Action{{Type: "join_party", CharID: 1}}}}
+	g.sc.Fire(g.st, "on_turn_end", "")
+	g.applyScenarioPartyJoins()
+	if !g.partyMembers[1] || len(g.partyJoinOrder) != 2 || g.partyJoinOrder[1] != 1 {
+		t.Fatalf("scenario JOIN did not update campaign membership/order: %#v %#v", g.partyMembers, g.partyJoinOrder)
+	}
+	if err := g.syncPartyFromBattle(); err != nil {
+		t.Fatal(err)
+	}
+	if hano, ok := g.partyRoster[1]; !ok || hano.HP != 17 || hano.Lv != 3 {
+		t.Fatalf("recruited allied Hano was not persisted: %#v", g.partyRoster)
+	}
+}
+
 func TestBeatGrantItemUsesFirstPlayerInventoryWithRoom(t *testing.T) {
 	itemID := 0xc6
 	g := newBeatTestGame(t, []campaign.Beat{{Op: "grant_item", ItemID: &itemID}, {Op: "sync_party"}})
@@ -700,6 +748,47 @@ func TestApplyLoadCHDirectReplayUsesBindingPartyOrder(t *testing.T) {
 		u := g.storyActors[slot]
 		if u.Fig != want.id || u.X != want.x || u.Y != want.y {
 			t.Fatalf("direct LOADCH slot %d = fig%d at (%d,%d), want fig%d at (%d,%d)", slot, u.Fig, u.X, u.Y, want.id, want.x, want.y)
+		}
+	}
+}
+
+func TestChapter1PreLoadCHUsesFiveMemberJoinOrderAndSpawnFrontiers(t *testing.T) {
+	beats, issues, err := campaign.CompileHandlerBinding(assetPath("assets/cutscenes/bindings/ch01_pre.json"))
+	if err != nil || len(issues) != 0 || len(beats) == 0 || beats[0].LoadCH == nil {
+		t.Fatalf("compile ch01_pre err=%v issues=%#v first=%#v", err, issues, beats)
+	}
+	g := &Game{
+		partyMembers:   map[int]bool{0: true, 9: true, 4: true, 30: true, 1: true},
+		partyJoinOrder: []int{0, 9, 4, 30, 1},
+		partyRoster: map[int]battle.Unit{
+			1: {Fig: 1, Name: "哈諾", Lv: 3, HP: 17, MaxHP: 36, MP: 0, MaxMP: 0},
+		},
+	}
+	if err := g.applyLoadCH(beats[0].LoadCH); err != nil {
+		t.Fatal(err)
+	}
+	if len(g.storyActors) != 5 {
+		t.Fatalf("ch01_pre initial runtime slots=%d, want five party members", len(g.storyActors))
+	}
+	for slot, id := range []int{0, 9, 4, 30, 1} {
+		if g.storyActors[slot].Fig != id {
+			t.Fatalf("ch01_pre party slot%d fig=%d, want %d", slot, g.storyActors[slot].Fig, id)
+		}
+	}
+	if g.storyActors[4].HP != 17 || g.storyActors[4].Lv != 3 {
+		t.Fatalf("Hano persistent battle progress was not overlaid: %#v", g.storyActors[4])
+	}
+	g.materializeStoryGroup(1)
+	if len(g.storyActors) != 11 {
+		t.Fatalf("SPAWN1 frontier=%d, want 11", len(g.storyActors))
+	}
+	g.materializeStoryGroup(2)
+	if len(g.storyActors) != 21 {
+		t.Fatalf("SPAWN2 frontier=%d, want 21", len(g.storyActors))
+	}
+	for slot := 11; slot <= 16; slot++ {
+		if g.storyActors[slot].X != 9 || g.storyActors[slot].Y != 20 {
+			t.Fatalf("ACT12 source slot%d pre-position=(%d,%d), want stacked (9,20)", slot, g.storyActors[slot].X, g.storyActors[slot].Y)
 		}
 	}
 }

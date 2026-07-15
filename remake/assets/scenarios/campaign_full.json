@@ -540,6 +540,11 @@
    "type": "cutscene",
    "bgm": "FDMUS_010",
    "handler_binding": "assets/cutscenes/bindings/ch00_post.json",
+   "next": "story_ch02_pre"
+  },
+  "story_ch02_pre": {
+   "type": "cutscene",
+   "handler_binding": "assets/cutscenes/bindings/ch01_pre.json",
    "next": "battle_ch02"
   },
   "shop_ch02_weapon": {
@@ -908,7 +913,6 @@
   "story_ch05": {
    "type": "cutscene",
    "bgm": "FDMUS_010",
-   "handler_binding": "assets/cutscenes/bindings/ch05_pre.json",
    "next": "battle_ch05"
   },
   "shop_ch05_weapon": {

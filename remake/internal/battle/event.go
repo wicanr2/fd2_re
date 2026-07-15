@@ -20,6 +20,7 @@ type Scenario struct {
 	Party               []PartyMember `json:"party"`                           // 主角隊(不在 FDFIELD roster,on_battle_start 進場)
 	DeployCells         [][2]int      `json:"deploy_cells"`                    // 主角隊進場目標格
 	Events              []Event       `json:"events"`
+	pendingJoins        []int
 }
 
 // PartyMember 主角隊成員(數值來自 characters.json / EXE 表)。
@@ -70,6 +71,7 @@ type Action struct {
 	Flag           string `json:"flag,omitempty"`            // set_flag
 	Unit           string `json:"unit,omitempty"`            // set_ai 目標
 	Mode           string `json:"mode,omitempty"`            // set_ai 模式(berserk…)
+	CharID         int    `json:"char_id,omitempty"`         // join_party: permanent player identity
 }
 
 // DialogLine 一句對話(說話者肖像 + 文本),供 UI 畫頭像+嘴型+文字。
@@ -183,6 +185,8 @@ func (sc *Scenario) exec(st *State, a Action) (DialogLine, bool) {
 		for _, g := range a.Groups {
 			st.SpawnGroup(g, camp, a.Camp != "", a.ActImmediately)
 		}
+	case "join_party":
+		sc.pendingJoins = append(sc.pendingJoins, a.CharID)
 	case "dialogue":
 		return DialogLine{Speaker: a.Speaker, Text: a.Text}, true
 	case "set_flag":
@@ -191,6 +195,18 @@ func (sc *Scenario) exec(st *State, a Action) (DialogLine, bool) {
 		st.Flags["ai_"+a.Unit+"_"+a.Mode] = true // 簡化:旗標記錄,AI 層讀(doc 11)
 	}
 	return DialogLine{}, false
+}
+
+// TakePartyJoins transfers JOIN effects from battle-script execution to the
+// campaign-owned persistent roster. Scenario stays independent from the UI /
+// save layer while preserving the original ordering (JOIN before SPAWN).
+func (sc *Scenario) TakePartyJoins() []int {
+	if sc == nil || len(sc.pendingJoins) == 0 {
+		return nil
+	}
+	joins := append([]int(nil), sc.pendingJoins...)
+	sc.pendingJoins = nil
+	return joins
 }
 
 // PartyUnits materializes the persistent player roster in scenario order.
