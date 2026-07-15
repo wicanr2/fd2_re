@@ -173,6 +173,7 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 	}
 	var pan, dialog bool
 	var slotAct bool
+	var normalSlotAct bool
 	for _, beat := range beats {
 		pan = pan || beat.Op == "pan" && beat.X == 72 && beat.Y == 816
 		dialog = dialog || beat.Op == "dialog" && beat.Line == 0
@@ -180,8 +181,12 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 			u := beat.Acting[0].Units[0]
 			slotAct = u.Slot != nil && *u.Slot == 16 && u.Fig == 0
 		}
+		if beat.Op == "act" && beat.Source == "0x324d7" && len(beat.Acting) == 3 {
+			u := beat.Acting[0].Units[0]
+			normalSlotAct = u.Slot != nil && *u.Slot == 1 && !beat.Acting[0].Special && beat.Acting[0].Beats == 1 && beat.Acting[1].Units[0].Pose == 2
+		}
 	}
-	if !pan || !dialog || !slotAct {
+	if !pan || !dialog || !slotAct || !normalSlotAct {
 		t.Fatalf("loaded binding did not lower its proven pan/dialog/slot-acting overrides: %#v", beats)
 	}
 }

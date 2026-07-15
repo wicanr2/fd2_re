@@ -97,6 +97,15 @@
         ]
       }
     },
+    "0x324d7": {
+      "act": {
+        "frames": [
+          { "beats": 1, "units": [{ "slot": 1, "pose": 3 }] },
+          { "beats": 1, "units": [{ "slot": 1, "pose": 2 }] },
+          { "beats": 4, "special": true, "units": [{ "slot": 1, "pose": 3 }] }
+        ]
+      }
+    },
     "0x324c3": {
       "dialog": {
         "script": "assets/story/ch00_palace.json",
@@ -122,6 +131,13 @@
           { "line": 19, "upper": true },
           { "line": 20 },
           { "line": 21, "upper": true }
+        ]
+      }
+    },
+    "0x3251c": {
+      "act": {
+        "frames": [
+          { "beats": 8, "special": true, "units": [{ "slot": 16, "pose": 3 }] }
         ]
       }
     }

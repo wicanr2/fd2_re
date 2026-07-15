@@ -222,6 +222,28 @@ func TestBeatActingUsesOriginalSlotBeforeDuplicateFig(t *testing.T) {
 	}
 }
 
+func TestBeatActingDecodedNormalSlotMovement(t *testing.T) {
+	// Exact decoded 0x68 from ch00_pre source 0x324d7: original slot1 moves
+	// right once, up once, then holds pose-right for four special ticks.
+	slot1 := 1
+	g := newBeatTestGame(t, []campaign.Beat{{Op: "act", Acting: []campaign.ActingFrame{
+		{Beats: 1, Units: []campaign.ActingUnit{{Slot: &slot1, Pose: 3}}},
+		{Beats: 1, Units: []campaign.ActingUnit{{Slot: &slot1, Pose: 2}}},
+		{Beats: 4, Special: true, Units: []campaign.ActingUnit{{Slot: &slot1, Pose: 3}}},
+	}}})
+	g.storyActors = make([]battle.Unit, 2)
+	g.storyActors[0] = battle.Unit{Fig: 66, X: 9, Y: 5, OnField: true}
+	g.storyActors[1] = battle.Unit{Fig: 66, X: 10, Y: 5, OnField: true}
+	g.beatAdvance()
+	g.tick(18) // 2 normal beats × 7 ticks, then 4 special ticks
+	if got := g.storyActors[0]; got.X != 9 || got.Y != 5 {
+		t.Fatalf("same-Fig slot0 moved instead of slot1: (%d,%d)", got.X, got.Y)
+	}
+	if got := g.storyActors[1]; got.X != 11 || got.Y != 4 || got.Dir != 3 {
+		t.Fatalf("slot1 decoded movement = (%d,%d) dir=%d, want (11,4) dir=3", got.X, got.Y, got.Dir)
+	}
+}
+
 func TestBeatFadeBothDirectionsCallThen(t *testing.T) {
 	g := newBeatTestGame(t, []campaign.Beat{
 		{Op: "fade", Out: true, Frames: 4},
