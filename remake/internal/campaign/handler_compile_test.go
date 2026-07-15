@@ -178,6 +178,11 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 		"0x32343": 99, "0x323f5": 100, "0x32426": 101, "0x32461": 102,
 		"0x3249c": 103, "0x324d7": 104, "0x3251c": 105,
 	}
+	map31Acts := map[string]int{
+		"0x3255f": 90, "0x3259a": 91, "0x325d5": 92, "0x32657": 93, "0x326d7": 94,
+		"0x32712": 95, "0x3274d": 96, "0x32788": 97, "0x327d9": 98,
+	}
+	loadchs := map[int]string{32: "assets/maps/map32", 31: "assets/maps/map31", 0: "assets/maps/map0"}
 	for _, beat := range beats {
 		pan = pan || beat.Op == "pan" && beat.X == 72 && beat.Y == 816
 		dialog = dialog || beat.Op == "dialog" && beat.Line == 0
@@ -195,8 +200,19 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 				t.Fatalf("map32 ACT(%d) did not preserve source roster slot: %#v", id, beat)
 			}
 		}
+		if id, ok := map31Acts[beat.Source]; ok && beat.Op == "act" && len(beat.Acting) > 0 {
+			delete(map31Acts, beat.Source)
+			if beat.Acting[0].Units[0].Slot == nil {
+				t.Fatalf("map31 ACT(%d) did not preserve source roster slot: %#v", id, beat)
+			}
+		}
+		if beat.Op == "loadch" && beat.LoadCH != nil {
+			if mapPath, ok := loadchs[beat.LoadCH.Chapter]; ok && beat.LoadCH.Map == mapPath {
+				delete(loadchs, beat.LoadCH.Chapter)
+			}
+		}
 	}
-	if !pan || !dialog || !slotAct || !normalSlotAct || len(map32Acts) != 0 {
+	if !pan || !dialog || !slotAct || !normalSlotAct || len(map32Acts) != 0 || len(map31Acts) != 0 || len(loadchs) != 0 {
 		t.Fatalf("loaded binding did not lower its proven pan/dialog/slot-acting overrides: %#v", beats)
 	}
 }
