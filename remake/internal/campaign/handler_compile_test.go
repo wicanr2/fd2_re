@@ -582,6 +582,55 @@ func TestCompileCompleteChapter1PreUsesChapter2ContextAndSharedTail(t *testing.T
 	}
 }
 
+func TestCompileCompleteChapter2PreUsesRecoveredChapter3Text(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch02_pre.json")
+	if err != nil || len(issues) != 0 {
+		t.Fatalf("ch02_pre err=%v issues=%#v", err, issues)
+	}
+	if len(beats) != 26 {
+		t.Fatalf("ch02_pre compiled beats=%d, want 16 source beats with dialogs expanded 4→14", len(beats))
+	}
+	dialogs := make([]Beat, 0, 14)
+	seen := map[string]Beat{}
+	for _, beat := range beats {
+		seen[beat.Source] = beat
+		if beat.Op == "dialog" {
+			dialogs = append(dialogs, beat)
+		}
+	}
+	if len(dialogs) != 14 {
+		t.Fatalf("FDTXT_003 #0..3 dialogs=%d, want 2+1+4+7", len(dialogs))
+	}
+	for i, start := range []int{0, 2, 3, 7} {
+		if dialogs[start].Line != start || dialogs[start].Script != "ch03.json" || dialogs[start].SceneIndex == nil || *dialogs[start].SceneIndex != 0 {
+			t.Fatalf("dialog group %d start = %#v", i, dialogs[start])
+		}
+	}
+	if dialogs[0].Source != "0x32ed3" || dialogs[2].Source != "0x32f3b" || dialogs[3].Source != "0x32f76" || dialogs[7].Source != "0x33133" {
+		t.Fatalf("chapter3 dialog source groups drifted: %#v", dialogs)
+	}
+	load := seen["0x32e96"]
+	if load.LoadCH == nil || load.LoadCH.Chapter != 2 || load.LoadCH.Map != "assets/maps/map2" || load.LoadCH.Script != "assets/story/ch03.json" || load.LoadCH.PartyScenario != "assets/scenarios/ch03.json" || fmt.Sprint(load.LoadCH.PartyOrder) != "[0 9 4 30 1 8]" {
+		t.Fatalf("ch02_pre LOADCH = %#v", load.LoadCH)
+	}
+	for source, want := range map[string][2]int{
+		"0x32e9f": {72, 408},
+		"0x32efd": {72, 144},
+		"0x32f8c": {72, 408},
+	} {
+		pan := seen[source]
+		if !pan.TileStep || pan.X != want[0] || pan.Y != want[1] {
+			t.Fatalf("ch02_pre PAN %s = %#v", source, pan)
+		}
+	}
+	if act18, act17, act19 := seen["0x32ee7"], seen["0x32f14"], seen["0x32f4f"]; len(act18.Acting) != 1 || len(act18.Acting[0].Units) != 6 || len(act17.Acting) != 5 || *act17.Acting[0].Units[0].Slot != 6 || len(act19.Acting) != 3 || len(act19.Acting[0].Units) != 8 || *act19.Acting[0].Units[0].Slot != 7 {
+		t.Fatalf("ch02_pre acting resources drifted: 18=%#v 17=%#v 19=%#v", act18.Acting, act17.Acting, act19.Acting)
+	}
+	if focus := seen["0x33142"]; focus.Op != "focus_unit" || focus.Slot == nil || *focus.Slot != 0 {
+		t.Fatalf("ch02_pre shared-tail focus missing: %#v", focus)
+	}
+}
+
 func TestCompileLoadCHBindingExposesSharedTailDialogueGap(t *testing.T) {
 	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch05_pre.json")
 	if err != nil || len(issues) != 1 || issues[0].Op != "dialog" || issues[0].Source.Addr != "0x3320c" {

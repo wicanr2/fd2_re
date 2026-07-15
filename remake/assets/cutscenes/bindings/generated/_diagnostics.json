@@ -6,8 +6,8 @@
   "story_index_map": "remake/assets/cutscenes/dialogue-index/count-aligned.json",
   "summary": {
     "handler_count": 60,
-    "dialogue_context_count": 81,
-    "skipped_dialogue_count": 89
+    "dialogue_context_count": 83,
+    "skipped_dialogue_count": 87
   },
   "handlers": [
     {
@@ -119,23 +119,8 @@
       "chapter": 2,
       "initial_source_dat": "FDTXT_003",
       "initial_context_kind": "handler_chapter",
-      "dialogue_context_count": 0,
-      "skipped_dialogs": [
-        {
-          "kind": "ambiguous_source_dat",
-          "source_addr": "0x23158",
-          "source_dat": "FDTXT_003",
-          "text_index": 6,
-          "message": "source does not have exactly one count-aligned script mapping"
-        },
-        {
-          "kind": "ambiguous_source_dat",
-          "source_addr": "0x231a5",
-          "source_dat": "FDTXT_003",
-          "text_index": 7,
-          "message": "source does not have exactly one count-aligned script mapping"
-        }
-      ],
+      "dialogue_context_count": 2,
+      "skipped_dialogs": [],
       "loadch_events": []
     },
     {

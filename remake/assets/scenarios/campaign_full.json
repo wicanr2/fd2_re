@@ -665,18 +665,9 @@
    "next": "battle_ch02"
   },
   "story_ch03": {
-   "type": "story",
+   "type": "cutscene",
    "bgm": "FDMUS_010",
-   "lines": [
-    {
-     "speaker": -1,
-     "text": "第3章:往塞拉村途中"
-    },
-    {
-     "speaker": -1,
-     "text": "目標:敵全滅。"
-    }
-   ],
+   "handler_binding": "assets/cutscenes/bindings/ch02_pre.json",
    "next": "battle_ch03"
   },
   "shop_ch03_weapon": {

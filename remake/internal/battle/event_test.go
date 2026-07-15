@@ -113,3 +113,36 @@ func TestChapter1Turn3JoinsHanoBeforeSpawningHisGroup(t *testing.T) {
 		t.Fatalf("party joins were not consumed: %#v", got)
 	}
 }
+
+func TestChapter3RuntimeAppendOrderMatchesPreHandlerSlots(t *testing.T) {
+	st, err := Load("../../assets/maps/map2/map2_units.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sc, err := LoadScenario("../../assets/scenarios/ch03.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sc.Setup(st)
+	if len(st.Units) != 15 {
+		t.Fatalf("chapter3 initial slots=%d, want six party + nine group1 records", len(st.Units))
+	}
+	for slot, id := range []int{0, 4, 9, 30, 1, 8} {
+		if st.Units[slot].Fig != id {
+			t.Fatalf("authored party slot%d fig=%d, want %d before JOIN-order adapter", slot, st.Units[slot].Fig, id)
+		}
+	}
+	if st.Units[6].Fig != 2 || st.Units[6].Camp != Ally {
+		t.Fatalf("chapter3 slot6 = %#v, want Tino ally", st.Units[6])
+	}
+	for slot := 7; slot <= 14; slot++ {
+		if st.Units[slot].Camp != Enemy {
+			t.Fatalf("chapter3 slot%d camp=%v, want enemy", slot, st.Units[slot].Camp)
+		}
+	}
+	for _, unit := range st.Units {
+		if unit.Group == 255 {
+			t.Fatalf("group255 source padding polluted runtime: %#v", unit)
+		}
+	}
+}

@@ -74,12 +74,21 @@
 > 零起算 table index5，實際選 map5/FDTXT_006（玩家第六章），其 shared dialog 與後期 JOIN chronology
 > 尚未閉合，所以不再冒充 campaign complete consumer。詳見 `doc50 §3`。
 
+> **2026-07-16 第十一次 Codex 更新（第三章戰前 + FDTXT_003）**：`ch02_pre` 16 source beats 已
+> 完整 lower 成26 runtime beats、0 issues：六人 JOIN-order party `[0,9,4,30,1,8]`，三段 X-first
+> tile PAN，ACT18→SPAWN1九人→ACT17/19，以及跨 handler shared dialog/reset/focus。map2 battle 同步
+> 改為 party-first runtime append，group255 不再汙染 slots。更重要的是回原始 FDTXT_003 找回舊
+> `ch03.json` 真正漏掉的六句 turn3 葛雷／卡蘿硬編碼對話，全文由33補成39，索引重生後達39/39
+> count-aligned（generated contexts 81→83、skipped 89→87）。campaign `story_ch03` 已由章標 stub
+> 改接 authored ch02_pre。下一 blocker 是 battle turn3 `0x344c2` 對 slot6 byte+5 bit0 的分支方向；
+> 現有文件語意互相矛盾，未實測前不可猜 alive/dead，詳見 `doc50 §3.7`。
+
 ## 0. 目前焦點(接手就做這裡)
 `ch00_pre`、`ch00_post`、`ch01_pre`、`ch01_post` 已成為前四個 campaign 實際 consumer；ch01 post 的 branch、
 reward、61-utterance FDTXT_002、dynamic speaker slots、PAN、SPAWN4、ACT14..16、JOIN/sync/chapter tail
-與第二章戰前 handler 均已完整 lower 且 compiler **0 issues**。下一個具體焦點應依 completion
-frontier 選擇下一個能最短閉合的原版 handler，優先處理 `ch02_pre` 的 shared tail／acting／文本，
-並繼續補齊 battle-event JOIN chronology。下方「草地深層未解」是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，
+與第二、第三章戰前 handler 均已完整 lower 且 compiler **0 issues**。下一個具體焦點是釘死
+ch03 battle turn3 slot6 bit0 條件，補上 SPAWN2/PAN/dialog #4，接著利用新完成的 FDTXT_003 mapping
+閉合 `ch02_post`。下方「草地深層未解」是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，
 不得再當目前 blocker。
 
 ## 1. 這段 session 做完的事

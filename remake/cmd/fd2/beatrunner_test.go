@@ -793,6 +793,32 @@ func TestChapter1PreLoadCHUsesFiveMemberJoinOrderAndSpawnFrontiers(t *testing.T)
 	}
 }
 
+func TestChapter2PreLoadCHUsesSixMemberJoinOrderAndGroupOneFrontier(t *testing.T) {
+	beats, issues, err := campaign.CompileHandlerBinding(assetPath("assets/cutscenes/bindings/ch02_pre.json"))
+	if err != nil || len(issues) != 0 || len(beats) == 0 || beats[0].LoadCH == nil {
+		t.Fatalf("compile ch02_pre err=%v issues=%#v first=%#v", err, issues, beats)
+	}
+	g := &Game{}
+	if err := g.applyLoadCH(beats[0].LoadCH); err != nil {
+		t.Fatal(err)
+	}
+	if len(g.storyActors) != 6 {
+		t.Fatalf("ch02_pre initial runtime slots=%d, want six party members", len(g.storyActors))
+	}
+	for slot, id := range []int{0, 9, 4, 30, 1, 8} {
+		if g.storyActors[slot].Fig != id {
+			t.Fatalf("ch02_pre party slot%d fig=%d, want %d", slot, g.storyActors[slot].Fig, id)
+		}
+	}
+	g.materializeStoryGroup(1)
+	if len(g.storyActors) != 15 {
+		t.Fatalf("SPAWN1 frontier=%d, want 6 party + 9 FDFIELD records", len(g.storyActors))
+	}
+	if g.storyActors[6].Fig != 2 || g.storyActors[6].Camp != battle.Ally {
+		t.Fatalf("slot6 after SPAWN1 = %#v, want Tino ally", g.storyActors[6])
+	}
+}
+
 func TestFilterScenarioPartyUsesJoinMembership(t *testing.T) {
 	sc := &battle.Scenario{
 		Party:       []battle.PartyMember{{Fig: 0}, {Fig: 9}, {Fig: 30}, {Fig: 75}},

@@ -418,8 +418,8 @@ resolve **兩臂**，任一臂缺 binding 就整個 branch fail closed。runtime
 再只把選中的 arm splice 到當前拍後；使用新 slice，不會改寫 campaign node backing array，共同 tail
 維持一次。dialogue-binding exporter 與 unknown diagnostics 也已改成遞迴走 arm。
 
-manifest 因三個錯誤頂層拍收成一個 `if`，全量為 **624 個 top-level beats**；遞迴計入三個 arm
-records 為 627 records（626 個原操作 + 1 個 control record），unknown 仍為 **107**。
+manifest 在 shared-tail CFG 修正後全量為 **701 個 top-level beats**，unknown 為 **108**；structured
+`if` 的 then/else 仍需遞迴計入 diagnostics，不能只看頂層 beat 數。
 
 ### 3.5 FDTXT_002 61 utterances 與 dynamic speaker slot（2026-07-16）
 
@@ -466,6 +466,27 @@ FDTXT #8 首句停住截圖確認希莉亞出場與原版窄視窗。
 campaign 現為 `battle_ch02.on_win → story_ch02_post → choice_ch02`。因目前 save format 只保存節點
 邊界、不保存 completed battle array，戰後 handler 進行中會明確拒絕 F5；到下一節點即可正常存檔，
 避免讀檔後缺 runtime slots 而必然失敗。
+
+### 3.7 ch02 pre 與 FDTXT_003 39 utterances（2026-07-16）
+
+`ch02_pre`（zero-based table index2，玩家第三章）的 16 source beats 已完整 lower：LOADCH chapter2、
+三段 `0x135dd` PAN `(3,17)→(72,408)`、`(3,6)→(72,144)`、`(3,17)→(72,408)` 都採 X-first
+`tile_step`；ACT18 操作 party slots0..5，SPAWN1 append map2 group1 九人後，ACT17 操作 slot6 鐵諾，
+ACT19 操作 slots7..14 八敵再回 slot6。尾端 `0x32fad` 跳到 shared block，播放 FDTXT #3、reset、
+focus slot0。party construction 依 JOIN caller chronology 是 `[0,9,4,30,1,8]`，不是 scenario UI
+排列 `[0,4,9,30,1,8]`；map2 battle 也改成 runtime append，避免 19 筆 group255 padding 汙染 slots。
+
+舊 `ch03.json` 只有33 lines，原始 FDTXT_003 十個 strings 的 logical counts 是
+`[2,1,4,7,7,1,5,10,1,1]`，合計39。缺的不是空白 padding，而是原版 battle turn3 hard-code #4
+後六句（鐵諾追問、葛雷指使、希莉亞揭露卡蘿線索、約下令攻擊）；已補回 editable scene0 lines15..20，
+故索引 exporter 現能機械得到 **39/39 count-aligned**，diagnostics 9→8、generated contexts 81→83、
+skipped 89→87。pre #0..3 精確展開 2+1+4+7=14 dialogs，因此完整 runtime 為26 beats、0 issues；
+campaign 的 `story_ch03` 已由章標 stub 改接 authored `ch02_pre.json` 後再進 battle_ch03。
+
+仍待下一輪釘死：battle turn3 native `0x344c2` 會檢查 slot6 `byte+5 bit0` 後才 SPAWN2、PAN、delay、
+dialog #4；現有 scenario 仍是 unconditional SPAWN2。這個 bit 在現有文件與該段劇情語意間有矛盾，
+不得先猜 alive/dead 方向；先保留為明確 fidelity blocker，再用原版 runtime flag dump／完整 caller
+交叉驗證後資料化。ch02 post 的 #5..#9 現已因39/39 mapping 自動取得 contexts，可作下一個閉合項目。
 
 ## 4. 未解(低優先)+ 工具紀律
 

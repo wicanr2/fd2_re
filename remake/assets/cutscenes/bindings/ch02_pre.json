@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "handler_script": "../handlers/ch02_pre.json",
+  "acting_resources": "../acting/map32.json",
+  "story_index_map": "../dialogue-index/count-aligned.json",
+  "dialogue_contexts": {
+    "0x32ed3": { "source_dat": "FDTXT_003", "script": "ch03.json" },
+    "0x32f3b": { "source_dat": "FDTXT_003", "script": "ch03.json" },
+    "0x32f76": { "source_dat": "FDTXT_003", "script": "ch03.json" },
+    "0x33133": { "source_dat": "FDTXT_003", "script": "ch03.json" }
+  },
+  "overrides": {
+    "0x32e96": {
+      "loadch": {
+        "chapter": 2,
+        "map": "assets/maps/map2",
+        "roster": "assets/maps/map2/map2_units.json",
+        "slot_count": 40,
+        "script": "assets/story/ch03.json",
+        "party_scenario": "assets/scenarios/ch03.json",
+        "party_order": [0, 9, 4, 30, 1, 8]
+      }
+    },
+    "0x32e9f": {
+      "pan": { "x": 72, "y": 408, "tile_step": true }
+    },
+    "0x32ee7": { "act": { "resource": 18 } },
+    "0x32efd": {
+      "pan": { "x": 72, "y": 144, "tile_step": true }
+    },
+    "0x32f14": { "act": { "resource": 17 } },
+    "0x32f4f": { "act": { "resource": 19 } },
+    "0x32f8c": {
+      "pan": { "x": 72, "y": 408, "tile_step": true }
+    }
+  }
+}

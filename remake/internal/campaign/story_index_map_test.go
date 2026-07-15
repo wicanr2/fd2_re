@@ -7,7 +7,7 @@ func TestLoadCountAlignedStoryIndexMap(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if index.MappingKind != "count_aligned_only" || len(index.Diagnostics) != 9 {
+	if index.MappingKind != "count_aligned_only" || len(index.Diagnostics) != 8 {
 		t.Fatalf("manifest identity = %#v", index)
 	}
 
@@ -40,6 +40,13 @@ func TestLoadCountAlignedStoryIndexMap(t *testing.T) {
 	ch02Post, ok := index.Lookup("FDTXT_002", "ch02.json", 8)
 	if !ok || len(ch02Post) != 1 || ch02Post[0].Scene == nil || *ch02Post[0].Scene != "希莉亞登場" || len(ch02Post[0].Lines) != 15 {
 		t.Fatalf("ch02 post FDTXT #8 = %#v", ch02Post)
+	}
+	ch03Reinforce, ok := index.Lookup("FDTXT_003", "ch03.json", 4)
+	if !ok || len(ch03Reinforce) != 1 || ch03Reinforce[0].Scene != nil || ch03Reinforce[0].SceneIndex != 0 {
+		t.Fatalf("ch03 turn3 FDTXT #4 = %#v", ch03Reinforce)
+	}
+	if got := ch03Reinforce[0].Lines; len(got) != 7 || got[0] != 14 || got[6] != 20 {
+		t.Fatalf("ch03 turn3 #4 lines = %#v, want scene0 lines14..20", got)
 	}
 }
 
