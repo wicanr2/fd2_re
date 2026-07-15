@@ -203,24 +203,28 @@ func TestCompileAnyUnitAliveRejectsInvalidCondition(t *testing.T) {
 	}
 }
 
-func TestCompileChapter1PostReportsBothBranchArms(t *testing.T) {
+func TestCompileChapter1PostResolvesBothDialogueBranchArms(t *testing.T) {
 	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/generated/ch01_post.json")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(issues) != 11 {
-		t.Fatalf("ch01 post issues = %d, want 11: %#v (beats=%#v)", len(issues), issues, beats)
+	if len(issues) != 6 {
+		t.Fatalf("ch01 post issues = %d, want 6 remaining pan/spawn/act bindings: %#v (beats=%#v)", len(issues), issues, beats)
 	}
-	wantSources := map[string]bool{"0x22fc8": false, "0x22f92": false}
 	for _, issue := range issues {
-		if _, ok := wantSources[issue.Source.Addr]; ok {
-			wantSources[issue.Source.Addr] = true
+		if issue.Source.Addr == "0x22fc8" || issue.Source.Addr == "0x22f92" || issue.Op == "dialog" {
+			t.Fatalf("resolved ch01 post dialog still reported as issue: %#v", issue)
 		}
 	}
-	for source, found := range wantSources {
-		if !found {
-			t.Errorf("ch01 post did not report unresolved branch dialog %s: %#v", source, issues)
+	foundBranch := false
+	for _, beat := range beats {
+		if beat.Op != "if" {
+			continue
 		}
+		foundBranch = len(beat.Then) == 1 && len(beat.Else) == 2 && beat.Then[0].Op == "dialog" && beat.Else[0].Op == "dialog" && beat.Else[1].Op == "grant_item"
+	}
+	if !foundBranch {
+		t.Fatalf("compiled ch01 post lost resolved structured branch: %#v", beats)
 	}
 }
 

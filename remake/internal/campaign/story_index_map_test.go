@@ -7,7 +7,7 @@ func TestLoadCountAlignedStoryIndexMap(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if index.MappingKind != "count_aligned_only" || len(index.Diagnostics) != 10 {
+	if index.MappingKind != "count_aligned_only" || len(index.Diagnostics) != 9 {
 		t.Fatalf("manifest identity = %#v", index)
 	}
 
@@ -30,8 +30,16 @@ func TestLoadCountAlignedStoryIndexMap(t *testing.T) {
 	if _, ok := index.Lookup("FDTXT_033", "ch33.json", 0); ok {
 		t.Fatal("unmapped ch33 context unexpectedly resolved")
 	}
-	if _, ok := index.Lookup("FDTXT_002", "ch02.json", 0); ok {
-		t.Fatal("count-mismatched FDTXT_002 unexpectedly resolved")
+	ch02Reward, ok := index.Lookup("FDTXT_002", "ch02.json", 6)
+	if !ok || len(ch02Reward) != 1 || ch02Reward[0].Scene == nil || *ch02Reward[0].Scene != "戰鬥中,強盜兵分兩路" {
+		t.Fatalf("ch02 reward FDTXT #6 = %#v", ch02Reward)
+	}
+	if got := ch02Reward[0].Lines; len(got) != 1 || got[0] != 10 {
+		t.Fatalf("ch02 reward #6 lines = %#v, want scene1 line10", got)
+	}
+	ch02Post, ok := index.Lookup("FDTXT_002", "ch02.json", 8)
+	if !ok || len(ch02Post) != 1 || ch02Post[0].Scene == nil || *ch02Post[0].Scene != "希莉亞登場" || len(ch02Post[0].Lines) != 15 {
+		t.Fatalf("ch02 post FDTXT #8 = %#v", ch02Post)
 	}
 }
 

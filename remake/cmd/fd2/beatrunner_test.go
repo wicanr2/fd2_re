@@ -136,6 +136,60 @@ func TestBeatDialogCountConsecutiveLines(t *testing.T) {
 	}
 }
 
+func TestBeatDialogResolvesOriginalRuntimeSpeakerSlot(t *testing.T) {
+	slot := 6
+	upper := true
+	g := newBeatTestGame(t, []campaign.Beat{{Op: "dialog", Line: 0}})
+	g.campLines = []campaign.Line{{Speaker: 133, SpeakerSlot: &slot, Upper: &upper, Text: "謝謝各位的幫助"}}
+	g.st = &battle.State{Units: make([]*battle.Unit, 7)}
+	g.st.Units[6] = &battle.Unit{Portrait: 134}
+	g.beatAdvance()
+	if g.loadErr != "" || len(g.dialog) != 1 || g.dialog[0].Speaker != 134 || g.dialog[0].Upper == nil || !*g.dialog[0].Upper {
+		t.Fatalf("runtime speaker slot did not resolve unit portrait/box: err=%q dialog=%#v", g.loadErr, g.dialog)
+	}
+	cutsceneSlot := 1
+	cutscene := newBeatTestGame(t, []campaign.Beat{{Op: "dialog", Line: 0}})
+	cutscene.campLines = []campaign.Line{{Speaker: 96, SpeakerSlot: &cutsceneSlot, Text: "場景單位"}}
+	cutscene.storyActors[1].Portrait = 133
+	cutscene.beatAdvance()
+	if cutscene.loadErr != "" || len(cutscene.dialog) != 1 || cutscene.dialog[0].Speaker != 133 {
+		t.Fatalf("cutscene speaker slot did not resolve materialized actor: err=%q dialog=%#v", cutscene.loadErr, cutscene.dialog)
+	}
+
+	bad := newBeatTestGame(t, []campaign.Beat{{Op: "dialog", Line: 0}})
+	bad.campLines = []campaign.Line{{Speaker: 133, SpeakerSlot: &slot, Text: "不可猜頭像"}}
+	bad.st = &battle.State{Units: make([]*battle.Unit, 6)}
+	bad.beatAdvance()
+	if bad.loadErr == "" || len(bad.dialog) != 0 {
+		t.Fatalf("missing direct speaker slot must fail closed: err=%q dialog=%#v", bad.loadErr, bad.dialog)
+	}
+}
+
+func TestChapter2StoryPreservesDirectSpeakerSlotsAndBoxSides(t *testing.T) {
+	battleLines := loadStoryScript("assets/story/ch02.json", "戰鬥中,強盜兵分兩路")
+	if len(battleLines) != 12 {
+		t.Fatalf("ch02 battle lines = %d, want 12", len(battleLines))
+	}
+	for line, slot := range map[int]int{0: 21, 1: 22, 2: 23, 3: 8, 8: 7, 10: 6, 11: 6} {
+		if battleLines[line].SpeakerSlot == nil || *battleLines[line].SpeakerSlot != slot || battleLines[line].Upper == nil || !*battleLines[line].Upper {
+			t.Errorf("ch02 battle line %d direct speaker = %#v, want upper slot %d", line, battleLines[line], slot)
+		}
+	}
+	postLines := loadStoryScript("assets/story/ch02.json", "希莉亞登場")
+	if len(postLines) != 23 || postLines[0].Upper == nil || !*postLines[0].Upper || postLines[1].Upper == nil || *postLines[1].Upper {
+		t.Fatalf("ch02 post line count/box sides = %#v", postLines)
+	}
+	casualties := loadStoryScript("assets/story/ch02.json", "戰鬥受創短句")
+	if len(casualties) != 6 {
+		t.Fatalf("ch02 casualty lines = %d, want 6", len(casualties))
+	}
+	for i, line := range casualties {
+		if line.SpeakerSlot == nil || *line.SpeakerSlot != i+5 || line.Speaker != []int{134, 133, 134, 133, 134, 133}[i] {
+			t.Errorf("casualty line %d = %#v", i, line)
+		}
+	}
+}
+
 func TestBeatActCyclesPosesThenAdvances(t *testing.T) {
 	g := newBeatTestGame(t, []campaign.Beat{
 		{Op: "act", Fig: 4, Poses: []int{1, 2, 3}, PoseFrames: 3},

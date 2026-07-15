@@ -49,11 +49,17 @@
 > 並送 `0xC6`，之後共同 continuation 只執行一次。compiler 會先 resolve 兩臂、runtime roster 不完整
 > 時 fail closed；dialogue binding/unknown diagnostics 亦會遞迴 branch。詳見 `doc50 §3.4`。
 
+> **2026-07-16 第八次 Codex 更新（FDTXT_002 完整化）**：`ch02.json` 已由 53 補到原版 61
+> logical utterances，#6/#7 互斥獎勵已拆開，#5 與 #11..16 亦保留在獨立資料位置；ch01 post
+> 的五個 dialog call-sites 全部取得精確 mapping，compile issues 11→6。並修正 `FFED operand`
+> 不是角色 ID 而是 runtime slot：村民 slots5..10 以 `speaker_slot` 動態解析 DATO134/133，缺 slot
+> 時 fail closed。詳見 `doc50 §3.5`。
+
 ## 0. 目前焦點(接手就做這裡)
 第一章開場 `ch00_pre` 的 handler、對白、ACT99/100、兩段 scroll、focus 與 map31 ACT90..98 已完整
 lower，compiler 為 **0 issues**；第一場勝利後的 `ch00_post` 也已完成 dialog、戰後 persistent
-roster 同步與 chapter 推進。下一個具體焦點是 ch01 post：補 FDTXT_002 缺少的 8 utterances，再給
-post handler 明確的 map0 runtime roster、pan、SPAWN4 與
+roster 同步與 chapter 推進。下一個具體焦點是 ch01 post：給 post handler 明確的 map1 runtime
+roster、pan、SPAWN4 與
 ACT14..16 binding；忠實流程節點應插在 `battle_ch02.on_win` 與 `choice_ch02` 之間。下方「草地深層未解」
 是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，不得再當目前 blocker。
 

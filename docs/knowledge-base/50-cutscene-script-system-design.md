@@ -390,9 +390,10 @@ remake lower 為 editable `grant_item(item_id)`；`battle.Unit.Inventory` 保存
 `sync_party` 深複製到 persistent roster，JSON save/load 亦會保留。這比原先只有名稱字串的全隊商店
 購物暫存更接近原版角色物品欄，也替後續裝備／消耗品系統留下可資料化的 stable ID。
 
-注意 ch01 post 尚不能因此直接宣稱 complete：generated binding 仍缺 FDTXT_002 61 utterances →
-`ch02.json` 53 lines 的 8 句、pan/ACT14..16/SPAWN4 的 post-battle roster context，共 11 個 compile
-issues。存活分支已由 §3.4 保存，但在這些 binding 補齊前仍不得接進 campaign 假裝可播放。
+注意 ch01 post 尚不能因此直接宣稱 complete：FDTXT_002 的 61 utterances 已由 §3.5 補齊並解除
+全部 5 個 post-dialog binding，但 pan×2 / ACT14..16 / SPAWN4 的 post-battle roster context 仍有
+**6 個 compile issues**。存活分支已由 §3.4 保存，但在這些場景 binding 補齊前仍不得接進 campaign
+假裝可播放。
 
 ### 3.4 `ch01_post` 存活 diamond：structured `if any_unit_alive`（2026-07-16）
 
@@ -412,6 +413,24 @@ resolve **兩臂**，任一臂缺 binding 就整個 branch fail closed。runtime
 
 manifest 因三個錯誤頂層拍收成一個 `if`，全量為 **624 個 top-level beats**；遞迴計入三個 arm
 records 為 627 records（626 個原操作 + 1 個 control record），unknown 仍為 **107**。
+
+### 3.5 FDTXT_002 61 utterances 與 dynamic speaker slot（2026-07-16）
+
+原始 17 strings 的 logical utterance counts 是：
+`[1,3,6,10,9,1,1,1,15,7,1,1,1,1,1,1,1]`，合計 **61**；舊 `ch02.json`
+只有 53 lines。差額不是八句連續 postbattle 對白：完全漏掉的是 #5 與 #11..16 共 7 句，另 #6/#7
+兩個互斥獎勵字串被以 `/` 壓在同一 line，再少一個結構位置。現在 story scenes 為 20+12+23+6=61，
+count-aligned index 可精確建立；ch01 post 使用的 #6..10 展開為 **1+1+15+7+1=25 lines**，五個
+dialog call-sites 全部 resolve，generated dialogue contexts 73→78、skipped 73→68。
+
+另有一個重要 speaker 修正：FDTXT 的 `FFED operand` 是 runtime unit direct index（doc40），不是全域
+角色 ID。map1 前 5 slots 是 party，slots5..10 六名村民的 DATO portraits 為 134/133 交錯；因此
+#6/#7 的 operand 6 是 DATO133 村民，不是萊汀，#11..16 也是六名村民倒下短句，不是洛娜到瑪琳。
+#4 的「救命啊」是 slot8/DATO133 村民，「往東南逃」回話是 slot7/DATO134 村民。editable story
+新增 `speaker_slot` 保存直接索引、`speaker` 保存已知 DATO audit value；runtime 必須從當前 battle unit
+或 materialized cutscene unit 的 `Portrait` 解析，slot/state 不存在就 fail closed。`upper` 同時保存
+FFED/FFEF 上框與 FFEC/FFEE 下框，
+避免再用角色編號猜框位。
 
 ## 4. 未解(低優先)+ 工具紀律
 

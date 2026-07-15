@@ -9,10 +9,14 @@ import (
 	"os"
 )
 
-// Line 一句對話(story 節點內嵌;speaker = 頭像 id)。
+// Line 一句對話(story 節點內嵌)。Speaker 是靜態或稽核用 DATO 頭像 id；
+// SpeakerSlot 保存原版 FFED/FFEC 的 runtime unit direct index，執行時必須
+// 從該 unit 的 Portrait 解析，不能把 slot 數字誤當全域角色 id。
 type Line struct {
-	Speaker int    `json:"speaker"`
-	Text    string `json:"text"`
+	Speaker     int    `json:"speaker"`
+	SpeakerSlot *int   `json:"speaker_slot,omitempty"`
+	Upper       *bool  `json:"upper,omitempty"`
+	Text        string `json:"text"`
 }
 
 // Option choice 節點的選項;If 非空時需旗標為真才顯示。

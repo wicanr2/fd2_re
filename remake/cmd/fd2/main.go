@@ -776,7 +776,13 @@ func (g *Game) beatStart(b campaign.Beat) {
 		g.dlgPage = 0                                  // 新對白從第一頁起
 		for i := end - 1; i >= b.Line && i >= 0; i-- { // 反序堆疊(同 enterNode story 分支慣例)
 			ln := lines[i]
-			g.dialog = append(g.dialog, battle.DialogLine{Speaker: ln.Speaker, Text: ln.Text, Upper: b.Upper})
+			dialogLine, err := g.resolveCampaignDialogLine(ln, b.Upper)
+			if err != nil {
+				g.dialog = nil
+				g.loadErr = "beat dialog:" + err.Error()
+				return
+			}
+			g.dialog = append(g.dialog, dialogLine)
 		}
 		if len(g.dialog) == 0 { // line/count 對不到資料:跳拍避免卡死
 			g.loadErr = fmt.Sprintf("beat dialog:line=%d count=%d 對不到 script lines(len=%d)", b.Line, n, len(lines))
@@ -909,6 +915,31 @@ func (g *Game) beatStart(b campaign.Beat) {
 		g.loadErr = "beat:未知原語 " + b.Op
 		g.beatAdvance()
 	}
+}
+
+func (g *Game) resolveCampaignDialogLine(line campaign.Line, upperOverride *bool) (battle.DialogLine, error) {
+	speaker := line.Speaker
+	if line.SpeakerSlot != nil {
+		slot := *line.SpeakerSlot
+		var unit *battle.Unit
+		if g.st != nil {
+			if slot < 0 || slot >= len(g.st.Units) || g.st.Units[slot] == nil {
+				return battle.DialogLine{}, fmt.Errorf("speaker_slot %d unavailable (battle units=%d)", slot, len(g.st.Units))
+			}
+			unit = g.st.Units[slot]
+		} else {
+			if slot < 0 || slot >= len(g.storyActors) {
+				return battle.DialogLine{}, fmt.Errorf("speaker_slot %d unavailable (cutscene units=%d)", slot, len(g.storyActors))
+			}
+			unit = &g.storyActors[slot]
+		}
+		speaker = unit.Portrait
+	}
+	upper := line.Upper
+	if upperOverride != nil {
+		upper = upperOverride
+	}
+	return battle.DialogLine{Speaker: speaker, Text: line.Text, Upper: upper}, nil
 }
 
 func (g *Game) evalBeatCondition(condition *campaign.BeatCondition) (bool, error) {
