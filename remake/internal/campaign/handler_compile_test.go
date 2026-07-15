@@ -1,6 +1,9 @@
 package campaign
 
-import "testing"
+import (
+	"path/filepath"
+	"testing"
+)
 
 func intPtr(v int) *int { return &v }
 
@@ -188,5 +191,25 @@ func TestHandlerBindingResolvesStrictStoryIndexContext(t *testing.T) {
 	}
 	if _, ok := binding.indexedDialog(HandlerBeat{Source: HandlerSource{Addr: "0x32d66"}, TextIndex: float64(999)}); ok {
 		t.Fatal("out-of-range text index unexpectedly resolved")
+	}
+}
+
+func TestCompileGeneratedHandlerBindingsFailClosed(t *testing.T) {
+	paths, err := filepath.Glob("../../assets/cutscenes/bindings/generated/ch??_*.json")
+	if err != nil || len(paths) != 60 {
+		t.Fatalf("generated bindings=%d err=%v", len(paths), err)
+	}
+	for _, path := range paths {
+		_, issues, err := CompileHandlerBinding(path)
+		if err != nil {
+			t.Fatalf("CompileHandlerBinding(%q): %v", path, err)
+		}
+		script, err := LoadHandlerScript(filepath.Join(filepath.Dir(path), "../../handlers", filepath.Base(path)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(script.Beats) > 0 && len(issues) == 0 {
+			t.Errorf("%s unexpectedly claims full fidelity", path)
+		}
 	}
 }

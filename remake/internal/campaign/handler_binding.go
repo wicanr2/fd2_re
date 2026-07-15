@@ -87,6 +87,23 @@ func LoadHandlerBinding(path string) (*HandlerBinding, error) {
 	return &binding, nil
 }
 
+// CompileHandlerBinding is the fail-closed runtime/editor entry point for one
+// editable handler binding.  It resolves HandlerScript relative to the
+// binding file, then returns every unresolved source operation as an issue;
+// callers must not start playback while issues remain.
+func CompileHandlerBinding(path string) ([]Beat, []HandlerCompileIssue, error) {
+	binding, err := LoadHandlerBinding(path)
+	if err != nil {
+		return nil, nil, err
+	}
+	script, err := LoadHandlerScript(filepath.Join(filepath.Dir(path), binding.HandlerScript))
+	if err != nil {
+		return nil, nil, fmt.Errorf("handler binding %q handler_script: %w", path, err)
+	}
+	beats, issues := CompileHandlerScript(script, binding.CompilerBindings())
+	return beats, issues, nil
+}
+
 // CompilerBindings exposes this binding file to the generic compiler.  A
 // missing override returns false, which deliberately becomes a compile issue.
 func (binding *HandlerBinding) CompilerBindings() HandlerBindings {
