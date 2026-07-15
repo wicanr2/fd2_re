@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
 
 func TestSaveDataRoundTripsPersistentParty(t *testing.T) {
@@ -30,5 +31,17 @@ func TestSaveDataRoundTripsPersistentParty(t *testing.T) {
 	}
 	if yuni.Fig != 9 || yuni.Lv != 4 || yuni.HP != 23 || yuni.MaxHP != 37 || yuni.MP != 18 || yuni.MaxMP != 24 || yuni.Exp != 67.5 || len(yuni.Spells) != 3 || len(yuni.Inventory) != 1 || yuni.Inventory[0] != 0xc6 {
 		t.Fatalf("party roster did not round-trip: %#v", yuni)
+	}
+}
+
+func TestSaveRejectsPostBattleHandlerWithoutSerializableRuntimeContext(t *testing.T) {
+	c := &campaign.Campaign{Start: "post", Nodes: map[string]*campaign.Node{
+		"post":   {Type: "cutscene", HandlerBinding: "assets/cutscenes/bindings/ch01_post.json", Next: "choice"},
+		"choice": {Type: "choice"},
+	}}
+	g := &Game{camp: campaign.NewRunner(c), st: &battle.State{Units: []*battle.Unit{{Fig: 0}}}}
+	g.saveGame()
+	if g.msg != "戰後演出進行中，請在下一個節點存檔" {
+		t.Fatalf("unsafe postbattle save was not rejected: %q", g.msg)
 	}
 }

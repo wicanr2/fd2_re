@@ -487,6 +487,61 @@ func TestCompileCompleteChapter0PostBinding(t *testing.T) {
 	}
 }
 
+func TestCompileCompleteChapter1PostBinding(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch01_post.json")
+	if err != nil || len(issues) != 0 {
+		t.Fatalf("ch01_post err=%v unresolved=%#v", err, issues)
+	}
+	if len(beats) != 39 || beats[0].Op != "runtime_context" || beats[0].RuntimeContext == nil {
+		t.Fatalf("ch01_post compiled beats/context = %d/%#v", len(beats), beats[0])
+	}
+	context := beats[0].RuntimeContext
+	if context.SlotCount != 27 || context.SpawnGroups[4] != 1 || !context.StoryViewport {
+		t.Fatalf("ch01_post runtime context = %#v", context)
+	}
+	seen := map[string]bool{}
+	for _, beat := range beats {
+		if beat.Source != "" {
+			seen[beat.Source] = true
+		}
+		if beat.Source == "0x22fd4" && (beat.Op != "pan" || beat.X != 336 || beat.Y != 48) {
+			t.Fatalf("first map1 pan = %#v", beat)
+		}
+		if beat.Source == "0x23084" && (beat.Op != "pan" || beat.X != 336 || beat.Y != 24) {
+			t.Fatalf("second map1 pan = %#v", beat)
+		}
+	}
+	for _, source := range []string{"0x22fd4", "0x22fde", "0x22ff2", "0x2303a", "0x23084", "0x2309b"} {
+		if !seen[source] {
+			t.Fatalf("ch01_post missing lowered source %s", source)
+		}
+	}
+}
+
+func TestCompileRuntimeContextSpawnExpandsActingSlotFrontier(t *testing.T) {
+	slot27 := 27
+	group4 := 4
+	actingID := 14
+	script := &HandlerScript{Beats: []HandlerBeat{
+		{Op: "spawn", Group: &group4},
+		{Op: "act", ActingID: &actingID},
+	}}
+	bindings := HandlerBindings{
+		RuntimeContext: &HandlerRuntimeContext{SlotCount: 27, SpawnGroups: map[int]int{4: 1}},
+		Acting: func(HandlerBeat) ([]ActingFrame, bool) {
+			return []ActingFrame{{Beats: 1, Units: []ActingUnit{{Slot: &slot27}}}}, true
+		},
+	}
+	beats, issues := CompileHandlerScript(script, bindings)
+	if len(issues) != 0 || len(beats) != 2 {
+		t.Fatalf("spawn frontier beats=%#v issues=%#v", beats, issues)
+	}
+	bindings.RuntimeContext.SpawnGroups = map[int]int{}
+	if _, issues = CompileHandlerScript(script, bindings); len(issues) == 0 || issues[0].Op != "spawn" {
+		t.Fatalf("missing group cardinality did not fail closed: %#v", issues)
+	}
+}
+
 func TestHandlerBindingResolvesStrictStoryIndexContext(t *testing.T) {
 	binding, err := LoadHandlerBinding("../../assets/cutscenes/bindings/ch01_pre.json")
 	if err != nil {

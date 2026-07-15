@@ -55,13 +55,21 @@
 > 不是角色 ID 而是 runtime slot：村民 slots5..10 以 `speaker_slot` 動態解析 DATO134/133，缺 slot
 > 時 fail closed。詳見 `doc50 §3.5`。
 
+> **2026-07-16 第九次 Codex 更新（ch01 post 完整接線）**：ch02 battle 已恢復原版 runtime
+> constructor 順序：party0..4、村民5..10、group2=11..20、turn3 group3=21..26，戰後 SPAWN4
+> 才 append 希莉亞為 slot27；group255 不再預佔 runtime array。`ch01_post.json` binding 以明確
+> postbattle context 驗證 slot frontier，PAN 定案為 `(336,48)/(336,24)`，ACT14/15/16 直接作用於
+> canonical battle state，compiler 為 0 issues。campaign 已接成 battle→post→choice，完整測試、
+> build 與 Xvfb branch/PAN/SPAWN/ACT14 截圖均通過。戰後演出中因 save 尚不序列化 battle array，
+> F5 會明確拒絕，下一節點恢復可存。詳見 `doc50 §3.6`。
+
 ## 0. 目前焦點(接手就做這裡)
-第一章開場 `ch00_pre` 的 handler、對白、ACT99/100、兩段 scroll、focus 與 map31 ACT90..98 已完整
-lower，compiler 為 **0 issues**；第一場勝利後的 `ch00_post` 也已完成 dialog、戰後 persistent
-roster 同步與 chapter 推進。下一個具體焦點是 ch01 post：給 post handler 明確的 map1 runtime
-roster、pan、SPAWN4 與
-ACT14..16 binding；忠實流程節點應插在 `battle_ch02.on_win` 與 `choice_ch02` 之間。下方「草地深層未解」
-是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，不得再當目前 blocker。
+`ch00_pre`、`ch00_post`、`ch01_post` 已成為前三個 campaign 實際 consumer；ch01 post 的 branch、
+reward、61-utterance FDTXT_002、dynamic speaker slots、PAN、SPAWN4、ACT14..16、JOIN/sync/chapter tail
+均已完整 lower 且 compiler **0 issues**。下一個具體焦點應移到 **ch01_pre** 剩餘非 dialog ops，讓
+第二章的戰前 handler 也取代現有舊 story/stub，或依 completion frontier 選擇下一個能最短閉合的
+handler。下方「草地深層未解」是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，
+不得再當目前 blocker。
 
 ## 1. 這段 session 做完的事
 - **王座傳位幕**:走位 (8,42)→**(8,21)**第一次對話→**(8,8)**最終(對原版截圖+FDFIELD 守衛地標實測);

@@ -432,6 +432,34 @@ dialog call-sites 全部 resolve，generated dialogue contexts 73→78、skipped
 FFED/FFEF 上框與 FFEC/FFEE 下框，
 避免再用角色編號猜框位。
 
+### 3.6 ch01 post 完整接線：canonical runtime slots + postbattle context（2026-07-16）
+
+先前 `battle.Load` 把 map1 全 40 筆 FDFIELD records 放入 `State.Units`，`Scenario.Setup` 只切
+`OnField`，再把五名 party append 到 slots40..44；group4 希莉亞更因誤列 `initial_groups` 而提前在
+slot22。這不只是畫面差異：存活 diamond 的 slots5..10 會混入敵軍，FFED speaker slot 也會讀錯人。
+
+ch02 現改用 `runtime_append_groups` constructor 模式：FDFIELD records 留在 source roster，canonical
+runtime array 依事件實際 materialize：party slots0..4、group1 村民 slots5..10、group2 slots11..20；
+turn3 的 SPAWN3 才 append slots21..26，戰後 SPAWN4 才 append 希莉亞為 **slot27**。group255 padding
+不再污染 runtime slots，也不計入尚待出場敵軍。`State.AppendGroup` 是無進場滑動的原版 `0x10b4e`
+投影；戰鬥增援 `SpawnGroup` 在同一 append 後另加既有動畫。
+
+post handler binding 新增明確 `runtime_context`：進入時必須已有 27 slots，group4 cardinality=1，並
+切到原版 13×8 的 story viewport；compiler 由這個 count 驗證 branch/ACT，在 SPAWN4 後把可用 slot
+frontier 推到 28。runtime 不建立第二份 story copy：PAN、SPAWN、ACT、FFED、grant、JOIN、sync_party
+全都作用於同一個 `g.st`，因此希莉亞加入後也能被後續 persistent roster 同步保存。
+
+兩個 PAN 已由 `0x135dd` 完整 body 定案：參數是 camera grid origin，原版 tile=24px；map1 27×21、
+viewport 13×8，故 `(14,2)→(336,48)`、`(14,1)→(336,24)`，其中 col14 也正好是 X 最大 origin。
+這兩點仍以 address-keyed binding 保存；沒有把所有章節未驗證座標改成全域猜測公式。ACT14 使 slot27
+由 `(22,4)` 下移到 `(22,6)`，ACT15 special 操作 party slots0..4，ACT16 再使 slot27 到 `(15,0)`；
+均有 headless runtime regression。實機 Xvfb 也已跑過完整 branch→reward→PAN→SPAWN→ACT14，並在
+FDTXT #8 首句停住截圖確認希莉亞出場與原版窄視窗。
+
+campaign 現為 `battle_ch02.on_win → story_ch02_post → choice_ch02`。因目前 save format 只保存節點
+邊界、不保存 completed battle array，戰後 handler 進行中會明確拒絕 F5；到下一節點即可正常存檔，
+避免讀檔後缺 runtime slots 而必然失敗。
+
 ## 4. 未解(低優先)+ 工具紀律
 
 - ~~acting 原始靜態容器未定位~~：已定位為 `FD2.EXE file+0x565d8` 的 106×u32 offset directory，

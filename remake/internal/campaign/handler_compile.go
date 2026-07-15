@@ -49,6 +49,17 @@ type HandlerBindings struct {
 	Dialog func(HandlerBeat) (HandlerDialog, bool)
 	Acting func(HandlerBeat) ([]ActingFrame, bool)
 	LoadCH func(HandlerBeat) (LoadCHState, bool)
+	// RuntimeContext is present for a handler entered with an existing canonical
+	// unit array (not through LOADCH), such as a post-battle handler. It makes
+	// slot validation and SPAWN cardinality explicit instead of guessing from a
+	// chapter number.
+	RuntimeContext *HandlerRuntimeContext
+}
+
+type HandlerRuntimeContext struct {
+	SlotCount     int         `json:"slot_count"`
+	SpawnGroups   map[int]int `json:"spawn_groups,omitempty"`
+	StoryViewport bool        `json:"story_viewport,omitempty"`
 }
 
 // HandlerCompileIssue identifies a source operation that was intentionally
@@ -72,6 +83,9 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 	beats := make([]Beat, 0, len(script.Beats))
 	issues := make([]HandlerCompileIssue, 0)
 	activeSlotCount := 0
+	if bindings.RuntimeContext != nil {
+		activeSlotCount = bindings.RuntimeContext.SlotCount
+	}
 	issue := func(i int, input HandlerBeat, reason string) {
 		issues = append(issues, HandlerCompileIssue{Beat: i, Op: input.Op, Source: input.Source, Reason: reason})
 	}
@@ -92,14 +106,14 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			seen := make(map[int]bool, len(input.Condition.UnitSlots))
 			validSlots := true
 			for _, slot := range input.Condition.UnitSlots {
-				if slot < 0 || seen[slot] {
+				if slot < 0 || seen[slot] || (activeSlotCount > 0 && slot >= activeSlotCount) {
 					validSlots = false
 					break
 				}
 				seen[slot] = true
 			}
 			if !validSlots {
-				issue(i, input, "any_unit_alive slots must be unique non-negative integers")
+				issue(i, input, "any_unit_alive slots must be unique non-negative integers within the active runtime context")
 				continue
 			}
 			if handlerBranchChangesCompileContext(input.Then) || handlerBranchChangesCompileContext(input.Else) {
@@ -257,6 +271,14 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			if activeSlotCount <= 0 {
 				issue(i, input, "spawn requires a preceding complete loadch roster")
 				continue
+			}
+			if bindings.RuntimeContext != nil {
+				size, ok := bindings.RuntimeContext.SpawnGroups[*input.Group]
+				if !ok || size <= 0 {
+					issue(i, input, "spawn requires an explicit positive runtime-context group cardinality")
+					continue
+				}
+				activeSlotCount += size
 			}
 			beat := runtime(input, "spawn")
 			beat.Group = *input.Group

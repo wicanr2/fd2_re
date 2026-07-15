@@ -28,6 +28,14 @@ func (g *Game) saveGame() {
 		g.msg = "存檔:僅 campaign 模式支援(FD2_CAMPAIGN=1)"
 		return
 	}
+	if n := g.camp.Node(); n != nil && n.Type == "cutscene" && n.HandlerBinding != "" && g.st != nil {
+		// Post-battle handlers intentionally retain the completed canonical battle
+		// array for slot predicates, rewards, SPAWN, ACT and sync_party. The save
+		// format is node-boundary-only and does not serialize that transient array;
+		// saving this node would reload into a guaranteed fail-closed context.
+		g.msg = "戰後演出進行中，請在下一個節點存檔"
+		return
+	}
 	d := saveData{
 		Node: g.camp.Cur, Flags: g.camp.Flags, Gold: g.gold, Items: g.items,
 		PartyMembers: g.partyMembers, PartyJoinOrder: g.partyJoinOrder,

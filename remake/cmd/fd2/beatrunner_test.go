@@ -316,6 +316,55 @@ func TestBeatActingDecodedNormalSlotMovement(t *testing.T) {
 	}
 }
 
+func TestChapter1PostRuntimeContextSpawnsAndActsOnCanonicalBattleSlots(t *testing.T) {
+	st, err := battle.Load(assetPath("assets/maps/map1/map1_units.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	sc, err := battle.LoadScenario(assetPath("assets/scenarios/ch02.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	sc.Setup(st)
+	st.SpawnGroup(3, battle.Ally, true, false)
+	if len(st.Units) != 27 {
+		t.Fatalf("pre-post runtime slots=%d, want 27", len(st.Units))
+	}
+	resources, err := campaign.LoadActingResourceSet(assetPath("assets/cutscenes/acting/map32.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	context := &campaign.HandlerRuntimeContext{SlotCount: 27, SpawnGroups: map[int]int{4: 1}, StoryViewport: true}
+	g := newBeatTestGame(t, []campaign.Beat{
+		{Op: "runtime_context", RuntimeContext: context},
+		{Op: "spawn", Group: 4, Source: "0x22fde"},
+		{Op: "act", Acting: resources[14], Source: "0x22ff2"},
+		{Op: "act", Acting: resources[15], Source: "0x2303a"},
+		{Op: "act", Acting: resources[16], Source: "0x2309b"},
+	})
+	g.st = st
+	g.storyActors = nil
+	g.storyBG = false
+	g.beatAdvance()
+	if !g.storyBG || len(st.Units) != 28 || st.Units[27].Portrait != 8 {
+		t.Fatalf("post context/spawn storyBG=%v slots=%d slot27=%#v", g.storyBG, len(st.Units), st.Units[27])
+	}
+	g.tick(14)
+	if got := st.Units[27]; got.X != 22 || got.Y != 6 {
+		t.Fatalf("ACT14 slot27 = (%d,%d), want (22,6)", got.X, got.Y)
+	}
+	g.tick(3)
+	for slot := 0; slot < 5; slot++ {
+		if st.Units[slot].Dir != 0 {
+			t.Fatalf("ACT15 party slot%d dir=%d, want 0", slot, st.Units[slot].Dir)
+		}
+	}
+	g.tick(91)
+	if got := st.Units[27]; got.X != 15 || got.Y != 0 || got.Dir != 2 {
+		t.Fatalf("ACT16 slot27 = (%d,%d) dir%d, want (15,0) dir2", got.X, got.Y, got.Dir)
+	}
+}
+
 func TestBeatScrollStepSlot2MatchesCh00ACT99Followup(t *testing.T) {
 	// ch00 handler 0x32351 calls 0x13185(slot2) 15 times immediately after
 	// direct ACT99 has moved Sol from Y42 to Y36.  Each original grid step has

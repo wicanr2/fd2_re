@@ -114,4 +114,8 @@ func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 	if ch05 == nil || ch05.Type != "cutscene" || ch05.HandlerBinding != "assets/cutscenes/bindings/ch05_pre.json" || ch05.Next != "battle_ch05" {
 		t.Fatalf("ch05 should execute its complete editable pre-handler: %#v", ch05)
 	}
+	battle2, post2 := c.Nodes["battle_ch02"], c.Nodes["story_ch02_post"]
+	if battle2 == nil || battle2.OnWin != "story_ch02_post" || post2 == nil || post2.Type != "cutscene" || post2.HandlerBinding != "assets/cutscenes/bindings/ch01_post.json" || post2.Next != "choice_ch02" {
+		t.Fatalf("chapter2 battle must flow through editable post handler: battle=%#v post=%#v", battle2, post2)
+	}
 }

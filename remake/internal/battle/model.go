@@ -138,12 +138,18 @@ func (u *Unit) TickStatus() {
 
 // State 一場戰鬥的狀態。
 type State struct {
-	W, H      int
-	Units     []*Unit
-	OwnDeploy []Cell          // 我方可部署格
-	Turn      int             // 回合數(無上限,doc 27;只由劇本事件限制)
-	Flags     map[string]bool // 事件旗標(跨事件/跨關劇情狀態,doc 29)
-	Cost      []int           // per-tile 移動成本(len==W*H;index=y*W+x;nil=尚無地形資料,MoveCost 全回 1)
+	W, H  int
+	Units []*Unit
+	// Roster is the unmaterialized FDFIELD source used by scenarios which
+	// preserve the original constructor semantics. Units is then the canonical
+	// runtime array: party/initial groups are appended in event order, and later
+	// SPAWN calls append their group without reserving slots ahead of time.
+	Roster        []*Unit
+	PendingGroups map[int]bool
+	OwnDeploy     []Cell          // 我方可部署格
+	Turn          int             // 回合數(無上限,doc 27;只由劇本事件限制)
+	Flags         map[string]bool // 事件旗標(跨事件/跨關劇情狀態,doc 29)
+	Cost          []int           // per-tile 移動成本(len==W*H;index=y*W+x;nil=尚無地形資料,MoveCost 全回 1)
 	// 來源:tools/export_engine_assets.py 依地形控制表(doc01 §5)換算,由 Load 讀同目錄
 	// map.json 的 "cost" 陣列自動接上(worklist 第 8 輪「地形屬性接線」)。
 }
@@ -178,6 +184,11 @@ func (s *State) PendingCount(c Camp) int {
 	n := 0
 	for _, u := range s.Units {
 		if !u.OnField && u.Alive() && u.Camp == c {
+			n++
+		}
+	}
+	for _, u := range s.Roster {
+		if s.PendingGroups[u.Group] && u.Alive() && u.Camp == c {
 			n++
 		}
 	}
@@ -287,10 +298,52 @@ func loadTerrainCost(mapJSONPath string, w, h int) []int {
 // AddUnit 把一個單位加入戰場(事件 spawn / 主角隊進場用)。
 func (s *State) AddUnit(u *Unit) { s.Units = append(s.Units, u) }
 
+// AppendGroup implements the original 0x10b4e constructor: matching FDFIELD
+// records are removed from the source roster and appended to the canonical
+// runtime unit array in record order. It intentionally has no reinforcement
+// slide; post-battle handlers perform their own decoded ACT immediately after
+// SPAWN.
+func (s *State) AppendGroup(group int) int {
+	if s == nil || len(s.Roster) == 0 {
+		return 0
+	}
+	remaining := s.Roster[:0]
+	n := 0
+	for _, u := range s.Roster {
+		if u.Group != group {
+			remaining = append(remaining, u)
+			continue
+		}
+		u.OnField = true
+		u.OffX, u.OffY = 0, 0
+		s.Units = append(s.Units, u)
+		n++
+	}
+	s.Roster = remaining
+	return n
+}
+
 // SpawnGroup 讓某 group 的待命單位登場(可改陣營;act=true 表示當回合可行動)。
 // 回傳登場數。對映原版 turn_events 觸發增援(doc 25/29)。多單位同座標時自動錯開到最近空格。
 func (s *State) SpawnGroup(group int, camp Camp, changeCamp, act bool) int {
 	n := 0
+	before := len(s.Units)
+	if appended := s.AppendGroup(group); appended > 0 {
+		for _, u := range s.Units[before:] {
+			u.OffY = -56
+			if changeCamp {
+				u.Camp = camp
+			}
+			u.Acted = !act
+			if occ := s.UnitAt(u.X, u.Y); occ != nil && occ != u {
+				if c, ok := s.nearestFree(u.X, u.Y); ok {
+					u.X, u.Y = c.X, c.Y
+				}
+			}
+			n++
+		}
+		return n
+	}
 	for _, u := range s.Units {
 		if u.Group == group && !u.OnField {
 			u.OnField = true

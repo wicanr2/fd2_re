@@ -486,6 +486,12 @@ func (g *Game) finishActJob(j *actPoseJob) {
 func (g *Game) actingActor(target campaign.ActingUnit) *battle.Unit {
 	if target.Slot != nil {
 		slot := *target.Slot
+		if g.st != nil {
+			if slot >= 0 && slot < len(g.st.Units) {
+				return g.st.Units[slot]
+			}
+			return nil
+		}
 		if slot >= 0 && slot < len(g.storyActors) {
 			return &g.storyActors[slot]
 		}
@@ -498,6 +504,13 @@ func (g *Game) actingActor(target campaign.ActingUnit) *battle.Unit {
 		}
 	}
 	return nil
+}
+
+func (g *Game) handlerUnitCount() int {
+	if g.st != nil {
+		return len(g.st.Units)
+	}
+	return len(g.storyActors)
 }
 
 // beginActingFrame 設定目前 frame 的姿態。呼叫端保證 j.frame 有效。
@@ -670,6 +683,19 @@ func (g *Game) beatStart(b campaign.Beat) {
 		return -1
 	}
 	switch b.Op {
+	case "runtime_context":
+		if b.RuntimeContext == nil || b.RuntimeContext.SlotCount <= 0 {
+			g.loadErr = "beat runtime_context:缺少有效 slot_count"
+			return
+		}
+		if g.st == nil || len(g.st.Units) != b.RuntimeContext.SlotCount {
+			g.loadErr = fmt.Sprintf("beat runtime_context: runtime slots=%d, want %d", g.handlerUnitCount(), b.RuntimeContext.SlotCount)
+			return
+		}
+		if b.RuntimeContext.StoryViewport {
+			g.storyBG = true
+		}
+		g.beatAdvance()
 	case "if":
 		matched, err := g.evalBeatCondition(b.Condition)
 		if err != nil {
@@ -795,8 +821,8 @@ func (g *Game) beatStart(b campaign.Beat) {
 			// be a different load-context resource or require an unmodelled spawn.
 			for _, frame := range b.Acting {
 				for _, target := range frame.Units {
-					if target.Slot != nil && (*target.Slot < 0 || *target.Slot >= len(g.storyActors)) {
-						g.loadErr = fmt.Sprintf("beat act %s: original runtime slot %d unavailable (materialized=%d)", b.Source, *target.Slot, len(g.storyActors))
+					if target.Slot != nil && (*target.Slot < 0 || *target.Slot >= g.handlerUnitCount()) {
+						g.loadErr = fmt.Sprintf("beat act %s: original runtime slot %d unavailable (materialized=%d)", b.Source, *target.Slot, g.handlerUnitCount())
 						return
 					}
 				}
@@ -821,7 +847,14 @@ func (g *Game) beatStart(b campaign.Beat) {
 		// current unit_count and increments it: this is append, not toggling an
 		// already slot-stable full roster.  Keep the legacy activation fallback
 		// for authored scene beats that have no LOADCH roster.
-		g.materializeStoryGroup(b.Group)
+		if g.st != nil {
+			if g.st.AppendGroup(b.Group) == 0 {
+				g.loadErr = fmt.Sprintf("beat spawn %s: group %d unavailable in runtime roster", b.Source, b.Group)
+				return
+			}
+		} else {
+			g.materializeStoryGroup(b.Group)
+		}
 		g.beatAdvance()
 	case "spawn_intro":
 		g.materializeStoryGroup(b.Group)
@@ -2595,7 +2628,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		drawCursor(screen, curPx, curPy, float64(tw), float64(th))
 	}
 	// HUD(對照原版 orig_04/08):游標單位資訊=左下面板(非常駐頂列);回合切換=中央大字橫幅。
-	if g.st != nil && g.font != nil {
+	if g.st != nil && g.font != nil && !g.storyBG {
 		if u := g.st.UnitAt(g.curX, g.curY); u != nil { // 左下單位面板(orig 樣式)
 			g.drawUnitHUD(screen, u)
 		}
@@ -2604,11 +2637,13 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				g.st.Turn, g.st.AliveCount(battle.Own), g.st.AliveCount(battle.Ally), g.st.AliveCount(battle.Enemy), g.curX, g.curY), 6, 4)
 		}
 	}
-	g.drawPhaseBanner(screen) // 回合橫幅(PLAYER/ENEMY PHASE,transient)
+	if !g.storyBG {
+		g.drawPhaseBanner(screen) // 回合橫幅(PLAYER/ENEMY PHASE,transient)
+	}
 
 	// 中文層(原版點陣字型,doc 08):選中單位名 + 對話框(DebugPrint 不支援中文)
 	if g.font != nil {
-		if g.st != nil { // 選中單位中文名(放游標格上方,避開頂部 DebugPrint)
+		if g.st != nil && !g.storyBG { // 選中單位中文名(放游標格上方,避開頂部 DebugPrint)
 			if u := g.st.UnitAt(g.curX, g.curY); u != nil {
 				nm := u.Name
 				if nm == "" {
@@ -3323,6 +3358,31 @@ func loadGame() *Game {
 		}
 		if c, err := campaign.Load(assetPath(cp)); err == nil {
 			g.camp = campaign.NewRunner(c)
+			// Headless post-handler oracle: materialize a named battle node before
+			// jumping to its following cutscene. Normal campaign play never sets this
+			// variable; it exists so screenshots can exercise the real canonical
+			// battle slots instead of bypassing the required runtime context.
+			if prep := os.Getenv("FD2_CAMP_PREP_BATTLE"); prep != "" {
+				if battleNode, ok := c.Nodes[prep]; ok && battleNode.Type == "battle" {
+					if battleNode.Map != "" {
+						if err := g.loadMap(battleNode.Map); err != nil {
+							g.loadErr = "prep map: " + err.Error()
+						}
+					}
+					g.resetBattle(battleNode.Units, battleNode.Scenario)
+					if turn, err := strconv.Atoi(os.Getenv("FD2_CAMP_PREP_TURN")); err == nil && turn > 0 && g.st != nil && g.sc != nil {
+						g.st.Turn = turn
+						g.sc.Fire(g.st, "on_turn_end", "")
+					}
+					if group, err := strconv.Atoi(os.Getenv("FD2_CAMP_PREP_DEAD_GROUP")); err == nil && g.st != nil {
+						for _, unit := range g.st.Units {
+							if unit.Group == group {
+								unit.HP = 0
+							}
+						}
+					}
+				}
+			}
 			if n := os.Getenv("FD2_CAMP_NODE"); n != "" { // 驗證鉤子:直接跳指定節點
 				if _, ok := c.Nodes[n]; ok {
 					g.camp.Cur = n

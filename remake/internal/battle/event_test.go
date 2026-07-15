@@ -33,3 +33,47 @@ func TestScenarioPartyUnitsUseFDFIELDFallbackCells(t *testing.T) {
 		t.Fatalf("fallback deployment lost: %#v", units)
 	}
 }
+
+func TestChapter2RuntimeAppendOrderMatchesOriginalHandlerSlots(t *testing.T) {
+	st, err := Load("../../assets/maps/map1/map1_units.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sc, err := LoadScenario("../../assets/scenarios/ch02.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sc.Setup(st)
+	if len(st.Units) != 21 {
+		t.Fatalf("setup runtime units=%d, want party5 + group1/2=16", len(st.Units))
+	}
+	for slot, portrait := range []int{0, 4, 9, 30, 1} {
+		if st.Units[slot].Portrait != portrait || st.Units[slot].Camp != Own {
+			t.Fatalf("party slot %d = portrait%d camp%s", slot, st.Units[slot].Portrait, st.Units[slot].Camp)
+		}
+	}
+	for slot, portrait := range []int{134, 133, 134, 133, 134, 133} {
+		u := st.Units[slot+5]
+		if u.Portrait != portrait || u.Group != 1 || u.Camp != Ally {
+			t.Fatalf("villager slot %d = portrait%d group%d camp%s", slot+5, u.Portrait, u.Group, u.Camp)
+		}
+	}
+	if got := st.PendingCount(Enemy); got != 6 {
+		t.Fatalf("pending enemies=%d, want scheduled group3 only", got)
+	}
+	if got := st.SpawnGroup(3, Ally, true, false); got != 6 || len(st.Units) != 27 {
+		t.Fatalf("turn3 spawn=%d runtime units=%d, want 6/27", got, len(st.Units))
+	}
+	if got := st.AppendGroup(4); got != 1 || len(st.Units) != 28 {
+		t.Fatalf("post SPAWN4=%d runtime units=%d, want 1/28", got, len(st.Units))
+	}
+	hilia := st.Units[27]
+	if hilia.Portrait != 8 || hilia.Group != 4 || hilia.X != 22 || hilia.Y != 4 || !hilia.OnField {
+		t.Fatalf("post slot27 = %#v", hilia)
+	}
+	for _, u := range st.Units {
+		if u.Group == 255 {
+			t.Fatal("group255 placeholder polluted canonical runtime slots")
+		}
+	}
+}

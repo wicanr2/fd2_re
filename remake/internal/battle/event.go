@@ -12,13 +12,14 @@ import (
 
 // Scenario 一關的劇本(對映原版 FDFIELD turn_events + 青衫 ground truth)。
 type Scenario struct {
-	Chapter       int           `json:"chapter"`
-	Name          string        `json:"name"`
-	Map           int           `json:"map"`
-	InitialGroups []int         `json:"initial_groups"` // 開局即在場的 unit group;其餘待命
-	Party         []PartyMember `json:"party"`          // 主角隊(不在 FDFIELD roster,on_battle_start 進場)
-	DeployCells   [][2]int      `json:"deploy_cells"`   // 主角隊進場目標格
-	Events        []Event       `json:"events"`
+	Chapter             int           `json:"chapter"`
+	Name                string        `json:"name"`
+	Map                 int           `json:"map"`
+	RuntimeAppendGroups bool          `json:"runtime_append_groups,omitempty"` // party first; FDFIELD groups append only when constructed
+	InitialGroups       []int         `json:"initial_groups"`                  // 開局即在場的 unit group;其餘待命
+	Party               []PartyMember `json:"party"`                           // 主角隊(不在 FDFIELD roster,on_battle_start 進場)
+	DeployCells         [][2]int      `json:"deploy_cells"`                    // 主角隊進場目標格
+	Events              []Event       `json:"events"`
 }
 
 // PartyMember 主角隊成員(數值來自 characters.json / EXE 表)。
@@ -94,6 +95,28 @@ func LoadScenario(path string) (*Scenario, error) {
 // Setup 套用劇本初始狀態:把非 initial_groups 的單位設為待命(OnField=false)。
 // 然後觸發 on_battle_start(主角隊進場 + 開場對話)。回傳開場要播的對話。
 func (sc *Scenario) Setup(st *State) []DialogLine {
+	if sc.RuntimeAppendGroups {
+		// Keep FDFIELD records as immutable-order constructor inputs. The opening
+		// event materializes the player party first; initial FDFIELD groups follow,
+		// exactly matching the runtime slots addressed by handler bytecode.
+		st.Roster = st.Units
+		st.Units = nil
+		st.PendingGroups = map[int]bool{}
+		for _, event := range sc.Events {
+			for _, action := range event.Do {
+				if action.Type == "spawn_group" {
+					for _, group := range action.Groups {
+						st.PendingGroups[group] = true
+					}
+				}
+			}
+		}
+		dialogues := sc.Fire(st, "on_battle_start", "")
+		for _, group := range sc.InitialGroups {
+			st.AppendGroup(group)
+		}
+		return dialogues
+	}
 	if len(sc.InitialGroups) > 0 {
 		init := map[int]bool{}
 		for _, g := range sc.InitialGroups {

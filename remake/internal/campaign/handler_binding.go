@@ -19,6 +19,7 @@ type HandlerBinding struct {
 	ActingResources  string                            `json:"acting_resources,omitempty"`
 	StoryIndexMap    string                            `json:"story_index_map,omitempty"`
 	DialogueContexts map[string]HandlerDialogueContext `json:"dialogue_contexts,omitempty"`
+	RuntimeContext   *HandlerRuntimeContext            `json:"runtime_context,omitempty"`
 	Overrides        map[string]HandlerBindingOverride `json:"overrides"`
 
 	storyIndex *StoryIndexMap
@@ -136,6 +137,16 @@ func LoadHandlerBinding(path string) (*HandlerBinding, error) {
 			}
 		}
 	}
+	if context := binding.RuntimeContext; context != nil {
+		if context.SlotCount <= 0 {
+			return nil, fmt.Errorf("handler binding %q runtime_context needs positive slot_count", path)
+		}
+		for group, count := range context.SpawnGroups {
+			if group < 0 || count <= 0 {
+				return nil, fmt.Errorf("handler binding %q runtime_context has invalid spawn group %d count %d", path, group, count)
+			}
+		}
+	}
 	return &binding, nil
 }
 
@@ -153,7 +164,23 @@ func CompileHandlerBinding(path string) ([]Beat, []HandlerCompileIssue, error) {
 		return nil, nil, fmt.Errorf("handler binding %q handler_script: %w", path, err)
 	}
 	beats, issues := CompileHandlerScript(script, binding.CompilerBindings())
+	if len(issues) == 0 && binding.RuntimeContext != nil {
+		context := *binding.RuntimeContext
+		context.SpawnGroups = cloneIntMap(context.SpawnGroups)
+		beats = append([]Beat{{Op: "runtime_context", RuntimeContext: &context}}, beats...)
+	}
 	return beats, issues, nil
+}
+
+func cloneIntMap(input map[int]int) map[int]int {
+	if input == nil {
+		return nil
+	}
+	output := make(map[int]int, len(input))
+	for key, value := range input {
+		output[key] = value
+	}
+	return output
 }
 
 // CompilerBindings exposes this binding file to the generic compiler.  A
@@ -167,6 +194,7 @@ func (binding *HandlerBinding) CompilerBindings() HandlerBindings {
 		return override, ok
 	}
 	return HandlerBindings{
+		RuntimeContext: binding.RuntimeContext,
 		LoadCH: func(input HandlerBeat) (LoadCHState, bool) {
 			override, ok := lookup(input)
 			if !ok || override.LoadCH == nil {

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "handler_script": "../handlers/ch01_post.json",
+  "acting_resources": "../acting/map32.json",
+  "story_index_map": "../dialogue-index/count-aligned.json",
+  "runtime_context": {
+    "slot_count": 27,
+    "spawn_groups": {
+      "4": 1
+    },
+    "story_viewport": true
+  },
+  "dialogue_contexts": {
+    "0x22f92": {
+      "source_dat": "FDTXT_002",
+      "script": "ch02.json"
+    },
+    "0x22fc8": {
+      "source_dat": "FDTXT_002",
+      "script": "ch02.json"
+    },
+    "0x23019": {
+      "source_dat": "FDTXT_002",
+      "script": "ch02.json"
+    },
+    "0x23061": {
+      "source_dat": "FDTXT_002",
+      "script": "ch02.json"
+    },
+    "0x230cf": {
+      "source_dat": "FDTXT_002",
+      "script": "ch02.json"
+    }
+  },
+  "overrides": {
+    "0x22fd4": {
+      "pan": {
+        "x": 336,
+        "y": 48
+      }
+    },
+    "0x22ff2": {
+      "act": {
+        "resource": 14
+      }
+    },
+    "0x2303a": {
+      "act": {
+        "resource": 15
+      }
+    },
+    "0x23084": {
+      "pan": {
+        "x": 336,
+        "y": 24
+      }
+    },
+    "0x2309b": {
+      "act": {
+        "resource": 16
+      }
+    }
+  }
+}
