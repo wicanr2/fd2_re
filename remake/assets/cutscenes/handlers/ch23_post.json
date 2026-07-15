@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "chapter": 23,
+  "phase": "post",
+  "handler": "0x24c1e",
+  "beats": [
+    {
+      "op": "dialog",
+      "text_index": 2,
+      "source": {
+        "addr": "0x24c4c",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "redraw",
+      "args": [
+        1
+      ],
+      "source": {
+        "addr": "0x24c63",
+        "target": "0x11cac"
+      }
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x17aa9",
+      "raw_args": [
+        1
+      ],
+      "source": {
+        "addr": "0x24c6d",
+        "target": "0x17aa9"
+      }
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x24d22",
+      "raw_args": [
+        "edi"
+      ],
+      "source": {
+        "addr": "0x24c82",
+        "target": "0x24d22"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 3,
+      "source": {
+        "addr": "0x24cad",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x11d40",
+      "raw_args": [
+        "esi",
+        255,
+        0
+      ],
+      "source": {
+        "addr": "0x24cc9",
+        "target": "0x11d40"
+      }
+    },
+    {
+      "op": "redraw",
+      "args": [
+        0
+      ],
+      "source": {
+        "addr": "0x24cd3",
+        "target": "0x11cac"
+      }
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x17aa9",
+      "raw_args": [
+        1
+      ],
+      "source": {
+        "addr": "0x24cdd",
+        "target": "0x17aa9"
+      }
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x24d22",
+      "raw_args": [
+        "edi"
+      ],
+      "source": {
+        "addr": "0x24cf3",
+        "target": "0x24d22"
+      }
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x11506",
+      "raw_args": [],
+      "source": {
+        "addr": "0x24d13",
+        "target": "0x11506"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 6
+  }
+}

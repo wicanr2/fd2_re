@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "chapter": 14,
+  "phase": "post",
+  "handler": "0x239bd",
+  "beats": [
+    {
+      "op": "roster_has",
+      "args": [
+        12
+      ],
+      "source": {
+        "addr": "0x239c9",
+        "target": "0x33499"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": "eax",
+      "source": {
+        "addr": "0x239f6",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x11506",
+      "raw_args": [],
+      "source": {
+        "addr": "0x239fe",
+        "target": "0x11506"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 1
+  }
+}

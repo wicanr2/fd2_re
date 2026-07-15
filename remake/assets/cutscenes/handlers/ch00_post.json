@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "chapter": 0,
+  "phase": "post",
+  "handler": "0x22ef6",
+  "beats": [
+    {
+      "op": "dialog",
+      "text_index": 9,
+      "source": {
+        "addr": "0x22f1f",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x11506",
+      "raw_args": [],
+      "source": {
+        "addr": "0x22f27",
+        "target": "0x11506"
+      }
+    },
+    {
+      "op": "set_chapter",
+      "chapter": 1,
+      "source": {
+        "addr": "0x22f2c"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 1
+  }
+}

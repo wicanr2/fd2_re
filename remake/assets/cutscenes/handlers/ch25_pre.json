@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "chapter": 25,
+  "phase": "pre",
+  "handler": "0x33aae",
+  "beats": [
+    {
+      "op": "loadch",
+      "source": {
+        "addr": "0x33ab8",
+        "target": "0x205da"
+      },
+      "chapter_expr": null
+    },
+    {
+      "op": "pan",
+      "grid_x": 9,
+      "grid_y": 39,
+      "source": {
+        "addr": "0x33ac1",
+        "target": "0x135dd"
+      }
+    },
+    {
+      "op": "act",
+      "acting_id": 76,
+      "source": {
+        "addr": "0x33acb",
+        "target": "0x1366a"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 0
+  }
+}

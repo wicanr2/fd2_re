@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "chapter": 13,
+  "phase": "pre",
+  "handler": "0x3347c",
+  "beats": [
+    {
+      "op": "loadch",
+      "source": {
+        "addr": "0x33486",
+        "target": "0x205da"
+      },
+      "chapter_expr": null
+    },
+    {
+      "op": "pan",
+      "grid_x": 20,
+      "grid_y": 20,
+      "source": {
+        "addr": "0x3348f",
+        "target": "0x135dd"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 0
+  }
+}

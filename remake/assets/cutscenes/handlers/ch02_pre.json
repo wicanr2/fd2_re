@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "chapter": 2,
+  "phase": "pre",
+  "handler": "0x32e8c",
+  "beats": [
+    {
+      "op": "loadch",
+      "source": {
+        "addr": "0x32e96",
+        "target": "0x205da"
+      },
+      "chapter_expr": null
+    },
+    {
+      "op": "pan",
+      "grid_x": 3,
+      "grid_y": 17,
+      "source": {
+        "addr": "0x32e9f",
+        "target": "0x135dd"
+      }
+    },
+    {
+      "op": "delay",
+      "ms": 200,
+      "source": {
+        "addr": "0x32eac",
+        "target": "0x375b2"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 0,
+      "source": {
+        "addr": "0x32ed3",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "act",
+      "acting_id": 18,
+      "source": {
+        "addr": "0x32ee7",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "spawn",
+      "group": 1,
+      "source": {
+        "addr": "0x32ef1",
+        "target": "0x10b4e"
+      }
+    },
+    {
+      "op": "pan",
+      "grid_x": 3,
+      "grid_y": 6,
+      "source": {
+        "addr": "0x32efd",
+        "target": "0x135dd"
+      }
+    },
+    {
+      "op": "delay",
+      "ms": 200,
+      "source": {
+        "addr": "0x32f0a",
+        "target": "0x375b2"
+      }
+    },
+    {
+      "op": "act",
+      "acting_id": 17,
+      "source": {
+        "addr": "0x32f14",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 1,
+      "source": {
+        "addr": "0x32f3b",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "act",
+      "acting_id": 19,
+      "source": {
+        "addr": "0x32f4f",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 2,
+      "source": {
+        "addr": "0x32f76",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "pan",
+      "grid_x": 3,
+      "grid_y": 17,
+      "source": {
+        "addr": "0x32f8c",
+        "target": "0x135dd"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 0
+  }
+}

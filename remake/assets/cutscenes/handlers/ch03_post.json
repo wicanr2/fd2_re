@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "chapter": 3,
+  "phase": "post",
+  "handler": "0x231bc",
+  "beats": [
+    {
+      "op": "dialog",
+      "text_index": 4,
+      "source": {
+        "addr": "0x231e5",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x11506",
+      "raw_args": [],
+      "source": {
+        "addr": "0x231ed",
+        "target": "0x11506"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 1
+  }
+}

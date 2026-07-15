@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "chapter": 6,
+  "phase": "post",
+  "handler": "0x232e8",
+  "beats": [
+    {
+      "op": "unknown",
+      "native_target": "0x11506",
+      "raw_args": [
+        "esi",
+        "edi"
+      ],
+      "source": {
+        "addr": "0x23319",
+        "target": "0x11506"
+      }
+    },
+    {
+      "op": "unit_alive",
+      "args": [
+        43
+      ],
+      "source": {
+        "addr": "0x2332e",
+        "target": "0x3453e"
+      }
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x233c6",
+      "raw_args": [
+        2,
+        6,
+        2,
+        7,
+        12,
+        43,
+        8,
+        "eax",
+        "eax",
+        "eax",
+        "eax"
+      ],
+      "source": {
+        "addr": "0x23358",
+        "target": "0x233c6"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 4,
+      "source": {
+        "addr": "0x2337f",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "join",
+      "char_id": 12,
+      "source": {
+        "addr": "0x23389",
+        "target": "0x112a5"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 5,
+      "source": {
+        "addr": "0x233b2",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 2
+  }
+}

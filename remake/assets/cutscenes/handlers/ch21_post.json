@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "chapter": 21,
+  "phase": "post",
+  "handler": "0x244b6",
+  "beats": [
+    {
+      "op": "unknown",
+      "native_target": "0x233c6",
+      "raw_args": [
+        "esi",
+        "edi",
+        18,
+        16,
+        2,
+        25,
+        22,
+        72,
+        15,
+        0,
+        "eax",
+        "eax",
+        "eax"
+      ],
+      "source": {
+        "addr": "0x24512",
+        "target": "0x233c6"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 4,
+      "source": {
+        "addr": "0x24539",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "act",
+      "acting_id": 65,
+      "source": {
+        "addr": "0x24543",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 5,
+      "source": {
+        "addr": "0x2456a",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "pan",
+      "grid_x": 16,
+      "grid_y": 16,
+      "source": {
+        "addr": "0x24576",
+        "target": "0x135dd"
+      }
+    },
+    {
+      "op": "act",
+      "acting_id": 66,
+      "source": {
+        "addr": "0x24580",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 6,
+      "source": {
+        "addr": "0x245a7",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "pan",
+      "grid_x": 16,
+      "grid_y": 14,
+      "source": {
+        "addr": "0x245b3",
+        "target": "0x135dd"
+      }
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x24618",
+      "raw_args": [
+        8,
+        10,
+        "eax",
+        "dword ptr [0x3ab9]"
+      ],
+      "source": {
+        "addr": "0x245ce",
+        "target": "0x24618"
+      }
+    },
+    {
+      "op": "delay",
+      "ms": 500,
+      "source": {
+        "addr": "0x245db",
+        "target": "0x375b2"
+      }
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x1f882",
+      "raw_args": [],
+      "source": {
+        "addr": "0x245fa",
+        "target": "0x1f882"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 3
+  }
+}

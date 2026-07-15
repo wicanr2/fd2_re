@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "chapter": 7,
+  "phase": "post",
+  "handler": "0x234bb",
+  "beats": [
+    {
+      "op": "unknown",
+      "native_target": "0x233c6",
+      "raw_args": [
+        "esi",
+        "edi",
+        14,
+        8,
+        0,
+        16,
+        14,
+        28,
+        9,
+        0,
+        2,
+        "eax",
+        "eax"
+      ],
+      "source": {
+        "addr": "0x234fe",
+        "target": "0x233c6"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 3,
+      "source": {
+        "addr": "0x23525",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "act",
+      "acting_id": 33,
+      "source": {
+        "addr": "0x23539",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 4,
+      "source": {
+        "addr": "0x23560",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "act",
+      "acting_id": 34,
+      "source": {
+        "addr": "0x2357e",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x11d40",
+      "raw_args": [
+        64,
+        255,
+        0
+      ],
+      "source": {
+        "addr": "0x23599",
+        "target": "0x11d40"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 2
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "chapter": 27,
+  "phase": "pre",
+  "handler": "0x33c9d",
+  "beats": [
+    {
+      "op": "loadch",
+      "source": {
+        "addr": "0x33ca8",
+        "target": "0x205da"
+      },
+      "chapter_expr": null
+    },
+    {
+      "op": "reveal",
+      "variant": "a",
+      "value": "ebx",
+      "source": {
+        "addr": "0x33cb2",
+        "target": "0x32975"
+      }
+    },
+    {
+      "op": "pan",
+      "grid_x": 29,
+      "grid_y": 15,
+      "source": {
+        "addr": "0x33cc4",
+        "target": "0x135dd"
+      }
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x24618",
+      "raw_args": [
+        8,
+        10,
+        "eax",
+        "eax"
+      ],
+      "source": {
+        "addr": "0x33ce2",
+        "target": "0x24618"
+      }
+    },
+    {
+      "op": "redraw",
+      "args": [
+        0
+      ],
+      "source": {
+        "addr": "0x33d15",
+        "target": "0x11cac"
+      }
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x11df2",
+      "raw_args": [
+        0,
+        255,
+        0
+      ],
+      "source": {
+        "addr": "0x33d26",
+        "target": "0x11df2"
+      }
+    },
+    {
+      "op": "delay",
+      "ms": 500,
+      "source": {
+        "addr": "0x33d33",
+        "target": "0x375b2"
+      }
+    },
+    {
+      "op": "act",
+      "acting_id": 85,
+      "source": {
+        "addr": "0x33d3d",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "act",
+      "acting_id": 85,
+      "source": {
+        "addr": "0x33d47",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "act",
+      "acting_id": 85,
+      "source": {
+        "addr": "0x33d51",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x134e4",
+      "raw_args": [],
+      "source": {
+        "addr": "0x33d59",
+        "target": "0x134e4"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 0,
+      "source": {
+        "addr": "0x33d7d",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x35822",
+      "raw_args": [
+        6,
+        16,
+        0
+      ],
+      "source": {
+        "addr": "0x33d95",
+        "target": "0x35822"
+      }
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x35822",
+      "raw_args": [
+        7,
+        16,
+        7
+      ],
+      "source": {
+        "addr": "0x33da3",
+        "target": "0x35822"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 5
+  }
+}

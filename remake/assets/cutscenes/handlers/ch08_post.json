@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "chapter": 8,
+  "phase": "post",
+  "handler": "0x235bc",
+  "beats": [
+    {
+      "op": "pan",
+      "grid_x": 6,
+      "grid_y": 1,
+      "source": {
+        "addr": "0x235d8",
+        "target": "0x135dd"
+      }
+    },
+    {
+      "op": "spawn",
+      "group": 4,
+      "source": {
+        "addr": "0x235e2",
+        "target": "0x10b4e"
+      }
+    },
+    {
+      "op": "act",
+      "acting_id": 36,
+      "source": {
+        "addr": "0x235ec",
+        "target": "0x1366a"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 0
+  }
+}

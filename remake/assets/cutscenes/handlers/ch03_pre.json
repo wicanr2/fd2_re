@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "chapter": 3,
+  "phase": "pre",
+  "handler": "0x32fb2",
+  "beats": [
+    {
+      "op": "loadch",
+      "source": {
+        "addr": "0x32fbc",
+        "target": "0x205da"
+      },
+      "chapter_expr": null
+    },
+    {
+      "op": "pan",
+      "grid_x": 4,
+      "grid_y": 11,
+      "source": {
+        "addr": "0x32fc5",
+        "target": "0x135dd"
+      }
+    },
+    {
+      "op": "act",
+      "acting_id": 20,
+      "source": {
+        "addr": "0x32fcf",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 0,
+      "source": {
+        "addr": "0x32ff6",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "spawn",
+      "group": 1,
+      "source": {
+        "addr": "0x3300a",
+        "target": "0x10b4e"
+      }
+    },
+    {
+      "op": "pan",
+      "grid_x": 4,
+      "grid_y": 0,
+      "source": {
+        "addr": "0x33016",
+        "target": "0x135dd"
+      }
+    },
+    {
+      "op": "delay",
+      "ms": 200,
+      "source": {
+        "addr": "0x33023",
+        "target": "0x375b2"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 0
+  }
+}

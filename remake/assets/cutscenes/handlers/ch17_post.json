@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "chapter": 17,
+  "phase": "post",
+  "handler": "0x23cd5",
+  "beats": [
+    {
+      "op": "unknown",
+      "native_target": "0x11506",
+      "raw_args": [
+        "esi",
+        "edi"
+      ],
+      "source": {
+        "addr": "0x23d15",
+        "target": "0x11506"
+      }
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x233c6",
+      "raw_args": [
+        4,
+        18,
+        1,
+        8,
+        25,
+        17,
+        16,
+        0,
+        "eax",
+        "eax",
+        "eax"
+      ],
+      "source": {
+        "addr": "0x23d39",
+        "target": "0x233c6"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 7,
+      "source": {
+        "addr": "0x23d60",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "act",
+      "acting_id": 56,
+      "source": {
+        "addr": "0x23d74",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 8,
+      "source": {
+        "addr": "0x23d9b",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "act",
+      "acting_id": 57,
+      "source": {
+        "addr": "0x23daf",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 9,
+      "source": {
+        "addr": "0x23dd6",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "act",
+      "acting_id": 58,
+      "source": {
+        "addr": "0x23dea",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 10,
+      "source": {
+        "addr": "0x23e11",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "join",
+      "char_id": 21,
+      "source": {
+        "addr": "0x23e1b",
+        "target": "0x112a5"
+      }
+    },
+    {
+      "op": "join",
+      "char_id": 7,
+      "source": {
+        "addr": "0x23e25",
+        "target": "0x112a5"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 2
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "chapter": 16,
+  "phase": "post",
+  "handler": "0x23b5f",
+  "beats": [
+    {
+      "op": "unknown",
+      "native_target": "0x11506",
+      "raw_args": [
+        "esi",
+        "edi"
+      ],
+      "source": {
+        "addr": "0x23b8c",
+        "target": "0x11506"
+      }
+    },
+    {
+      "op": "roster_has",
+      "args": [
+        18
+      ],
+      "source": {
+        "addr": "0x23b93",
+        "target": "0x33499"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 5,
+      "source": {
+        "addr": "0x23bbe",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "pan",
+      "grid_x": 17,
+      "grid_y": 14,
+      "source": {
+        "addr": "0x23bd4",
+        "target": "0x135dd"
+      }
+    },
+    {
+      "op": "spawn",
+      "group": 3,
+      "source": {
+        "addr": "0x23bde",
+        "target": "0x10b4e"
+      }
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x233c6",
+      "raw_args": [
+        52,
+        17,
+        17,
+        2,
+        23,
+        23,
+        52,
+        15,
+        "eax",
+        "eax",
+        "eax",
+        "eax"
+      ],
+      "source": {
+        "addr": "0x23c04",
+        "target": "0x233c6"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 7,
+      "source": {
+        "addr": "0x23c2b",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "act",
+      "acting_id": 50,
+      "source": {
+        "addr": "0x23c3f",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "pan",
+      "grid_x": 17,
+      "grid_y": 14,
+      "source": {
+        "addr": "0x23c4b",
+        "target": "0x135dd"
+      }
+    },
+    {
+      "op": "spawn",
+      "group": 3,
+      "source": {
+        "addr": "0x23c55",
+        "target": "0x10b4e"
+      }
+    },
+    {
+      "op": "act",
+      "acting_id": 51,
+      "source": {
+        "addr": "0x23c5f",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 6,
+      "source": {
+        "addr": "0x23c86",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "act",
+      "acting_id": 53,
+      "source": {
+        "addr": "0x23c90",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 8,
+      "source": {
+        "addr": "0x23cb7",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "join",
+      "char_id": 16,
+      "source": {
+        "addr": "0x23cc1",
+        "target": "0x112a5"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 2
+  }
+}

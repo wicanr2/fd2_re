@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "chapter": 16,
+  "phase": "pre",
+  "handler": "0x335aa",
+  "beats": [
+    {
+      "op": "loadch",
+      "source": {
+        "addr": "0x335b4",
+        "target": "0x205da"
+      },
+      "chapter_expr": null
+    },
+    {
+      "op": "roster_has",
+      "args": [
+        18
+      ],
+      "source": {
+        "addr": "0x335bb",
+        "target": "0x33499"
+      }
+    },
+    {
+      "op": "spawn",
+      "group": 1,
+      "source": {
+        "addr": "0x335cd",
+        "target": "0x10b4e"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 0
+  }
+}

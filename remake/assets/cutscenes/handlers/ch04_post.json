@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "chapter": 4,
+  "phase": "post",
+  "handler": "0x231f9",
+  "beats": [
+    {
+      "op": "unknown",
+      "native_target": "0x233c6",
+      "raw_args": [
+        "esi",
+        "edi",
+        4,
+        6,
+        0,
+        8,
+        12,
+        41,
+        6,
+        0,
+        "eax",
+        "eax",
+        "eax"
+      ],
+      "source": {
+        "addr": "0x2324c",
+        "target": "0x233c6"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 9,
+      "source": {
+        "addr": "0x23273",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "join",
+      "char_id": 10,
+      "source": {
+        "addr": "0x2327d",
+        "target": "0x112a5"
+      }
+    },
+    {
+      "op": "unknown",
+      "native_target": "0x11506",
+      "raw_args": [],
+      "source": {
+        "addr": "0x23285",
+        "target": "0x11506"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 2
+  }
+}
