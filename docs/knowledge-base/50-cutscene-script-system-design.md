@@ -226,7 +226,9 @@ dialog beats。
 位址另有手寫 `dialog` override（如 ch00 草地的 `upper`），override 優先；如果原字串跨 scene，
 compiler 保持 issue，等待 scene-loading adapter，不能偷當成同一 scene 的 dialog。ch01_pre 是第一個
 只靠嚴格索引映射產生三組對白的 binding fixture。compiler lower 後的 runtime `Beat` 仍保留
-`script/scene/scene_index` context（目前 BeatRunner 尚未切換 scene；資料不丟失、也不假裝已可播放）。
+`script/scene/scene_index` context；BeatRunner 會以 `scene_index`（可處理 null/reused label）載入那個
+editable scene，不能回退到 enclosing Node 的 lines 而播錯 `loadch` context。這只解決已編譯 dialog 的
+文字選擇；handler 整體仍須所有 map/roster/acting 原語完成 binding 才能宣告可忠實播放。
 3. 引擎 BeatRunner：依序執行已證實的 runtime beats
    (pan/dialog/walk/act/spawn/join/bgm/fade/delay)。其 `acting_frames` 已可精確播放已
    解的 0x1366a 格式；handler 腳本不直接把 EXE 位址交給引擎。

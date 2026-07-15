@@ -26,6 +26,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -557,8 +558,8 @@ func figName(fig int) string {
 
 func (g *Game) beatStart(b campaign.Beat) {
 	if g.cutsceneLog { // FD2_CUTSCENE_LOG:印每一拍(op+參數),對原版 handler beat 序列比對
-		fmt.Fprintf(os.Stderr, "[cutscene] beat op=%s source=%s fig=%d x=%d y=%d frames=%d line=%d count=%d\n",
-			b.Op, b.Source, b.Fig, b.X, b.Y, b.Frames, b.Line, b.Count)
+		fmt.Fprintf(os.Stderr, "[cutscene] beat op=%s source=%s fig=%d x=%d y=%d frames=%d line=%d count=%d script=%s scene=%s scene_index=%v\n",
+			b.Op, b.Source, b.Fig, b.X, b.Y, b.Frames, b.Line, b.Count, b.Script, b.Scene, b.SceneIndex)
 	}
 	if b.Op != "walk" { // 鏡頭跟焦只在 walk 拍內有效(見下),其餘拍一律不跟焦
 		g.followWalk = false
@@ -604,22 +605,34 @@ func (g *Game) beatStart(b campaign.Beat) {
 			toX: b.X, toY: b.Y, frames: frames, finalDir: bdir, then: g.beatAdvance,
 		})
 	case "dialog":
+		lines := g.campLines
+		if b.Script != "" {
+			// A compiled handler carries an explicit editable-story context.  Do
+			// not fall back to the enclosing Node's lines here: that could play a
+			// valid index from the wrong FDTXT/loadch segment.
+			lines = loadStoryScriptAt(handlerStoryPath(b.Script), b.Scene, b.SceneIndex)
+			if lines == nil {
+				g.loadErr = fmt.Sprintf("beat dialog:無法載入 script=%q scene=%q scene_index=%v", b.Script, b.Scene, b.SceneIndex)
+				g.beatAdvance()
+				return
+			}
+		}
 		n := b.Count
 		if n <= 0 {
 			n = 1
 		}
 		end := b.Line + n
-		if end > len(g.campLines) {
-			end = len(g.campLines)
+		if end > len(lines) {
+			end = len(lines)
 		}
 		g.dialog = nil
 		g.dlgPage = 0                                  // 新對白從第一頁起
 		for i := end - 1; i >= b.Line && i >= 0; i-- { // 反序堆疊(同 enterNode story 分支慣例)
-			ln := g.campLines[i]
+			ln := lines[i]
 			g.dialog = append(g.dialog, battle.DialogLine{Speaker: ln.Speaker, Text: ln.Text, Upper: b.Upper})
 		}
 		if len(g.dialog) == 0 { // line/count 對不到資料:跳拍避免卡死
-			g.loadErr = fmt.Sprintf("beat dialog:line=%d count=%d 對不到 campLines(len=%d)", b.Line, n, len(g.campLines))
+			g.loadErr = fmt.Sprintf("beat dialog:line=%d count=%d 對不到 script lines(len=%d)", b.Line, n, len(lines))
 			g.beatAdvance()
 		}
 	case "act":
@@ -1265,6 +1278,14 @@ func loadFIGANI() map[int][]*ebiten.Image {
 // 才能讓場景/鏡頭/擺位跟著劇情分段切換,不會「一次播完才進戰場」。找不到該 label 時回 nil(呼叫端
 // fallback 用節點內嵌 Lines,不會靜默播錯段)。檔案缺失(玩家未自備素材)同樣回 nil。
 func loadStoryScript(path, scene string) []campaign.Line {
+	return loadStoryScriptAt(path, scene, nil)
+}
+
+// loadStoryScriptAt extends the label-oriented legacy loader with an exact
+// scene index.  Handler mappings use scene_index because editable scripts may
+// intentionally contain an unlabeled scene or repeat a label; in that mode
+// the index is authoritative and an invalid index fails closed.
+func loadStoryScriptAt(path, scene string, sceneIndex *int) []campaign.Line {
 	raw, err := os.ReadFile(assetPath(path))
 	if err != nil {
 		return nil
@@ -1277,6 +1298,12 @@ func loadStoryScript(path, scene string) []campaign.Line {
 	}
 	if json.Unmarshal(raw, &f) != nil {
 		return nil
+	}
+	if sceneIndex != nil {
+		if *sceneIndex < 0 || *sceneIndex >= len(f.Scenes) {
+			return nil
+		}
+		return f.Scenes[*sceneIndex].Lines
 	}
 	if scene == "" {
 		var out []campaign.Line
@@ -1291,6 +1318,16 @@ func loadStoryScript(path, scene string) []campaign.Line {
 		}
 	}
 	return nil
+}
+
+// handlerStoryPath converts a StoryIndexMap script path (relative to
+// assets/story) into the normal asset lookup path.  Existing authored beats
+// may already carry assets/... or an absolute path, which stays untouched.
+func handlerStoryPath(script string) string {
+	if filepath.IsAbs(script) || strings.HasPrefix(filepath.ToSlash(script), "assets/") {
+		return script
+	}
+	return filepath.Join("assets", "story", script)
 }
 
 // loadFigMeta 載入 FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(assets/figani/meta.json;doc06:
