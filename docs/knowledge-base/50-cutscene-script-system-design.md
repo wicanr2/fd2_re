@@ -200,12 +200,15 @@ identity。
 
 **map31 runtime-array 反證（2026-07-15）**：用原版 headless DOSBox-X 從開場逐秒送 Enter；第
 100/120 個確認點截圖均已是 map31 密林（第 140 個則已進 map0），故場景時點不含糊。在第 100 點以
-`MEMDUMPBIN DS 24B2F0 1900` 成功取得 6,400 bytes（80×0x50）。然而該範圍的 slot 0–15 仍是
-map32 的國王、王后、兩個索爾、亞雷斯與守衛資料；slot 16 起立刻呈現非 unit 結構的遞增/垃圾樣式，
-並非 map31 的可見人物。故 **`0x24B2F0` 只是 map32 已知 array 的殘留，不能拿來當 map31 roster**；
-也不能以 map31 的 30-row FDFIELD export 或這份 stale array 猜 ACT(0x5a..0x62) 所指 25–71 槽。
-下一個資料工作是定位 map31 spawn (`0x10b4e`) 後實際供繪製／acting 使用的 unit-array base，再建立能
-保留其原始 slot 的 roster adapter；map0 的 0/1/2/5 亦尚待其獨立 runtime dump，全部保持 fail-closed。
+`MEMDUMPBIN DS 24B2F0 1900` 首次取得的是 map32 stale allocation，不能當 map31 roster。隨後從
+spawn writer `0x10c50` 的 runtime-relocated 指令讀出 `[*0x19CA45]`，在同一密林 checkpoint 的值為
+**`0x2499EC`**；dump 80×0x50 後只有 slot 0–4 是有效人物：索爾、亞雷斯、尤妮、蓋亞、悠妮。
+slot 5 起已不是 unit 結構。acting player `0x137dd/0x13891/0x13975` 也明確以同一
+`[*0x53a45]+slot×0x50` 取目標；故 map31 `ACT(0x5a..0x62)` 所含 slot 8、25–71 寫入並不對應這個
+checkpoint 的活動角色，**不能**從 map31 的 30-row FDFIELD export、stale map32 array 或「補成
+72-slot roster」猜出角色移動。下一個資料工作是以每個 ACT 的精確 entry 時點擷取 pointer/array，分辨
+這些非活動範圍寫入的原版語意；在此之前 map31 全部 ACT 維持 fail-closed。map0 的 0/1/2/5 亦尚待
+其獨立 runtime dump。
 - 舊 `poses`／`pose_frames` 仍可用於尚未轉錄的近似場景，但新的原版 acting 不得再降級成它。
 
 > **系統界線(2026-07-04,doc52):本 DSL 只承接「戰前/戰後過場編排」(handler 0x3231b 族,系統 A)。
