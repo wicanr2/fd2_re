@@ -165,14 +165,23 @@ func TestChapter3Turn3ReinforcementRequiresLivingTinoInRuntimeSlot6(t *testing.T
 
 	dead, deadScenario := load(t)
 	dead.Units[6].HP = 0
-	deadScenario.Fire(dead, "on_turn_end", "")
+	deadDialogues := deadScenario.Fire(dead, "on_turn_end", "")
 	if len(dead.Units) != 15 {
 		t.Fatalf("dead Tino spawned group2: runtime units=%d, want 15", len(dead.Units))
 	}
+	if len(deadDialogues) != 0 {
+		t.Fatalf("dead Tino played living-only #4 dialogue: %#v", deadDialogues)
+	}
 
 	alive, aliveScenario := load(t)
-	aliveScenario.Fire(alive, "on_turn_end", "")
+	aliveDialogues := aliveScenario.Fire(alive, "on_turn_end", "")
 	if len(alive.Units) != 27 {
 		t.Fatalf("living Tino runtime units=%d, want 15+12 group2", len(alive.Units))
+	}
+	if len(aliveDialogues) != 7 || aliveDialogues[0].Speaker != 77 || aliveDialogues[1].Speaker != 2 || aliveDialogues[6].Speaker != 77 {
+		t.Fatalf("turn3 FDTXT_003 #4 dialogues = %#v", aliveDialogues)
+	}
+	if aliveDialogues[1].Text != "如果不是這些年輕人幫忙的話,我早就沒命了!不過既然我還活著,我還是要問你一個問題:到底是誰命令你來殺我?" {
+		t.Fatalf("turn3 Tino line drifted: %q", aliveDialogues[1].Text)
 	}
 }

@@ -105,7 +105,7 @@
 `ch00_pre`、`ch00_post`、`ch01_pre`、`ch01_post` 已成為前四個 campaign 實際 consumer；ch01 post 的 branch、
 reward、61-utterance FDTXT_002、dynamic speaker slots、PAN、SPAWN4、ACT14..16、JOIN/sync/chapter tail
 與第二、第三章戰前／戰後 handler 均已完整 lower 且 compiler **0 issues**。下一個具體焦點是
-補完 ch03 battle turn3 的 PAN/delay/dialog #4 演出（slot6 active 條件與 SPAWN2 已完成），然後選下一支
+補完 ch03 battle turn3 的 PAN/delay 演出（slot6 active、SPAWN2 與 FDTXT_003 #4 七句已完成），然後選下一支
 `0x233c6` post caller 依原版 arrays 補 binding。下方「草地深層未解」是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，
 不得再當目前 blocker。
 
