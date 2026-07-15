@@ -204,6 +204,13 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			beat := runtime(input, "join")
 			beat.CharID = *input.CharID
 			beats = append(beats, beat)
+		case "palette_fade":
+			// Original 0x1f525 is the whole-screen palette fade-in.  It has no
+			// chapter-local argument, so the generic runtime representation is
+			// safe: fade.Out=false means fade from black into the loaded scene.
+			beat := runtime(input, "fade")
+			beat.Out = false
+			beats = append(beats, beat)
 		default:
 			issue(i, input, "operation has no proven runtime lowering")
 		}

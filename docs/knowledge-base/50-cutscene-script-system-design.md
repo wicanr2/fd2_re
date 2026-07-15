@@ -242,8 +242,9 @@ checkpoint 的活動角色，**不能**從 map31 的 30-row FDFIELD export、sta
    `bindings/ch05_pre.json` 的 `0x33155`，可編譯成唯一一個完整 loadch beat。
 　　`pan/dialog/act` 一律要求**以 `source.addr` 鍵控的**
 　　顯式 mapper，分別避免猜 grid→pixel、FDTXT idx→譯文行、acting id→角色。`spawn`
-　　現已由 loadch roster 的 FDFIELD group 直接 lower；`join`仍必須先有隊伍名冊 adapter，不編譯為會假裝成功的 runtime stub。其餘 op
-   （尤其 `scroll_step`、`unknown`）產生帶 source address 的 compile issue，不能假裝成
+　　現已由 loadch roster 的 FDFIELD group 直接 lower；`join` 只接受原版 0–31 的我方名冊
+　　charID，並保存成跨關 membership；`palette_fade` 則直接 lower 為 `fade(out:false)`。其餘 op
+　　（尤其 `scroll_step`、`unknown`）產生帶 source address 的 compile issue，不能假裝成
 　　可執行效果。
 
 **SPAWN runtime adapter（2026-07-15）**：`LOADCH` 會依原始 slot 順序保留全部

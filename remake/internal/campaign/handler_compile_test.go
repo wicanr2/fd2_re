@@ -85,6 +85,15 @@ func TestCompileHandlerJoinRejectsScenePortrait(t *testing.T) {
 	}
 }
 
+func TestCompileHandlerPaletteFadeIsFadeIn(t *testing.T) {
+	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
+		Op: "palette_fade", Source: HandlerSource{Addr: "0x1f525"},
+	}}}, HandlerBindings{})
+	if len(issues) != 0 || len(beats) != 1 || beats[0].Op != "fade" || beats[0].Out || beats[0].Source != "0x1f525" {
+		t.Fatalf("palette fade lowering = %#v issues=%#v", beats, issues)
+	}
+}
+
 func TestCompileHandlerScriptDoesNotGuessMissingMappings(t *testing.T) {
 	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{
 		{Op: "loadch", Chapter: intPtr(5)},
