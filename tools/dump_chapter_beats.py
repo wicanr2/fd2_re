@@ -43,6 +43,7 @@ PRIM = {
     0x12d7b: ('focus_unit', 1),    # (unit_idx)讀 unit X/Y，呼叫 0x12cea 捲到該格
     0x11506: ('sync_party', 0),    # 戰後 runtime unit→persistent roster，同 charID copy/清暫態/恢復資源
     0x1c220: ('grant_item', 1),    # (item_id) 掃 camp=2 runtime units，放入首個未滿的 8-slot inventory
+    0x233c6: ('layout_units', 0),  # 依 call-site 的 X/Y/pose 陣列佈置單位；由 address-keyed binding script 化
     0x205da: ('loadch_call', 0),  # 章節載入呼叫本身 0 參數;章節號由前面 mov [0x3c03] 設定,見 loadch_var
     # 本輪(2026-07-04)unknown×既有原語表交叉補上(event_handler_dump.py PRIM/VAR + doc25/26):
     0x3453e: ('unit_inactive', 1), # (idx) 查 [0x53a45]+idx*0x50+5 bit0；1=死亡／隱藏，0=有效存活
@@ -181,6 +182,10 @@ def extract_beats(insns):
             lhs, rhs = op.split(',', 1)
             if '0x3c03' in lhs:  # [0x53c03]=章節變數,LOADCH 的隱含參數
                 beats.append({'op': 'loadch_var', 'addr': hex(ins.address), 'chapter': rhs.strip()})
+        elif m == 'inc' and op.startswith('dword ptr [') and '0x3c03' in op:
+            # 戰後 handler 通常以 ++[0x53c03] 推進章節。這是共同 merge
+            # 尾的真實動作，不可因為沒有 call 就在 exporter 裡消失。
+            beats.append({'op': 'increment_chapter', 'addr': hex(ins.address)})
         elif m == 'call' and op.startswith('0x'):
             t = int(op, 16)
             if t in SKIP:
@@ -218,6 +223,96 @@ def structure_control_flow(insns, beats):
     shape (rather than a handler address) keeps the recognizer reusable while
     leaving every unproven branch in the existing loss-visible linear output.
     """
+    # Single-slot form used by post-battle handlers:
+    #
+    #   push slot; call unit_inactive; test eax,eax; je active_arm
+    #   ... inactive arm ...; jmp merge
+    # active_arm:
+    #   ... active arm ...; jmp merge
+    #
+    # Match the reusable CFG/instruction shape, not a handler or branch address.
+    # The raw predicate call is absorbed into the structured condition, and the
+    # shared merge suffix is emitted once.
+    for call_idx, call in enumerate(insns):
+        if call.mnemonic != 'call' or call.op_str != '0x3453e':
+            continue
+
+        slot = None
+        for previous in reversed(insns[max(0, call_idx - 3):call_idx]):
+            if previous.mnemonic == 'push':
+                slot = _immediate(previous.op_str)
+                break
+        if slot is None or slot < 0:
+            continue
+
+        test_idx = None
+        result_reg = None
+        branch_idx = None
+        for j in range(call_idx + 1, min(call_idx + 7, len(insns))):
+            candidate = insns[j]
+            parts = [part.strip() for part in candidate.op_str.split(',')]
+            if candidate.mnemonic == 'test' and len(parts) == 2 and parts[0] == parts[1]:
+                test_idx, result_reg = j, parts[0]
+                continue
+            if test_idx is None:
+                continue
+            if (test_idx is not None and j == test_idx + 1 and
+                    candidate.mnemonic in ('je', 'jz', 'jne', 'jnz') and
+                    candidate.op_str.startswith('0x')):
+                branch_idx = j
+            break
+        if branch_idx is None or result_reg is None:
+            continue
+
+        branch = insns[branch_idx]
+        target_addr = int(branch.op_str, 16)
+        if target_addr <= branch.address:
+            continue
+
+        # The fallthrough arm must explicitly jump past the taken arm.  Require
+        # the taken arm to reach the same merge as well, so unrelated early
+        # returns or nested branches cannot be flattened accidentally.
+        fallthrough_jumps = [
+            ins for ins in insns
+            if branch.address < ins.address < target_addr and
+            ins.mnemonic == 'jmp' and ins.op_str.startswith('0x') and
+            int(ins.op_str, 16) > target_addr
+        ]
+        if not fallthrough_jumps:
+            continue
+        merge_addr = int(fallthrough_jumps[-1].op_str, 16)
+        if not any(ins.mnemonic == 'jmp' and ins.op_str == hex(merge_addr)
+                   for ins in insns if target_addr <= ins.address < merge_addr):
+            continue
+
+        prefix = [beat for beat in beats if int(beat['addr'], 16) < call.address]
+        fallthrough = [beat for beat in beats
+                       if branch.address < int(beat['addr'], 16) < target_addr]
+        taken = [beat for beat in beats
+                 if target_addr <= int(beat['addr'], 16) < merge_addr]
+        suffix = [beat for beat in beats if int(beat['addr'], 16) >= merge_addr]
+        if not fallthrough or not taken:
+            continue
+
+        # JE/JZ takes the zero (=active) arm, so inactive is fallthrough.  JNE/JNZ
+        # takes the nonzero (=inactive) arm and therefore reverses the two lists.
+        if branch.mnemonic in ('je', 'jz'):
+            inactive, active = fallthrough, taken
+        else:
+            inactive, active = taken, fallthrough
+        conditional = {
+            'op': 'if',
+            'addr': hex(branch.address),
+            'target': hex(target_addr),
+            'condition': {
+                'op': 'any_unit_inactive',
+                'unit_slots': [slot],
+            },
+            'then': inactive,
+            'else': active,
+        }
+        return prefix + [conditional] + suffix
+
     for i in range(2, len(insns)):
         branch = insns[i]
         if branch.mnemonic not in ('jne', 'jnz') or not branch.op_str.startswith('0x'):

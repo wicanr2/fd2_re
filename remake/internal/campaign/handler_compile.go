@@ -50,6 +50,7 @@ type HandlerBindings struct {
 	Dialog func(HandlerBeat) (HandlerDialog, bool)
 	Acting func(HandlerBeat) ([]ActingFrame, bool)
 	LoadCH func(HandlerBeat) (LoadCHState, bool)
+	Layout func(HandlerBeat) (HandlerLayout, bool)
 	// RuntimeContext is present for a handler entered with an existing canonical
 	// unit array (not through LOADCH), such as a post-battle handler. It makes
 	// slot validation and SPAWN cardinality explicit instead of guessing from a
@@ -59,8 +60,44 @@ type HandlerBindings struct {
 
 type HandlerRuntimeContext struct {
 	SlotCount     int         `json:"slot_count"`
+	SlotCounts    []int       `json:"slot_counts,omitempty"`
 	SpawnGroups   map[int]int `json:"spawn_groups,omitempty"`
 	StoryViewport bool        `json:"story_viewport,omitempty"`
+}
+
+// MinimumSlotCount is the compile-time frontier shared by every allowed
+// runtime shape. SlotCount preserves the original exact-context form;
+// SlotCounts models optional native reinforcement groups (for example 15 or
+// 27 slots at the chapter-three post-battle entry).
+func (context *HandlerRuntimeContext) MinimumSlotCount() int {
+	if context == nil {
+		return 0
+	}
+	if context.SlotCount > 0 {
+		return context.SlotCount
+	}
+	minimum := 0
+	for _, count := range context.SlotCounts {
+		if count > 0 && (minimum == 0 || count < minimum) {
+			minimum = count
+		}
+	}
+	return minimum
+}
+
+func (context *HandlerRuntimeContext) AcceptsSlotCount(count int) bool {
+	if context == nil {
+		return false
+	}
+	if context.SlotCount > 0 {
+		return count == context.SlotCount
+	}
+	for _, allowed := range context.SlotCounts {
+		if count == allowed {
+			return true
+		}
+	}
+	return false
 }
 
 // HandlerCompileIssue identifies a source operation that was intentionally
@@ -85,7 +122,7 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 	issues := make([]HandlerCompileIssue, 0)
 	activeSlotCount := 0
 	if bindings.RuntimeContext != nil {
-		activeSlotCount = bindings.RuntimeContext.SlotCount
+		activeSlotCount = bindings.RuntimeContext.MinimumSlotCount()
 	}
 	issue := func(i int, input HandlerBeat, reason string) {
 		issues = append(issues, HandlerCompileIssue{Beat: i, Op: input.Op, Source: input.Source, Reason: reason})
@@ -379,6 +416,41 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			beat := runtime(input, "fade")
 			beat.Out = false
 			beats = append(beats, beat)
+		case "layout_units":
+			if bindings.Layout == nil {
+				issue(i, input, "layout_units requires an explicit runtime-slot layout mapping")
+				continue
+			}
+			layout, ok := bindings.Layout(input)
+			if !ok || len(layout.Units) == 0 {
+				issue(i, input, "no complete unit layout mapping for native layout call")
+				continue
+			}
+			seen := make(map[int]bool, len(layout.Units))
+			valid := activeSlotCount > 0
+			for _, unit := range layout.Units {
+				if unit.Slot < 0 || unit.Slot >= activeSlotCount || unit.Pose < 0 || unit.Pose > 3 || seen[unit.Slot] {
+					valid = false
+					break
+				}
+				seen[unit.Slot] = true
+			}
+			if !valid {
+				issue(i, input, "layout_units needs unique slots and poses 0..3 within every allowed runtime frontier")
+				continue
+			}
+			layoutBeat := runtime(input, "layout_units")
+			layoutBeat.Layout = &layout
+			beats = append(beats, layoutBeat)
+			redraw := runtime(input, "redraw")
+			redraw.Frames = 1
+			beats = append(beats, redraw)
+			fade := runtime(input, "fade")
+			fade.Out = false
+			beats = append(beats, fade)
+			delay := runtime(input, "delay")
+			delay.Ms = 200
+			beats = append(beats, delay)
 		default:
 			issue(i, input, "operation has no proven runtime lowering")
 		}

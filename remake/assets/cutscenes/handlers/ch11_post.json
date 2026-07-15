@@ -5,23 +5,7 @@
   "handler": "0x237d5",
   "beats": [
     {
-      "op": "unknown",
-      "native_target": "0x233c6",
-      "raw_args": [
-        "esi",
-        "edi",
-        0,
-        4,
-        0,
-        2,
-        10,
-        14,
-        13,
-        0,
-        "eax",
-        "eax",
-        "eax"
-      ],
+      "op": "layout_units",
       "source": {
         "addr": "0x2382b",
         "target": "0x233c6"
@@ -67,9 +51,16 @@
         "addr": "0x23892",
         "target": "0x112a5"
       }
+    },
+    {
+      "op": "set_chapter",
+      "chapter": 12,
+      "source": {
+        "addr": "0x239b1"
+      }
     }
   ],
   "diagnostics": {
-    "unknown_ops": 1
+    "unknown_ops": 0
   }
 }

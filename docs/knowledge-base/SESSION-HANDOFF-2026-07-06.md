@@ -92,12 +92,21 @@
 > 死亡者保留零 HP。`ch02_post` 真 CFG 已釘死為 `sync → inactive?#6:(layout+#7+JOIN2) → chapter3`；
 > 下一優先是 single-slot diamond、`0x233c6 layout_units` 與 15/27-slot runtime frontier。
 
+> **2026-07-16 第十三次 Codex 更新（ch02 post 完整閉合）**：extractor 已以通用指令形狀
+> 復原 single-slot diamond，`ch02_post` 現為 `sync_party → if any_unit_inactive([6])`；死亡臂只播
+> #6 五句，存活臂執行 `layout_units`、#7 十句並 JOIN2，共同 `set_chapter(3)` 只保留一次。
+> `0x233c6` binding 保存 slots0..6 絕對 X/Y/pose、camera `(48,0)`、redraw/fade/delay200；
+> post runtime 只接受 15/27 slots，對應 turn3 援軍未生／已生兩種真實 frontier。campaign 已接
+> `battle_ch03 → story_ch03_post → choice_ch03`，compiler 0 issues。同輪把全 post handlers 的
+> `inc [chapter]` 保留成 editable `set_chapter`，15 個 `0x233c6` caller 改為已命名、待逐章 binding 的
+> `layout_units`；全 60 支 manifest 為 **725 top-level beats / 93 unknown calls**。詳見 `doc50 §3.8`。
+
 ## 0. 目前焦點(接手就做這裡)
 `ch00_pre`、`ch00_post`、`ch01_pre`、`ch01_post` 已成為前四個 campaign 實際 consumer；ch01 post 的 branch、
 reward、61-utterance FDTXT_002、dynamic speaker slots、PAN、SPAWN4、ACT14..16、JOIN/sync/chapter tail
-與第二、第三章戰前 handler 均已完整 lower 且 compiler **0 issues**。下一個具體焦點是釘死
-ch03 battle turn3 的 slot6 active 條件已接上；尚待補完該 event 的 PAN/delay/dialog #4 演出，接著以
-single-slot diamond + `layout_units` 閉合 `ch02_post`。下方「草地深層未解」是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，
+與第二、第三章戰前／戰後 handler 均已完整 lower 且 compiler **0 issues**。下一個具體焦點是
+補完 ch03 battle turn3 的 PAN/delay/dialog #4 演出（slot6 active 條件與 SPAWN2 已完成），然後選下一支
+`0x233c6` post caller 依原版 arrays 補 binding。下方「草地深層未解」是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，
 不得再當目前 blocker。
 
 ## 1. 這段 session 做完的事

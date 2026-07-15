@@ -90,13 +90,14 @@
    "chapter": 2,
    "tag": "post",
    "handler": "0x230f2",
-   "n_beats": 6,
+   "n_beats": 3,
    "ops": {
     "sync_party": 1,
-    "unit_inactive": 1,
+    "if": 1,
     "dialog": 2,
-    "unknown": 1,
-    "join": 1
+    "layout_units": 1,
+    "join": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -119,10 +120,11 @@
    "chapter": 3,
    "tag": "post",
    "handler": "0x231bc",
-   "n_beats": 2,
+   "n_beats": 3,
    "ops": {
     "dialog": 1,
-    "sync_party": 1
+    "sync_party": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -146,12 +148,13 @@
    "chapter": 4,
    "tag": "post",
    "handler": "0x231f9",
-   "n_beats": 4,
+   "n_beats": 5,
    "ops": {
-    "unknown": 1,
+    "layout_units": 1,
     "dialog": 1,
     "join": 1,
-    "sync_party": 1
+    "sync_party": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -169,14 +172,15 @@
    "chapter": 5,
    "tag": "post",
    "handler": "0x23296",
-   "n_beats": 6,
+   "n_beats": 7,
    "ops": {
     "join": 1,
     "spawn": 1,
     "pan": 1,
     "act": 1,
     "dialog": 1,
-    "sync_party": 1
+    "sync_party": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -197,13 +201,14 @@
    "chapter": 6,
    "tag": "post",
    "handler": "0x232e8",
-   "n_beats": 6,
+   "n_beats": 7,
    "ops": {
     "sync_party": 1,
     "unit_inactive": 1,
-    "unknown": 1,
+    "layout_units": 1,
     "dialog": 2,
-    "join": 1
+    "join": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -224,13 +229,15 @@
    "chapter": 7,
    "tag": "post",
    "handler": "0x234bb",
-   "n_beats": 8,
+   "n_beats": 9,
    "ops": {
-    "unknown": 2,
+    "layout_units": 1,
     "dialog": 2,
     "act": 2,
+    "unknown": 1,
     "join": 1,
-    "sync_party": 1
+    "sync_party": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -251,13 +258,14 @@
    "chapter": 8,
    "tag": "post",
    "handler": "0x235bc",
-   "n_beats": 5,
+   "n_beats": 6,
    "ops": {
     "pan": 1,
     "spawn": 1,
     "act": 1,
     "dialog": 1,
-    "sync_party": 1
+    "sync_party": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -276,7 +284,7 @@
    "chapter": 9,
    "tag": "post",
    "handler": "0x235f9",
-   "n_beats": 11,
+   "n_beats": 12,
    "ops": {
     "unknown": 2,
     "redraw": 1,
@@ -285,7 +293,8 @@
     "dialog": 2,
     "act": 1,
     "sync_party": 1,
-    "join": 2
+    "join": 2,
+    "increment_chapter": 1
    }
   },
   {
@@ -307,11 +316,12 @@
    "chapter": 10,
    "tag": "post",
    "handler": "0x23790",
-   "n_beats": 3,
+   "n_beats": 4,
    "ops": {
     "dialog": 1,
     "sync_party": 1,
-    "join": 1
+    "join": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -333,13 +343,14 @@
    "chapter": 11,
    "tag": "post",
    "handler": "0x237d5",
-   "n_beats": 6,
+   "n_beats": 7,
    "ops": {
-    "unknown": 1,
+    "layout_units": 1,
     "dialog": 2,
     "act": 1,
     "sync_party": 1,
-    "join": 1
+    "join": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -357,11 +368,12 @@
    "chapter": 12,
    "tag": "post",
    "handler": "0x2389f",
-   "n_beats": 3,
+   "n_beats": 4,
    "ops": {
     "dialog": 1,
     "sync_party": 1,
-    "join": 1
+    "join": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -380,13 +392,14 @@
    "chapter": 13,
    "tag": "post",
    "handler": "0x238dc",
-   "n_beats": 6,
+   "n_beats": 7,
    "ops": {
     "spawn": 1,
-    "unknown": 1,
+    "layout_units": 1,
     "dialog": 2,
     "act": 1,
-    "sync_party": 1
+    "sync_party": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -407,12 +420,13 @@
    "chapter": 14,
    "tag": "post",
    "handler": "0x239bd",
-   "n_beats": 4,
+   "n_beats": 5,
    "ops": {
     "roster_has": 1,
     "dialog": 1,
     "sync_party": 1,
-    "join": 1
+    "join": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -430,14 +444,15 @@
    "chapter": 15,
    "tag": "post",
    "handler": "0x23a0a",
-   "n_beats": 8,
+   "n_beats": 9,
    "ops": {
-    "unknown": 1,
+    "layout_units": 1,
     "unit_inactive": 1,
     "sync_party": 1,
     "dialog": 3,
     "act": 1,
-    "join": 1
+    "join": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -457,16 +472,17 @@
    "chapter": 16,
    "tag": "post",
    "handler": "0x23b5f",
-   "n_beats": 15,
+   "n_beats": 16,
    "ops": {
     "sync_party": 1,
     "roster_has": 1,
     "dialog": 4,
     "pan": 2,
     "spawn": 2,
-    "unknown": 1,
+    "layout_units": 1,
     "act": 3,
-    "join": 1
+    "join": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -487,13 +503,14 @@
    "chapter": 17,
    "tag": "post",
    "handler": "0x23cd5",
-   "n_beats": 11,
+   "n_beats": 12,
    "ops": {
     "sync_party": 1,
-    "unknown": 1,
+    "layout_units": 1,
     "dialog": 4,
     "act": 3,
-    "join": 2
+    "join": 2,
+    "increment_chapter": 1
    }
   },
   {
@@ -511,10 +528,11 @@
    "chapter": 18,
    "tag": "post",
    "handler": "0x23e39",
-   "n_beats": 2,
+   "n_beats": 3,
    "ops": {
     "sync_party": 1,
-    "dialog": 1
+    "dialog": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -532,7 +550,7 @@
    "chapter": 19,
    "tag": "post",
    "handler": "0x23e74",
-   "n_beats": 19,
+   "n_beats": 20,
    "ops": {
     "unknown": 2,
     "redraw": 1,
@@ -542,7 +560,8 @@
     "act": 4,
     "join": 2,
     "sync_party": 1,
-    "spawn": 1
+    "spawn": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -560,14 +579,16 @@
    "chapter": 20,
    "tag": "post",
    "handler": "0x240fa",
-   "n_beats": 16,
+   "n_beats": 17,
    "ops": {
-    "unknown": 5,
+    "layout_units": 1,
     "dialog": 5,
+    "unknown": 4,
     "grant_item": 1,
     "act": 2,
     "join": 2,
-    "sync_party": 1
+    "sync_party": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -588,14 +609,16 @@
    "chapter": 21,
    "tag": "post",
    "handler": "0x244b6",
-   "n_beats": 12,
+   "n_beats": 13,
    "ops": {
-    "unknown": 3,
+    "layout_units": 1,
     "dialog": 3,
     "act": 2,
     "pan": 2,
+    "unknown": 2,
     "delay": 1,
-    "sync_party": 1
+    "sync_party": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -621,14 +644,16 @@
    "chapter": 22,
    "tag": "post",
    "handler": "0x24754",
-   "n_beats": 42,
+   "n_beats": 43,
    "ops": {
-    "unknown": 11,
+    "layout_units": 1,
+    "unknown": 10,
     "dialog": 10,
     "join": 2,
     "act": 6,
     "deactivate_unit": 2,
     "sync_party": 1,
+    "increment_chapter": 1,
     "delay": 4,
     "load_res": 3,
     "load_ch_bg": 1,
@@ -653,12 +678,13 @@
    "chapter": 23,
    "tag": "post",
    "handler": "0x24c1e",
-   "n_beats": 10,
+   "n_beats": 11,
    "ops": {
     "dialog": 2,
     "redraw": 2,
     "unknown": 5,
-    "sync_party": 1
+    "sync_party": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -681,14 +707,15 @@
    "chapter": 24,
    "tag": "post",
    "handler": "0x24df2",
-   "n_beats": 8,
+   "n_beats": 9,
    "ops": {
     "dialog": 2,
     "pan": 1,
     "spawn": 1,
     "act": 1,
     "join": 2,
-    "sync_party": 1
+    "sync_party": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -709,12 +736,13 @@
    "chapter": 25,
    "tag": "post",
    "handler": "0x24e80",
-   "n_beats": 11,
+   "n_beats": 12,
    "ops": {
-    "unknown": 1,
+    "layout_units": 1,
     "dialog": 5,
     "act": 4,
-    "sync_party": 1
+    "sync_party": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -736,14 +764,16 @@
    "chapter": 26,
    "tag": "post",
    "handler": "0x250cc",
-   "n_beats": 36,
+   "n_beats": 37,
    "ops": {
-    "unknown": 15,
+    "layout_units": 1,
     "dialog": 9,
     "act": 5,
+    "unknown": 14,
     "pan": 1,
     "delay": 5,
-    "sync_party": 1
+    "sync_party": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -768,10 +798,11 @@
    "chapter": 27,
    "tag": "post",
    "handler": "0x25464",
-   "n_beats": 2,
+   "n_beats": 3,
    "ops": {
     "dialog": 1,
-    "sync_party": 1
+    "sync_party": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -793,14 +824,15 @@
    "chapter": 28,
    "tag": "post",
    "handler": "0x2548c",
-   "n_beats": 39,
+   "n_beats": 40,
    "ops": {
     "dialog": 6,
     "unknown": 17,
     "spawn": 1,
     "pan": 1,
     "delay": 13,
-    "sync_party": 1
+    "sync_party": 1,
+    "increment_chapter": 1
    }
   },
   {
@@ -822,12 +854,14 @@
    "chapter": 29,
    "tag": "post",
    "handler": "0x25757",
-   "n_beats": 20,
+   "n_beats": 21,
    "ops": {
-    "unknown": 8,
+    "layout_units": 1,
     "dialog": 4,
     "act": 2,
     "pan": 2,
+    "unknown": 7,
+    "increment_chapter": 1,
     "load_ch_text": 1,
     "redraw": 2,
     "delay": 1
@@ -835,7 +869,6 @@
   }
  ],
  "unknown_targets": {
-  "0x233c6": 15,
   "0x11d40": 2,
   "0x1f882": 4,
   "0x13536": 2,

@@ -22,21 +22,7 @@
       }
     },
     {
-      "op": "unknown",
-      "native_target": "0x233c6",
-      "raw_args": [
-        2,
-        6,
-        2,
-        7,
-        12,
-        43,
-        8,
-        "eax",
-        "eax",
-        "eax",
-        "eax"
-      ],
+      "op": "layout_units",
       "source": {
         "addr": "0x23358",
         "target": "0x233c6"
@@ -67,9 +53,16 @@
         "target": "0x15f84"
       },
       "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "set_chapter",
+      "chapter": 7,
+      "source": {
+        "addr": "0x233ba"
+      }
     }
   ],
   "diagnostics": {
-    "unknown_ops": 1
+    "unknown_ops": 0
   }
 }

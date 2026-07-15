@@ -727,17 +727,36 @@ func (g *Game) beatStart(b campaign.Beat) {
 	}
 	switch b.Op {
 	case "runtime_context":
-		if b.RuntimeContext == nil || b.RuntimeContext.SlotCount <= 0 {
-			g.loadErr = "beat runtime_context:缺少有效 slot_count"
+		if b.RuntimeContext == nil || b.RuntimeContext.MinimumSlotCount() <= 0 {
+			g.loadErr = "beat runtime_context:缺少有效 slot_count/slot_counts"
 			return
 		}
-		if g.st == nil || len(g.st.Units) != b.RuntimeContext.SlotCount {
-			g.loadErr = fmt.Sprintf("beat runtime_context: runtime slots=%d, want %d", g.handlerUnitCount(), b.RuntimeContext.SlotCount)
+		if g.st == nil || !b.RuntimeContext.AcceptsSlotCount(len(g.st.Units)) {
+			g.loadErr = fmt.Sprintf("beat runtime_context: runtime slots=%d, want exact %d or one of %v", g.handlerUnitCount(), b.RuntimeContext.SlotCount, b.RuntimeContext.SlotCounts)
 			return
 		}
 		if b.RuntimeContext.StoryViewport {
 			g.storyBG = true
 		}
+		g.beatAdvance()
+	case "layout_units":
+		if b.Layout == nil || len(b.Layout.Units) == 0 {
+			g.loadErr = "beat layout_units:缺少可編輯的 runtime layout"
+			return
+		}
+		for _, placement := range b.Layout.Units {
+			unit := g.handlerUnitAt(placement.Slot)
+			if unit == nil || placement.Pose < 0 || placement.Pose > 3 {
+				g.loadErr = fmt.Sprintf("beat layout_units: slot%d/pose%d unavailable", placement.Slot, placement.Pose)
+				return
+			}
+		}
+		for _, placement := range b.Layout.Units {
+			unit := g.handlerUnitAt(placement.Slot)
+			unit.X, unit.Y, unit.Dir = placement.X, placement.Y, placement.Pose
+			unit.OffX, unit.OffY = 0, 0
+		}
+		g.camX, g.camY = float64(b.Layout.CamX), float64(b.Layout.CamY)
 		g.beatAdvance()
 	case "if":
 		matched, err := g.evalBeatCondition(b.Condition)

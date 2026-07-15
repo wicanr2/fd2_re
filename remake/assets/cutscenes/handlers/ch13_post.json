@@ -13,21 +13,7 @@
       }
     },
     {
-      "op": "unknown",
-      "native_target": "0x233c6",
-      "raw_args": [
-        10,
-        12,
-        0,
-        0,
-        0,
-        0,
-        15,
-        0,
-        "eax",
-        "eax",
-        "eax"
-      ],
+      "op": "layout_units",
       "source": {
         "addr": "0x23942",
         "target": "0x233c6"
@@ -65,9 +51,16 @@
         "addr": "0x239ac",
         "target": "0x11506"
       }
+    },
+    {
+      "op": "set_chapter",
+      "chapter": 14,
+      "source": {
+        "addr": "0x239b1"
+      }
     }
   ],
   "diagnostics": {
-    "unknown_ops": 1
+    "unknown_ops": 0
   }
 }

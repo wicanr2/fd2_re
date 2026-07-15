@@ -42,6 +42,7 @@ type HandlerBindingOverride struct {
 	Pan    *HandlerPoint  `json:"pan,omitempty"`
 	Dialog *HandlerDialog `json:"dialog,omitempty"`
 	Acting *HandlerActing `json:"act,omitempty"`
+	Layout *HandlerLayout `json:"layout,omitempty"`
 }
 
 // HandlerActing is a decoded, editable behavioural transcription.  It never
@@ -111,7 +112,7 @@ func LoadHandlerBinding(path string) (*HandlerBinding, error) {
 		}
 	}
 	for addr, override := range binding.Overrides {
-		if addr == "" || (override.LoadCH == nil && override.Pan == nil && override.Dialog == nil && override.Acting == nil) {
+		if addr == "" || (override.LoadCH == nil && override.Pan == nil && override.Dialog == nil && override.Acting == nil && override.Layout == nil) {
 			return nil, fmt.Errorf("handler binding %q has empty override at %q", path, addr)
 		}
 		if state := override.LoadCH; state != nil && (state.Chapter < 0 || state.Map == "" || state.Roster == "" || state.SlotCount <= 0 || state.Script == "") {
@@ -138,8 +139,18 @@ func LoadHandlerBinding(path string) (*HandlerBinding, error) {
 		}
 	}
 	if context := binding.RuntimeContext; context != nil {
-		if context.SlotCount <= 0 {
-			return nil, fmt.Errorf("handler binding %q runtime_context needs positive slot_count", path)
+		if context.SlotCount > 0 && len(context.SlotCounts) > 0 {
+			return nil, fmt.Errorf("handler binding %q runtime_context cannot mix slot_count and slot_counts", path)
+		}
+		if context.MinimumSlotCount() <= 0 {
+			return nil, fmt.Errorf("handler binding %q runtime_context needs positive slot_count or slot_counts", path)
+		}
+		previous := 0
+		for _, count := range context.SlotCounts {
+			if count <= previous {
+				return nil, fmt.Errorf("handler binding %q runtime_context slot_counts must be unique ascending positive integers", path)
+			}
+			previous = count
 		}
 		for group, count := range context.SpawnGroups {
 			if group < 0 || count <= 0 {
@@ -167,6 +178,7 @@ func CompileHandlerBinding(path string) ([]Beat, []HandlerCompileIssue, error) {
 	if len(issues) == 0 && binding.RuntimeContext != nil {
 		context := *binding.RuntimeContext
 		context.SpawnGroups = cloneIntMap(context.SpawnGroups)
+		context.SlotCounts = append([]int(nil), context.SlotCounts...)
 		beats = append([]Beat{{Op: "runtime_context", RuntimeContext: &context}}, beats...)
 	}
 	return beats, issues, nil
@@ -241,6 +253,15 @@ func (binding *HandlerBinding) CompilerBindings() HandlerBindings {
 				return timing, true
 			}
 			return override.Acting.Frames, true
+		},
+		Layout: func(input HandlerBeat) (HandlerLayout, bool) {
+			override, ok := lookup(input)
+			if !ok || override.Layout == nil {
+				return HandlerLayout{}, false
+			}
+			layout := *override.Layout
+			layout.Units = append([]HandlerUnitLayout(nil), override.Layout.Units...)
+			return layout, true
 		},
 	}
 }

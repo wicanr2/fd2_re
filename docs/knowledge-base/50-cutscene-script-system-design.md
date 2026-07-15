@@ -487,10 +487,32 @@ HP 歸零路徑 `0x1dc61/0x1dd4c` 寫1，復活 `0x30f9c` 再清0；所以 `0x34
 只有鐵諾仍 active/alive 才 SPAWN2、PAN、delay 並播 #4。scenario 已增加 editable
 `when:{turn:3,unit_slot_active:6}` 防止死亡路徑誤生援軍；PAN/delay/#4 的 battle-event 演出接線仍是後續項目。
 
-`ch02_post` 亦已審計出真 CFG：`sync_party → if slot6 inactive {#6 哀悼} else
-{0x233c6 layout + #7 + JOIN(2)} → set_chapter(3)`。現有 flat handler 仍會把互斥兩臂串起來；
-下一個最高優先項是補 single-slot diamond recognizer、`layout_units` 原語與 15/27-slot runtime frontier。
+`ch02_post` 真 CFG 是：`sync_party → if slot6 inactive {#6 哀悼} else
+{0x233c6 layout + #7 + JOIN(2)} → set_chapter(3)`。single-slot diamond、`layout_units` 與 15/27-slot
+runtime frontier 已於 §3.8 完成，不再把互斥兩臂串播。
 #5/#8/#9 不在這支 post handler CFG，不可因 39/39 mapping 就強塞進去。
+
+### 3.8 ch02 post：single-slot diamond + `layout_units`（2026-07-16）
+
+extractor 現依可重用的 `push slot; call 0x3453e; test; je/jne; 兩臂同 merge`
+指令形狀復原 single-slot branch，不硬寫 handler 位址。ch02 post 因此編輯成：
+
+- `sync_party`；
+- `if any_unit_inactive([6])`：死亡臂播 FDTXT_003 #6 五句哀悼；
+- active 臂執行 `layout_units`、#7 十句、`JOIN(2)`；
+- common tail 的 `inc [0x53c03]` 現保留為唯一 `set_chapter(3)`。
+
+`0x233c6` 以 call-site binding 保存 slots0..6 的絕對 `(X,Y,pose)`：
+`[(8,3,2),(7,3,2),(9,3,2),(6,2,3),(10,2,1),(8,4,2),(8,1,0)]`；鏡頭 grid `(2,0)`
+投影為 pixel `(48,0)`。compiler 把該原語完整 lower 為 layout、redraw、palette fade-in、delay200ms。
+由於 turn3 group2 可能因鐵諾死亡而未生成，post 入口不能假定單一 count；
+`runtime_context.slot_counts:[15,27]` 會在 runtime 只接受這兩個原版 frontier，compiler 以共同最小
+frontier 15 驗證 layout 的 slots0..6。campaign 現已接成 `battle_ch03 → story_ch03_post → choice_ch03`。
+
+同輪也把 29 支 post handler 的 `inc [chapter]` 保留成 editable `set_chapter`，並將 15 個
+`0x233c6` caller 從 unknown 分類為需 address-keyed layout binding 的已知原語。全 60 支 manifest 現為
+**725 top-level beats / 93 unknown calls**；「已命名」不等於其他 14 個 layout caller 已猜好座標，未有各章證據的
+binding 仍會 fail closed。
 
 ## 4. 未解(低優先)+ 工具紀律
 

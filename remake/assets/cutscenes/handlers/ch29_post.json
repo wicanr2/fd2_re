@@ -5,24 +5,7 @@
   "handler": "0x25757",
   "beats": [
     {
-      "op": "unknown",
-      "native_target": "0x233c6",
-      "raw_args": [
-        "ebx",
-        "esi",
-        "edi",
-        18,
-        16,
-        0,
-        0,
-        0,
-        0,
-        19,
-        0,
-        "ebx",
-        "ebx",
-        "ebx"
-      ],
+      "op": "layout_units",
       "source": {
         "addr": "0x257b4",
         "target": "0x233c6"
@@ -96,6 +79,13 @@
       "source": {
         "addr": "0x25850",
         "target": "0x25089"
+      }
+    },
+    {
+      "op": "set_chapter",
+      "chapter": 30,
+      "source": {
+        "addr": "0x25855"
       }
     },
     {
@@ -213,6 +203,6 @@
     }
   ],
   "diagnostics": {
-    "unknown_ops": 8
+    "unknown_ops": 7
   }
 }

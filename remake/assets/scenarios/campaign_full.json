@@ -753,8 +753,13 @@
    "map": "assets/maps/map2",
    "units": "assets/maps/map2/map2_units.json",
    "scenario": "assets/scenarios/ch03.json",
-   "on_win": "choice_ch03",
+   "on_win": "story_ch03_post",
    "on_lose": "retreat_ch03"
+  },
+  "story_ch03_post": {
+   "type": "cutscene",
+   "handler_binding": "assets/cutscenes/bindings/ch02_post.json",
+   "next": "choice_ch03"
   },
   "retreat_ch03": {
    "type": "story",

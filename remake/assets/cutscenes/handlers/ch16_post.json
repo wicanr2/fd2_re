@@ -48,22 +48,7 @@
       }
     },
     {
-      "op": "unknown",
-      "native_target": "0x233c6",
-      "raw_args": [
-        52,
-        17,
-        17,
-        2,
-        23,
-        23,
-        52,
-        15,
-        "eax",
-        "eax",
-        "eax",
-        "eax"
-      ],
+      "op": "layout_units",
       "source": {
         "addr": "0x23c04",
         "target": "0x233c6"
@@ -144,9 +129,16 @@
         "addr": "0x23cc1",
         "target": "0x112a5"
       }
+    },
+    {
+      "op": "set_chapter",
+      "chapter": 17,
+      "source": {
+        "addr": "0x23cc9"
+      }
     }
   ],
   "diagnostics": {
-    "unknown_ops": 1
+    "unknown_ops": 0
   }
 }

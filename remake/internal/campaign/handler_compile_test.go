@@ -543,6 +543,49 @@ func TestCompileRuntimeContextSpawnExpandsActingSlotFrontier(t *testing.T) {
 	}
 }
 
+func TestCompileCompleteChapter2PostBindingPreservesTinoBranches(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch02_post.json")
+	if err != nil || len(issues) != 0 {
+		t.Fatalf("ch02_post err=%v issues=%#v", err, issues)
+	}
+	if len(beats) != 4 || beats[0].Op != "runtime_context" || beats[1].Op != "sync_party" || beats[2].Op != "if" || beats[3].Op != "set_chapter" {
+		t.Fatalf("ch02_post top-level beats = %#v", beats)
+	}
+	context := beats[0].RuntimeContext
+	if context == nil || len(context.SlotCounts) != 2 || context.SlotCounts[0] != 15 || context.SlotCounts[1] != 27 || !context.StoryViewport {
+		t.Fatalf("ch02_post runtime frontiers = %#v", context)
+	}
+	branch := beats[2]
+	if branch.Condition == nil || branch.Condition.Op != "any_unit_inactive" || len(branch.Condition.UnitSlots) != 1 || branch.Condition.UnitSlots[0] != 6 {
+		t.Fatalf("ch02_post Tino condition = %#v", branch.Condition)
+	}
+	if len(branch.Then) != 5 {
+		t.Fatalf("inactive #6 arm beats=%d, want five mourning lines: %#v", len(branch.Then), branch.Then)
+	}
+	for _, beat := range branch.Then {
+		if beat.Op != "dialog" || beat.SceneIndex == nil || *beat.SceneIndex != 1 {
+			t.Fatalf("inactive arm line = %#v", beat)
+		}
+	}
+	if len(branch.Else) != 15 || branch.Else[0].Op != "layout_units" || branch.Else[1].Op != "redraw" || branch.Else[2].Op != "fade" || branch.Else[3].Op != "delay" || branch.Else[14].Op != "join" || branch.Else[14].CharID != 2 {
+		t.Fatalf("active layout/dialog/JOIN arm = %#v", branch.Else)
+	}
+	layout := branch.Else[0].Layout
+	if layout == nil || len(layout.Units) != 7 || layout.CamX != 48 || layout.CamY != 0 || layout.Units[6] != (HandlerUnitLayout{Slot: 6, X: 8, Y: 1, Pose: 0}) {
+		t.Fatalf("native 0x233c6 layout = %#v", layout)
+	}
+	if beats[3].Chapter == nil || *beats[3].Chapter != 3 || beats[3].Source != "0x2328a" {
+		t.Fatalf("shared chapter tail = %#v", beats[3])
+	}
+}
+
+func TestRuntimeContextAlternativeSlotCounts(t *testing.T) {
+	context := &HandlerRuntimeContext{SlotCounts: []int{15, 27}}
+	if context.MinimumSlotCount() != 15 || !context.AcceptsSlotCount(15) || !context.AcceptsSlotCount(27) || context.AcceptsSlotCount(16) {
+		t.Fatalf("alternative runtime context = %#v", context)
+	}
+}
+
 func TestCompileCompleteChapter1PreUsesChapter2ContextAndSharedTail(t *testing.T) {
 	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch01_pre.json")
 	if err != nil || len(issues) != 0 {

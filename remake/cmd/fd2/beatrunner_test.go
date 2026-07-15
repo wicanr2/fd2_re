@@ -899,6 +899,53 @@ func TestDeactivateResetAndRedrawPreserveHandlerBoundaries(t *testing.T) {
 	}
 }
 
+func TestLayoutUnitsUsesCanonicalRuntimeSlotsAndCamera(t *testing.T) {
+	layout := &campaign.HandlerLayout{
+		Units: []campaign.HandlerUnitLayout{
+			{Slot: 0, X: 8, Y: 3, Pose: 2},
+			{Slot: 6, X: 8, Y: 1, Pose: 0},
+		},
+		CamX: 48,
+		CamY: 0,
+	}
+	g := newBeatTestGame(t, []campaign.Beat{{Op: "layout_units", Layout: layout}})
+	g.st = &battle.State{Units: make([]*battle.Unit, 7)}
+	for i := range g.st.Units {
+		g.st.Units[i] = &battle.Unit{X: 20 + i, Y: 30 + i, Dir: 3, OffX: 4, OffY: 5}
+	}
+	g.beatAdvance()
+	if g.loadErr != "" {
+		t.Fatal(g.loadErr)
+	}
+	if got := g.st.Units[0]; got.X != 8 || got.Y != 3 || got.Dir != 2 || got.OffX != 0 || got.OffY != 0 {
+		t.Fatalf("layout slot0 = %#v", got)
+	}
+	if got := g.st.Units[6]; got.X != 8 || got.Y != 1 || got.Dir != 0 {
+		t.Fatalf("layout Tino slot6 = %#v", got)
+	}
+	if g.camX != 48 || g.camY != 0 {
+		t.Fatalf("layout camera = (%v,%v), want (48,0)", g.camX, g.camY)
+	}
+}
+
+func TestRuntimeContextAcceptsOnlyDeclaredPostBattleFrontiers(t *testing.T) {
+	context := &campaign.HandlerRuntimeContext{SlotCounts: []int{15, 27}, StoryViewport: true}
+	for _, count := range []int{15, 27} {
+		g := newBeatTestGame(t, []campaign.Beat{{Op: "runtime_context", RuntimeContext: context}})
+		g.st = &battle.State{Units: make([]*battle.Unit, count)}
+		g.beatAdvance()
+		if g.loadErr != "" || !g.storyBG {
+			t.Fatalf("runtime count%d rejected: err=%q storyBG=%v", count, g.loadErr, g.storyBG)
+		}
+	}
+	rejected := newBeatTestGame(t, []campaign.Beat{{Op: "runtime_context", RuntimeContext: context}})
+	rejected.st = &battle.State{Units: make([]*battle.Unit, 16)}
+	rejected.beatAdvance()
+	if rejected.loadErr == "" {
+		t.Fatal("undeclared 16-slot post-battle frontier was accepted")
+	}
+}
+
 func TestMap0ActingUsesPartyThenSpawnedRuntimeSlots(t *testing.T) {
 	resources, err := campaign.LoadActingResourceSet(assetPath("assets/cutscenes/acting/map32.json"))
 	if err != nil {

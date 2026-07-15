@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "handler_script": "../handlers/ch02_post.json",
+  "story_index_map": "../dialogue-index/count-aligned.json",
+  "runtime_context": {
+    "slot_counts": [
+      15,
+      27
+    ],
+    "story_viewport": true
+  },
+  "dialogue_contexts": {
+    "0x23158": {
+      "source_dat": "FDTXT_003",
+      "script": "ch03.json"
+    },
+    "0x231a5": {
+      "source_dat": "FDTXT_003",
+      "script": "ch03.json"
+    }
+  },
+  "overrides": {
+    "0x2317e": {
+      "layout": {
+        "units": [
+          { "slot": 0, "x": 8, "y": 3, "pose": 2 },
+          { "slot": 1, "x": 7, "y": 3, "pose": 2 },
+          { "slot": 2, "x": 9, "y": 3, "pose": 2 },
+          { "slot": 3, "x": 6, "y": 2, "pose": 3 },
+          { "slot": 4, "x": 10, "y": 2, "pose": 1 },
+          { "slot": 5, "x": 8, "y": 4, "pose": 2 },
+          { "slot": 6, "x": 8, "y": 1, "pose": 0 }
+        ],
+        "cam_x": 48,
+        "cam_y": 0
+      }
+    }
+  }
+}

@@ -51,7 +51,7 @@ def repeat_of(beat):
     return hint["limit"]
 
 
-def normalize(beats):
+def normalize(beats, chapter=None):
     """Convert raw disassembly beats to the stable editable IR."""
     out = []
     pending_chapter = None
@@ -105,6 +105,11 @@ def normalize(beats):
                 item["unit_slot_expr"] = args[0]
         elif op == "spawn_intro":
             item = {"op": "spawn_intro", "group": args[0], "source": src}
+        elif op == "layout_units":
+            # 0x233c6 reads call-site-specific X/Y/pose arrays through
+            # registers. Preserve the native call as a named operation; an
+            # address-keyed binding supplies the recovered absolute layout.
+            item = {"op": "layout_units", "source": src}
         elif op == "reset_pose":
             item = {"op": "reset_pose", "source": src}
         elif op == "focus_unit":
@@ -117,12 +122,17 @@ def normalize(beats):
             item = {"op": "sync_party", "source": src}
         elif op == "grant_item":
             item = {"op": "grant_item", "item_id": args[0], "source": src}
+        elif op == "increment_chapter":
+            if isinstance(chapter, int):
+                item = {"op": "set_chapter", "chapter": chapter + 1, "source": src}
+            else:
+                item = {"op": "increment_chapter", "source": src}
         elif op == "if":
             item = {
                 "op": "if",
                 "condition": beat["condition"],
-                "then": normalize(beat.get("then", [])),
-                "else": normalize(beat.get("else", [])),
+                "then": normalize(beat.get("then", []), chapter),
+                "else": normalize(beat.get("else", []), chapter),
                 "source": src,
             }
         elif op == "unknown":
@@ -157,7 +167,7 @@ def export_table(cg, fx, entries, tag, outdir):
             "chapter": chapter,
             "phase": tag,
             "handler": handler["handler"],
-            "beats": normalize(handler["beats"]),
+            "beats": normalize(handler["beats"], chapter),
         }
         unknown = sum(1 for beat in walk_beats(script["beats"]) if beat["op"] == "unknown")
         script["diagnostics"] = {"unknown_ops": unknown}

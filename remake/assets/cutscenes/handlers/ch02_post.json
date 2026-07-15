@@ -12,64 +12,64 @@
       }
     },
     {
-      "op": "unit_inactive",
-      "args": [
-        6
+      "op": "if",
+      "condition": {
+        "op": "any_unit_inactive",
+        "unit_slots": [
+          6
+        ]
+      },
+      "then": [
+        {
+          "op": "dialog",
+          "text_index": 6,
+          "source": {
+            "addr": "0x23158",
+            "target": "0x15f84"
+          },
+          "text_table": "dword ptr [0x3a79]"
+        }
+      ],
+      "else": [
+        {
+          "op": "layout_units",
+          "source": {
+            "addr": "0x2317e",
+            "target": "0x233c6"
+          }
+        },
+        {
+          "op": "dialog",
+          "text_index": 7,
+          "source": {
+            "addr": "0x231a5",
+            "target": "0x15f84"
+          },
+          "text_table": "dword ptr [0x3a79]"
+        },
+        {
+          "op": "join",
+          "char_id": 2,
+          "source": {
+            "addr": "0x231af",
+            "target": "0x112a5"
+          }
+        }
       ],
       "source": {
-        "addr": "0x2312d",
-        "target": "0x3453e"
+        "addr": "0x23137",
+        "target": "0x23165"
       }
     },
     {
-      "op": "dialog",
-      "text_index": 6,
+      "op": "set_chapter",
+      "chapter": 3,
       "source": {
-        "addr": "0x23158",
-        "target": "0x15f84"
-      },
-      "text_table": "dword ptr [0x3a79]"
-    },
-    {
-      "op": "unknown",
-      "native_target": "0x233c6",
-      "raw_args": [
-        "eax",
-        2,
-        "eax",
-        "eax",
-        "eax",
-        "eax",
-        6,
-        "eax",
-        "eax",
-        "eax",
-        "eax"
-      ],
-      "source": {
-        "addr": "0x2317e",
-        "target": "0x233c6"
-      }
-    },
-    {
-      "op": "dialog",
-      "text_index": 7,
-      "source": {
-        "addr": "0x231a5",
-        "target": "0x15f84"
-      },
-      "text_table": "dword ptr [0x3a79]"
-    },
-    {
-      "op": "join",
-      "char_id": 2,
-      "source": {
-        "addr": "0x231af",
-        "target": "0x112a5"
+        "addr": "0x2328a"
       }
     }
   ],
   "diagnostics": {
-    "unknown_ops": 1
+    "unknown_ops": 0
   }
 }

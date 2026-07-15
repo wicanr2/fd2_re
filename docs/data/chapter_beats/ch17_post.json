@@ -8,22 +8,10 @@
    "args": []
   },
   {
-   "op": "unknown",
+   "op": "layout_units",
    "addr": "0x23d39",
    "target": "0x233c6",
-   "args": [
-    4,
-    18,
-    1,
-    8,
-    25,
-    17,
-    16,
-    0,
-    "eax",
-    "eax",
-    "eax"
-   ]
+   "args": []
   },
   {
    "op": "dialog",
@@ -100,6 +88,10 @@
    "args": [
     7
    ]
+  },
+  {
+   "op": "increment_chapter",
+   "addr": "0x23e2d"
   }
  ]
 }

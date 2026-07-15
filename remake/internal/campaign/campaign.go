@@ -108,6 +108,22 @@ type BeatCondition struct {
 	UnitSlots []int  `json:"unit_slots,omitempty"`
 }
 
+// HandlerUnitLayout is one absolute runtime-slot placement recovered from a
+// native post-battle layout routine. Coordinates remain original map tiles;
+// CamX/CamY below are the verified remake pixel origin.
+type HandlerUnitLayout struct {
+	Slot int `json:"slot"`
+	X    int `json:"x"`
+	Y    int `json:"y"`
+	Pose int `json:"pose"`
+}
+
+type HandlerLayout struct {
+	Units []HandlerUnitLayout `json:"units"`
+	CamX  int                 `json:"cam_x"`
+	CamY  int                 `json:"cam_y"`
+}
+
 // Beat 過場原語(doc 50 §1/§2):cutscene 節點的 beats 通常依序執行；if 會在 runtime
 // 選一條 structured arm 插入目前拍之後，再回到共同 continuation。
 // 一比一對映原版 EXE handler 的呼叫序列(LOADCH/PAN/TXT/ACT/SPAWN/JOIN/BGM/FADE/DELAY)。
@@ -119,6 +135,7 @@ type Beat struct {
 	Then           []Beat                 `json:"then,omitempty"`
 	Else           []Beat                 `json:"else,omitempty"`
 	RuntimeContext *HandlerRuntimeContext `json:"runtime_context,omitempty"`
+	Layout         *HandlerLayout         `json:"layout,omitempty"`
 
 	// loadch: atomically replace the active map, FDFIELD roster and FDTXT
 	// story context.  It is deliberately a nested required state object so a
