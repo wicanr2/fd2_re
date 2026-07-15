@@ -121,12 +121,22 @@
 > status 都不 tick，finishTurn 重入不重複觸發。battle event 同時改用原版320×200（13×8格）
 > viewport；完整 Go tests 與 Xvfb frame120 實畫均通過。詳見 `doc50 §3.7`。
 
+> **2026-07-16 第十六次 Codex 更新（第27章天空之鑰 gate）**：campaign 新增非玩家選擇的
+> editable `inventory_gate`，`battle_ch27` 勝利後以 item `0x64` 分成兩臂。有鑰匙才執行
+> `sync_party → set_chapter(27)` 並停在 `preparation_ch28`，缺鑰匙進獨立壞結局；Load/runtime
+> 對 item/兩臂 fail closed，測試固定原版 `0x24b14` 只掃 runtime slots0..15、無 camp/active filter，
+> persistent roster fallback 則明記為 save/load projection。另已釘死真正取得路徑在零起算
+> ch20_post（玩家第21章戰後）：必須集齊 `0xD1..0xD6` 六素材，成功才移除六件並 grant `0x64`；
+> 目前 `battle_ch21` 還沒接這個 diamond，所以正常實玩仍拿不到鑰匙，下一批要接成
+> `battle_ch21 → ch20_post → town_ch22`，不可無條件發鑰匙或跳過城鎮。
+
 ## 0. 目前焦點(接手就做這裡)
 `ch00_pre`、`ch00_post`、`ch01_pre`、`ch01_post` 已成為前四個 campaign 實際 consumer；ch01 post 的 branch、
 reward、61-utterance FDTXT_002、dynamic speaker slots、PAN、SPAWN4、ACT14..16、JOIN/sync/chapter tail
 與第二、第三章戰前／戰後 handler 均已完整 lower 且 compiler **0 issues**；ch03 turn3 的
-slot6 active 條件、SPAWN2、兩段 PAN、800/200ms 與 FDTXT_003 #4 七句也已完整。下一個具體焦點是
-將第27章戰後天空之鑰→第28章／壞結局的 handler branch 接入 campaign，然後選下一支
+slot6 active 條件、SPAWN2、兩段 PAN、800/200ms 與 FDTXT_003 #4 七句也已完整；第27章戰後
+天空之鑰→第28章整備／壞結局 gate 已接。下一個具體焦點是 lower 玩家第21章戰後的
+`0xD1..0xD6` 六素材計數／移除／grant `0x64` diamond，接成 `battle_ch21 → post → town_ch22`，再選下一支
 `0x233c6` post caller 依原版 arrays 補 binding。下方「草地深層未解」是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，
 不得再當目前 blocker。
 

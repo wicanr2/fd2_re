@@ -3246,7 +3246,7 @@
    "map": "assets/maps/map26",
    "units": "assets/maps/map26/map26_units.json",
    "scenario": "assets/scenarios/ch27.json",
-   "on_win": "preparation_ch28",
+   "on_win": "inventory_gate_ch27_sky_key",
    "on_lose": "retreat_ch27"
   },
   "retreat_ch27": {
@@ -3262,6 +3262,29 @@
     "retried_ch27": true
    },
    "next": "battle_ch27"
+  },
+  "inventory_gate_ch27_sky_key": {
+   "type": "inventory_gate",
+   "item_id": 100,
+   "if_present": "story_ch27_post_sky_key_success",
+   "if_missing": "ending_ch27_no_sky_key"
+  },
+  "story_ch27_post_sky_key_success": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 27
+    }
+   ],
+   "next": "preparation_ch28"
+  },
+  "ending_ch27_no_sky_key": {
+   "type": "ending",
+   "text": "未能以天空之鑰開啟通往空中大陸的道路，炎龍騎士團的遠征在巨塔前告終。"
   },
   "story_ch28": {
    "type": "story",

@@ -637,6 +637,33 @@ def build_campaign(
         else:
             after_battle_id = ending_id if is_last else preparation_id
 
+        # 玩家第27章勝利後是全戰役唯一的道具條件分支。原版 ch26_post
+        # 0x25186 以 0x24b14 查 item 0x64；有天空之鑰才 sync party、
+        # set chapter=27(零起算) 並進第28章整備，缺少則呼叫壞結局。
+        if c == 27:
+            gate_id = "inventory_gate_ch27_sky_key"
+            success_id = "story_ch27_post_sky_key_success"
+            bad_ending_id = "ending_ch27_no_sky_key"
+            nodes[gate_id] = {
+                "type": "inventory_gate",
+                "item_id": 0x64,
+                "if_present": success_id,
+                "if_missing": bad_ending_id,
+            }
+            nodes[success_id] = {
+                "type": "cutscene",
+                "beats": [
+                    {"op": "sync_party"},
+                    {"op": "set_chapter", "chapter": 27},
+                ],
+                "next": preparation_id,
+            }
+            nodes[bad_ending_id] = {
+                "type": "ending",
+                "text": "未能以天空之鑰開啟通往空中大陸的道路，炎龍騎士團的遠征在巨塔前告終。",
+            }
+            after_battle_id = gate_id
+
         nodes[battle_id] = {
             "type": "battle",
             "bgm": BGM_BATTLE_TABLE[(c - 1) % len(BGM_BATTLE_TABLE)],
@@ -700,8 +727,16 @@ def validate(campaign: dict) -> list[str]:
         check_target(nid, n.get("next"))
         check_target(nid, n.get("on_win"))
         check_target(nid, n.get("on_lose"))
+        check_target(nid, n.get("if_present"))
+        check_target(nid, n.get("if_missing"))
         for opt in n.get("options", []):
             check_target(nid, opt.get("to"))
+        if n.get("type") == "inventory_gate":
+            item_id = n.get("item_id")
+            if not isinstance(item_id, int) or not 0 <= item_id <= 0xFF:
+                problems.append(f"inventory_gate 節點 {nid!r} 的 item_id 必須是 0..255")
+            if not n.get("if_present") or not n.get("if_missing"):
+                problems.append(f"inventory_gate 節點 {nid!r} 必須同時定義 if_present / if_missing")
         if n.get("type") == "battle":
             map_dir = n.get("map")
             units_path = n.get("units")
@@ -748,7 +783,10 @@ def validate(campaign: dict) -> list[str]:
             continue
         seen.add(cur)
         n = nodes[cur]
-        for to in (n.get("next"), n.get("on_win"), n.get("on_lose")):
+        for to in (
+            n.get("next"), n.get("on_win"), n.get("on_lose"),
+            n.get("if_present"), n.get("if_missing"),
+        ):
             if to:
                 stack.append(to)
         for opt in n.get("options", []):
@@ -783,12 +821,13 @@ def main():
     n_town = sum(1 for n in campaign["nodes"].values() if n["type"] == "town")
     n_preparation = sum(1 for n in campaign["nodes"].values() if n["type"] == "preparation")
     n_story = sum(1 for n in campaign["nodes"].values() if n["type"] == "story")
+    n_ending = sum(1 for n in campaign["nodes"].values() if n["type"] == "ending")
 
     print(f"寫出 {OUT_PATH}")
     print(f"章數:{TOTAL_CHAPTERS}  節點總數:{n_nodes}")
     print(
         f"  battle={n_battle} town={n_town} preparation={n_preparation} "
-        f"shop={n_shop} choice={n_choice} story={n_story} ending=1"
+        f"shop={n_shop} choice={n_choice} story={n_story} ending={n_ending}"
     )
 
     n_new_scn = sum(1 for cid, src in scenario_sources.items() if cid != "01")

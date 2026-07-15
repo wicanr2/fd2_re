@@ -12,6 +12,7 @@ import (
 	"image/color"
 	"math"
 	"os"
+	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text"
@@ -110,6 +111,32 @@ func (f *Font) Width(s string, scale float64) float64 {
 		return 0
 	}
 	return float64(text.BoundString(face, s).Dx())
+}
+
+// Wrap 依實際 glyph 寬度切行。繁中句子多半沒有空白，因此以 rune 為最小
+// 邊界；明示換行仍保留。這是 ending／說明頁使用的顯示工具，不改劇本文字。
+func (f *Font) Wrap(s string, scale, maxWidth float64) []string {
+	return wrapTextByWidth(s, maxWidth, func(line string) float64 {
+		return f.Width(line, scale)
+	})
+}
+
+func wrapTextByWidth(s string, maxWidth float64, width func(string) float64) []string {
+	var lines []string
+	for _, paragraph := range strings.Split(s, "\n") {
+		line := ""
+		for _, r := range paragraph {
+			candidate := line + string(r)
+			if line != "" && width(candidate) > maxWidth {
+				lines = append(lines, line)
+				line = string(r)
+			} else {
+				line = candidate
+			}
+		}
+		lines = append(lines, line)
+	}
+	return lines
 }
 
 // LineHeight 一行高(像素,含行距)。

@@ -1311,7 +1311,8 @@ func (g *Game) terrainAt(x, y int) int {
 
 // ── campaign(劇本節點圖,doc 19)引擎接線 ──────────────────────────
 
-// enterNode 進入 camp 目前節點:story→掛對白、battle→重開戰場、event→套旗標直通、town/preparation/choice/ending→等輸入。
+// enterNode 進入 camp 目前節點:story→掛對白、battle→重開戰場、inventory_gate→依角色物品欄自動分支、
+// event→套旗標直通、town/preparation/choice/ending→等輸入。
 func (g *Game) enterNode() {
 	if g.camp == nil {
 		return
@@ -1399,6 +1400,17 @@ func (g *Game) enterNode() {
 			}
 		}
 		g.resetBattle(n.Units, n.Scenario)
+	case "inventory_gate":
+		if n.ItemID == nil { // Load 已拒絕；保留 runtime fail-closed 防線給手工測試 Campaign。
+			g.loadErr = "inventory_gate: missing item_id"
+			return
+		}
+		outcome := "missing"
+		if g.partyHasItemID(*n.ItemID) {
+			outcome = "present"
+		}
+		g.camp.Advance(outcome)
+		g.enterNode()
 	case "event":
 		g.camp.Advance("")
 		g.enterNode()
@@ -1411,6 +1423,8 @@ func (g *Game) enterNode() {
 	case "shop":
 		g.dialog, g.st, g.sel = nil, nil, nil
 		g.shopSel = 0
+	case "ending":
+		g.dialog, g.st, g.sel = nil, nil, nil
 	}
 }
 
@@ -1494,6 +1508,37 @@ func (g *Game) grantItemToParty(itemID int) bool {
 		}
 		unit.Inventory = append(unit.Inventory, itemID)
 		return true
+	}
+	return false
+}
+
+// partyHasItemID implements the campaign-level equivalent of original 0x24b14:
+// search runtime slots 0..15 without filtering camp/activity for an exact
+// unsigned-byte item identity. The persistent roster fallback also makes a
+// node-boundary save/load lossless when there is no active runtime array.
+func (g *Game) partyHasItemID(itemID int) bool {
+	if g.st != nil {
+		limit := len(g.st.Units)
+		if limit > 16 {
+			limit = 16
+		}
+		for _, unit := range g.st.Units[:limit] {
+			if unit == nil {
+				continue
+			}
+			for _, held := range unit.Inventory {
+				if held == itemID {
+					return true
+				}
+			}
+		}
+	}
+	for _, unit := range g.partyRoster {
+		for _, held := range unit.Inventory {
+			if held == itemID {
+				return true
+			}
+		}
 	}
 	return false
 }
@@ -3073,9 +3118,21 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 		g.font.Draw(screen, n.Text, 205, 180, 1.2, color.RGBA{0xff, 0xe0, 0x90, 0xff})
 		g.font.Draw(screen, "Enter／ESC 返回城鎮", 205, 218, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
 	case n.Type == "ending":
-		fillBox(0, float64(logicalH)/2-60, float64(logicalW), 120)
-		g.font.Draw(screen, n.Text, float64(logicalW)/2-float64(len([]rune(n.Text)))*9, float64(logicalH)/2-30, 1.4,
-			color.RGBA{0xff, 0xe0, 0x90, 0xff})
+		// Ending 是獨立頁，不可讓上一張 battle map／HUD 從半透明框後露出。
+		screen.Fill(color.RGBA{0, 0, 0, 0xff})
+		const scale, maxWidth = 1.2, 560.0
+		lines := g.font.Wrap(n.Text, scale, maxWidth)
+		lineH := g.font.LineHeight(scale)
+		panelH := 70 + lineH*float64(len(lines))
+		panelY := (float64(logicalH) - panelH) / 2
+		fillBox(24, panelY, float64(logicalW)-48, panelH)
+		g.font.Draw(screen, "結局", float64(logicalW)/2-g.font.Width("結局", 1.35)/2, panelY+18, 1.35,
+			color.RGBA{0xff, 0xff, 0xff, 0xff})
+		for i, line := range lines {
+			x := float64(logicalW)/2 - g.font.Width(line, scale)/2
+			g.font.Draw(screen, line, x, panelY+55+float64(i)*lineH, scale,
+				color.RGBA{0xff, 0xe0, 0x90, 0xff})
+		}
 	}
 }
 

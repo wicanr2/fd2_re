@@ -88,6 +88,36 @@ func TestLoadValidation(t *testing.T) {
 	}
 }
 
+func TestInventoryGateRequiresBothTargetsAndRoutesWithoutPlayerChoice(t *testing.T) {
+	itemID := 100
+	c := &Campaign{Start: "gate", Nodes: map[string]*Node{
+		"gate":     {Type: "inventory_gate", ItemID: &itemID, IfPresent: "continue", IfMissing: "bad"},
+		"continue": {Type: "preparation"},
+		"bad":      {Type: "ending"},
+	}}
+	for outcome, want := range map[string]string{"present": "continue", "missing": "bad"} {
+		r := NewRunner(c)
+		if got := r.Advance(outcome); got != want || r.Cur != want {
+			t.Errorf("inventory gate %s = %q / current %q, want %q", outcome, got, r.Cur, want)
+		}
+	}
+
+	for name, raw := range map[string]string{
+		"missing item": `{"start":"gate","nodes":{"gate":{"type":"inventory_gate","if_present":"yes","if_missing":"no"},"yes":{"type":"ending"},"no":{"type":"ending"}}}`,
+		"missing arm":  `{"start":"gate","nodes":{"gate":{"type":"inventory_gate","item_id":100,"if_present":"yes"},"yes":{"type":"ending"}}}`,
+	} {
+		t.Run(name, func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), "invalid-gate.json")
+			if err := os.WriteFile(path, []byte(raw), 0o644); err != nil {
+				t.Fatal(err)
+			}
+			if _, err := Load(path); err == nil {
+				t.Fatal("invalid inventory gate must fail closed")
+			}
+		})
+	}
+}
+
 func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 	c, err := Load("../../assets/scenarios/campaign_full.json")
 	if err != nil {
@@ -132,6 +162,19 @@ func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 	battle3, post3 := c.Nodes["battle_ch03"], c.Nodes["story_ch03_post"]
 	if battle3 == nil || battle3.OnWin != "story_ch03_post" || post3 == nil || post3.Type != "cutscene" || post3.HandlerBinding != "assets/cutscenes/bindings/ch02_post.json" || post3.Next != "town_ch04" {
 		t.Fatalf("chapter3 battle must flow through Tino's editable post handler: battle=%#v post=%#v", battle3, post3)
+	}
+	battle27 := c.Nodes["battle_ch27"]
+	gate := c.Nodes["inventory_gate_ch27_sky_key"]
+	success := c.Nodes["story_ch27_post_sky_key_success"]
+	badEnding := c.Nodes["ending_ch27_no_sky_key"]
+	if battle27 == nil || battle27.OnWin != "inventory_gate_ch27_sky_key" || gate == nil || gate.Type != "inventory_gate" || gate.ItemID == nil || *gate.ItemID != 0x64 || gate.IfPresent != "story_ch27_post_sky_key_success" || gate.IfMissing != "ending_ch27_no_sky_key" {
+		t.Fatalf("chapter27 must preserve original sky-key inventory branch: battle=%#v gate=%#v", battle27, gate)
+	}
+	if success == nil || success.Type != "cutscene" || success.Next != "preparation_ch28" || len(success.Beats) != 2 || success.Beats[0].Op != "sync_party" || success.Beats[1].Op != "set_chapter" || success.Beats[1].Chapter == nil || *success.Beats[1].Chapter != 27 {
+		t.Fatalf("sky-key success must sync persistent party before chapter28 preparation: %#v", success)
+	}
+	if badEnding == nil || badEnding.Type != "ending" || badEnding.Text == "" {
+		t.Fatalf("missing sky key must reach an editable bad ending: %#v", badEnding)
 	}
 }
 
@@ -195,6 +238,10 @@ func TestCampaignFullPostBattleTownContractMatchesOriginalShopChapters(t *testin
 			}
 			if node.Type == "battle" {
 				t.Fatalf("%s reaches next battle %q before %s", battleID, current, targetID)
+			}
+			if node.Type == "inventory_gate" {
+				current = node.IfPresent // 此契約驗證持有天空之鑰的原版正常路徑；missing arm 另有專測。
+				continue
 			}
 			if node.Type != "story" && node.Type != "cutscene" && node.Type != "event" {
 				t.Fatalf("%s on_win path reaches %s node %q before %s", battleID, node.Type, current, targetID)

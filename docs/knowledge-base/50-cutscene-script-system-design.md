@@ -556,10 +556,22 @@ FDTXT_000 `0x201` 詢問「要進入戰場嗎？」，然後進 `0x318ad` 出戰
 各設施必回 hub，章23/24/25/28/29/30 無 town 但必有 preparation，且第30章勝利才進 ending；
 `TestRunnerTownUsesVisibleOptionOutcome` 則固定 town option 轉移。
 
-尚未接線的例外是玩家第27章（零起算 post `ch26_post`）的天空之鑰分支：
-`0x25186 call 0x24b14(item 0x64)` 找到鑰匙才於 `0x25338` 增章並進第28章 preparation；
-回傳 `-1` 則走 `0x2545d call 0x2bce5` 壞結局。目前全戰役 town/preparation 契約測試
-固定正常有鑰匙路徑，這個 inventory-conditioned handler branch 仍需後續 lower，不可以一律直進第28章宣告完成。
+玩家第27章（零起算 post `ch26_post`）的天空之鑰分支已先接成 editable campaign gate：
+`battle_ch27 → inventory_gate_ch27_sky_key`。`0x25186 call 0x24b14(item 0x64)` 的完整 body
+只掃 runtime unit records slots 0..15，不檢查 camp／active；找到鑰匙才走
+`story_ch27_post_sky_key_success` 的 `sync_party → set_chapter(27)`，再停在 `preparation_ch28`；
+回傳 `-1` 則走獨立 `ending_ch27_no_sky_key`，對應 `0x2545d call 0x2bce5` 壞結局。
+runtime 在沒有 active battle array 時另查 persistent roster，是為 node-boundary save/load 做的 remake
+projection，不冒充 `0x24b14` 的 byte-exact 行為。Load 會拒絕缺 `item_id` 或缺任一 arm 的 gate；
+runtime／campaign tests 同時固定 slots 0..15、present/missing、成功 sync、save round-trip 與第28章整備邊界。
+
+但「取得天空之鑰」仍是下一個必接項目，不能把 gate 接好就稱正常路線可玩。鑰匙在零起算
+`ch20_post`（玩家第21章戰後）鑄成：`0x2418a..0x241cd` 對 item `0xD1..0xD6`、runtime
+slots 0..15 累計命中，`cmp ebx,6` 要求六件全齊；成功才在 `0x241d6..0x24220` 移除材料並於
+`0x24224` grant `0x64`，失敗則從 `0x242e9` 播未鑄成對話。兩臂最後共同 JOIN24/JOIN23、
+sync_party、chapter++，然後仍必進 `town_ch22`。目前 `battle_ch21` 尚未接這個 handler，正常
+campaign 因此尚無鑰匙取得路徑；下一批必須 lower 這個六素材 diamond，不能把 flat handler JSON
+中的 `grant_item(100)` 誤當無條件。
 
 ## 4. 未解(低優先)+ 工具紀律
 
