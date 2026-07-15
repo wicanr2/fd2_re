@@ -92,13 +92,16 @@
 
 ## 5. 未解(誠實列表,下一輪 RE 錨點)
 
-- **0x627d8 acting 資源表的填表點**:refs 只有 getter 0x4e803;已排除=章節載入器 0x1088d/0x205da、
-  0x111ba(純 fopen/fseek/fread)、0x10652(章節大圖)。表在 BSS,填表用暫存器基底寫入,靜態難尋。
-- **acting 資源所在容器**:格式掃描已排除 FDTXT(35)/FDFIELD(100,roster 無尾掛)/DATO(137,90-136 全頭像量級)
-  /ANI(第10個=0 bytes)/EXE 資料段(無吻合 blob)。候選:FDOTHER 巢狀子資源、FIGANI 尾段、FD2.TMP。
-  或 id 有 base 偏移。**建議下一輪:dosbox 記憶體 dump [0x627d8] 表內容反查來源**(規則 64 第三條路)。
-- acting 幀的完整語意:0x80 旗標分支、unit+3/+4 欄位如何被 0x11cac 用於次格滑動繪製(=姿態/滑動,**非走位**;走位由 step 家族搬格子)、
-  鏡頭是否隨 acting 內容移動(影片顯示走入時鏡頭跟隨,但 handler 只在 beat 間平移——疑 0x11cac 追焦或 acting 資源含鏡頭指令)。
+> **2026-07-15 更正：下列 acting container／填表點已解，不再是未解項。** `0x627d8` 不在純 BSS，
+> 而在 FD2.EXE 的 LE object #3（RW initialized data，file+`0x565d8`）。getter `0x4e7f8` 直接做
+> `[0x627d8 + id*4]`；106-entry directory 指向同一 object 內 file+`0x53e00` 的 payload bank。
+> 因此沒有執行期填表點，也不是 FDOTHER／FIGANI／FD2.TMP 載入。canonical exporter 為
+> `tools/export_acting_resources.py`。保留本更正是為了避免再沿早期候選重查。
+
+- ~~**0x627d8 acting 資源表的填表點**~~：已由 LE file↔linear mapping 證明是 EXE initialized data。
+- ~~**acting 資源所在容器**~~：已定位於 FD2.EXE 106-entry direct-ID bank；外部容器候選全部撤回。
+- ~~acting 幀的完整語意~~：已解；normal frame 依 pose 逐格移動、special(`0x80`)原地顯示，
+  unit+3/+4 是 pose/tick，鏡頭跟隨另由 handler 的 step/focus 原語負責。以 doc50 §1.2 為準。
 - `[0x53afb]` 語意；`0x32975/0x32999` 已於 2026-07-15 完整展開。
 
 ## 6. 方法紀錄
