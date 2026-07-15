@@ -218,6 +218,7 @@ func (u *Unit) applyLevelUpGrowth(rng *rand.Rand) (LevelUpEvent, bool) {
 	u.MaxHP += ev.HpGain
 	u.HP += ev.HpGain // 升級當下回滿新增的 HP(RPG 慣例;doc 未明講升級是否立即回血,
 	// 但「升級卻沒補血」在戰鬥中間發生會很怪,採用較合理的一種,已於報告誠實標記)
+	u.MaxMP += ev.MpGain
 	u.MP += ev.MpGain
 	return ev, true
 }

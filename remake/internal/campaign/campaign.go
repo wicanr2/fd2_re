@@ -156,6 +156,10 @@ type Beat struct {
 	Out bool `json:"out,omitempty"` // fade:true=淡出 false=淡入(重用 storyFade,doc46 §5.2)
 
 	Ms int `json:"ms,omitempty"` // delay:毫秒(原版 0x375b2 語意);換算成 60fps 幀數,Frames 優先
+
+	// set_chapter: original [0x53c03] campaign/resource chapter assignment.
+	// Pointer form preserves chapter zero as an explicit editable value.
+	Chapter *int `json:"chapter,omitempty"`
 }
 
 // Node 節點。Type: story / cutscene / battle / choice / event / shop / ending。

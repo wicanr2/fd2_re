@@ -435,6 +435,39 @@ func TestBeatJoinPersistsOnlyPlayerCharacterIDs(t *testing.T) {
 	}
 }
 
+func TestBeatSyncPartyPersistsProgressAndClearsBattleState(t *testing.T) {
+	chapter := 1
+	g := newBeatTestGame(t, []campaign.Beat{{Op: "sync_party"}, {Op: "set_chapter", Chapter: &chapter}})
+	g.partyMembers = map[int]bool{0: true, 9: true}
+	g.st = &battle.State{Units: []*battle.Unit{
+		{Camp: battle.Own, Fig: 0, Name: "索爾", Lv: 3, HP: 7, MaxHP: 50, MP: 2, MaxMP: 12, AP: 18, Exp: 42, Acted: true, Poisoned: true, PoisonTurns: 3, Spells: []int{1, 2}},
+		{Camp: battle.Own, Fig: 9, Name: "悠妮", Lv: 2, HP: 0, MaxHP: 31, MP: 0, MaxMP: 19, Paralyzed: true, ParalyzeTurns: 2},
+		{Camp: battle.Enemy, Fig: 20, HP: 1, MaxHP: 1},
+	}}
+	g.beatAdvance()
+	if g.handlerChapter != 1 || g.fade == nil {
+		t.Fatalf("immediate post beats did not finish: chapter=%d fade=%#v err=%q", g.handlerChapter, g.fade, g.loadErr)
+	}
+	if len(g.partyRoster) != 2 {
+		t.Fatalf("party roster = %#v, want two JOIN members", g.partyRoster)
+	}
+	sol := g.partyRoster[0]
+	if sol.HP != 7 || sol.MP != 12 || sol.Lv != 3 || sol.Exp != 42 || sol.Acted || sol.Poisoned || len(sol.Spells) != 2 {
+		t.Fatalf("survivor snapshot = %#v", sol)
+	}
+	yuni := g.partyRoster[9]
+	if yuni.HP != 31 || yuni.MP != 19 || yuni.Paralyzed {
+		t.Fatalf("defeated member was not revived/cleared: %#v", yuni)
+	}
+
+	fresh := &battle.State{Units: []*battle.Unit{{Camp: battle.Own, Fig: 0, X: 11, Y: 22, Group: 4, OnField: true, HP: 99, MaxHP: 99}}}
+	g.applyPersistentParty(fresh)
+	got := fresh.Units[0]
+	if got.Lv != 3 || got.HP != 7 || got.MP != 12 || got.X != 11 || got.Y != 22 || got.Group != 4 || !got.OnField {
+		t.Fatalf("persistent overlay lost progression or deployment: %#v", got)
+	}
+}
+
 func TestReorderScenarioPartyUsesOriginalJoinSlots(t *testing.T) {
 	sc := &battle.Scenario{
 		Party:       []battle.PartyMember{{Fig: 0}, {Fig: 4}, {Fig: 9}, {Fig: 30}},

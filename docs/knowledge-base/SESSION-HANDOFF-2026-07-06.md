@@ -28,11 +28,21 @@
 > malloc heap。另以 DOSBox-X `-log-fileio` 實跑到 map32 草地對話，acting 期間沒有 FDOTHER/ANI/
 > FIGANI/FD2.TMP read；`FD2.TMP` 只有 207360-byte write，無 read-back。詳證補在 `doc50`。
 
+> **2026-07-15 第五次 Codex 更新（戰後 persistent roster）**：`0x11506` 的 **24 個戰後
+> caller** 已由完整 body 定案，不是查詢函式。它以角色 ID 配對 runtime battle array 與 persistent
+> roster，將完整 `0x50`-byte unit **由 runtime 複製回 persistent**；隨即清 persistent `+0x22..+0x27`
+> 六 bytes 與 transient flags，死亡者 HP 回滿、全員 MP 回滿，存活者保留戰後 HP，再呼叫 `0x1145a`
+> 依裝備重算衍生值。ch00 post 已 editable lower 成 `dialog → sync_party → set_chapter(1)`，由
+> `story_ch02` 的 `bindings/ch00_post.json` 接入；`partyRoster` 會在下一戰 materialize 時覆蓋持久能力
+> 值，且已納入 remake JSON save/load。全量 handler `unknown` 因此由 **133 降至 109**。完整位元組流程
+> 與欄位證據（包含 ID 0 存活時原版會跳過 copy 的反直覺特例）見 `doc50 §3.2`。
+
 ## 0. 目前焦點(接手就做這裡)
 第一章開場 `ch00_pre` 的 handler、對白、ACT99/100、兩段 scroll、focus 與 map31 ACT90..98 已完整
-lower，compiler 為 **0 issues**。下一步是跑完整 GUI 過場逐幕比對原版，再把相同 direct acting bank／
-handler compiler 套到 ch01 之後的戰前戰後事件。下方「草地深層未解」是 2026-07-06 歷史記錄，
-已被 2026-07-15 direct table 修正推翻，不得再當目前 blocker。
+lower，compiler 為 **0 issues**；第一場勝利後的 `ch00_post` 也已完成 dialog、戰後 persistent
+roster 同步與 chapter 推進。下一步是跑完整 GUI 過場逐幕比對原版，再把相同 direct acting bank／
+handler compiler 套到 ch01 之後的戰前戰後事件（戰後 handler 優先辨識 `sync_party`、裝備／世界地圖
+原語）。下方「草地深層未解」是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，不得再當目前 blocker。
 
 ## 1. 這段 session 做完的事
 - **王座傳位幕**:走位 (8,42)→**(8,21)**第一次對話→**(8,8)**最終(對原版截圖+FDFIELD 守衛地標實測);

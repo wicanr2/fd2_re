@@ -537,18 +537,9 @@
    "next": "battle_ch01"
   },
   "story_ch02": {
-   "type": "story",
+   "type": "cutscene",
    "bgm": "FDMUS_010",
-   "lines": [
-    {
-     "speaker": -1,
-     "text": "第2章:羅德鎮"
-    },
-    {
-     "speaker": -1,
-     "text": "目標:敵全滅。務必保護「村民全滅」存活。"
-    }
-   ],
+   "handler_binding": "assets/cutscenes/bindings/ch00_post.json",
    "next": "battle_ch02"
   },
   "shop_ch02_weapon": {

@@ -113,6 +113,8 @@ def normalize(beats):
                 item["unit_slot"] = args[0]
             else:
                 item["unit_slot_expr"] = args[0]
+        elif op == "sync_party":
+            item = {"op": "sync_party", "source": src}
         elif op == "unknown":
             item = {"op": "unknown", "native_target": beat["target"], "raw_args": args, "source": src}
         else:

@@ -277,6 +277,19 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			beat := runtime(input, "join")
 			beat.CharID = *input.CharID
 			beats = append(beats, beat)
+		case "sync_party":
+			// 0x11506 is the parameterless post-battle projection from the
+			// current runtime unit array back to the persistent player roster.
+			beats = append(beats, runtime(input, "sync_party"))
+		case "set_chapter":
+			if input.Chapter == nil || *input.Chapter < 0 {
+				issue(i, input, "set_chapter requires a non-negative immediate chapter")
+				continue
+			}
+			beat := runtime(input, "set_chapter")
+			chapter := *input.Chapter
+			beat.Chapter = &chapter
+			beats = append(beats, beat)
 		case "palette_fade":
 			// Original 0x1f525 is the whole-screen palette fade-in.  It has no
 			// chapter-local argument, so the generic runtime representation is

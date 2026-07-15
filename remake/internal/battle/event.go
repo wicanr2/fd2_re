@@ -188,7 +188,7 @@ func (sc *Scenario) PartyUnits(fallback []Cell) []*Unit {
 		}
 		units = append(units, &Unit{
 			Camp: Own, Name: pm.Name, ClsName: pm.Cls, Lv: pm.Lv,
-			HP: pm.HP, MaxHP: pm.HP, MP: pm.MP, AP: pm.AP, DP: pm.DP, MV: pm.MV,
+			HP: pm.HP, MaxHP: pm.HP, MP: pm.MP, MaxMP: pm.MP, AP: pm.AP, DP: pm.DP, MV: pm.MV,
 			HIT: pm.HIT, EV: pm.EV, CritPct: pm.CritPct,
 			AtkMin: pm.AtkMin, AtkMax: pm.AtkMax,
 			Portrait: pm.Portrait, Fig: pm.Fig, X: x, Y: y, OnField: true, Spells: pm.Spells,

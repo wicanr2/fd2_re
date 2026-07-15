@@ -94,6 +94,30 @@ func TestCompileHandlerPaletteFadeIsFadeIn(t *testing.T) {
 	}
 }
 
+func TestCompilePostBattlePrimitives(t *testing.T) {
+	chapter := 1
+	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{
+		{Op: "sync_party", Source: HandlerSource{Addr: "0x22f27", Target: "0x11506"}},
+		{Op: "set_chapter", Chapter: &chapter, Source: HandlerSource{Addr: "0x22f2c"}},
+	}}, HandlerBindings{})
+	if len(issues) != 0 || len(beats) != 2 {
+		t.Fatalf("post primitives beats=%#v issues=%#v", beats, issues)
+	}
+	if beats[0].Op != "sync_party" || beats[0].Source != "0x22f27" {
+		t.Fatalf("sync_party lowering = %#v", beats[0])
+	}
+	if beats[1].Op != "set_chapter" || beats[1].Chapter == nil || *beats[1].Chapter != 1 {
+		t.Fatalf("set_chapter lowering = %#v", beats[1])
+	}
+}
+
+func TestCompileSetChapterRejectsMissingImmediate(t *testing.T) {
+	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{Op: "set_chapter"}}}, HandlerBindings{})
+	if len(beats) != 0 || len(issues) != 1 || issues[0].Reason != "set_chapter requires a non-negative immediate chapter" {
+		t.Fatalf("missing set_chapter immediate beats=%#v issues=%#v", beats, issues)
+	}
+}
+
 func TestCompileHandlerScriptDoesNotGuessMissingMappings(t *testing.T) {
 	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{
 		{Op: "loadch", Chapter: intPtr(5)},
@@ -332,6 +356,27 @@ func TestCompileCompleteChapter0Binding(t *testing.T) {
 	}
 }
 
+func TestCompileCompleteChapter0PostBinding(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch00_post.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(issues) != 0 {
+		t.Fatalf("ch00_post unresolved issues: %#v", issues)
+	}
+	if len(beats) != 15 { // original FDTXT #9 expands to 13 lines, then sync + chapter assignment
+		t.Fatalf("ch00_post compiled %d beats, want 15: %#v", len(beats), beats)
+	}
+	for i := 0; i < 13; i++ {
+		if beats[i].Op != "dialog" || beats[i].SceneIndex == nil || *beats[i].SceneIndex != 7 {
+			t.Fatalf("post dialog beat %d = %#v", i, beats[i])
+		}
+	}
+	if beats[13].Op != "sync_party" || beats[14].Op != "set_chapter" || beats[14].Chapter == nil || *beats[14].Chapter != 1 {
+		t.Fatalf("post tail = %#v", beats[13:])
+	}
+}
+
 func TestHandlerBindingResolvesStrictStoryIndexContext(t *testing.T) {
 	binding, err := LoadHandlerBinding("../../assets/cutscenes/bindings/ch01_pre.json")
 	if err != nil {
@@ -447,10 +492,14 @@ func TestLoadActingResourceSetAndCh00References(t *testing.T) {
 	}
 }
 
-func TestCompileGeneratedHandlerBindingsFailClosed(t *testing.T) {
+func TestCompileGeneratedHandlerBindingsCompletionFrontier(t *testing.T) {
 	paths, err := filepath.Glob("../../assets/cutscenes/bindings/generated/ch??_*.json")
 	if err != nil || len(paths) != 60 {
 		t.Fatalf("generated bindings=%d err=%v", len(paths), err)
+	}
+	complete := map[string]bool{
+		"ch00_post.json": true, "ch03_post.json": true,
+		"ch10_post.json": true, "ch18_post.json": true,
 	}
 	for _, path := range paths {
 		_, issues, err := CompileHandlerBinding(path)
@@ -461,8 +510,9 @@ func TestCompileGeneratedHandlerBindingsFailClosed(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if len(script.Beats) > 0 && len(issues) == 0 {
-			t.Errorf("%s unexpectedly claims full fidelity", path)
+		wantComplete := complete[filepath.Base(path)]
+		if len(script.Beats) > 0 && (len(issues) == 0) != wantComplete {
+			t.Errorf("%s completion=%v issues=%#v, want completion=%v", path, len(issues) == 0, issues, wantComplete)
 		}
 	}
 }

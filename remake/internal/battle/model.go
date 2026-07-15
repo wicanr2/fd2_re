@@ -37,7 +37,7 @@ type Unit struct {
 	ClsName   string // 職業名(中文,M2 TTF 才顯示)
 	Lv        int
 	HP, MaxHP int
-	MP        int
+	MP, MaxMP int
 	AP, DP    int
 	HIT, EV   int // 命中/閃避基礎值(doc02 §2;doc03:EXE 內為「衍生值」非表格原始欄位,
 	// 敵/友單位 10B 表無此欄,export_units.py 暫用固定近似值,見該檔頭註解)
@@ -242,7 +242,7 @@ func Load(path string) (*State, error) {
 		camp := campFrom(u.Camp)
 		nu := &Unit{
 			Camp: camp, Name: u.Name, ClsName: u.ClsName, Lv: u.Lv,
-			HP: u.HP, MaxHP: u.HP, MP: u.MP, AP: u.AP, DP: u.DP, MV: u.MV,
+			HP: u.HP, MaxHP: u.HP, MP: u.MP, MaxMP: u.MP, AP: u.AP, DP: u.DP, MV: u.MV,
 			HIT: u.HIT, EV: u.EV, CritPct: u.Crit, ExpPerLevel: u.Ex,
 			AtkMin: u.AtkMin, AtkMax: u.AtkMax,
 			Portrait: u.Portrait, Fig: u.Fig, X: u.X, Y: u.Y, Spells: u.Spells,

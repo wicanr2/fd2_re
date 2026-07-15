@@ -5,12 +5,7 @@
   "handler": "0x23cd5",
   "beats": [
     {
-      "op": "unknown",
-      "native_target": "0x11506",
-      "raw_args": [
-        "esi",
-        "edi"
-      ],
+      "op": "sync_party",
       "source": {
         "addr": "0x23d15",
         "target": "0x11506"
@@ -115,6 +110,6 @@
     }
   ],
   "diagnostics": {
-    "unknown_ops": 2
+    "unknown_ops": 1
   }
 }

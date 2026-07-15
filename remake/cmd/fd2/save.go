@@ -5,16 +5,22 @@ package main
 import (
 	"encoding/json"
 	"os"
+
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
 
 // savePath 存檔位置:$XDG_DATA_HOME/fd2_re/fd2_save.json(唯讀 AppImage mount 內無法寫 cwd,見 assets.go)。
 func savePath() string { return userDataPath("fd2_save.json") }
 
 type saveData struct {
-	Node  string          `json:"node"`
-	Flags map[string]bool `json:"flags"`
-	Gold  int             `json:"gold"`
-	Items []string        `json:"items"`
+	Node           string              `json:"node"`
+	Flags          map[string]bool     `json:"flags"`
+	Gold           int                 `json:"gold"`
+	Items          []string            `json:"items"`
+	PartyMembers   map[int]bool        `json:"party_members,omitempty"`
+	PartyJoinOrder []int               `json:"party_join_order,omitempty"`
+	PartyRoster    map[int]battle.Unit `json:"party_roster,omitempty"`
+	Chapter        int                 `json:"chapter,omitempty"`
 }
 
 func (g *Game) saveGame() {
@@ -22,7 +28,11 @@ func (g *Game) saveGame() {
 		g.msg = "存檔:僅 campaign 模式支援(FD2_CAMPAIGN=1)"
 		return
 	}
-	d := saveData{Node: g.camp.Cur, Flags: g.camp.Flags, Gold: g.gold, Items: g.items}
+	d := saveData{
+		Node: g.camp.Cur, Flags: g.camp.Flags, Gold: g.gold, Items: g.items,
+		PartyMembers: g.partyMembers, PartyJoinOrder: g.partyJoinOrder,
+		PartyRoster: g.partyRoster, Chapter: g.handlerChapter,
+	}
 	raw, err := json.MarshalIndent(d, "", " ")
 	if err != nil {
 		return
@@ -52,6 +62,8 @@ func (g *Game) loadGame() {
 	g.camp.Cur = d.Node
 	g.camp.Flags = d.Flags
 	g.gold, g.items = d.Gold, d.Items
+	g.partyMembers, g.partyJoinOrder = d.PartyMembers, d.PartyJoinOrder
+	g.partyRoster, g.handlerChapter = d.PartyRoster, d.Chapter
 	g.enterNode()
 	g.msg = "已讀檔(" + d.Node + ")"
 }

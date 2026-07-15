@@ -37,6 +37,7 @@
 | `SPAWN_INTRO(g)` (0x32999) | 內呼叫 0x10b4e append group，再做 12-step reveal/present | beat op:spawn_intro |
 | `RESET_POSE` (0x134e4) | 所有 materialized units pose=0，再 delay 20ms | beat op:reset_pose |
 | `FOCUS_UNIT(slot)` (0x12d7b→0x12cea) | 讀 unit X/Y，先 X 後 Y 逐格移動游標；13×8 視窗在 X=2..10、Y=2..5 安全帶外才捲圖 | beat op:focus_unit；runtime 已照四個 step 函式 lower |
+| `SYNC_PARTY` (0x11506) | 戰後以角色 ID 將 runtime battle unit 回寫 persistent roster，清暫態並恢復 HP/MP（§3.2） | beat op:sync_party；`partyRoster` 跨 battle/save 保留 |
 
 ### 1.1 走位機制(step 家族 + 路徑走位;2026-07-05 釘死)
 
@@ -325,20 +326,50 @@ editable scene，不能回退到 enclosing Node 的 lines 而播錯 `loadch` con
 舊 raw dump 共 629 beats（含 `loadch_var` 這類非-call 記錄）中，重分類後已知原語 496 筆、未知
 133 筆（78.9%）。新版 editable 匯出將 `loadch_var + loadch_call` 合併為一個 `loadch`，
 因此要以各檔 `diagnostics.unknown_ops` 和 `_manifest.json` 計數，而不可拿兩種格式的
-beat 總數直接相比。2026-07-15 全量匯出為 **626 個 editable beats、133 個保留的
-`unknown` calls**；5 個 handler 是已驗證的空 handler，仍保留檔案與 handler metadata。
+beat 總數直接相比。2026-07-15 全量匯出為 **626 個 editable beats**；完整辨識 `0x11506`
+並重新生成 24 個 post handler 後，保留的 `unknown` calls 已由 **133 降至 109**。5 個 handler
+是已驗證的空 handler，仍保留檔案與 handler metadata。
 未知原語 28 種位址，集中在**戰後(post)handler**（戰役流程控制／中場
 銜接族，跟序章那種純過場敘事不同族）。逐一淺層反組譯定性（前 40 條指令，看讀寫哪些已知
 變數／呼叫哪些已知函式）：
 
 | 位址 | 次數 | 淺層定性(證據) |
 |---|---|---|
-| `0x11506` | 24 | **roster↔戰場單位雙迴圈配對**:外層走 `[0x53a45]`(戰場全單位,0..`[0x53beb]`)、內層走 `[0x53bf7]`(我方名冊,0..`[0x53bfb]`),比對兩邊 `+8`(角色ID)相同;若角色ID=0(索爾)額外呼叫 `unit_alive(idx)` 確認存活才算命中。疑「找 roster 成員在戰場的槽位/檢查特定角色是否已在場」,跟 `roster_has`/`unit_alive` 同族但更底層。 |
+| `0x11506` | 24 | **戰後 runtime→persistent roster 同步**（完整 body 已驗，見 §3.2）：雙迴圈以 `+8` charID 配對 battle `[0x53a45]` 與 persistent `[0x53bf7]`，複製完整 `0x50`-byte record、清戰場暫態、復原 HP/MP，最後重算裝備衍生值。ID 0 有一條必須原樣保留的特例：`unit_alive(runtime_idx) != 0` 時跳過這次配對。 |
 | `0x233c6` | 15 | **批次寫入單位陣列 X/Y 座標+初始 pose**:迴圈對 `unitbase+idx*0x50` 寫 `+0`(從 edi 陣列讀 X)、`+1`(從 ebp 陣列讀 Y)、`+3`(<4 的小常數,疑初始 pose)。疑是「roster/FDFIELD own 展開寫入戰場陣列」的初始化實作,呼應 doc47/48 單位結構 `+0=X,+1=Y,+3=pose` 定案。 |
 | `0x24b4d` | 15 | **畫面過渡效果**:push 鏡頭 `[0x53aa9]/[0x53aad]` 呼叫 `0x11eee`(地形重繪)+`0x11cac`(主重繪)+迴圈呼叫 `0x11eb0`(present)+`DELAY(20ms)`。與 acting bit7 特殊模式分支(doc47 §9)看到的同一組呼叫序列相同,疑是該分支背後共用的「reveal/漸現」子程序。 |
 | `0x11df2` | 12 | **VGA 調色盤處理**(**推翻 team-lead「疑 0x11cac 同族」的猜測**):操作 `[0x53a65]`(新變數,調色盤資料表?)+呼叫 `0x37795`(push 常數 `0x3c8`/`0x3c9`——VGA DAC 索引/資料 I/O port 位址),跟 `0x11cac`(畫面重繪)不同族,是獨立的調色盤/淡變數值計算函式。 |
 
 其餘 24 種(次數 1~8)未逐一反組譯,清單見 `docs/data/chapter_beats/_stats.json`。
+
+### 3.2 戰後 `0x11506`：runtime→persistent roster 同步（2026-07-15，完整 body 已驗）
+
+`0x11506` 出現在 **24 個 post/victory handler caller**。它不是 roster 查詢；每次戰後會外層掃
+runtime battle array `[0x53a45]`（`0..[0x53beb)`），內層掃 persistent player roster `[0x53bf7]`
+（`0..[0x53bfb)`），以 unit `+8` 的角色 ID 配對。ID 0 另呼叫 `unit_alive(runtime_idx)`；反組譯的
+精確分支是 **回傳非零（bit0=存活）便跳回內層迴圈、不做 copy**，只有回傳零才落入 copy。這個特例
+看似反直覺，但 `0x11565..0x11570` 的 `test eax,eax; jne 0x1153b` 沒有歧義；在尚未找到原版對 ID 0
+的另一條即時持久化路徑前，不把它改寫成「確認存活才保存」。
+
+對每一個配對，原版依序：
+
+- 以 `0x373c4` 把完整 **`0x50` bytes 從 runtime unit 複製到 persistent unit**；方向不可反過來。
+- 將 persistent `+0x22..+0x27` **六 bytes 清零**，並把 `+5` state flags 收斂為 bit0（存活）而不帶走
+  戰場 path／行動等 transient state。
+- 若 bit0 不為存活，將 HP current `+0x40` 回填為 HP max `+0x42`；不死者保留其戰後 current HP。
+  無論存活與否，都將 MP current `+0x44` 回填為 MP max `+0x46`。
+- 呼叫 `0x1145a(persistent_index)`：由 persistent record 的 base 值（`+0x37/+0x39/+0x3e`）起算，逐一
+  累加已裝備欄位（`+0x0a` 起、bit `0x40`）所指 item 的數值，寫回 `+0x48/+0x4a/+0x4c/+0x4e`。
+  故此 call 是**裝備衍生能力值重算**，必須在 copy/清理後做，不能把舊戰場快取直接跨關沿用。
+
+remake 的 first complete consumer 是 `assets/cutscenes/handlers/ch00_post.json`：原版 `FDTXT_001` #9
+展開為 13 句 editable `dialog` 後，接 `sync_party`，再 `set_chapter(1)`；
+`assets/cutscenes/bindings/ch00_post.json` 供 `campaign_full.json:story_ch02` 載入。runtime 將快照存入
+`Game.partyRoster`，下一張 battle/cutscene materialize 玩家時按 stable `Fig`/charID 覆蓋可持久的
+能力、HP、MP、EXP 與 spells，但保留新場景的部署座標／group／on-field 狀態；`saveData.PartyRoster`
+與 `Chapter` 一併 JSON serialize/restore。因此 battle→post handler→下一章／讀檔 的持久資料鏈已接通，
+而不是只在當前戰場記憶體做畫面效果。remake 目前會同步所有 `JOIN` 成員（包含 ID 0），因為尚未
+重製原版 ID 0 可能使用的另一條持久化路徑；這是刻意標記的 projection 差異，不能宣稱該特例已 1:1。
 
 ## 4. 未解(低優先)+ 工具紀律
 

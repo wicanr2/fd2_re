@@ -253,9 +253,7 @@
       }
     },
     {
-      "op": "unknown",
-      "native_target": "0x11506",
-      "raw_args": [],
+      "op": "sync_party",
       "source": {
         "addr": "0x25333",
         "target": "0x11506"
@@ -371,6 +369,6 @@
     }
   ],
   "diagnostics": {
-    "unknown_ops": 16
+    "unknown_ops": 15
   }
 }

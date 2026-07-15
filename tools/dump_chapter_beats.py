@@ -41,6 +41,7 @@ PRIM = {
     0x32999: ('spawn_intro', 1),   # (group)內部 call 0x10b4e 後做 12-frame reveal/present
     0x134e4: ('reset_pose', 0),    # 所有 materialized units pose=down，然後 delay(20ms)
     0x12d7b: ('focus_unit', 1),    # (unit_idx)讀 unit X/Y，呼叫 0x12cea 捲到該格
+    0x11506: ('sync_party', 0),    # 戰後 runtime unit→persistent roster，同 charID copy/清暫態/恢復資源
     0x205da: ('loadch_call', 0),  # 章節載入呼叫本身 0 參數;章節號由前面 mov [0x3c03] 設定,見 loadch_var
     # 本輪(2026-07-04)unknown×既有原語表交叉補上(event_handler_dump.py PRIM/VAR + doc25/26):
     0x3453e: ('unit_alive', 1),   # (idx) 查 [0x53a45]+idx*0x50+5 bit0(doc25/26 已知)

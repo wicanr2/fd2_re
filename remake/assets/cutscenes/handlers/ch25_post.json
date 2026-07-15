@@ -106,9 +106,7 @@
       "text_table": "dword ptr [0x3a79]"
     },
     {
-      "op": "unknown",
-      "native_target": "0x11506",
-      "raw_args": [],
+      "op": "sync_party",
       "source": {
         "addr": "0x25042",
         "target": "0x11506"
@@ -116,6 +114,6 @@
     }
   ],
   "diagnostics": {
-    "unknown_ops": 2
+    "unknown_ops": 1
   }
 }

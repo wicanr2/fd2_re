@@ -70,6 +70,8 @@ type Game struct {
 	storySpawned     map[int]bool        // 原版 group 已 materialize；防止 handler 重複 SPAWN 時重複 append
 	partyMembers     map[int]bool        // JOIN 建立的永久玩家名冊；key=原版 0..31 charID，不使用 NPC portrait
 	partyJoinOrder   []int               // JOIN 首次出現順序；章0 cutscene 的 party runtime slot 以此為準
+	partyRoster      map[int]battle.Unit // 0x11506 戰後同步的跨關角色能力／HP／MP／經驗快照
+	handlerChapter   int                 // 原版 [0x53c03]；set_chapter 與無立即數 LOADCH 的 resource chapter
 	storyWalks       []*storyWalkJob     // 場景走位動畫佇列(doc46 §5.3);逐幀推進、完成後移除
 	storyAutoAdvance int                 // story 節點無對白時的自動轉場倒數幀(doc46 行軍蒙太奇,0=不自動)
 	storyView        *ebiten.Image       // story 場景離屏世界層(320×200,放大 storyZoom 倍貼上畫布;2-1 原版取景)
@@ -846,6 +848,19 @@ func (g *Game) beatStart(b campaign.Beat) {
 			g.partyJoinOrder = append(g.partyJoinOrder, b.CharID)
 		}
 		g.beatAdvance()
+	case "sync_party":
+		if err := g.syncPartyFromBattle(); err != nil {
+			g.loadErr = "beat sync_party: " + err.Error()
+			return
+		}
+		g.beatAdvance()
+	case "set_chapter":
+		if b.Chapter == nil || *b.Chapter < 0 {
+			g.loadErr = "beat set_chapter:缺少有效章節"
+			return
+		}
+		g.handlerChapter = *b.Chapter
+		g.beatAdvance()
 	case "bgm":
 		g.playBGM(b.Track)
 		g.beatAdvance()
@@ -938,6 +953,9 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 			return fmt.Errorf("party scenario %q: %w", state.PartyScenario, err)
 		}
 		party = scenario.PartyUnits(roster.OwnDeploy)
+		if len(g.partyRoster) != 0 {
+			g.applyPersistentParty(&battle.State{Units: party})
+		}
 	}
 
 	// A handler cutscene uses the loaded FDFIELD records as a source, not as a
@@ -1204,9 +1222,85 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 			filterScenarioParty(sc, g.partyMembers)
 			g.sc = sc
 			g.dialog = append(g.dialog, sc.Setup(g.st)...)
+			g.applyPersistentParty(g.st)
 			g.focusOnParty()
 		}
 	}
+}
+
+// applyPersistentParty overlays the post-battle roster snapshot on freshly
+// materialized player units while preserving this scenario's deployment,
+// camp/group and on-field state. Original 0x11506 matches on charID; remake
+// player Fig is the same stable 0..31 identity used by JOIN.
+func (g *Game) applyPersistentParty(st *battle.State) {
+	if st == nil || len(g.partyRoster) == 0 {
+		return
+	}
+	for _, dst := range st.Units {
+		if dst == nil || dst.Camp != battle.Own {
+			continue
+		}
+		if src, ok := g.partyRoster[dst.Fig]; ok {
+			applyPersistentStats(dst, &src)
+		}
+	}
+}
+
+func applyPersistentStats(dst, src *battle.Unit) {
+	if dst == nil || src == nil {
+		return
+	}
+	dst.Name, dst.ClsName, dst.Lv = src.Name, src.ClsName, src.Lv
+	dst.HP, dst.MaxHP, dst.MP, dst.MaxMP = src.HP, src.MaxHP, src.MP, src.MaxMP
+	dst.AP, dst.DP, dst.DX = src.AP, src.DP, src.DX
+	dst.HIT, dst.EV, dst.CritPct, dst.MV = src.HIT, src.EV, src.CritPct, src.MV
+	dst.AtkMin, dst.AtkMax = src.AtkMin, src.AtkMax
+	dst.Portrait, dst.Fig = src.Portrait, src.Fig
+	dst.Exp, dst.ExpPerLevel = src.Exp, src.ExpPerLevel
+	dst.Spells = append(dst.Spells[:0], src.Spells...)
+}
+
+// syncPartyFromBattle is the remake projection of original 0x11506. The EXE
+// copies a matching 0x50-byte battle unit back to the persistent roster,
+// clears transient state/path bytes, revives defeated members to full HP and
+// restores MP. Surviving members retain their current HP. The EXE skips an
+// alive charID 0 here, apparently because that record has another persistence
+// path; until that path exists in the remake, JOIN member 0 is snapshotted too
+// so the engine does not discard the protagonist's battle progression.
+func (g *Game) syncPartyFromBattle() error {
+	if g.st == nil {
+		return fmt.Errorf("no completed battle state")
+	}
+	if g.partyRoster == nil {
+		g.partyRoster = make(map[int]battle.Unit)
+	}
+	for _, current := range g.st.Units {
+		if current == nil || current.Camp != battle.Own {
+			continue
+		}
+		id := current.Fig
+		if len(g.partyMembers) != 0 && !g.partyMembers[id] {
+			continue
+		}
+		snapshot := *current
+		snapshot.Spells = append([]int(nil), current.Spells...)
+		if snapshot.MaxMP < snapshot.MP {
+			snapshot.MaxMP = snapshot.MP
+		}
+		if snapshot.HP <= 0 {
+			snapshot.HP = snapshot.MaxHP
+		}
+		snapshot.MP = snapshot.MaxMP
+		snapshot.Acted = false
+		snapshot.OffX, snapshot.OffY = 0, 0
+		snapshot.BuffAPPct, snapshot.BuffDPPct = 0, 0
+		snapshot.BuffHit, snapshot.BuffEV, snapshot.BuffTurns = 0, 0, 0
+		snapshot.Sealed, snapshot.SealTurns = false, 0
+		snapshot.Poisoned, snapshot.PoisonTurns = false, 0
+		snapshot.Paralyzed, snapshot.ParalyzeTurns = false, 0
+		g.partyRoster[id] = snapshot
+	}
+	return nil
 }
 
 // filterScenarioParty applies the campaign's JOIN membership to a freshly
