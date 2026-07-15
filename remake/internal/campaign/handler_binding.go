@@ -6,6 +6,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"strconv"
 )
 
 // HandlerBinding is campaign-authored evidence that connects one immutable
@@ -15,11 +16,13 @@ import (
 type HandlerBinding struct {
 	SchemaVersion    int                               `json:"schema_version"`
 	HandlerScript    string                            `json:"handler_script"`
+	ActingResources  string                            `json:"acting_resources,omitempty"`
 	StoryIndexMap    string                            `json:"story_index_map,omitempty"`
 	DialogueContexts map[string]HandlerDialogueContext `json:"dialogue_contexts,omitempty"`
 	Overrides        map[string]HandlerBindingOverride `json:"overrides"`
 
 	storyIndex *StoryIndexMap
+	acting     map[int][]ActingFrame
 }
 
 // HandlerDialogueContext selects one reusable FDTXT-to-story mapping for a
@@ -43,7 +46,20 @@ type HandlerBindingOverride struct {
 // HandlerActing is a decoded, editable behavioural transcription.  It never
 // stores the original acting-resource bytes.
 type HandlerActing struct {
-	Frames []ActingFrame `json:"frames"`
+	// Resource is an explicit decoded resource ID from ActingResources.  It
+	// avoids duplicating the same editable behavioural transcript at every
+	// handler call-site.  Frames remains for a one-off authored transcription.
+	Resource *int          `json:"resource,omitempty"`
+	Frames   []ActingFrame `json:"frames,omitempty"`
+}
+
+// ActingResourceSet is a behavioural transcription of one runtime acting
+// table.  It intentionally contains decoded frame semantics, never original
+// bytes or pointers.  Keys are decimal resource IDs so JSON object ordering
+// cannot alter the data.
+type ActingResourceSet struct {
+	SchemaVersion int                      `json:"schema_version"`
+	Resources     map[string][]ActingFrame `json:"resources"`
 }
 
 // LoadHandlerBinding reads an address-keyed binding file.  It validates the
@@ -63,6 +79,14 @@ func LoadHandlerBinding(path string) (*HandlerBinding, error) {
 	}
 	if binding.HandlerScript == "" {
 		return nil, fmt.Errorf("handler binding %q has no handler_script", path)
+	}
+	if binding.ActingResources != "" {
+		setPath := filepath.Join(filepath.Dir(path), binding.ActingResources)
+		resources, err := LoadActingResourceSet(setPath)
+		if err != nil {
+			return nil, fmt.Errorf("handler binding %q acting_resources: %w", path, err)
+		}
+		binding.acting = resources
 	}
 	if binding.StoryIndexMap != "" {
 		indexPath := filepath.Join(filepath.Dir(path), binding.StoryIndexMap)
@@ -86,6 +110,22 @@ func LoadHandlerBinding(path string) (*HandlerBinding, error) {
 		}
 		if state := override.LoadCH; state != nil && (state.Chapter < 0 || state.Map == "" || state.Roster == "" || state.Script == "") {
 			return nil, fmt.Errorf("handler binding %q has incomplete loadch override at %q", path, addr)
+		}
+		if acting := override.Acting; acting != nil {
+			if acting.Resource != nil && len(acting.Frames) != 0 {
+				return nil, fmt.Errorf("handler binding %q act override %q mixes resource and inline frames", path, addr)
+			}
+			if acting.Resource == nil && len(acting.Frames) == 0 {
+				return nil, fmt.Errorf("handler binding %q has empty act override at %q", path, addr)
+			}
+			if acting.Resource != nil {
+				if binding.acting == nil {
+					return nil, fmt.Errorf("handler binding %q act override %q has resource without acting_resources", path, addr)
+				}
+				if _, ok := binding.acting[*acting.Resource]; !ok {
+					return nil, fmt.Errorf("handler binding %q act override %q references missing resource %d", path, addr, *acting.Resource)
+				}
+			}
 		}
 	}
 	return &binding, nil
@@ -147,9 +187,45 @@ func (binding *HandlerBinding) CompilerBindings() HandlerBindings {
 			if !ok || override.Acting == nil {
 				return nil, false
 			}
+			if override.Acting.Resource != nil {
+				if input.ActingID == nil || *input.ActingID != *override.Acting.Resource {
+					return nil, false
+				}
+				frames, ok := binding.acting[*override.Acting.Resource]
+				return frames, ok
+			}
 			return override.Acting.Frames, true
 		},
 	}
+}
+
+// LoadActingResourceSet reads a generated or hand-authored behavioural
+// transcript.  It verifies IDs and frame arrays before a handler binding can
+// claim to execute them.
+func LoadActingResourceSet(path string) (map[int][]ActingFrame, error) {
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	var set ActingResourceSet
+	if err := json.Unmarshal(raw, &set); err != nil {
+		return nil, err
+	}
+	if set.SchemaVersion != 1 || len(set.Resources) == 0 {
+		return nil, fmt.Errorf("acting resource set %q needs schema_version=1 and resources", path)
+	}
+	resources := make(map[int][]ActingFrame, len(set.Resources))
+	for key, frames := range set.Resources {
+		id, err := strconv.Atoi(key)
+		if err != nil || id < 0 || len(frames) == 0 {
+			return nil, fmt.Errorf("acting resource set %q has invalid resource %q", path, key)
+		}
+		if _, exists := resources[id]; exists {
+			return nil, fmt.Errorf("acting resource set %q repeats resource %d", path, id)
+		}
+		resources[id] = frames
+	}
+	return resources, nil
 }
 
 func (binding *HandlerBinding) indexedDialog(input HandlerBeat) (HandlerDialog, bool) {

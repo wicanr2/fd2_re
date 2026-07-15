@@ -1,6 +1,7 @@
 {
   "schema_version": 1,
   "handler_script": "../handlers/ch00_pre.json",
+  "acting_resources": "../acting/map32.json",
   "overrides": {
     "0x32330": {
       "loadch": {
@@ -18,6 +19,7 @@
         "frames": 60
       }
     },
+    "0x32343": { "act": { "resource": 99 } },
     "0x32382": {
       "dialog": {
         "script": "assets/story/ch00_palace.json",
@@ -73,18 +75,10 @@
         ]
       }
     },
-    "0x32461": {
-      "act": {
-        "frames": [
-          { "beats": 8, "special": true, "units": [{ "slot": 16, "pose": 2 }, { "slot": 17, "pose": 2 }] },
-          { "beats": 8, "special": true, "units": [{ "slot": 16, "pose": 0 }, { "slot": 17, "pose": 0 }] },
-          { "beats": 8, "special": true, "units": [{ "slot": 16, "pose": 2 }, { "slot": 17, "pose": 2 }] },
-          { "beats": 8, "special": true, "units": [{ "slot": 16, "pose": 3 }, { "slot": 17, "pose": 3 }] },
-          { "beats": 8, "special": true, "units": [{ "slot": 16, "pose": 1 }, { "slot": 17, "pose": 1 }] },
-          { "beats": 0, "special": true, "units": [{ "slot": 16, "pose": 1 }, { "slot": 17, "pose": 1 }] }
-        ]
-      }
-    },
+    "0x323f5": { "act": { "resource": 100 } },
+    "0x32426": { "act": { "resource": 101 } },
+    "0x32461": { "act": { "resource": 102 } },
+    "0x3249c": { "act": { "resource": 103 } },
     "0x32488": {
       "dialog": {
         "script": "assets/story/ch00_palace.json",
@@ -97,15 +91,7 @@
         ]
       }
     },
-    "0x324d7": {
-      "act": {
-        "frames": [
-          { "beats": 1, "units": [{ "slot": 1, "pose": 3 }] },
-          { "beats": 1, "units": [{ "slot": 1, "pose": 2 }] },
-          { "beats": 4, "special": true, "units": [{ "slot": 1, "pose": 3 }] }
-        ]
-      }
-    },
+    "0x324d7": { "act": { "resource": 104 } },
     "0x324c3": {
       "dialog": {
         "script": "assets/story/ch00_palace.json",
@@ -134,12 +120,6 @@
         ]
       }
     },
-    "0x3251c": {
-      "act": {
-        "frames": [
-          { "beats": 8, "special": true, "units": [{ "slot": 16, "pose": 3 }] }
-        ]
-      }
-    }
+    "0x3251c": { "act": { "resource": 105 } }
   }
 }

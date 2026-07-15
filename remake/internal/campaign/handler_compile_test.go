@@ -174,6 +174,10 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 	var pan, dialog bool
 	var slotAct bool
 	var normalSlotAct bool
+	map32Acts := map[string]int{
+		"0x32343": 99, "0x323f5": 100, "0x32426": 101, "0x32461": 102,
+		"0x3249c": 103, "0x324d7": 104, "0x3251c": 105,
+	}
 	for _, beat := range beats {
 		pan = pan || beat.Op == "pan" && beat.X == 72 && beat.Y == 816
 		dialog = dialog || beat.Op == "dialog" && beat.Line == 0
@@ -185,8 +189,14 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 			u := beat.Acting[0].Units[0]
 			normalSlotAct = u.Slot != nil && *u.Slot == 1 && !beat.Acting[0].Special && beat.Acting[0].Beats == 1 && beat.Acting[1].Units[0].Pose == 2
 		}
+		if id, ok := map32Acts[beat.Source]; ok && beat.Op == "act" && len(beat.Acting) > 0 {
+			delete(map32Acts, beat.Source)
+			if beat.Acting[0].Units[0].Slot == nil {
+				t.Fatalf("map32 ACT(%d) did not preserve source roster slot: %#v", id, beat)
+			}
+		}
 	}
-	if !pan || !dialog || !slotAct || !normalSlotAct {
+	if !pan || !dialog || !slotAct || !normalSlotAct || len(map32Acts) != 0 {
 		t.Fatalf("loaded binding did not lower its proven pan/dialog/slot-acting overrides: %#v", beats)
 	}
 }
@@ -247,6 +257,27 @@ func TestCompileCompleteLoadCHBinding(t *testing.T) {
 	// LOADCH/FDFIELD chapter ids are zero-origin: ch05 loads map4/FDTXT_005.
 	if state.Chapter != 4 || state.Map != "assets/maps/map4" || state.Roster != "assets/maps/map4/map4_units.json" || state.Script != "assets/story/ch05.json" {
 		t.Fatalf("ch05 loadch state = %#v", state)
+	}
+}
+
+func TestLoadActingResourceSetAndCh00References(t *testing.T) {
+	resources, err := LoadActingResourceSet("../../assets/cutscenes/acting/map32.json")
+	if err != nil || len(resources) != 74 {
+		t.Fatalf("acting resources err=%v count=%d", err, len(resources))
+	}
+	if frames := resources[102]; len(frames) != 6 || !frames[0].Special || frames[0].Units[0].Slot == nil || *frames[0].Units[0].Slot != 16 {
+		t.Fatalf("resource 102 = %#v", frames)
+	}
+	binding, err := LoadHandlerBinding("../../assets/cutscenes/bindings/ch00_pre.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	frames, ok := binding.CompilerBindings().Acting(HandlerBeat{ActingID: intPtr(104), Source: HandlerSource{Addr: "0x324d7"}})
+	if !ok || len(frames) != 3 || frames[0].Special || frames[0].Units[0].Slot == nil || *frames[0].Units[0].Slot != 1 {
+		t.Fatalf("ch00 resource acting resolve=%#v ok=%v", frames, ok)
+	}
+	if _, ok := binding.CompilerBindings().Acting(HandlerBeat{ActingID: intPtr(103), Source: HandlerSource{Addr: "0x324d7"}}); ok {
+		t.Fatal("acting resource reference accepted mismatched original resource id")
 	}
 }
 
