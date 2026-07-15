@@ -225,6 +225,20 @@ runtime slot 上限。必須逐個 ACT entry 取 pointer/array，才能知道 sp
 map31 全部 ACT 維持 fail-closed。map0 的 0/1/2/5 亦尚待
 其獨立 runtime dump。
 
+**SPAWN 資料流改定（2026-07-15，靜態反組譯）**：不再以鍵盤節奏撞 `decode_acting` entry。
+`0x10b4e(group)` 掃 `FDFIELD` unit record（`[0x53a55]+0x83+k×0x1a`，`+0x15=group`），每筆命中都 call
+`0x10c50`；後者以 **`[0x53beb]`** 為 destination slot，寫完整 `0x50`-byte unit，最後
+`inc [0x53beb]`（`0x10c69..0x10c81`、`0x10ffd..0x1100b`）。原版語意因此是「依 FDFIELD 原順序
+**append** matching group 到 runtime unit array」，不是先建完整 roster 再把 `OnField` 打開。
+map31 的 handler 只 spawn group 1、3、5，而這三組在 FDFIELD 正好是索爾／亞雷斯、商店店員／蓋亞、
+悠妮五筆；所以 checkpoint 的 runtime slots 0–4 正好成立。這是可重現的靜態＋實機交叉證據，並且推翻
+舊的「保留所有 FDFIELD slot」adapter。remake 已依此改為 loadch materialize group0、spawn append group；
+map32 runtime roster 的 21 筆都為 group0，故既有 map32 slot fixtures 不受影響。
+
+這個資料流也讓 map31 `ACT(90..98)` 的 map32-table 解碼（slots 8、25–71）成為**真正矛盾**：它們不能
+證明存在 72-slot map31 roster。下一輪只需在兩個有限假說間判別：該載入狀態的 acting resource table 是否
+不同，或那些 out-of-count writes 是否僅作 timing／副作用；在拿到 entry-time table 前，一律不可 lower。
+
 **精確 entry breakpoint 的位址規則（2026-07-15）**：不要把 `0x1366a` 的 runtime 位址
 `0x1C966A` 當成 handler 的 relocation base。normal-core 在一個 ACT(102) 函式入口擷取的 stack
 第一個 return address 是 **`0x1E8466`**；它對應該次載入狀態下原檔 `0x32461 call 0x1366a` 的
@@ -270,11 +284,11 @@ image（`0x1366a→0x1C966A`），兩者不可混算。把這個樣本外推成 
 　　（尤其 `scroll_step`、`unknown`）產生帶 source address 的 compile issue，不能假裝成
 　　可執行效果。
 
-**SPAWN runtime adapter（2026-07-15）**：remake 的 `LOADCH` 會依 editable FDFIELD roster 順序保留
-全部 slots，但只將 group 0 設為畫面上有效；`Beat.spawn(group)` 只啟用同 group 的既有 slots，絕不
-append/排序。ch00 binding 已能 lower map31 三個 call-site `0x32555/0x32610/0x3269c`；這是**目前
-remake projection**，不是原版 map31 runtime array 的最終證明。原版 ACT(90–98) 對 slot 25–71 的寫入
-已反證「SPAWN 只會建立 projection slots 0–4」這種外推，需待 entry-time dump 才能建真正 adapter。
+**SPAWN runtime adapter（2026-07-15）**：`LOADCH` 保留 editable FDFIELD records，但只 materialize
+group0；`Beat.spawn(group)` 按原 FDFIELD order append 尚未 materialize 的同 group records，對應
+`0x10b4e→0x10c50` 的 `unit_count` 寫入方式。ch00 binding 已能 lower map31 三個 call-site
+`0x32555/0x32610/0x3269c`。這解釋已驗證的 5-slot map31 checkpoint，但**不**把 map32-table 的
+ACT(90–98) slots 25–71 轉成角色；它們仍待 acting-table/context 證據。
 `JOIN` 已可 lower 原版 0–31 player charID 並保存 party membership；NPC portrait（例如商店店員 75）
 一律拒絕。
    `remake/assets/cutscenes/bindings/` 的 `HandlerBinding` 則是這個顯式 mapper 的可編輯

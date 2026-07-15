@@ -65,7 +65,9 @@ type Game struct {
 	sc               *battle.Scenario    // 劇本(事件系統,doc 29)
 	dialog           []battle.DialogLine // 待顯示對話(事件產生,含說話者)
 	storyBG          bool                // 場景背景模式(story 節點指定 Map):鏡頭固定不跟游標,不畫單位/游標/HUD(doc23 §4)
-	storyActors      []battle.Unit       // storyBG 場景上的靜態 NPC/主角擺位(doc23 §4;cutscene 用,無 AI/戰鬥邏輯)
+	storyActors      []battle.Unit       // 原版目前已 materialize 的 scene unit array；index 只在該 load/spawn 時序內有意義
+	storyRoster      []battle.Unit       // LOADCH 保留的 FDFIELD records；SPAWN 按 group 順序 append 到 storyActors
+	storySpawned     map[int]bool        // 原版 group 已 materialize；防止 handler 重複 SPAWN 時重複 append
 	partyMembers     map[int]bool        // JOIN 建立的永久玩家名冊；key=原版 0..31 charID，不使用 NPC portrait
 	storyWalks       []*storyWalkJob     // 場景走位動畫佇列(doc46 §5.3);逐幀推進、完成後移除
 	storyAutoAdvance int                 // story 節點無對白時的自動轉場倒數幀(doc46 行軍蒙太奇,0=不自動)
@@ -660,6 +662,17 @@ func (g *Game) beatStart(b campaign.Beat) {
 		}
 	case "act":
 		if len(b.Acting) > 0 {
+			// Decoded acting refers to the current materialized unit array. Never
+			// turn an unavailable original slot into a silent no-op: the source may
+			// be a different load-context resource or require an unmodelled spawn.
+			for _, frame := range b.Acting {
+				for _, target := range frame.Units {
+					if target.Slot != nil && (*target.Slot < 0 || *target.Slot >= len(g.storyActors)) {
+						g.loadErr = fmt.Sprintf("beat act %s: original runtime slot %d unavailable (materialized=%d)", b.Source, *target.Slot, len(g.storyActors))
+						return
+					}
+				}
+			}
 			g.actJob = &actPoseJob{acting: b.Acting, then: g.beatAdvance}
 			g.beginActingFrame(g.actJob)
 			return
@@ -675,14 +688,26 @@ func (g *Game) beatStart(b campaign.Beat) {
 		}
 		g.actJob = &actPoseJob{actor: idx, poses: b.Poses, frames: frames, then: g.beatAdvance}
 	case "spawn":
-		// LOADCH keeps every original roster slot but leaves non-zero FDFIELD
-		// groups off-field.  Original 0x10b4e(group) then materialises exactly
-		// that group without renumbering later acting targets.  This is the
-		// remake projection; map31's original runtime roster is still under RE,
-		// so its observed ACT targets must not be inferred from these slots.
-		for i := range g.storyActors {
-			if g.storyActors[i].Group == b.Group {
-				g.storyActors[i].OnField = true
+		// Original 0x10b4e scans the FDFIELD records for this group and calls
+		// the unit constructor once per match.  That constructor writes at the
+		// current unit_count and increments it: this is append, not toggling an
+		// already slot-stable full roster.  Keep the legacy activation fallback
+		// for authored scene beats that have no LOADCH roster.
+		if g.storyRoster != nil {
+			if !g.storySpawned[b.Group] {
+				for _, actor := range g.storyRoster {
+					if actor.Group == b.Group {
+						actor.OnField = true
+						g.storyActors = append(g.storyActors, actor)
+					}
+				}
+				g.storySpawned[b.Group] = true
+			}
+		} else {
+			for i := range g.storyActors {
+				if g.storyActors[i].Group == b.Group {
+					g.storyActors[i].OnField = true
+				}
 			}
 		}
 		g.beatAdvance()
@@ -748,25 +773,32 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 		return fmt.Errorf("map %q: %w", state.Map, err)
 	}
 
-	// A handler cutscene uses the loaded FDFIELD roster as visual actors, not
-	// as an active battle state. Preserve every entry in original order,
-	// including non-drawn/dead slots: decoded acting bytecode addresses the
-	// unit array by slot, so filtering would shift later targets. Non-zero
-	// FDFIELD groups stay hidden until their explicit spawn beat.
+	// A handler cutscene uses the loaded FDFIELD records as a source, not as a
+	// pre-built unit array. Original 0x10b4e appends matching group records to
+	// the current array. LOADCH first materializes only group 0; later SPAWN
+	// calls append groups in FDFIELD order. This preserves the actual runtime
+	// slot identity for every evidence-backed load/spawn sequence.
 	g.st, g.sel, g.sc = nil, nil, nil
 	g.storyActors = make([]battle.Unit, 0, len(roster.Units))
+	g.storyRoster = make([]battle.Unit, 0, len(roster.Units))
+	g.storySpawned = make(map[int]bool)
 	for _, u := range roster.Units {
 		if u == nil {
-			// Defensive hole preservation: State.Load never creates nil entries,
-			// but a future roster adapter must not renumber original unit slots.
-			g.storyActors = append(g.storyActors, battle.Unit{})
+			// State.Load does not create holes. Keep a harmless roster placeholder
+			// if a future loader does, without inventing a live unit.
+			g.storyRoster = append(g.storyRoster, battle.Unit{Group: 255})
 			continue
 		}
 		actor := *u
 		actor.OffX, actor.OffY = 0, 0
-		actor.OnField = actor.Group == 0
-		g.storyActors = append(g.storyActors, actor)
+		actor.OnField = false
+		g.storyRoster = append(g.storyRoster, actor)
+		if actor.Group == 0 {
+			actor.OnField = true
+			g.storyActors = append(g.storyActors, actor)
+		}
 	}
+	g.storySpawned[0] = true
 	g.storyWalks = nil
 	g.storyBG = true
 	g.walkFirst, g.followWalk = false, false
@@ -914,6 +946,7 @@ func (g *Game) enterNode() {
 			g.camMaxY = float64(n.CamMaxY)
 			g.camX, g.camY = float64(n.CamX), float64(n.CamY)
 			g.storyActors = nil
+			g.storyRoster, g.storySpawned = nil, nil
 			for _, a := range n.Actors { // cutscene 靜態擺位(國王/王后/主角等),無 AI/戰鬥邏輯
 				u := battle.Unit{Fig: a.Fig, X: a.X, Y: a.Y, Dir: a.Dir, OnField: true}
 				g.storyActors = append(g.storyActors, u)
@@ -928,6 +961,7 @@ func (g *Game) enterNode() {
 			}
 		} else {
 			g.storyActors = nil
+			g.storyRoster, g.storySpawned = nil, nil
 		}
 		if g.cutsceneLog { // FD2_CUTSCENE_LOG:進場印節點 + 每個 actor(idx/名/座標/dir)
 			fmt.Fprintf(os.Stderr, "[cutscene] === node %q map=%s cam=(%d,%d) ===\n", g.camp.Cur, n.Map, n.CamX, n.CamY)

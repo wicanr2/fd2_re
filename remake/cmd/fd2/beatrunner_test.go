@@ -244,6 +244,18 @@ func TestBeatActingDecodedNormalSlotMovement(t *testing.T) {
 	}
 }
 
+func TestBeatActingFailsClosedWhenRuntimeSlotWasNotMaterialized(t *testing.T) {
+	slot8 := 8
+	g := newBeatTestGame(t, []campaign.Beat{{Op: "act", Source: "0x32657", Acting: []campaign.ActingFrame{{
+		Beats: 1, Special: true, Units: []campaign.ActingUnit{{Slot: &slot8, Pose: 2}},
+	}}}})
+	g.storyActors = make([]battle.Unit, 5) // map31 after groups 1+3+5
+	g.beatAdvance()
+	if g.loadErr == "" {
+		t.Fatal("decoded act targeting an unmaterialized runtime slot must fail closed")
+	}
+}
+
 func TestBeatFadeBothDirectionsCallThen(t *testing.T) {
 	g := newBeatTestGame(t, []campaign.Beat{
 		{Op: "fade", Out: true, Frames: 4},
@@ -342,5 +354,27 @@ func TestBeatSpawnActivatesOnlyItsRosterGroup(t *testing.T) {
 	g.beatAdvance()
 	if g.storyActors[0].OnField || !g.storyActors[1].OnField || !g.storyActors[2].OnField || g.storyActors[3].OnField {
 		t.Fatalf("spawn group=3 activated wrong story slots: %#v", g.storyActors)
+	}
+}
+
+func TestBeatSpawnAppendsFDFIELDGroupInOriginalOrder(t *testing.T) {
+	// Original 0x10b4e does not reveal preallocated units: it constructs every
+	// matching FDFIELD record at unit_count, so the runtime slot identity is
+	// the order groups were spawned. This is the map31 pattern (1, then 3, 5).
+	g := newBeatTestGame(t, []campaign.Beat{
+		{Op: "spawn", Group: 1}, {Op: "spawn", Group: 3}, {Op: "spawn", Group: 1},
+	})
+	g.storyRoster = []battle.Unit{
+		{Group: 1, Fig: 10}, {Group: 3, Fig: 30}, {Group: 1, Fig: 11}, {Group: 3, Fig: 9},
+	}
+	g.storySpawned = map[int]bool{0: true}
+	g.beatAdvance()
+	if got := len(g.storyActors); got != 4 {
+		t.Fatalf("spawn constructed %d runtime units, want 4: %#v", got, g.storyActors)
+	}
+	for i, fig := range []int{10, 11, 30, 9} {
+		if g.storyActors[i].Fig != fig || !g.storyActors[i].OnField {
+			t.Fatalf("runtime slot %d = %#v, want on-field fig=%d", i, g.storyActors[i], fig)
+		}
 	}
 }
