@@ -215,6 +215,14 @@ checkpoint 的活動角色，**不能**從 map31 的 30-row FDFIELD export、sta
 runtime slot 上限。必須逐個 ACT entry 取 pointer/array，才能知道 spawn／重填發生的確切時序；在此之前
 map31 全部 ACT 維持 fail-closed。map0 的 0/1/2/5 亦尚待
 其獨立 runtime dump。
+
+**精確 entry breakpoint 的位址規則（2026-07-15）**：不要把 `0x1366a` 的 runtime 位址
+`0x1C966A` 當成 handler 的 relocation base。normal-core 在 ACT(102) 函式入口擷取的 stack
+第一個 return address 是 **`0x1E8466`**；它精確對應原檔 `0x32461 call 0x1366a` 的 return
+`0x32466`，故該 handler 的 runtime base 是 **`0x1B6000`**。ACT function 本體在另一段
+runtime image（`0x1366a→0x1C966A`），兩者不可混算。例：map31 `ACT(95)` 的原檔 call
+`0x32712` 應斷在 **`0x1E8712`**（return `0x1E8717`），而非曾誤試的 `0x1C7712`。這是
+entry-time roster dump 的正確斷點公式；尚未命中的舊錯位址實驗不構成任何 roster 結論。
 - 舊 `poses`／`pose_frames` 仍可用於尚未轉錄的近似場景，但新的原版 acting 不得再降級成它。
 
 > **系統界線(2026-07-04,doc52):本 DSL 只承接「戰前/戰後過場編排」(handler 0x3231b 族,系統 A)。
