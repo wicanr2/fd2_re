@@ -47,11 +47,11 @@ func TestCompileHandlerScriptUsesOnlyExplicitBindings(t *testing.T) {
 			return nil, false
 		},
 	})
-	if len(issues) != 3 || issues[0].Op != "spawn" || issues[1].Op != "join" || issues[2].Source.Addr != "0xdead" {
-		t.Fatalf("issues = %#v, want spawn/join/unknown left explicit", issues)
+	if len(issues) != 2 || issues[0].Op != "join" || issues[1].Source.Addr != "0xdead" {
+		t.Fatalf("issues = %#v, want join/unknown left explicit", issues)
 	}
-	if len(beats) != 7 {
-		t.Fatalf("compiled beats = %d, want 7", len(beats))
+	if len(beats) != 8 {
+		t.Fatalf("compiled beats = %d, want 8", len(beats))
 	}
 	if beats[0].Op != "loadch" || beats[0].LoadCH == nil || beats[0].LoadCH.Roster != "assets/maps/map32/map32_units.json" {
 		t.Fatalf("loadch lowering = %#v", beats[0])
@@ -59,7 +59,7 @@ func TestCompileHandlerScriptUsesOnlyExplicitBindings(t *testing.T) {
 	if beats[1].Op != "delay" || beats[1].Ms != 200 {
 		t.Fatalf("delay lowering = %#v", beats[1])
 	}
-	if beats[4].Source != "0x32339" || beats[5].Source != "0x32382" || beats[6].Source != "0x32343" {
+	if beats[4].Source != "0x32339" || beats[5].Source != "0x32382" || beats[6].Source != "0x32343" || beats[7].Op != "spawn" || beats[7].Group != 3 {
 		t.Fatalf("compiled source chain lost: %#v", beats[4:])
 	}
 	if beats[2].Track != "FDMUS_011" || beats[3].Op != "bgm_stop" {
@@ -85,6 +85,15 @@ func TestCompileHandlerScriptDoesNotGuessMissingMappings(t *testing.T) {
 	}}, HandlerBindings{})
 	if len(beats) != 0 || len(issues) != 4 {
 		t.Fatalf("beats=%#v issues=%#v, want no guessed beats and four issues", beats, issues)
+	}
+}
+
+func TestCompileHandlerSpawnRequiresLoadedRoster(t *testing.T) {
+	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{
+		{Op: "spawn", Group: intPtr(1), Source: HandlerSource{Addr: "0x100"}},
+	}}, HandlerBindings{})
+	if len(beats) != 0 || len(issues) != 1 || issues[0].Op != "spawn" || issues[0].Reason != "spawn requires a preceding complete loadch roster" {
+		t.Fatalf("spawn without loadch must fail closed: beats=%#v issues=%#v", beats, issues)
 	}
 }
 
@@ -178,6 +187,11 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 		"0x32343": false, // ACT(99) references original slot 61.
 		"0x323f5": false, // ACT(100) references original slot 60.
 	}
+	map31Spawns := map[string]int{
+		"0x32555": 1,
+		"0x32610": 3,
+		"0x3269c": 5,
+	}
 	map32Acts := map[string]int{
 		"0x32426": 101, "0x32461": 102,
 		"0x3249c": 103, "0x324d7": 104, "0x3251c": 105,
@@ -208,6 +222,9 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 				t.Fatalf("map32 ACT(%d) did not preserve source roster slot: %#v", id, beat)
 			}
 		}
+		if group, ok := map31Spawns[beat.Source]; ok && beat.Op == "spawn" && beat.Group == group {
+			delete(map31Spawns, beat.Source)
+		}
 		if beat.Op == "loadch" && beat.LoadCH != nil {
 			if want, ok := loadchs[beat.LoadCH.Chapter]; ok && beat.LoadCH.Map == want.mapPath && beat.LoadCH.Roster == want.rosterPath && beat.LoadCH.SlotCount == want.slots {
 				delete(loadchs, beat.LoadCH.Chapter)
@@ -228,7 +245,7 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 			t.Fatalf("unsafe map32 acting %s was unexpectedly eligible: issues=%#v", source, issues)
 		}
 	}
-	if !pan || !dialog || !slotAct || !normalSlotAct || len(map32Acts) != 0 || len(loadchs) != 0 {
+	if !pan || !dialog || !slotAct || !normalSlotAct || len(map32Acts) != 0 || len(map31Spawns) != 0 || len(loadchs) != 0 {
 		t.Fatalf("loaded binding did not lower its proven pan/dialog/slot-acting overrides: %#v", beats)
 	}
 }

@@ -302,3 +302,17 @@ func TestBeatSequenceEndTriggersNodeTransition(t *testing.T) {
 		t.Fatalf("應轉場到 end,得 %s", g.camp.Cur)
 	}
 }
+
+func TestBeatSpawnActivatesOnlyItsRosterGroup(t *testing.T) {
+	g := newBeatTestGame(t, []campaign.Beat{{Op: "spawn", Group: 3}})
+	g.storyActors = []battle.Unit{
+		{Group: 1, OnField: false},
+		{Group: 3, OnField: false},
+		{Group: 3, OnField: false},
+		{Group: 5, OnField: false},
+	}
+	g.beatAdvance()
+	if g.storyActors[0].OnField || !g.storyActors[1].OnField || !g.storyActors[2].OnField || g.storyActors[3].OnField {
+		t.Fatalf("spawn group=3 activated wrong story slots: %#v", g.storyActors)
+	}
+}

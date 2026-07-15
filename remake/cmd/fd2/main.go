@@ -673,9 +673,22 @@ func (g *Game) beatStart(b campaign.Beat) {
 			frames = 30
 		}
 		g.actJob = &actPoseJob{actor: idx, poses: b.Poses, frames: frames, then: g.beatAdvance}
-	case "spawn", "join":
-		// 資料面已由 Node.Actors(擺位)/battle 單位配置驅動,原語在 remake 僅記錄一致性,
-		// 無額外執行效果(stub,對映 doc50 §4「原語身分 vs 內容轉錄」的誠實分工)。
+	case "spawn":
+		// LOADCH keeps every original roster slot but leaves non-zero FDFIELD
+		// groups off-field.  Original 0x10b4e(group) then materialises exactly
+		// that group without renumbering later acting targets.  This is observed
+		// directly in map31: groups 1, 3 and 5 create slots 0..4 in order.
+		for i := range g.storyActors {
+			if g.storyActors[i].Group == b.Group {
+				g.storyActors[i].OnField = true
+			}
+		}
+		g.beatAdvance()
+	case "join":
+		// JOIN mutates the persistent party roster, whose complete original
+		// representation is not yet modelled by handler bindings.  The compiler
+		// therefore still leaves JOIN unresolved; retain this defensive runtime
+		// branch only for authored non-handler beats.
 		g.beatAdvance()
 	case "bgm":
 		g.playBGM(b.Track)
@@ -730,9 +743,10 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 	}
 
 	// A handler cutscene uses the loaded FDFIELD roster as visual actors, not
-	// as an active battle state.  Preserve every entry in its original order,
-	// including any non-drawn/dead slot: decoded acting bytecode addresses the
-	// unit array by slot, so filtering would shift later targets.
+	// as an active battle state. Preserve every entry in original order,
+	// including non-drawn/dead slots: decoded acting bytecode addresses the
+	// unit array by slot, so filtering would shift later targets. Non-zero
+	// FDFIELD groups stay hidden until their explicit spawn beat.
 	g.st, g.sel, g.sc = nil, nil, nil
 	g.storyActors = make([]battle.Unit, 0, len(roster.Units))
 	for _, u := range roster.Units {
@@ -744,6 +758,7 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 		}
 		actor := *u
 		actor.OffX, actor.OffY = 0, 0
+		actor.OnField = actor.Group == 0
 		g.storyActors = append(g.storyActors, actor)
 	}
 	g.storyWalks = nil
@@ -2052,6 +2067,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	// storyBG 場景靜態角色(doc23 §4:王座廳國王/王后/主角等 cutscene 擺位,同一 sprite 繪法無戰鬥邏輯)
 	for i := range g.storyActors {
 		u := &g.storyActors[i]
+		if !u.OnField || !u.Alive() {
+			continue
+		}
 		ux := float64(u.X*tw) - g.camX
 		uy := float64(u.Y*th) - g.camY
 		g.drawUnitSprite(target, ux, uy, float64(tw), float64(th), u)

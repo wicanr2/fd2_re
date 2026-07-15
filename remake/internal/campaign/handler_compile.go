@@ -177,6 +177,21 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			beat := runtime(input, "act")
 			beat.Acting = frames
 			beats = append(beats, beat)
+		case "spawn":
+			// SPAWN is data-driven once the preceding LOADCH supplied a slot-stable
+			// roster: its immediate is the original FDFIELD group number, not an
+			// address that needs a chapter-specific interpretation.
+			if input.Group == nil {
+				issue(i, input, "spawn lacks an original FDFIELD group")
+				continue
+			}
+			if activeSlotCount <= 0 {
+				issue(i, input, "spawn requires a preceding complete loadch roster")
+				continue
+			}
+			beat := runtime(input, "spawn")
+			beat.Group = *input.Group
+			beats = append(beats, beat)
 		default:
 			issue(i, input, "operation has no proven runtime lowering")
 		}

@@ -239,14 +239,20 @@ checkpoint 的活動角色，**不能**從 map31 的 30-row FDFIELD export、sta
    或 no-op。檔名 `ch05` 是玩家章節名，但原版 resource chapter 是 4（故 map4、FDTXT_005），
    不可由檔名猜，必須在 binding 寫明。首個完整垂直切片是
    `bindings/ch05_pre.json` 的 `0x33155`，可編譯成唯一一個完整 loadch beat。
-   `pan/dialog/act` 一律要求**以 `source.addr` 鍵控的**
-   顯式 mapper，分別避免猜 grid→pixel、FDTXT idx→譯文行、acting id→角色。`spawn/join`
-   也必須先有 roster mutation adapter，現階段不編譯為會假裝成功的 runtime stub。其餘 op
+　　`pan/dialog/act` 一律要求**以 `source.addr` 鍵控的**
+　　顯式 mapper，分別避免猜 grid→pixel、FDTXT idx→譯文行、acting id→角色。`spawn`
+　　現已由 loadch roster 的 FDFIELD group 直接 lower；`join`仍必須先有隊伍名冊 adapter，不編譯為會假裝成功的 runtime stub。其餘 op
    （尤其 `scroll_step`、`unknown`）產生帶 source address 的 compile issue，不能假裝成
-   可執行效果。
+　　可執行效果。
+
+**SPAWN runtime adapter（2026-07-15）**：`LOADCH` 會依原始 slot 順序保留全部
+FDFIELD roster，但只將 group 0 設為畫面上有效；`Beat.spawn(group)` 只啟用同 group
+的既有 slots，絕不 append/排序。這是 map31 原版實機 `SPAWN(1)→SPAWN(3)→SPAWN(5)`
+依序建立 slot 0–4 的直接對映；ch00 binding 已經能 lower 三個對應 call-site
+`0x32555/0x32610/0x3269c`。`JOIN`仍需完整隊伍名冊 adapter，因此保持 compile issue，不假裝成已完成。
    `remake/assets/cutscenes/bindings/` 的 `HandlerBinding` 則是這個顯式 mapper 的可編輯
    JSON 表示；其 override 以 call-site 位址為 key。`ch00_pre.json` 已收入已驗證的王座／草地
-   pan 與對話群組，但 acting、spawn、loadch 等仍是**刻意不完整**的縱切，不能被當成全章可播放。
+　　pan、對話群組和已驗證的 spawn group，但 acting、join 與其他 op 仍是**刻意不完整**的縱切，不能被當成全章可播放。
 
 **ch00 對白群組已具體轉錄（2026-07-15）**：原版一個 `0x15f84` 呼叫可包含多名說話者，故
 `HandlerDialog.lines` 可展開為多個 runtime dialog beat。binding 以 source 位址保存
