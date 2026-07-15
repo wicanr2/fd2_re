@@ -128,6 +128,11 @@ docker run --rm -e TERM=xterm \
 
 完整指令表見 `README.debugger`(dosbox-x 原始碼根目錄,已抄錄於本文撰寫時的查證過程)。
 
+**參數語法陷阱（2026-07-15 實測）**：三個數字參數用 debugger 的裸十六進位語法，**不可**帶
+`0x` 前綴。例如 `MEMDUMPBIN DS 24B2F0 1900` 會產生 `0x1900=6400` bytes；寫成
+`... 0x1900` 雖仍印 `Memory dump binary success.`，實際檔案卻是 0 bytes。每次擷取後都要先
+`ls -l MEMDUMP.BIN` 驗證大小，再把 dump 當證據。
+
 ### 4.3 headless 自動化(本輪已實測跑通,沿用 dq3 專案模式,見 `docs/29-dosbox-oracle.md`)
 
 **雙通道輸入**——這是本輪最重要的釐清,兩者不能混用,且已用真實流程驗證(§3):
