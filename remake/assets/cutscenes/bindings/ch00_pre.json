@@ -146,8 +146,14 @@
         "map": "assets/maps/map0",
         "roster": "assets/maps/map0/map0_units.json",
         "slot_count": 30,
-        "script": "assets/story/ch01.json"
+        "script": "assets/story/ch01.json",
+        "party_scenario": "assets/scenarios/ch01.json",
+        "party_order": [0, 9, 4, 30]
       }
-    }
+    },
+    "0x3283a": { "act": { "resource": 0 } },
+    "0x328a5": { "act": { "resource": 1 } },
+    "0x328c5": { "act": { "resource": 2 } },
+    "0x3290d": { "act": { "resource": 5 } }
   }
 }

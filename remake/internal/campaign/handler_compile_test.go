@@ -219,6 +219,9 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 		"0x32657": 93, "0x326d7": 94, "0x32712": 95,
 		"0x3274d": 96, "0x32788": 97, "0x327d9": 98,
 	}
+	map0Acts := map[string]int{
+		"0x3283a": 0, "0x328a5": 1, "0x328c5": 2, "0x3290d": 5,
+	}
 	type loadchWant struct {
 		mapPath, rosterPath string
 		slots               int
@@ -253,10 +256,19 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 				}
 			}
 		}
+		if id, ok := map0Acts[beat.Source]; ok && beat.Op == "act" && len(beat.Acting) > 0 {
+			delete(map0Acts, beat.Source)
+			if beat.Acting[0].Units[0].Slot == nil {
+				t.Fatalf("map0 ACT(%d) did not preserve runtime slot: %#v", id, beat)
+			}
+		}
 		if group, ok := map31Spawns[beat.Source]; ok && beat.Op == "spawn" && beat.Group == group {
 			delete(map31Spawns, beat.Source)
 		}
 		if beat.Op == "loadch" && beat.LoadCH != nil {
+			if beat.LoadCH.Chapter == 0 && (beat.LoadCH.PartyScenario != "assets/scenarios/ch01.json" || len(beat.LoadCH.PartyOrder) != 4 || beat.LoadCH.PartyOrder[1] != 9) {
+				t.Fatalf("map0 LOADCH lacks persistent party deployment/order: %#v", beat.LoadCH)
+			}
 			if want, ok := loadchs[beat.LoadCH.Chapter]; ok && beat.LoadCH.Map == want.mapPath && beat.LoadCH.Roster == want.rosterPath && beat.LoadCH.SlotCount == want.slots {
 				delete(loadchs, beat.LoadCH.Chapter)
 			}
@@ -276,7 +288,7 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 			t.Fatalf("unsafe map32 acting %s was unexpectedly eligible: issues=%#v", source, issues)
 		}
 	}
-	if !pan || !dialog || !slotAct || !normalSlotAct || len(map32Acts) != 0 || len(map31TimingActs) != 0 || len(map31Spawns) != 0 || len(loadchs) != 0 {
+	if !pan || !dialog || !slotAct || !normalSlotAct || len(map32Acts) != 0 || len(map31TimingActs) != 0 || len(map0Acts) != 0 || len(map31Spawns) != 0 || len(loadchs) != 0 {
 		t.Fatalf("loaded binding did not lower its proven pan/dialog/slot-acting overrides: %#v", beats)
 	}
 }
@@ -360,11 +372,20 @@ func TestCompileHandlerScriptRejectsActingOutsideActiveLoadCHSlots(t *testing.T)
 
 func TestLoadActingResourceSetAndCh00References(t *testing.T) {
 	resources, err := LoadActingResourceSet("../../assets/cutscenes/acting/map32.json")
-	if err != nil || len(resources) != 74 {
+	if err != nil || len(resources) != 78 {
 		t.Fatalf("acting resources err=%v count=%d", err, len(resources))
 	}
 	if frames := resources[102]; len(frames) != 6 || !frames[0].Special || frames[0].Units[0].Slot == nil || *frames[0].Units[0].Slot != 16 {
 		t.Fatalf("resource 102 = %#v", frames)
+	}
+	if frames := resources[0]; len(frames) != 5 || frames[0].Special || frames[0].Beats != 6 || len(frames[0].Units) != 4 || *frames[0].Units[1].Slot != 1 || !frames[1].Special {
+		t.Fatalf("resource 0 = %#v", frames)
+	}
+	if frames := resources[2]; len(frames) != 4 || frames[3].Beats != 4 || !frames[3].Special || len(frames[3].Units) != 5 {
+		t.Fatalf("resource 2 = %#v", frames)
+	}
+	if frames := resources[5]; len(frames) != 1 || frames[0].Beats != 4 || *frames[0].Units[0].Slot != 9 || frames[0].Units[0].Pose != 0 {
+		t.Fatalf("resource 5 = %#v", frames)
 	}
 	binding, err := LoadHandlerBinding("../../assets/cutscenes/bindings/ch00_pre.json")
 	if err != nil {
@@ -376,6 +397,10 @@ func TestLoadActingResourceSetAndCh00References(t *testing.T) {
 	}
 	if _, ok := binding.CompilerBindings().Acting(HandlerBeat{ActingID: intPtr(103), Source: HandlerSource{Addr: "0x324d7"}}); ok {
 		t.Fatal("acting resource reference accepted mismatched original resource id")
+	}
+	map0, ok := binding.CompilerBindings().Acting(HandlerBeat{ActingID: intPtr(0), Source: HandlerSource{Addr: "0x3283a"}})
+	if !ok || len(map0) != 5 || map0[0].Units[0].Slot == nil || *map0[0].Units[0].Slot != 0 {
+		t.Fatalf("map0 resource acting resolve=%#v ok=%v", map0, ok)
 	}
 	timing, ok := binding.CompilerBindings().Acting(HandlerBeat{ActingID: intPtr(90), Source: HandlerSource{Addr: "0x3255f"}})
 	if !ok || len(timing) != 2 || timing[0].Beats != 1 || timing[0].Special || len(timing[0].Units) != 0 {

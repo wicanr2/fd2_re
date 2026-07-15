@@ -147,28 +147,12 @@ func (w *When) match(st *State, ctxUnit string) bool {
 func (sc *Scenario) exec(st *State, a Action) (DialogLine, bool) {
 	switch a.Type {
 	case "spawn_party": // 主角隊從隊伍名冊進場到部署格(doc 25 雙來源)
-		// 進場方式忠實反組譯(doc 25 §7.5.1,章節0 handler 0x3231b 反組譯 + dosbox 實機複驗,2026-07-03):
-		// 主角隊由 0x10b4e(group_id)直接加入戰場,全程無座標遞增/路徑迴圈——直接定位在部署格,無「行軍滑入」。
-		// 0x3231b 內另有 0x13185(camera pan,15+13 幀計數迴圈)與 0x32999(spawn_group_with_intro,頭目類
-		// 「先喊話再出場」)兩種捲動/reveal 效果,但都是**攝影機平移**露出已定位單位,不是單位本身走位。
-		// dosbox 重跑整段序章開場(220+ 張連拍,throne room→草地小憩→比劍邀約→悠妮/蓋亞失憶對話→
-		// 海盜對峙→指令環開戰)全程未見任何單位行走動畫,也沒有世界地圖/道路移動段落。
-		// 玩家記憶中的「一行人走到地圖中央」目前查無實據(疑與攝影機平移效果混淆),非戰鬥進場忠實需求。
-		for i, pm := range sc.Party {
-			x, y := 0, 0
-			if i < len(sc.DeployCells) {
-				x, y = sc.DeployCells[i][0], sc.DeployCells[i][1]
-			} else if i < len(st.OwnDeploy) {
-				x, y = st.OwnDeploy[i].X, st.OwnDeploy[i].Y
-			}
-			st.AddUnit(&Unit{
-				Camp: Own, Name: pm.Name, ClsName: pm.Cls, Lv: pm.Lv,
-				HP: pm.HP, MaxHP: pm.HP, MP: pm.MP, AP: pm.AP, DP: pm.DP, MV: pm.MV,
-				HIT: pm.HIT, EV: pm.EV, CritPct: pm.CritPct,
-				AtkMin: pm.AtkMin, AtkMax: pm.AtkMax,
-				Portrait: pm.Portrait, Fig: pm.Fig, X: x, Y: y, OnField: true, Spells: pm.Spells,
-				Dir: 0, // 直接定位,面向鏡頭待機(無進場動畫)
-			})
+		// The party constructor itself places members directly on the deployment
+		// cells. Chapter 0 then immediately plays decoded ACT(0), which moves all
+		// four runtime slots six cells upward; the old "no movement animation"
+		// conclusion confused construction with the following handler operation.
+		for _, unit := range sc.PartyUnits(st.OwnDeploy) {
+			st.AddUnit(unit)
 		}
 	case "spawn_group": // 增援登場(原版 turn_events;doc 25)
 		camp := campFrom(a.Camp)
@@ -183,4 +167,33 @@ func (sc *Scenario) exec(st *State, a Action) (DialogLine, bool) {
 		st.Flags["ai_"+a.Unit+"_"+a.Mode] = true // 簡化:旗標記錄,AI 層讀(doc 11)
 	}
 	return DialogLine{}, false
+}
+
+// PartyUnits materializes the persistent player roster in scenario order.
+// Original chapter 0 constructs these units before any FDFIELD spawn, so this
+// order is also their authoritative acting-slot order (slots 0..3).  The same
+// constructor is shared by battle setup and handler cutscenes to prevent the
+// two paths from drifting in stats, deployment cells, or identity.
+func (sc *Scenario) PartyUnits(fallback []Cell) []*Unit {
+	if sc == nil {
+		return nil
+	}
+	units := make([]*Unit, 0, len(sc.Party))
+	for i, pm := range sc.Party {
+		x, y := 0, 0
+		if i < len(sc.DeployCells) {
+			x, y = sc.DeployCells[i][0], sc.DeployCells[i][1]
+		} else if i < len(fallback) {
+			x, y = fallback[i].X, fallback[i].Y
+		}
+		units = append(units, &Unit{
+			Camp: Own, Name: pm.Name, ClsName: pm.Cls, Lv: pm.Lv,
+			HP: pm.HP, MaxHP: pm.HP, MP: pm.MP, AP: pm.AP, DP: pm.DP, MV: pm.MV,
+			HIT: pm.HIT, EV: pm.EV, CritPct: pm.CritPct,
+			AtkMin: pm.AtkMin, AtkMax: pm.AtkMax,
+			Portrait: pm.Portrait, Fig: pm.Fig, X: x, Y: y, OnField: true, Spells: pm.Spells,
+			Dir: 0,
+		})
+	}
+	return units
 }

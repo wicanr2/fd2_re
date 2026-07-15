@@ -86,14 +86,16 @@ type ActingFrame struct {
 // Paths are asset-root relative (for example assets/maps/map5/map5_units.json)
 // rather than relative to the handler binding file.
 type LoadCHState struct {
-	Chapter   int    `json:"chapter"`
-	Map       string `json:"map"`
-	Roster    string `json:"roster"`
-	SlotCount int    `json:"slot_count"`
-	Script    string `json:"script"`
-	CamX      int    `json:"cam_x,omitempty"`
-	CamY      int    `json:"cam_y,omitempty"`
-	CamMaxY   int    `json:"cam_max_y,omitempty"`
+	Chapter       int    `json:"chapter"`
+	Map           string `json:"map"`
+	Roster        string `json:"roster"`
+	SlotCount     int    `json:"slot_count"`
+	Script        string `json:"script"`
+	PartyScenario string `json:"party_scenario,omitempty"` // persistent party constructed before FDFIELD groups
+	PartyOrder    []int  `json:"party_order,omitempty"`    // original JOIN chronology; direct-replay fallback and runtime assertion
+	CamX          int    `json:"cam_x,omitempty"`
+	CamY          int    `json:"cam_y,omitempty"`
+	CamMaxY       int    `json:"cam_max_y,omitempty"`
 }
 
 // Beat 過場原語(doc 50 §1/§2):cutscene 節點的 beats 是一條平面序列,依序執行,

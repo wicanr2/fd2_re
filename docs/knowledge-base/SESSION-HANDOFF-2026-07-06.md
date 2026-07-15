@@ -4,6 +4,13 @@
 > 記憶檔(`~/.claude/projects/.../memory/`)會自動載入=長期真相;本檔補「這段 session 的當前狀態 + 開放線索」。
 > **動手前先讀:記憶索引 MEMORY.md、`docs/knowledge-base/00-index.md`(問題導向路由)、`doc50`(過場機制主檔)。**
 
+> **2026-07-15 Codex 接手更新**：map0 ACT0/1/2/5 已全解。getter 的 relocated disp32 會隨 context
+> 從序章 `0x207718` 改為 map0 `0x2077d8`（差 48 entries）；raw directory/data 位於 FD2.EXE
+> file+0x565d8 / +0x53e00，不是 LOADCH0 新讀的 DAT。remake 已接 persistent party（JOIN order
+> 0,9,4,30）→ FDFIELD group1/2 append → editable acting。詳見 doc50 §1.2/§2.1；本 handoff 以下
+> 「草地未解」是 2026-07-06 歷史狀態，不得覆蓋較新的 doc50 定論。注意 ACT 20/20 解碼不代表
+> `ch00_pre` 全 handler 已 lower；非 ACT 的 unresolved 原語仍保持 partial/fail-closed。
+
 ## 0. 目前焦點(接手就做這裡)
 第一章**開場過場**逐幕對齊原版:王座傳位(done)→ 草地/王城一隅亞雷斯撞見(**幾乎 done,差一點**)→ 森林。
 目前卡在一個**深層 RE 未解**:**草地主角(索爾/亞雷斯)的走位是用什麼機制驅動**(見 §3)。
@@ -22,7 +29,8 @@
   通用 `0x13488(單位idx, 方向陣列, 步數)` 走任意路徑。王座是「全上」特例(直接 0x13185×15/13)。單位結構 +0X/+1Y/+3pose/+4tick/+8角色ID。
 - **此 handoff 的 acting「只設面向」結論已於 2026-07-15 推翻**：normal frame 依 pose 每拍移一格，
   special frame 才原地顯示。格式與證據以 `doc50 §1.2` 為唯一準據。
-  bit7 不改變 (unit,pose) 意義。拍數=幀顯示時長(非位移)。+4 tick 配繪製公式 `0x127e0=格+tick×f(pose)` 做**單格內次格微滑**(非多格走位)。
+  bit7 不改變 (unit,pose) 意義。normal frame 的低7位拍數=移動格數；special frame 的拍數才是
+  原地顯示節奏。+4 tick 配繪製公式 `0x127e0=格+tick×f(pose)` 做每一格內的平滑內插。
 - **map32 roster(dosbox dump `task_f/slots0_20_dialogue.bin`)**:slot0王/1后/**2=王座索爾**/**3=草地索爾(4,46)**/**4=草地亞雷斯(13,47)**/5-20守衛。
 - **面向規則(全劇本)**:dir 預設 0(下/面向玩家);FDFIELD 不存面向;非0僅「走位者面向移動方向」或「劇情主角對看」。
 

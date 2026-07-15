@@ -1,6 +1,78 @@
 {
   "schema_version": 1,
   "resources": {
+    "0": [
+      {
+        "beats": 6,
+        "units": [
+          { "slot": 0, "pose": 2 },
+          { "slot": 1, "pose": 2 },
+          { "slot": 2, "pose": 2 },
+          { "slot": 3, "pose": 2 }
+        ]
+      },
+      { "beats": 8, "special": true, "units": [{ "slot": 0, "pose": 1 }] },
+      { "beats": 8, "special": true, "units": [{ "slot": 0, "pose": 3 }] },
+      { "beats": 8, "special": true, "units": [{ "slot": 0, "pose": 1 }] },
+      { "beats": 4, "special": true, "units": [{ "slot": 0, "pose": 0 }] }
+    ],
+    "1": [
+      {
+        "beats": 1,
+        "units": [
+          { "slot": 4, "pose": 0 },
+          { "slot": 5, "pose": 0 },
+          { "slot": 6, "pose": 0 },
+          { "slot": 7, "pose": 0 }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "beats": 1,
+        "units": [
+          { "slot": 8, "pose": 2 },
+          { "slot": 9, "pose": 2 },
+          { "slot": 10, "pose": 1 },
+          { "slot": 11, "pose": 3 }
+        ]
+      },
+      {
+        "beats": 2,
+        "units": [
+          { "slot": 8, "pose": 3 },
+          { "slot": 9, "pose": 2 },
+          { "slot": 10, "pose": 2 },
+          { "slot": 11, "pose": 2 }
+        ]
+      },
+      {
+        "beats": 2,
+        "units": [
+          { "slot": 8, "pose": 2 },
+          { "slot": 9, "pose": 3 },
+          { "slot": 10, "pose": 2 },
+          { "slot": 11, "pose": 2 }
+        ]
+      },
+      {
+        "beats": 4,
+        "special": true,
+        "units": [
+          { "slot": 9, "pose": 2 },
+          { "slot": 0, "pose": 0 },
+          { "slot": 1, "pose": 0 },
+          { "slot": 2, "pose": 0 },
+          { "slot": 3, "pose": 0 }
+        ]
+      }
+    ],
+    "5": [
+      {
+        "beats": 4,
+        "units": [{ "slot": 9, "pose": 0 }]
+      }
+    ],
     "80": [
       {
         "beats": 4,

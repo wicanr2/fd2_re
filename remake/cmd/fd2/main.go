@@ -69,6 +69,7 @@ type Game struct {
 	storyRoster      []battle.Unit       // LOADCH 保留的 FDFIELD records；SPAWN 按 group 順序 append 到 storyActors
 	storySpawned     map[int]bool        // 原版 group 已 materialize；防止 handler 重複 SPAWN 時重複 append
 	partyMembers     map[int]bool        // JOIN 建立的永久玩家名冊；key=原版 0..31 charID，不使用 NPC portrait
+	partyJoinOrder   []int               // JOIN 首次出現順序；章0 cutscene 的 party runtime slot 以此為準
 	storyWalks       []*storyWalkJob     // 場景走位動畫佇列(doc46 §5.3);逐幀推進、完成後移除
 	storyAutoAdvance int                 // story 節點無對白時的自動轉場倒數幀(doc46 行軍蒙太奇,0=不自動)
 	storyView        *ebiten.Image       // story 場景離屏世界層(320×200,放大 storyZoom 倍貼上畫布;2-1 原版取景)
@@ -730,7 +731,10 @@ func (g *Game) beatStart(b campaign.Beat) {
 		if g.partyMembers == nil {
 			g.partyMembers = make(map[int]bool)
 		}
-		g.partyMembers[b.CharID] = true
+		if !g.partyMembers[b.CharID] {
+			g.partyMembers[b.CharID] = true
+			g.partyJoinOrder = append(g.partyJoinOrder, b.CharID)
+		}
 		g.beatAdvance()
 	case "bgm":
 		g.playBGM(b.Track)
@@ -783,16 +787,41 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 	if err := g.loadMap(state.Map); err != nil {
 		return fmt.Errorf("map %q: %w", state.Map, err)
 	}
+	var party []*battle.Unit
+	if state.PartyScenario != "" {
+		scenario, err := battle.LoadScenario(assetPath(state.PartyScenario))
+		if err != nil {
+			return fmt.Errorf("party scenario %q: %w", state.PartyScenario, err)
+		}
+		// A normal campaign reaches this LOADCH after JOIN established permanent
+		// membership. Direct scene/debug starts have no membership history and
+		// use the evidence-backed PartyOrder stored in the editable binding.
+		filterScenarioParty(scenario, g.partyMembers)
+		partyOrder := g.partyJoinOrder
+		if len(partyOrder) == 0 {
+			partyOrder = state.PartyOrder
+		} else if len(state.PartyOrder) != 0 && !equalIntOrder(partyOrder, state.PartyOrder) {
+			return fmt.Errorf("party JOIN chronology %v differs from binding %v", partyOrder, state.PartyOrder)
+		}
+		if err := reorderScenarioParty(scenario, partyOrder); err != nil {
+			return fmt.Errorf("party scenario %q: %w", state.PartyScenario, err)
+		}
+		party = scenario.PartyUnits(roster.OwnDeploy)
+	}
 
 	// A handler cutscene uses the loaded FDFIELD records as a source, not as a
 	// pre-built unit array. Original 0x10b4e appends matching group records to
-	// the current array. LOADCH first materializes only group 0; later SPAWN
-	// calls append groups in FDFIELD order. This preserves the actual runtime
-	// slot identity for every evidence-backed load/spawn sequence.
+	// the current array. Persistent party members are constructed first when a
+	// binding supplies PartyScenario; LOADCH then materializes group 0 and later
+	// SPAWN calls append groups in FDFIELD order. This preserves the actual
+	// runtime slot identity for every evidence-backed load/spawn sequence.
 	g.st, g.sel, g.sc = nil, nil, nil
-	g.storyActors = make([]battle.Unit, 0, len(roster.Units))
+	g.storyActors = make([]battle.Unit, 0, len(party)+len(roster.Units))
 	g.storyRoster = make([]battle.Unit, 0, len(roster.Units))
 	g.storySpawned = make(map[int]bool)
+	for _, unit := range party {
+		g.storyActors = append(g.storyActors, *unit)
+	}
 	for _, u := range roster.Units {
 		if u == nil {
 			// State.Load does not create holes. Keep a harmless roster placeholder
@@ -817,6 +846,18 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 	g.camX, g.camY = float64(state.CamX), float64(state.CamY)
 	g.campLines = lines
 	return nil
+}
+
+func equalIntOrder(a, b []int) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
 }
 
 // dlgWrap 把一句對白依框寬換行成顯示列(繪製與 Enter 分頁共用同一套,確保頁數一致)。
@@ -1045,12 +1086,65 @@ func filterScenarioParty(sc *battle.Scenario, members map[int]bool) {
 		return
 	}
 	party := sc.Party[:0]
-	for _, member := range sc.Party {
+	var deploy [][2]int
+	if len(sc.DeployCells) != 0 {
+		deploy = sc.DeployCells[:0]
+	}
+	for i, member := range sc.Party {
 		if members[member.Fig] {
 			party = append(party, member)
+			if i < len(sc.DeployCells) {
+				deploy = append(deploy, sc.DeployCells[i])
+			}
 		}
 	}
 	sc.Party = party
+	if len(sc.DeployCells) != 0 {
+		sc.DeployCells = deploy
+	}
+}
+
+// reorderScenarioParty applies the original JOIN chronology to a cutscene
+// party. Battle deployment keeps the scenario's authored order; this adapter
+// is used only by LOADCH because original acting addresses the current unit
+// array by construction slot. Chapter 0 proves the order 0,9,4,30 rather than
+// the battle UI order 0,4,9,30.
+func reorderScenarioParty(sc *battle.Scenario, joinOrder []int) error {
+	if sc == nil || len(joinOrder) == 0 {
+		return nil
+	}
+	if len(sc.DeployCells) != 0 && len(sc.DeployCells) < len(sc.Party) {
+		return fmt.Errorf("JOIN reordering requires complete deploy cells, got %d for %d party members", len(sc.DeployCells), len(sc.Party))
+	}
+	type partyEntry struct {
+		member battle.PartyMember
+		cell   [2]int
+	}
+	byID := make(map[int]partyEntry, len(sc.Party))
+	for i, member := range sc.Party {
+		entry := partyEntry{member: member}
+		if i < len(sc.DeployCells) {
+			entry.cell = sc.DeployCells[i]
+		}
+		byID[member.Fig] = entry
+	}
+	ordered := make([]battle.PartyMember, 0, len(sc.Party))
+	orderedCells := make([][2]int, 0, len(sc.DeployCells))
+	for _, id := range joinOrder {
+		if entry, ok := byID[id]; ok {
+			ordered = append(ordered, entry.member)
+			if len(sc.DeployCells) != 0 {
+				orderedCells = append(orderedCells, entry.cell)
+			}
+			delete(byID, id)
+		}
+	}
+	if len(ordered) != len(sc.Party) {
+		return fmt.Errorf("JOIN order covers %d of %d scenario party members", len(ordered), len(sc.Party))
+	}
+	sc.Party = ordered
+	sc.DeployCells = orderedCells
+	return nil
 }
 
 // focusOnParty 開局/戰鬥重開後把游標(=鏡頭中心)移到我方主角隊部署格的重心。

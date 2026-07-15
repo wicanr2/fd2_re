@@ -331,10 +331,16 @@ func TestBeatSequenceEndTriggersNodeTransition(t *testing.T) {
 }
 
 func TestBeatJoinPersistsOnlyPlayerCharacterIDs(t *testing.T) {
-	g := newBeatTestGame(t, []campaign.Beat{{Op: "join", CharID: 9}})
+	g := newBeatTestGame(t, []campaign.Beat{
+		{Op: "join", CharID: 0}, {Op: "join", CharID: 9},
+		{Op: "join", CharID: 4}, {Op: "join", CharID: 9},
+	})
 	g.beatAdvance()
-	if !g.partyMembers[9] || len(g.partyMembers) != 1 {
+	if !g.partyMembers[9] || len(g.partyMembers) != 3 {
 		t.Fatalf("join did not persist party membership: %#v", g.partyMembers)
+	}
+	if len(g.partyJoinOrder) != 3 || g.partyJoinOrder[0] != 0 || g.partyJoinOrder[1] != 9 || g.partyJoinOrder[2] != 4 {
+		t.Fatalf("JOIN chronology lost or duplicated: %#v", g.partyJoinOrder)
 	}
 
 	bad := newBeatTestGame(t, []campaign.Beat{{Op: "join", CharID: 75}})
@@ -344,11 +350,61 @@ func TestBeatJoinPersistsOnlyPlayerCharacterIDs(t *testing.T) {
 	}
 }
 
+func TestReorderScenarioPartyUsesOriginalJoinSlots(t *testing.T) {
+	sc := &battle.Scenario{
+		Party:       []battle.PartyMember{{Fig: 0}, {Fig: 4}, {Fig: 9}, {Fig: 30}},
+		DeployCells: [][2]int{{7, 20}, {8, 22}, {10, 21}, {11, 23}},
+	}
+	if err := reorderScenarioParty(sc, []int{0, 9, 4, 30}); err != nil {
+		t.Fatal(err)
+	}
+	for slot, want := range []struct{ id, x, y int }{
+		{0, 7, 20}, {9, 10, 21}, {4, 8, 22}, {30, 11, 23},
+	} {
+		if sc.Party[slot].Fig != want.id || sc.DeployCells[slot] != [2]int{want.x, want.y} {
+			t.Fatalf("party runtime slot %d = fig%d at %v, want fig%d at (%d,%d)", slot, sc.Party[slot].Fig, sc.DeployCells[slot], want.id, want.x, want.y)
+		}
+	}
+}
+
+func TestApplyLoadCHDirectReplayUsesBindingPartyOrder(t *testing.T) {
+	g := &Game{}
+	err := g.applyLoadCH(&campaign.LoadCHState{
+		Chapter:       0,
+		Map:           "assets/maps/map0",
+		Roster:        "assets/maps/map0/map0_units.json",
+		SlotCount:     30,
+		Script:        "assets/story/ch01.json",
+		PartyScenario: "assets/scenarios/ch01.json",
+		PartyOrder:    []int{0, 9, 4, 30},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(g.storyActors) < 4 {
+		t.Fatalf("LOADCH materialized only %d actors", len(g.storyActors))
+	}
+	for slot, want := range []struct{ id, x, y int }{
+		{0, 7, 20}, {9, 10, 21}, {4, 8, 22}, {30, 11, 23},
+	} {
+		u := g.storyActors[slot]
+		if u.Fig != want.id || u.X != want.x || u.Y != want.y {
+			t.Fatalf("direct LOADCH slot %d = fig%d at (%d,%d), want fig%d at (%d,%d)", slot, u.Fig, u.X, u.Y, want.id, want.x, want.y)
+		}
+	}
+}
+
 func TestFilterScenarioPartyUsesJoinMembership(t *testing.T) {
-	sc := &battle.Scenario{Party: []battle.PartyMember{{Fig: 0}, {Fig: 9}, {Fig: 30}, {Fig: 75}}}
+	sc := &battle.Scenario{
+		Party:       []battle.PartyMember{{Fig: 0}, {Fig: 9}, {Fig: 30}, {Fig: 75}},
+		DeployCells: [][2]int{{1, 10}, {2, 20}, {3, 30}, {4, 40}},
+	}
 	filterScenarioParty(sc, map[int]bool{0: true, 9: true})
 	if len(sc.Party) != 2 || sc.Party[0].Fig != 0 || sc.Party[1].Fig != 9 {
 		t.Fatalf("party filter ignored JOIN membership: %#v", sc.Party)
+	}
+	if len(sc.DeployCells) != 2 || sc.DeployCells[0] != [2]int{1, 10} || sc.DeployCells[1] != [2]int{2, 20} {
+		t.Fatalf("party deploy cells drifted after membership filter: %#v", sc.DeployCells)
 	}
 
 	direct := &battle.Scenario{Party: []battle.PartyMember{{Fig: 0}, {Fig: 9}}}
@@ -391,6 +447,51 @@ func TestBeatSpawnAppendsFDFIELDGroupInOriginalOrder(t *testing.T) {
 	for i, fig := range []int{10, 11, 30, 9} {
 		if g.storyActors[i].Fig != fig || !g.storyActors[i].OnField {
 			t.Fatalf("runtime slot %d = %#v, want on-field fig=%d", i, g.storyActors[i], fig)
+		}
+	}
+}
+
+func TestMap0ActingUsesPartyThenSpawnedRuntimeSlots(t *testing.T) {
+	resources, err := campaign.LoadActingResourceSet(assetPath("assets/cutscenes/acting/map32.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := newBeatTestGame(t, []campaign.Beat{
+		{Op: "act", Source: "0x3283a", Acting: resources[0]},
+		{Op: "spawn", Group: 1},
+		{Op: "act", Source: "0x328a5", Acting: resources[1]},
+		{Op: "spawn", Group: 2},
+		{Op: "act", Source: "0x328c5", Acting: resources[2]},
+		{Op: "act", Source: "0x3290d", Acting: resources[5]},
+	})
+	// Original JOIN chronology fixes party slots as Sol, Yuni, Ares, Gaia.
+	g.storyActors = []battle.Unit{
+		{Fig: 0, X: 7, Y: 20, OnField: true},
+		{Fig: 9, X: 10, Y: 21, OnField: true},
+		{Fig: 4, X: 8, Y: 22, OnField: true},
+		{Fig: 30, X: 11, Y: 23, OnField: true},
+	}
+	g.storyRoster = []battle.Unit{
+		{Group: 1, Fig: 96, X: 1, Y: 3}, {Group: 1, Fig: 96, X: 2, Y: 1},
+		{Group: 1, Fig: 96, X: 4, Y: 1}, {Group: 1, Fig: 96, X: 6, Y: 0},
+		{Group: 2, Fig: 96, X: 1, Y: 21}, {Group: 2, Fig: 96, X: 2, Y: 22},
+		{Group: 2, Fig: 96, X: 3, Y: 22}, {Group: 2, Fig: 96, X: 4, Y: 23},
+	}
+	g.storySpawned = map[int]bool{0: true}
+	g.beatAdvance()
+	g.tick(144) // ACT0=70, ACT1=7, ACT2=39, ACT5=28 original ticks.
+	if g.loadErr != "" || len(g.storyActors) != 12 {
+		t.Fatalf("map0 acting sequence failed: err=%q actors=%d", g.loadErr, len(g.storyActors))
+	}
+	want := [][2]int{
+		{7, 14}, {10, 15}, {8, 16}, {11, 17},
+		{1, 4}, {2, 2}, {4, 2}, {6, 1},
+		{3, 18}, {4, 23}, {2, 18}, {5, 19},
+	}
+	for slot, xy := range want {
+		u := g.storyActors[slot]
+		if u.X != xy[0] || u.Y != xy[1] {
+			t.Fatalf("map0 runtime slot %d fig%d=(%d,%d), want (%d,%d)", slot, u.Fig, u.X, u.Y, xy[0], xy[1])
 		}
 	}
 }
