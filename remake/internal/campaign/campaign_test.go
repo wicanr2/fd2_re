@@ -106,4 +106,8 @@ func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 	if !firstWalk || !secondWalk {
 		t.Fatalf("grass Ares walks missing: %#v", grass.Beats)
 	}
+	ch05 := c.Nodes["story_ch05"]
+	if ch05 == nil || ch05.Type != "cutscene" || ch05.HandlerBinding != "assets/cutscenes/bindings/ch05_pre.json" || ch05.Next != "battle_ch05" {
+		t.Fatalf("ch05 should execute its complete editable pre-handler: %#v", ch05)
+	}
 }

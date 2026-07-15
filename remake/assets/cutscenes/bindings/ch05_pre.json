@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "handler_script": "../handlers/ch05_pre.json",
+  "overrides": {
+    "0x33155": {
+      "loadch": {
+        "chapter": 4,
+        "map": "assets/maps/map4",
+        "roster": "assets/maps/map4/map4_units.json",
+        "script": "assets/story/ch05.json"
+      }
+    }
+  }
+}

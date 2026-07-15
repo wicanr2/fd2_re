@@ -558,8 +558,8 @@ func figName(fig int) string {
 
 func (g *Game) beatStart(b campaign.Beat) {
 	if g.cutsceneLog { // FD2_CUTSCENE_LOG:印每一拍(op+參數),對原版 handler beat 序列比對
-		fmt.Fprintf(os.Stderr, "[cutscene] beat op=%s source=%s fig=%d x=%d y=%d frames=%d line=%d count=%d script=%s scene=%s scene_index=%v\n",
-			b.Op, b.Source, b.Fig, b.X, b.Y, b.Frames, b.Line, b.Count, b.Script, b.Scene, b.SceneIndex)
+		fmt.Fprintf(os.Stderr, "[cutscene] beat op=%s source=%s fig=%d x=%d y=%d frames=%d line=%d count=%d script=%s scene=%s scene_index=%v loadch=%+v\n",
+			b.Op, b.Source, b.Fig, b.X, b.Y, b.Frames, b.Line, b.Count, b.Script, b.Scene, b.SceneIndex, b.LoadCH)
 	}
 	if b.Op != "walk" { // 鏡頭跟焦只在 walk 拍內有效(見下),其餘拍一律不跟焦
 		g.followWalk = false
@@ -573,6 +573,16 @@ func (g *Game) beatStart(b campaign.Beat) {
 		return -1
 	}
 	switch b.Op {
+	case "loadch":
+		if b.LoadCH == nil {
+			g.loadErr = "beat loadch:缺少完整狀態映射"
+			return // compiler should prevent this; never turn it into a no-op.
+		}
+		if err := g.applyLoadCH(b.LoadCH); err != nil {
+			g.loadErr = "beat loadch: " + err.Error()
+			return // fail closed rather than continuing on the old map/roster.
+		}
+		g.beatAdvance()
 	case "pan":
 		frames := b.Frames
 		if frames == 0 {
@@ -680,6 +690,51 @@ func (g *Game) beatStart(b campaign.Beat) {
 		g.loadErr = "beat:未知原語 " + b.Op
 		g.beatAdvance()
 	}
+}
+
+// applyLoadCH is the remake adapter for original 0x205da/0x1088d.  The
+// original operation selects FDTXT chapter+1 and the three FDFIELD resources
+// for the same chapter in one call; it is not merely a camera/map command.
+// The binding therefore provides all three editable counterparts.  Validate
+// roster and text before replacing the rendered map so a malformed asset does
+// not leave a half-applied chapter transition behind.
+func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
+	if state == nil || state.Chapter < 0 || state.Map == "" || state.Roster == "" || state.Script == "" {
+		return fmt.Errorf("incomplete map/roster/story state")
+	}
+	roster, err := battle.Load(assetPath(state.Roster))
+	if err != nil {
+		return fmt.Errorf("roster %q: %w", state.Roster, err)
+	}
+	lines := loadStoryScriptAt(state.Script, "", nil)
+	if lines == nil {
+		return fmt.Errorf("story script %q", state.Script)
+	}
+	if err := g.loadMap(state.Map); err != nil {
+		return fmt.Errorf("map %q: %w", state.Map, err)
+	}
+
+	// A handler cutscene uses the loaded FDFIELD roster as visual actors, not
+	// as an active battle state.  Preserve every on-field entry in its original
+	// order: acting bindings can later map original unit slots without losing
+	// duplicate Fig values such as guards.
+	g.st, g.sel, g.sc = nil, nil, nil
+	g.storyActors = make([]battle.Unit, 0, len(roster.Units))
+	for _, u := range roster.Units {
+		if u == nil || !u.OnField || !u.Alive() {
+			continue
+		}
+		actor := *u
+		actor.OffX, actor.OffY = 0, 0
+		g.storyActors = append(g.storyActors, actor)
+	}
+	g.storyWalks = nil
+	g.storyBG = true
+	g.walkFirst, g.followWalk = false, false
+	g.camMaxY = float64(state.CamMaxY)
+	g.camX, g.camY = float64(state.CamX), float64(state.CamY)
+	g.campLines = lines
+	return nil
 }
 
 // dlgWrap 把一句對白依框寬換行成顯示列(繪製與 Enter 分頁共用同一套,確保頁數一致)。

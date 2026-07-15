@@ -48,6 +48,7 @@ type HandlerBindings struct {
 	Pan    func(HandlerBeat) (HandlerPoint, bool)
 	Dialog func(HandlerBeat) (HandlerDialog, bool)
 	Acting func(HandlerBeat) ([]ActingFrame, bool)
+	LoadCH func(HandlerBeat) (LoadCHState, bool)
 }
 
 // HandlerCompileIssue identifies a source operation that was intentionally
@@ -78,6 +79,27 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 	}
 	for i, input := range script.Beats {
 		switch input.Op {
+		case "loadch":
+			if bindings.LoadCH == nil {
+				issue(i, input, "loadch requires an explicit map, roster, and story-context mapping")
+				continue
+			}
+			state, ok := bindings.LoadCH(input)
+			if !ok {
+				issue(i, input, "no complete remake state mapping for original loadch")
+				continue
+			}
+			if state.Chapter < 0 || state.Map == "" || state.Roster == "" || state.Script == "" {
+				issue(i, input, "loadch mapping must declare non-negative chapter plus map, roster, and script")
+				continue
+			}
+			if input.Chapter != nil && *input.Chapter != state.Chapter {
+				issue(i, input, fmt.Sprintf("loadch chapter %d disagrees with binding chapter %d", *input.Chapter, state.Chapter))
+				continue
+			}
+			beat := runtime(input, "loadch")
+			beat.LoadCH = &state
+			beats = append(beats, beat)
 		case "delay":
 			if input.Ms == nil {
 				issue(i, input, "delay lacks an immediate millisecond value")

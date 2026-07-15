@@ -74,12 +74,33 @@ type ActingFrame struct {
 	Units   []ActingUnit `json:"units"`
 }
 
+// LoadCHState is the editable remake state selected by an original LOADCH
+// call.  The original routine loads all three together: FDFIELD map, FDFIELD
+// roster, and FDTXT (doc23 §4).  Keeping those paths in one value makes an
+// incomplete reconstruction impossible to mistake for a harmless map change.
+// Paths are asset-root relative (for example assets/maps/map5/map5_units.json)
+// rather than relative to the handler binding file.
+type LoadCHState struct {
+	Chapter int    `json:"chapter"`
+	Map     string `json:"map"`
+	Roster  string `json:"roster"`
+	Script  string `json:"script"`
+	CamX    int    `json:"cam_x,omitempty"`
+	CamY    int    `json:"cam_y,omitempty"`
+	CamMaxY int    `json:"cam_max_y,omitempty"`
+}
+
 // Beat 過場原語(doc 50 §1/§2):cutscene 節點的 beats 是一條平面序列,依序執行,
 // 一比一對映原版 EXE handler 的呼叫序列(LOADCH/PAN/TXT/ACT/SPAWN/JOIN/BGM/FADE/DELAY)。
 // 每個 op 只用到自己相關的欄位,其餘留零值即可(同 Node 的稀疏欄位風格)。
 type Beat struct {
-	Op     string `json:"op"`               // pan/walk/dialog/act/spawn/join/bgm/fade/delay
+	Op     string `json:"op"`               // loadch/pan/walk/dialog/act/spawn/join/bgm/fade/delay
 	Source string `json:"source,omitempty"` // original handler call-site; empty for authored-only beats
+
+	// loadch: atomically replace the active map, FDFIELD roster and FDTXT
+	// story context.  It is deliberately a nested required state object so a
+	// handler cannot compile a map-only imitation of original 0x205da.
+	LoadCH *LoadCHState `json:"loadch,omitempty"`
 
 	// pan/walk 共用:目標格(walk 用 X/Y 當終點);pan 的 X/Y 沿用 Node.CamX/CamY 語意——
 	// 已由畫面回饋校準的「像素座標」,不是 doc47 §3 原始 grid(col,row)值(grid→px 未逐點驗證,

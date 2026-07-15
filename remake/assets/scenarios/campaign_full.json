@@ -904,18 +904,9 @@
    "next": "battle_ch04"
   },
   "story_ch05": {
-   "type": "story",
+   "type": "cutscene",
    "bgm": "FDMUS_010",
-   "lines": [
-    {
-     "speaker": -1,
-     "text": "第5章:塞拉村"
-    },
-    {
-     "speaker": -1,
-     "text": "目標:消滅卡特那。"
-    }
-   ],
+   "handler_binding": "assets/cutscenes/bindings/ch05_pre.json",
    "next": "battle_ch05"
   },
   "shop_ch05_weapon": {

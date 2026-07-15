@@ -34,6 +34,7 @@ type HandlerDialogueContext struct {
 // HandlerBindingOverride has at most one field for the matching source op.
 // Omitted operations stay unresolved and are reported by CompileHandlerScript.
 type HandlerBindingOverride struct {
+	LoadCH *LoadCHState   `json:"loadch,omitempty"`
 	Pan    *HandlerPoint  `json:"pan,omitempty"`
 	Dialog *HandlerDialog `json:"dialog,omitempty"`
 	Acting *HandlerActing `json:"act,omitempty"`
@@ -80,8 +81,11 @@ func LoadHandlerBinding(path string) (*HandlerBinding, error) {
 		}
 	}
 	for addr, override := range binding.Overrides {
-		if addr == "" || (override.Pan == nil && override.Dialog == nil && override.Acting == nil) {
+		if addr == "" || (override.LoadCH == nil && override.Pan == nil && override.Dialog == nil && override.Acting == nil) {
 			return nil, fmt.Errorf("handler binding %q has empty override at %q", path, addr)
+		}
+		if state := override.LoadCH; state != nil && (state.Chapter < 0 || state.Map == "" || state.Roster == "" || state.Script == "") {
+			return nil, fmt.Errorf("handler binding %q has incomplete loadch override at %q", path, addr)
 		}
 	}
 	return &binding, nil
@@ -115,6 +119,13 @@ func (binding *HandlerBinding) CompilerBindings() HandlerBindings {
 		return override, ok
 	}
 	return HandlerBindings{
+		LoadCH: func(input HandlerBeat) (LoadCHState, bool) {
+			override, ok := lookup(input)
+			if !ok || override.LoadCH == nil {
+				return LoadCHState{}, false
+			}
+			return *override.LoadCH, true
+		},
 		Pan: func(input HandlerBeat) (HandlerPoint, bool) {
 			override, ok := lookup(input)
 			if !ok || override.Pan == nil {
