@@ -84,6 +84,8 @@ type Game struct {
 	beats            []campaign.Beat     // 目前 cutscene 節點的過場原語序列(doc50 §2)
 	beatIdx          int                 // 目前執行到第幾拍(-1=尚未開始)
 	beatDelay        int                 // beat「delay」剩餘幀數(0=非等待中)
+	battleEvent      *battleEventRun     // 戰場事件的阻塞 action 序列；與 campaign BeatRunner 分離
+	battleEventDelay int                 // battle event delay 剩餘幀數
 	campLines        []campaign.Line     // cutscene 節點載入的章文本(dialog beat 依 Line/Count 取子段)
 	dlgShown         int                 // 對話框目前顯示的說話者(dlgNone=無;換人時播縮/展動畫)
 	dlgUpper         *bool               // 與 dlgShown 同步的上/下框覆蓋(來自 DialogLine.Upper;nil=沿用預設規則)
@@ -222,6 +224,16 @@ type camPanJob struct {
 	toX, toY     float64
 	t, frames    int
 	tileStep     bool
+	then         func()
+}
+
+// battleEventRun preserves the authored order of on-turn battle actions.
+// It deliberately does not reuse campaign beats: finishing a battle event
+// must finish the turn, never advance the campaign node.
+type battleEventRun struct {
+	actions []battle.Action
+	index   int
+	then    func()
 }
 
 // focusUnitJob 保留 0x12cea 的阻塞移動目標。原版每輪只移動一格，X 到位後才移 Y；
@@ -428,7 +440,9 @@ func (g *Game) stepCamPan() {
 		}
 		if g.camX == j.toX && g.camY == j.toY {
 			g.camPan = nil
-			g.beatAdvance()
+			if j.then != nil {
+				j.then()
+			}
 		}
 		return
 	}
@@ -441,7 +455,9 @@ func (g *Game) stepCamPan() {
 	g.camY = j.fromY + (j.toY-j.fromY)*frac
 	if j.t >= j.frames {
 		g.camPan = nil
-		g.beatAdvance()
+		if j.then != nil {
+			j.then()
+		}
 	}
 }
 
@@ -785,7 +801,7 @@ func (g *Game) beatStart(b campaign.Beat) {
 		if frames == 0 {
 			frames = 30
 		}
-		g.camPan = &camPanJob{fromX: g.camX, fromY: g.camY, toX: float64(b.X), toY: float64(b.Y), frames: frames, tileStep: b.TileStep}
+		g.camPan = &camPanJob{fromX: g.camX, fromY: g.camY, toX: float64(b.X), toY: float64(b.Y), frames: frames, tileStep: b.TileStep, then: g.beatAdvance}
 	case "walk":
 		idx := findActor(b.Fig)
 		if idx < 0 {
@@ -1310,6 +1326,7 @@ func (g *Game) enterNode() {
 	g.storyAutoAdvance = 0
 	g.walkFirst, g.followWalk, g.camMaxY = false, false, 0
 	g.camPan, g.focusJob, g.actJob, g.beats, g.beatIdx, g.beatDelay = nil, nil, nil, nil, -1, 0
+	g.battleEvent, g.battleEventDelay = nil, 0
 	g.dlgShown, g.dlgPhase, g.dlgT = dlgNone, 0, 0
 	g.dlgUpper = nil
 	switch n.Type {
@@ -1399,6 +1416,7 @@ func (g *Game) enterNode() {
 
 // resetBattle 重開一場戰鬥(campaign battle 節點;敗北重試也走這裡)。
 func (g *Game) resetBattle(unitsPath, scnPath string) {
+	g.storyActors, g.storyRoster, g.storySpawned = nil, nil, nil // 不讓上一個 pre cutscene 的 scene units 疊進戰場
 	if unitsPath == "" {
 		unitsPath = "assets/map0_units.json"
 	}
@@ -2456,6 +2474,7 @@ func (g *Game) Update() error {
 			g.beatAdvance()
 		}
 	}
+	g.stepBattleEventDelay()
 	if g.curX != g.prevCurX || g.curY != g.prevCurY { // 游標移動音
 		g.playSFX(sfxCursor)
 		g.prevCurX, g.prevCurY = g.curX, g.curY
@@ -2463,10 +2482,10 @@ func (g *Game) Update() error {
 	// 相機跟隨游標(置中,夾在地圖內;先於各攔截,避免環/選單開啟時相機停擺)
 	// storyBG 場景背景模式鏡頭固定(enterNode 已設 CamX/CamY),不跟游標走。
 	// FollowWalk 節點例外:走位期間鏡頭鎖定走位者(原版長廊運鏡,2-1;視野=320×200 世界px)。
-	if g.storyBG {
+	if g.camPan != nil {
+		g.stepCamPan()
+	} else if g.storyBG {
 		switch {
-		case g.camPan != nil: // beat「pan」進行中(doc50 0x135dd):線性內插到目標,走完接下一拍
-			g.stepCamPan()
 		case g.followWalk && len(g.storyWalks) > 0:
 			w := g.storyWalks[0]
 			u := &g.storyActors[w.actor]
@@ -2479,7 +2498,7 @@ func (g *Game) Update() error {
 				g.camY = g.camMaxY
 			}
 		}
-	} else {
+	} else if g.battleEvent == nil {
 		g.camX = float64(g.curX*g.m.TileW - logicalW/2 + g.m.TileW/2)
 		g.camY = float64(g.curY*g.m.TileH - logicalH/2 + g.m.TileH/2)
 		clamp(&g.camX, 0, float64(g.m.W*g.m.TileW-logicalW))
@@ -2490,6 +2509,14 @@ func (g *Game) Update() error {
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyF9) { // 快速讀檔
 		g.loadGame()
+	}
+	if g.battleEvent != nil {
+		if len(g.dialog) > 0 && (inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)) {
+			if g.dlgAdvance() && len(g.dialog) == 0 {
+				g.advanceBattleEvent()
+			}
+		}
+		return nil // PAN/delay/dialogue sequence blocks battle input and repeated end-turn
 	}
 	if g.campInput() { // campaign 節點(story/choice/ending/勝敗轉場)攔截輸入
 		return nil
@@ -2624,10 +2651,12 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	// 原版從未觸發,無「原版清色」可對齊;黑色是 remake 自訂 FOV(640 寬、tile 維持原生 24px)才會露出的
 	// 邊,選黑純為視覺乾淨、非還原原版行為。
 	screen.Fill(color.RGBA{0, 0, 0, 0xff})
-	// story 場景世界層走 320×200 離屏再放大 storyZoom 倍(還原原版 13×8 格取景,2-1);
-	// 戰場維持原有 640×400 直繪。對話框/HUD/淡幕仍畫在 screen 原生解析度。
+	// story 場景與原版阻塞 battle event 走 320×200 離屏再放大 storyZoom 倍
+	// (還原 13×8 格取景)；一般可操作戰場維持 640×400 直繪。
+	// 對話框/HUD/淡幕仍畫在 screen 原生解析度。
 	target, viewW, viewH := screen, logicalW, logicalH
-	if g.storyBG {
+	legacyViewport := g.storyBG || g.battleEvent != nil
+	if legacyViewport {
 		if g.storyView == nil {
 			g.storyView = ebiten.NewImage(logicalW/storyZoom, logicalH/storyZoom)
 		}
@@ -2716,7 +2745,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		uy := float64(u.Y*th) - g.camY
 		g.drawUnitSprite(target, ux, uy, float64(tw), float64(th), u)
 	}
-	if g.storyBG { // 離屏世界層放大貼回畫布(48px/格,原版取景)
+	if legacyViewport { // 離屏世界層放大貼回畫布(48px/格,原版取景)
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(storyZoom, storyZoom)
 		screen.DrawImage(g.storyView, op)
@@ -2734,11 +2763,11 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	curPx := float64(g.curX*tw) - g.camX
 	curPy := float64(g.curY*th) - g.camY
 	campaignBattleView := g.camp == nil || (g.camp.Node() != nil && g.camp.Node().Type == "battle")
-	if !g.ring && !g.spellOpen && !g.storyBG && campaignBattleView {
+	if !g.ring && !g.spellOpen && !legacyViewport && campaignBattleView {
 		drawCursor(screen, curPx, curPy, float64(tw), float64(th))
 	}
 	// HUD(對照原版 orig_04/08):游標單位資訊=左下面板(非常駐頂列);回合切換=中央大字橫幅。
-	if g.st != nil && g.font != nil && !g.storyBG {
+	if g.st != nil && g.font != nil && !legacyViewport {
 		if u := g.st.UnitAt(g.curX, g.curY); u != nil { // 左下單位面板(orig 樣式)
 			g.drawUnitHUD(screen, u)
 		}
@@ -2747,13 +2776,13 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				g.st.Turn, g.st.AliveCount(battle.Own), g.st.AliveCount(battle.Ally), g.st.AliveCount(battle.Enemy), g.curX, g.curY), 6, 4)
 		}
 	}
-	if !g.storyBG && campaignBattleView {
+	if !legacyViewport && campaignBattleView {
 		g.drawPhaseBanner(screen) // 回合橫幅(PLAYER/ENEMY PHASE,transient)
 	}
 
 	// 中文層(原版點陣字型,doc 08):選中單位名 + 對話框(DebugPrint 不支援中文)
 	if g.font != nil {
-		if g.st != nil && !g.storyBG { // 選中單位中文名(放游標格上方,避開頂部 DebugPrint)
+		if g.st != nil && !legacyViewport { // 選中單位中文名(放游標格上方,避開頂部 DebugPrint)
 			if u := g.st.UnitAt(g.curX, g.curY); u != nil {
 				nm := u.Name
 				if nm == "" {
@@ -3579,12 +3608,101 @@ func (g *Game) endTurn() {
 	g.finishTurn()
 }
 
-// finishTurn 回合收尾:on_turn_end 事件(增援/對話)、回合 +1、清已行動。
-func (g *Game) finishTurn() {
-	if g.sc != nil {
-		g.dialog = append(g.dialog, g.sc.Fire(g.st, "on_turn_end", "")...)
-		g.applyScenarioPartyJoins()
+// startBattleEvent runs ordered scenario actions without borrowing campaign's
+// BeatRunner. Immediate state actions execute in-order; pan/delay/dialogue block
+// until their visual/input boundary finishes, then resume at the next action.
+func (g *Game) startBattleEvent(actions []battle.Action, then func()) {
+	if len(actions) == 0 {
+		then()
+		return
 	}
+	g.battleEvent = &battleEventRun{actions: actions, index: -1, then: then}
+	g.advanceBattleEvent()
+}
+
+func (g *Game) finishBattleEventWithError(message string) {
+	g.loadErr = "battle event: " + message
+	run := g.battleEvent
+	g.battleEvent, g.battleEventDelay, g.camPan = nil, 0, nil
+	if run != nil && run.then != nil {
+		run.then()
+	}
+}
+
+func (g *Game) advanceBattleEvent() {
+	run := g.battleEvent
+	if run == nil {
+		return
+	}
+	for {
+		run.index++
+		if run.index >= len(run.actions) {
+			g.battleEvent = nil
+			if run.then != nil {
+				run.then()
+			}
+			return
+		}
+		action := run.actions[run.index]
+		switch action.Type {
+		case "pan":
+			if action.Grid == nil || g.m == nil || g.m.TileW <= 0 || g.m.TileH <= 0 {
+				g.finishBattleEventWithError("pan 缺少有效 grid/map")
+				return
+			}
+			g.camPan = &camPanJob{
+				fromX: g.camX, fromY: g.camY,
+				toX:      float64((*action.Grid)[0] * g.m.TileW),
+				toY:      float64((*action.Grid)[1] * g.m.TileH),
+				tileStep: true, then: g.advanceBattleEvent,
+			}
+			return
+		case "delay":
+			frames := action.Ms * 60 / 1000
+			if frames <= 0 {
+				frames = 1
+			}
+			g.battleEventDelay = frames
+			return
+		default:
+			dialogue, isDialogue := g.sc.ExecuteAction(g.st, action)
+			g.applyScenarioPartyJoins()
+			if isDialogue {
+				g.dialog = []battle.DialogLine{dialogue}
+				g.dlgPage = 0
+				return
+			}
+		}
+	}
+}
+
+func (g *Game) stepBattleEventDelay() {
+	if g.battleEventDelay <= 0 {
+		return
+	}
+	g.battleEventDelay--
+	if g.battleEventDelay == 0 {
+		g.advanceBattleEvent()
+	}
+}
+
+// finishTurn starts the ordered on_turn_end event. Turn/status bookkeeping is
+// deferred until the complete visual sequence finishes.
+func (g *Game) finishTurn() {
+	if g.battleEvent != nil {
+		return
+	}
+	if g.sc != nil {
+		actions := g.sc.TriggerActions(g.st, "on_turn_end", "")
+		if len(actions) > 0 {
+			g.startBattleEvent(actions, g.completeTurn)
+			return
+		}
+	}
+	g.completeTurn()
+}
+
+func (g *Game) completeTurn() {
 	g.st.Turn++
 	for _, u := range g.st.Units {
 		u.Acted = false

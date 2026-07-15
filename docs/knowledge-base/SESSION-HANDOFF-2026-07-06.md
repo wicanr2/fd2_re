@@ -114,12 +114,19 @@
 > 尚未閉合的原版分支是玩家第27章戰後：天空之鑰 `0x64` 存在才增章進第28章，
 > 無鑰匙則 `0x2545d → 0x2bce5` 壞結局；這個 handler/inventory condition 仍需後續接線。
 
+> **2026-07-16 第十五次 Codex 更新（ch03 turn3 通用 battle-event sequencing）**：新增與
+> campaign BeatRunner 分離的 `battleEventRun`；`Scenario.TriggerActions` 保存 JSON action 原序，
+> runtime 完整播放 `SPAWN2 → PAN(3,0) → 800ms → PAN(3,17) → 200ms → FDTXT_003 #4 七句`。
+> map2 24px tile 使鏡頭精確到 `(72,0)/(72,408)`，等待為48/12 ticks；事件最後一句前 Turn 與
+> status 都不 tick，finishTurn 重入不重複觸發。battle event 同時改用原版320×200（13×8格）
+> viewport；完整 Go tests 與 Xvfb frame120 實畫均通過。詳見 `doc50 §3.7`。
+
 ## 0. 目前焦點(接手就做這裡)
 `ch00_pre`、`ch00_post`、`ch01_pre`、`ch01_post` 已成為前四個 campaign 實際 consumer；ch01 post 的 branch、
 reward、61-utterance FDTXT_002、dynamic speaker slots、PAN、SPAWN4、ACT14..16、JOIN/sync/chapter tail
-與第二、第三章戰前／戰後 handler 均已完整 lower 且 compiler **0 issues**。下一個具體焦點是
-補完 ch03 battle turn3 的 PAN/delay 演出（slot6 active、SPAWN2 與 FDTXT_003 #4 七句已完成），接著將
-第27章戰後天空之鑰→第28章／壞結局的 handler branch 接入 campaign，然後選下一支
+與第二、第三章戰前／戰後 handler 均已完整 lower 且 compiler **0 issues**；ch03 turn3 的
+slot6 active 條件、SPAWN2、兩段 PAN、800/200ms 與 FDTXT_003 #4 七句也已完整。下一個具體焦點是
+將第27章戰後天空之鑰→第28章／壞結局的 handler branch 接入 campaign，然後選下一支
 `0x233c6` post caller 依原版 arrays 補 binding。下方「草地深層未解」是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，
 不得再當目前 blocker。
 

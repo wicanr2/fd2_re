@@ -487,7 +487,13 @@ HP 歸零路徑 `0x1dc61/0x1dd4c` 寫1，復活 `0x30f9c` 再清0；所以 `0x34
 只有鐵諾仍 active/alive 才 SPAWN2、PAN、delay 並播 #4。scenario 已增加 editable
 `when:{turn:3,unit_slot_active:6}` 防止死亡路徑誤生援軍；FDTXT_003 #4 七句已接入同一
 battle event，並以原始 portrait 77/2/77/8/2/8/77 顯示。PAN `(3,0)→(3,17)` 與 800/200ms
-節奏仍是後續 UI-event sequencing 項目。
+現已由通用 `battleEventRun` 依 editable action 原序播放：SPAWN2 → PAN grid(3,0) → delay800ms →
+PAN grid(3,17) → delay200ms → 七句對白。`Scenario.TriggerActions` 只評估/標記 once 並回傳 actions，
+runtime 再逐項執行；battle runner 與 campaign BeatRunner 分離，避免完成事件時誤推進 campaign。
+PAN 由 map2 24px tile 轉成 `(72,0)/(72,408)`，X-first tile step；等待精確為 48/12 ticks。
+最後一句清空前不會增 Turn 或 tick 毒／buff，finishTurn 重入亦不會重複 SPAWN。事件期間改用原版
+320×200（13×8格）離屏視野再放大2倍，Xvfb frame120 已確認第二個 PAN 後畫面無寬視野黑區且先播
+portrait77 的第一句。
 
 `ch02_post` 真 CFG 是：`sync_party → if slot6 inactive {#6 哀悼} else
 {0x233c6 layout + #7 + JOIN(2)} → set_chapter(3)`。single-slot diamond、`layout_units` 與 15/27-slot

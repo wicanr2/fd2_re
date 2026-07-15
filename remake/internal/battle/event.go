@@ -63,16 +63,18 @@ type When struct {
 
 // Action 動作(可擴充:加 type + execAction 加 case)。
 type Action struct {
-	Type           string `json:"type"`
-	Groups         []int  `json:"groups,omitempty"`          // spawn_group 的波次
-	Camp           string `json:"camp,omitempty"`            // 增援陣營(改為)
-	ActImmediately bool   `json:"act_immediately,omitempty"` // 增援當回合可動(青衫「立即行動」)
-	Speaker        int    `json:"speaker"`                   // dialogue 說話者(DATO 肖像 id;-1=旁白)
-	Text           string `json:"text,omitempty"`            // dialogue 文本
-	Flag           string `json:"flag,omitempty"`            // set_flag
-	Unit           string `json:"unit,omitempty"`            // set_ai 目標
-	Mode           string `json:"mode,omitempty"`            // set_ai 模式(berserk…)
-	CharID         int    `json:"char_id,omitempty"`         // join_party: permanent player identity
+	Type           string  `json:"type"`
+	Groups         []int   `json:"groups,omitempty"`          // spawn_group 的波次
+	Camp           string  `json:"camp,omitempty"`            // 增援陣營(改為)
+	ActImmediately bool    `json:"act_immediately,omitempty"` // 增援當回合可動(青衫「立即行動」)
+	Speaker        int     `json:"speaker"`                   // dialogue 說話者(DATO 肖像 id;-1=旁白)
+	Text           string  `json:"text,omitempty"`            // dialogue 文本
+	Flag           string  `json:"flag,omitempty"`            // set_flag
+	Unit           string  `json:"unit,omitempty"`            // set_ai 目標
+	Mode           string  `json:"mode,omitempty"`            // set_ai 模式(berserk…)
+	CharID         int     `json:"char_id,omitempty"`         // join_party: permanent player identity
+	Grid           *[2]int `json:"grid,omitempty"`            // pan:原版 camera grid(col,row)，runtime 依地圖 tile 尺寸換 pixel
+	Ms             int     `json:"ms,omitempty"`              // delay:原版毫秒數
 }
 
 // DialogLine 一句對話(說話者肖像 + 文本),供 UI 畫頭像+嘴型+文字。
@@ -137,7 +139,22 @@ func (sc *Scenario) Setup(st *State) []DialogLine {
 // Fire 對某 trigger 評估所有事件,執行符合者的動作。回傳要播的對話(含說話者)。
 // ctxUnit:on_unit_death 時傳陣亡者名。
 func (sc *Scenario) Fire(st *State, trigger, ctxUnit string) []DialogLine {
+	actions := sc.TriggerActions(st, trigger, ctxUnit)
 	var dialogues []DialogLine
+	for _, action := range actions {
+		if dl, ok := sc.ExecuteAction(st, action); ok {
+			dialogues = append(dialogues, dl)
+		}
+	}
+	return dialogues
+}
+
+// TriggerActions evaluates one trigger and returns its ordered editable actions,
+// marking matching once-events as fired without executing them. The UI runtime
+// uses this to preserve blocking PAN/delay/dialogue order; Fire remains the
+// synchronous compatibility path for setup, tests and triggers without staging.
+func (sc *Scenario) TriggerActions(st *State, trigger, ctxUnit string) []Action {
+	var actions []Action
 	for i := range sc.Events {
 		e := &sc.Events[i]
 		if e.Trigger != trigger || (e.Once && e.fired) {
@@ -147,13 +164,9 @@ func (sc *Scenario) Fire(st *State, trigger, ctxUnit string) []DialogLine {
 			continue
 		}
 		e.fired = true
-		for _, a := range e.Do {
-			if dl, ok := sc.exec(st, a); ok {
-				dialogues = append(dialogues, dl)
-			}
-		}
+		actions = append(actions, e.Do...)
 	}
-	return dialogues
+	return actions
 }
 
 // match 條件判斷(可擴充)。nil = 無條件,恆真。
@@ -177,8 +190,9 @@ func (w *When) match(st *State, ctxUnit string) bool {
 	return true
 }
 
-// exec 執行單一動作(可擴充:加 case)。回傳 (對話, true) 表示要播對話。
-func (sc *Scenario) exec(st *State, a Action) (DialogLine, bool) {
+// ExecuteAction 執行單一狀態動作。pan/delay 由 UI runner 阻塞處理；
+// 回傳 (對話, true) 表示 runner 應停下並播放這句。
+func (sc *Scenario) ExecuteAction(st *State, a Action) (DialogLine, bool) {
 	switch a.Type {
 	case "spawn_party": // 主角隊從隊伍名冊進場到部署格(doc 25 雙來源)
 		// The party constructor itself places members directly on the deployment

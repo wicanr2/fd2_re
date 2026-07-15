@@ -185,3 +185,33 @@ func TestChapter3Turn3ReinforcementRequiresLivingTinoInRuntimeSlot6(t *testing.T
 		t.Fatalf("turn3 Tino line drifted: %q", aliveDialogues[1].Text)
 	}
 }
+
+func TestChapter3Turn3TriggerPreservesOriginalStagingOrder(t *testing.T) {
+	st, err := Load("../../assets/maps/map2/map2_units.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sc, err := LoadScenario("../../assets/scenarios/ch03.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sc.Setup(st)
+	st.Turn = 3
+	actions := sc.TriggerActions(st, "on_turn_end", "")
+	wantTypes := []string{"spawn_group", "pan", "delay", "pan", "delay", "dialogue", "dialogue", "dialogue", "dialogue", "dialogue", "dialogue", "dialogue"}
+	if len(actions) != len(wantTypes) {
+		t.Fatalf("turn3 actions=%d, want %d: %#v", len(actions), len(wantTypes), actions)
+	}
+	for i, want := range wantTypes {
+		if actions[i].Type != want {
+			t.Fatalf("turn3 action[%d]=%q, want %q", i, actions[i].Type, want)
+		}
+	}
+	if actions[1].Grid == nil || *actions[1].Grid != [2]int{3, 0} || actions[2].Ms != 800 ||
+		actions[3].Grid == nil || *actions[3].Grid != [2]int{3, 17} || actions[4].Ms != 200 {
+		t.Fatalf("turn3 PAN/delay staging drifted: %#v", actions[1:5])
+	}
+	if again := sc.TriggerActions(st, "on_turn_end", ""); len(again) != 0 {
+		t.Fatalf("once event triggered twice: %#v", again)
+	}
+}
