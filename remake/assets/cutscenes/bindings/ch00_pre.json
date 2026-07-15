@@ -8,6 +8,7 @@
         "chapter": 32,
         "map": "assets/maps/map32",
         "roster": "assets/maps/map32/map32_units.json",
+        "slot_count": 30,
         "script": "assets/story/ch00_palace.json",
         "cam_max_y": 808
       }
@@ -19,7 +20,6 @@
         "frames": 60
       }
     },
-    "0x32343": { "act": { "resource": 99 } },
     "0x32382": {
       "dialog": {
         "script": "assets/story/ch00_palace.json",
@@ -75,7 +75,6 @@
         ]
       }
     },
-    "0x323f5": { "act": { "resource": 100 } },
     "0x32426": { "act": { "resource": 101 } },
     "0x32461": { "act": { "resource": 102 } },
     "0x3249c": { "act": { "resource": 103 } },
@@ -126,25 +125,18 @@
         "chapter": 31,
         "map": "assets/maps/map31",
         "roster": "assets/maps/map31/map31_units.json",
+        "slot_count": 30,
         "script": "assets/story/ch00_meadow.json",
         "cam_x": 160,
         "cam_y": 1020
       }
     },
-    "0x3255f": { "act": { "resource": 90 } },
-    "0x3259a": { "act": { "resource": 91 } },
-    "0x325d5": { "act": { "resource": 92 } },
-    "0x32657": { "act": { "resource": 93 } },
-    "0x326d7": { "act": { "resource": 94 } },
-    "0x32712": { "act": { "resource": 95 } },
-    "0x3274d": { "act": { "resource": 96 } },
-    "0x32788": { "act": { "resource": 97 } },
-    "0x327d9": { "act": { "resource": 98 } },
     "0x3281d": {
       "loadch": {
         "chapter": 0,
         "map": "assets/maps/map0",
         "roster": "assets/maps/map0/map0_units.json",
+        "slot_count": 30,
         "script": "assets/story/ch01.json"
       }
     }

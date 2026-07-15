@@ -71,6 +71,7 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 	}
 	beats := make([]Beat, 0, len(script.Beats))
 	issues := make([]HandlerCompileIssue, 0)
+	activeSlotCount := 0
 	issue := func(i int, input HandlerBeat, reason string) {
 		issues = append(issues, HandlerCompileIssue{Beat: i, Op: input.Op, Source: input.Source, Reason: reason})
 	}
@@ -89,8 +90,8 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 				issue(i, input, "no complete remake state mapping for original loadch")
 				continue
 			}
-			if state.Chapter < 0 || state.Map == "" || state.Roster == "" || state.Script == "" {
-				issue(i, input, "loadch mapping must declare non-negative chapter plus map, roster, and script")
+			if state.Chapter < 0 || state.Map == "" || state.Roster == "" || state.SlotCount <= 0 || state.Script == "" {
+				issue(i, input, "loadch mapping must declare non-negative chapter plus map, roster, slot_count, and script")
 				continue
 			}
 			if input.Chapter != nil && *input.Chapter != state.Chapter {
@@ -100,6 +101,7 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			beat := runtime(input, "loadch")
 			beat.LoadCH = &state
 			beats = append(beats, beat)
+			activeSlotCount = state.SlotCount
 		case "delay":
 			if input.Ms == nil {
 				issue(i, input, "delay lacks an immediate millisecond value")
@@ -168,6 +170,10 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 				issue(i, input, "acting resource has not been decoded/mapped")
 				continue
 			}
+			if activeSlotCount > 0 && actingUsesUnavailableSlot(frames, activeSlotCount) {
+				issue(i, input, fmt.Sprintf("acting references roster slot outside active loadch slot_count=%d", activeSlotCount))
+				continue
+			}
 			beat := runtime(input, "act")
 			beat.Acting = frames
 			beats = append(beats, beat)
@@ -176,4 +182,15 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 		}
 	}
 	return beats, issues
+}
+
+func actingUsesUnavailableSlot(frames []ActingFrame, slotCount int) bool {
+	for _, frame := range frames {
+		for _, unit := range frame.Units {
+			if unit.Slot != nil && (*unit.Slot < 0 || *unit.Slot >= slotCount) {
+				return true
+			}
+		}
+	}
+	return false
 }

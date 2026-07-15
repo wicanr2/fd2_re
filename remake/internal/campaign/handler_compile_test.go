@@ -24,7 +24,7 @@ func TestCompileHandlerScriptUsesOnlyExplicitBindings(t *testing.T) {
 	beats, issues := CompileHandlerScript(script, HandlerBindings{
 		LoadCH: func(input HandlerBeat) (LoadCHState, bool) {
 			if input.Source.Addr == "0x3231e" {
-				return LoadCHState{Chapter: 32, Map: "assets/maps/map32", Roster: "assets/maps/map32/map32_units.json", Script: "assets/story/ch00_palace.json"}, true
+				return LoadCHState{Chapter: 32, Map: "assets/maps/map32", Roster: "assets/maps/map32/map32_units.json", SlotCount: 30, Script: "assets/story/ch00_palace.json"}, true
 			}
 			return LoadCHState{}, false
 		},
@@ -175,12 +175,8 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 	var slotAct bool
 	var normalSlotAct bool
 	map32Acts := map[string]int{
-		"0x32343": 99, "0x323f5": 100, "0x32426": 101, "0x32461": 102,
+		"0x32426": 101, "0x32461": 102,
 		"0x3249c": 103, "0x324d7": 104, "0x3251c": 105,
-	}
-	map31Acts := map[string]int{
-		"0x3255f": 90, "0x3259a": 91, "0x325d5": 92, "0x32657": 93, "0x326d7": 94,
-		"0x32712": 95, "0x3274d": 96, "0x32788": 97, "0x327d9": 98,
 	}
 	loadchs := map[int]string{32: "assets/maps/map32", 31: "assets/maps/map31", 0: "assets/maps/map0"}
 	for _, beat := range beats {
@@ -200,19 +196,13 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 				t.Fatalf("map32 ACT(%d) did not preserve source roster slot: %#v", id, beat)
 			}
 		}
-		if id, ok := map31Acts[beat.Source]; ok && beat.Op == "act" && len(beat.Acting) > 0 {
-			delete(map31Acts, beat.Source)
-			if beat.Acting[0].Units[0].Slot == nil {
-				t.Fatalf("map31 ACT(%d) did not preserve source roster slot: %#v", id, beat)
-			}
-		}
 		if beat.Op == "loadch" && beat.LoadCH != nil {
 			if mapPath, ok := loadchs[beat.LoadCH.Chapter]; ok && beat.LoadCH.Map == mapPath {
 				delete(loadchs, beat.LoadCH.Chapter)
 			}
 		}
 	}
-	if !pan || !dialog || !slotAct || !normalSlotAct || len(map32Acts) != 0 || len(map31Acts) != 0 || len(loadchs) != 0 {
+	if !pan || !dialog || !slotAct || !normalSlotAct || len(map32Acts) != 0 || len(loadchs) != 0 {
 		t.Fatalf("loaded binding did not lower its proven pan/dialog/slot-acting overrides: %#v", beats)
 	}
 }
@@ -271,8 +261,26 @@ func TestCompileCompleteLoadCHBinding(t *testing.T) {
 	state := beats[0].LoadCH
 	// Handler file labels are player-facing (one-origin), while original
 	// LOADCH/FDFIELD chapter ids are zero-origin: ch05 loads map4/FDTXT_005.
-	if state.Chapter != 4 || state.Map != "assets/maps/map4" || state.Roster != "assets/maps/map4/map4_units.json" || state.Script != "assets/story/ch05.json" {
+	if state.Chapter != 4 || state.Map != "assets/maps/map4" || state.Roster != "assets/maps/map4/map4_units.json" || state.SlotCount != 30 || state.Script != "assets/story/ch05.json" {
 		t.Fatalf("ch05 loadch state = %#v", state)
+	}
+}
+
+func TestCompileHandlerScriptRejectsActingOutsideActiveLoadCHSlots(t *testing.T) {
+	slot30 := 30
+	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{
+		{Op: "loadch", Source: HandlerSource{Addr: "0x100"}},
+		{Op: "act", ActingID: intPtr(9), Source: HandlerSource{Addr: "0x101"}},
+	}}, HandlerBindings{
+		LoadCH: func(HandlerBeat) (LoadCHState, bool) {
+			return LoadCHState{Chapter: 0, Map: "assets/maps/map0", Roster: "assets/maps/map0/map0_units.json", SlotCount: 30, Script: "assets/story/ch01.json"}, true
+		},
+		Acting: func(HandlerBeat) ([]ActingFrame, bool) {
+			return []ActingFrame{{Beats: 1, Units: []ActingUnit{{Slot: &slot30, Pose: 3}}}}, true
+		},
+	})
+	if len(beats) != 1 || beats[0].Op != "loadch" || len(issues) != 1 || issues[0].Op != "act" {
+		t.Fatalf("out-of-range acting must fail closed: beats=%#v issues=%#v", beats, issues)
 	}
 }
 

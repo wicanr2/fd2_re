@@ -711,12 +711,15 @@ func (g *Game) beatStart(b campaign.Beat) {
 // roster and text before replacing the rendered map so a malformed asset does
 // not leave a half-applied chapter transition behind.
 func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
-	if state == nil || state.Chapter < 0 || state.Map == "" || state.Roster == "" || state.Script == "" {
+	if state == nil || state.Chapter < 0 || state.Map == "" || state.Roster == "" || state.SlotCount <= 0 || state.Script == "" {
 		return fmt.Errorf("incomplete map/roster/story state")
 	}
 	roster, err := battle.Load(assetPath(state.Roster))
 	if err != nil {
 		return fmt.Errorf("roster %q: %w", state.Roster, err)
+	}
+	if len(roster.Units) != state.SlotCount {
+		return fmt.Errorf("roster %q has %d slots, binding declares %d", state.Roster, len(roster.Units), state.SlotCount)
 	}
 	lines := loadStoryScriptAt(state.Script, "", nil)
 	if lines == nil {

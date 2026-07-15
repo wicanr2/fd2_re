@@ -108,7 +108,7 @@ func LoadHandlerBinding(path string) (*HandlerBinding, error) {
 		if addr == "" || (override.LoadCH == nil && override.Pan == nil && override.Dialog == nil && override.Acting == nil) {
 			return nil, fmt.Errorf("handler binding %q has empty override at %q", path, addr)
 		}
-		if state := override.LoadCH; state != nil && (state.Chapter < 0 || state.Map == "" || state.Roster == "" || state.Script == "") {
+		if state := override.LoadCH; state != nil && (state.Chapter < 0 || state.Map == "" || state.Roster == "" || state.SlotCount <= 0 || state.Script == "") {
 			return nil, fmt.Errorf("handler binding %q has incomplete loadch override at %q", path, addr)
 		}
 		if acting := override.Acting; acting != nil {
