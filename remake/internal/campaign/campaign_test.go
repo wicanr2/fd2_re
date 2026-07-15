@@ -196,6 +196,20 @@ func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 	if battle3 == nil || battle3.OnWin != "story_ch03_post" || post3 == nil || post3.Type != "cutscene" || post3.HandlerBinding != "assets/cutscenes/bindings/ch02_post.json" || post3.Next != "town_ch04" {
 		t.Fatalf("chapter3 battle must flow through Tino's editable post handler: battle=%#v post=%#v", battle3, post3)
 	}
+	for _, tc := range []struct {
+		chapter int
+		town    string
+	}{
+		{11, "town_ch12"}, {13, "town_ch14"}, {15, "town_ch16"},
+		{17, "town_ch18"}, {20, "town_ch21"},
+	} {
+		battleID := fmt.Sprintf("battle_ch%02d", tc.chapter)
+		postID := fmt.Sprintf("postbattle_ch%02d_persist", tc.chapter)
+		battleNode, post := c.Nodes[battleID], c.Nodes[postID]
+		if battleNode == nil || battleNode.OnWin != postID || post == nil || post.Type != "cutscene" || post.Next != tc.town || len(post.Beats) != 2 || post.Beats[0].Op != "sync_party" || post.Beats[1].Op != "set_chapter" || post.Beats[1].Chapter == nil || *post.Beats[1].Chapter != tc.chapter {
+			t.Fatalf("chapter%d material acquisition must sync before %s: battle=%#v post=%#v", tc.chapter, tc.town, battleNode, post)
+		}
+	}
 	battle27 := c.Nodes["battle_ch27"]
 	gate := c.Nodes["inventory_gate_ch27_sky_key"]
 	success := c.Nodes["story_ch27_post_sky_key_success"]

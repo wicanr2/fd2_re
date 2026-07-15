@@ -40,16 +40,26 @@ def parse_map(raw, m):
     for i in range(16):
         t = ctl[o+i*3]; v = struct.unpack_from("<H", ctl, o+i*3+1)[0]
         if t != 0xFF and v != 0:
-            info["chests"].append({"type": "gold" if t == 1 else "item", "value": v})
+            # 地圖構成每格第二個 word 的低 5 bit 直接索引這個 slot。
+            # slot 0 是合法值（map10 星之眼即 slot0），不可用 truthiness 丟掉。
+            info["chests"].append({"slot": i, "type": "gold" if t == 1 else "item", "value": v})
     o += 16*3
     units = []
     for k in range(ctl[2]):
         b = ctl[o+k*26:o+(k+1)*26]
         if len(b) < 26:
             break
+        death_type = b[22]
+        death_value = b[23] | (b[24] << 8) | (b[25] << 16)
         units.append({"camp": ["enemy", "ally", "own"][b[0]] if b[0] < 3 else b[0],
                       "portrait": b[1], "race": b[2], "cls": b[3], "lv": b[4],
-                      "group": b[21]})   # b21=出場波次 group(turn_events 觸發);b22-25=drop
+                      "inventory": [item for item in b[5:13] if item != 0xFF],
+                      "group": b[21],
+                      # 0=item、1=gold 已由原攻略確認；2/3 是特殊死亡效果，
+                      # 語意未全解前保留原值，不猜成一般掉落物。
+                      "death_effect": None if death_type == 0xFF else {
+                          "type": death_type, "value": death_value,
+                      }})   # b21=出場波次 group;b22-25=死亡效果
     info["units"] = units
     n = struct.unpack_from("<H", spw, 0)[0]
     info["positions"] = [list(struct.unpack_from("<HHH", spw, 2+k*6)) for k in range(n)]

@@ -1566,8 +1566,21 @@
    "map": "assets/maps/map10",
    "units": "assets/maps/map10/map10_units.json",
    "scenario": "assets/scenarios/ch11.json",
-   "on_win": "town_ch12",
+   "on_win": "postbattle_ch11_persist",
    "on_lose": "retreat_ch11"
+  },
+  "postbattle_ch11_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 11
+    }
+   ],
+   "next": "town_ch12"
   },
   "retreat_ch11": {
    "type": "story",
@@ -1786,8 +1799,21 @@
    "map": "assets/maps/map12",
    "units": "assets/maps/map12/map12_units.json",
    "scenario": "assets/scenarios/ch13.json",
-   "on_win": "town_ch14",
+   "on_win": "postbattle_ch13_persist",
    "on_lose": "retreat_ch13"
+  },
+  "postbattle_ch13_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 13
+    }
+   ],
+   "next": "town_ch14"
   },
   "retreat_ch13": {
    "type": "story",
@@ -2014,8 +2040,21 @@
    "map": "assets/maps/map14",
    "units": "assets/maps/map14/map14_units.json",
    "scenario": "assets/scenarios/ch15.json",
-   "on_win": "town_ch16",
+   "on_win": "postbattle_ch15_persist",
    "on_lose": "retreat_ch15"
+  },
+  "postbattle_ch15_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 15
+    }
+   ],
+   "next": "town_ch16"
   },
   "retreat_ch15": {
    "type": "story",
@@ -2246,8 +2285,21 @@
    "map": "assets/maps/map16",
    "units": "assets/maps/map16/map16_units.json",
    "scenario": "assets/scenarios/ch17.json",
-   "on_win": "town_ch18",
+   "on_win": "postbattle_ch17_persist",
    "on_lose": "retreat_ch17"
+  },
+  "postbattle_ch17_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 17
+    }
+   ],
+   "next": "town_ch18"
   },
   "retreat_ch17": {
    "type": "story",
@@ -2628,8 +2680,21 @@
    "map": "assets/maps/map19",
    "units": "assets/maps/map19/map19_units.json",
    "scenario": "assets/scenarios/ch20.json",
-   "on_win": "town_ch21",
+   "on_win": "postbattle_ch20_persist",
    "on_lose": "retreat_ch20"
+  },
+  "postbattle_ch20_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 20
+    }
+   ],
+   "next": "town_ch21"
   },
   "retreat_ch20": {
    "type": "story",

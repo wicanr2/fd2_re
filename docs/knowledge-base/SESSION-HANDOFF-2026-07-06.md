@@ -140,14 +140,25 @@
 > 但不可宣稱這支視覺演出或 true-ending 實玩取得鏈已完整。Xvfb 已以真實 battle_ch21 context
 > 實畫 #5 與 #6；#6 畫面仍會露出未 layout 的黑區，這是明列待辦，不以手寫鏡頭假裝還原。
 
+> **2026-07-16 第十八次 Codex 更新（六素材正常取得鏈第一個可玩垂直切片）**：D1 已由
+> EXE 人物 defaults 證實在索菲亞 `[36,A7,D1]`，並接入 ch11 party；D2/D6/D4 已由 FDFIELD
+> composition terrain flag + slot + control reward 精確接成 map10 `(18,37)`、map12 `(38,18)`、
+> map19 hidden `(30,7)` 的可編輯寶物。原版只在站上該格選「休息／待機」時取，背包滿不開箱，
+> 敵我皆可取；runtime 已按此實作。D3/D5 不是泛用 inventory 搬運：特殊死亡 id39/id41 的 EXE
+> handlers 明確 lower 為單一 `D3/D5` reward，已接 once-only death reward 與跨戰 party sync。
+> ch11/13/15/17/20 勝利現在都先經 editable `postbattle_chNN_persist` 再回
+> town12/14/16/18/21，沒有為保存素材跳過城鎮／商店／整備。尚未完成的是 D2/D6 獸人主動搶箱與
+> 逃離 AI、普通寶箱 opened terrain+1 視覺、物品滿欄時原版互動轉移 UI；詳證見 `doc50 §3.10`。
+
 ## 0. 目前焦點(接手就做這裡)
 `ch00_pre`、`ch00_post`、`ch01_pre`、`ch01_post` 已成為前四個 campaign 實際 consumer；ch01 post 的 branch、
 reward、61-utterance FDTXT_002、dynamic speaker slots、PAN、SPAWN4、ACT14..16、JOIN/sync/chapter tail
 與第二、第三章戰前／戰後 handler 均已完整 lower 且 compiler **0 issues**；ch03 turn3 的
 slot6 active 條件、SPAWN2、兩段 PAN、800/200ms 與 FDTXT_003 #4 七句也已完整；第27章戰後
 天空之鑰→第28章整備／壞結局 gate，以及玩家第21章戰後的六素材 recipe／完整分支文字／
-共同 JOIN/sync/town22 均已接。下一個具體焦點是盤點並接入 `0xD1..0xD6` 六素材在前章的原版取得來源，
-或 lower ch20_post 的 layout/ACT63/64/鑄造動畫，再選下一支
+共同 JOIN/sync/town22 均已接；D1 人物 default、D2/D6/D4 寶箱、D3/D5 特殊死亡 reward 與五個
+關鍵戰後 persistence→town 節點也已完成第一個可玩垂直切片。下一個具體焦點是 D2/D6 獸人搶箱／
+逃離 AI 與普通寶箱 opened 換圖，或 lower ch20_post 的 layout/ACT63/64/鑄造動畫，再選下一支
 `0x233c6` post caller 依原版 arrays 補 binding。下方「草地深層未解」是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，
 不得再當目前 blocker。
 

@@ -41,21 +41,23 @@ type Unit struct {
 	AP, DP    int
 	HIT, EV   int // 命中/閃避基礎值(doc02 §2;doc03:EXE 內為「衍生值」非表格原始欄位,
 	// 敵/友單位 10B 表無此欄,export_units.py 暫用固定近似值,見該檔頭註解)
-	CritPct   int // 暴擊率(doc03 職業暴擊率表 0x5219B,resist_crit.json,依 class 已驗證吻合 doc02 §7.2)
-	MV        int // 移動力
-	AtkMin    int // 近戰攻擊距離下限(曼哈頓距離;0 視為預設 1,doc32 weapon_range.json 依武器 type 決定)
-	AtkMax    int // 近戰攻擊距離上限(0 視為預設 1;例:騎士槍type3=2,doc32)
-	Portrait  int
-	Fig       int // 地圖 sprite 組(= 角色 id,恆等,doc 31)
-	X, Y      int
-	Acted     bool    // 本回合已行動(原版 byte[+5] bit7)
-	Group     int     // 出場波次(原版 FDFIELD b21;事件按 group 放出,doc 25/29)
-	OnField   bool    // 是否已登場(事件進場機制:false=待命,尚未出現在戰場,doc 25)
-	Spells    []int   // 已習得法術 id(spell.json;原版 M1-M5 bitfield 展開)
-	Inventory []int   // 角色物品欄 item IDs；原版 unit+0x0a 起 8×2B，本階段保存未裝備 item identity
-	Dir       int     // 朝向:0下 1左 2上 3右(原版 Z2,FDICON 方向幀)
-	OffX      float64 // 行軍/移動的像素位移(顯示用;0=正在格上)
-	OffY      float64 // 進場時從邊緣滑入,漸減到 0
+	CritPct     int // 暴擊率(doc03 職業暴擊率表 0x5219B,resist_crit.json,依 class 已驗證吻合 doc02 §7.2)
+	MV          int // 移動力
+	AtkMin      int // 近戰攻擊距離下限(曼哈頓距離;0 視為預設 1,doc32 weapon_range.json 依武器 type 決定)
+	AtkMax      int // 近戰攻擊距離上限(0 視為預設 1;例:騎士槍type3=2,doc32)
+	Portrait    int
+	Fig         int // 地圖 sprite 組(= 角色 id,恆等,doc 31)
+	X, Y        int
+	Acted       bool         // 本回合已行動(原版 byte[+5] bit7)
+	Group       int          // 出場波次(原版 FDFIELD b21;事件按 group 放出,doc 25/29)
+	OnField     bool         // 是否已登場(事件進場機制:false=待命,尚未出現在戰場,doc 25)
+	Spells      []int        // 已習得法術 id(spell.json;原版 M1-M5 bitfield 展開)
+	Inventory   []int        // 角色物品欄 item IDs；原版 unit+0x0a 起 8×2B，本階段保存未裝備 item identity
+	DeathEffect *DeathEffect // FDFIELD b22..25；0=item、1=gold，2/3 特殊效果先原值保留
+	DeathReward *DeathEffect // 可執行死亡獎勵；type2 已知 handler 由 exporter lower 成 item/gold
+	Dir         int          // 朝向:0下 1左 2上 3右(原版 Z2,FDICON 方向幀)
+	OffX        float64      // 行軍/移動的像素位移(顯示用;0=正在格上)
+	OffY        float64      // 進場時從邊緣滑入,漸減到 0
 
 	// ---- 輔助法術暫時狀態(doc02 §6.4;施放邏輯見 magic.go CastArea/applySpell)----
 	BuffAPPct int // 魔刃術:AP 加成百分比
@@ -145,18 +147,71 @@ type State struct {
 	// preserve the original constructor semantics. Units is then the canonical
 	// runtime array: party/initial groups are appended in event order, and later
 	// SPAWN calls append their group without reserving slots ahead of time.
-	Roster        []*Unit
-	PendingGroups map[int]bool
-	OwnDeploy     []Cell          // 我方可部署格
-	Turn          int             // 回合數(無上限,doc 27;只由劇本事件限制)
-	Flags         map[string]bool // 事件旗標(跨事件/跨關劇情狀態,doc 29)
-	Cost          []int           // per-tile 移動成本(len==W*H;index=y*W+x;nil=尚無地形資料,MoveCost 全回 1)
+	Roster         []*Unit
+	PendingGroups  map[int]bool
+	OwnDeploy      []Cell            // 我方可部署格
+	Turn           int               // 回合數(無上限,doc 27;只由劇本事件限制)
+	Flags          map[string]bool   // 事件旗標(跨事件/跨關劇情狀態,doc 29)
+	Cost           []int             // per-tile 移動成本(len==W*H;index=y*W+x;nil=尚無地形資料,MoveCost 全回 1)
+	Treasures      map[Cell]Treasure // FDFIELD composition 地形旗標+slot 與 control chest table 的 join
+	OpenedTreasure map[int]bool      // 原版 [0x53ad5] battle-local opened[slot]
 	// 來源:tools/export_engine_assets.py 依地形控制表(doc01 §5)換算,由 Load 讀同目錄
 	// map.json 的 "cost" 陣列自動接上(worklist 第 8 輪「地形屬性接線」)。
 }
 
 // Cell 格子座標。
 type Cell struct{ X, Y int }
+
+// DeathEffect 原樣保存 FDFIELD 單位記錄 b22..25。Type 0/1 是死亡時掉物/金錢；
+// 2/3 的特殊事件語意尚未完全解明，runtime 在釘死前不得猜測執行。
+type DeathEffect struct {
+	Type  int `json:"type"`
+	Value int `json:"value"`
+}
+
+// Treasure 是一個可編輯的戰場寶物節點。Slot 對應 composition word 低5bit與
+// control table 16筆 reward；Hidden 只控制視覺，取得規則相同。
+type Treasure struct {
+	Slot   int
+	Kind   string
+	Value  int
+	Hidden bool
+}
+
+// TreasureAt 查詢尚未取得的寶物格。
+func (s *State) TreasureAt(x, y int) (Treasure, bool) {
+	if s == nil || s.OpenedTreasure == nil {
+		return Treasure{}, false
+	}
+	t, ok := s.Treasures[Cell{X: x, Y: y}]
+	return t, ok && !s.OpenedTreasure[t.Slot]
+}
+
+// ClaimTreasure 投影原版 0x190ac：只有站在該格的 active unit 可取；物品放進
+// 該單位8格 inventory，滿背包時不開箱；金錢由 caller 加到 campaign bank。
+// 原版沒有 camp 限制，因此 Enemy 也能取得並標記 opened。
+func (s *State) ClaimTreasure(u *Unit, x, y int) (Treasure, bool) {
+	if u == nil || !u.OnField || !u.Alive() || u.X != x || u.Y != y {
+		return Treasure{}, false
+	}
+	t, ok := s.TreasureAt(x, y)
+	if !ok {
+		return Treasure{}, false
+	}
+	switch t.Kind {
+	case "item":
+		if len(u.Inventory) >= 8 {
+			return Treasure{}, false
+		}
+		u.Inventory = append(u.Inventory, t.Value)
+	case "gold":
+		// Game owns the campaign bank; returning the reward lets it add atomically.
+	default:
+		return Treasure{}, false
+	}
+	s.OpenedTreasure[t.Slot] = true
+	return t, true
+}
 
 // OnFieldUnit 回傳該格上「已登場且存活」的單位(無則 nil)。
 func (s *State) UnitAt(x, y int) *Unit {
@@ -203,24 +258,31 @@ type unitsFile struct {
 	W         int    `json:"w"`
 	H         int    `json:"h"`
 	OwnDeploy []Cell `json:"own_deploy"`
-	Units     []struct {
-		Camp      string `json:"camp"`
-		Name      string `json:"name"`
-		ClsName   string `json:"cls_name"`
-		Lv        int    `json:"lv"`
-		HP        int    `json:"hp"`
-		MP        int    `json:"mp"`
-		Spells    []int  `json:"spells"`
-		Inventory []int  `json:"inventory,omitempty"`
-		AP        int    `json:"ap"`
-		DP        int    `json:"dp"`
-		HIT       int    `json:"hit"`
-		EV        int    `json:"ev"`
-		Crit      int    `json:"crit"`
-		MV        int    `json:"mv"`
-		AtkMin    int    `json:"atk_min"` // 攻擊距離下限(0=預設1;沒此欄的舊版 units.json 一律 0,doc32)
-		AtkMax    int    `json:"atk_max"` // 攻擊距離上限(0=預設1)
-		Ex        int    `json:"ex"`      // 每級經驗(doc02 §4.5「守方每級經驗」;export_units.py 新增欄,
+	Chests    []struct {
+		Slot  int    `json:"slot"`
+		Kind  string `json:"type"`
+		Value int    `json:"value"`
+	} `json:"chests,omitempty"`
+	Units []struct {
+		Camp        string       `json:"camp"`
+		Name        string       `json:"name"`
+		ClsName     string       `json:"cls_name"`
+		Lv          int          `json:"lv"`
+		HP          int          `json:"hp"`
+		MP          int          `json:"mp"`
+		Spells      []int        `json:"spells"`
+		Inventory   []int        `json:"inventory,omitempty"`
+		DeathEffect *DeathEffect `json:"death_effect,omitempty"`
+		DeathReward *DeathEffect `json:"death_reward,omitempty"`
+		AP          int          `json:"ap"`
+		DP          int          `json:"dp"`
+		HIT         int          `json:"hit"`
+		EV          int          `json:"ev"`
+		Crit        int          `json:"crit"`
+		MV          int          `json:"mv"`
+		AtkMin      int          `json:"atk_min"` // 攻擊距離下限(0=預設1;沒此欄的舊版 units.json 一律 0,doc32)
+		AtkMax      int          `json:"atk_max"` // 攻擊距離上限(0=預設1)
+		Ex          int          `json:"ex"`      // 每級經驗(doc02 §4.5「守方每級經驗」;export_units.py 新增欄,
 		// 舊版 units.json 沒有此欄時 json.Unmarshal 留 0,見 Unit.ExpPerLevel 註解)
 		Portrait int `json:"portrait"`
 		Fig      int `json:"fig"`
@@ -251,7 +313,8 @@ func Load(path string) (*State, error) {
 	if err := json.Unmarshal(raw, &f); err != nil {
 		return nil, err
 	}
-	st := &State{W: f.W, H: f.H, OwnDeploy: f.OwnDeploy, Turn: 1, Flags: map[string]bool{}}
+	st := &State{W: f.W, H: f.H, OwnDeploy: f.OwnDeploy, Turn: 1, Flags: map[string]bool{},
+		Treasures: map[Cell]Treasure{}, OpenedTreasure: map[int]bool{}}
 	for _, u := range f.Units {
 		camp := campFrom(u.Camp)
 		nu := &Unit{
@@ -261,21 +324,58 @@ func Load(path string) (*State, error) {
 			AtkMin: u.AtkMin, AtkMax: u.AtkMax,
 			Portrait: u.Portrait, Fig: u.Fig, X: u.X, Y: u.Y,
 			Spells: append([]int(nil), u.Spells...), Inventory: append([]int(nil), u.Inventory...),
-			Group: u.Group, OnField: true, // 預設登場;Scenario 會把待命 group 設 false
+			DeathEffect: u.DeathEffect,
+			DeathReward: u.DeathReward,
+			Group:       u.Group, OnField: true, // 預設登場;Scenario 會把待命 group 設 false
 		}
 		// 註:不再自動把 own 塞部署格 — 部署格保留給 scenario 主角隊(spawn_party);
 		// FDFIELD 的 own(如哈諾/哈瓦特)用自己的出場座標(房子位置),由事件按回合放出。
 		st.Units = append(st.Units, nu)
 	}
 	st.Cost = loadTerrainCost(filepath.Join(filepath.Dir(path), "map.json"), f.W, f.H)
+	st.Treasures = loadTreasures(filepath.Join(filepath.Dir(path), "map.json"), f.W, f.H, f.Chests)
 	return st, nil
 }
 
 // mapCostFile map.json 裡跟地形成本相關的欄位(其餘欄位 main.go 的 MapData 自己讀,這裡只挑 cost 用)。
 type mapCostFile struct {
-	W    int   `json:"w"`
-	H    int   `json:"h"`
-	Cost []int `json:"cost"`
+	W              int    `json:"w"`
+	H              int    `json:"h"`
+	Cost           []int  `json:"cost"`
+	TreasureSlots  []int  `json:"treasure_slots"`
+	TreasureHidden []bool `json:"treasure_hidden"`
+}
+
+func loadTreasures(mapJSONPath string, w, h int, chests []struct {
+	Slot  int    `json:"slot"`
+	Kind  string `json:"type"`
+	Value int    `json:"value"`
+}) map[Cell]Treasure {
+	out := map[Cell]Treasure{}
+	raw, err := os.ReadFile(mapJSONPath)
+	if err != nil {
+		return out
+	}
+	var m mapCostFile
+	if json.Unmarshal(raw, &m) != nil || m.W != w || m.H != h || len(m.TreasureSlots) != w*h {
+		return out
+	}
+	defs := make(map[int]Treasure, len(chests))
+	for _, c := range chests {
+		if c.Slot >= 0 && c.Slot < 32 && (c.Kind == "item" || c.Kind == "gold") && c.Value > 0 {
+			defs[c.Slot] = Treasure{Slot: c.Slot, Kind: c.Kind, Value: c.Value}
+		}
+	}
+	for i, slot := range m.TreasureSlots {
+		if slot < 0 {
+			continue
+		}
+		if t, ok := defs[slot]; ok {
+			t.Hidden = len(m.TreasureHidden) == w*h && m.TreasureHidden[i]
+			out[Cell{X: i % w, Y: i / w}] = t
+		}
+	}
+	return out
 }
 
 // loadTerrainCost 嘗試讀 units.json 同目錄的 map.json,取其 "cost" 陣列(tools/

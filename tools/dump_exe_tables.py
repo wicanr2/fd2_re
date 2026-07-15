@@ -73,6 +73,28 @@ def dump_unit(d):
     return rows
 
 
+def dump_character_defaults(d):
+    """人物出場屬性:32×24B = RA CL LV HP MP MV MG×4 IT×6 AP DP DX。
+
+    這張表是 JOIN 建立命名角色時的 authoritative default。特別是索菲亞 index11
+    的 IT[2]=0xD1 黃金徽章；FDFIELD 場景用的索菲亞 record 本身沒有這件物品。
+    """
+    base = ANCHORS["char"][0]
+    rows = []
+    for i in range(32):
+        o = base + i * 24
+        r = d[o:o + 24]
+        rows.append({
+            "idx": i, "off": hex(o), "race": r[0], "cls": r[1], "lv": r[2],
+            "hp": u16(d, o + 3), "mp": u16(d, o + 5), "mv": r[7],
+            "magic_raw": list(r[8:12]),
+            "inventory": [item for item in r[12:18] if item != 0xFF],
+            "ap": u16(d, o + 18), "dp": u16(d, o + 20), "dx": u16(d, o + 22),
+            "raw": r.hex(),
+        })
+    return rows
+
+
 def dump_spell(d):
     """法術功效:7B = DA DA HT DS RN MP WH。0x00..0x23 + 召喚 0x20..0x23 → 取 0x24 筆。"""
     base = ANCHORS["spell"][0]
@@ -141,7 +163,7 @@ UNIT_CHECK = {
 }
 
 
-def selftest(growth, unit, resist):
+def selftest(growth, unit, characters, resist):
     ok = True
     for i, exp in GROWTH_CHECK.items():
         got = growth[i]["raw"]
@@ -154,6 +176,11 @@ def selftest(growth, unit, resist):
         m = got[1:] == exp[1:]
         ok &= m
         print(f"  敵友[{i}] {'✓' if m else '✗ 期望 '+str(exp)} {got}")
+    # JOIN 11（索菲亞）的 EXE default IT[2] 必須是黃金徽章 0xD1。
+    sophia_items = characters[11]["inventory"]
+    m = sophia_items == [0x36, 0xA7, 0xD1]
+    ok &= m
+    print(f"  人物[11]索菲亞初始物品 {'✓' if m else '✗ 期望 [54,167,209]'} {sophia_items}")
     # 職業魔抗:法師(05)應 30%、聖騎士(0B)應 10%、僧侶(06)30%
     rd = {r["cls"]: r["resist_pct"] for r in resist}
     for cls, exp in [(0x05, 30), (0x06, 30), (0x0B, 10), (0x0D, 50)]:
@@ -182,17 +209,18 @@ def main(argv):
 
     growth = dump_growth(d)
     unit = dump_unit(d)
+    characters = dump_character_defaults(d)
     spell = dump_spell(d)
     item = dump_item(d)
     rc = dump_resist_crit(d)
 
-    for name, rows in [("growth", growth), ("unit", unit), ("spell", spell),
+    for name, rows in [("growth", growth), ("unit", unit), ("character_defaults", characters), ("spell", spell),
                        ("item", item), ("resist_crit", rc)]:
         write_out(out, name, rows)
         print(f"  -> {name}.json  ({len(rows)} 列)")
 
     print("數值自驗(對照青衫攻略字面值):")
-    ok = selftest(growth, unit, rc)
+    ok = selftest(growth, unit, characters, rc)
     print("自驗結果:", "全部通過 ✓" if ok else "有不符 ✗")
     return 0 if ok else 2
 

@@ -41,6 +41,14 @@ EXE_RESIST_CRIT = os.path.join(os.path.dirname(__file__), "..", "docs", "data", 
 DEFAULT_HIT = 90
 DEFAULT_EV = 5
 
+# FDFIELD death_effect type=2 會以 value 索引 EXE 特殊死亡 handler 表。
+# 0x34F74(id39) 把三位元組 00 D3 00 交給 reward dispatcher；
+# 0x34FF0(id41) 同理傳 00 D5 00。保留 raw effect，另把可執行 reward 資料化。
+SPECIAL_DEATH_REWARDS = {
+    39: {"type": 0, "value": 0xD3},
+    41: {"type": 0, "value": 0xD5},
+}
+
 
 def crit_by_cls(resist_crit, cls):
     for e in resist_crit:
@@ -113,12 +121,21 @@ def main(argv):
             # 近似(既有限制,見 base_stats() docstring),非另外新造的猜測值。
             "ex": bs.get("ex", 0),
         }
+        if u.get("inventory"):
+            rec["inventory"] = u["inventory"]
+        if u.get("death_effect") is not None:
+            rec["death_effect"] = u["death_effect"]
+            effect = u["death_effect"]
+            if effect["type"] in (0, 1):
+                rec["death_reward"] = effect
+            elif effect["type"] == 2 and effect["value"] in SPECIAL_DEATH_REWARDS:
+                rec["death_reward"] = SPECIAL_DEATH_REWARDS[effect["value"]]
         if i < len(positions):                       # 固定出場座標(我方會被引擎改放部署格)
             rec["x"], rec["y"] = positions[i][0], positions[i][1]
         units.append(rec)
 
     res = {"map": m, "w": info["w"], "h": info["h"],
-           "own_deploy": own_cells, "units": units}
+           "own_deploy": own_cells, "chests": info.get("chests", []), "units": units}
     p = os.path.join(out, f"map{m}_units.json")
     json.dump(res, open(p, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
     print(f"map{m}: {len(units)} units ({sum(1 for u in units if u['camp']!='own')} 敵/友 配座標), "

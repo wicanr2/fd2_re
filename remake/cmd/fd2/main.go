@@ -130,6 +130,7 @@ type Game struct {
 	sfxDeath           []byte                  // 陣亡/重擊音(近似:最長池)
 	prevCurX, prevCurY int                     // 游標移動音偵測
 	aiBusy             bool                    // AI 回合進行中(逐單位行走動畫)
+	deathRewarded      map[*battle.Unit]bool   // 每個死亡 transition 的 reward 只執行一次
 	rng                *rand.Rand              // 施法擲骰(FD2_SEED 可固定,headless 重現)
 	gold               int                     // 金幣(商店)
 	items              []string                // 隊伍道具(名稱;道具效果待實裝)
@@ -1929,12 +1930,81 @@ func (g *Game) ringInput() bool {
 					g.sel.Name, g.sel.Lv, g.sel.HP, g.sel.MaxHP, g.sel.MP, g.sel.AP, g.sel.DP)
 			}
 		case 3: // 待機
-			g.ring = false
-			g.sel.Acted = true
-			g.sel, g.reach, g.moved = nil, nil, false
+			g.finishSelectedWait()
 		}
 	}
 	return true
+}
+
+// finishSelectedWait 對應原版行動選單第四項「下／休息」。0x19077 在未移動時
+// 先回復 MaxHP 20%，接著 0x1908b 無論是否移動都呼叫 0x190ac 檢查當格寶物；
+// 不是踩上格子立即開箱，也不是道具指令。
+func (g *Game) finishSelectedWait() {
+	u := g.sel
+	if u == nil {
+		return
+	}
+	g.ring = false
+	if u.X == g.selOrigX && u.Y == g.selOrigY && u.HP > 0 && u.HP < u.MaxHP {
+		heal := u.MaxHP / 5
+		if heal < 1 {
+			heal = 1
+		}
+		u.HP += heal
+		if u.HP > u.MaxHP {
+			u.HP = u.MaxHP
+		}
+	}
+	if before, exists := g.st.TreasureAt(u.X, u.Y); exists {
+		if got, ok := g.st.ClaimTreasure(u, u.X, u.Y); ok {
+			if got.Kind == "gold" {
+				g.gold += got.Value
+				g.msg = fmt.Sprintf("取得 %d 金幣", got.Value)
+			} else {
+				g.msg = fmt.Sprintf("取得物品 %02Xh", got.Value)
+			}
+		} else if before.Kind == "item" && len(u.Inventory) >= 8 {
+			g.msg = "物品欄已滿，寶物仍留在原處"
+		}
+	}
+	u.Acted = true
+	g.sel, g.reach, g.moved = nil, nil, false
+}
+
+// awardDeathReward 執行 exporter 已 lower 的可編輯 death_reward。原版特殊 handler
+// id39/id41 分別把 00 D3 00／00 D5 00 交給同一 reward dispatcher；不是把敵人整個
+// inventory 搬給攻擊者。item 優先放入擊殺者，滿欄時暫用隊伍空格承接，直到物品
+// 使用／給予 UI 完成後再還原原版的互動轉移提示。
+func (g *Game) awardDeathReward(dead, killer *battle.Unit) {
+	if dead == nil || dead.Alive() || dead.DeathReward == nil {
+		return
+	}
+	if g.deathRewarded == nil {
+		g.deathRewarded = make(map[*battle.Unit]bool)
+	}
+	if g.deathRewarded[dead] {
+		return
+	}
+	g.deathRewarded[dead] = true
+	r := dead.DeathReward
+	switch r.Type {
+	case 0:
+		awarded := false
+		if killer != nil && killer.Camp == battle.Own && len(killer.Inventory) < 8 {
+			killer.Inventory = append(killer.Inventory, r.Value)
+			awarded = true
+		} else {
+			awarded = g.grantItemToParty(r.Value)
+		}
+		if awarded {
+			g.msg = fmt.Sprintf("擊破敵人，取得物品 %02Xh", r.Value)
+		} else {
+			g.msg = fmt.Sprintf("物品欄已滿，未能取得 %02Xh", r.Value)
+		}
+	case 1:
+		g.gold += r.Value
+		g.msg = fmt.Sprintf("擊破敵人，取得 %d 金幣", r.Value)
+	}
 }
 
 // walkAnim 沿路徑逐格行走(玩家/AI 移動;FDICON 方向走動幀 + OffX/OffY 內插)。
@@ -2309,6 +2379,9 @@ func (g *Game) confirm() {
 				first = &results[i]
 			}
 		}
+		for i := range results {
+			g.awardDeathReward(results[i].Target, g.sel)
+		}
 		verb := "造成"
 		if sp.Target == 1 {
 			verb = "回復"
@@ -2366,6 +2439,7 @@ func (g *Game) confirm() {
 		}
 		defHP0 := tgt.HP
 		dmg := g.st.Attack(g.sel, tgt)
+		g.awardDeathReward(tgt, g.sel)
 		g.msg = fmt.Sprintf("%s 攻擊 %s,造成 %d 傷害", anm, nm, dmg)
 		g.atk = g.newAtkAnim(g.sel.Fig, tgt.Fig, anm, nm,
 			g.sel.HP, g.sel.MaxHP, g.sel.Lv, g.sel.MP, tgt.Lv, tgt.MP,
@@ -2373,8 +2447,7 @@ func (g *Game) confirm() {
 		g.sel, g.reach, g.moved = nil, nil, false
 		g.checkResult()
 	} else if g.curX == g.sel.X && g.curY == g.sel.Y { // 原地待命
-		g.sel.Acted = true
-		g.sel, g.reach, g.moved = nil, nil, false
+		g.finishSelectedWait()
 	}
 }
 
@@ -3822,7 +3895,8 @@ func (g *Game) completeTurn() {
 	g.st.Turn++
 	for _, u := range g.st.Units {
 		u.Acted = false
-		u.TickStatus() // buff/封咒/中毒/麻痺回合遞減+中毒扣血(doc02 §6.4)
+		u.TickStatus()             // buff/封咒/中毒/麻痺回合遞減+中毒扣血(doc02 §6.4)
+		g.awardDeathReward(u, nil) // poison/status death shares the same once-only reward path
 	}
 	if g.result == "" {
 		g.showBanner("PLAYER PHASE")
@@ -3860,6 +3934,7 @@ func (g *Game) aiStep() {
 			}
 			hp0 := tgt.HP
 			dmg := g.st.Attack(u, tgt)
+			g.awardDeathReward(tgt, u)
 			g.msg = fmt.Sprintf("%s 攻擊 %s,造成 %d 傷害", anm, nm, dmg)
 			g.atk = g.newAtkAnim(u.Fig, tgt.Fig, anm, nm,
 				u.HP, u.MaxHP, u.Lv, u.MP, tgt.Lv, tgt.MP,

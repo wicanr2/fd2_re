@@ -46,11 +46,13 @@ MOVE_CODE_TO_WALK_COST = {
 }
 
 
-def load_terrain_costs(terrainp):
-    """讀地形控制表(每格 4B,byte1=移動代碼),回傳 per-tile 步行成本清單。"""
+def load_terrain_records(terrainp):
+    """讀地形控制表(每格 4B)，回傳 (byte0 flags, 步行成本)。"""
     d = open(terrainp, "rb").read()
     n = len(d) // 4
-    return [MOVE_CODE_TO_WALK_COST.get(d[i * 4 + 1], 1) for i in range(n)]
+    flags = [d[i * 4] for i in range(n)]
+    costs = [MOVE_CODE_TO_WALK_COST.get(d[i * 4 + 1], 1) for i in range(n)]
+    return flags, costs
 
 
 def main(argv):
@@ -72,18 +74,33 @@ def main(argv):
     d = open(fieldp, "rb").read()
     w, h = struct.unpack_from("<HH", d, 0)
     tilesidx = [struct.unpack_from("<H", d, 4 + i * 4)[0] for i in range(w * h)]
+    event_words = [struct.unpack_from("<H", d, 6 + i * 4)[0] for i in range(w * h)]
     meta = {"w": w, "h": h, "tileW": tw, "tileH": th, "cols": cols, "tiles": tilesidx}
     if terrainp:
-        costs = load_terrain_costs(terrainp)
+        terrain_flags, costs = load_terrain_records(terrainp)
         oob = 0
         cost_arr = []
-        for ti in tilesidx:
+        treasure_slots = []
+        treasure_hidden = []
+        for ti, event_word in zip(tilesidx, event_words):
             if 0 <= ti < len(costs):
                 cost_arr.append(costs[ti])
+                flags = terrain_flags[ti]
+                if flags & 0x60:  # 0x20=普通寶箱、0x40=隱藏物品
+                    treasure_slots.append(event_word & 0x1F)
+                    treasure_hidden.append(bool(flags & 0x40))
+                else:
+                    treasure_slots.append(-1)
+                    treasure_hidden.append(False)
             else:
                 cost_arr.append(1)
+                treasure_slots.append(-1)
+                treasure_hidden.append(False)
                 oob += 1
         meta["cost"] = cost_arr
+        # 與 tiles/cost 同為 row-major 陣列。slot0 合法，-1 才表示非寶箱格。
+        meta["treasure_slots"] = treasure_slots
+        meta["treasure_hidden"] = treasure_hidden
         if oob:
             print(f"警告:{oob} 格 tile index 超出地形表範圍({len(costs)} 格),已回退 cost=1")
     json.dump(meta, open(os.path.join(out, "map.json"), "w"), separators=(",", ":"))

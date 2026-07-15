@@ -117,6 +117,7 @@ REMAKE = os.path.join(ROOT, "remake")
 DOC28 = os.path.join(ROOT, "docs", "knowledge-base", "28-chapter-objectives-and-recruits.md")
 SHOPS_JSON = os.path.join(ROOT, "docs", "data", "shops.json")
 CHARACTERS_JSON = os.path.join(ROOT, "docs", "data", "exe_tables", "characters.json")
+CHARACTER_DEFAULTS_JSON = os.path.join(ROOT, "docs", "data", "exe_tables", "character_defaults.json")
 GROWTH_JSON = os.path.join(ROOT, "docs", "data", "exe_tables", "growth.json")
 TURN_EVENTS_JSON = os.path.join(ROOT, "docs", "data", "turn_events.json")
 OUT_PATH = os.path.join(REMAKE, "assets", "scenarios", "campaign_full.json")
@@ -212,10 +213,19 @@ def load_ch01_party() -> list[dict]:
         return json.load(f)["party"]
 
 
-def load_characters(path: str) -> dict[str, dict]:
-    """讀 characters.json,回傳 name -> record(含 index,供對齊 growth.json idx)。"""
+def load_characters(path: str, defaults_path: str) -> dict[str, dict]:
+    """合併命名角色表與 EXE 24B 出場 defaults，回傳 name -> record。
+
+    defaults 的 inventory 是 JOIN 建角時的原始內容；索菲亞 D1 黃金徽章只存在這裡，
+    不在 ch10 FDFIELD 場景 record，不能以章末 grant 代替。
+    """
     with open(path, encoding="utf-8") as f:
         rows = json.load(f)
+    with open(defaults_path, encoding="utf-8") as f:
+        defaults = {r["idx"]: r for r in json.load(f)}
+    for row in rows:
+        if default := defaults.get(row["index"]):
+            row["inventory"] = list(default["inventory"])
     return {r["name"]: r for r in rows}
 
 
@@ -262,6 +272,7 @@ def build_base4_stats(
         "name": name, "cls": base["cls"], "fig": base["fig"], "portrait": base["portrait"],
         "lv": lv, "hp": hp, "mp": mp, "ap": ap, "dp": dp, "mv": base["mv"],
         **({"spells": base["spells"]} if "spells" in base else {}),
+        **({"inventory": char["inventory"]} if char and char.get("inventory") else {}),
     }
 
 
@@ -287,6 +298,7 @@ def build_recruit_stats(
         "mp": round(hp * MP_HP_RATIO_CASTER) if is_caster else 0,
         "ap": round(hp * ap_ratio), "dp": round(hp * DP_HP_RATIO),
         "mv": MV_BY_CLASS.get(char["cls_name"], DEFAULT_MV),
+        **({"inventory": char["inventory"]} if char.get("inventory") else {}),
     }
 
 
@@ -720,6 +732,22 @@ def build_campaign(
             }
             after_battle_id = intro_id
 
+        # 尚未逐章 lower 完原版 post handler 的關卡，也必須先有一個可編輯的
+        # persistence 節點：戰後 snapshot inventory/能力、推進 chapter，再進原本的
+        # town/preparation。不能讓 battle 直接跳 town，否則下一章 LOADCH 會用舊 roster
+        # 覆蓋剛取得的寶物。ch21/ch27 已在各自的精確分支尾執行同一組操作。
+        if c not in (21, 27):
+            post_id = f"postbattle_ch{cid}_persist"
+            nodes[post_id] = {
+                "type": "cutscene",
+                "beats": [
+                    {"op": "sync_party"},
+                    {"op": "set_chapter", "chapter": c},
+                ],
+                "next": after_battle_id,
+            }
+            after_battle_id = post_id
+
         nodes[battle_id] = {
             "type": "battle",
             "bgm": BGM_BATTLE_TABLE[(c - 1) % len(BGM_BATTLE_TABLE)],
@@ -874,7 +902,7 @@ def validate(campaign: dict) -> list[str]:
 def main():
     rows = parse_doc28(DOC28)
     shops_by_ch = load_shops_by_chapter(SHOPS_JSON)
-    characters_by_name = load_characters(CHARACTERS_JSON)
+    characters_by_name = load_characters(CHARACTERS_JSON, CHARACTER_DEFAULTS_JSON)
     growth_by_idx = load_growth(GROWTH_JSON)
     turn_events_by_ch = load_turn_events(TURN_EVENTS_JSON)
     campaign, scenario_sources, recruit_plan, skipped_recruits, reinforce_counts, reinforce_skipped = build_campaign(
