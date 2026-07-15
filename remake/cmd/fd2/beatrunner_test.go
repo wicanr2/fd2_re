@@ -1,5 +1,5 @@
 // beatrunner_test.go — BeatRunner(doc50)純邏輯測試:不碰 ebiten 顯示/輸入,
-// 只驗證 beatStart/beatAdvance 與 stepCamPan/stepStoryWalks/stepActJob/stepFade
+// 只驗證 beatStart/beatAdvance 與 stepCamPan/stepStoryWalks/stepActJob/stepFocusUnit/stepFade
 // 這幾個「逐幀推進」method 的狀態機是否照 op 表正確銜接。
 package main
 
@@ -55,6 +55,7 @@ func (g *Game) tick(n int) {
 	for i := 0; i < n; i++ {
 		g.stepStoryWalks()
 		g.stepActJob()
+		g.stepFocusUnit()
 		g.stepFade()
 		g.stepCamPan()
 		if g.beatDelay > 0 {
@@ -203,29 +204,25 @@ func TestBeatActingSpecialFrameStaysPut(t *testing.T) {
 }
 
 func TestBeatActingUsesOriginalSlotBeforeDuplicateFig(t *testing.T) {
-	// Exact decoded 0x66 from ch00_pre call-site 0x32461.  Slots 13,16,17
-	// are all fig69 guards; a Fig-only lookup used to animate slot13 twice.
-	slot16, slot17 := 16, 17
-	frames := []campaign.ActingFrame{
-		{Beats: 8, Special: true, Units: []campaign.ActingUnit{{Slot: &slot16, Pose: 2}, {Slot: &slot17, Pose: 2}}},
-		{Beats: 8, Special: true, Units: []campaign.ActingUnit{{Slot: &slot16, Pose: 0}, {Slot: &slot17, Pose: 0}}},
-		{Beats: 8, Special: true, Units: []campaign.ActingUnit{{Slot: &slot16, Pose: 2}, {Slot: &slot17, Pose: 2}}},
-		{Beats: 8, Special: true, Units: []campaign.ActingUnit{{Slot: &slot16, Pose: 3}, {Slot: &slot17, Pose: 3}}},
-		{Beats: 8, Special: true, Units: []campaign.ActingUnit{{Slot: &slot16, Pose: 1}, {Slot: &slot17, Pose: 1}}},
-		{Beats: 0, Special: true, Units: []campaign.ActingUnit{{Slot: &slot16, Pose: 1}, {Slot: &slot17, Pose: 1}}},
-	}
+	// Synthetic duplicate-Fig regression: decoded resources are slot-addressed,
+	// so a Fig-only lookup must never redirect either target to the first guard.
+	slot1, slot2 := 1, 2
+	frames := []campaign.ActingFrame{{
+		Beats: 3, Special: true,
+		Units: []campaign.ActingUnit{{Slot: &slot1, Pose: 1}, {Slot: &slot2, Pose: 2}},
+	}}
 	g := newBeatTestGame(t, []campaign.Beat{{Op: "act", Acting: frames}})
-	g.storyActors = make([]battle.Unit, 18)
+	g.storyActors = make([]battle.Unit, 3)
 	for i := range g.storyActors {
 		g.storyActors[i] = battle.Unit{Fig: 69, OnField: true, Dir: 3}
 	}
 	g.beatAdvance()
-	g.tick(43) // five 8-tick frames plus original zero-special delay(1)+delay(2)
-	if g.storyActors[13].Dir != 3 {
-		t.Fatalf("duplicate fig fallback touched slot13: dir=%d", g.storyActors[13].Dir)
+	g.tick(3)
+	if g.storyActors[0].Dir != 3 {
+		t.Fatalf("duplicate fig fallback touched slot0: dir=%d", g.storyActors[0].Dir)
 	}
-	if g.storyActors[16].Dir != 1 || g.storyActors[17].Dir != 1 {
-		t.Fatalf("decoded slots 16/17 were not targeted: dirs=(%d,%d)", g.storyActors[16].Dir, g.storyActors[17].Dir)
+	if g.storyActors[1].Dir != 1 || g.storyActors[2].Dir != 2 {
+		t.Fatalf("decoded slots 1/2 were not targeted: dirs=(%d,%d)", g.storyActors[1].Dir, g.storyActors[2].Dir)
 	}
 }
 
@@ -245,24 +242,105 @@ func TestBeatActingZeroSpecialPreservesOriginalThreeTickTransition(t *testing.T)
 }
 
 func TestBeatActingDecodedNormalSlotMovement(t *testing.T) {
-	// Exact decoded 0x68 from ch00_pre source 0x324d7: original slot1 moves
-	// right once, up once, then holds pose-right for four special ticks.
-	slot1 := 1
-	g := newBeatTestGame(t, []campaign.Beat{{Op: "act", Acting: []campaign.ActingFrame{
-		{Beats: 1, Units: []campaign.ActingUnit{{Slot: &slot1, Pose: 3}}},
-		{Beats: 1, Units: []campaign.ActingUnit{{Slot: &slot1, Pose: 2}}},
-		{Beats: 4, Special: true, Units: []campaign.ActingUnit{{Slot: &slot1, Pose: 3}}},
-	}}})
-	g.storyActors = make([]battle.Unit, 2)
-	g.storyActors[0] = battle.Unit{Fig: 66, X: 9, Y: 5, OnField: true}
-	g.storyActors[1] = battle.Unit{Fig: 66, X: 10, Y: 5, OnField: true}
-	g.beatAdvance()
-	g.tick(18) // 2 normal beats × 7 ticks, then 4 special ticks
-	if got := g.storyActors[0]; got.X != 9 || got.Y != 5 {
-		t.Fatalf("same-Fig slot0 moved instead of slot1: (%d,%d)", got.X, got.Y)
+	// Direct resource102 at ch00 source 0x32461: slot4 left×2, up×1,
+	// left×1. A duplicate Fig at slot0 must remain untouched.
+	resources, err := campaign.LoadActingResourceSet(assetPath("assets/cutscenes/acting/map32.json"))
+	if err != nil {
+		t.Fatal(err)
 	}
-	if got := g.storyActors[1]; got.X != 11 || got.Y != 4 || got.Dir != 3 {
-		t.Fatalf("slot1 decoded movement = (%d,%d) dir=%d, want (11,4) dir=3", got.X, got.Y, got.Dir)
+	g := newBeatTestGame(t, []campaign.Beat{{Op: "act", Acting: resources[102]}})
+	g.storyActors = make([]battle.Unit, 5)
+	g.storyActors[0] = battle.Unit{Fig: 4, X: 9, Y: 5, OnField: true}
+	g.storyActors[4] = battle.Unit{Fig: 4, X: 10, Y: 10, OnField: true}
+	g.beatAdvance()
+	g.tick(28) // four normal grid beats × seven ticks
+	if got := g.storyActors[0]; got.X != 9 || got.Y != 5 {
+		t.Fatalf("same-Fig slot0 moved instead of slot4: (%d,%d)", got.X, got.Y)
+	}
+	if got := g.storyActors[4]; got.X != 7 || got.Y != 9 || got.Dir != 1 {
+		t.Fatalf("slot4 decoded movement = (%d,%d) dir=%d, want (7,9) dir=1", got.X, got.Y, got.Dir)
+	}
+}
+
+func TestBeatScrollStepSlot2MatchesCh00ACT99Followup(t *testing.T) {
+	// ch00 handler 0x32351 calls 0x13185(slot2) 15 times immediately after
+	// direct ACT99 has moved Sol from Y42 to Y36.  Each original grid step has
+	// seven redraw ticks, so the complete scroll is exactly 105 ticks.
+	slot2 := 2
+	g := newBeatTestGame(t, []campaign.Beat{{
+		Op: "scroll_step", Slot: &slot2, Steps: 15, Frames: 105, Follow: true,
+	}})
+	g.m = &MapData{W: 20, H: 60, TileW: 24, TileH: 24, Cols: 8, Tiles: make([]int, 1200)}
+	g.storyActors = make([]battle.Unit, 3)
+	g.storyActors[2] = battle.Unit{Fig: 0, X: 8, Y: 36, OnField: true}
+	g.camY = 34 * 24
+	g.beatAdvance()
+	if len(g.storyWalks) != 1 || g.followWalk {
+		t.Fatalf("scroll_step should use its original safe-band follow rather than centering, walks=%d follow=%v", len(g.storyWalks), g.followWalk)
+	}
+	g.tick(104)
+	if got := g.storyActors[2]; got.Y != 21 || got.Dir != 2 || got.OffY == 0 {
+		t.Fatalf("after 104/105 ticks slot2 should still interpolate toward Y21 facing up: %+v", got)
+	}
+	g.tick(1)
+	if got := g.storyActors[2]; got.X != 8 || got.Y != 21 || got.Dir != 2 || got.OffX != 0 || got.OffY != 0 {
+		t.Fatalf("15-step scroll should finish slot2 at (8,21), pose2, without offset: %+v", got)
+	}
+	if g.camY != 20*24 {
+		t.Fatalf("0x13185 safe-band camera=%v, want original cam row 20", g.camY)
+	}
+}
+
+func TestBeatDirectACT100MovesSlot2DownTenCells(t *testing.T) {
+	resources, err := campaign.LoadActingResourceSet(assetPath("assets/cutscenes/acting/map32.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	frames := resources[100]
+	if len(frames) != 1 || frames[0].Beats != 10 || frames[0].Special || len(frames[0].Units) != 1 {
+		t.Fatalf("ACT100 must retain its direct decoded one-frame down×10 data: %#v", frames)
+	}
+	slot2 := 2
+	if frames[0].Units[0].Slot == nil || *frames[0].Units[0].Slot != slot2 || frames[0].Units[0].Pose != 0 {
+		t.Fatalf("ACT100 target must be original slot2 pose0: %#v", frames[0])
+	}
+	g := newBeatTestGame(t, []campaign.Beat{{Op: "act", Source: "0x323f5", Acting: frames}})
+	g.storyActors = make([]battle.Unit, 3)
+	g.storyActors[2] = battle.Unit{Fig: 0, X: 8, Y: 8, OnField: true}
+	g.beatAdvance()
+	g.tick(69)
+	if got := g.storyActors[2]; got.Y != 17 || got.Dir != 0 {
+		t.Fatalf("ACT100 before its 70th tick should have completed nine down cells: %+v", got)
+	}
+	g.tick(1)
+	if got := g.storyActors[2]; got.X != 8 || got.Y != 18 || got.Dir != 0 || got.OffX != 0 || got.OffY != 0 {
+		t.Fatalf("ACT100 direct frame should move slot2 Y8→18 in 70 ticks, pose0: %+v", got)
+	}
+}
+
+func TestBeatFocusUnitWalksCursorAndScrollsAtOriginalSafeBand(t *testing.T) {
+	slot2 := 2
+	g := newBeatTestGame(t, []campaign.Beat{{Op: "focus_unit", Slot: &slot2}})
+	// Original 0x12cea uses a 13×8 viewport. It walks X first, then Y, and only
+	// scrolls the map origin after screen cursor X>10 / Y>5; it never centers.
+	g.m = &MapData{W: 40, H: 30, TileW: 24, TileH: 24, Cols: 8, Tiles: make([]int, 1200)}
+	g.storyActors = make([]battle.Unit, 3)
+	g.storyActors[2] = battle.Unit{Fig: 0, X: 20, Y: 15, OnField: true}
+	g.beatAdvance()
+	if g.focusJob == nil || g.curX != 0 || g.curY != 0 {
+		t.Fatalf("focus_unit must start a blocking grid walk, job=%#v cursor=(%d,%d)", g.focusJob, g.curX, g.curY)
+	}
+	g.tick(20)
+	if g.curX != 20 || g.curY != 0 || g.camX != 216 || g.camY != 0 || g.focusJob == nil {
+		t.Fatalf("after X phase cursor=(%d,%d) camera=(%v,%v) job=%#v, want (20,0)/(216,0)/active", g.curX, g.curY, g.camX, g.camY, g.focusJob)
+	}
+	g.tick(14)
+	if g.curX != 20 || g.curY != 14 || g.camX != 216 || g.camY != 192 || g.focusJob == nil {
+		t.Fatalf("before final Y step cursor=(%d,%d) camera=(%v,%v) job=%#v", g.curX, g.curY, g.camX, g.camY, g.focusJob)
+	}
+	g.tick(1)
+	if g.curX != 20 || g.curY != 15 || g.camX != 216 || g.camY != 216 || g.focusJob != nil {
+		t.Fatalf("focus_unit finish cursor=(%d,%d) camera=(%v,%v) job=%#v, want target/(216,216)/nil", g.curX, g.curY, g.camX, g.camY, g.focusJob)
 	}
 }
 

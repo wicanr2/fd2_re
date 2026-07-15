@@ -1,6 +1,8 @@
 # 54 — acting pose 語意:用原版影片當 oracle 反推(rulebook 64)
 
-> **⭐ acting 機制結論已併入 `doc50` §1.2（正常 frame 逐格移動；特殊 frame 原地姿態）。本檔僅保留 dosbox 實測原始記錄當佐證。**
+> **⚠ 2026-07-15 撤回本檔的舊 oracle 對照結論。**當時餵入的是錯位 48 entries 的
+> `acting_decoded_throne.txt`，所以 unit60/61、pose 非方向、slot 不對 FDFIELD 等推論都不是目標 ACT 的資料。
+> 正確 direct bank 與 live ACT99/100 見 doc47/doc50；本檔 §1–§4 僅作失敗方法考古，不得用於 remake binding。
 
 > 任務:doc47 §2/§9 已定案 acting 播放器(`0x1366a`)每幀寫 `unit[+3]`=pose、`unit[+4]`=tick 倒數,
 > 但 pose **代表什麼視覺意義**、acting 的 `unit` 索引對到**哪個角色**、pose 與 doc31 的
@@ -12,11 +14,11 @@
 
 | 問題 | 結論 | 信心 |
 |---|---|---|
-| pose 是否含相對位移(使用者最想知道) | **否**——影片全程兩角色原地不動,pose 換值期間座標不變 | **高(影片直證)** |
-| pose(+3) 與 方向(+0x0B)/跑步幀(+0x0C) 是否同一欄位 | **不是**,structural 上是 80-byte 單位結構裡三個不同 offset(+3 vs +0x0B vs +0x0C),互不重疊 | 高(靜態反組譯,doc31/47 交叉核對) |
-| pose 是否驅動可見的角色朝向/姿態 | **至少一例證實會**——草地幕亞雷斯的 sprite 在對話過程中從「側面(面左)」變成「正面(面下)」,與 acting 資料的 pose 變化時間窗吻合 | 中(影片證實有變化,但幀取樣 0.5s 粒度,無法逐 tick 精確對應) |
-| pose 0/1/2/3 個別視覺意義 | **未解**——嘗試套用 doc31 的方向枚舉(0下1左2上3右)會與觀察到的時序矛盾,不強行採用 | 未解,誠實標註 |
-| acting `unit` 索引 → 角色 | **只確認相對順序**(先出現=亞雷斯、後出現=坐地友人),對應到 FDFIELD 30-unit roster 的**絕對槽號矛盾**(見 §4) | 中(順序高信心,絕對槽號未解) |
+| pose 是否含相對位移 | normal frame 每 beat 依 pose 搬一格；special frame 才原地 | 高（播放器尾段 + live unit diff） |
+| pose(+3) 的角色 | acting 方向／姿態欄，並決定 normal frame 位移方向 | 高 |
+| pose 0/1/2/3 | `0=下、1=左、2=上、3=右` | 高（ACT99/100 live） |
+| acting `unit` 索引 | 當前 runtime unit array 的原始 slot；remake 必須 slot-first | 高 |
+| 資源索引 | getter direct ID `0..105`，不存在 id−48 chapter window | 高 |
 
 ## 1. 方法
 
@@ -128,22 +130,16 @@ doc31 §6 反組譯戰場單位繪製碼(`0x12823`–`0x12932`)讀的是 `unit[+
   斷點讀 `[0x24B2F0]`(doc47 §8 給的執行期位址)+idx16/17 的 `byte[+7]`(肖像)欄位,
   看是否確實已從 69 改寫成亞雷斯/友人的肖像 id。**列入下一輪待辦,本輪不強行下結論。**
 
-## 5. 對 remake 的直接可用結論
+## 5. 對 remake 的直接可用結論（2026-07-15 重寫）
 
-1. **cutscene 角色的「原地換姿態」是安全可抄的機制**:remake 可以直接做「站樁播放一小段
-   姿態序列而不移動座標」的動畫,不需要額外設計位移插值——原版影片證實這條路徑本來就是
-   純姿態切換。
-2. **不要假設 pose 直接映射現有的 4 方向枚舉**——目前證據不支持,remake 若要照抄 pose
-   序列,應該當成獨立的「表演姿態」索引(配 FIGANI 或專用 cutscene sprite),不要重用
-   FDICON 的方向欄位語意,避免把不確定的假說寫死進資料驅動系統。
-3. **acting 資料的 unit 索引在 remake 端不必强行對回 FDFIELD 槽號**——remake 的過場系統
-   本來就可以用「劇情本地演員表」(doc50 cutscene-script-system-design 應該已經是這個設計),
-   這正好呼應本輪發現的「原版本身可能也是這樣做的」,不是 remake 偷懶,是原版真的这样设计。
+1. normal frame 要以每格七 ticks 插值並在第七 tick 寫 X/Y；special frame 只保留 pose/timing。
+2. pose 直接使用 `0下/1左/2上/3右`，不能再降成不移動的抽象表演姿態。
+3. `unit` 必須以 LOADCH/SPAWN 建立的原始 slot 解析；同 Fig 重複角色不可用 Fig-first 猜測。
 
 ## 6. 未解 / 下一輪待辦(誠實列表)
 
-- [ ] pose 0/1/2/3 各自的精確視覺意義(本輪只證實「有變化」與「非位移」,個別值語意未解)。
-- [ ] `0x11cac` 內部反組譯,確認它讀哪個 unit offset 驅動 acting 期間的畫面(坐實 pose(+3) 是否為其輸入)。
+- [x] pose 0/1/2/3 = 下/左/上/右；normal frame 位移、special frame 原地。
+- [x] `0x11cac` 繪製鏈與播放器 `0x13937..0x13949` 的 X/Y 寫入已閉環。
 - [ ] 草地幕 `[0x24B2F0]+16*0x50+7`/`+17*0x50+7` 開演瞬間 dosbox 斷點 dump,驗證 §4 的「重填假說」。
 - [ ] 密林幕(0x5a-0x62)、海島幕(章節0的獨立 acting 表)本輪未做影片對照,留待下一輪(team-lead
       原始建議的第二個「乾淨樣本」,本輪只做了王座廳+草地,forest 待補)。

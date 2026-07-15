@@ -37,32 +37,32 @@
 
 ## 2. 演出(acting)原始資料 + 解碼
 
-> **2026-07-15 更正：本檔後續舊註解中「acting 不搬格」已由播放器漏讀尾段推翻。**
-> `(unit,pose)` 格式仍正確；bit7=0 的低7位 beat 是依 pose 的實際格數，bit7=1 才是原地特殊顯示。
-> 請以 `doc50 §1.2` 為機制唯一準據。本幕 0x63 的 unit61 是否為有效劇情移動目標仍須另證，
-> 不得由此更正外推。
+> **2026-07-15 live 更正：舊 dump 從錯誤的 `0x207718` 位置起讀，造成 ID 錯移 48 entries。**
+> 下列舊 unit60/61 bytes 已撤回；getter 實際使用 direct table `0x2077d8`，完整 106 entries。
 
 > 格式(decode_acting.py):`u8 幀數 + 幀×{ u8 拍數(bit7=模式旗標/低7位=真拍數), u8 N, N×(u8 單位idx, u8 姿態) }`。
 > pose:0下/1左/2上/3右。normal/special 完整語意見 `doc50 §1.2`。
 
-### 演出 0x63(handler beat「索爾進場」)
-```
-原始 bytes: 02 05 01 3d 00 84 01 3d 00
-  +00: 02              幀數=2
-  +01: 05 01 3d 00     frame0: 拍數=5 N=1 (unit=0x3d=61, pose=0)
-  +05: 84 01 3d 00     frame1: 拍數=0x84→bit7,真拍數=4 N=1 (unit=61, pose=0)
-```
-**⚠ 可疑**:unit=**61** 超出 roster(只有槽 0-20)=**無效槽**。所以 0x63 沒有真的動任何單位;
-索爾長廊走入的**位移是 0x13185(step)做的**,0x63 疑為**節拍/鏡頭 setup**(bit7 分支會重繪地形,見 §5)。
+### 演出 0x63 / ACT99（handler `0x32343`）
 
-### 演出 0x64(handler beat「退朝」)
+Live entry stack 回扣 caller `0x32343`，getter `table[99]=0x208493`，resource bytes：
+
+```text
+01 06 01 02 02  -> 1 frame, beats=6, slot2, pose2(up)
 ```
-原始 bytes: 02 05 01 3c 00 84 01 3c 00
-  +00: 02              幀數=2
-  +01: 05 01 3c 00     frame0: 拍數=5 N=1 (unit=0x3c=60, pose=0)
-  +05: 84 01 3c 00     frame1: 拍數=4[bit7] N=1 (unit=60, pose=0)
+
+完整 unit buffer 前後只有 slot2 改變：Y `42→36`、pose `0→2`。隨後 handler 的兩段
+`0x13185(slot2)` 分別再上移 15、13 格，形成 `Y36→21→8` 的兩個對白停位。
+
+### 演出 0x64 / ACT100（handler `0x323f5`）
+
+Live entry stack 回扣 caller `0x323f5`，resource bytes：
+
+```text
+01 0A 01 02 00  -> 1 frame, beats=10, slot2, pose0(down)
 ```
-**⚠ 可疑**:unit=**60** 也是無效槽。同 0x63,疑節拍/鏡頭而非單位動作。
+
+播放後 slot2 Y `8→18`、pose=`0`。舊 slot60 結論同樣是錯表位移造成。
 
 ## 3. 單位陣列(roster,dosbox dump `task_f/slots0_20_dialogue.bin`,對話中快照)
 
@@ -90,15 +90,15 @@
 
 ## 5. 本幕限定解讀(2026-07-15)
 
-`0x13185` 的兩段顯式上移仍可獨立解釋王座索爾的走位；但 `0x63/0x64` 中的 slot60/61 是否是
-有效的非畫面槽，尚無本幕 runtime 證據，不應再稱為空操作。acting 的 normal/special 共同機制不在本檔重複，
-以 `doc50 §1.2` 為唯一準據。
+本幕走位已閉環：ACT99 上六格，STEP×15 到第一次對話，STEP×13 到王座前，ACT100 再向下十格。
+不存在 slot60/61 或「acting 只當節拍器」的未解假說。完整 decoder 與 runtime 規則見 doc50 §1.2。
 
 ## 附錄:acting bytes 怎麼讀(反組譯播放器 `0x1366a` 證明)
 
 > 格式不是猜的,是反組譯**「讀這些 byte 的程式」= 演出播放器 `0x1366a`** 得來。
-> 原始 bytes 出處 = dosbox 記憶體 dump:`acting_resources_0x50_0x99_throne.bin`(資料)+`acting_table_throne.bin`
-> (id→位址指標),傳位那幕下斷點倒出。**格式**:`u8 幀數 + 幀×{ u8 拍數, u8 N, N×(u8 單位idx, u8 pose) }`。
+> 正確 bytes 由 `FD2.EXE file+0x565d8` 的 106-entry directory + `file+0x53e00` data bank 重建；
+> `tools/export_acting_resources.py` 可重跑。舊 `acting_resources_0x50_0x99_throne.bin` 僅保留作錯 context
+> 的考古樣本，不得再餵給 binding。格式仍是 `u8 幀數 + 幀×{u8 拍數,u8 N,N×(u8 slot,u8 pose)}`。
 
 | 欄位 | 讀取指令(0x1366a) | 用途證據(它拿這個值幹嘛) |
 |---|---|---|

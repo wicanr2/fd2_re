@@ -179,7 +179,7 @@ func TestCompileHandlerActingPreservesOriginalRosterSlot(t *testing.T) {
 	}
 }
 
-func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
+func TestCompileCompleteChapter0Binding(t *testing.T) {
 	binding, err := LoadHandlerBinding("../../assets/cutscenes/bindings/ch00_pre.json")
 	if err != nil {
 		t.Fatal(err)
@@ -195,29 +195,30 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 		t.Fatal(err)
 	}
 	beats, issues := CompileHandlerScript(script, binding.CompilerBindings())
-	if len(issues) == 0 {
-		t.Fatal("partial binding unexpectedly compiled the entire handler")
-	}
-	if len(issues) != 5 {
-		t.Fatalf("ch00 unresolved issue count=%d, want 5 after proven FDTXT/native/PAN primitives are lowered: %#v", len(issues), issues)
+	if len(issues) != 0 {
+		t.Fatalf("ch00 must compile without unresolved handler beats: %#v", issues)
 	}
 	var pan, dialog bool
 	var slotAct bool
-	var normalSlotAct bool
-	unsafeMap32Acts := map[string]bool{
-		"0x32343": false, // ACT(99) references original slot 61.
-		"0x323f5": false, // ACT(100) references original slot 60.
+	var directSlotAct bool
+	var act99, act100 bool
+	scrollSteps := map[string]struct {
+		slot, steps, frames int
+	}{
+		"0x32351": {slot: 2, steps: 15, frames: 105},
+		"0x3239a": {slot: 2, steps: 13, frames: 91},
 	}
+	focusSlots := map[string]int{"0x32961": 0}
 	map31Spawns := map[string]int{
 		"0x32555": 1,
 		"0x32610": 3,
 		"0x3269c": 5,
 	}
 	map32Acts := map[string]int{
-		"0x32426": 101, "0x32461": 102,
+		"0x32343": 99, "0x323f5": 100, "0x32426": 101, "0x32461": 102,
 		"0x3249c": 103, "0x324d7": 104, "0x3251c": 105,
 	}
-	map31TimingActs := map[string]int{
+	map31Acts := map[string]int{
 		"0x3255f": 90, "0x3259a": 91, "0x325d5": 92,
 		"0x32657": 93, "0x326d7": 94, "0x32712": 95,
 		"0x3274d": 96, "0x32788": 97, "0x327d9": 98,
@@ -251,13 +252,33 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 		if beat.Op == "dialog" {
 			dialogCounts[beat.Source]++
 		}
-		if beat.Op == "act" && beat.Source == "0x32461" && len(beat.Acting) == 6 {
+		if beat.Op == "act" && beat.Source == "0x32461" && len(beat.Acting) == 3 {
 			u := beat.Acting[0].Units[0]
-			slotAct = u.Slot != nil && *u.Slot == 16 && u.Fig == 0
+			slotAct = u.Slot != nil && *u.Slot == 4 && u.Fig == 0 && !beat.Acting[0].Special
 		}
-		if beat.Op == "act" && beat.Source == "0x324d7" && len(beat.Acting) == 3 {
+		if beat.Op == "act" && beat.Source == "0x324d7" && len(beat.Acting) == 1 {
 			u := beat.Acting[0].Units[0]
-			normalSlotAct = u.Slot != nil && *u.Slot == 1 && !beat.Acting[0].Special && beat.Acting[0].Beats == 1 && beat.Acting[1].Units[0].Pose == 2
+			directSlotAct = u.Slot != nil && *u.Slot == 3 && beat.Acting[0].Special && beat.Acting[0].Beats == 2
+		}
+		if beat.Op == "act" && beat.Source == "0x32343" && len(beat.Acting) == 1 {
+			u := beat.Acting[0].Units[0]
+			act99 = !beat.Acting[0].Special && beat.Acting[0].Beats == 6 && u.Slot != nil && *u.Slot == 2 && u.Pose == 2
+		}
+		if beat.Op == "act" && beat.Source == "0x323f5" && len(beat.Acting) == 1 {
+			u := beat.Acting[0].Units[0]
+			act100 = !beat.Acting[0].Special && beat.Acting[0].Beats == 10 && u.Slot != nil && *u.Slot == 2 && u.Pose == 0
+		}
+		if want, ok := scrollSteps[beat.Source]; ok && beat.Op == "scroll_step" {
+			if beat.Slot == nil || *beat.Slot != want.slot || beat.Steps != want.steps || beat.Frames != want.frames || !beat.Follow {
+				t.Fatalf("scroll_step %s = %#v, want slot=%d steps=%d frames=%d follow", beat.Source, beat, want.slot, want.steps, want.frames)
+			}
+			delete(scrollSteps, beat.Source)
+		}
+		if want, ok := focusSlots[beat.Source]; ok && beat.Op == "focus_unit" {
+			if beat.Slot == nil || *beat.Slot != want {
+				t.Fatalf("focus_unit %s = %#v, want slot=%d", beat.Source, beat, want)
+			}
+			delete(focusSlots, beat.Source)
 		}
 		if id, ok := map32Acts[beat.Source]; ok && beat.Op == "act" && len(beat.Acting) > 0 {
 			delete(map32Acts, beat.Source)
@@ -265,12 +286,10 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 				t.Fatalf("map32 ACT(%d) did not preserve source roster slot: %#v", id, beat)
 			}
 		}
-		if id, ok := map31TimingActs[beat.Source]; ok && beat.Op == "act" && len(beat.Acting) > 0 {
-			delete(map31TimingActs, beat.Source)
-			for _, frame := range beat.Acting {
-				if len(frame.Units) != 0 {
-					t.Fatalf("map31 ACT(%d) timing projection retained inactive target: %#v", id, beat)
-				}
+		if id, ok := map31Acts[beat.Source]; ok && beat.Op == "act" && len(beat.Acting) > 0 {
+			delete(map31Acts, beat.Source)
+			if len(beat.Acting[0].Units) == 0 || beat.Acting[0].Units[0].Slot == nil {
+				t.Fatalf("map31 ACT(%d) did not preserve source roster slot: %#v", id, beat)
 			}
 		}
 		if id, ok := map0Acts[beat.Source]; ok && beat.Op == "act" && len(beat.Acting) > 0 {
@@ -299,21 +318,7 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 			}
 		}
 	}
-	for _, issue := range issues {
-		// These calls are intentionally not present in ch00_pre.json.  Keeping
-		// them unresolved is the binding-level fail-closed policy; the generic
-		// compiler test below separately proves that an accidental resource
-		// binding would be rejected against the 21-slot runtime roster.
-		if _, ok := unsafeMap32Acts[issue.Source.Addr]; ok && issue.Op == "act" && issue.Reason == "acting resource has not been decoded/mapped" {
-			unsafeMap32Acts[issue.Source.Addr] = true
-		}
-	}
-	for source, rejected := range unsafeMap32Acts {
-		if !rejected {
-			t.Fatalf("unsafe map32 acting %s was unexpectedly eligible: issues=%#v", source, issues)
-		}
-	}
-	if !pan || !dialog || !slotAct || !normalSlotAct || !resetPose || !redraw || len(panTargets) != 0 || len(map32Acts) != 0 || len(map31TimingActs) != 0 || len(map0Acts) != 0 || len(map31Spawns) != 0 || len(spawnIntros) != 0 || len(activateSlots) != 0 || len(loadchs) != 0 {
+	if !pan || !dialog || !slotAct || !directSlotAct || !act99 || !act100 || !resetPose || !redraw || len(scrollSteps) != 0 || len(focusSlots) != 0 || len(panTargets) != 0 || len(map32Acts) != 0 || len(map31Acts) != 0 || len(map0Acts) != 0 || len(map31Spawns) != 0 || len(spawnIntros) != 0 || len(activateSlots) != 0 || len(loadchs) != 0 {
 		t.Fatalf("loaded binding did not lower its proven pan/dialog/slot-acting overrides: %#v", beats)
 	}
 	for source, want := range map[string]int{
@@ -406,10 +411,10 @@ func TestCompileHandlerScriptRejectsActingOutsideActiveLoadCHSlots(t *testing.T)
 
 func TestLoadActingResourceSetAndCh00References(t *testing.T) {
 	resources, err := LoadActingResourceSet("../../assets/cutscenes/acting/map32.json")
-	if err != nil || len(resources) != 78 {
+	if err != nil || len(resources) != 106 {
 		t.Fatalf("acting resources err=%v count=%d", err, len(resources))
 	}
-	if frames := resources[102]; len(frames) != 6 || !frames[0].Special || frames[0].Units[0].Slot == nil || *frames[0].Units[0].Slot != 16 {
+	if frames := resources[102]; len(frames) != 3 || frames[0].Special || frames[0].Units[0].Slot == nil || *frames[0].Units[0].Slot != 4 {
 		t.Fatalf("resource 102 = %#v", frames)
 	}
 	if frames := resources[0]; len(frames) != 5 || frames[0].Special || frames[0].Beats != 6 || len(frames[0].Units) != 4 || *frames[0].Units[1].Slot != 1 || !frames[1].Special {
@@ -426,7 +431,7 @@ func TestLoadActingResourceSetAndCh00References(t *testing.T) {
 		t.Fatal(err)
 	}
 	frames, ok := binding.CompilerBindings().Acting(HandlerBeat{ActingID: intPtr(104), Source: HandlerSource{Addr: "0x324d7"}})
-	if !ok || len(frames) != 3 || frames[0].Special || frames[0].Units[0].Slot == nil || *frames[0].Units[0].Slot != 1 {
+	if !ok || len(frames) != 1 || !frames[0].Special || frames[0].Units[0].Slot == nil || *frames[0].Units[0].Slot != 3 {
 		t.Fatalf("ch00 resource acting resolve=%#v ok=%v", frames, ok)
 	}
 	if _, ok := binding.CompilerBindings().Acting(HandlerBeat{ActingID: intPtr(103), Source: HandlerSource{Addr: "0x324d7"}}); ok {
@@ -436,9 +441,9 @@ func TestLoadActingResourceSetAndCh00References(t *testing.T) {
 	if !ok || len(map0) != 5 || map0[0].Units[0].Slot == nil || *map0[0].Units[0].Slot != 0 {
 		t.Fatalf("map0 resource acting resolve=%#v ok=%v", map0, ok)
 	}
-	timing, ok := binding.CompilerBindings().Acting(HandlerBeat{ActingID: intPtr(90), Source: HandlerSource{Addr: "0x3255f"}})
-	if !ok || len(timing) != 2 || timing[0].Beats != 1 || timing[0].Special || len(timing[0].Units) != 0 {
-		t.Fatalf("map31 timing-only resource resolve=%#v ok=%v", timing, ok)
+	map31, ok := binding.CompilerBindings().Acting(HandlerBeat{ActingID: intPtr(90), Source: HandlerSource{Addr: "0x3255f"}})
+	if !ok || len(map31) != 5 || map31[0].Beats != 1 || map31[0].Special || len(map31[0].Units) != 1 || map31[0].Units[0].Slot == nil || *map31[0].Units[0].Slot != 0 {
+		t.Fatalf("map31 resource acting resolve=%#v ok=%v", map31, ok)
 	}
 }
 

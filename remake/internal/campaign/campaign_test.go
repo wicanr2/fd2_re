@@ -90,6 +90,10 @@ func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	prologue := c.Nodes["story_ch00_handler"]
+	if c.Start != "story_ch00_handler" || prologue == nil || prologue.Type != "cutscene" || prologue.HandlerBinding != "assets/cutscenes/bindings/ch00_pre.json" || prologue.Next != "battle_ch01" {
+		t.Fatalf("campaign must start through the complete editable ch00 handler: start=%q node=%#v", c.Start, prologue)
+	}
 	throne := c.Nodes["story_ch01_palace_throne"]
 	if throne == nil || len(throne.Beats) != 5 || throne.Beats[2].Line != 0 || throne.Beats[2].Count != 6 || throne.Beats[4].Line != 6 || throne.Beats[4].Count != 13 {
 		t.Fatalf("throne beats do not preserve FDTXT #0/#1 groups: %#v", throne)

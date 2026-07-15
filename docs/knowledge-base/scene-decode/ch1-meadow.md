@@ -1,7 +1,7 @@
 # ch1 草地/王城一隅(story_ch01_palace_path,亞雷斯撞見)— 原始資料 + 解讀註解
 
-> 目的(使用者要求 2026-07-06):從**資料面**檢查草地幕怎麼從原版產生 + 我的解讀 + **哪裡可能沒解乾淨**。
-> 這一幕是目前卡關的:主角走位機制未定位,使用者懷疑「acting 解碼不完整」。原始 binary × 我的註解並列供覆核。
+> 目的(使用者要求 2026-07-06):從資料面檢查草地幕怎麼從原版產生。**2026-07-15 已確認
+> acting decoder 的 table 起點錯位 48 entries；改用 106-entry direct bank 後，本幕主角走位已閉環。**
 > 機制總論見 `doc50`。
 
 ## 0. 對映
@@ -13,76 +13,32 @@
 
 | 位址 | 反組譯 | 原語 | 參數 | 說明 |
 |---|---|---|---|---|
-| 0x323f3 | `push 0x64; call 0x1366a` | ACT | 演出 0x64 | 退朝(見 ch1-throne §2;u60 無效槽) |
+| 0x323f3 | `push 0x64; call 0x1366a` | ACT | ACT100 | slot2 向下十格，退朝 |
 | 0x32407/b | `push 0x2b; call 0x135dd` | PAN | (col=0,row=0x2b=43) | 鏡頭平移到草地列(索爾4,46/亞雷斯13,47 在 row46/47) |
 | 0x32415/7 | `push 0xb; call 0x25977` | BGM | track 0xb=11 | 草地配樂 |
-| 0x32424/6 | `push 0x65; call 0x1366a` | ACT | 演出 0x65 | 全體面向上(見 §2) |
-| ~0x3245f | `push 0x66; call 0x1366a` | ACT | 演出 0x66 | u16/17 姿態循環 |
-| ~0x3249a | `push 0x67; call 0x1366a` | ACT | 演出 0x67 | u16/17 面右 |
-| ~0x324d5 | `push 0x68; call 0x1366a` | ACT | 演出 0x68 | u1 姿態 |
-| ~0x3251a | `push 0x69; call 0x1366a` | ACT | 演出 0x69 | u16 面右 |
+| 0x32424/6 | `push 0x65; call 0x1366a` | ACT | ACT101 | slot4 左三格 |
+| ~0x3245f | `push 0x66; call 0x1366a` | ACT | ACT102 | slot4 左二、上一、左一 |
+| ~0x3249a | `push 0x67; call 0x1366a` | ACT | ACT103 | slot4 special 面左 |
+| ~0x324d5 | `push 0x68; call 0x1366a` | ACT | ACT104 | slot3 special 面右兩拍 |
+| ~0x3251a | `push 0x69; call 0x1366a` | ACT | ACT105 | slots3/4 離場走位 |
 | (交錯) | `call 0x15f84` ×4 | 對白 | txt#2~5 | scene[1] 對白 |
 
-> ⚠ 這一段顯式原語只有 PAN / BGM / ACT(0x65~0x69) / 對白，沒有 step/0x13488；而這幾筆
-> ACT 也不選 slot3/4。實機已證 slot3/4 的寫入來自 acting 正常模式，故待查的是**額外 acting 的 caller/ID**；
-> `0x15f84` parser 已靜態排除。機制與最新狀態只見 `doc50 §1.2`。
+> 本段不需要額外 step：ACT101/102/105 的 normal frames 本身就是逐格走位。
 
-## 2. 演出(acting)原始資料 + 解碼 ★本檔重點★
+## 2. 演出(acting)direct 解碼 ★本檔重點★
 
-> **2026-07-15 更正：本節較早的「acting 不搬格」註解已失效。**資料格式 `(unit,pose)` 的切分沒有錯，
-> 但先前漏反組譯正常模式的尾段 `0x13930..0x13960`；bit7=0 frame 的低7位拍數會令每個 unit
-> 依 pose 實際移動同樣多格。bit7=1 才是原地特殊顯示。機制唯一準據見 `doc50 §1.2`；本檔保留
-> 原始 bytes，舊「只寫 +3/+4」段落不可再作結論。
+正確來源是 `FD2.EXE file+0x565d8` 的 direct-ID directory；editable 行為在
+`remake/assets/cutscenes/acting/map32.json`，可由 `tools/export_acting_resources.py --check` 驗證。
 
-> 格式與 mode 語意均以 `doc50 §1.2` 為唯一準據；本檔只保留本幕原始 bytes。
+| ID | editable frames | 對座標的結果 |
+|---:|---|---|
+| 101 | normal `slot4 left×3` | 亞雷斯 `(13,47)→(10,47)` |
+| 102 | normal `slot4 left×2 → up×1 → left×1` | `(10,47)→(7,46)` |
+| 103 | special0 `slot4 left` | 原地定向／轉場 |
+| 104 | special2 `slot3 right` | 索爾原地面右 |
+| 105 | slot3 `right×2/down×1/right×6`；slot4 `down×1/right×4` | 兩人依劇本離場 |
 
-### 演出 0x65
-```
-原始 bytes: 01 85 10 00 02 01 02 02 02 03 02 04 02 05 02 06 02 07 02 08 02 09 02 0a 02 0b 02 0c 02 0d 02 0e 02 0f 02
-  +00: 01                             幀數=1
-  +01: 85                             拍數=0x85→bit7,真拍數=5
-  +02: 10                             N=16
-  +03: 00 02  01 02  02 02  03 02 ...  (u0,p2)(u1,p2)(u2,p2)(u3,p2)... 到 (u15,p2)
-```
-**解讀**:1 幀,把 unit 0~15 全設 pose=2(上)。= 草地開場「全體面向上」定場。**bit7 模式**。
-
-### 演出 0x66
-```
-原始 bytes: 06 88 02 10 02 11 02 88 02 10 00 11 00 88 02 10 02 11 02 88 02 10 03 11 03 88 02 10 01 11 01 80 02 10 01 11 01
-  +00: 06                    幀數=6
-  frame0: 88 02 10 02 11 02  拍數=8[bit7] N=2 (u16,p2)(u17,p2)
-  frame1: 88 02 10 00 11 00  拍數=8[bit7] N=2 (u16,p0)(u17,p0)
-  frame2: 88 02 10 02 11 02  拍數=8[bit7] N=2 (u16,p2)(u17,p2)
-  frame3: 88 02 10 03 11 03  拍數=8[bit7] N=2 (u16,p3)(u17,p3)
-  frame4: 88 02 10 01 11 01  拍數=8[bit7] N=2 (u16,p1)(u17,p1)
-  frame5: 80 02 10 01 11 01  拍數=0[bit7] N=2 (u16,p1)(u17,p1)
-```
-**解讀**:6 幀,unit 16&17 姿態循環(上/下/上/右/左/左)。
-
-### 演出 0x67
-```
-原始 bytes: 01 8f 02 10 03 11 03
-  +00: 01  幀數=1
-  8f 02 10 03 11 03  拍數=0x8f→15[bit7] N=2 (u16,p3)(u17,p3)
-```
-**解讀**:1 幀,unit 16&17 面右,拍數 15。
-
-### 演出 0x68
-```
-原始 bytes: 03 01 01 01 03 01 01 01 02 84 01 01 03
-  frame0: 01 01 01 03  拍數=1 N=1 (u1,p3)
-  frame1: 01 01 01 02  拍數=1 N=1 (u1,p2)
-  frame2: 84 01 01 03  拍數=4[bit7] N=1 (u1,p3)
-```
-**解讀**:unit 1 姿態(右/上/右)。
-
-### 演出 0x69
-```
-原始 bytes: 01 88 01 10 03
-  +00: 01  幀數=1
-  88 01 10 03  拍數=8[bit7] N=1 (u16,p3)
-```
-**解讀**:1 幀,unit 16 面右,拍數 8。
+舊 0x65..0x69 的 slots16/17 bytes 是從錯誤 table base 解到的其他資源，已撤回。
 
 ## 3. 單位陣列(roster,dump `task_f/slots0_20_dialogue.bin`)
 
@@ -96,19 +52,12 @@
 | 5-15 | 守衛 | … | 14~36 | 否 |
 | **16,17** | **守衛(69)** | 12,6 | 16,28 | **否(王座區守衛,草地時在畫面外)** |
 
-## 4. campaign_full.json 對映(現值,doc55 影片量測重建)
-```json
-"story_ch01_palace_path": {
-  "actors":[ {"fig":0,"x":4,"y":46,"dir":3}索爾, {"fig":4,"x":11,"y":47,"dir":1,"from_x":13,"from_y":47,"walk_frames":40}亞雷斯 ],
-  "beats":[ dialog line0 upper, walk fig4→(8,46) dir1, dialog line1 count21 ],
-  "exit_walk":{ fig0→(7,47) dir3 } }
-```
-- remake 用 **storyWalk(from→to 格線走)對齊 doc55 影片量測**(亞雷斯 13,47→~8,46;索爾對話後→~7,47),**非**照 acting。
+## 4. remake 對映
+
+`campaign_full.json` 預設由 `story_ch00_handler` 載入 `bindings/ch00_pre.json`；草地不再走舊手寫
+`storyWalk/exit_walk` 節點，而是依 source addresses 直接播放 ACT101..105 editable frames。
 
 ## 5. 目前追查狀態(2026-07-15)
 
-此頁的舊「acting 只管面向」結論已撤回。已證實：草地 slot3/4 的邏輯格寫入由 acting 正常模式執行；
-`0x15f84` 亦不會觸發 acting。normal-core entry trace 已確認到 `0x68` 為止皆是 handler 顯式
-`0x64..0x68`，沒有額外 ID；且 `0x68` 後 slot4 已是 `(7,46)`，故草地可見接近在本段開始前已完成。
-map32 兩個早期快照仍為初始 `(4,46)/(13,47)`，故下一步鎖定王座第二段長對話開始後至 `ACT 0x64`
-之前做時間分段差分；完整證據鏈與 remake 對映只維護於 `doc50 §1.2`。
+已解，無額外 acting caller／ID 待追。normal-core 的 slot4 `(13,47)→(7,46)` 快照正好等於
+ACT101+102 累積結果；完整證據鏈與 runtime 規則見 doc50 §1.2。

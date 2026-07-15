@@ -55,7 +55,7 @@ handler 序列(反組譯,✅來源確定):
 | 入隊 | `join(0/9/4/30)`=索爾/悠妮/亞雷斯/蓋亞 | handler ✅ | runtime 保存 membership + JOIN chronology | ✅ |
 | 載真戰場 | `loadch(0)`=map0+FDTXT_001 | handler ✅ | story_ch01→map0 | ✅ |
 | 海島鏡頭 | `pan(4,12)→pan(0,0)→pan(0,15)`三平移點 | handler + PAN body ✅ | binding `96,288 → 0,0 → 0,360` | ✅ |
-| **主角隊／海盜進場移動** | act(0/1/2/5)+reveal；ACT0=party slots0–3 up×6，ACT1/2=spawn groups，ACT5=海盜 slot9 down×4 | map0 getter base 0x2077d8 + runtime dump ✅ | editable acting + party→spawn slot pipeline | ✅ |
+| **主角隊／海盜進場移動** | act(0/1/2/5)+reveal；ACT0=party slots0–3 up×6，ACT1/2=spawn groups，ACT5=海盜 slot9 down×4 | 各 call 的 live provenance（舊「map0 getter base」泛化撤回） | editable acting + party→spawn slot pipeline | ⚠逐 call 保留證據 |
 | 主角隊 ACT0 起點→停位 | 索爾(7,20)→(7,14) / 悠妮(10,21)→(10,15) / 亞雷斯(8,22)→(8,16) / 蓋亞(11,23)→(11,17) | map0 runtime slot dump + ACT0 解碼 ✅ | ch01 deploy_cells + editable ACT0 | ✅ |
 | 海島遇海盜對白 | FDTXT_001 txt#0-2 | FDTXT ✅ | story_ch01 script | ✅ |
 | 戰前UI(MAP/TURN+行軍確認) | 有 | 影片 doc46 D8 ✅ | 無 | ⚠須加(低優先) |
@@ -76,8 +76,9 @@ handler 序列(反組譯,✅來源確定):
 
 - **⚠須換(現況是外推/錯值,有RE值可直接換)**:王座廳 pan(3,34)、scroll-follow 取代外推pan、
   對白改「一FDTXT字串=一TXT」對齊6條、王城→草地同圖pan、接 acting_decoded、海島三平移、入隊、武器射程(靜態)。
-- **❓待RE(多輪靜態/影片未果才問使用者是否外推)**:走入 ACT99 + scroll_step 的精確邊界／ticks；
-  reveal75/99 已改由完整 callee body 定性，map0 ACT0/1/2/5 與 party 起停格亦已解決。
+- **✅ 2026-07-15 補齊**：direct acting bank 共 106 entries；ACT99 live 為 slot2 上行六格，ACT100
+  live 為 slot2 下行十格；兩段 scroll_step 實測 `Y36→21→8`，每格七 ticks。map31 ACT90..98 的
+  direct slots 皆落在當時已 spawn 的 2→4→5 個 active units 內，不再使用 `timing_only`。
 - **✅可直接寫**:START全段、FDFIELD所有座標、handler序列與scroll次數、0x13185機制、青衫事件骨架。
 
 > 下一步建議:先做全部 ⚠(都有RE值,純照抄,無推測);❓ 逐項評估「靜態/影片能不能補」,不能才問你。

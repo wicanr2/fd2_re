@@ -177,6 +177,25 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			beat := runtime(input, "act")
 			beat.Acting = frames
 			beats = append(beats, beat)
+		case "scroll_step":
+			// 0x13185(slot) is one complete grid step upward, including the
+			// seven sub-tile drawing ticks and camera follow. HandlerScript
+			// folds its counted loop into Repeat, so one runtime beat retains
+			// both the original slot identity and exact number of grid steps.
+			if input.UnitSlot == nil || *input.UnitSlot < 0 || input.Repeat == nil || *input.Repeat <= 0 {
+				issue(i, input, "scroll_step requires a non-negative runtime slot and positive repeat count")
+				continue
+			}
+			if activeSlotCount <= *input.UnitSlot {
+				issue(i, input, fmt.Sprintf("scroll_step slot %d is outside active loadch slot_count=%d", *input.UnitSlot, activeSlotCount))
+				continue
+			}
+			beat := runtime(input, "scroll_step")
+			beat.Slot = input.UnitSlot
+			beat.Steps = *input.Repeat
+			beat.Frames = *input.Repeat * 7
+			beat.Follow = true
+			beats = append(beats, beat)
 		case "spawn":
 			// SPAWN is data-driven once the preceding LOADCH supplied a slot-stable
 			// roster: its immediate is the original FDFIELD group number, not an
@@ -230,6 +249,21 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			// Standalone 0x11cac(0) presents the already-materialized scene.
 			beat := runtime(input, "redraw")
 			beat.Frames = 1
+			beats = append(beats, beat)
+		case "focus_unit":
+			// 0x12d7b reads the selected unit X/Y and delegates to 0x12cea,
+			// which walks the cursor there X-first/Y-second and scrolls only at
+			// the original 13x8 viewport safe bands. Runtime owns that stateful path.
+			if input.UnitSlot == nil || *input.UnitSlot < 0 {
+				issue(i, input, "focus_unit lacks a non-negative runtime slot")
+				continue
+			}
+			if activeSlotCount <= *input.UnitSlot {
+				issue(i, input, fmt.Sprintf("focus_unit slot %d is outside active loadch slot_count=%d", *input.UnitSlot, activeSlotCount))
+				continue
+			}
+			beat := runtime(input, "focus_unit")
+			beat.Slot = input.UnitSlot
 			beats = append(beats, beat)
 		case "join":
 			if input.CharID == nil {

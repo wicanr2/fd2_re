@@ -77,6 +77,7 @@ type Game struct {
 	followWalk       bool                // 本節點:走位期間鏡頭跟隨走位者(campaign.Node.FollowWalk;beat walk 依 Follow 逐拍設值)
 	camMaxY          float64             // 本節點:鏡頭 Y 上限(campaign.Node.CamMaxY;0=不限)
 	camPan           *camPanJob          // beat「pan」進行中(doc50 §1);storyBG 專用,與 followWalk 互斥
+	focusJob         *focusUnitJob       // beat「focus_unit」：依原版 0x12cea 先 X 後 Y 逐格移動游標／鏡頭
 	actJob           *actPoseJob         // beat「act」進行中(近似姿態循環,見 actPoseJob 註解)
 	beats            []campaign.Beat     // 目前 cutscene 節點的過場原語序列(doc50 §2)
 	beatIdx          int                 // 目前執行到第幾拍(-1=尚未開始)
@@ -194,6 +195,9 @@ type storyWalkJob struct {
 	toX, toY     int
 	t, frames    int
 	finalDir     int // 走完後面向(-1=保留走位末向;>=0=設定,如進場走位面向 actor 目標 dir)
+	scrollFollow bool
+	fromCamY     float64 // 0x13185 專用：超過原版 screen-row 安全帶後與 actor 同速捲圖
+	scrollFree   int     // actor 可先上移而不捲圖的格數（screenY-1）
 	then         func()
 }
 
@@ -215,6 +219,12 @@ type camPanJob struct {
 	fromX, fromY float64
 	toX, toY     float64
 	t, frames    int
+}
+
+// focusUnitJob 保留 0x12cea 的阻塞移動目標。原版每輪只移動一格，X 到位後才移 Y；
+// 游標接近 13×8 視窗邊緣時才推進 map origin，並非直接把目標置中。
+type focusUnitJob struct {
+	targetX, targetY int
 }
 
 // actPoseJob 承接 beat「act」。acting 非空時按原版 0x1366a 規則播放：正常 frame
@@ -343,6 +353,14 @@ func (g *Game) stepStoryWalks() {
 		u.X, u.Y = w.toX, w.toY // 掛在終點格,Off 為「當前位置-終點」(同 walkAnim 慣例)
 		u.OffX = (float64(w.fromX) + cx - float64(w.toX)) * float64(g.m.TileW)
 		u.OffY = (float64(w.fromY) + cy - float64(w.toY)) * float64(g.m.TileH)
+		if w.scrollFollow {
+			scrollDist := dist - float64(w.scrollFree)
+			if scrollDist < 0 {
+				scrollDist = 0
+			}
+			g.camY = w.fromCamY - scrollDist*float64(g.m.TileH)
+			clamp(&g.camY, 0, float64(g.m.H*g.m.TileH-logicalH/storyZoom))
+		}
 		if w.t >= w.frames {
 			u.OffX, u.OffY = 0, 0
 			if w.finalDir >= 0 { // 走完面向目標(如 Ares 走到索爾旁面向他),不停在走位末段的短軸方向
@@ -395,6 +413,59 @@ func (g *Game) stepCamPan() {
 	if j.t >= j.frames {
 		g.camPan = nil
 		g.beatAdvance()
+	}
+}
+
+// stepFocusUnit 逐格重現 0x12cea 與 0x11b48/0x11b9b/0x11bfa/0x11c59。
+// 原版視窗游標的安全帶為 X=2..10、Y=2..5；超出安全帶後，能捲圖時保持
+// screen cursor 不動並移動 map origin，碰地圖邊界時才讓 screen cursor 靠邊。
+func (g *Game) stepFocusUnit() {
+	j := g.focusJob
+	if j == nil || g.m == nil || g.m.TileW <= 0 || g.m.TileH <= 0 {
+		return
+	}
+	finish := func() {
+		g.focusJob = nil
+		g.beatAdvance()
+	}
+	if g.curX == j.targetX && g.curY == j.targetY {
+		finish()
+		return
+	}
+	originX, originY := int(g.camX)/g.m.TileW, int(g.camY)/g.m.TileH
+	maxOriginX, maxOriginY := g.m.W-13, g.m.H-8
+	if maxOriginX < 0 {
+		maxOriginX = 0
+	}
+	if maxOriginY < 0 {
+		maxOriginY = 0
+	}
+	screenX, screenY := g.curX-originX, g.curY-originY
+	switch {
+	case g.curX > j.targetX:
+		g.curX--
+		if screenX < 2 && originX > 0 {
+			originX--
+		}
+	case g.curX < j.targetX:
+		g.curX++
+		if screenX > 10 && originX < maxOriginX {
+			originX++
+		}
+	case g.curY > j.targetY:
+		g.curY--
+		if screenY < 2 && originY > 0 {
+			originY--
+		}
+	case g.curY < j.targetY:
+		g.curY++
+		if screenY > 5 && originY < maxOriginY {
+			originY++
+		}
+	}
+	g.camX, g.camY = float64(originX*g.m.TileW), float64(originY*g.m.TileH)
+	if g.curX == j.targetX && g.curY == j.targetY {
+		finish()
 	}
 }
 
@@ -585,7 +656,7 @@ func (g *Game) beatStart(b campaign.Beat) {
 		fmt.Fprintf(os.Stderr, "[cutscene] beat op=%s source=%s fig=%d x=%d y=%d frames=%d line=%d count=%d script=%s scene=%s scene_index=%v loadch=%+v\n",
 			b.Op, b.Source, b.Fig, b.X, b.Y, b.Frames, b.Line, b.Count, b.Script, b.Scene, b.SceneIndex, b.LoadCH)
 	}
-	if b.Op != "walk" { // 鏡頭跟焦只在 walk 拍內有效(見下),其餘拍一律不跟焦
+	if b.Op != "walk" && b.Op != "scroll_step" { // 兩種格線走位拍才啟用跟焦
 		g.followWalk = false
 	}
 	findActor := func(fig int) int {
@@ -637,6 +708,34 @@ func (g *Game) beatStart(b campaign.Beat) {
 		g.storyWalks = append(g.storyWalks, &storyWalkJob{
 			actor: idx, fromX: fromX, fromY: fromY,
 			toX: b.X, toY: b.Y, frames: frames, finalDir: bdir, then: g.beatAdvance,
+		})
+	case "scroll_step":
+		if b.Slot == nil || *b.Slot < 0 || *b.Slot >= len(g.storyActors) || b.Steps <= 0 {
+			g.loadErr = fmt.Sprintf("beat scroll_step: runtime slot %v/steps=%d unavailable (materialized=%d)", b.Slot, b.Steps, len(g.storyActors))
+			return
+		}
+		idx := *b.Slot
+		u := &g.storyActors[idx]
+		frames := b.Frames
+		if frames <= 0 {
+			frames = b.Steps * 7
+		}
+		// 0x13185 does not center on the actor. It lets the actor reach screen
+		// row 1, then scrolls one tile (smoothly over the same seven ticks) per
+		// further upward step. Preserve the current map-origin boundary.
+		g.followWalk = false
+		originY := int(g.camY) / g.m.TileH
+		free := u.Y - originY - 1
+		if free < 0 {
+			free = 0
+		}
+		if originY == 0 {
+			free = b.Steps
+		}
+		g.storyWalks = append(g.storyWalks, &storyWalkJob{
+			actor: idx, fromX: u.X, fromY: u.Y,
+			toX: u.X, toY: u.Y - b.Steps, frames: frames, finalDir: 2,
+			scrollFollow: true, fromCamY: g.camY, scrollFree: free, then: g.beatAdvance,
 		})
 	case "dialog":
 		lines := g.campLines
@@ -727,6 +826,13 @@ func (g *Game) beatStart(b campaign.Beat) {
 		// Ebiten presents the current state once after this Update.  Blocking
 		// one frame preserves the standalone original 0x11cac(0) boundary.
 		g.beatDelay = 1
+	case "focus_unit":
+		if b.Slot == nil || *b.Slot < 0 || *b.Slot >= len(g.storyActors) {
+			g.loadErr = fmt.Sprintf("beat focus_unit: runtime slot %v unavailable (materialized=%d)", b.Slot, len(g.storyActors))
+			return
+		}
+		u := &g.storyActors[*b.Slot]
+		g.focusJob = &focusUnitJob{targetX: u.X, targetY: u.Y}
 	case "join":
 		if !campaign.JoinableCharacterID(b.CharID) {
 			g.loadErr = fmt.Sprintf("beat join:非法 player char_id=%d", b.CharID)
@@ -994,7 +1100,7 @@ func (g *Game) enterNode() {
 	g.storyWalks = nil
 	g.storyAutoAdvance = 0
 	g.walkFirst, g.followWalk, g.camMaxY = false, false, 0
-	g.camPan, g.actJob, g.beats, g.beatIdx, g.beatDelay = nil, nil, nil, -1, 0
+	g.camPan, g.focusJob, g.actJob, g.beats, g.beatIdx, g.beatDelay = nil, nil, nil, nil, -1, 0
 	g.dlgShown, g.dlgPhase, g.dlgT = dlgNone, 0, 0
 	g.dlgUpper = nil
 	switch n.Type {
@@ -1989,6 +2095,7 @@ func (g *Game) Update() error {
 	}
 	g.stepStoryWalks()                           // 場景走位動畫(doc46 §5.3);storyWalks 為空時內部直接返回
 	g.stepActJob()                               // beat「act」姿態循環(doc50);actJob 為空時內部直接返回
+	g.stepFocusUnit()                            // beat「focus_unit」依原版安全帶逐格移動游標／鏡頭
 	g.stepDlgAnim()                              // 對話框換人縮/展動畫(使用者回饋 #3)
 	g.stepFade()                                 // 場景淡出/淡入轉場(doc46 §5.2;beat「fade」兩個方向都靠 then 接回下一拍)
 	if g.camp != nil && g.storyAutoAdvance > 0 { // 無對白節點自動轉場倒數(行軍蒙太奇)

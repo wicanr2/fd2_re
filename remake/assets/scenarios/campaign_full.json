@@ -1,6 +1,6 @@
 {
  "title": "炎龍騎士團2 — 全 30 章線性 campaign(自動生成)",
- "start": "story_ch01_palace_throne",
+ "start": "story_ch00_handler",
  "flags": {
   "retried_ch01": false,
   "found_secret_ch02": false,
@@ -57,6 +57,12 @@
   "retried_ch30": false
  },
  "nodes": {
+  "story_ch00_handler": {
+   "type": "cutscene",
+   "bgm": "FDMUS_010",
+   "handler_binding": "assets/cutscenes/bindings/ch00_pre.json",
+   "next": "battle_ch01"
+  },
   "story_ch01_palace_throne": {
    "type": "cutscene",
    "bgm": "FDMUS_010",

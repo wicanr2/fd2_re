@@ -4,21 +4,28 @@
 > 記憶檔(`~/.claude/projects/.../memory/`)會自動載入=長期真相;本檔補「這段 session 的當前狀態 + 開放線索」。
 > **動手前先讀:記憶索引 MEMORY.md、`docs/knowledge-base/00-index.md`(問題導向路由)、`doc50`(過場機制主檔)。**
 
-> **2026-07-15 Codex 接手更新**：map0 ACT0/1/2/5 已全解。getter 的 relocated disp32 會隨 context
-> 從序章 `0x207718` 改為 map0 `0x2077d8`（差 48 entries）；raw directory/data 位於 FD2.EXE
-> file+0x565d8 / +0x53e00，不是 LOADCH0 新讀的 DAT。remake 已接 persistent party（JOIN order
-> 0,9,4,30）→ FDFIELD group1/2 append → editable acting。詳見 doc50 §1.2/§2.1；本 handoff 以下
-> 「草地未解」是 2026-07-06 歷史狀態，不得覆蓋較新的 doc50 定論。注意 ACT 20/20 解碼不代表
-> `ch00_pre` 全 handler 已 lower；非 ACT 的 unresolved 原語仍保持 partial/fail-closed。
+> **2026-07-15 Codex 更正**：撤回舊 `0x207718`、id−48、74-resource 與「context 差 48 entries」
+> 結論，它們來自錯 context／錯時刻的 acting dump。EXE 靜態 directory 是 106 entries（file+0x565d8，
+> data=`file+0x53e00+offset`）；getter 以 source ACT ID 直接索引，沒有 chapter-local window。已驗 ACT99：caller
+> `0x32343`、getter immediate=`0x2077d8`、table[99]=`0x208493`、bytes=`01 06 01 02 02`，即 slot2
+> 上行六格（Y42→36、pose0→2）。ACT100 亦由 caller `0x323f5`/id100 live 驗為 slot2 下行十格
+>（Y8→18、pose0）。不要以舊 map0/window 推論覆蓋此 provenance。
 
 > **2026-07-15 第二次 Codex 更新**：全 60 handler 重新抽取後 unknown 146→133。完整 callee body
 > 已把 0x32975/0x32999/0x134e4/0x12d7b 定性成 activate_unit/spawn_intro/reset_pose/focus_unit；
-> ch00 的 13 個缺漏 FDTXT calls 與 5 個 PAN 已接上。73 source beats 現只剩 ACT99/100、兩個
-> scroll_step、focus_unit 共 5 issues，仍 fail-closed。
+> ch00 的 13 個缺漏 FDTXT calls 與 5 個 PAN 已接上；ACT99/100、兩段 scroll_step 與 focus_unit
+> 也已 lower 並有 regression。`ch00_pre` 現可完整編譯為 editable beats，**0 unresolved issues**。
+
+> **2026-07-15 第三次 Codex 更新**：`campaign_full.json` 預設入口已切到
+> `story_ch00_handler → bindings/ch00_pre.json`，不再預設走手寫分幕。headless GUI smoke 已實際跑過
+> 王座、草地、map31 全段並進入 map0 第一段對白；frame220 抓圖亦確認 ACT99+scroll 後索爾在
+> `(8,21)` 正常顯示「兒臣索爾，晉見父王陛下。」。完整 runtime/unit tests 與 106-entry exporter check 全綠。
 
 ## 0. 目前焦點(接手就做這裡)
-第一章**開場過場**逐幕對齊原版:王座傳位(done)→ 草地/王城一隅亞雷斯撞見(**幾乎 done,差一點**)→ 森林。
-目前卡在一個**深層 RE 未解**:**草地主角(索爾/亞雷斯)的走位是用什麼機制驅動**(見 §3)。
+第一章開場 `ch00_pre` 的 handler、對白、ACT99/100、兩段 scroll、focus 與 map31 ACT90..98 已完整
+lower，compiler 為 **0 issues**。下一步是跑完整 GUI 過場逐幕比對原版，再把相同 direct acting bank／
+handler compiler 套到 ch01 之後的戰前戰後事件。下方「草地深層未解」是 2026-07-06 歷史記錄，
+已被 2026-07-15 direct table 修正推翻，不得再當目前 blocker。
 
 ## 1. 這段 session 做完的事
 - **王座傳位幕**:走位 (8,42)→**(8,21)**第一次對話→**(8,8)**最終(對原版截圖+FDFIELD 守衛地標實測);
@@ -30,7 +37,7 @@
 - **文件集中化**:`doc50`=過場機制唯一主檔;新增 `scene-decode/ch1-throne.md`+`ch1-meadow.md`(每幕原始資料×解讀)。
 
 ## 2. 已驗證的 RE 定論(耐用真相,別再翻案)
-- **走位機制 = step 家族 + 路徑走位**(非 acting):`0x12eaa`下/`0x1300d`左/`0x13185`上/`0x13315`右(各推一格+捲鏡頭);
+- **走位來源 = step 家族 + 路徑走位 + acting normal frame**：`0x12eaa`下/`0x1300d`左/`0x13185`上/`0x13315`右(各推一格+捲鏡頭);
   通用 `0x13488(單位idx, 方向陣列, 步數)` 走任意路徑。王座是「全上」特例(直接 0x13185×15/13)。單位結構 +0X/+1Y/+3pose/+4tick/+8角色ID。
 - **此 handoff 的 acting「只設面向」結論已於 2026-07-15 推翻**：normal frame 依 pose 每拍移一格，
   special frame 才原地顯示。格式與證據以 `doc50 §1.2` 為唯一準據。
@@ -39,19 +46,15 @@
 - **map32 roster(dosbox dump `task_f/slots0_20_dialogue.bin`)**:slot0王/1后/**2=王座索爾**/**3=草地索爾(4,46)**/**4=草地亞雷斯(13,47)**/5-20守衛。
 - **面向規則(全劇本)**:dir 預設 0(下/面向玩家);FDFIELD 不存面向;非0僅「走位者面向移動方向」或「劇情主角對看」。
 
-## 3. ★最大開放問題:草地主角走位機制未定位★
-- handler 草地段(0x3231b Part1 後段)只呼叫 PAN/BGM/**ACT(0x64~0x69)**/對白;演出 0x65~0x69 **只設面向**
-  (0x65=units0-15面上、0x66/67/69=守衛16/17、0x68=后1),**沒有一筆動主角 slot3/4、也沒有 step/0x13488 呼叫**。
-- 但原版影片(doc55)明明看到索爾/亞雷斯在草地走多格。⟹ **主角走位是「另一個機制」,還沒找到。**
-- **候選下一步(scene-decode/ch1-meadow §5.4)**:
-  (a) 全 EXE 搜「誰寫 slot3/4 的 +0/+1(X/Y)」= `mov [base+idx*0x50+0/1]`(idx=3/4 或動態);
-  (b) 解森林 context acting(`out/acting_resources_forest.bin`+`acting_table_forest.bin`,未解；但草地問題優先直接抓 entry/caller);
-  (c) 接受 doc55 影片量測重建(remake 已對齊、可玩),精確原版驅動長期擱置。
+## 3. ~~最大開放問題:草地主角走位~~（2026-07-15 已解）
+- 錯表 decoder 才把 ACT101..105 誤讀成守衛16/17。direct resources 實際操作 slot3/4：ACT101/102
+  讓亞雷斯接近，ACT103/104 原地定向，ACT105 讓索爾與亞雷斯離場。handler 顯式 ACT 已完整解釋影片，
+  不存在額外走位機制或森林 context table。
+- 正確機械輸出由 `tools/export_acting_resources.py` 直接讀 EXE 106-entry bank；舊本機 dump 僅考古。
 - **方法論(使用者定)**:證據(截圖/影片)+ 已知機制 → 可「由上而下」回原版資料找出處,不必每次 RE 到底。
 
 ## 4. 其他待辦(worklist doc91;不急)
-- **草地結尾「兩人一起走 + 淡出」**(18-08-17):remake 現直接淡出,少一段。exit_walks(多人並行)可做,但先前試做已還原。
-- **索爾走不完整**:exit_walk(到 7,47)疑被淡出提前打斷(時機衝突),可修。
+- ~~草地結尾兩人一起走~~：已由 direct ACT105 承接，不再用手寫 `exit_walks`。
 - **對話分頁捲動動畫**(原版有「文字往上捲」;自寫平滑捲動即可,速度自訂非 RE)。
 - **自動結束回合**(全員行動完自動換陣營,免手動 Tab)。
 - **狀態欄位置**(HUD 擋單位,doc51)、**哈諾父子死亡→暴走**驗證、**export_units.py 全 33 章敵人數值**套合成公式。
@@ -76,7 +79,8 @@
 - **原版 dump**(本機,gitignore):`extracted/dosbox_dump/`(acting_decoded/、task_e|f/slots、out/);
   **原始 .DAT 解包**:`extracted/raw/`(FDFIELD/FDTXT/FDOTHER…);**原版錄影**:`video/fd2-ch1.mp4`。
 - **工具**:`tools/disasm_le.py`(反組譯,docker `fd2-cap`)、`tools/parse_field.py`(FDFIELD)、
-  `extracted/dosbox_dump/acting_decoded/decode_acting.py`(acting 解碼)。
+  `tools/export_acting_resources.py`（由 FD2.EXE direct bank 產生／檢查 106-entry editable JSON）。
+  `extracted/.../decode_acting.py` 與舊 transcript 是 gitignore 考古物，不得作 canonical input。
 - **remake**:`remake/`(build:`cd remake && ./build.sh` docker;跑:`./play.sh`;headless 截圖:見 play.sh --shot 或 FD2_SHOT env)。
 
 ## 7. 環境速記

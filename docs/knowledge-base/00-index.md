@@ -116,10 +116,9 @@
 - `campaign_sample.json` — 節點圖範例
 
 **本機 dump(`extracted/`,gitignore,版權物,不上 GitHub)**:
-- **`dosbox_dump/acting_decoded/acting_decoded_throne.txt`** — 序章 context 的 **74 筆 acting
-  (global 0x50..0x99)完整解碼**(每 id 的幀/拍數/單位/pose)；不是全遊戲資源總數。
-  目前已轉成 editable resource bank 並由 BeatRunner 播放；map0 的 local 0/1/2/5 是另一個 getter
-  window，詳見 `50` §1.2 與 `48` §6.1。
+- **舊 `acting_decoded_throne.txt`** — 其 `0x207718`／高 ID 74 筆／id−48 結論已確認為錯 context dump，
+  僅保留考古用途，不能供 remake 使用。正確來源是 EXE 106-entry direct-ID bank，可由
+  `tools/export_acting_resources.py` 決定性重建（詳見 `47`、`48`、`50`）。
 - `dosbox_dump/out/*.bin` — 單位陣列槽 dump、acting 資源原始 bytes、鏡頭/單位數快照(`47`/`48` 實測證據)
 - `extracted/maps/` `extracted/images/` `extracted/story/` 等 — 解出的地圖/圖/劇情文本(玩家自備原版跑 tools 解)
 

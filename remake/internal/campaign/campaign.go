@@ -122,6 +122,7 @@ type Beat struct {
 	Frames int  `json:"frames,omitempty"` // pan/walk/fade 位移或漸變幀數;delay 用幀數(見 Ms)
 	Follow bool `json:"follow,omitempty"` // walk:走位期間鏡頭鎖定跟隨(doc47 §9,同 Node.FollowWalk 機制)
 	Dir    *int `json:"dir,omitempty"`    // walk:走完後面向(指標,nil=保留走位末向;指定則面向它,如索爾走前面轉身面向亞雷斯)
+	Steps  int  `json:"steps,omitempty"`  // scroll_step:原版 0x13185 的重複上移格數
 
 	// act:Acting 非空時播放原版 acting frame 的行為轉錄：正常 frame 每 Beat 依 Pose 搬一格，
 	// special frame 只原地換姿態(doc50 §1.2)。Poses/PoseFrames 是舊的原地姿態近似欄位，
