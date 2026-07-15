@@ -122,8 +122,11 @@ slot3 索爾仍為 `(4,46)`，但 slot4 亞雷斯已為 **`(7,46)`**（初始 FD
 故已觀察的 handler/對話交界沒有額外 resource ID；也不能據此否定既有 slot3 寫入堆疊。
 normal-core 在 `ACT 0x68` 後的 `0160:24B3E0` unit dump 為 slot3=`(4,46,pose2)`、
 slot4=`(7,46,pose3)`，已是接近後的位置；而 `0x64..0x68` 解碼均不選 slot3/4。故位移**早於
-ACT 0x64**，不是草地四句對話之間的未知 caller。下一個實驗改為在 map32 載入、`ACT 0x63`、王座
-長對話與 `ACT 0x64` 前後傾印 slot3/4，定位最早改格的窗口。
+ACT 0x64**，不是草地四句對話之間的未知 caller。再取兩張 normal-core 快照：第一句王座對話、
+第二段長對話剛開始均為 slot3=`(4,46)`、slot4=`(13,47)`。所以首次改格窗口縮至**第二段長對話
+開始後至 ACT 0x64 前**。在此窗口對 X 設 `BPPM` 雖報 slot4 `0→13`，EIP 卻仍是 input-poll
+`0x203fde`；這是 heavy debugger 已知錯誤命中型態，不能把它當寫入函式。下一個實驗應在此窗口
+以時間分段的 unit dump 找到最早差異，再只對該短窗口的 normal acting path 做追蹤。
 
 **[資料面直接證實 2026-07-05,靜態讀 dump 非 dosbox]**:讀 74 筆解碼 acting(`extracted/dosbox_dump/acting_decoded/`),
 草地幕 0x65~0x69 資料 = 每幀 (拍數, unit, pose):0x65=units 0-15 全 pose2(上,定場,拍數5)、
