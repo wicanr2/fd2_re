@@ -11,6 +11,11 @@
 > 「草地未解」是 2026-07-06 歷史狀態，不得覆蓋較新的 doc50 定論。注意 ACT 20/20 解碼不代表
 > `ch00_pre` 全 handler 已 lower；非 ACT 的 unresolved 原語仍保持 partial/fail-closed。
 
+> **2026-07-15 第二次 Codex 更新**：全 60 handler 重新抽取後 unknown 146→133。完整 callee body
+> 已把 0x32975/0x32999/0x134e4/0x12d7b 定性成 activate_unit/spawn_intro/reset_pose/focus_unit；
+> ch00 的 13 個缺漏 FDTXT calls 與 5 個 PAN 已接上。73 source beats 現只剩 ACT99/100、兩個
+> scroll_step、focus_unit 共 5 issues，仍 fail-closed。
+
 ## 0. 目前焦點(接手就做這裡)
 第一章**開場過場**逐幕對齊原版:王座傳位(done)→ 草地/王城一隅亞雷斯撞見(**幾乎 done,差一點**)→ 森林。
 目前卡在一個**深層 RE 未解**:**草地主角(索爾/亞雷斯)的走位是用什麼機制驅動**(見 §3)。

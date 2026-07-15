@@ -27,6 +27,7 @@ type HandlerBeat struct {
 	TextTable    string        `json:"text_table,omitempty"`
 	ActingID     *int          `json:"acting_id,omitempty"`
 	UnitSlot     *int          `json:"unit_slot,omitempty"`
+	UnitSlotExpr any           `json:"unit_slot_expr,omitempty"`
 	Group        *int          `json:"group,omitempty"`
 	CharID       *int          `json:"char_id,omitempty"`
 	Track        *int          `json:"track,omitempty"`

@@ -192,6 +192,45 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			beat := runtime(input, "spawn")
 			beat.Group = *input.Group
 			beats = append(beats, beat)
+		case "spawn_intro":
+			// 0x32999(group) calls the same 0x10b4e constructor as SPAWN,
+			// then performs a 12-step visible reveal/present loop.
+			if input.Group == nil {
+				issue(i, input, "spawn_intro lacks an original FDFIELD group")
+				continue
+			}
+			if activeSlotCount <= 0 {
+				issue(i, input, "spawn_intro requires a preceding complete loadch roster")
+				continue
+			}
+			beat := runtime(input, "spawn_intro")
+			beat.Group = *input.Group
+			beat.Frames = 12
+			beats = append(beats, beat)
+		case "activate_unit":
+			// 0x32975(unit_idx) is exactly unit[idx].flags=1.  OnField is
+			// the remake's cutscene visibility/materialization projection.
+			if input.UnitSlot == nil || *input.UnitSlot < 0 {
+				issue(i, input, "activate_unit lacks a non-negative runtime slot")
+				continue
+			}
+			if activeSlotCount <= *input.UnitSlot {
+				issue(i, input, fmt.Sprintf("activate_unit slot %d is outside active loadch slot_count=%d", *input.UnitSlot, activeSlotCount))
+				continue
+			}
+			beat := runtime(input, "activate_unit")
+			beat.Slot = input.UnitSlot
+			beats = append(beats, beat)
+		case "reset_pose":
+			// 0x134e4 writes pose=0 to every materialized unit and waits 20ms.
+			beat := runtime(input, "reset_pose")
+			beat.Ms = 20
+			beats = append(beats, beat)
+		case "redraw":
+			// Standalone 0x11cac(0) presents the already-materialized scene.
+			beat := runtime(input, "redraw")
+			beat.Frames = 1
+			beats = append(beats, beat)
 		case "join":
 			if input.CharID == nil {
 				issue(i, input, "join lacks an original player char_id")

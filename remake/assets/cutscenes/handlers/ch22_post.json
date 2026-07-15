@@ -102,13 +102,12 @@
       }
     },
     {
-      "op": "reveal",
-      "variant": "a",
-      "value": 17,
+      "op": "activate_unit",
       "source": {
         "addr": "0x24881",
         "target": "0x32975"
-      }
+      },
+      "unit_slot": 17
     },
     {
       "op": "dialog",
@@ -137,13 +136,12 @@
       }
     },
     {
-      "op": "reveal",
-      "variant": "a",
-      "value": 17,
+      "op": "activate_unit",
       "source": {
         "addr": "0x248fb",
         "target": "0x32975"
-      }
+      },
+      "unit_slot": 17
     },
     {
       "op": "dialog",

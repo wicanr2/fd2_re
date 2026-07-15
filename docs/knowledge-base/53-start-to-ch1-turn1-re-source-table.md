@@ -22,7 +22,7 @@ handler 序列(反組譯,✅來源確定):
 
 | 元素 | 原版值/機制 | 來源 | remake 現況(campaign_full.json throne) | 判定 |
 |---|---|---|---|---|
-| 起始鏡頭 | `pan(3,34)` | handler ✅ | `pan(72,480)`=(3,20) | ⚠須換成 (3,34) |
+| 起始鏡頭 | `pan(3,34)` | handler + PAN body ✅ | binding `pan(72,816)` | ✅ |
 | 索爾走入起點 | (8,42) | FDFIELD map32 slot2 ✅ | walk from(隱含) | ✅ |
 | 索爾走入=act(0x63) | 引擎逐格步進+pose循環 | handler + doc47§9 ✅ | walk beat(storyWalks) | ✅機制 |
 | 走入**速度/幀數**(每格幾 tick) | act#0x63=2幀(拍5+bit7\|4);ticks/格未定 | 部分RE | walk frames=278(外推自450) | ❓待RE(靜態未給明確 ticks/格;影片可數格/秒) |
@@ -32,7 +32,7 @@ handler 序列(反組譯,✅來源確定):
 | 王座廳共幾句 | FDTXT_033=**6 條字串**(txt#0-5),非18行 | FDTXT直讀✅ | ch00_palace.json 18行(攤平) | ⚠須對齊 FDTXT 分條 |
 | 國王/王后位置 | (7,5)/(10,5) portrait48/66 | FDFIELD slot0/1 ✅ | actors已擺 | ✅ |
 | 長廊守衛×16 | portrait68/69 y14-40 | FDFIELD ✅ | actors已擺 | ✅ |
-| 王城→草地轉場 | `pan(0,43)`同map32平移(非換圖/淡出) | handler ✅ | 節點硬切+淡出 | ⚠須換成同圖pan(0,43) |
+| 王城→草地轉場 | `pan(0,43)`同map32平移(非換圖/淡出) | handler + PAN body ✅ | binding `pan(0,1032)`；explicit PAN 不受 follow cap 裁切 | ✅機制 |
 | 草地配樂 | `bgm(track11)` | handler ✅ | — | ⚠須加 |
 | 草地幕 act(0x65-69)+txt#2-5 | 演出/對白交錯 | handler ✅ | path節點 | ⚠須照序列 |
 | act(0x63-69)**幀內容** | acting表 id0x63-69 已dump解碼 | doc48/acting_decoded ✅ | BeatRunner act=方向近似,**未接解碼資料** | ⚠須接 acting_decoded |
@@ -46,7 +46,7 @@ handler 序列(反組譯,✅來源確定):
 | 蓋亞/悠妮位置 | (5,43)/(5,44) | FDFIELD map31 ✅ | 已用 | ✅ |
 | 索爾+亞雷斯走向悠妮蓋亞 | act 內走位(14格外) | handler+FDFIELD ✅ | walk beat | ✅機制 |
 | 蓋亞阻擋/悠妮昏迷 staging | act(0x5e-61)幀(11單位複合等) | acting_decoded ✅ | 未接 | ⚠須接 acting_decoded |
-| reveal75/reveal99 內部 | 攝影機reveal族,內部未展開 | doc25 部分 | 近似 | ❓待RE(0x32975/0x32999 內部) |
+| activate/spawn intro | 0x32975(slot)=flags1；0x32999(group)=spawn+12-step present | 完整 callee body ✅ | activate_unit / spawn_intro | ✅ |
 
 ## D. 開場 Part 3:入隊 + 海島 + 進戰場(handler 章節0)
 
@@ -54,7 +54,7 @@ handler 序列(反組譯,✅來源確定):
 |---|---|---|---|---|
 | 入隊 | `join(0/9/4/30)`=索爾/悠妮/亞雷斯/蓋亞 | handler ✅ | runtime 保存 membership + JOIN chronology | ✅ |
 | 載真戰場 | `loadch(0)`=map0+FDTXT_001 | handler ✅ | story_ch01→map0 | ✅ |
-| 海島鏡頭 | `pan(4,12)→pan(0,0)→pan(0,15)`三平移點 | handler ✅ | 單一cam | ⚠須換三平移 |
+| 海島鏡頭 | `pan(4,12)→pan(0,0)→pan(0,15)`三平移點 | handler + PAN body ✅ | binding `96,288 → 0,0 → 0,360` | ✅ |
 | **主角隊／海盜進場移動** | act(0/1/2/5)+reveal；ACT0=party slots0–3 up×6，ACT1/2=spawn groups，ACT5=海盜 slot9 down×4 | map0 getter base 0x2077d8 + runtime dump ✅ | editable acting + party→spawn slot pipeline | ✅ |
 | 主角隊 ACT0 起點→停位 | 索爾(7,20)→(7,14) / 悠妮(10,21)→(10,15) / 亞雷斯(8,22)→(8,16) / 蓋亞(11,23)→(11,17) | map0 runtime slot dump + ACT0 解碼 ✅ | ch01 deploy_cells + editable ACT0 | ✅ |
 | 海島遇海盜對白 | FDTXT_001 txt#0-2 | FDTXT ✅ | story_ch01 script | ✅ |
@@ -76,8 +76,8 @@ handler 序列(反組譯,✅來源確定):
 
 - **⚠須換(現況是外推/錯值,有RE值可直接換)**:王座廳 pan(3,34)、scroll-follow 取代外推pan、
   對白改「一FDTXT字串=一TXT」對齊6條、王城→草地同圖pan、接 acting_decoded、海島三平移、入隊、武器射程(靜態)。
-- **❓待RE(多輪靜態/影片未果才問使用者是否外推)**:①走入 ticks/格速度(影片可數,先試)
-  ②reveal75/99 內部。map0 ACT0/1/2/5 與 party 起停格已由 runtime dump 解決，不再列待辦。
+- **❓待RE(多輪靜態/影片未果才問使用者是否外推)**:走入 ACT99 + scroll_step 的精確邊界／ticks；
+  reveal75/99 已改由完整 callee body 定性，map0 ACT0/1/2/5 與 party 起停格亦已解決。
 - **✅可直接寫**:START全段、FDFIELD所有座標、handler序列與scroll次數、0x13185機制、青衫事件骨架。
 
 > 下一步建議:先做全部 ⚠(都有RE值,純照抄,無推測);❓ 逐項評估「靜態/影片能不能補」,不能才問你。

@@ -131,9 +131,7 @@
       "text_table": "dword ptr [0x3a79]"
     },
     {
-      "op": "unknown",
-      "native_target": "0x134e4",
-      "raw_args": [],
+      "op": "reset_pose",
       "source": {
         "addr": "0x32e36",
         "target": "0x134e4"
@@ -165,9 +163,7 @@
       }
     },
     {
-      "op": "unknown",
-      "native_target": "0x134e4",
-      "raw_args": [],
+      "op": "reset_pose",
       "source": {
         "addr": "0x32e69",
         "target": "0x134e4"
@@ -175,6 +171,6 @@
     }
   ],
   "diagnostics": {
-    "unknown_ops": 2
+    "unknown_ops": 0
   }
 }

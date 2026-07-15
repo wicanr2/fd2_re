@@ -102,7 +102,7 @@ type LoadCHState struct {
 // 一比一對映原版 EXE handler 的呼叫序列(LOADCH/PAN/TXT/ACT/SPAWN/JOIN/BGM/FADE/DELAY)。
 // 每個 op 只用到自己相關的欄位,其餘留零值即可(同 Node 的稀疏欄位風格)。
 type Beat struct {
-	Op     string `json:"op"`               // loadch/pan/walk/dialog/act/spawn/join/bgm/fade/delay
+	Op     string `json:"op"`               // loadch/pan/walk/dialog/act/spawn/spawn_intro/activate_unit/reset_pose/redraw/...
 	Source string `json:"source,omitempty"` // original handler call-site; empty for authored-only beats
 
 	// loadch: atomically replace the active map, FDFIELD roster and FDTXT
@@ -118,6 +118,7 @@ type Beat struct {
 	FromX  int  `json:"from_x,omitempty"` // walk 起點;省略=沿用該角色目前座標(接續上一拍)
 	FromY  int  `json:"from_y,omitempty"`
 	Fig    int  `json:"fig,omitempty"`    // walk/act:對應 Node.Actors 裡的角色(依 Fig 尋找,同 ActorWalk)
+	Slot   *int `json:"slot,omitempty"`   // original runtime unit-array slot; identity-critical handler primitives only
 	Frames int  `json:"frames,omitempty"` // pan/walk/fade 位移或漸變幀數;delay 用幀數(見 Ms)
 	Follow bool `json:"follow,omitempty"` // walk:走位期間鏡頭鎖定跟隨(doc47 §9,同 Node.FollowWalk 機制)
 	Dir    *int `json:"dir,omitempty"`    // walk:走完後面向(指標,nil=保留走位末向;指定則面向它,如索爾走前面轉身面向亞雷斯)

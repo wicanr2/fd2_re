@@ -26,7 +26,7 @@ func TestLoadExportedHandlerScripts(t *testing.T) {
 	}
 }
 
-func TestChapter0PreHandlerPreservesKnownAndUnknownOperations(t *testing.T) {
+func TestChapter0PreHandlerPreservesReclassifiedNativeOperations(t *testing.T) {
 	script, err := LoadHandlerScript("../../assets/cutscenes/handlers/ch00_pre.json")
 	if err != nil {
 		t.Fatal(err)
@@ -34,8 +34,8 @@ func TestChapter0PreHandlerPreservesKnownAndUnknownOperations(t *testing.T) {
 	if script.Handler != "0x3231b" || script.Phase != "pre" || script.Chapter != 0 {
 		t.Fatalf("chapter 0 pre identity = %#v", script)
 	}
-	if got := script.Diagnostics["unknown_ops"]; got != 2 {
-		t.Fatalf("chapter 0 unknown operations = %d, want 2", got)
+	if got := script.Diagnostics["unknown_ops"]; got != 0 {
+		t.Fatalf("chapter 0 unknown operations = %d, want 0 after native body classification", got)
 	}
 	want := []string{"loadch", "pan", "act", "scroll_step", "dialog", "scroll_step", "dialog", "bgm"}
 	if len(script.Beats) < len(want) {
@@ -54,5 +54,12 @@ func TestChapter0PreHandlerPreservesKnownAndUnknownOperations(t *testing.T) {
 	}
 	if script.Beats[3].UnitSlot == nil || *script.Beats[3].UnitSlot != 2 || script.Beats[3].Repeat == nil || *script.Beats[3].Repeat != 15 {
 		t.Errorf("first scroll step = slot %v repeat %v, want slot 2 repeat 15", script.Beats[3].UnitSlot, script.Beats[3].Repeat)
+	}
+	wantTail := []string{"activate_unit", "redraw", "delay", "dialog", "reset_pose", "focus_unit"}
+	for i, op := range wantTail {
+		beat := script.Beats[len(script.Beats)-len(wantTail)+i]
+		if beat.Op != op {
+			t.Errorf("tail beat %d op=%q, want %q", i, beat.Op, op)
+		}
 	}
 }

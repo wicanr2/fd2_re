@@ -2,6 +2,22 @@
   "schema_version": 1,
   "handler_script": "../handlers/ch00_pre.json",
   "acting_resources": "../acting/map32.json",
+  "story_index_map": "../dialogue-index/count-aligned.json",
+  "dialogue_contexts": {
+    "0x32586": { "source_dat": "FDTXT_032", "script": "ch00_meadow.json" },
+    "0x325c1": { "source_dat": "FDTXT_032", "script": "ch00_meadow.json" },
+    "0x325fc": { "source_dat": "FDTXT_032", "script": "ch00_meadow.json" },
+    "0x32643": { "source_dat": "FDTXT_032", "script": "ch00_meadow.json" },
+    "0x3267e": { "source_dat": "FDTXT_032", "script": "ch00_meadow.json" },
+    "0x326c3": { "source_dat": "FDTXT_032", "script": "ch00_meadow.json" },
+    "0x326fe": { "source_dat": "FDTXT_032", "script": "ch00_meadow.json" },
+    "0x32739": { "source_dat": "FDTXT_032", "script": "ch00_meadow.json" },
+    "0x32774": { "source_dat": "FDTXT_032", "script": "ch00_meadow.json" },
+    "0x327af": { "source_dat": "FDTXT_032", "script": "ch00_meadow.json" },
+    "0x3286e": { "source_dat": "FDTXT_001", "script": "ch01.json" },
+    "0x328ec": { "source_dat": "FDTXT_001", "script": "ch01.json" },
+    "0x32952": { "source_dat": "FDTXT_001", "script": "ch01.json" }
+  },
   "overrides": {
     "0x32330": {
       "loadch": {
@@ -57,7 +73,7 @@
     },
     "0x3240b": {
       "pan": {
-        "x": 56,
+        "x": 0,
         "y": 1032,
         "frames": 60
       }
@@ -131,6 +147,8 @@
         "cam_y": 1020
       }
     },
+    "0x3254b": { "pan": { "x": 120, "y": 1008, "frames": 60 } },
+    "0x3261c": { "pan": { "x": 96, "y": 984, "frames": 60 } },
     "0x3255f": { "act": { "resource": 90, "timing_only": true } },
     "0x3259a": { "act": { "resource": 91, "timing_only": true } },
     "0x325d5": { "act": { "resource": 92, "timing_only": true } },
@@ -151,6 +169,9 @@
         "party_order": [0, 9, 4, 30]
       }
     },
+    "0x32830": { "pan": { "x": 96, "y": 288, "frames": 60 } },
+    "0x32891": { "pan": { "x": 0, "y": 0, "frames": 60 } },
+    "0x328b1": { "pan": { "x": 0, "y": 360, "frames": 60 } },
     "0x3283a": { "act": { "resource": 0 } },
     "0x328a5": { "act": { "resource": 1 } },
     "0x328c5": { "act": { "resource": 2 } },

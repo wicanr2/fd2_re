@@ -33,7 +33,10 @@
 | **走位 STEP/路徑** (step家族 + 0x13488) | 引擎逐格步進單位(方向陣列 0下1左2上3右);詳見 §1.1 | beat op:walk |
 | `PALFADE` (0x1f525) | 整幕 palette 淡入 | beat op:fade |
 | `DELAY(ms)` (0x375b2) | 延遲 | beat op:delay |
-| `REVEAL(n)` (0x32975/0x32999) | 攝影機 reveal 族(內部待展開,先當 pan 近似) | beat op:pan(近似) |
+| `ACTIVATE_UNIT(slot)` (0x32975) | `unit[slot]+5 = 1`，讓指定 runtime slot 進入有效／可見狀態 | beat op:activate_unit |
+| `SPAWN_INTRO(g)` (0x32999) | 內呼叫 0x10b4e append group，再做 12-step reveal/present | beat op:spawn_intro |
+| `RESET_POSE` (0x134e4) | 所有 materialized units pose=0，再 delay 20ms | beat op:reset_pose |
+| `FOCUS_UNIT(slot)` (0x12d7b→0x12cea) | 讀 unit X/Y，逐格捲動畫面／游標到該格 | editable op 已命名；runtime camera/cursor 邊界仍 fail-closed |
 
 ### 1.1 走位機制(step 家族 + 路徑走位;2026-07-05 釘死)
 
@@ -289,7 +292,7 @@ image（`0x1366a→0x1C966A`），兩者不可混算。把這個樣本外推成 
    push/call 配對抽取，再正規化為 **60 個可編輯檔案**
    `remake/assets/cutscenes/handlers/chNN_{pre,post}.json` 與 manifest。
    每個 beat 都保留 EXE 原始 call-site (`source.addr`) 作稽核證據；原語呼叫則轉成
-   `loadch/pan/dialog/act/spawn/join/bgm/scroll_step/palette_fade/delay/reveal` 等可讀 op。
+   `loadch/pan/dialog/act/spawn/spawn_intro/activate_unit/reset_pose/focus_unit/join/bgm/scroll_step/palette_fade/delay` 等可讀 op。
    尚未證實的 native call **保留為 `unknown`**，不可靜默丟失或猜譯。ch0(序章)仍逐項
    對照 doc47 §7；其中迴圈由 parser 自動辨識，精確匯成
    `scroll_step(unit_slot:2,repeat:15)` 與 `repeat:13`。**slot 不是方向**：它是 0x13185
@@ -308,7 +311,7 @@ image（`0x1366a→0x1C966A`），兩者不可混算。把這個樣本外推成 
 　　顯式 mapper，分別避免猜 grid→pixel、FDTXT idx→譯文行、acting id→角色。`spawn`
 　　現已由 loadch roster 的 FDFIELD group 直接 lower；`join` 只接受原版 0–31 的我方名冊
 　　charID，並保存成跨關 membership；`palette_fade` 則直接 lower 為 `fade(out:false)`。其餘 op
-　　（尤其 `scroll_step`、`unknown`）產生帶 source address 的 compile issue，不能假裝成
+　　（尤其尚未完成的 `scroll_step`、`focus_unit`、動態參數與 `unknown`）產生帶 source address 的 compile issue，不能假裝成
 　　可執行效果。
 
 **SPAWN runtime adapter（2026-07-15）**：`LOADCH` 保留 editable FDFIELD records；可選 persistent
@@ -317,12 +320,16 @@ append 尚未 materialize 的同 group records，對應
 `0x10b4e→0x10c50` 的 `unit_count` 寫入方式。ch00 binding 已能 lower map31 三個 call-site
 `0x32555/0x32610/0x3269c`。這解釋已驗證的 5-slot map31 checkpoint；ACT(90–98) 則已依上節證據
 lower 為 `timing_only`，不把 slots 25–71 轉成角色。
+`0x32999(group)` 已由完整函式本體重反組譯確認為同一個 append constructor 加 12-step present loop；
+BeatRunner 的 `spawn_intro` 先 materialize group、保留 12 個顯示 step，再進下一個 ACT。`0x32975(slot)`
+則明確 lower 成 `activate_unit`；不是過去文件所稱的 camera reveal。
 `JOIN` 已可 lower 原版 0–31 player charID 並保存 party membership；NPC portrait（例如商店店員 75）
 一律拒絕。
    `remake/assets/cutscenes/bindings/` 的 `HandlerBinding` 則是這個顯式 mapper 的可編輯
    JSON 表示；其 override 以 call-site 位址為 key。`ch00_pre.json` 已收入已驗證的王座／草地
-   pan、對話群組、spawn group、map31 timing-only acting、player JOIN 與 map0 ACT0/1/2/5；其他未證實
-   op仍是**刻意不完整**的縱切，不能被當成全章可播放。
+   全七個 PAN、19 個 FDTXT call、spawn/spawn_intro、activate/reset/redraw、map31 timing-only acting、
+   player JOIN 與 map0 ACT0/1/2/5。73 個 source beats 目前只剩 **5 個** fail-closed issues：
+   ACT99/100、兩段 scroll_step、尾端 focus_unit；因此仍不能當成全章可播放。
 
 **ch00 對白群組已具體轉錄（2026-07-15）**：原版一個 `0x15f84` 呼叫可包含多名說話者，故
 `HandlerDialog.lines` 可展開為多個 runtime dialog beat。binding 以 source 位址保存
@@ -330,12 +337,14 @@ lower 為 `timing_only`，不把 slots 25–71 轉成角色。
 `0x3244d → line 0–4`、`0x32488 → line 5–8`、`0x324c3 → line 9`、
 `0x324fe → line 10–21`。這些群組由 FDTXT_033 offset table 直接解碼，不是按譯文段落猜切；
 草地兩段實際座標與時點見 doc55 §2.1。
+同一 binding 現亦透過 count-aligned index 接上 FDTXT_032 的十個 call-site（37 editable lines）與
+FDTXT_001 的三個 call-site（19 editable lines）；compiler regression 逐 source address 驗證每組行數。
 
 **全戰役台詞索引資料層（2026-07-15）**：`tools/export_story_index_map.py` 會讀原始 FDTXT
 offset table，僅在一份原始資源的「logical utterance」總數與一份 `assets/story/*.json` 的
 flattened lines **完全一致**時，產生 `remake/assets/cutscenes/dialogue-index/count-aligned.json`。
-目前有 **73** 個 handler dialog call-site context 可機械映射（60 份 handler skeleton 全量生成）；`FDTXT_002/003/026/027/029/031/032/033` 等
-**8** 個 count mismatch context 只列 diagnostics、不得猜補。映射 key 是
+目前有 **73** 個 handler dialog call-site context 可機械映射（60 份 handler skeleton 全量生成）；另有
+**73** 個 call-site 因 source context／唯一 mapping 未證實而只列 diagnostics、不得猜補。映射 key 是
 `source_dat + script + string_index`：FDTXT_032/033 在不同章／序章 context 有重用，不能只以
 FDTXT index 當全域 key。`campaign.LoadStoryIndexMap` 會驗證每個映射的全部計數、連續 line
 range 與 context，再提供只讀 `Lookup`；此層尚不越權把跨 scene 原字串強行 lower 成 runtime
@@ -350,19 +359,19 @@ compiler 保持 issue，等待 scene-loading adapter，不能偷當成同一 sce
 editable scene，不能回退到 enclosing Node 的 lines 而播錯 `loadch` context。這只解決已編譯 dialog 的
 文字選擇；handler 整體仍須所有 map/roster/acting 原語完成 binding 才能宣告可忠實播放。
 3. 引擎 BeatRunner：依序執行已證實的 runtime beats
-   (pan/dialog/walk/act/spawn/join/bgm/fade/delay)。其 `acting_frames` 已可精確播放已
+   (pan/dialog/walk/act/spawn/spawn_intro/activate_unit/reset_pose/redraw/join/bgm/fade/delay)。其 `acting_frames` 已可精確播放已
    解的 0x1366a 格式；handler 腳本不直接把 EXE 位址交給引擎。
 4. 驗收：每章過場對照 DOSBox 錄影（規則 65，對 reference 不對內部訊號），並以 Go
    loader test 驗證 60 份腳本全可讀取、每一筆均帶 source address。
 
 ### 3.1 原語覆蓋率(全 30 章,2026-07-04)
 
-舊 raw dump 共 629 beats（含 `loadch_var` 這類非-call 記錄）中，已知原語 483 筆、未知
-146 筆（76.8%）。新版 editable 匯出將 `loadch_var + loadch_call` 合併為一個 `loadch`，
+舊 raw dump 共 629 beats（含 `loadch_var` 這類非-call 記錄）中，重分類後已知原語 496 筆、未知
+133 筆（78.9%）。新版 editable 匯出將 `loadch_var + loadch_call` 合併為一個 `loadch`，
 因此要以各檔 `diagnostics.unknown_ops` 和 `_manifest.json` 計數，而不可拿兩種格式的
-beat 總數直接相比。2026-07-15 全量匯出為 **626 個 editable beats、146 個保留的
+beat 總數直接相比。2026-07-15 全量匯出為 **626 個 editable beats、133 個保留的
 `unknown` calls**；5 個 handler 是已驗證的空 handler，仍保留檔案與 handler metadata。
-未知原語 30 種位址，集中在**戰後(post)handler**（戰役流程控制／中場
+未知原語 28 種位址，集中在**戰後(post)handler**（戰役流程控制／中場
 銜接族，跟序章那種純過場敘事不同族）。逐一淺層反組譯定性（前 40 條指令，看讀寫哪些已知
 變數／呼叫哪些已知函式）：
 
@@ -373,7 +382,7 @@ beat 總數直接相比。2026-07-15 全量匯出為 **626 個 editable beats、
 | `0x24b4d` | 15 | **畫面過渡效果**:push 鏡頭 `[0x53aa9]/[0x53aad]` 呼叫 `0x11eee`(地形重繪)+`0x11cac`(主重繪)+迴圈呼叫 `0x11eb0`(present)+`DELAY(20ms)`。與 acting bit7 特殊模式分支(doc47 §9)看到的同一組呼叫序列相同,疑是該分支背後共用的「reveal/漸現」子程序。 |
 | `0x11df2` | 12 | **VGA 調色盤處理**(**推翻 team-lead「疑 0x11cac 同族」的猜測**):操作 `[0x53a65]`(新變數,調色盤資料表?)+呼叫 `0x37795`(push 常數 `0x3c8`/`0x3c9`——VGA DAC 索引/資料 I/O port 位址),跟 `0x11cac`(畫面重繪)不同族,是獨立的調色盤/淡變數值計算函式。 |
 
-其餘 26 種(次數 1~8)未逐一反組譯,清單見 `docs/data/chapter_beats/_stats.json`。
+其餘 24 種(次數 1~8)未逐一反組譯,清單見 `docs/data/chapter_beats/_stats.json`。
 
 ## 4. 未解(低優先)+ 工具紀律
 
@@ -385,7 +394,9 @@ beat 總數直接相比。2026-07-15 全量匯出為 **626 個 editable beats、
   ⟹ 索爾(slot3)/亞雷斯(slot4)走位的驅動源**未定位**(不在 handler acting、不在 step 家族)。
   roster 已解(slot3=草地索爾/slot4=草地亞雷斯,dump `task_f/slots0_20_dialogue.bin`)。
   remake 目前用 storyWalk grid-walk 對齊 doc55 影片量測值(可玩、視覺對得上);精確原版驅動待更大 RE。
-- **[工具紀律]sonnet 不適合反組譯語意判讀**:實測開場 handler 解碼,呼叫序列抄對但 7 原語猜錯 6(0x32999 錯猜「鏡頭滾動」實為 spawn_group_with_intro、0x10b4e 錯猜「發話者」實為 spawn、0x12d7b 錯猜「清場」實為印戰鬥 log),還誤說「森林不在 handler / handler 提早結束」(**與 doc47 §3 矛盾:森林=0x3231b Part2,早已轉錄**)。反組譯語意判讀交旗艦自己做 + 反查 KB,sonnet 至多機械 grep 且結果必覆核。
+- **[工具紀律]反組譯語意必看完整 body**：`0x32999` 完整 body 證實為 spawn_group_with_intro；
+  `0x12d7b` 不是戰鬥 log，而是讀 unit X/Y 後呼叫 `0x12cea` 逐格 focus。call-site 名稱或淺層 caller
+  不足以定性，extractor 只收已由 callee body 證實的名稱。
 
 ## 5. 版權界線
 

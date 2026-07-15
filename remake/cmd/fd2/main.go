@@ -392,9 +392,6 @@ func (g *Game) stepCamPan() {
 	}
 	g.camX = j.fromX + (j.toX-j.fromX)*frac
 	g.camY = j.fromY + (j.toY-j.fromY)*frac
-	if g.camMaxY > 0 && g.camY > g.camMaxY {
-		g.camY = g.camMaxY
-	}
 	if j.t >= j.frames {
 		g.camPan = nil
 		g.beatAdvance()
@@ -705,24 +702,31 @@ func (g *Game) beatStart(b campaign.Beat) {
 		// current unit_count and increments it: this is append, not toggling an
 		// already slot-stable full roster.  Keep the legacy activation fallback
 		// for authored scene beats that have no LOADCH roster.
-		if g.storyRoster != nil {
-			if !g.storySpawned[b.Group] {
-				for _, actor := range g.storyRoster {
-					if actor.Group == b.Group {
-						actor.OnField = true
-						g.storyActors = append(g.storyActors, actor)
-					}
-				}
-				g.storySpawned[b.Group] = true
-			}
-		} else {
-			for i := range g.storyActors {
-				if g.storyActors[i].Group == b.Group {
-					g.storyActors[i].OnField = true
-				}
-			}
-		}
+		g.materializeStoryGroup(b.Group)
 		g.beatAdvance()
+	case "spawn_intro":
+		g.materializeStoryGroup(b.Group)
+		frames := b.Frames
+		if frames <= 0 {
+			frames = 12
+		}
+		g.beatDelay = frames
+	case "activate_unit":
+		if b.Slot == nil || *b.Slot < 0 || *b.Slot >= len(g.storyActors) {
+			g.loadErr = fmt.Sprintf("beat activate_unit: runtime slot %v unavailable (materialized=%d)", b.Slot, len(g.storyActors))
+			return
+		}
+		g.storyActors[*b.Slot].OnField = true
+		g.beatAdvance()
+	case "reset_pose":
+		for i := range g.storyActors {
+			g.storyActors[i].Dir = 0
+		}
+		g.beatDelay = 1 // original 20ms at a 60Hz remake clock
+	case "redraw":
+		// Ebiten presents the current state once after this Update.  Blocking
+		// one frame preserves the standalone original 0x11cac(0) boundary.
+		g.beatDelay = 1
 	case "join":
 		if !campaign.JoinableCharacterID(b.CharID) {
 			g.loadErr = fmt.Sprintf("beat join:非法 player char_id=%d", b.CharID)
@@ -760,6 +764,27 @@ func (g *Game) beatStart(b campaign.Beat) {
 	default:
 		g.loadErr = "beat:未知原語 " + b.Op
 		g.beatAdvance()
+	}
+}
+
+func (g *Game) materializeStoryGroup(group int) {
+	if g.storyRoster != nil {
+		if g.storySpawned[group] {
+			return
+		}
+		for _, actor := range g.storyRoster {
+			if actor.Group == group {
+				actor.OnField = true
+				g.storyActors = append(g.storyActors, actor)
+			}
+		}
+		g.storySpawned[group] = true
+		return
+	}
+	for i := range g.storyActors {
+		if g.storyActors[i].Group == group {
+			g.storyActors[i].OnField = true
+		}
 	}
 }
 

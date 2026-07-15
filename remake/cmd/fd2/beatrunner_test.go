@@ -57,6 +57,12 @@ func (g *Game) tick(n int) {
 		g.stepActJob()
 		g.stepFade()
 		g.stepCamPan()
+		if g.beatDelay > 0 {
+			g.beatDelay--
+			if g.beatDelay == 0 {
+				g.beatAdvance()
+			}
+		}
 	}
 }
 
@@ -65,6 +71,7 @@ func TestBeatPanMovesCamera(t *testing.T) {
 		{Op: "pan", X: 100, Y: 200, Frames: 10},
 	})
 	g.beatAdvance() // 啟動第 0 拍
+	g.camMaxY = 50  // follow-only cap must not corrupt an explicit original PAN target.
 	if g.camPan == nil {
 		t.Fatal("pan 拍應設定 camPan")
 	}
@@ -451,6 +458,25 @@ func TestBeatSpawnAppendsFDFIELDGroupInOriginalOrder(t *testing.T) {
 	}
 }
 
+func TestActivateResetAndRedrawPreserveHandlerBoundaries(t *testing.T) {
+	slot := 0
+	g := newBeatTestGame(t, []campaign.Beat{
+		{Op: "activate_unit", Slot: &slot},
+		{Op: "reset_pose", Ms: 20},
+		{Op: "redraw", Frames: 1},
+	})
+	g.storyActors[0].OnField = false
+	g.storyActors[0].Dir = 3
+	g.beatAdvance()
+	if !g.storyActors[0].OnField || g.storyActors[0].Dir != 0 || g.beatDelay != 1 {
+		t.Fatalf("activate/reset state = onField:%v dir:%d delay:%d", g.storyActors[0].OnField, g.storyActors[0].Dir, g.beatDelay)
+	}
+	g.tick(2)
+	if g.beatDelay != 0 || g.beatIdx < 3 {
+		t.Fatalf("reset/redraw boundaries did not advance: beat=%d delay=%d", g.beatIdx, g.beatDelay)
+	}
+}
+
 func TestMap0ActingUsesPartyThenSpawnedRuntimeSlots(t *testing.T) {
 	resources, err := campaign.LoadActingResourceSet(assetPath("assets/cutscenes/acting/map32.json"))
 	if err != nil {
@@ -458,9 +484,9 @@ func TestMap0ActingUsesPartyThenSpawnedRuntimeSlots(t *testing.T) {
 	}
 	g := newBeatTestGame(t, []campaign.Beat{
 		{Op: "act", Source: "0x3283a", Acting: resources[0]},
-		{Op: "spawn", Group: 1},
+		{Op: "spawn_intro", Group: 1, Frames: 12},
 		{Op: "act", Source: "0x328a5", Acting: resources[1]},
-		{Op: "spawn", Group: 2},
+		{Op: "spawn_intro", Group: 2, Frames: 12},
 		{Op: "act", Source: "0x328c5", Acting: resources[2]},
 		{Op: "act", Source: "0x3290d", Acting: resources[5]},
 	})
@@ -479,7 +505,7 @@ func TestMap0ActingUsesPartyThenSpawnedRuntimeSlots(t *testing.T) {
 	}
 	g.storySpawned = map[int]bool{0: true}
 	g.beatAdvance()
-	g.tick(144) // ACT0=70, ACT1=7, ACT2=39, ACT5=28 original ticks.
+	g.tick(168) // ACTs=144 ticks plus two original 12-step spawn-intro loops.
 	if g.loadErr != "" || len(g.storyActors) != 12 {
 		t.Fatalf("map0 acting sequence failed: err=%q actors=%d", g.loadErr, len(g.storyActors))
 	}

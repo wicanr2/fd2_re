@@ -30,7 +30,7 @@
    ]
   },
   {
-   "op": "fade_step",
+   "op": "scroll_step",
    "addr": "0x32351",
    "target": "0x13185",
    "args": [
@@ -51,7 +51,7 @@
    ]
   },
   {
-   "op": "fade_step",
+   "op": "scroll_step",
    "addr": "0x3239a",
    "target": "0x13185",
    "args": [
@@ -311,7 +311,7 @@
    ]
   },
   {
-   "op": "reveal_a",
+   "op": "activate_unit",
    "addr": "0x32692",
    "target": "0x32975",
    "args": [
@@ -515,7 +515,7 @@
    ]
   },
   {
-   "op": "reveal_b",
+   "op": "spawn_intro",
    "addr": "0x3289b",
    "target": "0x32999",
    "args": [
@@ -540,7 +540,7 @@
    ]
   },
   {
-   "op": "reveal_b",
+   "op": "spawn_intro",
    "addr": "0x328bb",
    "target": "0x32999",
    "args": [
@@ -581,7 +581,7 @@
    ]
   },
   {
-   "op": "reveal_a",
+   "op": "activate_unit",
    "addr": "0x32917",
    "target": "0x32975",
    "args": [
@@ -614,13 +614,13 @@
    ]
   },
   {
-   "op": "unknown",
+   "op": "reset_pose",
    "addr": "0x3295a",
    "target": "0x134e4",
    "args": []
   },
   {
-   "op": "unknown",
+   "op": "focus_unit",
    "addr": "0x32961",
    "target": "0x12d7b",
    "args": [

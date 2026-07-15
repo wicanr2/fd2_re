@@ -86,7 +86,7 @@ def normalize(beats):
             item = {"op": "join", "char_id": args[0], "source": src}
         elif op == "bgm":
             item = {"op": "bgm", "track": args[0], "loop": args[1], "source": src}
-        elif op == "fade_step":
+        elif op == "scroll_step":
             # 0x13185 follows the supplied original unit slot while scrolling;
             # its argument is not a compass direction.
             item = {"op": "scroll_step", "unit_slot": args[0], "source": src}
@@ -97,8 +97,22 @@ def normalize(beats):
             item = {"op": "palette_fade", "source": src}
         elif op == "delay":
             item = {"op": "delay", "ms": args[0], "source": src}
-        elif op in ("reveal_a", "reveal_b"):
-            item = {"op": "reveal", "variant": op[-1], "value": args[0], "source": src}
+        elif op == "activate_unit":
+            item = {"op": "activate_unit", "source": src}
+            if isinstance(args[0], int):
+                item["unit_slot"] = args[0]
+            else:
+                item["unit_slot_expr"] = args[0]
+        elif op == "spawn_intro":
+            item = {"op": "spawn_intro", "group": args[0], "source": src}
+        elif op == "reset_pose":
+            item = {"op": "reset_pose", "source": src}
+        elif op == "focus_unit":
+            item = {"op": "focus_unit", "source": src}
+            if isinstance(args[0], int):
+                item["unit_slot"] = args[0]
+            else:
+                item["unit_slot_expr"] = args[0]
         elif op == "unknown":
             item = {"op": "unknown", "native_target": beat["target"], "raw_args": args, "source": src}
         else:

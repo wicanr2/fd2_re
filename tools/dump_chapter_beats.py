@@ -34,11 +34,13 @@ PRIM = {
     0x10b4e: ('spawn', 1),     # (group) — doc47 "0x10b4e(1)" ✓
     0x112a5: ('join', 1),      # (char_id) — 序章尾 0/9/4/0x1e 四連呼 ✓
     0x25977: ('bgm', 2),       # (track,loop?) — push(0,-1)->reversed(-1,0)=doc47 "(-1,0)=停止" ✓
-    0x13185: ('fade_step', 1), # 淡變/上捲步(doc47 §8 新假說:可能是鏡頭上捲,語意未定案)
+    0x13185: ('scroll_step', 1), # (unit_idx)往上逐格走並視需要跟焦；完整 body 0x13185..0x13314
     0x1f525: ('palfade', 1),   # 整幕 palette 淡入(本輪未捕捉到章節 handler 內的呼叫實例,參數個數未核對,標記待驗證)
     0x375b2: ('delay', 1),     # (ms) — doc47 "0x375b2(200ms)" ✓
-    0x32975: ('reveal_a', 1),  # 攝影機 reveal 族之一
-    0x32999: ('reveal_b', 1),  # 攝影機 reveal 族之二
+    0x32975: ('activate_unit', 1), # (unit_idx)直接設 unit[+5]=1；不是 camera reveal
+    0x32999: ('spawn_intro', 1),   # (group)內部 call 0x10b4e 後做 12-frame reveal/present
+    0x134e4: ('reset_pose', 0),    # 所有 materialized units pose=down，然後 delay(20ms)
+    0x12d7b: ('focus_unit', 1),    # (unit_idx)讀 unit X/Y，呼叫 0x12cea 捲到該格
     0x205da: ('loadch_call', 0),  # 章節載入呼叫本身 0 參數;章節號由前面 mov [0x3c03] 設定,見 loadch_var
     # 本輪(2026-07-04)unknown×既有原語表交叉補上(event_handler_dump.py PRIM/VAR + doc25/26):
     0x3453e: ('unit_alive', 1),   # (idx) 查 [0x53a45]+idx*0x50+5 bit0(doc25/26 已知)

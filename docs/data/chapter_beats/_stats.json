@@ -10,17 +10,18 @@
     "loadch_call": 3,
     "pan": 7,
     "act": 20,
-    "fade_step": 2,
+    "scroll_step": 2,
     "dialog": 19,
     "bgm": 3,
     "palfade": 1,
     "spawn": 3,
-    "reveal_a": 2,
+    "activate_unit": 2,
     "join": 4,
     "delay": 4,
-    "reveal_b": 2,
+    "spawn_intro": 2,
     "redraw": 1,
-    "unknown": 2
+    "reset_pose": 1,
+    "focus_unit": 1
    }
   },
   {
@@ -47,7 +48,7 @@
     "dialog": 3,
     "spawn": 2,
     "redraw": 1,
-    "unknown": 2
+    "reset_pose": 2
    }
   },
   {
@@ -129,7 +130,8 @@
     "spawn": 1,
     "redraw": 1,
     "act": 2,
-    "unknown": 2
+    "reset_pose": 1,
+    "focus_unit": 1
    }
   },
   {
@@ -222,7 +224,8 @@
     "pan": 1,
     "dialog": 2,
     "act": 1,
-    "unknown": 2
+    "focus_unit": 1,
+    "reset_pose": 1
    }
   },
   {
@@ -295,7 +298,7 @@
     "pan": 2,
     "spawn": 1,
     "act": 2,
-    "unknown": 1
+    "reset_pose": 1
    }
   },
   {
@@ -362,7 +365,7 @@
     "dialog": 3,
     "pan": 1,
     "act": 1,
-    "unknown": 1
+    "focus_unit": 1
    }
   },
   {
@@ -535,14 +538,15 @@
    "n_beats": 25,
    "ops": {
     "loadch_call": 1,
-    "reveal_a": 1,
+    "activate_unit": 1,
     "pan": 3,
-    "unknown": 5,
+    "unknown": 4,
     "redraw": 2,
     "delay": 4,
     "dialog": 5,
     "act": 3,
-    "spawn": 1
+    "spawn": 1,
+    "reset_pose": 1
    }
   },
   {
@@ -555,7 +559,7 @@
     "dialog": 10,
     "join": 2,
     "act": 6,
-    "reveal_a": 2,
+    "activate_unit": 2,
     "delay": 4,
     "load_res": 3,
     "load_ch_bg": 1,
@@ -597,8 +601,9 @@
     "pan": 1,
     "dialog": 2,
     "play_sfx": 4,
-    "unknown": 5,
-    "delay": 3
+    "unknown": 4,
+    "delay": 3,
+    "focus_unit": 1
    }
   },
   {
@@ -670,12 +675,13 @@
    "n_beats": 14,
    "ops": {
     "loadch_call": 1,
-    "reveal_a": 1,
+    "activate_unit": 1,
     "pan": 1,
-    "unknown": 5,
+    "unknown": 4,
     "redraw": 1,
     "delay": 1,
     "act": 3,
+    "reset_pose": 1,
     "dialog": 1
    }
   },
@@ -742,8 +748,6 @@
   }
  ],
  "unknown_targets": {
-  "0x134e4": 8,
-  "0x12d7b": 5,
   "0x11506": 24,
   "0x1c220": 2,
   "0x233c6": 15,

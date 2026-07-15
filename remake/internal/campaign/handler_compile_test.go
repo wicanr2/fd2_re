@@ -198,6 +198,9 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 	if len(issues) == 0 {
 		t.Fatal("partial binding unexpectedly compiled the entire handler")
 	}
+	if len(issues) != 5 {
+		t.Fatalf("ch00 unresolved issue count=%d, want 5 after proven FDTXT/native/PAN primitives are lowered: %#v", len(issues), issues)
+	}
 	var pan, dialog bool
 	var slotAct bool
 	var normalSlotAct bool
@@ -222,6 +225,13 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 	map0Acts := map[string]int{
 		"0x3283a": 0, "0x328a5": 1, "0x328c5": 2, "0x3290d": 5,
 	}
+	spawnIntros := map[string]int{"0x3289b": 1, "0x328bb": 2}
+	activateSlots := map[string]int{"0x32692": 2, "0x32917": 9}
+	panTargets := map[string][2]int{
+		"0x3254b": {120, 1008}, "0x3261c": {96, 984},
+		"0x32830": {96, 288}, "0x32891": {0, 0}, "0x328b1": {0, 360},
+	}
+	var resetPose, redraw bool
 	type loadchWant struct {
 		mapPath, rosterPath string
 		slots               int
@@ -231,9 +241,16 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 		31: {"assets/maps/map31", "assets/maps/map31/map31_units.json", 30},
 		0:  {"assets/maps/map0", "assets/maps/map0/map0_units.json", 30},
 	}
+	dialogCounts := map[string]int{}
 	for _, beat := range beats {
 		pan = pan || beat.Op == "pan" && beat.X == 72 && beat.Y == 816
+		if want, ok := panTargets[beat.Source]; ok && beat.Op == "pan" && beat.X == want[0] && beat.Y == want[1] {
+			delete(panTargets, beat.Source)
+		}
 		dialog = dialog || beat.Op == "dialog" && beat.Line == 0
+		if beat.Op == "dialog" {
+			dialogCounts[beat.Source]++
+		}
 		if beat.Op == "act" && beat.Source == "0x32461" && len(beat.Acting) == 6 {
 			u := beat.Acting[0].Units[0]
 			slotAct = u.Slot != nil && *u.Slot == 16 && u.Fig == 0
@@ -265,6 +282,14 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 		if group, ok := map31Spawns[beat.Source]; ok && beat.Op == "spawn" && beat.Group == group {
 			delete(map31Spawns, beat.Source)
 		}
+		if group, ok := spawnIntros[beat.Source]; ok && beat.Op == "spawn_intro" && beat.Group == group && beat.Frames == 12 {
+			delete(spawnIntros, beat.Source)
+		}
+		if slot, ok := activateSlots[beat.Source]; ok && beat.Op == "activate_unit" && beat.Slot != nil && *beat.Slot == slot {
+			delete(activateSlots, beat.Source)
+		}
+		resetPose = resetPose || beat.Source == "0x3295a" && beat.Op == "reset_pose" && beat.Ms == 20
+		redraw = redraw || beat.Source == "0x32921" && beat.Op == "redraw" && beat.Frames == 1
 		if beat.Op == "loadch" && beat.LoadCH != nil {
 			if beat.LoadCH.Chapter == 0 && (beat.LoadCH.PartyScenario != "assets/scenarios/ch01.json" || len(beat.LoadCH.PartyOrder) != 4 || beat.LoadCH.PartyOrder[1] != 9) {
 				t.Fatalf("map0 LOADCH lacks persistent party deployment/order: %#v", beat.LoadCH)
@@ -288,8 +313,17 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 			t.Fatalf("unsafe map32 acting %s was unexpectedly eligible: issues=%#v", source, issues)
 		}
 	}
-	if !pan || !dialog || !slotAct || !normalSlotAct || len(map32Acts) != 0 || len(map31TimingActs) != 0 || len(map0Acts) != 0 || len(map31Spawns) != 0 || len(loadchs) != 0 {
+	if !pan || !dialog || !slotAct || !normalSlotAct || !resetPose || !redraw || len(panTargets) != 0 || len(map32Acts) != 0 || len(map31TimingActs) != 0 || len(map0Acts) != 0 || len(map31Spawns) != 0 || len(spawnIntros) != 0 || len(activateSlots) != 0 || len(loadchs) != 0 {
 		t.Fatalf("loaded binding did not lower its proven pan/dialog/slot-acting overrides: %#v", beats)
+	}
+	for source, want := range map[string]int{
+		"0x32586": 5, "0x325c1": 1, "0x325fc": 1, "0x32643": 2, "0x3267e": 2,
+		"0x326c3": 3, "0x326fe": 6, "0x32739": 2, "0x32774": 8, "0x327af": 7,
+		"0x3286e": 5, "0x328ec": 2, "0x32952": 12,
+	} {
+		if got := dialogCounts[source]; got != want {
+			t.Fatalf("compiled dialog %s emitted %d editable lines, want %d", source, got, want)
+		}
 	}
 }
 
