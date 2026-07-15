@@ -17,7 +17,7 @@
 | **編排** | EXE 每章 handler(跳表 0x51d71[章] 戰前 / 0x51de9[章] 戰後),線性呼叫原語 | 序章 0x3231b 已全轉錄(doc47);其餘章可機械抽取(§3) |
 | **對白** | FDTXT 章文本,0x15f84(idx) 逐條播 | 35 檔全解+1533 句精校 |
 | **演出** | acting 資源(表 0x50~0x99 共 74 筆),0x1366a(id) 播放 | 74 筆全 dump+解碼(dosbox-x) |
-| **走位** | **引擎逐格步進單位**(step 家族 + 路徑走位 0x13488,見 §1.1)+ 鏡頭鎖定跟隨 | 機制閉環;remake storyWalks+FollowWalk 同構 ✓ |
+| **走位** | **引擎逐格步進單位**(step 家族、路徑走位 0x13488，及 acting 正常 frame；見 §1.1/§1.2)+ 鏡頭鎖定跟隨 | 機制閉環;remake storyWalks+FollowWalk/acting player 同構 ✓ |
 
 原語指令集(= 所有章節 handler 的「組合語言」):
 
@@ -26,7 +26,7 @@
 | `LOADCH` (0x205da) | 載章節地圖+文本(章節變數驅動) | 節點 map/script 欄 |
 | `PAN(col,row)` (0x135dd) | 平滑鏡頭平移到格 | beat op:pan |
 | `TXT(idx)` (0x15f84) | 播章文本第 idx 條(開框/頭像/翻頁) | beat op:dialog |
-| `ACT(id)` (0x1366a) | 演出:批次設單位 pose/幀動畫,N 拍(**不搬格子**;走位=step家族/0x13488) | beat op:act(pose) |
+| `ACT(id)` (0x1366a) | 演出:批次設單位 pose；正常 frame 每拍走一格，特殊 frame 原地顯示 | beat op:act(acting_frames) |
 | `SPAWN(g)` (0x10b4e) | 群組 g 登場 | beat op:spawn |
 | `JOIN(char)` (0x112a5) | 角色入隊伍名冊 | beat op:join |
 | `BGM(track)` (0x25977) | 配樂切換/停止 | beat op:bgm |
@@ -93,15 +93,24 @@
 **slot2=王座索爾(走王座那個)、slot3=草地索爾(4,46)、slot4=草地亞雷斯(13,47)、slot5-20=守衛、slot16/17=守衛**。
 而 handler 草地段(disasm 0x323f5~0x3251c)呼叫演出 **0x64~0x69**,解碼後:0x65=units0-15 全 pose2(全體面上,定場)、
 **0x66/0x67/0x69 動的是 unit16/17 = 守衛**、0x68=unit1。**沒有一筆動草地主角 slot3/4**;草地段也**無 step/0x13488 呼叫**。
-⟹ **草地主角(索爾/亞雷斯)走位機制 = 深層未解**(比王座難;不在 handler 呼叫的 acting、不在 step 家族)。roster 已解,但驅動源未定位。
+⟹ 顯式 handler 的資源清單仍不足以解釋草地主角走位；**未解的是對話期間額外進入的 acting 呼叫來源／ID**，不是 acting 位移語意。
 
 **[實機快照補證 2026-07-15]**:以同一份 `FD2.EXE`（`org_game/.../FD2.EXE` 與
 `extracted/dosbox_dump/game_run/FD2.EXE` SHA-256 相同）跑到草地對話中，直接傾印 unit array：
 slot3 索爾仍為 `(4,46)`，但 slot4 亞雷斯已為 **`(7,46)`**（初始 FDFIELD 為 `(13,47)`）。
 因此草地影片中的接近是**真的改寫 unit[+0]/[+1] 邏輯格座標**，不是 pose、tick 或鏡頭造成的視覺假象。
-這強化了「acting 解碼正確、位移另有驅動源」的結論；尚不能由此推出寫入函式。首次嘗試以 DOSBox-X
-`BPPM` 對 slot3 X 設寫入中斷，命中停在 input-poll 而非可靠的寫入 EIP（heavy debugger 已知會退化），
-故**不得**以該命中判定來源。下一步應在各移動窗做多個 array 差分，或改用不會退化的執行期追蹤器。
+第二次 `BPPM` 命中已由堆疊回溯到 acting 正常模式的 `0x1391e`（首次 thunk 命中仍不可採）；
+因此剩下的工作是直接在 `0x1366a` entry 擷取實際 ID 與 caller，定位非 handler 顯式 ACT 的來源。
+
+**[靜態排除 2026-07-15]**：對話 parser `0x15f84..0x164e3` 的所有直接與間接 control transfer
+均不會到 `0x1366a`；FDTXT 控制碼不是這個額外 acting 的發動來源。草地 handler 的 `ACT(0x65..0x69)`
+也都是直接呼叫且資料不選 slot3/4。故 runtime entry/caller trace 是下一個最小且有辨識力的實驗。
+
+**[追蹤準備 2026-07-15]**：在草地實機的 CS dump 以 entry 簽章
+`68 88 00 00 00 … 53 56 57 55 83 EC 5C` 搜到真正入口 `CS=0158:1C966A`（不是曾誤算的
+`1C766A`）。dynamic core 下該 code breakpoint 沒有可靠停住，即使流程已跨過整段草地；這與 DOSBox-X
+對 dynamic core 的 breakpoint/step 警告一致。後續必須以 **normal core** 重跑至草地，於此入口讀
+`SS:ESP` 的 return address 與 `SS:ESP+4` 的 acting ID；在未抓到這兩值前，不宣稱額外資源是哪一筆。
 
 **[資料面直接證實 2026-07-05,靜態讀 dump 非 dosbox]**:讀 74 筆解碼 acting(`extracted/dosbox_dump/acting_decoded/`),
 草地幕 0x65~0x69 資料 = 每幀 (拍數, unit, pose):0x65=units 0-15 全 pose2(上,定場,拍數5)、

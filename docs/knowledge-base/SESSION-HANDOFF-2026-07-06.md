@@ -20,8 +20,8 @@
 ## 2. 已驗證的 RE 定論(耐用真相,別再翻案)
 - **走位機制 = step 家族 + 路徑走位**(非 acting):`0x12eaa`下/`0x1300d`左/`0x13185`上/`0x13315`右(各推一格+捲鏡頭);
   通用 `0x13488(單位idx, 方向陣列, 步數)` 走任意路徑。王座是「全上」特例(直接 0x13185×15/13)。單位結構 +0X/+1Y/+3pose/+4tick/+8角色ID。
-- **acting 播放器 `0x1366a` 只設面向,不搬格**(反組譯逐 byte 證明,見 scene-decode/ch1-throne 附錄):
-  格式 `u8幀數 + 幀×{u8拍數(bit7=顯示模式旗標), u8 N, N×(u8單位idx,u8pose)}`;**兩模式都只寫 +3(pose)/+4(tick),從不寫 +0/+1**。
+- **此 handoff 的 acting「只設面向」結論已於 2026-07-15 推翻**：normal frame 依 pose 每拍移一格，
+  special frame 才原地顯示。格式與證據以 `doc50 §1.2` 為唯一準據。
   bit7 不改變 (unit,pose) 意義。拍數=幀顯示時長(非位移)。+4 tick 配繪製公式 `0x127e0=格+tick×f(pose)` 做**單格內次格微滑**(非多格走位)。
 - **map32 roster(dosbox dump `task_f/slots0_20_dialogue.bin`)**:slot0王/1后/**2=王座索爾**/**3=草地索爾(4,46)**/**4=草地亞雷斯(13,47)**/5-20守衛。
 - **面向規則(全劇本)**:dir 預設 0(下/面向玩家);FDFIELD 不存面向;非0僅「走位者面向移動方向」或「劇情主角對看」。
@@ -32,7 +32,7 @@
 - 但原版影片(doc55)明明看到索爾/亞雷斯在草地走多格。⟹ **主角走位是「另一個機制」,還沒找到。**
 - **候選下一步(scene-decode/ch1-meadow §5.4)**:
   (a) 全 EXE 搜「誰寫 slot3/4 的 +0/+1(X/Y)」= `mov [base+idx*0x50+0/1]`(idx=3/4 或動態);
-  (b) 解森林 context acting(`out/acting_resources_forest.bin`+`acting_table_forest.bin`,未解;期望值低=acting 已知只設面向);
+  (b) 解森林 context acting(`out/acting_resources_forest.bin`+`acting_table_forest.bin`,未解；但草地問題優先直接抓 entry/caller);
   (c) 接受 doc55 影片量測重建(remake 已對齊、可玩),精確原版驅動長期擱置。
 - **方法論(使用者定)**:證據(截圖/影片)+ 已知機制 → 可「由上而下」回原版資料找出處,不必每次 RE 到底。
 
@@ -52,7 +52,7 @@
 - **dosbox 不萬能**:heavy-debug 下執行類斷點卡死;採樣率跟不上快變值會誤判;headless 截圖 fps≠60 送鍵易對不上。
   優先靜態 RE + 原版截圖(靜止參照);Go 測試(確定性)驗邏輯、截圖驗版面。
 - **我這 session 自己犯又修的錯(別重犯)**:①「15呼叫=15格→row27」線性外推錯(→21);②「(8,8)改(8,14)」誤判(→8);
-  ③「acting 編草地走位/bit7 是位移」臆測兩次都錯(acting 只設面向,已證明)。
+  ③ 此處「acting 只設面向」的舊判讀已撤回；後續請以 doc50 的 2026-07-15 更正為準。
 
 ## 6. 關鍵檔案地圖
 - **機制主檔**:`doc50-cutscene-script-system-design.md`(過場原語/走位/acting/handler/DSL)。
