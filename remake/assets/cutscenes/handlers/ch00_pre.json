@@ -30,8 +30,8 @@
       }
     },
     {
-      "op": "step",
-      "direction": 2,
+      "op": "scroll_step",
+      "unit_slot": 2,
       "source": {
         "addr": "0x32351",
         "target": "0x13185"
@@ -48,8 +48,8 @@
       "text_table": "dword ptr [0x3a79]"
     },
     {
-      "op": "step",
-      "direction": 2,
+      "op": "scroll_step",
+      "unit_slot": 2,
       "source": {
         "addr": "0x3239a",
         "target": "0x13185"

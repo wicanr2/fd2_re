@@ -645,6 +645,9 @@ func (g *Game) beatStart(b campaign.Beat) {
 	case "bgm":
 		g.playBGM(b.Track)
 		g.beatAdvance()
+	case "bgm_stop":
+		g.stopBGM()
+		g.beatAdvance()
 	case "fade":
 		frames := b.Frames
 		if frames == 0 {

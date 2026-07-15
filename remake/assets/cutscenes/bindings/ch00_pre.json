@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "handler_script": "../handlers/ch00_pre.json",
+  "overrides": {
+    "0x32339": {
+      "pan": {
+        "x": 72,
+        "y": 816,
+        "frames": 60
+      }
+    },
+    "0x32382": {
+      "dialog": {
+        "line": 0,
+        "count": 1
+      }
+    }
+  }
+}

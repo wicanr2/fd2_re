@@ -87,7 +87,9 @@ def normalize(beats):
         elif op == "bgm":
             item = {"op": "bgm", "track": args[0], "loop": args[1], "source": src}
         elif op == "fade_step":
-            item = {"op": "step", "direction": args[0], "source": src}
+            # 0x13185 follows the supplied original unit slot while scrolling;
+            # its argument is not a compass direction.
+            item = {"op": "scroll_step", "unit_slot": args[0], "source": src}
             repeat = repeat_of(beat)
             if repeat is not None:
                 item["repeat"] = repeat

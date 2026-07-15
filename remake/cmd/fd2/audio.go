@@ -56,6 +56,17 @@ func (g *Game) playBGM(track string) {
 	p.Play()
 }
 
+// stopBGM is the proven play_bgm(track=-1) operation used by original
+// cutscene handlers.  Clearing bgmCur allows the following explicit BGM beat
+// to restart the same track.
+func (g *Game) stopBGM() {
+	if g.bgm != nil {
+		g.bgm.Close()
+		g.bgm = nil
+	}
+	g.bgmCur = ""
+}
+
 // ── SFX(doc36:FDOTHER#31 的 14 個 PCM 樣本,tools/export_sfx.py 導出 WAV)──
 
 // loadSFX 載入 assets/sfx/sfx_NN.wav 為 PCM bytes(解碼一次,播放時 NewPlayerFromBytes)。

@@ -37,7 +37,7 @@ func TestChapter0PreHandlerPreservesKnownAndUnknownOperations(t *testing.T) {
 	if got := script.Diagnostics["unknown_ops"]; got != 2 {
 		t.Fatalf("chapter 0 unknown operations = %d, want 2", got)
 	}
-	want := []string{"loadch", "pan", "act", "step", "dialog", "step", "dialog", "bgm"}
+	want := []string{"loadch", "pan", "act", "scroll_step", "dialog", "scroll_step", "dialog", "bgm"}
 	if len(script.Beats) < len(want) {
 		t.Fatalf("chapter 0 has only %d beats", len(script.Beats))
 	}
@@ -52,7 +52,7 @@ func TestChapter0PreHandlerPreservesKnownAndUnknownOperations(t *testing.T) {
 	if script.Beats[2].ActingID == nil || *script.Beats[2].ActingID != 99 {
 		t.Errorf("first act id = %v, want 99", script.Beats[2].ActingID)
 	}
-	if script.Beats[3].Repeat == nil || *script.Beats[3].Repeat != 15 {
-		t.Errorf("first step repeat = %v, want 15", script.Beats[3].Repeat)
+	if script.Beats[3].UnitSlot == nil || *script.Beats[3].UnitSlot != 2 || script.Beats[3].Repeat == nil || *script.Beats[3].Repeat != 15 {
+		t.Errorf("first scroll step = slot %v repeat %v, want slot 2 repeat 15", script.Beats[3].UnitSlot, script.Beats[3].Repeat)
 	}
 }
