@@ -51,6 +51,11 @@ type HandlerActing struct {
 	// handler call-site.  Frames remains for a one-off authored transcription.
 	Resource *int          `json:"resource,omitempty"`
 	Frames   []ActingFrame `json:"frames,omitempty"`
+	// TimingOnly records an original call whose decoded targets are all beyond
+	// the materialized unit_count. The original still runs the frame scheduler
+	// and redraws, but those units are not rendered. It is deliberately
+	// call-site-local evidence, never a property of the shared resource.
+	TimingOnly bool `json:"timing_only,omitempty"`
 }
 
 // ActingResourceSet is a behavioural transcription of one runtime acting
@@ -117,6 +122,9 @@ func LoadHandlerBinding(path string) (*HandlerBinding, error) {
 			}
 			if acting.Resource == nil && len(acting.Frames) == 0 {
 				return nil, fmt.Errorf("handler binding %q has empty act override at %q", path, addr)
+			}
+			if acting.TimingOnly && acting.Resource == nil {
+				return nil, fmt.Errorf("handler binding %q act override %q timing_only requires a decoded resource", path, addr)
 			}
 			if acting.Resource != nil {
 				if binding.acting == nil {
@@ -192,7 +200,17 @@ func (binding *HandlerBinding) CompilerBindings() HandlerBindings {
 					return nil, false
 				}
 				frames, ok := binding.acting[*override.Acting.Resource]
-				return frames, ok
+				if !ok || !override.Acting.TimingOnly {
+					return frames, ok
+				}
+				// Preserve the original frame/mode scheduler but erase writes to
+				// inactive unit-array memory. This is the visible/runtime projection
+				// proven for map31, not a generic bounds-error escape hatch.
+				timing := make([]ActingFrame, len(frames))
+				for i, frame := range frames {
+					timing[i] = ActingFrame{Beats: frame.Beats, Special: frame.Special}
+				}
+				return timing, true
 			}
 			return override.Acting.Frames, true
 		},

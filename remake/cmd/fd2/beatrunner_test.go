@@ -213,12 +213,27 @@ func TestBeatActingUsesOriginalSlotBeforeDuplicateFig(t *testing.T) {
 		g.storyActors[i] = battle.Unit{Fig: 69, OnField: true, Dir: 3}
 	}
 	g.beatAdvance()
-	g.tick(41) // five 8-tick special frames plus the zero-beat terminator
+	g.tick(43) // five 8-tick frames plus original zero-special delay(1)+delay(2)
 	if g.storyActors[13].Dir != 3 {
 		t.Fatalf("duplicate fig fallback touched slot13: dir=%d", g.storyActors[13].Dir)
 	}
 	if g.storyActors[16].Dir != 1 || g.storyActors[17].Dir != 1 {
 		t.Fatalf("decoded slots 16/17 were not targeted: dirs=(%d,%d)", g.storyActors[16].Dir, g.storyActors[17].Dir)
+	}
+}
+
+func TestBeatActingZeroSpecialPreservesOriginalThreeTickTransition(t *testing.T) {
+	g := newBeatTestGame(t, []campaign.Beat{{Op: "act", Acting: []campaign.ActingFrame{{
+		Beats: 0, Special: true,
+	}}}})
+	g.beatAdvance()
+	g.tick(2)
+	if g.actJob == nil {
+		t.Fatal("zero-special frame advanced before original delay(1)+delay(2)")
+	}
+	g.tick(1)
+	if g.actJob != nil {
+		t.Fatal("zero-special frame did not advance after three ticks")
 	}
 }
 
@@ -364,6 +379,7 @@ func TestBeatSpawnAppendsFDFIELDGroupInOriginalOrder(t *testing.T) {
 	g := newBeatTestGame(t, []campaign.Beat{
 		{Op: "spawn", Group: 1}, {Op: "spawn", Group: 3}, {Op: "spawn", Group: 1},
 	})
+	g.storyActors = nil // LOADCH map31 has no group0 records.
 	g.storyRoster = []battle.Unit{
 		{Group: 1, Fig: 10}, {Group: 3, Fig: 30}, {Group: 1, Fig: 11}, {Group: 3, Fig: 9},
 	}

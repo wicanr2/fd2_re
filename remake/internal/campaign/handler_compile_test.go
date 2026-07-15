@@ -214,6 +214,11 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 		"0x32426": 101, "0x32461": 102,
 		"0x3249c": 103, "0x324d7": 104, "0x3251c": 105,
 	}
+	map31TimingActs := map[string]int{
+		"0x3255f": 90, "0x3259a": 91, "0x325d5": 92,
+		"0x32657": 93, "0x326d7": 94, "0x32712": 95,
+		"0x3274d": 96, "0x32788": 97, "0x327d9": 98,
+	}
 	type loadchWant struct {
 		mapPath, rosterPath string
 		slots               int
@@ -240,6 +245,14 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 				t.Fatalf("map32 ACT(%d) did not preserve source roster slot: %#v", id, beat)
 			}
 		}
+		if id, ok := map31TimingActs[beat.Source]; ok && beat.Op == "act" && len(beat.Acting) > 0 {
+			delete(map31TimingActs, beat.Source)
+			for _, frame := range beat.Acting {
+				if len(frame.Units) != 0 {
+					t.Fatalf("map31 ACT(%d) timing projection retained inactive target: %#v", id, beat)
+				}
+			}
+		}
 		if group, ok := map31Spawns[beat.Source]; ok && beat.Op == "spawn" && beat.Group == group {
 			delete(map31Spawns, beat.Source)
 		}
@@ -263,7 +276,7 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 			t.Fatalf("unsafe map32 acting %s was unexpectedly eligible: issues=%#v", source, issues)
 		}
 	}
-	if !pan || !dialog || !slotAct || !normalSlotAct || len(map32Acts) != 0 || len(map31Spawns) != 0 || len(loadchs) != 0 {
+	if !pan || !dialog || !slotAct || !normalSlotAct || len(map32Acts) != 0 || len(map31TimingActs) != 0 || len(map31Spawns) != 0 || len(loadchs) != 0 {
 		t.Fatalf("loaded binding did not lower its proven pan/dialog/slot-acting overrides: %#v", beats)
 	}
 }
@@ -363,6 +376,10 @@ func TestLoadActingResourceSetAndCh00References(t *testing.T) {
 	}
 	if _, ok := binding.CompilerBindings().Acting(HandlerBeat{ActingID: intPtr(103), Source: HandlerSource{Addr: "0x324d7"}}); ok {
 		t.Fatal("acting resource reference accepted mismatched original resource id")
+	}
+	timing, ok := binding.CompilerBindings().Acting(HandlerBeat{ActingID: intPtr(90), Source: HandlerSource{Addr: "0x3255f"}})
+	if !ok || len(timing) != 2 || timing[0].Beats != 1 || timing[0].Special || len(timing[0].Units) != 0 {
+		t.Fatalf("map31 timing-only resource resolve=%#v ok=%v", timing, ok)
 	}
 }
 

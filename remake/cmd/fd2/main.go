@@ -466,6 +466,17 @@ func (g *Game) nextActingFrame(j *actPoseJob) {
 // stepOriginalActing 精確承接已破解的 acting frame 行為(doc50 §1.2)。
 func (g *Game) stepOriginalActing(j *actPoseJob) {
 	f := j.acting[j.frame]
+	if f.Special && f.Beats == 0 {
+		// Original bit7=1/low7=0 is not an empty terminator. 0x136d9..
+		// 0x137c5 performs a terrain/unit composite bracketed by delay(1) and
+		// delay(2), then redraws. Ebiten redraws continuously, so retain its
+		// three-tick hold before advancing to preserve handler timing.
+		j.tick++
+		if j.tick >= 3 {
+			g.nextActingFrame(j)
+		}
+		return
+	}
 	if f.Beats <= 0 {
 		g.nextActingFrame(j)
 		return
