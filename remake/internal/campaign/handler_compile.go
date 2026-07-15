@@ -22,8 +22,9 @@ type HandlerDialog struct {
 	// loadch or camera transition.  They are metadata until a handler is run
 	// through the scene-loading adapter; preserving them prevents line index 0
 	// from being ambiguous across different FDTXT resources.
-	Script string `json:"script,omitempty"`
-	Scene  string `json:"scene,omitempty"`
+	Script     string `json:"script,omitempty"`
+	Scene      string `json:"scene,omitempty"`
+	SceneIndex *int   `json:"scene_index,omitempty"`
 	// Lines expands one original FDTXT call into individually authored remake
 	// lines.  This is required when one original string contains alternating
 	// speakers (and therefore different dialogue-box positions).
@@ -125,12 +126,14 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			if len(d.Lines) == 0 {
 				beat := runtime(input, "dialog")
 				beat.Line, beat.Count, beat.Upper = d.Line, d.Count, d.Upper
+				beat.Script, beat.Scene, beat.SceneIndex = d.Script, d.Scene, d.SceneIndex
 				beats = append(beats, beat)
 				continue
 			}
 			for _, line := range d.Lines {
 				beat := runtime(input, "dialog")
 				beat.Line, beat.Count, beat.Upper = line.Line, line.Count, line.Upper
+				beat.Script, beat.Scene, beat.SceneIndex = d.Script, d.Scene, d.SceneIndex
 				beats = append(beats, beat)
 			}
 		case "act":

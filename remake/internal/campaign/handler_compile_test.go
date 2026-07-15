@@ -147,3 +147,46 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 		t.Fatalf("loaded binding did not lower its two proven overrides: %#v", beats)
 	}
 }
+
+func TestHandlerBindingResolvesStrictStoryIndexContext(t *testing.T) {
+	binding, err := LoadHandlerBinding("../../assets/cutscenes/bindings/ch01_pre.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	script, err := LoadHandlerScript("../../assets/cutscenes/handlers/ch01_pre.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	beats, issues := CompileHandlerScript(script, binding.CompilerBindings())
+	if len(issues) == 0 {
+		t.Fatal("partial ch01 binding unexpectedly compiled whole handler")
+	}
+	dialogBeats := make([]Beat, 0)
+	for _, beat := range beats {
+		if beat.Op == "dialog" {
+			dialogBeats = append(dialogBeats, beat)
+		}
+	}
+	if len(dialogBeats) != 19 {
+		t.Fatalf("indexed ch01 dialog beats = %d, want 5+2+12", len(dialogBeats))
+	}
+	if dialogBeats[0].Line != 0 || dialogBeats[0].Count != 0 {
+		t.Fatalf("FDTXT #0 first line = %#v", dialogBeats[0])
+	}
+	if dialogBeats[5].Line != 0 || dialogBeats[7].Line != 2 {
+		t.Fatalf("FDTXT #1/#2 line starts = %#v", dialogBeats[5:8])
+	}
+	if dialogBeats[0].Source != "0x32d66" || dialogBeats[5].Source != "0x32dbb" || dialogBeats[7].Source != "0x32e24" {
+		t.Fatalf("indexed dialogue sources lost: %#v", dialogBeats)
+	}
+	dialog, ok := binding.indexedDialog(HandlerBeat{Source: HandlerSource{Addr: "0x32dbb"}, TextIndex: float64(1)})
+	if !ok || dialog.Script != "ch01.json" || dialog.Scene != "海盜出現" || dialog.SceneIndex == nil || *dialog.SceneIndex != 1 || len(dialog.Lines) != 2 {
+		t.Fatalf("indexed dialog context = %#v", dialog)
+	}
+	if dialogBeats[5].Script != "ch01.json" || dialogBeats[5].Scene != "海盜出現" || dialogBeats[5].SceneIndex == nil || *dialogBeats[5].SceneIndex != 1 {
+		t.Fatalf("compiled dialog context lost: %#v", dialogBeats[5])
+	}
+	if _, ok := binding.indexedDialog(HandlerBeat{Source: HandlerSource{Addr: "0x32d66"}, TextIndex: float64(999)}); ok {
+		t.Fatal("out-of-range text index unexpectedly resolved")
+	}
+}

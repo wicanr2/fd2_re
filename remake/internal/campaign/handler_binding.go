@@ -3,7 +3,9 @@ package campaign
 import (
 	"encoding/json"
 	"fmt"
+	"math"
 	"os"
+	"path/filepath"
 )
 
 // HandlerBinding is campaign-authored evidence that connects one immutable
@@ -11,9 +13,22 @@ import (
 // Overrides are keyed by HandlerBeat.Source.Addr, never by a reused resource
 // id, so a later loadch segment cannot accidentally inherit an earlier scene.
 type HandlerBinding struct {
-	SchemaVersion int                               `json:"schema_version"`
-	HandlerScript string                            `json:"handler_script"`
-	Overrides     map[string]HandlerBindingOverride `json:"overrides"`
+	SchemaVersion    int                               `json:"schema_version"`
+	HandlerScript    string                            `json:"handler_script"`
+	StoryIndexMap    string                            `json:"story_index_map,omitempty"`
+	DialogueContexts map[string]HandlerDialogueContext `json:"dialogue_contexts,omitempty"`
+	Overrides        map[string]HandlerBindingOverride `json:"overrides"`
+
+	storyIndex *StoryIndexMap
+}
+
+// HandlerDialogueContext selects one reusable FDTXT-to-story mapping for a
+// dialog call site.  Script is the manifest's story-relative path; pairing it
+// with SourceDAT is essential because one FDTXT resource can be reused by
+// more than one campaign context.
+type HandlerDialogueContext struct {
+	SourceDAT string `json:"source_dat"`
+	Script    string `json:"script"`
 }
 
 // HandlerBindingOverride has at most one field for the matching source op.
@@ -48,6 +63,22 @@ func LoadHandlerBinding(path string) (*HandlerBinding, error) {
 	if binding.HandlerScript == "" {
 		return nil, fmt.Errorf("handler binding %q has no handler_script", path)
 	}
+	if binding.StoryIndexMap != "" {
+		indexPath := filepath.Join(filepath.Dir(path), binding.StoryIndexMap)
+		index, err := LoadStoryIndexMap(indexPath)
+		if err != nil {
+			return nil, fmt.Errorf("handler binding %q story_index_map: %w", path, err)
+		}
+		binding.storyIndex = index
+	}
+	for addr, context := range binding.DialogueContexts {
+		if addr == "" || context.SourceDAT == "" || context.Script == "" {
+			return nil, fmt.Errorf("handler binding %q has invalid dialogue context at %q", path, addr)
+		}
+		if binding.storyIndex == nil {
+			return nil, fmt.Errorf("handler binding %q dialogue context %q lacks story_index_map", path, addr)
+		}
+	}
 	for addr, override := range binding.Overrides {
 		if addr == "" || (override.Pan == nil && override.Dialog == nil && override.Acting == nil) {
 			return nil, fmt.Errorf("handler binding %q has empty override at %q", path, addr)
@@ -76,10 +107,12 @@ func (binding *HandlerBinding) CompilerBindings() HandlerBindings {
 		},
 		Dialog: func(input HandlerBeat) (HandlerDialog, bool) {
 			override, ok := lookup(input)
-			if !ok || override.Dialog == nil {
-				return HandlerDialog{}, false
+			if ok && override.Dialog != nil {
+				// Hand-authored overrides retain priority for observations such as
+				// the prologue's non-default upper dialogue-box placement.
+				return *override.Dialog, true
 			}
-			return *override.Dialog, true
+			return binding.indexedDialog(input)
 		},
 		Acting: func(input HandlerBeat) ([]ActingFrame, bool) {
 			override, ok := lookup(input)
@@ -88,5 +121,49 @@ func (binding *HandlerBinding) CompilerBindings() HandlerBindings {
 			}
 			return override.Acting.Frames, true
 		},
+	}
+}
+
+func (binding *HandlerBinding) indexedDialog(input HandlerBeat) (HandlerDialog, bool) {
+	if binding == nil || binding.storyIndex == nil {
+		return HandlerDialog{}, false
+	}
+	context, ok := binding.DialogueContexts[input.Source.Addr]
+	if !ok {
+		return HandlerDialog{}, false
+	}
+	stringIndex, ok := handlerTextIndex(input.TextIndex)
+	if !ok {
+		return HandlerDialog{}, false
+	}
+	targets, ok := binding.storyIndex.Lookup(context.SourceDAT, context.Script, stringIndex)
+	if !ok || len(targets) != 1 {
+		// A string crossing scenes needs a scene-transition adapter; lowering it
+		// as one runtime dialog would silently use the wrong current scene.
+		return HandlerDialog{}, false
+	}
+	target := targets[0]
+	sceneIndex := target.SceneIndex
+	dialog := HandlerDialog{Script: context.Script, SceneIndex: &sceneIndex}
+	if target.Scene != nil {
+		dialog.Scene = *target.Scene
+	}
+	for _, line := range target.Lines {
+		dialog.Lines = append(dialog.Lines, HandlerDialogLine{Line: line})
+	}
+	return dialog, true
+}
+
+func handlerTextIndex(value any) (int, bool) {
+	switch v := value.(type) {
+	case int:
+		return v, v >= 0
+	case float64:
+		if v < 0 || math.Trunc(v) != v || v > math.MaxInt {
+			return 0, false
+		}
+		return int(v), true
+	default:
+		return 0, false
 	}
 }

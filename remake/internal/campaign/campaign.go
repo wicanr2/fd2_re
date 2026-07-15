@@ -103,8 +103,11 @@ type Beat struct {
 	// dialog:章文本第 Line 條起連續 Count 句(Count 省略=1)。Line 對應目前節點 Script+Scene
 	// 載入的那份 lines(同 Node.Scene 語意),不是 FDTXT 原始 idx(譯文精校版常把一條原文拆成
 	// 多句對白,見 doc47 §7 教訓:機制懂了但內容沒逐句對齊前不假裝一一對應)。
-	Line  int `json:"line,omitempty"`
-	Count int `json:"count,omitempty"`
+	Line       int    `json:"line,omitempty"`
+	Count      int    `json:"count,omitempty"`
+	Script     string `json:"script,omitempty"`      // handler compiler context; empty=Node.Script
+	Scene      string `json:"scene,omitempty"`       // handler compiler context; empty can mean unlabeled scene
+	SceneIndex *int   `json:"scene_index,omitempty"` // authoritative for unlabeled/reused scene labels
 
 	// Upper:dialog 對話框上下位置覆蓋(指標,nil=沿用預設規則「說話者 id>=32 走上框」)。
 	// 草地撞見幕實測(doc55 截圖 18-03-10):亞雷斯(id4,<32)進場那句仍走上框——原版並非單純按
