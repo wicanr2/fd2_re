@@ -178,7 +178,15 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 		"0x32426": 101, "0x32461": 102,
 		"0x3249c": 103, "0x324d7": 104, "0x3251c": 105,
 	}
-	loadchs := map[int]string{32: "assets/maps/map32", 31: "assets/maps/map31", 0: "assets/maps/map0"}
+	type loadchWant struct {
+		mapPath, rosterPath string
+		slots               int
+	}
+	loadchs := map[int]loadchWant{
+		32: {"assets/maps/map32", "assets/cutscenes/rosters/map32_runtime.json", 21},
+		31: {"assets/maps/map31", "assets/maps/map31/map31_units.json", 30},
+		0:  {"assets/maps/map0", "assets/maps/map0/map0_units.json", 30},
+	}
 	for _, beat := range beats {
 		pan = pan || beat.Op == "pan" && beat.X == 72 && beat.Y == 816
 		dialog = dialog || beat.Op == "dialog" && beat.Line == 0
@@ -197,7 +205,7 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 			}
 		}
 		if beat.Op == "loadch" && beat.LoadCH != nil {
-			if mapPath, ok := loadchs[beat.LoadCH.Chapter]; ok && beat.LoadCH.Map == mapPath {
+			if want, ok := loadchs[beat.LoadCH.Chapter]; ok && beat.LoadCH.Map == want.mapPath && beat.LoadCH.Roster == want.rosterPath && beat.LoadCH.SlotCount == want.slots {
 				delete(loadchs, beat.LoadCH.Chapter)
 			}
 		}

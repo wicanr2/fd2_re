@@ -193,8 +193,11 @@ binding 也完整 transcription 三次 `loadch`（32→map32/ch00_palace，31→
 99/100 與 map31 的 90..98 會觸及 30 以上的原版 unit-array slot；它們**不能**在此模型 lower。
 `LoadCHState.slot_count` 現為必填，compiler 會拒絕任何超過當前已載入 roster projection 的 acting，
 runtime 也驗證實際 roster 長度，避免沉默略過。map32 的 101..105（slot ≤17）則是已可安全播放的
-完整轉錄。下一個資料工作是匯出／建立能保留全部原版 unit-array slot 的 roster adapter；0/1/2/5
-亦尚待 runtime dump，全部保持 fail-closed。
+完整轉錄；原版 DOSBox 的 map32 `unitcount=21` 已在多個 snapshot 相同，故用
+`tools/export_runtime_roster.py` 從 FDFIELD export 機械生成 21-slot
+`cutscenes/rosters/map32_runtime.json`，不把 battle export 的後 9 個 placeholder 混進原版 slot
+identity。下一個資料工作是匯出／建立 map31/map0 能保留全部原版 unit-array slot 的 roster adapter；
+0/1/2/5 亦尚待 runtime dump，全部保持 fail-closed。
 - 舊 `poses`／`pose_frames` 仍可用於尚未轉錄的近似場景，但新的原版 acting 不得再降級成它。
 
 > **系統界線(2026-07-04,doc52):本 DSL 只承接「戰前/戰後過場編排」(handler 0x3231b 族,系統 A)。
