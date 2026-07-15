@@ -677,8 +677,9 @@ func (g *Game) beatStart(b campaign.Beat) {
 	case "spawn":
 		// LOADCH keeps every original roster slot but leaves non-zero FDFIELD
 		// groups off-field.  Original 0x10b4e(group) then materialises exactly
-		// that group without renumbering later acting targets.  This is observed
-		// directly in map31: groups 1, 3 and 5 create slots 0..4 in order.
+		// that group without renumbering later acting targets.  This is the
+		// remake projection; map31's original runtime roster is still under RE,
+		// so its observed ACT targets must not be inferred from these slots.
 		for i := range g.storyActors {
 			if g.storyActors[i].Group == b.Group {
 				g.storyActors[i].OnField = true
