@@ -290,8 +290,8 @@ func TestBeatDelayCountsDownThenAdvances(t *testing.T) {
 func TestBeatSequenceEndTriggersNodeTransition(t *testing.T) {
 	g := newBeatTestGame(t, []campaign.Beat{
 		{Op: "bgm", Track: "FDMUS_999"}, // 非阻塞拍:應立即連呼下一拍
-		{Op: "spawn", Group: 1},         // 非阻塞 stub
-		{Op: "join", Fig: 0},            // 非阻塞 stub
+		{Op: "spawn", Group: 1},         // 非阻塞：啟用既有 roster group
+		{Op: "join", CharID: 0},         // 非阻塞：寫入永久 party membership
 	})
 	g.beatAdvance() // 三個非阻塞拍應在同一次呼叫內全部跑完,直接進入收尾
 	if g.fade == nil {
@@ -300,6 +300,34 @@ func TestBeatSequenceEndTriggersNodeTransition(t *testing.T) {
 	g.tick(storyFadeFrames) // 淡出走完 → camp.Advance("cs"→"end") + enterNode("end")
 	if g.camp.Cur != "end" {
 		t.Fatalf("應轉場到 end,得 %s", g.camp.Cur)
+	}
+}
+
+func TestBeatJoinPersistsOnlyPlayerCharacterIDs(t *testing.T) {
+	g := newBeatTestGame(t, []campaign.Beat{{Op: "join", CharID: 9}})
+	g.beatAdvance()
+	if !g.partyMembers[9] || len(g.partyMembers) != 1 {
+		t.Fatalf("join did not persist party membership: %#v", g.partyMembers)
+	}
+
+	bad := newBeatTestGame(t, []campaign.Beat{{Op: "join", CharID: 75}})
+	bad.beatAdvance()
+	if bad.loadErr == "" || len(bad.partyMembers) != 0 {
+		t.Fatalf("scene portrait join must fail closed: err=%q party=%#v", bad.loadErr, bad.partyMembers)
+	}
+}
+
+func TestFilterScenarioPartyUsesJoinMembership(t *testing.T) {
+	sc := &battle.Scenario{Party: []battle.PartyMember{{Fig: 0}, {Fig: 9}, {Fig: 30}, {Fig: 75}}}
+	filterScenarioParty(sc, map[int]bool{0: true, 9: true})
+	if len(sc.Party) != 2 || sc.Party[0].Fig != 0 || sc.Party[1].Fig != 9 {
+		t.Fatalf("party filter ignored JOIN membership: %#v", sc.Party)
+	}
+
+	direct := &battle.Scenario{Party: []battle.PartyMember{{Fig: 0}, {Fig: 9}}}
+	filterScenarioParty(direct, nil)
+	if len(direct.Party) != 2 {
+		t.Fatalf("direct scenario start must preserve authored party: %#v", direct.Party)
 	}
 }
 

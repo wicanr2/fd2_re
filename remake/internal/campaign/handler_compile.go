@@ -192,12 +192,29 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			beat := runtime(input, "spawn")
 			beat.Group = *input.Group
 			beats = append(beats, beat)
+		case "join":
+			if input.CharID == nil {
+				issue(i, input, "join lacks an original player char_id")
+				continue
+			}
+			if !JoinableCharacterID(*input.CharID) {
+				issue(i, input, fmt.Sprintf("join char_id %d is outside the original 0..31 player roster", *input.CharID))
+				continue
+			}
+			beat := runtime(input, "join")
+			beat.CharID = *input.CharID
+			beats = append(beats, beat)
 		default:
 			issue(i, input, "operation has no proven runtime lowering")
 		}
 	}
 	return beats, issues
 }
+
+// JoinableCharacterID identifies the original permanent-player roster.  This
+// is not a portrait range: NPC and scene-only portraits share the wider ID
+// space and must never acquire party membership through JOIN.
+func JoinableCharacterID(id int) bool { return id >= 0 && id < 32 }
 
 func actingUsesUnavailableSlot(frames []ActingFrame, slotCount int) bool {
 	for _, frame := range frames {

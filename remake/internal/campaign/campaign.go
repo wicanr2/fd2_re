@@ -141,8 +141,13 @@ type Beat struct {
 	// id 分上下框,推測與進場/位置有關,尚未逆得通則;先開這個 per-beat 覆蓋做最小修正,別動全域規則。
 	Upper *bool `json:"upper,omitempty"`
 
-	Group int    `json:"group,omitempty"` // spawn:群組編號(doc25 spawn(g));remake 無群組資料表,僅記錄,見 main.go stub 註解
-	Track string `json:"track,omitempty"` // bgm:曲目 id(對映 assets/bgm)
+	Group int `json:"group,omitempty"` // spawn:群組編號(doc25 spawn(g));remake 無群組資料表,僅記錄,見 main.go stub 註解
+	// CharID is JOIN's permanent-player identity.  It intentionally remains
+	// separate from a scene actor's Fig/portrait: JOIN accepts only the
+	// original 0..31 player roster, while a cutscene may contain arbitrary
+	// NPC portraits (for example map31's shop-clerk portrait 75).
+	CharID int    `json:"char_id,omitempty"`
+	Track  string `json:"track,omitempty"` // bgm:曲目 id(對映 assets/bgm)
 
 	Out bool `json:"out,omitempty"` // fade:true=淡出 false=淡入(重用 storyFade,doc46 §5.2)
 

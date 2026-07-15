@@ -47,11 +47,11 @@ func TestCompileHandlerScriptUsesOnlyExplicitBindings(t *testing.T) {
 			return nil, false
 		},
 	})
-	if len(issues) != 2 || issues[0].Op != "join" || issues[1].Source.Addr != "0xdead" {
-		t.Fatalf("issues = %#v, want join/unknown left explicit", issues)
+	if len(issues) != 1 || issues[0].Source.Addr != "0xdead" {
+		t.Fatalf("issues = %#v, want only unknown left explicit", issues)
 	}
-	if len(beats) != 8 {
-		t.Fatalf("compiled beats = %d, want 8", len(beats))
+	if len(beats) != 9 {
+		t.Fatalf("compiled beats = %d, want 9", len(beats))
 	}
 	if beats[0].Op != "loadch" || beats[0].LoadCH == nil || beats[0].LoadCH.Roster != "assets/maps/map32/map32_units.json" {
 		t.Fatalf("loadch lowering = %#v", beats[0])
@@ -59,7 +59,7 @@ func TestCompileHandlerScriptUsesOnlyExplicitBindings(t *testing.T) {
 	if beats[1].Op != "delay" || beats[1].Ms != 200 {
 		t.Fatalf("delay lowering = %#v", beats[1])
 	}
-	if beats[4].Source != "0x32339" || beats[5].Source != "0x32382" || beats[6].Source != "0x32343" || beats[7].Op != "spawn" || beats[7].Group != 3 {
+	if beats[4].Source != "0x32339" || beats[5].Source != "0x32382" || beats[6].Source != "0x32343" || beats[7].Op != "spawn" || beats[7].Group != 3 || beats[8].Op != "join" || beats[8].CharID != 12 {
 		t.Fatalf("compiled source chain lost: %#v", beats[4:])
 	}
 	if beats[2].Track != "FDMUS_011" || beats[3].Op != "bgm_stop" {
@@ -73,6 +73,15 @@ func TestCompileHandlerScriptUsesOnlyExplicitBindings(t *testing.T) {
 	}
 	if len(beats[6].Acting) != 1 || beats[6].Acting[0].Units[0].Fig != 0 {
 		t.Fatalf("act lowering = %#v", beats[6])
+	}
+}
+
+func TestCompileHandlerJoinRejectsScenePortrait(t *testing.T) {
+	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
+		Op: "join", CharID: intPtr(75), Source: HandlerSource{Addr: "0x123"},
+	}}}, HandlerBindings{})
+	if len(beats) != 0 || len(issues) != 1 || issues[0].Reason != "join char_id 75 is outside the original 0..31 player roster" {
+		t.Fatalf("scene portrait must not compile as join: beats=%#v issues=%#v", beats, issues)
 	}
 }
 

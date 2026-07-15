@@ -202,10 +202,10 @@ identity。
 100/120 個確認點截圖均已是 map31 密林（第 140 個則已進 map0），故場景時點不含糊。在第 100 點以
 `MEMDUMPBIN DS 24B2F0 1900` 首次取得的是 map32 stale allocation，不能當 map31 roster。隨後從
 spawn writer `0x10c50` 的 runtime-relocated 指令讀出 `[*0x19CA45]`，在同一密林 checkpoint 的值為
-**`0x2499EC`**；dump 80×0x50 後只有 slot 0–4 是有效人物：索爾、亞雷斯、**portrait／scene-actor
-ID 75（待確認；不是我方名冊 charID，亦不可誤稱為第二個悠妮）**、蓋亞、悠妮。序章文本與
+**`0x2499EC`**；dump 80×0x50 後只有 slot 0–4 是有效人物：索爾、亞雷斯、**商店店員的
+portrait／scene-actor ID 75（不是我方名冊 charID，亦不是第二個悠妮）**、蓋亞、悠妮。序章文本與
 `JOIN` 呼叫均只支持 charID 9 為悠妮；她在這幕是先倒地、後由演出喚醒的角色，不能把同格的
-portrait 75 猜成她。75 不在 0–31 的可入隊角色表，故不得進入 party/JOIN adapter。
+商店店員 portrait 75 猜成她。75 不在 0–31 的可入隊角色表，故不得進入 party/JOIN adapter。
 slot 5 起已不是 unit 結構。acting player `0x137dd/0x13891/0x13975` 也明確以同一
 `[*0x53a45]+slot×0x50` 取目標；故 map31 `ACT(0x5a..0x62)` 所含 slot 8、25–71 寫入並不對應這個
 checkpoint 的活動角色，**不能**從 map31 的 30-row FDFIELD export、stale map32 array 或「補成

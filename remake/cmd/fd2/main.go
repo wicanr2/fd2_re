@@ -66,6 +66,7 @@ type Game struct {
 	dialog           []battle.DialogLine // 待顯示對話(事件產生,含說話者)
 	storyBG          bool                // 場景背景模式(story 節點指定 Map):鏡頭固定不跟游標,不畫單位/游標/HUD(doc23 §4)
 	storyActors      []battle.Unit       // storyBG 場景上的靜態 NPC/主角擺位(doc23 §4;cutscene 用,無 AI/戰鬥邏輯)
+	partyMembers     map[int]bool        // JOIN 建立的永久玩家名冊；key=原版 0..31 charID，不使用 NPC portrait
 	storyWalks       []*storyWalkJob     // 場景走位動畫佇列(doc46 §5.3);逐幀推進、完成後移除
 	storyAutoAdvance int                 // story 節點無對白時的自動轉場倒數幀(doc46 行軍蒙太奇,0=不自動)
 	storyView        *ebiten.Image       // story 場景離屏世界層(320×200,放大 storyZoom 倍貼上畫布;2-1 原版取景)
@@ -685,10 +686,14 @@ func (g *Game) beatStart(b campaign.Beat) {
 		}
 		g.beatAdvance()
 	case "join":
-		// JOIN mutates the persistent party roster, whose complete original
-		// representation is not yet modelled by handler bindings.  The compiler
-		// therefore still leaves JOIN unresolved; retain this defensive runtime
-		// branch only for authored non-handler beats.
+		if !campaign.JoinableCharacterID(b.CharID) {
+			g.loadErr = fmt.Sprintf("beat join:非法 player char_id=%d", b.CharID)
+			return
+		}
+		if g.partyMembers == nil {
+			g.partyMembers = make(map[int]bool)
+		}
+		g.partyMembers[b.CharID] = true
 		g.beatAdvance()
 	case "bgm":
 		g.playBGM(b.Track)
@@ -974,11 +979,32 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 	// ch01 的 initial_groups/party/deploy 是 map0 專屬,錯配到他章會讓單位消失。每章 stub 見 worklist)
 	if g.st != nil && scnPath != "" {
 		if sc, err := battle.LoadScenario(assetPath(scnPath)); err == nil {
+			// Scenario owns chapter-specific combat statistics, but its party list
+			// is filtered by the permanent membership established by JOIN.  A
+			// direct chapter/debug start has no JOIN history and therefore keeps
+			// the authored scenario party intact.
+			filterScenarioParty(sc, g.partyMembers)
 			g.sc = sc
 			g.dialog = append(g.dialog, sc.Setup(g.st)...)
 			g.focusOnParty()
 		}
 	}
+}
+
+// filterScenarioParty applies the campaign's JOIN membership to a freshly
+// loaded battle scenario.  A nil/empty membership intentionally means a
+// direct chapter/debug start, so the authored scenario party remains usable.
+func filterScenarioParty(sc *battle.Scenario, members map[int]bool) {
+	if sc == nil || len(members) == 0 {
+		return
+	}
+	party := sc.Party[:0]
+	for _, member := range sc.Party {
+		if members[member.Fig] {
+			party = append(party, member)
+		}
+	}
+	sc.Party = party
 }
 
 // focusOnParty 開局/戰鬥重開後把游標(=鏡頭中心)移到我方主角隊部署格的重心。

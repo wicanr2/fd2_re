@@ -427,9 +427,8 @@
       `story_ch01_palace_path`(map32 草地小徑,原「meadow」節點誤用棚)兩幕,`story_ch01_meadow`
       **改名為 `story_ch01_forest_duel`+`story_ch01_forest_discover`,背景從 map32 改指 map31 密林**
       (先前張冠李戴的核心 bug);map31 actor 用 FDFIELD roster 直讀(索爾19,46/亞雷斯19,47/
-      蓋亞5,43/悠妮5,44);`portrait75`(出場位置表與悠妮同格的曖昧一筆)查了 `references/text/
-      memory.md` 肖像表(00-41 已命名角色)確認 0x4B 不在表列範圍,判定非已知隊友,**未擺放**,
-      按指示標記待查非瞎擺。**D4 行軍蒙太奇**:新增 `story_ch01_march`(map0,無對白,`auto_advance`
+      蓋亞5,43/悠妮5,44);`portrait75` 是商店店員 NPC，不在 00-41 可入隊角色範圍，**未擺放**。
+      **D4 行軍蒙太奇**:新增 `story_ch01_march`(map0,無對白,`auto_advance`
       180 幀自動轉場,索爾走位代表隊伍,簡化版,doc 誠實標「近似非逐幀重現」)。
       **D5 分段播放(核心)**:`campaign.Node` 加 `Scene` 欄(只取 Script 檔 `scenes[]` 裡 label
       對映的那一段,不再攤平全部劇本);改「每段一個 story 節點」而非 Node 內 sub-scenes,
