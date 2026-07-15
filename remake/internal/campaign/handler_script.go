@@ -30,6 +30,7 @@ type HandlerBeat struct {
 	UnitSlotExpr any           `json:"unit_slot_expr,omitempty"`
 	Group        *int          `json:"group,omitempty"`
 	CharID       *int          `json:"char_id,omitempty"`
+	ItemID       *int          `json:"item_id,omitempty"`
 	Track        *int          `json:"track,omitempty"`
 	Loop         *int          `json:"loop,omitempty"`
 	Direction    *int          `json:"direction,omitempty"`

@@ -74,11 +74,8 @@
       }
     },
     {
-      "op": "unknown",
-      "native_target": "0x1c220",
-      "raw_args": [
-        100
-      ],
+      "op": "grant_item",
+      "item_id": 100,
       "source": {
         "addr": "0x24224",
         "target": "0x1c220"
@@ -170,6 +167,6 @@
     }
   ],
   "diagnostics": {
-    "unknown_ops": 6
+    "unknown_ops": 5
   }
 }

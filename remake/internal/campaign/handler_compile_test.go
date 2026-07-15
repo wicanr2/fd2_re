@@ -118,6 +118,21 @@ func TestCompileSetChapterRejectsMissingImmediate(t *testing.T) {
 	}
 }
 
+func TestCompileGrantItemPrimitive(t *testing.T) {
+	itemID := 0xc6
+	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
+		Op: "grant_item", ItemID: &itemID, Source: HandlerSource{Addr: "0x22f9f", Target: "0x1c220"},
+	}}}, HandlerBindings{})
+	if len(issues) != 0 || len(beats) != 1 || beats[0].Op != "grant_item" || beats[0].ItemID == nil || *beats[0].ItemID != 0xc6 {
+		t.Fatalf("grant_item lowering = %#v issues=%#v", beats, issues)
+	}
+	bad := 0x100
+	beats, issues = CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{Op: "grant_item", ItemID: &bad}}}, HandlerBindings{})
+	if len(beats) != 0 || len(issues) != 1 || issues[0].Reason != "grant_item requires an unsigned byte item_id" {
+		t.Fatalf("invalid grant_item = %#v issues=%#v", beats, issues)
+	}
+}
+
 func TestCompileHandlerScriptDoesNotGuessMissingMappings(t *testing.T) {
 	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{
 		{Op: "loadch", Chapter: intPtr(5)},

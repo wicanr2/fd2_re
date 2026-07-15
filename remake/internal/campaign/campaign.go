@@ -160,6 +160,9 @@ type Beat struct {
 	// set_chapter: original [0x53c03] campaign/resource chapter assignment.
 	// Pointer form preserves chapter zero as an explicit editable value.
 	Chapter *int `json:"chapter,omitempty"`
+
+	// grant_item: original unsigned-byte item identity.
+	ItemID *int `json:"item_id,omitempty"`
 }
 
 // Node 節點。Type: story / cutscene / battle / choice / event / shop / ending。

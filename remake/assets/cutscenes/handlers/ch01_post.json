@@ -14,11 +14,8 @@
       "text_table": "dword ptr [0x3a79]"
     },
     {
-      "op": "unknown",
-      "native_target": "0x1c220",
-      "raw_args": [
-        198
-      ],
+      "op": "grant_item",
+      "item_id": 198,
       "source": {
         "addr": "0x22f9f",
         "target": "0x1c220"
@@ -174,6 +171,6 @@
     }
   ],
   "diagnostics": {
-    "unknown_ops": 1
+    "unknown_ops": 0
   }
 }

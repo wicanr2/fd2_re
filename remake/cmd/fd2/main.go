@@ -861,6 +861,17 @@ func (g *Game) beatStart(b campaign.Beat) {
 		}
 		g.handlerChapter = *b.Chapter
 		g.beatAdvance()
+	case "grant_item":
+		if b.ItemID == nil || *b.ItemID < 0 || *b.ItemID > 0xff {
+			g.loadErr = "beat grant_item:缺少有效 item_id"
+			return
+		}
+		if g.st == nil {
+			g.loadErr = "beat grant_item:缺少 runtime battle state"
+			return
+		}
+		g.grantItemToParty(*b.ItemID)
+		g.beatAdvance()
 	case "bgm":
 		g.playBGM(b.Track)
 		g.beatAdvance()
@@ -1258,6 +1269,25 @@ func applyPersistentStats(dst, src *battle.Unit) {
 	dst.Portrait, dst.Fig = src.Portrait, src.Fig
 	dst.Exp, dst.ExpPerLevel = src.Exp, src.ExpPerLevel
 	dst.Spells = append(dst.Spells[:0], src.Spells...)
+	dst.Inventory = append(dst.Inventory[:0], src.Inventory...)
+}
+
+// grantItemToParty projects original 0x1c220 + 0x1bb8c: scan runtime units in
+// slot order, skip non-player camps and append an unequipped item to the first
+// player inventory with room. If every player has eight items, the original
+// silently drops the reward.
+func (g *Game) grantItemToParty(itemID int) bool {
+	if g.st == nil {
+		return false
+	}
+	for _, unit := range g.st.Units {
+		if unit == nil || unit.Camp != battle.Own || len(unit.Inventory) >= 8 {
+			continue
+		}
+		unit.Inventory = append(unit.Inventory, itemID)
+		return true
+	}
+	return false
 }
 
 // syncPartyFromBattle is the remake projection of original 0x11506. The EXE
@@ -1284,6 +1314,7 @@ func (g *Game) syncPartyFromBattle() error {
 		}
 		snapshot := *current
 		snapshot.Spells = append([]int(nil), current.Spells...)
+		snapshot.Inventory = append([]int(nil), current.Inventory...)
 		if snapshot.MaxMP < snapshot.MP {
 			snapshot.MaxMP = snapshot.MP
 		}

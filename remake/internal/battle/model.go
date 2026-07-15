@@ -41,20 +41,21 @@ type Unit struct {
 	AP, DP    int
 	HIT, EV   int // 命中/閃避基礎值(doc02 §2;doc03:EXE 內為「衍生值」非表格原始欄位,
 	// 敵/友單位 10B 表無此欄,export_units.py 暫用固定近似值,見該檔頭註解)
-	CritPct  int // 暴擊率(doc03 職業暴擊率表 0x5219B,resist_crit.json,依 class 已驗證吻合 doc02 §7.2)
-	MV       int // 移動力
-	AtkMin   int // 近戰攻擊距離下限(曼哈頓距離;0 視為預設 1,doc32 weapon_range.json 依武器 type 決定)
-	AtkMax   int // 近戰攻擊距離上限(0 視為預設 1;例:騎士槍type3=2,doc32)
-	Portrait int
-	Fig      int // 地圖 sprite 組(= 角色 id,恆等,doc 31)
-	X, Y     int
-	Acted    bool    // 本回合已行動(原版 byte[+5] bit7)
-	Group    int     // 出場波次(原版 FDFIELD b21;事件按 group 放出,doc 25/29)
-	OnField  bool    // 是否已登場(事件進場機制:false=待命,尚未出現在戰場,doc 25)
-	Spells   []int   // 已習得法術 id(spell.json;原版 M1-M5 bitfield 展開)
-	Dir      int     // 朝向:0下 1左 2上 3右(原版 Z2,FDICON 方向幀)
-	OffX     float64 // 行軍/移動的像素位移(顯示用;0=正在格上)
-	OffY     float64 // 進場時從邊緣滑入,漸減到 0
+	CritPct   int // 暴擊率(doc03 職業暴擊率表 0x5219B,resist_crit.json,依 class 已驗證吻合 doc02 §7.2)
+	MV        int // 移動力
+	AtkMin    int // 近戰攻擊距離下限(曼哈頓距離;0 視為預設 1,doc32 weapon_range.json 依武器 type 決定)
+	AtkMax    int // 近戰攻擊距離上限(0 視為預設 1;例:騎士槍type3=2,doc32)
+	Portrait  int
+	Fig       int // 地圖 sprite 組(= 角色 id,恆等,doc 31)
+	X, Y      int
+	Acted     bool    // 本回合已行動(原版 byte[+5] bit7)
+	Group     int     // 出場波次(原版 FDFIELD b21;事件按 group 放出,doc 25/29)
+	OnField   bool    // 是否已登場(事件進場機制:false=待命,尚未出現在戰場,doc 25)
+	Spells    []int   // 已習得法術 id(spell.json;原版 M1-M5 bitfield 展開)
+	Inventory []int   // 角色物品欄 item IDs；原版 unit+0x0a 起 8×2B，本階段保存未裝備 item identity
+	Dir       int     // 朝向:0下 1左 2上 3右(原版 Z2,FDICON 方向幀)
+	OffX      float64 // 行軍/移動的像素位移(顯示用;0=正在格上)
+	OffY      float64 // 進場時從邊緣滑入,漸減到 0
 
 	// ---- 輔助法術暫時狀態(doc02 §6.4;施放邏輯見 magic.go CastArea/applySpell)----
 	BuffAPPct int // 魔刃術:AP 加成百分比
@@ -191,22 +192,23 @@ type unitsFile struct {
 	H         int    `json:"h"`
 	OwnDeploy []Cell `json:"own_deploy"`
 	Units     []struct {
-		Camp    string `json:"camp"`
-		Name    string `json:"name"`
-		ClsName string `json:"cls_name"`
-		Lv      int    `json:"lv"`
-		HP      int    `json:"hp"`
-		MP      int    `json:"mp"`
-		Spells  []int  `json:"spells"`
-		AP      int    `json:"ap"`
-		DP      int    `json:"dp"`
-		HIT     int    `json:"hit"`
-		EV      int    `json:"ev"`
-		Crit    int    `json:"crit"`
-		MV      int    `json:"mv"`
-		AtkMin  int    `json:"atk_min"` // 攻擊距離下限(0=預設1;沒此欄的舊版 units.json 一律 0,doc32)
-		AtkMax  int    `json:"atk_max"` // 攻擊距離上限(0=預設1)
-		Ex      int    `json:"ex"`      // 每級經驗(doc02 §4.5「守方每級經驗」;export_units.py 新增欄,
+		Camp      string `json:"camp"`
+		Name      string `json:"name"`
+		ClsName   string `json:"cls_name"`
+		Lv        int    `json:"lv"`
+		HP        int    `json:"hp"`
+		MP        int    `json:"mp"`
+		Spells    []int  `json:"spells"`
+		Inventory []int  `json:"inventory,omitempty"`
+		AP        int    `json:"ap"`
+		DP        int    `json:"dp"`
+		HIT       int    `json:"hit"`
+		EV        int    `json:"ev"`
+		Crit      int    `json:"crit"`
+		MV        int    `json:"mv"`
+		AtkMin    int    `json:"atk_min"` // 攻擊距離下限(0=預設1;沒此欄的舊版 units.json 一律 0,doc32)
+		AtkMax    int    `json:"atk_max"` // 攻擊距離上限(0=預設1)
+		Ex        int    `json:"ex"`      // 每級經驗(doc02 §4.5「守方每級經驗」;export_units.py 新增欄,
 		// 舊版 units.json 沒有此欄時 json.Unmarshal 留 0,見 Unit.ExpPerLevel 註解)
 		Portrait int `json:"portrait"`
 		Fig      int `json:"fig"`
@@ -245,7 +247,8 @@ func Load(path string) (*State, error) {
 			HP: u.HP, MaxHP: u.HP, MP: u.MP, MaxMP: u.MP, AP: u.AP, DP: u.DP, MV: u.MV,
 			HIT: u.HIT, EV: u.EV, CritPct: u.Crit, ExpPerLevel: u.Ex,
 			AtkMin: u.AtkMin, AtkMax: u.AtkMax,
-			Portrait: u.Portrait, Fig: u.Fig, X: u.X, Y: u.Y, Spells: u.Spells,
+			Portrait: u.Portrait, Fig: u.Fig, X: u.X, Y: u.Y,
+			Spells: append([]int(nil), u.Spells...), Inventory: append([]int(nil), u.Inventory...),
 			Group: u.Group, OnField: true, // 預設登場;Scenario 會把待命 group 設 false
 		}
 		// 註:不再自動把 own 塞部署格 — 部署格保留給 scenario 主角隊(spawn_party);

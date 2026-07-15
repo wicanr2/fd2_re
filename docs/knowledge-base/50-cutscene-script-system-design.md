@@ -38,6 +38,7 @@
 | `RESET_POSE` (0x134e4) | 所有 materialized units pose=0，再 delay 20ms | beat op:reset_pose |
 | `FOCUS_UNIT(slot)` (0x12d7b→0x12cea) | 讀 unit X/Y，先 X 後 Y 逐格移動游標；13×8 視窗在 X=2..10、Y=2..5 安全帶外才捲圖 | beat op:focus_unit；runtime 已照四個 step 函式 lower |
 | `SYNC_PARTY` (0x11506) | 戰後以角色 ID 將 runtime battle unit 回寫 persistent roster，清暫態並恢復 HP/MP（§3.2） | beat op:sync_party；`partyRoster` 跨 battle/save 保留 |
+| `GRANT_ITEM(item)` (0x1c220→0x1bb8c) | 依 runtime slot 順序找第一個我方且 8 格物品欄未滿的角色，放入 item ID | beat op:grant_item；角色 `Inventory` 隨 sync/save 保留 |
 
 ### 1.1 走位機制(step 家族 + 路徑走位;2026-07-05 釘死)
 
@@ -327,7 +328,8 @@ editable scene，不能回退到 enclosing Node 的 lines 而播錯 `loadch` con
 133 筆（78.9%）。新版 editable 匯出將 `loadch_var + loadch_call` 合併為一個 `loadch`，
 因此要以各檔 `diagnostics.unknown_ops` 和 `_manifest.json` 計數，而不可拿兩種格式的
 beat 總數直接相比。2026-07-15 全量匯出為 **626 個 editable beats**；完整辨識 `0x11506`
-並重新生成 24 個 post handler 後，保留的 `unknown` calls 已由 **133 降至 109**。5 個 handler
+並重新生成 24 個 post handler 後，保留的 `unknown` calls 已由 **133 降至 109**；再定案
+`0x1c220` 的兩個 caller 後降至 **107**。5 個 handler
 是已驗證的空 handler，仍保留檔案與 handler metadata。
 未知原語 28 種位址，集中在**戰後(post)handler**（戰役流程控制／中場
 銜接族，跟序章那種純過場敘事不同族）。逐一淺層反組譯定性（前 40 條指令，看讀寫哪些已知
@@ -370,6 +372,28 @@ remake 的 first complete consumer 是 `assets/cutscenes/handlers/ch00_post.json
 與 `Chapter` 一併 JSON serialize/restore。因此 battle→post handler→下一章／讀檔 的持久資料鏈已接通，
 而不是只在當前戰場記憶體做畫面效果。remake 目前會同步所有 `JOIN` 成員（包含 ID 0），因為尚未
 重製原版 ID 0 可能使用的另一條持久化路徑；這是刻意標記的 projection 差異，不能宣稱該特例已 1:1。
+
+### 3.3 戰後獎勵 `0x1c220(item_id)`：第一個有空位的我方角色（2026-07-15）
+
+完整 body `0x1c220..0x1c268` 只有一個參數。它由 runtime slot 0 起掃到 `[0x53beb)`，只處理
+unit `+6 == 2`（原版我方 camp），並呼叫 `0x1bb8c(unit_idx,item_id)`。後者逐一檢查
+unit `+0x0a` 起的 **8 個 2-byte inventory slots**：slot 第一 byte 的 bit7 set 代表可用空欄；命中後
+把第一 byte 清零、把 item ID 寫到第二 byte並回傳 1。八格都沒有空位則回傳 -1，外層繼續找下一個
+我方角色；所有我方皆滿時函式靜默結束。
+
+全 EXE 只有兩個 caller，兩者都在 post handler：
+
+- ch01 post `0x22f9f`：item `0xC6`（198，力量藥水）。
+- ch20 post `0x24224`：item `0x64`（100，天空之鑰）。
+
+remake lower 為 editable `grant_item(item_id)`；`battle.Unit.Inventory` 保存 item IDs、容量固定 8，
+`sync_party` 深複製到 persistent roster，JSON save/load 亦會保留。這比原先只有名稱字串的全隊商店
+購物暫存更接近原版角色物品欄，也替後續裝備／消耗品系統留下可資料化的 stable ID。
+
+注意 ch01 post 尚不能因此直接宣稱 complete：handler 開頭檢查 runtime slots 5..10 是否任一存活，
+「全滅」路徑才播 FDTXT #6 並送力量藥水，否則走 FDTXT #7；目前 linear call exporter 尚未保存這個
+control-flow branch。generated binding 另外仍缺 FDTXT_002 61 utterances → `ch02.json` 53 lines 的 8 句、
+pan/ACT14..16/SPAWN4 的 post-battle roster context，共 11 個 compile issues。不得把兩條分支對白串播。
 
 ## 4. 未解(低優先)+ 工具紀律
 

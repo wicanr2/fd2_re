@@ -468,6 +468,38 @@ func TestBeatSyncPartyPersistsProgressAndClearsBattleState(t *testing.T) {
 	}
 }
 
+func TestBeatGrantItemUsesFirstPlayerInventoryWithRoom(t *testing.T) {
+	itemID := 0xc6
+	g := newBeatTestGame(t, []campaign.Beat{{Op: "grant_item", ItemID: &itemID}, {Op: "sync_party"}})
+	g.partyMembers = map[int]bool{9: true}
+	g.st = &battle.State{Units: []*battle.Unit{
+		{Camp: battle.Own, Fig: 0, Inventory: []int{1, 2, 3, 4, 5, 6, 7, 8}},
+		{Camp: battle.Enemy, Fig: 99},
+		{Camp: battle.Own, Fig: 9, Inventory: []int{4}},
+	}}
+	g.beatAdvance()
+	if g.loadErr != "" {
+		t.Fatal(g.loadErr)
+	}
+	if got := g.st.Units[0].Inventory; len(got) != 8 {
+		t.Fatalf("full first player inventory changed: %#v", got)
+	}
+	if got := g.st.Units[1].Inventory; len(got) != 0 {
+		t.Fatalf("enemy received reward: %#v", got)
+	}
+	if got := g.st.Units[2].Inventory; len(got) != 2 || got[1] != 0xc6 {
+		t.Fatalf("second player reward inventory = %#v", got)
+	}
+	if got := g.partyRoster[9].Inventory; len(got) != 2 || got[1] != 0xc6 {
+		t.Fatalf("reward did not persist through sync_party: %#v", got)
+	}
+
+	full := &Game{st: &battle.State{Units: []*battle.Unit{{Camp: battle.Own, Inventory: make([]int, 8)}}}}
+	if full.grantItemToParty(0x64) || len(full.st.Units[0].Inventory) != 8 {
+		t.Fatalf("all-full inventory should silently reject reward: %#v", full.st.Units[0].Inventory)
+	}
+}
+
 func TestReorderScenarioPartyUsesOriginalJoinSlots(t *testing.T) {
 	sc := &battle.Scenario{
 		Party:       []battle.PartyMember{{Fig: 0}, {Fig: 4}, {Fig: 9}, {Fig: 30}},

@@ -290,6 +290,15 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			chapter := *input.Chapter
 			beat.Chapter = &chapter
 			beats = append(beats, beat)
+		case "grant_item":
+			if input.ItemID == nil || *input.ItemID < 0 || *input.ItemID > 0xff {
+				issue(i, input, "grant_item requires an unsigned byte item_id")
+				continue
+			}
+			beat := runtime(input, "grant_item")
+			itemID := *input.ItemID
+			beat.ItemID = &itemID
+			beats = append(beats, beat)
 		case "palette_fade":
 			// Original 0x1f525 is the whole-screen palette fade-in.  It has no
 			// chapter-local argument, so the generic runtime representation is
