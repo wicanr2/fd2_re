@@ -565,13 +565,21 @@ runtime 在沒有 active battle array 時另查 persistent roster，是為 node-
 projection，不冒充 `0x24b14` 的 byte-exact 行為。Load 會拒絕缺 `item_id` 或缺任一 arm 的 gate；
 runtime／campaign tests 同時固定 slots 0..15、present/missing、成功 sync、save round-trip 與第28章整備邊界。
 
-但「取得天空之鑰」仍是下一個必接項目，不能把 gate 接好就稱正常路線可玩。鑰匙在零起算
-`ch20_post`（玩家第21章戰後）鑄成：`0x2418a..0x241cd` 對 item `0xD1..0xD6`、runtime
-slots 0..15 累計命中，`cmp ebx,6` 要求六件全齊；成功才在 `0x241d6..0x24220` 移除材料並於
-`0x24224` grant `0x64`，失敗則從 `0x242e9` 播未鑄成對話。兩臂最後共同 JOIN24/JOIN23、
-sync_party、chapter++，然後仍必進 `town_ch22`。目前 `battle_ch21` 尚未接這個 handler，正常
-campaign 因此尚無鑰匙取得路徑；下一批必須 lower 這個六素材 diamond，不能把 flat handler JSON
-中的 `grant_item(100)` 誤當無條件。
+「取得天空之鑰」也已接入，但完整 body 揭露的規則比攻略口語的「六件全齊」更怪：零起算
+`ch20_post`（玩家第21章戰後）在 `0x2418a..0x241cd` 對每個 item `0xD1..0xD6` 與每個
+runtime slot 0..15 呼叫 `0x31860`；每個 `(item,slot)` 只要該角色至少持有一件就加一，最後
+`cmp ebx,6` 要求**命中組合總數恰為 6**。所以同一素材分散兩名角色會算2；D1兩人持有、
+D2..D5各一人、完全沒有D6仍會湊到6而成功，反之正常六種都有但任一種分散兩人形成7組反而失敗。
+這個原版怪癖由 `inventory_recipe` 與 regression 原樣保存，不能擅自正規化成 set membership。
+
+成功時 `0x241d6..0x24220` 仍以 item→slot 順序，在每個命中 pair 移除該角色的第一件，然後
+`0x24224` grant `0x64`；失敗完全不改 inventory。campaign 現為
+`battle_ch21 → story_ch21_post_sky_key_intro(#5十句) → inventory_recipe_ch21_sky_key`，
+成功臂使用 editable FDTXT_021 #7..#10 全16句，失敗臂使用 #6 全4句；兩臂共同
+JOIN24/JOIN23、sync_party、set_chapter(21)，最後都回 `town_ch22`，沒有跳過商店／整備。
+原 handler 的 `layout_units`、ACT63/64 與 `0x24336` 鑄造動畫尚未 lower，所以目前是完整文字、
+物品與持久化分支，不宣稱視覺演出 1:1。另目前較早章節仍沒有 D1..D6 的正常取得路徑；下一步要
+盤點六素材來源，否則實玩只會走未鑄成臂。
 
 ## 4. 未解(低優先)+ 工具紀律
 

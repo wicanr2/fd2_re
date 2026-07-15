@@ -664,6 +664,62 @@ def build_campaign(
             }
             after_battle_id = gate_id
 
+        # 零起算 ch20_post = 玩家第21章戰後。原版不是「六種各一件」：
+        # 它對 D1..D6 × runtime slots0..15 計數，每個(item,slot)至多命中一次，
+        # 總數恰為6才逐 pair 移除第一件並 grant 0x64。兩臂最後都 JOIN/sync，
+        # 仍回到玩家第22章 town hub。
+        if c == 21:
+            intro_id = "story_ch21_post_sky_key_intro"
+            recipe_id = "inventory_recipe_ch21_sky_key"
+            crafted_id = "story_ch21_post_sky_key_crafted"
+            insufficient_id = "story_ch21_post_sky_key_insufficient"
+            common_tail = [
+                {"op": "join", "char_id": 24},
+                {"op": "join", "char_id": 23},
+                {"op": "sync_party"},
+                {"op": "set_chapter", "chapter": 21},
+            ]
+            nodes[intro_id] = {
+                "type": "cutscene",
+                "script": "assets/story/ch21.json",
+                "scene": "浴血決戰,團長真身現形——萊汀舊識瑪爾",
+                "beats": [{"op": "dialog", "line": 7, "count": 10}],
+                "next": recipe_id,
+            }
+            nodes[recipe_id] = {
+                "type": "inventory_recipe",
+                "item_ids": list(range(0xD1, 0xD7)),
+                "slot_count": 16,
+                "required_matches": 6,
+                "reward_item_id": 0x64,
+                "if_crafted": crafted_id,
+                "if_insufficient": insufficient_id,
+            }
+            nodes[crafted_id] = {
+                "type": "cutscene",
+                "script": "assets/story/ch21.json",
+                "scene": "希爾法鑄成傳說法器「天空之鑰」",
+                "beats": [
+                    {"op": "dialog", "line": 0, "count": 1},
+                    {"op": "dialog", "line": 1, "count": 3},
+                    {"op": "dialog", "line": 4, "count": 2},
+                    {"op": "dialog", "line": 6, "count": 10},
+                    *common_tail,
+                ],
+                "next": after_battle_id,
+            }
+            nodes[insufficient_id] = {
+                "type": "cutscene",
+                "script": "assets/story/ch21.json",
+                "scene": "決議直赴巨塔(未鑄成天空之鑰)",
+                "beats": [
+                    {"op": "dialog", "line": 0, "count": 4},
+                    *common_tail,
+                ],
+                "next": after_battle_id,
+            }
+            after_battle_id = intro_id
+
         nodes[battle_id] = {
             "type": "battle",
             "bgm": BGM_BATTLE_TABLE[(c - 1) % len(BGM_BATTLE_TABLE)],
@@ -729,6 +785,8 @@ def validate(campaign: dict) -> list[str]:
         check_target(nid, n.get("on_lose"))
         check_target(nid, n.get("if_present"))
         check_target(nid, n.get("if_missing"))
+        check_target(nid, n.get("if_crafted"))
+        check_target(nid, n.get("if_insufficient"))
         for opt in n.get("options", []):
             check_target(nid, opt.get("to"))
         if n.get("type") == "inventory_gate":
@@ -737,6 +795,19 @@ def validate(campaign: dict) -> list[str]:
                 problems.append(f"inventory_gate 節點 {nid!r} 的 item_id 必須是 0..255")
             if not n.get("if_present") or not n.get("if_missing"):
                 problems.append(f"inventory_gate 節點 {nid!r} 必須同時定義 if_present / if_missing")
+        if n.get("type") == "inventory_recipe":
+            item_ids = n.get("item_ids")
+            if not isinstance(item_ids, list) or not item_ids or any(
+                not isinstance(item_id, int) or not 0 <= item_id <= 0xFF for item_id in item_ids
+            ):
+                problems.append(f"inventory_recipe 節點 {nid!r} 的 item_ids 必須是非空 0..255 陣列")
+            reward = n.get("reward_item_id")
+            if not isinstance(reward, int) or not 0 <= reward <= 0xFF:
+                problems.append(f"inventory_recipe 節點 {nid!r} 的 reward_item_id 必須是 0..255")
+            if n.get("slot_count", 0) <= 0 or n.get("required_matches", 0) <= 0:
+                problems.append(f"inventory_recipe 節點 {nid!r} 必須定義 slot_count / required_matches")
+            if not n.get("if_crafted") or not n.get("if_insufficient"):
+                problems.append(f"inventory_recipe 節點 {nid!r} 必須同時定義 if_crafted / if_insufficient")
         if n.get("type") == "battle":
             map_dir = n.get("map")
             units_path = n.get("units")
@@ -786,6 +857,7 @@ def validate(campaign: dict) -> list[str]:
         for to in (
             n.get("next"), n.get("on_win"), n.get("on_lose"),
             n.get("if_present"), n.get("if_missing"),
+            n.get("if_crafted"), n.get("if_insufficient"),
         ):
             if to:
                 stack.append(to)

@@ -2758,7 +2758,7 @@
    "map": "assets/maps/map20",
    "units": "assets/maps/map20/map20_units.json",
    "scenario": "assets/scenarios/ch21.json",
-   "on_win": "town_ch22",
+   "on_win": "story_ch21_post_sky_key_intro",
    "on_lose": "retreat_ch21"
   },
   "retreat_ch21": {
@@ -2774,6 +2774,106 @@
     "retried_ch21": true
    },
    "next": "battle_ch21"
+  },
+  "story_ch21_post_sky_key_intro": {
+   "type": "cutscene",
+   "script": "assets/story/ch21.json",
+   "scene": "浴血決戰,團長真身現形——萊汀舊識瑪爾",
+   "beats": [
+    {
+     "op": "dialog",
+     "line": 7,
+     "count": 10
+    }
+   ],
+   "next": "inventory_recipe_ch21_sky_key"
+  },
+  "inventory_recipe_ch21_sky_key": {
+   "type": "inventory_recipe",
+   "item_ids": [
+    209,
+    210,
+    211,
+    212,
+    213,
+    214
+   ],
+   "slot_count": 16,
+   "required_matches": 6,
+   "reward_item_id": 100,
+   "if_crafted": "story_ch21_post_sky_key_crafted",
+   "if_insufficient": "story_ch21_post_sky_key_insufficient"
+  },
+  "story_ch21_post_sky_key_crafted": {
+   "type": "cutscene",
+   "script": "assets/story/ch21.json",
+   "scene": "希爾法鑄成傳說法器「天空之鑰」",
+   "beats": [
+    {
+     "op": "dialog",
+     "line": 0,
+     "count": 1
+    },
+    {
+     "op": "dialog",
+     "line": 1,
+     "count": 3
+    },
+    {
+     "op": "dialog",
+     "line": 4,
+     "count": 2
+    },
+    {
+     "op": "dialog",
+     "line": 6,
+     "count": 10
+    },
+    {
+     "op": "join",
+     "char_id": 24
+    },
+    {
+     "op": "join",
+     "char_id": 23
+    },
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 21
+    }
+   ],
+   "next": "town_ch22"
+  },
+  "story_ch21_post_sky_key_insufficient": {
+   "type": "cutscene",
+   "script": "assets/story/ch21.json",
+   "scene": "決議直赴巨塔(未鑄成天空之鑰)",
+   "beats": [
+    {
+     "op": "dialog",
+     "line": 0,
+     "count": 4
+    },
+    {
+     "op": "join",
+     "char_id": 24
+    },
+    {
+     "op": "join",
+     "char_id": 23
+    },
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 21
+    }
+   ],
+   "next": "town_ch22"
   },
   "story_ch22": {
    "type": "story",

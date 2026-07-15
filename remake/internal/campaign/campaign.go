@@ -199,7 +199,7 @@ type Beat struct {
 }
 
 // Node 節點。Type: story / cutscene / battle / town / preparation / church / choice /
-// inventory_gate / event / shop / ending。
+// inventory_gate / inventory_recipe / event / shop / ending。
 // cutscene(doc 50):story 的 beats 驅動版——用 Beats 一比一承接原版章 handler 的原語序列,
 // 對白與走位/演出天然交錯(平面序列,非「一幕一段」)。Map/Actors/BGM/ExitWalk(s) 等欄位與
 // story 共用同一套場景設置(進節點時的初始擺位、退場走位、淡出轉場),Beats 只負責節點「進行中」
@@ -230,21 +230,27 @@ type Node struct {
 	FollowWalk     bool   `json:"follow_walk,omitempty"`     // story:走位期間鏡頭鎖定跟隨走位者(原版 13×8 格視野長廊運鏡,doc25 0x11eee)
 	CamMaxY        int    `json:"cam_max_y,omitempty"`       // story:鏡頭 Y 上限(px;0=不限)。王座廳=808 擋住 map32 底部草地段
 	// (原版第一幕畫面無草地,索爾從畫面外沿紅毯走入,使用者回饋 2026-07-04 #1)
-	BGM       string          `json:"bgm,omitempty"`
-	Next      string          `json:"next,omitempty"`       // story/event
-	OnWin     string          `json:"on_win,omitempty"`     // battle
-	OnLose    string          `json:"on_lose,omitempty"`    // battle(敗北路線;空=game over)
-	ItemID    *int            `json:"item_id,omitempty"`    // inventory_gate:原版 unsigned-byte item identity
-	IfPresent string          `json:"if_present,omitempty"` // inventory_gate:全隊任一角色持有 ItemID
-	IfMissing string          `json:"if_missing,omitempty"` // inventory_gate:全隊皆未持有 ItemID
-	Prompt    string          `json:"prompt,omitempty"`     // choice/preparation
-	Town      string          `json:"town,omitempty"`       // town:原版戰後城鎮/營地名稱(可編輯、可存檔的整備 hub)
-	Options   []Option        `json:"options,omitempty"`    // choice
-	SetFlags  map[string]bool `json:"set_flags,omitempty"`
-	Text      string          `json:"text,omitempty"`      // ending:結語
-	Goods     []Good          `json:"goods,omitempty"`     // shop:商品
-	Secret    []Good          `json:"secret,omitempty"`    // shop:祕密商店商品
-	SecretIf  string          `json:"secret_if,omitempty"` // shop:旗標為真才開祕密商品(原版祕密商店機制)
+	BGM             string          `json:"bgm,omitempty"`
+	Next            string          `json:"next,omitempty"`             // story/event
+	OnWin           string          `json:"on_win,omitempty"`           // battle
+	OnLose          string          `json:"on_lose,omitempty"`          // battle(敗北路線;空=game over)
+	ItemID          *int            `json:"item_id,omitempty"`          // inventory_gate:原版 unsigned-byte item identity
+	IfPresent       string          `json:"if_present,omitempty"`       // inventory_gate:全隊任一角色持有 ItemID
+	IfMissing       string          `json:"if_missing,omitempty"`       // inventory_gate:全隊皆未持有 ItemID
+	ItemIDs         []int           `json:"item_ids,omitempty"`         // inventory_recipe:逐 item×runtime slot 計數／移除
+	SlotCount       int             `json:"slot_count,omitempty"`       // inventory_recipe:只掃前 N 個 runtime records
+	RequiredMatches int             `json:"required_matches,omitempty"` // inventory_recipe:原版要求的精確命中組合數
+	RewardItemID    *int            `json:"reward_item_id,omitempty"`   // inventory_recipe:成功後 grant 的 item
+	IfCrafted       string          `json:"if_crafted,omitempty"`       // inventory_recipe:成功 arm
+	IfInsufficient  string          `json:"if_insufficient,omitempty"`  // inventory_recipe:命中數不符 arm
+	Prompt          string          `json:"prompt,omitempty"`           // choice/preparation
+	Town            string          `json:"town,omitempty"`             // town:原版戰後城鎮/營地名稱(可編輯、可存檔的整備 hub)
+	Options         []Option        `json:"options,omitempty"`          // choice
+	SetFlags        map[string]bool `json:"set_flags,omitempty"`
+	Text            string          `json:"text,omitempty"`      // ending:結語
+	Goods           []Good          `json:"goods,omitempty"`     // shop:商品
+	Secret          []Good          `json:"secret,omitempty"`    // shop:祕密商店商品
+	SecretIf        string          `json:"secret_if,omitempty"` // shop:旗標為真才開祕密商品(原版祕密商店機制)
 }
 
 // Campaign 整張節點圖。
@@ -278,7 +284,7 @@ func Load(path string) (*Campaign, error) {
 		return nil
 	}
 	for id, n := range c.Nodes {
-		for _, to := range []string{n.Next, n.OnWin, n.OnLose, n.IfPresent, n.IfMissing} {
+		for _, to := range []string{n.Next, n.OnWin, n.OnLose, n.IfPresent, n.IfMissing, n.IfCrafted, n.IfInsufficient} {
 			if err := check(id, to); err != nil {
 				return nil, err
 			}
@@ -289,6 +295,22 @@ func Load(path string) (*Campaign, error) {
 			}
 			if n.IfPresent == "" || n.IfMissing == "" {
 				return nil, fmt.Errorf("inventory_gate 節點 %q 必須同時定義 if_present / if_missing", id)
+			}
+		}
+		if n.Type == "inventory_recipe" {
+			if len(n.ItemIDs) == 0 || n.SlotCount <= 0 || n.RequiredMatches <= 0 {
+				return nil, fmt.Errorf("inventory_recipe 節點 %q 必須定義 item_ids / slot_count / required_matches", id)
+			}
+			for _, itemID := range n.ItemIDs {
+				if itemID < 0 || itemID > 255 {
+					return nil, fmt.Errorf("inventory_recipe 節點 %q 的 item_ids 必須是 0..255", id)
+				}
+			}
+			if n.RewardItemID == nil || *n.RewardItemID < 0 || *n.RewardItemID > 255 {
+				return nil, fmt.Errorf("inventory_recipe 節點 %q 的 reward_item_id 必須是 0..255", id)
+			}
+			if n.IfCrafted == "" || n.IfInsufficient == "" {
+				return nil, fmt.Errorf("inventory_recipe 節點 %q 必須同時定義 if_crafted / if_insufficient", id)
 			}
 		}
 		for _, o := range n.Options {
@@ -371,6 +393,12 @@ func (r *Runner) Advance(outcome string) string {
 			next = n.IfPresent
 		} else if outcome == "missing" {
 			next = n.IfMissing
+		}
+	case "inventory_recipe":
+		if outcome == "crafted" {
+			next = n.IfCrafted
+		} else if outcome == "insufficient" {
+			next = n.IfInsufficient
 		}
 	case "ending":
 		next = ""

@@ -118,6 +118,39 @@ func TestInventoryGateRequiresBothTargetsAndRoutesWithoutPlayerChoice(t *testing
 	}
 }
 
+func TestInventoryRecipeRequiresExactDataAndRoutesWithoutPlayerChoice(t *testing.T) {
+	reward := 100
+	c := &Campaign{Start: "recipe", Nodes: map[string]*Node{
+		"recipe": {
+			Type: "inventory_recipe", ItemIDs: []int{0xd1, 0xd2}, SlotCount: 16,
+			RequiredMatches: 2, RewardItemID: &reward, IfCrafted: "yes", IfInsufficient: "no",
+		},
+		"yes": {Type: "cutscene"},
+		"no":  {Type: "cutscene"},
+	}}
+	for outcome, want := range map[string]string{"crafted": "yes", "insufficient": "no"} {
+		r := NewRunner(c)
+		if got := r.Advance(outcome); got != want || r.Cur != want {
+			t.Errorf("inventory recipe %s = %q / current %q, want %q", outcome, got, r.Cur, want)
+		}
+	}
+
+	for name, raw := range map[string]string{
+		"missing items": `{"start":"recipe","nodes":{"recipe":{"type":"inventory_recipe","slot_count":16,"required_matches":6,"reward_item_id":100,"if_crafted":"yes","if_insufficient":"no"},"yes":{"type":"ending"},"no":{"type":"ending"}}}`,
+		"missing arm":   `{"start":"recipe","nodes":{"recipe":{"type":"inventory_recipe","item_ids":[209],"slot_count":16,"required_matches":1,"reward_item_id":100,"if_crafted":"yes"},"yes":{"type":"ending"}}}`,
+	} {
+		t.Run(name, func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), "invalid-recipe.json")
+			if err := os.WriteFile(path, []byte(raw), 0o644); err != nil {
+				t.Fatal(err)
+			}
+			if _, err := Load(path); err == nil {
+				t.Fatal("invalid inventory recipe must fail closed")
+			}
+		})
+	}
+}
+
 func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 	c, err := Load("../../assets/scenarios/campaign_full.json")
 	if err != nil {
@@ -175,6 +208,30 @@ func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 	}
 	if badEnding == nil || badEnding.Type != "ending" || badEnding.Text == "" {
 		t.Fatalf("missing sky key must reach an editable bad ending: %#v", badEnding)
+	}
+	battle21 := c.Nodes["battle_ch21"]
+	intro21 := c.Nodes["story_ch21_post_sky_key_intro"]
+	recipe21 := c.Nodes["inventory_recipe_ch21_sky_key"]
+	crafted21 := c.Nodes["story_ch21_post_sky_key_crafted"]
+	insufficient21 := c.Nodes["story_ch21_post_sky_key_insufficient"]
+	if battle21 == nil || battle21.OnWin != "story_ch21_post_sky_key_intro" || intro21 == nil || intro21.Script != "assets/story/ch21.json" || intro21.Scene != "浴血決戰,團長真身現形——萊汀舊識瑪爾" || len(intro21.Beats) != 1 || intro21.Beats[0].Line != 7 || intro21.Beats[0].Count != 10 || intro21.Next != "inventory_recipe_ch21_sky_key" {
+		t.Fatalf("chapter21 must preserve editable pre-recipe FDTXT #5: battle=%#v intro=%#v", battle21, intro21)
+	}
+	if recipe21 == nil || recipe21.Type != "inventory_recipe" || !reflect.DeepEqual(recipe21.ItemIDs, []int{0xd1, 0xd2, 0xd3, 0xd4, 0xd5, 0xd6}) || recipe21.SlotCount != 16 || recipe21.RequiredMatches != 6 || recipe21.RewardItemID == nil || *recipe21.RewardItemID != 0x64 || recipe21.IfCrafted != "story_ch21_post_sky_key_crafted" || recipe21.IfInsufficient != "story_ch21_post_sky_key_insufficient" {
+		t.Fatalf("chapter21 sky-key recipe does not match original nested loops: %#v", recipe21)
+	}
+	wantCraftedDialog := []Beat{{Op: "dialog", Line: 0, Count: 1}, {Op: "dialog", Line: 1, Count: 3}, {Op: "dialog", Line: 4, Count: 2}, {Op: "dialog", Line: 6, Count: 10}}
+	if crafted21 == nil || crafted21.Scene != "希爾法鑄成傳說法器「天空之鑰」" || len(crafted21.Beats) != 8 || !reflect.DeepEqual(crafted21.Beats[:4], wantCraftedDialog) || crafted21.Next != "town_ch22" {
+		t.Fatalf("crafted arm must preserve all editable #7..#10 dialogue and town22: %#v", crafted21)
+	}
+	if insufficient21 == nil || insufficient21.Scene != "決議直赴巨塔(未鑄成天空之鑰)" || len(insufficient21.Beats) != 5 || insufficient21.Beats[0].Op != "dialog" || insufficient21.Beats[0].Line != 0 || insufficient21.Beats[0].Count != 4 || insufficient21.Next != "town_ch22" {
+		t.Fatalf("insufficient arm must preserve all editable #6 dialogue and town22: %#v", insufficient21)
+	}
+	for id, node := range map[string]*Node{"crafted": crafted21, "insufficient": insufficient21} {
+		tail := node.Beats[len(node.Beats)-4:]
+		if tail[0].Op != "join" || tail[0].CharID != 24 || tail[1].Op != "join" || tail[1].CharID != 23 || tail[2].Op != "sync_party" || tail[3].Op != "set_chapter" || tail[3].Chapter == nil || *tail[3].Chapter != 21 {
+			t.Fatalf("chapter21 %s common JOIN/sync/chapter tail = %#v", id, tail)
+		}
 	}
 }
 
@@ -241,6 +298,10 @@ func TestCampaignFullPostBattleTownContractMatchesOriginalShopChapters(t *testin
 			}
 			if node.Type == "inventory_gate" {
 				current = node.IfPresent // 此契約驗證持有天空之鑰的原版正常路徑；missing arm 另有專測。
+				continue
+			}
+			if node.Type == "inventory_recipe" {
+				current = node.IfCrafted
 				continue
 			}
 			if node.Type != "story" && node.Type != "cutscene" && node.Type != "event" {

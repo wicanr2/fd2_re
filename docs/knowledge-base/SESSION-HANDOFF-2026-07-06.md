@@ -130,13 +130,24 @@
 > 目前 `battle_ch21` 還沒接這個 diamond，所以正常實玩仍拿不到鑰匙，下一批要接成
 > `battle_ch21 → ch20_post → town_ch22`，不可無條件發鑰匙或跳過城鎮。
 
+> **2026-07-16 第十七次 Codex 更新（玩家第21章戰後鑄造）**：已以完整 disassembly 更正
+> 「六種各一件」簡化；原版其實計算 `D1..D6 × runtime slots0..15` 的 `(item,slot)` 命中組合，
+> 總數必須**恰為6**，因此 duplicate 分散角色會改變結果。通用 editable `inventory_recipe`
+> 現 byte-exact 保存這個怪癖、成功 pair-ordered 移除與 grant `0x64`，失敗不改 inventory。
+> campaign 已接 `battle_ch21 → #5十句 → recipe → crafted #7..#10全16句 / insufficient #6全4句`，
+> 兩臂共同 JOIN24/JOIN23、sync、chapter21，最後都回 `town_ch22`。layout/ACT63/64/`0x24336`
+> 鑄造動畫仍待 lower，且更早章節尚無 D1..D6 正常取得路徑；文字／物品／持久化／城鎮流已接，
+> 但不可宣稱這支視覺演出或 true-ending 實玩取得鏈已完整。Xvfb 已以真實 battle_ch21 context
+> 實畫 #5 與 #6；#6 畫面仍會露出未 layout 的黑區，這是明列待辦，不以手寫鏡頭假裝還原。
+
 ## 0. 目前焦點(接手就做這裡)
 `ch00_pre`、`ch00_post`、`ch01_pre`、`ch01_post` 已成為前四個 campaign 實際 consumer；ch01 post 的 branch、
 reward、61-utterance FDTXT_002、dynamic speaker slots、PAN、SPAWN4、ACT14..16、JOIN/sync/chapter tail
 與第二、第三章戰前／戰後 handler 均已完整 lower 且 compiler **0 issues**；ch03 turn3 的
 slot6 active 條件、SPAWN2、兩段 PAN、800/200ms 與 FDTXT_003 #4 七句也已完整；第27章戰後
-天空之鑰→第28章整備／壞結局 gate 已接。下一個具體焦點是 lower 玩家第21章戰後的
-`0xD1..0xD6` 六素材計數／移除／grant `0x64` diamond，接成 `battle_ch21 → post → town_ch22`，再選下一支
+天空之鑰→第28章整備／壞結局 gate，以及玩家第21章戰後的六素材 recipe／完整分支文字／
+共同 JOIN/sync/town22 均已接。下一個具體焦點是盤點並接入 `0xD1..0xD6` 六素材在前章的原版取得來源，
+或 lower ch20_post 的 layout/ACT63/64/鑄造動畫，再選下一支
 `0x233c6` post caller 依原版 arrays 補 binding。下方「草地深層未解」是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，
 不得再當目前 blocker。
 

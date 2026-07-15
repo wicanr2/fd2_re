@@ -1411,6 +1411,18 @@ func (g *Game) enterNode() {
 		}
 		g.camp.Advance(outcome)
 		g.enterNode()
+	case "inventory_recipe":
+		crafted, err := g.applyInventoryRecipe(n)
+		if err != nil {
+			g.loadErr = "inventory_recipe: " + err.Error()
+			return
+		}
+		outcome := "insufficient"
+		if crafted {
+			outcome = "crafted"
+		}
+		g.camp.Advance(outcome)
+		g.enterNode()
 	case "event":
 		g.camp.Advance("")
 		g.enterNode()
@@ -1541,6 +1553,53 @@ func (g *Game) partyHasItemID(itemID int) bool {
 		}
 	}
 	return false
+}
+
+// applyInventoryRecipe projects the original ch20_post nested loops rather
+// than normalising them into a friendlier "one of each" recipe. Each
+// (item_id,runtime_slot) pair contributes at most one match; crafting happens
+// only when the total equals RequiredMatches exactly. On success the first
+// matching copy for every pair is removed in original item-then-slot order,
+// then RewardItemID is granted by the normal 0x1c220 projection.
+func (g *Game) applyInventoryRecipe(n *campaign.Node) (bool, error) {
+	if n == nil || n.RewardItemID == nil || len(n.ItemIDs) == 0 || n.SlotCount <= 0 || n.RequiredMatches <= 0 {
+		return false, fmt.Errorf("invalid recipe data")
+	}
+	if g.st == nil || len(g.st.Units) < n.SlotCount {
+		return false, fmt.Errorf("runtime slots=%d, want at least %d", g.handlerUnitCount(), n.SlotCount)
+	}
+	find := func(unit *battle.Unit, itemID int) int {
+		if unit == nil {
+			return -1
+		}
+		for i, held := range unit.Inventory {
+			if held == itemID {
+				return i
+			}
+		}
+		return -1
+	}
+	matches := 0
+	for _, itemID := range n.ItemIDs {
+		for slot := 0; slot < n.SlotCount; slot++ {
+			if find(g.st.Units[slot], itemID) >= 0 {
+				matches++
+			}
+		}
+	}
+	if matches != n.RequiredMatches {
+		return false, nil
+	}
+	for _, itemID := range n.ItemIDs {
+		for slot := 0; slot < n.SlotCount; slot++ {
+			unit := g.st.Units[slot]
+			if idx := find(unit, itemID); idx >= 0 {
+				unit.Inventory = append(unit.Inventory[:idx], unit.Inventory[idx+1:]...)
+			}
+		}
+	}
+	g.grantItemToParty(*n.RewardItemID) // original silently drops the reward only if every player inventory is full
+	return true, nil
 }
 
 // syncPartyFromBattle is the remake projection of original 0x11506. The EXE
