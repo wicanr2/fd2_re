@@ -174,6 +174,10 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 	var pan, dialog bool
 	var slotAct bool
 	var normalSlotAct bool
+	unsafeMap32Acts := map[string]bool{
+		"0x32343": false, // ACT(99) references original slot 61.
+		"0x323f5": false, // ACT(100) references original slot 60.
+	}
 	map32Acts := map[string]int{
 		"0x32426": 101, "0x32461": 102,
 		"0x3249c": 103, "0x324d7": 104, "0x3251c": 105,
@@ -208,6 +212,20 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 			if want, ok := loadchs[beat.LoadCH.Chapter]; ok && beat.LoadCH.Map == want.mapPath && beat.LoadCH.Roster == want.rosterPath && beat.LoadCH.SlotCount == want.slots {
 				delete(loadchs, beat.LoadCH.Chapter)
 			}
+		}
+	}
+	for _, issue := range issues {
+		// These calls are intentionally not present in ch00_pre.json.  Keeping
+		// them unresolved is the binding-level fail-closed policy; the generic
+		// compiler test below separately proves that an accidental resource
+		// binding would be rejected against the 21-slot runtime roster.
+		if _, ok := unsafeMap32Acts[issue.Source.Addr]; ok && issue.Op == "act" && issue.Reason == "acting resource has not been decoded/mapped" {
+			unsafeMap32Acts[issue.Source.Addr] = true
+		}
+	}
+	for source, rejected := range unsafeMap32Acts {
+		if !rejected {
+			t.Fatalf("unsafe map32 acting %s was unexpectedly eligible: issues=%#v", source, issues)
 		}
 	}
 	if !pan || !dialog || !slotAct || !normalSlotAct || len(map32Acts) != 0 || len(loadchs) != 0 {
