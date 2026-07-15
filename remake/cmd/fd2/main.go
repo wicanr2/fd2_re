@@ -843,6 +843,14 @@ func (g *Game) enterNode() {
 		}
 		if n.Type == "cutscene" {
 			g.beats = n.Beats
+			if n.HandlerBinding != "" {
+				beats, issues, err := campaign.CompileHandlerBinding(assetPath(n.HandlerBinding))
+				if err != nil || len(issues) > 0 {
+					g.loadErr = fmt.Sprintf("handler binding %q unresolved: %v issues=%d", n.HandlerBinding, err, len(issues))
+					return // fail closed: never replace authored beats with a partial handler
+				}
+				g.beats = beats
+			}
 			g.beatAdvance() // beatIdx -1 → 0,啟動第一拍(doc50 BeatRunner)
 		} else if len(lines) == 0 && n.AutoAdvance > 0 { // 無對白節點(行軍蒙太奇):進場後自動倒數轉場
 			g.storyAutoAdvance = n.AutoAdvance
