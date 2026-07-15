@@ -4,18 +4,15 @@
 This bridges the immutable EXE handler exports to editable story JSON without
 guessing text.  A dialog call receives a ``dialogue_contexts`` entry only if
 its active FDTXT resource has *exactly one* ``count_aligned`` script mapping
-in the supplied story-index manifest.  The only implicit resource is the
-nonzero handler chapter's initial ``FDTXT_<chapter>``.  ``loadch`` selects a
-map/chapter, not proven FDTXT data; after every ``loadch`` the FDTXT context is
-therefore unresolved until a future explicit resource mapping is supplied.
+in the supplied story-index manifest.  The proven loader rule is
+``FDTXT_<chapter + 1>``; an immediate ``loadch.chapter`` selects that resource.
 
 The generated files are HandlerBinding JSON skeletons: they contain dialogue
 contexts and an empty ``overrides`` object, leaving pan/acting/other native
 operations for evidence-backed RE.  No original text or binary data is copied.
-Calls with missing, ambiguous, out-of-range, multi-scene, or post-``loadch``
+Calls with missing, ambiguous, out-of-range, multi-scene, or indirect-loadch
 contexts are recorded in ``_diagnostics.json`` and intentionally receive no
-context.  Chapter zero is also deliberately not treated as FDTXT_000: its
-prologue handler has direct evidence that map/load text numbering differs.
+context.
 
 Existing generated targets are never overwritten.  This makes it safe to use
 an output directory that later contains hand-edited bindings: move/delete the
@@ -52,7 +49,7 @@ def is_nonnegative_int(value: Any) -> bool:
 def source_dat_for_chapter(chapter: int) -> str:
     """Format the FDTXT resource name used by an immediate chapter number."""
 
-    return f"FDTXT_{chapter:03d}"
+    return f"FDTXT_{chapter + 1:03d}"
 
 
 def load_json(path: Path) -> Any:
@@ -168,15 +165,13 @@ def export_handler(
     if not is_nonnegative_int(chapter) or not isinstance(beats, list):
         raise ValueError(f"handler {handler_path} lacks non-negative chapter or beats array")
 
-    # The common handler chapter is sufficient evidence only before a loadch.
-    # ch00 is exceptional: its handler's map loads and text resources are known
-    # not to share an index, so FDTXT_000 would be a fabricated context.
-    initial_source: str | None = source_dat_for_chapter(chapter) if chapter != 0 else None
+    # 0x205da → 0x1088d loads FDTXT resource chapter+1 (doc23 §4).
+    initial_source: str | None = source_dat_for_chapter(chapter)
     current_source = initial_source
     context_reason: str | None = (
         None
         if current_source is not None
-        else "chapter zero is not an implicit FDTXT resource; explicit mapping required"
+        else "no proven initial FDTXT resource"
     )
     context_origin: str | None = None
     contexts: dict[str, dict[str, str]] = {}
@@ -191,18 +186,15 @@ def export_handler(
             immediate = beat.get("chapter")
             source = beat.get("source")
             addr = source.get("addr") if isinstance(source, dict) else None
-            # loadch's immediate argument identifies the map/chapter being
-            # loaded, but it does not prove the FDTXT table used by later
-            # dialog calls.  ch00 demonstrates the two can differ by one or
-            # more.  Reset rather than manufacture FDTXT_NNN from it.
-            current_source = None
+            current_source = source_dat_for_chapter(immediate) if is_nonnegative_int(immediate) else None
             context_origin = addr if isinstance(addr, str) else None
-            context_reason = "loadch does not prove a FDTXT resource; explicit mapping required"
+            context_reason = None if current_source is not None else "loadch chapter is not an immediate value"
             loadch_events.append(
                 {
                     "source_addr": addr,
                     "chapter": immediate if is_nonnegative_int(immediate) else None,
-                    "kind": "fdtxt_context_unresolved",
+                    "kind": "fdtxt_context" if current_source is not None else "fdtxt_context_unresolved",
+                    "source_dat": current_source,
                     "message": context_reason,
                 }
             )
