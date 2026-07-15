@@ -78,7 +78,8 @@ type ActingFrame struct {
 // 一比一對映原版 EXE handler 的呼叫序列(LOADCH/PAN/TXT/ACT/SPAWN/JOIN/BGM/FADE/DELAY)。
 // 每個 op 只用到自己相關的欄位,其餘留零值即可(同 Node 的稀疏欄位風格)。
 type Beat struct {
-	Op string `json:"op"` // pan/walk/dialog/act/spawn/join/bgm/fade/delay
+	Op     string `json:"op"`               // pan/walk/dialog/act/spawn/join/bgm/fade/delay
+	Source string `json:"source,omitempty"` // original handler call-site; empty for authored-only beats
 
 	// pan/walk 共用:目標格(walk 用 X/Y 當終點);pan 的 X/Y 沿用 Node.CamX/CamY 語意——
 	// 已由畫面回饋校準的「像素座標」,不是 doc47 §3 原始 grid(col,row)值(grid→px 未逐點驗證,

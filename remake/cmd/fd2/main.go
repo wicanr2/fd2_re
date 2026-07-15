@@ -557,8 +557,8 @@ func figName(fig int) string {
 
 func (g *Game) beatStart(b campaign.Beat) {
 	if g.cutsceneLog { // FD2_CUTSCENE_LOG:印每一拍(op+參數),對原版 handler beat 序列比對
-		fmt.Fprintf(os.Stderr, "[cutscene] beat op=%s fig=%d x=%d y=%d frames=%d line=%d count=%d\n",
-			b.Op, b.Fig, b.X, b.Y, b.Frames, b.Line, b.Count)
+		fmt.Fprintf(os.Stderr, "[cutscene] beat op=%s source=%s fig=%d x=%d y=%d frames=%d line=%d count=%d\n",
+			b.Op, b.Source, b.Fig, b.X, b.Y, b.Frames, b.Line, b.Count)
 	}
 	if b.Op != "walk" { // 鏡頭跟焦只在 walk 拍內有效(見下),其餘拍一律不跟焦
 		g.followWalk = false

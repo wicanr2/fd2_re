@@ -46,6 +46,9 @@ func TestCompileHandlerScriptUsesOnlyExplicitBindings(t *testing.T) {
 	if beats[0].Op != "delay" || beats[0].Ms != 200 {
 		t.Fatalf("delay lowering = %#v", beats[0])
 	}
+	if beats[3].Source != "0x32339" || beats[4].Source != "0x32382" || beats[5].Source != "0x32343" {
+		t.Fatalf("compiled source chain lost: %#v", beats[3:])
+	}
 	if beats[1].Track != "FDMUS_011" || beats[2].Op != "bgm_stop" {
 		t.Fatalf("BGM lowerings = %#v", beats[1:3])
 	}

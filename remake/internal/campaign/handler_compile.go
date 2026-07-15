@@ -72,6 +72,9 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 	issue := func(i int, input HandlerBeat, reason string) {
 		issues = append(issues, HandlerCompileIssue{Beat: i, Op: input.Op, Source: input.Source, Reason: reason})
 	}
+	runtime := func(input HandlerBeat, op string) Beat {
+		return Beat{Op: op, Source: input.Source.Addr}
+	}
 	for i, input := range script.Beats {
 		switch input.Op {
 		case "delay":
@@ -79,16 +82,20 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 				issue(i, input, "delay lacks an immediate millisecond value")
 				continue
 			}
-			beats = append(beats, Beat{Op: "delay", Ms: *input.Ms})
+			beat := runtime(input, "delay")
+			beat.Ms = *input.Ms
+			beats = append(beats, beat)
 		case "bgm":
 			if input.Track == nil {
 				issue(i, input, "bgm lacks immediate track")
 				continue
 			}
 			if *input.Track == -1 {
-				beats = append(beats, Beat{Op: "bgm_stop"})
+				beats = append(beats, runtime(input, "bgm_stop"))
 			} else if *input.Track >= 0 {
-				beats = append(beats, Beat{Op: "bgm", Track: fmt.Sprintf("FDMUS_%03d", *input.Track)})
+				beat := runtime(input, "bgm")
+				beat.Track = fmt.Sprintf("FDMUS_%03d", *input.Track)
+				beats = append(beats, beat)
 			} else {
 				issue(i, input, fmt.Sprintf("unsupported negative BGM track %d", *input.Track))
 			}
@@ -102,7 +109,9 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 				issue(i, input, "no camera mapping for original grid coordinate")
 				continue
 			}
-			beats = append(beats, Beat{Op: "pan", X: p.X, Y: p.Y, Frames: p.Frames})
+			beat := runtime(input, "pan")
+			beat.X, beat.Y, beat.Frames = p.X, p.Y, p.Frames
+			beats = append(beats, beat)
 		case "dialog":
 			if bindings.Dialog == nil {
 				issue(i, input, "dialog requires an explicit FDTXT-to-remake-line mapping")
@@ -114,11 +123,15 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 				continue
 			}
 			if len(d.Lines) == 0 {
-				beats = append(beats, Beat{Op: "dialog", Line: d.Line, Count: d.Count, Upper: d.Upper})
+				beat := runtime(input, "dialog")
+				beat.Line, beat.Count, beat.Upper = d.Line, d.Count, d.Upper
+				beats = append(beats, beat)
 				continue
 			}
 			for _, line := range d.Lines {
-				beats = append(beats, Beat{Op: "dialog", Line: line.Line, Count: line.Count, Upper: line.Upper})
+				beat := runtime(input, "dialog")
+				beat.Line, beat.Count, beat.Upper = line.Line, line.Count, line.Upper
+				beats = append(beats, beat)
 			}
 		case "act":
 			if input.ActingID == nil || bindings.Acting == nil {
@@ -130,7 +143,9 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 				issue(i, input, "acting resource has not been decoded/mapped")
 				continue
 			}
-			beats = append(beats, Beat{Op: "act", Acting: frames})
+			beat := runtime(input, "act")
+			beat.Acting = frames
+			beats = append(beats, beat)
 		default:
 			issue(i, input, "operation has no proven runtime lowering")
 		}
