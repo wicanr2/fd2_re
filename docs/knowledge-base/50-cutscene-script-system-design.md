@@ -202,15 +202,18 @@ identity。
 100/120 個確認點截圖均已是 map31 密林（第 140 個則已進 map0），故場景時點不含糊。在第 100 點以
 `MEMDUMPBIN DS 24B2F0 1900` 首次取得的是 map32 stale allocation，不能當 map31 roster。隨後從
 spawn writer `0x10c50` 的 runtime-relocated 指令讀出 `[*0x19CA45]`，在同一密林 checkpoint 的值為
-**`0x2499EC`**；dump 80×0x50 後只有 slot 0–4 是有效人物：索爾、亞雷斯、**商店店員的
+**`0x2499EC`**；在**該 checkpoint** dump 80×0x50 後只有 slot 0–4 是有效人物：索爾、亞雷斯、**商店店員的
 portrait／scene-actor ID 75（不是我方名冊 charID，亦不是第二個悠妮）**、蓋亞、悠妮。序章文本與
 `JOIN` 呼叫均只支持 charID 9 為悠妮；她在這幕是先倒地、後由演出喚醒的角色，不能把同格的
 商店店員 portrait 75 猜成她。75 不在 0–31 的可入隊角色表，故不得進入 party/JOIN adapter。
-slot 5 起已不是 unit 結構。acting player `0x137dd/0x13891/0x13975` 也明確以同一
+slot 5 起在此時點尚不是 unit 結構。acting player `0x137dd/0x13891/0x13975` 也明確以同一
 `[*0x53a45]+slot×0x50` 取目標；故 map31 `ACT(0x5a..0x62)` 所含 slot 8、25–71 寫入並不對應這個
 checkpoint 的活動角色，**不能**從 map31 的 30-row FDFIELD export、stale map32 array 或「補成
 72-slot roster」猜出角色移動。下一個資料工作是以每個 ACT 的精確 entry 時點擷取 pointer/array，分辨
-這些非活動範圍寫入的原版語意；在此之前 map31 全部 ACT 維持 fail-closed。map0 的 0/1/2/5 亦尚待
+這些非活動範圍寫入的原版語意。尤其 handler 在 `SPAWN(1)` 後立即跑 `ACT(90)`（targets 25–32），
+後續 `ACT(91..98)` 更達 slot 71；因此「checkpoint slot 0–4」**絕不能**被外推成 map31 的完整
+runtime slot 上限。必須逐個 ACT entry 取 pointer/array，才能知道 spawn／重填發生的確切時序；在此之前
+map31 全部 ACT 維持 fail-closed。map0 的 0/1/2/5 亦尚待
 其獨立 runtime dump。
 - 舊 `poses`／`pose_frames` 仍可用於尚未轉錄的近似場景，但新的原版 acting 不得再降級成它。
 
@@ -247,14 +250,16 @@ checkpoint 的活動角色，**不能**從 map31 的 30-row FDFIELD export、sta
 　　（尤其 `scroll_step`、`unknown`）產生帶 source address 的 compile issue，不能假裝成
 　　可執行效果。
 
-**SPAWN runtime adapter（2026-07-15）**：`LOADCH` 會依原始 slot 順序保留全部
-FDFIELD roster，但只將 group 0 設為畫面上有效；`Beat.spawn(group)` 只啟用同 group
-的既有 slots，絕不 append/排序。這是 map31 原版實機 `SPAWN(1)→SPAWN(3)→SPAWN(5)`
-依序建立 slot 0–4 的直接對映；ch00 binding 已經能 lower 三個對應 call-site
-`0x32555/0x32610/0x3269c`。`JOIN`仍需完整隊伍名冊 adapter，因此保持 compile issue，不假裝成已完成。
+**SPAWN runtime adapter（2026-07-15）**：remake 的 `LOADCH` 會依 editable FDFIELD roster 順序保留
+全部 slots，但只將 group 0 設為畫面上有效；`Beat.spawn(group)` 只啟用同 group 的既有 slots，絕不
+append/排序。ch00 binding 已能 lower map31 三個 call-site `0x32555/0x32610/0x3269c`；這是**目前
+remake projection**，不是原版 map31 runtime array 的最終證明。原版 ACT(90–98) 對 slot 25–71 的寫入
+已反證「SPAWN 只會建立 projection slots 0–4」這種外推，需待 entry-time dump 才能建真正 adapter。
+`JOIN` 已可 lower 原版 0–31 player charID 並保存 party membership；NPC portrait（例如商店店員 75）
+一律拒絕。
    `remake/assets/cutscenes/bindings/` 的 `HandlerBinding` 則是這個顯式 mapper 的可編輯
    JSON 表示；其 override 以 call-site 位址為 key。`ch00_pre.json` 已收入已驗證的王座／草地
-　　pan、對話群組和已驗證的 spawn group，但 acting、join 與其他 op 仍是**刻意不完整**的縱切，不能被當成全章可播放。
+   pan、對話群組、spawn group 與 player JOIN；map31/map0 acting 與其他未證實 op 仍是**刻意不完整**的縱切，不能被當成全章可播放。
 
 **ch00 對白群組已具體轉錄（2026-07-15）**：原版一個 `0x15f84` 呼叫可包含多名說話者，故
 `HandlerDialog.lines` 可展開為多個 runtime dialog beat。binding 以 source 位址保存
