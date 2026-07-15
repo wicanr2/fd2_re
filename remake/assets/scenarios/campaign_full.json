@@ -1,5 +1,5 @@
 {
- "title": "炎龍騎士團2 — 全 30 章線性 campaign(自動生成)",
+ "title": "炎龍騎士團2 — 全 30 章 campaign(含戰後城鎮與整備)",
  "start": "story_ch00_handler",
  "flags": {
   "retried_ch01": false,
@@ -540,7 +540,7 @@
    "type": "cutscene",
    "bgm": "FDMUS_010",
    "handler_binding": "assets/cutscenes/bindings/ch00_post.json",
-   "next": "story_ch02_pre"
+   "next": "town_ch02"
   },
   "story_ch02_pre": {
    "type": "cutscene",
@@ -568,7 +568,7 @@
      "price": 750
     }
    ],
-   "next": "shop_ch02_item"
+   "next": "town_ch02"
   },
   "shop_ch02_item": {
    "type": "shop",
@@ -579,48 +579,7 @@
      "price": 10
     }
    ],
-   "next": "story_ch03",
-   "secret_if": "found_secret_ch02",
-   "secret": [
-    {
-     "name": "闊劍",
-     "price": 250
-    },
-    {
-     "name": "長戟",
-     "price": 1200
-    },
-    {
-     "name": "釘頭鎚",
-     "price": 180
-    },
-    {
-     "name": "藥草",
-     "price": 10
-    },
-    {
-     "name": "回復劑",
-     "price": 80
-    },
-    {
-     "name": "皮甲",
-     "price": 300
-    }
-   ]
-  },
-  "choice_ch02": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch02"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch02_weapon"
-    }
-   ]
+   "next": "town_ch02"
   },
   "rumor_ch02": {
    "type": "story",
@@ -634,7 +593,7 @@
    "set_flags": {
     "found_secret_ch02": true
    },
-   "next": "shop_ch02_weapon"
+   "next": "town_ch02"
   },
   "battle_ch02": {
    "type": "battle",
@@ -648,7 +607,7 @@
   "story_ch02_post": {
    "type": "cutscene",
    "handler_binding": "assets/cutscenes/bindings/ch01_post.json",
-   "next": "choice_ch02"
+   "next": "town_ch03"
   },
   "retreat_ch02": {
    "type": "story",
@@ -695,7 +654,7 @@
      "price": 750
     }
    ],
-   "next": "shop_ch03_item"
+   "next": "town_ch03"
   },
   "shop_ch03_item": {
    "type": "shop",
@@ -706,32 +665,7 @@
      "price": 10
     }
    ],
-   "next": "story_ch04",
-   "secret_if": "found_secret_ch03",
-   "secret": [
-    {
-     "name": "回復劑",
-     "price": 80
-    },
-    {
-     "name": "魔法水",
-     "price": 1000
-    }
-   ]
-  },
-  "choice_ch03": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch03"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch03_weapon"
-    }
-   ]
+   "next": "town_ch03"
   },
   "rumor_ch03": {
    "type": "story",
@@ -745,7 +679,7 @@
    "set_flags": {
     "found_secret_ch03": true
    },
-   "next": "shop_ch03_weapon"
+   "next": "town_ch03"
   },
   "battle_ch03": {
    "type": "battle",
@@ -759,7 +693,7 @@
   "story_ch03_post": {
    "type": "cutscene",
    "handler_binding": "assets/cutscenes/bindings/ch02_post.json",
-   "next": "choice_ch03"
+   "next": "town_ch04"
   },
   "retreat_ch03": {
    "type": "story",
@@ -827,7 +761,7 @@
      "price": 750
     }
    ],
-   "next": "shop_ch04_item"
+   "next": "town_ch04"
   },
   "shop_ch04_item": {
    "type": "shop",
@@ -842,32 +776,7 @@
      "price": 80
     }
    ],
-   "next": "story_ch05",
-   "secret_if": "found_secret_ch04",
-   "secret": [
-    {
-     "name": "風精之羽",
-     "price": 20000
-    },
-    {
-     "name": "魔法水",
-     "price": 1000
-    }
-   ]
-  },
-  "choice_ch04": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch04"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch04_weapon"
-    }
-   ]
+   "next": "town_ch04"
   },
   "rumor_ch04": {
    "type": "story",
@@ -881,7 +790,7 @@
    "set_flags": {
     "found_secret_ch04": true
    },
-   "next": "shop_ch04_weapon"
+   "next": "town_ch04"
   },
   "battle_ch04": {
    "type": "battle",
@@ -889,7 +798,7 @@
    "map": "assets/maps/map3",
    "units": "assets/maps/map3/map3_units.json",
    "scenario": "assets/scenarios/ch04.json",
-   "on_win": "choice_ch04",
+   "on_win": "town_ch05",
    "on_lose": "retreat_ch04"
   },
   "retreat_ch04": {
@@ -940,7 +849,7 @@
      "price": 1000
     }
    ],
-   "next": "shop_ch05_item"
+   "next": "town_ch05"
   },
   "shop_ch05_item": {
    "type": "shop",
@@ -959,40 +868,7 @@
      "price": 20
     }
    ],
-   "next": "story_ch06",
-   "secret_if": "found_secret_ch05",
-   "secret": [
-    {
-     "name": "力量藥水",
-     "price": 10000
-    },
-    {
-     "name": "耐力藥水",
-     "price": 10000
-    },
-    {
-     "name": "速度藥水",
-     "price": 10000
-    },
-    {
-     "name": "生命之實",
-     "price": 10000
-    }
-   ]
-  },
-  "choice_ch05": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch05"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch05_weapon"
-    }
-   ]
+   "next": "town_ch05"
   },
   "rumor_ch05": {
    "type": "story",
@@ -1006,7 +882,7 @@
    "set_flags": {
     "found_secret_ch05": true
    },
-   "next": "shop_ch05_weapon"
+   "next": "town_ch05"
   },
   "battle_ch05": {
    "type": "battle",
@@ -1014,7 +890,7 @@
    "map": "assets/maps/map4",
    "units": "assets/maps/map4/map4_units.json",
    "scenario": "assets/scenarios/ch05.json",
-   "on_win": "choice_ch05",
+   "on_win": "town_ch06",
    "on_lose": "retreat_ch05"
   },
   "retreat_ch05": {
@@ -1091,7 +967,7 @@
      "price": 1800
     }
    ],
-   "next": "shop_ch06_item"
+   "next": "town_ch06"
   },
   "shop_ch06_item": {
    "type": "shop",
@@ -1110,32 +986,7 @@
      "price": 20
     }
    ],
-   "next": "story_ch07",
-   "secret_if": "found_secret_ch06",
-   "secret": [
-    {
-     "name": "再生藥",
-     "price": 300
-    },
-    {
-     "name": "魔法水",
-     "price": 1000
-    }
-   ]
-  },
-  "choice_ch06": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch06"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch06_weapon"
-    }
-   ]
+   "next": "town_ch06"
   },
   "rumor_ch06": {
    "type": "story",
@@ -1149,7 +1000,7 @@
    "set_flags": {
     "found_secret_ch06": true
    },
-   "next": "shop_ch06_weapon"
+   "next": "town_ch06"
   },
   "battle_ch06": {
    "type": "battle",
@@ -1157,7 +1008,7 @@
    "map": "assets/maps/map5",
    "units": "assets/maps/map5/map5_units.json",
    "scenario": "assets/scenarios/ch06.json",
-   "on_win": "choice_ch06",
+   "on_win": "town_ch07",
    "on_lose": "retreat_ch06"
   },
   "retreat_ch06": {
@@ -1242,7 +1093,7 @@
      "price": 3600
     }
    ],
-   "next": "shop_ch07_item"
+   "next": "town_ch07"
   },
   "shop_ch07_item": {
    "type": "shop",
@@ -1257,40 +1108,7 @@
      "price": 80
     }
    ],
-   "next": "story_ch08",
-   "secret_if": "found_secret_ch07",
-   "secret": [
-    {
-     "name": "聖者之戒",
-     "price": 5000
-    },
-    {
-     "name": "心眼之書",
-     "price": 5000
-    },
-    {
-     "name": "白金勳章",
-     "price": 5000
-    },
-    {
-     "name": "飛龍卵",
-     "price": 100
-    }
-   ]
-  },
-  "choice_ch07": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch07"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch07_weapon"
-    }
-   ]
+   "next": "town_ch07"
   },
   "rumor_ch07": {
    "type": "story",
@@ -1304,7 +1122,7 @@
    "set_flags": {
     "found_secret_ch07": true
    },
-   "next": "shop_ch07_weapon"
+   "next": "town_ch07"
   },
   "battle_ch07": {
    "type": "battle",
@@ -1312,7 +1130,7 @@
    "map": "assets/maps/map6",
    "units": "assets/maps/map6/map6_units.json",
    "scenario": "assets/scenarios/ch07.json",
-   "on_win": "choice_ch07",
+   "on_win": "town_ch08",
    "on_lose": "retreat_ch07"
   },
   "retreat_ch07": {
@@ -1389,7 +1207,7 @@
      "price": 1800
     }
    ],
-   "next": "shop_ch08_item"
+   "next": "town_ch08"
   },
   "shop_ch08_item": {
    "type": "shop",
@@ -1404,40 +1222,7 @@
      "price": 80
     }
    ],
-   "next": "story_ch09",
-   "secret_if": "found_secret_ch08",
-   "secret": [
-    {
-     "name": "黑暗劍",
-     "price": 2400
-    },
-    {
-     "name": "先鋒矛",
-     "price": 1800
-    },
-    {
-     "name": "再生藥",
-     "price": 300
-    },
-    {
-     "name": "魔法水",
-     "price": 1000
-    }
-   ]
-  },
-  "choice_ch08": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch08"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch08_weapon"
-    }
-   ]
+   "next": "town_ch08"
   },
   "rumor_ch08": {
    "type": "story",
@@ -1451,7 +1236,7 @@
    "set_flags": {
     "found_secret_ch08": true
    },
-   "next": "shop_ch08_weapon"
+   "next": "town_ch08"
   },
   "battle_ch08": {
    "type": "battle",
@@ -1459,7 +1244,7 @@
    "map": "assets/maps/map7",
    "units": "assets/maps/map7/map7_units.json",
    "scenario": "assets/scenarios/ch08.json",
-   "on_win": "choice_ch08",
+   "on_win": "town_ch09",
    "on_lose": "retreat_ch08"
   },
   "retreat_ch08": {
@@ -1528,7 +1313,7 @@
      "price": 1200
     }
    ],
-   "next": "shop_ch09_item"
+   "next": "town_ch09"
   },
   "shop_ch09_item": {
    "type": "shop",
@@ -1543,32 +1328,7 @@
      "price": 80
     }
    ],
-   "next": "story_ch10",
-   "secret_if": "found_secret_ch09",
-   "secret": [
-    {
-     "name": "再生藥",
-     "price": 300
-    },
-    {
-     "name": "魔法水",
-     "price": 1000
-    }
-   ]
-  },
-  "choice_ch09": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch09"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch09_weapon"
-    }
-   ]
+   "next": "town_ch09"
   },
   "rumor_ch09": {
    "type": "story",
@@ -1582,7 +1342,7 @@
    "set_flags": {
     "found_secret_ch09": true
    },
-   "next": "shop_ch09_weapon"
+   "next": "town_ch09"
   },
   "battle_ch09": {
    "type": "battle",
@@ -1590,7 +1350,7 @@
    "map": "assets/maps/map8",
    "units": "assets/maps/map8/map8_units.json",
    "scenario": "assets/scenarios/ch09.json",
-   "on_win": "choice_ch09",
+   "on_win": "town_ch10",
    "on_lose": "retreat_ch09"
   },
   "retreat_ch09": {
@@ -1659,7 +1419,7 @@
      "price": 6400
     }
    ],
-   "next": "shop_ch10_item"
+   "next": "town_ch10"
   },
   "shop_ch10_item": {
    "type": "shop",
@@ -1678,32 +1438,7 @@
      "price": 20
     }
    ],
-   "next": "story_ch11",
-   "secret_if": "found_secret_ch10",
-   "secret": [
-    {
-     "name": "生命之實",
-     "price": 10000
-    },
-    {
-     "name": "魔力水晶",
-     "price": 10000
-    }
-   ]
-  },
-  "choice_ch10": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch10"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch10_weapon"
-    }
-   ]
+   "next": "town_ch10"
   },
   "rumor_ch10": {
    "type": "story",
@@ -1717,7 +1452,7 @@
    "set_flags": {
     "found_secret_ch10": true
    },
-   "next": "shop_ch10_weapon"
+   "next": "town_ch10"
   },
   "battle_ch10": {
    "type": "battle",
@@ -1725,7 +1460,7 @@
    "map": "assets/maps/map9",
    "units": "assets/maps/map9/map9_units.json",
    "scenario": "assets/scenarios/ch10.json",
-   "on_win": "choice_ch10",
+   "on_win": "town_ch11",
    "on_lose": "retreat_ch10"
   },
   "retreat_ch10": {
@@ -1794,7 +1529,7 @@
      "price": 1200
     }
    ],
-   "next": "shop_ch11_item"
+   "next": "town_ch11"
   },
   "shop_ch11_item": {
    "type": "shop",
@@ -1809,32 +1544,7 @@
      "price": 80
     }
    ],
-   "next": "story_ch12",
-   "secret_if": "found_secret_ch11",
-   "secret": [
-    {
-     "name": "再生藥",
-     "price": 300
-    },
-    {
-     "name": "魔法水",
-     "price": 1000
-    }
-   ]
-  },
-  "choice_ch11": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch11"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch11_weapon"
-    }
-   ]
+   "next": "town_ch11"
   },
   "rumor_ch11": {
    "type": "story",
@@ -1848,7 +1558,7 @@
    "set_flags": {
     "found_secret_ch11": true
    },
-   "next": "shop_ch11_weapon"
+   "next": "town_ch11"
   },
   "battle_ch11": {
    "type": "battle",
@@ -1856,7 +1566,7 @@
    "map": "assets/maps/map10",
    "units": "assets/maps/map10/map10_units.json",
    "scenario": "assets/scenarios/ch11.json",
-   "on_win": "choice_ch11",
+   "on_win": "town_ch12",
    "on_lose": "retreat_ch11"
   },
   "retreat_ch11": {
@@ -1925,7 +1635,7 @@
      "price": 1200
     }
    ],
-   "next": "shop_ch12_item"
+   "next": "town_ch12"
   },
   "shop_ch12_item": {
    "type": "shop",
@@ -1940,32 +1650,7 @@
      "price": 80
     }
    ],
-   "next": "story_ch13",
-   "secret_if": "found_secret_ch12",
-   "secret": [
-    {
-     "name": "再生藥",
-     "price": 300
-    },
-    {
-     "name": "魔法水",
-     "price": 1000
-    }
-   ]
-  },
-  "choice_ch12": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch12"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch12_weapon"
-    }
-   ]
+   "next": "town_ch12"
   },
   "rumor_ch12": {
    "type": "story",
@@ -1979,7 +1664,7 @@
    "set_flags": {
     "found_secret_ch12": true
    },
-   "next": "shop_ch12_weapon"
+   "next": "town_ch12"
   },
   "battle_ch12": {
    "type": "battle",
@@ -1987,7 +1672,7 @@
    "map": "assets/maps/map11",
    "units": "assets/maps/map11/map11_units.json",
    "scenario": "assets/scenarios/ch12.json",
-   "on_win": "choice_ch12",
+   "on_win": "town_ch13",
    "on_lose": "retreat_ch12"
   },
   "retreat_ch12": {
@@ -2056,7 +1741,7 @@
      "price": 1200
     }
    ],
-   "next": "shop_ch13_item"
+   "next": "town_ch13"
   },
   "shop_ch13_item": {
    "type": "shop",
@@ -2079,32 +1764,7 @@
      "price": 20
     }
    ],
-   "next": "story_ch14",
-   "secret_if": "found_secret_ch13",
-   "secret": [
-    {
-     "name": "斬鐵劍",
-     "price": 9600
-    },
-    {
-     "name": "聖之槍",
-     "price": 24000
-    }
-   ]
-  },
-  "choice_ch13": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch13"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch13_weapon"
-    }
-   ]
+   "next": "town_ch13"
   },
   "rumor_ch13": {
    "type": "story",
@@ -2118,7 +1778,7 @@
    "set_flags": {
     "found_secret_ch13": true
    },
-   "next": "shop_ch13_weapon"
+   "next": "town_ch13"
   },
   "battle_ch13": {
    "type": "battle",
@@ -2126,7 +1786,7 @@
    "map": "assets/maps/map12",
    "units": "assets/maps/map12/map12_units.json",
    "scenario": "assets/scenarios/ch13.json",
-   "on_win": "choice_ch13",
+   "on_win": "town_ch14",
    "on_lose": "retreat_ch13"
   },
   "retreat_ch13": {
@@ -2195,7 +1855,7 @@
      "price": 5600
     }
    ],
-   "next": "shop_ch14_item"
+   "next": "town_ch14"
   },
   "shop_ch14_item": {
    "type": "shop",
@@ -2218,32 +1878,7 @@
      "price": 20
     }
    ],
-   "next": "story_ch15",
-   "secret_if": "found_secret_ch14",
-   "secret": [
-    {
-     "name": "再生藥",
-     "price": 300
-    },
-    {
-     "name": "飛龍卵",
-     "price": 100
-    }
-   ]
-  },
-  "choice_ch14": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch14"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch14_weapon"
-    }
-   ]
+   "next": "town_ch14"
   },
   "rumor_ch14": {
    "type": "story",
@@ -2257,7 +1892,7 @@
    "set_flags": {
     "found_secret_ch14": true
    },
-   "next": "shop_ch14_weapon"
+   "next": "town_ch14"
   },
   "battle_ch14": {
    "type": "battle",
@@ -2265,7 +1900,7 @@
    "map": "assets/maps/map13",
    "units": "assets/maps/map13/map13_units.json",
    "scenario": "assets/scenarios/ch14.json",
-   "on_win": "choice_ch14",
+   "on_win": "town_ch15",
    "on_lose": "retreat_ch14"
   },
   "retreat_ch14": {
@@ -2334,7 +1969,7 @@
      "price": 5600
     }
    ],
-   "next": "shop_ch15_item"
+   "next": "town_ch15"
   },
   "shop_ch15_item": {
    "type": "shop",
@@ -2357,32 +1992,7 @@
      "price": 20
     }
    ],
-   "next": "story_ch16",
-   "secret_if": "found_secret_ch15",
-   "secret": [
-    {
-     "name": "神聖之水",
-     "price": 800
-    },
-    {
-     "name": "水晶粒",
-     "price": 5000
-    }
-   ]
-  },
-  "choice_ch15": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch15"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch15_weapon"
-    }
-   ]
+   "next": "town_ch15"
   },
   "rumor_ch15": {
    "type": "story",
@@ -2396,7 +2006,7 @@
    "set_flags": {
     "found_secret_ch15": true
    },
-   "next": "shop_ch15_weapon"
+   "next": "town_ch15"
   },
   "battle_ch15": {
    "type": "battle",
@@ -2404,7 +2014,7 @@
    "map": "assets/maps/map14",
    "units": "assets/maps/map14/map14_units.json",
    "scenario": "assets/scenarios/ch15.json",
-   "on_win": "choice_ch15",
+   "on_win": "town_ch16",
    "on_lose": "retreat_ch15"
   },
   "retreat_ch15": {
@@ -2469,7 +2079,7 @@
      "price": 16400
     }
    ],
-   "next": "shop_ch16_item"
+   "next": "town_ch16"
   },
   "shop_ch16_item": {
    "type": "shop",
@@ -2492,40 +2102,7 @@
      "price": 20
     }
    ],
-   "next": "story_ch17",
-   "secret_if": "found_secret_ch16",
-   "secret": [
-    {
-     "name": "生命之實",
-     "price": 10000
-    },
-    {
-     "name": "魔力水晶",
-     "price": 10000
-    },
-    {
-     "name": "力量藥水",
-     "price": 10000
-    },
-    {
-     "name": "耐力藥水",
-     "price": 10000
-    }
-   ]
-  },
-  "choice_ch16": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch16"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch16_weapon"
-    }
-   ]
+   "next": "town_ch16"
   },
   "rumor_ch16": {
    "type": "story",
@@ -2539,7 +2116,7 @@
    "set_flags": {
     "found_secret_ch16": true
    },
-   "next": "shop_ch16_weapon"
+   "next": "town_ch16"
   },
   "battle_ch16": {
    "type": "battle",
@@ -2547,7 +2124,7 @@
    "map": "assets/maps/map15",
    "units": "assets/maps/map15/map15_units.json",
    "scenario": "assets/scenarios/ch16.json",
-   "on_win": "choice_ch16",
+   "on_win": "town_ch17",
    "on_lose": "retreat_ch16"
   },
   "retreat_ch16": {
@@ -2624,7 +2201,7 @@
      "price": 12000
     }
    ],
-   "next": "shop_ch17_item"
+   "next": "town_ch17"
   },
   "shop_ch17_item": {
    "type": "shop",
@@ -2647,36 +2224,7 @@
      "price": 20
     }
    ],
-   "next": "story_ch18",
-   "secret_if": "found_secret_ch17",
-   "secret": [
-    {
-     "name": "神聖之水",
-     "price": 800
-    },
-    {
-     "name": "水晶粒",
-     "price": 5000
-    },
-    {
-     "name": "十字弓",
-     "price": 8800
-    }
-   ]
-  },
-  "choice_ch17": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch17"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch17_weapon"
-    }
-   ]
+   "next": "town_ch17"
   },
   "rumor_ch17": {
    "type": "story",
@@ -2690,7 +2238,7 @@
    "set_flags": {
     "found_secret_ch17": true
    },
-   "next": "shop_ch17_weapon"
+   "next": "town_ch17"
   },
   "battle_ch17": {
    "type": "battle",
@@ -2698,7 +2246,7 @@
    "map": "assets/maps/map16",
    "units": "assets/maps/map16/map16_units.json",
    "scenario": "assets/scenarios/ch17.json",
-   "on_win": "choice_ch17",
+   "on_win": "town_ch18",
    "on_lose": "retreat_ch17"
   },
   "retreat_ch17": {
@@ -2779,7 +2327,7 @@
      "price": 11000
     }
    ],
-   "next": "shop_ch18_item"
+   "next": "town_ch18"
   },
   "shop_ch18_item": {
    "type": "shop",
@@ -2802,32 +2350,7 @@
      "price": 20
     }
    ],
-   "next": "story_ch19",
-   "secret_if": "found_secret_ch18",
-   "secret": [
-    {
-     "name": "力之杖",
-     "price": 10000
-    },
-    {
-     "name": "水晶粒",
-     "price": 5000
-    }
-   ]
-  },
-  "choice_ch18": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch18"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch18_weapon"
-    }
-   ]
+   "next": "town_ch18"
   },
   "rumor_ch18": {
    "type": "story",
@@ -2841,7 +2364,7 @@
    "set_flags": {
     "found_secret_ch18": true
    },
-   "next": "shop_ch18_weapon"
+   "next": "town_ch18"
   },
   "battle_ch18": {
    "type": "battle",
@@ -2849,7 +2372,7 @@
    "map": "assets/maps/map17",
    "units": "assets/maps/map17/map17_units.json",
    "scenario": "assets/scenarios/ch18.json",
-   "on_win": "choice_ch18",
+   "on_win": "town_ch19",
    "on_lose": "retreat_ch18"
   },
   "retreat_ch18": {
@@ -2930,7 +2453,7 @@
      "price": 11000
     }
    ],
-   "next": "shop_ch19_item"
+   "next": "town_ch19"
   },
   "shop_ch19_item": {
    "type": "shop",
@@ -2953,32 +2476,7 @@
      "price": 20
     }
    ],
-   "next": "story_ch20",
-   "secret_if": "found_secret_ch19",
-   "secret": [
-    {
-     "name": "神聖之水",
-     "price": 800
-    },
-    {
-     "name": "水晶粒",
-     "price": 5000
-    }
-   ]
-  },
-  "choice_ch19": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch19"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch19_weapon"
-    }
-   ]
+   "next": "town_ch19"
   },
   "rumor_ch19": {
    "type": "story",
@@ -2992,7 +2490,7 @@
    "set_flags": {
     "found_secret_ch19": true
    },
-   "next": "shop_ch19_weapon"
+   "next": "town_ch19"
   },
   "battle_ch19": {
    "type": "battle",
@@ -3000,7 +2498,7 @@
    "map": "assets/maps/map18",
    "units": "assets/maps/map18/map18_units.json",
    "scenario": "assets/scenarios/ch19.json",
-   "on_win": "choice_ch19",
+   "on_win": "town_ch20",
    "on_lose": "retreat_ch19"
   },
   "retreat_ch19": {
@@ -3081,7 +2579,7 @@
      "price": 18000
     }
    ],
-   "next": "shop_ch20_item"
+   "next": "town_ch20"
   },
   "shop_ch20_item": {
    "type": "shop",
@@ -3108,32 +2606,7 @@
      "price": 20
     }
    ],
-   "next": "story_ch21",
-   "secret_if": "found_secret_ch20",
-   "secret": [
-    {
-     "name": "神聖之水",
-     "price": 800
-    },
-    {
-     "name": "水晶粒",
-     "price": 5000
-    }
-   ]
-  },
-  "choice_ch20": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch20"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch20_weapon"
-    }
-   ]
+   "next": "town_ch20"
   },
   "rumor_ch20": {
    "type": "story",
@@ -3147,7 +2620,7 @@
    "set_flags": {
     "found_secret_ch20": true
    },
-   "next": "shop_ch20_weapon"
+   "next": "town_ch20"
   },
   "battle_ch20": {
    "type": "battle",
@@ -3155,7 +2628,7 @@
    "map": "assets/maps/map19",
    "units": "assets/maps/map19/map19_units.json",
    "scenario": "assets/scenarios/ch20.json",
-   "on_win": "choice_ch20",
+   "on_win": "town_ch21",
    "on_lose": "retreat_ch20"
   },
   "retreat_ch20": {
@@ -3236,7 +2709,7 @@
      "price": 18000
     }
    ],
-   "next": "shop_ch21_item"
+   "next": "town_ch21"
   },
   "shop_ch21_item": {
    "type": "shop",
@@ -3263,32 +2736,7 @@
      "price": 20
     }
    ],
-   "next": "story_ch22",
-   "secret_if": "found_secret_ch21",
-   "secret": [
-    {
-     "name": "封魔弓",
-     "price": 20000
-    },
-    {
-     "name": "裂刃爪",
-     "price": 13200
-    }
-   ]
-  },
-  "choice_ch21": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch21"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch21_weapon"
-    }
-   ]
+   "next": "town_ch21"
   },
   "rumor_ch21": {
    "type": "story",
@@ -3302,7 +2750,7 @@
    "set_flags": {
     "found_secret_ch21": true
    },
-   "next": "shop_ch21_weapon"
+   "next": "town_ch21"
   },
   "battle_ch21": {
    "type": "battle",
@@ -3310,7 +2758,7 @@
    "map": "assets/maps/map20",
    "units": "assets/maps/map20/map20_units.json",
    "scenario": "assets/scenarios/ch21.json",
-   "on_win": "choice_ch21",
+   "on_win": "town_ch22",
    "on_lose": "retreat_ch21"
   },
   "retreat_ch21": {
@@ -3391,7 +2839,7 @@
      "price": 20000
     }
    ],
-   "next": "shop_ch22_item"
+   "next": "town_ch22"
   },
   "shop_ch22_item": {
    "type": "shop",
@@ -3418,32 +2866,7 @@
      "price": 20
     }
    ],
-   "next": "story_ch23",
-   "secret_if": "found_secret_ch22",
-   "secret": [
-    {
-     "name": "神聖之水",
-     "price": 800
-    },
-    {
-     "name": "水晶粒",
-     "price": 5000
-    }
-   ]
-  },
-  "choice_ch22": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch22"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch22_weapon"
-    }
-   ]
+   "next": "town_ch22"
   },
   "rumor_ch22": {
    "type": "story",
@@ -3457,7 +2880,7 @@
    "set_flags": {
     "found_secret_ch22": true
    },
-   "next": "shop_ch22_weapon"
+   "next": "town_ch22"
   },
   "battle_ch22": {
    "type": "battle",
@@ -3465,7 +2888,7 @@
    "map": "assets/maps/map21",
    "units": "assets/maps/map21/map21_units.json",
    "scenario": "assets/scenarios/ch22.json",
-   "on_win": "choice_ch22",
+   "on_win": "preparation_ch23",
    "on_lose": "retreat_ch22"
   },
   "retreat_ch22": {
@@ -3503,7 +2926,7 @@
    "map": "assets/maps/map22",
    "units": "assets/maps/map22/map22_units.json",
    "scenario": "assets/scenarios/ch23.json",
-   "on_win": "story_ch24",
+   "on_win": "preparation_ch24",
    "on_lose": "retreat_ch23"
   },
   "retreat_ch23": {
@@ -3541,7 +2964,7 @@
    "map": "assets/maps/map23",
    "units": "assets/maps/map23/map23_units.json",
    "scenario": "assets/scenarios/ch24.json",
-   "on_win": "story_ch25",
+   "on_win": "preparation_ch25",
    "on_lose": "retreat_ch24"
   },
   "retreat_ch24": {
@@ -3579,7 +3002,7 @@
    "map": "assets/maps/map24",
    "units": "assets/maps/map24/map24_units.json",
    "scenario": "assets/scenarios/ch25.json",
-   "on_win": "story_ch26",
+   "on_win": "town_ch26",
    "on_lose": "retreat_ch25"
   },
   "retreat_ch25": {
@@ -3660,7 +3083,7 @@
      "price": 34000
     }
    ],
-   "next": "shop_ch26_item"
+   "next": "town_ch26"
   },
   "shop_ch26_item": {
    "type": "shop",
@@ -3683,36 +3106,7 @@
      "price": 20
     }
    ],
-   "next": "story_ch27",
-   "secret_if": "found_secret_ch26",
-   "secret": [
-    {
-     "name": "神聖之水",
-     "price": 800
-    },
-    {
-     "name": "水晶粒",
-     "price": 5000
-    },
-    {
-     "name": "光之斧",
-     "price": 15500
-    }
-   ]
-  },
-  "choice_ch26": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch26"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch26_weapon"
-    }
-   ]
+   "next": "town_ch26"
   },
   "rumor_ch26": {
    "type": "story",
@@ -3726,7 +3120,7 @@
    "set_flags": {
     "found_secret_ch26": true
    },
-   "next": "shop_ch26_weapon"
+   "next": "town_ch26"
   },
   "battle_ch26": {
    "type": "battle",
@@ -3734,7 +3128,7 @@
    "map": "assets/maps/map25",
    "units": "assets/maps/map25/map25_units.json",
    "scenario": "assets/scenarios/ch26.json",
-   "on_win": "choice_ch26",
+   "on_win": "town_ch27",
    "on_lose": "retreat_ch26"
   },
   "retreat_ch26": {
@@ -3815,7 +3209,7 @@
      "price": 34000
     }
    ],
-   "next": "shop_ch27_item"
+   "next": "town_ch27"
   },
   "shop_ch27_item": {
    "type": "shop",
@@ -3830,32 +3224,7 @@
      "price": 5000
     }
    ],
-   "next": "story_ch28",
-   "secret_if": "found_secret_ch27",
-   "secret": [
-    {
-     "name": "神聖之水",
-     "price": 800
-    },
-    {
-     "name": "水晶粒",
-     "price": 5000
-    }
-   ]
-  },
-  "choice_ch27": {
-   "type": "choice",
-   "prompt": "進城前要不要先打聽消息?",
-   "options": [
-    {
-     "label": "打聽消息",
-     "to": "rumor_ch27"
-    },
-    {
-     "label": "直接進城採買",
-     "to": "shop_ch27_weapon"
-    }
-   ]
+   "next": "town_ch27"
   },
   "rumor_ch27": {
    "type": "story",
@@ -3869,7 +3238,7 @@
    "set_flags": {
     "found_secret_ch27": true
    },
-   "next": "shop_ch27_weapon"
+   "next": "town_ch27"
   },
   "battle_ch27": {
    "type": "battle",
@@ -3877,7 +3246,7 @@
    "map": "assets/maps/map26",
    "units": "assets/maps/map26/map26_units.json",
    "scenario": "assets/scenarios/ch27.json",
-   "on_win": "choice_ch27",
+   "on_win": "preparation_ch28",
    "on_lose": "retreat_ch27"
   },
   "retreat_ch27": {
@@ -3915,7 +3284,7 @@
    "map": "assets/maps/map27",
    "units": "assets/maps/map27/map27_units.json",
    "scenario": "assets/scenarios/ch28.json",
-   "on_win": "story_ch29",
+   "on_win": "preparation_ch29",
    "on_lose": "retreat_ch28"
   },
   "retreat_ch28": {
@@ -3953,7 +3322,7 @@
    "map": "assets/maps/map28",
    "units": "assets/maps/map28/map28_units.json",
    "scenario": "assets/scenarios/ch29.json",
-   "on_win": "story_ch30",
+   "on_win": "preparation_ch30",
    "on_lose": "retreat_ch29"
   },
   "retreat_ch29": {
@@ -4011,6 +3380,1403 @@
   "ending": {
    "type": "ending",
    "text": "傳說的終章——空魔神殞落,炎龍騎士團的旅程至此告一段落。(campaign_full.json 自動生成 v1:節點骨架完整,逐章劇情全文/回合事件/主角隊招募待下一輪補完)"
+  },
+  "town_ch02": {
+   "type": "town",
+   "town": "羅德鎮",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch02"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch02_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch02"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch02_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch02"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch02_secret",
+     "if": "found_secret_ch02"
+    }
+   ]
+  },
+  "town_ch03": {
+   "type": "town",
+   "town": "往塞拉村途中",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch03"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch03_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch03"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch03_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch03"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch03_secret",
+     "if": "found_secret_ch03"
+    }
+   ]
+  },
+  "town_ch04": {
+   "type": "town",
+   "town": "塞拉村前",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch04"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch04_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch04"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch04_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch04"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch04_secret",
+     "if": "found_secret_ch04"
+    }
+   ]
+  },
+  "town_ch05": {
+   "type": "town",
+   "town": "塞拉村",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch05"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch05_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch05"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch05_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch05"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch05_secret",
+     "if": "found_secret_ch05"
+    }
+   ]
+  },
+  "town_ch06": {
+   "type": "town",
+   "town": "普里茲港",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch06"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch06_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch06"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch06_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch06"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch06_secret",
+     "if": "found_secret_ch06"
+    }
+   ]
+  },
+  "town_ch07": {
+   "type": "town",
+   "town": "往王城的途中",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch07"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch07_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch07"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch07_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch07"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch07_secret",
+     "if": "found_secret_ch07"
+    }
+   ]
+  },
+  "town_ch08": {
+   "type": "town",
+   "town": "王城前的戰鬥",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch08"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch08_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch08"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch08_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch08"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch08_secret",
+     "if": "found_secret_ch08"
+    }
+   ]
+  },
+  "town_ch09": {
+   "type": "town",
+   "town": "騎士的抉擇",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch09"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch09_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch09"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch09_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch09"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch09_secret",
+     "if": "found_secret_ch09"
+    }
+   ]
+  },
+  "town_ch10": {
+   "type": "town",
+   "town": "洞窟中的激戰",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch10"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch10_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch10"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch10_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch10"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch10_secret",
+     "if": "found_secret_ch10"
+    }
+   ]
+  },
+  "town_ch11": {
+   "type": "town",
+   "town": "幻之森林",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch11"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch11_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch11"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch11_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch11"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch11_secret",
+     "if": "found_secret_ch11"
+    }
+   ]
+  },
+  "town_ch12": {
+   "type": "town",
+   "town": "北山道",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch12"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch12_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch12"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch12_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch12"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch12_secret",
+     "if": "found_secret_ch12"
+    }
+   ]
+  },
+  "town_ch13": {
+   "type": "town",
+   "town": "哈斯米爾之戰",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch13"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch13_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch13"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch13_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch13"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch13_secret",
+     "if": "found_secret_ch13"
+    }
+   ]
+  },
+  "town_ch14": {
+   "type": "town",
+   "town": "平原的會戰",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch14"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch14_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch14"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch14_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch14"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch14_secret",
+     "if": "found_secret_ch14"
+    }
+   ]
+  },
+  "town_ch15": {
+   "type": "town",
+   "town": "拉卡湖的激戰",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch15"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch15_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch15"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch15_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch15"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch15_secret",
+     "if": "found_secret_ch15"
+    }
+   ]
+  },
+  "town_ch16": {
+   "type": "town",
+   "town": "冰原之戰",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch16"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch16_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch16"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch16_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch16"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch16_secret",
+     "if": "found_secret_ch16"
+    }
+   ]
+  },
+  "town_ch17": {
+   "type": "town",
+   "town": "血與冰之刃",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch17"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch17_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch17"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch17_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch17"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch17_secret",
+     "if": "found_secret_ch17"
+    }
+   ]
+  },
+  "town_ch18": {
+   "type": "town",
+   "town": "遙遠的彼岸",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch18"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch18_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch18"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch18_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch18"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch18_secret",
+     "if": "found_secret_ch18"
+    }
+   ]
+  },
+  "town_ch19": {
+   "type": "town",
+   "town": "黑暗中的狙擊",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch19"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch19_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch19"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch19_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch19"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch19_secret",
+     "if": "found_secret_ch19"
+    }
+   ]
+  },
+  "town_ch20": {
+   "type": "town",
+   "town": "死亡般的沈寂",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch20"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch20_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch20"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch20_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch20"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch20_secret",
+     "if": "found_secret_ch20"
+    }
+   ]
+  },
+  "town_ch21": {
+   "type": "town",
+   "town": "亞述森林",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch21"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch21_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch21"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch21_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch21"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch21_secret",
+     "if": "found_secret_ch21"
+    }
+   ]
+  },
+  "town_ch22": {
+   "type": "town",
+   "town": "遠古呼喚",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch22"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch22_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch22"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch22_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch22"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch22_secret",
+     "if": "found_secret_ch22"
+    }
+   ]
+  },
+  "town_ch26": {
+   "type": "town",
+   "town": "未知的迴廊",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch26"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch26_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch26"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch26_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch26"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch26_secret",
+     "if": "found_secret_ch26"
+    }
+   ]
+  },
+  "town_ch27": {
+   "type": "town",
+   "town": "命運的交會點",
+   "bgm": "FDMUS_010",
+   "options": [
+    {
+     "label": "酒店：打聽消息",
+     "to": "rumor_ch27"
+    },
+    {
+     "label": "武器店",
+     "to": "shop_ch27_weapon"
+    },
+    {
+     "label": "出口：出戰整備",
+     "to": "preparation_ch27"
+    },
+    {
+     "label": "道具店",
+     "to": "shop_ch27_item"
+    },
+    {
+     "label": "教會",
+     "to": "church_ch27"
+    },
+    {
+     "label": "神秘商店",
+     "to": "shop_ch27_secret",
+     "if": "found_secret_ch27"
+    }
+   ]
+  },
+  "preparation_ch02": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch02_pre"
+  },
+  "preparation_ch03": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch03"
+  },
+  "preparation_ch04": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch04"
+  },
+  "preparation_ch05": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch05"
+  },
+  "preparation_ch06": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch06"
+  },
+  "preparation_ch07": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch07"
+  },
+  "preparation_ch08": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch08"
+  },
+  "preparation_ch09": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch09"
+  },
+  "preparation_ch10": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch10"
+  },
+  "preparation_ch11": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch11"
+  },
+  "preparation_ch12": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch12"
+  },
+  "preparation_ch13": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch13"
+  },
+  "preparation_ch14": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch14"
+  },
+  "preparation_ch15": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch15"
+  },
+  "preparation_ch16": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch16"
+  },
+  "preparation_ch17": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch17"
+  },
+  "preparation_ch18": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch18"
+  },
+  "preparation_ch19": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch19"
+  },
+  "preparation_ch20": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch20"
+  },
+  "preparation_ch21": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch21"
+  },
+  "preparation_ch22": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch22"
+  },
+  "preparation_ch23": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch23"
+  },
+  "preparation_ch24": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch24"
+  },
+  "preparation_ch25": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch25"
+  },
+  "preparation_ch26": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch26"
+  },
+  "preparation_ch27": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch27"
+  },
+  "preparation_ch28": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch28"
+  },
+  "preparation_ch29": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch29"
+  },
+  "preparation_ch30": {
+   "type": "preparation",
+   "prompt": "要記錄戰況嗎？",
+   "next": "story_ch30"
+  },
+  "church_ch02": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch02"
+  },
+  "church_ch03": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch03"
+  },
+  "church_ch04": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch04"
+  },
+  "church_ch05": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch05"
+  },
+  "church_ch06": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch06"
+  },
+  "church_ch07": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch07"
+  },
+  "church_ch08": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch08"
+  },
+  "church_ch09": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch09"
+  },
+  "church_ch10": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch10"
+  },
+  "church_ch11": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch11"
+  },
+  "church_ch12": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch12"
+  },
+  "church_ch13": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch13"
+  },
+  "church_ch14": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch14"
+  },
+  "church_ch15": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch15"
+  },
+  "church_ch16": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch16"
+  },
+  "church_ch17": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch17"
+  },
+  "church_ch18": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch18"
+  },
+  "church_ch19": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch19"
+  },
+  "church_ch20": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch20"
+  },
+  "church_ch21": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch21"
+  },
+  "church_ch22": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch22"
+  },
+  "church_ch26": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch26"
+  },
+  "church_ch27": {
+   "type": "church",
+   "text": "教會",
+   "next": "town_ch27"
+  },
+  "shop_ch02_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "闊劍",
+     "price": 250
+    },
+    {
+     "name": "長戟",
+     "price": 1200
+    },
+    {
+     "name": "釘頭鎚",
+     "price": 180
+    },
+    {
+     "name": "藥草",
+     "price": 10
+    },
+    {
+     "name": "回復劑",
+     "price": 80
+    },
+    {
+     "name": "皮甲",
+     "price": 300
+    }
+   ],
+   "next": "town_ch02"
+  },
+  "shop_ch03_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "回復劑",
+     "price": 80
+    },
+    {
+     "name": "魔法水",
+     "price": 1000
+    }
+   ],
+   "next": "town_ch03"
+  },
+  "shop_ch04_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "風精之羽",
+     "price": 20000
+    },
+    {
+     "name": "魔法水",
+     "price": 1000
+    }
+   ],
+   "next": "town_ch04"
+  },
+  "shop_ch05_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "力量藥水",
+     "price": 10000
+    },
+    {
+     "name": "耐力藥水",
+     "price": 10000
+    },
+    {
+     "name": "速度藥水",
+     "price": 10000
+    },
+    {
+     "name": "生命之實",
+     "price": 10000
+    }
+   ],
+   "next": "town_ch05"
+  },
+  "shop_ch06_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "魔法水",
+     "price": 1000
+    }
+   ],
+   "next": "town_ch06"
+  },
+  "shop_ch07_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "聖者之戒",
+     "price": 5000
+    },
+    {
+     "name": "心眼之書",
+     "price": 5000
+    },
+    {
+     "name": "白金勳章",
+     "price": 5000
+    },
+    {
+     "name": "飛龍卵",
+     "price": 100
+    }
+   ],
+   "next": "town_ch07"
+  },
+  "shop_ch08_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "黑暗劍",
+     "price": 2400
+    },
+    {
+     "name": "先鋒矛",
+     "price": 1800
+    },
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "魔法水",
+     "price": 1000
+    }
+   ],
+   "next": "town_ch08"
+  },
+  "shop_ch09_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "魔法水",
+     "price": 1000
+    }
+   ],
+   "next": "town_ch09"
+  },
+  "shop_ch10_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "生命之實",
+     "price": 10000
+    },
+    {
+     "name": "魔力水晶",
+     "price": 10000
+    }
+   ],
+   "next": "town_ch10"
+  },
+  "shop_ch11_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "魔法水",
+     "price": 1000
+    }
+   ],
+   "next": "town_ch11"
+  },
+  "shop_ch12_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "魔法水",
+     "price": 1000
+    }
+   ],
+   "next": "town_ch12"
+  },
+  "shop_ch13_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "斬鐵劍",
+     "price": 9600
+    },
+    {
+     "name": "聖之槍",
+     "price": 24000
+    }
+   ],
+   "next": "town_ch13"
+  },
+  "shop_ch14_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "再生藥",
+     "price": 300
+    },
+    {
+     "name": "飛龍卵",
+     "price": 100
+    }
+   ],
+   "next": "town_ch14"
+  },
+  "shop_ch15_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "水晶粒",
+     "price": 5000
+    }
+   ],
+   "next": "town_ch15"
+  },
+  "shop_ch16_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "生命之實",
+     "price": 10000
+    },
+    {
+     "name": "魔力水晶",
+     "price": 10000
+    },
+    {
+     "name": "力量藥水",
+     "price": 10000
+    },
+    {
+     "name": "耐力藥水",
+     "price": 10000
+    }
+   ],
+   "next": "town_ch16"
+  },
+  "shop_ch17_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "水晶粒",
+     "price": 5000
+    },
+    {
+     "name": "十字弓",
+     "price": 8800
+    }
+   ],
+   "next": "town_ch17"
+  },
+  "shop_ch18_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "力之杖",
+     "price": 10000
+    },
+    {
+     "name": "水晶粒",
+     "price": 5000
+    }
+   ],
+   "next": "town_ch18"
+  },
+  "shop_ch19_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "水晶粒",
+     "price": 5000
+    }
+   ],
+   "next": "town_ch19"
+  },
+  "shop_ch20_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "水晶粒",
+     "price": 5000
+    }
+   ],
+   "next": "town_ch20"
+  },
+  "shop_ch21_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "封魔弓",
+     "price": 20000
+    },
+    {
+     "name": "裂刃爪",
+     "price": 13200
+    }
+   ],
+   "next": "town_ch21"
+  },
+  "shop_ch22_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "水晶粒",
+     "price": 5000
+    }
+   ],
+   "next": "town_ch22"
+  },
+  "shop_ch26_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "水晶粒",
+     "price": 5000
+    },
+    {
+     "name": "光之斧",
+     "price": 15500
+    }
+   ],
+   "next": "town_ch26"
+  },
+  "shop_ch27_secret": {
+   "type": "shop",
+   "bgm": "FDMUS_010",
+   "goods": [
+    {
+     "name": "神聖之水",
+     "price": 800
+    },
+    {
+     "name": "水晶粒",
+     "price": 5000
+    }
+   ],
+   "next": "town_ch27"
   }
  }
 }

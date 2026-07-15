@@ -59,7 +59,7 @@
 > constructor 順序：party0..4、村民5..10、group2=11..20、turn3 group3=21..26，戰後 SPAWN4
 > 才 append 希莉亞為 slot27；group255 不再預佔 runtime array。`ch01_post.json` binding 以明確
 > postbattle context 驗證 slot frontier，PAN 定案為 `(336,48)/(336,24)`，ACT14/15/16 直接作用於
-> canonical battle state，compiler 為 0 issues。campaign 已接成 battle→post→choice，完整測試、
+> canonical battle state，compiler 為 0 issues。campaign 已接成 battle→post→下一章 town/preparation，完整測試、
 > build 與 Xvfb branch/PAN/SPAWN/ACT14 截圖均通過。戰後演出中因 save 尚不序列化 battle array，
 > F5 會明確拒絕，下一節點恢復可存。詳見 `doc50 §3.6`。
 
@@ -97,15 +97,29 @@
 > #6 五句，存活臂執行 `layout_units`、#7 十句並 JOIN2，共同 `set_chapter(3)` 只保留一次。
 > `0x233c6` binding 保存 slots0..6 絕對 X/Y/pose、camera `(48,0)`、redraw/fade/delay200；
 > post runtime 只接受 15/27 slots，對應 turn3 援軍未生／已生兩種真實 frontier。campaign 已接
-> `battle_ch03 → story_ch03_post → choice_ch03`，compiler 0 issues。同輪把全 post handlers 的
+> `battle_ch03 → story_ch03_post → town_ch04 → preparation_ch04 → story_ch04`，compiler 0 issues。同輪把全 post handlers 的
 > `inc [chapter]` 保留成 editable `set_chapter`，15 個 `0x233c6` caller 改為已命名、待逐章 binding 的
 > `layout_units`；全 60 支 manifest 為 **725 top-level beats / 93 unknown calls**。詳見 `doc50 §3.8`。
+
+> **2026-07-16 第十四次 Codex 更新（戰後 town/preparation 全戰役契約）**：原版 victory
+> driver 已重追為 `post[current] @0x25e23 → intermission 0x2cad7 → pre[next] @0x25e3a`，
+> 不是 post 後直接下一戰。`byte[chapter+0x526b9]` 的零起算章表是 0..21 town、
+> 22..24 preparation、25..26 town、27..29 preparation；這與商店只存在玩家章
+> 2..22、26、27 相符，也證明 shops.json 的章數是「下一場」，舊 campaign 整體 off-by-one 已修正。
+> remake 新增 editable `town`、`preparation`、`church` 節點；town 保留酒店／武器店／出口／
+> 道具店／教會五設施與 hidden secret shop，各設施離開後回 hub，出口才進可存檔的隊伍整備；
+> 原版無 town 章也依然有「要記錄戰況嗎？」與 sortie preparation。
+> `TestCampaignFullPostBattleTownContractMatchesOriginalShopChapters` 已對全戰役固定 shop 章集合、
+> post→town/prep→next pre、facility 回 hub、無 town 仍有 prep 及最終 ending；詳證見 `doc50 §3.9`。
+> 尚未閉合的原版分支是玩家第27章戰後：天空之鑰 `0x64` 存在才增章進第28章，
+> 無鑰匙則 `0x2545d → 0x2bce5` 壞結局；這個 handler/inventory condition 仍需後續接線。
 
 ## 0. 目前焦點(接手就做這裡)
 `ch00_pre`、`ch00_post`、`ch01_pre`、`ch01_post` 已成為前四個 campaign 實際 consumer；ch01 post 的 branch、
 reward、61-utterance FDTXT_002、dynamic speaker slots、PAN、SPAWN4、ACT14..16、JOIN/sync/chapter tail
 與第二、第三章戰前／戰後 handler 均已完整 lower 且 compiler **0 issues**。下一個具體焦點是
-補完 ch03 battle turn3 的 PAN/delay 演出（slot6 active、SPAWN2 與 FDTXT_003 #4 七句已完成），然後選下一支
+補完 ch03 battle turn3 的 PAN/delay 演出（slot6 active、SPAWN2 與 FDTXT_003 #4 七句已完成），接著將
+第27章戰後天空之鑰→第28章／壞結局的 handler branch 接入 campaign，然後選下一支
 `0x233c6` post caller 依原版 arrays 補 binding。下方「草地深層未解」是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，
 不得再當目前 blocker。
 

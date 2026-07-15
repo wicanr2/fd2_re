@@ -7,7 +7,8 @@
   doc28(30 章勝利/護衛/加入條件,青衫攻略 ground truth)
   + docs/data/shops.json(69 家商店,含 23 家祕密商店)
   + remake/assets/maps/mapN/(map.json + tileset.png + mapN_units.json,全 33 圖已匯出)
-  → campaign_full.json:每章 story → battle → (choice→祕密商店線索 →) shop* → 下一章;
+  → campaign_full.json:每章 story → battle → town hub(酒店/武器店/出口/道具店/教會/隱藏商店)
+    或無城鎮 preparation → 下一章;
     battle 敗北走 retreat 節點重打本章(不是 game over)。
 
 章→map 對應(重要,別誤用別的公式):
@@ -535,7 +536,12 @@ def build_campaign(
         next_story_id = None if is_last else f"story_ch{c + 1:02d}"
         ending_id = "ending" if is_last else None
 
-        chapter_shops = shops_by_ch.get(c, [])
+        # 商店表的 chapter 是「接下來要進入的玩家章節」。原版 victory driver 是
+        # post_handler[current] → intermission(new chapter) → pre_handler[new chapter]；
+        # 因此第 2 章羅德鎮出現在 battle_ch01 後，不是 battle_ch02 後。
+        intermission_ch = c + 1
+        intermission_cid = f"{intermission_ch:02d}"
+        chapter_shops = [] if is_last else shops_by_ch.get(intermission_ch, [])
         secret_row = next((s for s in chapter_shops if s["kind"] == "secret"), None)
         normal_rows = [s for s in chapter_shops if s["kind"] != "secret"]
 
@@ -553,45 +559,48 @@ def build_campaign(
         # --- battle 節點 ---
         after_battle_id = None  # on_win 目標,稍後依有無商店決定
 
-        # --- shop 鏈(有商店才生成) ---
+        # --- 戰後城鎮/整備 hub ---
+        # 即使原版該章沒有城鎮，仍會經「記錄戰況」與出戰/隊伍整備，不能直接跳戰鬥。
+        preparation_id = None if is_last else f"preparation_ch{intermission_cid}"
+        if preparation_id:
+            nodes[preparation_id] = {
+                "type": "preparation",
+                "prompt": "要記錄戰況嗎？",
+                "next": next_story_id,
+            }
         shop_node_ids: list[str] = []
         if normal_rows:
             for i, s in enumerate(normal_rows):
-                sid = f"shop_ch{cid}_{s['kind']}"
+                sid = f"shop_ch{intermission_cid}_{s['kind']}"
                 shop_node_ids.append(sid)
                 nodes[sid] = {
                     "type": "shop",
                     "bgm": BGM_STORY,
                     "goods": [{"name": g["name"], "price": g["price"]} for g in s["goods"]],
-                    "next": None,  # 稍後串接
+                    "next": None,  # 稍後一律回 town hub
                 }
-            # secret 掛在最後一個一般商店節點
+            secret_shop_id = None
             if secret_row:
-                last_sid = shop_node_ids[-1]
-                flag_name = f"found_secret_ch{cid}"
+                flag_name = f"found_secret_ch{intermission_cid}"
                 flags[flag_name] = False
-                nodes[last_sid]["secret_if"] = flag_name
-                nodes[last_sid]["secret"] = [
-                    {"name": g["name"], "price": g["price"]} for g in secret_row["goods"]
-                ]
-            # 串接商店鏈
-            for i in range(len(shop_node_ids) - 1):
-                nodes[shop_node_ids[i]]["next"] = shop_node_ids[i + 1]
-            tail_target = ending_id if is_last else next_story_id
-            nodes[shop_node_ids[-1]]["next"] = tail_target
-
-            if secret_row:
-                choice_id = f"choice_ch{cid}"
-                rumor_id = f"rumor_ch{cid}"
-                flag_name = f"found_secret_ch{cid}"
-                nodes[choice_id] = {
-                    "type": "choice",
-                    "prompt": "進城前要不要先打聽消息?",
-                    "options": [
-                        {"label": "打聽消息", "to": rumor_id},
-                        {"label": "直接進城採買", "to": shop_node_ids[0]},
-                    ],
+                secret_shop_id = f"shop_ch{intermission_cid}_secret"
+                nodes[secret_shop_id] = {
+                    "type": "shop",
+                    "bgm": BGM_STORY,
+                    "goods": [{"name": g["name"], "price": g["price"]} for g in secret_row["goods"]],
+                    "next": None,
                 }
+            town_id = f"town_ch{intermission_cid}"
+            tail_target = preparation_id
+            for sid in shop_node_ids:
+                nodes[sid]["next"] = town_id
+            if secret_shop_id:
+                nodes[secret_shop_id]["next"] = town_id
+
+            town_options = []
+            if secret_row:
+                rumor_id = f"rumor_ch{intermission_cid}"
+                flag_name = f"found_secret_ch{intermission_cid}"
                 nodes[rumor_id] = {
                     "type": "story",
                     "bgm": BGM_STORY,
@@ -602,13 +611,31 @@ def build_campaign(
                         }
                     ],
                     "set_flags": {flag_name: True},
-                    "next": shop_node_ids[0],
+                    "next": town_id,
                 }
-                after_battle_id = choice_id
-            else:
-                after_battle_id = shop_node_ids[0]
+                town_options.append({"label": "酒店：打聽消息", "to": rumor_id})
+            shop_by_kind = {s["kind"]: sid for sid, s in zip(shop_node_ids, normal_rows)}
+            town_options.append({"label": "武器店", "to": shop_by_kind["weapon"]})
+            town_options.append({"label": "出口：出戰整備", "to": tail_target})
+            town_options.append({"label": "道具店", "to": shop_by_kind["item"]})
+            church_id = f"church_ch{intermission_cid}"
+            nodes[church_id] = {
+                "type": "church",
+                "text": "教會",
+                "next": town_id,
+            }
+            town_options.append({"label": "教會", "to": church_id})
+            if secret_shop_id:
+                town_options.append({"label": "神秘商店", "to": secret_shop_id, "if": flag_name})
+            nodes[town_id] = {
+                "type": "town",
+                "town": normal_rows[0]["town"],
+                "bgm": BGM_STORY,
+                "options": town_options,
+            }
+            after_battle_id = town_id
         else:
-            after_battle_id = ending_id if is_last else next_story_id
+            after_battle_id = ending_id if is_last else preparation_id
 
         nodes[battle_id] = {
             "type": "battle",
@@ -647,7 +674,7 @@ def build_campaign(
             raise SystemExit(f"內部錯誤:shop 節點 next 未串接 {n}")
 
     campaign = {
-        "title": "炎龍騎士團2 — 全 30 章線性 campaign(自動生成)",
+        "title": "炎龍騎士團2 — 全 30 章 campaign(自動生成，含戰後城鎮與整備)",
         "start": "story_ch01",
         "flags": flags,
         "nodes": nodes,
@@ -753,11 +780,16 @@ def main():
     n_battle = sum(1 for n in campaign["nodes"].values() if n["type"] == "battle")
     n_shop = sum(1 for n in campaign["nodes"].values() if n["type"] == "shop")
     n_choice = sum(1 for n in campaign["nodes"].values() if n["type"] == "choice")
+    n_town = sum(1 for n in campaign["nodes"].values() if n["type"] == "town")
+    n_preparation = sum(1 for n in campaign["nodes"].values() if n["type"] == "preparation")
     n_story = sum(1 for n in campaign["nodes"].values() if n["type"] == "story")
 
     print(f"寫出 {OUT_PATH}")
     print(f"章數:{TOTAL_CHAPTERS}  節點總數:{n_nodes}")
-    print(f"  battle={n_battle} shop={n_shop} choice={n_choice} story={n_story} ending=1")
+    print(
+        f"  battle={n_battle} town={n_town} preparation={n_preparation} "
+        f"shop={n_shop} choice={n_choice} story={n_story} ending=1"
+    )
 
     n_new_scn = sum(1 for cid, src in scenario_sources.items() if cid != "01")
     n_meta = sum(1 for cid, src in scenario_sources.items() if src == "metadata")

@@ -990,3 +990,23 @@ func TestMap0ActingUsesPartyThenSpawnedRuntimeSlots(t *testing.T) {
 		}
 	}
 }
+
+func TestEnterTownClearsCompletedBattlePresentation(t *testing.T) {
+	c := &campaign.Campaign{
+		Start: "town",
+		Nodes: map[string]*campaign.Node{
+			"town": {Type: "town", Town: "羅德鎮", Options: []campaign.Option{{Label: "出口", To: "prep"}}},
+			"prep": {Type: "preparation"},
+		},
+	}
+	g := &Game{
+		camp:   campaign.NewRunner(c),
+		st:     &battle.State{Units: []*battle.Unit{{Fig: 0, OnField: true}}},
+		sel:    &battle.Unit{Fig: 0, OnField: true},
+		dialog: []battle.DialogLine{{Speaker: 0, Text: "上一戰殘留"}},
+	}
+	g.enterNode()
+	if g.st != nil || g.sel != nil || len(g.dialog) != 0 {
+		t.Fatalf("town retained completed battle presentation: state=%#v sel=%#v dialog=%#v", g.st, g.sel, g.dialog)
+	}
+}

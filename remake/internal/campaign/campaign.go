@@ -1,5 +1,5 @@
 // Package campaign — 劇本節點圖系統(doc 19):把「固定線性流程」變成可分支的有向圖。
-// 節點 = 一個遊戲段落(story/battle/choice/event/ending),轉場依結果(win/lose/next/optN)
+// 節點 = 一個遊戲段落(story/battle/town/preparation/choice/event/ending),轉場依結果(win/lose/next/optN)
 // 與旗標決定下一節點;敗北可走敗北路線而非 game over。
 package campaign
 
@@ -198,7 +198,7 @@ type Beat struct {
 	ItemID *int `json:"item_id,omitempty"`
 }
 
-// Node 節點。Type: story / cutscene / battle / choice / event / shop / ending。
+// Node 節點。Type: story / cutscene / battle / town / preparation / church / choice / event / shop / ending。
 // cutscene(doc 50):story 的 beats 驅動版——用 Beats 一比一承接原版章 handler 的原語序列,
 // 對白與走位/演出天然交錯(平面序列,非「一幕一段」)。Map/Actors/BGM/ExitWalk(s) 等欄位與
 // story 共用同一套場景設置(進節點時的初始擺位、退場走位、淡出轉場),Beats 只負責節點「進行中」
@@ -233,7 +233,8 @@ type Node struct {
 	Next     string          `json:"next,omitempty"`    // story/event
 	OnWin    string          `json:"on_win,omitempty"`  // battle
 	OnLose   string          `json:"on_lose,omitempty"` // battle(敗北路線;空=game over)
-	Prompt   string          `json:"prompt,omitempty"`  // choice
+	Prompt   string          `json:"prompt,omitempty"`  // choice/preparation
+	Town     string          `json:"town,omitempty"`    // town:原版戰後城鎮/營地名稱(可編輯、可存檔的整備 hub)
 	Options  []Option        `json:"options,omitempty"` // choice
 	SetFlags map[string]bool `json:"set_flags,omitempty"`
 	Text     string          `json:"text,omitempty"`      // ending:結語
@@ -346,7 +347,7 @@ func (r *Runner) Advance(outcome string) string {
 		} else {
 			next = n.OnLose
 		}
-	case "choice":
+	case "choice", "town":
 		var i int
 		if _, err := fmt.Sscanf(outcome, "opt%d", &i); err == nil {
 			if vis := r.Visible(); i >= 0 && i < len(vis) {

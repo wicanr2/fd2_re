@@ -1295,7 +1295,7 @@ func (g *Game) terrainAt(x, y int) int {
 
 // ── campaign(劇本節點圖,doc 19)引擎接線 ──────────────────────────
 
-// enterNode 進入 camp 目前節點:story→掛對白、battle→重開戰場、event→套旗標直通、choice/ending→等輸入。
+// enterNode 進入 camp 目前節點:story→掛對白、battle→重開戰場、event→套旗標直通、town/preparation/choice/ending→等輸入。
 func (g *Game) enterNode() {
 	if g.camp == nil {
 		return
@@ -1385,9 +1385,14 @@ func (g *Game) enterNode() {
 	case "event":
 		g.camp.Advance("")
 		g.enterNode()
-	case "choice":
+	case "choice", "town":
+		g.dialog, g.st, g.sel = nil, nil, nil // 戰間 hub 不可殘留上一戰的單位或勝利對白
 		g.campSel = 0
+	case "preparation", "church":
+		g.dialog, g.st, g.sel = nil, nil, nil
+		// 節點邊界 UI；preparation 可在此安全 F5 存檔，Enter 才進下一章 pre handler。
 	case "shop":
+		g.dialog, g.st, g.sel = nil, nil, nil
 		g.shopSel = 0
 	}
 }
@@ -1662,7 +1667,7 @@ func (g *Game) campInput() bool {
 			}
 		}
 		return true
-	case "choice":
+	case "choice", "town":
 		vis := g.camp.Visible()
 		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.campSel > 0 {
 			g.campSel--
@@ -1672,6 +1677,12 @@ func (g *Game) campInput() bool {
 		}
 		if enter && len(vis) > 0 {
 			g.camp.Advance(fmt.Sprintf("opt%d", g.campSel))
+			g.enterNode()
+		}
+		return true
+	case "preparation", "church":
+		if enter || inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+			g.camp.Advance("")
 			g.enterNode()
 		}
 		return true
@@ -2722,7 +2733,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	// 常駐白框會疊在中央、與環的選中框混淆,見 playfix #5)
 	curPx := float64(g.curX*tw) - g.camX
 	curPy := float64(g.curY*th) - g.camY
-	if !g.ring && !g.spellOpen && !g.storyBG {
+	campaignBattleView := g.camp == nil || (g.camp.Node() != nil && g.camp.Node().Type == "battle")
+	if !g.ring && !g.spellOpen && !g.storyBG && campaignBattleView {
 		drawCursor(screen, curPx, curPy, float64(tw), float64(th))
 	}
 	// HUD(對照原版 orig_04/08):游標單位資訊=左下面板(非常駐頂列);回合切換=中央大字橫幅。
@@ -2735,7 +2747,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				g.st.Turn, g.st.AliveCount(battle.Own), g.st.AliveCount(battle.Ally), g.st.AliveCount(battle.Enemy), g.curX, g.curY), 6, 4)
 		}
 	}
-	if !g.storyBG {
+	if !g.storyBG && campaignBattleView {
 		g.drawPhaseBanner(screen) // 回合橫幅(PLAYER/ENEMY PHASE,transient)
 	}
 
@@ -2986,11 +2998,15 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 		fillBox(0, float64(logicalH)/2-40, float64(logicalW), 80)
 		g.font.Draw(screen, "GAME OVER", float64(logicalW)/2-90, float64(logicalH)/2-20, 2.0,
 			color.RGBA{0xff, 0x70, 0x70, 0xff})
-	case n.Type == "choice":
+	case n.Type == "choice" || n.Type == "town":
 		vis := g.camp.Visible()
 		h := 60 + float64(len(vis))*28
 		fillBox(160, 120, 320, h)
-		g.font.Draw(screen, n.Prompt, 176, 130, 1.1, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+		title := n.Prompt
+		if n.Type == "town" && n.Town != "" {
+			title = n.Town + "　戰後整備"
+		}
+		g.font.Draw(screen, title, 176, 130, 1.1, color.RGBA{0xff, 0xe0, 0x90, 0xff})
 		for i, o := range vis {
 			c := color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
 			pre := "　"
@@ -3018,6 +3034,15 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 			}
 			g.font.Draw(screen, fmt.Sprintf("%s%s  %d G", pre, gd.Name, gd.Price), 156, 100+float64(i)*30, 1.0, c)
 		}
+	case n.Type == "preparation":
+		fillBox(140, 145, 360, 120)
+		g.font.Draw(screen, n.Prompt, 170, 162, 1.2, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+		g.font.Draw(screen, "F5 保存戰況", 190, 202, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
+		g.font.Draw(screen, "Enter 前往出戰（隊伍編成待接）", 190, 232, 1.0, color.RGBA{0xff, 0xff, 0xff, 0xff})
+	case n.Type == "church":
+		fillBox(180, 165, 280, 90)
+		g.font.Draw(screen, n.Text, 205, 180, 1.2, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+		g.font.Draw(screen, "Enter／ESC 返回城鎮", 205, 218, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
 	case n.Type == "ending":
 		fillBox(0, float64(logicalH)/2-60, float64(logicalW), 120)
 		g.font.Draw(screen, n.Text, float64(logicalW)/2-float64(len([]rune(n.Text)))*9, float64(logicalH)/2-30, 1.4,
