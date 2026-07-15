@@ -291,7 +291,7 @@ remake projection**，不是原版 map31 runtime array 的最終證明。原版 
 **全戰役台詞索引資料層（2026-07-15）**：`tools/export_story_index_map.py` 會讀原始 FDTXT
 offset table，僅在一份原始資源的「logical utterance」總數與一份 `assets/story/*.json` 的
 flattened lines **完全一致**時，產生 `remake/assets/cutscenes/dialogue-index/count-aligned.json`。
-目前有 **27** 份 script context 可機械映射；`FDTXT_002/003/026/027/029/031/032/033` 等
+目前有 **73** 個 handler dialog call-site context 可機械映射（60 份 handler skeleton 全量生成）；`FDTXT_002/003/026/027/029/031/032/033` 等
 **8** 個 count mismatch context 只列 diagnostics、不得猜補。映射 key 是
 `source_dat + script + string_index`：FDTXT_032/033 在不同章／序章 context 有重用，不能只以
 FDTXT index 當全域 key。`campaign.LoadStoryIndexMap` 會驗證每個映射的全部計數、連續 line
