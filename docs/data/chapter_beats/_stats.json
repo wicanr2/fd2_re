@@ -15,7 +15,7 @@
     "bgm": 3,
     "palfade": 1,
     "spawn": 3,
-    "activate_unit": 2,
+    "deactivate_unit": 2,
     "join": 4,
     "delay": 4,
     "spawn_intro": 2,
@@ -31,7 +31,7 @@
    "n_beats": 3,
    "ops": {
     "dialog": 1,
-    "unknown": 1,
+    "sync_party": 1,
     "loadch_var": 1
    }
   },
@@ -39,31 +39,34 @@
    "chapter": 1,
    "tag": "pre",
    "handler": "0x32d18",
-   "n_beats": 20,
+   "n_beats": 22,
    "ops": {
     "loadch_call": 1,
     "pan": 2,
     "act": 4,
     "delay": 5,
-    "dialog": 3,
+    "dialog": 4,
     "spawn": 2,
     "redraw": 1,
-    "reset_pose": 2
+    "reset_pose": 2,
+    "focus_unit": 1
    }
   },
   {
    "chapter": 1,
    "tag": "post",
    "handler": "0x22f37",
-   "n_beats": 20,
+   "n_beats": 18,
    "ops": {
+    "if": 1,
     "dialog": 5,
-    "unknown": 2,
+    "grant_item": 1,
     "pan": 2,
     "spawn": 1,
     "delay": 5,
     "act": 3,
     "join": 1,
+    "sync_party": 1,
     "loadch_var": 1
    }
   },
@@ -71,14 +74,16 @@
    "chapter": 2,
    "tag": "pre",
    "handler": "0x32e8c",
-   "n_beats": 13,
+   "n_beats": 16,
    "ops": {
     "loadch_call": 1,
     "pan": 3,
     "delay": 2,
-    "dialog": 3,
+    "dialog": 4,
     "act": 3,
-    "spawn": 1
+    "spawn": 1,
+    "reset_pose": 1,
+    "focus_unit": 1
    }
   },
   {
@@ -87,9 +92,10 @@
    "handler": "0x230f2",
    "n_beats": 6,
    "ops": {
-    "unknown": 2,
-    "unit_alive": 1,
+    "sync_party": 1,
+    "unit_inactive": 1,
     "dialog": 2,
+    "unknown": 1,
     "join": 1
    }
   },
@@ -97,14 +103,16 @@
    "chapter": 3,
    "tag": "pre",
    "handler": "0x32fb2",
-   "n_beats": 7,
+   "n_beats": 10,
    "ops": {
     "loadch_call": 1,
     "pan": 2,
     "act": 1,
-    "dialog": 1,
+    "dialog": 2,
     "spawn": 1,
-    "delay": 1
+    "delay": 1,
+    "reset_pose": 1,
+    "focus_unit": 1
    }
   },
   {
@@ -114,7 +122,7 @@
    "n_beats": 2,
    "ops": {
     "dialog": 1,
-    "unknown": 1
+    "sync_party": 1
    }
   },
   {
@@ -140,43 +148,49 @@
    "handler": "0x231f9",
    "n_beats": 4,
    "ops": {
-    "unknown": 2,
+    "unknown": 1,
     "dialog": 1,
-    "join": 1
+    "join": 1,
+    "sync_party": 1
    }
   },
   {
    "chapter": 5,
    "tag": "pre",
    "handler": "0x3314b",
-   "n_beats": 1,
+   "n_beats": 3,
    "ops": {
-    "loadch_call": 1
+    "loadch_call": 1,
+    "dialog": 1,
+    "focus_unit": 1
    }
   },
   {
    "chapter": 5,
    "tag": "post",
    "handler": "0x23296",
-   "n_beats": 4,
+   "n_beats": 6,
    "ops": {
     "join": 1,
     "spawn": 1,
     "pan": 1,
-    "act": 1
+    "act": 1,
+    "dialog": 1,
+    "sync_party": 1
    }
   },
   {
    "chapter": 6,
    "tag": "pre",
    "handler": "0x33169",
-   "n_beats": 8,
+   "n_beats": 9,
    "ops": {
     "loadch_call": 1,
     "dialog": 2,
     "spawn": 1,
     "pan": 2,
-    "act": 2
+    "act": 2,
+    "focus_unit": 1
    }
   },
   {
@@ -185,8 +199,9 @@
    "handler": "0x232e8",
    "n_beats": 6,
    "ops": {
-    "unknown": 2,
-    "unit_alive": 1,
+    "sync_party": 1,
+    "unit_inactive": 1,
+    "unknown": 1,
     "dialog": 2,
     "join": 1
    }
@@ -195,23 +210,27 @@
    "chapter": 7,
    "tag": "pre",
    "handler": "0x33219",
-   "n_beats": 6,
+   "n_beats": 9,
    "ops": {
     "loadch_call": 1,
     "pan": 2,
     "act": 2,
-    "dialog": 1
+    "dialog": 2,
+    "reset_pose": 1,
+    "focus_unit": 1
    }
   },
   {
    "chapter": 7,
    "tag": "post",
    "handler": "0x234bb",
-   "n_beats": 6,
+   "n_beats": 8,
    "ops": {
     "unknown": 2,
     "dialog": 2,
-    "act": 2
+    "act": 2,
+    "join": 1,
+    "sync_party": 1
    }
   },
   {
@@ -232,21 +251,25 @@
    "chapter": 8,
    "tag": "post",
    "handler": "0x235bc",
-   "n_beats": 3,
+   "n_beats": 5,
    "ops": {
     "pan": 1,
     "spawn": 1,
-    "act": 1
+    "act": 1,
+    "dialog": 1,
+    "sync_party": 1
    }
   },
   {
    "chapter": 9,
    "tag": "pre",
    "handler": "0x3332b",
-   "n_beats": 2,
+   "n_beats": 4,
    "ops": {
     "loadch_call": 1,
-    "pan": 1
+    "pan": 1,
+    "dialog": 1,
+    "focus_unit": 1
    }
   },
   {
@@ -255,12 +278,13 @@
    "handler": "0x235f9",
    "n_beats": 11,
    "ops": {
-    "unknown": 3,
+    "unknown": 2,
     "redraw": 1,
     "palfade": 1,
     "delay": 1,
     "dialog": 2,
     "act": 1,
+    "sync_party": 1,
     "join": 2
    }
   },
@@ -268,13 +292,15 @@
    "chapter": 10,
    "tag": "pre",
    "handler": "0x33367",
-   "n_beats": 6,
+   "n_beats": 10,
    "ops": {
     "loadch_call": 1,
-    "dialog": 2,
+    "dialog": 3,
     "pan": 1,
     "spawn": 1,
-    "act": 1
+    "act": 2,
+    "reset_pose": 1,
+    "focus_unit": 1
    }
   },
   {
@@ -284,7 +310,7 @@
    "n_beats": 3,
    "ops": {
     "dialog": 1,
-    "unknown": 1,
+    "sync_party": 1,
     "join": 1
    }
   },
@@ -292,13 +318,15 @@
    "chapter": 11,
    "tag": "pre",
    "handler": "0x333f5",
-   "n_beats": 7,
+   "n_beats": 9,
    "ops": {
     "loadch_call": 1,
     "pan": 2,
     "spawn": 1,
     "act": 2,
-    "reset_pose": 1
+    "reset_pose": 1,
+    "dialog": 1,
+    "focus_unit": 1
    }
   },
   {
@@ -307,9 +335,10 @@
    "handler": "0x237d5",
    "n_beats": 6,
    "ops": {
-    "unknown": 2,
+    "unknown": 1,
     "dialog": 2,
     "act": 1,
+    "sync_party": 1,
     "join": 1
    }
   },
@@ -317,29 +346,34 @@
    "chapter": 12,
    "tag": "pre",
    "handler": "0x3346b",
-   "n_beats": 1,
+   "n_beats": 3,
    "ops": {
-    "loadch_call": 1
+    "loadch_call": 1,
+    "dialog": 1,
+    "focus_unit": 1
    }
   },
   {
    "chapter": 12,
    "tag": "post",
    "handler": "0x2389f",
-   "n_beats": 2,
+   "n_beats": 3,
    "ops": {
     "dialog": 1,
-    "unknown": 1
+    "sync_party": 1,
+    "join": 1
    }
   },
   {
    "chapter": 13,
    "tag": "pre",
    "handler": "0x3347c",
-   "n_beats": 2,
+   "n_beats": 4,
    "ops": {
     "loadch_call": 1,
-    "pan": 1
+    "pan": 1,
+    "dialog": 1,
+    "focus_unit": 1
    }
   },
   {
@@ -349,9 +383,10 @@
    "n_beats": 6,
    "ops": {
     "spawn": 1,
-    "unknown": 2,
+    "unknown": 1,
     "dialog": 2,
-    "act": 1
+    "act": 1,
+    "sync_party": 1
    }
   },
   {
@@ -372,19 +407,24 @@
    "chapter": 14,
    "tag": "post",
    "handler": "0x239bd",
-   "n_beats": 3,
+   "n_beats": 4,
    "ops": {
     "roster_has": 1,
     "dialog": 1,
-    "unknown": 1
+    "sync_party": 1,
+    "join": 1
    }
   },
   {
    "chapter": 15,
    "tag": "pre",
    "handler": "0x335a0",
-   "n_beats": 0,
-   "ops": {}
+   "n_beats": 3,
+   "ops": {
+    "loadch_call": 1,
+    "dialog": 1,
+    "focus_unit": 1
+   }
   },
   {
    "chapter": 15,
@@ -392,8 +432,9 @@
    "handler": "0x23a0a",
    "n_beats": 8,
    "ops": {
-    "unknown": 2,
-    "unit_alive": 1,
+    "unknown": 1,
+    "unit_inactive": 1,
+    "sync_party": 1,
     "dialog": 3,
     "act": 1,
     "join": 1
@@ -403,11 +444,13 @@
    "chapter": 16,
    "tag": "pre",
    "handler": "0x335aa",
-   "n_beats": 3,
+   "n_beats": 5,
    "ops": {
     "loadch_call": 1,
     "roster_has": 1,
-    "spawn": 1
+    "spawn": 1,
+    "dialog": 1,
+    "focus_unit": 1
    }
   },
   {
@@ -416,11 +459,12 @@
    "handler": "0x23b5f",
    "n_beats": 15,
    "ops": {
-    "unknown": 2,
+    "sync_party": 1,
     "roster_has": 1,
     "dialog": 4,
     "pan": 2,
     "spawn": 2,
+    "unknown": 1,
     "act": 3,
     "join": 1
    }
@@ -429,12 +473,14 @@
    "chapter": 17,
    "tag": "pre",
    "handler": "0x335da",
-   "n_beats": 6,
+   "n_beats": 10,
    "ops": {
     "loadch_call": 1,
-    "dialog": 2,
+    "dialog": 3,
     "pan": 2,
-    "act": 1
+    "act": 2,
+    "reset_pose": 1,
+    "focus_unit": 1
    }
   },
   {
@@ -443,7 +489,8 @@
    "handler": "0x23cd5",
    "n_beats": 11,
    "ops": {
-    "unknown": 2,
+    "sync_party": 1,
+    "unknown": 1,
     "dialog": 4,
     "act": 3,
     "join": 2
@@ -453,8 +500,12 @@
    "chapter": 18,
    "tag": "pre",
    "handler": "0x33674",
-   "n_beats": 0,
-   "ops": {}
+   "n_beats": 3,
+   "ops": {
+    "loadch_call": 1,
+    "dialog": 1,
+    "focus_unit": 1
+   }
   },
   {
    "chapter": 18,
@@ -462,7 +513,7 @@
    "handler": "0x23e39",
    "n_beats": 2,
    "ops": {
-    "unknown": 1,
+    "sync_party": 1,
     "dialog": 1
    }
   },
@@ -470,8 +521,12 @@
    "chapter": 19,
    "tag": "pre",
    "handler": "0x33674",
-   "n_beats": 0,
-   "ops": {}
+   "n_beats": 3,
+   "ops": {
+    "loadch_call": 1,
+    "dialog": 1,
+    "focus_unit": 1
+   }
   },
   {
    "chapter": 19,
@@ -479,13 +534,14 @@
    "handler": "0x23e74",
    "n_beats": 19,
    "ops": {
-    "unknown": 3,
+    "unknown": 2,
     "redraw": 1,
     "palfade": 1,
     "delay": 1,
     "dialog": 6,
     "act": 4,
     "join": 2,
+    "sync_party": 1,
     "spawn": 1
    }
   },
@@ -493,8 +549,12 @@
    "chapter": 20,
    "tag": "pre",
    "handler": "0x33674",
-   "n_beats": 0,
-   "ops": {}
+   "n_beats": 3,
+   "ops": {
+    "loadch_call": 1,
+    "dialog": 1,
+    "focus_unit": 1
+   }
   },
   {
    "chapter": 20,
@@ -502,43 +562,50 @@
    "handler": "0x240fa",
    "n_beats": 16,
    "ops": {
-    "unknown": 7,
+    "unknown": 5,
     "dialog": 5,
+    "grant_item": 1,
     "act": 2,
-    "join": 2
+    "join": 2,
+    "sync_party": 1
    }
   },
   {
    "chapter": 21,
    "tag": "pre",
    "handler": "0x3367e",
-   "n_beats": 2,
+   "n_beats": 6,
    "ops": {
     "loadch_call": 1,
-    "pan": 1
+    "pan": 1,
+    "act": 1,
+    "reset_pose": 1,
+    "dialog": 1,
+    "focus_unit": 1
    }
   },
   {
    "chapter": 21,
    "tag": "post",
    "handler": "0x244b6",
-   "n_beats": 11,
+   "n_beats": 12,
    "ops": {
     "unknown": 3,
     "dialog": 3,
     "act": 2,
     "pan": 2,
-    "delay": 1
+    "delay": 1,
+    "sync_party": 1
    }
   },
   {
    "chapter": 22,
    "tag": "pre",
    "handler": "0x336a0",
-   "n_beats": 25,
+   "n_beats": 26,
    "ops": {
     "loadch_call": 1,
-    "activate_unit": 1,
+    "deactivate_unit": 1,
     "pan": 3,
     "unknown": 4,
     "redraw": 2,
@@ -546,7 +613,8 @@
     "dialog": 5,
     "act": 3,
     "spawn": 1,
-    "reset_pose": 1
+    "reset_pose": 1,
+    "focus_unit": 1
    }
   },
   {
@@ -555,11 +623,12 @@
    "handler": "0x24754",
    "n_beats": 42,
    "ops": {
-    "unknown": 12,
+    "unknown": 11,
     "dialog": 10,
     "join": 2,
     "act": 6,
-    "activate_unit": 2,
+    "deactivate_unit": 2,
+    "sync_party": 1,
     "delay": 4,
     "load_res": 3,
     "load_ch_bg": 1,
@@ -570,13 +639,14 @@
    "chapter": 23,
    "tag": "pre",
    "handler": "0x338c4",
-   "n_beats": 11,
+   "n_beats": 13,
    "ops": {
     "loadch_call": 1,
-    "dialog": 1,
+    "dialog": 2,
     "spawn": 1,
     "pan": 4,
-    "delay": 4
+    "delay": 4,
+    "focus_unit": 1
    }
   },
   {
@@ -587,21 +657,22 @@
    "ops": {
     "dialog": 2,
     "redraw": 2,
-    "unknown": 6
+    "unknown": 5,
+    "sync_party": 1
    }
   },
   {
    "chapter": 24,
    "tag": "pre",
    "handler": "0x3396a",
-   "n_beats": 17,
+   "n_beats": 19,
    "ops": {
     "loadch_call": 1,
     "load_res": 1,
     "pan": 1,
     "dialog": 2,
-    "play_sfx": 4,
-    "unknown": 4,
+    "play_sfx": 5,
+    "unknown": 5,
     "delay": 3,
     "focus_unit": 1
    }
@@ -610,25 +681,28 @@
    "chapter": 24,
    "tag": "post",
    "handler": "0x24df2",
-   "n_beats": 7,
+   "n_beats": 8,
    "ops": {
     "dialog": 2,
     "pan": 1,
     "spawn": 1,
     "act": 1,
-    "join": 1,
-    "unknown": 1
+    "join": 2,
+    "sync_party": 1
    }
   },
   {
    "chapter": 25,
    "tag": "pre",
    "handler": "0x33aae",
-   "n_beats": 3,
+   "n_beats": 6,
    "ops": {
     "loadch_call": 1,
     "pan": 1,
-    "act": 1
+    "act": 1,
+    "dialog": 1,
+    "reset_pose": 1,
+    "focus_unit": 1
    }
   },
   {
@@ -637,22 +711,25 @@
    "handler": "0x24e80",
    "n_beats": 11,
    "ops": {
-    "unknown": 2,
+    "unknown": 1,
     "dialog": 5,
-    "act": 4
+    "act": 4,
+    "sync_party": 1
    }
   },
   {
    "chapter": 26,
    "tag": "pre",
    "handler": "0x33af1",
-   "n_beats": 17,
+   "n_beats": 20,
    "ops": {
     "loadch_call": 1,
     "pan": 2,
     "act": 2,
-    "dialog": 5,
-    "unknown": 7
+    "dialog": 6,
+    "unknown": 7,
+    "reset_pose": 1,
+    "focus_unit": 1
    }
   },
   {
@@ -661,48 +738,55 @@
    "handler": "0x250cc",
    "n_beats": 36,
    "ops": {
-    "unknown": 16,
+    "unknown": 15,
     "dialog": 9,
     "act": 5,
     "pan": 1,
-    "delay": 5
+    "delay": 5,
+    "sync_party": 1
    }
   },
   {
    "chapter": 27,
    "tag": "pre",
    "handler": "0x33c9d",
-   "n_beats": 14,
+   "n_beats": 15,
    "ops": {
     "loadch_call": 1,
-    "activate_unit": 1,
+    "deactivate_unit": 1,
     "pan": 1,
     "unknown": 4,
     "redraw": 1,
     "delay": 1,
     "act": 3,
     "reset_pose": 1,
-    "dialog": 1
+    "dialog": 1,
+    "focus_unit": 1
    }
   },
   {
    "chapter": 27,
    "tag": "post",
    "handler": "0x25464",
-   "n_beats": 0,
-   "ops": {}
+   "n_beats": 2,
+   "ops": {
+    "dialog": 1,
+    "sync_party": 1
+   }
   },
   {
    "chapter": 28,
    "tag": "pre",
    "handler": "0x33dba",
-   "n_beats": 5,
+   "n_beats": 8,
    "ops": {
     "loadch_call": 1,
     "pan": 1,
     "act": 1,
-    "dialog": 1,
-    "unknown": 1
+    "dialog": 2,
+    "unknown": 1,
+    "reset_pose": 1,
+    "focus_unit": 1
    }
   },
   {
@@ -712,23 +796,26 @@
    "n_beats": 39,
    "ops": {
     "dialog": 6,
-    "unknown": 18,
+    "unknown": 17,
     "spawn": 1,
     "pan": 1,
-    "delay": 13
+    "delay": 13,
+    "sync_party": 1
    }
   },
   {
    "chapter": 29,
    "tag": "pre",
    "handler": "0x33e3c",
-   "n_beats": 16,
+   "n_beats": 18,
    "ops": {
     "loadch_call": 1,
     "act": 1,
     "pan": 3,
     "dialog": 3,
-    "unknown": 8
+    "unknown": 8,
+    "reset_pose": 1,
+    "focus_unit": 1
    }
   },
   {
@@ -748,8 +835,6 @@
   }
  ],
  "unknown_targets": {
-  "0x11506": 24,
-  "0x1c220": 2,
   "0x233c6": 15,
   "0x11d40": 2,
   "0x1f882": 4,
@@ -766,6 +851,7 @@
   "0x4dbfc": 1,
   "0x17aa9": 3,
   "0x24d22": 2,
+  "0x37416": 1,
   "0x25052": 6,
   "0x25089": 4,
   "0x1c2da": 1,

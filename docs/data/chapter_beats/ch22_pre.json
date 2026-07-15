@@ -8,7 +8,7 @@
    "args": []
   },
   {
-   "op": "activate_unit",
+   "op": "deactivate_unit",
    "addr": "0x336b5",
    "target": "0x32975",
    "args": [
@@ -217,6 +217,14 @@
    "addr": "0x338ba",
    "target": "0x134e4",
    "args": []
+  },
+  {
+   "op": "focus_unit",
+   "addr": "0x33596",
+   "target": "0x12d7b",
+   "args": [
+    0
+   ]
   }
  ]
 }

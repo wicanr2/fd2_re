@@ -24,7 +24,7 @@ sys.path.insert(0, __file__.rsplit('/', 1)[0])
 from callgraph_le import CG, fixup_map
 
 PRIM = {
-    0x3453e: 'unit_alive?(idx)', 0x205be: 'prologue(載章文本/預設碼)', 0x205da: 'prologue2',
+    0x3453e: 'unit_inactive?(idx)', 0x205be: 'prologue(載章文本/預設碼)', 0x205da: 'prologue2',
     0x15f84: '繪畫面', 0x1088d: '載章節文本', 0x111ba: '載資源', 0x25977: 'play_bgm/scene',
     0x25a96: 'play_sfx', 0x36cd7: '__STK', 0x2cad7: '結局判定?', 0x18890: '戰鬥行動',
 }
@@ -107,8 +107,8 @@ def main(av):
     if av[2] == 'json':
         import json
         SKIP = {0x36cd7, 0x205be, 0x205da, 0x1088d, 0x111ba, 0x375c0, 0x37416, 0x37244}
-        COND = {0x3453e: 'unit_flag', 0x33499: 'roster_has'}  # 條件查詢原語(非動作)
-        # 0x3453e(idx) = 查單位 [0x53a45]+idx*0x50+5 的 bit0(狀態旗標,初始=1;語意未定:存活/在場)
+        COND = {0x3453e: 'unit_inactive', 0x33499: 'roster_has'}  # 條件查詢原語(非動作)
+        # 0x3453e(idx) = ([0x53a45]+idx*0x50+5)&1；0=有效存活，1=死亡／隱藏／未啟用。
         hs = [(i, fx.get(0x51b19 + i * 4)) for i in range(30)]
         uniq = sorted(set(t for _, t in hs if t))
         cache = {}

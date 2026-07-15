@@ -14,7 +14,7 @@ type HandlerSource struct {
 }
 
 // HandlerCondition is the editable, evidence-level predicate attached to a
-// structured handler branch.  Start with only the fixed runtime-slot alive
+// structured handler branch. Start with only the fixed runtime-slot inactive
 // scan proven in ch01 post; future predicates must be added from disassembly,
 // not guessed into a generic expression language.
 type HandlerCondition struct {

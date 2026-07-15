@@ -108,6 +108,29 @@
     3,
     17
    ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x33133",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    3
+   ]
+  },
+  {
+   "op": "reset_pose",
+   "addr": "0x3313b",
+   "target": "0x134e4",
+   "args": []
+  },
+  {
+   "op": "focus_unit",
+   "addr": "0x33142",
+   "target": "0x12d7b",
+   "args": [
+    0
+   ]
   }
  ]
 }

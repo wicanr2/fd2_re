@@ -113,7 +113,7 @@ type BeatCondition struct {
 // 一比一對映原版 EXE handler 的呼叫序列(LOADCH/PAN/TXT/ACT/SPAWN/JOIN/BGM/FADE/DELAY)。
 // 每個 op 只用到自己相關的欄位,其餘留零值即可(同 Node 的稀疏欄位風格)。
 type Beat struct {
-	Op             string                 `json:"op"`               // loadch/pan/walk/dialog/act/spawn/spawn_intro/activate_unit/reset_pose/redraw/...
+	Op             string                 `json:"op"`               // loadch/pan/walk/dialog/act/spawn/spawn_intro/deactivate_unit/reset_pose/redraw/...
 	Source         string                 `json:"source,omitempty"` // original handler call-site; empty for authored-only beats
 	Condition      *BeatCondition         `json:"condition,omitempty"`
 	Then           []Beat                 `json:"then,omitempty"`

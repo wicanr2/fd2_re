@@ -96,12 +96,12 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 	for i, input := range script.Beats {
 		switch input.Op {
 		case "if":
-			if input.Condition == nil || input.Condition.Op != "any_unit_alive" {
-				issue(i, input, "if requires the proven any_unit_alive condition")
+			if input.Condition == nil || input.Condition.Op != "any_unit_inactive" {
+				issue(i, input, "if requires the proven any_unit_inactive condition")
 				continue
 			}
 			if len(input.Condition.UnitSlots) == 0 {
-				issue(i, input, "any_unit_alive requires at least one runtime unit slot")
+				issue(i, input, "any_unit_inactive requires at least one runtime unit slot")
 				continue
 			}
 			seen := make(map[int]bool, len(input.Condition.UnitSlots))
@@ -114,7 +114,7 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 				seen[slot] = true
 			}
 			if !validSlots {
-				issue(i, input, "any_unit_alive slots must be unique non-negative integers within the active runtime context")
+				issue(i, input, "any_unit_inactive slots must be unique non-negative integers within the active runtime context")
 				continue
 			}
 			if handlerBranchChangesCompileContext(input.Then) || handlerBranchChangesCompileContext(input.Else) {
@@ -299,18 +299,18 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			beat.Group = *input.Group
 			beat.Frames = 12
 			beats = append(beats, beat)
-		case "activate_unit":
-			// 0x32975(unit_idx) is exactly unit[idx].flags=1.  OnField is
-			// the remake's cutscene visibility/materialization projection.
+		case "deactivate_unit":
+			// 0x32975(unit_idx) writes unit[idx].flags=1. Constructor and
+			// death paths prove bit0 means inactive/dead, so clear OnField.
 			if input.UnitSlot == nil || *input.UnitSlot < 0 {
-				issue(i, input, "activate_unit lacks a non-negative runtime slot")
+				issue(i, input, "deactivate_unit lacks a non-negative runtime slot")
 				continue
 			}
 			if activeSlotCount <= *input.UnitSlot {
-				issue(i, input, fmt.Sprintf("activate_unit slot %d is outside active loadch slot_count=%d", *input.UnitSlot, activeSlotCount))
+				issue(i, input, fmt.Sprintf("deactivate_unit slot %d is outside active loadch slot_count=%d", *input.UnitSlot, activeSlotCount))
 				continue
 			}
-			beat := runtime(input, "activate_unit")
+			beat := runtime(input, "deactivate_unit")
 			beat.Slot = input.UnitSlot
 			beats = append(beats, beat)
 		case "reset_pose":
@@ -406,7 +406,7 @@ func handlerBranchChangesCompileContext(beats []HandlerBeat) bool {
 func handlerBranchNeedsActiveLoadCH(beats []HandlerBeat) bool {
 	for _, beat := range beats {
 		switch beat.Op {
-		case "act", "scroll_step", "spawn", "spawn_intro", "activate_unit", "focus_unit":
+		case "act", "scroll_step", "spawn", "spawn_intro", "deactivate_unit", "focus_unit":
 			return true
 		}
 		if beat.Op == "if" && (handlerBranchNeedsActiveLoadCH(beat.Then) || handlerBranchNeedsActiveLoadCH(beat.Else)) {

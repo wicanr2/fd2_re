@@ -2,29 +2,49 @@
  "handler": "0x22f37",
  "beats": [
   {
-   "op": "dialog",
-   "addr": "0x22f92",
-   "target": "0x15f84",
-   "args": [
-    "dword ptr [0x3a79]",
-    6
-   ]
-  },
-  {
-   "op": "unknown",
-   "addr": "0x22f9f",
-   "target": "0x1c220",
-   "args": [
-    198
-   ]
-  },
-  {
-   "op": "dialog",
-   "addr": "0x22fc8",
-   "target": "0x15f84",
-   "args": [
-    "dword ptr [0x3a79]",
-    7
+   "op": "if",
+   "addr": "0x22f71",
+   "target": "0x22fa9",
+   "condition": {
+    "op": "any_unit_inactive",
+    "unit_slots": [
+     5,
+     6,
+     7,
+     8,
+     9,
+     10
+    ]
+   },
+   "then": [
+    {
+     "op": "dialog",
+     "addr": "0x22fc8",
+     "target": "0x15f84",
+     "args": [
+      "dword ptr [0x3a79]",
+      7
+     ]
+    }
+   ],
+   "else": [
+    {
+     "op": "dialog",
+     "addr": "0x22f92",
+     "target": "0x15f84",
+     "args": [
+      "dword ptr [0x3a79]",
+      6
+     ]
+    },
+    {
+     "op": "grant_item",
+     "addr": "0x22f9f",
+     "target": "0x1c220",
+     "args": [
+      198
+     ]
+    }
    ]
   },
   {
@@ -153,7 +173,7 @@
    ]
   },
   {
-   "op": "unknown",
+   "op": "sync_party",
    "addr": "0x230e1",
    "target": "0x11506",
    "args": []

@@ -1,7 +1,7 @@
 // Package battle — 炎龍騎士團2 重製的戰棋核心資料模型(M1)。
 //
 // 設計:遊戲差異全在資料(units.json 由 tools/export_units.py 從原版產生),
-// 引擎只認穩定的 JSON。Unit 用布林 alive/acted 表達原版 byte[+5] bit0/bit7(doc 27)。
+// 引擎只認穩定的 JSON。Unit 用 HP/OnField/Acted 投影原版單位狀態。
 package battle
 
 import (
@@ -85,7 +85,8 @@ type Unit struct {
 	// 該次攻擊經驗值算出 0,見 growth.go AttackExp 註解)
 }
 
-// Alive 對映原版 byte[+5] bit0(HP>0,doc 27)。
+// Alive 是 remake 的 HP 判定。原版 byte[+5] bit0 剛好相反：
+// 0=有效／存活，1=死亡／隱藏／未啟用；對應到 remake 時需同時看 HP 與 OnField。
 func (u *Unit) Alive() bool { return u.HP > 0 }
 
 // EffectiveAP/EffectiveDP 套用魔刃術/魔鎧術暫時加成後的攻防值。地形% 修正另外在

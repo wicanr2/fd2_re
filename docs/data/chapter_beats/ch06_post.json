@@ -2,16 +2,13 @@
  "handler": "0x232e8",
  "beats": [
   {
-   "op": "unknown",
+   "op": "sync_party",
    "addr": "0x23319",
    "target": "0x11506",
-   "args": [
-    "esi",
-    "edi"
-   ]
+   "args": []
   },
   {
-   "op": "unit_alive",
+   "op": "unit_inactive",
    "addr": "0x2332e",
    "target": "0x3453e",
    "args": [

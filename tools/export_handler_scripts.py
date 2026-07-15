@@ -97,8 +97,8 @@ def normalize(beats):
             item = {"op": "palette_fade", "source": src}
         elif op == "delay":
             item = {"op": "delay", "ms": args[0], "source": src}
-        elif op == "activate_unit":
-            item = {"op": "activate_unit", "source": src}
+        elif op == "deactivate_unit":
+            item = {"op": "deactivate_unit", "source": src}
             if isinstance(args[0], int):
                 item["unit_slot"] = args[0]
             else:

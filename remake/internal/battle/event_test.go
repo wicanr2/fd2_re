@@ -146,3 +146,33 @@ func TestChapter3RuntimeAppendOrderMatchesPreHandlerSlots(t *testing.T) {
 		}
 	}
 }
+
+func TestChapter3Turn3ReinforcementRequiresLivingTinoInRuntimeSlot6(t *testing.T) {
+	load := func(t *testing.T) (*State, *Scenario) {
+		t.Helper()
+		st, err := Load("../../assets/maps/map2/map2_units.json")
+		if err != nil {
+			t.Fatal(err)
+		}
+		sc, err := LoadScenario("../../assets/scenarios/ch03.json")
+		if err != nil {
+			t.Fatal(err)
+		}
+		sc.Setup(st)
+		st.Turn = 3
+		return st, sc
+	}
+
+	dead, deadScenario := load(t)
+	dead.Units[6].HP = 0
+	deadScenario.Fire(dead, "on_turn_end", "")
+	if len(dead.Units) != 15 {
+		t.Fatalf("dead Tino spawned group2: runtime units=%d, want 15", len(dead.Units))
+	}
+
+	alive, aliveScenario := load(t)
+	aliveScenario.Fire(alive, "on_turn_end", "")
+	if len(alive.Units) != 27 {
+		t.Fatalf("living Tino runtime units=%d, want 15+12 group2", len(alive.Units))
+	}
+}

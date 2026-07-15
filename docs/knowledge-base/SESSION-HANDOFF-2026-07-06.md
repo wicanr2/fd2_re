@@ -12,7 +12,7 @@
 >（Y8→18、pose0）。不要以舊 map0/window 推論覆蓋此 provenance。
 
 > **2026-07-15 第二次 Codex 更新**：全 60 handler 重新抽取後 unknown 146→133。完整 callee body
-> 已把 0x32975/0x32999/0x134e4/0x12d7b 定性成 activate_unit/spawn_intro/reset_pose/focus_unit；
+> 已把 0x32975/0x32999/0x134e4/0x12d7b 定性成 deactivate_unit/spawn_intro/reset_pose/focus_unit；
 > ch00 的 13 個缺漏 FDTXT calls 與 5 個 PAN 已接上；ACT99/100、兩段 scroll_step 與 focus_unit
 > 也已 lower 並有 regression。`ch00_pre` 現可完整編譯為 editable beats，**0 unresolved issues**。
 
@@ -31,11 +31,11 @@
 > **2026-07-15 第五次 Codex 更新（戰後 persistent roster）**：`0x11506` 的 **24 個戰後
 > caller** 已由完整 body 定案，不是查詢函式。它以角色 ID 配對 runtime battle array 與 persistent
 > roster，將完整 `0x50`-byte unit **由 runtime 複製回 persistent**；隨即清 persistent `+0x22..+0x27`
-> 六 bytes 與 transient flags，死亡者 HP 回滿、全員 MP 回滿，存活者保留戰後 HP，再呼叫 `0x1145a`
+> 六 bytes 與 transient flags，存活 active 者 HP 回滿、全員 MP 回滿，死亡／inactive 者保留零 HP，再呼叫 `0x1145a`
 > 依裝備重算衍生值。ch00 post 已 editable lower 成 `dialog → sync_party → set_chapter(1)`，由
 > `story_ch02` 的 `bindings/ch00_post.json` 接入；`partyRoster` 會在下一戰 materialize 時覆蓋持久能力
 > 值，且已納入 remake JSON save/load。全量 handler `unknown` 因此由 **133 降至 109**。完整位元組流程
-> 與欄位證據（包含 ID 0 存活時原版會跳過 copy 的反直覺特例）見 `doc50 §3.2`。
+> 與欄位證據（包含 ID 0 inactive/dead 時原版會跳過 copy 的特例）見 `doc50 §3.2`。
 
 > **2026-07-15 第六次 Codex 更新（戰後獎勵物品）**：`0x1c220(item_id)` 已由完整 body 與
 > `0x1bb8c` 定案為「按 runtime slot 找第一個我方且 8-slot inventory 有空位的角色，放入 item」。
@@ -44,8 +44,8 @@
 > 此更新當時另發現 slots 5..10 存活分支與 FDTXT_002 缺 8 句等 11 issues，不能把 #6/#7 兩條
 > 路徑直線串播；分支已由下一筆更新解決，其餘 binding 問題仍待處理。
 
-> **2026-07-16 第七次 Codex 更新（handler control-flow）**：ch01 post 的存活 diamond 已從原版
-> 指令形狀復原成 editable `if any_unit_alive(slots 5..10)`。任一存活只播 #7；全部倒下才播 #6
+> **2026-07-16 第七次 Codex 更新（handler control-flow，已校正 bit 方向）**：ch01 post 的 diamond 已從原版
+> 指令形狀復原成 editable `if any_unit_inactive(slots 5..10)`。任一村民死亡只播 #7；全員存活才播 #6
 > 並送 `0xC6`，之後共同 continuation 只執行一次。compiler 會先 resolve 兩臂、runtime roster 不完整
 > 時 fail closed；dialogue binding/unknown diagnostics 亦會遞迴 branch。詳見 `doc50 §3.4`。
 
@@ -80,15 +80,24 @@
 > 改為 party-first runtime append，group255 不再汙染 slots。更重要的是回原始 FDTXT_003 找回舊
 > `ch03.json` 真正漏掉的六句 turn3 葛雷／卡蘿硬編碼對話，全文由33補成39，索引重生後達39/39
 > count-aligned（generated contexts 81→83、skipped 89→87）。campaign `story_ch03` 已由章標 stub
-> 改接 authored ch02_pre。下一 blocker 是 battle turn3 `0x344c2` 對 slot6 byte+5 bit0 的分支方向；
-> 現有文件語意互相矛盾，未實測前不可猜 alive/dead，詳見 `doc50 §3.7`。
+> 改接 authored ch02_pre。後續已以 constructor/death/revive 完整 body 解開 slot6 bit0 方向，
+> 下一筆更新與 `doc50 §3.7` 為現行定案。
+
+> **2026-07-16 第十二次 Codex 更新（bit0 全域翻案 + ch03 條件）**：完整反組譯與 live
+> dump 交叉證實 `unit+5 bit0=0` 才是 active/alive，`1` 是死亡／隱藏／inactive；bit7 才是
+> acted。有效 constructor `0x10eed` 寫0，HP0 路徑 `0x1dc61/0x1dd4c` 寫1，復活 `0x30f9c`
+> 清0。exporter/runtime 因此改名 `unit_inactive`、`any_unit_inactive`、`deactivate_unit`，60 支 handler
+> 已由原 EXE 重生。ch01 post 現為六村民全存活才 #6+item198；ch03 turn3 新增
+> `unit_slot_active:6`，鐵諾死亡時不再誤生 group2。`0x11506` 也同步校正為存活者 HP 回滿、
+> 死亡者保留零 HP。`ch02_post` 真 CFG 已釘死為 `sync → inactive?#6:(layout+#7+JOIN2) → chapter3`；
+> 下一優先是 single-slot diamond、`0x233c6 layout_units` 與 15/27-slot runtime frontier。
 
 ## 0. 目前焦點(接手就做這裡)
 `ch00_pre`、`ch00_post`、`ch01_pre`、`ch01_post` 已成為前四個 campaign 實際 consumer；ch01 post 的 branch、
 reward、61-utterance FDTXT_002、dynamic speaker slots、PAN、SPAWN4、ACT14..16、JOIN/sync/chapter tail
 與第二、第三章戰前 handler 均已完整 lower 且 compiler **0 issues**。下一個具體焦點是釘死
-ch03 battle turn3 slot6 bit0 條件，補上 SPAWN2/PAN/dialog #4，接著利用新完成的 FDTXT_003 mapping
-閉合 `ch02_post`。下方「草地深層未解」是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，
+ch03 battle turn3 的 slot6 active 條件已接上；尚待補完該 event 的 PAN/delay/dialog #4 演出，接著以
+single-slot diamond + `layout_units` 閉合 `ch02_post`。下方「草地深層未解」是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，
 不得再當目前 blocker。
 
 ## 1. 這段 session 做完的事

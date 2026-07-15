@@ -37,7 +37,7 @@ PRIM = {
     0x13185: ('scroll_step', 1), # (unit_idx)往上逐格走並視需要跟焦；完整 body 0x13185..0x13314
     0x1f525: ('palfade', 1),   # 整幕 palette 淡入(本輪未捕捉到章節 handler 內的呼叫實例,參數個數未核對,標記待驗證)
     0x375b2: ('delay', 1),     # (ms) — doc47 "0x375b2(200ms)" ✓
-    0x32975: ('activate_unit', 1), # (unit_idx)直接設 unit[+5]=1；不是 camera reveal
+    0x32975: ('deactivate_unit', 1), # (unit_idx)直接設 unit[+5]=1；原版是死亡／隱藏／未啟用
     0x32999: ('spawn_intro', 1),   # (group)內部 call 0x10b4e 後做 12-frame reveal/present
     0x134e4: ('reset_pose', 0),    # 所有 materialized units pose=down，然後 delay(20ms)
     0x12d7b: ('focus_unit', 1),    # (unit_idx)讀 unit X/Y，呼叫 0x12cea 捲到該格
@@ -45,7 +45,7 @@ PRIM = {
     0x1c220: ('grant_item', 1),    # (item_id) 掃 camp=2 runtime units，放入首個未滿的 8-slot inventory
     0x205da: ('loadch_call', 0),  # 章節載入呼叫本身 0 參數;章節號由前面 mov [0x3c03] 設定,見 loadch_var
     # 本輪(2026-07-04)unknown×既有原語表交叉補上(event_handler_dump.py PRIM/VAR + doc25/26):
-    0x3453e: ('unit_alive', 1),   # (idx) 查 [0x53a45]+idx*0x50+5 bit0(doc25/26 已知)
+    0x3453e: ('unit_inactive', 1), # (idx) 查 [0x53a45]+idx*0x50+5 bit0；1=死亡／隱藏，0=有效存活
     0x33499: ('roster_has', 1),   # (char_id) 查我方名冊 [0x53bf7](doc26 已知)
     0x111ba: ('load_res', 0),     # 載資源(純 fopen/fseek/fread,doc47 §5 已知,參數個數未逐一核對)
     0x25a96: ('play_sfx', 1),     # 播音效(event_handler_dump.py 已知,參數個數未逐一核對)
@@ -210,7 +210,7 @@ def _immediate(op):
 
 
 def structure_control_flow(insns, beats):
-    """Recover proven fixed-slot ``any alive`` diamonds into structured IR.
+    """Recover proven fixed-slot ``any inactive`` diamonds into structured IR.
 
     Watcom emits the ch01 post-battle test as a byte accumulator initialized
     to zero, a counted unit-slot loop testing ``unit+5 bit0``, and finally a
@@ -235,7 +235,7 @@ def structure_control_flow(insns, beats):
         counter = None
         start_slot = None
         end_slot = None
-        saw_alive_test = False
+        saw_inactive_test = False
         saw_accumulator_set = False
         for j in range(max(0, i - 48), i - 1):
             ins = insns[j]
@@ -253,9 +253,9 @@ def structure_control_flow(insns, beats):
                 end_slot = _immediate(parts[1])
             elif (start_idx is not None and ins.mnemonic == 'test' and len(parts) == 2 and
                   parts[0].startswith('byte ptr [') and '+ 5]' in parts[0] and parts[1] == '1'):
-                saw_alive_test = True
+                saw_inactive_test = True
         if (start_idx is None or counter is None or start_slot is None or end_slot is None or
-                start_slot < 0 or end_slot <= start_slot or not saw_alive_test or
+                start_slot < 0 or end_slot <= start_slot or not saw_inactive_test or
                 not saw_accumulator_set):
             continue
         if not any(ins.mnemonic == 'inc' and ins.op_str == counter
@@ -288,7 +288,7 @@ def structure_control_flow(insns, beats):
             'addr': hex(branch.address),
             'target': hex(then_addr),
             'condition': {
-                'op': 'any_unit_alive',
+                'op': 'any_unit_inactive',
                 'unit_slots': list(range(start_slot, end_slot)),
             },
             'then': matched,

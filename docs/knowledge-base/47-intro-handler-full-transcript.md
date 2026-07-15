@@ -33,7 +33,7 @@
 | `0x13185(unitIdx)` | **[靜態 RE 定案 2026-07-04]跟隨單位的鏡頭上捲步**(非 palette 淡變!):讀 unit`[+1]`=Y、設 unit`[+3]`=2(pose)、依 `unitY−camY` 改寫 camY`[0x53aad]`/`[0x53abd]` 並捲動 framebuffer(`edi+=−0x720`=上捲)+`0x11eee` 重繪。序章 `push 2`=跟隨 slot2 索爾;×15/×13=捲 15/13 步(cam row34→王座區,dosbox 實測 dialog#0 cam row20 吻合) | 0x131b2 讀[+1]、0x131ba 寫[+3]=2、0x131e2 讀寫[0x53aad]、0x13241 `add edi,−0x720` | doc23/47 舊標「淡變步」**錯**,實為鏡頭跟隨捲動 |
 | `0x1f525` | palette fade-in | doc23 已知 | — |
 | `0x375b2(ms)` | 延遲(序章用 0xc8=200ms) | — | — |
-| `0x32975(slot)` | 直接設 `unit[slot]+5=1`（activate_unit） | 0x32975..0x32998 完整 body | — |
+| `0x32975(slot)` | 直接設 `unit[slot]+5=1`（**deactivate_unit**：死亡/隱藏/inactive） | 0x32975..0x32998 完整 body；有效單位 constructor 0x10eed 設0 | — |
 | `0x32999(group)` | 內呼叫 0x10b4e spawn，再做 12-step reveal/present（spawn_intro） | 0x32999..0x32ced 完整 body | — |
 | `[0x53afb]` | 演出期間旗標(部分 0x1366a 呼叫前置 1 後清 0);疑=嘴型/不可跳過,**待證** | — | — |
 
@@ -65,7 +65,7 @@
 | 4 | `0x1366a(0x5a)` → `txt#0` → `0x1366a(0x5b)` → `txt#1` → `0x1366a(0x5c)` → `txt#2` | 演出/對白交錯 |
 | 5 | `0x10b4e(3); 0x135dd(4,0x29)` | spawn 群組 3 + 鏡頭微移 (4,41) |
 | 6 | `txt#3; 0x1366a(0x5d); txt#4` | — |
-| 7 | `0x32975(2); 0x10b4e(5)` | 啟用 runtime slot2 + spawn 群組 5 |
+| 7 | `0x32975(2); 0x10b4e(5)` | **停用/隱藏 runtime slot2** + spawn 群組 5 |
 | 8 | `txt#5;0x1366a(0x5e);txt#6;0x1366a(0x5f);txt#7;0x1366a(0x60);txt#8;0x1366a(0x61)` | 演出/對白交錯(蓋亞阻擋/悠妮甦醒段落應在演出 #0x5e~0x61 內) |
 | 9 | `txt#9; bgm 停; [afb]=1; 0x1366a(0x62)` | 幕終演出 |
 

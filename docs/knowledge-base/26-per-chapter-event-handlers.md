@@ -13,7 +13,7 @@
 
 | 原語(EXE) | 語意 | DSL 對應 |
 |---|---|---|
-| `0x3453e(idx)` | **unit_flag?(idx)**:第 idx 單位(`[0x53a45] + idx*0x50 + 5`)的 `byte[+5] bit0`(狀態旗標,初始化=1) | `unit_state(idx)` [驗];**bit0=存活(HP>0)**[使用者確認] |
+| `0x3453e(idx)` | **unit_inactive(idx)**:取第 idx 單位(`[0x53a45] + idx*0x50 + 5`)的 `byte[+5] bit0` | `unit_inactive(idx)` [驗]；**1=死亡/隱藏/inactive，0=active/alive** |
 | 迴圈 `for idx in a..b: 0x3453e` | 查一段單位群的狀態旗標 | `units_in_range(a,b)` [驗] |
 | `0x33499(id)` | **roster_has(id)**:線性搜尋我方名冊 `[0x53bf7]`(32 槽×0x50B,計數 `[0x53bfb]`),找 `byte[+8]==id` | `roster_has(id)` [驗];byte[+8]=角色 ID [推] |
 | `cmp [0x53bef], N` | 比較回合/進度計數 | `turn >= N` [推] |
@@ -23,18 +23,23 @@
 | default 尾段 `0x2067e` | 遍歷單位陣列做標準勝敗(殲滅即勝) | `default_win: annihilate` [驗] |
 
 **`0x3453e` 全貌(已驗證)**:`idx*4 + idx = idx*5`,再 `<<4` = `idx*0x50`(單位結構大小)+ 基底 + 5 → 取 bit0。
-**bit0 語意(已修正,撤回前說的「陣亡」)**:`byte[+5]` 是多 bit 狀態旗標——單位初始化 `memset 0` 後立刻 `mov byte[+5],1`(bit0 初始=1),戰鬥碼另 `test byte[+5],0x80`(bit7,推定「已行動」,配 doc 10 灰階 AA=0x80)。**bit0 = 存活(HP>0)**[使用者確認]:初始化=1(滿血),HP 歸 0 時翻 0(陣亡);bit7(0x80)= 已行動(下完任一指令後置位,配 doc 10 灰階)。故 `unit_state(idx)` = 「該單位是否存活」。章 17 = `unit_state(52)==1(存活)→ 設碼 2`。**「保護某單位存活」機制經青衫攻略證實**(每關失敗條件=護衛目標死亡)→ 全 30 關目標表見 doc 28。
+**bit0 語意(2026-07-16 反組譯定案)**:`byte[+5]` 是多 bit 狀態旗標。真正建立有效/可見單位的 constructor 在 `0x10eed` 明確寫 `byte[+5]=0`；HP 歸 0 的兩條 death 路徑 `0x1dc61/0x1dd4c` 明確寫 1；另有 `0x32975` 寫1來隱藏/停用劇情單位。因此 **bit0=1 表示死亡/隱藏/inactive，bit0=0 表示 active/alive**，`0x3453e` 應稱 `unit_inactive(idx)`；bit7(0x80)=已行動。先前「使用者確認 bit0=存活、初始化=1」是把另一寫入點誤認為有效單位 constructor，現已由完整反組譯撤回。護衛目標等玩法仍成立，但 handler 的 `test/jcc` 必須按 inactive 布林值逐條解讀，不能沿用舊的 alive 命名。
+
+這個定案亦直接解開兩個劇情/回合 handler：
+
+- **ch01 post `0x22f42`** 掃 slots 5..10：任一 slot bit0=1(inactive)走對白 #7、無獎勵；全部 bit0=0(active)才走對白 #6 並給 item 198。這是「村民全存活才有獎勵」，不是舊命名造成的「全死才獎勵」。
+- **ch03 turn 3 `0x344c2`** 查 slot6：`unit_inactive(6)!=0` 直接跳過；slot6 active(bit0=0)才生成 group2、移鏡並播對白 #4。對白中提諾表示自己仍活著，與控制流完全吻合。
 
 > **關鍵結論:戰場事件 handler 不含任何「動作函式」**(`battle_events.json` 全部 `action_fns` 為空)——
-> handler 只做「**條件查詢(unit_state / roster_has / 回合)→ 設碼(1/2)+ 可選繪圖**」。
+> handler 只做「**條件查詢(unit_inactive / roster_has / 回合)→ 設碼(1/2)+ 可選繪圖**」。
 > 增援、對話、劇情演出都在「碼 1 → 戰役迴圈 → 世界地圖/中場 → 章節跳表(0x51d71/0x51de9)劇情」後續發生,**不在戰場 handler 內**。這讓重製大幅簡化:handler 邏輯純粹是判定。
 
 > 單位索引是**戰場單位陣列 `[0x53a45]` 的全域 index**(我方 + 敵方 + NPC,每單位 0x50B);對應到角色名需配合各章 roster(`extracted/maps/maps_metadata.json` 的 `units`,含 camp/portrait/race/cls/lv)。我方/敵方在陣列中的精確分界(我方槽數 M)未隔離驗證 → 重製時自行定義單位陣列,trigger 用「具名單位 / 陣營」表達即可,不必對齊原版 idx。
 
 **兩個單位陣列(別混淆)** [驗]:
-- **`[0x53a45]` = 戰場全單位陣列**(malloc `0x1e00` = **96 槽** × 0x50B,我方上場+敵方+NPC)→ `unit_flag?(idx)`(0x3453e)查它。
+- **`[0x53a45]` = 戰場全單位陣列**(malloc `0x1e00` = **96 槽** × 0x50B,我方上場+敵方+NPC)→ `unit_inactive(idx)`(0x3453e)查它。
 - **`[0x53bf7]` = 我方隊伍/角色名冊**(場景載入時 memcpy `0xa00` = **32 槽** × 0x50B,計數 `[0x53bfb]`)→ `roster_has(id)`(0x33499)查它,找 `byte[+8]==id`。
-- 即:`unit_flag` 問「**場上**某單位的狀態旗標」;`roster_has` 問「**我方隊伍**是否擁有某角色」(招募/角色分支條件)。章 16 即用 `roster_has(0x12=角色18)`。
+- 即:`unit_inactive` 問「**場上**某單位是否死亡/隱藏/inactive」;`roster_has` 問「**我方隊伍**是否擁有某角色」(招募/角色分支條件)。章 16 即用 `roster_has(0x12=角色18)`。
 
 ### 回合計數:`[0x53bef]` 是回合數(非 `[0x53ec8]`)[驗]
 
@@ -56,7 +61,7 @@
 | +0 | roster[0](種族/陣營相關) | [驗] |
 | +1 | roster[2] | [驗] |
 | +2 | 由 [+7] 複製 | [驗] |
-| +5 | **狀態旗標 byte**:**bit0=存活(HP>0)**、**bit7(0x80)=已行動** | [驗+使用者確認] |
+| +5 | **狀態旗標 byte**:**bit0=死亡/隱藏/inactive**(1；active/alive=0)、**bit7(0x80)=已行動** | [驗] |
 | +6 | 初始=2(推定面向/陣營預設) | [驗] |
 | +8 | **角色 ID**(roster 名冊 `roster_has` 也比 +8) | [驗 欄位 / 推 語意] |
 | +0x31 | 初始=0xFF | [驗] |
@@ -78,32 +83,31 @@
 | 14 | `0x20822` | 單位 64 | 1 | — | |
 | 15 | `0x2084a` | 單位 65 | 1 | — | |
 | 16 | `0x20872` | `roster_has(18)` + 單位 52 | 1 | ✓ | 我方有角色18 + #52 相關 |
-| 17 | `0x208cf` | 單位 0/16/17 存活→**1**;單位 52 存活→**2** | 1 / 2 | — | 條件=指定單位**存活** |
+| 17 | `0x208cf` | 單位 0/16/17 任一 inactive→**1**;單位 52 inactive→**2** | 1 / 2 | — | 條件=指定單位 inactive |
 | 18 | `0x20926` | 回合 ≥6 + 單位 64 | 1 | — | 回合觸發 |
 | 19 | `0x20957` | 單位群(<46)→ 1;單位 52 → **2** | 1 / 2 | ✓ | |
 | 20 | `0x20a51` | 單位 16、17 | 1 | — | |
 | 21,26,27 | `0x20a87` | 單位(迴圈群) | 1 | — | 三章共用 |
-| 22 | `0x20aaf` | 單位 16/17 存活→1;單位 18 存活→**2** | 1 / 2 | — | 條件=指定單位**存活** |
+| 22 | `0x20aaf` | 單位 16/17 inactive→1;單位 18 inactive→**2** | 1 / 2 | — | 條件=指定單位 inactive |
 | 24 | `0x20b14` | 單位 16 | 1 | — | |
 | 25 | `0x20b3c` | 單位(兩個迴圈群) | 1 | — | |
 | 28 | `0x20b72` | 單位 → **2**;單位 40 → 1 | 1 / 2 | ✓ | 結局關 |
 | 29 | `0x20bf5` | 單位 20 → **2**;單位 → 1 | 1 / 2 | ✓ | 結局關 |
 
 **讀法**:特殊章的共通結構 =「查特定單位(或單位群)狀態 → 若成立則觸發劇情事件(碼 1,戰役迴圈帶你去世界地圖/中場播劇情)或判定特殊勝利(碼 2)」;未觸發則回落到標準殲滅判定。
-有 `碼 2` 的章(17/19/22/28/29)是**有特殊勝利/結束條件的關**:條件為「指定單位**存活**(bit0=1)」時設碼 2,非標準殲滅。確切玩法語意(護衛目標 / 主將存活 / 達成條件)逐章配劇情理解,重製按 campaign 定義。
+有 `碼 2` 的章(17/19/22/28/29)是**有特殊勝利/結束條件的關**：條件為「指定單位 **inactive(bit0=1)**」時設碼 2，而非標準殲滅。確切玩法語意(護衛目標死亡 / 主將被擊敗 / 其他章節條件)仍須逐章配劇情理解，重製按 campaign 定義。
 
 ## 3. 範例:章 17 handler `0x208cf` 反組譯 [驗]
 
 ```
-0x208d9 push 0;    call 0x3453e; test; jne 0x20903   ; 單位0 存活→設碼1
-0x208e7 push 0x10; call 0x3453e; test; jne 0x20903   ; 單位16 存活→設碼1
-0x208f5 push 0x11; call 0x3453e; test; je  0x2090d   ; 單位17 陣亡→跳過
-0x20903 mov [0x53ecc],1                              ;★ 0/16/17 任一存活 → 碼1(中途事件)
-0x2090d push 0x34; call 0x3453e; test; je 0x20925    ; 單位52 陣亡→跳過
-0x2091b mov [0x53ecc],2                              ;★ 單位52 存活 → 碼2
+0x208d9 push 0;    call 0x3453e; test; jne 0x20903   ; 單位0 inactive→設碼1
+0x208e7 push 0x10; call 0x3453e; test; jne 0x20903   ; 單位16 inactive→設碼1
+0x208f5 push 0x11; call 0x3453e; test; je  0x2090d   ; 單位17 active→跳過
+0x20903 mov [0x53ecc],1                              ;★ 0/16/17 任一 inactive → 碼1(中途事件)
+0x2090d push 0x34; call 0x3453e; test; je 0x20925    ; 單位52 active→跳過
+0x2091b mov [0x53ecc],2                              ;★ 單位52 inactive → 碼2
 ```
-即章 17 規則(bit0=存活):**「單位 0/16/17 任一存活 → 播中途事件;單位 52 存活 → 設碼 2」**。
-注意是「**存活**觸發」非「擊敗觸發」(早先誤判 bit0=陣亡已撤回)。#52 確切角色/陣營未深究(重製不需,見 doc 27 #9-10)。
+即章 17 規則(bit0=inactive):**「單位 0/16/17 任一 inactive → 播中途事件；單位 52 inactive → 設碼 2」**。這一版才與 death 路徑寫 bit0=1 一致；先前「存活觸發」的判讀已撤回。#52 確切角色/陣營未深究(重製不需,見 doc 27 #9-10)。
 
 ## 4. 提議的 remake 腳本 schema(取代硬編碼)
 
@@ -114,12 +118,12 @@
 {
   "default_win": "annihilate",          // 無事件觸發 → 標準殲滅判定(對應 default handler)
   "events": [
-    { "when": { "unit_state": [16, 17] }, "do": "story_event" },  // [0x53ecc]=1
-    { "when": { "unit_state": [52] },      "do": "victory" }       // [0x53ecc]=2(#52 狀態旗標成立)
+    { "when": { "unit_inactive": [16, 17] }, "do": "story_event" }, // [0x53ecc]=1
+    { "when": { "unit_inactive": [52] },      "do": "victory" }      // [0x53ecc]=2
   ]
 }
 ```
-- `when.unit_state:[…]` / `units_in_range:[a,b]` / `turn>=N` ← 對應原語
+- `when.unit_inactive:[…]` / `units_in_range:[a,b]` / `turn>=N` ← 對應原語
 - `do: story_event | victory | show_scene` ← 對應 `[0x53ecc]` 與 `0x15f84`
 - 11 個 default 章 → 直接 `{"default_win":"annihilate","events":[]}`,零工作量
 - 18 個特殊章 → 用上表填 `events`,**逐關資料化,無一行 hardcode**
@@ -136,12 +140,12 @@
 
 ## 6. 受阻 / 待驗(誠實標註)
 
-- **[修正→定案]** ~~byte[+5] bit0 = 陣亡~~ 撤回(初始化=1 不可能陣亡)→ 使用者確認 **bit0=存活(HP>0)、bit7=已行動**;事件條件 `unit_state` = 「指定單位存活」(見 §1)。
+- **[修正→定案]** byte[+5] **bit0=1 是死亡/隱藏/inactive，0 是 active/alive**；`0x3453e=unit_inactive`，`0x32975=deactivate_unit`。證據是 constructor `0x10eed` 寫0，HP=0 的 `0x1dc61/0x1dd4c` 與停用函式 `0x32975` 寫1。舊說「使用者確認 bit0=存活」已由反組譯推翻並撤回。
 - **[已驗]** 章16 `0x33499` 不是動作,是條件查詢(roster_has);全 30 章 `action_fns` 皆空 → **handler 無動作函式**。
 - **[已驗]** 回合數 = **`[0x53bef]`**(戰場開始 `mov 1`、`inc`、handler `cmp N`),**非 `[0x53ec8]`**(後者是 `add reg` 累積計數+clamp 99,語意待定)。詳見 §7。
 - **[阻]** 迴圈查的單位群(章 1/12/19/21/25)精確 idx 範圍見逐指令 dump(章1=5–10、章12=<12、章19=<46);`battle_events.json` 的 `trigger_units_flag` 只收立即數 push,迴圈索引另記於 `extra_conditions`。
 - **[阻]** 單位全域 idx → 角色/敵人名 對應 + 我方槽數 M;重製可略過(自定義單位陣列)。
-- **[已定案,使用者確認]** byte[+5] bit0=存活(HP>0)、bit7=已行動;回合 [0x53bef] inc=我方全動+敵方AI全動完。
+- **[已定案]** byte[+5] bit0=inactive、bit7=已行動；回合 [0x53bef] inc=我方全動+敵方AI全動完。
 - **[低優先]** `[0x53ec8]` 累積計數(靜態:累加單位 +0x21,clamp99)非重製核心,可選。
 
 > 相關:doc 25(事件系統架構)· doc 24(戰役迴圈 [0x53ecc] 狀態機)· doc 19(腳本系統)· doc 09(劇情)· doc 03(單位結構/roster)。工具:`tools/event_handler_dump.py`;資料:`docs/data/battle_events.json`。

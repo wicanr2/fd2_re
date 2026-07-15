@@ -56,8 +56,9 @@ type Event struct {
 
 // When 條件(可擴充:加欄位 + Match 加判斷)。
 type When struct {
-	Turn     int    `json:"turn,omitempty"`      // turn == N(0=不限)
-	UnitDead string `json:"unit_dead,omitempty"` // 某角色陣亡
+	Turn           int    `json:"turn,omitempty"`             // turn == N(0=不限)
+	UnitDead       string `json:"unit_dead,omitempty"`        // 某角色陣亡
+	UnitSlotActive *int   `json:"unit_slot_active,omitempty"` // 原版 runtime slot 已登場且存活
 }
 
 // Action 動作(可擴充:加 type + execAction 加 case)。
@@ -165,6 +166,13 @@ func (w *When) match(st *State, ctxUnit string) bool {
 	}
 	if w.UnitDead != "" && ctxUnit != w.UnitDead {
 		return false
+	}
+	if w.UnitSlotActive != nil {
+		slot := *w.UnitSlotActive
+		if slot < 0 || slot >= len(st.Units) || st.Units[slot] == nil ||
+			!st.Units[slot].OnField || !st.Units[slot].Alive() {
+			return false
+		}
 	}
 	return true
 }

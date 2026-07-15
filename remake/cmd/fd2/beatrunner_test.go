@@ -565,8 +565,8 @@ func TestBeatSyncPartyPersistsProgressAndClearsBattleState(t *testing.T) {
 	g := newBeatTestGame(t, []campaign.Beat{{Op: "sync_party"}, {Op: "set_chapter", Chapter: &chapter}})
 	g.partyMembers = map[int]bool{0: true, 9: true}
 	g.st = &battle.State{Units: []*battle.Unit{
-		{Camp: battle.Own, Fig: 0, Name: "索爾", Lv: 3, HP: 7, MaxHP: 50, MP: 2, MaxMP: 12, AP: 18, Exp: 42, Acted: true, Poisoned: true, PoisonTurns: 3, Spells: []int{1, 2}},
-		{Camp: battle.Own, Fig: 9, Name: "悠妮", Lv: 2, HP: 0, MaxHP: 31, MP: 0, MaxMP: 19, Paralyzed: true, ParalyzeTurns: 2},
+		{Camp: battle.Own, Fig: 0, Name: "索爾", Lv: 3, HP: 7, MaxHP: 50, MP: 2, MaxMP: 12, AP: 18, Exp: 42, Acted: true, Poisoned: true, PoisonTurns: 3, Spells: []int{1, 2}, OnField: true},
+		{Camp: battle.Own, Fig: 9, Name: "悠妮", Lv: 2, HP: 0, MaxHP: 31, MP: 0, MaxMP: 19, Paralyzed: true, ParalyzeTurns: 2, OnField: true},
 		{Camp: battle.Enemy, Fig: 20, HP: 1, MaxHP: 1},
 	}}
 	g.beatAdvance()
@@ -577,18 +577,18 @@ func TestBeatSyncPartyPersistsProgressAndClearsBattleState(t *testing.T) {
 		t.Fatalf("party roster = %#v, want two JOIN members", g.partyRoster)
 	}
 	sol := g.partyRoster[0]
-	if sol.HP != 7 || sol.MP != 12 || sol.Lv != 3 || sol.Exp != 42 || sol.Acted || sol.Poisoned || len(sol.Spells) != 2 {
+	if sol.HP != 50 || sol.MP != 12 || sol.Lv != 3 || sol.Exp != 42 || sol.Acted || sol.Poisoned || len(sol.Spells) != 2 {
 		t.Fatalf("survivor snapshot = %#v", sol)
 	}
 	yuni := g.partyRoster[9]
-	if yuni.HP != 31 || yuni.MP != 19 || yuni.Paralyzed {
-		t.Fatalf("defeated member was not revived/cleared: %#v", yuni)
+	if yuni.HP != 0 || yuni.MP != 19 || yuni.Paralyzed {
+		t.Fatalf("defeated member did not retain zero HP/clear transient state: %#v", yuni)
 	}
 
 	fresh := &battle.State{Units: []*battle.Unit{{Camp: battle.Own, Fig: 0, X: 11, Y: 22, Group: 4, OnField: true, HP: 99, MaxHP: 99}}}
 	g.applyPersistentParty(fresh)
 	got := fresh.Units[0]
-	if got.Lv != 3 || got.HP != 7 || got.MP != 12 || got.X != 11 || got.Y != 22 || got.Group != 4 || !got.OnField {
+	if got.Lv != 3 || got.HP != 50 || got.MP != 12 || got.X != 11 || got.Y != 22 || got.Group != 4 || !got.OnField {
 		t.Fatalf("persistent overlay lost progression or deployment: %#v", got)
 	}
 }
@@ -599,8 +599,8 @@ func TestScenarioJoinPersistsRecruitedAllyThroughPostBattleSync(t *testing.T) {
 		partyJoinOrder: []int{0},
 		sc:             &battle.Scenario{},
 		st: &battle.State{Units: []*battle.Unit{
-			{Camp: battle.Own, Fig: 0, HP: 10, MaxHP: 10},
-			{Camp: battle.Ally, Fig: 1, Name: "哈諾", Lv: 3, HP: 17, MaxHP: 36},
+			{Camp: battle.Own, Fig: 0, HP: 10, MaxHP: 10, OnField: true},
+			{Camp: battle.Ally, Fig: 1, Name: "哈諾", Lv: 3, HP: 17, MaxHP: 36, OnField: true},
 		}},
 	}
 	// Model the scenario-owned JOIN effect separately from the spawned unit's
@@ -614,7 +614,7 @@ func TestScenarioJoinPersistsRecruitedAllyThroughPostBattleSync(t *testing.T) {
 	if err := g.syncPartyFromBattle(); err != nil {
 		t.Fatal(err)
 	}
-	if hano, ok := g.partyRoster[1]; !ok || hano.HP != 17 || hano.Lv != 3 {
+	if hano, ok := g.partyRoster[1]; !ok || hano.HP != 36 || hano.Lv != 3 {
 		t.Fatalf("recruited allied Hano was not persisted: %#v", g.partyRoster)
 	}
 }
@@ -651,9 +651,9 @@ func TestBeatGrantItemUsesFirstPlayerInventoryWithRoom(t *testing.T) {
 	}
 }
 
-func TestBeatAnyUnitAliveChoosesOneArmAndKeepsCommonTail(t *testing.T) {
+func TestBeatAnyUnitInactiveChoosesOneArmAndKeepsCommonTail(t *testing.T) {
 	itemID := 0xc6
-	condition := &campaign.BeatCondition{Op: "any_unit_alive", UnitSlots: []int{5, 6, 7, 8, 9, 10}}
+	condition := &campaign.BeatCondition{Op: "any_unit_inactive", UnitSlots: []int{5, 6, 7, 8, 9, 10}}
 	branch := campaign.Beat{
 		Op: "if", Condition: condition,
 		Then: []campaign.Beat{{Op: "join", CharID: 4}},
@@ -661,43 +661,47 @@ func TestBeatAnyUnitAliveChoosesOneArmAndKeepsCommonTail(t *testing.T) {
 	}
 	common := campaign.Beat{Op: "join", CharID: 9}
 
-	alive := newBeatTestGame(t, []campaign.Beat{branch, common})
-	alive.st = &battle.State{Units: make([]*battle.Unit, 12)}
-	alive.st.Units[0] = &battle.Unit{Camp: battle.Own, Inventory: []int{1}}
-	alive.st.Units[10] = &battle.Unit{HP: 1}
-	alive.beatAdvance()
-	if alive.loadErr != "" || !alive.partyMembers[4] || !alive.partyMembers[9] {
-		t.Fatalf("alive arm did not run: err=%q party=%#v", alive.loadErr, alive.partyMembers)
+	inactive := newBeatTestGame(t, []campaign.Beat{branch, common})
+	inactive.st = &battle.State{Units: make([]*battle.Unit, 12)}
+	for i := range inactive.st.Units {
+		inactive.st.Units[i] = &battle.Unit{HP: 1, OnField: true}
 	}
-	if got := alive.st.Units[0].Inventory; len(got) != 1 {
-		t.Fatalf("alive arm incorrectly granted item: %#v", got)
+	inactive.st.Units[0] = &battle.Unit{Camp: battle.Own, Inventory: []int{1}, HP: 1, OnField: true}
+	inactive.st.Units[10].HP = 0
+	inactive.beatAdvance()
+	if inactive.loadErr != "" || !inactive.partyMembers[4] || !inactive.partyMembers[9] {
+		t.Fatalf("inactive arm did not run: err=%q party=%#v", inactive.loadErr, inactive.partyMembers)
 	}
-	if len(alive.beats) != 3 || alive.beats[2].Op != "join" {
-		t.Fatalf("selected arm/common tail splice = %#v", alive.beats)
+	if got := inactive.st.Units[0].Inventory; len(got) != 1 {
+		t.Fatalf("inactive arm incorrectly granted item: %#v", got)
+	}
+	if len(inactive.beats) != 3 || inactive.beats[2].Op != "join" {
+		t.Fatalf("selected arm/common tail splice = %#v", inactive.beats)
 	}
 
-	dead := newBeatTestGame(t, []campaign.Beat{branch, common})
-	dead.st = &battle.State{Units: make([]*battle.Unit, 12)}
-	dead.st.Units[0] = &battle.Unit{Camp: battle.Own}
-	dead.st.Units[4] = &battle.Unit{HP: 1}
-	dead.st.Units[11] = &battle.Unit{HP: 1}
-	dead.beatAdvance()
-	if dead.loadErr != "" || dead.partyMembers[4] || !dead.partyMembers[9] {
-		t.Fatalf("dead arm selection = err=%q party=%#v", dead.loadErr, dead.partyMembers)
+	active := newBeatTestGame(t, []campaign.Beat{branch, common})
+	active.st = &battle.State{Units: make([]*battle.Unit, 12)}
+	for i := range active.st.Units {
+		active.st.Units[i] = &battle.Unit{HP: 1, OnField: true}
 	}
-	if got := dead.st.Units[0].Inventory; len(got) != 1 || got[0] != 0xc6 {
+	active.st.Units[0] = &battle.Unit{Camp: battle.Own, HP: 1, OnField: true}
+	active.beatAdvance()
+	if active.loadErr != "" || active.partyMembers[4] || !active.partyMembers[9] {
+		t.Fatalf("all-active arm selection = err=%q party=%#v", active.loadErr, active.partyMembers)
+	}
+	if got := active.st.Units[0].Inventory; len(got) != 1 || got[0] != 0xc6 {
 		t.Fatalf("slots outside 5..10 affected condition; reward=%#v", got)
 	}
 }
 
-func TestBeatAnyUnitAliveFailsClosedWithoutCompleteRoster(t *testing.T) {
-	condition := &campaign.BeatCondition{Op: "any_unit_alive", UnitSlots: []int{5, 6, 7, 8, 9, 10}}
+func TestBeatAnyUnitInactiveFailsClosedWithoutCompleteRoster(t *testing.T) {
+	condition := &campaign.BeatCondition{Op: "any_unit_inactive", UnitSlots: []int{5, 6, 7, 8, 9, 10}}
 	beats := []campaign.Beat{{
 		Op: "if", Condition: condition,
 		Else: []campaign.Beat{{Op: "join", CharID: 9}},
 	}}
 	short := &battle.State{Units: make([]*battle.Unit, 10)}
-	short.Units[5] = &battle.Unit{HP: 1} // must still reject before selecting the alive arm.
+	short.Units[5] = &battle.Unit{HP: 1, OnField: true} // reject before selecting either arm.
 	for _, st := range []*battle.State{nil, short} {
 		g := newBeatTestGame(t, beats)
 		g.st = st
@@ -876,18 +880,18 @@ func TestBeatSpawnAppendsFDFIELDGroupInOriginalOrder(t *testing.T) {
 	}
 }
 
-func TestActivateResetAndRedrawPreserveHandlerBoundaries(t *testing.T) {
+func TestDeactivateResetAndRedrawPreserveHandlerBoundaries(t *testing.T) {
 	slot := 0
 	g := newBeatTestGame(t, []campaign.Beat{
-		{Op: "activate_unit", Slot: &slot},
+		{Op: "deactivate_unit", Slot: &slot},
 		{Op: "reset_pose", Ms: 20},
 		{Op: "redraw", Frames: 1},
 	})
-	g.storyActors[0].OnField = false
+	g.storyActors[0].OnField = true
 	g.storyActors[0].Dir = 3
 	g.beatAdvance()
-	if !g.storyActors[0].OnField || g.storyActors[0].Dir != 0 || g.beatDelay != 1 {
-		t.Fatalf("activate/reset state = onField:%v dir:%d delay:%d", g.storyActors[0].OnField, g.storyActors[0].Dir, g.beatDelay)
+	if g.storyActors[0].OnField || g.storyActors[0].Dir != 0 || g.beatDelay != 1 {
+		t.Fatalf("deactivate/reset state = onField:%v dir:%d delay:%d", g.storyActors[0].OnField, g.storyActors[0].Dir, g.beatDelay)
 	}
 	g.tick(2)
 	if g.beatDelay != 0 || g.beatIdx < 3 {

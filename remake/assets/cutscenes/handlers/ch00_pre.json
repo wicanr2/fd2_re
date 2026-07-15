@@ -303,7 +303,7 @@
       "text_table": "dword ptr [0x3a79]"
     },
     {
-      "op": "activate_unit",
+      "op": "deactivate_unit",
       "source": {
         "addr": "0x32692",
         "target": "0x32975"
@@ -570,7 +570,7 @@
       }
     },
     {
-      "op": "activate_unit",
+      "op": "deactivate_unit",
       "source": {
         "addr": "0x32917",
         "target": "0x32975"

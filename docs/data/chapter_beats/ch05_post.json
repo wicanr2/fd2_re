@@ -33,6 +33,21 @@
    "args": [
     27
    ]
+  },
+  {
+   "op": "dialog",
+   "addr": "0x231e5",
+   "target": "0x15f84",
+   "args": [
+    "dword ptr [0x3a79]",
+    6
+   ]
+  },
+  {
+   "op": "sync_party",
+   "addr": "0x231ed",
+   "target": "0x11506",
+   "args": []
   }
  ]
 }

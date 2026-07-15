@@ -126,7 +126,8 @@
       "id": "reinforce_ch03_e9_t3",
       "trigger": "on_turn_end",
       "when": {
-        "turn": 3
+        "turn": 3,
+        "unit_slot_active": 6
       },
       "once": true,
       "do": [

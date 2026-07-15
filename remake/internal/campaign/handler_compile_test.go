@@ -134,11 +134,11 @@ func TestCompileGrantItemPrimitive(t *testing.T) {
 	}
 }
 
-func TestCompileAnyUnitAliveBranchRequiresBothArms(t *testing.T) {
+func TestCompileAnyUnitInactiveBranchRequiresBothArms(t *testing.T) {
 	itemID := 0xc6
 	script := &HandlerScript{Beats: []HandlerBeat{{
 		Op: "if", Source: HandlerSource{Addr: "0x22f71", Target: "0x22fa9"},
-		Condition: &HandlerCondition{Op: "any_unit_alive", UnitSlots: []int{5, 6, 7, 8, 9, 10}},
+		Condition: &HandlerCondition{Op: "any_unit_inactive", UnitSlots: []int{5, 6, 7, 8, 9, 10}},
 		Then:      []HandlerBeat{{Op: "dialog", TextIndex: 7, Source: HandlerSource{Addr: "0x22fc8"}}},
 		Else: []HandlerBeat{
 			{Op: "dialog", TextIndex: 6, Source: HandlerSource{Addr: "0x22f92"}},
@@ -160,7 +160,7 @@ func TestCompileAnyUnitAliveBranchRequiresBothArms(t *testing.T) {
 		t.Fatalf("structured if lowering = %#v issues=%#v", beats, issues)
 	}
 	branch := beats[0]
-	if branch.Condition == nil || branch.Condition.Op != "any_unit_alive" || len(branch.Condition.UnitSlots) != 6 {
+	if branch.Condition == nil || branch.Condition.Op != "any_unit_inactive" || len(branch.Condition.UnitSlots) != 6 {
 		t.Fatalf("condition = %#v", branch.Condition)
 	}
 	if len(branch.Then) != 1 || branch.Then[0].Op != "dialog" || branch.Then[0].Line != 7 {
@@ -180,12 +180,12 @@ func TestCompileAnyUnitAliveBranchRequiresBothArms(t *testing.T) {
 	}
 }
 
-func TestCompileAnyUnitAliveRejectsInvalidCondition(t *testing.T) {
+func TestCompileAnyUnitInactiveRejectsInvalidCondition(t *testing.T) {
 	tests := []HandlerCondition{
 		{Op: "unknown", UnitSlots: []int{5}},
-		{Op: "any_unit_alive"},
-		{Op: "any_unit_alive", UnitSlots: []int{5, -1}},
-		{Op: "any_unit_alive", UnitSlots: []int{5, 5}},
+		{Op: "any_unit_inactive"},
+		{Op: "any_unit_inactive", UnitSlots: []int{5, -1}},
+		{Op: "any_unit_inactive", UnitSlots: []int{5, 5}},
 	}
 	for _, condition := range tests {
 		beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
@@ -195,7 +195,7 @@ func TestCompileAnyUnitAliveRejectsInvalidCondition(t *testing.T) {
 			t.Fatalf("invalid condition %#v: beats=%#v issues=%#v", condition, beats, issues)
 		}
 	}
-	valid := &HandlerCondition{Op: "any_unit_alive", UnitSlots: []int{5}}
+	valid := &HandlerCondition{Op: "any_unit_inactive", UnitSlots: []int{5}}
 	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
 		Op: "if", Condition: valid, Then: []HandlerBeat{{Op: "act", ActingID: intPtr(1)}},
 	}}}, HandlerBindings{})
@@ -439,7 +439,7 @@ func TestCompileCompleteChapter0Binding(t *testing.T) {
 		if group, ok := spawnIntros[beat.Source]; ok && beat.Op == "spawn_intro" && beat.Group == group && beat.Frames == 12 {
 			delete(spawnIntros, beat.Source)
 		}
-		if slot, ok := activateSlots[beat.Source]; ok && beat.Op == "activate_unit" && beat.Slot != nil && *beat.Slot == slot {
+		if slot, ok := activateSlots[beat.Source]; ok && beat.Op == "deactivate_unit" && beat.Slot != nil && *beat.Slot == slot {
 			delete(activateSlots, beat.Source)
 		}
 		resetPose = resetPose || beat.Source == "0x3295a" && beat.Op == "reset_pose" && beat.Ms == 20

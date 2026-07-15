@@ -46,7 +46,7 @@ handler 序列(反組譯,✅來源確定):
 | 蓋亞/悠妮位置 | (5,43)/(5,44) | FDFIELD map31 ✅ | 已用 | ✅ |
 | 索爾+亞雷斯走向悠妮蓋亞 | act 內走位(14格外) | handler+FDFIELD ✅ | walk beat | ✅機制 |
 | 蓋亞阻擋/悠妮昏迷 staging | act(0x5e-61)幀(11單位複合等) | acting_decoded ✅ | 未接 | ⚠須接 acting_decoded |
-| activate/spawn intro | 0x32975(slot)=flags1；0x32999(group)=spawn+12-step present | 完整 callee body ✅ | activate_unit / spawn_intro | ✅ |
+| deactivate/spawn intro | 0x32975(slot)=flags1（bit0=死亡/隱藏/inactive）；0x32999(group)=spawn+12-step present | 完整 callee body ✅；有效單位 constructor 0x10eed 設0 | deactivate_unit / spawn_intro | ✅ |
 
 ## D. 開場 Part 3:入隊 + 海島 + 進戰場(handler 章節0)
 

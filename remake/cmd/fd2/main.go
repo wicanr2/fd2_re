@@ -540,6 +540,22 @@ func (g *Game) handlerUnitCount() int {
 	return len(g.storyActors)
 }
 
+func (g *Game) handlerUnitAt(slot int) *battle.Unit {
+	if slot < 0 {
+		return nil
+	}
+	if g.st != nil {
+		if slot < len(g.st.Units) {
+			return g.st.Units[slot]
+		}
+		return nil
+	}
+	if slot < len(g.storyActors) {
+		return &g.storyActors[slot]
+	}
+	return nil
+}
+
 // beginActingFrame 設定目前 frame 的姿態。呼叫端保證 j.frame 有效。
 func (g *Game) beginActingFrame(j *actPoseJob) {
 	j.beat, j.tick = 0, 0
@@ -890,16 +906,24 @@ func (g *Game) beatStart(b campaign.Beat) {
 			frames = 12
 		}
 		g.beatDelay = frames
-	case "activate_unit":
-		if b.Slot == nil || *b.Slot < 0 || *b.Slot >= len(g.storyActors) {
-			g.loadErr = fmt.Sprintf("beat activate_unit: runtime slot %v unavailable (materialized=%d)", b.Slot, len(g.storyActors))
+	case "deactivate_unit":
+		if b.Slot == nil || g.handlerUnitAt(*b.Slot) == nil {
+			g.loadErr = fmt.Sprintf("beat deactivate_unit: runtime slot %v unavailable (materialized=%d)", b.Slot, g.handlerUnitCount())
 			return
 		}
-		g.storyActors[*b.Slot].OnField = true
+		g.handlerUnitAt(*b.Slot).OnField = false
 		g.beatAdvance()
 	case "reset_pose":
-		for i := range g.storyActors {
-			g.storyActors[i].Dir = 0
+		if g.st != nil {
+			for _, unit := range g.st.Units {
+				if unit != nil {
+					unit.Dir = 0
+				}
+			}
+		} else {
+			for i := range g.storyActors {
+				g.storyActors[i].Dir = 0
+			}
 		}
 		g.beatDelay = 1 // original 20ms at a 60Hz remake clock
 	case "redraw":
@@ -1003,20 +1027,20 @@ func (g *Game) resolveCampaignDialogLine(line campaign.Line, upperOverride *bool
 }
 
 func (g *Game) evalBeatCondition(condition *campaign.BeatCondition) (bool, error) {
-	if condition == nil || condition.Op != "any_unit_alive" || len(condition.UnitSlots) == 0 {
-		return false, fmt.Errorf("缺少有效 any_unit_alive condition")
+	if condition == nil || condition.Op != "any_unit_inactive" || len(condition.UnitSlots) == 0 {
+		return false, fmt.Errorf("缺少有效 any_unit_inactive condition")
 	}
 	if g.st == nil {
-		return false, fmt.Errorf("any_unit_alive 缺少 runtime battle state")
+		return false, fmt.Errorf("any_unit_inactive 缺少 runtime battle state")
 	}
 	for _, slot := range condition.UnitSlots {
-		if slot < 0 || slot >= len(g.st.Units) {
-			return false, fmt.Errorf("any_unit_alive slot %d unavailable (units=%d)", slot, len(g.st.Units))
+		if slot < 0 || slot >= len(g.st.Units) || g.st.Units[slot] == nil {
+			return false, fmt.Errorf("any_unit_inactive slot %d unavailable (units=%d)", slot, len(g.st.Units))
 		}
 	}
 	for _, slot := range condition.UnitSlots {
 		unit := g.st.Units[slot]
-		if unit != nil && unit.Alive() {
+		if !unit.OnField || !unit.Alive() {
 			return true, nil
 		}
 	}
@@ -1434,11 +1458,11 @@ func (g *Game) grantItemToParty(itemID int) bool {
 
 // syncPartyFromBattle is the remake projection of original 0x11506. The EXE
 // copies a matching 0x50-byte battle unit back to the persistent roster,
-// clears transient state/path bytes, revives defeated members to full HP and
-// restores MP. Surviving members retain their current HP. The EXE skips an
-// alive charID 0 here, apparently because that record has another persistence
-// path; until that path exists in the remake, JOIN member 0 is snapshotted too
-// so the engine does not discard the protagonist's battle progression.
+// clears transient state/path bytes, restores active survivors to full HP and
+// restores everyone's MP. Defeated/inactive members retain their zero HP. The
+// EXE skips an inactive charID 0 record; the remake snapshots JOIN member 0 as
+// well because a successful post-battle handler cannot normally receive a
+// defeated protagonist and dropping his progression would be destructive.
 func (g *Game) syncPartyFromBattle() error {
 	if g.st == nil {
 		return fmt.Errorf("no completed battle state")
@@ -1464,7 +1488,7 @@ func (g *Game) syncPartyFromBattle() error {
 		if snapshot.MaxMP < snapshot.MP {
 			snapshot.MaxMP = snapshot.MP
 		}
-		if snapshot.HP <= 0 {
+		if snapshot.OnField && snapshot.Alive() {
 			snapshot.HP = snapshot.MaxHP
 		}
 		snapshot.MP = snapshot.MaxMP
