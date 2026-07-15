@@ -327,7 +327,7 @@ editable scene，不能回退到 enclosing Node 的 lines 而播錯 `loadch` con
 舊 raw dump 共 629 beats（含 `loadch_var` 這類非-call 記錄）中，重分類後已知原語 496 筆、未知
 133 筆（78.9%）。新版 editable 匯出將 `loadch_var + loadch_call` 合併為一個 `loadch`，
 因此要以各檔 `diagnostics.unknown_ops` 和 `_manifest.json` 計數，而不可拿兩種格式的
-beat 總數直接相比。2026-07-15 全量匯出為 **626 個 editable beats**；完整辨識 `0x11506`
+beat 總數直接相比。2026-07-15 branch 結構化前全量匯出為 **626 個 flat editable beats**；完整辨識 `0x11506`
 並重新生成 24 個 post handler 後，保留的 `unknown` calls 已由 **133 降至 109**；再定案
 `0x1c220` 的兩個 caller 後降至 **107**。5 個 handler
 是已驗證的空 handler，仍保留檔案與 handler metadata。
@@ -390,10 +390,28 @@ remake lower 為 editable `grant_item(item_id)`；`battle.Unit.Inventory` 保存
 `sync_party` 深複製到 persistent roster，JSON save/load 亦會保留。這比原先只有名稱字串的全隊商店
 購物暫存更接近原版角色物品欄，也替後續裝備／消耗品系統留下可資料化的 stable ID。
 
-注意 ch01 post 尚不能因此直接宣稱 complete：handler 開頭檢查 runtime slots 5..10 是否任一存活，
-「全滅」路徑才播 FDTXT #6 並送力量藥水，否則走 FDTXT #7；目前 linear call exporter 尚未保存這個
-control-flow branch。generated binding 另外仍缺 FDTXT_002 61 utterances → `ch02.json` 53 lines 的 8 句、
-pan/ACT14..16/SPAWN4 的 post-battle roster context，共 11 個 compile issues。不得把兩條分支對白串播。
+注意 ch01 post 尚不能因此直接宣稱 complete：generated binding 仍缺 FDTXT_002 61 utterances →
+`ch02.json` 53 lines 的 8 句、pan/ACT14..16/SPAWN4 的 post-battle roster context，共 11 個 compile
+issues。存活分支已由 §3.4 保存，但在這些 binding 補齊前仍不得接進 campaign 假裝可播放。
+
+### 3.4 `ch01_post` 存活 diamond：structured `if any_unit_alive`（2026-07-16）
+
+原版 `0x22f44` 從 slot 5 起，`0x22f52 cmp edx,0xb` 限定掃 slots **5..10**；
+`0x22f61 test byte [unit+5],1` 累積 Alive bit，最後 `0x22f71 jne 0x22fa9` 分流：
+
+- 任一存活：只播 FDTXT #7（call-site `0x22fc8`）。
+- 全部倒下：播 #6（`0x22f92`），再 `grant_item(0xC6)`（`0x22f9f`）。
+- `0x22fd0` 匯合後才共同執行 pan / SPAWN4 / ACT14..16 / 後續對白。
+
+舊 exporter 依地址排序 call，會把 #6、送物品、#7 錯誤串成三拍。現在 extractor 依 Watcom 的
+「byte accumulator + fixed-slot loop + test/jne diamond + forward merge-jmp」指令形狀辨認，不硬寫
+handler 地址；editable IR 產生 `if`、`condition:any_unit_alive`、`then`、`else`，compiler 會遞迴
+resolve **兩臂**，任一臂缺 binding 就整個 branch fail closed。runtime 先驗證所有指定 slots 都存在，
+再只把選中的 arm splice 到當前拍後；使用新 slice，不會改寫 campaign node backing array，共同 tail
+維持一次。dialogue-binding exporter 與 unknown diagnostics 也已改成遞迴走 arm。
+
+manifest 因三個錯誤頂層拍收成一個 `if`，全量為 **624 個 top-level beats**；遞迴計入三個 arm
+records 為 627 records（626 個原操作 + 1 個 control record），unknown 仍為 **107**。
 
 ## 4. 未解(低優先)+ 工具紀律
 

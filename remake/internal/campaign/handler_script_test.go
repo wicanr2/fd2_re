@@ -2,6 +2,7 @@ package campaign
 
 import (
 	"path/filepath"
+	"strconv"
 	"testing"
 )
 
@@ -18,11 +19,50 @@ func TestLoadExportedHandlerScripts(t *testing.T) {
 		if err != nil {
 			t.Fatalf("LoadHandlerScript(%q): %v", path, err)
 		}
-		for i, beat := range script.Beats {
-			if beat.Source.Addr == "" {
-				t.Errorf("%s beat %d lacks source address", path, i)
+		var checkSources func(string, []HandlerBeat)
+		checkSources = func(location string, beats []HandlerBeat) {
+			for i, beat := range beats {
+				at := location + "[" + strconv.Itoa(i) + "]"
+				if beat.Source.Addr == "" {
+					t.Errorf("%s %s lacks source address", path, at)
+				}
+				checkSources(at+".then", beat.Then)
+				checkSources(at+".else", beat.Else)
 			}
 		}
+		checkSources("beats", script.Beats)
+	}
+}
+
+func TestChapter1PostPreservesAliveDiamond(t *testing.T) {
+	script, err := LoadHandlerScript("../../assets/cutscenes/handlers/ch01_post.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(script.Beats) == 0 || script.Beats[0].Op != "if" {
+		t.Fatalf("first beat = %#v, want structured if", script.Beats)
+	}
+	branch := script.Beats[0]
+	if branch.Source.Addr != "0x22f71" || branch.Condition == nil || branch.Condition.Op != "any_unit_alive" {
+		t.Fatalf("branch identity = %#v", branch)
+	}
+	wantSlots := []int{5, 6, 7, 8, 9, 10}
+	if len(branch.Condition.UnitSlots) != len(wantSlots) {
+		t.Fatalf("alive slots = %#v", branch.Condition.UnitSlots)
+	}
+	for i, want := range wantSlots {
+		if branch.Condition.UnitSlots[i] != want {
+			t.Fatalf("alive slots = %#v", branch.Condition.UnitSlots)
+		}
+	}
+	if len(branch.Then) != 1 || branch.Then[0].TextIndex != float64(7) {
+		t.Fatalf("alive arm = %#v", branch.Then)
+	}
+	if len(branch.Else) != 2 || branch.Else[0].TextIndex != float64(6) || branch.Else[1].ItemID == nil || *branch.Else[1].ItemID != 0xc6 {
+		t.Fatalf("all-dead arm = %#v", branch.Else)
+	}
+	if len(script.Beats) < 2 || script.Beats[1].Op != "pan" {
+		t.Fatalf("common continuation = %#v", script.Beats)
 	}
 }
 

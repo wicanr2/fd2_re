@@ -5,30 +5,52 @@
   "handler": "0x22f37",
   "beats": [
     {
-      "op": "dialog",
-      "text_index": 6,
-      "source": {
-        "addr": "0x22f92",
-        "target": "0x15f84"
+      "op": "if",
+      "condition": {
+        "op": "any_unit_alive",
+        "unit_slots": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
       },
-      "text_table": "dword ptr [0x3a79]"
-    },
-    {
-      "op": "grant_item",
-      "item_id": 198,
+      "then": [
+        {
+          "op": "dialog",
+          "text_index": 7,
+          "source": {
+            "addr": "0x22fc8",
+            "target": "0x15f84"
+          },
+          "text_table": "dword ptr [0x3a79]"
+        }
+      ],
+      "else": [
+        {
+          "op": "dialog",
+          "text_index": 6,
+          "source": {
+            "addr": "0x22f92",
+            "target": "0x15f84"
+          },
+          "text_table": "dword ptr [0x3a79]"
+        },
+        {
+          "op": "grant_item",
+          "item_id": 198,
+          "source": {
+            "addr": "0x22f9f",
+            "target": "0x1c220"
+          }
+        }
+      ],
       "source": {
-        "addr": "0x22f9f",
-        "target": "0x1c220"
+        "addr": "0x22f71",
+        "target": "0x22fa9"
       }
-    },
-    {
-      "op": "dialog",
-      "text_index": 7,
-      "source": {
-        "addr": "0x22fc8",
-        "target": "0x15f84"
-      },
-      "text_table": "dword ptr [0x3a79]"
     },
     {
       "op": "pan",

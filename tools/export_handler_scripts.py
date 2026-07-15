@@ -117,6 +117,14 @@ def normalize(beats):
             item = {"op": "sync_party", "source": src}
         elif op == "grant_item":
             item = {"op": "grant_item", "item_id": args[0], "source": src}
+        elif op == "if":
+            item = {
+                "op": "if",
+                "condition": beat["condition"],
+                "then": normalize(beat.get("then", [])),
+                "else": normalize(beat.get("else", [])),
+                "source": src,
+            }
         elif op == "unknown":
             item = {"op": "unknown", "native_target": beat["target"], "raw_args": args, "source": src}
         else:
@@ -128,6 +136,15 @@ def normalize(beats):
         out.append({"op": "set_chapter", "chapter": pending_chapter,
                     "source": pending_chapter_source})
     return out
+
+
+def walk_beats(beats):
+    """Yield editable beats recursively so diagnostics include branch arms."""
+    for beat in beats:
+        yield beat
+        if beat.get("op") == "if":
+            yield from walk_beats(beat.get("then", []))
+            yield from walk_beats(beat.get("else", []))
 
 
 def export_table(cg, fx, entries, tag, outdir):
@@ -142,7 +159,7 @@ def export_table(cg, fx, entries, tag, outdir):
             "handler": handler["handler"],
             "beats": normalize(handler["beats"]),
         }
-        unknown = sum(1 for beat in script["beats"] if beat["op"] == "unknown")
+        unknown = sum(1 for beat in walk_beats(script["beats"]) if beat["op"] == "unknown")
         script["diagnostics"] = {"unknown_ops": unknown}
         path = os.path.join(outdir, f"ch{chapter:02d}_{tag}.json")
         with open(path, "w", encoding="utf-8") as f:

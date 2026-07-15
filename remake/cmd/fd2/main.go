@@ -670,6 +670,18 @@ func (g *Game) beatStart(b campaign.Beat) {
 		return -1
 	}
 	switch b.Op {
+	case "if":
+		matched, err := g.evalBeatCondition(b.Condition)
+		if err != nil {
+			g.loadErr = "beat if:" + err.Error()
+			return
+		}
+		arm := b.Else
+		if matched {
+			arm = b.Then
+		}
+		g.spliceBeatsAfterCurrent(arm)
+		g.beatAdvance()
 	case "loadch":
 		if b.LoadCH == nil {
 			g.loadErr = "beat loadch:缺少完整狀態映射"
@@ -897,6 +909,40 @@ func (g *Game) beatStart(b campaign.Beat) {
 		g.loadErr = "beat:未知原語 " + b.Op
 		g.beatAdvance()
 	}
+}
+
+func (g *Game) evalBeatCondition(condition *campaign.BeatCondition) (bool, error) {
+	if condition == nil || condition.Op != "any_unit_alive" || len(condition.UnitSlots) == 0 {
+		return false, fmt.Errorf("缺少有效 any_unit_alive condition")
+	}
+	if g.st == nil {
+		return false, fmt.Errorf("any_unit_alive 缺少 runtime battle state")
+	}
+	for _, slot := range condition.UnitSlots {
+		if slot < 0 || slot >= len(g.st.Units) {
+			return false, fmt.Errorf("any_unit_alive slot %d unavailable (units=%d)", slot, len(g.st.Units))
+		}
+	}
+	for _, slot := range condition.UnitSlots {
+		unit := g.st.Units[slot]
+		if unit != nil && unit.Alive() {
+			return true, nil
+		}
+	}
+	return false, nil
+}
+
+// spliceBeatsAfterCurrent chooses one structured branch without mutating the
+// campaign node's backing array. The common continuation remains exactly once
+// after the selected arm.
+func (g *Game) spliceBeatsAfterCurrent(arm []campaign.Beat) {
+	prefix := g.beats[:g.beatIdx+1]
+	tail := g.beats[g.beatIdx+1:]
+	selected := make([]campaign.Beat, 0, len(prefix)+len(arm)+len(tail))
+	selected = append(selected, prefix...)
+	selected = append(selected, arm...)
+	selected = append(selected, tail...)
+	g.beats = selected
 }
 
 func (g *Game) materializeStoryGroup(group int) {

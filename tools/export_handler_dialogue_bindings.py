@@ -178,63 +178,84 @@ def export_handler(
     skipped: list[dict[str, Any]] = []
     loadch_events: list[dict[str, Any]] = []
 
-    for beat_index, beat in enumerate(beats):
-        if not isinstance(beat, dict):
-            raise ValueError(f"handler {handler_path} beat {beat_index} is not an object")
-        op = beat.get("op")
-        if op == "loadch":
-            immediate = beat.get("chapter")
-            source = beat.get("source")
-            addr = source.get("addr") if isinstance(source, dict) else None
-            current_source = source_dat_for_chapter(immediate) if is_nonnegative_int(immediate) else None
-            context_origin = addr if isinstance(addr, str) else None
-            context_reason = None if current_source is not None else "loadch chapter is not an immediate value"
-            loadch_events.append(
-                {
-                    "source_addr": addr,
-                    "chapter": immediate if is_nonnegative_int(immediate) else None,
-                    "kind": "fdtxt_context" if current_source is not None else "fdtxt_context_unresolved",
-                    "source_dat": current_source,
-                    "message": context_reason,
-                }
-            )
-            continue
-        if op != "dialog":
-            continue
+    def process_beats(sequence, source_dat, reason, origin, location):
+        """Walk a structured sequence and return its FDTXT context at merge."""
+        for beat_index, beat in enumerate(sequence):
+            at = f"{location}[{beat_index}]"
+            if not isinstance(beat, dict):
+                raise ValueError(f"handler {handler_path} {at} is not an object")
+            op = beat.get("op")
+            if op == "if":
+                then_beats, else_beats = beat.get("then"), beat.get("else")
+                if not isinstance(then_beats, list) or not isinstance(else_beats, list):
+                    raise ValueError(f"handler {handler_path} {at} lacks then/else arrays")
+                then_state = process_beats(then_beats, source_dat, reason, origin, at + ".then")
+                else_state = process_beats(else_beats, source_dat, reason, origin, at + ".else")
+                if then_state == else_state:
+                    source_dat, reason, origin = then_state
+                else:
+                    branch_source = beat.get("source")
+                    branch_addr = branch_source.get("addr") if isinstance(branch_source, dict) else None
+                    source_dat = None
+                    reason = "branch arms leave different FDTXT contexts"
+                    origin = branch_addr if isinstance(branch_addr, str) else None
+                continue
+            if op == "loadch":
+                immediate = beat.get("chapter")
+                beat_source = beat.get("source")
+                addr = beat_source.get("addr") if isinstance(beat_source, dict) else None
+                source_dat = source_dat_for_chapter(immediate) if is_nonnegative_int(immediate) else None
+                origin = addr if isinstance(addr, str) else None
+                reason = None if source_dat is not None else "loadch chapter is not an immediate value"
+                loadch_events.append(
+                    {
+                        "source_addr": addr,
+                        "chapter": immediate if is_nonnegative_int(immediate) else None,
+                        "kind": "fdtxt_context" if source_dat is not None else "fdtxt_context_unresolved",
+                        "source_dat": source_dat,
+                        "message": reason,
+                    }
+                )
+                continue
+            if op != "dialog":
+                continue
 
-        source = beat.get("source")
-        addr = source.get("addr") if isinstance(source, dict) else None
-        text_index = beat.get("text_index")
-        if not isinstance(addr, str) or not addr:
-            skipped.append(dialog_diagnostic(beat, current_source, "missing_source_addr", "dialog has no source.addr"))
-            continue
-        if not is_nonnegative_int(text_index):
-            skipped.append(dialog_diagnostic(beat, current_source, "invalid_text_index", "dialog text_index is not a non-negative immediate integer"))
-            continue
-        if current_source is None:
-            item = dialog_diagnostic(beat, None, "unproven_fdtxt_context", context_reason or "no proven active FDTXT resource")
-            if context_origin is not None:
-                item["context_origin_addr"] = context_origin
-            skipped.append(item)
-            continue
-        mapping = unique_mappings.get(current_source)
-        if mapping is None:
-            skipped.append(dialog_diagnostic(beat, current_source, "unmapped_source_dat", "source has no count-aligned script mapping"))
-            continue
-        if not mapping:
-            skipped.append(dialog_diagnostic(beat, current_source, "ambiguous_source_dat", "source does not have exactly one count-aligned script mapping"))
-            continue
-        targets = mapping_targets(mapping, text_index)
-        if targets is None:
-            skipped.append(dialog_diagnostic(beat, current_source, "out_of_range_text_index", "string index is absent or malformed in the selected mapping"))
-            continue
-        if len(targets) != 1:
-            skipped.append(dialog_diagnostic(beat, current_source, "multi_scene_target", "one dialog string crosses scenes; runtime adapter required"))
-            continue
-        script = mapping["script"]
-        if addr in contexts:
-            raise ValueError(f"handler {handler_path} repeats dialog source address {addr}")
-        contexts[addr] = {"source_dat": current_source, "script": script}
+            beat_source = beat.get("source")
+            addr = beat_source.get("addr") if isinstance(beat_source, dict) else None
+            text_index = beat.get("text_index")
+            if not isinstance(addr, str) or not addr:
+                skipped.append(dialog_diagnostic(beat, source_dat, "missing_source_addr", "dialog has no source.addr"))
+                continue
+            if not is_nonnegative_int(text_index):
+                skipped.append(dialog_diagnostic(beat, source_dat, "invalid_text_index", "dialog text_index is not a non-negative immediate integer"))
+                continue
+            if source_dat is None:
+                item = dialog_diagnostic(beat, None, "unproven_fdtxt_context", reason or "no proven active FDTXT resource")
+                if origin is not None:
+                    item["context_origin_addr"] = origin
+                skipped.append(item)
+                continue
+            mapping = unique_mappings.get(source_dat)
+            if mapping is None:
+                skipped.append(dialog_diagnostic(beat, source_dat, "unmapped_source_dat", "source has no count-aligned script mapping"))
+                continue
+            if not mapping:
+                skipped.append(dialog_diagnostic(beat, source_dat, "ambiguous_source_dat", "source does not have exactly one count-aligned script mapping"))
+                continue
+            targets = mapping_targets(mapping, text_index)
+            if targets is None:
+                skipped.append(dialog_diagnostic(beat, source_dat, "out_of_range_text_index", "string index is absent or malformed in the selected mapping"))
+                continue
+            if len(targets) != 1:
+                skipped.append(dialog_diagnostic(beat, source_dat, "multi_scene_target", "one dialog string crosses scenes; runtime adapter required"))
+                continue
+            script = mapping["script"]
+            if addr in contexts:
+                raise ValueError(f"handler {handler_path} repeats dialog source address {addr}")
+            contexts[addr] = {"source_dat": source_dat, "script": script}
+        return source_dat, reason, origin
+
+    process_beats(beats, current_source, context_reason, context_origin, "beats")
 
     binding = {
         "schema_version": SCHEMA_VERSION,

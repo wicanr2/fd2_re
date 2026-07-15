@@ -13,34 +13,46 @@ type HandlerSource struct {
 	Target string `json:"target,omitempty"`
 }
 
+// HandlerCondition is the editable, evidence-level predicate attached to a
+// structured handler branch.  Start with only the fixed runtime-slot alive
+// scan proven in ch01 post; future predicates must be added from disassembly,
+// not guessed into a generic expression language.
+type HandlerCondition struct {
+	Op        string `json:"op"`
+	UnitSlots []int  `json:"unit_slots,omitempty"`
+}
+
 // HandlerBeat is the lossless editable IR exported from one hard-coded EXE
 // handler.  Fields are intentionally sparse: each Op uses only its matching
 // fields, and RawArgs keeps unclassified native calls visible to editors.
 type HandlerBeat struct {
-	Op           string        `json:"op"`
-	Source       HandlerSource `json:"source,omitempty"`
-	Chapter      *int          `json:"chapter,omitempty"`
-	ChapterExpr  any           `json:"chapter_expr,omitempty"`
-	GridX        *int          `json:"grid_x,omitempty"`
-	GridY        *int          `json:"grid_y,omitempty"`
-	TextIndex    any           `json:"text_index,omitempty"`
-	TextTable    string        `json:"text_table,omitempty"`
-	ActingID     *int          `json:"acting_id,omitempty"`
-	UnitSlot     *int          `json:"unit_slot,omitempty"`
-	UnitSlotExpr any           `json:"unit_slot_expr,omitempty"`
-	Group        *int          `json:"group,omitempty"`
-	CharID       *int          `json:"char_id,omitempty"`
-	ItemID       *int          `json:"item_id,omitempty"`
-	Track        *int          `json:"track,omitempty"`
-	Loop         *int          `json:"loop,omitempty"`
-	Direction    *int          `json:"direction,omitempty"`
-	Repeat       *int          `json:"repeat,omitempty"`
-	Ms           *int          `json:"ms,omitempty"`
-	Variant      string        `json:"variant,omitempty"`
-	Value        any           `json:"value,omitempty"`
-	NativeTarget string        `json:"native_target,omitempty"`
-	RawArgs      []any         `json:"raw_args,omitempty"`
-	Args         []any         `json:"args,omitempty"`
+	Op           string            `json:"op"`
+	Source       HandlerSource     `json:"source,omitempty"`
+	Chapter      *int              `json:"chapter,omitempty"`
+	ChapterExpr  any               `json:"chapter_expr,omitempty"`
+	GridX        *int              `json:"grid_x,omitempty"`
+	GridY        *int              `json:"grid_y,omitempty"`
+	TextIndex    any               `json:"text_index,omitempty"`
+	TextTable    string            `json:"text_table,omitempty"`
+	ActingID     *int              `json:"acting_id,omitempty"`
+	UnitSlot     *int              `json:"unit_slot,omitempty"`
+	UnitSlotExpr any               `json:"unit_slot_expr,omitempty"`
+	Group        *int              `json:"group,omitempty"`
+	CharID       *int              `json:"char_id,omitempty"`
+	ItemID       *int              `json:"item_id,omitempty"`
+	Track        *int              `json:"track,omitempty"`
+	Loop         *int              `json:"loop,omitempty"`
+	Direction    *int              `json:"direction,omitempty"`
+	Repeat       *int              `json:"repeat,omitempty"`
+	Ms           *int              `json:"ms,omitempty"`
+	Variant      string            `json:"variant,omitempty"`
+	Value        any               `json:"value,omitempty"`
+	NativeTarget string            `json:"native_target,omitempty"`
+	RawArgs      []any             `json:"raw_args,omitempty"`
+	Args         []any             `json:"args,omitempty"`
+	Condition    *HandlerCondition `json:"condition,omitempty"`
+	Then         []HandlerBeat     `json:"then,omitempty"`
+	Else         []HandlerBeat     `json:"else,omitempty"`
 }
 
 // HandlerScript is a chapter pre/post handler in editable JSON form.  It is
@@ -77,10 +89,26 @@ func LoadHandlerScript(path string) (*HandlerScript, error) {
 	if script.Handler == "" {
 		return nil, fmt.Errorf("handler script %q has no handler", path)
 	}
-	for i, beat := range script.Beats {
-		if beat.Op == "" {
-			return nil, fmt.Errorf("handler script %q beat %d has no op", path, i)
-		}
+	if err := validateHandlerBeats(path, "beats", script.Beats); err != nil {
+		return nil, err
 	}
 	return &script, nil
+}
+
+func validateHandlerBeats(path, location string, beats []HandlerBeat) error {
+	for i, beat := range beats {
+		at := fmt.Sprintf("%s[%d]", location, i)
+		if beat.Op == "" {
+			return fmt.Errorf("handler script %q %s has no op", path, at)
+		}
+		if beat.Op == "if" {
+			if err := validateHandlerBeats(path, at+".then", beat.Then); err != nil {
+				return err
+			}
+			if err := validateHandlerBeats(path, at+".else", beat.Else); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }

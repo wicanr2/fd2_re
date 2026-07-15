@@ -133,6 +133,97 @@ func TestCompileGrantItemPrimitive(t *testing.T) {
 	}
 }
 
+func TestCompileAnyUnitAliveBranchRequiresBothArms(t *testing.T) {
+	itemID := 0xc6
+	script := &HandlerScript{Beats: []HandlerBeat{{
+		Op: "if", Source: HandlerSource{Addr: "0x22f71", Target: "0x22fa9"},
+		Condition: &HandlerCondition{Op: "any_unit_alive", UnitSlots: []int{5, 6, 7, 8, 9, 10}},
+		Then:      []HandlerBeat{{Op: "dialog", TextIndex: 7, Source: HandlerSource{Addr: "0x22fc8"}}},
+		Else: []HandlerBeat{
+			{Op: "dialog", TextIndex: 6, Source: HandlerSource{Addr: "0x22f92"}},
+			{Op: "grant_item", ItemID: &itemID, Source: HandlerSource{Addr: "0x22f9f"}},
+		},
+	}}}
+	bindings := HandlerBindings{Dialog: func(input HandlerBeat) (HandlerDialog, bool) {
+		switch input.Source.Addr {
+		case "0x22fc8":
+			return HandlerDialog{Line: 7}, true
+		case "0x22f92":
+			return HandlerDialog{Line: 6}, true
+		default:
+			return HandlerDialog{}, false
+		}
+	}}
+	beats, issues := CompileHandlerScript(script, bindings)
+	if len(issues) != 0 || len(beats) != 1 || beats[0].Op != "if" {
+		t.Fatalf("structured if lowering = %#v issues=%#v", beats, issues)
+	}
+	branch := beats[0]
+	if branch.Condition == nil || branch.Condition.Op != "any_unit_alive" || len(branch.Condition.UnitSlots) != 6 {
+		t.Fatalf("condition = %#v", branch.Condition)
+	}
+	if len(branch.Then) != 1 || branch.Then[0].Op != "dialog" || branch.Then[0].Line != 7 {
+		t.Fatalf("then arm = %#v", branch.Then)
+	}
+	if len(branch.Else) != 2 || branch.Else[0].Line != 6 || branch.Else[1].ItemID == nil || *branch.Else[1].ItemID != 0xc6 {
+		t.Fatalf("else arm = %#v", branch.Else)
+	}
+
+	missing := bindings
+	missing.Dialog = func(input HandlerBeat) (HandlerDialog, bool) {
+		return HandlerDialog{Line: 7}, input.Source.Addr == "0x22fc8"
+	}
+	beats, issues = CompileHandlerScript(script, missing)
+	if len(beats) != 0 || len(issues) != 1 || issues[0].Reason != "if else: no remake line mapping for original FDTXT lookup" {
+		t.Fatalf("unresolved arm must fail closed: beats=%#v issues=%#v", beats, issues)
+	}
+}
+
+func TestCompileAnyUnitAliveRejectsInvalidCondition(t *testing.T) {
+	tests := []HandlerCondition{
+		{Op: "unknown", UnitSlots: []int{5}},
+		{Op: "any_unit_alive"},
+		{Op: "any_unit_alive", UnitSlots: []int{5, -1}},
+		{Op: "any_unit_alive", UnitSlots: []int{5, 5}},
+	}
+	for _, condition := range tests {
+		beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
+			Op: "if", Condition: &condition,
+		}}}, HandlerBindings{})
+		if len(beats) != 0 || len(issues) != 1 {
+			t.Fatalf("invalid condition %#v: beats=%#v issues=%#v", condition, beats, issues)
+		}
+	}
+	valid := &HandlerCondition{Op: "any_unit_alive", UnitSlots: []int{5}}
+	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
+		Op: "if", Condition: valid, Then: []HandlerBeat{{Op: "act", ActingID: intPtr(1)}},
+	}}}, HandlerBindings{})
+	if len(beats) != 0 || len(issues) != 1 || issues[0].Reason != "if arms cannot use active-slot operations before branch compiler context is modeled" {
+		t.Fatalf("active-slot branch must fail closed: beats=%#v issues=%#v", beats, issues)
+	}
+}
+
+func TestCompileChapter1PostReportsBothBranchArms(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/generated/ch01_post.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(issues) != 11 {
+		t.Fatalf("ch01 post issues = %d, want 11: %#v (beats=%#v)", len(issues), issues, beats)
+	}
+	wantSources := map[string]bool{"0x22fc8": false, "0x22f92": false}
+	for _, issue := range issues {
+		if _, ok := wantSources[issue.Source.Addr]; ok {
+			wantSources[issue.Source.Addr] = true
+		}
+	}
+	for source, found := range wantSources {
+		if !found {
+			t.Errorf("ch01 post did not report unresolved branch dialog %s: %#v", source, issues)
+		}
+	}
+}
+
 func TestCompileHandlerScriptDoesNotGuessMissingMappings(t *testing.T) {
 	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{
 		{Op: "loadch", Chapter: intPtr(5)},

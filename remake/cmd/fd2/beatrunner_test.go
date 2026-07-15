@@ -500,6 +500,63 @@ func TestBeatGrantItemUsesFirstPlayerInventoryWithRoom(t *testing.T) {
 	}
 }
 
+func TestBeatAnyUnitAliveChoosesOneArmAndKeepsCommonTail(t *testing.T) {
+	itemID := 0xc6
+	condition := &campaign.BeatCondition{Op: "any_unit_alive", UnitSlots: []int{5, 6, 7, 8, 9, 10}}
+	branch := campaign.Beat{
+		Op: "if", Condition: condition,
+		Then: []campaign.Beat{{Op: "join", CharID: 4}},
+		Else: []campaign.Beat{{Op: "grant_item", ItemID: &itemID}},
+	}
+	common := campaign.Beat{Op: "join", CharID: 9}
+
+	alive := newBeatTestGame(t, []campaign.Beat{branch, common})
+	alive.st = &battle.State{Units: make([]*battle.Unit, 12)}
+	alive.st.Units[0] = &battle.Unit{Camp: battle.Own, Inventory: []int{1}}
+	alive.st.Units[10] = &battle.Unit{HP: 1}
+	alive.beatAdvance()
+	if alive.loadErr != "" || !alive.partyMembers[4] || !alive.partyMembers[9] {
+		t.Fatalf("alive arm did not run: err=%q party=%#v", alive.loadErr, alive.partyMembers)
+	}
+	if got := alive.st.Units[0].Inventory; len(got) != 1 {
+		t.Fatalf("alive arm incorrectly granted item: %#v", got)
+	}
+	if len(alive.beats) != 3 || alive.beats[2].Op != "join" {
+		t.Fatalf("selected arm/common tail splice = %#v", alive.beats)
+	}
+
+	dead := newBeatTestGame(t, []campaign.Beat{branch, common})
+	dead.st = &battle.State{Units: make([]*battle.Unit, 12)}
+	dead.st.Units[0] = &battle.Unit{Camp: battle.Own}
+	dead.st.Units[4] = &battle.Unit{HP: 1}
+	dead.st.Units[11] = &battle.Unit{HP: 1}
+	dead.beatAdvance()
+	if dead.loadErr != "" || dead.partyMembers[4] || !dead.partyMembers[9] {
+		t.Fatalf("dead arm selection = err=%q party=%#v", dead.loadErr, dead.partyMembers)
+	}
+	if got := dead.st.Units[0].Inventory; len(got) != 1 || got[0] != 0xc6 {
+		t.Fatalf("slots outside 5..10 affected condition; reward=%#v", got)
+	}
+}
+
+func TestBeatAnyUnitAliveFailsClosedWithoutCompleteRoster(t *testing.T) {
+	condition := &campaign.BeatCondition{Op: "any_unit_alive", UnitSlots: []int{5, 6, 7, 8, 9, 10}}
+	beats := []campaign.Beat{{
+		Op: "if", Condition: condition,
+		Else: []campaign.Beat{{Op: "join", CharID: 9}},
+	}}
+	short := &battle.State{Units: make([]*battle.Unit, 10)}
+	short.Units[5] = &battle.Unit{HP: 1} // must still reject before selecting the alive arm.
+	for _, st := range []*battle.State{nil, short} {
+		g := newBeatTestGame(t, beats)
+		g.st = st
+		g.beatAdvance()
+		if g.loadErr == "" || g.partyMembers[9] {
+			t.Fatalf("incomplete runtime state did not fail closed: state=%#v err=%q", st, g.loadErr)
+		}
+	}
+}
+
 func TestReorderScenarioPartyUsesOriginalJoinSlots(t *testing.T) {
 	sc := &battle.Scenario{
 		Party:       []battle.PartyMember{{Fig: 0}, {Fig: 4}, {Fig: 9}, {Fig: 30}},

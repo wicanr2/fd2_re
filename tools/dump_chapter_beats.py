@@ -150,6 +150,112 @@ def extract_beats(insns):
     return beats
 
 
+def _immediate(op):
+    """Parse one integer operand, returning None for registers/expressions."""
+    try:
+        return int(op, 0)
+    except (TypeError, ValueError):
+        return None
+
+
+def structure_control_flow(insns, beats):
+    """Recover proven fixed-slot ``any alive`` diamonds into structured IR.
+
+    Watcom emits the ch01 post-battle test as a byte accumulator initialized
+    to zero, a counted unit-slot loop testing ``unit+5 bit0``, and finally a
+    ``test accumulator`` / ``jne then`` diamond.  Matching the instruction
+    shape (rather than a handler address) keeps the recognizer reusable while
+    leaving every unproven branch in the existing loss-visible linear output.
+    """
+    for i in range(2, len(insns)):
+        branch = insns[i]
+        if branch.mnemonic not in ('jne', 'jnz') or not branch.op_str.startswith('0x'):
+            continue
+        movzx, test_result = insns[i - 2], insns[i - 1]
+        if movzx.mnemonic != 'movzx' or test_result.mnemonic != 'test':
+            continue
+        mov_parts = [part.strip() for part in movzx.op_str.split(',')]
+        test_parts = [part.strip() for part in test_result.op_str.split(',')]
+        if len(mov_parts) != 2 or test_parts != [mov_parts[0], mov_parts[0]]:
+            continue
+        accumulator = mov_parts[1]
+
+        start_idx = None
+        counter = None
+        start_slot = None
+        end_slot = None
+        saw_alive_test = False
+        saw_accumulator_set = False
+        for j in range(max(0, i - 48), i - 1):
+            ins = insns[j]
+            parts = [part.strip() for part in ins.op_str.split(',')]
+            if ins.mnemonic == 'xor' and parts == [accumulator, accumulator]:
+                start_idx = j
+            elif start_idx is not None and ins.mnemonic == 'mov' and len(parts) == 2:
+                value = _immediate(parts[1])
+                if value is not None and parts[0] != accumulator and counter is None:
+                    counter, start_slot = parts[0], value
+                if parts == [accumulator, '1']:
+                    saw_accumulator_set = True
+            elif (start_idx is not None and counter is not None and
+                  ins.mnemonic == 'cmp' and len(parts) == 2 and parts[0] == counter):
+                end_slot = _immediate(parts[1])
+            elif (start_idx is not None and ins.mnemonic == 'test' and len(parts) == 2 and
+                  parts[0].startswith('byte ptr [') and '+ 5]' in parts[0] and parts[1] == '1'):
+                saw_alive_test = True
+        if (start_idx is None or counter is None or start_slot is None or end_slot is None or
+                start_slot < 0 or end_slot <= start_slot or not saw_alive_test or
+                not saw_accumulator_set):
+            continue
+        if not any(ins.mnemonic == 'inc' and ins.op_str == counter
+                   for ins in insns[start_idx:i]):
+            continue
+
+        then_addr = int(branch.op_str, 16)
+        false_jump = None
+        merge_addr = None
+        for ins in insns[i + 1:]:
+            if ins.address >= then_addr:
+                break
+            if ins.mnemonic == 'jmp' and ins.op_str.startswith('0x'):
+                target = int(ins.op_str, 16)
+                if target > then_addr:
+                    false_jump, merge_addr = ins.address, target
+        if false_jump is None or merge_addr is None:
+            continue
+
+        prefix = [beat for beat in beats if int(beat['addr'], 16) < branch.address]
+        otherwise = [beat for beat in beats
+                     if branch.address < int(beat['addr'], 16) < then_addr]
+        matched = [beat for beat in beats
+                   if then_addr <= int(beat['addr'], 16) < merge_addr]
+        suffix = [beat for beat in beats if int(beat['addr'], 16) >= merge_addr]
+        if not otherwise or not matched:
+            continue
+        conditional = {
+            'op': 'if',
+            'addr': hex(branch.address),
+            'target': hex(then_addr),
+            'condition': {
+                'op': 'any_unit_alive',
+                'unit_slots': list(range(start_slot, end_slot)),
+            },
+            'then': matched,
+            'else': otherwise,
+        }
+        return prefix + [conditional] + suffix
+    return beats
+
+
+def walk_beats(beats):
+    """Yield structured raw beats recursively for statistics/diagnostics."""
+    for beat in beats:
+        yield beat
+        if beat.get('op') == 'if':
+            yield from walk_beats(beat.get('then', []))
+            yield from walk_beats(beat.get('else', []))
+
+
 def resolve_table(fx, table_addr, n):
     """跳表[i] = fx.get(table_addr + i*4);回傳 [(chapter, handler_addr)]。"""
     out = []
@@ -169,7 +275,7 @@ def handler_beats(cg, fx, entries, uniq_sorted, obj_end):
             later = [u for u in uniq_sorted if u > h]
             end = min(later) if later else obj_end
             insns = dump_range(cg, h, end)
-            cache[h] = extract_beats(insns)
+            cache[h] = structure_control_flow(insns, extract_beats(insns))
         out[ch] = {'handler': hex(h), 'beats': cache[h]}
     return out
 
@@ -194,7 +300,7 @@ def cmd_ch0(cg, fx):
 
 def cmd_handler(cg, fx, start, end):
     insns = dump_range(cg, start, end)
-    for b in extract_beats(insns):
+    for b in structure_control_flow(insns, extract_beats(insns)):
         print(json.dumps(b, ensure_ascii=False))
 
 
@@ -219,9 +325,9 @@ def cmd_all(cg, fx, outdir):
             with open(path, 'w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=1)
             ops = {}
-            for b in data['beats']:
+            for b in walk_beats(data['beats']):
                 ops[b['op']] = ops.get(b['op'], 0) + 1
-            for b in data['beats']:
+            for b in walk_beats(data['beats']):
                 if b['op'] == 'unknown':
                     all_unknown.setdefault(b['target'], 0)
                     all_unknown[b['target']] += 1

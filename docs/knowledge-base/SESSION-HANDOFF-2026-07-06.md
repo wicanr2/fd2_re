@@ -41,14 +41,19 @@
 > `0x1bb8c` 定案為「按 runtime slot 找第一個我方且 8-slot inventory 有空位的角色，放入 item」。
 > 兩個 caller 是 ch01 `0xC6` 力量藥水與 ch20 `0x64` 天空之鑰；已 lower 成 editable
 > `grant_item`，角色 `Inventory` 會經 `sync_party` 與 save/load 跨章保留，handler unknown 109→107。
-> ch01 post 仍有 slots 5..10 存活分支與 FDTXT_002 缺 8 句等 11 issues，不能把 #6/#7 兩條路徑
-> 直線串播；完整證據與下一步見 `doc50 §3.3`。
+> 此更新當時另發現 slots 5..10 存活分支與 FDTXT_002 缺 8 句等 11 issues，不能把 #6/#7 兩條
+> 路徑直線串播；分支已由下一筆更新解決，其餘 binding 問題仍待處理。
+
+> **2026-07-16 第七次 Codex 更新（handler control-flow）**：ch01 post 的存活 diamond 已從原版
+> 指令形狀復原成 editable `if any_unit_alive(slots 5..10)`。任一存活只播 #7；全部倒下才播 #6
+> 並送 `0xC6`，之後共同 continuation 只執行一次。compiler 會先 resolve 兩臂、runtime roster 不完整
+> 時 fail closed；dialogue binding/unknown diagnostics 亦會遞迴 branch。詳見 `doc50 §3.4`。
 
 ## 0. 目前焦點(接手就做這裡)
 第一章開場 `ch00_pre` 的 handler、對白、ACT99/100、兩段 scroll、focus 與 map31 ACT90..98 已完整
 lower，compiler 為 **0 issues**；第一場勝利後的 `ch00_post` 也已完成 dialog、戰後 persistent
-roster 同步與 chapter 推進。下一個具體焦點是 ch01 post：先保留／lower slots 5..10 存活分支，補
-FDTXT_002 缺少的 8 utterances，再給 post handler 明確的 map0 runtime roster、pan、SPAWN4 與
+roster 同步與 chapter 推進。下一個具體焦點是 ch01 post：補 FDTXT_002 缺少的 8 utterances，再給
+post handler 明確的 map0 runtime roster、pan、SPAWN4 與
 ACT14..16 binding；忠實流程節點應插在 `battle_ch02.on_win` 與 `choice_ch02` 之間。下方「草地深層未解」
 是 2026-07-06 歷史記錄，已被 2026-07-15 direct table 修正推翻，不得再當目前 blocker。
 

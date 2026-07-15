@@ -80,6 +80,56 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 	}
 	for i, input := range script.Beats {
 		switch input.Op {
+		case "if":
+			if input.Condition == nil || input.Condition.Op != "any_unit_alive" {
+				issue(i, input, "if requires the proven any_unit_alive condition")
+				continue
+			}
+			if len(input.Condition.UnitSlots) == 0 {
+				issue(i, input, "any_unit_alive requires at least one runtime unit slot")
+				continue
+			}
+			seen := make(map[int]bool, len(input.Condition.UnitSlots))
+			validSlots := true
+			for _, slot := range input.Condition.UnitSlots {
+				if slot < 0 || seen[slot] {
+					validSlots = false
+					break
+				}
+				seen[slot] = true
+			}
+			if !validSlots {
+				issue(i, input, "any_unit_alive slots must be unique non-negative integers")
+				continue
+			}
+			if handlerBranchChangesCompileContext(input.Then) || handlerBranchChangesCompileContext(input.Else) {
+				issue(i, input, "if arms cannot change loadch or chapter context before a proven merge model exists")
+				continue
+			}
+			if handlerBranchNeedsActiveLoadCH(input.Then) || handlerBranchNeedsActiveLoadCH(input.Else) {
+				issue(i, input, "if arms cannot use active-slot operations before branch compiler context is modeled")
+				continue
+			}
+			thenBeats, thenIssues := CompileHandlerScript(&HandlerScript{Beats: input.Then}, bindings)
+			elseBeats, elseIssues := CompileHandlerScript(&HandlerScript{Beats: input.Else}, bindings)
+			if len(thenIssues) > 0 || len(elseIssues) > 0 {
+				for _, branchIssue := range thenIssues {
+					branchIssue.Reason = "if then: " + branchIssue.Reason
+					issues = append(issues, branchIssue)
+				}
+				for _, branchIssue := range elseIssues {
+					branchIssue.Reason = "if else: " + branchIssue.Reason
+					issues = append(issues, branchIssue)
+				}
+				continue
+			}
+			condition := &BeatCondition{
+				Op:        input.Condition.Op,
+				UnitSlots: append([]int(nil), input.Condition.UnitSlots...),
+			}
+			beat := runtime(input, "if")
+			beat.Condition, beat.Then, beat.Else = condition, thenBeats, elseBeats
+			beats = append(beats, beat)
 		case "loadch":
 			if bindings.LoadCH == nil {
 				issue(i, input, "loadch requires an explicit map, roster, and story-context mapping")
@@ -317,6 +367,31 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 // is not a portrait range: NPC and scene-only portraits share the wider ID
 // space and must never acquire party membership through JOIN.
 func JoinableCharacterID(id int) bool { return id >= 0 && id < 32 }
+
+func handlerBranchChangesCompileContext(beats []HandlerBeat) bool {
+	for _, beat := range beats {
+		if beat.Op == "loadch" || beat.Op == "set_chapter" {
+			return true
+		}
+		if beat.Op == "if" && (handlerBranchChangesCompileContext(beat.Then) || handlerBranchChangesCompileContext(beat.Else)) {
+			return true
+		}
+	}
+	return false
+}
+
+func handlerBranchNeedsActiveLoadCH(beats []HandlerBeat) bool {
+	for _, beat := range beats {
+		switch beat.Op {
+		case "act", "scroll_step", "spawn", "spawn_intro", "activate_unit", "focus_unit":
+			return true
+		}
+		if beat.Op == "if" && (handlerBranchNeedsActiveLoadCH(beat.Then) || handlerBranchNeedsActiveLoadCH(beat.Else)) {
+			return true
+		}
+	}
+	return false
+}
 
 func actingUsesUnavailableSlot(frames []ActingFrame, slotCount int) bool {
 	for _, frame := range frames {
