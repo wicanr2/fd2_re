@@ -2,6 +2,15 @@
   "schema_version": 1,
   "handler_script": "../handlers/ch00_pre.json",
   "overrides": {
+    "0x32330": {
+      "loadch": {
+        "chapter": 32,
+        "map": "assets/maps/map32",
+        "roster": "assets/maps/map32/map32_units.json",
+        "script": "assets/story/ch00_palace.json",
+        "cam_max_y": 808
+      }
+    },
     "0x32339": {
       "pan": {
         "x": 72,
@@ -61,6 +70,18 @@
           { "line": 2, "upper": true },
           { "line": 3 },
           { "line": 4, "upper": true }
+        ]
+      }
+    },
+    "0x32461": {
+      "act": {
+        "frames": [
+          { "beats": 8, "special": true, "units": [{ "slot": 16, "pose": 2 }, { "slot": 17, "pose": 2 }] },
+          { "beats": 8, "special": true, "units": [{ "slot": 16, "pose": 0 }, { "slot": 17, "pose": 0 }] },
+          { "beats": 8, "special": true, "units": [{ "slot": 16, "pose": 2 }, { "slot": 17, "pose": 2 }] },
+          { "beats": 8, "special": true, "units": [{ "slot": 16, "pose": 3 }, { "slot": 17, "pose": 3 }] },
+          { "beats": 8, "special": true, "units": [{ "slot": 16, "pose": 1 }, { "slot": 17, "pose": 1 }] },
+          { "beats": 0, "special": true, "units": [{ "slot": 16, "pose": 1 }, { "slot": 17, "pose": 1 }] }
         ]
       }
     },

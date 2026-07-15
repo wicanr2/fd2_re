@@ -195,6 +195,33 @@ func TestBeatActingSpecialFrameStaysPut(t *testing.T) {
 	}
 }
 
+func TestBeatActingUsesOriginalSlotBeforeDuplicateFig(t *testing.T) {
+	// Exact decoded 0x66 from ch00_pre call-site 0x32461.  Slots 13,16,17
+	// are all fig69 guards; a Fig-only lookup used to animate slot13 twice.
+	slot16, slot17 := 16, 17
+	frames := []campaign.ActingFrame{
+		{Beats: 8, Special: true, Units: []campaign.ActingUnit{{Slot: &slot16, Pose: 2}, {Slot: &slot17, Pose: 2}}},
+		{Beats: 8, Special: true, Units: []campaign.ActingUnit{{Slot: &slot16, Pose: 0}, {Slot: &slot17, Pose: 0}}},
+		{Beats: 8, Special: true, Units: []campaign.ActingUnit{{Slot: &slot16, Pose: 2}, {Slot: &slot17, Pose: 2}}},
+		{Beats: 8, Special: true, Units: []campaign.ActingUnit{{Slot: &slot16, Pose: 3}, {Slot: &slot17, Pose: 3}}},
+		{Beats: 8, Special: true, Units: []campaign.ActingUnit{{Slot: &slot16, Pose: 1}, {Slot: &slot17, Pose: 1}}},
+		{Beats: 0, Special: true, Units: []campaign.ActingUnit{{Slot: &slot16, Pose: 1}, {Slot: &slot17, Pose: 1}}},
+	}
+	g := newBeatTestGame(t, []campaign.Beat{{Op: "act", Acting: frames}})
+	g.storyActors = make([]battle.Unit, 18)
+	for i := range g.storyActors {
+		g.storyActors[i] = battle.Unit{Fig: 69, OnField: true, Dir: 3}
+	}
+	g.beatAdvance()
+	g.tick(41) // five 8-tick special frames plus the zero-beat terminator
+	if g.storyActors[13].Dir != 3 {
+		t.Fatalf("duplicate fig fallback touched slot13: dir=%d", g.storyActors[13].Dir)
+	}
+	if g.storyActors[16].Dir != 1 || g.storyActors[17].Dir != 1 {
+		t.Fatalf("decoded slots 16/17 were not targeted: dirs=(%d,%d)", g.storyActors[16].Dir, g.storyActors[17].Dir)
+	}
+}
+
 func TestBeatFadeBothDirectionsCallThen(t *testing.T) {
 	g := newBeatTestGame(t, []campaign.Beat{
 		{Op: "fade", Out: true, Frames: 4},

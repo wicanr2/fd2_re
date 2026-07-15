@@ -133,6 +133,25 @@ func TestCompileHandlerDialogExpandsOriginalTextGroup(t *testing.T) {
 	}
 }
 
+func TestCompileHandlerActingPreservesOriginalRosterSlot(t *testing.T) {
+	slot := 17
+	script := &HandlerScript{Beats: []HandlerBeat{{
+		Op: "act", ActingID: intPtr(0x66), Source: HandlerSource{Addr: "0x32466"},
+	}}}
+	beats, issues := CompileHandlerScript(script, HandlerBindings{
+		Acting: func(HandlerBeat) ([]ActingFrame, bool) {
+			return []ActingFrame{{Beats: 8, Special: true, Units: []ActingUnit{{Slot: &slot, Pose: 2}}}}, true
+		},
+	})
+	if len(issues) != 0 || len(beats) != 1 || len(beats[0].Acting) != 1 {
+		t.Fatalf("slot acting compilation beats=%#v issues=%#v", beats, issues)
+	}
+	unit := beats[0].Acting[0].Units[0]
+	if unit.Slot == nil || *unit.Slot != 17 || unit.Fig != 0 || unit.Pose != 2 {
+		t.Fatalf("acting target lost original slot: %#v", unit)
+	}
+}
+
 func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 	binding, err := LoadHandlerBinding("../../assets/cutscenes/bindings/ch00_pre.json")
 	if err != nil {
@@ -153,12 +172,17 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 		t.Fatal("partial binding unexpectedly compiled the entire handler")
 	}
 	var pan, dialog bool
+	var slotAct bool
 	for _, beat := range beats {
 		pan = pan || beat.Op == "pan" && beat.X == 72 && beat.Y == 816
 		dialog = dialog || beat.Op == "dialog" && beat.Line == 0
+		if beat.Op == "act" && beat.Source == "0x32461" && len(beat.Acting) == 6 {
+			u := beat.Acting[0].Units[0]
+			slotAct = u.Slot != nil && *u.Slot == 16 && u.Fig == 0
+		}
 	}
-	if !pan || !dialog {
-		t.Fatalf("loaded binding did not lower its two proven overrides: %#v", beats)
+	if !pan || !dialog || !slotAct {
+		t.Fatalf("loaded binding did not lower its proven pan/dialog/slot-acting overrides: %#v", beats)
 	}
 }
 

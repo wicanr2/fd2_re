@@ -405,7 +405,19 @@ func (g *Game) finishActJob(j *actPoseJob) {
 	}
 }
 
-func (g *Game) actingActor(fig int) *battle.Unit {
+// actingActor resolves decoded acting against the original FDFIELD roster
+// slot first.  Fig is deliberately only a legacy authored-scene fallback:
+// using it for decoded frames would move the first matching guard when the
+// original bytecode targeted a different same-Fig guard.
+func (g *Game) actingActor(target campaign.ActingUnit) *battle.Unit {
+	if target.Slot != nil {
+		slot := *target.Slot
+		if slot >= 0 && slot < len(g.storyActors) {
+			return &g.storyActors[slot]
+		}
+		return nil
+	}
+	fig := target.Fig
 	for i := range g.storyActors {
 		if g.storyActors[i].Fig == fig {
 			return &g.storyActors[i]
@@ -418,7 +430,7 @@ func (g *Game) actingActor(fig int) *battle.Unit {
 func (g *Game) beginActingFrame(j *actPoseJob) {
 	j.beat, j.tick = 0, 0
 	for _, au := range j.acting[j.frame].Units {
-		if u := g.actingActor(au.Fig); u != nil {
+		if u := g.actingActor(au); u != nil {
 			u.Dir = au.Pose
 		}
 	}
@@ -467,7 +479,7 @@ func (g *Game) stepOriginalActing(j *actPoseJob) {
 	j.tick++
 	frac := float64(j.tick) / 7
 	for _, au := range f.Units {
-		if u := g.actingActor(au.Fig); u != nil {
+		if u := g.actingActor(au); u != nil {
 			dx, dy := actingDelta(au.Pose)
 			u.OffX = float64(dx) * float64(g.m.TileW) * frac
 			u.OffY = float64(dy) * float64(g.m.TileH) * frac
@@ -477,7 +489,7 @@ func (g *Game) stepOriginalActing(j *actPoseJob) {
 		return
 	}
 	for _, au := range f.Units {
-		if u := g.actingActor(au.Fig); u != nil {
+		if u := g.actingActor(au); u != nil {
 			dx, dy := actingDelta(au.Pose)
 			u.X += dx
 			u.Y += dy
@@ -715,13 +727,16 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 	}
 
 	// A handler cutscene uses the loaded FDFIELD roster as visual actors, not
-	// as an active battle state.  Preserve every on-field entry in its original
-	// order: acting bindings can later map original unit slots without losing
-	// duplicate Fig values such as guards.
+	// as an active battle state.  Preserve every entry in its original order,
+	// including any non-drawn/dead slot: decoded acting bytecode addresses the
+	// unit array by slot, so filtering would shift later targets.
 	g.st, g.sel, g.sc = nil, nil, nil
 	g.storyActors = make([]battle.Unit, 0, len(roster.Units))
 	for _, u := range roster.Units {
-		if u == nil || !u.OnField || !u.Alive() {
+		if u == nil {
+			// Defensive hole preservation: State.Load never creates nil entries,
+			// but a future roster adapter must not renumber original unit slots.
+			g.storyActors = append(g.storyActors, battle.Unit{})
 			continue
 		}
 		actor := *u

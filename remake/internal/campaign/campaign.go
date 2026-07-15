@@ -58,11 +58,16 @@ type ActorWalk struct {
 	Dir    *int `json:"dir,omitempty"` // 走完後面向(指標,nil=保留走位末向;指定則覆蓋,如索爾走到亞雷斯旁定住面右)
 }
 
-// ActingUnit 是一個 acting frame 影響的場景角色。Fig 對應 Node.Actors 的圖組／角色 id；
-// Pose 的方向定義與原版一致：0 下、1 左、2 上、3 右。
+// ActingUnit is one original acting frame target.  Slot is the original
+// FDFIELD/unit-array index and is the authoritative identity for decoded
+// 0x1366a data: a roster can contain many guards with the same Fig.  Fig is a
+// legacy fallback for hand-authored scenes that have no original roster; an
+// editable transcription of a decoded handler must use Slot instead.  Pose
+// follows the original direction encoding: 0 down, 1 left, 2 up, 3 right.
 type ActingUnit struct {
-	Fig  int `json:"fig"`
-	Pose int `json:"pose"`
+	Slot *int `json:"slot,omitempty"`
+	Fig  int  `json:"fig,omitempty"`
+	Pose int  `json:"pose"`
 }
 
 // ActingFrame 是原版 0x1366a 資源的一幀行為轉錄，不包含原始 bytes。
