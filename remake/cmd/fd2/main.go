@@ -212,15 +212,18 @@ type camPanJob struct {
 	t, frames    int
 }
 
-// actPoseJob beat「act」原語近似實作(doc50 §1 0x1366a):原地依序切換 poses(方向值 0-3)
-// 模擬姿態循環,每個 pose 停留 frames 幀,循環完呼叫 then。**非**原版 acting 幀播放器——
-// 74 筆 acting 資源已解碼但幀內容(逐 tick 姿態/位移)尚未接上引擎(doc47 §5 未解),
-// 這裡只用既有「方向→sprite 幀」機制做輕量近似,足敷「原地轉向」類簡單演出。
+// actPoseJob 承接 beat「act」。acting 非空時按原版 0x1366a 規則播放：正常 frame
+// (bit7=0)的每一 Beat 都走一格、每格 7 個內插 tick；special frame(bit7=1)原地停留。
+// poses/frames 則保留給尚未轉錄的舊場景作原地姿態相容。
 type actPoseJob struct {
 	actor  int
 	poses  []int
 	frames int
 	t, idx int
+	acting []campaign.ActingFrame
+	frame  int
+	beat   int
+	tick   int
 	then   func()
 }
 
@@ -393,11 +396,108 @@ func (g *Game) stepCamPan() {
 	}
 }
 
-// stepActJob 逐幀推進 beat「act」姿態循環(actPoseJob):每 frames 幀切下一個 pose,
-// 循環完呼叫 then(見 actPoseJob 型別註解——近似演出,非原版 acting 幀播放器)。
+// finishActJob 清除 acting job 後接下一個 beat。
+func (g *Game) finishActJob(j *actPoseJob) {
+	g.actJob = nil
+	if j.then != nil {
+		j.then()
+	}
+}
+
+func (g *Game) actingActor(fig int) *battle.Unit {
+	for i := range g.storyActors {
+		if g.storyActors[i].Fig == fig {
+			return &g.storyActors[i]
+		}
+	}
+	return nil
+}
+
+// beginActingFrame 設定目前 frame 的姿態。呼叫端保證 j.frame 有效。
+func (g *Game) beginActingFrame(j *actPoseJob) {
+	j.beat, j.tick = 0, 0
+	for _, au := range j.acting[j.frame].Units {
+		if u := g.actingActor(au.Fig); u != nil {
+			u.Dir = au.Pose
+		}
+	}
+}
+
+func actingDelta(pose int) (int, int) {
+	switch pose {
+	case 0:
+		return 0, 1
+	case 1:
+		return -1, 0
+	case 2:
+		return 0, -1
+	case 3:
+		return 1, 0
+	default:
+		return 0, 0
+	}
+}
+
+func (g *Game) nextActingFrame(j *actPoseJob) {
+	j.frame++
+	if j.frame >= len(j.acting) {
+		g.finishActJob(j)
+		return
+	}
+	g.beginActingFrame(j)
+}
+
+// stepOriginalActing 精確承接已破解的 acting frame 行為(doc50 §1.2)。
+func (g *Game) stepOriginalActing(j *actPoseJob) {
+	f := j.acting[j.frame]
+	if f.Beats <= 0 {
+		g.nextActingFrame(j)
+		return
+	}
+	if f.Special { // bit7=1：原地姿態，beat 為顯示節奏
+		j.tick++
+		if j.tick >= f.Beats {
+			g.nextActingFrame(j)
+		}
+		return
+	}
+
+	// bit7=0：原版對每一格跑 tick=1..6，再在第 7 tick 寫入 X/Y。
+	j.tick++
+	frac := float64(j.tick) / 7
+	for _, au := range f.Units {
+		if u := g.actingActor(au.Fig); u != nil {
+			dx, dy := actingDelta(au.Pose)
+			u.OffX = float64(dx) * float64(g.m.TileW) * frac
+			u.OffY = float64(dy) * float64(g.m.TileH) * frac
+		}
+	}
+	if j.tick < 7 {
+		return
+	}
+	for _, au := range f.Units {
+		if u := g.actingActor(au.Fig); u != nil {
+			dx, dy := actingDelta(au.Pose)
+			u.X += dx
+			u.Y += dy
+			u.OffX, u.OffY = 0, 0
+		}
+	}
+	j.tick = 0
+	j.beat++
+	if j.beat >= f.Beats {
+		g.nextActingFrame(j)
+	}
+}
+
+// stepActJob 逐幀推進原版 acting frame 或舊版姿態近似。
 func (g *Game) stepActJob() {
 	j := g.actJob
 	if j == nil {
+		return
+	}
+	if len(j.acting) > 0 {
+		g.stepOriginalActing(j)
 		return
 	}
 	u := &g.storyActors[j.actor]
@@ -407,10 +507,7 @@ func (g *Game) stepActJob() {
 		j.t = 0
 		j.idx++
 		if j.idx >= len(j.poses) {
-			g.actJob = nil
-			if j.then != nil {
-				j.then()
-			}
+			g.finishActJob(j)
 		}
 	}
 }
@@ -516,7 +613,7 @@ func (g *Game) beatStart(b campaign.Beat) {
 			end = len(g.campLines)
 		}
 		g.dialog = nil
-		g.dlgPage = 0 // 新對白從第一頁起
+		g.dlgPage = 0                                  // 新對白從第一頁起
 		for i := end - 1; i >= b.Line && i >= 0; i-- { // 反序堆疊(同 enterNode story 分支慣例)
 			ln := g.campLines[i]
 			g.dialog = append(g.dialog, battle.DialogLine{Speaker: ln.Speaker, Text: ln.Text, Upper: b.Upper})
@@ -526,6 +623,11 @@ func (g *Game) beatStart(b campaign.Beat) {
 			g.beatAdvance()
 		}
 	case "act":
+		if len(b.Acting) > 0 {
+			g.actJob = &actPoseJob{acting: b.Acting, then: g.beatAdvance}
+			g.beginActingFrame(g.actJob)
+			return
+		}
 		idx := findActor(b.Fig)
 		if idx < 0 || len(b.Poses) == 0 {
 			g.beatAdvance()

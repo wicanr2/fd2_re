@@ -150,6 +150,51 @@ func TestBeatActCyclesPosesThenAdvances(t *testing.T) {
 	}
 }
 
+func TestBeatActingNormalFrameMovesEachBeat(t *testing.T) {
+	g := newBeatTestGame(t, []campaign.Beat{
+		{Op: "act", Acting: []campaign.ActingFrame{{
+			Beats: 3,
+			Units: []campaign.ActingUnit{{Fig: 0, Pose: 3}}, // 右三格
+		}}},
+		{Op: "dialog", Line: 1, Count: 1},
+	})
+	g.beatAdvance()
+	if g.actJob == nil {
+		t.Fatal("acting frame 應建立 actJob")
+	}
+	g.tick(6)
+	if u := g.storyActors[0]; u.X != 1 || u.OffX <= 0 || u.Dir != 3 {
+		t.Fatalf("第 6 tick 應仍在第一格內插，得 X=%d OffX=%v Dir=%d", u.X, u.OffX, u.Dir)
+	}
+	g.tick(15) // 3 格 × 每格 7 tick，合計 21
+	if g.actJob != nil {
+		t.Fatal("正常 acting 的全部 beat 後應結束")
+	}
+	u := g.storyActors[0]
+	if u.X != 4 || u.Y != 1 || u.OffX != 0 || u.OffY != 0 || u.Dir != 3 {
+		t.Fatalf("右三格後應為 (4,1) 且定格，得 (%d,%d) off=(%v,%v) dir=%d", u.X, u.Y, u.OffX, u.OffY, u.Dir)
+	}
+	if len(g.dialog) != 1 || g.dialog[0].Text != "第二句" {
+		t.Fatalf("acting 結束應接下一 dialog，得 %+v", g.dialog)
+	}
+}
+
+func TestBeatActingSpecialFrameStaysPut(t *testing.T) {
+	g := newBeatTestGame(t, []campaign.Beat{
+		{Op: "act", Acting: []campaign.ActingFrame{{
+			Beats:   5,
+			Special: true,
+			Units:   []campaign.ActingUnit{{Fig: 4, Pose: 1}},
+		}}},
+	})
+	g.beatAdvance()
+	g.tick(5)
+	u := g.storyActors[1]
+	if u.X != 2 || u.Y != 2 || u.OffX != 0 || u.OffY != 0 || u.Dir != 1 {
+		t.Fatalf("special acting 必須原地面左，得 (%d,%d) off=(%v,%v) dir=%d", u.X, u.Y, u.OffX, u.OffY, u.Dir)
+	}
+}
+
 func TestBeatFadeBothDirectionsCallThen(t *testing.T) {
 	g := newBeatTestGame(t, []campaign.Beat{
 		{Op: "fade", Out: true, Frames: 4},

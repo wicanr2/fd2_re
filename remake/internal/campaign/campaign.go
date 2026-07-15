@@ -58,6 +58,22 @@ type ActorWalk struct {
 	Dir    *int `json:"dir,omitempty"` // 走完後面向(指標,nil=保留走位末向;指定則覆蓋,如索爾走到亞雷斯旁定住面右)
 }
 
+// ActingUnit 是一個 acting frame 影響的場景角色。Fig 對應 Node.Actors 的圖組／角色 id；
+// Pose 的方向定義與原版一致：0 下、1 左、2 上、3 右。
+type ActingUnit struct {
+	Fig  int `json:"fig"`
+	Pose int `json:"pose"`
+}
+
+// ActingFrame 是原版 0x1366a 資源的一幀行為轉錄，不包含原始 bytes。
+// Special=false = bit7=0 正常模式：每個 Beat 沿 Pose 移動一格；Special=true = bit7=1：
+// 原地顯示／姿態，Beat 只表示停留節奏。規則見 doc50 §1.2。
+type ActingFrame struct {
+	Beats   int          `json:"beats"`
+	Special bool         `json:"special,omitempty"`
+	Units   []ActingUnit `json:"units"`
+}
+
 // Beat 過場原語(doc 50 §1/§2):cutscene 節點的 beats 是一條平面序列,依序執行,
 // 一比一對映原版 EXE handler 的呼叫序列(LOADCH/PAN/TXT/ACT/SPAWN/JOIN/BGM/FADE/DELAY)。
 // 每個 op 只用到自己相關的欄位,其餘留零值即可(同 Node 的稀疏欄位風格)。
@@ -76,11 +92,12 @@ type Beat struct {
 	Follow bool `json:"follow,omitempty"` // walk:走位期間鏡頭鎖定跟隨(doc47 §9,同 Node.FollowWalk 機制)
 	Dir    *int `json:"dir,omitempty"`    // walk:走完後面向(指標,nil=保留走位末向;指定則面向它,如索爾走前面轉身面向亞雷斯)
 
-	// act:單位原地播 pose 序列(姿態循環,無位移)。remake 尚未把 74 筆 acting 資源解碼幀接上
-	// 引擎播放(doc47 §5 未解),此處以「方向切換」近似演出節奏(見 main.go stepActJob 註解),
-	// 非真實原版動畫——給悠妮昏迷轉向/蓋亞阻擋等簡單姿態用,不得當作已還原的 acting 播放器。
-	Poses      []int `json:"poses,omitempty"`
-	PoseFrames int   `json:"pose_frames,omitempty"` // 每個 pose 停留幀數(預設見 main.go)
+	// act:Acting 非空時播放原版 acting frame 的行為轉錄：正常 frame 每 Beat 依 Pose 搬一格，
+	// special frame 只原地換姿態(doc50 §1.2)。Poses/PoseFrames 是舊的原地姿態近似欄位，
+	// 為舊場景相容而保留；不可與 Acting 混用。
+	Acting     []ActingFrame `json:"acting_frames,omitempty"`
+	Poses      []int         `json:"poses,omitempty"`
+	PoseFrames int           `json:"pose_frames,omitempty"` // 每個 pose 停留幀數(預設見 main.go)
 
 	// dialog:章文本第 Line 條起連續 Count 句(Count 省略=1)。Line 對應目前節點 Script+Scene
 	// 載入的那份 lines(同 Node.Scene 語意),不是 FDTXT 原始 idx(譯文精校版常把一條原文拆成
