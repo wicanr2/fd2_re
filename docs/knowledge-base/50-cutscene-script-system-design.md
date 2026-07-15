@@ -106,11 +106,24 @@ slot3 索爾仍為 `(4,46)`，但 slot4 亞雷斯已為 **`(7,46)`**（初始 FD
 均不會到 `0x1366a`；FDTXT 控制碼不是這個額外 acting 的發動來源。草地 handler 的 `ACT(0x65..0x69)`
 也都是直接呼叫且資料不選 slot3/4。故 runtime entry/caller trace 是下一個最小且有辨識力的實驗。
 
-**[追蹤準備 2026-07-15]**：在草地實機的 CS dump 以 entry 簽章
+**[normal-core entry trace 2026-07-15]**：在草地實機的 CS dump 以 entry 簽章
 `68 88 00 00 00 … 53 56 57 55 83 EC 5C` 搜到真正入口 `CS=0158:1C966A`（不是曾誤算的
-`1C766A`）。dynamic core 下該 code breakpoint 沒有可靠停住，即使流程已跨過整段草地；這與 DOSBox-X
-對 dynamic core 的 breakpoint/step 警告一致。後續必須以 **normal core** 重跑至草地，於此入口讀
-`SS:ESP` 的 return address 與 `SS:ESP+4` 的 acting ID；在未抓到這兩值前，不宣稱額外資源是哪一筆。
+`1C766A`）。dynamic core 下 code breakpoint 不可靠；改用 **normal core** 後，`SS:ESP` 已逐筆讀到
+`return address, acting ID`，runtime code rebase=`0x1b6000`：
+
+| 實測順序 | `SS:ESP` return | ID | 回扣 static caller | 判定 |
+|---|---:|---:|---:|---|
+| 1 | `0x1e83fa` | `0x64` | `0x323fa` | handler 顯式 ACT |
+| 2 | `0x1e842b` | `0x65` | `0x3242b` | handler 顯式 ACT |
+| 3 | `0x1e8466` | `0x66` | `0x32466` | handler 顯式 ACT |
+| 4 | `0x1e84a1` | `0x67` | `0x324a1` | handler 顯式 ACT |
+| 5 | `0x1e84dc` | `0x68` | `0x324dc` | handler 顯式 ACT |
+
+故已觀察的 handler/對話交界沒有額外 resource ID；也不能據此否定既有 slot3 寫入堆疊。
+normal-core 在 `ACT 0x68` 後的 `0160:24B3E0` unit dump 為 slot3=`(4,46,pose2)`、
+slot4=`(7,46,pose3)`，已是接近後的位置；而 `0x64..0x68` 解碼均不選 slot3/4。故位移**早於
+ACT 0x64**，不是草地四句對話之間的未知 caller。下一個實驗改為在 map32 載入、`ACT 0x63`、王座
+長對話與 `ACT 0x64` 前後傾印 slot3/4，定位最早改格的窗口。
 
 **[資料面直接證實 2026-07-05,靜態讀 dump 非 dosbox]**:讀 74 筆解碼 acting(`extracted/dosbox_dump/acting_decoded/`),
 草地幕 0x65~0x69 資料 = 每幀 (拍數, unit, pose):0x65=units 0-15 全 pose2(上,定場,拍數5)、

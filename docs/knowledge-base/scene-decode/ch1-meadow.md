@@ -108,5 +108,6 @@
 ## 5. 目前追查狀態(2026-07-15)
 
 此頁的舊「acting 只管面向」結論已撤回。已證實：草地 slot3/4 的邏輯格寫入由 acting 正常模式執行；
-顯式 `0x65..0x69` 不是該資源，`0x15f84` 亦不會觸發 acting。下一步是 runtime 於 `0x1366a` entry
-記錄 resource ID 與 return/caller。完整證據鏈與 remake 對映只維護於 `doc50 §1.2`。
+`0x15f84` 亦不會觸發 acting。normal-core entry trace 已確認到 `0x68` 為止皆是 handler 顯式
+`0x64..0x68`，沒有額外 ID；且 `0x68` 後 slot4 已是 `(7,46)`，故草地可見接近在本段開始前已完成。
+下一步前移到 map32 載入／王座長對話窗口做 slot3/4 差分。完整證據鏈與 remake 對映只維護於 `doc50 §1.2`。
