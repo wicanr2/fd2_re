@@ -11,8 +11,97 @@
     },
     "0x32382": {
       "dialog": {
-        "line": 0,
-        "count": 1
+        "script": "assets/story/ch00_palace.json",
+        "scene": "王座廳,傳位",
+        "lines": [
+          { "line": 0 },
+          { "line": 1 },
+          { "line": 2 },
+          { "line": 3 },
+          { "line": 4 },
+          { "line": 5 }
+        ]
+      }
+    },
+    "0x323cb": {
+      "dialog": {
+        "script": "assets/story/ch00_palace.json",
+        "scene": "王座廳,傳位",
+        "lines": [
+          { "line": 6 },
+          { "line": 7 },
+          { "line": 8 },
+          { "line": 9 },
+          { "line": 10 },
+          { "line": 11 },
+          { "line": 12 },
+          { "line": 13 },
+          { "line": 14 },
+          { "line": 15 },
+          { "line": 16 },
+          { "line": 17 },
+          { "line": 18 }
+        ]
+      }
+    },
+    "0x3240b": {
+      "pan": {
+        "x": 56,
+        "y": 1032,
+        "frames": 60
+      }
+    },
+    "0x3244d": {
+      "dialog": {
+        "script": "assets/story/ch00_palace.json",
+        "scene": "王城一隅,亞雷斯撞見",
+        "lines": [
+          { "line": 0, "upper": true },
+          { "line": 1 },
+          { "line": 2, "upper": true },
+          { "line": 3 },
+          { "line": 4, "upper": true }
+        ]
+      }
+    },
+    "0x32488": {
+      "dialog": {
+        "script": "assets/story/ch00_palace.json",
+        "scene": "王城一隅,亞雷斯撞見",
+        "lines": [
+          { "line": 5, "upper": true },
+          { "line": 6 },
+          { "line": 7, "upper": true },
+          { "line": 8 }
+        ]
+      }
+    },
+    "0x324c3": {
+      "dialog": {
+        "script": "assets/story/ch00_palace.json",
+        "scene": "王城一隅,亞雷斯撞見",
+        "line": 9,
+        "upper": true
+      }
+    },
+    "0x324fe": {
+      "dialog": {
+        "script": "assets/story/ch00_palace.json",
+        "scene": "王城一隅,亞雷斯撞見",
+        "lines": [
+          { "line": 10 },
+          { "line": 11, "upper": true },
+          { "line": 12 },
+          { "line": 13, "upper": true },
+          { "line": 14 },
+          { "line": 15, "upper": true },
+          { "line": 16 },
+          { "line": 17, "upper": true },
+          { "line": 18 },
+          { "line": 19, "upper": true },
+          { "line": 20 },
+          { "line": 21, "upper": true }
+        ]
       }
     }
   }

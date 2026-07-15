@@ -39,8 +39,8 @@ func TestWinPath(t *testing.T) {
 	if r.Node().Type != "story" {
 		t.Fatalf("start 應為 story,得 %s", r.Node().Type)
 	}
-	r.Advance("")     // intro → b1
-	r.Advance("win")  // b1 → pick
+	r.Advance("")    // intro → b1
+	r.Advance("win") // b1 → pick
 	if r.Cur != "pick" {
 		t.Fatalf("勝利應到 pick,得 %s", r.Cur)
 	}
@@ -67,7 +67,7 @@ func TestLoseRouteAndFlags(t *testing.T) {
 	if !r.Flags["retried"] {
 		t.Fatal("retreat 應設 retried 旗標")
 	}
-	r.Advance("win") // b1 → pick
+	r.Advance("win")                   // b1 → pick
 	if n := len(r.Visible()); n != 2 { // retried=true → 祕道出現
 		t.Fatalf("choice 應有 2 選項,得 %d", n)
 	}
@@ -82,5 +82,28 @@ func TestLoadValidation(t *testing.T) {
 	os.WriteFile(p, []byte(`{"start":"x","nodes":{"a":{"type":"story","next":"nope"}}}`), 0o644)
 	if _, err := Load(p); err == nil {
 		t.Fatal("start 不存在應報錯")
+	}
+}
+
+func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
+	c, err := Load("../../assets/scenarios/campaign_full.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	throne := c.Nodes["story_ch01_palace_throne"]
+	if throne == nil || len(throne.Beats) != 5 || throne.Beats[2].Line != 0 || throne.Beats[2].Count != 6 || throne.Beats[4].Line != 6 || throne.Beats[4].Count != 13 {
+		t.Fatalf("throne beats do not preserve FDTXT #0/#1 groups: %#v", throne)
+	}
+	grass := c.Nodes["story_ch01_palace_path"]
+	if grass == nil || len(grass.Actors) != 2 || grass.Actors[1].X != 10 || grass.Actors[1].Y != 47 {
+		t.Fatalf("grass initial Ares placement = %#v, want proven (10,47)", grass)
+	}
+	var firstWalk, secondWalk bool
+	for _, beat := range grass.Beats {
+		firstWalk = firstWalk || beat.Op == "walk" && beat.Fig == 4 && beat.FromX == 13 && beat.X == 10 && beat.Y == 47
+		secondWalk = secondWalk || beat.Op == "walk" && beat.Fig == 4 && beat.X == 7 && beat.Y == 46
+	}
+	if !firstWalk || !secondWalk {
+		t.Fatalf("grass Ares walks missing: %#v", grass.Beats)
 	}
 }

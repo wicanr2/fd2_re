@@ -10,3 +10,8 @@ reports every absent binding as an issue and a caller must not start an
 incomplete handler as though it were faithful.  This separation lets future
 campaigns reuse the engine without copying FD2-specific addresses or guessing
 coordinate/text/actor conversions.
+
+When one original `dialog` call contains several FDTXT messages, use
+`dialog.lines` to list its remake line beats in source order.  Include its
+`script` and `scene`: line indices are local to that editable text scene and
+must not be inferred from the original numeric FDTXT index alone.

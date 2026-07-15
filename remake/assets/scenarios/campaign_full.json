@@ -201,7 +201,7 @@
     {
      "op": "dialog",
      "line": 0,
-     "count": 1
+     "count": 6
     },
     {
      "op": "walk",
@@ -213,8 +213,8 @@
     },
     {
      "op": "dialog",
-     "line": 1,
-     "count": 18
+     "line": 6,
+     "count": 13
     }
    ]
   },
@@ -236,15 +236,22 @@
     },
     {
      "fig": 4,
-     "x": 11,
+     "x": 10,
      "y": 47,
-     "dir": 1,
-     "from_x": 13,
-     "from_y": 47,
-     "walk_frames": 40
+     "dir": 1
     }
    ],
    "beats": [
+    {
+     "op": "walk",
+     "fig": 4,
+     "from_x": 13,
+     "from_y": 47,
+     "x": 10,
+     "y": 47,
+     "frames": 36,
+     "dir": 1
+    },
     {
      "op": "dialog",
      "line": 0,
@@ -252,17 +259,128 @@
      "upper": true
     },
     {
+     "op": "dialog",
+     "line": 1,
+     "count": 1
+    },
+    {
+     "op": "dialog",
+     "line": 2,
+     "count": 1,
+     "upper": true
+    },
+    {
+     "op": "dialog",
+     "line": 3,
+     "count": 1
+    },
+    {
+     "op": "dialog",
+     "line": 4,
+     "count": 1,
+     "upper": true
+    },
+    {
      "op": "walk",
      "fig": 4,
-     "x": 8,
+     "x": 7,
      "y": 46,
-     "frames": 70,
+     "frames": 84,
      "dir": 1
     },
     {
      "op": "dialog",
-     "line": 1,
-     "count": 21
+     "line": 5,
+     "count": 1,
+     "upper": true
+    },
+    {
+     "op": "dialog",
+     "line": 6,
+     "count": 1
+    },
+    {
+     "op": "dialog",
+     "line": 7,
+     "count": 1,
+     "upper": true
+    },
+    {
+     "op": "dialog",
+     "line": 8,
+     "count": 1
+    },
+    {
+     "op": "dialog",
+     "line": 9,
+     "count": 1,
+     "upper": true
+    },
+    {
+     "op": "dialog",
+     "line": 10,
+     "count": 1
+    },
+    {
+     "op": "dialog",
+     "line": 11,
+     "count": 1,
+     "upper": true
+    },
+    {
+     "op": "dialog",
+     "line": 12,
+     "count": 1
+    },
+    {
+     "op": "dialog",
+     "line": 13,
+     "count": 1,
+     "upper": true
+    },
+    {
+     "op": "dialog",
+     "line": 14,
+     "count": 1
+    },
+    {
+     "op": "dialog",
+     "line": 15,
+     "count": 1,
+     "upper": true
+    },
+    {
+     "op": "dialog",
+     "line": 16,
+     "count": 1
+    },
+    {
+     "op": "dialog",
+     "line": 17,
+     "count": 1,
+     "upper": true
+    },
+    {
+     "op": "dialog",
+     "line": 18,
+     "count": 1
+    },
+    {
+     "op": "dialog",
+     "line": 19,
+     "count": 1,
+     "upper": true
+    },
+    {
+     "op": "dialog",
+     "line": 20,
+     "count": 1
+    },
+    {
+     "op": "dialog",
+     "line": 21,
+     "count": 1,
+     "upper": true
     }
    ],
    "exit_walk": {

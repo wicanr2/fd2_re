@@ -77,7 +77,7 @@ func TestHandlerBindingUsesSourceAddress(t *testing.T) {
 		HandlerScript: "handlers/ch00_pre.json",
 		Overrides: map[string]HandlerBindingOverride{
 			"0x32339": {Pan: &HandlerPoint{X: 72, Y: 816, Frames: 60}},
-			"0x32382": {Dialog: &HandlerDialog{Line: 0, Count: 1}},
+			"0x32382": {Dialog: &HandlerDialog{Lines: []HandlerDialogLine{{Line: 0}}}},
 		},
 	}
 	script := &HandlerScript{Beats: []HandlerBeat{
@@ -96,10 +96,36 @@ func TestHandlerBindingUsesSourceAddress(t *testing.T) {
 	}
 }
 
+func TestCompileHandlerDialogExpandsOriginalTextGroup(t *testing.T) {
+	upper := true
+	script := &HandlerScript{Beats: []HandlerBeat{{
+		Op: "dialog", Source: HandlerSource{Addr: "0x40000"},
+	}}}
+	beats, issues := CompileHandlerScript(script, HandlerBindings{
+		Dialog: func(HandlerBeat) (HandlerDialog, bool) {
+			return HandlerDialog{Lines: []HandlerDialogLine{
+				{Line: 3, Upper: &upper}, {Line: 4}, {Line: 5, Count: 2, Upper: &upper},
+			}}, true
+		},
+	})
+	if len(issues) != 0 || len(beats) != 3 {
+		t.Fatalf("beats=%#v issues=%#v", beats, issues)
+	}
+	if beats[0].Line != 3 || beats[0].Upper != &upper || beats[1].Line != 4 || beats[2].Count != 2 {
+		t.Fatalf("expanded dialog beats = %#v", beats)
+	}
+}
+
 func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 	binding, err := LoadHandlerBinding("../../assets/cutscenes/bindings/ch00_pre.json")
 	if err != nil {
 		t.Fatal(err)
+	}
+	if d := binding.Overrides["0x32382"].Dialog; d == nil || d.Scene != "王座廳,傳位" || len(d.Lines) != 6 {
+		t.Fatalf("throne FDTXT #0 binding = %#v, want six contextual lines", d)
+	}
+	if d := binding.Overrides["0x3244d"].Dialog; d == nil || d.Scene != "王城一隅,亞雷斯撞見" || len(d.Lines) != 5 {
+		t.Fatalf("grass FDTXT #2 binding = %#v, want five contextual lines", d)
 	}
 	script, err := LoadHandlerScript("../../assets/cutscenes/handlers/ch00_pre.json")
 	if err != nil {
@@ -112,7 +138,7 @@ func TestLoadPartialChapter0BindingKeepsHandlerIncomplete(t *testing.T) {
 	var pan, dialog bool
 	for _, beat := range beats {
 		pan = pan || beat.Op == "pan" && beat.X == 72 && beat.Y == 816
-		dialog = dialog || beat.Op == "dialog" && beat.Line == 0 && beat.Count == 1
+		dialog = dialog || beat.Op == "dialog" && beat.Line == 0
 	}
 	if !pan || !dialog {
 		t.Fatalf("loaded binding did not lower its two proven overrides: %#v", beats)

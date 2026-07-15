@@ -18,6 +18,23 @@ type HandlerDialog struct {
 	Line  int   `json:"line"`
 	Count int   `json:"count,omitempty"`
 	Upper *bool `json:"upper,omitempty"`
+	// Script/Scene record the authored text context selected by the preceding
+	// loadch or camera transition.  They are metadata until a handler is run
+	// through the scene-loading adapter; preserving them prevents line index 0
+	// from being ambiguous across different FDTXT resources.
+	Script string `json:"script,omitempty"`
+	Scene  string `json:"scene,omitempty"`
+	// Lines expands one original FDTXT call into individually authored remake
+	// lines.  This is required when one original string contains alternating
+	// speakers (and therefore different dialogue-box positions).
+	Lines []HandlerDialogLine `json:"lines,omitempty"`
+}
+
+// HandlerDialogLine is one runtime dialog beat within a HandlerDialog group.
+type HandlerDialogLine struct {
+	Line  int   `json:"line"`
+	Count int   `json:"count,omitempty"`
+	Upper *bool `json:"upper,omitempty"`
 }
 
 // HandlerBindings holds only evidence-backed, campaign-specific bridges from
@@ -96,7 +113,13 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 				issue(i, input, "no remake line mapping for original FDTXT lookup")
 				continue
 			}
-			beats = append(beats, Beat{Op: "dialog", Line: d.Line, Count: d.Count, Upper: d.Upper})
+			if len(d.Lines) == 0 {
+				beats = append(beats, Beat{Op: "dialog", Line: d.Line, Count: d.Count, Upper: d.Upper})
+				continue
+			}
+			for _, line := range d.Lines {
+				beats = append(beats, Beat{Op: "dialog", Line: line.Line, Count: line.Count, Upper: line.Upper})
+			}
 		case "act":
 			if input.ActingID == nil || bindings.Acting == nil {
 				issue(i, input, "act requires an explicit acting-resource mapping")
