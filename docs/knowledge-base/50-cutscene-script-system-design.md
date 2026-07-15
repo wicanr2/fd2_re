@@ -217,12 +217,15 @@ map31 全部 ACT 維持 fail-closed。map0 的 0/1/2/5 亦尚待
 其獨立 runtime dump。
 
 **精確 entry breakpoint 的位址規則（2026-07-15）**：不要把 `0x1366a` 的 runtime 位址
-`0x1C966A` 當成 handler 的 relocation base。normal-core 在 ACT(102) 函式入口擷取的 stack
-第一個 return address 是 **`0x1E8466`**；它精確對應原檔 `0x32461 call 0x1366a` 的 return
-`0x32466`，故該 handler 的 runtime base 是 **`0x1B6000`**。ACT function 本體在另一段
-runtime image（`0x1366a→0x1C966A`），兩者不可混算。例：map31 `ACT(95)` 的原檔 call
-`0x32712` 應斷在 **`0x1E8712`**（return `0x1E8717`），而非曾誤試的 `0x1C7712`。這是
-entry-time roster dump 的正確斷點公式；尚未命中的舊錯位址實驗不構成任何 roster 結論。
+`0x1C966A` 當成 handler 的 relocation base。normal-core 在一個 ACT(102) 函式入口擷取的 stack
+第一個 return address 是 **`0x1E8466`**；它對應該次載入狀態下原檔 `0x32461 call 0x1366a` 的
+return `0x32466`，故當次 handler base 為 **`0x1B6000`**。ACT function 本體在另一段 runtime
+image（`0x1366a→0x1C966A`），兩者不可混算。把這個樣本外推成 map31 `ACT(95)` 的
+`0x1E8712`、並在 map31 `LOADCH` 前預設 breakpoint 的實驗**沒有命中且流程已越過 ACT(95)**；
+因此 handler code base 可能隨載入階段重配置，尚不可當跨 `LOADCH` 的通用公式。正確 SOP 是：到達
+目標 map31 checkpoint 後，先斷 `0x1C966A` 取得**當次** stack return，再以原檔 call-return 配對
+算出當次 handler base，最後重新跑到目標 ACT call-site。未驗證前，任何算出的 map31 call-site
+都只是假設，不能用來建立 roster 結論。
 - 舊 `poses`／`pose_frames` 仍可用於尚未轉錄的近似場景，但新的原版 acting 不得再降級成它。
 
 > **系統界線(2026-07-04,doc52):本 DSL 只承接「戰前/戰後過場編排」(handler 0x3231b 族,系統 A)。
