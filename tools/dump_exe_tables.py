@@ -144,6 +144,21 @@ def dump_resist_crit(d):
     return rows
 
 
+def dump_class_equip_types(d):
+    """原版 0x1c1c3 的 class×item.type 六欄白名單（file 0x55689）。"""
+    base, stride = 0x55689, 7
+    rows = []
+    for cls in range(29):
+        o = base + cls * stride
+        raw = list(d[o:o + stride])
+        if len(raw) != stride:
+            break
+        # 第一個 byte 是表項常數 1；0x1c1c3 只掃後六個 item.type slots。
+        rows.append({"cls": cls, "name": CLASS_NAMES[cls] if cls < len(CLASS_NAMES) else "?",
+                     "types": raw[1:], "raw": raw})
+    return rows
+
+
 def write_out(out, name, rows):
     os.makedirs(out, exist_ok=True)
     with open(os.path.join(out, name + ".json"), "w", encoding="utf-8") as f:
@@ -213,9 +228,10 @@ def main(argv):
     spell = dump_spell(d)
     item = dump_item(d)
     rc = dump_resist_crit(d)
+    equip = dump_class_equip_types(d)
 
     for name, rows in [("growth", growth), ("unit", unit), ("character_defaults", characters), ("spell", spell),
-                       ("item", item), ("resist_crit", rc)]:
+                       ("item", item), ("resist_crit", rc), ("class_equip_types", equip)]:
         write_out(out, name, rows)
         print(f"  -> {name}.json  ({len(rows)} 列)")
 
