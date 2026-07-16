@@ -1,6 +1,7 @@
 package campaign
 
 import (
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -21,6 +22,13 @@ func TestBuyGoodUsesSelectedInventoryAndIsAtomicOnFailure(t *testing.T) {
 	}
 	if got, err := BuyGood(9, receiver, good); err == nil || got != 9 || len(receiver.Inventory) != 3 {
 		t.Fatalf("insufficient gold changed state gold=%d err=%v inventory=%#v", got, err, receiver.Inventory)
+	}
+}
+
+func TestLoadShopEligibilityUsesOriginalTables(t *testing.T) {
+	types, equip, err := LoadShopEligibility(filepath.Join("..", "..", "..", "docs", "data", "exe_tables", "item.json"), filepath.Join("..", "..", "..", "docs", "data", "exe_tables", "class_equip_types.json"))
+	if err != nil || types[0x80] != 21 || !CanEquip(1, types[0x80], equip) || CanEquip(25, types[0x80], equip) {
+		t.Fatalf("eligibility tables err=%v type=%d equip=%#v", err, types[0x80], equip[1])
 	}
 }
 

@@ -1,10 +1,55 @@
 package campaign
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
+
+type shopItemRow struct {
+	ID   int `json:"id"`
+	Type int `json:"type"`
+}
+type shopEquipRow struct {
+	ClassID int   `json:"cls"`
+	Types   []int `json:"types"`
+}
+
+// LoadShopEligibility loads the editable EXE-derived item type and class whitelist tables.
+func LoadShopEligibility(itemPath, equipPath string) (map[int]int, map[int][]int, error) {
+	itemRaw, err := os.ReadFile(itemPath)
+	if err != nil {
+		return nil, nil, err
+	}
+	equipRaw, err := os.ReadFile(equipPath)
+	if err != nil {
+		return nil, nil, err
+	}
+	var items []shopItemRow
+	var rows []shopEquipRow
+	if err := json.Unmarshal(itemRaw, &items); err != nil {
+		return nil, nil, err
+	}
+	if err := json.Unmarshal(equipRaw, &rows); err != nil {
+		return nil, nil, err
+	}
+	types, equip := map[int]int{}, map[int][]int{}
+	for _, item := range items {
+		if item.ID < 0 || item.ID > 0xff {
+			return nil, nil, fmt.Errorf("invalid item id %d", item.ID)
+		}
+		types[item.ID] = item.Type
+	}
+	for _, row := range rows {
+		if len(row.Types) != 6 {
+			return nil, nil, fmt.Errorf("class %d has %d equipment slots", row.ClassID, len(row.Types))
+		}
+		equip[row.ClassID] = append([]int(nil), row.Types...)
+	}
+	return types, equip, nil
+}
 
 // CanEquip mirrors original 0x1c1c3: an equip item is allowed exactly when
 // its item.type appears in this class record's six type slots (0xff is empty).
