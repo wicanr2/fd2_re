@@ -198,6 +198,9 @@ def load_shops_by_chapter(path: str) -> dict[int, list[dict]]:
         data = json.load(f)
     by_ch: dict[int, list[dict]] = {}
     for s in data["shops"]:
+        for good in s["goods"]:
+            if "id" not in good or not isinstance(good["id"], int) or not 0 <= good["id"] <= 0xFF:
+                raise SystemExit(f"商店 {s.get('chapter')}/{s.get('kind')} 商品缺少有效原版 item id: {good!r}")
         by_ch.setdefault(s["chapter"], []).append(s)
     # 固定順序:weapon → item → 其他 → secret 最後(secret 掛在最後一個一般商店節點上)
     order = {"weapon": 0, "item": 1, "secret": 99}
@@ -588,7 +591,7 @@ def build_campaign(
                 nodes[sid] = {
                     "type": "shop",
                     "bgm": BGM_STORY,
-                    "goods": [{"name": g["name"], "price": g["price"]} for g in s["goods"]],
+                    "goods": [{"id": g["id"], "name": g["name"], "price": g["price"]} for g in s["goods"]],
                     "next": None,  # 稍後一律回 town hub
                 }
             secret_shop_id = None
@@ -599,7 +602,7 @@ def build_campaign(
                 nodes[secret_shop_id] = {
                     "type": "shop",
                     "bgm": BGM_STORY,
-                    "goods": [{"name": g["name"], "price": g["price"]} for g in secret_row["goods"]],
+                    "goods": [{"id": g["id"], "name": g["name"], "price": g["price"]} for g in secret_row["goods"]],
                     "next": None,
                 }
             town_id = f"town_ch{intermission_cid}"

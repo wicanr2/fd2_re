@@ -7,10 +7,10 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "布衣", "price": 50},
-      {"name": "旅行裝", "price": 500},
-      {"name": "皮甲", "price": 300},
-      {"name": "法師袍", "price": 750}
+      {"id": 128, "name": "布衣", "price": 50},
+      {"id": 129, "name": "旅行裝", "price": 500},
+      {"id": 132, "name": "皮甲", "price": 300},
+      {"id": 165, "name": "法師袍", "price": 750}
     ]
   },
   {
@@ -19,7 +19,7 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "藥草", "price": 10}
+      {"id": 192, "name": "藥草", "price": 10}
     ]
   },
   {
@@ -29,12 +29,12 @@
     "secret": true,
     "how_to_enter": "酒店前按Shift+F1鍵",
     "goods": [
-      {"name": "闊劍", "price": 250},
-      {"name": "長戟", "price": 1200},
-      {"name": "釘頭鎚", "price": 180},
-      {"name": "藥草", "price": 10},
-      {"name": "回復劑", "price": 80},
-      {"name": "皮甲", "price": 300}
+      {"id": 1, "name": "闊劍", "price": 250},
+      {"id": 22, "name": "長戟", "price": 1200},
+      {"id": 53, "name": "釘頭鎚", "price": 180},
+      {"id": 192, "name": "藥草", "price": 10},
+      {"id": 193, "name": "回復劑", "price": 80},
+      {"id": 132, "name": "皮甲", "price": 300}
     ]
   },
   {
@@ -43,11 +43,11 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "短劍", "price": 50},
-      {"name": "闊劍", "price": 250},
-      {"name": "手斧", "price": 300},
-      {"name": "皮甲", "price": 300},
-      {"name": "法師袍", "price": 750}
+      {"id": 0, "name": "短劍", "price": 50},
+      {"id": 1, "name": "闊劍", "price": 250},
+      {"id": 32, "name": "手斧", "price": 300},
+      {"id": 132, "name": "皮甲", "price": 300},
+      {"id": 165, "name": "法師袍", "price": 750}
     ]
   },
   {
@@ -56,7 +56,7 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "藥草", "price": 10}
+      {"id": 192, "name": "藥草", "price": 10}
     ]
   },
   {
@@ -66,8 +66,8 @@
     "secret": true,
     "how_to_enter": "武器店前按Ctrl+F2鍵",
     "goods": [
-      {"name": "回復劑", "price": 80},
-      {"name": "魔法水", "price": 1000}
+      {"id": 193, "name": "回復劑", "price": 80},
+      {"id": 206, "name": "魔法水", "price": 1000}
     ]
   },
   {
@@ -76,14 +76,14 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "闊劍", "price": 250},
-      {"name": "迴旋斧", "price": 800},
-      {"name": "長弓", "price": 500},
-      {"name": "釘頭鎚", "price": 180},
-      {"name": "旅行裝", "price": 500},
-      {"name": "皮甲", "price": 300},
-      {"name": "硬皮甲", "price": 800},
-      {"name": "法師袍", "price": 750}
+      {"id": 1, "name": "闊劍", "price": 250},
+      {"id": 33, "name": "迴旋斧", "price": 800},
+      {"id": 45, "name": "長弓", "price": 500},
+      {"id": 53, "name": "釘頭鎚", "price": 180},
+      {"id": 129, "name": "旅行裝", "price": 500},
+      {"id": 132, "name": "皮甲", "price": 300},
+      {"id": 133, "name": "硬皮甲", "price": 800},
+      {"id": 165, "name": "法師袍", "price": 750}
     ]
   },
   {
@@ -92,8 +92,8 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "藥草", "price": 10},
-      {"name": "回復劑", "price": 80}
+      {"id": 192, "name": "藥草", "price": 10},
+      {"id": 193, "name": "回復劑", "price": 80}
     ]
   },
   {
@@ -103,8 +103,8 @@
     "secret": true,
     "how_to_enter": "出口前按Alt+F3鍵",
     "goods": [
-      {"name": "風精之羽", "price": 20000},
-      {"name": "魔法水", "price": 1000}
+      {"id": 96, "name": "風精之羽", "price": 20000},
+      {"id": 206, "name": "魔法水", "price": 1000}
     ]
   },
   {
@@ -113,12 +113,12 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "闊劍", "price": 250},
-      {"name": "長劍", "price": 800},
-      {"name": "刺矛", "price": 80},
-      {"name": "騎槍", "price": 400},
-      {"name": "硬皮甲", "price": 800},
-      {"name": "環狀甲", "price": 1000}
+      {"id": 1, "name": "闊劍", "price": 250},
+      {"id": 2, "name": "長劍", "price": 800},
+      {"id": 20, "name": "刺矛", "price": 80},
+      {"id": 21, "name": "騎槍", "price": 400},
+      {"id": 133, "name": "硬皮甲", "price": 800},
+      {"id": 144, "name": "環狀甲", "price": 1000}
     ]
   },
   {
@@ -127,9 +127,9 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "藥草", "price": 10},
-      {"name": "回復劑", "price": 80},
-      {"name": "解毒劑", "price": 20}
+      {"id": 192, "name": "藥草", "price": 10},
+      {"id": 193, "name": "回復劑", "price": 80},
+      {"id": 196, "name": "解毒劑", "price": 20}
     ]
   },
   {
@@ -139,10 +139,10 @@
     "secret": true,
     "how_to_enter": "道具店前按Shift+F4鍵",
     "goods": [
-      {"name": "力量藥水", "price": 10000},
-      {"name": "耐力藥水", "price": 10000},
-      {"name": "速度藥水", "price": 10000},
-      {"name": "生命之實", "price": 10000}
+      {"id": 198, "name": "力量藥水", "price": 10000},
+      {"id": 199, "name": "耐力藥水", "price": 10000},
+      {"id": 200, "name": "速度藥水", "price": 10000},
+      {"id": 94, "name": "生命之實", "price": 10000}
     ]
   },
   {
@@ -151,16 +151,16 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "闊劍", "price": 250},
-      {"name": "長劍", "price": 800},
-      {"name": "刺矛", "price": 80},
-      {"name": "騎槍", "price": 400},
-      {"name": "迴旋斧", "price": 800},
-      {"name": "短弓", "price": 100},
-      {"name": "長弓", "price": 500},
-      {"name": "鎖子甲", "price": 3600},
-      {"name": "夜行裝", "price": 3200},
-      {"name": "僧侶袍", "price": 1800}
+      {"id": 1, "name": "闊劍", "price": 250},
+      {"id": 2, "name": "長劍", "price": 800},
+      {"id": 20, "name": "刺矛", "price": 80},
+      {"id": 21, "name": "騎槍", "price": 400},
+      {"id": 33, "name": "迴旋斧", "price": 800},
+      {"id": 44, "name": "短弓", "price": 100},
+      {"id": 45, "name": "長弓", "price": 500},
+      {"id": 145, "name": "鎖子甲", "price": 3600},
+      {"id": 134, "name": "夜行裝", "price": 3200},
+      {"id": 166, "name": "僧侶袍", "price": 1800}
     ]
   },
   {
@@ -169,9 +169,9 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "藥草", "price": 10},
-      {"name": "回復劑", "price": 80},
-      {"name": "解毒劑", "price": 20}
+      {"id": 192, "name": "藥草", "price": 10},
+      {"id": 193, "name": "回復劑", "price": 80},
+      {"id": 196, "name": "解毒劑", "price": 20}
     ]
   },
   {
@@ -181,8 +181,8 @@
     "secret": true,
     "how_to_enter": "教會前按Ctrl+F5鍵",
     "goods": [
-      {"name": "再生藥", "price": 300},
-      {"name": "魔法水", "price": 1000}
+      {"id": 194, "name": "再生藥", "price": 300},
+      {"id": 206, "name": "魔法水", "price": 1000}
     ]
   },
   {
@@ -191,18 +191,18 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "闊劍", "price": 250},
-      {"name": "長劍", "price": 800},
-      {"name": "騎槍", "price": 400},
-      {"name": "長戟", "price": 1200},
-      {"name": "迴旋斧", "price": 800},
-      {"name": "戰斧", "price": 800},
-      {"name": "長弓", "price": 500},
-      {"name": "釘頭鎚", "price": 180},
-      {"name": "巨鎚", "price": 640},
-      {"name": "硬皮甲", "price": 800},
-      {"name": "夜行裝", "price": 3200},
-      {"name": "鎖子甲", "price": 3600}
+      {"id": 1, "name": "闊劍", "price": 250},
+      {"id": 2, "name": "長劍", "price": 800},
+      {"id": 21, "name": "騎槍", "price": 400},
+      {"id": 22, "name": "長戟", "price": 1200},
+      {"id": 33, "name": "迴旋斧", "price": 800},
+      {"id": 34, "name": "戰斧", "price": 800},
+      {"id": 45, "name": "長弓", "price": 500},
+      {"id": 53, "name": "釘頭鎚", "price": 180},
+      {"id": 54, "name": "巨鎚", "price": 640},
+      {"id": 133, "name": "硬皮甲", "price": 800},
+      {"id": 134, "name": "夜行裝", "price": 3200},
+      {"id": 145, "name": "鎖子甲", "price": 3600}
     ]
   },
   {
@@ -211,8 +211,8 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "藥草", "price": 10},
-      {"name": "回復劑", "price": 80}
+      {"id": 192, "name": "藥草", "price": 10},
+      {"id": 193, "name": "回復劑", "price": 80}
     ]
   },
   {
@@ -222,10 +222,10 @@
     "secret": true,
     "how_to_enter": "酒店前按Alt+F6鍵",
     "goods": [
-      {"name": "聖者之戒", "price": 5000},
-      {"name": "心眼之書", "price": 5000},
-      {"name": "白金勳章", "price": 5000},
-      {"name": "飛龍卵", "price": 100}
+      {"id": 88, "name": "聖者之戒", "price": 5000},
+      {"id": 92, "name": "心眼之書", "price": 5000},
+      {"id": 93, "name": "白金勳章", "price": 5000},
+      {"id": 205, "name": "飛龍卵", "price": 100}
     ]
   },
   {
@@ -234,16 +234,16 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "長劍", "price": 800},
-      {"name": "巨劍", "price": 1500},
-      {"name": "騎槍", "price": 400},
-      {"name": "長戟", "price": 1200},
-      {"name": "長弓", "price": 500},
-      {"name": "戰斧", "price": 800},
-      {"name": "巨鎚", "price": 640},
-      {"name": "夜行裝", "price": 3200},
-      {"name": "鎖子甲", "price": 3600},
-      {"name": "僧侶袍", "price": 1800}
+      {"id": 2, "name": "長劍", "price": 800},
+      {"id": 3, "name": "巨劍", "price": 1500},
+      {"id": 21, "name": "騎槍", "price": 400},
+      {"id": 22, "name": "長戟", "price": 1200},
+      {"id": 45, "name": "長弓", "price": 500},
+      {"id": 34, "name": "戰斧", "price": 800},
+      {"id": 54, "name": "巨鎚", "price": 640},
+      {"id": 134, "name": "夜行裝", "price": 3200},
+      {"id": 145, "name": "鎖子甲", "price": 3600},
+      {"id": 166, "name": "僧侶袍", "price": 1800}
     ]
   },
   {
@@ -252,8 +252,8 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "藥草", "price": 10},
-      {"name": "回復劑", "price": 80}
+      {"id": 192, "name": "藥草", "price": 10},
+      {"id": 193, "name": "回復劑", "price": 80}
     ]
   },
   {
@@ -263,10 +263,10 @@
     "secret": true,
     "how_to_enter": "武器店前按Shift+F7鍵",
     "goods": [
-      {"name": "黑暗劍", "price": 2400},
-      {"name": "先鋒矛", "price": 1800},
-      {"name": "再生藥", "price": 300},
-      {"name": "魔法水", "price": 1000}
+      {"id": 4, "name": "黑暗劍", "price": 2400},
+      {"id": 23, "name": "先鋒矛", "price": 1800},
+      {"id": 194, "name": "再生藥", "price": 300},
+      {"id": 206, "name": "魔法水", "price": 1000}
     ]
   },
   {
@@ -275,14 +275,14 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "巨劍", "price": 1500},
-      {"name": "長戟", "price": 1200},
-      {"name": "戰鎚", "price": 2000},
-      {"name": "黑暗弓", "price": 1800},
-      {"name": "鐵爪", "price": 850},
-      {"name": "魔法皮甲", "price": 4000},
-      {"name": "鱗甲", "price": 5800},
-      {"name": "武鬥裝", "price": 1200}
+      {"id": 3, "name": "巨劍", "price": 1500},
+      {"id": 22, "name": "長戟", "price": 1200},
+      {"id": 35, "name": "戰鎚", "price": 2000},
+      {"id": 46, "name": "黑暗弓", "price": 1800},
+      {"id": 63, "name": "鐵爪", "price": 850},
+      {"id": 135, "name": "魔法皮甲", "price": 4000},
+      {"id": 146, "name": "鱗甲", "price": 5800},
+      {"id": 173, "name": "武鬥裝", "price": 1200}
     ]
   },
   {
@@ -291,8 +291,8 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "藥草", "price": 10},
-      {"name": "回復劑", "price": 80}
+      {"id": 192, "name": "藥草", "price": 10},
+      {"id": 193, "name": "回復劑", "price": 80}
     ]
   },
   {
@@ -302,8 +302,8 @@
     "secret": true,
     "how_to_enter": "出口前按Ctrl+F8鍵",
     "goods": [
-      {"name": "再生藥", "price": 300},
-      {"name": "魔法水", "price": 1000}
+      {"id": 194, "name": "再生藥", "price": 300},
+      {"id": 206, "name": "魔法水", "price": 1000}
     ]
   },
   {
@@ -312,14 +312,14 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "巨劍", "price": 1500},
-      {"name": "戰鎚", "price": 2000},
-      {"name": "黑暗弓", "price": 1800},
-      {"name": "巨鎚", "price": 640},
-      {"name": "鐵爪", "price": 850},
-      {"name": "魔法皮甲", "price": 4000},
-      {"name": "鱗甲", "price": 5800},
-      {"name": "祭司袍", "price": 6400}
+      {"id": 3, "name": "巨劍", "price": 1500},
+      {"id": 35, "name": "戰鎚", "price": 2000},
+      {"id": 46, "name": "黑暗弓", "price": 1800},
+      {"id": 54, "name": "巨鎚", "price": 640},
+      {"id": 63, "name": "鐵爪", "price": 850},
+      {"id": 135, "name": "魔法皮甲", "price": 4000},
+      {"id": 146, "name": "鱗甲", "price": 5800},
+      {"id": 167, "name": "祭司袍", "price": 6400}
     ]
   },
   {
@@ -328,9 +328,9 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "藥草", "price": 10},
-      {"name": "回復劑", "price": 80},
-      {"name": "解毒劑", "price": 20}
+      {"id": 192, "name": "藥草", "price": 10},
+      {"id": 193, "name": "回復劑", "price": 80},
+      {"id": 196, "name": "解毒劑", "price": 20}
     ]
   },
   {
@@ -340,8 +340,8 @@
     "secret": true,
     "how_to_enter": "道具店前按Alt+F9鍵",
     "goods": [
-      {"name": "生命之實", "price": 10000},
-      {"name": "魔力水晶", "price": 10000}
+      {"id": 94, "name": "生命之實", "price": 10000},
+      {"id": 95, "name": "魔力水晶", "price": 10000}
     ]
   },
   {
@@ -350,14 +350,14 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "巨劍", "price": 1500},
-      {"name": "黑暗劍", "price": 2400},
-      {"name": "先鋒矛", "price": 1800},
-      {"name": "斬馬刀", "price": 4400},
-      {"name": "皇帝指環", "price": 1200},
-      {"name": "盜賊之衣", "price": 7800},
-      {"name": "連環鋼甲", "price": 8400},
-      {"name": "武鬥裝", "price": 1200}
+      {"id": 3, "name": "巨劍", "price": 1500},
+      {"id": 4, "name": "黑暗劍", "price": 2400},
+      {"id": 23, "name": "先鋒矛", "price": 1800},
+      {"id": 24, "name": "斬馬刀", "price": 4400},
+      {"id": 64, "name": "皇帝指環", "price": 1200},
+      {"id": 136, "name": "盜賊之衣", "price": 7800},
+      {"id": 147, "name": "連環鋼甲", "price": 8400},
+      {"id": 173, "name": "武鬥裝", "price": 1200}
     ]
   },
   {
@@ -366,8 +366,8 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "藥草", "price": 10},
-      {"name": "回復劑", "price": 80}
+      {"id": 192, "name": "藥草", "price": 10},
+      {"id": 193, "name": "回復劑", "price": 80}
     ]
   },
   {
@@ -377,8 +377,8 @@
     "secret": true,
     "how_to_enter": "教會前按Shift+F10鍵",
     "goods": [
-      {"name": "再生藥", "price": 300},
-      {"name": "魔法水", "price": 1000}
+      {"id": 194, "name": "再生藥", "price": 300},
+      {"id": 206, "name": "魔法水", "price": 1000}
     ]
   },
   {
@@ -387,14 +387,14 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "黑暗劍", "price": 2400},
-      {"name": "斬馬刀", "price": 4400},
-      {"name": "巨斧", "price": 3200},
-      {"name": "槤枷", "price": 1000},
-      {"name": "皇帝指環", "price": 1200},
-      {"name": "盜賊之衣", "price": 7800},
-      {"name": "連環鋼甲", "price": 8400},
-      {"name": "武鬥裝", "price": 1200}
+      {"id": 4, "name": "黑暗劍", "price": 2400},
+      {"id": 24, "name": "斬馬刀", "price": 4400},
+      {"id": 36, "name": "巨斧", "price": 3200},
+      {"id": 55, "name": "槤枷", "price": 1000},
+      {"id": 64, "name": "皇帝指環", "price": 1200},
+      {"id": 136, "name": "盜賊之衣", "price": 7800},
+      {"id": 147, "name": "連環鋼甲", "price": 8400},
+      {"id": 173, "name": "武鬥裝", "price": 1200}
     ]
   },
   {
@@ -403,8 +403,8 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "藥草", "price": 10},
-      {"name": "回復劑", "price": 80}
+      {"id": 192, "name": "藥草", "price": 10},
+      {"id": 193, "name": "回復劑", "price": 80}
     ]
   },
   {
@@ -414,8 +414,8 @@
     "secret": true,
     "how_to_enter": "酒店前按Ctrl+F1鍵",
     "goods": [
-      {"name": "再生藥", "price": 300},
-      {"name": "魔法水", "price": 1000}
+      {"id": 194, "name": "再生藥", "price": 300},
+      {"id": 206, "name": "魔法水", "price": 1000}
     ]
   },
   {
@@ -424,14 +424,14 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "戰士劍", "price": 4200},
-      {"name": "斬馬刀", "price": 4400},
-      {"name": "巨斧", "price": 3200},
-      {"name": "巨弓", "price": 4800},
-      {"name": "盜賊之衣", "price": 7800},
-      {"name": "連環鋼甲", "price": 8400},
-      {"name": "聖者袍", "price": 11200},
-      {"name": "武鬥裝", "price": 1200}
+      {"id": 5, "name": "戰士劍", "price": 4200},
+      {"id": 24, "name": "斬馬刀", "price": 4400},
+      {"id": 36, "name": "巨斧", "price": 3200},
+      {"id": 47, "name": "巨弓", "price": 4800},
+      {"id": 136, "name": "盜賊之衣", "price": 7800},
+      {"id": 147, "name": "連環鋼甲", "price": 8400},
+      {"id": 168, "name": "聖者袍", "price": 11200},
+      {"id": 173, "name": "武鬥裝", "price": 1200}
     ]
   },
   {
@@ -440,10 +440,10 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "回復劑", "price": 80},
-      {"name": "再生藥", "price": 300},
-      {"name": "解毒劑", "price": 20},
-      {"name": "退麻劑", "price": 20}
+      {"id": 193, "name": "回復劑", "price": 80},
+      {"id": 194, "name": "再生藥", "price": 300},
+      {"id": 196, "name": "解毒劑", "price": 20},
+      {"id": 197, "name": "退麻劑", "price": 20}
     ]
   },
   {
@@ -453,8 +453,8 @@
     "secret": true,
     "how_to_enter": "武器店前按Alt+F2鍵",
     "goods": [
-      {"name": "斬鐵劍", "price": 9600},
-      {"name": "聖之槍", "price": 24000}
+      {"id": 7, "name": "斬鐵劍", "price": 9600},
+      {"id": 30, "name": "聖之槍", "price": 24000}
     ]
   },
   {
@@ -463,14 +463,14 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "戰士劍", "price": 4200},
-      {"name": "惡魔之矛", "price": 6000},
-      {"name": "巨斧", "price": 3200},
-      {"name": "巨弓", "price": 4800},
-      {"name": "忍者裝", "price": 9600},
-      {"name": "合金鎖甲", "price": 10800},
-      {"name": "聖者袍", "price": 11200},
-      {"name": "鬥士服", "price": 5600}
+      {"id": 5, "name": "戰士劍", "price": 4200},
+      {"id": 25, "name": "惡魔之矛", "price": 6000},
+      {"id": 36, "name": "巨斧", "price": 3200},
+      {"id": 47, "name": "巨弓", "price": 4800},
+      {"id": 137, "name": "忍者裝", "price": 9600},
+      {"id": 148, "name": "合金鎖甲", "price": 10800},
+      {"id": 168, "name": "聖者袍", "price": 11200},
+      {"id": 174, "name": "鬥士服", "price": 5600}
     ]
   },
   {
@@ -479,10 +479,10 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "回復劑", "price": 80},
-      {"name": "再生藥", "price": 300},
-      {"name": "解毒劑", "price": 20},
-      {"name": "退麻劑", "price": 20}
+      {"id": 193, "name": "回復劑", "price": 80},
+      {"id": 194, "name": "再生藥", "price": 300},
+      {"id": 196, "name": "解毒劑", "price": 20},
+      {"id": 197, "name": "退麻劑", "price": 20}
     ]
   },
   {
@@ -492,8 +492,8 @@
     "secret": true,
     "how_to_enter": "出口前按Shift+F3鍵",
     "goods": [
-      {"name": "再生藥", "price": 300},
-      {"name": "飛龍卵", "price": 100}
+      {"id": 194, "name": "再生藥", "price": 300},
+      {"id": 205, "name": "飛龍卵", "price": 100}
     ]
   },
   {
@@ -502,14 +502,14 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "巨魔劍", "price": 7800},
-      {"name": "惡魔之矛", "price": 6000},
-      {"name": "血之斧", "price": 5600},
-      {"name": "精靈弓", "price": 7200},
-      {"name": "忍者裝", "price": 9600},
-      {"name": "合金鎖甲", "price": 10800},
-      {"name": "聖者袍", "price": 11200},
-      {"name": "鬥士服", "price": 5600}
+      {"id": 6, "name": "巨魔劍", "price": 7800},
+      {"id": 25, "name": "惡魔之矛", "price": 6000},
+      {"id": 37, "name": "血之斧", "price": 5600},
+      {"id": 48, "name": "精靈弓", "price": 7200},
+      {"id": 137, "name": "忍者裝", "price": 9600},
+      {"id": 148, "name": "合金鎖甲", "price": 10800},
+      {"id": 168, "name": "聖者袍", "price": 11200},
+      {"id": 174, "name": "鬥士服", "price": 5600}
     ]
   },
   {
@@ -518,10 +518,10 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "回復劑", "price": 80},
-      {"name": "再生藥", "price": 300},
-      {"name": "解毒劑", "price": 20},
-      {"name": "退麻劑", "price": 20}
+      {"id": 193, "name": "回復劑", "price": 80},
+      {"id": 194, "name": "再生藥", "price": 300},
+      {"id": 196, "name": "解毒劑", "price": 20},
+      {"id": 197, "name": "退麻劑", "price": 20}
     ]
   },
   {
@@ -531,8 +531,8 @@
     "secret": true,
     "how_to_enter": "道具店前按Ctrl+F4鍵",
     "goods": [
-      {"name": "神聖之水", "price": 800},
-      {"name": "水晶粒", "price": 5000}
+      {"id": 195, "name": "神聖之水", "price": 800},
+      {"id": 207, "name": "水晶粒", "price": 5000}
     ]
   },
   {
@@ -541,13 +541,13 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "巨魔劍", "price": 7800},
-      {"name": "惡魔之矛", "price": 6000},
-      {"name": "血之斧", "price": 5600},
-      {"name": "精靈弓", "price": 7200},
-      {"name": "忍者裝", "price": 9600},
-      {"name": "合金鎖甲", "price": 10800},
-      {"name": "霧之袍", "price": 16400}
+      {"id": 6, "name": "巨魔劍", "price": 7800},
+      {"id": 25, "name": "惡魔之矛", "price": 6000},
+      {"id": 37, "name": "血之斧", "price": 5600},
+      {"id": 48, "name": "精靈弓", "price": 7200},
+      {"id": 137, "name": "忍者裝", "price": 9600},
+      {"id": 148, "name": "合金鎖甲", "price": 10800},
+      {"id": 169, "name": "霧之袍", "price": 16400}
     ]
   },
   {
@@ -556,10 +556,10 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "回復劑", "price": 80},
-      {"name": "再生藥", "price": 300},
-      {"name": "解毒劑", "price": 20},
-      {"name": "退麻劑", "price": 20}
+      {"id": 193, "name": "回復劑", "price": 80},
+      {"id": 194, "name": "再生藥", "price": 300},
+      {"id": 196, "name": "解毒劑", "price": 20},
+      {"id": 197, "name": "退麻劑", "price": 20}
     ]
   },
   {
@@ -569,10 +569,10 @@
     "secret": true,
     "how_to_enter": "教會前按Alt+F5鍵",
     "goods": [
-      {"name": "生命之實", "price": 10000},
-      {"name": "魔力水晶", "price": 10000},
-      {"name": "力量藥水", "price": 10000},
-      {"name": "耐力藥水", "price": 10000}
+      {"id": 94, "name": "生命之實", "price": 10000},
+      {"id": 95, "name": "魔力水晶", "price": 10000},
+      {"id": 198, "name": "力量藥水", "price": 10000},
+      {"id": 199, "name": "耐力藥水", "price": 10000}
     ]
   },
   {
@@ -581,16 +581,16 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "暗殺刀", "price": 5000},
-      {"name": "惡魔之矛", "price": 6000},
-      {"name": "血之斧", "price": 5600},
-      {"name": "狙擊弓", "price": 12000},
-      {"name": "魔法杖", "price": 5600},
-      {"name": "毒爪", "price": 3600},
-      {"name": "潛行服", "price": 12000},
-      {"name": "魔法鱗甲", "price": 13200},
-      {"name": "霧之袍", "price": 16400},
-      {"name": "鎧甲", "price": 12000}
+      {"id": 16, "name": "暗殺刀", "price": 5000},
+      {"id": 25, "name": "惡魔之矛", "price": 6000},
+      {"id": 37, "name": "血之斧", "price": 5600},
+      {"id": 49, "name": "狙擊弓", "price": 12000},
+      {"id": 56, "name": "魔法杖", "price": 5600},
+      {"id": 65, "name": "毒爪", "price": 3600},
+      {"id": 138, "name": "潛行服", "price": 12000},
+      {"id": 149, "name": "魔法鱗甲", "price": 13200},
+      {"id": 169, "name": "霧之袍", "price": 16400},
+      {"id": 156, "name": "鎧甲", "price": 12000}
     ]
   },
   {
@@ -599,10 +599,10 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "回復劑", "price": 80},
-      {"name": "再生藥", "price": 300},
-      {"name": "解毒劑", "price": 20},
-      {"name": "退麻劑", "price": 20}
+      {"id": 193, "name": "回復劑", "price": 80},
+      {"id": 194, "name": "再生藥", "price": 300},
+      {"id": 196, "name": "解毒劑", "price": 20},
+      {"id": 197, "name": "退麻劑", "price": 20}
     ]
   },
   {
@@ -612,9 +612,9 @@
     "secret": true,
     "how_to_enter": "酒店前按Shift+F5鍵",
     "goods": [
-      {"name": "神聖之水", "price": 800},
-      {"name": "水晶粒", "price": 5000},
-      {"name": "十字弓", "price": 8800}
+      {"id": 195, "name": "神聖之水", "price": 800},
+      {"id": 207, "name": "水晶粒", "price": 5000},
+      {"id": 97, "name": "十字弓", "price": 8800}
     ]
   },
   {
@@ -623,17 +623,17 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "忍者刀", "price": 8800},
-      {"name": "黃金之戟", "price": 8800},
-      {"name": "閃電鎚", "price": 12500},
-      {"name": "狙擊弓", "price": 12000},
-      {"name": "魔法杖", "price": 5600},
-      {"name": "毒爪", "price": 3600},
-      {"name": "潛行服", "price": 12000},
-      {"name": "魔法鱗甲", "price": 13200},
-      {"name": "霧之袍", "price": 16400},
-      {"name": "鎧甲", "price": 12000},
-      {"name": "武者鎧甲", "price": 11000}
+      {"id": 18, "name": "忍者刀", "price": 8800},
+      {"id": 26, "name": "黃金之戟", "price": 8800},
+      {"id": 38, "name": "閃電鎚", "price": 12500},
+      {"id": 49, "name": "狙擊弓", "price": 12000},
+      {"id": 56, "name": "魔法杖", "price": 5600},
+      {"id": 65, "name": "毒爪", "price": 3600},
+      {"id": 138, "name": "潛行服", "price": 12000},
+      {"id": 149, "name": "魔法鱗甲", "price": 13200},
+      {"id": 169, "name": "霧之袍", "price": 16400},
+      {"id": 156, "name": "鎧甲", "price": 12000},
+      {"id": 175, "name": "武者鎧甲", "price": 11000}
     ]
   },
   {
@@ -642,10 +642,10 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "回復劑", "price": 80},
-      {"name": "再生藥", "price": 300},
-      {"name": "解毒劑", "price": 20},
-      {"name": "退麻劑", "price": 20}
+      {"id": 193, "name": "回復劑", "price": 80},
+      {"id": 194, "name": "再生藥", "price": 300},
+      {"id": 196, "name": "解毒劑", "price": 20},
+      {"id": 197, "name": "退麻劑", "price": 20}
     ]
   },
   {
@@ -655,8 +655,8 @@
     "secret": true,
     "how_to_enter": "武器店前按Ctrl+F7鍵",
     "goods": [
-      {"name": "力之杖", "price": 10000},
-      {"name": "水晶粒", "price": 5000}
+      {"id": 58, "name": "力之杖", "price": 10000},
+      {"id": 207, "name": "水晶粒", "price": 5000}
     ]
   },
   {
@@ -665,17 +665,17 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "忍者刀", "price": 8800},
-      {"name": "黃金之戟", "price": 8800},
-      {"name": "閃電鎚", "price": 12500},
-      {"name": "十字弓", "price": 8800},
-      {"name": "魔法杖", "price": 5600},
-      {"name": "碎岩爪", "price": 7800},
-      {"name": "神秘裝", "price": 14400},
-      {"name": "血環甲", "price": 15600},
-      {"name": "霧之袍", "price": 16400},
-      {"name": "銀鎧甲", "price": 15000},
-      {"name": "武者鎧甲", "price": 11000}
+      {"id": 18, "name": "忍者刀", "price": 8800},
+      {"id": 26, "name": "黃金之戟", "price": 8800},
+      {"id": 38, "name": "閃電鎚", "price": 12500},
+      {"id": 97, "name": "十字弓", "price": 8800},
+      {"id": 56, "name": "魔法杖", "price": 5600},
+      {"id": 67, "name": "碎岩爪", "price": 7800},
+      {"id": 139, "name": "神秘裝", "price": 14400},
+      {"id": 150, "name": "血環甲", "price": 15600},
+      {"id": 169, "name": "霧之袍", "price": 16400},
+      {"id": 157, "name": "銀鎧甲", "price": 15000},
+      {"id": 175, "name": "武者鎧甲", "price": 11000}
     ]
   },
   {
@@ -684,10 +684,10 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "回復劑", "price": 80},
-      {"name": "再生藥", "price": 300},
-      {"name": "解毒劑", "price": 20},
-      {"name": "退麻劑", "price": 20}
+      {"id": 193, "name": "回復劑", "price": 80},
+      {"id": 194, "name": "再生藥", "price": 300},
+      {"id": 196, "name": "解毒劑", "price": 20},
+      {"id": 197, "name": "退麻劑", "price": 20}
     ]
   },
   {
@@ -697,8 +697,8 @@
     "secret": true,
     "how_to_enter": "出口前按Alt+F8鍵",
     "goods": [
-      {"name": "神聖之水", "price": 800},
-      {"name": "水晶粒", "price": 5000}
+      {"id": 195, "name": "神聖之水", "price": 800},
+      {"id": 207, "name": "水晶粒", "price": 5000}
     ]
   },
   {
@@ -707,17 +707,17 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "忍者刀", "price": 8800},
-      {"name": "黃金之戟", "price": 8800},
-      {"name": "閃電鎚", "price": 12500},
-      {"name": "十字弓", "price": 8800},
-      {"name": "封咒杖", "price": 8800},
-      {"name": "碎岩爪", "price": 7800},
-      {"name": "神秘裝", "price": 14400},
-      {"name": "血環甲", "price": 15600},
-      {"name": "黑暗之袍", "price": 18000},
-      {"name": "銀鎧甲", "price": 15000},
-      {"name": "妖魔鬥服", "price": 18000}
+      {"id": 18, "name": "忍者刀", "price": 8800},
+      {"id": 26, "name": "黃金之戟", "price": 8800},
+      {"id": 38, "name": "閃電鎚", "price": 12500},
+      {"id": 97, "name": "十字弓", "price": 8800},
+      {"id": 57, "name": "封咒杖", "price": 8800},
+      {"id": 67, "name": "碎岩爪", "price": 7800},
+      {"id": 139, "name": "神秘裝", "price": 14400},
+      {"id": 150, "name": "血環甲", "price": 15600},
+      {"id": 170, "name": "黑暗之袍", "price": 18000},
+      {"id": 157, "name": "銀鎧甲", "price": 15000},
+      {"id": 176, "name": "妖魔鬥服", "price": 18000}
     ]
   },
   {
@@ -726,11 +726,11 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "回復劑", "price": 80},
-      {"name": "再生藥", "price": 300},
-      {"name": "神聖之水", "price": 800},
-      {"name": "解毒劑", "price": 20},
-      {"name": "退麻劑", "price": 20}
+      {"id": 193, "name": "回復劑", "price": 80},
+      {"id": 194, "name": "再生藥", "price": 300},
+      {"id": 195, "name": "神聖之水", "price": 800},
+      {"id": 196, "name": "解毒劑", "price": 20},
+      {"id": 197, "name": "退麻劑", "price": 20}
     ]
   },
   {
@@ -740,8 +740,8 @@
     "secret": true,
     "how_to_enter": "道具店前按Shift+F9鍵",
     "goods": [
-      {"name": "神聖之水", "price": 800},
-      {"name": "水晶粒", "price": 5000}
+      {"id": 195, "name": "神聖之水", "price": 800},
+      {"id": 207, "name": "水晶粒", "price": 5000}
     ]
   },
   {
@@ -750,17 +750,17 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "地獄刀", "price": 14800},
-      {"name": "黃金之戟", "price": 8800},
-      {"name": "狂暴之斧", "price": 12800},
-      {"name": "十字弓", "price": 8800},
-      {"name": "封咒杖", "price": 8800},
-      {"name": "金鋼指環", "price": 11200},
-      {"name": "暗殺服", "price": 20000},
-      {"name": "金鋼鎖甲", "price": 22000},
-      {"name": "黑暗之袍", "price": 18000},
-      {"name": "魔法鎧甲", "price": 20000},
-      {"name": "妖魔鬥服", "price": 18000}
+      {"id": 19, "name": "地獄刀", "price": 14800},
+      {"id": 26, "name": "黃金之戟", "price": 8800},
+      {"id": 39, "name": "狂暴之斧", "price": 12800},
+      {"id": 97, "name": "十字弓", "price": 8800},
+      {"id": 57, "name": "封咒杖", "price": 8800},
+      {"id": 68, "name": "金鋼指環", "price": 11200},
+      {"id": 140, "name": "暗殺服", "price": 20000},
+      {"id": 151, "name": "金鋼鎖甲", "price": 22000},
+      {"id": 170, "name": "黑暗之袍", "price": 18000},
+      {"id": 158, "name": "魔法鎧甲", "price": 20000},
+      {"id": 176, "name": "妖魔鬥服", "price": 18000}
     ]
   },
   {
@@ -769,11 +769,11 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "回復劑", "price": 80},
-      {"name": "再生藥", "price": 300},
-      {"name": "神聖之水", "price": 800},
-      {"name": "解毒劑", "price": 20},
-      {"name": "退麻劑", "price": 20}
+      {"id": 193, "name": "回復劑", "price": 80},
+      {"id": 194, "name": "再生藥", "price": 300},
+      {"id": 195, "name": "神聖之水", "price": 800},
+      {"id": 196, "name": "解毒劑", "price": 20},
+      {"id": 197, "name": "退麻劑", "price": 20}
     ]
   },
   {
@@ -783,8 +783,8 @@
     "secret": true,
     "how_to_enter": "教會前按Ctrl+F10鍵",
     "goods": [
-      {"name": "封魔弓", "price": 20000},
-      {"name": "裂刃爪", "price": 13200}
+      {"id": 50, "name": "封魔弓", "price": 20000},
+      {"id": 69, "name": "裂刃爪", "price": 13200}
     ]
   },
   {
@@ -793,17 +793,17 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "地獄刀", "price": 14800},
-      {"name": "龍之槍", "price": 11200},
-      {"name": "狂暴之斧", "price": 12800},
-      {"name": "水晶弓", "price": 13500},
-      {"name": "封咒杖", "price": 8800},
-      {"name": "金鋼指環", "price": 11200},
-      {"name": "暗殺服", "price": 20000},
-      {"name": "金鋼鎖甲", "price": 22000},
-      {"name": "地之袍", "price": 20000},
-      {"name": "魔法鎧甲", "price": 20000},
-      {"name": "鬥士護甲", "price": 20000}
+      {"id": 19, "name": "地獄刀", "price": 14800},
+      {"id": 27, "name": "龍之槍", "price": 11200},
+      {"id": 39, "name": "狂暴之斧", "price": 12800},
+      {"id": 98, "name": "水晶弓", "price": 13500},
+      {"id": 57, "name": "封咒杖", "price": 8800},
+      {"id": 68, "name": "金鋼指環", "price": 11200},
+      {"id": 140, "name": "暗殺服", "price": 20000},
+      {"id": 151, "name": "金鋼鎖甲", "price": 22000},
+      {"id": 189, "name": "地之袍", "price": 20000},
+      {"id": 158, "name": "魔法鎧甲", "price": 20000},
+      {"id": 188, "name": "鬥士護甲", "price": 20000}
     ]
   },
   {
@@ -812,11 +812,11 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "回復劑", "price": 80},
-      {"name": "再生藥", "price": 300},
-      {"name": "神聖之水", "price": 800},
-      {"name": "解毒劑", "price": 20},
-      {"name": "退麻劑", "price": 20}
+      {"id": 193, "name": "回復劑", "price": 80},
+      {"id": 194, "name": "再生藥", "price": 300},
+      {"id": 195, "name": "神聖之水", "price": 800},
+      {"id": 196, "name": "解毒劑", "price": 20},
+      {"id": 197, "name": "退麻劑", "price": 20}
     ]
   },
   {
@@ -826,8 +826,8 @@
     "secret": true,
     "how_to_enter": "酒店前按Alt+F1鍵",
     "goods": [
-      {"name": "神聖之水", "price": 800},
-      {"name": "水晶粒", "price": 5000}
+      {"id": 195, "name": "神聖之水", "price": 800},
+      {"id": 207, "name": "水晶粒", "price": 5000}
     ]
   },
   {
@@ -836,17 +836,17 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "大地之劍", "price": 18000},
-      {"name": "破魔槍", "price": 16000},
-      {"name": "力量之斧", "price": 22000},
-      {"name": "封魔弓", "price": 20000},
-      {"name": "龍之杖", "price": 22400},
-      {"name": "巨神指環", "price": 17500},
-      {"name": "惡魔皮甲", "price": 30000},
-      {"name": "力量鎖甲", "price": 36000},
-      {"name": "聖鎧甲", "price": 42000},
-      {"name": "天之袍", "price": 32000},
-      {"name": "武神護甲", "price": 34000}
+      {"id": 9, "name": "大地之劍", "price": 18000},
+      {"id": 28, "name": "破魔槍", "price": 16000},
+      {"id": 41, "name": "力量之斧", "price": 22000},
+      {"id": 50, "name": "封魔弓", "price": 20000},
+      {"id": 60, "name": "龍之杖", "price": 22400},
+      {"id": 70, "name": "巨神指環", "price": 17500},
+      {"id": 142, "name": "惡魔皮甲", "price": 30000},
+      {"id": 153, "name": "力量鎖甲", "price": 36000},
+      {"id": 161, "name": "聖鎧甲", "price": 42000},
+      {"id": 171, "name": "天之袍", "price": 32000},
+      {"id": 177, "name": "武神護甲", "price": 34000}
     ]
   },
   {
@@ -855,10 +855,10 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "再生藥", "price": 300},
-      {"name": "神聖之水", "price": 800},
-      {"name": "解毒劑", "price": 20},
-      {"name": "退麻劑", "price": 20}
+      {"id": 194, "name": "再生藥", "price": 300},
+      {"id": 195, "name": "神聖之水", "price": 800},
+      {"id": 196, "name": "解毒劑", "price": 20},
+      {"id": 197, "name": "退麻劑", "price": 20}
     ]
   },
   {
@@ -868,9 +868,9 @@
     "secret": true,
     "how_to_enter": "教會前按Shift+F5鍵",
     "goods": [
-      {"name": "神聖之水", "price": 800},
-      {"name": "水晶粒", "price": 5000},
-      {"name": "光之斧", "price": 15500}
+      {"id": 195, "name": "神聖之水", "price": 800},
+      {"id": 207, "name": "水晶粒", "price": 5000},
+      {"id": 40, "name": "光之斧", "price": 15500}
     ]
   },
   {
@@ -879,17 +879,17 @@
     "kind": "weapon",
     "secret": false,
     "goods": [
-      {"name": "龍神劍", "price": 25000},
-      {"name": "巨神戟", "price": 24000},
-      {"name": "大地之鎚", "price": 28000},
-      {"name": "火神弓", "price": 32000},
-      {"name": "龍之杖", "price": 22400},
-      {"name": "鬥神指環", "price": 25800},
-      {"name": "雷神服", "price": 42000},
-      {"name": "惡魔鱗甲", "price": 45000},
-      {"name": "大地鎧甲", "price": 50000},
-      {"name": "天之袍", "price": 32000},
-      {"name": "武神護甲", "price": 34000}
+      {"id": 10, "name": "龍神劍", "price": 25000},
+      {"id": 31, "name": "巨神戟", "price": 24000},
+      {"id": 42, "name": "大地之鎚", "price": 28000},
+      {"id": 104, "name": "火神弓", "price": 32000},
+      {"id": 60, "name": "龍之杖", "price": 22400},
+      {"id": 105, "name": "鬥神指環", "price": 25800},
+      {"id": 143, "name": "雷神服", "price": 42000},
+      {"id": 154, "name": "惡魔鱗甲", "price": 45000},
+      {"id": 162, "name": "大地鎧甲", "price": 50000},
+      {"id": 171, "name": "天之袍", "price": 32000},
+      {"id": 177, "name": "武神護甲", "price": 34000}
     ]
   },
   {
@@ -898,8 +898,8 @@
     "kind": "item",
     "secret": false,
     "goods": [
-      {"name": "神聖之水", "price": 800},
-      {"name": "水晶粒", "price": 5000}
+      {"id": 195, "name": "神聖之水", "price": 800},
+      {"id": 207, "name": "水晶粒", "price": 5000}
     ]
   },
   {
@@ -909,8 +909,8 @@
     "secret": true,
     "how_to_enter": "酒店前按Ctrl+F6鍵",
     "goods": [
-      {"name": "神聖之水", "price": 800},
-      {"name": "水晶粒", "price": 5000}
+      {"id": 195, "name": "神聖之水", "price": 800},
+      {"id": 207, "name": "水晶粒", "price": 5000}
     ]
   }
   ]
