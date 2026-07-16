@@ -178,7 +178,7 @@ UNIT_CHECK = {
 }
 
 
-def selftest(growth, unit, characters, resist):
+def selftest(growth, unit, characters, resist, equip):
     ok = True
     for i, exp in GROWTH_CHECK.items():
         got = growth[i]["raw"]
@@ -202,6 +202,12 @@ def selftest(growth, unit, characters, resist):
         m = rd.get(cls) == exp
         ok &= m
         print(f"  魔抗[職業{cls:#x}] {'✓' if m else '✗ 期望 '+str(exp)} {rd.get(cls)}%")
+    # 0x1c1c3 只掃 class record 的後六個 type slots；首 byte 1 是常數。
+    for cls, exp in [(0, [0xFF] * 6), (1, [1, 21, 22, 0xFF, 0xFF, 0xFF]),
+                     (25, [8, 27, 0xFF, 0xFF, 0xFF, 0xFF])]:
+        m = equip[cls]["types"] == exp
+        ok &= m
+        print(f"  裝備相容[職業{cls}] {'✓' if m else '✗ 期望 '+str(exp)} {equip[cls]['types']}")
     return ok
 
 
@@ -236,7 +242,7 @@ def main(argv):
         print(f"  -> {name}.json  ({len(rows)} 列)")
 
     print("數值自驗(對照青衫攻略字面值):")
-    ok = selftest(growth, unit, characters, rc)
+    ok = selftest(growth, unit, characters, rc, equip)
     print("自驗結果:", "全部通過 ✓" if ok else "有不符 ✗")
     return 0 if ok else 2
 
