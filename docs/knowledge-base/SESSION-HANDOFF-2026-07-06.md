@@ -11,6 +11,14 @@
 > 上行六格（Y42→36、pose0→2）。ACT100 亦由 caller `0x323f5`/id100 live 驗為 slot2 下行十格
 >（Y8→18、pose0）。不要以舊 map0/window 推論覆蓋此 provenance。
 
+> **2026-07-16 第十九次 Codex 更新（戰後資料不再在城鎮邊界遺失）**：全30戰勝利流盤點發現
+> `battle_ch04..10,12,14,16,18,19,22..26,28,29` 共19條非終局路徑直接進 town/preparation；但
+> `enterNode` 會清掉 completed battle state，因此實際丟失等級、HP、戰利品與裝備。已在每條插入可編輯
+> `postbattle_chNN_persist`：`sync_party → set_chapter → 原本 town/preparation`，不改城鎮／商店／教會
+> ／整備去向。campaign regression 逐條追蹤 chapter1..29 正常路徑，強制在第一個戰間節點前恰一次 sync；
+> chapter30 保留 direct ending。下一個商店切片必須使用同一 `partyRoster` numeric inventory，不能再寫入舊
+> 的名稱字串清單。
+
 > **2026-07-15 第二次 Codex 更新**：全 60 handler 重新抽取後 unknown 146→133。完整 callee body
 > 已把 0x32975/0x32999/0x134e4/0x12d7b 定性成 deactivate_unit/spawn_intro/reset_pose/focus_unit；
 > ch00 的 13 個缺漏 FDTXT calls 與 5 個 PAN 已接上；ACT99/100、兩段 scroll_step 與 focus_unit

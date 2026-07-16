@@ -417,6 +417,95 @@ func TestCampaignFullPostBattleTownContractMatchesOriginalShopChapters(t *testin
 	}
 }
 
+func TestEveryContinuingBattleSyncsBeforeOriginalIntermission(t *testing.T) {
+	c, err := Load("../../assets/scenarios/campaign_full.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantIntermission := make(map[int]string)
+	for chapter := 1; chapter <= 21; chapter++ {
+		wantIntermission[chapter] = fmt.Sprintf("town_ch%02d", chapter+1)
+	}
+	for _, chapter := range []int{22, 23, 24, 28, 29} {
+		wantIntermission[chapter] = fmt.Sprintf("preparation_ch%02d", chapter+1)
+	}
+	wantIntermission[25] = "town_ch26"
+	wantIntermission[26] = "town_ch27"
+	wantIntermission[27] = "preparation_ch28"
+
+	countSync := func(nodeID string, n *Node) int {
+		t.Helper()
+		beats := n.Beats
+		if n.HandlerBinding != "" {
+			var issues []HandlerCompileIssue
+			beats, issues, err = CompileHandlerBinding(filepath.Join("../..", n.HandlerBinding))
+			if err != nil || len(issues) != 0 {
+				t.Fatalf("%s handler compile err=%v issues=%#v", nodeID, err, issues)
+			}
+		}
+		var walk func([]Beat) int
+		walk = func(bs []Beat) int {
+			total := 0
+			for _, beat := range bs {
+				if beat.Op == "sync_party" {
+					total++
+				}
+				total += walk(beat.Then) + walk(beat.Else)
+			}
+			return total
+		}
+		return walk(beats)
+	}
+
+	for chapter := 1; chapter <= 29; chapter++ {
+		chapter := chapter
+		t.Run(fmt.Sprintf("chapter_%02d", chapter), func(t *testing.T) {
+			battleID := fmt.Sprintf("battle_ch%02d", chapter)
+			battle := c.Nodes[battleID]
+			if battle == nil || battle.Type != "battle" || battle.OnWin == "" {
+				t.Fatalf("%s = %#v", battleID, battle)
+			}
+			if first := c.Nodes[battle.OnWin]; first != nil && (first.Type == "town" || first.Type == "preparation" || first.Type == "ending") {
+				t.Fatalf("%s has bare on_win edge to runtime-clearing %s node %s", battleID, first.Type, battle.OnWin)
+			}
+
+			current, syncs := battle.OnWin, 0
+			for steps := 0; steps < len(c.Nodes); steps++ {
+				n := c.Nodes[current]
+				if n == nil {
+					t.Fatalf("%s path reaches missing node %q", battleID, current)
+				}
+				syncs += countSync(current, n)
+				switch n.Type {
+				case "town", "preparation":
+					if current != wantIntermission[chapter] {
+						t.Fatalf("%s first intermission=%s, want %s", battleID, current, wantIntermission[chapter])
+					}
+					if syncs != 1 {
+						t.Fatalf("%s sync_party count before %s=%d, want exactly one", battleID, current, syncs)
+					}
+					return
+				case "inventory_gate":
+					current = n.IfPresent // ch27 normal/hidden-chapter route
+				case "inventory_recipe":
+					current = n.IfCrafted // ch21; insufficient arm has its own contract test
+				case "story", "cutscene", "event":
+					current = n.Next
+				case "battle", "ending":
+					t.Fatalf("%s reaches %s node %s before original intermission %s", battleID, n.Type, current, wantIntermission[chapter])
+				default:
+					t.Fatalf("%s path has unsupported node %s type=%s", battleID, current, n.Type)
+				}
+			}
+			t.Fatalf("%s path did not reach %s", battleID, wantIntermission[chapter])
+		})
+	}
+
+	if battle30 := c.Nodes["battle_ch30"]; battle30 == nil || battle30.OnWin != "ending" {
+		t.Fatalf("terminal battle must retain original direct ending edge: %#v", battle30)
+	}
+}
+
 func TestRunnerTownUsesVisibleOptionOutcome(t *testing.T) {
 	c := &Campaign{
 		Start: "town",

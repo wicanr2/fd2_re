@@ -4,6 +4,7 @@
 package main
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -590,6 +591,38 @@ func TestBeatSyncPartyPersistsProgressAndClearsBattleState(t *testing.T) {
 	got := fresh.Units[0]
 	if got.Lv != 3 || got.HP != 50 || got.MP != 12 || got.X != 11 || got.Y != 22 || got.Group != 4 || !got.OnField {
 		t.Fatalf("persistent overlay lost progression or deployment: %#v", got)
+	}
+}
+
+func TestCampaignPersistenceStubKeepsInventoryAfterBattleStateClears(t *testing.T) {
+	c, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	n := c.Nodes["postbattle_ch04_persist"]
+	if n == nil || n.Type != "cutscene" {
+		t.Fatalf("missing chapter four persistence node: %#v", n)
+	}
+	g := newBeatTestGame(t, n.Beats)
+	g.partyMembers = map[int]bool{0: true}
+	g.st = &battle.State{Units: []*battle.Unit{{
+		Camp: battle.Own, Fig: 0, Name: "索爾", Lv: 8,
+		HP: 13, MaxHP: 55, MP: 4, MaxMP: 12, OnField: true,
+		Inventory: []int{0xc0, 0xd2},
+	}}}
+	g.beatAdvance()
+	if g.loadErr != "" || g.handlerChapter != 4 {
+		t.Fatalf("persistence beats failed: err=%q chapter=%d", g.loadErr, g.handlerChapter)
+	}
+	if got := g.partyRoster[0]; got.Lv != 8 || got.HP != 55 || !reflect.DeepEqual(got.Inventory, []int{0xc0, 0xd2}) {
+		t.Fatalf("postbattle snapshot lost progression/inventory: %#v", got)
+	}
+	g.tick(storyFadeFrames)
+	if g.st != nil {
+		t.Fatal("intermission boundary did not clear completed battle state")
+	}
+	if got := g.partyRoster[0].Inventory; !reflect.DeepEqual(got, []int{0xc0, 0xd2}) {
+		t.Fatalf("clearing battle state also cleared persistent inventory: %#v", got)
 	}
 }
 

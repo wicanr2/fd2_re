@@ -798,8 +798,21 @@
    "map": "assets/maps/map3",
    "units": "assets/maps/map3/map3_units.json",
    "scenario": "assets/scenarios/ch04.json",
-   "on_win": "town_ch05",
+   "on_win": "postbattle_ch04_persist",
    "on_lose": "retreat_ch04"
+  },
+  "postbattle_ch04_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 4
+    }
+   ],
+   "next": "town_ch05"
   },
   "retreat_ch04": {
    "type": "story",
@@ -890,8 +903,21 @@
    "map": "assets/maps/map4",
    "units": "assets/maps/map4/map4_units.json",
    "scenario": "assets/scenarios/ch05.json",
-   "on_win": "town_ch06",
+   "on_win": "postbattle_ch05_persist",
    "on_lose": "retreat_ch05"
+  },
+  "postbattle_ch05_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 5
+    }
+   ],
+   "next": "town_ch06"
   },
   "retreat_ch05": {
    "type": "story",
@@ -1008,8 +1034,21 @@
    "map": "assets/maps/map5",
    "units": "assets/maps/map5/map5_units.json",
    "scenario": "assets/scenarios/ch06.json",
-   "on_win": "town_ch07",
+   "on_win": "postbattle_ch06_persist",
    "on_lose": "retreat_ch06"
+  },
+  "postbattle_ch06_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 6
+    }
+   ],
+   "next": "town_ch07"
   },
   "retreat_ch06": {
    "type": "story",
@@ -1130,8 +1169,21 @@
    "map": "assets/maps/map6",
    "units": "assets/maps/map6/map6_units.json",
    "scenario": "assets/scenarios/ch07.json",
-   "on_win": "town_ch08",
+   "on_win": "postbattle_ch07_persist",
    "on_lose": "retreat_ch07"
+  },
+  "postbattle_ch07_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 7
+    }
+   ],
+   "next": "town_ch08"
   },
   "retreat_ch07": {
    "type": "story",
@@ -1244,8 +1296,21 @@
    "map": "assets/maps/map7",
    "units": "assets/maps/map7/map7_units.json",
    "scenario": "assets/scenarios/ch08.json",
-   "on_win": "town_ch09",
+   "on_win": "postbattle_ch08_persist",
    "on_lose": "retreat_ch08"
+  },
+  "postbattle_ch08_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 8
+    }
+   ],
+   "next": "town_ch09"
   },
   "retreat_ch08": {
    "type": "story",
@@ -1350,8 +1415,21 @@
    "map": "assets/maps/map8",
    "units": "assets/maps/map8/map8_units.json",
    "scenario": "assets/scenarios/ch09.json",
-   "on_win": "town_ch10",
+   "on_win": "postbattle_ch09_persist",
    "on_lose": "retreat_ch09"
+  },
+  "postbattle_ch09_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 9
+    }
+   ],
+   "next": "town_ch10"
   },
   "retreat_ch09": {
    "type": "story",
@@ -1460,8 +1538,21 @@
    "map": "assets/maps/map9",
    "units": "assets/maps/map9/map9_units.json",
    "scenario": "assets/scenarios/ch10.json",
-   "on_win": "town_ch11",
+   "on_win": "postbattle_ch10_persist",
    "on_lose": "retreat_ch10"
+  },
+  "postbattle_ch10_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 10
+    }
+   ],
+   "next": "town_ch11"
   },
   "retreat_ch10": {
    "type": "story",
@@ -1685,8 +1776,21 @@
    "map": "assets/maps/map11",
    "units": "assets/maps/map11/map11_units.json",
    "scenario": "assets/scenarios/ch12.json",
-   "on_win": "town_ch13",
+   "on_win": "postbattle_ch12_persist",
    "on_lose": "retreat_ch12"
+  },
+  "postbattle_ch12_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 12
+    }
+   ],
+   "next": "town_ch13"
   },
   "retreat_ch12": {
    "type": "story",
@@ -1926,8 +2030,21 @@
    "map": "assets/maps/map13",
    "units": "assets/maps/map13/map13_units.json",
    "scenario": "assets/scenarios/ch14.json",
-   "on_win": "town_ch15",
+   "on_win": "postbattle_ch14_persist",
    "on_lose": "retreat_ch14"
+  },
+  "postbattle_ch14_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 14
+    }
+   ],
+   "next": "town_ch15"
   },
   "retreat_ch14": {
    "type": "story",
@@ -2163,8 +2280,21 @@
    "map": "assets/maps/map15",
    "units": "assets/maps/map15/map15_units.json",
    "scenario": "assets/scenarios/ch16.json",
-   "on_win": "town_ch17",
+   "on_win": "postbattle_ch16_persist",
    "on_lose": "retreat_ch16"
+  },
+  "postbattle_ch16_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 16
+    }
+   ],
+   "next": "town_ch17"
   },
   "retreat_ch16": {
    "type": "story",
@@ -2424,8 +2554,21 @@
    "map": "assets/maps/map17",
    "units": "assets/maps/map17/map17_units.json",
    "scenario": "assets/scenarios/ch18.json",
-   "on_win": "town_ch19",
+   "on_win": "postbattle_ch18_persist",
    "on_lose": "retreat_ch18"
+  },
+  "postbattle_ch18_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 18
+    }
+   ],
+   "next": "town_ch19"
   },
   "retreat_ch18": {
    "type": "story",
@@ -2550,8 +2693,21 @@
    "map": "assets/maps/map18",
    "units": "assets/maps/map18/map18_units.json",
    "scenario": "assets/scenarios/ch19.json",
-   "on_win": "town_ch20",
+   "on_win": "postbattle_ch19_persist",
    "on_lose": "retreat_ch19"
+  },
+  "postbattle_ch19_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 19
+    }
+   ],
+   "next": "town_ch20"
   },
   "retreat_ch19": {
    "type": "story",
@@ -3053,8 +3209,21 @@
    "map": "assets/maps/map21",
    "units": "assets/maps/map21/map21_units.json",
    "scenario": "assets/scenarios/ch22.json",
-   "on_win": "preparation_ch23",
+   "on_win": "postbattle_ch22_persist",
    "on_lose": "retreat_ch22"
+  },
+  "postbattle_ch22_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 22
+    }
+   ],
+   "next": "preparation_ch23"
   },
   "retreat_ch22": {
    "type": "story",
@@ -3091,8 +3260,21 @@
    "map": "assets/maps/map22",
    "units": "assets/maps/map22/map22_units.json",
    "scenario": "assets/scenarios/ch23.json",
-   "on_win": "preparation_ch24",
+   "on_win": "postbattle_ch23_persist",
    "on_lose": "retreat_ch23"
+  },
+  "postbattle_ch23_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 23
+    }
+   ],
+   "next": "preparation_ch24"
   },
   "retreat_ch23": {
    "type": "story",
@@ -3129,8 +3311,21 @@
    "map": "assets/maps/map23",
    "units": "assets/maps/map23/map23_units.json",
    "scenario": "assets/scenarios/ch24.json",
-   "on_win": "preparation_ch25",
+   "on_win": "postbattle_ch24_persist",
    "on_lose": "retreat_ch24"
+  },
+  "postbattle_ch24_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 24
+    }
+   ],
+   "next": "preparation_ch25"
   },
   "retreat_ch24": {
    "type": "story",
@@ -3167,8 +3362,21 @@
    "map": "assets/maps/map24",
    "units": "assets/maps/map24/map24_units.json",
    "scenario": "assets/scenarios/ch25.json",
-   "on_win": "town_ch26",
+   "on_win": "postbattle_ch25_persist",
    "on_lose": "retreat_ch25"
+  },
+  "postbattle_ch25_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 25
+    }
+   ],
+   "next": "town_ch26"
   },
   "retreat_ch25": {
    "type": "story",
@@ -3293,8 +3501,21 @@
    "map": "assets/maps/map25",
    "units": "assets/maps/map25/map25_units.json",
    "scenario": "assets/scenarios/ch26.json",
-   "on_win": "town_ch27",
+   "on_win": "postbattle_ch26_persist",
    "on_lose": "retreat_ch26"
+  },
+  "postbattle_ch26_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 26
+    }
+   ],
+   "next": "town_ch27"
   },
   "retreat_ch26": {
    "type": "story",
@@ -3472,8 +3693,21 @@
    "map": "assets/maps/map27",
    "units": "assets/maps/map27/map27_units.json",
    "scenario": "assets/scenarios/ch28.json",
-   "on_win": "preparation_ch29",
+   "on_win": "postbattle_ch28_persist",
    "on_lose": "retreat_ch28"
+  },
+  "postbattle_ch28_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 28
+    }
+   ],
+   "next": "preparation_ch29"
   },
   "retreat_ch28": {
    "type": "story",
@@ -3510,8 +3744,21 @@
    "map": "assets/maps/map28",
    "units": "assets/maps/map28/map28_units.json",
    "scenario": "assets/scenarios/ch29.json",
-   "on_win": "preparation_ch30",
+   "on_win": "postbattle_ch29_persist",
    "on_lose": "retreat_ch29"
+  },
+  "postbattle_ch29_persist": {
+   "type": "cutscene",
+   "beats": [
+    {
+     "op": "sync_party"
+    },
+    {
+     "op": "set_chapter",
+     "chapter": 29
+    }
+   ],
+   "next": "preparation_ch30"
   },
   "retreat_ch29": {
    "type": "story",
