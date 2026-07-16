@@ -35,6 +35,7 @@ type Unit struct {
 	Camp      Camp
 	Name      string // 角色名(characters.json;敵方多為職業名)
 	ClsName   string // 職業名(中文,M2 TTF 才顯示)
+	ClassID   int    // 原版職業 table index；商店裝備相容以此對 class_equip_types 判定
 	Lv        int
 	HP, MaxHP int
 	MP, MaxMP int
@@ -265,6 +266,7 @@ type unitsFile struct {
 	} `json:"chests,omitempty"`
 	Units []struct {
 		Camp        string       `json:"camp"`
+		ClassID     int          `json:"cls"`
 		Name        string       `json:"name"`
 		ClsName     string       `json:"cls_name"`
 		Lv          int          `json:"lv"`
@@ -318,7 +320,7 @@ func Load(path string) (*State, error) {
 	for _, u := range f.Units {
 		camp := campFrom(u.Camp)
 		nu := &Unit{
-			Camp: camp, Name: u.Name, ClsName: u.ClsName, Lv: u.Lv,
+			Camp: camp, Name: u.Name, ClsName: u.ClsName, ClassID: u.ClassID, Lv: u.Lv,
 			HP: u.HP, MaxHP: u.HP, MP: u.MP, MaxMP: u.MP, AP: u.AP, DP: u.DP, MV: u.MV,
 			HIT: u.HIT, EV: u.EV, CritPct: u.Crit, ExpPerLevel: u.Ex,
 			AtkMin: u.AtkMin, AtkMax: u.AtkMax,

@@ -10,7 +10,7 @@ import (
 
 func TestLoadJoinsTreasureSlotAndPreservesUnitInventory(t *testing.T) {
 	dir := t.TempDir()
-	units := `{"map":10,"w":2,"h":1,"chests":[{"slot":0,"type":"item","value":210}],"units":[{"camp":"enemy","lv":1,"hp":10,"mv":4,"x":0,"y":0,"inventory":[15,136,211],"death_effect":{"type":2,"value":39}}]}`
+	units := `{"map":10,"w":2,"h":1,"chests":[{"slot":0,"type":"item","value":210}],"units":[{"camp":"enemy","cls":7,"lv":1,"hp":10,"mv":4,"x":0,"y":0,"inventory":[15,136,211],"death_effect":{"type":2,"value":39}}]}`
 	mapJSON := `{"w":2,"h":1,"cost":[1,1],"treasure_slots":[-1,0],"treasure_hidden":[false,true]}`
 	if err := os.WriteFile(filepath.Join(dir, "units.json"), []byte(units), 0o600); err != nil {
 		t.Fatal(err)
@@ -24,6 +24,9 @@ func TestLoadJoinsTreasureSlotAndPreservesUnitInventory(t *testing.T) {
 	}
 	if !reflect.DeepEqual(st.Units[0].Inventory, []int{15, 136, 211}) {
 		t.Fatalf("inventory = %#v", st.Units[0].Inventory)
+	}
+	if st.Units[0].ClassID != 7 {
+		t.Fatalf("class id = %d, want 7", st.Units[0].ClassID)
 	}
 	if st.Units[0].DeathEffect == nil || st.Units[0].DeathEffect.Type != 2 || st.Units[0].DeathEffect.Value != 39 {
 		t.Fatalf("death effect = %#v", st.Units[0].DeathEffect)
