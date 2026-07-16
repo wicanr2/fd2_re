@@ -19,6 +19,14 @@
 > chapter30 保留 direct ending。下一個商店切片必須使用同一 `partyRoster` numeric inventory，不能再寫入舊
 > 的名稱字串清單。
 
+> **2026-07-16 第二十次 Codex 更新（商店資料與原版收件規則）**：`shops.json`、demo 與 full
+> campaign 的337筆商品皆已保存 EXE 原版 unsigned-byte `id`，逐筆以 `item.json` 的價格交叉驗證；
+> generator 會拒絕缺 ID 商品。原版購買順序已 RE 為「確認→金錢檢查→選收件者→8格容量→插入首空槽→
+> 裝備品詢問立即裝備→最後扣錢」；滿包／取消／無可裝備者均不扣錢。`0x1c1c3` 是純 class×item.type
+> 六欄白名單，EXE file `0x55689`、stride7、首 byte 常數、後六 byte 才是 type；已匯出
+> `docs/data/exe_tables/class_equip_types.json` 並加入 exporter selftest。尚未完成的是把此規則接進
+> UI 的收件者選單、裝備狀態與能力重算；不得再把購買寫入 `Game.items []string` 當作真實 inventory。
+
 > **2026-07-15 第二次 Codex 更新**：全 60 handler 重新抽取後 unknown 146→133。完整 callee body
 > 已把 0x32975/0x32999/0x134e4/0x12d7b 定性成 deactivate_unit/spawn_intro/reset_pose/focus_unit；
 > ch00 的 13 個缺漏 FDTXT calls 與 5 個 PAN 已接上；ACT99/100、兩段 scroll_step 與 focus_unit
