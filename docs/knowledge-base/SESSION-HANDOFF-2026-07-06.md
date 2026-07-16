@@ -27,6 +27,13 @@
 > `docs/data/exe_tables/class_equip_types.json` 並加入 exporter selftest。尚未完成的是把此規則接進
 > UI 的收件者選單、裝備狀態與能力重算；不得再把購買寫入 `Game.items []string` 當作真實 inventory。
 
+> **2026-07-16 第二十一次 Codex 更新（商店核心可測、等待 UI 接線）**：`battle.Unit` 已保留 FDFIELD
+> numeric `ClassID`；`campaign.BuyGood` 已實作指定收件者的原子購買（成功才入8格 inventory 並扣金，滿欄／
+> 缺錢完全不變）；`CanEquip` 已固定原版 class×item.type predicate，`LoadShopEligibility` 讀打包 runtime
+> assets。`remake/assets/data/item.json` 與 `class_equip_types.json` 已強制納入 build（不是只放 docs），並有
+> campaign regression。**下一輪第一件事**：在 `main.go` 將舊 `g.items []string` 商店分支換成「確認→合格
+> 收件者→BuyGood→裝備詢問」UI state machine；裝備 flag、能力重算與賣出仍未實作。
+
 > **2026-07-15 第二次 Codex 更新**：全 60 handler 重新抽取後 unknown 146→133。完整 callee body
 > 已把 0x32975/0x32999/0x134e4/0x12d7b 定性成 deactivate_unit/spawn_intro/reset_pose/focus_unit；
 > ch00 的 13 個缺漏 FDTXT calls 與 5 個 PAN 已接上；ACT99/100、兩段 scroll_step 與 focus_unit
