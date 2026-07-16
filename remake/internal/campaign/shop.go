@@ -6,6 +6,17 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
 
+// CanEquip mirrors original 0x1c1c3: an equip item is allowed exactly when
+// its item.type appears in this class record's six type slots (0xff is empty).
+func CanEquip(classID, itemType int, classEquip map[int][]int) bool {
+	for _, allowed := range classEquip[classID] {
+		if allowed == itemType {
+			return true
+		}
+	}
+	return false
+}
+
 // BuyGood is the atomic part of original shop purchase: the selected receiver
 // gets the item in its first free inventory slot, then (and only then) gold is
 // deducted. Confirmation, eligible-recipient selection and equip prompting are

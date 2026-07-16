@@ -23,3 +23,10 @@ func TestBuyGoodUsesSelectedInventoryAndIsAtomicOnFailure(t *testing.T) {
 		t.Fatalf("insufficient gold changed state gold=%d err=%v inventory=%#v", got, err, receiver.Inventory)
 	}
 }
+
+func TestCanEquipUsesOriginalClassTypeWhitelist(t *testing.T) {
+	table := map[int][]int{1: {1, 21, 22, 255, 255, 255}, 25: {8, 27, 255, 255, 255, 255}}
+	if !CanEquip(1, 21, table) || CanEquip(1, 8, table) || !CanEquip(25, 27, table) || CanEquip(0, 1, table) {
+		t.Fatalf("class/type whitelist mismatch: %#v", table)
+	}
+}
