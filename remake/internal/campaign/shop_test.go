@@ -26,7 +26,7 @@ func TestBuyGoodUsesSelectedInventoryAndIsAtomicOnFailure(t *testing.T) {
 }
 
 func TestLoadShopEligibilityUsesOriginalTables(t *testing.T) {
-	types, equip, err := LoadShopEligibility(filepath.Join("..", "..", "..", "docs", "data", "exe_tables", "item.json"), filepath.Join("..", "..", "..", "docs", "data", "exe_tables", "class_equip_types.json"))
+	types, equip, err := LoadShopEligibility(filepath.Join("..", "..", "assets", "data", "item.json"), filepath.Join("..", "..", "assets", "data", "class_equip_types.json"))
 	if err != nil || types[0x80] != 21 || !CanEquip(1, types[0x80], equip) || CanEquip(25, types[0x80], equip) {
 		t.Fatalf("eligibility tables err=%v type=%d equip=%#v", err, types[0x80], equip[1])
 	}
