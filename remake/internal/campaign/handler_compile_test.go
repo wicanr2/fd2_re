@@ -1040,6 +1040,36 @@ func TestCompileChapter15PreUsesRecoveredChapter16TextGroups(t *testing.T) {
 	}
 }
 
+func TestCompileChapter17PreUsesRecoveredChapter18TextGroups(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch17_pre.json")
+	if err != nil || len(issues) != 0 {
+		t.Fatalf("ch17_pre err=%v issues=%#v", err, issues)
+	}
+	seen := map[string]Beat{}
+	dialogs := make([]Beat, 0, 24)
+	for _, beat := range beats {
+		seen[beat.Source] = beat
+		if beat.Op == "dialog" {
+			dialogs = append(dialogs, beat)
+		}
+	}
+	if len(dialogs) != 24 {
+		t.Fatalf("FDTXT_018 #0/#1/#2 dialogs=%d, want 7+4+13", len(dialogs))
+	}
+	if dialogs[0].SceneIndex == nil || *dialogs[0].SceneIndex != 0 || dialogs[6].Line != 6 || dialogs[7].SceneIndex == nil || *dialogs[7].SceneIndex != 0 || dialogs[11].SceneIndex == nil || *dialogs[11].SceneIndex != 1 {
+		t.Fatalf("ch17_pre dialogue mapping = %#v", dialogs)
+	}
+	if load := seen["0x335e4"]; load.LoadCH == nil || load.LoadCH.Chapter != 17 || load.LoadCH.Map != "assets/maps/map17" || load.LoadCH.SlotCount != 70 || load.LoadCH.Script != "assets/story/ch18.json" || load.LoadCH.PartyScenario != "assets/scenarios/ch18.json" {
+		t.Fatalf("ch17_pre LOADCH = %#v", load.LoadCH)
+	}
+	if pan := seen["0x3361e"]; pan.X != 384 || pan.Y != 96 || !pan.TileStep {
+		t.Fatalf("ch17_pre first PAN = %#v", pan)
+	}
+	if act := seen["0x33628"]; len(act.Acting) == 0 || len(act.Acting[0].Units) == 0 {
+		t.Fatalf("ch17_pre acting54 = %#v", act.Acting)
+	}
+}
+
 func TestCompileHandlerScriptRejectsActingOutsideActiveLoadCHSlots(t *testing.T) {
 	slot30 := 30
 	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{
