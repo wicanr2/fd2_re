@@ -89,11 +89,11 @@ func TestLocateLogicalUtteranceUsesPhysicalLocator(t *testing.T) {
 	}
 }
 
-func TestPlayerFDTXT030Logical44HasStablePhysicalLocator(t *testing.T) {
-	const path = "../../../extracted/raw/FDTXT/FDTXT_030.bin"
+func TestPlayerFDTXT031Physical44HasStablePayload(t *testing.T) {
+	const path = "../../../extracted/raw/FDTXT/FDTXT_031.bin"
 	raw, err := os.ReadFile(path)
 	if os.IsNotExist(err) {
-		t.Skip("player-provided FDTXT_030 is absent")
+		t.Skip("player-provided FDTXT_031 is absent")
 	}
 	if err != nil {
 		t.Fatal(err)
@@ -102,11 +102,11 @@ func TestPlayerFDTXT030Logical44HasStablePhysicalLocator(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if s.Count() != 11 {
-		t.Fatalf("physical strings=%d, want 11", s.Count())
+	if s.Count() != 46 {
+		t.Fatalf("physical strings=%d, want 46", s.Count())
 	}
-	got, err := s.LocateLogicalUtterance(44)
-	if err != nil || got != (LogicalLocator{RawStringIndex: 10, RawUtteranceIndex: 6}) {
-		t.Fatalf("logical #44 locator=%#v err=%v", got, err)
+	words, err := s.Words(44)
+	if err != nil || len(words) != 130 || words[0] != 0x00b5 || words[len(words)-1] != 0x0248 {
+		t.Fatalf("physical #44 words=%d first/last=%#x/%#x err=%v", len(words), words[0], words[len(words)-1], err)
 	}
 }
