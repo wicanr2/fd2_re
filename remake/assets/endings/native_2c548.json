@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "native_handler": "0x2c548",
+  "status": "mapped_first_party_cycle_fail_closed",
+  "allocations": [
+    {"bytes": 128000, "purpose": "320x400 staging surface", "source": "0x2c551"},
+    {"bytes": 64000, "purpose": "battle presentation buffer A", "source": "0x2c560"},
+    {"bytes": 64000, "purpose": "battle presentation buffer B", "source": "0x2c573"}
+  ],
+  "resources": [
+    {"archive": "TAI.DAT", "index": 3, "source": "0x2c584", "role": "native platform sprite"},
+    {"archive": "FDOTHER.DAT", "index": 56, "source": "0x2c59b", "role": "native indexed backdrop"}
+  ],
+  "party_cycle": {
+    "source": "0x2c5d7",
+    "count_global": "0x53bfb",
+    "unit_base_global": "0x53a45",
+    "unit_stride": 80,
+    "visual_group_offset": 7,
+    "figure_archive": "FIGANI.DAT",
+    "figure_indices": ["group*3+1", "group*3"],
+    "figure_renderer": "0x29164",
+    "frame_renderer": "0x2b9a1",
+    "initial_frames": 20,
+    "frame_delay_ms": 1,
+    "source_range": "0x2c5e3..0x2c9a9"
+  },
+  "gate": {
+    "source": "0x2c5e3",
+    "reason": "unit selection, portrait/text control flow, input handling, and the full native battle renderer composition have not yet been reconstructed as one verified phase"
+  }
+}
