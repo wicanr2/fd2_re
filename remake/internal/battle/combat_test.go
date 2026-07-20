@@ -280,4 +280,11 @@ func TestAISpellCandidatesUsesOriginalFamilyCampFilters(t *testing.T) {
 	if got := st.AISpellCandidates(caster, Spell{ID: 17}); len(got) != 2 || got[0] != caster || got[1] != ally {
 		t.Fatalf("buff candidates=%v, want same-camp live units", got)
 	}
+	ally.Poisoned = true
+	if got := st.AISpellCandidates(caster, Spell{ID: 20}); len(got) != 1 || got[0] != ally {
+		t.Fatalf("cure candidates=%v, want poisoned same-camp ally", got)
+	}
+	if got := st.AISpellCandidates(caster, Spell{ID: 22}); len(got) != 1 || got[0] != target {
+		t.Fatalf("status candidates=%v, want opposing target", got)
+	}
 }

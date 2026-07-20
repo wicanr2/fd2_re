@@ -306,7 +306,9 @@ func (s *State) AISpellCandidates(caster *Unit, spell Spell) []*Unit {
 		family = "heal"
 	case 17, 18, 19:
 		family = "buff"
-	case 20, 21, 22, 26, 27:
+	case 20, 21:
+		family = "cure"
+	case 22, 26, 27:
 		family = "status"
 	default:
 		return nil
@@ -328,6 +330,10 @@ func (s *State) AISpellCandidates(caster *Unit, spell Spell) []*Unit {
 			}
 		case "buff":
 			if sameCamp {
+				out = append(out, target)
+			}
+		case "cure":
+			if sameCamp && ((spell.ID == 20 && target.Poisoned) || (spell.ID == 21 && target.Paralyzed)) {
 				out = append(out, target)
 			}
 		case "status":
