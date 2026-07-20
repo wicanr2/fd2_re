@@ -62,3 +62,19 @@ func TestPresentANIFrameKeepsFramePalettePair(t *testing.T) {
 		t.Fatalf("err=%v", err)
 	}
 }
+
+func TestANIPlayerUsesExactMillisecondCadence(t *testing.T) {
+	c := NewIndexedCompositor()
+	clip := &afm.Clip{IndexedFrames: [][]byte{make([]byte, Bytes), make([]byte, Bytes)}, Palettes: [][]byte{make([]byte, 768), make([]byte, 768)}}
+	clip.IndexedFrames[0][0], clip.IndexedFrames[1][0] = 1, 2
+	p := &ANIPlayer{Clip: clip, DelayMs: 100}
+	if done, err := p.Advance(c, 99); err != nil || done {
+		t.Fatal("advanced too early")
+	}
+	if done, err := p.Advance(c, 1); err != nil || done || c.VGA[0] != 1 {
+		t.Fatalf("first frame")
+	}
+	if done, err := p.Advance(c, 100); err != nil || !done || c.VGA[0] != 2 {
+		t.Fatalf("last frame")
+	}
+}

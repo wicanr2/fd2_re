@@ -22,6 +22,29 @@ type IndexedCompositor struct {
 	Palette              [768]byte
 }
 
+type ANIPlayer struct {
+	Clip                    *afm.Clip
+	DelayMs, Elapsed, Frame int
+}
+
+func (p *ANIPlayer) Advance(c *IndexedCompositor, elapsedMs int) (bool, error) {
+	if p.Clip == nil || p.DelayMs <= 0 || p.Frame >= len(p.Clip.IndexedFrames) {
+		return true, errors.New("ending: invalid ANI player")
+	}
+	p.Elapsed += elapsedMs
+	for p.Elapsed >= p.DelayMs {
+		p.Elapsed -= p.DelayMs
+		if err := c.PresentANIFrame(p.Clip, p.Frame); err != nil {
+			return true, err
+		}
+		p.Frame++
+		if p.Frame >= len(p.Clip.IndexedFrames) {
+			return true, nil
+		}
+	}
+	return false, nil
+}
+
 // RunRecoveredPrefix executes only fully recovered indexed operations. It
 // stops at the first native-only operation, preserving the fail-closed ending
 // contract while making the evidence-backed prefix testable.
