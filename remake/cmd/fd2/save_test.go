@@ -2,6 +2,9 @@ package main
 
 import (
 	"encoding/json"
+	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -44,5 +47,32 @@ func TestSaveRejectsPostBattleHandlerWithoutSerializableRuntimeContext(t *testin
 	g.saveGame()
 	if g.msg != "戰後演出進行中，請在下一個節點存檔" {
 		t.Fatalf("unsafe postbattle save was not rejected: %q", g.msg)
+	}
+}
+
+func TestWriteSaveFileReplacesCompleteJSONAtomically(t *testing.T) {
+	path := t.TempDir() + "/fd2_save.json"
+	if err := os.WriteFile(path, []byte(`{"node":"old"}`), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	want := []byte(`{"node":"town_ch04","gold":99}`)
+	if err := writeSaveFile(path, want); err != nil {
+		t.Fatal(err)
+	}
+	got, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(got) != string(want) {
+		t.Fatalf("save contents = %q, want %q", got, want)
+	}
+	entries, err := os.ReadDir(filepath.Dir(path))
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, entry := range entries {
+		if strings.HasPrefix(entry.Name(), ".fd2-save-") {
+			t.Fatalf("temporary save file leaked: %s", entry.Name())
+		}
 	}
 }

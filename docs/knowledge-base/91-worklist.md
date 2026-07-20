@@ -140,7 +140,7 @@
 - [~] class-change synthesis：`0x31602` 五組 `0x1e529` 先把新職成長加到 raw AP/DP/DX/MaxHP/MaxMP，隨後呼叫 `0x1b750`；該 routine 讀 raw `+0x37/+0x39/+0x3e`、item table 23-byte row 的 `+1/+3/+5/+7`，寫 derived AP/DP/HIT/EV `+0x48/+0x4a/+0x4c/+0x4e`。`RecomputeAfterClassChange` 已恢復並防止既有裝備重複計算；`+0x22/+0x23/+0x24` 是 constructor 清零後由其他 transient/effect writer 使用的旗標，class path 本身不寫入，不能臆測成 class modifiers。
 - [~] headless class-change fixture：新增僅由 `FD2_CAMP_CLASS_FIXTURE=1` 啟用的 Lv20 portrait9＋item 0x58/0x5a roster，供 xvfb 依「教會→轉職→角色→target branch」操作驗證；正常遊戲不改變。實機截圖 [`church-class-targets.png`](../figures/church-class-targets.png) 已確認 default 0x29、optional 0x3b、special 0x34 三分支。
 - [~] 分支與敗北路線：campaign runner 已有 on_lose→retreat 非 game-over 路徑與測試；battle Node 新增可編輯 `protect` 目標（空值沿用索爾），main 不再硬編碼唯一保護角色；待逐關核對原版保護目標與 retreat 後整備語意。
-- [ ] 存檔/讀檔(自有格式,非破解原版 `FD2.SAV`)
+- [~] 存檔/讀檔(自有格式,非破解原版 `FD2.SAV`)：節點／旗標／金幣／道具／persistent party 已保存；2026-07-20 新增同目錄暫存檔+rename 原子寫入與清理測試，避免 town/shop/preparation 存檔被截斷。仍待完整 GUI/Xvfb 讀檔回歸。
 
 ## M5 — 內容完整化(原版可破關)
 > 驗收:從序章玩到結局,全 33 戰場 + 全劇情 + 商店,正常玩法可達(無 debug hook)。

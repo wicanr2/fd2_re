@@ -5,12 +5,38 @@ package main
 import (
 	"encoding/json"
 	"os"
+	"path/filepath"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
 
 // savePath 存檔位置:$XDG_DATA_HOME/fd2_re/fd2_save.json(唯讀 AppImage mount 內無法寫 cwd,見 assets.go)。
 func savePath() string { return userDataPath("fd2_save.json") }
+
+// writeSaveFile replaces the save in one rename. Campaign progress is only
+// persisted at node boundaries, so a truncated JSON file must never turn a
+// valid town/preparation save into an unreadable slot after a process stop.
+func writeSaveFile(path string, raw []byte) error {
+	dir := filepath.Dir(path)
+	tmp, err := os.CreateTemp(dir, ".fd2-save-*")
+	if err != nil {
+		return err
+	}
+	tmpName := tmp.Name()
+	defer os.Remove(tmpName)
+	if err := tmp.Chmod(0o644); err != nil {
+		tmp.Close()
+		return err
+	}
+	if _, err := tmp.Write(raw); err != nil {
+		tmp.Close()
+		return err
+	}
+	if err := tmp.Close(); err != nil {
+		return err
+	}
+	return os.Rename(tmpName, path)
+}
 
 type saveData struct {
 	Node           string              `json:"node"`
@@ -47,7 +73,7 @@ func (g *Game) saveGame() {
 	if err != nil {
 		return
 	}
-	if os.WriteFile(savePath(), raw, 0o644) == nil {
+	if writeSaveFile(savePath(), raw) == nil {
 		g.msg = "已存檔(" + g.camp.Cur + ")"
 	}
 }
