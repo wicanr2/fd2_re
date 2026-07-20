@@ -54,6 +54,16 @@ func TestPresentANIReplacesIndexedVGAAndPalette(t *testing.T) {
 	}
 }
 
+func TestRGBAConvertsSixBitDAC(t *testing.T) {
+	c := NewIndexedCompositor()
+	c.VGA[0] = 1
+	c.Palette[3], c.Palette[4], c.Palette[5] = 63, 32, 0
+	p := c.RGBA().Pix
+	if p[0] != 255 || p[1] != 130 || p[2] != 0 || p[3] != 255 {
+		t.Fatalf("rgba=%v", p[:4])
+	}
+}
+
 func TestPresentANIFrameKeepsFramePalettePair(t *testing.T) {
 	c := NewIndexedCompositor()
 	clip := &afm.Clip{IndexedFrames: [][]byte{make([]byte, Bytes)}, Palettes: [][]byte{make([]byte, 768)}}

@@ -3,6 +3,7 @@ package ending
 import (
 	"errors"
 	"fmt"
+	"image"
 
 	"github.com/wicanr2/fd2_re/remake/internal/afm"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
@@ -20,6 +21,18 @@ const (
 type IndexedCompositor struct {
 	VGA, Offscreen, Work []byte
 	Palette              [768]byte
+}
+
+func (c *IndexedCompositor) RGBA() *image.RGBA {
+	out := image.NewRGBA(image.Rect(0, 0, Width, Height))
+	for i, index := range c.VGA {
+		p := int(index) * 3
+		out.Pix[i*4] = (c.Palette[p] << 2) | (c.Palette[p] >> 4)
+		out.Pix[i*4+1] = (c.Palette[p+1] << 2) | (c.Palette[p+1] >> 4)
+		out.Pix[i*4+2] = (c.Palette[p+2] << 2) | (c.Palette[p+2] >> 4)
+		out.Pix[i*4+3] = 0xff
+	}
+	return out
 }
 
 type ANIPlayer struct {
