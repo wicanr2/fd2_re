@@ -2,6 +2,7 @@
   "schema_version": 1,
   "handler_script": "../handlers/ch29_post.json",
   "acting_resources": "../acting/map32.json",
+  "runtime_context": { "slot_count": 20, "story_viewport": true },
   "story_index_map": "../dialogue-index/count-aligned.json",
   "dialogue_contexts": {
     "0x257db": { "source_dat": "FDTXT_029", "script": "ch29.json" },
@@ -10,6 +11,16 @@
     "0x25968": { "source_dat": "FDTXT_030", "script": "ch30.json" }
   },
   "overrides": {
+    "0x25870": {
+      "loadch": {
+        "chapter": 30,
+        "map": "assets/maps/map29",
+        "roster": "assets/maps/map29/map29_units.json",
+        "slot_count": 70,
+        "script": "assets/story/ch30.json",
+        "party_scenario": "assets/scenarios/ch30.json"
+      }
+    },
     "0x257db": {
       "dialog": { "line": 6, "count": 1, "script": "ch29.json", "scene_index": 2 }
     },

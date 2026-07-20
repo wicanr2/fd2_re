@@ -108,6 +108,27 @@ func TestCompileNativeTickWaitLowersToDelay(t *testing.T) {
 	}
 }
 
+func TestCompileNativeChapterLoaderRequiresCompleteLoadCHBinding(t *testing.T) {
+	script := &HandlerScript{Beats: []HandlerBeat{{
+		Op: "load_ch_text", Source: HandlerSource{Addr: "0x25870", Target: "0x1088d"},
+	}}}
+	state := LoadCHState{Chapter: 30, Map: "assets/maps/map29", Roster: "assets/maps/map29/map29_units.json", SlotCount: 70, Script: "assets/story/ch30.json", PartyScenario: "assets/scenarios/ch30.json"}
+	beats, issues := CompileHandlerScript(script, HandlerBindings{LoadCH: func(input HandlerBeat) (LoadCHState, bool) {
+		if input.Source.Addr == "0x25870" {
+			return state, true
+		}
+		return LoadCHState{}, false
+	}})
+	if len(issues) != 0 || len(beats) != 1 || beats[0].Op != "loadch" || beats[0].LoadCH == nil || beats[0].LoadCH.Chapter != state.Chapter || beats[0].LoadCH.Map != state.Map || beats[0].LoadCH.Roster != state.Roster || beats[0].LoadCH.SlotCount != state.SlotCount || beats[0].LoadCH.Script != state.Script || beats[0].LoadCH.PartyScenario != state.PartyScenario {
+		t.Fatalf("chapter loader=%#v issues=%#v", beats, issues)
+	}
+
+	beats, issues = CompileHandlerScript(script, HandlerBindings{})
+	if len(beats) != 0 || len(issues) != 1 || issues[0].Source.Addr != "0x25870" {
+		t.Fatalf("unbound chapter loader must stay unresolved: beats=%#v issues=%#v", beats, issues)
+	}
+}
+
 func TestCompileDynamicPaletteLoopMaterializesDescendingRange(t *testing.T) {
 	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
 		Op: "unknown", NativeTarget: "0x11df2", RawArgs: []any{"ebx", 255, 0},
@@ -1528,8 +1549,18 @@ func TestCompileChapter29PostPreservesDialogueAcrossChapterTextSwitch(t *testing
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(issues) < 5 {
+	if len(issues) < 4 {
 		t.Fatalf("ch29_post issues=%#v want unresolved native effects preserved", issues)
+	}
+	var loader Beat
+	for _, beat := range beats {
+		if beat.Source == "0x25870" {
+			loader = beat
+			break
+		}
+	}
+	if loader.Op != "loadch" || loader.LoadCH == nil || loader.LoadCH.Chapter != 30 || loader.LoadCH.Map != "assets/maps/map29" || loader.LoadCH.PartyScenario != "assets/scenarios/ch30.json" {
+		t.Fatalf("ch29_post full chapter loader=%#v", loader)
 	}
 	want := []struct {
 		script string

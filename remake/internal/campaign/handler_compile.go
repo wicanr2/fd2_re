@@ -219,6 +219,25 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			beat.LoadCH = &state
 			beats = append(beats, beat)
 			activeSlotCount = state.SlotCount
+		case "load_ch_text":
+			// The exporter name reflects the visible FDTXT switch, but native
+			// 0x1088d also loads FDFIELD, rebuilds the runtime unit array from
+			// the persistent roster, and spawns its groups. Never lower it as a
+			// text-only operation: it requires the same complete state mapping as
+			// an ordinary LOADCH wrapper.
+			if bindings.LoadCH == nil {
+				issue(i, input, "0x1088d chapter loader requires an explicit map, roster, and story-context mapping")
+				continue
+			}
+			state, ok := bindings.LoadCH(input)
+			if !ok || state.Chapter < 0 || state.Map == "" || state.Roster == "" || state.SlotCount <= 0 || state.Script == "" {
+				issue(i, input, "0x1088d chapter loader has no complete remake state mapping")
+				continue
+			}
+			beat := runtime(input, "loadch")
+			beat.LoadCH = &state
+			beats = append(beats, beat)
+			activeSlotCount = state.SlotCount
 		case "delay":
 			if input.Ms == nil {
 				issue(i, input, "delay lacks an immediate millisecond value")
