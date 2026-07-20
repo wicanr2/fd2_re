@@ -48,11 +48,22 @@ func TestLoadPreservesInternalInventoryHoleAndEquippedSourceSlot(t *testing.T) {
 		t.Fatal(err)
 	}
 	u := st.Units[0]
-	if !reflect.DeepEqual(u.InventorySlots, []int{255, 128, 255, 255, 255, 255, 255, 255}) || len(u.Equipped) != 1 || !u.Equipped[0] {
+	if !reflect.DeepEqual(u.InventorySlots, []int{128, 255, 255, 255, 255, 255, 255, 255}) || len(u.Equipped) != 1 || !u.Equipped[0] {
 		t.Fatalf("slot provenance lost: inventory=%v slots=%v equipped=%v", u.Inventory, u.InventorySlots, u.Equipped)
 	}
-	if !u.AddInventoryItem(0x22, false) || !reflect.DeepEqual(u.InventorySlots, []int{0x22, 128, 255, 255, 255, 255, 255, 255}) {
-		t.Fatalf("append did not fill first raw hole: inventory=%v slots=%v", u.Inventory, u.InventorySlots)
+	if !u.AddInventoryItem(0x22, false) || !reflect.DeepEqual(u.InventorySlots, []int{128, 0x22, 255, 255, 255, 255, 255, 255}) {
+		t.Fatalf("append did not fill first runtime hole: inventory=%v slots=%v", u.Inventory, u.InventorySlots)
+	}
+}
+
+func TestMaterializeInventoryPreservesOriginalSpawnBranches(t *testing.T) {
+	ids, equipped, slots := materializeInventory([]int{0x11, 0xff, 0x22, 0xff, 0xff, 0xff, 0xff, 0xff}, []int{0x11, 0x22})
+	if !reflect.DeepEqual(ids, []int{0x11, 0x22}) || !reflect.DeepEqual(equipped, []bool{true, false}) || !reflect.DeepEqual(slots, []int{0x11, 0xff, 0x22, 0xff, 0xff, 0xff, 0xff, 0xff}) {
+		t.Fatalf("source[0] branch materialization mismatch: ids=%v equipped=%v slots=%v", ids, equipped, slots)
+	}
+	ids, equipped, slots = materializeInventory([]int{0xff, 0x33, 0x44, 0xff, 0xff, 0xff, 0xff, 0xff}, []int{0x33, 0x44})
+	if !reflect.DeepEqual(ids, []int{0x33, 0x44}) || !reflect.DeepEqual(equipped, []bool{true, false}) || !reflect.DeepEqual(slots, []int{0x33, 0xff, 0x44, 0xff, 0xff, 0xff, 0xff, 0xff}) {
+		t.Fatalf("source[0]=ff branch materialization mismatch: ids=%v equipped=%v slots=%v", ids, equipped, slots)
 	}
 }
 

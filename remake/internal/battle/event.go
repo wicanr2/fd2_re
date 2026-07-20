@@ -249,13 +249,14 @@ func (sc *Scenario) PartyUnits(fallback []Cell) []*Unit {
 		} else if i < len(fallback) {
 			x, y = fallback[i].X, fallback[i].Y
 		}
+		inventory, equipped, runtimeSlots := materializeInventory(pm.InventorySlots, pm.Inventory)
 		u := &Unit{
 			Camp: Own, Name: pm.Name, ClsName: pm.Cls, Lv: pm.Lv,
 			HP: pm.HP, MaxHP: pm.HP, MP: pm.MP, MaxMP: pm.MP, AP: pm.AP, DP: pm.DP, MV: pm.MV,
 			HIT: pm.HIT, EV: pm.EV, CritPct: pm.CritPct,
 			AtkMin: pm.AtkMin, AtkMax: pm.AtkMax,
 			Portrait: pm.Portrait, Fig: pm.Fig, X: x, Y: y, OnField: true,
-			Spells: append([]int(nil), pm.Spells...), Inventory: append([]int(nil), pm.Inventory...), Equipped: equipmentFlagsForSlots(len(pm.Inventory), pm.InventorySlots), InventorySlots: append([]int(nil), pm.InventorySlots...),
+			Spells: append([]int(nil), pm.Spells...), Inventory: inventory, Equipped: equipped, InventorySlots: runtimeSlots,
 			Dir: 0,
 		}
 		// Editable scenario AP/DP/HIT/EV are already effective values (doc32),

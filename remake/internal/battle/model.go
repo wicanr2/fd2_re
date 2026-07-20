@@ -108,17 +108,35 @@ func initialEquipmentFlags(n int) []bool {
 	return flags
 }
 
-func equipmentFlagsForSlots(n int, slots []int) []bool {
-	if len(slots) != 8 {
-		return initialEquipmentFlags(n)
+func materializeInventory(source, compact []int) ([]int, []bool, []int) {
+	if len(source) != 8 {
+		return append([]int(nil), compact...), initialEquipmentFlags(len(compact)), append([]int(nil), compact...)
 	}
-	flags := make([]bool, 0, n)
-	for i, id := range slots {
+	runtime := make([]int, 8)
+	flags := make([]bool, 8)
+	for i := range runtime {
+		runtime[i] = 0xff
+	}
+	if source[0] != 0xff {
+		runtime[0], flags[0] = source[0], true
+		if source[1] != 0xff {
+			runtime[1], flags[1] = source[1], true
+		}
+	} else if source[1] != 0xff {
+		runtime[0], flags[0] = source[1], true
+	}
+	for i := 2; i < 8; i++ {
+		runtime[i] = source[i]
+	}
+	ids := make([]int, 0, 8)
+	usedFlags := make([]bool, 0, 8)
+	for i, id := range runtime {
 		if id != 0xff {
-			flags = append(flags, i < 2)
+			ids = append(ids, id)
+			usedFlags = append(usedFlags, flags[i])
 		}
 	}
-	return flags
+	return ids, usedFlags, runtime
 }
 
 func (u *Unit) normalizeInventorySlots() {
@@ -419,13 +437,14 @@ func Load(path string) (*State, error) {
 		Treasures: map[Cell]Treasure{}, OpenedTreasure: map[int]bool{}}
 	for _, u := range f.Units {
 		camp := campFrom(u.Camp)
+		inventory, equipped, runtimeSlots := materializeInventory(u.InventorySlots, u.Inventory)
 		nu := &Unit{
 			Camp: camp, Name: u.Name, ClsName: u.ClsName, ClassID: u.ClassID, Lv: u.Lv,
 			HP: u.HP, MaxHP: u.HP, MP: u.MP, MaxMP: u.MP, AP: u.AP, DP: u.DP, MV: u.MV,
 			HIT: u.HIT, EV: u.EV, CritPct: u.Crit, ExpPerLevel: u.Ex,
 			AtkMin: u.AtkMin, AtkMax: u.AtkMax,
 			Portrait: u.Portrait, Fig: u.Fig, X: u.X, Y: u.Y,
-			Spells: append([]int(nil), u.Spells...), Inventory: append([]int(nil), u.Inventory...), Equipped: equipmentFlagsForSlots(len(u.Inventory), u.InventorySlots), InventorySlots: append([]int(nil), u.InventorySlots...),
+			Spells: append([]int(nil), u.Spells...), Inventory: inventory, Equipped: equipped, InventorySlots: runtimeSlots,
 			DeathEffect: u.DeathEffect,
 			DeathReward: u.DeathReward,
 			Group:       u.Group, OnField: true, // 預設登場;Scenario 會把待命 group 設 false
