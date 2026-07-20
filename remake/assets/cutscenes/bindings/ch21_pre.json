@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "handler_script": "../handlers/ch21_pre.json",
+  "acting_resources": "../acting/map32.json",
+  "story_index_map": "../dialogue-index/count-aligned.json",
+  "dialogue_contexts": {
+    "0x3320c": { "source_dat": "FDTXT_022", "script": "ch22.json" }
+  },
+  "overrides": {
+    "0x33688": {
+      "loadch": {
+        "chapter": 21,
+        "map": "assets/maps/map21",
+        "roster": "assets/maps/map21/map21_units.json",
+        "slot_count": 70,
+        "script": "assets/story/ch22.json",
+        "party_scenario": "assets/scenarios/ch22.json"
+      }
+    },
+    "0x33691": { "pan": { "x": 384, "y": 672, "tile_step": true } },
+    "0x33440": { "act": { "resource": 67 } }
+  }
+}

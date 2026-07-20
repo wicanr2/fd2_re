@@ -508,6 +508,7 @@
       → remake 修正指示 doc47 §4;未解(acting 容器/0x627d8 填表)doc47 §5
 - [~] **王座廳 NPC 擺位**(cutscene-bg 執行中):國王/王后坐王座 + 索爾站紅毯中央,對照 f_006.png;
       story 節點加 actor 擺位欄。RE 查 FDFIELD 組32 是否帶 NPC roster(sprite id/cell 直接來自原版)
+- [x] **ch21/ch22 pre-handler**：FDTXT_022 index0（11句）與 map21/70-slot、pan(16,28)、acting67 已接 editable binding；`story_ch22` 已接回原版 pre-handler，compiler/campaign/battle regression 通過。
 
 ## 對話框 / 過場打磨(2026-07-05,使用者實玩逐項校正)
 - [x] **對話框文字不覆蓋頭像**:上框(頭像在右)文字右緣止於頭像左緣前(commit 57c0e30)→ doc09
