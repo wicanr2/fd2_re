@@ -902,6 +902,36 @@ func TestCompileChapter9PreUsesRecoveredChapter10TextGroups(t *testing.T) {
 	}
 }
 
+func TestCompileChapter10PreUsesRecoveredChapter11TextGroups(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch10_pre.json")
+	if err != nil || len(issues) != 0 {
+		t.Fatalf("ch10_pre err=%v issues=%#v", err, issues)
+	}
+	seen := map[string]Beat{}
+	dialogs := make([]Beat, 0, 25)
+	for _, beat := range beats {
+		seen[beat.Source] = beat
+		if beat.Op == "dialog" {
+			dialogs = append(dialogs, beat)
+		}
+	}
+	if len(dialogs) != 25 {
+		t.Fatalf("FDTXT_011 #0/#1/#2 dialogs=%d, want 12+1+12", len(dialogs))
+	}
+	if dialogs[0].SceneIndex == nil || *dialogs[0].SceneIndex != 0 || dialogs[4].SceneIndex == nil || *dialogs[4].SceneIndex != 1 || dialogs[10].SceneIndex == nil || *dialogs[10].SceneIndex != 2 || dialogs[12].SceneIndex == nil || *dialogs[12].SceneIndex != 2 || dialogs[12].Line != 2 || dialogs[13].Line != 3 {
+		t.Fatalf("ch10_pre cross-scene boundaries = %#v", dialogs)
+	}
+	if load := seen["0x33371"]; load.LoadCH == nil || load.LoadCH.Chapter != 10 || load.LoadCH.Map != "assets/maps/map10" || load.LoadCH.Script != "assets/story/ch11.json" || load.LoadCH.PartyScenario != "assets/scenarios/ch11.json" {
+		t.Fatalf("ch10_pre LOADCH = %#v", load.LoadCH)
+	}
+	if pan := seen["0x333ab"]; pan.X != 240 || pan.Y != 168 || !pan.TileStep {
+		t.Fatalf("ch10_pre PAN = %#v", pan)
+	}
+	if act := seen["0x333bf"]; len(act.Acting) == 0 || len(act.Acting[0].Units) == 0 {
+		t.Fatalf("ch10_pre acting38 = %#v", act.Acting)
+	}
+}
+
 func TestCompileHandlerScriptRejectsActingOutsideActiveLoadCHSlots(t *testing.T) {
 	slot30 := 30
 	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{
