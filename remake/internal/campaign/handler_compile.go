@@ -617,7 +617,7 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 					continue
 				}
 				transition, ok := bindings.Transition(input)
-				if !ok || transition.Frames != 9 || transition.FrameDelayMs != 5 || transition.TailDelayMs != 500 || transition.PaletteRangeStart != 0 || transition.PaletteRangeEnd != 255 || transition.PaletteDeltaStart != 0 || transition.PaletteDeltaEnd != 62 || transition.PaletteDeltaStep != 2 || transition.PaletteDelayMs != 4 {
+				if !ok || transition.Frames != 9 || transition.FrameDelayMs != 5 || transition.TailDelayMs != 500 || transition.SourceY != 0 || transition.BlitWidth != 0xc0 || transition.ClipWidth != 0x138 || transition.ClipHeight != 0xc0 || transition.PaletteRangeStart != 0 || transition.PaletteRangeEnd != 255 || transition.PaletteDeltaStart != 0 || transition.PaletteDeltaEnd != 62 || transition.PaletteDeltaStep != 2 || transition.PaletteDelayMs != 4 {
 					issue(i, input, "0x24618 binding lacks recovered 9-frame/500ms/palette timing")
 					continue
 				}

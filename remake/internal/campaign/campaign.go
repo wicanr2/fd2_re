@@ -133,6 +133,10 @@ type HandlerIndexedTransition struct {
 	TileY             int `json:"tile_y"`
 	SourceX           int `json:"source_x"`
 	SourceStep        int `json:"source_step"`
+	SourceY           int `json:"source_y"`
+	BlitWidth         int `json:"blit_width"`
+	ClipWidth         int `json:"clip_width"`
+	ClipHeight        int `json:"clip_height"`
 	Frames            int `json:"frames"`
 	FrameDelayMs      int `json:"frame_delay_ms"`
 	TailDelayMs       int `json:"tail_delay_ms"`
