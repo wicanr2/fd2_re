@@ -270,6 +270,7 @@ type State struct {
 	Flags          map[string]bool   // 事件旗標(跨事件/跨關劇情狀態,doc 29)
 	Cost           []int             // per-tile 移動成本(len==W*H;index=y*W+x;nil=尚無地形資料,MoveCost 全回 1)
 	SpellBook      []Spell           // scenario-injected spell table; AI command mapping remains data-only
+	AICommandSpell map[int]int       // editable item command byte -> spell id; AI ranking remains separate
 	Treasures      map[Cell]Treasure // FDFIELD composition 地形旗標+slot 與 control chest table 的 join
 	OpenedTreasure map[int]bool      // 原版 [0x53ad5] battle-local opened[slot]
 	// 來源:tools/export_engine_assets.py 依地形控制表(doc01 §5)換算,由 Load 讀同目錄

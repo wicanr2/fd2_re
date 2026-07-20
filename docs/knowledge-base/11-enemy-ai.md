@@ -62,6 +62,7 @@
 - `0x15688` 開始的函式逐一掃描單位可用命令。`0x15735` 讀取命令描述子的 command byte；`command<=0x0F` 走物理攻擊，`command>0x0F` 在 `0x1579A–0x157B5` 做 `spell_id=command-0x10`，並呼叫 `0x149F8` 取得法術傷害／命中評分。
 - 選中的命令由全域 `0x53C3F` 保存。`0x15055` 執行 AI 行動時於 `0x150C2` 讀回同一 command byte；`command>=0x10` 在 `0x150D3–0x150F1` 再次轉成 spell id 並呼叫 `0x149F8`，之後 `0x15168→0x28784` 播放施法者演出。
 - 因此「敵方 AI 施法」不是推測機制，而是已由 callsite 證實；尚待補的是 command inventory/可用法術條件、治療目標選擇，以及 `0x15880/0x15B77` 對不同法術效果的精確優先級。
+- remake 已先把 editable item 23-byte row 的 K4（raw byte `0x11`）資料化為 `AICommandSpell`（command `>=0x10` → `spell_id=command-0x10`）；這只建立 command inventory，不提前猜測 AI ranking、可用條件或治療目標。
 
 `0x15B77` 的 spell-target 評分分支也已直接反組譯（呼叫點 `0x15AD8`）：
 

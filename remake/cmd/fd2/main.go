@@ -4212,6 +4212,9 @@ func loadGame() *Game {
 			g.st.SpellBook = append([]battle.Spell(nil), sp...)
 		}
 	}
+	if commands, e := campaign.LoadAICommandSpellMap(assetPath("assets/data/item.json")); e == nil && g.st != nil {
+		g.st.AICommandSpell = commands
+	}
 	if types, equip, e := campaign.LoadShopEligibility(assetPath("assets/data/item.json"), assetPath("assets/data/class_equip_types.json")); e == nil {
 		g.shopItemTypes, g.shopEquipTypes = types, equip
 	}
