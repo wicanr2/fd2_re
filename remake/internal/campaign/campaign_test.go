@@ -222,11 +222,15 @@ func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 	gate := c.Nodes["inventory_gate_ch27_sky_key"]
 	success := c.Nodes["story_ch27_post_sky_key_success"]
 	badEnding := c.Nodes["ending_ch27_no_sky_key"]
-	if battle27 == nil || battle27.OnWin != "inventory_gate_ch27_sky_key" || gate == nil || gate.Type != "inventory_gate" || gate.ItemID == nil || *gate.ItemID != 0x64 || gate.IfPresent != "story_ch27_post_sky_key_success" || gate.IfMissing != "ending_ch27_no_sky_key" {
+	if battle27 == nil || battle27.OnWin != "inventory_gate_ch27_sky_key" || gate == nil || gate.Type != "inventory_gate" || gate.ItemID == nil || *gate.ItemID != 0x64 || gate.IfPresent != "story_ch27_post_sky_key_success" || gate.IfMissing != "story_ch27_post_sky_key_missing" {
 		t.Fatalf("chapter27 must preserve original sky-key inventory branch: battle=%#v gate=%#v", battle27, gate)
 	}
 	if success == nil || success.Type != "cutscene" || success.HandlerBinding != "assets/cutscenes/bindings/ch27_post.json" || success.Next != "preparation_ch28" || len(success.Beats) != 0 {
-		t.Fatalf("sky-key success must sync persistent party before chapter28 preparation: %#v", success)
+		 t.Fatalf("sky-key success must sync persistent party before chapter28 preparation: %#v", success)
+	}
+	missing := c.Nodes["story_ch27_post_sky_key_missing"]
+	if missing == nil || missing.Type != "story" || missing.Script != "assets/story/ch27.json" || missing.Scene != "缺少天空之鑰的離別(分支)" || missing.Next != "ending_ch27_no_sky_key" {
+		t.Fatalf("missing sky-key branch must preserve editable farewell scene: %#v", missing)
 	}
 	if badEnding == nil || badEnding.Type != "ending" || badEnding.Text == "" {
 		t.Fatalf("missing sky key must reach an editable bad ending: %#v", badEnding)

@@ -519,6 +519,7 @@
 - [x] **ch27 post/ch28 flow**：FDTXT_028 string7 已精確對到 ch28 scene1 lines 11–15，新增 post-handler binding 並接 `story_ch28`；sync_party/set_chapter 保留，下一節仍進可編輯 preparation_ch28。
 - [~] **ch28/ch29 pre-handler**：FDTXT_029 idx7/idx8 與 map27/pan/acting86 已建立 staged binding；`0x35822(8,19,9)` 尚未 RE，故暫不接 campaign，避免 handler unresolved 造成整段 fail-closed。
 - [~] **ch26 post item-gate branch**：已證實 `0x25186` 的 item `0x64` present/missing 雙臂與 FDTXT_027 idx8–12 / idx13–16 對應；需先把 visual/effect calls 與缺匙 editable branch 資料化，不能只保留 generic ending。
+- [x] **天空之鑰缺失對話分支**：新增 `ch27.json` 分支 scene（FDTXT_027 idx13–16 共17句）並接 `inventory_gate_ch27_sky_key → story_ch27_post_sky_key_missing → ending_ch27_no_sky_key`；視覺效果仍待 direct RE，對話本身已可編輯且有 campaign regression。
 - [x] **戰後 town/shop/preparation 外部交叉盤點（2026-07-20）**：subagent 查得公開攻略逐章列出羅德鎮、塞拉村、普里茲港等戰間商店／教會／整備，並有「第2章戰後獎勵」與「第6章戰後貝克威加入」等 persistent event 證據；只作流程旁證，不取代 EXE branch 證據。後續保持 battle→postbattle→town/shop/preparation→next battle 可編輯節點，禁止把 postbattle 直接接下一場戰鬥當完成。
 
 ## 對話框 / 過場打磨(2026-07-05,使用者實玩逐項校正)

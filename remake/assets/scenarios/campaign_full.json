@@ -3941,7 +3941,13 @@
    "type": "inventory_gate",
    "item_id": 100,
    "if_present": "story_ch27_post_sky_key_success",
-   "if_missing": "ending_ch27_no_sky_key"
+   "if_missing": "story_ch27_post_sky_key_missing"
+  },
+  "story_ch27_post_sky_key_missing": {
+   "type": "story",
+   "script": "assets/story/ch27.json",
+   "scene": "缺少天空之鑰的離別(分支)",
+   "next": "ending_ch27_no_sky_key"
   },
   "story_ch27_post_sky_key_success": {
    "type": "cutscene",
