@@ -36,10 +36,6 @@ type HandlerDialog struct {
 	Segments []HandlerDialogSegment `json:"segments,omitempty"`
 }
 
-type HandlerTextLoad struct {
-	Script string `json:"script"`
-}
-
 // HandlerDialogLine is one runtime dialog beat within a HandlerDialog group.
 type HandlerDialogLine struct {
 	Line  int   `json:"line"`
@@ -69,7 +65,6 @@ type HandlerBindings struct {
 	LoadCH     func(HandlerBeat) (LoadCHState, bool)
 	Layout     func(HandlerBeat) (HandlerLayout, bool)
 	Transition func(HandlerBeat) (HandlerIndexedTransition, bool)
-	Text       func(HandlerBeat) (HandlerTextLoad, bool)
 	Resource   func(HandlerBeat) (HandlerResource, bool)
 	// RuntimeContext is present for a handler entered with an existing canonical
 	// unit array (not through LOADCH), such as a post-battle handler. It makes
@@ -473,19 +468,6 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			itemID := *input.ItemID
 			beat.ItemID = &itemID
 			beats = append(beats, beat)
-		case "load_ch_text":
-			if bindings.Text == nil {
-				issue(i, input, "load_ch_text requires an explicit editable script binding")
-				continue
-			}
-			textLoad, ok := bindings.Text(input)
-			if !ok || textLoad.Script == "" {
-				issue(i, input, "load_ch_text has no valid script binding")
-				continue
-			}
-			beat := runtime(input, "load_ch_text")
-			beat.Script = textLoad.Script
-			beats = append(beats, beat)
 		case "load_res", "play_sfx", "release_res":
 			if bindings.Resource == nil {
 				issue(i, input, input.Op+" requires an explicit resource binding")
@@ -516,21 +498,6 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			beat.Out = false
 			beats = append(beats, beat)
 		case "unknown":
-			if input.NativeTarget == "0x1088d" {
-				if bindings.Text == nil {
-					issue(i, input, "0x1088d load_ch_text requires an explicit editable script binding")
-					continue
-				}
-				textLoad, ok := bindings.Text(input)
-				if !ok || textLoad.Script == "" {
-					issue(i, input, "0x1088d load_ch_text has no valid script binding")
-					continue
-				}
-				beat := runtime(input, "load_ch_text")
-				beat.Script = textLoad.Script
-				beats = append(beats, beat)
-				continue
-			}
 			// 0x12cea(x,y) is the native X-first/Y-second camera focus loop.
 			// Handler exports preserve the source PUSH order (y,x), so reverse the
 			// two immediate arguments before lowering to the tile-step camera pan.
