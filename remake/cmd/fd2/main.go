@@ -139,6 +139,9 @@ type Game struct {
 	shopRecipients     []int
 	shopPicking        bool
 	shopPending        campaign.Good
+	shopEquipPrompt    bool
+	shopEquipUnit      int
+	shopEquipSlot      int
 	shopItemTypes      map[int]int
 	shopEquipTypes     map[int][]int
 	portraits          map[int][]*ebiten.Image // DATO 頭像:肖像 id → 4 嘴型幀
@@ -1443,6 +1446,7 @@ func (g *Game) enterNode() {
 		g.dialog, g.st, g.sel = nil, nil, nil
 		g.shopSel = 0
 		g.shopPicking = false
+		g.shopEquipPrompt = false
 		g.shopRecipientSel = 0
 		g.shopRecipients = nil
 	case "ending":
@@ -1505,7 +1509,7 @@ func applyPersistentStats(dst, src *battle.Unit) {
 	if dst == nil || src == nil {
 		return
 	}
-	dst.Name, dst.ClsName, dst.Lv = src.Name, src.ClsName, src.Lv
+	dst.Name, dst.ClsName, dst.ClassID, dst.Lv = src.Name, src.ClsName, src.ClassID, src.Lv
 	dst.HP, dst.MaxHP, dst.MP, dst.MaxMP = src.HP, src.MaxHP, src.MP, src.MaxMP
 	dst.AP, dst.DP, dst.DX = src.AP, src.DP, src.DX
 	dst.HIT, dst.EV, dst.CritPct, dst.MV = src.HIT, src.EV, src.CritPct, src.MV
@@ -1514,6 +1518,7 @@ func applyPersistentStats(dst, src *battle.Unit) {
 	dst.Exp, dst.ExpPerLevel = src.Exp, src.ExpPerLevel
 	dst.Spells = append(dst.Spells[:0], src.Spells...)
 	dst.Inventory = append(dst.Inventory[:0], src.Inventory...)
+	dst.Equipped = append(dst.Equipped[:0], src.Equipped...)
 }
 
 // grantItemToParty projects original 0x1c220 + 0x1bb8c: scan runtime units in
@@ -1605,6 +1610,9 @@ func (g *Game) applyInventoryRecipe(n *campaign.Node) (bool, error) {
 			unit := g.st.Units[slot]
 			if idx := find(unit, itemID); idx >= 0 {
 				unit.Inventory = append(unit.Inventory[:idx], unit.Inventory[idx+1:]...)
+				if idx < len(unit.Equipped) {
+					unit.Equipped = append(unit.Equipped[:idx], unit.Equipped[idx+1:]...)
+				}
 			}
 		}
 	}
@@ -1641,6 +1649,7 @@ func (g *Game) syncPartyFromBattle() error {
 		snapshot := *current
 		snapshot.Spells = append([]int(nil), current.Spells...)
 		snapshot.Inventory = append([]int(nil), current.Inventory...)
+		snapshot.Equipped = append([]bool(nil), current.Equipped...)
 		if snapshot.MaxMP < snapshot.MP {
 			snapshot.MaxMP = snapshot.MP
 		}
@@ -1846,6 +1855,24 @@ func (g *Game) campInput() bool {
 		return true
 	case "shop":
 		goods := g.camp.ShopGoods()
+		if g.shopEquipPrompt {
+			// Original ESC at the equip prompt means "leave it unequipped";
+			// the purchase still completes and money is deducted last.
+			if enter || inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+				u := g.partyRoster[g.shopEquipUnit]
+				if enter {
+					for len(u.Equipped) < len(u.Inventory) {
+						u.Equipped = append(u.Equipped, false)
+					}
+					u.Equipped[g.shopEquipSlot] = true
+				}
+				g.gold = campaign.FinalizeGood(g.gold, g.shopPending)
+				g.partyRoster[g.shopEquipUnit] = u
+				g.shopEquipPrompt = false
+				g.msg = fmt.Sprintf("買下 %s(-%d G)", g.shopPending.Name, g.shopPending.Price)
+			}
+			return true
+		}
 		if g.shopPicking {
 			if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.shopRecipientSel > 0 {
 				g.shopRecipientSel--
@@ -1860,12 +1887,19 @@ func (g *Game) campInput() bool {
 			if enter && len(g.shopRecipients) > 0 {
 				id := g.shopRecipients[g.shopRecipientSel]
 				u := g.partyRoster[id]
-				gold, err := campaign.BuyGood(g.gold, &u, g.shopPending)
+				slot, err := campaign.ReserveGood(g.gold, &u, g.shopPending)
 				if err != nil {
 					g.msg = err.Error()
 				} else {
-					g.gold, g.partyRoster[id], g.shopPicking = gold, u, false
-					g.msg = fmt.Sprintf("買下 %s(-%d G)", g.shopPending.Name, g.shopPending.Price)
+					g.partyRoster[id] = u
+					g.shopPicking = false
+					if g.shopItemTypes[g.shopPending.ID] < 0x20 {
+						g.shopEquipPrompt, g.shopEquipUnit, g.shopEquipSlot = true, id, slot
+						g.msg = "要裝備上去嗎？ Enter=是，ESC=否"
+					} else {
+						g.gold = campaign.FinalizeGood(g.gold, g.shopPending)
+						g.msg = fmt.Sprintf("買下 %s(-%d G)", g.shopPending.Name, g.shopPending.Price)
+					}
 				}
 			}
 			return true
@@ -2052,6 +2086,7 @@ func (g *Game) awardDeathReward(dead, killer *battle.Unit) {
 		awarded := false
 		if killer != nil && killer.Camp == battle.Own && len(killer.Inventory) < 8 {
 			killer.Inventory = append(killer.Inventory, r.Value)
+			killer.Equipped = append(killer.Equipped, false)
 			awarded = true
 		} else {
 			awarded = g.grantItemToParty(r.Value)
@@ -3283,6 +3318,13 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 			g.font.Draw(screen, pre+o.Label, 190, 162+float64(i)*28, 1.0, c)
 		}
 	case n.Type == "shop":
+		if g.shopEquipPrompt {
+			fillBox(150, 150, 340, 120)
+			u := g.partyRoster[g.shopEquipUnit]
+			g.font.Draw(screen, fmt.Sprintf("%s：要裝備上去嗎？", u.Name), 170, 170, 1.1, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+			g.font.Draw(screen, "Enter 是　ESC 否（保留在物品欄）", 170, 210, 1.0, color.RGBA{0xff, 0xff, 0xff, 0xff})
+			break
+		}
 		if g.shopPicking {
 			h := 76 + float64(len(g.shopRecipients))*30
 			fillBox(140, 60, 360, h)

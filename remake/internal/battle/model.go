@@ -53,7 +53,8 @@ type Unit struct {
 	Group       int          // 出場波次(原版 FDFIELD b21;事件按 group 放出,doc 25/29)
 	OnField     bool         // 是否已登場(事件進場機制:false=待命,尚未出現在戰場,doc 25)
 	Spells      []int        // 已習得法術 id(spell.json;原版 M1-M5 bitfield 展開)
-	Inventory   []int        // 角色物品欄 item IDs；原版 unit+0x0a 起 8×2B，本階段保存未裝備 item identity
+	Inventory   []int        // 角色物品欄 item IDs；原版 unit+0x0a 起 8×2B
+	Equipped    []bool       // 與 Inventory 對齊；true 表示該欄位目前已裝備
 	DeathEffect *DeathEffect // FDFIELD b22..25；0=item、1=gold，2/3 特殊效果先原值保留
 	DeathReward *DeathEffect // 可執行死亡獎勵；type2 已知 handler 由 exporter lower 成 item/gold
 	Dir         int          // 朝向:0下 1左 2上 3右(原版 Z2,FDICON 方向幀)
@@ -205,6 +206,7 @@ func (s *State) ClaimTreasure(u *Unit, x, y int) (Treasure, bool) {
 			return Treasure{}, false
 		}
 		u.Inventory = append(u.Inventory, t.Value)
+		u.Equipped = append(u.Equipped, false)
 	case "gold":
 		// Game owns the campaign bank; returning the reward lets it add atomically.
 	default:

@@ -25,6 +25,18 @@ func TestBuyGoodUsesSelectedInventoryAndIsAtomicOnFailure(t *testing.T) {
 	}
 }
 
+func TestReserveGoodDefersGoldUntilEquipDecision(t *testing.T) {
+	receiver := &battle.Unit{}
+	good := Good{ID: 0x80, Price: 25, Name: "劍"}
+	slot, err := ReserveGood(30, receiver, good)
+	if err != nil || slot != 0 || len(receiver.Inventory) != 1 || len(receiver.Equipped) != 1 || receiver.Equipped[0] {
+		t.Fatalf("reserve slot=%d err=%v inventory=%#v equipped=%#v", slot, err, receiver.Inventory, receiver.Equipped)
+	}
+	if got := FinalizeGood(30, good); got != 5 {
+		t.Fatalf("finalize gold=%d, want 5", got)
+	}
+}
+
 func TestLoadShopEligibilityUsesOriginalTables(t *testing.T) {
 	types, equip, err := LoadShopEligibility(filepath.Join("..", "..", "assets", "data", "item.json"), filepath.Join("..", "..", "assets", "data", "class_equip_types.json"))
 	if err != nil || types[0x80] != 21 || !CanEquip(1, types[0x80], equip) || CanEquip(25, types[0x80], equip) {
