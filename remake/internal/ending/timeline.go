@@ -28,6 +28,17 @@ type Resource struct {
 type Segment struct {
 	Op           string          `json:"op"`
 	Source       string          `json:"source"`
+	Frame        *int            `json:"frame,omitempty"`
+	Target       string          `json:"target,omitempty"`
+	Stride       int             `json:"stride,omitempty"`
+	Transparent  *int            `json:"transparent,omitempty"`
+	Bytes        int             `json:"bytes,omitempty"`
+	From         string          `json:"from,omitempty"`
+	To           string          `json:"to,omitempty"`
+	Ms           int             `json:"ms,omitempty"`
+	PaletteStart *int            `json:"start,omitempty"`
+	PaletteEnd   *int            `json:"end,omitempty"`
+	PaletteValue *int            `json:"value,omitempty"`
 	ThenDialogue []DialogueBlock `json:"then_dialogue,omitempty"`
 	ElseDialogue []DialogueBlock `json:"else_dialogue,omitempty"`
 }
@@ -63,6 +74,12 @@ func LoadTimeline(path string) (*Timeline, error) {
 	for i, segment := range timeline.Segments {
 		if segment.Op == "" || segment.Source == "" {
 			return nil, fmt.Errorf("ending timeline %q segment %d is incomplete", path, i)
+		}
+		if segment.Op == "blit_frame" && (segment.Frame == nil || segment.Stride <= 0 || segment.Target == "" || segment.Transparent == nil) {
+			return nil, fmt.Errorf("ending timeline %q segment %d has incomplete blit", path, i)
+		}
+		if segment.Op == "copy_buffer" && (segment.Bytes != Bytes || segment.From == "" || segment.To == "") {
+			return nil, fmt.Errorf("ending timeline %q segment %d has incomplete copy", path, i)
 		}
 		for j, block := range append(append([]DialogueBlock(nil), segment.ThenDialogue...), segment.ElseDialogue...) {
 			if block.PortraitID < 0 || block.SourceDAT == "" || block.Script == "" || block.StringIndex < 0 || block.SceneIndex < 0 || block.Line < 0 || block.Count <= 0 {

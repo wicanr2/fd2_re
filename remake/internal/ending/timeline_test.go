@@ -19,6 +19,9 @@ func TestNative2BCE5TimelineIsRecoveredButNotPlayable(t *testing.T) {
 	if timeline.Segments[12].Op != "blit_frame_sequence" || timeline.Segments[15].Op != "native_composite_loop_opaque" || timeline.Segments[16].Op != "native_composite_loop_opaque" {
 		t.Fatalf("frame schedule landmarks = %#v", timeline.Segments)
 	}
+	if frame := timeline.Segments[0].Frame; frame == nil || *frame != 0 || timeline.Segments[0].Target != "offscreen" || timeline.Segments[0].Stride != 320 || timeline.Segments[0].Transparent == nil || *timeline.Segments[0].Transparent != -1 {
+		t.Fatalf("first native blit = %#v", timeline.Segments[0])
+	}
 	blocks := timeline.Segments[9].ElseDialogue
 	if len(blocks) != 5 || blocks[0] != (DialogueBlock{PortraitID: 37, SourceDAT: "FDTXT_030", Script: "ch30.json", StringIndex: 2, SceneIndex: 1, Line: 0, Count: 6}) || blocks[4].StringIndex != 6 || blocks[4].Line != 12 || blocks[4].Count != 1 {
 		t.Fatalf("first ending dialogue branch = %#v", blocks)
