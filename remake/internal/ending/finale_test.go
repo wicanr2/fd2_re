@@ -89,3 +89,38 @@ func TestPhase0ComposesExactRawGlyphOnlyString(t *testing.T) {
 	}
 	t.Fatal("phase text contained no set glyph bit")
 }
+
+func TestPhase0PlayerUsesNativeScrollAndPaletteCadenceThenStops(t *testing.T) {
+	phase, err := LoadFinalePhase("../../assets/endings/native_2c405.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	staging := make([]byte, phase.Phase.StagingBytes)
+	for row := 0; row < phase.Phase.StagingBytes/phase.Phase.Stride; row++ {
+		staging[row*phase.Phase.Stride] = byte(row)
+	}
+	c := NewIndexedCompositor()
+	c.Baseline[0] = 50
+	p, err := NewPhase0Player(*phase, staging, c)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if done, err := p.Advance(0); err != nil || done || c.VGA[0] != 0 || c.Palette[0] != 10 || p.paletteDelta != 39 {
+		t.Fatalf("i0 done=%v err=%v pixel=%d palette=%d nextDelta=%d", done, err, c.VGA[0], c.Palette[0], p.paletteDelta)
+	}
+	if done, err := p.Advance(1); err != nil || done || c.VGA[0] != 1 || c.Palette[0] != 11 {
+		t.Fatalf("i1 done=%v err=%v pixel=%d palette=%d", done, err, c.VGA[0], c.Palette[0])
+	}
+	p.iteration, p.paletteDelta, p.waitMS = 195, 1, 0
+	if done, err := p.Advance(0); err != nil || done || c.Palette[0] != 49 || p.paletteDelta != 0 {
+		t.Fatalf("fadeout done=%v err=%v palette=%d nextDelta=%d", done, err, c.Palette[0], p.paletteDelta)
+	}
+	p.iteration, p.paletteDelta, p.waitMS = 305, 0, 0
+	if done, err := p.Advance(0); err != nil || done || c.Palette[0] != 50 || p.paletteDelta != 1 {
+		t.Fatalf("fadein done=%v err=%v palette=%d nextDelta=%d", done, err, c.Palette[0], p.paletteDelta)
+	}
+	p.iteration, p.paletteDelta, p.waitMS = 499, 0, 0
+	if done, err := p.Advance(1); err != nil || !done {
+		t.Fatalf("final phase done=%v err=%v", done, err)
+	}
+}

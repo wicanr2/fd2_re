@@ -109,3 +109,71 @@ func (p FinalePhase) ComposePhase0Text(staging, textResource, fontResource []byt
 	}
 	return base, nil
 }
+
+// Phase0Player is the exact 500-pass row-scroll portion after 0x2c469. It is
+// intentionally separate from the ending Player: completing this phase does
+// not authorise execution of the unrecovered 0x2c548 montage.
+type Phase0Player struct {
+	phase        FinalePhase
+	staging      []byte
+	compositor   *IndexedCompositor
+	iteration    int
+	paletteDelta int
+	waitMS       int
+	done         bool
+}
+
+func NewPhase0Player(phase FinalePhase, staging []byte, compositor *IndexedCompositor) (*Phase0Player, error) {
+	if phase.Ready() || len(staging) != phase.Phase.StagingBytes || compositor == nil {
+		return nil, fmt.Errorf("ending: invalid phase-0 player")
+	}
+	return &Phase0Player{phase: phase, staging: staging, compositor: compositor, paletteDelta: phase.Phase.BaselinePaletteInitialDelta}, nil
+}
+
+// Advance consumes the native 1ms waits. The first iteration presents
+// immediately, as the original falls through to 0x2c4b4 before its first
+// 0x17aa9(1) call.
+func (p *Phase0Player) Advance(elapsedMS int) (done bool, err error) {
+	if elapsedMS < 0 {
+		return p.done, fmt.Errorf("ending: negative phase-0 elapsed time")
+	}
+	if p.done {
+		return true, nil
+	}
+	for {
+		if p.waitMS > 0 {
+			if elapsedMS < p.waitMS {
+				p.waitMS -= elapsedMS
+				return false, nil
+			}
+			elapsedMS -= p.waitMS
+			p.waitMS = 0
+			p.iteration++
+		}
+		if p.iteration >= p.phase.Phase.Iterations {
+			p.done = true
+			return true, nil
+		}
+		if err := p.compositor.SetBaselineDelta(0, 255, p.paletteDelta); err != nil {
+			return false, err
+		}
+		offset := p.iteration * p.phase.Phase.Stride
+		if err := CopyRect(p.compositor.VGA, Width, p.staging[offset:], p.phase.Phase.Stride, Width, p.phase.Phase.ViewportRows, 0); err != nil {
+			return false, err
+		}
+		// 0x2c4f9: the fade-out branch is entered only for i<200; its
+		// decrement follows the current frame's palette/copy work.
+		if p.iteration < 200 && p.paletteDelta > 0 && p.iteration%p.phase.Phase.PaletteStepCadence == 0 {
+			p.paletteDelta--
+		}
+		// 0x2c51b: fade-in starts strictly after i=300, also after the
+		// current frame has been presented.
+		if p.iteration > p.phase.Phase.FadeOutThroughIteration && p.iteration%p.phase.Phase.PaletteStepCadence == 0 {
+			p.paletteDelta++
+		}
+		p.waitMS = p.phase.Phase.DelayMS
+		if elapsedMS == 0 {
+			return false, nil
+		}
+	}
+}
