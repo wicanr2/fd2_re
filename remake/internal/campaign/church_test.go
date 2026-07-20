@@ -60,10 +60,10 @@ func TestApplyClassChangeResetsRawStatsAndConsumesItem(t *testing.T) {
 	if err := ApplyClassChange(u, 0x34, 21, 2, row, rand.New(rand.NewSource(1)), 0); err != nil {
 		t.Fatal(err)
 	}
-	if u.AP != 10 || u.DP != 20 || u.DX != 30 || u.MaxHP != 40 || u.HP != 40 || u.MaxMP != 50 || u.MP != 50 {
-		t.Fatalf("reset stats AP/DP/DX=%d/%d/%d HP=%d/%d MP=%d/%d", u.AP, u.DP, u.DX, u.HP, u.MaxHP, u.MP, u.MaxMP)
+	if u.AP != 109 || u.DP != 108 || u.DX != 107 || u.MaxHP != 40 || u.HP != 40 || u.MaxMP != 50 || u.MP != 50 {
+		t.Fatalf("incremented stats AP/DP/DX=%d/%d/%d HP=%d/%d MP=%d/%d", u.AP, u.DP, u.DX, u.HP, u.MaxHP, u.MP, u.MaxMP)
 	}
-	if u.Lv != 1 || u.Exp != 0 || u.MV != 7 || u.Portrait != 0x34 || u.ClassID != 21 {
+	if u.Lv != 27 || u.Exp != 0 || u.MV != 7 || u.Portrait != 0x34 || u.ClassID != 21 {
 		t.Fatalf("metadata lv=%d exp=%v mv=%d portrait=%x class=%d", u.Lv, u.Exp, u.MV, u.Portrait, u.ClassID)
 	}
 	if len(u.Inventory) != 1 || u.Inventory[0] != 0x20 || u.Equipped[0] {

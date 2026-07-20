@@ -38,10 +38,12 @@ func rollClassChangeRange(r [2]int, rng *rand.Rand) (int, error) {
 	return r[0] + rng.Intn(r[1]-r[0]), nil
 }
 
-// ApplyClassChange mirrors the proven 0x31602 state writes.  It deliberately
-// leaves ClsName, derived HIT/EV/MV and Base* untouched; the caller owns the
+// ApplyClassChange mirrors the proven 0x31602 state writes.  0x1e529 adds the
+// rolled row value to the existing raw AP/DP/DX/MaxHP/MaxMP words; it does not
+// replace them. The native routine leaves the level byte untouched and clears
+// EXP, then copies the new maxima to current HP/MP. The caller owns the
 // editable class-name lookup and subsequent 0x1b750-equivalent equipment
-// recomputation.  removeItemIndex is the compact Inventory index returned by
+// recomputation. removeItemIndex is the compact Inventory index returned by
 // the church item scan, or -1 when this branch consumed no item.
 func ApplyClassChange(u *battle.Unit, targetPortrait, classID, growthGroup int, row ClassChangeGrowth, rng *rand.Rand, removeItemIndex int) error {
 	if u == nil {
@@ -76,13 +78,17 @@ func ApplyClassChange(u *battle.Unit, targetPortrait, classID, growthGroup int, 
 	if removeItemIndex >= 0 && !u.RemoveInventoryIndex(removeItemIndex) {
 		return fmt.Errorf("class change: item removal failed")
 	}
-	u.AP, u.DP, u.DX = ap, dp, dx
-	u.MaxHP, u.HP = hp, hp
-	u.MaxMP, u.MP = mp, mp
+	u.AP += ap
+	u.DP += dp
+	u.DX += dx
+	u.MaxHP += hp
+	u.MaxMP += mp
+	u.HP = u.MaxHP
+	u.MP = u.MaxMP
 	// The second byte returned by 0x4e48d is the class mobility increment;
 	// native unit+0x3b is the movement budget used by pathfinding.
 	u.MV += growthGroup
-	u.Lv, u.Exp = 1, 0
+	u.Exp = 0
 	u.Portrait, u.ClassID = targetPortrait, classID
 	return nil
 }
