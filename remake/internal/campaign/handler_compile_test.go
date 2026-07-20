@@ -1549,7 +1549,7 @@ func TestCompileChapter29PostPreservesDialogueAcrossChapterTextSwitch(t *testing
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(issues) < 2 {
+	if len(issues) < 1 {
 		t.Fatalf("ch29_post issues=%#v want unresolved native effects preserved", issues)
 	}
 	var layout Beat
@@ -1571,6 +1571,16 @@ func TestCompileChapter29PostPreservesDialogueAcrossChapterTextSwitch(t *testing
 	}
 	if loader.Op != "loadch" || loader.LoadCH == nil || loader.LoadCH.Chapter != 30 || loader.LoadCH.Map != "assets/maps/map29" || loader.LoadCH.PartyScenario != "assets/scenarios/ch30.json" {
 		t.Fatalf("ch29_post full chapter loader=%#v", loader)
+	}
+	var transition Beat
+	for _, beat := range beats {
+		if beat.Source == "0x25848" {
+			transition = beat
+			break
+		}
+	}
+	if transition.Op != "indexed_transition" || transition.IndexedTransition == nil || transition.IndexedTransition.TileX != 6 || transition.IndexedTransition.TileY != 6 || transition.IndexedTransition.SourceX != 10 || transition.IndexedTransition.SourceStep != 8 {
+		t.Fatalf("ch29_post indexed transition=%#v", transition)
 	}
 	want := []struct {
 		script string

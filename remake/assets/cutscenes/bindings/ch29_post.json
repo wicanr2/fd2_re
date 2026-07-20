@@ -49,6 +49,27 @@
         "party_scenario": "assets/scenarios/ch30.json"
       }
     },
+    "0x25848": {
+      "indexed_transition": {
+        "tile_x": 6,
+        "tile_y": 6,
+        "source_x": 10,
+        "source_step": 8,
+        "source_y": 0,
+        "blit_width": 192,
+        "clip_width": 312,
+        "clip_height": 192,
+        "frames": 9,
+        "frame_delay_ms": 5,
+        "tail_delay_ms": 500,
+        "palette_range_start": 0,
+        "palette_range_end": 255,
+        "palette_delta_start": 0,
+        "palette_delta_end": 62,
+        "palette_delta_step": 2,
+        "palette_delay_ms": 4
+      }
+    },
     "0x257db": {
       "dialog": { "line": 6, "count": 1, "script": "ch29.json", "scene_index": 2 }
     },

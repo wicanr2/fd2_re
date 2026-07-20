@@ -529,6 +529,7 @@
 - [x] **ch29 post layout data**：`0x257b4 → 0x233c6` 的 20 slots X/Y/pose 與 camera `(16,18)` 已存入 editable binding，並有 compiler regression；`0x112a5` 已補證 persistent ordinal=JOIN chronology。整支終局 handler 尚未接 campaign（0x24618/ending renderer 等仍 fail-closed），不表示終局已可播放。
 - [x] **ch29 post final pan**：`0x25937 → 0x135dd(11,12)` 已依 X-first/Y-second native ABI lower 為 tile-step `(264,288)`，compiler regression 通過；終局 transition/renderer 仍待。
 - [~] **0x24618 indexed transition metadata**：已保存 tile/source/frame/timing 與 32-step 全 palette brightness ramp（delta 0→62, step2）之 editable schema、binding resolver/compiler regression；descriptor/double-buffer PNG adapter 尚未完成，故仍 fail-closed。
+- [x] **ch29 final 0x24618 arguments**：依 layout→focus 的 native scroll-offset writes，`0x25848` dynamic args 已定案為 tile `(6,6)`、source `(10,step8)`，並寫入 binding/compiler regression；真正 indexed descriptor/double-buffer adapter 尚待，整支 handler 繼續 fail-closed。
 - [~] **0x24618 fixed blit metadata**：補上 source_y=0、blit width=0xc0、clip 0x138×0xc0 與 source step 欄位；仍待以 `0x53a6d` descriptor table 和 `0x219ad` row clip 建立真正 indexed adapter。
 - [~] **ch29 post persistent roster cleanup**：`0x25089` 已實作獨立 `reset_persistent_roster_state` compiler/runtime beat（清 transient、MaxHP/MaxMP 回填），避免誤併入 `sync_party`；需補 binding、測試並接到正確 town/shop/preparation 節點。
 - [~] **ch29 pre native unit presentation**：`0x22253` direct RE 修正為 6×(render+present+10ms) 後再 2 ticks；現有 `layout_units` 不等價，需新增可編輯 `native_22253` adapter，完成前維持 fail-closed。
