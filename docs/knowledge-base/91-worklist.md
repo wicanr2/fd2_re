@@ -132,6 +132,7 @@
 - [~] 商店節點：原版337筆商品 numeric ID／價格已驗、祕密商店與 town 回返已接、`ClassID`／item type／class equip 白名單、指定收件者與兩階段裝備 prompt 已接；賣出 UI 已接成「Tab→角色→欄位」，`SellSlot` 鎖定原價 75 折並同步移除 equipped flag；`0x1145a/0x1c142` RE 已接入 base+flag 重算與 `<0x80`/`>=0x80` 同類替換；raw `inventory_slots` 保留 source 8 bytes，Load/PartyUnits 依 `0x10f06..0x10f31` materialize 成 runtime 8 slots，內部空槽不再錯移。`0x14237→0x14818` 已鎖定 `range_min` 幾何用途；待：完整 item multiplier/效果碼。
 - [~] 戰後 town/整備流程：campaign_full 的 postbattle→town、連戰 preparation 路線與 shop/rumor return 已盤點；`0x318ad` RE 已鎖定 30-byte 勾選表、一般 cap15／late cap19，remake 已接 `party_limit`、`partyDeploy`、save persistence 與可操作 preparation UI，永久 JOIN roster 不被改寫。church `0x3072f` 已證實四個入口，revive fee table、原子 `ReviveUnit` 核心與 `0x31793` class-change candidate filter 已接；尚待 church selector UI、class-change item/能力寫回與實機驗證（無免費一般治療）。
 - [~] 戰後 town/整備流程：preparation 與 church selector UI 已接；`docs/figures/church-selector.png` 為 xvfb 實機畫面。revive 已可依 fee table 執行並保存 roster/gold；class-change 尚待 `0x31860/0x2a2e8` item/能力寫回與完整驗證。
+- [~] class-change church：已鎖定 `0x3151a..0x3152d` portrait→item 分支、`0x31860` inventory 掃描、`0x1b8e7` item 移除與 `0x31571..0x3157a` class/portrait 寫回；待導出 `0x526a7` mapping 與 `0x2a2e8` 能力/成長重算後接入。
 - [ ] 分支與敗北路線(on_lose → 敗北關卡,非結束)
 - [ ] 存檔/讀檔(自有格式,非破解原版 `FD2.SAV`)
 
