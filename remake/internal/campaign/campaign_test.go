@@ -225,7 +225,7 @@ func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 	if battle27 == nil || battle27.OnWin != "inventory_gate_ch27_sky_key" || gate == nil || gate.Type != "inventory_gate" || gate.ItemID == nil || *gate.ItemID != 0x64 || gate.IfPresent != "story_ch27_post_sky_key_success" || gate.IfMissing != "ending_ch27_no_sky_key" {
 		t.Fatalf("chapter27 must preserve original sky-key inventory branch: battle=%#v gate=%#v", battle27, gate)
 	}
-	if success == nil || success.Type != "cutscene" || success.Next != "preparation_ch28" || len(success.Beats) != 2 || success.Beats[0].Op != "sync_party" || success.Beats[1].Op != "set_chapter" || success.Beats[1].Chapter == nil || *success.Beats[1].Chapter != 27 {
+	if success == nil || success.Type != "cutscene" || success.HandlerBinding != "assets/cutscenes/bindings/ch27_post.json" || success.Next != "preparation_ch28" || len(success.Beats) != 0 {
 		t.Fatalf("sky-key success must sync persistent party before chapter28 preparation: %#v", success)
 	}
 	if badEnding == nil || badEnding.Type != "ending" || badEnding.Text == "" {

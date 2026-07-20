@@ -3945,14 +3945,8 @@
   },
   "story_ch27_post_sky_key_success": {
    "type": "cutscene",
+   "handler_binding": "assets/cutscenes/bindings/ch27_post.json",
    "beats": [
-    {
-     "op": "sync_party"
-    },
-    {
-     "op": "set_chapter",
-     "chapter": 27
-    }
    ],
    "next": "preparation_ch28"
   },
@@ -3961,8 +3955,7 @@
    "text": "未能以天空之鑰開啟通往空中大陸的道路，炎龍騎士團的遠征在巨塔前告終。"
   },
   "story_ch28": {
-   "type": "cutscene",
-   "handler_binding": "assets/cutscenes/bindings/ch27_post.json",
+   "type": "story",
    "bgm": "FDMUS_010",
    "lines": [
     {
