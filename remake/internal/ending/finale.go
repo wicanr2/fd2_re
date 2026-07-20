@@ -123,6 +123,27 @@ type Phase0Player struct {
 	done         bool
 }
 
+// Phase0Assets keeps every non-global input needed by the recovered phase.
+// Baseline must come from the preceding native presentation state; callers
+// cannot silently substitute a convenience palette.
+type Phase0Assets struct {
+	TextResource []byte
+	FontResource []byte
+	Baseline     [768]byte
+}
+
+func NewPhase0PlayerFromAssets(phase FinalePhase, assets Phase0Assets, compositor *IndexedCompositor) (*Phase0Player, error) {
+	if compositor == nil {
+		return nil, fmt.Errorf("ending: nil phase-0 compositor")
+	}
+	staging := make([]byte, phase.Phase.StagingBytes)
+	if _, err := phase.ComposePhase0Text(staging, assets.TextResource, assets.FontResource); err != nil {
+		return nil, err
+	}
+	copy(compositor.Baseline[:], assets.Baseline[:])
+	return NewPhase0Player(phase, staging, compositor)
+}
+
 func NewPhase0Player(phase FinalePhase, staging []byte, compositor *IndexedCompositor) (*Phase0Player, error) {
 	if phase.Ready() || len(staging) != phase.Phase.StagingBytes || compositor == nil {
 		return nil, fmt.Errorf("ending: invalid phase-0 player")

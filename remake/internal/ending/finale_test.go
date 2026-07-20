@@ -124,3 +124,34 @@ func TestPhase0PlayerUsesNativeScrollAndPaletteCadenceThenStops(t *testing.T) {
 		t.Fatalf("final phase done=%v err=%v", done, err)
 	}
 }
+
+func TestPhase0AssetsRequireExplicitBaseline(t *testing.T) {
+	phase, err := LoadFinalePhase("../../assets/endings/native_2c405.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	text, err := os.ReadFile("../../../extracted/raw/FDTXT/FDTXT_031.bin")
+	if os.IsNotExist(err) {
+		t.Skip("player-provided finale text is absent")
+	}
+	if err != nil {
+		t.Fatal(err)
+	}
+	font, err := os.ReadFile("../../../extracted/raw/FDOTHER/FDOTHER_004.bin")
+	if os.IsNotExist(err) {
+		t.Skip("player-provided native font is absent")
+	}
+	if err != nil {
+		t.Fatal(err)
+	}
+	var baseline [768]byte
+	baseline[0] = 50
+	c := NewIndexedCompositor()
+	p, err := NewPhase0PlayerFromAssets(*phase, Phase0Assets{TextResource: text, FontResource: font, Baseline: baseline}, c)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if done, err := p.Advance(0); err != nil || done || c.Palette[0] != 10 {
+		t.Fatalf("done=%v err=%v palette=%d", done, err, c.Palette[0])
+	}
+}
