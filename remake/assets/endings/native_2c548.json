@@ -16,6 +16,7 @@
     "count_global": "0x53bfb",
     "unit_base_global": "0x53a45",
     "unit_stride": 80,
+    "slot_selection": "i==0?1:i==1?0:i",
     "visual_group_offset": 7,
     "figure_archive": "FIGANI.DAT",
     "figure_indices": ["group*3+1", "group*3"],
@@ -23,10 +24,39 @@
     "frame_renderer": "0x2b9a1",
     "initial_frames": 20,
     "frame_delay_ms": 1,
+    "initial_loop": {
+      "copy": "battle_buffer_a->staging 320x200",
+      "frame_call": "0x2b9a1(secondary_figani,-1,staging,320)",
+      "present": "staging->VGA 320x200",
+      "source": "0x2c692..0x2c6f7"
+    },
+    "primary_loop": {
+      "copy": "battle_buffer_a->staging 320x200",
+      "frame_call": "0x2935b(primary_figani,frame,staging,320,-1)",
+      "frame_count": "byte[primary_figani+2]",
+      "frame_delay": "byte[frame_descriptor+6]",
+      "source": "0x2c6fd..0x2c77d"
+    },
+    "portrait_text": {
+      "source": "0x2c7a4..0x2c967",
+      "portrait_archive": "DATO.DAT",
+      "portrait_index": "unit[+7]",
+      "current_text_table": "FDTXT_031",
+      "permanent_text_table": "FDTXT_000",
+      "fields": [
+        {"table": "current", "index": "10", "destination": "staging+0x16e9", "meaning": "name_label"},
+        {"table": "permanent", "index": "unit[+8]+1", "destination": "staging+0x171b", "meaning": "character_name"},
+        {"table": "current", "index": "11", "destination": "staging+0x2fe9", "meaning": "class_label"},
+        {"table": "permanent", "index": "unit[+0x20]+0x96", "destination": "staging+0x301b", "meaning": "class_name"},
+        {"table": "current", "index": "unit[+8]+0x0c|45", "destination": "staging+0x7d08", "meaning": "epilogue"}
+      ],
+      "glyph_style": {"stride": 320, "foreground": 205, "shadow": 76, "background": 0},
+      "input": {"poll": "0x10620", "skip_action": "outer_counter=1;0x4e031", "source": "0x2c950..0x2c961"}
+    },
     "source_range": "0x2c5e3..0x2c9a9"
   },
   "gate": {
     "source": "0x2c5e3",
-    "reason": "unit selection, portrait/text control flow, input handling, and the full native battle renderer composition have not yet been reconstructed as one verified phase"
+    "reason": "DATO countdown placement, epilogue slot semantics, and the dedicated indexed 0x29164/0x2935b renderer composition have not yet been reconstructed as one verified phase"
   }
 }
