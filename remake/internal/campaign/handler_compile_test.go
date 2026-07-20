@@ -1363,3 +1363,31 @@ func TestCompileChapter24PreUsesTransitionAndFDOther88SFX(t *testing.T) {
 		t.Fatalf("ch24_pre stop sfx=%#v", sfx[4])
 	}
 }
+
+func TestCompileChapter25PreUsesDirectFDTXT026StringZeroAlignment(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch25_pre.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(issues) != 0 {
+		t.Fatalf("ch25_pre issues=%#v", issues)
+	}
+	var dialog, act Beat
+	for _, beat := range beats {
+		if beat.Op == "dialog" {
+			dialog = beat
+		}
+		if beat.Op == "act" {
+			act = beat
+		}
+	}
+	if dialog.Script != "ch26.json" || dialog.SceneIndex == nil || *dialog.SceneIndex != 0 || dialog.Line != 0 || dialog.Count != 12 {
+		t.Fatalf("ch25_pre dialog=%#v", dialog)
+	}
+	if len(act.Acting) == 0 {
+		t.Fatalf("ch25_pre acting=%#v", act)
+	}
+	if beats[0].LoadCH == nil || beats[0].LoadCH.Chapter != 25 || beats[0].LoadCH.SlotCount != 70 {
+		t.Fatalf("ch25_pre loadch=%#v", beats[0])
+	}
+}

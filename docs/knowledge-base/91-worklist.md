@@ -514,6 +514,7 @@
 - [~] **ch22_pre control-flow**：固定 16-slot deactivate loop、`0x11df2` immediate `palette_update` 已 lower 並通過 regression；尚待實作 `0x24618` 的 9-frame transition/reveal renderer（非普通 fade），完成後再接 `story_ch23` binding。
 - [x] **ch23/ch24 pre-handler**：FDTXT_024 index0/index1（14句）與 map23/70-slot、spawn group1、四段鏡頭已接 binding；`story_ch24` 已接回原版 pre-handler，compiler/campaign/battle regression 通過。
 - [~] **ch24/ch25 pre-handler**：`0x24b4d` 四段 transition count 已 lower 為 `transition_reveal`（20/20/20/60、20ms/frame），FDOTHER#88 sub1 四次 SFX、index=-1 stop、handle release 已接，FDTXT_025 跨 scene 對白已接 `story_ch25`；尚待 indexed double-buffer visual adapter。
+- [~] **ch25/ch26 pre-handler**：FDTXT_026 string0 已以 direct scene0 12-line mapping 接 binding（map25/70-slot、pan、acting76），`story_ch26` 已接回 handler；後續分支字串因 authored/raw count mismatch，需先 RE 條件控制流再接，不猜全章順序。
 
 ## 對話框 / 過場打磨(2026-07-05,使用者實玩逐項校正)
 - [x] **對話框文字不覆蓋頭像**:上框(頭像在右)文字右緣止於頭像左緣前(commit 57c0e30)→ doc09

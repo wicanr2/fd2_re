@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "handler_script": "../handlers/ch25_pre.json",
+  "acting_resources": "../acting/map32.json",
+  "overrides": {
+    "0x33ab8": {
+      "loadch": {
+        "chapter": 25,
+        "map": "assets/maps/map25",
+        "roster": "assets/maps/map25/map25_units.json",
+        "slot_count": 70,
+        "script": "assets/story/ch26.json",
+        "party_scenario": "assets/scenarios/ch26.json"
+      }
+    },
+    "0x33ac1": { "pan": { "x": 216, "y": 936, "tile_step": true } },
+    "0x33acb": { "act": { "resource": 76 } },
+    "0x33133": {
+      "dialog": {
+        "line": 0,
+        "count": 12,
+        "script": "ch26.json",
+        "scene_index": 0
+      }
+    }
+  }
+}
