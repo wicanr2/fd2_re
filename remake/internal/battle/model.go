@@ -88,7 +88,8 @@ type Unit struct {
 	DX int // 速度(doc03 0x46;影響 HIT/EV 的原始欄位,但 remake 尚無 DX→HIT/EV 合成公式
 	// (doc42:HIT/EV 現為 export_units.py 固定近似值),故 DX 目前只累加成長值供未來接線,
 	// 尚未實際影響命中/閃避。
-	Exp float64 // 目前經驗值(滿 100 升級,doc03 0x43「EX 經驗」);用 float64 累加,避免
+	GrowthStat int     // 原版 unit[+0x3b]；轉職時累加 0x4e48d 的 growth-group
+	Exp        float64 // 目前經驗值(滿 100 升級,doc03 0x43「EX 經驗」);用 float64 累加,避免
 	// 攻擊/法術公式算出的小數經驗(如 40/施法者等級)逐次相加時被提早捨去。
 	ExpPerLevel int // 本單位每級可給出的經驗值(doc02 §4.5「守方每級經驗」;來源 EXE
 	// 敵/友單位表 EX 欄,docs/data/exe_tables/unit.json,由 export_units.py 依 (race,cls)

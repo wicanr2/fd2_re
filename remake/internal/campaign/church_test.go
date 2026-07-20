@@ -1,6 +1,7 @@
 package campaign
 
 import (
+	"math/rand"
 	"path/filepath"
 	"testing"
 
@@ -49,5 +50,32 @@ func TestClassChangeCandidatesMatchOriginal31793Predicate(t *testing.T) {
 	got := ClassChangeCandidates(roster, []int{0, 9, 4, 30})
 	if len(got) != 1 || got[0] != 0 {
 		t.Fatalf("class change candidates=%v, want [0]", got)
+	}
+}
+
+func TestApplyClassChangeResetsRawStatsAndConsumesItem(t *testing.T) {
+	u := &battle.Unit{Portrait: 9, ClassID: 5, Lv: 27, Exp: 73, AP: 99, DP: 88, DX: 77,
+		HP: 1, MaxHP: 2, MP: 3, MaxMP: 4, GrowthStat: 2,
+		Inventory: []int{0x5a, 0x20}, Equipped: []bool{true, false}, InventorySlots: []int{0x5a, 0x20}}
+	row := ClassChangeGrowth{AP: [2]int{10, 11}, DP: [2]int{20, 21}, DX: [2]int{30, 31}, HP: [2]int{40, 41}, MP: [2]int{50, 51}}
+	if err := ApplyClassChange(u, 0x34, 21, 2, row, rand.New(rand.NewSource(1)), 0); err != nil {
+		t.Fatal(err)
+	}
+	if u.AP != 10 || u.DP != 20 || u.DX != 30 || u.MaxHP != 40 || u.HP != 40 || u.MaxMP != 50 || u.MP != 50 {
+		t.Fatalf("reset stats AP/DP/DX=%d/%d/%d HP=%d/%d MP=%d/%d", u.AP, u.DP, u.DX, u.HP, u.MaxHP, u.MP, u.MaxMP)
+	}
+	if u.Lv != 1 || u.Exp != 0 || u.GrowthStat != 4 || u.Portrait != 0x34 || u.ClassID != 21 {
+		t.Fatalf("metadata lv=%d exp=%v growth=%d portrait=%x class=%d", u.Lv, u.Exp, u.GrowthStat, u.Portrait, u.ClassID)
+	}
+	if len(u.Inventory) != 1 || u.Inventory[0] != 0x20 || u.Equipped[0] {
+		t.Fatalf("item removal inventory=%v equipped=%v", u.Inventory, u.Equipped)
+	}
+}
+
+func TestApplyClassChangeRejectsInvalidRangeAtomically(t *testing.T) {
+	u := &battle.Unit{Lv: 20, AP: 7, Inventory: []int{9}}
+	err := ApplyClassChange(u, 0x20, 9, 1, ClassChangeGrowth{AP: [2]int{2, 1}}, rand.New(rand.NewSource(1)), 0)
+	if err == nil || u.AP != 7 || len(u.Inventory) != 1 {
+		t.Fatalf("invalid range mutated unit: err=%v unit=%+v", err, u)
 	}
 }

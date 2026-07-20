@@ -3,10 +3,77 @@ package campaign
 import (
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"os"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
+
+// ClassChangeGrowth is one 11-byte EXE growth row (0x4e4d1).  The five
+// pairs are encoded as [min,max), matching 0x1e529's idiv(max-min) path.
+type ClassChangeGrowth struct {
+	AP, DP, DX, HP, MP [2]int
+}
+
+func rollClassChangeRange(r [2]int, rng *rand.Rand) (int, error) {
+	if r[1] < r[0] {
+		return 0, fmt.Errorf("class change: invalid range [%d,%d)", r[0], r[1])
+	}
+	if r[1] == r[0] {
+		return r[0], nil
+	}
+	if rng == nil {
+		return 0, fmt.Errorf("class change: missing rng")
+	}
+	return r[0] + rng.Intn(r[1]-r[0]), nil
+}
+
+// ApplyClassChange mirrors the proven 0x31602 state writes.  It deliberately
+// leaves ClsName, derived HIT/EV/MV and Base* untouched; the caller owns the
+// editable class-name lookup and subsequent 0x1b750-equivalent equipment
+// recomputation.  removeItemIndex is the compact Inventory index returned by
+// the church item scan, or -1 when this branch consumed no item.
+func ApplyClassChange(u *battle.Unit, targetPortrait, classID, growthGroup int, row ClassChangeGrowth, rng *rand.Rand, removeItemIndex int) error {
+	if u == nil {
+		return fmt.Errorf("class change: missing unit")
+	}
+	if targetPortrait < 0 || targetPortrait > 0xff || classID < 0 || classID > 0xff || growthGroup < 0 || growthGroup > 0xff {
+		return fmt.Errorf("class change: invalid target/class/group")
+	}
+	if removeItemIndex >= len(u.Inventory) || removeItemIndex < -1 {
+		return fmt.Errorf("class change: invalid item index")
+	}
+	ap, err := rollClassChangeRange(row.AP, rng)
+	if err != nil {
+		return err
+	}
+	dp, err := rollClassChangeRange(row.DP, rng)
+	if err != nil {
+		return err
+	}
+	dx, err := rollClassChangeRange(row.DX, rng)
+	if err != nil {
+		return err
+	}
+	hp, err := rollClassChangeRange(row.HP, rng)
+	if err != nil {
+		return err
+	}
+	mp, err := rollClassChangeRange(row.MP, rng)
+	if err != nil {
+		return err
+	}
+	if removeItemIndex >= 0 && !u.RemoveInventoryIndex(removeItemIndex) {
+		return fmt.Errorf("class change: item removal failed")
+	}
+	u.AP, u.DP, u.DX = ap, dp, dx
+	u.MaxHP, u.HP = hp, hp
+	u.MaxMP, u.MP = mp, mp
+	u.GrowthStat += growthGroup
+	u.Lv, u.Exp = 1, 0
+	u.Portrait, u.ClassID = targetPortrait, classID
+	return nil
+}
 
 type reviveFeeTable struct {
 	Rates []int `json:"rates"`

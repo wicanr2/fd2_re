@@ -1552,6 +1552,7 @@ func applyPersistentStats(dst, src *battle.Unit) {
 	dst.BaseAP, dst.BaseDP, dst.BaseHIT, dst.BaseEV, dst.BaseMV = src.BaseAP, src.BaseDP, src.BaseHIT, src.BaseEV, src.BaseMV
 	dst.BaseAtkMin, dst.BaseAtkMax, dst.EquipmentBaseSet = src.BaseAtkMin, src.BaseAtkMax, src.EquipmentBaseSet
 	dst.Portrait, dst.Fig = src.Portrait, src.Fig
+	dst.GrowthStat = src.GrowthStat
 	dst.Exp, dst.ExpPerLevel = src.Exp, src.ExpPerLevel
 	dst.Spells = append(dst.Spells[:0], src.Spells...)
 	dst.Inventory = append(dst.Inventory[:0], src.Inventory...)
