@@ -1846,6 +1846,30 @@ func (g *Game) campInput() bool {
 		return true
 	case "shop":
 		goods := g.camp.ShopGoods()
+		if g.shopPicking {
+			if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.shopRecipientSel > 0 {
+				g.shopRecipientSel--
+			}
+			if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.shopRecipientSel < len(g.shopRecipients)-1 {
+				g.shopRecipientSel++
+			}
+			if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+				g.shopPicking = false
+				return true
+			}
+			if enter && len(g.shopRecipients) > 0 {
+				id := g.shopRecipients[g.shopRecipientSel]
+				u := g.partyRoster[id]
+				gold, err := campaign.BuyGood(g.gold, &u, g.shopPending)
+				if err != nil {
+					g.msg = err.Error()
+				} else {
+					g.gold, g.partyRoster[id], g.shopPicking = gold, u, false
+					g.msg = fmt.Sprintf("買下 %s(-%d G)", g.shopPending.Name, g.shopPending.Price)
+				}
+			}
+			return true
+		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.shopSel > 0 {
 			g.shopSel--
 		}
@@ -1854,12 +1878,13 @@ func (g *Game) campInput() bool {
 		}
 		if enter && g.shopSel < len(goods) { // 購買
 			gd := goods[g.shopSel]
-			if g.gold >= gd.Price {
-				g.gold -= gd.Price
-				g.items = append(g.items, gd.Name)
-				g.msg = fmt.Sprintf("買下 %s(-%d G)", gd.Name, gd.Price)
+			g.shopPending = gd
+			g.shopRecipients = g.shopReceiverIDs(gd)
+			g.shopRecipientSel = 0
+			if len(g.shopRecipients) == 0 {
+				g.msg = "沒有人可以收下這件物品!"
 			} else {
-				g.msg = "金幣不足!"
+				g.shopPicking = true
 			}
 		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) { // 離店
@@ -3258,6 +3283,20 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 			g.font.Draw(screen, pre+o.Label, 190, 162+float64(i)*28, 1.0, c)
 		}
 	case n.Type == "shop":
+		if g.shopPicking {
+			h := 76 + float64(len(g.shopRecipients))*30
+			fillBox(140, 60, 360, h)
+			g.font.Draw(screen, fmt.Sprintf("選擇收件者：%s", g.shopPending.Name), 156, 70, 1.0, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+			for i, id := range g.shopRecipients {
+				u := g.partyRoster[id]
+				pre, c := "　", color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
+				if i == g.shopRecipientSel {
+					pre, c = "▶", color.RGBA{0xff, 0xff, 0xff, 0xff}
+				}
+				g.font.Draw(screen, fmt.Sprintf("%s%s  (欄位%d/8)", pre, u.Name, len(u.Inventory)), 156, 100+float64(i)*30, 1.0, c)
+			}
+			break
+		}
 		goods := g.camp.ShopGoods()
 		h := 76 + float64(len(goods))*30
 		fillBox(140, 60, 360, h)
