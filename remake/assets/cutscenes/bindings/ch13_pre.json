@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "handler_script": "../handlers/ch13_pre.json",
+  "story_index_map": "../dialogue-index/count-aligned.json",
+  "dialogue_contexts": {
+    "0x3320c": { "source_dat": "FDTXT_014", "script": "ch14.json" }
+  },
+  "overrides": {
+    "0x33486": {
+      "loadch": {
+        "chapter": 13,
+        "map": "assets/maps/map13",
+        "roster": "assets/maps/map13/map13_units.json",
+        "slot_count": 70,
+        "script": "assets/story/ch14.json",
+        "party_scenario": "assets/scenarios/ch14.json"
+      }
+    },
+    "0x3348f": { "pan": { "x": 480, "y": 480, "tile_step": true } }
+  }
+}
