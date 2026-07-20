@@ -82,6 +82,14 @@ func TestFDOTHER054FrameTable(t *testing.T) {
 			t.Fatalf("frame %d = %#v, want %v", index, got, want)
 		}
 	}
+	// Each ending caller uses the verified transparent branch against a
+	// 320-wide framebuffer. Decoding every native frame here catches a wrong
+	// RLE grammar or frame-table boundary without committing original art.
+	for i, frame := range frames {
+		if err := frame.Blit(make([]byte, 320*200), 320, -1); err != nil {
+			t.Fatalf("frame %d does not decode into 320x200: %v", i, err)
+		}
+	}
 }
 
 func TestFDOTHER054ArchiveLoader(t *testing.T) {
