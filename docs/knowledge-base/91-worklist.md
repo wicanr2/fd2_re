@@ -525,6 +525,7 @@
 - [~] **ch29 post persistent cleanup**：`0x25089` 已 lower 為 editable `reset_persistent_roster_state`，並以 runtime/campaign regression 鎖定清 transient、回填 MaxHP/MaxMP；0x24618 transition、0x2bce5 ending renderer 仍待。
 - [~] **ch29 post tick wait**：`0x17aa9(1)` 已 lower 成一個 editable delay tick 並通過 compiler regression；仍待 0x24618 indexed transition 與 0x2bce5 ending renderer。
 - [~] **ch29 post dynamic palette loop**：`0x11df2(EBX,255,0)` 已依 direct 0x3e→0 loop materialize 成 63 組 palette/delay beats 並通過 regression；仍待 0x24618、load_ch_text、layout/pan mapping 與專用 ending renderer。
+- [~] **ch29 post chapter-text switch**：`0x25870 → 0x1088d` 已 lower 為可編輯 `load_ch_text(ch30.json)`；compiler 與 runtime regression 鎖住 transcript 切換，確保後續 FDTXT_030 對話不是沿用 FDTXT_029。尚待 layout、動態 pan、0x24618 indexed adapter 與 `0x2bce5` ending renderer，完成前仍不接進 campaign flow。
 - [~] **0x24618 indexed transition metadata**：已保存 tile/source/frame/timing 與 32-step 全 palette brightness ramp（delta 0→62, step2）之 editable schema、binding resolver/compiler regression；descriptor/double-buffer PNG adapter 尚未完成，故仍 fail-closed。
 - [~] **0x24618 fixed blit metadata**：補上 source_y=0、blit width=0xc0、clip 0x138×0xc0 與 source step 欄位；仍待以 `0x53a6d` descriptor table 和 `0x219ad` row clip 建立真正 indexed adapter。
 - [~] **ch29 post persistent roster cleanup**：`0x25089` 已實作獨立 `reset_persistent_roster_state` compiler/runtime beat（清 transient、MaxHP/MaxMP 回填），避免誤併入 `sync_party`；需補 binding、測試並接到正確 town/shop/preparation 節點。

@@ -159,6 +159,17 @@ func TestBeatDialogCountConsecutiveLines(t *testing.T) {
 	}
 }
 
+func TestBeatLoadChapterTextReplacesCurrentEditableTranscript(t *testing.T) {
+	g := newBeatTestGame(t, []campaign.Beat{{Op: "load_ch_text", Script: "ch30.json"}})
+	g.beatAdvance()
+	if g.loadErr != "" || len(g.campLines) == 0 {
+		t.Fatalf("chapter text load err=%q lines=%#v", g.loadErr, g.campLines)
+	}
+	if g.campLines[0].Text == "第一句" {
+		t.Fatalf("chapter text load left prior transcript=%#v", g.campLines[0])
+	}
+}
+
 func TestBeatDialogResolvesOriginalRuntimeSpeakerSlot(t *testing.T) {
 	slot := 6
 	upper := true

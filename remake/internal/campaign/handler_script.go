@@ -41,6 +41,7 @@ type HandlerBeat struct {
 	GridY             *int                      `json:"grid_y,omitempty"`
 	TextIndex         any                       `json:"text_index,omitempty"`
 	TextTable         string                    `json:"text_table,omitempty"`
+	Script            string                    `json:"script,omitempty"`
 	ActingID          *int                      `json:"acting_id,omitempty"`
 	UnitSlot          *int                      `json:"unit_slot,omitempty"`
 	UnitSlotExpr      any                       `json:"unit_slot_expr,omitempty"`

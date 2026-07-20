@@ -44,6 +44,7 @@ type HandlerBindingOverride struct {
 	Acting     *HandlerActing            `json:"act,omitempty"`
 	Layout     *HandlerLayout            `json:"layout,omitempty"`
 	Transition *HandlerIndexedTransition `json:"indexed_transition,omitempty"`
+	Text       *HandlerTextLoad          `json:"load_ch_text,omitempty"`
 	Resource   *HandlerResource          `json:"resource,omitempty"`
 }
 
@@ -121,7 +122,7 @@ func LoadHandlerBinding(path string) (*HandlerBinding, error) {
 		}
 	}
 	for addr, override := range binding.Overrides {
-		if addr == "" || (override.LoadCH == nil && override.Pan == nil && override.Dialog == nil && override.Acting == nil && override.Layout == nil && override.Transition == nil && override.Resource == nil) {
+		if addr == "" || (override.LoadCH == nil && override.Pan == nil && override.Dialog == nil && override.Acting == nil && override.Layout == nil && override.Transition == nil && override.Text == nil && override.Resource == nil) {
 			return nil, fmt.Errorf("handler binding %q has empty override at %q", path, addr)
 		}
 		if state := override.LoadCH; state != nil && (state.Chapter < 0 || state.Map == "" || state.Roster == "" || state.SlotCount <= 0 || state.Script == "") {
@@ -278,6 +279,13 @@ func (binding *HandlerBinding) CompilerBindings() HandlerBindings {
 				return HandlerIndexedTransition{}, false
 			}
 			return *override.Transition, true
+		},
+		Text: func(input HandlerBeat) (HandlerTextLoad, bool) {
+			override, ok := lookup(input)
+			if !ok || override.Text == nil || override.Text.Script == "" {
+				return HandlerTextLoad{}, false
+			}
+			return *override.Text, true
 		},
 		Resource: func(input HandlerBeat) (HandlerResource, bool) {
 			override, ok := lookup(input)

@@ -108,6 +108,26 @@ func TestCompileNativeTickWaitLowersToDelay(t *testing.T) {
 	}
 }
 
+func TestCompileNativeChapterTextLoadRequiresEditableBinding(t *testing.T) {
+	script := &HandlerScript{Beats: []HandlerBeat{{
+		Op: "load_ch_text", Source: HandlerSource{Addr: "0x25870", Target: "0x1088d"},
+	}}}
+	beats, issues := CompileHandlerScript(script, HandlerBindings{Text: func(input HandlerBeat) (HandlerTextLoad, bool) {
+		if input.Source.Addr == "0x25870" {
+			return HandlerTextLoad{Script: "ch30.json"}, true
+		}
+		return HandlerTextLoad{}, false
+	}})
+	if len(issues) != 0 || len(beats) != 1 || beats[0].Op != "load_ch_text" || beats[0].Script != "ch30.json" {
+		t.Fatalf("chapter text load=%#v issues=%#v", beats, issues)
+	}
+
+	beats, issues = CompileHandlerScript(script, HandlerBindings{})
+	if len(beats) != 0 || len(issues) != 1 || issues[0].Source.Addr != "0x25870" {
+		t.Fatalf("unbound chapter text load must stay unresolved: beats=%#v issues=%#v", beats, issues)
+	}
+}
+
 func TestCompileDynamicPaletteLoopMaterializesDescendingRange(t *testing.T) {
 	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
 		Op: "unknown", NativeTarget: "0x11df2", RawArgs: []any{"ebx", 255, 0},
@@ -1528,8 +1548,18 @@ func TestCompileChapter29PostPreservesDialogueAcrossChapterTextSwitch(t *testing
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(issues) < 5 {
+	if len(issues) < 4 {
 		t.Fatalf("ch29_post issues=%#v want unresolved native effects preserved", issues)
+	}
+	var textLoad Beat
+	for _, beat := range beats {
+		if beat.Source == "0x25870" {
+			textLoad = beat
+			break
+		}
+	}
+	if textLoad.Op != "load_ch_text" || textLoad.Script != "ch30.json" {
+		t.Fatalf("ch29_post chapter text switch=%#v", textLoad)
 	}
 	want := []struct {
 		script string

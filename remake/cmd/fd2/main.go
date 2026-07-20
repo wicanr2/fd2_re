@@ -981,6 +981,18 @@ func (g *Game) beatStart(b campaign.Beat) {
 			g.loadErr = fmt.Sprintf("beat dialog:line=%d count=%d 對不到 script lines(len=%d)", b.Line, n, len(lines))
 			g.beatAdvance()
 		}
+	case "load_ch_text":
+		if b.Script == "" {
+			g.loadErr = "beat load_ch_text:缺少 script"
+			return
+		}
+		lines := loadStoryScriptAt(handlerStoryPath(b.Script), "", nil)
+		if lines == nil {
+			g.loadErr = fmt.Sprintf("beat load_ch_text:無法載入 script=%q", b.Script)
+			return
+		}
+		g.campLines = lines
+		g.beatAdvance()
 	case "act":
 		if len(b.Acting) > 0 {
 			// Decoded acting refers to the current materialized unit array. Never
