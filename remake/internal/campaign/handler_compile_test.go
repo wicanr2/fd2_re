@@ -1549,7 +1549,7 @@ func TestCompileChapter29PostPreservesDialogueAcrossChapterTextSwitch(t *testing
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(issues) < 3 {
+	if len(issues) < 2 {
 		t.Fatalf("ch29_post issues=%#v want unresolved native effects preserved", issues)
 	}
 	var layout Beat
@@ -1601,6 +1601,16 @@ func TestCompileChapter29PostPreservesDialogueAcrossChapterTextSwitch(t *testing
 	}
 	if focus.Op != "pan" || focus.X != 22*24 || focus.Y != 23*24 || !focus.TileStep {
 		t.Fatalf("ch29 focus lower=%#v", focus)
+	}
+	var finalPan Beat
+	for _, beat := range beats {
+		if beat.Source == "0x25937" {
+			finalPan = beat
+			break
+		}
+	}
+	if finalPan.Op != "pan" || finalPan.X != 11*24 || finalPan.Y != 12*24 || !finalPan.TileStep {
+		t.Fatalf("ch29 final pan lower=%#v", finalPan)
 	}
 }
 
