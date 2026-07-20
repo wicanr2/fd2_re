@@ -104,18 +104,24 @@ func ParseFrames(data []byte) ([]Frame, error) {
 // supports two non-transparent palette remap modes too; no verified ending
 // caller uses them, so this adapter rejects them rather than inventing rules.
 func (f Frame) Blit(dst []byte, stride, transparent int) error {
+	return f.BlitAt(dst, stride, 0, transparent)
+}
+
+// BlitAt is the same verified transparent decoder with an explicit byte
+// origin inside a larger surface (used by 640-wide native ending work buffers).
+func (f Frame) BlitAt(dst []byte, stride, base, transparent int) error {
 	if transparent != -1 {
 		return errors.New("fdother: only verified transparent blit is supported")
 	}
 	if f.X < 0 || f.Y < 0 || f.Width <= 0 || f.Height <= 0 || stride < f.X+f.Width {
 		return errors.New("fdother: invalid destination geometry")
 	}
-	if f.Y > (len(dst)-f.X)/stride || f.Height > len(dst)/stride-f.Y {
+	if base < 0 || base > len(dst) || f.Y > (len(dst)-base-f.X)/stride || f.Height > (len(dst)-base)/stride-f.Y {
 		return errors.New("fdother: destination is too small")
 	}
 	pos := 4 // 0x4e63d consumes Width/Height from the payload before RLE.
 	for y := 0; y < f.Height; y++ {
-		row, written := (f.Y+y)*stride+f.X, 0
+		row, written := base+(f.Y+y)*stride+f.X, 0
 		for written < f.Width {
 			if pos >= len(f.Pixels) {
 				return fmt.Errorf("fdother: frame RLE ends in row %d", y)

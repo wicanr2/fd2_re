@@ -115,7 +115,43 @@ func (c *IndexedCompositor) RunRecoveredPrefix(t Timeline, frames []fdother.Fram
 }
 
 func NewIndexedCompositor() *IndexedCompositor {
-	return &IndexedCompositor{VGA: make([]byte, Bytes), Offscreen: make([]byte, Bytes), Work: make([]byte, Bytes)}
+	return &IndexedCompositor{VGA: make([]byte, Bytes), Offscreen: make([]byte, Bytes), Work: make([]byte, Width*2*Height)}
+}
+
+func CopyRect(dst []byte, dstStride int, src []byte, srcStride, width, height, dstBase int) error {
+	if width <= 0 || height <= 0 || dstStride < width || srcStride < width || dstBase < 0 {
+		return errors.New("ending: invalid rect copy")
+	}
+	for y := 0; y < height; y++ {
+		d, s := dstBase+y*dstStride, y*srcStride
+		if d+width > len(dst) || s+width > len(src) {
+			return errors.New("ending: rect copy exceeds buffer")
+		}
+		copy(dst[d:d+width], src[s:s+width])
+	}
+	return nil
+}
+
+// Composite40 exactly reproduces 0x2bf60's first 40-pass work-buffer loop.
+func (c *IndexedCompositor) Composite40(frames []fdother.Frame, i int) error {
+	if i < 0 || i >= 40 || len(frames) < 9 {
+		return errors.New("ending: invalid composite frame set")
+	}
+	if err := CopyRect(c.Work, 640, c.Offscreen, 320, 320, 200, 160); err != nil {
+		return err
+	}
+	primary := 290 - 4*i
+	if i >= 25 {
+		primary = 190 - 2*(i-25)
+	}
+	secondary := 80 + 2*i
+	if err := frames[i%4+1].BlitAt(c.Work, 640, primary, -1); err != nil {
+		return err
+	}
+	if err := frames[i%4+5].BlitAt(c.Work, 640, secondary, -1); err != nil {
+		return err
+	}
+	return CopyRect(c.VGA, 320, c.Work[160:], 640, 320, 200, 0)
 }
 
 func (c *IndexedCompositor) CopyToVGA(source []byte) error {

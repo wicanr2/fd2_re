@@ -28,6 +28,21 @@ func TestIndexedCompositorCopiesBlitsAndClampsPalette(t *testing.T) {
 	}
 }
 
+func TestComposite40UsesNativeViewportAndOffsets(t *testing.T) {
+	c := NewIndexedCompositor()
+	c.Offscreen[0] = 3
+	frames := make([]fdother.Frame, 9)
+	for i := 1; i < 9; i++ {
+		frames[i] = fdother.Frame{X: 0, Y: 0, Width: 1, Height: 1, Pixels: []byte{1, 0, 1, 0, 0, byte(i)}}
+	}
+	if err := c.Composite40(frames, 0); err != nil {
+		t.Fatal(err)
+	}
+	if c.VGA[0] != 3 || c.Work[290] != 1 || c.Work[80] != 5 {
+		t.Fatalf("viewport=%d primary=%d secondary=%d", c.VGA[0], c.Work[290], c.Work[80])
+	}
+}
+
 func TestRecoveredPrefixStopsAtNativeOnlyGate(t *testing.T) {
 	frame, transparent := 0, -1
 	c := NewIndexedCompositor()
