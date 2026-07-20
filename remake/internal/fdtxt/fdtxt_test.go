@@ -1,8 +1,11 @@
 package fdtxt
 
 import (
+	"bytes"
 	"os"
 	"testing"
+
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
 func TestParseRetainsControlWordsAndStopsAtTerminator(t *testing.T) {
@@ -108,5 +111,29 @@ func TestPlayerFDTXT031Physical44HasStablePayload(t *testing.T) {
 	words, err := s.Words(44)
 	if err != nil || len(words) != 130 || words[0] != 0x00b5 || words[len(words)-1] != 0x0248 {
 		t.Fatalf("physical #44 words=%d first/last=%#x/%#x err=%v", len(words), words[0], words[len(words)-1], err)
+	}
+}
+
+func TestChapterLoader30UsesFDTXTArchiveResource31(t *testing.T) {
+	const (
+		archivePath = "../../../org_game/炎龍騎士團/FLAME2/FDTXT.DAT"
+		rawPath     = "../../../extracted/raw/FDTXT/FDTXT_031.bin"
+	)
+	if _, err := os.Stat(archivePath); os.IsNotExist(err) {
+		t.Skip("player-provided FDTXT.DAT is absent")
+	}
+	entry, err := fdother.ReadResource(archivePath, 31) // 0x1088d increments chapter 30.
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, err := os.ReadFile(rawPath)
+	if os.IsNotExist(err) {
+		t.Skip("extracted FDTXT_031 oracle is absent")
+	}
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(entry, raw) {
+		t.Fatalf("FDTXT.DAT resource 31 does not equal FDTXT_031: %d/%d bytes", len(entry), len(raw))
 	}
 }
