@@ -226,11 +226,36 @@ func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 		t.Fatalf("chapter27 must preserve original sky-key inventory branch: battle=%#v gate=%#v", battle27, gate)
 	}
 	if success == nil || success.Type != "cutscene" || success.HandlerBinding != "assets/cutscenes/bindings/ch27_post.json" || success.Next != "preparation_ch28" || len(success.Beats) != 0 {
-		 t.Fatalf("sky-key success must sync persistent party before chapter28 preparation: %#v", success)
+		t.Fatalf("sky-key success must sync persistent party before chapter28 preparation: %#v", success)
 	}
 	missing := c.Nodes["story_ch27_post_sky_key_missing"]
 	if missing == nil || missing.Type != "story" || missing.Script != "assets/story/ch27.json" || missing.Scene != "缺少天空之鑰的離別(分支)" || missing.Next != "ending_ch27_no_sky_key" {
 		t.Fatalf("missing sky-key branch must preserve editable farewell scene: %#v", missing)
+	}
+	storyRaw, err := os.ReadFile("../../assets/story/ch27.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var storyDoc struct {
+		Scenes []struct {
+			Label string            `json:"label"`
+			Lines []json.RawMessage `json:"lines"`
+		} `json:"scenes"`
+	}
+	if err := json.Unmarshal(storyRaw, &storyDoc); err != nil {
+		t.Fatal(err)
+	}
+	var foundMissing bool
+	for _, scene := range storyDoc.Scenes {
+		if scene.Label == missing.Scene {
+			foundMissing = true
+			if len(scene.Lines) != 17 {
+				t.Fatalf("missing sky-key scene lines=%d want 17", len(scene.Lines))
+			}
+		}
+	}
+	if !foundMissing {
+		t.Fatalf("missing sky-key scene label %q absent from ch27 story", missing.Scene)
 	}
 	if badEnding == nil || badEnding.Type != "ending" || badEnding.Text == "" {
 		t.Fatalf("missing sky key must reach an editable bad ending: %#v", badEnding)
