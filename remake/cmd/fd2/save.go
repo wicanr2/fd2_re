@@ -19,6 +19,7 @@ type saveData struct {
 	Items          []string            `json:"items"`
 	PartyMembers   map[int]bool        `json:"party_members,omitempty"`
 	PartyJoinOrder []int               `json:"party_join_order,omitempty"`
+	PartyDeploy    map[int]bool        `json:"party_deploy,omitempty"`
 	PartyRoster    map[int]battle.Unit `json:"party_roster,omitempty"`
 	Chapter        int                 `json:"chapter,omitempty"`
 }
@@ -39,6 +40,7 @@ func (g *Game) saveGame() {
 	d := saveData{
 		Node: g.camp.Cur, Flags: g.camp.Flags, Gold: g.gold, Items: g.items,
 		PartyMembers: g.partyMembers, PartyJoinOrder: g.partyJoinOrder,
+		PartyDeploy: g.partyDeploy,
 		PartyRoster: g.partyRoster, Chapter: g.handlerChapter,
 	}
 	raw, err := json.MarshalIndent(d, "", " ")
@@ -71,6 +73,7 @@ func (g *Game) loadGame() {
 	g.camp.Flags = d.Flags
 	g.gold, g.items = d.Gold, d.Items
 	g.partyMembers, g.partyJoinOrder = d.PartyMembers, d.PartyJoinOrder
+	g.partyDeploy = d.PartyDeploy
 	g.partyRoster, g.handlerChapter = d.PartyRoster, d.Chapter
 	g.enterNode()
 	g.msg = "已讀檔(" + d.Node + ")"

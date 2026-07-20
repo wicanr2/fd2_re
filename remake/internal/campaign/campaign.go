@@ -244,6 +244,7 @@ type Node struct {
 	IfCrafted       string          `json:"if_crafted,omitempty"`       // inventory_recipe:成功 arm
 	IfInsufficient  string          `json:"if_insufficient,omitempty"`  // inventory_recipe:命中數不符 arm
 	Prompt          string          `json:"prompt,omitempty"`           // choice/preparation
+	PartyLimit      int             `json:"party_limit,omitempty"`      // preparation: original 0x318ad selection cap (15, late route 19)
 	Town            string          `json:"town,omitempty"`             // town:原版戰後城鎮/營地名稱(可編輯、可存檔的整備 hub)
 	Options         []Option        `json:"options,omitempty"`          // choice
 	SetFlags        map[string]bool `json:"set_flags,omitempty"`

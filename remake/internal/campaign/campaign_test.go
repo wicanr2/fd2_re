@@ -410,6 +410,12 @@ func TestCampaignFullPostBattleTownContractMatchesOriginalShopChapters(t *testin
 			if prep.Next != fmt.Sprintf("story_ch%02d", chapter) {
 				t.Fatalf("%s next = %q, want departure to chapter story", prepID, prep.Next)
 			}
+			if chapter >= 28 && prep.PartyLimit != 19 {
+				t.Fatalf("%s party_limit=%d, want late-route original cap 19", prepID, prep.PartyLimit)
+			}
+			if chapter < 28 && prep.PartyLimit != 0 {
+				t.Fatalf("%s party_limit=%d, want default original cap 15", prepID, prep.PartyLimit)
+			}
 		})
 	}
 	if battle30 := campaign.Nodes["battle_ch30"]; battle30 == nil || battle30.OnWin != "ending" {

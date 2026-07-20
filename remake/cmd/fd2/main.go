@@ -71,6 +71,10 @@ type Game struct {
 	partyMembers     map[int]bool        // JOIN 建立的永久玩家名冊；key=原版 0..31 charID，不使用 NPC portrait
 	partyJoinOrder   []int               // JOIN 首次出現順序；章0 cutscene 的 party runtime slot 以此為準
 	partyRoster      map[int]battle.Unit // 0x11506 戰後同步的跨關角色能力／HP／MP／經驗快照
+	partyDeploy      map[int]bool        // preparation 0x318ad 的本戰出擊勾選；不改永久 JOIN 名冊
+	prepIDs          []int               // preparation UI 角色順序（JOIN chronology）
+	prepSel          int                 // preparation UI 游標
+	prepLimit        int                 // preparation UI 原版出擊上限（15，末段 19）
 	handlerChapter   int                 // 原版 [0x53c03]；set_chapter 與無立即數 LOADCH 的 resource chapter
 	storyWalks       []*storyWalkJob     // 場景走位動畫佇列(doc46 §5.3);逐幀推進、完成後移除
 	storyAutoAdvance int                 // story 節點無對白時的自動轉場倒數幀(doc46 行軍蒙太奇,0=不自動)
@@ -1448,6 +1452,9 @@ func (g *Game) enterNode() {
 	case "preparation", "church":
 		g.dialog, g.st, g.sel = nil, nil, nil
 		// 節點邊界 UI；preparation 可在此安全 F5 存檔，Enter 才進下一章 pre handler。
+		if n.Type == "preparation" {
+			g.setupPreparation(n)
+		}
 	case "shop":
 		g.dialog, g.st, g.sel = nil, nil, nil
 		g.shopSel = 0
@@ -1483,7 +1490,7 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 			// is filtered by the permanent membership established by JOIN.  A
 			// direct chapter/debug start has no JOIN history and therefore keeps
 			// the authored scenario party intact.
-			filterScenarioParty(sc, g.partyMembers)
+			filterScenarioParty(sc, g.battlePartyMembers())
 			if err := reorderScenarioParty(sc, g.partyJoinOrder); err != nil {
 				g.loadErr = "scenario party order: " + err.Error()
 				return
@@ -1738,6 +1745,61 @@ func filterScenarioParty(sc *battle.Scenario, members map[int]bool) {
 	}
 }
 
+// battlePartyMembers returns the temporary roster selected by the original
+// preparation screen, falling back to the permanent JOIN roster for direct
+// starts and campaigns that have not reached a preparation node yet.
+func (g *Game) battlePartyMembers() map[int]bool {
+	if len(g.partyDeploy) != 0 {
+		return g.partyDeploy
+	}
+	return g.partyMembers
+}
+
+func (g *Game) setupPreparation(n *campaign.Node) {
+	g.prepIDs = append(g.prepIDs[:0], g.partyJoinOrder...)
+	seen := make(map[int]bool, len(g.prepIDs))
+	for _, id := range g.prepIDs {
+		seen[id] = true
+	}
+	for id := range g.partyRoster {
+		if !seen[id] {
+			g.prepIDs = append(g.prepIDs, id)
+			seen[id] = true
+		}
+	}
+	g.prepSel = 0
+	g.prepLimit = 15
+	if n != nil && n.PartyLimit > 0 {
+		g.prepLimit = n.PartyLimit
+	}
+	// Direct EXE evidence: 0x318ad uses 0x13 instead of 0x0f after the
+	// late-game chapter threshold. Keep this fallback editable via PartyLimit.
+	if g.prepLimit == 15 && g.camp != nil {
+		if strings.HasSuffix(g.camp.Cur, "28") || strings.HasSuffix(g.camp.Cur, "29") || strings.HasSuffix(g.camp.Cur, "30") {
+			g.prepLimit = 19
+		}
+	}
+	if len(g.partyDeploy) == 0 {
+		g.partyDeploy = make(map[int]bool)
+		for i, id := range g.prepIDs {
+			if i >= g.prepLimit {
+				break
+			}
+			g.partyDeploy[id] = true
+		}
+	}
+}
+
+func (g *Game) preparationSelected() int {
+	n := 0
+	for _, selected := range g.partyDeploy {
+		if selected {
+			n++
+		}
+	}
+	return n
+}
+
 // reorderScenarioParty applies the original JOIN chronology before either a
 // battle or handler cutscene constructs its runtime unit array. Deployment
 // cells stay attached to their characters; only slot construction changes.
@@ -1892,6 +1954,34 @@ func (g *Game) campInput() bool {
 		}
 		return true
 	case "preparation", "church":
+		if n.Type == "preparation" {
+			if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.prepSel > 0 {
+				g.prepSel--
+			}
+			if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.prepSel+1 < len(g.prepIDs) {
+				g.prepSel++
+			}
+			if enter && len(g.prepIDs) > 0 {
+				id := g.prepIDs[g.prepSel]
+				g.partyDeploy[id] = !g.partyDeploy[id]
+				// 0x318ad automatically leaves once its 0x0f/0x13 quota is met.
+				target := g.prepLimit
+				if len(g.prepIDs) < target {
+					target = len(g.prepIDs)
+				}
+				if g.preparationSelected() >= target {
+					g.camp.Advance("")
+					g.enterNode()
+				}
+			}
+			// Early campaigns can have fewer joined characters than the native
+			// quota; ESC is the lossless fallback to confirm that smaller roster.
+			if inpututil.IsKeyJustPressed(ebiten.KeyEscape) && g.preparationSelected() > 0 {
+				g.camp.Advance("")
+				g.enterNode()
+			}
+			return true
+		}
 		if enter || inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 			g.camp.Advance("")
 			g.enterNode()
@@ -3498,10 +3588,35 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 			g.font.Draw(screen, fmt.Sprintf("%s%s  %d G", pre, gd.Name, gd.Price), 156, 100+float64(i)*30, 1.0, c)
 		}
 	case n.Type == "preparation":
-		fillBox(140, 145, 360, 120)
-		g.font.Draw(screen, n.Prompt, 170, 162, 1.2, color.RGBA{0xff, 0xe0, 0x90, 0xff})
-		g.font.Draw(screen, "F5 保存戰況", 190, 202, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
-		g.font.Draw(screen, "Enter 前往出戰（隊伍編成待接）", 190, 232, 1.0, color.RGBA{0xff, 0xff, 0xff, 0xff})
+		h := 118 + float64((len(g.prepIDs)+1)/2)*24
+		if h < 170 {
+			h = 170
+		}
+		fillBox(64, 42, 512, h)
+		g.font.Draw(screen, "出戰整備", 84, 56, 1.2, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+		g.font.Draw(screen, fmt.Sprintf("出擊 %d/%d（↑↓移動，Enter 選擇）", g.preparationSelected(), g.prepLimit), 84, 82, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
+		for i, id := range g.prepIDs {
+			x := 88.0
+			if i%2 == 1 {
+				x = 320
+			}
+			y := 108 + float64(i/2)*24
+			prefix := "　"
+			c := color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
+			if i == g.prepSel {
+				prefix, c = "▶", color.RGBA{0xff, 0xff, 0xff, 0xff}
+			}
+			mark := "□"
+			if g.partyDeploy[id] {
+				mark = "■"
+			}
+			name := fmt.Sprintf("角色%d", id)
+			if u, ok := g.partyRoster[id]; ok && u.Name != "" {
+				name = u.Name
+			}
+			g.font.Draw(screen, fmt.Sprintf("%s%s %s", prefix, mark, name), x, y, 0.95, c)
+		}
+		g.font.Draw(screen, "F5 保存戰況", 84, 88+h-24, 0.9, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
 	case n.Type == "church":
 		fillBox(180, 165, 280, 90)
 		g.font.Draw(screen, n.Text, 205, 180, 1.2, color.RGBA{0xff, 0xe0, 0x90, 0xff})
