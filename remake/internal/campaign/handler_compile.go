@@ -566,6 +566,27 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			// exports keep it as unknown until this exact native signature is
 			// recognized; it must not be confused with the black-overlay fade.
 			if input.NativeTarget == "0x11df2" {
+				// ch29 uses EBX as a proven 0x3e..0 descending palette index;
+				// materialize the fixed loop so the editable script has no hidden
+				// register expression. Each update is followed by the native 4ms
+				// wait represented by the adjacent delay beat in the export.
+				if len(input.RawArgs) >= 3 {
+					if reg, ok := input.RawArgs[0].(string); ok && reg == "ebx" {
+						end, okEnd := immediateHandlerInt(input.RawArgs, 1)
+						delta, okDelta := immediateHandlerInt(input.RawArgs, 2)
+						if okEnd && okDelta && end == 255 && delta == 0 {
+							for value := 0x3e; value >= 0; value-- {
+								palette := runtime(input, "palette_update")
+								palette.PaletteStart, palette.PaletteEnd, palette.PaletteDelta = value, end, delta
+								beats = append(beats, palette)
+								wait := runtime(input, "delay")
+								wait.Ms = 4
+								beats = append(beats, wait)
+							}
+							continue
+						}
+					}
+				}
 				start, okStart := immediateHandlerInt(input.RawArgs, 0)
 				end, okEnd := immediateHandlerInt(input.RawArgs, 1)
 				delta, okDelta := immediateHandlerInt(input.RawArgs, 2)

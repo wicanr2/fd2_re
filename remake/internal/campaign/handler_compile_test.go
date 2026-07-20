@@ -108,6 +108,18 @@ func TestCompileNativeTickWaitLowersToDelay(t *testing.T) {
 	}
 }
 
+func TestCompileDynamicPaletteLoopMaterializesDescendingRange(t *testing.T) {
+	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
+		Op: "unknown", NativeTarget: "0x11df2", RawArgs: []any{"ebx", 255, 0},
+	}}}, HandlerBindings{})
+	if len(issues) != 0 || len(beats) != 126 {
+		t.Fatalf("dynamic palette beats=%d issues=%#v", len(beats), issues)
+	}
+	if beats[0].Op != "palette_update" || beats[0].PaletteStart != 0x3e || beats[1].Op != "delay" || beats[1].Ms != 4 || beats[124].PaletteStart != 0 || beats[125].Op != "delay" {
+		t.Fatalf("dynamic palette sequence head/tail=%#v ... %#v", beats[:2], beats[124:])
+	}
+}
+
 func TestCompileUnitPresentKeepsRecoveredTiming(t *testing.T) {
 	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
 		Op: "unit_present", UnitPresent: &HandlerUnitPresent{Slot: 2, X: 4, Y: 5, Frames: 6, FrameDelayMs: 10, TailTicks: 2},
@@ -1506,7 +1518,7 @@ func TestCompileChapter29PostPreservesDialogueAcrossChapterTextSwitch(t *testing
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(issues) < 6 {
+	if len(issues) < 5 {
 		t.Fatalf("ch29_post issues=%#v want unresolved native effects preserved", issues)
 	}
 	want := []struct {
