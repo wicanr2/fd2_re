@@ -1416,3 +1416,22 @@ func TestCompileChapter26PreMapsFDTXT027SceneZeroCalls(t *testing.T) {
 		}
 	}
 }
+
+func TestCompileChapter27PostMapsFDTXT028StringSeven(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch27_post.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(issues) != 0 {
+		t.Fatalf("ch27_post issues=%#v", issues)
+	}
+	var dialogs []Beat
+	for _, beat := range beats {
+		if beat.Op == "dialog" {
+			dialogs = append(dialogs, beat)
+		}
+	}
+	if len(dialogs) != 1 || dialogs[0].Script != "ch28.json" || dialogs[0].SceneIndex == nil || *dialogs[0].SceneIndex != 1 || dialogs[0].Line != 11 || dialogs[0].Count != 5 {
+		t.Fatalf("ch27_post dialog=%#v", dialogs)
+	}
+}
