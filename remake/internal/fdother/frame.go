@@ -11,6 +11,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"os"
 )
 
 // Frame is one FDOTHER frame-table descriptor. X/Y are its destination offset
@@ -19,6 +20,44 @@ type Frame struct {
 	X, Y          int
 	Width, Height int
 	Pixels        []byte
+}
+
+// DecodeResource opens a player-provided LLLLLL .DAT archive and parses one
+// raw FDOTHER resource. It mirrors 0x111ba's archive-only loading boundary:
+// no conversion or decompression is performed here.
+func DecodeResource(datPath string, resource int) ([]Frame, error) {
+	data, err := os.ReadFile(datPath)
+	if err != nil {
+		return nil, err
+	}
+	entry, err := archiveEntry(data, resource)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFrames(entry)
+}
+
+func archiveEntry(data []byte, resource int) ([]byte, error) {
+	if len(data) < 10 || string(data[:6]) != "LLLLLL" {
+		return nil, errors.New("fdother: missing LLLLLL archive magic")
+	}
+	first := int(binary.LittleEndian.Uint32(data[6:]))
+	if first < 10 || first > len(data) || (first-6)%4 != 0 {
+		return nil, errors.New("fdother: invalid archive directory")
+	}
+	count := (first - 6) / 4
+	if resource < 0 || resource >= count {
+		return nil, errors.New("fdother: archive resource is out of range")
+	}
+	start := int(binary.LittleEndian.Uint32(data[6+4*resource:]))
+	end := len(data)
+	if resource+1 < count {
+		end = int(binary.LittleEndian.Uint32(data[6+4*(resource+1):]))
+	}
+	if start < first || start > end || end > len(data) {
+		return nil, errors.New("fdother: invalid archive resource bounds")
+	}
+	return data[start:end], nil
 }
 
 // ParseFrames parses the raw archive entry returned by FD2's 0x111ba loader.

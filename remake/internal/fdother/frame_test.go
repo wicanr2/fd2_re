@@ -1,6 +1,7 @@
 package fdother
 
 import (
+	"bytes"
 	"encoding/binary"
 	"os"
 	"testing"
@@ -80,5 +81,38 @@ func TestFDOTHER054FrameTable(t *testing.T) {
 		if [4]int{got.X, got.Y, got.Width, got.Height} != want {
 			t.Fatalf("frame %d = %#v, want %v", index, got, want)
 		}
+	}
+}
+
+func TestFDOTHER054ArchiveLoader(t *testing.T) {
+	const datPath = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
+	const rawPath = "../../../extracted/raw/FDOTHER/FDOTHER_054.bin"
+	raw, err := os.ReadFile(rawPath)
+	if os.IsNotExist(err) {
+		t.Skip("player-provided FDOTHER_054 extraction is absent")
+	}
+	if err != nil {
+		t.Fatal(err)
+	}
+	archive, err := os.ReadFile(datPath)
+	if os.IsNotExist(err) {
+		t.Skip("player-provided FDOTHER.DAT is absent")
+	}
+	if err != nil {
+		t.Fatal(err)
+	}
+	entry, err := archiveEntry(archive, 0x36)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(entry, raw) {
+		t.Fatal("FDOTHER archive entry 0x36 does not equal raw FDOTHER_054")
+	}
+	frames, err := DecodeResource(datPath, 0x36)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(frames) != 111 {
+		t.Fatalf("loader frame count = %d, want 111", len(frames))
 	}
 }
