@@ -40,6 +40,14 @@ func NewPlayer(t Timeline, frames []fdother.Frame, ani *afm.Clip, compositor *In
 	}
 	segments := make([]Segment, 0, len(t.Segments))
 	for _, segment := range t.Segments {
+		if segment.Op == "blit_frame_sequence" {
+			for frame := *segment.FirstFrame; frame <= *segment.LastFrame; frame++ {
+				f := frame
+				segments = append(segments, Segment{Op: "blit_frame", Source: segment.Source, Frame: &f, Target: segment.Target, Stride: segment.Stride, Transparent: segment.Transparent})
+				segments = append(segments, Segment{Op: "delay_ms", Source: segment.Source, Ms: segment.PaletteDelay})
+			}
+			continue
+		}
 		if segment.Op != "palette_ramp_repeat" {
 			segments = append(segments, segment)
 			continue

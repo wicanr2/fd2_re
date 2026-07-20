@@ -29,6 +29,8 @@ type Segment struct {
 	Op           string          `json:"op"`
 	Source       string          `json:"source"`
 	Frame        *int            `json:"frame,omitempty"`
+	FirstFrame   *int            `json:"first_frame,omitempty"`
+	LastFrame    *int            `json:"last_frame,omitempty"`
 	Target       string          `json:"target,omitempty"`
 	Stride       int             `json:"stride,omitempty"`
 	Transparent  *int            `json:"transparent,omitempty"`
@@ -96,6 +98,9 @@ func LoadTimeline(path string) (*Timeline, error) {
 		}
 		if segment.Op == "blit_frame" && (segment.Frame == nil || segment.Stride <= 0 || segment.Target == "" || segment.Transparent == nil) {
 			return nil, fmt.Errorf("ending timeline %q segment %d has incomplete blit", path, i)
+		}
+		if segment.Op == "blit_frame_sequence" && (segment.FirstFrame == nil || segment.LastFrame == nil || *segment.FirstFrame < 0 || *segment.LastFrame < *segment.FirstFrame || segment.Stride <= 0 || segment.Target == "" || segment.Transparent == nil || segment.PaletteDelay <= 0) {
+			return nil, fmt.Errorf("ending timeline %q segment %d has incomplete frame sequence", path, i)
 		}
 		if segment.Op == "copy_buffer" && (segment.Bytes != Bytes || segment.From == "" || segment.To == "") {
 			return nil, fmt.Errorf("ending timeline %q segment %d has incomplete copy", path, i)

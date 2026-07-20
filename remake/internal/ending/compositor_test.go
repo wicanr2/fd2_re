@@ -223,3 +223,19 @@ func TestPlayerExpandsRepeatedPaletteRampBeforeNextGate(t *testing.T) {
 		t.Fatalf("state=%s err=%v blocked=%#v", state, err, p.Blocked)
 	}
 }
+
+func TestPlayerExpandsTimedFrameSequenceBeforeNextGate(t *testing.T) {
+	first, last, transparent := 0, 1, -1
+	frames := []fdother.Frame{{X: 0, Y: 0, Width: 1, Height: 1, Pixels: []byte{1, 0, 1, 0, 0, 5}}, {X: 0, Y: 0, Width: 1, Height: 1, Pixels: []byte{1, 0, 1, 0, 0, 6}}}
+	timeline := Timeline{Segments: []Segment{{Op: "blit_frame_sequence", Source: "sequence", FirstFrame: &first, LastFrame: &last, Target: "vga", Stride: Width, Transparent: &transparent, PaletteDelay: 20}, {Op: "native_text_branch_opaque", Source: "gate"}}}
+	p, err := NewPlayer(timeline, frames, nil, NewIndexedCompositor())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if state, err := p.Advance(0); err != nil || state != PlaybackRunning || p.Compositor.VGA[0] != 5 {
+		t.Fatalf("first frame state=%s err=%v pixel=%d", state, err, p.Compositor.VGA[0])
+	}
+	if state, err := p.Advance(40); err != nil || state != PlaybackBlocked || p.Compositor.VGA[0] != 6 || p.Blocked == nil {
+		t.Fatalf("sequence state=%s err=%v pixel=%d blocked=%#v", state, err, p.Compositor.VGA[0], p.Blocked)
+	}
+}
