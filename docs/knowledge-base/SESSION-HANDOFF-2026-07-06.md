@@ -27,6 +27,12 @@
 > `docs/data/exe_tables/class_equip_types.json` 並加入 exporter selftest。尚未完成的是把此規則接進
 > UI 的收件者選單、裝備狀態與能力重算；不得再把購買寫入 `Game.items []string` 當作真實 inventory。
 
+> **2026-07-20 第二十二次 Codex 更新（商店收件者 UI）**：`main.go` 已接入 runtime eligibility assets，
+> 商品 Enter 後進入第二段收件者清單，順序使用 `partyJoinOrder`、資料使用 persistent `partyRoster`；裝備品
+> 依 class×item.type 篩選，消耗品列全隊，購買成功後以 map copy 寫回 roster 並保留 numeric inventory。
+> Escape 可從收件者返回商品清單，商品頁再回原 town。已編譯驗證並推送 `39817dc`。尚待原版「要裝備上去嗎？」
+> prompt、equipped flag／能力重算，以及賣出功能。
+
 > **2026-07-16 第二十一次 Codex 更新（商店核心可測、等待 UI 接線）**：`battle.Unit` 已保留 FDFIELD
 > numeric `ClassID`；`campaign.BuyGood` 已實作指定收件者的原子購買（成功才入8格 inventory 並扣金，滿欄／
 > 缺錢完全不變）；`CanEquip` 已固定原版 class×item.type predicate，`LoadShopEligibility` 讀打包 runtime
