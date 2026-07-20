@@ -34,6 +34,14 @@ func TestScenarioPartyUnitsUseFDFIELDFallbackCells(t *testing.T) {
 	}
 }
 
+func TestScenarioPartyUnitsCaptureEffectiveStatsAsEquipmentBase(t *testing.T) {
+	sc := &Scenario{Party: []PartyMember{{Fig: 0, AP: 16, DP: 12, HIT: 97, EV: 2, MV: 4, AtkMin: 1, AtkMax: 1}}}
+	u := sc.PartyUnits(nil)[0]
+	if !u.EquipmentBaseSet || u.BaseAP != 16 || u.BaseDP != 12 || u.BaseHIT != 97 || u.BaseEV != 2 || u.BaseMV != 4 {
+		t.Fatalf("equipment base not captured: %#v", u)
+	}
+}
+
 func TestChapter2RuntimeAppendOrderMatchesOriginalHandlerSlots(t *testing.T) {
 	st, err := Load("../../assets/maps/map1/map1_units.json")
 	if err != nil {

@@ -145,6 +145,7 @@ type Game struct {
 	shopItemTypes      map[int]int
 	shopEquipTypes     map[int][]int
 	shopItemPrices     map[int]int
+	shopItemStats      map[int]campaign.ItemStats
 	shopMode           string // buy or sell
 	shopSellPicking    bool
 	shopSellUnitSel    int
@@ -1523,6 +1524,8 @@ func applyPersistentStats(dst, src *battle.Unit) {
 	dst.AP, dst.DP, dst.DX = src.AP, src.DP, src.DX
 	dst.HIT, dst.EV, dst.CritPct, dst.MV = src.HIT, src.EV, src.CritPct, src.MV
 	dst.AtkMin, dst.AtkMax = src.AtkMin, src.AtkMax
+	dst.BaseAP, dst.BaseDP, dst.BaseHIT, dst.BaseEV, dst.BaseMV = src.BaseAP, src.BaseDP, src.BaseHIT, src.BaseEV, src.BaseMV
+	dst.BaseAtkMin, dst.BaseAtkMax, dst.EquipmentBaseSet = src.BaseAtkMin, src.BaseAtkMax, src.EquipmentBaseSet
 	dst.Portrait, dst.Fig = src.Portrait, src.Fig
 	dst.Exp, dst.ExpPerLevel = src.Exp, src.ExpPerLevel
 	dst.Spells = append(dst.Spells[:0], src.Spells...)
@@ -1890,6 +1893,10 @@ func (g *Game) campInput() bool {
 			if enter || inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 				u := g.partyRoster[g.shopEquipUnit]
 				if enter {
+					if err := campaign.EquipItem(&u, g.shopEquipSlot, g.shopItemStats); err != nil {
+						g.msg = err.Error()
+						return true
+					}
 					for len(u.Equipped) < len(u.Inventory) {
 						u.Equipped = append(u.Equipped, false)
 					}
@@ -1934,6 +1941,7 @@ func (g *Game) campInput() bool {
 					} else if gold, err := campaign.SellSlot(g.gold, &u, g.shopSellSlotSel, price); err != nil {
 						g.msg = err.Error()
 					} else {
+						campaign.RecomputeEquipment(&u, g.shopItemStats)
 						g.gold, g.partyRoster[ids[g.shopSellUnitSel]] = gold, u
 						g.msg = fmt.Sprintf("賣出物品 %02Xh(+%d G)", itemID, price*3/4)
 						if len(u.Inventory) == 0 {
@@ -3904,6 +3912,9 @@ func loadGame() *Game {
 	}
 	if prices, e := campaign.LoadItemPrices(assetPath("assets/data/item.json")); e == nil {
 		g.shopItemPrices = prices
+	}
+	if stats, e := campaign.LoadItemStats(assetPath("assets/data/item.json")); e == nil {
+		g.shopItemStats = stats
 	}
 	g.font = loadFont()
 	// 狀態欄名字專用整數尺寸 face(scale 1.0 繪製,避免非整數縮放模糊);orig 名墨高 13px→face 28

@@ -248,7 +248,7 @@ func (sc *Scenario) PartyUnits(fallback []Cell) []*Unit {
 		} else if i < len(fallback) {
 			x, y = fallback[i].X, fallback[i].Y
 		}
-		units = append(units, &Unit{
+		u := &Unit{
 			Camp: Own, Name: pm.Name, ClsName: pm.Cls, Lv: pm.Lv,
 			HP: pm.HP, MaxHP: pm.HP, MP: pm.MP, MaxMP: pm.MP, AP: pm.AP, DP: pm.DP, MV: pm.MV,
 			HIT: pm.HIT, EV: pm.EV, CritPct: pm.CritPct,
@@ -256,7 +256,12 @@ func (sc *Scenario) PartyUnits(fallback []Cell) []*Unit {
 			Portrait: pm.Portrait, Fig: pm.Fig, X: x, Y: y, OnField: true,
 			Spells: append([]int(nil), pm.Spells...), Inventory: append([]int(nil), pm.Inventory...),
 			Dir: 0,
-		})
+		}
+		// Editable scenario AP/DP/HIT/EV are already effective values (doc32),
+		// so preserve them as the base for later shop purchases.
+		u.BaseAP, u.BaseDP, u.BaseHIT, u.BaseEV, u.BaseMV = u.AP, u.DP, u.HIT, u.EV, u.MV
+		u.BaseAtkMin, u.BaseAtkMax, u.EquipmentBaseSet = u.AtkMin, u.AtkMax, true
+		units = append(units, u)
 	}
 	return units
 }

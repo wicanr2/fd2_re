@@ -42,24 +42,30 @@ type Unit struct {
 	AP, DP    int
 	HIT, EV   int // 命中/閃避基礎值(doc02 §2;doc03:EXE 內為「衍生值」非表格原始欄位,
 	// 敵/友單位 10B 表無此欄,export_units.py 暫用固定近似值,見該檔頭註解)
-	CritPct     int // 暴擊率(doc03 職業暴擊率表 0x5219B,resist_crit.json,依 class 已驗證吻合 doc02 §7.2)
-	MV          int // 移動力
-	AtkMin      int // 近戰攻擊距離下限(曼哈頓距離;0 視為預設 1,doc32 weapon_range.json 依武器 type 決定)
-	AtkMax      int // 近戰攻擊距離上限(0 視為預設 1;例:騎士槍type3=2,doc32)
-	Portrait    int
-	Fig         int // 地圖 sprite 組(= 角色 id,恆等,doc 31)
-	X, Y        int
-	Acted       bool         // 本回合已行動(原版 byte[+5] bit7)
-	Group       int          // 出場波次(原版 FDFIELD b21;事件按 group 放出,doc 25/29)
-	OnField     bool         // 是否已登場(事件進場機制:false=待命,尚未出現在戰場,doc 25)
-	Spells      []int        // 已習得法術 id(spell.json;原版 M1-M5 bitfield 展開)
-	Inventory   []int        // 角色物品欄 item IDs；原版 unit+0x0a 起 8×2B
-	Equipped    []bool       // 與 Inventory 對齊；true 表示該欄位目前已裝備
-	DeathEffect *DeathEffect // FDFIELD b22..25；0=item、1=gold，2/3 特殊效果先原值保留
-	DeathReward *DeathEffect // 可執行死亡獎勵；type2 已知 handler 由 exporter lower 成 item/gold
-	Dir         int          // 朝向:0下 1左 2上 3右(原版 Z2,FDICON 方向幀)
-	OffX        float64      // 行軍/移動的像素位移(顯示用;0=正在格上)
-	OffY        float64      // 進場時從邊緣滑入,漸減到 0
+	CritPct   int // 暴擊率(doc03 職業暴擊率表 0x5219B,resist_crit.json,依 class 已驗證吻合 doc02 §7.2)
+	MV        int // 移動力
+	AtkMin    int // 近戰攻擊距離下限(曼哈頓距離;0 視為預設 1,doc32 weapon_range.json 依武器 type 決定)
+	AtkMax    int // 近戰攻擊距離上限(0 視為預設 1;例:騎士槍type3=2,doc32)
+	Portrait  int
+	Fig       int // 地圖 sprite 組(= 角色 id,恆等,doc 31)
+	X, Y      int
+	Acted     bool   // 本回合已行動(原版 byte[+5] bit7)
+	Group     int    // 出場波次(原版 FDFIELD b21;事件按 group 放出,doc 25/29)
+	OnField   bool   // 是否已登場(事件進場機制:false=待命,尚未出現在戰場,doc 25)
+	Spells    []int  // 已習得法術 id(spell.json;原版 M1-M5 bitfield 展開)
+	Inventory []int  // 角色物品欄 item IDs；原版 unit+0x0a 起 8×2B
+	Equipped  []bool // 與 Inventory 對齊；true 表示該欄位目前已裝備
+	// Base* are the persistent pre-remake equipment values. Existing scenario
+	// data stores effective values, so EquipmentBaseSet is true for those
+	// records and newly purchased equipment is added without double counting.
+	BaseAP, BaseDP, BaseHIT, BaseEV, BaseMV int
+	BaseAtkMin, BaseAtkMax                  int
+	EquipmentBaseSet                        bool
+	DeathEffect                             *DeathEffect // FDFIELD b22..25；0=item、1=gold，2/3 特殊效果先原值保留
+	DeathReward                             *DeathEffect // 可執行死亡獎勵；type2 已知 handler 由 exporter lower 成 item/gold
+	Dir                                     int          // 朝向:0下 1左 2上 3右(原版 Z2,FDICON 方向幀)
+	OffX                                    float64      // 行軍/移動的像素位移(顯示用;0=正在格上)
+	OffY                                    float64      // 進場時從邊緣滑入,漸減到 0
 
 	// ---- 輔助法術暫時狀態(doc02 §6.4;施放邏輯見 magic.go CastArea/applySpell)----
 	BuffAPPct int // 魔刃術:AP 加成百分比
