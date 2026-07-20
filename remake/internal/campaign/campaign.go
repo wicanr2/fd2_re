@@ -160,6 +160,9 @@ type Beat struct {
 	PaletteStart int `json:"palette_start,omitempty"`
 	PaletteEnd   int `json:"palette_end,omitempty"`
 	PaletteDelta int `json:"palette_delta,omitempty"`
+	// transition_reveal: native 0x24b4d alternating-buffer present loop.
+	RevealFrames  int `json:"reveal_frames,omitempty"`
+	RevealDelayMs int `json:"reveal_delay_ms,omitempty"`
 
 	// act:Acting 非空時播放原版 acting frame 的行為轉錄：正常 frame 每 Beat 依 Pose 搬一格，
 	// special frame 只原地換姿態(doc50 §1.2)。Poses/PoseFrames 是舊的原地姿態近似欄位，

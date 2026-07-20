@@ -484,6 +484,17 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 				beats = append(beats, beat)
 				continue
 			}
+			if input.NativeTarget == "0x24b4d" {
+				frames, ok := immediateHandlerInt(input.RawArgs, 0)
+				if !ok || frames <= 0 || frames > 255 {
+					issue(i, input, "0x24b4d transition_reveal requires a positive immediate frame count")
+					continue
+				}
+				beat := runtime(input, "transition_reveal")
+				beat.RevealFrames, beat.RevealDelayMs = frames, 20
+				beats = append(beats, beat)
+				continue
+			}
 			issue(i, input, "operation has no proven runtime lowering")
 		case "layout_units":
 			if bindings.Layout == nil {

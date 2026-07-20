@@ -1292,6 +1292,22 @@ func TestCompilePaletteUpdateFromNativeCall(t *testing.T) {
 	}
 }
 
+func TestCompileTransitionRevealFromNativeCall(t *testing.T) {
+	script := &HandlerScript{Beats: []HandlerBeat{{
+		Op:           "unknown",
+		NativeTarget: "0x24b4d",
+		RawArgs:      []any{float64(60)},
+		Source:       HandlerSource{Addr: "0x33a70", Target: "0x24b4d"},
+	}}}
+	beats, issues := CompileHandlerScript(script, HandlerBindings{})
+	if len(issues) != 0 || len(beats) != 1 {
+		t.Fatalf("transition lowering beats=%#v issues=%#v", beats, issues)
+	}
+	if beats[0].Op != "transition_reveal" || beats[0].RevealFrames != 60 || beats[0].RevealDelayMs != 20 {
+		t.Fatalf("transition beat=%#v", beats[0])
+	}
+}
+
 func TestCompileChapter23PreUsesRecoveredChapter24TextGroups(t *testing.T) {
 	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch23_pre.json")
 	if err != nil {

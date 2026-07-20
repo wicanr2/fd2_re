@@ -82,28 +82,29 @@ type Game struct {
 	churchBranches    []campaign.ClassChangeBranch
 	classChangeTable  campaign.ClassChangeTable
 	classChangeGrowth map[int]campaign.ClassChangeGrowth
-	handlerChapter    int              // 原版 [0x53c03]；set_chapter 與無立即數 LOADCH 的 resource chapter
-	storyWalks        []*storyWalkJob  // 場景走位動畫佇列(doc46 §5.3);逐幀推進、完成後移除
-	storyAutoAdvance  int              // story 節點無對白時的自動轉場倒數幀(doc46 行軍蒙太奇,0=不自動)
-	storyView         *ebiten.Image    // story 場景離屏世界層(320×200,放大 storyZoom 倍貼上畫布;2-1 原版取景)
-	walkFirst         bool             // 本節點:進場走位走完才顯示對白(campaign.Node.WalkFirst)
-	followWalk        bool             // 本節點:走位期間鏡頭跟隨走位者(campaign.Node.FollowWalk;beat walk 依 Follow 逐拍設值)
-	camMaxY           float64          // 本節點:鏡頭 Y 上限(campaign.Node.CamMaxY;0=不限)
-	camPan            *camPanJob       // beat「pan」進行中(doc50 §1);storyBG 專用,與 followWalk 互斥
-	focusJob          *focusUnitJob    // beat「focus_unit」：依原版 0x12cea 先 X 後 Y 逐格移動游標／鏡頭
-	actJob            *actPoseJob      // beat「act」進行中(近似姿態循環,見 actPoseJob 註解)
-	beats             []campaign.Beat  // 目前 cutscene 節點的過場原語序列(doc50 §2)
-	beatIdx           int              // 目前執行到第幾拍(-1=尚未開始)
-	beatDelay         int              // beat「delay」剩餘幀數(0=非等待中)
-	battleEvent       *battleEventRun  // 戰場事件的阻塞 action 序列；與 campaign BeatRunner 分離
-	battleEventDelay  int              // battle event delay 剩餘幀數
-	campLines         []campaign.Line  // cutscene 節點載入的章文本(dialog beat 依 Line/Count 取子段)
-	dlgShown          int              // 對話框目前顯示的說話者(dlgNone=無;換人時播縮/展動畫)
-	dlgUpper          *bool            // 與 dlgShown 同步的上/下框覆蓋(來自 DialogLine.Upper;nil=沿用預設規則)
-	dlgPhase          int              // 對話框動畫相位:0=常態 1=縮小(換人前收合) 2=展開
-	dlgT              int              // 對話框動畫相位內計時(幀)
-	dlgPage           int              // 目前對白的頁碼(0起);一句>3行時分頁,Enter 先翻頁翻完才換句(使用者回饋 2026-07-05)
-	fade              *storyFade       // 場景淡出/淡入轉場(doc46 §5.2)
+	handlerChapter    int             // 原版 [0x53c03]；set_chapter 與無立即數 LOADCH 的 resource chapter
+	storyWalks        []*storyWalkJob // 場景走位動畫佇列(doc46 §5.3);逐幀推進、完成後移除
+	storyAutoAdvance  int             // story 節點無對白時的自動轉場倒數幀(doc46 行軍蒙太奇,0=不自動)
+	storyView         *ebiten.Image   // story 場景離屏世界層(320×200,放大 storyZoom 倍貼上畫布;2-1 原版取景)
+	walkFirst         bool            // 本節點:進場走位走完才顯示對白(campaign.Node.WalkFirst)
+	followWalk        bool            // 本節點:走位期間鏡頭跟隨走位者(campaign.Node.FollowWalk;beat walk 依 Follow 逐拍設值)
+	camMaxY           float64         // 本節點:鏡頭 Y 上限(campaign.Node.CamMaxY;0=不限)
+	camPan            *camPanJob      // beat「pan」進行中(doc50 §1);storyBG 專用,與 followWalk 互斥
+	focusJob          *focusUnitJob   // beat「focus_unit」：依原版 0x12cea 先 X 後 Y 逐格移動游標／鏡頭
+	actJob            *actPoseJob     // beat「act」進行中(近似姿態循環,見 actPoseJob 註解)
+	beats             []campaign.Beat // 目前 cutscene 節點的過場原語序列(doc50 §2)
+	beatIdx           int             // 目前執行到第幾拍(-1=尚未開始)
+	beatDelay         int             // beat「delay」剩餘幀數(0=非等待中)
+	battleEvent       *battleEventRun // 戰場事件的阻塞 action 序列；與 campaign BeatRunner 分離
+	battleEventDelay  int             // battle event delay 剩餘幀數
+	campLines         []campaign.Line // cutscene 節點載入的章文本(dialog beat 依 Line/Count 取子段)
+	dlgShown          int             // 對話框目前顯示的說話者(dlgNone=無;換人時播縮/展動畫)
+	dlgUpper          *bool           // 與 dlgShown 同步的上/下框覆蓋(來自 DialogLine.Upper;nil=沿用預設規則)
+	dlgPhase          int             // 對話框動畫相位:0=常態 1=縮小(換人前收合) 2=展開
+	dlgT              int             // 對話框動畫相位內計時(幀)
+	dlgPage           int             // 目前對白的頁碼(0起);一句>3行時分頁,Enter 先翻頁翻完才換句(使用者回饋 2026-07-05)
+	fade              *storyFade      // 場景淡出/淡入轉場(doc46 §5.2)
+	transitionReveal  *transitionRevealJob
 	walk              *walkAnim        // 移動動畫(沿路徑逐格走,FDICON 方向幀)
 	camp              *campaign.Runner // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
 	campSel           int              // choice 節點游標
@@ -240,6 +241,17 @@ type storyFade struct {
 	t     int
 	total int
 	then  func()
+}
+
+// transitionRevealJob mirrors native 0x24b4d's alternating-buffer present
+// loop. The indexed double-buffer renderer is not available for PNG-backed
+// scenes yet, but timing and frame count remain explicit rather than being
+// misrepresented as a black fade.
+type transitionRevealJob struct {
+	remaining int
+	ticks     int
+	delay     int
+	then      func()
 }
 
 // storyFadeFrames 淡出/淡入各自幀數(60fps;doc46 要求 0.5–1s,先做快版 0.6s,實測後可調)。
@@ -437,6 +449,26 @@ func (g *Game) stepFade() {
 			cb()
 		}
 	}
+}
+
+func (g *Game) stepTransitionReveal() {
+	job := g.transitionReveal
+	if job == nil {
+		return
+	}
+	if job.ticks > 0 {
+		job.ticks--
+		return
+	}
+	job.remaining--
+	if job.remaining <= 0 {
+		g.transitionReveal = nil
+		if job.then != nil {
+			job.then()
+		}
+		return
+	}
+	job.ticks = job.delay
 }
 
 // stepCamPan 逐幀推進 beat「pan」鏡頭位移；原版模式逐 tile、X-first，
@@ -1049,6 +1081,16 @@ func (g *Game) beatStart(b campaign.Beat) {
 			frames = storyFadeFrames
 		}
 		g.fade = &storyFade{out: b.Out, total: frames, then: g.beatAdvance}
+	case "transition_reveal":
+		if b.RevealFrames <= 0 {
+			g.loadErr = "beat transition_reveal:缺少正確 frame count"
+			return
+		}
+		delay := b.RevealDelayMs * 60 / 1000
+		if delay < 1 {
+			delay = 1
+		}
+		g.transitionReveal = &transitionRevealJob{remaining: b.RevealFrames, delay: delay, then: g.beatAdvance}
 	case "palette_update":
 		// The current renderer stores RGB PNGs instead of the original VGA
 		// indexed surface. ch22's recovered calls all use delta=0, so their
@@ -1366,6 +1408,7 @@ func (g *Game) enterNode() {
 	g.storyAutoAdvance = 0
 	g.walkFirst, g.followWalk, g.camMaxY = false, false, 0
 	g.camPan, g.focusJob, g.actJob, g.beats, g.beatIdx, g.beatDelay = nil, nil, nil, nil, -1, 0
+	g.transitionReveal = nil
 	g.battleEvent, g.battleEventDelay = nil, 0
 	g.dlgShown, g.dlgPhase, g.dlgT = dlgNone, 0, 0
 	g.dlgUpper = nil
@@ -3086,6 +3129,7 @@ func (g *Game) Update() error {
 	g.stepFocusUnit()                            // beat「focus_unit」依原版安全帶逐格移動游標／鏡頭
 	g.stepDlgAnim()                              // 對話框換人縮/展動畫(使用者回饋 #3)
 	g.stepFade()                                 // 場景淡出/淡入轉場(doc46 §5.2;beat「fade」兩個方向都靠 then 接回下一拍)
+	g.stepTransitionReveal()                     // native 0x24b4d alternating present loop
 	if g.camp != nil && g.storyAutoAdvance > 0 { // 無對白節點自動轉場倒數(行軍蒙太奇)
 		g.storyAutoAdvance--
 		if g.storyAutoAdvance == 0 {
