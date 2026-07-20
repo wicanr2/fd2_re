@@ -264,3 +264,20 @@ func TestAIAvailableSpellsResolvesInventoryCommandsWithoutScoring(t *testing.T) 
 		t.Fatalf("available spells=%#v, want one resolved spell 15", got)
 	}
 }
+
+func TestAISpellCandidatesUsesOriginalFamilyCampFilters(t *testing.T) {
+	caster := &Unit{Camp: Enemy, OnField: true, HP: 10, MaxHP: 10}
+	ally := &Unit{Camp: Enemy, OnField: true, HP: 4, MaxHP: 10}
+	deadEnemy := &Unit{Camp: Own, OnField: true, HP: 0, MaxHP: 10}
+	target := &Unit{Camp: Own, OnField: true, HP: 10, MaxHP: 10}
+	st := &State{Units: []*Unit{caster, ally, deadEnemy, target}}
+	if got := st.AISpellCandidates(caster, Spell{ID: 0}); len(got) != 1 || got[0] != target {
+		t.Fatalf("attack candidates=%v, want live opposing target", got)
+	}
+	if got := st.AISpellCandidates(caster, Spell{ID: 13}); len(got) != 1 || got[0] != ally {
+		t.Fatalf("heal candidates=%v, want injured same-camp ally", got)
+	}
+	if got := st.AISpellCandidates(caster, Spell{ID: 17}); len(got) != 2 || got[0] != caster || got[1] != ally {
+		t.Fatalf("buff candidates=%v, want same-camp live units", got)
+	}
+}

@@ -291,6 +291,54 @@ func (s *State) AIAvailableSpells(u *Unit) []Spell {
 	return out
 }
 
+// AISpellCandidates mirrors the family split visible in 0x15B77. It returns
+// candidates in canonical runtime order only; the native score/priority layer
+// is intentionally separate and not inferred here.
+func (s *State) AISpellCandidates(caster *Unit, spell Spell) []*Unit {
+	if s == nil || caster == nil {
+		return nil
+	}
+	family := ""
+	switch spell.ID {
+	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12:
+		family = "attack"
+	case 13, 14, 15, 16:
+		family = "heal"
+	case 17, 18, 19:
+		family = "buff"
+	case 20, 21, 22, 26, 27:
+		family = "status"
+	default:
+		return nil
+	}
+	out := make([]*Unit, 0)
+	for _, target := range s.Units {
+		if target == nil || !target.OnField || !target.Alive() {
+			continue
+		}
+		sameCamp := target.Camp == caster.Camp
+		switch family {
+		case "attack":
+			if !sameCamp {
+				out = append(out, target)
+			}
+		case "heal":
+			if sameCamp && target.HP < target.MaxHP {
+				out = append(out, target)
+			}
+		case "buff":
+			if sameCamp {
+				out = append(out, target)
+			}
+		case "status":
+			if !sameCamp {
+				out = append(out, target)
+			}
+		}
+	}
+	return out
+}
+
 // NextAIPlan 找下一個未行動的 AI 單位並產生行動計畫(不執行、不設 Acted);
 // 全部動完回 nil。決策邏輯同 aiActUnit(doc11 評分式)。
 func (s *State) NextAIPlan() *AIPlan {
