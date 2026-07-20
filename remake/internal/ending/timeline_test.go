@@ -13,8 +13,11 @@ func TestNative2BCE5TimelineIsRecoveredButNotPlayable(t *testing.T) {
 	if timeline.Ready() {
 		t.Fatal("opaque native ending timeline must remain fail-closed")
 	}
-	if len(timeline.Segments) != 17 {
-		t.Fatalf("segment count = %d, want 17", len(timeline.Segments))
+	if len(timeline.Segments) != 18 {
+		t.Fatalf("segment count = %d, want 18", len(timeline.Segments))
+	}
+	if timeline.Segments[17].Op != "native_post_composite_opaque" {
+		t.Fatalf("post-composite gate = %#v", timeline.Segments[17])
 	}
 	if timeline.Segments[12].Op != "blit_frame_sequence" || timeline.Segments[15].Op != "native_composite_loop_opaque" || timeline.Segments[16].Op != "native_composite_loop_baseline" {
 		t.Fatalf("frame schedule landmarks = %#v", timeline.Segments)

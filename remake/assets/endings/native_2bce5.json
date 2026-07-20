@@ -34,6 +34,7 @@
     ]},
     {"op": "delay_ms", "source": "0x2bf4f", "ms": 2000},
     {"op": "native_composite_loop_opaque", "source": "0x2bf60", "iterations": 40, "stride": 640, "delay_ms": 20, "first_frame_formula": "floor(i/4)+1", "second_frame": "(i%4)+5", "reason": "native buffer offsets shift; no renderer adapter yet"},
-    {"op": "native_composite_loop_baseline", "source": "0x2c0c5", "iterations": 200, "stride": 320, "delay_ms": 20, "first_frame_formula": "floor(i/4)+1", "second_frame": "(i%4)+5", "palette_helper": "0x11d40(0,255,edi); edi=0 for first 136 passes, then 1"}
+    {"op": "native_composite_loop_baseline", "source": "0x2c0c5", "iterations": 200, "stride": 320, "delay_ms": 20, "first_frame_formula": "floor(i/4)+1", "second_frame": "(i%4)+5", "palette_helper": "0x11d40(0,255,edi); edi=0 for first 136 passes, then 1"},
+    {"op": "native_post_composite_opaque", "source": "0x2c172", "reason": "post-composite battle/ending montage not recovered"}
   ]
 }
