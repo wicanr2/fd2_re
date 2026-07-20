@@ -1291,3 +1291,31 @@ func TestCompilePaletteUpdateFromNativeCall(t *testing.T) {
 		t.Fatalf("palette update beat=%#v", beats[0])
 	}
 }
+
+func TestCompileChapter23PreUsesRecoveredChapter24TextGroups(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch23_pre.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(issues) != 0 {
+		t.Fatalf("ch23_pre issues=%#v", issues)
+	}
+	var dialogs []Beat
+	for _, beat := range beats {
+		if beat.Op == "dialog" {
+			dialogs = append(dialogs, beat)
+		}
+	}
+	if len(dialogs) != 14 {
+		t.Fatalf("ch23_pre dialog beats=%d want 14", len(dialogs))
+	}
+	if beats[0].Op != "loadch" || beats[0].LoadCH == nil || beats[0].LoadCH.Chapter != 23 || beats[0].LoadCH.SlotCount != 70 {
+		t.Fatalf("ch23_pre loadch=%#v", beats[0])
+	}
+	if dialogs[0].Script != "ch24.json" || dialogs[0].Line != 0 || dialogs[0].SceneIndex == nil || *dialogs[0].SceneIndex != 0 {
+		t.Fatalf("ch23_pre first dialog context=%#v", dialogs[0])
+	}
+	if dialogs[5].Line != 5 || dialogs[13].Line != 13 {
+		t.Fatalf("ch23_pre second text group boundaries=%#v/%#v", dialogs[5], dialogs[13])
+	}
+}
