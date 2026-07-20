@@ -146,6 +146,22 @@ func TestFDOTHER056SingleFramePayload(t *testing.T) {
 	}
 }
 
+func TestFinaleTAI003IsTransparentPlaceholder(t *testing.T) {
+	const path = "../../../extracted/raw/TAI/TAI_003.bin"
+	data, err := os.ReadFile(path)
+	if os.IsNotExist(err) {
+		t.Skip("player-provided TAI_003 asset is absent")
+	}
+	if err != nil {
+		t.Fatal(err)
+	}
+	// TAI #3 is not the visible 154x42 platform used by other battle paths:
+	// its 10x3 raw RLE body is three C9 (= transparent skip of ten) rows.
+	if !bytes.Equal(data, []byte{0x0a, 0, 0x03, 0, 0xc9, 0xc9, 0xc9}) {
+		t.Fatalf("TAI_003=% x, want transparent 10x3 placeholder", data)
+	}
+}
+
 func min(a, b int) int {
 	if a < b {
 		return a

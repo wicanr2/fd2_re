@@ -96,7 +96,7 @@ func LoadMontage(path string) (*Montage, error) {
 	}
 	if m.SchemaVersion != 1 || m.NativeHandler != "0x2c548" || m.Status != "mapped_first_party_cycle_fail_closed" ||
 		len(m.Allocations) != 3 || m.Allocations[0].Bytes != 0x1f400 || m.Allocations[1].Bytes != 0xfa00 || m.Allocations[2].Bytes != 0xfa00 ||
-		len(m.Resources) != 2 || m.Resources[0].Archive != "TAI.DAT" || m.Resources[0].Index != 3 || m.Resources[1].Archive != "FDOTHER.DAT" || m.Resources[1].Index != 56 ||
+		len(m.Resources) != 2 || m.Resources[0].Archive != "TAI.DAT" || m.Resources[0].Index != 3 || m.Resources[0].Role != "raw 10x3 fully-transparent sprite; renderer role unrecovered" || m.Resources[1].Archive != "FDOTHER.DAT" || m.Resources[1].Index != 56 ||
 		m.PartyCycle.Source != "0x2c5d7" || m.PartyCycle.CountGlobal != "0x53bfb" || m.PartyCycle.UnitBaseGlobal != "0x53a45" || m.PartyCycle.UnitStride != 0x50 || m.PartyCycle.VisualGroupOffset != 7 ||
 		m.PartyCycle.SlotSelection != "i==0?1:i==1?0:i" ||
 		m.PartyCycle.FigureArchive != "FIGANI.DAT" || len(m.PartyCycle.FigureIndices) != 2 || m.PartyCycle.FigureIndices[0] != "group*3+1" || m.PartyCycle.FigureIndices[1] != "group*3" ||
