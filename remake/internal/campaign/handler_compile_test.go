@@ -674,6 +674,40 @@ func TestCompileCompleteChapter2PreUsesRecoveredChapter3Text(t *testing.T) {
 	}
 }
 
+func TestCompileChapter3PreUsesRecoveredChapter4TextGroups(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch03_pre.json")
+	if err != nil || len(issues) != 0 {
+		t.Fatalf("ch03_pre err=%v issues=%#v", err, issues)
+	}
+	dialogs := make([]Beat, 0, 9)
+	seen := map[string]Beat{}
+	for _, beat := range beats {
+		seen[beat.Source] = beat
+		if beat.Op == "dialog" {
+			dialogs = append(dialogs, beat)
+		}
+	}
+	if len(dialogs) != 9 {
+		t.Fatalf("FDTXT_004 #0/#1 dialogs=%d, want 4+5", len(dialogs))
+	}
+	if dialogs[0].Script != "ch04.json" || dialogs[0].SceneIndex == nil || *dialogs[0].SceneIndex != 0 || dialogs[0].Line != 0 {
+		t.Fatalf("ch03_pre first dialogue = %#v", dialogs[0])
+	}
+	if dialogs[4].Script != "ch04.json" || dialogs[4].SceneIndex == nil || *dialogs[4].SceneIndex != 1 || dialogs[4].Line != 0 {
+		t.Fatalf("ch03_pre second dialogue = %#v", dialogs[4])
+	}
+	load := seen["0x32fbc"]
+	if load.LoadCH == nil || load.LoadCH.Chapter != 3 || load.LoadCH.Map != "assets/maps/map3" || load.LoadCH.Script != "assets/story/ch04.json" || load.LoadCH.PartyScenario != "assets/scenarios/ch04.json" {
+		t.Fatalf("ch03_pre LOADCH = %#v", load.LoadCH)
+	}
+	if pan := seen["0x32fc5"]; pan.X != 96 || pan.Y != 264 || !pan.TileStep {
+		t.Fatalf("ch03_pre initial PAN = %#v", pan)
+	}
+	if act := seen["0x32fcf"]; len(act.Acting) != 4 || len(act.Acting[0].Units) == 0 {
+		t.Fatalf("ch03_pre acting = %#v", act.Acting)
+	}
+}
+
 func TestCompileLoadCHBindingExposesSharedTailDialogueGap(t *testing.T) {
 	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch05_pre.json")
 	if err != nil || len(issues) != 1 || issues[0].Op != "dialog" || issues[0].Source.Addr != "0x3320c" {

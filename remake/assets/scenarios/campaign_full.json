@@ -721,18 +721,9 @@
    "next": "battle_ch03"
   },
   "story_ch04": {
-   "type": "story",
+   "type": "cutscene",
+   "handler_binding": "assets/cutscenes/bindings/ch03_pre.json",
    "bgm": "FDMUS_010",
-   "lines": [
-    {
-     "speaker": -1,
-     "text": "第4章:塞拉村前"
-    },
-    {
-     "speaker": -1,
-     "text": "目標:敵全滅。"
-    }
-   ],
    "next": "battle_ch04"
   },
   "shop_ch04_weapon": {
