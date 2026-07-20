@@ -187,3 +187,17 @@ func TestPlayerRunsRecoveredNativePrefixWithPlayerAssets(t *testing.T) {
 		t.Fatalf("prefix gate state=%s err=%v blocked=%#v", state, err, p.Blocked)
 	}
 }
+
+func TestBlockedDialogueSelectsOnlyNativeTextBranch(t *testing.T) {
+	p := &Player{State: PlaybackBlocked, Blocked: &Segment{Op: "native_text_branch_opaque", ThenDialogue: []DialogueBlock{{PortraitID: 4}}, ElseDialogue: []DialogueBlock{{PortraitID: 37}}}}
+	if blocks, ok := p.BlockedDialogue(26); !ok || len(blocks) != 1 || blocks[0].PortraitID != 4 {
+		t.Fatalf("chapter26 blocks=%#v ok=%v", blocks, ok)
+	}
+	if blocks, ok := p.BlockedDialogue(29); !ok || len(blocks) != 1 || blocks[0].PortraitID != 37 {
+		t.Fatalf("final blocks=%#v ok=%v", blocks, ok)
+	}
+	p.Blocked.Op = "native_composite_loop_opaque"
+	if blocks, ok := p.BlockedDialogue(29); ok || blocks != nil {
+		t.Fatalf("non-text opaque block leaked dialogue: %#v", blocks)
+	}
+}

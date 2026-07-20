@@ -3084,6 +3084,17 @@ func (g *Game) Update() error {
 			g.loadErr = "native ending: " + err.Error()
 			return err
 		}
+		if err := g.queueNativeEndingDialogue(); err != nil {
+			g.loadErr = "native ending dialogue: " + err.Error()
+			return err
+		}
+		g.stepDlgAnim()
+		if g.dlgScrollT > 0 {
+			g.dlgScrollT--
+		}
+		if len(g.dialog) > 0 && (inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)) {
+			g.dlgAdvance()
+		}
 		if g.shotPath != "" && g.frame > g.shotFrame {
 			return ebiten.Termination
 		}
@@ -4356,6 +4367,11 @@ func loadGame() *Game {
 			return g
 		}
 		g.nativeEnding = preview
+		// The preview intentionally bypasses map/battle loading, but native
+		// 0x2c39b dialogue still uses the ordinary player-provided DATO faces
+		// and FD font once it reaches its recovered text branch.
+		g.portraits = loadPortraits()
+		g.font = loadFont()
 		return g
 	}
 	if err := g.loadMap("assets"); err != nil {

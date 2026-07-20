@@ -174,3 +174,20 @@ func (p *Player) blit(s Segment) error {
 	}
 	return p.Compositor.Blit(p.Frames[*s.Frame], dst, s.Stride)
 }
+
+// BlockedDialogue returns the exact branch selected by the native chapter
+// comparison at an opaque text call.  The player remains blocked: presenting
+// these lines never grants permission to execute following opaque segments.
+func (p *Player) BlockedDialogue(chapter int) ([]DialogueBlock, bool) {
+	if p.State != PlaybackBlocked || p.Blocked == nil || p.Blocked.Op != "native_text_branch_opaque" {
+		return nil, false
+	}
+	blocks := p.Blocked.ElseDialogue
+	if chapter == 26 {
+		blocks = p.Blocked.ThenDialogue
+	}
+	if len(blocks) == 0 {
+		return nil, false
+	}
+	return append([]DialogueBlock(nil), blocks...), true
+}
