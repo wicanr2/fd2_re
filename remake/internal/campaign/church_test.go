@@ -38,3 +38,16 @@ func TestReviveUnitIsAtomicOnInsufficientGoldOrInvalidCandidate(t *testing.T) {
 		t.Fatalf("alive candidate mutation gold=%d cost=%d err=%v unit=%#v", gold, cost, err, alive)
 	}
 }
+
+func TestClassChangeCandidatesMatchOriginal31793Predicate(t *testing.T) {
+	roster := map[int]battle.Unit{
+		0:  {Fig: 0, Lv: 20, Portrait: 0},
+		9:  {Fig: 9, Lv: 19, Portrait: 9},
+		4:  {Fig: 4, Lv: 20, Portrait: 7},
+		30: {Fig: 30, Lv: 20, Portrait: 18},
+	}
+	got := ClassChangeCandidates(roster, []int{0, 9, 4, 30})
+	if len(got) != 1 || got[0] != 0 {
+		t.Fatalf("class change candidates=%v, want [0]", got)
+	}
+}

@@ -29,6 +29,35 @@ func LoadReviveFeeRates(path string) ([]int, error) {
 	return append([]int(nil), table.Rates...), nil
 }
 
+// CanChangeClass is the proven 0x31793 candidate predicate. The native
+// routine uses the roster record's level and portrait byte; it does not list
+// already promoted portrait groups (>=0x12) or portrait 7.
+func CanChangeClass(u *battle.Unit) bool {
+	return u != nil && u.Lv >= 20 && u.Portrait < 0x12 && u.Portrait != 7
+}
+
+// ClassChangeCandidates preserves caller order (normally JOIN chronology).
+func ClassChangeCandidates(roster map[int]battle.Unit, order []int) []int {
+	out := make([]int, 0)
+	seen := make(map[int]bool, len(roster))
+	for _, id := range order {
+		if seen[id] {
+			continue
+		}
+		seen[id] = true
+		u, ok := roster[id]
+		if ok && CanChangeClass(&u) {
+			out = append(out, id)
+		}
+	}
+	for id, u := range roster {
+		if !seen[id] && CanChangeClass(&u) {
+			out = append(out, id)
+		}
+	}
+	return out
+}
+
 // CanRevive matches the original church candidate filter: the character must
 // have a valid max HP and currently be dead/inactive. The native handler's
 // 0x309ff list is built from roster records, not from the active battle array.
