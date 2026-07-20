@@ -118,23 +118,29 @@ type Game struct {
 	spells             []battle.Spell
 	bgm                *audio.Player // BGM(doc12 play_bgm 語意:同曲不重播)
 	bgmCur             string
-	bgmSource          string                  // 音源設定 "fm"/"mt32"(settings.go;F2 切換)
-	debug              bool                    // F3:開發除錯 HUD(座標/陣營原文等)
-	unitLabels         bool                    // FD2_UNIT_LABELS=1:cutscene sprite 左上標 [idx]fig+名+座標(協助回報/對映原版 slot)
-	cutsceneLog        bool                    // FD2_CUTSCENE_LOG=1:過場 node/beat/走位逐步 log 到 stderr(協助對原版資料比對)
-	banner             string                  // 回合橫幅文字(PLAYER/ENEMY PHASE)
-	bannerT            int                     // 橫幅剩餘 tick
-	sfx                map[int][]byte          // SFX PCM(doc36 FDOTHER#31 14樣本)
-	sfxSwing           []byte                  // 戰鬥揮擊音(doc36 戰鬥池 #48-64 sub0,七池共用)
-	sfxImpact          []byte                  // 命中音(近似:最短最尖池;attack_id→sfx 對照表 doc36 未 RE)
-	sfxDeath           []byte                  // 陣亡/重擊音(近似:最長池)
-	prevCurX, prevCurY int                     // 游標移動音偵測
-	aiBusy             bool                    // AI 回合進行中(逐單位行走動畫)
-	deathRewarded      map[*battle.Unit]bool   // 每個死亡 transition 的 reward 只執行一次
-	rng                *rand.Rand              // 施法擲骰(FD2_SEED 可固定,headless 重現)
-	gold               int                     // 金幣(商店)
-	items              []string                // 隊伍道具(名稱;道具效果待實裝)
-	shopSel            int                     // 商店游標
+	bgmSource          string                // 音源設定 "fm"/"mt32"(settings.go;F2 切換)
+	debug              bool                  // F3:開發除錯 HUD(座標/陣營原文等)
+	unitLabels         bool                  // FD2_UNIT_LABELS=1:cutscene sprite 左上標 [idx]fig+名+座標(協助回報/對映原版 slot)
+	cutsceneLog        bool                  // FD2_CUTSCENE_LOG=1:過場 node/beat/走位逐步 log 到 stderr(協助對原版資料比對)
+	banner             string                // 回合橫幅文字(PLAYER/ENEMY PHASE)
+	bannerT            int                   // 橫幅剩餘 tick
+	sfx                map[int][]byte        // SFX PCM(doc36 FDOTHER#31 14樣本)
+	sfxSwing           []byte                // 戰鬥揮擊音(doc36 戰鬥池 #48-64 sub0,七池共用)
+	sfxImpact          []byte                // 命中音(近似:最短最尖池;attack_id→sfx 對照表 doc36 未 RE)
+	sfxDeath           []byte                // 陣亡/重擊音(近似:最長池)
+	prevCurX, prevCurY int                   // 游標移動音偵測
+	aiBusy             bool                  // AI 回合進行中(逐單位行走動畫)
+	deathRewarded      map[*battle.Unit]bool // 每個死亡 transition 的 reward 只執行一次
+	rng                *rand.Rand            // 施法擲骰(FD2_SEED 可固定,headless 重現)
+	gold               int                   // 金幣(商店)
+	items              []string              // 隊伍道具(名稱;道具效果待實裝)
+	shopSel            int                   // 商店游標
+	shopRecipientSel   int
+	shopRecipients     []int
+	shopPicking        bool
+	shopPending        campaign.Good
+	shopItemTypes      map[int]int
+	shopEquipTypes     map[int][]int
 	portraits          map[int][]*ebiten.Image // DATO 頭像:肖像 id → 4 嘴型幀
 	mouthOpen          bool                    // 嘴型動畫狀態(原版 0x16d00:m0閉/m3開)
 	mouthTimer         int                     // 閉嘴倒數(原版 rand%30+2 tick)
@@ -1436,6 +1442,9 @@ func (g *Game) enterNode() {
 	case "shop":
 		g.dialog, g.st, g.sel = nil, nil, nil
 		g.shopSel = 0
+		g.shopPicking = false
+		g.shopRecipientSel = 0
+		g.shopRecipients = nil
 	case "ending":
 		g.dialog, g.st, g.sel = nil, nil, nil
 	}
@@ -1759,6 +1768,32 @@ func (g *Game) focusOnParty() {
 	if n > 0 {
 		g.curX, g.curY = sx/n, sy/n
 	}
+}
+
+func (g *Game) shopReceiverIDs(good campaign.Good) []int {
+	ids := append([]int(nil), g.partyJoinOrder...)
+	seen := map[int]bool{}
+	for _, id := range ids {
+		seen[id] = true
+	}
+	for id := range g.partyRoster {
+		if !seen[id] {
+			ids = append(ids, id)
+		}
+	}
+	itemType, known := g.shopItemTypes[good.ID]
+	out := ids[:0]
+	for _, id := range ids {
+		u, ok := g.partyRoster[id]
+		if !ok {
+			continue
+		}
+		if known && itemType < 0x20 && !campaign.CanEquip(u.ClassID, itemType, g.shopEquipTypes) {
+			continue
+		}
+		out = append(out, id)
+	}
+	return out
 }
 
 // campInput 處理 campaign 節點的輸入。回傳 true = 已攔截(擋掉戰場一般輸入)。
@@ -3659,6 +3694,9 @@ func loadGame() *Game {
 	}
 	if sp, e := battle.LoadSpells(assetPath("assets/spells.json")); e == nil { // 法術表(EXE dump)
 		g.spells = sp
+	}
+	if types, equip, e := campaign.LoadShopEligibility(assetPath("assets/data/item.json"), assetPath("assets/data/class_equip_types.json")); e == nil {
+		g.shopItemTypes, g.shopEquipTypes = types, equip
 	}
 	g.font = loadFont()
 	// 狀態欄名字專用整數尺寸 face(scale 1.0 繪製,避免非整數縮放模糊);orig 名墨高 13px→face 28
