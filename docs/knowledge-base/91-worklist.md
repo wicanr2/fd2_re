@@ -147,6 +147,7 @@
 - [x] ch11/ch12 pre-handler：FDTXT_012 index0 跨 scene0/1（2+9句）與 map11/acting40/41 已接 binding，`story_ch12` 已接回 editable handler。
 - [x] ch12/ch13 pre-handler：FDTXT_013 index0（6句）與 map12/70-slot 已接 binding，`story_ch13` 已接回 editable handler。
 - [x] ch13/ch14 pre-handler：FDTXT_014 index0（4句）與 map13/70-slot、pan 20,20 已接 binding，`story_ch14` 已接回 editable handler。
+- [~] ch14/ch15 pre-handler：ch14 的 `roster_has(12)` 動態分支仍待控制流證據；ch15 已接 FDTXT_016 index0（16句）與 map15/60-slot，`story_ch16` 已接回 editable handler。
 - [~] class-change data/UI bridge：`LoadClassChangeTable`、`ClassChangeTargets`、`LoadClassChangeGrowth` 已接；church 現在先選角色再列 default/optional/special target，Enter 依 branch 消耗物品、套用 RNG stat reset、重算裝備並保存 persistent roster。runtime assets 已補入；待實機 xvfb 走完整轉職流程與校正 HIT/EV/DX synthesis。
 - [~] class-change synthesis：`0x31602` 五組 `0x1e529` 先把新職成長加到 raw AP/DP/DX/MaxHP/MaxMP，隨後呼叫 `0x1b750`；該 routine 讀 raw `+0x37/+0x39/+0x3e`、item table 23-byte row 的 `+1/+3/+5/+7`，寫 derived AP/DP/HIT/EV `+0x48/+0x4a/+0x4c/+0x4e`。`RecomputeAfterClassChange` 已恢復並防止既有裝備重複計算；`+0x22/+0x23/+0x24` 是 constructor 清零後由其他 transient/effect writer 使用的旗標，class path 本身不寫入，不能臆測成 class modifiers。
 - [~] headless class-change fixture：新增僅由 `FD2_CAMP_CLASS_FIXTURE=1` 啟用的 Lv20 portrait9＋item 0x58/0x5a roster，供 xvfb 依「教會→轉職→角色→target branch」操作驗證；正常遊戲不改變。實機截圖 [`church-class-targets.png`](../figures/church-class-targets.png) 已確認 default 0x29、optional 0x3b、special 0x34 三分支。
