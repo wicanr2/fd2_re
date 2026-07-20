@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "handler_script": "../handlers/ch19_pre.json",
+  "story_index_map": "../dialogue-index/count-aligned.json",
+  "dialogue_contexts": {
+    "0x3320c": { "source_dat": "FDTXT_020", "script": "ch20.json" }
+  },
+  "overrides": {
+    "0x33475": {
+      "loadch": {
+        "chapter": 19,
+        "map": "assets/maps/map19",
+        "roster": "assets/maps/map19/map19_units.json",
+        "slot_count": 70,
+        "script": "assets/story/ch20.json",
+        "party_scenario": "assets/scenarios/ch20.json"
+      }
+    }
+  }
+}
