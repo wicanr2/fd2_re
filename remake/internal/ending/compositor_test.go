@@ -208,3 +208,18 @@ func TestBlockedDialogueSelectsOnlyNativeTextBranch(t *testing.T) {
 		t.Fatalf("text resume state=%s blocked=%#v segment=%d", p.State, p.Blocked, p.Segment)
 	}
 }
+
+func TestPlayerExpandsRepeatedPaletteRampBeforeNextGate(t *testing.T) {
+	timeline := Timeline{Segments: []Segment{{Op: "palette_ramp_repeat", Source: "repeat", PaletteStart: intPtr(1), PaletteEnd: intPtr(0), PaletteStep: -1, PaletteDelay: 4, Repeat: 2, TailDelay: 3}, {Op: "native_text_branch_opaque", Source: "gate"}}}
+	p, err := NewPlayer(timeline, nil, nil, NewIndexedCompositor())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if state, err := p.Advance(0); err != nil || state != PlaybackRunning {
+		t.Fatal(state, err)
+	}
+	// (1,0)×2 at 4ms plus two 3ms tails.
+	if state, err := p.Advance(22); err != nil || state != PlaybackBlocked || p.Blocked == nil || p.Blocked.Source != "gate" {
+		t.Fatalf("state=%s err=%v blocked=%#v", state, err, p.Blocked)
+	}
+}

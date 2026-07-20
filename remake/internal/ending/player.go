@@ -38,6 +38,18 @@ func NewPlayer(t Timeline, frames []fdother.Frame, ani *afm.Clip, compositor *In
 	if len(t.Segments) == 0 {
 		return nil, errors.New("ending: timeline has no segments")
 	}
+	segments := make([]Segment, 0, len(t.Segments))
+	for _, segment := range t.Segments {
+		if segment.Op != "palette_ramp_repeat" {
+			segments = append(segments, segment)
+			continue
+		}
+		for i := 0; i < segment.Repeat; i++ {
+			segments = append(segments, Segment{Op: "palette_ramp", Source: segment.Source, PaletteStart: segment.PaletteStart, PaletteEnd: segment.PaletteEnd, PaletteStep: segment.PaletteStep, PaletteDelay: segment.PaletteDelay})
+			segments = append(segments, Segment{Op: "delay_ms", Source: segment.Source, Ms: segment.TailDelay})
+		}
+	}
+	t.Segments = segments
 	return &Player{
 		Timeline:   t,
 		Frames:     frames,
