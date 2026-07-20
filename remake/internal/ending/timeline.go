@@ -59,6 +59,18 @@ type DialogueBlock struct {
 	Count       int    `json:"count"`
 }
 
+// PlaybackState tells a presentation adapter why a native ending timeline
+// stopped.  Blocked is intentional: it marks the first operation whose exact
+// renderer has not been recovered, rather than replacing it with a remake
+// approximation.
+type PlaybackState string
+
+const (
+	PlaybackRunning   PlaybackState = "running"
+	PlaybackBlocked   PlaybackState = "blocked"
+	PlaybackCompleted PlaybackState = "completed"
+)
+
 func LoadTimeline(path string) (*Timeline, error) {
 	raw, err := os.ReadFile(path)
 	if err != nil {

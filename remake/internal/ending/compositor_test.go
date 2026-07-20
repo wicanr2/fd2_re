@@ -1,6 +1,7 @@
 package ending
 
 import (
+	"os"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/afm"
@@ -86,5 +87,87 @@ func TestANIPlayerUsesExactMillisecondCadence(t *testing.T) {
 	}
 	if done, err := p.Advance(c, 1); err != nil || !done || c.VGA[0] != 2 {
 		t.Fatalf("last frame")
+	}
+}
+
+func TestPlayerPlaysRecoveredPrefixThenBlocksAtPaletteRamp(t *testing.T) {
+	frame, transparent := 0, -1
+	ani := 2
+	timeline := Timeline{Segments: []Segment{
+		{Op: "blit_frame", Source: "blit", Frame: &frame, Target: "offscreen", Stride: Width, Transparent: &transparent},
+		{Op: "copy_buffer", Source: "copy", Bytes: Bytes, From: "offscreen", To: "vga"},
+		{Op: "delay_ms", Source: "wait", Ms: 1000},
+		{Op: "ani_play", Source: "ani", ANIResource: &ani, FrameDelayMs: 100, Skippable: boolPtr(false)},
+		{Op: "palette_update", Source: "palette", PaletteStart: intPtr(0), PaletteEnd: intPtr(0), PaletteValue: intPtr(2)},
+		{Op: "palette_ramp", Source: "unrecovered"},
+	}}
+	frames := []fdother.Frame{{X: 0, Y: 0, Width: 1, Height: 1, Pixels: []byte{1, 0, 1, 0, 0, 7}}}
+	clip := &afm.Clip{IndexedFrames: [][]byte{make([]byte, Bytes), make([]byte, Bytes)}, Palettes: [][]byte{make([]byte, 768), make([]byte, 768)}}
+	clip.IndexedFrames[0][0], clip.IndexedFrames[1][0] = 8, 9
+	p, err := NewPlayer(timeline, frames, clip, NewIndexedCompositor())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if state, err := p.Advance(0); err != nil || state != PlaybackRunning || p.Compositor.VGA[0] != 7 {
+		t.Fatalf("initial state=%s err=%v pixel=%d", state, err, p.Compositor.VGA[0])
+	}
+	if state, err := p.Advance(999); err != nil || state != PlaybackRunning || p.Compositor.VGA[0] != 7 {
+		t.Fatalf("early delay state=%s err=%v pixel=%d", state, err, p.Compositor.VGA[0])
+	}
+	if state, err := p.Advance(1); err != nil || state != PlaybackRunning || p.Compositor.VGA[0] != 8 {
+		t.Fatalf("ANI first state=%s err=%v pixel=%d", state, err, p.Compositor.VGA[0])
+	}
+	if state, err := p.Advance(100); err != nil || state != PlaybackRunning || p.Compositor.VGA[0] != 9 {
+		t.Fatalf("ANI final state=%s err=%v pixel=%d", state, err, p.Compositor.VGA[0])
+	}
+	if state, err := p.Advance(0); err != nil || state != PlaybackBlocked || p.Blocked == nil || p.Blocked.Source != "unrecovered" {
+		t.Fatalf("blocked state=%s err=%v blocked=%#v", state, err, p.Blocked)
+	}
+}
+
+func intPtr(v int) *int    { return &v }
+func boolPtr(v bool) *bool { return &v }
+
+func TestPlayerRunsRecoveredNativePrefixWithPlayerAssets(t *testing.T) {
+	const (
+		fdotherPath = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
+		aniPath     = "../../../org_game/炎龍騎士團/FLAME2/ANI.DAT"
+	)
+	if _, err := os.Stat(fdotherPath); os.IsNotExist(err) {
+		t.Skip("player-provided FDOTHER.DAT is absent")
+	}
+	if _, err := os.Stat(aniPath); os.IsNotExist(err) {
+		t.Skip("player-provided ANI.DAT is absent")
+	}
+	timeline, err := LoadTimeline("../../assets/endings/native_2bce5.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	frames, err := fdother.DecodeResource(fdotherPath, timeline.Resource.Index)
+	if err != nil {
+		t.Fatal(err)
+	}
+	clip, err := afm.DecodeResource(aniPath, 2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(frames) != 111 || len(clip.IndexedFrames) != 26 {
+		t.Fatalf("ending resources frames=%d ani=%d", len(frames), len(clip.IndexedFrames))
+	}
+	p, err := NewPlayer(*timeline, frames, clip, NewIndexedCompositor())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if state, err := p.Advance(0); err != nil || state != PlaybackRunning {
+		t.Fatalf("setup state=%s err=%v", state, err)
+	}
+	if state, err := p.Advance(1000); err != nil || state != PlaybackRunning {
+		t.Fatalf("first wait state=%s err=%v", state, err)
+	}
+	if state, err := p.Advance(2500); err != nil || state != PlaybackRunning {
+		t.Fatalf("ANI state=%s err=%v", state, err)
+	}
+	if state, err := p.Advance(0); err != nil || state != PlaybackBlocked || p.Blocked == nil || p.Blocked.Op != "palette_ramp" {
+		t.Fatalf("prefix gate state=%s err=%v blocked=%#v", state, err, p.Blocked)
 	}
 }

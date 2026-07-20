@@ -107,9 +107,10 @@ type Game struct {
 	dlgScrollFrom     int             // 分頁捲動開始頁碼
 	fade              *storyFade      // 場景淡出/淡入轉場(doc46 §5.2)
 	transitionReveal  *transitionRevealJob
-	walk              *walkAnim        // 移動動畫(沿路徑逐格走,FDICON 方向幀)
-	camp              *campaign.Runner // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
-	campSel           int              // choice 節點游標
+	nativeEnding      *nativeEndingPreview // FD2_ENDING_PREFIX=1 的 0x2bce5 fail-closed prefix oracle
+	walk              *walkAnim            // 移動動畫(沿路徑逐格走,FDICON 方向幀)
+	camp              *campaign.Runner     // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
+	campSel           int                  // choice 節點游標
 	// 開頭動畫/主選單(title.go,doc23)
 	titleAssets *titleAssets
 	titlePhase  string  // "scroll"→"menu"→""(進遊戲)
@@ -3078,6 +3079,16 @@ func (g *Game) Update() error {
 			return nil
 		}
 	}
+	if g.nativeEnding != nil {
+		if err := g.nativeEnding.advance(time.Now()); err != nil {
+			g.loadErr = "native ending: " + err.Error()
+			return err
+		}
+		if g.shotPath != "" && g.frame > g.shotFrame {
+			return ebiten.Termination
+		}
+		return nil
+	}
 	// 攻擊演出推進(FIGANI 全身分鏡;演出期間鎖玩家輸入)
 	if g.atk != nil {
 		g.atk.timer--
@@ -3388,6 +3399,10 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		if g.shotPath != "" && g.frame == g.shotFrame {
 			saveShot(screen, g.shotPath)
 		}
+		return
+	}
+	if g.nativeEnding != nil {
+		g.drawNativeEndingPreview(screen)
 		return
 	}
 	if g.m == nil {
@@ -4333,6 +4348,15 @@ func loadGame() *Game {
 		if n, e := strconv.Atoi(v); e == nil {
 			g.shotTurn = n
 		}
+	}
+	if os.Getenv("FD2_ENDING_PREFIX") != "" {
+		preview, err := newNativeEndingPreview()
+		if err != nil {
+			g.loadErr = "native ending: " + err.Error()
+			return g
+		}
+		g.nativeEnding = preview
+		return g
 	}
 	if err := g.loadMap("assets"); err != nil {
 		g.loadErr = err.Error()
