@@ -1253,3 +1253,25 @@ func TestCompileGeneratedHandlerBindingsCompletionFrontier(t *testing.T) {
 		}
 	}
 }
+
+func TestCompileFixedRepeatDeactivateRange(t *testing.T) {
+	limit := 16
+	script := &HandlerScript{Beats: []HandlerBeat{{
+		Op:           "deactivate_unit",
+		Source:       HandlerSource{Addr: "0x336b5"},
+		UnitSlotExpr: "ebx",
+		RepeatHint:   &HandlerRepeatHint{LoopBackTo: "0x336b4", Limit: limit},
+	}}}
+	beats, issues := CompileHandlerScript(script, HandlerBindings{RuntimeContext: &HandlerRuntimeContext{SlotCount: 70}})
+	if len(issues) != 0 {
+		t.Fatalf("fixed repeat issues=%#v", issues)
+	}
+	if len(beats) != limit {
+		t.Fatalf("fixed repeat beats=%d want %d", len(beats), limit)
+	}
+	for i, beat := range beats {
+		if beat.Op != "deactivate_unit" || beat.Slot == nil || *beat.Slot != i {
+			t.Fatalf("fixed repeat beat[%d]=%#v", i, beat)
+		}
+	}
+}

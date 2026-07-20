@@ -511,6 +511,7 @@
 - [x] **ch21/ch22 pre-handler**：FDTXT_022 index0（11句）與 map21/70-slot、pan(16,28)、acting67 已接 editable binding；`story_ch22` 已接回原版 pre-handler，compiler/campaign/battle regression 通過。
 - [x] **外部資源／城鎮流程交叉盤點**：公開資料確認 `FDFIELD.DAT` 是可替換的外部場景層，且章節間存在 preparation、商店、教會、存讀檔流程；後續以 DAT provider + battle→town/prep graph 實作，未將網路資料當 binary 格式硬證據。
 - [ ] **社群行為 oracle 對照**：逐項把 FD2.EXE 修改表中的入隊、隨時存檔、等級上限、寶箱持久化轉成可編輯規則與 regression；先挑 save/chest 兩項和目前 persistent flow 最相關者。
+- [~] **ch22_pre control-flow**：固定 16-slot deactivate loop 已由 repeat_hint lowering 與 regression test 解開；尚待把 0x24618 演出與 0x11df2 palette/fade 兩個 native call 反組譯成 runtime beats，完成後再接 `story_ch23` binding。
 
 ## 對話框 / 過場打磨(2026-07-05,使用者實玩逐項校正)
 - [x] **對話框文字不覆蓋頭像**:上框(頭像在右)文字右緣止於頭像左緣前(commit 57c0e30)→ doc09

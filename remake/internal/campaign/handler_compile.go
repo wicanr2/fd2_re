@@ -373,6 +373,23 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 		case "deactivate_unit":
 			// 0x32975(unit_idx) writes unit[idx].flags=1. Constructor and
 			// death paths prove bit0 means inactive/dead, so clear OnField.
+			if input.UnitSlot == nil && input.UnitSlotExpr == "ebx" && input.RepeatHint != nil {
+				if input.RepeatHint.Limit <= 0 {
+					issue(i, input, "deactivate_unit repeat_hint limit must be positive")
+					continue
+				}
+				if activeSlotCount > 0 && input.RepeatHint.Limit > activeSlotCount {
+					issue(i, input, fmt.Sprintf("deactivate_unit repeat limit %d exceeds active loadch slot_count=%d", input.RepeatHint.Limit, activeSlotCount))
+					continue
+				}
+				for slot := 0; slot < input.RepeatHint.Limit; slot++ {
+					beat := runtime(input, "deactivate_unit")
+					s := slot
+					beat.Slot = &s
+					beats = append(beats, beat)
+				}
+				continue
+			}
 			if input.UnitSlot == nil || *input.UnitSlot < 0 {
 				issue(i, input, "deactivate_unit lacks a non-negative runtime slot")
 				continue
