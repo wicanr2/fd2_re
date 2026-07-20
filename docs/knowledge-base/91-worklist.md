@@ -585,3 +585,4 @@
 - [x] **first 40-pass composite primitive**：新增 640×200 work buffer、`CopyRect`、帶 byte-origin bounds 的 `Frame.BlitAt`，並以 native primary/secondary offsets + viewport x=160 實作 `Composite40(i)`；尚待 scheduler 接線，第二 loop 的 palette helper 繼續封閉。
 - [x] **first 40-pass composite scheduler**：player 現以每輪20ms 驅動 `Composite40(i=0..39)`，完成後精確落在第二段 native text gate；200-pass loop 仍因 `0x11d40` 未證實而封閉。
 - [x] **second 200-pass composite scheduler**：baseline palette loop 已恢復為200×20ms（0..135 base、136..199 base−1）；其後 `0x2c172` 明確標為 unrecovered montage gate，禁止 player 回報完整 ending。
+- [x] **finale 0x2c405 phase-0 map**：已確認 chapter30 text load、`0x36b00` staging/clear、`+0x12c30` text-composite destination、500×(1ms) 的 320×200 row-scroll 與 baseline palette 40→0→上升 cadence。尚缺 `0x15f84` renderer/staging source，保持 gate；禁止用 generic fade 或空白畫面替代。
