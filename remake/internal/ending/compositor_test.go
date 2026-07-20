@@ -313,3 +313,60 @@ func TestPlayerRunsRecoveredComposite200ThenStopsAtPostCompositeGate(t *testing.
 		t.Fatalf("final baseline delta palette=%d, want 2", c.Palette[0])
 	}
 }
+
+func TestPlayerPhase0BridgeNeedsNativePaletteAndStopsAtMontageGate(t *testing.T) {
+	text, err := os.ReadFile("../../../extracted/raw/FDTXT/FDTXT_031.bin")
+	if os.IsNotExist(err) {
+		t.Skip("player-provided finale text is absent")
+	}
+	if err != nil {
+		t.Fatal(err)
+	}
+	font, err := os.ReadFile("../../../extracted/raw/FDOTHER/FDOTHER_004.bin")
+	if os.IsNotExist(err) {
+		t.Skip("player-provided native font is absent")
+	}
+	if err != nil {
+		t.Fatal(err)
+	}
+	phase, err := LoadFinalePhase("../../assets/endings/native_2c405.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	c := NewIndexedCompositor()
+	var palette [768]byte
+	palette[0] = 50
+	if err := c.PresentANI(make([]byte, Bytes), palette[:]); err != nil {
+		t.Fatal(err)
+	}
+	p, err := NewPlayer(Timeline{Segments: []Segment{{Op: "native_post_composite_opaque", Source: "0x2c172"}}}, nil, nil, c)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.EnableRecoveredPhase0(*phase, Phase0Assets{TextResource: text, FontResource: font}); err != nil {
+		t.Fatal(err)
+	}
+	if state, err := p.Advance(0); err != nil || state != PlaybackRunning || p.phase0 == nil || c.Palette[0] != 10 {
+		t.Fatalf("initial phase bridge state=%s err=%v phase=%#v palette=%d", state, err, p.phase0, c.Palette[0])
+	}
+	if state, err := p.Advance(500); err != nil || state != PlaybackBlocked || p.Blocked == nil || p.Blocked.Op != "native_finale_montage_opaque" || p.Blocked.Source != "0x2c548" {
+		t.Fatalf("phase bridge state=%s err=%v blocked=%#v", state, err, p.Blocked)
+	}
+}
+
+func TestPlayerPhase0BridgeRefusesUnprovenPalette(t *testing.T) {
+	phase, err := LoadFinalePhase("../../assets/endings/native_2c405.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	p, err := NewPlayer(Timeline{Segments: []Segment{{Op: "native_post_composite_opaque", Source: "0x2c172"}}}, nil, nil, NewIndexedCompositor())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.EnableRecoveredPhase0(*phase, Phase0Assets{TextResource: []byte{1}, FontResource: []byte{1}}); err != nil {
+		t.Fatal(err)
+	}
+	if state, err := p.Advance(0); err != nil || state != PlaybackBlocked || p.Blocked == nil || p.Blocked.Source != "0x2c172" {
+		t.Fatalf("state=%s err=%v blocked=%#v", state, err, p.Blocked)
+	}
+}

@@ -9,8 +9,8 @@ import (
 )
 
 // FinalePhase is an editable, evidence-only transcription of a native finale
-// stage.  It intentionally has no Player adapter until every renderer input
-// for that stage is recovered.
+// stage. Its recovered phase-0 adapter still blocks before the next native
+// montage, so it cannot make the finale generally playable.
 type FinalePhase struct {
 	SchemaVersion int             `json:"schema_version"`
 	NativeHandler string          `json:"native_handler"`
@@ -54,7 +54,7 @@ func LoadFinalePhase(path string) (*FinalePhase, error) {
 		return nil, err
 	}
 	p := phase.Phase
-	if phase.SchemaVersion != 1 || phase.NativeHandler != "0x2c405" || phase.Status != "recovered_phase0_only_fail_closed" ||
+	if phase.SchemaVersion != 1 || phase.NativeHandler != "0x2c405" || phase.Status != "recovered_phase0_bridge_fail_closed" ||
 		p.Source != "0x2c469" || p.SourceDAT != "FDTXT_031" || p.StringIndex != 44 || p.Script != "ch32.json" || p.SceneIndex != 0 || p.Line != 0 || p.Count != 1 ||
 		p.StagingBytes != 0x36b00 || p.TextOffset != 0x12c30 || p.Stride != Width || p.LineAdvanceRows != 25 || p.ViewportRows != Height || p.Iterations != 500 || p.DelayMS != 1 ||
 		p.BaselinePaletteInitialDelta != 40 || p.FadeOutThroughIteration != 300 || p.PaletteStepCadence != 5 ||

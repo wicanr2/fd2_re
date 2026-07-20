@@ -24,8 +24,31 @@ type Player struct {
 	ramp         *paletteRamp
 	composite    *composite40
 	composite200 *composite200
+	phase0       *Phase0Player
+	phase0Spec   *FinalePhase
+	phase0Assets *Phase0Assets
 	Blocked      *Segment
 	State        PlaybackState
+}
+
+// EnableRecoveredPhase0 supplies the two archive resources that 0x2c405
+// reads after the already-recovered 0x2bce5 prefix.  It does not make the
+// ending generally playable: it only permits the exact 0x2c172 hand-off and
+// will block again at the verified 0x2c548 montage boundary.
+//
+// Palette input deliberately is not accepted here.  The native routine keeps
+// the DAC state produced by the preceding ending presentation, so the bridge
+// takes it only from this Player's compositor after PresentANI has captured
+// it.
+func (p *Player) EnableRecoveredPhase0(phase FinalePhase, assets Phase0Assets) error {
+	if p == nil || p.State != PlaybackRunning || phase.Ready() ||
+		phase.NativeHandler != "0x2c405" || phase.Gate.Source != "0x2c548" ||
+		len(assets.TextResource) == 0 || len(assets.FontResource) == 0 {
+		return errors.New("ending: invalid recovered phase-0 inputs")
+	}
+	p.phase0Spec = &phase
+	p.phase0Assets = &assets
+	return nil
 }
 
 type composite40 struct{ iteration, delay int }
@@ -83,6 +106,21 @@ func (p *Player) Advance(elapsedMS int) (PlaybackState, error) {
 		return p.State, nil
 	}
 	for {
+		if p.phase0 != nil {
+			done, err := p.phase0.Advance(elapsedMS)
+			if err != nil {
+				return p.State, err
+			}
+			if !done {
+				return p.State, nil
+			}
+			// 0x2c548 begins a distinct resource-heavy montage.  Reaching it
+			// proves phase 0, not the finale, so retain its native boundary.
+			p.phase0 = nil
+			p.Blocked = &Segment{Op: "native_finale_montage_opaque", Source: p.phase0Spec.Gate.Source}
+			p.State = PlaybackBlocked
+			return p.State, nil
+		}
 		if p.WaitMS > 0 {
 			if elapsedMS < p.WaitMS {
 				p.WaitMS -= elapsedMS
@@ -220,6 +258,21 @@ func (p *Player) Advance(elapsedMS int) (PlaybackState, error) {
 			p.composite = &composite40{delay: 20}
 		case "native_composite_loop_baseline":
 			p.composite200 = &composite200{delay: 20}
+		case "native_post_composite_opaque":
+			// 0x2c172 clears VGA and enters 0x2c405.  The selector is narrow:
+			// any other native post-composite call remains an opaque stop.
+			if s.Source != "0x2c172" || p.phase0Spec == nil || p.phase0Assets == nil || !p.Compositor.BaselineKnown() {
+				p.Blocked, p.State = s, PlaybackBlocked
+				return p.State, nil
+			}
+			assets := *p.phase0Assets
+			copy(assets.Baseline[:], p.Compositor.Baseline[:])
+			phase0, err := NewPhase0PlayerFromAssets(*p.phase0Spec, assets, p.Compositor)
+			if err != nil {
+				return p.State, err
+			}
+			clear(p.Compositor.VGA)
+			p.phase0 = phase0
 		default:
 			p.Blocked = s
 			p.State = PlaybackBlocked

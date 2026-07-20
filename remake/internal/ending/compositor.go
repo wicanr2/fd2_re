@@ -22,6 +22,10 @@ type IndexedCompositor struct {
 	VGA, Offscreen, Work []byte
 	Palette              [768]byte
 	Baseline             [768]byte
+	// baselineKnown is set only when an original indexed presentation supplied
+	// the DAC state.  A later native phase must not treat an all-zero newly
+	// allocated compositor as a recovered palette source.
+	baselineKnown bool
 }
 
 func (c *IndexedCompositor) RGBA() *image.RGBA {
@@ -172,8 +176,11 @@ func (c *IndexedCompositor) PresentANI(frame, palette []byte) error {
 	copy(c.VGA, frame)
 	copy(c.Palette[:], palette)
 	copy(c.Baseline[:], palette)
+	c.baselineKnown = true
 	return nil
 }
+
+func (c *IndexedCompositor) BaselineKnown() bool { return c != nil && c.baselineKnown }
 
 func (c *IndexedCompositor) SetBaselineDelta(start, end, delta int) error {
 	if start < 0 || end < start || end > 255 || delta < 0 {

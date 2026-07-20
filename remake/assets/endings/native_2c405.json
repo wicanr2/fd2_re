@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "native_handler": "0x2c405",
-  "status": "recovered_phase0_only_fail_closed",
+  "status": "recovered_phase0_bridge_fail_closed",
   "phase": {
     "source": "0x2c469",
     "source_dat": "FDTXT_031",
@@ -23,6 +23,6 @@
   },
   "gate": {
     "source": "0x2c548",
-    "reason": "native FDTXT glyph compositor and staging source are not yet recovered; do not substitute an empty scroll"
+    "reason": "phase-0 scroll is recovered, but the native resource-heavy finale montage beginning here is not; do not advance into it"
   }
 }
