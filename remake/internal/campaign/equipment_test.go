@@ -47,15 +47,8 @@ func TestRecomputeAfterClassChangeUsesDXForHitAndEVBase(t *testing.T) {
 }
 
 func TestRecomputeAfterClassChangeDoesNotDoubleCountExistingEquipment(t *testing.T) {
-	u := &battle.Unit{
-		AP: 18, DP: 12, DX: 14, MV: 5,
-		Inventory: []int{1}, Equipped: []bool{true},
-		EquipmentBaseSet: true, BaseAP: 15, BaseDP: 10, BaseMV: 5,
-	}
+	u := &battle.Unit{AP: 18, DP: 12, DX: 14, MV: 5, Inventory: []int{1}, Equipped: []bool{true}, EquipmentBaseSet: true, BaseAP: 15, BaseDP: 10, BaseMV: 5}
 	stats := map[int]ItemStats{1: {Type: 1, AP: 3, DP: 2}}
-	// AP/DP already include the old weapon (15+3, 10+2); after a class
-	// change the raw growth has made them 18/12. Recompute must retain those
-	// totals, not produce 21/14 by adding the weapon twice.
 	RecomputeAfterClassChange(u, stats)
 	if u.BaseAP != 15 || u.BaseDP != 10 || u.AP != 18 || u.DP != 12 {
 		t.Fatalf("existing equipment double-counted: base=%d/%d effective=%d/%d", u.BaseAP, u.BaseDP, u.AP, u.DP)

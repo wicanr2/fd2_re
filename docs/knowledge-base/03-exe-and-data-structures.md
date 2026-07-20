@@ -17,7 +17,8 @@
 | 0x0F | FA | 肖像編號(見附錄) |
 | 0x10 | NN(2) | 姓名 |
 | 0x12 | IT×8 | 物品，各 2 byte = 狀態 + 編號；狀態 40=裝備 00=持有 80=空 |
-| 0x22 | M1..M5 | 五組法術 bitfield(各 bit 對一法術) |
+| 0x1A | magic_raw(4) | FDFIELD b13..b16 複製到 runtime 的法術／技能原始欄位 |
+| 0x22 | raw modifier bytes | constructor 先清零；後續流程使用 `+0x22/+0x23` 的 AP/DP×1.15 旗標與 `+0x24` 的 DX/HIT+15 旗標，並非法術 bitfield |
 | 0x27 | RA,CL,LV | 種族 / 職業 / 等級 |
 | 0x2A | A+,D+,H+,-H,XA,XM | 增強 / 中毒 / 麻痺 / 封咒狀態旗標 |
 | 0x3F | MT | 力量(影響 AP) |
@@ -29,7 +30,7 @@
 | 0x4C | M1(2),M2(2) | 目前 / 最大 MP |
 | ... | AP,DP,HT,EV | 衍生值(由上面計算，直接改無效) |
 
-法術 bitfield(M1–M5，攻略 memory.md 列全 40 法術對應 bit)、肖像編號(0x00–0x41)、職業編號(0x00–0x1A)
+法術原始欄位與後續技能表、肖像編號(0x00–0x41)、職業編號(0x00–0x1A)
 詳見 `references/text/memory.md` 與本檔附錄。
 
 ## B. FD2.EXE 內資料表 offset

@@ -80,20 +80,15 @@ func RecomputeEquipment(u *battle.Unit, stats map[int]ItemStats) {
 	}
 }
 
-// RecomputeAfterClassChange mirrors the 0x31602 -> 0x1b750 handoff. The
-// class-change row writes one raw combat base at unit+0x3e; 0x1b750 exposes
-// it twice as derived HIT/EV and then adds item +3/+7 independently. Do not
-// reuse the previous class's effective HIT/EV as the new equipment base.
+// RecomputeAfterClassChange mirrors the proven 0x31602 -> 0x1b750 handoff.
+// The native routine reads raw AP/DP/DX, adds equipped item contributions and
+// writes the derived AP/DP/HIT/EV words.  ApplyClassChange updates the public
+// values first; when an equipment base already exists, remove the old item
+// contribution before rebuilding it so the same gear is not counted twice.
 func RecomputeAfterClassChange(u *battle.Unit, stats map[int]ItemStats) {
 	if u == nil {
 		return
 	}
-	// ApplyClassChange mutates the public/effective AP/DP/MV fields because
-	// the native class routine writes the raw words before 0x1b750 runs.  When
-	// this unit already has an equipment base, those public values still
-	// include the old equipped items; remove that contribution exactly once
-	// before installing the new raw base.  Otherwise RecomputeEquipment would
-	// count every equipped item a second time after the class change.
 	baseAP, baseDP, baseMV := u.AP, u.DP, u.MV
 	if u.EquipmentBaseSet {
 		for i, equipped := range u.Equipped {
@@ -109,6 +104,8 @@ func RecomputeAfterClassChange(u *battle.Unit, stats map[int]ItemStats) {
 			baseMV -= item.MV
 		}
 	}
+	// +0x3e is the raw DX/HIT/EV base; equipped item +HIT/+EV are then
+	// accumulated by RecomputeEquipment.
 	u.HIT, u.EV = u.DX, u.DX
 	u.BaseAP, u.BaseDP = baseAP, baseDP
 	u.BaseHIT, u.BaseEV = u.DX, u.DX

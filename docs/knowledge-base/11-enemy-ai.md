@@ -68,7 +68,7 @@
 - spell id `0..12` 走攻擊術分支，逐一掃候選目標；依目標 HP 與施法者法術值累加基本／高優先分數（可見常數 `8` 與 `0x18`）。
 - spell id `13..16` 走治療／恢復分支，改掃己方候選並以「目前 HP 相對 MaxHP」判斷是否值得補血。
 - spell id `17..19` 走增益術分支；`20..22`、`26`、`27` 各自進入狀態／毒麻相關分支，部分條件透過 `0x1C269` 檢查目標資料。
-- 依單位結構表，`unit+0x22..+0x26` 是 M1–M5 法術習得 bitfield，`+0x27` 是 RA/CL/LV 區段的起點；因此這些讀取不是可泛稱的「狀態旗標」。AI 確實依 spell family 選目標，精確欄位用途仍需配合實機案例命名，暫不在 remake 猜測接線。
+- 依 spawn constructor `0x10f6b..0x10fa5` 的 direct trace，FDFIELD b13..b16 的 `magic_raw` 只複製到 runtime `unit+0x1a..+0x1d`，而 `unit+0x22..+0x27` 另由 constructor 清零。故 `+0x22/+0x23` 是 AP/DP×1.15 旗標、`+0x24` 是 DX/HIT+15 旗標；不能再把它們標成 M1–M5 spell bitfield。AI 仍依 spell family 選目標，command inventory 與後續 modifier writer 待另行接線。
 
 ## 仍待確認(後輪)
 
