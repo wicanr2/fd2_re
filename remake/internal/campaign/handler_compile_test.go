@@ -99,6 +99,15 @@ func TestCompilePersistentRosterCleanupIsEditable(t *testing.T) {
 	}
 }
 
+func TestCompileNativeTickWaitLowersToDelay(t *testing.T) {
+	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
+		Op: "unknown", NativeTarget: "0x17aa9", RawArgs: []any{1},
+	}}}, HandlerBindings{})
+	if len(issues) != 0 || len(beats) != 1 || beats[0].Op != "delay" || beats[0].Frames != 3 {
+		t.Fatalf("tick wait=%#v issues=%#v", beats, issues)
+	}
+}
+
 func TestCompileUnitPresentKeepsRecoveredTiming(t *testing.T) {
 	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
 		Op: "unit_present", UnitPresent: &HandlerUnitPresent{Slot: 2, X: 4, Y: 5, Frames: 6, FrameDelayMs: 10, TailTicks: 2},
@@ -1497,7 +1506,7 @@ func TestCompileChapter29PostPreservesDialogueAcrossChapterTextSwitch(t *testing
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(issues) < 7 {
+	if len(issues) < 6 {
 		t.Fatalf("ch29_post issues=%#v want unresolved native effects preserved", issues)
 	}
 	want := []struct {

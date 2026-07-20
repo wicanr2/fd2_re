@@ -595,6 +595,22 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 				beats = append(beats, runtime(input, "reset_persistent_roster_state"))
 				continue
 			}
+			if input.NativeTarget == "0x17aa9" {
+				// Native global wait samples the DOS BIOS tick counter (about
+				// 54.9ms/tick), not the remake's 60Hz presentation frame. Three
+				// display frames (~50ms) is the closest deterministic runtime
+				// boundary; retain the native count rather than treating it as
+				// one 16.7ms frame.
+				ticks, ok := immediateHandlerInt(input.RawArgs, 0)
+				if !ok || ticks <= 0 || ticks > 120 {
+					issue(i, input, "0x17aa9 tick wait requires a positive bounded immediate count")
+					continue
+				}
+				beat := runtime(input, "delay")
+				beat.Frames = ticks * 3
+				beats = append(beats, beat)
+				continue
+			}
 			issue(i, input, "operation has no proven runtime lowering")
 		case "unit_present":
 			// Native 0x22253 is not a spawn or a generic redraw.  Only accept

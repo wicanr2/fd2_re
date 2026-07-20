@@ -523,8 +523,10 @@
 - [~] **ch29 post staged mapping**：四組對白已精確接到 ch29/ch30 authored lines，並完成 0x12cea/0x24618/0x25089/0x11df2/0x17aa9/0x2bce5 direct RE；persistent roster cleanup、9-frame transition、專用 ending renderer 尚未全部 lower，故暫不接 campaign。
 - [~] **ch29 post focus lowering**：`0x12cea` 已安全 lower 成 tile-step pan(22,23) 並通過 regression；其餘 native cleanup/transition/ending 仍待 lower。
 - [~] **ch29 post persistent cleanup**：`0x25089` 已 lower 為 editable `reset_persistent_roster_state`，並以 runtime/campaign regression 鎖定清 transient、回填 MaxHP/MaxMP；0x24618 transition、0x2bce5 ending renderer 仍待。
+- [~] **ch29 post tick wait**：`0x17aa9(1)` 已 lower 成一個 editable delay tick 並通過 compiler regression；仍待 0x24618 indexed transition 與 0x2bce5 ending renderer。
 - [~] **ch29 post persistent roster cleanup**：`0x25089` 已實作獨立 `reset_persistent_roster_state` compiler/runtime beat（清 transient、MaxHP/MaxMP 回填），避免誤併入 `sync_party`；需補 binding、測試並接到正確 town/shop/preparation 節點。
 - [~] **ch29 pre native unit presentation**：`0x22253` direct RE 修正為 6×(render+present+10ms) 後再 2 ticks；現有 `layout_units` 不等價，需新增可編輯 `native_22253` adapter，完成前維持 fail-closed。
+- [~] **ch29 post BIOS tick wait**：`0x17aa9` 已證實讀 DOS BIOS tick（約54.9ms），lower 為每 tick 3 個 remake frames 並通過 compiler regression；若要逐毫秒重現，需在 runtime 加 BIOS-tick clock adapter。
 - [x] **天空之鑰缺失對話分支**：新增 `ch27.json` 分支 scene（FDTXT_027 idx13–16 共17句）並接 `inventory_gate_ch27_sky_key → story_ch27_post_sky_key_missing → ending_ch27_no_sky_key`；視覺效果仍待 direct RE，對話本身已可編輯且有 campaign regression。
 - [x] **戰後 town/shop/preparation 外部交叉盤點（2026-07-20）**：subagent 查得公開攻略逐章列出羅德鎮、塞拉村、普里茲港等戰間商店／教會／整備，並有「第2章戰後獎勵」與「第6章戰後貝克威加入」等 persistent event 證據；只作流程旁證，不取代 EXE branch 證據。後續保持 battle→postbattle→town/shop/preparation→next battle 可編輯節點，禁止把 postbattle 直接接下一場戰鬥當完成。
 - [x] **戰後 town/rest 反例盤點（2026-07-20）**：GameFAQs 明載第14章途中小鎮休息，且第22章至第26章前沒有 rest/buy/sell；因此 campaign 需保留 battle→town/rest 的可編輯節點，也要允許 ch23–25 連戰區間不插 town/shop。攻略只作外部旁證，仍須以 EXE/資產驗證觸發時機。
