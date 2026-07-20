@@ -77,6 +77,19 @@ func TestCompileHandlerScriptUsesOnlyExplicitBindings(t *testing.T) {
 	}
 }
 
+func TestCompileNativeFocusLowersToTileStepPan(t *testing.T) {
+	script := &HandlerScript{Beats: []HandlerBeat{{
+		Op: "unknown", NativeTarget: "0x12cea", RawArgs: []any{23, 22}, Source: HandlerSource{Addr: "0xfocus"},
+	}}}
+	beats, issues := CompileHandlerScript(script, HandlerBindings{})
+	if len(issues) != 0 || len(beats) != 1 {
+		t.Fatalf("focus lowering beats=%#v issues=%#v", beats, issues)
+	}
+	if beats[0].Op != "pan" || beats[0].X != 528 || beats[0].Y != 552 || beats[0].Frames != 30 || !beats[0].TileStep {
+		t.Fatalf("focus lowering=%#v", beats[0])
+	}
+}
+
 func TestCompileHandlerJoinRejectsScenePortrait(t *testing.T) {
 	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
 		Op: "join", CharID: intPtr(75), Source: HandlerSource{Addr: "0x123"},
