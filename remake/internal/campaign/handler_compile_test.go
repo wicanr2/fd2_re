@@ -1460,3 +1460,43 @@ func TestCompileChapter28PreLowersStagingHelper(t *testing.T) {
 		t.Fatalf("ch28_pre staging timing=%#v", staging)
 	}
 }
+
+func TestCompileChapter29PostPreservesDialogueAcrossChapterTextSwitch(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch29_post.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(issues) < 7 {
+		t.Fatalf("ch29_post issues=%#v want unresolved native effects preserved", issues)
+	}
+	want := []struct {
+		script string
+		scene  int
+		line   int
+		count  int
+	}{{"ch29.json", 2, 6, 1}, {"ch29.json", 2, 7, 1}, {"ch30.json", 0, 0, 10}, {"ch30.json", 0, 10, 5}}
+	var dialogs []Beat
+	for _, beat := range beats {
+		if beat.Op == "dialog" {
+			dialogs = append(dialogs, beat)
+		}
+	}
+	if len(dialogs) != len(want) {
+		t.Fatalf("ch29_post dialogs=%#v", dialogs)
+	}
+	for i, w := range want {
+		if dialogs[i].Script != w.script || dialogs[i].SceneIndex == nil || *dialogs[i].SceneIndex != w.scene || dialogs[i].Line != w.line || dialogs[i].Count != w.count {
+			t.Fatalf("ch29_post dialog[%d]=%#v want %#v", i, dialogs[i], w)
+		}
+	}
+	var focus Beat
+	for _, beat := range beats {
+		if beat.Source == "0x2582e" {
+			focus = beat
+			break
+		}
+	}
+	if focus.Op != "pan" || focus.X != 22*24 || focus.Y != 23*24 || !focus.TileStep {
+		t.Fatalf("ch29 focus lower=%#v", focus)
+	}
+}
