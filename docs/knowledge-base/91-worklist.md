@@ -129,7 +129,7 @@
 > 驗收:序章→商店→分支→下一關 能一條龍跑完;戰敗走不同路線而非 game over。
 - [ ] 工具:原版資料自動生成「線性 campaign.json」(parse_field + 劇情 + 商店)→ 原版模式
 - [ ] 引擎 ScenarioRunner 狀態機(節點/轉場/旗標),對齊 `19` + `campaign_sample.json`
-- [~] 商店節點：原版337筆商品 numeric ID／價格已驗、祕密商店與 town 回返已接、`ClassID`／item type／class equip 白名單已打包、指定收件者 UI 與原子購買核心已接（滿8格／金錢不足不扣款）；待：立即裝備 prompt／equipped flag／能力重算、賣出。
+- [~] 商店節點：原版337筆商品 numeric ID／價格已驗、祕密商店與 town 回返已接、`ClassID`／item type／class equip 白名單、指定收件者與兩階段裝備 prompt 已接；`SellGood` 已鎖定原價 75 折並同步移除 equipped flag。待：原版 inventory flags/base stat provenance、能力重算/同類替換、賣出 UI。
 - [ ] 分支與敗北路線(on_lose → 敗北關卡,非結束)
 - [ ] 存檔/讀檔(自有格式,非破解原版 `FD2.SAV`)
 

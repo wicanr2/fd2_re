@@ -98,3 +98,29 @@ func ReserveGood(gold int, receiver *battle.Unit, good Good) (int, error) {
 func FinalizeGood(gold int, good Good) int {
 	return gold - good.Price
 }
+
+// SellGood mirrors the original 75%-of-list-price transaction. The slot is
+// removed only after validation; its equipped marker follows the item out.
+func SellGood(gold int, receiver *battle.Unit, itemID, listPrice int) (int, error) {
+	if receiver == nil {
+		return gold, fmt.Errorf("shop receiver missing")
+	}
+	if itemID < 0 || itemID > 0xff || listPrice < 0 {
+		return gold, fmt.Errorf("invalid shop item")
+	}
+	slot := -1
+	for i, id := range receiver.Inventory {
+		if id == itemID {
+			slot = i
+			break
+		}
+	}
+	if slot < 0 {
+		return gold, fmt.Errorf("item not found")
+	}
+	receiver.Inventory = append(receiver.Inventory[:slot], receiver.Inventory[slot+1:]...)
+	if slot < len(receiver.Equipped) {
+		receiver.Equipped = append(receiver.Equipped[:slot], receiver.Equipped[slot+1:]...)
+	}
+	return gold + listPrice*3/4, nil
+}

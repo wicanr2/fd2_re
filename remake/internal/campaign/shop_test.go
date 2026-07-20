@@ -37,6 +37,14 @@ func TestReserveGoodDefersGoldUntilEquipDecision(t *testing.T) {
 	}
 }
 
+func TestSellGoodPaysThreeQuartersAndRemovesSlot(t *testing.T) {
+	u := &battle.Unit{Inventory: []int{7, 8}, Equipped: []bool{true, false}}
+	gold, err := SellGood(10, u, 7, 101)
+	if err != nil || gold != 85 || len(u.Inventory) != 1 || u.Inventory[0] != 8 || len(u.Equipped) != 1 || u.Equipped[0] {
+		t.Fatalf("sell gold=%d err=%v inventory=%v equipped=%v", gold, err, u.Inventory, u.Equipped)
+	}
+}
+
 func TestLoadShopEligibilityUsesOriginalTables(t *testing.T) {
 	types, equip, err := LoadShopEligibility(filepath.Join("..", "..", "assets", "data", "item.json"), filepath.Join("..", "..", "assets", "data", "class_equip_types.json"))
 	if err != nil || types[0x80] != 21 || !CanEquip(1, types[0x80], equip) || CanEquip(25, types[0x80], equip) {

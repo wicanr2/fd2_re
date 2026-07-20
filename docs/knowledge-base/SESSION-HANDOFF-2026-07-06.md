@@ -258,3 +258,4 @@ slot6 active 條件、SPAWN2、兩段 PAN、800/200ms 與 FDTXT_003 #4 七句也
 - `battle.Unit` 新增與 Inventory 對齊的 `Equipped []bool`，並在 persistent sync、recipe 移除、死亡獎勵、寶箱領取時維持欄位對齊；`ClassID` 亦納入 persistent overlay。
 - `campaign.ReserveGood`/`FinalizeGood` 保留兩階段交易原語；`BuyGood` 維持既有一次完成 API。
 - 已以官方 Go 1.22 容器跑 `go test ./internal/campaign ./internal/battle ./cmd/fd2 -count=1`；能力值重算與換裝（覆蓋同類舊裝）仍待下一輪 RE/實作。
+- 本輪補上 `campaign.SellGood` 純交易核心（原價 3/4、先驗證再移除欄位）；尚未接 UI。裝備數值暫不臆測：現有 FDFIELD/character dump 丟失原版 inventory slot flag，且 scenario AP/DP/HIT/EV 是有效值，必須先補 provenance 才能安全重算。
