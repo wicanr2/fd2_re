@@ -80,6 +80,23 @@ func RecomputeEquipment(u *battle.Unit, stats map[int]ItemStats) {
 	}
 }
 
+// RecomputeAfterClassChange mirrors the 0x31602 -> 0x1b750 handoff. The
+// class-change row writes one raw combat base at unit+0x3e; 0x1b750 exposes
+// it twice as derived HIT/EV and then adds item +3/+7 independently. Do not
+// reuse the previous class's effective HIT/EV as the new equipment base.
+func RecomputeAfterClassChange(u *battle.Unit, stats map[int]ItemStats) {
+	if u == nil {
+		return
+	}
+	u.HIT, u.EV = u.DX, u.DX
+	u.BaseAP, u.BaseDP = u.AP, u.DP
+	u.BaseHIT, u.BaseEV = u.DX, u.DX
+	u.BaseMV = u.MV
+	u.BaseAtkMin, u.BaseAtkMax = u.AtkMin, u.AtkMax
+	u.EquipmentBaseSet = true
+	RecomputeEquipment(u, stats)
+}
+
 // InitializeEquipmentBase converts an authored effective stat line into the
 // persistent base expected by 0x1145a by subtracting the source's equipped
 // first-two inventory slots once. Subsequent saves carry EquipmentBaseSet and

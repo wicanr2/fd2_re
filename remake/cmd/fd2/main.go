@@ -1556,7 +1556,6 @@ func applyPersistentStats(dst, src *battle.Unit) {
 	dst.BaseAP, dst.BaseDP, dst.BaseHIT, dst.BaseEV, dst.BaseMV = src.BaseAP, src.BaseDP, src.BaseHIT, src.BaseEV, src.BaseMV
 	dst.BaseAtkMin, dst.BaseAtkMax, dst.EquipmentBaseSet = src.BaseAtkMin, src.BaseAtkMax, src.EquipmentBaseSet
 	dst.Portrait, dst.Fig = src.Portrait, src.Fig
-	dst.GrowthStat = src.GrowthStat
 	dst.Exp, dst.ExpPerLevel = src.Exp, src.ExpPerLevel
 	dst.Spells = append(dst.Spells[:0], src.Spells...)
 	dst.Inventory = append(dst.Inventory[:0], src.Inventory...)
@@ -2069,17 +2068,12 @@ func (g *Game) campInput() bool {
 					g.msg = fmt.Sprintf("缺少轉職成長列 portrait=%02Xh", branch.Portrait)
 					return true
 				}
-				if err := campaign.ApplyClassChange(&u, branch.Portrait, branch.ClassID, branch.GrowthGroup, row, g.rng, branch.InventoryIndex); err != nil {
+				if err := campaign.ApplyClassChange(&u, branch.Portrait, branch.ClassID, branch.MobilityIncrement, row, g.rng, branch.InventoryIndex); err != nil {
 					g.msg = err.Error()
 					return true
 				}
 				u.ClsName = campaign.ClassName(branch.ClassID)
-				// 0x1b750 starts from the newly written base stats, then adds
-				// equipped item contributions. HIT/EV are kept as their current
-				// derived projection until the DX synthesis is implemented.
-				u.BaseAP, u.BaseDP, u.BaseHIT, u.BaseEV, u.BaseMV = u.AP, u.DP, u.HIT, u.EV, u.MV
-				u.BaseAtkMin, u.BaseAtkMax, u.EquipmentBaseSet = u.AtkMin, u.AtkMax, true
-				campaign.RecomputeEquipment(&u, g.shopItemStats)
+				campaign.RecomputeAfterClassChange(&u, g.shopItemStats)
 				g.partyRoster[id] = u
 				g.msg = fmt.Sprintf("%s 已轉職為%s", u.Name, u.ClsName)
 				g.churchMode, g.churchBranches, g.churchIDs = "class", nil, g.churchCandidates("class")

@@ -79,7 +79,9 @@ func ApplyClassChange(u *battle.Unit, targetPortrait, classID, growthGroup int, 
 	u.AP, u.DP, u.DX = ap, dp, dx
 	u.MaxHP, u.HP = hp, hp
 	u.MaxMP, u.MP = mp, mp
-	u.GrowthStat += growthGroup
+	// The second byte returned by 0x4e48d is the class mobility increment;
+	// native unit+0x3b is the movement budget used by pathfinding.
+	u.MV += growthGroup
 	u.Lv, u.Exp = 1, 0
 	u.Portrait, u.ClassID = targetPortrait, classID
 	return nil

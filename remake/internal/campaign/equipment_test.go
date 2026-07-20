@@ -33,3 +33,15 @@ func TestInitializeEquipmentBaseSubtractsAuthoredStartingGearOnce(t *testing.T) 
 		t.Fatalf("base conversion repeated: base=%d AP=%d", u.BaseAP, u.AP)
 	}
 }
+
+func TestRecomputeAfterClassChangeUsesDXForHitAndEVBase(t *testing.T) {
+	u := &battle.Unit{AP: 10, DP: 8, DX: 12, HIT: 99, EV: 77, MV: 4, Inventory: []int{1}, Equipped: []bool{true}}
+	stats := map[int]ItemStats{1: {AP: 3, DP: 2, HIT: 5, EV: 7}}
+	RecomputeAfterClassChange(u, stats)
+	if u.BaseHIT != 12 || u.BaseEV != 12 || u.HIT != 17 || u.EV != 19 {
+		t.Fatalf("class base synthesis hit/ev base=%d/%d effective=%d/%d", u.BaseHIT, u.BaseEV, u.HIT, u.EV)
+	}
+	if u.AP != 13 || u.DP != 10 {
+		t.Fatalf("class base AP/DP effective=%d/%d", u.AP, u.DP)
+	}
+}

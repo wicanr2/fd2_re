@@ -25,19 +25,19 @@ type ClassChangeCurrent struct {
 }
 
 type ClassChangeTarget struct {
-	Portrait    int `json:"portrait"`
-	ClassID     int `json:"class_id"`
-	GrowthGroup int `json:"growth_group"`
+	Portrait          int `json:"portrait"`
+	ClassID           int `json:"class_id"`
+	MobilityIncrement int `json:"mobility_increment"`
 }
 
 // ClassChangeBranch is one target shown after selecting a church candidate.
 type ClassChangeBranch struct {
-	Branch         string
-	Portrait       int
-	ClassID        int
-	GrowthGroup    int
-	RequiredItemID int
-	InventoryIndex int
+	Branch            string
+	Portrait          int
+	ClassID           int
+	MobilityIncrement int
+	RequiredItemID    int
+	InventoryIndex    int
 }
 
 func LoadClassChangeTable(path string) (ClassChangeTable, error) {
@@ -75,7 +75,7 @@ func LoadClassChangeTable(path string) (ClassChangeTable, error) {
 		if row.Portrait != i+0x20 {
 			return ClassChangeTable{}, fmt.Errorf("class change target row %d is not indexed", i+0x20)
 		}
-		if row.ClassID < 0 || row.ClassID > 0xff || row.GrowthGroup < 0 || row.GrowthGroup > 0xff {
+		if row.ClassID < 0 || row.ClassID > 0xff || row.MobilityIncrement < 0 || row.MobilityIncrement > 0xff {
 			return ClassChangeTable{}, fmt.Errorf("class change target row %d has non-byte class metadata", i+0x20)
 		}
 		t.Targets[row.Portrait] = row
@@ -110,7 +110,7 @@ func ClassChangeTargets(u *battle.Unit, t ClassChangeTable) []ClassChangeBranch 
 		if !ok {
 			return
 		}
-		*out = append(*out, ClassChangeBranch{Branch: branch, Portrait: target.Portrait, ClassID: target.ClassID, GrowthGroup: target.GrowthGroup, RequiredItemID: itemID, InventoryIndex: itemIndex})
+		*out = append(*out, ClassChangeBranch{Branch: branch, Portrait: target.Portrait, ClassID: target.ClassID, MobilityIncrement: target.MobilityIncrement, RequiredItemID: itemID, InventoryIndex: itemIndex})
 	}
 	out := make([]ClassChangeBranch, 0, 3)
 	add("default", row.DefaultTarget, -1, -1, &out)
