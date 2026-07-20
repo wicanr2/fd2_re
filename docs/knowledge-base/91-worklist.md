@@ -137,7 +137,7 @@
 - [~] class-change church：核心 `campaign.ApplyClassChange` 已依 `0x31602` 實作可重現 RNG（row `[min,max)`）、AP/DP/DX/MaxHP/MaxMP reset、MV(+0x3b) 累加、Lv/EXP/HP/MP reset 與轉職道具移除，並有 atomic rollback tests；persistent party 已同步保存 MV。待接 editable growth rows、church target 選擇與 equipment recompute/UI。
 - [~] class-change data/UI bridge：`LoadClassChangeTable`、`ClassChangeTargets`、`LoadClassChangeGrowth` 已接；church 現在先選角色再列 default/optional/special target，Enter 依 branch 消耗物品、套用 RNG stat reset、重算裝備並保存 persistent roster。runtime assets 已補入；待實機 xvfb 走完整轉職流程與校正 HIT/EV/DX synthesis。
 - [~] class-change synthesis：直接追 `0x1b750/0x1145a` 已確認 raw `+0x3e` 同時作 HIT/EV base，裝備 item `+3/+7` 分別累加；class byte `+0x24` 非零時 DX/HIT base 另加 15，AP/DP multiplier byte `+0x22/+0x23` 為 1.15。新增 `RecomputeAfterClassChange`，避免沿用轉職前有效 HIT/EV；`+0x24` race bonus 與 AP/DP multiplier 尚待 Unit 欄位資料化。
-- [~] headless class-change fixture：新增僅由 `FD2_CAMP_CLASS_FIXTURE=1` 啟用的 Lv20 portrait9＋item 0x58/0x5a roster，供 xvfb 依「教會→轉職→角色→target branch」操作驗證；正常遊戲不改變。預期 target branch 為 default 0x29、optional 0x3b、special 0x34。
+- [~] headless class-change fixture：新增僅由 `FD2_CAMP_CLASS_FIXTURE=1` 啟用的 Lv20 portrait9＋item 0x58/0x5a roster，供 xvfb 依「教會→轉職→角色→target branch」操作驗證；正常遊戲不改變。實機截圖 [`church-class-targets.png`](../figures/church-class-targets.png) 已確認 default 0x29、optional 0x3b、special 0x34 三分支。
 - [ ] 分支與敗北路線(on_lose → 敗北關卡,非結束)
 - [ ] 存檔/讀檔(自有格式,非破解原版 `FD2.SAV`)
 
