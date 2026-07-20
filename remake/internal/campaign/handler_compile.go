@@ -30,6 +30,10 @@ type HandlerDialog struct {
 	// lines.  This is required when one original string contains alternating
 	// speakers (and therefore different dialogue-box positions).
 	Lines []HandlerDialogLine `json:"lines,omitempty"`
+	// Segments preserves one native FDTXT lookup whose authored lines cross
+	// scene boundaries. The compiler lowers these in order to ordinary dialog
+	// beats; no text or scene boundary is inferred at runtime.
+	Segments []HandlerDialogSegment `json:"segments,omitempty"`
 }
 
 // HandlerDialogLine is one runtime dialog beat within a HandlerDialog group.
@@ -37,6 +41,15 @@ type HandlerDialogLine struct {
 	Line  int   `json:"line"`
 	Count int   `json:"count,omitempty"`
 	Upper *bool `json:"upper,omitempty"`
+}
+
+// HandlerDialogSegment is one contiguous scene range within a native lookup.
+type HandlerDialogSegment struct {
+	Script     string              `json:"script,omitempty"`
+	Scene      string              `json:"scene,omitempty"`
+	SceneIndex *int                `json:"scene_index,omitempty"`
+	Lines      []HandlerDialogLine `json:"lines"`
+	Upper      *bool               `json:"upper,omitempty"`
 }
 
 // HandlerBindings holds only evidence-backed, campaign-specific bridges from
@@ -249,18 +262,39 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 				issue(i, input, "no remake line mapping for original FDTXT lookup")
 				continue
 			}
-			if len(d.Lines) == 0 {
+			if len(d.Segments) == 0 && len(d.Lines) == 0 {
 				beat := runtime(input, "dialog")
 				beat.Line, beat.Count, beat.Upper = d.Line, d.Count, d.Upper
 				beat.Script, beat.Scene, beat.SceneIndex = d.Script, d.Scene, d.SceneIndex
 				beats = append(beats, beat)
 				continue
 			}
-			for _, line := range d.Lines {
-				beat := runtime(input, "dialog")
-				beat.Line, beat.Count, beat.Upper = line.Line, line.Count, line.Upper
-				beat.Script, beat.Scene, beat.SceneIndex = d.Script, d.Scene, d.SceneIndex
-				beats = append(beats, beat)
+			if len(d.Segments) == 0 {
+				for _, line := range d.Lines {
+					beat := runtime(input, "dialog")
+					beat.Line, beat.Count, beat.Upper = line.Line, line.Count, line.Upper
+					beat.Script, beat.Scene, beat.SceneIndex = d.Script, d.Scene, d.SceneIndex
+					beats = append(beats, beat)
+				}
+				continue
+			}
+			for _, segment := range d.Segments {
+				if len(segment.Lines) == 0 {
+					beat := runtime(input, "dialog")
+					beat.Upper = segment.Upper
+					beat.Script, beat.Scene, beat.SceneIndex = segment.Script, segment.Scene, segment.SceneIndex
+					beats = append(beats, beat)
+					continue
+				}
+				for _, line := range segment.Lines {
+					beat := runtime(input, "dialog")
+					beat.Line, beat.Count, beat.Upper = line.Line, line.Count, line.Upper
+					if line.Upper == nil {
+						beat.Upper = segment.Upper
+					}
+					beat.Script, beat.Scene, beat.SceneIndex = segment.Script, segment.Scene, segment.SceneIndex
+					beats = append(beats, beat)
+				}
 			}
 		case "act":
 			if input.ActingID == nil || bindings.Acting == nil {

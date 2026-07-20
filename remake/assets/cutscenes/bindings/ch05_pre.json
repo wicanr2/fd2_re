@@ -1,6 +1,10 @@
 {
   "schema_version": 1,
   "handler_script": "../handlers/ch05_pre.json",
+  "story_index_map": "../dialogue-index/count-aligned.json",
+  "dialogue_contexts": {
+    "0x3320c": { "source_dat": "FDTXT_006", "script": "ch06.json" }
+  },
   "overrides": {
     "0x33155": {
       "loadch": {

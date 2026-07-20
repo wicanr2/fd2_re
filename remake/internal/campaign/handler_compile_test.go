@@ -756,11 +756,26 @@ func TestCompileChapter4PreUsesRecoveredChapter5TextGroups(t *testing.T) {
 
 func TestCompileLoadCHBindingExposesSharedTailDialogueGap(t *testing.T) {
 	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch05_pre.json")
-	if err != nil || len(issues) != 1 || issues[0].Op != "dialog" || issues[0].Source.Addr != "0x3320c" {
+	if err != nil || len(issues) != 0 {
 		t.Fatalf("ch05 loadch binding err=%v issues=%#v", err, issues)
 	}
-	if len(beats) != 2 || beats[0].Op != "loadch" || beats[0].Source != "0x33155" || beats[0].LoadCH == nil || beats[1].Op != "focus_unit" || beats[1].Source != "0x33142" {
+	if len(beats) != 20 || beats[0].Op != "loadch" || beats[0].Source != "0x33155" || beats[0].LoadCH == nil || beats[len(beats)-1].Op != "focus_unit" || beats[len(beats)-1].Source != "0x33142" {
 		t.Fatalf("ch05 loadch beat = %#v", beats)
+	}
+	dialogs := make([]Beat, 0, 18)
+	for _, beat := range beats {
+		if beat.Op == "dialog" {
+			dialogs = append(dialogs, beat)
+		}
+	}
+	if len(dialogs) != 18 {
+		t.Fatalf("FDTXT_006 #0 cross-scene dialogs=%d, want 18", len(dialogs))
+	}
+	for i, want := range []struct{ scene, line int }{{0, 0}, {1, 0}, {1, 2}, {2, 0}, {2, 4}, {3, 0}, {3, 8}} {
+		got := dialogs[[]int{0, 1, 3, 4, 8, 9, 17}[i]]
+		if got.Script != "ch06.json" || got.SceneIndex == nil || *got.SceneIndex != want.scene || got.Line != want.line {
+			t.Fatalf("cross-scene dialogue boundary %d = %#v", i, got)
+		}
 	}
 	state := beats[0].LoadCH
 	// Handler filenames are jump-table indices. Index 5 leaves the global

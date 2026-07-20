@@ -308,10 +308,26 @@ func (binding *HandlerBinding) indexedDialog(input HandlerBeat) (HandlerDialog, 
 		return HandlerDialog{}, false
 	}
 	targets, ok := binding.storyIndex.Lookup(context.SourceDAT, context.Script, stringIndex)
-	if !ok || len(targets) != 1 {
-		// A string crossing scenes needs a scene-transition adapter; lowering it
-		// as one runtime dialog would silently use the wrong current scene.
+	if !ok || len(targets) == 0 {
 		return HandlerDialog{}, false
+	}
+	if len(targets) > 1 {
+		dialog := HandlerDialog{Segments: make([]HandlerDialogSegment, 0, len(targets))}
+		for _, target := range targets {
+			sceneIndex := target.SceneIndex
+			segment := HandlerDialogSegment{Script: context.Script, SceneIndex: &sceneIndex}
+			if target.Scene != nil {
+				segment.Scene = *target.Scene
+			}
+			for _, line := range target.Lines {
+				segment.Lines = append(segment.Lines, HandlerDialogLine{Line: line})
+			}
+			if len(segment.Lines) == 0 {
+				return HandlerDialog{}, false
+			}
+			dialog.Segments = append(dialog.Segments, segment)
+		}
+		return dialog, true
 	}
 	target := targets[0]
 	sceneIndex := target.SceneIndex
