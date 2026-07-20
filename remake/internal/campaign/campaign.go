@@ -124,6 +124,20 @@ type HandlerLayout struct {
 	CamY  int                 `json:"cam_y"`
 }
 
+// HandlerUnitPresent is the evidence-backed shape of native 0x22253 when the
+// caller passes the same source and destination coordinate. The native helper
+// presents six frames (10ms each), followed by two one-tick waits. Keeping
+// these timings explicit prevents editors from silently replacing the effect
+// with a generic spawn or redraw.
+type HandlerUnitPresent struct {
+	Slot         int `json:"slot"`
+	X            int `json:"x"`
+	Y            int `json:"y"`
+	Frames       int `json:"frames"`
+	FrameDelayMs int `json:"frame_delay_ms"`
+	TailTicks    int `json:"tail_ticks"`
+}
+
 // Beat 過場原語(doc 50 §1/§2):cutscene 節點的 beats 通常依序執行；if 會在 runtime
 // 選一條 structured arm 插入目前拍之後，再回到共同 continuation。
 // 一比一對映原版 EXE handler 的呼叫序列(LOADCH/PAN/TXT/ACT/SPAWN/JOIN/BGM/FADE/DELAY)。
@@ -136,6 +150,7 @@ type Beat struct {
 	Else           []Beat                 `json:"else,omitempty"`
 	RuntimeContext *HandlerRuntimeContext `json:"runtime_context,omitempty"`
 	Layout         *HandlerLayout         `json:"layout,omitempty"`
+	UnitPresent    *HandlerUnitPresent    `json:"unit_present,omitempty"`
 
 	// loadch: atomically replace the active map, FDFIELD roster and FDTXT
 	// story context.  It is deliberately a nested required state object so a
