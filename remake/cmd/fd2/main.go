@@ -824,6 +824,17 @@ func (g *Game) beatStart(b campaign.Beat) {
 			g.storyBG = true
 		}
 		g.beatAdvance()
+	case "unit_present":
+		// The compiler carries the recovered placement/timing payload, but
+		// the PNG renderer does not yet implement native 0x22253's off-screen
+		// blit and FDOTHER effect.  Fail closed instead of silently turning it
+		// into a position change or a generic redraw.
+		if b.UnitPresent == nil {
+			g.loadErr = "beat unit_present:缺少 placement payload"
+			return
+		}
+		g.loadErr = "beat unit_present: native 0x22253 renderer adapter未完成"
+		return
 	case "layout_units":
 		if b.Layout == nil || len(b.Layout.Units) == 0 {
 			g.loadErr = "beat layout_units:缺少可編輯的 runtime layout"
