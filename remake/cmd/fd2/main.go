@@ -150,6 +150,7 @@ type Game struct {
 	shopEquipTypes     map[int][]int
 	shopItemPrices     map[int]int
 	shopItemStats      map[int]campaign.ItemStats
+	reviveFeeRates     []int  // church 0x30dc3 class fee words
 	shopMode           string // buy or sell
 	shopSellPicking    bool
 	shopSellUnitSel    int
@@ -4040,6 +4041,9 @@ func loadGame() *Game {
 	}
 	if stats, e := campaign.LoadItemStats(assetPath("assets/data/item.json")); e == nil {
 		g.shopItemStats = stats
+	}
+	if rates, e := campaign.LoadReviveFeeRates(assetPath("assets/data/revive_fee_rates.json")); e == nil {
+		g.reviveFeeRates = rates
 	}
 	g.initializeEquipmentBases(g.st)
 	g.font = loadFont()

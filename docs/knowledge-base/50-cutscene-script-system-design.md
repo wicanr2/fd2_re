@@ -548,7 +548,7 @@ town 路徑在 `0x2cd04` 以 `0x4e4b9(chapter)` 讀城鎮資料，並以 FDTXT_0
 設施結束後回 town hub，不是強迫「武器店→道具店→離城」的線性鏈。選出口會以
 FDTXT_000 `0x201` 詢問「要進入戰場嗎？」，然後進 `0x318ad` 出戰隊伍整備。
 
-2026-07-20 追加 church direct trace：`0x3072f` 並非單純 placeholder return。它建立教會場景後呼叫 `0x2d669/0x2d7bd` 讀取服務選擇，依選項 `0..3` 分派到 `0x2ffa5`、`0x2f8ea`、`0x30dc3`、`0x31385`，完成後重畫教會並可再次選擇。`0x30dc3` 先由 `0x309ff` 建立死亡角色清單；count=0 顯示 FDTXT `0x24c`「隊伍中沒有須要復活的！」，有候選才顯示 `0x24d`「誰要復活呢？」並進入角色選擇。`0x31385` 呼叫 `0x31793` 建立轉職候選，無候選顯示 `0x24f`、有候選顯示 `0x250`，確認使用 `0x252`。`0x2f8ea` 逐角色掃描 8 個 inventory bytes 並取未裝備 item，`0x2ffa5` 走角色選擇／能力服務路徑；這兩項的最終語意仍待追 callee。remake 目前 church 仍是 placeholder，下一步需先把 revive/class-change 兩個可證實服務資料化，不能再把 church 視為單純返回 town。
+2026-07-20 追加 church direct trace：`0x3072f` 並非單純 placeholder return。它建立教會場景後呼叫 `0x2d669/0x2d7bd` 讀取服務選擇，依選項 `0..3` 分派到 `0x2ffa5`、`0x2f8ea`、`0x30dc3`、`0x31385`，完成後重畫教會並可再次選擇。`0x30dc3` 先由 `0x309ff` 建立死亡角色清單；count=0 顯示 FDTXT `0x24c`「隊伍中沒有須要復活的！」，有候選才顯示 `0x24d`「誰要復活呢？」並進入角色選擇。選定角色後從 `0x52669 + class*2` 讀 fee word，以 `fee * level` 計費；`0x30f39` 先驗金，`0x2d516` 扣款，再清死亡 flag 並把 max HP 寫回 current HP。`0x31385` 呼叫 `0x31793` 建立轉職候選，無候選顯示 `0x24f`、有候選顯示 `0x250`，確認使用 `0x252`。`0x2f8ea` 逐角色掃描 8 個 inventory bytes 並取未裝備 item，`0x2ffa5` 走角色選擇／能力服務路徑；這兩項的最終語意仍待追 callee。remake 已先以 `campaign.ReviveUnit` 鎖定復活核心與 fee table，church selector UI、class-change 寫回仍待接線，不能再把 church 視為單純返回 town。
 
 無 town 的 table=1 路徑也不會直接進戰：`0x2cc04` 顯示 FDTXT_000 `0x19a`
 「要記錄戰況嗎？」，允許存檔後同樣進 `0x318ad` 隊伍整備。remake 因此新增可編輯
