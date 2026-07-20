@@ -3,6 +3,7 @@ package ending
 import (
 	"testing"
 
+	"github.com/wicanr2/fd2_re/remake/internal/afm"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
@@ -50,5 +51,14 @@ func TestPresentANIReplacesIndexedVGAAndPalette(t *testing.T) {
 	}
 	if c.VGA[7] != 42 || c.Palette[9] != 63 {
 		t.Fatalf("ANI state not presented")
+	}
+}
+
+func TestPresentANIFrameKeepsFramePalettePair(t *testing.T) {
+	c := NewIndexedCompositor()
+	clip := &afm.Clip{IndexedFrames: [][]byte{make([]byte, Bytes)}, Palettes: [][]byte{make([]byte, 768)}}
+	clip.IndexedFrames[0][3], clip.Palettes[0][4] = 11, 12
+	if err := c.PresentANIFrame(clip, 0); err != nil || c.VGA[3] != 11 || c.Palette[4] != 12 {
+		t.Fatalf("err=%v", err)
 	}
 }

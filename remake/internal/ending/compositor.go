@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/wicanr2/fd2_re/remake/internal/afm"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
@@ -87,6 +88,13 @@ func (c *IndexedCompositor) PresentANI(frame, palette []byte) error {
 	copy(c.VGA, frame)
 	copy(c.Palette[:], palette)
 	return nil
+}
+
+func (c *IndexedCompositor) PresentANIFrame(clip *afm.Clip, index int) error {
+	if clip == nil || index < 0 || index >= len(clip.IndexedFrames) || index >= len(clip.Palettes) {
+		return errors.New("ending: ANI frame is unavailable")
+	}
+	return c.PresentANI(clip.IndexedFrames[index], clip.Palettes[index])
 }
 
 func (c *IndexedCompositor) Blit(frame fdother.Frame, destination []byte, stride int) error {
