@@ -1046,7 +1046,7 @@ func TestCompileChapter17PreUsesRecoveredChapter18TextGroups(t *testing.T) {
 		t.Fatalf("ch17_pre err=%v issues=%#v", err, issues)
 	}
 	seen := map[string]Beat{}
-	dialogs := make([]Beat, 0, 24)
+	dialogs := make([]Beat, 0, 8)
 	for _, beat := range beats {
 		seen[beat.Source] = beat
 		if beat.Op == "dialog" {
@@ -1067,6 +1067,30 @@ func TestCompileChapter17PreUsesRecoveredChapter18TextGroups(t *testing.T) {
 	}
 	if act := seen["0x33628"]; len(act.Acting) == 0 || len(act.Acting[0].Units) == 0 {
 		t.Fatalf("ch17_pre acting54 = %#v", act.Acting)
+	}
+}
+
+func TestCompileChapter18PreUsesRecoveredChapter19TextGroups(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch18_pre.json")
+	if err != nil || len(issues) != 0 {
+		t.Fatalf("ch18_pre err=%v issues=%#v", err, issues)
+	}
+	seen := map[string]Beat{}
+	dialogs := make([]Beat, 0, 24)
+	for _, beat := range beats {
+		seen[beat.Source] = beat
+		if beat.Op == "dialog" {
+			dialogs = append(dialogs, beat)
+		}
+	}
+	if len(dialogs) != 8 {
+		t.Fatalf("FDTXT_019 #0 dialogs=%d, want 8", len(dialogs))
+	}
+	if dialogs[0].SceneIndex == nil || *dialogs[0].SceneIndex != 0 || dialogs[7].Line != 7 {
+		t.Fatalf("ch18_pre dialogue mapping = %#v", dialogs)
+	}
+	if load := seen["0x33475"]; load.LoadCH == nil || load.LoadCH.Chapter != 18 || load.LoadCH.Map != "assets/maps/map18" || load.LoadCH.SlotCount != 70 || load.LoadCH.Script != "assets/story/ch19.json" || load.LoadCH.PartyScenario != "assets/scenarios/ch19.json" {
+		t.Fatalf("ch18_pre LOADCH = %#v", load.LoadCH)
 	}
 }
 
