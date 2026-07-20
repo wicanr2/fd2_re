@@ -134,7 +134,7 @@
 - [~] 戰後 town/整備流程：preparation 與 church selector UI 已接；`docs/figures/church-selector.png` 為 xvfb 實機畫面。revive 已可依 fee table 執行並保存 roster/gold；class-change 尚待 `0x31860/0x2a2e8` item/能力寫回與完整驗證。
 - [~] class-change church：已鎖定 `0x3151a..0x3152d` portrait→item 分支、`0x31860` inventory 掃描、`0x1b8e7` item 移除與 `0x31571..0x3157a` class/portrait 寫回；待導出 `0x526a7` mapping 與 `0x2a2e8` 能力/成長重算後接入。
 - [~] class-change church：`class_change_targets.json` 已校正為兩層可編輯資料：current portrait 0..0x11→default/optional target（`0x526a7` 以 current portrait 索引，raw `0xff` 不產生 optional branch），以及 target portrait 0x20..0x41→class/growth (`0x615fe`)；portrait 9 的 item 0x5a→target 0x34 special branch 明列。新增資料完整性測試；尚未接猜測性 mutation，下一步追 `0x31602` stat reset。
-- [~] class-change church：`0x31602` 已追到轉職後 stat-reset 寫入 `+0x37/+0x39/+0x3e/+0x42/+0x46`、growth-group→`+0x3b`、level=1、`+0x3c=0`、HP/MP current←max 與 equipment recompute；待把這些原始 offset 對齊 `battle.Unit` 欄位並建立 deterministic mutation 測試。
+- [~] class-change church：`0x31602` 已定案 `+0x37=AP`、`+0x39=DP`、`+0x3e=DX/HIT-EV base`、`+0x42/+0x46=MaxHP/MaxMP`，row 取值為 `[min,max)` RNG；growth-group 加 raw `+0x3b`，Lv=1、EXP=0、HP/MP 全滿、再做 equipment recompute。待保留 RNG 實作 class mutation，並為 `+0x3b` 建欄位或明確保留 raw。
 - [ ] 分支與敗北路線(on_lose → 敗北關卡,非結束)
 - [ ] 存檔/讀檔(自有格式,非破解原版 `FD2.SAV`)
 
