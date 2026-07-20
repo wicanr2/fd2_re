@@ -1341,8 +1341,8 @@ func TestCompileChapter24PreUsesTransitionAndFDOther88SFX(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(issues) != 1 || issues[0].Op != "play_sfx" || issues[0].Source.Addr != "0x1d50a" {
-		t.Fatalf("ch24_pre unresolved tail=%#v", issues)
+	if len(issues) != 0 {
+		t.Fatalf("ch24_pre issues=%#v", issues)
 	}
 	var transitions, sfx []Beat
 	for _, beat := range beats {
@@ -1356,7 +1356,10 @@ func TestCompileChapter24PreUsesTransitionAndFDOther88SFX(t *testing.T) {
 	if len(transitions) != 4 || transitions[0].RevealFrames != 20 || transitions[3].RevealFrames != 60 {
 		t.Fatalf("ch24_pre transitions=%#v", transitions)
 	}
-	if len(sfx) != 4 || sfx[0].ResourceID == nil || *sfx[0].ResourceID != 88 || sfx[0].SFXIndex == nil || *sfx[0].SFXIndex != 1 {
+	if len(sfx) != 5 || sfx[0].ResourceID == nil || *sfx[0].ResourceID != 88 || sfx[0].SFXIndex == nil || *sfx[0].SFXIndex != 1 {
 		t.Fatalf("ch24_pre sfx=%#v", sfx)
+	}
+	if sfx[4].SFXIndex == nil || *sfx[4].SFXIndex != -1 {
+		t.Fatalf("ch24_pre stop sfx=%#v", sfx[4])
 	}
 }

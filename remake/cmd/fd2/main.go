@@ -1106,7 +1106,7 @@ func (g *Game) beatStart(b campaign.Beat) {
 		g.handlerResource = *b.ResourceID
 		g.beatAdvance()
 	case "play_sfx":
-		if b.ResourceID == nil || b.SFXIndex == nil || *b.ResourceID != 88 || *b.SFXIndex != 1 {
+		if b.ResourceID == nil || b.SFXIndex == nil || *b.ResourceID != 88 || (*b.SFXIndex != 1 && *b.SFXIndex != -1) {
 			g.loadErr = fmt.Sprintf("beat play_sfx:未映射 resource=%v index=%v", b.ResourceID, b.SFXIndex)
 			return
 		}
@@ -1114,7 +1114,9 @@ func (g *Game) beatStart(b campaign.Beat) {
 			g.loadErr = fmt.Sprintf("beat play_sfx:resource handle=%d want 88", g.handlerResource)
 			return
 		}
-		g.playRaw(g.sfxTransition)
+		if *b.SFXIndex == 1 {
+			g.playRaw(g.sfxTransition)
+		}
 		g.beatAdvance()
 	case "release_res":
 		if b.ResourceID == nil || *b.ResourceID != g.handlerResource {

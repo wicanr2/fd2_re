@@ -471,8 +471,8 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 				issue(i, input, input.Op+" has no valid resource binding")
 				continue
 			}
-			if input.Op == "play_sfx" && (resource.SFXIndex == nil || *resource.SFXIndex < 0) {
-				issue(i, input, "play_sfx requires an explicit non-negative sfx_index")
+			if input.Op == "play_sfx" && (resource.SFXIndex == nil || *resource.SFXIndex < -1) {
+				issue(i, input, "play_sfx requires an explicit sfx_index >= -1")
 				continue
 			}
 			beat := runtime(input, input.Op)
