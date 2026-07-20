@@ -3093,7 +3093,9 @@ func (g *Game) Update() error {
 			g.dlgScrollT--
 		}
 		if len(g.dialog) > 0 && (inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)) {
-			g.dlgAdvance()
+			if g.dlgAdvance() && len(g.dialog) == 0 {
+				g.nativeEnding.player.ResumeBlockedDialogue()
+			}
 		}
 		if g.shotPath != "" && g.frame > g.shotFrame {
 			return ebiten.Termination

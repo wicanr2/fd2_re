@@ -578,3 +578,4 @@
 ### 2026-07-20 native ending dialogue bridge
 
 - [x] **0x2c39b preview dialogue**：`internal/ending.Player.BlockedDialogue(chapter)` 僅在 `native_text_branch_opaque` 取出 chapter26 then 或 final else blocks；`FD2_ENDING_PREFIX=1` 以 `FD2_ENDING_CHAPTER=26|29` 明確選 branch，讀 editable `ch27.json`／`ch30.json` 的 exact scene,line,count，並強制每句使用 block 的 `portrait_id`（native DATO arg1），不混用 transcript speaker。它沿用 DATO 頭像與 Enter/Space 分頁阻塞；對話結束後 player 仍停在同一 native gate，後段不會被放行。
+- [x] **native text gate resume**：對話所有頁／句皆完成後，preview 只可呼叫 `ResumeBlockedDialogue()` 恢復該一個 `native_text_branch_opaque` segment；任何 composite 或其他 opaque gate 都被拒絕，避免 UI 誤跳過未 RE renderer。下一段將依資料化 palette repeat / frame sequence 繼續實作。

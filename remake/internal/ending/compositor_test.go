@@ -200,4 +200,11 @@ func TestBlockedDialogueSelectsOnlyNativeTextBranch(t *testing.T) {
 	if blocks, ok := p.BlockedDialogue(29); ok || blocks != nil {
 		t.Fatalf("non-text opaque block leaked dialogue: %#v", blocks)
 	}
+	if p.ResumeBlockedDialogue() {
+		t.Fatal("non-text opaque block resumed")
+	}
+	p.Blocked.Op = "native_text_branch_opaque"
+	if !p.ResumeBlockedDialogue() || p.State != PlaybackRunning || p.Blocked != nil || p.Segment != 1 {
+		t.Fatalf("text resume state=%s blocked=%#v segment=%d", p.State, p.Blocked, p.Segment)
+	}
 }

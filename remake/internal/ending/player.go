@@ -191,3 +191,16 @@ func (p *Player) BlockedDialogue(chapter int) ([]DialogueBlock, bool) {
 	}
 	return append([]DialogueBlock(nil), blocks...), true
 }
+
+// ResumeBlockedDialogue advances exactly one already-presented native text
+// gate.  It refuses every other opaque operation, so a UI cannot accidentally
+// skip a not-yet-recovered renderer boundary.
+func (p *Player) ResumeBlockedDialogue() bool {
+	if p.State != PlaybackBlocked || p.Blocked == nil || p.Blocked.Op != "native_text_branch_opaque" {
+		return false
+	}
+	p.Blocked = nil
+	p.State = PlaybackRunning
+	p.Segment++
+	return true
+}
