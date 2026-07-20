@@ -33,16 +33,16 @@ type Segment struct {
 }
 
 // DialogueBlock is a count-aligned FDTXT block recovered from an ending text
-// helper. VisualResourceIndex is intentionally not called a portrait until
-// archive 0x51a70's resource type is directly established.
+// helper. PortraitID is a DATO.DAT resource index: 0x2c39b forwards its first
+// caller argument to 0x1956b, which loads archive 0x51a70 (DATO.DAT).
 type DialogueBlock struct {
-	VisualResourceIndex int    `json:"visual_resource_index"`
-	SourceDAT           string `json:"source_dat"`
-	Script              string `json:"script"`
-	StringIndex         int    `json:"string_index"`
-	SceneIndex          int    `json:"scene_index"`
-	Line                int    `json:"line"`
-	Count               int    `json:"count"`
+	PortraitID  int    `json:"portrait_id"`
+	SourceDAT   string `json:"source_dat"`
+	Script      string `json:"script"`
+	StringIndex int    `json:"string_index"`
+	SceneIndex  int    `json:"scene_index"`
+	Line        int    `json:"line"`
+	Count       int    `json:"count"`
 }
 
 func LoadTimeline(path string) (*Timeline, error) {
@@ -65,7 +65,7 @@ func LoadTimeline(path string) (*Timeline, error) {
 			return nil, fmt.Errorf("ending timeline %q segment %d is incomplete", path, i)
 		}
 		for j, block := range append(append([]DialogueBlock(nil), segment.ThenDialogue...), segment.ElseDialogue...) {
-			if block.VisualResourceIndex < 0 || block.SourceDAT == "" || block.Script == "" || block.StringIndex < 0 || block.SceneIndex < 0 || block.Line < 0 || block.Count <= 0 {
+			if block.PortraitID < 0 || block.SourceDAT == "" || block.Script == "" || block.StringIndex < 0 || block.SceneIndex < 0 || block.Line < 0 || block.Count <= 0 {
 				return nil, fmt.Errorf("ending timeline %q segment %d dialogue %d is incomplete", path, i, j)
 			}
 		}
