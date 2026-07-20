@@ -88,10 +88,31 @@ func RecomputeAfterClassChange(u *battle.Unit, stats map[int]ItemStats) {
 	if u == nil {
 		return
 	}
+	// ApplyClassChange mutates the public/effective AP/DP/MV fields because
+	// the native class routine writes the raw words before 0x1b750 runs.  When
+	// this unit already has an equipment base, those public values still
+	// include the old equipped items; remove that contribution exactly once
+	// before installing the new raw base.  Otherwise RecomputeEquipment would
+	// count every equipped item a second time after the class change.
+	baseAP, baseDP, baseMV := u.AP, u.DP, u.MV
+	if u.EquipmentBaseSet {
+		for i, equipped := range u.Equipped {
+			if !equipped || i >= len(u.Inventory) {
+				continue
+			}
+			item, ok := stats[u.Inventory[i]]
+			if !ok {
+				continue
+			}
+			baseAP -= item.AP
+			baseDP -= item.DP
+			baseMV -= item.MV
+		}
+	}
 	u.HIT, u.EV = u.DX, u.DX
-	u.BaseAP, u.BaseDP = u.AP, u.DP
+	u.BaseAP, u.BaseDP = baseAP, baseDP
 	u.BaseHIT, u.BaseEV = u.DX, u.DX
-	u.BaseMV = u.MV
+	u.BaseMV = baseMV
 	u.BaseAtkMin, u.BaseAtkMax = u.AtkMin, u.AtkMax
 	u.EquipmentBaseSet = true
 	RecomputeEquipment(u, stats)
