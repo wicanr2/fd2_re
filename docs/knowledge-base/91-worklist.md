@@ -105,7 +105,7 @@
 - [x] **地圖單位 sprite=FDICON Q版小人**(24×24 待機動畫)→ `31`(取代誤用的 FIGANI 全身)
 - [ ] 戰場選單狀態機(移動/攻擊/待機/道具/結束),對齊 `13`(游標/Enter/ESC)
 - [ ] 攻擊結算:套**青衫公式**(物理/劍技/法術/恢復+命中+暴擊+經驗,doc 02 §4 = 實作依據)+ EXE 數值表(`03`)
-- [~] 敵方 AI 回合:flood-fill + 評分選目標(擊殺×2),對齊 `11`(0x15140)：已補地形 AP/DP 與原版 `dmg≤2` 跳過門檻；情境加成、狀態倍率待 RE，且已證實原版 `0x157B5/0x150F1` 有 SpellID 評分／執行、`0x15B77` 依 spell family 分流目標。remake 已建立 `State.SpellBook`/`AIPlan.SpellID` plumbing，並以 item raw K4 (`0x11`) 建立 `State.AICommandSpell` command inventory；施法目標與優先級仍待接入。
+- [~] 敵方 AI 回合:flood-fill + 評分選目標(擊殺×2),對齊 `11`(0x15140)：已補地形 AP/DP 與原版 `dmg≤2` 跳過門檻；情境加成、狀態倍率待 RE，且已證實原版 `0x157B5/0x150F1` 有 SpellID 評分／執行、`0x15B77` 依 spell family 分流目標。remake 已建立 `State.SpellBook`/`AIPlan.SpellID`、item raw K4 (`0x11`) command inventory 與 `AIAvailableSpells` 清單層；尚未接施法目標與優先級。
 - [ ] 勝敗判定 + **回合推進(回合無上限;上限只由劇本事件 turn>=N 設定,見 `27`§1)**
 - [ ] headless 確定性回歸:固定種子打一場 → 結果可重現(驗演算法,不靠手玩)
 

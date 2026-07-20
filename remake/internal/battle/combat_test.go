@@ -252,3 +252,15 @@ func TestNextAIPlan_DefaultSpellCommandIsDisabled(t *testing.T) {
 		t.Fatalf("injected spell book was mutated: %#v", st.SpellBook)
 	}
 }
+
+func TestAIAvailableSpellsResolvesInventoryCommandsWithoutScoring(t *testing.T) {
+	u := &Unit{Inventory: []int{79, 80, 79}}
+	st := &State{
+		AICommandSpell: map[int]int{79: 15, 80: 99},
+		SpellBook:      []Spell{{ID: 15, Name: "回復"}},
+	}
+	got := st.AIAvailableSpells(u)
+	if len(got) != 1 || got[0].ID != 15 {
+		t.Fatalf("available spells=%#v, want one resolved spell 15", got)
+	}
+}

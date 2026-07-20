@@ -261,6 +261,36 @@ type AIPlan struct {
 	SpellID int    // 原版 spell command 的資料欄位；-1 表示本計畫不施法
 }
 
+// AIAvailableSpells mirrors the data portion of the native AI command scan:
+// inventory commands are translated through State.AICommandSpell and then
+// resolved against the injected EXE SpellBook. It deliberately does not pick
+// a target or score a spell; those rules belong to the later 0x149f8/0x15b77
+// decision layer.
+func (s *State) AIAvailableSpells(u *Unit) []Spell {
+	if s == nil || u == nil || len(s.AICommandSpell) == 0 || len(s.SpellBook) == 0 {
+		return nil
+	}
+	byID := make(map[int]Spell, len(s.SpellBook))
+	for _, spell := range s.SpellBook {
+		byID[spell.ID] = spell
+	}
+	seen := make(map[int]bool)
+	out := make([]Spell, 0)
+	for _, itemID := range u.Inventory {
+		spellID, ok := s.AICommandSpell[itemID]
+		if !ok || seen[spellID] {
+			continue
+		}
+		spell, ok := byID[spellID]
+		if !ok {
+			continue
+		}
+		seen[spellID] = true
+		out = append(out, spell)
+	}
+	return out
+}
+
 // NextAIPlan 找下一個未行動的 AI 單位並產生行動計畫(不執行、不設 Acted);
 // 全部動完回 nil。決策邏輯同 aiActUnit(doc11 評分式)。
 func (s *State) NextAIPlan() *AIPlan {
