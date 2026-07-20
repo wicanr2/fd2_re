@@ -582,3 +582,4 @@
 - [x] **text 後 palette repeat**：`palette_ramp_repeat` 的 native `repeat=3`、63→0、4ms、`tail_delay_ms=200` 現由 player 展開成三組明確 `palette_ramp + delay`，不以普通 fade 代替；接續會在尚未實作的 frame12..108 sequence gate 停住。
 - [x] **frame12..108 sequence**：`blit_frame_sequence` 現展開 frame12 到108 的 transparent VGA blit 與每幀20ms wait；第一段 text 後 resume 可走到第二個已知 native text gate。composite 的 string formula 改名 `first_frame_formula`，避免與 sequence integer `first_frame` 的 JSON schema 衝突。
 - [x] **first 40-pass composite primitive**：新增 640×200 work buffer、`CopyRect`、帶 byte-origin bounds 的 `Frame.BlitAt`，並以 native primary/secondary offsets + viewport x=160 實作 `Composite40(i)`；尚待 scheduler 接線，第二 loop 的 palette helper 繼續封閉。
+- [x] **first 40-pass composite scheduler**：player 現以每輪20ms 驅動 `Composite40(i=0..39)`，完成後精確落在第二段 native text gate；200-pass loop 仍因 `0x11d40` 未證實而封閉。
