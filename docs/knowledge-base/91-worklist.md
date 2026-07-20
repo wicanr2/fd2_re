@@ -140,6 +140,7 @@
 - [x] ch04/ch05 pre-handler slice：`ch04_pre` 的 FDTXT_005 idx0/1/2 已接 `ch05.json` scene0/1（3+3+9句），map4 50-slot、pan、acting22/21 皆有 binding；`story_ch05` 已由空 cutscene 接回可編輯 handler。
 - [x] ch05/ch06 pre-handler：新增 `HandlerDialog.Segments[]` 跨-scene adapter，依 FDTXT_006 #0 的 scene0→1→2→3 targets 展開 18 句；`ch05_pre` 完整 binding，`story_ch06` 已接回可編輯 handler。
 - [x] ch06/ch07 pre-handler：FDTXT_007 index0/1（2+6句）與 map6/acting28/29 已接 binding，`story_ch07` 已接回 editable handler。
+- [x] ch07/ch08 pre-handler：FDTXT_008 index0/1（跨 scene 15句+2句）與 map7/acting31/32 已接 binding，`story_ch08` 已接回 editable handler。
 - [~] class-change data/UI bridge：`LoadClassChangeTable`、`ClassChangeTargets`、`LoadClassChangeGrowth` 已接；church 現在先選角色再列 default/optional/special target，Enter 依 branch 消耗物品、套用 RNG stat reset、重算裝備並保存 persistent roster。runtime assets 已補入；待實機 xvfb 走完整轉職流程與校正 HIT/EV/DX synthesis。
 - [~] class-change synthesis：`0x31602` 五組 `0x1e529` 先把新職成長加到 raw AP/DP/DX/MaxHP/MaxMP，隨後呼叫 `0x1b750`；該 routine 讀 raw `+0x37/+0x39/+0x3e`、item table 23-byte row 的 `+1/+3/+5/+7`，寫 derived AP/DP/HIT/EV `+0x48/+0x4a/+0x4c/+0x4e`。`RecomputeAfterClassChange` 已恢復並防止既有裝備重複計算；`+0x22/+0x23/+0x24` 是 constructor 清零後由其他 transient/effect writer 使用的旗標，class path 本身不寫入，不能臆測成 class modifiers。
 - [~] headless class-change fixture：新增僅由 `FD2_CAMP_CLASS_FIXTURE=1` 啟用的 Lv20 portrait9＋item 0x58/0x5a roster，供 xvfb 依「教會→轉職→角色→target branch」操作驗證；正常遊戲不改變。實機截圖 [`church-class-targets.png`](../figures/church-class-targets.png) 已確認 default 0x29、optional 0x3b、special 0x34 三分支。
