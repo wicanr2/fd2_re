@@ -1549,8 +1549,18 @@ func TestCompileChapter29PostPreservesDialogueAcrossChapterTextSwitch(t *testing
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(issues) < 4 {
+	if len(issues) < 3 {
 		t.Fatalf("ch29_post issues=%#v want unresolved native effects preserved", issues)
+	}
+	var layout Beat
+	for _, beat := range beats {
+		if beat.Source == "0x257b4" {
+			layout = beat
+			break
+		}
+	}
+	if layout.Op != "layout_units" || layout.Layout == nil || len(layout.Layout.Units) != 20 || layout.Layout.Units[0] != (HandlerUnitLayout{Slot: 0, X: 22, Y: 23, Pose: 2}) || layout.Layout.Units[1] != (HandlerUnitLayout{Slot: 1, X: 22, Y: 19, Pose: 0}) || layout.Layout.Units[19] != (HandlerUnitLayout{Slot: 19, X: 24, Y: 25, Pose: 2}) || layout.Layout.CamX != 384 || layout.Layout.CamY != 432 {
+		t.Fatalf("ch29_post native layout=%#v", layout)
 	}
 	var loader Beat
 	for _, beat := range beats {
