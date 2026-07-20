@@ -137,32 +137,66 @@ func (s *State) estDamage(u, t *Unit) int {
 	return ap - dp
 }
 
-// aiActUnit 一個 AI 單位的行動:挑最佳目標,移到攻擊範圍內可達格,能打就打(doc11 評分式簡化版)。
-func (s *State) aiActUnit(u *Unit) {
-	// 1. 找最佳目標:可造成最大傷害者(dmg×擊殺加成);dmg≤2 視為不值得(但仍可能當移動目標)
-	var best *Unit
+// aiTargets separates the original AI's attack candidate from its movement
+// fallback.  The 0x15140 scorer ignores targets whose estimated damage is at
+// most two; when every hostile target is below that threshold, the unit may
+// still advance toward the nearest hostile but must not attack it.
+func (s *State) aiTargets(u *Unit) (attack, move *Unit) {
 	bestScore := -1 << 30
+	bestDistance := 1 << 30
 	for _, t := range s.Units {
 		if !t.OnField || !t.Alive() || !hostile(u, t) {
 			continue
 		}
+		distance := manhattan(u.X, u.Y, t.X, t.Y)
+		if move == nil || distance < bestDistance {
+			move, bestDistance = t, distance
+		}
 		dmg := s.estDamage(u, t)
+		if dmg <= 2 {
+			continue
+		}
 		score := dmg
 		if dmg >= t.HP { // 可擊殺 → 最高優先(doc11 prio 0x12)
 			score = dmg*2 + 1000
 		}
-		// 距離越近越優先(同分時)
-		score = score*100 - manhattan(u.X, u.Y, t.X, t.Y)
-		if score > bestScore {
-			bestScore = score
-			best = t
+		score = score*100 - distance
+		if attack == nil || score > bestScore {
+			attack, bestScore = t, score
 		}
 	}
-	if best == nil {
+	return attack, move
+}
+
+func (s *State) aiApproachPath(u, target *Unit) []Cell {
+	reach := s.Reachable(u)
+	dstX, dstY := u.X, u.Y
+	bestD := manhattan(u.X, u.Y, target.X, target.Y)
+	for c := range reach {
+		if s.UnitAt(c.X, c.Y) != nil {
+			continue
+		}
+		d := manhattan(c.X, c.Y, target.X, target.Y)
+		if d < bestD {
+			bestD = d
+			dstX, dstY = c.X, c.Y
+		}
+	}
+	return s.Path(u, dstX, dstY)
+}
+
+// aiActUnit 一個 AI 單位的行動:挑最佳目標,移到攻擊範圍內可達格,能打就打(doc11 評分式簡化版)。
+func (s *State) aiActUnit(u *Unit) {
+	// 1. 找最佳攻擊目標；dmg≤2 略過，但保留最近敵人作為移動目標。
+	best, moveTarget := s.aiTargets(u)
+	if moveTarget == nil {
 		return
 	}
+	if best == nil {
+		best = moveTarget
+	}
 	// 2. 已在攻擊範圍內(InAttackRange 依武器射程判定,doc32) → 直接打
-	if s.InAttackRange(u, best.X, best.Y) {
+	if s.InAttackRange(u, best.X, best.Y) && s.estDamage(u, best) > 2 {
 		s.Attack(u, best)
 		return
 	}
@@ -181,7 +215,7 @@ func (s *State) aiActUnit(u *Unit) {
 		}
 	}
 	u.X, u.Y = dstX, dstY
-	if s.InAttackRange(u, best.X, best.Y) {
+	if best != moveTarget && s.InAttackRange(u, best.X, best.Y) {
 		s.Attack(u, best)
 	}
 	u.Acted = true
@@ -233,25 +267,12 @@ func (s *State) NextAIPlan() *AIPlan {
 		if !u.OnField || !u.Alive() || u.Camp == Own || u.Acted || u.Paralyzed {
 			continue
 		}
-		var best *Unit
-		bestScore := -1 << 30
-		for _, t := range s.Units {
-			if !t.OnField || !t.Alive() || !hostile(u, t) {
-				continue
-			}
-			dmg := s.estDamage(u, t)
-			score := dmg
-			if dmg >= t.HP {
-				score = dmg*2 + 1000
-			}
-			score = score*100 - manhattan(u.X, u.Y, t.X, t.Y)
-			if score > bestScore {
-				bestScore = score
-				best = t
-			}
+		best, moveTarget := s.aiTargets(u)
+		if moveTarget == nil {
+			return &AIPlan{U: u}
 		}
 		if best == nil {
-			return &AIPlan{U: u}
+			return &AIPlan{U: u, Path: s.aiApproachPath(u, moveTarget)}
 		}
 		if s.InAttackRange(u, best.X, best.Y) {
 			return &AIPlan{U: u, Target: best}

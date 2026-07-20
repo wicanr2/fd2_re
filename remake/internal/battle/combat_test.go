@@ -202,3 +202,38 @@ func TestEstDamage_UsesTerrain(t *testing.T) {
 		t.Errorf("攻方站沼澤的 AI 估計傷害(%d)應低於站正常地形(%d)", dmgSwamp, dmgNormal)
 	}
 }
+
+func TestNextAIPlan_SkipsLowDamageTarget(t *testing.T) {
+	st := &State{W: 5, H: 1}
+	ai := mkFighter(Enemy, 0, 0, 100, 5, 0, 100, 0, 0)
+	target := mkFighter(Own, 1, 0, 100, 0, 20, 0, 0, 0)
+	ai.MV = 3
+	ai.OnField, target.OnField = true, true
+	st.Units = []*Unit{ai, target}
+
+	plan := st.NextAIPlan()
+	if plan == nil || plan.U != ai {
+		t.Fatalf("expected deterministic plan for AI unit, got %#v", plan)
+	}
+	if plan.Target != nil {
+		t.Fatalf("estimated damage <=2 must skip attack target, got %q", plan.Target.Name)
+	}
+	if got := st.estDamage(ai, target); got > 2 {
+		t.Fatalf("fixture damage must be at most two, got %d", got)
+	}
+}
+
+func TestNextAIPlan_PrefersDamageAboveThreshold(t *testing.T) {
+	st := &State{W: 6, H: 2}
+	ai := mkFighter(Enemy, 0, 0, 100, 50, 0, 100, 0, 0)
+	weak := mkFighter(Own, 0, 1, 100, 0, 100, 0, 0, 0) // low damage, nearer
+	good := mkFighter(Own, 4, 0, 100, 0, 10, 0, 0, 0)  // viable damage
+	ai.MV = 3
+	ai.OnField, weak.OnField, good.OnField = true, true, true
+	st.Units = []*Unit{ai, weak, good}
+
+	plan := st.NextAIPlan()
+	if plan == nil || plan.Target != good {
+		t.Fatalf("AI should choose viable target over dmg<=2 target, got %#v", plan)
+	}
+}
