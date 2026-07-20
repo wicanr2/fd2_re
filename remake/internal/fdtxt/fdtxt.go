@@ -133,3 +133,26 @@ func (f *Font) GlyphBit(index, x, y int) (bool, error) {
 	row := binary.BigEndian.Uint16(f.data[index*GlyphBytes+y*2:])
 	return row&(uint16(0x8000)>>x) != 0, nil
 }
+
+// BlitGlyph writes only set source bits to an indexed destination. Zero bits
+// are transparent, exactly matching the source font's 1bpp mask semantics.
+// Palette choice belongs to the still-unrecovered 0x4ea2a call ABI, so callers
+// must supply it explicitly rather than inheriting a guessed UI colour.
+func (f *Font) BlitGlyph(dst []byte, stride, base, index int, color byte) error {
+	if f == nil || index < 0 || index >= f.GlyphCount() || stride < GlyphWidth || base < 0 {
+		return fmt.Errorf("fdtxt: invalid glyph blit")
+	}
+	for y := 0; y < GlyphHeight; y++ {
+		start := base + y*stride
+		if start+GlyphWidth > len(dst) {
+			return fmt.Errorf("fdtxt: glyph blit exceeds destination")
+		}
+		row := binary.BigEndian.Uint16(f.data[index*GlyphBytes+y*2:])
+		for x := 0; x < GlyphWidth; x++ {
+			if row&(uint16(0x8000)>>x) != 0 {
+				dst[start+x] = color
+			}
+		}
+	}
+	return nil
+}

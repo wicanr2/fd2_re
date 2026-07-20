@@ -40,6 +40,25 @@ func TestFontGlyphBitUsesMSBLeftOrder(t *testing.T) {
 	}
 }
 
+func TestBlitGlyphLeavesZeroBitsTransparent(t *testing.T) {
+	data := make([]byte, GlyphBytes)
+	data[0], data[1] = 0x80, 0x01
+	f, err := ParseFont(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	dst := make([]byte, 20*16)
+	for i := range dst {
+		dst[i] = 7
+	}
+	if err := f.BlitGlyph(dst, 20, 2, 0, 42); err != nil {
+		t.Fatal(err)
+	}
+	if dst[2] != 42 || dst[17] != 42 || dst[3] != 7 || dst[22] != 7 {
+		t.Fatalf("glyph pixels = %v %v %v %v", dst[2], dst[17], dst[3], dst[22])
+	}
+}
+
 func TestLocateLogicalUtteranceUsesPhysicalLocator(t *testing.T) {
 	// Each FFxx word terminates a text chunk.  The second glyph 557 is the
 	// original opening quote and therefore marks two visible utterances.
