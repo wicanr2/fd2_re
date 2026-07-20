@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "handler_script": "../handlers/ch26_pre.json",
+  "acting_resources": "../acting/map32.json",
+  "overrides": {
+    "0x33afb": {
+      "loadch": {
+        "chapter": 26,
+        "map": "assets/maps/map26",
+        "roster": "assets/maps/map26/map26_units.json",
+        "slot_count": 70,
+        "script": "assets/story/ch27.json",
+        "party_scenario": "assets/scenarios/ch27.json"
+      }
+    },
+    "0x33b04": { "pan": { "x": 216, "y": 1176, "tile_step": true } },
+    "0x33b0e": { "act": { "resource": 76 } },
+    "0x33b35": {
+      "dialog": {
+        "line": 0,
+        "count": 4,
+        "script": "ch27.json",
+        "scene_index": 0
+      }
+    },
+    "0x33b6b": {
+      "dialog": {
+        "line": 4,
+        "count": 1,
+        "script": "ch27.json",
+        "scene_index": 0
+      }
+    },
+    "0x33b92": {
+      "dialog": {
+        "line": 5,
+        "count": 2,
+        "script": "ch27.json",
+        "scene_index": 0
+      }
+    },
+    "0x33bf1": {
+      "dialog": {
+        "line": 7,
+        "count": 1,
+        "script": "ch27.json",
+        "scene_index": 0
+      }
+    },
+    "0x33c4b": {
+      "dialog": {
+        "line": 8,
+        "count": 5,
+        "script": "ch27.json",
+        "scene_index": 0
+      }
+    },
+    "0x33133": {
+      "dialog": {
+        "line": 13,
+        "count": 9,
+        "script": "ch27.json",
+        "scene_index": 0
+      }
+    }
+  }
+}

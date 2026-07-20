@@ -1391,3 +1391,28 @@ func TestCompileChapter25PreUsesDirectFDTXT026StringZeroAlignment(t *testing.T) 
 		t.Fatalf("ch25_pre loadch=%#v", beats[0])
 	}
 }
+
+func TestCompileChapter26PreMapsFDTXT027SceneZeroCalls(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch26_pre.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(issues) != 6 {
+		t.Fatalf("ch26_pre issues=%#v, want the six intentionally unresolved native effects", issues)
+	}
+	var dialogs []Beat
+	for _, beat := range beats {
+		if beat.Op == "dialog" {
+			dialogs = append(dialogs, beat)
+		}
+	}
+	if len(dialogs) != 6 {
+		t.Fatalf("ch26_pre dialog beats=%d want 6 mapped groups", len(dialogs))
+	}
+	want := []struct{ line, count int }{{0, 4}, {4, 1}, {5, 2}, {7, 1}, {8, 5}, {13, 9}}
+	for i, group := range want {
+		if dialogs[i].Line != group.line || dialogs[i].Count != group.count || dialogs[i].Script != "ch27.json" || dialogs[i].SceneIndex == nil || *dialogs[i].SceneIndex != 0 {
+			t.Fatalf("ch26_pre dialog[%d]=%#v want line=%d count=%d scene0", i, dialogs[i], group.line, group.count)
+		}
+	}
+}
