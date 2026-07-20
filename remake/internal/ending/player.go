@@ -18,16 +18,18 @@ type Player struct {
 	ANI        *afm.Clip
 	Compositor *IndexedCompositor
 
-	Segment   int
-	WaitMS    int
-	ani       *ANIPlayer
-	ramp      *paletteRamp
-	composite *composite40
-	Blocked   *Segment
-	State     PlaybackState
+	Segment      int
+	WaitMS       int
+	ani          *ANIPlayer
+	ramp         *paletteRamp
+	composite    *composite40
+	composite200 *composite200
+	Blocked      *Segment
+	State        PlaybackState
 }
 
 type composite40 struct{ iteration, delay int }
+type composite200 struct{ iteration, delay int }
 
 type paletteRamp struct {
 	value, end, step, delay int
@@ -132,6 +134,22 @@ func (p *Player) Advance(elapsedMS int) (PlaybackState, error) {
 			}
 			continue
 		}
+		if p.composite200 != nil {
+			if err := p.Compositor.Composite200(p.Frames, p.composite200.iteration); err != nil {
+				return p.State, err
+			}
+			p.composite200.iteration++
+			if p.composite200.iteration >= 200 {
+				p.composite200 = nil
+				p.Segment++
+				continue
+			}
+			p.WaitMS = p.composite200.delay
+			if elapsedMS == 0 {
+				return p.State, nil
+			}
+			continue
+		}
 		if p.ani != nil {
 			done, err := p.ani.Advance(p.Compositor, elapsedMS)
 			if err != nil {
@@ -200,6 +218,8 @@ func (p *Player) Advance(elapsedMS int) (PlaybackState, error) {
 				return p.State, nil
 			}
 			p.composite = &composite40{delay: 20}
+		case "native_composite_loop_baseline":
+			p.composite200 = &composite200{delay: 20}
 		default:
 			p.Blocked = s
 			p.State = PlaybackBlocked
