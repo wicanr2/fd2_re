@@ -4269,6 +4269,20 @@ func loadGame() *Game {
 		}
 		if c, err := campaign.Load(assetPath(cp)); err == nil {
 			g.camp = campaign.NewRunner(c)
+			if os.Getenv("FD2_CAMP_CLASS_FIXTURE") != "" {
+				// Bounded headless oracle only: construct one native-eligible
+				// Lv20+ roster record so xvfb can exercise the church target UI.
+				g.partyMembers = map[int]bool{0: true}
+				g.partyJoinOrder = []int{0}
+				g.partyRoster = map[int]battle.Unit{0: {
+					Camp: battle.Own, Name: "索爾", ClsName: "法師", ClassID: 5,
+					Lv: 20, HP: 80, MaxHP: 80, MP: 20, MaxMP: 20,
+					AP: 30, DP: 20, DX: 10, MV: 5, HIT: 10, EV: 10,
+					Portrait: 9, Fig: 0, OnField: true,
+					Inventory: []int{0x58, 0x5a}, Equipped: []bool{true, false},
+					InventorySlots: []int{0x58, 0x5a, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff},
+				}}
+			}
 			// Headless post-handler oracle: materialize a named battle node before
 			// jumping to its following cutscene. Normal campaign play never sets this
 			// variable; it exists so screenshots can exercise the real canonical
