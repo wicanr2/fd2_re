@@ -43,3 +43,21 @@ func TestDlgShortLineSinglePage(t *testing.T) {
 		t.Fatalf("短句應單頁,got=%d", p)
 	}
 }
+
+func TestDlgPaginationStartsSmoothScrollAndBlocksSkip(t *testing.T) {
+	long := battle.DialogLine{Speaker: 0, Text: "這是一段需要分頁顯示的長對白,按下確認後應該平滑往上捲動。"}
+	g := Game{dialog: []battle.DialogLine{long}}
+	if g.dlgAdvance() {
+		t.Fatal("翻到下一頁不應立即換句")
+	}
+	if g.dlgPage != 1 || g.dlgScrollFrom != 0 || g.dlgScrollT != dlgScrollFrames {
+		t.Fatalf("scroll state=%d/%d/%d", g.dlgPage, g.dlgScrollFrom, g.dlgScrollT)
+	}
+	if g.dlgAdvance() || g.dlgPage != 1 {
+		t.Fatal("捲動期間再次 Enter 不應跳過頁面")
+	}
+	g.dlgScrollT = 0
+	if !g.dlgAdvance() || len(g.dialog) != 0 || g.dlgPage != 0 {
+		t.Fatalf("完成最後一頁後未換句: dialog=%d page=%d", len(g.dialog), g.dlgPage)
+	}
+}

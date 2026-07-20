@@ -103,6 +103,8 @@ type Game struct {
 	dlgPhase          int             // 對話框動畫相位:0=常態 1=縮小(換人前收合) 2=展開
 	dlgT              int             // 對話框動畫相位內計時(幀)
 	dlgPage           int             // 目前對白的頁碼(0起);一句>3行時分頁,Enter 先翻頁翻完才換句(使用者回饋 2026-07-05)
+	dlgScrollT        int             // 分頁捲動剩餘幀數(0=靜止)
+	dlgScrollFrom     int             // 分頁捲動開始頁碼
 	fade              *storyFade      // 場景淡出/淡入轉場(doc46 §5.2)
 	transitionReveal  *transitionRevealJob
 	walk              *walkAnim        // 移動動畫(沿路徑逐格走,FDICON 方向幀)
@@ -1371,20 +1373,28 @@ func dlgPageCount(dl battle.DialogLine) int {
 // dlgAdvance 處理 Enter:目前句還有下一頁就翻頁(回 false,不換句);翻完(或本就單頁)就 pop
 // 到下一句、頁碼歸零(回 true=已換句)。修長對白被截斷丟棄的 bug(使用者回饋 2026-07-05)。
 func (g *Game) dlgAdvance() bool {
+	if g.dlgScrollT > 0 { // 捲動尚未完成時，Enter 不得跳過下一頁
+		return false
+	}
 	if len(g.dialog) > 0 && g.dlgPage+1 < dlgPageCount(g.dialog[len(g.dialog)-1]) {
+		g.dlgScrollFrom = g.dlgPage
 		g.dlgPage++
+		g.dlgScrollT = dlgScrollFrames
 		return false
 	}
 	if len(g.dialog) > 0 {
 		g.dialog = g.dialog[:len(g.dialog)-1]
 	}
 	g.dlgPage = 0
+	g.dlgScrollT = 0
+	g.dlgScrollFrom = 0
 	return true
 }
 
 // ── 對話框切換動畫(使用者回饋 2026-07-04 #3:換人說話時框先收合再展開)──
-const dlgNone = -999    // dlgShown 無框哨兵
-const dlgAnimFrames = 7 // 縮/展各自幀數(~0.12s@60fps)
+const dlgNone = -999       // dlgShown 無框哨兵
+const dlgAnimFrames = 7    // 縮/展各自幀數(~0.12s@60fps)
+const dlgScrollFrames = 10 // 分頁文字往上捲動幀數(~0.17s@60fps)
 
 // stepDlgAnim 逐幀推進對話框縮/展動畫:首句直接展開;說話者變更先縮(phase1)再換人展開(phase2)。
 func (g *Game) stepDlgAnim() {
@@ -1447,6 +1457,7 @@ func (g *Game) enterNode() {
 	g.battleEvent, g.battleEventDelay = nil, 0
 	g.dlgShown, g.dlgPhase, g.dlgT = dlgNone, 0, 0
 	g.dlgUpper = nil
+	g.dlgScrollT, g.dlgScrollFrom = 0, 0
 	switch n.Type {
 	case "story", "cutscene": // cutscene(doc50):同一套場景設置,進行中改由 Beats 驅動(見下)
 		g.dialog = nil
@@ -3159,10 +3170,13 @@ func (g *Game) Update() error {
 	if g.m == nil {
 		return nil
 	}
-	g.stepStoryWalks()                           // 場景走位動畫(doc46 §5.3);storyWalks 為空時內部直接返回
-	g.stepActJob()                               // beat「act」姿態循環(doc50);actJob 為空時內部直接返回
-	g.stepFocusUnit()                            // beat「focus_unit」依原版安全帶逐格移動游標／鏡頭
-	g.stepDlgAnim()                              // 對話框換人縮/展動畫(使用者回饋 #3)
+	g.stepStoryWalks() // 場景走位動畫(doc46 §5.3);storyWalks 為空時內部直接返回
+	g.stepActJob()     // beat「act」姿態循環(doc50);actJob 為空時內部直接返回
+	g.stepFocusUnit()  // beat「focus_unit」依原版安全帶逐格移動游標／鏡頭
+	g.stepDlgAnim()    // 對話框換人縮/展動畫(使用者回饋 #3)
+	if g.dlgScrollT > 0 {
+		g.dlgScrollT--
+	}
 	g.stepFade()                                 // 場景淡出/淡入轉場(doc46 §5.2;beat「fade」兩個方向都靠 then 接回下一拍)
 	g.stepTransitionReveal()                     // native 0x24b4d alternating present loop
 	if g.camp != nil && g.storyAutoAdvance > 0 { // 無對白節點自動轉場倒數(行軍蒙太奇)
@@ -3583,11 +3597,25 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				} else {
 					tx = 32
 				}
-				// 自動換行(dlgWrap 與 Enter 分頁共用)。每頁最多 3 行,超過分頁,渲染目前頁 g.dlgPage。
+				// 自動換行(dlgWrap 與 Enter 分頁共用)。Enter 翻頁時保留舊頁與新頁，
+				// 以平滑往上捲動取代瞬間切換(原版文字捲動效果;速度為 remake 可編輯參數)。
 				lines := dlgWrap(dl)
-				start := g.dlgPage * 3
-				for i := 0; i < 3 && start+i < len(lines); i++ {
-					g.font.Draw(screen, lines[start+i], tx, ty+float64(i)*38, 1.7, color.RGBA{0xf0, 0xf4, 0xff, 0xff})
+				drawPage := func(page int, offset float64) {
+					start := page * 3
+					for i := 0; i < 3 && start+i < len(lines); i++ {
+						y := ty + float64(i)*38 + offset
+						if y < by+8 || y > by+184 { // clip 於框內，避免捲出框外
+							continue
+						}
+						g.font.Draw(screen, lines[start+i], tx, y, 1.7, color.RGBA{0xf0, 0xf4, 0xff, 0xff})
+					}
+				}
+				if g.dlgScrollT > 0 {
+					progress := 1 - float64(g.dlgScrollT)/float64(dlgScrollFrames)
+					drawPage(g.dlgScrollFrom, -progress*114)
+					drawPage(g.dlgPage, (1-progress)*114)
+				} else {
+					drawPage(g.dlgPage, 0)
 				}
 			}
 			_ = top
