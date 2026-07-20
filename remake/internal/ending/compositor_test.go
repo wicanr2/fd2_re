@@ -25,3 +25,18 @@ func TestIndexedCompositorCopiesBlitsAndClampsPalette(t *testing.T) {
 		t.Fatalf("palette=%v", got)
 	}
 }
+
+func TestRecoveredPrefixStopsAtNativeOnlyGate(t *testing.T) {
+	frame, transparent := 0, -1
+	c := NewIndexedCompositor()
+	timeline := Timeline{Segments: []Segment{
+		{Op: "blit_frame", Source: "test", Frame: &frame, Target: "offscreen", Stride: Width, Transparent: &transparent},
+		{Op: "copy_buffer", Source: "test", Bytes: Bytes, From: "offscreen", To: "vga"},
+		{Op: "native_call_opaque", Source: "gate"},
+	}}
+	frames := []fdother.Frame{{X: 0, Y: 0, Width: 1, Height: 1, Pixels: []byte{1, 0, 1, 0, 0, 7}}}
+	stopped, err := c.RunRecoveredPrefix(timeline, frames)
+	if err == nil || stopped != 2 || c.VGA[0] != 7 {
+		t.Fatalf("stopped=%d err=%v pixel=%d", stopped, err, c.VGA[0])
+	}
+}
