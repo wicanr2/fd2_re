@@ -13,6 +13,8 @@ assets/*
 !assets/maps/
 assets/maps/*/*.png
 assets/maps/*/*.ogg
+# 例外:ending compositor 的反組譯 choreography JSON；不含原版圖像/字型。
+!assets/endings/
 web/assets/
 web/fd2.wasm
 *.wasm
