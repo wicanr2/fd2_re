@@ -75,6 +75,9 @@ type Game struct {
 	prepIDs          []int               // preparation UI 角色順序（JOIN chronology）
 	prepSel          int                 // preparation UI 游標
 	prepLimit        int                 // preparation UI 原版出擊上限（15，末段 19）
+	churchSel        int                 // church service menu cursor (0..3)
+	churchMode       string              // menu / revive / class
+	churchIDs        []int               // current church candidate ids
 	handlerChapter   int                 // 原版 [0x53c03]；set_chapter 與無立即數 LOADCH 的 resource chapter
 	storyWalks       []*storyWalkJob     // 場景走位動畫佇列(doc46 §5.3);逐幀推進、完成後移除
 	storyAutoAdvance int                 // story 節點無對白時的自動轉場倒數幀(doc46 行軍蒙太奇,0=不自動)
@@ -1455,6 +1458,8 @@ func (g *Game) enterNode() {
 		// 節點邊界 UI；preparation 可在此安全 F5 存檔，Enter 才進下一章 pre handler。
 		if n.Type == "preparation" {
 			g.setupPreparation(n)
+		} else {
+			g.setupChurch()
 		}
 	case "shop":
 		g.dialog, g.st, g.sel = nil, nil, nil
@@ -1801,6 +1806,25 @@ func (g *Game) preparationSelected() int {
 	return n
 }
 
+func (g *Game) setupChurch() {
+	g.churchSel = 0
+	g.churchMode = "menu"
+	g.churchIDs = nil
+}
+
+func (g *Game) churchCandidates(mode string) []int {
+	if mode == "revive" {
+		ids := make([]int, 0)
+		for _, id := range g.partyJoinOrder {
+			if u, ok := g.partyRoster[id]; ok && campaign.CanRevive(&u) {
+				ids = append(ids, id)
+			}
+		}
+		return ids
+	}
+	return campaign.ClassChangeCandidates(g.partyRoster, g.partyJoinOrder)
+}
+
 // reorderScenarioParty applies the original JOIN chronology before either a
 // battle or handler cutscene constructs its runtime unit array. Deployment
 // cells stay attached to their characters; only slot construction changes.
@@ -1983,9 +2007,61 @@ func (g *Game) campInput() bool {
 			}
 			return true
 		}
-		if enter || inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-			g.camp.Advance("")
-			g.enterNode()
+		if g.churchMode == "menu" {
+			if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.churchSel > 0 {
+				g.churchSel--
+			}
+			if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.churchSel < 3 {
+				g.churchSel++
+			}
+			if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+				g.camp.Advance("")
+				g.enterNode()
+				return true
+			}
+			if enter {
+				switch g.churchSel {
+				case 2, 3: // native 0x30dc3 revive / 0x31385 class-change services
+					g.churchMode = map[int]string{2: "revive", 3: "class"}[g.churchSel]
+					g.churchIDs = g.churchCandidates(g.churchMode)
+					g.churchSel = 0
+				default:
+					g.msg = "此教會服務尚待原版 callee 完整接線"
+				}
+			}
+			return true
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+			g.churchMode = "menu"
+			g.churchIDs = nil
+			g.churchSel = 0
+			return true
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.churchSel > 0 {
+			g.churchSel--
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.churchSel+1 < len(g.churchIDs) {
+			g.churchSel++
+		}
+		if enter && len(g.churchIDs) > 0 {
+			id := g.churchIDs[g.churchSel]
+			u := g.partyRoster[id]
+			if g.churchMode == "revive" {
+				if u.ClassID < 0 || u.ClassID >= len(g.reviveFeeRates) {
+					g.msg = fmt.Sprintf("復活費率缺少 class=%d", u.ClassID)
+				} else if gold, cost, err := campaign.ReviveUnit(g.gold, &u, g.reviveFeeRates[u.ClassID]); err != nil {
+					g.msg = fmt.Sprintf("復活費用 %d G：%v", cost, err)
+				} else {
+					g.gold, g.partyRoster[id] = gold, u
+					g.msg = fmt.Sprintf("%s 已復活（-%d G）", u.Name, cost)
+					g.churchIDs = g.churchCandidates("revive")
+					if g.churchSel >= len(g.churchIDs) {
+						g.churchSel = 0
+					}
+				}
+			} else {
+				g.msg = "轉職道具分支與能力寫回待接（原版 0x31860/0x2a2e8）"
+			}
 		}
 		return true
 	case "shop":
@@ -3619,9 +3695,40 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 		}
 		g.font.Draw(screen, "F5 保存戰況", 84, 88+h-24, 0.9, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
 	case n.Type == "church":
-		fillBox(180, 165, 280, 90)
-		g.font.Draw(screen, n.Text, 205, 180, 1.2, color.RGBA{0xff, 0xe0, 0x90, 0xff})
-		g.font.Draw(screen, "Enter／ESC 返回城鎮", 205, 218, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
+		if g.churchMode == "menu" {
+			fillBox(150, 110, 340, 180)
+			g.font.Draw(screen, n.Text, 182, 126, 1.2, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+			labels := []string{"服務一（待 callee）", "服務二（待 callee）", "復活", "轉職"}
+			for i, label := range labels {
+				pre, c := "　", color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
+				if i == g.churchSel {
+					pre, c = "▶", color.RGBA{0xff, 0xff, 0xff, 0xff}
+				}
+				g.font.Draw(screen, pre+label, 188, 158+float64(i)*24, 1.0, c)
+			}
+			g.font.Draw(screen, "Enter 選擇／ESC 返回城鎮", 188, 266, 0.9, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
+		} else {
+			h := 120 + float64(len(g.churchIDs))*26
+			fillBox(120, 90, 400, h)
+			title := "復活"
+			if g.churchMode == "class" {
+				title = "轉職"
+			}
+			g.font.Draw(screen, title, 150, 108, 1.2, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+			if len(g.churchIDs) == 0 {
+				g.font.Draw(screen, "目前沒有符合條件的角色", 150, 150, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
+			} else {
+				for i, id := range g.churchIDs {
+					pre, c := "　", color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
+					if i == g.churchSel {
+						pre, c = "▶", color.RGBA{0xff, 0xff, 0xff, 0xff}
+					}
+					u := g.partyRoster[id]
+					g.font.Draw(screen, fmt.Sprintf("%s%s Lv%d", pre, u.Name, u.Lv), 150, 150+float64(i)*26, 1.0, c)
+				}
+			}
+			g.font.Draw(screen, "Enter 執行／ESC 返回服務選單", 150, 108+h-24, 0.9, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
+		}
 	case n.Type == "ending":
 		// Ending 是獨立頁，不可讓上一張 battle map／HUD 從半透明框後露出。
 		screen.Fill(color.RGBA{0, 0, 0, 0xff})
