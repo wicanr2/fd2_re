@@ -13,11 +13,19 @@
     {"op": "blit_frame", "source": "0x2bdfa", "frame": 9, "target": "vga", "stride": 320, "transparent": -1},
     {"op": "palette_ramp", "source": "0x2be18", "start": 63, "end": 0, "step": -1, "delay_ms": 4},
     {"op": "delay_ms", "source": "0x2be37", "ms": 2000},
-    {"op": "native_text_branch_opaque", "source": "0x2be44", "chapter_equals": 26, "then_args": [[4, 17]], "else_args": [[37, 2], [21, 3], [26, 4], [105, 5], [32, 6]]},
+    {"op": "native_text_branch_opaque", "source": "0x2be44", "chapter_equals": 26, "then_args": [[4, 17]], "else_dialogue": [
+      {"visual_resource_index": 37, "source_dat": "FDTXT_030", "script": "ch30.json", "string_index": 2, "scene_index": 1, "line": 0, "count": 6},
+      {"visual_resource_index": 21, "source_dat": "FDTXT_030", "script": "ch30.json", "string_index": 3, "scene_index": 1, "line": 6, "count": 2},
+      {"visual_resource_index": 26, "source_dat": "FDTXT_030", "script": "ch30.json", "string_index": 4, "scene_index": 1, "line": 8, "count": 2},
+      {"visual_resource_index": 105, "source_dat": "FDTXT_030", "script": "ch30.json", "string_index": 5, "scene_index": 1, "line": 10, "count": 2},
+      {"visual_resource_index": 32, "source_dat": "FDTXT_030", "script": "ch30.json", "string_index": 6, "scene_index": 1, "line": 12, "count": 1}
+    ]},
     {"op": "delay_ms", "source": "0x2be8f", "ms": 500},
     {"op": "palette_ramp_repeat", "source": "0x2bea0", "start": 63, "end": 0, "step": -1, "delay_ms": 4, "repeat": 3, "tail_delay_ms": 200},
     {"op": "blit_frame_sequence", "source": "0x2bee0", "first_frame": 12, "last_frame": 108, "target": "vga", "stride": 320, "transparent": -1, "delay_ms": 20},
-    {"op": "native_text_branch_opaque", "source": "0x2bf1c", "chapter_equals": 26, "then_args": [[21, 18], [24, 19], [26, 20]], "else_args": [[45, 7]]},
+    {"op": "native_text_branch_opaque", "source": "0x2bf1c", "chapter_equals": 26, "then_args": [[21, 18], [24, 19], [26, 20]], "else_dialogue": [
+      {"visual_resource_index": 45, "source_dat": "FDTXT_030", "script": "ch30.json", "string_index": 7, "scene_index": 1, "line": 13, "count": 1}
+    ]},
     {"op": "delay_ms", "source": "0x2bf4f", "ms": 2000},
     {"op": "native_composite_loop_opaque", "source": "0x2bf60", "iterations": 40, "stride": 640, "delay_ms": 20, "first_frame": "floor(i/4)+1", "second_frame": "(i%4)+5", "reason": "native buffer offsets shift; no renderer adapter yet"},
     {"op": "native_composite_loop_opaque", "source": "0x2c0c5", "iterations": 200, "stride": 640, "delay_ms": 20, "first_frame": "floor(i/4)+1", "second_frame": "(i%4)+5", "palette_helper": "0x11d40(0,255,edi); edi=0 for first 136 passes, then 1", "reason": "native buffer/palette helper semantics not yet rendered"}
