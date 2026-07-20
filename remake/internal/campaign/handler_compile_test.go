@@ -785,6 +785,39 @@ func TestCompileLoadCHBindingExposesSharedTailDialogueGap(t *testing.T) {
 	}
 }
 
+func TestCompileChapter6PreUsesRecoveredChapter7TextGroups(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch06_pre.json")
+	if err != nil || len(issues) != 0 {
+		t.Fatalf("ch06_pre err=%v issues=%#v", err, issues)
+	}
+	seen := map[string]Beat{}
+	dialogs := make([]Beat, 0, 8)
+	for _, beat := range beats {
+		seen[beat.Source] = beat
+		if beat.Op == "dialog" {
+			dialogs = append(dialogs, beat)
+		}
+	}
+	if len(dialogs) != 8 {
+		t.Fatalf("FDTXT_007 #0/#1 dialogs=%d, want 2+6", len(dialogs))
+	}
+	if load := seen["0x33173"]; load.LoadCH == nil || load.LoadCH.Chapter != 6 || load.LoadCH.Map != "assets/maps/map6" || load.LoadCH.Script != "assets/story/ch07.json" || load.LoadCH.PartyScenario != "assets/scenarios/ch07.json" {
+		t.Fatalf("ch06_pre LOADCH = %#v", load.LoadCH)
+	}
+	if pan := seen["0x331c5"]; pan.X != 192 || pan.Y != 24 || !pan.TileStep {
+		t.Fatalf("ch06_pre first PAN = %#v", pan)
+	}
+	if pan := seen["0x331db"]; pan.X != 192 || pan.Y != 0 || !pan.TileStep {
+		t.Fatalf("ch06_pre second PAN = %#v", pan)
+	}
+	if act := seen["0x331cf"]; len(act.Acting) == 0 || len(act.Acting[0].Units) == 0 {
+		t.Fatalf("ch06_pre acting28 = %#v", act.Acting)
+	}
+	if act := seen["0x331e5"]; len(act.Acting) == 0 || len(act.Acting[0].Units) == 0 {
+		t.Fatalf("ch06_pre acting29 = %#v", act.Acting)
+	}
+}
+
 func TestCompileHandlerScriptRejectsActingOutsideActiveLoadCHSlots(t *testing.T) {
 	slot30 := 30
 	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{
