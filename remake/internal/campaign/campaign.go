@@ -124,6 +124,26 @@ type HandlerLayout struct {
 	CamY  int                 `json:"cam_y"`
 }
 
+// HandlerIndexedTransition records the recovered 0x24618 double-buffer
+// choreography. Coordinates and source stepping are kept explicit because
+// this is not a generic fade; the PNG renderer may only execute it once an
+// indexed descriptor adapter is available.
+type HandlerIndexedTransition struct {
+	TileX             int `json:"tile_x"`
+	TileY             int `json:"tile_y"`
+	SourceX           int `json:"source_x"`
+	SourceStep        int `json:"source_step"`
+	Frames            int `json:"frames"`
+	FrameDelayMs      int `json:"frame_delay_ms"`
+	TailDelayMs       int `json:"tail_delay_ms"`
+	PaletteRangeStart int `json:"palette_range_start"`
+	PaletteRangeEnd   int `json:"palette_range_end"`
+	PaletteDeltaStart int `json:"palette_delta_start"`
+	PaletteDeltaEnd   int `json:"palette_delta_end"`
+	PaletteDeltaStep  int `json:"palette_delta_step"`
+	PaletteDelayMs    int `json:"palette_delay_ms"`
+}
+
 // HandlerUnitPresent is the evidence-backed shape of native 0x22253 when the
 // caller passes the same source and destination coordinate. The native helper
 // presents six frames (10ms each), followed by two one-tick waits. Keeping
@@ -143,14 +163,15 @@ type HandlerUnitPresent struct {
 // 一比一對映原版 EXE handler 的呼叫序列(LOADCH/PAN/TXT/ACT/SPAWN/JOIN/BGM/FADE/DELAY)。
 // 每個 op 只用到自己相關的欄位,其餘留零值即可(同 Node 的稀疏欄位風格)。
 type Beat struct {
-	Op             string                 `json:"op"`               // loadch/pan/walk/dialog/act/spawn/spawn_intro/deactivate_unit/reset_pose/redraw/...
-	Source         string                 `json:"source,omitempty"` // original handler call-site; empty for authored-only beats
-	Condition      *BeatCondition         `json:"condition,omitempty"`
-	Then           []Beat                 `json:"then,omitempty"`
-	Else           []Beat                 `json:"else,omitempty"`
-	RuntimeContext *HandlerRuntimeContext `json:"runtime_context,omitempty"`
-	Layout         *HandlerLayout         `json:"layout,omitempty"`
-	UnitPresent    *HandlerUnitPresent    `json:"unit_present,omitempty"`
+	Op                string                    `json:"op"`               // loadch/pan/walk/dialog/act/spawn/spawn_intro/deactivate_unit/reset_pose/redraw/...
+	Source            string                    `json:"source,omitempty"` // original handler call-site; empty for authored-only beats
+	Condition         *BeatCondition            `json:"condition,omitempty"`
+	Then              []Beat                    `json:"then,omitempty"`
+	Else              []Beat                    `json:"else,omitempty"`
+	RuntimeContext    *HandlerRuntimeContext    `json:"runtime_context,omitempty"`
+	Layout            *HandlerLayout            `json:"layout,omitempty"`
+	IndexedTransition *HandlerIndexedTransition `json:"indexed_transition,omitempty"`
+	UnitPresent       *HandlerUnitPresent       `json:"unit_present,omitempty"`
 
 	// loadch: atomically replace the active map, FDFIELD roster and FDTXT
 	// story context.  It is deliberately a nested required state object so a

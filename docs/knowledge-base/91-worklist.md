@@ -525,6 +525,7 @@
 - [~] **ch29 post persistent cleanup**：`0x25089` 已 lower 為 editable `reset_persistent_roster_state`，並以 runtime/campaign regression 鎖定清 transient、回填 MaxHP/MaxMP；0x24618 transition、0x2bce5 ending renderer 仍待。
 - [~] **ch29 post tick wait**：`0x17aa9(1)` 已 lower 成一個 editable delay tick 並通過 compiler regression；仍待 0x24618 indexed transition 與 0x2bce5 ending renderer。
 - [~] **ch29 post dynamic palette loop**：`0x11df2(EBX,255,0)` 已依 direct 0x3e→0 loop materialize 成 63 組 palette/delay beats 並通過 regression；仍待 0x24618、load_ch_text、layout/pan mapping 與專用 ending renderer。
+- [~] **0x24618 indexed transition metadata**：已保存 tile/source/frame/timing 與 32-step 全 palette brightness ramp（delta 0→62, step2）之 editable schema、binding resolver/compiler regression；descriptor/double-buffer PNG adapter 尚未完成，故仍 fail-closed。
 - [~] **ch29 post persistent roster cleanup**：`0x25089` 已實作獨立 `reset_persistent_roster_state` compiler/runtime beat（清 transient、MaxHP/MaxMP 回填），避免誤併入 `sync_party`；需補 binding、測試並接到正確 town/shop/preparation 節點。
 - [~] **ch29 pre native unit presentation**：`0x22253` direct RE 修正為 6×(render+present+10ms) 後再 2 ticks；現有 `layout_units` 不等價，需新增可編輯 `native_22253` adapter，完成前維持 fail-closed。
 - [~] **ch29 post BIOS tick wait**：`0x17aa9` 已證實讀 DOS BIOS tick（約54.9ms），lower 為每 tick 3 個 remake frames 並通過 compiler regression；若要逐毫秒重現，需在 runtime 加 BIOS-tick clock adapter。

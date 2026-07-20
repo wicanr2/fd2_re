@@ -59,12 +59,13 @@ type HandlerBindings struct {
 	// Every resolver receives the full input beat, including source.addr.  This
 	// permits explicit per-call-site bindings when an index is reused after a
 	// later loadch segment.
-	Pan      func(HandlerBeat) (HandlerPoint, bool)
-	Dialog   func(HandlerBeat) (HandlerDialog, bool)
-	Acting   func(HandlerBeat) ([]ActingFrame, bool)
-	LoadCH   func(HandlerBeat) (LoadCHState, bool)
-	Layout   func(HandlerBeat) (HandlerLayout, bool)
-	Resource func(HandlerBeat) (HandlerResource, bool)
+	Pan        func(HandlerBeat) (HandlerPoint, bool)
+	Dialog     func(HandlerBeat) (HandlerDialog, bool)
+	Acting     func(HandlerBeat) ([]ActingFrame, bool)
+	LoadCH     func(HandlerBeat) (LoadCHState, bool)
+	Layout     func(HandlerBeat) (HandlerLayout, bool)
+	Transition func(HandlerBeat) (HandlerIndexedTransition, bool)
+	Resource   func(HandlerBeat) (HandlerResource, bool)
 	// RuntimeContext is present for a handler entered with an existing canonical
 	// unit array (not through LOADCH), such as a post-battle handler. It makes
 	// slot validation and SPAWN cardinality explicit instead of guessing from a
@@ -607,6 +608,22 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 				}
 				beat := runtime(input, "transition_reveal")
 				beat.RevealFrames, beat.RevealDelayMs = frames, 20
+				beats = append(beats, beat)
+				continue
+			}
+			if input.NativeTarget == "0x24618" {
+				if bindings.Transition == nil {
+					issue(i, input, "0x24618 indexed transition requires an explicit editable binding")
+					continue
+				}
+				transition, ok := bindings.Transition(input)
+				if !ok || transition.Frames != 9 || transition.FrameDelayMs != 5 || transition.TailDelayMs != 500 || transition.PaletteRangeStart != 0 || transition.PaletteRangeEnd != 255 || transition.PaletteDeltaStart != 0 || transition.PaletteDeltaEnd != 62 || transition.PaletteDeltaStep != 2 || transition.PaletteDelayMs != 4 {
+					issue(i, input, "0x24618 binding lacks recovered 9-frame/500ms/palette timing")
+					continue
+				}
+				beat := runtime(input, "indexed_transition")
+				copyTransition := transition
+				beat.IndexedTransition = &copyTransition
 				beats = append(beats, beat)
 				continue
 			}

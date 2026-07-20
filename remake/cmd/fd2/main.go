@@ -835,6 +835,15 @@ func (g *Game) beatStart(b campaign.Beat) {
 		}
 		g.loadErr = "beat unit_present: native 0x22253 renderer adapter未完成"
 		return
+	case "indexed_transition":
+		if b.IndexedTransition == nil {
+			g.loadErr = "beat indexed_transition:缺少 transition payload"
+			return
+		}
+		// Keep the descriptor/double-buffer operation fail-closed until the
+		// indexed renderer is available; it must not silently become a fade.
+		g.loadErr = "beat indexed_transition: native 0x24618 renderer adapter未完成"
+		return
 	case "layout_units":
 		if b.Layout == nil || len(b.Layout.Units) == 0 {
 			g.loadErr = "beat layout_units:缺少可編輯的 runtime layout"
