@@ -23,8 +23,16 @@ func TestNative2BCE5TimelineIsRecoveredButNotPlayable(t *testing.T) {
 	if len(blocks) != 5 || blocks[0] != (DialogueBlock{VisualResourceIndex: 37, SourceDAT: "FDTXT_030", Script: "ch30.json", StringIndex: 2, SceneIndex: 1, Line: 0, Count: 6}) || blocks[4].StringIndex != 6 || blocks[4].Line != 12 || blocks[4].Count != 1 {
 		t.Fatalf("first ending dialogue branch = %#v", blocks)
 	}
+	blocks = timeline.Segments[9].ThenDialogue
+	if len(blocks) != 1 || blocks[0] != (DialogueBlock{VisualResourceIndex: 4, SourceDAT: "FDTXT_027", Script: "ch27.json", StringIndex: 17, SceneIndex: 3, Line: 1, Count: 1}) {
+		t.Fatalf("first bad-ending dialogue branch = %#v", blocks)
+	}
 	blocks = timeline.Segments[13].ElseDialogue
 	if len(blocks) != 1 || blocks[0] != (DialogueBlock{VisualResourceIndex: 45, SourceDAT: "FDTXT_030", Script: "ch30.json", StringIndex: 7, SceneIndex: 1, Line: 13, Count: 1}) {
 		t.Fatalf("second ending dialogue branch = %#v", blocks)
+	}
+	blocks = timeline.Segments[13].ThenDialogue
+	if len(blocks) != 3 || blocks[0].StringIndex != 18 || blocks[0].Line != 2 || blocks[2].StringIndex != 20 || blocks[2].Line != 4 {
+		t.Fatalf("second bad-ending dialogue branch = %#v", blocks)
 	}
 }

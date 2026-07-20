@@ -13,7 +13,9 @@
     {"op": "blit_frame", "source": "0x2bdfa", "frame": 9, "target": "vga", "stride": 320, "transparent": -1},
     {"op": "palette_ramp", "source": "0x2be18", "start": 63, "end": 0, "step": -1, "delay_ms": 4},
     {"op": "delay_ms", "source": "0x2be37", "ms": 2000},
-    {"op": "native_text_branch_opaque", "source": "0x2be44", "chapter_equals": 26, "then_args": [[4, 17]], "else_dialogue": [
+    {"op": "native_text_branch_opaque", "source": "0x2be44", "chapter_equals": 26, "then_dialogue": [
+      {"visual_resource_index": 4, "source_dat": "FDTXT_027", "script": "ch27.json", "string_index": 17, "scene_index": 3, "line": 1, "count": 1}
+    ], "else_dialogue": [
       {"visual_resource_index": 37, "source_dat": "FDTXT_030", "script": "ch30.json", "string_index": 2, "scene_index": 1, "line": 0, "count": 6},
       {"visual_resource_index": 21, "source_dat": "FDTXT_030", "script": "ch30.json", "string_index": 3, "scene_index": 1, "line": 6, "count": 2},
       {"visual_resource_index": 26, "source_dat": "FDTXT_030", "script": "ch30.json", "string_index": 4, "scene_index": 1, "line": 8, "count": 2},
@@ -23,7 +25,11 @@
     {"op": "delay_ms", "source": "0x2be8f", "ms": 500},
     {"op": "palette_ramp_repeat", "source": "0x2bea0", "start": 63, "end": 0, "step": -1, "delay_ms": 4, "repeat": 3, "tail_delay_ms": 200},
     {"op": "blit_frame_sequence", "source": "0x2bee0", "first_frame": 12, "last_frame": 108, "target": "vga", "stride": 320, "transparent": -1, "delay_ms": 20},
-    {"op": "native_text_branch_opaque", "source": "0x2bf1c", "chapter_equals": 26, "then_args": [[21, 18], [24, 19], [26, 20]], "else_dialogue": [
+    {"op": "native_text_branch_opaque", "source": "0x2bf1c", "chapter_equals": 26, "then_dialogue": [
+      {"visual_resource_index": 21, "source_dat": "FDTXT_027", "script": "ch27.json", "string_index": 18, "scene_index": 3, "line": 2, "count": 1},
+      {"visual_resource_index": 24, "source_dat": "FDTXT_027", "script": "ch27.json", "string_index": 19, "scene_index": 3, "line": 3, "count": 1},
+      {"visual_resource_index": 26, "source_dat": "FDTXT_027", "script": "ch27.json", "string_index": 20, "scene_index": 3, "line": 4, "count": 1}
+    ], "else_dialogue": [
       {"visual_resource_index": 45, "source_dat": "FDTXT_030", "script": "ch30.json", "string_index": 7, "scene_index": 1, "line": 13, "count": 1}
     ]},
     {"op": "delay_ms", "source": "0x2bf4f", "ms": 2000},
