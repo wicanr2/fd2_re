@@ -202,7 +202,9 @@ type Beat struct {
 	Chapter *int `json:"chapter,omitempty"`
 
 	// grant_item: original unsigned-byte item identity.
-	ItemID *int `json:"item_id,omitempty"`
+	ItemID     *int `json:"item_id,omitempty"`
+	ResourceID *int `json:"resource_id,omitempty"`
+	SFXIndex   *int `json:"sfx_index,omitempty"`
 }
 
 // Node 節點。Type: story / cutscene / battle / town / preparation / church / choice /

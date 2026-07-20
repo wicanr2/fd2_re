@@ -47,6 +47,8 @@ type HandlerBeat struct {
 	Group        *int               `json:"group,omitempty"`
 	CharID       *int               `json:"char_id,omitempty"`
 	ItemID       *int               `json:"item_id,omitempty"`
+	ResourceID   *int               `json:"resource_id,omitempty"`
+	SFXIndex     *int               `json:"sfx_index,omitempty"`
 	Track        *int               `json:"track,omitempty"`
 	Loop         *int               `json:"loop,omitempty"`
 	Direction    *int               `json:"direction,omitempty"`

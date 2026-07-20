@@ -59,11 +59,12 @@ type HandlerBindings struct {
 	// Every resolver receives the full input beat, including source.addr.  This
 	// permits explicit per-call-site bindings when an index is reused after a
 	// later loadch segment.
-	Pan    func(HandlerBeat) (HandlerPoint, bool)
-	Dialog func(HandlerBeat) (HandlerDialog, bool)
-	Acting func(HandlerBeat) ([]ActingFrame, bool)
-	LoadCH func(HandlerBeat) (LoadCHState, bool)
-	Layout func(HandlerBeat) (HandlerLayout, bool)
+	Pan      func(HandlerBeat) (HandlerPoint, bool)
+	Dialog   func(HandlerBeat) (HandlerDialog, bool)
+	Acting   func(HandlerBeat) ([]ActingFrame, bool)
+	LoadCH   func(HandlerBeat) (LoadCHState, bool)
+	Layout   func(HandlerBeat) (HandlerLayout, bool)
+	Resource func(HandlerBeat) (HandlerResource, bool)
 	// RuntimeContext is present for a handler entered with an existing canonical
 	// unit array (not through LOADCH), such as a post-battle handler. It makes
 	// slot validation and SPAWN cardinality explicit instead of guessing from a
@@ -460,6 +461,28 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			itemID := *input.ItemID
 			beat.ItemID = &itemID
 			beats = append(beats, beat)
+		case "load_res", "play_sfx", "release_res":
+			if bindings.Resource == nil {
+				issue(i, input, input.Op+" requires an explicit resource binding")
+				continue
+			}
+			resource, ok := bindings.Resource(input)
+			if !ok || resource.ResourceID < 0 {
+				issue(i, input, input.Op+" has no valid resource binding")
+				continue
+			}
+			if input.Op == "play_sfx" && (resource.SFXIndex == nil || *resource.SFXIndex < 0) {
+				issue(i, input, "play_sfx requires an explicit non-negative sfx_index")
+				continue
+			}
+			beat := runtime(input, input.Op)
+			resourceID := resource.ResourceID
+			beat.ResourceID = &resourceID
+			if resource.SFXIndex != nil {
+				index := *resource.SFXIndex
+				beat.SFXIndex = &index
+			}
+			beats = append(beats, beat)
 		case "palette_fade":
 			// Original 0x1f525 is the whole-screen palette fade-in.  It has no
 			// chapter-local argument, so the generic runtime representation is
@@ -468,6 +491,16 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			beat.Out = false
 			beats = append(beats, beat)
 		case "unknown":
+			if input.NativeTarget == "0x37416" && bindings.Resource != nil {
+				resource, ok := bindings.Resource(input)
+				if ok && resource.ResourceID >= 0 {
+					beat := runtime(input, "release_res")
+					resourceID := resource.ResourceID
+					beat.ResourceID = &resourceID
+					beats = append(beats, beat)
+					continue
+				}
+			}
 			// 0x11df2 is a proven one-shot VGA DAC range update. Handler
 			// exports keep it as unknown until this exact native signature is
 			// recognized; it must not be confused with the black-overlay fade.

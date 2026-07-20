@@ -140,6 +140,8 @@ type Game struct {
 	sfxSwing           []byte                // 戰鬥揮擊音(doc36 戰鬥池 #48-64 sub0,七池共用)
 	sfxImpact          []byte                // 命中音(近似:最短最尖池;attack_id→sfx 對照表 doc36 未 RE)
 	sfxDeath           []byte                // 陣亡/重擊音(近似:最長池)
+	sfxTransition      []byte                // FDOTHER #88 sub1: ch24 transition SFX
+	handlerResource    int                   // currently loaded handler resource-table id
 	prevCurX, prevCurY int                   // 游標移動音偵測
 	aiBusy             bool                  // AI 回合進行中(逐單位行走動畫)
 	deathRewarded      map[*battle.Unit]bool // 每個死亡 transition 的 reward 只執行一次
@@ -468,7 +470,12 @@ func (g *Game) stepTransitionReveal() {
 		}
 		return
 	}
-	job.ticks = job.delay
+	// The current tick already presents one frame; wait only the remaining
+	// delay ticks so a 20ms native delay maps to one 60Hz update, not two.
+	job.ticks = job.delay - 1
+	if job.ticks < 0 {
+		job.ticks = 0
+	}
 }
 
 // stepCamPan 逐幀推進 beat「pan」鏡頭位移；原版模式逐 tile、X-first，
@@ -1091,6 +1098,31 @@ func (g *Game) beatStart(b campaign.Beat) {
 			delay = 1
 		}
 		g.transitionReveal = &transitionRevealJob{remaining: b.RevealFrames, delay: delay, then: g.beatAdvance}
+	case "load_res":
+		if b.ResourceID == nil || *b.ResourceID < 0 {
+			g.loadErr = "beat load_res:缺少 resource_id"
+			return
+		}
+		g.handlerResource = *b.ResourceID
+		g.beatAdvance()
+	case "play_sfx":
+		if b.ResourceID == nil || b.SFXIndex == nil || *b.ResourceID != 88 || *b.SFXIndex != 1 {
+			g.loadErr = fmt.Sprintf("beat play_sfx:未映射 resource=%v index=%v", b.ResourceID, b.SFXIndex)
+			return
+		}
+		if g.handlerResource != 88 {
+			g.loadErr = fmt.Sprintf("beat play_sfx:resource handle=%d want 88", g.handlerResource)
+			return
+		}
+		g.playRaw(g.sfxTransition)
+		g.beatAdvance()
+	case "release_res":
+		if b.ResourceID == nil || *b.ResourceID != g.handlerResource {
+			g.loadErr = fmt.Sprintf("beat release_res:resource=%v handle=%d", b.ResourceID, g.handlerResource)
+			return
+		}
+		g.handlerResource = 0
+		g.beatAdvance()
 	case "palette_update":
 		// The current renderer stores RGB PNGs instead of the original VGA
 		// indexed surface. ch22's recovered calls all use delta=0, so their
@@ -1409,6 +1441,7 @@ func (g *Game) enterNode() {
 	g.walkFirst, g.followWalk, g.camMaxY = false, false, 0
 	g.camPan, g.focusJob, g.actJob, g.beats, g.beatIdx, g.beatDelay = nil, nil, nil, nil, -1, 0
 	g.transitionReveal = nil
+	g.handlerResource = 0
 	g.battleEvent, g.battleEventDelay = nil, 0
 	g.dlgShown, g.dlgPhase, g.dlgT = dlgNone, 0, 0
 	g.dlgUpper = nil
@@ -4335,9 +4368,10 @@ func loadGame() *Game {
 	g.rng = rand.New(rand.NewSource(seed))
 	g.sfx = loadSFX()
 	// 戰鬥音效:揮擊/命中/陣亡三段(真素材;attack_id→池 精確對照 doc36 未 RE,故命中/陣亡池為近似選擇)
-	g.sfxSwing = loadWav("assets/sfx/battle_48_00.wav")  // 揮擊(池 sub0,七池共用)
-	g.sfxImpact = loadWav("assets/sfx/battle_64_00.wav") // 命中(最短最尖池)
-	g.sfxDeath = loadWav("assets/sfx/battle_88_00.wav")  // 陣亡/重擊(最長池)
+	g.sfxSwing = loadWav("assets/sfx/battle_48_00.wav")      // 揮擊(池 sub0,七池共用)
+	g.sfxImpact = loadWav("assets/sfx/battle_64_00.wav")     // 命中(最短最尖池)
+	g.sfxDeath = loadWav("assets/sfx/battle_88_00.wav")      // 陣亡/重擊(最長池)
+	g.sfxTransition = loadWav("assets/sfx/battle_88_01.wav") // ch24 FDOTHER #88 sub1
 	// 戰場 BGM:doc12 推定 track18=戰鬥被使用者實聽推翻(18=商店音樂);戰鬥曲號待聽辨,先不播錯曲
 	if os.Getenv("FD2_TITLE") == "1" || (g.shotPath == "" && os.Getenv("FD2_TITLE") != "0") { // 開頭動畫+主選單(headless 截圖預設跳過)
 		if ta := loadTitleAssets(); ta != nil {
