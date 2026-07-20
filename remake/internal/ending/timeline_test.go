@@ -22,6 +22,10 @@ func TestNative2BCE5TimelineIsRecoveredButNotPlayable(t *testing.T) {
 	if frame := timeline.Segments[0].Frame; frame == nil || *frame != 0 || timeline.Segments[0].Target != "offscreen" || timeline.Segments[0].Stride != 320 || timeline.Segments[0].Transparent == nil || *timeline.Segments[0].Transparent != -1 {
 		t.Fatalf("first native blit = %#v", timeline.Segments[0])
 	}
+	ani := timeline.Segments[3]
+	if ani.Op != "ani_play" || ani.ANIResource == nil || *ani.ANIResource != 2 || ani.FrameDelayMs != 100 || ani.Skippable == nil || *ani.Skippable {
+		t.Fatalf("ANI prefix = %#v", ani)
+	}
 	blocks := timeline.Segments[9].ElseDialogue
 	if len(blocks) != 5 || blocks[0] != (DialogueBlock{PortraitID: 37, SourceDAT: "FDTXT_030", Script: "ch30.json", StringIndex: 2, SceneIndex: 1, Line: 0, Count: 6}) || blocks[4].StringIndex != 6 || blocks[4].Line != 12 || blocks[4].Count != 1 {
 		t.Fatalf("first ending dialogue branch = %#v", blocks)

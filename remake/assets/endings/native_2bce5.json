@@ -7,7 +7,7 @@
     {"op": "blit_frame", "source": "0x2bd8b", "frame": 0, "target": "offscreen", "stride": 320, "transparent": -1},
     {"op": "copy_buffer", "source": "0x2bda3", "bytes": 64000, "from": "offscreen", "to": "vga"},
     {"op": "delay_ms", "source": "0x2bdbb", "ms": 1000},
-    {"op": "native_call_opaque", "source": "0x2bdc8", "target": "0x20421", "args": [2, 100, 0]},
+    {"op": "ani_play", "source": "0x2bdc8", "resource": 2, "frame_delay_ms": 100, "skippable": false},
     {"op": "palette_update", "source": "0x2bdd6", "start": 0, "end": 255, "value": 63},
     {"op": "copy_buffer", "source": "0x2bde7", "bytes": 64000, "from": "offscreen", "to": "vga"},
     {"op": "blit_frame", "source": "0x2bdfa", "frame": 9, "target": "vga", "stride": 320, "transparent": -1},

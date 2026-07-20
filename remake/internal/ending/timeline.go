@@ -36,6 +36,9 @@ type Segment struct {
 	From         string          `json:"from,omitempty"`
 	To           string          `json:"to,omitempty"`
 	Ms           int             `json:"ms,omitempty"`
+	ANIResource  *int            `json:"resource,omitempty"`
+	FrameDelayMs int             `json:"frame_delay_ms,omitempty"`
+	Skippable    *bool           `json:"skippable,omitempty"`
 	PaletteStart *int            `json:"start,omitempty"`
 	PaletteEnd   *int            `json:"end,omitempty"`
 	PaletteValue *int            `json:"value,omitempty"`
@@ -80,6 +83,9 @@ func LoadTimeline(path string) (*Timeline, error) {
 		}
 		if segment.Op == "copy_buffer" && (segment.Bytes != Bytes || segment.From == "" || segment.To == "") {
 			return nil, fmt.Errorf("ending timeline %q segment %d has incomplete copy", path, i)
+		}
+		if segment.Op == "ani_play" && (segment.ANIResource == nil || *segment.ANIResource != 2 || segment.FrameDelayMs != 100 || segment.Skippable == nil || *segment.Skippable) {
+			return nil, fmt.Errorf("ending timeline %q segment %d has incomplete ANI playback", path, i)
 		}
 		for j, block := range append(append([]DialogueBlock(nil), segment.ThenDialogue...), segment.ElseDialogue...) {
 			if block.PortraitID < 0 || block.SourceDAT == "" || block.Script == "" || block.StringIndex < 0 || block.SceneIndex < 0 || block.Line < 0 || block.Count <= 0 {
