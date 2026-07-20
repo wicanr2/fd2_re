@@ -133,7 +133,7 @@
 - [~] 戰後 town/整備流程：campaign_full 的 postbattle→town、連戰 preparation 路線與 shop/rumor return 已盤點；`0x318ad` RE 已鎖定 30-byte 勾選表、一般 cap15／late cap19，remake 已接 `party_limit`、`partyDeploy`、save persistence 與可操作 preparation UI，永久 JOIN roster 不被改寫。church `0x3072f` 已證實四個入口，revive fee table、原子 `ReviveUnit` 核心與 `0x31793` class-change candidate filter 已接；尚待 church selector UI、class-change item/能力寫回與實機驗證（無免費一般治療）。
 - [~] 戰後 town/整備流程：preparation 與 church selector UI 已接；`docs/figures/church-selector.png` 為 xvfb 實機畫面。revive 已可依 fee table 執行並保存 roster/gold；class-change 尚待 `0x31860/0x2a2e8` item/能力寫回與完整驗證。
 - [~] class-change church：已鎖定 `0x3151a..0x3152d` portrait→item 分支、`0x31860` inventory 掃描、`0x1b8e7` item 移除與 `0x31571..0x3157a` class/portrait 寫回；待導出 `0x526a7` mapping 與 `0x2a2e8` 能力/成長重算後接入。
-- [~] class-change church：`0x615fe` portrait→class/growth pairs 與 `0x526a7` raw item bytes 已導出 `class_change_targets.json`（含 portrait 0x34→item 0x5a override）；`0xff` 分支仍待語意確認，尚未接猜測性 mutation。下一步追 `0x2a2e8`/growth table 的可安全欄位寫回。
+- [~] class-change church：`class_change_targets.json` 已校正為兩層可編輯資料：current portrait 0..0x11→default/optional target（`0x526a7` 以 current portrait 索引，raw `0xff` 不產生 optional branch），以及 target portrait 0x20..0x41→class/growth (`0x615fe`)；portrait 9 的 item 0x5a→target 0x34 special branch 明列。新增資料完整性測試；尚未接猜測性 mutation，下一步追 `0x31602` stat reset。
 - [ ] 分支與敗北路線(on_lose → 敗北關卡,非結束)
 - [ ] 存檔/讀檔(自有格式,非破解原版 `FD2.SAV`)
 
