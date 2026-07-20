@@ -26,6 +26,17 @@ type Frame struct {
 // raw FDOTHER resource. It mirrors 0x111ba's archive-only loading boundary:
 // no conversion or decompression is performed here.
 func DecodeResource(datPath string, resource int) ([]Frame, error) {
+	entry, err := ReadResource(datPath, resource)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFrames(entry)
+}
+
+// ReadResource returns one raw LLLLLL archive entry without assuming a frame
+// table. FDOTHER #4 (the native FDTXT bitmap font) is one such non-frame
+// payload; its decoding belongs to internal/fdtxt.
+func ReadResource(datPath string, resource int) ([]byte, error) {
 	data, err := os.ReadFile(datPath)
 	if err != nil {
 		return nil, err
@@ -34,7 +45,7 @@ func DecodeResource(datPath string, resource int) ([]Frame, error) {
 	if err != nil {
 		return nil, err
 	}
-	return ParseFrames(entry)
+	return append([]byte(nil), entry...), nil
 }
 
 func archiveEntry(data []byte, resource int) ([]byte, error) {
