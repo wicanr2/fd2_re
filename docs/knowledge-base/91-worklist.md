@@ -135,7 +135,7 @@
 - [~] class-change church：已鎖定 `0x3151a..0x3152d` portrait→item 分支、`0x31860` inventory 掃描、`0x1b8e7` item 移除與 `0x31571..0x3157a` class/portrait 寫回；待導出 `0x526a7` mapping 與 `0x2a2e8` 能力/成長重算後接入。
 - [~] class-change church：`class_change_targets.json` 已校正為兩層可編輯資料：current portrait 0..0x11→default/optional target（`0x526a7` 以 current portrait 索引，raw `0xff` 不產生 optional branch），以及 target portrait 0x20..0x41→class/growth (`0x615fe`)；portrait 9 的 item 0x5a→target 0x34 special branch 明列。新增資料完整性測試；尚未接猜測性 mutation，下一步追 `0x31602` stat reset。
 - [~] class-change church：核心 `campaign.ApplyClassChange` 已依 `0x31602` 實作可重現 RNG（row `[min,max)`）、AP/DP/DX/MaxHP/MaxMP reset、GrowthStat(+0x3b) 累加、Lv/EXP/HP/MP reset 與轉職道具移除，並有 atomic rollback tests；persistent party 已同步保存 GrowthStat。待接 editable growth rows、church target 選擇與 equipment recompute/UI。
-- [~] class-change data bridge：新增 `LoadClassChangeTable`、`ClassChangeTargets`（default/optional/special 與 inventory index）及 `LoadClassChangeGrowth`（growth.json idx32..67→target portrait 0x20..0x43），資料邊界與分支順序已有測試；待接 church UI 與 runtime asset packaging。
+- [~] class-change data/UI bridge：`LoadClassChangeTable`、`ClassChangeTargets`、`LoadClassChangeGrowth` 已接；church 現在先選角色再列 default/optional/special target，Enter 依 branch 消耗物品、套用 RNG stat reset、重算裝備並保存 persistent roster。runtime assets 已補入；待實機 xvfb 走完整轉職流程與校正 HIT/EV/DX synthesis。
 - [ ] 分支與敗北路線(on_lose → 敗北關卡,非結束)
 - [ ] 存檔/讀檔(自有格式,非破解原版 `FD2.SAV`)
 
