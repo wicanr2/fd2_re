@@ -37,6 +37,25 @@ func TestLoadJoinsTreasureSlotAndPreservesUnitInventory(t *testing.T) {
 	}
 }
 
+func TestLoadPreservesInternalInventoryHoleAndEquippedSourceSlot(t *testing.T) {
+	dir := t.TempDir()
+	units := `{"map":0,"w":1,"h":1,"units":[{"camp":"own","lv":1,"hp":10,"mv":4,"x":0,"y":0,"inventory":[128],"inventory_slots":[255,128,255,255,255,255,255,255]}]}`
+	if err := os.WriteFile(filepath.Join(dir, "units.json"), []byte(units), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	st, err := Load(filepath.Join(dir, "units.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	u := st.Units[0]
+	if !reflect.DeepEqual(u.InventorySlots, []int{255, 128, 255, 255, 255, 255, 255, 255}) || len(u.Equipped) != 1 || !u.Equipped[0] {
+		t.Fatalf("slot provenance lost: inventory=%v slots=%v equipped=%v", u.Inventory, u.InventorySlots, u.Equipped)
+	}
+	if !u.AddInventoryItem(0x22, false) || !reflect.DeepEqual(u.InventorySlots, []int{0x22, 128, 255, 255, 255, 255, 255, 255}) {
+		t.Fatalf("append did not fill first raw hole: inventory=%v slots=%v", u.Inventory, u.InventorySlots)
+	}
+}
+
 func TestClaimTreasureUsesActiveUnitInventoryAndFailsAtomicallyWhenFull(t *testing.T) {
 	st := &State{
 		Treasures:      map[Cell]Treasure{{X: 4, Y: 5}: {Slot: 0, Kind: "item", Value: 0xd2}},

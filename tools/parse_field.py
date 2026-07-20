@@ -54,6 +54,7 @@ def parse_map(raw, m):
         units.append({"camp": ["enemy", "ally", "own"][b[0]] if b[0] < 3 else b[0],
                       "portrait": b[1], "race": b[2], "cls": b[3], "lv": b[4],
                       "inventory": [item for item in b[5:13] if item != 0xFF],
+                      "inventory_slots": list(b[5:13]),
                       "group": b[21],
                       # 0=item、1=gold 已由原攻略確認；2/3 是特殊死亡效果，
                       # 語意未全解前保留原值，不猜成一般掉落物。

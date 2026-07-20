@@ -25,23 +25,24 @@ type Scenario struct {
 
 // PartyMember 主角隊成員(數值來自 characters.json / EXE 表)。
 type PartyMember struct {
-	Name      string `json:"name"`
-	Cls       string `json:"cls"`
-	Fig       int    `json:"fig"` // sprite 組 = 角色 id(恆等,doc 31)
-	Portrait  int    `json:"portrait"`
-	HP        int    `json:"hp"`
-	MP        int    `json:"mp"`
-	AP        int    `json:"ap"`
-	DP        int    `json:"dp"`
-	HIT       int    `json:"hit"`  // 命中(doc32:DX+起始武器HIT增值,對照orig_07_unit_status.png逐位驗證)
-	EV        int    `json:"ev"`   // 閃避(doc32:DX+起始防具EV增值;起始4件防具EV增值皆為0)
-	CritPct   int    `json:"crit"` // 暴擊率(resist_crit.json 依角色職業)
-	MV        int    `json:"mv"`
-	AtkMin    int    `json:"atk_min"` // 攻擊距離下限(0=預設1;doc32 weapon_range.json)
-	AtkMax    int    `json:"atk_max"` // 攻擊距離上限(0=預設1;如亞雷斯騎士槍type3=2)
-	Lv        int    `json:"lv"`
-	Spells    []int  `json:"spells"` // 已習得法術 id(spell.json)
-	Inventory []int  `json:"inventory,omitempty"`
+	Name           string `json:"name"`
+	Cls            string `json:"cls"`
+	Fig            int    `json:"fig"` // sprite 組 = 角色 id(恆等,doc 31)
+	Portrait       int    `json:"portrait"`
+	HP             int    `json:"hp"`
+	MP             int    `json:"mp"`
+	AP             int    `json:"ap"`
+	DP             int    `json:"dp"`
+	HIT            int    `json:"hit"`  // 命中(doc32:DX+起始武器HIT增值,對照orig_07_unit_status.png逐位驗證)
+	EV             int    `json:"ev"`   // 閃避(doc32:DX+起始防具EV增值;起始4件防具EV增值皆為0)
+	CritPct        int    `json:"crit"` // 暴擊率(resist_crit.json 依角色職業)
+	MV             int    `json:"mv"`
+	AtkMin         int    `json:"atk_min"` // 攻擊距離下限(0=預設1;doc32 weapon_range.json)
+	AtkMax         int    `json:"atk_max"` // 攻擊距離上限(0=預設1;如亞雷斯騎士槍type3=2)
+	Lv             int    `json:"lv"`
+	Spells         []int  `json:"spells"` // 已習得法術 id(spell.json)
+	Inventory      []int  `json:"inventory,omitempty"`
+	InventorySlots []int  `json:"inventory_slots,omitempty"`
 }
 
 // Event 一條事件規則。
@@ -254,7 +255,7 @@ func (sc *Scenario) PartyUnits(fallback []Cell) []*Unit {
 			HIT: pm.HIT, EV: pm.EV, CritPct: pm.CritPct,
 			AtkMin: pm.AtkMin, AtkMax: pm.AtkMax,
 			Portrait: pm.Portrait, Fig: pm.Fig, X: x, Y: y, OnField: true,
-			Spells: append([]int(nil), pm.Spells...), Inventory: append([]int(nil), pm.Inventory...), Equipped: initialEquipmentFlags(len(pm.Inventory)),
+			Spells: append([]int(nil), pm.Spells...), Inventory: append([]int(nil), pm.Inventory...), Equipped: equipmentFlagsForSlots(len(pm.Inventory), pm.InventorySlots), InventorySlots: append([]int(nil), pm.InventorySlots...),
 			Dir: 0,
 		}
 		// Editable scenario AP/DP/HIT/EV are already effective values (doc32),

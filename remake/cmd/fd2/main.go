@@ -1543,6 +1543,7 @@ func applyPersistentStats(dst, src *battle.Unit) {
 	dst.Spells = append(dst.Spells[:0], src.Spells...)
 	dst.Inventory = append(dst.Inventory[:0], src.Inventory...)
 	dst.Equipped = append(dst.Equipped[:0], src.Equipped...)
+	dst.InventorySlots = append(dst.InventorySlots[:0], src.InventorySlots...)
 }
 
 // grantItemToParty projects original 0x1c220 + 0x1bb8c: scan runtime units in
@@ -1557,8 +1558,9 @@ func (g *Game) grantItemToParty(itemID int) bool {
 		if unit == nil || unit.Camp != battle.Own || len(unit.Inventory) >= 8 {
 			continue
 		}
-		unit.Inventory = append(unit.Inventory, itemID)
-		return true
+		if unit.AddInventoryItem(itemID, false) {
+			return true
+		}
 	}
 	return false
 }
@@ -1633,10 +1635,7 @@ func (g *Game) applyInventoryRecipe(n *campaign.Node) (bool, error) {
 		for slot := 0; slot < n.SlotCount; slot++ {
 			unit := g.st.Units[slot]
 			if idx := find(unit, itemID); idx >= 0 {
-				unit.Inventory = append(unit.Inventory[:idx], unit.Inventory[idx+1:]...)
-				if idx < len(unit.Equipped) {
-					unit.Equipped = append(unit.Equipped[:idx], unit.Equipped[idx+1:]...)
-				}
+				unit.RemoveInventoryIndex(idx)
 			}
 		}
 	}
@@ -1674,6 +1673,7 @@ func (g *Game) syncPartyFromBattle() error {
 		snapshot.Spells = append([]int(nil), current.Spells...)
 		snapshot.Inventory = append([]int(nil), current.Inventory...)
 		snapshot.Equipped = append([]bool(nil), current.Equipped...)
+		snapshot.InventorySlots = append([]int(nil), current.InventorySlots...)
 		if snapshot.MaxMP < snapshot.MP {
 			snapshot.MaxMP = snapshot.MP
 		}
@@ -2194,9 +2194,7 @@ func (g *Game) awardDeathReward(dead, killer *battle.Unit) {
 	case 0:
 		awarded := false
 		if killer != nil && killer.Camp == battle.Own && len(killer.Inventory) < 8 {
-			killer.Inventory = append(killer.Inventory, r.Value)
-			killer.Equipped = append(killer.Equipped, false)
-			awarded = true
+			awarded = killer.AddInventoryItem(r.Value, false)
 		} else {
 			awarded = g.grantItemToParty(r.Value)
 		}

@@ -123,6 +123,8 @@ def main(argv):
         }
         if u.get("inventory"):
             rec["inventory"] = u["inventory"]
+        if u.get("inventory_slots"):
+            rec["inventory_slots"] = u["inventory_slots"]
         if u.get("death_effect") is not None:
             rec["death_effect"] = u["death_effect"]
             effect = u["death_effect"]

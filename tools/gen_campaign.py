@@ -229,6 +229,7 @@ def load_characters(path: str, defaults_path: str) -> dict[str, dict]:
     for row in rows:
         if default := defaults.get(row["index"]):
             row["inventory"] = list(default["inventory"])
+            row["inventory_slots"] = list(default.get("inventory_slots", default["inventory"]))
     return {r["name"]: r for r in rows}
 
 
@@ -276,6 +277,7 @@ def build_base4_stats(
         "lv": lv, "hp": hp, "mp": mp, "ap": ap, "dp": dp, "mv": base["mv"],
         **({"spells": base["spells"]} if "spells" in base else {}),
         **({"inventory": char["inventory"]} if char and char.get("inventory") else {}),
+        **({"inventory_slots": char["inventory_slots"]} if char and char.get("inventory_slots") else {}),
     }
 
 
@@ -302,6 +304,7 @@ def build_recruit_stats(
         "ap": round(hp * ap_ratio), "dp": round(hp * DP_HP_RATIO),
         "mv": MV_BY_CLASS.get(char["cls_name"], DEFAULT_MV),
         **({"inventory": char["inventory"]} if char.get("inventory") else {}),
+        **({"inventory_slots": char["inventory_slots"]} if char.get("inventory_slots") else {}),
     }
 
 

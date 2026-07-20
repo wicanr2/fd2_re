@@ -89,6 +89,7 @@ def dump_character_defaults(d):
             "hp": u16(d, o + 3), "mp": u16(d, o + 5), "mv": r[7],
             "magic_raw": list(r[8:12]),
             "inventory": [item for item in r[12:18] if item != 0xFF],
+            "inventory_slots": list(r[12:18]) + [0xFF, 0xFF],
             "ap": u16(d, o + 18), "dp": u16(d, o + 20), "dx": u16(d, o + 22),
             "raw": r.hex(),
         })

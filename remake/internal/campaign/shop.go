@@ -113,8 +113,9 @@ func ReserveGood(gold int, receiver *battle.Unit, good Good) (int, error) {
 	if len(receiver.Inventory) >= 8 {
 		return -1, fmt.Errorf("inventory full")
 	}
-	receiver.Inventory = append(receiver.Inventory, good.ID)
-	receiver.Equipped = append(receiver.Equipped, false)
+	if !receiver.AddInventoryItem(good.ID, false) {
+		return -1, fmt.Errorf("inventory full")
+	}
 	return len(receiver.Inventory) - 1, nil
 }
 
@@ -149,9 +150,6 @@ func SellSlot(gold int, receiver *battle.Unit, slot, listPrice int) (int, error)
 	if slot < 0 || slot >= len(receiver.Inventory) || listPrice < 0 {
 		return gold, fmt.Errorf("invalid shop slot")
 	}
-	receiver.Inventory = append(receiver.Inventory[:slot], receiver.Inventory[slot+1:]...)
-	if slot < len(receiver.Equipped) {
-		receiver.Equipped = append(receiver.Equipped[:slot], receiver.Equipped[slot+1:]...)
-	}
+	receiver.RemoveInventoryIndex(slot)
 	return gold + listPrice*3/4, nil
 }
