@@ -20,3 +20,16 @@ func TestEquipItemRecomputesFromBaseAndReplacesEXECategory(t *testing.T) {
 		t.Fatalf("replacement err=%v AP=%d HIT=%d flags=%v", err, u.AP, u.HIT, u.Equipped)
 	}
 }
+
+func TestInitializeEquipmentBaseSubtractsAuthoredStartingGearOnce(t *testing.T) {
+	u := &battle.Unit{AP: 16, DP: 12, HIT: 97, EV: 2, Inventory: []int{0, 132}, Equipped: []bool{true, true}}
+	stats := map[int]ItemStats{0: {Type: 1, AP: 10, HIT: 95}, 132: {Type: 22, DP: 8}}
+	InitializeEquipmentBase(u, stats)
+	if !u.EquipmentBaseSet || u.BaseAP != 6 || u.BaseDP != 4 || u.BaseHIT != 2 || u.AP != 16 || u.DP != 12 || u.HIT != 97 {
+		t.Fatalf("base conversion = base(%d,%d,%d) effective(%d,%d,%d)", u.BaseAP, u.BaseDP, u.BaseHIT, u.AP, u.DP, u.HIT)
+	}
+	InitializeEquipmentBase(u, stats)
+	if u.BaseAP != 6 || u.AP != 16 {
+		t.Fatalf("base conversion repeated: base=%d AP=%d", u.BaseAP, u.AP)
+	}
+}

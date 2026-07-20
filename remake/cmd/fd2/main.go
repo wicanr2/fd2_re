@@ -1490,6 +1490,7 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 			}
 			g.sc = sc
 			g.dialog = append(g.dialog, sc.Setup(g.st)...)
+			g.initializeEquipmentBases(g.st)
 			g.applyScenarioPartyJoins()
 			g.applyPersistentParty(g.st)
 			g.focusOnParty()
@@ -1511,6 +1512,17 @@ func (g *Game) applyPersistentParty(st *battle.State) {
 		}
 		if src, ok := g.partyRoster[dst.Fig]; ok {
 			applyPersistentStats(dst, &src)
+		}
+	}
+}
+
+func (g *Game) initializeEquipmentBases(st *battle.State) {
+	if st == nil || g.shopItemStats == nil {
+		return
+	}
+	for _, u := range st.Units {
+		if u != nil && u.Camp == battle.Own {
+			campaign.InitializeEquipmentBase(u, g.shopItemStats)
 		}
 	}
 }
@@ -3916,6 +3928,7 @@ func loadGame() *Game {
 	if stats, e := campaign.LoadItemStats(assetPath("assets/data/item.json")); e == nil {
 		g.shopItemStats = stats
 	}
+	g.initializeEquipmentBases(g.st)
 	g.font = loadFont()
 	// 狀態欄名字專用整數尺寸 face(scale 1.0 繪製,避免非整數縮放模糊);orig 名墨高 13px→face 28
 	g.fontNm = loadFontSized(28)

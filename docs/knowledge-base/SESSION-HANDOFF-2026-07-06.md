@@ -261,4 +261,4 @@ slot6 active 條件、SPAWN2、兩段 PAN、800/200ms 與 FDTXT_003 #4 七句也
 - 本輪補上 `campaign.SellGood` 純交易核心（原價 3/4、先驗證再移除欄位）；尚未接 UI。裝備數值暫不臆測：現有 FDFIELD/character dump 丟失原版 inventory slot flag，且 scenario AP/DP/HIT/EV 是有效值，必須先補 provenance 才能安全重算。
 - 2026-07-20 後續：商店已接賣出 UI（Tab 切換、角色、指定 inventory slot、ESC 返回），以 `item.json.price` 載入原價並呼叫 `SellSlot`；duplicate item ID 不會賣錯欄位。能力重算仍刻意保留待 RE。
 - 2026-07-20 RE 補證：以 `tools/disasm_le.py` 反組譯原版 `0x1145a` 與 `0x1c142`。`0x1145a` 明確掃 8 個 `+0x0a+slot*2`，檢查第一 byte `bit 0x40`，從 item record `+1/+5/+3/+7` 累加 AP/DP/HIT/EV；`0x1c142` 的換裝規則是 item ID `<0x80` 與 `>=0x80` 分兩類，清除同類已裝備 flag，再將新 slot 第一 byte 寫 `0x40`。
-- remake 已新增 `BaseAP/BaseDP/BaseHIT/BaseEV` 與 `RecomputeEquipment`，scenario 的既有有效值先固定為 base，之後新購裝備依已確認 flags 累加；這避免舊資料重複計算。原始 FDFIELD/character dump 仍沒有 initial persistent flags，故不能宣稱所有初始裝備已 1:1 還原。
+- remake 已新增 `BaseAP/BaseDP/BaseHIT/BaseEV` 與 `RecomputeEquipment`。進一步確認原版 spawn `0x10f06..0x10f31`：source inventory 前兩 bytes 直接寫成 flag `0x40`，後續 bytes 為 `0x80` held；remake 現在 materialize 前兩欄 equipped，並由 `InitializeEquipmentBase` 從 authored effective 值扣回一次，避免 double-count。FDFIELD compact export 對原始 `0xff` 空槽位置仍有資訊損失，需後續補 raw slot schema。

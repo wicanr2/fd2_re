@@ -80,6 +80,34 @@ func RecomputeEquipment(u *battle.Unit, stats map[int]ItemStats) {
 	}
 }
 
+// InitializeEquipmentBase converts an authored effective stat line into the
+// persistent base expected by 0x1145a by subtracting the source's equipped
+// first-two inventory slots once. Subsequent saves carry EquipmentBaseSet and
+// never repeat this conversion.
+func InitializeEquipmentBase(u *battle.Unit, stats map[int]ItemStats) {
+	if u == nil || u.EquipmentBaseSet {
+		return
+	}
+	u.BaseAP, u.BaseDP, u.BaseHIT, u.BaseEV, u.BaseMV = u.AP, u.DP, u.HIT, u.EV, u.MV
+	u.BaseAtkMin, u.BaseAtkMax = u.AtkMin, u.AtkMax
+	for i, equipped := range u.Equipped {
+		if !equipped || i >= len(u.Inventory) {
+			continue
+		}
+		item, ok := stats[u.Inventory[i]]
+		if !ok {
+			continue
+		}
+		u.BaseAP -= item.AP
+		u.BaseDP -= item.DP
+		u.BaseHIT -= item.HIT
+		u.BaseEV -= item.EV
+		u.BaseMV -= item.MV
+	}
+	u.EquipmentBaseSet = true
+	RecomputeEquipment(u, stats)
+}
+
 // EquipItem applies the original 0x1c142 rule: weapon IDs below 0x80 replace
 // an equipped weapon, while IDs >=0x80 replace an equipped armour/accessory.
 func EquipItem(u *battle.Unit, slot int, stats map[int]ItemStats) error {

@@ -254,13 +254,13 @@ func (sc *Scenario) PartyUnits(fallback []Cell) []*Unit {
 			HIT: pm.HIT, EV: pm.EV, CritPct: pm.CritPct,
 			AtkMin: pm.AtkMin, AtkMax: pm.AtkMax,
 			Portrait: pm.Portrait, Fig: pm.Fig, X: x, Y: y, OnField: true,
-			Spells: append([]int(nil), pm.Spells...), Inventory: append([]int(nil), pm.Inventory...),
+			Spells: append([]int(nil), pm.Spells...), Inventory: append([]int(nil), pm.Inventory...), Equipped: initialEquipmentFlags(len(pm.Inventory)),
 			Dir: 0,
 		}
 		// Editable scenario AP/DP/HIT/EV are already effective values (doc32),
 		// so preserve them as the base for later shop purchases.
 		u.BaseAP, u.BaseDP, u.BaseHIT, u.BaseEV, u.BaseMV = u.AP, u.DP, u.HIT, u.EV, u.MV
-		u.BaseAtkMin, u.BaseAtkMax, u.EquipmentBaseSet = u.AtkMin, u.AtkMax, true
+		u.BaseAtkMin, u.BaseAtkMax, u.EquipmentBaseSet = u.AtkMin, u.AtkMax, false
 		units = append(units, u)
 	}
 	return units

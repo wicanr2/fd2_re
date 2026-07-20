@@ -95,6 +95,18 @@ type Unit struct {
 	// 該次攻擊經驗值算出 0,見 growth.go AttackExp 註解)
 }
 
+// initialEquipmentFlags mirrors the original spawn constructor: its first
+// two source inventory bytes are placed with flag 0x40; later bytes start
+// held/unequipped. The editable exports omit 0xff empty bytes, so the
+// compacted list is the available representation here.
+func initialEquipmentFlags(n int) []bool {
+	flags := make([]bool, n)
+	for i := 0; i < n && i < 2; i++ {
+		flags[i] = true
+	}
+	return flags
+}
+
 // Alive 是 remake 的 HP 判定。原版 byte[+5] bit0 剛好相反：
 // 0=有效／存活，1=死亡／隱藏／未啟用；對應到 remake 時需同時看 HP 與 OnField。
 func (u *Unit) Alive() bool { return u.HP > 0 }
@@ -333,7 +345,7 @@ func Load(path string) (*State, error) {
 			HIT: u.HIT, EV: u.EV, CritPct: u.Crit, ExpPerLevel: u.Ex,
 			AtkMin: u.AtkMin, AtkMax: u.AtkMax,
 			Portrait: u.Portrait, Fig: u.Fig, X: u.X, Y: u.Y,
-			Spells: append([]int(nil), u.Spells...), Inventory: append([]int(nil), u.Inventory...),
+			Spells: append([]int(nil), u.Spells...), Inventory: append([]int(nil), u.Inventory...), Equipped: initialEquipmentFlags(len(u.Inventory)),
 			DeathEffect: u.DeathEffect,
 			DeathReward: u.DeathReward,
 			Group:       u.Group, OnField: true, // 預設登場;Scenario 會把待命 group 設 false
