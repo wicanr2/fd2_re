@@ -48,7 +48,7 @@
 
 ## RE 側也需要補的缺口(非 remake 落差,附帶記錄)
 
-- **施法入口已找到**：`0x154D1` 仍不是入口；但 `0x15688/0x157B5` 的 AI spell 評分與 `0x15055/0x150F1` 的 spell 執行 callsite 已定案。remake 缺口從「是否存在機制」收斂為「尚未把 command inventory、SpellID、治療／攻擊目標優先級接到 AI」。
+- **施法入口已找到**：`0x154D1` 仍不是入口；但 `0x15688/0x157B5` 的 AI spell 評分、`0x15B77` 的 spell-family 目標分支與 `0x15055/0x150F1` 的 spell 執行 callsite 已定案。`unit+0x22..+0x26` 另是 M1–M5 習得 bitfield，不能誤標成狀態旗標。remake 缺口從「是否存在機制」收斂為「尚未把 command inventory、SpellID、治療／攻擊目標優先級接到 AI」。
 - **doc32 §4 三個 `[阻]` 項目(裝備加成精確公式、物品使用效果碼、轉職系統機制)本身就還沒反組譯完**,remake 的裝備/道具/轉職缺口有一部分要等 RE 補完才能對照實作,不能單純算「remake 沒做」。
 
 ## 落差統計
