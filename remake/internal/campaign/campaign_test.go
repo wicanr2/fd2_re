@@ -185,8 +185,8 @@ func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 		t.Fatalf("grass Ares walks missing: %#v", grass.Beats)
 	}
 	ch05 := c.Nodes["story_ch05"]
-	if ch05 == nil || ch05.Type != "cutscene" || ch05.HandlerBinding != "" || ch05.Next != "battle_ch05" {
-		t.Fatalf("player chapter 5 must not execute zero-based handler ch05 (chapter 6): %#v", ch05)
+	if ch05 == nil || ch05.Type != "cutscene" || ch05.HandlerBinding != "assets/cutscenes/bindings/ch04_pre.json" || ch05.Next != "battle_ch05" {
+		t.Fatalf("player chapter 5 must execute the recovered zero-based ch04 pre-handler: %#v", ch05)
 	}
 	battle2, post2 := c.Nodes["battle_ch02"], c.Nodes["story_ch02_post"]
 	if battle2 == nil || battle2.OnWin != "story_ch02_post" || post2 == nil || post2.Type != "cutscene" || post2.HandlerBinding != "assets/cutscenes/bindings/ch01_post.json" || post2.Next != "town_ch03" {

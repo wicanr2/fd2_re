@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "handler_script": "../handlers/ch04_pre.json",
+  "acting_resources": "../acting/map32.json",
+  "story_index_map": "../dialogue-index/count-aligned.json",
+  "dialogue_contexts": {
+    "0x33077": { "source_dat": "FDTXT_005", "script": "ch05.json" },
+    "0x330ec": { "source_dat": "FDTXT_005", "script": "ch05.json" },
+    "0x33133": { "source_dat": "FDTXT_005", "script": "ch05.json" }
+  },
+  "overrides": {
+    "0x33053": {
+      "loadch": {
+        "chapter": 4,
+        "map": "assets/maps/map4",
+        "roster": "assets/maps/map4/map4_units.json",
+        "slot_count": 50,
+        "script": "assets/story/ch05.json",
+        "party_scenario": "assets/scenarios/ch05.json"
+      }
+    },
+    "0x3308d": { "pan": { "x": 72, "y": 72, "tile_step": true } },
+    "0x33102": { "pan": { "x": 192, "y": 336, "tile_step": true } },
+    "0x330c5": { "act": { "resource": 22 } },
+    "0x3310c": { "act": { "resource": 21 } }
+  }
+}

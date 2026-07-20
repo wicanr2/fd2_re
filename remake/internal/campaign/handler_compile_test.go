@@ -708,6 +708,52 @@ func TestCompileChapter3PreUsesRecoveredChapter4TextGroups(t *testing.T) {
 	}
 }
 
+func TestCompileChapter4PreUsesRecoveredChapter5TextGroups(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch04_pre.json")
+	if err != nil || len(issues) != 0 {
+		t.Fatalf("ch04_pre err=%v issues=%#v", err, issues)
+	}
+	dialogs := make([]Beat, 0, 15)
+	seen := map[string]Beat{}
+	for _, beat := range beats {
+		seen[beat.Source] = beat
+		if beat.Op == "dialog" {
+			dialogs = append(dialogs, beat)
+		}
+	}
+	if len(dialogs) != 15 {
+		t.Fatalf("FDTXT_005 #0/#1/#2 dialogs=%d, want 3+3+9", len(dialogs))
+	}
+	for i, want := range []struct {
+		index int
+		line  int
+		scene int
+	}{
+		{0, 0, 0}, {3, 3, 0}, {6, 0, 1},
+	} {
+		got := dialogs[want.index]
+		if got.Script != "ch05.json" || got.SceneIndex == nil || *got.SceneIndex != want.scene || got.Line != want.line {
+			t.Fatalf("ch04_pre dialogue group %d = %#v", i, got)
+		}
+	}
+	load := seen["0x33053"]
+	if load.LoadCH == nil || load.LoadCH.Chapter != 4 || load.LoadCH.Map != "assets/maps/map4" || load.LoadCH.Script != "assets/story/ch05.json" || load.LoadCH.PartyScenario != "assets/scenarios/ch05.json" {
+		t.Fatalf("ch04_pre LOADCH = %#v", load.LoadCH)
+	}
+	if pan := seen["0x3308d"]; pan.X != 72 || pan.Y != 72 || !pan.TileStep {
+		t.Fatalf("ch04_pre initial PAN = %#v", pan)
+	}
+	if pan := seen["0x33102"]; pan.X != 192 || pan.Y != 336 || !pan.TileStep {
+		t.Fatalf("ch04_pre second PAN = %#v", pan)
+	}
+	if act22 := seen["0x330c5"]; len(act22.Acting) != 2 || act22.Acting[0].Units == nil {
+		t.Fatalf("ch04_pre acting22 = %#v", act22.Acting)
+	}
+	if act21 := seen["0x3310c"]; len(act21.Acting) != 3 || act21.Acting[0].Units == nil {
+		t.Fatalf("ch04_pre acting21 = %#v", act21.Acting)
+	}
+}
+
 func TestCompileLoadCHBindingExposesSharedTailDialogueGap(t *testing.T) {
 	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch05_pre.json")
 	if err != nil || len(issues) != 1 || issues[0].Op != "dialog" || issues[0].Source.Addr != "0x3320c" {
