@@ -92,7 +92,7 @@ func (p *Player) Advance(elapsedMS int) (PlaybackState, error) {
 			p.WaitMS = 0
 			if p.ramp != nil {
 				p.ramp.next = true
-			} else if p.composite != nil {
+			} else if p.composite != nil || p.composite200 != nil {
 				// The next pass is selected below; it owns the same segment.
 			} else {
 				p.Segment++
@@ -211,8 +211,8 @@ func (p *Player) Advance(elapsedMS int) (PlaybackState, error) {
 			}
 			p.ramp = &paletteRamp{value: *s.PaletteStart, end: *s.PaletteEnd, step: s.PaletteStep, delay: s.PaletteDelay}
 		case "native_composite_loop_opaque":
-			// The first native loop is fully recovered; the later 200-pass loop
-			// remains opaque because its 0x11d40 palette helper is not yet proven.
+			// The first native loop is fully recovered.  Only its known call site
+			// is executable: other opaque operations must stay fail-closed.
 			if s.Source != "0x2bf60" {
 				p.Blocked, p.State = s, PlaybackBlocked
 				return p.State, nil

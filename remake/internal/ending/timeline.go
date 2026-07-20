@@ -26,30 +26,32 @@ type Resource struct {
 // Segment deliberately retains only evidence names and native call arguments.
 // It is an editable transcription, not a generic ending scripting language.
 type Segment struct {
-	Op           string          `json:"op"`
-	Source       string          `json:"source"`
-	Frame        *int            `json:"frame,omitempty"`
-	FirstFrame   *int            `json:"first_frame,omitempty"`
-	LastFrame    *int            `json:"last_frame,omitempty"`
-	Target       string          `json:"target,omitempty"`
-	Stride       int             `json:"stride,omitempty"`
-	Transparent  *int            `json:"transparent,omitempty"`
-	Bytes        int             `json:"bytes,omitempty"`
-	From         string          `json:"from,omitempty"`
-	To           string          `json:"to,omitempty"`
-	Ms           int             `json:"ms,omitempty"`
-	ANIResource  *int            `json:"resource,omitempty"`
-	FrameDelayMs int             `json:"frame_delay_ms,omitempty"`
-	Skippable    *bool           `json:"skippable,omitempty"`
-	PaletteStart *int            `json:"start,omitempty"`
-	PaletteEnd   *int            `json:"end,omitempty"`
-	PaletteValue *int            `json:"value,omitempty"`
-	PaletteStep  int             `json:"step,omitempty"`
-	PaletteDelay int             `json:"delay_ms,omitempty"`
-	Repeat       int             `json:"repeat,omitempty"`
-	TailDelay    int             `json:"tail_delay_ms,omitempty"`
-	ThenDialogue []DialogueBlock `json:"then_dialogue,omitempty"`
-	ElseDialogue []DialogueBlock `json:"else_dialogue,omitempty"`
+	Op                 string          `json:"op"`
+	Source             string          `json:"source"`
+	Frame              *int            `json:"frame,omitempty"`
+	FirstFrame         *int            `json:"first_frame,omitempty"`
+	LastFrame          *int            `json:"last_frame,omitempty"`
+	Target             string          `json:"target,omitempty"`
+	Stride             int             `json:"stride,omitempty"`
+	Transparent        *int            `json:"transparent,omitempty"`
+	Bytes              int             `json:"bytes,omitempty"`
+	From               string          `json:"from,omitempty"`
+	To                 string          `json:"to,omitempty"`
+	Ms                 int             `json:"ms,omitempty"`
+	ANIResource        *int            `json:"resource,omitempty"`
+	FrameDelayMs       int             `json:"frame_delay_ms,omitempty"`
+	Skippable          *bool           `json:"skippable,omitempty"`
+	PaletteStart       *int            `json:"start,omitempty"`
+	PaletteEnd         *int            `json:"end,omitempty"`
+	PaletteValue       *int            `json:"value,omitempty"`
+	PaletteStep        int             `json:"step,omitempty"`
+	PaletteDelay       int             `json:"delay_ms,omitempty"`
+	Repeat             int             `json:"repeat,omitempty"`
+	TailDelay          int             `json:"tail_delay_ms,omitempty"`
+	FirstFrameFormula  string          `json:"first_frame_formula,omitempty"`
+	SecondFrameFormula string          `json:"second_frame_formula,omitempty"`
+	ThenDialogue       []DialogueBlock `json:"then_dialogue,omitempty"`
+	ElseDialogue       []DialogueBlock `json:"else_dialogue,omitempty"`
 }
 
 // DialogueBlock is a count-aligned FDTXT block recovered from an ending text
@@ -116,6 +118,9 @@ func LoadTimeline(path string) (*Timeline, error) {
 		}
 		if segment.Op == "palette_ramp_repeat" && (!validRamp() || segment.Repeat <= 0 || segment.TailDelay < 0) {
 			return nil, fmt.Errorf("ending timeline %q segment %d has invalid repeated palette ramp", path, i)
+		}
+		if (segment.Op == "native_composite_loop_opaque" || segment.Op == "native_composite_loop_baseline") && (segment.FirstFrameFormula != "(i%4)+1" || segment.SecondFrameFormula != "(i%4)+5") {
+			return nil, fmt.Errorf("ending timeline %q segment %d has unsupported composite frame formulas", path, i)
 		}
 		for j, block := range append(append([]DialogueBlock(nil), segment.ThenDialogue...), segment.ElseDialogue...) {
 			if block.PortraitID < 0 || block.SourceDAT == "" || block.Script == "" || block.StringIndex < 0 || block.SceneIndex < 0 || block.Line < 0 || block.Count <= 0 {

@@ -19,6 +19,9 @@ func TestNative2BCE5TimelineIsRecoveredButNotPlayable(t *testing.T) {
 	if timeline.Segments[17].Op != "native_post_composite_opaque" {
 		t.Fatalf("post-composite gate = %#v", timeline.Segments[17])
 	}
+	if timeline.Segments[15].FirstFrameFormula != "(i%4)+1" || timeline.Segments[15].SecondFrameFormula != "(i%4)+5" || timeline.Segments[16].FirstFrameFormula != "(i%4)+1" || timeline.Segments[16].SecondFrameFormula != "(i%4)+5" {
+		t.Fatalf("composite frame formulas = %#v / %#v", timeline.Segments[15], timeline.Segments[16])
+	}
 	if timeline.Segments[12].Op != "blit_frame_sequence" || timeline.Segments[15].Op != "native_composite_loop_opaque" || timeline.Segments[16].Op != "native_composite_loop_baseline" {
 		t.Fatalf("frame schedule landmarks = %#v", timeline.Segments)
 	}

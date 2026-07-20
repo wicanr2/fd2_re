@@ -287,3 +287,29 @@ func TestPlayerRunsRecoveredComposite40BeforeTextGate(t *testing.T) {
 		t.Fatalf("state=%s err=%v blocked=%#v", state, err, p.Blocked)
 	}
 }
+
+func TestPlayerRunsRecoveredComposite200ThenStopsAtPostCompositeGate(t *testing.T) {
+	frames := make([]fdother.Frame, 9)
+	for i := 1; i < 9; i++ {
+		frames[i] = fdother.Frame{Width: 1, Height: 1, Pixels: []byte{1, 0, 1, 0, 0, byte(i)}}
+	}
+	c := NewIndexedCompositor()
+	c.Baseline[0] = 3
+	p, err := NewPlayer(Timeline{Segments: []Segment{
+		{Op: "native_composite_loop_baseline", Source: "0x2c0c5"},
+		{Op: "native_post_composite_opaque", Source: "0x2c172"},
+	}}, frames, nil, c)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if state, err := p.Advance(0); err != nil || state != PlaybackRunning {
+		t.Fatalf("initial state=%s err=%v", state, err)
+	}
+	// The initial pass is immediate; the remaining 199 passes take 20ms each.
+	if state, err := p.Advance(3980); err != nil || state != PlaybackBlocked || p.Blocked == nil || p.Blocked.Source != "0x2c172" {
+		t.Fatalf("state=%s err=%v blocked=%#v", state, err, p.Blocked)
+	}
+	if c.Palette[0] != 2 {
+		t.Fatalf("final baseline delta palette=%d, want 2", c.Palette[0])
+	}
+}
