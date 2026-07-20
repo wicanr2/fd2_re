@@ -586,4 +586,5 @@
 - [x] **first 40-pass composite scheduler**：player 現以每輪20ms 驅動 `Composite40(i=0..39)`，完成後精確落在第二段 native text gate；200-pass loop 仍因 `0x11d40` 未證實而封閉。
 - [x] **second 200-pass composite scheduler**：baseline palette loop 已恢復為200×20ms（0..135 base、136..199 base−1）；其後 `0x2c172` 明確標為 unrecovered montage gate，禁止 player 回報完整 ending。
 - [x] **finale 0x2c405 phase-0 map**：已確認 chapter30 text load、`0x36b00` staging/clear、`+0x12c30` text-composite destination、500×(1ms) 的 320×200 row-scroll 與 baseline palette 40→0→上升 cadence。尚缺 `0x15f84` renderer/staging source，保持 gate；禁止用 generic fade 或空白畫面替代。
-- [x] **finale phase-0 editable script node**：新增 `assets/endings/native_2c405.json` 和嚴格 loader；`0x2c469` 的 FDTXT_030 #44 已對位 `ch30.json` scene3 line6（悠妮剛醒來後記憶受損的獨白），並保存 staging/layout/timing/palette cadence。asset 可編輯但 `Ready()==false`，直到 glyph compositor 恢復。
+- [x] **finale phase-0 editable script node**：新增 `assets/endings/native_2c405.json` 和嚴格 loader；`0x2c469` 的 native selector `0x2c` 對位 FDTXT_030 的 logical utterance #44（raw string10 的第6段）與 `ch30.json` scene3 line6（悠妮剛醒來後記憶受損的獨白），並保存 staging/layout/timing/palette cadence。asset 可編輯但 `Ready()==false`，直到 glyph compositor 恢復。
+- [x] **native FDTXT/font decoder foundation**：`internal/fdtxt` 現嚴格讀原始 offset-table、保留所有 FFxx 控制字、精確解 `FDOTHER_004` 的 16×16 1bpp（MSB-left）glyph。尚未猜 palette／框／控制碼行為；下一步把已知 `0x15f84` layout 接成 compositor。

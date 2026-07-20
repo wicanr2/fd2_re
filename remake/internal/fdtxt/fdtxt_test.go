@@ -1,0 +1,73 @@
+package fdtxt
+
+import (
+	"os"
+	"testing"
+)
+
+func TestParseRetainsControlWordsAndStopsAtTerminator(t *testing.T) {
+	// Two strings: offsets 4 and 10. The first ends before its span does.
+	data := []byte{4, 0, 10, 0, 0x12, 0, 0xfe, 0xff, 0xff, 0xff, 0x34, 0, 0xfd, 0xff, 0xff, 0xff}
+	s, err := Parse(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if s.Count() != 2 {
+		t.Fatalf("count=%d", s.Count())
+	}
+	first, _ := s.Words(0)
+	second, _ := s.Words(1)
+	if len(first) != 2 || first[0] != 0x12 || first[1] != 0xfffe || len(second) != 2 || second[0] != 0x34 || second[1] != 0xfffd {
+		t.Fatalf("words=%#v / %#v", first, second)
+	}
+}
+
+func TestFontGlyphBitUsesMSBLeftOrder(t *testing.T) {
+	data := make([]byte, GlyphBytes)
+	data[0], data[1] = 0x80, 0x01
+	f, err := ParseFont(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, point := range []struct{ x, y int }{{0, 0}, {15, 0}} {
+		got, err := f.GlyphBit(0, point.x, point.y)
+		if err != nil || !got {
+			t.Fatalf("bit(%d,%d)=%v err=%v", point.x, point.y, got, err)
+		}
+	}
+	if got, _ := f.GlyphBit(0, 1, 0); got {
+		t.Fatal("unexpected set bit")
+	}
+}
+
+func TestLocateLogicalUtteranceUsesPhysicalLocator(t *testing.T) {
+	// Each FFxx word terminates a text chunk.  The second glyph 557 is the
+	// original opening quote and therefore marks two visible utterances.
+	s := &Strings{words: [][]uint16{{9, OpeningGlyph, 1, 0xfffe, 9, OpeningGlyph, 2, 0xffff}}}
+	got, err := s.LocateLogicalUtterance(1)
+	if err != nil || got != (LogicalLocator{RawStringIndex: 0, RawUtteranceIndex: 1}) {
+		t.Fatalf("locator=%#v err=%v", got, err)
+	}
+}
+
+func TestPlayerFDTXT030Logical44HasStablePhysicalLocator(t *testing.T) {
+	const path = "../../../extracted/raw/FDTXT/FDTXT_030.bin"
+	raw, err := os.ReadFile(path)
+	if os.IsNotExist(err) {
+		t.Skip("player-provided FDTXT_030 is absent")
+	}
+	if err != nil {
+		t.Fatal(err)
+	}
+	s, err := Parse(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if s.Count() != 11 {
+		t.Fatalf("physical strings=%d, want 11", s.Count())
+	}
+	got, err := s.LocateLogicalUtterance(44)
+	if err != nil || got != (LogicalLocator{RawStringIndex: 10, RawUtteranceIndex: 6}) {
+		t.Fatalf("logical #44 locator=%#v err=%v", got, err)
+	}
+}
