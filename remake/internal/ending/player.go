@@ -21,8 +21,14 @@ type Player struct {
 	Segment int
 	WaitMS  int
 	ani     *ANIPlayer
+	ramp    *paletteRamp
 	Blocked *Segment
 	State   PlaybackState
+}
+
+type paletteRamp struct {
+	value, end, step, delay int
+	next                    bool
 }
 
 func NewPlayer(t Timeline, frames []fdother.Frame, ani *afm.Clip, compositor *IndexedCompositor) (*Player, error) {
@@ -59,7 +65,31 @@ func (p *Player) Advance(elapsedMS int) (PlaybackState, error) {
 			}
 			elapsedMS -= p.WaitMS
 			p.WaitMS = 0
-			p.Segment++
+			if p.ramp != nil {
+				p.ramp.next = true
+			} else {
+				p.Segment++
+			}
+		}
+		if p.ramp != nil {
+			if p.ramp.next {
+				p.ramp.value += p.ramp.step
+				p.ramp.next = false
+				if (p.ramp.step < 0 && p.ramp.value < p.ramp.end) || (p.ramp.step > 0 && p.ramp.value > p.ramp.end) {
+					p.ramp = nil
+					p.Segment++
+					continue
+				}
+			}
+			if err := p.Compositor.PaletteDelta(0, 255, p.ramp.value); err != nil {
+				return p.State, err
+			}
+			p.WaitMS = p.ramp.delay
+			p.ramp.next = true
+			if elapsedMS == 0 {
+				return p.State, nil
+			}
+			continue
 		}
 		if p.ani != nil {
 			done, err := p.ani.Advance(p.Compositor, elapsedMS)
@@ -116,6 +146,11 @@ func (p *Player) Advance(elapsedMS int) (PlaybackState, error) {
 				return p.State, err
 			}
 			p.Segment++
+		case "palette_ramp":
+			if s.PaletteStart == nil || s.PaletteEnd == nil || s.PaletteStep == 0 || s.PaletteDelay <= 0 {
+				return p.State, fmt.Errorf("ending: incomplete palette ramp at %s", s.Source)
+			}
+			p.ramp = &paletteRamp{value: *s.PaletteStart, end: *s.PaletteEnd, step: s.PaletteStep, delay: s.PaletteDelay}
 		default:
 			p.Blocked = s
 			p.State = PlaybackBlocked

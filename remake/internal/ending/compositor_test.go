@@ -99,7 +99,8 @@ func TestPlayerPlaysRecoveredPrefixThenBlocksAtPaletteRamp(t *testing.T) {
 		{Op: "delay_ms", Source: "wait", Ms: 1000},
 		{Op: "ani_play", Source: "ani", ANIResource: &ani, FrameDelayMs: 100, Skippable: boolPtr(false)},
 		{Op: "palette_update", Source: "palette", PaletteStart: intPtr(0), PaletteEnd: intPtr(0), PaletteValue: intPtr(2)},
-		{Op: "palette_ramp", Source: "unrecovered"},
+		{Op: "palette_ramp", Source: "ramp", PaletteStart: intPtr(2), PaletteEnd: intPtr(0), PaletteStep: -1, PaletteDelay: 4},
+		{Op: "native_text_branch_opaque", Source: "unrecovered"},
 	}}
 	frames := []fdother.Frame{{X: 0, Y: 0, Width: 1, Height: 1, Pixels: []byte{1, 0, 1, 0, 0, 7}}}
 	clip := &afm.Clip{IndexedFrames: [][]byte{make([]byte, Bytes), make([]byte, Bytes)}, Palettes: [][]byte{make([]byte, 768), make([]byte, 768)}}
@@ -120,7 +121,16 @@ func TestPlayerPlaysRecoveredPrefixThenBlocksAtPaletteRamp(t *testing.T) {
 	if state, err := p.Advance(100); err != nil || state != PlaybackRunning || p.Compositor.VGA[0] != 9 {
 		t.Fatalf("ANI final state=%s err=%v pixel=%d", state, err, p.Compositor.VGA[0])
 	}
-	if state, err := p.Advance(0); err != nil || state != PlaybackBlocked || p.Blocked == nil || p.Blocked.Source != "unrecovered" {
+	if state, err := p.Advance(0); err != nil || state != PlaybackRunning {
+		t.Fatalf("ramp begin state=%s err=%v", state, err)
+	}
+	if state, err := p.Advance(4); err != nil || state != PlaybackRunning {
+		t.Fatalf("ramp second state=%s err=%v", state, err)
+	}
+	if state, err := p.Advance(4); err != nil || state != PlaybackRunning {
+		t.Fatalf("ramp third state=%s err=%v", state, err)
+	}
+	if state, err := p.Advance(4); err != nil || state != PlaybackBlocked || p.Blocked == nil || p.Blocked.Source != "unrecovered" {
 		t.Fatalf("blocked state=%s err=%v blocked=%#v", state, err, p.Blocked)
 	}
 }
@@ -167,7 +177,13 @@ func TestPlayerRunsRecoveredNativePrefixWithPlayerAssets(t *testing.T) {
 	if state, err := p.Advance(2500); err != nil || state != PlaybackRunning {
 		t.Fatalf("ANI state=%s err=%v", state, err)
 	}
-	if state, err := p.Advance(0); err != nil || state != PlaybackBlocked || p.Blocked == nil || p.Blocked.Op != "palette_ramp" {
+	if state, err := p.Advance(0); err != nil || state != PlaybackRunning {
+		t.Fatalf("palette setup state=%s err=%v", state, err)
+	}
+	if state, err := p.Advance(256); err != nil || state != PlaybackRunning {
+		t.Fatalf("palette ramp state=%s err=%v", state, err)
+	}
+	if state, err := p.Advance(2000); err != nil || state != PlaybackBlocked || p.Blocked == nil || p.Blocked.Op != "native_text_branch_opaque" {
 		t.Fatalf("prefix gate state=%s err=%v blocked=%#v", state, err, p.Blocked)
 	}
 }

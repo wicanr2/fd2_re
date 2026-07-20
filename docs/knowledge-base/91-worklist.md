@@ -571,6 +571,6 @@
 
 ## 2026-07-20 ending prefix playback slice
 
-- [x] **0x2bce5 可播放前綴（仍 fail-closed）**：`internal/ending.Player` 現以毫秒 clock 依原序執行已證實的 frame0 transparent blit、64000-byte copy、1000ms hold 與 ANI #2（首幀立即、後續每 100ms）；實際玩家 `FDOTHER.DAT #54` + `ANI.DAT #2` regression 可走到第一個未復原 gate。遇 `palette_ramp`、native text 或 composite 一律保留最後 VGA frame 並回報 `blocked`，絕不改用 generic fade／結局。
+- [x] **0x2bce5 可播放前綴（仍 fail-closed）**：`internal/ending.Player` 現以毫秒 clock 依原序執行 frame0 transparent blit、64000-byte copy、1000ms hold、ANI #2（首幀立即、後續每100ms），以及 direct-Capstone 證實的 `0x11df2(0,255,EBX)` 63→0、每步4ms palette ramp；玩家 `FDOTHER.DAT #54` + `ANI.DAT #2` regression 已走到第一個 native text gate。遇 native text 或 composite 一律保留最後 VGA frame 並回報 `blocked`，絕不改用 generic fade／結局。
 - [x] **獨立畫面 oracle**：`FD2_ENDING_PREFIX=1` 會讀玩家自備 DAT，將 indexed VGA DAC 轉為 320×200、2× 顯示於 Ebiten；它不接 campaign，故無法假裝原版終局已完成。可用 `FD2_FDOTHER=/path/FDOTHER.DAT`、`FD2_ANI=/path/ANI.DAT` 指定素材，並沿用 `FD2_SHOT` 截圖。
-- [ ] **下一個 ending gate**：直接 RE／實作 `palette_ramp` 對應的 native palette helper（不可從 `palette_update` 推測），再將已定案的 DATO/FDTXT dialogue blocks 接到現有對話 UI；之後才處理 640-stride composite loops 與 campaign terminal route。
+- [ ] **下一個 ending gate**：將已定案的 DATO/FDTXT dialogue blocks 以 native sequence 接到現有對話 UI（含 chapter26/29 branch）；之後才處理 frame12..108、640-stride composite loops 與 campaign terminal route。

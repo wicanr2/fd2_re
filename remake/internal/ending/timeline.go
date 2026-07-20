@@ -42,6 +42,8 @@ type Segment struct {
 	PaletteStart *int            `json:"start,omitempty"`
 	PaletteEnd   *int            `json:"end,omitempty"`
 	PaletteValue *int            `json:"value,omitempty"`
+	PaletteStep  int             `json:"step,omitempty"`
+	PaletteDelay int             `json:"delay_ms,omitempty"`
 	ThenDialogue []DialogueBlock `json:"then_dialogue,omitempty"`
 	ElseDialogue []DialogueBlock `json:"else_dialogue,omitempty"`
 }
@@ -98,6 +100,9 @@ func LoadTimeline(path string) (*Timeline, error) {
 		}
 		if segment.Op == "ani_play" && (segment.ANIResource == nil || *segment.ANIResource != 2 || segment.FrameDelayMs != 100 || segment.Skippable == nil || *segment.Skippable) {
 			return nil, fmt.Errorf("ending timeline %q segment %d has incomplete ANI playback", path, i)
+		}
+		if segment.Op == "palette_ramp" && (segment.PaletteStart == nil || segment.PaletteEnd == nil || segment.PaletteStep == 0 || segment.PaletteDelay <= 0 || *segment.PaletteStart < 0 || *segment.PaletteStart > 63 || *segment.PaletteEnd < 0 || *segment.PaletteEnd > 63 || (*segment.PaletteEnd-*segment.PaletteStart)*segment.PaletteStep < 0) {
+			return nil, fmt.Errorf("ending timeline %q segment %d has invalid palette ramp", path, i)
 		}
 		for j, block := range append(append([]DialogueBlock(nil), segment.ThenDialogue...), segment.ElseDialogue...) {
 			if block.PortraitID < 0 || block.SourceDAT == "" || block.Script == "" || block.StringIndex < 0 || block.SceneIndex < 0 || block.Line < 0 || block.Count <= 0 {
