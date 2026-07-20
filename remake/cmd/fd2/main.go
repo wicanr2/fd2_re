@@ -144,6 +144,11 @@ type Game struct {
 	shopEquipSlot      int
 	shopItemTypes      map[int]int
 	shopEquipTypes     map[int][]int
+	shopItemPrices     map[int]int
+	shopMode           string // buy or sell
+	shopSellPicking    bool
+	shopSellUnitSel    int
+	shopSellSlotSel    int
 	portraits          map[int][]*ebiten.Image // DATO 頭像:肖像 id → 4 嘴型幀
 	mouthOpen          bool                    // 嘴型動畫狀態(原版 0x16d00:m0閉/m3開)
 	mouthTimer         int                     // 閉嘴倒數(原版 rand%30+2 tick)
@@ -1447,6 +1452,10 @@ func (g *Game) enterNode() {
 		g.shopSel = 0
 		g.shopPicking = false
 		g.shopEquipPrompt = false
+		g.shopMode = "buy"
+		g.shopSellPicking = false
+		g.shopSellUnitSel = 0
+		g.shopSellSlotSel = 0
 		g.shopRecipientSel = 0
 		g.shopRecipients = nil
 	case "ending":
@@ -1805,6 +1814,26 @@ func (g *Game) shopReceiverIDs(good campaign.Good) []int {
 	return out
 }
 
+func (g *Game) shopSellIDs() []int {
+	ids := append([]int(nil), g.partyJoinOrder...)
+	seen := map[int]bool{}
+	for _, id := range ids {
+		seen[id] = true
+	}
+	for id := range g.partyRoster {
+		if !seen[id] {
+			ids = append(ids, id)
+		}
+	}
+	out := ids[:0]
+	for _, id := range ids {
+		if u, ok := g.partyRoster[id]; ok && len(u.Inventory) > 0 {
+			out = append(out, id)
+		}
+	}
+	return out
+}
+
 // campInput 處理 campaign 節點的輸入。回傳 true = 已攔截(擋掉戰場一般輸入)。
 func (g *Game) campInput() bool {
 	if g.camp == nil {
@@ -1870,6 +1899,66 @@ func (g *Game) campInput() bool {
 				g.partyRoster[g.shopEquipUnit] = u
 				g.shopEquipPrompt = false
 				g.msg = fmt.Sprintf("買下 %s(-%d G)", g.shopPending.Name, g.shopPending.Price)
+			}
+			return true
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyTab) {
+			if g.shopMode == "sell" {
+				g.shopMode = "buy"
+			} else {
+				g.shopMode = "sell"
+			}
+			g.shopSellPicking = false
+			g.shopSellUnitSel, g.shopSellSlotSel = 0, 0
+			return true
+		}
+		if g.shopMode == "sell" {
+			ids := g.shopSellIDs()
+			if g.shopSellPicking {
+				u := g.partyRoster[ids[g.shopSellUnitSel]]
+				if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.shopSellSlotSel > 0 {
+					g.shopSellSlotSel--
+				}
+				if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.shopSellSlotSel < len(u.Inventory)-1 {
+					g.shopSellSlotSel++
+				}
+				if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+					g.shopSellPicking = false
+					return true
+				}
+				if enter && g.shopSellSlotSel < len(u.Inventory) {
+					itemID := u.Inventory[g.shopSellSlotSel]
+					price, ok := g.shopItemPrices[itemID]
+					if !ok {
+						g.msg = fmt.Sprintf("物品 %02Xh 沒有價格資料", itemID)
+					} else if gold, err := campaign.SellSlot(g.gold, &u, g.shopSellSlotSel, price); err != nil {
+						g.msg = err.Error()
+					} else {
+						g.gold, g.partyRoster[ids[g.shopSellUnitSel]] = gold, u
+						g.msg = fmt.Sprintf("賣出物品 %02Xh(+%d G)", itemID, price*3/4)
+						if len(u.Inventory) == 0 {
+							g.shopSellPicking = false
+						}
+						if g.shopSellSlotSel >= len(u.Inventory) && g.shopSellSlotSel > 0 {
+							g.shopSellSlotSel--
+						}
+					}
+				}
+				return true
+			}
+			if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.shopSellUnitSel > 0 {
+				g.shopSellUnitSel--
+			}
+			if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.shopSellUnitSel < len(ids)-1 {
+				g.shopSellUnitSel++
+			}
+			if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+				g.shopMode = "buy"
+				return true
+			}
+			if enter && len(ids) > 0 {
+				g.shopSellPicking = true
+				g.shopSellSlotSel = 0
 			}
 			return true
 		}
@@ -3325,6 +3414,40 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 			g.font.Draw(screen, "Enter 是　ESC 否（保留在物品欄）", 170, 210, 1.0, color.RGBA{0xff, 0xff, 0xff, 0xff})
 			break
 		}
+		if g.shopMode == "sell" {
+			ids := g.shopSellIDs()
+			if g.shopSellPicking && g.shopSellUnitSel < len(ids) {
+				u := g.partyRoster[ids[g.shopSellUnitSel]]
+				h := 76 + float64(len(u.Inventory))*28
+				fillBox(140, 60, 360, h)
+				g.font.Draw(screen, fmt.Sprintf("賣出：%s（Tab 返回購買）", u.Name), 156, 70, 1.0, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+				for i, id := range u.Inventory {
+					pre, c := "　", color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
+					if i == g.shopSellSlotSel {
+						pre, c = "▶", color.RGBA{0xff, 0xff, 0xff, 0xff}
+					}
+					price := g.shopItemPrices[id]
+					flag := ""
+					if i < len(u.Equipped) && u.Equipped[i] {
+						flag = " [裝備]"
+					}
+					g.font.Draw(screen, fmt.Sprintf("%s%02Xh%s  +%d G", pre, id, flag, price*3/4), 156, 100+float64(i)*28, 1.0, c)
+				}
+				break
+			}
+			h := 76 + float64(len(ids))*30
+			fillBox(140, 60, 360, h)
+			g.font.Draw(screen, "賣出：選擇角色（Tab 返回購買）", 156, 70, 1.0, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+			for i, id := range ids {
+				u := g.partyRoster[id]
+				pre, c := "　", color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
+				if i == g.shopSellUnitSel {
+					pre, c = "▶", color.RGBA{0xff, 0xff, 0xff, 0xff}
+				}
+				g.font.Draw(screen, fmt.Sprintf("%s%s（%d 件）", pre, u.Name, len(u.Inventory)), 156, 100+float64(i)*30, 1.0, c)
+			}
+			break
+		}
 		if g.shopPicking {
 			h := 76 + float64(len(g.shopRecipients))*30
 			fillBox(140, 60, 360, h)
@@ -3342,7 +3465,7 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 		goods := g.camp.ShopGoods()
 		h := 76 + float64(len(goods))*30
 		fillBox(140, 60, 360, h)
-		g.font.Draw(screen, fmt.Sprintf("商店　持有 %d G(Enter 購買/ESC 離開)", g.gold), 156, 70, 1.0,
+		g.font.Draw(screen, fmt.Sprintf("商店　持有 %d G(Enter 購買/Tab 賣出/ESC 離開)", g.gold), 156, 70, 1.0,
 			color.RGBA{0xff, 0xe0, 0x90, 0xff})
 		for i, gd := range goods {
 			c := color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
@@ -3778,6 +3901,9 @@ func loadGame() *Game {
 	}
 	if types, equip, e := campaign.LoadShopEligibility(assetPath("assets/data/item.json"), assetPath("assets/data/class_equip_types.json")); e == nil {
 		g.shopItemTypes, g.shopEquipTypes = types, equip
+	}
+	if prices, e := campaign.LoadItemPrices(assetPath("assets/data/item.json")); e == nil {
+		g.shopItemPrices = prices
 	}
 	g.font = loadFont()
 	// 狀態欄名字專用整數尺寸 face(scale 1.0 繪製,避免非整數縮放模糊);orig 名墨高 13px→face 28

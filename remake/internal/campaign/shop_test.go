@@ -45,6 +45,24 @@ func TestSellGoodPaysThreeQuartersAndRemovesSlot(t *testing.T) {
 	}
 }
 
+func TestSellSlotTargetsDuplicateInventoryEntry(t *testing.T) {
+	u := &battle.Unit{Inventory: []int{7, 7}, Equipped: []bool{true, false}}
+	gold, err := SellSlot(0, u, 1, 100)
+	if err != nil || len(u.Inventory) != 1 || len(u.Equipped) != 1 || !u.Equipped[0] || gold != 75 {
+		t.Fatalf("slot sell gold=%d err=%v inventory=%v equipped=%v", gold, err, u.Inventory, u.Equipped)
+	}
+}
+
+func TestLoadItemPricesFromRuntimeBundle(t *testing.T) {
+	prices, err := LoadItemPrices("../../assets/data/item.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if prices[0] != 50 || prices[0x80] != 50 {
+		t.Fatalf("unexpected item prices: id0=%d id80=%d", prices[0], prices[0x80])
+	}
+}
+
 func TestLoadShopEligibilityUsesOriginalTables(t *testing.T) {
 	types, equip, err := LoadShopEligibility(filepath.Join("..", "..", "assets", "data", "item.json"), filepath.Join("..", "..", "assets", "data", "class_equip_types.json"))
 	if err != nil || types[0x80] != 21 || !CanEquip(1, types[0x80], equip) || CanEquip(25, types[0x80], equip) {

@@ -51,6 +51,30 @@ func LoadShopEligibility(itemPath, equipPath string) (map[int]int, map[int][]int
 	return types, equip, nil
 }
 
+// LoadItemPrices loads the editable list-price column used by the original
+// shop sell table. SellGood applies the fixed 3/4 resale rule to this value.
+func LoadItemPrices(path string) (map[int]int, error) {
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	var rows []struct {
+		ID    int `json:"id"`
+		Price int `json:"price"`
+	}
+	if err := json.Unmarshal(raw, &rows); err != nil {
+		return nil, err
+	}
+	prices := make(map[int]int, len(rows))
+	for _, row := range rows {
+		if row.ID < 0 || row.ID > 0xff || row.Price < 0 {
+			return nil, fmt.Errorf("invalid item price row id=%d price=%d", row.ID, row.Price)
+		}
+		prices[row.ID] = row.Price
+	}
+	return prices, nil
+}
+
 // CanEquip mirrors original 0x1c1c3: an equip item is allowed exactly when
 // its item.type appears in this class record's six type slots (0xff is empty).
 func CanEquip(classID, itemType int, classEquip map[int][]int) bool {
@@ -108,15 +132,22 @@ func SellGood(gold int, receiver *battle.Unit, itemID, listPrice int) (int, erro
 	if itemID < 0 || itemID > 0xff || listPrice < 0 {
 		return gold, fmt.Errorf("invalid shop item")
 	}
-	slot := -1
-	for i, id := range receiver.Inventory {
+	for slot, id := range receiver.Inventory {
 		if id == itemID {
-			slot = i
-			break
+			return SellSlot(gold, receiver, slot, listPrice)
 		}
 	}
-	if slot < 0 {
-		return gold, fmt.Errorf("item not found")
+	return gold, fmt.Errorf("item not found")
+}
+
+// SellSlot is the slot-addressed form used by the UI, so duplicate item IDs
+// cannot cause the wrong inventory entry to be sold.
+func SellSlot(gold int, receiver *battle.Unit, slot, listPrice int) (int, error) {
+	if receiver == nil {
+		return gold, fmt.Errorf("shop receiver missing")
+	}
+	if slot < 0 || slot >= len(receiver.Inventory) || listPrice < 0 {
+		return gold, fmt.Errorf("invalid shop slot")
 	}
 	receiver.Inventory = append(receiver.Inventory[:slot], receiver.Inventory[slot+1:]...)
 	if slot < len(receiver.Equipped) {
