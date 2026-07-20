@@ -156,3 +156,45 @@ func (f *Font) BlitGlyph(dst []byte, stride, base, index int, color byte) error 
 	}
 	return nil
 }
+
+// NativeGlyphStyle is the exact visible colour portion of 0x4ea2a's ABI.
+// Foreground is written for each set 1bpp source bit; Shadow is written one
+// pixel to its left and one row below; Background fills the 16x16 cell only
+// when it is non-zero.
+type NativeGlyphStyle struct {
+	Foreground byte
+	Shadow     byte
+	Background byte
+}
+
+// BlitNativeGlyph reproduces 0x4ea2a's 16x16 loop.  Its bounds checks are
+// intentionally stricter than the original raw pointer writes: a glyph needs
+// one pixel of left margin and one shadow row below the cell.
+func (f *Font) BlitNativeGlyph(dst []byte, stride, base, index int, style NativeGlyphStyle) error {
+	if f == nil || index < 0 || index >= f.GlyphCount() || stride < GlyphWidth || base < 1 {
+		return fmt.Errorf("fdtxt: invalid native glyph blit")
+	}
+	if base+GlyphHeight*stride+GlyphWidth > len(dst) {
+		return fmt.Errorf("fdtxt: native glyph blit exceeds destination")
+	}
+	if style.Background != 0 {
+		for y := 0; y < GlyphHeight; y++ {
+			for x := 0; x < GlyphWidth; x++ {
+				dst[base+y*stride+x] = style.Background
+			}
+		}
+	}
+	for y := 0; y < GlyphHeight; y++ {
+		row := binary.BigEndian.Uint16(f.data[index*GlyphBytes+y*2:])
+		for x := 0; x < GlyphWidth; x++ {
+			if row&(uint16(0x8000)>>x) == 0 {
+				continue
+			}
+			pos := base + y*stride + x
+			dst[pos] = style.Foreground
+			dst[pos-1] = style.Shadow
+			dst[pos+stride] = style.Shadow
+		}
+	}
+	return nil
+}

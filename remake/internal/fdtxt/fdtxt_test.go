@@ -59,6 +59,26 @@ func TestBlitGlyphLeavesZeroBitsTransparent(t *testing.T) {
 	}
 }
 
+func TestBlitNativeGlyphMatchesForegroundShadowAndBackgroundABI(t *testing.T) {
+	data := make([]byte, GlyphBytes)
+	data[0] = 0x80 // top-left source bit
+	f, err := ParseFont(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	dst := make([]byte, 20*18)
+	for i := range dst {
+		dst[i] = 7
+	}
+	base := 21
+	if err := f.BlitNativeGlyph(dst, 20, base, 0, NativeGlyphStyle{Foreground: 0xcd, Shadow: 0x4c, Background: 3}); err != nil {
+		t.Fatal(err)
+	}
+	if dst[base] != 0xcd || dst[base-1] != 0x4c || dst[base+20] != 0x4c || dst[base+1] != 3 || dst[base+15*20+15] != 3 {
+		t.Fatalf("native glyph pixels=%#x %#x %#x %#x %#x", dst[base], dst[base-1], dst[base+20], dst[base+1], dst[base+15*20+15])
+	}
+}
+
 func TestLocateLogicalUtteranceUsesPhysicalLocator(t *testing.T) {
 	// Each FFxx word terminates a text chunk.  The second glyph 557 is the
 	// original opening quote and therefore marks two visible utterances.
