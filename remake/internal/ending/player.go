@@ -18,13 +18,16 @@ type Player struct {
 	ANI        *afm.Clip
 	Compositor *IndexedCompositor
 
-	Segment int
-	WaitMS  int
-	ani     *ANIPlayer
-	ramp    *paletteRamp
-	Blocked *Segment
-	State   PlaybackState
+	Segment   int
+	WaitMS    int
+	ani       *ANIPlayer
+	ramp      *paletteRamp
+	composite *composite40
+	Blocked   *Segment
+	State     PlaybackState
 }
+
+type composite40 struct{ iteration, delay int }
 
 type paletteRamp struct {
 	value, end, step, delay int
@@ -87,6 +90,8 @@ func (p *Player) Advance(elapsedMS int) (PlaybackState, error) {
 			p.WaitMS = 0
 			if p.ramp != nil {
 				p.ramp.next = true
+			} else if p.composite != nil {
+				// The next pass is selected below; it owns the same segment.
 			} else {
 				p.Segment++
 			}
@@ -106,6 +111,22 @@ func (p *Player) Advance(elapsedMS int) (PlaybackState, error) {
 			}
 			p.WaitMS = p.ramp.delay
 			p.ramp.next = true
+			if elapsedMS == 0 {
+				return p.State, nil
+			}
+			continue
+		}
+		if p.composite != nil {
+			if err := p.Compositor.Composite40(p.Frames, p.composite.iteration); err != nil {
+				return p.State, err
+			}
+			p.composite.iteration++
+			if p.composite.iteration >= 40 {
+				p.composite = nil
+				p.Segment++
+				continue
+			}
+			p.WaitMS = p.composite.delay
 			if elapsedMS == 0 {
 				return p.State, nil
 			}
@@ -171,6 +192,14 @@ func (p *Player) Advance(elapsedMS int) (PlaybackState, error) {
 				return p.State, fmt.Errorf("ending: incomplete palette ramp at %s", s.Source)
 			}
 			p.ramp = &paletteRamp{value: *s.PaletteStart, end: *s.PaletteEnd, step: s.PaletteStep, delay: s.PaletteDelay}
+		case "native_composite_loop_opaque":
+			// The first native loop is fully recovered; the later 200-pass loop
+			// remains opaque because its 0x11d40 palette helper is not yet proven.
+			if s.Source != "0x2bf60" {
+				p.Blocked, p.State = s, PlaybackBlocked
+				return p.State, nil
+			}
+			p.composite = &composite40{delay: 20}
 		default:
 			p.Blocked = s
 			p.State = PlaybackBlocked

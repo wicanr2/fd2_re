@@ -254,3 +254,20 @@ func TestPlayerExpandsTimedFrameSequenceBeforeNextGate(t *testing.T) {
 		t.Fatalf("sequence state=%s err=%v pixel=%d blocked=%#v", state, err, p.Compositor.VGA[0], p.Blocked)
 	}
 }
+
+func TestPlayerRunsRecoveredComposite40BeforeTextGate(t *testing.T) {
+	frames := make([]fdother.Frame, 9)
+	for i := 1; i < 9; i++ {
+		frames[i] = fdother.Frame{Width: 1, Height: 1, Pixels: []byte{1, 0, 1, 0, 0, byte(i)}}
+	}
+	p, err := NewPlayer(Timeline{Segments: []Segment{{Op: "native_composite_loop_opaque", Source: "0x2bf60"}, {Op: "native_text_branch_opaque", Source: "gate"}}}, frames, nil, NewIndexedCompositor())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if state, err := p.Advance(0); err != nil || state != PlaybackRunning {
+		t.Fatal(state, err)
+	}
+	if state, err := p.Advance(780); err != nil || state != PlaybackBlocked || p.Blocked == nil || p.Blocked.Source != "gate" {
+		t.Fatalf("state=%s err=%v blocked=%#v", state, err, p.Blocked)
+	}
+}
