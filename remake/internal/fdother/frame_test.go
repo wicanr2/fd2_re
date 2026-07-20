@@ -137,7 +137,10 @@ func TestFDOTHER056SingleFramePayload(t *testing.T) {
 	if len(data) < 4 || binary.LittleEndian.Uint16(data) != 320 || binary.LittleEndian.Uint16(data[2:]) != 200 {
 		t.Fatalf("#56 header=% x", data[:min(4, len(data))])
 	}
-	frame := Frame{Width: 320, Height: 200, Pixels: data}
+	frame, err := ParseSingleFrame(data)
+	if err != nil {
+		t.Fatal(err)
+	}
 	if err := frame.Blit(make([]byte, 320*200), 320, -1); err != nil {
 		t.Fatalf("#56 single-frame RLE decode: %v", err)
 	}

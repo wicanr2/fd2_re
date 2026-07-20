@@ -99,6 +99,19 @@ func ParseFrames(data []byte) ([]Frame, error) {
 	return frames, nil
 }
 
+// ParseSingleFrame parses a raw 0x4e63d payload with Width/Height at offset
+// zero and no offset table (the finale's FDOTHER #56 form).
+func ParseSingleFrame(data []byte) (Frame, error) {
+	if len(data) < 4 {
+		return Frame{}, errors.New("fdother: single frame is too short")
+	}
+	w, h := int(binary.LittleEndian.Uint16(data)), int(binary.LittleEndian.Uint16(data[2:]))
+	if w == 0 || h == 0 {
+		return Frame{}, errors.New("fdother: single frame has empty dimensions")
+	}
+	return Frame{Width: w, Height: h, Pixels: data}, nil
+}
+
 // Blit applies the exact transparent (-1) branch of FD2.EXE 0x4e63d to dst.
 // dst is an indexed framebuffer with the given row stride.  The original
 // supports two non-transparent palette remap modes too; no verified ending
