@@ -343,6 +343,12 @@ func NewRunner(c *Campaign) *Runner {
 // Node 目前節點。
 func (r *Runner) Node() *Node { return r.C.Nodes[r.Cur] }
 
+// NodeID exposes the editable node key for runtime data fallback decisions.
+// Keeping this separate from Node avoids making callers infer identity from
+// the node payload (which is intentionally allowed to be identical across
+// multiple story segments).
+func (r *Runner) NodeID() string { return r.Cur }
+
 // Visible 回傳 choice 節點依旗標過濾後的選項。
 func (r *Runner) Visible() []Option {
 	n := r.Node()

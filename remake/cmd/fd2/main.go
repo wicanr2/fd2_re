@@ -1363,8 +1363,12 @@ func (g *Game) enterNode() {
 		g.dialog = nil
 		g.dlgPage = 0 // 新對白從第一頁起
 		lines := n.Lines
-		if n.Script != "" { // 本機劇情文本檔(assets/story/chNN.json,人工精校;無檔 fallback 內嵌 lines)
-			if ls := loadStoryScript(n.Script, n.Scene); len(ls) > 0 {
+		script := n.Script
+		if script == "" && n.Type == "story" {
+			script = defaultChapterStoryScript(g.camp.NodeID())
+		}
+		if script != "" { // 本機劇情文本檔(assets/story/chNN.json,人工精校;無檔 fallback 內嵌 lines)
+			if ls := loadStoryScript(script, n.Scene); len(ls) > 0 {
 				lines = ls
 			}
 		}
@@ -2620,6 +2624,22 @@ func loadFIGANI() map[int][]*ebiten.Image {
 // fallback 用節點內嵌 Lines,不會靜默播錯段)。檔案缺失(玩家未自備素材)同樣回 nil。
 func loadStoryScript(path, scene string) []campaign.Line {
 	return loadStoryScriptAt(path, scene, nil)
+}
+
+// defaultChapterStoryScript supplies the editable full-chapter transcript for
+// generic story nodes whose campaign entry only carries a short fallback line.
+// It is deliberately limited to the exact story_chNN key shape: handler
+// cutscenes (story_chNN_pre/post or named scenes) must keep their explicit
+// beats/bindings instead of silently replaying an entire chapter.
+func defaultChapterStoryScript(nodeID string) string {
+	if !strings.HasPrefix(nodeID, "story_ch") || len(nodeID) != len("story_ch00") {
+		return ""
+	}
+	chapter, err := strconv.Atoi(nodeID[len("story_ch"):])
+	if err != nil || chapter < 1 || chapter > 33 {
+		return ""
+	}
+	return fmt.Sprintf("assets/story/ch%02d.json", chapter)
 }
 
 // loadStoryScriptAt extends the label-oriented legacy loader with an exact
