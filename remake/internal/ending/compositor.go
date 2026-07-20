@@ -25,11 +25,22 @@ type IndexedCompositor struct {
 type ANIPlayer struct {
 	Clip                    *afm.Clip
 	DelayMs, Elapsed, Frame int
+	Started                 bool
 }
 
 func (p *ANIPlayer) Advance(c *IndexedCompositor, elapsedMs int) (bool, error) {
 	if p.Clip == nil || p.DelayMs <= 0 || p.Frame >= len(p.Clip.IndexedFrames) {
 		return true, errors.New("ending: invalid ANI player")
+	}
+	if !p.Started {
+		if err := c.PresentANIFrame(p.Clip, p.Frame); err != nil {
+			return true, err
+		}
+		p.Started = true
+		p.Frame++
+	}
+	if p.Frame >= len(p.Clip.IndexedFrames) {
+		return true, nil
 	}
 	p.Elapsed += elapsedMs
 	for p.Elapsed >= p.DelayMs {
