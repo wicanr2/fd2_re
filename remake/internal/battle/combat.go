@@ -255,9 +255,10 @@ func (s *State) Result(protect string) string {
 
 // AIPlan 一個 AI 單位的行動計畫(決策與執行分離,供引擎逐單位播放移動動畫後才結算)。
 type AIPlan struct {
-	U      *Unit
-	Path   []Cell // 含起點;len>=2 = 要移動(引擎播行走動畫)
-	Target *Unit  // 到位後攻擊目標(nil = 僅移動/待機)
+	U       *Unit
+	Path    []Cell // 含起點;len>=2 = 要移動(引擎播行走動畫)
+	Target  *Unit  // 到位後攻擊目標(nil = 僅移動/待機)
+	SpellID int    // 原版 spell command 的資料欄位；-1 表示本計畫不施法
 }
 
 // NextAIPlan 找下一個未行動的 AI 單位並產生行動計畫(不執行、不設 Acted);
@@ -269,13 +270,13 @@ func (s *State) NextAIPlan() *AIPlan {
 		}
 		best, moveTarget := s.aiTargets(u)
 		if moveTarget == nil {
-			return &AIPlan{U: u}
+			return &AIPlan{U: u, SpellID: -1}
 		}
 		if best == nil {
-			return &AIPlan{U: u, Path: s.aiApproachPath(u, moveTarget)}
+			return &AIPlan{U: u, Path: s.aiApproachPath(u, moveTarget), SpellID: -1}
 		}
 		if s.InAttackRange(u, best.X, best.Y) {
-			return &AIPlan{U: u, Target: best}
+			return &AIPlan{U: u, Target: best, SpellID: -1}
 		}
 		reach := s.Reachable(u)
 		dstX, dstY := u.X, u.Y
@@ -290,7 +291,7 @@ func (s *State) NextAIPlan() *AIPlan {
 				dstX, dstY = c.X, c.Y
 			}
 		}
-		p := &AIPlan{U: u, Path: s.Path(u, dstX, dstY)}
+		p := &AIPlan{U: u, Path: s.Path(u, dstX, dstY), SpellID: -1}
 		// 到位後若可攻擊 best,帶上目標(引擎走完動畫再結算)
 		du, dv := dstX-best.X, dstY-best.Y
 		if du < 0 {

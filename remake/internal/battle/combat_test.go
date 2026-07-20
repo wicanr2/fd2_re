@@ -237,3 +237,18 @@ func TestNextAIPlan_PrefersDamageAboveThreshold(t *testing.T) {
 		t.Fatalf("AI should choose viable target over dmg<=2 target, got %#v", plan)
 	}
 }
+
+func TestNextAIPlan_DefaultSpellCommandIsDisabled(t *testing.T) {
+	st := &State{W: 2, H: 1, SpellBook: []Spell{{ID: 7, Name: "神雷"}}}
+	ai := mkFighter(Enemy, 0, 0, 100, 50, 0, 100, 0, 0)
+	target := mkFighter(Own, 1, 0, 100, 0, 1, 0, 0, 0)
+	ai.OnField, target.OnField = true, true
+	st.Units = []*Unit{ai, target}
+	plan := st.NextAIPlan()
+	if plan == nil || plan.SpellID != -1 {
+		t.Fatalf("physical AI plan must not invent spell command: %#v", plan)
+	}
+	if len(st.SpellBook) != 1 || st.SpellBook[0].ID != 7 {
+		t.Fatalf("injected spell book was mutated: %#v", st.SpellBook)
+	}
+}

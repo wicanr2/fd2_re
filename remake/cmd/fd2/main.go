@@ -4208,6 +4208,9 @@ func loadGame() *Game {
 	}
 	if sp, e := battle.LoadSpells(assetPath("assets/spells.json")); e == nil { // 法術表(EXE dump)
 		g.spells = sp
+		if g.st != nil {
+			g.st.SpellBook = append([]battle.Spell(nil), sp...)
+		}
 	}
 	if types, equip, e := campaign.LoadShopEligibility(assetPath("assets/data/item.json"), assetPath("assets/data/class_equip_types.json")); e == nil {
 		g.shopItemTypes, g.shopEquipTypes = types, equip
