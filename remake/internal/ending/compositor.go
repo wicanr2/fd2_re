@@ -2,6 +2,7 @@ package ending
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
@@ -18,6 +19,51 @@ const (
 type IndexedCompositor struct {
 	VGA, Offscreen, Work []byte
 	Palette              [768]byte
+}
+
+// RunRecoveredPrefix executes only fully recovered indexed operations. It
+// stops at the first native-only operation, preserving the fail-closed ending
+// contract while making the evidence-backed prefix testable.
+func (c *IndexedCompositor) RunRecoveredPrefix(t Timeline, frames []fdother.Frame) (int, error) {
+	for i, s := range t.Segments {
+		switch s.Op {
+		case "blit_frame":
+			if s.Frame == nil || *s.Frame < 0 || *s.Frame >= len(frames) || s.Transparent == nil || *s.Transparent != -1 {
+				return i, fmt.Errorf("ending: invalid recovered blit at %s", s.Source)
+			}
+			var dst []byte
+			switch s.Target {
+			case "offscreen":
+				dst = c.Offscreen
+			case "vga":
+				dst = c.VGA
+			default:
+				return i, fmt.Errorf("ending: unknown target %q", s.Target)
+			}
+			if err := c.Blit(frames[*s.Frame], dst, s.Stride); err != nil {
+				return i, err
+			}
+		case "copy_buffer":
+			if s.From != "offscreen" || s.To != "vga" {
+				return i, fmt.Errorf("ending: unknown copy %s→%s", s.From, s.To)
+			}
+			if err := c.CopyToVGA(c.Offscreen); err != nil {
+				return i, err
+			}
+		case "palette_update":
+			if s.PaletteStart == nil || s.PaletteEnd == nil || s.PaletteValue == nil {
+				return i, fmt.Errorf("ending: incomplete palette update")
+			}
+			if err := c.PaletteDelta(*s.PaletteStart, *s.PaletteEnd, *s.PaletteValue); err != nil {
+				return i, err
+			}
+		case "delay_ms":
+			// Timing is owned by a future presentation clock; no state mutation.
+		default:
+			return i, fmt.Errorf("ending: native-only segment %s at %s", s.Op, s.Source)
+		}
+	}
+	return len(t.Segments), nil
 }
 
 func NewIndexedCompositor() *IndexedCompositor {
