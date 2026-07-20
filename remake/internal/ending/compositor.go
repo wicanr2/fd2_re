@@ -21,6 +21,7 @@ const (
 type IndexedCompositor struct {
 	VGA, Offscreen, Work []byte
 	Palette              [768]byte
+	Baseline             [768]byte
 }
 
 func (c *IndexedCompositor) RGBA() *image.RGBA {
@@ -170,7 +171,43 @@ func (c *IndexedCompositor) PresentANI(frame, palette []byte) error {
 	}
 	copy(c.VGA, frame)
 	copy(c.Palette[:], palette)
+	copy(c.Baseline[:], palette)
 	return nil
+}
+
+func (c *IndexedCompositor) SetBaselineDelta(start, end, delta int) error {
+	if start < 0 || end < start || end > 255 || delta < 0 {
+		return errors.New("ending: invalid baseline palette range")
+	}
+	for i := start * 3; i <= end*3+2; i++ {
+		v := int(c.Baseline[i]) - delta
+		if v < 0 {
+			v = 0
+		}
+		c.Palette[i] = byte(v)
+	}
+	return nil
+}
+
+// Composite200 reproduces 0x2c0c5's known geometry and palette baseline rule.
+func (c *IndexedCompositor) Composite200(frames []fdother.Frame, i int) error {
+	if i < 0 || i >= 200 || len(frames) < 9 {
+		return errors.New("ending: invalid composite frame set")
+	}
+	if err := c.CopyToVGA(c.Offscreen); err != nil {
+		return err
+	}
+	if err := frames[i%4+1].Blit(c.VGA, 320, -1); err != nil {
+		return err
+	}
+	if err := frames[i%4+5].Blit(c.VGA, 320, -1); err != nil {
+		return err
+	}
+	delta := 0
+	if i >= 136 {
+		delta = 1
+	}
+	return c.SetBaselineDelta(0, 255, delta)
 }
 
 func (c *IndexedCompositor) PresentANIFrame(clip *afm.Clip, index int) error {

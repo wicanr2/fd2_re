@@ -43,6 +43,22 @@ func TestComposite40UsesNativeViewportAndOffsets(t *testing.T) {
 	}
 }
 
+func TestComposite200UsesBaselinePalette(t *testing.T) {
+	c := NewIndexedCompositor()
+	c.Offscreen[1] = 3
+	c.Baseline[0] = 1
+	frames := make([]fdother.Frame, 9)
+	for i := 1; i < 9; i++ {
+		frames[i] = fdother.Frame{Width: 1, Height: 1, Pixels: []byte{1, 0, 1, 0, 0, byte(i)}}
+	}
+	if err := c.Composite200(frames, 136); err != nil {
+		t.Fatal(err)
+	}
+	if c.VGA[1] != 3 || c.Palette[0] != 0 {
+		t.Fatalf("vga=%d palette=%d", c.VGA[1], c.Palette[0])
+	}
+}
+
 func TestRecoveredPrefixStopsAtNativeOnlyGate(t *testing.T) {
 	frame, transparent := 0, -1
 	c := NewIndexedCompositor()
