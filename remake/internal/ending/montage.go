@@ -47,6 +47,31 @@ type PartyCycleSpec struct {
 	FrameDelayMS      int              `json:"frame_delay_ms"`
 	SourceRange       string           `json:"source_range"`
 	PortraitText      PortraitTextSpec `json:"portrait_text"`
+	FigureFade        FigureFadeSpec   `json:"figure_fade"`
+}
+
+type FigureFadeSpec struct {
+	Source           string          `json:"source"`
+	UnitSideOffset   int             `json:"unit_side_offset"`
+	RequiredUnitSide int             `json:"required_unit_side"`
+	WorkStride       int             `json:"work_stride"`
+	ViewportWidth    int             `json:"viewport_width"`
+	ViewportHeight   int             `json:"viewport_height"`
+	Platform         FigureFadeAsset `json:"platform"`
+	Figure           FigureFadeAsset `json:"figure"`
+	StageStart       int             `json:"stage_start"`
+	StageEnd         int             `json:"stage_end"`
+	StageShiftBytes  int             `json:"stage_shift_bytes"`
+	PaletteFormula   string          `json:"palette_delta_formula"`
+	RestoreBytes     int             `json:"restore_buffer_bytes"`
+}
+
+type FigureFadeAsset struct {
+	Resource string `json:"resource"`
+	X        int    `json:"x"`
+	Y        int    `json:"y"`
+	Effect   string `json:"effect"`
+	Frame    int    `json:"frame"`
 }
 
 type PortraitTextSpec struct {
@@ -104,10 +129,31 @@ func LoadMontage(path string) (*Montage, error) {
 		m.PartyCycle.PortraitText.Source != "0x2c7a4..0x2c967" || m.PartyCycle.PortraitText.PortraitArchive != "DATO.DAT" || m.PartyCycle.PortraitText.PortraitIndex != "unit[+7]" || m.PartyCycle.PortraitText.CurrentTextTable != "FDTXT_031" || m.PartyCycle.PortraitText.PermanentTextTable != "FDTXT_000" || len(m.PartyCycle.PortraitText.Fields) != 5 ||
 		m.PartyCycle.PortraitText.Fields[0] != (MontageTextField{Table: "current", Index: "10", Destination: "staging+0x16e9", Meaning: "name_label"}) || m.PartyCycle.PortraitText.Fields[1] != (MontageTextField{Table: "permanent", Index: "unit[+8]+1", Destination: "staging+0x171b", Meaning: "character_name"}) || m.PartyCycle.PortraitText.Fields[2] != (MontageTextField{Table: "current", Index: "11", Destination: "staging+0x2fe9", Meaning: "class_label"}) || m.PartyCycle.PortraitText.Fields[3] != (MontageTextField{Table: "permanent", Index: "unit[+0x20]+0x96", Destination: "staging+0x301b", Meaning: "class_name"}) || m.PartyCycle.PortraitText.Fields[4] != (MontageTextField{Table: "current", Index: "unit[+8]+0x0c|45", Destination: "staging+0x7d08", Meaning: "epilogue"}) ||
 		m.PartyCycle.PortraitText.GlyphStyle != (MontageGlyphStyle{Stride: 320, Foreground: 0xcd, Shadow: 0x4c, Background: 0}) || m.PartyCycle.PortraitText.Input != (MontageInput{Poll: "0x10620", SkipAction: "outer_counter=1;0x4e031", Source: "0x2c950..0x2c961"}) ||
+		m.PartyCycle.FigureFade.Source != "0x291197..0x29258" || m.PartyCycle.FigureFade.UnitSideOffset != 6 || m.PartyCycle.FigureFade.RequiredUnitSide != 1 || m.PartyCycle.FigureFade.WorkStride != 640 || m.PartyCycle.FigureFade.ViewportWidth != 320 || m.PartyCycle.FigureFade.ViewportHeight != 200 || m.PartyCycle.FigureFade.Platform != (FigureFadeAsset{Resource: "TAI.DAT#3", X: 164, Y: 157, Effect: "transparent_noop"}) || m.PartyCycle.FigureFade.Figure != (FigureFadeAsset{Resource: "secondary_figani", Frame: 0}) || m.PartyCycle.FigureFade.StageStart != 8 || m.PartyCycle.FigureFade.StageEnd != 0 || m.PartyCycle.FigureFade.StageShiftBytes != 10 || m.PartyCycle.FigureFade.PaletteFormula != "stage*6" || m.PartyCycle.FigureFade.RestoreBytes != 0xfa00 ||
 		m.Gate.Source != "0x2c5e3" || m.Gate.Reason == "" {
 		return nil, fmt.Errorf("ending montage %q is incomplete or unsupported", path)
 	}
 	return &m, nil
+}
+
+// FigureFadePass is one fully evidenced 0x29164 non-mirrored presentation.
+// SourceOffset is a byte offset into the 640-stride work surface. The caller
+// owns the un-recovered restore/copy sequencing; this plan never substitutes
+// an RGBA or generic battle fade.
+type FigureFadePass struct {
+	Stage, SourceOffset, PaletteDelta int
+}
+
+func (m Montage) PlanFigureFade(unitSide int) ([]FigureFadePass, error) {
+	s := m.PartyCycle.FigureFade
+	if m.Status != "mapped_first_party_cycle_fail_closed" || unitSide != s.RequiredUnitSide || s.StageStart != 8 || s.StageEnd != 0 || s.StageShiftBytes != 10 || s.PaletteFormula != "stage*6" {
+		return nil, fmt.Errorf("ending: unavailable or mirrored figure fade")
+	}
+	passes := make([]FigureFadePass, 0, s.StageStart-s.StageEnd+1)
+	for stage := s.StageStart; stage >= s.StageEnd; stage-- {
+		passes = append(passes, FigureFadePass{Stage: stage, SourceOffset: stage * s.StageShiftBytes, PaletteDelta: stage * 6})
+	}
+	return passes, nil
 }
 
 // PartyCyclePlan is the exact recoverable selection portion of the native

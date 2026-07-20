@@ -25,3 +25,20 @@ func TestNative2C548MontageRefusesEmptyParty(t *testing.T) {
 		t.Fatalf("plans=%#v err=%v", plans, err)
 	}
 }
+
+func TestNative2C548FigureFadeIsNineNonMirroredPasses(t *testing.T) {
+	montage, err := LoadMontage("../../assets/endings/native_2c548.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	passes, err := montage.PlanFigureFade(1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(passes) != 9 || passes[0] != (FigureFadePass{Stage: 8, SourceOffset: 80, PaletteDelta: 48}) || passes[8] != (FigureFadePass{Stage: 0, SourceOffset: 0, PaletteDelta: 0}) {
+		t.Fatalf("fade passes=%#v", passes)
+	}
+	if passes, err := montage.PlanFigureFade(0); err == nil || passes != nil {
+		t.Fatalf("mirrored passes=%#v err=%v", passes, err)
+	}
+}

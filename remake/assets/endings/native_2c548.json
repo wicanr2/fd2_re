@@ -37,6 +37,21 @@
       "frame_delay": "byte[frame_descriptor+6]",
       "source": "0x2c6fd..0x2c77d"
     },
+    "figure_fade": {
+      "source": "0x291197..0x29258",
+      "unit_side_offset": 6,
+      "required_unit_side": 1,
+      "work_stride": 640,
+      "viewport_width": 320,
+      "viewport_height": 200,
+      "platform": {"resource": "TAI.DAT#3", "x": 164, "y": 157, "effect": "transparent_noop"},
+      "figure": {"resource": "secondary_figani", "frame": 0},
+      "stage_start": 8,
+      "stage_end": 0,
+      "stage_shift_bytes": 10,
+      "palette_delta_formula": "stage*6",
+      "restore_buffer_bytes": 64000
+    },
     "portrait_text": {
       "source": "0x2c7a4..0x2c967",
       "portrait_archive": "DATO.DAT",
