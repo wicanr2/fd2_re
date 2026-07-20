@@ -40,3 +40,15 @@ func TestRecoveredPrefixStopsAtNativeOnlyGate(t *testing.T) {
 		t.Fatalf("stopped=%d err=%v pixel=%d", stopped, err, c.VGA[0])
 	}
 }
+
+func TestPresentANIReplacesIndexedVGAAndPalette(t *testing.T) {
+	c := NewIndexedCompositor()
+	frame, palette := make([]byte, Bytes), make([]byte, 768)
+	frame[7], palette[9] = 42, 63
+	if err := c.PresentANI(frame, palette); err != nil {
+		t.Fatal(err)
+	}
+	if c.VGA[7] != 42 || c.Palette[9] != 63 {
+		t.Fatalf("ANI state not presented")
+	}
+}

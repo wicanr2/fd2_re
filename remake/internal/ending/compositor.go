@@ -78,6 +78,17 @@ func (c *IndexedCompositor) CopyToVGA(source []byte) error {
 	return nil
 }
 
+// PresentANI applies one AFM frame exactly as its VM leaves it: indexed VGA
+// bytes and the accompanying 6-bit DAC palette replace the current state.
+func (c *IndexedCompositor) PresentANI(frame, palette []byte) error {
+	if len(frame) != Bytes || len(palette) != len(c.Palette) {
+		return errors.New("ending: invalid ANI indexed snapshot")
+	}
+	copy(c.VGA, frame)
+	copy(c.Palette[:], palette)
+	return nil
+}
+
 func (c *IndexedCompositor) Blit(frame fdother.Frame, destination []byte, stride int) error {
 	return frame.Blit(destination, stride, -1)
 }
