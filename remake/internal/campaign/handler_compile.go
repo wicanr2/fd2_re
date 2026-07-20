@@ -467,6 +467,24 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			beat := runtime(input, "fade")
 			beat.Out = false
 			beats = append(beats, beat)
+		case "unknown":
+			// 0x11df2 is a proven one-shot VGA DAC range update. Handler
+			// exports keep it as unknown until this exact native signature is
+			// recognized; it must not be confused with the black-overlay fade.
+			if input.NativeTarget == "0x11df2" {
+				start, okStart := immediateHandlerInt(input.RawArgs, 0)
+				end, okEnd := immediateHandlerInt(input.RawArgs, 1)
+				delta, okDelta := immediateHandlerInt(input.RawArgs, 2)
+				if !okStart || !okEnd || !okDelta || start < 0 || end < start || end > 255 || delta < -63 || delta > 63 {
+					issue(i, input, "0x11df2 palette_update requires immediate start/end/delta within VGA range")
+					continue
+				}
+				beat := runtime(input, "palette_update")
+				beat.PaletteStart, beat.PaletteEnd, beat.PaletteDelta = start, end, delta
+				beats = append(beats, beat)
+				continue
+			}
+			issue(i, input, "operation has no proven runtime lowering")
 		case "layout_units":
 			if bindings.Layout == nil {
 				issue(i, input, "layout_units requires an explicit runtime-slot layout mapping")
@@ -507,6 +525,22 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 		}
 	}
 	return beats, issues
+}
+
+func immediateHandlerInt(args []any, index int) (int, bool) {
+	if index < 0 || index >= len(args) {
+		return 0, false
+	}
+	switch value := args[index].(type) {
+	case int:
+		return value, true
+	case int64:
+		return int(value), true
+	case float64:
+		return int(value), value == float64(int(value))
+	default:
+		return 0, false
+	}
 }
 
 // JoinableCharacterID identifies the original permanent-player roster.  This

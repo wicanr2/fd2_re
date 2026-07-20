@@ -1275,3 +1275,19 @@ func TestCompileFixedRepeatDeactivateRange(t *testing.T) {
 		}
 	}
 }
+
+func TestCompilePaletteUpdateFromNativeCall(t *testing.T) {
+	script := &HandlerScript{Beats: []HandlerBeat{{
+		Op:           "unknown",
+		NativeTarget: "0x11df2",
+		RawArgs:      []any{float64(0), float64(255), float64(0)},
+		Source:       HandlerSource{Addr: "0x3372d", Target: "0x11df2"},
+	}}}
+	beats, issues := CompileHandlerScript(script, HandlerBindings{})
+	if len(issues) != 0 || len(beats) != 1 {
+		t.Fatalf("palette update lowering beats=%#v issues=%#v", beats, issues)
+	}
+	if beats[0].Op != "palette_update" || beats[0].PaletteStart != 0 || beats[0].PaletteEnd != 255 || beats[0].PaletteDelta != 0 {
+		t.Fatalf("palette update beat=%#v", beats[0])
+	}
+}

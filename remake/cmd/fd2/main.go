@@ -1049,6 +1049,17 @@ func (g *Game) beatStart(b campaign.Beat) {
 			frames = storyFadeFrames
 		}
 		g.fade = &storyFade{out: b.Out, total: frames, then: g.beatAdvance}
+	case "palette_update":
+		// The current renderer stores RGB PNGs instead of the original VGA
+		// indexed surface. ch22's recovered calls all use delta=0, so their
+		// observable effect is a DAC refresh and the exact timing is preserved
+		// without inventing a black-overlay fade. Non-zero updates stay
+		// fail-closed until indexed palette rendering is available.
+		if b.PaletteDelta != 0 {
+			g.loadErr = fmt.Sprintf("beat palette_update: non-zero delta %d requires indexed palette renderer", b.PaletteDelta)
+			return
+		}
+		g.beatAdvance()
 	case "delay":
 		frames := b.Frames
 		if frames == 0 && b.Ms > 0 {
