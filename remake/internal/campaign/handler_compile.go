@@ -491,6 +491,25 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			beat.Out = false
 			beats = append(beats, beat)
 		case "unknown":
+			// 0x12cea(x,y) is the native X-first/Y-second camera focus loop.
+			// Handler exports preserve the source PUSH order (y,x), so reverse the
+			// two immediate arguments before lowering to the tile-step camera pan.
+			if input.NativeTarget == "0x12cea" {
+				if len(input.RawArgs) < 2 {
+					issue(i, input, "0x12cea focus requires immediate x/y arguments")
+					continue
+				}
+				y, okY := immediateHandlerInt(input.RawArgs, 0)
+				x, okX := immediateHandlerInt(input.RawArgs, 1)
+				if !okX || !okY || x < 0 || y < 0 {
+					issue(i, input, "0x12cea focus requires immediate non-negative x/y")
+					continue
+				}
+				pan := runtime(input, "pan")
+				pan.X, pan.Y, pan.Frames, pan.TileStep = x*24, y*24, 30, true
+				beats = append(beats, pan)
+				continue
+			}
 			// 0x35822(x,y,group) is the late-game staging helper used by
 			// ch27/ch28 handlers.  Capstone disassembly shows a camera pan to
 			// (x,y), direct spawn of group, 300ms wait, two no-op palette uploads
