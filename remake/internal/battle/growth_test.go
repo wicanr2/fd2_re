@@ -57,6 +57,22 @@ func TestGainExp_CrossesThreshold_MultiLevel(t *testing.T) {
 	}
 }
 
+// The EXE derives both HIT and EV from the same DX accumulator, then adds
+// equipped item contributions.  A level-up must therefore move both derived
+// values by the exact DX growth amount, without losing the equipment delta.
+func TestGainExp_DXUpdatesDerivedHitAndEV(t *testing.T) {
+	u := &Unit{Camp: Own, Name: "索爾", ClsName: "劍士", Lv: 1,
+		AP: 16, DP: 12, DX: 2, HIT: 97, EV: 2,
+		BaseHIT: 2, BaseEV: 2, EquipmentBaseSet: true}
+	GainExp(u, 100, rand.New(rand.NewSource(1)))
+	if u.DX != 4 {
+		t.Fatalf("DX = %d, want 4", u.DX)
+	}
+	if u.HIT != 99 || u.EV != 4 || u.BaseHIT != 4 || u.BaseEV != 4 {
+		t.Fatalf("DX synthesis lost equipment/base: HIT=%d EV=%d base=%d/%d", u.HIT, u.EV, u.BaseHIT, u.BaseEV)
+	}
+}
+
 // TestGainExp_EnemyNoop:Enemy 不會累積經驗值/升級(doc42 gap 範圍只涵蓋玩家停滯問題,
 // 敵方無成長曲線資料,見 growth.go 檔頭說明)。
 func TestGainExp_EnemyNoop(t *testing.T) {

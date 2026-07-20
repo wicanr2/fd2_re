@@ -15,7 +15,7 @@ const sample = `{
   "flags": {"retried": false},
   "nodes": {
     "intro":  {"type":"story","lines":[{"speaker":0,"text":"哈囉"}],"next":"b1"},
-    "b1":     {"type":"battle","scenario":"ch01.json","on_win":"pick","on_lose":"retreat"},
+	"b1":     {"type":"battle","scenario":"ch01.json","protect":"亞雷斯","on_win":"pick","on_lose":"retreat"},
     "retreat":{"type":"story","lines":[{"speaker":4,"text":"撤退!"}],"set_flags":{"retried":true},"next":"b1"},
     "pick":   {"type":"choice","prompt":"走哪邊?","options":[
                  {"label":"山路","to":"end"},
@@ -56,6 +56,14 @@ func TestWinPath(t *testing.T) {
 	}
 	if r.Advance("") != "" {
 		t.Fatal("ending 後應結束")
+	}
+}
+
+func TestBattleProtectTargetIsEditable(t *testing.T) {
+	r := NewRunner(load(t))
+	r.Advance("")
+	if got := r.Node().Protect; got != "亞雷斯" {
+		t.Fatalf("battle protect=%q, want editable target", got)
 	}
 }
 

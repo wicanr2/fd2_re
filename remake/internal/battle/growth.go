@@ -215,6 +215,19 @@ func (u *Unit) applyLevelUpGrowth(rng *rand.Rand) (LevelUpEvent, bool) {
 	u.AP += ev.ApGain
 	u.DP += ev.DpGain
 	u.DX += ev.DxGain
+	// DX is the shared raw source for both derived HIT and EV in the
+	// original status constructor (references/text/memory.md; docs/32).
+	// Keep the equipment contributions intact while carrying a level-up's
+	// speed gain through to the displayed/combat values.  EquipmentBaseSet is
+	// only true after the authored effective line has been split into base +
+	// equipped contributions; without it, legacy fixtures have no trustworthy
+	// base to update and retain their historical behaviour.
+	if u.EquipmentBaseSet && ev.DxGain != 0 {
+		u.BaseHIT += ev.DxGain
+		u.BaseEV += ev.DxGain
+		u.HIT += ev.DxGain
+		u.EV += ev.DxGain
+	}
 	u.MaxHP += ev.HpGain
 	u.HP += ev.HpGain // 升級當下回滿新增的 HP(RPG 慣例;doc 未明講升級是否立即回血,
 	// 但「升級卻沒補血」在戰鬥中間發生會很怪,採用較合理的一種,已於報告誠實標記)

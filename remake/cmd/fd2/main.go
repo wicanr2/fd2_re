@@ -2868,7 +2868,13 @@ func (g *Game) checkResult() {
 	if g.result != "" || g.sc == nil {
 		return
 	}
-	if r := g.st.Result("索爾"); r != "" {
+	protect := "索爾"
+	if g.camp != nil {
+		if n := g.camp.Node(); n != nil && n.Protect != "" {
+			protect = n.Protect
+		}
+	}
+	if r := g.st.Result(protect); r != "" {
 		g.result = r
 	}
 }

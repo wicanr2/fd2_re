@@ -234,6 +234,7 @@ type Node struct {
 	Next            string          `json:"next,omitempty"`             // story/event
 	OnWin           string          `json:"on_win,omitempty"`           // battle
 	OnLose          string          `json:"on_lose,omitempty"`          // battle(敗北路線;空=game over)
+	Protect         string          `json:"protect,omitempty"`          // battle:保護目標；空值沿用主角索爾
 	ItemID          *int            `json:"item_id,omitempty"`          // inventory_gate:原版 unsigned-byte item identity
 	IfPresent       string          `json:"if_present,omitempty"`       // inventory_gate:全隊任一角色持有 ItemID
 	IfMissing       string          `json:"if_missing,omitempty"`       // inventory_gate:全隊皆未持有 ItemID
