@@ -90,6 +90,15 @@ func TestCompileNativeFocusLowersToTileStepPan(t *testing.T) {
 	}
 }
 
+func TestCompilePersistentRosterCleanupIsEditable(t *testing.T) {
+	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
+		Op: "unknown", NativeTarget: "0x25089", Source: HandlerSource{Addr: "0x25089"},
+	}}}, HandlerBindings{})
+	if len(issues) != 0 || len(beats) != 1 || beats[0].Op != "reset_persistent_roster_state" {
+		t.Fatalf("persistent cleanup=%#v issues=%#v", beats, issues)
+	}
+}
+
 func TestCompileHandlerJoinRejectsScenePortrait(t *testing.T) {
 	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
 		Op: "join", CharID: intPtr(75), Source: HandlerSource{Addr: "0x123"},

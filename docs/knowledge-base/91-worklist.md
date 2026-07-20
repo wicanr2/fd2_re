@@ -522,6 +522,8 @@
 - [~] **ch29 post staged mapping**：FDTXT_029 idx9/10 與 FDTXT_030 idx0/1 已接四組 editable dialogue overrides；`0x12cea` focus 已 lower，仍待 0x24618 transition、0x25089 roster cleanup、0x17aa9 tick、0x2bce5 專用 ending renderer，故尚未接 campaign runtime。
 - [~] **ch29 post staged mapping**：四組對白已精確接到 ch29/ch30 authored lines，並完成 0x12cea/0x24618/0x25089/0x11df2/0x17aa9/0x2bce5 direct RE；persistent roster cleanup、9-frame transition、專用 ending renderer 尚未全部 lower，故暫不接 campaign。
 - [~] **ch29 post focus lowering**：`0x12cea` 已安全 lower 成 tile-step pan(22,23) 並通過 regression；其餘 native cleanup/transition/ending 仍待 lower。
+- [~] **ch29 post persistent roster cleanup**：`0x25089` 已實作獨立 `reset_persistent_roster_state` compiler/runtime beat（清 transient、MaxHP/MaxMP 回填），避免誤併入 `sync_party`；需補 binding、測試並接到正確 town/shop/preparation 節點。
+- [~] **ch29 pre native unit presentation**：`0x22253` direct RE 修正為 6×(render+present+10ms) 後再 2 ticks；現有 `layout_units` 不等價，需新增可編輯 `native_22253` adapter，完成前維持 fail-closed。
 - [x] **天空之鑰缺失對話分支**：新增 `ch27.json` 分支 scene（FDTXT_027 idx13–16 共17句）並接 `inventory_gate_ch27_sky_key → story_ch27_post_sky_key_missing → ending_ch27_no_sky_key`；視覺效果仍待 direct RE，對話本身已可編輯且有 campaign regression。
 - [x] **戰後 town/shop/preparation 外部交叉盤點（2026-07-20）**：subagent 查得公開攻略逐章列出羅德鎮、塞拉村、普里茲港等戰間商店／教會／整備，並有「第2章戰後獎勵」與「第6章戰後貝克威加入」等 persistent event 證據；只作流程旁證，不取代 EXE branch 證據。後續保持 battle→postbattle→town/shop/preparation→next battle 可編輯節點，禁止把 postbattle 直接接下一場戰鬥當完成。
 

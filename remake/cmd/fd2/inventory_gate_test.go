@@ -26,6 +26,18 @@ func TestPartyHasItemIDMatchesOriginalSixteenRuntimeSlotSearch(t *testing.T) {
 	}
 }
 
+func TestPersistentRosterCleanupRestoresNativeMaxFields(t *testing.T) {
+	g := &Game{partyRoster: map[int]battle.Unit{3: {
+		HP: 0, MaxHP: 41, MP: 2, MaxMP: 9, Acted: true, OnField: false,
+		OffX: 3, OffY: 4, Poisoned: true, PoisonTurns: 2, BuffAPPct: 25,
+	}}}
+	g.resetPersistentRosterState()
+	u := g.partyRoster[3]
+	if u.HP != 41 || u.MP != 9 || u.Acted || u.OffX != 0 || u.OffY != 0 || u.Poisoned || u.BuffAPPct != 0 {
+		t.Fatalf("persistent cleanup=%#v", u)
+	}
+}
+
 func TestInventoryGateSkyKeyRoutesThroughSyncThenPreparation(t *testing.T) {
 	itemID, chapter := 0x64, 27
 	c := &campaign.Campaign{Start: "gate", Nodes: map[string]*campaign.Node{

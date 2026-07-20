@@ -443,6 +443,12 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			// 0x11506 is the parameterless post-battle projection from the
 			// current runtime unit array back to the persistent player roster.
 			beats = append(beats, runtime(input, "sync_party"))
+		case "reset_persistent_roster_state":
+			// 0x25089 is the post-handler persistent player-roster cleanup.
+			// Direct LE disassembly shows byte +5 cleared and current HP/MP
+			// reloaded from +0x42/+0x46 for every roster entry; keep it as an
+			// explicit editable primitive rather than folding it into sync_party.
+			beats = append(beats, runtime(input, "reset_persistent_roster_state"))
 		case "set_chapter":
 			if input.Chapter == nil || *input.Chapter < 0 {
 				issue(i, input, "set_chapter requires a non-negative immediate chapter")
@@ -581,6 +587,12 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 				beat := runtime(input, "transition_reveal")
 				beat.RevealFrames, beat.RevealDelayMs = frames, 20
 				beats = append(beats, beat)
+				continue
+			}
+			if input.NativeTarget == "0x25089" {
+				// Persistent player-roster cleanup used by ch26/ch29 normal and
+				// ending paths; semantics are kept separate from sync_party.
+				beats = append(beats, runtime(input, "reset_persistent_roster_state"))
 				continue
 			}
 			issue(i, input, "operation has no proven runtime lowering")

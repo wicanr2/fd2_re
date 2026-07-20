@@ -1060,6 +1060,9 @@ func (g *Game) beatStart(b campaign.Beat) {
 			return
 		}
 		g.beatAdvance()
+	case "reset_persistent_roster_state":
+		g.resetPersistentRosterState()
+		g.beatAdvance()
 	case "set_chapter":
 		if b.Chapter == nil || *b.Chapter < 0 {
 			g.loadErr = "beat set_chapter:缺少有效章節"
@@ -1812,6 +1815,24 @@ func (g *Game) syncPartyFromBattle() error {
 		g.partyRoster[id] = snapshot
 	}
 	return nil
+}
+
+// resetPersistentRosterState mirrors native 0x25089, which is separate from
+// the battle-to-roster projection.  The routine clears the persistent status
+// byte and copies each member's max HP/MP into the current values before the
+// next town/preparation or ending branch.
+func (g *Game) resetPersistentRosterState() {
+	for id, u := range g.partyRoster {
+		u.Acted = false
+		u.HP = u.MaxHP
+		u.MP = u.MaxMP
+		u.OffX, u.OffY = 0, 0
+		u.BuffAPPct, u.BuffDPPct, u.BuffHit, u.BuffEV, u.BuffTurns = 0, 0, 0, 0, 0
+		u.Sealed, u.SealTurns = false, 0
+		u.Poisoned, u.PoisonTurns = false, 0
+		u.Paralyzed, u.ParalyzeTurns = false, 0
+		g.partyRoster[id] = u
+	}
 }
 
 func (g *Game) applyScenarioPartyJoins() {
