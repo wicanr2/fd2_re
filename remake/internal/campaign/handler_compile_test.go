@@ -1435,3 +1435,28 @@ func TestCompileChapter27PostMapsFDTXT028StringSeven(t *testing.T) {
 		t.Fatalf("ch27_post dialog=%#v", dialogs)
 	}
 }
+
+func TestCompileChapter28PreLowersStagingHelper(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch28_pre.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(issues) != 0 {
+		t.Fatalf("ch28_pre issues=%#v", issues)
+	}
+	var staging []Beat
+	for _, beat := range beats {
+		if beat.Source == "0x33e16" {
+			staging = append(staging, beat)
+		}
+	}
+	if len(staging) != 7 {
+		t.Fatalf("ch28_pre staging beats=%d want pan/spawn/delay/palette/delay/palette/redraw", len(staging))
+	}
+	if staging[0].Op != "pan" || staging[0].X != 192 || staging[0].Y != 456 || staging[1].Op != "spawn" || staging[1].Group != 9 {
+		t.Fatalf("ch28_pre staging front=%#v", staging[:2])
+	}
+	if staging[2].Op != "delay" || staging[2].Ms != 300 || staging[3].Op != "palette_update" || staging[4].Op != "delay" || staging[4].Ms != 200 || staging[5].Op != "palette_update" || staging[6].Op != "redraw" {
+		t.Fatalf("ch28_pre staging timing=%#v", staging)
+	}
+}

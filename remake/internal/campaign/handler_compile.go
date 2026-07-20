@@ -491,6 +491,42 @@ func CompileHandlerScript(script *HandlerScript, bindings HandlerBindings) ([]Be
 			beat.Out = false
 			beats = append(beats, beat)
 		case "unknown":
+			// 0x35822(x,y,group) is the late-game staging helper used by
+			// ch27/ch28 handlers.  Capstone disassembly shows a camera pan to
+			// (x,y), direct spawn of group, 300ms wait, two no-op palette uploads
+			// separated by 200ms, then a redraw.  Preserve that choreography as
+			// ordinary editable beats instead of leaving the whole handler opaque.
+			if input.NativeTarget == "0x35822" {
+				x, okX := immediateHandlerInt(input.RawArgs, 0)
+				y, okY := immediateHandlerInt(input.RawArgs, 1)
+				group, okGroup := immediateHandlerInt(input.RawArgs, 2)
+				if !okX || !okY || !okGroup || x < 0 || y < 0 || group < 0 || group > 255 {
+					issue(i, input, "0x35822 staging helper requires immediate non-negative x/y/group")
+					continue
+				}
+				pan := runtime(input, "pan")
+				pan.X, pan.Y, pan.Frames, pan.TileStep = x*24, y*24, 30, true
+				beats = append(beats, pan)
+				spawn := runtime(input, "spawn")
+				spawn.Group = group
+				beats = append(beats, spawn)
+				wait := runtime(input, "delay")
+				wait.Ms = 300
+				beats = append(beats, wait)
+				palette := runtime(input, "palette_update")
+				palette.PaletteStart, palette.PaletteEnd, palette.PaletteDelta = 0, 255, 0
+				beats = append(beats, palette)
+				delay := runtime(input, "delay")
+				delay.Ms = 200
+				beats = append(beats, delay)
+				palette = runtime(input, "palette_update")
+				palette.PaletteStart, palette.PaletteEnd, palette.PaletteDelta = 0, 255, 0
+				beats = append(beats, palette)
+				redraw := runtime(input, "redraw")
+				redraw.Frames = 1
+				beats = append(beats, redraw)
+				continue
+			}
 			if input.NativeTarget == "0x37416" && bindings.Resource != nil {
 				resource, ok := bindings.Resource(input)
 				if ok && resource.ResourceID >= 0 {

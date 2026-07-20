@@ -257,6 +257,10 @@ func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 	if !foundMissing {
 		t.Fatalf("missing sky-key scene label %q absent from ch27 story", missing.Scene)
 	}
+	ch28 := c.Nodes["story_ch28"]
+	if ch28 == nil || ch28.Type != "cutscene" || ch28.HandlerBinding != "assets/cutscenes/bindings/ch28_pre.json" || ch28.Next != "battle_ch28" {
+		t.Fatalf("chapter28 must execute the verified ch28_pre handler: %#v", ch28)
+	}
 	if badEnding == nil || badEnding.Type != "ending" || badEnding.Text == "" {
 		t.Fatalf("missing sky key must reach an editable bad ending: %#v", badEnding)
 	}
