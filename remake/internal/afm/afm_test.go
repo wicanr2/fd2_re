@@ -40,6 +40,9 @@ func TestDecodeANI(t *testing.T) {
 		if len(clip.Frames) != want {
 			t.Errorf("資源 %d 幀數 = %d,預期 %d", res, len(clip.Frames), want)
 		}
+		if len(clip.IndexedFrames) != want || len(clip.Palettes) != want || len(clip.IndexedFrames[0]) != frameBytes || len(clip.Palettes[0]) != 768 {
+			t.Errorf("資源 %d indexed snapshots不完整: frames=%d indexed=%d palettes=%d", res, len(clip.Frames), len(clip.IndexedFrames), len(clip.Palettes))
+		}
 		b := clip.Frames[0].Bounds()
 		if b.Dx() != scrW || b.Dy() != scrH {
 			t.Errorf("資源 %d 幀尺寸 = %dx%d,預期 320x200", res, b.Dx(), b.Dy())

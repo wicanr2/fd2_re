@@ -19,15 +19,17 @@ import (
 )
 
 const (
-	scrW  = 320
-	scrH  = 200
+	scrW       = 320
+	scrH       = 200
 	frameBytes = scrW * scrH // 64000
 )
 
 // Clip 是一個 AFM 資源解出的完整影格序列(已套 palette 的 RGBA)。
 type Clip struct {
-	Title  string
-	Frames []*image.RGBA
+	Title         string
+	Frames        []*image.RGBA
+	IndexedFrames [][]byte // 320x200 palette indices, one immutable snapshot/frame
+	Palettes      [][]byte // matching 768-byte VGA 6-bit palette snapshots
 }
 
 // LoadANI 開啟一個 .DAT 容器(LLLLLL magic + uint32 offset 目錄),回傳其資源數。
@@ -100,6 +102,8 @@ func decodeAFM(d []byte) (*Clip, error) {
 		if err := runVM(script, cmdCount, pal, fb); err != nil {
 			break // 解碼中斷:保留前面已成功的幀(同 python 解碼器行為)
 		}
+		clip.IndexedFrames = append(clip.IndexedFrames, append([]byte(nil), fb...))
+		clip.Palettes = append(clip.Palettes, append([]byte(nil), pal...))
 		clip.Frames = append(clip.Frames, toRGBA(fb, pal))
 	}
 	if len(clip.Frames) == 0 {
