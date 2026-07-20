@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "native_handler": "0x2c405",
+  "status": "recovered_phase0_only_fail_closed",
+  "phase": {
+    "source": "0x2c469",
+    "source_dat": "FDTXT_030",
+    "string_index": 44,
+    "script": "ch30.json",
+    "scene_index": 3,
+    "line": 6,
+    "count": 1,
+    "staging_bytes": 224000,
+    "text_offset": 76848,
+    "stride": 320,
+    "viewport_rows": 200,
+    "iterations": 500,
+    "delay_ms": 1,
+    "baseline_palette_initial_delta": 40,
+    "fade_out_through_iteration": 300,
+    "palette_step_cadence": 5
+  },
+  "gate": {
+    "source": "0x2c548",
+    "reason": "native FDTXT glyph compositor and staging source are not yet recovered; do not substitute an empty scroll"
+  }
+}
