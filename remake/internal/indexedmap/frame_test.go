@@ -149,8 +149,8 @@ func TestComposeNativeFrameBindsRecoveredHUDInsteadOfCallback(t *testing.T) {
 		t.Fatal(err)
 	}
 	layout, _ := fdicon.NativeMapHUDLayoutFor(136, workStride)
-	if work[workBase+layout.Frame] != 0x5a ||
-		work[workBase+layout.Terrain] != 0x66 ||
+	if layout.Terrain != layout.Unit || work[workBase+layout.Frame] != 0x5a ||
+		work[workBase+layout.Terrain] != 0x77 ||
 		work[workBase+layout.Unit] != 0x77 ||
 		work[workBase+layout.HP] != 0x70 {
 		t.Fatalf("native HUD missing from viewport-relative work: %#x/%#x/%#x/%#x",

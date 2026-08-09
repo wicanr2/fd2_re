@@ -3956,3 +3956,28 @@ UID/GID。這修正可解釋 GitHub 戰場圖中敵人被畫成鍵 0 藍色圖�
 狀態；上一節的 `851781...`／`da9cae...` 雜湊保留為歷史產物，不再代表目前首頁
 圖片。截圖鉤子也改為錯誤狀態不產生證據，避免再次把失敗即關閉的畫面誤列為正式圖。
 這仍是 E1，不解除同狀態 DOSBox／重製逐幀配對或三平台發布閘門。
+
+## 2026-08-10：map HUD terrain icon row-5 位址勘誤（已證實；修正戰場差異）
+
+以同一固定版 `FD2.EXE` 在合法 IDA Pro 9.4 Docker 重新讀取 `sub_1ACF3`
+（0x1acf3..0x1aeb1）。0x1adb5..0x1adc4 直接把 `edi`（native stride）乘 5，
+加上 panel base `ebp` 與 6，再呼叫 `0x4DEDA`；因此 FDSHAP terrain icon 的 raw
+目的地是 `base + stride*5 + 6`。0x1ae74..0x1ae86 對 optional FDICON unit
+icon 使用相同目的地。舊版重製端只把 terrain icon 寫在 `base+6`，造成 GitHub
+戰場圖左下圖示向上偏移約 5 個原生列。
+
+已修正 `fdicon.NativeMapHUDLayoutFor`、layout regression 與 SDD／worklist，
+完整 IDA 指令與檔案指紋保存於 [`fd2_map_hud_geometry_ida.txt`](../data/ida/fd2_map_hud_geometry_ida.txt)。
+這是位址已證實的 renderer bridge 修正，不等於其他章節或整體 GUI E2 完成。
+
+同輪以 Docker DOSBox/Xvfb 從 `FD2.SAV`（大小 22987、MD5
+`409795ccebc2af340d5c74152c2d471c`、SHA-256
+`6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f`）的 CONTINUE
+狀態取得原版 320×200 oracle，加入
+[`native-map-ch01-original-fd2sav.png`](../figures/native-map-ch01-original-fd2sav.png)。
+修正後重製圖 MD5 `faa28a76c93146684c40eee55ac82a3e`、SHA-256
+`10cd82b22aa3637fa230f1fcd12146ecae1b8d93fe4055cdefaae85c05bcaeb4`；最近鄰縮放
+到 320×200 後用 Docker ImageMagick `compare` 得 AE=22、RMSE=41.2403，差異只
+剩左下畫布邊界。這個結果是 ch01 單一 FD2.SAV 狀態的 E2 範圍候選，不能外推
+到其他章節、一般玩家 CONTINUE 或完整操作界面；完整欄位與方法見
+[`battle-visual-gap-ch01.json`](../data/ui-traces/battle-visual-gap-ch01.json)。

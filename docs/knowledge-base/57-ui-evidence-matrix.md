@@ -24,6 +24,14 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 | save/load | 45–55% | 四槽 input、native save envelope、原版 indexed loadslots 與 chapter-slot→typed party→town/preparation restore owner 已接；空槽及修改存檔 chapter1 有效槽畫面均與 DOSBox 全幀 RGB 相同。一般玩家有效槽 E2、CONTINUE current battle、delete/overwrite 仍缺 |
 | ending | 20–30% | prefix已跑到 `0x2c548`，portrait compositor已閉合一段；campaign仍可落入 generic「結局」半透明文字頁，party montage、音訊與terminal route未完成 |
 
+2026-08-10 ch01 HUD 位址勘誤：官方 IDA 直接指令證實 terrain icon 與 optional unit
+icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 寫在 `base+6`
+造成的向上偏移。以同一 `FD2.SAV` 的 Docker DOSBox oracle 與 handler 截圖做
+320×200 最近鄰比較，內容區只剩 22 個邊界差異像素；詳見
+[`battle-visual-gap-ch01.json`](../data/ui-traces/battle-visual-gap-ch01.json) 與
+[`fd2_map_hud_geometry_ida.txt`](../data/ida/fd2_map_hud_geometry_ida.txt)。這是 ch01
+單一狀態的範圍 E2 候選，不可外推至其他章節或完整操作界面。
+
 上表百分比是各欄已檢視切片的工程估計；town/shop已明列為ch02 scoped，
 不能把它們當成23 town／69 shop的coverage denominator。綜合未驗收章節與
 缺失state後，整體仍估約 **40–45%**，因此現階段應對外寫成「操作界面

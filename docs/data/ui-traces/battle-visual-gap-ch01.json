@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "comparison_id": "battle-ch01-reference-vs-remake",
-  "evidence_level": "E1 差異稽核",
+  "evidence_level": "E1 差異稽核；另附 ch01 FD2.SAV 範圍像素驗證",
   "same_state": false,
   "comparison_scope": "只記錄目前兩張圖的尺寸、來源與可見差異；不宣稱原版與重製逐像素一致。",
   "original_reference": {
@@ -20,13 +20,42 @@
     "path": "docs/figures/native-map-ch01-remake-handler.png",
     "width": 640,
     "height": 400,
-    "md5": "6e200d3bbd48782f4248a6a8ced48343",
-    "sha256": "8f2e948995350d64c53267c55e71a858eef34db9e6cb9f22577327007af8813c",
+    "md5": "faa28a76c93146684c40eee55ac82a3e",
+    "sha256": "10cd82b22aa3637fa230f1fcd12146ecae1b8d93fe4055cdefaae85c05bcaeb4",
     "provenance": "目前重製 source 由 Docker／Xvfb 產生的 E1 截圖；以 FD2_SHOT_FAST_FORWARD=1 執行正式 story_ch00_handler 的 73 拍，唯讀掛載使用者提供的 FDOTHER.DAT（同目錄 FDSHAP.DAT／FDICON.B24），並以 FD2_SHOT_DETERMINISTIC=1 的固定 60 Hz 虛擬時鐘鎖定動畫幀，保留 LOADCH、SPAWN、JOIN 與戰場 handoff 的狀態副作用後，在 battle_ch01 第120幀擷取。地圖資產的 FDICON selector 已依 IDA 證據改用 FDFIELD b1；這是截圖專用的快速時鐘，不是一般玩家路徑 E2。",
     "visible_findings": [
       "正式前置 handler 已產生完整多單位戰場；本圖使用 b1 原始 selector 產生敵我對應圖像，不再是舊 b0 映射造成的錯誤友軍圖像。",
-      "場上單位與原版參考的數量／位置仍不同，HUD、游標與像素比例也仍有可見差異。"
+      "以同一尺寸最近鄰縮放和 FD2.SAV 範圍 oracle 比較後，地形、單位、游標及 HUD 主要圖素已對齊；剩餘差異只在截圖邊界的 22 個像素。"
     ]
+  },
+  "fd2sav_scoped_comparison": {
+    "original_path": "docs/figures/native-map-ch01-original-fd2sav.png",
+    "original_width": 320,
+    "original_height": 200,
+    "original_md5": "00d28d835264bfc5b87bc2f707b259ed",
+    "original_sha256": "30de89fc2dc4e2cf804ed7e4985a68253b35c6625b687fe8ade1e8820af5e73e",
+    "fd2_sav_size": 22987,
+    "fd2_sav_md5": "409795ccebc2af340d5c74152c2d471c",
+    "fd2_sav_sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f",
+    "state_fingerprint": {
+      "chapter": 0,
+      "runtime_count": 12,
+      "turn_counter": 1,
+      "camera_xy": [1, 13],
+      "absolute_cursor_xy": [8, 17],
+      "visible_cursor_xy": [7, 4]
+    },
+    "remake_path": "story_ch00_handler → battle_ch01",
+    "normalization": "原版 DOSBox 320×200 crop 與重製 640×400 PNG 以最近鄰縮放至 320×200；未套用模糊或遮罩。",
+    "pixel_diff": {
+      "absolute_error_pixels": 22,
+      "rmse": 41.2403,
+      "normalized_rmse": 0.000629287,
+      "tool": "Docker ImageMagick compare",
+      "note": "22 個差異位於左下畫布邊界；terrain icon row-5 修正後不再有內容區差異。"
+    },
+    "status": "E2 scoped candidate；仍不外推至其他章節、一般玩家 CONTINUE 或完整 GUI parity",
+    "provenance": "原版以 Docker DOSBox/Xvfb 從 FD2.SAV CONTINUE 逐步輸入取得；重製以 Docker/Xvfb、FD2_SHOT_FAST_FORWARD=1、FD2_SHOT_DETERMINISTIC=1、FD2_SHOT_FRAME=120 取得。"
   },
   "legacy_debug_reference": {
     "path": "docs/figures/native-map-ch01-remake.png",
@@ -39,6 +68,6 @@
   "conclusion": {
     "status": "未閉合",
     "confidence": "已證實（影像尺寸與可見差異）；成因未知",
-    "next_gate": "取得同一 FD2.SAV、同一相機／游標／回合／單位狀態的原版 DOSBox 與重製逐幀配對後，才可判定是狀態橋接、單位合成、HUD、調色盤或其他渲染差異。既有 raw 相機／游標欄位 provenance 不等於畫面像素一致。"
+    "next_gate": "ch01 FD2.SAV 範圍比較已關閉地形圖示位移；下一道閘門是以相同狀態方法覆蓋其他章節、一般玩家 CONTINUE、戰鬥指令／演出與 town／shop／整備邊界。不要把這個單一畫面 E2 範圍外推為完整 GUI parity。"
   }
 }

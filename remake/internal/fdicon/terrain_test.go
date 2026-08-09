@@ -35,7 +35,7 @@ func TestNativeMapHUDLayoutForMatches1ACF3(t *testing.T) {
 		t.Fatal(err)
 	}
 	if l != (NativeMapHUDLayout{
-		Frame: NativeMapStride*157 + 1, Terrain: NativeMapStride*157 + 7,
+		Frame: NativeMapStride*157 + 1, Terrain: NativeMapStride*162 + 7,
 		AP: NativeMapStride*165 + 0x2c, DP: NativeMapStride*176 + 0x2c,
 		Unit: NativeMapStride*162 + 7, HP: NativeMapStride*178 + 10,
 	}) {

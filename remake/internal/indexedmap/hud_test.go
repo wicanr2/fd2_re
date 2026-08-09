@@ -155,11 +155,22 @@ func TestBlitNativeMapHUDComposesRecoveredSubpassesAtomically(t *testing.T) {
 		OptionalUnit: &NativeMapHUDOptionalUnit{SelectorSlot: 0, RawState: 3, Current: 7, Maximum: 8},
 	}
 	dst := make([]byte, fdicon.NativeMapStride*200)
-	if err := BlitNativeMapHUD(hudFrames(), terrain, units, cache, dst, in); err != nil {
+	terrainOnly := append([]byte(nil), dst...)
+	terrainInput := in
+	terrainInput.OptionalUnit = nil
+	if err := BlitNativeMapHUD(hudFrames(), terrain, nil, nil, terrainOnly, terrainInput); err != nil {
 		t.Fatal(err)
 	}
 	layout, _ := fdicon.NativeMapHUDLayoutFor(1, fdicon.NativeMapStride)
-	if dst[layout.Frame] != 0x5a || dst[layout.Terrain] != 0x66 || dst[layout.AP] != 0x42 || dst[layout.DP] != 0x31 || dst[layout.Unit] != 0x77 || dst[layout.HP] != 0x70 {
+	if terrainOnly[layout.Terrain] != 0x66 {
+		t.Fatalf("terrain-only HUD byte=%#x, want %#x", terrainOnly[layout.Terrain], 0x66)
+	}
+	if err := BlitNativeMapHUD(hudFrames(), terrain, units, cache, dst, in); err != nil {
+		t.Fatal(err)
+	}
+	// Native draws the optional unit icon after terrain at the same row-5
+	// destination, so the unit is the final byte when both subpasses run.
+	if layout.Terrain != layout.Unit || dst[layout.Frame] != 0x5a || dst[layout.Terrain] != 0x77 || dst[layout.AP] != 0x42 || dst[layout.DP] != 0x31 || dst[layout.Unit] != 0x77 || dst[layout.HP] != 0x70 {
 		t.Fatalf("HUD composition=%#x/%#x/%#x/%#x/%#x/%#x", dst[layout.Frame], dst[layout.Terrain], dst[layout.AP], dst[layout.DP], dst[layout.Unit], dst[layout.HP])
 	}
 	before := append([]byte(nil), dst...)

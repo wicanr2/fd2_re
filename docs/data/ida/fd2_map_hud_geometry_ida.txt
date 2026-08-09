@@ -1,0 +1,46 @@
+FD2 map HUD terrain destination correction — IDA Pro 9.4 evidence
+==================================================================
+
+輸入檔：org_game/炎龍騎士團/FLAME2/FD2.EXE
+大小：357074 bytes
+MD5：b97caf2239a27a896069d03549d96e1e
+SHA-256：222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f
+工具：IDA Pro 9.4.0.260610／Hex-Rays；Docker image
+      fd2-ida-authorized-local:latest
+位址空間：IDA linear address，LE image，code segment 0x10000 起；不是檔案偏移。
+
+已證實（IDA 直接指令）
+------------------------
+
+目標函式 `sub_1ACF3`（0x1acf3..0x1aeb1），參數由 IDA 指令保留為：
+
+* `ebp = arg_0`，`edi = arg_4`（native work-buffer stride）。
+* 0x1ad64..0x1ad6c：`ebp += edi*0x9d + dword_51A0C`。
+* 0x1ad7d..0x1ad86：panel 以 `(src, x=0, y=0, dst=ebp, stride=edi,
+  transparent=-1)` 呼叫 `sub_4E63D`。
+* 0x1ad90..0x1ada2：`sub_12E38(dword_53AB1, dword_53AB5, &local)`。
+* 0x1ada5..0x1adb3：local word0 取 selected FDSHAP descriptor pointer。
+* 0x1adb5..0x1adc4：
+
+  ```asm
+  push edi
+  mov  esi, edi
+  shl  esi, 2
+  add  esi, edi       ; esi = 5 * stride
+  add  esi, ebp
+  add  esi, 6         ; dst = ebp + 5*stride + 6
+  call sub_4DEDA
+  ```
+
+因此 terrain icon 的原始目的地是 `base + stride*5 + 6`，不是 `base + 6`。
+0x1ae74..0x1ae86 對 optional FDICON unit icon 重複同一個
+`ebp + 5*stride + 6` 計算；兩個圖示共用 row-5 slot。這是已證實的 raw buffer
+位址，不替圖示、地形或角色欄位命名。
+
+重製端同步：`fdicon.NativeMapHUDLayoutFor` 的 `Terrain` 現與 `Unit` 同為
+`base + NativeMapStride*5 + 6`，並由 `terrain_test.go` regression 固定；其他
+AP／DP／HP 位置未因本勘誤變更。
+
+原版／重製像素驗證（同一 `FD2.SAV`，Docker DOSBox／Xvfb 與 deterministic
+handler shot）另記於 `docs/data/ui-traces/battle-visual-gap-ch01.json`；本檔只
+保存位址與工具證據。
