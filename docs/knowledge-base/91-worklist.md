@@ -361,6 +361,8 @@
   `ScoreNativePhysicalAttackCandidate`／`SelectNativePhysicalAttackCandidate`
   與門檻、嚴格HP比較、priority及穩定同分測試；合法 IDA 9.4 另交叉確認
   函式邊界、三個 callers 與 `0x1DEBE` 唯一 caller。不接 normalized planner。
+  完整 IDA／Capstone 位址級證據見
+  [`fd2_ai_physical_score_ida.txt`](../data/ida/fd2_ai_physical_score_ida.txt)。
 - [x] **RE-AI-PHYSICAL-CANDIDATE-BRIDGE**：新增
   `BuildNativeAIPhysicalAttackCandidates`，以 raw records 串起
   `NativeAIPhysicalDestinations` 的 row-major 落點、caller 明示的

@@ -134,7 +134,8 @@ helper。它以 `0x145CD→0x4E040→0x146D1→0x14B16` 建立 row-major 候選�
 單候選規則，`SelectNativePhysicalAttackCandidate` 保存 priority→score→穩定同分
 選擇；`0x1DEBE`、raw `+8`、候選產生順序與完整執行仍未命名或接入 runtime。
 合法 IDA 9.4 的 address-only report 交叉確認 `0x14237..0x145CC` 邊界、
-三個 direct callers，以及 `0x1DEBE` 僅由該函式呼叫。
+三個 direct callers，以及 `0x1DEBE` 僅由該函式呼叫；新增的 IDA／Capstone
+逐指令證據見 [`fd2_ai_physical_score_ida.txt`](../data/ida/fd2_ai_physical_score_ida.txt)。
 
 `0x1548E..0x1567D` 則已更正為物理選擇結果執行邊界，不是路徑產生器：
 它把 `0x53C43/47`、actor 與原始分組選擇值交給 `0x14B78`，以 `0x53C4B`

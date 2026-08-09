@@ -1,0 +1,100 @@
+# FD2.EXE 0x14237／0x1DEBE raw physical-candidate score evidence
+#
+# 輸入檔：FD2.EXE
+# 大小：357074 bytes
+# MD5：b97caf2239a27a896069d03549d96e1e
+# SHA-256：222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f
+# IDA：IDA Pro 9.4.0.260610，DOS LE loader，linear address space
+# IDA Docker：fd2-ida-authorized-local（使用者合法授權映像；資料庫只在 /tmp）
+# Capstone：5.0.3，fd2-cap-local Docker image
+# 證據等級：已證實（E0 raw control/data provenance）
+#
+# 本檔保留原始函式名、線性位址與運算元。附加語意只描述 caller-specific
+# dataflow；不把 raw +0x0b 命名成通用武器射程，也不宣稱原版 AI 已接入重製端。
+
+## 函式邊界與 caller
+
+- `sub_1DEBE`：`0x1debe..0x1df58`。
+- `sub_14237`：`0x14237..0x145cd`；`0x14496` 是 `sub_1DEBE` 的唯一直接 caller。
+- Capstone `range 0x1debe 0x1df58` 與 IDA 偽代碼的分支、呼叫順序一致。
+
+## `sub_1DEBE` 的 raw predicate（IDA／Capstone）
+
+IDA 偽代碼的結構為：
+
+```c
+v3 = (unsigned __int8 *)(80 * a1 + dword_53A45);
+if (v3[38] == 0) {
+    if (abs(a2 - v3[0]) + abs(a3 - v3[1]) == 1) {
+        result = sub_1B83D(a1, 0);
+        if (result != -1) {
+            v6 = sub_1B722(a1, result);
+            if (*(unsigned __int8 *)(sub_4E56C(v6) + 11) <= 1)
+                return 1;
+        }
+    }
+}
+return -1;
+```
+
+直接指令的關鍵位址：
+
+```text
+0x1dee0  movzx eax, byte ptr [ebx + 0x26]
+0x1dee4  test eax, eax
+0x1dee6  je   0x1def0
+0x1df17  add  eax, esi
+0x1df19  cmp  eax, 1
+0x1df1c  jne  0x1dee8
+0x1df1e  push 0
+0x1df24  call 0x1b83d
+0x1df2c  cmp  eax, -1
+0x1df2f  je   0x1df55
+0x1df36  call 0x1b722
+0x1df3f  call 0x4e56c
+0x1df47  movzx eax, byte ptr [eax + 0xb]
+0x1df4b  cmp  eax, 1
+0x1df4e  jg   0x1dee8
+0x1df50  mov  eax, 1
+0x1df57  ret
+```
+
+因此可確認的 caller-specific 條件是：runtime record `+0x26` 為零、候選
+座標與 actor 座標的曼哈頓距離恰為一、`sub_1B83D(a1,0)` 找到 raw slot，且
+`sub_4E56C(sub_1B722(a1,slot))+0x0b <= 1`。其他路徑回傳 `-1`。`sub_36CD7(20)`、
+`0x53a45` 與三個共用函式的高階用途在本檔保持未知。
+
+## `0x14496` 消費端
+
+IDA 偽代碼將 caller 參數還原為 `sub_1DEBE(v38, v35, v36)`，其中 `v38` 來自
+目標 runtime slot、`v35/v36` 來自候選座標；Capstone 保留原始 push/call 順序：
+
+```text
+0x1448a  push dword ptr [esp + 0x48]
+0x1448e  push dword ptr [esp + 0x48]
+0x14492  push dword ptr [esp + 0x58]
+0x14496  call 0x1debe
+0x1449e  cmp  eax, 1
+0x144a1  jne  0x144ab
+0x144a7  sub  eax, ebp
+0x144a9  add  esi, eax
+```
+
+只有 `0x1debe` 回傳 1 時，caller 才把 caller-owned 的兩個已調整 raw word
+差值加入目前 score；這個加法不替 `+0x0b`、`+0x26` 或 `+0x08` 命名為玩法欄位。
+既有 `ScoreNativePhysicalAttackCandidate` 的 `RawHelper1DEBEResult` 只接受
+此明示的 0／1 結果，並未把它接成 `NextAIPlan` 或玩家攻擊規則。
+
+## 交叉驗證命令
+
+```text
+IDA：idat -A -c -o/tmp/fd2-ai/FD2.EXE.i64
+      -S/repo/tools/ida_dump_pseudocode.py /input/FD2.EXE
+      FD2_IDA_ADDRESSES="0x1debe 0x14496 0x14237"
+
+Capstone：python3 tools/disasm_le.py FD2.EXE range 0x1debe 0x1df58
+          python3 tools/disasm_le.py FD2.EXE range 0x14470 0x14510
+```
+
+原始 FD2.EXE、IDA database、授權檔與暫存資料不納入儲存庫；本文件只保存可重生
+的位址級證據與輸入版本指紋。

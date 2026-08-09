@@ -3872,3 +3872,13 @@ slot6 active 條件、SPAWN2、兩段 PAN、800/200ms 與 FDTXT_003 #4 七句也
 這只是可編輯流程的 E1 垂直切片，沒有把 fixture 的空敵方計畫當成原版 AI 證據，
 也沒有解除逐章 handler、一般玩家 DOSBox E2 或完整 town/shop/preparation/save
 驗收門檻。
+
+## 2026-08-09：AI `0x1DEBE` caller-specific raw gate 證據補檔（E0）
+
+以使用者合法 IDA Pro 9.4 Docker 與 `fd2-cap-local` Capstone 重新核對固定版
+`FD2.EXE`：`sub_1DEBE` 位於 `0x1debe..0x1df58`，唯一直接 caller 是
+`0x14496`。IDA／Capstone 共同確認 `+0x26==0`、候選座標曼哈頓距離恰為一、
+`sub_1B83D(a1,0)` 找到 equipped raw slot，且 item row `+0x0b<=1` 時回傳 1；
+caller 才把兩個 caller-owned raw word 差值加入 score。原始運算元與未知高階語意
+均保留，未接 normalized `NextAIPlan`。完整輸入指紋、工具版本與直接指令見
+[`fd2_ai_physical_score_ida.txt`](../data/ida/fd2_ai_physical_score_ida.txt)。
