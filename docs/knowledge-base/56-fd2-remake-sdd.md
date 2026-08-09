@@ -3478,3 +3478,26 @@ indexed frame、一般玩家 E2 與 battle→postbattle→town／shop／整備�
 回歸涵蓋確定命中、缺少亂數的失敗即關閉，以及訊息保留未命中／暴擊／經驗。
 正規化 `aiStep` 也共用這個亂數邊界，缺少來源時停止而不標記單位已行動；這只是
 重製端 deterministic consistency，不能當成原版 native AI 回合執行證據。
+
+## 2026-08-09：指令環疊加完整原生戰場畫面（E1 重製端）
+
+Docker／Xvfb 實際抓圖發現：完整 `FDOTHER.DAT` 存在時，指令環與原始 command
+grid 原先被錯誤排除在 `drawNativeMapFrame` admission 之外，短地圖會在畫面下方
+留下黑帶。現在只有已 materialize 的完整 native frame 才允許 ring／command grid
+疊加；缺資源仍走既有可玩回退，不以黑帶或猜測補畫原版資料。回歸鎖定 modal
+admission，並保存目前 source 的
+[完整戰場指令環畫面](../figures/action-overlay-native-remake-fullframe.png)。
+這是重製端 renderer 接線修正，不是原版 DOSBox 逐像素差分。
+
+## 2026-08-09：戰鬥回合至戰後城鎮的 runtime 垂直切片（E1 重製端）
+
+`Game.endTurn` 現在以實際 `endTurn → aiStep → finishTurn → completeTurn →
+checkResult` 完成敵方回合；勝負結果停留在 battle node，只有玩家結果畫面的
+Enter 才經 `confirmBattleResult` 進入可編輯的 postbattle cutscene。回歸中的
+postbattle beat 先執行 `sync_party`，再執行章節標記並經淡出 callback 進 town，
+因此不會把戰後隊伍同步或城鎮邊界折疊成「直接下一戰」。
+
+`TestEndTurnEnemyPhaseResultEntersPostbattleCutsceneThenTown` 在 Docker／Xvfb
+通過，並檢查持續隊伍快照與結果清除。這是最小可重現的 E1 runtime 邊界；敵方
+目標選擇、原版逐章 handler、一般玩家 DOSBox E2 及 town/shop/save 的完整玩家
+路徑仍未宣稱完成。

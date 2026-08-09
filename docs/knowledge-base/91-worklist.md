@@ -1291,7 +1291,7 @@
       `0x1c75e→0x1c81f` 現已釘 command0 hit/damage：record `u16+0`×target class-ID（unit`+0x20`）multiplier/10，
       `rand()%100 < record+2`，命中後以 90..99.9% base 扣 `unit+0x40` 並 clamp0（`+0x42` 是 HP cap）。
       multiplier table 已與 file `0x51d96` 的職業魔抗 `resist_raw` 對齊（base=`dmg*raw/10`）；完整 target family
-      仍待，尚不可直接替換為 legacy magic formula。
+  仍待，尚不可直接替換為 legacy magic formula。
       selector `0x1d51d` 已鎖每欄四列的 variable-column grid：↑/↓ linear wrap、←/→ ±4、Enter/Space 重查
       MP gate、Esc cancel；`0x1ceed` 再鎖 x/y formula 與 label index=`0x1b9+commandID`。常駐 table
       已對齊 FDTXT_000，40 個 physical label slots 已由 `tools/export_command_labels.py` 匯出為
@@ -2049,3 +2049,23 @@
   camera/roster/tick 逐幀比對兩次白閃與增援。ch27 戰前 view／selector0 已
   閉合並接線，persistent HUD 擁有者也已達 E1；本項剩餘該時點真實 roster
   raw record、CONTINUE 邊界及原版逐幀 oracle。完成前 event63 仍不可標成 E2。
+
+## 2026-08-09：UI-03 完整 native frame 疊加修正
+
+- [x] **UI-03-NATIVE-FRAME-OVERLAY**：Docker／Xvfb 真實抓圖發現 action overlay／native command grid
+  被排除在完整 `drawNativeMapFrame` 之外，短地圖留下黑帶；現已在完整資源可用時允許
+  modal 疊加，缺資源仍回退。新增 admission regression 與目前 source 的
+  [完整指令環畫面](../figures/action-overlay-native-remake-fullframe.png)；只代表重製端
+  E1，未提升為原版 DOSBox E2。
+
+## 2026-08-09：戰後 runtime 邊界回歸
+
+- [x] **CAMPAIGN-POSTBATTLE-RUNTIME-SEAM-E1**：新增 production
+  `confirmBattleResult`，讓實際 `endTurn → aiStep → finishTurn → checkResult`
+  的結果停在 battle node，Enter 才進入可編輯 postbattle；postbattle 先
+  `sync_party`、再設章並經淡出進 town。Docker／Xvfb regression
+  `TestEndTurnEnemyPhaseResultEntersPostbattleCutsceneThenTown` 已驗證持續隊伍快照、
+  結果清除與 town 邊界，避免把戰後補給／商店入口誤接成下一戰。
+- [ ] **CAMPAIGN-POSTBATTLE-E2-FULL-PATH**：仍需每一已綁定章節以未修改一般玩家
+  路徑驗證 handler、戰後城鎮／商店／整備／存檔，以及原版與重製同狀態逐幀證據；本輪
+  E1 fixture 不解除各章 fail-closed gate。

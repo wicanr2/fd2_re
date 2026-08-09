@@ -206,6 +206,11 @@ ch01 戰場目前已能由原始地圖、單位、前景與 HUD 資產合成。�
 
 ![戰鬥演出還原對照](docs/figures/battle_restore.gif)
 
+目前 source 的完整原生戰場 frame 也能承接指令環與 command grid；下圖是 Docker／Xvfb
+的 E1 執行期畫面，資源缺失時仍會失敗即關閉，不代表原版逐像素等價。
+
+![完整原生戰場與指令環疊加（重製端 E1）](docs/figures/action-overlay-native-remake-fullframe.png)
+
 完整介面覆蓋、證據等級與其餘比較圖請看
 [`57-ui-evidence-matrix.md`](docs/knowledge-base/57-ui-evidence-matrix.md)。
 

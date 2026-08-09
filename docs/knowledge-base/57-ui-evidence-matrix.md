@@ -337,3 +337,18 @@ reducer 成單一菱形或宣稱其完整路徑／LOS 規則。
 訊息與 FIGANI 演出。缺少亂數來源時先停止，測試也確認不會先改寫攻方或守方狀態。
 這是重製端消費鏈的 E1 回歸，不是原版 raw 攻擊 ABI、完整 indexed settlement
 或一般玩家 E2；命中表、劍技與完整經驗介面仍維持未關閉。
+
+### 2026-08-09：完整 native map frame 與 action overlay 疊加（E1 重製端）
+
+`drawNativeMapFrame` 的 admission 現允許已 materialize 的 action overlay／native
+command grid 疊加；原先這些 modal 被排除時，短地圖會露出非原版黑帶。Docker／Xvfb
+目前 source 的 [完整 640×400 畫面](../figures/action-overlay-native-remake-fullframe.png)
+已保存供審查。資源缺失仍回退，這不是原版 DOSBox E2。
+
+### 2026-08-09：戰後結果 Enter 與城鎮邊界（E1 重製端）
+
+實際 runtime 回歸確認敵方回合完成後先停在 battle 結果畫面；Enter 才進入含
+`sync_party` 的 postbattle cutscene，淡出完成後才進 town。這修正了只測
+`Campaign.Advance` 而未測玩家輸入邊界的缺口。證據為
+`TestEndTurnEnemyPhaseResultEntersPostbattleCutsceneThenTown`，不提升為原版
+DOSBox E2，也不替未綁定的章節 handler 猜測 renderer 或 campaign 語意。

@@ -22,6 +22,30 @@ func TestNativeActionOffsetXYMatchesFinalOpenFrame(t *testing.T) {
 	}
 }
 
+func TestNativeMapFrameAdmissionKeepsActionOverlayOnCompleteFrame(t *testing.T) {
+	if !(&Game{ring: true}).nativeMapFrameAdmission(false, true) {
+		t.Fatal("action overlay was excluded from the complete native map frame")
+	}
+	if !(&Game{nativeCommandOpen: true}).nativeMapFrameAdmission(false, true) {
+		t.Fatal("native command grid was excluded from the complete native map frame")
+	}
+	if (&Game{sel: &battle.Unit{}}).nativeMapFrameAdmission(false, true) {
+		t.Fatal("ordinary selected-unit movement was admitted without a complete modal state")
+	}
+	for _, state := range []*Game{
+		{ring: true, spellOpen: true},
+		{nativeCommandOpen: true, itemOpen: true},
+		{nativeCommand0Targeting: true, castSp: &battle.Spell{}},
+	} {
+		if state.nativeMapFrameAdmission(false, true) {
+			t.Fatalf("incompatible modal state was admitted: %+v", state)
+		}
+	}
+	if (&Game{ring: true}).nativeMapFrameAdmission(true, true) {
+		t.Fatal("legacy viewport was admitted")
+	}
+}
+
 func TestActionOverlayLifecyclePresentsAllOpeningAndClosingFrames(t *testing.T) {
 	g := &Game{}
 	g.beginActionOverlayOpen(2)

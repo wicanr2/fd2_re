@@ -3905,13 +3905,31 @@ func (g *Game) campInput() bool {
 		return true
 	case "battle":
 		if g.result != "" && enter { // 勝敗後 Enter → 依結果轉場(敗北可走敗北路線)
-			g.camp.Advance(g.result)
-			g.enterNode()
-			return true
+			return g.confirmBattleResult()
 		}
 		return false // 戰鬥照常
 	}
 	return false
+}
+
+// confirmBattleResult consumes the already displayed battle result at the
+// explicit Enter boundary.  Keeping this seam separate prevents tests and
+// future input adapters from bypassing the same postbattle/campaign handoff
+// used by the player-facing control path.
+func (g *Game) confirmBattleResult() bool {
+	if g == nil || g.camp == nil || g.result == "" {
+		return false
+	}
+	outcome := g.result
+	// An empty next id is a valid terminal/game-over result; consume the same
+	// Enter boundary and let enterNode observe the ended campaign.
+	g.camp.Advance(outcome)
+	// The result belongs to the battle node only.  Postbattle/cutscene and town
+	// nodes must not inherit a stale win/lose overlay while they persist the
+	// party and expose the next hub.
+	g.result = ""
+	g.enterNode()
+	return true
 }
 
 // applyChurchClassChange is the runtime seam for the native class-change
@@ -5912,6 +5930,18 @@ func clamp(v *float64, lo, hi float64) {
 	}
 }
 
+func (g *Game) nativeMapFrameAdmission(legacyViewport, campaignBattleView bool) bool {
+	if g == nil || legacyViewport || !campaignBattleView {
+		return false
+	}
+	if g.spellOpen || g.itemOpen || g.castSp != nil {
+		return false
+	}
+	return g.sel == nil || g.nativeCommand0Targeting ||
+		g.nativeItemTargeting || g.nativeItemRelocating ||
+		g.ring || g.nativeCommandOpen
+}
+
 func (g *Game) Draw(screen *ebiten.Image) {
 	// The exact full-DAC saturation covers the complete mode-13h surface,
 	// including HUD and dialogue. Defer preserves that hardware ordering across
@@ -6175,14 +6205,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	}
 	// A complete original indexed frame supersedes the normalized map/unit/HUD
 	// layers for the verified drawable selectors 1..5. Target selection keeps
-	// g.sel as its actor, so explicitly admit that modal state. Record-byte+2
-	// writers can exceed six and target validation still consumes those values
-	// even when 0x122dc draws no overlay; those states retain the playable
-	// renderer until their complete presentation lifecycle is materialized.
-	if !legacyViewport && campaignBattleView &&
-		(g.sel == nil || g.nativeCommand0Targeting ||
-			g.nativeItemTargeting || g.nativeItemRelocating) &&
-		!g.ring && !g.spellOpen && !g.itemOpen && g.castSp == nil {
+	// g.sel as its actor, so explicitly admit those modal states. The recovered
+	// action overlay and raw command grid are composited after this frame; if
+	// their parent remains on the normalized map, short maps leave an unproven
+	// black band below the 320x200 native viewport. Record-byte+2 writers can
+	// exceed six and target validation still consumes those values even when
+	// 0x122dc draws no overlay; those states retain the playable renderer until
+	// their complete presentation lifecycle is materialized.
+	if g.nativeMapFrameAdmission(legacyViewport, campaignBattleView) {
 		nativeMapPresented = g.drawNativeMapFrame(screen)
 	}
 

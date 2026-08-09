@@ -3,8 +3,74 @@ package main
 import (
 	"testing"
 
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
+
+func TestEndTurnEnemyPhaseResultEntersPostbattleCutsceneThenTown(t *testing.T) {
+	chapter := 2
+	c := &campaign.Campaign{
+		Start: "battle_fixture",
+		Flags: map[string]bool{},
+		Nodes: map[string]*campaign.Node{
+			"battle_fixture": {
+				Type: "battle", OnWin: "postbattle_fixture",
+			},
+			"postbattle_fixture": {
+				Type: "cutscene", Next: "town_fixture",
+				// The editable postbattle beats persist the party before the
+				// chapter marker and visual fade; no native handler meaning is
+				// invented by this fixture.
+				Beats: []campaign.Beat{
+					{Op: "sync_party"},
+					{Op: "set_chapter", Chapter: &chapter},
+				},
+			},
+			"town_fixture": {Type: "town", Town: "fixture"},
+		},
+	}
+	st := &battle.State{Units: []*battle.Unit{
+		{Name: "索爾", Camp: battle.Own, OnField: true, HP: 10, MaxHP: 10},
+		// A dead, non-field enemy gives NextAIPlan an empty plan while still
+		// exercising the real endTurn→enemy phase→finishTurn seam.
+		{Camp: battle.Enemy, OnField: false, HP: 0, MaxHP: 10},
+	}}
+	g := &Game{camp: campaign.NewRunner(c), st: st, sc: &battle.Scenario{}}
+
+	g.endTurn()
+	if !g.aiBusy {
+		t.Fatal("endTurn did not enter enemy phase")
+	}
+	g.aiStep()
+	if g.aiBusy || g.result != "win" || st.Turn != 1 {
+		t.Fatalf("enemy phase completion: aiBusy=%v result=%q turn=%d", g.aiBusy, g.result, st.Turn)
+	}
+	if got := g.camp.NodeID(); got != "battle_fixture" {
+		t.Fatalf("result advanced before confirmation: node=%q", got)
+	}
+
+	// This calls the production battle-result confirmation seam; it must not
+	// bypass the authored postbattle cutscene node.
+	if !g.confirmBattleResult() || g.result != "" {
+		t.Fatalf("battle result confirmation failed: result=%q", g.result)
+	}
+	if got := g.camp.NodeID(); got != "postbattle_fixture" {
+		t.Fatalf("battle result→postbattle=%q", got)
+	}
+	if got, ok := g.partyRoster[0]; !ok || got.HP != got.MaxHP || got.MP != got.MaxMP {
+		t.Fatalf("postbattle sync party=%+v, want restored persistent snapshot", g.partyRoster)
+	}
+	if g.fade == nil || !g.fade.out {
+		t.Fatal("postbattle cutscene did not reach its fade transition")
+	}
+
+	// Complete only the deterministic fade-out callback; the callback enters
+	// the declared town node and leaves the fade-in lifecycle for the runtime.
+	g.fade.then()
+	if got := g.camp.NodeID(); got != "town_fixture" {
+		t.Fatalf("postbattle cutscene→town=%q", got)
+	}
+}
 
 func TestUIShellVerticalTraceKeepsPostbattleTownAndShopBoundary(t *testing.T) {
 	// This is deliberately a state/input contract, not a claim about native

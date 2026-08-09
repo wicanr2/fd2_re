@@ -3849,4 +3849,26 @@ slot6 active 條件、SPAWN2、兩段 PAN、800/200ms 與 FDTXT_003 #4 七句也
   重現，並保留未命中／暴擊／經驗訊息。
 - 這只是重製端的一致性修正；`NextAIPlan`、目標選擇與回合 orchestration 仍是
   normalized approximation，沒有把這次改動描述成原版 native AI 接線。亂數來源
-  缺失時 `aiStep` 停止且不標記單位已行動，維持失敗即關閉。
+缺失時 `aiStep` 停止且不標記單位已行動，維持失敗即關閉。
+
+## 2026-08-09：完整 native 戰場 frame 疊加 action overlay（E1 重製端）
+
+- Docker／Xvfb 以目前 source、唯讀 `FDOTHER.DAT` 與 `battle_ch01` 實際抓圖，發現
+  ring／native command grid 原本被 `drawNativeMapFrame` admission 排除；在短地圖上
+  只畫 normalized map，畫面下方出現大片黑帶。
+- 現已讓 ring／native command grid 在完整 native map frame 成功時疊加，缺資源仍
+  使用既有回退。新增 admission regression 與
+  [`action-overlay-native-remake-fullframe.png`](../figures/action-overlay-native-remake-fullframe.png)
+（SHA-256 `4402adbb6f1ddff94639ae594b392bf96c68a264f9f05126f3e4f022d74a7852`）。這是
+重製端 E1 renderer 接線，不是原版 DOSBox 逐像素差分。
+
+## 2026-08-09：戰後結果輸入至城鎮的 runtime 邊界（E1 重製端）
+
+補上 `confirmBattleResult` production seam，並由 Docker／Xvfb 真實回歸驗證：
+`endTurn → aiStep → finishTurn → completeTurn → checkResult` 完成敵方回合後，
+結果仍停在 battle；玩家按 Enter 才進入含 `sync_party` 的 postbattle cutscene，
+淡出完成後才進 town。測試也確認持續隊伍快照已寫入且不殘留舊結果覆蓋。
+
+這只是可編輯流程的 E1 垂直切片，沒有把 fixture 的空敵方計畫當成原版 AI 證據，
+也沒有解除逐章 handler、一般玩家 DOSBox E2 或完整 town/shop/preparation/save
+驗收門檻。
