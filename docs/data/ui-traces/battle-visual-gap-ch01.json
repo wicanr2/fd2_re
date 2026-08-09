@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "comparison_id": "battle-ch01-reference-vs-remake",
+  "evidence_level": "E1 差異稽核",
+  "same_state": false,
+  "comparison_scope": "只記錄目前兩張圖的尺寸、來源與可見差異；不宣稱原版與重製逐像素一致。",
+  "original_reference": {
+    "path": "docs/figures/native-map-ch01-original-video.png",
+    "width": 320,
+    "height": 200,
+    "md5": "389102069562271a64991a123d674f53",
+    "sha256": "65e47a5d8af49bc91373fcd062af7ed6a7d8b51e79a9d03367ce1191e71a34b6",
+    "provenance": "儲存庫中的原版參考影格；未記錄可重現的一般玩家輸入與存檔狀態。",
+    "visible_findings": [
+      "可見多個戰場單位、游標與左下 HUD。",
+      "畫面內容不能直接和重製圖視為同一時刻。"
+    ]
+  },
+  "remake_runtime": {
+    "path": "docs/figures/native-map-ch01-remake.png",
+    "width": 640,
+    "height": 400,
+    "md5": "4211ca75ccc893c39d6ca20f338468e9",
+    "sha256": "bcac00085e11a6a0646e9c31508d8c76997c1e7b24961fa1f53bff5a4e68e06a",
+    "provenance": "目前重製 source 由 Docker／Xvfb 產生的 E1 截圖。",
+    "visible_findings": [
+      "相機裁切與原版參考不同。",
+      "場上單位與原版參考的數量／位置不同。",
+      "HUD 的位置與可見內容仍不同。"
+    ]
+  },
+  "conclusion": {
+    "status": "未閉合",
+    "confidence": "已證實（影像尺寸與可見差異）；成因未知",
+    "next_gate": "取得同一 FD2.SAV、同一相機／游標／回合／單位狀態的原版 DOSBox 與重製逐幀配對後，才可判定是狀態橋接、相機、單位合成、HUD 或調色盤差異。"
+  }
+}

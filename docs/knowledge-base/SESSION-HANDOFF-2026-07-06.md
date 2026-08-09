@@ -3882,3 +3882,18 @@ slot6 active 條件、SPAWN2、兩段 PAN、800/200ms 與 FDTXT_003 #4 七句也
 caller 才把兩個 caller-owned raw word 差值加入 score。原始運算元與未知高階語意
 均保留，未接 normalized `NextAIPlan`。完整輸入指紋、工具版本與直接指令見
 [`fd2_ai_physical_score_ida.txt`](../data/ida/fd2_ai_physical_score_ida.txt)。
+
+## 2026-08-09：戰場 GUI 對照圖差異勘誤（E1；未解除）
+
+重新檢視 GitHub 首頁上的戰場圖片後，確認
+`native-map-ch01-original-video.png`（320×200，原版參考）與
+`native-map-ch01-remake.png`（640×400，重製端 E1）不是同一個戰場狀態；原版
+可見的單位、相機裁切與左下 HUD，在重製圖中的位置／內容仍不同。這兩張圖只能
+作為資源消費與排版參考，不能再被描述成「相近相機已對齊」或原版 E2。
+
+尺寸、雜湊、可見觀察與下一道驗收門檻已保存於
+[`battle-visual-gap-ch01.json`](../data/ui-traces/battle-visual-gap-ch01.json)，
+並同步修正 README、SDD、介面證據矩陣與工作清單。下一步必須用同一
+`FD2.SAV`、相機／游標／回合／單位狀態，取得原版 DOSBox 與重製端逐幀配對，
+再分辨狀態橋接、相機、單位合成、HUD 或調色盤的實際差異；三平台套件與推廣影片
+發布閘門在此之前保持未解除。

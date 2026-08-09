@@ -128,6 +128,18 @@
   就緒探測（readiness probe）。Docker 實測輸出 320×200 原版標題選單與戰場對話畫面，避免
   把根視窗左上角的局部黑畫面誤列為介面證據；另保存目前重製端執行期畫面
   [`title-remake-runtime.png`](../figures/title-remake-runtime.png)，不把原版重複圖再加入。
+- [~] **BATTLE-VISUAL-GAP-CH01**：重新稽核 GitHub 上的戰場對照圖，確認
+  `native-map-ch01-original-video.png` 是 320×200 原版參考、
+  `native-map-ch01-remake.png` 是 640×400 重製端 E1，兩者不是同一狀態；相機、
+  場上單位與 HUD 仍有可見差異。已保存尺寸／雜湊／可見觀察於
+  [`battle-visual-gap-ch01.json`](../data/ui-traces/battle-visual-gap-ch01.json)。
+  在同一 FD2.SAV、相機、游標、回合與單位狀態的 DOSBox／重製逐幀配對完成前，
+  不得把戰場畫面標成 E2 或「與原版一致」。
+- [ ] **RELEASE-TRIPLE-PLATFORM-PROMO-GATE**：只有在 30 章一般玩家路徑、
+  戰場／戰後／城鎮／商店／整備／存檔等畫面都取得同狀態原版 DOSBox 與重製端
+  逐幀證據，且 UI 矩陣不再有未解除的視覺或流程封鎖時，才允許製作
+  Windows、Linux、macOS 三平台套件與推廣影片；在閘門前不得以 E1、素材合成或
+  不同狀態截圖代替完整驗收。
 - [ ] **下一個戰後切片**：玩家第22、23、24、25、29戰；每關都必須保留
   town／shop／整備／連戰與存檔邊界，不可只把節點接到下一場戰鬥。
 - [x] **UI-05 重製端對話框執行期擷取**：以 `FD2_CAMPAIGN=1` 的可編輯序章腳本，
