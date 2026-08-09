@@ -221,6 +221,12 @@ FDFIELD b1 selector 及原版 `FDOTHER/FDSHAP/FDICON` 資源產生，不再使�
 
 ![戰鬥演出還原對照](docs/figures/battle_restore.gif)
 
+戰鬥狀態欄姓名目前已改接原版 `FDOTHER#4` 16×16 點陣字模；下圖是 Docker／Xvfb
+以目前 source 重新建置的 E1 演出截圖。它只證明姓名字模的消費端，不代表攻擊幀、
+傷害／閃紅或整個戰鬥介面已與原版逐像素一致。
+
+![重製端原版字模戰鬥狀態欄](docs/figures/battle-native-name-remake.png)
+
 目前 source 的完整原生戰場 frame 也能承接指令環與 command grid；下圖是 Docker／Xvfb
 的 E1 執行期畫面，資源缺失時仍會失敗即關閉，不代表原版逐像素等價。
 

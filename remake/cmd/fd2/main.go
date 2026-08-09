@@ -39,6 +39,7 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
@@ -332,22 +333,24 @@ type Game struct {
 	result             string // 勝負:""/win/lose
 	msg                string // 短訊息(攻擊傷害等)
 	// 地圖單位 sprite(FDICON 待機分鏡):fig index → 幀序列
-	sprites      map[int][]*ebiten.Image
-	figani       map[int][]*ebiten.Image         // 攻擊全身動畫(FIGANI):fig → 幀序列
-	figaniDelays map[int][]int                   // 原始 FIGANI descriptor +6 delay，與 PNG 幀數一一對齊
-	atk          *atkAnim                        // 進行中的攻擊演出
-	bg           *ebiten.Image                   // 戰鬥背景(BG.DAT,by 戰場;map0=BG_004 森林)
-	tai          *ebiten.Image                   // 我方腳下台座(TAI.DAT;0x29164 載 0x28c46,doc35 §3.3)
-	panel        *ebiten.Image                   // 狀態欄框素材(FDOTHER#5 LMI1 #22,149×42;含bevel+HP/MP標籤+槽,doc35 §4)
-	dlgBox       *ebiten.Image                   // 對話框框素材(FDOTHER#5 LMI1 #21,310×99;orig 下框(5,112)@320)
-	dlgGrad      *ebiten.Image                   // 對話框內部漸層(比對頭像底色 40,69,138→56,85,154 消接縫色差;lazy 建)
-	fontNm       *Font                           // 狀態欄名字(整數尺寸 face,scale1 銳利)
-	digits       [10]*ebiten.Image               // 狀態欄數字 0-9(LMI1 #31-40 原版 digit cell,白/藍影)
-	redSil       map[*ebiten.Image]*ebiten.Image // 命中閃紅的全紅剪影快取(orig=VGA 色盤閃紅)
-	redFlash     *ebiten.Image                   // 命中全螢幕紅罩(orig=DAC 整組色盤設紅→整片泛紅)
-	dim          *ebiten.Image                   // 全螢幕暗化/底板共用(回合橫幅、單位面板)
-	figMeta      map[int][][2]int                // FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(doc06;動畫走位全靠它)
-	font         *Font                           // 原版點陣中文字型(doc 08)
+	sprites            map[int][]*ebiten.Image
+	figani             map[int][]*ebiten.Image         // 攻擊全身動畫(FIGANI):fig → 幀序列
+	figaniDelays       map[int][]int                   // 原始 FIGANI descriptor +6 delay，與 PNG 幀數一一對齊
+	atk                *atkAnim                        // 進行中的攻擊演出
+	bg                 *ebiten.Image                   // 戰鬥背景(BG.DAT,by 戰場;map0=BG_004 森林)
+	tai                *ebiten.Image                   // 我方腳下台座(TAI.DAT;0x29164 載 0x28c46,doc35 §3.3)
+	panel              *ebiten.Image                   // 狀態欄框素材(FDOTHER#5 LMI1 #22,149×42;含bevel+HP/MP標籤+槽,doc35 §4)
+	dlgBox             *ebiten.Image                   // 對話框框素材(FDOTHER#5 LMI1 #21,310×99;orig 下框(5,112)@320)
+	dlgGrad            *ebiten.Image                   // 對話框內部漸層(比對頭像底色 40,69,138→56,85,154 消接縫色差;lazy 建)
+	fontNm             *Font                           // 狀態欄名字(整數尺寸 face,scale1 銳利)
+	nativeBattleFont   *fdtxt.Font                     // 全螢幕戰鬥狀態欄 FDOTHER#4 16×16 字模
+	nativeBattleGlyphs map[string]int                  // Unicode→原版 glyph 索引（未知字元失敗即關閉）
+	digits             [10]*ebiten.Image               // 狀態欄數字 0-9(LMI1 #31-40 原版 digit cell,白/藍影)
+	redSil             map[*ebiten.Image]*ebiten.Image // 命中閃紅的全紅剪影快取(orig=VGA 色盤閃紅)
+	redFlash           *ebiten.Image                   // 命中全螢幕紅罩(orig=DAC 整組色盤設紅→整片泛紅)
+	dim                *ebiten.Image                   // 全螢幕暗化/底板共用(回合橫幅、單位面板)
+	figMeta            map[int][][2]int                // FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(doc06;動畫走位全靠它)
+	font               *Font                           // 原版點陣中文字型(doc 08)
 
 	nativeChapterRestore *campaign.NativeChapterSlotRestorePlan // 四槽 LOAD 的已驗證戰間狀態；未知 raw bytes 僅保存、不猜接
 }
@@ -7350,8 +7353,11 @@ func (g *Game) drawBattlePanel(screen *ebiten.Image, x, y float64, name string, 
 	// 排版(對照 orig 放大量測,native):名(8,2) 16px;LV數字接框內「LV‧」後(133,3) 9px;
 	// HP/MP 數值與槽同列(125,20)/(125,29) 8px
 	_ = white
-	// 名字:TTF + 深藍描邊(仿原版點陣的暗邊;字形風格為 TTF 既定決策,非像素級)
-	if g.fontNm != nil {
+	// 名字：原版 0x15f84→0x4ea2a 使用 FDOTHER#4 16×16 glyph；只有
+	// 字模／Unicode 索引缺失時才退回現代字型，避免未證實字元讓戰鬥畫面失敗。
+	if g.drawNativeBattleName(screen, x, y, name) {
+		// native bitmap path consumed the name; do not paint a second TTF layer.
+	} else if g.fontNm != nil {
 		nx, ny := rnd(x+8*sc), rnd(y+2*sc)-2
 		dk := color.RGBA{0x20, 0x30, 0x60, 0xff}
 		for _, o := range [][2]float64{{-2, 0}, {2, 0}, {0, -2}, {0, 2}, {2, 2}} {
@@ -7626,6 +7632,10 @@ func loadGame() *Game {
 	}
 	g.figMeta = loadFigMeta()
 	g.nativeUIPalette = loadNativeUIPalette()
+	if nativeFont, nativeGlyphs, err := loadNativeBattleNameAssets(); err == nil {
+		g.nativeBattleFont = nativeFont
+		g.nativeBattleGlyphs = nativeGlyphs
+	}
 	g.nativeActionCells = loadNativeActionCells(g.nativeUIPalette)
 	if loadSlotsUI, err := loadNativeLoadSlotsUIAssets(); err == nil {
 		g.nativeLoadSlotsUI = loadSlotsUI

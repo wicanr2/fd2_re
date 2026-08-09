@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "comparison_id": "battle-ch01-status-name-native-glyph",
+  "evidence_level": "E1 重製端消費端驗證；非原版同狀態 E2",
+  "same_state": false,
+  "scope": "只驗證全螢幕戰鬥狀態欄姓名的原版字模消費，不宣稱整個攻擊演出或畫面逐像素一致。",
+  "source_contract": {
+    "fd2_exe": {
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "native_call": "0x18c6d → 0x15f84 → 0x4ea2a",
+    "semantic_status": "已證實：狀態欄姓名使用 FDOTHER#4 的 16×16 1bpp glyph；Unicode 對映只是重製端可編輯橋接。",
+    "evidence": "docs/knowledge-base/35-battle-animation-rendering.md §4.2"
+  },
+  "assets": {
+    "FDOTHER.DAT": {
+      "size": 3382481,
+      "md5": "22f56e5027edc7c766ad34ca4e5aca93",
+      "sha256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
+    },
+    "remake/assets/fonts/FDOTHER_004.bin": {
+      "size": 58368,
+      "md5": "98cfa6f68591a78c23a5ab1507f188bf",
+      "sha256": "e18793facb1d4c71eee8f78cbe72475634b8ce9836e86c13ee16c63737b6b5a8"
+    },
+    "remake/assets/fonts/unicode_to_glyph.json": {
+      "size": 22501,
+      "md5": "cadabd16aebac159f6bcdb8a3fe63ed8",
+      "sha256": "6563115626de78cad69a54f1bb7fe6c5b659ff999324fd31b4d7d5fa80087e61"
+    }
+  },
+  "remake_capture": {
+    "path": "docs/figures/battle-native-name-remake.png",
+    "width": 640,
+    "height": 400,
+    "md5": "86da76005c28c561b0a3a92ea726202b",
+    "sha256": "b38f26c9475cf4eb34fd4505dac4f035eed76c3291a63bc1f2044732dc7b5ae9",
+    "command": "FD2_SHOT_ATTACK=4 FD2_SHOT_FRAME=20 FD2_TITLE=0 FD2_MUTE=1",
+    "provenance": "fd2-go-test-local Docker／Xvfb；原版 FDOTHER.DAT 唯讀掛載；重製端目前 source 重新建置。畫面只作 E1 artifact，沒有替代未修改一般玩家 DOSBox 比對。"
+  },
+  "result": {
+    "status": "已接入可編輯重製端",
+    "fallback": "字模或 Unicode 對映缺失時保留既有 TTF fallback；不猜測 glyph index，也不讓未知字元污染原版路徑。",
+    "remaining": "全螢幕演出幀時序、傷害／閃紅、台座與一般玩家同狀態 E2 仍未閉合。"
+  }
+}

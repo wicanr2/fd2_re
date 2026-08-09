@@ -3981,3 +3981,19 @@ icon 使用相同目的地。舊版重製端只把 terrain icon 寫在 `base+6`�
 剩左下畫布邊界。這個結果是 ch01 單一 FD2.SAV 狀態的 E2 範圍候選，不能外推
 到其他章節、一般玩家 CONTINUE 或完整操作界面；完整欄位與方法見
 [`battle-visual-gap-ch01.json`](../data/ui-traces/battle-visual-gap-ch01.json)。
+
+## 2026-08-10：戰鬥狀態欄姓名改接 FDOTHER#4（E1；未解除）
+
+重新檢查 GitHub 戰鬥演出圖後，確認另一項可重現的差異：重製端狀態欄姓名仍走
+現代 28 像素字型，原版 `0x18c6d→0x15f84→0x4ea2a` 則消費
+FDOTHER#4 的 16×16 1bpp glyph。現已以可版控的 `FDOTHER_004.bin` 與
+`unicode_to_glyph.json` 接入重製端，保留未知字元的既有 fallback，不猜測 glyph
+索引；測試也固定確認前景／陰影寫入與未知字元拒絕 native 路徑。
+
+Docker／Xvfb 產生的 E1 證據圖為
+[`battle-native-name-remake.png`](../figures/battle-native-name-remake.png)，完整
+檔案指紋、原版雜湊、呼叫鏈與命令見
+[`battle-name-glyph-ch01.json`](../data/ui-traces/battle-name-glyph-ch01.json)。
+這只關閉狀態欄姓名字形的重製端消費差異；攻擊幀時序、傷害／閃紅、台座、完整
+指令介面及一般玩家同狀態 DOSBox E2 仍未驗收，三平台套件與推廣影片閘門維持
+未解除。

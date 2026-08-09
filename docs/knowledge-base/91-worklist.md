@@ -718,7 +718,11 @@
 - [x] **README 對外展示**:battle_restore.gif(orig|remake 同步+網格)、battle_storyboard.png(5階段分鏡)、
       battle_restore_grid.png(網格驗證);新增「戰鬥演出:像素級 1:1 還原」節
 - [x] **FD2_SHOT_SERIES 逐幀截圖鉤子**(GIF/分鏡素材管線)
-- [x] 名字=TTF 28px+深藍描邊(~85%,既定決策:只有狀態欄數字用點陣素材,其他文字 TTF)
+- [x] **戰鬥狀態欄姓名改接原版字模（2026-08-10）**：撤回「名字=TTF 28px」舊決策。
+      `0x18c6d→0x15f84→0x4ea2a` 已證實使用 FDOTHER#4 16×16 1bpp glyph；重製端
+      以 `FDOTHER_004.bin`＋`unicode_to_glyph.json` 逐字 render，未知字元才保留
+      TTF fallback，並以 Docker/Xvfb 產生 [`battle-native-name-remake.png`](../figures/battle-native-name-remake.png)。
+      這是戰鬥狀態欄 E1 消費端修正，不代表全螢幕演出或一般玩家 DOSBox E2。
 
 ## 第 8 輪（歷史玩法盤點 round；魔法／SFX／campaign 目前仍是 partial）
 > 使用者指示:檢視腳本系統一路到移動/觸發戰鬥/魔法,盤點缺口逐項補。

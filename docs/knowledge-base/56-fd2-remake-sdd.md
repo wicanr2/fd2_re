@@ -3497,6 +3497,21 @@ admission，並保存目前 source 的
 [完整戰場指令環畫面](../figures/action-overlay-native-remake-fullframe.png)。
 這是重製端 renderer 接線修正，不是原版 DOSBox 逐像素差分。
 
+## 2026-08-10：戰鬥狀態欄姓名字模消費端勘誤（E1）
+
+全螢幕戰鬥狀態欄的框、血條與數字原本已使用原版素材，但姓名路徑仍使用
+28 像素現代字型，造成 GitHub 戰鬥演出圖的字形與原版不一致。`35` 的 IDA／
+Capstone 證據已確認 `0x18c6d→0x15f84→0x4ea2a` 消費 FDOTHER#4 的 16×16
+1bpp glyph；重製端現以可版控的 `FDOTHER_004.bin` 與
+`unicode_to_glyph.json` 逐字建立索引畫面，再以原版前景／陰影索引放大 2×。
+缺少字模或 Unicode 對映時才退回既有 TTF，未知字元不會被猜測成其他 glyph。
+
+Docker／Xvfb 實際產生 [`battle-native-name-remake.png`](../figures/battle-native-name-remake.png)，
+完整輸入雜湊與命令見 [`battle-name-glyph-ch01.json`](../data/ui-traces/battle-name-glyph-ch01.json)。
+這只關閉「狀態欄姓名字形」的重製端 E1 消費端差異；攻擊幀時序、傷害／閃紅、
+台座、完整 command／spell／item presentation 及未修改一般玩家同狀態 E2 仍維持
+失敗即關閉，不能把這張圖宣稱為整個戰鬥介面完成。
+
 ## 2026-08-09：戰鬥回合至戰後城鎮的 runtime 垂直切片（E1 重製端）
 
 `Game.endTurn` 現在以實際 `endTurn → aiStep → finishTurn → completeTurn →
