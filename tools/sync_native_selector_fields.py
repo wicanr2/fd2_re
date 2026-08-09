@@ -5,7 +5,7 @@ The editable map assets contain manual corrections which a full export_units.py
 regeneration must not overwrite.  FDFIELD construction at 0x10d7f..0x10efc
 does, however, close three fields for every scripted roster entry:
 
-* roster b0 -> 0x11019 raw key -> runtime unit+2 cache slot
+* roster b1 -> 0x11019 raw key -> runtime unit+2 cache slot
 * roster b0 -> runtime unit+6
 * roster b1 -> runtime unit+7 / unit+8 raw visual selector bytes
 * roster b13..b16 -> runtime unit+0x1a..+0x1d command-mask bytes
@@ -140,7 +140,13 @@ def expected_units(raw, map_index, native_tables=None):
     return expected
 
 
-def sync_asset(raw, asset_path, write, native_tables=None):
+def sync_asset(
+    raw,
+    asset_path,
+    write,
+    native_tables=None,
+    rewrite_map_selector_key=False,
+):
     asset = json.loads(asset_path.read_text(encoding="utf-8"))
     map_index = asset.get("map")
     if not isinstance(map_index, int):
@@ -184,6 +190,10 @@ def sync_asset(raw, asset_path, write, native_tables=None):
             current = unit.get(field)
             value = native[field]
             if current is not None and current != value:
+                if field == "map_selector_key" and rewrite_map_selector_key:
+                    unit[field] = value
+                    changed += 1
+                    continue
                 raise ValueError(
                     f"{asset_path}: unit {index} {field}={current!r}, expected native {value!r}"
                 )
@@ -213,7 +223,17 @@ def main(argv):
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--check", action="store_true")
     mode.add_argument("--write", action="store_true")
+    parser.add_argument(
+        "--rewrite-map-selector-key",
+        action="store_true",
+        help=(
+            "rewrite only stale map_selector_key values from the proven "
+            "FDFIELD b1 -> 0x11019 source; requires --write"
+        ),
+    )
     args = parser.parse_args(argv)
+    if args.rewrite_map_selector_key and not args.write:
+        parser.error("--rewrite-map-selector-key requires --write")
 
     paths = sorted(args.assets.glob("map*/map*_units.json"), key=lambda p: int(p.parent.name[3:]))
     if not paths:
@@ -224,7 +244,13 @@ def main(argv):
         validate_native_tables(native_tables, args.reference_files)
     changed = 0
     for path in paths:
-        map_index, count = sync_asset(args.raw, path, args.write, native_tables)
+        map_index, count = sync_asset(
+            args.raw,
+            path,
+            args.write,
+            native_tables,
+            args.rewrite_map_selector_key,
+        )
         changed += count
         print(f"map{map_index}: {'updated' if args.write else 'verified'} ({count} pending native field migrations)")
     if args.check and changed:

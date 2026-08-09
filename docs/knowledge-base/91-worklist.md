@@ -129,15 +129,17 @@
   把根視窗左上角的局部黑畫面誤列為介面證據；另保存目前重製端執行期畫面
   [`title-remake-runtime.png`](../figures/title-remake-runtime.png)，不把原版重複圖再加入。
 - [~] **BATTLE-VISUAL-GAP-CH01**：重新稽核 GitHub 上的戰場對照圖，確認
-  `native-map-ch01-original-video.png` 是 320×200 原版參考。新增
-  `native-map-ch01-remake-handler.png`（640×400），由 Docker／Xvfb 以正式
-  `story_ch00_handler` 的 73 拍快速時鐘執行 LOADCH、JOIN、SPAWN 與 battle handoff
-  後擷取；已排除舊 `native-map-ch01-remake.png` 直接跳 `battle_ch01` 造成的單角色
-  除錯入口假象。新圖仍與原版參考不是同一狀態，場上單位、游標、HUD 與像素比例仍有
-  可見差異；raw 相機／游標欄位不等於畫面一致。尺寸／雜湊／可見觀察與舊圖歷史證據
-  已保存於 [`battle-visual-gap-ch01.json`](../data/ui-traces/battle-visual-gap-ch01.json)。
-  在同一 FD2.SAV、相機、游標、回合與單位狀態的 DOSBox／重製逐幀配對完成前，不得把
-  戰場畫面標成 E2 或「與原版一致」。
+  `native-map-ch01-original-video.png` 是 320×200 原版參考。`native-map-ch01-remake-handler.png`
+  （640×400）現由 Docker／Xvfb 以正式 `story_ch00_handler` 的 73 拍快速時鐘執行
+  LOADCH、JOIN、SPAWN 與 battle handoff 後擷取，並唯讀掛載使用者提供的
+  `FDOTHER.DAT`／`FDSHAP.DAT`／`FDICON.B24`，並以 `FD2_SHOT_DETERMINISTIC=1`
+  固定動畫時鐘；同時套用 IDA 已證實的 FDFIELD b1 selector。這取代舊 b0 映射造成的敵軍友軍圖像錯誤，也排除舊
+  `native-map-ch01-remake.png` 直接跳 `battle_ch01` 的單角色除錯入口假象。新圖仍
+  與原版參考不是同一狀態，場上單位、游標、HUD 與像素比例仍有可見差異；raw
+  相機／游標欄位不等於畫面一致。尺寸／雜湊／可見觀察與舊圖歷史證據已保存於
+  [`battle-visual-gap-ch01.json`](../data/ui-traces/battle-visual-gap-ch01.json)。
+  在同一 FD2.SAV、相機、游標、回合與單位狀態的 DOSBox／重製逐幀配對完成前，不得
+  把戰場畫面標成 E2 或「與原版一致」。
 - [ ] **RELEASE-TRIPLE-PLATFORM-PROMO-GATE**：只有在 30 章一般玩家路徑、
   戰場／戰後／城鎮／商店／整備／存檔等畫面都取得同狀態原版 DOSBox 與重製端
   逐幀證據，且 UI 矩陣不再有未解除的視覺或流程封鎖時，才允許製作
@@ -1165,14 +1167,14 @@
   save-persistent gate A、process-persistent anchor 及 controller gate B=1；
   其他章仍須逐章 view 來源，且角色 raw record 不完整時照舊失敗即關閉，
   故此項是 strict bridge 而非全戰役畫面已 native。
-- [x] **HUD unit-gate constructor provenance**：Docker Capstone `0x10d7f..0x10efc` 固定 runtime `+6=FDFIELD b0`、`+7/+8=FDFIELD b1`，與 editable `map_selector_key`/`battle_fig` 對齊；`+0x1f` 改由 portrait/resource branch 寫入，不能拿 portrait/class 直接代替。缺少該 resource byte 時 optional icon/HP 繼續 fail-closed。
+- [x] **HUD unit-gate constructor provenance**：Docker Capstone `0x10d7f..0x10efc` 固定 runtime `+6=FDFIELD b0`、`+7/+8=FDFIELD b1`；IDA Pro 9.4 進一步固定 `0x10ed6` 將同一 b1 傳給 `0x11019`，回傳 slot 寫入 `unit+2`。editable `map_selector_key`／`battle_fig` 現以 b1 對齊；`+0x1f` 改由 portrait/resource branch 寫入，不能拿 portrait/class 直接代替。缺少該 resource byte 時 optional icon/HP 繼續 fail-closed。
 
 - [x] **FDICON indexed asset primitive**：`internal/fdicon` 現直接 decode `FDICON.B24` header/offset table/24×24 four-mode RLE，保留透明與 dither spans；`Sprite.BlitAt` 是 raw `0x4deda`，`BlitPaletteBand` 是 `0x4de56` 的 `(index&7)+0x18`。**撤回 256-byte LUT 對應說法**（那是其他 renderer path）；fixture 與 player-provided 原始 1680-sprite regression 通過；仍未替代 roster/frame/timing/layer adapter。
 
 - [x] **FDICON native selector primitive**：`Bank.SpriteFor(key,pose,cycle)` 嚴格表達已解析 B24 raw key 的 `key×12 + pose×3 + cycle` lookup（pose 0..3、cycle 0..2）並 regression；`0x127e0` 則先取 runtime `unit+2` cache slot 選對應 12-pointer block。它與 `0x287b5..0x2884c` 的 battle `unit+7 × 3` FIGANI selector 是不同 raw field；現有 exported visual id 的相等只在已驗證 roster 記錄成立，不能當 ABI alias。`NativeFrameIndex` 依 +4 movement offset 選 `0x3C0B/0x3C07`，將 global cycle 3 正規化為 1，`+0x26` 則強制 0；撤回「runtime +4 frame」說法，故沒有把它隱式接入 GUI。
   - [~] battle selector bridge：`battle_fig`→`Unit.BattleFig`→全螢幕 `newAtkAnim` 已可承載 split ABI，loader regression 固定它可與 legacy map `fig` 不同；constructor `0x10d7f..0x10efc` 已閉合 FDFIELD `b1→unit+7`，正式 exporter 已寫入該欄、舊 JSON 才 fallback。`fig` 不宣稱原版 field。
-  - [~] map selector provenance audit：`0x10c50→0x11019` 是 global raw-key FDICON cache path；完整 constructor 已釘 FDFIELD `b0`（亦寫 native camp `+6`）。`0x11019` 只比對全域 key table，僅新 key 使用 caller archive pointer 建 block；player `0x10a25` 與 scripted `0x10b69` 都開啟 `FDICON.B24`。parser/exporter 現輸出 raw `map_selector_key=b0`；map0 30筆實跑為 keys `[0,1,2]` 並逐筆等於 camp raw code。`tools/sync_native_selector_fields.py --check` 現驗證全部 33 份版本化 map assets 的 `map_selector_key`／`battle_fig`／raw `native_record_byte8`；舊 scripted `native_identity` 已移除，避免把 FDFIELD `b1→runtime +8` 錯稱角色身分，且不覆寫其他人工校正數值。Scenario 現在以 party-first／group-order batch materialize，battle draw 只在整場成功時 slot→key；malformed editable input 會保留 legacy append 並禁用全場 native selector。撤回把角色表/DATO/素材 index 的相等值當成全域 mapping。下一步是 native indexed buffer/palette/layer composition，不得把目前 PNG/Ebiten selector adapter 寫成完整原版 renderer。
-    - [x] player-party source split：`0x1088d→0x10a77` 先 copy persistent `[0x53bf7]` 0x50-byte record，再用 copied `+7` 作 `0x11019` key，回傳 slot 寫 `unit+2`。它不是 FDFIELD `b0` 路徑；slot allocation 順序必須保留這條 roster loop 的順序。
+  - [~] map selector provenance audit：`0x10c50→0x11019` 是 global raw-key FDICON cache path；IDA Pro 9.4 已釘 FDFIELD **b1** 傳入 `0x11019`，回傳 slot 寫入 `unit+2`，而 b0 另寫 native `+6`。`0x11019` 只比對全域 key table，僅新 key 使用 caller archive pointer 建 block；player `0x10a25` 與 scripted `0x10b69` 都開啟 `FDICON.B24`。parser/exporter 現輸出 raw `map_selector_key=b1`；33 份版本化 map assets 已以 `--rewrite-map-selector-key` 修正 1886 筆 stale b0 值，Docker `--check` 與 1887/1887 逐筆比對通過。舊 scripted `native_identity` 已移除，避免把 FDFIELD `b1→runtime +8` 錯稱角色身分，且不覆寫其他人工校正數值。Scenario 現在以 party-first／group-order batch materialize，battle draw 只在整場成功時 slot→key；malformed editable input 會保留 legacy append 並禁用全場 native selector。撤回把角色表/DATO/素材 index 的相等值當成全域 mapping。下一步是以重新抓圖驗證單位圖像／前景／HUD，仍不得把目前 PNG/Ebiten selector adapter 寫成完整原版 renderer。
+    - [x] player-party source split：`0x1088d→0x10a77` 先 copy persistent `[0x53bf7]` 0x50-byte record，再用 copied `+7` 作 `0x11019` key，回傳 slot 寫 `unit+2`。它不是 FDFIELD b1 路徑；slot allocation 順序必須保留這條 roster loop 的順序。
       Official IDA 9.4 address-only xref report再確認 `0x10a77` 屬於 `sub_1088d`，而 `sub_1088d` 的 callers 是 `0x205ff`、`0x25870`、`0x2c437`；不得將 selector initialization 當成只有一般 battle setup 才會做的步驟。
       `JOIN` constructor `0x112a5(join_id)` 直接寫 persistent `+7=join_id` 且 `+8=join_id`；`0x33499` 已閉合 `+8` character-ID lookup。因此 fresh player 的 map raw key=character ID，但只限這個 writer；不得回推 FDFIELD/NPC/general `fig` identity。另 `0x314a7..0x3157a` class-change flow 對 live roster `+7` 寫 UI-selected raw target，故 equality 不是 immutable；`0x11506` 的 full 0x50 runtime→persistent copy 會在任何 `sync_party` caller 保存它，唯 class-change 是否立即進這條 flow 待追。
     `fdicon.NativeSelectorCache` 已以 first-seen key→slot regression 表達 cache 部分；resource/key decoder 尚未接入 runtime。

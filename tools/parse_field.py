@@ -36,6 +36,13 @@ def native_death_effect(record):
     return {"type": record[22], "value": record[23] | (record[24] << 8)}
 
 
+def native_map_selector_key(record):
+    """Return FDFIELD b1, the proven raw key passed to ``0x11019``."""
+    if len(record) < 2:
+        raise ValueError("FDFIELD roster record is shorter than b1")
+    return record[1]
+
+
 def native_turn_event_controls(control):
     """保留完整 16 列；turn=0xff 是原始休眠值，不是第 255 回合。"""
     return [
@@ -105,19 +112,19 @@ def parse_map(raw, m):
             break
         death_effect = native_death_effect(b)
         units.append({"camp": ["enemy", "ally", "own"][b[0]] if b[0] < 3 else b[0],
-                      # 0x10ec1/0x10ef5 copy this raw byte to runtime +6,
-                      # while 0x10ed6 passes it to 0x11019 before writing the
-                      # returned FDICON cache slot to +2. Keep the raw key
-                      # separate from the human-readable camp label.
-                      "native_map_selector_key": b[0],
-                      # 0x10ec1/0x10ef5 copy the same FDFIELD b0 directly to
-                      # runtime record +6. Preserve this raw provenance; it
-                      # is not a normalized camp synonym.
+                      # 0x10d7f reads FDFIELD b1 and 0x10ed6 passes that byte
+                      # to 0x11019; the returned FDICON cache slot becomes
+                      # runtime unit+2. This is the raw map selector source,
+                      # not the camp byte.
+                      "native_map_selector_key": native_map_selector_key(b),
+                      # 0x10ec1/0x10ef5 copy FDFIELD b0 directly to runtime
+                      # record +6. Preserve this raw provenance; it is not a
+                      # normalized camp synonym in the native record.
                       "native_record_byte6": b[0],
-                      # b1 is copied to runtime +7/+8 and selects the native
-                      # constructor tables. Historical exporters called it
-                      # portrait, but a universal DATO/identity meaning has not
-                      # been closed for both FDFIELD and persistent sources.
+                      # b1 is also copied to runtime +7/+8 and selects the
+                      # native constructor tables. Historical exporters called
+                      # it portrait, but a universal DATO/identity meaning has
+                      # not been closed for both FDFIELD and persistent sources.
                       "raw_unit_key": b[1],
                       "portrait": b[1],  # legacy output alias; not ABI evidence
                       # Historical exporter labels kept only for normalized

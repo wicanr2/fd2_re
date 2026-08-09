@@ -6089,7 +6089,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	}
 	if g.m == nil {
 		ebitenutil.DebugPrint(screen, "FD2 重製 MVP\n缺 assets/(tileset.png + map.json)\n用 tools/export_engine_assets.py 產生\n"+g.loadErr)
-		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame { // 打包驗證:資產缺失時也要能截圖存證(舊版此分支漏存,見打包 worklist)
+		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
 			g.captureShot(screen)
 		}
 		return
@@ -6496,6 +6496,13 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 func (g *Game) captureShot(screen *ebiten.Image) {
 	g.shotTaken = true
+	if g.loadErr != "" {
+		// 截圖是證據產物，不得把失敗即關閉（fail-closed）的錯誤狀態
+		// 偽裝成可比較的執行期畫面。shotTaken 仍讓無人值守程序結束，
+		// 呼叫端可用輸出檔不存在判定驗證失敗。
+		log.Printf("shot rejected: %s", g.loadErr)
+		return
+	}
 	saveShot(screen, g.shotPath)
 }
 
@@ -8002,7 +8009,13 @@ func (g *Game) drawNativeMapFrame(screen *ebiten.Image) bool {
 }
 
 func (g *Game) composeNativeMapFrame() error {
-	return g.composeNativeMapFrameAt(time.Now())
+	now := time.Now()
+	if g != nil && g.shotPath != "" && os.Getenv("FD2_SHOT_DETERMINISTIC") == "1" {
+		// 截圖證據只取固定 60 Hz 虛擬時鐘；一般玩家仍使用實際 BIOS
+		// 時鐘。這避免 Xvfb 排程差異把同一狀態存成不同動畫幀。
+		now = time.Unix(0, int64(g.frame)*int64(time.Second/60))
+	}
+	return g.composeNativeMapFrameAt(now)
 }
 
 // composeNativeMapFrameAt owns one complete 0x11CAC-style transaction:

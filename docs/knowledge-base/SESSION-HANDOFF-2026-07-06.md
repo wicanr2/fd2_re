@@ -3918,3 +3918,41 @@ Docker／Xvfb 真實命令產生新的正式 handler 截圖：
 目前仍只能判定為 E1 消費端與狀態橋接證據；同一 `FD2.SAV`、相機／游標／回合／
 單位狀態的原版 DOSBox 與重製逐幀配對尚未取得。三平台套件與推廣影片閘門維持
 未解除。
+
+## 2026-08-10：FDICON map-selector 原始來源勘誤（已證實；取代先前 b0 說法）
+
+使用固定版 `FD2.EXE`（大小 357074、MD5
+`b97caf2239a27a896069d03549d96e1e`、SHA-256
+`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`）在合法
+`fd2-ida-authorized-local:latest` Docker 映像以 IDA Pro 9.4／Hex-Rays
+`9.4.0.260610` 重新判讀。`0x10c50` 的直接欄位關係是：FDFIELD row
+`b1` 傳給 `0x11019`，回傳 cache slot 寫入 runtime `unit+2`；FDFIELD
+`b0` 另寫入 runtime `+6`；同一 b1 再寫入 `+7/+8`。`0x1088d` 的玩家迴圈
+則以 persistent record `+7` 傳給 `0x11019`。完整逐位址摘要見
+[`fd2_fdicon_selector_constructor_ida.txt`](../data/ida/fd2_fdicon_selector_constructor_ida.txt)。
+
+因此先前「scripted FDFIELD b0→`0x11019`→`unit+2`」及「map0 keys
+`[0,1,2]` 等於陣營碼」是錯誤斷言；保留該歷史記錄，但不再作現況依據。
+`tools/parse_field.py`、`export_units.py` 與 selector synchronizer 已改為 b1，
+並以明確 `--rewrite-map-selector-key` 只遷移 33 張可編輯地圖的 1886 筆 stale
+欄位。Docker `--check` 與 1887/1887 原始列比對通過，所有檔案仍為目前使用者
+UID/GID。這修正可解釋 GitHub 戰場圖中敵人被畫成鍵 0 藍色圖像的高可信度原因；
+仍須重新抓取同狀態原版／重製畫面，不能因此宣稱逐像素一致或解除三平台發布閘門。
+
+## 2026-08-10：戰場截圖以原版資源重抓（E1；取代上一節舊圖雜湊）
+
+上一節後，重新檢查截圖命令發現若沒有設定
+`FD2_ORIGINAL_FDOTHER`，正式序章會在 `spawn_intro` 的原生基準輸入失敗；舊截圖
+鉤子仍會把只剩地形的錯誤狀態寫成 PNG。現已在 Docker／Xvfb 中以唯讀
+`org_game/炎龍騎士團/FLAME2/FDOTHER.DAT`（同目錄 `FDSHAP.DAT`、`FDICON.B24`）
+重抓，並套用 b1 selector 遷移後的 1887/1887 地圖資料；截圖命令另設定
+`FD2_SHOT_DETERMINISTIC=1`，以固定 60 Hz 虛擬時鐘鎖定動畫幀，兩次 Docker 執行
+的 PNG 已做位元組級比對相同。
+
+目前 GitHub 圖片 [`native-map-ch01-remake-handler.png`](../figures/native-map-ch01-remake-handler.png)
+的 MD5 為 `6e200d3bbd48782f4248a6a8ced48343`、SHA-256 為
+`8f2e948995350d64c53267c55e71a858eef34db9e6cb9f22577327007af8813c`（640×400）。
+這張圖已不再把舊 b0 映射的敵軍誤畫成友軍圖像，但仍與 320×200 原版參考不是同一
+狀態；上一節的 `851781...`／`da9cae...` 雜湊保留為歷史產物，不再代表目前首頁
+圖片。截圖鉤子也改為錯誤狀態不產生證據，避免再次把失敗即關閉的畫面誤列為正式圖。
+這仍是 E1，不解除同狀態 DOSBox／重製逐幀配對或三平台發布閘門。

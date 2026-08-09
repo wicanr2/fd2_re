@@ -471,9 +471,12 @@ func TestChapter2RuntimeAppendOrderMatchesOriginalHandlerSlots(t *testing.T) {
 		if !ok {
 			t.Fatalf("runtime slot %d lacks an enabled native map key", slot)
 		}
-		want := map[Camp]int{Enemy: 0, Ally: 1, Own: 2}[u.Camp]
+		if !u.HasBattleFig {
+			t.Fatalf("runtime slot %d lacks FDFIELD b1 battle selector", slot)
+		}
+		want := u.BattleFig // scripted map key and unit+7 both source FDFIELD b1
 		if key != want {
-			t.Fatalf("runtime slot %d native key=%d, want camp raw %d", slot, key, want)
+			t.Fatalf("runtime slot %d native key=%d, want FDFIELD b1 %d", slot, key, want)
 		}
 	}
 	if len(st.Units) != 21 {

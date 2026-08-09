@@ -197,8 +197,9 @@ Docker／Xvfb 產生的 640×400 E1 證據。它證明腳本、肖像、藍框�
 
 ch01 戰場目前已能由原始地圖、單位、前景與 HUD 資產合成。下列兩圖仍不是
 同狀態 E2：原版參考為 320×200，重製圖為 640×400；重製圖已改用正式
-`story_ch00_handler` 的 73 拍快速時鐘保留隊伍／戰場 handoff，不再使用只有一名角色的
-直接節點除錯入口，但場上單位、游標、HUD 與像素比例仍可見差異。raw 相機／游標欄位
+`story_ch00_handler` 的 73 拍快速時鐘保留隊伍／戰場 handoff，並以 IDA 已證實的
+FDFIELD b1 selector 及原版 `FDOTHER/FDSHAP/FDICON` 資源產生，不再使用只有一名角色的
+直接節點除錯入口；但場上單位、游標、HUD 與像素比例仍可見差異。raw 相機／游標欄位
 雖已有 E1 provenance，仍不能代替同狀態逐幀比對。完整尺寸、雜湊與下一個驗收門檻見
 [`battle-visual-gap-ch01.json`](docs/data/ui-traces/battle-visual-gap-ch01.json)。
 

@@ -10,6 +10,13 @@ import parse_field
 
 
 class NativePostResolutionSourceTest(unittest.TestCase):
+    def test_map_selector_uses_fdf_field_b1_not_camp_b0(self):
+        record = bytearray(26)
+        record[0] = 2
+        record[1] = 0x60
+        parsed = parse_field.native_map_selector_key(record)
+        self.assertEqual(parsed, 0x60)
+
     def test_treasure_types_do_not_turn_events_into_items(self):
         self.assertEqual(parse_field.native_reward_kind(0), "item")
         self.assertEqual(parse_field.native_reward_kind(1), "gold")

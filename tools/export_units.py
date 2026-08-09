@@ -141,11 +141,12 @@ def crit_by_cls(resist_crit, cls):
             return e.get("crit_pct", 0)
     return 0  # 查不到(如怪物專屬職業,超出 26 種玩家職業表)保守回 0
 
-# Native unit+2 (map FDICON) and unit+7 (battle FIGANI/DATO consumers) are
-# distinct runtime fields. Scripted constructor 0x10d7f..0x10efc passes
-# FDFIELD roster b0 to 0x11019, whose cache slot becomes unit+2; it directly
-# copies b1 to unit+7. Export the b0 raw key as map_selector_key, while legacy
-# fig remains only a compatibility approximation.
+# Native unit+2 (map FDICON cache slot) and unit+7 (battle FIGANI/DATO
+# consumers) remain distinct runtime fields, but the scripted constructor
+# supplies both from the same FDFIELD b1 source: 0x10d7f..0x10efc passes b1 to
+# 0x11019, whose returned cache slot becomes unit+2, and directly copies b1 to
+# unit+7. FDFIELD b0 is the independent runtime +6 byte. Export b1 as the raw
+# map_selector_key; legacy fig remains only a compatibility approximation.
 
 # 職業名(cls_name)顯示錯位 bug 根因(worklist 第 8 輪職業名映射修復):
 #   exe unit.json 的 cls_name 是 CLASS_NAMES[cls]——「機械職業(戰鬥動畫/成長曲線用)」,
@@ -209,7 +210,7 @@ def main(argv):
             "hp": bs["hp"], "mp": bs["mp"], "ap": bs["ap"], "dp": bs["dp"], "mv": bs["mv"],
             "hit": DEFAULT_HIT, "ev": DEFAULT_EV, "crit": crit_by_cls(resist_crit, u["cls"]),
             "fig": raw_unit_key,  # legacy compatibility approximation; not native unit+2
-            "map_selector_key": u["native_map_selector_key"],  # FDFIELD b0 -> 0x11019 -> unit+2 slot
+            "map_selector_key": u["native_map_selector_key"],  # FDFIELD b1 -> 0x11019 -> unit+2 slot
             "native_record_byte6": u["native_record_byte6"],  # FDFIELD b0 -> runtime record +6
             "battle_fig": raw_unit_key,  # FDFIELD b1 -> native unit+7 raw selector
             "native_record_byte8": raw_unit_key,  # FDFIELD b1 -> runtime +8; not universal identity

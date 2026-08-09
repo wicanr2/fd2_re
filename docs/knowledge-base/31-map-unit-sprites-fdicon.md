@@ -59,7 +59,7 @@ header 與 FDSHAP tileset 同骨架(尺寸+count+offset 表)，且兩者都可�
 - 原版實機截圖與 DATO face 可做單一角色素材的 oracle，但不能單獨證明 runtime map selector。battle FIGANI
   走另一條已閉合的 `unit+7×3` 路徑（doc06）。
 
-## 6. sprite index 公式（已驗證）；source identity 待閉合
+## 6. sprite index 公式（已驗證）；raw key 來源已勘誤
 
 不靠猜測,**反組譯戰場單位繪製碼(0x128e0–0x12932)鎖死了公式**:
 
@@ -75,15 +75,16 @@ header 與 FDSHAP tileset 同骨架(尺寸+count+offset 表)，且兩者都可�
 0x12932  mov eax,[edx + eax*4]     ; sprite[index]
 ```
 
-→ **FDICON sprite index = slot × 12 + 方向 × 3 + cycle**（公式已驗證）；slot 為 `unit[+2]`。第三項不是 runtime `+4` 或 `+0x26`：`+4` 是沿方向的次格 placement offset；`+4==0` 選 global idle phase `0x3c0b`、非零選 moving phase `0x3c07`，phase 3 會正規化為 1，而 `+0x26!=0` 只強制 cycle 0 並加上已證實的全域繪製偏移。`0x10c50→0x11019` 以 FDFIELD `b0` 查全域 raw-key table；只有新 key 才用 caller archive pointer 建十二指標 block，回傳 cache slot 寫入 `unit+2`。它不是直接 copy 的角色／肖像 byte。
+→ **FDICON sprite index = slot × 12 + 方向 × 3 + cycle**（公式已驗證）；slot 為 `unit[+2]`。第三項不是 runtime `+4` 或 `+0x26`：`+4` 是沿方向的次格 placement offset；`+4==0` 選 global idle phase `0x3c0b`、非零選 moving phase `0x3c07`，phase 3 會正規化為 1，而 `+0x26!=0` 只強制 cycle 0 並加上已證實的全域繪製偏移。IDA Pro 9.4 的完整 constructor trace 現已證實 `0x10c50→0x11019` 以 FDFIELD **b1** 查全域 raw-key table；只有新 key 才用 caller archive pointer 建十二指標 block，回傳 cache slot 寫入 `unit+2`。它不是直接 copy 的角色／肖像 byte。
 
-> **撤回全域 identity assertion（2026-07-26）**：角色表、DATO、FDICON 素材與若干玩家 roster 的數值相同，
-> 只能作為素材觀察，不能證明 `unit+2 = character id = portrait`。完整 constructor trace 已證實 FDFIELD
-> `b1→unit+7`，而 scripted FDFIELD constructor 已閉合 `b0→0x11019→unit+2 cache slot`：`b0` 亦寫
-> native camp `+6`（敵0／友1／己2），不是角色／portrait byte。玩家 persistent roster 則有獨立的 `+7`
+> **撤回全域 identity assertion（2026-07-26；raw key 來源於 2026-08-10 勘誤）**：角色表、DATO、FDICON 素材與若干玩家 roster 的數值相同，
+> 只能作為素材觀察，不能證明 `unit+2 = character id = portrait`。完整 constructor trace 已證實 scripted
+> FDFIELD **b1 同時作為** `0x11019` raw key（回傳 slot→`unit+2`）及 `unit+7/+8`；FDFIELD b0 則獨立寫入
+> native `+6`（敵0／友1／己2），不是角色／portrait byte。玩家 persistent roster 則有獨立的 `+7`
 > source path；兩者共享 cache ABI，不能 alias。
 > 因此敵方、玩家及轉職都不得由「恆等」推導 map group，`fig` 僅保留 compatibility approximation。`unit+7`
-> 的 battle FIGANI/DATO path 也不能反推 `unit+2`。先前關於特定轉職 group、龍人例外與 DATO_067 的敘述皆
+> 與 `unit+2` 仍是不同 runtime 欄位，不能把欄位或 cache slot 混成角色身分；但 scripted FDFIELD 的 b1 同源
+> 是已證實的。先前關於特定轉職 group、龍人例外與 DATO_067 的敘述皆
 > 不再作為 renderer/exporter 的證據。
 
 > **玩家初始 record 的狹窄例外（2026-07-26）**：`JOIN` 的 `0x112a5(join_id)` 建立 persistent

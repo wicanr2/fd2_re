@@ -1,0 +1,73 @@
+# FD2 FDICON map-selector constructor 勘誤（IDA Pro 9.4）
+
+狀態：**已證實**（固定版本、直接指令與 Hex-Rays 交叉核對）
+
+## 輸入與位址基準
+
+- 輸入：`FD2.EXE`
+- 大小：357074 bytes
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 工具：使用者合法授權的 `fd2-ida-authorized-local:latest` Docker 映像
+- IDA：9.4；Hex-Rays 版本 `9.4.0.260610`
+- 位址空間：IDA 載入的 LE 線性位址（`0x10000` 起），不是檔案偏移；原始
+  函式名稱與運算元均保留，以下只附加語意與證據等級。
+
+## 直接證據
+
+### `0x10c50`（FDFIELD scripted constructor）
+
+IDA 反編譯保留的欄位關係如下（`dword_53A55 + 26*a1` 指向 FDFIELD
+26-byte roster row）：
+
+```c
+v5 = (_BYTE *)(dword_53A55 + 26 * a1);
+v6 = v5 + 131;
+v17 = (unsigned __int8)v5[132]; /* row b1 */
+v18 = v5[131];                  /* row b0 */
+...
+*(_BYTE *)v22       = v23;      /* resolved X */
+*(_BYTE *)(v22 + 1) = v25;      /* resolved Y */
+*(_BYTE *)(v22 + 2) = sub_11019(v17, a2);
+*(_BYTE *)(v22 + 6) = v18;
+*(_BYTE *)(v22 + 7) = v17;
+*(_BYTE *)(v22 + 8) = v17;
+```
+
+因此，FDFIELD **b1** 是傳給 `0x11019` 的原始 FDICON key，回傳的快取槽
+寫入 runtime `unit+2`；FDFIELD **b0** 是獨立的 runtime `unit+6` 原始
+位元組（陣營來源）。同一個 b1 另寫入 `unit+7/+8`，不能因此把它命名成
+角色身分或肖像。
+
+### `0x1088d`（persistent party constructor）
+
+IDA 反編譯的玩家迴圈保留：
+
+```c
+memmove(v3, v5, 80);
+...
+v3[2] = sub_11019((unsigned __int8)v3[7], v9);
+```
+
+玩家路徑以已複製 persistent record 的 `+7` 作為同一個 raw key；這與
+scripted FDFIELD 的 b1 路徑相容，但不授權由 legacy `Fig` 推導。
+
+### `0x11019` 與 `0x127e0`
+
+- `0x11019(a1,a2)` 以 `a1` 索引 FDICON.B24 的 13-pointer header，並以
+  全域 `dword_53B17`／`dword_53BDF` 保留 first-seen raw-key cache；新 key
+  才使用 caller file pointer 複製十二指標區塊。
+- `0x127e0` 讀取 runtime `unit+2`，再用
+  `unit+2 * 12 + pose * 3 + cycle` 選取圖像指標。這證明 `unit+2` 是
+  cache slot，不是直接的角色編號。
+
+## 勘誤與重製資料修正
+
+舊結論「scripted FDFIELD b0 → `0x11019` → `unit+2`」已被上述同一函式的
+直接指令否定；錯誤會把 map0 敵方 b1=`96/97` 映射成陣營鍵 `0`。本輪以
+`tools/sync_native_selector_fields.py --write --rewrite-map-selector-key`
+只改寫 33 張可編輯地圖的 `map_selector_key`，共 1886 筆，並保留所有其餘
+人工欄位。Docker 唯讀驗證結果為 1887/1887 筆與 FDFIELD b1 一致。
+
+這是靜態證據到重製資料的橋接修正，不等同逐像素完成；仍須以相同戰場狀態
+重新抓取原版與重製畫面，逐層檢查地形、單位、前景、游標與抬頭資訊。

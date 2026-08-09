@@ -20,11 +20,11 @@
     "path": "docs/figures/native-map-ch01-remake-handler.png",
     "width": 640,
     "height": 400,
-    "md5": "851781caf1bcff736e24a0bc57d39372",
-    "sha256": "da9cae2827d027f933e47ab2c4e846c990babc2f856c449f699fdba0794d524b",
-    "provenance": "目前重製 source 由 Docker／Xvfb 產生的 E1 截圖；以 FD2_SHOT_FAST_FORWARD=1 執行正式 story_ch00_handler 的 73 拍，保留 LOADCH、SPAWN、JOIN 與戰場 handoff 的狀態副作用後，在 battle_ch01 第120幀擷取。這是截圖專用的快速時鐘，不是一般玩家路徑 E2。",
+    "md5": "6e200d3bbd48782f4248a6a8ced48343",
+    "sha256": "8f2e948995350d64c53267c55e71a858eef34db9e6cb9f22577327007af8813c",
+    "provenance": "目前重製 source 由 Docker／Xvfb 產生的 E1 截圖；以 FD2_SHOT_FAST_FORWARD=1 執行正式 story_ch00_handler 的 73 拍，唯讀掛載使用者提供的 FDOTHER.DAT（同目錄 FDSHAP.DAT／FDICON.B24），並以 FD2_SHOT_DETERMINISTIC=1 的固定 60 Hz 虛擬時鐘鎖定動畫幀，保留 LOADCH、SPAWN、JOIN 與戰場 handoff 的狀態副作用後，在 battle_ch01 第120幀擷取。地圖資產的 FDICON selector 已依 IDA 證據改用 FDFIELD b1；這是截圖專用的快速時鐘，不是一般玩家路徑 E2。",
     "visible_findings": [
-      "正式前置 handler 已產生完整多單位戰場，不再是直接跳 battle_ch01 的單角色除錯圖。",
+      "正式前置 handler 已產生完整多單位戰場；本圖使用 b1 原始 selector 產生敵我對應圖像，不再是舊 b0 映射造成的錯誤友軍圖像。",
       "場上單位與原版參考的數量／位置仍不同，HUD、游標與像素比例也仍有可見差異。"
     ]
   },
