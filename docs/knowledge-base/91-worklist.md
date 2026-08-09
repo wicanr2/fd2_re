@@ -1049,7 +1049,7 @@
       未見任何單位行走動畫或世界地圖段落;玩家記憶「走到地圖中央」疑與攝影機平移視覺效果混淆。
       remake 現行 focusOnParty(純鏡頭對準)+ spawn_party(直接定位)已忠實,#3 非 bug,不需補行軍動畫。
       → `docs/knowledge-base/25-battle-event-system.md` §7.5.1
-- [~] **playtest 8 項修正**(playfix agent 執行中,#7=我 kill 誤殺非 bug 已排除):
+- [~] **playtest 8 項修正**（前次批次已提交，#7 已判定不是 bug；目前無執行中代理）：
       #1 方向鍵按住持續移動、#2 預設沒開場動畫、#4 移動後 ESC 取消退回、
       #5 action overlay／command grid 的原版 side-by-side 視覺對照、#6 地圖狀態欄還原原版、#8 單位走完轉回正面朝向
       → **batch1 已 commit(0f32d25)**;#7 非 bug(kill 誤殺);#3 部分(鏡頭對準部隊)
@@ -1074,7 +1074,7 @@
       重大:王城→草地=同 map32 鏡頭平移轉場非淡出換景;對白與演出逐條交錯;海島幕 3 個平移點。
       → remake 修正指示 doc47 §4；尚待逐章把 direct acting 資源接入可編輯 cutscene 節點，
       並以實機截圖核對 renderer/presentation 差異（不猜測性補 handler 語意）。
-- [~] **王座廳 NPC 擺位**(cutscene-bg 執行中):國王/王后坐王座 + 索爾站紅毯中央,對照 f_006.png;
+- [~] **王座廳 NPC 擺位**（已有部分盤點，目前無執行中代理）：國王/王后坐王座 + 索爾站紅毯中央,對照 f_006.png;
       story 節點加 actor 擺位欄。RE 查 FDFIELD 組32 是否帶 NPC roster(sprite id/cell 直接來自原版)
 - [x] **ch21/ch22 pre-handler**：FDTXT_022 index0（11句）與 map21/70-slot、pan(16,28)、acting67 已接 editable binding；`story_ch22` 已接回原版 pre-handler，compiler/campaign/battle regression 通過。
 - [x] **ch21 合成不足分支的戰間存檔邊界（2026-08-09）**：`inventory_recipe` 材料不足時實際走可編輯（editable）的 insufficient→town 節點，清除戰場暫態但保留持續隊伍；Docker/Xvfb regression 會在 town22 等價節點存檔、清空暫態後讀回金幣、隊伍成員與加入順序。這只補足戰後城鎮／存檔回歸，不猜 raw `ch21_post` handler，也不宣稱一般玩家 E2。
@@ -1273,7 +1273,7 @@
       native end-turn 的完整 caller／team predicate／AI completion timing 尚未閉合。`+5 bit7` 只能作 raw
       set/test mutation，不在此 work item 命名 acted/turn，也不能直接宣稱「全員完畢→換邊」。需補 native
       state-machine evidence 後，才決定是否自動 endTurn、是否保留 Tab 提前結束。
-- [~] **handler 後半段 beats 解碼**(sonnet subagent 執行中 acb94c2):庭院/森林段走位/對話/fade 編排,
+- [~] **handler 後半段 beats 解碼**（前次分析未形成可驗證提交，目前無執行中代理）：庭院/森林段走位/對話/fade 編排,
       供重建 palace_path/forest 節點(Ares 進場對話框位置、逐段走位轉向、索爾練劍、領頭跟隨、fade 換場)
 
 ## 完成定義(反組譯研究)
