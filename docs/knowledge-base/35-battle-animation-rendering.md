@@ -345,12 +345,14 @@ remake 對不準的根因即在此:該照各 frame header 的寬高 + 下面的�
   幀的 (dx,dy) 內嵌(§2.2)→ **swing 斬擊弧 = 逐幀位移 + 換幀**。
 - **idle / fallback 描述子**:0x2939d 進場 `rep movsd` 從 **0x5255f**(6 dword)與 **0x52577**(6 dword)複製預設描述子到區域 frame
   (0x293cf / 0x293df)→ 沒有真實動畫時的**待機姿態 fallback**。
-- **閃紅 / figure 淡入 = 色盤操作,不是重畫像素**:
+- **閃紅 / figure 淡入涉及色盤操作,但不是無條件的全畫面紅罩**:
   - **0x11d40** 是 VGA DAC 寫入迴圈:`push 0x3c8 / push 0x3c9; call 0x37795`(0x11d5c / 0x11d73)→
     out 到埠 **0x3c8(palette index)/0x3c9(palette data)**。0x37795 = DAC 埠寫入原語。
   - 同手法在 0x28784 / 0x286dd 的 fade-in 迴圈(用 0x53a65 色表插值),以及 0x29164 的 figure/台座淡入(`0x11d40(0,0xff,esi*6)`,brightness ramp,見 §4.0)。
-  - → **守方受擊閃紅 = 改色盤**(把該圖用色暫時拉紅再復原);效能極低成本。
-    精確的「閃紅幀數 / 色值序列」待確認(需追 0x37795 的色值來源表)。
+  - `0x2939d` 的命中分支只有在 frame record `+4 == 1`、傷害步進完成且
+    `0x29f72` 的兩個原始輸出欄位非零時，才寫入兩段短暫 DAC 序列；色值、
+    20/40 毫秒等待與原始位址見 [`fd2_battle_impact_pulse_ida.txt`](../data/ida/fd2_battle_impact_pulse_ida.txt)。
+    這證實「條件式色盤脈衝」，不證實可用 RGBA 紅罩取代它。
   - ⚠ **修正**:**HP 條變化不走色盤**。HP/MP 條是 0x18c6d 的程式畫(0x18795 算長度 `cur*101/max+1` → 0x17d6f 逐欄填),見 §4.2;舊註「HP 條亦走 0x11d40 色盤」已刪。
 - **standoff**:演出結束 0x290xx 釋放所有 buffer(0x28fc1-0x2900e 連續 `0x37416` free)、復原色盤(0x290b8 `0x375c0`)、`0x11cac` 還原畫面。
 
@@ -397,7 +399,7 @@ remake 對不準的根因即在此:該照各 frame header 的寬高 + 下面的�
 | 0x10fe9 / 0x1142a / 0x250b1 | unit 格座標寫入 / 布陣 / 演出後復位(+0x42→+0x40) |
 | 0x4e63d | blit 原語(原生尺寸 RLE,dst+Y*stride+X) |
 | 0x11eb0 | 矩形 present(逐列 memcpy,work↔VGA) |
-| 0x11d40 | VGA DAC 色盤寫（閃紅／figure 淡入／fade，ports `0x3c8/0x3c9`）；HP／MP 條不走此路徑 |
+| 0x11d40 | VGA DAC 色盤寫（figure 淡入／fade，ports `0x3c8/0x3c9`；命中條件式脈衝見 `0x2939d`）；HP／MP 條不走此路徑 |
 | 0x111ba | 資源解碼器:`(descriptor, prevSlot, index)` → 解 entry[index],釋放 prevSlot,回新 buffer |
 | 0x22d1b | BG.DAT 載入(前置) |
 | 0x4e893 | 動畫進度來源(被 idiv 100) |
@@ -443,5 +445,23 @@ remake 對不準的根因即在此:該照各 frame header 的寬高 + 下面的�
    `0x29164`另載TAI.DAT sprite，不是BG層或程式純色。TAI entry、raw selector
    與跨角色對齊仍待逐caller驗證。
 4. **狀態欄(血條框)** ✅(本輪嚴格 RE 重做,§4):真函式 = **0x18c6d**(座標器 0x2a289,byte[+6]→ 我方(0,154)/敵方(171,4))。**0x29164 不是狀態欄,是 figure + 台座(TAI.DAT)淡入**(舊標錯已改)。三元素釘死:**① 框/深藍底/立體 bevel = 素材 sprite**(0x4e8af blit [0x53a81]+0x5e);**② HP/MP 條 = 程式畫**(0x18795 算 `len=cur*101/max+1` → 0x17d6f 逐欄 blit [0x53a81] 漸層欄 cell,空槽 0x1d;HP=unit+0x40/+0x42、MP=+0x44/+0x46);**③ 名 = `0x15f84→0x4ea2a` 以 `[0x53a75]` FDOTHER#4 font畫 16×16 glyph**、**數值 = 6px digit cell**([0x53a81],0x187d6)。`[0x53a81]` loader 已由 boot `0x25c97` 定案為 FDOTHER #5；`[0x53a85]` 是 DATO mouth-frame工作指標，不再誤稱字模。
-5. **動畫階段** ✅:[0x540ff] phase + 重複呼叫驅動;0x2939d 幀迴圈 + `idiv 100` 百分比進度;幀 (dx,dy) = swing 斬擊弧;**閃紅 = VGA DAC 色盤 0x3c8/0x3c9(0x11d40)**(figure 淡入同手法);**HP 條非色盤**(程式畫,見 §4.2,舊「HP 抽乾=色盤」已刪);idle fallback 0x5255f/0x52577。**待確認**:閃紅色值序列、各階段確切幀數。
+5. **動畫階段** ✅:[0x540ff] phase + 重複呼叫驅動;0x2939d 幀迴圈 + `idiv 100` 百分比進度;幀 (dx,dy) = swing 斬擊弧;**命中色盤脈衝是條件式 VGA DAC 0x3c8/0x3c9 寫入**(原始 frame `+4`、傷害步進與 `0x29f72` 欄位共同控制,證據見 §8);**HP 條非色盤**(程式畫,見 §4.2,舊「HP 抽乾=色盤」已刪);idle fallback 0x5255f/0x52577。**待確認**:原始輸出欄位的完整 producer/consumer 與各階段確切玩家路徑幀數。
 6. **座標系** ✅:320×200、VGA 0xa0000、**work stride 640 但只 present 左半 320**(雙寬 off-screen 預備區,用途待確認)。
+
+## 2026-08-10：命中色盤脈衝與戰場畫面修正（E0／E1）
+
+以固定雜湊 `FD2.EXE` 重新執行合法 IDA Pro 9.4 與 Docker Capstone 5.0.3 後，
+`0x2939d` 的實際條件已固定：frame record `+4 == 1`、傷害步進完成，並且
+`0x29f72` 的兩個原始輸出欄位各自非零時，才會寫入兩段 VGA DAC 序列。第一段
+是索引 0 的 `(1,0x20,0)`、等待 20 毫秒後清零；第二段是 `(0x3f,0x3f,0x3f)`、
+等待 20 毫秒、清零再等待 40 毫秒。每個 FIGANI 子幀另以 `0x17aa9(1)` 等待，
+不能化約為固定 `impactS+8` 的閃爍時間。逐位址證據見
+[`fd2_battle_impact_pulse_ida.txt`](../data/ida/fd2_battle_impact_pulse_ida.txt)。
+
+重製端目前沒有可追溯的原始輸出欄位，因此已移除原先無條件繪製的 RGBA 全畫面
+紅罩；角色紅剪影仍保留為已有畫面證據支持的 E1 近似，真正 DAC 脈衝先保持
+失敗即關閉。這直接修正 GitHub 戰鬥演出圖中「整個背景與狀態欄一起泛紅」的
+可見偏差，但尚未閉合原版輸出欄位轉接器、完整幀序列或一般玩家 E2。
+修正後的代表性畫面保存為
+[`battle-impact-no-global-tint.png`](../figures/battle-impact-no-global-tint.png)，
+其擷取條件與雜湊見 [`battle-impact-no-global-tint.json`](../data/ui-traces/battle-impact-no-global-tint.json)。

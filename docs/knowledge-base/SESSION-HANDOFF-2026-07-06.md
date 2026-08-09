@@ -3997,3 +3997,20 @@ Docker／Xvfb 產生的 E1 證據圖為
 這只關閉狀態欄姓名字形的重製端消費差異；攻擊幀時序、傷害／閃紅、台座、完整
 指令介面及一般玩家同狀態 DOSBox E2 仍未驗收，三平台套件與推廣影片閘門維持
 未解除。
+
+## 2026-08-10：戰場全畫面紅罩勘誤與命中色盤證據
+
+針對 GitHub 戰鬥演出圖的「命中時整個背景與狀態欄泛紅」偏差，先以合法 IDA Pro
+9.4 重新追 `0x28a6c→0x2939d`，再用 Docker `fd2-cap-local` Capstone 5.0.3
+交叉驗證。原版只有在 frame `+4 == 1`、傷害步進完成、`0x29f72` 兩個未命名
+原始輸出欄位非零時，才寫入索引 0 的短暫 DAC 脈衝（第一段 RGB
+`1,0x20,0`；第二段 `0x3f,0x3f,0x3f`，各含 20/40 毫秒等待），每個子幀另有
+`0x17aa9(1)` 等待。完整證據與雜湊見
+[`fd2_battle_impact_pulse_ida.txt`](../data/ida/fd2_battle_impact_pulse_ida.txt)。
+
+目前重製端沒有這些 raw 欄位的可追溯來源，已移除不受證據支持的 RGBA 全畫面
+紅罩；角色紅剪影暫保留為 E1 近似。這修正可見的戰場畫面偏差，但不宣稱已完成
+DAC runtime bridge、攻擊全時序、逐像素一致或一般玩家 E2。逐幀截圖鉤子另已修正
+為 `FD2_SHOT_SERIES` 單獨啟用時也建立攻擊演出，供後續比較使用。修正後代表性
+畫面為 [`battle-impact-no-global-tint.png`](../figures/battle-impact-no-global-tint.png)，
+擷取雜湊與條件見 [`battle-impact-no-global-tint.json`](../data/ui-traces/battle-impact-no-global-tint.json)。

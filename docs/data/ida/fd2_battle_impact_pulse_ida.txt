@@ -1,0 +1,97 @@
+# FD2 戰鬥命中色盤脈衝：非破壞性位址證據
+
+## 輸入與工具
+
+- 輸入：`org_game/炎龍騎士團/FLAME2/FD2.EXE`
+- 大小：357074 位元組
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- IDA Pro：9.4／Hex-Rays `9.4.0.260610`，映像 `fd2-ida-authorized-local:latest`
+- Capstone：5.0.3，映像 `fd2-cap-local:latest`
+- 位址基準：以下數值均為 FD2.EXE 的線性執行期位址；Capstone 匯出同時保留
+  `0x` 位址，不把檔案偏移與線性位址混用。
+
+## 已證實的呼叫與時序（E0）
+
+`0x28a6c` 是攻守戰鬥演出的入口，呼叫 `0x2939d`。在
+`0x2939d` 的動畫幀迴圈中：
+
+1. 以每個 frame record 的原始 `+4` byte 計算有效幀數；沒有有效幀時把計數設為
+   1（`0x29409..0x29435`）。
+2. 逐幀寫入守方 runtime record 的 `+0x40` word，並在每個 frame record 的
+   `+6` 子幀延遲後呼叫 `0x17aa9(1)`。這是每個原生呈現子幀的一個等待單位，
+   不是重製端可任意猜測的固定八格閃爍。
+3. 當前 frame record 的原始 byte `+4 == 1` 且傷害步進計數等於有效幀數時，
+   才進入 `0x29882..0x299be` 的色盤脈衝分支。
+
+`0x2989d` 與 `0x292a?` 對應的 stack local 是 `0x29f72` 的輸出暫存欄位。
+目前只能保留其原始位置與未知狀態，不把它們命名為「暴擊」「狀態」或其他
+高階語意：
+
+- `0x2989d`：local `[esp+0x20] != 0` 時執行第一段脈衝。
+- `0x2992a`：local `[esp+0x1c] != 0` 時執行第二段脈衝。
+- `0x29f72` 初始化一組輸出欄位並填入命中／傷害相關結果；欄位與
+  `0x2939d` 的 presentation branch 尚未有完整 producer／consumer 閉合。
+
+### 第一段原始埠序列（`[esp+0x20] != 0`）
+
+在 `0x298a8..0x298e6`：
+
+```text
+out(0x3c8, 0)
+out(0x3c9, 1)
+out(0x3c9, 0x20)
+out(0x3c9, 0)
+delay(0x14)       ; 20 ms，`0x375b2`
+out(0x3c8, 0)
+out(0x3c9, 0)
+out(0x3c9, 0)
+out(0x3c9, 0)
+```
+### 第二段原始埠序列（`[esp+0x1c] != 0`）
+
+在 `0x29935..0x299b9`：
+
+```text
+out(0x3c8, 0)
+out(0x3c9, 0x3f)
+out(0x3c9, 0x3f)
+out(0x3c9, 0x3f)
+delay(0x14)       ; 20 ms，`0x375b2`
+out(0x3c8, 0)
+out(0x3c9, 0)
+out(0x3c9, 0)
+out(0x3c9, 0)
+delay(0x28)       ; 40 ms，`0x375b2`
+```
+
+`0x37795` 是原始 I/O 埠寫入原語；`0x11d40` 則依不可變基準表
+`[0x53a65]` 對每個索引寫入 `0x3c8/0x3c9`，並將亮度差扣到不小於零。
+這兩個函式的位址與埠值是已證實資料；「它們在玩家可見畫面中代表哪一種
+效果」仍須以同狀態原版擷取閉合。
+
+## 對重製端的限制
+
+目前重製端的 `AttackResult` 沒有上述 `0x29f72` 原始輸出欄位、frame `+4`
+旗標與傷害步進的可追溯來源。因此：
+
+- 不可把 `AttackResult.Crit` 或其他正規化欄位當成 `[esp+0x20]`／
+  `[esp+0x1c]` 的別名。
+- 不可用固定 `impactS + 8` 加上 RGBA 全畫面紅罩冒充上述 VGA DAC 埠序列。
+- 目前只保留已有畫面證據支持的角色紅色剪影近似；全畫面 DAC 效果保持失敗
+  即關閉，直到建立帶原始欄位、位址與消費端的呈現轉接器。
+
+因此本檔是 E0 靜態證據，不是一般玩家路徑 E2，也不宣稱已完成攻擊閃紅、
+傷害演出或逐像素一致。
+
+## 可重生指令
+
+```sh
+docker run --rm --network none --memory 512m --cpus 0.5 --pids-limit 64 \
+  --user 1000:1000 --entrypoint /bin/sh \
+  -v /home/anr2/cht/fd2:/src:ro -v /tmp:/hosttmp -w /src \
+  fd2-cap-local:latest -lc \
+  'python3 -c "import capstone; print(capstone.__version__)"; \
+   python3 tools/disasm_le.py org_game/炎龍騎士團/FLAME2/FD2.EXE range 0x2939d 0x29d20; \
+   python3 tools/disasm_le.py org_game/炎龍騎士團/FLAME2/FD2.EXE range 0x11d40 0x11e10'
+```

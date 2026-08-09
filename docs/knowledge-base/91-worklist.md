@@ -2096,3 +2096,16 @@
 - [ ] **CAMPAIGN-POSTBATTLE-E2-FULL-PATH**：仍需每一已綁定章節以未修改一般玩家
   路徑驗證 handler、戰後城鎮／商店／整備／存檔，以及原版與重製同狀態逐幀證據；本輪
   E1 fixture 不解除各章 fail-closed gate。
+
+## 2026-08-10：戰場命中色盤脈衝與全畫面紅罩
+
+- [x] **BATTLE-IMPACT-DAC-E0**：以固定雜湊的 `FD2.EXE`、合法 IDA Pro 9.4
+  與 Docker Capstone 5.0.3 固定 `0x2939d` 的條件式 DAC 分支、`0x17aa9(1)`
+  子幀等待，以及 `0x298a8..0x299b9` 的 20/40 毫秒脈衝；原始 local 欄位仍
+  保留未知等級。證據：`docs/data/ida/fd2_battle_impact_pulse_ida.txt`。
+- [x] **BATTLE-IMPACT-FULLSCREEN-TINT-CORRECTION-E1**：移除重製端沒有 raw
+  provenance 支持的 RGBA 全畫面紅罩；保留角色紅剪影 E1 近似，未把
+  `AttackResult` 欄位猜成原始 DAC 輸出。
+- [ ] **BATTLE-IMPACT-DAC-RUNTIME-BRIDGE**：仍需建立帶 frame `+4`、傷害步進、
+  `0x29f72` 原始輸出與 palette baseline 的正式轉接器，並以未修改一般玩家
+  同狀態逐幀比較；完成前不得宣稱攻擊閃紅或整體戰場 UI E2。

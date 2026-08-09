@@ -30,3 +30,41 @@ func TestNewAtkAnimRequiresNativeDelayPairing(t *testing.T) {
 		t.Fatal("unpaired FIGANI PNGs received a guessed attack timeline")
 	}
 }
+
+func TestNewAtkAnimLeavesNativeImpactDACUnwired(t *testing.T) {
+	g := &Game{
+		figani: map[int][]*ebiten.Image{
+			13: {ebiten.NewImage(1, 1), ebiten.NewImage(1, 1), ebiten.NewImage(1, 1)},
+		},
+		figaniDelays: map[int][]int{13: {1, 2, 1}},
+	}
+	a := g.newAtkAnim(4, 96, "亞雷斯", "盜賊", 48, 48, 1, 0, 2, 0, 28, 8, 28, 0, true)
+	if a == nil {
+		t.Fatal("paired FIGANI delay schedule did not create an attack presentation")
+	}
+	if a.nativeImpactRaw != nil || nativeImpactDACAllowed(a.nativeImpactRaw) {
+		t.Fatal("attack animation inferred native DAC output without raw provenance")
+	}
+}
+
+func TestNativeImpactDACRequiresRawFrameAndDamageProvenance(t *testing.T) {
+	cases := []struct {
+		name string
+		raw  *nativeImpactDACInput
+		want bool
+	}{
+		{name: "missing", raw: nil, want: false},
+		{name: "frame flag missing", raw: &nativeImpactDACInput{damageStepComplete: true, rawOutput20: true}, want: false},
+		{name: "damage step incomplete", raw: &nativeImpactDACInput{frameFlag: 1, rawOutput1C: true}, want: false},
+		{name: "output absent", raw: &nativeImpactDACInput{frameFlag: 1, damageStepComplete: true}, want: false},
+		{name: "first raw output", raw: &nativeImpactDACInput{frameFlag: 1, damageStepComplete: true, rawOutput20: true}, want: true},
+		{name: "second raw output", raw: &nativeImpactDACInput{frameFlag: 1, damageStepComplete: true, rawOutput1C: true}, want: true},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := nativeImpactDACAllowed(tc.raw); got != tc.want {
+				t.Fatalf("nativeImpactDACAllowed()=%v, want %v", got, tc.want)
+			}
+		})
+	}
+}

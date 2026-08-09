@@ -227,6 +227,13 @@ FDFIELD b1 selector 及原版 `FDOTHER/FDSHAP/FDICON` 資源產生，不再使�
 
 ![重製端原版字模戰鬥狀態欄](docs/figures/battle-native-name-remake.png)
 
+針對命中幀的另一項已確認偏差：重製端已移除沒有原始欄位來源支撐的全畫面紅罩，
+避免背景、狀態欄與台座一起泛紅；角色紅剪影仍標示為 E1 近似。下圖是修正後的
+Docker／Xvfb 截圖，不是原版同狀態逐像素 E2；原始 DAC 條件與截圖雜湊見
+[`battle-impact-no-global-tint.json`](docs/data/ui-traces/battle-impact-no-global-tint.json)。
+
+![重製端命中幀（移除未證實全畫面紅罩；E1）](docs/figures/battle-impact-no-global-tint.png)
+
 目前 source 的完整原生戰場 frame 也能承接指令環與 command grid；下圖是 Docker／Xvfb
 的 E1 執行期畫面，資源缺失時仍會失敗即關閉，不代表原版逐像素等價。
 

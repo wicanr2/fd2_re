@@ -346,8 +346,7 @@ type Game struct {
 	nativeBattleFont   *fdtxt.Font                     // 全螢幕戰鬥狀態欄 FDOTHER#4 16×16 字模
 	nativeBattleGlyphs map[string]int                  // Unicode→原版 glyph 索引（未知字元失敗即關閉）
 	digits             [10]*ebiten.Image               // 狀態欄數字 0-9(LMI1 #31-40 原版 digit cell,白/藍影)
-	redSil             map[*ebiten.Image]*ebiten.Image // 命中閃紅的全紅剪影快取(orig=VGA 色盤閃紅)
-	redFlash           *ebiten.Image                   // 命中全螢幕紅罩(orig=DAC 整組色盤設紅→整片泛紅)
+	redSil             map[*ebiten.Image]*ebiten.Image // E1 紅色剪影近似快取；不是 raw DAC 脈衝本身
 	dim                *ebiten.Image                   // 全螢幕暗化/底板共用(回合橫幅、單位面板)
 	figMeta            map[int][][2]int                // FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(doc06;動畫走位全靠它)
 	font               *Font                           // 原版點陣中文字型(doc 08)
@@ -369,9 +368,25 @@ type atkAnim struct {
 	atkOwn           bool                     // 攻方是否我方(狀態欄按陣營:我方欄右上/敵方欄左下)
 	terrain          int                      // 攻擊格地形索引(戰鬥背景 = 戰場地形,跟 FDFIELD 戰場資料有關)
 	figaniTimeline   *figani.DisplayScheduler // 已證實 FIGANI 幀延遲；不承載命中／傷害語意
+	nativeImpactRaw  *nativeImpactDACInput    // 尚未接線；缺 raw provenance 時保持 nil
 	frameIndex       int                      // 目前已呈現的 FIGANI 幀
 	bodyTicks        int                      // 幀本體的精確延遲總長，尾段停格另計
 	after            func()                   // 原版 action handler 完成後才進 selector1；不得在演出前提交
+}
+
+// nativeImpactDACInput 只保存原版 0x2939d 命中分支仍可回查的 raw 條件。
+// rawOutput20/rawOutput1C 對應 0x29f72 輸出暫存的 stack local 位移；它們不是
+// 暴擊、狀態或其他高階語意名稱。正式 renderer 尚未取得這組來源，故指標為 nil。
+type nativeImpactDACInput struct {
+	frameFlag          byte
+	damageStepComplete bool
+	rawOutput20        bool
+	rawOutput1C        bool
+}
+
+func nativeImpactDACAllowed(raw *nativeImpactDACInput) bool {
+	return raw != nil && raw.frameFlag == 1 && raw.damageStepComplete &&
+		(raw.rawOutput20 || raw.rawOutput1C)
 }
 
 // storyWalkJob 場景走位動畫(doc46 §5.3):cutscene 固定路徑位移,非玩家可控,重用
@@ -5595,8 +5610,10 @@ func (g *Game) Update() error {
 			g.mouthTimer = next.Countdown
 		}
 	}
-	// 截圖模式:到指定幀後自動退出(畫面已於 Draw 存檔)
-	if g.shotPath != "" {
+	// 截圖模式:到指定幀後自動退出(畫面已於 Draw 存檔)。逐幀攻擊序列
+	// 只有 `FD2_SHOT_SERIES` 時也必須進入同一個 setup，否則攻擊演出永遠
+	// 不會建立，逐幀工具只能得到空目錄而無法驗證 GUI 時序。
+	if g.shotPath != "" || g.shotSeries != "" {
 		// Apply screenshot-only setup immediately before capture, after scenario
 		// setup has had time to spawn its party. Frame 1 is too early for
 		// FD2_SHOT_RING on battle-start event scenarios.
@@ -7149,8 +7166,9 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 	}
 }
 
-// redSilhouette 全紅剪影(快取):orig 命中閃紅=VGA DAC 把 sprite 色盤整組設紅(0x11d40),
-// 是整片飽和紅,非乘法調色 → 逐像素把非透明處塗紅,一次生成後快取。
+// redSilhouette 全紅剪影(快取):目前只作 E1 視覺近似。原版 0x2939d 的命中
+// DAC 分支受 raw frame flag、傷害步進與 0x29f72 輸出欄位控制；在這些欄位
+// 尚未接入前，不把剪影快取宣稱為原版色盤寫入的等價實作。
 func (g *Game) redSilhouette(src *ebiten.Image) *ebiten.Image {
 	if g.redSil == nil {
 		g.redSil = map[*ebiten.Image]*ebiten.Image{}
@@ -7250,7 +7268,7 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 	if fr := g.figani[a.defFig]; len(fr) > 0 {
 		fi := (prog / 6) % len(fr)
 		img := fr[fi]
-		// 命中閃紅:整片飽和紅剪影(orig=VGA 色盤整組設紅,非乘法調色),快速交替閃
+		// E1 紅色剪影近似；原版 DAC 條件尚未由 raw presentation adapter 提供。
 		if prog >= impactS && prog < impactE && (prog/2)%2 == 0 {
 			img = g.redSilhouette(img)
 		}
@@ -7277,7 +7295,7 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 	if len(atkFrames) > 0 {
 		img := atkFrames[atkFi]
 		if prog >= impactS && prog < impactE && (prog/2)%2 == 0 {
-			img = g.redSilhouette(img) // 命中閃紅:攻方也閃(orig_05_03 攻方紅剪影)
+			img = g.redSilhouette(img) // E1 近似：攻方也以剪影閃動(orig_05_03)
 		}
 		dx, dy := 141.0, 3.0
 		if m := g.figMeta[a.atkFig]; atkFi < len(m) {
@@ -7288,16 +7306,10 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		op.GeoM.Translate(dx*sc, dy*sc)
 		screen.DrawImage(img, op)
 	}
-	// (4) 命中全螢幕紅閃:orig VGA DAC 整組色盤設紅→整片泛紅(非只 sprite);快速閃
-	if prog >= impactS && prog < impactE && (prog/2)%2 == 0 {
-		if g.redFlash == nil {
-			g.redFlash = ebiten.NewImage(logicalW, logicalH)
-			g.redFlash.Fill(color.RGBA{0xff, 0x28, 0x28, 0xff})
-		}
-		op := &ebiten.DrawImageOptions{}
-		op.ColorScale.ScaleAlpha(0.3) // 半透明紅罩(整片泛紅、不全遮)
-		screen.DrawImage(g.redFlash, op)
-	}
+	// (4) 原版的 VGA DAC 脈衝不能以 RGBA 全畫面紅罩替代。IDA 在
+	// 0x2939d 只證實它受 FIGANI frame flag、傷害步進及 sub_29f72 的
+	// 原始輸出欄位控制；目前 AttackResult 沒有這些欄位的可追溯來源，
+	// 因此此處保持失敗即關閉，不繪製未證實的全畫面效果。
 	if g.shotSeries != "" { // 逐幀截圖(GIF/分鏡素材)
 		saveShot(screen, fmt.Sprintf("%s/frame_%02d.png", g.shotSeries, prog))
 	}

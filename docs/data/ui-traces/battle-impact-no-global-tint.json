@@ -1,0 +1,44 @@
+{
+  "id": "battle-impact-no-global-tint",
+  "status": "E1_remake_only",
+  "generated_at": "2026-08-10",
+  "source": {
+    "binary": "org_game/炎龍騎士團/FLAME2/FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "remake_head_before_change": "29b7dea",
+    "working_tree_change": "移除沒有原始欄位來源支撐的 RGBA 全畫面紅罩；保留角色紅剪影"
+  },
+  "capture": {
+    "container_image": "fd2-go-test-local:latest",
+    "display": "Xvfb :99 1024x768x24",
+    "environment": {
+      "FD2_SHOT_ATTACK": "4",
+      "FD2_SHOT_FRAME": "3",
+      "FD2_SHOT_SERIES": "frame_73_selected",
+      "FD2_TITLE": "0",
+      "FD2_MUTE": "1",
+      "FD2_ORIGINAL_FDOTHER": "org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
+    },
+    "selected_frame": 73,
+    "notes": [
+      "背景、台座與狀態欄不再被未證實的全畫面紅色 RGBA 覆蓋",
+      "兩個角色仍以目前 E1 的紅色剪影近似呈現",
+      "這不是原版 DOSBox 同狀態擷取，也不能證明逐像素一致"
+    ]
+  },
+  "output": {
+    "path": "docs/figures/battle-impact-no-global-tint.png",
+    "width": 640,
+    "height": 400,
+    "md5": "131d97a3d895fde3b5748b13b9d52e99",
+    "sha256": "aaed1bbbf63d6e19bda7637ec2482bb672278454454a3187a1d563eb52528ad0"
+  },
+  "evidence_scope": [
+    "重製端畫面修正",
+    "IDA/Capstone 已證實原版命中色盤分支是條件式 DAC 脈衝",
+    "尚未接入原始輸出欄位的 runtime adapter",
+    "尚未完成一般玩家 E2 或逐像素比較"
+  ]
+}

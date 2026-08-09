@@ -3524,3 +3524,15 @@ postbattle beat 先執行 `sync_party`，再執行章節標記並經淡出 callb
 通過，並檢查持續隊伍快照與結果清除。這是最小可重現的 E1 runtime 邊界；敵方
 目標選擇、原版逐章 handler、一般玩家 DOSBox E2 及 town/shop/save 的完整玩家
 路徑仍未宣稱完成。
+
+### 2026-08-10：戰場命中色盤脈衝採失敗即關閉
+
+固定版 `FD2.EXE` 的 IDA／Capstone 證據已閉合 `0x2939d` 的條件式 DAC 分支：
+只有 frame record `+4 == 1`、傷害步進完成，且 `0x29f72` 的兩個原始輸出欄位
+非零時，才執行索引 0 的兩段色盤寫入與 20/40 毫秒等待。證據與可重生命令見
+[`fd2_battle_impact_pulse_ida.txt`](../data/ida/fd2_battle_impact_pulse_ida.txt)。
+
+重製端的正規化 `AttackResult` 尚無這些欄位的位址來源，故移除原先無條件的
+RGBA 全畫面紅罩；保留紅色角色剪影作為 E1 畫面近似，但不把它或其他欄位猜成
+原始 DAC 脈衝。這是避免 GitHub 戰場圖產生整片泛紅偏差的安全修正；原始輸出
+轉接器、完整攻擊時序及一般玩家 E2 仍是未解除閘門。

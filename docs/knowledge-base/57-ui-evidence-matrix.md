@@ -360,3 +360,15 @@ command grid 疊加；原先這些 modal 被排除時，短地圖會露出非原
 `Campaign.Advance` 而未測玩家輸入邊界的缺口。證據為
 `TestEndTurnEnemyPhaseResultEntersPostbattleCutsceneThenTown`，不提升為原版
 DOSBox E2，也不替未綁定的章節 handler 猜測 renderer 或 campaign 語意。
+
+### 2026-08-10：戰場命中畫面全螢幕紅罩勘誤（E0／E1）
+
+IDA／Capstone 已證實原版命中效果是受原始 frame flag、傷害步進與
+`0x29f72` 輸出欄位控制的 DAC 脈衝，不是每次命中都套用 RGBA 全畫面紅罩。
+重製端已移除沒有 raw provenance 的全畫面紅罩，避免背景、狀態欄與台座一起
+泛紅；角色紅剪影仍只算 E1 近似。完整位址、雜湊與埠序列見
+[`fd2_battle_impact_pulse_ida.txt`](../data/ida/fd2_battle_impact_pulse_ida.txt)。
+本項只關閉一個已確認的重製端視覺偏差，未提升戰鬥幀時序、傷害演出或一般玩家
+同狀態比較為 E2。修正後代表性畫面與擷取條件見
+[`battle-impact-no-global-tint.png`](../figures/battle-impact-no-global-tint.png)／
+[`battle-impact-no-global-tint.json`](../data/ui-traces/battle-impact-no-global-tint.json)。
