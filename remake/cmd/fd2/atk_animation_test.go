@@ -68,3 +68,16 @@ func TestNativeImpactDACRequiresRawFrameAndDamageProvenance(t *testing.T) {
 		})
 	}
 }
+
+func TestBattleImpactHPCommitsPostHitValueAtImpactBoundary(t *testing.T) {
+	const impactStart = 33
+	if got := battleImpactHP(impactStart-1, impactStart, 28, 8); got != 28 {
+		t.Fatalf("pre-impact HP=%d, want 28", got)
+	}
+	if got := battleImpactHP(impactStart, impactStart, 28, 8); got != 8 {
+		t.Fatalf("impact HP=%d, want committed post-hit value 8", got)
+	}
+	if got := battleImpactHP(impactStart+7, impactStart, 28, 8); got != 8 {
+		t.Fatalf("post-impact HP=%d, want 8", got)
+	}
+}

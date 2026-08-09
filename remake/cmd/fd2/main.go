@@ -7166,6 +7166,20 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 	}
 }
 
+// nativeImpactSilhouetteColor 是目前 E1 影像證據中的原版紅色（RGB
+// 190,0,0）。它只約束剪影近似的顏色，不代表已接上 0x2939d 的 DAC 脈衝。
+var nativeImpactSilhouetteColor = color.RGBA{0xbe, 0x00, 0x00, 0xff}
+
+// battleImpactHP 對應 orig_05 可見的命中邊界：守方在命中演出開始前保留原 HP，
+// 命中開始後立即顯示扣血後 HP。原始傷害／演出寫入者仍未知，因此不從這個邊界
+// 推導其他 native 時序。
+func battleImpactHP(prog, impactStart, before, after int) int {
+	if prog < impactStart {
+		return before
+	}
+	return after
+}
+
 // redSilhouette 全紅剪影(快取):目前只作 E1 視覺近似。原版 0x2939d 的命中
 // DAC 分支受 raw frame flag、傷害步進與 0x29f72 輸出欄位控制；在這些欄位
 // 尚未接入前，不把剪影快取宣稱為原版色盤寫入的等價實作。
@@ -7182,7 +7196,7 @@ func (g *Game) redSilhouette(src *ebiten.Image) *ebiten.Image {
 		for x := 0; x < b.Dx(); x++ {
 			_, _, _, al := src.At(b.Min.X+x, b.Min.Y+y).RGBA()
 			if al > 0x4000 {
-				out.Set(x, y, color.RGBA{0xd0, 0x10, 0x10, 0xff})
+				out.Set(x, y, nativeImpactSilhouetteColor)
 			}
 		}
 	}
@@ -7245,14 +7259,7 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 	impactE := impactS + 8
 	// (1) 狀態欄先畫(會被 figure 蓋住一部分,如原版)
 	if g.font != nil {
-		dhp := a.defHP0 // 命中當下快抽(orig impact 幀 HP 已抽完)
-		if prog >= impactS {
-			t := float64(prog-impactS) / float64(impactE-impactS)
-			if t > 1 {
-				t = 1
-			}
-			dhp = a.defHP0 + int(float64(a.defHP1-a.defHP0)*t)
-		}
+		dhp := battleImpactHP(prog, impactS, a.defHP0, a.defHP1)
 		// 位置=模板匹配 orig:我方 (171,4)@320、敵方 (0,154)@320(下欄匹配 err=0 像素全等)
 		// 欄位按「陣營」分:我方欄右上、敵方欄左下(atkOwn=false 表敵攻我,資料對調)
 		if a.atkOwn {

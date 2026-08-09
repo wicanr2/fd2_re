@@ -466,3 +466,17 @@ remake 對不準的根因即在此:該照各 frame header 的寬高 + 下面的�
 修正後的代表性畫面保存為
 [`battle-impact-no-global-tint.png`](../figures/battle-impact-no-global-tint.png)，
 其擷取條件與雜湊見 [`battle-impact-no-global-tint.json`](../data/ui-traces/battle-impact-no-global-tint.json)。
+
+### 8.1 2026-08-10：命中狀態欄邊界與正規化對照
+
+重新對照 `orig_05_attack_03_impact.png` 與目前 `FD2_SHOT_SERIES` 的同一命中幀後，
+確認原版在命中呈現開始時立即顯示扣血後的 HP；重製端原先以 8 個 tick 緩降，會
+出現原版沒有的中間數值。現改為只在已觀測的 impact 邊界切換 `defHP0→defHP1`，
+不推導未知的傷害寫入者或 DAC 時序。原版擷取的守方剪影主色為 RGB `(190,0,0)`，
+重製端 E1 剪影近似也改用此色值；這不是原版色盤脈衝的轉接器。
+
+新增正規化對照圖
+[`battle-impact-compare-20260810.png`](../figures/battle-impact-compare-20260810.png)：
+原版 DOSBox 640×480 以垂直 2.4 倍取樣正規化為 320×200，重製端 640×400 以 2 倍
+最近鄰縮小，右欄是逐 RGB 差異遮罩。此固定命中 fixture 尚有 3933 個差異像素，
+因此只關閉 HP 中間值與剪影色值兩項可見差異，未提升為完整戰鬥介面或一般玩家 E2。

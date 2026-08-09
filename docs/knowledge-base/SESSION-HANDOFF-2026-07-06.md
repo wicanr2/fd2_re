@@ -4015,3 +4015,22 @@ DAC runtime bridge、攻擊全時序、逐像素一致或一般玩家 E2。逐�
 為 `FD2_SHOT_SERIES` 單獨啟用時也建立攻擊演出，供後續比較使用。修正後代表性
 畫面為 [`battle-impact-no-global-tint.png`](../figures/battle-impact-no-global-tint.png)，
 擷取雜湊與條件見 [`battle-impact-no-global-tint.json`](../data/ui-traces/battle-impact-no-global-tint.json)。
+
+## 2026-08-10：命中幀 HP 邊界與戰場對照圖更新（E1；未解除）
+
+使用 Docker／Xvfb 以目前 source 重新抓取 `FD2_SHOT_ATTACK=4` 的逐幀序列，並與
+原版 `orig_05_attack_03_impact.png` 對照。影像證實原版在 impact 開始時立即顯示
+post-hit HP；重製端原先 8 tick 緩降造成中間值，現以 `battleImpactHP` 在同一邊界
+切換 `defHP0→defHP1`，並補 `TestBattleImpactHPCommitsPostHitValueAtImpactBoundary`。
+守方 E1 剪影色值由原先 `(208,16,16)` 改為原版擷取主色 `(190,0,0)`；這仍不是
+`0x2939d` DAC runtime adapter。
+
+目前首頁已改展示
+[`battle-impact-compare-20260810.png`](../figures/battle-impact-compare-20260810.png)：
+左原版正規化、中重製、右逐 RGB 差異遮罩。原版 640×480 以垂直 2.4 倍取樣、重製
+640×400 以 2 倍最近鄰縮小為 320×200，固定 fixture 仍有 3933 個差異像素；舊
+`battle_restore.gif` 保留為歷史證據，不再代表目前 source。`battle-impact-no-global-tint.png`
+已更新為修正後 frame 77，MD5 `15b4e22f09a732abcb0caf32daaa565d`、SHA-256
+`58423664e32ebddff09768b191a059b15c3d0595462ee8ec4feb1584d7b599fe`。
+實際 targeted/full regression、Markdown/JSON/影像雜湊與 Docker 清理仍是提交前必要驗證；
+原始 DAC 欄位、完整攻擊時序及一般玩家 E2／三平台發布閘門維持未解除。

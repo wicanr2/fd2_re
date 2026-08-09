@@ -8,7 +8,7 @@
     "md5": "b97caf2239a27a896069d03549d96e1e",
     "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
     "remake_head_before_change": "0782257",
-    "working_tree_change": "移除沒有原始欄位來源支撐的 RGBA 全畫面紅罩；只保留守方紅剪影，攻方維持 FIGANI 原色"
+    "working_tree_change": "移除沒有原始欄位來源支撐的 RGBA 全畫面紅罩；只保留守方紅剪影，攻方維持 FIGANI 原色；命中邊界立即提交 post-hit HP，剪影 E1 色值對齊原版擷取 RGB 190,0,0"
   },
   "capture": {
     "container_image": "fd2-go-test-local:latest",
@@ -25,7 +25,8 @@
     "selected_frame": 77,
     "notes": [
       "背景、台座與狀態欄不再被未證實的全畫面紅色 RGBA 覆蓋",
-      "守方受擊者以目前 E1 的紅色剪影近似呈現，攻方維持原本 FIGANI 幀",
+      "守方受擊者以目前 E1 的紅色剪影近似呈現，剪影色值採原版 impact 擷取的 RGB 190,0,0；攻方維持原本 FIGANI 幀",
+      "命中幀的狀態欄在 impact 邊界立即顯示 post-hit HP，不再以未有原始欄位依據的中間值緩降",
       "這不是原版 DOSBox 同狀態擷取，也不能證明逐像素一致"
     ]
   },
@@ -33,8 +34,15 @@
     "path": "docs/figures/battle-impact-no-global-tint.png",
     "width": 640,
     "height": 400,
-    "md5": "df1b259b236f764671dcb4e75fcd9f50",
-    "sha256": "5236043d55adecb20af52696917fb3496ae9b3dfc15fa3330a45e225177e3367"
+    "md5": "15b4e22f09a732abcb0caf32daaa565d",
+    "sha256": "58423664e32ebddff09768b191a059b15c3d0595462ee8ec4feb1584d7b599fe"
+  },
+  "normalized_comparison": {
+    "path": "docs/figures/battle-impact-compare-20260810.png",
+    "normalization": "原版 DOSBox 640x480 影像以 2.4 倍垂直取樣正規化為 320x200；重製端 640x400 以 2 倍最近鄰縮小為 320x200；右欄為逐 RGB 差異遮罩",
+    "diff_pixels": 3933,
+    "md5": "77aa0fac4c2eac994445979f175d41b8",
+    "sha256": "61f8f79d5a2e32208925462ccea4177769a3103b0b092b33c6d2122597298c50"
   },
   "evidence_scope": [
     "重製端畫面修正",

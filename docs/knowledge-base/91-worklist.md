@@ -720,10 +720,10 @@
 - [x] **像素級對齊(模板匹配法)**:三 figure+台座+狀態欄框+三處數字 全部 err=0 且 dx=dy=0;
       狀態欄=原生 149×42 blit(敵(0,154)/我(171,4))、數字=LMI1 #31-40 素材(#42-51綠/#119-128黃=滿血變色)、
       LMI1 混雙 codec(框 0x4e916/小cell 4-mode)、VGA 6-bit palette ×4(decode_lmi 修正)
-- [x] **README 對外展示（局部 fixture）**：`battle_restore.gif`
-      （原版／重製同步與網格）、`battle_storyboard.png`（5 階段分鏡）、
-      `battle_restore_grid.png`（網格驗證）仍保留作歷史證據；首頁不得把它們
-      稱為整體「像素級 1:1 還原」。
+- [x] **README 對外展示（局部 fixture）**：`battle_restore.gif`、
+      `battle_storyboard.png`、`battle_restore_grid.png` 仍保留作歷史證據；
+      2026-08-10 首頁改用 `battle-impact-compare-20260810.png`（原版正規化／
+      重製／逐 RGB 差異遮罩），不得把任何局部圖稱為整體「像素級 1:1 還原」。
 - [x] **FD2_SHOT_SERIES 逐幀截圖鉤子**(GIF/分鏡素材管線)
 - [x] **戰鬥狀態欄姓名改接原版字模（2026-08-10）**：撤回「名字=TTF 28px」舊決策。
       `0x18c6d→0x15f84→0x4ea2a` 已證實使用 FDOTHER#4 16×16 1bpp glyph；重製端
@@ -2117,6 +2117,11 @@
 - [x] **BATTLE-IMPACT-DEFENDER-SILHOUETTE-E1**：以
   `orig_05_attack_03_impact.png` 的可見狀態修正攻方不應對稱染紅；這只代表
   impact 參考圖的重製端畫面近似，不提升為所有攻擊／技能的原版規則。
+- [x] **BATTLE-IMPACT-HP-BOUNDARY-E1（2026-08-10）**：固定命中 fixture 證實
+  原版在 impact 開始時立即顯示 post-hit HP；重製端撤回未有 raw provenance
+  依據的 8 tick 中間值，並以原版擷取 RGB `(190,0,0)` 校正守方剪影近似色。
+  [`battle-impact-compare-20260810.png`](../figures/battle-impact-compare-20260810.png)
+  的正規化逐 RGB 差異仍為 3933 像素，不能提升為完整戰鬥 UI E2。
 - [ ] **BATTLE-IMPACT-DAC-RUNTIME-BRIDGE**：仍需建立帶 frame `+4`、傷害步進、
   `0x29f72` 原始輸出與 palette baseline 的正式轉接器，並以未修改一般玩家
   同狀態逐幀比較；完成前不得宣稱攻擊閃紅或整體戰場 UI E2。

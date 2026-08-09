@@ -3537,3 +3537,9 @@ RGBA 全畫面紅罩；目前只保留原版 impact 參考圖支持的守方紅�
 原本 FIGANI 幀，不把它或其他欄位猜成原始 DAC 脈衝。這是避免 GitHub 戰場圖
 產生整片泛紅或攻方對稱染紅的安全修正；原始輸出轉接器、完整攻擊時序及一般
 玩家 E2 仍是未解除閘門。
+
+同一命中 fixture 另確認狀態欄的可見邊界：原版在 impact 開始時立即顯示
+post-hit HP，重製端已移除沒有 raw provenance 的 8 tick 中間值；守方剪影 E1
+近似色值對齊原版擷取 RGB `(190,0,0)`。正規化原版／重製／差異遮罩保存於
+[`battle-impact-compare-20260810.png`](../figures/battle-impact-compare-20260810.png)，
+逐 RGB 差異仍有 3933 像素，故這是兩項可見差異的窄修正，不是完整戰鬥 UI E2。

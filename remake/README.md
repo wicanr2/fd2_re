@@ -8,7 +8,9 @@
 > handler、renderer 與 campaign transition 維持 fail-closed；請不要把本 README 的切片列表解讀成 parity 宣稱。
 
 目前進度與差距總覽請先讀根目錄 [`README.md`](../README.md) 的「目前狀態」表；可視化驗證產物在
-[`docs/figures`](../docs/figures/)（例如 [`battle_restore.gif`](../docs/figures/battle_restore.gif)、
+[`docs/figures`](../docs/figures/)（目前戰場命中對照為
+[`battle-impact-compare-20260810.png`](../docs/figures/battle-impact-compare-20260810.png)；
+[`battle_restore.gif`](../docs/figures/battle_restore.gif) 僅是歷史分鏡，另有
 [`preparation-remake.png`](../docs/figures/preparation-remake.png)）。
 
 ## 資產(玩家自備原版)

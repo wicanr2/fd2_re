@@ -217,9 +217,13 @@ FDFIELD b1 selector 及原版 `FDOTHER/FDSHAP/FDICON` 資源產生，不再使�
 |---|---|
 | ![同一 FD2.SAV 的 ch01 原版戰場](docs/figures/native-map-ch01-original-fd2sav.png) | ![ch01 重製端 handler 戰場](docs/figures/native-map-ch01-remake-handler.png) |
 
-戰鬥動畫解碼與局部位置比較：
+戰鬥動畫解碼與局部位置比較：首頁不再把 2026-07 的舊分鏡
+[`battle_restore.gif`](docs/figures/battle_restore.gif) 當成目前執行期畫面；該圖保留在
+儲存庫作歷史證據。以下是 2026-08-10 以目前 source 重新擷取的命中幀：左為原版
+影像正規化結果，中為重製端，右為逐 RGB 差異遮罩。它可直接看出剩餘差異，並不
+宣稱整個戰鬥介面已完成像素級一致。
 
-![戰鬥演出還原對照](docs/figures/battle_restore.gif)
+![戰鬥命中幀正規化對照與差異遮罩](docs/figures/battle-impact-compare-20260810.png)
 
 戰鬥狀態欄姓名目前已改接原版 `FDOTHER#4` 16×16 點陣字模；下圖是 Docker／Xvfb
 以目前 source 重新建置的 E1 演出截圖。它只證明姓名字模的消費端，不代表攻擊幀、
