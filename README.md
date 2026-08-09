@@ -195,27 +195,22 @@ Docker／Xvfb 產生的 640×400 E1 證據。它證明腳本、肖像、藍框�
 
 ### 戰場與戰鬥演出
 
-ch01 戰場目前已能由原始地圖、單位、前景與 HUD 資產合成。下列歷史參考圖仍不是
-同狀態 E2：原版參考為 320×200，重製圖為 640×400；重製圖已改用正式
-`story_ch00_handler` 的 73 拍快速時鐘保留隊伍／戰場 handoff，並以 IDA 已證實的
-FDFIELD b1 selector 及原版 `FDOTHER/FDSHAP/FDICON` 資源產生，不再使用只有一名角色的
-直接節點除錯入口。下方第一組圖片仍是不同狀態的歷史原版參考，只能說明流程擷取與
-畫面管線，不能從兩張圖的場上單位、游標或 HUD 差異推論目前渲染器缺陷；raw 相機／
-游標欄位也不能代替同狀態逐幀比對。完整尺寸、雜湊與下一個驗收門檻見
+ch01 戰場目前已能由原始地圖、單位、前景與 HUD 資產合成。首頁主要展示同一份
+`FD2.SAV`、同一鏡頭／游標／回合的 320×200 比較：左為原版 DOSBox，中為重製端
+最近鄰縮小結果，右為差異遮罩。terrain icon 已依 IDA 證實的
+`base + stride*5 + 6` 修正；內容區只剩左下畫布邊界的 22 個差異像素，不能外推為
+其他章節或完整操作界面已完成。
+
+![ch01 同狀態原版／重製戰場與差異遮罩](docs/figures/battle-field-ch01-scoped-compare-20260810.png)
+
+完整尺寸、狀態指紋、影像雜湊與限制見
 [`battle-visual-gap-ch01.json`](docs/data/ui-traces/battle-visual-gap-ch01.json)。
+較早的 `native-map-ch01-original-video.png` 與正式 handler 截圖不是同一狀態，仍保留
+作為歷史流程參考，不能拿來判定單位、游標或 HUD 的像素差異：
 
 | 歷史原版參考（非同狀態） | 重製切片 |
 |---|---|
 | ![ch01 原版戰場參考](docs/figures/native-map-ch01-original-video.png) | ![ch01 重製端正式 handler 戰場切片](docs/figures/native-map-ch01-remake-handler.png) |
-
-另外以目前 `FD2.SAV` 的 Docker DOSBox CONTINUE 狀態建立可重現的原版 oracle，
-再與同一 ch01 handler 截圖以最近鄰縮放比較：terrain icon 已依 IDA 的
-`base + stride*5 + 6` 修正，320×200 內容只剩畫布邊界 22 個差異像素。
-這是單一 ch01 狀態的範圍驗證，不代表其他章節或完整操作界面已完成。
-
-| 同一 FD2.SAV 原版 oracle | 重製端同狀態範圍切片 |
-|---|---|
-| ![同一 FD2.SAV 的 ch01 原版戰場](docs/figures/native-map-ch01-original-fd2sav.png) | ![ch01 重製端 handler 戰場](docs/figures/native-map-ch01-remake-handler.png) |
 
 戰鬥動畫解碼與局部位置比較：首頁不再把 2026-07 的舊分鏡
 [`battle_restore.gif`](docs/figures/battle_restore.gif) 當成目前執行期畫面；該圖保留在

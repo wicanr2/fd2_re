@@ -57,6 +57,14 @@
     "status": "E2 scoped candidate；仍不外推至其他章節、一般玩家 CONTINUE 或完整 GUI parity",
     "provenance": "原版以 Docker DOSBox/Xvfb 從 FD2.SAV CONTINUE 逐步輸入取得；重製以 Docker/Xvfb、FD2_SHOT_FAST_FORWARD=1、FD2_SHOT_DETERMINISTIC=1、FD2_SHOT_FRAME=120 取得。"
   },
+  "scoped_composite": {
+    "path": "docs/figures/battle-field-ch01-scoped-compare-20260810.png",
+    "width": 970,
+    "height": 218,
+    "md5": "762b3bb91b7496fb4ae27a938c1c8469",
+    "sha256": "162dcbfdce83f4463dd314476689a0b9f31c78898d367f16d744af2a9b44f366",
+    "provenance": "由上述兩張同狀態影像在 Docker ImageMagick 內產生：左欄是原版 320×200，中欄是重製端 640×400 最近鄰縮小後的 320×200，右欄是差異遮罩；三欄以 5 像素分隔帶放在 970×218 畫布。遮罩中的 22 個紅色像素全部位於左下畫布邊界，不代表內容層錯位。"
+  },
   "legacy_debug_reference": {
     "path": "docs/figures/native-map-ch01-remake.png",
     "width": 640,

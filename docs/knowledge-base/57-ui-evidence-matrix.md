@@ -28,6 +28,7 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 寫在 `base+6`
 造成的向上偏移。以同一 `FD2.SAV` 的 Docker DOSBox oracle 與 handler 截圖做
 320×200 最近鄰比較，內容區只剩 22 個邊界差異像素；詳見
+[`battle-field-ch01-scoped-compare-20260810.png`](../figures/battle-field-ch01-scoped-compare-20260810.png)、
 [`battle-visual-gap-ch01.json`](../data/ui-traces/battle-visual-gap-ch01.json) 與
 [`fd2_map_hud_geometry_ida.txt`](../data/ida/fd2_map_hud_geometry_ida.txt)。這是 ch01
 單一狀態的範圍 E2 候選，不可外推至其他章節或完整操作界面。
