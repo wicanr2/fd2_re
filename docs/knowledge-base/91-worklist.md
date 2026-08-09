@@ -134,12 +134,16 @@
   LOADCH、JOIN、SPAWN 與 battle handoff 後擷取，並唯讀掛載使用者提供的
   `FDOTHER.DAT`／`FDSHAP.DAT`／`FDICON.B24`，並以 `FD2_SHOT_DETERMINISTIC=1`
   固定動畫時鐘；同時套用 IDA 已證實的 FDFIELD b1 selector。這取代舊 b0 映射造成的敵軍友軍圖像錯誤，也排除舊
-  `native-map-ch01-remake.png` 直接跳 `battle_ch01` 的單角色除錯入口假象。新圖仍
-  與原版參考不是同一狀態，場上單位、游標、HUD 與像素比例仍有可見差異；raw
-  相機／游標欄位不等於畫面一致。尺寸／雜湊／可見觀察與舊圖歷史證據已保存於
+  `native-map-ch01-remake.png` 直接跳 `battle_ch01` 的單角色除錯入口假象。它與舊
+  `native-map-ch01-original-video.png` 參考不是同一狀態，不能用兩張舊圖的可見差異
+  推論目前渲染器仍有相同缺陷；尺寸／雜湊／可見觀察與舊圖歷史證據已保存於
   [`battle-visual-gap-ch01.json`](../data/ui-traces/battle-visual-gap-ch01.json)。
-  在同一 FD2.SAV、相機、游標、回合與單位狀態的 DOSBox／重製逐幀配對完成前，不得
-  把戰場畫面標成 E2 或「與原版一致」。
+  2026-08-10 已另外用同一份 `FD2.SAV` 在 DOSBox 擷取原版 oracle，並以最近鄰縮放
+  對齊重製端 handler 畫面；IDA `0x1adbf` 證實地形圖示與可選單位圖示都寫入
+  `base + stride*5 + 6`，修正後內容區只剩 22 個畫布邊界差異像素。此項已關閉
+  「戰場 HUD 地形圖示列位址」子門檻，但整體仍維持 `[~]`：其他章節、一般玩家
+  CONTINUE、動作／指令覆蓋層、動畫時序與完整戰場 E2 尚未完成，不能宣稱全遊戲
+  戰場畫面已與原版一致。
 - [ ] **RELEASE-TRIPLE-PLATFORM-PROMO-GATE**：只有在 30 章一般玩家路徑、
   戰場／戰後／城鎮／商店／整備／存檔等畫面都取得同狀態原版 DOSBox 與重製端
   逐幀證據，且 UI 矩陣不再有未解除的視覺或流程封鎖時，才允許製作
