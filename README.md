@@ -205,12 +205,10 @@ ch01 戰場目前已能由原始地圖、單位、前景與 HUD 資產合成。�
 
 完整尺寸、狀態指紋、影像雜湊與限制見
 [`battle-visual-gap-ch01.json`](docs/data/ui-traces/battle-visual-gap-ch01.json)。
-較早的 `native-map-ch01-original-video.png` 與正式 handler 截圖不是同一狀態，仍保留
-作為歷史流程參考，不能拿來判定單位、游標或 HUD 的像素差異：
-
-| 歷史原版參考（非同狀態） | 重製切片 |
-|---|---|
-| ![ch01 原版戰場參考](docs/figures/native-map-ch01-original-video.png) | ![ch01 重製端正式 handler 戰場切片](docs/figures/native-map-ch01-remake-handler.png) |
+較早的 [`native-map-ch01-original-video.png`](docs/figures/native-map-ch01-original-video.png)
+與正式 handler 截圖
+[`native-map-ch01-remake-handler.png`](docs/figures/native-map-ch01-remake-handler.png)
+不是同一狀態，仍保留作為歷史流程參考；不能拿它們判定單位、游標或 HUD 的像素差異。
 
 戰鬥動畫解碼與局部位置比較：首頁不再把 2026-07 的舊分鏡
 [`battle_restore.gif`](docs/figures/battle_restore.gif) 當成目前執行期畫面；該圖保留在
