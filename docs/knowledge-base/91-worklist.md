@@ -709,14 +709,21 @@
       f01=(141,3)/盜賊=(16,41) 與模板匹配 orig 落點完全一致 → 走位/伸擊/突刺全在資料,引擎照貼即可
 - [x] **戰鬥演出資料驅動重寫**:meta.json(22 個 FIGANI 全幀 dx,dy)+ loadFigMeta;刪 lunge/錨點手調;
       FIGANI_013 15幀=f01-f10旋轉蓄力/f11黃劈擊/f12-14突刺;盜賊 4 幀待機呼吸
-- [x] **打擊感**:命中=全紅剪影交替閃(redSilhouette,orig=VGA色盤閃紅)+ HP 命中窗快抽;5 階段對照 orig 全對上
-- [x] **通用化**:newAtkAnim 建構器(所有角色同管線:攻=組×3+1/守=組×3;演出長度隨幀數;命中幀=倒數第4幀通用推定)
+- [~] **打擊感（歷史 fixture，已勘誤）**：舊實作曾把命中寫成全紅剪影與
+      VGA 色盤等價；目前只由 `orig_05_attack_03_impact.png` 支持守方剪影、
+      攻方維持 FIGANI 原色，原始 DAC 輸出欄位與通用時序仍未接入。HP 命中窗
+      也只算重製端 E1 近似，詳見本檔 2026-08-10 勘誤段。
+- [~] **通用化（重製端管線）**：`newAtkAnim` 已可依組別與配對 FIGANI 建立
+      動畫，但「所有角色的命中幀都是倒數第 4 幀」仍只是歷史推定；未取得各
+      frame flag、傷害步進與 raw presentation 欄位前，不提升為原版通用規則。
 - [x] **播放速度接口**:FD2_BATTLE_FPT 環境變數(tick/幀,預設3)+ atkAnim.fpt
 - [x] **像素級對齊(模板匹配法)**:三 figure+台座+狀態欄框+三處數字 全部 err=0 且 dx=dy=0;
       狀態欄=原生 149×42 blit(敵(0,154)/我(171,4))、數字=LMI1 #31-40 素材(#42-51綠/#119-128黃=滿血變色)、
       LMI1 混雙 codec(框 0x4e916/小cell 4-mode)、VGA 6-bit palette ×4(decode_lmi 修正)
-- [x] **README 對外展示**:battle_restore.gif(orig|remake 同步+網格)、battle_storyboard.png(5階段分鏡)、
-      battle_restore_grid.png(網格驗證);新增「戰鬥演出:像素級 1:1 還原」節
+- [x] **README 對外展示（局部 fixture）**：`battle_restore.gif`
+      （原版／重製同步與網格）、`battle_storyboard.png`（5 階段分鏡）、
+      `battle_restore_grid.png`（網格驗證）仍保留作歷史證據；首頁不得把它們
+      稱為整體「像素級 1:1 還原」。
 - [x] **FD2_SHOT_SERIES 逐幀截圖鉤子**(GIF/分鏡素材管線)
 - [x] **戰鬥狀態欄姓名改接原版字模（2026-08-10）**：撤回「名字=TTF 28px」舊決策。
       `0x18c6d→0x15f84→0x4ea2a` 已證實使用 FDOTHER#4 16×16 1bpp glyph；重製端
