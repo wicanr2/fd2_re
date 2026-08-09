@@ -10,9 +10,10 @@ func TestNewAtkAnimRequiresNativeDelayPairing(t *testing.T) {
 	t.Setenv("FD2_BATTLE_FPT", "2")
 	g := &Game{
 		figani: map[int][]*ebiten.Image{
-			13: {ebiten.NewImage(1, 1), ebiten.NewImage(1, 1), ebiten.NewImage(1, 1)},
+			13:  {ebiten.NewImage(1, 1), ebiten.NewImage(1, 1), ebiten.NewImage(1, 1)},
+			288: {ebiten.NewImage(1, 1), ebiten.NewImage(1, 1), ebiten.NewImage(1, 1)},
 		},
-		figaniDelays: map[int][]int{13: {1, 2, 1}},
+		figaniDelays: map[int][]int{13: {1, 2, 1}, 288: {1, 2, 1}},
 	}
 	a := g.newAtkAnim(4, 96, "亞雷斯", "盜賊", 48, 48, 1, 0, 2, 0, 28, 8, 28, 0, true)
 	if a == nil || a.figaniTimeline == nil {
@@ -34,9 +35,10 @@ func TestNewAtkAnimRequiresNativeDelayPairing(t *testing.T) {
 func TestNewAtkAnimLeavesNativeImpactDACUnwired(t *testing.T) {
 	g := &Game{
 		figani: map[int][]*ebiten.Image{
-			13: {ebiten.NewImage(1, 1), ebiten.NewImage(1, 1), ebiten.NewImage(1, 1)},
+			13:  {ebiten.NewImage(1, 1), ebiten.NewImage(1, 1), ebiten.NewImage(1, 1)},
+			288: {ebiten.NewImage(1, 1), ebiten.NewImage(1, 1), ebiten.NewImage(1, 1)},
 		},
-		figaniDelays: map[int][]int{13: {1, 2, 1}},
+		figaniDelays: map[int][]int{13: {1, 2, 1}, 288: {1, 2, 1}},
 	}
 	a := g.newAtkAnim(4, 96, "亞雷斯", "盜賊", 48, 48, 1, 0, 2, 0, 28, 8, 28, 0, true)
 	if a == nil {
@@ -44,6 +46,20 @@ func TestNewAtkAnimLeavesNativeImpactDACUnwired(t *testing.T) {
 	}
 	if a.nativeImpactRaw != nil || nativeImpactDACAllowed(a.nativeImpactRaw) {
 		t.Fatal("attack animation inferred native DAC output without raw provenance")
+	}
+}
+
+func TestFIGANIFrameAtDisplayTickUsesNativeDelays(t *testing.T) {
+	delays := []int{1, 2, 1}
+	want := map[int]int{0: 0, 1: 0, 2: 1, 3: 1, 4: 1, 5: 1, 6: 2, 7: 2, 8: 0}
+	for tick, expected := range want {
+		got, ok := figaniFrameAtDisplayTick(delays, 2, tick)
+		if !ok || got != expected {
+			t.Fatalf("tick %d -> frame %d/%v, want %d/true", tick, got, ok, expected)
+		}
+	}
+	if _, ok := figaniFrameAtDisplayTick([]int{1, 0}, 2, 0); ok {
+		t.Fatal("invalid native delay unexpectedly produced a frame")
 	}
 }
 

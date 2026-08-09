@@ -4034,3 +4034,8 @@ post-hit HP；重製端原先 8 tick 緩降造成中間值，現以 `battleImpac
 `58423664e32ebddff09768b191a059b15c3d0595462ee8ec4feb1584d7b599fe`。
 實際 targeted/full regression、Markdown/JSON/影像雜湊與 Docker 清理仍是提交前必要驗證；
 原始 DAC 欄位、完整攻擊時序及一般玩家 E2／三平台發布閘門維持未解除。
+
+同輪另修正守方 FIGANI 待機幀：原先的固定 `(prog/6)` 不是原版可證實的時序，
+現以每個守方資源 descriptor `+6` 與 `FD2_BATTLE_FPT` 的純排程橋選幀；攻守任一
+延遲表不完整即失敗即關閉。這個選幀管線修正未改變已記錄的 frame 77 雜湊，故
+現有 3933 差異像素對照仍有效；它不解除 raw DAC、完整攻擊時序或一般玩家 E2。

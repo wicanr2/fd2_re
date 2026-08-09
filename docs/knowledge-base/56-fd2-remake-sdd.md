@@ -3543,3 +3543,7 @@ post-hit HP，重製端已移除沒有 raw provenance 的 8 tick 中間值；守
 近似色值對齊原版擷取 RGB `(190,0,0)`。正規化原版／重製／差異遮罩保存於
 [`battle-impact-compare-20260810.png`](../figures/battle-impact-compare-20260810.png)，
 逐 RGB 差異仍有 3933 像素，故這是兩項可見差異的窄修正，不是完整戰鬥 UI E2。
+
+守方 FIGANI 待機幀也已撤回固定 `(prog/6)` 選幀，改由 descriptor `+6` 與
+`FD2_BATTLE_FPT` 的純排程橋消費；攻守任一延遲表缺失即失敗即關閉。這只收緊
+renderer 輸入契約，不能把排程本身解讀成命中、傷害或 DAC 語意。

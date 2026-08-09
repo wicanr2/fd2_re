@@ -8,7 +8,7 @@
     "md5": "b97caf2239a27a896069d03549d96e1e",
     "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
     "remake_head_before_change": "0782257",
-    "working_tree_change": "移除沒有原始欄位來源支撐的 RGBA 全畫面紅罩；只保留守方紅剪影，攻方維持 FIGANI 原色；命中邊界立即提交 post-hit HP，剪影 E1 色值對齊原版擷取 RGB 190,0,0"
+    "working_tree_change": "移除沒有原始欄位來源支撐的 RGBA 全畫面紅罩；只保留守方紅剪影，攻方維持 FIGANI 原色；命中邊界立即提交 post-hit HP，剪影 E1 色值對齊原版擷取 RGB 190,0,0；守方待機幀改消費 descriptor +6 排程"
   },
   "capture": {
     "container_image": "fd2-go-test-local:latest",
@@ -27,6 +27,7 @@
       "背景、台座與狀態欄不再被未證實的全畫面紅色 RGBA 覆蓋",
       "守方受擊者以目前 E1 的紅色剪影近似呈現，剪影色值採原版 impact 擷取的 RGB 190,0,0；攻方維持原本 FIGANI 幀",
       "命中幀的狀態欄在 impact 邊界立即顯示 post-hit HP，不再以未有原始欄位依據的中間值緩降",
+      "守方 FIGANI 待機幀消費各資源 descriptor +6 與 FD2_BATTLE_FPT；缺延遲表時失敗即關閉",
       "這不是原版 DOSBox 同狀態擷取，也不能證明逐像素一致"
     ]
   },

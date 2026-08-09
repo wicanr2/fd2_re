@@ -2122,6 +2122,10 @@
   依據的 8 tick 中間值，並以原版擷取 RGB `(190,0,0)` 校正守方剪影近似色。
   [`battle-impact-compare-20260810.png`](../figures/battle-impact-compare-20260810.png)
   的正規化逐 RGB 差異仍為 3933 像素，不能提升為完整戰鬥 UI E2。
+- [x] **BATTLE-DEFENDER-FIGANI-SCHEDULE-E1（2026-08-10）**：守方待機幀撤回
+  固定 `(prog/6)` 猜測，改依各資源 descriptor `+6`／`FD2_BATTLE_FPT` 的純排程
+  橋選幀；攻守任一延遲表不完整即失敗即關閉。這只收緊 renderer 輸入，不證實
+  命中、傷害或 DAC 語意。
 - [ ] **BATTLE-IMPACT-DAC-RUNTIME-BRIDGE**：仍需建立帶 frame `+4`、傷害步進、
   `0x29f72` 原始輸出與 palette baseline 的正式轉接器，並以未修改一般玩家
   同狀態逐幀比較；完成前不得宣稱攻擊閃紅或整體戰場 UI E2。

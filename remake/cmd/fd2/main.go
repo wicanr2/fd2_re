@@ -4818,6 +4818,14 @@ func (g *Game) newAtkAnim(atkGroup, defGroup int, atkName, defName string,
 		// delay: an unpaired PNG/export schedule is not an original attack.
 		return nil
 	}
+	df := figaniIndex(defGroup)
+	defFrames := g.figani[df]
+	defDelays, defOK := g.figaniDelays[df]
+	if len(defFrames) == 0 || !defOK || len(defDelays) != len(defFrames) {
+		// The defender idle figure is a native presentation input too; do not
+		// fall back to a guessed fixed-period breathing loop.
+		return nil
+	}
 	timeline, err := figani.NewDisplayScheduler(delays, fpt)
 	if err != nil {
 		return nil
@@ -7180,6 +7188,33 @@ func battleImpactHP(prog, impactStart, before, after int) int {
 	return after
 }
 
+// figaniFrameAtDisplayTick 依 FIGANI descriptor +6 與顯示倍率選出指定 tick
+// 的幀。它是 0x2b9a1／0x2935b 的純排程橋，不替幀賦予命中或傷害語意。
+func figaniFrameAtDisplayTick(delays []int, ticksPerNative, tick int) (int, bool) {
+	if len(delays) == 0 || ticksPerNative <= 0 || tick < 0 {
+		return 0, false
+	}
+	total := 0
+	for _, delay := range delays {
+		if delay <= 0 {
+			return 0, false
+		}
+		total += delay * ticksPerNative
+	}
+	if total <= 0 {
+		return 0, false
+	}
+	remaining := tick % total
+	for i, delay := range delays {
+		span := delay * ticksPerNative
+		if remaining < span {
+			return i, true
+		}
+		remaining -= span
+	}
+	return len(delays) - 1, true
+}
+
 // redSilhouette 全紅剪影(快取):目前只作 E1 視覺近似。原版 0x2939d 的命中
 // DAC 分支受 raw frame flag、傷害步進與 0x29f72 輸出欄位控制；在這些欄位
 // 尚未接入前，不把剪影快取宣稱為原版色盤寫入的等價實作。
@@ -7271,9 +7306,13 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		}
 	}
 
-	// (2) 敵方盜賊 figure(正面;蓋住狀態欄):4 幀待機呼吸循環,貼各幀內嵌 (dx,dy)
+	// (2) 敵方盜賊 figure(正面;蓋住狀態欄):待機幀依 descriptor +6 排程循環，
+	// 貼各幀內嵌 (dx,dy)。缺少排程時 newAtkAnim 已失敗即關閉。
 	if fr := g.figani[a.defFig]; len(fr) > 0 {
-		fi := (prog / 6) % len(fr)
+		fi, ok := figaniFrameAtDisplayTick(g.figaniDelays[a.defFig], a.fpt, prog)
+		if !ok || fi >= len(fr) {
+			return
+		}
 		img := fr[fi]
 		// E1 紅色剪影近似；原版 DAC 條件尚未由 raw presentation adapter 提供。
 		if prog >= impactS && prog < impactE && (prog/2)%2 == 0 {
