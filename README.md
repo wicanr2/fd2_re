@@ -199,11 +199,12 @@ ch01 戰場目前已能由原始地圖、單位、前景與 HUD 資產合成。�
 同狀態 E2：原版參考為 320×200，重製圖為 640×400；重製圖已改用正式
 `story_ch00_handler` 的 73 拍快速時鐘保留隊伍／戰場 handoff，並以 IDA 已證實的
 FDFIELD b1 selector 及原版 `FDOTHER/FDSHAP/FDICON` 資源產生，不再使用只有一名角色的
-直接節點除錯入口；但場上單位、游標、HUD 與像素比例仍可見差異。raw 相機／游標欄位
-雖已有 E1 provenance，仍不能代替同狀態逐幀比對。完整尺寸、雜湊與下一個驗收門檻見
+直接節點除錯入口。下方第一組圖片仍是不同狀態的歷史原版參考，只能說明流程擷取與
+畫面管線，不能從兩張圖的場上單位、游標或 HUD 差異推論目前渲染器缺陷；raw 相機／
+游標欄位也不能代替同狀態逐幀比對。完整尺寸、雜湊與下一個驗收門檻見
 [`battle-visual-gap-ch01.json`](docs/data/ui-traces/battle-visual-gap-ch01.json)。
 
-| 原版參考 | 重製切片 |
+| 歷史原版參考（非同狀態） | 重製切片 |
 |---|---|
 | ![ch01 原版戰場參考](docs/figures/native-map-ch01-original-video.png) | ![ch01 重製端正式 handler 戰場切片](docs/figures/native-map-ch01-remake-handler.png) |
 
