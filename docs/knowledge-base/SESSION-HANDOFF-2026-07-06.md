@@ -3898,3 +3898,23 @@ caller 才把兩個 caller-owned raw word 差值加入 score。原始運算元�
 `FD2.SAV`、相機／游標／回合／單位狀態，取得原版 DOSBox 與重製端逐幀配對，
 再分辨狀態橋接、相機、單位合成、HUD 或調色盤的實際差異；三平台套件與推廣影片
 發布閘門在此之前保持未解除。
+
+## 2026-08-10：正式序章 handler 戰場截圖橋接（E1；未解除）
+
+為釐清 GitHub 戰場圖中的「只剩一名角色」問題，新增僅限
+`FD2_SHOT=...` 且 `FD2_SHOT_FAST_FORWARD=1` 的截圖快速時鐘。它仍由
+`story_ch00_handler` 的既有 BeatRunner 執行 73 拍，逐拍保留 LOADCH、兩次
+`spawn_intro`、四次 JOIN、`reset_pose`、`focus_unit` 與最後的 `battle_ch01`
+handoff；對白按頁消費，原生 present job 也逐步執行，不改一般玩家路徑。
+
+Docker／Xvfb 真實命令產生新的正式 handler 截圖：
+[`native-map-ch01-remake-handler.png`](../figures/native-map-ch01-remake-handler.png)，
+640×400，MD5 `851781caf1bcff736e24a0bc57d39372`、SHA-256
+`da9cae2827d027f933e47ab2c4e846c990babc2f856c449f699fdba0794d524b`。它確實顯示
+完整多單位戰場；但與儲存庫的原版 320×200 錄影片格仍有單位位置、游標、HUD 與
+尺度差異。舊 `native-map-ch01-remake.png` 保留為直接節點除錯入口的歷史證據，
+不再作正式比較圖。
+
+目前仍只能判定為 E1 消費端與狀態橋接證據；同一 `FD2.SAV`、相機／游標／回合／
+單位狀態的原版 DOSBox 與重製逐幀配對尚未取得。三平台套件與推廣影片閘門維持
+未解除。

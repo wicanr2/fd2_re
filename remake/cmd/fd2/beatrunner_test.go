@@ -114,6 +114,22 @@ func TestBeatPanMovesCamera(t *testing.T) {
 	}
 }
 
+func TestFastForwardShotCampaignCompletesBlockingBeats(t *testing.T) {
+	g := newBeatTestGame(t, []campaign.Beat{
+		{Op: "pan", X: 100, Y: 200, Frames: 10},
+		{Op: "dialog", Line: 0},
+		{Op: "delay", Frames: 5},
+	})
+	g.camp.C.Nodes["end"].Type = "battle"
+	g.beatAdvance()
+	if err := g.fastForwardShotCampaign(); err != nil {
+		t.Fatalf("screenshot fast-forward failed: %v", err)
+	}
+	if g.loadErr != "" || g.camp.Cur != "end" || g.camX != 100 || g.camY != 200 || len(g.dialog) != 0 {
+		t.Fatalf("fast-forward state node=%q camera=(%v,%v) dialog=%d err=%q", g.camp.Cur, g.camX, g.camY, len(g.dialog), g.loadErr)
+	}
+}
+
 func TestBeatPanTileStepMatchesOriginalXFirstRedrawOrder(t *testing.T) {
 	g := newBeatTestGame(t, []campaign.Beat{{Op: "pan", X: 72, Y: 48, TileStep: true}})
 	g.camX, g.camY = 0, 0

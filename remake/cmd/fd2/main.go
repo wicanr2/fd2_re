@@ -931,6 +931,121 @@ func (g *Game) beatAdvance() {
 	g.beatStart(g.beats[g.beatIdx])
 }
 
+// fastForwardShotCampaign 只供 FD2_SHOT_FAST_FORWARD=1 的隔離畫面證據。
+// 它仍從目前 campaign 節點執行既有 BeatRunner，逐一完成阻塞拍的「狀態副作用」；
+// 不會在一般玩家路徑啟用，也不把不同節點或未證實的 handler 直接接成戰鬥。
+// 對白／走位／姿態／鏡頭／淡出只略過可見時間，LOADCH、SPAWN、JOIN、SYNC、
+// SET_CHAPTER 與原生資源驗證仍由 beatStart 真實執行。遇到未完成的原生 renderer
+// 或無法辨識的阻塞狀態時立即失敗（fail-closed），避免產生看似正式的截圖。
+func (g *Game) fastForwardShotCampaign() error {
+	if g == nil || g.camp == nil {
+		return errors.New("shot fast-forward requires campaign")
+	}
+	const maxSteps = 200000
+	for step := 0; step < maxSteps; step++ {
+		n := g.camp.Node()
+		if n == nil || n.Type == "battle" {
+			return nil
+		}
+		if n.Type != "story" && n.Type != "cutscene" {
+			return fmt.Errorf("shot fast-forward reached non-battle node=%q type=%q", g.camp.Cur, n.Type)
+		}
+		if g.loadErr != "" {
+			return fmt.Errorf("shot fast-forward stopped: %s", g.loadErr)
+		}
+		switch {
+		case len(g.dialog) > 0:
+			// 逐頁、逐句重播 Enter 的狀態轉移；不可直接清空長句，否則
+			// 截圖雖然前進，卻無法證明對白腳本與頁數已被消費。
+			g.dlgScrollT = 0
+			if g.dlgAdvance() && len(g.dialog) == 0 {
+				g.dlgShown, g.dlgPhase, g.dlgT = dlgNone, 0, 0
+				g.beatAdvance()
+			}
+		case g.storyWalks != nil && len(g.storyWalks) > 0:
+			// 使用正式逐幀方法完成走位，保留格線終點、姿態與 callback。
+			for ticks := 0; len(g.storyWalks) > 0 && ticks < maxSteps; ticks++ {
+				g.stepStoryWalks()
+			}
+			if len(g.storyWalks) != 0 {
+				return errors.New("shot fast-forward story walk exceeded step bound")
+			}
+		case g.actJob != nil:
+			// acting frame 仍透過原本的 0x1366a 轉錄執行；只壓縮每格的
+			// 7 tick 顯示等待，不改變最終座標／pose。
+			for ticks := 0; g.actJob != nil && ticks < maxSteps; ticks++ {
+				g.stepActJob()
+			}
+			if g.actJob != nil {
+				return errors.New("shot fast-forward acting exceeded step bound")
+			}
+		case g.focusJob != nil:
+			for ticks := 0; g.focusJob != nil && ticks < maxSteps; ticks++ {
+				g.stepFocusUnit()
+			}
+			if g.focusJob != nil {
+				return errors.New("shot fast-forward focus exceeded step bound")
+			}
+		case g.camPan != nil:
+			// callback 會進入下一拍；先清 job 避免 callback 重入時被視為
+			// 舊拍仍在執行。線性 pan 的終點就是 Beat payload 的終點。
+			job := g.camPan
+			g.camX, g.camY, g.camPan = job.toX, job.toY, nil
+			if job.then != nil {
+				job.then()
+			}
+		case g.fade != nil:
+			job := g.fade
+			g.fade = nil
+			if job.then != nil {
+				job.then()
+			}
+		case g.transitionReveal != nil:
+			job := g.transitionReveal
+			g.transitionReveal = nil
+			if job.then != nil {
+				job.then()
+			}
+		case g.nativePaletteRamp != nil:
+			for ticks := 0; g.nativePaletteRamp != nil && ticks < maxSteps; ticks++ {
+				// Draw() normally acknowledges the currently presented DAC step.
+				g.nativePaletteRamp.drawn = true
+				g.stepNativePaletteRamp()
+			}
+			if g.nativePaletteRamp != nil {
+				return errors.New("shot fast-forward palette ramp exceeded step bound")
+			}
+		case g.spawnIntroTransition != nil:
+			for ticks := 0; g.spawnIntroTransition != nil && ticks < maxSteps; ticks++ {
+				// Each pass still goes through the real stepper and preserves its
+				// sound callback; only the visual present acknowledgement is synthetic.
+				g.spawnIntroTransition.drawn = true
+				g.stepNativeSpawnIntro()
+			}
+			if g.spawnIntroTransition != nil {
+				return errors.New("shot fast-forward spawn intro exceeded step bound")
+			}
+		case g.indexedTransition != nil:
+			for ticks := 0; g.indexedTransition != nil && ticks < maxSteps; ticks++ {
+				g.indexedTransition.drawn = true
+				g.stepNativeIndexedTransition()
+			}
+			if g.indexedTransition != nil {
+				return errors.New("shot fast-forward indexed transition exceeded step bound")
+			}
+		case g.beatDelay > 0:
+			g.beatDelay = 0
+			g.beatAdvance()
+		case g.storyAutoAdvance > 0:
+			g.storyAutoAdvance = 0
+			g.advanceStoryNode(n)
+		default:
+			return fmt.Errorf("shot fast-forward stuck at node=%q beat=%d", g.camp.Cur, g.beatIdx)
+		}
+	}
+	return errors.New("shot fast-forward exceeded campaign step bound")
+}
+
 // beatStart 依原語種類啟動目前這一拍(狀態掛到 g.camPan/g.storyWalks/g.dialog/g.actJob/
 // g.fade/g.beatDelay,交給 Update 既有機制逐幀推進)。找不到對應角色 / 資料缺漏時直接跳拍
 // 並記到 loadErr,不讓整個過場卡死(誠實 stub,勝過假裝完成)。
@@ -7733,6 +7848,15 @@ func loadGame() *Game {
 				}
 			}
 			g.enterNode()
+			// 只在明確的截圖證據模式壓縮既有 cutscene 的等待時間。一般
+			// 玩家輸入、正常戰役與存檔永遠不會走這條分支；若任何 beat
+			// 或原生 renderer 尚未閉合，保留 loadErr 而停止，不產生假正式畫面。
+			if g.shotPath != "" && os.Getenv("FD2_SHOT_FAST_FORWARD") == "1" &&
+				g.camp.Cur == "story_ch00_handler" && g.loadErr == "" {
+				if err := g.fastForwardShotCampaign(); err != nil {
+					g.loadErr = "shot campaign fast-forward: " + err.Error()
+				}
+			}
 		} else {
 			g.loadErr = "campaign: " + err.Error()
 		}

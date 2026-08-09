@@ -195,15 +195,16 @@ Docker／Xvfb 產生的 640×400 E1 證據。它證明腳本、肖像、藍框�
 
 ### 戰場與戰鬥演出
 
-ch01 戰場目前已能由原始地圖、單位、前景與 HUD 資產合成。下列兩圖只是不同
-擷取狀態的參考，不是同狀態 E2：原版參考為 320×200，重製圖為 640×400，
-場上單位與 HUD 像素仍可見差異；raw 相機／游標欄位雖已有 E1 provenance，
-仍不能代替同狀態逐幀比對。完整尺寸、雜湊與下一個驗收門檻見
+ch01 戰場目前已能由原始地圖、單位、前景與 HUD 資產合成。下列兩圖仍不是
+同狀態 E2：原版參考為 320×200，重製圖為 640×400；重製圖已改用正式
+`story_ch00_handler` 的 73 拍快速時鐘保留隊伍／戰場 handoff，不再使用只有一名角色的
+直接節點除錯入口，但場上單位、游標、HUD 與像素比例仍可見差異。raw 相機／游標欄位
+雖已有 E1 provenance，仍不能代替同狀態逐幀比對。完整尺寸、雜湊與下一個驗收門檻見
 [`battle-visual-gap-ch01.json`](docs/data/ui-traces/battle-visual-gap-ch01.json)。
 
 | 原版參考 | 重製切片 |
 |---|---|
-| ![ch01 原版戰場參考](docs/figures/native-map-ch01-original-video.png) | ![ch01 重製戰場切片](docs/figures/native-map-ch01-remake.png) |
+| ![ch01 原版戰場參考](docs/figures/native-map-ch01-original-video.png) | ![ch01 重製端正式 handler 戰場切片](docs/figures/native-map-ch01-remake-handler.png) |
 
 戰鬥動畫解碼與局部位置比較：
 

@@ -274,7 +274,7 @@ Runtime 不應再讓 `main.go` 同時決定資料模型、輸入、規則和像�
 | ID | UI / 流程 | 必須還原的操作契約 | 目前狀態 |
 |---|---|---|---|
 | UI-01 | Title/main menu | 上下選擇、確認、取消、save/load、游標音效與 focus state | partial；`TitleMenuState`／`TitleSlotState` 已與 Ebiten 輸入共用並有 deterministic trace，仍缺原版逐幀 E2 對照與完整 boot/campaign 接線 |
-| UI-02 | Battle field | 游標格、鏡頭、可移動格、高亮、單位 HUD、方向／面向 | partial；`native-map-ch01-original-video.png`（320×200）與 `native-map-ch01-remake.png`（640×400）不是同一狀態，場上單位與 HUD 像素仍有可見差異。較早 E1 已保存 raw 相機／游標欄位，但不等於畫面一致；固定同一 FD2.SAV、相機、游標與回合後的 DOSBox／重製逐幀證據仍未取得。詳見 [`battle-visual-gap-ch01.json`](../data/ui-traces/battle-visual-gap-ch01.json)。 |
+| UI-02 | Battle field | 游標格、鏡頭、可移動格、高亮、單位 HUD、方向／面向 | partial；`native-map-ch01-original-video.png`（320×200）與正式 handler 截圖 `native-map-ch01-remake-handler.png`（640×400）不是同一狀態。新圖由 `story_ch00_handler` 的 73 拍快速時鐘保留 LOADCH、JOIN、SPAWN 與 battle handoff，已排除舊直接 `battle_ch01` 除錯入口造成的單角色假象；場上單位、游標與 HUD 像素仍有可見差異。較早 E1 raw 相機／游標欄位不等於畫面一致；固定同一 FD2.SAV、相機、游標、回合與單位後的 DOSBox／重製逐幀證據仍未取得。詳見 [`battle-visual-gap-ch01.json`](../data/ui-traces/battle-visual-gap-ch01.json)。 |
 | UI-03 | Action menu | move/attack/magic/item/status/wait/end-turn 的可見項、enable gate、取消回上一層 | partial；原版 action overlay 的 battle cell table（enabled `[0,2,4,6]`／disabled `[3,5,7,9]`）、open/close 四幀 byte-offset、以可視 cursor column/row 算出的 framebuffer anchor 已閉合。runtime 現以 caller-owned lifecycle 呈現 opening `0..3` 與獨立 closing `0..3`，並延後 command/item/spell/attack/wait side effect，直到第四個 close present 完成；因 native loop 無 delay call，只宣稱順序／present count，不宣稱毫秒時長。[8-frame Xvfb artifact](../figures/action-overlay-open-close-remake.png) 由目前 source 與玩家 FDOTHER.DAT read-only mount 產生。native command grid 亦已定為 320×200、每欄四列，label `(18+100*col,103+22*row)`、MP 右側、↑↓ wrap/←→±4 bounded；scenario raw command mask 已可 materialize。Docker/Xvfb 以 player FDOTHER.DAT 捕捉的 [悠妮 command-0 grid](../figures/native-command-grid-remake.png) 證實 mask→label→palette/font→renderer 路徑，非 original visual diff。`fdother.CaptureActionOverlaySnapshot`／`RestoreActionOverlaySnapshot` 與 `ActionOverlaySnapshotOrigin` 現已對齊原版 `0x175a9/0x17643` 的 72×72（`0x1440`）索引快照、每列 `0x1c8` stride、游標各減一格的 owner，並有失敗即關閉回歸；詳見 [IDA snapshot evidence](../data/ida/fd2_action_overlay_snapshot_ida.txt)。現行 Ebiten adapter 尚未消費此快照（每幀由整幅場景重畫避免殘影），因此 native backup/restore 的正式 runtime consumer、完整 native gate 與 DOSBox visual diff 仍未關閉。舊 PNG ring 是缺原始 asset 時的 fallback。 |
 | UI-04 | Target/range/item selector | 武器 min/max reach、法術 range/AOE、item兩欄四列、不可用目標灰化、確認／取消 | partial；command/item targets與 observed item effects已閉合。`0x1b9de/0x184c0` 固定 compact prefix、input、layout與raw icon IDs；`0x18409` 的12-frame open11→0/close0→11及left/upper/bottom clipped rectangles已有Ebiten adapter。tracked item Enter transaction已接，但indexed effect presentation、完整weapon/AOE/LOS與DOSBox visual diff仍fail-closed |
 | UI-05 | Dialog | 上／下框、portrait anchor、文字避讓、控制碼、分頁／捲動、嘴型、輸入鎖 | partial；`internal/dato.MouthState` 已按 `0x16D00` cadence 接入更新迴圈，native frame/資源與所有 speaker layout 未閉合 |
@@ -2117,7 +2117,7 @@ SDD 通過後按以下順序重審，不先補 renderer 猜測：
 
    Presentation bridge (strict gate): `drawNativeMapHUD` converts the verified 456-stride indexed buffer to a 320×200 paletted Ebiten image only when `NativeMapHUDRuntimeState`, selector cache/cycle and every selected-unit raw admission byte are present. It now draws panel/terrain/AP/DP plus the proven unit icon and `+0x40/+0x42` HP path together. The former hardcoded `DisplayGateA=true, DisplayGateB=true, AnchorX=1` partial path has been removed because native load can overwrite gate A. Missing provenance falls back before any native drawing. `NativeMapHUDPersistentState` now separates save-persistent gate A、process-persistent anchor 與 controller-owned gate B；custom save and native chapter restore preserve gate A, while battle entry materializes gate B only from the proven value 1. `battle_ch01`、`battle_ch26` and `battle_ch27` use editable `native_map_hud_inherited` together with their evidenced views. Exact fixed HUD bytes remain available only for explicit fixtures/snapshots; this inherited owner closes E1 state flow, not whole-campaign visual parity.
 
-   HUD pointer-base correction (2026-07-28): direct Capstone at
+   HUD pointer-base correction (2026-07-28；歷史 E1 橋接，非目前正式 handler 畫面): direct Capstone at
    `0x11cfa..0x11d0a` proves the caller pushes stride `0x1c8` and
    `[0x53a49]+0x8088` into `0x1acf3`. Therefore every recovered HUD offset,
    including row157, is relative to the same viewport pointer used by terrain
@@ -2125,19 +2125,26 @@ SDD 通過後按以下順序重審，不先補 renderer 猜測：
    allocation base, causing the HUD to land 72 rows／72 bytes away and disappear
    from the final bottom edge; its regression had encoded that wrong coordinate.
    `ComposeNativeFrame` now passes `work[0x8088:]`, keeps failure atomicity, and
-   verifies the panel reaches VGA `(anchor+4,161)`. The original-video
-   [HUD oracle](../figures/native-map-ch01-original-video.png) and rebuilt
-   [remake frame](../figures/native-map-ch01-remake.png) both show the panel at
-   the lower edge. The reproducible extractor
+   verifies the panel reaches VGA `(anchor+4,161)`. That paragraph's rebuilt
+   [remake frame](../figures/native-map-ch01-remake.png) is the older
+   `FD2_CAMP_NODE=battle_ch01` direct-entry artifact; it is retained only to
+   preserve the pointer-base evidence and must not be read as the current
+   story-handler composition. The original-video
+   [HUD oracle](../figures/native-map-ch01-original-video.png) remains a separate
+   320×200 reference. The reproducible extractor
    `tools/extract_fd2_video_frame.sh video/fd2-ch1.mp4 434.5 ...` first crops
    the recording's centered `(16,100,1408,880)` game viewport, then returns it
    to 320×200; direct whole-video scaling was a distorted oracle and is removed.
-   The 434.5-second frame and remake now share camera `(1,13)`, absolute cursor
-   `(8,15)`, visible cursor `(7,2)`, tree terrain and HUD `A -05 / D +10`.
+   The 434.5-second frame and that historical direct-entry frame shared camera
+   `(1,13)`, absolute cursor `(8,15)`, visible cursor `(7,2)`, tree terrain and
+   HUD `A -05 / D +10`.
    The screenshot hook formerly assigned only normalized `curX/curY`, leaving
    `NativeMapViewState` stale; it now drives `MoveNativeMapCursor` and persistent
    HUD-anchor updates. Roster/event presentation still differs, so these images
-   prove camera/cursor/terrain/HUD alignment but not a full-frame pixel diff.
+   prove only the pointer-base/camera/cursor/terrain/HUD bridge, not a full-frame
+   pixel diff. The current formal handler image and its remaining battlefield
+   differences are recorded in
+   [`battle-visual-gap-ch01.json`](../data/ui-traces/battle-visual-gap-ch01.json).
 
    Pre-handler→battle roster correction (2026-07-28): the remaining ch01
    roster mismatch was not a compositor omission. `ch00_pre` performs

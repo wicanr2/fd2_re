@@ -129,13 +129,15 @@
   把根視窗左上角的局部黑畫面誤列為介面證據；另保存目前重製端執行期畫面
   [`title-remake-runtime.png`](../figures/title-remake-runtime.png)，不把原版重複圖再加入。
 - [~] **BATTLE-VISUAL-GAP-CH01**：重新稽核 GitHub 上的戰場對照圖，確認
-  `native-map-ch01-original-video.png` 是 320×200 原版參考、
-  `native-map-ch01-remake.png` 是 640×400 重製端 E1，兩者不是同一狀態；場上
-  單位與 HUD 像素仍有可見差異。較早 E1 雖保存 raw 相機／游標欄位，但不等於
-  畫面一致。已保存尺寸／雜湊／可見觀察於
-  [`battle-visual-gap-ch01.json`](../data/ui-traces/battle-visual-gap-ch01.json)。
-  在同一 FD2.SAV、相機、游標、回合與單位狀態的 DOSBox／重製逐幀配對完成前，
-  不得把戰場畫面標成 E2 或「與原版一致」。
+  `native-map-ch01-original-video.png` 是 320×200 原版參考。新增
+  `native-map-ch01-remake-handler.png`（640×400），由 Docker／Xvfb 以正式
+  `story_ch00_handler` 的 73 拍快速時鐘執行 LOADCH、JOIN、SPAWN 與 battle handoff
+  後擷取；已排除舊 `native-map-ch01-remake.png` 直接跳 `battle_ch01` 造成的單角色
+  除錯入口假象。新圖仍與原版參考不是同一狀態，場上單位、游標、HUD 與像素比例仍有
+  可見差異；raw 相機／游標欄位不等於畫面一致。尺寸／雜湊／可見觀察與舊圖歷史證據
+  已保存於 [`battle-visual-gap-ch01.json`](../data/ui-traces/battle-visual-gap-ch01.json)。
+  在同一 FD2.SAV、相機、游標、回合與單位狀態的 DOSBox／重製逐幀配對完成前，不得把
+  戰場畫面標成 E2 或「與原版一致」。
 - [ ] **RELEASE-TRIPLE-PLATFORM-PROMO-GATE**：只有在 30 章一般玩家路徑、
   戰場／戰後／城鎮／商店／整備／存檔等畫面都取得同狀態原版 DOSBox 與重製端
   逐幀證據，且 UI 矩陣不再有未解除的視覺或流程封鎖時，才允許製作
