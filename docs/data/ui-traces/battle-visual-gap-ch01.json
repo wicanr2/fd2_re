@@ -24,14 +24,13 @@
     "sha256": "bcac00085e11a6a0646e9c31508d8c76997c1e7b24961fa1f53bff5a4e68e06a",
     "provenance": "目前重製 source 由 Docker／Xvfb 產生的 E1 截圖。",
     "visible_findings": [
-      "相機裁切與原版參考不同。",
       "場上單位與原版參考的數量／位置不同。",
-      "HUD 的位置與可見內容仍不同。"
+      "HUD 雖有相同的下緣區域參考，像素內容與比例仍不同。"
     ]
   },
   "conclusion": {
     "status": "未閉合",
     "confidence": "已證實（影像尺寸與可見差異）；成因未知",
-    "next_gate": "取得同一 FD2.SAV、同一相機／游標／回合／單位狀態的原版 DOSBox 與重製逐幀配對後，才可判定是狀態橋接、相機、單位合成、HUD 或調色盤差異。"
+    "next_gate": "取得同一 FD2.SAV、同一相機／游標／回合／單位狀態的原版 DOSBox 與重製逐幀配對後，才可判定是狀態橋接、單位合成、HUD、調色盤或其他渲染差異。既有 raw 相機／游標欄位 provenance 不等於畫面像素一致。"
   }
 }

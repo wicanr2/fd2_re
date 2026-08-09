@@ -130,8 +130,9 @@
   [`title-remake-runtime.png`](../figures/title-remake-runtime.png)，不把原版重複圖再加入。
 - [~] **BATTLE-VISUAL-GAP-CH01**：重新稽核 GitHub 上的戰場對照圖，確認
   `native-map-ch01-original-video.png` 是 320×200 原版參考、
-  `native-map-ch01-remake.png` 是 640×400 重製端 E1，兩者不是同一狀態；相機、
-  場上單位與 HUD 仍有可見差異。已保存尺寸／雜湊／可見觀察於
+  `native-map-ch01-remake.png` 是 640×400 重製端 E1，兩者不是同一狀態；場上
+  單位與 HUD 像素仍有可見差異。較早 E1 雖保存 raw 相機／游標欄位，但不等於
+  畫面一致。已保存尺寸／雜湊／可見觀察於
   [`battle-visual-gap-ch01.json`](../data/ui-traces/battle-visual-gap-ch01.json)。
   在同一 FD2.SAV、相機、游標、回合與單位狀態的 DOSBox／重製逐幀配對完成前，
   不得把戰場畫面標成 E2 或「與原版一致」。
