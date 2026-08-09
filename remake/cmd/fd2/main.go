@@ -7294,9 +7294,9 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 	// 位置=各幀內嵌 (dx,dy)(f11 劈擊伸左、f12-14 突刺,走位在資料裡,不需 lunge 計算)
 	if len(atkFrames) > 0 {
 		img := atkFrames[atkFi]
-		if prog >= impactS && prog < impactE && (prog/2)%2 == 0 {
-			img = g.redSilhouette(img) // E1 近似：攻方也以剪影閃動(orig_05_03)
-		}
+		// 原版 impact 參考圖（orig_05_attack_03_impact）只把守方受擊者
+		// 顯示為紅色剪影；攻方仍使用原本的 FIGANI 幀。未有 raw 旗標前，
+		// 不把攻方也染紅成未證實的對稱效果。
 		dx, dy := 141.0, 3.0
 		if m := g.figMeta[a.atkFig]; atkFi < len(m) {
 			dx, dy = float64(m[atkFi][0]), float64(m[atkFi][1])
@@ -8032,7 +8032,7 @@ func (g *Game) drawNativeMapFrame(screen *ebiten.Image) bool {
 
 func (g *Game) composeNativeMapFrame() error {
 	now := time.Now()
-	if g != nil && g.shotPath != "" && os.Getenv("FD2_SHOT_DETERMINISTIC") == "1" {
+	if g != nil && (g.shotPath != "" || g.shotSeries != "") && os.Getenv("FD2_SHOT_DETERMINISTIC") == "1" {
 		// 截圖證據只取固定 60 Hz 虛擬時鐘；一般玩家仍使用實際 BIOS
 		// 時鐘。這避免 Xvfb 排程差異把同一狀態存成不同動畫幀。
 		now = time.Unix(0, int64(g.frame)*int64(time.Second/60))

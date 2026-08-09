@@ -365,8 +365,9 @@ DOSBox E2，也不替未綁定的章節 handler 猜測 renderer 或 campaign 語
 
 IDA／Capstone 已證實原版命中效果是受原始 frame flag、傷害步進與
 `0x29f72` 輸出欄位控制的 DAC 脈衝，不是每次命中都套用 RGBA 全畫面紅罩。
-重製端已移除沒有 raw provenance 的全畫面紅罩，避免背景、狀態欄與台座一起
-泛紅；角色紅剪影仍只算 E1 近似。完整位址、雜湊與埠序列見
+重製端已移除沒有 raw provenance 的全畫面紅罩，並只保留原版 impact 參考圖支持
+的守方紅剪影；攻方維持 FIGANI 原色，避免背景、狀態欄、台座與攻方一起泛紅。
+完整位址、雜湊與埠序列見
 [`fd2_battle_impact_pulse_ida.txt`](../data/ida/fd2_battle_impact_pulse_ida.txt)。
 本項只關閉一個已確認的重製端視覺偏差，未提升戰鬥幀時序、傷害演出或一般玩家
 同狀態比較為 E2。修正後代表性畫面與擷取條件見

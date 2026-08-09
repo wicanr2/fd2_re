@@ -459,9 +459,10 @@ remake 對不準的根因即在此:該照各 frame header 的寬高 + 下面的�
 [`fd2_battle_impact_pulse_ida.txt`](../data/ida/fd2_battle_impact_pulse_ida.txt)。
 
 重製端目前沒有可追溯的原始輸出欄位，因此已移除原先無條件繪製的 RGBA 全畫面
-紅罩；角色紅剪影仍保留為已有畫面證據支持的 E1 近似，真正 DAC 脈衝先保持
-失敗即關閉。這直接修正 GitHub 戰鬥演出圖中「整個背景與狀態欄一起泛紅」的
-可見偏差，但尚未閉合原版輸出欄位轉接器、完整幀序列或一般玩家 E2。
+紅罩；目前只保留原版 impact 參考圖支持的守方紅剪影，攻方維持原本 FIGANI
+幀；真正 DAC 脈衝先保持失敗即關閉。這直接修正 GitHub 戰鬥演出圖中「整個
+背景與狀態欄一起泛紅、攻方也被染紅」的可見偏差，但尚未閉合原版輸出欄位
+轉接器、完整幀序列或一般玩家 E2。
 修正後的代表性畫面保存為
 [`battle-impact-no-global-tint.png`](../figures/battle-impact-no-global-tint.png)，
 其擷取條件與雜湊見 [`battle-impact-no-global-tint.json`](../data/ui-traces/battle-impact-no-global-tint.json)。

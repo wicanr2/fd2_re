@@ -3533,6 +3533,7 @@ postbattle beat 先執行 `sync_party`，再執行章節標記並經淡出 callb
 [`fd2_battle_impact_pulse_ida.txt`](../data/ida/fd2_battle_impact_pulse_ida.txt)。
 
 重製端的正規化 `AttackResult` 尚無這些欄位的位址來源，故移除原先無條件的
-RGBA 全畫面紅罩；保留紅色角色剪影作為 E1 畫面近似，但不把它或其他欄位猜成
-原始 DAC 脈衝。這是避免 GitHub 戰場圖產生整片泛紅偏差的安全修正；原始輸出
-轉接器、完整攻擊時序及一般玩家 E2 仍是未解除閘門。
+RGBA 全畫面紅罩；目前只保留原版 impact 參考圖支持的守方紅色剪影，攻方維持
+原本 FIGANI 幀，不把它或其他欄位猜成原始 DAC 脈衝。這是避免 GitHub 戰場圖
+產生整片泛紅或攻方對稱染紅的安全修正；原始輸出轉接器、完整攻擊時序及一般
+玩家 E2 仍是未解除閘門。

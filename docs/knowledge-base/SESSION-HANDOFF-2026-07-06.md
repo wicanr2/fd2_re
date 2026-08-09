@@ -4009,7 +4009,8 @@ Docker／Xvfb 產生的 E1 證據圖為
 [`fd2_battle_impact_pulse_ida.txt`](../data/ida/fd2_battle_impact_pulse_ida.txt)。
 
 目前重製端沒有這些 raw 欄位的可追溯來源，已移除不受證據支持的 RGBA 全畫面
-紅罩；角色紅剪影暫保留為 E1 近似。這修正可見的戰場畫面偏差，但不宣稱已完成
+紅罩；另依 `orig_05_attack_03_impact.png` 保留守方紅剪影、讓攻方維持 FIGANI
+原色。這修正可見的戰場畫面偏差，但不宣稱已完成
 DAC runtime bridge、攻擊全時序、逐像素一致或一般玩家 E2。逐幀截圖鉤子另已修正
 為 `FD2_SHOT_SERIES` 單獨啟用時也建立攻擊演出，供後續比較使用。修正後代表性
 畫面為 [`battle-impact-no-global-tint.png`](../figures/battle-impact-no-global-tint.png)，

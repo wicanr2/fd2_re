@@ -2104,8 +2104,12 @@
   子幀等待，以及 `0x298a8..0x299b9` 的 20/40 毫秒脈衝；原始 local 欄位仍
   保留未知等級。證據：`docs/data/ida/fd2_battle_impact_pulse_ida.txt`。
 - [x] **BATTLE-IMPACT-FULLSCREEN-TINT-CORRECTION-E1**：移除重製端沒有 raw
-  provenance 支持的 RGBA 全畫面紅罩；保留角色紅剪影 E1 近似，未把
+  provenance 支持的 RGBA 全畫面紅罩；只保留原版 impact 參考圖支持的守方紅
+  剪影，攻方維持 FIGANI 原色，未把
   `AttackResult` 欄位猜成原始 DAC 輸出。
+- [x] **BATTLE-IMPACT-DEFENDER-SILHOUETTE-E1**：以
+  `orig_05_attack_03_impact.png` 的可見狀態修正攻方不應對稱染紅；這只代表
+  impact 參考圖的重製端畫面近似，不提升為所有攻擊／技能的原版規則。
 - [ ] **BATTLE-IMPACT-DAC-RUNTIME-BRIDGE**：仍需建立帶 frame `+4`、傷害步進、
   `0x29f72` 原始輸出與 palette baseline 的正式轉接器，並以未修改一般玩家
   同狀態逐幀比較；完成前不得宣稱攻擊閃紅或整體戰場 UI E2。
