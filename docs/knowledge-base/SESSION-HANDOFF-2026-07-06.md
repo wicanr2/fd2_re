@@ -4233,3 +4233,19 @@ state-only 契約，尚未把影格、色彩、音效或 renderer 接入正式�
 mode 11 實際 producer／consumer trace；在此之前不可把本輪交易契約升格成完整
 AI 或逐像素 UI parity。Docker 工作皆使用一次性容器；本輪結束要確認 FD2
 容器、臨時 DOSBox 沙箱與 `/tmp/fd2cap` 均已清理。
+
+## 2026-08-11 追加勘誤：本輪已完成 E1 owner
+
+上段是中斷前的交接狀態，不能覆蓋本輪實作結果。現況如下：
+
+- `NextAIPlan` 已在 raw mode 11 且來源完整時建立兩段 stage；
+  `native_ai_mode11_execute.go` 以 continuation 實際消費 `0x15311`（command／
+  item）與 `0x1548E`（physical／FIGANI），`0x14121` 無 blocked cell 時才交給
+  `0x13FD4`，中間不重新選下一個單位。
+- `native_ai_idle_recovery.go` 已成為 `0x13FD4` 的 indexed／音訊 owner，驗證
+  `[0x53EEC]` index `4`／loop `1`、FDICON、DAC、312×192 copy 與三次 Draw
+  確認後才提交 HP；任一資源、raw tuple 或 record 變動會停止並回復 range。
+- 這只是 E1 原始證據到可見窄切片的完成，不是原版逐幀／逐音訊一致，也不是
+  一般玩家敵方回合 E2。index 4 高階音色、decode mode 玩法語意、未知命令／法術／
+  物品演出與其他 caller 的一般玩家 trace 仍需後續補證。對應工作清單已更新於
+  [`91-worklist.md`](91-worklist.md)。

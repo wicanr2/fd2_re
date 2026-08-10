@@ -99,6 +99,48 @@ func TestNextAIPlanUsesVerifiedMode2PhysicalCandidate(t *testing.T) {
 	}
 }
 
+func TestNextAIPlanMode11BuildsOrderedDirectStages(t *testing.T) {
+	actor := nativeAIRuntimeUnit(0, 0, 1, 11)
+	actor.NativeCommandMask[0] = 1
+	actor.NativeInventoryFlags = []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	actor.MP = 255
+	target := nativeAIRuntimeUnit(2, 0, 0, 0)
+	target.Camp = Own
+	target.NativeInventoryFlags = []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	state := &State{
+		W: 3, H: 1, Units: []*Unit{actor, target},
+		NativeCompositionEventBytes: []byte{0, 0, 0},
+		NativeTerrainMoveCodes:      []byte{0, 0, 0},
+		NativeCommandBook:           nativeAIActionCommandBook(),
+	}
+	if err := state.BindNativeFutureItemRows(make([]byte, 2*NativeItemEffectRowSize)); err != nil {
+		t.Fatal(err)
+	}
+	if err := state.BindNativeMovementCostRows(nativeAIRuntimeCostRows()); err != nil {
+		t.Fatal(err)
+	}
+	plan := state.NextAIPlan()
+	if plan == nil || plan.NativeError != nil {
+		if plan == nil {
+			t.Fatal("mode11 plan is nil")
+		}
+		t.Fatalf("mode11 plan=%+v err=%v", plan, plan.NativeError)
+	}
+	if len(plan.NativeMode11Stages) != 2 {
+		t.Fatalf("mode11 stages=%+v, want two direct stages", plan.NativeMode11Stages)
+	}
+	if plan.NativeMode11Stages[0].Stage != (NativeAIMode11Stage{Ordinal: 1, Route: NativeAIMode11Call15311}) {
+		t.Fatalf("first mode11 stage=%+v", plan.NativeMode11Stages[0].Stage)
+	}
+	if plan.NativeMode11Stages[0].Action == nil ||
+		plan.NativeMode11Stages[0].Action.NativeActionKind != NativeAIActionCommand {
+		t.Fatalf("first mode11 action=%+v, want command owner", plan.NativeMode11Stages[0].Action)
+	}
+	if plan.NativeMode11Stages[1].Stage.Ordinal != 2 {
+		t.Fatalf("second mode11 stage=%+v", plan.NativeMode11Stages[1].Stage)
+	}
+}
+
 func TestNextAIPlanMode2FailsClosedWithoutMovementRows(t *testing.T) {
 	actor := nativeAIRuntimeUnit(0, 0, 0, 2)
 	state := &State{W: 1, H: 1, Units: []*Unit{actor}, NativeCompositionEventBytes: []byte{0}, NativeTerrainMoveCodes: []byte{0}}

@@ -11,6 +11,14 @@ import (
 // executors as the player UI; no normalized spell or guessed item effect is
 // substituted when a command ID is outside the recovered families.
 func (g *Game) executeNativeAIAction(plan *battle.AIPlan) error {
+	return g.executeNativeAIActionWithContinuation(plan, nil)
+}
+
+// executeNativeAIActionWithContinuation reuses the recovered command/item
+// owner for mode 11 without prematurely handing control back to NextAIPlan.
+// The continuation runs only after the existing successful-action boundary
+// (including selector-1 field-event ownership) has completed.
+func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after func()) error {
 	if g == nil || g.st == nil || plan == nil || plan.U == nil {
 		return fmt.Errorf("native AI action context unavailable")
 	}
@@ -101,7 +109,7 @@ func (g *Game) executeNativeAIAction(plan *battle.AIPlan) error {
 		}
 		actor.SetMapPose(dirToward(actor.X, actor.Y, target.X, target.Y))
 		g.msg = message
-		g.finishSuccessfulUnitAction(actor, nil)
+		g.finishSuccessfulUnitAction(actor, after)
 		g.checkResult()
 		return nil
 
@@ -129,6 +137,7 @@ func (g *Game) executeNativeAIAction(plan *battle.AIPlan) error {
 		}
 		if applied {
 			g.msg = fmt.Sprintf("原始物品 %02Xh：完成自動效果", plan.NativeItemID)
+			g.finishSuccessfulUnitAction(actor, after)
 			g.checkResult()
 			return nil
 		}
@@ -151,6 +160,7 @@ func (g *Game) executeNativeAIAction(plan *battle.AIPlan) error {
 			return fmt.Errorf("native AI item %02Xh requires an unresolved relocation route", plan.NativeItemID)
 		}
 		g.msg = fmt.Sprintf("原始物品 %02Xh：完成自動效果", plan.NativeItemID)
+		g.finishSuccessfulUnitAction(actor, after)
 		g.checkResult()
 		return nil
 	default:

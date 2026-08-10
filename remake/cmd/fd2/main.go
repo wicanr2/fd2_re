@@ -163,10 +163,11 @@ type Game struct {
 	spawnIntroTransition       *nativeSpawnIntroJob
 	nativeTurnStaging          *nativeTurnStagingJob
 	nativeFieldEvent61         *nativeFieldEvent61Job
-	nativeEnding               *nativeEndingPreview // FD2_ENDING_PREFIX=1 的 0x2bce5 fail-closed prefix oracle
-	walk                       *walkAnim            // 移動動畫(沿路徑逐格走,FDICON 方向幀)
-	camp                       *campaign.Runner     // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
-	campSel                    int                  // choice 節點游標
+	nativeAIIdleRecovery       *nativeAIIdleRecoveryJob // direct 0x13FD4 indexed/audio owner
+	nativeEnding               *nativeEndingPreview     // FD2_ENDING_PREFIX=1 的 0x2bce5 fail-closed prefix oracle
+	walk                       *walkAnim                // 移動動畫(沿路徑逐格走,FDICON 方向幀)
+	camp                       *campaign.Runner         // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
+	campSel                    int                      // choice 節點游標
 	// 開頭動畫/主選單(title.go,doc23)
 	titleAssets *titleAssets
 	titlePhase  string  // "scroll"→"menu"→""(進遊戲)
@@ -5574,6 +5575,13 @@ func (g *Game) Update() error {
 		}
 		return nil
 	}
+	if g.nativeAIIdleRecovery != nil {
+		g.stepNativeAIIdleRecovery()
+		if g.shotPath != "" && g.shotTaken {
+			return ebiten.Termination
+		}
+		return nil
+	}
 	// 攻擊演出推進(FIGANI 全身分鏡;演出期間鎖玩家輸入)
 	if g.atk != nil {
 		g.atk.timer--
@@ -6193,6 +6201,21 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		screen.Fill(color.Black)
 		if !g.drawNativeFieldEvent61(screen) {
 			ebitenutil.DebugPrint(screen, "native event61 presentation unavailable")
+		}
+		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
+			g.captureShot(screen)
+		}
+		return
+	}
+	if g.nativeAIIdleRecovery != nil {
+		screen.Fill(color.Black)
+		if !g.drawNativeAIIdleRecovery(screen) {
+			job := g.nativeAIIdleRecovery
+			g.restoreNativeAIIdleRecoveryRange(job)
+			g.nativeAIIdleRecovery = nil
+			g.loadErr = "native AI 0x13fd4 presentation unavailable"
+			g.aiBusy = false
+			ebitenutil.DebugPrint(screen, "native AI 0x13fd4 presentation unavailable")
 		}
 		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
 			g.captureShot(screen)
@@ -8339,6 +8362,10 @@ func (g *Game) aiStep() {
 		// 靜默替換成正規化 AI。
 		g.loadErr = "native AI: " + plan.NativeError.Error()
 		g.aiBusy = false
+		return
+	}
+	if len(plan.NativeMode11Stages) > 0 {
+		g.startNativeAIMode11(plan)
 		return
 	}
 	u := plan.U

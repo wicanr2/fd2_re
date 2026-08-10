@@ -660,3 +660,28 @@ score、Cast 或 effect；36..39 仍因沒有已驗證 command record 而省略�
 
 因此本輪測試可證明的是 E1 原始資料到窄執行器的連通性，不是完整敵方回合、
 一般玩家 E2 或所有 mode 的原版等價。
+
+## 2026-08-11 勘誤：`0x15311`／`0x1548E`／`0x13FD4` owner 已接線（E1）
+
+前文「沒有 transaction owner」與「正式 renderer 仍失敗即關閉」描述屬於
+2026-08-10 的歷史邊界；本節記錄目前實作，不刪除舊證據：
+
+- `remake/internal/battle/native_ai_mode11_runtime.go` 先保留兩個 raw producer
+  的 gate 與 stage 順序，再要求 command、item、物理候選及 raw record provenance
+  完整。第一段 `0x15311` 只將已證實的 command／item ID 交給共用消費端；第二段
+  `0x1548E` 只在 priority `>=6` 且目標／路徑完整時交給 typed physical owner。
+  `remake/cmd/fd2/native_ai_mode11_execute.go` 以 continuation 執行兩段，不在
+  中間重新呼叫 `NextAIPlan`，因此不會把第二段遺失或變成另一個單位的行動。
+- `0x1548E` 的可見 owner 使用既有 `resolvePhysicalAttack` 與 FIGANI timeline；
+  這是 raw route 的重製端消費方式，不把位址改名成近戰、施法或其他未證實玩法。
+- `0x14121` 找不到 blocked cell 且 `0x13FD4` raw HP／gate 接受時，
+  `remake/cmd/fd2/native_ai_idle_recovery.go` 會驗證 `[0x53EEC]` index `4`／
+  loop `1`、`0x12D7B`、`0x1DA16` 的 `(2,0xFD)`→`(0,0)`、`0x11EB0` 的
+  312×192／456→320 copy、三次 `0x17AA9(1)`，並使用 FDICON／DAC／既有
+  indexed map compositor 建立三個 320×200 frame。sample 只消費 `sfx[4]`，其
+  高階音色名稱仍未知；decode mode 也不命名成回血、休息或閃爍。
+- HP 與 `[0x51A83]=1` 只有在第三次 Draw 確認、raw record 重算仍相同後提交；
+  資產、sample、tuple、frame 或 callback 失敗會回復 range 快照並停止。這把
+  原始證據接到可見 E1 窄切片，但不代表原版逐幀／逐音訊一致，也不解除一般玩家
+  敵方回合 E2、未知 command／spell／item presentation 或其他 `0x13FD4` caller
+  的動態驗收。

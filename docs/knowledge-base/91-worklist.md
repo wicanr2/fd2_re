@@ -8,20 +8,22 @@
 
 ## 本輪收束（2026-08-11）
 
-- [~] **RE-AI-MODE11-RAW-STAGE-TRANSACTION**：`NativeAIMode11Stage`、
-  `Stages` 與 `ExecuteNativeAIMode11Transaction` 已把 IDA 證實的呼叫順序
-  固定成「有 `[0x53C23] >= 6` 才先走 `0x15311`，再無條件進第二段；
-  `[0x53C4F] >= 6` 選 `0x1548E`，否則選 `0x14121`」。回呼失敗不會執行
-  後續 stage，且不把 route 改名成命令、攻擊、法術或移動。這一輪已完成
-  可編輯的 E0／E1 路由交易與 Docker regression；真正的 `0x15311`／
-  `0x1548E` 指令／物理演出 owner、`0x14121` 零回傳後的 `0x13FD4` handoff
-  與一般玩家敵方回合仍 fail-closed。
-- [~] **RE-AI-13FD4-RAW-PRESENTATION-COMMIT**：新增完整 raw presentation
-  描述與原子提交 wrapper，保存 `[0x53EEC]` sample tuple、兩段
-  `0x1DA16` 解碼、兩段 `0x11EB0` 拷貝與三次 `0x17AA9(1)`；callback 缺失、
-  失敗或竄改 record 時不提交 HP。這一輪已通過 `NativeAIIdleRecovery` 的
-  Docker regression，但尚未證實 indexed framebuffer、色彩、音效 sample
-  名稱或正式 renderer／audio owner，因此不可標成「AI 回復效果完成」。
+- [x] **RE-AI-MODE11-RAW-STAGE-TRANSACTION**：`NativeAIMode11Stage`、
+  `Stages` 與 `ExecuteNativeAIMode11Transaction` 保存 IDA 證實的呼叫順序，
+  並由 `NextAIPlan`／`startNativeAIMode11` 接成可執行的兩段 owner：
+  `0x15311` 交給已閉合的 raw command／item executor，`0x1548E` 交給已閉合
+  的 typed physical damage／FIGANI owner；`0x14121` 找不到 blocked cell 時
+  進入下一項 `0x13FD4` owner。缺少 command、target、path、FIGANI 或 raw
+  provenance 時停止，不把 route 猜成玩法名稱。Docker focused regression 已
+  通過；一般玩家敵方回合 E2 與未知 command／spell presentation 仍另列待辦。
+- [x] **RE-AI-13FD4-RAW-PRESENTATION-COMMIT**：正式 runtime owner 已接上
+  `0x13FD4` 的 indexed／音訊窄切片：消費 `[0x53EEC]` index `4`／loop `1`、
+  `0x12D7B`、兩段 `0x1DA16`（`(2,0xFD)`→`(0,0)`）、兩段修正後的
+  `0x11EB0` 312×192 copy 與三次 wait，使用既有 FDICON／palette／map
+  compositor 產生三個可確認的 320×200 indexed frame，並在繪圖確認後才提交
+  `+0x40` HP。缺樣本、資產、tuple、frame 或 raw record 變動即回復並停止。
+  這是 E1 owner，不宣稱 index 4 的高階音效名稱、兩個 decode mode 的玩法語意、
+  逐幀原版 parity 或一般玩家 E2。
 - [x] **RE-PLAYER-TURN-ORIGINAL-E2-ANCHOR**：以固定雜湊的未修改
   `FD2.EXE`／`FD2.SAV` 複本，在 Docker DOSBox 沙箱中由標題、開場對話走到
   第一戰第一個我方單位的玩家指令格；保存 320×200 原版畫面、按鍵時間線、
@@ -29,6 +31,27 @@
   及 [`battle-player-turn-original-dosbox.png`](../figures/battle-player-turn-original-dosbox.png)。
   這是一般玩家「玩家回合可操作」的 E2 原版錨點，不是重製端同狀態 parity，
   也不代表敵方 AI 回合或整個戰場 UI 已完成。
+
+### 2026-08-11 進度勘誤：演出 owner 已接線，E2 仍未宣稱
+
+本節取代本表較早「尚無 `0x15311`／`0x1548E` owner」與「`0x13FD4` 仍只有
+state-only」的現況敘述；那些段落保留作時間序列證據，不再當作目前狀態。
+
+- `remake/internal/battle/native_ai_mode11_runtime.go` 會要求完整 raw record、
+  command book、item row 與物理 producer provenance，建立兩段可編輯 stage。
+  `remake/cmd/fd2/native_ai_mode11_execute.go` 以 continuation 保持同一單位的
+  stage 順序：`0x15311` 重用已驗證 command／item 消費端，`0x1548E` 重用 typed
+  physical damage／FIGANI 演出，`0x14121` 的 blocked-search fallback 完成後才
+  進 `0x13FD4`。任一路徑缺證據、目標、路徑或演出資源就停止。
+- `remake/cmd/fd2/native_ai_idle_recovery.go` 是 `0x13FD4` 的正式 indexed／
+  音訊 owner：先驗證 raw sample `[0x53EEC]` index `4`／loop `1`、
+  `0x12D7B`、兩個 decode tuple、修正後的 `0x11EB0` ABI、FDICON selector、
+  DAC palette 與 320×200 frame，再播放 `sfx[4]` 並逐 frame 等待繪圖確認；
+  HP 僅在第三次確認後提交。Draw／資產／sample／record 任一失敗都回復
+  `[0x51A83]` 快照並停止。
+- 此批是「原始證據→可見窄切片」的 E1 完成，不是原版高階語意完成：index 4
+  音色名稱、`0x1DA16` mode 的玩法名稱、完整 command／spell／item 表現、同一
+  未修改原版狀態的逐幀／逐音訊 E2 仍列為待辦。
 
 ## 本輪優先工作（2026-08-10）
 
@@ -53,11 +76,10 @@
 - [~] **RE-AI-14EF0-RUNTIME-CONSUMER-20260810**：raw producer→`0x14EF0`
   route→command／item state-only executor 已接上；mode 3／9 raw `+0x08`
   查找與 mode 5 mutable event grid／state tail 也有 Docker regression。
-  mode 11 現另有 `SelectNativeAIMode11Transaction` 保存兩個獨立 raw gate 的
-  純 E0 路由選擇（含 `0x14121` 前置路由）；雙動作 transaction owner、
-  `PlanNativeAIIdleRecovery` 的 state-only 結果已拆出但其
-  `0x12D7B` recovery presentation、mode 5 raw AIL sample 的遊戲名稱、未知
-  command／relocation 與未修改原版 E2 仍待補證。
+  mode 11 現另有 `SelectNativeAIMode11Transaction` 與 runtime stage owner，
+  已把 `0x15311`／`0x1548E`／`0x14121→0x13FD4` 接到可編輯執行路徑；
+  `0x13FD4` 已有 indexed／音訊消費端。mode 5 raw AIL sample 的遊戲名稱、
+  未知 command／relocation、完整原版逐幀／逐音訊比對與未修改原版 E2 仍待補證。
 
 - [x] **RE-AI-14EF0-RAW-DISPATCH**：合法 IDA Pro 9.4 與 Docker Capstone
   5.0.3 交叉固定 `0x14ef0..0x15055` 的完整 raw 尾端契約：三個 producer

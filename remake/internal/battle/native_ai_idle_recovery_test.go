@@ -107,8 +107,8 @@ func TestBuildNativeAIIdleRecoveryPresentationPreservesRawSequence(t *testing.T)
 	}
 	wantCopy := NativeAIIdleRecoveryCopy{
 		SourceOffset: 0xA0504, DestinationOffset: 0x140,
-		SourceStride: 0x1C8, DestinationStride: 0x138,
-		Rows: 0xC0, Length: 0x1C8,
+		SourceStride: 0x1C8, DestinationStride: 0x140,
+		Rows: 0xC0, Length: 0x138,
 	}
 	if presentation.FirstCopy != wantCopy || presentation.SecondCopy != wantCopy {
 		t.Fatalf("copy passes=%+v/%+v", presentation.FirstCopy, presentation.SecondCopy)

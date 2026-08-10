@@ -3625,17 +3625,37 @@ handoff 或一般玩家回合證據。
   stage 順序與 route 位址。第一段只有 raw `[0x53C23] >= 6` 才進
   `0x15311`；第二段永遠存在，由 raw `[0x53C4F] >= 6` 選 `0x1548E` 或
   `0x14121`。stage callback 缺失或失敗會停止後續階段。此 API 不提供
-  command、physical、spell、item、movement 或 indexed effect 語意，因此
-  不得直接視為正式敵方 AI planner。
+  command、physical、spell、item、movement 或 indexed effect 語意；正式 runtime
+  owner 另由 `native_ai_mode11_runtime.go`／`native_ai_mode11_execute.go` 接線，
+  因此不可把這個純 stage API 本身直接視為完整敵方 AI planner。
 - `NativeAIIdleRecoveryPresentation`／
   `ApplyNativeAIIdleRecoveryWithPresentation` 保存 `0x13FD4` 已證實的
   sample、解碼、拷貝與 wait 參數；presentation callback 必須成功且不得改動
   raw record，才會以 `max/5` 封頂結果寫回 `+0x40`。缺 owner、callback 錯誤
-  或 record 竄改會回復快照並失敗即關閉。這不是畫面或音訊接線，也不替
+  或 record 竄改會回復快照並失敗即關閉。該 API 保持原始 callback 契約；
+  實際 indexed／音訊消費端由 `native_ai_idle_recovery.go` 另行提供，仍不替
   `[0x53EEC]` index 4 命名。
 - Docker 的 `go test ./internal/battle -run 'NativeAIMode11|NativeAIIdleRecovery'`
   已通過；原版未修改複本另由 Docker DOSBox 走到第一戰第一個我方單位的
   玩家指令格，畫面與輸入時間線見
   [`native-player-turn-original.json`](../data/ui-traces/native-player-turn-original.json)。
   這是一般玩家回合 E2 原版錨點，不是重製端同狀態對照，也不解除敵方
-  回合、畫面／音訊 owner 或完整戰場 UI 的 E2 閘門。
+  回合、逐幀／逐音訊 parity 或完整戰場 UI 的 E2 閘門。
+
+### 2026-08-11 目前 owner 狀態勘誤
+
+上一節的「尚未接線」是本輪開始前的邊界；目前已補上受 raw provenance
+保護的 E1 消費端：
+
+- mode 11 由 `native_ai_mode11_runtime.go` 建立兩段 stage，
+  `native_ai_mode11_execute.go` 保持 `0x15311`→`0x1548E`／`0x14121` 的同單位
+  continuation。`0x15311` 的已閉合 command／item family 重用既有 executor；
+  `0x1548E` 使用 typed physical damage／FIGANI owner；缺 target、path、table
+  或 raw provenance 時失敗即關閉。
+- `0x13FD4` 由 `native_ai_idle_recovery.go` 消費 raw sample、indexed map
+  compositor、FDICON selector 與修正後的 312×192 copy ABI，逐 frame 等待後才
+  寫回 HP。音效只接受 `[0x53EEC]` index `4`／loop `1` 的現有 `sfx[4]`；
+  `0x1DA16` mode、sample 高階名稱與色彩語意仍未知。
+- 這些變更只把證據接到 E1 窄切片，不提升為原版一般玩家 E2、逐像素／逐音訊
+  parity，也不替其他 `0x13FD4` caller 猜測玩法。驗收入口與剩餘 gate 以
+  `docs/knowledge-base/91-worklist.md` 為準。

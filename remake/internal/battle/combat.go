@@ -293,6 +293,23 @@ type AIPlan struct {
 	// verified command-mask/+0x27/MP gates at 0x1598a. It is evidence only: planner code
 	// must still resolve target, score, presentation, and execution separately.
 	NativeScoredCommands []int
+	// NativeMode11Stages preserves the direct mode-11 dispatcher as one
+	// caller-owned sequence.  Each stage retains its raw route ordinal; the
+	// command/physical plan or the optional 0x13FD4 decision is consumed only
+	// after its predecessor has completed presentation.  A nil slice means the
+	// plan is not mode 11.
+	NativeMode11Stages []NativeAIMode11StagePlan
+}
+
+// NativeAIMode11StagePlan is the executable boundary for one direct mode-11
+// stage.  Action is used by 0x15311/0x1548E and the raw 0x14121 movement path;
+// Recovery is present only when 0x14121 returned zero and the 0x13FD4 raw HP
+// gates accepted.  Keeping both optional is intentional: the original common
+// tail can complete without a visible action when the recovery gates reject.
+type NativeAIMode11StagePlan struct {
+	Stage    NativeAIMode11Stage
+	Action   *AIPlan
+	Recovery *NativeAIIdleRecoveryDecision
 }
 
 // NativeAIActionKind is deliberately a route label, not a gameplay name.
@@ -405,6 +422,16 @@ func (s *State) NextAIPlan() *AIPlan {
 	for _, u := range s.Units {
 		if !u.OnField || !u.Alive() || u.Camp == Own || u.Acted || u.Paralyzed {
 			continue
+		}
+		// Mode 11 has its own direct 0x1598A→0x15311→0x14237 dispatcher;
+		// it must be consumed before the separate 0x14EF0 bridge is considered.
+		if nativePlan, handled, err := s.nextNativeAIMode11Plan(u); handled {
+			if err != nil {
+				return &AIPlan{U: u, SpellID: -1, NativeError: err}
+			}
+			if nativePlan != nil {
+				return nativePlan
+			}
 		}
 		if nativePlan, handled, err := s.nextNativeAI14EF0Plan(u); handled {
 			if err != nil {

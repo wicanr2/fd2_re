@@ -131,3 +131,23 @@ record 快照交給 caller-owned presentation callback；callback 失敗、缺 o
 E0／E1 的非破壞性交易邊界，不是 renderer／音訊接線，也不宣稱完成 mode 2／11
 正式敵方回合。Docker focused regression 已驗證所有 raw 參數、回呼順序、原子
 提交與失敗即關閉。
+
+## 2026-08-11 重製端 indexed／音訊 owner 勘誤（E1）
+
+前一節所稱「尚不是 renderer／音訊接線」是本輪實作前的歷史狀態；目前
+`remake/cmd/fd2/native_ai_idle_recovery.go` 已接上受 raw provenance 保護的
+窄 owner：
+
+- 先驗證 `0x12D7B(a1)`、`[0x53EEC]` index `4`／loop `1`、兩個 `0x1DA16`
+  tuple `(2,0xFD)`→`(0,0)`、兩個 `0x11EB0` 的
+  `0xA0504`／`0x140`／`0x1C8`／`0x138`／`0xC0`，以及三次 `0x17AA9(1)`。
+- 以既有 FDICON 24×24 selector、DAC palette 與 indexed map compositor 產生
+  三個 320×200 frame；音效只消費對應的 `sfx[4]`，不將 index 4 命名成某種
+  角色或回復音。
+- 第三個 Draw 確認且 raw record 仍與 preflight 相同後才寫入 `record+0x40`
+  與 `[0x51A83]=1`；sample、palette、FDICON、frame 或 record 變動會回復
+  `[0x51A83]` 快照並停止。
+
+這是 E1 的資料到可見 owner 連通性，不是原版逐幀／逐音訊 parity；
+`0x1DA16` 的高階玩法語意、index 4 音色名稱、其他 caller 的一般玩家路徑及
+同狀態 E2 仍未知。原始位址與雜湊契約保持不變。

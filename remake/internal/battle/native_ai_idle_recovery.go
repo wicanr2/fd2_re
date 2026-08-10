@@ -19,8 +19,10 @@ type NativeAIIdleRecoveryDecision struct {
 }
 
 // NativeAIIdleRecoveryCopy preserves the raw 0x11EB0 copy arguments used by
-// the recovery presentation. The names are ABI fields, not renderer or
-// gameplay meanings.
+// the recovery presentation. SourceOffset/DestinationOffset retain the first
+// two raw pointer/offset arguments; SourceStride, DestinationStride, Rows and
+// Length expose the directly decoded source stride, destination stride, row
+// count and copy width. These are ABI fields, not renderer or gameplay names.
 type NativeAIIdleRecoveryCopy struct {
 	SourceOffset      uint32
 	DestinationOffset uint32
@@ -88,8 +90,8 @@ func BuildNativeAIIdleRecoveryPresentation(decision NativeAIIdleRecoveryDecision
 	}
 	copyArgs := NativeAIIdleRecoveryCopy{
 		SourceOffset: 0xA0504, DestinationOffset: 0x140,
-		SourceStride: 0x1C8, DestinationStride: 0x138,
-		Rows: 0xC0, Length: 0x1C8,
+		SourceStride: 0x1C8, DestinationStride: 0x140,
+		Rows: 0xC0, Length: 0x138,
 	}
 	return NativeAIIdleRecoveryPresentation{
 		Unit: decision.Unit, BeforeHP: decision.CurrentHP, AfterHP: decision.NextHP,
