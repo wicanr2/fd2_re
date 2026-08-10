@@ -258,6 +258,13 @@ type AIPlan struct {
 	Path    []Cell // 含起點;len>=2 = 要移動(引擎播行走動畫)
 	Target  *Unit  // 到位後攻擊目標(nil = 僅移動/待機)
 	SpellID int    // 原版 spell command 的資料欄位；-1 表示本計畫不施法
+	// NativeMode2Physical 標記原始 mode 2 物理候選窄切片；只有計畫確實使用
+	// 脫離的 runtime record、0x4e555 移動表與已驗證的 0x14237 評分契約時才為真。
+	// 它不代表前置 0x14ef0 路由或所有 native mode 已閉合。
+	NativeMode2Physical bool
+	// NativeError 是失敗即關閉的來源／執行期錯誤；非 nil 時，命令層 runner
+	// 必須在消耗單位行動前停止。
+	NativeError error
 	// NativeScoredCommands preserves raw command indices that passed the
 	// verified command-mask/+0x27/MP gates at 0x1598a. It is evidence only: planner code
 	// must still resolve target, score, presentation, and execution separately.
@@ -361,6 +368,14 @@ func (s *State) NextAIPlan() *AIPlan {
 	for _, u := range s.Units {
 		if !u.OnField || !u.Alive() || u.Camp == Own || u.Acted || u.Paralyzed {
 			continue
+		}
+		if nativePlan, handled, err := s.nextNativeAIPhysicalPlan(u); handled {
+			if err != nil {
+				return &AIPlan{U: u, SpellID: -1, NativeError: err}
+			}
+			if nativePlan != nil {
+				return nativePlan
+			}
 		}
 		best, moveTarget := s.aiTargets(u)
 		if moveTarget == nil {

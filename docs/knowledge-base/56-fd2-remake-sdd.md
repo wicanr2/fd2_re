@@ -55,9 +55,14 @@ actor `+0x48`、target `+0x4a` 與必要時 `0x4e516([0x53c2f])` 分派
 `0x1548e`／`0x15311`／`0x15055`；完整低階契約見
 [`fd2_ai_14ef0_dispatch_ida.txt`](../data/ida/fd2_ai_14ef0_dispatch_ida.txt)。只有 `0x1598A` 內的 `0x15AD8→0x15B77`
 負責該 producer 的 raw score/tie-break；`0x1567E` 改呼 `0x15880`。
-這取代舊文件把 `0x15140` 稱作 AI entry 的說法。重製端只保存
-`SelectNativeAI14EF0Tail` 的無副作用 raw 路由，缺 provenance 即失敗關閉，
-不接 `NextAIPlan`。SDD 只授權保存上述 raw call topology；
+這取代舊文件把 `0x15140` 稱作 AI entry 的說法。重製端仍只保存
+`SelectNativeAI14EF0Tail` 的無副作用 raw 路由，缺 provenance 即失敗關閉；
+2026-08-10 另以一個明確的 E1 窄切片讓 `NextAIPlan` 僅在原始 mode 2、完整
+`0x4e555` 移動表、FDFIELD 地形／組成來源、物品幾何與
+`0x14237` 評分來源齊全時消費物理候選。這個消費端（consumer）不代表
+`0x14EF0` 前置選擇、其他 mode、命令／法術／物品交易或 `0x1548E` 演出已閉合；
+其餘情況維持既有重製端相容路徑或在 raw provenance 缺失時失敗即關閉。
+SDD 只授權保存上述原始呼叫拓撲（raw call topology）與這個標明範圍的執行期窄切片（runtime slice）；
 `+6` 的 raw camp code 已由 constructor 與 `0x14818` consumer 固定為
 敵0／友1／己2；但完整 target transaction、movement/effect/UI 與 runtime
 AI execution 仍是 fail-closed，不得由 normalized `aiActUnit` 反推 native parity。
@@ -72,8 +77,9 @@ command-mask 的 `0x4E516` table。
 它只連接已證實的 row-major movement destinations、caller-provided
 `0x14818` geometry、raw `+5/+6` target filter 與 detached record snapshots。
 地形百分比修正、`0x1DEBE`、target `+8` 等輸入必須由明示 resolver 提供；
-缺失時失敗即關閉。這是 E0 diagnostic bridge，不是 command record loader、
-正式 AI planner、戰鬥執行器或 UI consumer；`NextAIPlan` 仍維持近似路徑。
+缺失時失敗即關閉。這是 E0/E1 窄資料橋，不是完整 command record loader、
+正式 native AI planner、原生戰鬥演出或 UI consumer；`NextAIPlan` 只有上述
+mode 2 來源完整時採用它，其餘模式仍不可宣稱原版一致。
 
 上層掃描現已有可重現的完整指令產物
 [`phase setup`](../data/fd2_ai_phase_setup_disasm.txt)、

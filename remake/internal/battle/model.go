@@ -548,19 +548,23 @@ type State struct {
 	// turn/event 列與可編輯 scenario 完全相符的 FDFIELD rows 深複製到
 	// Roster。它不代表動態改寫排程或 Game controller handoff 已完成。
 	HasNativePendingGroupBinding bool
-	NativeFieldEventSlots        []int                       // row-major -1/0..15；0x13a44 的 1-based low5 已正規化
-	NativeFieldEvents            []NativeFieldEvent          // FDFIELD control 16×2 raw event-id/selector table
-	NativeFieldEventRules        []NativeFieldEventRule      // 已由 handler 閉合、仍保留 selector timing 的 editable rules
-	NativeTileBlitModes          []byte                      // live FDFIELD entry byte+3; exact export admits it, then 0x4dbfc/0x14818 own mutation
-	NativeTerrainControl         []byte                      // raw FDSHAP four-byte terrain records; nil unless exact renderer export exists
-	NativeTerrainMoveCodes       []byte                      // FDSHAP control byte+1 selected by each FDFIELD tile; nil unless the complete exact export validates
-	SpellBook                    []Spell                     // scenario-injected spell table; AI command mapping remains data-only
-	NativeCommandBook            []NativeCommandRecord       // verified raw IDs 0..35; distinct from normalized SpellBook
-	NativeCommandResistances     map[int]int                 // verified class raw multiplier; nil means native command effects stay closed
-	CommandLearn                 map[int][]CommandLearnEntry // portrait/growth-row idx -> native level-up command pairs
-	AICommandSpell               map[int]int                 // editable item command byte -> spell id; AI ranking remains separate
-	Treasures                    map[Cell]Treasure           // FDFIELD composition 地形旗標+slot 與 control chest table 的 join
-	NativeTreasureEventRules     map[int]NativeTreasureEventRule
+	NativeFieldEventSlots        []int                  // row-major -1/0..15；0x13a44 的 1-based low5 已正規化
+	NativeFieldEvents            []NativeFieldEvent     // FDFIELD control 16×2 raw event-id/selector table
+	NativeFieldEventRules        []NativeFieldEventRule // 已由 handler 閉合、仍保留 selector timing 的 editable rules
+	NativeTileBlitModes          []byte                 // live FDFIELD entry byte+3; exact export admits it, then 0x4dbfc/0x14818 own mutation
+	NativeTerrainControl         []byte                 // raw FDSHAP four-byte terrain records; nil unless exact renderer export exists
+	NativeTerrainMoveCodes       []byte                 // FDSHAP control byte+1 selected by each FDFIELD tile; nil unless the complete exact export validates
+	// nativeMovementCostRows is the detached 0x4e555 table used by the
+	// original AI/path helpers. It is bound from the versioned asset export;
+	// normalized Cost must never be substituted for this raw table.
+	nativeMovementCostRows   [][]byte
+	SpellBook                []Spell                     // scenario-injected spell table; AI command mapping remains data-only
+	NativeCommandBook        []NativeCommandRecord       // verified raw IDs 0..35; distinct from normalized SpellBook
+	NativeCommandResistances map[int]int                 // verified class raw multiplier; nil means native command effects stay closed
+	CommandLearn             map[int][]CommandLearnEntry // portrait/growth-row idx -> native level-up command pairs
+	AICommandSpell           map[int]int                 // editable item command byte -> spell id; AI ranking remains separate
+	Treasures                map[Cell]Treasure           // FDFIELD composition 地形旗標+slot 與 control chest table 的 join
+	NativeTreasureEventRules map[int]NativeTreasureEventRule
 	// OpenedTreasure is remake-owned state for editable treasure nodes.  It has
 	// no asserted native-global address: native [0x53ad5] is a pointer to a
 	// 0x20-byte battle-local state table (0x10322 copies it; 0x13d00 writes an
@@ -580,6 +584,24 @@ func (s *State) BindNativeFutureItemRows(rows []byte) error {
 		return fmt.Errorf("native future item rows: invalid byte length %d", len(rows))
 	}
 	s.nativeFutureItemRows = append([]byte(nil), rows...)
+	return nil
+}
+
+// BindNativeMovementCostRows supplies the versioned 0x4e555 movement table
+// used by native AI/path helpers. The table is immutable after binding and is
+// copied so callers cannot mutate an in-progress decision.
+func (s *State) BindNativeMovementCostRows(rows [][]byte) error {
+	if s == nil || len(rows) != NativeMovementCostRowCount {
+		return fmt.Errorf("native movement rows: invalid row count")
+	}
+	copyRows := make([][]byte, len(rows))
+	for index, row := range rows {
+		if len(row) != NativeMovementCostRowSize {
+			return fmt.Errorf("native movement selector=%d: invalid row length %d", index, len(row))
+		}
+		copyRows[index] = append([]byte(nil), row...)
+	}
+	s.nativeMovementCostRows = copyRows
 	return nil
 }
 

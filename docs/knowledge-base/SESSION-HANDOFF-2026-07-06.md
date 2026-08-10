@@ -4058,3 +4058,30 @@ CONTINUE、操作覆蓋層與完整戰場 E2 仍未解除。
 精確 22 像素。修正版檔案 MD5 為 `0506c67ad58728c6fcaf45be6f12a432`、SHA-256
 為 `3b3ab913fd0630ce37a80f78476edba0bcacb8e0636cc919dc90e7a09ddd1174`；後續引用
 應以此雜湊與 `battle-visual-gap-ch01.json` 為準。
+
+## 2026-08-10：敵方 AI mode 2 窄執行期切片、祕密商店矩陣與終局音訊邊界
+
+本輪先按優先順序處理敵方人工智慧。合法 IDA Pro 9.4／Docker Capstone 已固定
+`0x13A9F` 的 mode dispatch 與 `0x14237` 物理候選消費邊界；重製端新增
+`battle.State.BindNativeMovementCostRows`，在每個 battle state 綁定版本化
+`0x4e555` 29×20 原始移動列（raw movement rows），並讓 `NextAIPlan` 僅在 mode 2、
+原始選擇碼（selector）、完整 FDFIELD 地形／組成來源、物品幾何、`0x1DEBE` 與
+`0x14237` 評分輸入全部存在時產生物理路徑／目標。缺任何 provenance 會回傳
+`NativeError`，`Game.aiStep` 停止且不消耗行動，不再把缺資料靜默換成另一套
+正規化（normalized）目標選擇。Docker battle regression 已涵蓋成功候選、路徑與缺移動表
+失敗即關閉；這是 E1 窄切片，不是完整敵方 AI。`0x14EF0` 前置選擇、其他 mode、
+命令／法術／物品交易、`0x1548E` 原生演出與一般玩家 E2 仍待下一輪 raw trace。
+
+祕密商店不是共用按鍵。`campaign_full.json` 現保存 23 個城鎮的可編輯
+`native_secret_gate`（可見選項、BIOS 掃描碼（scan code）、祕密商店節點）；
+ch02 與其餘章節的 selection／scan 差異以
+`TestCampaignFullNativeTownSecretGatesAreChapterSpecific` 固定，Runner 仍維持
+「精確組合鍵揭露 selection 5 → 再次確認」兩步邊界。這解除「ch02 祕密店入口未
+資料化」的過時說法，但還不等於 23 章未修改一般玩家 DOSBox E2。
+
+音訊接線改以原版證據為準：戰鬥節點以 `0x51e63` 30-entry chapter table，城鎮／
+商店以 `FDMUS_010`；新增 campaign regression 防止曲目退回單一猜測值。沒有
+已證實終局曲目的 generic `ending` 會經既有 `play_bgm(-1)` 停止前一曲，
+`campaign_full.json` 的終局文字也移除生成器狀態尾註，改為可編輯的玩家可見結語。
+原版 `0x2BCE5` indexed renderer、文字閘門後 montage、確切終局音樂與正式
+campaign handoff 仍失敗即關閉；`FD2_ENDING_PREFIX` 預覽不可當成通關完成。

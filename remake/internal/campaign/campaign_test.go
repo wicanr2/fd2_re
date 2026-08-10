@@ -807,6 +807,90 @@ func TestRunnerNativeTownSecretGateRevealsThenConfirms(t *testing.T) {
 	}
 }
 
+func TestCampaignFullNativeTownSecretGatesAreChapterSpecific(t *testing.T) {
+	c, err := Load("../../assets/scenarios/campaign_full.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := map[string]struct {
+		selection int
+		scan      int
+	}{
+		"town_ch02": {0, 0x54}, "town_ch03": {1, 0x5f}, "town_ch04": {2, 0x6a},
+		"town_ch05": {3, 0x57}, "town_ch06": {4, 0x62}, "town_ch07": {0, 0x6d},
+		"town_ch08": {1, 0x5a}, "town_ch09": {2, 0x65}, "town_ch10": {3, 0x70},
+		"town_ch11": {4, 0x5d}, "town_ch12": {0, 0x5e}, "town_ch13": {1, 0x69},
+		"town_ch14": {2, 0x56}, "town_ch15": {3, 0x61}, "town_ch16": {4, 0x6c},
+		"town_ch17": {0, 0x58}, "town_ch18": {1, 0x64}, "town_ch19": {2, 0x6f},
+		"town_ch20": {3, 0x5c}, "town_ch21": {4, 0x67}, "town_ch22": {0, 0x68},
+		"town_ch26": {4, 0x58}, "town_ch27": {0, 0x63},
+	}
+	if len(want) != 23 {
+		t.Fatalf("test gate table has %d entries, want 23", len(want))
+	}
+	for town, expected := range want {
+		node := c.Nodes[town]
+		if node == nil || node.NativeSecretGate == nil {
+			t.Fatalf("%s lacks editable native_secret_gate", town)
+		}
+		gate := node.NativeSecretGate
+		if gate.Selection != expected.selection || gate.ScanCode != expected.scan ||
+			gate.To != "shop_"+town[5:]+"_secret" {
+			t.Fatalf("%s gate=%+v want selection=%d scan=%#x", town, gate, expected.selection, expected.scan)
+		}
+		// A chord only reveals selection 5. Confirming any visible option must
+		// remain on the hub; the next Enter is a separate lifecycle step.
+		runner := NewRunner(c)
+		runner.Cur = town
+		if !runner.MatchNativeTownSecret(expected.selection, expected.scan) || runner.Cur != town {
+			t.Fatalf("%s exact chord did not reveal in place", town)
+		}
+		if runner.ConfirmNativeTownSecret(expected.selection) || runner.Cur != town {
+			t.Fatalf("%s visible selection entered hidden shop", town)
+		}
+		if !runner.ConfirmNativeTownSecret(5) || runner.Cur != gate.To {
+			t.Fatalf("%s revealed selection did not enter %s", town, gate.To)
+		}
+	}
+}
+
+func TestCampaignFullBGMUsesVerifiedChapterAndTownTables(t *testing.T) {
+	c, err := Load("../../assets/scenarios/campaign_full.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Raw 0x51e63 is indexed by the original zero-based chapter.  The
+	// campaign IDs are player-facing ch01..ch30, so ch01 consumes table[0].
+	wantBattle := []string{
+		"FDMUS_019", "FDMUS_019", "FDMUS_019", "FDMUS_019", "FDMUS_003",
+		"FDMUS_019", "FDMUS_019", "FDMUS_019", "FDMUS_003", "FDMUS_004",
+		"FDMUS_019", "FDMUS_019", "FDMUS_019", "FDMUS_019", "FDMUS_003",
+		"FDMUS_019", "FDMUS_004", "FDMUS_019", "FDMUS_019", "FDMUS_003",
+		"FDMUS_019", "FDMUS_003", "FDMUS_004", "FDMUS_019", "FDMUS_003",
+		"FDMUS_019", "FDMUS_004", "FDMUS_019", "FDMUS_019", "FDMUS_008",
+	}
+	for chapter, want := range wantBattle {
+		id := fmt.Sprintf("battle_ch%02d", chapter+1)
+		node := c.Nodes[id]
+		if node == nil || node.Type != "battle" {
+			t.Fatalf("%s missing battle node: %#v", id, node)
+		}
+		if node.BGM != want {
+			t.Fatalf("%s BGM=%q want raw 0x51e63 table %q", id, node.BGM, want)
+		}
+	}
+	for id, node := range c.Nodes {
+		if node.Type == "town" && node.BGM != "FDMUS_010" {
+			t.Fatalf("%s town BGM=%q want verified FDMUS_010", id, node.BGM)
+		}
+	}
+	ending := c.Nodes["ending"]
+	if ending == nil || ending.Type != "ending" || ending.Text == "" ||
+		strings.Contains(ending.Text, "campaign_full.json 自動生成") {
+		t.Fatalf("ending text is not an editable player-facing epilogue: %#v", ending)
+	}
+}
+
 func TestCampaignFullStoryScriptCoverageMatchesAudit(t *testing.T) {
 	c, err := Load("../../assets/scenarios/campaign_full.json")
 	if err != nil {

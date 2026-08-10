@@ -2147,7 +2147,14 @@ func (g *Game) enterNode() {
 	if n == nil {
 		return // 流程結束(game over)
 	}
-	g.playBGM(n.BGM)
+	// campaign 結局尚無已證實的場景→曲目對映；空白 ending BGM 先停止前一場景，
+	// 避免戰鬥音樂漏到終局頁。若資料明確填入 BGM，仍保留可編輯的曲目入口，
+	// 待證據閉合後即可使用。
+	if n.Type == "ending" && n.BGM == "" {
+		g.stopBGM()
+	} else {
+		g.playBGM(n.BGM)
+	}
 	g.storyBG = false // 預設離開場景背景模式;story+Map 節點下面再開回
 	g.storyWalks = nil
 	g.storyAutoAdvance = 0
@@ -2438,6 +2445,10 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 			g.loadErr = "native future constructor item rows: " + err.Error()
 			return
 		}
+		if err := g.bindNativeMovementCostRows(st); err != nil {
+			g.loadErr = "native movement rows: " + err.Error()
+			return
+		}
 		g.bindCommandLearn(st)
 		g.bindNativeCommandBook(st)
 		g.bindNativeCommandResistances(st)
@@ -2498,6 +2509,22 @@ func (g *Game) bindNativeCommandBook(st *battle.State) {
 		return
 	}
 	st.NativeCommandBook = append([]battle.NativeCommandRecord(nil), g.nativeCommandBook...)
+}
+
+// bindNativeMovementCostRows 將有機會進入 AI runner 的每個 battle state 綁定
+// 版本化 0x4e555 表。缺少或格式錯誤時，在 mode 2 窄切片嘗試以正規化移動成本
+// 取代原始成本前先停止。
+func (g *Game) bindNativeMovementCostRows(st *battle.State) error {
+	if st == nil {
+		return fmt.Errorf("native movement rows: nil battle state")
+	}
+	rows, err := battle.LoadNativeMovementCostRows(
+		assetPath("assets/data/native_movement_cost_rows.json"),
+	)
+	if err != nil {
+		return err
+	}
+	return st.BindNativeMovementCostRows(rows)
 }
 
 func (g *Game) bindNativeCommandResistances(st *battle.State) {
@@ -7667,6 +7694,11 @@ func loadGame() *Game {
 	// 載入單位(M1)
 	if st, err := battle.Load(assetPath("assets/map0_units.json")); err == nil {
 		g.st = st
+		if err := g.bindNativeFutureItemRows(st); err != nil {
+			g.loadErr = "native future constructor item rows: " + err.Error()
+		} else if err := g.bindNativeMovementCostRows(st); err != nil {
+			g.loadErr = "native movement rows: " + err.Error()
+		}
 	} else if g.loadErr == "" {
 		g.loadErr = "units: " + err.Error()
 	}
@@ -8300,6 +8332,13 @@ func (g *Game) aiStep() {
 	if plan == nil {
 		g.aiBusy = false
 		g.finishTurn()
+		return
+	}
+	if plan.NativeError != nil {
+		// Native mode 2 有明確的原始來源閘門；閘門失敗時不可消耗行動，也不可
+		// 靜默替換成正規化 AI。
+		g.loadErr = "native AI: " + plan.NativeError.Error()
+		g.aiBusy = false
 		return
 	}
 	u := plan.U

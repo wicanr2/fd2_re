@@ -6,6 +6,29 @@
 
 ## 目前驗收（2026-08-09）
 
+## 本輪優先工作（2026-08-10）
+
+- [~] **RE-AI-MODE2-PHYSICAL-RUNTIME**：把合法 IDA Pro／Docker Capstone 固定的
+  `0x14237` 物理候選窄契約接到 `battle.State.NextAIPlan`。執行期現在會要求
+  原始 mode 2、`0x4e555` 29×20 移動表、FDFIELD 地形／組成來源、物品幾何、
+  `0x1DEBE` 與 `0x14237` 評分輸入；缺任何來源就停止，不退回另一套目標選擇。
+  Docker 真實測試已涵蓋選目標、路徑與缺表失敗即關閉。這不是完整敵方人工智慧：
+  `0x14EF0` 前置選擇、mode 0/1/3/4/5/7/8/9/10/11、法術／物品命令交易、
+  `0x1548E` 原生演出與一般玩家 E2 仍未閉合。
+- [~] **NATIVE-TOWN-SECRET-GATE-MATRIX**：`campaign_full.json` 現以可編輯
+  `native_secret_gate` 保存 23 個城鎮的選項／BIOS 掃描碼（scan code）／祕密商店
+  目的地；`ch02` 的「精確組合鍵揭露→再次確認 selection 5」與其餘章節的差異表
+  已由決定性回歸（deterministic regression）鎖定。這只證明資料與 Runner 邊界，不宣稱每章
+  未修改一般玩家 DOSBox E2 輸入已完成。
+- [~] **ENDING-AUDIO-WIRING**：戰鬥 BGM 以原版 `0x51e63` 30-entry table、
+  城鎮／商店以已證實的 `FDMUS_010` 做資料回歸；空白 ending 節點會透過已證實的
+  `play_bgm(-1)` 路徑停止前一曲，避免猜測終局曲目。原版 `0x2BCE5` indexed
+  結局 renderer、兩段文字閘門後的 montage、確切終局音樂與正式 campaign
+  handoff 仍失敗即關閉。
+- [ ] **下一個 AI 垂直切片**：以未修改原版敵方回合 trace 關閉 `0x14EF0` 前置
+  選擇與 mode 0/1/3/4/5/7/9/10/11 的消費端；未取得同一狀態的 raw trace 前，
+  不得把既有 normalized fallback 宣稱為原版 AI。
+
 - [x] **RE-AI-14EF0-RAW-DISPATCH**：合法 IDA Pro 9.4 與 Docker Capstone
   5.0.3 交叉固定 `0x14ef0..0x15055` 的完整 raw 尾端契約：三個 producer
   的固定順序、三個 signed score、record `+0x34 & 0x40`、actor／target
