@@ -6,6 +6,30 @@
 
 ## 目前驗收（2026-08-09）
 
+## 本輪收束（2026-08-11）
+
+- [~] **RE-AI-MODE11-RAW-STAGE-TRANSACTION**：`NativeAIMode11Stage`、
+  `Stages` 與 `ExecuteNativeAIMode11Transaction` 已把 IDA 證實的呼叫順序
+  固定成「有 `[0x53C23] >= 6` 才先走 `0x15311`，再無條件進第二段；
+  `[0x53C4F] >= 6` 選 `0x1548E`，否則選 `0x14121`」。回呼失敗不會執行
+  後續 stage，且不把 route 改名成命令、攻擊、法術或移動。這一輪已完成
+  可編輯的 E0／E1 路由交易與 Docker regression；真正的 `0x15311`／
+  `0x1548E` 指令／物理演出 owner、`0x14121` 零回傳後的 `0x13FD4` handoff
+  與一般玩家敵方回合仍 fail-closed。
+- [~] **RE-AI-13FD4-RAW-PRESENTATION-COMMIT**：新增完整 raw presentation
+  描述與原子提交 wrapper，保存 `[0x53EEC]` sample tuple、兩段
+  `0x1DA16` 解碼、兩段 `0x11EB0` 拷貝與三次 `0x17AA9(1)`；callback 缺失、
+  失敗或竄改 record 時不提交 HP。這一輪已通過 `NativeAIIdleRecovery` 的
+  Docker regression，但尚未證實 indexed framebuffer、色彩、音效 sample
+  名稱或正式 renderer／audio owner，因此不可標成「AI 回復效果完成」。
+- [x] **RE-PLAYER-TURN-ORIGINAL-E2-ANCHOR**：以固定雜湊的未修改
+  `FD2.EXE`／`FD2.SAV` 複本，在 Docker DOSBox 沙箱中由標題、開場對話走到
+  第一戰第一個我方單位的玩家指令格；保存 320×200 原版畫面、按鍵時間線、
+  MD5／SHA-256 與限制於 [`native-player-turn-original.json`](../data/ui-traces/native-player-turn-original.json)
+  及 [`battle-player-turn-original-dosbox.png`](../figures/battle-player-turn-original-dosbox.png)。
+  這是一般玩家「玩家回合可操作」的 E2 原版錨點，不是重製端同狀態 parity，
+  也不代表敵方 AI 回合或整個戰場 UI 已完成。
+
 ## 本輪優先工作（2026-08-10）
 
 - [~] **RE-AI-MODE2-PHYSICAL-RUNTIME**：把合法 IDA Pro／Docker Capstone 固定的

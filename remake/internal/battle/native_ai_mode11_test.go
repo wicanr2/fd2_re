@@ -1,6 +1,9 @@
 package battle
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestSelectNativeAIMode11TransactionPreservesIndependentGates(t *testing.T) {
 	tests := []struct {
@@ -32,5 +35,60 @@ func TestSelectNativeAIMode11TransactionFailsClosedWithoutRawScore(t *testing.T)
 	}
 	if _, err := SelectNativeAIMode11Transaction(6, 6, true, false); err == nil {
 		t.Fatal("missing raw physical score unexpectedly accepted")
+	}
+}
+
+func TestNativeAIMode11StagesPreserveNativeOrder(t *testing.T) {
+	tx, err := SelectNativeAIMode11Transaction(6, 5, true, true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got []NativeAIMode11Stage
+	if err := ExecuteNativeAIMode11Transaction(tx, func(stage NativeAIMode11Stage) error {
+		got = append(got, stage)
+		return nil
+	}); err != nil {
+		t.Fatal(err)
+	}
+	want := []NativeAIMode11Stage{
+		{Ordinal: 1, Route: NativeAIMode11Call15311},
+		{Ordinal: 2, Route: NativeAIMode11Call14121},
+	}
+	if len(got) != len(want) || got[0] != want[0] || got[1] != want[1] {
+		t.Fatalf("stages=%#v, want %#v", got, want)
+	}
+}
+
+func TestNativeAIMode11StageFailureStopsLaterRoute(t *testing.T) {
+	tx, err := SelectNativeAIMode11Transaction(6, 6, true, true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	called := 0
+	if err := ExecuteNativeAIMode11Transaction(tx, func(stage NativeAIMode11Stage) error {
+		called++
+		if stage.Ordinal == 1 {
+			return fmt.Errorf("presentation owner unavailable")
+		}
+		return nil
+	}); err == nil {
+		t.Fatal("failed first stage unexpectedly accepted")
+	}
+	if called != 1 {
+		t.Fatalf("later stage executed after failure: called=%d", called)
+	}
+}
+
+func TestNativeAIMode11StagesRejectInvalidRoute(t *testing.T) {
+	if _, err := (NativeAIMode11Transaction{
+		FirstRoute:  NativeAIMode11Call14121,
+		SecondRoute: NativeAIMode11Call14121,
+	}).Stages(); err == nil {
+		t.Fatal("invalid first route unexpectedly accepted")
+	}
+	if err := ExecuteNativeAIMode11Transaction(NativeAIMode11Transaction{
+		SecondRoute: NativeAIMode11NoFirst,
+	}, func(NativeAIMode11Stage) error { return nil }); err == nil {
+		t.Fatal("invalid second route unexpectedly accepted")
 	}
 }

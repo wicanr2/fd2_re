@@ -4199,3 +4199,37 @@ state-only 契約，尚未把影格、色彩、音效或 renderer 接入正式�
   並在 callback 中消費 raw sample tuple；缺樣本時正式執行路徑仍失敗即關閉。
   完整證據見
   [`fd2_ai_mode5_full_ida_20260810.txt`](../data/ida/fd2_ai_mode5_full_ida_20260810.txt)。
+
+## 2026-08-11：mode 11／`0x13FD4` 交易邊界與未修改原版玩家回合
+
+本輪接續上一輪中斷的 AI 工作，先核對 worktree 與固定雜湊，沒有覆蓋既有
+未提交變更。新增內容如下：
+
+- `remake/internal/battle/native_ai_mode11.go` 的
+  `NativeAIMode11Stage`／`Stages`／`ExecuteNativeAIMode11Transaction` 保存
+  `0x13E02` 之後的兩段 raw route 順序。第一段由 `[0x53C23] >= 6` 選
+  `0x15311`；第二段無條件執行，由 `[0x53C4F] >= 6` 選 `0x1548E`，否則選
+  `0x14121`。回呼失敗會停止後續 stage；未替 route 猜 command、物理、法術、
+  道具或移動語意。
+- `remake/internal/battle/native_ai_idle_recovery.go` 的
+  `NativeAIIdleRecoveryPresentation` 保存 `0x13FD4` 的 sample／解碼／拷貝／
+  wait raw 參數；`ApplyNativeAIIdleRecoveryWithPresentation` 只有在 callback
+  成功、record 未被改動且重新 preflight 相同時才寫入 `+0x40`，其餘情況回復
+  快照並失敗即關閉。完整位址與參數仍見
+  [`fd2_ai_13fd4_full_ida_20260810.txt`](../data/ida/fd2_ai_13fd4_full_ida_20260810.txt)。
+- Docker focused regression 實際通過：
+  `go test ./internal/battle -run 'NativeAIMode11|NativeAIIdleRecovery' -count=1`。
+  這只是 raw transaction E0／E1，不是正式敵方 AI 回合完成；缺少
+  `0x15311`／`0x1548E`／`0x14121` 的完整消費 owner、indexed framebuffer、
+  音訊 sample 與 mode 11→`0x13FD4` caller handoff 時，正式路徑仍停止。
+- 未修改原版的一般玩家驗證已在 Docker DOSBox 沙箱完成：保持
+  `FD2.EXE`／`FD2.SAV` 原始雜湊，從標題與開場對話走到第一戰第一個我方單位的
+  玩家指令格，保存 320×200 PNG、輸入時間線與雜湊於
+  [`native-player-turn-original.json`](../data/ui-traces/native-player-turn-original.json)。
+  這是玩家回合 E2 原版錨點；尚未取得同一 raw 狀態的重製端對照，且敵方 AI
+  回合／攻擊演出仍未完成。
+
+下一輪應先用同一 raw runtime 狀態建立重製端玩家指令格對照，再取得可回查的
+mode 11 實際 producer／consumer trace；在此之前不可把本輪交易契約升格成完整
+AI 或逐像素 UI parity。Docker 工作皆使用一次性容器；本輪結束要確認 FD2
+容器、臨時 DOSBox 沙箱與 `/tmp/fd2cap` 均已清理。

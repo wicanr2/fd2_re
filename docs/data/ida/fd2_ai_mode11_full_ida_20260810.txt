@@ -160,3 +160,18 @@ mode 11 只有在 `0x14121` 返回零時才由 `0x13E52` 呼叫 `0x13FD4`。因�
 `0x14EF0`。`0x14EF0` 自身也會呼叫 `0x14237`、`0x1598A`、`0x1567E`，
 但那是另一個 caller 的 producer topology；mode 11 在 `0x13E02` 直接走
 `0x1598A`／`0x14237`，不可把兩條 CFG 合併成單一 dispatcher。
+
+## 重製端新增的非破壞性交易邊界（2026-08-11）
+
+`remake/internal/battle/native_ai_mode11.go` 新增
+`NativeAIMode11Stage`、`Stages` 與 `ExecuteNativeAIMode11Transaction`。
+它只把已證實的呼叫順序具型別化：第一段若 `[0x53C23] >= 6` 才是
+`0x15311`，第二段永遠存在，依 `[0x53C4F] >= 6` 選 `0x1548E`，否則選
+`0x14121`。回呼失敗會停止後續階段；回呼仍必須自行提供 raw candidate、
+移動、indexed 演出與提交 owner。這是 E0/E1 的交易安全邊界，不是把
+command、attack、spell 或 movement 名稱猜接到正式敵方回合。
+
+Docker 回歸：`go test ./internal/battle -run 'NativeAIMode11|NativeAIIdleRecovery'`
+通過；原版執行期的一般玩家回合另以
+[`native-player-turn-original.json`](../../data/ui-traces/native-player-turn-original.json)
+保存，尚未提供 mode 11 被一般玩家觸發的 trace。

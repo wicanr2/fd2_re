@@ -1,0 +1,38 @@
+{
+  "evidence_tier": "E2",
+  "scope": "未修改原版一般玩家第一戰玩家回合：第一個我方單位的戰術指令格",
+  "source": {
+    "fd2_exe": {
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "fd2_sav": {
+      "size": 22987,
+      "md5": "409795ccebc2af340d5c74152c2d471c",
+      "sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f"
+    },
+    "sandbox": "/tmp/fd2-player-e2/game",
+    "sandbox_policy": "由原版目錄逐檔複製；原始目錄唯讀且未被掛載為可寫"
+  },
+  "capture": {
+    "container": "fd2-dosbox-screenshot-local",
+    "dosbox_cycles": "fixed 60000",
+    "timeline": "wait:10;repeat:8,Escape,500;wait:1;key:Return;wait:3;repeat:1000,Return,100;wait:3;shot:fast_command",
+    "raw_capture": "DOSBox client 1024x768；取左上角實際 320x200 VGA 畫面",
+    "normalized_png": "docs/figures/battle-player-turn-original-dosbox.png",
+    "md5": "5fed3899fc169a08f68ef1b6a66f80da",
+    "sha256": "d07b0f70689e8e05123e22cf4bccfc8ecaf26ec18e09d50a84b92aed705ddb19",
+    "bytes": 6554
+  },
+  "observed": [
+    "第一戰已由 START 一般玩家路徑進入戰場",
+    "畫面顯示第一個我方單位的原版戰術指令格、肖像、HP/MP、能力欄與游標狀態",
+    "畫面由未修改原版執行檔與原始 FD2.SAV 的 Docker 副本取得"
+  ],
+  "limitations": [
+    "本證據固定的是玩家回合可操作指令格，不代表敵方人工智慧回合已完成逐幀驗證",
+    "尚未取得同一 raw runtime 狀態的重製端整幀對照，因此不提升為介面 parity",
+    "原始存檔與原始執行檔未加入儲存庫；/tmp 沙箱應在本輪結束清理"
+  ]
+}

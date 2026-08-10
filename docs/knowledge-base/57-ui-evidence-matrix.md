@@ -381,3 +381,14 @@ IDA／Capstone 已證實原版命中效果是受原始 frame flag、傷害步進
 同狀態比較為 E2。修正後代表性畫面與擷取條件見
 [`battle-impact-no-global-tint.png`](../figures/battle-impact-no-global-tint.png)／
 [`battle-impact-no-global-tint.json`](../data/ui-traces/battle-impact-no-global-tint.json)。
+
+### 2026-08-11：未修改原版一般玩家回合錨點（E2 partial）
+
+Docker DOSBox 以未修改 `FD2.EXE`／`FD2.SAV` 的複本，從標題與開場正常按鍵
+走到第一戰第一個我方單位的玩家指令格；原始輸入時間線、執行檔／存檔雜湊、
+320×200 PNG 的 MD5／SHA-256 與限制見
+[`native-player-turn-original.json`](../data/ui-traces/native-player-turn-original.json)，
+畫面見 [`battle-player-turn-original-dosbox.png`](../figures/battle-player-turn-original-dosbox.png)。
+這只閉合 UI-02／UI-03 的「一般玩家回合可操作畫面」原版錨點；尚無同一
+raw runtime 狀態的重製端配對，也沒有證明敵方 AI 回合、攻擊演出或全戰場畫面
+已與原版一致。

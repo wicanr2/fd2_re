@@ -114,3 +114,20 @@ IDA direct xref 固定為：
   trace 與 sample 資料列時，維持失敗即關閉。
 - 尚未證實 `0x51A83` 的所有值、`0x53EEC` 資源列、`0xA0504` 目的緩衝區、
   `0xFD` 參數與 `0x4DDD7`／`0x4DEDA` 的高階玩法或音訊含義。
+
+## 重製端新增的非破壞性 presentation／commit 邊界（2026-08-11）
+
+`remake/internal/battle/native_ai_idle_recovery.go` 新增
+`NativeAIIdleRecoveryPresentation`，逐欄保存本函式已證實的 raw 呼叫與寫入：
+前後的 `[0x51A83]=0/1`、`0x12D7B(a1)`、`[0x53EEC]`、sample index `4`／loop `1`、兩段 `0x1DA16` 的
+`(2,0xFD)`→`(0,0)`、兩段 `0x11EB0` 的 `0xA0504`／`0x140`／
+`0x1C8`／`0x138`／`0xC0`，以及三次 `0x17AA9(1)`。這些欄位保留原始
+位址／參數表達式，沒有命名成畫面、回血、休息或音效。
+
+`ApplyNativeAIIdleRecoveryWithPresentation` 先做同一個 raw preflight，將
+record 快照交給 caller-owned presentation callback；callback 失敗、缺 owner，
+或 callback 改動任何 raw record 時，整筆輸入回復且不寫入 `record+0x40`。
+只有回呼成功且重新計畫仍與原決策相同，才提交 `max/5` 封頂後的 HP。這是
+E0／E1 的非破壞性交易邊界，不是 renderer／音訊接線，也不宣稱完成 mode 2／11
+正式敵方回合。Docker focused regression 已驗證所有 raw 參數、回呼順序、原子
+提交與失敗即關閉。

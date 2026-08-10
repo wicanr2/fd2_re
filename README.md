@@ -14,7 +14,7 @@
 | 領域 | 已驗證成果 | 主要缺口 |
 |---|---|---|
 | 資產與格式 | `.DAT`、RLE 圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與部分 EXE 資料表可重現解析 | 部分執行期改寫、合成器與音訊播放尚未完整接入 |
-| 反向工程 | 戰役狀態機、事件處理器、戰鬥規則、敵方 AI 原始模式與城鎮／商店／教會及存檔邊界已有證據化切片；mode 2 物理候選與 mode 5 事件 state tail 已接失敗即關閉的執行期窄切片，mode 5 另保存原版 `0x25B45` 的 FDOTHER #31 index 12 音效 cue | `0x14EF0` 前置選擇、mode 11 雙動作、`0x13FD4` 完整演出、未知命令／法術／物品交易、逐章戰後流程與原生 CONTINUE 仍採失敗即關閉 |
+| 反向工程 | 戰役狀態機、事件處理器、戰鬥規則、敵方 AI 原始模式與城鎮／商店／教會及存檔邊界已有證據化切片；mode 2 物理候選與 mode 5 事件 state tail 已接失敗即關閉的執行期窄切片，mode 11 已保存兩段 raw route 的順序交易契約，`0x13FD4` 已保存 HP 決策與完整 raw 演出呼叫契約 | `0x14EF0` 前置選擇、mode 11 真正的命令／物理演出 owner、`0x13FD4` indexed／音訊消費端、未知命令／法術／物品交易、逐章戰後流程與原生 CONTINUE 仍採失敗即關閉 |
 | Go／Ebiten 重製 | 地圖、對話、部分戰鬥、城鎮、商店、教會、整備、自有存檔及場景 BGM 消費可操作；戰鬥曲與城鎮曲已有原版表格回歸 | 尚缺完整 30 章玩家路徑、完整原生存檔相容、`0x2BCE5` 結局演出、終局曲目與跨平台驗收 |
 | 原版視覺比對 | ch02 城鎮 variant0 六項、variant1 正常五項、variant2 正常五項（後兩者為修改 LOAD 路徑），以及部分商店、讀檔選單已有整幀 RGB 相同證據 | 完整操作介面估計約 40–45%；秘密選項、一般玩家城鎮路徑、戰場、整備、教會與其餘章節仍需同狀態比較 |
 
@@ -200,6 +200,13 @@ Docker／Xvfb 產生的 640×400 E1 證據。它證明腳本、肖像、藍框�
 | ![ch01 原版 DOSBox 對話框](docs/figures/ch01-dialogue-original-dosbox.png) | ![重製端對話框執行期畫面](docs/figures/dialogue-remake-runtime.png) |
 
 ### 戰場與戰鬥演出
+
+未修改原版已由 Docker 沙箱走到第一戰的一般玩家回合，固定取得第一個我方單位的
+戰術指令格、肖像、HP／MP 與能力欄；這是原版玩家回合 E2 錨點，不是重製端對照圖，
+也不代表敵方人工智慧回合已驗收。來源雜湊、按鍵時間線與限制見
+[`native-player-turn-original.json`](docs/data/ui-traces/native-player-turn-original.json)。
+
+![未修改原版第一戰玩家回合指令格](docs/figures/battle-player-turn-original-dosbox.png)
 
 ch01 戰場目前已能由原始地圖、單位、前景與 HUD 資產合成。首頁主要展示同一份
 `FD2.SAV`、同一鏡頭／游標／回合的 320×200 比較：左為原版 DOSBox，中為重製端

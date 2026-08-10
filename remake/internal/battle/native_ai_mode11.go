@@ -22,6 +22,56 @@ type NativeAIMode11Transaction struct {
 	SecondRoute NativeAIMode11Route // 0x1548E when raw [0x53C4F] >= 6, otherwise 0x14121
 }
 
+// NativeAIMode11Stage is one address-level stage in the mode-11 transaction.
+// Ordinal is the native call order, not a gameplay action number.  The
+// callback owner must supply the complete raw candidate/presentation contract
+// for the route before mutating battle state.
+type NativeAIMode11Stage struct {
+	Ordinal int
+	Route   NativeAIMode11Route
+}
+
+// Stages returns the exact dispatcher order after 0x1598A and 0x14237 have
+// produced their raw scores.  A missing first route is intentionally omitted;
+// the second route is still unconditional in the original dispatcher.
+func (t NativeAIMode11Transaction) Stages() ([]NativeAIMode11Stage, error) {
+	if t.SecondRoute != NativeAIMode11Call14121 && t.SecondRoute != NativeAIMode11Call1548E {
+		return nil, fmt.Errorf("native AI mode 11 second route %#x is invalid", t.SecondRoute)
+	}
+	stages := make([]NativeAIMode11Stage, 0, 2)
+	if t.FirstRoute != NativeAIMode11NoFirst {
+		if t.FirstRoute != NativeAIMode11Call15311 {
+			return nil, fmt.Errorf("native AI mode 11 first route %#x is invalid", t.FirstRoute)
+		}
+		stages = append(stages, NativeAIMode11Stage{Ordinal: 1, Route: t.FirstRoute})
+	}
+	stages = append(stages, NativeAIMode11Stage{Ordinal: 2, Route: t.SecondRoute})
+	return stages, nil
+}
+
+// ExecuteNativeAIMode11Transaction owns only the verified stage ordering. It
+// deliberately receives a caller-owned stage callback: command effects,
+// movement, indexed presentation and the 0x13FD4 fallback are not silently
+// substituted here. A callback failure stops before a later native stage.
+func ExecuteNativeAIMode11Transaction(
+	t NativeAIMode11Transaction,
+	execute func(NativeAIMode11Stage) error,
+) error {
+	if execute == nil {
+		return fmt.Errorf("native AI mode 11 stage executor is unavailable")
+	}
+	stages, err := t.Stages()
+	if err != nil {
+		return err
+	}
+	for _, stage := range stages {
+		if err := execute(stage); err != nil {
+			return fmt.Errorf("native AI mode 11 stage %d route %#x: %w", stage.Ordinal, stage.Route, err)
+		}
+	}
+	return nil
+}
+
 // SelectNativeAIMode11Transaction preserves the direct mode-11 control flow:
 // 0x1598A has already produced [0x53C23], 0x15311 is called at signed >=6,
 // 0x14237 then runs unconditionally, and [0x53C4F] selects 0x1548E or

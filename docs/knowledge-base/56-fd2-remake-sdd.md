@@ -3616,3 +3616,26 @@ handoff 或一般玩家回合證據。
 這只提升 raw presentation 邊界的 E0 證據；重製端仍只執行 state-only
 `PlanNativeAIIdleRecovery`／`ApplyNativeAIIdleRecovery`，缺少同狀態原版逐幀
 擷取時不得接入正式 renderer 或替參數命名為回血／音效效果。
+
+## 2026-08-11：mode 11／`0x13FD4` 交易邊界與原版玩家回合錨點
+
+本輪把兩個高影響 native 路徑整理成可測但不猜語意的交易邊界：
+
+- `NativeAIMode11Stage`／`ExecuteNativeAIMode11Transaction` 僅執行已證實的
+  stage 順序與 route 位址。第一段只有 raw `[0x53C23] >= 6` 才進
+  `0x15311`；第二段永遠存在，由 raw `[0x53C4F] >= 6` 選 `0x1548E` 或
+  `0x14121`。stage callback 缺失或失敗會停止後續階段。此 API 不提供
+  command、physical、spell、item、movement 或 indexed effect 語意，因此
+  不得直接視為正式敵方 AI planner。
+- `NativeAIIdleRecoveryPresentation`／
+  `ApplyNativeAIIdleRecoveryWithPresentation` 保存 `0x13FD4` 已證實的
+  sample、解碼、拷貝與 wait 參數；presentation callback 必須成功且不得改動
+  raw record，才會以 `max/5` 封頂結果寫回 `+0x40`。缺 owner、callback 錯誤
+  或 record 竄改會回復快照並失敗即關閉。這不是畫面或音訊接線，也不替
+  `[0x53EEC]` index 4 命名。
+- Docker 的 `go test ./internal/battle -run 'NativeAIMode11|NativeAIIdleRecovery'`
+  已通過；原版未修改複本另由 Docker DOSBox 走到第一戰第一個我方單位的
+  玩家指令格，畫面與輸入時間線見
+  [`native-player-turn-original.json`](../data/ui-traces/native-player-turn-original.json)。
+  這是一般玩家回合 E2 原版錨點，不是重製端同狀態對照，也不解除敵方
+  回合、畫面／音訊 owner 或完整戰場 UI 的 E2 閘門。
