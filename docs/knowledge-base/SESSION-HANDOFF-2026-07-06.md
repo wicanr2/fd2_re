@@ -4107,8 +4107,8 @@ campaign handoff 仍失敗即關閉；`FD2_ENDING_PREFIX` 預覽不可當成通�
   與獨立 score word 分開，依 raw `+0x34` bit、actor／target `+0x48/+0x4A`
   及 command word 走 `0x1548E`／`0x15311`／`0x15055`；mode 3／9 的
   `+0x35→+0x08` lookup 與 mode 5 state tail 有 focused Docker regression。
-  未知 command／item relocation、mode 11、`0x25B45`／`0x17AA9` indexed
-  presentation、一般玩家回合 E2 仍未關閉。
+  未知 command／item relocation、mode 11、mode 5 raw sample audio、一般玩家
+  回合 E2 仍未關閉；本節較早的「indexed presentation」暫稱已由末尾勘誤撤回。
 - 結局音訊證據 `fd2_ending_audio_ida.txt` 已加入三筆精確事件：
   `0x2C5CF→FDMUS_004`、`0x2C1AC→play_bgm(-1)`、`0x2C1F5→FDMUS_018`。
   `internal/ending` timeline／預覽器會依序驗證並消費這三筆；這不等於完整
@@ -4128,7 +4128,8 @@ mode 11 路由型別，明確表示它不是 `0x14EF0` 尾端。
 
 Docker focused regression 已通過四種分數組合與缺少任一 raw score 的失敗即關閉。
 這個選擇器沒有寫入戰鬥狀態，也沒有假接 transaction owner、命令／法術／物品
-執行、`0x13FD4` 回復演出或 `0x25B45`／`0x17AA9` indexed presentation；
+執行、`0x13FD4` 回復演出或 mode 5 raw sample audio；較早的
+`0x25B45`／`0x17AA9` indexed presentation 暫稱已由末尾勘誤撤回；
 因此仍只提升 mode 11 的 E0 靜態路由證據，不解除完整敵方回合或原版一般玩家 E2。
 
 ## 2026-08-10：0x13FD4 state-only recovery decision 補證
@@ -4177,3 +4178,24 @@ IDA direct callers 仍是 `0x13BC5`、`0x13C0F`、`0x13C84`、`0x13D58`、
 重製端只保留 `PlanNativeAIIdleRecovery`／`ApplyNativeAIIdleRecovery` 的
 state-only 契約，尚未把影格、色彩、音效或 renderer 接入正式路徑；未知部分
 維持失敗即關閉。
+
+## 2026-08-10：mode 5 音訊邊界勘誤與完整 raw tail（E0）
+
+重新以合法 IDA Pro 9.4／Docker Capstone 核對 `0x13C19..0x13D24`、
+`0x15DF3..0x15E6C` 與 `0x25B45..0x25BF3` 後，撤回先前把
+`0x25B45／0x17AA9` 稱為「mode 5 indexed presentation」的說法：
+
+- mode 5 在抵達事件格後直接呼叫 `0x25B45([0x53EE8], 12, 1)`；IDA 的
+  `0x391D1`、`0x39344`、`0x3975E`、`0x39448` 字串／呼叫鏈證實這是
+  AIL sample 的 stop、init、address、loop-count、start 序列。重製端現以
+  `NativeAIMode5AudioCue` 將同一 FDOTHER #31 導出的 `sfx_12.wav` 接到
+  raw 播放邊界，缺樣本時失敗即關閉；sample 的遊戲名稱仍未知。
+- `0x17AA9` 不在 mode 5 的 direct caller 清單；它在 `0x13FD4` 的三段
+  等候與其他 raw presentation 路徑出現，不能與 mode 5 音訊併稱。
+- `0x15DF3` 的 return `0` 才代表第一個 row-major 事件格命中，`-1` 代表
+  無命中；`0x12263` 只做整張 mutable map 的 state word 增加與 event byte 清零。
+- `PlanNativeUnitMode5`／`ApplyNativeAIMode5Event` 已保留事件格、field-control
+  row、`0x1BB8C`、`0x53AD5`、`0x12263`、完整 `record+0x34=7` state tail，
+  並在 callback 中消費 raw sample tuple；缺樣本時正式執行路徑仍失敗即關閉。
+  完整證據見
+  [`fd2_ai_mode5_full_ida_20260810.txt`](../data/ida/fd2_ai_mode5_full_ida_20260810.txt)。

@@ -252,10 +252,15 @@ call 0x25a96         ; (或 0x25b45 = handle B,允許與 handle A 疊播)
 | 7 | 3(A)+1(B) | `0x1193a` 等,某位元旗標檢查失敗時播(`test eax,eax; je →播7`),否則呼叫另一函式 `0x17aed`(其內部在 `0x17b2e` 播 index 6) | 待確認 |
 | 8 | 1 | `0x17495`,前置為陣列索引運算後把 4 個 dword 設為 `0x390`(疑重置某計數) | 待確認 |
 | 0xb | 1 | `0x2cac3`,以 `某計數 % 9 == 0` 為觸發條件(`idiv 9; test edx,edx; jne 跳過`),疑週期性動畫 tick 音 | 待確認 |
-| 0xc | 1(僅 handle B) | `0x13d13`,伴隨把 `[某結構+0x31]`byte 設 1(疑「已選定」旗標),用 handle B 播放以便與正在播的 handle A 疊聲 | 待確認 |
+| 0xc | 1（僅 handle B） | `0x13d13`，mode 5 事件尾端在 `dword_53AD5[event]=1` 後呼叫 `0x25b45([0x53ee8],12,1)`，接著才進 `0x12263` 與 `record+0x34=7`；使用 handle B 可與 handle A 疊聲 | 已證實 raw caller／API 順序；sample 聽覺名稱未知 |
 
 僅 index 0(游標移動)有多重獨立證據(5 個方向鍵分支 × 波形長度吻合)可視為確認;其餘 index 已列出
 確切呼叫端位址與上下文,但語意需要配合畫面實測(第 10 輪待辦)才能升級為確認,此處不臆測標籤。
+
+mode 5 的 index `0xc` 已另由合法 IDA／Capstone 固定為 raw 音訊邊界；完整
+`0x13C19..0x13D24`、`0x25B45` AIL wrapper 與 state tail 見
+[`fd2_ai_mode5_full_ida_20260810.txt`](../data/ida/fd2_ai_mode5_full_ida_20260810.txt)。
+這只確認播放時序與來源，不把 index `0xc` 命名成特定事件音效。
 
 ### 戰鬥音效(`[0x5411f]`/`[0x54117]`/`[0x53b13]`)與本篇 UI 池的關係澄清
 

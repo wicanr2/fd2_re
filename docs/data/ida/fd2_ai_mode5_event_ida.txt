@@ -41,16 +41,16 @@ row at `[0x53A55]+0x53+3*event_id`. The row's first byte selects the writer;
 the following word is copied into the runtime `+0x31..+0x33` death/effect
 bytes. For row mode zero the same raw value is passed to the fixed eight-slot
 inventory writer. The tail then sets `dword_53AD5[event_id]`, calls the
-`0x12263` map-event update path, and writes the complete runtime `+0x34` byte
-to `7` (not only its low nibble). The exact visual calls around `0x25B45` and
-`0x17AA9` remain presentation-owner boundaries; this file does not infer
-their renderer semantics.
+`0x25B45([0x53EE8], 12, 1)` AIL sample wrapper, calls the `0x12263` map-event
+update path, and writes the complete runtime `+0x34` byte to `7` (not only its
+low nibble). `0x25B45` is an audio sample boundary, not a renderer; `0x17AA9`
+is not a direct mode-5 call. The sample row's audible identity remains unknown.
 
 The remake adapter is therefore limited to a transactional, state-only E1
 bridge: it revalidates the raw event identity, field-control row, destination,
 inventory provenance and mutable map grid before any mutation; it updates the
-raw effect/inventory/state/grid/+0x34 fields; and it fails closed when the
-presentation owner is absent. It does not claim an unmodified-player E2 trace.
+raw effect/inventory/state/grid/+0x34 fields; and it fails closed when the raw
+sample/audio owner is absent. It does not claim an unmodified-player E2 trace.
 
 ## Related functions
 

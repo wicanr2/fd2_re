@@ -559,8 +559,10 @@ score、Cast 或 effect；36..39 仍因沒有已驗證 command record 而省略�
   mode 3／9 現以 `0x12C60(raw +0x35)` 對 `record +0x08` 做 first-match
   查詢後移向該 raw record 座標，並保留 mode 3 的 `0x51A83=0` 寫入閘門。
 - mode 2 在既有物理候選證據缺失時仍拒絕進入 `0x13FD4`；mode 5 的
-  `0x15DF3` 原始事件格陣、field-control row 與 state-only 尾端現已接入，
-  但 `0x25B45`／`0x17AA9` indexed presentation 尚未接線。mode 11 的
+  `0x15DF3` 原始事件格陣、field-control row、state tail 與
+  `0x25B45` raw AIL sample（`[0x53EE8]`、index `12`、loop `1`）現已接入
+  失敗即關閉的播放器窄切片；缺少 `sfx_12.wav` 時不先改寫事件狀態。
+  `0x17AA9` 不是 mode 5 的 direct caller。mode 11 的
   `0x1598A→0x15311/0x14237→0x1548E/0x14121` 是多動作交易，仍維持
   fail-closed。`0x13FD4` 的 raw HP 回復函式已有獨立 state-only 測試，但尚未
   假接到未證實的 mode 回傳點。
@@ -607,7 +609,8 @@ score、Cast 或 effect；36..39 仍因沒有已驗證 command record 而省略�
 本節勘誤上一節「mode 5 尚未匯出事件格陣」的過時描述。合法 IDA Pro 9.4
 已保存 `0x15DF3` 的 row-major `0x53A51` 搜尋、`0x13FD4` 的 raw HP
 回復寫入，以及 mode 11 的兩個獨立 score gate；證據分別見
-[`fd2_ai_mode5_event_ida.txt`](../data/ida/fd2_ai_mode5_event_ida.txt)、
+[`fd2_ai_mode5_event_ida.txt`](../data/ida/fd2_ai_mode5_event_ida.txt) 與完整
+[`fd2_ai_mode5_full_ida_20260810.txt`](../data/ida/fd2_ai_mode5_full_ida_20260810.txt)、
 [`fd2_ai_mode11_13fd4_ida.txt`](../data/ida/fd2_ai_mode11_13fd4_ida.txt) 與
 新增的完整 `0x13FD4` 邊界檔
 [`fd2_ai_13fd4_full_ida_20260810.txt`](../data/ida/fd2_ai_13fd4_full_ida_20260810.txt)。
@@ -620,8 +623,10 @@ score、Cast 或 effect；36..39 仍因沒有已驗證 command record 而省略�
 - mode 3／9 已消費 `0x12C60` 的 raw `+0x35`→record `+0x08`
   first-match 查找。mode 5 已消費 `0x15DF3` 的 raw 事件格、field-control
   row、`+0x31..+0x33`／inventory writer、`0x53AD5` state、可變地圖事件格及
-  整個 `+0x34=7` 尾端；這是 state-only E1，`0x25B45`／`0x17AA9` 的
-  indexed presentation owner 仍未接入。
+  整個 `+0x34=7` 尾端；這是含 raw AIL sample 播放 callback 的 E1 窄切片，
+  以同一 FDOTHER #31 容器導出的 `sfx_12.wav` 消費 index `12`，但不命名
+  sample 的遊戲語意；`0x17AA9` 只在 `0x13FD4` 等候序列出現，不能併稱 mode 5
+  presentation。
 - command／法術／item 目前只執行已閉合的 raw ID 家族與 item effect route。
   `0x1598A→0x15B77` 的 command score、`0x1567E→0x15880` 的 item score
   已有 runtime tuple 與 Docker regression，但未知 ID、未閉合 relocation、

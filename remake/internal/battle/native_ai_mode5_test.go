@@ -56,6 +56,51 @@ func TestNativeAIMode5EventCellAndStateTailPreserveRawRows(t *testing.T) {
 	}
 }
 
+func TestNativeAIMode5EventEmitsProvenRawAudioCueBeforeStateCompletion(t *testing.T) {
+	actor := nativeAIRuntimeUnit(0, 0, 1, 5)
+	actor.NativeRecordByte3D = 1
+	actor.HasNativeRecordByte3D = true
+	actor.NativeRecordDeathEffect = [3]byte{0xff, 0xff, 0xff}
+	actor.HasNativeRecordDeathEffect = true
+	state := &State{
+		W: 1, H: 1, Units: []*Unit{actor},
+		NativeEventState:      [0x20]byte{},
+		NativeTerrainControl:  []byte{0, 0, 0, 0x20},
+		NativeMapEventGrid:    nativeAIMode5Grid(1, 1, Cell{X: 0, Y: 0}, 1),
+		HasNativeMapEventGrid: true,
+		NativeFieldControlRaw: func() []byte {
+			raw := make([]byte, 0x56+3)
+			raw[0x56] = 1
+			binary.LittleEndian.PutUint16(raw[0x57:0x59], 9)
+			return raw
+		}(),
+		HasNativeFieldControlState: true,
+	}
+	var cues []NativeAIMode5AudioCue
+	actor.X = 0
+	if err := state.ApplyNativeAIMode5EventWithAudioCue(
+		actor, 1, Cell{X: 0, Y: 0}, func(cue NativeAIMode5AudioCue) {
+			cues = append(cues, cue)
+			if state.NativeEventState[1] != 1 {
+				t.Fatalf("audio cue emitted before raw event state=1: %d", state.NativeEventState[1])
+			}
+		},
+	); err != nil {
+		t.Fatalf("ApplyNativeAIMode5EventWithAudioCue() error = %v", err)
+	}
+	if len(cues) != 1 || cues[0] != (NativeAIMode5AudioCue{
+		HandleLinearAddress: NativeAIMode5AudioHandle,
+		ResourceID:          NativeAIMode5AudioResource,
+		Index:               NativeAIMode5AudioIndex,
+		LoopCount:           NativeAIMode5AudioLoopCount,
+	}) {
+		t.Fatalf("raw mode5 audio cues=%v", cues)
+	}
+	if actor.NativeRecordByte34 != 7 || state.NativeEventState[1] != 1 {
+		t.Fatalf("mode5 state completion lost after audio cue: mode=%d state=%d", actor.NativeRecordByte34, state.NativeEventState[1])
+	}
+}
+
 func TestNextAIPlanMode5UsesRawEventCellAndFailsClosedWithoutRow(t *testing.T) {
 	actor := nativeAIRuntimeUnit(0, 0, 1, 5)
 	actor.NativeRecordByte3D = 1

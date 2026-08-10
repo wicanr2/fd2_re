@@ -1,0 +1,114 @@
+# FD2.EXE mode 5 完整事件／音訊邊界（2026-08-10）
+
+## 輸入與工具
+
+- 輸入：`org_game/炎龍騎士團/FLAME2/FD2.EXE`，357074 位元組。
+- MD5：`b97caf2239a27a896069d03549d96e1e`。
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- IDA：合法 IDA Pro 9.4.0.260610，DOS LE loader；位址均為 IDA 線性位址，
+  不是檔案偏移。
+- Capstone：5.0.3，Docker 映像 `fd2-cap-local`；交叉核對
+  `0x13C19..0x13D24`、`0x15DF3..0x15E6C` 與 `0x25B45..0x25BF3`。
+- 音效來源：`FDOTHER.DAT`，大小 `3382481` 位元組，MD5
+  `22f56e5027edc7c766ad34ca4e5aca93`，SHA-256
+  `a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`；
+  已解出並版控的 `remake/assets/sfx/sfx_12.wav` SHA-256
+  `dffd8b27db73356f26f1a01ea34734875bd0aae9108e3b3ac43c5c4b99f425b1`。
+- 等級：下列分支、欄位與 AIL API 呼叫為已證實（E0）；事件高階劇情、
+  sample ID 對應的聽覺名稱與一般玩家動態 trace 未知。
+
+## `0x13A9F` mode 5 分支
+
+當 raw `record+0x34 & 0x0F == 5` 時，直接指令順序如下：
+
+```text
+0x013C19  cmp eax, 5
+0x013C22  call 0x14EF0(edi, esi)
+0x013C2C  test eax,eax; 非零 → 0x13E5A 共用完成
+0x013C34  mov [0x51A83], eax       ; 此時 eax=0
+0x013C3A  call 0x12D7B(esi)
+0x013C42  state = byte [0x53AD5 + ebp]
+0x013C4D  state != 0 → 0x13B05 raw 備援
+0x013C59  call 0x15DF3(ebp, local_xy)
+0x013C61  return != 0 → 0x13B05 raw 備援
+0x013C6B  call 0x14B78(..., local_xy, ...)
+0x013C7F  return == 0 → call 0x13FD4(esi)
+0x013C8C  以 runtime record 的 +0/+1 比對 local_xy
+0x013CB9  座標不同 → 0x13E5A 共用完成，不寫事件狀態
+0x013CCF  row = [0x53A55 + 3*ebp + 0x53]；value = word [+0x54]
+0x013CE0  row < 2 → record+0x31=byte(row)、record+0x32=word(value)
+0x013CF4  row == 0 → call 0x1BB8C(esi, value)
+0x013D05  byte [0x53AD5 + ebp] = 1
+0x013D0D  call 0x25B45([0x53EE8], 0x0C, 1)
+0x013D1B  call 0x12263()
+0x013D20  mov byte [record+0x34], 7  ; 整個 byte，不是低四位遮罩
+0x013D24  jmp 0x13E5A 共用完成
+```
+
+`0x15DF3` 成功回傳 `0`，把第一個 row-major 命中格寫入 `local_xy`；沒有
+命中回傳 `-1`。因此 caller 的 `test eax; jne 0x13B05` 表示只有找到格子時
+才進 `0x14B78`，不是把非零當成成功。`0x15DF3` 的迴圈是
+`i=0..height-1`、每列 `j=0..width-1`，呼叫 `0x12E38(j,i,local)`，只接受
+`flags & 0x60 == 0x20` 且 `local.event == ebp`。
+
+`0x12E38` 保留 mutable map cell 的低 10 位 tile word、event low5，並以
+`0x53A69 + 4*tile` 取四個 raw terrain bytes；mode 5 只直接消費其中的
+`flags`。這是事件格查找證據，不替 tile 或 event 命名成寶箱、機關或劇情。
+
+## `0x25B45` 是 AIL sample 播放，不是畫面呈現器
+
+IDA 函式範圍為 `0x25B45..0x25BF4`。當
+`byte [0x53EF1] != 0`、`byte [0x51E62] != 0` 且 `[0x540FF] == 0` 時，
+它對 `[0x53EE8]` 執行下列原始 API 序列；其他條件直接返回：
+
+```text
+stop_sample([0x53EE8])
+if index != -1:
+  row = [0x53EE8] + 4*index
+  address = [row+6] + [0x53EE8]
+  length = [row+10] - [row+6]
+  AIL_init_sample([0x53EE8])
+  AIL_set_sample_address([0x53EE8], address, length)
+  AIL_set_sample_loop_count([0x53EE8], loop_count)
+  AIL_start_sample([0x53EE8])
+```
+
+這些 API 名稱由 IDA 偽代碼的受控字串輸出與 `0x391D1`、`0x39344`、`0x3975E`、
+`0x39448` helper 直接證實。mode 5 的呼叫參數是 `index=0x0C`、`loop_count=1`。
+因此舊文件把 `0x25B45` 稱為「indexed presentation」已撤回；它是 raw sample
+播放邊界。`0x25B45` 的 direct callers 還包括 `0x19082`、`0x1FD24`、
+`0x2695B`、`0x26D16`、`0x271EE`、`0x273C1`、`0x275A1`、`0x276C4`、
+`0x282BD` 與 `0x31A4C`，不能把所有 caller 都命名成 mode 5 音效。
+
+`0x17AA9` 沒有出現在 mode 5 分支的 direct call；IDA direct xref 中 mode 5
+之外的 `0x13FD4` 三次等待位於 `0x1402B`、`0x14096`、`0x140EC`。因此
+「mode 5 的 `0x25B45／0x17AA9` indexed presentation」是錯誤混稱，應拆成
+mode 5 的 raw sample 播放與 `0x13FD4` 的等待／影格序列。
+
+## `0x12263` 的可證實 state tail
+
+`0x12263` 逐格呼叫 `0x12E38`；當 composition flags 的 `0x20` 旗標成立，且
+`byte [0x53AD5 + cell.event] != 0` 時，對相同 mutable cell：
+
+```text
+word cell+4 += 1
+byte cell+6 = 0
+```
+
+它不直接播放 sample，也不直接呼叫 renderer。這與重製端
+`advanceNativeAIMode5EventGrid` 的 state-only 更新相對應；任何 event index 0
+是否為保留值仍須以原始資料 producer 證實，不得僅因匯出器把 0 當 sentinel 就
+改寫原版迴圈。
+
+## 重製端邊界
+
+- `PlanNativeUnitMode5`／`ApplyNativeAIMode5Event` 已保存 `0x15DF3`、
+  `0x14B78`、field-control row、`0x1BB8C`、`0x53AD5`、`0x12263` 與完整
+  `record+0x34=7` state tail，並對缺少 raw provenance 失敗即關閉。
+- 重製端現以 `NativeAIMode5AudioCue` 保存
+  `{resource_base,index,loop_count}` 原始 tuple，並在 event state=1 後把
+  index `12` 對應到已由同一個 FDOTHER #31 容器導出的 `sfx_12.wav`；缺少
+  該樣本時，正式執行路徑在 state mutation 前失敗即關閉（靜音／抓圖模式則
+  依既有無聲契約略過播放器）。這只接 raw 播放邊界，不替 sample 命名。
+- 不可把 `0x25B45` 的 sample index 12 直接命名成某種爆炸、事件或角色音效，
+  也不可用現有 normalized SFX 表代打；未知音訊維持失敗即關閉。

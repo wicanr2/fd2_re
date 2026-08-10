@@ -32,7 +32,7 @@
   mode 11 現另有 `SelectNativeAIMode11Transaction` 保存兩個獨立 raw gate 的
   純 E0 路由選擇（含 `0x14121` 前置路由）；雙動作 transaction owner、
   `PlanNativeAIIdleRecovery` 的 state-only 結果已拆出但其
-  `0x12D7B` recovery presentation、mode 5 indexed presentation、未知
+  `0x12D7B` recovery presentation、mode 5 raw AIL sample 的遊戲名稱、未知
   command／relocation 與未修改原版 E2 仍待補證。
 
 - [x] **RE-AI-14EF0-RAW-DISPATCH**：合法 IDA Pro 9.4 與 Docker Capstone
@@ -466,7 +466,14 @@
   [`fd2_ai_mode11_full_ida_20260810.txt`](../data/ida/fd2_ai_mode11_full_ida_20260810.txt)。
   重製端仍只保留 E0 路由選擇，transaction owner、演出與一般玩家 E2 尚未完成。
 - [x] **RE-AI-MODE0/1-BRANCHES**：同一份 `0x13A9F` 原始控制流已資料化為 `PlanNativeUnitMode0`／`PlanNativeUnitMode1`；mode 0 保留 `0x14EF0→0x14121→0x13E9C` 巢狀備援，`0x13E9C` 零回傳才到 `0x13FD4`；mode 1 只保留 `0x14EF0→0x14121→0x13FD4`。原 helper 仍只保存 E0 位址順序與 caller-supplied 回傳旗標；2026-08-10 的 `NextAIPlan` bridge 另以 raw provenance 接上 mode 0／1，缺來源仍失敗即關閉。
-- [x] **RE-AI-MODE3-10-BRANCHES**：同一份 `0x13A9F` raw CFG 已資料化為 `PlanNativeUnitMode3/4/5/7/9/10`；保留 `0x12C60` 的 `-1`／索引分支、`0x12D7B→0x14B78→0x13FD4`、`0x51A83` 清零、mode 5 的 `+0x31/+0x32`／`0x53AD5`／`+0x34=7` writes 與 mode 7 的 `0x32975`。原 helper 的 caller-supplied 邊界仍保留；2026-08-10 `NextAIPlan` bridge 已接 mode 3／4／5／7／9／10 的 raw destination／event state，mode 5 indexed presentation 仍未接，測試已通過。
+- [x] **RE-AI-MODE3-10-BRANCHES**：同一份 `0x13A9F` raw CFG 已資料化為 `PlanNativeUnitMode3/4/5/7/9/10`；保留 `0x12C60` 的 `-1`／索引分支、`0x12D7B→0x14B78→0x13FD4`、`0x51A83` 清零、mode 5 的 `+0x31/+0x32`／`0x53AD5`／`+0x34=7` writes 與 mode 7 的 `0x32975`。原 helper 的 caller-supplied 邊界仍保留；2026-08-10 `NextAIPlan` bridge 已接 mode 3／4／5／7／9／10 的 raw destination／event state，mode 5 raw AIL sample tuple 也已接到 `sfx_12.wav` 並在缺樣本時失敗即關閉，測試已通過。
+- [x] **RE-AI-MODE5-FULL-IDA-20260810**：重新固定 mode 5 的 `0x13C19..0x13D24`
+  分支、`0x15DF3` 的 return `0=命中／-1=無命中`、`0x12263` 整圖 state tail，
+  並以 IDA helper 字串證實 `0x25B45([0x53EE8],12,1)` 是 AIL sample
+  stop/init/address/loop/start，不是 indexed renderer。`0x17AA9` 不是 mode 5
+  direct caller；`0x25B45` raw sample tuple 已接同一 FDOTHER #31 導出的
+  `sfx_12.wav`，缺樣本時維持失敗即關閉，未知 sample 名稱不命名。完整證據見
+  [`fd2_ai_mode5_full_ida_20260810.txt`](../data/ida/fd2_ai_mode5_full_ida_20260810.txt)。
 - [x] **RE-AI-IDLE-RECOVERY-13FD4**：`0x13FD4` 只在 currentHP≠maxHP 且 raw `+0x25/+0x26==0` 時回復 `floor(maxHP/5)` 並封頂；新增 state-only adapter，玩家休息正式路徑同步刪除錯誤的最少回復 1 並接 raw transient gates。
 - [x] **RE-AI-13FD4-FULL-IDA-20260810**：重新以合法 IDA Pro 9.4／Docker Capstone
   固定 `0x13FD4..0x14120` 的三次 `0x17AA9(1)` 等候、兩次 `0x1DA16` raw

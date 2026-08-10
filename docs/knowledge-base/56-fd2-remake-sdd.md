@@ -65,7 +65,7 @@ actor `+0x48`、target `+0x4a` 與必要時 `0x4e516([0x53c2f])` 分派
 SDD 只授權保存上述原始呼叫拓撲（raw call topology）與這個標明範圍的執行期窄切片（runtime slice）；
 截至 2026-08-10，`NextAIPlan` 另已接上 raw mode 0／1／3／4／5／7／9／10 的
 窄 fallback、`0x14EF0` 的 command／item route，以及 mode 5 的 mutable event
-state tail；未知 command、mode 11 雙動作、`0x13FD4` presentation、
+state tail 與 raw sample audio 窄切片；未知 command、mode 11 雙動作、`0x13FD4` presentation、
 `0x1548E` indexed 演出與一般玩家 E2 仍失敗即關閉。`+6` 的 raw camp code 已由 constructor 與 `0x14818` consumer 固定為
 敵0／友1／己2；但完整 target transaction、movement/effect/UI 與 runtime
 AI execution 仍是 fail-closed，不得由 normalized `aiActUnit` 反推 native parity。
@@ -3569,12 +3569,15 @@ renderer 輸入契約，不能把排程本身解讀成命中、傷害或 DAC 語
 - mode 3／9 的 `0x12C60` raw `+0x35`→`+0x08` first-match、mode 5 的
   `0x15DF3` mutable event grid／field-control row／`+0x31..+0x33`／
   `0x53AD5`／`+0x34=7` state tail 已有可編輯資料與 transactional adapter。
-  mode 5 的 `0x25B45`／`0x17AA9` indexed presentation、mode 11 的雙動作
+  mode 5 的 `0x25B45` raw AIL sample（resource `[0x53EE8]`、index `12`、
+  loop `1`）已接到同一 FDOTHER #31 導出的 `sfx_12.wav`，缺樣本時失敗即關閉；
+  `0x17AA9` 不是 mode 5 的 direct caller。mode 11 的雙動作
   transaction，以及 `0x13FD4` 的 recovery presentation 仍 fail-closed。
 - 指令、法術與物品決策只在 raw command／item effect route 完整時執行；
   unknown command、未閉合 relocation、零分勝者與 spell presentation 不得
   由 normalized 名稱或一般玩家 UI 推回。證據見
-  [`fd2_ai_mode5_event_ida.txt`](../data/ida/fd2_ai_mode5_event_ida.txt) 與
+  [`fd2_ai_mode5_event_ida.txt`](../data/ida/fd2_ai_mode5_event_ida.txt)、
+  [`fd2_ai_mode5_full_ida_20260810.txt`](../data/ida/fd2_ai_mode5_full_ida_20260810.txt) 與
   [`fd2_ai_mode11_13fd4_ida.txt`](../data/ida/fd2_ai_mode11_13fd4_ida.txt)。
 - 終局播放器新增三個由 IDA 直接確認的事件：`sub_2C405` 前段
   `0x2C5CF→FDMUS_004`、`sub_2BCE5` 尾端 `0x2C1AC→play_bgm(-1)`，以及

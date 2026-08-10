@@ -64,6 +64,14 @@ record + 0x26 : raw byte gate
 `0x140`（320）。因此可以證實它是一次原始緩衝區拷貝，不能僅由此命名為
 螢幕、回血特效或某種音效。
 
+`0x25A96` 與 `0x25B45` 是同形狀的 AIL sample API wrapper，而不是畫面繪製
+函式。IDA 偽代碼與 `0x391D1`、`0x39344`、`0x3975E`、`0x39448` 的字串／
+呼叫鏈直接顯示：先 `AIL_stop_sample`，再以表格索引取位址／長度，呼叫
+`AIL_init_sample`、`AIL_set_sample_address`、`AIL_set_sample_loop_count`、
+`AIL_start_sample`。本函式的 raw 參數是 resource base `[0x53EEC]`、index `4`、
+loop count `1`；sample 高階名稱與音色仍未知。這修正舊文件把它當成 render
+helper 的說法，但不替 index 4 命名成回血、休息或角色音效。
+
 `0x1DA16` 先依 actor record 的 `+0..+4`、視窗全域與方向值計算目的位址，再
 從 `dword_53A61` 取資料，交給 `0x4DDD7`（第五參數 `0xFD` 的第一段）或
 `0x4DEDA`（第二段）解碼至 24×24 格的緩衝區。這能證實兩次不同 raw 解碼／
@@ -101,7 +109,8 @@ IDA direct xref 固定為：
 - `PlanNativeAIIdleRecovery` 只讀 detached raw record，保留四個 raw 欄位並
   輸出接受／拒絕、`max/5` 與封頂結果；`ApplyNativeAIIdleRecovery` 才提交
   `+0x40` 寫入。這是 E0 state-only 對應，與本檔的 writer 一致。
-- 目前沒有把 `0x12D7B`、`0x25A96`、`0x1DA16` 或 `0x11EB0` 接進正式
-  戰鬥 renderer；缺少原版同狀態影像／逐幀 trace 時，維持失敗即關閉。
+- 目前沒有把 `0x12D7B`、`0x25A96` 的 raw sample tuple、`0x1DA16` 或
+  `0x11EB0` 接進正式戰鬥 renderer／音訊播放器；缺少原版同狀態影像／逐幀
+  trace 與 sample 資料列時，維持失敗即關閉。
 - 尚未證實 `0x51A83` 的所有值、`0x53EEC` 資源列、`0xA0504` 目的緩衝區、
   `0xFD` 參數與 `0x4DDD7`／`0x4DEDA` 的高階玩法或音訊含義。

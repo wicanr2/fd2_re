@@ -8360,8 +8360,27 @@ func (g *Game) aiStep() {
 		}
 		finish := func() {
 			if plan.NativeModeEventActive {
-				if err := g.st.ApplyNativeAIMode5Event(
+				audioCue := battle.NativeAIMode5AudioCueForRawTail()
+				if os.Getenv("FD2_MUTE") == "" && g.shotPath == "" &&
+					(g.sfx == nil || len(g.sfx[audioCue.Index]) == 0) {
+					g.loadErr = fmt.Sprintf("native AI mode 5 raw sample unavailable: resource=%d index=%d", audioCue.ResourceID, audioCue.Index)
+					g.aiBusy = false
+					return
+				}
+				emitMode5Audio := func(cue battle.NativeAIMode5AudioCue) {
+					// Native 0x13D0D calls 0x25B45([0x53EE8],12,1).
+					// The extracted FDOTHER #31 sample index is the only
+					// accepted mapping; do not substitute a normalized SFX.
+					if cue.HandleLinearAddress == battle.NativeAIMode5AudioHandle &&
+						cue.ResourceID == battle.NativeAIMode5AudioResource &&
+						cue.Index == battle.NativeAIMode5AudioIndex &&
+						cue.LoopCount == battle.NativeAIMode5AudioLoopCount {
+						g.playSFX(cue.Index)
+					}
+				}
+				if err := g.st.ApplyNativeAIMode5EventWithAudioCue(
 					u, plan.NativeModeEventID, plan.NativeModeEventDestination,
+					emitMode5Audio,
 				); err != nil {
 					g.loadErr = "native AI mode event: " + err.Error()
 					g.aiBusy = false

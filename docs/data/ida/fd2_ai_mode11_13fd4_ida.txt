@@ -17,12 +17,13 @@ at `+0x42`; if the two words are equal, or either raw byte `+0x25`/`+0x26` is
 nonzero, it returns zero without changing the record. The two bytes are kept
 unnamed: the reader/writer evidence does not by itself prove a status name.
 
-On the accepting path it writes raw `[0x51A83]=0`, enters the shared movement /
-presentation block through `0x12D7B`, waits for the native presentation calls,
-adds `max_hp/5` to current HP with a cap at max HP, writes the result back to
-`+0x40`, restores `[0x51A83]=1`, and returns one. The state arithmetic is
-therefore reproducible, but the owner of its visual call sequence and its
-mode-2/mode-11 caller handoff are not yet closed in the remake.
+On the accepting path it writes raw `[0x51A83]=0`, calls `0x12D7B`, then starts
+the AIL sample wrapper `0x25A96([0x53EEC], 4, 1)`, performs two raw
+`0x1DA16`/`0x11EB0` frame-buffer passes separated by `0x17AA9(1)`, and waits
+once more before the HP write. The state arithmetic is therefore reproducible;
+the exact sample row, frame parameters and mode-2/mode-11 caller handoff are
+still not closed in the remake. `0x25A96` is an AIL sample API wrapper, not a
+renderer name.
 
 ## Mode-11 dispatcher boundary
 

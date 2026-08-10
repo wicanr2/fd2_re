@@ -278,7 +278,7 @@ func (s *State) nativeAIPlanForDestination(
 
 // nextNativeAIModeFallbackPlan consumes only the mode branches whose inputs
 // are explicit in the 0x13a9f disassembly.  Mode 5 now owns the raw
-// 0x15df3/event-row state tail; its indexed presentation calls remain a
+// 0x15df3/event-row state tail; its raw 0x25b45 AIL sample cue remains a
 // separate gate. Mode 11's two-action transaction and the 0x13fd4 raw HP
 // write still have no complete runtime owner here.
 func (s *State) nextNativeAIModeFallbackPlan(u *Unit) (*AIPlan, bool, error) {
