@@ -629,6 +629,11 @@ score、Cast 或 effect；36..39 仍因沒有已驗證 command record 而省略�
   獨立型別保留 `0x14121` 是前置尋路／回復路由、不是 `0x14EF0` 尾端的事實。
   這是無副作用的 E0 選擇器與失敗即關閉測試；沒有接入 transaction owner、
   command／法術／item 執行或演出，因此不提升上述未閉合項目。
+- `PlanNativeAIIdleRecovery` 現以無副作用方式保存 `0x13FD4` 的 raw
+  `+0x40/+0x42` 與 `+0x25/+0x26` 接受邊界，輸出 `max/5` 封頂後的原始 HP
+  決策；`ApplyNativeAIIdleRecovery` 只提交同一快照的已驗證結果。這補強
+  state-only E0，不代表 `0x12D7B` 等候／畫面 owner、mode 2 handoff 或
+  一般玩家 E2 已閉合。
 
 因此本輪測試可證明的是 E1 原始資料到窄執行器的連通性，不是完整敵方回合、
 一般玩家 E2 或所有 mode 的原版等價。

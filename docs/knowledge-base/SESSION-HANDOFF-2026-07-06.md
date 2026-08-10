@@ -4130,3 +4130,13 @@ Docker focused regression 已通過四種分數組合與缺少任一 raw score �
 這個選擇器沒有寫入戰鬥狀態，也沒有假接 transaction owner、命令／法術／物品
 執行、`0x13FD4` 回復演出或 `0x25B45`／`0x17AA9` indexed presentation；
 因此仍只提升 mode 11 的 E0 靜態路由證據，不解除完整敵方回合或原版一般玩家 E2。
+
+## 2026-08-10：0x13FD4 state-only recovery decision 補證
+
+將既有 `ApplyNativeAIIdleRecovery` 拆成兩層：
+`PlanNativeAIIdleRecovery` 先在 detached raw record 上讀取 `+0x40/+0x42`、
+`+0x25/+0x26`，只輸出接受／拒絕、目前／最大／下一個 HP 與原始 gate bytes，
+不改寫輸入；提交 wrapper 再以同一快照寫回 `+0x40`。Docker regression 已
+驗證 current==max、任一 raw gate 非零、`max/5` 與封頂，以及純函式不變更
+record。這補的是 `0x13FD4` state-only E0，仍沒有把 `0x12D7B` 等候、畫面
+演出、mode 2／11 caller handoff 或結局／AI 一般玩家路徑接入正式執行器。

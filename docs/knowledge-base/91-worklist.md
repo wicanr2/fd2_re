@@ -31,7 +31,8 @@
   查找與 mode 5 mutable event grid／state tail 也有 Docker regression。
   mode 11 現另有 `SelectNativeAIMode11Transaction` 保存兩個獨立 raw gate 的
   純 E0 路由選擇（含 `0x14121` 前置路由）；雙動作 transaction owner、
-  `0x13FD4` recovery presentation、mode 5 indexed presentation、未知
+  `PlanNativeAIIdleRecovery` 的 state-only 結果已拆出但其
+  `0x12D7B` recovery presentation、mode 5 indexed presentation、未知
   command／relocation 與未修改原版 E2 仍待補證。
 
 - [x] **RE-AI-14EF0-RAW-DISPATCH**：合法 IDA Pro 9.4 與 Docker Capstone

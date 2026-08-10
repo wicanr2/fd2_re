@@ -3587,3 +3587,8 @@ renderer 輸入契約，不能把排程本身解讀成命中、傷害或 DAC 語
 `[0x53C23]`／`[0x53C4F]` 各自的 `>=6` 路由選擇；`0x14121` 以獨立的 mode 11
 路由型別表示，避免與 `0x14EF0` 尾端混稱。它沒有 transaction owner、演出或
 指令／法術／物品效果，因此不能解除 mode 11 的 E1／E2 閘門。
+
+`PlanNativeAIIdleRecovery` 同樣只保存 `0x13FD4` 的 raw HP／gate 判定與
+`max/5` 封頂結果，`ApplyNativeAIIdleRecovery` 才在同一 raw snapshot 上提交
+寫入。這是可測的 state-only 邊界，不是 `0x12D7B` presentation、mode 2
+handoff 或一般玩家回合證據。
