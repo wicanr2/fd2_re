@@ -468,6 +468,12 @@
 - [x] **RE-AI-MODE0/1-BRANCHES**：同一份 `0x13A9F` 原始控制流已資料化為 `PlanNativeUnitMode0`／`PlanNativeUnitMode1`；mode 0 保留 `0x14EF0→0x14121→0x13E9C` 巢狀備援，`0x13E9C` 零回傳才到 `0x13FD4`；mode 1 只保留 `0x14EF0→0x14121→0x13FD4`。原 helper 仍只保存 E0 位址順序與 caller-supplied 回傳旗標；2026-08-10 的 `NextAIPlan` bridge 另以 raw provenance 接上 mode 0／1，缺來源仍失敗即關閉。
 - [x] **RE-AI-MODE3-10-BRANCHES**：同一份 `0x13A9F` raw CFG 已資料化為 `PlanNativeUnitMode3/4/5/7/9/10`；保留 `0x12C60` 的 `-1`／索引分支、`0x12D7B→0x14B78→0x13FD4`、`0x51A83` 清零、mode 5 的 `+0x31/+0x32`／`0x53AD5`／`+0x34=7` writes 與 mode 7 的 `0x32975`。原 helper 的 caller-supplied 邊界仍保留；2026-08-10 `NextAIPlan` bridge 已接 mode 3／4／5／7／9／10 的 raw destination／event state，mode 5 indexed presentation 仍未接，測試已通過。
 - [x] **RE-AI-IDLE-RECOVERY-13FD4**：`0x13FD4` 只在 currentHP≠maxHP 且 raw `+0x25/+0x26==0` 時回復 `floor(maxHP/5)` 並封頂；新增 state-only adapter，玩家休息正式路徑同步刪除錯誤的最少回復 1 並接 raw transient gates。
+- [x] **RE-AI-13FD4-FULL-IDA-20260810**：重新以合法 IDA Pro 9.4／Docker Capstone
+  固定 `0x13FD4..0x14120` 的三次 `0x17AA9(1)` 等候、兩次 `0x1DA16` raw
+  24×24 解碼、`0x11EB0` 312×192 緩衝區拷貝，以及 caller `0x19082` 的原始
+  `a3==0` gate。這是 E0 raw presentation 邊界，不宣稱影格、色彩、音效或
+  `0x12D7B` 的高階玩法；重製 renderer 仍失敗即關閉。證據見
+  [`fd2_ai_13fd4_full_ida_20260810.txt`](../data/ida/fd2_ai_13fd4_full_ida_20260810.txt)。
 - [x] **RE-AI-MODE11-WRITER-35F92**：`[0x53AD5]+0x10==4` 時，`0x36078→0x3419C(20,20,11)` 改寫單位 20 低四位；它是全域 90-entry 表的 event 82，不是第二張 30-entry 表的 entry 22。一般玩家觸發尚未閉合，且 33 張格子事件表沒有 event 82，不猜章節或人物。
 - [~] **REMAKE-AI-MODE-RUNTIME**：模式 0/1/2/3/4/5/7/9/10 的 raw branch 已有 `NextAIPlan` 窄消費端，mode 5 另有 mutable event state tail；`0x14EF0` command／item route 與 state-only executor 也已接線。mode 11 雙動作 orchestration、`0x13FD4` presentation、event 82 觸發、完整回合 orchestration、未知 command／relocation 與一般玩家 E2 仍未完成。`set_ai:berserk` 仍只是 inert 事件標記。
 - [x] **RE-FIELD-EVENT-13A44**：閉合地圖 event-word low5 的 1-based slot、FDSHAP `0x20/0x40` 寶箱 gate、FDFIELD 控制段 16×2 `(event_id,selector)` 與 `0xFF` gate；33 張地圖已同步為可編輯資料並有失敗即關閉查詢。

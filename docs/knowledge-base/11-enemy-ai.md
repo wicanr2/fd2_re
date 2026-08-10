@@ -607,8 +607,10 @@ score、Cast 或 effect；36..39 仍因沒有已驗證 command record 而省略�
 本節勘誤上一節「mode 5 尚未匯出事件格陣」的過時描述。合法 IDA Pro 9.4
 已保存 `0x15DF3` 的 row-major `0x53A51` 搜尋、`0x13FD4` 的 raw HP
 回復寫入，以及 mode 11 的兩個獨立 score gate；證據分別見
-[`fd2_ai_mode5_event_ida.txt`](../data/ida/fd2_ai_mode5_event_ida.txt) 與
-[`fd2_ai_mode11_13fd4_ida.txt`](../data/ida/fd2_ai_mode11_13fd4_ida.txt)。
+[`fd2_ai_mode5_event_ida.txt`](../data/ida/fd2_ai_mode5_event_ida.txt)、
+[`fd2_ai_mode11_13fd4_ida.txt`](../data/ida/fd2_ai_mode11_13fd4_ida.txt) 與
+新增的完整 `0x13FD4` 邊界檔
+[`fd2_ai_13fd4_full_ida_20260810.txt`](../data/ida/fd2_ai_13fd4_full_ida_20260810.txt)。
 
 - `0x14EF0` 現有一個受 provenance 閘門保護的 runtime 消費者：它先執行
   `0x14237`、`0x1598A`、`0x1567E`，把 `[0x53C4F]` 正確視為
@@ -639,6 +641,17 @@ score、Cast 或 effect；36..39 仍因沒有已驗證 command record 而省略�
   決策；`ApplyNativeAIIdleRecovery` 只提交同一快照的已驗證結果。這補強
   state-only E0，不代表 `0x12D7B` 等候／畫面 owner、mode 2 handoff 或
   一般玩家 E2 已閉合。
+
+### `0x13FD4` 完整 state／presentation 邊界（E0）
+
+重新以 IDA Pro 9.4 與 Docker Capstone 固定 `0x13FD4..0x14120` 的直接指令：
+接受路徑除了 `max/5` HP 寫回，還依序執行三次 `0x17AA9(1)`、兩次
+`0x1DA16` raw 24×24 解碼與兩次 `0x11EB0`（312×192、456→320 stride）拷貝。
+另一個 caller `0x19082` 只有在未命名的原始 `a3==0` 時才呼叫它。完整 raw
+參數、函式邊界、caller 與未命名限制見
+[`fd2_ai_13fd4_full_ida_20260810.txt`](../data/ida/fd2_ai_13fd4_full_ida_20260810.txt)。
+這補的是 E0 邊界，不把 `0x12D7B`、`0x25A96`、影格參數或 `0x51A83` 命名成
+回血演出、音效或玩法；正式 renderer 仍失敗即關閉。
 
 因此本輪測試可證明的是 E1 原始資料到窄執行器的連通性，不是完整敵方回合、
 一般玩家 E2 或所有 mode 的原版等價。

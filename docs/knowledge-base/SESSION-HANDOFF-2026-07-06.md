@@ -4160,3 +4160,20 @@ SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`）。
 - 重製端目前只保存兩個 raw gate 的無副作用 E0 路由，尚未假接 transaction
   owner、指令／法術／物品效果或演出；仍採失敗即關閉。`0x13FD4` 的 HP 算術
   仍只是 state-only 契約，後續會單獨補證其 presentation 邊界。
+
+## 2026-08-10：`0x13FD4` 完整 presentation 邊界重檢（E0）
+
+合法 IDA Pro 9.4 與 Docker Capstone 固定 `0x13FD4..0x14120`：接受路徑在
+`max/5` HP 寫回前依序執行三次 `0x17AA9(1)`、兩次 `0x1DA16`（raw 24×24
+解碼）與兩次 `0x11EB0`（312×192、來源步幅456／目的步幅320）拷貝；第一段
+`0x1DA16` 的 raw 參數是 `2,0xFD`，第二段是 `0,0`。`0x12D7B` 只把 actor
+record 前兩個座標位元組交給 `0x12CEA`，後者依 `[0x53AB1]`／`[0x53AB5]`
+更新座標並受 `[0x51A83]` 等候閘門影響，尚不足以命名成移動或休息。
+
+IDA direct callers 仍是 `0x13BC5`、`0x13C0F`、`0x13C84`、`0x13D58`、
+`0x13E52` 與 `0x19082`；後者只有在未命名原始 `a3==0` 時呼叫。完整 raw
+指令、helper 邊界與雜湊見
+[`fd2_ai_13fd4_full_ida_20260810.txt`](../data/ida/fd2_ai_13fd4_full_ida_20260810.txt)。
+重製端只保留 `PlanNativeAIIdleRecovery`／`ApplyNativeAIIdleRecovery` 的
+state-only 契約，尚未把影格、色彩、音效或 renderer 接入正式路徑；未知部分
+維持失敗即關閉。

@@ -3603,3 +3603,13 @@ handoff 或一般玩家回合證據。
 [`fd2_ai_mode11_full_ida_20260810.txt`](../data/ida/fd2_ai_mode11_full_ida_20260810.txt)。
 重製端目前只保存無副作用的 E0 路由選擇，尚未接 transaction owner、演出或
 一般玩家回合，因此維持失敗即關閉。
+
+### `0x13FD4` presentation 邊界補證（E0）
+
+完整指令重新固定 `0x13FD4..0x14120` 的三次 `0x17AA9(1)` 等候、兩次
+`0x1DA16` raw 影格解碼，以及 `0x11EB0` 的 312×192、456→320 stride 緩衝區
+拷貝；`0x19082` 另以未命名的原始 `a3==0` 作為 caller gate。證據見
+[`fd2_ai_13fd4_full_ida_20260810.txt`](../data/ida/fd2_ai_13fd4_full_ida_20260810.txt)。
+這只提升 raw presentation 邊界的 E0 證據；重製端仍只執行 state-only
+`PlanNativeAIIdleRecovery`／`ApplyNativeAIIdleRecovery`，缺少同狀態原版逐幀
+擷取時不得接入正式 renderer 或替參數命名為回血／音效效果。

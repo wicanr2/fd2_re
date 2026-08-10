@@ -1,0 +1,107 @@
+# FD2.EXE 0x13FD4 完整 state／presentation 邊界（2026-08-10）
+
+## 輸入與工具
+
+- 輸入：`org_game/炎龍騎士團/FLAME2/FD2.EXE`，357074 位元組。
+- MD5：`b97caf2239a27a896069d03549d96e1e`。
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- IDA：合法 IDA Pro 9.4.0.260610，DOS LE loader；下列數值均為 IDA 線性位址，
+  不是檔案偏移。
+- Capstone：5.0.3，Docker 映像 `fd2-cap-local`；直接指令區間
+  `0x13FD4..0x14120` 與 caller `0x18D8C..0x190AC` 交叉核對。
+- 等級：raw 分支、欄位讀寫、caller 與 helper 參數為已證實（E0）；
+  `0x12D7B` 的高階名稱、影格色彩的玩法語意、音效及一般玩家動態 trace 未知。
+
+## `sub_13FD4` 的原始控制流
+
+函式範圍為 `0x13FD4..0x14121`。`a1` 以
+`dword_53A45 + 0x50*a1` 取得 runtime record，讀取：
+
+```text
+record + 0x40 : current word（16 位元無號讀取）
+record + 0x42 : maximum word（16 位元無號讀取）
+record + 0x25 : raw byte gate
+record + 0x26 : raw byte gate
+```
+
+精確分支為：
+
+```text
+0x13FFE  cmp current, maximum
+0x014000  je  0x14012                 ; 相等 → eax=0
+0x014002  movzx eax, byte [record+0x25]
+0x014008  jne 0x14012                 ; 非零 → eax=0
+0x01400A  movzx eax, byte [record+0x26]
+0x014010  je  0x14018                 ; 零值才接受
+0x014012  xor eax,eax; pop; ret
+```
+
+接受路徑的寫入與呼叫順序：
+
+```text
+0x014018  mov [0x51A83], eax           ; 此時 eax 已由 gate 讀取為 0
+0x01401D  call 0x12D7B(a1)
+0x01402B  call 0x17AA9(1)
+0x01403D  call 0x25A96([0x53EEC], 4, 1)
+0x014060  call 0x1DA16([0x53A49]+0x8088, 0x1C8, a1, 2, 0xFD)
+0x01408C  call 0x11EB0(0xA0504, 0x140, [0x53A49]+0x8088, 0x1C8,
+                       0x138, 0xC0)
+0x014094  call 0x17AA9(1)
+0x0140B6  call 0x1DA16([0x53A49]+0x8088, 0x1C8, a1, 0, 0)
+0x0140E2  call 0x11EB0(0xA0504, 0x140, [0x53A49]+0x8088, 0x1C8,
+                       0x138, 0xC0)
+0x0140EA  call 0x17AA9(1)
+0x0140F4  quotient = maximum / 5
+0x014102  current += quotient
+0x014106  if current > maximum: current = maximum
+0x01410A  mov [record+0x40], current
+0x01410E  mov [0x51A83], 1
+0x014118  eax = 1; ret
+```
+
+`0x11EB0` 的直接指令是固定的逐列拷貝：`rows=0xC0`（192）、每列
+`length=0x138`（312）位元組，來源步幅 `0x1C8`（456），目的步幅
+`0x140`（320）。因此可以證實它是一次原始緩衝區拷貝，不能僅由此命名為
+螢幕、回血特效或某種音效。
+
+`0x1DA16` 先依 actor record 的 `+0..+4`、視窗全域與方向值計算目的位址，再
+從 `dword_53A61` 取資料，交給 `0x4DDD7`（第五參數 `0xFD` 的第一段）或
+`0x4DEDA`（第二段）解碼至 24×24 格的緩衝區。這能證實兩次不同 raw 解碼／
+拷貝，但尚不足以把參數 `2`、`0xFD` 命名成死亡、休息、閃爍或調色效果。
+
+`0x12D7B(a1)` 只是把 record 的前兩個座標位元組傳給 `0x12CEA`；後者會依
+`[0x53AB1]`／`[0x53AB5]` 逐軸呼叫座標更新 helper，並依 `[0x51A83]` 決定
+是否每格等待一個 `0x17AA9(1)`。因此本檔只稱它為座標／視窗同步 helper，
+不提升為「移動」或「休息」語意。
+
+## Direct callers 與條件
+
+IDA direct xref 固定為：
+
+```text
+0x13BC5、0x13C0F、0x13C84、0x13D58、0x13E52  （sub_13A9F 內）
+0x19082                                             （sub_18D8C 內）
+```
+
+在 `sub_18D8C` 的 `0x19082`，原始指令先比較 stack argument `a3`：
+
+```text
+0x019077  cmp [esp+0xA0], 0
+0x01907F  jne 0x1908A
+0x019081  push ebp
+0x019082  call 0x13FD4
+```
+
+`a3` 的高階用途未知；重製端不得把這個條件改名成「AI」「玩家」「休息」或
+其他玩法旗標。它只證實 `0x13FD4` 不是 mode 11 專屬函式，也不是只由
+`0x14121` 呼叫的尾端。
+
+## 重製端對應與未閉合事項
+
+- `PlanNativeAIIdleRecovery` 只讀 detached raw record，保留四個 raw 欄位並
+  輸出接受／拒絕、`max/5` 與封頂結果；`ApplyNativeAIIdleRecovery` 才提交
+  `+0x40` 寫入。這是 E0 state-only 對應，與本檔的 writer 一致。
+- 目前沒有把 `0x12D7B`、`0x25A96`、`0x1DA16` 或 `0x11EB0` 接進正式
+  戰鬥 renderer；缺少原版同狀態影像／逐幀 trace 時，維持失敗即關閉。
+- 尚未證實 `0x51A83` 的所有值、`0x53EEC` 資源列、`0xA0504` 目的緩衝區、
+  `0xFD` 參數與 `0x4DDD7`／`0x4DEDA` 的高階玩法或音訊含義。
