@@ -95,6 +95,18 @@ func NewPlayer(t Timeline, frames []fdother.Frame, ani *afm.Clip, compositor *In
 	}, nil
 }
 
+// VerifiedAudioCues returns the raw ending audio schedule in source order.
+// The method is intentionally observational: callers must not treat the
+// returned list as permission to bypass the Player's blocked montage gate.
+// A future montage owner can consume each cue only after reaching its
+// Trigger stage with the corresponding native renderer evidence.
+func (p *Player) VerifiedAudioCues() []AudioCue {
+	if p == nil {
+		return nil
+	}
+	return append([]AudioCue(nil), p.Timeline.AudioCues...)
+}
+
 // Advance consumes up to elapsedMS of wall-clock time.  The caller should use
 // a monotonic presentation clock; zero is useful to present the first ANI
 // frame immediately, exactly as 0x20421 does.

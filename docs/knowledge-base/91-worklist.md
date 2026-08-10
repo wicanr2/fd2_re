@@ -13,29 +13,33 @@
   原始 mode 2、`0x4e555` 29×20 移動表、FDFIELD 地形／組成來源、物品幾何、
   `0x1DEBE` 與 `0x14237` 評分輸入；缺任何來源就停止，不退回另一套目標選擇。
   Docker 真實測試已涵蓋選目標、路徑與缺表失敗即關閉。這不是完整敵方人工智慧：
-  `0x14EF0` 前置選擇、mode 0/1/3/4/5/7/8/9/10/11、法術／物品命令交易、
-  `0x1548E` 原生演出與一般玩家 E2 仍未閉合。
+  `0x14EF0` 前置選擇與 mode 3／9／5 的窄消費端已另行接線；mode 11、
+  `0x13FD4` 回復演出、`0x1548E` 原生演出與一般玩家 E2 仍未閉合。
 - [~] **NATIVE-TOWN-SECRET-GATE-MATRIX**：`campaign_full.json` 現以可編輯
   `native_secret_gate` 保存 23 個城鎮的選項／BIOS 掃描碼（scan code）／祕密商店
   目的地；`ch02` 的「精確組合鍵揭露→再次確認 selection 5」與其餘章節的差異表
   已由決定性回歸（deterministic regression）鎖定。這只證明資料與 Runner 邊界，不宣稱每章
   未修改一般玩家 DOSBox E2 輸入已完成。
 - [~] **ENDING-AUDIO-WIRING**：戰鬥 BGM 以原版 `0x51e63` 30-entry table、
-  城鎮／商店以已證實的 `FDMUS_010` 做資料回歸；空白 ending 節點會透過已證實的
-  `play_bgm(-1)` 路徑停止前一曲，避免猜測終局曲目。原版 `0x2BCE5` indexed
-  結局 renderer、兩段文字閘門後的 montage、確切終局音樂與正式 campaign
-  handoff 仍失敗即關閉。
-- [ ] **下一個 AI 垂直切片**：以未修改原版敵方回合 trace 關閉 `0x14EF0` 前置
-  選擇與 mode 0/1/3/4/5/7/9/10/11 的消費端；未取得同一狀態的 raw trace 前，
-  不得把既有 normalized fallback 宣稱為原版 AI。
+  城鎮／商店以已證實的 `FDMUS_010` 做資料回歸；IDA 已直接證實結局事件
+  `0x2c5cf→FDMUS_004`、`0x2c1ac→play_bgm(-1)`、`0x2c1f5→FDMUS_018`，
+  並由 ending timeline／預覽器依序消費。完整 `0x2BCE5` indexed renderer、
+  文字閘門後 montage、正式 campaign handoff 與一般玩家 E2 仍失敗即關閉；
+  證據見 [`fd2_ending_audio_ida.txt`](../data/ida/fd2_ending_audio_ida.txt)。
+- [~] **RE-AI-14EF0-RUNTIME-CONSUMER-20260810**：raw producer→`0x14EF0`
+  route→command／item state-only executor 已接上；mode 3／9 raw `+0x08`
+  查找與 mode 5 mutable event grid／state tail 也有 Docker regression。
+  mode 11 雙動作 transaction、`0x13FD4` recovery presentation、mode 5
+  indexed presentation、未知 command／relocation 與未修改原版 E2 仍待補證。
 
 - [x] **RE-AI-14EF0-RAW-DISPATCH**：合法 IDA Pro 9.4 與 Docker Capstone
   5.0.3 交叉固定 `0x14ef0..0x15055` 的完整 raw 尾端契約：三個 producer
   的固定順序、三個 signed score、record `+0x34 & 0x40`、actor／target
   `+0x48/+0x4a`、必要時 `0x4e516([0x53c2f])`，以及
   `0x1548e/0x15311/0x15055` 路由與共用收尾。六個 direct callers 亦已列出。
-  `battle.SelectNativeAI14EF0Tail` 僅保存 provenance 閘門下的無副作用位址路由，
-  regression 已通過；不接 `NextAIPlan`，不宣稱 turn/camp、完整交易或 E2。
+  `battle.SelectNativeAI14EF0Tail` 保存 provenance 閘門下的無副作用位址路由；
+  runtime consumer 另以 `NextAIPlan` 接線，但兩者不得混稱為完整 turn/camp、
+  交易或 E2。
   證據見 [`fd2_ai_14ef0_dispatch_ida.txt`](../data/ida/fd2_ai_14ef0_dispatch_ida.txt)。
 - [x] **玩家第18戰／raw ch17 post 垂直切片**：已修正 raw handler 與玩家戰鬥
   編號的偏移，`ch17_post` 是玩家第18戰戰後，不是第17戰。IDA 直接指令閉合
@@ -451,11 +455,11 @@
 - [x] **RE-AI-MODE-SOURCE-10FB6**：Docker Capstone 閉合 FDFIELD 名冊 `b17/b18/b19` → runtime `+0x34/+0x35/+0x36`，33 圖 1887 筆低四位分布已保存為 `docs/data/fdfield_native_ai_modes.json`，資料管線與 `Unit` 保留原始來源；高四位不誤命名成 mode。
 - [x] **RE-AI-MODE-WRITER-3419C**：閉合 `0x3419C` inclusive range writer 的保留高四位規則，以及 `0x13D20`／章節處理器的 whole-byte writes；新增 fail-closed materializer 與 writer regression。
 - [x] **RE-AI-MODE2/11-BRANCHES**：原始 Capstone 與合法 IDA 9.4 交叉勘誤 mode 2 為 `0x14EF0` 失敗後 `0x14237→0x13B1E→0x13C06→0x13FD4`；`0x14237` 尾端固定回傳 0，因此會走共用零分支，但不走 `0x13E9C`。mode 11 依 `[0x53C23]`／`[0x53C4F]` 兩個獨立 signed `>=6` gate，第一段後仍評估物理第二段。`PlanNativeUnitMode2` regression 已同步修正，證據見 `fd2_ai_mode_dispatch_ida.txt`；先前「mode 2 不呼叫 `0x13FD4`」已撤回。
-- [x] **RE-AI-MODE0/1-BRANCHES**：同一份 `0x13A9F` 原始控制流已資料化為 `PlanNativeUnitMode0`／`PlanNativeUnitMode1`；mode 0 保留 `0x14EF0→0x14121→0x13E9C` 巢狀備援，`0x13E9C` 零回傳才到 `0x13FD4`；mode 1 只保留 `0x14EF0→0x14121→0x13FD4`。helper 只保存 E0 位址順序與 caller-supplied 回傳旗標，不接 `NextAIPlan`，測試已通過。
-- [x] **RE-AI-MODE3-10-BRANCHES**：同一份 `0x13A9F` raw CFG 已資料化為 `PlanNativeUnitMode3/4/5/7/9/10`；保留 `0x12C60` 的 `-1`／索引分支、`0x12D7B→0x14B78→0x13FD4`、`0x51A83` 清零、mode 5 的 `+0x31/+0x32`／`0x53AD5`／`+0x34=7` writes 與 mode 7 的 `0x32975`。輸入仍是 caller-supplied raw 回傳／byte／座標旗標，沒有接 `NextAIPlan`，測試已通過。
+- [x] **RE-AI-MODE0/1-BRANCHES**：同一份 `0x13A9F` 原始控制流已資料化為 `PlanNativeUnitMode0`／`PlanNativeUnitMode1`；mode 0 保留 `0x14EF0→0x14121→0x13E9C` 巢狀備援，`0x13E9C` 零回傳才到 `0x13FD4`；mode 1 只保留 `0x14EF0→0x14121→0x13FD4`。原 helper 仍只保存 E0 位址順序與 caller-supplied 回傳旗標；2026-08-10 的 `NextAIPlan` bridge 另以 raw provenance 接上 mode 0／1，缺來源仍失敗即關閉。
+- [x] **RE-AI-MODE3-10-BRANCHES**：同一份 `0x13A9F` raw CFG 已資料化為 `PlanNativeUnitMode3/4/5/7/9/10`；保留 `0x12C60` 的 `-1`／索引分支、`0x12D7B→0x14B78→0x13FD4`、`0x51A83` 清零、mode 5 的 `+0x31/+0x32`／`0x53AD5`／`+0x34=7` writes 與 mode 7 的 `0x32975`。原 helper 的 caller-supplied 邊界仍保留；2026-08-10 `NextAIPlan` bridge 已接 mode 3／4／5／7／9／10 的 raw destination／event state，mode 5 indexed presentation 仍未接，測試已通過。
 - [x] **RE-AI-IDLE-RECOVERY-13FD4**：`0x13FD4` 只在 currentHP≠maxHP 且 raw `+0x25/+0x26==0` 時回復 `floor(maxHP/5)` 並封頂；新增 state-only adapter，玩家休息正式路徑同步刪除錯誤的最少回復 1 並接 raw transient gates。
 - [x] **RE-AI-MODE11-WRITER-35F92**：`[0x53AD5]+0x10==4` 時，`0x36078→0x3419C(20,20,11)` 改寫單位 20 低四位；它是全域 90-entry 表的 event 82，不是第二張 30-entry 表的 entry 22。一般玩家觸發尚未閉合，且 33 張格子事件表沒有 event 82，不猜章節或人物。
-- [~] **REMAKE-AI-MODE-RUNTIME**：模式 0/1/2/3/4/5/7/9/10/11 的 raw branch helper 與 `0x13FD4` mutation 已閉合；其餘模式玩法名稱、event 82 觸發、完整回合 orchestration 及 `NextAIPlan` production 接線仍未完成。`set_ai:berserk` 仍只是 inert 事件標記。
+- [~] **REMAKE-AI-MODE-RUNTIME**：模式 0/1/2/3/4/5/7/9/10 的 raw branch 已有 `NextAIPlan` 窄消費端，mode 5 另有 mutable event state tail；`0x14EF0` command／item route 與 state-only executor 也已接線。mode 11 雙動作 orchestration、`0x13FD4` presentation、event 82 觸發、完整回合 orchestration、未知 command／relocation 與一般玩家 E2 仍未完成。`set_ai:berserk` 仍只是 inert 事件標記。
 - [x] **RE-FIELD-EVENT-13A44**：閉合地圖 event-word low5 的 1-based slot、FDSHAP `0x20/0x40` 寶箱 gate、FDFIELD 控制段 16×2 `(event_id,selector)` 與 `0xFF` gate；33 張地圖已同步為可編輯資料並有失敗即關閉查詢。
 - [~] **REMAKE-GLOBAL-EVENT-DISPATCH**：全域 `0x51B91` 已由錯誤的 58 entries 更正為 90 entries；回合事件使用 0..57，格子事件只覆蓋另一子集合。58..89 handler 的高階語意與各 dispatcher 的 selector 生產路徑仍須逐一閉合，未知 handler 不接正式流程。
 - [x] **RE-POST-RESOLUTION-1AA1D**：閉合 `{kind:u8,payload:u16le}`，kind0/1 為物品／金錢、kind2 dispatch 全域事件、kind3 為另一呈現分支；建構器只採 FDFIELD b22+b23..24，撤回 b23..25 24-bit payload。

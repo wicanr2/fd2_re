@@ -6,11 +6,16 @@ import "fmt"
 // 0x1567e to [0x53c33/37/3b/3f]. InventorySlot is the raw slot index saved in
 // [0x53c3f], not the item command byte.
 type NativeAI1567EScoreResult struct {
-	MaxScore          int
-	X                 int
-	Y                 int
-	InventorySlot     int
-	ItemID            int
+	MaxScore      int
+	X             int
+	Y             int
+	InventorySlot int
+	ItemID        int
+	// TargetIndices is the detached raw target list for the winning
+	// destination.  It is retained so the execution owner can re-run the
+	// second target/effect stage instead of inventing a target from normalized
+	// party data.
+	TargetIndices     []byte
 	HasPositiveWinner bool
 }
 
@@ -108,6 +113,7 @@ func ScoreNativeAI1567E(
 					result = NativeAI1567EScoreResult{
 						MaxScore: score, X: x, Y: y,
 						InventorySlot: slot, ItemID: itemID,
+						TargetIndices:     append([]byte(nil), targets...),
 						HasPositiveWinner: true,
 					}
 				}

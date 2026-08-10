@@ -42,7 +42,7 @@ AI spell scoring raw slice：Docker Capstone/Hex-Rays 已閉合 `0x15b77` attack
 `0x1598a` dispatcher 的 raw selection boundary 也已閉合：`unit+0x27==0` 後，`0x1c269` 產生 command bytes；每筆 command 先以 record `+5 <= unit+0x44` 過濾，再由 `0x4e040`/`0x14818` 產生目標候選，呼 `0x15b77(command,candidateCount,candidateBytes)` 評分。最大 score 勝；同分比較 command record `+0`，仍同分則保留先出現者。`battle.SelectNativeAISpellCandidate` 只保存此 score/tie-break 與 raw `(x,y,command)`，不代替 MP、target resolver、`+0x27` gate、UI 或施法執行。
 `battle.NativeAvailableAICommandIDs` 另保存 dispatcher 前置 gate：raw `+0x27` 非零時不產生任何 AI command IDs；為避免把第五 command byte 的未知 physical IDs36..39 當可執行命令，仍只回傳已驗證的 0..35 records。
 
-### AI unit/action call-graph boundary（E0 raw, runtime 未開放）
+### AI unit/action call-graph boundary（E0 raw；E1 窄 runtime）
 
 Canonical Docker Capstone 目前可重現的上層順序是：`0x1A4EB`／`0x1A58F` 的 phase-specific
 setup 後進入 `0x1D80B`／`0x1D8BA` unit scans；每筆 `0x50`-byte record 經 raw `+6`、
@@ -63,7 +63,10 @@ actor `+0x48`、target `+0x4a` 與必要時 `0x4e516([0x53c2f])` 分派
 `0x14EF0` 前置選擇、其他 mode、命令／法術／物品交易或 `0x1548E` 演出已閉合；
 其餘情況維持既有重製端相容路徑或在 raw provenance 缺失時失敗即關閉。
 SDD 只授權保存上述原始呼叫拓撲（raw call topology）與這個標明範圍的執行期窄切片（runtime slice）；
-`+6` 的 raw camp code 已由 constructor 與 `0x14818` consumer 固定為
+截至 2026-08-10，`NextAIPlan` 另已接上 raw mode 0／1／3／4／5／7／9／10 的
+窄 fallback、`0x14EF0` 的 command／item route，以及 mode 5 的 mutable event
+state tail；未知 command、mode 11 雙動作、`0x13FD4` presentation、
+`0x1548E` indexed 演出與一般玩家 E2 仍失敗即關閉。`+6` 的 raw camp code 已由 constructor 與 `0x14818` consumer 固定為
 敵0／友1／己2；但完整 target transaction、movement/effect/UI 與 runtime
 AI execution 仍是 fail-closed，不得由 normalized `aiActUnit` 反推 native parity。
 
@@ -3553,3 +3556,28 @@ post-hit HP，重製端已移除沒有 raw provenance 的 8 tick 中間值；守
 守方 FIGANI 待機幀也已撤回固定 `(prog/6)` 選幀，改由 descriptor `+6` 與
 `FD2_BATTLE_FPT` 的純排程橋消費；攻守任一延遲表缺失即失敗即關閉。這只收緊
 renderer 輸入契約，不能把排程本身解讀成命中、傷害或 DAC 語意。
+
+## 2026-08-10：人工智慧與結局音訊的證據閉合更新
+
+本輪把原始人工智慧與終局音訊拆成可驗證的邊界，沒有把尚未證實的演出語意
+接入正式劇情：
+
+- `0x14EF0` 的 runtime bridge 現在嚴格要求 `0x14237`、`0x1598A`、
+  `0x1567E` 三個 producer 的原始結果，以及 actor／target `+0x34`、
+  `+0x48/+0x4A` 與 command/item 來源；依 IDA 已證實的 raw tree 分派到
+  `0x1548E`、`0x15311`、`0x15055`。這是 E1 窄執行切片，不是完整 AI 或 E2。
+- mode 3／9 的 `0x12C60` raw `+0x35`→`+0x08` first-match、mode 5 的
+  `0x15DF3` mutable event grid／field-control row／`+0x31..+0x33`／
+  `0x53AD5`／`+0x34=7` state tail 已有可編輯資料與 transactional adapter。
+  mode 5 的 `0x25B45`／`0x17AA9` indexed presentation、mode 11 的雙動作
+  transaction，以及 `0x13FD4` 的 recovery presentation 仍 fail-closed。
+- 指令、法術與物品決策只在 raw command／item effect route 完整時執行；
+  unknown command、未閉合 relocation、零分勝者與 spell presentation 不得
+  由 normalized 名稱或一般玩家 UI 推回。證據見
+  [`fd2_ai_mode5_event_ida.txt`](../data/ida/fd2_ai_mode5_event_ida.txt) 與
+  [`fd2_ai_mode11_13fd4_ida.txt`](../data/ida/fd2_ai_mode11_13fd4_ida.txt)。
+- 終局播放器新增三個由 IDA 直接確認的事件：`sub_2C405` 前段
+  `0x2C5CF→FDMUS_004`、`sub_2BCE5` 尾端 `0x2C1AC→play_bgm(-1)`，以及
+  `0x2C1F5→FDMUS_018`。事件序列可由 `internal/ending` 預覽器消費，
+  但 `0x2BCE5` 的完整 indexed montage、輸入交接與正式 campaign ending
+  節點仍未接通；因此不能宣稱原版結局演出或逐音符一致。

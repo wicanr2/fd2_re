@@ -1,0 +1,60 @@
+# FD2 AI mode 11 and 0x13FD4 — IDA Pro 9.4 evidence
+
+- Input: `FD2.EXE`
+- Size: `357074` bytes
+- MD5: `b97caf2239a27a896069d03549d96e1e`
+- SHA-256: `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- Tool: IDA Pro 9.4; addresses are linear IDA addresses, not file offsets.
+- Confidence: 已證實（direct instruction and data-flow review） for the
+  branches below. Gameplay names and a general-player runtime trace remain
+  unknown unless explicitly stated.
+
+## 0x13FD4 raw recovery writer
+
+`0x13FD4..0x14120` computes its runtime record as
+`dword_53A45 + 0x50 * unit_index`. It reads current HP at `+0x40` and max HP
+at `+0x42`; if the two words are equal, or either raw byte `+0x25`/`+0x26` is
+nonzero, it returns zero without changing the record. The two bytes are kept
+unnamed: the reader/writer evidence does not by itself prove a status name.
+
+On the accepting path it writes raw `[0x51A83]=0`, enters the shared movement /
+presentation block through `0x12D7B`, waits for the native presentation calls,
+adds `max_hp/5` to current HP with a cap at max HP, writes the result back to
+`+0x40`, restores `[0x51A83]=1`, and returns one. The state arithmetic is
+therefore reproducible, but the owner of its visual call sequence and its
+mode-2/mode-11 caller handoff are not yet closed in the remake.
+
+## Mode-11 dispatcher boundary
+
+The `0x13A9F` low-nibble `11` branch calls `0x1598A` first. It then checks the
+raw signed score at `[0x53C23]`; when it is at least six it calls `0x15311`.
+The branch always evaluates `0x14237` afterwards. Finally it checks the raw
+score at `[0x53C4F]`; when that score is at least six it calls `0x1548E`, and
+otherwise it returns through `0x14121`. These are two independent gates, not a
+single mutually exclusive command/physical choice. The exact direct branch is
+also recorded in [`fd2_ai_mode_dispatch_ida.txt`](fd2_ai_mode_dispatch_ida.txt).
+
+`0x1598A` itself resets `[0x53C23]`, obtains the raw command count through
+`0x1C269`, skips a unit when runtime `+0x27` is nonzero, and scans each raw
+command ID. A command row is available only when its row `+5` cost is no more
+than actor `+0x44` MP. The target pass uses the command row `+4` and the raw
+target geometry; each positive candidate is sent to `0x15B77`, and the strict
+greater score winner is retained, with raw command word tie data preserved.
+
+`0x1567E` is the independent item preselection pass: it resets `[0x53C33]`,
+scans the active inventory slots obtained from `0x1B8A6`, chooses
+`0x14818` for low command bytes and `0x149F8` for command bytes above `0x0f`,
+then sends targets to `0x15880`. The strict greater winner stores the raw slot,
+item and destination tuple. This is an item-command producer, not proof that
+every item is a spell or that every winner is executable by a generic item
+effect.
+
+## Remake boundary
+
+`SelectNativeAI14EF0Tail` and the current `NextAIPlan` bridge consume the raw
+producer tuple only when all source fields are present. Command IDs with
+verified state-only executors and item rows with a closed effect route can be
+executed; unresolved mode-11 two-action transaction, the `0x13FD4` recovery
+presentation owner, and any missing raw command/item effect remain
+fail-closed. No normalized HP, camp, spell name or item name is substituted for
+the raw fields above.

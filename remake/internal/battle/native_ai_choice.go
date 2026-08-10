@@ -9,6 +9,11 @@ type NativeAISpellCandidate struct {
 	X            int
 	Y            int
 	Score        int
+	// TargetIndices preserves the raw runtime record order emitted by the
+	// candidate's 0x14818 target pass.  The command consumer may use the first
+	// index as the confirmed cursor while re-running its own effect geometry;
+	// it must never infer a target from normalized Camp or distance alone.
+	TargetIndices []byte
 }
 
 // SelectNativeAISpellCandidate preserves 0x1598a's strict score comparison:
@@ -24,5 +29,6 @@ func SelectNativeAISpellCandidate(candidates []NativeAISpellCandidate) (NativeAI
 			best = candidate
 		}
 	}
+	best.TargetIndices = append([]byte(nil), best.TargetIndices...)
 	return best, true
 }

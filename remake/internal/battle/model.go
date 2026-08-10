@@ -6,6 +6,7 @@ package battle
 
 import (
 	"crypto/sha256"
+	"encoding/binary"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -523,6 +524,12 @@ type State struct {
 	NativeEventState            [0x20]byte      // raw [0x53ad5] battle-local state table; unnamed indices
 	Cost                        []int           // per-tile 移動成本(len==W*H;index=y*W+x;nil=尚無地形資料,MoveCost 全回 1)
 	NativeCompositionEventBytes []byte          // immutable FDFIELD composition cell +2 source; each caller rebuilds its own mutable low5/live flags
+	// NativeMapEventGrid is the mutable 0x53a51-shaped map buffer used by the
+	// native AI/event helpers.  It retains the four-byte header followed by
+	// one four-byte FDFIELD tile/event word per cell; it is never substituted
+	// for NativeCompositionEventBytes when a caller rebuilds a fresh grid.
+	NativeMapEventGrid    []byte
+	HasNativeMapEventGrid bool
 	// NativeFieldControlRaw is the exact live current-save image rooted at
 	// [0x53a55]. It is distinct from composition and from the original chapter
 	// resource because battle handlers rewrite turn/chest bytes.
@@ -1077,6 +1084,10 @@ func Load(path string) (*State, error) {
 	mapPath := filepath.Join(filepath.Dir(path), "map.json")
 	st.Cost = loadTerrainCost(mapPath, f.W, f.H)
 	st.NativeCompositionEventBytes = loadNativeCompositionEventBytes(mapPath, f.W, f.H)
+	st.NativeMapEventGrid, st.HasNativeMapEventGrid = loadNativeMapEventGrid(mapPath, f.W, f.H)
+	if st.HasNativeMapEventGrid {
+		resetNativeMapEventGrid(st.NativeMapEventGrid)
+	}
 	var nativeRoundSeed int
 	st.NativeTurnEventControls, nativeRoundSeed, st.HasNativeTurnEventControlState =
 		loadNativeTurnEventControls(mapPath, f.W, f.H)
@@ -1261,6 +1272,62 @@ func loadNativeCompositionEventBytes(mapJSONPath string, w, h int) []byte {
 		return nil
 	}
 	return append([]byte(nil), m.NativeCompositionEventBytes...)
+}
+
+// loadNativeMapEventGrid rebuilds the exact four-byte cell prefix consumed by
+// 0x12e38/0x15df3 from the same FDFIELD export that produced map.json.  The
+// first four bytes are the native width/height header; each cell then keeps
+// tile word (+0/+1) and event word (+2/+3).  Callers still own the mutable
+// 0x4dbfc reset and later event writers.
+func loadNativeMapEventGrid(mapJSONPath string, w, h int) ([]byte, bool) {
+	if w <= 0 || h <= 0 || w > 0xff || h > 0xff {
+		return nil, false
+	}
+	raw, err := os.ReadFile(mapJSONPath)
+	if err != nil {
+		return nil, false
+	}
+	var m mapCostFile
+	if json.Unmarshal(raw, &m) != nil || m.W != w || m.H != h ||
+		len(m.Tiles) != w*h || len(m.NativeCompositionEventBytes) != w*h ||
+		len(m.NativeTileBlitModes) != w*h {
+		return nil, false
+	}
+	grid := make([]byte, 4+4*w*h)
+	grid[0], grid[2] = byte(w), byte(h)
+	for index, tile := range m.Tiles {
+		if tile < 0 || tile > 0xffff ||
+			m.NativeCompositionEventBytes[index] < 0 ||
+			m.NativeCompositionEventBytes[index] > 0xff ||
+			m.NativeTileBlitModes[index] < 0 || m.NativeTileBlitModes[index] > 0xff {
+			return nil, false
+		}
+		offset := 4 + 4*index
+		binary.LittleEndian.PutUint16(grid[offset:offset+2], uint16(tile))
+		eventWord := uint16(m.NativeCompositionEventBytes[index]) |
+			uint16(m.NativeTileBlitModes[index])<<8
+		binary.LittleEndian.PutUint16(grid[offset+2:offset+4], eventWord)
+	}
+	return grid, true
+}
+
+// resetNativeMapEventGrid reproduces 0x4dbfc's constructor prefix.  It is
+// intentionally in-place because the original buffer is subsequently owned
+// by event/AI writers; malformed dimensions are rejected by the loader.
+func resetNativeMapEventGrid(grid []byte) {
+	if len(grid) < 4 {
+		return
+	}
+	count := int(grid[0]) * int(grid[2])
+	if count < 0 || len(grid) != 4+4*count {
+		return
+	}
+	for index := 0; index < count; index++ {
+		offset := 4 + 4*index
+		grid[offset+1] &= 0x03
+		grid[offset+2] &= 0x1f
+		grid[offset+3] = 0xff
+	}
 }
 
 func loadNativeFieldEvents(

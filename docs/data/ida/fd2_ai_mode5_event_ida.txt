@@ -1,0 +1,63 @@
+# FD2 AI mode 5 event tail — IDA Pro 9.4 evidence
+
+- Input: `FD2.EXE`
+- Size: `357074` bytes
+- MD5: `b97caf2239a27a896069d03549d96e1e`
+- SHA-256: `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- Tool: IDA Pro 9.4, 16-bit segmented analysis database; addresses below are
+  linear IDA addresses, not file offsets.
+- Confidence: 已證實（direct disassembly and caller/data-flow review） unless a
+  line is explicitly marked as an implementation boundary.
+
+## 0x15DF3 event-cell search
+
+`0x13A9F` mode 5 reaches `0x12D7B`, then calls `0x15DF3` before the common
+`0x14B78` movement block. `0x15DF3` scans the mutable map buffer rooted at
+`dword_53A51` in row-major order. The loop bounds are the raw map width and
+height words in that buffer; each cell is four bytes. It calls `0x12E38` for
+the cell composition, accepts only `(returned_flags & 0x60) == 0x20`, and
+compares the cell event value's low five bits with the mode-5 event operand.
+On the first match it returns the cell X/Y; otherwise it returns `-1`.
+
+The four-byte cell representation is preserved as raw data here. The
+reconstruction used by the remake is:
+
+| byte | retained source | status |
+| --- | --- | --- |
+| `+0/+1` | mutable tile word, masked with `0x03ff` for the FDSHAP lookup | 已證實 |
+| `+2` | mutable event word, compared with `event_id & 0x1f` | 已證實 |
+| `+3` | raw cell byte retained without a gameplay name | 未知 |
+
+The map exporter supplies the immutable FDFIELD tile word, composition event
+byte and tile blit mode. `State.Load` rebuilds the same four-byte cell prefix,
+then `resetNativeMapEventGrid` applies the constructor's low-bit/sentinel
+normalization before a mode-5 search. This is an evidence-backed buffer
+reconstruction, not a claim that the byte `+3` has been decoded.
+
+## Mode-5 state tail
+
+The direct mode-5 tail at `0x13A9F` writes the selected event's field-control
+row at `[0x53A55]+0x53+3*event_id`. The row's first byte selects the writer;
+the following word is copied into the runtime `+0x31..+0x33` death/effect
+bytes. For row mode zero the same raw value is passed to the fixed eight-slot
+inventory writer. The tail then sets `dword_53AD5[event_id]`, calls the
+`0x12263` map-event update path, and writes the complete runtime `+0x34` byte
+to `7` (not only its low nibble). The exact visual calls around `0x25B45` and
+`0x17AA9` remain presentation-owner boundaries; this file does not infer
+their renderer semantics.
+
+The remake adapter is therefore limited to a transactional, state-only E1
+bridge: it revalidates the raw event identity, field-control row, destination,
+inventory provenance and mutable map grid before any mutation; it updates the
+raw effect/inventory/state/grid/+0x34 fields; and it fails closed when the
+presentation owner is absent. It does not claim an unmodified-player E2 trace.
+
+## Related functions
+
+- `0x12C60..0x12D7B`: raw `+0x08` lookup and common movement entry used by
+  modes 3/5/9.
+- `0x13FD4..0x14120`: raw current/max HP recovery writer. The state arithmetic
+  is known, but its mode-2/mode-11 runtime owner and visual presentation remain
+  unresolved in the remake.
+- `0x14EF0..0x15055`: producer/score tail dispatch; see
+[`fd2_ai_14ef0_dispatch_ida.txt`](fd2_ai_14ef0_dispatch_ida.txt).

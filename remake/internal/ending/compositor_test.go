@@ -237,6 +237,35 @@ func TestPlayerRunsRecoveredNativePrefixWithPlayerAssets(t *testing.T) {
 	}
 }
 
+func TestEndingTimelinePreservesVerifiedAudioCueOrder(t *testing.T) {
+	timeline, err := LoadTimeline("../../assets/endings/native_2bce5.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(timeline.AudioCues) != 3 {
+		t.Fatalf("audio cues=%#v", timeline.AudioCues)
+	}
+	want := []AudioCue{
+		{Source: "0x2c5cf", Track: 4, DriverArg: 0, Trigger: "0x2c405 after phase0 before party cycle"},
+		{Source: "0x2c1ac", Track: -1, DriverArg: 1, Trigger: "0x2bce5 after 0x2c405 returns before FDOTHER#60"},
+		{Source: "0x2c1f5", Track: 18, DriverArg: 0, Trigger: "0x2bce5 after FDOTHER#60 frame before post-montage loop"},
+	}
+	for i := range want {
+		if timeline.AudioCues[i] != want[i] {
+			t.Fatalf("audio cue %d=%#v want %#v", i, timeline.AudioCues[i], want[i])
+		}
+	}
+	p, err := NewPlayer(*timeline, nil, nil, NewIndexedCompositor())
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := p.VerifiedAudioCues()
+	got[0].Track = 99
+	if p.VerifiedAudioCues()[0].Track != 4 {
+		t.Fatal("audio cue accessor exposed mutable timeline state")
+	}
+}
+
 func TestBlockedDialogueSelectsOnlyNativeTextBranch(t *testing.T) {
 	p := &Player{State: PlaybackBlocked, Blocked: &Segment{Op: "native_text_branch_opaque", ThenDialogue: []DialogueBlock{{PortraitID: 4}}, ElseDialogue: []DialogueBlock{{PortraitID: 37}}}}
 	if blocks, ok := p.BlockedDialogue(26); !ok || len(blocks) != 1 || blocks[0].PortraitID != 4 {

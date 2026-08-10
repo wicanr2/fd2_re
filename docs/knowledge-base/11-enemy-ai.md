@@ -538,6 +538,34 @@ score、Cast 或 effect；36..39 仍因沒有已驗證 command record 而省略�
 - 這個橋只涵蓋無副作用的分數與門檻，沒有呼叫 `0x13A9F`、逐單位事件／章節
   回呼或 `[0x53ECC]` 提早離開，因此不是正式敵方回合執行器。
 
+## 2026-08-10 執行期橋接進度（E1 窄切片，非完整敵方回合）
+
+重製端現在把完整 raw provenance 經 `NextAIPlan` 接到可執行的窄切片，仍不把
+位址改名成玩法：
+
+- `0x14EF0` 的三個 producer 已保留正分勝者、原始目標索引、目的格與
+  `0x1548E`／`0x15311`／`0x15055` 路由；缺任一 command／item／移動來源就
+  失敗即關閉。`0x15311` 的已知 command ID 家族與 `0x15055` 的已知 item
+  transaction 會重用玩家端已驗證的 state-only executor；未知 ID、未閉合的
+  relocation 或缺目標不會改用正規化技能名稱。
+- raw mode bridge 已直接消費 `0x14121`／`0x13E9C` 的 mode 0／1、
+  `0x12D7B→0x14B78` 的 mode 4／7／10，mode 7 的座標抵達後保留
+  `0x32975` 對 runtime `+0x05` 的完整位元組寫入；mode 8 只走共同收尾。
+  mode 3／9 現以 `0x12C60(raw +0x35)` 對 `record +0x08` 做 first-match
+  查詢後移向該 raw record 座標，並保留 mode 3 的 `0x51A83=0` 寫入閘門。
+- mode 2 在既有物理候選證據缺失時仍拒絕進入 `0x13FD4`；mode 5 的
+  `0x15DF3` 原始事件格陣、field-control row 與 state-only 尾端現已接入，
+  但 `0x25B45`／`0x17AA9` indexed presentation 尚未接線。mode 11 的
+  `0x1598A→0x15311/0x14237→0x1548E/0x14121` 是多動作交易，仍維持
+  fail-closed。`0x13FD4` 的 raw HP 回復函式已有獨立 state-only 測試，但尚未
+  假接到未證實的 mode 回傳點。
+- `NativeModeFallbackActive`、原始 mode nibble、`+0x05` 與 `0x51A83` 寫入旗標
+  都是附加投影；原始 record 位址與運算元仍留在證據文件，沒有以自訂名稱取代。
+
+本輪 Docker 回歸涵蓋 mode 0／3／4／7／9、0x14EF0 command／item／physical
+候選，以及 command／item 執行器；這是 E1 內部執行切片，不是原版一般玩家 E2
+或完整敵方回合證明。
+
 ## 下一步最小驗證
 
 1. 在固定原版存檔與固定單位上，依序於 `0x1D8BA`、`0x13A9F`、
@@ -568,3 +596,34 @@ score、Cast 或 effect；36..39 仍因沒有已驗證 command record 而省略�
 零分勝者與動態原版對照仍未全部閉合。重製端的正規化
 `aiActUnit`／`NextAIPlan` 因此仍是近似路徑；難度調整參數也不得當成原版
 等價設定。
+
+## 2026-08-10 補證：0x14EF0 消費端、mode 5 事件尾端與未閉合邊界
+
+本節勘誤上一節「mode 5 尚未匯出事件格陣」的過時描述。合法 IDA Pro 9.4
+已保存 `0x15DF3` 的 row-major `0x53A51` 搜尋、`0x13FD4` 的 raw HP
+回復寫入，以及 mode 11 的兩個獨立 score gate；證據分別見
+[`fd2_ai_mode5_event_ida.txt`](../data/ida/fd2_ai_mode5_event_ida.txt) 與
+[`fd2_ai_mode11_13fd4_ida.txt`](../data/ida/fd2_ai_mode11_13fd4_ida.txt)。
+
+- `0x14EF0` 現有一個受 provenance 閘門保護的 runtime 消費者：它先執行
+  `0x14237`、`0x1598A`、`0x1567E`，把 `[0x53C4F]` 正確視為
+  `0x14237` 寫入的優先值（8／18），再依原始 `+0x34` bit、`+0x48/+0x4A`
+  及 command word 選 `0x1548E`、`0x15311` 或 `0x15055`。每個 route 都
+  重新驗證原始目標與可達路徑；缺資料不轉成 normalized 目標。
+- mode 3／9 已消費 `0x12C60` 的 raw `+0x35`→record `+0x08`
+  first-match 查找。mode 5 已消費 `0x15DF3` 的 raw 事件格、field-control
+  row、`+0x31..+0x33`／inventory writer、`0x53AD5` state、可變地圖事件格及
+  整個 `+0x34=7` 尾端；這是 state-only E1，`0x25B45`／`0x17AA9` 的
+  indexed presentation owner 仍未接入。
+- command／法術／item 目前只執行已閉合的 raw ID 家族與 item effect route。
+  `0x1598A→0x15B77` 的 command score、`0x1567E→0x15880` 的 item score
+  已有 runtime tuple 與 Docker regression，但未知 ID、未閉合 relocation、
+  低分／零分勝者及 spell presentation 仍失敗即關閉；不得把 command byte
+  直接改名成玩法效果。
+- mode 11 的 `0x1598A→0x15311`、`0x14237→0x1548E` 雙動作順序已由 IDA
+  證實，卻沒有可驗證的 transaction owner；`0x13FD4` 的 `max/5` HP 回復
+  算術也只完成 state-only 契約。兩者維持 fail-closed，直到同一原版回合
+  trace 同時提供 raw score、回復前後 record 與演出完成邊界。
+
+因此本輪測試可證明的是 E1 原始資料到窄執行器的連通性，不是完整敵方回合、
+一般玩家 E2 或所有 mode 的原版等價。

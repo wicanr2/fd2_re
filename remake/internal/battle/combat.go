@@ -258,6 +258,30 @@ type AIPlan struct {
 	Path    []Cell // 含起點;len>=2 = 要移動(引擎播行走動畫)
 	Target  *Unit  // 到位後攻擊目標(nil = 僅移動/待機)
 	SpellID int    // 原版 spell command 的資料欄位；-1 表示本計畫不施法
+	// NativeActionKind identifies a verified raw action route selected by
+	// 0x14ef0.  None keeps the legacy planner contract; the other values are
+	// only executable when the corresponding raw candidate, target and
+	// movement provenance are complete.
+	NativeActionKind        NativeAIActionKind
+	NativeCommandID         int
+	NativeItemSlot          int
+	NativeItemID            int
+	NativeActionDestination Cell
+	NativeAI14EF0Route      NativeAI14EF0Tail
+	NativeActionScore       int
+	// NativeModeFallbackActive distinguishes a raw dispatcher fallback from a
+	// normalized plan. NativeModeFallback is meaningful only when this flag is
+	// true; its value is the original low nibble, not a gameplay name.
+	NativeModeFallbackActive bool
+	NativeModeFallback       byte
+	NativeModeWriteByte5     bool
+	NativeModeWriteRangeZero bool
+	// NativeModeEventActive marks mode 5's exact 0x15df3 map-event lookup.
+	// The event ID and destination are raw dispatcher operands; the executor
+	// must revalidate the map/control bytes before mutating the unit.
+	NativeModeEventActive      bool
+	NativeModeEventID          byte
+	NativeModeEventDestination Cell
 	// NativeMode2Physical 標記原始 mode 2 物理候選窄切片；只有計畫確實使用
 	// 脫離的 runtime record、0x4e555 移動表與已驗證的 0x14237 評分契約時才為真。
 	// 它不代表前置 0x14ef0 路由或所有 native mode 已閉合。
@@ -270,6 +294,19 @@ type AIPlan struct {
 	// must still resolve target, score, presentation, and execution separately.
 	NativeScoredCommands []int
 }
+
+// NativeAIActionKind is deliberately a route label, not a gameplay name.
+// The command table's IDs and the item row's bytes remain the authoritative
+// semantic layer until their presentation/effect names are independently
+// proven.
+type NativeAIActionKind uint8
+
+const (
+	NativeAIActionNone NativeAIActionKind = iota
+	NativeAIActionPhysical
+	NativeAIActionCommand
+	NativeAIActionItem
+)
 
 func (s *State) nativeAIPlanScoredCommands(u *Unit) []int {
 	if s == nil || len(s.NativeCommandBook) != 36 {
@@ -369,7 +406,43 @@ func (s *State) NextAIPlan() *AIPlan {
 		if !u.OnField || !u.Alive() || u.Camp == Own || u.Acted || u.Paralyzed {
 			continue
 		}
+		if nativePlan, handled, err := s.nextNativeAI14EF0Plan(u); handled {
+			if err != nil {
+				// A failed 0x14ef0 producer is only allowed to continue through
+				// the exact raw mode fallback.  If that fallback is unavailable,
+				// preserve the original evidence error and stop before the
+				// normalized planner can consume the unit.
+				if fallback, fallbackHandled, fallbackErr := s.nextNativeAIModeFallbackPlan(u); fallbackHandled {
+					if fallbackErr != nil {
+						return &AIPlan{U: u, SpellID: -1, NativeError: fallbackErr}
+					}
+					if fallback != nil {
+						return fallback
+					}
+				}
+				return &AIPlan{U: u, SpellID: -1, NativeError: err}
+			}
+			if nativePlan != nil {
+				return nativePlan
+			}
+		}
 		if nativePlan, handled, err := s.nextNativeAIPhysicalPlan(u); handled {
+			if err != nil {
+				if fallback, fallbackHandled, fallbackErr := s.nextNativeAIModeFallbackPlan(u); fallbackHandled {
+					if fallbackErr != nil {
+						return &AIPlan{U: u, SpellID: -1, NativeError: fallbackErr}
+					}
+					if fallback != nil {
+						return fallback
+					}
+				}
+				return &AIPlan{U: u, SpellID: -1, NativeError: err}
+			}
+			if nativePlan != nil {
+				return nativePlan
+			}
+		}
+		if nativePlan, handled, err := s.nextNativeAIModeFallbackPlan(u); handled {
 			if err != nil {
 				return &AIPlan{U: u, SpellID: -1, NativeError: err}
 			}

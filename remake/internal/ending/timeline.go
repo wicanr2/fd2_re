@@ -11,16 +11,28 @@ import (
 )
 
 type Timeline struct {
-	SchemaVersion int       `json:"schema_version"`
-	NativeHandler string    `json:"native_handler"`
-	Resource      Resource  `json:"resource"`
-	Status        string    `json:"status"`
-	Segments      []Segment `json:"segments"`
+	SchemaVersion int        `json:"schema_version"`
+	NativeHandler string     `json:"native_handler"`
+	Resource      Resource   `json:"resource"`
+	Status        string     `json:"status"`
+	Segments      []Segment  `json:"segments"`
+	AudioCues     []AudioCue `json:"audio_cues,omitempty"`
 }
 
 type Resource struct {
 	Archive string `json:"archive"`
 	Index   int    `json:"index"`
+}
+
+// AudioCue is an address-preserving transcription of one native 0x25977
+// call. Track=-1 is the native stop request; all other values are the raw
+// FDMUS.DAT resource index. Trigger is deliberately a source-stage label,
+// not a claim that the current fail-closed Player can execute that stage.
+type AudioCue struct {
+	Source    string `json:"source"`
+	Track     int    `json:"track"`
+	DriverArg int    `json:"driver_arg"`
+	Trigger   string `json:"trigger"`
 }
 
 // Segment deliberately retains only evidence names and native call arguments.
@@ -93,6 +105,11 @@ func LoadTimeline(path string) (*Timeline, error) {
 	}
 	if len(timeline.Segments) == 0 {
 		return nil, fmt.Errorf("ending timeline %q has no recovered segments", path)
+	}
+	for i, cue := range timeline.AudioCues {
+		if cue.Source == "" || cue.Track < -1 || cue.Track > 0xff || cue.DriverArg < 0 || cue.DriverArg > 1 || cue.Trigger == "" {
+			return nil, fmt.Errorf("ending timeline %q audio cue %d is incomplete", path, i)
+		}
 	}
 	for i, segment := range timeline.Segments {
 		if segment.Op == "" || segment.Source == "" {

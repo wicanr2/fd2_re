@@ -3,6 +3,11 @@
   "native_handler": "0x2bce5",
   "resource": {"archive": "FDOTHER.DAT", "index": 54},
   "status": "recovered_prefix_only_fail_closed",
+  "audio_cues": [
+    {"source": "0x2c5cf", "track": 4, "driver_arg": 0, "trigger": "0x2c405 after phase0 before party cycle"},
+    {"source": "0x2c1ac", "track": -1, "driver_arg": 1, "trigger": "0x2bce5 after 0x2c405 returns before FDOTHER#60"},
+    {"source": "0x2c1f5", "track": 18, "driver_arg": 0, "trigger": "0x2bce5 after FDOTHER#60 frame before post-montage loop"}
+  ],
   "segments": [
     {"op": "blit_frame", "source": "0x2bd8b", "frame": 0, "target": "offscreen", "stride": 320, "transparent": -1},
     {"op": "copy_buffer", "source": "0x2bda3", "bytes": 64000, "from": "offscreen", "to": "vga"},

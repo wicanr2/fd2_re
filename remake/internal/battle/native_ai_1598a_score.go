@@ -72,11 +72,12 @@ func ScoreNativeAI1598A(
 				continue
 			}
 			candidates = append(candidates, NativeAISpellCandidate{
-				CommandID:    commandID,
-				CommandValue: command.Damage,
-				X:            score.Destination.X,
-				Y:            score.Destination.Y,
-				Score:        score.Score,
+				CommandID:     commandID,
+				CommandValue:  command.Damage,
+				X:             score.Destination.X,
+				Y:             score.Destination.Y,
+				Score:         score.Score,
+				TargetIndices: append([]byte(nil), score.TargetIndices...),
 			})
 		}
 	}

@@ -4085,3 +4085,35 @@ ch02 與其餘章節的 selection／scan 差異以
 `campaign_full.json` 的終局文字也移除生成器狀態尾註，改為可編輯的玩家可見結語。
 原版 `0x2BCE5` indexed renderer、文字閘門後 montage、確切終局音樂與正式
 campaign handoff 仍失敗即關閉；`FD2_ENDING_PREFIX` 預覽不可當成通關完成。
+
+## 2026-08-10：AI 其他模式、0x14EF0 消費端與結局精確音訊補證
+
+本次接手保留上一節的時間序列，不覆寫舊結論；以下是新證據及其消費邊界。
+
+- 新增 [`fd2_ai_mode5_event_ida.txt`](../data/ida/fd2_ai_mode5_event_ida.txt)：
+  IDA 直接固定 `0x15DF3` 對 mutable `0x53A51` 的寬高／四位元組 cell
+  row-major 搜尋、terrain flag `0x20`、event low5 first match；並固定
+  mode 5 field-control row、`+0x31..+0x33`、inventory writer、`0x53AD5`
+  state、`0x12263` map update 與整個 `+0x34=7` 寫入。重製端由 map JSON
+  的 raw tile／event／blit bytes 重建同形狀 buffer，且在任何 state mutation
+  前驗證整張 grid，避免 malformed later cell 留下半套交易。
+- 新增 [`fd2_ai_mode11_13fd4_ida.txt`](../data/ida/fd2_ai_mode11_13fd4_ida.txt)：
+  固定 `0x13FD4` current/max HP、`max/5`、`+0x25/+0x26` raw gate、
+  `0x51A83` 暫存寫入，以及 mode 11 的 `[0x53C23] >= 6`、
+  `[0x53C4F] >= 6` 雙 gate。mode 11 的雙動作 transaction 與 `0x13FD4`
+  presentation owner 尚未證實，因此重製端仍 fail-closed，不以正規化回血或
+  下一步攻擊代替。
+- `0x14EF0` runtime consumer 現已把 `0x14237` 的 raw priority（8／18）
+  與獨立 score word 分開，依 raw `+0x34` bit、actor／target `+0x48/+0x4A`
+  及 command word 走 `0x1548E`／`0x15311`／`0x15055`；mode 3／9 的
+  `+0x35→+0x08` lookup 與 mode 5 state tail 有 focused Docker regression。
+  未知 command／item relocation、mode 11、`0x25B45`／`0x17AA9` indexed
+  presentation、一般玩家回合 E2 仍未關閉。
+- 結局音訊證據 `fd2_ending_audio_ida.txt` 已加入三筆精確事件：
+  `0x2C5CF→FDMUS_004`、`0x2C1AC→play_bgm(-1)`、`0x2C1F5→FDMUS_018`。
+  `internal/ending` timeline／預覽器會依序驗證並消費這三筆；這不等於完整
+  `0x2BCE5` indexed montage、輸入交接或正式 campaign ending 已完成。
+
+本輪聚焦 Docker 測試通過：mode 5 raw grid／state tail、mode 3／9 raw lookup、
+0x14EF0 command／item route、所有 raw tail table cases。未修改原版 DOSBox
+動態 AI trace 與終局逐幀／逐音訊比對仍是下一個證據門檻。

@@ -8343,7 +8343,39 @@ func (g *Game) aiStep() {
 	}
 	u := plan.U
 	act := func() {
+		if plan.NativeModeWriteRangeZero {
+			// The dispatcher writes the raw map-range global [0x51a83] on
+			// these branches. Keep the state field explicitly raw; it is not
+			// a normalized command-selection value.
+			g.st.NativeMapRangeMode = 0
+			g.st.HasNativeMapRangeModeState = true
+		}
+		if plan.NativeActionKind == battle.NativeAIActionCommand ||
+			plan.NativeActionKind == battle.NativeAIActionItem {
+			if err := g.executeNativeAIAction(plan); err != nil {
+				g.loadErr = "native AI action: " + err.Error()
+				g.aiBusy = false
+			}
+			return
+		}
 		finish := func() {
+			if plan.NativeModeEventActive {
+				if err := g.st.ApplyNativeAIMode5Event(
+					u, plan.NativeModeEventID, plan.NativeModeEventDestination,
+				); err != nil {
+					g.loadErr = "native AI mode event: " + err.Error()
+					g.aiBusy = false
+					return
+				}
+			}
+			if plan.NativeModeWriteByte5 {
+				// 0x32975 writes the complete runtime +0x05 byte only after
+				// mode 7's raw destination comparison succeeds.  Keep the
+				// mutation on the native field; Acted remains the engine
+				// projection updated by the common completion owner below.
+				u.NativeRecordByte5 = 1
+				u.HasNativeRecordByte5 = true
+			}
 			g.finishSuccessfulUnitAction(u, nil)
 		}
 		if plan.Target != nil && plan.Target.Alive() {
