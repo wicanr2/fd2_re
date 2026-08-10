@@ -624,6 +624,11 @@ score、Cast 或 effect；36..39 仍因沒有已驗證 command record 而省略�
   證實，卻沒有可驗證的 transaction owner；`0x13FD4` 的 `max/5` HP 回復
   算術也只完成 state-only 契約。兩者維持 fail-closed，直到同一原版回合
   trace 同時提供 raw score、回復前後 record 與演出完成邊界。
+- 本輪另加入 `SelectNativeAIMode11Transaction`：它只把
+  `[0x53C23] >= 6` 與 `[0x53C4F] >= 6` 轉成兩個獨立的原始位址路由，並以
+  獨立型別保留 `0x14121` 是前置尋路／回復路由、不是 `0x14EF0` 尾端的事實。
+  這是無副作用的 E0 選擇器與失敗即關閉測試；沒有接入 transaction owner、
+  command／法術／item 執行或演出，因此不提升上述未閉合項目。
 
 因此本輪測試可證明的是 E1 原始資料到窄執行器的連通性，不是完整敵方回合、
 一般玩家 E2 或所有 mode 的原版等價。

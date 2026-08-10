@@ -29,8 +29,10 @@
 - [~] **RE-AI-14EF0-RUNTIME-CONSUMER-20260810**：raw producer→`0x14EF0`
   route→command／item state-only executor 已接上；mode 3／9 raw `+0x08`
   查找與 mode 5 mutable event grid／state tail 也有 Docker regression。
-  mode 11 雙動作 transaction、`0x13FD4` recovery presentation、mode 5
-  indexed presentation、未知 command／relocation 與未修改原版 E2 仍待補證。
+  mode 11 現另有 `SelectNativeAIMode11Transaction` 保存兩個獨立 raw gate 的
+  純 E0 路由選擇（含 `0x14121` 前置路由）；雙動作 transaction owner、
+  `0x13FD4` recovery presentation、mode 5 indexed presentation、未知
+  command／relocation 與未修改原版 E2 仍待補證。
 
 - [x] **RE-AI-14EF0-RAW-DISPATCH**：合法 IDA Pro 9.4 與 Docker Capstone
   5.0.3 交叉固定 `0x14ef0..0x15055` 的完整 raw 尾端契約：三個 producer

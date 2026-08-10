@@ -3581,3 +3581,9 @@ renderer 輸入契約，不能把排程本身解讀成命中、傷害或 DAC 語
   `0x2C1F5→FDMUS_018`。事件序列可由 `internal/ending` 預覽器消費，
   但 `0x2BCE5` 的完整 indexed montage、輸入交接與正式 campaign ending
   節點仍未接通；因此不能宣稱原版結局演出或逐音符一致。
+
+補充一個不改變執行期狀態的 mode 11 E0 邊界：
+`SelectNativeAIMode11Transaction` 只驗證兩個 raw score 是否存在，並保留
+`[0x53C23]`／`[0x53C4F]` 各自的 `>=6` 路由選擇；`0x14121` 以獨立的 mode 11
+路由型別表示，避免與 `0x14EF0` 尾端混稱。它沒有 transaction owner、演出或
+指令／法術／物品效果，因此不能解除 mode 11 的 E1／E2 閘門。

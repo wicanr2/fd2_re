@@ -4117,3 +4117,16 @@ campaign handoff 仍失敗即關閉；`FD2_ENDING_PREFIX` 預覽不可當成通�
 本輪聚焦 Docker 測試通過：mode 5 raw grid／state tail、mode 3／9 raw lookup、
 0x14EF0 command／item route、所有 raw tail table cases。未修改原版 DOSBox
 動態 AI trace 與終局逐幀／逐音訊比對仍是下一個證據門檻。
+
+## 2026-08-10：mode 11 雙閘門的純 E0 選擇器補證
+
+在上一節已提交的窄消費端之外，新增
+`remake/internal/battle/native_ai_mode11.go` 與對應測試。它保存 IDA 已證實的
+獨立條件：`[0x53C23] >= 6` 才選 `0x15311`，`0x14237` 之後無條件保留第二階段，
+再由 `[0x53C4F] >= 6` 選 `0x1548E`，否則選 `0x14121`。`0x14121` 使用獨立
+mode 11 路由型別，明確表示它不是 `0x14EF0` 尾端。
+
+Docker focused regression 已通過四種分數組合與缺少任一 raw score 的失敗即關閉。
+這個選擇器沒有寫入戰鬥狀態，也沒有假接 transaction owner、命令／法術／物品
+執行、`0x13FD4` 回復演出或 `0x25B45`／`0x17AA9` indexed presentation；
+因此仍只提升 mode 11 的 E0 靜態路由證據，不解除完整敵方回合或原版一般玩家 E2。
