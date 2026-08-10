@@ -3592,3 +3592,14 @@ renderer 輸入契約，不能把排程本身解讀成命中、傷害或 DAC 語
 `max/5` 封頂結果，`ApplyNativeAIIdleRecovery` 才在同一 raw snapshot 上提交
 寫入。這是可測的 state-only 邊界，不是 `0x12D7B` presentation、mode 2
 handoff 或一般玩家回合證據。
+
+### mode 11 直接控制流勘誤（E0）
+
+合法 IDA Pro 9.4 與 Docker Capstone 已固定 `0x13A9F` 的 mode 11 分支從
+`0x13E02` 直接呼叫 `0x1598A`，接著無條件呼叫 `0x14237`；它不是先經
+`0x14EF0`。`[0x53C23] >= 6` 只控制 `0x15311`，`[0x53C4F] >= 6` 只控制
+`0x1548E`，不足時才走 `0x14121`，且零回傳才進 `0x13FD4`。完整指令、函式
+邊界、caller 與 raw writer 見
+[`fd2_ai_mode11_full_ida_20260810.txt`](../data/ida/fd2_ai_mode11_full_ida_20260810.txt)。
+重製端目前只保存無副作用的 E0 路由選擇，尚未接 transaction owner、演出或
+一般玩家回合，因此維持失敗即關閉。

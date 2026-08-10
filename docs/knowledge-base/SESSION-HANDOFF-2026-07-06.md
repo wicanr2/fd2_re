@@ -4140,3 +4140,23 @@ Docker focused regression 已通過四種分數組合與缺少任一 raw score �
 驗證 current==max、任一 raw gate 非零、`max/5` 與封頂，以及純函式不變更
 record。這補的是 `0x13FD4` state-only E0，仍沒有把 `0x12D7B` 等候、畫面
 演出、mode 2／11 caller handoff 或結局／AI 一般玩家路徑接入正式執行器。
+
+## 2026-08-10：mode 11 完整直接控制流重檢（E0）
+
+本輪以合法 IDA Pro 9.4 優先、Docker Capstone 5.0.3 交叉驗證目前雜湊固定的
+`FD2.EXE`（357074 位元組、MD5 `b97caf2239a27a896069d03549d96e1e`、
+SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`）。
+完整位址、工具與輸出位置見
+[`fd2_ai_mode11_full_ida_20260810.txt`](../data/ida/fd2_ai_mode11_full_ida_20260810.txt)。
+
+- `0x13A9F` 的 mode 11 分支從 `0x13E02` 直接呼叫 `0x1598A`，不是先經
+  `0x14EF0`；之後無條件呼叫 `0x14237`。
+- `[0x53C23] >= 6` 只控制 `0x15311`；`[0x53C4F] >= 6` 只控制
+  `0x1548E`，不足才走 `0x14121`，且其零回傳才呼叫 `0x13FD4`。
+- IDA direct callers 固定 `0x1598A`（`0x13E09`、`0x14F15`、`0x1D91A`）、
+  `0x14237`（`0x13B5F`、`0x13E26`、`0x14F0B`）、`0x15311`（`0x13E1C`、
+  `0x14FDB`）與 `0x1548E`（`0x13E39`、`0x14F9B`）；這些 caller 不可互併成
+  單一 dispatcher。
+- 重製端目前只保存兩個 raw gate 的無副作用 E0 路由，尚未假接 transaction
+  owner、指令／法術／物品效果或演出；仍採失敗即關閉。`0x13FD4` 的 HP 算術
+  仍只是 state-only 契約，後續會單獨補證其 presentation 邊界。

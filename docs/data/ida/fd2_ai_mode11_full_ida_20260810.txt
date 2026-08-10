@@ -1,0 +1,162 @@
+# FD2.EXE mode 11 完整直接指令解讀（2026-08-10）
+
+## 輸入與工具
+
+- 輸入：`FD2.EXE`，大小 `357074` 位元組。
+- MD5：`b97caf2239a27a896069d03549d96e1e`。
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- IDA：合法 IDA Pro 9.4.0.260610，DOS LE loader；以下位址都是 IDA 線性位址，
+  不是檔案偏移。
+- IDA Docker：`fd2-ida-authorized-local`；Hex-Rays 偽代碼、函式邊界、直接
+  交叉引用與 `idc.generate_disasm_line` 匯出只寫入 `/tmp`。
+- Capstone：`fd2-cap-local` 5.0.3；以相同輸入交叉驗證
+  `0x13E02..0x13E57`、`0x1598A..0x15B77`、`0x14237..0x145CD` 與
+  `0x15311..0x1548D`。
+- 證據等級：下列控制流、原始欄位讀寫與呼叫邊界為已證實（E0）；沒有把
+  位址命名成攻擊、法術、休息或狂暴，也沒有一般玩家動態回合 trace。
+
+## 直接 dispatcher：`0x13A9F` 的 mode 11 分支
+
+`sub_13A9F` 範圍為 `0x13A9F..0x13E9C`，IDA 直接 caller 為
+`0x1D876`、`0x1D942`、`0x1D9D2`。函式先由 runtime record
+`dword_53A45 + 0x50 * unit` 讀取低四位模式 `record+0x34 & 0x0F`。
+
+mode 11 的直接指令如下：
+
+```text
+0x13e02  cmp eax, 0x0b
+0x13e05  jne 0x13e5a
+0x13e07  push edi
+0x13e08  push esi
+0x13e09  call 0x1598a
+0x13e11  cmp dword ptr [0x53c23], 6
+0x13e18  jl  0x13e24
+0x13e1a  push edi
+0x13e1b  push esi
+0x13e1c  call 0x15311
+0x13e24  push edi
+0x13e25  push esi
+0x13e26  call 0x14237
+0x13e2e  cmp dword ptr [0x53c4f], 6
+0x13e35  jl  0x13e43
+0x13e37  push edi
+0x13e38  push esi
+0x13e39  call 0x1548e
+0x13e41  jmp 0x13e5a
+0x13e43  push edi
+0x13e44  push esi
+0x13e45  call 0x14121
+0x13e4d  test eax, eax
+0x13e4f  jne 0x13e5a
+0x13e51  push esi
+0x13e52  call 0x13fd4
+0x13e5a  ; 共用完成路徑
+```
+
+這證明三件事：
+
+1. mode 11 **不先呼叫 `0x14EF0`**；它在此分支直接呼叫 `0x1598A`。
+2. `[0x53C23] >= 6` 只控制 `0x15311`，不會跳過後面的 `0x14237`。
+3. `[0x53C4F] >= 6` 只控制 `0x1548E`；不足時走 `0x14121`，且只有
+   `0x14121` 回傳零才呼叫 `0x13FD4`。兩個閘門可以在同一次呼叫中先後成立。
+
+因此 mode 11 不是「指令／物理行動二選一」的單一選擇器，而是兩段有順序的
+原始呼叫交易；「交易」在此只是控制流描述，不代表重製端已找出完整提交擁有者。
+
+## 第一段 producer：`0x1598A` → `[0x53C23]`
+
+`sub_1598A` 範圍為 `0x1598A..0x15B77`，IDA 直接 caller 為 `0x13E09`
+（mode 11）、`0x14F15`（`0x14EF0` 內）與 `0x1D91A`。
+
+- `0x1599B` 先把 `[0x53C23]` 清零。
+- 以 `dword_53A45 + 0x50 * actor` 取得 actor raw record；`+0x44` 是此
+  函式直接比較的原始 word，`0x1C269` 提供 bounded command ID 陣列。
+- command list 為空，或 actor `record+0x27 != 0`，直接跳到 `0x15B6D` 返回。
+- 每個 command ID 經 `0x4E516` 取得 row；只有 row `+5 <= actor +0x44`
+  才進入 candidate 建立。
+- `0x4E040` 建立候選格，`0x14B16` 讀取候選數；每個候選先呼
+  `0x14818`，再將非空 target array 交給 `0x15B77`。
+- 分數嚴格較大才取代現任結果；同分時比較 command row `+0`，仍相等則
+  保留先前結果。勝者寫入：
+
+  - `[0x53C23]`：score
+  - `[0x53C27]`、`[0x53C2B]`：候選座標
+  - `[0x53C2F]`：raw command ID
+
+這裡只能證實「command candidate producer／score winner」，不能由 row 欄位
+直接命名成法術、攻擊或道具效果。
+
+## 第二段 producer：`0x14237` → `[0x53C4F]`
+
+`sub_14237` 範圍為 `0x14237..0x145CD`，IDA 直接 caller 為 `0x13B5F`
+（mode 2 失敗後）、`0x13E26`（mode 11）與 `0x14F0B`（`0x14EF0` 內）。
+
+- `0x1427E` 先清零 `[0x53C4F]`。
+- `0x1B83D→0x1B722→0x4E56C` 取得 actor 的 raw item row；row `+0x0B`
+  與 `+0x0C` 直接傳入後續候選幾何。
+- actor raw `+0x48/+0x4A`、`+0x3B`、座標與 `0x145CD` 的 grid 設定共同
+  形成候選搜尋輸入；缺少 equipped low-item 時在 `0x145C3` 以零返回。
+- `0x14818` 產生落點與 target array。每個 target 使用 raw word 計算比較值，
+  並由比較結果選出 priority `0`、`8` 或 `18`；`0x1DEBE` 的明示返回值
+  只在返回一時加入另一個 raw 差值。
+- 勝者寫入：
+
+  - `[0x53C43]`、`[0x53C47]`：候選座標
+  - `[0x53C4B]`：raw target record index
+  - `[0x53C4F]`：priority gate
+
+`[0x53C4F]` 是此 producer 的優先值，不可與 `[0x53C43]` 的候選算術分數
+混為一談。
+
+## `0x15311`：第一段結果的消費邊界
+
+`sub_15311` 範圍為 `0x15311..0x1548E`；直接 caller 是 mode 11 的
+`0x13E1C` 與 `0x14EF0` 的 `0x14FDB`。
+
+- `0x1534F` 再次要求 `[0x53C23] >= 6`，不足返回零。
+- 以 `[0x53C2F]` 取 raw command row，使用 `[0x53C27]/[0x53C2B]` 與
+  row `+4/+6` 再呼叫 `0x14818`。
+- 清理 candidate grid 後等待 `200`，暫時把 `[0x51A83]` 設成 row `+4+2`，
+  呼叫 `0x12CEA`，再清零 `[0x51A83]`。
+- command ID `<10` 且 `byte [0x53AF9]==0` 時進 `0x2A6BD`；否則以
+  `[0x51D01 + command_id*4]` 的函式表進入另一條 raw handler。此分支只
+  證實函式表 dispatch，不命名各 ID 的玩法。
+- 後續經 `0x1B653`、`0x1DB65`、`0x1AA1D` 做 raw 收尾，清除
+  `[0x53EC8]`／`[0x51A83]`，返回一。
+
+## `0x1548E`：第二段結果的消費邊界
+
+`sub_1548E` 範圍為 `0x1548E..0x1567E`；直接 caller 是 mode 11 的
+`0x13E39` 與 `0x14EF0` 的 `0x14F9B`。
+
+- 清零 `[0x51A83]`，呼叫 `0x12D7B(actor)`。
+- 將 `[0x53C43]/[0x53C47]` 交給 `0x14B78`，再設定 `[0x51A83]=1`。
+- 以 `[0x53C4B]` 呼叫 target-side `0x12D7B` 與後續 raw helper；
+  `byte [0x53AF9]` 決定兩條不同的後續 helper chain。
+- 結尾經 `0x1B6B7`、`0x1DB65`、`0x1AA1D`、`0x1E292` 清理並返回一。
+
+這只能命名為「第二段選中結果的 raw 消費函式」；不能單靠入口位址稱它為
+施法、近戰或完整攻擊呈現。
+
+## `0x14121` 與 `0x13FD4` 的 mode 11 邊界
+
+`sub_14121` 範圍為 `0x14121..0x14237`，mode 11 的 caller 是 `0x13E45`。
+它以 `0x145CD`／`0x4E1A6` 搜尋 raw blocked-cell，沒有結果返回零；有結果
+才經 `0x12D7B`、`0x14B78` 嘗試移動並返回成功旗標。沒有足夠證據把它命名成
+待機、逃跑或接近敵人。
+
+mode 11 只有在 `0x14121` 返回零時才由 `0x13E52` 呼叫 `0x13FD4`。因此
+`0x13FD4` 是 mode 11 的第三層失敗備援，不是第二個 score gate，也不是
+`0x1548E` 的別名。
+
+## 重製端邊界與勘誤
+
+`remake/internal/battle/native_ai_mode11.go` 的
+`SelectNativeAIMode11Transaction` 目前只保存兩個 raw score gate，並用獨立
+型別表示 `0x14121`；它不執行 `0x15311`／`0x14237`／`0x1548E`，也不寫入
+戰鬥狀態。這是 E0 路由契約，不是完整 mode 11 transaction、演出或一般玩家 E2。
+
+本次重新核對特別撤回一個容易混淆的說法：mode 11 的直接入口不是
+`0x14EF0`。`0x14EF0` 自身也會呼叫 `0x14237`、`0x1598A`、`0x1567E`，
+但那是另一個 caller 的 producer topology；mode 11 在 `0x13E02` 直接走
+`0x1598A`／`0x14237`，不可把兩條 CFG 合併成單一 dispatcher。

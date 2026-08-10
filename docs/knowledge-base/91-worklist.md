@@ -458,6 +458,13 @@
 - [x] **RE-AI-MODE-SOURCE-10FB6**：Docker Capstone 閉合 FDFIELD 名冊 `b17/b18/b19` → runtime `+0x34/+0x35/+0x36`，33 圖 1887 筆低四位分布已保存為 `docs/data/fdfield_native_ai_modes.json`，資料管線與 `Unit` 保留原始來源；高四位不誤命名成 mode。
 - [x] **RE-AI-MODE-WRITER-3419C**：閉合 `0x3419C` inclusive range writer 的保留高四位規則，以及 `0x13D20`／章節處理器的 whole-byte writes；新增 fail-closed materializer 與 writer regression。
 - [x] **RE-AI-MODE2/11-BRANCHES**：原始 Capstone 與合法 IDA 9.4 交叉勘誤 mode 2 為 `0x14EF0` 失敗後 `0x14237→0x13B1E→0x13C06→0x13FD4`；`0x14237` 尾端固定回傳 0，因此會走共用零分支，但不走 `0x13E9C`。mode 11 依 `[0x53C23]`／`[0x53C4F]` 兩個獨立 signed `>=6` gate，第一段後仍評估物理第二段。`PlanNativeUnitMode2` regression 已同步修正，證據見 `fd2_ai_mode_dispatch_ida.txt`；先前「mode 2 不呼叫 `0x13FD4`」已撤回。
+- [x] **RE-AI-MODE11-FULL-IDA-20260810**：合法 IDA Pro 9.4 與 Docker Capstone 重新核對
+  `0x13E02..0x13E57`，證實 mode 11 直接 `0x1598A→(gate)0x15311→0x14237→(gate)0x1548E/0x14121→0x13FD4`，
+  不先經 `0x14EF0`。同時保存 `0x1598A` 的 `[0x53C23]` producer、`0x14237` 的
+  `[0x53C4F]` priority producer、`0x15311`／`0x1548E` consumer 邊界與 direct callers；
+  `[0x53C4F]` 不命名成算術 score。完整輸入雜湊與位址基準見
+  [`fd2_ai_mode11_full_ida_20260810.txt`](../data/ida/fd2_ai_mode11_full_ida_20260810.txt)。
+  重製端仍只保留 E0 路由選擇，transaction owner、演出與一般玩家 E2 尚未完成。
 - [x] **RE-AI-MODE0/1-BRANCHES**：同一份 `0x13A9F` 原始控制流已資料化為 `PlanNativeUnitMode0`／`PlanNativeUnitMode1`；mode 0 保留 `0x14EF0→0x14121→0x13E9C` 巢狀備援，`0x13E9C` 零回傳才到 `0x13FD4`；mode 1 只保留 `0x14EF0→0x14121→0x13FD4`。原 helper 仍只保存 E0 位址順序與 caller-supplied 回傳旗標；2026-08-10 的 `NextAIPlan` bridge 另以 raw provenance 接上 mode 0／1，缺來源仍失敗即關閉。
 - [x] **RE-AI-MODE3-10-BRANCHES**：同一份 `0x13A9F` raw CFG 已資料化為 `PlanNativeUnitMode3/4/5/7/9/10`；保留 `0x12C60` 的 `-1`／索引分支、`0x12D7B→0x14B78→0x13FD4`、`0x51A83` 清零、mode 5 的 `+0x31/+0x32`／`0x53AD5`／`+0x34=7` writes 與 mode 7 的 `0x32975`。原 helper 的 caller-supplied 邊界仍保留；2026-08-10 `NextAIPlan` bridge 已接 mode 3／4／5／7／9／10 的 raw destination／event state，mode 5 indexed presentation 仍未接，測試已通過。
 - [x] **RE-AI-IDLE-RECOVERY-13FD4**：`0x13FD4` 只在 currentHP≠maxHP 且 raw `+0x25/+0x26==0` 時回復 `floor(maxHP/5)` 並封頂；新增 state-only adapter，玩家休息正式路徑同步刪除錯誤的最少回復 1 並接 raw transient gates。
