@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "title": "第 30 關終局外部影片視覺旁證",
+  "classification": {
+    "level": "外部錄影旁證",
+    "confidence": "強推論",
+    "limits": "影片不是本專案控制的未修改 DOSBox 一般玩家 E2 軌跡；它不能單獨證明原始存檔、輸入、二進位版本或逐像素畫面。"
+  },
+  "source": {
+    "platform": "YouTube",
+    "video_id": "jadGPiN66mw",
+    "url": "https://www.youtube.com/watch?v=jadGPiN66mw",
+    "title": "炎龍騎士團2：黃金城之謎 第30章 傳說的終章－結局",
+    "channel": "cid",
+    "published": "2018-05-19",
+    "observed_on": "2026-08-12",
+    "duration_seconds": 1943
+  },
+  "sampling": {
+    "method": "一次性 Docker 內以 yt-dlp 擷取 00:25:00..00:32:23 的 360p 暫存片段，再以 FFmpeg 接觸表與 freezedetect 檢查；原始影片、片段與接觸表均只留在 /tmp，未加入版控。",
+    "freeze_detect": {
+      "clip_start_seconds": 1500,
+      "freeze_start_seconds": 382.667,
+      "freeze_duration_seconds": 55.9,
+      "source_time_start": "00:31:22.667",
+      "source_time_end": "00:32:18.567"
+    }
+  },
+  "observations": [
+    {
+      "range": "約 00:25:00..00:27:40",
+      "claim": "影片可見逐位隊員肖像、職業／文字與大幅角色圖的最終狀態頁面。",
+      "confidence": "外部影片觀測"
+    },
+    {
+      "range": "約 00:27:40..00:31:22",
+      "claim": "隊員頁面後接黑底的 STAFF／工作人員與插畫式終局蒙太奇；本項只證明玩家可見順序，不能把每幅畫面逐筆對應到 0x28a6c 或三組 raw table。",
+      "confidence": "外部影片觀測"
+    },
+    {
+      "range": "00:31:22.667..00:32:18.567",
+      "claim": "畫面停留在黑底、金色 THE END 與紅金橫線的終局圖；偵測到約 55.9 秒靜止畫面，之後錄影出現製作者桌面覆蓋。",
+      "confidence": "外部影片觀測"
+    }
+  ],
+  "cross_evidence": {
+    "proven_binary": "固定雜湊 FD2.EXE 的 0x2c194..0x2c39a：#60 前置單幀、#58 的 20-entry frame table、#57 的 768-byte palette、0x28a6c loop，最後才解碼 FDOTHER #59，並從 0x2c39a 返回；caller 的 0x25975 自迴圈不回一般戰役節點。",
+    "strong_inference": "因 #59 是迴圈後唯一的 320x200 單幀，且影片在蒙太奇後停於 THE END，將 #59 作為重製近似終局定格的來源是強推論；尚未宣稱已用未修改一般玩家路徑逐幀證明。"
+  },
+  "remake_policy": {
+    "user_direction": "第 30 關完整結局動畫結束後，停在終局畫面讓玩家回味；不模擬 DOS BIOS 鍵盤或原版自迴圈。",
+    "implemented_scope": "FD2_APPROXIMATE=1 的既有終局入口可在原資源角色蒙太奇完成後，呈現來源受驗證的 #59 定格；20-entry 的 0x28a6c 視覺 owner 仍未完成。",
+    "future_extension": "可選的隊伍最終狀態回顧循環屬重製延伸，必須與原版一次性隊員頁面分開標示。"
+  }
+}

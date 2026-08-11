@@ -508,12 +508,12 @@ terminal、一般玩家 E2 仍未閉合，因此不解除 `postbattle_ch29_persi
 [`fd2_ch29_input_cleanup_ida.txt`](../data/ida/fd2_ch29_input_cleanup_ida.txt)。
 
 2026-08-09 ch29 post-montage tail raw schedule：IDA／Capstone 又閉合
-`0x2c194..0x2c39a` 的資源與迴圈契約：FDOTHER #60 的前置解碼、#58／#57
-的 20-entry raw table loop、`unit+6/+7/+0x56/+0x57` 寫入、
+`0x2c194..0x2c39a` 的資源與迴圈契約：FDOTHER #60 的前置 320×200 單影格、#58
+的 20-entry frame table、#57 的 768-byte VGA 調色盤、`unit+6/+7/+0x56/+0x57` 寫入、
 `0x28a6c(0,1)`、`0x11d40(0,255,0)`、`0x2935b`、20／78 tick、
 `0x1f882`，以及最後 FDOTHER #59 的解碼與釋放。三組 20-byte 表以固定版
 原始位址 `0x525dc..0x52617` 輸出並帶雜湊；`MontageTail.Plan` 只產生 raw
-entry，不寫入 `battle.State`、不呈現畫面，也不命名欄位。這關閉「尾端完全未知」
+entry，不寫入 `battle.State`、不呈現 20-entry loop，也不命名欄位。這關閉「尾端完全未知」
 的過時斷言，但不關閉 indexed resource owner、輸入事件、campaign／town／
  shop／整備／save handoff 或 `postbattle_ch29_persist`；證據見
 [`fd2_ch29_post_montage_tail_ida.txt`](../data/ida/fd2_ch29_post_montage_tail_ida.txt)。
@@ -4018,3 +4018,43 @@ mode-7 `+0x35/+0x36` 目的地、地形／組成與 movement-cost provenance 的
 驗證 raw nonzero、輪播跳轉、資料拒絕與戰役 admission。這是重製端 E1 垂直切片，
 不是未修改一般玩家終局路徑；`0x2c194` 尾段、精確 BIOS key code、FDMUS_018／停曲
 owner、raw terminal owner、戰後／城鎮 handoff 與一般玩家 E2 仍失敗即關閉。
+
+## 2026-08-12：終局 #59 定格與可選隊伍回顧（近似 E1 勘誤）
+
+本節是對上述「`0x2c194` tail 完全沒有 consumer」舊現況的追加勘誤，不把未還原
+的 20-entry 演出升格為完整終局。固定雜湊的 IDA／Capstone 直接指令與資源形狀現在
+分開記錄：`0x2c1be` 的 FDOTHER #60 與 `0x2c357` 的 #59 都是 320×200 單影格；
+`0x2c220` 的 #58 是傳給 `0x2935b` 的 20-entry frame table；`0x2c234` 的 #57 是
+768-byte（256×3）VGA 調色盤，先寫入 `[0x53a65]` 再交給 `0x11d40`。先前把
+`0x2935b` 的來源寫成 #57 是 resource index 錯置，已在
+[`fd2_ch29_post_montage_tail_ida.txt`](../data/ida/fd2_ch29_post_montage_tail_ida.txt)
+追加勘誤。
+
+`MontageTailAssets` 因此只在 `FD2_APPROXIMATE=1`、`0x2c548` 的已 admission
+party montage 成功完成後，驗證 #57/#58/#60/#59 的形狀與透明 RLE 邊界，恢復既有的
+indexed baseline，呈現 #59 並保持終局定格。這條成功路徑不會再落入 generic ending；
+素材或 raw provenance 缺失時才保持舊有的可編輯結語回退。原始程式在未還原的
+20-entry loop 之前才啟動 `FDMUS_018`，而近似 runtime 在 #59 定格取得後才接線同一曲目，
+故僅稱曲目來源相符，**不宣稱時序相同**。
+
+外部第 30 戰片尾錄影顯示黑底金色 `THE END` 長時間停留；把 #59 對應成該畫面的
+結論是**強推論／外部視覺旁證**，不是原版未修改一般玩家 E2，也不是逐像素比較。
+擷取方法、時間窗、影片 URL、限制與原始位址交叉關係都記於
+[`ch30-ending-youtube-visual-side-evidence.json`](../data/ui-traces/ch30-ending-youtube-visual-side-evidence.json)；
+外部影片或影格沒有加入儲存庫。
+
+為符合「終局停住讓玩家回味」的產品規則，定格是預設。Enter／空白鍵才會啟動一個
+**重製延伸**：重播已 admission 的每位隊員 `MontageCycle` 最終狀態，完整一輪後再開始；
+Enter／空白鍵／Esc 立即恢復 #59 定格。這些控制鍵不映射回 `0x10620` 的 BIOS word，
+也不主張原版 terminal self-loop 有相同行為。
+
+仍未解除的 gate 是 `0x28a6c(0,1)` 的 20-entry renderer、#60 的完整可見 owner、
+palette fade／wait 的精確時序、raw `0x25970→0x2bce5` 一般玩家 campaign owner，
+以及完整終局 E2。所有未解項繼續失敗即關閉，不能因 #59 定格或重製回顧功能而接成
+正式戰役完成宣稱。
+
+Docker／Xvfb 回歸 `TestMontageTailAssetsPreservePaletteFramesAndTerminalImage` 與
+`TestApproximateCampaignMontageStartsFromPersistentLoadCHOrder` 的
+`optional_party_outcome_review_loops_and_restores_terminal` 子案例，已以玩家原始 archive
+確認資源形狀、終局定格、回顧重新起始與返回定格。不過測試以已完成的 montage state
+驗證循環邊界，不能代替未修改一般玩家從第 30 戰走到終局的 E2。

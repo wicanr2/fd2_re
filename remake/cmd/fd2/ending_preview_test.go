@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"os"
 	"path/filepath"
 	"testing"
@@ -47,6 +48,57 @@ func TestNativeEndingPreviewReachesRecoveredPhase0MontageGate(t *testing.T) {
 		p.Blocked == nil || p.Blocked.Op != "native_finale_montage_opaque" ||
 		p.Blocked.Source != "0x2c548" {
 		t.Fatalf("montage gate = state=%s err=%v blocked=%#v", state, err, p.Blocked)
+	}
+}
+
+func TestApproximateCampaignTailHoldsRecoveredTerminalFrame(t *testing.T) {
+	const base = "../../../org_game/炎龍騎士團/FLAME2"
+	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "ANI.DAT"} {
+		if _, err := os.Stat(filepath.Join(base, name)); os.IsNotExist(err) {
+			t.Skip("player-provided ending resources are unavailable")
+		} else if err != nil {
+			t.Fatal(err)
+		}
+	}
+	t.Setenv("FD2_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+	t.Setenv("FD2_FDTXT", filepath.Join(base, "FDTXT.DAT"))
+	t.Setenv("FD2_ANI", filepath.Join(base, "ANI.DAT"))
+	t.Setenv("FD2_ENDING_CHAPTER", "29")
+	t.Setenv("FD2_MUTE", "1")
+	preview, err := newNativeEndingPreview()
+	if err != nil {
+		t.Fatal(err)
+	}
+	p := preview.player
+	for _, elapsed := range []int{0, 1000, 2500, 0, 256, 2000} {
+		if _, err := p.Advance(elapsed); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if !p.ResumeBlockedDialogue() {
+		t.Fatal("first ending dialogue gate was unavailable")
+	}
+	if _, err := p.Advance(5000); err != nil || !p.ResumeBlockedDialogue() {
+		t.Fatalf("second ending dialogue gate err=%v blocked=%#v", err, p.Blocked)
+	}
+	preview.campaignApproximate = true
+	if _, err := p.Advance(7500); err != nil || !preview.atNativeMontageGate() {
+		t.Fatalf("montage gate err=%v preview=%#v", err, preview)
+	}
+	preview.montage = &ending.MontageCycle{Phase: ending.MontagePhaseCompleted}
+	g := &Game{nativeEnding: preview, approximateMode: true}
+	if err := g.startCampaignNativeTail(); err != nil {
+		t.Fatal(err)
+	}
+	if !g.nativeEnding.presentingCampaignTerminal() || g.nativeEnding.awaitingCampaignFallback() {
+		t.Fatalf("terminal state=%#v", g.nativeEnding)
+	}
+	before := append([]byte(nil), p.Compositor.VGA...)
+	if err := preview.advance(time.Unix(1, 0), &g.nativeRNGState); err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(before, p.Compositor.VGA) {
+		t.Fatal("terminal frame advanced after it was presented")
 	}
 }
 
@@ -172,6 +224,7 @@ func TestApproximateCampaignMontageStartsFromPersistentLoadCHOrder(t *testing.T)
 	t.Setenv("FD2_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
 	t.Setenv("FD2_FDTXT", filepath.Join(base, "FDTXT.DAT"))
 	t.Setenv("FD2_ANI", filepath.Join(base, "ANI.DAT"))
+	t.Setenv("FD2_MUTE", "1")
 	preview, err := newNativeEndingPreview()
 	if err != nil {
 		t.Fatal(err)
@@ -249,6 +302,49 @@ func TestApproximateCampaignMontageStartsFromPersistentLoadCHOrder(t *testing.T)
 			g.nativeEnding.montageInputPending, g.nativeEnding.montage.Phase,
 			g.nativeEnding.montage.PlanIndex, len(g.nativeEnding.montage.Plans))
 	}
+
+	t.Run("optional party outcome review loops and restores terminal", func(t *testing.T) {
+		// The post-montage terminal is the default.  The repeat below is a
+		// deliberately separate remake extension: it can replay every admitted
+		// party outcome, automatically starts a new pass after completion, and
+		// always allows the player to return to the source-derived terminal frame.
+		g.nativeEnding.montage.Phase = ending.MontagePhaseCompleted
+		if err := g.startCampaignNativeTail(); err != nil {
+			t.Fatal(err)
+		}
+		held := append([]byte(nil), g.nativeEnding.player.Compositor.VGA...)
+		if err := g.startCampaignPartyOutcomeReview(); err != nil {
+			t.Fatal(err)
+		}
+		if !g.nativeEnding.reviewingCampaignPartyOutcomes() || g.nativeEnding.montage.Ready() ||
+			g.nativeEnding.reviewCycles != 1 {
+			t.Fatalf("party outcome review did not begin: %#v", g.nativeEnding)
+		}
+		now = now.Add(approximateNativeMontageTick)
+		if err := g.nativeEnding.advance(now, &g.nativeRNGState); err != nil {
+			t.Fatal(err)
+		}
+		if g.nativeEnding.montage.Phase != ending.MontagePhaseSecondary {
+			t.Fatalf("party outcome review did not restart indexed cycle: %s", g.nativeEnding.montage.Phase)
+		}
+		g.nativeEnding.montage.Phase = ending.MontagePhaseCompleted
+		now = now.Add(approximateNativeMontageTick)
+		if err := g.nativeEnding.advance(now, &g.nativeRNGState); err != nil {
+			t.Fatal(err)
+		}
+		if !g.nativeEnding.reviewingCampaignPartyOutcomes() || g.nativeEnding.montage.Ready() ||
+			g.nativeEnding.reviewCycles != 2 || !bytes.Equal(held, g.nativeEnding.player.Compositor.VGA) {
+			t.Fatalf("party outcome review did not loop through terminal: review=%v phase=%s cycles=%d",
+				g.nativeEnding.reviewingCampaignPartyOutcomes(), g.nativeEnding.montage.Phase, g.nativeEnding.reviewCycles)
+		}
+		if err := g.returnCampaignTerminalFromReview(); err != nil {
+			t.Fatal(err)
+		}
+		if !g.nativeEnding.presentingCampaignTerminal() || g.nativeEnding.reviewingCampaignPartyOutcomes() ||
+			!bytes.Equal(held, g.nativeEnding.player.Compositor.VGA) {
+			t.Fatal("party outcome review did not restore the terminal frame")
+		}
+	})
 }
 
 func TestApproximateCampaignMontageRejectsUncompiledCh29ShotPartyBinding(t *testing.T) {

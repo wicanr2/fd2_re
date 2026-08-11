@@ -4735,3 +4735,30 @@ phase 轉為上述 raw-change effect。素材或 raw provenance 缺失時不猜�
 
 同日再確認：`ch29_post` 的 `0x25970→0x2bce5` 仍留下明確編譯問題（compile issue）；
 截圖隊伍輔助程式會拒絕其不完整的 LOADCH，不能把它當作上述持續隊伍的一般玩家來源。
+
+## 2026-08-12：終局尾段資源角色與近似定格勘誤
+
+這是對本檔較早「#58／#57 都是 loop frame source」及「party montage 完成後一律回到
+可編輯結語」的**追加勘誤**；舊記錄保留其當時的發現過程，不再作為現況接口。
+
+- 固定雜湊的 IDA Pro 9.4／Capstone 證據現在明確分開：FDOTHER #60（`0x2c1be`）與
+  #59（`0x2c357`）是 320×200 單影格；#58（`0x2c220`）是交給
+  `0x2935b` 的 20-entry frame table；#57（`0x2c234`）是 768-byte 256×3 VGA
+  調色盤，於 `0x2c2b6` 指派 `[0x53a65]` 後交給 `0x11d40`。`0x2935b(resource_57,...)`
+  的舊文字是 stack resource index 錯置，已在
+  [`fd2_ch29_post_montage_tail_ida.txt`](../data/ida/fd2_ch29_post_montage_tail_ida.txt)
+  勘誤為 `resource_58`。
+- `FD2_APPROXIMATE=1` 的已 admission 終局節點完成 `MontageCycle` 後，現在會驗證
+  #57/#58/#60/#59 的來源形狀、呈現並保持 #59 靜態圖；只有素材或 raw provenance
+  admission 失敗才回到可編輯結語。原始 `FDMUS_018` 位於未還原 20-entry loop 前，
+  所以重製端在定格取得後接同一曲目只能標作**近似時序**。
+- 第 30 戰外部片尾錄影顯示黑底金色 `THE END` 持續畫面。依 raw 順序將 #59 對應成
+  該定格是**強推論／外部視覺旁證**，不是原版一般玩家 E2；方法與限制見
+  [`ch30-ending-youtube-visual-side-evidence.json`](../data/ui-traces/ch30-ending-youtube-visual-side-evidence.json)。
+- 終局定格是預設。Enter／空白鍵才啟動可選的隊伍最終狀態重播循環，Enter／空白鍵／Esc
+  回到 #59。它是重製版延伸，未映射為 `0x10620` 的原版 BIOS 輸入，也不推定原版 self-loop
+  有同樣功能。
+
+`0x28a6c` 的 20-entry renderer、#60 的可見 owner、原始 palette/wait 時序、raw
+`0x25970→0x2bce5` 一般玩家 owner 與完整終局 E2 仍未閉合；它們不能因近似定格而被
+接到正式 campaign handoff。

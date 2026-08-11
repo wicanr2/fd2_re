@@ -37,6 +37,11 @@ type nativeEndingPreview struct {
 	montageInputPending   bool
 	montageStartAttempted bool
 	montageStartError     string
+	tail                  *ending.MontageTailAssets
+	tailStartAttempted    bool
+	tailStartError        string
+	reviewPartyOutcomes   bool
+	reviewCycles          int
 }
 
 const nativeEndingTimelinePath = "assets/endings/native_2bce5.json"
@@ -148,7 +153,23 @@ func (p *nativeEndingPreview) atNativeMontageGate() bool {
 }
 
 func (p *nativeEndingPreview) runningCampaignMontage() bool {
-	return p != nil && p.atNativeMontageGate() && p.montage != nil && !p.montage.Ready()
+	return p != nil && p.atNativeMontageGate() && !p.reviewPartyOutcomes && p.montage != nil && !p.montage.Ready()
+}
+
+// presentingCampaignTerminal marks the stable terminal image recovered from
+// the final FDOTHER#59 presentation.  It remains an explicit approximate
+// campaign feature until the 20-entry 0x28a6c renderer has its own proven
+// adapter and the raw terminal owner reaches a normal player path.
+func (p *nativeEndingPreview) presentingCampaignTerminal() bool {
+	return p != nil && p.atNativeMontageGate() && p.tail != nil && !p.reviewPartyOutcomes
+}
+
+// reviewingCampaignPartyOutcomes is a remake-only, opt-in revisit loop.  It
+// reuses the already admitted 0x2c548 party outcome renderer, but does not
+// claim that the original's terminal self-loop accepted a modern review
+// command.  Returning from it always restores the recovered terminal frame.
+func (p *nativeEndingPreview) reviewingCampaignPartyOutcomes() bool {
+	return p != nil && p.atNativeMontageGate() && p.tail != nil && p.reviewPartyOutcomes
 }
 
 // awaitingCampaignFallback only admits the editable epilogue after the
@@ -156,11 +177,12 @@ func (p *nativeEndingPreview) runningCampaignMontage() bool {
 // has failed.  The game starts the montage before it polls the fallback key.
 func (p *nativeEndingPreview) awaitingCampaignFallback() bool {
 	return p != nil && p.atNativeMontageGate() && p.montageStartAttempted &&
-		(p.montage == nil || p.montage.Ready())
+		(p.montage == nil || (p.montage.Ready() && p.tailStartAttempted && p.tail == nil))
 }
 
 // consumeNativeEndingAudioAtGate 只消費 after_gate 與目前已還原 0x2c548
-// 邊界精確相符的唯一音訊 cue。後續停曲／track18 沒有已還原的 owner，刻意不碰。
+// 邊界精確相符的唯一音訊 cue。後續 track18 只在 #59 定格取得後由另一個明確的
+// 近似 adapter 消費，不能把它誤當作此 gate 的精確時序。
 func (g *Game) consumeNativeEndingAudioAtGate() {
 	if g == nil || g.nativeEnding == nil || !g.nativeEnding.atNativeMontageGate() ||
 		g.nativeEnding.audioCueConsumed {
@@ -178,15 +200,16 @@ func (g *Game) consumeNativeEndingAudioAtGate() {
 	g.playBGMCount(fmt.Sprintf("FDMUS_%03d", cue.Track), cue.DriverArg)
 }
 
-// finishCampaignNativeEndingFallback 只在明確近似模式的未還原蒙太奇閘門返回。
-// 它絕不恢復 native Player，也不宣稱已執行原版終局 renderer。
+// finishCampaignNativeEndingFallback 只在明確近似模式且原始資產 admission
+// 失敗時返回可編輯結語。成功呈現 terminal frame 的路徑會永久停留在原版
+// 對應的終局畫面，不會回退成 generic ending。
 func (g *Game) finishCampaignNativeEndingFallback() bool {
 	if g == nil || g.nativeEnding == nil || !g.nativeEnding.awaitingCampaignFallback() {
 		return false
 	}
-	notice := "原版結局尾段尚未還原；以下顯示可編輯結語。"
+	notice := "原始結局素材不足，以下顯示可編輯結語。"
 	if g.nativeEnding.montage != nil && g.nativeEnding.montage.Ready() {
-		notice = "已播放可驗證的結局前段與角色蒙太奇；原版結局尾段尚未還原；以下顯示可編輯結語。"
+		notice = "已播放可驗證的結局前段與角色蒙太奇，但終局靜態畫面素材不足；以下顯示可編輯結語。"
 	}
 	g.stopBGM()
 	g.nativeEnding = nil
@@ -294,6 +317,122 @@ func (g *Game) startCampaignNativeMontage() error {
 		return err
 	}
 	p.montage = cycle
+	return nil
+}
+
+// startCampaignNativeTail admits only the stable frame at the end of the
+// recovered 0x2c194 resource sequence.  The 20-entry loop itself still calls
+// unresolved 0x28a6c, so this does not label the whole tail as reproduced.
+// It replaces the old generic epilogue only in explicit approximate mode and
+// leaves the terminal image on screen for the player to revisit.
+func (g *Game) startCampaignNativeTail() error {
+	if g == nil || !g.approximateMode || g.nativeEnding == nil || !g.nativeEnding.atNativeMontageGate() ||
+		g.nativeEnding.montage == nil || !g.nativeEnding.montage.Ready() {
+		return fmt.Errorf("ending: terminal tail requires a completed approximate montage")
+	}
+	p := g.nativeEnding
+	if p.tailStartAttempted {
+		if p.tail != nil {
+			return nil
+		}
+		return fmt.Errorf("ending: terminal tail admission already failed")
+	}
+	p.tailStartAttempted = true
+	tail, err := ending.LoadMontageTail(assetPath("assets/endings/native_2c194_tail.json"))
+	if err != nil {
+		p.tailStartError = err.Error()
+		return err
+	}
+	assets, err := ending.LoadMontageTailAssets(*tail, p.fdotherPath)
+	if err != nil {
+		p.tailStartError = err.Error()
+		return err
+	}
+	if err := assets.PresentFinal(p.player.Compositor); err != nil {
+		p.tailStartError = err.Error()
+		return err
+	}
+	p.tail = &assets
+	if p.view != nil {
+		p.view.WritePixels(p.player.Compositor.RGBA().Pix)
+	}
+	// 原版在尾段先停止前曲，並在 20-entry loop 前啟動 FDMUS_018。
+	// 這個近似端只在穩定的終局畫面取得後消費同一資源，不宣稱其間隔
+	// 與尚未還原的 0x28a6c loop 完全相同。
+	g.stopBGM()
+	g.playBGMCount("FDMUS_018", 0)
+	return nil
+}
+
+// resetCampaignPartyReviewCycle creates another pass through the already
+// source-admitted party outcome cycle.  It is intentionally available only
+// after the terminal image is on screen: the terminal remains the default
+// ending, while review is a modern optional extension rather than a guessed
+// original input path.
+func (p *nativeEndingPreview) resetCampaignPartyReviewCycle() error {
+	if p == nil || p.player == nil || p.player.Compositor == nil || p.tail == nil || p.montage == nil || !p.montage.Ready() {
+		return fmt.Errorf("ending: party outcome review requires a completed terminal montage")
+	}
+	template := p.montage
+	groups := make([]byte, len(template.Units))
+	for i, unit := range template.Units {
+		if len(unit) <= 7 {
+			return fmt.Errorf("ending: party outcome review unit %d lacks raw +7 provenance", i)
+		}
+		groups[i] = unit[7]
+	}
+	// A completed cycle has faded its palette.  The native tail restores a
+	// saved palette before the final image; use the same recovered baseline
+	// before beginning this explicitly non-native repeat.
+	if err := p.tail.PresentFinal(p.player.Compositor); err != nil {
+		return err
+	}
+	cycle, err := ending.NewMontageCycle(template.Montage, template.Assets, template.Units, groups, p.player.Compositor)
+	if err != nil {
+		return fmt.Errorf("ending: party outcome review: %w", err)
+	}
+	p.montage = cycle
+	p.montageWait = 0
+	p.montageInputPending = false
+	p.last = time.Time{}
+	return nil
+}
+
+// startCampaignPartyOutcomeReview starts a continuous replay of every party
+// member's recovered ending outcome.  Enter/Space opt in from the terminal;
+// Enter/Space/Escape returns to the terminal.  Those controls are deliberately
+// documented as remake behavior, not as a DOS input reconstruction.
+func (g *Game) startCampaignPartyOutcomeReview() error {
+	if g == nil || g.nativeEnding == nil || !g.nativeEnding.presentingCampaignTerminal() {
+		return fmt.Errorf("ending: party outcome review requires the terminal image")
+	}
+	p := g.nativeEnding
+	if err := p.resetCampaignPartyReviewCycle(); err != nil {
+		return err
+	}
+	p.reviewPartyOutcomes = true
+	p.reviewCycles++
+	return nil
+}
+
+// returnCampaignTerminalFromReview leaves the optional remake review loop and
+// restores the held source-derived terminal image.  It never advances the
+// campaign or emulates the original DOS keyboard self-loop.
+func (g *Game) returnCampaignTerminalFromReview() error {
+	if g == nil || g.nativeEnding == nil || !g.nativeEnding.reviewingCampaignPartyOutcomes() {
+		return fmt.Errorf("ending: party outcome review is not active")
+	}
+	p := g.nativeEnding
+	if err := p.tail.PresentFinal(p.player.Compositor); err != nil {
+		return err
+	}
+	p.reviewPartyOutcomes = false
+	p.montageWait = 0
+	p.montageInputPending = false
+	p.last = time.Time{}
+	if p.view != nil {
+		p.view.WritePixels(p.player.Compositor.RGBA().Pix)
+	}
 	return nil
 }
 
@@ -417,7 +556,26 @@ func (p *nativeEndingPreview) advance(now time.Time, nativeRNG *uint16) error {
 		p.remainder -= time.Duration(elapsed) * time.Millisecond
 	}
 	p.last = now
-	if p.montage != nil && !p.montage.Ready() {
+	if p.reviewingCampaignPartyOutcomes() {
+		if p.montage == nil {
+			return fmt.Errorf("ending: party outcome review has no cycle")
+		}
+		if !p.montage.Ready() {
+			if err := p.advanceMontage(time.Duration(elapsed)*time.Millisecond, nativeRNG); err != nil {
+				return err
+			}
+		}
+		if p.montage.Ready() {
+			if err := p.resetCampaignPartyReviewCycle(); err != nil {
+				return err
+			}
+			p.reviewCycles++
+		}
+	} else if p.tail != nil {
+		// The native caller self-loops after 0x2bce5 returns.  Keep the
+		// recovered terminal frame stable instead of advancing a generic
+		// campaign node or requiring a DOS keyboard emulation layer.
+	} else if p.montage != nil && !p.montage.Ready() {
 		if err := p.advanceMontage(time.Duration(elapsed)*time.Millisecond, nativeRNG); err != nil {
 			return err
 		}
@@ -452,7 +610,7 @@ func (g *Game) drawNativeEndingPreview(screen *ebiten.Image) {
 		screen.DrawImage(panel, pop)
 		message := "已播放可驗證的結局前段；按 Enter 顯示可編輯結語。"
 		if g.nativeEnding.montage != nil && g.nativeEnding.montage.Ready() {
-			message = "已播放可驗證的結局前段與角色蒙太奇；按 Enter 顯示可編輯結語。"
+			message = "角色蒙太奇後無法載入終局畫面；按 Enter 顯示可編輯結語。"
 		} else if g.nativeEnding.montageStartError != "" {
 			message = "角色蒙太奇需要完整的原始隊伍記錄與素材；按 Enter 顯示可編輯結語。"
 		}

@@ -4,10 +4,10 @@
   "status": "mapped_post_montage_tail_fail_closed",
   "source": "0x2c194..0x2c39a",
   "resources": [
-    {"archive": "FDOTHER.DAT", "index": 60, "source": "0x2c220", "role": "raw indexed frame source before the 20-entry loop"},
-    {"archive": "FDOTHER.DAT", "index": 58, "source": "0x2c220", "role": "raw per-entry frame source"},
-    {"archive": "FDOTHER.DAT", "index": 57, "source": "0x2c234", "role": "raw per-entry frame source"},
-    {"archive": "FDOTHER.DAT", "index": 59, "source": "0x2c357", "role": "raw indexed frame source after the 20-entry loop"}
+    {"archive": "FDOTHER.DAT", "index": 60, "source": "0x2c1be", "role": "320x200 single-frame payload decoded before the 20-entry loop"},
+    {"archive": "FDOTHER.DAT", "index": 58, "source": "0x2c220", "role": "20-entry frame table passed to 0x2935b with the loop index"},
+    {"archive": "FDOTHER.DAT", "index": 57, "source": "0x2c234", "role": "768-byte VGA palette payload assigned to 0x53a65 before 0x11d40"},
+    {"archive": "FDOTHER.DAT", "index": 59, "source": "0x2c357", "role": "320x200 single-frame payload decoded after the 20-entry loop"}
   ],
   "raw_tables": {
     "global_540ff": [4, 3, 51, 14, 25, 18, 40, 53, 22, 24, 28, 17, 30, 31, 50, 33, 34, 52, 36, 47],
@@ -26,7 +26,7 @@
     "global_540ff_source": "global_540ff",
     "unit_present_call": "0x28a6c(0,1)",
     "palette_call": "0x11d40(0,255,0)",
-    "frame_call": "0x2935b(resource_57,loop_index,staging,0x140,-1)",
+    "frame_call": "0x2935b(resource_58,loop_index,staging,0x140,-1)",
     "wait_before_frame_ticks": 20,
     "wait_after_frame_ticks": 78,
     "wait_helper": "0x17aa9",
@@ -35,6 +35,6 @@
   },
   "gate": {
     "source": "0x2c194",
-    "reason": "raw schedule is editable and provenance-checked, but indexed resource ownership, input/campaign handoff, and player-path E2 remain unclosed"
+    "reason": "raw schedule is editable and provenance-checked; the #59 static frame has a separate approximate terminal adapter, but the 0x28a6c 20-entry renderer, input/campaign handoff, and player-path E2 remain unclosed"
   }
 }

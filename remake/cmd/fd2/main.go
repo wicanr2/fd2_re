@@ -5747,7 +5747,20 @@ func (g *Game) Update() error {
 		}
 	}
 	if g.nativeEnding != nil {
-		if g.nativeEnding.montage != nil && !g.nativeEnding.montage.Ready() && len(inpututil.AppendJustPressedKeys(nil)) != 0 {
+		endingConfirm := inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)
+		reviewExit := inpututil.IsKeyJustPressed(ebiten.KeyEscape)
+		if g.nativeEnding.reviewingCampaignPartyOutcomes() && (endingConfirm || reviewExit) {
+			if err := g.returnCampaignTerminalFromReview(); err != nil {
+				g.loadErr = "native ending review: " + err.Error()
+				return err
+			}
+		} else if g.nativeEnding.presentingCampaignTerminal() && endingConfirm {
+			if err := g.startCampaignPartyOutcomeReview(); err != nil {
+				g.loadErr = "native ending review: " + err.Error()
+				return err
+			}
+		}
+		if !g.nativeEnding.reviewingCampaignPartyOutcomes() && g.nativeEnding.montage != nil && !g.nativeEnding.montage.Ready() && len(inpututil.AppendJustPressedKeys(nil)) != 0 {
 			// 0x2c950 does not decode Enter/Space.  Preserve a raw changed-input
 			// condition until the recovered portrait loop polls it.
 			g.nativeEnding.montageInputPending = true
@@ -5761,6 +5774,13 @@ func (g *Game) Update() error {
 			// it never substitutes a guessed native renderer in faithful mode.
 			_ = g.startCampaignNativeMontage()
 		}
+		if g.nativeEnding.atNativeMontageGate() && g.nativeEnding.montage != nil &&
+			g.nativeEnding.montage.Ready() && !g.nativeEnding.tailStartAttempted {
+			// The final native image is a separate, provenance-checked tail
+			// asset.  Its 20-entry renderer remains isolated, but a successful
+			// terminal frame must not fall through to the old generic epilogue.
+			_ = g.startCampaignNativeTail()
+		}
 		if err := g.queueNativeEndingDialogue(); err != nil {
 			g.loadErr = "native ending dialogue: " + err.Error()
 			return err
@@ -5770,7 +5790,6 @@ func (g *Game) Update() error {
 		if g.dlgScrollT > 0 {
 			g.dlgScrollT--
 		}
-		endingConfirm := inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)
 		if len(g.dialog) > 0 && endingConfirm {
 			if g.dlgAdvance() && len(g.dialog) == 0 {
 				g.resumeNativeEndingDialogue()

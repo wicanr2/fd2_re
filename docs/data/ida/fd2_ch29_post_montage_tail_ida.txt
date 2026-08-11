@@ -52,7 +52,7 @@ Capstone 固定迴圈 `0x2c253..0x2c33b`：
 0x2c2a6  call 0x28a6c(0,1)
 0x2c2bb  call 0x11d40(0,255,0)
 0x2c2cc  call 0x17aa9(0x14)
-0x2c2d6  call 0x2935b(resource_57,i,0xa0000,0x140,-1)
+0x2c2d6  call 0x2935b(resource_58,i,0xa0000,0x140,-1)
 0x2c2ef  call 0x17aa9(0x4e)
 0x2c2f9  call 0x1f882
 0x2c302  call 0x375c0(0xa0000,0,0xfa00)
@@ -63,6 +63,12 @@ Capstone 固定迴圈 `0x2c253..0x2c33b`：
 不可升格為角色、職業、動畫或結局名稱。重製端以
 `native_2c194_tail.json` 與 `MontageTail.Plan` 保存這個可編輯 schedule，
 只產生 raw entry，不直接寫入 `battle.State` 或呈現畫面。
+
+資源角色勘誤：`0x2c220` 載入的是 FDOTHER #58；其資源表可解出 20 個 frame，
+也正是 `0x2c2d6` 傳入 `0x2935b` 的來源。`0x2c234` 載入的是 FDOTHER #57；它剛好
+是 768 bytes（256×3），在 `0x2c2b6` 指派到 `[0x53a65]` 後交給 `0x11d40`。先前把
+frame call 寫成 `resource_57` 是 stack resource index 的錯置，現已撤回；這項勘誤
+不為三組 raw table 或 `0x28a6c` 增加任何角色／演出語意。
 
 ## 已證實：尾端收尾
 

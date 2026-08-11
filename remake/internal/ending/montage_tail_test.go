@@ -1,6 +1,7 @@
 package ending
 
 import (
+	"os"
 	"path/filepath"
 	"testing"
 )
@@ -28,5 +29,45 @@ func TestMontageTailRejectsShortOrNonByteRawTable(t *testing.T) {
 	tail.RawTables.UnitPlus7 = []int{1, 2}
 	if _, err := tail.Plan(); err == nil {
 		t.Fatal("non-byte raw table accepted")
+	}
+}
+
+func TestMontageTailAssetsPreservePaletteFramesAndTerminalImage(t *testing.T) {
+	const datPath = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
+	if _, err := os.Stat(datPath); os.IsNotExist(err) {
+		t.Skip("player-provided FDOTHER.DAT is absent")
+	} else if err != nil {
+		t.Fatal(err)
+	}
+	tail, err := LoadMontageTail(filepath.Join("..", "..", "assets", "endings", "native_2c194_tail.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	assets, err := LoadMontageTailAssets(*tail, datPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(assets.LoopPalette) != 768 || len(assets.LoopFrames) != 20 ||
+		assets.Intro.Width != Width || assets.Intro.Height != Height ||
+		assets.Final.Width != Width || assets.Final.Height != Height {
+		t.Fatalf("tail assets palette=%d frames=%d intro=%dx%d final=%dx%d",
+			len(assets.LoopPalette), len(assets.LoopFrames), assets.Intro.Width, assets.Intro.Height,
+			assets.Final.Width, assets.Final.Height)
+	}
+	compositor := NewIndexedCompositor()
+	copy(compositor.Palette[:], assets.LoopPalette)
+	copy(compositor.Baseline[:], assets.LoopPalette)
+	compositor.baselineKnown = true
+	if err := assets.PresentFinal(compositor); err != nil {
+		t.Fatal(err)
+	}
+	visible := 0
+	for _, pixel := range compositor.VGA {
+		if pixel != 0 {
+			visible++
+		}
+	}
+	if visible < 100 {
+		t.Fatalf("terminal frame has only %d visible indexed pixels", visible)
 	}
 }
