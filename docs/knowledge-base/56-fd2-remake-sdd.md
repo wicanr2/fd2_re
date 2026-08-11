@@ -3982,3 +3982,39 @@ mode-7 `+0x35/+0x36` 目的地、地形／組成與 movement-cost provenance 的
 第一名在任何行走／raw 寫入前失敗即關閉，第二名、兩者位置、行動旗標與回合均保持
 不變。這只關閉重製端「多單位敵方回合 loop」的 E1 編排，不把 mode 7 raw byte 命名
 成原版玩法，也不替原版多單位目標選擇、權重或同狀態 E2 增加語意。
+
+## 2026-08-12：終局 party montage 與 raw 輸入變化的近似接線（E1）
+
+固定雜湊 `FD2.EXE` 的合法 IDA Pro 9.4 資料庫，再由 Docker Capstone 5.0.3
+交叉確認下列原始位址；完整位元組、工具版本與推論等級見
+[`fd2_ch29_montage_ida.txt`](../data/ida/fd2_ch29_montage_ida.txt) 與
+[`fd2_ch29_input_cleanup_ida.txt`](../data/ida/fd2_ch29_input_cleanup_ida.txt)。
+
+- `0x2918f` 是 `test unit[+6],unit[+6]`，因此 `0x29164` 分支是零／非零，
+  不是 `0/1` 枚舉。`MontageCycle` 現接受所有 nonzero raw value；真實 persistent
+  party constructor 的 `+6=2` 不再被誤拒。
+- portrait loop 每輪在 `0x2c946` 呼叫 `0x17aa9(1)`；該 helper 已證實比較
+  `word[0x46c]` 的 wrap-aware 差值。55ms 只是 BIOS 約18.2Hz的**強推論近似**，
+  不能寫成 E2 的精確時鐘。
+- `0x2c950→0x10620` 的 raw word 差異若為非零，會在 `0x2c959` 把 outer counter
+  寫成1、於 `0x2c961` 複製 raw word，且仍先走完當前 portrait；下一 outer loop
+  改為 `j=0`。因此近似 runtime 只在 portrait loop 把「新輸入」作為這個 raw-change
+  載體，完成當前角色後跳到 final loop。它沒有把任一鍵命名為原版 Enter、Space 或
+  Escape。
+- 最終 `ending` 節點仍受 `FD2_APPROXIMATE=1` 保護。抵達 `0x2c548` 時，runtime
+  只從 persistent JOIN chronology 經現有 LOADCH 的 deployed-order 投影取 raw
+  `+6/+7/+8/+0x20`，並以原始 `FDOTHER/TAI/FIGANI/DATO/FDTXT` 建立 montage。
+  缺任何 raw provenance 或素材時，不建立半張畫面，保留明確的可編輯結語回退；
+  direct preview 和預設忠實模式不跨越此 gate。
+- 第 29 戰 `ch29_post` 的 `0x25970→0x2bce5` 仍是一個未編譯的原始 owner；
+  截圖隊伍輔助程式會拒絕其不完整的 LOADCH，而不把它偷渡成 montage 的隊伍來源。
+  因此上述持續隊伍（persistent roster）是近似終局節點既有的型別化資料載體，
+  不是原版第 29 戰一般玩家交接（handoff）的宣稱。
+
+回歸 `TestMontageCycleExecutesBothNativeSideBranchesAndFinalPaletteFade`、
+`TestMontageCycleInputChangeFinishesCurrentPortraitThenJumpsToFinalLoop`、
+`TestNativeEndingMontageRecordsUseOnlyPersistentRawProvenance` 與
+`TestApproximateCampaignMontageStartsFromPersistentLoadCHOrder` 以玩家原始 archive
+驗證 raw nonzero、輪播跳轉、資料拒絕與戰役 admission。這是重製端 E1 垂直切片，
+不是未修改一般玩家終局路徑；`0x2c194` 尾段、精確 BIOS key code、FDMUS_018／停曲
+owner、raw terminal owner、戰後／城鎮 handoff 與一般玩家 E2 仍失敗即關閉。

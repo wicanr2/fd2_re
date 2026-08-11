@@ -20,12 +20,22 @@ func montageCycleUnits() [][]byte {
 	units := make([][]byte, 2)
 	for i := range units {
 		units[i] = make([]byte, 0x21)
-		units[i][6] = byte(i) // exercise both native 0x29164 branches
-		units[i][7] = 4       // player-provided FIGANI/DATO group
-		units[i][8] = 4       // permanent FDTXT character index source
-		units[i][0x20] = 2    // permanent FDTXT class index source
+		if i == 1 {
+			// 0x2918f is a zero/nonzero test, not an equality test for one.
+			units[i][6] = 2
+		}
+		units[i][7] = 4    // player-provided FIGANI/DATO group
+		units[i][8] = 4    // permanent FDTXT character index source
+		units[i][0x20] = 2 // permanent FDTXT class index source
 	}
 	return units
+}
+
+func montageCycleThreeUnits() [][]byte {
+	units := montageCycleUnits()
+	unit := make([]byte, 0x21)
+	unit[6], unit[7], unit[8], unit[0x20] = 2, 4, 4, 2
+	return append(units, unit)
 }
 
 func TestLoadMontageCycleAssetsUsesOnlyProvenanceBoundPlayerResources(t *testing.T) {
@@ -87,5 +97,77 @@ func TestMontageCycleExecutesBothNativeSideBranchesAndFinalPaletteFade(t *testin
 	}
 	if cycle.PlanIndex != 2 || cycle.FadeOut != 64 {
 		t.Fatalf("completed cycle state=%#v", cycle)
+	}
+}
+
+func TestMontageCycleInputChangeFinishesCurrentPortraitThenJumpsToFinalLoop(t *testing.T) {
+	paths := montageCyclePlayerPaths()
+	for _, path := range []string{paths.FDOTHER, paths.TAI, paths.FIGANI, paths.DATO, paths.FDTXT} {
+		if _, err := os.Stat(path); err != nil {
+			t.Skip("player-provided original archives are unavailable")
+		}
+	}
+	montage, err := LoadMontage("../../assets/endings/native_2c548.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	units := montageCycleThreeUnits()
+	assets, err := LoadMontageCycleAssets(*montage, paths, units)
+	if err != nil {
+		t.Fatal(err)
+	}
+	compositor := NewIndexedCompositor()
+	if err := compositor.PresentANI(make([]byte, Bytes), make([]byte, len(compositor.Palette))); err != nil {
+		t.Fatal(err)
+	}
+	cycle, err := NewMontageCycle(*montage, assets, units, []byte{4, 4, 4}, compositor)
+	if err != nil {
+		t.Fatal(err)
+	}
+	steps := 0
+	for cycle.Phase != MontagePhasePortrait && steps < 2000 {
+		if err := cycle.Step(byte(steps)); err != nil {
+			t.Fatalf("reach portrait step %d phase=%s: %v", steps, cycle.Phase, err)
+		}
+		steps++
+	}
+	if cycle.Phase != MontagePhasePortrait || cycle.PlanIndex != 0 {
+		t.Fatalf("first portrait state=%s plan=%d after %d steps", cycle.Phase, cycle.PlanIndex, steps)
+	}
+	// 0x2c950 polls after the portrait is presented and its one-tick wait has
+	// elapsed.  An input before that boundary must not alter the pending frame.
+	if cycle.ObserveInputChange() {
+		t.Fatal("input was admitted before the first portrait presentation")
+	}
+	if err := cycle.Step(byte(steps)); err != nil {
+		t.Fatalf("render first portrait step %d: %v", steps, err)
+	}
+	steps++
+	if !cycle.ObserveInputChange() {
+		t.Fatal("portrait input change was not admitted")
+	}
+	for cycle.PlanIndex == 0 && steps < 2600 {
+		if err := cycle.Step(byte(steps)); err != nil {
+			t.Fatalf("portrait skip step %d phase=%s: %v", steps, cycle.Phase, err)
+		}
+		steps++
+	}
+	if cycle.PlanIndex != len(cycle.Plans)-1 || cycle.Phase != MontagePhaseFigureFade {
+		t.Fatalf("input change did not preserve current portrait then select final loop: phase=%s plan=%d plans=%d", cycle.Phase, cycle.PlanIndex, len(cycle.Plans))
+	}
+}
+
+func TestMontageCycleDoesNotAdvanceRandomDuringPortraitBoundary(t *testing.T) {
+	cycle := &MontageCycle{
+		Phase:                   MontagePhasePortrait,
+		PortraitSM:              MontagePortraitState{Countdown: 0},
+		portraitBoundaryPending: true,
+	}
+	if cycle.NeedsRandomByte() {
+		t.Fatal("portrait boundary requested a random byte that no native render iteration consumes")
+	}
+	cycle.portraitBoundaryPending = false
+	if !cycle.NeedsRandomByte() {
+		t.Fatal("next portrait render did not request its native random byte")
 	}
 }

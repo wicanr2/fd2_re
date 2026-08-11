@@ -134,26 +134,30 @@ const (
 // MontageCycle is a deterministic indexed executor for the verified
 // 0x2c548 schedule.  Step performs one native render iteration; the caller
 // owns the returned delay units and the raw random byte used by 0x4e893.
-// It is intentionally not wired to campaign or generic keyboard input.
+// ObserveInputChange is deliberately a separate raw event hook: 0x2c950 only
+// observes a changed input-buffer condition during portrait presentation; it
+// does not decode a particular key in this branch.
 type MontageCycle struct {
-	Montage     Montage
-	Assets      MontageCycleAssets
-	Units       [][]byte
-	Plans       []PartyCyclePlan
-	Compositor  *IndexedCompositor
-	PlanIndex   int
-	Phase       MontageCyclePhase
-	FadeIndex   int
-	Secondary   *figani.Animation
-	Primary     *figani.Animation
-	SecondarySM figani.NativeScheduler
-	PrimaryIdx  int
-	Portrait    int
-	PortraitMax int
-	PortraitSM  MontagePortraitState
-	FadeOut     int
-	DelayTicks  int
-	DelayMS     int
+	Montage                 Montage
+	Assets                  MontageCycleAssets
+	Units                   [][]byte
+	Plans                   []PartyCyclePlan
+	Compositor              *IndexedCompositor
+	PlanIndex               int
+	Phase                   MontageCyclePhase
+	FadeIndex               int
+	Secondary               *figani.Animation
+	Primary                 *figani.Animation
+	SecondarySM             figani.NativeScheduler
+	PrimaryIdx              int
+	Portrait                int
+	PortraitMax             int
+	PortraitSM              MontagePortraitState
+	FadeOut                 int
+	DelayTicks              int
+	DelayMS                 int
+	skipToFinal             bool
+	portraitBoundaryPending bool
 }
 
 // NewMontageCycle validates all source provenance before exposing an
@@ -172,8 +176,8 @@ func NewMontageCycle(m Montage, assets MontageCycleAssets, units [][]byte, group
 		return nil, err
 	}
 	for i, unit := range units {
-		if len(unit) < 0x21 || (unit[6] != 0 && unit[6] != 1) {
-			return nil, fmt.Errorf("ending: unit %d has unsupported native side", i)
+		if len(unit) < 0x21 {
+			return nil, fmt.Errorf("ending: unit %d is shorter than native stride", i)
 		}
 		group := int(unit[7])
 		if _, ok := assets.Portraits[group]; !ok || len(assets.Portraits[group]) < 4 {
@@ -212,6 +216,7 @@ func (p *MontageCycle) preparePlan() error {
 	p.PrimaryIdx = 0
 	p.DelayTicks = 0
 	p.DelayMS = 0
+	p.portraitBoundaryPending = false
 	if err := p.renderBackdrop(); err != nil {
 		return err
 	}
@@ -255,8 +260,8 @@ func (p *MontageCycle) Step(randomByte byte) error {
 			return nil
 		}
 		frame := p.Secondary.Frames[0]
-		if unit[6] == 1 {
-			passes, err := p.Montage.PlanFigureFade(1)
+		if unit[6] != 0 {
+			passes, err := p.Montage.PlanFigureFade(int(unit[6]))
 			if err != nil {
 				return err
 			}
@@ -308,6 +313,36 @@ func (p *MontageCycle) Step(randomByte byte) error {
 		p.PrimaryIdx++
 		return nil
 	case MontagePhasePortrait:
+		// The native loop polls 0x10620 only after present+0x17aa9(1), then
+		// increments EDI and decides whether to leave this portrait.  Keep that
+		// boundary separate from rendering so an input arriving during the wait
+		// can still affect the final current portrait, rather than one later.
+		if p.portraitBoundaryPending {
+			p.portraitBoundaryPending = false
+			p.Portrait++
+			if p.Portrait >= p.PortraitMax {
+				nextPlan := p.PlanIndex + 1
+				// At 0x2c950 a pending raw input change sets the native outer
+				// counter to one.  The current portrait still completes; the next
+				// outer-loop iteration is therefore i=0, rather than an immediate
+				// abort.  The exact key code remains intentionally outside this API.
+				if p.skipToFinal {
+					nextPlan = len(p.Plans) - 1
+					p.skipToFinal = false
+				}
+				p.PlanIndex = nextPlan
+				if p.PlanIndex >= len(p.Plans) {
+					p.Phase = MontagePhaseFadeOut
+					p.FadeOut = 0
+				} else {
+					p.Phase = MontagePhaseFigureFade
+					if err := p.preparePlan(); err != nil {
+						return err
+					}
+				}
+			}
+			return nil
+		}
 		portraitFrames := p.Assets.Portraits[int(unit[7])]
 		frameIndex, err := p.PortraitSM.Step(randomByte)
 		if err != nil {
@@ -328,19 +363,7 @@ func (p *MontageCycle) Step(randomByte byte) error {
 			return err
 		}
 		p.DelayTicks = 1
-		p.Portrait++
-		if p.Portrait >= p.PortraitMax {
-			p.PlanIndex++
-			if p.PlanIndex >= len(p.Plans) {
-				p.Phase = MontagePhaseFadeOut
-				p.FadeOut = 0
-			} else {
-				p.Phase = MontagePhaseFigureFade
-				if err := p.preparePlan(); err != nil {
-					return err
-				}
-			}
-		}
+		p.portraitBoundaryPending = true
 		return nil
 	case MontagePhaseFadeOut:
 		if p.FadeOut >= 64 {
@@ -356,6 +379,27 @@ func (p *MontageCycle) Step(randomByte byte) error {
 	default:
 		return errors.New("ending: unknown montage phase")
 	}
+}
+
+// NeedsRandomByte reports the sole recovered call site where 0x2c99c uses
+// 0x4e893: portrait countdown reset.  Callers must not advance the native RNG
+// on every rendered frame.
+func (p *MontageCycle) NeedsRandomByte() bool {
+	return p != nil && p.Phase == MontagePhasePortrait && !p.portraitBoundaryPending && p.PortraitSM.Countdown == 0
+}
+
+// ObserveInputChange receives the raw condition observed at 0x2c950, not a
+// named keyboard mapping.  The native branch is only polled while a portrait
+// is being presented and, except for the final loop, causes middle portraits
+// to be skipped after the current one finishes.
+func (p *MontageCycle) ObserveInputChange() bool {
+	if p == nil || p.Phase != MontagePhasePortrait || !p.portraitBoundaryPending {
+		return false
+	}
+	if p.PlanIndex+1 < len(p.Plans) {
+		p.skipToFinal = true
+	}
+	return true
 }
 
 func (p *MontageCycle) renderFIGANI(frame figani.Frame) error {

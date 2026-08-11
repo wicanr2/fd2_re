@@ -273,7 +273,10 @@ type FigureFadePass struct {
 
 func (m Montage) PlanFigureFade(unitSide int) ([]FigureFadePass, error) {
 	s := m.PartyCycle.FigureFade
-	if m.Status != "mapped_first_party_cycle_fail_closed" || unitSide != s.RequiredUnitSide || s.StageStart != 8 || s.StageEnd != 0 || s.StageShiftBytes != 10 || s.PaletteFormula != "stage*6" {
+	// 0x2918f tests unit[+6] for zero.  The JSON contract retains
+	// required_unit_side=1 as its first observed representative, but it is not
+	// an equality predicate: every nonzero raw value takes this branch.
+	if m.Status != "mapped_first_party_cycle_fail_closed" || s.RequiredUnitSide != 1 || unitSide == 0 || s.StageStart != 8 || s.StageEnd != 0 || s.StageShiftBytes != 10 || s.PaletteFormula != "stage*6" {
 		return nil, fmt.Errorf("ending: unavailable or mirrored figure fade")
 	}
 	passes := make([]FigureFadePass, 0, s.StageStart-s.StageEnd+1)

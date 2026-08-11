@@ -87,6 +87,11 @@ func TestWriteShotStateTracePreservesApproximateEndingGate(t *testing.T) {
 	g := &Game{nativeEnding: &nativeEndingPreview{
 		campaignApproximate: true,
 		audioCueConsumed:    true,
+		montage: &ending.MontageCycle{
+			Phase:     ending.MontagePhasePortrait,
+			PlanIndex: 0,
+			Plans:     make([]ending.PartyCyclePlan, 3),
+		},
 		player: &ending.Player{
 			State:   ending.PlaybackBlocked,
 			Blocked: &ending.Segment{Op: "native_finale_montage_opaque", Source: "0x2c548"},
@@ -107,7 +112,9 @@ func TestWriteShotStateTracePreservesApproximateEndingGate(t *testing.T) {
 	if got.NativeEnding == nil || got.NativeEnding.PlaybackState != string(ending.PlaybackBlocked) ||
 		got.NativeEnding.BlockedOp != "native_finale_montage_opaque" ||
 		got.NativeEnding.BlockedSource != "0x2c548" || !got.NativeEnding.CampaignApproximate ||
-		!got.NativeEnding.AudioCueConsumed {
+		!got.NativeEnding.AudioCueConsumed || got.NativeEnding.MontagePhase != string(ending.MontagePhasePortrait) ||
+		got.NativeEnding.MontagePlanIndex == nil || *got.NativeEnding.MontagePlanIndex != 0 ||
+		got.NativeEnding.MontagePlanCount != 3 {
 		t.Fatalf("ending trace=%#v", got.NativeEnding)
 	}
 }

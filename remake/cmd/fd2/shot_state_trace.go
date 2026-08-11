@@ -61,6 +61,11 @@ type screenshotEndingTrace struct {
 	BlockedSource       string `json:"blocked_source,omitempty"`
 	CampaignApproximate bool   `json:"campaign_approximate"`
 	AudioCueConsumed    bool   `json:"audio_cue_consumed"`
+	MontagePhase        string `json:"montage_phase,omitempty"`
+	MontagePlanIndex    *int   `json:"montage_plan_index,omitempty"`
+	MontagePlanCount    int    `json:"montage_plan_count,omitempty"`
+	MontageInputPending bool   `json:"montage_input_pending,omitempty"`
+	MontageStartError   string `json:"montage_start_error,omitempty"`
 }
 
 func (g *Game) writeShotStateTrace(path string) error {
@@ -95,6 +100,14 @@ func (g *Game) writeShotStateTrace(path string) error {
 			endingTrace.BlockedOp = p.player.Blocked.Op
 			endingTrace.BlockedSource = p.player.Blocked.Source
 		}
+		if p.montage != nil {
+			endingTrace.MontagePhase = string(p.montage.Phase)
+			index := p.montage.PlanIndex
+			endingTrace.MontagePlanIndex = &index
+			endingTrace.MontagePlanCount = len(p.montage.Plans)
+			endingTrace.MontageInputPending = p.montageInputPending
+		}
+		endingTrace.MontageStartError = p.montageStartError
 		trace.NativeEnding = endingTrace
 	}
 	if g.sel != nil {

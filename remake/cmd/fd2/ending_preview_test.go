@@ -4,7 +4,9 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/ending"
 )
@@ -113,7 +115,10 @@ func TestApproximateCampaignEndingConsumesOnlyVerifiedGateCueThenReturnsToEditab
 		State:   ending.PlaybackBlocked,
 		Blocked: &ending.Segment{Op: "native_finale_montage_opaque", Source: "0x2c548"},
 	}
-	g := &Game{nativeEnding: &nativeEndingPreview{player: p, campaignApproximate: true}}
+	g := &Game{nativeEnding: &nativeEndingPreview{
+		player: p, campaignApproximate: true, montageStartAttempted: true,
+		montageStartError: "test admission failure",
+	}}
 	t.Setenv("FD2_MUTE", "1")
 	g.consumeNativeEndingAudioAtGate()
 	if !g.nativeEnding.audioCueConsumed {
@@ -121,6 +126,145 @@ func TestApproximateCampaignEndingConsumesOnlyVerifiedGateCueThenReturnsToEditab
 	}
 	if !g.finishCampaignNativeEndingFallback() || g.nativeEnding != nil || g.endingNotice == "" {
 		t.Fatalf("campaign fallback = preview=%#v notice=%q", g.nativeEnding, g.endingNotice)
+	}
+}
+
+func TestNativeEndingMontageRecordsUseOnlyPersistentRawProvenance(t *testing.T) {
+	order := []int{9, 4}
+	roster := map[int]battle.Unit{
+		9: {
+			Fig: 99, BattleFig: 4, HasBattleFig: true,
+			NativeRecordByte6: 2, HasNativeRecordByte6: true,
+			NativeRecordByte8: 7, HasNativeRecordByte8: true,
+			NativeRecordClass: 3, HasNativeRecordClass: true,
+		},
+		4: {
+			Fig: 88, BattleFig: 5, HasBattleFig: true,
+			NativeRecordByte6: 0, HasNativeRecordByte6: true,
+			NativeIdentity: 6, HasNativeIdentity: true,
+			NativeRecordClass: 4, HasNativeRecordClass: true,
+		},
+	}
+	units, groups, err := nativeEndingMontageRecords(order, roster)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(units) != 2 || string(groups) != string([]byte{4, 5}) ||
+		units[0][6] != 2 || units[0][7] != 4 || units[0][8] != 7 || units[0][0x20] != 3 ||
+		units[1][6] != 0 || units[1][7] != 5 || units[1][8] != 6 || units[1][0x20] != 4 {
+		t.Fatalf("montage records=%#v groups=%v", units, groups)
+	}
+	broken := roster[9]
+	broken.HasBattleFig = false
+	roster[9] = broken
+	if _, _, err := nativeEndingMontageRecords(order, roster); err == nil {
+		t.Fatal("missing raw BattleFig provenance was accepted")
+	}
+}
+
+func TestApproximateCampaignMontageStartsFromPersistentLoadCHOrder(t *testing.T) {
+	const base = "../../../org_game/炎龍騎士團/FLAME2"
+	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "ANI.DAT", "TAI.DAT", "FIGANI.DAT", "DATO.DAT"} {
+		if _, err := os.Stat(filepath.Join(base, name)); err != nil {
+			t.Skip("player-provided ending resources are unavailable")
+		}
+	}
+	t.Setenv("FD2_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+	t.Setenv("FD2_FDTXT", filepath.Join(base, "FDTXT.DAT"))
+	t.Setenv("FD2_ANI", filepath.Join(base, "ANI.DAT"))
+	preview, err := newNativeEndingPreview()
+	if err != nil {
+		t.Fatal(err)
+	}
+	preview.campaignApproximate = true
+	for _, elapsed := range []int{0, 1000, 2500, 0, 256, 2000} {
+		if _, err := preview.player.Advance(elapsed); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if !preview.player.ResumeBlockedDialogue() {
+		t.Fatal("first recovered text gate was unavailable")
+	}
+	if _, err := preview.player.Advance(5000); err != nil || !preview.player.ResumeBlockedDialogue() {
+		t.Fatalf("second recovered text gate err=%v blocked=%#v", err, preview.player.Blocked)
+	}
+	if _, err := preview.player.Advance(7500); err != nil || !preview.atNativeMontageGate() {
+		t.Fatalf("montage gate err=%v preview=%#v", err, preview)
+	}
+	unit := func(side byte, group byte) battle.Unit {
+		return battle.Unit{
+			Fig: 99, BattleFig: int(group), HasBattleFig: true,
+			NativeRecordByte6: side, HasNativeRecordByte6: true,
+			NativeRecordByte8: group, HasNativeRecordByte8: true,
+			NativeRecordClass: 2, HasNativeRecordClass: true,
+		}
+	}
+	g := &Game{
+		nativeEnding:    preview,
+		approximateMode: true,
+		partyMembers:    map[int]bool{0: true, 1: true, 2: true},
+		partyJoinOrder:  []int{0, 1, 2},
+		partyRoster: map[int]battle.Unit{
+			0: unit(2, 4), 1: unit(0, 4), 2: unit(2, 4),
+		},
+	}
+	if err := g.startCampaignNativeMontage(); err != nil {
+		t.Fatal(err)
+	}
+	if g.nativeEnding.montage == nil || len(g.nativeEnding.montage.Units) != 3 ||
+		g.nativeEnding.montage.Units[0][6] != 2 || g.nativeEnding.montage.Units[0][7] != 4 {
+		t.Fatalf("persistent montage admission=%#v", g.nativeEnding.montage)
+	}
+	if g.finishCampaignNativeEndingFallback() {
+		t.Fatal("editable epilogue became available before the admitted montage completed")
+	}
+	now := time.Unix(1, 0)
+	if err := g.nativeEnding.advance(now, &g.nativeRNGState); err != nil {
+		t.Fatal(err)
+	}
+	if !g.nativeEnding.runningCampaignMontage() || g.nativeEnding.montage.Phase != ending.MontagePhaseSecondary {
+		t.Fatalf("montage did not begin from recovered gate: %#v", g.nativeEnding.montage)
+	}
+	for steps := 0; g.nativeEnding.montage.Phase != ending.MontagePhasePortrait && steps < 512; steps++ {
+		now = now.Add(approximateNativeMontageTick)
+		if err := g.nativeEnding.advance(now, &g.nativeRNGState); err != nil {
+			t.Fatalf("reach portrait step %d: %v", steps, err)
+		}
+	}
+	if g.nativeEnding.montage.Phase != ending.MontagePhasePortrait {
+		t.Fatalf("campaign montage did not reach a portrait: phase=%s", g.nativeEnding.montage.Phase)
+	}
+	// Game.Update records a raw input change here. The preview must carry it
+	// until the recovered portrait boundary consumes it; it must not interpret
+	// a particular key or jump out before the current portrait completes.
+	g.nativeEnding.montageInputPending = true
+	for steps := 0; g.nativeEnding.montage.PlanIndex != len(g.nativeEnding.montage.Plans)-1 && steps < 1024; steps++ {
+		now = now.Add(approximateNativeMontageTick)
+		if err := g.nativeEnding.advance(now, &g.nativeRNGState); err != nil {
+			t.Fatalf("consume raw input step %d: %v", steps, err)
+		}
+	}
+	if g.nativeEnding.montageInputPending || g.nativeEnding.montage.PlanIndex != len(g.nativeEnding.montage.Plans)-1 {
+		t.Fatalf("campaign raw input did not select the final loop: pending=%v phase=%s plan=%d/%d",
+			g.nativeEnding.montageInputPending, g.nativeEnding.montage.Phase,
+			g.nativeEnding.montage.PlanIndex, len(g.nativeEnding.montage.Plans))
+	}
+}
+
+func TestApproximateCampaignMontageRejectsUncompiledCh29ShotPartyBinding(t *testing.T) {
+	// The original ch29 handler still ends at the unrecovered 0x2bce5 owner.
+	// Screenshot mode must not smuggle its partial LOADCH data into the ending
+	// roster merely to make the montage appear reachable.
+	_, issues, err := campaign.CompileHandlerBinding(assetPath("assets/cutscenes/bindings/ch29_post.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(issues) != 1 || issues[0].Source.Addr != "0x25970" || issues[0].Op != "unknown" {
+		t.Fatalf("ch29 ending owner diagnostics=%#v", issues)
+	}
+	g := &Game{shotPath: filepath.Join(t.TempDir(), "ending.png")}
+	if err := g.materializeShotPartyFromBinding("assets/cutscenes/bindings/ch29_post.json"); err == nil {
+		t.Fatal("uncompiled ch29 post handler was accepted as montage roster provenance")
 	}
 }
 
@@ -133,6 +277,19 @@ func TestDirectEndingPreviewCannotUseApproximateCampaignFallback(t *testing.T) {
 	}}
 	if g.finishCampaignNativeEndingFallback() || g.nativeEnding == nil {
 		t.Fatalf("direct preview crossed fail-closed montage boundary: %#v", g.nativeEnding)
+	}
+}
+
+func TestCampaignMontageRequiresExplicitApproximateMode(t *testing.T) {
+	g := &Game{nativeEnding: &nativeEndingPreview{
+		campaignApproximate: true,
+		player: &ending.Player{
+			State:   ending.PlaybackBlocked,
+			Blocked: &ending.Segment{Op: "native_finale_montage_opaque", Source: "0x2c548"},
+		},
+	}}
+	if err := g.startCampaignNativeMontage(); err == nil {
+		t.Fatal("campaign montage started without FD2_APPROXIMATE=1")
 	}
 }
 
@@ -181,7 +338,10 @@ func TestApproximateCampaignFinalNodeConsumesRecoveredPrefixThenStops(t *testing
 	if _, err := p.Advance(5000); err != nil || !p.ResumeBlockedDialogue() {
 		t.Fatalf("second recovered text gate err=%v blocked=%#v", err, p.Blocked)
 	}
-	if _, err := p.Advance(7500); err != nil || !g.nativeEnding.awaitingCampaignFallback() {
+	if _, err := p.Advance(7500); err != nil || g.nativeEnding.awaitingCampaignFallback() {
+		t.Fatalf("unstarted montage fallback err=%v preview=%#v", err, g.nativeEnding)
+	}
+	if err := g.startCampaignNativeMontage(); err == nil || !g.nativeEnding.awaitingCampaignFallback() {
 		t.Fatalf("unrecovered montage boundary err=%v preview=%#v", err, g.nativeEnding)
 	}
 	g.consumeNativeEndingAudioAtGate()

@@ -5729,10 +5729,10 @@ func (g *Game) Update() error {
 	g.stepNativeShopUILifecycle(time.Now())
 	g.stepNativeTownUILifecycle(g.nativeTownUIClock.Sample(time.Now()))
 	g.stepNativePreparationUILifecycle(time.Now())
-	if !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF2) { // 全域:切換音源(MT-32 / Sound Blaster)
+	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF2) { // 全域:切換音源(MT-32 / Sound Blaster)
 		g.cycleBGMSource()
 	}
-	if !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF3) { // 全域:開發除錯 HUD 開關
+	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF3) { // 全域:開發除錯 HUD 開關
 		g.debug = !g.debug
 	}
 	if g.bannerT > 0 {
@@ -5747,9 +5747,19 @@ func (g *Game) Update() error {
 		}
 	}
 	if g.nativeEnding != nil {
-		if err := g.nativeEnding.advance(time.Now()); err != nil {
+		if g.nativeEnding.montage != nil && !g.nativeEnding.montage.Ready() && len(inpututil.AppendJustPressedKeys(nil)) != 0 {
+			// 0x2c950 does not decode Enter/Space.  Preserve a raw changed-input
+			// condition until the recovered portrait loop polls it.
+			g.nativeEnding.montageInputPending = true
+		}
+		if err := g.nativeEnding.advance(time.Now(), &g.nativeRNGState); err != nil {
 			g.loadErr = "native ending: " + err.Error()
 			return err
+		}
+		if g.nativeEnding.atNativeMontageGate() && g.nativeEnding.montage == nil && !g.nativeEnding.montageStartAttempted {
+			// Failure here keeps the explicitly approximate fallback available;
+			// it never substitutes a guessed native renderer in faithful mode.
+			_ = g.startCampaignNativeMontage()
 		}
 		if err := g.queueNativeEndingDialogue(); err != nil {
 			g.loadErr = "native ending dialogue: " + err.Error()

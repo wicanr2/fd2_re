@@ -22,14 +22,21 @@ import (
 // the timeline currently blocks at the first unrecovered native operation.
 // FD2_ENDING_PREFIX=1 activates it with player-provided FDOTHER.DAT/ANI.DAT.
 type nativeEndingPreview struct {
-	player              *ending.Player
-	view                *ebiten.Image
-	last                time.Time
-	remainder           time.Duration
-	chapter             int
-	queued              bool
-	campaignApproximate bool
-	audioCueConsumed    bool
+	player                *ending.Player
+	view                  *ebiten.Image
+	last                  time.Time
+	remainder             time.Duration
+	chapter               int
+	queued                bool
+	campaignApproximate   bool
+	audioCueConsumed      bool
+	fdotherPath           string
+	fdtxtPath             string
+	montage               *ending.MontageCycle
+	montageWait           time.Duration
+	montageInputPending   bool
+	montageStartAttempted bool
+	montageStartError     string
 }
 
 const nativeEndingTimelinePath = "assets/endings/native_2bce5.json"
@@ -112,14 +119,17 @@ func newNativeEndingPreviewForTimeline(timelinePath string, chapter int) (*nativ
 	}); err != nil {
 		return nil, err
 	}
-	return &nativeEndingPreview{player: player, view: ebiten.NewImage(ending.Width, ending.Height), chapter: chapter}, nil
+	return &nativeEndingPreview{
+		player: player, view: ebiten.NewImage(ending.Width, ending.Height), chapter: chapter,
+		fdotherPath: fdotherPath, fdtxtPath: fdtxtPath,
+	}, nil
 }
 
 // startCampaignNativeEnding 只啟動已經過明確驗證的戰役節點所選前綴。呼叫端
 // 必須以 FD2_APPROXIMATE=1 保護，正常忠實模式不會悄悄跨過未還原的終局蒙太奇邊界。
 func (g *Game) startCampaignNativeEnding(prefix *campaign.NativeEndingPrefixConfig) error {
-	if g == nil {
-		return fmt.Errorf("ending: nil game")
+	if g == nil || !g.approximateMode {
+		return fmt.Errorf("ending: campaign prefix requires explicit approximate mode")
 	}
 	preview, err := newNativeEndingPreviewForCampaign(prefix)
 	if err != nil {
@@ -130,17 +140,29 @@ func (g *Game) startCampaignNativeEnding(prefix *campaign.NativeEndingPrefixConf
 	return nil
 }
 
-func (p *nativeEndingPreview) awaitingCampaignFallback() bool {
+func (p *nativeEndingPreview) atNativeMontageGate() bool {
 	return p != nil && p.campaignApproximate && !p.queued && p.player != nil &&
 		p.player.State == ending.PlaybackBlocked && p.player.Blocked != nil &&
 		p.player.Blocked.Op == "native_finale_montage_opaque" &&
 		p.player.Blocked.Source == "0x2c548"
 }
 
+func (p *nativeEndingPreview) runningCampaignMontage() bool {
+	return p != nil && p.atNativeMontageGate() && p.montage != nil && !p.montage.Ready()
+}
+
+// awaitingCampaignFallback only admits the editable epilogue after the
+// recovered montage has completed, or after its source-provenance admission
+// has failed.  The game starts the montage before it polls the fallback key.
+func (p *nativeEndingPreview) awaitingCampaignFallback() bool {
+	return p != nil && p.atNativeMontageGate() && p.montageStartAttempted &&
+		(p.montage == nil || p.montage.Ready())
+}
+
 // consumeNativeEndingAudioAtGate 只消費 after_gate 與目前已還原 0x2c548
 // 邊界精確相符的唯一音訊 cue。後續停曲／track18 沒有已還原的 owner，刻意不碰。
 func (g *Game) consumeNativeEndingAudioAtGate() {
-	if g == nil || g.nativeEnding == nil || !g.nativeEnding.awaitingCampaignFallback() ||
+	if g == nil || g.nativeEnding == nil || !g.nativeEnding.atNativeMontageGate() ||
 		g.nativeEnding.audioCueConsumed {
 		return
 	}
@@ -162,10 +184,117 @@ func (g *Game) finishCampaignNativeEndingFallback() bool {
 	if g == nil || g.nativeEnding == nil || !g.nativeEnding.awaitingCampaignFallback() {
 		return false
 	}
+	notice := "原版結局尾段尚未還原；以下顯示可編輯結語。"
+	if g.nativeEnding.montage != nil && g.nativeEnding.montage.Ready() {
+		notice = "已播放可驗證的結局前段與角色蒙太奇；原版結局尾段尚未還原；以下顯示可編輯結語。"
+	}
 	g.stopBGM()
 	g.nativeEnding = nil
-	g.endingNotice = "原版結局尾段尚未還原；以下顯示可編輯結語。"
+	g.endingNotice = notice
 	return true
+}
+
+// nativeEndingMontageRecords materializes only the raw byte fields consumed
+// by 0x2c548.  It intentionally reads the persistent JOIN roster in the same
+// deployed order used by LOADCH, rather than projecting the current battle
+// map, a normalized figure id, or a static chapter roster.
+func nativeEndingMontageRecords(order []int, roster map[int]battle.Unit) ([][]byte, []byte, error) {
+	if len(order) < 2 || len(roster) == 0 {
+		return nil, nil, fmt.Errorf("ending: native montage needs at least two persistent party records")
+	}
+	units := make([][]byte, 0, len(order))
+	groups := make([]byte, 0, len(order))
+	for _, id := range order {
+		unit, ok := roster[id]
+		if !ok || !unit.HasNativeRecordByte6 || !unit.HasBattleFig || !unit.HasNativeRecordClass || unit.BattleFig < 0 || unit.BattleFig > 0xff {
+			return nil, nil, fmt.Errorf("ending: persistent party record %d lacks raw montage provenance", id)
+		}
+		identity := unit.NativeRecordByte8
+		if !unit.HasNativeRecordByte8 {
+			// Persistent JOIN records use +8 as NativeIdentity.  This is a
+			// source-carried fallback, not an inference from Fig or BattleFig.
+			if !unit.HasNativeIdentity || unit.NativeIdentity < 0 || unit.NativeIdentity > 0xff {
+				return nil, nil, fmt.Errorf("ending: persistent party record %d lacks raw +8 provenance", id)
+			}
+			identity = byte(unit.NativeIdentity)
+		}
+		record := make([]byte, 0x21)
+		record[6] = unit.NativeRecordByte6
+		record[7] = byte(unit.BattleFig)
+		record[8] = identity
+		record[0x20] = unit.NativeRecordClass
+		units = append(units, record)
+		groups = append(groups, record[7])
+	}
+	return units, groups, nil
+}
+
+func (p *nativeEndingPreview) montageArchivePaths() (ending.MontageArchivePaths, error) {
+	if p == nil || p.fdotherPath == "" || p.fdtxtPath == "" {
+		return ending.MontageArchivePaths{}, fmt.Errorf("ending: prefix archive provenance is unavailable")
+	}
+	base := filepath.Dir(p.fdotherPath)
+	resolve := func(environment, name string) string {
+		return playerAssetPath(environment, []string{
+			filepath.Join(base, name),
+			"assets/" + name,
+			"../org_game/炎龍騎士團/FLAME2/" + name,
+			"org_game/炎龍騎士團/FLAME2/" + name,
+		})
+	}
+	paths := ending.MontageArchivePaths{
+		FDOTHER: p.fdotherPath,
+		FDTXT:   p.fdtxtPath,
+		TAI:     resolve("FD2_TAI", "TAI.DAT"),
+		FIGANI:  resolve("FD2_FIGANI", "FIGANI.DAT"),
+		DATO:    resolve("FD2_DATO", "DATO.DAT"),
+	}
+	if paths.TAI == "" || paths.FIGANI == "" || paths.DATO == "" {
+		return ending.MontageArchivePaths{}, fmt.Errorf("ending: player-provided montage archives are unavailable")
+	}
+	return paths, nil
+}
+
+// startCampaignNativeMontage is limited to FD2_APPROXIMATE=1.  It uses the
+// current persistent roster only as a typed, source-provenance carrier; it
+// does not claim that the unmodified general-player path reached 0x2c548.
+func (g *Game) startCampaignNativeMontage() error {
+	if g == nil || !g.approximateMode || g.nativeEnding == nil || !g.nativeEnding.atNativeMontageGate() {
+		return fmt.Errorf("ending: native montage requires explicit approximate mode at its recovered gate")
+	}
+	p := g.nativeEnding
+	if p.montageStartAttempted {
+		return nil
+	}
+	p.montageStartAttempted = true
+	order := g.loadCHPartyOrder(nil)
+	units, groups, err := nativeEndingMontageRecords(order, g.partyRoster)
+	if err != nil {
+		p.montageStartError = err.Error()
+		return err
+	}
+	montage, err := ending.LoadMontage(assetPath("assets/endings/native_2c548.json"))
+	if err != nil {
+		p.montageStartError = err.Error()
+		return err
+	}
+	paths, err := p.montageArchivePaths()
+	if err != nil {
+		p.montageStartError = err.Error()
+		return err
+	}
+	assets, err := ending.LoadMontageCycleAssets(*montage, paths, units)
+	if err != nil {
+		p.montageStartError = err.Error()
+		return err
+	}
+	cycle, err := ending.NewMontageCycle(*montage, assets, units, groups, p.player.Compositor)
+	if err != nil {
+		p.montageStartError = err.Error()
+		return err
+	}
+	p.montage = cycle
+	return nil
 }
 
 func nativeEndingDialogLines(blocks []ending.DialogueBlock) ([]battle.DialogLine, error) {
@@ -239,7 +368,48 @@ func playerAssetPath(environment string, candidates []string) string {
 	return ""
 }
 
-func (p *nativeEndingPreview) advance(now time.Time) error {
+const approximateNativeMontageTick = 55 * time.Millisecond
+
+func (p *nativeEndingPreview) advanceMontage(elapsed time.Duration, nativeRNG *uint16) error {
+	if p == nil || p.montage == nil || nativeRNG == nil {
+		return fmt.Errorf("ending: montage runtime is incomplete")
+	}
+	remaining := elapsed
+	for steps := 0; steps < 1024; steps++ {
+		if p.montage.Ready() {
+			return nil
+		}
+		if p.montageWait > 0 {
+			if remaining < p.montageWait {
+				p.montageWait -= remaining
+				return nil
+			}
+			remaining -= p.montageWait
+			p.montageWait = 0
+		}
+		if p.montageInputPending && p.montage.ObserveInputChange() {
+			p.montageInputPending = false
+		}
+		randomByte := byte(0)
+		if p.montage.NeedsRandomByte() {
+			*nativeRNG = fdother.NativeRNGStep(*nativeRNG)
+			randomByte = byte(*nativeRNG)
+		}
+		if err := p.montage.Step(randomByte); err != nil {
+			return err
+		}
+		if p.montage.Ready() {
+			return nil
+		}
+		p.montageWait = time.Duration(p.montage.DelayTicks)*approximateNativeMontageTick + time.Duration(p.montage.DelayMS)*time.Millisecond
+		if remaining == 0 && p.montageWait > 0 {
+			return nil
+		}
+	}
+	return fmt.Errorf("ending: montage advance exceeded bounded step budget")
+}
+
+func (p *nativeEndingPreview) advance(now time.Time, nativeRNG *uint16) error {
 	elapsed := 0
 	if !p.last.IsZero() {
 		p.remainder += now.Sub(p.last)
@@ -247,8 +417,14 @@ func (p *nativeEndingPreview) advance(now time.Time) error {
 		p.remainder -= time.Duration(elapsed) * time.Millisecond
 	}
 	p.last = now
-	if _, err := p.player.Advance(elapsed); err != nil {
-		return err
+	if p.montage != nil && !p.montage.Ready() {
+		if err := p.advanceMontage(time.Duration(elapsed)*time.Millisecond, nativeRNG); err != nil {
+			return err
+		}
+	} else {
+		if _, err := p.player.Advance(elapsed); err != nil {
+			return err
+		}
 	}
 	p.view.WritePixels(p.player.Compositor.RGBA().Pix)
 	return nil
@@ -260,13 +436,27 @@ func (g *Game) drawNativeEndingPreview(screen *ebiten.Image) {
 	op.GeoM.Scale(2, 2)
 	screen.DrawImage(g.nativeEnding.view, op)
 	g.drawNativeEndingDialogue(screen)
-	if g.nativeEnding.awaitingCampaignFallback() && g.font != nil {
+	if g.nativeEnding.runningCampaignMontage() && g.font != nil {
 		panel := ebiten.NewImage(logicalW-32, 42)
 		panel.Fill(color.RGBA{0x10, 0x1c, 0x40, 0xe8})
 		pop := &ebiten.DrawImageOptions{}
 		pop.GeoM.Translate(16, logicalH-56)
 		screen.DrawImage(panel, pop)
-		g.font.Draw(screen, "已播放可驗證的結局前段；按 Enter 顯示可編輯結語。", 30, logicalH-44, 0.9,
+		g.font.Draw(screen, "角色蒙太奇（近似戰役資料）：任意按鍵會在本輪結束後略過中間角色。", 23, logicalH-44, 0.78,
+			color.RGBA{0xff, 0xe0, 0x90, 0xff})
+	} else if g.nativeEnding.awaitingCampaignFallback() && g.font != nil {
+		panel := ebiten.NewImage(logicalW-32, 42)
+		panel.Fill(color.RGBA{0x10, 0x1c, 0x40, 0xe8})
+		pop := &ebiten.DrawImageOptions{}
+		pop.GeoM.Translate(16, logicalH-56)
+		screen.DrawImage(panel, pop)
+		message := "已播放可驗證的結局前段；按 Enter 顯示可編輯結語。"
+		if g.nativeEnding.montage != nil && g.nativeEnding.montage.Ready() {
+			message = "已播放可驗證的結局前段與角色蒙太奇；按 Enter 顯示可編輯結語。"
+		} else if g.nativeEnding.montageStartError != "" {
+			message = "角色蒙太奇需要完整的原始隊伍記錄與素材；按 Enter 顯示可編輯結語。"
+		}
+		g.font.Draw(screen, message, 30, logicalH-44, 0.82,
 			color.RGBA{0xff, 0xe0, 0x90, 0xff})
 	}
 	if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {

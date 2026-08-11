@@ -4689,9 +4689,11 @@ selection=false、overlay=true。結果圖與原版／重製／差異比較為
   預設忠實模式維持原有可編輯靜態結語與停曲行為；這不是 raw `ch29_post` 的
   campaign owner，也不解除其 handler 仍未綁定的 gate。
 - timeline 只允許 `after_gate=0x2c548` 的唯一 audio cue。到達精確的
-  `native_finale_montage_opaque/0x2c548` 時才消費 `FDMUS_004`；玩家確認後停止
-  近似前綴，顯示可編輯結語。`play_bgm(-1)`、`FDMUS_018`、montage owner、原始
-  按鍵對映與一般玩家 E2 都沒有 consumer，仍失敗即關閉。
+  `native_finale_montage_opaque/0x2c548` 時才消費 `FDMUS_004`；此處舊有的
+  「立刻確認回退」描述已由同日後段勘誤取代：近似模式先播放原資源 party montage，
+  cycle 完成或 provenance admission 失敗後才接受確認並顯示可編輯結語。
+  `play_bgm(-1)`、`FDMUS_018`、`0x2c194` tail owner、精確按鍵對映與一般玩家 E2
+  都沒有 consumer，仍失敗即關閉。
 - Docker／Xvfb 以玩家自備 `FDOTHER.DAT`、`FDTXT.DAT`、`ANI.DAT` 直接進入
   最終節點，取得第一個原版文字閘門 `0x2BE44` 的重製端 E1 擷取：
   [`ending-prefix-approximate-remake-e1.png`](../figures/ending-prefix-approximate-remake-e1.png)。
@@ -4699,9 +4701,37 @@ selection=false、overlay=true。結果圖與原版／重製／差異比較為
   [`ending-prefix-approximate-remake-e1.json`](../data/ui-traces/ending-prefix-approximate-remake-e1.json)；
   這是直接節點，不是第 30 戰一般玩家路徑，且 `FD2_MUTE=1`，不能當音訊或 E2 證明。
 - 回歸 `TestApproximateCampaignFinalNodeConsumesRecoveredPrefixThenStops` 使用真實原版
-  資產，完整走過兩個已還原文字閘門到 `0x2C548`，檢查唯一 cue 的消費與回退。
-  `TestDirectEndingPreviewCannotUseApproximateCampaignFallback`、不合法合約與
+  資產，完整走過兩個已還原文字閘門到 `0x2C548`，檢查唯一 cue 的消費與回退；同日
+  後段新增 `TestApproximateCampaignMontageStartsFromPersistentLoadCHOrder`、raw record
+  拒絕與 portrait input-loop regression，鎖定 montage admission。`TestDirectEndingPreviewCannotUseApproximateCampaignFallback`、不合法合約與
   截圖狀態旁車測試則防止 direct preview、猜測性設定或截圖被錯誤升格。
 
 較早記錄「`0x2BCE5` 只存在於獨立 preview、未接 campaign」描述的是當時狀態；現在
 應讀成「預設忠實模式與 raw terminal owner 仍未接，只有上述明確近似切片可用」。
+
+## 2026-08-12：終局 montage input／nonzero 分支勘誤與近似接線
+
+本次重新以合法 IDA Pro 9.4 Docker 資料庫追蹤 `0x2c405`，再以 Docker Capstone
+5.0.3 對固定雜湊 `FD2.EXE` 交叉驗證。這是對較早「`j=1` 的玩家可見意義未知」
+記錄的**追加勘誤**，不刪除舊的 raw-word 證據：
+
+- `0x2918a..0x29191` 直接為 `movzx unit[+6]`、`test ebx,ebx`、`je 0x2927e`。
+  所以 `0x29164` 是 `+6==0`／非零分支；舊 `MontageCycle` 只允許 `0/1` 的限制
+  錯拒了 persistent party constructor 實際會產生的 `+6=2`，已修正為全 nonzero。
+- `0x2c946..0x2c96a` 直接為 `0x17aa9(1)→0x10620→test→j=1→0x4e031→inc edi`；
+  `0x2c5e3..0x2c5ec` 在當前 portrait loop 結束後遞減 outer counter。因此 raw word
+  差異的已證實效果是「完成當前 portrait，下一 outer loop 走 `j=0`」，而不是立刻
+  中止畫面。仍**未知**的是造成 word change 的實際 BIOS key code／佇列規則；不能
+  反寫成原版 Enter、Space 或 Escape。
+- `0x17aa9` 已直接確認以 wrap-aware `word[0x46c]` delta 等待。近似 runtime 的
+  55ms tick 是 BIOS 頻率的強推論，不是逐毫秒或一般玩家 E2。
+
+實作只在 `FD2_APPROXIMATE=1` 的 final node 使用 persistent JOIN roster 的 deployed
+order 與 raw `+6/+7/+8/+0x20` 建立原資源 `MontageCycle`；new input 只在 portrait
+phase 轉為上述 raw-change effect。素材或 raw provenance 缺失時不猜補 renderer，仍回到
+可編輯結語。`0x2c194` tail、精確輸入 owner、`FDMUS_018`／停曲、raw terminal owner
+與未修改一般玩家 E2 仍是未解除 gate。完整現況同步至 SDD、UI matrix、worklist 和
+`fd2_ch29_input_cleanup_ida.txt`／`fd2_ch29_montage_ida.txt`。
+
+同日再確認：`ch29_post` 的 `0x25970→0x2bce5` 仍留下明確編譯問題（compile issue）；
+截圖隊伍輔助程式會拒絕其不完整的 LOADCH，不能把它當作上述持續隊伍的一般玩家來源。

@@ -43,11 +43,13 @@ IDA 將 `0x2c548` 識別為 `0x2c405` 函式內部位址；以下保留原始位
    `0x15f84` 文字呼叫（FDTXT_031 index 10、FDTXT_000 的 unit `+8+1`、
    FDTXT_031 index 11、FDTXT_000 的 unit `+0x20+150`、以及
    `n<220 ? unit+8+12 : 45`），present 後 `0x17aa9(1)`。
-10. `0x10620` 若偵測到 `word[0x41a] != word[0x41c]`，將外層 `j` 寫成 1
-    並呼叫 `0x4e031`；`0x4e031` 的已證實效果只有把 `word[0x41a]` 複製到
-    `word[0x41c]`。BIOS head/tail 是強推論，按鍵映射、佇列消費與 `j=1`
-    的玩家可見意義仍未知。所有 party loop 結束後呼叫 `0x1f882`，再釋放
-    資源並跳至 `0x28a64`。
+10. `0x10620` 若偵測到 `word[0x41a] != word[0x41c]`，`0x2c959` 將外層
+    `j` 寫成 1 並呼叫 `0x4e031`；`0x4e031` 的已證實效果只有把
+    `word[0x41a]` 複製到 `word[0x41c]`。`0x2c966..0x2c96a` 仍先完成當前
+    portrait 迭代，之後 `0x2c5e3..0x2c5ec` 使下一個外層迭代成 `j=0`；因此
+    中間 party loop 會被略過、而非立刻中止當前 portrait。BIOS head/tail 是
+    強推論，確切按鍵映射與佇列規則仍未知。所有 party loop 結束後呼叫
+    `0x1f882`，再釋放資源並跳至 `0x28a64`。
 
 ## 共用 helper 的直接證據
 
@@ -67,9 +69,11 @@ IDA 將 `0x2c548` 識別為 `0x2c405` 函式內部位址；以下保留原始位
 
 `remake/internal/ending/montage_cycle.go` 現已把上述已證實的 backdrop、九段
 figure fade、20 次 secondary intro、primary FIGANI frame delay、DATO／FDTXT
-portrait loop 與最後 64 段 palette fade 做成獨立可測試的 indexed executor；
-它只接受原始資源與 caller 提供的 raw random byte，不連接 campaign，也不替
-`0x10620→0x4e031` 猜測鍵盤語意；raw word 原語另見
+portrait loop 與最後 64 段 palette fade 做成可測試的 indexed executor。近似戰役
+只會以 persistent JOIN roster 的 raw `+6/+7/+8/+0x20` 作來源，在 portrait loop
+把「新輸入」受限地轉為已證實的 raw-word-change 效果：當前 portrait 完成後跳到
+final loop；它不把這個載體命名成 Enter／Space／Esc，也不修改 direct preview 的
+失敗即關閉邊界。raw word 與計時器證據另見
 [`fd2_ch29_input_cleanup_ida.txt`](fd2_ch29_input_cleanup_ida.txt)。
-`postbattle_ch29_persist` 仍保持失敗即關閉，直到終局 handoff、輸入事件映射、
-一般玩家 E2 與完整結束節點均閉合。
+`postbattle_ch29_persist`、原版 terminal owner、`0x2c194` 尾段與一般玩家 E2
+仍保持失敗即關閉。
