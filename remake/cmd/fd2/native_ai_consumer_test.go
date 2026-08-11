@@ -244,6 +244,74 @@ func TestAIStepStopsMode5WithoutMovementProvenance(t *testing.T) {
 	}
 }
 
+func TestAIStepConsumesVerifiedMode7DestinationPlan(t *testing.T) {
+	actor := nativeAIConsumerUnit(0, 0, 1, 7)
+	actor.NativeRecordByte35 = 1
+	actor.HasNativeRecordByte35 = true
+	actor.NativeRecordByte36 = 0
+	actor.HasNativeRecordByte36 = true
+	state := &battle.State{
+		W:                           3,
+		H:                           1,
+		Units:                       []*battle.Unit{actor},
+		NativeCompositionEventBytes: []byte{0, 0, 0},
+		NativeTerrainMoveCodes:      []byte{0, 0, 0},
+		NativeTerrainControl:        []byte{0, 0, 0, 0x20},
+	}
+	if err := state.BindNativeMovementCostRows(nativeAIConsumerCostRows()); err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{
+		m:      &MapData{W: 3, H: 1, TileW: 24, TileH: 24, Tiles: []int{0, 0, 0}},
+		st:     state,
+		aiBusy: true,
+	}
+	g.aiStep()
+	if g.loadErr != "" || g.walk == nil || g.walk.u != actor || g.atk != nil {
+		t.Fatalf("mode-7 destination plan did not start as movement-only: walk=%v atk=%v err=%q", g.walk != nil, g.atk != nil, g.loadErr)
+	}
+	for step := 0; step < 96 && (g.aiBusy || g.walk != nil); step++ {
+		if err := g.Update(); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if g.loadErr != "" || g.aiBusy || g.walk != nil || g.atk != nil || state.Turn != 1 {
+		t.Fatalf("mode-7 movement completion ai=%v walk=%v atk=%v turn=%d err=%q", g.aiBusy, g.walk != nil, g.atk != nil, state.Turn, g.loadErr)
+	}
+	if actor.X != 1 || actor.Y != 0 || actor.NativeRecordByte5 != 1 || !actor.HasNativeRecordByte5 ||
+		!state.HasNativeMapRangeModeState || state.NativeMapRangeMode != 0 {
+		t.Fatalf("mode-7 raw owner did not commit: pos=(%d,%d) byte5=%d range=%d/%v", actor.X, actor.Y, actor.NativeRecordByte5, state.NativeMapRangeMode, state.HasNativeMapRangeModeState)
+	}
+}
+
+func TestAIStepStopsMode7WithoutMovementProvenance(t *testing.T) {
+	actor := nativeAIConsumerUnit(0, 0, 1, 7)
+	actor.NativeRecordByte35 = 1
+	actor.HasNativeRecordByte35 = true
+	actor.NativeRecordByte36 = 0
+	actor.HasNativeRecordByte36 = true
+	state := &battle.State{
+		W:                           3,
+		H:                           1,
+		Units:                       []*battle.Unit{actor},
+		NativeCompositionEventBytes: []byte{0, 0, 0},
+		NativeTerrainMoveCodes:      []byte{0, 0, 0},
+		NativeTerrainControl:        []byte{0, 0, 0, 0x20},
+	}
+	g := &Game{
+		m:      &MapData{W: 3, H: 1, TileW: 24, TileH: 24, Tiles: []int{0, 0, 0}},
+		st:     state,
+		aiBusy: true,
+	}
+	g.aiStep()
+	if g.loadErr == "" || g.aiBusy || g.walk != nil || g.atk != nil || actor.Acted {
+		t.Fatalf("incomplete mode-7 AI was consumed: err=%q ai=%v walk=%v atk=%v acted=%v", g.loadErr, g.aiBusy, g.walk != nil, g.atk != nil, actor.Acted)
+	}
+	if actor.X != 0 || actor.Y != 0 || actor.NativeRecordByte5 != 0 || state.Turn != 0 || state.HasNativeMapRangeModeState {
+		t.Fatalf("mode-7 failure partially changed runtime: pos=(%d,%d) byte5=%d turn=%d range=%v", actor.X, actor.Y, actor.NativeRecordByte5, state.Turn, state.HasNativeMapRangeModeState)
+	}
+}
+
 func TestAIStepConsumesVerifiedMode11StagesInNativeOrder(t *testing.T) {
 	actor := nativeAIConsumerUnit(0, 0, 1, 11)
 	actor.NativeCommandMask[0] = 1

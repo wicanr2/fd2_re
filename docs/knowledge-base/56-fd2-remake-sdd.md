@@ -3835,3 +3835,14 @@ field-control row 與 movement-cost rows 的 mode 5 計畫接到 `aiStep`：單�
 測試以 `FD2_MUTE=1` 隔離容器沒有可播放 AIL sample 的環境差異；這不是跳過 mode 5
 狀態提交，也不替事件命名成物品／法術／特殊效果。此切片只提升重製端遊戲層 owner
 為 E1，尚未證明原版一般玩家目標選擇、完整敵方回合或同 raw 狀態 E2。
+
+## 2026-08-11：mode 7 `aiStep` 遊戲層消費端 E1
+
+重製端新增 `TestAIStepConsumesVerifiedMode7DestinationPlan` 與
+`TestAIStepStopsMode7WithoutMovementProvenance`。測試只採用反組譯明示的 raw
+`+0x35/+0x36` 目的地：`NextAIPlan` 產生 movement-only 路徑，`aiStep` 抵達相同落點
+後才寫入 raw `+0x05=1`，並保留 `[0x51A83]` map-range 的來源標記；缺少 movement
+rows 時在任何行走、攻擊、byte 寫入或回合變更前停止。
+
+這是 `0x32975` raw writer 的重製端 E1 消費證據，不替 mode 7 命名為特定玩法，也不
+證明原版目標選擇、完整敵方回合或一般玩家 E2。

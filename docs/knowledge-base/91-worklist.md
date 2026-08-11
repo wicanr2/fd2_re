@@ -53,6 +53,13 @@
   `0→1`、清除 map event、寫入 raw `+0x34=7` 並完成回合；缺少原始來源仍失敗即關閉。
   `FD2_MUTE=1` 只隔離測試環境沒有可播放 AIL sample 的外部資產，不命名事件的玩法、
   物品或法術效果，也不宣稱一般玩家 E2。
+- [x] **RE-AI-MODE7-GAME-CONSUMER-20260811**：新增
+  `TestAIStepConsumesVerifiedMode7DestinationPlan` 與
+  `TestAIStepStopsMode7WithoutMovementProvenance`。Docker/Xvfb 實際由
+  `NextAIPlan` 消費 raw `+0x35/+0x36` 目的地，完成 movement-only 行走後才寫入
+  raw `+0x05=1` 與 map-range provenance；缺少 movement rows 時不建立 walk／attack、
+  不改寫 raw byte 或回合。這只提升 `0x32975` writer 的遊戲層 owner 為 E1，不命名
+  mode 7 的高階玩法，也不宣稱原版一般玩家 E2。
 - [x] **CAMPAIGN-APPROXIMATE-INTERMISSION-20260811**：新增明確的
   `FD2_APPROXIMATE=1` 可玩近似模式。對尚未有正式 handler 的
   `postbattle_*` 節點，只同步已物化戰場隊伍、顯示「戰後整理」提示，等待玩家
@@ -403,9 +410,9 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   `fd2` product branch 即可啟動、遊玩、存讀檔及建置，兩倉 CI 均可由
   Docker 重生。另需先決定引擎程式碼授權、貢獻規範與版本相依方式。
 
-## 文件狀態入口（更新至 2026-08-09）
+## 文件狀態入口（更新至 2026-08-11）
 
-目前統計：`[x]=525`、`[~]=106`、`[ ]=72`；只計算實際 checklist 行，且僅代表工程項目數，不是原版完成百分比。
+目前統計：`[x]=573`、`[~]=119`、`[ ]=70`；只計算本文件的 checklist 行，且僅代表工程項目數，不是原版完成百分比。
 
 - [x] 根目錄 `README.md` 改為「資產／RE／引擎切片／原版差距」四欄狀態表，加入已驗證成果圖片；不再宣稱全 30 章 parity。
 - [x] `remake/README.md` 改為垂直切片與 fail-closed 差距說明；`00-index.md` 指定 README → `56` SDD → `42` gap audit → 本 worklist 的閱讀順序。

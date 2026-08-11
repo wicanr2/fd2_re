@@ -4494,3 +4494,12 @@ pending producer 證據，再以同一 raw roster／camera／cursor／tick 做�
 sample 的聲音環境，不是替未知 mode 5 語意接線。這是重製端 E1 消費端證據，不升格
 為原版目標／物品／法術決策或一般玩家 E2；相關限制與測試入口已同步至
 [`91-worklist.md`](91-worklist.md) 與 [`56-fd2-remake-sdd.md`](56-fd2-remake-sdd.md)。
+
+## 2026-08-11：mode 7 遊戲層消費端回歸
+
+`TestAIStepConsumesVerifiedMode7DestinationPlan` 與
+`TestAIStepStopsMode7WithoutMovementProvenance` 已在 Docker／Xvfb 通過。測試以
+raw `+0x35/+0x36` 目的地建立 movement-only 計畫，抵達後提交 raw `+0x05=1` 與
+map-range provenance；缺少 movement rows 時不建立 walk／attack、不改寫 raw byte、
+位置或回合，維持失敗即關閉。這是 `0x32975` writer 的重製端 E1 owner，不命名
+mode 7 高階玩法，也不升格為原版一般玩家 E2；工作清單與 SDD 已同步。
