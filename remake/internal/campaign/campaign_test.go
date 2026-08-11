@@ -664,6 +664,54 @@ func TestCampaignFullPostBattleTownContractMatchesOriginalShopChapters(t *testin
 	}
 }
 
+func TestCampaignFullChapter16BattlePreservesTownShopPreparationBoundary(t *testing.T) {
+	c, err := Load("../../assets/scenarios/campaign_full.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	r := NewRunner(c)
+	r.Cur = "battle_ch16"
+
+	if got := r.Advance("win"); got != "postbattle_ch16_persist" {
+		t.Fatalf("battle_ch16 win=%q, want postbattle_ch16_persist", got)
+	}
+	post := r.Node()
+	if post == nil || post.Type != "cutscene" || post.HandlerBinding == "" || post.Next != "town_ch17" || len(post.Beats) != 0 {
+		t.Fatalf("ch16 postbattle=%#v, want bound cutscene→town with no inline bypass", post)
+	}
+	if got := r.Advance(""); got != "town_ch17" {
+		t.Fatalf("postbattle_ch16→town=%q", got)
+	}
+	town := r.Node()
+	if town == nil || town.Type != "town" || len(r.Visible()) != 5 {
+		t.Fatalf("town_ch17 node=%#v visible=%d, want five non-secret entries", town, len(r.Visible()))
+	}
+
+	// The battle must not skip the hub: visit the weapon shop and return to the
+	// same town before entering preparation.
+	if got := r.Advance("opt1"); got != "shop_ch17_weapon" {
+		t.Fatalf("town_ch17 weapon option=%q", got)
+	}
+	if got := r.Advance(""); got != "town_ch17" {
+		t.Fatalf("shop_ch17_weapon→town=%q", got)
+	}
+	if got := r.Advance("opt2"); got != "preparation_ch17" {
+		t.Fatalf("town_ch17 preparation option=%q", got)
+	}
+	if got := r.Advance("cancel"); got != "town_ch17" {
+		t.Fatalf("preparation_ch17 cancel=%q", got)
+	}
+	if got := r.Advance("opt2"); got != "preparation_ch17" {
+		t.Fatalf("town_ch17 preparation retry=%q", got)
+	}
+	if got := r.Advance("confirm"); got != "story_ch17" {
+		t.Fatalf("preparation_ch17 confirm=%q", got)
+	}
+	if got := r.Advance(""); got != "battle_ch17" {
+		t.Fatalf("story_ch17→battle=%q", got)
+	}
+}
+
 func TestEveryContinuingBattleSyncsBeforeOriginalIntermission(t *testing.T) {
 	c, err := Load("../../assets/scenarios/campaign_full.json")
 	if err != nil {

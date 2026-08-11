@@ -276,6 +276,14 @@ panel 尚未閉合，因此不宣稱逐像素 E2。條件與雜湊見
 
 ![重製端 CONTINUE current-runtime 戰場（E1）](docs/figures/native-continue-current-runtime-remake-e1.png)
 
+同一份存檔另保存了原版 E2 與重製端普通 X11 輸入的 current-runtime 配對基準：
+原版 320×200 放大至 640×400 比較的 AE 為 `164`、RMSE 為 `50.2631`。重製端畫面
+仍使用明確的 `FD2_NATIVE_TITLE_TICK=0` 計時夾具，所以這是原版 E2＋重製端 E1
+的配對證據，不是逐像素一致；完整限制與雜湊見
+[`native-continue-current-runtime-remake-e2.json`](docs/data/ui-traces/native-continue-current-runtime-remake-e2.json)。
+
+![重製端 CONTINUE current-runtime 配對畫面（E1）](docs/figures/native-continue-current-runtime-remake-e2.png)
+
 同一份未修改原版 `FD2.SAV` 也已走到「結束目前單位行動嗎？」→「是」，實際看見
 `ENEMY PHASE`，並在約 10 秒後看到敵方回合的另一個戰場畫面，約 20 秒後回到玩家
 操作狀態。這是一般玩家敵方回合的原版 E2 輸入／畫面錨點，不是重製端對照，也不足以

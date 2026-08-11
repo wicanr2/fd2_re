@@ -6694,8 +6694,7 @@ func (g *Game) drawRing(screen *ebiten.Image) {
 		return
 	}
 	tw, th := g.m.TileW, g.m.TileH
-	ux := float64(g.sel.X*tw) - g.camX
-	uy := float64(g.sel.Y*th) - g.camY
+	ux, uy, _ := g.actionOverlayAnchor(g.sel)
 	if g.drawNativeActionOverlay(screen, ux, uy) {
 		g.markActionOverlayDrawn()
 		return
@@ -6740,6 +6739,24 @@ func (g *Game) drawRing(screen *ebiten.Image) {
 		screen.DrawImage(ic, op)
 	}
 	g.markActionOverlayDrawn()
+}
+
+// actionOverlayAnchor converts the selected unit's world cell into the
+// screen coordinate system used by the overlay.  The native indexed battle
+// frame is authored at 320×200 and presented at 2×; the normalized renderer
+// remains 1×.  Returning the scale makes this boundary directly testable and
+// prevents a raw native map frame from receiving a half-size overlay anchor.
+func (g *Game) actionOverlayAnchor(u *battle.Unit) (x, y, scale float64) {
+	if g == nil || g.m == nil || u == nil {
+		return 0, 0, 1
+	}
+	scale = 1
+	if g.nativeMapAssets != nil && g.st != nil && g.st.HasNativeMapViewState &&
+		g.nativeMapFrameAdmission(false, g.camp == nil || (g.camp.Node() != nil && g.camp.Node().Type == "battle")) {
+		scale = 2
+	}
+	return (float64(u.X*g.m.TileW) - g.camX) * scale,
+		(float64(u.Y*g.m.TileH) - g.camY) * scale, scale
 }
 
 func (g *Game) actionOverlayAvailability() [4]int {

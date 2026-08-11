@@ -8,6 +8,20 @@
 
 ## 本輪收束（2026-08-11）
 
+- [x] **CAMPAIGN-CH16-TOWN17-BOUNDARY**：`battle_ch16→postbattle_ch16_persist→town_ch17`
+  已由實際 `campaign_full.json` 回歸走過武器店返回、整備取消、再次整備確認，最後
+  才進 `battle_ch17`。這關閉一個可編輯的戰後城鎮／商店／整備垂直切片，不代表
+  30 章全部戰役或一般玩家 E2 已完成；測試為
+  `TestCampaignFullChapter16BattlePreservesTownShopPreparationBoundary`。
+- [x] **RE-PLAYER-CURRENT-RUNTIME-PAIRED-BASELINE**：同一份固定雜湊 `FD2.SAV` 的
+  未修改原版 CONTINUE E2 與重製端普通 X11 輸入 E1 已保存為
+  [`native-continue-current-runtime-remake-e2.json`](../data/ui-traces/native-continue-current-runtime-remake-e2.json)。
+  原版 320×200 放大至 640×400 的比較 AE `164`、RMSE `50.2631`；重製端仍受
+  `FD2_NATIVE_TITLE_TICK=0` 夾具限制，故不宣稱逐像素或重製端 E2。
+- [x] **UI-ACTION-ANCHOR-NATIVE-PRESENTATION-SCALE**：`drawRing` 已依完整 native
+  map frame 的呈現縮放修正 320×200→640×400 指令環座標；
+  `TestNativeActionOverlayAnchorUsesPresentationScale` 通過。圖示可用性、原始
+  command／spell／item presentation 與敵方回合配對仍維持失敗即關閉。
 - [x] **RE-AI-ENEMY-PHASE-ORIGINAL-E2-ANCHOR**：以固定雜湊的未修改
   `FD2.EXE`／`FD2.SAV`，在一次性 Docker DOSBox 中由 `CONTINUE` 進入
   current-runtime 戰場，開啟 command grid，選擇 `END` 並以 `YES` 確認；約

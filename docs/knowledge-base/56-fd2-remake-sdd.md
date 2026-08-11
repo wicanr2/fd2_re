@@ -3791,3 +3791,22 @@ BIOS 時鐘、`0x10494/0x105ED` 重繪／延遲（redraw/delay）、逐像素或
 群組寫入器／公式、未修改一般玩家同一 raw runtime 的重製／原版 E2、action 選取擁有者與
 status/equipment panel、戰後城鎮／商店／整備／存檔全路徑，以及 mode 11、`0x13FD4`、
 mode 5 的完整目標／指令／法術／道具人工智慧語意仍未解除。
+
+## 2026-08-11：戰役 intermission 與 current-runtime 畫面配對更新
+
+本輪完成一個可審查的戰役圖垂直切片：`battle_ch16` 勝利先進入有正式
+`handler_binding` 的 `postbattle_ch16_persist`，再到 `town_ch17`；回歸實際走過武器店
+返回、整備取消、再次整備確認，最後才進 `battle_ch17`。測試為
+`TestCampaignFullChapter16BattlePreservesTownShopPreparationBoundary`，因此不能把
+戰後節點折疊成直接下一戰；這仍不是 30 章一般玩家 E2。
+
+同一份固定雜湊 `FD2.SAV` 的原版 CONTINUE E2 與重製端普通 X11 輸入畫面已形成配對基準，
+但重製端仍使用明確的 `FD2_NATIVE_TITLE_TICK=0` 夾具，故重製端側維持 E1。原版 320×200
+放大至 640×400 後，畫面 AE `164`、RMSE `50.2631`；證據與限制見
+[`native-continue-current-runtime-remake-e2.json`](../data/ui-traces/native-continue-current-runtime-remake-e2.json)。
+
+`drawRing` 另已補上 native 320×200→640×400 的呈現座標縮放，並以
+`TestNativeActionOverlayAnchorUsesPresentationScale` 固定驗證；這只修正指令環位置，
+不代表圖示可用性、指令／法術／道具效果或敵方人工智慧語意已完成。原版敵方回合 E2
+錨點仍以 [`native-enemy-turn-original-e2.json`](../data/ui-traces/native-enemy-turn-original-e2.json)
+為準，重製端同狀態敵方回合 E2 尚未解除。

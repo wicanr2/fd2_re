@@ -711,3 +711,17 @@ client crop、輸入時間線及 PNG／原版檔案雜湊見
 path）當成原版資料。這是原始資料到重製端遊戲層的 E1 消費端證據，不是未修改原版的
 一般玩家 E2，也不代表 mode 2 的目標評分、所有指令／法術／道具分支或其他 AI mode
 已經閉合。
+
+## 2026-08-11：人工智慧回歸盤點與未閉合 E2 邊界
+
+本輪以 Docker 真實執行下列人工智慧測試群組並通過：`internal/battle` 的
+mode 2 物理候選／路徑、mode 3／9 raw 查找、mode 5 事件尾端、mode 11 兩段順序、
+`0x14EF0` command／item route、`0x13FD4` indexed／音訊窄切片，以及 `cmd/fd2` 的
+`aiStep` mode 2 遊戲層消費端。這些測試共同保留 raw provenance、缺資料失敗即關閉，
+並確認未知 command／spell／item 不會改寫隊伍狀態。
+
+這仍不是「敵方人工智慧已完成」：未修改原版敵方回合 E2 只證明一般玩家可達的
+`ENEMY PHASE` 時序與畫面邊界；重製端尚未在同一 raw roster、鏡頭、游標與 tick 上
+完成敵方回合畫面配對，也尚未取得目標選擇／移動評分／命令／法術／道具的完整一般玩家
+動態證據。後續必須先補這些 E2 證據，再逐項升級 mode owner，不得以正規化
+`NextAIPlan` 輸出補寫原版未知語意。

@@ -466,3 +466,23 @@ handoff 或同狀態逐像素 parity 已完成。UI-03 與 UI-12 的正式重製
 截圖快進器只在明確的 `FD2_SHOT_FAST_FORWARD=1` 模式執行，故不提升 UI-02／UI-03
 的一般玩家 E2，也不表示與上面的原版 current-runtime 已是同一 raw roster、鏡頭、
 游標或 tick。
+
+### 2026-08-11：重製端 current-runtime E1 配對基準與原生指令環座標修正
+
+同一份固定雜湊的 `FD2.SAV` 已在 Docker／Xvfb 以普通 X11 鍵盤事件走過重製端
+`CONTINUE`，並保存重製端原生戰場畫面
+[`native-continue-current-runtime-remake-e2.png`](../figures/native-continue-current-runtime-remake-e2.png)。
+它與原版 E2 crop 的最近鄰 2×比較為 AE `164`、RMSE `50.2631`；這是原版 E2
+與重製端 E1 的同存檔配對基準，不是逐像素一致。重製端的
+`FD2_NATIVE_TITLE_TICK=0` 是明確提供的計時夾具，故尚未宣稱一般玩家 BIOS 時鐘
+或敵方回合 E2。
+
+本輪另修正 `drawRing` 將原生 320×200 地圖座標直接拿到 640×400 畫布的偏移：
+`actionOverlayAnchor` 只在完整 native map frame admitted 時套用 2×呈現縮放，
+normalized 路徑仍維持 1×。回歸測試
+`TestNativeActionOverlayAnchorUsesPresentationScale` 固定 `(8,16)` 單位的
+native anchor `(336,144)`，但不替尚未閉合的 icon availability／command semantics
+猜測接線。
+
+完整輸入、雜湊、限制與 helper 來源見
+[`native-continue-current-runtime-remake-e2.json`](../data/ui-traces/native-continue-current-runtime-remake-e2.json)。

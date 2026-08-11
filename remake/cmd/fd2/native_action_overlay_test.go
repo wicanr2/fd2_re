@@ -46,6 +46,27 @@ func TestNativeMapFrameAdmissionKeepsActionOverlayOnCompleteFrame(t *testing.T) 
 	}
 }
 
+func TestNativeActionOverlayAnchorUsesPresentationScale(t *testing.T) {
+	unit := &battle.Unit{X: 8, Y: 16}
+	base := &Game{
+		m:               &MapData{TileW: 24, TileH: 24},
+		camX:            24,
+		camY:            312,
+		nativeMapAssets: &nativeMapAssets{},
+		st:              &battle.State{HasNativeMapViewState: true},
+		ring:            true,
+	}
+	x, y, scale := base.actionOverlayAnchor(unit)
+	if scale != 2 || x != 336 || y != 144 {
+		t.Fatalf("native anchor=(%.0f,%.0f) scale=%.0f, want (336,144) scale=2", x, y, scale)
+	}
+	base.nativeMapAssets = nil
+	x, y, scale = base.actionOverlayAnchor(unit)
+	if scale != 1 || x != 168 || y != 72 {
+		t.Fatalf("normalized anchor=(%.0f,%.0f) scale=%.0f, want (168,72) scale=1", x, y, scale)
+	}
+}
+
 func TestActionOverlayLifecyclePresentsAllOpeningAndClosingFrames(t *testing.T) {
 	g := &Game{}
 	g.beginActionOverlayOpen(2)

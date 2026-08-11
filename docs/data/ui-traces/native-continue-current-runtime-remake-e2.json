@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "evidence_level": "E2",
+  "scope": "同一份原版 FD2.SAV 的一般玩家 CONTINUE→chapter0 current-runtime 戰場基準配對",
+  "input": {
+    "executable": {
+      "path": "org_game/炎龍騎士團/FLAME2/FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "save": {
+      "path": "org_game/炎龍騎士團/FLAME2/FD2.SAV",
+      "size": 22987,
+      "md5": "409795ccebc2af340d5c74152c2d471c",
+      "sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f",
+      "decoded_current_runtime": {
+        "chapter": 0,
+        "runtime_count": 12,
+        "camera": [1, 13],
+        "cursor": [8, 17],
+        "visible_cursor": [7, 4]
+      }
+    }
+  },
+  "execution": {
+    "original": {
+      "image": "fd2-dosbox-screenshot-local:latest",
+      "network": "none",
+      "source_mount": "read-only FLAME2 copied to disposable writable sandbox",
+      "route_patch": false,
+      "debug_shortcut": false,
+      "timeline": [
+        "等待開場後按 Escape",
+        "標題選單按 Down、Down、Return（CONTINUE）",
+        "進入 current-runtime 戰場後停留，不修改存檔"
+      ]
+    },
+    "remake": {
+      "image": "fd2-go-test-local:latest",
+      "display": "Docker Xvfb :99",
+      "network": "none",
+      "campaign": "remake/assets/scenarios/campaign_full.json",
+      "original_fdother": "org_game/炎龍騎士團/FLAME2/FDOTHER.DAT",
+      "native_save_env": "FD2_NATIVE_SAVE",
+      "native_title_tick": 0,
+      "player_input": [
+        "Escape（跳過開場）",
+        "Down、Down、Enter（CONTINUE）",
+        "進入戰場後停留至 FD2_SHOT_FRAME=500"
+      ],
+      "input_helper": "tools/docker/fd2-xtest-input.c",
+      "helper_contract": "只送出普通 X11 鍵盤按下／放開事件，不呼叫遊戲 API、不修改狀態"
+    }
+  },
+  "screenshots": [
+    {
+      "path": "../../figures/native-continue-current-runtime-original-dosbox.png",
+      "state": "未修改原版 CONTINUE 後的 current-runtime 戰場",
+      "size": [320, 200],
+      "md5": "9460771fdae41db5a942ec896ac4cfce",
+      "sha256": "9fcddfa4d1ad917beffe5e219401134e273a14962191dde738152e4f40114820"
+    },
+    {
+      "path": "../../figures/native-continue-current-runtime-remake-e2.png",
+      "state": "同一存檔與一般玩家輸入下的重製端原生戰場",
+      "size": [640, 400],
+      "md5": "faa28a76c93146684c40eee55ac82a3e",
+      "sha256": "10cd82b22aa3637fa230f1fcd12146ecae1b8d93fe4055cdefaae85c05bcaeb4"
+    }
+  ],
+  "comparison": {
+    "method": "Docker ImageMagick nearest-neighbour 將原版 320×200 放大至 640×400，再與重製端 PNG 比對",
+    "absolute_error_pixels": 164,
+    "rmse": 50.2631,
+    "claim": "未修改原版一般玩家 E2 與重製端同一存檔／輸入的 E1 畫面形成配對基準；非逐像素一致"
+  },
+  "claims": [
+    "E2 證實未修改原版可由標題 CONTINUE 進入 current-runtime 戰場。",
+    "重製端以同一份原版 FD2.SAV 與普通 X11 鍵盤事件可發布對應戰場 State，這一側仍受明確的 FD2_NATIVE_TITLE_TICK 夾具限制。",
+    "重製端原生地圖 frame、地形、單位、游標與 HUD 已有可重生的配對畫面；這是 E1 消費端基準，不升格為重製端 E2。"
+  ],
+  "limits": [
+    "像素差異仍存在，未宣稱逐像素 parity；重製端截圖未鎖定與原版相同的待機動畫相位。",
+    "本證據只涵蓋 chapter0 current-runtime 的進場基準，不外推到其他章節、城鎮、商店、整備或結局。",
+    "未修改原版敵方回合的 E2 輸入／畫面另見 native-enemy-turn-original-e2.json；本檔沒有重製端敵方回合的同狀態配對。",
+    "重製端使用 FD2_NATIVE_TITLE_TICK=0 的明確計時夾具；一般玩家 BIOS 時鐘、標題重繪節奏與敵方回合仍未完成 E2 配對。",
+    "action overlay 的原始資源與輸入消費端仍部分閉合；本檔不把指令圖示可見性當成 AI 或完整 action gate 證據。"
+  ]
+}

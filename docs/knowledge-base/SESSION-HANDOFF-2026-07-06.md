@@ -4439,3 +4439,25 @@ pending producer 證據，再以同一 raw roster／camera／cursor／tick 做�
   deterministic 夾具，不是原版 BIOS 時鐘逐幀 E2；action 選取擁有者、status/equipment
   panel、同狀態原版／重製逐幀比較、戰後 town/shop/preparation/save 全路徑，以及
   敵方 AI 正式 caller／目標／命令／法術／物品決策仍維持 fail-closed。
+
+## 2026-08-11：戰役 intermission、E2 配對與指令環座標勘誤
+
+本輪可交接成果如下：
+
+- `TestCampaignFullChapter16BattlePreservesTownShopPreparationBoundary` 以實際
+  `campaign_full.json` 驗證 `battle_ch16→postbattle_ch16_persist→town_ch17`，走過
+  武器店返回、整備取消、再次整備確認，才進 `battle_ch17`。這是戰後城鎮／商店／
+  整備的可編輯垂直切片，不是 30 章一般玩家 E2。
+- `native-continue-current-runtime-remake-e2.json` 保存同一份固定 `FD2.SAV` 的
+  原版 CONTINUE E2 與重製端普通 X11 輸入 E1 配對；原版 320×200 放大至 640×400
+  比較 AE `164`、RMSE `50.2631`。重製端因 `FD2_NATIVE_TITLE_TICK=0` 仍是計時夾具，
+  不得寫成重製端 E2 或逐像素 parity。
+- `drawRing` 的 `actionOverlayAnchor` 已在完整 native map frame 時套用 2×呈現縮放；
+  `TestNativeActionOverlayAnchorUsesPresentationScale` 固定驗證 `(336,144)` native
+  anchor。這只修正座標偏移，不替圖示可用性或 command／spell／item 語意猜測接線。
+
+原版一般玩家敵方回合的 E2 錨點仍是
+[`native-enemy-turn-original-e2.json`](../data/ui-traces/native-enemy-turn-original-e2.json)；
+重製端同一 raw 狀態的敵方回合畫面、目標選擇與完整 mode 2／3／5／9／11 消費端仍未閉合。
+目前已驗證的 mode 2 遊戲層 owner、mode 11 兩段 owner、`0x14EF0` raw route 與
+`0x13FD4` indexed／音訊 owner 必須繼續以 Docker 回歸；未知欄位保持失敗即關閉。
