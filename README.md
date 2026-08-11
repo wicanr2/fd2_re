@@ -225,6 +225,14 @@ ch01 戰場目前已能由原始地圖、單位、前景與 HUD 資產合成。�
 
 ![ch01 同狀態原版／重製戰場與差異遮罩](docs/figures/battle-field-ch01-scoped-compare-20260810.png)
 
+### 可玩近似戰後提示
+
+明確設定 `FD2_APPROXIMATE=1` 時，尚未有正式原版 handler 的戰後節點會先同步已物化
+隊伍，顯示可確認的戰後整理提示，再沿腳本進入城鎮／整備；下圖是 Docker／Xvfb
+實際執行期擷取。它是可玩近似模式畫面，不代表原版演出或逐像素等價。
+
+![可玩近似模式戰後整理提示](docs/figures/postbattle-approximate-remake.png)
+
 完整尺寸、狀態指紋、影像雜湊與限制見
 [`battle-visual-gap-ch01.json`](docs/data/ui-traces/battle-visual-gap-ch01.json)。
 

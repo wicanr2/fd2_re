@@ -56,6 +56,12 @@
   未修改 `FD2.EXE`／固定 `FD2.SAV` 完成 DOSBox 啟動／CONTINUE 擷取；報告見
   [`game-test-2026-08-11.md`](../reports/game-test-2026-08-11.md)。DOSBox 尚未
   能可靠進入與重製端相同 raw 敵方回合，故 mode 11 仍只列 E1，不宣稱 parity。
+- [x] **APPROXIMATE-POSTBATTLE-SCREENSHOT-20260811**：以實際
+  `FD2_CAMPAIGN=assets/scenarios/campaign_full.json`、`FD2_CAMP_NODE=postbattle_ch23_persist`
+  與 `FD2_APPROXIMATE=1` 在 Docker／Xvfb 擷取戰後整理提示
+  [`postbattle-approximate-remake.png`](../figures/postbattle-approximate-remake.png)，
+  SHA-256 `dfdd3248f0d653a97c95ac1ea17cb8e884436fc4a473a78f2b9bb3d5b4967abe`；這是
+  可玩近似模式畫面，不提升為原版 E2。
 - [x] **RE-AI-13FD4-RAW-PRESENTATION-COMMIT**：正式 runtime owner 已接上
   `0x13FD4` 的 indexed／音訊窄切片：消費 `[0x53EEC]` index `4`／loop `1`、
   `0x12D7B`、兩段 `0x1DA16`（`(2,0xFD)`→`(0,0)`）、兩段修正後的

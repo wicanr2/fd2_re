@@ -4474,6 +4474,10 @@ pending producer 證據，再以同一 raw roster／camera／cursor／tick 做�
   不猜 JOIN／獎勵／章節／原版分支。未設定時仍維持忠實模式失敗即關閉。
   `TestApproximatePostbattlePreservesAuthoredIntermissionBoundary` 驗證 town 與
   preparation 兩條邊界，並確認戰場狀態已清除。
+- 實際 Docker／Xvfb 擷取已保存為
+  [`postbattle-approximate-remake.png`](../figures/postbattle-approximate-remake.png)，
+  SHA-256 `dfdd3248f0d653a97c95ac1ea17cb8e884436fc4a473a78f2b9bb3d5b4967abe`；這張圖
+  只證明近似模式提示可見，不代表原版戰後演出等價。
 - 本輪遊戲測試報告由獨立子代理在 Docker 產出，見
   [`game-test-2026-08-11.md`](../reports/game-test-2026-08-11.md)；報告中的 DOSBox／
   重製命令、輸入時間線、資產雜湊與畫面限制已由主代理重新檢查，仍維持 DOSBox
