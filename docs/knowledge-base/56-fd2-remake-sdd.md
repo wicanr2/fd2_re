@@ -3840,6 +3840,10 @@ mode 5 的完整目標／指令／法術／道具人工智慧語意仍未解除�
 - `TestApproximateCampaignFullUnboundPostbattleBoundaries` 與
   `TestCampaignFullUnboundPostbattleDefaultsFailClosed` 再以 `campaign_full.json` 的
   第 23、24、25、29 戰實際節點驗證近似確認與預設停止。
+- `TestApproximateCampaignFullResultConfirmationKeepsUnboundIntermissions` 再從四個
+  對應的 `battle_ch23/24/25/29` 設定勝利結果，走正式 `confirmBattleResult`，確認
+  先停在近似戰後提示，玩家確認後才沿 authored `next` 進 preparation／town；這補上
+  之前直接把 Runner 游標放在 postbattle 的測試與正式結果消費端之間的邊界。
 - 近似模式只代表可玩的戰役銜接，不提升 E1 為 E2，也不改寫既有原版證據與推論
   等級；剩餘節點與證據以 [`91-worklist.md`](91-worklist.md) 最新稽核為準。
 

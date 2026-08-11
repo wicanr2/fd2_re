@@ -4509,6 +4509,18 @@ map21 的真實 ch22 runtime fixture、73-slot group1／2 frontier 與原版資�
 66／72-slot frontier、未綁定 ch23／24／25／29 handler 或未知演出增加語意。若資產
 或 raw view provenance 缺失，測試會停止而不繞過 handler。
 
+## 2026-08-11：四個未綁定戰後節點的正式結果→近似戰間回歸
+
+新增 `TestApproximateCampaignFullResultConfirmationKeepsUnboundIntermissions`，以
+`campaign_full.json` 的 `battle_ch23/24/25/29` 分別建立已完成的勝利結果，走正式
+`Game.confirmBattleResult`，確認未綁定的 `postbattle_ch23/24/25/29` 會先停在
+明示的近似整理提示；只有 `continueApproximatePostbattle` 確認後，才沿資料檔的
+`next` 進入 `preparation_ch24`、`preparation_ch25`、`town_ch26`、
+`preparation_ch30`。這補上直接把 Runner 游標放在 postbattle 的舊測試與玩家結果
+消費端之間的邊界，仍不猜 JOIN、獎勵或未知 handler 語意。
+
+此為重製端 E1／可玩近似流程，不是未修改原版 E2；忠實模式仍對同四節點失敗即關閉。
+
 ## 2026-08-11：mode 5 遊戲層消費端回歸
 
 `TestAIStepConsumesVerifiedMode5EventPlan` 與

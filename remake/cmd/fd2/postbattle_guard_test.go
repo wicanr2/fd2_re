@@ -121,6 +121,50 @@ func TestApproximateCampaignFullUnboundPostbattleBoundaries(t *testing.T) {
 	}
 }
 
+func TestApproximateCampaignFullResultConfirmationKeepsUnboundIntermissions(t *testing.T) {
+	tests := []struct {
+		battle, postbattle, next string
+	}{
+		{battle: "battle_ch23", postbattle: "postbattle_ch23_persist", next: "preparation_ch24"},
+		{battle: "battle_ch24", postbattle: "postbattle_ch24_persist", next: "preparation_ch25"},
+		{battle: "battle_ch25", postbattle: "postbattle_ch25_persist", next: "town_ch26"},
+		{battle: "battle_ch29", postbattle: "postbattle_ch29_persist", next: "preparation_ch30"},
+	}
+	for _, tc := range tests {
+		t.Run(tc.battle, func(t *testing.T) {
+			campaignData, err := campaign.Load("../../assets/scenarios/campaign_full.json")
+			if err != nil {
+				t.Fatal(err)
+			}
+			campaignData.Start = tc.battle
+			unit := &battle.Unit{Fig: 0, Camp: battle.Own, OnField: true, HP: 10, MaxHP: 10, MP: 1, MaxMP: 3}
+			g := &Game{
+				camp:            campaign.NewRunner(campaignData),
+				approximateMode: true,
+				st: &battle.State{Units: []*battle.Unit{
+					unit,
+					{Fig: 1, Camp: battle.Enemy, OnField: false, HP: 0, MaxHP: 10},
+				}},
+				partyMembers: map[int]bool{0: true},
+				partyRoster:  map[int]battle.Unit{0: *unit},
+			}
+			g.result = "win"
+			if !g.confirmBattleResult() || g.result != "" {
+				t.Fatalf("production result confirmation failed: node=%q result=%q err=%q", g.camp.NodeID(), g.result, g.loadErr)
+			}
+			if g.camp.NodeID() != tc.postbattle || g.loadErr != "" || !g.approximatePostbattle {
+				t.Fatalf("result entered wrong intermission: node=%q err=%q pending=%v", g.camp.NodeID(), g.loadErr, g.approximatePostbattle)
+			}
+			if !g.continueApproximatePostbattle() {
+				t.Fatal("approximate intermission confirmation was rejected")
+			}
+			if g.camp.NodeID() != tc.next || g.st != nil {
+				t.Fatalf("approximate result boundary node=%q state=%#v, want %q and cleared battle", g.camp.NodeID(), g.st, tc.next)
+			}
+		})
+	}
+}
+
 func TestCampaignFullUnboundPostbattleDefaultsFailClosed(t *testing.T) {
 	for _, nodeID := range []string{
 		"postbattle_ch23_persist", "postbattle_ch24_persist",
