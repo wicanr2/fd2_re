@@ -204,6 +204,46 @@ func TestAIStepConsumesVerifiedMode5EventPlan(t *testing.T) {
 	}
 }
 
+func TestAIStepStopsMode5WithoutMovementProvenance(t *testing.T) {
+	actor := nativeAIConsumerUnit(0, 0, 1, 5)
+	actor.NativeRecordByte3D = 1
+	actor.HasNativeRecordByte3D = true
+	actor.NativeRecordDeathEffect = [3]byte{0xff, 0xff, 0xff}
+	actor.HasNativeRecordDeathEffect = true
+	state := &battle.State{
+		W:                           3,
+		H:                           1,
+		Units:                       []*battle.Unit{actor},
+		NativeEventState:            [0x20]byte{},
+		NativeCompositionEventBytes: []byte{0, 0, 0},
+		NativeTerrainMoveCodes:      []byte{0, 0, 0},
+		NativeTerrainControl:        []byte{0, 0, 0, 0x20},
+		NativeMapEventGrid:          nativeAIConsumerMode5Grid(3, 1, battle.Cell{X: 2, Y: 0}, 1),
+		HasNativeMapEventGrid:       true,
+		NativeFieldControlRaw:       make([]byte, 0x56+3),
+		HasNativeFieldControlState:  true,
+	}
+	state.NativeFieldControlRaw[0x56] = 1
+	beforeGrid := append([]byte(nil), state.NativeMapEventGrid...)
+	g := &Game{
+		m:      &MapData{W: 3, H: 1, TileW: 24, TileH: 24, Tiles: []int{0, 0, 0}},
+		st:     state,
+		aiBusy: true,
+	}
+	g.aiStep()
+	if g.loadErr == "" || g.aiBusy || g.walk != nil || g.atk != nil || actor.Acted {
+		t.Fatalf("incomplete mode-5 AI was consumed: err=%q ai=%v walk=%v atk=%v acted=%v", g.loadErr, g.aiBusy, g.walk != nil, g.atk != nil, actor.Acted)
+	}
+	if actor.X != 0 || actor.Y != 0 || state.Turn != 0 || state.NativeEventState[1] != 0 || actor.NativeRecordByte34 != 5 || state.HasNativeMapRangeModeState {
+		t.Fatalf("mode-5 failure partially changed runtime: pos=(%d,%d) turn=%d state=%d mode=%d range=%v", actor.X, actor.Y, state.Turn, state.NativeEventState[1], actor.NativeRecordByte34, state.HasNativeMapRangeModeState)
+	}
+	for i := range beforeGrid {
+		if state.NativeMapEventGrid[i] != beforeGrid[i] {
+			t.Fatalf("mode-5 failure changed event grid at %d: got=%d want=%d", i, state.NativeMapEventGrid[i], beforeGrid[i])
+		}
+	}
+}
+
 func TestAIStepConsumesVerifiedMode11StagesInNativeOrder(t *testing.T) {
 	actor := nativeAIConsumerUnit(0, 0, 1, 11)
 	actor.NativeCommandMask[0] = 1

@@ -46,7 +46,8 @@
   producer 時停止且不消耗行動。這只把 mode 11 的遊戲層 owner 提升為 E1 回歸，
   不宣稱原版目標選擇、完整敵方回合或一般玩家 E2。
 - [x] **RE-AI-MODE5-GAME-CONSUMER-20260811**：新增
-  `TestAIStepConsumesVerifiedMode5EventPlan`。Docker/Xvfb 實際由
+  `TestAIStepConsumesVerifiedMode5EventPlan` 與
+  `TestAIStepStopsMode5WithoutMovementProvenance`。Docker/Xvfb 實際由
   `NextAIPlan` 產生帶完整 raw event grid、field-control row 與 movement-cost
   provenance 的 mode 5 計畫，經 `aiStep` 實際移動至事件格、提交原始 event state
   `0→1`、清除 map event、寫入 raw `+0x34=7` 並完成回合；缺少原始來源仍失敗即關閉。

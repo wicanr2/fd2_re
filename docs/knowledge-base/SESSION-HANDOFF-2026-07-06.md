@@ -4485,10 +4485,12 @@ pending producer 證據，再以同一 raw roster／camera／cursor／tick 做�
 
 ## 2026-08-11：mode 5 遊戲層消費端回歸
 
-`TestAIStepConsumesVerifiedMode5EventPlan` 已在 Docker／Xvfb 通過。測試由
+`TestAIStepConsumesVerifiedMode5EventPlan` 與
+`TestAIStepStopsMode5WithoutMovementProvenance` 已在 Docker／Xvfb 通過。測試由
 `NextAIPlan` 提供完整 raw event grid、field-control row 與 movement-cost rows，
 再由 `aiStep` 完成事件格移動、event state `0→1`、map event 清除、raw `+0x34=7`
-與回合提交；缺少來源時維持失敗即關閉。`FD2_MUTE=1` 只是隔離測試容器缺少 AIL
+與回合提交；缺少 movement provenance 時不建立 walk／attack、不改寫事件或回合，
+維持失敗即關閉。`FD2_MUTE=1` 只是隔離測試容器缺少 AIL
 sample 的聲音環境，不是替未知 mode 5 語意接線。這是重製端 E1 消費端證據，不升格
 為原版目標／物品／法術決策或一般玩家 E2；相關限制與測試入口已同步至
 [`91-worklist.md`](91-worklist.md) 與 [`56-fd2-remake-sdd.md`](56-fd2-remake-sdd.md)。

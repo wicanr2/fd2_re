@@ -3826,8 +3826,9 @@ mode 5 的完整目標／指令／法術／道具人工智慧語意仍未解除�
 
 ## 2026-08-11：mode 5 `aiStep` 遊戲層消費端 E1
 
-重製端新增 `TestAIStepConsumesVerifiedMode5EventPlan`，把已驗證 raw event
-grid、field-control row 與 movement-cost rows 的 mode 5 計畫接到 `aiStep`：單位
+重製端新增 `TestAIStepConsumesVerifiedMode5EventPlan` 與
+`TestAIStepStopsMode5WithoutMovementProvenance`，把已驗證 raw event grid、
+field-control row 與 movement-cost rows 的 mode 5 計畫接到 `aiStep`：單位
 實際走到事件格後，原始 event state 由 `0` 寫成 `1`、地圖事件位元組清除、raw
 `+0x34` 寫成 `7`，並完成該回合。缺少任一必要來源時，執行期仍停止且不標記行動。
 
