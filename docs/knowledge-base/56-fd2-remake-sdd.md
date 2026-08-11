@@ -3728,3 +3728,12 @@ CONTINUE 的 pending-group／`Game` controller handoff 閘門。未修改原版�
 評分或命令效果；重製端尚未以同一 raw runtime 狀態完成逐幀配對，未知 AI 語意仍
 失敗即關閉。`CAMPAIGN-POSTBATTLE-E2-FULL-PATH` 也仍需逐章保留戰後城鎮／商店／
 整備／存檔節點的正常玩家路徑。
+
+### 2026-08-11：mode 2 `aiStep` 遊戲層消費端 E1
+
+重製端新增兩個決定性回歸夾具：完整原始來源證據（raw provenance）的 mode 2 物理計畫
+會由 `NextAIPlan` 進入 `aiStep`，實際消費移動路徑、FIGANI 攻擊演出擁有者（owner）
+並完成回合；缺少移動成本資料列（movement-cost rows）時則在執行前停止，單位維持未行動。這只證明重製端的資料
+契約與遊戲層 owner 已接通，不能替代未修改原版的同狀態 E2，也不為目標選擇、命令／
+法術／道具效果或其他 AI mode 建立語意。一般玩家驗收仍要求固定 raw roster、鏡頭、
+游標與 tick 的原版／重製逐幀比較，並保留戰後城鎮／商店／整備／存檔節點。

@@ -268,6 +268,12 @@ Docker／Xvfb 截圖，不是原版同狀態逐像素 E2；原始 DAC 條件與�
 單獨證明目標選擇、移動評分或命令／法術／物品語意；完整時間線、來源雜湊與限制見
 [`native-enemy-turn-original-e2.json`](docs/data/ui-traces/native-enemy-turn-original-e2.json)。
 
+重製端另有一個受原始來源證據（raw provenance）保護的 mode 2 遊戲層 E1 回歸：完整
+移動、地形與道具來源會實際走到 FIGANI 攻擊演出擁有者（owner）並完成回合，缺來源
+則停止而不標記單位已行動。這是可驗證的 AI 消費端切片，不是原版 E2 等價性（parity）；
+完整目標選擇、所有 AI mode 與未修改原版同狀態逐幀配對仍列於 [`11` 敵方 AI](docs/knowledge-base/11-enemy-ai.md)
+與 [`91` 工作清單](docs/knowledge-base/91-worklist.md)。
+
 | 原版 ENEMY PHASE | 原版敵方回合畫面 | 原版回到玩家回合 |
 |---|---|---|
 | ![原版敵方回合開始](docs/figures/native-enemy-phase-original-dosbox.png) | ![原版敵方回合中段](docs/figures/native-enemy-ai-moved-original-dosbox.png) | ![原版敵方回合結束](docs/figures/native-enemy-phase-return-original-dosbox.png) |

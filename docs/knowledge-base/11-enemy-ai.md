@@ -700,3 +700,14 @@ client crop、輸入時間線及 PNG／原版檔案雜湊見
 目前的 `NextAIPlan`／`aiStep` 只在 raw 來源完整時接窄切片，其餘未知分支仍失敗即
 關閉；要把本證據升成重製端 E2，還需同一 raw runtime roster、camera、cursor、tick
 的重製畫面與逐幀／逐音訊比較。
+
+## 2026-08-11：mode 2 物理計畫的 `aiStep` 消費端（E1）
+
+新增 `remake/cmd/fd2/native_ai_consumer_test.go` 的兩個回歸夾具，將具備完整原始
+來源證據（raw provenance）的 mode 2 單位交給重製端 `NextAIPlan`／`aiStep`：第一個
+夾具實際走完原始物理計畫的移動路徑、FIGANI 攻擊演出擁有者（owner）與回合完成，並
+確認 `state.Turn` 正確推進；第二個夾具刻意移除移動成本資料列（movement-cost rows），
+驗證執行器在缺少原始移動來源時會停止、保留單位未行動，不把正規化路徑（normalized
+path）當成原版資料。這是原始資料到重製端遊戲層的 E1 消費端證據，不是未修改原版的
+一般玩家 E2，也不代表 mode 2 的目標評分、所有指令／法術／道具分支或其他 AI mode
+已經閉合。

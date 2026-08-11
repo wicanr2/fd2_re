@@ -4344,3 +4344,13 @@ debug shortcut）實際走：開場 Escape → 標題 Down、Down、Return（CON
 移動評分、命令／法術／道具效果，也不代表重製端已完成同狀態 parity。下一步仍須
 把同一 raw runtime roster、camera、cursor、tick 接到重製端，並完成戰役戰後→城鎮／
 商店／整備／存檔的正常玩家 E2；未知 AI 分支保持失敗即關閉。
+
+## 2026-08-11：mode 2 `aiStep` 消費端 E1 已驗證
+
+在上述原版 E2 錨點之外，重製端現已用完整原始移動／地形／道具來源證據（raw
+provenance）跑通 mode 2 的 `NextAIPlan`→`aiStep`→行走→FIGANI 攻擊演出擁有者（owner）
+→回合完成；另以缺少移動成本資料列（movement-cost rows）的夾具確認執行器會失敗即
+關閉，且不把單位標成已行動。測試
+檔為 `remake/cmd/fd2/native_ai_consumer_test.go`，這是重製端 E1 遊戲層消費證據，
+不是原版目標選擇語意、所有 AI mode 或一般玩家 E2。戰役主線仍須逐節驗證戰鬥→戰後
+→城鎮／商店／整備／存檔，不能只以進入下一場戰鬥判定完成。
