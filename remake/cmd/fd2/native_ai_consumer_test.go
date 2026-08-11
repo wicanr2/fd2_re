@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/binary"
 	"math/rand"
 	"testing"
 
@@ -77,6 +78,15 @@ func nativeAIConsumerCommandBook() []battle.NativeCommandRecord {
 	return book
 }
 
+func nativeAIConsumerMode5Grid(w, h int, eventCell battle.Cell, eventID byte) []byte {
+	grid := make([]byte, 4+4*w*h)
+	grid[0], grid[2] = byte(w), byte(h)
+	offset := 4 + 4*(eventCell.X+w*eventCell.Y)
+	binary.LittleEndian.PutUint16(grid[offset:offset+2], 0)
+	grid[offset+2] = eventID
+	return grid
+}
+
 func TestAIStepConsumesVerifiedMode2PhysicalPlan(t *testing.T) {
 	actor := nativeAIConsumerUnit(0, 0, 1, 2)
 	actor.InventorySlots[0] = 1
@@ -148,6 +158,49 @@ func TestAIStepStopsMode2WithoutMovementProvenance(t *testing.T) {
 	g.aiStep()
 	if g.loadErr == "" || g.aiBusy || actor.Acted {
 		t.Fatalf("incomplete mode-2 AI was consumed: err=%q ai=%v acted=%v", g.loadErr, g.aiBusy, actor.Acted)
+	}
+}
+
+func TestAIStepConsumesVerifiedMode5EventPlan(t *testing.T) {
+	t.Setenv("FD2_MUTE", "1")
+	actor := nativeAIConsumerUnit(0, 0, 1, 5)
+	actor.NativeRecordByte3D = 1
+	actor.HasNativeRecordByte3D = true
+	actor.NativeRecordDeathEffect = [3]byte{0xff, 0xff, 0xff}
+	actor.HasNativeRecordDeathEffect = true
+	state := &battle.State{
+		W:                           3,
+		H:                           1,
+		Units:                       []*battle.Unit{actor},
+		NativeEventState:            [0x20]byte{},
+		NativeCompositionEventBytes: []byte{0, 0, 0},
+		NativeTerrainMoveCodes:      []byte{0, 0, 0},
+		NativeTerrainControl:        []byte{0, 0, 0, 0x20},
+		NativeMapEventGrid:          nativeAIConsumerMode5Grid(3, 1, battle.Cell{X: 2, Y: 0}, 1),
+		HasNativeMapEventGrid:       true,
+		NativeFieldControlRaw:       make([]byte, 0x56+3),
+		HasNativeFieldControlState:  true,
+	}
+	state.NativeFieldControlRaw[0x56] = 1
+	if err := state.BindNativeMovementCostRows(nativeAIConsumerCostRows()); err != nil {
+		t.Fatal(err)
+	}
+
+	g := &Game{m: &MapData{W: 3, H: 1, TileW: 24, TileH: 24, Tiles: []int{0, 0, 0}}, st: state, aiBusy: true}
+	g.aiStep()
+	if g.loadErr != "" || g.walk == nil {
+		t.Fatalf("mode-5 event plan did not start: walk=%v err=%q", g.walk != nil, g.loadErr)
+	}
+	for step := 0; step < 96 && (g.aiBusy || g.walk != nil); step++ {
+		if err := g.Update(); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if g.loadErr != "" || g.aiBusy || g.walk != nil || state.Turn != 1 {
+		t.Fatalf("mode-5 event completion ai=%v walk=%v turn=%d err=%q", g.aiBusy, g.walk != nil, state.Turn, g.loadErr)
+	}
+	if actor.X != 2 || actor.Y != 0 || state.NativeEventState[1] != 1 || actor.NativeRecordByte34 != 7 {
+		t.Fatalf("mode-5 event owner did not commit raw tail: pos=(%d,%d) state=%d mode=%d", actor.X, actor.Y, state.NativeEventState[1], actor.NativeRecordByte34)
 	}
 }
 

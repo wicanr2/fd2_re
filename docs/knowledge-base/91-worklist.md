@@ -45,6 +45,13 @@
   continuation 消費 `0x1548E` 物理／FIGANI；缺 command book 或 item／movement
   producer 時停止且不消耗行動。這只把 mode 11 的遊戲層 owner 提升為 E1 回歸，
   不宣稱原版目標選擇、完整敵方回合或一般玩家 E2。
+- [x] **RE-AI-MODE5-GAME-CONSUMER-20260811**：新增
+  `TestAIStepConsumesVerifiedMode5EventPlan`。Docker/Xvfb 實際由
+  `NextAIPlan` 產生帶完整 raw event grid、field-control row 與 movement-cost
+  provenance 的 mode 5 計畫，經 `aiStep` 實際移動至事件格、提交原始 event state
+  `0→1`、清除 map event、寫入 raw `+0x34=7` 並完成回合；缺少原始來源仍失敗即關閉。
+  `FD2_MUTE=1` 只隔離測試環境沒有可播放 AIL sample 的外部資產，不命名事件的玩法、
+  物品或法術效果，也不宣稱一般玩家 E2。
 - [x] **CAMPAIGN-APPROXIMATE-INTERMISSION-20260811**：新增明確的
   `FD2_APPROXIMATE=1` 可玩近似模式。對尚未有正式 handler 的
   `postbattle_*` 節點，只同步已物化戰場隊伍、顯示「戰後整理」提示，等待玩家

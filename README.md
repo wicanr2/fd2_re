@@ -304,10 +304,11 @@ panel 尚未閉合，因此不宣稱逐像素 E2。條件與雜湊見
 單獨證明目標選擇、移動評分或命令／法術／物品語意；完整時間線、來源雜湊與限制見
 [`native-enemy-turn-original-e2.json`](docs/data/ui-traces/native-enemy-turn-original-e2.json)。
 
-重製端另有一個受原始來源證據（raw provenance）保護的 mode 2 遊戲層 E1 回歸：完整
-移動、地形與道具來源會實際走到 FIGANI 攻擊演出擁有者（owner）並完成回合，缺來源
-則停止而不標記單位已行動。這是可驗證的 AI 消費端切片，不是原版 E2 等價性（parity）；
-完整目標選擇、所有 AI mode 與未修改原版同狀態逐幀配對仍列於 [`11` 敵方 AI](docs/knowledge-base/11-enemy-ai.md)
+重製端另有受原始來源證據（raw provenance）保護的 mode 2／mode 5／mode 11 遊戲層
+E1 回歸：mode 2 可完成物理移動／FIGANI 攻擊，mode 5 可提交事件格的 raw state
+尾端，mode 11 可依序消費兩段 command／physical stage；缺少來源則停止而不標記單位
+已行動。這些是可驗證的 AI 消費端切片，不是原版 E2 等價性（parity）；完整目標選擇、
+未知命令／法術／物品演出與未修改原版同狀態逐幀配對仍列於 [`11` 敵方 AI](docs/knowledge-base/11-enemy-ai.md)
 與 [`91` 工作清單](docs/knowledge-base/91-worklist.md)。
 
 | 原版 ENEMY PHASE | 原版敵方回合畫面 | 原版回到玩家回合 |

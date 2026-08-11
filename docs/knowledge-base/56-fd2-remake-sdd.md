@@ -3823,3 +3823,14 @@ mode 5 的完整目標／指令／法術／道具人工智慧語意仍未解除�
   以 town／preparation 兩條邊界驗證同步與戰場狀態清除。
 - 近似模式只代表可玩的戰役銜接，不提升 E1 為 E2，也不改寫既有原版證據與推論
   等級；剩餘節點與證據以 [`91-worklist.md`](91-worklist.md) 最新稽核為準。
+
+## 2026-08-11：mode 5 `aiStep` 遊戲層消費端 E1
+
+重製端新增 `TestAIStepConsumesVerifiedMode5EventPlan`，把已驗證 raw event
+grid、field-control row 與 movement-cost rows 的 mode 5 計畫接到 `aiStep`：單位
+實際走到事件格後，原始 event state 由 `0` 寫成 `1`、地圖事件位元組清除、raw
+`+0x34` 寫成 `7`，並完成該回合。缺少任一必要來源時，執行期仍停止且不標記行動。
+
+測試以 `FD2_MUTE=1` 隔離容器沒有可播放 AIL sample 的環境差異；這不是跳過 mode 5
+狀態提交，也不替事件命名成物品／法術／特殊效果。此切片只提升重製端遊戲層 owner
+為 E1，尚未證明原版一般玩家目標選擇、完整敵方回合或同 raw 狀態 E2。
