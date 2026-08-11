@@ -3943,3 +3943,16 @@ movement-cost 與 `NativeTileBlitModes` provenance。`NextAIPlan` 實際選出
 這只閉合已核對 type-5／`0x211A4` 的一個重製端 E1 consumer；不替 item 192 命名玩法，
 也不宣稱 type-5 以外的 item、`0x15055` relocation、未知 command／spell 演出或原版
 一般玩家 E2。其餘物品與完整敵方回合仍依工作清單維持未完成。
+
+## 2026-08-11：敵方回合多單位 loop 消費端 E1
+
+`TestAIStepConsumesTwoVerifiedMode7ActorsBeforeFinishingTurn` 建立兩名都具完整 raw
+mode-7 `+0x35/+0x36` 目的地、地形／組成與 movement-cost provenance 的敵方單位。正式
+`NextAIPlan`／`aiStep` 先消費第一名 actor，提交其 `+0x05=1` 後才建立第二名 actor
+的行走；第二名完成後只由共同 `finishTurn` 增加一次回合。測試同時確認第二名不會在
+第一名尚未提交時提前消費，且沒有 attack／normalized fallback 介入。
+
+`TestAIStepStopsTwoMode7ActorsWithoutMovementProvenance` 刪除 movement-cost rows，
+第一名在任何行走／raw 寫入前失敗即關閉，第二名、兩者位置、行動旗標與回合均保持
+不變。這只關閉重製端「多單位敵方回合 loop」的 E1 編排，不把 mode 7 raw byte 命名
+成原版玩法，也不替原版多單位目標選擇、權重或同狀態 E2 增加語意。

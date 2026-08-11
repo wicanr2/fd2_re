@@ -4521,6 +4521,21 @@ map21 的真實 ch22 runtime fixture、73-slot group1／2 frontier 與原版資�
 
 此為重製端 E1／可玩近似流程，不是未修改原版 E2；忠實模式仍對同四節點失敗即關閉。
 
+## 2026-08-11：敵方回合多單位 loop 與 DOSBox 時間線勘誤
+
+新增 `TestAIStepConsumesTwoVerifiedMode7ActorsBeforeFinishingTurn`／
+`TestAIStepStopsTwoMode7ActorsWithoutMovementProvenance`，以兩名 raw mode-7 actor
+驗證正式 `NextAIPlan→aiStep` 依序提交兩個行動，最後只完成一次 `Turn++`；缺 movement
+provenance 時第一名即停止且沒有部分寫入。這是重製端 E1 編排，不是原版目標選擇 E2。
+
+遊戲測試子代理另查明先前 DOSBox `enemy10`／`enemy20` 相同並非原版沒有敵方回合，
+而是輸入時間線少了標題 `Down×2→Return`、戰場 `Return`、`Down→Return→Return`。
+補足完整 `Escape→CONTINUE→command grid→END→YES` 後，`enemy1`、`enemy5`、
+`enemy10`、`enemy20` 四個畫面雜湊均不同；既有
+[`native-enemy-turn-original-e2.json`](../data/ui-traces/native-enemy-turn-original-e2.json)
+仍是原版章節0 E2 錨點。這只證實原版敵方回合進入／持續／返回，重製端尚未以同一
+raw roster／camera／cursor／tick 配對，故 AI parity 與目標選擇仍保持失敗即關閉。
+
 ## 2026-08-11：mode 5 遊戲層消費端回歸
 
 `TestAIStepConsumesVerifiedMode5EventPlan` 與

@@ -60,6 +60,14 @@
   raw `+0x05=1` 與 map-range provenance；缺少 movement rows 時不建立 walk／attack、
   不改寫 raw byte 或回合。這只提升 `0x32975` writer 的遊戲層 owner 為 E1，不命名
   mode 7 的高階玩法，也不宣稱原版一般玩家 E2。
+- [x] **RE-AI-MULTI-ACTOR-LOOP-20260811**：新增
+  `TestAIStepConsumesTwoVerifiedMode7ActorsBeforeFinishingTurn` 與
+  `TestAIStepStopsTwoMode7ActorsWithoutMovementProvenance`。兩個 raw mode-7 actor
+  分別沿已證實 `+0x35/+0x36` 目的地由 `NextAIPlan`→`aiStep` 依序消費；第一個
+  actor 完成後才建立第二個 actor 的行走，兩者都提交 `+0x05=1`，最後只增加一次
+  `Turn`。缺少 movement rows 時第一個 actor 即停止，第二個 actor、位置、raw byte
+  與回合均不變。這只驗證重製端敵方回合 loop 的 E1 編排，不命名 mode 7 玩法，也不
+  宣稱原版多單位目標選擇 E2。
 - [x] **RE-AI-MODE3-9-GAME-CONSUMER-20260811**：新增
   `TestAIStepConsumesVerifiedMode3AndMode9RawTargetPlans` 與
   `TestAIStepStopsMode3AndMode9WithoutMovementProvenance`。Docker/Xvfb 實際由
@@ -109,9 +117,10 @@
   一般玩家 DOSBox E2；group 66／72、未綁定 ch23/24/25/29 與同狀態逐幀差異仍待。
 - [x] **GAME-TEST-REPORT-20260811**：獨立子代理在 Docker 內實際驗證重製端完整
   Go 回歸、mode 2／mode 11、戰後城鎮／整備與 shop/preparation contract，並以
-  未修改 `FD2.EXE`／固定 `FD2.SAV` 完成 DOSBox 啟動／CONTINUE 擷取；報告見
-  [`game-test-2026-08-11.md`](../reports/game-test-2026-08-11.md)。DOSBox 尚未
-  能可靠進入與重製端相同 raw 敵方回合，故 mode 11 仍只列 E1，不宣稱 parity。
+  未修改 `FD2.EXE`／固定 `FD2.SAV` 完成 DOSBox 啟動／CONTINUE／END／YES 敵方回合
+  擷取；報告見 [`game-test-2026-08-11.md`](../reports/game-test-2026-08-11.md)。
+  完整時間線已證實原版章節0 敵方回合 E2 可達，但尚未取得重製端同一 raw 狀態配對，
+  故 mode 11 與多 actor loop 仍只列重製端 E1，不宣稱 parity。
 - [x] **APPROXIMATE-POSTBATTLE-SCREENSHOT-20260811**：以實際
   `FD2_CAMPAIGN=assets/scenarios/campaign_full.json`、`FD2_CAMP_NODE=postbattle_ch23_persist`
   與 `FD2_APPROXIMATE=1` 在 Docker／Xvfb 擷取戰後整理提示
