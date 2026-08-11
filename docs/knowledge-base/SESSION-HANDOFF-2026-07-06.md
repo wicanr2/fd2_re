@@ -4389,3 +4389,36 @@ provenance；直接把候選 binding 接到 battle State 會在 `runtime_context
 後續必須先取得未修改玩家路徑的70→86 roster handoff與存檔／城鎮邊界證據，
 再決定是否升級正式 binding。詳細 IDA／Capstone 指令與雜湊見
 [`fd2_ch24_post_ida.txt`](../data/ida/fd2_ch24_post_ida.txt)。
+
+## 2026-08-11：CONTINUE 戰場交接發布契約（E1）
+
+本輪完成的是重製端的最後一段「已驗證快照如何安全交給戰場控制器」契約，
+不是把尚未取得的標題／一般玩家證據猜接成完成：
+
+- `remake/internal/campaign/native_continue_handoff.go` 的
+  `MaterializeNativeContinueInteractiveBoundary` 只在欄位控制（field control）、
+  執行期單位（runtime units）、待處理群組（pending groups）、地圖計時（map timing）、
+  視圖（view）、HUD 與開場範圍模式（opening range mode）都存在時，原子安裝
+  互動範圍模式（interactive range mode）`1`；`ValidateNativeContinueBattleHandoff`
+  再驗證章節／地圖（chapter/map）、尺寸、`runtime_append_groups`、保存的視圖／回合／
+  HUD、選擇器快取（selector cache）、隊伍名冊（roster）與待處理群組。
+- `remake/cmd/fd2/native_continue_handoff.go` 的
+  `publishNativeContinueBattle` 只接受通過驗證的 state，複製 campaign runner，
+  一次發布 `Game.st`／`Game.sc`／current node，清除殘留 story、dialog、transition、
+  battle event、AI／map 暫存，最後同步保存鏡頭／游標；它不呼叫 `resetBattle` 或
+  `Scenario.Setup`，因此不會把 CONTINUE 快照誤重播成新戰鬥。
+- Docker 測試 `TestNativeContinueBattlePublicationFromRealCurrentSnapshot` 實際
+  讀取 `org_game/炎龍騎士團/FLAME2/FD2.SAV`，其 MD5 為
+  `409795ccebc2af340d5c74152c2d471c`、SHA-256 為
+  `6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f`；另有
+  `TestMaterializeNativeContinueInteractiveBoundaryInstallsControllerMode` 及
+  `TestValidateNativeContinueBattleHandoffRejectsIncompleteAdapters`。三項均在
+  Docker 通過。
+
+測試刻意由呼叫端（caller）提供 `TitleTimerTick=0` 只驗證資料契約；不代表
+`0x25D83..0x25D8B` 帶符號 BIOS 計時值（signed BIOS tick）、`0x10494/0x105ED` 重繪／
+延遲（redraw/delay）、標題正式呼叫端、逐像素 E2 或一般玩家 E2 已接通。多章節待處理群組寫入器／公式（pending-group writer／formula）、
+戰後城鎮／商店／整備／存檔全路徑、以及 mode 11／`0x13FD4`／mode 5 的完整
+目標與指令／法術／道具 AI 仍維持 fail-closed。下一輪應先補正式 caller 的時鐘／
+pending producer 證據，再以同一 raw roster／camera／cursor／tick 做原版與重製
+逐幀比較；不能以本輪 E1 publication contract 宣稱 CONTINUE 或完整 remake 完成。

@@ -11,7 +11,7 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 
 | 畫面／流程 | 視覺還原估計 | 直接證據與主要差距 |
 |---|---:|---|
-| title/main menu | 60–70% | Docker／Xvfb 已擷取重製端實際標題選單 [`title-remake-runtime.png`](../figures/title-remake-runtime.png)，與 DOSBox oracle [`title-original-dosbox.png`](../figures/title-original-dosbox.png) 可在 320×200 內容上直接對照；畫面仍加了非原版 F2 提示，logozoom 是近似，CONTINUE current-battle restore 尚未閉合。README 的 `title.png` 仍只是錯色盤的 raw 解碼產物，不可當 runtime screenshot |
+| title/main menu | 60–70% | Docker／Xvfb 已擷取重製端實際標題選單 [`title-remake-runtime.png`](../figures/title-remake-runtime.png)，與 DOSBox oracle [`title-original-dosbox.png`](../figures/title-original-dosbox.png) 可在 320×200 內容上直接對照；畫面仍加了非原版 F2 提示，logozoom 是近似。CONTINUE 的 typed adapter 與 `Game` 原子發布契約已有 E1 回歸，但正式標題 caller 尚未提供 signed BIOS tick、泛用 pending-group writer／formula，故 current-battle restore 仍 fail-closed。README 的 `title.png` 仍只是錯色盤的 raw 解碼產物，不可當 runtime screenshot |
 | tactical field/HUD | 45–55%（E1；ch01 scoped E2 candidate） | 目前正式 `story_ch00_handler` 截圖 `native-map-ch01-remake-handler.png` 與 `native-map-ch01-original-video.png` 仍是不同狀態，只能證明原始資源／渲染輸入及隊伍 handoff 已被消費；重製圖已改以唯讀原版 `FDOTHER/FDSHAP/FDICON` 與 IDA 已證實的 FDFIELD b1 selector 產生，修正舊 b0 映射的敵軍圖像錯誤。舊 pair 的場上單位、游標與 HUD 差異不能作為目前渲染器缺陷證據；舊 `native-map-ch01-remake.png` 是直接節點除錯歷史證據，不再作正式比較。較早 E1 raw 相機／游標欄位也不等於畫面像素一致。2026-08-10 另以同一 `FD2.SAV`、相機、游標、回合與單位狀態建立 DOSBox／重製逐幀範圍比較，最近鄰縮放後內容區只剩 22 個畫布邊界差異像素，記為 ch01 scoped E2 candidate；這仍不是其他章節、一般玩家 CONTINUE 或完整操作界面 E2。2026-07-29 稽核發現只有 map0 曾帶 `native_tile_blit_modes/native_terrain_control`，現已從雜湊鎖定的 FDFIELD／FDSHAP 同步至全部 33 圖並有全圖 regression；這只閉合 renderer inputs，不是全遊戲視覺 E2。ch26 又由 pre-handler PAN/FOCUS 與 cursor state machine 閉合 event61 所需 runtime view/HUD E1；ch27 的 selector0→event62→event63 raw camp0 敵軍 AI 前 runner、兩批增援與全白／恢復演出已達重製端 E1，戰前 view／selector0 及 inherited HUD owner 也已閉合並接線。gate A 由存檔保存、anchor 為程序內持續、gate B 由 controller 物化；ch02+ 其餘畫面、一般玩家／CONTINUE 同 roster/event/tick DOSBox 像素差分、該時點角色 raw record 的實際值，以及 `0x12c0d` 的 exact raw lookup predicate/order 仍待補齊 |
 | action/command/item/target UI | 45–55% | action skin、command grid、item panel已有原資源 indexed adapters；command grid 另有空 ID／selected 越界失敗即關閉回歸（regression）；完整 availability、selector 6/7+、effect presentation、同狀態 DOSBox diff 未閉合 |
 | story dialogue | 30–40% | 原版 oracle 固定左下 80×80 portrait、native frame/text/page marker；目前一般 runtime 仍有 RGBA/font/layout path，upper/right anchor、FFxx、scroll/clipping 未逐類驗收。README 的 `dialogue.png` 是文字解碼圖，不是 remake 對話 runtime screenshot |
@@ -36,6 +36,19 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 目標選擇、移動評分、命令／法術／道具決策，也不是重製端同一 raw 狀態的 parity。
 `REMAKE-AI-MODE-RUNTIME`、`CAMPAIGN-POSTBATTLE-E2-FULL-PATH` 與重製端同狀態
 逐幀比較仍維持 partial／open。
+
+### 2026-08-11：CONTINUE battle handoff E1 邊界
+
+重製端已新增 `MaterializeNativeContinueInteractiveBoundary`、
+`ValidateNativeContinueBattleHandoff` 與 `Game.publishNativeContinueBattle`：所有
+已驗證的欄位／執行期／待處理群組／計時／視圖／HUD 型別化轉接器
+（field/runtime/pending/timing/view/HUD adapter）完成後，才從開場選擇器
+（selector）mode `0` 原子切換到互動 mode `1`，並以一次發布清除舊對話／轉場／戰鬥暫存。真實
+`FD2.SAV` chapter0 快照的 Docker 回歸（regression）已通過；測試明確以呼叫端提供的零值
+計時種子（timer seed）驗證資料契約，不是標題時鐘或畫面 E2 證據。正式呼叫端
+（caller）的帶符號 BIOS 計時值、泛用待處理群組產生器（pending-group producer）、未修改一般玩家同狀態逐幀比較，以及戰後
+town／shop／preparation／save 路徑仍是 partial／open，不能把這項 E1 當成 CONTINUE
+完成。
 
 2026-08-10 的音訊邊界：戰鬥節點使用原版 `0x51e63` 章節曲表，城鎮／商店節點使用
 已證實的 `FDMUS_010`；這些是資料回歸，不代表每章一般玩家 E2。`ending` 的三個

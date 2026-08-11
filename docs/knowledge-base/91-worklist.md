@@ -2009,7 +2009,10 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   與 future-group constructor 已由下列具型別交易分別閉合；chapter0 未改寫
   live 排程已有嚴格 pending roster consumer 與原版快照測試。真正缺的是
   動態 turn-writer／group-formula 的通用 pending-group binding，以及整組 `battle.State` 到正式
-  `Game`／controller 的原子 handoff，故正式 CONTINUE 仍維持失敗即關閉
+  `Game`／controller 的原子 handoff，故正式 CONTINUE 仍維持失敗即關閉；本輪已
+  新增重製端 `battle.State→Game` 原子發布契約與真實快照回歸，但標題呼叫端
+  （caller）尚未提供帶符號 BIOS 計時值（signed BIOS tick），不能因此解除正式擁有者
+  （owner）
   → `fd2_current_snapshot_ida.txt`、`fd2_current_event_state_ida.txt`、
   `fd2_current_field_control_ida.txt`
 - [~] **NATIVE-CONTINUE-RUNTIME-PREFLIGHT**：合法 IDA Pro 9.4 與
@@ -2089,8 +2092,10 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
     均不別名；拒絕路徑不改 state。它明確不碰現有 Units、timing、
     interactive mode 1 或正式 `Game`／`0x117E7` 控制器轉接。原本籠統的
     field-runtime owner 已由後續的 runtime-unit、map-timing 與
-    future-group 具型別交易逐項關閉；目前只剩 chapter asset 的 pending-group
-    binding，以及正式 `Game`／controller handoff 兩個 caller-owned 邊界。
+    future-group 具型別交易逐項關閉；正式 `Game`／controller handoff 現已有
+    失敗即關閉發布契約（fail-closed publication contract），但標題呼叫端的帶符號
+    BIOS 計時值與泛用待處理群組產生器（pending-group producer）仍是呼叫端擁有的
+    邊界（caller-owned）。
   - [x] **CONTINUE saved runtime unit projection**：
     `MaterializeNativeContinueRuntimeUnits` 只接受已重驗 input 與逐筆相符的
     live field boundary；先在 detached roster 驗證 raw camp 0/1/2、
@@ -2157,6 +2162,18 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
     → `fd2_future_group_constructor_capstone.txt`、
       `fd2_future_group_raw_gate_ida.txt`、
       `fd2_runtime_equipment_recalc_1b750_ida.txt`、`fd2_spawn_intro_32999_ida.md`
+- [x] **NATIVE-CONTINUE-BATTLE-PUBLICATION-E1（2026-08-11）**：新增
+  `MaterializeNativeContinueInteractiveBoundary` 與
+  `ValidateNativeContinueBattleHandoff`，在所有 typed adapter 完成後才切換
+  opening selector mode `0`→interactive mode `1`；新增
+  `Game.publishNativeContinueBattle`，以複製 runner、清除殘留 UI／轉場／戰鬥
+  暫存、同步保存鏡頭／游標後一次發布 `st`／`sc`／node，且不呼叫
+  `resetBattle`／`Scenario.Setup`。真實 `FD2.SAV` chapter0 current-runtime
+  快照的 `TestNativeContinueBattlePublicationFromRealCurrentSnapshot`、
+  `TestMaterializeNativeContinueInteractiveBoundaryInstallsControllerMode` 及
+  不完整 adapter 失敗即關閉回歸均在 Docker 通過。此項只閉合重製端 E1 publication
+  契約（contract）；呼叫端帶符號 BIOS 計時值、泛用待處理群組寫入器／公式
+  （pending-group writer／formula）、未修改一般玩家同狀態 E2 與戰後城鎮／商店／整備／存檔仍未完成。
 - [x] **RE-CHAPTER-AUX-GRAPHICS-10652**：合法 IDA Pro 9.4 與 Docker
   Capstone 固定 `0x10652..0x1088d` 只有 CONTINUE、完整章節 loader、
   ch22 post 三個 caller。函式先釋放 `[0x53aff]/[0x53b03]`，再只對 raw

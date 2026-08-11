@@ -91,3 +91,42 @@ func TestMaterializeNativeContinueMapTimingRejectsAtomically(t *testing.T) {
 		t.Fatal("tampered input changed state")
 	}
 }
+
+func TestMaterializeNativeContinueInteractiveBoundaryInstallsControllerMode(t *testing.T) {
+	input := nativePendingGroupsInput(t, 1, nil)
+	state, assetState, scenario, itemRows := nativePendingGroupsFixture(t, input)
+	if err := MaterializeNativeContinueRuntimeUnits(
+		state, input, nativeRuntimeCatalog(t),
+	); err != nil {
+		t.Fatal(err)
+	}
+	if err := MaterializeNativeContinueMapTiming(state, input); err != nil {
+		t.Fatal(err)
+	}
+	if err := MaterializeNativeContinuePendingGroups(
+		state, input, 0, assetState, scenario, itemRows,
+	); err != nil {
+		t.Fatal(err)
+	}
+	if state.NativeMapRangeMode != input.MapPresentation.OpeningRangeMode {
+		t.Fatalf("opening selector=%d, want %d", state.NativeMapRangeMode, input.MapPresentation.OpeningRangeMode)
+	}
+	if err := MaterializeNativeContinueInteractiveBoundary(state, input); err != nil {
+		t.Fatal(err)
+	}
+	if state.NativeMapRangeMode != input.MapPresentation.InteractiveRangeMode {
+		t.Fatalf("interactive selector=%d, want %d", state.NativeMapRangeMode, input.MapPresentation.InteractiveRangeMode)
+	}
+	if err := ValidateNativeContinueBattleHandoff(input, state, scenario); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestValidateNativeContinueBattleHandoffRejectsIncompleteAdapters(t *testing.T) {
+	input := nativePendingGroupsInput(t, 1, nil)
+	state, _, scenario, _ := nativePendingGroupsFixture(t, input)
+	state.HasNativeRuntimeUnitProjection = false
+	if err := ValidateNativeContinueBattleHandoff(input, state, scenario); err == nil {
+		t.Fatal("incomplete CONTINUE adapters were accepted")
+	}
+}

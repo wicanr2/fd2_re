@@ -3748,3 +3748,37 @@ CONTINUE 的 pending-group／`Game` controller handoff 閘門。未修改原版�
 這張圖只作重製端 E1 執行期展示，完整環境、原版資產唯讀掛載與雜湊見
 [`native-battle-ch01-remake-e1.json`](../data/ui-traces/native-battle-ch01-remake-e1.json)；
 它不取代未修改原版一般玩家 E2 或同狀態逐幀比較。
+
+## 2026-08-11：CONTINUE 戰場交接發布契約已補齊（E1）
+
+本輪把已經過型別化驗證的 CONTINUE 載入結果接到重製端戰場控制器的
+「發布邊界」，但沒有把標題流程尚未提供的值猜成完成：
+
+- `MaterializeNativeContinueInteractiveBoundary` 只在欄位控制（field control）、
+  執行期單位（runtime units）、待處理群組（pending groups）、地圖計時（map timing）、
+  視圖（view）、HUD 與開場選擇器（selector）都成功後，將已證實的範圍模式
+  （range mode）`0` 原子切換成返回控制器使用的 mode `1`。它不重播
+  `Scenario.Setup`、不重建開場單位，也不修改未驗證的原始記錄（raw record）。
+- `ValidateNativeContinueBattleHandoff` 檢查章節／地圖（chapter/map）、地圖尺寸、
+  scenario 的 `runtime_append_groups`、保存的鏡頭／游標／可見游標
+  （camera/cursor/visible cursor）、回合（round）、HUD 閘門（gates）、選擇器快取
+  （selector cache）、隊伍名冊（roster）與待處理群組；任一欄缺失即失敗即關閉。
+- `Game.publishNativeContinueBattle` 只接受上述通過的狀態，複製 campaign runner
+  後一次發布 `Game.st`／`Game.sc`／current node，清除殘留對話、轉場、戰鬥事件與
+  暫存地圖緩衝，再同步保存的鏡頭／游標。它刻意不呼叫 `resetBattle`，避免把
+  CONTINUE 快照誤當成新戰鬥開場。
+
+實際回歸 `TestNativeContinueBattlePublicationFromRealCurrentSnapshot` 讀取使用者
+提供的 `FD2.SAV`（MD5 `409795ccebc2af340d5c74152c2d471c`，SHA-256
+`6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f`），在 Docker
+內解碼 chapter0、12 筆 current-runtime 執行期記錄，完成 map0/ch01 的型別化轉接器
+（typed adapter）與 `Game` 發布；`TestMaterializeNativeContinueInteractiveBoundaryInstallsControllerMode`
+及 `TestValidateNativeContinueBattleHandoffRejectsIncompleteAdapters` 也通過。
+測試使用呼叫端明確提供的 `TitleTimerTick=0` 作為資料契約夾具，**不**宣稱標題
+BIOS 時鐘、`0x10494/0x105ED` 重繪／延遲（redraw/delay）、逐像素或一般玩家 E2 已完成。
+
+目前仍保持失敗即關閉的邊界：標題呼叫端（caller）尚未把 `0x25D83..0x25D8B` 擷取的
+帶符號 BIOS 計時值（signed BIOS tick）接入正式輸入；多章節動態待處理群組寫入器／
+公式（pending-group writer/formula）、未修改一般玩家
+同一 raw runtime 的重製／原版 E2、戰後城鎮／商店／整備／存檔全路徑，以及 mode 11、
+`0x13FD4`、mode 5 的完整目標／指令／法術／道具人工智慧語意仍未解除。
