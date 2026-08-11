@@ -253,6 +253,15 @@ Docker／Xvfb 截圖，不是原版同狀態逐像素 E2；原始 DAC 條件與�
 
 ![完整原生戰場與指令環疊加（重製端 E1）](docs/figures/action-overlay-native-remake-fullframe.png)
 
+另有一份未修改原版 `FD2.SAV` 的 chapter0 current-runtime E2 錨點：從標題
+`CONTINUE` 進入戰場，再按 Enter 開啟 command grid。這是原版操作證據，不是
+重製端 parity，也不能外推到第23戰；完整輸入時間線與雜湊見
+[`native-continue-current-runtime-e2.json`](docs/data/ui-traces/native-continue-current-runtime-e2.json)。
+
+![原版 CONTINUE current-runtime 戰場](docs/figures/native-continue-current-runtime-original-dosbox.png)
+
+![原版 current-runtime command grid](docs/figures/native-continue-current-command-original-dosbox.png)
+
 完整介面覆蓋、證據等級與其餘比較圖請看
 [`57-ui-evidence-matrix.md`](docs/knowledge-base/57-ui-evidence-matrix.md)。
 

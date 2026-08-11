@@ -3701,3 +3701,17 @@ raw `ch21_post`（玩家第22戰戰後）已從候選提升為正式可編輯 bi
   handler 部分陣列與戰鬥共享；這是避免未證實語意接入的失敗即關閉邊界。
 - 此項是靜態證據到重製 E1 窄切片，不是未修改一般玩家 DOSBox E2、逐像素／逐音訊
   parity，也不解除 `postbattle_ch23_persist` 的戰後城鎮／商店／整備／存檔 gate。
+
+### 2026-08-11：CONTINUE current-runtime command grid E2 勘誤
+
+重新檢查原版資料後，確認工作區內的 `FD2.SAV` 是可解碼的 current-runtime
+快照，不是「完全沒有有效存檔」：固定雜湊的快照為 chapter0、12 筆 runtime
+records、camera `(1,13)`、absolute cursor `(8,17)`、visible cursor `(7,4)`。
+在 Docker DOSBox 以未修改輸入從開場按 Escape、標題 `CONTINUE`，再按 Enter
+開啟游標單位的 command grid；兩個 320×200 client crop 與完整輸入時間線見
+[`native-continue-current-runtime-e2.json`](../data/ui-traces/native-continue-current-runtime-e2.json)。
+
+這項勘誤只把「沒有任何一般玩家 command grid oracle」修正為「章節0已有
+E2 原版錨點」；沒有把章節0快照外推到 ch22／ch23，也沒有解除重製端
+CONTINUE 的 pending-group／`Game` controller handoff 閘門。未修改原版與重製端
+尚未同一 raw runtime 狀態逐像素配對，故 UI-03 仍為 partial。

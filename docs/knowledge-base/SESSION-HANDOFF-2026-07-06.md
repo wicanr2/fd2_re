@@ -4312,3 +4312,22 @@ go test -v ./cmd/fd2 -run 'TestChapter22PreLoadCHUsesSelectedPartyAndRawViewRese
 - `postbattle_ch23_persist` 及其戰後城鎮／商店／整備／存檔仍失敗即關閉。
 - `ch23.json` 的 runtime append handoff 尚無原始證據，暫不把部分 handler 陣列
   猜接成戰鬥 runtime；後續需先取得原版一般玩家路徑與 raw slot trace。
+
+## 2026-08-11：未修改原版 CONTINUE／command grid E2 錨點補證
+
+在確認「後續補證」範圍時，重新檢查 `org_game/炎龍騎士團/FLAME2/FD2.SAV`，並以
+Docker `fd2-cap-local` 解碼其 current-runtime header。固定雜湊快照是 chapter0、
+12 筆 runtime records、camera `(1,13)`、cursor `(8,17)`、visible `(7,4)`。
+
+接著以一次性 Docker DOSBox（原版目錄唯讀掛載、複本寫入 tmpfs、沒有 route patch 或
+debug shortcut）實際走：開場 Escape → 標題 Down、Down、Return（CONTINUE）→
+戰場游標單位 Enter。保存兩張 320×200 client crop：
+
+- [`native-continue-current-runtime-original-dosbox.png`](../figures/native-continue-current-runtime-original-dosbox.png)
+- [`native-continue-current-command-original-dosbox.png`](../figures/native-continue-current-command-original-dosbox.png)
+
+完整輸入、輸入檔雜湊與 PNG 雜湊見
+[`native-continue-current-runtime-e2.json`](../data/ui-traces/native-continue-current-runtime-e2.json)。
+這補上原版一般玩家 UI-02／UI-03 的 chapter0 E2 錨點，但不是 ch22／ch23 的
+同狀態證據，也不解除重製端 CONTINUE 的 pending-group／controller handoff gate；
+第23／24／25／29戰與戰後城鎮流程仍維持失敗即關閉。

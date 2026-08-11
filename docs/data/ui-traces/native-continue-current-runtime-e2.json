@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "evidence_level": "E2",
+  "scope": "未修改原版的章節 0 current-runtime CONTINUE／玩家指令格錨點",
+  "input": {
+    "executable": {
+      "path": "org_game/炎龍騎士團/FLAME2/FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "save": {
+      "path": "org_game/炎龍騎士團/FLAME2/FD2.SAV",
+      "size": 22987,
+      "md5": "409795ccebc2af340d5c74152c2d471c",
+      "sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f",
+      "decoded_current_runtime": {
+        "chapter": 0,
+        "runtime_count": 12,
+        "camera": [1, 13],
+        "cursor": [8, 17],
+        "visible_cursor": [7, 4]
+      }
+    },
+    "execution": {
+      "image": "fd2-dosbox-screenshot-local:latest",
+      "network": "none",
+      "source_mount": "read-only FLAME2 copied to disposable tmpfs /game",
+      "route_patch": false,
+      "debug_shortcut": false,
+      "timeline": [
+        "等待開場後按 Escape",
+        "標題選單按 Down、Down、Return（CONTINUE）",
+        "進入現有 current-runtime 戰場後按 Return，開啟目前游標單位的指令格"
+      ]
+    }
+  },
+  "screenshots": [
+    {
+      "path": "../../figures/native-continue-current-runtime-original-dosbox.png",
+      "state": "CONTINUE 後的未修改原版戰場／游標狀態",
+      "size": [320, 200],
+      "md5": "9460771fdae41db5a942ec896ac4cfce",
+      "sha256": "9fcddfa4d1ad917beffe5e219401134e273a14962191dde738152e4f40114820"
+    },
+    {
+      "path": "../../figures/native-continue-current-command-original-dosbox.png",
+      "state": "同一未修改原版狀態按 Return 後的 command grid",
+      "size": [320, 200],
+      "md5": "ee4726d4a272e91d2d6e1150be8513b3",
+      "sha256": "d0166192d17e1a30f8fd413372bc84fa12ba24b1920cd05d731898531f7c2e92"
+    }
+  ],
+  "claims": [
+    "E2 證實未修改原版的 CONTINUE 輸入可以從標題進入 current-runtime 戰場。",
+    "E2 證實該狀態的玩家游標可開啟原版 command grid。"
+  ],
+  "limits": [
+    "這份快照的 current-runtime chapter=0；沒有證據可把它外推到 ch22／ch23。",
+    "這是原版 E2 錨點，不是重製端逐像素 parity；重製正式 CONTINUE 仍因 pending-group binding 與 Game/controller handoff fail-closed。",
+    "FD2.SAV 與 FD2.TMP 仍視為可變動原版使用者資料，不納入固定版本資產清單。"
+  ]
+}

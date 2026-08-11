@@ -400,3 +400,16 @@ Docker DOSBox 以未修改 `FD2.EXE`／`FD2.SAV` 的複本，從標題與開場�
 這只閉合 UI-02／UI-03 的「一般玩家回合可操作畫面」原版錨點；尚無同一
 raw runtime 狀態的重製端配對，也沒有證明敵方 AI 回合、攻擊演出或全戰場畫面
 已與原版一致。
+
+### 2026-08-11：UI-03／UI-12 原版 current-runtime E2 錨點勘誤
+
+工作區內的原版 `FD2.SAV` 已由 Docker `tools/fd2save.py` 驗證為 checksum-valid
+current-runtime 快照（chapter0、12 筆 runtime records），不應再寫成「沒有任何
+可用原版存檔」。未修改 `FD2.EXE`／`FD2.SAV` 從開場正常進入 `CONTINUE`，再以
+Enter 開啟玩家指令格；兩張 320×200 client crop、輸入時間線與雜湊見
+[`native-continue-current-runtime-e2.json`](../data/ui-traces/native-continue-current-runtime-e2.json)。
+
+證據等級為原版一般玩家 UI-02／UI-03 的 E2 partial：它只覆蓋 chapter0 current
+runtime，不能外推到 ch22／ch23／ch24／ch25／ch29，也不代表重製端 CONTINUE
+handoff 或同狀態逐像素 parity 已完成。UI-03 與 UI-12 的正式重製 owner 仍保持
+失敗即關閉。
