@@ -725,3 +725,11 @@ mode 2 物理候選／路徑、mode 3／9 raw 查找、mode 5 事件尾端、mod
 完成敵方回合畫面配對，也尚未取得目標選擇／移動評分／命令／法術／道具的完整一般玩家
 動態證據。後續必須先補這些 E2 證據，再逐項升級 mode owner，不得以正規化
 `NextAIPlan` 輸出補寫原版未知語意。
+
+## 2026-08-11：`0x14EF0` type-5 item route E1 owner
+
+在上述 command／item raw score 邊界上，重製端新增一個不命名玩法的窄消費測試：
+資產 item 192 的 raw row（type 5）由 `NextAIPlan` 選出 `0x15055`，`aiStep` 交給
+既有 `0x211A4` HP 交易 owner，完成目標回復、來源欄位消耗與回合提交；缺少 item
+table 時在狀態變更前失敗即關閉。這只提升一個已核對 row 的 E1 consumer，不代表
+其他 item／relocation、未知 command／spell 演出或原版一般玩家 E2。

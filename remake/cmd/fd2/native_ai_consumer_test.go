@@ -215,6 +215,89 @@ func TestAIStepConsumesVerified14EF0CommandRoute(t *testing.T) {
 	}
 }
 
+func TestAIStepConsumesVerified14EF0ItemRoute(t *testing.T) {
+	actor := nativeAIConsumerUnit(0, 0, 1, 2)
+	actor.InventorySlots[0] = 192 // raw row 192: type-5 route, 0x211A4
+	actor.NativeInventoryFlags = []int{0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	target := nativeAIConsumerUnit(1, 0, 1, 0)
+	target.Camp = battle.Own
+	target.HP = 1
+	target.NativeInventoryFlags = []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	state := &battle.State{
+		W:                           2,
+		H:                           1,
+		Units:                       []*battle.Unit{actor, target},
+		NativeCompositionEventBytes: []byte{0, 0},
+		NativeTerrainMoveCodes:      []byte{0, 0},
+		NativeTileBlitModes:         make([]byte, 2),
+		NativeCommandBook:           nativeAIConsumerCommandBook(),
+		NativeCommandResistances:    map[int]int{0: 10},
+	}
+	// Use the checked-in raw table rather than replacing item 192 with a
+	// synthetic row.  This keeps the game-layer proof tied to the recovered
+	// type-5/0x211A4 asset record and its target tuple.
+	itemRows, err := battle.LoadNativeItemEffectRowPrefix("../../assets/data/native_item_effect_rows.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := state.BindNativeFutureItemRows(itemRows); err != nil {
+		t.Fatal(err)
+	}
+	if err := state.BindNativeMovementCostRows(nativeAIConsumerCostRows()); err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{
+		m:      &MapData{W: 2, H: 1, TileW: 24, TileH: 24, Tiles: []int{0, 0}},
+		st:     state,
+		aiBusy: true,
+		rng:    rand.New(rand.NewSource(1)),
+	}
+
+	beforeItem := actor.InventorySlots[0]
+	g.aiStep()
+	if g.loadErr != "" || (g.walk != nil && g.walk.u != actor) || g.atk != nil {
+		t.Fatalf("0x14ef0 item route did not start from raw plan: walk=%v atk=%v targeting=%v ai=%v err=%q", g.walk != nil, g.atk != nil, g.nativeItemTargeting, g.aiBusy, g.loadErr)
+	}
+	for step := 0; step < 96 && (g.aiBusy || g.walk != nil || g.atk != nil || g.nativeFieldEvent61 != nil); step++ {
+		if err := g.Update(); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if g.loadErr != "" || g.aiBusy || g.walk != nil || g.atk != nil || state.Turn != 1 {
+		t.Fatalf("0x14ef0 item completion ai=%v walk=%v atk=%v turn=%d err=%q", g.aiBusy, g.walk != nil, g.atk != nil, state.Turn, g.loadErr)
+	}
+	if actor.InventorySlots[0] != 0xff || actor.NativeInventoryFlags[0]&0x80 == 0 ||
+		target.HP <= 1 || target.HP > target.MaxHP || beforeItem != 192 {
+		t.Fatalf("0x14ef0 item route did not commit type-5 transaction: slot=%d flags=%#x targetHP=%d/%d", actor.InventorySlots[0], actor.NativeInventoryFlags[0], target.HP, target.MaxHP)
+	}
+}
+
+func TestAIStepStops14EF0ItemRouteWithoutItemRows(t *testing.T) {
+	actor := nativeAIConsumerUnit(0, 0, 1, 2)
+	actor.InventorySlots[0] = 192
+	actor.NativeInventoryFlags = []int{0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	target := nativeAIConsumerUnit(1, 0, 0, 0)
+	target.Camp = battle.Own
+	target.HP = 1
+	target.NativeInventoryFlags = []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	state := &battle.State{
+		W:                           2,
+		H:                           1,
+		Units:                       []*battle.Unit{actor, target},
+		NativeCompositionEventBytes: []byte{0, 0},
+		NativeTerrainMoveCodes:      []byte{0, 0},
+		NativeCommandBook:           nativeAIConsumerCommandBook(),
+	}
+	if err := state.BindNativeMovementCostRows(nativeAIConsumerCostRows()); err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{st: state, aiBusy: true}
+	g.aiStep()
+	if g.loadErr == "" || g.aiBusy || actor.InventorySlots[0] != 192 || target.HP != 1 || actor.Acted {
+		t.Fatalf("incomplete 0x14ef0 item route was consumed: err=%q ai=%v slot=%d targetHP=%d acted=%v", g.loadErr, g.aiBusy, actor.InventorySlots[0], target.HP, actor.Acted)
+	}
+}
+
 func TestAIStepConsumesVerifiedMode5EventPlan(t *testing.T) {
 	t.Setenv("FD2_MUTE", "1")
 	actor := nativeAIConsumerUnit(0, 0, 1, 5)

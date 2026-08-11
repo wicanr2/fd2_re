@@ -4553,5 +4553,18 @@ movement-cost 與 class resistance；`NextAIPlan` 實際選出 `0x14EF0→0x1531
 確認 MP 扣除、目標 HP 變更與回合完成。這是 raw route→遊戲層的 E1 證據，不把
 synthetic command tuple 升格為原版法術名稱、完整演出或一般玩家 E2。
 
-`0x15055` item route、未知 command／relocation／spell 演出與缺少 producer 時的完整
-回合編排仍維持失敗即關閉；相關工作清單項目仍為 partial。
+`0x15055` 未知 item／relocation、未知 command／spell 演出與缺少 producer 時的完整
+回合編排仍維持失敗即關閉；已核對的 type-5 item 窄交易另見下一節。
+
+## 2026-08-11：`0x14EF0` type-5 item route 遊戲層回歸
+
+`TestAIStepConsumesVerified14EF0ItemRoute` 已在 Docker／Xvfb 通過。正向 fixture 直接
+使用資產 item 192 的 raw type-5 row，提供 command book、selector、runtime record、
+地形／組成、movement-cost 與 tile-overlay provenance；`NextAIPlan` 實際選出
+`0x14EF0→0x15055`，`aiStep` 交由既有 item owner 完成 `0x211A4` HP 回復、來源欄位
+消耗與回合提交。`TestAIStepStops14EF0ItemRouteWithoutItemRows` 缺少 item table 時
+保持失敗即關閉，沒有改變 HP、背包、行動旗標或回合。
+
+這是已核對 raw row 的重製端 E1 垂直切片，不是 item 192 的玩法命名，也不是所有
+物品、relocation、未知 command／spell 演出或原版一般玩家 E2。後續應優先把這個
+窄路由放進同一份 AI regression，而不是複製沒有 producer／consumer 的反組譯筆記。

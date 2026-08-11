@@ -310,9 +310,9 @@ nearest fallback、mode 1 可依 raw blocked-coordinate 完成 movement-only 路
 依 raw `+0x08` 查找完成 movement-only 路徑，mode 4／10 依 raw 目的地完成 movement-only
 路徑，mode 5 可提交事件格的 raw state 尾端，mode 7 可完成 raw 目的地移動並提交 `+0x05`，
 mode 8 走共同的行動完成分支，`0x14EF0` 已有 raw command route 進入已驗證的
-數值執行器，mode 11 可依序消費兩段 command／
+數值執行器，`0x15055` 另可在已核對的 type-5 raw item row 上完成 HP 交易，mode 11 可依序消費兩段 command／
 physical stage；缺少來源則停止而不標記單位已行動。這些是可驗證的 AI 消費端切片，不是原版 E2 等價性（parity）；完整目標選擇、
-未知命令／法術／物品演出與未修改原版同狀態逐幀配對仍列於 [`11` 敵方 AI](docs/knowledge-base/11-enemy-ai.md)
+未知命令／法術／其他物品演出與未修改原版同狀態逐幀配對仍列於 [`11` 敵方 AI](docs/knowledge-base/11-enemy-ai.md)
 與 [`91` 工作清單](docs/knowledge-base/91-worklist.md)。
 
 | 原版 ENEMY PHASE | 原版敵方回合畫面 | 原版回到玩家回合 |

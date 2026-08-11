@@ -3902,6 +3902,21 @@ command 0 數值執行器，提交 MP 扣除、目標 HP 變更與回合完成�
 與 numeric state owner，不替 command 0 命名法術或演出，也不把 synthetic fixture
 當作原版一般玩家 E2。
 
-`0x15055` item route、未知 command／relocation／spell 的完整效果與 indexed 演出仍
+`0x15055` 未知 item／relocation、未知 command／spell 的完整效果與 indexed 演出仍
 維持失敗即關閉；缺少 command book、target 或 resistance provenance 不得退回正規化
-AI。
+AI。已核對的 type-5 item row 窄交易另見下節。
+
+## 2026-08-11：`0x14EF0` type-5 item route 遊戲層消費端 E1
+
+`TestAIStepConsumesVerified14EF0ItemRoute` 已在 Docker／Xvfb 通過。正向 fixture 使用
+資產表中 item 192 的原始 23-byte row（row `+0x0d=5`、`+0x0e=40`、選擇／目標欄位
+保持原值），並提供完整 command book、selector、runtime record、地形／組成、
+movement-cost 與 `NativeTileBlitModes` provenance。`NextAIPlan` 實際選出
+`0x14EF0→0x15055`，`aiStep` 完成目的地移動後交給正式 item owner：
+`beginNativeTargetItem` 建立 raw 目標，`applyNativeTargetItem` 依 `0x211A4` type-5
+交易回復目標 HP、消耗來源欄位並提交回合。`TestAIStepStops14EF0ItemRouteWithoutItemRows`
+確認缺少 item rows 時在 HP、背包、行動旗標與回合變更前失敗即關閉。
+
+這只閉合已核對 type-5／`0x211A4` 的一個重製端 E1 consumer；不替 item 192 命名玩法，
+也不宣稱 type-5 以外的 item、`0x15055` relocation、未知 command／spell 演出或原版
+一般玩家 E2。其餘物品與完整敵方回合仍依工作清單維持未完成。
