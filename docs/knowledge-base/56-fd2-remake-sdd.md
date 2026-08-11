@@ -3944,6 +3944,29 @@ movement-cost 與 `NativeTileBlitModes` provenance。`NextAIPlan` 實際選出
 也不宣稱 type-5 以外的 item、`0x15055` relocation、未知 command／spell 演出或原版
 一般玩家 E2。其餘物品與完整敵方回合仍依工作清單維持未完成。
 
+## 2026-08-11：可編輯敵方／友軍 NPC 法術後備（fallback）E1
+
+當 `NextAIPlan` 的原始 AI 路徑（route）未建立計畫且未回傳錯誤時，重製端才會從可編輯
+`SpellBook` 與單位 `Spells` 建立法術計畫。已支援的治療、解除、再行動、輔助、
+攻擊與狀態類法術，依可重現的目標分數、施放距離與移動路徑排序；未知、傳送或未有
+明確數值語意的法術不會被猜測性接入。計畫由正式
+`NextAIPlan → aiStep → CastArea` 路徑消費，完成 MP、效果、死亡獎勵與回合提交。
+
+`TestNextAIPlanSelectsEditableHealSpellBeforePhysicalFallback`、
+`TestNextAIPlanApproachesEditableAttackSpellTarget`、
+`TestNextAIPlanAllyTargetsEnemyWithEditableAttackSpell` 與
+`TestNextAIPlanUsesEditableInventorySpellMapping`、
+`TestNextAIPlanSpellPathUsesStableCellTieBreak`、
+`TestAIStepConsumesEditableHealSpellThroughProductionLoop` 與
+`TestAIStepConsumesEditableAttackSpellAndMovesIntoRange` 鎖定這個正規化
+（normalized）切片；`TestAIStepStopsSpellWithoutRNGBeforeMutation` 則確認缺少
+決定性亂數來源時，在 MP、位置、HP 與回合變更前停止。原始 AI 路徑一旦回報
+`NativeError`，仍不得回退至本後備路徑。
+
+這是讓資料驅動戰役可實際運作的重製端 E1 行為，不是 `0x1598A` 原始評分、命令格、
+特效、音效或一般玩家 E2 的證據；原始 AI 法術路徑與同狀態原版比較仍依工作清單
+保持未完成。
+
 ## 2026-08-11：敵方回合多單位 loop 消費端 E1
 
 `TestAIStepConsumesTwoVerifiedMode7ActorsBeforeFinishingTurn` 建立兩名都具完整 raw

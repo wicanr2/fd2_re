@@ -253,6 +253,11 @@ label 直接採原始 `0xc9/0xcd` palette entries，↑↓／←→採 recovered
 two-stage target/effect，**不再**因 ID 剛好有 EXE spell row 就送入 legacy `CastArea`；缺任一 asset 則退回 legacy
 spell UI。這是可視 layout/input slice，不是所有 command effect 或 native frame/background renderer 的完成宣告。
 
+2026-08-11 補充：上述玩家（player）命令格確認（command-grid confirm）的限制不延伸到
+敵方／友軍 NPC 的可編輯法術後備（fallback）。後者僅在原始 AI 路徑未處理且無錯誤時，
+於無玩家 UI 的 `NextAIPlan→aiStep→CastArea` 路徑消費；它不是 `0x1ceed` 的命令確認、
+不是原始命令效果／渲染器（renderer）證據，也不提升本矩陣的 UI-03 E0／E1／E2 等級。
+
 runtime audit（2026-07-26，更新）：chapter `Scenario.Party` 現已保存 exact
 `initial_command_mask`；產生器從 EXE `character_defaults.json` 依角色 index 帶入，並已重產 ch01..ch30。
 loader 僅接受空值或四 bytes，避免以截斷值製造假 command inventory；persistent roster 亦保留 runtime

@@ -8531,6 +8531,13 @@ func (g *Game) aiStep() {
 			g.st.NativeMapRangeMode = 0
 			g.st.HasNativeMapRangeModeState = true
 		}
+		if plan.SpellID >= 0 {
+			if err := g.executeAISpell(plan); err != nil {
+				g.loadErr = "敵方 AI 法術：" + err.Error()
+				g.aiBusy = false
+			}
+			return
+		}
 		if plan.NativeActionKind == battle.NativeAIActionCommand ||
 			plan.NativeActionKind == battle.NativeAIActionItem {
 			if err := g.executeNativeAIAction(plan); err != nil {

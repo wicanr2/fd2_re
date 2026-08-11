@@ -68,6 +68,20 @@
   `Turn`。缺少 movement rows 時第一個 actor 即停止，第二個 actor、位置、raw byte
   與回合均不變。這只驗證重製端敵方回合 loop 的 E1 編排，不命名 mode 7 玩法，也不
   宣稱原版多單位目標選擇 E2。
+- [x] **RE-AI-EDITABLE-SPELL-FALLBACK-CONSUMER-20260811**：原始 AI 路徑沒有建立
+  計畫且沒有回傳錯誤時，`NextAIPlan` 現可依可編輯 `SpellBook`／單位 `Spells`
+  產生正規化（normalized）治療、攻擊、輔助、狀態與行動術計畫；`aiStep` 以既有
+  `CastArea`、注入亂數、移動動畫與共同回合提交正式消費。`TestNextAIPlanSelectsEditableHealSpellBeforePhysicalFallback`、
+  `TestNextAIPlanAllyTargetsEnemyWithEditableAttackSpell`、
+  `TestNextAIPlanApproachesEditableAttackSpellTarget`、
+  `TestNextAIPlanUsesEditableInventorySpellMapping` 與
+  `TestNextAIPlanSpellPathUsesStableCellTieBreak` 另鎖定治療優先、友軍 NPC 不誤攻我方
+  （Own）陣線、背包命令映射可建立法術計畫、攻擊法術朝可施放格移動及同分可施放格的穩定選擇；
+  `TestAIStepConsumesEditableHealSpellThroughProductionLoop` 與
+  `TestAIStepConsumesEditableAttackSpellAndMovesIntoRange` 覆蓋治療、移動入施法距離、數值
+  結算與回合完成；`TestAIStepStopsSpellWithoutRNGBeforeMutation` 確認缺亂數時 MP、HP、
+  行動與回合均不變。任何原始路徑的來源錯誤仍優先失敗即關閉，這是可玩
+  重製端 E1，不是原版 `0x1598A` 評分、命令格或法術演出，也不是一般玩家 E2。
 - [x] **RE-AI-MODE3-9-GAME-CONSUMER-20260811**：新增
   `TestAIStepConsumesVerifiedMode3AndMode9RawTargetPlans` 與
   `TestAIStepStopsMode3AndMode9WithoutMovementProvenance`。Docker/Xvfb 實際由
@@ -1017,9 +1031,11 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   engine integration 待。
 - [~] **native command IDs10..12 compositor family**：ID10 `0x21527`、ID11 `0x2185F`、ID12 `0x21A9E` 都會進 `0x21548` 的 320×200/640-stride indexed presentation；**修正舊斷言**：其尾端已直接定位 `1CA89→per-target 1C75E`，故 numeric state core 已由 `ExecuteNativeCommandDamage` 支援。`0x2189A/219AD` scroll/composite、專用演出/SFX/UI 仍待，不可從數值共用推論 visual equivalence。
 - [x] **scenario native command-mask bridge**：`PartyMember.initial_command_mask` 已接 exact four-byte source，loader 對 malformed length fail-closed；`gen_campaign.py` 從 EXE `character_defaults.json` 依角色 index 合併至 ch01..ch30 而不覆寫既有手工 scenario 欄位。戰後 persistent snapshot 也保留完整五-byte runtime mask，level-up OR 不會跨 town/preparation 消失。ch01 悠妮 `[1,0,0,0]` 有 per-scenario materialization regression；不可由 normalized `Spells` 反造 raw bytes。待：逐章真機 availability 對照、未知 command effect／frame renderer。
-- [~] **魔法系統**（資料表與基礎 Cast 已接，native command/effect 尚未閉合）:magic.go(spells.json=EXE dump 36條+normalized spell names;InCastRange/Cast
-      固定表值傷害/治療capMax);悠妮火炎/電擊/治療;法術選單→射程紫高亮→施放接戰鬥演出+扣MP。
-      待:AoE(range>0)、命中率、輔助系(魔刃/風行…)效果。
+- [~] **魔法系統**（資料表與基礎 Cast 已接，native command/effect 尚未閉合）: `magic.go`
+      讀取 `spells.json` 的 36 條 EXE dump 與 normalized 名稱；`CastArea` 的範圍、命中、
+      治療／輔助／狀態效果均有 deterministic regression，玩家法術選單可走射程高亮、
+      結算、扣 MP 與既有戰鬥演出。敵方／友軍 NPC 在 raw route 未處理且無錯誤時也能經
+      editable spell fallback 走 `NextAIPlan→aiStep→CastArea`；這些皆是重製端近似。
       ✅ 法術特效對映已 RE 定論(f8fffba 後,doc37):**不存在獨立法術id→FIGANI對映**——施法演出=施法者
       自己的組×3/×3+1(火花燒在 sprite 幀,`0x28784` 不讀 spell_id)。這僅閉合 FIGANI 手勢選擇；
       `0x2a6bd` command-specific presentation、SFX、命中與多段畫面仍待，現行角色攻擊動畫只是局部 adapter，

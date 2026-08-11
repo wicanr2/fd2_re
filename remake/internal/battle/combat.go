@@ -381,6 +381,12 @@ func (s *State) AISpellCandidates(caster *Unit, spell Spell) []*Unit {
 		family = "cure"
 	case 22, 26, 27:
 		family = "status"
+	case 25:
+		family = "action"
+	case 34:
+		family = "buff"
+	case 35:
+		family = "status"
 	default:
 		return nil
 	}
@@ -389,31 +395,233 @@ func (s *State) AISpellCandidates(caster *Unit, spell Spell) []*Unit {
 		if target == nil || !target.OnField || !target.Alive() {
 			continue
 		}
-		sameCamp := target.Camp == caster.Camp
+		// Own 與 Ally 是同一陣線；不可只用 Camp 相等，否則 Ally NPC
+		// 會把 Own 誤當成攻擊法術目標。
+		sameSide := !isEnemyOf(caster, target)
 		switch family {
 		case "attack":
-			if !sameCamp {
+			if !sameSide {
 				out = append(out, target)
 			}
 		case "heal":
-			if sameCamp && target.HP < target.MaxHP {
+			if sameSide && target.HP < target.MaxHP {
 				out = append(out, target)
 			}
 		case "buff":
-			if sameCamp {
+			if sameSide {
+				out = append(out, target)
+			}
+		case "action":
+			if sameSide && target.Acted {
 				out = append(out, target)
 			}
 		case "cure":
-			if sameCamp && ((spell.ID == 20 && target.Poisoned) || (spell.ID == 21 && target.Paralyzed)) {
+			if sameSide && ((spell.ID == 20 && target.Poisoned) || (spell.ID == 21 && target.Paralyzed)) {
 				out = append(out, target)
 			}
 		case "status":
-			if !sameCamp {
+			if !sameSide {
 				out = append(out, target)
 			}
 		}
 	}
 	return out
+}
+
+// aiSpellOptions 合併重製端兩種可編輯法術來源。原始命令紀錄仍走獨立 route；
+// 只有原始 provenance 不可用時才會呼叫本函式。背包命令映射保持作者設定的順序，
+// 之後才加入尚未出現的正規化（normalized）單位法術 ID。
+func (s *State) aiSpellOptions(u *Unit) []Spell {
+	if s == nil || u == nil {
+		return nil
+	}
+	byID := make(map[int]Spell, len(s.SpellBook))
+	for _, sp := range s.SpellBook {
+		if _, exists := byID[sp.ID]; !exists {
+			byID[sp.ID] = sp
+		}
+	}
+	seen := make(map[int]bool)
+	options := make([]Spell, 0)
+	for _, sp := range s.AIAvailableSpells(u) {
+		if seen[sp.ID] {
+			continue
+		}
+		seen[sp.ID] = true
+		options = append(options, sp)
+	}
+	for _, id := range u.Spells {
+		if seen[id] {
+			continue
+		}
+		sp, ok := byID[id]
+		if !ok {
+			continue
+		}
+		seen[id] = true
+		options = append(options, sp)
+	}
+	return options
+}
+
+// aiSpellChoice 是正規化（normalized）的後備決策。它刻意只保存可編輯的
+// spell／target／path 資料；不可將其誤讀成原版 0x1598A 的評分或選目標 ABI。
+type aiSpellChoice struct {
+	spell    Spell
+	target   *Unit
+	path     []Cell
+	priority int
+	score    int
+	order    int
+}
+
+// aiSpellPriority 讓輔助行為可用，但不宣稱原版權重：先解除異常，再治療／行動／
+// 輔助，最後才是攻擊／狀態法術。
+func aiSpellPriority(sp Spell) int {
+	switch sp.ID {
+	case 20, 21:
+		return 500
+	case 13, 14, 15, 16:
+		return 450
+	case 25:
+		return 400
+	case 17, 18, 19, 34:
+		return 350
+	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 22, 26, 27, 35:
+		return 200
+	default:
+		return 0
+	}
+}
+
+// aiSpellTargetScore 刻意保持可解釋且決定性（deterministic）。輔助法術優先處理
+// 最需要的目標；攻擊／狀態法術偏好可擊殺或高傷害的敵方目標。這只是重製端後備，
+// 不是對原版評分表的宣稱。
+func (s *State) aiSpellTargetScore(caster, target *Unit, sp Spell) (int, bool) {
+	if caster == nil || target == nil || !target.OnField || !target.Alive() {
+		return 0, false
+	}
+	distance := manhattan(caster.X, caster.Y, target.X, target.Y)
+	score := 0
+	switch sp.ID {
+	case 20:
+		if !target.Poisoned {
+			return 0, false
+		}
+		score = 10000
+	case 21:
+		if !target.Paralyzed {
+			return 0, false
+		}
+		score = 10000
+	case 13, 14, 15, 16:
+		missing := target.MaxHP - target.HP
+		if missing <= 0 {
+			return 0, false
+		}
+		score = missing * 100
+	case 25:
+		if !target.Acted {
+			return 0, false
+		}
+		score = 5000
+	case 17, 18, 19, 34:
+		if target.BuffTurns > 0 {
+			return 0, false
+		}
+		score = 3000
+	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 22, 26, 27, 35:
+		if !isEnemyOf(caster, target) {
+			return 0, false
+		}
+		// 用可編輯法術的最大值當穩定估計；可擊殺者優先，其後為較低剩餘 HP
+		// 與距離。這不是原版 score 的推論。
+		score = sp.Dmg * 10
+		if sp.Dmg >= target.HP {
+			score += 10000
+		}
+		score += (target.MaxHP - target.HP) * 2
+	default:
+		return 0, false
+	}
+	return score - distance, true
+}
+
+// aiSpellPath 選擇可自其施放的最短可達空格。零移動施放保留起點；它與
+// InCastRange 不同，允許以自己為目標的輔助法術。
+func (s *State) aiSpellPath(u, target *Unit, sp Spell) []Cell {
+	if s == nil || u == nil || target == nil {
+		return nil
+	}
+	if manhattan(u.X, u.Y, target.X, target.Y) <= sp.Dist {
+		return []Cell{{X: u.X, Y: u.Y}}
+	}
+	reach := s.Reachable(u)
+	best := []Cell(nil)
+	bestDistance, bestPathLen, bestX, bestY := 1<<30, 1<<30, 1<<30, 1<<30
+	for cell := range reach {
+		if cell.X == u.X && cell.Y == u.Y {
+			continue
+		}
+		if s.UnitAt(cell.X, cell.Y) != nil {
+			continue
+		}
+		if manhattan(cell.X, cell.Y, target.X, target.Y) > sp.Dist {
+			continue
+		}
+		path := s.Path(u, cell.X, cell.Y)
+		if len(path) == 0 {
+			continue
+		}
+		distance := manhattan(cell.X, cell.Y, target.X, target.Y)
+		if distance < bestDistance ||
+			(distance == bestDistance && len(path) < bestPathLen) ||
+			(distance == bestDistance && len(path) == bestPathLen &&
+				(cell.Y < bestY || (cell.Y == bestY && cell.X < bestX))) {
+			best, bestDistance, bestPathLen, bestX, bestY = path, distance, len(path), cell.X, cell.Y
+		}
+	}
+	return best
+}
+
+// nextAISpellPlan 是敵方／友軍 NPC 可編輯法術的正規化（normalized）後備。它只會在
+// 所有原始 route 正常未處理或缺少 provenance 後呼叫；原始 route 的錯誤仍會讓回合
+// 失敗即關閉（fail-closed）。
+func (s *State) nextAISpellPlan(u *Unit) *AIPlan {
+	if s == nil || u == nil || u.Sealed || u.MP < 0 {
+		return nil
+	}
+	options := s.aiSpellOptions(u)
+	var best *aiSpellChoice
+	for order, sp := range options {
+		if sp.MP < 0 || u.MP < sp.MP || aiSpellPriority(sp) == 0 {
+			continue
+		}
+		for _, target := range s.AISpellCandidates(u, sp) {
+			score, ok := s.aiSpellTargetScore(u, target, sp)
+			if !ok {
+				continue
+			}
+			path := s.aiSpellPath(u, target, sp)
+			if len(path) == 0 {
+				continue
+			}
+			choice := &aiSpellChoice{spell: sp, target: target, path: path,
+				priority: aiSpellPriority(sp), score: score, order: order}
+			if best == nil || choice.priority > best.priority ||
+				(choice.priority == best.priority && choice.score > best.score) ||
+				(choice.priority == best.priority && choice.score == best.score && choice.order < best.order) {
+				best = choice
+			}
+		}
+	}
+	if best == nil {
+		return nil
+	}
+	return &AIPlan{
+		U: u, Path: best.path, Target: best.target, SpellID: best.spell.ID,
+		NativeScoredCommands: s.nativeAIPlanScoredCommands(u),
+	}
 }
 
 // NextAIPlan 找下一個未行動的 AI 單位並產生重製端近似計畫
@@ -476,6 +684,9 @@ func (s *State) NextAIPlan() *AIPlan {
 			if nativePlan != nil {
 				return nativePlan
 			}
+		}
+		if spellPlan := s.nextAISpellPlan(u); spellPlan != nil {
+			return spellPlan
 		}
 		best, moveTarget := s.aiTargets(u)
 		if moveTarget == nil {

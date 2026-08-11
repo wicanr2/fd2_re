@@ -253,6 +253,85 @@ func TestNextAIPlan_DefaultSpellCommandIsDisabled(t *testing.T) {
 	}
 }
 
+func TestNextAIPlanSelectsEditableHealSpellBeforePhysicalFallback(t *testing.T) {
+	st := &State{W: 3, H: 1, SpellBook: []Spell{{ID: 13, Dmg: 70, Dist: 3, MP: 5, Target: 1}}}
+	caster := mkFighter(Enemy, 0, 0, 100, 40, 0, 100, 0, 0)
+	caster.MP, caster.Spells, caster.OnField = 10, []int{13}, true
+	ally := mkFighter(Enemy, 1, 0, 30, 10, 20, 100, 0, 0)
+	ally.HP, ally.OnField = 10, true
+	target := mkFighter(Own, 2, 0, 30, 30, 0, 0, 0, 0)
+	target.OnField = true
+	st.Units = []*Unit{caster, ally, target}
+
+	plan := st.NextAIPlan()
+	if plan == nil || plan.SpellID != 13 || plan.Target != ally || len(plan.Path) != 1 {
+		t.Fatalf("spell plan=%#v, want heal ally without physical fallback", plan)
+	}
+}
+
+func TestNextAIPlanApproachesEditableAttackSpellTarget(t *testing.T) {
+	st := &State{W: 4, H: 1, SpellBook: []Spell{{ID: 0, Dmg: 50, Dist: 1, MP: 5, Target: 0}}}
+	caster := mkFighter(Enemy, 0, 0, 100, 40, 0, 100, 0, 0)
+	caster.MP, caster.MV, caster.Spells, caster.OnField = 5, 2, []int{0}, true
+	target := mkFighter(Own, 3, 0, 30, 30, 0, 0, 0, 0)
+	target.OnField = true
+	st.Units = []*Unit{caster, target}
+
+	plan := st.NextAIPlan()
+	if plan == nil || plan.SpellID != 0 || plan.Target != target || len(plan.Path) != 3 || plan.Path[len(plan.Path)-1] != (Cell{X: 2, Y: 0}) {
+		t.Fatalf("spell approach plan=%#v, want path to cast range", plan)
+	}
+}
+
+func TestNextAIPlanAllyTargetsEnemyWithEditableAttackSpell(t *testing.T) {
+	st := &State{W: 3, H: 1, SpellBook: []Spell{{ID: 0, Dmg: 50, Dist: 2, MP: 5, Target: 0}}}
+	caster := mkFighter(Ally, 0, 0, 100, 40, 0, 100, 0, 0)
+	caster.MP, caster.Spells, caster.OnField = 5, []int{0}, true
+	friend := mkFighter(Own, 1, 0, 30, 30, 0, 0, 0, 0)
+	friend.OnField = true
+	target := mkFighter(Enemy, 2, 0, 30, 30, 0, 0, 0, 0)
+	target.OnField = true
+	st.Units = []*Unit{caster, friend, target}
+
+	plan := st.NextAIPlan()
+	if plan == nil || plan.SpellID != 0 || plan.Target != target {
+		t.Fatalf("ally spell plan=%#v, want enemy target", plan)
+	}
+}
+
+func TestNextAIPlanUsesEditableInventorySpellMapping(t *testing.T) {
+	st := &State{
+		W:              2,
+		H:              1,
+		SpellBook:      []Spell{{ID: 0, Dmg: 50, Dist: 1, MP: 5, Target: 0}},
+		AICommandSpell: map[int]int{0x61: 0},
+	}
+	caster := mkFighter(Enemy, 0, 0, 100, 40, 0, 100, 0, 0)
+	caster.MP, caster.Inventory, caster.OnField = 5, []int{0x61}, true
+	target := mkFighter(Own, 1, 0, 30, 30, 0, 0, 0, 0)
+	target.OnField = true
+	st.Units = []*Unit{caster, target}
+
+	plan := st.NextAIPlan()
+	if plan == nil || plan.SpellID != 0 || plan.Target != target {
+		t.Fatalf("inventory spell plan=%#v, want mapped editable spell", plan)
+	}
+}
+
+func TestNextAIPlanSpellPathUsesStableCellTieBreak(t *testing.T) {
+	st := &State{W: 4, H: 2, SpellBook: []Spell{{ID: 0, Dmg: 50, Dist: 2, MP: 5, Target: 0}}}
+	caster := mkFighter(Enemy, 0, 0, 100, 40, 0, 100, 0, 0)
+	caster.MP, caster.MV, caster.Spells, caster.OnField = 5, 2, []int{0}, true
+	target := mkFighter(Own, 3, 1, 30, 30, 0, 0, 0, 0)
+	target.OnField = true
+	st.Units = []*Unit{caster, target}
+
+	plan := st.NextAIPlan()
+	if plan == nil || len(plan.Path) == 0 || plan.Path[len(plan.Path)-1] != (Cell{X: 2, Y: 0}) {
+		t.Fatalf("spell path=%#v, want stable endpoint (2,0)", plan)
+	}
+}
+
 func TestNextAIPlanPreservesRawNativeScoredCommandsWithoutExecutingThem(t *testing.T) {
 	actor := &Unit{Camp: Enemy, OnField: true, HP: 10, MaxHP: 10, MP: 5, X: 0, Y: 0, NativeCommandMask: [5]byte{1 << 2, 0, 0, 1 << 4}}
 	target := &Unit{Camp: Own, OnField: true, HP: 10, MaxHP: 10, X: 1, Y: 0}
