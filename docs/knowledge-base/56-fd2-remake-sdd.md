@@ -3858,3 +3858,11 @@ raw 目標鄰格；mode 3 提交已證實的 map-range write，mode 9 保留不�
 
 這是 `0x12C60` lookup 的重製端 E1 消費證據，不命名目標選擇或 mode 3／9 的高階
 玩法，也不證明原版一般玩家 E2。
+
+## 2026-08-11：mode 4／10 `aiStep` 遊戲層消費端 E1
+
+重製端新增 `TestAIStepConsumesVerifiedMode4AndMode10DestinationPlans` 與
+`TestAIStepStopsMode4AndMode10WithoutMovementProvenance`。兩個測試只採用 raw
+`+0x35/+0x36` 目的地，完成 movement-only 行走後提交 map-range write；不寫入
+raw `+0x05`，也不建立攻擊。缺少 movement provenance 時在位置、回合或 map-range
+變更前失敗即關閉；mode 4／10 的高階玩法仍未知。

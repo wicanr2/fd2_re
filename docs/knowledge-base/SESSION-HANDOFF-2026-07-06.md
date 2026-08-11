@@ -4512,3 +4512,12 @@ mode 7 高階玩法，也不升格為原版一般玩家 E2；工作清單與 SDD
 write，mode 9 保留不寫入的分支，均不執行攻擊。缺少 movement rows 時不建立 walk／
 attack、不改寫位置、回合或 map-range，維持失敗即關閉。這是 `0x12C60` lookup 的
 重製端 E1 owner，不命名高階玩法，也不升格為原版一般玩家 E2。
+
+## 2026-08-11：mode 4／10 遊戲層消費端回歸
+
+`TestAIStepConsumesVerifiedMode4AndMode10DestinationPlans` 與
+`TestAIStepStopsMode4AndMode10WithoutMovementProvenance` 已在 Docker／Xvfb 通過。
+兩者依 raw `+0x35/+0x36` 目的地完成 movement-only 行走並提交 map-range write，
+不寫入 raw `+0x05`、不建立攻擊；缺少 movement rows 時不改寫位置、回合或 map-range，
+維持失敗即關閉。這是 E1 raw consumer，不命名 mode 4／10 高階玩法，也不升格為
+原版一般玩家 E2。
