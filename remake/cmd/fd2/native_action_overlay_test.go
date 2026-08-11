@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+	"path/filepath"
 	"slices"
 	"testing"
 
@@ -18,6 +20,36 @@ func TestNativeActionOffsetXYMatchesFinalOpenFrame(t *testing.T) {
 		x, y := nativeActionOffsetXY(offset)
 		if got := [2]int{x, y}; got != want[direction] {
 			t.Fatalf("direction %d offset=%#x gives %v, want %v", direction, offset, got, want[direction])
+		}
+	}
+}
+
+func TestNativeContinueOverlayUses16F55CellState(t *testing.T) {
+	g := &Game{nativeContinueCursorOverlay: true}
+	state := g.nativeActionOverlayState()
+	want := [4]int{21, 15, 18, 12}
+	for direction := range want {
+		got, err := state.CellIndex(direction)
+		if err != nil || got != want[direction] {
+			t.Fatalf("direction %d: index=%d err=%v, want %d", direction, got, err, want[direction])
+		}
+	}
+}
+
+func TestLoadNativeActionCellsKeepsFullReferenceBank(t *testing.T) {
+	path := filepath.Join("../../../org_game/炎龍騎士團/FLAME2", "FDOTHER.DAT")
+	if _, err := os.Stat(path); err != nil {
+		t.Skipf("player-provided FDOTHER.DAT is absent: %v", err)
+	}
+	t.Setenv("FD2_ORIGINAL_FDOTHER", path)
+	palette := loadNativeUIPalette()
+	cells := loadNativeActionCells(palette)
+	if len(cells) != nativeActionOverlayCellCount {
+		t.Fatalf("cell bank length=%d, want %d", len(cells), nativeActionOverlayCellCount)
+	}
+	for _, index := range []int{12, 15, 18, 21} {
+		if cells[index] == nil {
+			t.Fatalf("current-runtime cell %d was not loaded", index)
 		}
 	}
 }
@@ -53,8 +85,10 @@ func TestNativeActionOverlayAnchorUsesPresentationScale(t *testing.T) {
 		camX:            24,
 		camY:            312,
 		nativeMapAssets: &nativeMapAssets{},
-		st:              &battle.State{HasNativeMapViewState: true},
-		ring:            true,
+		st: &battle.State{HasNativeMapViewState: true, NativeMapViewState: battle.NativeMapViewState{
+			CursorX: 8, CursorY: 16,
+		}},
+		ring: true,
 	}
 	x, y, scale := base.actionOverlayAnchor(unit)
 	if scale != 2 || x != 336 || y != 144 {

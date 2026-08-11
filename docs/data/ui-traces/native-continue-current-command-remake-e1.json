@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "evidence_level": "E1",
+  "scope": "重製端 chapter0 current-runtime：一般 X11 標題 CONTINUE 後，在空游標按 Return 的四格命令面板",
+  "input": {
+    "reference": {
+      "executable": {
+        "path": "org_game/炎龍騎士團/FLAME2/FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      "save": {
+        "path": "org_game/炎龍騎士團/FLAME2/FD2.SAV",
+        "size": 22987,
+        "md5": "409795ccebc2af340d5c74152c2d471c",
+        "sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f",
+        "current_runtime": {
+          "chapter": 0,
+          "camera": [1, 13],
+          "cursor": [8, 17],
+          "visible_cursor": [7, 4]
+        }
+      }
+    },
+    "remake_execution": {
+      "image": "fd2-go-test-local:latest",
+      "display": "Docker Xvfb :99",
+      "network": "none",
+      "campaign": "remake/assets/scenarios/campaign_full.json",
+      "original_fdother": "read-only org_game/炎龍騎士團/FLAME2/FDOTHER.DAT",
+      "environment": {
+        "FD2_TITLE": "1",
+        "FD2_NATIVE_SAVE": "原版 FD2.SAV",
+        "FD2_NATIVE_TITLE_TICK": "0",
+        "FD2_SHOT_DETERMINISTIC": "1"
+      },
+      "input_helper": "tools/docker/fd2-xtest-input.c",
+      "helper_contract": "只送出普通 X11 鍵盤按下／放開事件，不呼叫遊戲 API、不修改遊戲狀態",
+      "timeline": [
+        "Escape",
+        "Down、Down、Return（CONTINUE）",
+        "進入 current-runtime 戰場後 Return"
+      ]
+    }
+  },
+  "raw_renderer_state": {
+    "evidence": "../ida/fd2_continue_action_overlay_ida.txt",
+    "caller": "0x16f55（強推論：此 normal CONTINUE 空游標入口）",
+    "first_argument_table": [7, 5, 6, 4],
+    "second_argument_table": [0, 0, 0, 0],
+    "cell_indices": [21, 15, 18, 12],
+    "cell_bank_count": 78,
+    "action_effects": "未知；重製端 Enter 維持失敗即關閉"
+  },
+  "capture": {
+    "state_sidecar": "native-continue-current-command-remake-e1-state.json",
+    "frame": 802,
+    "campaign_node": "battle_ch01",
+    "cursor": [8, 17],
+    "has_selection": false,
+    "action_overlay_open": true,
+    "native_continue_cursor_overlay": true,
+    "note": "旁車中的 selection=[0,0] 是舊 serializer 在 has_selection=false 時留下的零值；現行 serializer 已省略該欄位。"
+  },
+  "screenshots": [
+    {
+      "path": "../../figures/native-continue-current-command-original-dosbox.png",
+      "role": "未修改原版 E2 同一操作錨點",
+      "size": [320, 200],
+      "md5": "ee4726d4a272e91d2d6e1150be8513b3",
+      "sha256": "d0166192d17e1a30f8fd413372bc84fa12ba24b1920cd05d731898531f7c2e92"
+    },
+    {
+      "path": "../../figures/native-continue-current-command-remake-e1.png",
+      "role": "重製端普通 X11 輸入的 E1 執行期畫面",
+      "size": [640, 400],
+      "md5": "2cfea336ea69fb16ecc33f62ee3279b5",
+      "sha256": "03edb8723b4a24e3b23db7d7036ed8749e890cbf88f2617958c5384d8d8e9e51"
+    },
+    {
+      "path": "../../figures/native-continue-current-command-compare-e1.png",
+      "role": "上：原版最近鄰放大；中：重製；下：差異遮罩",
+      "size": [640, 1200],
+      "md5": "99f6f843b7388138524c91bb23184024",
+      "sha256": "eb69c93ac9184534a65ae92d09673c56049950e2aebbda734d745d23e91349cd"
+    }
+  ],
+  "comparison": {
+    "method": "Docker ImageMagick：原版 320×200 最近鄰放大至 640×400，再與重製端 PNG 比較",
+    "absolute_error_pixels": 8932,
+    "claim": "四格圖塊、游標入口與一般鍵盤流程已被重製端消費；數值顯示尚未達逐像素一致。"
+  },
+  "limits": [
+    "原版一側是未修改 DOSBox E2；重製端一側因明確 title tick 與 deterministic screenshot clock 仍只屬 E1。",
+    "這個 slice 不證明四格的動作名稱、owner、目標選擇、確認效果、status/equipment panel 或其他戰場狀態。",
+    "本快照不可外推至其他章節、城鎮、商店、整備、結局或敵方回合。"
+  ]
+}

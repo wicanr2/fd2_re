@@ -4634,3 +4634,40 @@ AI 路徑正常未處理時，`NextAIPlan` 才從 `SpellBook`／`Spells` 選擇�
 與攻擊消費；缺少決定性亂數時保持 MP、位置、HP、行動與回合不變。這是重製端 E1 的
 正規化（normalized）近似，沒有推翻先前對原版法術評分、`0x1598A`、命令格、演出與
 一般玩家 E2 尚未閉合的結論。
+
+## 2026-08-11：CONTINUE 空游標命令面板索引勘誤與 E1 畫面切片
+
+先前 2026-07-25 記錄的 `0x1741c` cell index
+`3*availabilityWord + 2*directionState` 是把兩個乘數顛倒的錯誤斷言。這次以固定
+雜湊 `FD2.EXE` 在合法 IDA Pro 9.4／Hex-Rays Docker 讀取
+`0x16f55`、`0x1741c`、`0x18d8c`、`0x177fc`，再用 Docker Capstone 5.0.3 逐條覆核
+`0x174f9..0x1752b`，直接指令固定為：
+
+```text
+index = 3 * firstArgumentWord + 2 * secondArgumentWord
+```
+
+`0x18d8c` 的第一表是 `[0,1,2,3]`，所以 second word 0 對應
+`[0,3,6,9]`，word 1 對應 `[2,5,8,11]`；舊的 `[0,2,4,6]`／`[3,5,7,9]`
+不可再作 battle skin 或 gate 依據。完整原始位址、表 bytes、工具版本與推論等級見
+[`fd2_continue_action_overlay_ida.txt`](../data/ida/fd2_continue_action_overlay_ida.txt)。
+
+同一份未修改原版 `FD2.SAV` 的 normal title `CONTINUE→Return` 畫面，與
+`0x16f55` 初始兩表 `[7,5,6,4]`／`[0,0,0,0]` 對應 cells `[21,15,18,12]` 相符。
+把該 normal snapshot 歸到 `0x16f55` 仍是**強推論**：本輪沒有向原版程序植入 trace；
+cell formula、tables、`0x117e7` 的直接 call site 和 renderer resource 則是**已證實**。
+
+重製端因此改為完整讀取 FDOTHER #2 的 78 格，並在這個狹義 current-runtime 空游標
+狀態使用 caller-owned raw state。Docker/Xvfb 以普通 X11 鍵盤事件重播
+`Escape→Down→Down→Return→Return`，旁車記錄 `battle_ch01`、cursor `(8,17)`、
+selection=false、overlay=true。結果圖與原版／重製／差異比較為
+[`native-continue-current-command-remake-e1.png`](../figures/native-continue-current-command-remake-e1.png)
+及 [`native-continue-current-command-compare-e1.png`](../figures/native-continue-current-command-compare-e1.png)；
+詳細輸入、雜湊與限制見
+[`native-continue-current-command-remake-e1.json`](../data/ui-traces/native-continue-current-command-remake-e1.json)。
+最近鄰比較 AE 為 8932，故這只是重製端 E1 的可見／輸入切片，不宣稱逐像素 E2。
+
+四格的動作 owner、名稱、目標、確認效果與後續 handler 仍未由這項畫面證據閉合；
+重製端在此狀態只允許方向、取消與顯示，Enter 保持失敗即關閉。focused
+`internal/fdother`／`cmd/fd2` Docker/Xvfb regression 已通過；完整回歸與文件連結
+檢查仍須在提交前重跑。

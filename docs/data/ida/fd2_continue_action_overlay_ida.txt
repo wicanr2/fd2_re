@@ -1,0 +1,91 @@
+FD2 current-runtime CONTINUE action overlay — IDA Pro 9.4 / Capstone 5 evidence
+==============================================================================
+
+輸入檔：org_game/炎龍騎士團/FLAME2/FD2.EXE
+大小：357074 bytes
+MD5：b97caf2239a27a896069d03549d96e1e
+SHA-256：222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f
+IDA：使用者合法提供的 IDA Pro 9.4.0.260610／Hex-Rays，
+      fd2-ida-authorized-local:latest，一次性無網路 Docker。
+Capstone：5.0.3，fd2-cap-local:latest，一次性無網路 Docker。
+位址空間：IDA 與 Capstone 均為 FD2 LE linear address；不是檔案偏移。
+資料庫：只在一次性容器的 /tmp 建立；未寫回原版、IDA 資料庫或授權檔。
+
+可重現查詢
+------------
+
+IDA `tools/ida_probe_functions.py`：
+
+```text
+0x16f55 0x1741c 0x18d8c 0x177fc
+```
+
+IDA `tools/ida_dump_bytes.py`：
+
+```text
+0x51e9f:0x10 0x53ef2:0x10 0x51ed5:0x10
+```
+
+Capstone：
+
+```text
+python3 tools/disasm_le.py FD2.EXE range 0x174f9 0x17531
+```
+
+已證實：`0x1741c` 圖塊索引 ABI
+-----------------------------------
+
+`0x174f9..0x1752b` 的直接指令先從第一個四字表讀值並做
+`value*4-value`（三倍），再從第二個四字表讀值並 `add edx,edx`（兩倍），
+兩者相加後讀 `[0x53a89 + index*4]` 的相對位址，最後交給 `0x4e9e4`。
+
+```asm
+0x174ff  mov ebx, [firstArgument + direction*4]
+0x17504  shl edx, 2
+0x17507  sub edx, ebx                 ; 3 * firstArgument
+0x1750b  mov edx, [secondArgument + direction*4]
+0x1750f  add edx, edx                 ; 2 * secondArgument
+0x17511  add edx, ebx
+0x17519  mov edx, [dword_53A89 + edx*4]
+0x1752b  call sub_4E9E4
+```
+
+所以 raw cell index 的已證實公式是：
+
+```text
+index = 3 * firstArgumentWord + 2 * secondArgumentWord
+```
+
+舊文件與早期 `fdother.ActionOverlayState` 將兩個乘數顛倒，屬錯誤斷言；不得
+再以 `3*availability + 2*directionState` 推導任何圖塊。
+
+已證實：battle wrapper 與 CONTINUE 初始呼叫者是不同表
+-------------------------------------------------------------
+
+* `0x18d8c` 在 `0x18da7..0x18db5` 複製第一表 `0x51ed5`，其 raw dword 是
+  `[0,1,2,3]`；`0x18e4c..0x18e67` 將此表作第一參數、呼叫者提供的四字
+  availability 作第二參數。因此 availability=0 的 cells 為 `[0,3,6,9]`，
+  availability=1 的 cells 為 `[2,5,8,11]`。這只固定 battle wrapper 的
+  raw layout，沒有命名圖示或完整 gate 語意。
+* `0x117e7` 的直接 call site `0x118c1` 呼叫 `0x16f55`。`0x16f65..0x16f81`
+  分別複製第一表 `0x51e9f` 與第二表 `0x53ef2`；`0x16f8d..0x16f97` 將兩表
+  傳給 `0x1741c`。原始 bytes 為：
+
+  ```text
+  0x51e9f: 07 00 00 00 05 00 00 00 06 00 00 00 04 00 00 00
+  0x53ef2: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  ```
+
+  因而其初始 cells 是 `[21,15,18,12]`。未修改原版 current-runtime
+  `CONTINUE → Return` 截圖顯示與此四格配置相符；把這個一般玩家路徑歸為
+  `0x16f55` 是**強推論**，因本輪沒有在原版程序內插入控制流追蹤。
+
+重製邊界
+--------
+
+重製端只在固定版本、已驗證的 chapter0 current-runtime `FD2.SAV` 游標位置使用
+`[7,5,6,4]`／`[0,0,0,0]` 來呈現圖塊；它完整載入 FDOTHER #2 的 78 格，而非只載
+前十格。四格動作的擁有者、名稱、確認效果與後續處理器均未由此證實，Enter 仍必須
+失敗即關閉。原版／重製畫面差異另由
+`docs/data/ui-traces/native-continue-current-command-remake-e1.json` 記錄，不宣稱
+逐像素一致。

@@ -5,23 +5,41 @@ import (
 	"fmt"
 )
 
-// ActionOverlayState is the native cell-selection state for the four action
-// directions, in native order: up, left, right, down. The values intentionally
-// remain raw: their gameplay/icon meaning is not yet recovered.
+// ActionOverlayState is the two raw four-word inputs consumed by 0x1741c, in
+// native order: up, left, right, down.  Availability is the caller's second
+// argument and is multiplied by two; it represents action availability only
+// in the battle wrapper. DirectionState is the caller's first argument and is
+// multiplied by three.  Other callers may use either table as unrelated menu
+// state, so neither field assigns an icon or gameplay meaning by itself.
 type ActionOverlayState struct {
 	Availability   [4]int
 	DirectionState [4]int
 }
 
 // BattleActionOverlayState constructs the state passed by the native battle
-// action wrapper 0x18d8c. Its direction states are a fixed [0,1,2,3], so an
-// enabled action selects cells [0,2,4,6] and a disabled action selects
-// [3,5,7,9]. Other 0x1741c callers (such as 0x1728c) use separate state
-// tables and must construct ActionOverlayState explicitly.
+// action wrapper 0x18d8c. Its DirectionState table is a fixed [0,1,2,3]; an
+// available word (zero) selects cells [0,3,6,9], while a one word selects
+// [2,5,8,11]. Other 0x1741c callers use separate tables and must construct
+// ActionOverlayState explicitly.
 func BattleActionOverlayState(availability [4]int) ActionOverlayState {
 	return ActionOverlayState{
 		Availability:   availability,
 		DirectionState: [4]int{0, 1, 2, 3},
+	}
+}
+
+// NativeContinueActionOverlayState is the raw initial 0x16f55 caller state
+// used by the fixed reference FD2.SAV current-runtime CONTINUE anchor.  The
+// association of that normal-player screenshot with 0x16f55 is a strong
+// inference; the two tables themselves are direct instruction evidence. The
+// first argument table at 0x51e9f is [7,5,6,4]; the second argument table at
+// 0x53ef2 is all zero. It yields cells [21,15,18,12]. This supplies only the
+// visible overlay; it does not name or enable the four actions, whose owner
+// remains fail-closed in the remake.
+func NativeContinueActionOverlayState() ActionOverlayState {
+	return ActionOverlayState{
+		Availability:   [4]int{},
+		DirectionState: [4]int{7, 5, 6, 4},
 	}
 }
 
@@ -114,7 +132,12 @@ func ActionOverlayOrigin(cursorColumn, cursorRow int) (int, error) {
 
 // CellIndex implements the FD2.EXE 0x1741c table ABI:
 //
-//	index = 3*availabilityWord + 2*directionState
+//	index = 3*firstArgumentWord + 2*secondArgumentWord
+//
+// In ActionOverlayState, firstArgumentWord is DirectionState and
+// secondArgumentWord is Availability.  The multiplication order is kept
+// explicit because reversing it produces plausible but incorrect FDOTHER #2
+// cells for the battle and CONTINUE callers.
 //
 // The returned index addresses an FDOTHER #2 raw cell. It does not infer a
 // direction's visible icon or availability semantics.
@@ -127,7 +150,7 @@ func (s ActionOverlayState) CellIndex(direction int) (int, error) {
 	if availability < 0 || directionState < 0 {
 		return 0, fmt.Errorf("fdother: negative action overlay state for direction %d", direction)
 	}
-	return 3*availability + 2*directionState, nil
+	return 3*directionState + 2*availability, nil
 }
 
 // ActionOverlayFrameOffsets returns the four byte offsets used by native

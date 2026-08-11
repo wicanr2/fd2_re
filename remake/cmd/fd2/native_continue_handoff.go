@@ -264,10 +264,30 @@ func (g *Game) publishNativeContinueBattle(
 	candidate.nativeMapWork, candidate.nativeMapVGA = nil, nil
 	candidate.nativeMapClock.Reset()
 	candidate.resetActionOverlayLifecycle()
+	// 原版 E2 current-runtime 畫面與 0x16f55 的關聯目前是強推論：游標仍在
+	// 儲存位置時，第一個 Return 應直接開 action overlay。這個一次性旗標
+	// 保留來源邊界，讓後續一般戰場仍走既有的選取／移動流程。
+	candidate.nativeContinueOpeningConfirm = true
 	if !candidate.syncNativeMapView() {
 		return fmt.Errorf("native CONTINUE battle handoff: map view publication failed")
 	}
 	candidate.prevCurX, candidate.prevCurY = candidate.curX, candidate.curY
 	*g = candidate
 	return nil
+}
+
+// consumeNativeContinueOpeningConfirm 僅接受剛由原版 CONTINUE 發布的
+// 第一個玩家確認，而且游標必須還在 save header 原樣記錄的位置。任何移動、
+// 非原生發布或第二次確認都退回普通選取；這避免把單一 E2 錨點猜測性推廣成
+// 通用的戰場輸入規則。
+func (g *Game) consumeNativeContinueOpeningConfirm() bool {
+	if g == nil || !g.nativeContinueOpeningConfirm {
+		return false
+	}
+	g.nativeContinueOpeningConfirm = false
+	if g.st == nil || !g.st.HasNativeMapViewState {
+		return false
+	}
+	view := g.st.NativeMapViewState
+	return g.curX == view.CursorX && g.curY == view.CursorY
 }

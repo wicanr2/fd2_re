@@ -14,7 +14,7 @@
 | 領域 | 已驗證成果 | 主要缺口 |
 |---|---|---|
 | 資產與格式 | `.DAT`、RLE 圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與部分 EXE 資料表可重現解析 | 部分執行期改寫、合成器與音訊播放尚未完整接入 |
-| 反向工程 | 戰役狀態機、事件處理器、戰鬥規則、敵方 AI 原始模式與城鎮／商店／教會及存檔邊界已有證據化切片；mode 1 blocked-coordinate、mode 2 物理候選、mode 5 事件尾端，以及 mode 11 的 `0x15311` 命令／`0x1548E` 物理／`0x14121→0x13FD4` indexed 音訊 owner，均已接上失敗即關閉的執行期窄切片；`aiStep` 另已驗證兩名 raw mode-7 actor 的同回合順序，原始路由未處理且無錯誤時敵方／友軍 NPC 可依可編輯 `SpellBook`／`Spells` 完成正規化（normalized）法術決策與結算；未修改原版 CONTINUE→END→ENEMY PHASE 的章節0 E2 時間線也已可重現 | 尚缺重製端同一 raw 狀態的敵方回合 E2 配對、未知命令／法術／物品的完整演出、逐章戰後流程與原生 CONTINUE；原版 E2 錨點及現有 owner 都不等於逐像素或逐音訊一致 |
+| 反向工程 | 戰役狀態機、事件處理器、戰鬥規則、敵方 AI 原始模式與城鎮／商店／教會及存檔邊界已有證據化切片；mode 1 blocked-coordinate、mode 2 物理候選、mode 5 事件尾端，以及 mode 11 的 `0x15311` 命令／`0x1548E` 物理／`0x14121→0x13FD4` indexed 音訊 owner，均已接上失敗即關閉的執行期窄切片；`aiStep` 另已驗證兩名 raw mode-7 actor 的同回合順序，原始路由未處理且無錯誤時敵方／友軍 NPC 可依可編輯 `SpellBook`／`Spells` 完成正規化（normalized）法術決策與結算；未修改原版 CONTINUE→END→ENEMY PHASE 的章節0 E2 時間線也已可重現 | 尚缺重製端同一 raw 狀態的敵方回合 E2 配對、未知命令／法術／物品的完整演出、逐章戰後流程與 CONTINUE 四格的動作 owner／確認效果；原版 E2 錨點及現有 owner 都不等於逐像素或逐音訊一致 |
 | Go／Ebiten 重製 | 地圖、對話、部分戰鬥、城鎮、商店、教會、整備、自有存檔及場景 BGM 消費可操作；戰鬥曲與城鎮曲已有原版表格回歸 | 尚缺完整 30 章玩家路徑、完整原生存檔相容、`0x2BCE5` 結局演出、終局曲目與跨平台驗收 |
 | 原版視覺比對 | ch02 城鎮 variant0 六項、variant1 正常五項、variant2 正常五項（後兩者為修改 LOAD 路徑），以及部分商店、讀檔選單已有整幀 RGB 相同證據 | 完整操作介面估計約 40–45%；秘密選項、一般玩家城鎮路徑、戰場、整備、教會與其餘章節仍需同狀態比較 |
 
@@ -284,8 +284,8 @@ Docker／Xvfb 截圖，不是原版同狀態逐像素 E2；原始 DAC 條件與�
 重製端現在也能由同一份 `FD2.SAV` 走標題 Escape／Down／Down／Enter，
 在明確提供 `FD2_NATIVE_TITLE_TICK` 後發布 `battle_ch01` current-runtime；
 下圖是 Docker／Xvfb 的 E1 執行期畫面。它證明保存的鏡頭、游標、回合與地圖
-已交給戰場控制器，但目前 Enter 後的 action 選取擁有者與原版 status/equipment
-panel 尚未閉合，因此不宣稱逐像素 E2。條件與雜湊見
+已交給戰場控制器。這張較早的基準圖仍不證明 Enter 後的四格動作 owner 或原版
+status/equipment panel，因此不宣稱逐像素 E2。條件與雜湊見
 [`native-continue-current-runtime-remake-e1.json`](docs/data/ui-traces/native-continue-current-runtime-remake-e1.json)。
 
 ![重製端 CONTINUE current-runtime 戰場（E1）](docs/figures/native-continue-current-runtime-remake-e1.png)
@@ -297,6 +297,14 @@ panel 尚未閉合，因此不宣稱逐像素 E2。條件與雜湊見
 [`native-continue-current-runtime-remake-e2.json`](docs/data/ui-traces/native-continue-current-runtime-remake-e2.json)。
 
 ![重製端 CONTINUE current-runtime 配對畫面（E1）](docs/figures/native-continue-current-runtime-remake-e2.png)
+
+2026-08-11 已修正 action overlay 圖塊索引乘數與「只載入前十格」的錯誤；同一普通
+X11 `CONTINUE→Return` 路徑現在會在空游標顯示**強推論**對應原版 `0x16f55` 的四個圖塊。下圖
+依序是原版、重製與差異遮罩；它清楚顯示畫面仍有差距（AE `8932`），所以只作重製端
+E1 的可見／輸入切片，Enter 的動作效果仍失敗即關閉。原始位址、輸入、旁車與雜湊見
+[`native-continue-current-command-remake-e1.json`](docs/data/ui-traces/native-continue-current-command-remake-e1.json)。
+
+![CONTINUE 空游標命令面板：原版／重製／差異（重製端 E1）](docs/figures/native-continue-current-command-compare-e1.png)
 
 同一份未修改原版 `FD2.SAV` 也已走到「結束目前單位行動嗎？」→「是」，實際看見
 `ENEMY PHASE`，並在約 10 秒後看到敵方回合的另一個戰場畫面，約 20 秒後回到玩家

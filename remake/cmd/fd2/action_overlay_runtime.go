@@ -99,6 +99,7 @@ func (g *Game) markActionOverlayDrawn() {
 
 func (g *Game) resetActionOverlayLifecycle() {
 	g.ring = false
+	g.nativeContinueCursorOverlay = false
 	g.actionOverlayPhase = ""
 	g.actionOverlayFrame = 0
 	g.actionOverlayAfter = nil

@@ -182,3 +182,46 @@ func TestNativeContinueTitleTimerSeedFailsClosed(t *testing.T) {
 		t.Fatal("out-of-range signed BIOS tick was accepted")
 	}
 }
+
+func TestNativeContinueOpeningConfirmUsesExactSavedCursorOnce(t *testing.T) {
+	g := &Game{
+		st: &battle.State{
+			W: 24, H: 24,
+			HasNativeMapViewState: true,
+			NativeMapViewState:    battle.NativeMapViewState{CursorX: 8, CursorY: 17},
+		},
+		curX: 8, curY: 17,
+		nativeContinueOpeningConfirm: true,
+	}
+	g.confirm()
+	if g.sel != nil || !g.nativeContinueCursorOverlay || !g.ring ||
+		g.actionOverlayPhase != actionOverlayOpening || g.ringSel != 0 ||
+		g.reach != nil || g.nativeContinueOpeningConfirm {
+		t.Fatalf("first native CONTINUE confirm did not open action overlay: %+v", g)
+	}
+
+	// 已消費的旗標不會把第二次確認或其他狀態再導向 native overlay。
+	g.resetActionOverlayLifecycle()
+	g.moved, g.reach = false, nil
+	g.confirm()
+	if g.ring || g.sel != nil || g.moved || g.nativeContinueOpeningConfirm || g.nativeContinueCursorOverlay {
+		t.Fatalf("consumed native CONTINUE bridge leaked into normal selection: %+v", g)
+	}
+}
+
+func TestNativeContinueOpeningConfirmRejectsMovedCursor(t *testing.T) {
+	unit := &battle.Unit{Camp: battle.Own, OnField: true, HP: 10, X: 7, Y: 17}
+	g := &Game{
+		st: &battle.State{
+			W: 24, H: 24, Units: []*battle.Unit{unit},
+			HasNativeMapViewState: true,
+			NativeMapViewState:    battle.NativeMapViewState{CursorX: 8, CursorY: 17},
+		},
+		curX: 7, curY: 17,
+		nativeContinueOpeningConfirm: true,
+	}
+	g.confirm()
+	if g.ring || g.sel != unit || g.moved || g.nativeContinueOpeningConfirm || g.nativeContinueCursorOverlay {
+		t.Fatalf("moved cursor must stay on normal selection path: %+v", g)
+	}
+}

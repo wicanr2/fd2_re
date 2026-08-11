@@ -7,7 +7,7 @@ func TestActionOverlayCellIndex(t *testing.T) {
 		Availability:   [4]int{0, 1, 0, 1},
 		DirectionState: [4]int{0x12, 0x14, 0x16, 0x18},
 	}
-	want := [4]int{36, 43, 44, 51}
+	want := [4]int{54, 62, 66, 74}
 	for direction := range want {
 		got, err := state.CellIndex(direction)
 		if err != nil || got != want[direction] {
@@ -24,7 +24,21 @@ func TestBattleActionOverlayStateMatches18D8C(t *testing.T) {
 	if state.DirectionState != [4]int{0, 1, 2, 3} {
 		t.Fatalf("direction states=%v", state.DirectionState)
 	}
-	want := [4]int{0, 5, 4, 9}
+	want := [4]int{0, 5, 6, 11}
+	for direction := range want {
+		got, err := state.CellIndex(direction)
+		if err != nil || got != want[direction] {
+			t.Fatalf("direction %d: index=%d err=%v, want %d", direction, got, err, want[direction])
+		}
+	}
+}
+
+func TestNativeContinueActionOverlayStateMatches16F55InitialTables(t *testing.T) {
+	state := NativeContinueActionOverlayState()
+	if state.Availability != [4]int{} || state.DirectionState != [4]int{7, 5, 6, 4} {
+		t.Fatalf("current-runtime state=%+v", state)
+	}
+	want := [4]int{21, 15, 18, 12}
 	for direction := range want {
 		got, err := state.CellIndex(direction)
 		if err != nil || got != want[direction] {
@@ -120,12 +134,12 @@ func TestActionOverlayFrameOffsets(t *testing.T) {
 }
 
 func TestBlitActionOverlayFrameUsesNativeCellsAndTransparency(t *testing.T) {
-	cells := make([]RawCell, 52)
+	cells := make([]RawCell, 75)
 	for i := range cells {
 		cells[i] = RawCell{Width: 1, Height: 1, Pixels: []byte{byte(i + 1)}}
 	}
 	// Direction 1 intentionally has a transparent pixel, which must preserve dst.
-	cells[43].Pixels[0] = 0
+	cells[62].Pixels[0] = 0
 	state := ActionOverlayState{
 		Availability:   [4]int{0, 1, 0, 1},
 		DirectionState: [4]int{0x12, 0x14, 0x16, 0x18},
@@ -140,16 +154,16 @@ func TestBlitActionOverlayFrameUsesNativeCellsAndTransparency(t *testing.T) {
 		t.Fatal(err)
 	}
 	offsets, _ := ActionOverlayFrameOffsets(1, false)
-	if got := dst[origin+offsets[0]]; got != 37 { // cell 36
-		t.Fatalf("up pixel=%d, want 37", got)
+	if got := dst[origin+offsets[0]]; got != 55 { // cell 54
+		t.Fatalf("up pixel=%d, want 55", got)
 	}
-	if got := dst[origin+offsets[1]]; got != 0xee { // transparent cell 43
+	if got := dst[origin+offsets[1]]; got != 0xee { // transparent cell 62
 		t.Fatalf("left transparent pixel=%d, want preserved", got)
 	}
-	if got := dst[origin+offsets[2]]; got != 45 { // cell 44
-		t.Fatalf("right pixel=%d, want 45", got)
+	if got := dst[origin+offsets[2]]; got != 67 { // cell 66
+		t.Fatalf("right pixel=%d, want 67", got)
 	}
-	if got := dst[origin+offsets[3]]; got != 52 { // cell 51
-		t.Fatalf("down pixel=%d, want 52", got)
+	if got := dst[origin+offsets[3]]; got != 75 { // cell 74
+		t.Fatalf("down pixel=%d, want 75", got)
 	}
 }

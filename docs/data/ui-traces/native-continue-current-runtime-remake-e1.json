@@ -32,7 +32,7 @@
   "observed": [
     "標題輸入成功發布 battle_ch01 的 current-runtime State；回合為1、camera=(1,13)、cursor=(8,17)。",
     "畫面可重現原版 current-runtime 的地圖、單位、游標與地形 HUD 邊界。",
-    "同一輸入序列未能在重製端開啟原版 action/command overlay；這保留為 UI-02/UI-03 的選取擁有者缺口。"
+    "這是 2026-08-11 action overlay 勘誤前的戰場基準圖；當時同一輸入序列尚未開啟原版 action overlay。現行一般 X11 `CONTINUE→Return` 的四格可見切片另見 native-continue-current-command-remake-e1.json；確認效果仍維持失敗即關閉。"
   ],
   "limits": [
     "FD2_NATIVE_TITLE_TICK=0 是明確提供的 deterministic E1 夾具，不是 BIOS 時鐘逐幀 E2。",

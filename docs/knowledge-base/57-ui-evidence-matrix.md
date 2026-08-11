@@ -194,17 +194,22 @@ present 後 4-frame slide 分別更新 offset `up -= 0x8e8`（5 native rows）�
 並寫入 `[0x53a89]`。raw #2 是 untagged 78-cell offset bank（首 `u32=0x138` 即 directory end），cell
 為 `{u16 width,u16 height,width*height indexed pixels}`；`0x4e9e4` 逐列 direct blit，index 0 preserve。
 實測為 74 個 24×20、4 個 24×16 cells，strict `fdother.ParseRawCellBank` 與 player asset regression 已覆蓋。
-`0x1741c` 的 relative table index ABI 也可重跑：每個方向取 `availabilityWord`（同一個供
-`0x177fc` gate 的四-word array）與 `directionState`，cell index=`3*availabilityWord +
-2*directionState`，再讀 `u32 relativeOffset=base[index]`、貼 `base+relativeOffset`。官方 IDA 重新
-追 `0x18d8c` 後更正舊斷言：**battle action wrapper 的 directionState 是固定 `[0,1,2,3]`**，故
-available cells=`[0,2,4,6]`，disabled cells=`[3,5,7,9]`。先前把 `0x1728c` 的
+`0x1741c` 的 relative table index ABI 已在 2026-08-11 由合法 IDA／Capstone 重讀：每個方向取
+第一個四字表與第二個四字表，cell index=`3*firstArgumentWord +
+2*secondArgumentWord`，再讀 `u32 relativeOffset=base[index]`、貼 `base+relativeOffset`。早期將兩個
+乘數顛倒的 `3*availabilityWord + 2*directionState` 是錯誤斷言，已由
+[`fd2_continue_action_overlay_ida.txt`](../data/ida/fd2_continue_action_overlay_ida.txt) 取代。battle
+wrapper `0x18d8c` 的**第一**表固定 `[0,1,2,3]`，所以第二表為 0 時 cells=`[0,3,6,9]`，為 1 時
+cells=`[2,5,8,11]`。chapter0 current-runtime 的一般 X11 `CONTINUE→Return` 空游標入口**強推論**使用
+`0x16f55` 初始表 `[7,5,6,4]`／`[0,0,0,0]`，顯示 cells=`[21,15,18,12]`；重製已完整載入 78 cells，
+並保存 [原版／重製／差異 E1 比較](../figures/native-continue-current-command-compare-e1.png)，但確認
+效果仍失敗即關閉，不能從圖塊推測四格 action 語意。先前把 `0x1728c` 的
 `[0x12+(byte_51e61==0),0x14+(byte_51e62==0),0x16+(byte_53af9!=0),0x18+(byte_51aab==0)]`
 套到 battle action 是錯誤；該 caller 選中方向後只切換這些 byte state 並重畫自己的巢狀四向 menu。
 `fdother.BattleActionOverlayState` 現以 unit test 固化真正 battle table；它不替這個另一個 submenu
 的四個 byte 命名。remake runtime 現可選擇性讀玩家自己的 `FD2_ORIGINAL_FDOTHER`／
-`assets/original/FDOTHER.DAT`：FDOTHER#0 的 6-bit VGA palette 轉為透明 index-0 palette，#2 的 raw
-cells 0..9 由 caller-owned lifecycle 依 opening `0..3`／closing `0..3` 幾何貼到 cursor。輸入在兩段
+`assets/original/FDOTHER.DAT`：FDOTHER#0 的 6-bit VGA palette 轉為透明 index-0 palette，#2 的完整 raw
+78 cells 由 caller-owned lifecycle 依 opening `0..3`／closing `0..3` 幾何貼到 cursor。輸入在兩段
 四-present 序列中被鎖定，confirm/cancel 的 child state 只在 close frame3 已呈現後提交；沒有把
 `0x1741c/0x176b4` 未提供的 delay 猜成毫秒值。這不包含原版 asset，也不把 current remake 的
 attack/spell/item availability approximation 說成 native `0x1b83d/0x1c269/0x1b8a6` 全等價。
