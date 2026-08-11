@@ -3891,3 +3891,17 @@ map-range 狀態。缺少 movement／raw provenance 時，在位置、回合與 
 這只證明 `0x14EF0→0x14121` 失敗備援的重製端 E1 消費邊界；blocked-coordinate 的
 原版完整 producer／高階 mode 1 語意、一般玩家同狀態 E2 與其他 command／spell／item
 路徑仍未閉合。
+
+## 2026-08-11：`0x14EF0` command route 遊戲層消費端 E1
+
+`TestAIStepConsumesVerified14EF0CommandRoute` 已在 Docker／Xvfb 通過。測試以完整
+raw command book、command mask、selector、runtime record、地形／組成、movement-cost
+與 class resistance provenance 建立三格戰場；`NextAIPlan` 由 `0x14EF0` 選出
+`0x15311` command route，`aiStep` 先沿 raw destination 移動，再呼叫已驗證的
+command 0 數值執行器，提交 MP 扣除、目標 HP 變更與回合完成。測試只驗證 raw route
+與 numeric state owner，不替 command 0 命名法術或演出，也不把 synthetic fixture
+當作原版一般玩家 E2。
+
+`0x15055` item route、未知 command／relocation／spell 的完整效果與 indexed 演出仍
+維持失敗即關閉；缺少 command book、target 或 resistance provenance 不得退回正規化
+AI。

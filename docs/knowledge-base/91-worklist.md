@@ -159,7 +159,9 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   文字閘門後 montage、正式 campaign handoff 與一般玩家 E2 仍失敗即關閉；
   證據見 [`fd2_ending_audio_ida.txt`](../data/ida/fd2_ending_audio_ida.txt)。
 - [~] **RE-AI-14EF0-RUNTIME-CONSUMER-20260810**：raw producer→`0x14EF0`
-  route→command／item state-only executor 已接上；mode 3／9 raw `+0x08`
+  route→command／item state-only executor 已接上；`TestAIStepConsumesVerified14EF0CommandRoute`
+  已以完整 raw command book／mask／resistance／movement provenance 實際消費
+  `0x15311` command route，提交 MP／HP／回合結果；mode 3／9 raw `+0x08`
   查找與 mode 5 mutable event grid／state tail 也有 Docker regression。
   mode 11 現另有 `SelectNativeAIMode11Transaction` 與 runtime stage owner，
   已把 `0x15311`／`0x1548E`／`0x14121→0x13FD4` 接到可編輯執行路徑；

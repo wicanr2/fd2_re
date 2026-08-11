@@ -162,6 +162,59 @@ func TestAIStepStopsMode2WithoutMovementProvenance(t *testing.T) {
 	}
 }
 
+func TestAIStepConsumesVerified14EF0CommandRoute(t *testing.T) {
+	actor := nativeAIConsumerUnit(0, 0, 1, 2)
+	actor.NativeCommandMask[0] = 1
+	actor.NativeInventoryFlags = []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	target := nativeAIConsumerUnit(2, 0, 0, 0)
+	target.Camp = battle.Enemy
+	target.ClassID = 0
+	target.AP, target.DP = 1, 1
+	commandBook := nativeAIConsumerCommandBook()
+	state := &battle.State{
+		W:                           3,
+		H:                           1,
+		Units:                       []*battle.Unit{actor, target},
+		NativeCompositionEventBytes: []byte{0, 0, 0},
+		NativeTerrainMoveCodes:      []byte{0, 0, 0},
+		NativeCommandBook:           commandBook,
+		NativeCommandResistances:    map[int]int{0: 10},
+	}
+	if err := state.BindNativeFutureItemRows(make([]byte, 2*battle.NativeItemEffectRowSize)); err != nil {
+		t.Fatal(err)
+	}
+	if err := state.BindNativeMovementCostRows(nativeAIConsumerCostRows()); err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{
+		m:      &MapData{W: 3, H: 1, TileW: 24, TileH: 24, Tiles: []int{0, 0, 0}},
+		st:     state,
+		aiBusy: true,
+		rng:    rand.New(rand.NewSource(1)),
+	}
+	g.aiStep()
+	if g.loadErr != "" || g.walk == nil || g.walk.u != actor || g.atk != nil || len(g.walk.path) < 2 ||
+		g.walk.path[len(g.walk.path)-1] != (battle.Cell{X: 1, Y: 0}) {
+		t.Fatalf("0x14ef0 command route did not start raw movement: walk=%v atk=%v path=%v err=%q", g.walk != nil, g.atk != nil, func() []battle.Cell {
+			if g.walk == nil {
+				return nil
+			}
+			return g.walk.path
+		}(), g.loadErr)
+	}
+	for step := 0; step < 96 && (g.aiBusy || g.walk != nil); step++ {
+		if err := g.Update(); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if g.loadErr != "" || g.aiBusy || g.walk != nil || g.atk != nil || state.Turn != 1 {
+		t.Fatalf("0x14ef0 command completion ai=%v walk=%v atk=%v turn=%d err=%q", g.aiBusy, g.walk != nil, g.atk != nil, state.Turn, g.loadErr)
+	}
+	if actor.X != 1 || actor.Y != 0 || actor.MP != 2 || target.HP >= target.MaxHP {
+		t.Fatalf("0x14ef0 command route did not commit numeric owner: actor=(%d,%d) mp=%d targetHP=%d/%d", actor.X, actor.Y, actor.MP, target.HP, target.MaxHP)
+	}
+}
+
 func TestAIStepConsumesVerifiedMode5EventPlan(t *testing.T) {
 	t.Setenv("FD2_MUTE", "1")
 	actor := nativeAIConsumerUnit(0, 0, 1, 5)

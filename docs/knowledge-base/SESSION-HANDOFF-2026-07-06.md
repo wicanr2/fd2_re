@@ -4543,3 +4543,15 @@ rows 建立三格戰場：`NextAIPlan` 只接受唯一 raw 落點，`aiStep` 走
 
 這是 `0x14EF0→0x14121` 備援的重製端 E1 消費證據，不是完整 mode 1 producer、高階
 玩法或原版一般玩家 E2；未知 command／法術／物品與完整敵方回合仍保持未閉合。
+
+## 2026-08-11：`0x14EF0` command route 遊戲層回歸
+
+`TestAIStepConsumesVerified14EF0CommandRoute` 已在 Docker／Xvfb 通過。正向 fixture
+提供完整 raw command book、command mask、selector、runtime record、地形／組成、
+movement-cost 與 class resistance；`NextAIPlan` 實際選出 `0x14EF0→0x15311`，
+`aiStep` 完成 raw destination movement 後，交給已驗證 command 0 numeric owner，
+確認 MP 扣除、目標 HP 變更與回合完成。這是 raw route→遊戲層的 E1 證據，不把
+synthetic command tuple 升格為原版法術名稱、完整演出或一般玩家 E2。
+
+`0x15055` item route、未知 command／relocation／spell 演出與缺少 producer 時的完整
+回合編排仍維持失敗即關閉；相關工作清單項目仍為 partial。
