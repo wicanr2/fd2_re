@@ -4461,3 +4461,20 @@ pending producer 證據，再以同一 raw roster／camera／cursor／tick 做�
 重製端同一 raw 狀態的敵方回合畫面、目標選擇與完整 mode 2／3／5／9／11 消費端仍未閉合。
 目前已驗證的 mode 2 遊戲層 owner、mode 11 兩段 owner、`0x14EF0` raw route 與
 `0x13FD4` indexed／音訊 owner 必須繼續以 Docker 回歸；未知欄位保持失敗即關閉。
+
+## 2026-08-11：遊戲層模式 11 回歸與可玩近似戰後邊界
+
+- `TestAIStepConsumesVerifiedMode11StagesInNativeOrder` 在 Docker／Xvfb 內由
+  `NextAIPlan` 實際建立兩段 raw stage，經 `aiStep` 先消費 `0x15311` 指令，再
+  沿 continuation 消費 `0x1548E` 物理／FIGANI；`TestAIStepStopsMode11WithoutVerifiedProducerTables`
+  證明缺 command book 或 item／movement producer 時會停止且不消耗行動。這是
+  重製端 E1 遊戲層 owner，不是原版一般玩家 AI E2。
+- 新增 `FD2_APPROXIMATE=1` 可玩近似模式。未綁定的 `postbattle_*` 只同步已物化
+  戰場隊伍，顯示戰後整理提示，按 Enter 後沿 authored `next` 進城鎮或整備；
+  不猜 JOIN／獎勵／章節／原版分支。未設定時仍維持忠實模式失敗即關閉。
+  `TestApproximatePostbattlePreservesAuthoredIntermissionBoundary` 驗證 town 與
+  preparation 兩條邊界，並確認戰場狀態已清除。
+- 本輪遊戲測試報告由獨立子代理在 Docker 產出，見
+  [`game-test-2026-08-11.md`](../reports/game-test-2026-08-11.md)；報告中的 DOSBox／
+  重製命令、輸入時間線、資產雜湊與畫面限制已由主代理重新檢查，仍維持 DOSBox
+  同 raw 敵方回合未閉合的限制。

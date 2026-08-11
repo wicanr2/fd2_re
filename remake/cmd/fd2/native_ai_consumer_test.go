@@ -61,6 +61,22 @@ func nativeAIConsumerCostRows() [][]byte {
 	return rows
 }
 
+func nativeAIConsumerCommandBook() []battle.NativeCommandRecord {
+	book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
+	for id := range book {
+		book[id] = battle.NativeCommandRecord{ID: id}
+	}
+	// This is the same raw command tuple used by the battle-package mode-11
+	// producer fixture.  It is intentionally kept local to the consumer test:
+	// the executable layer must prove it can consume a verified book, not reach
+	// into an unexported test helper or invent a normalized command.
+	book[0] = battle.NativeCommandRecord{
+		ID: 0, Damage: 50, Hit: 100, SelectionMode: 5, EffectMode: 1,
+		MPCost: 2, TargetCode: 0,
+	}
+	return book
+}
+
 func TestAIStepConsumesVerifiedMode2PhysicalPlan(t *testing.T) {
 	actor := nativeAIConsumerUnit(0, 0, 1, 2)
 	actor.InventorySlots[0] = 1
@@ -132,5 +148,88 @@ func TestAIStepStopsMode2WithoutMovementProvenance(t *testing.T) {
 	g.aiStep()
 	if g.loadErr == "" || g.aiBusy || actor.Acted {
 		t.Fatalf("incomplete mode-2 AI was consumed: err=%q ai=%v acted=%v", g.loadErr, g.aiBusy, actor.Acted)
+	}
+}
+
+func TestAIStepConsumesVerifiedMode11StagesInNativeOrder(t *testing.T) {
+	actor := nativeAIConsumerUnit(0, 0, 1, 11)
+	actor.NativeCommandMask[0] = 1
+	actor.NativeInventoryFlags = []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	actor.MP = 255
+	target := nativeAIConsumerUnit(2, 0, 0, 0)
+	// The raw command target code is authoritative for this fixture.  Both
+	// records are deliberately in the native enemy group so the command
+	// consumer's Camp predicate and the producer's raw +6 predicate agree;
+	// this test does not rename that group as an allegiance rule.
+	target.Camp = battle.Enemy
+	target.ClassID = 0
+	target.AP, target.DP = 1, 1
+	target.NativeInventoryFlags = []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	state := &battle.State{
+		W:                           3,
+		H:                           1,
+		Units:                       []*battle.Unit{actor, target},
+		NativeCompositionEventBytes: []byte{0, 0, 0},
+		NativeTerrainMoveCodes:      []byte{0, 0, 0},
+		NativeCommandBook:           nativeAIConsumerCommandBook(),
+		NativeCommandResistances:    map[int]int{0: 10},
+	}
+	if err := state.BindNativeFutureItemRows(make([]byte, 2*battle.NativeItemEffectRowSize)); err != nil {
+		t.Fatal(err)
+	}
+	if err := state.BindNativeMovementCostRows(nativeAIConsumerCostRows()); err != nil {
+		t.Fatal(err)
+	}
+
+	frames := []*ebiten.Image{ebiten.NewImage(1, 1), ebiten.NewImage(1, 1), ebiten.NewImage(1, 1)}
+	g := &Game{
+		m:            &MapData{W: 3, H: 1, TileW: 24, TileH: 24, Tiles: []int{0, 0, 0}},
+		st:           state,
+		aiBusy:       true,
+		rng:          rand.New(rand.NewSource(1)),
+		figani:       map[int][]*ebiten.Image{3: frames, 4: frames},
+		figaniDelays: map[int][]int{3: {1, 1, 1}, 4: {1, 1, 1}},
+	}
+
+	// aiStep must consume the raw mode-11 transaction.  The first call only
+	// starts its first movement/action stage; subsequent Update calls prove the
+	// continuation reaches the second stage instead of asking NextAIPlan again.
+	g.aiStep()
+	if g.loadErr != "" || g.walk == nil {
+		t.Fatalf("mode-11 first stage did not start: walk=%v err=%q", g.walk != nil, g.loadErr)
+	}
+	firstStageObserved := false
+	for step := 0; step < 240 && (g.aiBusy || g.walk != nil || g.atk != nil); step++ {
+		if err := g.Update(); err != nil {
+			t.Fatal(err)
+		}
+		if !firstStageObserved && actor.MP == 253 && target.HP < target.MaxHP {
+			firstStageObserved = true
+			if g.walk == nil && g.atk == nil {
+				t.Fatal("mode-11 continuation returned without starting its second native stage")
+			}
+		}
+	}
+	if g.loadErr != "" {
+		t.Fatalf("mode-11 native continuation failed: %s", g.loadErr)
+	}
+	if !firstStageObserved || g.aiBusy || g.walk != nil || g.atk != nil || state.Turn != 1 || target.HP >= target.MaxHP {
+		t.Fatalf("mode-11 stages did not complete: first=%v ai=%v walk=%v atk=%v turn=%d targetHP=%d/%d", firstStageObserved, g.aiBusy, g.walk != nil, g.atk != nil, state.Turn, target.HP, target.MaxHP)
+	}
+}
+
+func TestAIStepStopsMode11WithoutVerifiedProducerTables(t *testing.T) {
+	actor := nativeAIConsumerUnit(0, 0, 1, 11)
+	state := &battle.State{
+		W:                           1,
+		H:                           1,
+		Units:                       []*battle.Unit{actor},
+		NativeCompositionEventBytes: []byte{0},
+		NativeTerrainMoveCodes:      []byte{0},
+	}
+	g := &Game{st: state, aiBusy: true}
+	g.aiStep()
+	if g.loadErr == "" || g.aiBusy || actor.Acted {
+		t.Fatalf("incomplete mode-11 AI was consumed or normalized: err=%q ai=%v acted=%v", g.loadErr, g.aiBusy, actor.Acted)
 	}
 }

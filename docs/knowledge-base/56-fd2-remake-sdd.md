@@ -3810,3 +3810,16 @@ mode 5 的完整目標／指令／法術／道具人工智慧語意仍未解除�
 不代表圖示可用性、指令／法術／道具效果或敵方人工智慧語意已完成。原版敵方回合 E2
 錨點仍以 [`native-enemy-turn-original-e2.json`](../data/ui-traces/native-enemy-turn-original-e2.json)
 為準，重製端同狀態敵方回合 E2 尚未解除。
+
+## 2026-08-11：可玩近似模式與忠實證據模式分流
+
+為配合重製目標「可玩且近似」，不再把逐像素／逐音訊 E2 當成唯一完成條件；但未知
+原版語意仍不得悄悄成為正式規則。重製端新增明確的 `FD2_APPROXIMATE=1`：
+
+- 尚未有正式 handler 的 `postbattle_*` 節點只同步已物化戰場隊伍，顯示戰後整理
+  提示，玩家確認後沿編輯腳本的 `next` 進入既有城鎮或整備節點；不自行建立
+  JOIN、獎勵、章節值或原版分支。
+- 未設定旗標時維持忠實證據模式的失敗即關閉；`TestApproximatePostbattlePreservesAuthoredIntermissionBoundary`
+  以 town／preparation 兩條邊界驗證同步與戰場狀態清除。
+- 近似模式只代表可玩的戰役銜接，不提升 E1 為 E2，也不改寫既有原版證據與推論
+  等級；剩餘節點與證據以 [`91-worklist.md`](91-worklist.md) 最新稽核為準。

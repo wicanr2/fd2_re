@@ -32,6 +32,12 @@
 [介面證據矩陣](docs/knowledge-base/57-ui-evidence-matrix.md)與
 [最新交接勘誤](docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md)。
 
+為了讓重製端先維持可玩戰役流程，未綁定的戰後節點可在明確設定
+`FD2_APPROXIMATE=1` 時顯示戰後整理提示，確認後沿可編輯腳本進入既有城鎮／整備；
+這不猜原版 JOIN、獎勵或分支，未設定時仍採忠實模式的失敗即關閉。最近一輪
+重製版／未修改 DOSBox 的實測命令、雜湊與限制見
+[遊戲測試報告](docs/reports/game-test-2026-08-11.md)。
+
 本輪另固定兩項可編輯邊界：各城鎮的祕密商店不是共用一組按鍵，而是由
 `native_secret_gate` 保存每章 selection／掃描碼；戰鬥 BGM 依原版章節表、城鎮／
 商店使用 `FDMUS_010`。沒有已證實終局曲目的 `ending` 節點會停止前一曲，原版

@@ -272,6 +272,8 @@ type Game struct {
 	bgmCur                   string
 	bgmSource                string                // 音源設定 "fm"/"mt32"(settings.go;F2 切換)
 	debug                    bool                  // F3:開發除錯 HUD(座標/陣營原文等)
+	approximateMode          bool                  // FD2_APPROXIMATE=1:可玩近似模式；不宣稱原版 handler 等價
+	approximatePostbattle    bool                  // 未綁定戰後節點的近似整理提示，等待玩家確認後才進城鎮／整備
 	unitLabels               bool                  // FD2_UNIT_LABELS=1:cutscene sprite 左上標 [idx]fig+名+座標(協助回報/對映原版 slot)
 	cutsceneLog              bool                  // FD2_CUTSCENE_LOG=1:過場 node/beat/走位逐步 log 到 stderr(協助對原版資料比對)
 	banner                   string                // 回合橫幅文字(PLAYER/ENEMY PHASE)
@@ -2337,6 +2339,18 @@ func (g *Game) enterNode() {
 			// jump straight to town. Keep the authored graph cursor in place until
 			// an active handler binding is supplied.
 			if len(g.beats) == 0 && n.HandlerBinding == "" && strings.HasPrefix(g.camp.NodeID(), "postbattle_") {
+				if g.approximateMode {
+					// 此節點的原版 handler 仍未知。明確啟用的近似模式只保留玩家可見的
+					// 戰役邊界，不捏造 JOIN／獎勵語意：只同步已物化的戰場隊伍，等待
+					// Enter 後才沿 authored Next 邊進入城鎮／整備。
+					if err := g.syncPartyFromBattle(); err != nil {
+						g.loadErr = fmt.Sprintf("approximate postbattle %q: party sync unavailable: %v", g.camp.NodeID(), err)
+						return
+					}
+					g.approximatePostbattle = true
+					g.msg = "戰後整理（近似模式；原版 handler 尚未證實）按 Enter 繼續"
+					return
+				}
 				g.loadErr = fmt.Sprintf("postbattle node %q has no active handler binding", g.camp.NodeID())
 				g.msg = "戰後 handler 尚未接線，流程已停止"
 				return
@@ -3395,6 +3409,19 @@ func (g *Game) shopSellIDs() []int {
 	return out
 }
 
+// continueApproximatePostbattle 在明確近似提示後只沿 authored graph 邊前進；
+// 不合成原版 JOIN、獎勵、章節值或 handler 分支。
+func (g *Game) continueApproximatePostbattle() bool {
+	if g == nil || !g.approximatePostbattle || g.camp == nil {
+		return false
+	}
+	g.approximatePostbattle = false
+	g.msg = ""
+	g.camp.Advance("")
+	g.enterNode()
+	return true
+}
+
 // campInput 處理 campaign 節點的輸入。回傳 true = 已攔截(擋掉戰場一般輸入)。
 func (g *Game) campInput() bool {
 	if g.camp == nil {
@@ -3415,6 +3442,12 @@ func (g *Game) campInput() bool {
 		}
 		return true
 	case "cutscene":
+		if g.approximatePostbattle {
+			if enter {
+				g.continueApproximatePostbattle()
+			}
+			return true
+		}
 		// BeatRunner 驅動:目前這一拍是不是「等對白播完」全看 g.dialog 是否非空
 		// (只有 dialog beat 會填它),其餘拍(pan/walk/act/fade/delay)Enter 無作用,
 		// 交給 Update 各自的計時/佇列機制推進,不在這裡搶著 advance。
@@ -7801,6 +7834,7 @@ func loadGame() *Game {
 	}
 	g.unitLabels = os.Getenv("FD2_UNIT_LABELS") != ""
 	g.cutsceneLog = os.Getenv("FD2_CUTSCENE_LOG") != ""
+	g.approximateMode = os.Getenv("FD2_APPROXIMATE") == "1"
 	g.shotPath = os.Getenv("FD2_SHOT")
 	g.shotSeries = os.Getenv("FD2_SHOT_SERIES")
 	if v := os.Getenv("FD2_SHOT_FRAME"); v != "" {

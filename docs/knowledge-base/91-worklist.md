@@ -38,6 +38,24 @@
   進入下一項 `0x13FD4` owner。缺少 command、target、path、FIGANI 或 raw
   provenance 時停止，不把 route 猜成玩法名稱。Docker focused regression 已
   通過；一般玩家敵方回合 E2 與未知 command／spell presentation 仍另列待辦。
+- [x] **RE-AI-MODE11-GAME-CONSUMER-20260811**：新增
+  `TestAIStepConsumesVerifiedMode11StagesInNativeOrder` 與
+  `TestAIStepStopsMode11WithoutVerifiedProducerTables`。Docker/Xvfb 實際由
+  `NextAIPlan` 產生兩段 raw stage，經 `aiStep` 先消費 `0x15311` 指令，再沿
+  continuation 消費 `0x1548E` 物理／FIGANI；缺 command book 或 item／movement
+  producer 時停止且不消耗行動。這只把 mode 11 的遊戲層 owner 提升為 E1 回歸，
+  不宣稱原版目標選擇、完整敵方回合或一般玩家 E2。
+- [x] **CAMPAIGN-APPROXIMATE-INTERMISSION-20260811**：新增明確的
+  `FD2_APPROXIMATE=1` 可玩近似模式。對尚未有正式 handler 的
+  `postbattle_*` 節點，只同步已物化戰場隊伍、顯示「戰後整理」提示，等待玩家
+  確認後沿 authored `next` 進入城鎮／整備；不猜 JOIN、獎勵、章節或原版分支。
+  預設忠實模式仍失敗即關閉，且新增 `TestApproximatePostbattlePreservesAuthoredIntermissionBoundary`
+  驗證 town／preparation 邊界與戰場狀態清除。這是可玩近似切片，不是原版 E2。
+- [x] **GAME-TEST-REPORT-20260811**：獨立子代理在 Docker 內實際驗證重製端完整
+  Go 回歸、mode 2／mode 11、戰後城鎮／整備與 shop/preparation contract，並以
+  未修改 `FD2.EXE`／固定 `FD2.SAV` 完成 DOSBox 啟動／CONTINUE 擷取；報告見
+  [`game-test-2026-08-11.md`](../reports/game-test-2026-08-11.md)。DOSBox 尚未
+  能可靠進入與重製端相同 raw 敵方回合，故 mode 11 仍只列 E1，不宣稱 parity。
 - [x] **RE-AI-13FD4-RAW-PRESENTATION-COMMIT**：正式 runtime owner 已接上
   `0x13FD4` 的 indexed／音訊窄切片：消費 `[0x53EEC]` index `4`／loop `1`、
   `0x12D7B`、兩段 `0x1DA16`（`(2,0xFD)`→`(0,0)`）、兩段修正後的
@@ -203,14 +221,15 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   靜態 owner 邊界，不把欄位命名成 camera／portrait／effect，也不解除
   `native_2189a_loop` 的 indexed／campaign fail-closed gate。證據見
   [`fd2_ch22_post_ida.txt`](../data/ida/fd2_ch22_post_ida.txt)。
-- [x] **本輪稽核基線**：24 個標準戰後節點為 19 active／5 blocked；
+- [x] **本輪稽核基線**：以目前 `tools/audit_postbattle_binding_gates.py --json`
+  實際稽核，24 個標準戰後節點為 **20 active／4 blocked**；
   story/cutscene 為 121 節點、9 個獨立 script、50 個 handler binding、62 個
   fallback；`mapping_gaps.native_semantics` 由 29 降為 24，表示三個
   `0x2189a` caller 與兩個 ch22 raw predicate 已有可編輯原語／條件，不代表
   renderer 或戰役節點已解鎖。
-  這些是覆蓋統計，不是原版完成百分比。新增的第五個封鎖節點是玩家第25戰：
-  `0x24df2` 的兩個 `0x112a5` immediate 已辨識為角色索引 26「聖寇拉斯」與
-  14「珊」，但仍不能把該次 append 命名成永久 JOIN。
+  這些是覆蓋統計，不是原版完成百分比。現時仍封鎖的是玩家第23、24、25、29戰；
+  第25戰 `0x24df2` 的兩個 `0x112a5` immediate 雖已辨識為角色索引 26「聖寇拉斯」
+  與 14「珊」，仍不能把該次 append 命名成永久 JOIN。
 - [x] **RE-4DBFC-RAW-MASK-CONTRACT**：合法 IDA Pro 9.4 重新固定
   `0x4dbfc..0x4dc34` 的 `count=u8[base+0]*u8[base+2]` 與逐格
   `cell[+3]=0xff`、`cell[+2]&=0x1f`、`cell[+1]&=0x03`；`0x24a92` 只是其中一個
@@ -428,7 +447,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 - [x] **UI-VERTICAL-CH02-TOWN-HOTEL-RAW-RETURN**：新增 `hotel` campaign node、`Game.applyHotelServiceSelection`／`Game.leaveHotel` 與 `TestCampaignTownHotelRawRouteReturnTrace`，驗證 `town_ch02→hotel_ch02→town_ch02`，selector 0/1/2/3 保留 raw resource13 與 `0x2ffa5/0x30012/0x301f4/0x19953→0x197e5` order；未命名服務、不做 party/gold mutation，未知 selector fail-closed。保存 [`town-hotel-raw-return-ch02.json`](../data/ui-traces/town-hotel-raw-return-ch02.json)。
 - [x] **POSTBATTLE-UNBOUND-FAIL-CLOSED**：`Game.enterNode` 對沒有 active handler 的 `postbattle_*` cutscene 拒絕空 beats auto-advance，新增 `TestUnboundPostbattleCutsceneFailsClosed`；流程停在原 node、保留 `loadErr/msg`，避免未完成 persistence/reward handler 被誤當成直接回 town。
 - [x] **POSTBATTLE-SAVE-FAIL-CLOSED**：`saveGameToSlot` 對所有 `postbattle_*` 節點拒絕 F5，新增 `TestSaveRejectsUnboundPostbattleBoundary`；未完成 persistence handler 不會產生假 save。
-- [x] **POSTBATTLE-BINDING-GATE-AUDIT**：新增唯讀 `tools/audit_postbattle_binding_gates.py`，逐一依 handler source address 檢查 generated binding 的 `loadch/pan/dialog/act/layout` 覆蓋；**本項原始稽核快照曾列 18 個 blocked，現況以文件頂端 19 active／5 blocked 為準**。ch09/ch10/ch12/ch18 已通過 compiler regression 並提升為 active handler，ch09 resource37 由 Docker exporter 解碼，其餘 skeleton 禁止自動啟用。
+- [x] **POSTBATTLE-BINDING-GATE-AUDIT**：新增唯讀 `tools/audit_postbattle_binding_gates.py`，逐一依 handler source address 檢查 generated binding 的 `loadch/pan/dialog/act/layout` 覆蓋；歷史快照曾列 18 或 19 active，**現況以 Docker 實際稽核的 20 active／4 blocked 為準**。ch09/ch10/ch12/ch18 已通過 compiler regression 並提升為 active handler，ch09 resource37 由 Docker exporter 解碼，其餘 skeleton 禁止自動啟用。
 
 ## 第 1 輪 ✅
 - [x] 素材盤點(`FD2.EXE` + 12 `.DAT` + 音效驅動)
