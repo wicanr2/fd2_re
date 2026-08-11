@@ -4270,3 +4270,45 @@ AI 或逐像素 UI parity。Docker 工作皆使用一次性容器；本輪結束
 這是原始證據到重製 runtime 的 E1 窄切片，不是未修改一般玩家 DOSBox E2，
 也不代表第23／24／25／29戰已完成。下一步應從最小可重現的戰役節點繼續，
 並維持城鎮／商店／整備／存檔邊界與失敗即關閉規則。
+
+## 2026-08-11：ch22_pre LOADCH 視圖來源已補證並接入正式戰役
+
+本輪完成玩家第23戰戰前 `ch22_pre` 的原始游標／視圖來源窄切片。先以合法
+IDA Pro 9.4 Docker 重新讀取固定雜湊 `FD2.EXE`，再以 Docker＋Xvfb 執行真實
+回歸；沒有使用主機 Capstone、主機 Python 或未鎖定虛擬環境。
+
+### 已證實
+
+- `0x205da` 在 `0x1088d` 後將 `[0x53AA9]`／`[0x53AAD]`、
+  `[0x53AB1]`／`[0x53AB5]`、`[0x53AB9]`／`[0x53ABD]` 全部清為零，
+  再呼叫 `0x11CAC(1)`。
+- `0x135dd` 只同步更新鏡頭與絕對游標；沒有寫入可見游標。故第一次
+  PAN `(14,32)` 後，`0x336e5` 的 `[0x53AB9]+6`／`[0x53ABD]+5`
+  是 indexed tile `(0,5)`，不是 `(6,5)`。
+- `Game` 現以場景專用 `storyNativeMapView` 保存六個原始視圖全域，
+  `syncStoryNativeMapPanView` 每個 tile-step 驗證鏡頭／絕對游標身份與地圖邊界。
+  `handlerRuntimeSlotCount` 會在 runtime_context 位於 LOADCH 前時驗證下一個
+  LOADCH 的 70 筆宣告，不拿前一戰 66 槽誤判。
+- 正式 `story_ch23` 已使用 `ch22_pre.json`；正式 regression 驗證 70 筆 roster、
+  目前整備選出的 16 人、16 次停用、三段 PAN、indexed transition，並到達
+  `battle_ch23`。因 `ch23.json` 沒有 `runtime_append_groups` 明確契約，
+  handoff 只走正式戰場重建，沒有猜測 handler 陣列與 battle state 共享。
+
+### 實際驗證
+
+在 `/home/anr2/cht/fd2` 使用一次性 Docker＋Xvfb（原版 `FLAME2` 唯讀掛載）執行：
+
+```text
+go test -v ./cmd/fd2 -run TestChapter22PreHandlerReachesBattle23WithLoadCHView -count=1
+go test -v ./cmd/fd2 -run 'TestChapter22PreLoadCHUsesSelectedPartyAndRawViewReset|TestResolveNativeIndexedTransition' -count=1
+```
+
+兩組均通過；完整證據見
+[`fd2_ch22_pre_view_reset_ida.txt`](../data/ida/fd2_ch22_pre_view_reset_ida.txt)。
+
+### 尚未完成
+
+- 這是 E1，不是未修改一般玩家 DOSBox 同狀態 E2，也不宣稱逐像素／逐音訊一致。
+- `postbattle_ch23_persist` 及其戰後城鎮／商店／整備／存檔仍失敗即關閉。
+- `ch23.json` 的 runtime append handoff 尚無原始證據，暫不把部分 handler 陣列
+  猜接成戰鬥 runtime；後續需先取得原版一般玩家路徑與 raw slot trace。

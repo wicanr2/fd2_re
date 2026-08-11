@@ -1521,6 +1521,58 @@ func TestChapter2PreLoadCHUsesSixMemberJoinOrderAndGroupOneFrontier(t *testing.T
 	}
 }
 
+func TestChapter22PreLoadCHUsesSelectedPartyAndRawViewReset(t *testing.T) {
+	beats, issues, err := campaign.CompileHandlerBinding(assetPath("assets/cutscenes/bindings/ch22_pre.json"))
+	if err != nil || len(issues) != 0 || len(beats) == 0 {
+		t.Fatalf("ch22_pre compile err=%v issues=%#v beats=%#v", err, issues, beats)
+	}
+	var loadCH *campaign.LoadCHState
+	for _, beat := range beats {
+		if beat.LoadCH != nil {
+			loadCH = beat.LoadCH
+			break
+		}
+	}
+	if loadCH == nil {
+		t.Fatalf("ch22_pre compile produced no LOADCH beat")
+	}
+	order := []int{0, 4, 9, 30, 1, 8, 2, 10, 13, 12, 5, 6, 11, 14, 17, 15, 18, 16, 21}
+	members := make(map[int]bool, len(order))
+	deploy := make(map[int]bool, 15)
+	for _, id := range order {
+		members[id] = true
+	}
+	for _, id := range order[1:16] {
+		deploy[id] = true
+	}
+	g := &Game{partyMembers: members, partyJoinOrder: order, partyDeploy: deploy}
+	if err := g.applyLoadCH(loadCH); err != nil {
+		t.Fatal(err)
+	}
+	if len(g.storyRoster) != 70 || len(g.storyActors) != 18 {
+		t.Fatalf("ch22_pre runtime roster/actors=%d/%d, want 70/18", len(g.storyRoster), len(g.storyActors))
+	}
+	for slot, id := range order[:16] {
+		if g.storyActors[slot].Fig != id {
+			t.Fatalf("selected party slot%d fig=%d, want %d", slot, g.storyActors[slot].Fig, id)
+		}
+	}
+	if !g.hasStoryNativeMapView || g.storyNativeMapView != (battle.NativeMapViewState{}) {
+		t.Fatalf("LOADCH view=%#v has=%v, want proven zero reset", g.storyNativeMapView, g.hasStoryNativeMapView)
+	}
+	g.camPan = &camPanJob{toX: float64(14 * g.m.TileW), toY: float64(32 * g.m.TileH), tileStep: true}
+	for ticks := 0; g.camPan != nil && ticks < 100; ticks++ {
+		g.stepCamPan()
+	}
+	if g.camPan != nil || g.loadErr != "" {
+		t.Fatalf("ch22 first pan stopped pan=%#v err=%q", g.camPan, g.loadErr)
+	}
+	wantView := battle.NativeMapViewState{CameraX: 14, CameraY: 32, CursorX: 14, CursorY: 32}
+	if g.storyNativeMapView != wantView {
+		t.Fatalf("ch22 first pan view=%#v, want %#v", g.storyNativeMapView, wantView)
+	}
+}
+
 func TestCh15CandidateBindingCompilesForChapter16RuntimeButRemainsDataOnly(t *testing.T) {
 	bindingPath := assetPath("assets/cutscenes/bindings/ch15_post_candidate.json")
 	beats, issues, err := campaign.CompileHandlerBinding(bindingPath)

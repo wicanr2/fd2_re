@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "handler_script": "../handlers/ch22_pre.json",
+  "acting_resources": "../acting/map32.json",
+  "story_index_map": "../dialogue-index/count-aligned.json",
+  "dialogue_contexts": {
+    "0x33761": { "source_dat": "FDTXT_023", "script": "ch23.json" },
+    "0x3379e": { "source_dat": "FDTXT_023", "script": "ch23.json" },
+    "0x337cf": { "source_dat": "FDTXT_023", "script": "ch23.json" },
+    "0x33800": { "source_dat": "FDTXT_023", "script": "ch23.json" },
+    "0x338b2": { "source_dat": "FDTXT_023", "script": "ch23.json" }
+  },
+  "runtime_context": {
+    "slot_counts": [70],
+    "spawn_groups": { "1": 24 },
+    "story_viewport": true
+  },
+  "overrides": {
+    "0x336ab": {
+      "loadch": {
+        "chapter": 22,
+        "map": "assets/maps/map22",
+        "roster": "assets/maps/map22/map22_units.json",
+        "slot_count": 70,
+        "script": "assets/story/ch23.json",
+        "party_scenario": "assets/scenarios/ch23.json"
+      }
+    },
+    "0x336e5": {
+      "indexed_transition": {
+        "tile_x": 0,
+        "tile_y": 0,
+        "cursor_source": "native_relative_cursor",
+        "cursor_y_offset": 5,
+        "radial_radius": 10,
+        "radial_radius_step": 8,
+        "start_y": 0,
+        "end_y": 192,
+        "clip_width": 312,
+        "clip_height": 192,
+        "frames": 9,
+        "frame_delay_ms": 5,
+        "tail_delay_ms": 500,
+        "palette_range_start": 0,
+        "palette_range_end": 255,
+        "palette_delta_start": 0,
+        "palette_delta_end": 62,
+        "palette_delta_step": 2,
+        "palette_delay_ms": 4
+      }
+    },
+    "0x336c7": { "pan": { "x": 336, "y": 768, "tile_step": true } },
+    "0x3376d": { "pan": { "x": 336, "y": 696, "tile_step": true } },
+    "0x33816": { "pan": { "x": 336, "y": 312, "tile_step": true } },
+    "0x33777": { "act": { "resource": 68 } },
+    "0x337a8": { "act": { "resource": 69 } },
+    "0x337d9": { "act": { "resource": 70 } }
+  }
+}

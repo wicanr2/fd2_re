@@ -57,3 +57,14 @@ FD2 ch22 pre-handler evidence (player battle 23, candidate only)
 map22 runtime 拓撲與 FDTXT／ACTING 對位是「強推論／資料消費候選」，因為尚
 未有未修改一般玩家路徑的 DOSBox 同狀態擷取。候選編譯測試通過只證明 IR
 可消費，不提升為 renderer parity、戰後城鎮流程或完整重製完成。
+
+勘誤（2026-08-11）
+------------------
+
+上面的「候選／尚未接入」是歷史狀態，保留作時間序列，不再代表目前正式接線。
+新增 [`fd2_ch22_pre_view_reset_ida.txt`](fd2_ch22_pre_view_reset_ida.txt) 已補證：
+`0x205da` 在 `0x1088d` 後將鏡頭、絕對游標、可見游標三組原始全域清零，
+`0x135dd` 只同步前兩組；所以 `0x336e5` 第一次 PAN 後的相對 tile 是 `(0,5)`。
+正式 binding 已接 `story_ch23`，並以 Docker＋Xvfb 回歸進入 `battle_ch23`。
+這只把 LOADCH 視圖來源提升為 E1；未修改一般玩家 DOSBox E2、逐像素／逐音訊
+parity 及 `postbattle_ch23_persist` 戰後城鎮／商店／整備／存檔仍未閉合。

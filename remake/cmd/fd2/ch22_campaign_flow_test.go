@@ -151,3 +151,32 @@ func TestChapter22PostbattleBindingReachesPreparation23ForMaterializedFrontiers(
 		})
 	}
 }
+
+func TestChapter22PreHandlerReachesBattle23WithLoadCHView(t *testing.T) {
+	if os.Getenv("FD2_ORIGINAL_FDOTHER") == "" {
+		t.Skip("ch22_pre indexed transition regression requires the read-only original FDOTHER/FDSHAP/FDICON bundle")
+	}
+	g, _ := newChapter22RuntimeBattle(t)
+	full, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	full.Start = "story_ch23"
+	g.camp = campaign.NewRunner(full)
+	g.enterNode()
+	if g.loadErr != "" {
+		t.Fatalf("ch22_pre entry stopped at beat %d/%d: %s", g.beatIdx, len(g.beats), g.loadErr)
+	}
+	if !g.hasStoryNativeMapView || len(g.storyRoster) != 70 {
+		t.Fatalf("ch22_pre LOADCH view=%#v has=%v roster=%d, want zero view and 70 raw records", g.storyNativeMapView, g.hasStoryNativeMapView, len(g.storyRoster))
+	}
+	if err := g.fastForwardShotCampaign(); err != nil {
+		t.Fatal(err)
+	}
+	if g.loadErr != "" || g.camp.NodeID() != "battle_ch23" {
+		t.Fatalf("ch22_pre boundary node=%q beat=%d/%d err=%q", g.camp.NodeID(), g.beatIdx, len(g.beats), g.loadErr)
+	}
+	if g.st == nil || len(g.st.Units) == 0 {
+		t.Fatal("battle_ch23 was reached without a materialized battle state")
+	}
+}

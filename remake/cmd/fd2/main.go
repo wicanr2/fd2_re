@@ -353,6 +353,9 @@ type Game struct {
 	font               *Font                           // 原版點陣中文字型(doc 08)
 
 	nativeChapterRestore *campaign.NativeChapterSlotRestorePlan // 四槽 LOAD 的已驗證戰間狀態；未知 raw bytes 僅保存、不猜接
+
+	storyNativeMapView    battle.NativeMapViewState // LOADCH 後原版六個視圖全域的場景專用載體；不冒充 battle.State
+	hasStoryNativeMapView bool                      // 僅在已證實的 LOADCH 視圖重設與 pan 步進後有效
 }
 
 // atkAnim 全螢幕戰鬥演出(對照原版 orig_05:守方左/攻方右土台/斬擊弧/血條/閃紅抽血)。
@@ -646,6 +649,33 @@ func (g *Game) stepTransitionReveal() {
 	}
 }
 
+// syncStoryNativeMapPanView mirrors raw 0x135dd's proven camera/absolute
+// cursor lockstep.  The helper deliberately preserves the visible cursor:
+// IDA shows that 0x135dd writes [0x53aa9/0x53aad] and
+// [0x53ab1/0x53ab5], but not [0x53ab9/0x53abd].
+func (g *Game) syncStoryNativeMapPanView() bool {
+	if g == nil || !g.hasStoryNativeMapView {
+		return true
+	}
+	if g.m == nil || g.m.TileW <= 0 || g.m.TileH <= 0 || g.m.W <= 0 || g.m.H <= 0 ||
+		int(g.camX)%g.m.TileW != 0 || int(g.camY)%g.m.TileH != 0 ||
+		g.camX != float64(int(g.camX)) || g.camY != float64(int(g.camY)) {
+		g.loadErr = "native story map view: pan camera is not tile-aligned"
+		return false
+	}
+	view := g.storyNativeMapView
+	view.CameraX, view.CameraY = int(g.camX)/g.m.TileW, int(g.camY)/g.m.TileH
+	view.CursorX = view.CameraX + view.VisibleCursorX
+	view.CursorY = view.CameraY + view.VisibleCursorY
+	carrier := &battle.State{W: g.m.W, H: g.m.H}
+	if err := carrier.MaterializeNativeMapViewState(view); err != nil {
+		g.loadErr = "native story map view: " + err.Error()
+		return false
+	}
+	g.storyNativeMapView = carrier.NativeMapViewState
+	return true
+}
+
 // stepCamPan 逐幀推進 beat「pan」鏡頭位移；原版模式逐 tile、X-first，
 // 相容模式線性內插。走完清除 job 並接下一拍。
 func (g *Game) stepCamPan() {
@@ -672,6 +702,10 @@ func (g *Game) stepCamPan() {
 			g.camX = step(g.camX, j.toX, g.m.TileW)
 		} else if g.camY != j.toY {
 			g.camY = step(g.camY, j.toY, g.m.TileH)
+		}
+		if !g.syncStoryNativeMapPanView() {
+			g.camPan = nil
+			return
 		}
 		if g.camX == j.toX && g.camY == j.toY {
 			g.camPan = nil
@@ -787,6 +821,20 @@ func (g *Game) actingActor(target campaign.ActingUnit) *battle.Unit {
 func (g *Game) handlerUnitCount() int {
 	if g.st != nil {
 		return len(g.st.Units)
+	}
+	return len(g.storyActors)
+}
+
+// handlerRuntimeSlotCount preserves LOADCH's raw FDFIELD count before later
+// SPAWN beats append records to the scene actor array.  A runtime_context beat
+// therefore validates the original load context, not only the currently
+// visible/materialized actors.
+func (g *Game) handlerRuntimeSlotCount() int {
+	if g.st != nil {
+		return len(g.st.Units)
+	}
+	if g.storyRoster != nil {
+		return len(g.storyRoster)
 	}
 	return len(g.storyActors)
 }
@@ -1010,6 +1058,9 @@ func (g *Game) fastForwardShotCampaign() error {
 			// 舊拍仍在執行。線性 pan 的終點就是 Beat payload 的終點。
 			job := g.camPan
 			g.camX, g.camY, g.camPan = job.toX, job.toY, nil
+			if !g.syncStoryNativeMapPanView() {
+				return fmt.Errorf("shot fast-forward camera view: %s", g.loadErr)
+			}
 			if job.then != nil {
 				job.then()
 			}
@@ -1111,9 +1162,17 @@ func (g *Game) beatStart(b campaign.Beat) {
 			g.loadErr = "beat runtime_context:缺少有效 slot_count/slot_counts"
 			return
 		}
-		if g.st == nil || !b.RuntimeContext.AcceptsSlotCount(len(g.st.Units)) {
-			g.loadErr = fmt.Sprintf("beat runtime_context: runtime slots=%d, want exact %d or one of %v", g.handlerUnitCount(), b.RuntimeContext.SlotCount, b.RuntimeContext.SlotCounts)
-			return
+		if !b.RuntimeContext.AcceptsSlotCount(g.handlerRuntimeSlotCount()) {
+			// Compiler metadata is emitted before LOADCH, while the previous
+			// battle state may still be installed (or the scene array may be
+			// empty). Validate the declared LOADCH record count here instead of
+			// comparing unrelated prior-battle slots; applyLoadCH then validates
+			// the actual roster bytes before replacing the scene state.
+			nextIsLoadCH := g.beatIdx+1 < len(g.beats) && g.beats[g.beatIdx+1].Op == "loadch" && g.beats[g.beatIdx+1].LoadCH != nil
+			if !nextIsLoadCH || !b.RuntimeContext.AcceptsSlotCount(g.beats[g.beatIdx+1].LoadCH.SlotCount) {
+				g.loadErr = fmt.Sprintf("beat runtime_context: runtime slots=%d, want exact %d or one of %v", g.handlerRuntimeSlotCount(), b.RuntimeContext.SlotCount, b.RuntimeContext.SlotCounts)
+				return
+			}
 		}
 		if b.RuntimeContext.StoryViewport {
 			g.storyBG = true
@@ -1919,6 +1978,28 @@ func (g *Game) materializeStoryGroup(group int) {
 	}
 }
 
+// loadCHPartyOrder projects the permanent JOIN chronology through the current
+// preparation selection.  The original LOADCH constructs the deployed party
+// first, so a late-game cutscene must not silently resurrect every joined
+// character merely because partyJoinOrder is longer than the selected roster.
+// With no JOIN history this remains a direct/debug binding's authored order.
+func (g *Game) loadCHPartyOrder(state *campaign.LoadCHState) []int {
+	if g == nil || len(g.partyJoinOrder) == 0 {
+		if state == nil {
+			return nil
+		}
+		return append([]int(nil), state.PartyOrder...)
+	}
+	members := g.battlePartyMembers()
+	order := make([]int, 0, len(g.partyJoinOrder))
+	for _, id := range g.partyJoinOrder {
+		if members[id] {
+			order = append(order, id)
+		}
+	}
+	return order
+}
+
 // applyLoadCH is the remake adapter for original 0x205da/0x1088d.  The
 // original operation selects FDTXT chapter+1 and the three FDFIELD resources
 // for the same chapter in one call; it is not merely a camera/map command.
@@ -1943,6 +2024,15 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 	if err := g.loadMap(state.Map); err != nil {
 		return fmt.Errorf("map %q: %w", state.Map, err)
 	}
+	// 0x205da/0x1088d resets camera, absolute cursor and visible cursor to
+	// zero after loading the field. Keep this raw view in a scene-only carrier;
+	// putting it in g.st would make later story SPAWN beats use the battle-state
+	// append path and invent runtime records that LOADCH has not materialized.
+	loadCHView := battle.NativeMapViewState{}
+	viewCarrier := &battle.State{W: g.m.W, H: g.m.H}
+	if err := viewCarrier.MaterializeNativeMapViewState(loadCHView); err != nil {
+		return fmt.Errorf("map %q native view reset: %w", state.Map, err)
+	}
 	var party []*battle.Unit
 	if state.PartyScenario != "" {
 		scenario, err := battle.LoadScenario(assetPath(state.PartyScenario))
@@ -1952,11 +2042,12 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 		// A normal campaign reaches this LOADCH after JOIN established permanent
 		// membership. Direct scene/debug starts have no membership history and
 		// use the evidence-backed PartyOrder stored in the editable binding.
-		filterScenarioParty(scenario, g.partyMembers)
-		partyOrder := g.partyJoinOrder
-		if len(partyOrder) == 0 {
-			partyOrder = state.PartyOrder
-		} else if len(state.PartyOrder) != 0 && !equalIntOrder(partyOrder, state.PartyOrder) {
+		filterScenarioParty(scenario, g.battlePartyMembers())
+		partyOrder := g.loadCHPartyOrder(state)
+		// A binding's PartyOrder describes the normal permanent chronology.  Once
+		// preparation has an active selection, the projected deployed order is the
+		// native runtime source and may intentionally be shorter than that field.
+		if len(g.partyJoinOrder) != 0 && len(g.partyDeploy) == 0 && len(state.PartyOrder) != 0 && !equalIntOrder(partyOrder, state.PartyOrder) {
 			return fmt.Errorf("party JOIN chronology %v differs from binding %v", partyOrder, state.PartyOrder)
 		}
 		if err := reorderScenarioParty(scenario, partyOrder); err != nil {
@@ -2017,6 +2108,8 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 	g.walkFirst, g.followWalk = false, false
 	g.camMaxY = float64(state.CamMaxY)
 	g.camX, g.camY = float64(state.CamX), float64(state.CamY)
+	g.storyNativeMapView = loadCHView
+	g.hasStoryNativeMapView = true
 	g.campLines = lines
 	return nil
 }
@@ -2160,6 +2253,8 @@ func (g *Game) enterNode() {
 	g.storyWalks = nil
 	g.storyAutoAdvance = 0
 	g.walkFirst, g.followWalk, g.camMaxY = false, false, 0
+	g.storyNativeMapView = battle.NativeMapViewState{}
+	g.hasStoryNativeMapView = false
 	g.camPan, g.focusJob, g.actJob, g.beats, g.beatIdx, g.beatDelay = nil, nil, nil, nil, -1, 0
 	g.transitionReveal = nil
 	g.indexedTransition = nil
@@ -2485,6 +2580,14 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 			if err := reorderScenarioParty(sc, g.partyJoinOrder); err != nil {
 				g.loadErr = "scenario party order: " + err.Error()
 				return
+			}
+			if adoptHandlerState && !sc.RuntimeAppendGroups {
+				// Matching asset paths alone do not prove that the following battle
+				// consumes the handler's partial runtime array.  Without the
+				// explicit runtime-append contract, rebuild the authored battle
+				// state and keep the boundary fail-closed rather than calling
+				// AdoptHandlerBattleState on an incompatible scenario.
+				adoptHandlerState = false
 			}
 			g.sc = sc
 			if adoptHandlerState {

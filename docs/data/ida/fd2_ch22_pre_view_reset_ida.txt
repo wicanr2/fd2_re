@@ -1,0 +1,85 @@
+FD2 ch22 pre：LOADCH 後原始視圖／游標來源補證
+================================================
+
+輸入與工具
+----------
+
+- 輸入：`FD2.EXE`，固定版本大小 357074 bytes。
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- IDA：合法 IDA Pro 9.4，使用 `fd2-ida-authorized-local` 一次性 Docker
+  容器；線性位址是 IDA 的 FD2.EXE 位址，不是檔案偏移。
+- 交叉驗證：Capstone 僅使用 `fd2-cap-local` Docker 映像；本次沒有在主機
+  Python 或主機虛擬環境安裝 Capstone。
+
+已證實的 `loadch` 重設
+----------------------
+
+`0x336ab` 呼叫 `0x205da`。IDA 9.4 的指令層固定下列寫入順序：
+
+```text
+0x205f9 push dword_53C03
+0x205ff call sub_1088D
+0x20619 mov dword_53AA9, 0
+0x20623 mov dword_53AAD, 0
+0x2062d mov dword_53AB1, 0
+0x20637 mov dword_53AB5, 0
+0x20641 mov dword_53AB9, 0
+0x2064b mov dword_53ABD, 0
+0x20655 push 1
+0x20657 call sub_11CAC
+```
+
+本專案的附加語意只作索引，保留原始全域名稱：
+
+| 原始全域 | 附加語意 | 等級 | 證據 |
+|---|---|---|---|
+| `[0x53AA9]`／`[0x53AAD]` | 鏡頭 tile 原點 X/Y | 已證實 | `0x205da` 寫零；`0x135dd` 讀寫並步進 |
+| `[0x53AB1]`／`[0x53AB5]` | 絕對游標 X/Y | 已證實 | `0x205da` 寫零；`0x135dd` 與鏡頭同步步進 |
+| `[0x53AB9]`／`[0x53ABD]` | 鏡頭相對可見游標 X/Y | 已證實 | `0x205da` 寫零；`0x135dd` 沒有寫入端 |
+
+`0x135dd` 的 IDA 輸出在 `0x13606`／`0x1360c`、`0x13614`／`0x1361a`、
+`0x1363f`／`0x13645`、`0x1364d`／`0x13653` 分別對鏡頭與絕對游標做減／加，
+每次更新後呼叫 `0x11cac`。同一函式沒有寫入 `[0x53AB9]` 或
+`[0x53ABD]`；相鄰 `0x4e031` 只搬移 BIOS timer words，不能被命名成視圖更新。
+
+因此 ch22 pre 第一次 PAN `(14,32)` 完成後，原始視圖是：
+
+```text
+camera       = (14, 32)
+absolute     = (14, 32)
+visible      = (0, 0)
+```
+
+`0x336e5` 的 raw push `[0x53AB9]+6`、`[0x53ABD]+5` 因而解析為
+`0x24618` 的 indexed transition tile `(0,5)`；不能把 X 偏移 6 誤套到
+可見游標，也不能把它改成 `(6,5)`。第二、三次 PAN 的 camera／absolute
+分別到 `(14,29)`、`(14,13)`，visible 仍保留 `(0,0)`。以上是靜態 E0／E1
+證據，不是未修改一般玩家畫面的 E2。
+
+重製端接線與界線
+----------------
+
+- `Game.storyNativeMapView`／`hasStoryNativeMapView` 是場景專用的六全域載體，
+  不把視圖硬塞進 `battle.State`，避免 `SPAWN` 誤走戰鬥 constructor。
+- `applyLoadCH` 先以 `battle.MaterializeNativeMapViewState` 驗證 map 尺寸與
+  零值視圖，再載入 roster／script；`storyRoster` 保留 70 筆 FDFIELD record。
+- tile-step `pan` 每格呼叫 `syncStoryNativeMapPanView`，只同步 camera 與
+  absolute cursor，保留 visible cursor；任何越界、非 tile 對齊或身份不一致
+  都失敗即關閉。
+- `native_relative_cursor` 只接受 `0x336e5`＋Y+5；`0x245ce`＋Y+3 仍是
+  第21戰的另一個來源契約。兩者不可互換。
+- 正式 `story_ch23` 現使用
+  [`ch22_pre.json`](../../../remake/assets/cutscenes/bindings/ch22_pre.json)。
+  Docker＋Xvfb 實測 `LOADCH → 16-slot deactivate → 三段 pan → indexed
+  transition → story beats → battle_ch23` 成功；`ch23.json` 尚未宣告
+  `runtime_append_groups`，所以 battle handoff 會安全地重建正式戰場，不假裝
+  同一部分 handler 陣列已被戰鬥消費。
+
+尚未關閉的證據
+--------------
+
+- 尚無未修改一般玩家 DOSBox 同狀態的第23戰戰前逐幀畫面與音訊 E2。
+- `0x11df2` palette／indexed consumer 與正式 renderer 的逐像素等價仍未證明。
+- `postbattle_ch23_persist`、戰後城鎮／商店／整備／存檔仍維持失敗即關閉；
+  本文件不把 ch22 pre 的 E1 接線誤報為完整戰役或 parity。

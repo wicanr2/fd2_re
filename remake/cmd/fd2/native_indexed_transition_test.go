@@ -43,6 +43,26 @@ func TestResolveNativeIndexedTransitionUsesProvenRelativeCursor(t *testing.T) {
 	}
 }
 
+func TestResolveNativeIndexedTransitionUsesLoadCHSceneView(t *testing.T) {
+	g := &Game{
+		storyNativeMapView: battle.NativeMapViewState{
+			CameraX: 14, CameraY: 32, CursorX: 14, CursorY: 32,
+			VisibleCursorX: 0, VisibleCursorY: 0,
+		},
+		hasStoryNativeMapView: true,
+	}
+	spec := nativeIndexedTransitionSpecForTest()
+	spec.CursorSource = "native_relative_cursor"
+	spec.CursorYOffset = 5
+	resolved, err := g.resolveNativeIndexedTransitionSpec(spec, "0x336e5")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if resolved.TileX != 0 || resolved.TileY != 5 {
+		t.Fatalf("resolved ch22 scene cursor=(%d,%d), want (0,5)", resolved.TileX, resolved.TileY)
+	}
+}
+
 func TestResolveNativeIndexedTransitionRejectsMissingOrUnprovenCursor(t *testing.T) {
 	spec := nativeIndexedTransitionSpecForTest()
 	spec.CursorSource = "native_relative_cursor"

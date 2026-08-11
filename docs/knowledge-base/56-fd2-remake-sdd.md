@@ -3680,3 +3680,24 @@ raw `ch21_post`（玩家第22戰戰後）已從候選提升為正式可編輯 bi
 這是 E1 的原始 handler→runtime→整備垂直切片，不是一般玩家 E2。未證實的
 66／72-slot 結束狀態、玩家未修改 DOSBox 同狀態截圖、以及第23／24／25／29戰
 仍維持失敗即關閉，不得由本切片推論完整戰役 parity。
+
+## 2026-08-11：玩家第23戰 ch22_pre 的 LOADCH 視圖來源已補證（E1）
+
+本輪追加 IDA Pro 9.4／Docker 證據，閉合原先「`loadch` 後游標／視圖來源
+尚未證實」的窄問題；歷史候選段落保留，不把舊的未知改寫成畫面完成：
+
+- `0x205da` 在呼叫 `0x1088d` 後，明確將 `[0x53AA9]`／`[0x53AAD]`（鏡頭）、
+  `[0x53AB1]`／`[0x53AB5]`（絕對游標）、`[0x53AB9]`／`[0x53ABD]`
+  （可見游標）全部寫成零，接著呼叫 `0x11CAC(1)`。`0x135dd` 只讓鏡頭與
+  絕對游標同步步進，沒有寫入可見游標；完整指令與雜湊見
+  [`fd2_ch22_pre_view_reset_ida.txt`](../data/ida/fd2_ch22_pre_view_reset_ida.txt)。
+- 因此第一次 PAN `(14,32)` 後，`0x336e5` 的 `[0x53AB9]+6`／
+  `[0x53ABD]+5` 解析為可見相對 tile `(0,5)`；重製端以場景專用
+  `NativeMapViewState` 載體保存六個原始全域，不把它冒充成 `battle.State`。
+- 正式 `story_ch23` 已接 `assets/cutscenes/bindings/ch22_pre.json`；Docker＋Xvfb
+  真實回歸涵蓋 70 筆 LOADCH roster、選定 16 人隊伍、16 次停用、三段 tile-step
+  PAN、indexed transition 與進入 `battle_ch23`。`ch23.json` 沒有
+  `runtime_append_groups` 的明確契約，故 handoff 會安全重建正式戰場，不宣稱
+  handler 部分陣列與戰鬥共享；這是避免未證實語意接入的失敗即關閉邊界。
+- 此項是靜態證據到重製 E1 窄切片，不是未修改一般玩家 DOSBox E2、逐像素／逐音訊
+  parity，也不解除 `postbattle_ch23_persist` 的戰後城鎮／商店／整備／存檔 gate。

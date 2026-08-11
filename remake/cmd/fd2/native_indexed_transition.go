@@ -83,10 +83,20 @@ func (g *Game) resolveNativeIndexedTransitionSpec(spec campaign.HandlerIndexedTr
 	if !validOffset {
 		return campaign.HandlerIndexedTransition{}, fmt.Errorf("native 0x24618 cursor offset is not proven for source %s", source)
 	}
-	if g == nil || g.st == nil || !g.st.HasNativeMapViewState {
+	if g == nil {
 		return campaign.HandlerIndexedTransition{}, errors.New("native 0x24618 relative cursor provenance unavailable")
 	}
-	view := g.st.NativeMapViewState
+	var view battle.NativeMapViewState
+	switch {
+	case g.st != nil && g.st.HasNativeMapViewState:
+		view = g.st.NativeMapViewState
+	case g.hasStoryNativeMapView:
+		// LOADCH scenes keep the six raw map-view globals outside battle.State;
+		// this is the same provenance, without inventing a battle runtime array.
+		view = g.storyNativeMapView
+	default:
+		return campaign.HandlerIndexedTransition{}, errors.New("native 0x24618 relative cursor provenance unavailable")
+	}
 	x, y := view.VisibleCursorX, view.VisibleCursorY+spec.CursorYOffset
 	if x < 0 || x >= fdother.NativeTransitionStageWidth || y < 0 || y >= fdother.NativeTransitionStageHeight {
 		return campaign.HandlerIndexedTransition{}, errors.New("native 0x24618 relative cursor is outside indexed stage")

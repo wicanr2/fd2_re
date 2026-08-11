@@ -144,16 +144,18 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   正式戰役節點；各 frontier 的 record、indexed 畫面與 E2 仍待補足。詳見
   [`fd2_ch21_post_ida.txt`](../data/ida/fd2_ch21_post_ida.txt)、
   [`ch21_post_candidate.json`](../../remake/assets/cutscenes/bindings/ch21_post_candidate.json)。
-- [x] **玩家第23戰／raw ch22 pre 可編輯候選（E1）**：IDA／Capstone 已固定
+- [x] **玩家第23戰／raw ch22 pre 正式戰前切片（E1）**：IDA／Capstone 已固定
   `0x336a0..0x338c0` 的 16 次停用迴圈、三段 PAN、`0x336e5→0x24618` 的
   raw push、FDTXT_023 0..4、ACTING 68..70、group1 spawn 與 focus/reset 順序。
-  候選保留 map22 的 70 slots 與 group1 24 rows，並以來源位址區分
+  正式 binding 保留 map22 的 70 slots 與 group1 24 rows，並以來源位址區分
   `0x336e5` 的 Y+5 與 ch21 `0x245ce` 的 Y+3；compiler/runtime fail-closed
-  回歸已通過。這仍是資料消費候選，不是 `story_ch23` 或
-  `postbattle_ch22_persist→town_ch23` 正式 binding；indexed renderer、一般玩家
-  DOSBox E2 與戰後城鎮／商店／整備／存檔流程仍待。證據見
-  [`fd2_ch22_pre_ida.txt`](../data/ida/fd2_ch22_pre_ida.txt) 與
-  [`ch22_pre_candidate.json`](../../remake/assets/cutscenes/bindings/ch22_pre_candidate.json)。
+  回歸已通過。`loadch` 後的六個原始視圖全域已由 IDA 證實重設為零，
+  `0x135dd` 只同步鏡頭／絕對游標，因此第一次 PAN 後 indexed tile 是 `(0,5)`；
+  重製端以場景專用載體保存，並以 Docker＋Xvfb 實測進入 `battle_ch23`。
+  這不是逐像素 E2；`postbattle_ch23_persist`、戰後城鎮／商店／整備／存檔與
+  未修改一般玩家 DOSBox E2 仍待。證據見
+  [`fd2_ch22_pre_view_reset_ida.txt`](../data/ida/fd2_ch22_pre_view_reset_ida.txt) 與
+  [`ch22_pre.json`](../../remake/assets/cutscenes/bindings/ch22_pre.json)。
 - [x] **玩家第23戰／raw ch22 post `0x2189a` 原語（E1）**：IDA／Capstone 已固定
   `0x24754` 的三個 `0x2189a` caller、十次外層迴圈、`work+0x8088`、456 stride、
   13×8 raw 場景建立、312×192 呈現與五個巢狀 call-site。三個呼叫點已在
@@ -1201,7 +1203,15 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 - [x] **ch21 合成不足分支的戰間存檔邊界（2026-08-09）**：`inventory_recipe` 材料不足時實際走可編輯（editable）的 insufficient→town 節點，清除戰場暫態但保留持續隊伍；Docker/Xvfb regression 會在 town22 等價節點存檔、清空暫態後讀回金幣、隊伍成員與加入順序。這只補足戰後城鎮／存檔回歸，不猜 raw `ch21_post` handler，也不宣稱一般玩家 E2。
 - [x] **外部資源／城鎮流程交叉盤點**：公開資料確認 `FDFIELD.DAT` 是可替換的外部場景層，且章節間存在 preparation、商店、教會、存讀檔流程；後續以 DAT provider + battle→town/prep graph 實作，未將網路資料當 binary 格式硬證據。
 - [ ] **社群行為 oracle 對照**：逐項把 FD2.EXE 修改表中的入隊、隨時存檔、等級上限、寶箱持久化轉成可編輯規則與 regression；先挑 save/chest 兩項和目前 persistent flow 最相關者。
-- [~] **ch22_pre control-flow**：固定 16-slot deactivate loop、`0x11df2` immediate `palette_update` 已 lower 並通過 regression；共用 `0x24618` 9-pass indexed adapter 已完成，但本 handler 的 exact binding／進入時 raw roster-camera context 尚待閉合，不能僅因 renderer 存在就接 `story_ch23`。
+- [x] **ch22_pre control-flow／視圖來源**：固定 16-slot deactivate loop、`0x11df2`
+  immediate `palette_update`、三段 tile-step PAN 與 `0x336e5→0x24618` 的
+  Y+5 indexed cursor。IDA 已證實 `0x205da` 將鏡頭／絕對游標／可見游標全數
+  重設為零，`0x135dd` 只同步前兩者；正式 binding 已接 `story_ch23`，並以
+  Docker＋Xvfb 回歸進入 `battle_ch23`。`ch23.json` 未宣告
+  `runtime_append_groups`，所以 handoff 只採正式戰場重建，不猜測部分 handler
+  陣列共享；未修改一般玩家 DOSBox E2、renderer parity 與 postbattle_ch23
+  城鎮／商店／整備／存檔仍未關閉。證據見
+  [`fd2_ch22_pre_view_reset_ida.txt`](../data/ida/fd2_ch22_pre_view_reset_ida.txt)。
 - [x] **ch23/ch24 pre-handler**：FDTXT_024 index0/index1（14句）與 map23/70-slot、spawn group1、四段鏡頭已接 binding；`story_ch24` 已接回原版 pre-handler，compiler/campaign/battle regression 通過。
 - [~] **ch23 post mapping boundary**：合法 IDA Pro 9.4／Docker Capstone 已固定 raw table index23→`0x24c1e`、初始 dialog `0x24c4c`→FDTXT_024 index2（scene0 line14、scene1 lines0–1），並固定 `0x24d22` 的非零 setter 與 `arg==0` copy branch。`0x17aa9(1)` 已證實為 BIOS tick wait；第二段 `0x11d40` 每個 outer stage 12 次、五個 stage 合計 60 次，formal `(0,255,ESI)` 的 `ESI=0..59`，不可縮窄成 `0..11`。`0x11cac(1/0)` 的 shared 456-stride indexed staging chain 也已固定，只有 `0x11cac(0)` 進一步呼叫 `0x4dfcc`；其 palette cycle 由 `mov ah,0xe0`／`out 0x3c8` 固定寫入 DAC `0xe0..0xef`，舊低位索引斷言已撤回。它本身沒有直接讀 `0x51a10`，但 `0x11eee` 的 case 23（raw chapter `0x17`）已由 Capstone 固定為 `[0x46c] != [0x539f8]` 的 BIOS tick gate，只有變化時才呼叫 `0x24d22(0)`，並將 tick 寫回 `[0x539f8]`；這證實 312-byte staging 列旋轉 raw latch，但不把 tick 當固定影格延遲。`0x11EB0` 的 IDA 偽代碼／Capstone 參數又固定共用尾端 `sub_11EB0(0xA0504,0x140,work+0x8088,0x1C8,0x138,0xC0)`，因此固定目的地位址與複製 ABI 已知；新增 `0x10652` 分支交叉證據：`0x107dd→0x107ea` 只對 raw chapter 23 配置 `0xea00 (=0x138×0xc0)` 並寫入 `[0x53aff]`，`0x107ef..0x10804` 保留 `0x1a4d`／`0x2a`／`[0x53b03]` 的原始載入參數，`0x10809..0x10831` 保留 decode 呼叫與 handle cleanup，`0x1083b` 再呼叫 `0x24d22(0)`；因此 raw staging owner 與 cleanup 邊界已收窄，FDOTHER #42 的 archive identity 已確定，但 #42 的圖形用途、`0x53AED`／`0x53AF5`／`0x53AF1` 中間偏移生命週期、固定版 raw seed（`0x01`）以外的入口 latch 執行期值與 raw state adapter 仍未知。IDA 另以 `0x11eee→0x122dc→0x127a9→0x1acf3→0x11eb0` 固定共用 indexed 消費鏈，且直接交叉參照含 ch23 的 `0x24c63`／`0x24cd3`；這只關閉靜態 E1 consumer evidence，不等於重製已有 raw state/latch adapter。重製端已加入列旋轉、16-entry palette cycle 原語、`RunNativeCh23Loop` raw schedule executor 與兩個 `native_ch23_loop` 候選 beats；executor 只接受精確 staging／callback provenance，任何失敗皆回復 buffer，且仍不接 campaign。一般玩家 E2 仍未閉合，故不接 `postbattle_ch23_persist`。候選檔 [`ch23_post_candidate.json`](../../remake/assets/cutscenes/bindings/ch23_post_candidate.json) 僅供編譯／證據回歸；完整位址與 raw table 勘誤見 [`fd2_ch23_post_ida.txt`](../data/ida/fd2_ch23_post_ida.txt)。
 - [~] **ch24/ch25 pre-handler**：`0x24b4d` 四段 transition count 已 lower 為 `transition_reveal`（20/20/20/60、20ms/frame），FDOTHER#88 sub1 四次 SFX、index=-1 stop、handle release 已接，FDTXT_025 跨 scene 對白已接 `story_ch25`；尚待 indexed double-buffer visual adapter。
