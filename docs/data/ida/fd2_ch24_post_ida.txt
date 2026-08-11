@@ -45,17 +45,29 @@ Capstone 與 IDA 指令逐項一致，`0x24df2` 依序執行：
    行為是將 persistent record append 至 `[0x53bf7] + [0x53bfb]*0x50`、寫入
    原始欄位、呼叫 `0x1145a` 後增加 `[0x53bfb]`。`sub_4e4e8(id)` 的 32 列
    固定角色表與 `characters.json`／`native_character_catalog.json` 共同證實
-   `0x1a`（十進位 26）是角色索引「聖寇拉斯」；這只證明建構器輸入身分，
-   **沒有**證實本次 append 是永久 JOIN、臨時演出或戰後隊伍操作。
+   `0x1a`（十進位 26）是角色索引「聖寇拉斯」。同一個 persistent 建構器在
+   其他已閉合 handler 中以 `join` 編輯操作消費；map24 的 authored party 沒有
+   26，而 map24 group0 唯一我方 raw unit 正是 26，因此本次操作可提升為
+   **強推論：可編輯永久 JOIN 26**，但仍不把「post handler 可直接接到 battle
+   State」的 runtime roster 邊界當成已證實。
 8. `0x24e74` 呼叫 `0x11506`。
-9. `0x24e7b` 將 raw immediate `0x1d` push 後跳至 `0x237c8`。`0x237c8` 位於
-   共享函式 `sub_23790` 內，不是獨立的 handler；其尾段另執行文字 index3、
-   `0x11506`、`0x112a5(0x0e)`，再跳至 `0x231f2`。同一角色表證實
-   `0x0e`（十進位 14）是「珊」的角色索引；本批仍不把 `0x1d` 命名成章節，
-   也不把兩個已辨識的角色索引升格成 JOIN 語意。
+9. `0x24e7b` 將 raw immediate `0x1d`（十進位 29）壓入堆疊後跳到
+   `0x237c8`。Capstone 對 `0x23790..0x237d5` 的直接指令顯示：
+   `0x237c6` 才是 direct-entry 的 `push 0x0e`，`0x237c8` 本身是
+   `call 0x112a5`；因此從 `0x24e7b` 跳入時會跳過固定的 `push 0x0e`，
+   `0x112a5` 實際消費呼叫者壓入的 `0x1d`，不是角色14。IDA 偽程式碼的
+   `sub_23790()` 只描述從函式起點進入的預設 14，不能覆蓋這個中途跳入的
+   堆疊 ABI。ch12 的 `push 3 → jmp 0x237c8` 與 ch14 的同型呼叫是交叉證據。
+   固定角色表確認 29 為「亞奇梅吉」；map24 group2 唯一敵方 raw unit 也是
+   29，後續 ch26–ch30 authored party 同時列出 26／29。因此本次共享尾段可
+   提升為 **強推論：可編輯永久 JOIN 29**，原始位址仍保留為 `0x24e7b→0x237c8`。
 
 以上是 E1 靜態控制流程證據。它支持「raw handler 有兩段對話、PAN、spawn、
-ACTING、persistent append 與共享尾段」；不支持自行建立新的正式 campaign binding。
+ACTING、JOIN 建構器 26／29 與共享尾段」；仍不支持直接把候選 binding 接到
+目前重製端的普通 battle State。實際 `ch25.json` 重建後為 86 筆 runtime units，
+而候選 binding 的 raw handler context 仍是 70 筆 map control frontier，且
+`0x10b4e(2)` 需要具備 `Roster`／selector provenance；兩者的戰後 handoff 尚未
+以未修改一般玩家路徑閉合，故正式 campaign 仍必須失敗即關閉。
 
 ## 已證實：`0x10b4e(2)` 的 FDFIELD group materializer 與 map24 列數
 
@@ -96,6 +108,8 @@ MD5 `d64cca11484662bd45ab6c34aeb63ff9`、SHA-256
 - 這份 raw evidence 可供後續核對 `postbattle_ch25_persist → town_ch26`，但
   table index 本身不是玩家戰次證據；若沒有一般玩家路徑與持續隊伍／城鎮／存檔
   邊界的 E2，不能把它升格成正式接線。
-- `0x1a`／`0x0e` 的建構器角色索引已辨識，但其永久 JOIN／戰後隊伍用途與
-  `0x1d` 的高階語意保持未知；重製端維持 fail-closed，不以猜測替代
-  battle→postbattle→town/preparation/save 流程。
+- `0x1a`／`0x1d` 的建構器角色索引與中途跳入的堆疊參數已辨識為 26／29，
+  可編輯腳本已保留為 `join` 26／29；尚未閉合的是戰後 70-slot story
+  roster 與 86-slot battle State 的交接，以及 `Roster`／selector 的
+  `0x10b4e(2)` 消費端。重製端因此仍對正式 campaign 維持 fail-closed，不以
+  猜測替代 battle→postbattle→town/preparation/save 流程。

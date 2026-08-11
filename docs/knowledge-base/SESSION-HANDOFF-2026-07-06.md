@@ -893,7 +893,7 @@ slot6 active 條件、SPAWN2、兩段 PAN、800/200ms 與 FDTXT_003 #4 七句也
 - 2026-07-27 ch25 camera assertion correction：重讀完整 `0x233c6` scalar ABI 後撤回 `(5,9)→(120,216)`；caller push 順序最後兩個 scalar 是 `cam_x=9, cam_y=5`，正確像素為 `(216,120)`。binding、test、SDD、worklist 已同步修正。
 - 2026-07-27 ch06 post branch recheck：Docker Capstone 固定 `[0x53ad5]+0x11==1` 才檢查 `unit_inactive(43)`；inactive 走 dialog #5，active 才走 `0x233c6` 9-slot layout（X=`[12,11,13,10,14,10,14,9,15]`、Y=`[4,4,4,5,5,6,6,7,7]`、pose=`[0,0,0,3,1,3,1,3,1]`）、special slot43=`(12,7,pose2)`、camera raw `(6,2)`，再 dialog #4/JOIN12。map6 只有 40 editable units，native slot43/96-slot buffer 尚未有 runtime model，故維持 fail-closed。
 - 2026-08-09 ch23 post handler recheck 勘誤：合法 IDA Pro 9.4 與 Docker Capstone 固定 raw table index23→`0x24c1e` 的兩段 loop：第一段每 stage 30 次 `0x11cac(1)→0x17aa9(1)`，第二段每 stage 12 次 raw PUSH `[ESI,255,0]→0x11d40→0x11cac(0)→0x17aa9(1)`；五個 stage 合計 60 次，`ESI=0..59`，不可縮窄成 `0..11`；形式參數是 `0x11d40(0,255,ESI)`。`0x17aa9` 是 BIOS tick wait；`0x11d40` 是全 256-entry DAC 減法／夾零；`0x4dfcc` 則由 IDA `BYTE1(v2)=-32` 與 Capstone `mov ah,0xe0` 固定寫入 DAC `0xe0..0xef`，撤回舊低位索引說法；`0x24d22` 在此 handler 只走非零 setter，寫 raw `0x51a10`。沿 `0x11cac→0x11eee` 追查後確認 case 23 在 BIOS tick 變化時會間接呼叫 `0x24d22(0)`，其 `0x138` bytes row copy 是 312-byte staging 列旋轉消費端；IDA 另固定 `0x11eee→0x122dc→0x127a9→0x1acf3→0x11eb0` 的共用 indexed 消費鏈，直接交叉參照包含 ch23 的 `0x24c63`／`0x24cd3`。因此舊的「沒有消費端」說法已撤回；新證據只關閉靜態 E1 consumer chain，不代表重製已有 raw state/latch adapter。重製端已加入 `RotateNativeCh23Rows`／`ApplyNativeCh23PaletteCycle`／`RunNativeCh23Loop` 原語，executor 僅消費精確 staging 與 raw callback，失敗即回復 buffer，仍不接 campaign。固定版 raw seed 已由 IDA／Capstone 證實為 `0x01`，但入口 latch 的執行期值、`dword_53C03` 生命週期、raw state mapping 與一般玩家 E2 仍未閉合；tick gate 已證實為 `[0x46c] != [0x539f8]` 的 BIOS tick 變化條件，故不命名泛用 renderer，也不接 `postbattle_ch23_persist`。證據見 [`fd2_ch23_post_ida.txt`](../data/ida/fd2_ch23_post_ida.txt)。
-- 2026-08-09 ch24 post raw handler recheck：合法 IDA Pro 9.4 與 Docker Capstone 共同固定 table index24 的 raw entry `0x14df2→0x24df2`，以及獨立相鄰 index25 `0x14e80→0x24e80`。`sub_24DF2` 順序是 FDTXT_025 index6、PAN raw `(4,16)`、raw `0x10b4e(2)`、ACTING75、FDTXT_025 index7、`0x112a5(0x1a)` append、`0x11506`，再以 raw `0x1d` 跳入共享 `0x237c8` 尾段；共享尾段另有 index3、`0x11506`、`0x112a5(0x0e)`。初次記錄只保留 raw append 與未知的隊伍／章節用途；後續角色表複核已辨識 26「聖寇拉斯」與 14「珊」的建構器索引，但永久 JOIN、戰後隊伍操作與 `0x1d` 分支語意仍未知。table index不直接等於玩家戰次；map24／文字／ACTING75 只支持玩家第25戰候選，先前 `postbattle_ch24→town_ch25` 同號接線已撤回，`postbattle_ch24_persist` 仍 fail-closed。完整固定版雜湊、IDA 函式範圍與 raw table bytes 見 [`fd2_ch24_post_ida.txt`](../data/ida/fd2_ch24_post_ida.txt)。
+- **歷史快照（已由 2026-08-11 勘誤取代，不可作現況證據）** 2026-08-09 ch24 post raw handler recheck：合法 IDA Pro 9.4 與 Docker Capstone 共同固定 table index24 的 raw entry `0x14df2→0x24df2`，以及獨立相鄰 index25 `0x14e80→0x24e80`。`sub_24DF2` 順序是 FDTXT_025 index6、PAN raw `(4,16)`、raw `0x10b4e(2)`、ACTING75、FDTXT_025 index7、`0x112a5(0x1a)` append、`0x11506`，再以 raw `0x1d` 跳入共享 `0x237c8` 尾段；共享尾段另有 index3、`0x11506`、`0x112a5(0x0e)`。初次記錄只保留 raw append 與未知的隊伍／章節用途；當時暫記角色表索引26「聖寇拉斯」與14「珊」，但後續 Capstone 已證實中途跳入會略過 direct-entry 的 `push 0x0e`，實際消費29，故舊的14解讀已撤回。table index不直接等於玩家戰次；map24／文字／ACTING75 只支持玩家第25戰候選，先前 `postbattle_ch24→town_ch25` 同號接線已撤回，`postbattle_ch24_persist` 仍 fail-closed。完整固定版雜湊、IDA 函式範圍與 raw table bytes 見 [`fd2_ch24_post_ida.txt`](../data/ida/fd2_ch24_post_ida.txt)。
 - 2026-08-09 ch24 `0x10b4e` materializer recheck：IDA Pro 9.4 固定 `sub_10B4E` 會讀取 FDFIELD current field、以 row `+0x15` 比對 group，並逐筆呼叫 `sub_10C50` 建立 0x50-byte runtime record。原始 map24 resource073（1951 bytes，MD5 `d64cca11484662bd45ab6c34aeb63ff9`）共有70筆列，group分布 `0=46/1=8/2=1/255=15`，group2唯一列索引54與 authored `map24_units.json` 第54筆一致；因此候選 binding 的 `spawn_groups["2"] = 1` 已獲得列數閉合。這不改變 `0x1a/0x1d/0x0e` 未知、玩家第25戰僅為候選、`postbattle_ch24_persist` 與戰間城鎮／商店／整備／存檔仍 fail-closed 的判定。證據與 SHA-256 見 [`fd2_ch24_post_ida.txt`](../data/ida/fd2_ch24_post_ida.txt)。
 - 2026-08-09 ch24 immediate identity refinement：`sub_112A5` 的固定 32 列角色表與 `characters.json`／`native_character_catalog.json` 對照，已證實 raw `0x1a`（26）是聖寇拉斯、raw `0x0e`（14）是珊的建構器角色索引；仍未知的是該次 append 是否永久 JOIN、臨時演出或其他隊伍操作，`0x1d` 也未獲得章節／分支語意。這將舊記錄的角色身分範圍收窄，但不解除 `postbattle_ch24_persist` 或戰間城鎮／商店／整備／存檔的 fail-closed gate。
 - 2026-08-09 ch29 terminal body recheck：合法 IDA Pro 9.4／Docker Capstone 完整固定 `sub_2BCE5(0x2bce5..0x2c39b)` 的兩個 caller（`0x2545d`、`0x25970`）與 `sub_2C405(0x2c405..0x2c9ec)` 的獨立邊界。前綴 raw 順序為 FDOTHER `#0x36` frame0/9、`0x11df2` ramp、三輪重複 ramp、frame `0x0c..0x6c`、40／200 次 indexed composite；`0x2c172` 後呼叫 `0x2c405`，後者先 `0x1088d(0x1e)`、500次 raw staging，再進 `0x2c548` montage。`0x10620` 只比較 `word[0x41a]`／`word[0x41c]`，`0x4e031` 只複製前者，沒有已證實按鍵映射；`0x25975` self-loop 與 `0x28a64` 清理尾端均不是 campaign 返回。完整 fixed hash／raw body 見 [`fd2_ch29_terminal_body_ida.txt`](../data/ida/fd2_ch29_terminal_body_ida.txt)。indexed owner、一般玩家 E2、輸入事件與終局 campaign handoff 仍 fail-closed。
@@ -4361,3 +4361,31 @@ provenance）跑通 mode 2 的 `NextAIPlan`→`aiStep`→行走→FIGANI 攻擊�
 這是重製端 E1 產物，並非一般玩家輸入或原版同狀態 E2；下一輪仍應優先把原版
 current-runtime 的 roster／鏡頭／游標／tick 與重製端逐幀配對，再處理完整敵方 AI
 目標選擇與所有戰役戰後節點。
+
+## 2026-08-11：ch24 raw post 共享尾段角色參數勘誤（E1，未正式接線）
+
+以合法 IDA Pro 9.4 Docker 與 `fd2-cap-local` 重新核對固定版 `FD2.EXE`
+（357074 bytes、MD5 `b97caf2239a27a896069d03549d96e1e`、SHA-256
+`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`）。
+`0x23790..0x237d5` 的直接指令是 `0x237c6 push 0x0e`、`0x237c8 call
+0x112a5`；因此 ch24 raw handler 在 `0x24e7b push 0x1d` 後跳到 `0x237c8`
+時，會跳過固定的 14，實際把 29 傳給 `0x112a5`。ch12 的 `push 3→jmp 0x237c8`
+與 ch14 的同型資料是交叉證據。原先把共享尾段記成角色14的說法已勘誤，
+不可再回填到現況文件。
+
+map24 的 authored／raw 對照也閉合了兩個建構器輸入：group0 唯一我方 raw unit
+是26「聖寇拉斯」，group2 唯一敵方 raw unit 是29「亞奇梅吉」；後續 ch26–ch30
+party 同時列出26／29。`remake/assets/cutscenes/handlers/ch24_post.json`
+因此只做非破壞性資料修正：保留 `source.addr`，將兩個已分級操作編輯為
+`join 26`（強推論，`0x24e6c`）與 `join 29`（強推論，`0x24e7b→0x237c8`），
+沒有把 handler 接進正式 campaign。
+
+實際 Docker runtime regression 暴露目前真正的 handoff gate：`ch25.json`
+重建後有86筆 battle runtime units，但候選 ch24 post binding 仍宣告70筆
+map-control frontier，且 `0x10b4e(2)` 的 typed consumer 要求 `Roster`／selector
+provenance；直接把候選 binding 接到 battle State 會在 `runtime_context` 或
+`native future group 2: runtime roster unavailable` 失敗即關閉。這是保護行為，
+不是可繞過的測試問題。`postbattle_ch25_persist→town_ch26` 仍未達一般玩家 E2，
+後續必須先取得未修改玩家路徑的70→86 roster handoff與存檔／城鎮邊界證據，
+再決定是否升級正式 binding。詳細 IDA／Capstone 指令與雜湊見
+[`fd2_ch24_post_ida.txt`](../data/ida/fd2_ch24_post_ida.txt)。

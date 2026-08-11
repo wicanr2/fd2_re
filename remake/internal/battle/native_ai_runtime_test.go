@@ -197,6 +197,35 @@ func TestNextAIPlanMode2FailsClosedWithoutPhysicalCandidate(t *testing.T) {
 	}
 }
 
+func TestNativeAIPhysicalHelper1DEBEKeepsRawPredicateBoundaries(t *testing.T) {
+	target := make([]byte, nativeRecordSize)
+	target[0], target[1] = 1, 0
+	target[0x26] = 0
+	target[0x0a] = 0x40
+	target[0x0b] = 1
+	itemRows := make([]byte, 2*NativeItemEffectRowSize)
+	itemRows[NativeItemEffectRowSize+0x0b] = 1
+
+	if got, err := nativeAIPhysicalHelper1DEBE(target, Cell{X: 0, Y: 0}, itemRows); err != nil || got != 1 {
+		t.Fatalf("verified adjacent raw predicate = %d, err=%v; want 1", got, err)
+	}
+
+	target[0x26] = 1
+	if got, err := nativeAIPhysicalHelper1DEBE(target, Cell{X: 0, Y: 0}, itemRows); err != nil || got != -1 {
+		t.Fatalf("nonzero target +0x26 predicate = %d, err=%v; want -1", got, err)
+	}
+	target[0x26] = 0
+
+	if got, err := nativeAIPhysicalHelper1DEBE(target, Cell{X: 0, Y: 2}, itemRows); err != nil || got != -1 {
+		t.Fatalf("non-adjacent raw predicate = %d, err=%v; want -1", got, err)
+	}
+
+	itemRows[NativeItemEffectRowSize+0x0b] = 2
+	if got, err := nativeAIPhysicalHelper1DEBE(target, Cell{X: 0, Y: 0}, itemRows); err != nil || got != -1 {
+		t.Fatalf("raw item geometry >1 predicate = %d, err=%v; want -1", got, err)
+	}
+}
+
 func nativeAIActionCommandBook() []NativeCommandRecord {
 	book := make([]NativeCommandRecord, NativeCommandRecordCount)
 	for id := range book {

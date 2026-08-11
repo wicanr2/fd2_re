@@ -49,11 +49,8 @@
       "text_table": "dword ptr [0x3a79]"
     },
     {
-      "op": "raw_append",
-      "native_target": "0x112a5",
-      "raw_args": [
-        26
-      ],
+      "op": "join",
+      "char_id": 26,
       "source": {
         "addr": "0x24e6c",
         "target": "0x112a5"
@@ -67,11 +64,8 @@
       }
     },
     {
-      "op": "raw_append",
-      "native_target": "0x112a5",
-      "raw_args": [
-        14
-      ],
+      "op": "join",
+      "char_id": 29,
       "source": {
         "addr": "0x237c8",
         "target": "0x112a5"
@@ -86,6 +80,6 @@
     }
   ],
   "diagnostics": {
-    "unknown_ops": 2
+    "unknown_ops": 0
   }
 }

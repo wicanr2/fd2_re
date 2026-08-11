@@ -3401,27 +3401,33 @@ raw dispatch，不直接代表玩家戰次。
 `sub_24DF2` 的已證實順序為：FDTXT_025 index6 → `0x135dd` raw PAN
 `(4,16)` → `0x10b4e(2)` → ACTING resource75 → FDTXT_025 index7 →
 `0x112a5(0x1a)` persistent append → `0x11506` → push raw `0x1d` 跳入共享
-`0x237c8` 尾段。共享尾段另執行文字 index3、`0x11506`、`0x112a5(0x0e)`，再
-跳至 `0x231f2`。`0x112a5` 的 append 形狀已證實，固定角色表也已辨識
-`0x1a`（26）為聖寇拉斯、`0x0e`（14）為珊；但兩次 append 是否代表永久
-JOIN、臨時演出或其他隊伍操作，以及 `0x1d` 的章節／分支語意，仍未知，不能
-由名稱或 table index 猜測升格。
+`0x237c8` 尾段。Capstone 顯示 `0x237c6` 是 direct-entry 的 `push 0x0e`，
+`0x237c8` 本身是 `call 0x112a5`；因此 `0x24e7b` 的中途跳入會跳過固定
+14，讓 `0x112a5` 消費呼叫者壓入的 `0x1d=29`。ch12 的 `push 3→jmp 0x237c8`
+與 ch14 的同型呼叫是交叉證據。固定角色表與 authored map／party 交叉確認
+26 為聖寇拉斯、29 為亞奇梅吉；現行可編輯 handler 已保存為 `join` 26 與
+`join` 29，原始位址仍保留在 `source.addr`。這是角色操作的強推論，並不等於
+戰後 handler 已能直接消費目前重製端的 battle State。
 補充追查已證實 `0x10b4e(2)` 會以 FDFIELD row `+0x15` 比對 group，逐筆呼叫
 `0x10c50` 建立 runtime record；map24 resource 073 的 70 筆列中 group2 恰有
 1 筆，故候選 binding 的 `spawn_groups["2"] = 1` 是可重生的列數投影。這只
-閉合增援 materializer 的靜態列數，不替已辨識的角色索引 `0x1a/0x0e` 賦予 JOIN 身分，
-也不解除一般玩家與戰間節點的 E2 gate。
+閉合增援 materializer 的靜態列數；26／29 的 JOIN 角色判讀仍只到強推論，
+不解除一般玩家與戰間節點的 E2 gate。
 
-現有 map24、FDTXT_025 與 ACTING resource75 的交叉證據支持「`0x24df2` 是玩家
-第25戰 post handler 候選」；先前同號接到 `postbattle_ch24_persist → town_ch25`
-已撤回。重製端仍維持 `postbattle_ch24_persist` fail-closed，尚未把
-`postbattle_ch25_persist → town_ch26` 當成已驗證正式接線。缺少未修改一般玩家
-路徑、持續隊伍與戰後城鎮／商店／整備／存檔的 E2 時，這一節只屬靜態 E1 證據。
+現有 map24、FDTXT_025、ACTING resource75、26／29 的 map／party 對照支持
+「`0x24df2` 是玩家第25戰 post handler 候選」；先前同號接到
+`postbattle_ch24_persist → town_ch25` 已撤回。實際重製端 `ch25.json` 重建後
+是 86 筆 battle runtime units，而候選 handler 的 raw context 是 70 筆 map
+control frontier，且 `0x10b4e(2)` 需要具備 `Roster`／selector provenance。
+這個 70→86 的戰後 handoff 尚未由未修改一般玩家路徑閉合，故重製端仍維持
+`postbattle_ch25_persist → town_ch26` 的 fail-closed gate；本節目前仍是靜態 E1，
+不是一般玩家 E2。
 
-現行 `ch24_post.json` 只保留 `0x112a5` 的兩個 raw append 呼叫（immediate
-`0x1a` 與 `0x0e`），不再把它們改名成 JOIN 26／29；對應 binding 仍是候選資料，
-`postbattle_ch25_persist` 已撤回正式 handler binding，編譯器會對兩個未知操作
-產生問題並停止執行。
+現行 `ch24_post.json` 將已核對的兩個建構器操作保存為 `join` 26／29，
+`source.addr` 仍保留 `0x24e6c` 與 `0x237c8`；對應 binding 仍是候選資料。
+由於 70-slot story roster、86-slot battle State 與 native selector／Roster
+交接尚未閉合，`postbattle_ch25_persist` 沒有正式 handler binding，正式執行仍
+會停止而不跳過戰後隊伍／城鎮流程。
 
 ## 2026-08-09 raw ch29 terminal body `0x2bce5→0x2c405`（E1）
 

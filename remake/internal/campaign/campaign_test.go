@@ -939,32 +939,36 @@ func TestCampaignFullStoryScriptCoverageMatchesAudit(t *testing.T) {
 	}
 }
 
-func TestCh24PostCandidatePreservesUnknownAppendAndFailsClosed(t *testing.T) {
+func TestCh24PostBindingResolvesPersistentJoins(t *testing.T) {
 	script, err := LoadHandlerScript("../../assets/cutscenes/handlers/ch24_post.json")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if script.Diagnostics["unknown_ops"] != 2 {
-		t.Fatalf("ch24 unknown operation count=%d, want 2", script.Diagnostics["unknown_ops"])
+	if script.Diagnostics["unknown_ops"] != 0 {
+		t.Fatalf("ch24 unknown operation count=%d, want 0", script.Diagnostics["unknown_ops"])
 	}
-	var raw []HandlerBeat
+	var joins []HandlerBeat
 	for _, beat := range script.Beats {
-		if beat.Op == "raw_append" {
-			raw = append(raw, beat)
+		if beat.Op == "join" {
+			joins = append(joins, beat)
 		}
 	}
-	if len(raw) != 2 || raw[0].NativeTarget != "0x112a5" || raw[1].NativeTarget != "0x112a5" || len(raw[0].RawArgs) != 1 || len(raw[1].RawArgs) != 1 || raw[0].RawArgs[0] != float64(26) || raw[1].RawArgs[0] != float64(14) {
-		t.Fatalf("ch24 raw append calls=%#v", raw)
+	if len(joins) != 2 || joins[0].CharID == nil || *joins[0].CharID != 26 || joins[0].Source.Addr != "0x24e6c" || joins[1].CharID == nil || *joins[1].CharID != 29 || joins[1].Source.Addr != "0x237c8" {
+		t.Fatalf("ch24 persistent joins=%#v", joins)
 	}
 	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch24_post.json")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(beats) == 0 || len(issues) != 2 {
-		t.Fatalf("ch24 candidate must retain proven prefix but fail closed: beats=%#v issues=%#v", beats, issues)
+	if len(beats) == 0 || len(issues) != 0 {
+		t.Fatalf("ch24 binding must compile its proven prefix and joins: beats=%#v issues=%#v", beats, issues)
 	}
+	var joined []int
 	var spawnGroups []int
 	for _, beat := range beats {
+		if beat.Op == "join" {
+			joined = append(joined, beat.CharID)
+		}
 		if beat.Op == "spawn" {
 			if beat.Group != 2 || beat.RawPlacementGate == nil || *beat.RawPlacementGate != 0 {
 				t.Fatalf("ch24 proven FDFIELD materializer=%#v", beat)
@@ -975,10 +979,8 @@ func TestCh24PostCandidatePreservesUnknownAppendAndFailsClosed(t *testing.T) {
 	if len(spawnGroups) != 1 || spawnGroups[0] != 2 {
 		t.Fatalf("ch24 group2 materializer was not retained: %v", spawnGroups)
 	}
-	for _, issue := range issues {
-		if issue.Op != "raw_append" {
-			t.Fatalf("unexpected ch24 blocked op=%#v", issue)
-		}
+	if len(joined) != 2 || joined[0] != 26 || joined[1] != 29 {
+		t.Fatalf("ch24 compiled join order=%v, want [26 29]", joined)
 	}
 }
 

@@ -102,6 +102,12 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 > `ch22_pre` 現已由 `0x205da`／`0x135dd` 的 LOADCH 視圖證據接到
 > `battle_ch23`（E1）；玩家第23戰戰後、24、25、29戰仍維持失敗即關閉。
 > 這只修正狀態分類，不代表未修改一般玩家 DOSBox E2 或逐像素 parity。
+
+> **2026-08-11 追加勘誤：raw ch24 post 的共享角色參數。** `0x24e7b` 的
+> `push 0x1d→jmp 0x237c8` 會跳過 direct-entry 的 `push 0x0e`，所以可編輯
+> handler 的共享尾段角色是29，不是14；另一個直接建構器輸入是26。這只修正
+> `source.addr` 保留的腳本／證據索引，沒有解除玩家第25戰的70→86 roster
+> handoff、`Roster`／selector provenance或一般玩家 E2 gate。
 > 詳見 [`fd2_ch22_pre_view_reset_ida.txt`](../data/ida/fd2_ch22_pre_view_reset_ida.txt)。
 
 | UI-08 town | `0x2cd16/0x2cf71/0x11eb0`；FDOTHER#11/#61/#62背景、#10 label、FDTXT `0x1ef+selection`、FDICON pulse、三variant×六selection座標；23筆raw variant已接production。ch02 postbattle 以 `/tmp` sandbox route patch 走完原版 handler，variant0 [`selection0–5 contact sheet`](../figures/town-hub-six-selections-original-vs-remake.png) 的每格都能和指定 remake pulse 做 raw RGB 整幀 hash 配對。另以固定雜湊原版的修改 LOAD 副本取得 variant1與variant2，兩者正常 selection0–4 都與對應 production node 的指定 pulse 逐幀整幀 AE=0，證據與限制見 [`native_town_variant1_e2.json`](../data/native_town_variant1_e2.json)、[`native_town_variant2_e2.json`](../data/native_town_variant2_e2.json) 及兩張對照圖。input trace另證實 Left/Right wrap、Shift+F1 reveal、Enter進variant5及Escape回selection5；`0x2ce7a/0x2ceac/0x2cef7` 不寫 pulse counter，已刪除方向鍵／secret reveal reset | partial（E1 + ch02 variant0 E2 + variant1/2 selection0–4 modified-LOAD E2） | variant2 selection5 的 BIOS 掃描碼／Enter；未修改一般玩家路徑與其他城鎮 |
