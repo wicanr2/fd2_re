@@ -426,3 +426,10 @@ Enter 開啟玩家指令格；兩張 320×200 client crop、輸入時間線與�
 runtime，不能外推到 ch22／ch23／ch24／ch25／ch29，也不代表重製端 CONTINUE
 handoff 或同狀態逐像素 parity 已完成。UI-03 與 UI-12 的正式重製 owner 仍保持
 失敗即關閉。
+
+同日另保存一張重製端 `story_ch00_handler`→`battle_ch01` 的 E1 執行期畫面
+[`native-battle-ch01-remake-e1.png`](../figures/native-battle-ch01-remake-e1.png)，
+以及可重生條件與雜湊 [`native-battle-ch01-remake-e1.json`](../data/ui-traces/native-battle-ch01-remake-e1.json)。
+截圖快進器只在明確的 `FD2_SHOT_FAST_FORWARD=1` 模式執行，故不提升 UI-02／UI-03
+的一般玩家 E2，也不表示與上面的原版 current-runtime 已是同一 raw roster、鏡頭、
+游標或 tick。

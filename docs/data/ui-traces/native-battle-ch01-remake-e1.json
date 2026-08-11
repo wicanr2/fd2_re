@@ -1,0 +1,28 @@
+{
+  "evidence_level": "E1",
+  "kind": "remake_runtime_capture",
+  "claim": "重製端在明確的截圖驗證模式中，沿用既有 story_ch00_handler BeatRunner 的狀態副作用，完成序章並進入 battle_ch01；畫面是重製端執行期產物。",
+  "capture": {
+    "runner": "fd2-go-test-local",
+    "command": "go build -o /tmp/fd2bin ./cmd/fd2 && /tmp/fd2bin",
+    "environment": {
+      "FD2_CAMPAIGN": "assets/scenarios/campaign_full.json",
+      "FD2_SHOT_FAST_FORWARD": "1",
+      "FD2_SHOT_FRAME": "30",
+      "FD2_SHOT_DETERMINISTIC": "1",
+      "FD2_ORIGINAL_FDOTHER": "/src/org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
+    },
+    "original_assets": "唯讀掛載；只供重製端載入原版 indexed 資源，不修改原始目錄",
+    "output_size": "640x400"
+  },
+  "image": {
+    "path": "../../figures/native-battle-ch01-remake-e1.png",
+    "md5": "59621a14bace8c7d0be27c8cdc26b177",
+    "sha256": "78a9a693b173b64c1eb2d945f682b32532f883526432bc6e2a7ef4252a0a3745"
+  },
+  "limitations": [
+    "FD2_SHOT_FAST_FORWARD 只在截圖模式啟用，不是一般玩家輸入路徑。",
+    "這張圖不是未修改原版同狀態的 E2 對照，也沒有證明戰場 roster、鏡頭、游標、tick 或音訊逐幀一致。",
+    "原版敵方回合 E2 證據另見 native-enemy-turn-original-e2.json；未知 AI 語意仍失敗即關閉。"
+  ]
+}

@@ -221,6 +221,11 @@ ch01 戰場目前已能由原始地圖、單位、前景與 HUD 資產合成。�
 
 完整尺寸、狀態指紋、影像雜湊與限制見
 [`battle-visual-gap-ch01.json`](docs/data/ui-traces/battle-visual-gap-ch01.json)。
+
+另有一張由既有 `story_ch00_handler` 截圖快進器產生的重製端第1戰畫面，僅作
+E1 執行期產物展示：[`native-battle-ch01-remake-e1.png`](docs/figures/native-battle-ch01-remake-e1.png)。
+它不是一般玩家輸入或原版同狀態 E2 對照；完整限制與雜湊見
+[`native-battle-ch01-remake-e1.json`](docs/data/ui-traces/native-battle-ch01-remake-e1.json)。
 較早的 [`native-map-ch01-original-video.png`](docs/figures/native-map-ch01-original-video.png)
 與正式 handler 截圖
 [`native-map-ch01-remake-handler.png`](docs/figures/native-map-ch01-remake-handler.png)

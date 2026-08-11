@@ -4354,3 +4354,10 @@ provenance）跑通 mode 2 的 `NextAIPlan`→`aiStep`→行走→FIGANI 攻擊�
 檔為 `remake/cmd/fd2/native_ai_consumer_test.go`，這是重製端 E1 遊戲層消費證據，
 不是原版目標選擇語意、所有 AI mode 或一般玩家 E2。戰役主線仍須逐節驗證戰鬥→戰後
 →城鎮／商店／整備／存檔，不能只以進入下一場戰鬥判定完成。
+
+另以同一個明確截圖模式實際跑通 `story_ch00_handler` 到 `battle_ch01`，保存
+[`native-battle-ch01-remake-e1.png`](../figures/native-battle-ch01-remake-e1.png) 與
+[`native-battle-ch01-remake-e1.json`](../data/ui-traces/native-battle-ch01-remake-e1.json)。
+這是重製端 E1 產物，並非一般玩家輸入或原版同狀態 E2；下一輪仍應優先把原版
+current-runtime 的 roster／鏡頭／游標／tick 與重製端逐幀配對，再處理完整敵方 AI
+目標選擇與所有戰役戰後節點。

@@ -3737,3 +3737,8 @@ CONTINUE 的 pending-group／`Game` controller handoff 閘門。未修改原版�
 契約與遊戲層 owner 已接通，不能替代未修改原版的同狀態 E2，也不為目標選擇、命令／
 法術／道具效果或其他 AI mode 建立語意。一般玩家驗收仍要求固定 raw roster、鏡頭、
 游標與 tick 的原版／重製逐幀比較，並保留戰後城鎮／商店／整備／存檔節點。
+
+本輪也以該截圖快進器產生 [`native-battle-ch01-remake-e1.png`](../figures/native-battle-ch01-remake-e1.png)。
+這張圖只作重製端 E1 執行期展示，完整環境、原版資產唯讀掛載與雜湊見
+[`native-battle-ch01-remake-e1.json`](../data/ui-traces/native-battle-ch01-remake-e1.json)；
+它不取代未修改原版一般玩家 E2 或同狀態逐幀比較。
