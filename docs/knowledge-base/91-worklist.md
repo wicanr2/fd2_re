@@ -88,7 +88,15 @@
   `postbattle_*` 節點，只同步已物化戰場隊伍、顯示「戰後整理」提示，等待玩家
   確認後沿 authored `next` 進入城鎮／整備；不猜 JOIN、獎勵、章節或原版分支。
   預設忠實模式仍失敗即關閉，且新增 `TestApproximatePostbattlePreservesAuthoredIntermissionBoundary`
-  驗證 town／preparation 邊界與戰場狀態清除。這是可玩近似切片，不是原版 E2。
+  驗證 town／preparation 邊界與戰場狀態清除；另以 `campaign_full.json` 的
+  `postbattle_ch23/24/25/29` 實際節點通過近似確認與預設失敗即關閉矩陣，確認四個
+  未綁定 handler 都沿 authored `next` 進入準備／城鎮而不跳過戰間段落。這是可玩
+  近似切片，不是原版 E2。
+- [x] **CAMPAIGN-RESULT-CONFIRM-CH01-20260811**：`TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne`
+  改由實際 `battle.State.Result`→`checkResult`→`confirmBattleResult` 生產邊界
+  確認戰鬥勝利，再沿已編譯戰後節點進入 `town_ch02` 與整備；不再用
+  `Runner.Advance("win")` 取代玩家的結果確認。測試仍以完成的戰場 fixture 清除
+  敵方與 pending groups，這只驗證生產結果消費端，不宣稱未修改 DOSBox E2。
 - [x] **GAME-TEST-REPORT-20260811**：獨立子代理在 Docker 內實際驗證重製端完整
   Go 回歸、mode 2／mode 11、戰後城鎮／整備與 shop/preparation contract，並以
   未修改 `FD2.EXE`／固定 `FD2.SAV` 完成 DOSBox 啟動／CONTINUE 擷取；報告見

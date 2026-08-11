@@ -72,3 +72,77 @@ func TestApproximatePostbattlePreservesAuthoredIntermissionBoundary(t *testing.T
 		})
 	}
 }
+
+func TestApproximateCampaignFullUnboundPostbattleBoundaries(t *testing.T) {
+	tests := []struct {
+		postbattle, next string
+	}{
+		{postbattle: "postbattle_ch23_persist", next: "preparation_ch24"},
+		{postbattle: "postbattle_ch24_persist", next: "preparation_ch25"},
+		{postbattle: "postbattle_ch25_persist", next: "town_ch26"},
+		{postbattle: "postbattle_ch29_persist", next: "preparation_ch30"},
+	}
+	for _, tc := range tests {
+		t.Run(tc.postbattle, func(t *testing.T) {
+			campaignData, err := campaign.Load("../../assets/scenarios/campaign_full.json")
+			if err != nil {
+				t.Fatal(err)
+			}
+			runner := campaign.NewRunner(campaignData)
+			runner.Cur = tc.postbattle
+			unit := &battle.Unit{
+				Fig: 0, Camp: battle.Own, OnField: true,
+				HP: 4, MaxHP: 10, MP: 1, MaxMP: 3,
+			}
+			g := &Game{
+				camp:            runner,
+				approximateMode: true,
+				st:              &battle.State{Units: []*battle.Unit{unit}},
+				partyMembers:    map[int]bool{0: true},
+				partyRoster:     map[int]battle.Unit{0: *unit},
+			}
+			g.enterNode()
+			if g.loadErr != "" || !g.approximatePostbattle {
+				t.Fatalf("actual campaign node did not enter approximate prompt: node=%q err=%q pending=%v", g.camp.NodeID(), g.loadErr, g.approximatePostbattle)
+			}
+			if g.camp.NodeID() != tc.postbattle || g.msg == "" {
+				t.Fatalf("actual campaign node advanced before confirmation: node=%q msg=%q", g.camp.NodeID(), g.msg)
+			}
+			if got := g.partyRoster[0].HP; got != 10 {
+				t.Fatalf("actual campaign postbattle did not synchronize party HP: %d", got)
+			}
+			if !g.continueApproximatePostbattle() {
+				t.Fatal("actual campaign approximate confirmation was rejected")
+			}
+			if g.camp.NodeID() != tc.next || g.st != nil {
+				t.Fatalf("actual campaign intermission boundary node=%q state=%#v, want next=%q and cleared battle state", g.camp.NodeID(), g.st, tc.next)
+			}
+		})
+	}
+}
+
+func TestCampaignFullUnboundPostbattleDefaultsFailClosed(t *testing.T) {
+	for _, nodeID := range []string{
+		"postbattle_ch23_persist", "postbattle_ch24_persist",
+		"postbattle_ch25_persist", "postbattle_ch29_persist",
+	} {
+		t.Run(nodeID, func(t *testing.T) {
+			campaignData, err := campaign.Load("../../assets/scenarios/campaign_full.json")
+			if err != nil {
+				t.Fatal(err)
+			}
+			runner := campaign.NewRunner(campaignData)
+			runner.Cur = nodeID
+			g := &Game{
+				camp: runner,
+				st: &battle.State{Units: []*battle.Unit{{
+					Fig: 0, Camp: battle.Own, OnField: true, HP: 4, MaxHP: 10,
+				}}},
+			}
+			g.enterNode()
+			if g.camp.NodeID() != nodeID || g.loadErr == "" || g.approximatePostbattle {
+				t.Fatalf("unbound actual campaign node was not fail-closed: node=%q err=%q pending=%v", g.camp.NodeID(), g.loadErr, g.approximatePostbattle)
+			}
+		})
+	}
+}

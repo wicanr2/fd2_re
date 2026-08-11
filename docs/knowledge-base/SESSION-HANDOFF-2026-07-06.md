@@ -4473,7 +4473,11 @@ pending producer 證據，再以同一 raw roster／camera／cursor／tick 做�
   戰場隊伍，顯示戰後整理提示，按 Enter 後沿 authored `next` 進城鎮或整備；
   不猜 JOIN／獎勵／章節／原版分支。未設定時仍維持忠實模式失敗即關閉。
   `TestApproximatePostbattlePreservesAuthoredIntermissionBoundary` 驗證 town 與
-  preparation 兩條邊界，並確認戰場狀態已清除。
+  preparation 兩條邊界，並確認戰場狀態已清除；新增
+  `TestApproximateCampaignFullUnboundPostbattleBoundaries` 與
+  `TestCampaignFullUnboundPostbattleDefaultsFailClosed`，以 `campaign_full.json` 的
+  第 23、24、25、29 戰實際節點驗證四條 authored 戰間邊界。
+
 - 實際 Docker／Xvfb 擷取已保存為
   [`postbattle-approximate-remake.png`](../figures/postbattle-approximate-remake.png)，
   SHA-256 `dfdd3248f0d653a97c95ac1ea17cb8e884436fc4a473a78f2b9bb3d5b4967abe`；這張圖
@@ -4482,6 +4486,15 @@ pending producer 證據，再以同一 raw roster／camera／cursor／tick 做�
   [`game-test-2026-08-11.md`](../reports/game-test-2026-08-11.md)；報告中的 DOSBox／
   重製命令、輸入時間線、資產雜湊與畫面限制已由主代理重新檢查，仍維持 DOSBox
   同 raw 敵方回合未閉合的限制。
+
+## 2026-08-11：ch01 生產戰鬥結果確認回歸
+
+`TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne` 不再直接呼叫
+`Runner.Advance("win")` 進入戰後；測試在已完成的 battle fixture 上走正式
+`battle.State.Result`、`Game.checkResult` 與 `Game.confirmBattleResult`，再沿編譯後
+戰後節點進入 `town_ch02` 與整備。為保持測試的可重現性，夾具明確清除敵方與 pending
+spawn groups，且保留「索爾」保護角色；這證明結果確認的生產消費端，不是未修改原版
+一般玩家 E2，也沒有替未知戰後 handler 增加語意。
 
 ## 2026-08-11：mode 5 遊戲層消費端回歸
 

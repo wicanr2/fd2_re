@@ -1418,10 +1418,33 @@ func TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne(t *testin
 		!reflect.DeepEqual(g.partyJoinOrder, []int{0, 9, 4, 30, 1}) {
 		t.Fatalf("chapter-one join chronology=%v members=%#v", g.partyJoinOrder, g.partyMembers)
 	}
-	if got := g.camp.Advance("win"); got != "story_ch02" {
-		t.Fatalf("battle_ch01 win=%q, want story_ch02", got)
+	// Exercise the production result seam instead of advancing the campaign
+	// runner directly: a completed battle is represented by the normal Result
+	// predicate, then the same confirmation boundary used by Enter advances
+	// the authored on_win edge.
+	protected := false
+	for _, unit := range g.st.Units {
+		if unit != nil && unit.Camp != battle.Own {
+			unit.OnField = false
+			unit.HP = 0
+		} else if unit != nil && !protected {
+			// The chapter node's protect field uses the original text name;
+			// this fixture names the surviving lead so Result exercises that
+			// production guard instead of bypassing it.
+			unit.Name = "索爾"
+			protected = true
+		}
 	}
-	g.enterNode()
+	for group := range g.st.PendingGroups {
+		g.st.PendingGroups[group] = false
+	}
+	g.checkResult()
+	if g.result != "win" {
+		t.Fatalf("completed chapter-one battle result=%q, want win", g.result)
+	}
+	if !g.confirmBattleResult() || g.result != "" || g.camp.NodeID() != "story_ch02" {
+		t.Fatalf("battle result confirmation node=%q result=%q, want story_ch02 and cleared result", g.camp.NodeID(), g.result)
+	}
 	for frame := 0; frame < 10000 && g.camp.NodeID() != "town_ch02"; frame++ {
 		if len(g.dialog) > 0 {
 			g.dialog = nil

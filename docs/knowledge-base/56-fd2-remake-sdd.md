@@ -3821,6 +3821,9 @@ mode 5 的完整目標／指令／法術／道具人工智慧語意仍未解除�
   JOIN、獎勵、章節值或原版分支。
 - 未設定旗標時維持忠實證據模式的失敗即關閉；`TestApproximatePostbattlePreservesAuthoredIntermissionBoundary`
   以 town／preparation 兩條邊界驗證同步與戰場狀態清除。
+- `TestApproximateCampaignFullUnboundPostbattleBoundaries` 與
+  `TestCampaignFullUnboundPostbattleDefaultsFailClosed` 再以 `campaign_full.json` 的
+  第 23、24、25、29 戰實際節點驗證近似確認與預設停止。
 - 近似模式只代表可玩的戰役銜接，不提升 E1 為 E2，也不改寫既有原版證據與推論
   等級；剩餘節點與證據以 [`91-worklist.md`](91-worklist.md) 最新稽核為準。
 
