@@ -4529,4 +4529,17 @@ attack、不改寫位置、回合或 map-range，維持失敗即關閉。這是 
 `TestAIStepConsumesVerifiedMode8Completion` 已在 Docker／Xvfb 通過。mode 0 依 raw
 nearest fallback 完成 movement-only 行走且不寫入 map-range；mode 8 走共同的 raw
 行動完成分支；缺少 mode 0 movement rows 時不改寫位置、回合或 raw 狀態，維持失敗即
-關閉。mode 1 的 blocked-coordinate owner 仍保持未接線，不以近似值冒充原版語意。
+關閉。mode 1 的 blocked-coordinate 遊戲層消費端已由下一節補上；原版語意與一般玩家
+E2 仍不以近似值冒充。
+
+## 2026-08-11：mode 1 blocked-coordinate 遊戲層消費端回歸
+
+`TestAIStepConsumesVerifiedMode1BlockedCoordinate` 與
+`TestAIStepStopsMode1WithoutMovementProvenance` 已在 Docker／Xvfb 通過。正向測試以
+raw `0x14121` blocked-cell、完整 runtime record、selector、地形／組成與 movement-cost
+rows 建立三格戰場：`NextAIPlan` 只接受唯一 raw 落點，`aiStep` 走到該落點前一格，
+以 movement-only 完成回合；沒有攻擊、nearest fallback 或 map-range 寫入。負向測試
+缺少 movement provenance 時，位置、回合、行動旗標與 raw 狀態均不變，維持失敗即關閉。
+
+這是 `0x14EF0→0x14121` 備援的重製端 E1 消費證據，不是完整 mode 1 producer、高階
+玩法或原版一般玩家 E2；未知 command／法術／物品與完整敵方回合仍保持未閉合。

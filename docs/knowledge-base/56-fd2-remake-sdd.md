@@ -3876,4 +3876,18 @@ movement-only 路徑並完成回合，不寫入 map-range；mode 8 只驗證共�
 分支。mode 0 缺少 movement provenance 時在位置、回合或 raw 狀態變更前停止。
 
 這些是重製端 E1 消費邊界，不替 mode 0／8 命名高階玩法；mode 1 的 blocked-coordinate
-生產路徑仍未有可安全接線的 raw owner，原版一般玩家 E2 也未宣稱完成。
+遊戲層消費端另見下節，原版一般玩家 E2 也未宣稱完成。
+
+## 2026-08-11：mode 1 blocked-coordinate 遊戲層消費端 E1
+
+`TestAIStepConsumesVerifiedMode1BlockedCoordinate` 與
+`TestAIStepStopsMode1WithoutMovementProvenance` 已在 Docker／Xvfb 通過。測試沿用
+`0x14121` 的 raw blocked-cell 來源、完整 runtime record、selector、地形／組成與
+movement-cost rows：`NextAIPlan` 只接受唯一 raw 落點，`aiStep` 實際完成
+movement-only 行走並結束回合，不建立攻擊、不寫入 mode 0 的 nearest fallback 或
+map-range 狀態。缺少 movement／raw provenance 時，在位置、回合與 raw 狀態變更前
+失敗即關閉。
+
+這只證明 `0x14EF0→0x14121` 失敗備援的重製端 E1 消費邊界；blocked-coordinate 的
+原版完整 producer／高階 mode 1 語意、一般玩家同狀態 E2 與其他 command／spell／item
+路徑仍未閉合。

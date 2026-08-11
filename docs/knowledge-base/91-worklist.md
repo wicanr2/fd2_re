@@ -73,14 +73,16 @@
   `NextAIPlan` 消費 raw `+0x35/+0x36` 目的地，完成 movement-only 行走並提交
   map-range write；兩者不寫入 raw `+0x05`、不建立攻擊。缺少 movement rows 時
   不改寫位置、回合或 map-range，維持失敗即關閉；不命名未證實的高階玩法。
-- [x] **RE-AI-MODE0-8-GAME-CONSUMER-20260811**：新增
+- [x] **RE-AI-MODE0-1-8-GAME-CONSUMER-20260811**：新增
   `TestAIStepConsumesVerifiedMode0NearestFallback`、
   `TestAIStepStopsMode0WithoutMovementProvenance` 與
   `TestAIStepConsumesVerifiedMode8Completion`。Docker/Xvfb 實際驗證 mode 0 的
   raw nearest fallback movement-only owner（不寫入 map-range）及 mode 8 的共同
-  行動完成分支；mode 0 缺少 movement rows 時不改寫位置、回合或 raw 狀態。這只
-  關閉已證實 raw 分支的重製端 E1 消費邊界，不命名高階玩法，也不宣稱 mode 1 或
-  原版一般玩家 E2。
+  行動完成分支；mode 0 缺少 movement rows 時不改寫位置、回合或 raw 狀態。
+  同批另以 `TestAIStepConsumesVerifiedMode1BlockedCoordinate` 與
+  `TestAIStepStopsMode1WithoutMovementProvenance` 驗證唯一 raw blocked-coordinate
+  的 movement-only owner。這只關閉已證實 raw 分支的重製端 E1 消費邊界，不命名高階
+  玩法，也不宣稱原版一般玩家 E2。
 - [x] **CAMPAIGN-APPROXIMATE-INTERMISSION-20260811**：新增明確的
   `FD2_APPROXIMATE=1` 可玩近似模式。對尚未有正式 handler 的
   `postbattle_*` 節點，只同步已物化戰場隊伍、顯示「戰後整理」提示，等待玩家
@@ -623,7 +625,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   `0x12D7B` 的高階玩法；重製 renderer 仍失敗即關閉。證據見
   [`fd2_ai_13fd4_full_ida_20260810.txt`](../data/ida/fd2_ai_13fd4_full_ida_20260810.txt)。
 - [x] **RE-AI-MODE11-WRITER-35F92**：`[0x53AD5]+0x10==4` 時，`0x36078→0x3419C(20,20,11)` 改寫單位 20 低四位；它是全域 90-entry 表的 event 82，不是第二張 30-entry 表的 entry 22。一般玩家觸發尚未閉合，且 33 張格子事件表沒有 event 82，不猜章節或人物。
-- [~] **REMAKE-AI-MODE-RUNTIME**：模式 0/2/3/4/5/7/8/9/10 已有 `NextAIPlan` 與 game-layer E1 窄消費端（分別保留 nearest fallback、raw table／event／destination provenance、mode 8 common completion 等邊界）；mode 11 的雙段 owner（`0x15311`、`0x1548E`／`0x14121→0x13FD4`）已接 E1 continuation，`0x13FD4` 另有 indexed／音訊 owner。mode 1 的 blocked-coordinate producer、`0x14EF0` command／item route 的完整消費、event 82 觸發、完整回合 orchestration、未知 command／relocation／spell／item 演出與一般玩家 E2 仍未完成；所有未具 raw provenance 的分支維持失敗即關閉。`set_ai:berserk` 仍只是 inert 事件標記。
+- [~] **REMAKE-AI-MODE-RUNTIME**：模式 0/1/2/3/4/5/7/8/9/10 已有 `NextAIPlan` 與 game-layer E1 窄消費端（mode 1 僅接受唯一 raw blocked-coordinate，其他模式分別保留 nearest fallback、raw table／event／destination provenance、mode 8 common completion 等邊界）；mode 11 的雙段 owner（`0x15311`、`0x1548E`／`0x14121→0x13FD4`）已接 E1 continuation，`0x13FD4` 另有 indexed／音訊 owner。mode 1 的完整 raw producer、`0x14EF0` command／item route 的完整消費、event 82 觸發、完整回合 orchestration、未知 command／relocation／spell／item 演出與一般玩家 E2 仍未完成；所有未具 raw provenance 的分支維持失敗即關閉。`set_ai:berserk` 仍只是 inert 事件標記。
 - [x] **RE-FIELD-EVENT-13A44**：閉合地圖 event-word low5 的 1-based slot、FDSHAP `0x20/0x40` 寶箱 gate、FDFIELD 控制段 16×2 `(event_id,selector)` 與 `0xFF` gate；33 張地圖已同步為可編輯資料並有失敗即關閉查詢。
 - [~] **REMAKE-GLOBAL-EVENT-DISPATCH**：全域 `0x51B91` 已由錯誤的 58 entries 更正為 90 entries；回合事件使用 0..57，格子事件只覆蓋另一子集合。58..89 handler 的高階語意與各 dispatcher 的 selector 生產路徑仍須逐一閉合，未知 handler 不接正式流程。
 - [x] **RE-POST-RESOLUTION-1AA1D**：閉合 `{kind:u8,payload:u16le}`，kind0/1 為物品／金錢、kind2 dispatch 全域事件、kind3 為另一呈現分支；建構器只採 FDFIELD b22+b23..24，撤回 b23..25 24-bit payload。
