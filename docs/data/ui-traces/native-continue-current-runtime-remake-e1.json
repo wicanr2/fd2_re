@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "evidence_level": "E1",
+  "scope": "重製端標題 CONTINUE→chapter0 current-runtime 戰場發布",
+  "input": {
+    "save": {
+      "path": "org_game/炎龍騎士團/FLAME2/FD2.SAV",
+      "md5": "409795ccebc2af340d5c74152c2d471c",
+      "sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f"
+    },
+    "campaign": "remake/assets/scenarios/campaign_full.json",
+    "runtime": {
+      "image": "fd2-go-test-local:latest",
+      "display": "Docker Xvfb :99",
+      "network": "none",
+      "title_timer_tick": 0,
+      "native_save_env": "FD2_NATIVE_SAVE",
+      "title_timer_env": "FD2_NATIVE_TITLE_TICK"
+    },
+    "player_input": [
+      "Escape×8（跳過開場）",
+      "Down、Down、Enter（CONTINUE）",
+      "Enter、Enter、Left、Enter（嘗試進入玩家 action/command）"
+    ]
+  },
+  "output": {
+    "path": "../../figures/native-continue-current-runtime-remake-e1.png",
+    "size": [640, 400],
+    "md5": "1748b0cd8c3346bcb241efca446bcddf",
+    "sha256": "050f11d6598e2cdcbbcbb0dd9f72e558d6daac1fe677351838aa9814d448e76d"
+  },
+  "observed": [
+    "標題輸入成功發布 battle_ch01 的 current-runtime State；回合為1、camera=(1,13)、cursor=(8,17)。",
+    "畫面可重現原版 current-runtime 的地圖、單位、游標與地形 HUD 邊界。",
+    "同一輸入序列未能在重製端開啟原版 action/command overlay；這保留為 UI-02/UI-03 的選取擁有者缺口。"
+  ],
+  "limits": [
+    "FD2_NATIVE_TITLE_TICK=0 是明確提供的 deterministic E1 夾具，不是 BIOS 時鐘逐幀 E2。",
+    "本圖是重製端 E1 執行期畫面，不是與原版 320×200 畫面的逐像素 parity。",
+    "尚未由 raw current-runtime record 證實 action 選取擁有者、status/equipment panel 或敵方 AI 目標語意，因此未把它們猜測性接入。"
+  ]
+}

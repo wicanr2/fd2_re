@@ -4422,3 +4422,20 @@ provenance；直接把候選 binding 接到 battle State 會在 `runtime_context
 目標與指令／法術／道具 AI 仍維持 fail-closed。下一輪應先補正式 caller 的時鐘／
 pending producer 證據，再以同一 raw roster／camera／cursor／tick 做原版與重製
 逐幀比較；不能以本輪 E1 publication contract 宣稱 CONTINUE 或完整 remake 完成。
+
+## 2026-08-11 勘誤：CONTINUE 標題呼叫端已接 E1
+
+上一段「標題正式呼叫端尚未接通」已由本輪窄切片更新：
+
+- `TitleMenuContinue` 現只接受 `FD2_NATIVE_SAVE` 與 `FD2_NATIVE_TITLE_TICK`；它從
+  可編輯戰役圖唯一解析 `scenario.chapter` 相符的 battle node，於私有 state 完成
+  field/runtime/pending/timing/view/HUD adapters 後才發布 `Game`。缺存檔、signed BIOS
+  tick、資產或章節對映含糊時，標題保持不動並失敗即關閉。
+- Docker／Xvfb 以 Escape×8、Down×2、Enter 走過標題續戰，成功發布真實 chapter0
+  `FD2.SAV` current-runtime；重製端畫面與條件見
+  [`native-continue-current-runtime-remake-e1.png`](../figures/native-continue-current-runtime-remake-e1.png)
+  與 [`native-continue-current-runtime-remake-e1.json`](../data/ui-traces/native-continue-current-runtime-remake-e1.json)。
+- 這只關閉重製端 E1 publication／輸入邊界。`FD2_NATIVE_TITLE_TICK=0` 是明確的
+  deterministic 夾具，不是原版 BIOS 時鐘逐幀 E2；action 選取擁有者、status/equipment
+  panel、同狀態原版／重製逐幀比較、戰後 town/shop/preparation/save 全路徑，以及
+  敵方 AI 正式 caller／目標／命令／法術／物品決策仍維持 fail-closed。

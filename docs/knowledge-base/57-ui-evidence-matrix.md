@@ -45,10 +45,22 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 （field/runtime/pending/timing/view/HUD adapter）完成後，才從開場選擇器
 （selector）mode `0` 原子切換到互動 mode `1`，並以一次發布清除舊對話／轉場／戰鬥暫存。真實
 `FD2.SAV` chapter0 快照的 Docker 回歸（regression）已通過；測試明確以呼叫端提供的零值
-計時種子（timer seed）驗證資料契約，不是標題時鐘或畫面 E2 證據。正式呼叫端
-（caller）的帶符號 BIOS 計時值、泛用待處理群組產生器（pending-group producer）、未修改一般玩家同狀態逐幀比較，以及戰後
-town／shop／preparation／save 路徑仍是 partial／open，不能把這項 E1 當成 CONTINUE
-完成。
+計時種子（timer seed）驗證資料契約，不是標題時鐘或畫面 E2 證據。
+
+同日已補上正式標題呼叫端：`TitleMenuContinue` 只接受明確提供的
+`FD2_NATIVE_SAVE` 與 `FD2_NATIVE_TITLE_TICK`，從可編輯戰役圖唯一解析
+`scenario.chapter` 相符的 battle node，在私有 state 完成四個 adapter 後才發布；缺少
+存檔、signed BIOS tick、資產或章節對映含糊時，標題保持不動並失敗即關閉。真實
+`FD2.SAV` chapter0 的標題 Escape／Down／Down／Enter 路徑已在 Docker／Xvfb 取得
+[`native-continue-current-runtime-remake-e1.png`](../figures/native-continue-current-runtime-remake-e1.png)，
+條件與雜湊見
+[`native-continue-current-runtime-remake-e1.json`](../data/ui-traces/native-continue-current-runtime-remake-e1.json)。
+這是重製端 E1 publication／輸入邊界，不是 BIOS 時鐘逐幀或原版畫面 E2。
+
+仍未解除的閘門是：泛用待處理群組公式的更多章節證據、未修改一般玩家同狀態逐幀
+比較、action 選取擁有者與 status/equipment panel、戰後 town／shop／preparation／save
+全路徑，以及敵方 AI 的正式 caller、目標選擇與命令／法術／物品決策。沒有這些證據，
+不可把 CONTINUE 或完整戰役寫成完成。
 
 2026-08-10 的音訊邊界：戰鬥節點使用原版 `0x51e63` 章節曲表，城鎮／商店節點使用
 已證實的 `FDMUS_010`；這些是資料回歸，不代表每章一般玩家 E2。`ending` 的三個
@@ -103,6 +115,8 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 | Contract | 現有 code evidence | 判定 | 下一個證據問題 |
 |---|---|---|---|
 | UI-01 title/menu | 原版 `0x1fe2c` scan-code loop（↑/↓ wrap；Enter/Space/`0xe0`/`0x52` confirm）、`0x25ebb` return dispatcher、DOSBox oracle `docs/figures/title-original-dosbox.png` 已固定 START／LOAD／CONTINUE 與 title cursor；四槽 selector、valid-save typed restore 與 indexed 畫面已接。CONTINUE 的 FDFIELD 控制映像、battle-local event state、current-runtime-order selector rebuild，以及標題 caller 的 opening／interactive range mode、HUD gate B／anchor 已閉合成唯讀 preflight；後續 map timing、live field、runtime units、future-group transaction 與未改寫 chapter0 pending roster 亦有嚴格 consumer | partial | 第三主選單 CONTINUE 的 production owner 仍缺動態 turn-writer／group-formula 的通用 pending-group binding，及 `0x117E7` 對應的正式 `Game` controller handoff；另缺刪除／覆寫與完整 boot 畫面差分 |
+> **UI-01 表格勘誤（2026-08-11）**：上列「CONTINUE production owner 仍缺」是接線前的歷史描述，現由 `TitleMenuContinue`＋`loadNativeContinueFromCurrentSnapshot` 補上 chapter0 E1；它仍不是一般玩家 E2。詳細輸入與失敗即關閉條件以本頁下方同日段落及 [`native-continue-current-runtime-remake-e1.json`](../data/ui-traces/native-continue-current-runtime-remake-e1.json) 為準。
+
 | UI-02 field | map/camera/cursor/unit/HUD Draw 約 3441–3568、4571、4595；camera、absolute/visible cursor、HUD anchor/gates 與 FDOTHER #130 panel 已有直接原版資料流；ch26 event61 所需 view/HUD 已達 E1。ch27 event62 已接向左一步第七拍 selector0，能由完整 raw row 與 `0x2066E` 已證實的新戰鬥回合初始值1啟用 event63；`sub_1A813(0)` 的敵軍 AI 前 owner、兩次 0x35822 增援、delta255 全白／delta0 恢復及 AI continuation 已接正式 runner。ch26_pre 返回 battle_ch27 的 view `(camera 9,49; cursor 14,54; visible 5,5)`、selector0 與 inherited HUD 已由 IDA／Capstone 閉合並接線；gate A 從存檔、anchor 從程序持續狀態、gate B 從 controller 取得，不猜章節常數。event63 的 indexed regression 由雜湊綁定 `NativeJoinConstructorTable` 建立凱麗 fresh raw `+0x42=151`，不再手填 fixture，也不由章節近似 HP 反推。ch00 的 `0x32999` 已以 FDOTHER #9 接12次索引呈現、pass6/7/8 snapshot 重建及 pass1 #95，兩次各12幀後能沿正式 handler 進入戰鬥、戰後、城鎮與整備。另以截圖專用快速時鐘逐拍跑完 `story_ch00_handler` 的 73 拍並擷取 `native-map-ch01-remake-handler.png`；完整隊伍已出現；`native-map-ch01-original-video.png` 是不同狀態的歷史參考，不能以其單位、游標、HUD 或尺度差異判定目前 renderer 缺陷。2026-08-10 另以同一 `FD2.SAV` 狀態做 DOSBox／重製最近鄰比較，內容區只剩 22 個畫布邊界差異像素，記為 ch01 scoped E2 candidate；ch01 以外仍只是 E1。ch01 global event1/2 又驗證 turn4/5 各12次呈現後才執行 ACTING(3/4)，event2 對話不會越過 acting；缺 acting 資源時不發布 roster/cache/turn continuation。這些目前仍不是完整戰場 UI 或全章節 DOSBox E2 | partial | 除 ch26／ch27 event62/63／ch00／ch01 event1/2 E1 切片與 ch01 scoped E2 candidate 外，ch02+ 的逐章 dynamic view/gates/anchor producer、ch27 一般玩家／CONTINUE 同 roster/event/tick DOSBox 像素差分、該時點角色 raw record 的實際值，以及 `0x12c0d` 的 exact raw lookup predicate/order；另補 ch00 與 ch01 event1/2 同 camera/roster/pass 的原版逐幀比較 |
 | UI-03 action menu | Docker Capstone `0x18890` + `0x18d8c`：↑0 attack、←1 spell、→2 item、↓3 wait/field interaction；native command grid每欄四列。item branch `0x1bbdc` 的compact兩欄四列input、`0x17eef/0x17fc0/0x184c0`完整 indexed compositor與12-frame三區clip schedule已有 Ebiten adapter；tracked item Enter transaction已接。`0x19953` 是另一 selector | partial | end-turn entry、indexed effect presentation、DOSBox visual diff與缺archive UX |
 | UI-04 target/range | `0x1cff0` + `0x149f8` 證實 command record `+3/+4/+6` 參與 target-candidate geometry；`0x1bbdc` item case 0 的 two-stage targets、observed type5–24 effect dispatch 已閉合。item entry materialize `row[+0x12]+2`；first selector return後grid reset且selector回1。type23 destination把literal target code6傳給`0x115b6`，不是global selector6；兩層取消都回item panel。remake已接tracked transaction、occupancy/class/race/29×20 cost/terrain gate | partial | native argument↔weapon min/max mapping、AOE/LOS、不可用目標灰化、indexed item/effect presentation；global selector6的production owner仍待 |

@@ -140,3 +140,45 @@ func TestNativeContinueBattlePublicationFromRealCurrentSnapshot(t *testing.T) {
 			g.camp.NodeID(), g.st, g.sc, g.titlePhase, g.curX, g.curY)
 	}
 }
+
+func TestNativeContinueTitleCallerPublishesRealCurrentSnapshot(t *testing.T) {
+	savePath := filepath.Join(
+		"../../../org_game/炎龍騎士團/FLAME2", "FD2.SAV",
+	)
+	if _, err := os.Stat(savePath); err != nil {
+		t.Skipf("player-provided FD2.SAV is absent: %v", err)
+	}
+	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("FD2_NATIVE_TITLE_TICK", "0")
+	g := &Game{
+		camp:       campaign.NewRunner(graph),
+		titlePhase: "menu",
+	}
+	if err := g.loadNativeContinueFromCurrentSnapshot(savePath); err != nil {
+		t.Fatal(err)
+	}
+	if g.camp == nil || g.camp.NodeID() != "battle_ch01" ||
+		g.st == nil || g.sc == nil || g.titlePhase != "" ||
+		g.st.NativeRoundCounter != 1 || g.curX != 8 || g.curY != 17 ||
+		g.st.NativeMapViewState.CameraX != 1 || g.st.NativeMapViewState.CameraY != 13 {
+		t.Fatalf(
+			"title CONTINUE publication node=%v title=%q state=%p scenario=%p round=%d cursor=(%d,%d) view=%+v",
+			g.camp.NodeID(), g.titlePhase, g.st, g.sc, g.st.NativeRoundCounter,
+			g.curX, g.curY, g.st.NativeMapViewState,
+		)
+	}
+}
+
+func TestNativeContinueTitleTimerSeedFailsClosed(t *testing.T) {
+	t.Setenv("FD2_NATIVE_TITLE_TICK", "")
+	if _, err := nativeContinueTitleTimerSeed(); err == nil {
+		t.Fatal("missing signed BIOS tick was accepted")
+	}
+	t.Setenv("FD2_NATIVE_TITLE_TICK", "32768")
+	if _, err := nativeContinueTitleTimerSeed(); err == nil {
+		t.Fatal("out-of-range signed BIOS tick was accepted")
+	}
+}

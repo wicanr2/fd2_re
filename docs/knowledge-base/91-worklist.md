@@ -2174,6 +2174,17 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   不完整 adapter 失敗即關閉回歸均在 Docker 通過。此項只閉合重製端 E1 publication
   契約（contract）；呼叫端帶符號 BIOS 計時值、泛用待處理群組寫入器／公式
   （pending-group writer／formula）、未修改一般玩家同狀態 E2 與戰後城鎮／商店／整備／存檔仍未完成。
+- [x] **NATIVE-CONTINUE-TITLE-CALLER-E1（2026-08-11）**：`TitleMenuContinue` 現以
+  `FD2_NATIVE_SAVE`／`FD2_NATIVE_TITLE_TICK` 為明確輸入，從可編輯戰役圖唯一解析
+  `scenario.chapter` 相符的 battle node，在私有 state 完成 field/runtime/pending/
+  timing/view/HUD adapters 後才呼叫 `Game.publishNativeContinueBattle`；缺存檔、signed
+  BIOS tick、資產或對映含糊時停在標題並失敗即關閉。Docker／Xvfb 實際以一般按鍵
+  Escape×8、Down×2、Enter 走到 chapter0 current-runtime battle，畫面與雜湊見
+  [`native-continue-current-runtime-remake-e1.png`](../figures/native-continue-current-runtime-remake-e1.png)
+  與 [`native-continue-current-runtime-remake-e1.json`](../data/ui-traces/native-continue-current-runtime-remake-e1.json)。
+  這項只關閉重製端 E1 publication／輸入邊界；原版 BIOS 時鐘逐幀、action 選取擁有者、
+  status/equipment panel、同狀態 E2、戰後 town/shop/preparation/save 全路徑與敵方 AI
+  正式 caller／目標決策仍未完成。
 - [x] **RE-CHAPTER-AUX-GRAPHICS-10652**：合法 IDA Pro 9.4 與 Docker
   Capstone 固定 `0x10652..0x1088d` 只有 CONTINUE、完整章節 loader、
   ch22 post 三個 caller。函式先釋放 `[0x53aff]/[0x53b03]`，再只對 raw

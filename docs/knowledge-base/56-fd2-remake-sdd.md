@@ -3777,8 +3777,17 @@ CONTINUE 的 pending-group／`Game` controller handoff 閘門。未修改原版�
 測試使用呼叫端明確提供的 `TitleTimerTick=0` 作為資料契約夾具，**不**宣稱標題
 BIOS 時鐘、`0x10494/0x105ED` 重繪／延遲（redraw/delay）、逐像素或一般玩家 E2 已完成。
 
-目前仍保持失敗即關閉的邊界：標題呼叫端（caller）尚未把 `0x25D83..0x25D8B` 擷取的
-帶符號 BIOS 計時值（signed BIOS tick）接入正式輸入；多章節動態待處理群組寫入器／
-公式（pending-group writer/formula）、未修改一般玩家
-同一 raw runtime 的重製／原版 E2、戰後城鎮／商店／整備／存檔全路徑，以及 mode 11、
-`0x13FD4`、mode 5 的完整目標／指令／法術／道具人工智慧語意仍未解除。
+同日已補上正式標題呼叫端：`TitleMenuContinue` 只接受明確提供的
+`FD2_NATIVE_SAVE` 與 `FD2_NATIVE_TITLE_TICK`，從可編輯戰役圖唯一解析
+`scenario.chapter` 相符的 battle node，在私有 state 完成四個 adapter 後才發布；缺少
+存檔、signed BIOS tick、資產或章節對映含糊時，標題保持不動並失敗即關閉。Docker／Xvfb
+以 Escape×8、Down×2、Enter 走過標題續戰，產生重製端 E1 畫面
+[`native-continue-current-runtime-remake-e1.png`](../figures/native-continue-current-runtime-remake-e1.png)，
+條件與雜湊見
+[`native-continue-current-runtime-remake-e1.json`](../data/ui-traces/native-continue-current-runtime-remake-e1.json)。
+
+目前仍保持失敗即關閉的邊界：`FD2_NATIVE_TITLE_TICK` 是明確輸入的 signed BIOS tick，
+尚未由跨平台執行期自行重建原版 `0x25D83..0x25D8B` 的時鐘／重繪時序；多章節動態待處理
+群組寫入器／公式、未修改一般玩家同一 raw runtime 的重製／原版 E2、action 選取擁有者與
+status/equipment panel、戰後城鎮／商店／整備／存檔全路徑，以及 mode 11、`0x13FD4`、
+mode 5 的完整目標／指令／法術／道具人工智慧語意仍未解除。

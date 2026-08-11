@@ -136,7 +136,7 @@ DOS 原生不能直接顯示中文。漢堂隨遊戲攜帶點陣字型，文字�
 | 動畫與戰鬥演出解碼 | 建立 AFM 增量繪圖虛擬機及 FIGANI 幀解碼器，保存原始座標、調色盤與時序資料 | [`39` AFM](docs/knowledge-base/39-ani-afm-format.md)、[`35` 戰鬥演出](docs/knowledge-base/35-battle-animation-rendering.md) |
 | 遊戲機制反向工程 | 以版本雜湊綁定已閉合的戰鬥規則切片、物品、事件處理器、敵方 AI、章節狀態與戰後路徑；撤回缺少寫入端／消費端的舊斷言 | [`11` 敵方 AI](docs/knowledge-base/11-enemy-ai.md)、[`27` 戰鬥規則](docs/knowledge-base/27-combat-rules-and-validation-checklist.md) |
 | 原版介面逐狀態重建 | 城鎮、商店、讀檔及部分戰鬥介面以原版 indexed 資源重建；多個 ch02 狀態已有整幀 RGB 相同對照 | [`57` 介面證據矩陣](docs/knowledge-base/57-ui-evidence-matrix.md) |
-| 可編輯戰役與持續隊伍 | 對話、事件、章節節點、商店／教會／整備與持續隊伍逐步脫離硬編碼；序章兩次增援及第一章 turn4／5 增援已接原版12次索引呈現與獨立 ACTING，第8戰已依29..41 slots frontier完成洛娜加入與進城，第10戰亦接上60／61 slots、原版 DAC 淡出／淡入、直接 record patch、JOIN11／6與 `town_ch11`。第16戰 raw `ch15_post` 現以 persistent-first 76 slots、四條 raw 分支、JOIN18 與 `town_ch17` save/load 完成重製端 E1；第20戰現依固定名冊第0筆＋15人整備建立83 slots，正確區分round15的增援／JOIN28與round16略過路徑，兩路都保留JOIN25並進`town_ch21`；第27章 event62→event63 已接敵軍 AI 前兩批增援與全白／恢復演出（均為重製端 E1，尚非 DOSBox E2）。流程仍保持戰鬥→戰後→城鎮→整備；原生 `FD2.SAV` 四槽 LOAD 已能還原到具型別隊伍及城鎮／整備邊界，CONTINUE 目前戰鬥仍未接入 | [`29` 事件系統](docs/knowledge-base/29-remake-extensible-event-system.md)、[`23` 啟動與存檔流程](docs/knowledge-base/23-boot-title-and-scenario-flow.md) |
+| 可編輯戰役與持續隊伍 | 對話、事件、章節節點、商店／教會／整備與持續隊伍逐步脫離硬編碼；序章兩次增援及第一章 turn4／5 增援已接原版12次索引呈現與獨立 ACTING，第8戰已依29..41 slots frontier完成洛娜加入與進城，第10戰亦接上60／61 slots、原版 DAC 淡出／淡入、直接 record patch、JOIN11／6與 `town_ch11`。第16戰 raw `ch15_post` 現以 persistent-first 76 slots、四條 raw 分支、JOIN18 與 `town_ch17` save/load 完成重製端 E1；第20戰現依固定名冊第0筆＋15人整備建立83 slots，正確區分round15的增援／JOIN28與round16略過路徑，兩路都保留JOIN25並進`town_ch21`；第27章 event62→event63 已接敵軍 AI 前兩批增援與全白／恢復演出（均為重製端 E1，尚非 DOSBox E2）。流程仍保持戰鬥→戰後→城鎮→整備；原生 `FD2.SAV` 四槽 LOAD 已能還原到具型別隊伍及城鎮／整備邊界；chapter0 current-runtime CONTINUE 已接明確存檔／計時種子的重製端 E1 發布，尚非一般玩家 E2 | [`29` 事件系統](docs/knowledge-base/29-remake-extensible-event-system.md)、[`23` 啟動與存檔流程](docs/knowledge-base/23-boot-title-and-scenario-flow.md) |
 
 這些貢獻各自代表已驗證的子系統，不代表完整 30 章已經可以從頭到尾等價
 遊玩。尚未閉合的玩家路徑、原生存檔還原與介面差距仍列在
@@ -184,7 +184,7 @@ ch02 武器店、道具店與秘密商店：上排為原版，下排為重製；
 
 原版與重製端的標題選單同樣以 320×200 內容呈現；重製圖是 Docker／Xvfb
 實際執行期擷取，保留目前非原版的音源提示列，僅作介面對照，不代表
-CONTINUE 戰場還原或完整開場動畫已完成。
+一般玩家 E2 或完整開場動畫已完成。chapter0 的 CONTINUE E1 另見下方戰場段落。
 
 | 原版 DOSBox | 重製端執行期 |
 |---|---|
@@ -266,6 +266,15 @@ Docker／Xvfb 截圖，不是原版同狀態逐像素 E2；原始 DAC 條件與�
 ![原版 CONTINUE current-runtime 戰場](docs/figures/native-continue-current-runtime-original-dosbox.png)
 
 ![原版 current-runtime command grid](docs/figures/native-continue-current-command-original-dosbox.png)
+
+重製端現在也能由同一份 `FD2.SAV` 走標題 Escape／Down／Down／Enter，
+在明確提供 `FD2_NATIVE_TITLE_TICK` 後發布 `battle_ch01` current-runtime；
+下圖是 Docker／Xvfb 的 E1 執行期畫面。它證明保存的鏡頭、游標、回合與地圖
+已交給戰場控制器，但目前 Enter 後的 action 選取擁有者與原版 status/equipment
+panel 尚未閉合，因此不宣稱逐像素 E2。條件與雜湊見
+[`native-continue-current-runtime-remake-e1.json`](docs/data/ui-traces/native-continue-current-runtime-remake-e1.json)。
+
+![重製端 CONTINUE current-runtime 戰場（E1）](docs/figures/native-continue-current-runtime-remake-e1.png)
 
 同一份未修改原版 `FD2.SAV` 也已走到「結束目前單位行動嗎？」→「是」，實際看見
 `ENEMY PHASE`，並在約 10 秒後看到敵方回合的另一個戰場畫面，約 20 秒後回到玩家

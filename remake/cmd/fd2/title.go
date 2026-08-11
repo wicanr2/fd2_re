@@ -243,10 +243,14 @@ func (g *Game) titleUpdate() bool {
 				return true
 			case TitleMenuContinue:
 				// Original selection 2 restores FD2.SAV's current-runtime
-				// snapshot through 0x10010; it is not remake JSON slot 0.
-				// Keep the title active until the native transaction can publish
-				// its pending-group and 0x117E7-controller handoff atomically.
-				g.msg = "原版目前戰鬥續戰尚未完成接線"
+				// snapshot through 0x10010; it is not remake JSON slot 0.  The
+				// caller supplies the original save and signed BIOS seed; every
+				// missing/ambiguous owner remains fail-closed in the title.
+				if err := g.loadNativeContinueFromCurrentSnapshot(
+					os.Getenv("FD2_NATIVE_SAVE"),
+				); err != nil {
+					g.msg = err.Error()
+				}
 				return true
 			}
 			g.titlePhase = "" // START 或讀檔後 → 進遊戲

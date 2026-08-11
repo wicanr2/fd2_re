@@ -1,12 +1,189 @@
 package main
 
 import (
+	"errors"
 	"fmt"
+	"os"
+	"strconv"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
+
+// nativeContinueBattleSource is resolved from the editable campaign graph,
+// not from a guessed chapter-to-map formula.  A current-runtime save is only
+// accepted when exactly one battle node owns the matching scenario chapter.
+type nativeContinueBattleSource struct {
+	nodeID       string
+	unitsPath    string
+	scenarioPath string
+	nodeMap      string
+}
+
+func (g *Game) resolveNativeContinueBattleSource(chapter int) (nativeContinueBattleSource, error) {
+	if g == nil || g.camp == nil || g.camp.C == nil {
+		return nativeContinueBattleSource{}, errors.New("原版續戰：戰役圖尚未載入")
+	}
+	if chapter < 0 || chapter >= 30 {
+		return nativeContinueBattleSource{}, fmt.Errorf("原版續戰：章節索引 %d 超出原版範圍", chapter)
+	}
+	var matches []nativeContinueBattleSource
+	for nodeID, node := range g.camp.C.Nodes {
+		if node == nil || node.Type != "battle" || node.Units == "" ||
+			node.Scenario == "" || node.Map == "" {
+			continue
+		}
+		scenario, err := battle.LoadScenario(assetPath(node.Scenario))
+		if err != nil || scenario.Chapter != chapter+1 {
+			continue
+		}
+		matches = append(matches, nativeContinueBattleSource{
+			nodeID: nodeID, unitsPath: node.Units, scenarioPath: node.Scenario,
+			nodeMap: node.Map,
+		})
+	}
+	if len(matches) != 1 {
+		return nativeContinueBattleSource{}, fmt.Errorf(
+			"原版續戰：章節 %d 對應戰鬥節點數=%d，拒絕猜測",
+			chapter, len(matches),
+		)
+	}
+	return matches[0], nil
+}
+
+func nativeContinueTitleTimerSeed() (int, error) {
+	raw := os.Getenv("FD2_NATIVE_TITLE_TICK")
+	if raw == "" {
+		return 0, errors.New(
+			"原版續戰：缺少 FD2_NATIVE_TITLE_TICK（必須由標題呼叫端提供 signed BIOS tick）",
+		)
+	}
+	tick, err := strconv.Atoi(raw)
+	if err != nil || tick < -0x8000 || tick > 0x7fff {
+		return 0, errors.New("原版續戰：FD2_NATIVE_TITLE_TICK 不在 signed 16-bit 範圍")
+	}
+	return tick, nil
+}
+
+// loadNativeContinueFromCurrentSnapshot owns the title CONTINUE application
+// caller.  It resolves an exact editable battle source, builds every typed
+// adapter on private state, and publishes only after the complete handoff is
+// valid.  Missing save, timer, assets, or an ambiguous chapter mapping keeps
+// the title active and never mutates the current battle.
+func (g *Game) loadNativeContinueFromCurrentSnapshot(path string) error {
+	if path == "" {
+		return errors.New("原版續戰：未提供 FD2_NATIVE_SAVE")
+	}
+	stored, err := os.ReadFile(path)
+	if err != nil {
+		return fmt.Errorf("原版續戰：讀取 FD2.SAV：%w", err)
+	}
+	plain, err := fdsave.Decode(stored)
+	if err != nil {
+		return fmt.Errorf("原版續戰：解碼 FD2.SAV：%w", err)
+	}
+	snapshot, err := fdsave.InspectCurrentSnapshot(plain)
+	if err != nil {
+		return fmt.Errorf("原版續戰：current-runtime 快照：%w", err)
+	}
+	timer, err := nativeContinueTitleTimerSeed()
+	if err != nil {
+		return err
+	}
+	source, err := g.resolveNativeContinueBattleSource(int(snapshot.Header.Chapter))
+	if err != nil {
+		return err
+	}
+
+	// All loading and adapter writes below happen on a private Game/state.  The
+	// live title remains untouched until publishNativeContinueBattle succeeds.
+	candidate := *g
+	if err := candidate.loadMap(source.nodeMap); err != nil {
+		return fmt.Errorf("原版續戰：地圖資產：%w", err)
+	}
+	state, err := battle.Load(assetPath(source.unitsPath))
+	if err != nil {
+		return fmt.Errorf("原版續戰：單位資產：%w", err)
+	}
+	// pending-group validation compares the untouched authored FDFIELD
+	// topology with the progressively materialized CONTINUE state.  Keep a
+	// separate load so adapter writes cannot make that proof self-referential.
+	assetState, err := battle.Load(assetPath(source.unitsPath))
+	if err != nil {
+		return fmt.Errorf("原版續戰：單位資產基準：%w", err)
+	}
+	scenario, err := battle.LoadScenario(assetPath(source.scenarioPath))
+	if err != nil {
+		return fmt.Errorf("原版續戰：劇本資產：%w", err)
+	}
+	if scenario.Chapter != int(snapshot.Header.Chapter)+1 ||
+		scenario.Map < 0 || state.W != candidate.m.W || state.H != candidate.m.H ||
+		assetState.W != state.W || assetState.H != state.H {
+		return errors.New("原版續戰：戰場資產與 current-runtime 章節不一致")
+	}
+	if err := candidate.bindNativeFutureItemRows(state); err != nil {
+		return fmt.Errorf("原版續戰：future item rows：%w", err)
+	}
+	if err := candidate.bindNativeMovementCostRows(state); err != nil {
+		return fmt.Errorf("原版續戰：movement rows：%w", err)
+	}
+	candidate.bindCommandLearn(state)
+	candidate.bindNativeCommandBook(state)
+	candidate.bindNativeCommandResistances(state)
+	input, err := fdsave.BuildContinueRuntimeInput(
+		snapshot,
+		fdsave.ContinueRuntimeContext{
+			Chapter:            int(snapshot.Header.Chapter),
+			FieldWidth:         state.W,
+			FieldHeight:        state.H,
+			SelectorGroupCount: 0x100,
+			TitleTimerTick:     timer,
+			HasTitleTimerTick:  true,
+		},
+	)
+	if err != nil {
+		return fmt.Errorf("原版續戰：typed input：%w", err)
+	}
+	catalog, err := campaign.LoadNativeCharacterCatalog(
+		assetPath("assets/data/native_character_catalog.json"),
+	)
+	if err != nil {
+		return fmt.Errorf("原版續戰：角色目錄：%w", err)
+	}
+	if err := campaign.MaterializeNativeContinueFieldBoundary(
+		state, input, int(snapshot.Header.Chapter),
+	); err != nil {
+		return err
+	}
+	if err := campaign.MaterializeNativeContinueRuntimeUnits(state, input, catalog); err != nil {
+		return err
+	}
+	if err := campaign.MaterializeNativeContinueMapTiming(state, input); err != nil {
+		return err
+	}
+	itemRows, err := battle.LoadNativeItemEffectRowPrefix(
+		assetPath("assets/data/native_item_effect_rows.json"),
+	)
+	if err != nil {
+		return fmt.Errorf("原版續戰：item rows：%w", err)
+	}
+	if err := campaign.MaterializeNativeContinuePendingGroups(
+		state, input, int(snapshot.Header.Chapter), assetState, scenario, itemRows,
+	); err != nil {
+		return err
+	}
+	if err := campaign.MaterializeNativeContinueInteractiveBoundary(state, input); err != nil {
+		return err
+	}
+	if err := candidate.publishNativeContinueBattle(
+		input, state, scenario, source.nodeID, source.unitsPath, source.scenarioPath,
+	); err != nil {
+		return err
+	}
+	*g = candidate
+	return nil
+}
 
 // publishNativeContinueBattle is the application-owned half of the native
 // CONTINUE boundary.  It consumes a state that has already passed all typed
@@ -15,8 +192,8 @@ import (
 // not replaced by an authored battle opening.
 //
 // The title caller is intentionally separate: it must provide the signed BIOS
-// timer seed and the exact campaign node.  Until that caller is evidence
-// complete, title CONTINUE remains fail-closed.
+// timer seed and resolve the exact campaign node.  Missing either input keeps
+// title CONTINUE fail-closed; this E1 path does not claim BIOS timing parity.
 func (g *Game) publishNativeContinueBattle(
 	input fdsave.ContinueRuntimeInput,
 	state *battle.State,
