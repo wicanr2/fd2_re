@@ -3866,3 +3866,14 @@ raw 目標鄰格；mode 3 提交已證實的 map-range write，mode 9 保留不�
 `+0x35/+0x36` 目的地，完成 movement-only 行走後提交 map-range write；不寫入
 raw `+0x05`，也不建立攻擊。缺少 movement provenance 時在位置、回合或 map-range
 變更前失敗即關閉；mode 4／10 的高階玩法仍未知。
+
+## 2026-08-11：mode 0／8 `aiStep` 遊戲層消費端 E1
+
+重製端新增 `TestAIStepConsumesVerifiedMode0NearestFallback`、
+`TestAIStepStopsMode0WithoutMovementProvenance` 與
+`TestAIStepConsumesVerifiedMode8Completion`。mode 0 只依 raw nearest fallback 建立
+movement-only 路徑並完成回合，不寫入 map-range；mode 8 只驗證共同的 raw 行動完成
+分支。mode 0 缺少 movement provenance 時在位置、回合或 raw 狀態變更前停止。
+
+這些是重製端 E1 消費邊界，不替 mode 0／8 命名高階玩法；mode 1 的 blocked-coordinate
+生產路徑仍未有可安全接線的 raw owner，原版一般玩家 E2 也未宣稱完成。

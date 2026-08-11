@@ -4521,3 +4521,12 @@ attack、不改寫位置、回合或 map-range，維持失敗即關閉。這是 
 不寫入 raw `+0x05`、不建立攻擊；缺少 movement rows 時不改寫位置、回合或 map-range，
 維持失敗即關閉。這是 E1 raw consumer，不命名 mode 4／10 高階玩法，也不升格為
 原版一般玩家 E2。
+
+## 2026-08-11：mode 0／8 遊戲層消費端回歸
+
+`TestAIStepConsumesVerifiedMode0NearestFallback`、
+`TestAIStepStopsMode0WithoutMovementProvenance` 與
+`TestAIStepConsumesVerifiedMode8Completion` 已在 Docker／Xvfb 通過。mode 0 依 raw
+nearest fallback 完成 movement-only 行走且不寫入 map-range；mode 8 走共同的 raw
+行動完成分支；缺少 mode 0 movement rows 時不改寫位置、回合或 raw 狀態，維持失敗即
+關閉。mode 1 的 blocked-coordinate owner 仍保持未接線，不以近似值冒充原版語意。
