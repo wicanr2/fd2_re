@@ -24,6 +24,19 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 | save/load | 45–55% | 四槽 input、native save envelope、原版 indexed loadslots 與 chapter-slot→typed party→town/preparation restore owner 已接；空槽及修改存檔 chapter1 有效槽畫面均與 DOSBox 全幀 RGB 相同。一般玩家有效槽 E2、CONTINUE current battle、delete/overwrite 仍缺 |
 | ending | 25–35%（E1；campaign仍缺） | prefix已跑到 `0x2c548`，portrait compositor已閉合一段；IDA 已證實 `0x2c5cf→FDMUS_004`、`0x2c1ac→play_bgm(-1)`、`0x2c1f5→FDMUS_018` 三個結局音訊事件，預覽器可依序消費。party montage、完整 `0x2bce5` indexed terminal route、輸入交接與正式 campaign ending 仍未完成，不宣稱一般玩家 E2 |
 
+### 2026-08-11：未修改原版敵方回合 E2 錨點
+
+以固定雜湊的 `FD2.EXE`／`FD2.SAV`，在一次性 Docker DOSBox 中由
+`CONTINUE` 進入 current-runtime 戰場，開啟 command grid，選擇 `END` 並以
+`YES` 確認。約 1 秒畫面明確顯示 `ENEMY PHASE`，約 10 秒仍在敵方回合，約
+20 秒回到玩家操作狀態。三張 320×200 client crop 與完整輸入、PNG 雜湊見
+[`native-enemy-turn-original-e2.json`](../data/ui-traces/native-enemy-turn-original-e2.json)。
+
+這關閉的是「原版完全沒有一般玩家敵方回合 E2 輸入／畫面錨點」的舊缺口；它不證明
+目標選擇、移動評分、命令／法術／道具決策，也不是重製端同一 raw 狀態的 parity。
+`REMAKE-AI-MODE-RUNTIME`、`CAMPAIGN-POSTBATTLE-E2-FULL-PATH` 與重製端同狀態
+逐幀比較仍維持 partial／open。
+
 2026-08-10 的音訊邊界：戰鬥節點使用原版 `0x51e63` 章節曲表，城鎮／商店節點使用
 已證實的 `FDMUS_010`；這些是資料回歸，不代表每章一般玩家 E2。`ending` 的三個
 已證實事件與位址、檔案雜湊見 [`fd2_ending_audio_ida.txt`](../data/ida/fd2_ending_audio_ida.txt)。

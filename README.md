@@ -14,7 +14,7 @@
 | 領域 | 已驗證成果 | 主要缺口 |
 |---|---|---|
 | 資產與格式 | `.DAT`、RLE 圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與部分 EXE 資料表可重現解析 | 部分執行期改寫、合成器與音訊播放尚未完整接入 |
-| 反向工程 | 戰役狀態機、事件處理器、戰鬥規則、敵方 AI 原始模式與城鎮／商店／教會及存檔邊界已有證據化切片；mode 2 物理候選、mode 5 事件尾端，以及 mode 11 的 `0x15311` 命令／`0x1548E` 物理／`0x14121→0x13FD4` indexed 音訊 owner，均已接上失敗即關閉的執行期窄切片 | 尚缺同一原版狀態的一般玩家敵方回合 E2、未知命令／法術／物品的完整演出、逐章戰後流程與原生 CONTINUE；現有 owner 不等於逐像素或逐音訊一致 |
+| 反向工程 | 戰役狀態機、事件處理器、戰鬥規則、敵方 AI 原始模式與城鎮／商店／教會及存檔邊界已有證據化切片；mode 2 物理候選、mode 5 事件尾端，以及 mode 11 的 `0x15311` 命令／`0x1548E` 物理／`0x14121→0x13FD4` indexed 音訊 owner，均已接上失敗即關閉的執行期窄切片；另已取得未修改原版 CONTINUE→END→ENEMY PHASE 的章節0 E2 輸入錨點 | 尚缺重製端同一 raw 狀態的敵方回合 E2 配對、未知命令／法術／物品的完整演出、逐章戰後流程與原生 CONTINUE；原版 E2 錨點及現有 owner 都不等於逐像素或逐音訊一致 |
 | Go／Ebiten 重製 | 地圖、對話、部分戰鬥、城鎮、商店、教會、整備、自有存檔及場景 BGM 消費可操作；戰鬥曲與城鎮曲已有原版表格回歸 | 尚缺完整 30 章玩家路徑、完整原生存檔相容、`0x2BCE5` 結局演出、終局曲目與跨平台驗收 |
 | 原版視覺比對 | ch02 城鎮 variant0 六項、variant1 正常五項、variant2 正常五項（後兩者為修改 LOAD 路徑），以及部分商店、讀檔選單已有整幀 RGB 相同證據 | 完整操作介面估計約 40–45%；秘密選項、一般玩家城鎮路徑、戰場、整備、教會與其餘章節仍需同狀態比較 |
 
@@ -261,6 +261,16 @@ Docker／Xvfb 截圖，不是原版同狀態逐像素 E2；原始 DAC 條件與�
 ![原版 CONTINUE current-runtime 戰場](docs/figures/native-continue-current-runtime-original-dosbox.png)
 
 ![原版 current-runtime command grid](docs/figures/native-continue-current-command-original-dosbox.png)
+
+同一份未修改原版 `FD2.SAV` 也已走到「結束目前單位行動嗎？」→「是」，實際看見
+`ENEMY PHASE`，並在約 10 秒後看到敵方回合的另一個戰場畫面，約 20 秒後回到玩家
+操作狀態。這是一般玩家敵方回合的原版 E2 輸入／畫面錨點，不是重製端對照，也不足以
+單獨證明目標選擇、移動評分或命令／法術／物品語意；完整時間線、來源雜湊與限制見
+[`native-enemy-turn-original-e2.json`](docs/data/ui-traces/native-enemy-turn-original-e2.json)。
+
+| 原版 ENEMY PHASE | 原版敵方回合畫面 | 原版回到玩家回合 |
+|---|---|---|
+| ![原版敵方回合開始](docs/figures/native-enemy-phase-original-dosbox.png) | ![原版敵方回合中段](docs/figures/native-enemy-ai-moved-original-dosbox.png) | ![原版敵方回合結束](docs/figures/native-enemy-phase-return-original-dosbox.png) |
 
 完整介面覆蓋、證據等級與其餘比較圖請看
 [`57-ui-evidence-matrix.md`](docs/knowledge-base/57-ui-evidence-matrix.md)。

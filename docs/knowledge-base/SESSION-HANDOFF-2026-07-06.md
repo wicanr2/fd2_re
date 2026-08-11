@@ -4331,3 +4331,16 @@ debug shortcut）實際走：開場 Escape → 標題 Down、Down、Return（CON
 這補上原版一般玩家 UI-02／UI-03 的 chapter0 E2 錨點，但不是 ch22／ch23 的
 同狀態證據，也不解除重製端 CONTINUE 的 pending-group／controller handoff gate；
 第23／24／25／29戰與戰後城鎮流程仍維持失敗即關閉。
+
+## 2026-08-11：未修改原版敵方回合 E2 錨點
+
+接續同一份固定雜湊的 `FD2.EXE`／`FD2.SAV`，本輪在 Docker DOSBox 走完：
+開場 Escape → 標題 `CONTINUE` → 戰場 Return 開啟 command grid → Down 選
+`END` → Return 開啟確認 → Return 選 `YES`。約 1 秒擷取到明確的 `ENEMY PHASE`，
+約 10 秒仍在敵方回合，約 20 秒回到玩家操作畫面。三張 320×200 圖片與完整雜湊／
+限制見 [`native-enemy-turn-original-e2.json`](../data/ui-traces/native-enemy-turn-original-e2.json)。
+
+這補上原版一般玩家敵方回合的 E2 輸入與畫面錨點，但不宣稱已解出敵方目標選擇、
+移動評分、命令／法術／道具效果，也不代表重製端已完成同狀態 parity。下一步仍須
+把同一 raw runtime roster、camera、cursor、tick 接到重製端，並完成戰役戰後→城鎮／
+商店／整備／存檔的正常玩家 E2；未知 AI 分支保持失敗即關閉。

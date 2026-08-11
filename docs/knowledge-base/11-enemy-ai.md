@@ -685,3 +685,18 @@ score、Cast 或 effect；36..39 仍因沒有已驗證 command record 而省略�
   原始證據接到可見 E1 窄切片，但不代表原版逐幀／逐音訊一致，也不解除一般玩家
   敵方回合 E2、未知 command／spell／item presentation 或其他 `0x13FD4` caller
   的動態驗收。
+
+## 2026-08-11：未修改原版敵方回合 E2 操作錨點
+
+使用固定雜湊的 `FD2.EXE`／`FD2.SAV`，以一次性 Docker DOSBox 執行未修改原版的
+一般玩家輸入：開場按 Escape、標題選 `CONTINUE`、戰場按 Return 開啟 command
+grid、按 Down 選 `END`、連按兩次 Return 確認 `YES`。約 1 秒的畫面明確出現
+`ENEMY PHASE`；約 10 秒仍在敵方回合，約 20 秒回到玩家操作畫面。三張 320×200
+client crop、輸入時間線及 PNG／原版檔案雜湊見
+[`native-enemy-turn-original-e2.json`](../data/ui-traces/native-enemy-turn-original-e2.json)。
+
+這是 E2 的「輸入→敵方回合→玩家回合」消費端證據，足以驗證回合不是直接跳到下一
+戰，但不能單獨推出敵方目標、移動評分、模式 nibble、命令／法術／道具效果。重製端
+目前的 `NextAIPlan`／`aiStep` 只在 raw 來源完整時接窄切片，其餘未知分支仍失敗即
+關閉；要把本證據升成重製端 E2，還需同一 raw runtime roster、camera、cursor、tick
+的重製畫面與逐幀／逐音訊比較。

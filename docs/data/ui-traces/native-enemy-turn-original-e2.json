@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "evidence_level": "E2",
+  "scope": "未修改原版章節 0 current-runtime：玩家結束一名我方單位後的敵方回合",
+  "input": {
+    "executable": {
+      "path": "org_game/炎龍騎士團/FLAME2/FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "save": {
+      "path": "org_game/炎龍騎士團/FLAME2/FD2.SAV",
+      "size": 22987,
+      "md5": "409795ccebc2af340d5c74152c2d471c",
+      "sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f",
+      "decoded_current_runtime": {
+        "chapter": 0,
+        "runtime_count": 12,
+        "camera": [1, 13],
+        "cursor": [8, 17],
+        "visible_cursor": [7, 4]
+      }
+    },
+    "execution": {
+      "image": "fd2-dosbox-screenshot-local:latest",
+      "network": "none",
+      "source_mount": "未修改 FLAME2 唯讀掛載後複製到一次性 tmpfs /game",
+      "route_patch": false,
+      "debug_shortcut": false,
+      "cycles": "fixed 12000",
+      "timeline": [
+        "等待 10 秒後按 Escape",
+        "標題選單按 Down、Down、Return（CONTINUE）",
+        "等待 current-runtime 戰場穩定後按 Return 開啟目前單位的 command grid",
+        "按 Down 選擇 END、按 Return 開啟『結束本回合的行動嗎？』確認",
+        "按 Return 選擇 YES；於 1、5、10、20 秒分別擷取畫面"
+      ]
+    }
+  },
+  "screenshots": [
+    {
+      "path": "../../figures/native-enemy-phase-original-dosbox.png",
+      "state": "確認 YES 後約 1 秒；畫面明確顯示 ENEMY PHASE",
+      "size": [320, 200],
+      "md5": "02a9a9b8427e0750244dd660543076ce",
+      "sha256": "a96b9e146817dcfb3588d194ff92de2b24ad0451c89540828d668e0a64d6fd54"
+    },
+    {
+      "path": "../../figures/native-enemy-ai-moved-original-dosbox.png",
+      "state": "確認 YES 後約 10 秒；敵方回合中的另一個戰場／單位畫面",
+      "size": [320, 200],
+      "md5": "55dad6d0e49189b298a2be596bdc0fae",
+      "sha256": "4a511be4581186e1152a1b12e35a38ee495e88588d2a618e686b8560a23310e4"
+    },
+    {
+      "path": "../../figures/native-enemy-phase-return-original-dosbox.png",
+      "state": "確認 YES 後約 20 秒；畫面回到玩家操作狀態並顯示單位 HUD",
+      "size": [320, 200],
+      "md5": "302509d252a0bab8a7204d54d879f6a5",
+      "sha256": "7736ea9829bedef3f67360d5c200d59e8715a7e785b76473bed198d0fbb77663"
+    }
+  ],
+  "claims": [
+    "E2 證實未修改原版可由 CONTINUE 進入 current-runtime 戰場，開啟 command grid，選擇 END 並以 YES 確認。",
+    "E2 證實確認後會進入明確的 ENEMY PHASE，而不是直接跳到下一戰。",
+    "E2 證實敵方回合會持續多個時間點，期間畫面／單位位置會改變，約 20 秒後回到玩家操作畫面。這是敵方回合消費端的視覺錨點，不是目標選擇公式或模式語意的證明。"
+  ],
+  "limits": [
+    "這份快照只有章節 0 current-runtime；不可外推到 ch22、ch23 或其他戰役。",
+    "截圖證明敵方回合的輸入與畫面邊界，不足以單獨證明敵方選擇哪個目標、移動評分、指令／法術／道具決策。",
+    "這是原版 E2 錨點，不是重製端逐像素一致證據；重製端仍需同一存檔狀態的玩家輸入與畫面配對。",
+    "FD2.SAV 與 FD2.TMP 是可變動的原版使用者資料，不列為固定版本資產。"
+  ]
+}

@@ -8,6 +8,14 @@
 
 ## 本輪收束（2026-08-11）
 
+- [x] **RE-AI-ENEMY-PHASE-ORIGINAL-E2-ANCHOR**：以固定雜湊的未修改
+  `FD2.EXE`／`FD2.SAV`，在一次性 Docker DOSBox 中由 `CONTINUE` 進入
+  current-runtime 戰場，開啟 command grid，選擇 `END` 並以 `YES` 確認；約
+  1 秒看見 `ENEMY PHASE`，約 10 秒仍在敵方回合，約 20 秒回到玩家操作狀態。
+  三張 320×200 client crop、按鍵時間線與 PNG／原版雜湊見
+  [`native-enemy-turn-original-e2.json`](../data/ui-traces/native-enemy-turn-original-e2.json)。
+  這是原版一般玩家 E2 的回合邊界，不是重製端 parity，也不單獨證明目標選擇、
+  移動評分或 command／spell／item 語意。
 - [x] **RE-AI-MODE11-RAW-STAGE-TRANSACTION**：`NativeAIMode11Stage`、
   `Stages` 與 `ExecuteNativeAIMode11Transaction` 保存 IDA 證實的呼叫順序，
   並由 `NextAIPlan`／`startNativeAIMode11` 接成可執行的兩段 owner：

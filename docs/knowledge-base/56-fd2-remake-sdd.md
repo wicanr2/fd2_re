@@ -3715,3 +3715,16 @@ records、camera `(1,13)`、absolute cursor `(8,17)`、visible cursor `(7,4)`。
 E2 原版錨點」；沒有把章節0快照外推到 ch22／ch23，也沒有解除重製端
 CONTINUE 的 pending-group／`Game` controller handoff 閘門。未修改原版與重製端
 尚未同一 raw runtime 狀態逐像素配對，故 UI-03 仍為 partial。
+
+### 2026-08-11：未修改原版敵方回合 E2 錨點
+
+沿用同一份固定雜湊 `FD2.SAV`，在未修改原版 DOSBox 中實際執行
+`CONTINUE → Return 開啟 command grid → Down 選 END → Return → Return(YES)`。
+約 1 秒畫面顯示 `ENEMY PHASE`；約 10 秒仍在敵方回合，約 20 秒回到玩家操作狀態。
+這是一般玩家輸入可達的原版 E2 邊界，輸入時間線、來源與 PNG 雜湊保存於
+[`native-enemy-turn-original-e2.json`](../data/ui-traces/native-enemy-turn-original-e2.json)。
+
+證據只閉合敵方回合的進入／持續／返回畫面，不把畫面變化命名成特定目標、移動
+評分或命令效果；重製端尚未以同一 raw runtime 狀態完成逐幀配對，未知 AI 語意仍
+失敗即關閉。`CAMPAIGN-POSTBATTLE-E2-FULL-PATH` 也仍需逐章保留戰後城鎮／商店／
+整備／存檔節點的正常玩家路徑。
