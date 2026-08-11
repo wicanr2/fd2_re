@@ -25,7 +25,7 @@
 `town_ch17`；玩家第17戰戰後（raw `ch16_post`）已進入 `town_ch18`；玩家第18戰
 戰後（raw `ch17_post`）已進入 `town_ch19`；玩家第20戰戰後（raw `ch19_post`）已進入
 `town_ch21`；玩家第22戰戰後（raw `ch21_post`）已由73／79-slot E1 邊界進入
-`preparation_ch23`，並驗證 JOIN、持久隊伍與整備邊界；玩家第23戰戰前
+`preparation_ch23`，並以正式戰鬥結果確認、持久隊伍及隔離存檔／讀檔驗證整備邊界；玩家第23戰戰前
 （raw `ch22_pre`）已由 LOADCH 視圖來源 E1 切片進入 `battle_ch23`。玩家第23戰
 戰後、24、25、29戰仍維持失敗即關閉；
 詳細位址、分支與證據等級見[工作清單](docs/knowledge-base/91-worklist.md)、

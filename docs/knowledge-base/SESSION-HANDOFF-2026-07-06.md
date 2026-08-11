@@ -4496,6 +4496,19 @@ pending producer 證據，再以同一 raw roster／camera／cursor／tick 做�
 spawn groups，且保留「索爾」保護角色；這證明結果確認的生產消費端，不是未修改原版
 一般玩家 E2，也沒有替未知戰後 handler 增加語意。
 
+## 2026-08-11：ch22 生產戰鬥結果→整備→存檔回歸
+
+新增 `TestChapter22BattleResultPreparationSaveLoadUsesProductionBoundaries`，以
+map21 的真實 ch22 runtime fixture、73-slot group1／2 frontier 與原版資產唯讀掛載，
+先走正式 `Game.confirmBattleResult`，再讓既有 `ch21_post` binding 自然消費到
+`preparation_ch23`。測試確認 `postbattle_ch22_persist` 不會被結果確認直接跳過，
+進整備時 battle array 已清除且持久隊伍已同步；在隔離 XDG 目錄保存後，再經
+`loadGameFromSlot` 還原 chapter=22、節點、隊伍名冊、加入順序與部署狀態。
+
+這是重製端 E1 的正式戰役／存檔邊界，不是未修改一般玩家 DOSBox E2，也不替
+66／72-slot frontier、未綁定 ch23／24／25／29 handler 或未知演出增加語意。若資產
+或 raw view provenance 缺失，測試會停止而不繞過 handler。
+
 ## 2026-08-11：mode 5 遊戲層消費端回歸
 
 `TestAIStepConsumesVerifiedMode5EventPlan` 與

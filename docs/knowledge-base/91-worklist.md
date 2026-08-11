@@ -97,6 +97,14 @@
   確認戰鬥勝利，再沿已編譯戰後節點進入 `town_ch02` 與整備；不再用
   `Runner.Advance("win")` 取代玩家的結果確認。測試仍以完成的戰場 fixture 清除
   敵方與 pending groups，這只驗證生產結果消費端，不宣稱未修改 DOSBox E2。
+- [x] **CAMPAIGN-CH22-RESULT-PREPARATION-SAVELOAD-20260811**：新增
+  `TestChapter22BattleResultPreparationSaveLoadUsesProductionBoundaries`。以 map21、
+  真實 ch22 runtime roster 與已證實 73-slot group1／2 frontier，經正式
+  `confirmBattleResult` 進入 `postbattle_ch22_persist`，消費既有 `ch21_post` binding
+  後抵達 `preparation_ch23`；接著只在整備節點以隔離 XDG 目錄存檔，再由
+  `loadGameFromSlot` 還原節點、chapter=22、隊伍名冊／加入順序／部署狀態，並確認
+  不殘留 battle array。這是重製端 E1 的戰鬥結果→戰後→整備→存檔邊界，不是未修改
+  一般玩家 DOSBox E2；group 66／72、未綁定 ch23/24/25/29 與同狀態逐幀差異仍待。
 - [x] **GAME-TEST-REPORT-20260811**：獨立子代理在 Docker 內實際驗證重製端完整
   Go 回歸、mode 2／mode 11、戰後城鎮／整備與 shop/preparation contract，並以
   未修改 `FD2.EXE`／固定 `FD2.SAV` 完成 DOSBox 啟動／CONTINUE 擷取；報告見

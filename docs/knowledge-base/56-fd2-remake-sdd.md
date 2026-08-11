@@ -3687,6 +3687,22 @@ raw `ch21_post`（玩家第22戰戰後）已從候選提升為正式可編輯 bi
 66／72-slot 結束狀態、玩家未修改 DOSBox 同狀態截圖、以及第23／24／25／29戰
 仍維持失敗即關閉，不得由本切片推論完整戰役 parity。
 
+## 2026-08-11：ch22 正式結果確認與整備存檔邊界（E1）
+
+`TestChapter22BattleResultPreparationSaveLoadUsesProductionBoundaries` 將既有
+ch22 runtime fixture 接到玩家可見的正式結果消費端：先以 73-slot（group1／2）
+的已證實 frontier 建立 map21 狀態，再設定已完成的 battle result，呼叫
+`Game.confirmBattleResult`；測試不直接呼叫 `Runner.Advance` 或 handler。既有
+`postbattle_ch22_persist` binding 完成後進入 `preparation_ch23`，確認持久隊伍已
+同步、battle array 已清除，並在該整備節點的隔離 XDG 目錄寫入自有 JSON 存檔。
+重新透過 `loadGameFromSlot` 後，node、chapter、party roster、join order 與 deploy
+狀態均保留，且不重新帶回 transient battle state。
+
+這只關閉重製端 E1 的「戰鬥結果→戰後 handler→整備→存檔／讀檔」消費邊界；原版
+未修改一般玩家 E2、同 raw 狀態的畫面／音訊差分、66／72-slot 入口，以及尚未綁定
+的 ch23／24／25／29 戰後節點仍保持失敗即關閉。測試使用的資產唯讀掛載與
+`--rm` Docker/Xvfb 命令列在遊戲測試報告中保存。
+
 ## 2026-08-11：玩家第23戰 ch22_pre 的 LOADCH 視圖來源已補證（E1）
 
 本輪追加 IDA Pro 9.4／Docker 證據，閉合原先「`loadch` 後游標／視圖來源

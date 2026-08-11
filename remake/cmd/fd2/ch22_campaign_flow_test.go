@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"reflect"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -149,6 +150,113 @@ func TestChapter22PostbattleBindingReachesPreparation23ForMaterializedFrontiers(
 				t.Fatalf("ch21_post synced roster=%d, want %d", len(g.partyRoster), len(deployed))
 			}
 		})
+	}
+}
+
+func TestChapter22BattleResultPreparationSaveLoadUsesProductionBoundaries(t *testing.T) {
+	fdother := os.Getenv("FD2_ORIGINAL_FDOTHER")
+	if fdother == "" {
+		t.Skip("ch22 production boundary regression requires the read-only original FDOTHER/FDSHAP/FDICON bundle")
+	}
+	if _, err := os.Stat(fdother); err != nil {
+		t.Skipf("original FDOTHER.DAT is unavailable: %v", err)
+	}
+	g, deployed := newChapter22RuntimeBattle(t)
+	// The bound ch22 post handler has two verified runtime frontiers: after
+	// groups 1/2 (73 slots) or after group 3 (79 slots).  Use the smaller
+	// proven frontier here; inventing a different runtime length would make the
+	// production handler reject the state, correctly.
+	appendChapter22Groups(t, g, 1, 2)
+	// The indexed transition consumes the battle cursor/view provenance.  Use
+	// the same empty-cell setup as the existing ch22 binding regression rather
+	// than fabricating a coordinate or allowing the handler to guess one.
+	emptyX, emptyY, found := 0, 0, false
+	for y := 0; y < g.st.H && !found; y++ {
+		for x := 0; x < g.st.W; x++ {
+			if g.st.UnitAt(x, y) == nil {
+				emptyX, emptyY, found = x, y, true
+				break
+			}
+		}
+	}
+	if !found {
+		t.Fatal("ch22 map has no empty cursor cell")
+	}
+	g.curX, g.curY = emptyX, emptyY
+	if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{
+		CursorX: emptyX, CursorY: emptyY, VisibleCursorX: emptyX, VisibleCursorY: emptyY,
+	}); err != nil || !g.st.MaterializeNativeMapHUDState(1, 1, 1) || !g.st.MaterializeNativeMapRangeMode(1) {
+		t.Fatalf("ch22 native view setup err=%v", err)
+	}
+	if _, ok := g.nativeMapHUDInput(); !ok {
+		t.Fatal("ch22 native map input unavailable for production handler")
+	}
+	if err := g.composeNativeMapFrame(); err != nil {
+		t.Fatal(err)
+	}
+	full, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	full.Start = "battle_ch22"
+	g.camp = campaign.NewRunner(full)
+
+	// The battle fixture is already materialized above.  Only the player's
+	// normal result confirmation is injected; the test must not call Runner
+	// Advance or the postbattle handler directly.
+	g.result = "win"
+	if !g.confirmBattleResult() || g.result != "" {
+		t.Fatalf("production battle-result confirmation failed: node=%q result=%q err=%q", g.camp.NodeID(), g.result, g.loadErr)
+	}
+	for frame := 0; frame < 30000 && g.camp.NodeID() != "preparation_ch23"; frame++ {
+		if g.nativePaletteRamp != nil {
+			g.nativePaletteRamp.drawn = true
+		}
+		if g.indexedTransition != nil {
+			g.indexedTransition.drawn = true
+			g.stepNativeIndexedTransition()
+		}
+		if len(g.dialog) != 0 {
+			g.dialog = nil
+			g.beatAdvance()
+		}
+		g.tick(1)
+		if g.loadErr != "" {
+			t.Fatalf("production ch22 result flow stopped at beat %d/%d node=%q: %s", g.beatIdx, len(g.beats), g.camp.NodeID(), g.loadErr)
+		}
+	}
+	if g.camp.NodeID() != "preparation_ch23" || g.handlerChapter != 22 {
+		t.Fatalf("production ch22 result boundary node=%q chapter=%d beat=%d/%d", g.camp.NodeID(), g.handlerChapter, g.beatIdx, len(g.beats))
+	}
+	if g.st != nil || len(g.partyRoster) != len(deployed) {
+		t.Fatalf("preparation boundary state=%v roster=%d, want cleared battle and %d persistent records", g.st != nil, len(g.partyRoster), len(deployed))
+	}
+
+	// Save only at the editable preparation node, then reload through the same
+	// node-boundary API.  Keep the file in a per-test XDG directory so this
+	// regression never touches a developer save.
+	oldCache := userDataDirCached
+	userDataDirCached = ""
+	t.Setenv("XDG_DATA_HOME", t.TempDir())
+	t.Cleanup(func() { userDataDirCached = oldCache })
+	g.saveGameToSlot(0)
+	if _, err := os.Stat(saveSlotPath(0)); err != nil {
+		t.Fatalf("preparation save was not written: %v", err)
+	}
+	wantRoster := g.partyRoster
+	wantOrder := append([]int(nil), g.partyJoinOrder...)
+	wantDeploy := g.partyDeploy
+	g.partyRoster = nil
+	g.partyJoinOrder = nil
+	g.partyDeploy = nil
+	g.st = &battle.State{}
+	g.loadGameFromSlot(0)
+	if g.loadErr != "" || g.camp.NodeID() != "preparation_ch23" {
+		t.Fatalf("preparation reload failed: node=%q err=%q", g.camp.NodeID(), g.loadErr)
+	}
+	if g.st != nil || g.handlerChapter != 22 || !reflect.DeepEqual(g.partyRoster, wantRoster) ||
+		!reflect.DeepEqual(g.partyJoinOrder, wantOrder) || !reflect.DeepEqual(g.partyDeploy, wantDeploy) {
+		t.Fatalf("preparation reload state=%#v order=%v deploy=%v battle=%v chapter=%d", g.partyRoster, g.partyJoinOrder, g.partyDeploy, g.st != nil, g.handlerChapter)
 	}
 }
 
