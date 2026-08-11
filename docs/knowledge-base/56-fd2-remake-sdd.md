@@ -3846,3 +3846,15 @@ rows 時在任何行走、攻擊、byte 寫入或回合變更前停止。
 
 這是 `0x32975` raw writer 的重製端 E1 消費證據，不替 mode 7 命名為特定玩法，也不
 證明原版目標選擇、完整敵方回合或一般玩家 E2。
+
+## 2026-08-11：mode 3／9 `aiStep` 遊戲層消費端 E1
+
+重製端新增 `TestAIStepConsumesVerifiedMode3AndMode9RawTargetPlans` 與
+`TestAIStepStopsMode3AndMode9WithoutMovementProvenance`。兩個測試只採用 raw
+`+0x08` 首筆查找與 movement rows：`NextAIPlan` 產生 movement-only 路徑並抵達
+raw 目標鄰格；mode 3 提交已證實的 map-range write，mode 9 保留不寫入的分支，兩者
+都不把 raw target 轉成攻擊。缺少 movement provenance 時在位置、回合與 map-range
+變更前失敗即關閉。
+
+這是 `0x12C60` lookup 的重製端 E1 消費證據，不命名目標選擇或 mode 3／9 的高階
+玩法，也不證明原版一般玩家 E2。

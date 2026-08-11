@@ -4503,3 +4503,12 @@ raw `+0x35/+0x36` 目的地建立 movement-only 計畫，抵達後提交 raw `+0
 map-range provenance；缺少 movement rows 時不建立 walk／attack、不改寫 raw byte、
 位置或回合，維持失敗即關閉。這是 `0x32975` writer 的重製端 E1 owner，不命名
 mode 7 高階玩法，也不升格為原版一般玩家 E2；工作清單與 SDD 已同步。
+
+## 2026-08-11：mode 3／9 遊戲層消費端回歸
+
+`TestAIStepConsumesVerifiedMode3AndMode9RawTargetPlans` 與
+`TestAIStepStopsMode3AndMode9WithoutMovementProvenance` 已在 Docker／Xvfb 通過。
+兩者依 raw `+0x08` 首筆查找建立 movement-only 路徑；mode 3 僅提交 raw map-range
+write，mode 9 保留不寫入的分支，均不執行攻擊。缺少 movement rows 時不建立 walk／
+attack、不改寫位置、回合或 map-range，維持失敗即關閉。這是 `0x12C60` lookup 的
+重製端 E1 owner，不命名高階玩法，也不升格為原版一般玩家 E2。

@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/binary"
+	"fmt"
 	"math/rand"
 	"testing"
 
@@ -309,6 +310,89 @@ func TestAIStepStopsMode7WithoutMovementProvenance(t *testing.T) {
 	}
 	if actor.X != 0 || actor.Y != 0 || actor.NativeRecordByte5 != 0 || state.Turn != 0 || state.HasNativeMapRangeModeState {
 		t.Fatalf("mode-7 failure partially changed runtime: pos=(%d,%d) byte5=%d turn=%d range=%v", actor.X, actor.Y, actor.NativeRecordByte5, state.Turn, state.HasNativeMapRangeModeState)
+	}
+}
+
+func nativeAIConsumerModeTargetState(mode byte) (*battle.State, *battle.Unit, *battle.Unit) {
+	actor := nativeAIConsumerUnit(0, 0, 1, mode)
+	actor.NativeRecordByte35 = 7
+	actor.HasNativeRecordByte35 = true
+	target := nativeAIConsumerUnit(2, 0, 0, 0)
+	target.Camp = battle.Own
+	target.NativeRecordByte8 = 7
+	target.HasNativeRecordByte8 = true
+	state := &battle.State{
+		W:                           3,
+		H:                           1,
+		Units:                       []*battle.Unit{actor, target},
+		NativeCompositionEventBytes: []byte{0, 0, 0},
+		NativeTerrainMoveCodes:      []byte{0, 0, 0},
+	}
+	return state, actor, target
+}
+
+func TestAIStepConsumesVerifiedMode3AndMode9RawTargetPlans(t *testing.T) {
+	for _, tc := range []struct {
+		name      string
+		mode      byte
+		wantRange bool
+	}{
+		{name: "mode3", mode: 3, wantRange: true},
+		{name: "mode9", mode: 9, wantRange: false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			state, actor, target := nativeAIConsumerModeTargetState(tc.mode)
+			if err := state.BindNativeMovementCostRows(nativeAIConsumerCostRows()); err != nil {
+				t.Fatal(err)
+			}
+			g := &Game{
+				m:      &MapData{W: 3, H: 1, TileW: 24, TileH: 24, Tiles: []int{0, 0, 0}},
+				st:     state,
+				aiBusy: true,
+			}
+			g.aiStep()
+			if g.loadErr != "" || g.walk == nil || g.walk.u != actor || g.atk != nil || len(g.walk.path) < 2 ||
+				g.walk.path[len(g.walk.path)-1] != (battle.Cell{X: 1, Y: 0}) {
+				t.Fatalf("mode-%d raw target plan did not start movement-only: walk=%v atk=%v path=%v err=%q", tc.mode, g.walk != nil, g.atk != nil, func() []battle.Cell {
+					if g.walk == nil {
+						return nil
+					}
+					return g.walk.path
+				}(), g.loadErr)
+			}
+			for step := 0; step < 96 && (g.aiBusy || g.walk != nil); step++ {
+				if err := g.Update(); err != nil {
+					t.Fatal(err)
+				}
+			}
+			if g.loadErr != "" || g.aiBusy || g.walk != nil || g.atk != nil || state.Turn != 1 {
+				t.Fatalf("mode-%d movement completion ai=%v walk=%v atk=%v turn=%d err=%q", tc.mode, g.aiBusy, g.walk != nil, g.atk != nil, state.Turn, g.loadErr)
+			}
+			if actor.X != 1 || actor.Y != 0 || actor.NativeRecordByte5 != 0 || target.X != 2 || target.Y != 0 ||
+				state.HasNativeMapRangeModeState != tc.wantRange || (tc.wantRange && state.NativeMapRangeMode != 0) {
+				t.Fatalf("mode-%d raw target owner changed unexpected state: actor=(%d,%d) byte5=%d target=(%d,%d) range=%d/%v", tc.mode, actor.X, actor.Y, actor.NativeRecordByte5, target.X, target.Y, state.NativeMapRangeMode, state.HasNativeMapRangeModeState)
+			}
+		})
+	}
+}
+
+func TestAIStepStopsMode3AndMode9WithoutMovementProvenance(t *testing.T) {
+	for _, mode := range []byte{3, 9} {
+		t.Run(fmt.Sprintf("mode%d", mode), func(t *testing.T) {
+			state, actor, _ := nativeAIConsumerModeTargetState(mode)
+			g := &Game{
+				m:      &MapData{W: 3, H: 1, TileW: 24, TileH: 24, Tiles: []int{0, 0, 0}},
+				st:     state,
+				aiBusy: true,
+			}
+			g.aiStep()
+			if g.loadErr == "" || g.aiBusy || g.walk != nil || g.atk != nil || actor.Acted {
+				t.Fatalf("incomplete mode-%d AI was consumed: err=%q ai=%v walk=%v atk=%v acted=%v", mode, g.loadErr, g.aiBusy, g.walk != nil, g.atk != nil, actor.Acted)
+			}
+			if actor.X != 0 || actor.Y != 0 || state.Turn != 0 || state.HasNativeMapRangeModeState {
+				t.Fatalf("mode-%d failure partially changed runtime: pos=(%d,%d) turn=%d range=%v", mode, actor.X, actor.Y, state.Turn, state.HasNativeMapRangeModeState)
+			}
+		})
 	}
 }
 

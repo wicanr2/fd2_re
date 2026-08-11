@@ -60,6 +60,13 @@
   raw `+0x05=1` 與 map-range provenance；缺少 movement rows 時不建立 walk／attack、
   不改寫 raw byte 或回合。這只提升 `0x32975` writer 的遊戲層 owner 為 E1，不命名
   mode 7 的高階玩法，也不宣稱原版一般玩家 E2。
+- [x] **RE-AI-MODE3-9-GAME-CONSUMER-20260811**：新增
+  `TestAIStepConsumesVerifiedMode3AndMode9RawTargetPlans` 與
+  `TestAIStepStopsMode3AndMode9WithoutMovementProvenance`。Docker/Xvfb 實際由
+  `NextAIPlan` 依 raw `+0x08` 首筆查找建立 movement-only 路徑；mode 3 只提交
+  明示的 map-range write，mode 9 保留不寫入的分支，兩者都不把目標當成攻擊消費。
+  缺少 movement rows 時均失敗即關閉，不改寫位置、回合或 map-range；這是 E1 raw
+  consumer，不命名 `0x12C60` 的高階玩法，也不宣稱一般玩家 E2。
 - [x] **CAMPAIGN-APPROXIMATE-INTERMISSION-20260811**：新增明確的
   `FD2_APPROXIMATE=1` 可玩近似模式。對尚未有正式 handler 的
   `postbattle_*` 節點，只同步已物化戰場隊伍、顯示「戰後整理」提示，等待玩家
@@ -412,7 +419,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 
 ## 文件狀態入口（更新至 2026-08-11）
 
-目前統計：`[x]=573`、`[~]=119`、`[ ]=70`；只計算本文件的 checklist 行，且僅代表工程項目數，不是原版完成百分比。
+目前統計：`[x]=574`、`[~]=119`、`[ ]=70`；只計算本文件的 checklist 行，且僅代表工程項目數，不是原版完成百分比。
 
 - [x] 根目錄 `README.md` 改為「資產／RE／引擎切片／原版差距」四欄狀態表，加入已驗證成果圖片；不再宣稱全 30 章 parity。
 - [x] `remake/README.md` 改為垂直切片與 fail-closed 差距說明；`00-index.md` 指定 README → `56` SDD → `42` gap audit → 本 worklist 的閱讀順序。
