@@ -23,8 +23,10 @@
 
 最新可驗證戰役切片：玩家第16戰戰後（raw `ch15_post`）已進入
 `town_ch17`；玩家第17戰戰後（raw `ch16_post`）已進入 `town_ch18`；玩家第18戰
-戰後（raw `ch17_post`）已進入 `town_ch19`，並驗證 JOIN、持久隊伍與存檔邊界。
-玩家第22、23、24、25、29戰仍維持失敗即關閉；
+戰後（raw `ch17_post`）已進入 `town_ch19`；玩家第20戰戰後（raw `ch19_post`）已進入
+`town_ch21`；玩家第22戰戰後（raw `ch21_post`）已由73／79-slot E1 邊界進入
+`preparation_ch23`，並驗證 JOIN、持久隊伍與整備邊界。玩家第23、24、25、29戰仍維持
+失敗即關閉；
 詳細位址、分支與證據等級見[工作清單](docs/knowledge-base/91-worklist.md)、
 [介面證據矩陣](docs/knowledge-base/57-ui-evidence-matrix.md)與
 [最新交接勘誤](docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md)。

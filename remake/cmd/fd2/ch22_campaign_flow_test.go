@@ -1,0 +1,153 @@
+package main
+
+import (
+	"os"
+	"testing"
+
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+)
+
+func newChapter22RuntimeBattle(t *testing.T) (*Game, []int) {
+	t.Helper()
+	// 原版記錄0固定為隊長；後續15筆是可編輯整備選擇，邊界與第20戰
+	// production regression 相同，不是直接跳章或除錯隊伍。
+	order := []int{0, 9, 4, 30, 1, 8, 2, 10, 13, 12, 5, 6, 11, 14, 17, 15, 18, 19, 20}
+	g := &Game{
+		partyMembers:   make(map[int]bool, len(order)),
+		partyJoinOrder: append([]int(nil), order...),
+		partyDeploy:    make(map[int]bool, 15),
+	}
+	for _, id := range order {
+		g.partyMembers[id] = true
+	}
+	for _, id := range order[1:16] {
+		g.partyDeploy[id] = true
+	}
+	if err := g.loadMap("assets/maps/map21"); err != nil {
+		t.Fatal(err)
+	}
+	g.resetBattle("assets/maps/map21/map21_units.json", "assets/scenarios/ch22.json")
+	if g.loadErr != "" || g.st == nil || g.sc == nil {
+		t.Fatalf("ch22 setup err=%q state=%v scenario=%v", g.loadErr, g.st != nil, g.sc != nil)
+	}
+	if !g.sc.RuntimeAppendGroups || len(g.sc.Party) != 16 || len(g.st.Units) != 66 {
+		t.Fatalf("ch22 initial frontier runtime=%v party=%d units=%d", g.sc.RuntimeAppendGroups, len(g.sc.Party), len(g.st.Units))
+	}
+	deployed := append([]int{order[0]}, order[1:16]...)
+	if err := g.seedPersistentPartyFromLoadCH(deployed, g.st.Units[:len(deployed)]); err != nil {
+		t.Fatal(err)
+	}
+	return g, deployed
+}
+
+func appendChapter22Groups(t *testing.T, g *Game, groups ...int) {
+	t.Helper()
+	want := 66
+	for _, group := range groups {
+		n, err := g.st.AppendGroupWithNativePlacement(group, 0)
+		if err != nil || n == 0 {
+			t.Fatalf("ch22 native group%d append n=%d err=%v", group, n, err)
+		}
+		want += n
+		if len(g.st.Units) != want {
+			t.Fatalf("ch22 group%d frontier=%d, want %d", group, len(g.st.Units), want)
+		}
+	}
+}
+
+func TestChapter22RuntimeAppendGroupsBuildsProvenFrontiers(t *testing.T) {
+	g, _ := newChapter22RuntimeBattle(t)
+	if got := len(g.st.PendingGroups); got != 3 || !g.st.PendingGroups[1] || !g.st.PendingGroups[2] || !g.st.PendingGroups[3] {
+		t.Fatalf("ch22 pending groups=%v, want 1/2/3", g.st.PendingGroups)
+	}
+	appendChapter22Groups(t, g, 1, 2, 3)
+}
+
+func TestChapter22PostbattleBindingReachesPreparation23ForMaterializedFrontiers(t *testing.T) {
+	if os.Getenv("FD2_ORIGINAL_FDOTHER") == "" {
+		t.Skip("ch22 indexed transition regression requires the read-only original FDOTHER/FDSHAP/FDICON bundle")
+	}
+	for _, groups := range [][]int{{1, 2}, {1, 2, 3}} {
+		name := "groups_1_2"
+		if len(groups) == 3 {
+			name = "groups_1_2_3"
+		}
+		t.Run(name, func(t *testing.T) {
+			g, deployed := newChapter22RuntimeBattle(t)
+			appendChapter22Groups(t, g, groups...)
+			if len(g.st.Units) != 73 && len(g.st.Units) != 79 {
+				t.Fatalf("postbattle frontier=%d is outside production binding", len(g.st.Units))
+			}
+
+			// 原始 indexed transition 會消費戰場游標／視圖與合成器資產；把游標
+			// 具體放在空格，避免虛構單位目標或依賴 GUI 點擊。
+			emptyX, emptyY, found := 0, 0, false
+			for y := 0; y < g.st.H && !found; y++ {
+				for x := 0; x < g.st.W; x++ {
+					if g.st.UnitAt(x, y) == nil {
+						emptyX, emptyY, found = x, y, true
+						break
+					}
+				}
+			}
+			if !found {
+				t.Fatal("ch22 map has no empty cursor cell")
+			}
+			g.curX, g.curY = emptyX, emptyY
+			if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{
+				CursorX: emptyX, CursorY: emptyY, VisibleCursorX: emptyX, VisibleCursorY: emptyY,
+			}); err != nil || !g.st.MaterializeNativeMapHUDState(1, 1, 1) || !g.st.MaterializeNativeMapRangeMode(1) {
+				t.Fatalf("ch22 native view setup err=%v", err)
+			}
+			if _, ok := g.nativeMapHUDInput(); !ok {
+				t.Fatalf("ch22 native map input unavailable assets=%v view=%v hud=%v cycle=%v cache=%v cur=(%d,%d) map=%dx%d",
+					nativeMapAssetsAvailable(g.nativeMapAssets), g.st.HasNativeMapViewState, g.st.HasNativeMapHUDState,
+					g.st.HasNativeMapCycleState, g.st.NativeMapSelectorCache != nil, g.curX, g.curY, g.m.W, g.m.H)
+			}
+			if err := g.composeNativeMapFrame(); err != nil {
+				t.Fatal(err)
+			}
+
+			beats, issues, err := campaign.CompileHandlerBinding(assetPath("assets/cutscenes/bindings/ch21_post.json"))
+			if err != nil || len(issues) != 0 || len(beats) == 0 || beats[0].Op != "runtime_context" {
+				t.Fatalf("ch21_post compile err=%v issues=%#v first=%#v", err, issues, beats)
+			}
+			full, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			full.Start = "postbattle_ch22_persist"
+			g.camp = campaign.NewRunner(full)
+			g.beats, g.beatIdx, g.storyBG = beats, -1, true
+			g.beatAdvance()
+			for frame := 0; frame < 30000 && g.camp.NodeID() != "preparation_ch23"; frame++ {
+				if g.nativePaletteRamp != nil {
+					g.nativePaletteRamp.drawn = true
+				}
+				if g.indexedTransition != nil {
+					g.indexedTransition.drawn = true
+					g.stepNativeIndexedTransition()
+				}
+				if len(g.dialog) != 0 {
+					g.dialog = nil
+					g.beatAdvance()
+				}
+				g.tick(1)
+				if g.loadErr != "" {
+					t.Fatalf("ch21_post stopped at beat %d/%d: %s", g.beatIdx, len(g.beats), g.loadErr)
+				}
+			}
+			if g.camp.NodeID() != "preparation_ch23" || g.handlerChapter != 22 {
+				op := "<out-of-range>"
+				if g.beatIdx >= 0 && g.beatIdx < len(g.beats) {
+					op = g.beats[g.beatIdx].Op
+				}
+				t.Fatalf("ch21_post boundary node=%q chapter=%d beat=%d/%d op=%s transition=%v palette=%v delay=%d dialog=%d", g.camp.NodeID(), g.handlerChapter, g.beatIdx, len(g.beats), op, g.indexedTransition != nil, g.nativePaletteRamp != nil, g.beatDelay, len(g.dialog))
+			}
+			if len(g.partyRoster) != len(deployed) {
+				t.Fatalf("ch21_post synced roster=%d, want %d", len(g.partyRoster), len(deployed))
+			}
+		})
+	}
+}

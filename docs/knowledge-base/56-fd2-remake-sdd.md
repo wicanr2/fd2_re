@@ -3659,3 +3659,24 @@ handoff 或一般玩家回合證據。
 - 這些變更只把證據接到 E1 窄切片，不提升為原版一般玩家 E2、逐像素／逐音訊
   parity，也不替其他 `0x13FD4` caller 猜測玩法。驗收入口與剩餘 gate 以
   `docs/knowledge-base/91-worklist.md` 為準。
+
+## 2026-08-11：玩家第22戰戰後→整備 E1 邊界
+
+raw `ch21_post`（玩家第22戰戰後）已從候選提升為正式可編輯 binding：
+
+- `remake/assets/scenarios/ch22.json` 明確使用 `runtime_append_groups`；正常
+  整備選出的16名隊伍先建立，再依 map21 FDFIELD group0／1／2／3 的原始順序
+  形成 66→72→73→79 的 runtime frontier。
+- `remake/assets/cutscenes/bindings/ch21_post.json` 只接受 73 或79槽，因為
+  raw `0x24512` 會直接寫 slot72；66／72槽在編譯或執行期停止，避免以未物化
+  的記錄假裝演出可達。ACTING 65／66、三段 FDTXT_022、兩次 PAN、
+  `0x24618` 九段 indexed transition、`0x1f882` 淡出、`sync_party` 與
+  `set_chapter(22)` 均保留原始位址與可編輯 payload。
+- `campaign_full.json` 的 `postbattle_ch22_persist` 現接至該 binding，完成後
+  進入既有 `preparation_ch23`，不是直接跳到下一場戰鬥。Docker/Xvfb 回歸以
+  group1+2（73）及 group1+2+3（79）兩個明確 frontier 實際消費 handler、
+  持久隊伍與整備節點；原始資產採唯讀掛載。
+
+這是 E1 的原始 handler→runtime→整備垂直切片，不是一般玩家 E2。未證實的
+66／72-slot 結束狀態、玩家未修改 DOSBox 同狀態截圖、以及第23／24／25／29戰
+仍維持失敗即關閉，不得由本切片推論完整戰役 parity。

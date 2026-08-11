@@ -60,8 +60,9 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   原始 mode 2、`0x4e555` 29×20 移動表、FDFIELD 地形／組成來源、物品幾何、
   `0x1DEBE` 與 `0x14237` 評分輸入；缺任何來源就停止，不退回另一套目標選擇。
   Docker 真實測試已涵蓋選目標、路徑與缺表失敗即關閉。這不是完整敵方人工智慧：
-  `0x14EF0` 前置選擇與 mode 3／9／5 的窄消費端已另行接線；mode 11、
-  `0x13FD4` 回復演出、`0x1548E` 原生演出與一般玩家 E2 仍未閉合。
+  `0x14EF0` 前置選擇與 mode 3／9／5 的窄消費端已另行接線；mode 11 的兩段
+  owner 與 `0x13FD4` indexed／音訊 owner 已達 E1，但完整回合、未知效果演出與
+  一般玩家 E2 仍未閉合。
 - [~] **NATIVE-TOWN-SECRET-GATE-MATRIX**：`campaign_full.json` 現以可編輯
   `native_secret_gate` 保存 23 個城鎮的選項／BIOS 掃描碼（scan code）／祕密商店
   目的地；`ch02` 的「精確組合鍵揭露→再次確認 selection 5」與其餘章節的差異表
@@ -179,7 +180,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   `native_2189a_loop` 的 indexed／campaign fail-closed gate。證據見
   [`fd2_ch22_post_ida.txt`](../data/ida/fd2_ch22_post_ida.txt)。
 - [x] **本輪稽核基線**：24 個標準戰後節點為 19 active／5 blocked；
-  story/cutscene 為 121 節點、9 個獨立 script、49 個 handler binding、63 個
+  story/cutscene 為 121 節點、9 個獨立 script、50 個 handler binding、62 個
   fallback；`mapping_gaps.native_semantics` 由 29 降為 24，表示三個
   `0x2189a` caller 與兩個 ch22 raw predicate 已有可編輯原語／條件，不代表
   renderer 或戰役節點已解鎖。
@@ -229,7 +230,9 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   逐幀證據，且 UI 矩陣不再有未解除的視覺或流程封鎖時，才允許製作
   Windows、Linux、macOS 三平台套件與推廣影片；在閘門前不得以 E1、素材合成或
   不同狀態截圖代替完整驗收。
-- [ ] **下一個戰後切片**：玩家第22、23、24、25、29戰；每關都必須保留
+- [~] **下一個戰後切片**：玩家第22戰已完成 raw `ch21_post` 的 E1 production
+  binding、73／79-slot runtime frontier、持久隊伍同步與 `preparation_ch23`
+  邊界；玩家第23、24、25、29戰仍 blocked。每關都必須保留
   town／shop／整備／連戰與存檔邊界，不可只把節點接到下一場戰鬥。
 - [x] **UI-05 重製端對話框執行期擷取**：以 `FD2_CAMPAIGN=1` 的可編輯序章腳本，
   在 Docker／Xvfb 實際產生 640×400 [`dialogue-remake-runtime.png`](../figures/dialogue-remake-runtime.png)。
@@ -256,10 +259,12 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   round／byte+5／word+0x42、JOIN18、`town_ch17` 與 town save/load 均有
   Docker/Xvfb E1 回歸。未修改一般玩家 DOSBox E2 仍另列於 UI-07，不把本切片
   說成完整 parity。
-- [ ] **其餘標準戰後節點**：玩家第22、23、24、25、29戰仍 blocked；第17、18戰已由
-  本文件上方的 raw `ch17_post` 切片解除。完成
+- [~] **其餘標準戰後節點**：玩家第22戰的 raw `ch21_post` 已接正式 E1 binding，
+  只接受已追加 group1+2（73）或 group1+2+3（79）的 materialized frontier，
+  缺 group2 或更早的 66／72-slot 狀態會停止；玩家第23、24、25、29戰仍
+  blocked。第17、18戰已由本文件上方的 raw `ch17_post` 切片解除。完成
   handler後仍需逐關驗證城鎮／商店／整備／存檔邊界，不可只接下一場戰鬥。
-- [~] **玩家第22戰／raw ch21 post 靜態證據**：授權 IDA Pro 9.4 已固定
+- [x] **玩家第22戰／raw ch21 post E1 垂直切片**：授權 IDA Pro 9.4 已固定
   `0x244b6`、`0x24512→0x233c6`、文字索引4/5/6、ACTING raw 65/66、
   PAN raw `(16,16)`／`(16,14)`、`0x245ce→0x24618` 與尾端
   `0x1f882→sync→chapter22`；三組 16-byte layout 表及原生 loader
@@ -276,7 +281,12 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   `0x24618` 的 raw 相對游標 globals
   （`0x53ab9/0x53abd`）與 ch21 呼叫點 `0x245ce` 的 Y+3 變換已由 IDA 證實；
   重製端已有帶 provenance 且依呼叫位址白名單核對偏移的 fail-closed 動態欄位橋接，因此
-  不接 `town_ch23`，維持失敗即關閉。
+  不接 `town_ch23`，維持失敗即關閉。2026-08-11 新增正式
+  `assets/cutscenes/bindings/ch21_post.json`，只接受 73／79-slot（layout 需要
+  slot72），並將 `postbattle_ch22_persist` 接到既有 `preparation_ch23`；
+  `ch22.json` 改為 runtime append groups，Docker/Xvfb 回歸實際跑過 group1+2
+  與 group1+2+3、`sync_party`、chapter22 及整備節點。66／72-slot、未知
+  indexed 資產或未修改一般玩家路徑仍失敗即關閉，未提升為 E2。
 - [ ] **介面與完整戰役驗收**：UI-01至UI-12目前全部仍為partial；城鎮與商店
   只有部分ch02狀態達E2。仍須同狀態DOSBox／重製逐幀比較，以及無debug的30章
   一般玩家可破關鏈。不要以asset／codec、文件行數或通過的重製端單元測試代替。
@@ -528,7 +538,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   `0x12D7B` 的高階玩法；重製 renderer 仍失敗即關閉。證據見
   [`fd2_ai_13fd4_full_ida_20260810.txt`](../data/ida/fd2_ai_13fd4_full_ida_20260810.txt)。
 - [x] **RE-AI-MODE11-WRITER-35F92**：`[0x53AD5]+0x10==4` 時，`0x36078→0x3419C(20,20,11)` 改寫單位 20 低四位；它是全域 90-entry 表的 event 82，不是第二張 30-entry 表的 entry 22。一般玩家觸發尚未閉合，且 33 張格子事件表沒有 event 82，不猜章節或人物。
-- [~] **REMAKE-AI-MODE-RUNTIME**：模式 0/1/2/3/4/5/7/9/10 的 raw branch 已有 `NextAIPlan` 窄消費端，mode 5 另有 mutable event state tail；`0x14EF0` command／item route 與 state-only executor 也已接線。mode 11 雙動作 orchestration、`0x13FD4` presentation、event 82 觸發、完整回合 orchestration、未知 command／relocation 與一般玩家 E2 仍未完成。`set_ai:berserk` 仍只是 inert 事件標記。
+- [~] **REMAKE-AI-MODE-RUNTIME**：模式 0/1/2/3/4/5/7/9/10 的 raw branch 已有 `NextAIPlan` 窄消費端，mode 5 另有 mutable event state tail；`0x14EF0` command／item route 與 state-only executor 也已接線。mode 11 的雙段 owner（`0x15311`、`0x1548E`／`0x14121→0x13FD4`）已接 E1 continuation，`0x13FD4` 另有 indexed／音訊 owner；event 82 觸發、完整回合 orchestration、未知 command／relocation／spell／item 演出與一般玩家 E2 仍未完成。`set_ai:berserk` 仍只是 inert 事件標記。
 - [x] **RE-FIELD-EVENT-13A44**：閉合地圖 event-word low5 的 1-based slot、FDSHAP `0x20/0x40` 寶箱 gate、FDFIELD 控制段 16×2 `(event_id,selector)` 與 `0xFF` gate；33 張地圖已同步為可編輯資料並有失敗即關閉查詢。
 - [~] **REMAKE-GLOBAL-EVENT-DISPATCH**：全域 `0x51B91` 已由錯誤的 58 entries 更正為 90 entries；回合事件使用 0..57，格子事件只覆蓋另一子集合。58..89 handler 的高階語意與各 dispatcher 的 selector 生產路徑仍須逐一閉合，未知 handler 不接正式流程。
 - [x] **RE-POST-RESOLUTION-1AA1D**：閉合 `{kind:u8,payload:u16le}`，kind0/1 為物品／金錢、kind2 dispatch 全域事件、kind3 為另一呈現分支；建構器只採 FDFIELD b22+b23..24，撤回 b23..25 24-bit payload。
@@ -622,7 +632,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 - [x] **地圖單位 sprite=FDICON Q版小人**(24×24 待機動畫)→ `31`(取代誤用的 FIGANI 全身)
 - [~] 戰場選單狀態機(移動/攻擊/待機/道具/結束),對齊 `13`(游標/Enter/ESC)：原始 action wrapper、四向環、command grid、物品列與目標游標已有可編輯／失敗即關閉切片；完整 end-turn 入口、indexed effect presentation、原版畫面差分仍未關閉。
 - [~] 攻擊結算:玩家選單路徑現在以注入的遊戲亂數呼叫 `AttackWithRNG`，保留未命中／暴擊／經驗結果並交給演出與訊息層；公式仍以**青衫公式**(物理/劍技/法術/恢復+命中+暴擊+經驗,doc 02 §4 = 實作依據)+ EXE 數值表(`03`)為目前重製依據，原版 raw 攻擊 ABI／一般玩家 E2 尚未關閉。
-- [~] 敵方 AI 回合：normalized flood-fill/評分與 raw evidence 對照；`aiStep` 現與玩家攻擊共用注入亂數的型別結算邊界，但仍是 normalized approximation。舊 `0x15140` 地址已由 canonical recheck 撤回。`0x13A9F/0x14EF0/0x15B77` 的 dispatcher／尾端路由／score slices 已各自有 evidence/adapter，但完整權重、turn/camp、target selection 與 native runtime execution 仍待 RE。`0x1598A` 使用 `0x14818`、`0x1567E` 的 item-command spell branch 才使用 `0x149F8`；raw `+0x22..+0x27` 不命名 AP/DP/HIT/status。
+- [~] 敵方 AI 回合：normalized flood-fill/評分與 raw evidence 對照；`aiStep` 現與玩家攻擊共用注入亂數的型別結算邊界，但仍是 normalized approximation。舊 `0x15140` 地址已由 canonical recheck 撤回。`0x13A9F/0x14EF0/0x15B77` 的 dispatcher／尾端路由／score slices 已各自有 evidence/adapter，mode 11 與 `0x13FD4` 也已有 E1 窄 owner；完整權重、turn/camp、target selection、未閉合效果與一般玩家 native runtime E2 仍待補證。`0x1598A` 使用 `0x14818`、`0x1567E` 的 item-command spell branch 才使用 `0x149F8`；raw `+0x22..+0x27` 不命名 AP/DP/HIT/status。
 - [~] 敵方 AI 雙預選 bridge：`BuildNativeAIPhaseDiagnosticPlan` 已依
   `0x1D8BA` 原序將 `0x1598A→0x15B77→[0x53C23]` 與
   `0x1567E→0x15880→[0x53C33]` 兩個具型別 producer 接入
@@ -757,7 +767,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 - [x] **建反組譯器** `tools/disasm_le.py`(capstone 解 DOS4GW LE,docker)+ 確認 entry/main/狀態機
 - [x] **頂層狀態機反組譯**:真 main=0x25bf4(雙層迴圈),核心狀態變數 `[0x53c03]`=章節,兩張章節跳表(0x51d71 戰前劇情 / 0x51de9 戰後)→ `23`
 - [x] **標題序列**:角色立繪 5 幀(FDOTHER #0x45-0x49,320×147)垂直捲動(非旋轉)+ FLAME DRAGON logo(#7 sub0)+ 主選單;**解碼器當 oracle 解圖視覺驗證** → `23`
-- [~] **主選單機制**:輸入迴圈/scancode dispatch(↑0x48/↓0x50/Enter/Space)/游標 wrap、return `0=新遊戲`、`1=0x30550` 四槽 selector 已由 Docker Capstone 重跑；第三 return branch 直進 `0x10010`。2026-08-02 合法 IDA 重核已撤回「`0x4E031` 是戰鬥驅動器」：它只複製 BIOS 鍵盤緩衝 word；第三分支返回0後由 main `0x25DCE` 呼叫並循環重入真正的共享控制器 `0x117E7`。remake 也已刪除 selection2 誤讀 JSON slot0 的高風險行為，正式 native transaction 完成前留在 title。四槽 LOAD 已接 checksum-valid selector→typed party→town/preparation production owner；真正未接的是未修改一般玩家有效槽 E2、delete/overwrite 與 CONTINUE 的 pending-group／`Game` handoff，故仍不能稱完整 native LOAD/CONTINUE 相容 → `23`、`56`、`57`
+- [~] **主選單機制**:輸入迴圈/scancode dispatch(↑0x48/↓0x50/Enter/Space)/游標 wrap、return `0=新遊戲`、`1=0x30550` 四槽 selector 已由 Docker Capstone 重跑；第三 return branch 直進 `0x10010`。2026-08-02 合法 IDA 重核已撤回「`0x4E031` 是戰鬥驅動器」：它只複製 BIOS 鍵盤緩衝 word；第三分支返回0後由 main `0x25DCE` 呼叫並循環重入真正的共享控制器 `0x117E7`。remake 也已刪除 selection2 誤讀 JSON slot0 的高風險行為；在未修改一般玩家有效槽 E2、delete/overwrite 與 CONTINUE 的 pending-group／`Game` handoff 完成前，未證實狀態仍停在 title。四槽 LOAD 已接 checksum-valid selector→typed party→town/preparation production owner，故仍不能稱完整 native LOAD/CONTINUE 相容 → `23`、`56`、`57`
 - [x] **新遊戲→開場對話→自動進戰場**:[0x53c03] 章節驅動,cutscene 0x3231b(與前代主角對話)→ 戰場地圖=章節*3+2(自動串接)→ `23`
 - [x] **call-graph 遞迴反組譯工具** `tools/callgraph_le.py`(可達集/callers/rpath/funcof/jtab)→ `24`
 - [x] **cutscene→戰場控制流勘誤**：`0x10010` 真 caller 仍是 `0x1a251/0x26130`，但展開 `0x25ebb` 證實 `0x26130` 只屬第三主選單分支；新遊戲與四槽讀檔各自跑 pre-handler 後從 `0x25ebb` 返回，main `0x25dce` 才呼叫 `0x117e7`。舊「handler ret 後在同 driver 線性落入 `0x10010`」已撤回；callgraph 工具排除 `0x1b051/0x26f30` 偽命中的成果仍有效 → `23`、`24`
@@ -1034,7 +1044,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 - [x] **歷史文本轉錄快照（非可玩覆蓋）**(sonnet 流水線 6 批):當時記錄
       ch01-33 共 1452 句與 speaker 場景本地表現象；這只代表文字資產曾被轉錄，
       不代表 33 章 handler、對話索引、一般玩家路徑或重製已完成。現況以本檔頂端
-      121 個 story/cutscene、9 個獨立 script、49 個 handler binding、63 個
+      121 個 story/cutscene、9 個獨立 script、50 個 handler binding、62 個
       fallback 稽核為準；未證實的身世標籤不作為 runtime 語意。
 - [x] **speaker→頭像機制 RE**(sonnet):0xFFEF operand→0x12C60 查[0x53A45]/[0x53BF7] byte[+7]=DATO;
       三推論裁決(①部分成立=陣列重填+雙定址②怪物表不成立③字母碼是 render_story.py operand 洩漏 bug);

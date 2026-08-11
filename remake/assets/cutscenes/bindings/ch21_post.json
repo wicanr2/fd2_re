@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "handler_script": "../handlers/ch21_post.json",
+  "acting_resources": "../acting/ch21_post.json",
+  "story_index_map": "../dialogue-index/count-aligned.json",
+  "dialogue_contexts": {
+    "0x24539": { "source_dat": "FDTXT_022", "script": "ch22.json" },
+    "0x2456a": { "source_dat": "FDTXT_022", "script": "ch22.json" },
+    "0x245a7": { "source_dat": "FDTXT_022", "script": "ch22.json" }
+  },
+  "runtime_context": {
+    "slot_counts": [73, 79],
+    "story_viewport": true
+  },
+  "overrides": {
+    "0x24512": {
+      "layout": {
+        "units": [
+          { "slot": 0, "x": 16, "y": 16, "pose": 2 },
+          { "slot": 1, "x": 16, "y": 14, "pose": 0 },
+          { "slot": 2, "x": 15, "y": 16, "pose": 2 },
+          { "slot": 3, "x": 17, "y": 16, "pose": 2 },
+          { "slot": 4, "x": 14, "y": 17, "pose": 2 },
+          { "slot": 5, "x": 15, "y": 17, "pose": 2 },
+          { "slot": 6, "x": 16, "y": 17, "pose": 2 },
+          { "slot": 7, "x": 17, "y": 17, "pose": 2 },
+          { "slot": 8, "x": 18, "y": 17, "pose": 2 },
+          { "slot": 9, "x": 14, "y": 18, "pose": 2 },
+          { "slot": 10, "x": 15, "y": 18, "pose": 2 },
+          { "slot": 11, "x": 16, "y": 18, "pose": 2 },
+          { "slot": 12, "x": 17, "y": 18, "pose": 2 },
+          { "slot": 13, "x": 18, "y": 18, "pose": 2 },
+          { "slot": 14, "x": 15, "y": 19, "pose": 2 },
+          { "slot": 15, "x": 17, "y": 19, "pose": 2 },
+          { "slot": 72, "x": 22, "y": 25, "pose": 2 }
+        ],
+        "cam_x": 384,
+        "cam_y": 432
+      }
+    },
+    "0x24543": { "act": { "resource": 65 } },
+    "0x24580": { "act": { "resource": 66 } },
+    "0x24576": { "pan": { "x": 384, "y": 384, "tile_step": true } },
+    "0x245b3": { "pan": { "x": 384, "y": 336, "tile_step": true } },
+    "0x245ce": {
+      "indexed_transition": {
+        "tile_x": 0,
+        "tile_y": 0,
+        "cursor_source": "native_relative_cursor",
+        "cursor_y_offset": 3,
+        "radial_radius": 10,
+        "radial_radius_step": 8,
+        "start_y": 0,
+        "end_y": 192,
+        "clip_width": 312,
+        "clip_height": 192,
+        "frames": 9,
+        "frame_delay_ms": 5,
+        "tail_delay_ms": 500,
+        "palette_range_start": 0,
+        "palette_range_end": 255,
+        "palette_delta_start": 0,
+        "palette_delta_end": 62,
+        "palette_delta_step": 2,
+        "palette_delay_ms": 4
+      }
+    }
+  }
+}

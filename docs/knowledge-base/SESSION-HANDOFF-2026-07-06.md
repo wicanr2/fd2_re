@@ -4249,3 +4249,24 @@ AI 或逐像素 UI parity。Docker 工作皆使用一次性容器；本輪結束
   一般玩家敵方回合 E2。index 4 高階音色、decode mode 玩法語意、未知命令／法術／
   物品演出與其他 caller 的一般玩家 trace 仍需後續補證。對應工作清單已更新於
   [`91-worklist.md`](91-worklist.md)。
+
+## 2026-08-11：玩家第22戰 ch21 post 正式 E1 戰役邊界
+
+本輪先稽核工作清單，撤回 mode 11／`0x13FD4`、主選單與敵方 AI runtime
+仍完全未接的過時字句；未具備原版證據或消費端的項目仍保留未完成。接著完成
+玩家第22戰戰後到整備的最小戰役切片：
+
+- `remake/assets/cutscenes/bindings/ch21_post.json` 以 raw `0x244b6`／
+  `0x24512`／`0x245ce`／`0x24618`／`0x1f882` 為定位，正式接入三段對話、
+  ACTING 65／66、兩次 PAN、indexed transition、`sync_party` 與
+  `set_chapter(22)`；只接受能物化 raw layout 所需 slot72 的 73 或79槽。
+- `ch22.json` 啟用 `runtime_append_groups`，以 group0 起始並依原始 map21
+  group1／2／3 形成 66→72→73→79 frontier；缺少 group2 或尚未物化的
+  66／72-slot 狀態會停止，不以猜測補齊演出。
+- `campaign_full.json` 的 `postbattle_ch22_persist` 現正式指向該 binding，
+  完成後進入既有 `preparation_ch23`，不是直接跳下一場戰鬥。Docker／Xvfb
+  回歸實際消費 group1+2 與 group1+2+3、持久隊伍同步及整備節點。
+
+這是原始證據到重製 runtime 的 E1 窄切片，不是未修改一般玩家 DOSBox E2，
+也不代表第23／24／25／29戰已完成。下一步應從最小可重現的戰役節點繼續，
+並維持城鎮／商店／整備／存檔邊界與失敗即關閉規則。
