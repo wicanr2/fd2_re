@@ -8,6 +8,7 @@ import (
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+	"github.com/wicanr2/fd2_re/remake/internal/ending"
 )
 
 func TestWriteShotStateTraceRecordsNativeInteractionState(t *testing.T) {
@@ -79,5 +80,34 @@ func TestWriteShotStateTraceOmitsSelectionWithoutOwner(t *testing.T) {
 	}
 	if got.HasSelection || got.Selection != nil || !got.NativeContinueCursorOverlay {
 		t.Fatalf("empty cursor trace=%#v", got)
+	}
+}
+
+func TestWriteShotStateTracePreservesApproximateEndingGate(t *testing.T) {
+	g := &Game{nativeEnding: &nativeEndingPreview{
+		campaignApproximate: true,
+		audioCueConsumed:    true,
+		player: &ending.Player{
+			State:   ending.PlaybackBlocked,
+			Blocked: &ending.Segment{Op: "native_finale_montage_opaque", Source: "0x2c548"},
+		},
+	}}
+	path := filepath.Join(t.TempDir(), "shot-state-ending.json")
+	if err := g.writeShotStateTrace(path); err != nil {
+		t.Fatal(err)
+	}
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got screenshotStateTrace
+	if err := json.Unmarshal(raw, &got); err != nil {
+		t.Fatal(err)
+	}
+	if got.NativeEnding == nil || got.NativeEnding.PlaybackState != string(ending.PlaybackBlocked) ||
+		got.NativeEnding.BlockedOp != "native_finale_montage_opaque" ||
+		got.NativeEnding.BlockedSource != "0x2c548" || !got.NativeEnding.CampaignApproximate ||
+		!got.NativeEnding.AudioCueConsumed {
+		t.Fatalf("ending trace=%#v", got.NativeEnding)
 	}
 }

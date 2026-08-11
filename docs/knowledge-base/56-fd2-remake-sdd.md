@@ -3587,9 +3587,12 @@ renderer 輸入契約，不能把排程本身解讀成命中、傷害或 DAC 語
   [`fd2_ai_mode11_13fd4_ida.txt`](../data/ida/fd2_ai_mode11_13fd4_ida.txt)。
 - 終局播放器新增三個由 IDA 直接確認的事件：`sub_2C405` 前段
   `0x2C5CF→FDMUS_004`、`sub_2BCE5` 尾端 `0x2C1AC→play_bgm(-1)`，以及
-  `0x2C1F5→FDMUS_018`。事件序列可由 `internal/ending` 預覽器消費，
-  但 `0x2BCE5` 的完整 indexed montage、輸入交接與正式 campaign ending
-  節點仍未接通；因此不能宣稱原版結局演出或逐音符一致。
+  `0x2C1F5→FDMUS_018`。2026-08-12 起，唯一已獲 runtime 消費權的 cue 是
+  `FDMUS_004`：它必須在精確 `0x2C548` 邊界，且只由
+  `FD2_APPROXIMATE=1` 的嚴格 `native_ending_prefix` 最終節點消費；確認後
+  回到可編輯結語。停曲與 `FDMUS_018` 仍僅保存為觀測事件。完整 `0x2BCE5`
+  indexed montage、原始輸入交接、raw ch29 terminal owner 與一般玩家終局 E2
+  仍未接通，因此不能宣稱原版結局演出或逐音符一致。
 
 補充一個不改變執行期狀態的 mode 11 E0 邊界：
 `SelectNativeAIMode11Transaction` 只驗證兩個 raw score 是否存在，並保留

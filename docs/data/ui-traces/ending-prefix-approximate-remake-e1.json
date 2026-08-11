@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "evidence_level": "E1",
+  "scope": "重製端可玩近似模式的最終節點：已證實 0x2BCE5 前綴至第一個原版文字閘門 0x2BE44",
+  "input": {
+    "reference": {
+      "executable": {
+        "path": "org_game/炎龍騎士團/FLAME2/FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      "player_assets": [
+        {
+          "path": "org_game/炎龍騎士團/FLAME2/FDOTHER.DAT",
+          "size": 3382481,
+          "md5": "22f56e5027edc7c766ad34ca4e5aca93",
+          "sha256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
+        },
+        {
+          "path": "org_game/炎龍騎士團/FLAME2/FDTXT.DAT",
+          "size": 120502,
+          "md5": "fe5c487ce4313485f1da9d48d35b05f9",
+          "sha256": "a4555f8a0e61e884b4f504d56a8bdde11672583bbbbc6506281ae10dcdfb1f69"
+        },
+        {
+          "path": "org_game/炎龍騎士團/FLAME2/ANI.DAT",
+          "size": 2437547,
+          "md5": "81315bcbb78764361c5137ab0f714f7e",
+          "sha256": "be909c71d0f1121b6632ae931d978e990f6d54c830f4e0509cd6862187c4d963"
+        }
+      ]
+    },
+    "remake_execution": {
+      "image": "fd2-go-test-local:latest",
+      "display": "Docker Xvfb :99",
+      "network": "none",
+      "campaign": "remake/assets/scenarios/campaign_full.json",
+      "environment": {
+        "FD2_TITLE": "0",
+        "FD2_CAMPAIGN": "assets/scenarios/campaign_full.json",
+        "FD2_CAMP_NODE": "ending",
+        "FD2_APPROXIMATE": "1",
+        "FD2_MUTE": "1"
+      },
+      "entry": "明確的驗證節點直接進入；不是由第30戰一般玩家勝利路徑到達"
+    }
+  },
+  "editable_contract": {
+    "campaign_node": "ending",
+    "native_ending_prefix": {
+      "timeline": "assets/endings/native_2bce5.json",
+      "handler": "0x2bce5",
+      "chapter": 29,
+      "mode": "recovered_prefix_only_fail_closed"
+    },
+    "admission": "只有 FD2_APPROXIMATE=1 且上述嚴格合約完整時才建立前綴播放器；預設忠實模式維持可編輯靜態結語。"
+  },
+  "capture": {
+    "state_sidecar": "ending-prefix-approximate-remake-e1-state.json",
+    "frame": 503,
+    "campaign_node": "ending",
+    "native_ending": {
+      "playback_state": "blocked",
+      "blocked_op": "native_text_branch_opaque",
+      "blocked_source": "0x2be44",
+      "campaign_approximate": true,
+      "audio_cue_consumed": false,
+      "dialog_count": 13
+    }
+  },
+  "screenshot": {
+    "path": "../../figures/ending-prefix-approximate-remake-e1.png",
+    "role": "重製端 Docker/Xvfb 執行期畫面；已到第一個原版文字閘門，不是原版逐像素對照",
+    "size": [640, 400],
+    "md5": "e67b5bc9b4b72eae8523c21502a6a5c6",
+    "sha256": "848e84f4817790c330cb1a9928bd62269a45631a7794bc27516ded672033904c"
+  },
+  "verified_following_boundary": {
+    "after_gate": "0x2c548",
+    "audio_cue": {
+      "source": "0x2c5cf",
+      "track": "FDMUS_004",
+      "driver_arg": 0
+    },
+    "regression": "TestApproximateCampaignFinalNodeConsumesRecoveredPrefixThenStops；測試在該精確邊界才消費音訊，然後停止於未還原蒙太奇。"
+  },
+  "limits": [
+    "這張圖使用 FD2_CAMP_NODE=ending 直接驗證入口，不能證明第30戰一般玩家路徑、存檔或完整結局 E2。",
+    "截圖設定 FD2_MUTE=1，故不把畫面當作音訊播放證據；音訊消費端由獨立回歸驗證。",
+    "第一與第二個文字閘門後的已還原前段可播放，但 0x2C548 後的原版蒙太奇、停止曲／FDMUS_018、輸入尾段與正式原版比較仍失敗即關閉。",
+    "按 Enter 回到可編輯靜態結語只屬近似模式，不代表原版結局已完整還原。"
+  ]
+}

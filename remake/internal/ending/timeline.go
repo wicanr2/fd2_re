@@ -32,6 +32,9 @@ type AudioCue struct {
 	Source    string `json:"source"`
 	Track     int    `json:"track"`
 	DriverArg int    `json:"driver_arg"`
+	// AfterGate 是允許消費此音訊的精確 raw 停止邊界。空字串代表該 cue
+	// 仍只有觀測用途，因為其原版畫面／流程 owner 尚未還原。
+	AfterGate string `json:"after_gate,omitempty"`
 	Trigger   string `json:"trigger"`
 }
 
@@ -106,9 +109,16 @@ func LoadTimeline(path string) (*Timeline, error) {
 	if len(timeline.Segments) == 0 {
 		return nil, fmt.Errorf("ending timeline %q has no recovered segments", path)
 	}
+	seenAudioGates := map[string]bool{}
 	for i, cue := range timeline.AudioCues {
 		if cue.Source == "" || cue.Track < -1 || cue.Track > 0xff || cue.DriverArg < 0 || cue.DriverArg > 1 || cue.Trigger == "" {
 			return nil, fmt.Errorf("ending timeline %q audio cue %d is incomplete", path, i)
+		}
+		if cue.AfterGate != "" {
+			if cue.AfterGate != "0x2c548" || seenAudioGates[cue.AfterGate] {
+				return nil, fmt.Errorf("ending timeline %q audio cue %d has an unverified or duplicate gate", path, i)
+			}
+			seenAudioGates[cue.AfterGate] = true
 		}
 	}
 	for i, segment := range timeline.Segments {

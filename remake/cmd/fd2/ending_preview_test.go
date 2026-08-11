@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/ending"
 )
 
@@ -101,5 +102,93 @@ func TestNativeEndingDialogueResumeAllowsSecondNativeTextGate(t *testing.T) {
 		g.dialog[0].Speaker != 45 || g.dialog[0].Text == "" {
 		t.Fatalf("second recovered ending dialogue = queued=%v lines=%#v",
 			g.nativeEnding.queued, g.dialog)
+	}
+}
+
+func TestApproximateCampaignEndingConsumesOnlyVerifiedGateCueThenReturnsToEditableEpilogue(t *testing.T) {
+	p := &ending.Player{
+		Timeline: ending.Timeline{AudioCues: []ending.AudioCue{{
+			Source: "0x2c5cf", Track: 4, DriverArg: 0, AfterGate: "0x2c548", Trigger: "verified gate",
+		}}},
+		State:   ending.PlaybackBlocked,
+		Blocked: &ending.Segment{Op: "native_finale_montage_opaque", Source: "0x2c548"},
+	}
+	g := &Game{nativeEnding: &nativeEndingPreview{player: p, campaignApproximate: true}}
+	t.Setenv("FD2_MUTE", "1")
+	g.consumeNativeEndingAudioAtGate()
+	if !g.nativeEnding.audioCueConsumed {
+		t.Fatal("verified ending audio cue was not consumed at 0x2c548")
+	}
+	if !g.finishCampaignNativeEndingFallback() || g.nativeEnding != nil || g.endingNotice == "" {
+		t.Fatalf("campaign fallback = preview=%#v notice=%q", g.nativeEnding, g.endingNotice)
+	}
+}
+
+func TestDirectEndingPreviewCannotUseApproximateCampaignFallback(t *testing.T) {
+	g := &Game{nativeEnding: &nativeEndingPreview{
+		player: &ending.Player{
+			State:   ending.PlaybackBlocked,
+			Blocked: &ending.Segment{Op: "native_finale_montage_opaque", Source: "0x2c548"},
+		},
+	}}
+	if g.finishCampaignNativeEndingFallback() || g.nativeEnding == nil {
+		t.Fatalf("direct preview crossed fail-closed montage boundary: %#v", g.nativeEnding)
+	}
+}
+
+func TestCampaignEndingRejectsProgrammaticUnprovenPrefix(t *testing.T) {
+	if _, err := newNativeEndingPreviewForCampaign(&campaign.NativeEndingPrefixConfig{
+		Timeline: nativeEndingTimelinePath, Handler: "0x2c548", Chapter: 29,
+		Mode: campaign.NativeEndingPrefixRecoveredOnly,
+	}); err == nil {
+		t.Fatal("programmatic unproven ending prefix was accepted")
+	}
+}
+
+func TestApproximateCampaignFinalNodeConsumesRecoveredPrefixThenStops(t *testing.T) {
+	const base = "../../../org_game/炎龍騎士團/FLAME2"
+	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "ANI.DAT"} {
+		if _, err := os.Stat(filepath.Join(base, name)); os.IsNotExist(err) {
+			t.Skip("player-provided ending resources are unavailable")
+		} else if err != nil {
+			t.Fatal(err)
+		}
+	}
+	t.Setenv("FD2_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+	t.Setenv("FD2_FDTXT", filepath.Join(base, "FDTXT.DAT"))
+	t.Setenv("FD2_ANI", filepath.Join(base, "ANI.DAT"))
+	t.Setenv("FD2_MUTE", "1")
+	c, err := campaign.Load("../../assets/scenarios/campaign_full.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	runner := campaign.NewRunner(c)
+	runner.Cur = "ending"
+	g := &Game{camp: runner, approximateMode: true}
+	g.enterNode()
+	if g.nativeEnding == nil || !g.nativeEnding.campaignApproximate {
+		t.Fatalf("approximate final node did not admit recovered prefix: %#v", g.nativeEnding)
+	}
+	p := g.nativeEnding.player
+	for _, elapsed := range []int{0, 1000, 2500, 0, 256, 2000} {
+		if _, err := p.Advance(elapsed); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if !p.ResumeBlockedDialogue() {
+		t.Fatal("first recovered text gate was unavailable")
+	}
+	if _, err := p.Advance(5000); err != nil || !p.ResumeBlockedDialogue() {
+		t.Fatalf("second recovered text gate err=%v blocked=%#v", err, p.Blocked)
+	}
+	if _, err := p.Advance(7500); err != nil || !g.nativeEnding.awaitingCampaignFallback() {
+		t.Fatalf("unrecovered montage boundary err=%v preview=%#v", err, g.nativeEnding)
+	}
+	g.consumeNativeEndingAudioAtGate()
+	if !g.nativeEnding.audioCueConsumed {
+		t.Fatal("verified FDMUS_004 cue was not consumed at the recovered boundary")
+	}
+	if !g.finishCampaignNativeEndingFallback() || g.nativeEnding != nil || g.endingNotice == "" {
+		t.Fatalf("approximate final fallback did not return to editable ending: preview=%#v notice=%q", g.nativeEnding, g.endingNotice)
 	}
 }

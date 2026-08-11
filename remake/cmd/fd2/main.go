@@ -164,7 +164,8 @@ type Game struct {
 	nativeTurnStaging          *nativeTurnStagingJob
 	nativeFieldEvent61         *nativeFieldEvent61Job
 	nativeAIIdleRecovery       *nativeAIIdleRecoveryJob // direct 0x13FD4 indexed/audio owner
-	nativeEnding               *nativeEndingPreview     // FD2_ENDING_PREFIX=1 的 0x2bce5 fail-closed prefix oracle
+	nativeEnding               *nativeEndingPreview     // FD2_ENDING_PREFIX 或 approximate campaign 的 0x2bce5 fail-closed prefix
+	endingNotice               string                   // approximate prefix 無法取得原始素材或停在未還原尾段時的玩家提示
 	walk                       *walkAnim                // 移動動畫(沿路徑逐格走,FDICON 方向幀)
 	camp                       *campaign.Runner         // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
 	campSel                    int                      // choice 節點游標
@@ -2247,6 +2248,8 @@ func (g *Game) enterNode() {
 	}
 	g.captureNativeMapHUDPersistence()
 	g.resetActionOverlayLifecycle()
+	g.nativeEnding = nil
+	g.endingNotice = ""
 	n := g.camp.Node()
 	if n == nil {
 		return // 流程結束(game over)
@@ -2451,6 +2454,13 @@ func (g *Game) enterNode() {
 		g.setupNativeShop()
 	case "ending":
 		g.dialog, g.st, g.sel = nil, nil, nil
+		if g.approximateMode && n.NativeEndingPrefix != nil {
+			if err := g.startCampaignNativeEnding(n.NativeEndingPrefix); err != nil {
+				// 原始結局資源是玩家自備且不隨專案散布；近似模式可退回
+				// 可編輯結語，但預設忠實模式不會走這條分支。
+				g.endingNotice = "原始結局素材不足，顯示可編輯結語。"
+			}
+		}
 	}
 }
 
@@ -5745,14 +5755,19 @@ func (g *Game) Update() error {
 			g.loadErr = "native ending dialogue: " + err.Error()
 			return err
 		}
+		g.consumeNativeEndingAudioAtGate()
 		g.stepDlgAnim()
 		if g.dlgScrollT > 0 {
 			g.dlgScrollT--
 		}
-		if len(g.dialog) > 0 && (inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)) {
+		endingConfirm := inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)
+		if len(g.dialog) > 0 && endingConfirm {
 			if g.dlgAdvance() && len(g.dialog) == 0 {
 				g.resumeNativeEndingDialogue()
 			}
+		}
+		if endingConfirm && g.finishCampaignNativeEndingFallback() {
+			return nil
 		}
 		if g.shotPath != "" && g.shotTaken {
 			return ebiten.Termination
@@ -7459,6 +7474,10 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 			x := float64(logicalW)/2 - g.font.Width(line, scale)/2
 			g.font.Draw(screen, line, x, panelY+55+float64(i)*lineH, scale,
 				color.RGBA{0xff, 0xe0, 0x90, 0xff})
+		}
+		if g.endingNotice != "" {
+			g.font.Draw(screen, g.endingNotice, 28, logicalH-30, 0.9,
+				color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
 		}
 	}
 }

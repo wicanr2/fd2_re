@@ -97,6 +97,25 @@ func TestLoadValidation(t *testing.T) {
 	}
 }
 
+func TestNativeEndingPrefixRejectsUnprovenCampaignAdmission(t *testing.T) {
+	for name, raw := range map[string]string{
+		"wrong node type": `{"start":"end","nodes":{"end":{"type":"story","native_ending_prefix":{"timeline":"assets/endings/native_2bce5.json","handler":"0x2bce5","chapter":29,"mode":"recovered_prefix_only_fail_closed"}}}}`,
+		"wrong handler":   `{"start":"end","nodes":{"end":{"type":"ending","native_ending_prefix":{"timeline":"assets/endings/native_2bce5.json","handler":"0x2c548","chapter":29,"mode":"recovered_prefix_only_fail_closed"}}}}`,
+		"wrong chapter":   `{"start":"end","nodes":{"end":{"type":"ending","native_ending_prefix":{"timeline":"assets/endings/native_2bce5.json","handler":"0x2bce5","chapter":28,"mode":"recovered_prefix_only_fail_closed"}}}}`,
+		"wrong mode":      `{"start":"end","nodes":{"end":{"type":"ending","native_ending_prefix":{"timeline":"assets/endings/native_2bce5.json","handler":"0x2bce5","chapter":29,"mode":"ready"}}}}`,
+	} {
+		t.Run(name, func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), "invalid-native-ending.json")
+			if err := os.WriteFile(path, []byte(raw), 0o644); err != nil {
+				t.Fatal(err)
+			}
+			if _, err := Load(path); err == nil {
+				t.Fatal("unproven native ending prefix was accepted")
+			}
+		})
+	}
+}
+
 func TestNativeMapRuntimeRejectsUnsupportedOrUnanchoredState(t *testing.T) {
 	for name, raw := range map[string]string{
 		"hud only":              `{"start":"b","nodes":{"b":{"type":"battle","native_map_hud":{"display_gate_a":1,"display_gate_b":1,"anchor_x":1}}}}`,
@@ -661,6 +680,14 @@ func TestCampaignFullPostBattleTownContractMatchesOriginalShopChapters(t *testin
 	}
 	if battle30 := campaign.Nodes["battle_ch30"]; battle30 == nil || battle30.OnWin != "ending" {
 		t.Fatalf("battle_ch30 must end campaign: %#v", battle30)
+	}
+	ending := campaign.Nodes["ending"]
+	if ending == nil || ending.NativeEndingPrefix == nil ||
+		ending.NativeEndingPrefix.Timeline != "assets/endings/native_2bce5.json" ||
+		ending.NativeEndingPrefix.Handler != "0x2bce5" ||
+		ending.NativeEndingPrefix.Chapter != 29 ||
+		ending.NativeEndingPrefix.Mode != NativeEndingPrefixRecoveredOnly {
+		t.Fatalf("terminal ending prefix=%#v", ending)
 	}
 }
 

@@ -26,6 +26,7 @@ type screenshotStateTrace struct {
 	// 能區分「按鍵未到」和「遊戲刻意尚未接受按鍵」。
 	NativeContinueOpeningConfirm bool                       `json:"native_continue_opening_confirm"`
 	NativeContinueCursorOverlay  bool                       `json:"native_continue_cursor_overlay"`
+	NativeEnding                 *screenshotEndingTrace     `json:"native_ending,omitempty"`
 	DialogCount                  int                        `json:"dialog_count"`
 	BattleEventActive            bool                       `json:"battle_event_active"`
 	NativeTurnStagingActive      bool                       `json:"native_turn_staging_active"`
@@ -52,6 +53,16 @@ type screenshotBattleTrace struct {
 	NativeMapView      *battle.NativeMapViewState `json:"native_map_view,omitempty"`
 }
 
+// screenshotEndingTrace 保存結局截圖所在的精確 raw 邊界。它刻意只記錄狀態，
+// 不能把已還原前綴或近似戰役回退升格成完整結局宣告。
+type screenshotEndingTrace struct {
+	PlaybackState       string `json:"playback_state"`
+	BlockedOp           string `json:"blocked_op,omitempty"`
+	BlockedSource       string `json:"blocked_source,omitempty"`
+	CampaignApproximate bool   `json:"campaign_approximate"`
+	AudioCueConsumed    bool   `json:"audio_cue_consumed"`
+}
+
 func (g *Game) writeShotStateTrace(path string) error {
 	if g == nil || path == "" {
 		return errors.New("截圖狀態追蹤輸出路徑不可用")
@@ -73,6 +84,18 @@ func (g *Game) writeShotStateTrace(path string) error {
 	}
 	if g.camp != nil {
 		trace.CampaignNode = g.camp.NodeID()
+	}
+	if p := g.nativeEnding; p != nil && p.player != nil {
+		endingTrace := &screenshotEndingTrace{
+			PlaybackState:       string(p.player.State),
+			CampaignApproximate: p.campaignApproximate,
+			AudioCueConsumed:    p.audioCueConsumed,
+		}
+		if p.player.Blocked != nil {
+			endingTrace.BlockedOp = p.player.Blocked.Op
+			endingTrace.BlockedSource = p.player.Blocked.Source
+		}
+		trace.NativeEnding = endingTrace
 	}
 	if g.sel != nil {
 		trace.HasSelection = true

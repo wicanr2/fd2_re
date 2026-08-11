@@ -4671,3 +4671,37 @@ selection=false、overlay=true。結果圖與原版／重製／差異比較為
 重製端在此狀態只允許方向、取消與顯示，Enter 保持失敗即關閉。focused
 `internal/fdother`／`cmd/fd2` Docker/Xvfb regression 已通過；完整回歸與文件連結
 檢查仍須在提交前重跑。
+
+## 2026-08-12：`0x2BCE5` 已還原前綴的近似戰役接線（E1）
+
+這次只接一個已能閉合證據的垂直切片，沒有把原版終局尾段猜接為可玩流程。
+固定版 `FD2.EXE` 的 `0x2BCE5` 前綴、`0x2C405` 的 500-pass scroll、以及
+`0x2C548` 邊界仍以
+[`fd2_ch29_terminal_body_ida.txt`](../data/ida/fd2_ch29_terminal_body_ida.txt)
+為原始定位；`0x2C5CF→FDMUS_004` 的直接事件則見
+[`fd2_ending_audio_ida.txt`](../data/ida/fd2_ending_audio_ida.txt)。
+
+- `campaign.Node` 新增嚴格 `native_ending_prefix` 合約：唯一接受
+  `assets/endings/native_2bce5.json`、handler `0x2bce5`、chapter `26/29` 與
+  `recovered_prefix_only_fail_closed`。錯誤 node type、位址、章節或 mode 都會在
+  載入時拒絕；記憶體直接建構的 Campaign 也再次檢查。
+- `campaign_full.json` 的最終 `ending` 節點只在 `FD2_APPROXIMATE=1` 啟動該前綴。
+  預設忠實模式維持原有可編輯靜態結語與停曲行為；這不是 raw `ch29_post` 的
+  campaign owner，也不解除其 handler 仍未綁定的 gate。
+- timeline 只允許 `after_gate=0x2c548` 的唯一 audio cue。到達精確的
+  `native_finale_montage_opaque/0x2c548` 時才消費 `FDMUS_004`；玩家確認後停止
+  近似前綴，顯示可編輯結語。`play_bgm(-1)`、`FDMUS_018`、montage owner、原始
+  按鍵對映與一般玩家 E2 都沒有 consumer，仍失敗即關閉。
+- Docker／Xvfb 以玩家自備 `FDOTHER.DAT`、`FDTXT.DAT`、`ANI.DAT` 直接進入
+  最終節點，取得第一個原版文字閘門 `0x2BE44` 的重製端 E1 擷取：
+  [`ending-prefix-approximate-remake-e1.png`](../figures/ending-prefix-approximate-remake-e1.png)。
+  它的輸入、固定檔案雜湊、狀態旁車與限制記於
+  [`ending-prefix-approximate-remake-e1.json`](../data/ui-traces/ending-prefix-approximate-remake-e1.json)；
+  這是直接節點，不是第 30 戰一般玩家路徑，且 `FD2_MUTE=1`，不能當音訊或 E2 證明。
+- 回歸 `TestApproximateCampaignFinalNodeConsumesRecoveredPrefixThenStops` 使用真實原版
+  資產，完整走過兩個已還原文字閘門到 `0x2C548`，檢查唯一 cue 的消費與回退。
+  `TestDirectEndingPreviewCannotUseApproximateCampaignFallback`、不合法合約與
+  截圖狀態旁車測試則防止 direct preview、猜測性設定或截圖被錯誤升格。
+
+較早記錄「`0x2BCE5` 只存在於獨立 preview、未接 campaign」描述的是當時狀態；現在
+應讀成「預設忠實模式與 raw terminal owner 仍未接，只有上述明確近似切片可用」。

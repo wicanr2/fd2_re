@@ -12,6 +12,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/afm"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/ending"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
@@ -21,16 +22,42 @@ import (
 // the timeline currently blocks at the first unrecovered native operation.
 // FD2_ENDING_PREFIX=1 activates it with player-provided FDOTHER.DAT/ANI.DAT.
 type nativeEndingPreview struct {
-	player    *ending.Player
-	view      *ebiten.Image
-	last      time.Time
-	remainder time.Duration
-	chapter   int
-	queued    bool
+	player              *ending.Player
+	view                *ebiten.Image
+	last                time.Time
+	remainder           time.Duration
+	chapter             int
+	queued              bool
+	campaignApproximate bool
+	audioCueConsumed    bool
 }
 
+const nativeEndingTimelinePath = "assets/endings/native_2bce5.json"
+
 func newNativeEndingPreview() (*nativeEndingPreview, error) {
-	timeline, err := ending.LoadTimeline(assetPath("assets/endings/native_2bce5.json"))
+	chapter := 29 // 0x2bce5 branches only on exact native chapter 26.
+	if raw := os.Getenv("FD2_ENDING_CHAPTER"); raw != "" {
+		value, err := strconv.Atoi(raw)
+		if err != nil || (value != 26 && value != 29) {
+			return nil, fmt.Errorf("ending: FD2_ENDING_CHAPTER must be 26 or 29")
+		}
+		chapter = value
+	}
+	return newNativeEndingPreviewForTimeline(nativeEndingTimelinePath, chapter)
+}
+
+func newNativeEndingPreviewForCampaign(prefix *campaign.NativeEndingPrefixConfig) (*nativeEndingPreview, error) {
+	if !prefix.IsRecoveredPrefixContract() {
+		return nil, fmt.Errorf("ending: campaign native prefix is not a recovered 0x2bce5 contract")
+	}
+	return newNativeEndingPreviewForTimeline(prefix.Timeline, prefix.Chapter)
+}
+
+func newNativeEndingPreviewForTimeline(timelinePath string, chapter int) (*nativeEndingPreview, error) {
+	if chapter != 26 && chapter != 29 {
+		return nil, fmt.Errorf("ending: native chapter must be 26 or 29")
+	}
+	timeline, err := ending.LoadTimeline(assetPath(timelinePath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,15 +112,60 @@ func newNativeEndingPreview() (*nativeEndingPreview, error) {
 	}); err != nil {
 		return nil, err
 	}
-	chapter := 29 // 0x2bce5 branches only on exact native chapter 26.
-	if raw := os.Getenv("FD2_ENDING_CHAPTER"); raw != "" {
-		value, err := strconv.Atoi(raw)
-		if err != nil || (value != 26 && value != 29) {
-			return nil, fmt.Errorf("ending: FD2_ENDING_CHAPTER must be 26 or 29")
-		}
-		chapter = value
-	}
 	return &nativeEndingPreview{player: player, view: ebiten.NewImage(ending.Width, ending.Height), chapter: chapter}, nil
+}
+
+// startCampaignNativeEnding 只啟動已經過明確驗證的戰役節點所選前綴。呼叫端
+// 必須以 FD2_APPROXIMATE=1 保護，正常忠實模式不會悄悄跨過未還原的終局蒙太奇邊界。
+func (g *Game) startCampaignNativeEnding(prefix *campaign.NativeEndingPrefixConfig) error {
+	if g == nil {
+		return fmt.Errorf("ending: nil game")
+	}
+	preview, err := newNativeEndingPreviewForCampaign(prefix)
+	if err != nil {
+		return err
+	}
+	preview.campaignApproximate = true
+	g.nativeEnding = preview
+	return nil
+}
+
+func (p *nativeEndingPreview) awaitingCampaignFallback() bool {
+	return p != nil && p.campaignApproximate && !p.queued && p.player != nil &&
+		p.player.State == ending.PlaybackBlocked && p.player.Blocked != nil &&
+		p.player.Blocked.Op == "native_finale_montage_opaque" &&
+		p.player.Blocked.Source == "0x2c548"
+}
+
+// consumeNativeEndingAudioAtGate 只消費 after_gate 與目前已還原 0x2c548
+// 邊界精確相符的唯一音訊 cue。後續停曲／track18 沒有已還原的 owner，刻意不碰。
+func (g *Game) consumeNativeEndingAudioAtGate() {
+	if g == nil || g.nativeEnding == nil || !g.nativeEnding.awaitingCampaignFallback() ||
+		g.nativeEnding.audioCueConsumed {
+		return
+	}
+	cue, ok := g.nativeEnding.player.AudioCueAtBlockedBoundary()
+	if !ok {
+		return
+	}
+	g.nativeEnding.audioCueConsumed = true
+	if cue.Track < 0 {
+		g.stopBGM()
+		return
+	}
+	g.playBGMCount(fmt.Sprintf("FDMUS_%03d", cue.Track), cue.DriverArg)
+}
+
+// finishCampaignNativeEndingFallback 只在明確近似模式的未還原蒙太奇閘門返回。
+// 它絕不恢復 native Player，也不宣稱已執行原版終局 renderer。
+func (g *Game) finishCampaignNativeEndingFallback() bool {
+	if g == nil || g.nativeEnding == nil || !g.nativeEnding.awaitingCampaignFallback() {
+		return false
+	}
+	g.stopBGM()
+	g.nativeEnding = nil
+	g.endingNotice = "原版結局尾段尚未還原；以下顯示可編輯結語。"
+	return true
 }
 
 func nativeEndingDialogLines(blocks []ending.DialogueBlock) ([]battle.DialogLine, error) {
@@ -188,8 +260,19 @@ func (g *Game) drawNativeEndingPreview(screen *ebiten.Image) {
 	op.GeoM.Scale(2, 2)
 	screen.DrawImage(g.nativeEnding.view, op)
 	g.drawNativeEndingDialogue(screen)
-	if g.shotPath != "" && g.frame == g.shotFrame {
-		saveShot(screen, g.shotPath)
+	if g.nativeEnding.awaitingCampaignFallback() && g.font != nil {
+		panel := ebiten.NewImage(logicalW-32, 42)
+		panel.Fill(color.RGBA{0x10, 0x1c, 0x40, 0xe8})
+		pop := &ebiten.DrawImageOptions{}
+		pop.GeoM.Translate(16, logicalH-56)
+		screen.DrawImage(panel, pop)
+		g.font.Draw(screen, "已播放可驗證的結局前段；按 Enter 顯示可編輯結語。", 30, logicalH-44, 0.9,
+			color.RGBA{0xff, 0xe0, 0x90, 0xff})
+	}
+	if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
+		// 原生結局前綴與其他場景共用同一證據掛鉤：輸出狀態旁車、回報載入
+		// 錯誤，並讓 Update 結束有界的截圖流程。
+		g.captureShot(screen)
 	}
 }
 

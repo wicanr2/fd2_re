@@ -107,6 +107,21 @@ func (p *Player) VerifiedAudioCues() []AudioCue {
 	return append([]AudioCue(nil), p.Timeline.AudioCues...)
 }
 
+// AudioCueAtBlockedBoundary 只回傳 after_gate 與目前失敗即關閉邊界精確相符的
+// 音訊 cue。它不前進播放、不略過 renderer，也不讓尚未還原 owner 的 cue 被
+// 提前消費。
+func (p *Player) AudioCueAtBlockedBoundary() (AudioCue, bool) {
+	if p == nil || p.State != PlaybackBlocked || p.Blocked == nil {
+		return AudioCue{}, false
+	}
+	for _, cue := range p.Timeline.AudioCues {
+		if cue.AfterGate != "" && cue.AfterGate == p.Blocked.Source {
+			return cue, true
+		}
+	}
+	return AudioCue{}, false
+}
+
 // Advance consumes up to elapsedMS of wall-clock time.  The caller should use
 // a monotonic presentation clock; zero is useful to present the first ANI
 // frame immediately, exactly as 0x20421 does.

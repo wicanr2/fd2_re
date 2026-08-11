@@ -405,6 +405,26 @@ type Beat struct {
 	SFXIndex   *int `json:"sfx_index,omitempty"`
 }
 
+// NativeEndingPrefixConfig 是已證實原版結局前綴的狹義戰役入口。它保留精確
+// timeline／handler，不會把不完整的 ending decoder 變成泛用終局場景。runtime
+// 只會在 FD2_APPROXIMATE=1 接受它；預設忠實模式仍在未還原尾段失敗即關閉。
+type NativeEndingPrefixConfig struct {
+	Timeline string `json:"timeline"`
+	Handler  string `json:"handler"`
+	Chapter  int    `json:"chapter"`
+	Mode     string `json:"mode"`
+}
+
+const NativeEndingPrefixRecoveredOnly = "recovered_prefix_only_fail_closed"
+
+// IsRecoveredPrefixContract 即使呼叫端在記憶體內建構 Campaign、略過 JSON
+// 載入驗證，仍將唯一支援的結局前綴限制在已證實合約內。
+func (c *NativeEndingPrefixConfig) IsRecoveredPrefixContract() bool {
+	return c != nil && c.Timeline == "assets/endings/native_2bce5.json" &&
+		c.Handler == "0x2bce5" && (c.Chapter == 26 || c.Chapter == 29) &&
+		c.Mode == NativeEndingPrefixRecoveredOnly
+}
+
 // Node 節點。Type: story / cutscene / battle / town / preparation / church / choice /
 // inventory_gate / inventory_recipe / event / shop / ending。
 // cutscene(doc 50):story 的 beats 驅動版——用 Beats 一比一承接原版章 handler 的原語序列,
@@ -440,33 +460,34 @@ type Node struct {
 	FollowWalk     bool   `json:"follow_walk,omitempty"`     // story:走位期間鏡頭鎖定跟隨走位者(原版 13×8 格視野長廊運鏡,doc25 0x11eee)
 	CamMaxY        int    `json:"cam_max_y,omitempty"`       // story:鏡頭 Y 上限(px;0=不限)。王座廳=808 擋住 map32 底部草地段
 	// (原版第一幕畫面無草地,索爾從畫面外沿紅毯走入,使用者回饋 2026-07-04 #1)
-	BGM               string                `json:"bgm,omitempty"`
-	Next              string                `json:"next,omitempty"`                // story/event
-	OnWin             string                `json:"on_win,omitempty"`              // battle
-	OnLose            string                `json:"on_lose,omitempty"`             // battle(敗北路線;空=game over)
-	Protect           string                `json:"protect,omitempty"`             // battle:保護目標；空值沿用主角索爾
-	ItemID            *int                  `json:"item_id,omitempty"`             // inventory_gate:原版 unsigned-byte item identity
-	IfPresent         string                `json:"if_present,omitempty"`          // inventory_gate:全隊任一角色持有 ItemID
-	IfMissing         string                `json:"if_missing,omitempty"`          // inventory_gate:全隊皆未持有 ItemID
-	ItemIDs           []int                 `json:"item_ids,omitempty"`            // inventory_recipe:逐 item×runtime slot 計數／移除
-	SlotCount         int                   `json:"slot_count,omitempty"`          // inventory_recipe:只掃前 N 個 runtime records
-	RequiredMatches   int                   `json:"required_matches,omitempty"`    // inventory_recipe:原版要求的精確命中組合數
-	RewardItemID      *int                  `json:"reward_item_id,omitempty"`      // inventory_recipe:成功後 grant 的 item
-	IfCrafted         string                `json:"if_crafted,omitempty"`          // inventory_recipe:成功 arm
-	IfInsufficient    string                `json:"if_insufficient,omitempty"`     // inventory_recipe:命中數不符 arm
-	Prompt            string                `json:"prompt,omitempty"`              // choice/preparation
-	PartyLimit        int                   `json:"party_limit,omitempty"`         // preparation: original 0x318ad selection cap (15, late route 19)
-	Cancel            string                `json:"cancel,omitempty"`              // preparation: native confirmation/selection cancellation target
-	Town              string                `json:"town,omitempty"`                // town:原版戰後城鎮/營地名稱(可編輯、可存檔的整備 hub)
-	NativeTownVariant *int                  `json:"native_town_variant,omitempty"` // town:0/1/2→FDOTHER#11/#61/#62
-	NativeSecretGate  *NativeTownSecretGate `json:"native_secret_gate,omitempty"`  // town:selection+BIOS scan→reveal selection5
-	Options           []Option              `json:"options,omitempty"`             // choice
-	SetFlags          map[string]bool       `json:"set_flags,omitempty"`
-	Text              string                `json:"text,omitempty"`               // ending:結語
-	Goods             []Good                `json:"goods,omitempty"`              // shop:商品
-	NativeHubVariant  int                   `json:"native_hub_variant,omitempty"` // shop:0=custom/generic; original owner uses 1 weapon, 3 item, 5 secret
-	Secret            []Good                `json:"secret,omitempty"`             // shop:legacy authored conditional goods
-	SecretIf          string                `json:"secret_if,omitempty"`          // shop:legacy authored flag; not the proven native hidden-entry gate
+	BGM                string                    `json:"bgm,omitempty"`
+	Next               string                    `json:"next,omitempty"`                // story/event
+	OnWin              string                    `json:"on_win,omitempty"`              // battle
+	OnLose             string                    `json:"on_lose,omitempty"`             // battle(敗北路線;空=game over)
+	Protect            string                    `json:"protect,omitempty"`             // battle:保護目標；空值沿用主角索爾
+	ItemID             *int                      `json:"item_id,omitempty"`             // inventory_gate:原版 unsigned-byte item identity
+	IfPresent          string                    `json:"if_present,omitempty"`          // inventory_gate:全隊任一角色持有 ItemID
+	IfMissing          string                    `json:"if_missing,omitempty"`          // inventory_gate:全隊皆未持有 ItemID
+	ItemIDs            []int                     `json:"item_ids,omitempty"`            // inventory_recipe:逐 item×runtime slot 計數／移除
+	SlotCount          int                       `json:"slot_count,omitempty"`          // inventory_recipe:只掃前 N 個 runtime records
+	RequiredMatches    int                       `json:"required_matches,omitempty"`    // inventory_recipe:原版要求的精確命中組合數
+	RewardItemID       *int                      `json:"reward_item_id,omitempty"`      // inventory_recipe:成功後 grant 的 item
+	IfCrafted          string                    `json:"if_crafted,omitempty"`          // inventory_recipe:成功 arm
+	IfInsufficient     string                    `json:"if_insufficient,omitempty"`     // inventory_recipe:命中數不符 arm
+	Prompt             string                    `json:"prompt,omitempty"`              // choice/preparation
+	PartyLimit         int                       `json:"party_limit,omitempty"`         // preparation: original 0x318ad selection cap (15, late route 19)
+	Cancel             string                    `json:"cancel,omitempty"`              // preparation: native confirmation/selection cancellation target
+	Town               string                    `json:"town,omitempty"`                // town:原版戰後城鎮/營地名稱(可編輯、可存檔的整備 hub)
+	NativeTownVariant  *int                      `json:"native_town_variant,omitempty"` // town:0/1/2→FDOTHER#11/#61/#62
+	NativeSecretGate   *NativeTownSecretGate     `json:"native_secret_gate,omitempty"`  // town:selection+BIOS scan→reveal selection5
+	Options            []Option                  `json:"options,omitempty"`             // choice
+	SetFlags           map[string]bool           `json:"set_flags,omitempty"`
+	Text               string                    `json:"text,omitempty"` // ending:結語
+	NativeEndingPrefix *NativeEndingPrefixConfig `json:"native_ending_prefix,omitempty"`
+	Goods              []Good                    `json:"goods,omitempty"`              // shop:商品
+	NativeHubVariant   int                       `json:"native_hub_variant,omitempty"` // shop:0=custom/generic; original owner uses 1 weapon, 3 item, 5 secret
+	Secret             []Good                    `json:"secret,omitempty"`             // shop:legacy authored conditional goods
+	SecretIf           string                    `json:"secret_if,omitempty"`          // shop:legacy authored flag; not the proven native hidden-entry gate
 }
 
 // Campaign 整張節點圖。
@@ -556,6 +577,15 @@ func Load(path string) (*Campaign, error) {
 				"town 節點 %q 的 native_town_variant 無效",
 				id,
 			)
+		}
+		if n.NativeEndingPrefix != nil {
+			prefix := n.NativeEndingPrefix
+			if n.Type != "ending" || !prefix.IsRecoveredPrefixContract() {
+				return nil, fmt.Errorf(
+					"ending 節點 %q 的 native_ending_prefix 不是已證實的 0x2bce5 recovered-only 合約",
+					id,
+				)
+			}
 		}
 		if n.NativeMapHUD != nil && n.NativeMapView == nil {
 			return nil, fmt.Errorf("battle 節點 %q 不可在缺少 native_map_view 時單獨定義 native_map_hud", id)
