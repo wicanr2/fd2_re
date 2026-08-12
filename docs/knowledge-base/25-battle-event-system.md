@@ -51,7 +51,7 @@ hdl:D  a  D  D  D  D  D  D  D  b  D  c  d  D  e  f  g  h  i  j  k  L  m  D  n  o
 
 關鍵狀態變數:
 - **`[0x53a45]`** = 戰場單位陣列基底(每單位 0x50 byte;doc 23)。事件條件多半在查它。[驗]
-- **`[0x53bef]`** = **回合數**(戰場開始=1、`inc`、handler `cmp N`)→ 「第 N 回合觸發」類事件。[驗](doc 26)
+- **`[0x53bef]`** = **回合數**(戰場開始=1、`inc`、handler `cmp N`)→ 「第 N 回合觸發」類事件。[驗]（doc 26）
 - **`[0x53ec8]`** = 累積計數(`add reg`+每 tick `clamp` 99,0x11959;非回合數)→ 語意待定。[推]
 - **`[0x53ecc]`** = raw pending 輸出碼；0 表示掃描繼續，1／2 由外層
   不同分支消費，不在 handler 層命名中場或勝利。[驗]

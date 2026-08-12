@@ -1,6 +1,7 @@
 package main
 
 import (
+	"reflect"
 	"strings"
 	"testing"
 
@@ -188,5 +189,158 @@ func TestCampaignFullUnboundPostbattleDefaultsFailClosed(t *testing.T) {
 				t.Fatalf("unbound actual campaign node was not fail-closed: node=%q err=%q pending=%v", g.camp.NodeID(), g.loadErr, g.approximatePostbattle)
 			}
 		})
+	}
+}
+
+func TestApproximateCampaignFullCh29Preparation30SaveLoadBoundary(t *testing.T) {
+	t.Setenv("FD2_MUTE", "1")
+	oldCache := userDataDirCached
+	userDataDirCached = ""
+	t.Setenv("XDG_DATA_HOME", t.TempDir())
+	t.Cleanup(func() { userDataDirCached = oldCache })
+
+	campaignData, err := campaign.Load("../../assets/scenarios/campaign_full.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	runner := campaign.NewRunner(campaignData)
+	runner.Cur = "battle_ch29"
+	stale := battle.Unit{
+		Fig: 0, Camp: battle.Own, OnField: true,
+		Lv: 31, HP: 8, MaxHP: 40, MP: 2, MaxMP: 12,
+		NativeIdentity: 0, HasNativeIdentity: true,
+	}
+	current := stale
+	current.Lv, current.Exp, current.MaxHP, current.HP = 32, 18.5, 44, 9
+	g := &Game{
+		camp: runner, approximateMode: true, handlerChapter: 29,
+		st:           &battle.State{Units: []*battle.Unit{&current}},
+		partyMembers: map[int]bool{0: true}, partyJoinOrder: []int{0},
+		partyRoster: map[int]battle.Unit{0: stale},
+	}
+	g.result = "win"
+	if !g.confirmBattleResult() || g.camp.NodeID() != "postbattle_ch29_persist" || !g.approximatePostbattle {
+		t.Fatalf("第29戰結果未停在近似戰後邊界: node=%q pending=%v err=%q", g.camp.NodeID(), g.approximatePostbattle, g.loadErr)
+	}
+	if !g.continueApproximatePostbattle() || g.camp.NodeID() != "preparation_ch30" || g.st != nil {
+		t.Fatalf("第30戰整備邊界錯誤: node=%q battle=%v err=%q", g.camp.NodeID(), g.st != nil, g.loadErr)
+	}
+	wantRoster := clonePartyRoster(g.partyRoster)
+	wantOrder := append([]int(nil), g.partyJoinOrder...)
+	wantChapter := g.handlerChapter
+	if got := wantRoster[0]; got.Lv != 32 || got.Exp != 18.5 || got.HP != 44 {
+		t.Fatalf("第29戰結果未同步到持續隊伍: %#v", got)
+	}
+
+	g.saveGameToSlot(0)
+	if !strings.Contains(g.msg, "preparation_ch30") {
+		t.Fatalf("第30戰整備節點未建立存檔: %q", g.msg)
+	}
+	g.partyMembers, g.partyJoinOrder, g.partyDeploy, g.partyRoster = nil, nil, nil, nil
+	g.handlerChapter = 0
+	g.st = &battle.State{}
+	g.loadGameFromSlot(0)
+	if g.loadErr != "" || g.camp.NodeID() != "preparation_ch30" || g.st != nil ||
+		g.handlerChapter != wantChapter || !reflect.DeepEqual(g.partyRoster, wantRoster) ||
+		!reflect.DeepEqual(g.partyJoinOrder, wantOrder) {
+		t.Fatalf("第30戰整備存讀檔不一致: node=%q chapter=%d roster=%#v order=%v battle=%v err=%q",
+			g.camp.NodeID(), g.handlerChapter, g.partyRoster, g.partyJoinOrder, g.st != nil, g.loadErr)
+	}
+}
+
+func clonePartyRoster(src map[int]battle.Unit) map[int]battle.Unit {
+	dst := make(map[int]battle.Unit, len(src))
+	for id, unit := range src {
+		dst[id] = cloneNativeShopUnit(unit)
+	}
+	return dst
+}
+
+func TestApproximateCampaignFullFinalWinSyncsCurrentPartyBeforeEnding(t *testing.T) {
+	t.Setenv("FD2_MUTE", "1")
+	campaignData, err := campaign.Load("../../assets/scenarios/campaign_full.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	// 本測試只驗證玩家結果確認的資料邊界；結局資產播放器有獨立 admission
+	// 回歸，因此移除測試副本的呈現入口，避免把玩家外部資產變成此測試前提。
+	campaignData.Nodes["ending"].NativeEndingPrefix = nil
+	runner := campaign.NewRunner(campaignData)
+	runner.Cur = "battle_ch30"
+	stale := battle.Unit{
+		Fig: 0, Camp: battle.Own, OnField: true,
+		Lv: 39, HP: 30, MaxHP: 50,
+		NativeIdentity: 0, HasNativeIdentity: true,
+	}
+	current := stale
+	current.Lv, current.Exp, current.HP, current.MaxHP = 40, 77.25, 7, 56
+	g := &Game{
+		camp: runner, approximateMode: true,
+		st:           &battle.State{Units: []*battle.Unit{&current}},
+		partyMembers: map[int]bool{0: true}, partyJoinOrder: []int{0},
+		partyRoster: map[int]battle.Unit{0: stale},
+		result:      "win",
+	}
+	if !g.confirmBattleResult() || g.camp.NodeID() != "ending" || g.result != "" || g.loadErr != "" {
+		t.Fatalf("最終勝利未進入結局: node=%q result=%q err=%q", g.camp.NodeID(), g.result, g.loadErr)
+	}
+	got := g.partyRoster[0]
+	if got.Lv != 40 || got.Exp != 77.25 || got.MaxHP != 56 || got.HP != 56 {
+		t.Fatalf("結局仍讀到最終戰之前的隊伍資料: %#v", got)
+	}
+}
+
+func TestApproximateTerminalPartySyncFailsClosedBeforeCampaignAdvance(t *testing.T) {
+	c := &campaign.Campaign{Start: "battle", Nodes: map[string]*campaign.Node{
+		"battle": {Type: "battle", OnWin: "ending", ApproximateWinSync: true},
+		"ending": {Type: "ending"},
+	}}
+	g := &Game{camp: campaign.NewRunner(c), approximateMode: true, result: "win"}
+	if g.confirmBattleResult() || g.camp.NodeID() != "battle" || g.result != "win" ||
+		!strings.Contains(g.loadErr, "缺少已完成的戰場狀態") {
+		t.Fatalf("終局同步失敗仍跨越戰役邊界: node=%q result=%q err=%q", g.camp.NodeID(), g.result, g.loadErr)
+	}
+}
+
+func TestApproximateTerminalPartySyncRejectsZeroMatchedRecords(t *testing.T) {
+	c := &campaign.Campaign{Start: "battle", Nodes: map[string]*campaign.Node{
+		"battle": {Type: "battle", OnWin: "ending", ApproximateWinSync: true},
+		"ending": {Type: "ending"},
+	}}
+	current := battle.Unit{
+		Fig: 0, Camp: battle.Own, OnField: true,
+		NativeIdentity: 7, HasNativeIdentity: true,
+	}
+	stale := current
+	stale.NativeIdentity = 8
+	g := &Game{
+		camp: campaign.NewRunner(c), approximateMode: true, result: "win",
+		st:           &battle.State{Units: []*battle.Unit{&current}},
+		partyMembers: map[int]bool{0: true}, partyRoster: map[int]battle.Unit{0: stale},
+	}
+	if g.confirmBattleResult() || g.camp.NodeID() != "battle" || g.result != "win" ||
+		!strings.Contains(g.loadErr, "沒有任何持續隊伍身分符合") {
+		t.Fatalf("零筆終局同步仍跨越戰役邊界: node=%q result=%q err=%q", g.camp.NodeID(), g.result, g.loadErr)
+	}
+}
+
+func TestFaithfulModeDoesNotConsumeApproximateTerminalPartySync(t *testing.T) {
+	c := &campaign.Campaign{Start: "battle", Nodes: map[string]*campaign.Node{
+		"battle": {Type: "battle", OnWin: "ending", ApproximateWinSync: true},
+		"ending": {Type: "ending"},
+	}}
+	stale := battle.Unit{Fig: 0, Camp: battle.Own, OnField: true, Lv: 20, HP: 30, MaxHP: 30}
+	current := stale
+	current.Lv = 21
+	g := &Game{
+		camp: campaign.NewRunner(c), result: "win",
+		st:           &battle.State{Units: []*battle.Unit{&current}},
+		partyMembers: map[int]bool{0: true}, partyRoster: map[int]battle.Unit{0: stale},
+	}
+	if !g.confirmBattleResult() || g.camp.NodeID() != "ending" {
+		t.Fatalf("忠實模式終局邊錯誤: node=%q err=%q", g.camp.NodeID(), g.loadErr)
+	}
+	if got := g.partyRoster[0].Lv; got != 20 {
+		t.Fatalf("忠實模式誤用了近似終局同步: Lv=%d", got)
 	}
 }

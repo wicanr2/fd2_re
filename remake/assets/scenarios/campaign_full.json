@@ -3965,7 +3965,8 @@
    "units": "assets/maps/map29/map29_units.json",
    "scenario": "assets/scenarios/ch30.json",
    "on_win": "ending",
-   "on_lose": "retreat_ch30"
+   "on_lose": "retreat_ch30",
+   "approximate_sync_party_on_win": true
   },
   "retreat_ch30": {
    "type": "story",

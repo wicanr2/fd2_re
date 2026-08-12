@@ -460,10 +460,13 @@ type Node struct {
 	FollowWalk     bool   `json:"follow_walk,omitempty"`     // story:走位期間鏡頭鎖定跟隨走位者(原版 13×8 格視野長廊運鏡,doc25 0x11eee)
 	CamMaxY        int    `json:"cam_max_y,omitempty"`       // story:鏡頭 Y 上限(px;0=不限)。王座廳=808 擋住 map32 底部草地段
 	// (原版第一幕畫面無草地,索爾從畫面外沿紅毯走入,使用者回饋 2026-07-04 #1)
-	BGM                string                    `json:"bgm,omitempty"`
-	Next               string                    `json:"next,omitempty"`                // story/event
-	OnWin              string                    `json:"on_win,omitempty"`              // battle
-	OnLose             string                    `json:"on_lose,omitempty"`             // battle(敗北路線;空=game over)
+	BGM    string `json:"bgm,omitempty"`
+	Next   string `json:"next,omitempty"`    // story/event
+	OnWin  string `json:"on_win,omitempty"`  // battle
+	OnLose string `json:"on_lose,omitempty"` // battle(敗北路線;空=game over)
+	// ApproximateWinSync 是重製近似模式的終局資料邊界；只允許勝利直接進
+	// ending 的 battle 使用，且不可當作原版 handler 證據。
+	ApproximateWinSync bool                      `json:"approximate_sync_party_on_win,omitempty"`
 	Protect            string                    `json:"protect,omitempty"`             // battle:保護目標；空值沿用主角索爾
 	ItemID             *int                      `json:"item_id,omitempty"`             // inventory_gate:原版 unsigned-byte item identity
 	IfPresent          string                    `json:"if_present,omitempty"`          // inventory_gate:全隊任一角色持有 ItemID
@@ -583,6 +586,15 @@ func Load(path string) (*Campaign, error) {
 			if n.Type != "ending" || !prefix.IsRecoveredPrefixContract() {
 				return nil, fmt.Errorf(
 					"ending 節點 %q 的 native_ending_prefix 不是已證實的 0x2bce5 recovered-only 合約",
+					id,
+				)
+			}
+		}
+		if n.ApproximateWinSync {
+			ending := c.Nodes[n.OnWin]
+			if n.Type != "battle" || n.OnWin == "" || ending == nil || ending.Type != "ending" {
+				return nil, fmt.Errorf(
+					"battle 節點 %q 的 approximate_sync_party_on_win 只能用於直接進入 ending 的勝利邊",
 					id,
 				)
 			}

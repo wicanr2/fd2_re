@@ -365,6 +365,73 @@ func TestApproximateCampaignMontageStartsFromPersistentLoadCHOrder(t *testing.T)
 	})
 }
 
+func TestApproximateFinalBattleWinFeedsSynchronizedPartyToEndingMontage(t *testing.T) {
+	const base = "../../../org_game/炎龍騎士團/FLAME2"
+	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "ANI.DAT", "TAI.DAT", "FIGANI.DAT", "DATO.DAT"} {
+		if _, err := os.Stat(filepath.Join(base, name)); err != nil {
+			t.Skip("player-provided ending resources are unavailable")
+		}
+	}
+	t.Setenv("FD2_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+	t.Setenv("FD2_FDTXT", filepath.Join(base, "FDTXT.DAT"))
+	t.Setenv("FD2_ANI", filepath.Join(base, "ANI.DAT"))
+	t.Setenv("FD2_MUTE", "1")
+
+	campaignData, err := campaign.Load("../../assets/scenarios/campaign_full.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	runner := campaign.NewRunner(campaignData)
+	runner.Cur = "battle_ch30"
+	unit := func(side, group byte, level int) battle.Unit {
+		return battle.Unit{
+			Fig: int(group), BattleFig: int(group), HasBattleFig: true,
+			Camp: battle.Own, OnField: true, Lv: level, HP: 8, MaxHP: 42,
+			NativeIdentity: int(group), HasNativeIdentity: true,
+			NativeRecordByte6: side, HasNativeRecordByte6: true,
+			NativeRecordByte8: group, HasNativeRecordByte8: true,
+			NativeRecordClass: 2, HasNativeRecordClass: true,
+		}
+	}
+	old0, old1 := unit(2, 4, 39), unit(0, 5, 38)
+	final0, final1 := old0, old1
+	final0.Lv, final0.Exp, final0.MaxHP = 40, 88.5, 47
+	final1.Lv, final1.Exp, final1.MaxHP = 39, 44.25, 46
+	g := &Game{
+		camp: runner, approximateMode: true, result: "win",
+		st:           &battle.State{Units: []*battle.Unit{&final0, &final1}},
+		partyMembers: map[int]bool{0: true, 1: true}, partyJoinOrder: []int{0, 1},
+		partyRoster: map[int]battle.Unit{0: old0, 1: old1},
+	}
+	if !g.confirmBattleResult() || g.camp.NodeID() != "ending" || g.nativeEnding == nil {
+		t.Fatalf("最終戰結果未進入原資源結局前綴: node=%q preview=%v err=%q", g.camp.NodeID(), g.nativeEnding != nil, g.loadErr)
+	}
+	if g.partyRoster[0].Lv != 40 || g.partyRoster[1].Lv != 39 {
+		t.Fatalf("最終戰結果未同步到結局隊伍: %#v", g.partyRoster)
+	}
+	for _, elapsed := range []int{0, 1000, 2500, 0, 256, 2000} {
+		if _, err := g.nativeEnding.player.Advance(elapsed); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if !g.nativeEnding.player.ResumeBlockedDialogue() {
+		t.Fatal("第一個原版文字閘門不可用")
+	}
+	if _, err := g.nativeEnding.player.Advance(5000); err != nil || !g.nativeEnding.player.ResumeBlockedDialogue() {
+		t.Fatalf("第二個原版文字閘門錯誤: %v", err)
+	}
+	if _, err := g.nativeEnding.player.Advance(7500); err != nil || !g.nativeEnding.atNativeMontageGate() {
+		t.Fatalf("未抵達角色蒙太奇閘門: err=%v preview=%#v", err, g.nativeEnding)
+	}
+	if err := g.startCampaignNativeMontage(); err != nil {
+		t.Fatal(err)
+	}
+	if got := g.nativeEnding.montage; got == nil || len(got.Units) != 2 ||
+		got.Units[0][7] != 4 || got.Units[1][7] != 5 || got.Units[0][8] != 4 || got.Units[1][8] != 5 {
+		t.Fatalf("結局蒙太奇未消費同步後的持續隊伍: %#v", got)
+	}
+}
+
 func TestApproximateCampaignMontageRejectsUncompiledCh29ShotPartyBinding(t *testing.T) {
 	// The original ch29 handler still ends at the unrecovered 0x2bce5 owner.
 	// Screenshot mode must not smuggle its partial LOADCH data into the ending

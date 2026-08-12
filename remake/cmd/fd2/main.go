@@ -2925,12 +2925,21 @@ func (g *Game) applyInventoryRecipe(n *campaign.Node) (bool, error) {
 // members retain their zero HP. The projection snapshots JOIN member 0 as
 // compatibility behavior; it is not byte-identical proof of native 0x11506.
 func (g *Game) syncPartyFromBattle() error {
+	_, err := g.syncPartyFromBattleRecords()
+	return err
+}
+
+// syncPartyFromBattleRecords 回傳實際發布到持續隊伍的紀錄（record）數。一般戰後
+// 呼叫維持既有相容行為；終局近似邊界另要求至少一筆，避免所有原始身分
+// （raw identity）都不相符時帶著舊名冊靜默進入角色蒙太奇。
+func (g *Game) syncPartyFromBattleRecords() (int, error) {
 	if g.st == nil {
-		return fmt.Errorf("no completed battle state")
+		return 0, fmt.Errorf("缺少已完成的戰場狀態")
 	}
 	if g.partyRoster == nil {
 		g.partyRoster = make(map[int]battle.Unit)
 	}
+	synced := 0
 	for _, current := range g.st.Units {
 		if current == nil {
 			continue
@@ -2987,8 +2996,9 @@ func (g *Game) syncPartyFromBattle() error {
 		snapshot.Poisoned, snapshot.PoisonTurns = false, 0
 		snapshot.Paralyzed, snapshot.ParalyzeTurns = false, 0
 		g.partyRoster[id] = snapshot
+		synced++
 	}
-	return nil
+	return synced, nil
 }
 
 // resetPersistentRosterState mirrors native 0x25089, which is separate from
@@ -4238,6 +4248,21 @@ func (g *Game) confirmBattleResult() bool {
 		return false
 	}
 	outcome := g.result
+	current := g.camp.Node()
+	// 第 30 戰目前沒有已閉合的原版 terminal handler。明確近似模式可由
+	// campaign 資料要求在直達結局前保存最後一戰的隊伍結果；忠實模式不會
+	// 消費這個欄位，也不會因此把近似同步冒充原版語意。
+	if outcome == "win" && g.approximateMode && current != nil && current.ApproximateWinSync {
+		synced, err := g.syncPartyFromBattleRecords()
+		if err == nil && synced == 0 {
+			err = fmt.Errorf("完成的戰場沒有任何持續隊伍身分符合")
+		}
+		if err != nil {
+			g.loadErr = "近似終局隊伍同步失敗: " + err.Error()
+			g.msg = "最終戰結果尚未保存，流程已停止"
+			return false
+		}
+	}
 	// An empty next id is a valid terminal/game-over result; consume the same
 	// Enter boundary and let enterNode observe the ended campaign.
 	g.camp.Advance(outcome)

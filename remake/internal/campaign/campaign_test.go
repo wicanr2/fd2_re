@@ -678,7 +678,7 @@ func TestCampaignFullPostBattleTownContractMatchesOriginalShopChapters(t *testin
 			}
 		})
 	}
-	if battle30 := campaign.Nodes["battle_ch30"]; battle30 == nil || battle30.OnWin != "ending" {
+	if battle30 := campaign.Nodes["battle_ch30"]; battle30 == nil || battle30.OnWin != "ending" || !battle30.ApproximateWinSync {
 		t.Fatalf("battle_ch30 must end campaign: %#v", battle30)
 	}
 	ending := campaign.Nodes["ending"]
@@ -830,8 +830,26 @@ func TestEveryContinuingBattleSyncsBeforeOriginalIntermission(t *testing.T) {
 		})
 	}
 
-	if battle30 := c.Nodes["battle_ch30"]; battle30 == nil || battle30.OnWin != "ending" {
+	if battle30 := c.Nodes["battle_ch30"]; battle30 == nil || battle30.OnWin != "ending" || !battle30.ApproximateWinSync {
 		t.Fatalf("terminal battle must retain original direct ending edge: %#v", battle30)
+	}
+}
+
+func TestApproximateTerminalPartySyncRejectsNonTerminalEdges(t *testing.T) {
+	for name, raw := range map[string]string{
+		"non-battle owner":  `{"start":"story","nodes":{"story":{"type":"story","on_win":"ending","approximate_sync_party_on_win":true},"ending":{"type":"ending"}}}`,
+		"non-ending target": `{"start":"battle","nodes":{"battle":{"type":"battle","on_win":"story","approximate_sync_party_on_win":true},"story":{"type":"story"}}}`,
+		"missing win edge":  `{"start":"battle","nodes":{"battle":{"type":"battle","approximate_sync_party_on_win":true}}}`,
+	} {
+		t.Run(name, func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), "invalid-approximate-terminal-sync.json")
+			if err := os.WriteFile(path, []byte(raw), 0o644); err != nil {
+				t.Fatal(err)
+			}
+			if _, err := Load(path); err == nil {
+				t.Fatal("非終局勝利邊接受了近似隊伍同步")
+			}
+		})
 	}
 }
 

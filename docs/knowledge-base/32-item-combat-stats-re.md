@@ -3,7 +3,7 @@
 > 目標:反組譯「裝備如何加成 AP/DP」「物品使用效果」「轉職」,供 M1 戰鬥結算用。
 > 本篇記錄**已確認**與**待續**(誠實標註,rulebook 62/63)。本輪深度有限,物品/轉職機制需後續多輪。
 
-## 1. 物品表的兩種錯位視圖 [驗](2026-07-27 勘誤)
+## 1. 物品表的兩種錯位視圖 [驗]（2026-07-27 勘誤）
 
 `dump_exe_tables.py` 的攻略／normalized 視圖從 EXE file `0x540AC` 起，以
 23B/item 匯出目前攻略列出的 215 個 ID 到 `docs/data/exe_tables/item.json`：
@@ -41,7 +41,7 @@ runtime prefix，並在 docs 與 remake assets 各追蹤一份。這只閉合「
 - 裝備自帶法術不耗 MP、但施放無經驗(item.md)。賣價 = 原價 75 折。
 - 單位 roster 26B 含 **物品×8 + 法術×8**(parse_field;即每單位 8 裝備欄 + 8 法術欄)。
 
-## 3.5 主角隊起始武器 + AP/HIT/EV 合成公式 [驗](worklist 第8輪後,對 orig_07 截圖逐位吻合)
+## 3.5 主角隊起始武器 + AP/HIT/EV 合成公式 [驗]（worklist 第8輪後,對 orig_07 截圖逐位吻合）
 
 **人物出場屬性表**(modify2 §4,EXE `0x55BA1`,anchor `01 01 01 2A`,24B/人物,順序同 growth 表 §5):
 `RA(1) CL(1) LV(1) HP(u16) MP(u16) MV(1) MG(4) IT(6) AP(u16) DP(u16) DX(u16)`。IT[0]=起始武器 id、

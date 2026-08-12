@@ -4078,3 +4078,24 @@ Docker／Xvfb 回歸 `TestMontageTailAssetsPreservePaletteFramesAndTerminalImage
 `TestMontageTailPlayerUsesAllTwentySourceTransactionsThenHoldsFinal` 另以玩家原始
 archive 驗證 20 組近似資源交易、延遲與最終 #59；不過測試以已完成的 montage state
 驗證循環邊界，不能代替未修改一般玩家從第 30 戰走到終局的 E2。
+
+## 2026-08-12：第 29／30 戰持續隊伍到結局的近似資料邊界（E1）
+
+戰役圖原先已有 `battle_ch29 → postbattle_ch29_persist → preparation_ch30`，但只驗證
+近似戰後同步與整備入口，沒有驗證該整備節點可安全存檔／讀檔。現在新增完整節點邊界
+回歸：玩家勝利結果確認先停在未綁定戰後提示，確認後才清除戰場、進入
+`preparation_ch30`，並以隔離的 JSON 存檔往返持續隊伍、加入順序與章節值。這仍是
+重製端 E1；raw `ch28_post` 未閉合的 renderer 與原版一般玩家 E2 沒有因此升級。
+
+另修正一個玩家可見的重製資料遺失：`battle_ch30.on_win` 原本直接進 `ending`，
+`confirmBattleResult` 只移動戰役游標，而結局角色輪播只讀 `partyRoster`，不讀即將被
+清除的最後戰場 `g.st`。因此第 30 戰獲得的等級、經驗與最終數值會停留在結局之外。
+戰役資料現在可在「戰鬥勝利直接進 ending」的窄合約上設定
+`approximate_sync_party_on_win`；只有 `FD2_APPROXIMATE=1` 才在移動游標前執行既有
+`syncPartyFromBattle`，同步失敗或零筆持續隊伍身分（persistent identity）符合時，
+保留原節點與勝利結果並停止。載入器拒絕把此欄位放在
+非戰鬥、非勝利邊或非 ending 目標；忠實模式完全不消費它。
+
+這個欄位只表達重製近似模式的終局資料保存需求，不命名 `0x25757`、`0x2bce5` 或
+任何尚未閉合的原版 terminal handler 語意。原版 owner、精確終局輸入與一般玩家 E2
+仍維持失敗即關閉。

@@ -66,6 +66,6 @@ doc50 的「全 33 關 beats」管線只涵蓋**系統 A**(0x51d71/0x51de9);**�
 
 ## 3. 待核對(dosbox/影片,不憑猜)
 
-- fade_step=上捲步的確認:dosbox 在 0x13185 入口斷點,讀前後 [0x53aad](camY)是否每 call −1(上捲一列)。
+- fade_step=上捲步的確認:dosbox 在 0x13185 入口斷點,讀前後 `[0x53aad]`（camY）是否每 call −1(上捲一列)。
 - 哈諾登場的確切回合(數影片玩家回合數)。
 - 戰前 UI(MAP/TURN + 行軍確認)是否納入 remake(doc46 D8,低優先)。

@@ -26,7 +26,7 @@
 | 位址 | 身分(本輪確認) | 關鍵證據 | 舊誤判 |
 |---|---|---|---|
 | `0x135dd(col,row)` | **平滑鏡頭平移**:目前鏡頭格 [0x53aa9]/[0x53aad] 逐格 inc/dec 至目標,先欄後列,每步 0x11cac 重繪 | 0x135fc-0x13668 雙 while 迴圈 | (未命名) |
-| `0x15f84(txtbuf,idx,…)` | **對白播放器**:讀 [0x53a79](當前章 FDTXT)offset 表第 idx 條,逐字渲染,處理 0xFFFD 翻頁(0x15fc4 `cmp eax,-3`) | 0x15fb9 `movsx eax,[esi+idx*2]; add esi,eax` = offset 表查找 | doc23 §4 誤判為「逐格貼序幕影像」 |
+| `0x15f84(txtbuf,idx,…)` | **對白播放器**:讀 `[0x53a79]`（當前章 FDTXT）offset 表第 idx 條,逐字渲染,處理 0xFFFD 翻頁(0x15fc4 `cmp eax,-3`) | 0x15fb9 `movsx eax,[esi+idx*2]; add esi,eax` = offset 表查找 | doc23 §4 誤判為「逐格貼序幕影像」 |
 | `0x1366a(id)` | **演出(acting)播放器**:getter `0x4e7f8` 以當下 loader 修補後的 table pointer 取 `id` 對應資源;格式 `[幀數] + 每幀{(拍數,N) + N×(單位idx,姿態)}`;逐 tick 寫 unit[+3]=姿態、unit[+4]=tick 計數並 0x11cac/0x11eee 重繪(13×8 視窗) | 0x13687/0x1369a/0x13832 幀迴圈;0x137e6/0x1389a 寫 [0x53a45]+idx*80+3/+4；table 必須於目標 ACT 中斷當下讀取 | (未知函式) |
 | `0x10b4e(g)` | spawn 群組 g(doc25 已知) | — | — |
 | `0x112a5(char_id)` | **加入隊伍名冊**:序章尾連呼 0(索爾)/9(悠妮)/4(亞雷斯)/0x1e(蓋亞) | 0x327f5-0x32815 四連呼 | (未知) |
