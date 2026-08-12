@@ -1,7 +1,9 @@
 # 99 — 逐輪反思日誌(Lessons Learned)
 
 > 每一輪結束寫一則：做了什麼、學到什麼、哪個前輪結論被推翻。錯誤知識要回頭刪。
-> 本篇是不可用來計算完成度的歷史時間線；目前狀態以 README、`56` SDD、`42` gap audit、`91` worklist 為準。
+> 本篇是不可用來計算完成度的歷史時間線；目前分層狀態以
+> [`58`](58-fd2-exe-re-coverage.md)為準，系統與 UI 分別看 `56`／`57`，有效工作
+> 只看 `91` 檔首。搜尋命中本檔的舊未知或下一輪，不可單獨觸發重新反組譯。
 
 ## 第 1 輪 — 素材盤點 + 容器格式破解 + 計畫(2026-06-28)
 
@@ -120,13 +122,13 @@
 - `24×24 文法直接套 FIGANI` → 需用參數化版 0x4F43D + 正確幀標頭。
 
 **歷史快照（已過時）**：這段當時僅涵蓋資產容器／codec，不能延伸成「反組譯研究主體完成」。
-後續已證實 native command、transient lifecycle、player selector、battle UI、campaign/town flow 仍有大量未閉合資料流；現況以 SDD `56`、UI matrix `57` 與 worklist `91` 為準。
+後續已證實 native command、transient lifecycle、player selector、battle UI、campaign/town flow 仍有大量未閉合資料流；反組譯覆蓋現況以 `58`，系統、畫面與待辦分別以 `56`、`57`、`91` 為準。
 
 ## 第 4 輪 — 遊戲機制反組譯 + LE 重定位工具 + 劇情轉錄(2026-06-28)
 
 **做了什麼**
 - **機制文件 5 篇**:`09` 劇情/對話結構、`10` 敵我/狀態繪製、`11` 戰場 AI、`12` 音樂播放/場景切換、`13` 戰場選單。
-- **AI（歷史假說，已撤回地址）**：舊筆記曾以 `0x15140` 描述 flood-fill／逐落點評分；canonical Docker recheck 已證該地址不是可確認的 AI entry。當時只足以稱 `0x14EF0` 為 candidate boundary；2026-08-09 的 IDA／Capstone 複核已補上其 `0x14ef0..0x15055` raw 尾端契約，但完整 AI 仍未閉合。現況以 `11`、SDD `56` 與 worklist `91` 為準。
+- **AI（歷史假說，已撤回地址）**：舊筆記曾以 `0x15140` 描述 flood-fill／逐落點評分；canonical Docker recheck 已證該地址不是可確認的 AI entry。當時只足以稱 `0x14EF0` 為 candidate boundary；2026-08-09 的 IDA／Capstone 複核已補上其 `0x14ef0..0x15055` raw 尾端契約，但完整 AI 仍未閉合。反組譯覆蓋看 `58`，AI 細節看 `11`，系統與待辦看 `56`／`91`。
 - **選單**:Enter/Space 確認、ESC 取消、方向鍵游標(`[0x3C57]`);`Get_EasyMagic` caller 已定位，但 magic raw/command schema 以 `unit+0x1a..+0x1d` 與 `0x1cff0` 為準，不能把 `+0x22..+0x24` 當 bitfield。
 - **音樂**:`play_bgm`(0x26777),`[0x1A11]`=目前曲、track=−1 停、否則載 `FDMUS[track]`;32 處呼叫得場景→曲號。
 - **LE 重定位 xref 工具**(`tools/le_xref.py`):解析 LE object/fixup 表,解開 DOS4GW 絕對位址重定位。
@@ -185,13 +187,13 @@
 **當時狀態**:已完成列舉的base codecs與exports（容器／圖／動畫／音樂／
 文字字型／頭像／圖塊／地圖／圖示／remap／TAI），並抽出33地圖、
 136頭像、15首音樂與劇情素材。這不代表所有mixed-resource entry、
-caller binding或scene composition已閉合；現況以doc56/57為準。
+caller binding或scene composition已閉合；反組譯覆蓋看 `58`，系統與畫面分別看 `56`／`57`。
 
 ## 第 7 輪 — 重製開工:Go/Ebiten + 本機執行檔(2026-06-28)
 
 **做了什麼**
 - 第一性原理可行性確認(doc 20):當時以 9 項資產／工具能力判定可以開始整合；
-  後續實測已證明這不等於戰役、介面、戰後城鎮或存檔流程完成，現況以 doc56/57/91 為準。
+  後續實測已證明這不等於戰役、介面、戰後城鎮或存檔流程完成；覆蓋、系統、畫面與待辦依序看 `58`／`56`／`57`／`91`。
 - Go/Ebiten 架構(doc 21)+ MVP 垂直切片(`remake/`:載序章地圖→hi-res 渲染→游標)。
 - 技術驗證(doc 22):**本機桌面 Linux ELF(10.8MB)+ WASM(10.5MB)+ 資產管線**三項實證可建。
 - 建立 M0–M6 重製工作分解（本機優先，網頁／手機打包延後）；這是當時的規劃基線，

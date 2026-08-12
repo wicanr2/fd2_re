@@ -184,6 +184,7 @@ type HandlerIndexedTransition struct {
 	// is native_relative_cursor, which preserves [0x53ab9]/[0x53abd] rather than
 	// replacing them with a guessed absolute map coordinate.
 	CursorSource  string `json:"cursor_source,omitempty"`
+	CursorXOffset int    `json:"cursor_x_offset,omitempty"`
 	CursorYOffset int    `json:"cursor_y_offset,omitempty"`
 	// RadialRadius and RadialRadiusStep are the third/fourth native arguments.
 	// 0x24618 advances the radius on every pass; 0x22046 passes it to the two
@@ -313,7 +314,7 @@ type HandlerUnitPresent struct {
 // 一比一對映原版 EXE handler 的呼叫序列(LOADCH/PAN/TXT/ACT/SPAWN/JOIN/BGM/FADE/DELAY)。
 // 每個 op 只用到自己相關的欄位,其餘留零值即可(同 Node 的稀疏欄位風格)。
 type Beat struct {
-	Op                    string                    `json:"op"`               // loadch/pan/walk/dialog/act/spawn/spawn_intro/deactivate_unit/reset_pose/redraw/...
+	Op                    string                    `json:"op"`               // loadch/pan/walk/dialog/act/spawn/spawn_intro/deactivate_unit/reactivate_nonzero_hp/reset_pose/redraw/...
 	Source                string                    `json:"source,omitempty"` // original handler call-site; empty for authored-only beats
 	Condition             *BeatCondition            `json:"condition,omitempty"`
 	Then                  []Beat                    `json:"then,omitempty"`

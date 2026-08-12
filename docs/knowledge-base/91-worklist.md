@@ -1,8 +1,35 @@
-# 91 — Worklist(逐輪更新，依序執行)
+# 91 — FD2 remake 有效工作佇列與歷史工作記錄
 
-> 目標:完成《炎龍騎士團2》反組譯研究，並考證當年開發工具。
-> 每輪結束更新本表(打勾 / 補新項 / 調整順序)，與 `99-reflections-log.md` 互補。
-> 圖例:✅ 完成 · 🟡 進行中 · ⬜ 待辦 · ❌ 放棄(註明原因)
+> **文件責任（2026-08-12）**：只有下方「有效佇列」決定下一步；其後兩千多行
+> 是已完成切片與歷史工作記錄，保留證據連結但不再用 `[x]` 推算完成度。
+> 每一題的 RE／資料／正式執行期／E2 分層狀態，以
+> [`58-fd2-exe-re-coverage.md`](58-fd2-exe-re-coverage.md)為準。
+>
+> 舊 `[x]` 只表示該段標題所述的有界產物曾通過當時驗證；它不等於子系統完成。
+> 新工作必須使用 `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`、`PLAYER-E2` 或
+> `BLOCKED` 明列關閉哪一層，不再新增沒有層級的 `[x]`。
+
+## 有效佇列（2026-08-12）
+
+| 順序 | 工作 | 現況 | 下一個可驗收結果 |
+|---:|---|---|---|
+| 0 | 提交本輪玩家第28／29戰前置 owner 與部署尾段修正 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`；完整 Go、41項工具測試及唯讀原版資產重點回歸已通過 | 納入被 ignore 的 `ch27_pre` binding 後提交；一般玩家 E2 仍另列，不因本輪測試升級 |
+| 1 | 清除假的 handler unknown 與建立 IDA 函式 inventory | 工具索引滯後；不是全面 RE 缺口 | 先把已閉合的 `0x11DF2`、`0x1F882`、`0x24618`、`0x25052`、`0x24B14`、`0x22253` 等回填 exporter；IDA inventory 分類產品程式／runtime／driver／未知，不猜名稱 |
+| 2 | 四個忠實模式 blocked postbattle | 玩家第23、24、25、29戰戰後為 `BLOCKED`；近似模式不提升 | 每章完成 handler branch、持續隊伍、城鎮／整備及 save/load E1；再各補一般玩家 E2 |
+| 3 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有，完整效果與同狀態 E2 缺少 | 以未知 command／效果為單位完成 producer→transaction→UI／演出→回歸；不重解已閉合 mode／helper |
+| 4 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial | 依 `57` 逐個輸入狀態機取得同狀態原版／重製證據，不用單張 layout 圖代替 |
+| 5 | 原版終局精確鏈 | 近似 E1 可見；忠實模式仍部分阻擋 | 閉合 `0x28A6C` renderer、終端輸入、`0x2BCE5` 正式 owner／handoff及第30戰一般玩家 E2 |
+| 6 | 全戰役抽樣／長程試玩、三平台打包與推廣片 | 核心 gate 未關閉 | 核心垂直切片與代表性晚期玩家路徑完成後才進入發行驗收 |
+
+### 反組譯重開規則
+
+已在 `58`「不要重做索引」列出的位址，只有原版雜湊不同、直接指令／跳表反證、
+同狀態執行結果矛盾，或主證據其實缺少聲稱的 writer／consumer 時才能重開。
+handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不到筆記，都不是理由。
+
+---
+
+## 歷史工作記錄（不可用來計算完成度）
 
 ## 目前驗收（2026-08-09）
 
@@ -437,7 +464,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   預檢後原子發布，來源roster失敗不改。三套件Docker回歸通過；完整0x50-byte
   identity、其他caller、phase expiry與DOSBox E2仍待。
 - [x] **DOC-ASSERTION-GOVERNANCE-20260728**：repo-wide掃描66個Markdown，撤回會污染remake的現行斷言：攻略不能取代逐章handler/postbattle route；`battle_events.json`與`gen_campaign.py`只是candidate scaffold；DATO／FDICON cache slot／runtime identity不全域恆等；cutscene DSL不是33關完整oracle；historical decision freeze已標superseded。同步修正README、42/56/57目前town/shop E2範圍，並保留「悠妮」與`DATO_075=商店店員`的已核實對應。
-- [x] 逐項重審 title、field/HUD、action/target、dialogue、battle、postbattle、town、shop、church、preparation、save/load、ending；town indexed production接線後，完整操作界面視覺還原估計40–45%，不能以75–85%的asset/codec完成度代替。
+- [x] 逐項重審 title、field/HUD、action/target、dialogue、battle、postbattle、town、shop、church、preparation、save/load、ending；當時曾提出40–45%的操作界面工程估計，後因缺少完整狀態與玩家路徑分母而撤回。現況只看 `57` 的逐列證據狀態。
 - [x] README撤回將 `docs/figures/title.png`／`dialogue.png` 標成 remake runtime對照；兩張是raw decode／字型研究圖。
 - [~] **UI-VIS-TOWN**：`0x2cd16/0x2cf71/0x11eb0`已閉合3個FDOTHER背景variant、#10 label、FDTXT `0x1ef+selection`、FDICON `0,1,2,1` pulse、6組variant座標與312×192→VGA `(4,4)`；23個town保存raw `native_town_variant`。ch02 variant0 [`selection0–5`](../figures/town-hub-six-selections-original-vs-remake.png) 都達原版／remake raw RGB 整幀相同；另以固定雜湊原版的修改 LOAD 副本取得 variant1與variant2，兩者正常 selection0–4 都與對應 production node 指定 pulse 逐幀 AE=0，見 [`native_town_variant1_e2.json`](../data/native_town_variant1_e2.json)、[`native_town_variant2_e2.json`](../data/native_town_variant2_e2.json) 與兩張對照圖。Left/Right wrap、Shift+F1 reveal、Enter進variant5及Escape返回selection5亦有input E2；共用 glyph shadow 與誤 reset pulse 已修。仍缺variant2 selection5 的 BIOS 掃描碼／Enter，以及未修改一般玩家城鎮路徑 E2。
 - [~] **UI-VIS-SHOP**：四個callee與secret selection+BIOS-scan gate皆已接production；ch02 variant1/3/5的service0 selected phase均達原版／production raw RGB整幀相同，variant5另閉合四service、wrap及Escape→town selection5。ch02 weapon purchase list四個selection、Yes/No、gold0不足金及gold1000裝備收件者selection0/cycle1也已全幀AE=0；selection0按Down到selection1經exact-pixel相位同步後，remake三cycle亦各有整幀AE=0（recipient E2僅screenshot-only typed-party bootstrap，不代表完整campaign/save trace）。success裸畫面撤回過早DATO第0幀覆蓋後，25個原版原子樣本各有整幀AE=0；唯一非零樣本只差`0x16886`效果寫入途中的兩點。`0x2d516`扣款odometer修正roll y=98後，16個原版atomic samples各有整幀AE=0。下一gate是四人以上recipient scroll、no-recipient/full、sell/equip/transfer child panel DOSBox E2與其他章節狀態。
@@ -487,14 +514,14 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 目前統計：`[x]=576`、`[~]=119`、`[ ]=70`；只計算本文件的 checklist 行，且僅代表工程項目數，不是原版完成百分比。
 
 - [x] 根目錄 `README.md` 改為「資產／RE／引擎切片／原版差距」四欄狀態表，加入已驗證成果圖片；不再宣稱全 30 章 parity。
-- [x] `remake/README.md` 改為垂直切片與 fail-closed 差距說明；`00-index.md` 指定 README → `56` SDD → `42` gap audit → 本 worklist 的閱讀順序。
+- [x] `remake/README.md` 改為垂直切片與失敗即關閉差距說明；此處記錄的是當時閱讀順序，目前已改為 README → `58` 覆蓋矩陣 → `56` SDD → `57` 介面矩陣 → 本工作清單。
 - [x] `20`／`22` 的「所有必要能力已完成／只剩工程整合」過強斷言降級為「資料與工具證明可行，runtime integration 尚待」；`90`／`51` 明確標成歷史計畫／試玩快照。
-- [~] 專題 RE 文件仍保留各自證據與歷史修正；不直接合併成單一長文，避免丟失 address-level provenance。若內容與 README 狀態衝突，以 `56`、`42`、本表最新勘誤為準。
+- [~] 專題 RE 文件仍保留各自證據與歷史修正；不直接合併成單一長文，避免丟失位址層證據。現況衝突依 `58`、`56`、`57` 與本文件頂端有效佇列裁決；`42` 只作歷史快照。
 - [x] 2026-07-27 README/KB review：README 改正「跨平台已完成」「EXE 全部表已閉合」「SDL2 第二條 runtime」等過強敘述，補上原版／重製對話圖與可驗證差距說明；`00-index` 明列 README→56→57→42→91 裁決順序；`08` 修正兩個圖片相對路徑。`90`、`30`、`51`、`SESSION-HANDOFF-*` 不合併，保留 address-level/historical provenance，避免把舊快照當現況。
 - [x] 2026-07-27 stale dialogue-operand assertion cleanup：`09`、`01`、`18` 不再把控制碼第二 word 一律稱為固定肖像/DATO ID；依 `0x15f84→0x12c60` 分開 identity lookup、runtime unit `+7` 與 direct-DATO fallback，並將 `FFFA/FFFB` 統一修正為遞迴名稱／數值插入碼，不是特效。
 - [x] 2026-07-27 second-pass dialogue wording audit：`14` §4 的組合說明與 `-17/-18` 讀取步驟仍殘留「直接肖像 ID」舊斷言，已改成 identity lookup／record `+7`／direct-DATO fallback 三路 provenance；未修改任何未證實的 story operand。
 - [x] 2026-07-27 expansion-doc assertion audit：`17-scenario-expansion-evaluation.md` 原稱「原版評分式 AI 已還原、可照搬」已撤回，改以 `11` 的 raw dispatcher/candidate/score slices 與完整 runtime 未閉合為準；`50` 的 persistence 句也限定為 remake 自有 JSON projection，不冒稱 `FD2.SAV` byte identity。
-- [x] **DOC-EVENT-DSL-ASSERTION-AUDIT-20260728**：將`29-remake-extensible-event-system.md`明確降級為歷史設計草案；刪除「handler只管勝負／動作全在FDFIELD」「record +5 bit0全域等同存活」「第一章主角含妮雅」「示例已完整重現30關」等會污染忠實模式的斷言。同步將第3/6/7/8輪的「核心全完成／通用1:1／像素級收官／魔法SFX補完」標題限定為當時codec或fixture範圍；SDD視覺估計統一為doc57的40–45%，shop recipient production接線明列為E1而非DOSBox lifecycle parity，並刪除已被後續closure取代的ch29 cleanup重複待辦。
+- [x] **DOC-EVENT-DSL-ASSERTION-AUDIT-20260728**：將`29-remake-extensible-event-system.md`明確降級為歷史設計草案；刪除「handler只管勝負／動作全在FDFIELD」「record +5 bit0全域等同存活」「第一章主角含妮雅」「示例已完整重現30關」等會污染忠實模式的斷言。同步將第3/6/7/8輪的「核心全完成／通用1:1／像素級收官／魔法SFX補完」標題限定為當時codec或fixture範圍；當時沿用的40–45%視覺估計現已撤回，shop recipient production接線明列為E1而非DOSBox lifecycle parity，並刪除已被後續closure取代的ch29 cleanup重複待辦。
 - [x] **DOC-REPO-WIDE-ASSERTION-AUDIT-20260728**：擴大審核歷史專題文件並修正會被當成規格的現行矛盾：`00/28/53`不再把攻略稱為handler ground truth；`19/29/30`把自動campaign與Registry降為尚未閉合的scaffold／設計提案；`25`保留raw byte5 caller predicate；`35`刪除BG=TAI台座與`0x53ec8`=縮放X；`39`區分AFM resource decode與caller schedule；`44`撤回「序章無單位移動」「group10/11全遊戲死資料」及過時兩行直進戰鬥live-state；`47/50`撤回所有章NPC永遠dir0；`50`的campaign graph test不再冒稱全戰役原版route E2；`99`的資產全解改為當時base-codec範圍。
 - [x] **AGENT-MEMORY-AND-DOCKER-HYGIENE-20260729**：新增根目錄
   `AGENTS.md`，統一專案目標、文件權威順序、E0–E3、known corrections、
@@ -851,7 +878,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 - [x] ch13/ch14 pre-handler：FDTXT_014 index0（4句）與 map13/70-slot、pan 20,20 已接 binding，`story_ch14` 已接回 editable handler。
 - [~] ch14/ch15 handler：Docker Capstone 已證實 pre `0x334f3..0x334f7` 的 `roster_has(12)`→FDTXT_015「有 12：0/1/2；無：3/4/5」，以及 raw `ch14_post` `0x239d1..0x239d3` 的「有：12；無：13」。主迴圈與前三戰既有測試證實玩家戰鬥 N 對應 raw `ch(N-1)_post`；因此 `postbattle_ch14_persist` 應使用 `ch13_post`，`postbattle_ch15_persist` 才使用 `ch14_post`（JOIN15→set_chapter15→town_ch16）。pre binding 含 map14/80-slot、pan、acting48；runtime 只讀 permanent party roster，缺此資料 fail-closed。
 - [x] **ch14/ch15 postbattle campaign index correction**：撤回「同號 postbattle node 對同號 raw post handler」的錯誤斷言；目前已驗證並回歸 `postbattle_ch14_persist→ch13_post→town_ch15`、`postbattle_ch15_persist→ch14_post→town_ch16`。其他仍採同號 binding 的章節必須逐一用直接指令複核，不能機械式整批平移。
-- [x] **既有 postbattle 索引錯接稽核**：稽核工具現將 active binding 與已證實的 `battle N→raw ch(N-1)_post` 關係逐筆比較，不再把「欄位非空」當成 active 正確。原有13個同號錯接已清除；IDA 直接指令再閉合 raw ch25→玩家ch26、raw ch27→玩家ch28、raw ch05→玩家ch06、raw ch06→玩家ch07、raw ch07→玩家ch08、raw ch09→玩家ch10、raw ch12→玩家ch13、raw ch16→玩家ch17、raw ch17→玩家ch18與raw ch19→玩家ch20。ch24 candidate 的 `0x112a5(0x1a/0x0e)` 已從正式 binding 撤回，現況為19 active／5 blocked，沒有 `active_index_mismatch`、`unbound_mapping_complete` 或 `unbound_inline_beats`。
+- [x] **既有 postbattle 索引錯接稽核**：稽核工具現將 active binding 與已證實的 `battle N→raw ch(N-1)_post` 關係逐筆比較，不再把「欄位非空」當成 active 正確。原有13個同號錯接已清除；IDA 直接指令再閉合 raw ch25→玩家ch26、raw ch27→玩家ch28、raw ch05→玩家ch06、raw ch06→玩家ch07、raw ch07→玩家ch08、raw ch09→玩家ch10、raw ch12→玩家ch13、raw ch16→玩家ch17、raw ch17→玩家ch18與raw ch19→玩家ch20。ch24 candidate 的 `0x112a5(0x1a/0x0e)` 已從正式 binding 撤回。此項完成當時為19 active／5 blocked；玩家第22戰後續接入後，現況為20 active／4 blocked，以本文件頂端與 `58` 為準。
 - [x] **玩家第 8 戰 raw ch07 post 垂直切片（E1）**：撤回 `ch08.json` 把 groups 1／8／9／10 預先 materialize 的舊設定。`0x1088D` 只建立 party＋group0（10＋19＝29 slots），event27 回合2..7才逐組追加兩筆，合法戰後 frontiers為29..41的奇數。address-keyed binding 已接 slot28 raw JOIN5身分、layout、ACTING33／34、FDTXT_008 index3／4、精確全黑與 framebuffer clear，再走JOIN5／sync／chapter8進 `town_ch09`；負向測試拒絕其他 `0x11D40` call site／參數。event28 slots10..27 raw `+0x34 &= 0x80` 的正式回合接線及 DOSBox E2仍待完成。證據見 [`fd2_ch07_post_ida.txt`](../data/ida/fd2_ch07_post_ida.txt)。
 - [x] **玩家第 10 戰 raw ch09 post 垂直切片（E1）**：IDA Pro 9.4 與 Docker Capstone 固定 `0x235F9..0x23790`。正式 binding 保留有／無凱麗造成的60／61兩種強推論 frontier，依位址執行 delta 0→63 共64次 DAC 淡出、只寫明列 offset 的 sparse record/view patch、delta 64→0 共65次 DAC 淡入、FDTXT_010 index4／5、ACTING37、JOIN11／6、sync與chapter10，最後進 `town_ch11`。執行期對非法值、缺 raw provenance 或 frontier 不足會在任何寫入前原子拒絕；尚缺未修改 DOSBox 一般玩家逐幀 E2。證據見 [`fd2_ch09_post_ida.txt`](../data/ida/fd2_ch09_post_ida.txt)。
 - [ ] **ch00 `0x3241f` 原生淡入閉合**：追查 map32 runtime roster 的 raw FDICON key producer，讓 title/story indexed compositor 不再依賴 `Fig==key` 假設；完成前只保留此 exact call site 明示的 RGBA E1 可玩近似，不得泛化為 `0x1F525` fallback。
@@ -1355,7 +1382,24 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 - [~] **ch25/ch26 pre-handler**：FDTXT_026 string0 已以 direct scene0 12-line mapping 接 binding（map25/70-slot、pan、acting76），`story_ch26` 已接回 handler。2026-07-29 已修正未加引號訊息計數，FDTXT_026 全量 63/63 count-aligned；這只關閉文字索引，不自動證明每個條件分支或 event61 玩家路徑。
 - [~] **ch26/ch27 pre-handler**：FDTXT_027 idx0/3/4/5/6/7 已高信心對到 ch27 scene0 全部 21 句，新增六組 editable direct overrides 並接 `story_ch27`；共用 `0x24618` renderer 已完成。IDA／Capstone 又閉合 ch26_pre 返回時的 view `(camera 9,49; cursor 14,54; visible 5,5)` 與 selector0，`battle_ch27` 已資料化並由正式 runtime 消費。HUD 持續擁有者亦已閉合為 save-persistent gate A、process-persistent anchor 與 controller entry gate B=1，`battle_ch27` 已改用 `native_map_hud_inherited`，不猜章節常數；仍缺未修改一般玩家／CONTINUE 的同狀態 E2，以及 `0x24b14` item `0x64` branch 的其餘視覺行為，故不能視為完整章節流程完成。
 - [x] **raw ch27 post／玩家第28戰流程（E1）**：FDTXT_028 string7 已精確對到 ch28 scene1 lines11–15。IDA Pro 9.4 直接確認主表 index27=`0x25464`，該入口準備對話參數後跳到 `0x231df` 共用尾段，依序執行 dialog／sync_party／set_chapter28；低位址來源是真實共享程式碼，不是 exporter 污染。authored binding 已接 `postbattle_ch28_persist→preparation_ch29`；舊接在玩家第27戰天空之鑰成功分支的 owner 已撤回，該分支只保留 raw ch26 已證實的 sync_party／set_chapter27。未宣稱 renderer parity或一般玩家 E2。
-- [x] **ch28/ch29 pre-handler**：Docker 隔離 Capstone 與 IDA Pro 9.4 證實 `0x35822` 的 pan→spawn→300ms→`0x11DF2(0,255,255)` 全白→200ms→`0x11DF2(0,255,0)` 基準恢復（baseline restore）→redraw；舊稱「兩次無作用（no-op）調色盤更新」已撤回。2026-08-02 更正來源 `PUSH` 順序為 `(group,y,x)`，並以非對稱 ch27/ch28 呼叫回歸鎖定 group 與 x。FDTXT_029 idx7/idx8、map27/pan/acting86 binding 通過回歸，`story_ch28` 已接回可編輯 handler。
+- [x] **玩家第 28／29 戰前置處理器 owner 勘誤**：IDA Pro 9.4 的
+  `0x51D71` 分派表與 `0x1088D(chapter)` 資源公式共同證實 raw index27
+  `0x33C9D` 屬玩家第 28 戰（map27／FDTXT_028），raw index28 `0x33DBA`
+  才屬玩家第 29 戰（map28／FDTXT_029）。舊版把 `ch28_pre` 接到
+  `story_ch28`，且錯配 map27／slot70／ch28 party，已改為
+  `story_ch28→ch27_pre`、`story_ch29→ch28_pre`。前者新增固定 20 筆
+  deactivate→`+0x40!=0` 才清 byte `+5` 的受限原語，以及 `0x33CE2` 的
+  relative cursor X+6/Y+5；後者以 slot76、group8=56 進場，群組實際數不符
+  立即停止。兩條皆由正式 campaign handler 走到正確 battle node；這是 E1，
+  尚非未修改一般玩家 E2。`0x35822` 的 pan→spawn→300ms→全白→200ms→
+  baseline restore→redraw 與 `(group,y,x)` PUSH 勘誤仍有效。證據見
+  [`fd2_ch27_ch28_pre_owner_ida.txt`](../data/ida/fd2_ch27_ch28_pre_owner_ida.txt)。
+- [x] **FDFIELD 部署尾端匯出勘誤**：`0x1088D` 從
+  `2+6*enemy_ally_total` 起讀 control 宣告的 `own_deploy` 筆 X/Y，完全不讀
+  第三個 raw key。exporter 已停止用 `raw_key==0` 掃全表：map28 由16修為20
+  筆重疊位置，map31／map32 的捏造部署格由1／2修為0；33張地圖的
+  `positions=units+own_deploy` 由 regression 鎖定。scenario 的去重／螺旋補位
+  仍明列為重製直達戰鬥近似，不冒充原始位置表。
 - [~] **ch26 post item-gate branch**：`0x25186→0x24b14(0x64)` 是前 16 個 runtime slots 的 exact inventory search，無 camp/activity filter；成功臂無 `0x1b8e7`，天空之鑰不消耗，之後才 sync→chapter increment→persistent cleanup。FDTXT_027 idx8–12 / idx13–16 對應兩臂；仍需把 visual/effect calls 與缺匙 editable branch 資料化，不能只保留 generic ending。
 - [x] **ch26 success palette-ramp lowering**：Docker Capstone 定義 `0x25052(start,delay)` 為 inclusive `delta=start..0` 的 `0x11df2(0,255,delta)`＋每步 delay；compiler 已 lower immediate start 0..63。synthetic descending/zero/invalid 與真實 `ch26_post.json` 六個 5/4/3/2、80ms calls 均有 regression。這是 palette ramp，不是 generic fade；`0x24618` 已有專用 adapter，其餘 renderer effects仍各自 fail-closed。
 - [x] **撤回 `0x1f882`=vsync/sync helper**：Docker Capstone 展開 `ebx=0..63`、每次 `0x11d40(0,255,ebx)`＋2ms wait，故是 64-step native palette fade-out。compiler 現保留 exact `native_palette_fade_out(0..63,2ms)` payload；它與 `0x25052/0x11df2` 的 delta ramp 不同，runtime 在 indexed DAC adapter 未完成前有 regression-protected fail-closed。

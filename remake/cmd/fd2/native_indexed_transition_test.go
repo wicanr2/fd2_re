@@ -63,6 +63,24 @@ func TestResolveNativeIndexedTransitionUsesLoadCHSceneView(t *testing.T) {
 	}
 }
 
+func TestResolveNativeIndexedTransitionUsesChapter27TwoAxisOffset(t *testing.T) {
+	g := &Game{
+		storyNativeMapView:    battle.NativeMapViewState{VisibleCursorX: 2, VisibleCursorY: 3},
+		hasStoryNativeMapView: true,
+	}
+	spec := nativeIndexedTransitionSpecForTest()
+	spec.CursorSource = "native_relative_cursor"
+	spec.CursorXOffset = 6
+	spec.CursorYOffset = 5
+	resolved, err := g.resolveNativeIndexedTransitionSpec(spec, "0x33ce2")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if resolved.TileX != 8 || resolved.TileY != 8 {
+		t.Fatalf("resolved ch27 scene cursor=(%d,%d), want (8,8)", resolved.TileX, resolved.TileY)
+	}
+}
+
 func TestResolveNativeIndexedTransitionRejectsMissingOrUnprovenCursor(t *testing.T) {
 	spec := nativeIndexedTransitionSpecForTest()
 	spec.CursorSource = "native_relative_cursor"
@@ -95,6 +113,15 @@ func TestResolveNativeIndexedTransitionRejectsMissingOrUnprovenCursor(t *testing
 	}
 	if _, err := g.resolveNativeIndexedTransitionSpec(ch22, "0x245ce"); err == nil {
 		t.Fatal("ch22 cursor offset was accepted at ch21 call-site")
+	}
+	ch27 := spec
+	ch27.CursorXOffset, ch27.CursorYOffset = 6, 5
+	if _, err := g.resolveNativeIndexedTransitionSpec(ch27, "0x33ce2"); err != nil {
+		t.Fatalf("proven ch27 cursor offsets rejected: %v", err)
+	}
+	ch27.CursorXOffset = 5
+	if _, err := g.resolveNativeIndexedTransitionSpec(ch27, "0x33ce2"); err == nil {
+		t.Fatal("unproven ch27 cursor x offset was accepted")
 	}
 }
 

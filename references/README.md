@@ -30,4 +30,4 @@
 
 - 所有 HTML 為 UTF-8（含 BOM），中文可直接顯示。
 - 圖片僅 `fd2.htm`（遊戲攻略）使用，共 36 張，已全數下載。
-- Markdown 中的 `![圖](fd2-N.jpg)` 路徑相對於 `html/`，若要在 `text/` 內直接看圖，請改開 `html/fd2.htm`。
+- Markdown 中的圖片路徑使用 `../html/` 回到離線圖片目錄，也可直接開啟 `html/fd2.htm` 閱讀原始版面。

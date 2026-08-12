@@ -14,50 +14,28 @@
 | 領域 | 已驗證成果 | 主要缺口 |
 |---|---|---|
 | 資產與格式 | `.DAT`、RLE 圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與部分 EXE 資料表可重現解析 | 部分執行期改寫、合成器與音訊播放尚未完整接入 |
-| 反向工程 | 戰役狀態機、事件處理器、戰鬥規則、敵方 AI 原始模式與城鎮／商店／教會及存檔邊界已有證據化切片；mode 1 blocked-coordinate、mode 2 物理候選、mode 5 事件尾端，以及 mode 11 的 `0x15311` 命令／`0x1548E` 物理／`0x14121→0x13FD4` indexed 音訊 owner，均已接上失敗即關閉的執行期窄切片；`aiStep` 另已驗證兩名 raw mode-7 actor 的同回合順序，原始路由未處理且無錯誤時敵方／友軍 NPC 可依可編輯 `SpellBook`／`Spells` 完成正規化（normalized）法術決策與結算；未修改原版 CONTINUE→END→ENEMY PHASE 的章節0 E2 時間線也已可重現 | 尚缺重製端同一 raw 狀態的敵方回合 E2 配對、未知命令／法術／物品的完整演出、逐章戰後流程與 CONTINUE 四格的動作 owner／確認效果；原版 E2 錨點及現有 owner 都不等於逐像素或逐音訊一致 |
+| 反向工程 | 資產格式與多個底層原語已高度閉合；戰役處理器、戰鬥規則、敵方 AI、戰間服務、存檔與終局都有具位址的窄切片 | 目前不能誠實換算成整支 EXE 百分比；晚期 handler、完整指令／法術／物品交易、終局與一般玩家 E2 仍未閉合，詳見[反組譯覆蓋矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md) |
 | Go／Ebiten 重製 | 地圖、對話、部分戰鬥、城鎮、商店、教會、整備、自有存檔及場景 BGM 消費可操作；戰鬥曲與城鎮曲已有原版表格回歸；近似模式可從最終節點播放已證實的 `0x2BCE5` 前綴、原資源角色最終狀態蒙太奇、20 組尾段資源與來源 `FDOTHER#59` 的終局靜態圖 | 尚缺完整 30 章玩家路徑、`0x2C194→0x28A6C` 的精確尾段 renderer／時序與 BIOS 按鍵對映、一般玩家終局 E2 與跨平台驗收 |
-| 原版視覺比對 | ch02 城鎮 variant0 六項、variant1 正常五項、variant2 正常五項（後兩者為修改 LOAD 路徑），以及部分商店、讀檔選單已有整幀 RGB 相同證據 | 完整操作介面估計約 40–45%；秘密選項、一般玩家城鎮路徑、戰場、整備、教會與其餘章節仍需同狀態比較 |
+| 原版視覺比對 | ch02 城鎮 variant0 六項、variant1 正常五項、variant2 正常五項（後兩者為修改 LOAD 路徑），以及部分商店、讀檔選單已有整幀 RGB 相同證據 | 尚無可靠的全介面百分比；祕密選項、一般玩家城鎮路徑、戰場、整備、教會與其餘章節仍需同狀態比較，詳見[介面證據矩陣](docs/knowledge-base/57-ui-evidence-matrix.md) |
 
 工作清單中的完成項代表已驗證的函式、格式或切片，**不是遊戲完成百分比**。
 資產解碼完成也不等於玩法、介面或戰役流程已完成。
 
-最新可驗證戰役切片：玩家第16戰戰後（raw `ch15_post`）已進入
-`town_ch17`；玩家第17戰戰後（raw `ch16_post`）已進入 `town_ch18`；玩家第18戰
-戰後（raw `ch17_post`）已進入 `town_ch19`；玩家第20戰戰後（raw `ch19_post`）已進入
-`town_ch21`；玩家第22戰戰後（raw `ch21_post`）已由73／79-slot E1 邊界進入
-`preparation_ch23`，並以正式戰鬥結果確認、持久隊伍及隔離存檔／讀檔驗證整備邊界；玩家第23戰戰前
-（raw `ch22_pre`）已由 LOADCH 視圖來源 E1 切片進入 `battle_ch23`。玩家第23戰
-戰後、24、25、29戰仍維持失敗即關閉；
-詳細位址、分支與證據等級見[工作清單](docs/knowledge-base/91-worklist.md)、
-[介面證據矩陣](docs/knowledge-base/57-ui-evidence-matrix.md)與
-[最新交接勘誤](docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md)。
+目前最值得關注的三條垂直切片是：
 
-為了讓重製端先維持可玩戰役流程，未綁定的戰後節點可在明確設定
-`FD2_APPROXIMATE=1` 時顯示戰後整理提示，確認後沿可編輯腳本進入既有城鎮／整備；
-這不猜原版 JOIN、獎勵或分支，未設定時仍採忠實模式的失敗即關閉。最近一輪
-四個晚期未綁定戰後節點也已由正式勝利結果確認後才進入近似戰間段落；其中
-第 29 戰已再驗證 `preparation_ch30` 的隔離存檔／讀檔邊界。第 30 戰直達結局前，
-近似模式會依可編輯的 `approximate_sync_party_on_win` 明確同步最後一戰的隊伍結果，
-避免結局角色輪播仍讀到戰前等級與數值；同步失敗或零筆身分符合就停在勝利確認，
-忠實模式不消費此欄位。這是重製端 E1 資料邊界，不是未證實原版終局處理器
-（handler）的語意。重製版／
-未修改 DOSBox 的實測命令、雜湊與限制見
-[遊戲測試報告](docs/reports/game-test-2026-08-11.md)。
+- 戰役已能驗證多個「戰鬥→戰後→城鎮／整備→存讀檔」邊界，但玩家第23、24、
+  25、29戰戰後在忠實模式仍失敗即關閉。
+- 敵方人工智慧已有多個原始模式的窄執行期消費，原版一般玩家敵方回合也可重現；
+  仍缺同一 raw 狀態的重製端配對及完整命令／法術／物品效果。
+- 近似模式可播放已證實的終局前綴、隊員最終狀態與20組原版資源尾段，最後停在
+  `FDOTHER#59`；精確 `0x28A6C` renderer、原版輸入與一般玩家終局 E2 仍未完成。
 
-本輪另固定兩項可編輯邊界：各城鎮的祕密商店不是共用一組按鍵，而是由
-`native_secret_gate` 保存每章 selection／掃描碼；戰鬥 BGM 依原版章節表、城鎮／
-商店使用 `FDMUS_010`。預設忠實模式的 `ending` 節點沒有已證實終局曲目時仍會停止
-前一曲。只有明確設定 `FD2_APPROXIMATE=1`，且戰役節點通過嚴格
-`native_ending_prefix` 合約，才會播放已證實的 `0x2BCE5` 前綴；到 `0x2C548`
-閘門時只消費已核對的 `FDMUS_004`，再以 persistent raw roster 播放原資源角色蒙太奇。
-cycle 完成後，近似尾段會依可編輯排程逐組消費已驗證的 TAI／BG／FIGANI 原版
-資源，保留 FIGANI descriptor `+6` 的原始延遲，疊上 `FDOTHER#58` 的 20 影格，
-再顯示來源 `#59` 的終局靜態圖並停留。這是可見近似效果，不是
-`0x2C194→0x28A6C` 的精確 renderer；外部片尾錄影把 `#59` 對應為 `THE END` 僅屬
-[強推論旁證](docs/data/ui-traces/ch30-ending-youtube-visual-side-evidence.json)，不是一般玩家 E2。按 Enter／空白鍵可選擇重播每位隊員的最終狀態，Enter／空白鍵／Esc
-會回到終局定格；這是重製版延伸，不宣稱為原版按鍵行為。素材或 provenance 不足才會
-確認回到可編輯結語。`FDMUS_018` 在此近似尾段只作曲目接線，時序不宣稱相同；
-精確 `0x28A6C` renderer、完整呼叫時紀錄、BIOS 按鍵與一般玩家通關仍失敗即關閉。
+`FD2_APPROXIMATE=1` 只為未綁定戰後與終局提供可見、可玩的保守路徑，不猜 JOIN、
+獎勵或原版分支；預設忠實模式仍維持失敗即關閉。整體缺口與「哪些位址不應再重做」
+看[反組譯覆蓋矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)，實際下一步看
+[工作清單](docs/knowledge-base/91-worklist.md)，畫面狀態看
+[介面證據矩陣](docs/knowledge-base/57-ui-evidence-matrix.md)。原版與重製的實測命令、
+雜湊及限制見[遊戲測試報告](docs/reports/game-test-2026-08-11.md)。
 
 ![重製端近似終局尾段：20 組原版資源排程總覽](docs/figures/ending-tail-20-segments-approximate-remake-e1.png)
 
@@ -396,14 +374,15 @@ docker run --rm --network none --memory 3g --cpus 2 --pids-limit 384 \
 
 建議先依下列順序閱讀：
 
-1. [`56-fd2-remake-sdd.md`](docs/knowledge-base/56-fd2-remake-sdd.md)：
+1. [`58-fd2-exe-re-coverage.md`](docs/knowledge-base/58-fd2-exe-re-coverage.md)：
+   反組譯、可編輯資料、正式執行期與一般玩家驗證的唯一分層現況；也列出哪些
+   位址不該再重做。
+2. [`56-fd2-remake-sdd.md`](docs/knowledge-base/56-fd2-remake-sdd.md)：
    系統設計、證據分級、原版與重製的責任邊界。
-2. [`57-ui-evidence-matrix.md`](docs/knowledge-base/57-ui-evidence-matrix.md)：
+3. [`57-ui-evidence-matrix.md`](docs/knowledge-base/57-ui-evidence-matrix.md)：
    操作介面的原版證據、重製狀態與未閉合項目。
-3. [`42-re-vs-remake-gap-audit.md`](docs/knowledge-base/42-re-vs-remake-gap-audit.md)：
-   從玩家功能檢視原版與重製差距。
 4. [`91-worklist.md`](docs/knowledge-base/91-worklist.md)：
-   目前工程佇列與驗證狀態。
+   檔首是目前有效工程佇列；後段是歷史工作記錄，不用勾選數計算完成度。
 5. [`00-index.md`](docs/knowledge-base/00-index.md)：
    資產格式、戰鬥、劇情、介面等專題文件索引。
 6. [`SESSION-HANDOFF-2026-07-06.md`](docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md)：

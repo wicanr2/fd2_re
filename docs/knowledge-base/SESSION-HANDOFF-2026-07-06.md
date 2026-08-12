@@ -1,10 +1,14 @@
 # 交接歷史日誌 — 2026-07-06 起
 
-> **文件定位（2026-07-27 稽核）**：本檔累積了多個 session 的當時工作樹、下一步與中間結論，
-> 因而是可追溯的歷史日誌，不是目前交接指令或進度真值。不要依本檔的「下一輪」「目前」或
-> working-tree 描述執行工作。現況依序以根目錄 README、`56-fd2-remake-sdd.md`、
-> `42-re-vs-remake-gap-audit.md`、`91-worklist.md` 為準；具體 RE 證據回到各專題文件。
-> 保留本檔僅為提交與判讀 provenance，已被後續文件推翻的斷言須以後者為準。
+> **文件定位（2026-08-12 稽核）**：本檔累積了多個 session 的當時工作樹、下一步與中間結論，
+> 因而是可追溯的歷史日誌，不是目前交接指令、位址主證據或進度真值。不要依本檔的「下一輪」
+> 「目前」、working-tree 描述或單一較晚段落執行工作。整體 RE／資料／執行期／E2
+> 狀態看 [`58-fd2-exe-re-coverage.md`](58-fd2-exe-re-coverage.md)，系統契約看
+> [`56`](56-fd2-remake-sdd.md)，UI 看 [`57`](57-ui-evidence-matrix.md)，有效下一步
+> 只看 [`91`](91-worklist.md) 檔首；具體 RE 證據回到 `docs/data/ida/`、
+> `docs/data/fd2_*` 與各專題文件。
+> 保留本檔僅為提交與判讀 provenance，已被後續文件推翻的斷言須以主證據與上述
+> 現況文件為準。搜尋命中本檔不能單獨觸發重新反組譯。
 
 ## 2026-07-30 CONTINUE saved runtime roster adapter
 
@@ -4871,3 +4875,48 @@ raw owner 與一般玩家 E2 的失敗即關閉結論。
 - campaign loader、近似成功／失敗與忠實模式皆有回歸。這個欄位是重製端 E1
   資料邊界，不能用來宣稱 `0x25757→0x2bce5` owner、精確終局 handler 或一般玩家
   E2 已閉合。
+
+## 2026-08-12：玩家第 28／29 戰前置處理器錯一章勘誤（E1）
+
+本段追加推翻本檔 2026-07-20 條目中「`ch28_pre` 已接 `story_ch28`」的舊結論；
+舊條目保留作為錯誤形成過程，不可再當作現況。
+
+- 合法 IDA Pro 9.4 Docker 直接讀 `0x51D71` 前置表：raw index27=`0x33C9D`、
+  index28=`0x33DBA`、index29=`0x33E3C`。`0x205DA→0x1088D(chapter)` 同時載
+  `FDTXT_(chapter+1)` 與 `FDFIELD_(3*chapter+0/1/2)`；所以玩家第28戰必須用
+  `ch27_pre`／map27／FDTXT_028，玩家第29戰才用 `ch28_pre`／map28／FDTXT_029。
+- campaign 現改為 `story_ch28→ch27_pre.json`、`story_ch29→ch28_pre.json`；
+  後者 binding 由錯誤的 map27／slot70／ch28 scenario 修成 map28／slot76／
+  ch29 scenario。兩條均由原始資產 Docker／Xvfb 回歸走到相應戰鬥節點。
+- `ch27_pre` 的 slots0..19 隱藏後，只在 current HP word `+0x40!=0` 時清 byte
+  `+5`；現以 call-site 限定、固定20筆、全批 preflight 的可編輯原語保存。
+  `0x33CE2→0x24618` 另固定 relative cursor X+6／Y+5。缺 raw byte來源、位置、
+  indexed 資產或群組筆數時仍失敗即關閉。
+- `0x1088D` 的部署迴圈從 `2+6*enemy_ally_total` 起讀 control 宣告的
+  `own_deploy` 筆 X/Y，不讀第三 word。exporter 已停止用 `raw_key==0` 掃全表：
+  map28 own_deploy 16→20；map31／map32 1／2→0。
+- raw index29 `0x33E3C` 仍受 `0x22253` 完整 indexed 演出阻擋，沒有因相鄰 owner
+  closure 而猜測接入第30戰。上述僅是 E1，不是一般玩家 E2 或逐像素一致。
+
+完整位址、雜湊、FDFIELD 資源與推論等級見
+[`fd2_ch27_ch28_pre_owner_ida.txt`](../data/ida/fd2_ch27_ch28_pre_owner_ida.txt)。
+本檔較早引用的
+[`fd2_ch27_pre_view_ida.txt`](../data/fd2_ch27_pre_view_ida.txt) 實際存在，且回答
+raw ch26 pre→玩家第27戰的視窗／HUD 來源；新證據回答 raw ch27／ch28 pre 的
+owner 與部署尾端。兩者主題不同、都保留，撤回先前「舊檔不存在／已被取代」的說法。
+
+## 2026-08-12：文件權威與重複反組譯治理
+
+- 新增 [`58-fd2-exe-re-coverage.md`](58-fd2-exe-re-coverage.md)，把每個子系統拆成
+  原版證據、可編輯資料、正式執行期、一般玩家 E2 與下一缺口；不再用單一 `[x]`、
+  文件數或沒有分母的百分比宣稱完成。
+- README、`00`、`56`、`57`、`91`、`99` 與歷史計畫入口已統一責任；本檔明確降為
+  時間序列證據，`91` 只有檔首有效佇列能決定下一步。舊40–45%介面估計、舊19 active／
+  5 blocked 現況與「資料格式全破」已撤回或標為有日期的歷史快照。
+- 已閉合位址只有雜湊不同、直接指令／跳表反證、同狀態執行矛盾，或主證據缺少其
+  聲稱的 writer／consumer 時才能重開。raw exporter 仍標 unknown 或搜尋命中本檔，
+  都不能單獨觸發重新反組譯。
+- 全庫 Markdown 本地連結／圖片以受版控檢查器在一次性 Docker 檢查682項，0項
+  斷鏈；攻略 Markdown 的36張圖片已修回 `../html/`。完整 Go 回歸、Capstone image
+  內41項工具測試及
+  玩家第28／29戰前置 owner／部署尾段的唯讀原版資產重點回歸均通過。

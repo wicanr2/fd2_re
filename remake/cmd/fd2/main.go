@@ -1469,20 +1469,30 @@ func (g *Game) beatStart(b campaign.Beat) {
 		// current unit_count and increments it: this is append, not toggling an
 		// already slot-stable full roster.  Keep the legacy activation fallback
 		// for authored scene beats that have no LOADCH roster.
+		materialized := 0
 		if g.st != nil {
 			if b.RawPlacementGate != nil {
-				if _, err := g.st.AppendGroupWithNativePlacement(
+				var err error
+				materialized, err = g.st.AppendGroupWithNativePlacement(
 					b.Group, byte(*b.RawPlacementGate),
-				); err != nil {
+				)
+				if err != nil {
 					g.loadErr = fmt.Sprintf("beat spawn %s: %v", b.Source, err)
 					return
 				}
-			} else if g.st.AppendGroup(b.Group) == 0 {
-				g.loadErr = fmt.Sprintf("beat spawn %s: group %d unavailable in runtime roster", b.Source, b.Group)
-				return
+			} else {
+				materialized = g.st.AppendGroup(b.Group)
 			}
 		} else {
-			g.materializeStoryGroup(b.Group)
+			materialized = g.materializeStoryGroup(b.Group)
+		}
+		if materialized == 0 && (b.Source != "" || b.Count > 0) {
+			g.loadErr = fmt.Sprintf("beat spawn %s: group %d unavailable in runtime roster", b.Source, b.Group)
+			return
+		}
+		if b.Count > 0 && materialized != b.Count {
+			g.loadErr = fmt.Sprintf("beat spawn %s: group %d materialized=%d want=%d", b.Source, b.Group, materialized, b.Count)
+			return
 		}
 		g.beatAdvance()
 	case "spawn_intro":
@@ -1521,6 +1531,29 @@ func (g *Game) beatStart(b campaign.Beat) {
 		if u.HasNativeRecordByte5 {
 			// 0x32975 overwrites the complete byte with 1; do not OR only bit0.
 			u.NativeRecordByte5 = 1
+		}
+		g.beatAdvance()
+	case "reactivate_nonzero_hp":
+		if b.Source != "0x33cea" || b.Count <= 0 {
+			g.loadErr = "beat reactivate_nonzero_hp:缺少已證實的 counted-loop 來源"
+			return
+		}
+		// Preflight the whole raw loop before changing any record.  The native
+		// +0x40 word is the already-closed current-HP field represented by Unit.HP;
+		// byte +5 remains explicit provenance and is never inferred from HP.
+		for slot := 0; slot < b.Count; slot++ {
+			u := g.handlerUnitAt(slot)
+			if u == nil || u.Camp != battle.Own || !u.HasNativeRecordByte5 {
+				g.loadErr = fmt.Sprintf("beat reactivate_nonzero_hp: slot%d lacks player/raw byte+5 provenance", slot)
+				return
+			}
+		}
+		for slot := 0; slot < b.Count; slot++ {
+			u := g.handlerUnitAt(slot)
+			if u.HP != 0 {
+				u.OnField = true
+				u.NativeRecordByte5 = 0
+			}
 		}
 		g.beatAdvance()
 	case "reset_pose":
@@ -1968,25 +2001,32 @@ func (g *Game) spliceBeatsAfterCurrent(arm []campaign.Beat) {
 	g.beats = selected
 }
 
-func (g *Game) materializeStoryGroup(group int) {
+func (g *Game) materializeStoryGroup(group int) int {
 	if g.storyRoster != nil {
 		if g.storySpawned[group] {
-			return
+			return 0
 		}
+		materialized := 0
 		for _, actor := range g.storyRoster {
 			if actor.Group == group {
 				actor.OnField = true
 				g.storyActors = append(g.storyActors, actor)
+				materialized++
 			}
 		}
-		g.storySpawned[group] = true
-		return
+		if materialized > 0 {
+			g.storySpawned[group] = true
+		}
+		return materialized
 	}
+	materialized := 0
 	for i := range g.storyActors {
 		if g.storyActors[i].Group == group {
 			g.storyActors[i].OnField = true
+			materialized++
 		}
 	}
+	return materialized
 }
 
 // loadCHPartyOrder projects the permanent JOIN chronology through the current

@@ -1,5 +1,12 @@
 # 42 — RE 已記錄 vs remake 已實作:落差稽核
 
+> **文件狀態（2026-08-12）**：本檔是機制落差的歷史專題快照，表內 `✅／🟡／❌`
+> 不再代表目前總進度。最新分層狀態統一看
+> [`58-fd2-exe-re-coverage.md`](58-fd2-exe-re-coverage.md)，精確系統契約看
+> [`56`](56-fd2-remake-sdd.md)，玩家可見差距看 [`57`](57-ui-evidence-matrix.md)，
+> 有效下一步只看 [`91`](91-worklist.md) 檔首。保留本表是為了追溯早期 code／RE
+> 差距，不得因本表某列仍寫缺少而直接重新反組譯。
+>
 > 目的:逐一核對「RE knowledge-base 已記錄的機制」與「remake 程式碼實際做了什麼」,列出落差與優先度。
 > 方法:每項機制先讀對應 doc,再 grep/讀 `remake/internal/battle`、`remake/cmd/fd2` 的實作,以 code 為準,不憑印象判定。
 > 2026-07-25 重新校正本表：撤回已被後續 code 推翻的「零命中／完全沒有」斷言。序章主角隊進場(staging)由另一 agent 處理,本篇不重複列。

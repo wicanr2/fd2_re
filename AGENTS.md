@@ -46,11 +46,28 @@
 
 1. `README.md`：面向使用者的專案定位、技術保存紀錄與目前進度。進度敘述以
    連結指向現況文件，保存與紀念性內容則長期留在首頁。
-2. `docs/knowledge-base/56-fd2-remake-sdd.md`：目前系統設計與證據政策。
-3. `docs/knowledge-base/57-ui-evidence-matrix.md`：介面覆蓋率與尚未關閉的關卡。
-4. `docs/knowledge-base/91-worklist.md`：目前工作佇列。
-5. `docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md`：時間序列證據紀錄；
+2. `docs/knowledge-base/58-fd2-exe-re-coverage.md`：原版證據、可編輯資料、正式
+   執行期與一般玩家驗證的唯一分層現況；同時指定已知位址的主證據與重開條件。
+3. `docs/knowledge-base/56-fd2-remake-sdd.md`：目前系統設計與證據政策。
+4. `docs/knowledge-base/57-ui-evidence-matrix.md`：介面覆蓋率與尚未關閉的關卡。
+5. `docs/knowledge-base/91-worklist.md`：檔首是目前工作佇列；後段勾選是歷史
+   工作記錄，不得用來推算總完成度。
+6. `docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md`：時間序列證據紀錄；
    較晚的勘誤優先於較早的內容。
+
+### 防止重複反組譯
+
+- 動手分析一個 `FD2.EXE` 位址前，必須先查 `58` 的「不要重做」索引、
+  `00-index.md` 及 `docs/data/ida/`／`docs/data/fd2_*`。raw exporter 仍標
+  `unknown`、handoff 舊段落仍列待辦，或工作階段找不到記憶，都不能單獨觸發重做。
+- 已閉合位址只有四種情況可重開：輸入雜湊不同、原始指令／跳表直接反證、
+  同狀態執行結果矛盾，或主證據缺少它聲稱已具備的 writer／consumer。重開時須在
+  `58` 記錄原因與取代關係。
+- 新成果分別標記 `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`、`PLAYER-E2` 或
+  `BLOCKED`；不得再用沒有層級的「完成」或單一 `[x]` 橫跨整個子系統。
+- 目前的覆蓋統計必須由可重跑工具產生，並在 `58` 記錄命令、輸入與日期；其他
+  文件只能引用該矩陣，不能各自保存會漂移的 handler、節點或阻擋數。歷史數字
+  若因追溯需要保留，必須在同段標示日期、已失效及目前入口。
 
 ## README 文化保存與復原規則
 

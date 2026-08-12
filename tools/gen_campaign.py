@@ -89,8 +89,9 @@ turn/group 欄位**——它跟「第幾回合誰增援」無關。
 scenario stub(chNN.json,ch2-30 本輪新生成,見 build_scenario_stub()):
   - party:沿用 ch01.json 的 4 人數值/spells(index 對齊,不做逐章成長)。
   - deploy_cells:優先取 mapN_units.json 的 own_deploy(= FDFIELD 出場位置資源
-    portrait==0 格,tools/export_units.py 萃取,map0 版本已與人工核對過的 ch01.json
-    完全吻合——ground truth)。own_deploy 部分地圖有重複座標/與真實單位重疊
+    由 control 的 enemy_ally_total/own_deploy 數量切出的尾端位置；原版 0x1088D
+    不讀第三個 raw key)。map0 版本已與人工核對過的 ch01.json 完全吻合。
+    own_deploy 部分地圖有重複座標/與真實單位重疊
     (資料本身如此,非解析 bug),先去重+濾重疊,不足 4 格再用 spiral 保底搜尋
     (見 pick_deploy_cells());三層資料來源標記 metadata / metadata+fallback_spiral。
   - initial_groups:units.json 全部真實 group(**排除 group==255**——實測每張圖的
@@ -381,7 +382,7 @@ def spiral_offsets(max_r: int):
 def pick_deploy_cells(
     own_deploy: list[dict], occupied: set[tuple[int, int]], w: int, h: int, n: int
 ) -> tuple[list[tuple[int, int]], str]:
-    """從 mapN_units.json 的 own_deploy(FDFIELD 出場位置,portrait==0 格)挑 n 個部署格。
+    """從 mapN_units.json 的 own_deploy（FDFIELD 宣告的尾端位置）挑 n 個部署格。
 
     own_deploy 部分地圖本身就有重複座標,或座標與「全開」後的真實單位重疊
     (見檔頭說明,不是解析錯誤)。優先去重+濾重疊+界內取滿 n 個(source='metadata');

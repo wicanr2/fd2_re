@@ -1,7 +1,8 @@
 # 炎龍騎士團2 逆向工程知識庫 — 索引(問題導向路由)
 
 > 《炎龍騎士團2》(Flame Dragon Knight 2),漢堂國際 1995,DOS / DOS4GW 保護模式。
-> 由逆向工程逐輪累積。**每輪 RE 發現與反思都寫進這裡**;後輪推翻前輪時回去修正/刪除,不堆矛盾。
+> 由逆向工程逐輪累積。本檔只負責把問題路由到主證據；現況與逐輪反思分別寫入
+> `58` 覆蓋矩陣、`91` 工作佇列與 `99` 歷史反思，不再把同一結論複製到每份文件。
 >
 > **用法**:先看下面「§A 問題 → 查哪份」路由表定位;§B 完整文件清單;§C 機器可讀資料(別忘了用);§D 還原 chNN.json 工作流。
 >
@@ -11,13 +12,27 @@
 > (反組譯 doc47/50、dosbox doc48、青衫、影片、FDFIELD 直讀)。不知道就先 RE 拿真值,拿不到就誠實停,不准猜。
 > (BeatRunner 外推 pan 值→越改越偏的教訓;驗收對 reference 實測非「測試綠」,規則 65。)
 
-> **進度入口**：整體完成度先看根目錄 [`README.md`](../../README.md) 狀態表，再看 `56` SDD、`57` UI evidence matrix、
-> `42` gap audit、`91` worklist。`SESSION-HANDOFF-*` 是歷史 provenance，不是目前工作指令。
+> **進度入口**：整體覆蓋與下一個缺欄位先看
+> [`58-fd2-exe-re-coverage.md`](58-fd2-exe-re-coverage.md)，再依問題讀 `56` SDD、
+> `57` UI evidence matrix 與 `91` worklist。根目錄 [`README.md`](../../README.md)
+> 是對外摘要；`SESSION-HANDOFF-*` 是歷史 provenance，不是目前工作指令。
 > 本索引與其他專題文件是證據路由，不是「已完成全遊戲」清單。
 
-> **文件裁決順序（2026-07-27）**：整體進度只看根目錄 README 的狀態表；raw ABI 是否可接線看 `56` SDD，
-> UI 證據看 `57`，玩法差距看 `42`，逐項工程狀態看 `91`。`90`、`30`、`51`、`99` 與
+> **文件裁決順序（2026-08-12）**：整體 RE／資料／執行期／E2 分層狀態看 `58`；
+> raw ABI 與系統契約看 `56`；UI 證據看 `57`；有效下一步看 `91`。`42` 是較早的
+> 落差稽核，仍可作專題線索但不再另算總完成度。`90`、`30`、`51`、`99` 與
 > `SESSION-HANDOFF-*` 保留歷史 provenance；其中的「下一輪」「全章可玩」「已完成」等字樣不覆蓋現況。
+
+### 現況文件與歷史文件
+
+| 需求 | 唯一入口 | 不可取代它的文件 |
+|---|---|---|
+| 判斷是否還要 RE、缺實作還是缺 E2 | [`58` 覆蓋矩陣](58-fd2-exe-re-coverage.md) | handoff、raw exporter 的 `unknown` 統計 |
+| 系統架構、ABI 與證據 gate | [`56` SDD](56-fd2-remake-sdd.md) | 舊 WBS、聊天摘要 |
+| 玩家可見 UI 與畫面差距 | [`57` UI 矩陣](57-ui-evidence-matrix.md) | README 圖片、單一 screenshot |
+| 下一批可執行工作 | [`91` worklist](91-worklist.md) 檔首有效佇列 | 檔內歷史輪次、`90` plan |
+| 位址／位元組主證據 | `docs/data/ida/`、`docs/data/fd2_*` | 自訂名稱、handoff 重述、generated binding |
+| 歷史錯誤形成與勘誤 | [`SESSION-HANDOFF`](SESSION-HANDOFF-2026-07-06.md)、[`99`](99-reflections-log.md) | 現況矩陣 |
 
 ---
 
@@ -90,6 +105,7 @@
 ### 專案管理
 | | 查 |
 |---|---|
+| 整體 RE／資料／執行期／E2 覆蓋與「是否重做」 | **`58`**（唯一現況矩陣） |
 | 這輪做什麼 / 待辦 | `91`(worklist) |
 | 逐輪反思 / 踩雷 | `99`(reflections) |
 | 計畫 | `90` |
@@ -107,7 +123,7 @@
 `36`SFX · `37`法術特效對映 · `38`編輯器設計 · `39`ANI.DAT AFM · `40`說話者→頭像查表 · `41`打包 ·
 `42`RE-vs-remake稽核 · `44`第一章對照 · `45`職業名錯位 · `46`第一章開場時間軸 · `47`序章handler全轉錄 ·
 `48`dosbox-x debugger · `49`char id→角色名 · `50`**過場機制總表(唯一主檔)** · `51`試玩落差R2 · `52`戰場分鏡+兩套系統 · `53`START→ch1回合1 RE來源表 · `54`acting實測原始記錄(機制見`50`) · `55`草地走位量測 ·
-`56` FD2 remake SDD（UI／campaign／證據 gate） · `57` UI evidence matrix · `90`計畫 · `91`worklist · `99`反思
+`56` FD2 remake SDD（UI／campaign／證據 gate） · `57` UI evidence matrix · `58` FD2.EXE RE／remake 覆蓋矩陣 · `90`計畫 · `91`worklist · `99`反思
 
 (缺號 33/34/43 = 曾用後併入他篇或未建。)
 

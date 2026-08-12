@@ -1948,6 +1948,41 @@ func TestCompileChapter27PreUsesNativeStagingPushOrder(t *testing.T) {
 	}
 }
 
+func TestCompileChapter27PreBindingClosesExactLateGameOwner(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch27_pre.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(issues) != 0 {
+		t.Fatalf("ch27_pre issues=%#v", issues)
+	}
+	if len(beats) == 0 || beats[0].Op != "runtime_context" || beats[0].RuntimeContext == nil ||
+		beats[0].RuntimeContext.SlotCount != 60 || !beats[0].RuntimeContext.StoryViewport {
+		t.Fatalf("ch27_pre runtime context=%#v", beats)
+	}
+	deactivations := 0
+	var transition Beat
+	var reactivation Beat
+	for _, beat := range beats {
+		switch beat.Op {
+		case "deactivate_unit":
+			deactivations++
+		case "indexed_transition":
+			transition = beat
+		case "reactivate_nonzero_hp":
+			reactivation = beat
+		}
+	}
+	if deactivations != 20 || reactivation.Source != "0x33cea" || reactivation.Count != 20 {
+		t.Fatalf("ch27_pre deactivate/reactivate=%d/%#v", deactivations, reactivation)
+	}
+	if transition.Source != "0x33ce2" || transition.IndexedTransition == nil ||
+		transition.IndexedTransition.CursorSource != "native_relative_cursor" ||
+		transition.IndexedTransition.CursorXOffset != 6 || transition.IndexedTransition.CursorYOffset != 5 {
+		t.Fatalf("ch27_pre indexed transition=%#v", transition)
+	}
+}
+
 func TestCompileChapter28PreLowersStagingHelper(t *testing.T) {
 	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch28_pre.json")
 	if err != nil {
@@ -1955,6 +1990,22 @@ func TestCompileChapter28PreLowersStagingHelper(t *testing.T) {
 	}
 	if len(issues) != 0 {
 		t.Fatalf("ch28_pre issues=%#v", issues)
+	}
+	if len(beats) == 0 || beats[0].Op != "runtime_context" || beats[0].RuntimeContext == nil ||
+		beats[0].RuntimeContext.SlotCount != 76 || !beats[0].RuntimeContext.StoryViewport {
+		t.Fatalf("ch28_pre runtime context=%#v", beats)
+	}
+	var load Beat
+	for _, beat := range beats {
+		if beat.Op == "loadch" {
+			load = beat
+			break
+		}
+	}
+	if load.LoadCH == nil || load.LoadCH.Chapter != 28 || load.LoadCH.Map != "assets/maps/map28" ||
+		load.LoadCH.Roster != "assets/maps/map28/map28_units.json" || load.LoadCH.SlotCount != 76 ||
+		load.LoadCH.PartyScenario != "assets/scenarios/ch29.json" {
+		t.Fatalf("ch28_pre loadch owner=%#v", load.LoadCH)
 	}
 	var staging []Beat
 	for _, beat := range beats {

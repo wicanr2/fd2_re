@@ -3,12 +3,12 @@
 
 組合三方資料:
   FDFIELD 控制段(parse_field):每單位 camp/raw_unit_key/race/cls/lv/group
-  FDFIELD 出場段(parse_field positions):(X, Y, raw position key；0=己方部署格)
+  FDFIELD 出場段(parse_field positions):(X, Y, raw position key)
   EXE 單位表(docs/data/exe_tables/unit.json):各 (race,cls) base hp/mp/ap/dp/dx/mv/ex
 
 輸出 <out>/map<N>_units.json:
   { "map","w","h",
-    "own_deploy":[{x,y}...],                       # 己方可部署格(肖像==0)
+    "own_deploy":[{x,y}...],                       # 控制表宣告的尾端部署位置
     "units":[ {camp,cls,cls_name,lv,hp,mp,ap,dp,hit,ev,crit,mv,ex,portrait,x,y} ... ] }
 
 數值:以 (race,cls) 查 EXE base;查不到則用 race 任一 cls 近似,再不到給保底值。
@@ -180,6 +180,29 @@ def base_stats(exe, race, cls):
     return {"hp": 20, "mp": 0, "ap": 5, "dp": 2, "dx": 1, "mv": 4, "cls_name": f"r{race}c{cls}"}
 
 
+def own_deploy_cells(info):
+    """Project the exact deployment tail consumed by native ``0x1088D``.
+
+    The position table contains one record for every FDFIELD unit, followed by
+    the number of player deployment records declared at control byte ``+1``.
+    Native ``0x1088D`` starts at ``2 + 6*enemy_ally_total`` and consumes that
+    exact count; it reads only X/Y and does not filter the third word.  Keeping
+    the count boundary explicit also prevents story maps whose unit-position
+    record happens to have raw key zero from acquiring a fabricated deploy cell.
+    """
+    positions = info.get("positions", [])
+    unit_count = info.get("enemy_ally_total")
+    deploy_count = info.get("own_deploy")
+    if not isinstance(unit_count, int) or not isinstance(deploy_count, int) or unit_count < 0 or deploy_count < 0:
+        raise ValueError("FDFIELD deployment counts are missing or invalid")
+    end = unit_count + deploy_count
+    if len(positions) != end:
+        raise ValueError(
+            f"FDFIELD positions count {len(positions)} != units {unit_count} + own_deploy {deploy_count}"
+        )
+    return [{"x": row[0], "y": row[1]} for row in positions[unit_count:end]]
+
+
 def main(argv):
     if len(argv) < 4:
         print(__doc__); return 1
@@ -193,9 +216,9 @@ def main(argv):
         native_tables = json.load(open(argv[4], encoding="utf-8"))
 
     # positions[i] 與 control row index 對齊；第三個 word 的完整語意仍保留
-    # 為 raw position key。值 0 是己方部署格的已驗證篩選條件。
+    # 為 raw position key。部署區由控制表數量切分，不能用 raw key 猜測。
     positions = info.get("positions", [])           # [X,Y,raw position key]
-    own_cells = [{"x": x, "y": y} for (x, y, p) in positions if p == 0]
+    own_cells = own_deploy_cells(info)
 
     units = []
     for i, u in enumerate(info["units"]):

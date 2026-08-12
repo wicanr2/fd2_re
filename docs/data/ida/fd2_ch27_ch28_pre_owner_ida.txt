@@ -1,0 +1,108 @@
+# FD2 玩家第 28／29 戰前置處理器擁有者與部署位置證據
+
+## 輸入、工具與位址空間
+
+- 輸入：`FD2.EXE`，357074 bytes。
+- MD5：`b97caf2239a27a896069d03549d96e1e`。
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 工具：使用者合法提供的 IDA Pro 9.4，透過
+  `fd2-ida-authorized-local` Docker 映像執行；Capstone 5 的
+  `fd2-cap-local` 只作第二套指令交叉驗證。
+- 本檔的 EXE 位址皆為 IDA flat loader 的線性位址。FDFIELD 位移另列為
+  資源內位移，不與 EXE 線性位址混用。
+- IDA 內未以推測名稱覆蓋原始函式／全域名稱；以下語意是帶分級的外部附註。
+
+## 分派表與 LOADCH 擁有者（已證實）
+
+主流程 `0x25E3A` 依 raw chapter index 呼叫位於 `0x51D71` 的前置處理器表。
+IDA 直接讀出的相鄰表項為：
+
+```text
+index 26 -> 0x33AF1
+index 27 -> 0x33C9D
+index 28 -> 0x33DBA
+index 29 -> 0x33E3C
+```
+
+`0x205DA` 讀取 `[0x53C03]` 後呼叫 `0x1088D(chapter)`；`0x1088D` 同時選擇
+`FDTXT_(chapter+1)` 與 `FDFIELD_(3*chapter+0/1/2)`。所以：
+
+| raw index | 前置處理器 | 玩家戰役 | 地圖／文字 |
+|---:|---:|---:|---|
+| 27 | `0x33C9D` | 第 28 戰 | map27／`FDTXT_028` |
+| 28 | `0x33DBA` | 第 29 戰 | map28／`FDTXT_029` |
+| 29 | `0x33E3C` | 第 30 戰 | map29／`FDTXT_030` |
+
+這項對應是**已證實**。舊重製把 `0x33DBA` 接到 `story_ch28`，造成處理器、
+地圖與文字索引錯一章；現已改為 `story_ch28 -> ch27_pre`、
+`story_ch29 -> ch28_pre`。`0x33E3C` 仍含未完成的 `0x22253` indexed 演出，
+所以第 30 戰前置處理器維持失敗即關閉，不因相鄰表項而猜測接線。
+
+## `0x33C9D`：玩家第 28 戰前置流程（已證實）
+
+- `0x33CA8`：呼叫 `0x205DA`，載入 raw index 27 的 map27／`FDTXT_028`。
+- `0x33CB1` 起的固定迴圈：對 slots 0..19 呼叫 `0x32975`，將 record byte
+  `+5` 寫成 1。
+- `0x33CC4`：`0x135DD(29,15)`。
+- `0x33CE2`：呼叫 `0x24618`；前兩個動態參數來自
+  `[0x53AB9]+6`、`[0x53ABD]+5`，另帶 radius 10／step 8。
+- `0x33CEA..0x33D13`：再掃 slots 0..19；僅當 word `+0x40 != 0` 時把
+  byte `+5` 清為 0。`+0x40=current HP` 已由血條與傷害寫入端獨立閉合，
+  因此重製採受限的 `reactivate_nonzero_hp` 原語；它只接受本 call site、
+  固定 20 筆與既有 raw byte `+5` 來源，缺件時整批不改寫。
+- `0x33D3D`、`0x33D47`、`0x33D51`：三次 acting 85。
+- `0x33D7D`：`FDTXT_028` string 0；count-aligned 對應 `ch28.json`
+  scene 0 的 6 句。
+- `0x33D95`／`0x33DA3`：`0x35822` 依序產生 group 6 於 `(0,16)`、
+  group 7 於 `(7,16)`，最後 focus slot 0。
+
+上述直接指令與 fixed loop 是**已證實**；grid×24 的重製 camera pixel 轉換是
+既有引擎映射，不取代 raw grid 值。
+
+## `0x33DBA`：玩家第 29 戰前置流程（已證實）
+
+- `0x33DC4`：呼叫 `0x205DA`，載入 raw index 28 的 map28／`FDTXT_029`。
+- `0x33DD7`：`0x135DD(9,56)`；`0x33DE1`：acting 86。
+- `0x33E08`：`FDTXT_029` string 7；`0x33E16`：
+  `0x35822(group=8,y=19,x=9)`。
+- 共享尾端 `0x33133`：`FDTXT_029` string 8，接著 reset pose／focus 0。
+- map28 group 8 有 56 筆，因此 runnable binding 明列
+  `spawn_groups:{8:56}`；實際產生數不同即停止，不能再把缺群組當無作用。
+
+## 部署位置表（已證實）
+
+`0x1088D` 先讀 control byte `+2` 為 `enemy_ally_total`，再令 positions 指標為
+`2 + 6*enemy_ally_total`；接著依 control byte `+1` 的 `own_deploy` 次數循環。
+每筆只讀 `x` 與 `y` word，沒有讀第三個 `raw_key`。因此部署位置必須由數量
+切出尾端，不能用 `raw_key == 0` 過濾。
+
+map27：
+
+- control `FDFIELD_082.bin`：MD5 `92f15d7f11feddef2d6a430e75479e44`，
+  SHA-256 `f843ec34677364c99050ee955ef447148fc71e29758276a48028290df0ef2395`。
+- positions `FDFIELD_083.bin`：MD5 `20f32483e2ae48c943c715e2f7f5a08b`，
+  SHA-256 `c8cddf2952fe16c057f38e458ec887aa7c77cc677c07a221147ee7ca1601908b`。
+- `enemy_ally_total=60`、`own_deploy=20`、positions header 80；尾端 20 筆
+  raw key 恰為 0，所以舊匯出結果偶然正確。
+
+map28：
+
+- control `FDFIELD_085.bin`：MD5 `600e972b147b086f7bbd6c3f2aa2dde8`，
+  SHA-256 `a01c382cc898063359afad816430f81629d4978feca2df93a7741f9aa13252fd`。
+- positions `FDFIELD_086.bin`：MD5 `c4804b973a7ac5764f52e8e871e968ce`，
+  SHA-256 `61b7a3f5bbdcfae08e42e4d4ea8b0e1f6376b3128454067948e77fb855e28e05`。
+- `enemy_ally_total=76`、`own_deploy=20`、positions header 96；rows 76..79
+  是 `(15,63,0x60)`，rows 80..95 是 `(15,63,0)`。原版仍循環讀取全部
+  20 筆 X/Y；舊 exporter 只留下 16 筆是工具錯誤。
+- map31／map32 的 `own_deploy=0`，但單位位置區內分別有一／兩筆 raw key 0；
+  舊 exporter 反而捏造了部署格。數量切尾端同時修正這兩個反例。
+
+## 現況與證據邊界
+
+- 編譯器、處理器播放與 campaign graph 已用決定性回歸覆蓋正確 owner、
+  slot count、兩軸游標偏移、20 筆 HP gate、group 6／7／8 cardinality，並從
+  `story_ch28`／`story_ch29` 走到相應正式戰鬥節點。
+- 這是 E1 的可執行資料流與畫面狀態驗證，不是未修改一般玩家 E2，也不代表
+  DOS 與重製逐像素一致。
+- 第 30 戰 `0x33E3C` 的 `0x22253` 演出、完整 late-game 原版一般玩家擷取，
+  以及場景時間差／像素差仍是獨立缺口；不得用本檔的 owner closure 宣稱完成。

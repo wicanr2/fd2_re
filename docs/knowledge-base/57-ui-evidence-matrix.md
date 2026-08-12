@@ -1,5 +1,10 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+> **文件責任（2026-08-12）**：本檔是玩家可見 UI、輸入、畫面與 E2 差距的唯一
+> 狀態表。整體 `FD2.EXE` 反組譯、可編輯資料與正式執行期覆蓋改由
+> [`58-fd2-exe-re-coverage.md`](58-fd2-exe-re-coverage.md)統一判定；不能用本檔
+> 某個畫面已達 E2，推成整個子系統或戰役完成。
+
 > 這是 SDD 的第一份可執行盤點，不是「已還原」宣告。行號以本輪 `remake/cmd/fd2/main.go` 為準；`partial`／`missing` 必須先補 E0/E1/E2 證據才可改成 verified。
 
 ## 2026-07-28 visual-parity audit
@@ -85,12 +90,10 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 [`fd2_map_hud_geometry_ida.txt`](../data/ida/fd2_map_hud_geometry_ida.txt)。這是 ch01
 單一狀態的範圍 E2 候選，不可外推至其他章節或完整操作界面。
 
-上表百分比是各欄已檢視切片的工程估計；town/shop已明列為ch02 scoped，
-不能把它們當成23 town／69 shop的coverage denominator。綜合未驗收章節與
-缺失state後，整體仍估約 **40–45%**，因此現階段應對外寫成「操作界面
-視覺還原約 40–45%」，而不是「原版視覺 parity 已完成」。如果評的是
-原始圖檔／字型／動畫／indexed codec 可解碼程度，則可合理估為 75–85%；
-如果評的是可操作 state flow，約 50–55%；這三種指標不可互相替代。
+舊版曾把少數已檢視切片換算成整體百分比；這種算法沒有完整的畫面狀態、章節與
+玩家路徑分母，現已撤回。town／shop 的 ch02 同狀態證據不能外推為 23 個 town
+或 69 個 shop 狀態的覆蓋率，資產可解碼也不能換算成操作界面完成度。現況只能以
+下表逐列的 `partial`／E0／E1／E2 狀態陳述，不再對外提供單一整體百分比。
 
 外部交叉證據只用來辨認原版畫面結構，不取代本機 DOSBox oracle：
 
@@ -129,7 +132,7 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 | UI-04 target/range | `0x1cff0` + `0x149f8` 證實 command record `+3/+4/+6` 參與 target-candidate geometry；`0x1bbdc` item case 0 的 two-stage targets、observed type5–24 effect dispatch 已閉合。item entry materialize `row[+0x12]+2`；first selector return後grid reset且selector回1。type23 destination把literal target code6傳給`0x115b6`，不是global selector6；兩層取消都回item panel。remake已接tracked transaction、occupancy/class/race/29×20 cost/terrain gate | partial | native argument↔weapon min/max mapping、AOE/LOS、不可用目標灰化、indexed item/effect presentation；global selector6的production owner仍待 |
 | UI-05 dialog | dialog Draw 約 3590–3686；`dlgAdvance` 有 page/scroll state；ch01 original oracle `docs/figures/ch01-dialogue-original-dosbox.png` 固定左肖像下框、文字、page indicator。重製端另以可編輯序章腳本擷取 [`dialogue-remake-runtime.png`](../figures/dialogue-remake-runtime.png)（640×400，E1）；縮放至320×200與原版比較 AE=60414，僅證明重製端消費端（runtime consumer），未達同狀態 E2 | partial | 每種上／下框與肖像錨點、控制碼渲染器（control-code renderer）、原生裁切與原版同狀態差分 |
 | UI-06 HUD | native map HUD `0x1acf3` 的 panel→terrain→AP→DP→optional unit icon→HP 已由 `BlitNativeMapHUD→ComposeNativeFrame` 接入 ch01 production full frame；display gates、persistent anchor、LMI1 #130／hex #0x83/#0x84、digit banks與FDICON selector均有 regression。`0x11cfa`證實HUD base是`work+0x8088`。FD2.SAV 初始快照為 camera `(1,13)`／absolute cursor `(8,17)`／visible `(7,4)`；原版錄影434.5秒的較晚比較幀則與remake對齊 `(1,13)`／`(8,15)`／`(7,2)`、tree icon及`A -05/D +10`。全 33 圖現具雜湊驗證後同步的 composition byte+3 與 terrain control；ch01／ch26／ch27 已改用 `native_map_hud_inherited`：gate A 由 custom save／native chapter restore 保存，anchor 在程序內持續，gate B 只接受已證實的 controller entry 1。event63 production regression 已由正式 JOIN table 提供 persistent raw record 並進 indexed path；#22仍只在 native admission 失敗時 fallback | partial | 除 ch26／ch27 E1 切片外，ch02+逐章動態 view/gates/anchor provenance、ch27 未修改一般玩家／CONTINUE 同一 roster/event state 的 pixel diff、`0x12c0d` exact raw lookup predicate/order；raw globals高階名稱仍不猜 |
-| UI-07 postbattle | `campInput` battle result 約 2394；campaign node 可表達 post node；`campaign_full` 30 戰 transition matrix 已逐列展開。主迴圈直接指令、scenario `chNN→map(N-1)` 與 handler `chNN_post→set_chapter(N+1)` 共同證實玩家戰鬥 N 使用 raw `ch(N-1)_post`。13個既有同號錯接已全數清除；目前稽核為19 active／5 blocked。raw ch06→玩家ch07 已閉合 map6 六格 selector0 event26 的 raw `+6` gate、slots9..27 mode寫入與 state16 producer；enemy turn10 event25 只有在 state16==1 時才建立34→44 runtime、寫state17，戰後再經slot43 raw gate、唯一JOIN12 persistent record進 `town_ch08`。未踏格反例維持34 slots；先前「第10回合必定增援」與96-slot空白 frontier斷言均已撤回。raw ch07→玩家ch08 已撤回無 producer 的初始 groups1／8／9／10，正常入口為party10＋group0共29 slots；event27回合2..7逐組追加兩筆，戰後接受29..41奇數 frontier，依序執行layout、ACTING33／34、完整全黑、JOIN5、sync與chapter8，再進 `town_ch09`。raw ch09→玩家ch10 現保留60／61兩種強推論 frontier，依原始位址執行 DAC delta 0→63 淡出、sparse record/view patch、delta 64→0 淡入、FDTXT_010 index4／5、ACTING37、JOIN11／6、sync與chapter10，再進 `town_ch11`。raw ch15→玩家ch16 現正式接入76-slot persistent-first topology，四條 raw branch（round>18、inactive>4、word42<0x140、JOIN18 arm）均以 Docker/Xvfb E1 regression 進`town_ch17`；raw ch16→玩家ch17現以 map16的兩條 roster_has(18) branch接入layout、ACTING50–53、FDTXT_017 index5–8、JOIN16，60／61→61／62 frontier並進`town_ch18`，另驗證save/load；raw ch17→玩家ch18 現以 map17的55-slot runtime接入layout、ACTING56／57／58、FDTXT_018 index7–10、JOIN21／7，進`town_ch19`並驗證save/load；raw ch19→玩家ch20現以固定record0＋選15人和map19 group0建立83-slot入口，round15執行group1→84與JOIN28，round16精確略過，兩路共同JOIN25後進`town_ch21`。raw ch12→玩家ch13由table bytes固定interior entry `0x2389f`並接`town_ch14`。raw ch05／ch25／ch27則分別屬玩家ch06／ch26／ch28；第27戰天空之鑰成功分支不重用raw ch27。玩家第22、23、24、25、29戰仍 fail-closed；所有已接切片仍缺未修改一般玩家 DOSBox E2，因此不宣稱完整 parity。位址證據見[`fd2_ch16_post_ida.txt`](../data/fd2_ch16_post_ida.txt)、[`fd2_ch15_post_ida.txt`](../data/fd2_ch15_post_ida.txt)、[`fd2_ch17_post_ida.txt`](../data/fd2_ch17_post_ida.txt)、[`fd2_ch19_post_ida.txt`](../data/ida/fd2_ch19_post_ida.txt)及各切片證據檔。 | partial | 以原版 handler offset／DOSBox input 差分核對每章是否進 town/shop/rest/preparation/ending；玩家第22、23、24、25、29戰仍 fail-closed，第7／8／10／16／17／18／20戰尚缺一般玩家DOSBox E2；ch00 `0x3241f` 尚缺 raw FDICON key，仍是明示的 RGBA E1 近似 |
+| UI-07 postbattle | `campInput` battle result 約 2394；campaign node 可表達 post node；`campaign_full` 30 戰 transition matrix 已逐列展開。主迴圈直接指令、scenario `chNN→map(N-1)` 與 handler `chNN_post→set_chapter(N+1)` 共同證實玩家戰鬥 N 使用 raw `ch(N-1)_post`。13個既有同號錯接已全數清除；目前稽核為20 active／4 blocked。raw ch06→玩家ch07 已閉合 map6 六格 selector0 event26 的 raw `+6` gate、slots9..27 mode寫入與 state16 producer；enemy turn10 event25 只有在 state16==1 時才建立34→44 runtime、寫state17，戰後再經slot43 raw gate、唯一JOIN12 persistent record進 `town_ch08`。未踏格反例維持34 slots；先前「第10回合必定增援」與96-slot空白 frontier斷言均已撤回。raw ch07→玩家ch08 已撤回無 producer 的初始 groups1／8／9／10，正常入口為party10＋group0共29 slots；event27回合2..7逐組追加兩筆，戰後接受29..41奇數 frontier，依序執行layout、ACTING33／34、完整全黑、JOIN5、sync與chapter8，再進 `town_ch09`。raw ch09→玩家ch10 現保留60／61兩種強推論 frontier，依原始位址執行 DAC delta 0→63 淡出、sparse record/view patch、delta 64→0 淡入、FDTXT_010 index4／5、ACTING37、JOIN11／6、sync與chapter10，再進 `town_ch11`。raw ch15→玩家ch16 現正式接入76-slot persistent-first topology，四條 raw branch（round>18、inactive>4、word42<0x140、JOIN18 arm）均以 Docker/Xvfb E1 regression 進`town_ch17`；raw ch16→玩家ch17現以 map16的兩條 roster_has(18) branch接入layout、ACTING50–53、FDTXT_017 index5–8、JOIN16，60／61→61／62 frontier並進`town_ch18`，另驗證save/load；raw ch17→玩家ch18 現以 map17的55-slot runtime接入layout、ACTING56／57／58、FDTXT_018 index7–10、JOIN21／7，進`town_ch19`並驗證save/load；raw ch19→玩家ch20現以固定record0＋選15人和map19 group0建立83-slot入口，round15執行group1→84與JOIN28，round16精確略過，兩路共同JOIN25後進`town_ch21`。raw ch12→玩家ch13由table bytes固定interior entry `0x2389f`並接`town_ch14`。raw ch05／ch25／ch27則分別屬玩家ch06／ch26／ch28；第27戰天空之鑰成功分支不重用raw ch27。玩家第22戰已提升為 E1；玩家第23、24、25、29戰仍失敗即關閉；所有已接切片仍缺未修改一般玩家 DOSBox E2，因此不宣稱完整一致。位址證據見[`fd2_ch16_post_ida.txt`](../data/fd2_ch16_post_ida.txt)、[`fd2_ch15_post_ida.txt`](../data/fd2_ch15_post_ida.txt)、[`fd2_ch17_post_ida.txt`](../data/fd2_ch17_post_ida.txt)、[`fd2_ch19_post_ida.txt`](../data/ida/fd2_ch19_post_ida.txt)及各切片證據檔。 | partial | 以原版 handler offset／DOSBox input 差分核對每章是否進 town/shop/rest/preparation/ending；玩家第22戰已提升為 E1；玩家第23、24、25、29戰仍失敗即關閉，第7／8／10／16／17／18／20／22戰尚缺一般玩家DOSBox E2；ch00 `0x3241f` 尚缺 raw FDICON key，仍是明示的 RGBA E1 近似 |
 > **2026-08-11 勘誤：玩家第22戰已由 fail-closed 提升為 E1 production**。`postbattle_ch22_persist` 現使用 `ch21_post.json` binding，只接受 73／79-slot（group1+2 或 group1+2+3）並實測進入 `preparation_ch23`；66／72-slot、未知 indexed 資產與未修改一般玩家 E2 仍停止。這不改變其他第23／24／25／29戰的 blocked 狀態。
 
 > **2026-08-11 追加勘誤：UI-07 的舊總結已被本段取代。** 玩家第23戰戰前
@@ -148,6 +151,16 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 > `postbattle_*` 提供可見的戰後整理提示；確認後沿 authored `next` 進入既有 town／preparation，
 > 並先同步已物化隊伍。它不猜 JOIN、獎勵、章節或原版分支；未設定旗標的忠實模式仍失敗即關閉。
 > 因此本矩陣的 blocked／E1／E2 分類不因近似路徑而升級。
+
+> **2026-08-12 玩家第 28／29 戰前置 owner 勘誤（E1）：** IDA 分派表與
+> `0x1088D` 資源公式證實 `0x33C9D`（raw index27）屬 `story_ch28`／map27／
+> FDTXT_028；`0x33DBA`（raw index28）屬 `story_ch29`／map28／FDTXT_029。
+> 舊版把後者錯接到前者，導致 map、slot count、party scenario 與 group8 全部
+> 錯一章，現已拆成兩份正式 binding，並由 Docker／Xvfb 走到相應 battle node。
+> map28 部署尾端也由錯誤的 raw-key 篩選 16 筆修為 control 宣告的20筆；map31／
+> map32 的假部署格由1／2修為0。這關閉的是可執行 owner／資料流，不是 DOSBox
+> 一般玩家逐像素 E2；證據見
+> [`fd2_ch27_ch28_pre_owner_ida.txt`](../data/ida/fd2_ch27_ch28_pre_owner_ida.txt)。
 
 | UI-08 town | `0x2cd16/0x2cf71/0x11eb0`；FDOTHER#11/#61/#62背景、#10 label、FDTXT `0x1ef+selection`、FDICON pulse、三variant×六selection座標；23筆raw variant已接production。ch02 postbattle 以 `/tmp` sandbox route patch 走完原版 handler，variant0 [`selection0–5 contact sheet`](../figures/town-hub-six-selections-original-vs-remake.png) 的每格都能和指定 remake pulse 做 raw RGB 整幀 hash 配對。另以固定雜湊原版的修改 LOAD 副本取得 variant1與variant2，兩者正常 selection0–4 都與對應 production node 的指定 pulse 逐幀整幀 AE=0，證據與限制見 [`native_town_variant1_e2.json`](../data/native_town_variant1_e2.json)、[`native_town_variant2_e2.json`](../data/native_town_variant2_e2.json) 及兩張對照圖。input trace另證實 Left/Right wrap、Shift+F1 reveal、Enter進variant5及Escape回selection5；`0x2ce7a/0x2ceac/0x2cef7` 不寫 pulse counter，已刪除方向鍵／secret reveal reset | partial（E1 + ch02 variant0 E2 + variant1/2 selection0–4 modified-LOAD E2） | variant2 selection5 的 BIOS 掃描碼／Enter；未修改一般玩家路徑與其他城鎮 |
 | UI-09 shop | purchase、sell、standalone equip與transfer均有original-resource regression及production owner；strict adapters在raw projection不完整時fail-closed。secret gate保存23筆normal selection與Shift/Ctrl/Alt-F1..F10 BIOS scan；chord只揭露selection5，後續confirm才進variant5。ch02 variant1/3/5 service0 selected phase均與同gold remake整幀AE=0；variant5四service、wrap及Escape→town selection5亦閉合。weapon purchase list四個selection、其後Yes/No、gold0不足金，以及gold1000裝備收件者selection0/cycle1也各自全幀AE=0；該E2使用screenshot-only LOADCH typed-party bootstrap，DX 2/2/1/2是visible HIT/EV與known equipment rows交叉約束的projection、不是直接raw dump。成功動畫裸畫面、尾端DATO第0幀恢復與`0x2d516`扣款odometer已接production；25個原版成功動畫原子樣本及16個扣款原子樣本各有整幀AE=0。正常campaign JOIN→LOADCH typed roster另有ch00→ch02 recipient regression，但不是完整playthrough E2/native FD2.SAV | partial（E1 + ch02 shop menu/purchase-list/confirmation/insufficient/equipment-recipient/success/debit stable E2） | recipient scroll、no-recipient/full、sell/equip/transfer child panel E2；其他章節route/state與native save |

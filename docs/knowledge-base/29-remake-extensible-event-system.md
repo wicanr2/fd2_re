@@ -2,9 +2,9 @@
 
 > **狀態：歷史設計草案，不是原版事件 ABI 或目前 runtime 完成度規格。**
 > 本文保留 DSL 方向供擴充設計參考；原版忠實模式必須以
-> [`56-fd2-remake-sdd.md`](56-fd2-remake-sdd.md)、
-> [`42-re-vs-remake-gap-audit.md`](42-re-vs-remake-gap-audit.md) 與
-> [`91-worklist.md`](91-worklist.md) 的最新 evidence gate 為準。
+> [`58-fd2-exe-re-coverage.md`](58-fd2-exe-re-coverage.md)、
+> [`56-fd2-remake-sdd.md`](56-fd2-remake-sdd.md) 與
+> [`91-worklist.md`](91-worklist.md) 檔首的有效佇列為準；`42` 只保留歷史落差快照。
 > 早期「handler 只管勝負、動作全在 FDFIELD」已被逐章 post/pre handler 的
 > SPAWN/JOIN/PAN/ACT/dialogue/LOADCH call trace 推翻；不得再拿本草案替代
 > hard-coded handler 的逐章轉錄。

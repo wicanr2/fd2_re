@@ -18,7 +18,11 @@
         "addr": "0x33cb2",
         "target": "0x32975"
       },
-      "unit_slot_expr": "ebx"
+      "unit_slot_expr": "ebx",
+      "repeat_hint": {
+        "loop_back_to": "0x33cb1",
+        "limit": 20
+      }
     },
     {
       "op": "pan",
@@ -41,6 +45,17 @@
       "source": {
         "addr": "0x33ce2",
         "target": "0x24618"
+      }
+    },
+    {
+      "op": "reactivate_nonzero_hp",
+      "source": {
+        "addr": "0x33cea"
+      },
+      "unit_slot_expr": "ebx",
+      "repeat_hint": {
+        "loop_back_to": "0x33cea",
+        "limit": 20
       }
     },
     {

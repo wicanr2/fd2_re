@@ -1,6 +1,12 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
 > 本文件是重新開始 remake 前的設計闸門。目標不是把目前能啟動的 Ebiten demo 擴張成更多 placeholder，而是以可追溯的反組譯證據，重建原版的操作介面、戰間流程、資料與腳本引擎。未滿足證據與驗收條件的語意保持 fail-closed。
+>
+> **文件責任（2026-08-12）**：本檔保存系統契約、ABI、證據 gate 與精確設計，
+> 不再從四千行歷史追加段落推算整體進度。最新「原版證據→可編輯資料→正式
+> 執行期→玩家 E2」狀態與 canonical evidence，統一看
+> [`58-fd2-exe-re-coverage.md`](58-fd2-exe-re-coverage.md)。本檔後段的日期條目是
+> 設計沿革；與 `58` 衝突時先核對主證據，再更新兩者，不能重開整個子系統。
 
 ## 1. 目標與現況判定
 
@@ -11,11 +17,18 @@
 - UI 操作語意以原版為目標：游標、action overlay／command grid、射程／目標、對話框、狀態欄、商店、教會和戰後節點均須有可見且可測的操作入口；未取得 E0/E1/E2 證據的現有 UI 只算 approximation。
 - native indexed renderer 與現代 RGBA/Ebiten 顯示層分離；未完成 native ABI 時不得用泛用淡出、PNG 或空白畫面冒充完成。
 
-### 1.2 現況（以 2026-08-09 working tree 與程式碼為準）
+### 1.2 現況（2026-08-12 摘要；詳細狀態以 `58` 為準）
 
 目前不是「沒有程式」，而是「有一個可跑的垂直切片，尚未達 remake」：`remake/cmd/fd2/main.go` 仍承擔 scene state、輸入 dispatch、戰鬥 UI、對話、town、shop、church、preparation 與 Draw；`internal/battle`、`internal/campaign`、`internal/ending`、`internal/figani` 已有可測的部分 primitive。這些 primitive 不等於原版 UI 或完整 campaign。
 
-已存在但必須重新驗收：story/cutscene BeatRunner、dialog 分頁／捲動、campaign node、persistent roster、shop buy/sell/equip、church revive/class-change、preparation quota、indexed ending prefix。明確缺口包括：原版選單完整 dispatch、可見的回合結束流程、武器射程、完整 spell effects/演出、HUD 避讓、完整 UI sprite/layout、所有 postbattle branch、native ending montage。現行戰後稽核為 19 active／5 blocked；玩家第 22、23、24、25、29 戰仍失敗即關閉，已接切片也只達重製端 E1，不能當成一般玩家 E2 或完整 30 章完成。
+已存在但尚未全程驗收：story/cutscene BeatRunner、dialog 分頁／捲動、campaign
+node、persistent roster、shop buy/sell/equip、church revive/class-change、
+preparation quota、敵方 AI 窄 consumer 與 indexed ending prefix。2026-08-12
+實跑戰後 audit 為24節點中20 active／4 blocked；玩家第23、24、25、29戰戰後仍
+失敗即關閉。玩家第22戰戰後與第23戰戰前已提升為 E1，故本檔較早的
+「19 active／5 blocked」及「玩家第22戰仍阻擋」已失效。其餘主要缺口是完整
+玩家指令／法術／物品交易、相同 raw 狀態敵方回合、戰場與戰間 UI、四個
+blocked postbattle、精確終局 renderer／輸入，以及一般玩家 E2；詳見 `58`。
 
 ### 1.3 進度停滯審計（2026-07-27）
 
@@ -225,11 +238,9 @@ map0＋item79 交叉 fixture 固定 score8、`(19,15)`、slot0，屬靜態 E0，
 本輪重新核對的已知更正：`0x16559` 是 DATO mouth-frame／glyph blit caller，`0x4ea2a` 才是 native glyph renderer；`0x2c435 push 0x1e`、`0x2c437 call 0x1088d` 會在 loader 內選 FDTXT archive resource #31，不能把 raw selector `0x1e` 或實體欄位直接命名成 ch30；`0x2c548` 有 `i=0→slot1、i=1→slot0` swap；`0x29164` 第一參數是 party unit index，TAI#3 是 7-byte transparent aux，不是可見台座。這些結論不可再由名稱外推 renderer 語意。
 
 2026-07-28 visual audit correction：codec／原資源 fixture 的完成度不得再
-寫成整體 UI parity。依 12 個主要界面逐項比較 repo DOSBox／錄影 oracle、
-source-rebuild screenshot 與外部原版畫面後，目前 asset/codec 可重現約
-75–85%、可操作 state flow 約50–55%，但玩家操作畫面的視覺還原約
-40–45%。35–40%是同日較早、尚未計入ch02 town/shop indexed production
-與DOSBox E2的初估，已由doc57分項矩陣取代。最大落差仍包括preparation、
+寫成整體 UI parity。當時曾依 12 個主要界面的部分樣本提出三組工程估計，
+但它們沒有完整的章節、畫面狀態與一般玩家路徑分母，現已撤回，不得再當成
+專案完成度。最大落差仍包括preparation、
 loadslots、ending、town variant1、variant2 selection5／未修改玩家路徑與商店其餘
 child panels；不得因ch02已驗
 切片而外推成全章覆蓋。完整分項和證據分級以doc57為準；README 已撤回把 raw `title.png`／
@@ -3325,9 +3336,10 @@ ACTING53、index8、JOIN16、chapter17。共享 call site 的 ACTING immediate
   byte5 或唯一 identity 時仍失敗即關閉。這是 E1 垂直切片，未修改一般玩家
   DOSBox 同狀態 E2、完整第17戰輸入路徑與其餘 blocked 章節仍未完成。
 
-本次稽核後，24 個標準 postbattle 節點為 **19 active／5 blocked**；story/cutscene
-為 121 節點、9 個獨立 script、49 個 handler binding、63 個 fallback。剩餘
-blocked 為玩家第22、23、24、25、29戰；這些統計是覆蓋範圍，不是重製完成百分比。
+這是 2026-08-09 當次稽核快照：24 個標準 postbattle 節點當時為
+**19 active／5 blocked**；後續玩家第22戰已提升為 E1，現況為20 active／4 blocked，
+以 [`58-fd2-exe-re-coverage.md`](58-fd2-exe-re-coverage.md) 為準。這些統計只表示
+節點接線狀態，不是重製完成百分比。
 
 ## 2026-08-09 raw ch21 post 靜態證據（玩家第22戰；尚未接入）
 

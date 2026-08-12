@@ -1,7 +1,8 @@
 # 30 — remake 工作拆解(WBS:模組 / 資料管線 / 衝刺)
 
 > **文件性質**：這是架構與工作包的 WBS 基線，不是即時進度表。`待建`、`⬜` 等標記保留當時
-> 的拆解語境，可能已被後續實作取代；目前狀態請看根目錄 README、`56` SDD 與 `91` worklist。
+> 的拆解語境，可能已被後續實作取代；目前分層狀態請看 [`58`](58-fd2-exe-re-coverage.md)，
+> 系統契約看 `56` SDD，有效下一步只看 `91` worklist 檔首。
 > 文中以`battle_events`、攻略目標與章節跳表「生成原版30關」的說法只代表
 > authored scaffold工作包；它不證明逐章handler、戰後城鎮／整備、persistent
 > roster/save或視覺E2，不能作為忠實模式的evidence authority。

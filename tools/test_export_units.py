@@ -18,6 +18,39 @@ def table(record_size, records):
 
 
 class NativeConstructorProjectionTest(unittest.TestCase):
+    def test_own_deploy_uses_declared_position_tail_without_key_filter(self):
+        info = {
+            "enemy_ally_total": 2,
+            "own_deploy": 3,
+            "positions": [
+                [1, 2, 0],
+                [3, 4, 9],
+                [15, 63, 0x60],
+                [15, 63, 0],
+                [16, 63, 0],
+            ],
+        }
+        self.assertEqual(
+            export_units.own_deploy_cells(info),
+            [{"x": 15, "y": 63}, {"x": 15, "y": 63}, {"x": 16, "y": 63}],
+        )
+
+    def test_story_map_zero_key_inside_unit_region_is_not_deployable(self):
+        info = {
+            "enemy_ally_total": 2,
+            "own_deploy": 0,
+            "positions": [[1, 2, 0], [3, 4, 0]],
+        }
+        self.assertEqual(export_units.own_deploy_cells(info), [])
+
+    def test_own_deploy_rejects_inconsistent_position_count(self):
+        with self.assertRaises(ValueError):
+            export_units.own_deploy_cells({
+                "enemy_ally_total": 2,
+                "own_deploy": 1,
+                "positions": [[1, 2, 0], [3, 4, 0]],
+            })
+
     def test_high_branch_uses_word_plus_two_times_level(self):
         high = [bytearray(10) for _ in range(1)]
         high[0][2:4] = (0x0102).to_bytes(2, "little")

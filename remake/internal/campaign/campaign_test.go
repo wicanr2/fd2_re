@@ -391,8 +391,12 @@ func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 		t.Fatalf("missing sky-key scene label %q absent from ch27 story", missing.Scene)
 	}
 	ch28 := c.Nodes["story_ch28"]
-	if ch28 == nil || ch28.Type != "cutscene" || ch28.HandlerBinding != "assets/cutscenes/bindings/ch28_pre.json" || ch28.Next != "battle_ch28" {
-		t.Fatalf("chapter28 must execute the verified ch28_pre handler: %#v", ch28)
+	if ch28 == nil || ch28.Type != "cutscene" || ch28.HandlerBinding != "assets/cutscenes/bindings/ch27_pre.json" || ch28.Next != "battle_ch28" {
+		t.Fatalf("chapter28 must execute raw-index-27 ch27_pre handler: %#v", ch28)
+	}
+	ch29 := c.Nodes["story_ch29"]
+	if ch29 == nil || ch29.Type != "cutscene" || ch29.HandlerBinding != "assets/cutscenes/bindings/ch28_pre.json" || ch29.Next != "battle_ch29" {
+		t.Fatalf("chapter29 must execute raw-index-28 ch28_pre handler: %#v", ch29)
 	}
 	if badEnding == nil || badEnding.Type != "ending" || badEnding.Text == "" {
 		t.Fatalf("missing sky key must reach an editable bad ending: %#v", badEnding)
@@ -835,6 +839,98 @@ func TestEveryContinuingBattleSyncsBeforeOriginalIntermission(t *testing.T) {
 	}
 }
 
+// TestFullCampaignGraphReachesEndingThroughAllBattles verifies the editable
+// campaign graph only. It deliberately does not claim that native handlers,
+// original assets, or an unmodified player route have been proven here.
+func TestFullCampaignGraphReachesEndingThroughAllBattles(t *testing.T) {
+	c, err := Load("../../assets/scenarios/campaign_full.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	r := NewRunner(c)
+	wantBattles := make([]string, 30)
+	for i := range wantBattles {
+		wantBattles[i] = fmt.Sprintf("battle_ch%02d", i+1)
+	}
+	var gotBattles []string
+	var intermissions []string
+	lastBattle := ""
+	const maxSteps = 400
+
+	for steps := 0; steps < maxSteps; steps++ {
+		n := r.Node()
+		if n == nil {
+			t.Fatalf("step %d reached missing node %q", steps, r.Cur)
+		}
+		if n.Type == "ending" {
+			if r.Cur != "ending" {
+				t.Fatalf("terminal node=%q, want editable ending node", r.Cur)
+			}
+			if !reflect.DeepEqual(gotBattles, wantBattles) {
+				t.Fatalf("battle order=%v, want %v", gotBattles, wantBattles)
+			}
+			if len(intermissions) != 29 {
+				t.Fatalf("intermission count=%d, want 29 (one after each battle except ch30)", len(intermissions))
+			}
+			return
+		}
+
+		current := r.Cur
+		var outcome string
+		switch n.Type {
+		case "battle":
+			gotBattles = append(gotBattles, current)
+			lastBattle = current
+			outcome = "win"
+		case "town":
+			visible := r.Visible()
+			for i, option := range visible {
+				target := c.Nodes[option.To]
+				if target != nil && target.Type == "preparation" {
+					outcome = fmt.Sprintf("opt%d", i)
+					break
+				}
+			}
+			if outcome == "" {
+				t.Fatalf("town %q has no visible preparation departure", current)
+			}
+		case "preparation":
+			outcome = "confirm"
+		case "inventory_recipe":
+			outcome = "crafted"
+		case "inventory_gate":
+			outcome = "present"
+		case "choice":
+			visible := r.Visible()
+			for i, option := range visible {
+				if target := c.Nodes[option.To]; target != nil && target.Type != "ending" {
+					outcome = fmt.Sprintf("opt%d", i)
+					break
+				}
+			}
+			if outcome == "" {
+				t.Fatalf("choice %q has no visible continuing branch", current)
+			}
+		case "story", "cutscene", "event", "shop", "church":
+			outcome = ""
+		default:
+			t.Fatalf("step %d reached unsupported graph node %q type=%q", steps, current, n.Type)
+		}
+
+		next := r.Advance(outcome)
+		if n.Type == "town" || n.Type == "preparation" {
+			if lastBattle != "" {
+				intermissions = append(intermissions, current)
+				lastBattle = ""
+			}
+		}
+		if next == "" {
+			t.Fatalf("step %d ended at %q before terminal ending", steps, current)
+		}
+	}
+	t.Fatalf("campaign graph exceeded %d steps at node %q", maxSteps, r.Cur)
+}
+
 func TestApproximateTerminalPartySyncRejectsNonTerminalEdges(t *testing.T) {
 	for name, raw := range map[string]string{
 		"non-battle owner":  `{"start":"story","nodes":{"story":{"type":"story","on_win":"ending","approximate_sync_party_on_win":true},"ending":{"type":"ending"}}}`,
@@ -1027,7 +1123,7 @@ func TestCampaignFullStoryScriptCoverageMatchesAudit(t *testing.T) {
 			generic++
 		}
 	}
-	if storyNodes != 121 || scripted != 9 || handlerBound != 51 || fallback != 61 || retreat != 30 || rumor != 23 || postbattle != 4 || generic != 4 {
+	if storyNodes != 121 || scripted != 9 || handlerBound != 52 || fallback != 60 || retreat != 30 || rumor != 23 || postbattle != 4 || generic != 3 {
 		t.Fatalf("campaign story coverage changed: nodes=%d scripted=%d handler_bound=%d fallback=%d retreat=%d rumor=%d postbattle=%d generic=%d; update the audit before changing claims", storyNodes, scripted, handlerBound, fallback, retreat, rumor, postbattle, generic)
 	}
 }

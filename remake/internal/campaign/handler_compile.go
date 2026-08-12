@@ -530,6 +530,7 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 				issue(i, input, "spawn requires a preceding complete loadch roster")
 				continue
 			}
+			expectedCount := 0
 			if bindings.RuntimeContext != nil {
 				size, ok := bindings.RuntimeContext.SpawnGroups[*input.Group]
 				if !ok || size <= 0 {
@@ -538,9 +539,11 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 				}
 				activeSlotCount += size
 				minimumSlotCount += size
+				expectedCount = size
 			}
 			beat := runtime(input, "spawn")
 			beat.Group = *input.Group
+			beat.Count = expectedCount
 			gate := *input.RawPlacementGate
 			beat.RawPlacementGate = &gate
 			beats = append(beats, beat)
@@ -597,6 +600,23 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 			}
 			beat := runtime(input, "deactivate_unit")
 			beat.Slot = input.UnitSlot
+			beats = append(beats, beat)
+		case "reactivate_nonzero_hp":
+			// ch27_pre directly scans the first twenty runtime records, tests
+			// current-HP word +0x40, and clears byte +5 only when it is nonzero.
+			// Keep this as a bounded source-specific primitive: it is not a
+			// generic resurrection or an authored roster shortcut.
+			if input.Source.Addr != "0x33cea" || input.Source.Target != "" ||
+				input.UnitSlotExpr != "ebx" || input.RepeatHint == nil || input.RepeatHint.Limit <= 0 {
+				issue(i, input, "reactivate_nonzero_hp requires the proven 0x33cea counted record loop")
+				continue
+			}
+			if activeSlotCount <= 0 || input.RepeatHint.Limit > activeSlotCount {
+				issue(i, input, fmt.Sprintf("reactivate_nonzero_hp limit %d exceeds active loadch slot_count=%d", input.RepeatHint.Limit, activeSlotCount))
+				continue
+			}
+			beat := runtime(input, "reactivate_nonzero_hp")
+			beat.Count = input.RepeatHint.Limit
 			beats = append(beats, beat)
 		case "reset_pose":
 			// 0x134e4 writes pose=0 to every materialized unit and waits 20ms.
@@ -814,6 +834,9 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 				beats = append(beats, pan)
 				spawn := runtime(input, "spawn")
 				spawn.Group = group
+				if bindings.RuntimeContext != nil {
+					spawn.Count = bindings.RuntimeContext.SpawnGroups[group]
+				}
 				beats = append(beats, spawn)
 				wait := runtime(input, "delay")
 				wait.Ms = 300
@@ -1304,7 +1327,7 @@ func handlerBranchNeedsActiveLoadCH(beats []HandlerBeat) bool {
 		// discarded at the branch merge, so later beats cannot assume the new
 		// slots exist on both arms.  Other slot-addressed operations still need
 		// an explicit branch-context model.
-		case "act", "scroll_step", "spawn_intro", "deactivate_unit", "focus_unit":
+		case "act", "scroll_step", "spawn_intro", "deactivate_unit", "reactivate_nonzero_hp", "focus_unit":
 			return true
 		}
 		if beat.Op == "if" && (handlerBranchNeedsActiveLoadCH(beat.Then) || handlerBranchNeedsActiveLoadCH(beat.Else)) {

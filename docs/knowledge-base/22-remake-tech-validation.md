@@ -71,8 +71,8 @@ GOOS=js GOARCH=wasm go build -o web/fd2.wasm ./cmd/fd2   # 10.5 MB
 ## 結論
 
 1. **技術選型成立**:Go/Ebiten 一套碼覆蓋桌面(本機優先)+ Web + 手機,且都已實證可建。
-2. **重製性質已定**:資產格式與多數資料來源已足以證明工程可行，但 native command/effect、indexed renderer、campaign transition
-   仍在反組譯與整合中；不能把目前工作簡化成「只剩組裝」。現況以 [`20`](20-first-principles-feasibility.md)、`42` gap audit、`56` SDD 為準。
-3. **歷史路線（已部分超前）**:原先由「能渲染地圖」推進到一場戰鬥的規劃已產生多個垂直切片；目前優先項改以 [`91-worklist`](91-worklist.md)、`42` gap audit 與 `56` SDD 的未完成項為準，尤其是 native UI/effect、campaign postbattle 與 renderer。
+2. **重製性質已定**:資產格式與多數資料來源已足以證明工程可行，但原生指令／效果、索引色渲染與戰役轉場
+   仍在反組譯與整合中；不能把目前工作簡化成「只剩組裝」。反組譯現況以 [`58`](58-fd2-exe-re-coverage.md)，系統契約以 [`56`](56-fd2-remake-sdd.md) 為準。
+3. **歷史路線（已部分超前）**:原先由「能渲染地圖」推進到一場戰鬥的規劃已產生多個垂直切片；目前優先項改以 [`91-worklist`](91-worklist.md) 頂端有效佇列為準，尤其是原生介面／效果、戰後戰役流程與渲染器。`42` 只保留較早的差距盤點，不再裁決現況。
 
 > 相關:架構設計 [`21`](21-go-ebiten-remake-plan.md) · 可行性 [`20`](20-first-principles-feasibility.md) · 字型現代化 [`18`](18-font-modernization-utf8-ttf-plan.md) · 腳本系統 [`19`](19-scenario-script-system-design.md)

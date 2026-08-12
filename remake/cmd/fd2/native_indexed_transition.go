@@ -67,9 +67,10 @@ func validateNativeIndexedTransitionSpec(s campaign.HandlerIndexedTransition) er
 
 // resolveNativeIndexedTransitionSpec keeps the dynamic first two arguments
 // of 0x24618 distinct from static authored geometry.  The recovered handlers
-// use two different raw cursor expressions: ch21 call-site 0x245ce pushes
-// [0x53ab9] and [0x53abd]+3, while ch22 pre call-site 0x336e5 pushes
-// [0x53ab9] and [0x53abd]+5.  The call-site is part of Beat.Source so an
+// use three recovered raw cursor expressions: ch21 call-site 0x245ce pushes
+// [0x53ab9] and [0x53abd]+3; ch22 pre call-site 0x336e5 pushes
+// [0x53ab9] and [0x53abd]+5; ch27 pre call-site 0x33ce2 pushes
+// [0x53ab9]+6 and [0x53abd]+5.  The call-site is part of Beat.Source so an
 // authored offset cannot silently acquire a different native meaning.
 func (g *Game) resolveNativeIndexedTransitionSpec(spec campaign.HandlerIndexedTransition, source string) (campaign.HandlerIndexedTransition, error) {
 	if spec.CursorSource == "" {
@@ -78,8 +79,9 @@ func (g *Game) resolveNativeIndexedTransitionSpec(spec campaign.HandlerIndexedTr
 	if spec.CursorSource != "native_relative_cursor" {
 		return campaign.HandlerIndexedTransition{}, errors.New("native 0x24618 cursor source is not proven")
 	}
-	validOffset := (source == "0x245ce" && spec.CursorYOffset == 3) ||
-		(source == "0x336e5" && spec.CursorYOffset == 5)
+	validOffset := (source == "0x245ce" && spec.CursorXOffset == 0 && spec.CursorYOffset == 3) ||
+		(source == "0x336e5" && spec.CursorXOffset == 0 && spec.CursorYOffset == 5) ||
+		(source == "0x33ce2" && spec.CursorXOffset == 6 && spec.CursorYOffset == 5)
 	if !validOffset {
 		return campaign.HandlerIndexedTransition{}, fmt.Errorf("native 0x24618 cursor offset is not proven for source %s", source)
 	}
@@ -97,7 +99,7 @@ func (g *Game) resolveNativeIndexedTransitionSpec(spec campaign.HandlerIndexedTr
 	default:
 		return campaign.HandlerIndexedTransition{}, errors.New("native 0x24618 relative cursor provenance unavailable")
 	}
-	x, y := view.VisibleCursorX, view.VisibleCursorY+spec.CursorYOffset
+	x, y := view.VisibleCursorX+spec.CursorXOffset, view.VisibleCursorY+spec.CursorYOffset
 	if x < 0 || x >= fdother.NativeTransitionStageWidth || y < 0 || y >= fdother.NativeTransitionStageHeight {
 		return campaign.HandlerIndexedTransition{}, errors.New("native 0x24618 relative cursor is outside indexed stage")
 	}
