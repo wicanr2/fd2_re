@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "address_space": "IDA flat-loader linear address",
+  "entries": [
+    {
+      "address": "0x11d40",
+      "classification": "product",
+      "semantic": "基準 DAC 色盤範圍減算與下限夾限",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ch23_post_ida.txt", "docs/data/ida/fd2_battle_impact_pulse_ida.txt"],
+      "scope": "callee；個別 caller 的範圍、delta、畫面與時序仍須另證"
+    },
+    {
+      "address": "0x11df2",
+      "classification": "product",
+      "semantic": "索引色 DAC 範圍／delta 寫入 helper",
+      "confidence": "已證實",
+      "evidence": ["docs/data/fd2_11df2_palette_disasm.txt"],
+      "scope": "callee；個別 caller 的時序與畫面仍須另證"
+    },
+    {
+      "address": "0x12cea",
+      "classification": "product",
+      "semantic": "X-first／Y-second 地圖捲動至指定格",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ch28_post_ida.txt", "docs/data/ida/fd2_ai_13fd4_full_ida_20260810.txt"],
+      "scope": "callee；caller 的座標來源與玩家可見時序仍須另證"
+    },
+    {
+      "address": "0x13536",
+      "classification": "product",
+      "semantic": "逐筆清除 materialized runtime record byte+5 bit7",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ch09_post_ida.txt", "docs/data/ida/fd2_ch19_post_ida.txt"],
+      "scope": "窄 raw bit mutation；不等同重製端通用 acted reset"
+    },
+    {
+      "address": "0x13fd4",
+      "classification": "product",
+      "semantic": "敵方人工智慧 raw gate、回復與窄呈現 owner",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ai_13fd4_full_ida_20260810.txt"],
+      "scope": "函式邊界與已列資料流；完整回合交易與 E2 未閉合"
+    },
+    {
+      "address": "0x14237",
+      "classification": "product",
+      "semantic": "敵方人工智慧物理候選評分切片",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ai_physical_score_ida.txt"],
+      "scope": "窄評分切片；不是完整 planner"
+    },
+    {
+      "address": "0x14ef0",
+      "classification": "product",
+      "semantic": "敵方人工智慧 producer 順序與尾端 dispatch",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ai_14ef0_dispatch_ida.txt"],
+      "scope": "已列 dispatch；未知 command／效果仍未閉合"
+    },
+    {
+      "address": "0x15311",
+      "classification": "product",
+      "semantic": "人工智慧 mode 11 第一段 owner",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ai_mode11_full_ida_20260810.txt"],
+      "scope": "兩段順序的一部分；完整演出與 E2 未閉合"
+    },
+    {
+      "address": "0x1548e",
+      "classification": "product",
+      "semantic": "人工智慧 mode 11 第二段物理／FIGANI owner",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ai_mode11_full_ida_20260810.txt"],
+      "scope": "兩段順序的一部分；完整演出與 E2 未閉合"
+    },
+    {
+      "address": "0x17aa9",
+      "classification": "product",
+      "semantic": "以 raw timer delta 計數的等待 helper",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ch29_input_cleanup_ida.txt", "docs/data/ida/fd2_ch23_post_ida.txt"],
+      "scope": "timer delta 契約；重製 60Hz 近似不等於 DOS wall-clock parity"
+    },
+    {
+      "address": "0x1b8e7",
+      "classification": "product",
+      "semantic": "八格 inventory cell 左移壓縮並將尾 flag 設為 0x80",
+      "confidence": "已證實",
+      "evidence": ["docs/knowledge-base/56-fd2-remake-sdd.md", "docs/knowledge-base/91-worklist.md"],
+      "scope": "callee raw mutation；移除原因由 caller 決定"
+    },
+    {
+      "address": "0x1c2da",
+      "classification": "product",
+      "semantic": "indexed item presentation 的 target blit 與五次 restore/present",
+      "confidence": "已證實",
+      "evidence": ["docs/knowledge-base/56-fd2-remake-sdd.md", "docs/knowledge-base/91-worklist.md"],
+      "scope": "呈現 ABI／順序；item effect、frame asset 與 target producer 未命名"
+    },
+    {
+      "address": "0x1f882",
+      "classification": "product",
+      "semantic": "64 段原生調色盤淡出",
+      "confidence": "已證實",
+      "evidence": ["docs/knowledge-base/91-worklist.md"],
+      "scope": "callee；caller 畫面與時序仍須另證"
+    },
+    {
+      "address": "0x22253",
+      "classification": "product",
+      "semantic": "共用 11＋6＋10 次索引呈現排程",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ch29_terminal_body_ida.txt", "docs/knowledge-base/54-acting-pose-semantics.md"],
+      "scope": "callee 排程；caller payload 形狀不同，完整 ABI／renderer 組合仍未閉合"
+    },
+    {
+      "address": "0x24618",
+      "classification": "product",
+      "semantic": "多階段索引色轉場核心",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ch22_pre_ida.txt", "docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt"],
+      "scope": "callee 與部分 caller payload；新 caller 仍須另證參數"
+    },
+    {
+      "address": "0x24b14",
+      "classification": "product",
+      "semantic": "天空之鑰物品搜尋 gate",
+      "confidence": "已證實",
+      "evidence": ["docs/knowledge-base/91-worklist.md"],
+      "scope": "搜尋條件；成功／失敗兩臂的畫面效果未閉合"
+    },
+    {
+      "address": "0x24b4d",
+      "classification": "product",
+      "semantic": "stride-456 雙緩衝列呈現迴圈，每輪等待 20ms",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ch22_post_ida.txt", "docs/data/ida/fd2_ch28_post_ida.txt"],
+      "scope": "raw indexed 時序；完整工作區來源與玩家可見 visual adapter 未閉合"
+    },
+    {
+      "address": "0x25052",
+      "classification": "product",
+      "semantic": "含起始 delta 與延遲的調色盤 ramp",
+      "confidence": "已證實",
+      "evidence": ["docs/knowledge-base/91-worklist.md"],
+      "scope": "callee；caller 畫面與時序仍須另證"
+    },
+    {
+      "address": "0x25089",
+      "classification": "product",
+      "semantic": "persistent roster 暫態清理並由 max HP／MP 回填 current HP／MP",
+      "confidence": "已證實",
+      "evidence": ["docs/knowledge-base/91-worklist.md", "docs/data/ida/fd2_ch29_terminal_callers_ida.txt"],
+      "scope": "callee mutation；與 sync_party 分離，campaign owner 由 caller 決定"
+    },
+    {
+      "address": "0x28a6c",
+      "classification": "product",
+      "semantic": "雙 runtime-record 索引演出 renderer；含戰鬥、事件與終局 caller",
+      "confidence": "強推論",
+      "evidence": ["docs/knowledge-base/35-battle-animation-rendering.md", "docs/data/ida/fd2_ch29_post_montage_tail_ida.txt"],
+      "scope": "共用 callee；終局 call 0x2c2a6 的 records/globals、精確輸出與輸入時序未閉合"
+    },
+    {
+      "address": "0x2bce5",
+      "classification": "product",
+      "semantic": "終局前綴與部分尾段 owner",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ch29_terminal_body_ida.txt", "docs/data/ida/fd2_ch29_post_montage_tail_ida.txt"],
+      "scope": "已證實前綴／尾段；正式 caller handoff 與一般玩家 E2 未閉合"
+    },
+    {
+      "address": "0x31860",
+      "classification": "product",
+      "semantic": "指定 runtime unit 的八格 inventory exact-item 搜尋",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ch22_post_ida.txt", "docs/knowledge-base/91-worklist.md"],
+      "scope": "callee 搜尋；caller 決定 item 的玩法語意"
+    },
+    {
+      "address": "0x33f78",
+      "classification": "product",
+      "semantic": "保留 raw [y,x,slot] 的 indexed staging wrapper",
+      "confidence": "已證實",
+      "evidence": ["docs/knowledge-base/50-cutscene-script-system-design.md", "docs/knowledge-base/91-worklist.md"],
+      "scope": "wrapper 順序；下游 0x22253 renderer adapter 仍失敗即關閉"
+    },
+    {
+      "address": "0x35822",
+      "classification": "product",
+      "semantic": "raw (group,y,x) 的 pan→spawn→等待→palette→redraw staging",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt", "docs/data/fd2_current_field_control_mutations_ida.txt"],
+      "scope": "callee choreography；不可誤改為 (group,x,y)"
+    },
+    {
+      "address": "0x35bba",
+      "classification": "product",
+      "semantic": "由指定 runtime index 起清除每筆 record byte+0x40",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ch28_post_ida.txt"],
+      "scope": "窄 raw mutation；不是完整 record reset"
+    },
+    {
+      "address": "0x35e5a",
+      "classification": "product",
+      "semantic": "0→63、hold、62→0 的全 DAC palette pulse",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ch28_post_ida.txt", "docs/knowledge-base/91-worklist.md"],
+      "scope": "無參數 callee；不等同 generic fade"
+    },
+    {
+      "address": "0x37416",
+      "classification": "runtime",
+      "semantic": "Watcom runtime free",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ch23_post_ida.txt", "docs/data/ida/fd2_xrefs.json"],
+      "scope": "IDA FLIRT 命名與 caller cleanup；不是遊戲 renderer"
+    },
+    {
+      "address": "0x4dbfc",
+      "classification": "product",
+      "semantic": "raw cell +1/+2 遮罩與 +3=0xff 初始化",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ch22_post_ida.txt"],
+      "scope": "callee raw mutation；完整原始陣列與高階 consumer 未閉合"
+    }
+  ]
+}

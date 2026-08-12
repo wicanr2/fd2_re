@@ -56,6 +56,29 @@ PRIM = {
     # FDFIELD/FDSHAP 背景 loader；未知 runtime lowering 必須繼續阻擋。
     0x10652: ('prepare_chapter_aux_graphics', 0),
     0x11cac: ('redraw', 1),       # 主重繪函式,每幀呼叫(doc25 已知「每幀呼叫」)
+    # 這批 helper 已有固定雜湊的 IDA／直接指令證據與 exact arity。此處只把
+    # raw call 提升成窄、可搜尋的 native operation；正式 runtime 仍逐 caller
+    # 驗證參數與 binding，不能因 exporter 命名便自動解除 gate。
+    0x11d40: ('native_palette_subtract', 3),
+    0x11df2: ('native_palette_update', 3),
+    0x12cea: ('native_camera_focus', 2),
+    0x13536: ('native_clear_record_bit7', 0),
+    0x17aa9: ('native_tick_wait', 1),
+    0x1b8e7: ('native_inventory_compact_remove', 2),
+    0x1c2da: ('native_indexed_item_present', 4),
+    0x1f882: ('native_palette_fade_out', 0),
+    0x24618: ('native_indexed_transition', 4),
+    0x24b14: ('native_inventory_item_gate', 1),
+    0x24b4d: ('native_indexed_double_buffer_present', 1),
+    0x25052: ('native_palette_ramp', 2),
+    0x25089: ('native_reset_persistent_roster', 0),
+    0x31860: ('native_inventory_item_search', 2),
+    0x33f78: ('native_staging_present', 3),
+    0x35822: ('native_pan_spawn_stage', 3),
+    0x35bba: ('native_clear_record40_from', 1),
+    0x35e5a: ('native_palette_pulse', 0),
+    0x37416: ('native_free_buffer', 1),
+    0x4dbfc: ('native_mask_raw_cells', 1),
 }
 # 非原語(編譯器插入的堆疊探測/輔助函式),線性掃描時直接跳過、清空 pushes 不記 beat:
 SKIP = {0x36cd7, 0x375c0}  # 0x375c0 本輪核對過等同 event_handler_dump.py 的 SKIP 清單
@@ -204,7 +227,11 @@ def extract_beats(insns):
             if t in PRIM:
                 name, nargs = PRIM[t]
                 args = pushes[-nargs:] if nargs > 0 else []
-                args = list(reversed(args))  # cdecl push 順序反過來才是函式簽名順序
+                # 一般可編輯原語使用函式簽名順序；新 native_call 則必須與
+                # 歷史 unknown/raw_args 一樣保留來源 PUSH 順序，讓 caller ABI
+                # 可直接回查，且不會破壞既有 fail-closed lowering。
+                if not name.startswith("native_"):
+                    args = list(reversed(args))
                 beat = {'op': name, 'addr': hex(ins.address), 'target': hex(t), 'args': args}
                 if name in ('spawn', 'spawn_intro'):
                     beat['raw_placement_gate'] = (

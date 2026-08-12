@@ -13,12 +13,16 @@
 目前**不能誠實宣稱整支 `FD2.EXE` 已完成多少百分比**，也不能用文件數、測試數或
 匯出器的 `unknown_ops` 數量代替。原因如下：
 
-1. 尚未有一份以 IDA Pro 資料庫重生、排除 DOS/4GW、Watcom runtime、Miles AIL
-   與一般函式庫後的「重製相關函式母數」。沒有分母，就沒有可信的全檔百分比。
+1. 現已有 IDA Pro 9.4 重生的 1,305 筆函式清冊，但第一輪只由 Watcom FLIRT
+   分出170筆 runtime、由受版控語意索引分出27筆產品函式，其餘1,108筆仍未
+   分類；尚未排完 DOS/4GW、Miles AIL 與所有一般函式庫，因此仍沒有可信的
+   「重製相關函式」分母。清冊見
+   [`fd2_function_inventory.json`](../data/ida/fd2_function_inventory.json)。
 2. 目前反組譯以玩家可見功能為目標，並不需要逐一重寫編譯器函式庫或驅動程式。
    「整支 EXE 每個函式都命名」不是重製完成條件。
-3. `chapter_beats` 的 raw exporter 目前仍把多個已解 helper 標成 `unknown`；該數字
-   混合了工具索引滯後與真正未知，不能視為研究缺口。
+3. `chapter_beats` 現將呼叫拆成已分級 `native_call`、已知 callee 但未閉合
+   caller/runtime 的 `unresolved_native_call`，以及真正 `unknown`；任何單一計數
+   都不能直接視為重製完成度。
 4. 原版語意已解、可編輯資料已建、正式執行期已消費、未修改一般玩家路徑已驗證，
    是四個不同閘門。過去最常見的誤判，就是把第一個閘門完成寫成整個功能完成。
 
@@ -49,7 +53,7 @@
 | 檔案版本、容器與主要資產格式 | 閉合 | 就緒 | E1 | 部分 | `.DAT`、圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與多張 EXE 表已有雜湊與重生工具。剩餘多是消費端、音訊時序或個別執行期改寫，不應重解容器格式。 |
 | 開機、標題、LOAD、CONTINUE、存檔 | 部分 | 部分 | 部分 E1 | 原版錨點部分 E2 | 四槽 envelope、checksum、名冊與部分戰間落點已接；current-runtime 有原版與重製各自錨點，但尚缺同一 raw 狀態配對、未修改有效槽完整路徑與部分控制器交接。下一步以動態原版／執行期整合為主。 |
 | 對話、頭像與過場原語 | 部分偏高 | 部分就緒 | 部分 E1 | 部分 | `0x15F84`、`0x1366A`、基本 pan／acting／spawn／join 等不應再從零重解。仍須處理 caller-specific layout、indexed renderer、文字分支與實際 chapter binding。 |
-| 30 個 raw chapter 的戰前／戰後處理器 | 部分 | 60 份 handler script；部分 binding | 部分 E1 | 缺完整 E2 | raw manifest 為 30 pre＋30 post；45 份目前 `unknown_ops=0`、15 份仍非零。但 raw `unknown` 含工具索引滯後，不能把 45/60 當語意或玩法完成率。應逐章追蹤「handler→戰鬥→戰後→城鎮／整備→存檔」，不得只清 unknown 計數。 |
+| 30 個 raw chapter 的戰前／戰後處理器 | 部分 | 60 份 handler script；部分 binding | 部分 E1 | 缺完整 E2 | 舊83個 raw unknown 已拆成78個已證實窄呼叫、4個已知但未閉合呼叫；這批 handler target 中只剩1個真正未知 `0x24336`。這只清除工具債，不代表 handler 可執行；仍須逐章追蹤「handler→戰鬥→戰後→城鎮／整備→存檔」。 |
 | 可編輯戰役與持續隊伍 | 部分 | 121 個 story／cutscene 節點；9 個 scripted、52 個 handler-bound、60 個 fallback | 部分 E1 | 缺完整 E2 | 24 個 postbattle 節點中目前20 active、4 blocked（玩家第23、24、25、29戰戰後）。近似模式只維持可玩戰間，不提升忠實度。下一步是四個阻擋節點與跨章存讀檔，不是重畫整份 graph。 |
 | 戰鬥資料、移動、公式、勝敗與成長 | 部分偏高 | 部分就緒 | E1 | 部分 | 多項公式與地形資料已有具型別實作；命中／閃避來源、部分經驗交易、回合事件與原版逐狀態驗證仍不完整。需要針對缺欄位補 producer／consumer，不重解已閉合的 AP−DP 等公式。 |
 | 玩家指令、法術、物品與交易 | 部分 | 部分 | 部分 E1／部分失敗即關閉 | 缺完整 E2 | command mask、若干 ID、MP／物品交易與 selector 邊界已解；未知 command、複合技、法術／物品完整效果、rollback、演出與 UI 尚未閉合。這是目前真正需要局部反組譯與實作並行的區域。 |
@@ -57,20 +61,23 @@
 | 戰場 HUD、指令格、輸入與戰鬥演出 | 部分 | 部分 | 部分 E1 | 少量畫面 E2／多數缺少 | 有 native frame、command overlay、姓名字模、命中色盤與部分 FIGANI consumer；整體操作狀態機、圖示可用性、相同戰況及演出時序仍未完成。完成度只由 [`57` 介面矩陣](57-ui-evidence-matrix.md)判定。 |
 | 城鎮、祕密商店、商店、教會與整備 | 部分偏高 | 部分就緒 | 多個正式 E1 consumer | ch02 若干狀態 E2；其餘部分 | 個別 menu、購買、轉移、復活、轉職與整備已有窄切片；不同章的祕密入口、正常 campaign／native save、recipient scroll 與完整返回路徑仍缺。不得以 ch02 單章推成全遊戲。 |
 | 音樂與音效 | 格式閉合；owner／時序部分 | 部分就緒 | 部分 E1 | 逐音訊 E2 缺少 | XMIDI、兩類音源與部分曲目／樣本 owner 已知。重點是精確播放時機、停止／切換、效果同步與三平台播放，不需要重解 XMIDI 格式。 |
-| 終局與結局 | 部分 | 近似排程已資料化 | 近似 E1；忠實路徑部分失敗即關閉 | 缺一般玩家終局 E2 | `0x2BCE5` 前綴、部分 montage／音訊／資源尾段已有證據；`0x28A6C` 精確 renderer、終端輸入與正式 owner／handoff 仍是真正缺口。不要重做已知前綴，應閉合這三項。 |
-| DOS/4GW、Watcom runtime、Miles 驅動與一般函式庫 | 未建立全函式分類 | 不適用 | 只在行為外露時處理 | 不適用 | 這些位元組屬全檔，但通常不需要潔淨重寫。後續 IDA 全檔 inventory 必須先分類，不能把函式庫未命名算成 remake 缺口。 |
+| 終局與結局 | 部分 | 近似排程已資料化 | 近似 E1；忠實路徑部分失敗即關閉 | 缺一般玩家終局 E2 | `0x2BCE5` 前綴、部分 montage／音訊／資源尾段已有證據；`0x28A6C` 是戰鬥、事件與終局共用的雙 record renderer，缺的是終局 caller `0x2C2A6` 當下 records／globals、精確輸出、終端輸入與正式 handoff，不是重解整個 callee。 |
+| DOS/4GW、Watcom runtime、Miles 驅動與一般函式庫 | 第一輪分類 | 不適用 | 只在行為外露時處理 | 不適用 | IDA 清冊1305函式中170筆由 Watcom FLIRT 標成 runtime；其餘未分類不能都算產品程式。後續只擴充分級索引，不把函式庫未命名算成 remake 缺口。 |
 | 三平台打包與推廣片 | 不適用 | 部分 | 尚未達發行閘門 | 缺完整玩家驗收 | 這不是反組譯問題。待核心戰役、操作 UI、結局與代表性一般玩家路徑關閉後，再做 Linux／Windows／macOS 打包與影片。 |
 
 ## 四、目前可重生的數字，以及不能怎麼解讀
 
 2026-08-12 以唯讀 Docker 實跑現有 audit：
 
-- `remake/assets/cutscenes/handlers/_manifest.json` 與各 handler 的 `diagnostics`：
-  60 份 raw handler script；45 份 `unknown_ops=0`，15 份非零，共83個 raw unknown
-  call site、23個 target。
-- 這23個 target 至少包含一批已在後續 IDA／Capstone 證據閉合、但尚未回填 exporter
-  的 helper，例如 `0x11DF2`、`0x1F882`、`0x24618`、`0x25052`、`0x24B14`、
-  `0x22253`。因此 unknown 數是**工具債指標**，不是反組譯未完成率。
+- IDA Pro 9.4 對固定雜湊 `FD2.EXE` 辨識1,305個函式；受版控語意索引28筆，
+  分類結果為產品27、runtime170、未知1,108。`0x37416` 同時由 FLIRT 命名為
+  `free` 並由索引標成 runtime；沒有因此重複計數。
+- 60份 raw handler script 原有83個 `unknown` call site、23個 target。重生後為
+  78個 `native_call`（20個 target）、4個 `unresolved_native_call`
+  （`0x22253`、`0x2BCE5` 各2次）與這批 target 中1個真正 `unknown`
+  （`0x24336`）。每筆
+  具名呼叫皆保存原始位址／PUSH 順序、推論等級與證據檔；編譯器仍逐 caller
+  驗證並失敗即關閉，故這是**工具債清除**，不是玩法完成率。
 - `campaign_full.json`：121 個 story／cutscene 節點；9 個 scripted、52 個
   handler-bound、60 個 fallback。fallback 可能是撤退、傳聞或尚未接線故事，不能全部
   視為同一種缺口。
@@ -98,10 +105,10 @@
 | `0x14237` | [`fd2_ai_physical_score_ida.txt`](../data/ida/fd2_ai_physical_score_ida.txt) | 物理候選評分窄切片 | 完整 planner、target transaction 與 E2 |
 | `0x15311`／`0x1548E` | [`fd2_ai_mode11_full_ida_20260810.txt`](../data/ida/fd2_ai_mode11_full_ida_20260810.txt) | mode 11 兩段 owner／順序 | 未知 command、完整演出與 E2 |
 | `0x24618` | chapter-specific IDA 證據；例如 [`ch22`](../data/ida/fd2_ch22_pre_ida.txt)、[`ch27/28`](../data/ida/fd2_ch27_ch28_pre_owner_ida.txt) | indexed transition 核心與部分 caller payload | 新 caller 必須另證參數／view；不得把已知 callee 當全新未知 |
-| `0x22253` | [`fd2_ch29_terminal_body_ida.txt`](../data/ida/fd2_ch29_terminal_body_ida.txt) | 已知排程與 caller 邊界 | renderer 組合、資產與同狀態 E2 |
+| `0x22253` | [`fd2_ch29_terminal_body_ida.txt`](../data/ida/fd2_ch29_terminal_body_ida.txt) | 共用11＋6＋10排程 | caller payload、renderer 組合、資產與同狀態 E2；維持 `unresolved_native_call` |
 | `0x24B14` | ch26 post 直接證據與 [`91`](91-worklist.md) | 天空之鑰 inventory gate | 兩臂視覺／效果；不重解搜尋條件 |
 | `0x2BCE5` | [`fd2_ch29_terminal_body_ida.txt`](../data/ida/fd2_ch29_terminal_body_ida.txt)、[`montage tail`](../data/ida/fd2_ch29_post_montage_tail_ida.txt) | 終局前綴與部分尾段 | 正式 owner、完整 handoff、一般玩家 E2 |
-| `0x28A6C` | [`fd2_ch29_montage_ida.txt`](../data/ida/fd2_ch29_montage_ida.txt) | 部分 record／排程 | 精確 renderer、輸入與消費端；屬真正未閉合 |
+| `0x28A6C` | [`35`](35-battle-animation-rendering.md)、[`montage tail`](../data/ida/fd2_ch29_post_montage_tail_ida.txt) | 共用雙 runtime-record renderer；直接 caller 含戰鬥、事件與終局 | 只補終局 `0x2C2A6` call-time records／globals、精確輸出與輸入；不得再稱終局專屬 callee |
 
 只有四種情況可重開「已閉合範圍」：原版雜湊不同、原始指令或跳表直接反證、執行期
 同狀態結果矛盾，或現有證據缺少它聲稱已具有的 writer／consumer。單純找不到舊筆記、
@@ -111,8 +118,8 @@
 
 ### 真正需要局部反組譯
 
-- 一次性建立 IDA Pro 全檔函式 inventory，分類重製相關程式、第三方／runtime、資料與
-  未識別 code；輸出函式邊界、主 evidence 與覆蓋狀態，不先替所有函式猜名稱。
+- 依玩家可見 blocker 擴充既有 IDA 清冊的產品／runtime／driver 分類；不為了提高
+  百分比替剩餘1,108筆未知函式猜名稱。
 - 四個 blocked postbattle 節點的實際未知 branch／native semantics；已知 helper 只補
   caller payload，不重讀 callee。
 - 未知 command／spell／item transaction 與高階效果 owner。
@@ -121,7 +128,8 @@
 
 ### 不需要再反組譯，應轉實作或工具修正
 
-- 把已閉合 helper 回填 `dump_chapter_beats.py`／handler exporter，降低假的 unknown 數。
+- 維護 `native_call`／`unresolved_native_call`／`unknown` 三態與分級證據；目前唯一
+  callee 本體真未知為 `0x24336`，其餘 blocker 追 caller/runtime，不重解 helper。
 - 把已知資料接進正式 UI、campaign、save、audio consumer，補原子失敗與 regression。
 - 依 [`57`](57-ui-evidence-matrix.md)完成戰場、指令、城鎮、教會、整備的輸入狀態機與畫面。
 - 讓完整戰役保留戰後城鎮／商店／整備，不用直接跳下一戰的測試捷徑。

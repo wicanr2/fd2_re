@@ -98,6 +98,22 @@ def normalize(beats, chapter=None):
                 item["repeat"] = repeat
         elif op == "palfade":
             item = {"op": "palette_fade", "source": src}
+        elif op.startswith("native_"):
+            # A named native operation means only that the callee's narrow
+            # role and arity are evidence-backed. Preserve source PUSH order;
+            # the compiler still owns caller-specific lowering and fails closed
+            # when the exact ABI or binding is absent.
+            item = {
+                "op": "native_call",
+                "native_semantic": op,
+                "native_target": beat["target"],
+                "raw_args": args,
+                "native_confidence": "已證實",
+                "native_evidence": [
+                    evidence for evidence in NATIVE_EVIDENCE[beat["target"]]
+                ],
+                "source": src,
+            }
         elif op == "delay":
             item = {"op": "delay", "ms": args[0], "source": src}
         elif op == "deactivate_unit":
@@ -142,7 +158,20 @@ def normalize(beats, chapter=None):
                 "source": src,
             }
         elif op == "unknown":
-            item = {"op": "unknown", "native_target": beat["target"], "raw_args": args, "source": src}
+            target = beat["target"]
+            unresolved = UNRESOLVED_NATIVE.get(target)
+            if unresolved:
+                item = {
+                    "op": "unresolved_native_call",
+                    "native_target": target,
+                    "native_semantic": unresolved["semantic"],
+                    "native_confidence": unresolved["confidence"],
+                    "native_evidence": list(unresolved["evidence"]),
+                    "raw_args": args,
+                    "source": src,
+                }
+            else:
+                item = {"op": "unknown", "native_target": target, "raw_args": args, "source": src}
         else:
             # Conditions and currently non-runtime operations remain editable
             # named records.  Keeping them prevents a lossy “known only” dump.
@@ -152,6 +181,48 @@ def normalize(beats, chapter=None):
         out.append({"op": "set_chapter", "chapter": pending_chapter,
                     "source": pending_chapter_source})
     return out
+
+
+# 這份索引只涵蓋 raw chapter handler 會輸出的 native calls；它與完整
+# docs/data/ida/fd2_semantic_index.json 共用同一證據契約。export 時把等級與
+# evidence 內嵌到每筆 beat，避免名稱脫離證據後被誤當成完整 runtime 語意。
+NATIVE_EVIDENCE = {
+    "0x11d40": ["docs/data/ida/fd2_ch23_post_ida.txt"],
+    "0x11df2": ["docs/data/fd2_11df2_palette_disasm.txt"],
+    "0x12cea": ["docs/data/ida/fd2_ch28_post_ida.txt"],
+    "0x13536": ["docs/data/ida/fd2_ch09_post_ida.txt"],
+    "0x17aa9": ["docs/data/ida/fd2_ch29_input_cleanup_ida.txt"],
+    "0x1b8e7": ["docs/knowledge-base/91-worklist.md"],
+    "0x1c2da": ["docs/knowledge-base/91-worklist.md"],
+    "0x1f882": ["docs/data/ida/fd2_ch21_post_ida.txt"],
+    "0x24618": ["docs/data/ida/fd2_ch21_post_ida.txt"],
+    "0x24b14": ["docs/data/ida/fd2_ch22_post_ida.txt"],
+    "0x24b4d": ["docs/data/ida/fd2_ch22_post_ida.txt"],
+    "0x25052": ["docs/knowledge-base/91-worklist.md"],
+    "0x25089": ["docs/knowledge-base/91-worklist.md"],
+    "0x31860": ["docs/data/ida/fd2_ch22_post_ida.txt"],
+    "0x33f78": ["docs/knowledge-base/91-worklist.md"],
+    "0x35822": ["docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt"],
+    "0x35bba": ["docs/data/ida/fd2_ch28_post_ida.txt"],
+    "0x35e5a": ["docs/data/ida/fd2_ch28_post_ida.txt"],
+    "0x37416": ["docs/data/ida/fd2_ch23_post_ida.txt"],
+    "0x4dbfc": ["docs/data/ida/fd2_ch22_post_ida.txt"],
+}
+
+# Callee 有窄證據，但仍缺 caller-specific ABI、renderer 或 campaign owner。
+# 這些不能算「完全未知」，也不能當作可執行 native_call。
+UNRESOLVED_NATIVE = {
+    "0x22253": {
+        "semantic": "native_indexed_presentation_schedule",
+        "confidence": "強推論",
+        "evidence": ["docs/data/ida/fd2_ch29_terminal_callers_ida.txt"],
+    },
+    "0x2bce5": {
+        "semantic": "native_terminal_ending_owner",
+        "confidence": "強推論",
+        "evidence": ["docs/data/ida/fd2_ch29_terminal_body_ida.txt"],
+    },
+}
 
 
 def walk_beats(beats):
@@ -176,13 +247,24 @@ def export_table(cg, fx, entries, tag, outdir):
             "beats": normalize(handler["beats"], chapter),
         }
         unknown = sum(1 for beat in walk_beats(script["beats"]) if beat["op"] == "unknown")
+        native = sum(1 for beat in walk_beats(script["beats"]) if beat["op"] == "native_call")
+        unresolved = sum(1 for beat in walk_beats(script["beats"]) if beat["op"] == "unresolved_native_call")
         script["diagnostics"] = {"unknown_ops": unknown}
+        if native:
+            script["diagnostics"]["classified_native_ops"] = native
+        if unresolved:
+            script["diagnostics"]["unresolved_native_ops"] = unresolved
         path = os.path.join(outdir, f"ch{chapter:02d}_{tag}.json")
         with open(path, "w", encoding="utf-8") as f:
             json.dump(script, f, ensure_ascii=False, indent=2)
             f.write("\n")
-        summary.append({"chapter": chapter, "phase": tag, "handler": handler["handler"],
-                        "beats": len(script["beats"]), "unknown_ops": unknown})
+        summary_item = {"chapter": chapter, "phase": tag, "handler": handler["handler"],
+                        "beats": len(script["beats"]), "unknown_ops": unknown}
+        if native:
+            summary_item["classified_native_ops"] = native
+        if unresolved:
+            summary_item["unresolved_native_ops"] = unresolved
+        summary.append(summary_item)
     return summary
 
 

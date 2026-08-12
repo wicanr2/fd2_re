@@ -91,6 +91,38 @@ func TestCompileNativeFocusLowersToTileStepPan(t *testing.T) {
 	}
 }
 
+func TestCompileClassifiedNativeCallsRequireEvidenceAndKeepUnresolvedClosed(t *testing.T) {
+	classified := HandlerBeat{
+		Op: "native_call", NativeTarget: "0x12cea",
+		NativeSemantic: "native_camera_focus", NativeConfidence: "已證實",
+		NativeEvidence: []string{"docs/data/ida/fd2_ch28_post_ida.txt"},
+		RawArgs:        []any{23, 22}, Source: HandlerSource{Addr: "0x2582e", Target: "0x12cea"},
+	}
+	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{classified}}, HandlerBindings{})
+	if len(issues) != 0 || len(beats) != 1 || beats[0].Op != "pan" {
+		t.Fatalf("classified native call beats=%#v issues=%#v", beats, issues)
+	}
+
+	withoutEvidence := classified
+	withoutEvidence.NativeEvidence = nil
+	beats, issues = CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{withoutEvidence}}, HandlerBindings{})
+	if len(beats) != 0 || len(issues) != 1 || issues[0].Reason != "native call requires semantic/confidence/evidence metadata" {
+		t.Fatalf("metadata gate beats=%#v issues=%#v", beats, issues)
+	}
+
+	unresolved := HandlerBeat{
+		Op: "unresolved_native_call", NativeTarget: "0x22253",
+		NativeSemantic: "native_indexed_presentation_schedule", NativeConfidence: "強推論",
+		NativeEvidence: []string{"docs/data/ida/fd2_ch29_terminal_callers_ida.txt"},
+		RawArgs:        []any{"edx", "eax", 255, 255, 1},
+		Source:         HandlerSource{Addr: "0x25406", Target: "0x22253"},
+	}
+	beats, issues = CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{unresolved}}, HandlerBindings{})
+	if len(beats) != 0 || len(issues) != 1 || issues[0].Op != "unresolved_native_call" {
+		t.Fatalf("unresolved native call must fail closed: beats=%#v issues=%#v", beats, issues)
+	}
+}
+
 func TestCompileNativeStagingHelperPreservesSourcePushOrder(t *testing.T) {
 	// 0x33d95 pushes group=6, y=16, x=0 before calling 0x35822.  Keep this
 	// tuple asymmetric so a group/x reversal cannot hide behind equal values.

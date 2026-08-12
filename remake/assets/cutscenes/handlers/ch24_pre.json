@@ -49,8 +49,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x24b4d",
+      "native_semantic": "native_indexed_double_buffer_present",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch22_post_ida.txt"],
       "raw_args": [
         20
       ],
@@ -78,8 +81,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x24b4d",
+      "native_semantic": "native_indexed_double_buffer_present",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch22_post_ida.txt"],
       "raw_args": [
         20
       ],
@@ -107,8 +113,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x24b4d",
+      "native_semantic": "native_indexed_double_buffer_present",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch22_post_ida.txt"],
       "raw_args": [
         20
       ],
@@ -136,8 +145,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x24b4d",
+      "native_semantic": "native_indexed_double_buffer_present",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch22_post_ida.txt"],
       "raw_args": [
         60
       ],
@@ -174,8 +186,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x37416",
+      "native_semantic": "native_free_buffer",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch23_post_ida.txt"],
       "raw_args": [
         "dword ptr [0x3b13]"
       ],
@@ -186,6 +201,7 @@
     }
   ],
   "diagnostics": {
-    "unknown_ops": 5
+    "unknown_ops": 0,
+    "classified_native_ops": 5
   }
 }

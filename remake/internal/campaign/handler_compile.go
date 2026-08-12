@@ -769,7 +769,12 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 			beat := runtime(input, "native_palette_fade_in")
 			beat.NativePaletteFadeIn = &NativePaletteFadeIn{Start: 64, End: 0, DelayMs: 2}
 			beats = append(beats, beat)
-		case "unknown":
+		case "unknown", "native_call", "unresolved_native_call":
+			if input.Op != "unknown" && (input.NativeSemantic == "" ||
+				input.NativeConfidence == "" || len(input.NativeEvidence) == 0) {
+				issue(i, input, "native call requires semantic/confidence/evidence metadata")
+				continue
+			}
 			// ch07 post-battle has one fully immediate use of 0x11d40 followed
 			// directly by memset(0xA0000,0,0xFA00).  VGA DAC components are
 			// six-bit values (0..63), so subtracting 64 over entries 0..255

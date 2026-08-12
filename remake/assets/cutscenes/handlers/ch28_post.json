@@ -14,8 +14,11 @@
       "text_table": "dword ptr [0x3a79]"
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x35bba",
+      "native_semantic": "native_clear_record40_from",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch28_post_ida.txt"],
       "raw_args": [
         20
       ],
@@ -52,8 +55,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x12cea",
+      "native_semantic": "native_camera_focus",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch28_post_ida.txt"],
       "raw_args": [
         10,
         15
@@ -64,8 +70,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "unresolved_native_call",
       "native_target": "0x22253",
+      "native_semantic": "native_indexed_presentation_schedule",
+      "native_confidence": "強推論",
+      "native_evidence": ["docs/data/ida/fd2_ch29_terminal_callers_ida.txt"],
       "raw_args": [
         10,
         15,
@@ -88,8 +97,11 @@
       "text_table": "dword ptr [0x3a79]"
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x24b4d",
+      "native_semantic": "native_indexed_double_buffer_present",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch22_post_ida.txt"],
       "raw_args": [
         20
       ],
@@ -107,8 +119,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x24b4d",
+      "native_semantic": "native_indexed_double_buffer_present",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch22_post_ida.txt"],
       "raw_args": [
         20
       ],
@@ -126,8 +141,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x24b4d",
+      "native_semantic": "native_indexed_double_buffer_present",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch22_post_ida.txt"],
       "raw_args": [
         20
       ],
@@ -146,8 +164,11 @@
       "text_table": "dword ptr [0x3a79]"
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x24b4d",
+      "native_semantic": "native_indexed_double_buffer_present",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch22_post_ida.txt"],
       "raw_args": [
         20
       ],
@@ -165,8 +186,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x24b4d",
+      "native_semantic": "native_indexed_double_buffer_present",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch22_post_ida.txt"],
       "raw_args": [
         20
       ],
@@ -184,8 +208,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x24b4d",
+      "native_semantic": "native_indexed_double_buffer_present",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch22_post_ida.txt"],
       "raw_args": [
         20
       ],
@@ -204,8 +231,11 @@
       "text_table": "dword ptr [0x3a79]"
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x24b4d",
+      "native_semantic": "native_indexed_double_buffer_present",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch22_post_ida.txt"],
       "raw_args": [
         20
       ],
@@ -223,8 +253,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x24b4d",
+      "native_semantic": "native_indexed_double_buffer_present",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch22_post_ida.txt"],
       "raw_args": [
         20
       ],
@@ -242,8 +275,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x24b4d",
+      "native_semantic": "native_indexed_double_buffer_present",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch22_post_ida.txt"],
       "raw_args": [
         40
       ],
@@ -261,8 +297,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x35e5a",
+      "native_semantic": "native_palette_pulse",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch28_post_ida.txt"],
       "raw_args": [],
       "source": {
         "addr": "0x25682",
@@ -278,8 +317,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x35e5a",
+      "native_semantic": "native_palette_pulse",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch28_post_ida.txt"],
       "raw_args": [],
       "source": {
         "addr": "0x25694",
@@ -295,8 +337,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x35e5a",
+      "native_semantic": "native_palette_pulse",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch28_post_ida.txt"],
       "raw_args": [],
       "source": {
         "addr": "0x256a6",
@@ -321,8 +366,11 @@
       "text_table": "dword ptr [0x3a79]"
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x11df2",
+      "native_semantic": "native_palette_update",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/fd2_11df2_palette_disasm.txt"],
       "raw_args": [
         "ebx",
         255,
@@ -350,8 +398,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x11df2",
+      "native_semantic": "native_palette_update",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/fd2_11df2_palette_disasm.txt"],
       "raw_args": [
         "ebx",
         255,
@@ -386,6 +437,8 @@
     }
   ],
   "diagnostics": {
-    "unknown_ops": 17
+    "unknown_ops": 0,
+    "classified_native_ops": 16,
+    "unresolved_native_ops": 1
   }
 }

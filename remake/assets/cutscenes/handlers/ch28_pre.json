@@ -39,8 +39,11 @@
       "text_table": "dword ptr [0x3a79]"
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x35822",
+      "native_semantic": "native_pan_spawn_stage",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt"],
       "raw_args": [
         8,
         19,
@@ -77,6 +80,7 @@
     }
   ],
   "diagnostics": {
-    "unknown_ops": 1
+    "unknown_ops": 0,
+    "classified_native_ops": 1
   }
 }

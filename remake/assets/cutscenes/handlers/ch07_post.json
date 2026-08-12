@@ -46,8 +46,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x11d40",
+      "native_semantic": "native_palette_subtract",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch23_post_ida.txt"],
       "raw_args": [
         64,
         255,
@@ -82,6 +85,7 @@
     }
   ],
   "diagnostics": {
-    "unknown_ops": 1
+    "unknown_ops": 0,
+    "classified_native_ops": 1
   }
 }

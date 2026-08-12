@@ -160,7 +160,9 @@
       "phase": "pre",
       "handler": "0x336a0",
       "beats": 26,
-      "unknown_ops": 4
+      "unknown_ops": 0,
+      "classified_native_ops": 4,
+      "classified_native_ops": 4
     },
     {
       "chapter": 23,
@@ -174,7 +176,9 @@
       "phase": "pre",
       "handler": "0x3396a",
       "beats": 19,
-      "unknown_ops": 5
+      "unknown_ops": 0,
+      "classified_native_ops": 5,
+      "classified_native_ops": 5
     },
     {
       "chapter": 25,
@@ -188,28 +192,36 @@
       "phase": "pre",
       "handler": "0x33af1",
       "beats": 20,
-      "unknown_ops": 7
+      "unknown_ops": 0,
+      "classified_native_ops": 7,
+      "classified_native_ops": 7
     },
     {
       "chapter": 27,
       "phase": "pre",
       "handler": "0x33c9d",
       "beats": 15,
-      "unknown_ops": 4
+      "unknown_ops": 0,
+      "classified_native_ops": 4,
+      "classified_native_ops": 4
     },
     {
       "chapter": 28,
       "phase": "pre",
       "handler": "0x33dba",
       "beats": 8,
-      "unknown_ops": 1
+      "unknown_ops": 0,
+      "classified_native_ops": 1,
+      "classified_native_ops": 1
     },
     {
       "chapter": 29,
       "phase": "pre",
       "handler": "0x33e3c",
       "beats": 18,
-      "unknown_ops": 8
+      "unknown_ops": 0,
+      "classified_native_ops": 8,
+      "classified_native_ops": 8
     },
     {
       "chapter": 0,
@@ -265,7 +277,9 @@
       "phase": "post",
       "handler": "0x234bb",
       "beats": 9,
-      "unknown_ops": 1
+      "unknown_ops": 0,
+      "classified_native_ops": 1,
+      "classified_native_ops": 1
     },
     {
       "chapter": 8,
@@ -279,7 +293,9 @@
       "phase": "post",
       "handler": "0x235f9",
       "beats": 12,
-      "unknown_ops": 2
+      "unknown_ops": 0,
+      "classified_native_ops": 2,
+      "classified_native_ops": 2
     },
     {
       "chapter": 10,
@@ -349,35 +365,43 @@
       "phase": "post",
       "handler": "0x23e74",
       "beats": 20,
-      "unknown_ops": 2
+      "unknown_ops": 0,
+      "classified_native_ops": 2,
+      "classified_native_ops": 2
     },
     {
       "chapter": 20,
       "phase": "post",
       "handler": "0x240fa",
       "beats": 17,
-      "unknown_ops": 4
+      "unknown_ops": 1,
+      "classified_native_ops": 3,
+      "classified_native_ops": 3
     },
     {
       "chapter": 21,
       "phase": "post",
       "handler": "0x244b6",
       "beats": 13,
-      "unknown_ops": 2
+      "unknown_ops": 0,
+      "classified_native_ops": 2,
+      "classified_native_ops": 2
     },
     {
       "chapter": 22,
       "phase": "post",
       "handler": "0x24754",
       "beats": 43,
-      "unknown_ops": 10
+      "unknown_ops": 0,
+      "classified_native_ops": 5,
+      "classified_native_ops": 5
     },
     {
       "chapter": 23,
       "phase": "post",
       "handler": "0x24c1e",
       "beats": 11,
-      "unknown_ops": 5
+      "unknown_ops": 0
     },
     {
       "chapter": 24,
@@ -398,7 +422,10 @@
       "phase": "post",
       "handler": "0x250cc",
       "beats": 37,
-      "unknown_ops": 14
+      "unknown_ops": 0,
+      "classified_native_ops": 12,
+      "unresolved_native_ops": 2,
+      "classified_native_ops": 12
     },
     {
       "chapter": 27,
@@ -412,14 +439,20 @@
       "phase": "post",
       "handler": "0x2548c",
       "beats": 40,
-      "unknown_ops": 17
+      "unknown_ops": 0,
+      "classified_native_ops": 16,
+      "unresolved_native_ops": 1,
+      "classified_native_ops": 16
     },
     {
       "chapter": 29,
       "phase": "post",
       "handler": "0x25757",
       "beats": 21,
-      "unknown_ops": 7
+      "unknown_ops": 0,
+      "classified_native_ops": 6,
+      "unresolved_native_ops": 1,
+      "classified_native_ops": 6
     }
   ]
 }

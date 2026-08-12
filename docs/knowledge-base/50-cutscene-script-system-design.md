@@ -346,6 +346,11 @@ editable scene，不能回退到 enclosing Node 的 lines 而播錯 `loadch` con
 
 ### 3.1 原語覆蓋率(全 30 章,2026-07-04)
 
+> **歷史快照**：本節記錄 2026-07-04 至 2026-07-15 的抽取器演進，不能再當成
+> 現況統計。2026-08-12 已把原有 83 個 raw handler `unknown` call site 分成
+> `native_call`、`unresolved_native_call` 與真正 `unknown` 三態；最新數字與主證據
+> 一律見 [`58-fd2-exe-re-coverage.md`](58-fd2-exe-re-coverage.md)。
+
 舊 raw dump 共 629 beats（含 `loadch_var` 這類非-call 記錄）中，重分類後已知原語 496 筆、未知
 133 筆（78.9%）。新版 editable 匯出將 `loadch_var + loadch_call` 合併為一個 `loadch`，
 因此要以各檔 `diagnostics.unknown_ops` 和 `_manifest.json` 計數，而不可拿兩種格式的

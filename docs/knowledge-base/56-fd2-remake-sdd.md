@@ -262,6 +262,16 @@ repo 提供不含 license／遊戲資料的 `tools/docker/fd2-ida.Dockerfile` �
 `ida_xref.get_xref_type` API；export 現只保存 address/caller/function metadata，絕不提交 binary、database 或 license。
 這份 report 可作 call-graph E0 交叉驗證，但不自行證明遊戲語意；語意仍須由指令與資料流佐證。
 
+2026-08-12 新增可重生的全函式清冊：`tools/ida_export_fd2_function_inventory.py`
+只在授權 IDA Docker 匯出原始函式邊界、IDA 分析名稱、旗標與直接 caller；
+`tools/compact_fd2_function_inventory.py` 產生受版控的
+[`fd2_function_inventory.json`](../data/ida/fd2_function_inventory.json)。固定雜湊輸入
+辨識1305函式，第一輪為產品27、Watcom runtime170、未知1108；語意只從
+[`fd2_semantic_index.json`](../data/ida/fd2_semantic_index.json) 合併，雜湊不符、
+註記未落在函式起點或缺推論等級／證據時直接拒絕。handler IR 同步拆成
+`native_call`、`unresolved_native_call`、`unknown`；三者都保留原始定位，前兩者
+另內嵌推論等級與證據，名稱本身不解除正式 runtime gate。
+
 2026-07-29 起，repo 根目錄 `AGENTS.md` 是跨 session 的操作契約，
 `CLAUDE.md` 只保存專案意圖並指向它。Docker container 必須是有界生命週期：
 one-shot 一律 `docker run --rm`，Xvfb 等背景程序須由 trap 收回；每批 RE／測試／

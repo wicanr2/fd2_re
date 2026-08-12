@@ -76,6 +76,34 @@ class StructureControlFlowTest(unittest.TestCase):
             ("prepare_chapter_aux_graphics", 0),
         )
 
+    def test_classified_native_call_keeps_narrow_label_and_push_order(self):
+        insns = [
+            Insn(0x200, "push", "0"),
+            Insn(0x201, "push", "0xff"),
+            Insn(0x202, "push", "0x3f"),
+            Insn(0x203, "call", "0x11df2"),
+        ]
+        raw_beats = beats.extract_beats(insns)
+        self.assertEqual(raw_beats[0]["op"], "native_palette_update")
+        self.assertEqual(raw_beats[0]["args"], [0, 0xFF, 0x3F])
+        authored = handler_scripts.normalize(raw_beats)
+        self.assertEqual(authored, [{
+            "op": "native_call",
+            "native_semantic": "native_palette_update",
+            "native_confidence": "已證實",
+            "native_evidence": ["docs/data/fd2_11df2_palette_disasm.txt"],
+            "native_target": "0x11df2",
+            "raw_args": [0, 0xFF, 0x3F],
+            "source": {"addr": "0x203", "target": "0x11df2"},
+        }])
+
+    def test_unclassified_high_risk_native_target_remains_unknown(self):
+        raw_beats = beats.extract_beats([Insn(0x300, "call", "0x22253")])
+        self.assertEqual(raw_beats[0]["op"], "unknown")
+        authored = handler_scripts.normalize(raw_beats)[0]
+        self.assertEqual(authored["op"], "unresolved_native_call")
+        self.assertEqual(authored["native_confidence"], "強推論")
+
     def test_single_slot_unit_inactive_diamond_keeps_shared_merge_once(self):
         # Deliberately unrelated synthetic addresses: regression proves that the
         # recognizer is based on the original instruction shape, not ch02_post.

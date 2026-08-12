@@ -144,11 +144,17 @@ type HandlerBeat struct {
 	Variant           string                    `json:"variant,omitempty"`
 	Value             any                       `json:"value,omitempty"`
 	NativeTarget      string                    `json:"native_target,omitempty"`
-	RawArgs           []any                     `json:"raw_args,omitempty"`
-	Args              []any                     `json:"args,omitempty"`
-	Condition         *HandlerCondition         `json:"condition,omitempty"`
-	Then              []HandlerBeat             `json:"then,omitempty"`
-	Else              []HandlerBeat             `json:"else,omitempty"`
+	// NativeSemantic is the evidence-index label emitted for a classified
+	// native call. It is audit metadata; lowering still keys on NativeTarget,
+	// source address, raw arguments and explicit bindings.
+	NativeSemantic   string            `json:"native_semantic,omitempty"`
+	NativeConfidence string            `json:"native_confidence,omitempty"`
+	NativeEvidence   []string          `json:"native_evidence,omitempty"`
+	RawArgs          []any             `json:"raw_args,omitempty"`
+	Args             []any             `json:"args,omitempty"`
+	Condition        *HandlerCondition `json:"condition,omitempty"`
+	Then             []HandlerBeat     `json:"then,omitempty"`
+	Else             []HandlerBeat     `json:"else,omitempty"`
 }
 
 // HandlerScript is a chapter pre/post handler in editable JSON form.  It is
@@ -196,6 +202,12 @@ func validateHandlerBeats(path, location string, beats []HandlerBeat) error {
 		at := fmt.Sprintf("%s[%d]", location, i)
 		if beat.Op == "" {
 			return fmt.Errorf("handler script %q %s has no op", path, at)
+		}
+		if beat.Op == "native_call" || beat.Op == "unresolved_native_call" {
+			if beat.NativeTarget == "" || beat.NativeSemantic == "" ||
+				beat.NativeConfidence == "" || len(beat.NativeEvidence) == 0 {
+				return fmt.Errorf("handler script %q %s native call lacks target/semantic/confidence/evidence", path, at)
+			}
 		}
 		if beat.Op == "if" {
 			if err := validateHandlerBeats(path, at+".then", beat.Then); err != nil {

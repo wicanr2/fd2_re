@@ -34,8 +34,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x24618",
+      "native_semantic": "native_indexed_transition",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch21_post_ida.txt"],
       "raw_args": [
         8,
         10,
@@ -58,8 +61,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x11df2",
+      "native_semantic": "native_palette_update",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/fd2_11df2_palette_disasm.txt"],
       "raw_args": [
         0,
         255,
@@ -174,8 +180,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x11df2",
+      "native_semantic": "native_palette_update",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/fd2_11df2_palette_disasm.txt"],
       "raw_args": [
         255,
         255,
@@ -205,8 +214,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x11df2",
+      "native_semantic": "native_palette_update",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/fd2_11df2_palette_disasm.txt"],
       "raw_args": [
         0,
         255,
@@ -251,6 +263,7 @@
     }
   ],
   "diagnostics": {
-    "unknown_ops": 4
+    "unknown_ops": 0,
+    "classified_native_ops": 4
   }
 }

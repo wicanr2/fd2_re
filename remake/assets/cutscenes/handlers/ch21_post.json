@@ -73,8 +73,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x24618",
+      "native_semantic": "native_indexed_transition",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch21_post_ida.txt"],
       "raw_args": [
         8,
         10,
@@ -95,8 +98,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x1f882",
+      "native_semantic": "native_palette_fade_out",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch21_post_ida.txt"],
       "raw_args": [],
       "source": {
         "addr": "0x245fa",
@@ -119,6 +125,7 @@
     }
   ],
   "diagnostics": {
-    "unknown_ops": 2
+    "unknown_ops": 0,
+    "classified_native_ops": 2
   }
 }

@@ -29,8 +29,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x24b14",
+      "native_semantic": "native_inventory_item_gate",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch22_post_ida.txt"],
       "raw_args": [
         100
       ],
@@ -92,8 +95,11 @@
       "text_table": "dword ptr [0x3a79]"
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x25052",
+      "native_semantic": "native_palette_ramp",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/knowledge-base/91-worklist.md"],
       "raw_args": [
         5,
         80
@@ -113,8 +119,11 @@
       "text_table": "dword ptr [0x3a79]"
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x25052",
+      "native_semantic": "native_palette_ramp",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/knowledge-base/91-worklist.md"],
       "raw_args": [
         4,
         80
@@ -133,8 +142,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x25052",
+      "native_semantic": "native_palette_ramp",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/knowledge-base/91-worklist.md"],
       "raw_args": [
         3,
         80
@@ -153,8 +165,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x25052",
+      "native_semantic": "native_palette_ramp",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/knowledge-base/91-worklist.md"],
       "raw_args": [
         2,
         80
@@ -173,8 +188,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x25052",
+      "native_semantic": "native_palette_ramp",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/knowledge-base/91-worklist.md"],
       "raw_args": [
         2,
         80
@@ -193,8 +211,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x25052",
+      "native_semantic": "native_palette_ramp",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/knowledge-base/91-worklist.md"],
       "raw_args": [
         2,
         80
@@ -205,8 +226,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x24618",
+      "native_semantic": "native_indexed_transition",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch21_post_ida.txt"],
       "raw_args": [
         10,
         10,
@@ -227,8 +251,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x1f882",
+      "native_semantic": "native_palette_fade_out",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch21_post_ida.txt"],
       "raw_args": [],
       "source": {
         "addr": "0x2531a",
@@ -250,8 +277,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x25089",
+      "native_semantic": "native_reset_persistent_roster",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/knowledge-base/91-worklist.md"],
       "raw_args": [],
       "source": {
         "addr": "0x2533e",
@@ -302,8 +332,11 @@
       "text_table": "dword ptr [0x3a79]"
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x1c2da",
+      "native_semantic": "native_indexed_item_present",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/knowledge-base/91-worklist.md"],
       "raw_args": [
         "eax",
         1,
@@ -316,8 +349,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "unresolved_native_call",
       "native_target": "0x22253",
+      "native_semantic": "native_indexed_presentation_schedule",
+      "native_confidence": "強推論",
+      "native_evidence": ["docs/data/ida/fd2_ch29_terminal_callers_ida.txt"],
       "raw_args": [
         "edx",
         "eax",
@@ -340,8 +376,11 @@
       "text_table": "dword ptr [0x3a79]"
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x25089",
+      "native_semantic": "native_reset_persistent_roster",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/knowledge-base/91-worklist.md"],
       "raw_args": [],
       "source": {
         "addr": "0x25458",
@@ -349,8 +388,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "unresolved_native_call",
       "native_target": "0x2bce5",
+      "native_semantic": "native_terminal_ending_owner",
+      "native_confidence": "強推論",
+      "native_evidence": ["docs/data/ida/fd2_ch29_terminal_body_ida.txt"],
       "raw_args": [],
       "source": {
         "addr": "0x2545d",
@@ -359,6 +401,8 @@
     }
   ],
   "diagnostics": {
-    "unknown_ops": 14
+    "unknown_ops": 0,
+    "classified_native_ops": 12,
+    "unresolved_native_ops": 2
   }
 }

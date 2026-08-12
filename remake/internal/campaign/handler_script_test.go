@@ -34,6 +34,47 @@ func TestLoadExportedHandlerScripts(t *testing.T) {
 	}
 }
 
+func TestExportedHandlerNativeCallsUseThreeEvidenceStates(t *testing.T) {
+	paths, err := filepath.Glob("../../assets/cutscenes/handlers/ch??_*.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	counts := map[string]int{}
+	targets := map[string]map[string]int{}
+	var visit func([]HandlerBeat)
+	visit = func(beats []HandlerBeat) {
+		for _, beat := range beats {
+			switch beat.Op {
+			case "native_call", "unresolved_native_call", "unknown":
+				counts[beat.Op]++
+				if targets[beat.Op] == nil {
+					targets[beat.Op] = map[string]int{}
+				}
+				targets[beat.Op][beat.NativeTarget]++
+			}
+			visit(beat.Then)
+			visit(beat.Else)
+		}
+	}
+	for _, path := range paths {
+		script, err := LoadHandlerScript(path)
+		if err != nil {
+			t.Fatalf("LoadHandlerScript(%q): %v", path, err)
+		}
+		visit(script.Beats)
+	}
+
+	if counts["native_call"] != 78 || counts["unresolved_native_call"] != 4 || counts["unknown"] != 1 {
+		t.Fatalf("handler native-call states = %#v, want native=78 unresolved=4 unknown=1", counts)
+	}
+	if got := targets["unresolved_native_call"]; len(got) != 2 || got["0x22253"] != 2 || got["0x2bce5"] != 2 {
+		t.Fatalf("unresolved native targets = %#v", got)
+	}
+	if got := targets["unknown"]; len(got) != 1 || got["0x24336"] != 1 {
+		t.Fatalf("true unknown native targets = %#v", got)
+	}
+}
+
 func TestChapter1PostPreservesInactiveDiamond(t *testing.T) {
 	script, err := LoadHandlerScript("../../assets/cutscenes/handlers/ch01_post.json")
 	if err != nil {

@@ -13,8 +13,7 @@
 
 | 順序 | 工作 | 現況 | 下一個可驗收結果 |
 |---:|---|---|---|
-| 0 | 提交本輪玩家第28／29戰前置 owner 與部署尾段修正 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`；完整 Go、41項工具測試及唯讀原版資產重點回歸已通過 | 納入被 ignore 的 `ch27_pre` binding 後提交；一般玩家 E2 仍另列，不因本輪測試升級 |
-| 1 | 清除假的 handler unknown 與建立 IDA 函式 inventory | 工具索引滯後；不是全面 RE 缺口 | 先把已閉合的 `0x11DF2`、`0x1F882`、`0x24618`、`0x25052`、`0x24B14`、`0x22253` 等回填 exporter；IDA inventory 分類產品程式／runtime／driver／未知，不猜名稱 |
+| 0 | 清除假的 handler unknown 與建立 IDA 函式 inventory | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式；舊83 unknown 已拆為78已分類、4已知但未閉合、1真未知 | 維護受版控語意索引；下一個 handler callee 真未知只做 `0x24336`，`0x22253`／`0x2BCE5` 追 caller/runtime gate，不重解 callee |
 | 2 | 四個忠實模式 blocked postbattle | 玩家第23、24、25、29戰戰後為 `BLOCKED`；近似模式不提升 | 每章完成 handler branch、持續隊伍、城鎮／整備及 save/load E1；再各補一般玩家 E2 |
 | 3 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有，完整效果與同狀態 E2 缺少 | 以未知 command／效果為單位完成 producer→transaction→UI／演出→回歸；不重解已閉合 mode／helper |
 | 4 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial | 依 `57` 逐個輸入狀態機取得同狀態原版／重製證據，不用單張 layout 圖代替 |

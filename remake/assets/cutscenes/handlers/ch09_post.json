@@ -5,8 +5,11 @@
   "handler": "0x235f9",
   "beats": [
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x1f882",
+      "native_semantic": "native_palette_fade_out",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch21_post_ida.txt"],
       "raw_args": [
         "ebx",
         "esi",
@@ -18,8 +21,11 @@
       }
     },
     {
-      "op": "unknown",
+      "op": "native_call",
       "native_target": "0x13536",
+      "native_semantic": "native_clear_record_bit7",
+      "native_confidence": "已證實",
+      "native_evidence": ["docs/data/ida/fd2_ch09_post_ida.txt"],
       "raw_args": [],
       "source": {
         "addr": "0x23628",
@@ -141,6 +147,7 @@
     }
   ],
   "diagnostics": {
-    "unknown_ops": 2
+    "unknown_ops": 0,
+    "classified_native_ops": 2
   }
 }

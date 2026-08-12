@@ -413,7 +413,7 @@ slot6 active 條件、SPAWN2、兩段 PAN、800/200ms 與 FDTXT_003 #4 七句也
 - 2026-07-20 ch21_pre slice：handler 的 FDTXT_022 index0 實際為 11 句、scene0；binding 已補上 map21/70-slot、pan(16,28)、acting67 與 ch22 script/party scenario，`story_ch22` 改接 editable pre-handler。新增 compiler regression，確認段落順序、載入、鏡頭與演出資源；campaign/battle tests 通過。
 - 2026-07-20 web survey（僅作外部交叉證據）：公開資源頁確認原版以外部 `FDFIELD.DAT`（含 mod 目錄替換）提供場景資料，故後續 loader 應保留 DAT provider/override layer，不把所有內容假定在 EXE。攻略資料亦明載章節間先進戰鬥準備，可購買／換裝、教會復活、存讀檔後才進下一章；campaign graph 必須維持 battle→postbattle/town/preparation→next battle。參考：[FD2 資源頁](https://chiuinan.github.io/game/game/intro/ch/c31/fd2.htm)、[準備畫面介紹](https://leoandvc.pixnet.net/blog/posts/13079662050)、[第七章商店觸發](https://jaceju-favorite-games.gitbooks.io/fd2/content/walkthrough/7.html#L55-L58)。尚未找到可靠公開 DAT binary 格式，格式結論仍以本地檔案與反組譯為準。
 - 同輪補充：GitBook 的 [FD2.EXE 修改表](https://jaceju-favorite-games.gitbooks.io/fd2/content/modify/FD2_EXE.html) 可作低成本行為 oracle（入隊 ID、行動後再動、隨時存檔、等級上限、寶箱持久化）；只採其可對照的行為線索，不把社群 byte patch 當 loader 格式證據。
-- 2026-07-20 ch22_pre control-flow slice：`0x336b5` 的 `EBX` 不是 roster_has，而是 `repeat_hint(limit=16, loop_back=0x336b4)` 的固定清理迴圈；compiler 現在把 `unit_slot_expr:"ebx"` 明確展開成 slots 0..15，並以 active loadch slot_count 驗證。這解開 ch22 的動態索引阻塞；`0x24618` 視覺效果與 `0x11df2` palette/fade 仍保留 unknown，故 story_ch23 尚未猜接。
+- 2026-07-20 ch22_pre control-flow slice：`0x336b5` 的 `EBX` 不是 roster_has，而是 `repeat_hint(limit=16, loop_back=0x336b4)` 的固定清理迴圈；compiler 現在把 `unit_slot_expr:"ebx"` 明確展開成 slots 0..15，並以 active loadch slot_count 驗證。這解開 ch22 的動態索引阻塞；`0x24618` 視覺效果與 `0x11df2` palette/fade 仍保留 unknown，故 story_ch23 尚未猜接。此為當日狀態，兩者已由 2026-07-26 的 indexed transition 與 palette fade 直接證據勘誤取代。
 - 2026-07-20 palette/transition RE correction：`0x11df2(start,end,delta)` 對 `[0x53a65]` 每色 RGB 加 delta、clamp 0..0x3f 後逐項寫 VGA DAC，是一次性 `palette_update`；`0x11d40` 才是減亮 fade-out。compiler 已將 native `0x11df2` immediate calls lower 成 `palette_update`（ch22 呼叫皆 delta=0，runtime 保留順序，不誤當黑幕 fade）。`0x24618` 定案為 `(x,y,palette_delta,step)` 固定 9-frame transition/reveal（每幀 present、5ms、尾端 delay500ms），仍待 indexed transition renderer，未猜接。
 - 2026-07-20 ch23_pre slice：handler `0x338ce` 的 FDTXT_024 index0/index1 共 14 句（scene0，5+9），map23/70-slot、四段 pan(0,4→0,22→26,24→26,2)、spawn group1 與 ch24 script 已新增 binding；`story_ch24` 接回 editable pre-handler，compiler/campaign/battle regression 通過。
 - 2026-07-20 ch24 transition/audio slice：`0x24b4d(count)` 完整 RE 確認為先 terrain/main redraw，再以兩個 `0x1c8` buffer 交替 present、每幀 20ms；ch24 calls 為 20/20/20/60（400ms/1.2s）。compiler/runtime 已新增 `transition_reveal`，binding 將 `load_res` FDOTHER#88、四次 `play_sfx(priority=1,index=1)` 接到 `battle_88_01.wav`，並把 `0x1d50a` 的 index=-1 stop 與 `0x1a80a` release 接回 handle；`story_ch25` 已切回 editable handler。剩餘差異只在 indexed double-buffer visual adapter（目前保留 exact count/timing，PNG renderer 每幀重繪）。
@@ -4904,6 +4904,25 @@ raw owner 與一般玩家 E2 的失敗即關閉結論。
 [`fd2_ch27_pre_view_ida.txt`](../data/fd2_ch27_pre_view_ida.txt) 實際存在，且回答
 raw ch26 pre→玩家第27戰的視窗／HUD 來源；新證據回答 raw ch27／ch28 pre 的
 owner 與部署尾端。兩者主題不同、都保留，撤回先前「舊檔不存在／已被取代」的說法。
+
+## 2026-08-12：IDA 全函式清冊與 handler unknown 三態勘誤
+
+- 合法 IDA Pro 9.4 在一次性無網路 Docker 對固定雜湊 `FD2.EXE` 重跑；DOS LE
+  loader 建立 `0x10000` 起始 code segment，Watcom 9.x FLIRT 生效，辨識1305個
+  函式。受版控精簡清冊為 [`fd2_function_inventory.json`](../data/ida/fd2_function_inventory.json)：
+  產品27、runtime170、未知1108；這是第一輪函式分類，不是 remake 百分比。
+- [`fd2_semantic_index.json`](../data/ida/fd2_semantic_index.json) 保存28筆非破壞性
+  位址語意、等級、scope 與 evidence。匯出器拒絕雜湊不符或註記未落函式起點；
+  不改 IDA 名稱、型別、註解或資料庫。完整逐 call-site xref 留在一次性產物，版控
+  清冊保留函式邊界與直接 caller 函式。
+- 60份 handler 的歷史83個 `unknown` 已分成78個已證實窄 `native_call`、4個
+  已知 callee 但 caller/runtime 未閉合的 `unresolved_native_call`
+  （`0x22253`、`0x2BCE5`）與唯一真正未知 `0x24336`。每筆具名呼叫保存原始
+  source／PUSH順序、推論等級與 evidence；Go compiler 仍依 exact caller/binding
+  失敗即關閉，不因名稱自動接入 campaign。
+- 全檔 caller 清冊同時勘誤 `0x28A6C`：直接 caller 包含正式戰鬥、人工智慧／事件
+  與終局 `0x2C2A6`，所以它是共用雙 runtime-record renderer，不是終局專屬函式。
+  終局缺口限縮為該 caller 當下 records／globals、精確輸出、輸入與 campaign handoff。
 
 ## 2026-08-12：文件權威與重複反組譯治理
 
