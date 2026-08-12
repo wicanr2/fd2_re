@@ -90,6 +90,16 @@ func TestApproximateCampaignTailHoldsRecoveredTerminalFrame(t *testing.T) {
 	if err := g.startCampaignNativeTail(); err != nil {
 		t.Fatal(err)
 	}
+	if !g.nativeEnding.runningCampaignTail() || g.nativeEnding.presentingCampaignTerminal() {
+		t.Fatalf("tail did not start in its 20-entry visual schedule: %#v", g.nativeEnding.tailPlayer)
+	}
+	now := time.Unix(1, 0)
+	if err := preview.advance(now, &g.nativeRNGState); err != nil {
+		t.Fatal(err)
+	}
+	if err := preview.advance(now.Add(30*time.Minute), &g.nativeRNGState); err != nil {
+		t.Fatal(err)
+	}
 	if !g.nativeEnding.presentingCampaignTerminal() || g.nativeEnding.awaitingCampaignFallback() {
 		t.Fatalf("terminal state=%#v", g.nativeEnding)
 	}
@@ -311,6 +321,14 @@ func TestApproximateCampaignMontageStartsFromPersistentLoadCHOrder(t *testing.T)
 		g.nativeEnding.montage.Phase = ending.MontagePhaseCompleted
 		if err := g.startCampaignNativeTail(); err != nil {
 			t.Fatal(err)
+		}
+		for steps := 0; !g.nativeEnding.tailPlayer.Ready() && steps < 4096; steps++ {
+			if err := g.nativeEnding.tailPlayer.Step(); err != nil {
+				t.Fatalf("tail step %d: %v", steps, err)
+			}
+		}
+		if !g.nativeEnding.tailPlayer.Ready() {
+			t.Fatal("tail did not reach the terminal frame")
 		}
 		held := append([]byte(nil), g.nativeEnding.player.Compositor.VGA...)
 		if err := g.startCampaignPartyOutcomeReview(); err != nil {

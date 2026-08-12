@@ -3502,6 +3502,42 @@ slot6 active 條件、SPAWN2、兩段 PAN、800/200ms 與 FDTXT_003 #4 七句也
   table、unit raw offsets、`0x28a6c`／`0x11d40`／`0x2935b`／`0x1f882`／
   `0x375c0` 呼叫與 20／78 tick 已輸出到
   [`fd2_ch29_post_montage_tail_ida.txt`](../data/ida/fd2_ch29_post_montage_tail_ida.txt)。
+
+## 2026-08-12：20 組終局尾段近似播放器（E1；忠實模式仍失敗即關閉）
+
+本節是同日較早「近似模式只驗證資源後直接呈現 #59」及「20 段重製轉接器整體
+尚不存在」的追加勘誤。真正阻礙玩家可見成果的缺口不是再擴張
+`MontageTailLoaderBaseline`，而是缺少不冒充精確 `0x28a6c` 的有界播放器；本輪
+因此停止擴張載入器，完成以下垂直切片：
+
+- `MontageTail.PlanVisualResources` 保留每輪 TAI／BG 與 record0／record1 的四項
+  FIGANI 原始選擇算術；合法 IDA Pro 9.4 交叉參照重新確認 record1 也同時載入
+  `3*record1[+7]+1`，先前少列該資源的文件已勘誤。
+- `LoadMontageTailVisualSets` 在播放前一次驗證 20 組 TAI／BG／FIGANI；任一晚期資源
+  不可解碼時不建立半套播放器。`MontageTailPlayer` 不寫入戰役、戰鬥、隊伍或存檔，
+  只在 `FD2_APPROXIMATE=1` 的已通過來源驗證終局節點執行。
+- 近似合成依已證實幾何放置 BG 與 TAI，先播放 record0 auxiliary／record1 base，
+  再播放 record1 auxiliary／record0 base，接著保持兩個 base、疊上 FDOTHER#58 的
+  對應影格；20 組完成後才呈現並保持 FDOTHER#59。這不補寫未知的狀態欄、滑動、
+  聲音、效果或呼叫時 runtime records。
+- FIGANI frame descriptor `+4/+5/+6/+7` 已更正為四個獨立位元組；`+6` 才是延遲。
+  舊解碼器把 `+6/+7` 合成 little-endian u16，會把正常延遲誤讀成數千 ticks，已由
+  真實資源回歸鎖定。未證實的 `+4/+5/+7` 只保留 raw 名稱。
+- `FDMUS_018` 現在於近似尾段開始時接線，而非先跳到 #59 後才播放；精確停曲、
+  呼叫間隔與畫面同步仍不宣稱等同原版。
+
+決定性回歸使用玩家自備原版 archive，驗證全部 20 組交易、超過 100 次索引畫面
+呈現、來源延遲、相同輸入的相同輸出、缺件失敗即關閉，以及最後畫面等於獨立解碼的
+#59。可審查的 20 組總覽見
+[`ending-tail-20-segments-approximate-remake-e1.png`](../figures/ending-tail-20-segments-approximate-remake-e1.png)，
+其雜湊、產生命令與限制見
+[`ending-tail-20-segments-approximate-remake-e1.json`](../data/ui-traces/ending-tail-20-segments-approximate-remake-e1.json)。
+
+現況應統一讀成：近似模式已有玩家可見的 20 組原版資源尾段；忠實模式仍缺
+`0x2c2a6` 呼叫當下完整 records/globals、精確 `0x28a6c` 狀態欄／滑動／聲音／效果
+renderer、原版輸入與時序，以及未修改一般玩家終局 E2。較早把「精確轉接器缺口」
+寫成「所有 20 段 consumer 都不存在」的句子只代表當時狀態，不再是現況斷言。
+
 - 新增 `remake/assets/endings/native_2c194_tail.json` 與
   `ending.MontageTail.Plan`。它只驗證資源索引、raw tables、位址契約並產生
   20 筆 raw entry；沒有寫入 battle state、沒有猜動畫／角色名稱，也沒有把
@@ -4790,6 +4826,12 @@ frame-table layout；`0x28a6c` 對這些輸入的可見輸出、20 段時序、�
 E2 與 raw campaign handoff 仍未閉合，全部維持失敗即關閉。詳見
 [`fd2_ch29_post_montage_tail_ida.txt`](../data/ida/fd2_ch29_post_montage_tail_ida.txt)。
 
+> **同日後續勘誤：**上述「20 段重製轉接器」缺口應限縮為**精確**
+> `0x28a6c` renderer。明確近似模式已有 `MontageTailPlayer` 消費 20 組原版
+> TAI／BG／FIGANI 與 FDOTHER#58、完成後保持 #59；完整說明、回歸與 E1 擷取見
+> 本檔較前方「20 組終局尾段近似播放器」一節。呼叫時 records/globals、狀態欄、
+> 滑動、聲音、效果、原版輸入時序及一般玩家 E2 仍維持失敗即關閉。
+
 ## 2026-08-12：終局 loader 基線與 `0x28a6c` 非零視覺鏈勘誤（E0）
 
 本段追加更正兩項會阻礙後續實作的舊斷言。固定雜湊 `FD2.EXE` 先以合法
@@ -4806,7 +4848,8 @@ IDA Pro 9.4 Docker 資料庫追蹤交叉參照與資料流，再用 Docker Capst
   略過的是 `[0x540ff]==0` 才呼叫的 `0x29f72` 一般戰鬥結果解析器。
 
 這兩項只把原版 loader baseline 與可見消費鏈提升到 E0。`0x2c548` 位於 loader
-與 `0x2c2a6` 之間，可能觀察或改動相同 runtime image；因此 post-loader baseline
-不可冒充呼叫當下 snapshot。尚缺完整 records/globals、20 段重製轉接器、精確輸入
-與一般玩家 E2，正式尾段仍維持失敗即關閉。完整證據與工具／位址基準見
+與 `0x2c2a6` 之間，可能觀察或改動同一 runtime image；因此 post-loader baseline
+不可冒充呼叫當下 snapshot。尚缺完整 records/globals、精確 20 段重製轉接器、
+精確輸入與一般玩家 E2；忠實模式仍維持失敗即關閉。近似播放器的後續勘誤見上節。
+完整證據與工具／位址基準見
 [`fd2_ch29_post_montage_tail_ida.txt`](../data/ida/fd2_ch29_post_montage_tail_ida.txt)。

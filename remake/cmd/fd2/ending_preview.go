@@ -38,6 +38,8 @@ type nativeEndingPreview struct {
 	montageStartAttempted bool
 	montageStartError     string
 	tail                  *ending.MontageTailAssets
+	tailPlayer            *ending.MontageTailPlayer
+	tailWait              time.Duration
 	tailStartAttempted    bool
 	tailStartError        string
 	reviewPartyOutcomes   bool
@@ -156,12 +158,18 @@ func (p *nativeEndingPreview) runningCampaignMontage() bool {
 	return p != nil && p.atNativeMontageGate() && !p.reviewPartyOutcomes && p.montage != nil && !p.montage.Ready()
 }
 
+func (p *nativeEndingPreview) runningCampaignTail() bool {
+	return p != nil && p.atNativeMontageGate() && !p.reviewPartyOutcomes && p.tail != nil &&
+		p.tailPlayer != nil && !p.tailPlayer.Ready()
+}
+
 // presentingCampaignTerminal marks the stable terminal image recovered from
 // the final FDOTHER#59 presentation.  It remains an explicit approximate
 // campaign feature until the 20-entry 0x28a6c renderer has its own proven
 // adapter and the raw terminal owner reaches a normal player path.
 func (p *nativeEndingPreview) presentingCampaignTerminal() bool {
-	return p != nil && p.atNativeMontageGate() && p.tail != nil && !p.reviewPartyOutcomes
+	return p != nil && p.atNativeMontageGate() && p.tail != nil && p.tailPlayer != nil &&
+		p.tailPlayer.Ready() && !p.reviewPartyOutcomes
 }
 
 // reviewingCampaignPartyOutcomes is a remake-only, opt-in revisit loop.  It
@@ -169,7 +177,8 @@ func (p *nativeEndingPreview) presentingCampaignTerminal() bool {
 // claim that the original's terminal self-loop accepted a modern review
 // command.  Returning from it always restores the recovered terminal frame.
 func (p *nativeEndingPreview) reviewingCampaignPartyOutcomes() bool {
-	return p != nil && p.atNativeMontageGate() && p.tail != nil && p.reviewPartyOutcomes
+	return p != nil && p.atNativeMontageGate() && p.tail != nil && p.tailPlayer != nil &&
+		p.tailPlayer.Ready() && p.reviewPartyOutcomes
 }
 
 // awaitingCampaignFallback only admits the editable epilogue after the
@@ -177,12 +186,12 @@ func (p *nativeEndingPreview) reviewingCampaignPartyOutcomes() bool {
 // has failed.  The game starts the montage before it polls the fallback key.
 func (p *nativeEndingPreview) awaitingCampaignFallback() bool {
 	return p != nil && p.atNativeMontageGate() && p.montageStartAttempted &&
-		(p.montage == nil || (p.montage.Ready() && p.tailStartAttempted && p.tail == nil))
+		(p.montage == nil || (p.montage.Ready() && p.tailStartAttempted && (p.tail == nil || p.tailPlayer == nil)))
 }
 
 // consumeNativeEndingAudioAtGate 只消費 after_gate 與目前已還原 0x2c548
-// 邊界精確相符的唯一音訊 cue。後續 track18 只在 #59 定格取得後由另一個明確的
-// 近似 adapter 消費，不能把它誤當作此 gate 的精確時序。
+// 邊界精確相符的唯一音訊 cue。後續 track18 由另一個明確的近似 adapter 在
+// 20 組尾段開始時消費，不能把它誤當作此 gate 的精確時序。
 func (g *Game) consumeNativeEndingAudioAtGate() {
 	if g == nil || g.nativeEnding == nil || !g.nativeEnding.atNativeMontageGate() ||
 		g.nativeEnding.audioCueConsumed {
@@ -320,12 +329,10 @@ func (g *Game) startCampaignNativeMontage() error {
 	return nil
 }
 
-// startCampaignNativeTail admits only the stable frame at the end of the
-// recovered 0x2c194 resource sequence. The original 0x28a6c visual chain is
-// proven, but its post-0x2c548 call-time input and remake adapter remain
-// unresolved, so this does not label the whole tail as reproduced.
-// It replaces the old generic epilogue only in explicit approximate mode and
-// leaves the terminal image on screen for the player to revisit.
+// startCampaignNativeTail admits an explicitly approximate visual bridge for
+// the proven 20-entry 0x2c194 resource schedule. It preserves original archive
+// selectors and delays, but does not claim the unresolved native status-panel,
+// slide, sound or call-time record semantics. Faithful mode remains blocked.
 func (g *Game) startCampaignNativeTail() error {
 	if g == nil || !g.approximateMode || g.nativeEnding == nil || !g.nativeEnding.atNativeMontageGate() ||
 		g.nativeEnding.montage == nil || !g.nativeEnding.montage.Ready() {
@@ -333,7 +340,7 @@ func (g *Game) startCampaignNativeTail() error {
 	}
 	p := g.nativeEnding
 	if p.tailStartAttempted {
-		if p.tail != nil {
+		if p.tail != nil && p.tailPlayer != nil {
 			return nil
 		}
 		return fmt.Errorf("ending: terminal tail admission already failed")
@@ -349,17 +356,35 @@ func (g *Game) startCampaignNativeTail() error {
 		p.tailStartError = err.Error()
 		return err
 	}
-	if err := assets.PresentFinal(p.player.Compositor); err != nil {
+	paths, err := p.montageArchivePaths()
+	if err != nil {
+		p.tailStartError = err.Error()
+		return err
+	}
+	bgPath := playerAssetPath("FD2_BG", []string{
+		filepath.Join(filepath.Dir(p.fdotherPath), "BG.DAT"),
+		"assets/BG.DAT",
+		"../org_game/炎龍騎士團/FLAME2/BG.DAT",
+		"org_game/炎龍騎士團/FLAME2/BG.DAT",
+	})
+	sets, err := ending.LoadMontageTailVisualSets(*tail, ending.MontageTailVisualPaths{
+		TAI: paths.TAI, BG: bgPath, FIGANI: paths.FIGANI,
+	})
+	if err != nil {
+		p.tailStartError = err.Error()
+		return err
+	}
+	player, err := ending.NewMontageTailPlayer(*tail, assets, sets, p.player.Compositor)
+	if err != nil {
 		p.tailStartError = err.Error()
 		return err
 	}
 	p.tail = &assets
-	if p.view != nil {
-		p.view.WritePixels(p.player.Compositor.RGBA().Pix)
-	}
+	p.tailPlayer = player
+	p.tailWait = 0
+	p.last = time.Time{}
 	// 原版在尾段先停止前曲，並在 20-entry loop 前啟動 FDMUS_018。
-	// 這個近似端只在穩定的終局畫面取得後消費同一資源，不宣稱其間隔
-	// 與尚未接入的 0x28a6c loop 完全相同。
+	// 近似端在視覺排程開始時消費同一資源，但不宣稱精確音訊間隔。
 	g.stopBGM()
 	g.playBGMCount("FDMUS_018", 0)
 	return nil
@@ -395,6 +420,7 @@ func (p *nativeEndingPreview) resetCampaignPartyReviewCycle() error {
 	p.montage = cycle
 	p.montageWait = 0
 	p.montageInputPending = false
+	p.tailWait = 0
 	p.last = time.Time{}
 	return nil
 }
@@ -430,6 +456,7 @@ func (g *Game) returnCampaignTerminalFromReview() error {
 	p.reviewPartyOutcomes = false
 	p.montageWait = 0
 	p.montageInputPending = false
+	p.tailWait = 0
 	p.last = time.Time{}
 	if p.view != nil {
 		p.view.WritePixels(p.player.Compositor.RGBA().Pix)
@@ -549,6 +576,34 @@ func (p *nativeEndingPreview) advanceMontage(elapsed time.Duration, nativeRNG *u
 	return fmt.Errorf("ending: montage advance exceeded bounded step budget")
 }
 
+func (p *nativeEndingPreview) advanceTail(elapsed time.Duration) error {
+	if p == nil || p.tailPlayer == nil {
+		return fmt.Errorf("ending: montage tail runtime is incomplete")
+	}
+	remaining := elapsed
+	for steps := 0; steps < 4096; steps++ {
+		if p.tailPlayer.Ready() {
+			return nil
+		}
+		if p.tailWait > 0 {
+			if remaining < p.tailWait {
+				p.tailWait -= remaining
+				return nil
+			}
+			remaining -= p.tailWait
+			p.tailWait = 0
+		}
+		if err := p.tailPlayer.Step(); err != nil {
+			return err
+		}
+		p.tailWait = time.Duration(p.tailPlayer.DelayTicks) * approximateNativeMontageTick
+		if remaining == 0 && p.tailWait > 0 {
+			return nil
+		}
+	}
+	return fmt.Errorf("ending: montage tail advance exceeded bounded step budget")
+}
+
 func (p *nativeEndingPreview) advance(now time.Time, nativeRNG *uint16) error {
 	elapsed := 0
 	if !p.last.IsZero() {
@@ -571,6 +626,10 @@ func (p *nativeEndingPreview) advance(now time.Time, nativeRNG *uint16) error {
 				return err
 			}
 			p.reviewCycles++
+		}
+	} else if p.runningCampaignTail() {
+		if err := p.advanceTail(time.Duration(elapsed) * time.Millisecond); err != nil {
+			return err
 		}
 	} else if p.tail != nil {
 		// The native caller self-loops after 0x2bce5 returns.  Keep the
@@ -602,6 +661,14 @@ func (g *Game) drawNativeEndingPreview(screen *ebiten.Image) {
 		pop.GeoM.Translate(16, logicalH-56)
 		screen.DrawImage(panel, pop)
 		g.font.Draw(screen, "角色蒙太奇（近似戰役資料）：任意按鍵會在本輪結束後略過中間角色。", 23, logicalH-44, 0.78,
+			color.RGBA{0xff, 0xe0, 0x90, 0xff})
+	} else if g.nativeEnding.runningCampaignTail() && g.font != nil {
+		panel := ebiten.NewImage(logicalW-32, 42)
+		panel.Fill(color.RGBA{0x10, 0x1c, 0x40, 0xe8})
+		pop := &ebiten.DrawImageOptions{}
+		pop.GeoM.Translate(16, logicalH-56)
+		screen.DrawImage(panel, pop)
+		g.font.Draw(screen, "終局蒙太奇（原版資源、近似合成）：完成後將停留在 THE END。", 25, logicalH-44, 0.78,
 			color.RGBA{0xff, 0xe0, 0x90, 0xff})
 	} else if g.nativeEnding.awaitingCampaignFallback() && g.font != nil {
 		panel := ebiten.NewImage(logicalW-32, 42)

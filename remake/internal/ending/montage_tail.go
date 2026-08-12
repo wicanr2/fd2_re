@@ -10,6 +10,7 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
+	"github.com/wicanr2/fd2_re/remake/internal/figani"
 )
 
 // MontageTail is the raw, editable schedule after the party montage.  It
@@ -78,6 +79,20 @@ type MontageTailEntry struct {
 	Record1Byte7 byte
 }
 
+// MontageTailVisualResources records only the directly proven archive
+// selectors consumed by the nonzero 0x28a6c branch. It is not a decoded
+// animation, does not assign attacker/defender roles, and performs no runtime
+// mutation or drawing.
+type MontageTailVisualResources struct {
+	Index             int
+	TAI               int
+	BG                int
+	Record1FIGANIBase int
+	Record1FIGANIAux  int
+	Record0FIGANIBase int
+	Record0FIGANIAux  int
+}
+
 const (
 	// 0x2c435 passes this raw selector to 0x1088d before the party montage.
 	// These constants deliberately retain archive arithmetic instead of naming
@@ -96,6 +111,15 @@ const (
 type MontageTailLoaderPaths struct {
 	FDFIELD string
 	FDICON  string
+}
+
+// MontageTailVisualPaths identifies the player-provided archives needed by
+// the approximate visual bridge. The bridge validates every native selector
+// before playback and never writes these archives.
+type MontageTailVisualPaths struct {
+	TAI    string
+	BG     string
+	FIGANI string
 }
 
 // MontageTailLoaderBaseline is the exact raw-runtime shape constructed by the
@@ -272,14 +296,105 @@ func validateMontageTailLoaderField(fieldMap, control, positions []byte) (int, e
 // MontageTailAssets preserves the directly loaded FDOTHER inputs of
 // 0x2c194. The original nonzero 0x28a6c branch is proven to load and compose
 // visual resources, but the remake lacks its admitted full call-time runtime
-// records and a renderer adapter. Merely loading these assets therefore does
-// not claim to reproduce that loop. The final #59 frame is kept separately
+// records and exact renderer adapter. Merely loading these assets therefore
+// does not claim to reproduce that loop. The final #59 frame is kept separately
 // because the native code decodes it only after the loop has completed.
 type MontageTailAssets struct {
 	LoopPalette []byte
 	Intro       fdother.Frame
 	LoopFrames  []fdother.Frame
 	Final       fdother.Frame
+}
+
+// MontageTailVisualSet is one preflighted 0x28a6c resource transaction. The
+// field names retain raw record ownership rather than assigning character or
+// attacker/defender identities to finale records 0 and 1.
+type MontageTailVisualSet struct {
+	Plan              MontageTailVisualResources
+	TAI               fdother.Frame
+	BG                fdother.Frame
+	Record1FIGANIBase *figani.Animation
+	Record1FIGANIAux  *figani.Animation
+	Record0FIGANIBase *figani.Animation
+	Record0FIGANIAux  *figani.Animation
+}
+
+// LoadMontageTailVisualSets performs an all-or-nothing preflight of the 20
+// original TAI/BG/FIGANI selector transactions. This closes archive and codec
+// availability only; it does not claim exact 0x2939d composition or timing.
+func LoadMontageTailVisualSets(tail MontageTail, paths MontageTailVisualPaths) ([]MontageTailVisualSet, error) {
+	if paths.TAI == "" || paths.BG == "" || paths.FIGANI == "" {
+		return nil, fmt.Errorf("ending: montage tail visual archive path is unavailable")
+	}
+	plans, err := tail.PlanVisualResources()
+	if err != nil {
+		return nil, err
+	}
+	sets := make([]MontageTailVisualSet, len(plans))
+	for index, plan := range plans {
+		tai, err := fdother.DecodeArchiveSingleFrame(paths.TAI, plan.TAI)
+		if err != nil {
+			return nil, fmt.Errorf("ending: montage tail entry %d TAI#%d: %w", index, plan.TAI, err)
+		}
+		taiAt := tai
+		taiAt.X, taiAt.Y = 164, 157
+		if err := validateMontageTailVisualFrame(taiAt); err != nil {
+			return nil, fmt.Errorf("ending: montage tail entry %d TAI#%d: %w", index, plan.TAI, err)
+		}
+		bg, err := fdother.DecodeArchiveSingleFrame(paths.BG, plan.BG)
+		if err != nil {
+			return nil, fmt.Errorf("ending: montage tail entry %d BG#%d: %w", index, plan.BG, err)
+		}
+		bgAt := bg
+		bgAt.Y = 50
+		if err := validateMontageTailVisualFrame(bgAt); err != nil {
+			return nil, fmt.Errorf("ending: montage tail entry %d BG#%d: %w", index, plan.BG, err)
+		}
+		loadAnimation := func(resource int) (*figani.Animation, error) {
+			animation, err := figani.DecodeResource(paths.FIGANI, resource)
+			if err != nil {
+				return nil, err
+			}
+			for frameIndex, frame := range animation.Frames {
+				if frame.X < 0 || frame.Y < 0 || frame.X+frame.Width > Width || frame.Y+frame.Height > Height {
+					return nil, fmt.Errorf("frame %d is outside the proven indexed viewport", frameIndex)
+				}
+			}
+			return animation, nil
+		}
+		record1Base, err := loadAnimation(plan.Record1FIGANIBase)
+		if err != nil {
+			return nil, fmt.Errorf("ending: montage tail entry %d FIGANI#%d: %w", index, plan.Record1FIGANIBase, err)
+		}
+		record1Aux, err := loadAnimation(plan.Record1FIGANIAux)
+		if err != nil {
+			return nil, fmt.Errorf("ending: montage tail entry %d FIGANI#%d: %w", index, plan.Record1FIGANIAux, err)
+		}
+		record0Base, err := loadAnimation(plan.Record0FIGANIBase)
+		if err != nil {
+			return nil, fmt.Errorf("ending: montage tail entry %d FIGANI#%d: %w", index, plan.Record0FIGANIBase, err)
+		}
+		record0Aux, err := loadAnimation(plan.Record0FIGANIAux)
+		if err != nil {
+			return nil, fmt.Errorf("ending: montage tail entry %d FIGANI#%d: %w", index, plan.Record0FIGANIAux, err)
+		}
+		sets[index] = MontageTailVisualSet{
+			Plan: plan, TAI: tai, BG: bg, Record1FIGANIBase: record1Base,
+			Record1FIGANIAux: record1Aux, Record0FIGANIBase: record0Base, Record0FIGANIAux: record0Aux,
+		}
+	}
+	return sets, nil
+}
+
+func validateMontageTailVisualFrame(frame fdother.Frame) error {
+	if frame.Width <= 0 || frame.Height <= 0 || frame.Width > Width || frame.Height > Height {
+		return fmt.Errorf("geometry %dx%d exceeds the indexed viewport", frame.Width, frame.Height)
+	}
+	dst := make([]byte, Bytes)
+	if err := frame.Blit(dst, Width, -1); err != nil {
+		return err
+	}
+	return nil
 }
 
 // LoadMontageTailAssets verifies the native resource shapes before the
@@ -439,6 +554,35 @@ func (t MontageTail) Plan() ([]MontageTailEntry, error) {
 		}
 	}
 	return entries, nil
+}
+
+// PlanVisualResources preserves the resource-index arithmetic directly used
+// by the original nonzero 0x28a6c branch. The TAI#3 substitutions are raw
+// selector comparisons, not named character exceptions. Approximate mode may
+// consume this plan without mutating runtime records; faithful mode still needs
+// a separately admitted call-time record snapshot and exact renderer adapter.
+func (t MontageTail) PlanVisualResources() ([]MontageTailVisualResources, error) {
+	entries, err := t.Plan()
+	if err != nil {
+		return nil, err
+	}
+	resources := make([]MontageTailVisualResources, len(entries))
+	for index, entry := range entries {
+		tai := int(entry.Global540FF)
+		if entry.Record0Byte7 == 0x1a || entry.Record0Byte7 == 0x36 || entry.Record1Byte7 == 0x37 {
+			tai = 3
+		}
+		resources[index] = MontageTailVisualResources{
+			Index:             index,
+			TAI:               tai,
+			BG:                int(entry.Global540FF),
+			Record1FIGANIBase: int(entry.Record1Byte7) * 3,
+			Record1FIGANIAux:  int(entry.Record1Byte7)*3 + 1,
+			Record0FIGANIBase: int(entry.Record0Byte7) * 3,
+			Record0FIGANIAux:  int(entry.Record0Byte7)*3 + 1,
+		}
+	}
+	return resources, nil
 }
 
 func tailRecordByte6(recordByte7 byte) byte {

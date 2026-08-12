@@ -5776,9 +5776,9 @@ func (g *Game) Update() error {
 		}
 		if g.nativeEnding.atNativeMontageGate() && g.nativeEnding.montage != nil &&
 			g.nativeEnding.montage.Ready() && !g.nativeEnding.tailStartAttempted {
-			// The final native image is a separate, provenance-checked tail
-			// asset.  Its 20-entry renderer remains isolated, but a successful
-			// terminal frame must not fall through to the old generic epilogue.
+			// Explicit approximate mode consumes the provenance-checked 20-entry
+			// source schedule, then holds the final native image. Faithful mode
+			// never reaches this adapter.
 			_ = g.startCampaignNativeTail()
 		}
 		if err := g.queueNativeEndingDialogue(); err != nil {

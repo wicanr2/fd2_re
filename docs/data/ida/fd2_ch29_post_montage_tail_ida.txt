@@ -109,15 +109,17 @@ records 清零後只寫 `+5=1`。尾端 `0x10b4e(0)` 只追加 group 0，而 #91
 
 IDA 9.4 資料流與 Capstone 直接指令交叉確認：`0x28c15` 起依 `[0x540ff]`
 選 TAI／BG（特定 raw `record[+7]` 組合則選 TAI #3），並載入
-`3*record1[+7]`、`3*record0[+7]`、`3*record0[+7]+1` 的 FIGANI 資源。
+`3*record1[+7]`、`3*record1[+7]+1`、`3*record0[+7]`、
+`3*record0[+7]+1` 的 FIGANI 資源。
 接著呼叫 `0x29164` 與 `0x2939d`；`0x29164` 的 `+6==0`／非零兩支都執行
 九階段合成、`0x2935b`、VGA copy 與 `0x11d40`。
 
 `0x2939d` 只在 `[0x540ff]==0` 呼叫 `0x29f72` 一般戰鬥結果解析器；非零時把
 相關結果欄位歸零，但仍執行 frame loop、`0x2935b`、`0x11eb0`、等待與
 `0x29c90`／`0x29ded`。所以「非零分支沒有畫面」是錯誤斷言；正確限制是：
-原版視覺輸出鏈已達 E0，但精確呼叫時輸入、20 段可見結果、重製轉接器與 E2
-尚未閉合，正式路徑仍須失敗即關閉。
+原版視覺輸出鏈已達 E0，但精確呼叫時輸入、原版 20 段可見結果、精確重製轉接器
+與 E2 尚未閉合，忠實模式仍須失敗即關閉。明確近似模式另有
+`MontageTailPlayer` 消費 20 組已驗證資源；它不提升這項 E0 證據。
 
 ## 已證實：尾端收尾
 
@@ -134,8 +136,8 @@ node、town、shop、整備、save 或結局 owner。
 - 已證實：上述 table 的定位是 IDA／Capstone LE 線性位址；它們位於 object 2，
   所以檔案偏移是線性位址減 `0x200`。不可把兩種基準混作同一個 `0x...`。
 - 未知：各 raw table 欄位的遊戲名稱、`0x25977`／`0x1f525` 的完整語意、
-  `0x2c2a6` 呼叫當下完整 records/globals、20 段重製轉接器，以及這段與
-  終局／戰役／城鎮的 handoff。
+  `0x2c2a6` 呼叫當下完整 records/globals、精確 `0x28a6c` 20 段轉接器，以及
+  這段與終局／戰役／城鎮的 handoff。近似 `MontageTailPlayer` 不解除這些未知項。
 
 因此 `MontageTail` 目前是可編輯、可驗證、失敗即關閉的 raw schedule，
 不是 campaign binding，也不解除 `postbattle_ch29_persist`。

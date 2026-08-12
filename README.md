@@ -15,7 +15,7 @@
 |---|---|---|
 | 資產與格式 | `.DAT`、RLE 圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與部分 EXE 資料表可重現解析 | 部分執行期改寫、合成器與音訊播放尚未完整接入 |
 | 反向工程 | 戰役狀態機、事件處理器、戰鬥規則、敵方 AI 原始模式與城鎮／商店／教會及存檔邊界已有證據化切片；mode 1 blocked-coordinate、mode 2 物理候選、mode 5 事件尾端，以及 mode 11 的 `0x15311` 命令／`0x1548E` 物理／`0x14121→0x13FD4` indexed 音訊 owner，均已接上失敗即關閉的執行期窄切片；`aiStep` 另已驗證兩名 raw mode-7 actor 的同回合順序，原始路由未處理且無錯誤時敵方／友軍 NPC 可依可編輯 `SpellBook`／`Spells` 完成正規化（normalized）法術決策與結算；未修改原版 CONTINUE→END→ENEMY PHASE 的章節0 E2 時間線也已可重現 | 尚缺重製端同一 raw 狀態的敵方回合 E2 配對、未知命令／法術／物品的完整演出、逐章戰後流程與 CONTINUE 四格的動作 owner／確認效果；原版 E2 錨點及現有 owner 都不等於逐像素或逐音訊一致 |
-| Go／Ebiten 重製 | 地圖、對話、部分戰鬥、城鎮、商店、教會、整備、自有存檔及場景 BGM 消費可操作；戰鬥曲與城鎮曲已有原版表格回歸；近似模式可從最終節點播放已證實的 `0x2BCE5` 前綴、原資源角色最終狀態蒙太奇，以及來源 `FDOTHER#59` 的終局靜態圖 | 尚缺完整 30 章玩家路徑、`0x2C194` 的 20 段 indexed 尾段 renderer／精確時序與 BIOS 按鍵對映、一般玩家終局 E2 與跨平台驗收 |
+| Go／Ebiten 重製 | 地圖、對話、部分戰鬥、城鎮、商店、教會、整備、自有存檔及場景 BGM 消費可操作；戰鬥曲與城鎮曲已有原版表格回歸；近似模式可從最終節點播放已證實的 `0x2BCE5` 前綴、原資源角色最終狀態蒙太奇、20 組尾段資源與來源 `FDOTHER#59` 的終局靜態圖 | 尚缺完整 30 章玩家路徑、`0x2C194→0x28A6C` 的精確尾段 renderer／時序與 BIOS 按鍵對映、一般玩家終局 E2 與跨平台驗收 |
 | 原版視覺比對 | ch02 城鎮 variant0 六項、variant1 正常五項、variant2 正常五項（後兩者為修改 LOAD 路徑），以及部分商店、讀檔選單已有整幀 RGB 相同證據 | 完整操作介面估計約 40–45%；秘密選項、一般玩家城鎮路徑、戰場、整備、教會與其餘章節仍需同狀態比較 |
 
 工作清單中的完成項代表已驗證的函式、格式或切片，**不是遊戲完成百分比**。
@@ -44,12 +44,20 @@
 前一曲。只有明確設定 `FD2_APPROXIMATE=1`，且戰役節點通過嚴格
 `native_ending_prefix` 合約，才會播放已證實的 `0x2BCE5` 前綴；到 `0x2C548`
 閘門時只消費已核對的 `FDMUS_004`，再以 persistent raw roster 播放原資源角色蒙太奇。
-cycle 完成後，近似模式會驗證 `#57` 調色盤、`#58` 的 20 影格表與 `#60/#59` 單影格，
-顯示來源 `#59` 的終局靜態圖並停留；外部片尾錄影把它對應為 `THE END` 僅屬
+cycle 完成後，近似尾段會依可編輯排程逐組消費已驗證的 TAI／BG／FIGANI 原版
+資源，保留 FIGANI descriptor `+6` 的原始延遲，疊上 `FDOTHER#58` 的 20 影格，
+再顯示來源 `#59` 的終局靜態圖並停留。這是可見近似效果，不是
+`0x2C194→0x28A6C` 的精確 renderer；外部片尾錄影把 `#59` 對應為 `THE END` 僅屬
 [強推論旁證](docs/data/ui-traces/ch30-ending-youtube-visual-side-evidence.json)，不是一般玩家 E2。按 Enter／空白鍵可選擇重播每位隊員的最終狀態，Enter／空白鍵／Esc
 會回到終局定格；這是重製版延伸，不宣稱為原版按鍵行為。素材或 provenance 不足才會
 確認回到可編輯結語。`FDMUS_018` 在此近似尾段只作曲目接線，時序不宣稱相同；
-`0x2C194` 的 20 段 renderer、精確 BIOS 按鍵與一般玩家通關仍失敗即關閉。
+精確 `0x28A6C` renderer、完整呼叫時紀錄、BIOS 按鍵與一般玩家通關仍失敗即關閉。
+
+![重製端近似終局尾段：20 組原版資源排程總覽](docs/figures/ending-tail-20-segments-approximate-remake-e1.png)
+
+*這是 `MontageTailPlayer` 以玩家自備原版 TAI／BG／FIGANI／FDOTHER 產生的 E1
+近似合成總覽；不是原版擷取、逐像素對照或精確 `0x28A6C` 輸出。產生方式、雜湊與
+限制見[擷取紀錄](docs/data/ui-traces/ending-tail-20-segments-approximate-remake-e1.json)。*
 
 ![重製端近似模式的結局前段：到第一個原版文字閘門](docs/figures/ending-prefix-approximate-remake-e1.png)
 

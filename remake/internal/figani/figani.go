@@ -158,6 +158,9 @@ type Frame struct {
 	Width, Height int
 	Pixels, Mask  []byte
 	Delay         int
+	RawByte4      byte
+	RawByte5      byte
+	RawByte7      byte
 }
 
 func DecodeResource(path string, resource int) (*Animation, error) {
@@ -195,7 +198,15 @@ func Parse(raw []byte) (*Animation, error) {
 		if err != nil {
 			return nil, fmt.Errorf("figani: frame %d: %w", i, err)
 		}
-		frames[i] = Frame{X: int(int16(binary.LittleEndian.Uint16(raw[off:]))), Y: int(int16(binary.LittleEndian.Uint16(raw[off+2:]))), Width: w, Height: h, Pixels: pixels, Mask: mask, Delay: int(binary.LittleEndian.Uint16(raw[off+6:]))}
+		// 0x2939d consumes +4, +5, +6 and +7 as four independent bytes.
+		// In particular, +6 is the frame delay; retaining the other bytes by
+		// raw offset avoids assigning an unclosed effect/sound/z-order meaning.
+		// Reading a u16 at +6 turns byte7 value 6 plus delay 38 into a bogus 1574.
+		frames[i] = Frame{
+			X: int(int16(binary.LittleEndian.Uint16(raw[off:]))), Y: int(int16(binary.LittleEndian.Uint16(raw[off+2:]))),
+			Width: w, Height: h, Pixels: pixels, Mask: mask,
+			RawByte4: raw[off+4], RawByte5: raw[off+5], Delay: int(raw[off+6]), RawByte7: raw[off+7],
+		}
 		previous = off
 	}
 	return &Animation{Frames: frames, HeaderByte4: raw[4]}, nil

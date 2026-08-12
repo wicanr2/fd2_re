@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "evidence_level": "E1",
+  "scope": "重製端以玩家自備原版資源執行 MontageTailPlayer 的 20 組近似終局尾段；不是原版擷取、一般玩家 E2 或逐像素對照",
+  "generated_on": "2026-08-12",
+  "reference_files": [
+    {
+      "file": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    {
+      "file": "FDOTHER.DAT",
+      "size": 3382481,
+      "md5": "22f56e5027edc7c766ad34ca4e5aca93",
+      "sha256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
+    },
+    {
+      "file": "TAI.DAT",
+      "size": 94917,
+      "md5": "7cfe4b9ad2cbff44b2ebd7ab2f94e4aa",
+      "sha256": "d56fea9c43f8bb59aad89ad76698885d7e07f380d12a4547888a0b60ea5e0410"
+    },
+    {
+      "file": "BG.DAT",
+      "size": 624564,
+      "md5": "4b5414c92b40ef25ba0ee10c80f9e149",
+      "sha256": "b9fc21d019d6256a4bb7e6da1cefcb0bfe331d8ff74a52a8201570afc98b56de"
+    },
+    {
+      "file": "FIGANI.DAT",
+      "size": 15279582,
+      "md5": "7da21ec0ad9917455459f1acb970bdf4",
+      "sha256": "e909314ce37b70701238fd24febc8f61603bbe8d81a9ecbf8f289c97a5b67a1f"
+    }
+  ],
+  "generator": {
+    "source": "remake/cmd/fd2-ending-tail-oracle",
+    "production_consumer": "remake/internal/ending.MontageTailPlayer",
+    "docker_image": "fd2-go-test-local",
+    "docker_image_id": "sha256:0e335ef7174c526163324291038fa4c0aa6c00095b5fa12556c203c3dd7c0d4a",
+    "network": "none",
+    "command_from_remake": "go run ./cmd/fd2-ending-tail-oracle -game-root ../org_game/炎龍騎士團/FLAME2 -out ../docs/figures/ending-tail-20-segments-approximate-remake-e1.png -contact-sheet"
+  },
+  "presentation_contract": {
+    "transactions": 20,
+    "schedule": "remake/assets/endings/native_2c194_tail.json",
+    "admission": "20 組 TAI、BG 與四項 FIGANI 選擇必須全部可解碼，否則在播放前失敗即關閉",
+    "per_transaction": [
+      "BG 放在 y=50",
+      "TAI 放在 (164,157)，並保留原始 TAI#3 選擇例外",
+      "record0 auxiliary 與 record1 base 配對",
+      "record1 auxiliary 與 record0 base 配對",
+      "FIGANI descriptor +6 作為原始延遲位元組",
+      "基準姿勢保持 20 ticks",
+      "疊上對應的 FDOTHER#58 frame",
+      "疊圖後保持 78 ticks"
+    ],
+    "intro": "FDOTHER#57 調色盤與 FDOTHER#60 全畫面，保持 0x50 ticks",
+    "terminal": "20 組完成後呈現並保持 FDOTHER#59"
+  },
+  "outputs": [
+    {
+      "file": "docs/figures/ending-tail-20-segments-approximate-remake-e1.png",
+      "width": 1624,
+      "height": 820,
+      "size": 449367,
+      "md5": "0e9b1d0b9bb081654afcd2dd6072fced",
+      "sha256": "d7644cea79aa4f8cd4fea1e506644a6a4b0c095e0e65a5c390ad0e629a538d76",
+      "role": "20 組 FDOTHER#58 疊圖完成時的 5×4 總覽"
+    },
+    {
+      "file": "docs/figures/ending-tail-segment09-approximate-remake-e1.png",
+      "width": 320,
+      "height": 200,
+      "size": 27787,
+      "md5": "aa357b2083c8901b5d4e64291f6c5a36",
+      "sha256": "022d01efa47bce100790535ba0b636ea2ef1ae343c637c0750bd15474f4c6a04",
+      "role": "第 10 組 FDOTHER#58 疊圖完成時的代表畫面"
+    }
+  ],
+  "limitations": [
+    "這是直接執行重製端播放器取得的 E1 證據，不是從第 30 戰一般玩家路徑取得的 E2。",
+    "精確 0x28A6C 仍依賴呼叫當下完整 records/globals、狀態欄、滑動（slide）、聲音（sound）與效果（effect）消費端；近似播放器沒有替它們猜測語意。",
+    "尚無相同狀態的原版 20 組影格，因此不宣稱逐像素或精確時序一致。",
+    "畫面內署名來自原版資源；本側錄不替 20 筆 raw selector 指派人物或職務語意。",
+    "FDOTHER#59 對應長時間停留的 THE END 仍以外部影片作強推論旁證，並非一般玩家 E2。"
+  ]
+}

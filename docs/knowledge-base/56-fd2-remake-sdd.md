@@ -516,8 +516,10 @@ LE 線性位址 `0x525dc..0x52617`（object 2 檔案偏移 `0x523dc..0x52417`）
 record0、record1 的 `+7`，並各自在 `<0x4c` 時即時計算該筆的 `+6=2`，
 否則為 0（`0x50` stride，故 `[0x53a45]+0x56/+0x57` 是 record1，而非 record0
 高位欄位），第三組寫入 `[0x540ff]`。`MontageTail.Plan` 只產生 raw
-entry，不寫入 `battle.State`、不呈現 20-entry loop，也不命名欄位。這關閉「尾端完全未知」
-的過時斷言，但不關閉 indexed resource owner、輸入事件、campaign／town／
+entry、不寫入 `battle.State`，也不命名欄位；近似模式另由 `MontageTailPlayer`
+消費 20 組已驗證的 TAI／BG／FIGANI 資源、FIGANI descriptor `+6` 延遲與
+FDOTHER #58 疊圖，最後保持 #59。這關閉「尾端完全未知」的過時斷言，但不是
+精確 `0x28a6c` renderer，也不關閉輸入事件、campaign／town／
  shop／整備／save handoff 或 `postbattle_ch29_persist`；證據見
 [`fd2_ch29_post_montage_tail_ida.txt`](../data/ida/fd2_ch29_post_montage_tail_ida.txt)。
 
@@ -530,7 +532,8 @@ entry，不寫入 `battle.State`、不呈現 20-entry loop，也不命名欄位�
 IDA／Capstone 也已證明 `[0x540ff]!=0` 的 `0x28a6c` 仍載入 TAI／FIGANI／BG、
 經 `0x29164→0x2939d` 合成並輸出 VGA，只略過 `[0x540ff]==0` 才呼叫的
 `0x29f72` 一般戰鬥結果解析器。尚缺 `0x2c2a6` 呼叫當下完整 records/globals、
-重製轉接器及 E2，因此正式 20 段演出仍失敗即關閉。
+精確 `0x28a6c` renderer、原版輸入／時序及 E2；近似播放器不能解除忠實模式的
+20 段失敗即關閉邊界。
 
 2026-08-09 ch29 terminal caller correction：IDA／Capstone 直接固定
 `0x25e23` 以 `[0x53c03]` 消費 raw table `0x51de9`；目前已證實
@@ -4044,12 +4047,13 @@ owner、raw terminal owner、戰後／城鎮 handoff 與一般玩家 E2 仍失�
 [`fd2_ch29_post_montage_tail_ida.txt`](../data/ida/fd2_ch29_post_montage_tail_ida.txt)
 追加勘誤。
 
-`MontageTailAssets` 因此只在 `FD2_APPROXIMATE=1`、`0x2c548` 的已 admission
-party montage 成功完成後，驗證 #57/#58/#60/#59 的形狀與透明 RLE 邊界，恢復既有的
-indexed baseline，呈現 #59 並保持終局定格。這條成功路徑不會再落入 generic ending；
-素材或 raw provenance 缺失時才保持舊有的可編輯結語回退。原始程式在未還原的
-20-entry loop 之前才啟動 `FDMUS_018`，而近似 runtime 在 #59 定格取得後才接線同一曲目，
-故僅稱曲目來源相符，**不宣稱時序相同**。
+`MontageTailAssets` 在 `FD2_APPROXIMATE=1`、`0x2c548` 的已 admission party montage
+成功完成後，先驗證 #57/#58/#60/#59 的形狀與透明 RLE 邊界；`MontageTailPlayer`
+再以 20 組 TAI／BG／FIGANI、descriptor `+6` 延遲與 #58 疊圖產生近似尾段，最後
+呈現 #59 並保持終局定格。這條成功路徑不會再落入 generic ending；任一來源缺失時
+在播放前失敗即關閉並保留可編輯結語回退。原始程式與近似 runtime 都在 20-entry
+loop 前啟動 `FDMUS_018`，但其完整停曲、呼叫間隔與畫面同步尚未閉合，故只稱曲目與
+大致階段相符，**不宣稱精確時序相同**。
 
 外部第 30 戰片尾錄影顯示黑底金色 `THE END` 長時間停留；把 #59 對應成該畫面的
 結論是**強推論／外部視覺旁證**，不是原版未修改一般玩家 E2，也不是逐像素比較。
@@ -4062,7 +4066,7 @@ indexed baseline，呈現 #59 並保持終局定格。這條成功路徑不會�
 Enter／空白鍵／Esc 立即恢復 #59 定格。這些控制鍵不映射回 `0x10620` 的 BIOS word，
 也不主張原版 terminal self-loop 有相同行為。
 
-仍未解除的 gate 是 `0x28a6c(0,1)` 的 20-entry renderer、#60 的完整可見 owner、
+仍未解除的 gate 是 `0x28a6c(0,1)` 的精確 20-entry renderer、#60 的完整可見 owner、
 palette fade／wait 的精確時序、raw `0x25970→0x2bce5` 一般玩家 campaign owner，
 以及完整終局 E2。所有未解項繼續失敗即關閉，不能因 #59 定格或重製回顧功能而接成
 正式戰役完成宣稱。
@@ -4070,5 +4074,7 @@ palette fade／wait 的精確時序、raw `0x25970→0x2bce5` 一般玩家 campa
 Docker／Xvfb 回歸 `TestMontageTailAssetsPreservePaletteFramesAndTerminalImage` 與
 `TestApproximateCampaignMontageStartsFromPersistentLoadCHOrder` 的
 `optional_party_outcome_review_loops_and_restores_terminal` 子案例，已以玩家原始 archive
-確認資源形狀、終局定格、回顧重新起始與返回定格。不過測試以已完成的 montage state
+確認資源形狀、終局定格、回顧重新起始與返回定格。新增的
+`TestMontageTailPlayerUsesAllTwentySourceTransactionsThenHoldsFinal` 另以玩家原始
+archive 驗證 20 組近似資源交易、延遲與最終 #59；不過測試以已完成的 montage state
 驗證循環邊界，不能代替未修改一般玩家從第 30 戰走到終局的 E2。

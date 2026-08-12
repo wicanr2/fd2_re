@@ -81,6 +81,93 @@ func TestTailRecordByte6UsesNativeThreshold(t *testing.T) {
 	}
 }
 
+func TestMontageTailVisualResourcePlanKeepsNonzeroBranchArithmeticRaw(t *testing.T) {
+	tail, err := LoadMontageTail(filepath.Join("..", "..", "assets", "endings", "native_2c194_tail.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	entries, err := tail.Plan()
+	if err != nil {
+		t.Fatal(err)
+	}
+	resources, err := tail.PlanVisualResources()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(resources) != 20 {
+		t.Fatalf("visual resource entries=%d, want 20", len(resources))
+	}
+	for index, resource := range resources {
+		entry := entries[index]
+		wantTAI := int(entry.Global540FF)
+		if entry.Record0Byte7 == 0x1a || entry.Record0Byte7 == 0x36 || entry.Record1Byte7 == 0x37 {
+			wantTAI = 3
+		}
+		if resource.Index != index || resource.TAI != wantTAI || resource.BG != int(entry.Global540FF) ||
+			resource.Record1FIGANIBase != int(entry.Record1Byte7)*3 ||
+			resource.Record1FIGANIAux != int(entry.Record1Byte7)*3+1 ||
+			resource.Record0FIGANIBase != int(entry.Record0Byte7)*3 ||
+			resource.Record0FIGANIAux != int(entry.Record0Byte7)*3+1 {
+			t.Fatalf("visual resource entry %d=%#v", index, resource)
+		}
+	}
+	for _, index := range []int{4, 13, 14} {
+		if resources[index].TAI != 3 {
+			t.Fatalf("raw TAI substitution entry %d=%d, want 3", index, resources[index].TAI)
+		}
+	}
+}
+
+func TestLoadMontageTailVisualSetsPreflightsAllTwentyOriginalTransactions(t *testing.T) {
+	const gameRoot = "../../../org_game/炎龍騎士團/FLAME2"
+	paths := MontageTailVisualPaths{
+		TAI: filepath.Join(gameRoot, "TAI.DAT"), BG: filepath.Join(gameRoot, "BG.DAT"),
+		FIGANI: filepath.Join(gameRoot, "FIGANI.DAT"),
+	}
+	for _, path := range []string{paths.TAI, paths.BG, paths.FIGANI} {
+		if _, err := os.Stat(path); os.IsNotExist(err) {
+			t.Skip("player-provided tail visual archive is absent")
+		} else if err != nil {
+			t.Fatal(err)
+		}
+	}
+	tail, err := LoadMontageTail(filepath.Join("..", "..", "assets", "endings", "native_2c194_tail.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	sets, err := LoadMontageTailVisualSets(*tail, paths)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(sets) != 20 {
+		t.Fatalf("tail visual sets=%d, want 20", len(sets))
+	}
+	for index, set := range sets {
+		if set.Plan.Index != index || set.TAI.Width <= 0 || set.BG.Width <= 0 || set.BG.Width > Width || set.BG.Height <= 0 || set.BG.Height > Height-50 ||
+			set.Record1FIGANIBase == nil || set.Record1FIGANIAux == nil || set.Record0FIGANIBase == nil || set.Record0FIGANIAux == nil {
+			t.Fatalf("tail visual set %d failed preflight: TAI=%dx%d BG=%dx%d animations=%t/%t/%t/%t", index,
+				set.TAI.Width, set.TAI.Height, set.BG.Width, set.BG.Height,
+				set.Record1FIGANIBase != nil, set.Record1FIGANIAux != nil,
+				set.Record0FIGANIBase != nil, set.Record0FIGANIAux != nil)
+		}
+	}
+	for _, index := range []int{4, 13, 14} {
+		if sets[index].Plan.TAI != 3 || sets[index].TAI.Width != 10 || sets[index].TAI.Height != 3 {
+			t.Fatalf("tail TAI substitution set %d=%#v", index, sets[index])
+		}
+	}
+}
+
+func TestLoadMontageTailVisualSetsFailsClosedBeforePartialPlayback(t *testing.T) {
+	tail, err := LoadMontageTail(filepath.Join("..", "..", "assets", "endings", "native_2c194_tail.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if sets, err := LoadMontageTailVisualSets(*tail, MontageTailVisualPaths{}); err == nil || sets != nil {
+		t.Fatalf("missing visual archives returned sets=%#v err=%v", sets, err)
+	}
+}
+
 func TestBuildMontageTailLoaderBaselineUsesExactSelector1EDeployment(t *testing.T) {
 	const gameRoot = "../../../org_game/炎龍騎士團/FLAME2"
 	paths := MontageTailLoaderPaths{
