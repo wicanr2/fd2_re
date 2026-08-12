@@ -512,7 +512,10 @@ terminal、一般玩家 E2 仍未閉合，因此不解除 `postbattle_ch29_persi
 的 20-entry frame table、#57 的 768-byte VGA 調色盤、`unit+6/+7/+0x56/+0x57` 寫入、
 `0x28a6c(0,1)`、`0x11d40(0,255,0)`、`0x2935b`、20／78 tick、
 `0x1f882`，以及最後 FDOTHER #59 的解碼與釋放。三組 20-byte 表以固定版
-原始位址 `0x525dc..0x52617` 輸出並帶雜湊；`MontageTail.Plan` 只產生 raw
+LE 線性位址 `0x525dc..0x52617`（object 2 檔案偏移 `0x523dc..0x52417`）輸出並帶雜湊；兩組 selector table 分別寫入
+record0、record1 的 `+7`，並各自在 `<0x4c` 時即時計算該筆的 `+6=2`，
+否則為 0（`0x50` stride，故 `[0x53a45]+0x56/+0x57` 是 record1，而非 record0
+高位欄位），第三組寫入 `[0x540ff]`。`MontageTail.Plan` 只產生 raw
 entry，不寫入 `battle.State`、不呈現 20-entry loop，也不命名欄位。這關閉「尾端完全未知」
 的過時斷言，但不關閉 indexed resource owner、輸入事件、campaign／town／
  shop／整備／save handoff 或 `postbattle_ch29_persist`；證據見

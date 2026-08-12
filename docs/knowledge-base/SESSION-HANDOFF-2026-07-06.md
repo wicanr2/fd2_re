@@ -4762,3 +4762,30 @@ phase 轉為上述 raw-change effect。素材或 raw provenance 缺失時不猜�
 `0x28a6c` 的 20-entry renderer、#60 的可見 owner、原始 palette/wait 時序、raw
 `0x25970→0x2bce5` 一般玩家 owner 與完整終局 E2 仍未閉合；它們不能因近似定格而被
 接到正式 campaign handoff。
+
+## 2026-08-12：`0x2c194→0x28a6c(0,1)` 雙 record 排程勘誤（E0；仍失敗即關閉）
+
+本段是對較早尾段筆記中「首筆 `unit+6=0`、其餘為 2」與把
+`[0x53a45]+0x56/+0x57` 視為同一筆 record 高位欄位的**追加勘誤**。舊筆記保留作為
+錯誤形成過程，不可再當作重製輸入合約。
+
+固定雜湊 `FD2.EXE` 以合法 IDA Pro 9.4 Docker 資料庫檢視 `sub_2BCE5`，再以 Docker
+Capstone 對 `0x2c253..0x2c33b` 逐指令覆核，現已確認固定的 60 bytes 分別是：
+
+- LE 線性位址 `0x525dc..0x525ef`（object 2 檔案偏移 `0x523dc..0x523ef`）：record 0 的 `+7` selector（20 筆）；
+- LE 線性位址 `0x525f0..0x52603`（object 2 檔案偏移 `0x523f0..0x52403`）：record 1 的 `+7` selector（20 筆）；
+- LE 線性位址 `0x52604..0x52617`（object 2 檔案偏移 `0x52404..0x52417`）：每輪寫入 `[0x540ff]` 的值（20 筆）。
+
+runtime record stride 是 `0x50`，故 `0x53a45+0x56 = 0x53a95 = record 1 + 6`、
+`+0x57 = record 1 + 7`。每輪都以各自的 selector 即時計算
+`+6 = selector < 0x4c ? 2 : 0`，再呼叫 `0x28a6c(0,1)`；`+6` 不是另有兩張表，
+也不是「第 0 筆特例」。例如第 0 輪為 record0 `( +6=2, +7=0x33 )`、record1
+`( +6=0, +7=0x67 )`；第 19 輪則為 record0 `(0,0x7e)`、record1 `(2,0x32)`。
+
+因此 `native_2c194_tail.json` 升為 schema 2，拒絕舊的欄位轉置；
+`MontageTail.Plan` 只輸出兩筆 record 的 raw `+6/+7` 與 `[0x540ff]`，不寫入
+`battle.State`、不建立 renderer adapter、也不把 record 0/1 命名成角色或攻守。FDOTHER
+#58 的 20 筆 frame descriptor 幾何已有玩家提供檔案 regression，但它只證實原始
+frame-table layout；`0x28a6c` 對這些輸入的可見輸出、20 段時序、輸入 owner、一般玩家
+E2 與 raw campaign handoff 仍未閉合，全部維持失敗即關閉。詳見
+[`fd2_ch29_post_montage_tail_ida.txt`](../data/ida/fd2_ch29_post_montage_tail_ida.txt)。

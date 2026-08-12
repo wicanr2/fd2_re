@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "native_handler": "0x2c194",
   "status": "mapped_post_montage_tail_fail_closed",
   "source": "0x2c194..0x2c39a",
@@ -10,21 +10,20 @@
     {"archive": "FDOTHER.DAT", "index": 59, "source": "0x2c357", "role": "320x200 single-frame payload decoded after the 20-entry loop"}
   ],
   "raw_tables": {
-    "global_540ff": [4, 3, 51, 14, 25, 18, 40, 53, 22, 24, 28, 17, 30, 31, 50, 33, 34, 52, 36, 47],
-    "unit_plus_7": [51, 110, 19, 105, 54, 117, 30, 123, 39, 127, 64, 81, 52, 125, 26, 115, 41, 91, 31, 126],
-    "unit_plus_14": [103, 20, 83, 28, 124, 38, 93, 34, 112, 44, 86, 53, 80, 55, 120, 36, 106, 60, 122, 50]
+    "record0_byte_7": [51, 110, 19, 105, 54, 117, 30, 123, 39, 127, 64, 81, 52, 125, 26, 115, 41, 91, 31, 126],
+    "record1_byte_7": [103, 20, 83, 28, 124, 38, 93, 34, 112, 44, 86, 53, 80, 55, 120, 36, 106, 60, 122, 50],
+    "global_540ff": [4, 3, 51, 14, 25, 18, 40, 53, 22, 24, 28, 17, 30, 31, 50, 33, 34, 52, 36, 47]
   },
   "loop": {
     "count": 20,
-    "unit_base_global": "0x53a45",
-    "unit_stride": 80,
-    "unit_byte_6_first": 0,
-    "unit_byte_6_later": 2,
-    "unit_byte_7_source": "unit_plus_7",
-    "unit_byte_0x56_source": "unit_plus_14_lt_0x4c ? 2 : 0",
-    "unit_byte_0x57_source": "unit_plus_14",
+    "runtime_records_global": "0x53a45",
+    "runtime_record_stride": 80,
+    "record0_byte_6_formula": "record0_byte_7 < 0x4c ? 2 : 0",
+    "record0_byte_7_source": "record0_byte_7",
+    "record1_byte_6_formula": "record1_byte_7 < 0x4c ? 2 : 0",
+    "record1_byte_7_source": "record1_byte_7",
     "global_540ff_source": "global_540ff",
-    "unit_present_call": "0x28a6c(0,1)",
+    "renderer_call": "0x28a6c(0,1)",
     "palette_call": "0x11d40(0,255,0)",
     "frame_call": "0x2935b(resource_58,loop_index,staging,0x140,-1)",
     "wait_before_frame_ticks": 20,

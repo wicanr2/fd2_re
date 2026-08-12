@@ -1,9 +1,15 @@
 # 35 — 全螢幕戰鬥演出繪圖機制(FIGANI 攻守動畫)
 
-> 反組譯《炎龍騎士團2》FD2.EXE(DOS4GW LE,obj1 linear=file offset)的**全螢幕戰鬥演出**:
+> 反組譯《炎龍騎士團2》FD2.EXE（DOS4GW LE；本文位址均為 IDA／Capstone 線性位址，
+> raw bytes 必須依 LE object／page 映射回檔案偏移）的**全螢幕戰鬥演出**:
 > 攻擊發生時切到的那張大圖畫面 —— 守方 / 攻方全身 FIGANI、戰場背景、狀態欄、斬擊與閃紅。
 > 所有結論附反組譯位址佐證;runtime 才決定的值標「待確認」。
 > 相關:doc 06(FIGANI 格式)· doc 31(FDICON 地圖小人,另一套)· doc 13(戰鬥選單)· doc 25(戰鬥事件)。
+
+> **範圍勘誤（2026-08-12）**：本檔標題保留歷史名稱，但 `0x28a6c` 是接受兩個
+> runtime record index 的共用 renderer。`0x1561f`／`0x18fc6` 的正式戰鬥 caller
+> 才可稱攻守演出；終局 `0x2c2aa` 固定傳 `(0,1)`，且在每輪前寫入 raw record
+> bytes。後者不可套用本檔正式戰鬥的攻守、命中、動畫階段或逐幀斷言。
 
 ## 2026-08-09：幀延遲呈現橋接（E1，非完整演出閉合）
 
@@ -21,7 +27,7 @@
 | 函式 | 入口 | 參數 | 用途 |
 |---|---|---|---|
 | 單圖演出 | **0x28784** | 1 個 unit index | 顯示**單一**單位全身圖(施法/單體演出) |
-| 攻守演出 | **0x28a6c** | **2 個** unit index(攻方、守方) | 攻擊的**對打**全螢幕演出(本篇重點) |
+| 雙 record 演出 | **0x28a6c** | **2 個** runtime record index | 正式戰鬥 caller 已證實用於對打全螢幕演出；其他 caller 仍須各別判讀 |
 
 兩者 prologue 都是 Watcom 風格 `push <frameSize>; call 0x36cd7`(stack-probe):
 - 0x28784:`push 0x54; call 0x36cd7`(0x28789),func 範圍 0x28784–0x28a6b `ret`。
@@ -36,15 +42,18 @@
 
 | caller linear | 傳參 | 意義 |
 |---|---|---|
-| **0x1561f** | `push [0x53c4b]; push ebx; call` → `0x28a6c(ebx, [0x53c4b])` | 攻擊執行流:**arg0=ebx=攻方 idx、arg1=[0x53c4b]=守方 idx** |
-| 0x18fc6 | — | 另一觸發點(待確認) |
-| 0x2c2aa | `mov [0x540ff],ecx; push 1; push 0; call` → `0x28a6c(0, 1)` | 先設演出 phase 旗標再呼叫 |
-| 0x35435 | — | 另一觸發點(待確認) |
+| **0x1561f** | `push [0x53c4b]; push ebx; call` → `0x28a6c(ebx, [0x53c4b])` | 正式戰鬥執行流：arg0=攻方、arg1=目標 runtime index（已證實） |
+| 0x18fc6 | `push ebx; push ebp; call` | action UI 的一般攻擊路徑；選定 target 後進入同一 renderer（已證實） |
+| 0x2c2aa | `push 1; push 0; call` | 終局尾段固定 record 0/1；該輪前先寫兩筆 record 的 `+6/+7` 與 `[0x540ff]`（已證實，非一般攻守角色斷言） |
+| 0x35435 | `push 0; push 0x11; call` | 事件專用 caller；其畫面／戰役語意未知（已證實 caller 形狀） |
 
 `calls 0x28784` → 唯一 caller 0x15195(單圖路徑,與 0x1561f 同一攻擊執行區 0x15xxx,符合「攻擊執行 0x15xxx」推測)。
 
-**[0x540ff] = 演出 phase / 重繪旗標**(`refs 540ff` 找到 writer):函式外 0x25ac0、0x25b6f 設定;函式內 0x28ae8/0x28c15/0x28cdb/…/0x28ef1(設 1)讀寫。
-語意:`0` = 第一次進場(載入資源 + 全畫面合成),非 0 = 後續增量幀(只重畫變動層)。動畫靠**重複呼叫 0x28a6c 推進**,phase 旗標決定這一幀做哪些事。
+**[0x540ff] = renderer 分支輸入（強推論）**：函式在 `0x28ae6`、`0x28c15`、
+`0x28cd9`、`0x28ef1` 讀寫它；正式戰鬥 caller 也有外部 writer。值為 0 時會額外建立
+status／standoff 路徑，非 0 時略過其一部分並在尾端寫回 1（已證實的控制流）。
+但是終局尾段每輪直接寫入 20 個非零值，因此不能再把它縮成「首幀 0、其後 1」或
+直接命名為通用 phase；各 caller 的高階演出語意仍各自失敗即關閉。
 
 ---
 
@@ -334,14 +343,22 @@ remake 對不準的根因即在此:該照各 frame header 的寬高 + 下面的�
 
 ---
 
-## 5. 動畫階段機制(windup → swing → impact → standoff)
+## 5. 正式戰鬥 caller 的動畫控制（windup → swing → impact → standoff）
 
-- **驅動**:phase 旗標 **[0x540ff]** + **重複呼叫 0x28a6c**(每幀一次);非「一次畫完整段」。
-  進場 phase=0(載資源 + 全合成,0x28e3e 區算 [0x54117]/[0x5411b]),之後 0x28ef1 設 [0x540ff]=1 走增量。
+> 本節只整理 `0x1561f`／`0x18fc6` 的正式戰鬥脈絡。`0x2c2aa` 的終局尾段 20 次
+> 呼叫在每輪先寫入非零 `[0x540ff]`；沒有一般玩家擷取或完整 renderer input 前，
+> 不得把它稱為同一段動畫、同一幀迴圈或同一套戰鬥結果。
+
+- **renderer 分支輸入**：正式戰鬥上層可重複呼叫 `0x28a6c`；已證實的是
+  `[0x540ff]==0` 時會走載入／全合成相關控制流（`0x28e3e` 計算
+  `[0x54117]/[0x5411b]`），`0x28ef1` 隨後寫回 1。各 caller 的呼叫頻率與
+  「一呼叫是否等於一可見幀」尚未由一般玩家 E2 證實。
 - **進度百分比**:figure renderer **0x2939d** 內 0x2946a `call 0x4e893` → 0x2947b `idiv 100`(`mov ebx,0x64; idiv`),
   取餘數判斷階段(`cmp edx,3` < 3 時 `[esp+0x4c]=2`,多畫一層)→ **動畫進度以 0–99% 表示,百分比決定當前幀 / 疊層**。
-- **幀迴圈**:0x2939d 以 `byte[ebp]`=幀數迴圈(0x29409-0x29424)；在 phase gate 下先呼 0x29f72
-  取得戰鬥結果／階段旗標，再由 0x2935b 貼 frame；不可把該 resolver 當位移輸出。
+- **幀迴圈**:0x2939d 以 `byte[ebp]`=幀數迴圈(0x29409-0x29424)；在
+  `[0x540ff]==0` 的正式戰鬥 branch 會呼 `0x29f72`，再由 `0x2935b` 貼 frame。
+  終局尾段的非零 branch 不據此取得 `0x29f72` 結果；不可把該 resolver 當位移輸出，
+  也不可把它猜接到尾段。
   幀的 (dx,dy) 內嵌(§2.2)→ **swing 斬擊弧 = 逐幀位移 + 換幀**。
 - **idle / fallback 描述子**:0x2939d 進場 `rep movsd` 從 **0x5255f**(6 dword)與 **0x52577**(6 dword)複製預設描述子到區域 frame
   (0x293cf / 0x293df)→ 沒有真實動畫時的**待機姿態 fallback**。
@@ -380,7 +397,7 @@ remake 對不準的根因即在此:該照各 frame header 的寬高 + 下面的�
 | 位址 | 角色 |
 |---|---|
 | 0x28784 | 單圖演出(1 unit) |
-| **0x28a6c** | **攻守演出主函式(2 unit)** |
+| **0x28a6c** | **雙 runtime record renderer**（正式戰鬥 caller 才是攻守演出） |
 | 0x29164 | **figure 全身圖 + 台座(TAI.DAT)淡入**(非狀態欄;舊標錯,見 §4.0) |
 | **0x2a289** | **狀態欄座標器**:byte[+6] → off 0xc080=(0,154)/0x5ab=(171,4);`call 0x18c6d` |
 | **0x18c6d** | **狀態欄(血條框)繪製器**:框 sprite + HP/MP 條 + 名 + 數值(§4.2) |
@@ -391,7 +408,7 @@ remake 對不準的根因即在此:該照各 frame header 的寬高 + 下面的�
 | 0x16559 | 從目前 DATO `[0x53a85]` 取 mouth frame重貼 portrait；不是一般 glyph renderer |
 | 0x187d6 / 0x1875d / 0x377d9 | 數值繪製(itoa → 6px digit cell @ [0x53a81];0x1875d 滿血換色) |
 | 0x2935b | 單幀 figure/台座 貼圖 wrapper(解 frame header dx/dy → 0x4e63d;dst/stride/transp 由 caller 傳穿) |
-| 0x2939d | figure 動畫 renderer(幀迴圈 + 百分比進度;0x29536 依 byte[unit+6] 分兩合成路徑) |
+| 0x2939d | figure 動畫 renderer（幀迴圈 + 百分比進度；`[0x540ff]==0` 的正式戰鬥 branch 才會消費 `0x29f72`） |
 | **0x29f72** | **戰鬥結果 resolver**：derived AP/DP/HIT/EV、HP、item record、terrain table、RNG → hit/crit/damage flags 與 presentation value；非 lunge coordinate helper |
 | 0x29c90 | 合成路徑 A(byte[unit+6]≠0):BG (0,50) + figure 走 frame (dx,dy) + slide-in 方向 A |
 | 0x29ded | 合成路徑 B(byte[unit+6]==0):BG (0,50) + **figure 固定錨 (164,157)**(0x29ea2)+ slide-in 方向 B |
@@ -416,7 +433,7 @@ remake 對不準的根因即在此:該照各 frame header 的寬高 + 下面的�
 | 0x52363 | 章節→演出參數表 `[4,9,14,18,14,0,…]`(`[0x53c03]` 索引) |
 | 0x5255f / 0x52577 | idle / fallback 動畫描述子(各 6 dword) |
 | [0x53a45] | 單位陣列基底(每單位 80 byte) |
-| [0x540ff] | 演出 phase / 重繪旗標 |
+| [0x540ff] | renderer 分支輸入（強推論；正式戰鬥 phase 解讀不得外推至終局尾段） |
 | [0x54117] / [0x5411b] | 攻方 / 守方 FIGANI 動畫描述子 buffer |
 | [0x54107]/[0x54103]/[0x5410b]/[0x5410f]/[0x54113] | BG 各層 buffer |
 | [0x53c03] | 當前章節 |
@@ -429,7 +446,7 @@ remake 對不準的根因即在此:該照各 frame header 的寬高 + 下面的�
 | unit[+8] | 角色名 / 職業 index(0x18d73 `byte[+8]+1` 查名字表 [0x53a7d]) |
 | unit[+0x21] | 狀態欄顯示的等級 / 數值(0x18d06 餵 0x187d6,mode2 上限 99) |
 | unit[+0x48]/[+0x4a]/[+0x4c]/[+0x4e] (word) | derived AP / DP / HIT / EV；先前 screen bounding-box 斷言已撤回 |
-| unit[+6] | 攻 / 守旗標:選合成路徑(0x29c90 vs 0x29ded)+ 左右 buffer 交換(0x28e05) |
+| unit[+6] | renderer 合成路徑 selector（0x29c90 vs 0x29ded）及左右 buffer 交換（0x28e05）；正式戰鬥 caller 可作攻守側別，終局 record 0/1 不可套用此名稱 |
 | [0x5018d] | 1.15 double 常數；與 transient modifier / renderer 的精確關係待重判 |
 | 0x51a12 / 0x51a2a | map HUD `0x1acf3` 的地形 AP / DP 百分比表，索引為 FDSHAP control byte+1；已驗證 0→(+5,0)、1/5→(0,0)、2/3→(-5,+10)、4→(-5,-5) |
 | [0x53ec8] | `0x29f72`相關combat-result／presentation state；下游語意尚未閉合，不是已證實的縮放或figure X座標 |
@@ -438,14 +455,14 @@ remake 對不準的根因即在此:該照各 frame header 的寬高 + 下面的�
 
 ## 8. 六項成果摘要 + 待確認
 
-1. **入口 + 呼叫鏈** ✅:單圖 0x28784(caller 0x15195)、攻守 0x28a6c(caller 0x1561f 傳 `攻方ebx, 守方[0x53c4b]`,另 0x18fc6/0x2c2aa/0x35435)。phase = [0x540ff]。
+1. **入口 + 呼叫鏈** ✅:單圖 0x28784(caller 0x15195)、雙 record renderer 0x28a6c（`0x1561f` 傳正式戰鬥攻方 `ebx`、目標 `[0x53c4b]`；另有 0x18fc6/0x2c2aa/0x35435）。`[0x540ff]` 是 renderer 分支輸入，不能以單一 phase 名稱涵蓋所有 caller。
 2. **figure 座標 / 翻轉 / 縮放** partial:blit 0x4e63d 原生尺寸 `dst+Y*stride+X`,**全程無縮放運算**;每幀 displacement=descriptor header `u16 X/Y`，固定 `(164,157)` 是某些 figure/台座 caller 的 anchor；`word[unit+0x40]`=當前 HP（非座標）。`+0x48/+0x4a` 是 derived AP/DP，`0x29f72` 是 combat-result resolver。**待確認**:byte[unit+6] 攻守配對、土台 entry、所有 caller 的 schedule。
 3. **BG 繪製與TAI台座是兩條素材路徑**：BG.DAT多層走
    `[0x54107…54113]`並以`0x4e63d(X=0,Y=50,寬320)`合成；腳下大台座由
    `0x29164`另載TAI.DAT sprite，不是BG層或程式純色。TAI entry、raw selector
    與跨角色對齊仍待逐caller驗證。
 4. **狀態欄(血條框)** ✅(本輪嚴格 RE 重做,§4):真函式 = **0x18c6d**(座標器 0x2a289,byte[+6]→ 我方(0,154)/敵方(171,4))。**0x29164 不是狀態欄,是 figure + 台座(TAI.DAT)淡入**(舊標錯已改)。三元素釘死:**① 框/深藍底/立體 bevel = 素材 sprite**(0x4e8af blit [0x53a81]+0x5e);**② HP/MP 條 = 程式畫**(0x18795 算 `len=cur*101/max+1` → 0x17d6f 逐欄 blit [0x53a81] 漸層欄 cell,空槽 0x1d;HP=unit+0x40/+0x42、MP=+0x44/+0x46);**③ 名 = `0x15f84→0x4ea2a` 以 `[0x53a75]` FDOTHER#4 font畫 16×16 glyph**、**數值 = 6px digit cell**([0x53a81],0x187d6)。`[0x53a81]` loader 已由 boot `0x25c97` 定案為 FDOTHER #5；`[0x53a85]` 是 DATO mouth-frame工作指標，不再誤稱字模。
-5. **動畫階段** ✅:[0x540ff] phase + 重複呼叫驅動;0x2939d 幀迴圈 + `idiv 100` 百分比進度;幀 (dx,dy) = swing 斬擊弧;**命中色盤脈衝是條件式 VGA DAC 0x3c8/0x3c9 寫入**(原始 frame `+4`、傷害步進與 `0x29f72` 欄位共同控制,證據見 §8);**HP 條非色盤**(程式畫,見 §4.2,舊「HP 抽乾=色盤」已刪);idle fallback 0x5255f/0x52577。**待確認**:原始輸出欄位的完整 producer/consumer 與各階段確切玩家路徑幀數。
+5. **正式戰鬥動畫控制** ✅：`[0x540ff]` 的 0／非零 branch、0x2939d 幀迴圈與 `idiv 100` 百分比進度已固定；`[0x540ff]==0` 的正式戰鬥 branch 才消費 `0x29f72`。幀 (dx,dy) 的 swing 斬擊弧、**命中色盤脈衝的條件式 VGA DAC 0x3c8/0x3c9 寫入**（原始 frame `+4`、傷害步進與 `0x29f72` 欄位共同控制，證據見 §8）、HP 條非色盤及 idle fallback 0x5255f/0x52577 都不外推到終局尾段。**待確認**：原始輸出欄位的完整 producer/consumer、各 caller 的 schedule 與一般玩家路徑幀數。
 6. **座標系** ✅:320×200、VGA 0xa0000、**work stride 640 但只 present 左半 320**(雙寬 off-screen 預備區,用途待確認)。
 
 ## 2026-08-10：命中色盤脈衝與戰場畫面修正（E0／E1）

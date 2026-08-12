@@ -131,7 +131,7 @@ codec 解碼只還原「幀→圖」;**哪個單位用哪個 FIGANI** 反組譯�
 
 ## 全螢幕戰鬥演出 → 已驗證邊界見 [doc 35](35-battle-animation-rendering.md)
 
-原版攻擊是全螢幕戰鬥演出(320×200,非地圖小格)。已釘住的部分包含攻守雙圖演出主函式 `0x28a6c`、four-mode blit `0x4e63d`、phase `[0x540ff]`、戰場→BG 原始 selector 與狀態欄座標器 `0x2a289→0x18c6d`。**撤回**「繪圖機制已完整反組譯」與「狀態欄是 `0x29164`」：`0x29164` 是 figure + TAI.DAT 台座淡入；command presentation、部分 BG layer schedule、SFX、多段命中仍待，見 doc35。
+原版攻擊是全螢幕戰鬥演出(320×200,非地圖小格)。已釘住的正式戰鬥 caller 部分包含雙 runtime-record renderer `0x28a6c`、four-mode blit `0x4e63d`、`[0x540ff]` 的 renderer branch、戰場→BG 原始 selector 與狀態欄座標器 `0x2a289→0x18c6d`。**撤回**「繪圖機制已完整反組譯」與「狀態欄是 `0x29164`」：`0x29164` 是 figure + TAI.DAT 台座淡入；`0x28a6c` 的終局／事件 caller 不能直接套用攻守、phase 或命中語意，command presentation、部分 BG layer schedule、SFX、多段命中仍待，見 doc35。
 - **關鍵**:blit **無 runtime 縮放**——守方小/攻方大是 **FIGANI 美術本身畫成不同尺寸**(景深燒進素材),不是 scale。`0x2935b` 已證實每幀位移來自 descriptor header 的 `(dx,dy)`；(164,157) 是特定 caller 的固定 anchor。**不可再把 `unit+0x40` 當 figure X**，該 word 是 current HP。
 - figure／台座淡入會使用 **VGA DAC 色盤操作**；戰鬥命中分支另受 raw frame
   flag、傷害步進與 `0x29f72` 輸出欄位條件控制，不能簡化成無條件全畫面紅罩。

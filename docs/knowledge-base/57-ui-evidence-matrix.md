@@ -22,7 +22,7 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 | church | 60–70%（已接 slices） | church main/status/transfer/revive/class 多數已有原始 FDOTHER/FDICON/FDTXT indexed畫面與 lifecycle；transfer的`0x2f8ea`亦由shop service3共用，非church專屬；缺 DOSBox side-by-side、部分 fallback與完整 persistent/save parity |
 | preparation | 35–45% | 舊「兩欄文字核取方塊」與「確認框仍是重製殼層」斷言已失效。城鎮 FDTXT `0x201` 出發提示會保存／還原實際 town frame；無城鎮 FDTXT `0x19a` 記錄提示使用原版黑色來源，存檔延至完整關框後。兩者與 `0x31d3c` 最終確認都接上 6＋4＋兩 tick 脈動＋4＋5＋還原。`0x318ad/0x31e80` 選人主畫面、`0x17fc0` 狀態與 `0x1297d` 待機週期亦已接正式路徑。README 的整備圖均為 E1 原始資源合成，不是 DOSBox 實機。仍缺跨畫面初始相位、晚期存檔與同狀態實機差分 |
 | save/load | 45–55% | 四槽 input、native save envelope、原版 indexed loadslots 與 chapter-slot→typed party→town/preparation restore owner 已接；空槽及修改存檔 chapter1 有效槽畫面均與 DOSBox 全幀 RGB 相同。一般玩家有效槽 E2、CONTINUE current battle、delete/overwrite 仍缺 |
-| ending | 35–45%（E1；近似終局節點） | prefix 已跑到 `0x2c548`；近似模式以 persistent JOIN roster 的 raw `+6/+7/+8/+0x20` 執行原資源角色蒙太奇，並在完成後驗證 #57 768-byte 調色盤、#58 的 20 影格表與 #60/#59 320×200 單影格，只呈現並保持 #59 終局靜態圖。外部片尾錄影把 #59 對應為 `THE END` 是**強推論**，見 [`ch30-ending-youtube-visual-side-evidence.json`](../data/ui-traces/ch30-ending-youtube-visual-side-evidence.json)，不是一般玩家 E2。Enter／空白鍵開啟、Enter／空白鍵／Esc 關閉的角色回顧循環是重製版延伸，不命名為原版按鍵。`0x28a6c` 的 20-entry renderer、精確時序／BIOS 對映、停曲與一般玩家 E2 仍未完成 |
+| ending | 35–45%（E1；近似終局節點） | prefix 已跑到 `0x2c548`；近似模式以 persistent JOIN roster 的 raw `+6/+7/+8/+0x20` 執行原資源角色蒙太奇，並在完成後驗證 #57 768-byte 調色盤、#58 的 20 影格表與 #60/#59 320×200 單影格，只呈現並保持 #59 終局靜態圖。尾段 `0x28a6c(0,1)` 每輪會依兩組 selector table 寫 record0、record1 的 `+7`，並以 `<0x4c` 計算各自 `+6`；renderer adapter 尚未接入，故只保存可編輯的 raw schedule。外部片尾錄影把 #59 對應為 `THE END` 是**強推論**，見 [`ch30-ending-youtube-visual-side-evidence.json`](../data/ui-traces/ch30-ending-youtube-visual-side-evidence.json)，不是一般玩家 E2。Enter／空白鍵開啟、Enter／空白鍵／Esc 關閉的角色回顧循環是重製版延伸，不命名為原版按鍵。`0x28a6c` 的 20-entry renderer、精確時序／BIOS 對映、停曲與一般玩家 E2 仍未完成 |
 
 ### 2026-08-11：未修改原版敵方回合 E2 錨點
 
@@ -72,7 +72,8 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 素材／raw provenance admission 失敗才回到可編輯結語。`FDMUS_018` 在近似 static
 tail 的消費時點不宣稱與原版相同。新輸入只在 portrait loop 實現已證實的「完成本輪後
 進 final loop」效果；另有可選的現代隊伍回顧，離開時回到 #59。精確 BIOS 按鍵對映、
-`0x28a6c` 20-entry renderer、停曲與一般玩家路徑仍維持失敗即關閉。
+`0x28a6c` 20-entry renderer、停曲與一般玩家路徑仍維持失敗即關閉；已記錄的
+record0／record1 `+6/+7` raw writes 不構成 renderer 完成宣稱。
 
 2026-08-10 ch01 HUD 位址勘誤：官方 IDA 直接指令證實 terrain icon 與 optional unit
 icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 寫在 `base+6`

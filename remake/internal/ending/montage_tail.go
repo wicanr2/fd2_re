@@ -30,22 +30,24 @@ type MontageTailAsset struct {
 }
 
 type MontageTailRawTable struct {
-	Global540FF []int `json:"global_540ff"`
-	UnitPlus7   []int `json:"unit_plus_7"`
-	UnitPlus14  []int `json:"unit_plus_14"`
+	// Record0Byte7, Record1Byte7 and Global540FF retain the three raw
+	// 20-byte tables at 0x525dc..0x52617. The byte-6 writes are not a fourth
+	// table: native code derives each from its paired byte-7 value.
+	Record0Byte7 []int `json:"record0_byte_7"`
+	Record1Byte7 []int `json:"record1_byte_7"`
+	Global540FF  []int `json:"global_540ff"`
 }
 
 type MontageTailLoop struct {
 	Count                int    `json:"count"`
-	UnitBaseGlobal       string `json:"unit_base_global"`
-	UnitStride           int    `json:"unit_stride"`
-	UnitByte6First       int    `json:"unit_byte_6_first"`
-	UnitByte6Later       int    `json:"unit_byte_6_later"`
-	UnitByte7Source      string `json:"unit_byte_7_source"`
-	UnitByte56Source     string `json:"unit_byte_0x56_source"`
-	UnitByte57Source     string `json:"unit_byte_0x57_source"`
+	RuntimeRecordsGlobal string `json:"runtime_records_global"`
+	RuntimeRecordStride  int    `json:"runtime_record_stride"`
+	Record0Byte6Formula  string `json:"record0_byte_6_formula"`
+	Record0Byte7Source   string `json:"record0_byte_7_source"`
+	Record1Byte6Formula  string `json:"record1_byte_6_formula"`
+	Record1Byte7Source   string `json:"record1_byte_7_source"`
 	Global540FFSource    string `json:"global_540ff_source"`
-	UnitPresentCall      string `json:"unit_present_call"`
+	RendererCall         string `json:"renderer_call"`
 	PaletteCall          string `json:"palette_call"`
 	FrameCall            string `json:"frame_call"`
 	WaitBeforeFrameTicks int    `json:"wait_before_frame_ticks"`
@@ -61,14 +63,15 @@ type MontageTailGate struct {
 }
 
 // MontageTailEntry keeps the three raw table bytes together for one native
-// loop index.  It is a plan only: no renderer, unit mutation, or campaign
+// loop index. It is a plan only: no renderer, runtime mutation, or campaign
 // transition is performed by this package.
 type MontageTailEntry struct {
-	Index       int
-	Global540FF byte
-	UnitPlus7   byte
-	UnitPlus14  byte
-	UnitByte6   byte
+	Index        int
+	Global540FF  byte
+	Record0Byte6 byte
+	Record0Byte7 byte
+	Record1Byte6 byte
+	Record1Byte7 byte
 }
 
 // MontageTailAssets preserves the directly loaded FDOTHER inputs of
@@ -173,15 +176,15 @@ func LoadMontageTail(path string) (*MontageTail, error) {
 	if err := json.Unmarshal(raw, &tail); err != nil {
 		return nil, err
 	}
-	if tail.SchemaVersion != 1 || tail.NativeHandler != "0x2c194" || tail.Status != "mapped_post_montage_tail_fail_closed" ||
+	if tail.SchemaVersion != 2 || tail.NativeHandler != "0x2c194" || tail.Status != "mapped_post_montage_tail_fail_closed" ||
 		tail.Source != "0x2c194..0x2c39a" || len(tail.Resources) != 4 || tail.Loop.Count != 20 ||
-		tail.Loop.UnitBaseGlobal != "0x53a45" || tail.Loop.UnitStride != 0x50 ||
-		tail.Loop.UnitByte6First != 0 || tail.Loop.UnitByte6Later != 2 ||
-		tail.Loop.UnitByte7Source != "unit_plus_7" ||
-		tail.Loop.UnitByte56Source != "unit_plus_14_lt_0x4c ? 2 : 0" ||
-		tail.Loop.UnitByte57Source != "unit_plus_14" ||
+		tail.Loop.RuntimeRecordsGlobal != "0x53a45" || tail.Loop.RuntimeRecordStride != 0x50 ||
+		tail.Loop.Record0Byte6Formula != "record0_byte_7 < 0x4c ? 2 : 0" ||
+		tail.Loop.Record0Byte7Source != "record0_byte_7" ||
+		tail.Loop.Record1Byte6Formula != "record1_byte_7 < 0x4c ? 2 : 0" ||
+		tail.Loop.Record1Byte7Source != "record1_byte_7" ||
 		tail.Loop.Global540FFSource != "global_540ff" ||
-		tail.Loop.UnitPresentCall != "0x28a6c(0,1)" ||
+		tail.Loop.RendererCall != "0x28a6c(0,1)" ||
 		tail.Loop.PaletteCall != "0x11d40(0,255,0)" ||
 		tail.Loop.FrameCall != "0x2935b(resource_58,loop_index,staging,0x140,-1)" ||
 		tail.Loop.WaitBeforeFrameTicks != 20 || tail.Loop.WaitAfterFrameTicks != 78 ||
@@ -196,9 +199,9 @@ func LoadMontageTail(path string) (*MontageTail, error) {
 		}
 	}
 	for name, table := range map[string][]int{
-		"global_540ff": tail.RawTables.Global540FF,
-		"unit_plus_7":  tail.RawTables.UnitPlus7,
-		"unit_plus_14": tail.RawTables.UnitPlus14,
+		"record0_byte_7": tail.RawTables.Record0Byte7,
+		"record1_byte_7": tail.RawTables.Record1Byte7,
+		"global_540ff":   tail.RawTables.Global540FF,
 	} {
 		if len(table) != tail.Loop.Count {
 			return nil, fmt.Errorf("ending montage tail %q table %s has %d entries", path, name, len(table))
@@ -212,25 +215,32 @@ func LoadMontageTail(path string) (*MontageTail, error) {
 	return &tail, nil
 }
 
-// Plan returns the raw 20-entry schedule while retaining the native side
-// branch as byte 6.  It does not write a unit or present a frame.
+// Plan returns the raw 20-entry schedule and the exact derived byte-6 values.
+// It does not write a runtime record or present a frame.
 func (t MontageTail) Plan() ([]MontageTailEntry, error) {
-	if t.Loop.Count <= 0 || len(t.RawTables.Global540FF) != t.Loop.Count || len(t.RawTables.UnitPlus7) != t.Loop.Count || len(t.RawTables.UnitPlus14) != t.Loop.Count {
+	if t.Loop.Count <= 0 || len(t.RawTables.Record0Byte7) != t.Loop.Count || len(t.RawTables.Record1Byte7) != t.Loop.Count || len(t.RawTables.Global540FF) != t.Loop.Count {
 		return nil, fmt.Errorf("ending montage tail has incomplete raw tables")
 	}
 	entries := make([]MontageTailEntry, t.Loop.Count)
 	for i := range entries {
-		if t.RawTables.Global540FF[i] < 0 || t.RawTables.Global540FF[i] > 0xff || t.RawTables.UnitPlus7[i] < 0 || t.RawTables.UnitPlus7[i] > 0xff || t.RawTables.UnitPlus14[i] < 0 || t.RawTables.UnitPlus14[i] > 0xff {
+		if t.RawTables.Record0Byte7[i] < 0 || t.RawTables.Record0Byte7[i] > 0xff || t.RawTables.Record1Byte7[i] < 0 || t.RawTables.Record1Byte7[i] > 0xff || t.RawTables.Global540FF[i] < 0 || t.RawTables.Global540FF[i] > 0xff {
 			return nil, fmt.Errorf("ending montage tail raw table entry %d is not a byte", i)
 		}
-		unitByte6 := t.Loop.UnitByte6Later
-		if i == 0 {
-			unitByte6 = t.Loop.UnitByte6First
+		entries[i] = MontageTailEntry{
+			Index:        i,
+			Global540FF:  byte(t.RawTables.Global540FF[i]),
+			Record0Byte6: tailRecordByte6(byte(t.RawTables.Record0Byte7[i])),
+			Record0Byte7: byte(t.RawTables.Record0Byte7[i]),
+			Record1Byte6: tailRecordByte6(byte(t.RawTables.Record1Byte7[i])),
+			Record1Byte7: byte(t.RawTables.Record1Byte7[i]),
 		}
-		if unitByte6 < 0 || unitByte6 > 0xff {
-			return nil, fmt.Errorf("ending montage tail unit byte 6 is not a byte")
-		}
-		entries[i] = MontageTailEntry{Index: i, Global540FF: byte(t.RawTables.Global540FF[i]), UnitPlus7: byte(t.RawTables.UnitPlus7[i]), UnitPlus14: byte(t.RawTables.UnitPlus14[i]), UnitByte6: byte(unitByte6)}
 	}
 	return entries, nil
+}
+
+func tailRecordByte6(recordByte7 byte) byte {
+	if recordByte7 < 0x4c {
+		return 2
+	}
+	return 0
 }

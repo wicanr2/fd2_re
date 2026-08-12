@@ -33,21 +33,26 @@
 
 ## 已證實：20-entry raw table loop
 
-固定 `0x525dc..0x52617` 的 60 bytes 被分成三組各 20 bytes：
+固定版 FD2.EXE 的**線性位址** `0x525dc..0x52617`（LE object 2，對應檔案偏移
+`0x523dc..0x52417`）的 60 bytes 被分成三組各 20 bytes：
 
 ```text
-global_540ff = 04 03 33 0e 19 12 28 35 16 18 1c 11 1e 1f 32 21 22 34 24 2f
-unit_plus_7  = 33 6e 13 69 36 75 1e 7b 27 7f 40 51 34 7d 1a 73 29 5b 1f 7e
-unit_plus_14 = 67 14 53 1c 7c 26 5d 22 70 2c 56 35 50 37 78 24 6a 3c 7a 32
+linear 0x525dc..0x525ef / file 0x523dc..0x523ef  record0_byte_7
+linear 0x525f0..0x52603 / file 0x523f0..0x52403  record1_byte_7
+linear 0x52604..0x52617 / file 0x52404..0x52417  global_540ff
+
+record0_byte_7 = 33 6e 13 69 36 75 1e 7b 27 7f 40 51 34 7d 1a 73 29 5b 1f 7e
+record1_byte_7 = 67 14 53 1c 7c 26 5d 22 70 2c 56 35 50 37 78 24 6a 3c 7a 32
+global_540ff   = 04 03 33 0e 19 12 28 35 16 18 1c 11 1e 1f 32 21 22 34 24 2f
 ```
 
 Capstone 固定迴圈 `0x2c253..0x2c33b`：
 
 ```text
-0x2c258  [0x53a45]+6 = 0
-0x2c268  [0x53a45]+7 = byte[stack+0x28+i]
-0x2c274  if byte[stack+0x14+i] < 0x4c: [0x53a45]+0x56 = 2; else 0
-0x2c299  [0x53a45]+0x57 = byte[stack+0x14+i]
+0x2c258/0x2c32c  [0x53a45]+6 = (record0_byte_7[i] < 0x4c ? 2 : 0)
+0x2c268             [0x53a45]+7 = record0_byte_7[i]
+0x2c274/0x2c285  [0x53a45]+0x56 = (record1_byte_7[i] < 0x4c ? 2 : 0)
+0x2c299             [0x53a45]+0x57 = record1_byte_7[i]
 0x2c2a0  [0x540ff] = byte[stack+i]
 0x2c2a6  call 0x28a6c(0,1)
 0x2c2bb  call 0x11d40(0,255,0)
@@ -59,16 +64,23 @@ Capstone 固定迴圈 `0x2c253..0x2c33b`：
 0x2c313  i++ ; i < 0x14
 ```
 
-`unit+6` 的第 0 筆為 0，其餘 19 筆為 2；其餘三組數值保留 raw 表名，
-不可升格為角色、職業、動畫或結局名稱。重製端以
-`native_2c194_tail.json` 與 `MontageTail.Plan` 保存這個可編輯 schedule，
-只產生 raw entry，不直接寫入 `battle.State` 或呈現畫面。
+`[0x53a45]+0x56/+0x57` 與 runtime stride `0x50` 相減後，正是第 1 筆
+record 的 `+6/+7`，不是第 0 筆 record 的高位欄位。兩組 selector byte 都依
+各自 `<0x4c ? 2 : 0` **即時計算**對應 record 的 `+6`；那不是第四或第五張
+20-byte table。所有 20 筆都會寫入這兩筆 record。各 byte 仍只保留 raw 表名，
+不可升格為角色、職業、動畫或結局名稱。
+重製端以 `native_2c194_tail.json` 與 `MontageTail.Plan` 保存這個可編輯
+schedule；為拒絕舊的轉置欄位合約，該資產 schema 已升為 2。它只產生 raw entry，
+不直接寫入 `battle.State` 或呈現畫面。
 
 資源角色勘誤：`0x2c220` 載入的是 FDOTHER #58；其資源表可解出 20 個 frame，
 也正是 `0x2c2d6` 傳入 `0x2935b` 的來源。`0x2c234` 載入的是 FDOTHER #57；它剛好
 是 768 bytes（256×3），在 `0x2c2b6` 指派到 `[0x53a65]` 後交給 `0x11d40`。先前把
 frame call 寫成 `resource_57` 是 stack resource index 的錯置，現已撤回；這項勘誤
 不為三組 raw table 或 `0x28a6c` 增加任何角色／演出語意。
+FDOTHER #58 的 20 筆 descriptor 幾何也以玩家提供檔案 regression 固定，例如第 0 筆
+為 `(15,7,55,98)`、第 19 筆為 `(39,71,237,28)`；這只證實 frame-table layout，
+不替各 frame 命名或推斷其畫面角色。
 
 ## 已證實：尾端收尾
 
@@ -79,9 +91,11 @@ node、town、shop、整備、save 或結局 owner。
 
 ## 推論等級與限制
 
-- 已證實：四個 FDOTHER resource index、三組 20-byte raw table、20 次 loop、
-  unit raw offsets、`0x28a6c`／`0x11d40`／`0x2935b`／`0x1f882`／`0x375c0`
-  的直接呼叫形狀。
+- 已證實：四個 FDOTHER resource index、三組 20-byte raw table、兩個
+  `0x50`-stride runtime records 的 `+6/+7` 寫入、20 次 loop、
+  `0x28a6c`／`0x11d40`／`0x2935b`／`0x1f882`／`0x375c0` 的直接呼叫形狀。
+- 已證實：上述 table 的定位是 IDA／Capstone LE 線性位址；它們位於 object 2，
+  所以檔案偏移是線性位址減 `0x200`。不可把兩種基準混作同一個 `0x...`。
 - 未知：各 raw table 欄位的遊戲名稱、`0x25977`／`0x1f525` 的完整語意、
   這段與終局／戰役／城鎮的 handoff。
 
