@@ -222,7 +222,7 @@ map0＋item79 交叉 fixture 固定 score8、`(19,15)`、slot0，屬靜態 E0，
 | E2 | DOSBox/Xvfb 實機操作、逐幀截圖／輸入差分 | 可以，需保存 command、frame、artifact |
 | E3 | 攻略、影片、視覺推論或 UX 慣例 | 只能列為假設，不得解除 native/handler gate |
 
-本輪重新核對的已知更正：`0x16559` 是 DATO mouth-frame／glyph blit caller，`0x4ea2a` 才是 native glyph renderer；FDTXT `0x2c469` 前的 `0x1088d(30)` 會選 archive resource #31，不能直接把實體欄位命名成 ch30；`0x2c548` 有 `i=0→slot1、i=1→slot0` swap；`0x29164` 第一參數是 party unit index，TAI#3 是 7-byte transparent aux，不是可見台座。這些結論要在新工具鏈重跑後才能再擴展，不可由名稱推導 renderer 語意。
+本輪重新核對的已知更正：`0x16559` 是 DATO mouth-frame／glyph blit caller，`0x4ea2a` 才是 native glyph renderer；`0x2c435 push 0x1e`、`0x2c437 call 0x1088d` 會在 loader 內選 FDTXT archive resource #31，不能把 raw selector `0x1e` 或實體欄位直接命名成 ch30；`0x2c548` 有 `i=0→slot1、i=1→slot0` swap；`0x29164` 第一參數是 party unit index，TAI#3 是 7-byte transparent aux，不是可見台座。這些結論不可再由名稱外推 renderer 語意。
 
 2026-07-28 visual audit correction：codec／原資源 fixture 的完成度不得再
 寫成整體 UI parity。依 12 個主要界面逐項比較 repo DOSBox／錄影 oracle、
@@ -520,6 +520,17 @@ entry，不寫入 `battle.State`、不呈現 20-entry loop，也不命名欄位�
 的過時斷言，但不關閉 indexed resource owner、輸入事件、campaign／town／
  shop／整備／save handoff 或 `postbattle_ch29_persist`；證據見
 [`fd2_ch29_post_montage_tail_ida.txt`](../data/ida/fd2_ch29_post_montage_tail_ida.txt)。
+
+2026-08-12 loader／renderer 邊界追加證據：`0x1088d(0x1e)` 由 FDFIELD
+#90/#91/#92 建立 31 筆 deployment runtime records；前綴逐筆複製 persistent
+`0x50` records、覆寫位置／selector cache／狀態欄並執行 `0x1b750`，其餘筆數
+只標成 inactive。`MontageTailLoaderBaseline` 已把這個 **post-loader baseline**
+做成唯讀值拷貝與真實素材回歸，但 `0x2c548` 介於 loader 與 `0x2c2a6` 之間，
+可能觀察或改動相同 runtime image；所以它明確不是 renderer admission。
+IDA／Capstone 也已證明 `[0x540ff]!=0` 的 `0x28a6c` 仍載入 TAI／FIGANI／BG、
+經 `0x29164→0x2939d` 合成並輸出 VGA，只略過 `[0x540ff]==0` 才呼叫的
+`0x29f72` 一般戰鬥結果解析器。尚缺 `0x2c2a6` 呼叫當下完整 records/globals、
+重製轉接器及 E2，因此正式 20 段演出仍失敗即關閉。
 
 2026-08-09 ch29 terminal caller correction：IDA／Capstone 直接固定
 `0x25e23` 以 `[0x53c03]` 消費 raw table `0x51de9`；目前已證實

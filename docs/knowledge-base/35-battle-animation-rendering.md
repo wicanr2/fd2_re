@@ -8,7 +8,7 @@
 
 > **範圍勘誤（2026-08-12）**：本檔標題保留歷史名稱，但 `0x28a6c` 是接受兩個
 > runtime record index 的共用 renderer。`0x1561f`／`0x18fc6` 的正式戰鬥 caller
-> 才可稱攻守演出；終局 `0x2c2aa` 固定傳 `(0,1)`，且在每輪前寫入 raw record
+> 才可稱攻守演出；終局 `0x2c2a6` 固定傳 `(0,1)`，且在每輪前寫入 raw record
 > bytes。後者不可套用本檔正式戰鬥的攻守、命中、動畫階段或逐幀斷言。
 
 ## 2026-08-09：幀延遲呈現橋接（E1，非完整演出閉合）
@@ -44,7 +44,7 @@
 |---|---|---|
 | **0x1561f** | `push [0x53c4b]; push ebx; call` → `0x28a6c(ebx, [0x53c4b])` | 正式戰鬥執行流：arg0=攻方、arg1=目標 runtime index（已證實） |
 | 0x18fc6 | `push ebx; push ebp; call` | action UI 的一般攻擊路徑；選定 target 後進入同一 renderer（已證實） |
-| 0x2c2aa | `push 1; push 0; call` | 終局尾段固定 record 0/1；該輪前先寫兩筆 record 的 `+6/+7` 與 `[0x540ff]`（已證實，非一般攻守角色斷言） |
+| 0x2c2a6 | `push 1; push 0; call` | 終局尾段固定 record 0/1；該輪前先寫兩筆 record 的 `+6/+7` 與 `[0x540ff]`（已證實，非一般攻守角色斷言） |
 | 0x35435 | `push 0; push 0x11; call` | 事件專用 caller；其畫面／戰役語意未知（已證實 caller 形狀） |
 
 `calls 0x28784` → 唯一 caller 0x15195(單圖路徑,與 0x1561f 同一攻擊執行區 0x15xxx,符合「攻擊執行 0x15xxx」推測)。
@@ -345,14 +345,25 @@ remake 對不準的根因即在此:該照各 frame header 的寬高 + 下面的�
 
 ## 5. 正式戰鬥 caller 的動畫控制（windup → swing → impact → standoff）
 
-> 本節只整理 `0x1561f`／`0x18fc6` 的正式戰鬥脈絡。`0x2c2aa` 的終局尾段 20 次
+> 本節只整理 `0x1561f`／`0x18fc6` 的正式戰鬥脈絡。`0x2c2a6` 的終局尾段 20 次
 > 呼叫在每輪先寫入非零 `[0x540ff]`；沒有一般玩家擷取或完整 renderer input 前，
-> 不得把它稱為同一段動畫、同一幀迴圈或同一套戰鬥結果。
+> 不得把它稱為同一段動畫、同一幀迴圈或同一套戰鬥結果。2026-08-12 的
+> IDA／Capstone 追加證據已證明非零分支仍會載入 TAI／FIGANI／BG、經
+> `0x29164→0x2939d` 合成並輸出 VGA；它略過的是 `[0x540ff]==0` 才呼叫的
+> `0x29f72` 一般戰鬥結果解析器，不是整段視覺輸出。
 
 - **renderer 分支輸入**：正式戰鬥上層可重複呼叫 `0x28a6c`；已證實的是
   `[0x540ff]==0` 時會走載入／全合成相關控制流（`0x28e3e` 計算
   `[0x54117]/[0x5411b]`），`0x28ef1` 隨後寫回 1。各 caller 的呼叫頻率與
   「一呼叫是否等於一可見幀」尚未由一般玩家 E2 證實。
+- **終局非零分支（E0）**：`0x28c15` 起依 `[0x540ff]` 選 TAI／BG，並載入
+  `3*record1[+7]`、`3*record0[+7]`、`3*record0[+7]+1` 的 FIGANI 資源；
+  `0x29164` 的 `+6==0` 與非零兩支都會完成九階段合成、`0x2935b`、VGA copy
+  與 `0x11d40`。`0x2939d` 在 `[0x540ff]!=0` 時把一般戰鬥結果欄位歸零，
+  不呼叫 `0x29f72`，但仍執行 frame loop、`0x2935b`、`0x11eb0`、等待與
+  `0x29c90`／`0x29ded`。因此現況是「原版可見消費鏈已證實，重製轉接器與
+  `0x2c2a6` 呼叫當下完整 records/globals 未閉合」，不能再寫成非零分支無畫面，
+  也不能因 E0 控制流已閉合就直接接正式尾段。
 - **進度百分比**:figure renderer **0x2939d** 內 0x2946a `call 0x4e893` → 0x2947b `idiv 100`(`mov ebx,0x64; idiv`),
   取餘數判斷階段(`cmp edx,3` < 3 時 `[esp+0x4c]=2`,多畫一層)→ **動畫進度以 0–99% 表示,百分比決定當前幀 / 疊層**。
 - **幀迴圈**:0x2939d 以 `byte[ebp]`=幀數迴圈(0x29409-0x29424)；在
@@ -455,7 +466,7 @@ remake 對不準的根因即在此:該照各 frame header 的寬高 + 下面的�
 
 ## 8. 六項成果摘要 + 待確認
 
-1. **入口 + 呼叫鏈** ✅:單圖 0x28784(caller 0x15195)、雙 record renderer 0x28a6c（`0x1561f` 傳正式戰鬥攻方 `ebx`、目標 `[0x53c4b]`；另有 0x18fc6/0x2c2aa/0x35435）。`[0x540ff]` 是 renderer 分支輸入，不能以單一 phase 名稱涵蓋所有 caller。
+1. **入口 + 呼叫鏈** ✅:單圖 0x28784(caller 0x15195)、雙 record renderer 0x28a6c（`0x1561f` 傳正式戰鬥攻方 `ebx`、目標 `[0x53c4b]`；另有 0x18fc6/0x2c2a6/0x35435）。`[0x540ff]` 是 renderer 分支輸入，不能以單一 phase 名稱涵蓋所有 caller。
 2. **figure 座標 / 翻轉 / 縮放** partial:blit 0x4e63d 原生尺寸 `dst+Y*stride+X`,**全程無縮放運算**;每幀 displacement=descriptor header `u16 X/Y`，固定 `(164,157)` 是某些 figure/台座 caller 的 anchor；`word[unit+0x40]`=當前 HP（非座標）。`+0x48/+0x4a` 是 derived AP/DP，`0x29f72` 是 combat-result resolver。**待確認**:byte[unit+6] 攻守配對、土台 entry、所有 caller 的 schedule。
 3. **BG 繪製與TAI台座是兩條素材路徑**：BG.DAT多層走
    `[0x54107…54113]`並以`0x4e63d(X=0,Y=50,寬320)`合成；腳下大台座由

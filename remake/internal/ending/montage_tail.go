@@ -1,11 +1,15 @@
 package ending
 
 import (
+	"encoding/binary"
 	"encoding/json"
 	"fmt"
 	"os"
 
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
 
 // MontageTail is the raw, editable schedule after the party montage.  It
@@ -74,11 +78,203 @@ type MontageTailEntry struct {
 	Record1Byte7 byte
 }
 
+const (
+	// 0x2c435 passes this raw selector to 0x1088d before the party montage.
+	// These constants deliberately retain archive arithmetic instead of naming
+	// selector 0x1e as a chapter or a character list.
+	nativeMontageTailLoadSelector       = 0x1e
+	nativeMontageTailFieldMapResource   = nativeMontageTailLoadSelector * 3
+	nativeMontageTailControlResource    = nativeMontageTailFieldMapResource + 1
+	nativeMontageTailPositionsResource  = nativeMontageTailFieldMapResource + 2
+	nativeMontageTailDeployRecordCount  = 0x1f
+	nativeMontageTailControlGroupOffset = 21
+)
+
+// MontageTailLoaderPaths identifies the player-provided archives consumed by
+// the record-construction portion of 0x1088d(0x1e).  The original archives
+// remain read-only; this type never embeds their bytes in the remake.
+type MontageTailLoaderPaths struct {
+	FDFIELD string
+	FDICON  string
+}
+
+// MontageTailLoaderBaseline is the exact raw-runtime shape constructed by the
+// 0x1088d(0x1e) party-slot loop: 31 deployment records, with the active
+// persistent prefix copied at stride 0x50 and the remainder marked inactive.
+//
+// It is deliberately *not* an admitted 0x28a6c call-time input.  The later
+// 0x2c548 montage can observe and potentially mutate the same runtime image;
+// no original trace yet proves its final full-record state at 0x2c2a6.  A
+// future tail renderer must require a separately proven call-time snapshot,
+// rather than treating this loader baseline as sufficient evidence.
+type MontageTailLoaderBaseline struct {
+	runtimeRecords [][fdsave.UnitSize]byte
+}
+
+// RuntimeCount reports the native deployment-slot count, including inactive
+// slots. It does not expose a mutable backing slice.
+func (b MontageTailLoaderBaseline) RuntimeCount() int {
+	return len(b.runtimeRecords)
+}
+
+// RuntimeRecord returns a value copy of one post-0x1088d deployment record.
+func (b MontageTailLoaderBaseline) RuntimeRecord(index int) ([fdsave.UnitSize]byte, error) {
+	if index < 0 || index >= len(b.runtimeRecords) {
+		return [fdsave.UnitSize]byte{}, fmt.Errorf("ending: montage tail loader record %d is unavailable", index)
+	}
+	return b.runtimeRecords[index], nil
+}
+
+// FirstPair returns the first two post-loader records as value copies.  This
+// convenience function does not upgrade the pair to a renderer admission;
+// see MontageTailLoaderBaseline for the unresolved 0x2c548 boundary.
+func (b MontageTailLoaderBaseline) FirstPair() ([2][fdsave.UnitSize]byte, error) {
+	if len(b.runtimeRecords) < 2 {
+		return [2][fdsave.UnitSize]byte{}, fmt.Errorf("ending: montage tail loader lacks the first two records")
+	}
+	return [2][fdsave.UnitSize]byte{b.runtimeRecords[0], b.runtimeRecords[1]}, nil
+}
+
+// BuildMontageTailLoaderBaseline reproduces only the proven raw record writes
+// in 0x1088d's selector-0x1e own-deployment loop.  It validates the complete
+// FDFIELD resource triplet needed by that fixed selector, validates FDICON
+// keys against the player archive, copies the complete persistent records,
+// performs the documented overwrites, and reuses the independently verified
+// 0x1b750 equipment tail.  It deliberately stops before 0x2c548 and does not
+// create a tail renderer or campaign transition.
+func BuildMontageTailLoaderBaseline(
+	tail MontageTail,
+	persistent []fdsave.PersistentRecord,
+	paths MontageTailLoaderPaths,
+	itemTable []byte,
+) (MontageTailLoaderBaseline, error) {
+	if err := tail.validateNativeContract(); err != nil {
+		return MontageTailLoaderBaseline{}, err
+	}
+	// The fixed FDFIELD selector supplies 31 deployment slots.  0x2c405 later
+	// indexes using the persistent count, so a 32nd persistent record lacks a
+	// proven corresponding deployment record and must remain fail-closed.
+	if len(persistent) < 2 || len(persistent) > nativeMontageTailDeployRecordCount {
+		return MontageTailLoaderBaseline{}, fmt.Errorf(
+			"ending: montage tail loader persistent count %d is outside proven 2..%d",
+			len(persistent), nativeMontageTailDeployRecordCount,
+		)
+	}
+	if paths.FDFIELD == "" || paths.FDICON == "" {
+		return MontageTailLoaderBaseline{}, fmt.Errorf("ending: montage tail loader archive path is unavailable")
+	}
+
+	fieldMap, err := fdother.ReadResource(paths.FDFIELD, nativeMontageTailFieldMapResource)
+	if err != nil {
+		return MontageTailLoaderBaseline{}, fmt.Errorf("ending: montage tail FDFIELD#%d: %w", nativeMontageTailFieldMapResource, err)
+	}
+	control, err := fdother.ReadResource(paths.FDFIELD, nativeMontageTailControlResource)
+	if err != nil {
+		return MontageTailLoaderBaseline{}, fmt.Errorf("ending: montage tail FDFIELD#%d: %w", nativeMontageTailControlResource, err)
+	}
+	positions, err := fdother.ReadResource(paths.FDFIELD, nativeMontageTailPositionsResource)
+	if err != nil {
+		return MontageTailLoaderBaseline{}, fmt.Errorf("ending: montage tail FDFIELD#%d: %w", nativeMontageTailPositionsResource, err)
+	}
+	unitRows, err := validateMontageTailLoaderField(fieldMap, control, positions)
+	if err != nil {
+		return MontageTailLoaderBaseline{}, err
+	}
+
+	bank, err := fdicon.DecodeFile(paths.FDICON)
+	if err != nil || bank == nil || len(bank.Sprites) == 0 || len(bank.Sprites)%12 != 0 {
+		if err != nil {
+			return MontageTailLoaderBaseline{}, fmt.Errorf("ending: montage tail FDICON: %w", err)
+		}
+		return MontageTailLoaderBaseline{}, fmt.Errorf("ending: montage tail FDICON has invalid selector groups")
+	}
+	selectorGroups := len(bank.Sprites) / 12
+
+	runtime := make([][fdsave.UnitSize]byte, nativeMontageTailDeployRecordCount)
+	cache := &fdicon.NativeSelectorCache{}
+	for index := range runtime {
+		if index >= len(persistent) {
+			runtime[index][5] = 1
+			continue
+		}
+		record := persistent[index].Raw
+		if int(record[7]) >= selectorGroups {
+			return MontageTailLoaderBaseline{}, fmt.Errorf(
+				"ending: montage tail persistent record %d has FDICON key %d outside %d groups",
+				index, record[7], selectorGroups,
+			)
+		}
+		slot, err := cache.SlotFor(int(record[7]))
+		if err != nil || slot > 0xff {
+			if err != nil {
+				return MontageTailLoaderBaseline{}, fmt.Errorf("ending: montage tail selector cache: %w", err)
+			}
+			return MontageTailLoaderBaseline{}, fmt.Errorf("ending: montage tail selector slot %d is not a byte", slot)
+		}
+		positionOffset := 2 + (unitRows+index)*6
+		record[0] = positions[positionOffset]
+		record[1] = positions[positionOffset+2]
+		record[2] = byte(slot)
+		record[3] = 0
+		record[4] = 0
+		record[6] = 2
+		record[0x31] = 0xff
+		clear(record[0x22:0x28])
+		if err := battle.ApplyNativeRuntimeEquipmentRecalc(record[:], itemTable); err != nil {
+			return MontageTailLoaderBaseline{}, fmt.Errorf("ending: montage tail runtime record %d: %w", index, err)
+		}
+		runtime[index] = record
+	}
+	return MontageTailLoaderBaseline{runtimeRecords: runtime}, nil
+}
+
+func validateMontageTailLoaderField(fieldMap, control, positions []byte) (int, error) {
+	if len(fieldMap) < 4 {
+		return 0, fmt.Errorf("ending: montage tail FDFIELD map is too short")
+	}
+	width := int(binary.LittleEndian.Uint16(fieldMap))
+	height := int(binary.LittleEndian.Uint16(fieldMap[2:]))
+	if width != 35 || height != 45 || len(fieldMap) != 4+width*height*4 {
+		return 0, fmt.Errorf("ending: montage tail FDFIELD#%d geometry is not the proven 35x45 selector image", nativeMontageTailFieldMapResource)
+	}
+	if len(control) < 3 || control[0] != nativeMontageTailLoadSelector ||
+		int(control[1]) != nativeMontageTailDeployRecordCount || control[2] != 1 {
+		return 0, fmt.Errorf("ending: montage tail FDFIELD control header does not match selector %#x", nativeMontageTailLoadSelector)
+	}
+	unitRows := int(control[2])
+	wantControlLength := fdsave.CurrentFieldControlUnitOffset + unitRows*fdsave.CurrentFieldControlUnitSize
+	if len(control) != wantControlLength {
+		return 0, fmt.Errorf("ending: montage tail FDFIELD control length %d, want %d", len(control), wantControlLength)
+	}
+	unitOffset := fdsave.CurrentFieldControlUnitOffset
+	if control[unitOffset+nativeMontageTailControlGroupOffset] != 0xff {
+		return 0, fmt.Errorf("ending: montage tail FDFIELD control row may append an unproven group-0 record")
+	}
+	if len(positions) < 2 {
+		return 0, fmt.Errorf("ending: montage tail FDFIELD positions are too short")
+	}
+	positionCount := int(binary.LittleEndian.Uint16(positions))
+	if positionCount != unitRows+nativeMontageTailDeployRecordCount || len(positions) != 2+positionCount*6 {
+		return 0, fmt.Errorf("ending: montage tail FDFIELD positions do not match the proven 32-row layout")
+	}
+	if binary.LittleEndian.Uint16(positions[6:]) != nativeMontageTailLoadSelector {
+		return 0, fmt.Errorf("ending: montage tail FDFIELD first position key is not selector %#x", nativeMontageTailLoadSelector)
+	}
+	for index := 0; index < nativeMontageTailDeployRecordCount; index++ {
+		offset := 2 + (unitRows+index)*6
+		if binary.LittleEndian.Uint16(positions[offset+4:]) != 0 {
+			return 0, fmt.Errorf("ending: montage tail FDFIELD deployment position %d has unexpected raw key", index)
+		}
+	}
+	return unitRows, nil
+}
+
 // MontageTailAssets preserves the directly loaded FDOTHER inputs of
-// 0x2c194.  The 20-entry renderer still has an unresolved 0x28a6c stage, so
-// merely loading these assets does not claim to reproduce that loop.  The
-// final #59 frame is kept separately because the native code decodes it only
-// after the loop has completed.
+// 0x2c194. The original nonzero 0x28a6c branch is proven to load and compose
+// visual resources, but the remake lacks its admitted full call-time runtime
+// records and a renderer adapter. Merely loading these assets therefore does
+// not claim to reproduce that loop. The final #59 frame is kept separately
+// because the native code decodes it only after the loop has completed.
 type MontageTailAssets struct {
 	LoopPalette []byte
 	Intro       fdother.Frame
@@ -176,6 +372,13 @@ func LoadMontageTail(path string) (*MontageTail, error) {
 	if err := json.Unmarshal(raw, &tail); err != nil {
 		return nil, err
 	}
+	if err := tail.validateNativeContract(); err != nil {
+		return nil, fmt.Errorf("ending montage tail %q: %w", path, err)
+	}
+	return &tail, nil
+}
+
+func (tail MontageTail) validateNativeContract() error {
 	if tail.SchemaVersion != 2 || tail.NativeHandler != "0x2c194" || tail.Status != "mapped_post_montage_tail_fail_closed" ||
 		tail.Source != "0x2c194..0x2c39a" || len(tail.Resources) != 4 || tail.Loop.Count != 20 ||
 		tail.Loop.RuntimeRecordsGlobal != "0x53a45" || tail.Loop.RuntimeRecordStride != 0x50 ||
@@ -190,12 +393,12 @@ func LoadMontageTail(path string) (*MontageTail, error) {
 		tail.Loop.WaitBeforeFrameTicks != 20 || tail.Loop.WaitAfterFrameTicks != 78 ||
 		tail.Loop.WaitHelper != "0x17aa9" || tail.Loop.PresentHelper != "0x1f882" ||
 		tail.Loop.RestoreHelper != "0x375c0" || tail.Gate.Source == "" || tail.Gate.Reason == "" {
-		return nil, fmt.Errorf("ending montage tail %q has incomplete native contract", path)
+		return fmt.Errorf("has incomplete native contract")
 	}
 	for i, resource := range tail.Resources {
 		wantIndex := []int{60, 58, 57, 59}[i]
 		if resource.Archive != "FDOTHER.DAT" || resource.Index != wantIndex || resource.Source == "" || resource.Role == "" {
-			return nil, fmt.Errorf("ending montage tail %q resource %d is incomplete", path, i)
+			return fmt.Errorf("resource %d is incomplete", i)
 		}
 	}
 	for name, table := range map[string][]int{
@@ -204,15 +407,15 @@ func LoadMontageTail(path string) (*MontageTail, error) {
 		"global_540ff":   tail.RawTables.Global540FF,
 	} {
 		if len(table) != tail.Loop.Count {
-			return nil, fmt.Errorf("ending montage tail %q table %s has %d entries", path, name, len(table))
+			return fmt.Errorf("table %s has %d entries", name, len(table))
 		}
 		for i, value := range table {
 			if value < 0 || value > 0xff {
-				return nil, fmt.Errorf("ending montage tail %q table %s entry %d is not a byte", path, name, i)
+				return fmt.Errorf("table %s entry %d is not a byte", name, i)
 			}
 		}
 	}
-	return &tail, nil
+	return nil
 }
 
 // Plan returns the raw 20-entry schedule and the exact derived byte-6 values.

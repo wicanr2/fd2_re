@@ -8,6 +8,10 @@
 - IDA：合法 IDA Pro 9.4，`fd2-ida-authorized-local`，一次性無網路 Docker。
 - 交叉驗證：`fd2-cap-local` Docker 內 Capstone 5.0.3。
 - 所有 `0x...` 均為 FD2.EXE 線性位址，不是檔案偏移或重製端位址。
+- `FDFIELD.DAT`：大小 243169，MD5 `ecdb0436d26adfe5d107f2713fa7e9a2`，
+  SHA-256 `b0cf75d94f58603f091c7462c0494f0e83bd6edfb04c1acbf83ed4d938c7a513`。
+- `FDICON.B24`：大小 624010，MD5 `46f793540209a063ea73a5373ca14bf4`，
+  SHA-256 `7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44`。
 
 ## 已證實：`0x2c194..0x2c39a` 呼叫順序
 
@@ -82,6 +86,39 @@ FDOTHER #58 的 20 筆 descriptor 幾何也以玩家提供檔案 regression 固�
 為 `(15,7,55,98)`、第 19 筆為 `(39,71,237,28)`；這只證實 frame-table layout，
 不替各 frame 命名或推斷其畫面角色。
 
+## 已證實：`0x1088d(0x1e)` 的 post-loader record 基線
+
+正確 caller 是 `0x2c435 push 0x1e`、`0x2c437 call 0x1088d`；較早把呼叫點寫成
+`0x2c469` 是時序誤植。固定 selector 使用 FDFIELD #90/#91/#92：#90 是 35×45
+地圖；#91 header 為 `(30,31,1)`，唯一 unit row 的 group byte 是 255；#92 有
+32 筆位置，第一筆屬 control row，後 31 筆才是 deployment slots。
+
+`0x1088d` 會配置 31×`0x50` runtime records。對每筆有效 persistent record，
+`0x10a77` 先複製完整 `0x50` bytes，再由 deployment position 寫 `+0/+1`、
+`0x11019(record[+7])` 寫 selector cache slot 到 `+2`、清 `+3/+4`、寫 `+6=2`、
+`+0x31=0xff`、清 `+0x22..+0x27`，最後呼叫 `0x1b750`；其餘 deployment
+records 清零後只寫 `+5=1`。尾端 `0x10b4e(0)` 只追加 group 0，而 #91 唯一 row
+是 group 255，因此不增加第 32 筆 record。
+
+重製端 `MontageTailLoaderBaseline` 以真實 FDFIELD／FDICON／item table 回歸這個
+31-record 形狀，並只暴露 value copy。這是 **post-`0x1088d` baseline**，不是
+`0x2c2a6` renderer admission：中間的 `0x2c548` 可觀察或改動同一 runtime image，
+目前沒有一般玩家 trace 證明呼叫時完整 record 內容。
+
+## 已證實：`[0x540ff]!=0` 仍有可見消費鏈
+
+IDA 9.4 資料流與 Capstone 直接指令交叉確認：`0x28c15` 起依 `[0x540ff]`
+選 TAI／BG（特定 raw `record[+7]` 組合則選 TAI #3），並載入
+`3*record1[+7]`、`3*record0[+7]`、`3*record0[+7]+1` 的 FIGANI 資源。
+接著呼叫 `0x29164` 與 `0x2939d`；`0x29164` 的 `+6==0`／非零兩支都執行
+九階段合成、`0x2935b`、VGA copy 與 `0x11d40`。
+
+`0x2939d` 只在 `[0x540ff]==0` 呼叫 `0x29f72` 一般戰鬥結果解析器；非零時把
+相關結果欄位歸零，但仍執行 frame loop、`0x2935b`、`0x11eb0`、等待與
+`0x29c90`／`0x29ded`。所以「非零分支沒有畫面」是錯誤斷言；正確限制是：
+原版視覺輸出鏈已達 E0，但精確呼叫時輸入、20 段可見結果、重製轉接器與 E2
+尚未閉合，正式路徑仍須失敗即關閉。
+
 ## 已證實：尾端收尾
 
 `0x2c33b` 後恢復 `[0x53a65]`、釋放 #58，等待 `0x17aa9(0x32)`，載入
@@ -97,7 +134,8 @@ node、town、shop、整備、save 或結局 owner。
 - 已證實：上述 table 的定位是 IDA／Capstone LE 線性位址；它們位於 object 2，
   所以檔案偏移是線性位址減 `0x200`。不可把兩種基準混作同一個 `0x...`。
 - 未知：各 raw table 欄位的遊戲名稱、`0x25977`／`0x1f525` 的完整語意、
-  這段與終局／戰役／城鎮的 handoff。
+  `0x2c2a6` 呼叫當下完整 records/globals、20 段重製轉接器，以及這段與
+  終局／戰役／城鎮的 handoff。
 
 因此 `MontageTail` 目前是可編輯、可驗證、失敗即關閉的 raw schedule，
 不是 campaign binding，也不解除 `postbattle_ch29_persist`。

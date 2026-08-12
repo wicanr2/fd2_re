@@ -2,9 +2,14 @@ package ending
 
 import (
 	"bytes"
+	"encoding/binary"
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
+
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
 
 func TestLoadMontageTailPlansProvenanceBoundRawTables(t *testing.T) {
@@ -73,6 +78,115 @@ func TestTailRecordByte6UsesNativeThreshold(t *testing.T) {
 	}
 	if got := tailRecordByte6(0x4c); got != 0 {
 		t.Fatalf("selector 0x4c yielded +6=%d, want 0", got)
+	}
+}
+
+func TestBuildMontageTailLoaderBaselineUsesExactSelector1EDeployment(t *testing.T) {
+	const gameRoot = "../../../org_game/炎龍騎士團/FLAME2"
+	paths := MontageTailLoaderPaths{
+		FDFIELD: filepath.Join(gameRoot, "FDFIELD.DAT"),
+		FDICON:  filepath.Join(gameRoot, "FDICON.B24"),
+	}
+	if _, err := os.Stat(paths.FDFIELD); os.IsNotExist(err) {
+		t.Skip("player-provided FDFIELD.DAT is absent")
+	} else if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Stat(paths.FDICON); os.IsNotExist(err) {
+		t.Skip("player-provided FDICON.B24 is absent")
+	} else if err != nil {
+		t.Fatal(err)
+	}
+	tail, err := LoadMontageTail(filepath.Join("..", "..", "assets", "endings", "native_2c194_tail.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	items, err := battle.LoadNativeItemEffectRowPrefix(filepath.Join("..", "..", "assets", "data", "native_item_effect_rows.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	records := []fdsave.PersistentRecord{{}, {}}
+	for index := range records {
+		for offset := range records[index].Raw {
+			records[index].Raw[offset] = byte(index*0x40 + offset)
+		}
+		records[index].Raw[5] = byte(0x80 | index)
+		records[index].Raw[7] = byte(4 + index*5)
+		for slot := 0; slot < 8; slot++ {
+			records[index].Raw[0x0a+slot*2] &^= 0x40
+		}
+		binary.LittleEndian.PutUint16(records[index].Raw[0x37:], uint16(10+index))
+		binary.LittleEndian.PutUint16(records[index].Raw[0x39:], uint16(20+index))
+		binary.LittleEndian.PutUint16(records[index].Raw[0x3e:], uint16(30+index))
+	}
+	before := append([]fdsave.PersistentRecord(nil), records...)
+
+	baseline, err := BuildMontageTailLoaderBaseline(*tail, records, paths, items)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if baseline.RuntimeCount() != nativeMontageTailDeployRecordCount {
+		t.Fatalf("runtime count=%d, want %d", baseline.RuntimeCount(), nativeMontageTailDeployRecordCount)
+	}
+	first, err := baseline.RuntimeRecord(0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	second, err := baseline.RuntimeRecord(1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if first[0] != 17 || first[1] != 18 || second[0] != 1 || second[1] != 43 {
+		t.Fatalf("selector 0x1e deployment coordinates=%d,%d / %d,%d", first[0], first[1], second[0], second[1])
+	}
+	if first[2] != 0 || second[2] != 1 || first[3] != 0 || first[4] != 0 || first[6] != 2 || first[0x31] != 0xff {
+		t.Fatalf("first loader overwrite=% x", first[:0x32])
+	}
+	if first[5] != before[0].Raw[5] || first[7] != before[0].Raw[7] || first[8] != before[0].Raw[8] ||
+		second[5] != before[1].Raw[5] || second[7] != before[1].Raw[7] || second[8] != before[1].Raw[8] {
+		t.Fatalf("persistent raw provenance was not preserved")
+	}
+	for offset := 0x22; offset <= 0x27; offset++ {
+		if first[offset] != 0 || second[offset] != 0 {
+			t.Fatalf("transient offset %#x was not cleared", offset)
+		}
+	}
+	inactive, err := baseline.RuntimeRecord(2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if inactive[5] != 1 || inactive[7] != 0 || inactive[0x31] != 0 {
+		t.Fatalf("inactive deployment slot=% x", inactive[:])
+	}
+	pair, err := baseline.FirstPair()
+	if err != nil {
+		t.Fatal(err)
+	}
+	pair[0][0] ^= 0xff
+	stillFirst, err := baseline.RuntimeRecord(0)
+	if err != nil || stillFirst[0] != first[0] {
+		t.Fatalf("baseline record unexpectedly aliases a returned pair: record=%#v err=%v", stillFirst, err)
+	}
+	if !reflect.DeepEqual(records, before) {
+		t.Fatal("loader baseline mutated persistent source records")
+	}
+}
+
+func TestBuildMontageTailLoaderBaselineFailsClosedBeforeAdmittingTailRenderer(t *testing.T) {
+	tail, err := LoadMontageTail(filepath.Join("..", "..", "assets", "endings", "native_2c194_tail.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := BuildMontageTailLoaderBaseline(*tail, []fdsave.PersistentRecord{{}}, MontageTailLoaderPaths{}, nil); err == nil {
+		t.Fatal("one persistent record unexpectedly admitted")
+	}
+	tooMany := make([]fdsave.PersistentRecord, nativeMontageTailDeployRecordCount+1)
+	if _, err := BuildMontageTailLoaderBaseline(*tail, tooMany, MontageTailLoaderPaths{}, nil); err == nil {
+		t.Fatal("32 persistent records unexpectedly admitted to 31 deployment slots")
+	}
+	var empty MontageTailLoaderBaseline
+	if _, err := empty.FirstPair(); err == nil {
+		t.Fatal("empty loader baseline unexpectedly exposed a tail pair")
 	}
 }
 

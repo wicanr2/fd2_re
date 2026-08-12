@@ -4789,3 +4789,24 @@ runtime record stride 是 `0x50`，故 `0x53a45+0x56 = 0x53a95 = record 1 + 6`�
 frame-table layout；`0x28a6c` 對這些輸入的可見輸出、20 段時序、輸入 owner、一般玩家
 E2 與 raw campaign handoff 仍未閉合，全部維持失敗即關閉。詳見
 [`fd2_ch29_post_montage_tail_ida.txt`](../data/ida/fd2_ch29_post_montage_tail_ida.txt)。
+
+## 2026-08-12：終局 loader 基線與 `0x28a6c` 非零視覺鏈勘誤（E0）
+
+本段追加更正兩項會阻礙後續實作的舊斷言。固定雜湊 `FD2.EXE` 先以合法
+IDA Pro 9.4 Docker 資料庫追蹤交叉參照與資料流，再用 Docker Capstone 5.0.3
+逐指令覆核；FDFIELD／FDICON 也綁定 reference manifest 的大小與雜湊。
+
+- `0x1088d` 的終局 caller 是 `0x2c435 push 0x1e`、`0x2c437 call`，不是
+  `0x2c469`。selector `0x1e` 使用 FDFIELD #90/#91/#92，建立 31 筆 deployment
+  runtime records：active prefix 完整複製 persistent `0x50` record 後做位置、
+  selector cache、狀態及 `0x1b750` 覆寫，其餘 records 只標 inactive。
+  `MontageTailLoaderBaseline` 現以真實玩家素材測試這個形狀，且只回傳值拷貝。
+- `[0x540ff]!=0` 的 `0x28a6c` 並非沒有畫面。它仍載入 TAI／FIGANI／BG，經
+  `0x29164→0x2939d` 合成、frame loop、palette／VGA consumer 輸出；非零分支
+  略過的是 `[0x540ff]==0` 才呼叫的 `0x29f72` 一般戰鬥結果解析器。
+
+這兩項只把原版 loader baseline 與可見消費鏈提升到 E0。`0x2c548` 位於 loader
+與 `0x2c2a6` 之間，可能觀察或改動相同 runtime image；因此 post-loader baseline
+不可冒充呼叫當下 snapshot。尚缺完整 records/globals、20 段重製轉接器、精確輸入
+與一般玩家 E2，正式尾段仍維持失敗即關閉。完整證據與工具／位址基準見
+[`fd2_ch29_post_montage_tail_ida.txt`](../data/ida/fd2_ch29_post_montage_tail_ida.txt)。

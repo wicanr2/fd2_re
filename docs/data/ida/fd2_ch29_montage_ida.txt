@@ -14,7 +14,8 @@
 IDA 將 `0x2c548` 識別為 `0x2c405` 函式內部位址；以下保留原始位址，不替
 暫存器、全域欄位或未知函式建立推測性名稱。
 
-1. 先由 `0x1088d(30)` 載入 chapter 30 狀態；配置 `0x1f400` bytes 的
+1. 先由 `0x2c435 push 0x1e`、`0x2c437 call 0x1088d` 載入 raw selector
+   `0x1e` 對應狀態；配置 `0x1f400` bytes 的
    640-stride work surface、兩個各 `64000` bytes 的 320×200 buffer。
 2. 以 `0x111ba(TAI.DAT,0,3)`、`0x111ba(FDOTHER.DAT,0,56)` 讀取原始資源；
    `0x4e63d` 將 FDOTHER #56 透明解碼到 320×200 backdrop。`TAI#3` 的用途只

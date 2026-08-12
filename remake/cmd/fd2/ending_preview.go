@@ -321,8 +321,9 @@ func (g *Game) startCampaignNativeMontage() error {
 }
 
 // startCampaignNativeTail admits only the stable frame at the end of the
-// recovered 0x2c194 resource sequence.  The 20-entry loop itself still calls
-// unresolved 0x28a6c, so this does not label the whole tail as reproduced.
+// recovered 0x2c194 resource sequence. The original 0x28a6c visual chain is
+// proven, but its post-0x2c548 call-time input and remake adapter remain
+// unresolved, so this does not label the whole tail as reproduced.
 // It replaces the old generic epilogue only in explicit approximate mode and
 // leaves the terminal image on screen for the player to revisit.
 func (g *Game) startCampaignNativeTail() error {
@@ -358,7 +359,7 @@ func (g *Game) startCampaignNativeTail() error {
 	}
 	// 原版在尾段先停止前曲，並在 20-entry loop 前啟動 FDMUS_018。
 	// 這個近似端只在穩定的終局畫面取得後消費同一資源，不宣稱其間隔
-	// 與尚未還原的 0x28a6c loop 完全相同。
+	// 與尚未接入的 0x28a6c loop 完全相同。
 	g.stopBGM()
 	g.playBGMCount("FDMUS_018", 0)
 	return nil
