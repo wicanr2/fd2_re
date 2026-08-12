@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "evidence_level": "E1",
+  "scope": "玩家第21戰正式勝利邊界中的 0x242C9→0x24336 重製端三階段索引畫面；不是原版擷取、一般玩家 E2 或逐像素對照",
+  "generated_on": "2026-08-13",
+  "reference_files": [
+    {
+      "file": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    {
+      "file": "FDOTHER.DAT",
+      "size": 3382481,
+      "md5": "22f56e5027edc7c766ad34ca4e5aca93",
+      "sha256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
+    },
+    {
+      "file": "ANI.DAT",
+      "size": 2437547,
+      "md5": "81315bcbb78764361c5137ab0f714f7e",
+      "sha256": "be909c71d0f1121b6632ae931d978e990f6d54c830f4e0509cd6862187c4d963"
+    },
+    {
+      "file": "FDFIELD.DAT",
+      "size": 243169,
+      "md5": "ecdb0436d26adfe5d107f2713fa7e9a2",
+      "sha256": "b0cf75d94f58603f091c7462c0494f0e83bd6edfb04c1acbf83ed4d938c7a513"
+    }
+  ],
+  "generator": {
+    "source": "remake/cmd/fd2/native_ch20_sky_key_test.go",
+    "test": "TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary",
+    "production_consumer": "remake/cmd/fd2/native_ch20_sky_key.go",
+    "docker_image": "fd2-go-test-local:latest",
+    "docker_image_id": "sha256:0e335ef7174c526163324291038fa4c0aa6c00095b5fa12556c203c3dd7c0d4a",
+    "network": "none",
+    "display": "Docker Xvfb :99",
+    "environment": {
+      "FD2_ORIGINAL_FDOTHER": "/workspace/org_game/炎龍騎士團/FLAME2/FDOTHER.DAT",
+      "FD2_ANI": "/workspace/org_game/炎龍騎士團/FLAME2/ANI.DAT",
+      "FD2_SKY_KEY_EVIDENCE_OUT": "/workspace/docs/figures/ch21-sky-key-sequence-remake-e1.png"
+    },
+    "command_from_remake": "go test ./cmd/fd2 -run ^TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary$ -count=1 -v"
+  },
+  "output": {
+    "file": "docs/figures/ch21-sky-key-sequence-remake-e1.png",
+    "width": 960,
+    "height": 200,
+    "size": 51318,
+    "md5": "ff074116163c339fa7d23d7b47d8e61d",
+    "sha256": "526d7c5445b55b395a9b2a7b1da524e63a88da660ac49f0e4eb6dc5efaf255ba",
+    "panels": [
+      "FDOTHER #34 前段 frame 34 與當下 DAC",
+      "ANI #0 frame 48 與該幀 DAC snapshot",
+      "FDOTHER #34 尾段 frame 84 與原生地圖 baseline DAC"
+    ]
+  },
+  "flow_assertions": [
+    "從 campaign_full.json 的 battle_ch21 正式勝利確認開始，不直接跳入鑄造節點",
+    "驗證六素材原版恰好六組配對規則、JOIN24／23、sync_party、chapter21 與 town_ch22",
+    "只在 town_ch22 節點保存並讀回隊伍、加入順序與天空之鑰",
+    "完整演出經過鏡頭平移、FDOTHER 前段、ANI、閃白、恢復與 FDOTHER 尾段六個 phase"
+  ],
+  "limitations": [
+    "為縮短回歸時間，測試仍經正式 Draw acknowledgement 與 stepper，但把每段等待 tick 設為0；因此不驗證 DOS BIOS 計時或主機60Hz精確時序。",
+    "這是重製端索引 framebuffer 與 DAC 的 E1 證據，不是未修改原版一般玩家路徑或同狀態 E2。",
+    "0x4DFCC 進入演出時的程序內第一相位仍未由原版動態狀態固定；重製只保存68次相對循環。",
+    "相鄰 layout_units 與 ACT63／64 尚未接入；本圖只證明 0x24336 固定演出本體及其正式戰役消費端。"
+  ]
+}

@@ -33,7 +33,7 @@ class SemanticIndexTest(unittest.TestCase):
         self.assertEqual(inventory["function_count"], 1305)
         self.assertEqual(
             inventory["classification_counts"],
-            {"product": 27, "runtime": 170, "unknown": 1108},
+            {"product": 31, "runtime": 170, "unknown": 1104},
         )
         self.assertEqual(inventory["semantic_annotation_count"], len(entries))
 
@@ -41,6 +41,11 @@ class SemanticIndexTest(unittest.TestCase):
         for address, annotations in entries.items():
             self.assertIn(address, functions, hex(address))
             self.assertEqual(functions[address]["semantic_annotations"], annotations, hex(address))
+
+    def test_checked_in_index_is_sorted_by_linear_address(self):
+        document = json.loads(INDEX.read_text(encoding="utf-8"))
+        addresses = [int(entry["address"], 0) for entry in document["entries"]]
+        self.assertEqual(addresses, sorted(addresses))
 
     def test_input_identity_rejects_different_hash(self):
         document, _ = load_semantic_index(INDEX, ROOT)

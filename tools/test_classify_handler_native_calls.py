@@ -47,6 +47,26 @@ class ClassifyHandlerNativeCallsTest(unittest.TestCase):
         self.assertEqual(classify_document(document)[:2], (0, 0))
         self.assertEqual(json.dumps(document, sort_keys=True), snapshot)
 
+    def test_classifies_ch20_sky_key_sequence_with_conservative_semantic(self):
+        document = {
+            "beats": [{
+                "op": "unknown", "native_target": "0x24336", "raw_args": [],
+                "source": {"addr": "0x242c9", "target": "0x24336"},
+            }],
+        }
+        changed, unknown, counts, _ = classify_document(document)
+        self.assertEqual((changed, unknown, counts["0x24336"]), (1, 0, 1))
+        self.assertEqual(document["beats"][0]["op"], "native_call")
+        self.assertEqual(
+            document["beats"][0]["native_semantic"],
+            "ch20 天空之鑰固定合成演出序列",
+        )
+        self.assertEqual(document["beats"][0]["native_confidence"], "已證實")
+        self.assertEqual(
+            document["beats"][0]["native_evidence"],
+            ["docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"],
+        )
+
     def test_minimal_renderer_preserves_unrelated_compact_layout(self):
         original = '''{
   "beats": [

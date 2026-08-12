@@ -2533,6 +2533,34 @@ func TestCompileCh07PostBlackoutRequiresExactCallSiteAndArguments(t *testing.T) 
 	}
 }
 
+func TestCompileCh20SkyKeySequenceRequiresExactCallSite(t *testing.T) {
+	exact := HandlerBeat{
+		Op: "native_call", NativeTarget: "0x24336",
+		NativeSemantic: "ch20 天空之鑰固定合成演出序列", NativeConfidence: "已證實",
+		NativeEvidence: []string{"docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"},
+		Source:         HandlerSource{Addr: "0x242c9", Target: "0x24336"},
+	}
+	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{exact}}, HandlerBindings{})
+	if len(issues) != 0 || len(beats) != 1 || beats[0].Op != "native_ch20_sky_key_sequence" ||
+		beats[0].Source != "0x242c9" || !beats[0].NativeCh20SkyKey.IsRecoveredContract() {
+		t.Fatalf("exact sky-key sequence beats=%#v issues=%#v", beats, issues)
+	}
+	for name, mutate := range map[string]func(*HandlerBeat){
+		"different source": func(beat *HandlerBeat) { beat.Source.Addr = "0x242ca" },
+		"different target": func(beat *HandlerBeat) { beat.Source.Target = "0x24337" },
+		"unexpected arg":   func(beat *HandlerBeat) { beat.RawArgs = []any{float64(0)} },
+	} {
+		t.Run(name, func(t *testing.T) {
+			candidate := exact
+			mutate(&candidate)
+			beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{candidate}}, HandlerBindings{})
+			if len(beats) != 0 || len(issues) != 1 {
+				t.Fatalf("beats=%#v issues=%#v", beats, issues)
+			}
+		})
+	}
+}
+
 func TestNativeEventStateEqualsRejectsFrontierAbsentFromBinding(t *testing.T) {
 	index, value, required := 17, 1, 44
 	script := &HandlerScript{Beats: []HandlerBeat{{

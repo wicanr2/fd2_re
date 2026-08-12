@@ -147,16 +147,47 @@ func TestInventoryRecipeFailsClosedWithoutSixteenRuntimeSlots(t *testing.T) {
 }
 
 func TestChapterTwentyOneBattleMaterializesRecipeRuntimeFrontier(t *testing.T) {
-	st, err := battle.Load(assetPath("assets/maps/map20/map20_units.json"))
-	if err != nil {
-		t.Fatal(err)
-	}
 	sc, err := battle.LoadScenario(assetPath("assets/scenarios/ch21.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	sc.Setup(st)
-	if len(st.Units) < 16 {
-		t.Fatalf("chapter21 post recipe requires slots0..15, materialized=%d", len(st.Units))
+	if !sc.RuntimeAppendGroups || len(sc.Party) < 16 {
+		t.Fatalf("chapter21 runtime contract=%v party=%d", sc.RuntimeAppendGroups, len(sc.Party))
+	}
+	// 一般戰役的整備最多投影16名出戰者；永久名冊較大不代表全部同時
+	// materialize。保留隊長並取前15名整備選擇，鎖住原版 16+group0 的前沿。
+	sc.Party = append(sc.Party[:0:0], sc.Party[:16]...)
+	if len(sc.DeployCells) > 16 {
+		sc.DeployCells = append(sc.DeployCells[:0:0], sc.DeployCells[:16]...)
+	}
+	g := &Game{
+		partyMembers:   make(map[int]bool, 16),
+		partyJoinOrder: make([]int, 16),
+		partyDeploy:    make(map[int]bool, 15),
+	}
+	for index, member := range sc.Party {
+		g.partyMembers[member.Fig] = true
+		g.partyJoinOrder[index] = member.Fig
+		if index != 0 {
+			g.partyDeploy[member.Fig] = true
+		}
+	}
+	g.resetBattle("assets/maps/map20/map20_units.json", "assets/scenarios/ch21.json")
+	if g.loadErr != "" || g.st == nil || g.sc == nil {
+		t.Fatalf("chapter21 setup err=%q state=%v scenario=%v", g.loadErr, g.st != nil, g.sc != nil)
+	}
+	if len(g.st.Units) != 75 {
+		t.Fatalf("chapter21 post recipe frontier=%d, want 16 deployed + 59 group0", len(g.st.Units))
+	}
+	// 群組是原版第2、4、6、8回合的有序追加，不可用 Go map 的未定順序
+	// 驗證累積前沿，否則先物化 group3 也會被錯誤拿去比較第三階段的87筆。
+	for _, step := range []struct {
+		group int
+		want  int
+	}{{1, 79}, {2, 83}, {3, 87}, {4, 91}} {
+		group, want := step.group, step.want
+		if n, err := g.st.AppendGroupWithNativePlacement(group, 0); err != nil || n != 4 || len(g.st.Units) != want {
+			t.Fatalf("chapter21 group%d append n=%d frontier=%d want=%d err=%v", group, n, len(g.st.Units), want, err)
+		}
 	}
 }

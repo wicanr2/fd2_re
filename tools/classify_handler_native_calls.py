@@ -8,7 +8,7 @@ from collections import Counter
 from pathlib import Path
 
 import dump_chapter_beats
-from export_handler_scripts import NATIVE_EVIDENCE, UNRESOLVED_NATIVE
+from export_handler_scripts import NATIVE_EVIDENCE, NATIVE_SEMANTICS, UNRESOLVED_NATIVE
 
 
 CLASSIFIED = {
@@ -51,7 +51,7 @@ def classify_document(document):
                 unresolved_counts[target] += 1
             continue
         beat["op"] = "native_call"
-        beat["native_semantic"] = semantic
+        beat["native_semantic"] = NATIVE_SEMANTICS.get(target, semantic)
         beat["native_confidence"] = "已證實"
         beat["native_evidence"] = list(NATIVE_EVIDENCE[target])
         changed += 1
@@ -79,7 +79,7 @@ def render_minimal_changes(original, document):
             lambda match: (
                 f'{match.group("indent")}"op": "native_call",'
                 f'{match.group("body")}\n'
-                f'{match.group("indent")}"native_semantic": "{semantic}",\n'
+                f'{match.group("indent")}"native_semantic": "{NATIVE_SEMANTICS.get(target, semantic)}",\n'
                 f'{match.group("indent")}"native_confidence": "已證實",\n'
                 f'{match.group("indent")}"native_evidence": {evidence},'
             ),

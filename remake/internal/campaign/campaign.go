@@ -284,6 +284,50 @@ type NativePaletteBlackout struct {
 	ClearBytes int `json:"clear_bytes"`
 }
 
+// NativeCh20SkyKeySequence 是 raw ch20 post 的固定合成演出契約。它保留
+// 0x24336 內部的鏡頭格、FDOTHER 幀界線、AFM 資源與兩段色盤停留，不把
+// 這段 caller-specific choreography 泛化成任意動畫播放器。
+type NativeCh20SkyKeySequence struct {
+	PanGridX           int  `json:"pan_grid_x"`
+	PanGridY           int  `json:"pan_grid_y"`
+	FDOTHERResource    int  `json:"fdother_resource"`
+	FDOTHERFrameCount  int  `json:"fdother_frame_count"`
+	BaseFrame          int  `json:"base_frame"`
+	FirstFrameStart    int  `json:"first_frame_start"`
+	FirstFrameEnd      int  `json:"first_frame_end"`
+	FrameWaitBIOSTicks int  `json:"frame_wait_bios_ticks"`
+	PaletteCycleFirst  bool `json:"palette_cycle_first"`
+	ANIResource        int  `json:"ani_resource"`
+	ANIFrameCount      int  `json:"ani_frame_count"`
+	ANIFrameDelayMs    int  `json:"ani_frame_delay_ms"`
+	ANISkippable       bool `json:"ani_skippable"`
+	PaletteStart       int  `json:"palette_start"`
+	PaletteEnd         int  `json:"palette_end"`
+	FlashDelta         int  `json:"flash_delta"`
+	FlashHoldMs        int  `json:"flash_hold_ms"`
+	RestoreDelta       int  `json:"restore_delta"`
+	RestoreHoldMs      int  `json:"restore_hold_ms"`
+	TailFrameStart     int  `json:"tail_frame_start"`
+	TailFrameEnd       int  `json:"tail_frame_end"`
+}
+
+// IsRecoveredContract 限制正式執行器只接受 IDA／Capstone 已共同固定的
+// 0x24336 payload。可編輯 JSON 仍完整顯示每個值，但改動後必須先補新證據，
+// 不會悄悄取得原版語意。
+func (s *NativeCh20SkyKeySequence) IsRecoveredContract() bool {
+	return s != nil &&
+		s.PanGridX == 14 && s.PanGridY == 8 &&
+		s.FDOTHERResource == 34 && s.FDOTHERFrameCount == 101 &&
+		s.BaseFrame == 0 && s.FirstFrameStart == 1 && s.FirstFrameEnd == 68 &&
+		s.FrameWaitBIOSTicks == 3 && s.PaletteCycleFirst &&
+		s.ANIResource == 0 && s.ANIFrameCount == 96 &&
+		s.ANIFrameDelayMs == 15 && !s.ANISkippable &&
+		s.PaletteStart == 0 && s.PaletteEnd == 255 &&
+		s.FlashDelta == 63 && s.FlashHoldMs == 100 &&
+		s.RestoreDelta == 0 && s.RestoreHoldMs == 500 &&
+		s.TailFrameStart == 69 && s.TailFrameEnd == 100
+}
+
 // NativeStagingPresent preserves the exact 0x33f78 wrapper ABI. It focuses
 // (FocusX, FocusY), then invokes 0x22253 with (Slot, X, Y, X, Y). The callee
 // has a recovered 11+6+10 indexed choreography, so this remains data-only
@@ -326,6 +370,7 @@ type Beat struct {
 	NativePaletteFadeIn   *NativePaletteFadeIn      `json:"native_palette_fade_in,omitempty"`
 	NativePalettePulse    *NativePalettePulse       `json:"native_palette_pulse,omitempty"`
 	NativePaletteBlackout *NativePaletteBlackout    `json:"native_palette_blackout,omitempty"`
+	NativeCh20SkyKey      *NativeCh20SkyKeySequence `json:"native_ch20_sky_key_sequence,omitempty"`
 	NativeStagingPresent  *NativeStagingPresent     `json:"native_staging_present,omitempty"`
 	NativeCh23Loop        *NativeCh23Loop           `json:"native_ch23_loop,omitempty"`
 	Native2189ALoop       *Native2189ALoop          `json:"native_2189a_loop,omitempty"`

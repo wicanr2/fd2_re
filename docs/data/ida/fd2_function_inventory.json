@@ -15,11 +15,11 @@
   "imagebase": "0x0",
   "function_count": 1305,
   "classification_counts": {
-    "unknown": 1108,
-    "product": 27,
+    "unknown": 1104,
+    "product": 31,
     "runtime": 170
   },
-  "semantic_annotation_count": 28,
+  "semantic_annotation_count": 32,
   "classification_note": "product/driver only come from the versioned semantic index; runtime is a mechanical IDA FUNC_LIB classification after the configured FLIRT signatures; every other function remains unknown",
   "detail_note": "每筆保留 IDA 函式邊界、分析名稱、旗標、直接 caller 函式與分級語意；逐 call-site 交叉參照由同一匯出器重生，不在此精簡版重複保存",
   "functions": [
@@ -1435,11 +1435,22 @@
       "direct_code_xref_count": 98,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x135dd",
+          "classification": "product",
+          "semantic": "X-first／Y-second 的絕對地圖相機與游標同步平移",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"
+          ],
+          "scope": "callee 逐格更新與 present；各 caller 目標座標來源仍須另證"
+        }
+      ]
     },
     {
       "start": "0x1366a",
@@ -5120,11 +5131,22 @@
       "direct_code_xref_count": 5,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x20421",
+          "classification": "product",
+          "semantic": "ANI.DAT AFM 資源播放器，具每幀 delay 與可選輸入略過",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"
+          ],
+          "scope": "通用 callee；resource、delay、skippable 與相鄰畫面由 caller 決定"
+        }
+      ]
     },
     {
       "start": "0x205b4",
@@ -6890,11 +6912,22 @@
       "direct_code_xref_count": 1,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x24336",
+          "classification": "product",
+          "semantic": "raw ch20 post 成功分支的固定 FDOTHER／ANI／DAC 合成演出",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"
+          ],
+          "scope": "唯一 caller 0x240FA@0x242C9；一般玩家 E2 與 0x4DFCC 首相位仍未閉合"
+        }
+      ]
     },
     {
       "start": "0x244b6",
@@ -27476,11 +27509,22 @@
       "direct_code_xref_count": 15,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x4dfcc",
+          "classification": "product",
+          "semantic": "兩 BIOS tick 閘門的程序全域16相 DAC entries E0..EF 循環",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"
+          ],
+          "scope": "callee raw DAC 排程；caller 初始 phase、tick latch 與視覺 E2 仍須另證"
+        }
+      ]
     },
     {
       "start": "0x4e031",

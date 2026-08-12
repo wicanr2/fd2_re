@@ -9,11 +9,12 @@
 > 新工作必須使用 `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`、`PLAYER-E2` 或
 > `BLOCKED` 明列關閉哪一層，不再新增沒有層級的 `[x]`。
 
-## 有效佇列（2026-08-12）
+## 有效佇列（2026-08-13）
 
 | 順序 | 工作 | 現況 | 下一個可驗收結果 |
 |---:|---|---|---|
-| 0 | 清除假的 handler unknown 與建立 IDA 函式 inventory | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式；舊83 unknown 已拆為78已分類、4已知但未閉合、1真未知 | 維護受版控語意索引；下一個 handler callee 真未知只做 `0x24336`，`0x22253`／`0x2BCE5` 追 caller/runtime gate，不重解 callee |
+| 0 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式，現為產品31／runtime170／未知1104；舊83 unknown 已拆為79已分類、4已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253`／`0x2BCE5` 追 caller／執行期 gate，不重解 callee |
+| 1 | 玩家第21戰天空之鑰固定演出 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`：`0x24336` 已接真實 `FDOTHER #34`、`ANI #0`、調色盤循環與正式戰後→城鎮→存讀檔 | 取得未修改原版同狀態 E2，核對第一個動態調色盤相位與相鄰 `layout_units`／ACT63／64；不重解函式本體 |
 | 2 | 四個忠實模式 blocked postbattle | 玩家第23、24、25、29戰戰後為 `BLOCKED`；近似模式不提升 | 每章完成 handler branch、持續隊伍、城鎮／整備及 save/load E1；再各補一般玩家 E2 |
 | 3 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有，完整效果與同狀態 E2 缺少 | 以未知 command／效果為單位完成 producer→transaction→UI／演出→回歸；不重解已閉合 mode／helper |
 | 4 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial | 依 `57` 逐個輸入狀態機取得同狀態原版／重製證據，不用單張 layout 圖代替 |
@@ -29,6 +30,22 @@ handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不�
 ---
 
 ## 歷史工作記錄（不可用來計算完成度）
+
+### 2026-08-13：玩家第21戰天空之鑰演出垂直切片
+
+- [x] **RE-CH20-SKY-KEY-SEQUENCE-20260813**：合法 IDA Pro 9.4 與 Docker
+  Capstone 對固定雜湊 `FD2.EXE` 閉合 `0x242C9→0x24336`。原版依序平移鏡頭、
+  播放 `FDOTHER.DAT #34` 第0至68幀、`ANI.DAT #0`、兩次全域調色盤變換，最後
+  播放第69至100幀；直接指令、資產雜湊、幾何與推論等級見
+  [`fd2_ch20_sky_key_sequence_ida.txt`](../data/ida/fd2_ch20_sky_key_sequence_ida.txt)。
+- [x] **RUNTIME-CH21-SKY-KEY-TOWN-SAVE-E1-20260813**：可編輯劇本只接受精確
+  source／target／零參數合約，正式執行期預先驗證全部幀與 AFM 後才改變畫面。
+  完整 `campaign_full.json` 回歸由玩家第21戰正式勝利確認走過六素材配方、鑄造演出、
+  JOIN24／23、隊伍同步、`town_ch22` 與存檔／讀檔。map20 另固定原版
+  `75→79→83→87→91` 的群組追加前沿，群組255不物化。
+- [ ] **PLAYER-E2-CH21-SKY-KEY**：尚缺未修改一般玩家路徑的原版同狀態逐幀／音訊
+  配對；原版 `0x4DFCC` 第一個程序內相位仍是動態狀態。重製端目前只保存相對相位，
+  且相鄰 `layout_units`、ACT63／64 尚未接入，不宣稱逐像素或完整戰後演出一致。
 
 ## 目前驗收（2026-08-09）
 

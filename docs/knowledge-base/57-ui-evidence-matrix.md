@@ -135,6 +135,14 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 | UI-07 postbattle | `campInput` battle result 約 2394；campaign node 可表達 post node；`campaign_full` 30 戰 transition matrix 已逐列展開。主迴圈直接指令、scenario `chNN→map(N-1)` 與 handler `chNN_post→set_chapter(N+1)` 共同證實玩家戰鬥 N 使用 raw `ch(N-1)_post`。13個既有同號錯接已全數清除；目前稽核為20 active／4 blocked。raw ch06→玩家ch07 已閉合 map6 六格 selector0 event26 的 raw `+6` gate、slots9..27 mode寫入與 state16 producer；enemy turn10 event25 只有在 state16==1 時才建立34→44 runtime、寫state17，戰後再經slot43 raw gate、唯一JOIN12 persistent record進 `town_ch08`。未踏格反例維持34 slots；先前「第10回合必定增援」與96-slot空白 frontier斷言均已撤回。raw ch07→玩家ch08 已撤回無 producer 的初始 groups1／8／9／10，正常入口為party10＋group0共29 slots；event27回合2..7逐組追加兩筆，戰後接受29..41奇數 frontier，依序執行layout、ACTING33／34、完整全黑、JOIN5、sync與chapter8，再進 `town_ch09`。raw ch09→玩家ch10 現保留60／61兩種強推論 frontier，依原始位址執行 DAC delta 0→63 淡出、sparse record/view patch、delta 64→0 淡入、FDTXT_010 index4／5、ACTING37、JOIN11／6、sync與chapter10，再進 `town_ch11`。raw ch15→玩家ch16 現正式接入76-slot persistent-first topology，四條 raw branch（round>18、inactive>4、word42<0x140、JOIN18 arm）均以 Docker/Xvfb E1 regression 進`town_ch17`；raw ch16→玩家ch17現以 map16的兩條 roster_has(18) branch接入layout、ACTING50–53、FDTXT_017 index5–8、JOIN16，60／61→61／62 frontier並進`town_ch18`，另驗證save/load；raw ch17→玩家ch18 現以 map17的55-slot runtime接入layout、ACTING56／57／58、FDTXT_018 index7–10、JOIN21／7，進`town_ch19`並驗證save/load；raw ch19→玩家ch20現以固定record0＋選15人和map19 group0建立83-slot入口，round15執行group1→84與JOIN28，round16精確略過，兩路共同JOIN25後進`town_ch21`。raw ch12→玩家ch13由table bytes固定interior entry `0x2389f`並接`town_ch14`。raw ch05／ch25／ch27則分別屬玩家ch06／ch26／ch28；第27戰天空之鑰成功分支不重用raw ch27。玩家第22戰已提升為 E1；玩家第23、24、25、29戰仍失敗即關閉；所有已接切片仍缺未修改一般玩家 DOSBox E2，因此不宣稱完整一致。位址證據見[`fd2_ch16_post_ida.txt`](../data/fd2_ch16_post_ida.txt)、[`fd2_ch15_post_ida.txt`](../data/fd2_ch15_post_ida.txt)、[`fd2_ch17_post_ida.txt`](../data/fd2_ch17_post_ida.txt)、[`fd2_ch19_post_ida.txt`](../data/ida/fd2_ch19_post_ida.txt)及各切片證據檔。 | partial | 以原版 handler offset／DOSBox input 差分核對每章是否進 town/shop/rest/preparation/ending；玩家第22戰已提升為 E1；玩家第23、24、25、29戰仍失敗即關閉，第7／8／10／16／17／18／20／22戰尚缺一般玩家DOSBox E2；ch00 `0x3241f` 尚缺 raw FDICON key，仍是明示的 RGBA E1 近似 |
 > **2026-08-11 勘誤：玩家第22戰已由 fail-closed 提升為 E1 production**。`postbattle_ch22_persist` 現使用 `ch21_post.json` binding，只接受 73／79-slot（group1+2 或 group1+2+3）並實測進入 `preparation_ch23`；66／72-slot、未知 indexed 資產與未修改一般玩家 E2 仍停止。這不改變其他第23／24／25／29戰的 blocked 狀態。
 
+> **2026-08-13 勘誤：玩家第21戰天空之鑰鑄造固定演出已達 E1。**
+> `0x242C9→0x24336` 已以真實 `FDOTHER #34`、`ANI #0`、原始幀順序與相對
+> 調色盤相位接入正式 `campaign_full.json`；完整勝利路徑能回到 `town_ch22` 並
+> 存檔／讀檔。這解除的是先前「鑄造動畫未接」的缺口，不包含相鄰
+> `layout_units`、ACT63／64、第一個程序內相位或未修改原版同狀態 E2，故 UI-07
+> 整列仍為 partial。證據見
+> [`fd2_ch20_sky_key_sequence_ida.txt`](../data/ida/fd2_ch20_sky_key_sequence_ida.txt)。
+
 > **2026-08-11 追加勘誤：UI-07 的舊總結已被本段取代。** 玩家第23戰戰前
 > `ch22_pre` 現已由 `0x205da`／`0x135dd` 的 LOADCH 視圖證據接到
 > `battle_ch23`（E1）；玩家第23戰戰後、24、25、29戰仍維持失敗即關閉。

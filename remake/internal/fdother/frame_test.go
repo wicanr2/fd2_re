@@ -92,6 +92,38 @@ func TestFDOTHER054FrameTable(t *testing.T) {
 	}
 }
 
+func TestFDOTHER034SkyKeyFrameTable(t *testing.T) {
+	const path = "../../../extracted/raw/FDOTHER/FDOTHER_034.bin"
+	data, err := os.ReadFile(path)
+	if os.IsNotExist(err) {
+		t.Skip("player-provided FDOTHER_034 asset is absent")
+	}
+	if err != nil {
+		t.Fatal(err)
+	}
+	frames, err := ParseFrames(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(frames) != 101 {
+		t.Fatalf("frame count = %d, want 101", len(frames))
+	}
+	for index, want := range map[int][4]int{
+		0: {148, 94, 24, 24}, 68: {146, 95, 32, 23},
+		69: {146, 95, 32, 23}, 100: {148, 94, 24, 36},
+	} {
+		got := frames[index]
+		if [4]int{got.X, got.Y, got.Width, got.Height} != want {
+			t.Fatalf("frame %d = %#v, want %v", index, got, want)
+		}
+	}
+	for index, frame := range frames {
+		if err := frame.Blit(make([]byte, 320*200), 320, -1); err != nil {
+			t.Fatalf("frame %d does not decode into 320x200: %v", index, err)
+		}
+	}
+}
+
 func TestFDOTHER054ArchiveLoader(t *testing.T) {
 	const datPath = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
 	const rawPath = "../../../extracted/raw/FDOTHER/FDOTHER_054.bin"

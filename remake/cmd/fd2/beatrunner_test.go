@@ -62,6 +62,7 @@ func (g *Game) tick(n int) {
 		g.stepFocusUnit()
 		g.stepFade()
 		g.stepNativePaletteRamp()
+		g.stepNativeCh20SkyKey()
 		g.stepCamPan()
 		if g.beatDelay > 0 {
 			g.beatDelay--

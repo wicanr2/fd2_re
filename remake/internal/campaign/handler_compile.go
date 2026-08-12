@@ -775,6 +775,32 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 				issue(i, input, "native call requires semantic/confidence/evidence metadata")
 				continue
 			}
+			// raw ch20 post calls the no-argument 0x24336 sequence exactly once.
+			// The callee owns its (14,8) pan, FDOTHER #34 frame split, ANI #0
+			// playback and palette flash. Keep the complete fixed payload in one
+			// editable beat and key lowering to the proven caller, not merely the
+			// shared-looking asset numbers.
+			if input.NativeTarget == "0x24336" {
+				if input.Source.Addr != "0x242c9" || input.Source.Target != "0x24336" || len(input.RawArgs) != 0 {
+					issue(i, input, "0x24336 sky-key sequence requires exact no-argument callsite 0x242c9")
+					continue
+				}
+				beat := runtime(input, "native_ch20_sky_key_sequence")
+				beat.NativeCh20SkyKey = &NativeCh20SkyKeySequence{
+					PanGridX: 14, PanGridY: 8,
+					FDOTHERResource: 34, FDOTHERFrameCount: 101,
+					BaseFrame: 0, FirstFrameStart: 1, FirstFrameEnd: 68,
+					FrameWaitBIOSTicks: 3, PaletteCycleFirst: true,
+					ANIResource: 0, ANIFrameCount: 96, ANIFrameDelayMs: 15,
+					ANISkippable: false,
+					PaletteStart: 0, PaletteEnd: 255,
+					FlashDelta: 63, FlashHoldMs: 100,
+					RestoreDelta: 0, RestoreHoldMs: 500,
+					TailFrameStart: 69, TailFrameEnd: 100,
+				}
+				beats = append(beats, beat)
+				continue
+			}
 			// ch07 post-battle has one fully immediate use of 0x11d40 followed
 			// directly by memset(0xA0000,0,0xFA00).  VGA DAC components are
 			// six-bit values (0..63), so subtracting 64 over entries 0..255

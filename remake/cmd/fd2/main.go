@@ -76,6 +76,8 @@ type Game struct {
 	nativeMapVGA               []byte                             // persistent 320x200 indexed VGA surface
 	nativeMapDAC               []byte                             // current 256xRGB six-bit DAC state for handler palette ramps
 	nativePaletteRamp          *nativePaletteRampJob              // exact 0x1f882/0x1f525 indexed DAC presentation
+	nativeCh20SkyKey           *nativeCh20SkyKeyJob               // raw ch20 post 0x24336 fixed FDOTHER/ANI/palette sequence
+	nativeFDOTHERPalettePhase  int                                // process-lifetime 0x4DFCC phase projection (0..15)
 	nativeFullDACWhite         bool                               // exact 0x11DF2(0,255,255) overlay for legacy RGB scenes
 	nativeFullDACBlack         bool                               // exact ch07 post 0x11D40(0,255,64)+mode-13h clear
 	nativeMapHUDPersistent     battle.NativeMapHUDPersistentState // gate A save-persistent；anchor process-persistent
@@ -1114,6 +1116,15 @@ func (g *Game) fastForwardShotCampaign() error {
 			if g.indexedTransition != nil {
 				return errors.New("shot fast-forward indexed transition exceeded step bound")
 			}
+		case g.nativeCh20SkyKey != nil:
+			for ticks := 0; g.nativeCh20SkyKey != nil && ticks < maxSteps; ticks++ {
+				g.nativeCh20SkyKey.drawn = true
+				g.nativeCh20SkyKey.ticks = 0
+				g.stepNativeCh20SkyKey()
+			}
+			if g.nativeCh20SkyKey != nil {
+				return errors.New("shot fast-forward native 0x24336 exceeded step bound")
+			}
 		case g.beatDelay > 0:
 			g.beatDelay = 0
 			g.beatAdvance()
@@ -1207,6 +1218,15 @@ func (g *Game) beatStart(b campaign.Beat) {
 		}
 		if err := g.startNativeIndexedTransition(*b.IndexedTransition, b.Source, g.beatAdvance); err != nil {
 			g.loadErr = "beat indexed_transition: " + err.Error()
+		}
+		return
+	case "native_ch20_sky_key_sequence":
+		if b.Source != "0x242c9" || !b.NativeCh20SkyKey.IsRecoveredContract() {
+			g.loadErr = "beat native_ch20_sky_key_sequence:缺少原版 0x242c9 payload"
+			return
+		}
+		if err := g.startNativeCh20SkyKeySequence(*b.NativeCh20SkyKey, g.beatAdvance); err != nil {
+			g.loadErr = "beat native_ch20_sky_key_sequence: " + err.Error()
 		}
 		return
 	case "native_palette_fade_out":
@@ -2311,6 +2331,7 @@ func (g *Game) enterNode() {
 	g.camPan, g.focusJob, g.actJob, g.beats, g.beatIdx, g.beatDelay = nil, nil, nil, nil, -1, 0
 	g.transitionReveal = nil
 	g.indexedTransition = nil
+	g.nativeCh20SkyKey = nil
 	g.spawnIntroTransition = nil
 	g.nativeTurnStaging = nil
 	g.nativeFullDACWhite = false
@@ -2588,6 +2609,7 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 	g.resetActionOverlayLifecycle()
 	g.nativeContinueOpeningConfirm = false
 	g.nativeContinueCursorOverlay = false
+	g.nativeCh20SkyKey = nil
 	g.indexedTransition = nil
 	g.spawnIntroTransition = nil
 	g.nativeTurnStaging = nil
@@ -5884,6 +5906,13 @@ func (g *Game) Update() error {
 		}
 		return nil
 	}
+	if g.nativeCh20SkyKey != nil {
+		g.stepNativeCh20SkyKey()
+		if g.shotPath != "" && g.shotTaken {
+			return ebiten.Termination
+		}
+		return nil
+	}
 	// 攻擊演出推進(FIGANI 全身分鏡;演出期間鎖玩家輸入)
 	if g.atk != nil {
 		g.atk.timer--
@@ -6450,6 +6479,17 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	}
 	if g.nativeEnding != nil {
 		g.drawNativeEndingPreview(screen)
+		return
+	}
+	if g.nativeCh20SkyKey != nil {
+		screen.Fill(color.Black)
+		if !g.drawNativeCh20SkyKey(screen) {
+			g.failNativeCh20SkyKey(errors.New("presentation unavailable"))
+			ebitenutil.DebugPrint(screen, "native 0x24336 presentation unavailable")
+		}
+		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
+			g.captureShot(screen)
+		}
 		return
 	}
 	if g.m == nil {

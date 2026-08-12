@@ -25,6 +25,10 @@
 
 - 戰役已能驗證多個「戰鬥→戰後→城鎮／整備→存讀檔」邊界，但玩家第23、24、
   25、29戰戰後在忠實模式仍失敗即關閉。
+- 玩家第21戰的天空之鑰成功分支，已由固定雜湊 `FD2.EXE` 的
+  `0x242C9→0x24336` 閉合到正式重製端：六素材配方後依序消費原版
+  `FDOTHER #34`、`ANI #0` 與調色盤排程，再經 JOIN24／23 回到 `town_ch22`
+  並完成存讀檔。相鄰 ACT63／64與一般玩家 E2 仍待補。
 - 敵方人工智慧已有多個原始模式的窄執行期消費，原版一般玩家敵方回合也可重現；
   仍缺同一 raw 狀態的重製端配對及完整命令／法術／物品效果。
 - 近似模式可播放已證實的終局前綴、隊員最終狀態與20組原版資源尾段，最後停在
@@ -36,6 +40,12 @@
 [工作清單](docs/knowledge-base/91-worklist.md)，畫面狀態看
 [介面證據矩陣](docs/knowledge-base/57-ui-evidence-matrix.md)。原版與重製的實測命令、
 雜湊及限制見[遊戲測試報告](docs/reports/game-test-2026-08-11.md)。
+
+![重製端玩家第21戰天空之鑰固定演出：FDOTHER 前段、ANI、FDOTHER 尾段](docs/figures/ch21-sky-key-sequence-remake-e1.png)
+
+*這是正式第21戰勝利→城鎮→存讀檔整合回歸中，由索引 framebuffer 與當下 DAC
+輸出的重製端 E1 三階段畫面；不是原版擷取或逐像素 E2。完整資產雜湊、產生命令與
+尚未接入的 ACT63／64限制見[擷取紀錄](docs/data/ui-traces/ch21-sky-key-sequence-remake-e1.json)。*
 
 ![重製端近似終局尾段：20 組原版資源排程總覽](docs/figures/ending-tail-20-segments-approximate-remake-e1.png)
 

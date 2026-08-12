@@ -64,14 +64,17 @@ func TestExportedHandlerNativeCallsUseThreeEvidenceStates(t *testing.T) {
 		visit(script.Beats)
 	}
 
-	if counts["native_call"] != 78 || counts["unresolved_native_call"] != 4 || counts["unknown"] != 1 {
-		t.Fatalf("handler native-call states = %#v, want native=78 unresolved=4 unknown=1", counts)
+	if counts["native_call"] != 79 || counts["unresolved_native_call"] != 4 || counts["unknown"] != 0 {
+		t.Fatalf("handler native-call states = %#v, want native=79 unresolved=4 unknown=0", counts)
 	}
 	if got := targets["unresolved_native_call"]; len(got) != 2 || got["0x22253"] != 2 || got["0x2bce5"] != 2 {
 		t.Fatalf("unresolved native targets = %#v", got)
 	}
-	if got := targets["unknown"]; len(got) != 1 || got["0x24336"] != 1 {
-		t.Fatalf("true unknown native targets = %#v", got)
+	if got := targets["unknown"]; len(got) != 0 {
+		t.Fatalf("true unknown native targets = %#v, want none", got)
+	}
+	if got := targets["native_call"]; got["0x24336"] != 1 {
+		t.Fatalf("classified native targets = %#v, want one 0x24336 callsite", got)
 	}
 }
 

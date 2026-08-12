@@ -262,11 +262,11 @@ repo 提供不含 license／遊戲資料的 `tools/docker/fd2-ida.Dockerfile` �
 `ida_xref.get_xref_type` API；export 現只保存 address/caller/function metadata，絕不提交 binary、database 或 license。
 這份 report 可作 call-graph E0 交叉驗證，但不自行證明遊戲語意；語意仍須由指令與資料流佐證。
 
-2026-08-12 新增可重生的全函式清冊：`tools/ida_export_fd2_function_inventory.py`
+2026-08-13 的可重生全函式清冊由 `tools/ida_export_fd2_function_inventory.py`
 只在授權 IDA Docker 匯出原始函式邊界、IDA 分析名稱、旗標與直接 caller；
 `tools/compact_fd2_function_inventory.py` 產生受版控的
 [`fd2_function_inventory.json`](../data/ida/fd2_function_inventory.json)。固定雜湊輸入
-辨識1305函式，第一輪為產品27、Watcom runtime170、未知1108；語意只從
+辨識1305函式，目前為產品31、Watcom runtime170、未知1104；語意只從
 [`fd2_semantic_index.json`](../data/ida/fd2_semantic_index.json) 合併，雜湊不符、
 註記未落在函式起點或缺推論等級／證據時直接拒絕。handler IR 同步拆成
 `native_call`、`unresolved_native_call`、`unknown`；三者都保留原始定位，前兩者
@@ -4121,3 +4121,33 @@ archive 驗證 20 組近似資源交易、延遲與最終 #59；不過測試以�
 這個欄位只表達重製近似模式的終局資料保存需求，不命名 `0x25757`、`0x2bce5` 或
 任何尚未閉合的原版 terminal handler 語意。原版 owner、精確終局輸入與一般玩家 E2
 仍維持失敗即關閉。
+
+## 2026-08-13：玩家第21戰天空之鑰固定演出（E0／E1）
+
+本節是對較早「`0x24336` 尚未 lower」與 handler 匯出仍有一筆真正未知的勘誤；
+舊時間序列紀錄保留其發現過程，不再作為現況判定。固定雜湊 `FD2.EXE` 由合法
+IDA Pro 9.4 Docker 資料庫先確認函式邊界、唯一 caller 與直接呼叫圖，再由 Docker
+Capstone 覆核原始指令。完整位址、工具、雜湊、資源形狀與推論等級見
+[`fd2_ch20_sky_key_sequence_ida.txt`](../data/ida/fd2_ch20_sky_key_sequence_ida.txt)。
+
+- `ch20_post` 在 `0x242C9` 無參數呼叫 `0x24336`；該函式先以
+  `0x135DD(14,8)` 同步移動鏡頭與絕對游標、保持可見游標相對座標不變，保存
+  320×200 VGA 基底，再載入 `FDOTHER.DAT #34`。
+- 第0至68幀之後呼叫 `0x20421(0,15,0)` 播放 `ANI.DAT #0` 的全螢幕 AFM；
+  `0x20421` 不是音訊 owner。接著以 `0x11DF2` 進行兩次全域調色盤變換，最後播放
+  第69至100幀。前段每幀另呼叫 `0x4DFCC`，其已證實窄角色是依程序內相位循環
+  更新 DAC `0xE0..0xEF`，不是泛用的整張調色盤 API。
+- `native_ch20_sky_key_sequence` 只接受來源 `0x242C9`、目標 `0x24336`、零參數的
+  具型別合約。正式執行期在改動畫面前預先驗證全部101幀、ANI 96幀與調色盤；
+  缺資產、幀或來源不符時停止，不發布半套演出。
+- map20 控制資料另固定 `16` 名部署隊伍加初始群組0的75筆前沿；第2、4、6、8回合
+  依序追加群組1至4後為79、83、87、91，群組255不物化。`ch21.json` 因而使用
+  `runtime_append_groups`，不再錯把80筆控制列全部當成戰鬥初始狀態。
+- 完整回歸由 `campaign_full.json` 的玩家第21戰正式勝利確認開始，走過十句戰後對話、
+  六素材原版怪癖配方、鑄造演出、JOIN24／23、持續隊伍同步、`town_ch22` 與
+  存檔／讀檔邊界。這關閉重製端 E1 垂直切片，不等於一般玩家 E2。
+
+尚未解除的是未修改原版同狀態逐幀／音訊配對、`0x4DFCC` 進入本函式前的程序內
+第一相位，以及相鄰 `layout_units`、ACT63／64 的可見演出。重製端只保存已證實的
+相對相位與順序，不宣稱 DOS 計時逐拍或逐像素一致；這些缺口不得觸發重新反組譯
+`0x24336` 本體。

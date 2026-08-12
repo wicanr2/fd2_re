@@ -1,0 +1,263 @@
+# FD2.EXE `0x24336`／raw ch20 post 天空之鑰固定合成演出證據
+#
+# 輸入檔：FD2.EXE
+# 大小：357074 bytes
+# MD5：b97caf2239a27a896069d03549d96e1e
+# SHA-256：222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f
+# IDA：IDA Pro 9.4.0.260610，DOS LE loader，IDA flat-loader linear address
+# IDA Docker：fd2-ida-authorized-local（使用者合法授權映像；資料庫只在 /tmp）
+# Capstone：5.0.3，fd2-cap-local Docker image
+# 證據等級：已證實（E0 control/data provenance）；重製整合為 E1
+#
+# 本檔採非破壞性註記：函式名、位址、原始 PUSH／CALL 與相對運算元保留，
+# 「天空之鑰」只描述 raw ch20 post 成功分支的 caller 情境。一般 AFM helper
+# `0x20421` 與 DAC helper `0x4DFCC` 不因這個 caller 被改名成專屬函式。
+
+## 一、固定版本資產
+
+- `FDOTHER.DAT`：3382481 bytes；MD5
+  `22f56e5027edc7c766ad34ca4e5aca93`；SHA-256
+  `a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`。
+- `ANI.DAT`：2437547 bytes；MD5
+  `81315bcbb78764361c5137ab0f714f7e`；SHA-256
+  `be909c71d0f1121b6632ae931d978e990f6d54c830f4e0509cd6862187c4d963`。
+- `FDFIELD.DAT`：243169 bytes；MD5
+  `ecdb0436d26adfe5d107f2713fa7e9a2`；SHA-256
+  `b0cf75d94f58603f091c7462c0494f0e83bd6edfb04c1acbf83ed4d938c7a513`。
+- `FDOTHER` resource #34 解包後為102345 bytes；MD5
+  `84dca404546a3a407d72f139cb934a40`；SHA-256
+  `53f120fa4b1fab74c6b3998ec3ef8a9a2363461980ad38a7ffef2400e79b0c4d`；
+  解碼器得到101幀。幾何錨點：frame0=`(148,94,24,24)`、
+  frame68=`(146,95,32,23)`、frame69=`(146,95,32,23)`、
+  frame100=`(148,94,24,36)`。
+- `ANI.DAT` resource #0 由既有 AFM VM 解出96份320×200索引 framebuffer 與
+  96份768-byte DAC snapshot；這是完整畫面動畫，不是音訊。
+
+上述主檔雜湊亦受
+`docs/data/fd2-reference-files.json` 約束。雜湊不同時，本頁位址及資源編號
+不得直接沿用。
+
+## 二、caller、函式邊界與唯一直接呼叫
+
+IDA 函式清冊：
+
+```text
+sub_240FA  0x240fa..0x24336
+sub_24336  0x24336..0x244b6
+sub_20421  0x20421..0x205b4
+sub_135DD  0x135dd..0x1366a
+sub_4DFCC  0x4dfcc..0x4e031
+```
+
+`sub_24336` 只有一個直接 caller：`sub_240FA` 的 `0x242C9`。caller 在
+物品 `0xD1..0xD6` 對 runtime slots `0..15` 的配對數恰為6時，依序移除、
+給予 item `0x64`，播放 FDTXT indices 7／8／9 與 ACT63／64，然後呼叫：
+
+```text
+0x242c1  call sub_15F84       ; text index 9
+0x242c6  add  esp, 24h
+0x242c9  call sub_24336       ; 沒有參數
+0x242ce  push 1               ; 下一個 dialog 的第一個 push
+...
+0x24308  call sub_15F84       ; success index10／failure index6
+0x24310  push 18h
+0x24312  call sub_112A5       ; JOIN 24
+0x2431a  push 17h
+0x2431c  call sub_112A5       ; JOIN 23
+0x24324  call sub_11506       ; sync party
+0x24329  inc  dword_53C03
+```
+
+因此 `0x242C9→0x24336` 是 caller-specific 的固定成功分支演出，不是可帶任意
+資源／幀範圍的通用腳本 ABI。
+
+## 三、`sub_24336` 的直接指令與排程
+
+### 3.1 鏡頭、基底與 FDOTHER #34
+
+```text
+0x24344  push 8
+0x24346  push 0Eh
+0x24348  call sub_135DD       ; C 參數順序 (14,8)
+0x24350  push 0FA00h
+0x24355  call malloc
+0x24361  push 0FA00h
+0x24366  push 0A0000h
+0x2436b  push eax
+0x2436c  call memmove         ; 保存320×200 VGA基底
+0x24374  push 22h
+0x24376  push 0
+0x24378  push "FDOTHER.DAT"
+0x2437d  call sub_111BA       ; resource 34
+0x24387  push -1
+0x24389  push 140h
+0x2438e  push esi
+0x2438f  push 0
+0x24391  push eax
+0x24392  call sub_2935B       ; frame0 疊入保存基底
+```
+
+`sub_135DD(14,8)` 的直接指令先逐格變更 X 全域
+`[0x53AA9]/[0x53AB1]`，再逐格變更 Y 全域 `[0x53AAD]/[0x53AB5]`；每格均
+呼叫 `0x11CAC(0)` 及 `0x4E031`。所以重製端保留 X-first／Y-second、絕對游標與
+相機一起移動、visible cursor 不變的契約；不把它縮成一次座標跳轉。
+
+### 3.2 frame 1..68 與色盤循環
+
+```text
+0x2439a  mov  esi, 1
+0x243a1  ...                  ; 從保存基底複製到工作 framebuffer
+0x243c4  call sub_2935B       ; 疊 frame esi，stride320，transparent=-1
+0x243dc  call memmove         ; 工作 framebuffer → VGA
+0x243e4  call sub_4DFCC
+0x243e9  push 3
+0x243eb  call sub_17AA9
+0x243f3  call sub_4E031
+0x243f8  inc  esi
+0x243f9  cmp  esi, 45h
+0x243fc  jl   0x243a1
+```
+
+迴圈因此呈現 frame `1..68`。每幀呼叫 `sub_4DFCC`，再等待三個 BIOS tick
+delta 並 present。`sub_4DFCC` 本身的固定直接指令為：
+
+```text
+0x4dfce  call sub_4DFC0
+0x4dfd3  sub  ax, [0x60000]
+0x4dfda  cmp  ax, 2
+0x4dfde  jb   0x4e02e
+0x4dfe0  inc  byte [0x60002]
+0x4dfe6  cmp  byte [0x60002], 10h
+0x4dfef  mov  byte [0x60002], 0
+0x4dff8  mov  al, byte [0x60002]
+0x4dffd  mov  ah, 3
+0x4dfff  mul  ah
+0x4e001  lea  esi, [0x60003]
+0x4e009  mov  ecx, 10h
+0x4e00e  mov  ah, 0E0h
+0x4e010  mov  dx, 3C8h
+...
+0x4e021  loop 0x4e010
+```
+
+也就是兩 tick 閘門後把程序全域 phase 加一並對16色 DAC entries
+`0xE0..0xEF` 寫入由 `0x60003 + 3*phase` 起的重疊 RGB 表。phase 是程序生命週期
+狀態，不是 `sub_24336` 的固定零起點；重製端只宣稱保留相對循環，精確首相位仍
+需要同程序同狀態動態驗證。
+
+### 3.3 ANI #0、全色盤閃白與停留
+
+```text
+0x243fe  push 0
+0x24400  push 0Fh
+0x24402  push 0
+0x24404  call sub_20421       ; ANI #0，15ms，skippable=0
+0x2440c  push 3Fh
+0x2440e  push 0FFh
+0x24413  push 0
+0x24415  call sub_11DF2       ; DAC entries 0..255，delta63
+0x2441d  push 64h
+0x2441f  call delay           ; 100ms
+0x24427  push 0
+0x24429  push 0FFh
+0x2442e  push 0
+0x24430  call sub_11DF2       ; 同範圍 delta0
+0x24438  push 1F4h
+0x2443d  call delay           ; 500ms
+```
+
+`sub_20421` 的直接指令開啟 `ANI.DAT`、以 `resource*4+6` 讀 archive offset、
+執行每幀 AFM VM、每幀呼叫 `delay(arg4)`；只有 `arg8 != 0` 時才查輸入
+`0x10620`。因此本 caller 是 ANI resource0、每幀15ms、不可輸入略過。
+`arg0==1` 才會額外載入 FDOTHER #78，本 caller `arg0=0` 不走該分支。
+
+`sub_11DF2` 以 immutable baseline `[0x53A65]` 計算 DAC，不消費 ANI VM 私有
+palette buffer；重製端的白閃／baseline restore 因而也以原生地圖 baseline DAC
+重新著色當前 ANI 索引畫面。
+
+### 3.4 frame 69..100 與清理
+
+```text
+0x24447  ...                  ; 保存基底 → 工作 framebuffer
+0x2446a  call sub_2935B       ; 疊 frame esi
+0x24482  call memmove         ; 工作 framebuffer → VGA
+0x2448a  push 3
+0x2448c  call sub_17AA9
+0x24494  call sub_4E031
+0x24499  inc  esi
+0x2449a  cmp  esi, 65h
+0x2449d  jl   0x24447
+0x2449f  push ebp
+0x244a0  call free
+0x244a8  push edi
+0x244a9  call free
+```
+
+前一迴圈離開時 `esi=69`，所以尾段呈現 frame `69..100`；這段沒有
+`sub_4DFCC` 色盤循環。兩個配置都釋放後返回共用 epilogue。
+
+## 四、玩家第21戰 runtime 拓撲勘誤
+
+`FDFIELD` resources 60／61／62 對應 map20：41×40、80筆 control rows、
+96筆 position records（80筆單位位置加16格部署位置）。control group 分布為：
+
+```text
+group0=59, group1=4, group2=4, group3=4, group4=4, group255=5
+camp: own=2, ally=8, enemy=70
+```
+
+固定資源指紋：
+
+```text
+FDFIELD_060 size=6564  md5=3e2525c3cb4087029e910f6be9f9da58
+ sha256=da246117eb7c8f9724e69e5e87eb8be4e03c2278439b92cd5ab99f72bd7cee3d
+FDFIELD_061 size=2211  md5=8caf6834d9f72e8a865664a7f66bb30b
+ sha256=3cc6167f0904e7cb81e9a60090df168d716959ead1381142a3be343a14489d28
+FDFIELD_062 size=578   md5=c1e4e939bef0dc23005d5eed64fa2aac
+ sha256=7b1402736790351e171e6dcc6f2b8110a418808dccc7978d1d8448a386057705
+```
+
+本關正常整備出戰16人，開場再 append group0 的59筆，因此原版 runtime
+frontier 是75；回合2／4／6／8依序 append groups1／2／3／4後為
+`79→83→87→91`，group255不 materialize。舊重製若先保留全部80筆 FDFIELD rows
+再 append party，會得到錯誤 topology。`ch21.json` 現以
+`runtime_append_groups:true` 與 `initial_groups:[0]` 明確固定正確建構順序。
+
+## 五、重製消費端與仍未解除的閘門
+
+已完成的 E1 垂直切片：
+
+- handler IR 保留 `0x242C9→0x24336`、證據等級與本檔，編譯器只對 exact
+  no-argument caller 降成具型別 `native_ch20_sky_key_sequence`。
+- 可編輯 campaign 依序保留對話、配方、101幀 FDOTHER 合成、ANI #0、
+  白閃／還原、JOIN 24／23、sync party、chapter21 與 `town_ch22`。相鄰
+  ACT63／64 尚未接入，不能由本函式的閉合狀態外推。
+- 執行器在變更相機前預檢全部 FDOTHER RLE、ANI 索引幀與 DAC；資產、indexed
+  map、payload 或視圖不完整時失敗即關閉。
+- 決定性回歸從正式 `battle_ch21` 勝利確認進入配方成功分支，逐相位呈現後停在
+  `town_ch22`，並驗證天空之鑰、JOIN chronology、persistent roster 與城鎮存讀檔。
+
+尚未宣稱：
+
+- 未修改 DOS 一般玩家路徑與重製相同戰場狀態的逐幀／音訊 E2 比較。
+- `0x4DFCC` 在實際 caller 第一次呼叫時的程序全域 phase 與 BIOS tick latch 精確值。
+- DOS BIOS tick 與60Hz主機時鐘逐毫秒一致；重製只保留原始順序及約略等待。
+- `sub_240FA` 開頭 `sub_233C6` layout 與 ACT63／64 的完整 indexed 像素忠實度；
+  本檔關閉的是 `0x24336` 固定演出，不把相鄰原語一併升格。
+
+## 六、可重生命令
+
+```text
+IDA：在 fd2-ida-authorized-local 中執行
+  FD2_IDA_ADDRESSES="0x135dd 0x20421 0x24336 0x4dfcc"
+  FD2_IDA_OUTPUT=/work/fd2-ch20-sky-key-functions.txt
+  /opt/ida-pro-9.4/idat -A -c -o/work/FD2.EXE.i64
+  -S/workspace/tools/ida_probe_functions.py /input/FD2.EXE
+
+Capstone：在 fd2-cap-local 中執行
+  python3 tools/disasm_le.py FD2.EXE range 0x24336 0x244b6
+  python3 tools/disasm_le.py FD2.EXE range 0x4dfcc 0x4e031
+```
+
+原始 EXE／DAT、IDA database、授權檔與一次性完整輸出不納入儲存庫；本檔只保存
+回查所需的函式邊界、原始定位、直接指令、附加語意、推論等級與版本指紋。

@@ -105,7 +105,7 @@ def normalize(beats, chapter=None):
             # when the exact ABI or binding is absent.
             item = {
                 "op": "native_call",
-                "native_semantic": op,
+                "native_semantic": NATIVE_SEMANTICS.get(beat["target"], op),
                 "native_target": beat["target"],
                 "raw_args": args,
                 "native_confidence": "已證實",
@@ -206,7 +206,12 @@ NATIVE_EVIDENCE = {
     "0x35bba": ["docs/data/ida/fd2_ch28_post_ida.txt"],
     "0x35e5a": ["docs/data/ida/fd2_ch28_post_ida.txt"],
     "0x37416": ["docs/data/ida/fd2_ch23_post_ida.txt"],
+    "0x24336": ["docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"],
     "0x4dbfc": ["docs/data/ida/fd2_ch22_post_ida.txt"],
+}
+
+NATIVE_SEMANTICS = {
+    "0x24336": "ch20 天空之鑰固定合成演出序列",
 }
 
 # Callee 有窄證據，但仍缺 caller-specific ABI、renderer 或 campaign owner。

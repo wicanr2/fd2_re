@@ -610,8 +610,13 @@ D2..D5各一人、完全沒有D6仍會湊到6而成功，反之正常六種都�
 `battle_ch21 → story_ch21_post_sky_key_intro(#5十句) → inventory_recipe_ch21_sky_key`，
 成功臂使用 editable FDTXT_021 #7..#10 全16句，失敗臂使用 #6 全4句；兩臂共同
 JOIN24/JOIN23、sync_party、set_chapter(21)，最後都回 `town_ch22`，沒有跳過商店／整備。
-原 handler 的 `layout_units`、ACT63/64 與 `0x24336` 鑄造動畫尚未 lower，所以目前是完整文字、
-物品與持久化分支，不宣稱視覺演出 1:1。六素材的正常取得資料與 runtime 接線見下一節。
+原 handler 的 `0x242C9→0x24336` 鑄造動畫已依直接指令 lower 成精確來源／目標的
+`native_ch20_sky_key_sequence`，正式執行期消費 `FDOTHER #34`、`ANI #0`、兩段調色盤
+變換與原始幀順序；證據見
+[`fd2_ch20_sky_key_sequence_ida.txt`](../data/ida/fd2_ch20_sky_key_sequence_ida.txt)。
+這只達重製端 E1：相鄰 `layout_units`、ACT63／64、第一個程序內調色盤相位與未修改原版
+同狀態比較仍未閉合，因此不宣稱整段視覺演出 1:1。六素材的正常取得資料與 runtime
+接線見下一節。
 
 ### 3.10 天空之鑰六素材：人物 defaults、寶箱與特殊死亡 reward（2026-07-16）
 

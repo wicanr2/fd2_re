@@ -440,7 +440,8 @@ func TestApproximateCampaignMontageRejectsUncompiledCh29ShotPartyBinding(t *test
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(issues) != 1 || issues[0].Source.Addr != "0x25970" || issues[0].Op != "unknown" {
+	if len(issues) != 1 || issues[0].Source.Addr != "0x25970" ||
+		issues[0].Source.Target != "0x2bce5" || issues[0].Op != "unresolved_native_call" {
 		t.Fatalf("ch29 ending owner diagnostics=%#v", issues)
 	}
 	g := &Game{shotPath: filepath.Join(t.TempDir(), "ending.png")}

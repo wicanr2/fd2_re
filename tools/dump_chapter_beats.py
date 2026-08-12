@@ -78,6 +78,7 @@ PRIM = {
     0x35bba: ('native_clear_record40_from', 1),
     0x35e5a: ('native_palette_pulse', 0),
     0x37416: ('native_free_buffer', 1),
+    0x24336: ('native_ch20_sky_key_sequence', 0),
     0x4dbfc: ('native_mask_raw_cells', 1),
 }
 # 非原語(編譯器插入的堆疊探測/輔助函式),線性掃描時直接跳過、清空 pushes 不記 beat:

@@ -3187,6 +3187,33 @@
      "count": 2
     },
     {
+     "op": "native_ch20_sky_key_sequence",
+     "source": "0x242c9",
+     "native_ch20_sky_key_sequence": {
+      "pan_grid_x": 14,
+      "pan_grid_y": 8,
+      "fdother_resource": 34,
+      "fdother_frame_count": 101,
+      "base_frame": 0,
+      "first_frame_start": 1,
+      "first_frame_end": 68,
+      "frame_wait_bios_ticks": 3,
+      "palette_cycle_first": true,
+      "ani_resource": 0,
+      "ani_frame_count": 96,
+      "ani_frame_delay_ms": 15,
+      "ani_skippable": false,
+      "palette_start": 0,
+      "palette_end": 255,
+      "flash_delta": 63,
+      "flash_hold_ms": 100,
+      "restore_delta": 0,
+      "restore_hold_ms": 500,
+      "tail_frame_start": 69,
+      "tail_frame_end": 100
+     }
+    },
+    {
      "op": "dialog",
      "line": 6,
      "count": 10

@@ -41,6 +41,14 @@
       "scope": "窄 raw bit mutation；不等同重製端通用 acted reset"
     },
     {
+      "address": "0x135dd",
+      "classification": "product",
+      "semantic": "X-first／Y-second 的絕對地圖相機與游標同步平移",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"],
+      "scope": "callee 逐格更新與 present；各 caller 目標座標來源仍須另證"
+    },
+    {
       "address": "0x13fd4",
       "classification": "product",
       "semantic": "敵方人工智慧 raw gate、回復與窄呈現 owner",
@@ -113,12 +121,28 @@
       "scope": "callee；caller 畫面與時序仍須另證"
     },
     {
+      "address": "0x20421",
+      "classification": "product",
+      "semantic": "ANI.DAT AFM 資源播放器，具每幀 delay 與可選輸入略過",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"],
+      "scope": "通用 callee；resource、delay、skippable 與相鄰畫面由 caller 決定"
+    },
+    {
       "address": "0x22253",
       "classification": "product",
       "semantic": "共用 11＋6＋10 次索引呈現排程",
       "confidence": "已證實",
       "evidence": ["docs/data/ida/fd2_ch29_terminal_body_ida.txt", "docs/knowledge-base/54-acting-pose-semantics.md"],
       "scope": "callee 排程；caller payload 形狀不同，完整 ABI／renderer 組合仍未閉合"
+    },
+    {
+      "address": "0x24336",
+      "classification": "product",
+      "semantic": "raw ch20 post 成功分支的固定 FDOTHER／ANI／DAC 合成演出",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"],
+      "scope": "唯一 caller 0x240FA@0x242C9；一般玩家 E2 與 0x4DFCC 首相位仍未閉合"
     },
     {
       "address": "0x24618",
@@ -231,6 +255,14 @@
       "confidence": "已證實",
       "evidence": ["docs/data/ida/fd2_ch22_post_ida.txt"],
       "scope": "callee raw mutation；完整原始陣列與高階 consumer 未閉合"
+    },
+    {
+      "address": "0x4dfcc",
+      "classification": "product",
+      "semantic": "兩 BIOS tick 閘門的程序全域16相 DAC entries E0..EF 循環",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"],
+      "scope": "callee raw DAC 排程；caller 初始 phase、tick latch 與視覺 E2 仍須另證"
     }
   ]
 }

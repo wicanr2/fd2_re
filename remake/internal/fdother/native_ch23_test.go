@@ -74,12 +74,12 @@ func TestRotateNativeCh23RowsRejectsInvalidWithoutMutation(t *testing.T) {
 	}
 }
 
-func TestApplyNativeCh23PaletteCycleWritesOnlyNativeRange(t *testing.T) {
+func TestApplyNativeDACPaletteCycleE0EFWritesOnlyNativeRange(t *testing.T) {
 	dac := make([]byte, 256*3)
 	for i := range dac {
 		dac[i] = 63
 	}
-	if err := ApplyNativeCh23PaletteCycle(dac, 0); err != nil {
+	if err := ApplyNativeDACPaletteCycleE0EF(dac, 0); err != nil {
 		t.Fatal(err)
 	}
 	if dac[0] != 63 || dac[0xdf*3] != 63 || dac[0xf0*3] != 63 {
@@ -88,7 +88,7 @@ func TestApplyNativeCh23PaletteCycleWritesOnlyNativeRange(t *testing.T) {
 	if got := dac[0xe0*3 : 0xe0*3+3]; got[0] != 0x0e || got[1] != 0x15 || got[2] != 0x26 {
 		t.Fatalf("palette phase0 entry=%#v", got)
 	}
-	if err := ApplyNativeCh23PaletteCycle(dac, 1); err != nil {
+	if err := ApplyNativeDACPaletteCycleE0EF(dac, 1); err != nil {
 		t.Fatal(err)
 	}
 	if got := dac[0xe0*3 : 0xe0*3+3]; got[0] != 0x0d || got[1] != 0x14 || got[2] != 0x25 {
@@ -96,11 +96,11 @@ func TestApplyNativeCh23PaletteCycleWritesOnlyNativeRange(t *testing.T) {
 	}
 }
 
-func TestApplyNativeCh23PaletteCycleRejectsInvalidAtomically(t *testing.T) {
+func TestApplyNativeDACPaletteCycleE0EFRejectsInvalidAtomically(t *testing.T) {
 	dac := make([]byte, 256*3)
 	dac[0xe0*3] = 11
 	want := append([]byte(nil), dac...)
-	if err := ApplyNativeCh23PaletteCycle(dac, 16); err == nil {
+	if err := ApplyNativeDACPaletteCycleE0EF(dac, 16); err == nil {
 		t.Fatal("invalid palette phase accepted")
 	}
 	for i := range dac {
