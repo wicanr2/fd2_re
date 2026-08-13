@@ -17,17 +17,18 @@
 - UI 操作語意以原版為目標：游標、action overlay／command grid、射程／目標、對話框、狀態欄、商店、教會和戰後節點均須有可見且可測的操作入口；未取得 E0/E1/E2 證據的現有 UI 只算 approximation。
 - native indexed renderer 與現代 RGBA/Ebiten 顯示層分離；未完成 native ABI 時不得用泛用淡出、PNG 或空白畫面冒充完成。
 
-### 1.2 現況（2026-08-12 摘要；詳細狀態以 `58` 為準）
+### 1.2 現況（2026-08-13 摘要；詳細狀態以 `58` 為準）
 
 目前不是「沒有程式」，而是「有一個可跑的垂直切片，尚未達 remake」：`remake/cmd/fd2/main.go` 仍承擔 scene state、輸入 dispatch、戰鬥 UI、對話、town、shop、church、preparation 與 Draw；`internal/battle`、`internal/campaign`、`internal/ending`、`internal/figani` 已有可測的部分 primitive。這些 primitive 不等於原版 UI 或完整 campaign。
 
 已存在但尚未全程驗收：story/cutscene BeatRunner、dialog 分頁／捲動、campaign
 node、persistent roster、shop buy/sell/equip、church revive/class-change、
-preparation quota、敵方 AI 窄 consumer 與 indexed ending prefix。2026-08-12
-實跑戰後 audit 為24節點中20 active／4 blocked；玩家第23、24、25、29戰戰後仍
-失敗即關閉。玩家第22戰戰後與第23戰戰前已提升為 E1，故本檔較早的
-「19 active／5 blocked」及「玩家第22戰仍阻擋」已失效。其餘主要缺口是完整
-玩家指令／法術／物品交易、相同 raw 狀態敵方回合、戰場與戰間 UI、四個
+preparation quota、敵方 AI 窄 consumer 與 indexed ending prefix。2026-08-13
+實跑戰後 audit 為24節點中21 active／3 blocked；玩家第25戰已以62→70→71槽位
+拓撲接通 raw ch24 post、`town_ch26` 與存讀檔 E1，玩家第23、24、29戰仍失敗
+即關閉。故本檔較早的「20 active／4 blocked」與「玩家第25戰仍阻擋」已失效。
+其餘主要缺口是完整玩家指令／法術／物品交易、相同 raw 狀態敵方回合、戰場與
+戰間 UI、三個
 blocked postbattle、精確終局 renderer／輸入，以及一般玩家 E2；詳見 `58`。
 
 ### 1.3 進度停滯審計（2026-07-27）
@@ -3347,8 +3348,9 @@ ACTING53、index8、JOIN16、chapter17。共享 call site 的 ACTING immediate
   DOSBox 同狀態 E2、完整第17戰輸入路徑與其餘 blocked 章節仍未完成。
 
 這是 2026-08-09 當次稽核快照：24 個標準 postbattle 節點當時為
-**19 active／5 blocked**；後續玩家第22戰已提升為 E1，現況為20 active／4 blocked，
-以 [`58-fd2-exe-re-coverage.md`](58-fd2-exe-re-coverage.md) 為準。這些統計只表示
+**19 active／5 blocked**；其後玩家第22戰曾使當時統計成為20 active／4 blocked，
+但這兩組歷史數字均已被2026-08-13的 **21 active／3 blocked** 取代。現況以
+[`58-fd2-exe-re-coverage.md`](58-fd2-exe-re-coverage.md) 為準。這些統計只表示
 節點接線狀態，不是重製完成百分比。
 
 ## 2026-08-09 raw ch21 post 靜態證據（玩家第22戰；尚未接入）
@@ -3454,19 +3456,19 @@ raw dispatch，不直接代表玩家戰次。
 不解除一般玩家與戰間節點的 E2 gate。
 
 現有 map24、FDTXT_025、ACTING resource75、26／29 的 map／party 對照支持
-「`0x24df2` 是玩家第25戰 post handler 候選」；先前同號接到
-`postbattle_ch24_persist → town_ch25` 已撤回。實際重製端 `ch25.json` 重建後
-是 86 筆 battle runtime units，而候選 handler 的 raw context 是 70 筆 map
-control frontier，且 `0x10b4e(2)` 需要具備 `Roster`／selector provenance。
-這個 70→86 的戰後 handoff 尚未由未修改一般玩家路徑閉合，故重製端仍維持
-`postbattle_ch25_persist → town_ch26` 的 fail-closed gate；本節目前仍是靜態 E1，
-不是一般玩家 E2。
+「`0x24df2` 是玩家第25戰 post handler」；先前同號接到
+`postbattle_ch24_persist → town_ch25` 已撤回。
 
-現行 `ch24_post.json` 將已核對的兩個建構器操作保存為 `join` 26／29，
-`source.addr` 仍保留 `0x24e6c` 與 `0x237c8`；對應 binding 仍是候選資料。
-由於 70-slot story roster、86-slot battle State 與 native selector／Roster
-交接尚未閉合，`postbattle_ch25_persist` 沒有正式 handler binding，正式執行仍
-會停止而不跳過戰後隊伍／城鎮流程。
+**2026-08-13 勘誤與執行期閉合（E1）：**舊說把完整70筆 map control 預載後再加
+16名隊員，誤造86-slot battle State。原版追加式拓撲其實是開戰先建立16名隊員與
+group0的46筆，形成62；第6回合 event56 在`0x3549f`呼叫`0x10b4e(1)`，再追加
+group1的8筆成為戰後入口70；`0x24df2`隨後呼叫`0x10b4e(2)`，追加唯一 group2
+成為71，ACTING resource75才操作新建立的slot70。group255沒有任何初始或事件
+materializer，不進 runtime。`ch25.json` 已改採 `runtime_append_groups`，正式
+`postbattle_ch25_persist` 綁定 `ch24_post.json`；Docker／Xvfb 回歸實際走過
+`battle_ch25 → postbattle_ch25 → town_ch26`，驗證 JOIN26／29、`sync_party`、
+章節25與 town node-boundary save/load。這解除 runtime E1 gate；尚缺未修改一般
+玩家原版同狀態 E2，不宣稱逐像素或完整玩家路徑一致。
 
 ## 2026-08-09 raw ch29 terminal body `0x2bce5→0x2c405`（E1）
 
@@ -3881,9 +3883,10 @@ mode 5 的完整目標／指令／法術／道具人工智慧語意仍未解除�
   以 town／preparation 兩條邊界驗證同步與戰場狀態清除。
 - `TestApproximateCampaignFullUnboundPostbattleBoundaries` 與
   `TestCampaignFullUnboundPostbattleDefaultsFailClosed` 再以 `campaign_full.json` 的
-  第 23、24、25、29 戰實際節點驗證近似確認與預設停止。
-- `TestApproximateCampaignFullResultConfirmationKeepsUnboundIntermissions` 再從四個
-  對應的 `battle_ch23/24/25/29` 設定勝利結果，走正式 `confirmBattleResult`，確認
+  第 23、24、29 戰實際節點驗證近似確認與預設停止。第25戰已由下游正式
+  `ch24_post` E1 回歸取代此近似測試。
+- `TestApproximateCampaignFullResultConfirmationKeepsUnboundIntermissions` 再從三個
+  對應的 `battle_ch23/24/29` 設定勝利結果，走正式 `confirmBattleResult`，確認
   先停在近似戰後提示，玩家確認後才沿 authored `next` 進 preparation／town；這補上
   之前直接把 Runner 游標放在 postbattle 的測試與正式結果消費端之間的邊界。
 - 近似模式只代表可玩的戰役銜接，不提升 E1 為 E2，也不改寫既有原版證據與推論

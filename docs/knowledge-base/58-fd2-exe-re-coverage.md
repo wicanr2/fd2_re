@@ -53,8 +53,8 @@
 | 檔案版本、容器與主要資產格式 | 閉合 | 就緒 | E1 | 部分 | `.DAT`、圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與多張 EXE 表已有雜湊與重生工具。剩餘多是消費端、音訊時序或個別執行期改寫，不應重解容器格式。 |
 | 開機、標題、LOAD、CONTINUE、存檔 | 部分 | 部分 | 部分 E1 | 原版錨點部分 E2 | 四槽 envelope、checksum、名冊與部分戰間落點已接；current-runtime 有原版與重製各自錨點，但尚缺同一 raw 狀態配對、未修改有效槽完整路徑與部分控制器交接。下一步以動態原版／執行期整合為主。 |
 | 對話、頭像與過場原語 | 部分偏高 | 部分就緒 | 部分 E1 | 部分 | `0x15F84`、`0x1366A`、基本 pan／acting／spawn／join 等不應再從零重解。仍須處理 caller-specific layout、indexed renderer、文字分支與實際 chapter binding。 |
-| 30 個 raw chapter 的戰前／戰後處理器 | 部分 | 60 份 handler script；部分 binding | 部分 E1 | 缺完整 E2 | 舊83個 raw unknown 已拆成79個已證實窄呼叫、4個已知但 caller／執行期未閉合的呼叫，已沒有未分類 call site。`0x24336` 的固定演出已達 E1，但四個晚期戰後節點及多個 caller-specific 畫面仍未完成；仍須逐章追蹤「handler→戰鬥→戰後→城鎮／整備→存檔」。 |
-| 可編輯戰役與持續隊伍 | 部分 | 121 個 story／cutscene 節點；9 個 scripted、52 個 handler-bound、60 個 fallback | 部分 E1 | 缺完整 E2 | 24 個 postbattle 節點中目前20 active、4 blocked（玩家第23、24、25、29戰戰後）。近似模式只維持可玩戰間，不提升忠實度。下一步是四個阻擋節點與跨章存讀檔，不是重畫整份 graph。 |
+| 30 個 raw chapter 的戰前／戰後處理器 | 部分 | 60 份 handler script；部分 binding | 部分 E1 | 缺完整 E2 | 舊83個 raw unknown 已拆成79個已證實窄呼叫、4個已知但 caller／執行期未閉合的呼叫，已沒有未分類 call site。`0x24336` 與玩家第25戰 raw ch24 post 已達 E1，但三個晚期戰後節點及多個 caller-specific 畫面仍未完成；仍須逐章追蹤「handler→戰鬥→戰後→城鎮／整備→存檔」。 |
+| 可編輯戰役與持續隊伍 | 部分 | 121 個 story／cutscene 節點；9 個 scripted、53 個 handler-bound、59 個 fallback | 部分 E1 | 缺完整 E2 | 24 個 postbattle 節點中目前21 active、3 blocked（玩家第23、24、29戰戰後）。玩家第25戰已以62→70→71原始槽位拓撲接到`town_ch26`並通過JOIN26／29與存讀檔 E1；仍缺一般玩家 E2。近似模式只維持其餘可玩戰間，不提升忠實度。 |
 | 戰鬥資料、移動、公式、勝敗與成長 | 部分偏高 | 部分就緒 | E1 | 部分 | 多項公式與地形資料已有具型別實作；命中／閃避來源、部分經驗交易、回合事件與原版逐狀態驗證仍不完整。需要針對缺欄位補 producer／consumer，不重解已閉合的 AP−DP 等公式。 |
 | 玩家指令、法術、物品與交易 | 部分 | 部分 | 部分 E1／部分失敗即關閉 | 缺完整 E2 | command mask、若干 ID、MP／物品交易與 selector 邊界已解；未知 command、複合技、法術／物品完整效果、rollback、演出與 UI 尚未閉合。這是目前真正需要局部反組譯與實作並行的區域。 |
 | 敵方人工智慧 | 底層控制流部分偏高；高階交易部分 | mode／候選／部分 fallback 已資料化 | 多個窄 E1 consumer | 只有原版敵方回合邊界 E2 | `0x13FD4`、`0x14EF0`、mode 5／11 等既有函式邊界與窄 owner 不應反覆重解。缺的是完整 target／command／spell／item transaction、同一 raw 狀態的重製端配對與一般玩家效果；詳見 [`11`](11-enemy-ai.md)。 |
@@ -77,11 +77,11 @@
   （`0x22253`、`0x2BCE5` 各2次），真正 `unknown` 為0。每筆
   具名呼叫皆保存原始位址／PUSH 順序、推論等級與證據檔；編譯器仍逐 caller
   驗證並失敗即關閉，故這是**工具債清除**，不是玩法完成率。
-- `campaign_full.json`：121 個 story／cutscene 節點；9 個 scripted、52 個
-  handler-bound、60 個 fallback。fallback 可能是撤退、傳聞或尚未接線故事，不能全部
+- `campaign_full.json`：121 個 story／cutscene 節點；9 個 scripted、53 個
+  handler-bound、59 個 fallback。fallback 可能是撤退、傳聞或尚未接線故事，不能全部
   視為同一種缺口。
-- postbattle audit：24 個節點，20 active、4 blocked；mapping gap 為 act 7、dialog 6、
-  layout 1、pan 4，已無未分類 native semantics。active 也只表示 admission gate 可通過，不代表
+- postbattle audit：24 個節點，21 active、3 blocked；mapping gap 為 act 6、dialog 6、
+  layout 1、pan 3，已無未分類 native semantics。active 也只表示 admission gate 可通過，不代表
   該章一般玩家 E2 或逐像素一致。
 
 上述數字只能用來定位工作，**禁止相加或換算成遊戲完成百分比**。
@@ -121,7 +121,7 @@
 
 - 依玩家可見 blocker 擴充既有 IDA 清冊的產品／runtime／driver 分類；不為了提高
   百分比替剩餘1,104筆未知函式猜名稱。
-- 四個 blocked postbattle 節點的實際未知 branch／native semantics；已知 helper 只補
+- 三個 blocked postbattle 節點的實際未知 branch／native semantics；已知 helper 只補
   caller payload，不重讀 callee。
 - 未知 command／spell／item transaction 與高階效果 owner。
 - `0x28A6C` 精確 renderer、終端輸入、`0x2BCE5` 正式 owner／handoff。

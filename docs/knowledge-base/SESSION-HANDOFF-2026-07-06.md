@@ -4369,8 +4369,9 @@ debug shortcut）實際走：開場 Escape → 標題 Down、Down、Return（CON
 完整輸入、輸入檔雜湊與 PNG 雜湊見
 [`native-continue-current-runtime-e2.json`](../data/ui-traces/native-continue-current-runtime-e2.json)。
 這補上原版一般玩家 UI-02／UI-03 的 chapter0 E2 錨點，但不是 ch22／ch23 的
-同狀態證據，也不解除重製端 CONTINUE 的 pending-group／controller handoff gate；
-第23／24／25／29戰與戰後城鎮流程仍維持失敗即關閉。
+同狀態證據，也不解除重製端 CONTINUE 的 pending-group／controller handoff gate。
+本段當時的第23／24／25／29戰阻擋清單是歷史快照；第25戰已由2026-08-13尾端
+勘誤解除runtime E1，現況仍阻擋第23／24／29戰。
 
 ## 2026-08-11：未修改原版敵方回合 E2 錨點
 
@@ -4429,6 +4430,11 @@ provenance；直接把候選 binding 接到 battle State 會在 `runtime_context
 後續必須先取得未修改玩家路徑的70→86 roster handoff與存檔／城鎮邊界證據，
 再決定是否升級正式 binding。詳細 IDA／Capstone 指令與雜湊見
 [`fd2_ch24_post_ida.txt`](../data/ida/fd2_ch24_post_ida.txt)。
+
+> **2026-08-13 勘誤：本段的86筆 runtime 與70→86 handoff 結論已失效。**
+> 86來自重製端錯誤地預載全部70筆控制列後又追加16名隊員；原版可追溯拓撲為
+> 62→70→71。正式 binding、JOIN26／29、`town_ch26` 與存讀檔已達 E1；完整
+> 證據與仍缺的一般玩家 E2 見本檔2026-08-13條目。
 
 ## 2026-08-11：CONTINUE 戰場交接發布契約（E1）
 
@@ -4516,7 +4522,8 @@ pending producer 證據，再以同一 raw roster／camera／cursor／tick 做�
   preparation 兩條邊界，並確認戰場狀態已清除；新增
   `TestApproximateCampaignFullUnboundPostbattleBoundaries` 與
   `TestCampaignFullUnboundPostbattleDefaultsFailClosed`，以 `campaign_full.json` 的
-  第 23、24、25、29 戰實際節點驗證四條 authored 戰間邊界。
+  第 23、24、25、29 戰實際節點驗證四條當時尚未綁定的 authored 戰間邊界。
+  這是2026-08-11歷史測試範圍；第25戰已於2026-08-13改由正式binding回歸取代。
 
 - 實際 Docker／Xvfb 擷取已保存為
   [`postbattle-approximate-remake.png`](../figures/postbattle-approximate-remake.png)，
@@ -4962,3 +4969,23 @@ owner 與部署尾端。兩者主題不同、都保留，撤回先前「舊檔�
   控制列與16名部署隊伍併成錯誤初始拓撲的可能性。
 - 目前只達 E1。未修改一般玩家同狀態 E2、`0x4DFCC` 第一個程序內相位，以及相鄰
   `layout_units`／ACT63／64仍待補；不得因此重新反組譯已閉合的 `0x24336` 本體。
+
+## 2026-08-13：玩家第25戰 raw ch24 post 的86-slot斷言勘誤與 E1 接線
+
+本段追加更正本檔較早「70-slot story 對86-slot battle」與
+`postbattle_ch25_persist`仍阻擋的說法；歷史條目保留錯誤形成原因，不可再當現況。
+
+- 固定版 FDFIELD map24 控制列仍是70筆：group0=46、group1=8、group2=1、
+  group255=15。錯誤來自重製端先預載全部70筆，再加16名隊員而形成86；原版
+  `0x10B4E` 是按 group 追加，而不是預建整份槽位穩定名冊。
+- `ch25.json` 現採 `runtime_append_groups:true`、`initial_groups:[0]`：開戰先建立
+  party16＋group0(46)=62；第6回合 event56 依既有 `0x3549F→0x10B4E(1)` 證據
+  追加group1(8)成70；raw ch24 post再以`0x24E31→0x10B4E(2)`追加唯一group2
+  成71。ACTING resource75操作slot70，與此順序精確吻合；group255沒有初始或
+  事件materializer，不進runtime。
+- 正式`postbattle_ch25_persist`已綁定`ch24_post.json`。Docker／Xvfb決定性回歸
+  從`battle_ch25`勝利確認進入戰後，走過PAN、spawn、ACT75、JOIN26、sync、
+  JOIN29、chapter25，最後進`town_ch26`；另驗證JOIN順序、原始身分持續紀錄與
+  town node-boundary save/load。
+- 戰後稽核現為24節點中21 active／3 blocked；剩餘玩家第23、24、29戰。
+  本切片只提升為runtime E1，仍缺未修改一般玩家原版同狀態E2與逐像素比較。

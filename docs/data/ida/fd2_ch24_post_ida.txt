@@ -63,11 +63,9 @@ Capstone 與 IDA 指令逐項一致，`0x24df2` 依序執行：
    提升為 **強推論：可編輯永久 JOIN 29**，原始位址仍保留為 `0x24e7b→0x237c8`。
 
 以上是 E1 靜態控制流程證據。它支持「raw handler 有兩段對話、PAN、spawn、
-ACTING、JOIN 建構器 26／29 與共享尾段」；仍不支持直接把候選 binding 接到
-目前重製端的普通 battle State。實際 `ch25.json` 重建後為 86 筆 runtime units，
-而候選 binding 的 raw handler context 仍是 70 筆 map control frontier，且
-`0x10b4e(2)` 需要具備 `Roster`／selector provenance；兩者的戰後 handoff 尚未
-以未修改一般玩家路徑閉合，故正式 campaign 仍必須失敗即關閉。
+ACTING、JOIN 建構器 26／29 與共享尾段」。本檔舊版曾因重製端預載全部70筆
+map control再加16名隊員而得到錯誤的86-slot State，並據此阻擋正式接線；
+2026-08-13的執行期拓撲勘誤見下方「目前判定」。
 
 ## 已證實：`0x10b4e(2)` 的 FDFIELD group materializer 與 map24 列數
 
@@ -100,16 +98,21 @@ MD5 `d64cca11484662bd45ab6c34aeb63ff9`、SHA-256
 最後增加 `[0x53c03]` 並跳至 `0x15487`。這是 table index25／相鄰 handler 的
 獨立函式，不可將它的 layout 與 `0x24df2` 的 raw caller 混合。
 
-## 目前判定與失敗即關閉邊界
+## 目前判定與2026-08-13執行期勘誤
 
-- 目前 worklist 的 owner 勘誤保留：`0x24df2` 的 map／文字／ACTING 證據屬
-  玩家第25戰候選，`postbattle_ch24_persist` 仍 blocked；先前同號接到
-  `postbattle_ch24_persist → town_ch25` 的說法已撤回。
-- 這份 raw evidence 可供後續核對 `postbattle_ch25_persist → town_ch26`，但
-  table index 本身不是玩家戰次證據；若沒有一般玩家路徑與持續隊伍／城鎮／存檔
-  邊界的 E2，不能把它升格成正式接線。
+- owner 勘誤保留：`0x24df2` 的 map／文字／ACTING 證據屬玩家第25戰；
+  `postbattle_ch24_persist` 曾因錯誤的70對86拓撲而 blocked，但本段下方的
+  62→70→71證據已解除該阻擋。先前把同號接到
+  `postbattle_ch24_persist → town_ch25` 的說法仍維持撤回。
+- table index本身不是玩家戰次證據；玩家第25戰 owner另由map24、FDTXT_025、
+  ACTING75、event56與campaign graph交叉閉合。
 - `0x1a`／`0x1d` 的建構器角色索引與中途跳入的堆疊參數已辨識為 26／29，
-  可編輯腳本已保留為 `join` 26／29；尚未閉合的是戰後 70-slot story
-  roster 與 86-slot battle State 的交接，以及 `Roster`／selector 的
-  `0x10b4e(2)` 消費端。重製端因此仍對正式 campaign 維持 fail-closed，不以
-  猜測替代 battle→postbattle→town/preparation/save 流程。
+  可編輯腳本已保留為`join`26／29。舊70對86衝突已撤回：原版追加式runtime
+  是party16＋group0(46)=62，第6回合event56於`0x3549f`追加group1(8)成70；
+  post handler的`0x10b4e(2)`再追加唯一group2成71，ACTING75操作slot70。
+  group255沒有初始或事件materializer，不進runtime。
+- 重製端`ch25.json`現採`runtime_append_groups`與`initial_groups:[0]`，正式
+  `postbattle_ch25_persist`綁定`ch24_post.json`。Docker／Xvfb決定性回歸已走過
+  62→70→71、JOIN26／29、sync、chapter25、`town_ch26`與node-boundary save/load，
+  因而提升為runtime E1。未修改一般玩家原版同狀態E2仍缺，不宣稱逐像素或完整
+  玩家路徑一致。

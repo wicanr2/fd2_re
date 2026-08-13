@@ -894,6 +894,109 @@ func TestChapter20PostRoundGateControlsReinforcementAndJoinBeforeTown21(t *testi
 	}
 }
 
+func TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary(t *testing.T) {
+	order := []int{0, 4, 9, 30, 1, 8, 2, 10, 13, 12, 5, 6, 11, 14, 17, 15}
+	g := &Game{
+		partyMembers:   make(map[int]bool, len(order)),
+		partyJoinOrder: append([]int(nil), order...),
+		partyDeploy:    make(map[int]bool, len(order)-1),
+	}
+	for _, id := range order {
+		g.partyMembers[id] = true
+	}
+	for _, id := range order[1:] {
+		g.partyDeploy[id] = true
+	}
+	if err := g.loadMap("assets/maps/map24"); err != nil {
+		t.Fatal(err)
+	}
+	g.resetBattle("assets/maps/map24/map24_units.json", "assets/scenarios/ch25.json")
+	if g.loadErr != "" || g.st == nil || g.sc == nil || !g.sc.RuntimeAppendGroups {
+		t.Fatalf("chapter25 setup err=%q state=%v scenario=%v", g.loadErr, g.st != nil, g.sc != nil && g.sc.RuntimeAppendGroups)
+	}
+	if got := len(g.st.Units); got != 62 {
+		t.Fatalf("chapter25 opening frontier=%d, want party16+group0(46)=62", got)
+	}
+	if err := g.seedPersistentPartyFromLoadCH(order, g.st.Units[:len(order)]); err != nil {
+		t.Fatal(err)
+	}
+
+	// Original event 56 calls 0x10B4E(1) at turn 6.  Materialize that exact
+	// pending group before victory so raw ch24_post enters with 70 records.
+	g.st.Turn = 6
+	actions := g.sc.TriggerActions(g.st, "on_turn_end", "")
+	if len(actions) != 1 || actions[0].Type != "spawn_group" {
+		t.Fatalf("chapter25 turn6 actions=%#v", actions)
+	}
+	if _, _, err := g.sc.ExecuteActionChecked(g.st, actions[0]); err != nil {
+		t.Fatal(err)
+	}
+	if got := len(g.st.Units); got != 70 {
+		t.Fatalf("chapter25 postbattle frontier=%d, want 62+group1(8)=70", got)
+	}
+	for _, unit := range g.st.Units {
+		if unit != nil && unit.Group == 255 {
+			t.Fatal("chapter25 reserved group255 was materialized into runtime")
+		}
+	}
+
+	campaignData, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	runner := campaign.NewRunner(campaignData)
+	runner.Cur = "battle_ch25"
+	g.camp = runner
+	g.result = "win"
+	if !g.confirmBattleResult() || g.camp.NodeID() != "postbattle_ch25_persist" || g.loadErr != "" {
+		t.Fatalf("chapter25 result handoff node=%q err=%q", g.camp.NodeID(), g.loadErr)
+	}
+	maxSlots := len(g.st.Units)
+	for frame := 0; frame < 12000 && g.camp.NodeID() != "town_ch26"; frame++ {
+		if len(g.dialog) != 0 {
+			g.dialog = nil
+			g.beatAdvance()
+		}
+		g.tick(1)
+		if g.st != nil && len(g.st.Units) > maxSlots {
+			maxSlots = len(g.st.Units)
+		}
+		if g.loadErr != "" {
+			t.Fatalf("ch24_post stopped at beat %d/%d: %s", g.beatIdx, len(g.beats), g.loadErr)
+		}
+	}
+	if g.camp.NodeID() != "town_ch26" || g.handlerChapter != 25 || g.st != nil || maxSlots != 71 {
+		t.Fatalf("chapter25 post boundary node=%q chapter=%d state=%v maxSlots=%d", g.camp.NodeID(), g.handlerChapter, g.st != nil, maxSlots)
+	}
+	if !g.partyMembers[26] || !g.partyMembers[29] ||
+		len(g.partyJoinOrder) != len(order)+2 ||
+		g.partyJoinOrder[len(order)] != 26 || g.partyJoinOrder[len(order)+1] != 29 {
+		t.Fatalf("chapter25 joins members=%v order=%v", g.partyMembers, g.partyJoinOrder)
+	}
+	for _, id := range []int{26, 29} {
+		joined, ok := g.partyRoster[id]
+		if !ok || !joined.HasNativeIdentity || joined.NativeIdentity != id ||
+			!joined.HasNativeRecordByte8 || int(joined.NativeRecordByte8) != id {
+			t.Fatalf("JOIN%d persistent record=%#v", id, joined)
+		}
+	}
+
+	t.Setenv("XDG_DATA_HOME", t.TempDir())
+	userDataDirCached = ""
+	g.saveGameToSlot(2)
+	if g.msg != "已存檔(槽位3：town_ch26)" {
+		t.Fatalf("town26 save message=%q", g.msg)
+	}
+	g.camp.Cur = "postbattle_ch25_persist"
+	g.partyMembers, g.partyJoinOrder = nil, nil
+	g.partyDeploy, g.partyRoster = nil, nil
+	g.loadGameFromSlot(2)
+	if g.camp.NodeID() != "town_ch26" || !g.partyMembers[26] || !g.partyMembers[29] ||
+		len(g.partyJoinOrder) != len(order)+2 {
+		t.Fatalf("town26 save/load node=%q members=%v order=%v roster=%v", g.camp.NodeID(), g.partyMembers, g.partyJoinOrder, g.partyRoster)
+	}
+}
+
 func TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary(t *testing.T) {
 	order := []int{0, 4, 9, 30, 1, 8, 2, 10, 13, 12, 5, 6, 11, 14, 17, 15}
 	tests := []struct {
