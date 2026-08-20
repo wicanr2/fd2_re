@@ -3810,6 +3810,16 @@ beginEnemyPhase → aiStep → finishTurn`，最後返回 `PLAYER PHASE`。Escap
 提示沿用重製端文字層，未接原版 indexed renderer，因此只提升為 `RUNTIME-E1`，
 不宣稱重製端畫面 E2。
 
+2026-08-21 靜態證據勘誤：上述 direction 3 不再只是 E2 輸入旁證。合法 IDA Pro
+9.4 與 Docker Capstone 直接證實 `0x16F55` 在 `[0x53C57]==3` 時載入
+`FDTXT_000[0x1A3]`，`0x19953` 成功且 choice 0 後載入 `[0x1A4]`，再呼叫
+`delay(0xC8)` 與 `0x1A30B`。重製端因此改用兩段原文，並以60 Hz十二幀近似
+200 ms 後才發布 `ENEMY PHASE`。同批也固定 command 13–16 的 indexed 演出 owner：
+`0x21AD9/0x21B99/0x2211C/0x22153→0x21B18`；目前只為 command 13 加入玩家
+cursor→MP／HP→action→range reset 的正式回歸，未猜接其畫格、調色盤或音效。
+位址、雜湊、工具版本與限制見
+[`fd2_end_turn_command13_owner_ida.txt`](../data/ida/fd2_end_turn_command13_owner_ida.txt)。
+
 ### 2026-08-11：mode 2 `aiStep` 遊戲層消費端 E1
 
 重製端新增兩個決定性回歸夾具：完整原始來源證據（raw provenance）的 mode 2 物理計畫

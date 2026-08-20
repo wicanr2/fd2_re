@@ -317,8 +317,10 @@ status/equipment panel，因此不宣稱逐像素 E2。條件與雜湊見
 X11 `CONTINUE→Return` 路徑現在會在空游標顯示**強推論**對應原版 `0x16f55` 的四個圖塊。下圖
 依序是原版、重製與差異遮罩；它清楚顯示畫面仍有差距（AE `8932`），所以只作重製端
 E1 的可見／輸入切片。2026-08-20 已沿同一份原版 E2 輸入證據接通 Down→END→YES：
-四幀面板關閉後才顯示重製端確認提示，YES 才進入敵方回合並返回玩家回合；其餘三格
-動作效果仍失敗即關閉，確認提示也不宣稱原版像素一致。原始位址、輸入、旁車與雜湊見
+四幀面板關閉後才顯示確認。2026-08-21 又由 IDA 9.4／Capstone 直接證實 direction 3、
+`FDTXT_000[0x1A3/0x1A4]`、YES 與 `0xC8` 毫秒延遲；重製端現顯示原文並以十二個
+60 Hz 幀近似延遲，再進敵方回合及返回玩家回合。其餘三格動作效果仍失敗即關閉，
+確認畫面也不宣稱原版像素一致。原始位址、輸入、旁車與雜湊見
 [`native-continue-current-command-remake-e1.json`](docs/data/ui-traces/native-continue-current-command-remake-e1.json)。
 
 ![CONTINUE 空游標命令面板：原版／重製／差異（重製端 E1）](docs/figures/native-continue-current-command-compare-e1.png)

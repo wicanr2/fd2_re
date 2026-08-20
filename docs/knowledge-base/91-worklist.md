@@ -16,7 +16,7 @@
 | 0 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式，現為產品31／runtime170／未知1104；舊83 unknown 已拆為79已分類、4已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253`／`0x2BCE5` 追 caller／執行期 gate，不重解 callee |
 | 1 | 玩家第21戰天空之鑰固定演出 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`：`0x24336` 已接真實 `FDOTHER #34`、`ANI #0`、調色盤循環與正式戰後→城鎮→存讀檔 | 取得未修改原版同狀態 E2，核對第一個動態調色盤相位與相鄰 `layout_units`／ACT63／64；不重解函式本體 |
 | 2 | 三個忠實模式 blocked postbattle | 玩家第23、24、29戰戰後為 `BLOCKED`；玩家第25戰已達 E1，近似模式不提升 | 每章完成 handler branch、持續隊伍、城鎮／整備及 save/load E1；再各補一般玩家 E2 |
-| 3 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；chapter0 空游標 Down→END→YES 已接正式敵方回合／玩家回合返回，完整效果與同狀態重製 E2 仍缺 | 以未知 command／效果為單位完成 producer→transaction→UI／演出→回歸；END 下一步只補原版確認 renderer／同狀態配對，不重解已閉合 mode／helper |
+| 3 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；`0x16F55` END 原文／YES／200ms／換邊已閉合並接正式入口，command 13 玩家交易也有 production 回歸；完整 indexed 效果與同狀態重製 E2 仍缺 | 依已定位的 `0x21AD9→0x21B18` owner 移植 command13–16 演出，或處理下一個已閉合 command transaction；END 只補 indexed renderer／同狀態配對，不重解已閉合分支 |
 | 4 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial | 依 `57` 逐個輸入狀態機取得同狀態原版／重製證據，不用單張 layout 圖代替 |
 | 5 | 原版終局精確鏈 | 近似 E1 可見；忠實模式仍部分阻擋 | 閉合 `0x28A6C` renderer、終端輸入、`0x2BCE5` 正式 owner／handoff及第30戰一般玩家 E2 |
 | 6 | 全戰役抽樣／長程試玩、三平台打包與推廣片 | 核心 gate 未關閉 | 核心垂直切片與代表性晚期玩家路徑完成後才進入發行驗收 |
@@ -30,6 +30,20 @@ handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不�
 ---
 
 ## 歷史工作記錄（不可用來計算完成度）
+
+### 2026-08-21：END 直接控制流程與 command 13 演出 owner
+
+- `RE-CLOSED`：合法 IDA Pro 9.4／Hex-Rays 與 Docker Capstone 對固定雜湊
+  `FD2.EXE` 共同證實 `0x16F55` direction3→FDTXT `0x1A3`→YES choice0→
+  FDTXT `0x1A4`→`delay(0xC8)`→`0x1A30B`；`0x117E7` 是直接 caller。
+- `RUNTIME-E1`：正式 chapter0 current-runtime END 現顯示兩段原文，YES 後先等待
+  十二個60 Hz幀才進 `ENEMY PHASE`。回歸固定四幀 overlay close、確認、延遲、敵方
+  回合與玩家回合返回；這不是 DOS BIOS tick 逐時鐘等價。
+- `RE-CLOSED`／`RUNTIME-E1`：command 13–16 wrapper 與共同 indexed presentation
+  owner 已定位於 `0x21AD9/0x21B99/0x2211C/0x22153→0x21B18`；command 13
+  玩家 cursor→MP扣除→HP回復→action提交→range reset 已通過 production 回歸。
+  畫格、調色盤、音效與同狀態 E2 尚未移植，詳見
+  [`fd2_end_turn_command13_owner_ida.txt`](../data/ida/fd2_end_turn_command13_owner_ida.txt)。
 
 ### 2026-08-20：chapter0 空游標 END→YES→敵方回合正式入口
 

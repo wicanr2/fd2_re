@@ -1,5 +1,7 @@
 package main
 
+const nativeContinueEndTurnDelayFrames = 12 // 0x17259: delay(0xC8 ms)；60 Hz 約十二幀。
+
 const (
 	actionOverlayOpening = "opening"
 	actionOverlayOpen    = "open"
@@ -101,6 +103,7 @@ func (g *Game) resetActionOverlayLifecycle() {
 	g.ring = false
 	g.nativeContinueCursorOverlay = false
 	g.nativeContinueEndTurnConfirm = false
+	g.nativeContinueEndTurnDelay = 0
 	g.actionOverlayPhase = ""
 	g.actionOverlayFrame = 0
 	g.actionOverlayAfter = nil
@@ -119,7 +122,7 @@ func (g *Game) beginNativeContinueEndTurn() bool {
 	g.beginActionOverlayClose(func() {
 		g.nativeContinueCursorOverlay = false
 		g.nativeContinueEndTurnConfirm = true
-		g.msg = "結束本回合的行動嗎？　Enter＝是，Esc＝否"
+		g.msg = "要結束本回合的行動嗎？"
 	})
 	return true
 }
@@ -129,8 +132,10 @@ func (g *Game) confirmNativeContinueEndTurn() {
 		return
 	}
 	g.nativeContinueEndTurnConfirm = false
-	g.msg = ""
-	g.endTurn()
+	g.nativeContinueEndTurnDelay = nativeContinueEndTurnDelayFrames
+	// FDTXT_000[0x1A4] 的 0xFFFE 是換行控制碼。原版在這段文字後等待
+	// 0xC8 ms，才呼叫 0x1A30B 進入敵方回合。
+	g.msg = "好的，\n就結束本回合的行動吧！"
 }
 
 func (g *Game) cancelNativeContinueEndTurn() {
@@ -139,4 +144,15 @@ func (g *Game) cancelNativeContinueEndTurn() {
 	}
 	g.nativeContinueEndTurnConfirm = false
 	g.msg = ""
+}
+
+func (g *Game) stepNativeContinueEndTurn() {
+	if g == nil || g.nativeContinueEndTurnDelay <= 0 {
+		return
+	}
+	g.nativeContinueEndTurnDelay--
+	if g.nativeContinueEndTurnDelay == 0 {
+		g.msg = ""
+		g.endTurn()
+	}
 }

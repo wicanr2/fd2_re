@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math/rand"
 	"os"
 	"path/filepath"
 	"slices"
@@ -279,5 +280,50 @@ func TestNativeCommandTargetFieldMaterializeAndReset(t *testing.T) {
 	if !g.resetNativeTargetField() ||
 		!slices.Equal(g.st.NativeTileBlitModes, []byte{0xff, 0xff, 0xff}) {
 		t.Fatalf("target field reset=%#v", g.st.NativeTileBlitModes)
+	}
+}
+
+func TestPlayerNativeCommand13RunsCursorTransactionThroughConfirm(t *testing.T) {
+	book := make([]battle.NativeCommandRecord, 36)
+	for id := range book {
+		book[id] = battle.NativeCommandRecord{ID: id}
+	}
+	book[13] = battle.NativeCommandRecord{
+		ID: 13, Damage: 70, SelectionMode: 1, EffectMode: 0,
+		MPCost: 3, TargetCode: 1,
+	}
+	actor := &battle.Unit{
+		Camp: battle.Own, OnField: true, HP: 20, MaxHP: 20, MP: 5, X: 0, Y: 0,
+		HasNativeRecordByte5: true,
+	}
+	target := &battle.Unit{
+		Camp: battle.Own, OnField: true, HP: 40, MaxHP: 100, X: 1, Y: 0,
+		HasNativeRecordByte5: true,
+	}
+	state := &battle.State{
+		W: 2, H: 1, Units: []*battle.Unit{actor, target},
+		NativeCommandBook:           book,
+		NativeCompositionEventBytes: make([]byte, 2),
+		NativeTileBlitModes:         []byte{0xff, 0},
+		NativeMapRangeMode:          3,
+		HasNativeMapRangeModeState:  true,
+	}
+	g := &Game{
+		st: state, sel: actor, curX: 1, curY: 0,
+		nativeCommand0Targeting: true, nativeCommandTargetID: 13,
+		rng: rand.New(rand.NewSource(2)),
+	}
+
+	g.confirm()
+
+	if actor.MP != 2 || !actor.Acted || target.HP != 100 {
+		t.Fatalf("player command13 transaction actor=%#v target=%#v", actor, target)
+	}
+	if g.nativeCommand0Targeting || g.sel != nil || state.NativeMapRangeMode != 1 {
+		t.Fatalf("player command13 cleanup targeting=%v sel=%#v range=%d",
+			g.nativeCommand0Targeting, g.sel, state.NativeMapRangeMode)
+	}
+	if g.msg != "原始指令 13：回復 60" {
+		t.Fatalf("player command13 message=%q", g.msg)
 	}
 }

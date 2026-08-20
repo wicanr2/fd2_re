@@ -1,0 +1,75 @@
+# FD2 `0x16F55` END 與 command 13 演出 owner：IDA 9.4 證據
+
+## 輸入與位址空間
+
+- 輸入：`FD2.EXE`，357074 bytes
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 第一工具：使用者授權 Docker 映像 `fd2-ida-authorized-local` 內的 IDA Pro／
+  Hex-Rays `9.4.0.260610`，LE loader，IDA 線性位址；資料庫只存在一次性 tmpfs。
+- 第二工具：`fd2-cap-local`／Capstone 5.0.3，`tools/disasm_le.py` 的 LE 線性
+  位址。下列位址均採同一線性基準，不是檔案偏移。
+- 註記方式：保留 IDA 原始 `sub_XXXXX`、位址與運算元；本檔的語意名稱只是附加
+  索引，並逐項標示推論等級。
+
+## `0x16F55` direction 3 是 END（已證實）
+
+直接控制流程：
+
+```text
+0x16F83  [0x53C57] = 0
+0x16F97  call 0x1741C
+0x16FA9  call 0x177FC
+0x16FC1  call 0x176B4
+0x171C3  cmp [0x53C57], 3
+0x171F1  push 0x1A3
+0x171FC  call 0x15F84
+0x1720E  call 0x19953
+0x1721A  cmp ebx, 1
+0x17223  cmp [0x53C57], 0
+0x17246  push 0x1A4
+0x17251  call 0x15F84
+0x17259  push 0xC8
+0x1725E  call 0x375B2
+0x17272  call 0x1A30B
+```
+
+唯讀解碼的 `FDTXT_000`：
+
+- `0x1A3`：`要結束本回合的行動嗎？`
+- `0x1A4`：`好的，<0xFFFE>就結束本回合的行動吧！`
+- `0xFFFE` 在這條文字路徑保留為換行控制碼。
+
+因此 direction 3 → END、選擇器成功且 choice 0 → 肯定、顯示第二段文字、等待
+`0xC8` 毫秒後進 `0x1A30B`，均為**已證實**。`0x117E7` 的空游標分支直接在
+`0x118C1` 呼叫 `0x16F55`，也是**已證實**。既有未修改原版 E2 的
+`CONTINUE→Return→Down→Return→Return` 與這條直接控制流程相符。
+
+限制：`0x1A30B` 的全部換邊內部流程不因本檔重新命名；重製端以 60 Hz 十二幀
+近似 `0xC8` 毫秒，屬 `RUNTIME-E1`，不是 DOS BIOS 時鐘逐 tick 等價。
+
+## command 13–16 的 indexed 演出 owner（已證實）
+
+IDA 與 Capstone 直接指令共同固定：
+
+- `0x21AD9`：呼叫 `0x25A96(...,0x0B,1)`、`0x21EB1(1,2)`，再以 literal
+  command `0x0D` 進 `0x21B18`。
+- `0x21B99`：同一骨架以 `0x21EB1(2,4)`、literal `0x0E` 進共同尾端。
+- `0x2211C`：以 `0x21EB1(8,4)`、literal `0x0F` 進共同尾端。
+- `0x22153`：以 `0x21EB1(6,6)`、literal `0x10` 進共同尾端。
+- `0x21B18` 依序呼叫 `0x1C4CC`、`0x1C2DA`、`0x1CA89`；再逐 final target
+  呼叫 `0x1C8ED(target, command)` 與 `0x1E0DB(...,0x69,target)`，最後跳到
+  `0x21190`。
+- `0x1CFF0` 的 jump-table caller 與 AI `0x15311` 都交叉參照這四個 wrapper。
+
+所以 command 13 的玩家數值交易已有正式消費端，而原版 indexed presentation 的
+wrapper／共同 owner 也已定位，判定為 `RE-CLOSED`。但 `0x25A96`、`0x21EB1`、
+`0x1C4CC`、`0x1C2DA`、`0x1CA89`、`0x1C8ED`、`0x1E0DB` 的畫格、調色盤、音效與
+呈現時序尚未轉成具型別播放器；重製端目前只有文字結果，仍是 `RUNTIME-E1`，不可
+宣稱 command 13–16 演出或同狀態畫面 E2。
+
+## 重開條件
+
+只有輸入雜湊不同、上述直接指令／跳轉被反證、同狀態執行結果矛盾，或主證據缺少
+聲稱存在的 caller／consumer 時才重開。不要因舊文件仍寫 unknown 或反編譯器未能
+輸出某個 wrapper 的虛擬碼而重解這些 owner。

@@ -5016,3 +5016,19 @@ current-runtime direction3 建立正式 owner，其餘三格仍失敗即關閉�
   敵方無可行動計畫時完成回合並返回 `PLAYER PHASE`；取消不改寫回合。
 - Docker／Xvfb focused regression 覆蓋正向鏈、四幀發布邊界、取消與 direction0..2
   反例。確認提示暫用重製文字層；原版 indexed 確認 renderer 及同狀態重製 E2 尚缺。
+
+## 2026-08-21：END 靜態閉合與 command 13 演出 owner
+
+本輪以合法 IDA Pro 9.4／Hex-Rays 的一次性 tmpfs 資料庫為主、Docker Capstone 為
+第二套驗證。專案 IDA 映像的 GUI `ida` 缺 X11 library，改用同一映像內可用且授權
+正常的 headless `idat`；沒有改用 host、Ghidra 或建立重複 image。
+
+- `0x16F55` 的 `[0x53C57]==3` 直接分支顯示 FDTXT `0x1A3`，YES choice0 後顯示
+  `0x1A4`，呼叫 `delay(0xC8)` 再進 `0x1A30B`；`0x117E7` 為直接 caller。
+  所以 direction3→END 已由旁證提升為直接指令證實。
+- 重製端使用解碼原文「要結束本回合的行動嗎？」與含換行的肯定句，並以十二個
+  60 Hz幀近似200 ms；延遲完成前不啟動 AI，之後才進敵方回合並返回玩家回合。
+- command 13–16 的 wrapper／共同演出 owner 已固定於
+  `0x21AD9/0x21B99/0x2211C/0x22153→0x21B18`。command 13 正式玩家交易回歸
+  已通過；indexed 畫格／調色盤／音效仍未移植，不用文字結果冒稱演出完成。
+- 主證據：[`fd2_end_turn_command13_owner_ida.txt`](../data/ida/fd2_end_turn_command13_owner_ida.txt)。

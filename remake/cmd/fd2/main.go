@@ -332,6 +332,7 @@ type Game struct {
 	// nativeContinueEndTurnConfirm 只承接 chapter0 current-runtime 在未修改原版
 	// E2 觀測到的 END→YES；其餘三個 0x16f55 cell 沒有已證實 owner，仍失敗即關閉。
 	nativeContinueEndTurnConfirm bool
+	nativeContinueEndTurnDelay   int
 
 	// 截圖鉤子(FD2_SHOT=path 啟用):第 shotFrame 幀存 PNG 後自動退出(有界,供無人值守驗證)
 	frame      int
@@ -4485,6 +4486,9 @@ func (g *Game) stepCampaignMenu(event campaign.MenuEvent) (selected int, confirm
 func (g *Game) ringInput() bool {
 	enter := inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)
 	esc := inpututil.IsKeyJustPressed(ebiten.KeyEscape) || inpututil.IsKeyJustPressed(ebiten.KeyBackspace)
+	if g.nativeContinueEndTurnDelay > 0 {
+		return true
+	}
 	if g.nativeContinueEndTurnConfirm {
 		if esc {
 			g.cancelNativeContinueEndTurn()
@@ -5828,6 +5832,7 @@ func (g *Game) tileAt(idx int) *ebiten.Image {
 func (g *Game) Update() error {
 	g.frame++
 	g.stepActionOverlayLifecycle()
+	g.stepNativeContinueEndTurn()
 	g.stepNativeClassUILifecycle(time.Now())
 	g.stepNativeChurchUILifecycle(time.Now())
 	g.stepNativeShopUILifecycle(time.Now())

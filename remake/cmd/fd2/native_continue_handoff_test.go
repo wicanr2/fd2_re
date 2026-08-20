@@ -254,9 +254,21 @@ func TestNativeContinueDownEndYesEntersAndCompletesEnemyPhase(t *testing.T) {
 	}
 
 	g.confirmNativeContinueEndTurn()
-	if !g.aiBusy || g.banner != "ENEMY PHASE" || g.nativeContinueEndTurnConfirm {
-		t.Fatalf("YES did not enter enemy phase: ai=%v banner=%q confirm=%v",
-			g.aiBusy, g.banner, g.nativeContinueEndTurnConfirm)
+	if g.aiBusy || g.nativeContinueEndTurnDelay != nativeContinueEndTurnDelayFrames ||
+		g.msg != "好的，\n就結束本回合的行動吧！" {
+		t.Fatalf("YES feedback boundary: ai=%v delay=%d msg=%q",
+			g.aiBusy, g.nativeContinueEndTurnDelay, g.msg)
+	}
+	for frame := 1; frame < nativeContinueEndTurnDelayFrames; frame++ {
+		g.stepNativeContinueEndTurn()
+		if g.aiBusy {
+			t.Fatalf("enemy phase started before 0xC8 ms boundary at frame %d", frame)
+		}
+	}
+	g.stepNativeContinueEndTurn()
+	if !g.aiBusy || g.banner != "ENEMY PHASE" || g.nativeContinueEndTurnDelay != 0 {
+		t.Fatalf("delayed YES did not enter enemy phase: ai=%v banner=%q delay=%d",
+			g.aiBusy, g.banner, g.nativeContinueEndTurnDelay)
 	}
 	g.aiStep()
 	if g.aiBusy || state.Turn != 1 || g.banner != "PLAYER PHASE" {
