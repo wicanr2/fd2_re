@@ -5004,3 +5004,15 @@ scan；`town_ch26` 是 selection4＋Shift+F5（`0x58`），不是ch02的Shift+F1
   JOIN26／29及持續隊伍。
 - Docker／Xvfb focused regression通過。這是重製端正常戰間`RUNTIME-E1`，仍缺
   未修改原版第25戰勝利後相同狀態的`PLAYER-E2`與逐幀畫面／音訊比較。
+
+## 2026-08-20：chapter0 `CONTINUE→END→YES` 玩家入口接入敵方回合
+
+本輪沿用既有未修改原版 E2 證據，不重開已閉合反組譯。固定原版存檔的輸入時間線
+已證實空游標面板按 Down 選 END、Return 開確認、Return 選 YES；重製端因此只為
+current-runtime direction3 建立正式 owner，其餘三格仍失敗即關閉。
+
+- action overlay 的四個 closing present 完成前不發布確認，也不啟動敵方回合。
+- YES 經既有 `endTurn→beginEnemyPhase→aiStep→finishTurn` 顯示 `ENEMY PHASE`，
+  敵方無可行動計畫時完成回合並返回 `PLAYER PHASE`；取消不改寫回合。
+- Docker／Xvfb focused regression 覆蓋正向鏈、四幀發布邊界、取消與 direction0..2
+  反例。確認提示暫用重製文字層；原版 indexed 確認 renderer 及同狀態重製 E2 尚缺。

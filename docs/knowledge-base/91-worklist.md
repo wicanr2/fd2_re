@@ -16,7 +16,7 @@
 | 0 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式，現為產品31／runtime170／未知1104；舊83 unknown 已拆為79已分類、4已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253`／`0x2BCE5` 追 caller／執行期 gate，不重解 callee |
 | 1 | 玩家第21戰天空之鑰固定演出 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`：`0x24336` 已接真實 `FDOTHER #34`、`ANI #0`、調色盤循環與正式戰後→城鎮→存讀檔 | 取得未修改原版同狀態 E2，核對第一個動態調色盤相位與相鄰 `layout_units`／ACT63／64；不重解函式本體 |
 | 2 | 三個忠實模式 blocked postbattle | 玩家第23、24、29戰戰後為 `BLOCKED`；玩家第25戰已達 E1，近似模式不提升 | 每章完成 handler branch、持續隊伍、城鎮／整備及 save/load E1；再各補一般玩家 E2 |
-| 3 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有，完整效果與同狀態 E2 缺少 | 以未知 command／效果為單位完成 producer→transaction→UI／演出→回歸；不重解已閉合 mode／helper |
+| 3 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；chapter0 空游標 Down→END→YES 已接正式敵方回合／玩家回合返回，完整效果與同狀態重製 E2 仍缺 | 以未知 command／效果為單位完成 producer→transaction→UI／演出→回歸；END 下一步只補原版確認 renderer／同狀態配對，不重解已閉合 mode／helper |
 | 4 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial | 依 `57` 逐個輸入狀態機取得同狀態原版／重製證據，不用單張 layout 圖代替 |
 | 5 | 原版終局精確鏈 | 近似 E1 可見；忠實模式仍部分阻擋 | 閉合 `0x28A6C` renderer、終端輸入、`0x2BCE5` 正式 owner／handoff及第30戰一般玩家 E2 |
 | 6 | 全戰役抽樣／長程試玩、三平台打包與推廣片 | 核心 gate 未關閉 | 核心垂直切片與代表性晚期玩家路徑完成後才進入發行驗收 |
@@ -30,6 +30,18 @@ handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不�
 ---
 
 ## 歷史工作記錄（不可用來計算完成度）
+
+### 2026-08-20：chapter0 空游標 END→YES→敵方回合正式入口
+
+- `RE-CLOSED`／`PLAYER-E2` 原版錨點沿用既有
+  [`native-enemy-turn-original-e2.json`](../data/ui-traces/native-enemy-turn-original-e2.json)：
+  `CONTINUE→Return→Down(END)→Return→Return(YES)`。沒有重解 `0x16f55`，也沒有
+  將其餘三格由圖示外觀猜成玩法 owner。
+- `RUNTIME-E1`：正式輸入現在只允許 direction3 開 END；完整呈現四個 action overlay
+  關閉畫面後才顯示確認，YES 才進 `ENEMY PHASE`，敵方計畫耗盡後返回
+  `PLAYER PHASE`。取消不改回合，direction0..2仍失敗即關閉。
+- `PLAYER-E2` 差距：原版一側已有 E2；重製端確認提示仍是文字層，尚缺同一 raw
+  roster／鏡頭／游標／tick 的逐幀畫面配對，所以不可宣稱完整 END UI 或 AI parity。
 
 ### 2026-08-20：玩家第25戰後第26章祕密商店正常戰間切片
 

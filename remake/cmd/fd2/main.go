@@ -253,8 +253,8 @@ type Game struct {
 	// 一經消費即回到一般選取流程，不可外推為其他戰場的輸入規則。
 	nativeContinueOpeningConfirm bool
 	// nativeContinueCursorOverlay 是 current-runtime E2 錨點的游標命令格。
-	// 它沒有可接入的 selected-unit owner，故只消費畫面、方向與取消；任何
-	// 動作確認維持失敗即關閉，不能冒充已完成的戰鬥操作。
+	// 它沒有可接入的 selected-unit owner；只有同一 E2 輸入證實的 Down→END
+	// 可進確認，其餘三格維持失敗即關閉。
 	nativeContinueCursorOverlay bool
 	spellOpen                   bool
 	spellSel                    int
@@ -328,6 +328,11 @@ type Game struct {
 	camX                        float64
 	camY                        float64
 	loadErr                     string
+
+	// nativeContinueEndTurnConfirm 只承接 chapter0 current-runtime 在未修改原版
+	// E2 觀測到的 END→YES；其餘三個 0x16f55 cell 沒有已證實 owner，仍失敗即關閉。
+	nativeContinueEndTurnConfirm bool
+
 	// 截圖鉤子(FD2_SHOT=path 啟用):第 shotFrame 幀存 PNG 後自動退出(有界,供無人值守驗證)
 	frame      int
 	shotPath   string
@@ -4480,6 +4485,16 @@ func (g *Game) stepCampaignMenu(event campaign.MenuEvent) (selected int, confirm
 func (g *Game) ringInput() bool {
 	enter := inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)
 	esc := inpututil.IsKeyJustPressed(ebiten.KeyEscape) || inpututil.IsKeyJustPressed(ebiten.KeyBackspace)
+	if g.nativeContinueEndTurnConfirm {
+		if esc {
+			g.cancelNativeContinueEndTurn()
+			return true
+		}
+		if enter {
+			g.confirmNativeContinueEndTurn()
+		}
+		return true
+	}
 	if g.nativeContinueCursorOverlay {
 		if !g.ring {
 			g.nativeContinueCursorOverlay = false
@@ -4508,10 +4523,12 @@ func (g *Game) ringInput() bool {
 			return true
 		}
 		if enter {
-			// 原版這個 current-runtime menu 的動作 owner 尚未由 runtime
-			// record 與 controller 資料流閉合。保留 UI 與取消語意，但不
-			// 將空游標轉成虛構單位或執行任何攻擊／法術／物品效果。
-			g.msg = "原版續戰指令的動作擁有者尚未驗證"
+			if g.ringSel == 3 && g.beginNativeContinueEndTurn() {
+				return true
+			}
+			// 只有 Down→END 已有同一存檔、同一輸入的未修改原版 E2；
+			// 其餘三格不由圖示外觀猜測動作 owner。
+			g.msg = "原版續戰指令的此動作擁有者尚未驗證"
 		}
 		return true
 	}

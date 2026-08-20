@@ -100,9 +100,43 @@ func (g *Game) markActionOverlayDrawn() {
 func (g *Game) resetActionOverlayLifecycle() {
 	g.ring = false
 	g.nativeContinueCursorOverlay = false
+	g.nativeContinueEndTurnConfirm = false
 	g.actionOverlayPhase = ""
 	g.actionOverlayFrame = 0
 	g.actionOverlayAfter = nil
 	g.actionOverlayDrawn = false
 	g.actionOverlayShotHold = false
+}
+
+// beginNativeContinueEndTurn 只承接 chapter0 current-runtime 已觀測的
+// Down→END。原版 trace 證實 END 會開確認且 YES 會進 ENEMY PHASE；它沒有證實
+// 其餘三個 0x16f55 cell owner，也沒有證實重製端確認提示的像素。
+func (g *Game) beginNativeContinueEndTurn() bool {
+	if g == nil || !g.nativeContinueCursorOverlay || !g.ring || g.ringSel != 3 ||
+		g.st == nil || g.aiBusy || g.result != "" {
+		return false
+	}
+	g.beginActionOverlayClose(func() {
+		g.nativeContinueCursorOverlay = false
+		g.nativeContinueEndTurnConfirm = true
+		g.msg = "結束本回合的行動嗎？　Enter＝是，Esc＝否"
+	})
+	return true
+}
+
+func (g *Game) confirmNativeContinueEndTurn() {
+	if g == nil || !g.nativeContinueEndTurnConfirm {
+		return
+	}
+	g.nativeContinueEndTurnConfirm = false
+	g.msg = ""
+	g.endTurn()
+}
+
+func (g *Game) cancelNativeContinueEndTurn() {
+	if g == nil || !g.nativeContinueEndTurnConfirm {
+		return
+	}
+	g.nativeContinueEndTurnConfirm = false
+	g.msg = ""
 }

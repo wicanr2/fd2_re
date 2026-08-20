@@ -3802,6 +3802,14 @@ CONTINUE 的 pending-group／`Game` controller handoff 閘門。未修改原版�
 失敗即關閉。`CAMPAIGN-POSTBATTLE-E2-FULL-PATH` 也仍需逐章保留戰後城鎮／商店／
 整備／存檔節點的正常玩家路徑。
 
+2026-08-20 已把同一輸入證據的狹義消費端接到正式重製路徑：只有 chapter0
+current-runtime 空游標面板的 Down（內部 direction 3）可開啟 END 確認；四個原始
+關閉畫面都完成後才顯示確認提示，Enter／Space 的 YES 才呼叫既有 `endTurn →
+beginEnemyPhase → aiStep → finishTurn`，最後返回 `PLAYER PHASE`。Escape／Backspace
+只取消且不改回合。其餘三個 `0x16f55` cell 的 owner 仍未知並失敗即關閉；目前確認
+提示沿用重製端文字層，未接原版 indexed renderer，因此只提升為 `RUNTIME-E1`，
+不宣稱重製端畫面 E2。
+
 ### 2026-08-11：mode 2 `aiStep` 遊戲層消費端 E1
 
 重製端新增兩個決定性回歸夾具：完整原始來源證據（raw provenance）的 mode 2 物理計畫

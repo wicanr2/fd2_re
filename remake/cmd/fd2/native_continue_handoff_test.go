@@ -225,3 +225,59 @@ func TestNativeContinueOpeningConfirmRejectsMovedCursor(t *testing.T) {
 		t.Fatalf("moved cursor must stay on normal selection path: %+v", g)
 	}
 }
+
+func TestNativeContinueDownEndYesEntersAndCompletesEnemyPhase(t *testing.T) {
+	state := &battle.State{W: 24, H: 24, Units: []*battle.Unit{
+		{Camp: battle.Own, OnField: true, HP: 10, MaxHP: 10},
+		{Camp: battle.Enemy, OnField: false, HP: 0, MaxHP: 10},
+	}}
+	g := &Game{
+		st: state, sc: &battle.Scenario{}, ring: true, ringSel: 3,
+		nativeContinueCursorOverlay: true,
+	}
+	if !g.beginNativeContinueEndTurn() {
+		t.Fatal("verified Down→END route was rejected")
+	}
+	if g.aiBusy || g.nativeContinueEndTurnConfirm {
+		t.Fatal("enemy phase or confirmation started before four close presents")
+	}
+	for present := 0; present < 4; present++ {
+		g.markActionOverlayDrawn()
+		g.stepActionOverlayLifecycle()
+	}
+	if !g.nativeContinueEndTurnConfirm || g.nativeContinueCursorOverlay || g.ring {
+		t.Fatalf("END confirmation handoff = confirm:%v overlay:%v ring:%v",
+			g.nativeContinueEndTurnConfirm, g.nativeContinueCursorOverlay, g.ring)
+	}
+	if g.msg == "" {
+		t.Fatal("END confirmation has no visible player prompt")
+	}
+
+	g.confirmNativeContinueEndTurn()
+	if !g.aiBusy || g.banner != "ENEMY PHASE" || g.nativeContinueEndTurnConfirm {
+		t.Fatalf("YES did not enter enemy phase: ai=%v banner=%q confirm=%v",
+			g.aiBusy, g.banner, g.nativeContinueEndTurnConfirm)
+	}
+	g.aiStep()
+	if g.aiBusy || state.Turn != 1 || g.banner != "PLAYER PHASE" {
+		t.Fatalf("enemy phase did not return to player: ai=%v turn=%d banner=%q",
+			g.aiBusy, state.Turn, g.banner)
+	}
+}
+
+func TestNativeContinueEndTurnRemainsNarrowAndCancelable(t *testing.T) {
+	state := &battle.State{W: 24, H: 24}
+	for direction := 0; direction < 3; direction++ {
+		g := &Game{st: state, ring: true, ringSel: direction, nativeContinueCursorOverlay: true}
+		if g.beginNativeContinueEndTurn() {
+			t.Fatalf("unverified direction %d opened END confirmation", direction)
+		}
+	}
+
+	g := &Game{st: state, nativeContinueEndTurnConfirm: true}
+	g.cancelNativeContinueEndTurn()
+	if g.nativeContinueEndTurnConfirm || g.aiBusy || state.Turn != 0 {
+		t.Fatalf("cancel mutated turn: confirm=%v ai=%v turn=%d",
+			g.nativeContinueEndTurnConfirm, g.aiBusy, state.Turn)
+	}
+}

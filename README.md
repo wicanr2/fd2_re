@@ -316,7 +316,9 @@ status/equipment panel，因此不宣稱逐像素 E2。條件與雜湊見
 2026-08-11 已修正 action overlay 圖塊索引乘數與「只載入前十格」的錯誤；同一普通
 X11 `CONTINUE→Return` 路徑現在會在空游標顯示**強推論**對應原版 `0x16f55` 的四個圖塊。下圖
 依序是原版、重製與差異遮罩；它清楚顯示畫面仍有差距（AE `8932`），所以只作重製端
-E1 的可見／輸入切片，Enter 的動作效果仍失敗即關閉。原始位址、輸入、旁車與雜湊見
+E1 的可見／輸入切片。2026-08-20 已沿同一份原版 E2 輸入證據接通 Down→END→YES：
+四幀面板關閉後才顯示重製端確認提示，YES 才進入敵方回合並返回玩家回合；其餘三格
+動作效果仍失敗即關閉，確認提示也不宣稱原版像素一致。原始位址、輸入、旁車與雜湊見
 [`native-continue-current-command-remake-e1.json`](docs/data/ui-traces/native-continue-current-command-remake-e1.json)。
 
 ![CONTINUE 空游標命令面板：原版／重製／差異（重製端 E1）](docs/figures/native-continue-current-command-compare-e1.png)
