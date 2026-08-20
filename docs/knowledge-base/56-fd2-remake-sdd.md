@@ -833,7 +833,7 @@ actor raw completion writer。它與 ID20/21「借 record10」的 clear/restore 
 |---|---|---|---|
 | 0–8 | `0x2A6BD→2B659/1C75E`，two-stage final targets、MP event、numeric hit/HP | `ExecuteNativeCommandDamage`；ID0 有 target slice | 僅 ID0 grid target；compositor/SFX/post-resolution 未接 |
 | 9–12 | direct/`0x21548` tail → `1CA89→1C75E` | `ExecuteNativeCommandDamage` | 未接；numeric 共用不代表演出共用 |
-| 13–16 | `0x21AD9…0x22153→21B18→1C8ED/1C916` | `ExecuteNativeCommandHeal` | 專用 animation/SFX/grid confirm 未接 |
+| 13–16 | `0x21AD9…0x22153→21EB1→21B18→1C8ED/1C916` | `BuildNativeCommandHealPresentationSchedule`＋`ExecuteNativeCommandHeal` | 玩家 16 張 FDOTHER #3 LUT 前段已接；後段索引畫面／數字佇列、敵方消費端與格狀確認 E2 未接 |
 | 17–19 | `0x226EA/2282F/22960` modifier writers、`+0x22..+0x24` duration；`__CHP` toward-zero 已釘死 | `ApplyNativeCommandModifier` 已接 raw writer；`ApplyNativeRuntimeEquipmentRecalc` 已保存 `0x1B750` 的 exact 1.15／朝零及HIT/EV+15。command transaction與phase-expiry caller仍未接 | 未接 |
 | 20–21 | `0x22A85/22BC6→22AF6`，clear `+0x25/+0x26` 並借 record10 restore | `ExecuteNativeCommandClearRestore` | 未接 |
 | 22 | `0x22BE1→22D1B`，class/RNG gate、base10 經第二 RNG 實際9 HP、第三 RNG write `+0x27` | `ExecuteNativeCommandApplication` | 未接 |
@@ -3815,10 +3815,21 @@ beginEnemyPhase → aiStep → finishTurn`，最後返回 `PLAYER PHASE`。Escap
 `FDTXT_000[0x1A3]`，`0x19953` 成功且 choice 0 後載入 `[0x1A4]`，再呼叫
 `delay(0xC8)` 與 `0x1A30B`。重製端因此改用兩段原文，並以60 Hz十二幀近似
 200 ms 後才發布 `ENEMY PHASE`。同批也固定 command 13–16 的 indexed 演出 owner：
-`0x21AD9/0x21B99/0x2211C/0x22153→0x21B18`；目前只為 command 13 加入玩家
+`0x21AD9/0x21B99/0x2211C/0x22153→0x21B18`；當時只為 command 13 加入玩家
 cursor→MP／HP→action→range reset 的正式回歸，未猜接其畫格、調色盤或音效。
 位址、雜湊、工具版本與限制見
 [`fd2_end_turn_command13_owner_ida.txt`](../data/ida/fd2_end_turn_command13_owner_ida.txt)。
+
+2026-08-21 後續閉合：`0x21EB1` 的 caller-specific 排程現已由 IDA／Capstone
+固定為 FDOTHER #3 LUT 9→1九張擴張、200 ms、3→9七張收束、`0x11CAC(0)`
+與200 ms尾停；中心來自鏡頭相對可見游標，半徑由四個 wrapper 的
+`(1,2)/(2,4)/(8,4)/(6,6)` 決定。重製端以
+`BuildNativeCommandHealPresentationSchedule` 配合既有嚴格 `0x22046`
+compositor，在玩家 command 13–16 狀態變更前一次預先驗證全部 16 張。缺 baseline、
+LUT、palette 或 raw view 時交易不發生；原版每張 5 ms 在 60 Hz 更新迴圈中採每張
+至少一幀的順序近似。後段數字佇列、敵方消費端與 E2 仍失敗即關閉。
+證據見
+[`fd2_command13_21eb1_presentation_ida.txt`](../data/ida/fd2_command13_21eb1_presentation_ida.txt)。
 
 ### 2026-08-11：mode 2 `aiStep` 遊戲層消費端 E1
 

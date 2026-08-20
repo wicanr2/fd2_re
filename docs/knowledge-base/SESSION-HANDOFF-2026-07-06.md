@@ -5032,3 +5032,25 @@ current-runtime direction3 建立正式 owner，其餘三格仍失敗即關閉�
   `0x21AD9/0x21B99/0x2211C/0x22153→0x21B18`。command 13 正式玩家交易回歸
   已通過；indexed 畫格／調色盤／音效仍未移植，不用文字結果冒稱演出完成。
 - 主證據：[`fd2_end_turn_command13_owner_ida.txt`](../data/ida/fd2_end_turn_command13_owner_ida.txt)。
+
+## 2026-08-21：command 13–16 `0x21EB1` indexed 演出接入
+
+本輪沒有重解已閉合的 `0x22046` compositor，而是用合法 IDA Pro 9.4／Hex-Rays
+與 Docker Capstone 追查尚未分型的 caller `0x21EB1`。第一次 IDA 啟動曾因錯誤覆寫
+專案授權 entrypoint 而被 license gate 拒絕；沒有產生資料庫或儲存庫變更。更正後
+沿用 `fd2-ida-authorized-local`，原始EXE唯讀、資料庫只在tmpfs。
+
+- 四個 wrapper 對 `0x21EB1` 的 raw `(start,step)` 是13=`(1,2)`、14=`(2,4)`、
+  15=`(8,4)`、16=`(6,6)`，並共同播放 sample index11。
+- `0x21EB1` 以鏡頭相對可見游標建立中心，從 boot 載入的FDOTHER #3取LUT，先走
+  descriptor9→1的九張擴張，每張5 ms；等待200 ms後以最後半徑走3→9七張收束，
+  再`0x11CAC(0)`與200 ms尾停。完整snapshot restore、object redraw與viewport copy
+  復用既有strict `0x22046` adapter。
+- 玩家 command 13–16 已接此16張排程；開始前一次驗證全部raw map／LUT／palette／
+  visible cursor／normal baseline。缺任一項不扣MP、不改HP、不提交acted；演出完成後
+  才進既有交易與range reset。敵方owner、後段`0x1C4CC/0x1C2DA→0x1E0DB`及
+  同狀態原版逐幀／逐音訊E2仍待。
+- 主證據：[`fd2_command13_21eb1_presentation_ida.txt`](../data/ida/fd2_command13_21eb1_presentation_ida.txt)。
+- 提交前 Docker 驗證：`go test ./... -count=1` 全套通過；工具測試55項、JSON 917份、
+  戰後節點稽核21 active／3 blocked均通過；本批文件579個具副檔名本地目標無斷鏈。
+  原版每張5 ms在60 Hz重製端採至少一個可見幀的E1近似，沒有升格成逐毫秒E2。

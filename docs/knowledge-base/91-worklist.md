@@ -16,7 +16,7 @@
 | 0 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式，現為產品31／runtime170／未知1104；舊83 unknown 已拆為79已分類、4已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253`／`0x2BCE5` 追 caller／執行期 gate，不重解 callee |
 | 1 | 玩家第21戰天空之鑰固定演出 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`：`0x24336` 已接真實 `FDOTHER #34`、`ANI #0`、調色盤循環與正式戰後→城鎮→存讀檔 | 取得未修改原版同狀態 E2，核對第一個動態調色盤相位與相鄰 `layout_units`／ACT63／64；不重解函式本體 |
 | 2 | 三個忠實模式 blocked postbattle | 玩家第23、24、29戰戰後為 `BLOCKED`；玩家第25戰已達 E1，近似模式不提升 | 每章完成 handler branch、持續隊伍、城鎮／整備及 save/load E1；再各補一般玩家 E2 |
-| 3 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；`0x16F55` END 原文／YES／200ms／換邊已閉合並接正式入口，command 13 玩家交易也有 production 回歸；完整 indexed 效果與同狀態重製 E2 仍缺 | 依已定位的 `0x21AD9→0x21B18` owner 移植 command13–16 演出，或處理下一個已閉合 command transaction；END 只補 indexed renderer／同狀態配對，不重解已閉合分支 |
+| 3 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；`0x16F55` END 原文／YES／200ms／換邊已接，command 13–16 的 `0x21EB1` 16張 LUT 排程也已接玩家正式入口 | 接 `0x1C4CC/0x1C2DA→0x1E0DB` 後段數字呈現或敵方同 owner；補同狀態 E2，不重解 END／`0x21EB1` 已閉合 loop |
 | 4 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial | 依 `57` 逐個輸入狀態機取得同狀態原版／重製證據，不用單張 layout 圖代替 |
 | 5 | 原版終局精確鏈 | 近似 E1 可見；忠實模式仍部分阻擋 | 閉合 `0x28A6C` renderer、終端輸入、`0x2BCE5` 正式 owner／handoff及第30戰一般玩家 E2 |
 | 6 | 全戰役抽樣／長程試玩、三平台打包與推廣片 | 核心 gate 未關閉 | 核心垂直切片與代表性晚期玩家路徑完成後才進入發行驗收 |
@@ -30,6 +30,19 @@ handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不�
 ---
 
 ## 歷史工作記錄（不可用來計算完成度）
+
+### 2026-08-21：command 13–16 `0x21EB1` indexed 演出
+
+- `RE-CLOSED`：IDA Pro 9.4／Hex-Rays 與 Docker Capstone 固定四個 wrapper 的
+  `(start,step)`、sample index11、`0x21EB1` 的FDOTHER #3 LUT 9→1／3→9、
+  visible-cursor中心、5 ms逐張與兩段200 ms；`0x22046` consumer沿用既有
+  strict compositor，不重解 callee。
+- `DATA-READY`／`RUNTIME-E1`：四組排程已資料化，玩家 command 13–16 先完整
+  preflight 16張 indexed frame，全部呈現後才扣MP、回復HP、提交action並重設range。
+  缺正常畫面baseline、原始LUT、palette或visible cursor時不 mutation。
+- 尚缺 `0x1C4CC/0x1C2DA→0x1E0DB` 後段數字畫面、敵方 owner與同狀態原版逐幀／
+  逐音訊 E2。主證據見
+  [`fd2_command13_21eb1_presentation_ida.txt`](../data/ida/fd2_command13_21eb1_presentation_ida.txt)。
 
 ### 2026-08-21：END 直接控制流程與 command 13 演出 owner
 
@@ -1093,7 +1106,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   - [x] generic BG selector boundary：`0x2a6bd→0x2b5e1(finalCount, finalTargetArray)` 倒序 target scan，經 `0x12e38`／`0x1f183`，只有 gate 不通或累積 selector=0 才以 control byte+2 取代 selector，再載 `BG.DAT`。`NativeCommandBackgroundSelector` unit regression 固定這條 raw ABI；command ID 只先選 generic/special presentation branch，不直接選 BG resource。selector semantic 保持 raw。
   - [x] BG archive input：`BG.DAT` #0/#1/#2 為 320×100 的 `0x4e63d` four-mode single-frame payload，新增 `fdother.DecodeArchiveSingleFrame` 與 player-archive decode regression；它只提供 indexed frame，layer selection／schedule 仍由 native caller evidence 決定。
 - [x] **shared native damage route IDs0..12**：IDs0..8 經 `2A6BD→2B659/1C75E`，ID9 direct `1CA89→1C75E`；IDs10..12 的 `0x21548` 專用 compositor 尾端也直接 `1CA89→per-target 1C75E`。同樣扣 MP、逐 target numeric writer、success-only raw completion writer；engine bounded support 0..12，UI 仍僅 ID0。不得從 numeric 共用推論 visual equivalence。
-- [~] **native command IDs13..16 healing route**：IDA `0x21AD9/0x21B99/0x2211C/0x22153→0x21B18` 已閉合 generic final target array、`0x1CA89(actor,id)` MP debit、`0x1C8ED→0x1C916` per-target HP restore 及 `+0x42` cap；其 amount 公式同 `9/10 + rand%100/1000`。`ExecuteNativeCommandHeal` 已接 strict non-UI engine slice（own record target/MP/restore/cap/raw completion writer，family boundary fail-closed）。專用 indexed animation、UI、SFX、message 未接，禁止誤用 IDs0..9 damage executor。
+- [~] **native command IDs13..16 healing route**：IDA `0x21AD9/0x21B99/0x2211C/0x22153→0x21B18` 已閉合 generic final target array、`0x1CA89(actor,id)` MP debit、`0x1C8ED→0x1C916` per-target HP restore 及 `+0x42` cap；其 amount 公式是 `floor(amount*9/10)+floor((rand%100)*amount/1000)`。`ExecuteNativeCommandHeal` 已接 strict engine slice。`0x21EB1→0x22046` 的FDOTHER #3 LUT 16張前段演出現已接玩家正式入口，缺raw資產不 mutation；後段`0x1C4CC/0x1C2DA`、數字queue、敵方演出與同狀態E2仍未接，禁止誤用 IDs0..9 damage executor。
 - [~] **native command ID24 player special route**：玩家 confirm 的 `0x1CFF0` 對 `0x18` 直入 `0x2A6BD→0x276EC`；`0x276EC→0x2B659` 以 `0x1CA89(actor,0x18)` 扣 record24 MP，並以 `trunc(actor derived +0x48 × 15/10) - target derived +0x4a` 呼叫 `0x1C81F`。原版為多段演出暫時復原 HP 後等份遞減，`ExecuteNativeCommand24` 已接相同 final delta 的 strict non-UI slice。`funcs_1541F[24]` 雖為 `0x22153`，但只在 AI／自動 `0x15311` dispatcher 使用，且傳 ID16 給 heal tail，不能拿來推導玩家 ID24。multi-hit／presentation/SFX/UI 未接。
 - [~] **native commands28/29/31 derived-strike siblings**：同一 `0x276EC` 對玩家 ID28／29／31 分別選 20／12／18 倍率，並經 `0x2B659→0x1CA89(actor,id)` 與同一 final HP delta path；其 ordinary record geometry 可走 `NativeCommandEffectTargets`，`ExecuteNativeCommandDerivedStrike` 已接 strict state-only slice。ID30 的 special route 亦已收斂：`0x1CFF0` 先確認 record+3 candidate，`0x149F8` 從 saved pre-confirm cursor 朝 confirmed cursor 走 `record+3-0x10`（record30=4）格；X-first，僅 X 相同走 Y，selector=1 只收 enemy，然後 `0x2A6BD→0x276EC` default倍率18。`ExecuteNativeCommand30` 已接顯式 cursor state slice；不將其隱藏接入 current UI，cursor lifecycle／multi-hit／SFX／indexed renderer 仍待。32..35 走 `0x27FC9`。
 - [x] **RE-COMPOUND-PLAN-27FC9**：Docker Capstone 重新固定唯一 caller `0x2A7CE`（`0x2A6BD` selector `>=0x20`），並把 ID32/33/34/35 的 raw helper 順序、ID33 direct clear offsets `+0x25/+0x26/+0x27`、固定 amount `0x320` 資料化為 `battle.NativeCompoundCommandPlan`；此為 editable evidence-only plan，`Callee==0` 明確代表 inline byte clear，不執行 transaction/MP/target/UI。

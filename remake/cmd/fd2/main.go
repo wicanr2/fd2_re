@@ -162,6 +162,7 @@ type Game struct {
 	fade                       *storyFade      // 場景淡出/淡入轉場(doc46 §5.2)
 	transitionReveal           *transitionRevealJob
 	indexedTransition          *nativeIndexedTransitionJob
+	nativeHealPresentation     *nativeCommandHealPresentationJob
 	spawnIntroTransition       *nativeSpawnIntroJob
 	nativeTurnStaging          *nativeTurnStagingJob
 	nativeFieldEvent61         *nativeFieldEvent61Job
@@ -5660,6 +5661,36 @@ func (g *Game) confirm() {
 			g.msg = fmt.Sprintf("原始指令 %d：游標確認不合法", id)
 			return
 		}
+		if id >= 13 && id <= 16 {
+			actor := g.sel
+			if _, err := g.st.NativeCommandHealTargets(actor, tgt, id); err != nil {
+				g.msg = fmt.Sprintf("原始指令 %d：請選擇有效目標 (%v)", id, err)
+				return
+			}
+			err := g.startNativeCommandHealPresentation(id, func() {
+				results, executeErr := g.st.ExecuteNativeCommandHeal(actor, tgt, id, g.rng)
+				if executeErr != nil {
+					g.loadErr = fmt.Sprintf("native command %d post-presentation transaction: %v", id, executeErr)
+					return
+				}
+				total := 0
+				for _, result := range results {
+					total += result.Restore.Actual
+				}
+				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
+				g.msg = fmt.Sprintf("原始指令 %d：回復 %d", id, total)
+				g.finishSuccessfulUnitAction(actor, func() {
+					g.resetNativeTargetField()
+					g.st.MaterializeNativeMapRangeMode(1)
+					g.nativeCommand0Targeting, g.nativeCommandTargetID, g.sel, g.reach, g.moved = false, 0, nil, nil, false
+				})
+				g.checkResult()
+			})
+			if err != nil {
+				g.msg = fmt.Sprintf("原始指令 %d：indexed 演出不可用 (%v)", id, err)
+			}
+			return
+		}
 		message := ""
 		var err error
 		var damageTargets []*battle.Unit
@@ -5679,14 +5710,6 @@ func (g *Game) confirm() {
 				damageTargets = append(damageTargets, result.Target)
 			}
 			message = fmt.Sprintf("原始指令 0：命中 %d，傷害 %d", hit, total)
-		case id >= 13 && id <= 16:
-			results, e := g.st.ExecuteNativeCommandHeal(g.sel, tgt, id, g.rng)
-			err = e
-			total := 0
-			for _, result := range results {
-				total += result.Restore.Actual
-			}
-			message = fmt.Sprintf("原始指令 %d：回復 %d", id, total)
 		case id == 20 || id == 21:
 			results, e := g.st.ExecuteNativeCommandClearRestore(g.sel, tgt, id, g.rng)
 			err = e
@@ -6200,6 +6223,7 @@ func (g *Game) Update() error {
 	g.stepFade()                                 // 場景淡出/淡入轉場(doc46 §5.2;beat「fade」兩個方向都靠 then 接回下一拍)
 	g.stepTransitionReveal()                     // native 0x24b4d alternating present loop
 	g.stepNativeIndexedTransition()              // native 0x24618 indexed map/palette transition
+	g.stepNativeCommandHealPresentation()        // native 0x21EB1 command 13..16 indexed presentation
 	g.stepNativePaletteRamp()                    // native 0x1f882/0x1f525 whole-DAC ramps
 	g.stepNativeSpawnIntro()                     // native 0x32999 twelve-pass indexed spawn transition
 	g.stepNativeTurnStaging()                    // event63 raw-camp0 pre-AI staging helper
@@ -6248,6 +6272,9 @@ func (g *Game) Update() error {
 			clamp(&g.camX, 0, float64(g.m.W*g.m.TileW-logicalW))
 			clamp(&g.camY, 0, float64(g.m.H*g.m.TileH-logicalH))
 		}
+	}
+	if g.nativeHealPresentation != nil {
+		return nil
 	}
 	if !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF5) { // 快速存檔(節點邊界語意:存 campaign 進度)
 		g.saveGame()
@@ -6525,6 +6552,16 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		screen.Fill(color.Black)
 		if !g.drawNativeIndexedTransition(screen) {
 			ebitenutil.DebugPrint(screen, "native 0x24618 transition unavailable")
+		}
+		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
+			g.captureShot(screen)
+		}
+		return
+	}
+	if g.nativeHealPresentation != nil {
+		screen.Fill(color.Black)
+		if !g.drawNativeCommandHealPresentation(screen) {
+			ebitenutil.DebugPrint(screen, "native 0x21EB1 presentation unavailable")
 		}
 		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
 			g.captureShot(screen)

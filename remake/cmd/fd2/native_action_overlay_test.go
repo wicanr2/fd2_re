@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
@@ -284,6 +285,12 @@ func TestNativeCommandTargetFieldMaterializeAndReset(t *testing.T) {
 }
 
 func TestPlayerNativeCommand13RunsCursorTransactionThroughConfirm(t *testing.T) {
+	assets, field, state := completeNativeMapFrameFixture(t)
+	for i := range assets.LUTs {
+		for p := range assets.LUTs[i] {
+			assets.LUTs[i][p] = byte(p)
+		}
+	}
 	book := make([]battle.NativeCommandRecord, 36)
 	for id := range book {
 		book[id] = battle.NativeCommandRecord{ID: id}
@@ -292,32 +299,46 @@ func TestPlayerNativeCommand13RunsCursorTransactionThroughConfirm(t *testing.T) 
 		ID: 13, Damage: 70, SelectionMode: 1, EffectMode: 0,
 		MPCost: 3, TargetCode: 1,
 	}
-	actor := &battle.Unit{
-		Camp: battle.Own, OnField: true, HP: 20, MaxHP: 20, MP: 5, X: 0, Y: 0,
-		HasNativeRecordByte5: true,
-	}
-	target := &battle.Unit{
-		Camp: battle.Own, OnField: true, HP: 40, MaxHP: 100, X: 1, Y: 0,
-		HasNativeRecordByte5: true,
-	}
-	state := &battle.State{
-		W: 2, H: 1, Units: []*battle.Unit{actor, target},
-		NativeCommandBook:           book,
-		NativeCompositionEventBytes: make([]byte, 2),
-		NativeTileBlitModes:         []byte{0xff, 0},
-		NativeMapRangeMode:          3,
-		HasNativeMapRangeModeState:  true,
-	}
+	actor := state.Units[0]
+	actor.Camp, actor.OnField = battle.Own, true
+	actor.HP, actor.MaxHP, actor.MP = 40, 100, 5
+	actor.NativeRecordWord42, actor.HasNativeRecordWord42 = 100, true
+	state.NativeCommandBook = book
+	state.NativeCompositionEventBytes = make([]byte, state.W*state.H)
+	state.NativeTileBlitModes[0], field.NativeTileBlitModes[0] = 0, 0
+	state.MaterializeNativeMapRangeMode(3)
 	g := &Game{
-		st: state, sel: actor, curX: 1, curY: 0,
+		nativeMapAssets: assets, nativeMapDAC: append([]byte(nil), assets.PaletteDAC...),
+		m: field, st: state, sel: actor, curX: 0, curY: 0,
 		nativeCommand0Targeting: true, nativeCommandTargetID: 13,
 		rng: rand.New(rand.NewSource(2)),
 	}
+	g.confirm()
+	if g.nativeHealPresentation != nil || actor.MP != 5 || actor.HP != 40 || actor.Acted {
+		t.Fatalf("missing indexed baseline did not fail closed: job=%v actor=%#v",
+			g.nativeHealPresentation != nil, actor)
+	}
+	if err := g.composeNativeMapFrameAt(time.Unix(0, 0)); err != nil {
+		t.Fatal(err)
+	}
 
 	g.confirm()
+	if g.nativeHealPresentation == nil || actor.MP != 5 || actor.HP != 40 || actor.Acted {
+		t.Fatalf("command13 did not stop at presentation boundary: job=%v actor=%#v",
+			g.nativeHealPresentation != nil, actor)
+	}
+	for step := 0; g.nativeHealPresentation != nil && step < 100; step++ {
+		if g.nativeHealPresentation.phase == nativeCommandHealFrames {
+			g.nativeHealPresentation.drawn = true
+		}
+		g.stepNativeCommandHealPresentation()
+	}
+	if g.nativeHealPresentation != nil {
+		t.Fatal("command13 presentation did not complete")
+	}
 
-	if actor.MP != 2 || !actor.Acted || target.HP != 100 {
-		t.Fatalf("player command13 transaction actor=%#v target=%#v", actor, target)
+	if actor.MP != 2 || !actor.Acted || actor.HP != 100 {
+		t.Fatalf("player command13 transaction actor=%#v", actor)
 	}
 	if g.nativeCommand0Targeting || g.sel != nil || state.NativeMapRangeMode != 1 {
 		t.Fatalf("player command13 cleanup targeting=%v sel=%#v range=%d",

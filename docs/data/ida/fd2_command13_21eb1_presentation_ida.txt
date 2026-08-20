@@ -1,0 +1,81 @@
+# FD2 command 13–16 `0x21EB1` indexed 演出：IDA 9.4 證據
+
+## 輸入與工具
+
+- 輸入：`FD2.EXE`，357074 bytes
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 第一順位工具：IDA Pro 9.4.0.260610／Hex-Rays，授權 Docker
+  `fd2-ida-authorized-local`；Linear Executable loader 的線性位址空間
+- 第二順位工具：Capstone 5.0.3，Docker `fd2-cap-local`；同一線性位址空間
+- IDA 原始名稱：`sub_21AD9`、`sub_21B99`、`sub_2211C`、`sub_22153`、
+  `sub_21EB1`、`sub_22046`。本文不以改名取代這些原始名稱。
+
+IDA 資料庫只建立於容器 tmpfs；原始執行檔唯讀掛載。下列語意是附加註記，
+每段均標示推論等級。
+
+## wrapper、caller 與樣本（已證實）
+
+- `sub_21AD9`／`sub_21B99`／`sub_2211C`／`sub_22153` 都有兩種直接 caller：
+  玩家 dispatcher `0x1CFF0..0x1D4CB` 與敵方／自動 dispatcher
+  `0x15311..0x1548E` 的 `funcs_1541F[eax*4]`。
+- 四個 wrapper 都先呼叫 `0x25A96([0x53B13],0x0B,1)`；`0x25A96` 的
+  已閉合角色是 AIL sample wrapper。因此 raw sample index `11` 已證實，
+  但本文不替該聲音取效果名稱。
+- wrapper 對 `sub_21EB1` 的兩個 cdecl 引數依序是：command 13=`(1,2)`、
+  14=`(2,4)`、15=`(8,4)`、16=`(6,6)`。之後才把 command literal
+  `13/14/15/16` 傳入共同 `sub_21B18` 交易尾端。
+
+## `sub_21EB1` 的 16 張 indexed 排程（已證實）
+
+函式邊界是 `0x21EB1..0x22046`，四個 wrapper 是其全部直接 caller。
+IDA 與 Capstone 對下列直接指令一致：
+
+1. 由鏡頭相對可見游標 `[0x53AB9]/[0x53ABD]` 建立中心
+   `(24*x+12,24*y+16)`；這兩個 global 的游標語意沿用既有 writer／consumer
+   證據，不由本函式重新命名。
+2. 配置 `0x25680` bytes，並以
+   `0x11EEE(work+0x8088,456,13,8,[0x53AA9],[0x53AAD])` 建立原始背景工作區。
+3. 第一段以 descriptor `9..1` 共九次：每次從 boot 載入的
+   FDOTHER #3 base `[0x53A6D]` 取 offset-table entry，恢復完整 `0x25680`
+   snapshot，呼叫 `sub_22046(centerX,centerY,radius,0,192,LUT)`，再以
+   `0x11EB0` 呈現 312×192 viewport。半徑從 wrapper 第一參數開始，每張加
+   第二參數；每張等待5 ms。
+4. 九張後等待200 ms，再把半徑減回最後一張的值。第二段以相同固定半徑走
+   descriptor `3..9` 共七次，每張等待5 ms。
+5. 最後呼叫 `0x11CAC(0)` 恢復一般 indexed 戰場並等待200 ms。
+
+所以四個排程的第一／最後半徑分別是 `1→17`、`2→34`、`8→40`、
+`6→54`。這些是原始 loop 與 wrapper immediate 的機械結果，不是視覺命名。
+
+## `sub_22046` 消費端（已證實）
+
+- 函式邊界是 `0x22046..0x2211C`；`sub_21EB1` 有兩個直接 call site。
+- 它先呼叫 `sub_219AD`，接著呼叫 `sub_127A9` 重畫物件，再次呼叫
+  `sub_219AD`，最後以 `sub_4DB9C` 對矩形列做同一 LUT remap。
+- 半徑的水平倍率來自線性位址 `0x50208` 的 raw double bytes
+  `9a 99 99 99 99 99 f9 3f`，即1.6；整數轉換沿既有 toward-zero 契約。
+- 這個 compositor 及 FDOTHER #3 LUT parser 已由既有
+  `BuildNativeIndexedTransitionPass`、`ComposeNativeTransitionFrame` 嚴格實作；
+  本批只是新增 caller-specific 16-frame schedule，沒有重寫或重新命名 callee。
+
+## 重製對應與證據等級
+
+- `RE-CLOSED`：四個 wrapper、sample index、`0x21EB1` 的16張排程、兩次200 ms、
+  visible-cursor中心、FDOTHER #3 LUT provenance，以及 `0x22046` consumer chain。
+- `DATA-READY`：`BuildNativeCommandHealPresentationSchedule` 保存四組 immediate、
+  descriptor／radius／delay，不把 raw LUT 命名成法術圖檔。
+- `RUNTIME-E1`：玩家 command 13–16 會先完整 preflight 原始 map、LUT、palette、
+  visible cursor 與 normal indexed baseline。缺任何一項時 MP／HP／acted 均不改；
+  16 張畫面與兩段停格完成後才進既有 MP／HP 交易及 action cleanup。原版每張
+  5 ms 小於目前 60 Hz 更新週期，重製端因此每張至少發布一個更新幀；這是保留
+  順序與可見畫格的 E1 時序近似，不宣稱逐毫秒一致。
+- 敵方／自動 dispatcher 尚未接此畫面 owner；`0x1C4CC/0x1C2DA` 後段演出、
+  `0x1E0DB` 數字佇列的畫面消費，以及未修改原版同狀態逐幀／逐音訊比較仍缺，
+  所以不可宣稱 command 13–16 完整 E2 或逐像素一致。
+
+## 重開條件
+
+只有輸入雜湊不同、直接指令／offset table 反證、同狀態執行結果矛盾，或上述
+主證據缺少其聲稱的 caller／consumer 時，才重開本函式。後續工作應接數字佇列、
+AI owner 與原版對拍，不再重解 `0x21EB1` 的 loop。
