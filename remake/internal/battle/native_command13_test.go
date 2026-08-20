@@ -34,3 +34,41 @@ func TestExecuteNativeCommandHealRejectsFamilyBoundaryBeforeMutation(t *testing.
 		t.Fatalf("non-heal ID must fail closed: actor=%#v err=%v", actor, err)
 	}
 }
+
+func TestExecuteNativeAICommandHealRebuildsTargetsFromRawSelector(t *testing.T) {
+	actor := completeNativeAIScoringUnit()
+	actor.NativeMapPresentation.X, actor.NativeMapPresentation.Y = 0, 0
+	actor.NativeRecordByte5, actor.NativeRecordByte6 = 0, 0
+	actor.HP, actor.MaxHP, actor.MP = 100, 100, 5
+	target := completeNativeAIScoringUnit()
+	target.NativeMapPresentation.X, target.NativeMapPresentation.Y = 1, 0
+	target.NativeRecordByte5, target.NativeRecordByte6 = 0, 0
+	target.HP, target.MaxHP = 40, 100
+	book := nativeCommandHealBook(13)
+	book[13].EffectMode = 1
+	st := &State{
+		W: 2, H: 1, Units: []*Unit{actor, target},
+		NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: book,
+	}
+
+	got, err := st.ExecuteNativeAICommandHeal(actor, 13, rand.New(rand.NewSource(2)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(got) != 2 || got[0].Target != actor || got[1].Target != target {
+		t.Fatalf("AI target array=%#v", got)
+	}
+	if actor.MP != 2 || target.HP != 100 || !actor.Acted {
+		t.Fatalf("AI heal actor=%#v target=%#v", actor, target)
+	}
+}
+
+func TestExecuteNativeAICommandHealRejectsMissingSelectorBeforeMutation(t *testing.T) {
+	actor := completeNativeAIScoringUnit()
+	actor.HasNativeRecordByte6 = false
+	actor.MP = 5
+	st := &State{NativeCommandBook: nativeCommandHealBook(13), Units: []*Unit{actor}}
+	if _, err := st.ExecuteNativeAICommandHeal(actor, 13, rand.New(rand.NewSource(1))); err == nil || actor.MP != 5 || actor.Acted {
+		t.Fatalf("missing selector crossed AI heal gate: actor=%#v err=%v", actor, err)
+	}
+}

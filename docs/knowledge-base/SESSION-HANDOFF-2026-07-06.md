@@ -5054,3 +5054,22 @@ current-runtime direction3 建立正式 owner，其餘三格仍失敗即關閉�
 - 提交前 Docker 驗證：`go test ./... -count=1` 全套通過；工具測試55項、JSON 917份、
   戰後節點稽核21 active／3 blocked均通過；本批文件579個具副檔名本地目標無斷鏈。
   原版每張5 ms在60 Hz重製端採至少一個可見幀的E1近似，沒有升格成逐毫秒E2。
+
+## 2026-08-21：敵方 mode 11 command 13–16 target array 與演出消費端
+
+接線前回歸先證明玩家 `NativeCommandTargetMatches(1)` 的絕對陣營 predicate 不能
+直接套到 Enemy；該嘗試未提交。回查既有 IDA 主證據後，`0x15311` 已明確在移動完成
+後用 winner 座標、row `+4/+6` 再呼叫 `0x14818`，因此重製端新增 AI 專用 typed
+target builder：由 raw `+6` selector、當下 presentation 座標、完整 runtime records
+與 composition flags 重建 target array，不猜測翻轉 `Camp`。
+
+- `ExecuteNativeAICommandHeal` 只接受 command 13–16 與完整 raw provenance；缺 selector、
+  roster、baseline、LUT 或 palette 時不扣 MP、不改 HP、不提交 acted。
+- mode 11 的 `0x15311` consumer 現先播放同一 `0x21EB1` 16張演出，完成後才交易；
+  `aiStep` 在演出存在時不重新規劃，避免同一敵人重複行動。
+- 這是重製端 `RUNTIME-E1`；後段數字佇列、同狀態原版逐幀／逐音訊與一般玩家
+  mode 11 E2 仍缺。主證據沿用
+  [`fd2_ai_mode11_full_ida_20260810.txt`](../data/ida/fd2_ai_mode11_full_ida_20260810.txt) 與
+  [`fd2_command13_21eb1_presentation_ida.txt`](../data/ida/fd2_command13_21eb1_presentation_ida.txt)。
+- Docker／Xvfb `go test ./... -count=1` 全套、55項工具測試、917份JSON、戰後
+  21 active／3 blocked稽核均通過；本批582個具副檔名本地文件目標無斷鏈。

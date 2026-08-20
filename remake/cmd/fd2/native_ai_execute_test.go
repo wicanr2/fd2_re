@@ -3,6 +3,7 @@ package main
 import (
 	"math/rand"
 	"testing"
+	"time"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
@@ -44,6 +45,81 @@ func TestExecuteNativeAIActionReusesVerifiedCommandDamageRoute(t *testing.T) {
 	}
 	if !actor.Acted || actor.MP != 2 || target.HP >= 20 {
 		t.Fatalf("actor=%+v target=%+v", actor, target)
+	}
+}
+
+func TestExecuteNativeAICommand13WaitsForIndexedPresentation(t *testing.T) {
+	assets, field, state := completeNativeMapFrameFixture(t)
+	for i := range assets.LUTs {
+		for p := range assets.LUTs[i] {
+			assets.LUTs[i][p] = byte(p)
+		}
+	}
+	book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
+	for id := range book {
+		book[id] = battle.NativeCommandRecord{ID: id}
+	}
+	book[13] = battle.NativeCommandRecord{
+		ID: 13, Damage: 70, SelectionMode: 1, EffectMode: 0,
+		MPCost: 3, TargetCode: 1,
+	}
+	actor := state.Units[0]
+	actor.Camp, actor.OnField = battle.Enemy, true
+	actor.HP, actor.MaxHP, actor.MP = 40, 100, 5
+	actor.NativeRecordByte5, actor.HasNativeRecordByte5 = 0, true
+	actor.NativeRecordByte6, actor.HasNativeRecordByte6 = 0, true
+	actor.NativeRecordByte34, actor.HasNativeRecordByte34 = 0x81, true
+	actor.NativeRecordByte35, actor.HasNativeRecordByte35 = 0, true
+	actor.NativeRecordByte36, actor.HasNativeRecordByte36 = 0, true
+	actor.NativeRecordWord42, actor.HasNativeRecordWord42 = 100, true
+	actor.NativeRecordWord46, actor.HasNativeRecordWord46 = 5, true
+	actor.NativeRecordRace, actor.HasNativeRecordRace = 0, true
+	actor.NativeRecordClass, actor.HasNativeRecordClass = 0, true
+	actor.NativeRecordByte8, actor.HasNativeRecordByte8 = 0, true
+	actor.InventorySlots = []int{0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}
+	actor.NativeInventoryFlags = []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	state.NativeCommandBook = book
+	state.NativeCompositionEventBytes = make([]byte, state.W*state.H)
+	state.NativeTileBlitModes[0], field.NativeTileBlitModes[0] = 0, 0
+	state.MaterializeNativeMapRangeMode(3)
+	g := &Game{
+		nativeMapAssets: assets, nativeMapDAC: append([]byte(nil), assets.PaletteDAC...),
+		m: field, st: state, aiBusy: true, rng: rand.New(rand.NewSource(2)),
+	}
+	plan := &battle.AIPlan{
+		U: actor, Target: actor, NativeActionKind: battle.NativeAIActionCommand,
+		NativeCommandID: 13,
+	}
+	if err := g.executeNativeAIAction(plan); err == nil {
+		t.Fatal("AI command13 accepted a missing indexed baseline")
+	}
+	if actor.MP != 5 || actor.HP != 40 || actor.Acted {
+		t.Fatalf("failed AI presentation mutated actor=%#v", actor)
+	}
+	if err := g.composeNativeMapFrameAt(time.Unix(0, 0)); err != nil {
+		t.Fatal(err)
+	}
+	if err := g.executeNativeAIAction(plan); err != nil {
+		t.Fatal(err)
+	}
+	if g.nativeHealPresentation == nil || actor.MP != 5 || actor.HP != 40 || actor.Acted {
+		t.Fatalf("AI command13 crossed presentation boundary: job=%v actor=%#v",
+			g.nativeHealPresentation != nil, actor)
+	}
+	g.aiStep()
+	if g.nativeHealPresentation == nil || actor.MP != 5 || actor.HP != 40 || actor.Acted {
+		t.Fatalf("aiStep replanned during presentation: job=%v actor=%#v",
+			g.nativeHealPresentation != nil, actor)
+	}
+	for step := 0; g.nativeHealPresentation != nil && step < 100; step++ {
+		if g.nativeHealPresentation.phase == nativeCommandHealFrames {
+			g.nativeHealPresentation.drawn = true
+		}
+		g.stepNativeCommandHealPresentation()
+	}
+	if g.nativeHealPresentation != nil || actor.MP != 2 || actor.HP != 100 || !actor.Acted {
+		t.Fatalf("AI command13 did not finish after presentation: job=%v actor=%#v",
+			g.nativeHealPresentation != nil, actor)
 	}
 }
 

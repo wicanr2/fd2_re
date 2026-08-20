@@ -833,7 +833,7 @@ actor raw completion writer。它與 ID20/21「借 record10」的 clear/restore 
 |---|---|---|---|
 | 0–8 | `0x2A6BD→2B659/1C75E`，two-stage final targets、MP event、numeric hit/HP | `ExecuteNativeCommandDamage`；ID0 有 target slice | 僅 ID0 grid target；compositor/SFX/post-resolution 未接 |
 | 9–12 | direct/`0x21548` tail → `1CA89→1C75E` | `ExecuteNativeCommandDamage` | 未接；numeric 共用不代表演出共用 |
-| 13–16 | `0x21AD9…0x22153→21EB1→21B18→1C8ED/1C916` | `BuildNativeCommandHealPresentationSchedule`＋`ExecuteNativeCommandHeal` | 玩家 16 張 FDOTHER #3 LUT 前段已接；後段索引畫面／數字佇列、敵方消費端與格狀確認 E2 未接 |
+| 13–16 | `0x21AD9…0x22153→21EB1→21B18→1C8ED/1C916` | `BuildNativeCommandHealPresentationSchedule`＋玩家 `ExecuteNativeCommandHeal`／AI `ExecuteNativeAICommandHeal` | 玩家與敵方 mode 11 的 16 張 FDOTHER #3 LUT 前段已接；AI 依 raw selector 重建 target array；後段索引畫面／數字佇列與格狀確認 E2 未接 |
 | 17–19 | `0x226EA/2282F/22960` modifier writers、`+0x22..+0x24` duration；`__CHP` toward-zero 已釘死 | `ApplyNativeCommandModifier` 已接 raw writer；`ApplyNativeRuntimeEquipmentRecalc` 已保存 `0x1B750` 的 exact 1.15／朝零及HIT/EV+15。command transaction與phase-expiry caller仍未接 | 未接 |
 | 20–21 | `0x22A85/22BC6→22AF6`，clear `+0x25/+0x26` 並借 record10 restore | `ExecuteNativeCommandClearRestore` | 未接 |
 | 22 | `0x22BE1→22D1B`，class/RNG gate、base10 經第二 RNG 實際9 HP、第三 RNG write `+0x27` | `ExecuteNativeCommandApplication` | 未接 |
@@ -3827,7 +3827,8 @@ cursor→MP／HP→action→range reset 的正式回歸，未猜接其畫格、�
 `BuildNativeCommandHealPresentationSchedule` 配合既有嚴格 `0x22046`
 compositor，在玩家 command 13–16 狀態變更前一次預先驗證全部 16 張。缺 baseline、
 LUT、palette 或 raw view 時交易不發生；原版每張 5 ms 在 60 Hz 更新迴圈中採每張
-至少一幀的順序近似。後段數字佇列、敵方消費端與 E2 仍失敗即關閉。
+至少一幀的順序近似。敵方 mode 11 不套玩家 confirmed-cursor gate，而是依既有
+`0x15311` 證據在移動後重建 raw target array；後段數字佇列與 E2 仍失敗即關閉。
 證據見
 [`fd2_command13_21eb1_presentation_ida.txt`](../data/ida/fd2_command13_21eb1_presentation_ida.txt)。
 
