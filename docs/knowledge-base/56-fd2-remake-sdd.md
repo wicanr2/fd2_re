@@ -1266,6 +1266,13 @@ Enter/Space reaches `0x2d093→0x2d28c`. Legacy
 `SecretIf` and `found_secret_ch*` remain authored extension mechanisms only;
 they do not establish native parity.
 
+2026-08-20 的正式戰間回歸已把上述資料契約接到玩家第25戰：戰後
+`62→70→71`、JOIN26／29、`town_ch26` 存讀檔之後，只有selection4＋Shift+F5
+（BIOS scan `0x58`）能揭露selection5；ch02的Shift+F1（`0x54`）會拒絕。
+後續確認進入`shop_ch26_secret` variant5，驗證商品195／207／40，並經四幀
+離店動畫回到`town_ch26`、保留selection5及持續隊伍。這是重製端正常戰間
+`RUNTIME-E1`，不是未修改原版同狀態`PLAYER-E2`。
+
 The town scene owner is now closed at E1/production level. `0x2cd16` reads
 record byte 0 and indexes the three-entry resource table at `0x526d7`,
 selecting FDOTHER resources `11`, `61`, or `62`. `0x2cf71` redraws

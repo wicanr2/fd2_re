@@ -4989,3 +4989,18 @@ owner 與部署尾端。兩者主題不同、都保留，撤回先前「舊檔�
   town node-boundary save/load。
 - 戰後稽核現為24節點中21 active／3 blocked；剩餘玩家第23、24、29戰。
   本切片只提升為runtime E1，仍缺未修改一般玩家原版同狀態E2與逐像素比較。
+
+## 2026-08-20：第25戰後 `town_ch26` 祕密商店正常戰間 E1
+
+本輪沒有重開已閉合的祕密商店反組譯，而是補上玩家可見消費鏈。既有
+`0x2cd16→0x2cef7` 與23筆章節表已證實每個城鎮使用不同的normal selection／BIOS
+scan；`town_ch26` 是 selection4＋Shift+F5（`0x58`），不是ch02的Shift+F1（`0x54`）。
+
+- 第25戰正式回歸在62→70→71、JOIN26／29、`town_ch26`存讀檔之後繼續執行；
+  錯誤`0x54`不改selector，`0x58`只將selection4揭露成selection5並以原版城鎮資源
+  重畫，仍停在town。
+- 下一次確認才進`shop_ch26_secret`；正式原版資源消費端啟用variant5四幀開場，
+  商品ID固定為195／207／40。四幀離店完成後回`town_ch26`並保留selection5、
+  JOIN26／29及持續隊伍。
+- Docker／Xvfb focused regression通過。這是重製端正常戰間`RUNTIME-E1`，仍缺
+  未修改原版第25戰勝利後相同狀態的`PLAYER-E2`與逐幀畫面／音訊比較。

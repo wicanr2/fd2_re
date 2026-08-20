@@ -31,6 +31,19 @@ handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不�
 
 ## 歷史工作記錄（不可用來計算完成度）
 
+### 2026-08-20：玩家第25戰後第26章祕密商店正常戰間切片
+
+- `RE-CLOSED`／`DATA-READY`：沿用已閉合的 `0x2cd16→0x2cef7` 章節表與
+  `native_secret_gate`，未重新反組譯。`town_ch26` 的原始條件是 selection4＋
+  Shift+F5（BIOS scan `0x58`）；掃描碼只揭露selection5，下一次確認才進variant5。
+- `RUNTIME-E1`：`TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary`
+  現由玩家第25戰勝利、62→70→71、JOIN26／29及town save/load繼續走到
+  `shop_ch26_secret`，使用原版城鎮／商店資源驗證隱藏項重畫、商品195／207／40、
+  四幀離店與返回`town_ch26`。錯用ch02 Shift+F1（`0x54`）會拒絕；返回後selection5
+  與持續隊伍仍保留。
+- `PLAYER-E2`：尚缺未修改原版第25戰勝利後同狀態輸入與畫面擷取；本切片不得
+  外推成23個城鎮或所有商店交易已達E2。
+
 ### 2026-08-13：玩家第21戰天空之鑰演出垂直切片
 
 - [x] **RE-CH20-SKY-KEY-SEQUENCE-20260813**：合法 IDA Pro 9.4 與 Docker

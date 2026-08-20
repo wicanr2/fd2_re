@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
@@ -995,6 +996,81 @@ func TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary(t
 		len(g.partyJoinOrder) != len(order)+2 {
 		t.Fatalf("town26 save/load node=%q members=%v order=%v roster=%v", g.camp.NodeID(), g.partyMembers, g.partyJoinOrder, g.partyRoster)
 	}
+
+	// Continue through the actual chapter-specific town/shop intermission. The
+	// native table requires selection 4 plus Shift+F5 (BIOS scan 0x58); ch02's
+	// Shift+F1 gate must not work here. The chord reveals selection 5 in place,
+	// a separate confirmation enters variant 5, and the four-frame close returns
+	// to town_ch26 with the hidden selection preserved.
+	t.Run("town_ch26_secret_shop", func(t *testing.T) {
+		base := filepath.Join("..", "..", "..", "org_game", "炎龍騎士團", "FLAME2")
+		if _, err := os.Stat(filepath.Join(base, "FDOTHER.DAT")); err != nil {
+			t.Skip("player-provided original facility resources are absent")
+		}
+		t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+		t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(base, "FDTXT.DAT"))
+		t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(base, "DATO.DAT"))
+		shared, err := loadNativeClassUIAssets()
+		if err != nil {
+			t.Fatal(err)
+		}
+		townUI, err := loadNativeTownUIAssets()
+		if err != nil {
+			t.Fatal(err)
+		}
+		shopUI, err := loadNativeShopUIAssets(shared)
+		if err != nil {
+			t.Fatal(err)
+		}
+		g.nativeClassUI, g.nativeTownUI, g.nativeShopUI = shared, townUI, shopUI
+		g.campSel = 4
+		visible, ok := g.composeNativeTownFrame()
+		if !ok || len(visible) != 320*200 {
+			t.Fatalf("town26 visible frame=%d ok=%v", len(visible), ok)
+		}
+		ch02Scan, ok := nativeBIOSFunctionScan(nativeFunctionShift, 1)
+		if !ok || ch02Scan != 0x54 || g.revealNativeTownSecret(ch02Scan) || g.campSel != 4 {
+			t.Fatalf("town26 accepted ch02 secret gate: scan=%#x ok=%v selection=%d", ch02Scan, ok, g.campSel)
+		}
+		ch26Scan, ok := nativeBIOSFunctionScan(nativeFunctionShift, 5)
+		if !ok || ch26Scan != 0x58 || !g.revealNativeTownSecret(ch26Scan) || g.campSel != 5 ||
+			g.camp.NodeID() != "town_ch26" {
+			t.Fatalf("town26 Shift+F5 reveal: scan=%#x ok=%v node=%q selection=%d", ch26Scan, ok, g.camp.NodeID(), g.campSel)
+		}
+		hidden, ok := g.composeNativeTownFrame()
+		if !ok || bytes.Equal(visible, hidden) {
+			t.Fatal("town26 hidden selection did not redraw the native town frame")
+		}
+		if !g.camp.ConfirmNativeTownSecret(g.campSel) {
+			t.Fatal("town26 hidden selection confirmation was rejected")
+		}
+		g.enterNode()
+		if g.camp.NodeID() != "shop_ch26_secret" || g.nativeShopVariant != 5 ||
+			g.nativeShopMode != "menu" || g.nativeShopUIJob == nil ||
+			len(g.nativeShopUIJob.frames) != 4 {
+			t.Fatalf("town26 secret entry node=%q variant=%d mode=%q opening=%v", g.camp.NodeID(), g.nativeShopVariant, g.nativeShopMode, g.nativeShopUIJob != nil)
+		}
+		goods := g.camp.ShopGoods()
+		if len(goods) != 3 || goods[0].ID != 195 || goods[1].ID != 207 || goods[2].ID != 40 {
+			t.Fatalf("town26 secret goods=%v", goods)
+		}
+		for g.nativeShopUIJob != nil {
+			g.nativeShopUIJob.drawn = true
+			g.stepNativeShopUILifecycle(time.Time{})
+		}
+		if !g.beginNativeShopServiceClosing(g.leaveShop) || g.nativeShopUIJob == nil ||
+			len(g.nativeShopUIJob.frames) != 4 {
+			t.Fatal("town26 secret shop did not start the four-frame close lifecycle")
+		}
+		for g.nativeShopUIJob != nil {
+			g.nativeShopUIJob.drawn = true
+			g.stepNativeShopUILifecycle(time.Time{})
+		}
+		if g.camp.NodeID() != "town_ch26" || g.campSel != 5 ||
+			!g.partyMembers[26] || !g.partyMembers[29] {
+			t.Fatalf("town26 secret return node=%q selection=%d members=%v", g.camp.NodeID(), g.campSel, g.partyMembers)
+		}
+	})
 }
 
 func TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary(t *testing.T) {
