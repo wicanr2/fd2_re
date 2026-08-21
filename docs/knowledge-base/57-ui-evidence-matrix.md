@@ -141,6 +141,13 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 > event52 精確增援時序與未修改原版同狀態畫面仍缺，故只列 RUNTIME-E1；
 > 目前24個標準戰後節點為23 active／1 blocked，只剩玩家第29戰。
 
+> **2026-08-21 玩家第29戰窄幅進展：** raw ch28 `0x25535` 對
+> `0x22253([0x53BEB]-1,15,10,15,10)` 的來源限定 lowering、indexed unit
+> presenter 與 `0x35E5A` 127-step palette pulse 已達 RUNTIME-E1。這不解除
+> 玩家第29戰的 fail-closed：map28 materialize 順序、group9 後的實際 runtime
+> frontier、對話／視圖 owner、正式 binding、存檔邊界與一般玩家 E2 仍未閉合；
+> 尤其不得把強推論的固定 slot93 寫入正式資料。
+
 > **2026-08-11 歷史勘誤；blocked 清單已由 2026-08-21 取代。** 玩家第22戰
 > 當時由 fail-closed 提升為 E1；玩家第24戰又於2026-08-21以 raw ch23 indexed
 > adapter 提升為 E1。此歷史清單又由上方玩家第23戰接線勘誤取代。

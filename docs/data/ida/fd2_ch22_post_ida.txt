@@ -99,9 +99,9 @@ FD2.EXE：raw ch22 post／玩家第23戰戰後處理器證據
   `192,456,312,work+0x8088,320,0xa0504`；最後 `0x219a3` 呼叫
   `0x11cac(0)`。
 - `Native2189ALoop` 只把上述 call-site、重複次數、幾何常數與 raw 引數
-  放入可編輯腳本；沒有把它命名成肖像、特效、過場或玩法。重製執行器
-  對 `native_2189a_loop` 目前明確回報「indexed adapter 未完成」並停止，
-  因此不會以猜測的 generic renderer 取代原始效果。
+  放入可編輯腳本；沒有把它命名成肖像、特效、過場或玩法。這段原為
+  adapter 未完成時的失敗即關閉契約；2026-08-21 已由 indexed adapter
+  消費上述 raw payload。高階畫面名稱與原版同狀態 E2 仍未證實。
 - `0x24b14`、`0x24bde` 與 `[0x53BEF] < 15` 已在
   `ch22_post.json` 轉成 `native_inventory_item_present`、
   `native_persistent_identity_present` 與 `native_round_lt` 結構化條件。

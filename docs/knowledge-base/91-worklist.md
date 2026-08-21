@@ -13,10 +13,10 @@
 
 | 順序 | 工作 | 現況 | 下一個可驗收結果 |
 |---:|---|---|---|
-| 0 | 原始碼註解與 Markdown 現況斷言稽核 | `DATA-READY`：已發現並修正部分戰役節點、blocked 數量及原始格網舊說法；仍需以現行程式與 `58` 權威矩陣全面抽查 | 下一輪搜尋註解與文件中的完成度、節點、slot、handler、renderer 舊斷言；錯誤現況直接訂正或刪除，歷史證據則追加勘誤，不抹除形成原因 |
-| 1 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式，現為產品31／runtime170／未知1104；舊83 unknown 已拆為79已分類、4已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253`／`0x2BCE5` 追 caller／執行期 gate，不重解 callee |
+| 0 | 原始碼註解與 Markdown 現況斷言稽核 | `DATA-READY`：本輪已修正 `0x2189A`、`0x22253`、legacy `unit_present` 與 handler 三態計數的高信心舊斷言，並修復 manifest 產生器重複鍵；這是持續性品質閘門，不是一次掃描即永久完成 | 下一輪抽查完成度、節點、slot、handler、renderer 舊斷言；錯誤現況直接訂正或刪除，歷史證據則追加勘誤，不抹除形成原因 |
+| 1 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式，現為產品31／runtime170／未知1104；舊83 unknown 已拆為80已分類、3已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253` 只追其他 caller／戰役 gate，`0x2BCE5` 追正式 owner，不重解 callee |
 | 2 | 玩家第21戰天空之鑰固定演出 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`：`0x24336` 已接真實 `FDOTHER #34`、`ANI #0`、調色盤循環與正式戰後→城鎮→存讀檔 | 取得未修改原版同狀態 E2，核對第一個動態調色盤相位與相鄰 `layout_units`／ACT63／64；不重解函式本體 |
-| 3 | 最後一個忠實模式 blocked postbattle | 玩家第23至25戰戰後已達 `RUNTIME-E1`；只剩玩家第29戰為 `BLOCKED`，近似模式不提升 | 完成玩家第29戰的 handler branch、持續隊伍、整備及 save/load E1；已接章節再各補一般玩家 E2 |
+| 3 | 最後一個忠實模式 blocked postbattle | 玩家第23至25戰戰後已達 `RUNTIME-E1`；玩家第29戰的 `0x25535→0x22253` 與 `0x35E5A` presenter 已達窄 E1，但 map28 groups1..7／group8／group9 materialize topology 未閉合，因此節點仍 `BLOCKED` | 先證實第29戰原版 runtime frontier 並修正 scenario append topology，再補 dialog／pan binding、持續隊伍、`preparation_ch30` save/load E1；最後補一般玩家 E2 |
 | 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；`0x16F55` END 已接，command 13–16 的玩家與敵方 mode 11 已走完整 #3前段、#6七張、mask、交易後 redraw、#5數字22張與尾停，AI 依 raw selector重建 target array | 補 END／command 13–16 同狀態逐幀逐音訊 E2；再依 `56` family matrix選下一個有完整證據的 command，不重解本批已閉合函式 |
 | 5 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial | 依 `57` 逐個輸入狀態機取得同狀態原版／重製證據，不用單張 layout 圖代替 |
 | 6 | 原版終局精確鏈 | 近似 E1 可見；忠實模式仍部分阻擋 | 閉合 `0x28A6C` renderer、終端輸入、`0x2BCE5` 正式 owner／handoff及第30戰一般玩家 E2 |
@@ -31,6 +31,23 @@ handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不�
 ---
 
 ## 歷史工作記錄（不可用來計算完成度）
+
+### 2026-08-21：raw ch28 `0x25535` indexed presenter 與斷言稽核
+
+- `RE-CLOSED`／`DATA-READY`：固定版 caller 已證實為
+  `0x22253([0x53BEB]-1,15,10,15,10)`；腳本只對 `0x25535` lower 成動態最後
+  runtime slot，不把強推論 slot93 寫入資料。map28 materialize topology 仍未閉合。
+- `RUNTIME-E1`：battle-state presenter 預先驗證並播放
+  11＋6＋18/24＋10 段，座標只在 bridge 邊界提交；`0x35E5A` 另按
+  0..63／400 ms hold／62..0 執行127次 indexed DAC 寫入。缺 asset、raw
+  provenance 或 compositor 時零修改，執行中錯誤會 rollback。
+- 斷言稽核修正將所有 `0x22253` 概括為「renderer 未完成」的舊說法，並區分
+  已接的 `0x25535` battle-state caller、仍 blocked 的 `0x33F78` story/focus
+  wrapper 與無 caller ABI 的 legacy `unit_present`。handler manifest 產生器也已
+  修正重複 JSON key，新增冪等回歸。
+- Docker 驗證：Go `go test ./...` 全套、Python 工具56項、918份 JSON（含重複鍵）、
+  722個 Markdown 本地目標均通過；handler 為80 classified／3 unresolved／0 unknown，
+  戰後節點仍為23 active／1 blocked。玩家第29戰正式 binding 與 E2 尚未解除。
 
 ### 2026-08-21：raw ch23／玩家第24戰戰後垂直切片
 
@@ -1517,8 +1534,8 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 - [~] **ch26 post item-gate branch**：`0x25186→0x24b14(0x64)` 是前 16 個 runtime slots 的 exact inventory search，無 camp/activity filter；成功臂無 `0x1b8e7`，天空之鑰不消耗，之後才 sync→chapter increment→persistent cleanup。FDTXT_027 idx8–12 / idx13–16 對應兩臂；仍需把 visual/effect calls 與缺匙 editable branch 資料化，不能只保留 generic ending。
 - [x] **ch26 success palette-ramp lowering**：Docker Capstone 定義 `0x25052(start,delay)` 為 inclusive `delta=start..0` 的 `0x11df2(0,255,delta)`＋每步 delay；compiler 已 lower immediate start 0..63。synthetic descending/zero/invalid 與真實 `ch26_post.json` 六個 5/4/3/2、80ms calls 均有 regression。這是 palette ramp，不是 generic fade；`0x24618` 已有專用 adapter，其餘 renderer effects仍各自 fail-closed。
 - [x] **撤回 `0x1f882`=vsync/sync helper**：Docker Capstone 展開 `ebx=0..63`、每次 `0x11d40(0,255,ebx)`＋2ms wait，故是 64-step native palette fade-out。compiler 現保留 exact `native_palette_fade_out(0..63,2ms)` payload；它與 `0x25052/0x11df2` 的 delta ramp 不同，runtime 在 indexed DAC adapter 未完成前有 regression-protected fail-closed。
-- [x] **native palette pulse (`0x35e5a`)**：Docker Capstone 完整 body 固定 `0x11df2(0,255,delta)` 的 inclusive 0→63（8ms/step）、400ms hold、再 62→0（8ms/step）。compiler 以 exact editable `native_palette_pulse` payload 保存不對稱端點，並拒絕帶參數變體；runtime 在 indexed DAC adapter 未完成前 regression-protected fail-closed，不以 story fade／delay 偽造。官方 IDA xref export 亦已納入此 helper 與 `0x33f78` staging wrapper。
-- [x] **ch29 staging wrapper (`0x33f78`)**：Capstone stack trace 與官方 IDA function/xref 共同固定 raw push-order `[y,x,slot]`→`0x12cea(slot,x)`→`0x22253(slot,x,y,x,y)`；compiler 將七個 ch29 pre call-sites 保存成 `native_staging_present`，含 source regression。因 `0x22253` 的 indexed 11+6+10 presentation adapter 未完成，runtime 明確 fail-closed，禁止誤 lower 成 spawn／position／pan。
+- [x] **native palette pulse (`0x35e5a`)**：Docker Capstone 完整 body 固定 `0x11df2(0,255,delta)` 的 inclusive 0→63（8ms/step）、400ms hold、再 62→0（8ms/step）。compiler 以 exact editable `native_palette_pulse` payload 保存不對稱端點，並拒絕帶參數變體；runtime 現以 immutable baseline、127次 draw acknowledgement 與最後 baseline restore 執行 indexed DAC，schedule drift 在發布前拒絕。這是窄 `RUNTIME-E1`，正式 ch28 post binding 與原版 E2仍缺。
+- [x] **ch29 staging wrapper (`0x33f78`)**：Capstone stack trace 與官方 IDA function/xref 共同固定 raw push-order `[y,x,slot]`→`0x12cea(slot,x)`→`0x22253(slot,x,y,x,y)`；compiler 將七個 ch29 pre call-sites 保存成 `native_staging_present`，含 source regression。共用 battle-state `0x22253` presenter 已完成，但此 wrapper 的 focus 與 story runtime-array owner 尚未接，因此仍 fail-closed，禁止誤 lower 成 spawn／position／pan。
 - [~] **ch29 post staged mapping**：四組對白已精確接到 ch29/ch30 authored lines；`0x12cea` focus、`0x25089` persistent cleanup、`0x17aa9` tick、dynamic palette loop、terminal `loadch` 與 `0x24618` indexed transition 均已有 runtime adapter/regression。`0x2bce5` 的前綴、party cycle 與 `0x2c194` raw tail 已分別保存；完整 indexed owner、輸入事件與 campaign handoff 仍未閉合，因此整支 terminal handler 仍不接 campaign runtime。
 - [~] **ch29 post focus lowering**：`0x12cea` 已安全 lower 成 tile-step pan(22,23) 並通過 regression；cleanup與`0x24618`已接，仍待完整 ending owner／indexed handoff。
 - [~] **ch29 post persistent cleanup**：`0x25089` 已 lower 為 editable `reset_persistent_roster_state`，並以 runtime/campaign regression 鎖定清 transient、回填 MaxHP/MaxMP；本 handler 的主要剩餘終局 gate 是 `0x2bce5` 的完整 indexed owner／輸入／campaign handoff。
@@ -1532,7 +1549,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 - [x] **ch29 final 0x24618 arguments**：依 layout→focus 的 native scroll-offset writes，`0x25848` dynamic args 已定案為 tile `(6,6)`、radial radius `(10,step8)`，已寫入 binding/compiler regression並由runtime adapter消費；terminal handler仍因`0x2bce5`維持fail-closed。
 - [x] **0x24618 pass-range/runtime boundary**：`0x22046` 的固定最後兩參數是 row range `[start_y,end_y)=[0,0xc0)`，不是 source_y 或 blit width；clip `0x138×0xc0`、radial step、`0x53a6d` LUT bank、`0x219ad` row clip均已接入strict indexed adapter。
 - [~] **ch29 pre native unit presentation**：舊「6×(render+present+10ms)+2 ticks」結論已撤回。完整 `0x22253` trace 是前段 `0x22470` 11 次 LMI present/tick、中央 `0x22547` 6 次 10ms remap present+2 ticks、後段 `0x22656` 10 次 remap present/tick，合計 27 次 present；既有 `unit_present` metadata 不完整，維持 fail-closed。
-- [x] **`0x22253` machine-readable schedule boundary**：`fdother.NativeUnitPresentSchedule` 現嚴格保存三段 11+6+10 的 27 個 present：FDOTHER#6 entries `0x72..0x7c`（各1 tick）、FDOTHER#3 entries `5..0`（各10ms，最後才2 ticks）、#3 entries `0..9`（各1 tick）。regression 拒絕舊 six-frame shortcut 或把兩 ticks 移位；這仍不是 geometry/buffer/Ebiten renderer adapter。
+- [x] **`0x22253` machine-readable schedule boundary**：`fdother.NativeUnitPresentSchedule` 嚴格保存三段 11+6+10 的27個 full present；後續已接 exact geometry、18／24-row bridge 與 battle-state Ebiten presenter。舊 six-frame shortcut 仍禁止；本項的「尚無 renderer adapter」是歷史狀態，已由 2026-08-21 `0x25535` 窄 `RUNTIME-E1` 取代。
 - [x] **`0x22470` first-phase destination ABI**：direct arithmetic 已保存為 `NativeUnitPresentByteOrigin(x,y,camX,camY)=0x8088+24*(x-camX)+24*456*(y-camY)+456`。它是 456-stride indexed work-buffer byte offset，最後 `+456` 不可漏；raw helper 保留 offscreen signed result，clip 仍屬 caller/renderer boundary。LMI decoder／unit-layer/present adapter 尚待組合。
 - [x] **`0x22470→0x4e85b` LMI write primitive**：`0x4e85b` 逐像素透過 `0x4e916` decode，僅非零寫 destination，等同既有 `LMI1Entry.BlitAt` 的 preserve-zero 規則。`BlitNativeUnitPresentLMI` 已將 #6 cell 與 verified byte origin 組合，對 offscreen origin fail-closed；其後 unit redraw/present/tick 與其餘 phase 仍待 adapter。
 - [x] **`0x22470` eleven-pass intro executor**：`RunNativeUnitPresentLMIIntro` 固定走 #6 entries `0x72..0x7c`，每一 entry blit 後強制要求 caller 執行一次 redraw/present/tick callback；不得折疊為一張最終畫面。short table／nil callback 均 fail-closed。尚未接 GUI renderer。
@@ -1555,7 +1572,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   composers。剩餘runtime gate縮小為Unit raw pose/motion、cycle globals與
   phase-specific snapshots，不再籠統寫成「沒有indexed buffer」。
 - [~] **ch29 post BIOS tick wait**：`0x17aa9` 已證實比較 raw `word[0x46c]` 的相對差值；DOS BIOS 約54.9ms是強推論。舊 handler compiler 的「每 tick 3 個 remake frames」只保留為 editable beat 近似，不是原版精確時間；終局 `MontageCycle` 另以 55ms 作近似排程，仍須一般玩家 E2 才能提升 timing parity。
-- [~] **native `0x22253` renderer adapter**：已釘死 `0x22547→0x22046` indexed off-screen blit 呼叫鏈。2026-07-26 stack-slot recheck：FDOTHER #81 的 nested `LLLLLL` allocation 只存 local、尾端 free，未傳 renderer callees，故不再叫它 frame/pixel source；`0x11eee` 只做背景/tile redraw。真正已見資料是 boot `0x111ba(FDOTHER,#3)`→descriptor base `0x53a6d`（`0x22547` 倒序 entries 5→0）與 FDOTHER#6 `LMI1` bank：230 entries，`0x22470` entries 0x72..0x7c（12×21、九個20×22、24×23），`+0x1f6`=entry0x7c。**修正舊斷言**：`0x22046` 有六個靜態 caller，不是 unit-present 專屬；它只**兩次**呼 `0x219ad`，後者逐 row 用 `sqrt(radius²-dy²)*scale/10` 求 clip span，再以 remap LUT in-place map pixels，之後 `0x22046` 自己對另一矩形範圍作同 LUT remap。`__CHP` 已釘死為 toward-zero；`fdother.ApplyRadialLUTRemap` 與 `ApplyCenteredRectLUTRemap` 都有 boundary／clip／256-byte LUT regression。**原本的中間 redraw 已證實會 mutation**：`0x127a9→0x127e0` 依 camera-relative object sprites 經 `0x4deda/0x4de56` 寫 `0x53a49`，不可合併兩 radial passes 或省略。個別 caller 視覺語意、descriptor/buffer adapter、Ebiten adapter 仍缺，`unit_present` 暫維持 fail-closed。
+- [~] **native `0x22253` renderer adapter**：`0x22547→0x22046`、FDOTHER #3／#6、shared snapshot、object redraw 與 bridge 已閉合。2026-08-21 新增 battle-state 原子 presenter：預算11＋6＋18/24＋10個可見邊界，第六張 contract 畫出後才寫 `record+0/+1`，preflight／runtime failure 回復 unit、work、VGA。`0x25535` 動態最後槽位 caller 已 lower；仍缺的是 `0x33F78` 等 story-array/focus caller、玩家第29戰 topology／正式 binding 與 E2，不再把 generic Ebiten adapter 本身列為未知。
 - [~] **chapter ending renderer (`0x2bce5`)**：IDA／Capstone 已完整固定 `0x2bce5..0x2c39b` 之前綴（FDOTHER `#0x36`、320×200雙 buffer、frame0/9、palette ramp、三輪重複 ramp、frame12..108、40/200次 composite）與 `0x2c405` 的 `0x1088d(0x1e)`、500次 raw staging、`0x2c548` montage 入口；`0x2c548` party-cycle 與 `0x2c194` raw tail 現已有原資源 executor／schedule。`0x29164` 已更正為 raw `+6==0`／非零分支；`0x2c194` 的三組表也已校正為每輪寫 record0、record1 各自的 `+7`、並以 `<0x4c` 即時計算各自 `+6`，第三組寫 `[0x540ff]`，不能再誤寫成單一 record 的高位欄位或首輪例外。`0x10620→0x4e031` 已證實在 portrait loop 讓當前角色完成後改走 final loop，但尚無確切按鍵映射。最終 `ending` 節點現在只在 `FD2_APPROXIMATE=1` 以嚴格前綴合約播放前綴與原資源 party montage；其後 `MontageTailPlayer` 以 20 組 TAI／BG／FIGANI、原始 `+6` 延遲及 FDOTHER #58 疊圖形成可見近似尾段並保持 #59，只有 admission 失敗才等待確認回到可編輯結語。`ch29_post` 的 `0x25970→0x2bce5` 仍保留編譯問題（compile issue），截圖隊伍輔助程式拒絕拿不完整的 LOADCH 偽造此 roster；它不是 raw ch29 terminal owner。未閉合的是精確 `0x28a6c` renderer、呼叫時 records/globals、精確輸入、一般玩家 E2 與正式 raw campaign handoff；不可因 E1 近似尾段而吞成 generic ending。完整 body 證據見 [`fd2_ch29_terminal_body_ida.txt`](../data/ida/fd2_ch29_terminal_body_ida.txt)。
 
 - [x] **第29／30戰終局持續隊伍邊界（近似 E1）**：第29戰勝利的未綁定戰後節點現有結果確認→近似同步→`preparation_ch30`→隔離存檔／讀檔回歸；第30戰以 campaign JSON 的 `approximate_sync_party_on_win` 在明確近似模式、直達 ending 的勝利邊同步最後戰場，避免角色結局仍讀戰前 roster。缺戰場或零筆身分符合時不移動游標且保留勝利結果；載入器拒絕非終局用途，忠實模式不消費。這不解除 raw terminal owner、精確 renderer、輸入或一般玩家 E2。

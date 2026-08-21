@@ -800,6 +800,32 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 				beats = append(beats, runtime(input, "native_ch22_reset_grid"))
 				continue
 			}
+			if input.NativeTarget == "0x22253" {
+				// ch28 post is the only dynamic-last-slot direct caller currently
+				// admitted. The exporter retains the first four immediate PUSHes and
+				// EBX for [0x53BEB]-1; cdecl reverses them into
+				// (lastSlot,15,10,15,10).
+				valid := input.Source.Addr == "0x25535" && input.Source.Target == "0x22253" &&
+					len(input.RawArgs) == 5
+				want := []int{10, 15, 10, 15}
+				for arg := range want {
+					value, ok := immediateHandlerInt(input.RawArgs, arg)
+					valid = valid && ok && value == want[arg]
+				}
+				last, lastOK := input.RawArgs[4].(string)
+				valid = valid && lastOK && last == "ebx"
+				if !valid {
+					issue(i, input, "0x22253 direct lowering requires exact ch28 post 0x25535 PUSH payload")
+					continue
+				}
+				beat := runtime(input, "native_unit_present")
+				beat.NativeUnitPresent = &NativeUnitPresent{
+					LastRuntimeSlot: true,
+					NewX:            15, NewY: 10, VisualX: 15, VisualY: 10,
+				}
+				beats = append(beats, beat)
+				continue
+			}
 			// raw ch20 post calls the no-argument 0x24336 sequence exactly once.
 			// The callee owns its (14,8) pan, FDOTHER #34 frame split, ANI #0
 			// playback and palette flash. Keep the complete fixed payload in one
@@ -1112,16 +1138,16 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 			}
 			issue(i, input, "operation has no proven runtime lowering")
 		case "unit_present":
-			// Native 0x22253 is not a spawn or a generic redraw. The former
-			// six-frame metadata covered only 0x22547; direct trace now proves
-			// an 11+6+10 indexed choreography. Reject it until that full ABI is
-			// represented, rather than producing a falsely runnable handler.
+			// This legacy shape carries only the six-frame 0x22547 tail and no
+			// proven caller. The source-specific native_unit_present lowering
+			// owns 0x25535's complete battle-state choreography; reject every
+			// remaining legacy payload rather than borrowing that caller ABI.
 			p := input.UnitPresent
 			if p == nil {
 				issue(i, input, "unit_present requires an explicit placement payload")
 				continue
 			}
-			issue(i, input, "unit_present is blocked: native 0x22253 full 11+6+10 choreography is not represented")
+			issue(i, input, "unit_present is blocked: legacy payload lacks a proven native 0x22253 caller ABI")
 		case "direct_record_patch":
 			patch := input.DirectRecordPatch
 			provenSource := input.Source.Addr == "0x2362d" || input.Source.Addr == "0x23ec4"

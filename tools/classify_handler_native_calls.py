@@ -134,6 +134,13 @@ def render_manifest_minimal_changes(original, summaries):
         position = rendered.find(marker, offset)
         if position < 0:
             raise ValueError("handler manifest unknown_ops entry was not found in order")
+        metrics = re.match(
+            r'"unknown_ops": \d+'
+            r'(?:,\n[ \t]+"(?:classified_native_ops|unresolved_native_ops)": \d+)*',
+            rendered[position:],
+        )
+        if metrics is None:
+            raise ValueError("handler manifest metrics block was not found")
         replacement = (
             f'"unknown_ops": {summary["unknown_ops"]}'
         )
@@ -147,7 +154,7 @@ def render_manifest_minimal_changes(original, summaries):
                 f',\n      "unresolved_native_ops": '
                 f'{summary["unresolved_native_ops"]}'
             )
-        rendered = rendered[:position] + replacement + rendered[position + len(marker):]
+        rendered = rendered[:position] + replacement + rendered[position + metrics.end():]
         offset = position + len(replacement)
     return rendered
 

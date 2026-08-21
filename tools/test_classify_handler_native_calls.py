@@ -4,7 +4,11 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from classify_handler_native_calls import classify_document, render_minimal_changes
+from classify_handler_native_calls import (
+    classify_document,
+    render_manifest_minimal_changes,
+    render_minimal_changes,
+)
 
 
 class ClassifyHandlerNativeCallsTest(unittest.TestCase):
@@ -90,6 +94,34 @@ class ClassifyHandlerNativeCallsTest(unittest.TestCase):
         self.assertIn('"native_semantic": "native_palette_update"', rendered)
         self.assertIn('"native_confidence": "已證實"', rendered)
         self.assertEqual(json.loads(rendered), document)
+
+    def test_manifest_renderer_replaces_stale_and_duplicate_metrics(self):
+        original = '''{
+  "scripts": [
+    {
+      "chapter": 28,
+      "phase": "post",
+      "handler": "0x2548c",
+      "unknown_ops": 0,
+      "classified_native_ops": 16,
+      "classified_native_ops": 16,
+      "unresolved_native_ops": 1
+    }
+  ]
+}
+'''
+        summaries = {(28, "post"): {
+            "unknown_ops": 0,
+            "classified_native_ops": 17,
+            "unresolved_native_ops": 0,
+        }}
+        rendered = render_manifest_minimal_changes(original, summaries)
+        self.assertEqual(rendered.count('"classified_native_ops"'), 1)
+        self.assertNotIn('"unresolved_native_ops"', rendered)
+        self.assertEqual(
+            json.loads(rendered)["scripts"][0]["classified_native_ops"],
+            17,
+        )
 
 
 if __name__ == "__main__":

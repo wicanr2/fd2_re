@@ -64,10 +64,10 @@ func TestExportedHandlerNativeCallsUseThreeEvidenceStates(t *testing.T) {
 		visit(script.Beats)
 	}
 
-	if counts["native_call"] != 79 || counts["unresolved_native_call"] != 4 || counts["unknown"] != 0 {
-		t.Fatalf("handler native-call states = %#v, want native=79 unresolved=4 unknown=0", counts)
+	if counts["native_call"] != 80 || counts["unresolved_native_call"] != 3 || counts["unknown"] != 0 {
+		t.Fatalf("handler native-call states = %#v, want native=80 unresolved=3 unknown=0", counts)
 	}
-	if got := targets["unresolved_native_call"]; len(got) != 2 || got["0x22253"] != 2 || got["0x2bce5"] != 2 {
+	if got := targets["unresolved_native_call"]; len(got) != 2 || got["0x22253"] != 1 || got["0x2bce5"] != 2 {
 		t.Fatalf("unresolved native targets = %#v", got)
 	}
 	if got := targets["unknown"]; len(got) != 0 {

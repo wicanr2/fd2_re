@@ -67,6 +67,49 @@ string 12 對到 scene3 lines1–12；string 13 對到 scene4 line0；string 14
 - 完整原始函式、雜湊與 call order 保存於本檔；後續任何 owner 修訂都必須
   追加勘誤，不得以 table index 覆蓋線性位址與 raw provenance。
 
+## `0x25535 → 0x22253` caller payload 勘誤（2026-08-21）
+
+本節只重審既有受版控證據是否充分，不重開已閉合的 `0x22253` callee。當前
+工作環境找不到固定雜湊的 `FD2.EXE` 或既有 `.i64`，因此本節**沒有宣稱重新
+執行 IDA**；工具與輸入仍引用本檔開頭已保存的合法 IDA Pro 9.4／Capstone 5、
+357074-byte 固定版雜湊。沒有出現輸入雜湊差異、直接指令反證、同狀態執行
+矛盾，或主證據缺少其聲稱的 writer／consumer，故不符合重開條件。
+
+既有五個 direct caller 與 `0x22253` 函式體已證實其 C ABI 為：
+
+```text
+0x22253(unit, newX, newY, visualX, visualY)
+```
+
+`0x25535` 前的原始壓棧順序是
+`10, 15, 10, 15, [0x53BEB]-1`。32-bit cdecl 由右至左壓入參數，因此這個
+call site 的具型別 payload 為：
+
+```text
+unit    = [0x53BEB] - 1
+newX    = 15
+newY    = 10
+visualX = 15
+visualY = 10
+```
+
+這項結論等級為**已證實**：caller 保留原始位址／壓棧順序，callee 主證據
+保留五參數消費端、`record+0/+1` 寫入時點，以及 11＋6＋10 full-present 與
+18／24-row direct-VGA bridge。它只授權 compiler 針對來源 `0x25535` 將
+`[0x53BEB]-1` 降成「執行當下最後一個 materialized runtime slot」，並以
+`(15,10)` 同時作 new／visual pair；不得泛化成任意動態角色選擇器。
+
+因此先前「`0x22253` caller payload 尚未證實」已失效。仍未關閉的是：
+
+- Ebiten 對完整 indexed schedule 的原子 presenter 與失敗回復；
+- `0x35E5A` 的 indexed DAC pulse presenter；
+- 玩家第29戰在 post handler 入口的 materialized slot topology，以及
+  group9 append 後 `[0x53BEB]-1` 的原版槽位對應；
+- 正式 `postbattle_ch29_persist` binding、整備／存讀檔 E1 與未修改原版 E2。
+
+在上述拓撲證據閉合前，caller payload 可以列為 `RE-CLOSED`／`DATA-READY`，
+但 campaign 仍必須失敗即關閉。
+
 ## `0x35bba(20)` 與共用 `0x1db65` raw 邊界（2026-08-09）
 
 合法 IDA Pro 9.4 與 Docker Capstone 以同一固定版 `FD2.EXE` 重新檢查
@@ -88,3 +131,32 @@ global 計算索引緩衝區位址，並呼叫 `0x129ec`、`0x11eee`、`0x17aa9`
 `0x1db65` 的高階欄位語意、indexed frame provenance、一般玩家 E2，亦不
 授權 `postbattle_ch29_persist` 接到 preparation、town、shop、整備或
 save。原始位址、caller 與所有運算元仍以本檔及固定版雜湊為準。
+
+## map28 runtime topology 稽核與 E1 adapter 邊界（2026-08-21）
+
+固定版 FDFIELD map28 有76筆控制 record、20筆 own deployment position；控制
+群組分布為 group1/2/3各3筆、group4/5/6/7各2筆、group8共56筆、group9共1筆、
+group255共2筆。`ch28_pre` 的直接指令只明確顯示 LOADCH index28 後以
+`0x35822(group8,19,9)` 追加 group8；`ch28_post` 再於 `0x25505` 呼叫
+`0x10B4E(9)`，然後以 `[0x53BEB]-1` 呼叫 `0x22253`。共用 `0x1088D`／
+`0x10B4E` 證據支持「persistent records 先置於 runtime 起始區，group append
+使用目前 count 作新 slot 並遞增」。
+
+這些證據已證實 `0x25535` 的 unit 是**呼叫當下最後一個 materialized slot**，
+但尚未證實 groups1..7 在一般玩家第29戰的 writer／時序。若假設20名 party、
+groups1..7共17、group8共56、group9共1依序全部 materialize，最後會是 slot93；
+這只屬**強推論**，不可寫入 binding 或 runtime 常數。現行 `ch29.json` 把 groups1..9
+列為 initial groups，且 legacy Setup 先保留76筆 map rows再 append party，與原版
+append topology 不等價；正式接線前必須先修正這個資料邊界並取得相符 writer 證據。
+
+在不依賴固定 slot93的範圍內，重製端已完成兩個窄 adapter：
+
+- `native_unit_present` 只對來源 `0x25535` 接受 dynamic last slot 與
+  `(15,10,15,10)`；預先合成11＋6＋18/24＋10個可見邊界，第六張 contract
+  呈現後才寫座標，失敗回復 unit／work／VGA。
+- `native_palette_pulse` 依 `0x35E5A` 執行0..63、400ms hold、62..0共127次
+  immutable-baseline DAC present，拒絕端點漂移。
+
+上述為 `RUNTIME-E1` primitive／caller slice，不是 `postbattle_ch29_persist`
+正式 binding。dialog／pan binding、group topology、持續隊伍、`preparation_ch30`
+save/load與未修改原版 E2 未完成前，campaign 仍失敗即關閉。

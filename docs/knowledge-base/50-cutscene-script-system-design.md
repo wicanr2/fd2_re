@@ -673,12 +673,14 @@ D3/D5 不採「搬走敵人全部 inventory」的猜法，而使用上述特殊�
 8ms）。這是整個 DAC 的亮度脈衝，不是 `0x1f882` 的 baseline darkening，也不是
 普通 story fade。handler compiler 因此將它保存為可編輯的
 `native_palette_pulse{rise:0..63/8ms,hold:400ms,fall:62..0/8ms}`；現行 PNG renderer
-沒有 indexed DAC surface 時必須 fail-closed，禁止用 delay 或 RGBA fade 假裝完成。
+現行 battle-state indexed DAC adapter 已按此 127-step 排程達到窄 RUNTIME-E1；
+缺少 indexed DAC surface 時仍必須 fail-closed，禁止用 delay 或 RGBA fade 假裝完成。
 
 `0x33f78` 則是不同的 ch29 staging wrapper：原始 push-order 為 `[y,x,slot]`，它先
 `0x12cea(slot,x)`，再精確轉交 `0x22253(slot,x,y,x,y)`。因此 compiler 保存
-`native_staging_present` 的 slot/x/y 與 focus payload；`0x22253` 已可見 11+6+10 個
-indexed presentation pass，但 renderer 尚未完成，仍必須 fail-closed，不能降成 spawn 或 pan。
+`native_staging_present` 的 slot/x/y 與 focus payload。battle-state caller `0x25535`
+已有完整 `11+6+bridge+10` presenter；本 wrapper 的 story/focus owner 仍未接通，
+必須 fail-closed，不能因共用 compositor 存在就降成 spawn 或 pan。
 
 ## 4. 未解(低優先)+ 工具紀律
 

@@ -330,14 +330,27 @@ func (s *NativeCh20SkyKeySequence) IsRecoveredContract() bool {
 
 // NativeStagingPresent preserves the exact 0x33f78 wrapper ABI. It focuses
 // (FocusX, FocusY), then invokes 0x22253 with (Slot, X, Y, X, Y). The callee
-// has a recovered 11+6+10 indexed choreography, so this remains data-only
-// until its renderer adapter exists.
+// has a recovered 11+6+10 indexed choreography. The shared battle-state
+// presenter exists, but this wrapper remains data-only until its preceding
+// focus and story-runtime-array owner are wired without guessing.
 type NativeStagingPresent struct {
 	Slot   int `json:"slot"`
 	X      int `json:"x"`
 	Y      int `json:"y"`
 	FocusX int `json:"focus_x"`
 	FocusY int `json:"focus_y"`
+}
+
+// NativeUnitPresent preserves 0x22253's five-argument ABI. LastRuntimeSlot is
+// source-specific evidence for ch28 post's [0x53BEB]-1 caller; it is not a
+// general script selector and is accepted only for call site 0x25535.
+type NativeUnitPresent struct {
+	Slot            int  `json:"slot,omitempty"`
+	LastRuntimeSlot bool `json:"last_runtime_slot,omitempty"`
+	NewX            int  `json:"new_x"`
+	NewY            int  `json:"new_y"`
+	VisualX         int  `json:"visual_x"`
+	VisualY         int  `json:"visual_y"`
 }
 
 // HandlerUnitPresent retains the formerly recovered metadata shape for native
@@ -372,6 +385,7 @@ type Beat struct {
 	NativePaletteBlackout *NativePaletteBlackout    `json:"native_palette_blackout,omitempty"`
 	NativeCh20SkyKey      *NativeCh20SkyKeySequence `json:"native_ch20_sky_key_sequence,omitempty"`
 	NativeStagingPresent  *NativeStagingPresent     `json:"native_staging_present,omitempty"`
+	NativeUnitPresent     *NativeUnitPresent        `json:"native_unit_present,omitempty"`
 	NativeCh23Loop        *NativeCh23Loop           `json:"native_ch23_loop,omitempty"`
 	Native2189ALoop       *Native2189ALoop          `json:"native_2189a_loop,omitempty"`
 	UnitPresent           *HandlerUnitPresent       `json:"unit_present,omitempty"`

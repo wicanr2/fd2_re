@@ -76,10 +76,12 @@ type Game struct {
 	nativeMapVGA               []byte                             // persistent 320x200 indexed VGA surface
 	nativeMapDAC               []byte                             // current 256xRGB six-bit DAC state for handler palette ramps
 	nativePaletteRamp          *nativePaletteRampJob              // exact 0x1f882/0x1f525 indexed DAC presentation
+	nativePalettePulse         *nativePalettePulseJob             // exact 0x35E5A 0..63/hold/62..0 indexed DAC presentation
 	nativeCh20SkyKey           *nativeCh20SkyKeyJob               // raw ch20 post 0x24336 fixed FDOTHER/ANI/palette sequence
 	nativeCh23State            *nativeCh23AdapterState            // raw ch23 staging/latch/timer state shared across both handler loops
 	nativeCh23Loop             *nativeCh23LoopJob                 // blocking raw ch23 indexed presentation loop
 	native2189A                *native2189AJob                    // blocking raw ch22 post 0x2189A ten-pass presentation
+	nativeUnitPresent          *nativeUnitPresentJob              // blocking shared 0x22253 11+6+bridge+10 indexed presentation
 	nativeCh22Reload           *nativeCh22ReloadState             // atomic FDFIELD69/FDSHAP46/47/FDOTHER42 tail transaction
 	nativeFDOTHERPalettePhase  int                                // process-lifetime 0x4DFCC phase projection (0..15)
 	nativeFullDACWhite         bool                               // exact 0x11DF2(0,255,255) overlay for legacy RGB scenes
@@ -1124,6 +1126,15 @@ func (g *Game) fastForwardShotCampaign() error {
 			if g.nativePaletteRamp != nil {
 				return errors.New("shot fast-forward palette ramp exceeded step bound")
 			}
+		case g.nativePalettePulse != nil:
+			for ticks := 0; g.nativePalettePulse != nil && ticks < maxSteps; ticks++ {
+				g.nativePalettePulse.drawn = true
+				g.nativePalettePulse.wait = 0
+				g.stepNativePalettePulse()
+			}
+			if g.nativePalettePulse != nil {
+				return errors.New("shot fast-forward native 0x35E5A exceeded step bound")
+			}
 		case g.spawnIntroTransition != nil:
 			for ticks := 0; g.spawnIntroTransition != nil && ticks < maxSteps; ticks++ {
 				// Each pass still goes through the real stepper and preserves its
@@ -1168,6 +1179,15 @@ func (g *Game) fastForwardShotCampaign() error {
 			}
 			if g.native2189A != nil {
 				return errors.New("shot fast-forward native 0x2189A exceeded step bound")
+			}
+		case g.nativeUnitPresent != nil:
+			for ticks := 0; g.nativeUnitPresent != nil && ticks < maxSteps; ticks++ {
+				g.nativeUnitPresent.drawn = true
+				g.nativeUnitPresent.wait = 0
+				g.stepNativeUnitPresent()
+			}
+			if g.nativeUnitPresent != nil {
+				return errors.New("shot fast-forward native 0x22253 exceeded step bound")
 			}
 		case g.beatDelay > 0:
 			g.beatDelay = 0
@@ -1245,15 +1265,24 @@ func (g *Game) beatStart(b campaign.Beat) {
 		}
 		g.beatAdvance()
 	case "unit_present":
-		// The compiler carries the recovered placement/timing payload, but
-		// the PNG renderer does not yet implement native 0x22253's off-screen
-		// blit and FDOTHER effect.  Fail closed instead of silently turning it
-		// into a position change or a generic redraw.
+		// Legacy metadata described only the six-frame 0x22547 tail and did
+		// not identify a proven caller.  The separate native_unit_present op
+		// owns the recovered 0x25535 battle-state path; keep this legacy shape
+		// closed instead of silently treating it as that caller.
 		if b.UnitPresent == nil {
 			g.loadErr = "beat unit_present:缺少 placement payload"
 			return
 		}
-		g.loadErr = "beat unit_present: native 0x22253 renderer adapter未完成"
+		g.loadErr = "beat unit_present: legacy payload未綁定已證實的0x22253 caller"
+		return
+	case "native_unit_present":
+		if b.NativeUnitPresent == nil || b.Source != "0x25535" || !b.NativeUnitPresent.LastRuntimeSlot {
+			g.loadErr = "beat native_unit_present:缺少原版 0x25535 payload"
+			return
+		}
+		if err := g.startNativeUnitPresent(*b.NativeUnitPresent, g.beatAdvance); err != nil {
+			g.loadErr = "beat native_unit_present: " + err.Error()
+		}
 		return
 	case "indexed_transition":
 		if b.IndexedTransition == nil {
@@ -1297,10 +1326,9 @@ func (g *Game) beatStart(b campaign.Beat) {
 			g.loadErr = "beat native_palette_pulse:缺少原版 DAC pulse payload"
 			return
 		}
-		// 0x35e5a repeatedly calls 0x11df2 across the complete DAC range.
-		// The PNG renderer has no indexed palette surface, so do not replace
-		// this visible pulse with an RGBA fade or a delay-only approximation.
-		g.loadErr = "beat native_palette_pulse: native indexed DAC adapter未完成"
+		if err := g.startNativePalettePulse(*pulse, g.beatAdvance); err != nil {
+			g.loadErr = "beat native_palette_pulse: " + err.Error()
+		}
 		return
 	case "native_palette_blackout":
 		blackout := b.NativePaletteBlackout
@@ -1329,9 +1357,10 @@ func (g *Game) beatStart(b campaign.Beat) {
 			g.loadErr = "beat native_staging_present:缺少原版 wrapper ABI payload"
 			return
 		}
-		// 0x33f78 calls 0x22253 after focusing; its indexed 11+6+10
-		// choreography is not a spawn, position change, or ordinary camera pan.
-		g.loadErr = "beat native_staging_present: native 0x22253 renderer adapter未完成"
+		// 0x33f78 calls 0x22253 after focusing. The shared battle-state
+		// presenter is available, but this story-array/focus owner remains
+		// separate; it is not a spawn, position change, or ordinary camera pan.
+		g.loadErr = "beat native_staging_present: 0x33f78 story/focus adapter未完成"
 		return
 	case "native_ch23_loop":
 		if b.NativeCh23Loop == nil {
@@ -2396,6 +2425,7 @@ func (g *Game) enterNode() {
 	g.nativeCh23State = nil
 	g.nativeCh23Loop = nil
 	g.native2189A = nil
+	g.nativeUnitPresent = nil
 	g.nativeCh22Reload = nil
 	g.spawnIntroTransition = nil
 	g.nativeTurnStaging = nil
@@ -2678,6 +2708,7 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 	g.nativeCh23State = nil
 	g.nativeCh23Loop = nil
 	g.native2189A = nil
+	g.nativeUnitPresent = nil
 	g.nativeCh22Reload = nil
 	g.indexedTransition = nil
 	g.spawnIntroTransition = nil
@@ -5178,6 +5209,7 @@ func (g *Game) loadMap(dir string) error {
 	g.nativeMapAssets = nil
 	g.nativeMapDAC = nil
 	g.nativePaletteRamp = nil
+	g.nativePalettePulse = nil
 	if native, nativeErr := loadNativeMapAssets(dir); nativeErr == nil && nativeMapAssetsAvailable(native) {
 		g.nativeMapAssets = native
 		g.nativeMapDAC = append(g.nativeMapDAC[:0], native.PaletteDAC...)
@@ -6032,6 +6064,13 @@ func (g *Game) Update() error {
 		}
 		return nil
 	}
+	if g.nativeUnitPresent != nil {
+		g.stepNativeUnitPresent()
+		if g.shotPath != "" && g.shotTaken {
+			return ebiten.Termination
+		}
+		return nil
+	}
 	// 攻擊演出推進(FIGANI 全身分鏡;演出期間鎖玩家輸入)
 	if g.atk != nil {
 		g.atk.timer--
@@ -6299,6 +6338,7 @@ func (g *Game) Update() error {
 	g.stepNativeIndexedTransition()              // native 0x24618 indexed map/palette transition
 	g.stepNativeCommandHealPresentation()        // native 0x21EB1 command 13..16 indexed presentation
 	g.stepNativePaletteRamp()                    // native 0x1f882/0x1f525 whole-DAC ramps
+	g.stepNativePalettePulse()                   // native 0x35E5A whole-DAC pulse
 	g.stepNativeSpawnIntro()                     // native 0x32999 twelve-pass indexed spawn transition
 	g.stepNativeTurnStaging()                    // event63 raw-camp0 pre-AI staging helper
 	if g.camp != nil && g.storyAutoAdvance > 0 { // 無對白節點自動轉場倒數(行軍蒙太奇)
@@ -6637,6 +6677,17 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		}
 		return
 	}
+	if g.nativeUnitPresent != nil {
+		screen.Fill(color.Black)
+		if !g.drawNativeUnitPresent(screen) {
+			g.failNativeUnitPresent(errors.New("presentation unavailable"))
+			ebitenutil.DebugPrint(screen, "native 0x22253 presentation unavailable")
+		}
+		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
+			g.captureShot(screen)
+		}
+		return
+	}
 	if g.transitionReveal != nil {
 		screen.Fill(color.Black)
 		if !g.drawNative24B4D(screen) {
@@ -6679,6 +6730,16 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		screen.Fill(color.Black)
 		if !g.drawNativePaletteRamp(screen) {
 			ebitenutil.DebugPrint(screen, "native palette ramp unavailable")
+		}
+		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
+			g.captureShot(screen)
+		}
+		return
+	}
+	if g.nativePalettePulse != nil {
+		screen.Fill(color.Black)
+		if !g.drawNativePalettePulse(screen) {
+			ebitenutil.DebugPrint(screen, "native 0x35E5A palette pulse unavailable")
 		}
 		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
 			g.captureShot(screen)

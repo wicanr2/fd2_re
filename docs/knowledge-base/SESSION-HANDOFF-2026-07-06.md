@@ -5119,3 +5119,28 @@ target builder：由 raw `+6` selector、當下 presentation 座標、完整 run
   24節點中23 active／1 blocked，只剩玩家第29戰。
 - 本批只提升為 `RUNTIME-E1`。event52精確時序、高階畫面名稱與未修改原版
   同狀態 `PLAYER-E2` 仍缺；不得宣稱 DOS 時序或逐像素一致。
+
+## 2026-08-21：raw ch28 `0x25535` 窄 E1 與文件斷言勘誤
+
+本條取代舊交接中將所有 `0x22253` 概括為「renderer／GUI adapter 未完成」及
+handler 尚有4筆 unresolved 的現況說法；舊段落保留為歷史形成過程。固定版
+caller 現已證實 `0x25535→0x22253([0x53BEB]-1,15,10,15,10)`，但只證實動態
+最後 materialized slot，不證實固定 slot93。
+
+- 先更新 [`fd2_ch28_post_ida.txt`](../data/ida/fd2_ch28_post_ida.txt) 的 caller／
+  topology 證據，再於 [`56-fd2-remake-sdd.md`](56-fd2-remake-sdd.md) 建立 typed
+  presenter 契約，最後才接正式執行期，遵守 RE→規格→實作。
+- `native_unit_present` 只接受來源 `0x25535` 與動態最後槽位，完整預先產生
+  11＋6＋18/24＋10個 indexed frame／row；mutation 只發生在 bridge 邊界，
+  缺 asset／raw provenance 時零修改，執行中錯誤回復 unit／work／VGA。
+- `native_palette_pulse` 另精確保存 `0x35E5A` 的0..63、400 ms peak hold、
+  62..0，共127次 DAC 寫入；它不是 RGBA fade 或純 delay。
+- source comment／Markdown 稽核已區分上述 battle-state E1、仍 blocked 的
+  `0x33F78` story/focus wrapper與無 caller ABI的 legacy `unit_present`。另修正
+  handler manifest 產生器每次執行重複插入 JSON key 的缺陷並加冪等回歸。
+- Docker 驗證：Go `go test ./...` 全套、Python工具56項、918份JSON（含重複鍵）、
+  722個 Markdown 本地目標皆通過；分類為80 classified／3 unresolved／0 unknown，
+  戰後節點仍23 active／1 blocked。
+- 玩家第29戰仍失敗即關閉：map28 groups1..9 materialize 拓撲、group9後的實際
+  runtime frontier、dialog／pan binding、持續隊伍、`preparation_ch30` save/load
+  與未修改一般玩家 E2 尚未閉合。

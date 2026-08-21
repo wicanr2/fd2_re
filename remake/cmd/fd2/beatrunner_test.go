@@ -377,14 +377,14 @@ func TestBeatNativePaletteFadeOutFailsClosedWithoutIndexedInput(t *testing.T) {
 	}
 }
 
-func TestBeatNativePalettePulseFailsClosedWithoutIndexedDACAdapter(t *testing.T) {
+func TestBeatNativePalettePulseFailsClosedWithoutIndexedInput(t *testing.T) {
 	g := newBeatTestGame(t, []campaign.Beat{{
 		Op: "native_palette_pulse", NativePalettePulse: &campaign.NativePalettePulse{
 			RiseStart: 0, RiseEnd: 63, RiseDelayMs: 8, HoldMs: 400, FallStart: 62, FallEnd: 0, FallDelayMs: 8,
 		},
 	}})
 	g.beatAdvance()
-	if g.loadErr != "beat native_palette_pulse: native indexed DAC adapter未完成" {
+	if g.loadErr != "beat native_palette_pulse: native indexed framebuffer or DAC baseline unavailable" {
 		t.Fatalf("native palette pulse error=%q", g.loadErr)
 	}
 }
@@ -442,7 +442,7 @@ func TestBeatClearNativeRecordBit7PreservesOtherBits(t *testing.T) {
 func TestBeatNativeStagingPresentFailsClosedWithoutRendererAdapter(t *testing.T) {
 	g := newBeatTestGame(t, []campaign.Beat{{Op: "native_staging_present", NativeStagingPresent: &campaign.NativeStagingPresent{Slot: 22, X: 23, Y: 5, FocusX: 22, FocusY: 23}}})
 	g.beatAdvance()
-	if g.loadErr != "beat native_staging_present: native 0x22253 renderer adapter未完成" {
+	if g.loadErr != "beat native_staging_present: 0x33f78 story/focus adapter未完成" {
 		t.Fatalf("native staging present error=%q", g.loadErr)
 	}
 }

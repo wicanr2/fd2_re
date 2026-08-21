@@ -77,13 +77,13 @@ func completeNativeMapFrameFixture(t *testing.T) (*nativeMapAssets, *MapData, *b
 		Terrain: nativeFrameTestBank(2, 1), Range: nativeFrameTestBank(20, 2), Units: nativeFrameTestBank(96, 3),
 		Controls: controls, LUTs: luts, Palette: make(color.Palette, 256), PaletteDAC: make([]byte, 256*3), Frames: nativeFrameTestHUDFrames(),
 		CommandHealDigits: make([]fdother.LMI1Entry, fdother.NativeCommandHealTailDigitBias+10),
-		CommandHealEffect: make([]fdother.LMI1Entry, fdother.NativeCommandHealTailEffectStart+fdother.NativeCommandHealTailEffectFrames),
+		FDOTHER6:          make([]fdother.LMI1Entry, 0x7d),
 	}
 	for i := range assets.CommandHealDigits {
 		assets.CommandHealDigits[i] = fdother.LMI1Entry{Width: 1, Height: 1, Pixels: []byte{byte(i)}}
 	}
-	for i := range assets.CommandHealEffect {
-		assets.CommandHealEffect[i] = fdother.LMI1Entry{Width: 1, Height: 1, Pixels: []byte{byte(i)}}
+	for i := range assets.FDOTHER6 {
+		assets.FDOTHER6[i] = fdother.LMI1Entry{Width: 1, Height: 1, Pixels: []byte{byte(i)}}
 	}
 	for i := range assets.Palette {
 		assets.Palette[i] = color.RGBA{byte(i), byte(i), byte(i), 0xff}

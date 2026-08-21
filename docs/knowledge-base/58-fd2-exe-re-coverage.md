@@ -53,7 +53,7 @@
 | 檔案版本、容器與主要資產格式 | 閉合 | 就緒 | E1 | 部分 | `.DAT`、圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與多張 EXE 表已有雜湊與重生工具。剩餘多是消費端、音訊時序或個別執行期改寫，不應重解容器格式。 |
 | 開機、標題、LOAD、CONTINUE、存檔 | 部分 | 部分 | 部分 E1 | 原版錨點部分 E2 | 四槽 envelope、checksum、名冊與部分戰間落點已接；current-runtime 有原版與重製各自錨點，但尚缺同一 raw 狀態配對、未修改有效槽完整路徑與部分控制器交接。下一步以動態原版／執行期整合為主。 |
 | 對話、頭像與過場原語 | 部分偏高 | 部分就緒 | 部分 E1 | 部分 | `0x15F84`、`0x1366A`、基本 pan／acting／spawn／join 等不應再從零重解。仍須處理 caller-specific layout、indexed renderer、文字分支與實際 chapter binding。 |
-| 30 個 raw chapter 的戰前／戰後處理器 | 部分 | 60 份 handler script；部分 binding | 部分 E1 | 缺完整 E2 | 舊83個 raw unknown 已拆成79個已證實窄呼叫、4個已知但 caller／執行期未閉合的呼叫，已沒有未分類 call site。`0x24336`、玩家第25戰 raw ch24 post，以及 raw ch23／玩家第24戰的 indexed adapter 已達 E1；後者依 stage-before-draw、BIOS tick gate、零 transient offset 與 indexed copy 規格接入，不再重解入口 latch。剩餘兩個晚期戰後節點仍 blocked。 |
+| 30 個 raw chapter 的戰前／戰後處理器 | 部分 | 60 份 handler script；部分 binding | 部分 E1 | 缺完整 E2 | 舊83個 raw unknown 已拆成80個已證實窄呼叫、3個已知但 caller／執行期未閉合的呼叫，已沒有未分類 call site。`0x24336`、玩家第25戰 raw ch24 post，以及 raw ch23／玩家第24戰的 indexed adapter 已達 E1；後者依 stage-before-draw、BIOS tick gate、零 transient offset 與 indexed copy 規格接入，不再重解入口 latch。只剩玩家第29戰戰後節點 blocked。 |
 | 可編輯戰役與持續隊伍 | 部分 | 121 個 story／cutscene 節點；9 個 scripted、55 個 handler-bound、57 個 fallback | 部分 E1 | 缺完整 E2 | 24 個 postbattle 節點中目前23 active、1 blocked（只剩玩家第29戰戰後）。玩家第23戰現由 raw ch22 adapter 依16＋70 persistent-first topology 建立86-slot runtime，消費三個 predicate、indexed／resource尾段、同步隊伍後進`preparation_ch24`，並通過節點邊界存讀檔 E1；event52精確增援時序與一般玩家E2仍缺。玩家第24戰亦已由 raw ch23 adapter 進`preparation_ch25`。近似模式只維持其餘可玩戰間，不提升忠實度。 |
 | 戰鬥資料、移動、公式、勝敗與成長 | 部分偏高 | 部分就緒 | E1 | 部分 | 多項公式與地形資料已有具型別實作；命中／閃避來源、部分經驗交易、回合事件與原版逐狀態驗證仍不完整。需要針對缺欄位補 producer／consumer，不重解已閉合的 AP−DP 等公式。 |
 | 玩家指令、法術、物品與交易 | 部分 | 部分 | 部分 E1／部分失敗即關閉 | 缺完整 E2 | command mask、若干 ID、MP／物品交易與 selector 邊界已解；`0x16F55` direction3→END、FDTXT `0x1A3/0x1A4`、YES、`0xC8` ms 與 `0x1A30B` 已直接閉合，chapter0 current-runtime 正式入口會顯示原文後進敵方回合及返回玩家回合。command 13–16 的 `0x21EB1→0x22046` 16張 FDOTHER #3 LUT 演出已轉成 typed schedule，玩家與敵方 mode 11 正式入口均先演出再交易；AI 依 `0x15311` 在移動後重建 raw target array。缺原始 baseline／records／LUT／palette／visible cursor 時交易不發生。後段 `0x1C4CC/0x1C2DA`、數字 queue、其餘三格 owner、未知 command、複合技與完整 E2 仍未閉合。 |
@@ -73,8 +73,8 @@
   分類結果為產品31、runtime170、未知1,104。`0x37416` 同時由 FLIRT 命名為
   `free` 並由索引標成 runtime；沒有因此重複計數。
 - 60份 raw handler script 原有83個 `unknown` call site、23個 target。重生後為
-  79個 `native_call`（21個 target）與4個 `unresolved_native_call`
-  （`0x22253`、`0x2BCE5` 各2次），真正 `unknown` 為0。每筆
+  80個 `native_call`（22個 target）與3個 `unresolved_native_call`
+  （`0x22253` 1次、`0x2BCE5` 2次），真正 `unknown` 為0。每筆
   具名呼叫皆保存原始位址／PUSH 順序、推論等級與證據檔；編譯器仍逐 caller
   驗證並失敗即關閉，故這是**工具債清除**，不是玩法完成率。
 - `campaign_full.json`：121 個 story／cutscene 節點；9 個 scripted、55 個
@@ -108,7 +108,7 @@
 | `0x21EB1`／`0x22046`（command 13–16 LUT 演出） | [`fd2_command13_21eb1_presentation_ida.txt`](../data/ida/fd2_command13_21eb1_presentation_ida.txt) | FDOTHER #3 LUT provenance、16張排程、visible-cursor中心、兩段200 ms、sample index11、compositor consumer及玩家／敵方 E1 | 補同狀態逐幀／逐音訊 E2；不重解 loop |
 | `0x1C4CC`／`0x1C2DA`／`0x1E0DB`／`0x1DF58`（command 13–16 後段） | [`fd2_command_numeric_tail_ida.txt`](../data/ida/fd2_command_numeric_tail_ida.txt) | FDOTHER #6七幀、五組snapshot→mask、`0x4DDD7` write mask、transaction後redraw、FDOTHER #5 queue／22-frame reader與玩家／敵方 E1 | 補同狀態逐幀／逐音訊 E2；不重解函式 |
 | `0x24618` | chapter-specific IDA 證據；例如 [`ch22`](../data/ida/fd2_ch22_pre_ida.txt)、[`ch27/28`](../data/ida/fd2_ch27_ch28_pre_owner_ida.txt) | indexed transition 核心與部分 caller payload | 新 caller 必須另證參數／view；不得把已知 callee 當全新未知 |
-| `0x22253` | [`fd2_ch29_terminal_body_ida.txt`](../data/ida/fd2_ch29_terminal_body_ida.txt) | 共用11＋6＋10排程 | caller payload、renderer 組合、資產與同狀態 E2；維持 `unresolved_native_call` |
+| `0x22253` | [`fd2_ch29_terminal_body_ida.txt`](../data/ida/fd2_ch29_terminal_body_ida.txt)、[`fd2_ch28_post_ida.txt`](../data/ida/fd2_ch28_post_ida.txt) | 共用11＋6＋10、18／24-row bridge、五參數 ABI；`0x25535` caller 已閉合為 `([0x53BEB]-1,15,10,15,10)`，battle-state Ebiten presenter 已達窄 `RUNTIME-E1` | 其他 caller-specific focus／story-array adapter、玩家第29戰 slot topology／group9 consumer、正式 binding 與同狀態 E2；callee 與 `0x25535` payload 不重解 |
 | `0x24B14` | ch26 post 直接證據與 [`91`](91-worklist.md) | 天空之鑰 inventory gate | 兩臂視覺／效果；不重解搜尋條件 |
 | `0x24336` | [`fd2_ch20_sky_key_sequence_ida.txt`](../data/ida/fd2_ch20_sky_key_sequence_ida.txt) | 玩家第21戰戰後天空之鑰固定演出：`FDOTHER #34`、`ANI #0`、調色盤與延遲順序；正式重製端 E1 已消費 | 補未修改原版同狀態 E2、第一個動態調色盤相位及相鄰 `layout_units`／ACT63／64；不重解函式本體 |
 | `0x24C1E`／`0x24D22`／`0x11EEE` case 23 | [`fd2_ch23_post_ida.txt`](../data/ida/fd2_ch23_post_ida.txt) | raw ch23／玩家第24戰的 stage 2..14 先寫後畫、`[0x46c] != [0x539f8]` tick gate、312×192 row rotation、#42 staging、零 transient offset、indexed copy ABI 與正式 E1 adapter | 補未修改一般玩家同狀態逐幀／時序 E2；不得重開入口 latch 或把移動中 offset 外推到 handler |

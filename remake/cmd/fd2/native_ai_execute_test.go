@@ -99,15 +99,15 @@ func TestExecuteNativeAICommand13WaitsForIndexedPresentation(t *testing.T) {
 	if err := g.composeNativeMapFrameAt(time.Unix(0, 0)); err != nil {
 		t.Fatal(err)
 	}
-	effect := assets.CommandHealEffect
-	assets.CommandHealEffect = nil
+	effect := assets.FDOTHER6
+	assets.FDOTHER6 = nil
 	if err := g.executeNativeAIAction(plan); err == nil {
 		t.Fatal("AI command13 accepted missing FDOTHER#6")
 	}
 	if actor.MP != 5 || actor.HP != 40 || actor.Acted {
 		t.Fatalf("missing AI FDOTHER#6 mutated actor=%#v", actor)
 	}
-	assets.CommandHealEffect = effect
+	assets.FDOTHER6 = effect
 	if err := g.executeNativeAIAction(plan); err != nil {
 		t.Fatal(err)
 	}

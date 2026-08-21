@@ -1992,6 +1992,12 @@ SDD 通過後按以下順序重審，不先補 renderer 猜測：
 1. **Boot/menu/UI dispatch**：以 Ghidra/IDA 建立 call graph、keyboard scan、menu item table、resource loader；Docker Capstone 只作可重跑交叉驗證。
 2. **Resource provenance**：把 FDOTHER/FDTXT/DATO/FIGANI/TAI/FDFIELD 的 loader、entry、palette、stride、clip 寫成 machine-readable bindings，並與 UI contract 對應。
    `0x22253` 會載入 FDOTHER immediate `0x51`（十進位 **81**）的 nested `LLLLLL` entry（outer 18710 bytes、directory first-word `0x12`；nested payload #1 為 9782 bytes），但完整 stack-slot trace 顯示此 local pointer 不傳入 `0x22470`／`0x22547`／`0x22656`，尾端只 free；它是 resource lifetime，**不是** pixel/frame source。`0x11eee` 是背景／tile redraw；boot 載入 FDOTHER #3 到 `0x53a6d`。FDOTHER #6 是 230-entry `LMI1` bank：`0x22470` 先以 entries `0x72..0x7c` 做 **11** 次 LMI present/tick（#0x72=12×21，#0x73..0x7b=20×22，+0x1f6=#0x7c=24×23）；`0x22547` 再倒序 #3 entries5→0 做 **6** 次 10ms remap present＋2 ticks；最後 `0x22656` 以 #3 entries0→9 做 **10** 次 remap present/tick，合計 27 次 present。其共用 compositor `0x22046` 有六個靜態 caller，並非只屬於 unit presentation：它兩次呼 `0x219ad`，後者以 `sqrt(radius²-dy²)*scale/10` 的 scanline span 作 in-place LUT remap；接著自身對第二個矩形範圍做同一 LUT remap。重新映射六個參數也更正舊斷言：unit-present 的 radius 固定11、scale固定16；`trunc((24*[0x53abd]+15)/5)*LUTIndex` 是 first-radial/final-rectangle **startY**，不是 radius。second radial從centerY開始，final rectangle水平半徑17。`NativeUnitPresentLUTPass/Frames`已保存完整6+10 geometry；`RunNativeUnitPresentLUTFrame`並固定每frame先restore完整`0x25680` snapshot，再執行first radial→mandatory object redraw→second radial→rectangle→present，禁止錯誤累積LUT。`indexedmap`現另有exact terrain-only snapshot、object-only redraw、312×192 viewport copy，以及atomic intro/LUT frame composers。snapshot ownership已閉合為同一allocation在`0x22547`由terrain-only轉成terrain+final-LMI，contract/release共用；不再列為未知 blocker。剩餘Ebiten blocker是從目前Game狀態一致提供原版`unit+3/+4` pose/motion、selector globals/BIOS-tick call timing與中間strip-copy bridge；缺任一仍不可用normalized PNG/Dir猜值。先前6-frame schema禁止接runtime。`internal/fdother.ArchiveEntry` 僅驗證 #81 nested raw boundary，不可把它寫成 layout、音訊或 frame table。
+   **2026-08-21 現況勘誤**：上段「剩餘 Ebiten blocker」是 2026-07-26
+   的歷史狀態。battle-state adapter 現已嚴格取得 `unit+3/+4`、selector、
+   visible cursor 與 strip bridge，並先預算全部影格再發布。仍未閉合的是
+   `0x33F78` 等 story/focus caller、第29戰 runtime topology 與原版 BIOS timing E2；
+   舊六影格 schema 仍禁止接 runtime。
+
 3. **Battle interaction**：追 action menu enable gates、weapon reach、spell inventory/targeting、end-turn 判定、HUD anchor；每一項先找 caller/data flow，再改 Go。
 
    Renderer boundary addendum: `0x127e0` chooses a camera-relative 24×24 object sprite and writes the current indexed buffer through either `0x4deda` (raw indexed RLE) or `0x4de56` (RLE palette-remap path). `0x127a9` then calls `0x129ec`, which performs further map/object overlay work on that same buffer. `0x129ec` iterates visible runtime units after their sprites, calls `0x12ac6` for the unit cell and its upper neighbour, and during a nonzero `unit+4` movement offset redraws one pose-dependent neighbour. `0x12ac6` only draws field entries whose resolved tile flag has bit 7 set, to `buffer+0x8088+(y-cameraY)*24*456+(x-cameraX)*24`; bit `0x08` adds `2*flip`, and its FDSHAP descriptor lookup is deliberately the offset-table entry `index+1` (`base+0x0a`). Its raw/alternate tile branch depends on the field entry's byte `+3`. The alternate `0x4dd52` branch is now closed as the same 24×24 four-mode RLE decoder with an explicit caller-supplied 256-entry index table, not an unknown visual effect. Loader `0x10937..0x1096f` obtains the image descriptor base `0x53a5d` and flag table `0x53a69` as the selected FDSHAP even/odd resource pair via `0x111ba`. `0x12ac6` selects its FDOTHER #3 LUT through the same `0x51a97[0x53c1f]` terrain phase table as `0x11eee`; that selector is closed. This is evidence for a foreground-terrain occlusion layer, not merely a redraw marker. The full scheduler remains incomplete, so an Ebiten adapter cannot claim native presentation.
@@ -3674,9 +3680,10 @@ raw handler table index28 的 bytes `8c 54 01 00` 解析為線性位址 `0x2548c
 
 map28（現行 `battle_ch29`）、FDTXT_029 count-aligned index10..15、raw
 index28 與最後的 chapter-global increment 共同支持「玩家第29戰 post handler
-候選」；不再把 index29 的 terminal self-loop 當成第29戰。但 `0x35bba`、
-`0x12cea`、`0x22253`、`0x24b4d`、`0x35e5a` 的完整 indexed renderer／工作區
-擁有者尚未閉合，也沒有未修改一般玩家的 E2，因此不能把現有
+候選」；不再把 index29 的 terminal self-loop 當成第29戰。【2026-08-21 勘誤】
+`0x25535` 專用 `0x22253` battle-state presenter、`0x24B4D` 與 `0x35E5A`
+indexed DAC presenter 已達窄 E1；仍由第29戰 runtime topology、dialog／pan binding、
+正式 save flow 與未修改一般玩家 E2 阻擋，因此不能把現有
 `postbattle_ch29_persist` 接到 `preparation_ch30`。campaign、城鎮／商店／整備／
 存檔仍採 fail-closed；這一節不宣稱正式 binding。
 
@@ -4394,3 +4401,66 @@ Capstone 覆核原始指令。完整位址、工具、雜湊、資源形狀與�
 第一相位，以及相鄰 `layout_units`、ACT63／64 的可見演出。重製端只保存已證實的
 相對相位與順序，不宣稱 DOS 計時逐拍或逐像素一致；這些缺口不得觸發重新反組譯
 `0x24336` 本體。
+
+## 2026-08-21：`0x22253` indexed presenter 與 ch28 post caller 合約（E0 規格）
+
+本節先固定執行介面，再允許修改 runtime。它沿用已閉合的共用 callee，不重解
+`0x22253`：五參數 ABI 是 `(unit,newX,newY,visualX,visualY)`；可觀察排程為
+11 張 FDOTHER #6 LMI intro、6 張 FDOTHER #3 contract、18／24 列 direct-VGA
+bridge、10 張 FDOTHER #3 release。座標只能在第六張 contract 完成之後、bridge
+開始之前寫入 runtime record `+0/+1`。
+
+### 具型別拍與來源限制
+
+正式 `Beat` 使用新的 `native_unit_present` payload，完整保存五參數，不沿用已被
+反證的六影格 `HandlerUnitPresent` schema。可編輯數值仍須綁定 caller：
+
+- `0x33F78` wrapper 只接受已證實的 `(slot,x,y)` immediate，先套用其 focus，
+  再 lower 為 `(slot,x,y,x,y)`；
+- raw ch28 post 的 `0x25535` 只接受原始壓棧
+  `10,15,10,15,[0x53BEB]-1`，lower 為「執行當下最後一個 materialized slot」
+  與 `(newX,newY,visualX,visualY)=(15,10,15,10)`；
+- 其他 direct caller 必須各自補來源專屬 lowering，不得把動態最後槽位或兩組
+  座標泛化成任意腳本功能。
+
+### 原子預先驗證與發布
+
+runtime 在改動 live state 前，必須以 private copies 完成以下預先驗證：
+
+1. 固定版 FDOTHER #6 entries `0x72..0x7C`、FDOTHER #3 LUT0..9 與 bridge LUT
+   `LUT0[1:256]+LUT1[0]` 全部存在且形狀正確；
+2. native work/VGA、地形、unit、foreground、selector cache、camera、visible cursor、
+   raw `+0/+1/+3/+4` presentation provenance 與目標 slot 完整；
+3. 先用 mutation 前 state 建 terrain-only snapshot、11 張 intro、共享
+   terrain+final-LMI snapshot 及6張 contract；
+4. 再 clone battle state，只在 clone 寫入 `newX/newY`，用 mutation 後 state 建
+   bridge 逐列 VGA 快照與10張 release；
+5. 任一 frame、row、bounds、asset 或 compositor 失敗時，不發布第一張影格，
+   live unit、work、VGA、DAC、camera 與 beat index 必須完全不變。
+
+全部預先驗證成功後才建立 presenter job。每張 full-present 與每一列 bridge 都是
+獨立 draw-ack 邊界；更新迴圈不可在該影格尚未實際畫出前自行跳過。第六張
+contract 已畫出後，job 原子寫入 live unit 的 native map coordinates，再發布第一列
+bridge；完成 release 後才執行 continuation。若 job 啟動後遇到 renderer 錯誤，必須
+回復啟動前的 unit、work 與 VGA。
+
+DOS BIOS tick 只可映射為重製端有界呈現等待；這是 E1 時序近似，不得宣稱 DOS
+時鐘逐拍一致。`0x35E5A` 的 0..63／hold／62..0 DAC pulse 是另一個 typed presenter，
+不得用 RGBA fade、純 delay 或本 adapter 代替。
+
+### 戰役接線 gate
+
+完成 generic presenter 不自動解除 `postbattle_ch29_persist`。正式 binding 還必須
+證實玩家第29戰 post 入口的 materialized slot topology、group9 append 後
+`[0x53BEB]-1` 的 consumer、所有對話／pan／palette payload、持續隊伍同步、
+`preparation_ch30` 存讀檔，以及一般玩家戰果確認路徑。缺任一項時保持失敗即關閉；
+不得用目前的近似戰後 fallback 或 direct-entry 測試冒充忠實模式 E1／E2。
+
+### 2026-08-21 實作狀態
+
+`native_unit_present` 現只接受來源 `0x25535` 的動態最後槽位 ABI，預先產生
+11＋6＋18/24＋10個 work/VGA 快照；第17張 full-present 畫出後才提交座標。
+決定性回歸覆蓋51-frame分支、mutation boundary、缺 FDOTHER #6 零修改與執行期
+rollback。`native_palette_pulse` 另以 immutable baseline 執行127次 DAC 寫入，
+保留第64步400 ms hold與最後 baseline restore。兩者是窄 `RUNTIME-E1`，不解除本節
+戰役 topology／binding／E2 gate；`0x33F78` story/focus wrapper 也仍維持失敗即關閉。

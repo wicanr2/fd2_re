@@ -32,11 +32,11 @@ type nativeMapAssets struct {
 	// sub_32999. It is validated independently because steady map rendering
 	// does not require this caller-specific transition.
 	SpawnIntro []fdother.LMI1Entry
-	// CommandHealDigits/Effect are caller-specific FDOTHER #5/#6 LMI1 banks.
-	// Steady native map rendering does not require them; command 13..16 performs
-	// its own all-or-nothing descriptor preflight before any state mutation.
+	// CommandHealDigits is the caller-specific FDOTHER #5 LMI1 bank.
+	// FDOTHER6 is the complete shared #6 bank consumed by command 13..16 and
+	// 0x22253; neither path may rename the archive itself after one effect.
 	CommandHealDigits []fdother.LMI1Entry
-	CommandHealEffect []fdother.LMI1Entry
+	FDOTHER6          []fdother.LMI1Entry
 }
 
 func loadNativeMapAssets(mapDir string) (*nativeMapAssets, error) {
@@ -85,7 +85,7 @@ func loadNativeMapAssets(mapDir string) (*nativeMapAssets, error) {
 	// separately and fails closed before changing the roster.
 	spawnIntro, _ := fdother.DecodeNativeSpawnIntroFrames(fdotherPath)
 	commandHealDigits, _ := fdother.DecodeLMI1Resource(fdotherPath, fdother.NativeCommandHealTailDigitResource)
-	commandHealEffect, _ := fdother.DecodeLMI1Resource(fdotherPath, fdother.NativeCommandHealTailEffectResource)
+	fdother6, _ := fdother.DecodeLMI1Resource(fdotherPath, fdother.NativeCommandHealTailEffectResource)
 	return &nativeMapAssets{
 		MapIndex: mapIndex, Frames: frames,
 		Terrain: terrain, Range: rangeBank, Units: units,
@@ -93,7 +93,7 @@ func loadNativeMapAssets(mapDir string) (*nativeMapAssets, error) {
 		PaletteDAC:        append([]byte(nil), paletteRaw...),
 		SpawnIntro:        spawnIntro,
 		CommandHealDigits: commandHealDigits,
-		CommandHealEffect: commandHealEffect,
+		FDOTHER6:          fdother6,
 	}, nil
 }
 

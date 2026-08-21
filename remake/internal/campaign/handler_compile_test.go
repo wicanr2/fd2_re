@@ -9,6 +9,29 @@ import (
 
 func intPtr(v int) *int { return &v }
 
+func TestCompileCh28PostUnitPresentPreservesDynamicLastSlotABI(t *testing.T) {
+	input := HandlerBeat{
+		Op: "unresolved_native_call", NativeTarget: "0x22253",
+		NativeSemantic: "native_indexed_presentation_schedule", NativeConfidence: "已證實",
+		NativeEvidence: []string{"docs/data/ida/fd2_ch28_post_ida.txt"},
+		RawArgs:        []any{float64(10), float64(15), float64(10), float64(15), "ebx"},
+		Source:         HandlerSource{Addr: "0x25535", Target: "0x22253"},
+	}
+	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{input}}, HandlerBindings{})
+	if len(issues) != 0 || len(beats) != 1 || beats[0].Op != "native_unit_present" || beats[0].NativeUnitPresent == nil {
+		t.Fatalf("beats=%#v issues=%#v", beats, issues)
+	}
+	got := beats[0].NativeUnitPresent
+	if !got.LastRuntimeSlot || got.Slot != 0 || got.NewX != 15 || got.NewY != 10 || got.VisualX != 15 || got.VisualY != 10 {
+		t.Fatalf("payload=%+v", got)
+	}
+	input.Source.Addr = "0x25534"
+	beats, issues = CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{input}}, HandlerBindings{})
+	if len(beats) != 0 || len(issues) != 1 {
+		t.Fatalf("mismatched source compiled: beats=%#v issues=%#v", beats, issues)
+	}
+}
+
 func TestCompileHandlerScriptUsesOnlyExplicitBindings(t *testing.T) {
 	upper := true
 	script := &HandlerScript{Beats: []HandlerBeat{

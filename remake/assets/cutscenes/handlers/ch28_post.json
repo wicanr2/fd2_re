@@ -70,11 +70,14 @@
       }
     },
     {
-      "op": "unresolved_native_call",
+      "op": "native_call",
       "native_target": "0x22253",
       "native_semantic": "native_indexed_presentation_schedule",
-      "native_confidence": "強推論",
-      "native_evidence": ["docs/data/ida/fd2_ch29_terminal_callers_ida.txt"],
+      "native_confidence": "已證實",
+      "native_evidence": [
+        "docs/data/ida/fd2_ch29_terminal_callers_ida.txt",
+        "docs/data/ida/fd2_ch28_post_ida.txt"
+      ],
       "raw_args": [
         10,
         15,
@@ -438,7 +441,7 @@
   ],
   "diagnostics": {
     "unknown_ops": 0,
-    "classified_native_ops": 16,
-    "unresolved_native_ops": 1
+    "classified_native_ops": 17,
+    "unresolved_native_ops": 0
   }
 }

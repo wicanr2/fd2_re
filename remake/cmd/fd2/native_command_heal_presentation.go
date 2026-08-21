@@ -89,7 +89,7 @@ func (g *Game) startNativeCommandHealPresentation(commandID int, targetUnits []*
 		return err
 	}
 	a := g.nativeMapAssets
-	if !nativeMapAssetsAvailable(a) || len(a.CommandHealEffect) < tail.EffectStart+tail.EffectFrames || len(a.CommandHealDigits) <= tail.DigitBias+9 {
+	if !nativeMapAssetsAvailable(a) || len(a.FDOTHER6) < tail.EffectStart+tail.EffectFrames || len(a.CommandHealDigits) <= tail.DigitBias+9 {
 		return errors.New("native command heal tail FDOTHER #5/#6 descriptors unavailable")
 	}
 	targets, err := nativeCommandHealTailTargets(g.st, targetUnits)
@@ -129,7 +129,7 @@ func (g *Game) startNativeCommandHealPresentation(commandID int, targetUnits []*
 	effectFrames := make([][]byte, 0, tail.EffectFrames)
 	for frame := 0; frame < tail.EffectFrames; frame++ {
 		work, vga := append([]byte(nil), baselineWork...), append([]byte(nil), baselineVGA...)
-		if err := indexedmap.ComposeNativeCommandHealEffectFrame(work, vga, baselineWork, a.CommandHealEffect[tail.EffectStart+frame], effectTargets, in.CameraX, in.CameraY); err != nil {
+		if err := indexedmap.ComposeNativeCommandHealEffectFrame(work, vga, baselineWork, a.FDOTHER6[tail.EffectStart+frame], effectTargets, in.CameraX, in.CameraY); err != nil {
 			return fmt.Errorf("native command heal tail effect %d: %w", frame, err)
 		}
 		effectFrames = append(effectFrames, vga)
