@@ -152,9 +152,9 @@ func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing
 		t.Skipf("ANI.DAT unavailable: %v", err)
 	}
 
-	// 使用本關可編輯 scenario 的實際出戰順序建立既有持續隊伍；這等價於
-	// 一般戰役在上一個整備節點已經完成的 JOIN／部署狀態，不從測試中虛構
-	// 新角色。戰後新增的 24、23 仍只能由正式 join beat 建立。
+	// 使用本關可編輯 scenario 的實際出戰順序建立測試用持續隊伍投影。
+	// 這只提供既有 JOIN／部署的資料形狀，不證明上一個整備節點或一般玩家
+	// 路徑已執行。戰後新增的 24、23 仍只能由正式 join beat 建立。
 	scenario, err := battle.LoadScenario(assetPath("assets/scenarios/ch21.json"))
 	if err != nil {
 		t.Fatal(err)

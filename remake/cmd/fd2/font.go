@@ -1,8 +1,9 @@
 // font.go — TTF 中文字型渲染(doc 18 字型現代化)。
 //
 // 設計決策:台詞/物品名都已解碼成 UTF-8(extracted/story/*),remake 用現代 TTF
-// (Noto Sans CJK)直接渲染 UTF-8,清晰可縮放、支援任意字,不受原版 16×16 點陣字限制。
-// 繁體 codepoint 在 Noto CJK 都有 glyph;原版自製「特殊代號字模」(機器人篇,KB 有記錄)未來再特例。
+// (Noto Sans CJK)直接渲染 UTF-8，清晰可縮放，且不受原版 16×16 點陣字索引限制。
+// 實際字形覆蓋仍由載入的字型檔決定；不可假設所有繁體 codepoint 必然存在。
+// 原版自製「特殊代號字模」（機器人篇，知識庫有記錄）仍須逐字建立明確特例。
 //
 // 銳利度:Draw(scale) 不做 GeoM 縮放(非整數縮放重採樣=糊字根因,狀態欄名字踩過),
 // 而是把 scale 換算成目標像素尺寸,用 per-尺寸 face 快取直接 rasterize(scale 1.0 繪製)。

@@ -1,4 +1,5 @@
-// title.go — 開頭動畫 + 主選單(忠實 doc23 反組譯):
+// title.go — 開頭動畫與主選單。目前接入已驗證的 AFM／FDOTHER 資源、
+// 個別選單輸入與局部排程；完整原版幕序、交錯捲動與 DAC 時序仍未達 E2。
 // ① 魔王立繪 320×735(FDOTHER #0x45-0x49 五幀直疊)由下往上垂直捲動(視窗 200 高,
 //
 //	src y=535→0,原版 0x1fa85;任意鍵跳過)。淡入目前仍用 ColorScale 作 E1
@@ -32,10 +33,10 @@ type titleAssets struct {
 	aniPath   string              // 玩家自備 ANI.DAT 路徑(""=無,退回捲動 fallback)
 }
 
-// 開場過場腳本 — 反組譯真值(doc39 §10 ani-sched + doc23 §2.4⑥ ani-fdother):
-// AFM 動畫幕(從 ANI.DAT 執行期解碼)與 FDOTHER 靜態幕(0x1f73f)交錯,依 title_seq
-// 捲動觸發序穿插。AFM delayMs 90/50/15→60fps tick;靜態幕 hold≈BIOS tick 忙等短停+淡入。
-// skippable:僅首幕(守護者前 AFM#3)與末幕 logo(AFM#1)可按鍵跳,中間原版不可跳。
+// 開場過場腳本是重製端 E1 排程：AFM 動畫幕由 ANI.DAT 解碼，FDOTHER 靜態幕
+// 使用已辨識資源；doc39 §10 已推翻舊 cutSeq，指出原版捲動會穿插在各幕之間，
+// 目前 cutScript 尚未重現該完整交錯順序。delay 與 skippable 僅保留已證實的
+// 局部輸入，不得把這份表當成原版完整排程真值。
 type cutStep struct {
 	kind string // "afm"=ANI.DAT 動畫幕 / "static"=FDOTHER 靜態幕
 	res  int    // afm:ANI.DAT 資源號 / static:cutStatic 索引(0 守護者/1 浮空城)
@@ -378,7 +379,7 @@ func (g *Game) drawTitle(screen *ebiten.Image) {
 			iop.GeoM.Translate(float64((320-b.Dx())/2*2), float64((162+i*9)*2)) // dosbox 實拍座標:y=162/171/180、間距9@320
 			screen.DrawImage(it, iop)
 		}
-		// 音源設定提示(F2 切換;還原原版 SETSOUND 選音效卡的體驗)
+		// 音源設定提示（F2 切換預錄 OGG；只近似原版 SETSOUND 的選擇意圖）
 		if g.font != nil {
 			g.font.Draw(screen, "♪ F2  "+bgmSourceName[g.bgmSource], 8, float64(logicalH)-24, 0.9,
 				color.RGBA{0xa0, 0xc0, 0xff, 0xff})

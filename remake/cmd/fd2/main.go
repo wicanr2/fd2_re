@@ -50,7 +50,8 @@ const (
 	// storyZoom:story 場景(cutscene)世界層放大倍率。原版視窗固定 13×8 格
 	// (312×192px @320×200,doc25 0x11eee),remake 戰場自訂 640 寬 FOV 一屏裝下整廳,
 	// 走入/運鏡完全失去意義(使用者 2-1);story 場景世界層 2×(48px/格,視野 13.3×8.3 格)
-	// 即還原原版取景與長廊運鏡。戰場是否同步 2× 另議(動 HUD/指令環佈局,worklist)。
+	// 用來保留原版 13×8 格附近的局部取景與長廊運鏡手感；完整鏡頭／HUD
+	// 同狀態 E2 仍由 UI 證據矩陣逐場驗收，不能由倍率常數自行宣稱還原。
 	storyZoom = 2
 )
 
@@ -8172,7 +8173,8 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		screen.DrawImage(g.bg, op)
 	}
 	// 繪製順序(doc35 §4 RE:演出 0x28a6c 內「狀態欄 0x2a289(0x28ce7/0x28d62)先畫、
-	// figure(0x28e76 起 0x29164/0x2939d)後畫」→ figure z-order 高於狀態欄,動畫蓋住欄、動畫完整)。
+	// figure(0x28e76 起 0x29164/0x2939d)後畫」→ figure z-order 高於狀態欄，
+	// 動畫可覆蓋狀態欄；這只證明繪製順序，不代表完整演出、色盤、音效或時序 E2。
 	const sc = 2.0 // doc35:無 runtime 縮放,FIGANI 原生尺寸 ×2(原版 320→畫布 640)
 
 	// 資料驅動動畫(doc06,所有角色通用):每幀貼幀標頭內嵌的絕對螢幕座標 (dx,dy)@320 ×2,
@@ -8383,7 +8385,8 @@ func (g *Game) mapSpriteGroup(u *battle.Unit) int {
 	return u.Fig
 }
 
-// drawUnitSprite 畫一個單位:純 FDICON Q 版 sprite(原版無 HP bar/腳標,還原乾淨)。
+// drawUnitSprite 以 FDICON Q 版 sprite 呈現單位；正式 sprite 路徑不另加重製端
+// HP bar／腳標，fallback 色塊則仍有自己的除錯資訊。完整戰場畫面另依 E2 驗收。
 // 用方向走動分鏡(FDICON 12幀=4方向×3:站/抬左手/抬右手);行軍時套用 OffX/OffY 位移。
 // spriteGroup is either a proven native raw key or an explicit legacy Fig;
 // this helper never infers one from the other.
@@ -8766,7 +8769,7 @@ func loadGame() *Game {
 		if ta := loadTitleAssets(); ta != nil {
 			g.titleAssets = ta
 			if ta.aniPath != "" && os.Getenv("FD2_NOCUT") == "" {
-				g.titlePhase = "cutscene" // 有 ANI.DAT:播完整 AFM 開場過場
+				g.titlePhase = "cutscene" // 有 ANI.DAT：播放目前接入的 AFM／靜態幕；完整原版排程仍非 E2
 			} else {
 				g.titlePhase = "scroll" // 無 ANI.DAT:退回 FDOTHER 立繪捲動+logozoom
 				g.scrollY = 535

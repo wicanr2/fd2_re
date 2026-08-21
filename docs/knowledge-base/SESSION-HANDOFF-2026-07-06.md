@@ -5508,3 +5508,18 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   [`shop-transfer-ch02-e2.json`](../data/ui-traces/shop-transfer-ch02-e2.json)與
   [`對照圖`](../figures/shop-transfer-ch02-original-vs-remake.png)。本批不證明
   mutation、empty/full、cancel/restore、原版存檔、church caller 或其他章節。
+
+## 2026-08-22：原始碼註解與 Markdown 現況斷言第五輪勘誤
+
+- 以 `README→58→56→57→91→handoff` 與實際消費端重核高風險措辭。
+  `title.go` 舊稱 cutScript 為「忠實／反組譯真值」，但 `39 §10` 已明確推翻
+  舊幕序，現改標 E1 並保留交錯捲動、完整幕序與 DAC 時序缺口；啟動註解也不再
+  把有 ANI.DAT 說成完整原版開場。
+- 天空之鑰測試直接以 ch21 scenario 建立隊伍投影，現明寫不等價於已執行上一個
+  整備或一般玩家路徑。戰鬥畫面註解只保留已證實的 figure／狀態欄繪製順序，
+  不再稱動畫完整；storyZoom、FDICON 單位、TTF 字形與 SETSOUND 註解也撤回
+  「常數即還原、所有繁中字必有 glyph、預錄 OGG 等於原版驅動」等過度概括。
+- `42/56/57` 現況摘要與 `91` 歷史搜尋入口已同步：service3提示／來源名冊／物品／
+  目的提示／名冊五狀態已有route-patched partial E2，不再列為 transfer child panel
+  未做。仍缺的是動畫相位、service3 mutation／empty／full、church caller、其他章節、
+  原版存檔與未修改一般玩家路徑；沒有因文件勘誤把這些真實缺口刪掉。

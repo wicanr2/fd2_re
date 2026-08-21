@@ -1,7 +1,8 @@
 // settings.go — 全域系統設定(跨存檔,獨立於 fd2_save.json)。
-// 目前:音源選擇(MT-32 / Sound Blaster FM)——還原原版 SETSOUND.EXE 選音效卡的體驗。
-// FD2 出廠預設是 Sound Blaster(FM/OPL),多數玩家(含使用者童年)聽到的就是這個磅礡版;
-// MT-32 是選配的「高級」音源,音色偏圓潤。兩套 OGG 並存,執行期可切換。
+// 目前提供重製端 F2 設定與兩套預錄 OGG，在操作意圖上近似原版
+// SETSOUND.EXE 的音源選擇；它不執行原版程式、驅動或即時合成。
+// 兩套 OGG 以 Sound Blaster（FM）與 Roland MT-32 身分並存；重製端預設選 FM。
+// 這個預設與音色描述不是原版 SETSOUND 的動態證據，也不代表即時合成 parity。
 package main
 
 import (
@@ -24,7 +25,7 @@ type settings struct {
 	BGMSource string `json:"bgm_source"` // "fm"(預設)或 "mt32"
 }
 
-// loadSettings 讀 fd2_settings.json;無檔/不合法回預設(fm=出廠 Sound Blaster)。
+// loadSettings 讀 fd2_settings.json；無檔或不合法時回重製端預設 FM。
 func loadSettings() settings {
 	s := settings{BGMSource: "fm"}
 	if raw, err := os.ReadFile(settingsPath()); err == nil {
