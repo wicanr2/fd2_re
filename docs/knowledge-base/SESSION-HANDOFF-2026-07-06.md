@@ -5421,3 +5421,17 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   及[`對照圖`](../figures/shop-sell-success-return-ch02-original-vs-remake.png)。
 - 本批沒有證明未修改戰役、原版存檔、成功影格的精確停留時間、recipient scroll、
   no-recipient/full、equip/transfer子面板或其他章節；這些仍依 `57` 保持 partial。
+
+## 2026-08-22：原始碼註解與 Markdown 現況斷言第三輪勘誤
+
+- 先逐項重核前輪候選：轉職、postbattle fallback、戰鬥音效E1近似及mode2
+  `0x13FD4`註解都已限定實際路徑，現況正確，未為了縮短文件而刪除有效限制。
+- `drawNativeBattleStatus` 使用原版6×8 digit cell與7px advance，但舊註解把局部素材
+  消費直接寫成「100%還原」。現改為只聲明素材與局部幾何；完整狀態欄仍依UI矩陣
+  的同狀態畫面與E2驗收，不可由程式註解自行升格。
+- `18-font-modernization-utf8-ttf-plan.md` 同樣把FDOTHER#4 16×16 atlas寫成
+  「100%還原1995畫面」。現更正為忠實取用原版字模；文字布局、陰影、裁切、分頁
+  與整幀結果仍逐狀態驗收。1824／1824 glyph mapping與round-trip等有明確分母的
+  資料覆蓋數字保留，不與畫面完成度混為一談。
+- 商店賣出「成功時間線與返回仍待」只剩交接檔上一輪的歷史狀態，後方已有本日
+  新E2勘誤；依時間序列追溯規則保留原句，不把歷史改寫成當時已完成。

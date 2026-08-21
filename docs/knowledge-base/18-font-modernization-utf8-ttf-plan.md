@@ -61,7 +61,7 @@ FDTXT.DAT ─(glyph_map)→ 每章 script.json:
 
 | 模式 | 做法 | 觀感 |
 |---|---|---|
-| **原版點陣**(懷舊) | 把 FDOTHER#4 烘成 16×16 atlas,用 glyph 索引畫(`tools/decode_text.py` 已能匯出) | 100% 還原 1995 畫面 |
+| **原版點陣**(懷舊) | 把 FDOTHER#4 烘成 16×16 atlas,用 glyph 索引畫(`tools/decode_text.py` 已能匯出) | 忠實取用1995字模；布局、陰影、裁切與分頁仍須逐狀態驗收 |
 | **TTF 現代**(預設) | UTF-8 + TTF render | 清晰、可縮放、可翻譯 |
 | **TTF 復古**(折衷) | 用點陣風 TTF(如 Cubic 11 / Zpix / 賽博像素字) | 像素感 + 不受字數限制 |
 

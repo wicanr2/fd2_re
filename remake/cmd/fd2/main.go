@@ -8300,7 +8300,8 @@ func (g *Game) drawBattlePanel(screen *ebiten.Image, x, y float64, name string, 
 		}
 		g.fontNm.Draw(screen, name, nx, ny, 1.0, color.RGBA{0xe0, 0xee, 0xff, 0xff})
 	}
-	// 數字:原版 digit cell 素材(6×8,advance 7px native),100% 還原
+	// 數字使用原版 6×8 digit cell 與 native 7px advance；這只固定素材與
+	// 局部幾何，不代表完整戰鬥狀態欄已達逐像素 E2。
 	drawNum := func(s string, nxN, nyN float64) {
 		for k, ch := range s {
 			if ch < '0' || ch > '9' || g.digits[ch-'0'] == nil {
