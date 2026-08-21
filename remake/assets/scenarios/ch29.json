@@ -1260,6 +1260,40 @@
           }
         ]
       }
+    },
+    {
+      "event_id": 76,
+      "raw_camp": 2,
+      "handler": "0x35d60",
+      "progression": {
+        "state_index": 17,
+        "repeat_until": 4,
+        "mark_unit_index": 1,
+        "mark_helper": "0x13512",
+        "control_slot": 1,
+        "reschedule_delta": 1,
+        "final_text_index": 2,
+        "spawn_group": 1,
+        "spawn_helper": "0x10b4e",
+        "raw_placement_gate": 0,
+        "spawn_count": 3,
+        "base_state_index": 21,
+        "final_activation": {
+          "slot": 2,
+          "event_id": 79,
+          "raw_camp": 0,
+          "turn_delta": 0
+        },
+        "pulse_handler": "0x35e5a",
+        "pulse_count": 6,
+        "extra_delay_ms": 400,
+        "tail_text_indices": [
+          3,
+          4,
+          5,
+          6
+        ]
+      }
     }
   ],
   "events": [

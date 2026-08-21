@@ -16,7 +16,7 @@
 | 0 | 原始碼註解與 Markdown 現況斷言稽核 | `DATA-READY`：本輪已修正 `0x2189A`、`0x22253`、legacy `unit_present` 與 handler 三態計數的高信心舊斷言，並修復 manifest 產生器重複鍵；這是持續性品質閘門，不是一次掃描即永久完成 | 下一輪抽查完成度、節點、slot、handler、renderer 舊斷言；錯誤現況直接訂正或刪除，歷史證據則追加勘誤，不抹除形成原因 |
 | 1 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式，現為產品31／runtime170／未知1104；舊83 unknown 已拆為80已分類、3已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253` 只追其他 caller／戰役 gate，`0x2BCE5` 追正式 owner，不重解 callee |
 | 2 | 玩家第21戰天空之鑰固定演出 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`：`0x24336` 已接真實 `FDOTHER #34`、`ANI #0`、調色盤循環與正式戰後→城鎮→存讀檔 | 取得未修改原版同狀態 E2，核對第一個動態調色盤相位與相鄰 `layout_units`／ACT63／64；不重解函式本體 |
-| 3 | 最後一個忠實模式 blocked postbattle | `RE-CLOSED`；event75→74 已 `DATA-READY`／`RUNTIME-E1`：玩家第29戰入口為20筆持續隊伍＋group8的56筆＝76，成功動作在可編輯對話後啟動event74，並逐回追加groups4..7。event76／79與post仍未接，故節點保持 `BLOCKED` | 依已閉合規格接 typed event76／79，再補ch28 post group9、持續隊伍、`preparation_ch30` save/load E1；最後補一般玩家 E2 |
+| 3 | 最後一個忠實模式 blocked postbattle | `RE-CLOSED`；event75／74／76 已 `DATA-READY`／`RUNTIME-E1`：玩家第29戰入口為20筆持續隊伍＋group8的56筆＝76，成功動作啟動groups4..7，raw-camp2再推進slot1 bit7、group1、event79 row與六次pulse／對話。event79與post仍未接，故節點保持 `BLOCKED` | 依已閉合規格接 typed event79，再補ch28 post group9、持續隊伍、`preparation_ch30` save/load E1；最後補一般玩家 E2 |
 | 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；`0x16F55` END 已接，command 13–16 的玩家與敵方 mode 11 已走完整 #3前段、#6七張、mask、交易後 redraw、#5數字22張與尾停，AI 依 raw selector重建 target array | 補 END／command 13–16 同狀態逐幀逐音訊 E2；再依 `56` family matrix選下一個有完整證據的 command，不重解本批已閉合函式 |
 | 5 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial | 依 `57` 逐個輸入狀態機取得同狀態原版／重製證據，不用單張 layout 圖代替 |
 | 6 | 原版終局精確鏈 | 近似 E1 可見；忠實模式仍部分阻擋 | 閉合 `0x28A6C` renderer、終端輸入、`0x2BCE5` 正式 owner／handoff及第30戰一般玩家 E2 |
@@ -42,7 +42,19 @@ handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不�
   啟動event74／76。event74沿用indexed pan／白閃staging，每次只發布一個動態
   group快照，失敗不污染公開battle state。
 - 決定性回歸覆蓋成功、identity mismatch、缺raw provenance、對話提交邊界、
-  dynamic group preflight與既有event63非對稱回歸。event76／79、post及E2仍待辦。
+  dynamic group preflight與既有event63非對稱回歸。當時的event76待辦已由下段
+  取代；event79、post及E2仍待辦。
+
+### 2026-08-21：玩家第29戰 event76 raw-camp2 progression
+
+- `RE-CLOSED`／`DATA-READY`：`sub_35D60` 的state17 repeat/final branches、
+  `0x13512(slot1)`、row1 reschedule、group1三筆／gate0、state21 base、event79 row，
+  以及六次`0x35E5A`與indices2..6順序已寫入typed scenario。
+- `RUNTIME-E1`：`completeTurn`在native round increment後、player phase前執行
+  raw-camp2；repeat transaction與CONTINUE raw views保持原子，final group1／row2
+  先在私有state完整preflight。indexed pulse／delay／dialogue全部結束後才恢復輸入。
+- 聚焦回歸覆蓋缺slot1 raw provenance零修改、phase order、private group append，
+  以及六pulse＋兩delay＋五組editable text。event79、post binding與E2仍待辦。
 
 ### 2026-08-21：raw ch28 `0x25535` indexed presenter 與斷言稽核
 

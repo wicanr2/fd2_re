@@ -4502,5 +4502,16 @@ event82 也沒有已證實的 live-row producer，因此兩者不得物化或用
 - 新戰鬥使用雜湊綁定的 typed turn rows；若 CONTINUE 邊界另提供完整 raw field
   view，則提交時必須先核對並同步該 view。兩者不可互相冒充 provenance。
 
-typed event76／79、正式 ch28 post binding、隊伍同步、`preparation_ch30` 存讀檔
-與一般玩家 E2 尚未完成，因此 `postbattle_ch29_persist` 仍是 `BLOCKED`。
+### 2026-08-21 event76 實作狀態
+
+- `DATA-READY`／`RUNTIME-E1`：event76 現由 raw-camp2 phase owner 在 round
+  increment 後、玩家輸入前 dispatch。state17<4 的 repeat branch 原子設定slot1
+  raw `+5` bit7、state increment與row1下一回合；state17==4則在index2對話後
+  私下建構group1三筆、寫state21 base並啟動event79 row。
+- final呈現沿用已閉合的 `0x35E5A` indexed presenter，順序固定為六次pulse、
+  前兩次後各400ms，以及indices3、4、5、6對話；全部結束才回到player phase。
+  測試將核心state preflight與indexed admission分開，不能用無原版資產的直接
+  fixture冒充正式畫面已驗收。
+
+typed event79、正式 ch28 post binding、隊伍同步、`preparation_ch30` 存讀檔與
+一般玩家 E2 尚未完成，因此 `postbattle_ch29_persist` 仍是 `BLOCKED`。

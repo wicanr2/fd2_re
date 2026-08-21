@@ -151,9 +151,10 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 > **2026-08-21 map28 runtime 拓撲勘誤：** IDA 9.4 已固定正常 pre-handler
 > 入口為20筆持續隊伍後追加group8的56筆，正式 battle seam 現保留該76筆順序，
 > 不再把groups1..9全部當作開場單位。event75 selector1 的可編輯對話／live-row
-> activation 與event74逐回合groups4..7 staging現已達 `RUNTIME-E1`；event76的
-> group1、event79 consumer及post group9仍只有已閉合producer/order，尚未接正式
-> runtime／戰後binding。groups2/3沒有已證實producer，故保持source-only。
+> activation、event74逐回合groups4..7 staging，以及event76的raw-camp2 repeat／
+> group1／六次palette pulse與indices2..6現已達 `RUNTIME-E1`；event79 consumer
+> 及post group9仍只有已閉合producer/order，尚未接正式runtime／戰後binding。
+> groups2/3沒有已證實producer，故保持source-only。
 > 本切片不解除玩家第29戰整體fail-closed，也尚未提升為一般玩家 `PLAYER-E2`。
 
 > **2026-08-11 歷史勘誤；blocked 清單已由 2026-08-21 取代。** 玩家第22戰

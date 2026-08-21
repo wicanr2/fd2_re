@@ -38,6 +38,7 @@ type NativeTurnEvent struct {
 	Handler      string                  `json:"handler"`
 	Staging      NativeTurnStaging       `json:"staging"`
 	DynamicGroup *NativeTurnDynamicGroup `json:"dynamic_group,omitempty"`
+	Progression  *NativeTurnProgression  `json:"progression,omitempty"`
 }
 
 // NativeTurnDynamicGroup 從 raw event-state table 解析一個 0x35822 group 參數，
@@ -51,6 +52,29 @@ type NativeTurnDynamicGroup struct {
 	RescheduleDelta int `json:"reschedule_delta"`
 	StopValue       int `json:"stop_value"`
 	Increment       int `json:"increment"`
+}
+
+// NativeTurnProgression 保存 event76 這類由 raw event-state byte 推進、最後才
+// materialize group 並啟動另一 live row 的可編輯規則；欄位名只描述運算，不替
+// state byte 或 RawCamp 猜測玩法語意。
+type NativeTurnProgression struct {
+	StateIndex       int                  `json:"state_index"`
+	RepeatUntil      int                  `json:"repeat_until"`
+	MarkUnitIndex    int                  `json:"mark_unit_index"`
+	MarkHelper       string               `json:"mark_helper"`
+	ControlSlot      int                  `json:"control_slot"`
+	RescheduleDelta  int                  `json:"reschedule_delta"`
+	FinalTextIndex   int                  `json:"final_text_index"`
+	SpawnGroup       int                  `json:"spawn_group"`
+	SpawnHelper      string               `json:"spawn_helper"`
+	RawPlacementGate int                  `json:"raw_placement_gate"`
+	SpawnCount       int                  `json:"spawn_count"`
+	BaseStateIndex   int                  `json:"base_state_index"`
+	FinalActivation  NativeTurnActivation `json:"final_activation"`
+	PulseHandler     string               `json:"pulse_handler"`
+	PulseCount       int                  `json:"pulse_count"`
+	ExtraDelayMS     int                  `json:"extra_delay_ms"`
+	TailTextIndices  []int                `json:"tail_text_indices"`
 }
 
 // NativeTurnStaging is the editable form of the recovered 0x35822 helper.
@@ -321,13 +345,16 @@ func LoadScenario(path string) (*Scenario, error) {
 		staging := event.Staging
 		if !sc.RuntimeAppendGroups || event.EventID < 0 || event.EventID >= 90 ||
 			event.RawCamp < 0 || event.RawCamp > 0xff || event.Handler == "" ||
-			seenNativeTurn[key] || staging.Helper == "" || staging.PanHelper == "" ||
+			seenNativeTurn[key] {
+			return nil, fmt.Errorf("scenario native turn event %d is invalid", eventIndex)
+		}
+		if event.Progression == nil && (staging.Helper == "" || staging.PanHelper == "" ||
 			staging.SpawnHelper == "" || staging.PaletteHelper == "" || staging.RedrawHelper == "" ||
 			staging.DelayBeforeFlashMS < 0 || staging.FlashHoldMS < 0 ||
 			staging.PaletteStart < 0 || staging.PaletteEnd < staging.PaletteStart || staging.PaletteEnd > 255 ||
 			staging.FlashDelta < 0 || staging.FlashDelta > 255 ||
 			staging.RestoreDelta < 0 || staging.RestoreDelta > 255 ||
-			staging.RawPlacementGate < 0 || staging.RawPlacementGate > 0xff || len(staging.Calls) == 0 {
+			staging.RawPlacementGate < 0 || staging.RawPlacementGate > 0xff || len(staging.Calls) == 0) {
 			return nil, fmt.Errorf("scenario native turn event %d is invalid", eventIndex)
 		}
 		seenNativeTurn[key] = true
@@ -339,6 +366,22 @@ func LoadScenario(path string) (*Scenario, error) {
 				dynamic.RescheduleDelta <= 0 || dynamic.StopValue < dynamic.Minimum ||
 				dynamic.StopValue > dynamic.Maximum || dynamic.Increment <= 0 || len(staging.Calls) != 1 {
 				return nil, fmt.Errorf("scenario native turn event %d dynamic group is invalid", eventIndex)
+			}
+		}
+		if event.Progression != nil {
+			progression := event.Progression
+			if event.DynamicGroup != nil || len(staging.Calls) != 0 || progression.StateIndex < 0 || progression.StateIndex >= 0x20 ||
+				progression.RepeatUntil <= 0 || progression.RepeatUntil > 0xff || progression.MarkUnitIndex < 0 ||
+				progression.MarkHelper == "" || progression.ControlSlot < 0 || progression.ControlSlot >= 16 ||
+				progression.RescheduleDelta <= 0 || progression.FinalTextIndex < 0 || progression.SpawnGroup < 0 ||
+				progression.SpawnGroup > 0xff || progression.SpawnHelper == "" || progression.RawPlacementGate < 0 ||
+				progression.RawPlacementGate > 0xff || progression.SpawnCount <= 0 || progression.BaseStateIndex < 0 ||
+				progression.BaseStateIndex >= 0x20 || progression.FinalActivation.Slot < 0 ||
+				progression.FinalActivation.Slot >= 16 || progression.FinalActivation.EventID < 0 ||
+				progression.FinalActivation.EventID >= 90 || progression.FinalActivation.RawCamp < 0 ||
+				progression.FinalActivation.RawCamp > 0xff || progression.PulseHandler == "" ||
+				progression.PulseCount <= 0 || progression.ExtraDelayMS < 0 || len(progression.TailTextIndices) == 0 {
+				return nil, fmt.Errorf("scenario native turn event %d progression is invalid", eventIndex)
 			}
 		}
 		seenGroups := map[int]bool{}
@@ -438,6 +481,10 @@ func (sc *Scenario) materializePendingGroups(st *State) {
 			for group := event.DynamicGroup.Minimum; group <= event.DynamicGroup.Maximum; group++ {
 				st.PendingGroups[group] = true
 			}
+			continue
+		}
+		if event.Progression != nil {
+			st.PendingGroups[event.Progression.SpawnGroup] = true
 			continue
 		}
 		for _, call := range event.Staging.Calls {

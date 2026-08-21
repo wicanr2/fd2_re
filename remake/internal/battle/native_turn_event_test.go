@@ -102,13 +102,72 @@ func TestChapter29KeepsDynamicEvent74GroupsPending(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !sc.RuntimeAppendGroups || !reflect.DeepEqual(sc.InitialGroups, []int{8}) ||
-		len(sc.NativeFieldEventRules) != 1 || len(sc.NativeTurnEvents) != 1 ||
+		len(sc.NativeFieldEventRules) != 1 || len(sc.NativeTurnEvents) != 2 ||
 		sc.NativeTurnEvents[0].DynamicGroup == nil {
 		t.Fatalf("chapter29 event boundary=%#v", sc)
 	}
 	st := &State{}
 	sc.materializePendingGroups(st)
-	if !reflect.DeepEqual(st.PendingGroups, map[int]bool{4: true, 5: true, 6: true, 7: true}) {
+	if !reflect.DeepEqual(st.PendingGroups, map[int]bool{1: true, 4: true, 5: true, 6: true, 7: true}) {
 		t.Fatalf("chapter29 pending groups=%v", st.PendingGroups)
+	}
+}
+
+func TestEvent76RepeatCommitsRawBitStateAndNextRowAtomically(t *testing.T) {
+	st, err := Load("../../assets/maps/map28/map28_units.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sc, err := LoadScenario("../../assets/scenarios/ch29.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := sc.SetupChecked(st); err != nil {
+		t.Fatal(err)
+	}
+	event := sc.NativeTurnEvents[1]
+	st.NativeRoundCounter = 9
+	st.NativeEventState[17] = 1
+	st.NativeTurnEventControls[1] = NativeTurnEventControl{Turn: 9, EventID: 76, RawCamp: 2}
+	if len(st.Units) < 2 || !st.Units[1].HasNativeRecordByte5 {
+		t.Fatal("chapter29 slot1 lacks raw +5 provenance")
+	}
+	before := st.Units[1].NativeRecordByte5
+	plan, err := PlanNativeTurnEvent76(st, event)
+	if err != nil || plan.Final {
+		t.Fatalf("event76 repeat plan=%#v err=%v", plan, err)
+	}
+	if err := CommitNativeTurnEvent76Repeat(st, plan); err != nil {
+		t.Fatal(err)
+	}
+	if st.Units[1].NativeRecordByte5 != before|0x80 || st.NativeEventState[17] != 2 ||
+		st.NativeTurnEventControls[1] != (NativeTurnEventControl{Turn: 10, EventID: 76, RawCamp: 2}) {
+		t.Fatalf("event76 repeat byte5=%#x state17=%d row=%#v", st.Units[1].NativeRecordByte5, st.NativeEventState[17], st.NativeTurnEventControls[1])
+	}
+}
+
+func TestEvent76RepeatMissingRawProvenanceFailsWithoutMutation(t *testing.T) {
+	st, err := Load("../../assets/maps/map28/map28_units.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sc, err := LoadScenario("../../assets/scenarios/ch29.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := sc.SetupChecked(st); err != nil {
+		t.Fatal(err)
+	}
+	event := sc.NativeTurnEvents[1]
+	st.NativeRoundCounter = 9
+	st.NativeEventState[17] = 1
+	st.NativeTurnEventControls[1] = NativeTurnEventControl{Turn: 9, EventID: 76, RawCamp: 2}
+	st.Units[1].HasNativeRecordByte5 = false
+	beforeState, beforeRows := st.NativeEventState, st.NativeTurnEventControls
+	if _, err := PlanNativeTurnEvent76(st, event); err == nil {
+		t.Fatal("event76 accepted missing slot1 raw +5 provenance")
+	}
+	if st.NativeEventState != beforeState || st.NativeTurnEventControls != beforeRows {
+		t.Fatal("event76 rejected plan partially mutated state")
 	}
 }

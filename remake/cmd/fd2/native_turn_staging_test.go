@@ -211,7 +211,8 @@ func TestEvent63UnknownMatchingRowFailsClosedBeforeAI(t *testing.T) {
 	}
 }
 
-func TestEvent74PreflightResolvesOneDynamicGroupAtomically(t *testing.T) {
+func chapter29DirectNativeGameFixture(t *testing.T) *Game {
+	t.Helper()
 	g := &Game{}
 	if err := g.loadMap(assetPath("assets/maps/map28")); err != nil {
 		t.Fatal(err)
@@ -227,6 +228,11 @@ func TestEvent74PreflightResolvesOneDynamicGroupAtomically(t *testing.T) {
 	if !g.materializeNativeMapRuntime(c.Nodes["battle_ch29"]) {
 		t.Fatalf("chapter29 native runtime: %s", g.loadErr)
 	}
+	return g
+}
+
+func TestEvent74PreflightResolvesOneDynamicGroupAtomically(t *testing.T) {
+	g := chapter29DirectNativeGameFixture(t)
 	g.st.NativeRoundCounter = 8
 	g.st.NativeEventState[16] = 4
 	g.st.NativeTurnEventControls[0] = battle.NativeTurnEventControl{Turn: 8, EventID: 74, RawCamp: 0}
@@ -245,5 +251,46 @@ func TestEvent74PreflightResolvesOneDynamicGroupAtomically(t *testing.T) {
 	}
 	if !reflect.DeepEqual(g.st.Units, beforeUnits) || g.st.NativeEventState[16] != 4 {
 		t.Fatal("event74 preflight mutated the published state")
+	}
+}
+
+func TestEvent76RunsAfterRoundIncrementBeforePlayerPhase(t *testing.T) {
+	g := chapter29DirectNativeGameFixture(t)
+	g.st.NativeRoundCounter = 8
+	g.st.NativeEventState[17] = 1
+	g.st.NativeTurnEventControls[1] = battle.NativeTurnEventControl{Turn: 9, EventID: 76, RawCamp: 2}
+	before := g.st.Units[1].NativeRecordByte5
+	beforeTurn := g.st.Turn
+	g.completeTurn()
+	if g.loadErr != "" || g.st.NativeRoundCounter != 9 || g.st.Turn != beforeTurn+1 ||
+		g.st.NativeEventState[17] != 2 || g.st.Units[1].NativeRecordByte5 != before|0x80 ||
+		g.st.NativeTurnEventControls[1] != (battle.NativeTurnEventControl{Turn: 10, EventID: 76, RawCamp: 2}) {
+		t.Fatalf("event76 phase err=%q round=%d turn=%d state17=%d byte5=%#x row=%#v", g.loadErr, g.st.NativeRoundCounter, g.st.Turn, g.st.NativeEventState[17], g.st.Units[1].NativeRecordByte5, g.st.NativeTurnEventControls[1])
+	}
+}
+
+func TestEvent76FinalPreflightAppendsGroup1AndSchedulesEvent79Privately(t *testing.T) {
+	g := chapter29DirectNativeGameFixture(t)
+	g.st.NativeRoundCounter = 12
+	g.st.NativeEventState[17] = 4
+	g.st.NativeTurnEventControls[1] = battle.NativeTurnEventControl{Turn: 12, EventID: 76, RawCamp: 2}
+	beforeUnits := cloneBattleUnitPointers(g.st.Units)
+	var event76 battle.NativeTurnEvent
+	for _, event := range g.sc.NativeTurnEvents {
+		if event.EventID == 76 {
+			event76 = event
+		}
+	}
+	candidate, err := g.preflightNativeEvent76FinalState(event76)
+	if err != nil {
+		t.Fatal(err)
+	}
+	base := len(beforeUnits)
+	if countActiveGroup(candidate, 1) != 3 || candidate.NativeEventState[21] != byte(base) ||
+		candidate.NativeTurnEventControls[2] != (battle.NativeTurnEventControl{Turn: 12, EventID: 79, RawCamp: 0}) {
+		t.Fatalf("event76 final group1=%d base=%d/%d row2=%#v", countActiveGroup(candidate, 1), candidate.NativeEventState[21], base, candidate.NativeTurnEventControls[2])
+	}
+	if !reflect.DeepEqual(g.st.Units, beforeUnits) || countActiveGroup(g.st, 1) != 0 || g.st.NativeEventState[21] != 0 {
+		t.Fatal("event76 final preflight mutated published battle state")
 	}
 }

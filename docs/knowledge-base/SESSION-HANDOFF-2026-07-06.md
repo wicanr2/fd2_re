@@ -5150,3 +5150,9 @@ caller 現已證實 `0x25535→0x22253([0x53BEB]-1,15,10,15,10)`，但只證實�
 與event74 groups4..7已成為可編輯資料及正式 `RUNTIME-E1`；event76／79、post
 group9、持續隊伍、`preparation_ch30` save/load與一般玩家E2仍待完成。map28
 事件格依實際寬31重算為(15,21)；暫算(28,22)已撤回。
+
+**2026-08-21 event76 續接：** `sub_35D60` 已從主證據與SDD lower成可編輯
+progression，正式runtime在round increment後dispatch raw-camp2。repeat branch
+原子寫slot1 raw `+5` bit7／state17／row1；final branch在index2後私下建構group1
+三筆、寫state21 base與event79 row，再依序播放六次`0x35E5A`、兩次額外400ms及
+indices3..6。event79、post binding、save/load與E2仍未完成。

@@ -8971,6 +8971,18 @@ func (g *Game) completeTurn() {
 		u.TickStatus()             // buff/封咒/中毒/麻痺回合遞減+中毒扣血(doc02 §6.4)
 		g.awardDeathReward(u, nil) // poison/status death shares the same once-only reward path
 	}
+	started, err := g.startNativeRawCamp2TurnEvents(g.completeTurnPlayerPhase)
+	if err != nil {
+		g.loadErr = "native raw camp2 phase: " + err.Error()
+		return
+	}
+	if started {
+		return
+	}
+	g.completeTurnPlayerPhase()
+}
+
+func (g *Game) completeTurnPlayerPhase() {
 	if g.result == "" {
 		g.showBanner("PLAYER PHASE")
 	}

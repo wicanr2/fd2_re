@@ -128,6 +128,42 @@ extensions; group9 is the one-record postbattle extension.
 5. 本切片只接 event75→74。event76／79 的對話、位元寫入、group1 與 palette
    消費端另行閉合；不得因共用同一張表而猜測接入。
 
+## event76 精確指令與 phase 契約（2026-08-21）
+
+輸入雜湊、IDA 版本與線性位址基準同上；下列均為「已證實」。
+
+- `sub_35D60`（`0x35D60..0x35E5A`）讀 event-state `[0x11]`。值不是4時，
+  呼叫 `0x13512(1)`，將 runtime record slot1 的 raw `+5` bit7 設為1；再把
+  `[0x11]` 加一，並將 live row1（event76/raw camp2）排到
+  `native_round+1`。
+- 值等於4時，先消費 FDTXT_029 index2，再呼叫 `0x10B4E(group1)`。依
+  [`fd2_future_group_raw_gate_ida.txt`](../fd2_future_group_raw_gate_ida.txt)，
+  `[0x53AFA]` 只有已列的直接 writers；本 caller 與其 event76 路徑都不寫，
+  所以此處具證據的 `raw_placement_gate` 為0。group1固定三筆，函式把
+  `runtime_count-3` 寫入 event-state `[0x15]`，並把 live row2
+  （event79/raw camp0）排到目前 native round。
+- 後續演出順序是 `0x35E5A` palette pulse、400ms delay、第二次 pulse、
+  400ms delay，接著對 FDTXT_029 indices3、4、5、6各執行一次
+  `pulse → dialogue`。這六次 pulse 都是同一個已閉合的127-step indexed DAC
+  presenter，不可改成 RGBA fade 或純 delay。
+- 原始 `0x1A30B` 的 phase order 是 selector1、目前 round 的 raw camp0、round
+  increment、再 dispatch raw camp2。因此重製端 event76 owner 必須在敵方回合
+  完成並增加 `NativeRoundCounter` 後、玩家重新取得輸入前執行；不得降成一般
+  `on_turn_end` action，也不得在 raw camp0 前提早執行。
+
+### event76 可編輯資料與執行期契約
+
+1. typed rule 必須保存 handler `0x35D60`、state index17、repeat limit4、
+   `0x13512(slot1)`、row1 reschedule delta1，以及 final branch 的 text index2、
+   group1／gate0／count3、base state index21、row2 event79/raw camp0/current round。
+2. repeat branch 必須先驗證 slot1 raw `+5` provenance、live row1 identity、state
+   與可選 raw field view，再原子提交 bit7、state increment及reschedule。
+3. final branch 必須在 index2 對話完成後，先於私有 battle-state clone 完整建構
+   group1與row2/base state，再一次發布；任一 constructor、position、selector或
+   row驗證失敗時不得留下部分 group。
+4. 六次 pulse、兩次額外400ms與 indices3..6 對話全部完成後，才能把輸入交回
+   player phase。event79 的隨機兩目標 mutation仍是下一個獨立切片。
+
 Implementation consequence (confirmed data contract; runtime work pending)
 -------------------------------------------------------------------------
 The authored ch29 scenario must use runtime append ownership.  The normal
