@@ -204,6 +204,11 @@ ch02 武器店賣出角色名冊與索爾物品清單：上排為 route-patched 
 
 ![ch02 賣出子面板原版與重製對照](docs/figures/shop-sell-child-ch02-original-vs-remake.png)
 
+同一路徑再以方向鍵選到悠妮，並取得短劍賣出的 Yes／No 選中狀態；上排原版、
+下排重製三組也都為完整 RGB 相同。賣出成功演出與未修改戰役路徑仍另行驗收。
+
+![ch02 賣出選擇與確認原版／重製對照](docs/figures/shop-sell-selection-confirm-ch02-original-vs-remake.png)
+
 ### 讀檔選單
 
 原版與重製的四個空存檔槽畫面已達整幀 RGB 相同；有效槽排版也已有相同結果。

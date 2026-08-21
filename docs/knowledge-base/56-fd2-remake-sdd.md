@@ -1795,6 +1795,26 @@ successful branch, matching the lack of a selector reset before `0x2f70a`.
 這只關閉兩個 stable child states；selection1、問句、取消／成功生命週期與未修改
 campaign/native save 路徑仍另列 gate。
 
+下一個賣出 E2 切片沿用同一固定雜湊與 route-patched 限制，但必須由
+`sell_roster` selection0 送普通 Right 抵達 selection1，再由 Left 回selection0，
+不得以 renderer hook 取代輸入證據。之後以 Enter 選索爾、Enter 選第一件物品，
+保存 `sell_confirm` 的 Yes selected 與一次 Right 後 No selected；兩個選項必須
+分別與正式 `ComposeNativeShopSellQuestionBase`＋choice compositor 做同 pulse、
+同人物相位的整幀比較。受限 adapter 只能選既有 raw inventory 中的 active item，
+顯示價與提交價都必須來自已追蹤 effect row 的 75% 計算；缺 raw slot／flag、
+非法 unit／item／choice／pulse 或 compositor 失敗時須原子回復。這一批只驗證
+問句與選項，不得在尚未擷取 success timeline 前宣稱賣出提交演出已達 E2。
+
+驗收結果：原版由 selection0 普通 Right 抵達悠妮，再 Left 回索爾；selection1
+cycle1 與 production raw RGB MD5 同為 `d63d213c835f59c1a60428ef6a14d7ad`。
+短劍問句顯示 37 元，Yes selected 與 Right 後的 No selected 分別在同人物相位、
+pulse2 對上 production，raw RGB MD5 為
+`38bd7527570c0ddbf819f19eeea71685`、
+`6168c00b515ffe33e14a658bd7932d42`，三組完整 320×200 `AE=0`。
+證據見 [`shop-sell-selection-confirm-ch02-e2.json`](../data/ui-traces/shop-sell-selection-confirm-ch02-e2.json)。
+這關閉名冊 selection0↔1 與賣出 Yes／No stable/input E2；success timeline、
+commit 後返回名冊及未修改 campaign/native save 仍未由本切片證明。
+
 The `0x318ad` cap gate is now explicit in
 `fdother.NativePreparationPartyLimit`: raw global `[0x53c03] <= 0x1a` yields
 15, while values greater than `0x1a` yield 19. The adapter accepts a native

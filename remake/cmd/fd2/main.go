@@ -6386,6 +6386,19 @@ func (g *Game) Update() error {
 					)
 				}
 			}
+			if spec := os.Getenv("FD2_SHOT_SHOP_SELL_CONFIRM_STATE"); spec != "" {
+				unit, item, choice, pulse, gold, ok :=
+					parseNativeShopSellConfirmShotState(spec)
+				if !ok ||
+					!g.setNativeShopSellConfirmShotState(
+						unit, item, choice, pulse, gold,
+					) {
+					return fmt.Errorf(
+						"FD2_SHOT_SHOP_SELL_CONFIRM_STATE expects unit,item,choice,pulse,gold on an admitted native sell party: %q",
+						spec,
+					)
+				}
+			}
 			if os.Getenv("FD2_SHOT_DISMISS_DIALOG") != "" {
 				for len(g.dialog) > 0 {
 					g.dialog = g.dialog[:len(g.dialog)-1]

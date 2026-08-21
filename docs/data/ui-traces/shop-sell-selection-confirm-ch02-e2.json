@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-22",
+  "evidence_level": "PLAYER-E2-route-patched",
+  "scope": "ch02 variant1 shop sell roster selection1 and short-sword Yes/No selected states",
+  "reference": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "address_space": "IDA/Capstone LE obj1 linear"
+  },
+  "oracle_sandbox": {
+    "patched_exe_sha256": "7ade244ace954bccec0b89639cded9393973bff586117a19f1fdc168ffcb2105",
+    "patches": [
+      "0x117f3 -> call 0x205be",
+      "0x117f8 -> jmp 0x1187a",
+      "0x205d5 -> jmp 0x206c3"
+    ],
+    "limitation": "Patches skip manual battle completion only; evidence is not an unmodified general-player postbattle trace."
+  },
+  "normal_input": [
+    "CONTINUE",
+    "waittown0:Return,0.25,240",
+    "town Left -> weapon shop Enter",
+    "shop Right -> sell Enter",
+    "roster Right -> selection1",
+    "roster Left -> selection0 Enter",
+    "item selection0 Enter",
+    "confirmation Right -> No"
+  ],
+  "phase_gate": "waitpixel:175,90,101,121,121,0.05,400",
+  "states": [
+    {
+      "name": "sell_roster_selection1_cycle1",
+      "original_raw_rgb_md5": "d63d213c835f59c1a60428ef6a14d7ad",
+      "remake_raw_rgb_md5": "d63d213c835f59c1a60428ef6a14d7ad",
+      "ae": 0
+    },
+    {
+      "name": "sell_short_sword_yes_selected",
+      "original_raw_rgb_md5": "38bd7527570c0ddbf819f19eeea71685",
+      "remake_raw_rgb_md5": "38bd7527570c0ddbf819f19eeea71685",
+      "ae": 0
+    },
+    {
+      "name": "sell_short_sword_no_selected",
+      "original_raw_rgb_md5": "6168c00b515ffe33e14a658bd7932d42",
+      "remake_raw_rgb_md5": "6168c00b515ffe33e14a658bd7932d42",
+      "ae": 0
+    }
+  ],
+  "remake_adapters": {
+    "party": "FD2_SHOT_PARTY_BINDING=assets/cutscenes/bindings/ch00_pre.json",
+    "roster": "FD2_SHOT_SHOP_SELL_STATE=roster,unit,selection,start,cycle,gold",
+    "confirmation": "FD2_SHOT_SHOP_SELL_CONFIRM_STATE=unit,item,choice,pulse,gold",
+    "limitation": "Screenshot-only typed/raw bootstrap; does not prove native save, success animation, commit, or campaign persistence."
+  },
+  "figure": "docs/figures/shop-sell-selection-confirm-ch02-original-vs-remake.png"
+}

@@ -5372,3 +5372,18 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   [`shop-sell-child-ch02-original-vs-remake.png`](../figures/shop-sell-child-ch02-original-vs-remake.png)。
 - 本切片只關閉兩個 stable child states；selection1、問句、取消／成功 lifecycle、
   未修改campaign/native save、equip／transfer與recipient scroll仍待。
+
+## 2026-08-22：ch02 賣出 selection1 與 Yes／No E2
+
+- 沿用同一固定雜湊與三處 route patch，原版從賣出名冊 selection0 實際 Right 到
+  悠妮，再 Left 回索爾；selection1/cycle1與production完整320×200 `AE=0`。
+- 選索爾、短劍後原版問句顯示37元。Yes selected與Right後No selected高頻樣本
+  分別對production choice0/pulse2、choice1/pulse2整幀`AE=0`。新增受限
+  `FD2_SHOT_SHOP_SELL_CONFIRM_STATE=unit,item,choice,pulse,gold`；只接受真實active
+  raw item，價格仍由effect row的75%計算，非法狀態會原子回復。
+- 三組raw RGB MD5依序為`d63d213c835f59c1a60428ef6a14d7ad`、
+  `38bd7527570c0ddbf819f19eeea71685`、`6168c00b515ffe33e14a658bd7932d42`。
+  證據見[`shop-sell-selection-confirm-ch02-e2.json`](../data/ui-traces/shop-sell-selection-confirm-ch02-e2.json)
+  與[`shop-sell-selection-confirm-ch02-original-vs-remake.png`](../figures/shop-sell-selection-confirm-ch02-original-vs-remake.png)。
+- 本批關閉selection0↔1及Yes／No stable/input E2；success timeline、提交後返回名冊、
+  未修改campaign/native save仍待。

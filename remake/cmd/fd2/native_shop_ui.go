@@ -173,6 +173,27 @@ func parseNativeShopSellShotState(
 	return parts[0], values[0], values[1], values[2], values[3], values[4], true
 }
 
+func parseNativeShopSellConfirmShotState(
+	spec string,
+) (unit, item, choice, pulse, gold int, ok bool) {
+	parts := strings.Split(spec, ",")
+	if len(parts) != 5 {
+		return 0, 0, 0, 0, 0, false
+	}
+	values := make([]int, len(parts))
+	for i, part := range parts {
+		value, err := strconv.Atoi(part)
+		if err != nil || value < 0 {
+			return 0, 0, 0, 0, 0, false
+		}
+		values[i] = value
+	}
+	if values[2] > 1 || values[3] > 3 || values[4] > 99999999 {
+		return 0, 0, 0, 0, 0, false
+	}
+	return values[0], values[1], values[2], values[3], values[4], true
+}
+
 // setNativeShopShotState is a screenshot-only oracle hook. It may select a
 // stable service-menu frame after setupNativeShop has claimed a proven native
 // shop node. Gold is an explicit visible-state input for the one captured
@@ -466,6 +487,62 @@ func (g *Game) setNativeShopSellShotState(
 	g.shopSellSlotSel = selection
 	g.nativeShopSellItemTop = start
 	if _, ok := g.composeNativeShopSellItems(); !ok {
+		rollback()
+		return false
+	}
+	return true
+}
+
+// setNativeShopSellConfirmShotState exposes the stable Yes/No state only
+// after the production sell owner has admitted a real actor and active raw
+// inventory item. Price and text still come from the tracked native effect
+// row; this adapter cannot inject either value.
+func (g *Game) setNativeShopSellConfirmShotState(
+	unit, item, choice, pulse, gold int,
+) bool {
+	if unit < 0 || item < 0 || choice < 0 || choice > 1 ||
+		pulse < 0 || pulse > 3 || gold < 0 || gold > 99999999 ||
+		g.nativeShopMode != "menu" {
+		return false
+	}
+
+	oldMode, oldUnit, oldSlot, oldRosterTop, oldRosterCycle,
+		oldItemTop, oldConfirm, oldPulse, oldGold, oldJob :=
+		g.nativeShopMode, g.shopSellUnitSel, g.shopSellSlotSel,
+		g.nativeShopSellRosterTop, g.nativeShopSellRosterCycle,
+		g.nativeShopSellItemTop, g.nativeShopSellConfirmSel,
+		g.nativeShopUIPulse, g.gold, g.nativeShopUIJob
+	oldItems := append([]int(nil), g.nativeShopSellItemIDs...)
+	rollback := func() {
+		g.nativeShopMode = oldMode
+		g.shopSellUnitSel = oldUnit
+		g.shopSellSlotSel = oldSlot
+		g.nativeShopSellRosterTop = oldRosterTop
+		g.nativeShopSellRosterCycle = oldRosterCycle
+		g.nativeShopSellItemTop = oldItemTop
+		g.nativeShopSellConfirmSel = oldConfirm
+		g.nativeShopUIPulse = oldPulse
+		g.gold = oldGold
+		g.nativeShopUIJob = oldJob
+		g.nativeShopSellItemIDs = oldItems
+	}
+
+	g.nativeShopUIJob = nil
+	g.gold = gold
+	if !g.setupNativeShopSellRoster() || unit >= len(g.partyJoinOrder) {
+		rollback()
+		return false
+	}
+	g.shopSellUnitSel = unit
+	if !g.setupNativeShopSellItems() || item >= len(g.nativeShopSellItemIDs) {
+		rollback()
+		return false
+	}
+	g.shopSellSlotSel = item
+	g.nativeShopMode = "sell_confirm"
+	g.nativeShopSellConfirmSel = choice
+	g.nativeShopUIPulse = pulse
+	if _, ok := g.composeNativeShopSellConfirmation(); !ok {
 		rollback()
 		return false
 	}

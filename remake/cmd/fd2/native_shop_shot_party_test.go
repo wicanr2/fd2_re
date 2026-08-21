@@ -71,6 +71,33 @@ func TestParseNativeShopSellShotState(t *testing.T) {
 	}
 }
 
+func TestParseNativeShopSellConfirmShotState(t *testing.T) {
+	for _, tc := range []struct {
+		spec                            string
+		unit, item, choice, pulse, gold int
+		ok                              bool
+	}{
+		{spec: "0,0,0,0,0", ok: true},
+		{spec: "1,2,1,3,99999999", unit: 1, item: 2, choice: 1, pulse: 3, gold: 99999999, ok: true},
+		{spec: "-1,0,0,0,0"},
+		{spec: "0,0,2,0,0"},
+		{spec: "0,0,0,4,0"},
+		{spec: "0,0,0,0,100000000"},
+		{spec: "0,0,0,0"},
+	} {
+		unit, item, choice, pulse, gold, ok :=
+			parseNativeShopSellConfirmShotState(tc.spec)
+		if unit != tc.unit || item != tc.item || choice != tc.choice ||
+			pulse != tc.pulse || gold != tc.gold || ok != tc.ok {
+			t.Fatalf(
+				"parseNativeShopSellConfirmShotState(%q)=(%d,%d,%d,%d,%d,%v), want (%d,%d,%d,%d,%d,%v)",
+				tc.spec, unit, item, choice, pulse, gold, ok,
+				tc.unit, tc.item, tc.choice, tc.pulse, tc.gold, tc.ok,
+			)
+		}
+	}
+}
+
 func TestNativeShopEquipmentRecipientShotUsesBindingPartyProjection(t *testing.T) {
 	const base = "../../../org_game/炎龍騎士團/FLAME2"
 	fdotherPath := filepath.Join(base, "FDOTHER.DAT")
@@ -259,6 +286,21 @@ func TestNativeShopSellShotUsesBindingPartyProjection(t *testing.T) {
 	}
 	if g.nativeShopMode != "menu" {
 		t.Fatal("rejected sell shot did not roll back atomically")
+	}
+	if !g.setNativeShopSellConfirmShotState(0, 0, 0, 2, 0) ||
+		g.nativeShopMode != "sell_confirm" ||
+		g.nativeShopSellConfirmSel != 0 || g.nativeShopUIPulse != 2 {
+		t.Fatal("sell confirmation shot rejected verified raw item")
+	}
+	if frame, ok := g.composeNativeShopSellConfirmation(); !ok || len(frame) != 320*200 {
+		t.Fatal("sell confirmation shot did not pass final compositor admission")
+	}
+	g.nativeShopMode = "menu"
+	if g.setNativeShopSellConfirmShotState(0, 99, 0, 0, 0) {
+		t.Fatal("sell confirmation shot accepted missing raw item")
+	}
+	if g.nativeShopMode != "menu" {
+		t.Fatal("rejected sell confirmation did not roll back atomically")
 	}
 }
 
