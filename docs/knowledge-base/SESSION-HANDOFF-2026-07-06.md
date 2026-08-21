@@ -5400,3 +5400,24 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   `sell ... success/debit stable E2`，同列又把 sell success／return 列為待辦，容易
   形成互相矛盾的記憶。現明確限定 success／debit 原子影格屬購買路徑；賣出目前只
   關閉名冊、物品與 Yes／No stable state，成功時間線與返回名冊仍待驗證。
+
+## 2026-08-22：ch02 賣出成功、向上金幣滾動與返回名冊 E2
+
+- 先在 SDD 固定成功→加款→背包發布／返回三個邊界，再沿固定雜湊原版的可丟棄
+  route-patched 副本，以正常標題、城鎮、武器店與賣出輸入按下短劍 Yes；未修改
+  `FD2.EXE` 與原始資產仍保持唯讀，因此證據是 route-patched E2，不是完整戰役 E2。
+- 密集擷取證實成功演出期間金額維持0，之後可見向上滾動 `0→11→33→34→35→37`，
+  約0.8秒後返回索爾名冊且selection不重設；重新進入時短劍已移除，皮甲與藥草保留。
+- 合法 Docker 內 IDA Pro 9.4 以既有 `.i64` 非破壞性續讀：`0x2D3FF` 先增加
+  `dword_53BF3`，每個不同digit再畫phase1..9並十進位wrap；`0x2D620`只是九列×六像素
+  blitter。證據綁定固定雜湊、IDA線性位址及caller／consumer，見
+  [`fd2_shop_gold_credit_ida.txt`](../data/ida/fd2_shop_gold_credit_ida.txt)。
+- 新增具型別 `ComposeNativeGoldCreditFrames` 與正式三段owner：成功動畫只持有
+  staged transaction；第一個callback發布gold並開始10 ms credit timeline；最後
+  callback才發布移除後背包並返回原actor名冊。資源或projection不足時整筆失敗即關閉。
+- 五個成功影格、gold11／36與返回cycle0／1共九組原版／重製完整320×200 RGB
+  `AE=0`；證據、雜湊與受限截圖入口見
+  [`shop-sell-success-return-ch02-e2.json`](../data/ui-traces/shop-sell-success-return-ch02-e2.json)
+  及[`對照圖`](../figures/shop-sell-success-return-ch02-original-vs-remake.png)。
+- 本批沒有證明未修改戰役、原版存檔、成功影格的精確停留時間、recipient scroll、
+  no-recipient/full、equip/transfer子面板或其他章節；這些仍依 `57` 保持 partial。

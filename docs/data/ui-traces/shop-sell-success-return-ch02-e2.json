@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-22",
+  "evidence_level": "PLAYER-E2-route-patched",
+  "scope": "ch02 variant1 shop sell short-sword success, upward gold odometer, commit, and return roster",
+  "reference": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "address_space": "IDA LE object 1 linear"
+  },
+  "tools": {
+    "static": "IDA Pro 9.4 in fd2-ida-authorized-local",
+    "dynamic": "DOSBox 0.74-3 in fd2-dosbox-screenshot-local",
+    "remake": "source-built Go/Ebiten under Xvfb in fd2-go-test-local",
+    "comparison": "ImageMagick raw RGB and compare -metric AE"
+  },
+  "oracle_sandbox": {
+    "patched_exe_sha256": "7ade244ace954bccec0b89639cded9393973bff586117a19f1fdc168ffcb2105",
+    "patches": [
+      "file 0x125f3: e8b0020000 -> e8c6ed0000 (linear 0x117f3 call 0x205be)",
+      "file 0x125f8: 83f801740e -> e97d000000 (linear 0x117f8 jmp 0x1187a)",
+      "file 0x213d5: e9a4000000 -> e9e9000000 (linear 0x205d5 jmp 0x206c3)"
+    ],
+    "limitation": "The patches skip manual battle completion only. Shop code, resources, party data, and keyboard input are unchanged; this is not an unmodified general-player postbattle trace."
+  },
+  "normal_input": [
+    "title Down, Down, Enter -> CONTINUE",
+    "waittown0:Return,0.25,240",
+    "town Left -> weapon shop Enter",
+    "shop Right -> sell Enter",
+    "sell roster Enter -> Sol items",
+    "short sword Enter -> Yes selected",
+    "Yes Enter",
+    "after return, Sol Enter -> item list without short sword"
+  ],
+  "phase_gate": "waitpixel:175,90,101,121,121,0.05,400",
+  "dynamic_findings": {
+    "proven": [
+      "The visible gold remains 00000000 throughout the five captured success-effect atomic frames.",
+      "The original then shows an upward odometer. Dense samples include stable 00000011 and 00000036 frames before 00000037.",
+      "The first stable returned roster preserves Sol as selection0 and displays 00000037.",
+      "Re-entering Sol after return shows leather armor and herb; the sold short sword is absent."
+    ],
+    "static_binding": "docs/data/ida/fd2_shop_gold_credit_ida.txt proves 0x2d3ff commits gold before phase1..9, then the sell caller removes/recomputes before returning.",
+    "remaining_unknown": "Success final restoration writes and some credit intermediate windows are shorter than the screenshot sampling interval; only directly matched atomic frames are promoted to E2."
+  },
+  "same_state_pairs": [
+    {
+      "state": "success_step0",
+      "original_raw_rgb_md5": "e00bd9a98686030c1ea1e62cb6e49bc6",
+      "remake_raw_rgb_md5": "e00bd9a98686030c1ea1e62cb6e49bc6",
+      "ae": 0
+    },
+    {
+      "state": "success_step1",
+      "original_raw_rgb_md5": "b8eccbfb1eece0ff9452d64f6509fab3",
+      "remake_raw_rgb_md5": "b8eccbfb1eece0ff9452d64f6509fab3",
+      "ae": 0
+    },
+    {
+      "state": "success_step2",
+      "original_raw_rgb_md5": "539b73b2ed762460ca20fc80a938eea6",
+      "remake_raw_rgb_md5": "539b73b2ed762460ca20fc80a938eea6",
+      "ae": 0
+    },
+    {
+      "state": "success_step3",
+      "original_raw_rgb_md5": "0ce4d6c54bf05256a5a7c9f55fa636e8",
+      "remake_raw_rgb_md5": "0ce4d6c54bf05256a5a7c9f55fa636e8",
+      "ae": 0
+    },
+    {
+      "state": "success_step4",
+      "original_raw_rgb_md5": "2872f4ebf9b369172e87d8cc5cc9038a",
+      "remake_raw_rgb_md5": "2872f4ebf9b369172e87d8cc5cc9038a",
+      "ae": 0
+    },
+    {
+      "state": "credit_frame8_gold11",
+      "original_raw_rgb_md5": "7514b74466247a51273445b07151a694",
+      "remake_raw_rgb_md5": "7514b74466247a51273445b07151a694",
+      "ae": 0
+    },
+    {
+      "state": "credit_frame53_gold36",
+      "original_raw_rgb_md5": "64cdd7dec29994ac218ef06ae18b1d0f",
+      "remake_raw_rgb_md5": "64cdd7dec29994ac218ef06ae18b1d0f",
+      "ae": 0
+    },
+    {
+      "state": "return_roster_selection0_cycle0_gold37",
+      "original_raw_rgb_md5": "a5caaa7305133f41fc0f39dfb4a89cef",
+      "remake_raw_rgb_md5": "a5caaa7305133f41fc0f39dfb4a89cef",
+      "ae": 0
+    },
+    {
+      "state": "return_roster_selection0_cycle1_gold37",
+      "original_raw_rgb_md5": "95d9ad95f925f412213d2fb7fd9398ed",
+      "remake_raw_rgb_md5": "95d9ad95f925f412213d2fb7fd9398ed",
+      "ae": 0
+    }
+  ],
+  "remake_adapter": {
+    "party": "FD2_SHOT_PARTY_BINDING=assets/cutscenes/bindings/ch00_pre.json",
+    "state": "FD2_SHOT_SHOP_SELL_SUCCESS_STATE=timeline|credit|return,unit,item,step|cycle,gold",
+    "contract": "timeline selects an existing production success frame without commit; credit executes the first production callback but keeps the staged unit unpublished; return executes both production callbacks and composes the stable roster.",
+    "limitation": "Screenshot-only typed/raw bootstrap; it does not prove native FD2.SAV or an unmodified campaign path."
+  },
+  "figure": "docs/figures/shop-sell-success-return-ch02-original-vs-remake.png"
+}

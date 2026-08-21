@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
 
@@ -93,6 +94,35 @@ func TestParseNativeShopSellConfirmShotState(t *testing.T) {
 				"parseNativeShopSellConfirmShotState(%q)=(%d,%d,%d,%d,%d,%v), want (%d,%d,%d,%d,%d,%v)",
 				tc.spec, unit, item, choice, pulse, gold, ok,
 				tc.unit, tc.item, tc.choice, tc.pulse, tc.gold, tc.ok,
+			)
+		}
+	}
+}
+
+func TestParseNativeShopSellSuccessShotState(t *testing.T) {
+	for _, tc := range []struct {
+		spec                    string
+		phase                   string
+		unit, item, state, gold int
+		ok                      bool
+	}{
+		{spec: "timeline,0,0,0,0", phase: "timeline", ok: true},
+		{spec: "credit,1,2,62,99999999", phase: "credit", unit: 1, item: 2, state: 62, gold: 99999999, ok: true},
+		{spec: "return,0,0,2,0", phase: "return", state: 2, ok: true},
+		{spec: "success,0,0,0,0"},
+		{spec: "return,0,0,3,0"},
+		{spec: "timeline,-1,0,0,0"},
+		{spec: "credit,0,0,0,100000000"},
+		{spec: "timeline,0,0,0"},
+	} {
+		phase, unit, item, state, gold, ok :=
+			parseNativeShopSellSuccessShotState(tc.spec)
+		if phase != tc.phase || unit != tc.unit || item != tc.item ||
+			state != tc.state || gold != tc.gold || ok != tc.ok {
+			t.Fatalf(
+				"parseNativeShopSellSuccessShotState(%q)=(%q,%d,%d,%d,%d,%v), want (%q,%d,%d,%d,%d,%v)",
+				tc.spec, phase, unit, item, state, gold, ok,
+				tc.phase, tc.unit, tc.item, tc.state, tc.gold, tc.ok,
 			)
 		}
 	}
@@ -301,6 +331,54 @@ func TestNativeShopSellShotUsesBindingPartyProjection(t *testing.T) {
 	}
 	if g.nativeShopMode != "menu" {
 		t.Fatal("rejected sell confirmation did not roll back atomically")
+	}
+	if !g.setNativeShopSellSuccessShotState("timeline", 0, 0, 0, 0) ||
+		g.nativeShopMode != "sell_success" || g.nativeShopUIJob == nil ||
+		len(g.nativeShopUIJob.timeline) != 1 ||
+		len(g.nativeShopUIJob.timeline[0].frame) != 320*200 ||
+		g.gold != 0 || len(g.partyRoster[0].Inventory) != 3 {
+		t.Fatal("sell success shot did not expose a staged production frame")
+	}
+	g.nativeShopMode = "menu"
+	g.nativeShopUIJob = nil
+	g.nativeShopHasPendingUnit = false
+	g.nativeShopPendingUnit = battle.Unit{}
+	g.nativeShopPendingGold = 0
+	wantRoster := cloneNativeShopUnit(g.partyRoster[0])
+	if g.setNativeShopSellSuccessShotState("timeline", 0, 0, 99, 0) {
+		t.Fatal("sell success shot accepted an absent timeline step")
+	}
+	if g.nativeShopMode != "menu" || g.gold != 0 ||
+		!reflect.DeepEqual(g.partyRoster[0], wantRoster) {
+		t.Fatal("rejected sell success shot did not roll back atomically")
+	}
+	if !g.setNativeShopSellSuccessShotState("credit", 0, 0, 8, 0) ||
+		g.nativeShopMode != "sell_success" || g.nativeShopUIJob == nil ||
+		len(g.nativeShopUIJob.timeline) != 1 ||
+		len(g.nativeShopUIJob.timeline[0].frame) != 320*200 ||
+		g.gold != 37 || !g.nativeShopHasPendingUnit ||
+		len(g.partyRoster[0].Inventory) != 3 {
+		t.Fatal("sell credit shot did not preserve the staged-unit boundary")
+	}
+	g.nativeShopMode = "menu"
+	g.nativeShopUIJob = nil
+	g.nativeShopHasPendingUnit = false
+	g.nativeShopPendingUnit = battle.Unit{}
+	g.nativeShopPendingGold = 0
+	g.gold = 0
+	if !g.setNativeShopSellSuccessShotState("return", 0, 0, 1, 0) ||
+		g.nativeShopMode != "sell_roster" || g.nativeShopUIJob != nil ||
+		g.nativeShopHasPendingUnit || g.gold != 37 ||
+		g.nativeShopSellRosterCycle != 1 {
+		t.Fatal("sell return shot did not execute the production callback")
+	}
+	returned := g.partyRoster[0]
+	if len(returned.Inventory) != 2 || returned.InventorySlots[0] != 132 ||
+		returned.InventorySlots[2] != 0xff {
+		t.Fatalf("sell return inventory=%v slots=%v", returned.Inventory, returned.InventorySlots)
+	}
+	if frame, ok := g.composeNativeShopSellRoster(); !ok || len(frame) != 320*200 {
+		t.Fatal("sell return shot did not pass final roster compositor admission")
 	}
 }
 

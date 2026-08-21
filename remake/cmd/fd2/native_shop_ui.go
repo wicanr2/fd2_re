@@ -194,6 +194,28 @@ func parseNativeShopSellConfirmShotState(
 	return values[0], values[1], values[2], values[3], values[4], true
 }
 
+func parseNativeShopSellSuccessShotState(
+	spec string,
+) (phase string, unit, item, state, gold int, ok bool) {
+	parts := strings.Split(spec, ",")
+	if len(parts) != 5 ||
+		(parts[0] != "timeline" && parts[0] != "credit" && parts[0] != "return") {
+		return "", 0, 0, 0, 0, false
+	}
+	values := make([]int, 4)
+	for i, part := range parts[1:] {
+		value, err := strconv.Atoi(part)
+		if err != nil || value < 0 {
+			return "", 0, 0, 0, 0, false
+		}
+		values[i] = value
+	}
+	if values[3] > 99999999 || (parts[0] == "return" && values[2] > 2) {
+		return "", 0, 0, 0, 0, false
+	}
+	return parts[0], values[0], values[1], values[2], values[3], true
+}
+
 // setNativeShopShotState is a screenshot-only oracle hook. It may select a
 // stable service-menu frame after setupNativeShop has claimed a proven native
 // shop node. Gold is an explicit visible-state input for the one captured
@@ -543,6 +565,153 @@ func (g *Game) setNativeShopSellConfirmShotState(
 	g.nativeShopSellConfirmSel = choice
 	g.nativeShopUIPulse = pulse
 	if _, ok := g.composeNativeShopSellConfirmation(); !ok {
+		rollback()
+		return false
+	}
+	return true
+}
+
+// setNativeShopSellSuccessShotState is a bounded screenshot oracle for the
+// production sell-success owner. "timeline" exposes one existing success
+// frame without publishing the staged transaction. "credit" runs the first
+// production callback and exposes one existing upward-odometer frame while
+// the staged unit remains unpublished. "return" runs both callbacks, then
+// exposes the stable roster. It never accepts injected item IDs, prices,
+// frames, or post-sale gold.
+func (g *Game) setNativeShopSellSuccessShotState(
+	phase string, unit, item, state, gold int,
+) bool {
+	if g.shotPath == "" ||
+		(phase != "timeline" && phase != "credit" && phase != "return") ||
+		unit < 0 || item < 0 || state < 0 || gold < 0 || gold > 99999999 ||
+		g.nativeShopMode != "menu" {
+		return false
+	}
+
+	type snapshot struct {
+		mode                   string
+		job                    *nativeClassUIJob
+		gold                   int
+		unitSel, slotSel       int
+		rosterTop, rosterCycle int
+		itemTop, confirmSel    int
+		pulse, lastTick        int
+		hasTick                bool
+		items                  []int
+		pendingUnit            battle.Unit
+		pendingGold            int
+		hasPending             bool
+		roster                 map[int]battle.Unit
+	}
+	old := snapshot{
+		mode: g.nativeShopMode, job: g.nativeShopUIJob, gold: g.gold,
+		unitSel: g.shopSellUnitSel, slotSel: g.shopSellSlotSel,
+		rosterTop:   g.nativeShopSellRosterTop,
+		rosterCycle: g.nativeShopSellRosterCycle,
+		itemTop:     g.nativeShopSellItemTop,
+		confirmSel:  g.nativeShopSellConfirmSel,
+		pulse:       g.nativeShopUIPulse, lastTick: g.nativeShopUILastTick,
+		hasTick:     g.nativeShopUIHasTick,
+		items:       append([]int(nil), g.nativeShopSellItemIDs...),
+		pendingUnit: cloneNativeShopUnit(g.nativeShopPendingUnit),
+		pendingGold: g.nativeShopPendingGold,
+		hasPending:  g.nativeShopHasPendingUnit,
+		roster:      make(map[int]battle.Unit, len(g.partyRoster)),
+	}
+	for id, member := range g.partyRoster {
+		old.roster[id] = cloneNativeShopUnit(member)
+	}
+	rollback := func() {
+		g.nativeShopMode = old.mode
+		g.nativeShopUIJob = old.job
+		g.gold = old.gold
+		g.shopSellUnitSel = old.unitSel
+		g.shopSellSlotSel = old.slotSel
+		g.nativeShopSellRosterTop = old.rosterTop
+		g.nativeShopSellRosterCycle = old.rosterCycle
+		g.nativeShopSellItemTop = old.itemTop
+		g.nativeShopSellConfirmSel = old.confirmSel
+		g.nativeShopUIPulse = old.pulse
+		g.nativeShopUILastTick = old.lastTick
+		g.nativeShopUIHasTick = old.hasTick
+		g.nativeShopSellItemIDs = append([]int(nil), old.items...)
+		g.nativeShopPendingUnit = cloneNativeShopUnit(old.pendingUnit)
+		g.nativeShopPendingGold = old.pendingGold
+		g.nativeShopHasPendingUnit = old.hasPending
+		g.partyRoster = old.roster
+	}
+
+	if !g.setNativeShopSellConfirmShotState(unit, item, 0, 0, gold) ||
+		!g.beginNativeShopSellSuccess() || g.nativeShopUIJob == nil ||
+		len(g.nativeShopUIJob.timeline) == 0 {
+		rollback()
+		return false
+	}
+	if phase == "timeline" {
+		if state >= len(g.nativeShopUIJob.timeline) {
+			rollback()
+			return false
+		}
+		selected := g.nativeShopUIJob.timeline[state]
+		if len(selected.frame) != 320*200 || len(selected.palette) == 0 {
+			rollback()
+			return false
+		}
+		// Keep Draw on the selected production frame. The screenshot adapter
+		// deliberately removes the callback so no captured frame can commit.
+		selected.frame = append([]byte(nil), selected.frame...)
+		selected.duration = 24 * time.Hour
+		g.nativeShopUIJob = &nativeClassUIJob{
+			timeline: []nativeClassUITimelineStep{selected},
+		}
+		return true
+	}
+
+	if g.nativeShopUIJob.after == nil {
+		rollback()
+		return false
+	}
+	after := g.nativeShopUIJob.after
+	g.nativeShopUIJob = nil
+	after()
+	if phase == "credit" {
+		if g.nativeShopMode != "sell_success" ||
+			g.nativeShopUIJob == nil ||
+			state >= len(g.nativeShopUIJob.timeline) {
+			rollback()
+			return false
+		}
+		selected := g.nativeShopUIJob.timeline[state]
+		if len(selected.frame) != 320*200 || len(selected.palette) == 0 {
+			rollback()
+			return false
+		}
+		selected.frame = append([]byte(nil), selected.frame...)
+		selected.duration = 24 * time.Hour
+		g.nativeShopUIJob = &nativeClassUIJob{
+			timeline: []nativeClassUITimelineStep{selected},
+		}
+		return true
+	}
+	if state > 2 {
+		rollback()
+		return false
+	}
+	if g.nativeShopMode == "sell_success" && g.nativeShopUIJob != nil &&
+		g.nativeShopUIJob.after != nil {
+		creditAfter := g.nativeShopUIJob.after
+		g.nativeShopUIJob = nil
+		creditAfter()
+	}
+	if g.nativeShopMode != "sell_roster" || g.nativeShopHasPendingUnit {
+		rollback()
+		return false
+	}
+	// returnToNativeShopSellRoster owns the opening job. This hook exposes
+	// the stable target after that formal return without inventing a frame.
+	g.nativeShopUIJob = nil
+	g.nativeShopSellRosterCycle = state
+	if _, ok := g.composeNativeShopSellRoster(); !ok {
 		rollback()
 		return false
 	}

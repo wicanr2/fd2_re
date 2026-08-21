@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
@@ -385,7 +387,8 @@ func (g *Game) beginNativeShopSellSuccess() bool {
 	unitID, unit, unitOK := g.nativeShopSellUnit()
 	_, fullPrice, _, selectionOK := g.nativeShopSellSelection()
 	timeline, timelineOK := g.nativeShopSuccessTimeline()
-	if !unitOK || !selectionOK || !timelineOK {
+	assets, _, _, stateOK := g.nativeShopState()
+	if !unitOK || !selectionOK || !timelineOK || !stateOK || len(timeline) == 0 {
 		return false
 	}
 	staged := cloneNativeShopUnit(unit)
@@ -396,21 +399,47 @@ func (g *Game) beginNativeShopSellSuccess() bool {
 	if err != nil {
 		return false
 	}
+	creditFrames, creditedGold, err := campaign.ComposeNativeGoldCreditFrames(
+		timeline[len(timeline)-1].frame, assets.GoldRollStrip,
+		g.gold, nextGold-g.gold,
+	)
+	if err != nil || creditedGold != nextGold {
+		return false
+	}
+	creditTimeline := make([]nativeClassUITimelineStep, len(creditFrames))
+	for i, frame := range creditFrames {
+		creditTimeline[i] = nativeClassUITimelineStep{
+			frame: frame, palette: g.nativeClassUI.palette,
+			duration: campaign.NativeGoldRollDelayMilliseconds * time.Millisecond,
+		}
+	}
 	g.nativeShopPendingUnit = staged
 	g.nativeShopPendingGold = nextGold
 	g.nativeShopHasPendingUnit = true
 	g.nativeShopMode = "sell_success"
+	finish := func() {
+		g.partyRoster[unitID] = cloneNativeShopUnit(
+			g.nativeShopPendingUnit,
+		)
+		g.nativeShopHasPendingUnit = false
+		g.nativeShopPendingUnit = battle.Unit{}
+		g.nativeShopSellItemIDs = nil
+		g.returnToNativeShopSellRoster()
+	}
 	g.nativeShopUIJob = &nativeClassUIJob{
 		timeline: timeline,
 		after: func() {
+			// 0x2d3ff commits the balance before its first upward 6x9
+			// digit window. Raw removal/recompute follow the visible roll.
 			g.gold = g.nativeShopPendingGold
-			g.partyRoster[unitID] = cloneNativeShopUnit(
-				g.nativeShopPendingUnit,
-			)
-			g.nativeShopHasPendingUnit = false
-			g.nativeShopPendingUnit = battle.Unit{}
-			g.nativeShopSellItemIDs = nil
-			g.returnToNativeShopSellRoster()
+			if len(creditTimeline) == 0 {
+				finish()
+				return
+			}
+			g.nativeShopUIJob = &nativeClassUIJob{
+				timeline: creditTimeline,
+				after:    finish,
+			}
 		},
 	}
 	return true

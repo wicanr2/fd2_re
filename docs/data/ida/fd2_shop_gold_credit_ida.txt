@@ -1,0 +1,126 @@
+FD2 shop gold credit/debit odometer evidence
+============================================
+
+Evidence level: proven
+Captured: 2026-08-22
+Input: FD2.EXE
+Size: 357074 bytes
+MD5: b97caf2239a27a896069d03549d96e1e
+SHA-256: 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f
+Tool: IDA Pro 9.4, user-authorized Docker image
+Address space: IDA linear addresses in LE object 1
+Database source: disposable copy of the existing FD2 IDA database
+Export command: tools/ida_probe_functions.py with addresses
+                0x2d3ff 0x2d516 0x2d620
+
+Non-destructive naming contract
+-------------------------------
+
+Original names and addresses remain authoritative:
+
+- sub_2D3FF: proven narrow semantic = upward eight-digit gold odometer.
+- sub_2D516: proven narrow semantic = downward eight-digit gold odometer.
+- sub_2D620: proven narrow semantic = one 6x9 rolling-digit window blit.
+
+These semantics are attached navigation notes, not destructive replacements
+for the original IDA names.
+
+Caller and writer evidence
+--------------------------
+
+0x2F85C, inside the sell owner 0x2F642..0x2F883:
+
+    call    sub_2D3FF
+
+sub_2D3FF begins at 0x2D3FF and ends at 0x2D516. It formats the old balance,
+then commits the credited balance before drawing:
+
+    0x2D40F push    dword_53BF3
+    0x2D415 push    offset "%0.8d"
+    0x2D436 mov     eax, [arg_0]
+    0x2D43A add     dword_53BF3, eax
+    0x2D440 push    dword_53BF3
+    0x2D446 push    offset "%0.8d"
+
+For each digit whose old and target values differ, the routine initializes a
+phase byte to one. Across nine inner phases it passes
+`old_digit * 9 + phase` to sub_2D620, increments the phase, then increments
+the digit with decimal wrap after phase ten:
+
+    0x2D47A movzx   edx, [old_digit]
+    0x2D47F movzx   eax, [target_digit]
+    0x2D483 cmp     edx, eax
+    0x2D487 mov     [phase], 1
+    0x2D49C push    0Ah
+    0x2D49E call    delay
+    0x2D4BF movzx   edx, [old_digit]
+    0x2D4C4 mov     eax, edx
+    0x2D4C6 shl     eax, 3
+    0x2D4C9 add     eax, edx
+    0x2D4CB add     eax, phase
+    0x2D4CD push    eax
+    0x2D4CE push    140h
+    0x2D4D6 add     eax, 0A7A90h
+    0x2D4DC call    sub_2D620
+    0x2D4E4 inc     [phase]
+    0x2D4ED cmp     phase, 0Ah
+    0x2D4F2 inc     [old_digit]
+    0x2D4FB cmp     old_digit, 0Ah
+    0x2D500 mov     [old_digit], 0
+
+The outer loop repeats until all eight old digits equal their targets.
+
+Independent downward counterpart
+--------------------------------
+
+sub_2D516 is called by purchase at 0x2F4B1 and revive at 0x30F94. It commits
+the subtraction at 0x2D551, decrements every differing digit before drawing,
+then sends `new_digit * 9 + phase - 1` for phases nine down to one:
+
+    0x2D54D mov     eax, [arg_0]
+    0x2D551 sub     dword_53BF3, eax
+    0x2D59E mov     [phase], 9
+    0x2D5A5 dec     [old_digit]
+    0x2D5F3 add     ecx, eax
+    0x2D5F5 dec     ecx
+    0x2D605 call    sub_2D620
+    0x2D60D dec     [phase]
+
+This independently validates that the two owners use opposite schedules
+rather than a shared direction-neutral approximation.
+
+Shared blitter ABI
+------------------
+
+sub_2D620 starts at 0x2D620 and ends at 0x2D669. Its callers are exactly
+0x2D4DC and 0x2D605. It resolves the FDOTHER rolling strip, multiplies the
+requested row index by six, then copies nine rows of six pixels to a
+destination whose stride is supplied by the caller:
+
+    0x2D62E mov     edi, [arg_0]      ; destination
+    0x2D632 mov     ebp, [arg_4]      ; destination stride
+    0x2D642 imul    esi, [arg_8], 6   ; strip row * 6
+    0x2D64D push    6
+    0x2D651 call    memmove
+    0x2D659 add     edi, ebp
+    0x2D65B add     ebx, 6
+    0x2D65F cmp     esi, 9
+
+Remake mapping
+--------------
+
+- `campaign.ComposeNativeGoldCreditFrames` implements the proven
+  `old_digit*9 + phase(1..9)` upward schedule.
+- `campaign.ComposeNativeGoldDebitFrames` retains the independently proven
+  downward schedule.
+- The sell runtime commits gold before presenting the credit timeline, keeps
+  the staged unit unpublished during that timeline, then performs the raw
+  removal/recompute publication and returns to the same roster selection.
+
+Remaining uncertainty
+---------------------
+
+The direct instructions prove ordering, digit scheduling, delay requests and
+the 6x9 blitter ABI. Exact host-time duration and every mid-write framebuffer
+state remain dynamic-oracle questions; the remake therefore records the
+10 ms delay request but does not call this evidence a full timing E2.

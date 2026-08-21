@@ -365,6 +365,33 @@ func TestNativeShopProductionOwnerDrawsOriginalMenuAndPurchaseList(t *testing.T)
 	finishSell := g.nativeShopUIJob.after
 	g.nativeShopUIJob = nil
 	finishSell()
+	creditFrames := 0
+	if g.nativeShopUIJob != nil {
+		creditFrames = len(g.nativeShopUIJob.timeline)
+	}
+	if g.gold != 137 || len(g.partyRoster[0].Inventory) != 1 ||
+		g.nativeShopMode != "sell_success" || g.nativeShopUIJob == nil ||
+		creditFrames != 63 {
+		t.Fatalf(
+			"native sell credit start = gold %d inventory=%#v mode=%q job=%v frames=%d",
+			g.gold, g.partyRoster[0].Inventory, g.nativeShopMode,
+			g.nativeShopUIJob != nil, creditFrames,
+		)
+	}
+	creditTotal := time.Duration(0)
+	for _, step := range g.nativeShopUIJob.timeline {
+		if step.duration !=
+			campaign.NativeGoldRollDelayMilliseconds*time.Millisecond {
+			t.Fatalf("native credit phase duration=%v", step.duration)
+		}
+		creditTotal += step.duration
+	}
+	if creditTotal != 630*time.Millisecond {
+		t.Fatalf("native credit total=%v, want 630ms", creditTotal)
+	}
+	finishSell = g.nativeShopUIJob.after
+	g.nativeShopUIJob = nil
+	finishSell()
 	if g.gold != 137 || len(g.partyRoster[0].Inventory) != 0 ||
 		g.partyRoster[0].InventorySlots[0] != 0xff ||
 		g.nativeShopMode != "sell_roster" {

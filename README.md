@@ -205,9 +205,17 @@ ch02 武器店賣出角色名冊與索爾物品清單：上排為 route-patched 
 ![ch02 賣出子面板原版與重製對照](docs/figures/shop-sell-child-ch02-original-vs-remake.png)
 
 同一路徑再以方向鍵選到悠妮，並取得短劍賣出的 Yes／No 選中狀態；上排原版、
-下排重製三組也都為完整 RGB 相同。賣出成功演出與未修改戰役路徑仍另行驗收。
+下排重製三組也都為完整 RGB 相同。未修改戰役路徑仍另行驗收。
 
 ![ch02 賣出選擇與確認原版／重製對照](docs/figures/shop-sell-selection-confirm-ch02-original-vs-remake.png)
+
+短劍 Yes 後的成功演出、向上金幣滾動與返回索爾名冊：上排為 route-patched
+原版正常輸入，下排為正式重製。由左至右是成功影格0–4、金幣11／36與返回名冊
+cycle0／1；九組完整320×200 RGB皆相同。重製也會等金幣動畫完成後才發布移除
+短劍的背包，不能再直接跳到37元。證據與限制見
+[`shop-sell-success-return-ch02-e2.json`](docs/data/ui-traces/shop-sell-success-return-ch02-e2.json)。
+
+![ch02 賣出成功、金幣滾動與返回名冊原版／重製對照](docs/figures/shop-sell-success-return-ch02-original-vs-remake.png)
 
 ### 讀檔選單
 
