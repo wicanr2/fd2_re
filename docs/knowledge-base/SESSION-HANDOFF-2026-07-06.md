@@ -5400,6 +5400,8 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   `sell ... success/debit stable E2`，同列又把 sell success／return 列為待辦，容易
   形成互相矛盾的記憶。現明確限定 success／debit 原子影格屬購買路徑；賣出目前只
   關閉名冊、物品與 Yes／No stable state，成功時間線與返回名冊仍待驗證。
+  **本句是當時狀態，已由緊接的「ch02 賣出成功、向上金幣滾動與返回名冊
+  E2」取代；不得再以本句重開 sell success／return。**
 
 ## 2026-08-22：ch02 賣出成功、向上金幣滾動與返回名冊 E2
 
@@ -5474,3 +5476,17 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   原版存檔或未修改完整campaign。證據見
   [`shop-standalone-equip-ch02-e2.json`](../data/ui-traces/shop-standalone-equip-ch02-e2.json)
   與[` 對照圖`](../figures/shop-standalone-equip-ch02-original-vs-remake.png)。
+
+## 2026-08-22：原始碼註解與 Markdown 現況斷言第四輪勘誤
+
+- 以 `58→56→57→91` 現況順序重核程式註解、README、歷史 gap audit 與交接檔。
+  `growth_test.go` 與 mode2 `0x13FD4` 已有正確路徑限定，不採用子代理程式的
+  過時行號回報，也不刪除有效的失敗即關閉註記。
+- `atkAnim` 與 `0x16D00` 嘴型註解原本分別以「對照原版」與「忠實原版」
+  概括尚未閉合的 DAC／調色盤／逐幀時序。現明寫為重製 E1 與已知節奏，
+  不得由註解自行提升為完整 E2。
+- `42` 保留早期 HIT／EV 來源缺口，但撤回「remake 尚無裝備系統」；
+  現況是裝備與 shop equip owner 已存在，尚缺完整 native stat source 與戰鬥整合。
+- README 改為明寫「賣出子面板圖本身」不包成功／返回，而該後續現已有
+  九組 route-patched E2；歷史 `91` 與本檔舊「仍待 sell success」句均追加取代關係，
+  避免單純搜尋把已閉合切片重開。未修改一般玩家路徑仍是獨立缺口。

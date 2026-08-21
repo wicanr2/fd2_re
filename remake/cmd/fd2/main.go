@@ -388,7 +388,8 @@ type Game struct {
 	hasStoryNativeMapView bool                      // 僅在已證實的 LOADCH 視圖重設與 pan 步進後有效
 }
 
-// atkAnim 全螢幕戰鬥演出(對照原版 orig_05:守方左/攻方右土台/斬擊弧/血條/閃紅抽血)。
+// atkAnim 是重製端 E1 全螢幕戰鬥演出；土台、角色、斬擊弧與血條使用
+// 已接資源與幾何，但命中 DAC、逐幀調色盤及完整原版 owner 尚未達 E2。
 type atkAnim struct {
 	atkFig, defFig   int    // 攻方(右土台)/ 守方(左)FIGANI
 	atkName, defName string // 名字(資訊條)
@@ -6286,7 +6287,8 @@ func (g *Game) Update() error {
 	// 移動動畫:原版每格 unit+4=1..6，第7 tick提交目的格。
 	g.stepBattleWalk()
 	g.aiStep() // AI 回合驅動(aiBusy 時逐單位行走→攻擊演出)
-	// 嘴型動畫(忠實原版 0x16d00,doc14):每 2 frame 一 tick;閉嘴隨機 2-31 tick、開嘴一瞬
+	// 嘴型動畫沿用 0x16d00 已知節奏（doc14）：每 2 frame 一 tick；閉嘴隨機
+	// 2–31 tick、開嘴一瞬。這是重製時序，尚無同狀態原版逐幀 E2 比較。
 	if len(g.dialog) > 0 && g.frame%2 == 0 {
 		randomMod30 := 0
 		if g.mouthState.Open {

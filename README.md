@@ -199,8 +199,9 @@ ch02 武器店、道具店與秘密商店：上排為原版，下排為重製；
 ![ch02 三種商店原版與重製對照](docs/figures/shop-variants-1-3-5-original-vs-remake.png)
 
 ch02 武器店賣出角色名冊與索爾物品清單：上排為 route-patched 原版正常商店
-輸入，下排為正式重製 owner；兩個同步狀態皆為完整 320×200 RGB 相同。這不
-代表未修改的一般玩家戰後路徑或整套賣出流程皆已閉合。
+輸入，下排為正式重製 owner；兩個同步狀態皆為完整 320×200 RGB 相同。這張圖
+本身不包含成功演出與返回名冊；該部分的後續證據見下方專項對照。未修改的
+一般玩家戰後路徑仍另行驗收。
 
 ![ch02 賣出子面板原版與重製對照](docs/figures/shop-sell-child-ch02-original-vs-remake.png)
 
