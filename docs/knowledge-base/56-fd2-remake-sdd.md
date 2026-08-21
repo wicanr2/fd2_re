@@ -4513,5 +4513,12 @@ event82 也沒有已證實的 live-row producer，因此兩者不得物化或用
   測試將核心state preflight與indexed admission分開，不能用無原版資產的直接
   fixture冒充正式畫面已驗收。
 
-typed event79、正式 ch28 post binding、隊伍同步、`preparation_ch30` 存讀檔與
-一般玩家 E2 尚未完成，因此 `postbattle_ch29_persist` 仍是 `BLOCKED`。
+### 2026-08-21 event79 實作狀態
+
+event79 已達 `DATA-READY`／`RUNTIME-E1`：raw-camp0 owner使用同一個process-wide
+`nativeRNGState`，只前進一次後選state21 base下兩個循環相鄰group1 slots，原子
+設定raw `+5` bit7並把row2排到下一round。`0xFFFF` seed回歸鎖住第二目標不得先
+發生16-bit overflow；缺第三筆provenance時RNG、row與units均保持不變。
+
+正式 ch28 post binding、隊伍同步、`preparation_ch30` 存讀檔與一般玩家 E2 尚未
+完成，因此 `postbattle_ch29_persist` 仍是 `BLOCKED`。

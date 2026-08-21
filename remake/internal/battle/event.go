@@ -39,6 +39,7 @@ type NativeTurnEvent struct {
 	Staging      NativeTurnStaging       `json:"staging"`
 	DynamicGroup *NativeTurnDynamicGroup `json:"dynamic_group,omitempty"`
 	Progression  *NativeTurnProgression  `json:"progression,omitempty"`
+	PairMutation *NativeTurnPairMutation `json:"pair_mutation,omitempty"`
 }
 
 // NativeTurnDynamicGroup 從 raw event-state table 解析一個 0x35822 group 參數，
@@ -75,6 +76,19 @@ type NativeTurnProgression struct {
 	PulseCount       int                  `json:"pulse_count"`
 	ExtraDelayMS     int                  `json:"extra_delay_ms"`
 	TailTextIndices  []int                `json:"tail_text_indices"`
+}
+
+// NativeTurnPairMutation 保存 event79 由一個 raw base 與單一步 RNG 選出兩個
+// 循環相鄰 runtime slots 的規則，不替 bit7 賦予 caller 之外的玩法名稱。
+type NativeTurnPairMutation struct {
+	BaseStateIndex  int    `json:"base_state_index"`
+	Group           int    `json:"group"`
+	Count           int    `json:"count"`
+	Modulo          int    `json:"modulo"`
+	SecondOffset    int    `json:"second_offset"`
+	MarkHelper      string `json:"mark_helper"`
+	ControlSlot     int    `json:"control_slot"`
+	RescheduleDelta int    `json:"reschedule_delta"`
 }
 
 // NativeTurnStaging is the editable form of the recovered 0x35822 helper.
@@ -348,7 +362,7 @@ func LoadScenario(path string) (*Scenario, error) {
 			seenNativeTurn[key] {
 			return nil, fmt.Errorf("scenario native turn event %d is invalid", eventIndex)
 		}
-		if event.Progression == nil && (staging.Helper == "" || staging.PanHelper == "" ||
+		if event.Progression == nil && event.PairMutation == nil && (staging.Helper == "" || staging.PanHelper == "" ||
 			staging.SpawnHelper == "" || staging.PaletteHelper == "" || staging.RedrawHelper == "" ||
 			staging.DelayBeforeFlashMS < 0 || staging.FlashHoldMS < 0 ||
 			staging.PaletteStart < 0 || staging.PaletteEnd < staging.PaletteStart || staging.PaletteEnd > 255 ||
@@ -382,6 +396,15 @@ func LoadScenario(path string) (*Scenario, error) {
 				progression.FinalActivation.RawCamp > 0xff || progression.PulseHandler == "" ||
 				progression.PulseCount <= 0 || progression.ExtraDelayMS < 0 || len(progression.TailTextIndices) == 0 {
 				return nil, fmt.Errorf("scenario native turn event %d progression is invalid", eventIndex)
+			}
+		}
+		if event.PairMutation != nil {
+			pair := event.PairMutation
+			if event.DynamicGroup != nil || event.Progression != nil || len(staging.Calls) != 0 ||
+				pair.BaseStateIndex < 0 || pair.BaseStateIndex >= 0x20 || pair.Group < 0 || pair.Group > 0xff ||
+				pair.Count <= 1 || pair.Modulo <= 1 || pair.SecondOffset <= 0 || pair.MarkHelper == "" ||
+				pair.ControlSlot < 0 || pair.ControlSlot >= 16 || pair.RescheduleDelta <= 0 {
+				return nil, fmt.Errorf("scenario native turn event %d pair mutation is invalid", eventIndex)
 			}
 		}
 		seenGroups := map[int]bool{}

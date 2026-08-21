@@ -152,8 +152,9 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 > 入口為20筆持續隊伍後追加group8的56筆，正式 battle seam 現保留該76筆順序，
 > 不再把groups1..9全部當作開場單位。event75 selector1 的可編輯對話／live-row
 > activation、event74逐回合groups4..7 staging，以及event76的raw-camp2 repeat／
-> group1／六次palette pulse與indices2..6現已達 `RUNTIME-E1`；event79 consumer
-> 及post group9仍只有已閉合producer/order，尚未接正式runtime／戰後binding。
+> group1／六次palette pulse與indices2..6，以及event79單步RNG／兩個group1
+> targets現已達 `RUNTIME-E1`；post group9仍只有已閉合producer/order，尚未接
+> 正式戰後binding。
 > groups2/3沒有已證實producer，故保持source-only。
 > 本切片不解除玩家第29戰整體fail-closed，也尚未提升為一般玩家 `PLAYER-E2`。
 

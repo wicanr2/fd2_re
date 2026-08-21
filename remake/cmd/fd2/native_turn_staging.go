@@ -223,6 +223,15 @@ func (g *Game) startNativeRawCamp0TurnEvents() (bool, error) {
 	if len(events) != 1 {
 		return false, fmt.Errorf("raw camp0 has %d simultaneous handlers; staging is sequential", len(events))
 	}
+	if events[0].PairMutation != nil {
+		nextRNG, _, err := battle.ApplyNativeTurnEvent79(g.st, events[0], g.nativeRNGState)
+		if err != nil {
+			return false, err
+		}
+		g.nativeRNGState = nextRNG
+		g.beginEnemyPhase()
+		return true, nil
+	}
 	resolved, states, frame, indexed, err := g.preflightNativeTurnStaging(events[0])
 	if err != nil {
 		return false, err

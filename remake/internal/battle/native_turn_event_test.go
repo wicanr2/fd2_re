@@ -102,7 +102,7 @@ func TestChapter29KeepsDynamicEvent74GroupsPending(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !sc.RuntimeAppendGroups || !reflect.DeepEqual(sc.InitialGroups, []int{8}) ||
-		len(sc.NativeFieldEventRules) != 1 || len(sc.NativeTurnEvents) != 2 ||
+		len(sc.NativeFieldEventRules) != 1 || len(sc.NativeTurnEvents) != 3 ||
 		sc.NativeTurnEvents[0].DynamicGroup == nil {
 		t.Fatalf("chapter29 event boundary=%#v", sc)
 	}

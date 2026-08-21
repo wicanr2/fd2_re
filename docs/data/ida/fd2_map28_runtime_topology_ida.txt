@@ -164,12 +164,27 @@ extensions; group9 is the one-record postbattle extension.
 4. 六次 pulse、兩次額外400ms與 indices3..6 對話全部完成後，才能把輸入交回
    player phase。event79 的隨機兩目標 mutation仍是下一個獨立切片。
 
-Implementation consequence (confirmed data contract; runtime work pending)
+## event79 精確 RNG 與 mutation 契約（2026-08-21）
+
+- `sub_35EE6`（`0x35EE6..0x35F5A`，已證實）先將live row2排到
+  `native_round+1`，再呼叫一次`0x4E893`。該函式使用process-wide word
+  `[0x627B8]`；既有`fdother.NativeRNGStep`已固定為
+  `rol16(state+0x9014,3)`，本事件不得另造隨機器或多消耗一步。
+- base取自event-state `[0x15]`。兩個`0x13512`目標依序是
+  `base + rng%3`及`base + (rng+1)%3`，因此永遠是group1三筆中兩個不同且循環
+  相鄰的runtime slots；兩者只設定raw `+5` bit7，不追加group。
+- typed rule必須保存handler、state index21、modulo3、second offset1、row2與
+  reschedule delta1。執行前必須驗證base範圍、三筆連續group1、各slot raw `+5`
+  provenance、typed／可選raw views與唯一live row；所有mutation與RNG state須
+  一次提交。任一條件失敗時row、units及RNG皆不可改變。
+
+Implementation consequence (confirmed data contract; post binding pending)
 -------------------------------------------------------------------------
 The authored ch29 scenario must use runtime append ownership.  The normal
 pre-handler handoff must preserve its 20+group8 runtime array instead of
-rebuilding groups1..9 from all 76 source rows.  Formal runtime code must keep
-groups1,4,5,6,7,9 as pending constructor sources and implement the live event
-mutations above atomically.  Groups2/3 must remain source-only.  Until that
-typed chain and the ch28 post binding are both installed, the campaign node
+rebuilding groups1..9 from all 76 source rows.  Formal runtime code now owns
+event75/74/76/79 atomically: groups4..7 are staged sequentially, group1 is
+appended by event76, and event79 mutates two of those three records.  Group9
+remains a pending postbattle constructor source; groups2/3 remain source-only.
+Until the ch28 post binding is installed, the campaign node
 postbattle_ch29_persist remains fail-closed.

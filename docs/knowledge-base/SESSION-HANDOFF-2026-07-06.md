@@ -5156,3 +5156,8 @@ progression，正式runtime在round increment後dispatch raw-camp2。repeat bran
 原子寫slot1 raw `+5` bit7／state17／row1；final branch在index2後私下建構group1
 三筆、寫state21 base與event79 row，再依序播放六次`0x35E5A`、兩次額外400ms及
 indices3..6。event79、post binding、save/load與E2仍未完成。
+
+**2026-08-21 event79 續接：** `sub_35EE6` 已lower成typed pair mutation；正式
+raw-camp0 owner以process-wide `nativeRNGState`前進一次，從state21 base的三筆
+group1選兩個循環相鄰slots，原子設定raw `+5` bit7並reschedule row2。post
+binding、save/load與E2仍未完成。

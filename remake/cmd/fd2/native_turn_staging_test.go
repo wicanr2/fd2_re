@@ -294,3 +294,29 @@ func TestEvent76FinalPreflightAppendsGroup1AndSchedulesEvent79Privately(t *testi
 		t.Fatal("event76 final preflight mutated published battle state")
 	}
 }
+
+func TestEvent79RunsInRawCamp0BeforeEnemyPhase(t *testing.T) {
+	g := chapter29DirectNativeGameFixture(t)
+	base := len(g.st.Units)
+	if n, err := g.st.AppendGroupWithNativePlacement(1, 0); err != nil || n != 3 {
+		t.Fatalf("event79 fixture group1 append=%d err=%v", n, err)
+	}
+	g.st.NativeEventState[21] = byte(base)
+	g.st.NativeRoundCounter = 12
+	g.st.NativeTurnEventControls[2] = battle.NativeTurnEventControl{Turn: 12, EventID: 79, RawCamp: 0}
+	beforeRNG := g.nativeRNGState
+	g.endTurn()
+	if g.loadErr != "" || !g.aiBusy || g.nativeRNGState == beforeRNG ||
+		g.st.NativeTurnEventControls[2] != (battle.NativeTurnEventControl{Turn: 13, EventID: 79, RawCamp: 0}) {
+		t.Fatalf("event79 phase err=%q ai=%v rng=%#x row=%#v", g.loadErr, g.aiBusy, g.nativeRNGState, g.st.NativeTurnEventControls[2])
+	}
+	marked := 0
+	for index := base; index < base+3; index++ {
+		if g.st.Units[index].NativeRecordByte5&0x80 != 0 {
+			marked++
+		}
+	}
+	if marked != 2 {
+		t.Fatalf("event79 marked group1 slots=%d", marked)
+	}
+}
