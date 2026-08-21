@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
 
 // savePath/saveSlotPath 存檔位置:$XDG_DATA_HOME/fd2_re/fd2_save_N.json；四槽
@@ -141,8 +142,52 @@ func (g *Game) loadGameFromSlot(slot int) {
 	g.dialog, g.st, g.sel = nil, nil, nil
 	g.nativeChapterRestore = nil
 	g.clearChurchTransientStateForLoad()
+	g.clearShopTransientStateForLoad()
 	g.enterNode()
 	g.msg = fmt.Sprintf("已讀檔(槽位%d：%s)", slot+1, d.Node)
+}
+
+func (g *Game) clearShopTransientStateForLoad() {
+	g.nativeShopUIJob = nil
+	g.resetNativeShopUIPulse()
+	g.nativeShopVariant = 0
+	g.nativeShopMode = ""
+	g.nativeShopServiceSel = 0
+	g.nativeShopItemStart = 0
+	g.nativeShopConfirmSel = 0
+	g.nativeShopRecipientStart = 0
+	g.nativeShopRecipientCycle = 0
+	g.nativeShopEquipSel = 0
+	g.nativeShopPendingUnit = battle.Unit{}
+	g.nativeShopHasPendingUnit = false
+	g.nativeShopPendingGold = 0
+	g.nativeShopSellRosterTop = 0
+	g.nativeShopSellItemTop = 0
+	g.nativeShopSellConfirmSel = 0
+	g.nativeShopSellItemIDs = nil
+	g.nativeShopEquipRosterTop = 0
+	g.nativeShopEquipUnitSel = 0
+	g.nativeShopTransferSource = -1
+	g.nativeShopTransferItem = -1
+	g.nativeShopTransferItems = nil
+	g.nativeShopTransferDest = -1
+	g.nativeShopTransferIDs = nil
+	g.nativeShopTransferSel = 0
+	g.nativeShopTransferTop = 0
+
+	g.shopSel = 0
+	g.shopRecipientSel = 0
+	g.shopRecipients = nil
+	g.shopPicking = false
+	g.shopPending = campaign.Good{}
+	g.shopEquipPrompt = false
+	g.shopEquipUnit = 0
+	g.shopEquipSlot = 0
+	g.shopMode = ""
+	g.shopSellPicking = false
+	g.shopSellUnitSel = 0
+	g.shopSellSlotSel = 0
+	g.clearNativeItemPanel()
 }
 
 func (g *Game) clearChurchTransientStateForLoad() {

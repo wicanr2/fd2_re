@@ -127,6 +127,23 @@ func TestCampaignSaveLoadRestoresTownBoundaryAndParty(t *testing.T) {
 	g.partyMembers, g.partyJoinOrder = nil, nil
 	g.partyDeploy, g.partyRoster = nil, nil
 	g.nativeMapHUDPersistent = battle.InitialNativeMapHUDPersistentState()
+	g.shopMode = "sell"
+	g.shopPicking = true
+	g.shopEquipPrompt = true
+	g.shopRecipients = []int{9}
+	g.nativeShopUIJob = &nativeClassUIJob{frames: [][]byte{{1}}}
+	g.nativeShopMode = "transfer_full"
+	g.nativeShopVariant = 5
+	g.nativeShopHasPendingUnit = true
+	g.nativeShopSellItemIDs = []int{0x64}
+	g.nativeShopTransferSource = 9
+	g.nativeShopTransferItems = []int{0}
+	g.nativeShopTransferIDs = []int{9}
+	g.nativeItemPanelBase = []byte{1}
+	g.nativeItemPanelRecord = []byte{1}
+	g.nativeItemEffectRows = []byte{1}
+	g.itemAnimStep = 11
+	g.itemClosing = true
 	g.loadGameFromSlot(2)
 	if g.camp.NodeID() != "town_ch02" || g.gold != 279 || len(g.items) != 1 || g.items[0] != "sky-key" {
 		t.Fatalf("campaign boundary did not restore: node=%q gold=%d items=%#v", g.camp.NodeID(), g.gold, g.items)
@@ -139,8 +156,15 @@ func TestCampaignSaveLoadRestoresTownBoundaryAndParty(t *testing.T) {
 		!g.nativeMapHUDPersistent.HasAnchorX || g.nativeMapHUDPersistent.AnchorX != 1 {
 		t.Fatalf("save HUD persistence=%+v", g.nativeMapHUDPersistent)
 	}
-	if g.st != nil || g.sel != nil || g.shopMode != "" || g.churchMode != "" {
-		t.Fatalf("town boundary retained transient scene state: st=%v sel=%v shop=%q church=%q", g.st, g.sel, g.shopMode, g.churchMode)
+	if g.st != nil || g.sel != nil || g.shopMode != "" || g.churchMode != "" ||
+		g.shopPicking || g.shopEquipPrompt || len(g.shopRecipients) != 0 ||
+		g.nativeShopUIJob != nil || g.nativeShopMode != "" || g.nativeShopVariant != 0 ||
+		g.nativeShopHasPendingUnit || len(g.nativeShopSellItemIDs) != 0 ||
+		g.nativeShopTransferSource != -1 || len(g.nativeShopTransferItems) != 0 ||
+		len(g.nativeShopTransferIDs) != 0 || len(g.nativeItemPanelBase) != 0 ||
+		len(g.nativeItemPanelRecord) != 0 || len(g.nativeItemEffectRows) != 0 ||
+		g.itemAnimStep != 0 || g.itemClosing {
+		t.Fatalf("town boundary retained transient scene state: st=%v sel=%v shop=%q nativeShop=%q church=%q", g.st, g.sel, g.shopMode, g.nativeShopMode, g.churchMode)
 	}
 }
 

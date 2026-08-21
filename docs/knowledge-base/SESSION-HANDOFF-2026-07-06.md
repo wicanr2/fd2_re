@@ -5326,3 +5326,18 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - `native_ai_runtime.go` 的 mode 2 無候選分支仍未綁到 `0x13FD4` owner，但 mode 11
   的 `0x14121→0x13FD4` 正式畫面／音訊消費端已達 E1。註解現已限定分支，不再把
   局部缺口誤寫成整個 `0x13FD4` 尚未接入。
+
+## 2026-08-22：商店裝備／轉移跨 town 存讀檔邊界
+
+- 先重讀既有 `0x2F883→0x1C142→0x1B750` 獨立裝備（standalone-equip）與
+  `0x2F8EA` 轉移證據，SDD 再定義正式 mutation 必須經 `leaveShop` 回 town，
+  才能寫入重製 JSON；沒有重開已閉合 IDA 位址。
+- `TestNativeShopProductionOwnerDrawsOriginalMenuAndPurchaseList` 現沿正式 indexed
+  擁有者（owner）完成裝備與自身轉移（self-transfer），再穿越離店、town、槽位3存檔、清空記憶狀態與
+  冷讀檔。回歸核對緊密背包投影（compact inventory）／equipped、八格 `InventorySlots`／
+  `NativeInventoryFlags`、AP、equipment base、membership、join order、deployment、
+  chapter 與 campaign cursor。
+- 首次回歸直接重現讀檔污染：`nativeShopMode="transfer_full"`、variant5、舊 transfer
+  source 與 item panel 全部殘留。`loadGameFromSlot` 現在集中清除購買／賣出／裝備／
+  轉移選擇器、待提交交易（pending transaction）、索引工作（indexed job）、item panel 與一般 shop 暫態後才
+  進入存檔 town。這是重製 JSON `RUNTIME-E1`，不外推成原版 `FD2.SAV` 或商店 E2。

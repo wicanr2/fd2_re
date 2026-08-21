@@ -25,6 +25,8 @@ func TestNativeShopProductionOwnerDrawsOriginalMenuAndPurchaseList(t *testing.T)
 	t.Setenv("FD2_ORIGINAL_FDOTHER", fdotherPath)
 	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(base, "FDTXT.DAT"))
 	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(base, "DATO.DAT"))
+	t.Setenv("XDG_DATA_HOME", t.TempDir())
+	userDataDirCached = ""
 
 	shared, err := loadNativeClassUIAssets()
 	if err != nil {
@@ -43,7 +45,9 @@ func TestNativeShopProductionOwnerDrawsOriginalMenuAndPurchaseList(t *testing.T)
 					{ID: 0, Name: "item0", Price: 100},
 					{ID: 1, Name: "item1", Price: 200},
 				},
+				Next: "town",
 			},
+			"town": {Type: "town"},
 		},
 	}
 	g := &Game{
@@ -505,6 +509,94 @@ func TestNativeShopProductionOwnerDrawsOriginalMenuAndPurchaseList(t *testing.T)
 		!g.beginNativeShopTransferMessageOpening() ||
 		len(g.nativeShopUIJob.frames) != 6 {
 		t.Fatal("native shop transfer full-destination feedback fell back")
+	}
+
+	// 正式獨立裝備與轉移擁有者已在上方依原始拓撲（raw topology）
+	// 產生 reordered；現在必須經離店→town 節點，才可進入重製 JSON 存檔邊界。
+	g.partyRoster[0] = reordered
+	delete(g.partyRoster, 1)
+	g.partyMembers = map[int]bool{0: true}
+	g.partyJoinOrder = []int{0}
+	g.partyDeploy = map[int]bool{0: true}
+	g.handlerChapter = 1
+	g.nativeShopVariant = 1
+	g.leaveShop()
+	if g.camp.NodeID() != "town" || g.campSel != 1 {
+		t.Fatalf("native shop leave boundary=(%q,%d), want town/1", g.camp.NodeID(), g.campSel)
+	}
+	g.saveGameToSlot(2)
+	if g.msg != "已存檔(槽位3：town)" {
+		t.Fatalf("native shop town save message=%q", g.msg)
+	}
+
+	// 模擬讀檔前仍有另一個商店子畫面；這些欄位皆未序列化，不得穿越 town save。
+	g.partyRoster = nil
+	g.partyMembers = nil
+	g.partyJoinOrder = nil
+	g.partyDeploy = nil
+	g.nativeShopUIJob = &nativeClassUIJob{frames: [][]byte{{1}}}
+	g.nativeShopMode = "transfer_full"
+	g.nativeShopVariant = 5
+	g.nativeShopServiceSel = 3
+	g.nativeShopItemStart = 4
+	g.nativeShopConfirmSel = 1
+	g.nativeShopRecipientStart = 2
+	g.nativeShopRecipientCycle = 1
+	g.nativeShopEquipSel = 1
+	g.nativeShopHasPendingUnit = true
+	g.nativeShopPendingGold = 999
+	g.nativeShopSellRosterTop = 2
+	g.nativeShopSellItemTop = 2
+	g.nativeShopSellConfirmSel = 1
+	g.nativeShopSellItemIDs = []int{0}
+	g.nativeShopEquipRosterTop = 2
+	g.nativeShopEquipUnitSel = 1
+	g.nativeShopTransferSource = 7
+	g.nativeShopTransferItem = 6
+	g.nativeShopTransferItems = []int{6}
+	g.nativeShopTransferDest = 8
+	g.nativeShopTransferIDs = []int{7, 8}
+	g.nativeShopTransferSel = 1
+	g.nativeShopTransferTop = 2
+	g.shopPicking = true
+	g.shopEquipPrompt = true
+	g.shopEquipUnit = 7
+	g.shopEquipSlot = 6
+	g.shopRecipients = []int{7}
+	g.shopRecipientSel = 1
+	g.shopSellPicking = true
+	g.shopSellUnitSel = 2
+	g.shopSellSlotSel = 3
+	g.shopMode = "sell"
+	g.nativeItemPanel = ebiten.NewImage(1, 1)
+	g.nativeItemPanelBase = []byte{1}
+	g.nativeItemPanelRecord = []byte{1}
+	g.nativeItemEffectRows = []byte{1}
+	g.itemAnimStep = 11
+	g.itemClosing = true
+
+	g.loadGameFromSlot(2)
+	restored, ok := g.partyRoster[0]
+	if !ok || !reflect.DeepEqual(restored.Inventory, []int{1, 0}) ||
+		!reflect.DeepEqual(restored.Equipped, []bool{true, false}) ||
+		!reflect.DeepEqual(restored.InventorySlots, []int{1, 0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}) ||
+		!reflect.DeepEqual(restored.NativeInventoryFlags, []int{0x40, 0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}) ||
+		restored.AP != 32 || !restored.EquipmentBaseSet {
+		t.Fatalf("native shop mutation did not survive JSON round-trip: %#v", restored)
+	}
+	if g.camp.NodeID() != "town" || g.handlerChapter != 1 ||
+		len(g.partyJoinOrder) != 1 || !g.partyMembers[0] || !g.partyDeploy[0] {
+		t.Fatalf("native shop party boundary did not restore: node=%q chapter=%d members=%#v order=%#v deploy=%#v", g.camp.NodeID(), g.handlerChapter, g.partyMembers, g.partyJoinOrder, g.partyDeploy)
+	}
+	if g.nativeShopUIJob != nil || g.nativeShopMode != "" || g.nativeShopVariant != 0 ||
+		g.nativeShopHasPendingUnit || len(g.nativeShopSellItemIDs) != 0 ||
+		g.nativeShopTransferSource != -1 || len(g.nativeShopTransferItems) != 0 ||
+		len(g.nativeShopTransferIDs) != 0 || g.shopPicking || g.shopEquipPrompt ||
+		len(g.shopRecipients) != 0 || g.shopSellPicking || g.shopMode != "" ||
+		g.nativeItemPanel != nil || len(g.nativeItemPanelBase) != 0 ||
+		len(g.nativeItemPanelRecord) != 0 || len(g.nativeItemEffectRows) != 0 ||
+		g.itemAnimStep != 0 || g.itemClosing {
+		t.Fatalf("town load retained shop transient state: mode=%q variant=%d transfer=%d itemPanel=%v", g.nativeShopMode, g.nativeShopVariant, g.nativeShopTransferSource, g.nativeItemPanel != nil)
 	}
 }
 

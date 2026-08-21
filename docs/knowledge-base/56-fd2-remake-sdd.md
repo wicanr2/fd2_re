@@ -1957,6 +1957,34 @@ closed rather than projecting a normalized full state. The deterministic
 original-resource oracle is
 [`native-transfer-full-indexed.png`](../figures/native-transfer-full-indexed.png).
 
+### 商店裝備／轉移返回城鎮的 JSON 存讀檔契約（2026-08-22）
+
+本節不新增原版語意，而是把上方已閉合的正式交易擁有者（owner）接到重製自有 JSON
+節點邊界。原版獨立裝備由 `0x2F883` 進入角色／物品面板，成功時以
+`0x1C142→0x1B750` 更新八格裝備旗標與衍生能力；共用轉移 owner `0x2F8EA`
+依 `0x1B8E7(source)→0x1BB8C(destination,item)→0x1B750(source)` 完成交易，
+不寫金幣。主證據仍是本節前文與
+[`fd2_runtime_equipment_recalc_1b750_ida.txt`](../data/fd2_runtime_equipment_recalc_1b750_ida.txt)，
+不由存檔測試反向宣稱新的原版 ABI。
+
+正式重製端契約如下：
+
+1. 測試必須呼叫 `applyNativeShopEquipSelection` 與
+   `applyNativeShopTransfer`，不得直接改寫 `partyRoster` 來冒充交易。
+2. 成功交易必須經 `leaveShop` 返回 campaign authoring 指定的 town；只有 town
+   節點才可寫入重製 JSON。存檔需保存緊密背包投影（compact inventory）、`Equipped`、八格
+   `InventorySlots`／`NativeInventoryFlags`、裝備基礎值、重算後能力、名冊成員、
+   加入順序、部署、金幣、章節與 campaign cursor。
+3. 清空記憶中的持續隊伍後再讀檔，必須重建同一交易結果；裝備與轉移均不得因
+   JSON round-trip 改變 raw 八格拓撲或衍生能力。
+4. 商店選擇器（selector）、待提交 unit／gold、購買／賣出／裝備／轉移游標與列表、
+   索引轉場（indexed transition）工作、暫存 item panel、舊 shop variant 等都不是節點邊界
+   狀態。`loadGameFromSlot` 必須在 `enterNode` 前清除；即使讀檔前停在另一個
+   商店子畫面，也不可污染還原後 town。
+5. 本切片通過時只提升為重製 JSON 的 `RUNTIME-E1`。它不證明原版四槽
+   `FD2.SAV` 位元組相容性（byte compatibility）、商店子面板（child panel）的 DOSBox E2，或所有章節
+   商店均已完成一般玩家驗收。
+
 The other raw branch, `0x2ffa5 → 0x17aed`, is a separate boundary. Direct
 instruction decoding fixes `0x17aed` as a one-argument function; an apparent
 second Hex-Rays argument was a decompiler artifact. Its body
