@@ -13,11 +13,11 @@
 
 | 順序 | 工作 | 現況 | 下一個可驗收結果 |
 |---:|---|---|---|
-| 0 | 原始碼註解與 Markdown 現況斷言稽核 | `DATA-READY`：本輪撤回 FIGANI `u16 frameCount`、終局仍只是近似、玩家第29戰仍 blocked、空游標 END 只限 chapter0、只能按 Tab 與商店收件者輸入未接等舊現況；這是持續性品質閘門，不是一次掃描即永久完成 | 每個玩家功能關閉時，以程式、測試與 `58` 現況核對完成度、節點、slot、handler、renderer；錯誤現況直接訂正，歷史證據追加勘誤 |
+| 0 | 原始碼註解與 Markdown 現況斷言稽核 | `DATA-READY`：本輪再撤回`0x9017`是左端、END仍使用泛用文字層、終局仍只是近似與`0x2BCE5`只容許chapter26等錯誤現況；較早FIGANI／第29戰／chapter0-only／Tab／商店收件者勘誤均保留可追溯。這是持續性品質閘門，不是一次掃描即永久完成 | 每個玩家功能關閉時，以程式、測試與 `58` 現況核對完成度、節點、slot、handler、renderer；錯誤現況直接訂正，歷史證據追加勘誤 |
 | 1 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式，現為產品31／runtime170／未知1104；舊83 unknown 已拆為80已分類、3已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253` 只追其他 caller／戰役 gate，`0x2BCE5` 追正式 owner，不重解 callee |
 | 2 | 玩家第21戰天空之鑰固定演出 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`：`0x24336` 已接真實 `FDOTHER #34`、`ANI #0`、調色盤循環與正式戰後→城鎮→存讀檔 | 取得未修改原版同狀態 E2，核對第一個動態調色盤相位與相鄰 `layout_units`／ACT63／64；不重解函式本體 |
 | 3 | 玩家第29戰 raw ch28 post 後續驗收 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`；`0x1DB65`原資源 presenter、group9→`0x25535`、持續隊伍、`preparation_ch30` 與存讀檔已正式接通，postbattle admission blocker 已歸零 | 以未修改原版一般玩家路徑取得同狀態逐幀／音訊 E2；高階圖像與sample 3語意仍保留unknown，不阻擋 E1戰役流程 |
-| 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；共用 `0x117E7` 空游標 `0x16F55` END 已接原版6＋4展開、YES／NO、兩段回應、4＋5收合與來源復原，command 13–16 的玩家與敵方 mode 11 已走完整 #3前段、#6七張、mask、交易後 redraw、#5數字22張與尾停，AI 依 raw selector重建 target array | 補 END／command 13–16 同狀態逐幀逐音訊 E2與精確tick；再依 `56` family matrix選下一個有完整證據的 command，不重解本批已閉合函式 |
+| 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；共用 `0x117E7` 空游標 `0x16F55` END 已接原版6＋4展開、YES／NO、兩段回應、4＋5收合與來源復原；同一存檔問句畫面的肖像／文字子區域已與原版相同，整幀仍受選項與戰場動畫相位影響。command 13–16 的玩家與敵方 mode 11 已走完整 #3前段、#6七張、mask、交易後 redraw、#5數字22張與尾停，AI 依 raw selector重建 target array | 補 END接受／取消／收合及command 13–16逐幀逐音訊 E2與精確tick；再依 `56` family matrix選下一個有完整證據的 command，不重解本批已閉合函式 |
 | 5 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial | 依 `57` 逐個輸入狀態機取得同狀態原版／重製證據，不用單張 layout 圖代替 |
 | 6 | 原版終局精確鏈 | `RUNTIME-E1`：正式 `battle_ch30→ending` 現消費來源約束前綴／角色／20段尾段並停在 #59；80個實際 FIGANI 的 header-zero `0x2939D` raw `+4..+7`、base scheduler 與兩次配對已接；未達 E2 | 以動態 watchpoint／未修改玩家路徑閉合 `0x2C548→0x2C2A6` records／globals 連續性、3% RNG重播、精確音訊／終端輸入、`0x2BCE5` 原版 owner 及第30戰 E2 |
 | 7 | 全戰役抽樣／長程試玩、三平台打包與推廣片 | 核心 gate 未關閉 | 核心垂直切片與代表性晚期玩家路徑完成後才進入發行驗收 |
@@ -166,7 +166,8 @@ handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不�
 - `PLAYER-E2` 差距：原版一側已有 E2；重製端確認提示仍是文字層，尚缺同一 raw
   roster／鏡頭／游標／tick 的逐幀畫面配對，所以不可宣稱完整 END UI 或 AI parity。
 - 2026-08-22 勘誤：重製端已不再使用文字層，而是接上原版資源的完整確認生命週期；
-  同一 raw 狀態逐幀配對與精確 tick 仍缺，因此 E2 限制不變。
+  2026-08-22 後續又完成同一存檔的問句穩定畫面配對，肖像／文字子區域差異為0；
+  接受、取消、收合、精確 tick與音訊仍缺，因此整體 E2 限制不變。
 
 ### 2026-08-20：玩家第25戰後第26章祕密商店正常戰間切片
 

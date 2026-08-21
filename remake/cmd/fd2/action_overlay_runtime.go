@@ -161,7 +161,9 @@ func (g *Game) beginNativeSystemEndTurn() bool {
 	if err != nil {
 		return false
 	}
-	question, err := campaign.ComposeNativeBattleEndTurnQuestion(dialogue, ui.status.Strings, ui.status.Font)
+	question, err := campaign.ComposeNativeBattleEndTurnQuestion(
+		dialogue, ui.portrait, ui.status.Strings, ui.status.Font,
+	)
 	if err != nil {
 		return false
 	}

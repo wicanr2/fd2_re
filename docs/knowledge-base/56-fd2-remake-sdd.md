@@ -4031,7 +4031,8 @@ cursor→MP／HP→action→range reset 的正式回歸，未猜接其畫格、�
    只有延遲結束才發布敵方回合。
 4. chapter0 CONTINUE 的一次性 opening-confirm（歷史擷取限制）只證明該存檔第一個 Return；
    面板本身改由共用 `nativeSystemCursorOverlay` 狀態承接。這是 `RUNTIME-E1`，
-   不提升確認框畫面、DOS tick 或各章一般玩家路徑為 E2。
+   本段當時尚未提升確認框畫面、DOS tick 或各章一般玩家路徑為 E2；問句畫面的
+   後續同狀態比較與仍存限制，以緊接的 indexed renderer 小節為準。
 
 主證據見
 [`fd2_117e7_empty_cursor_system_overlay_ida.txt`](../data/ida/fd2_117e7_empty_cursor_system_overlay_ida.txt)。
@@ -4046,7 +4047,8 @@ FDOTHER #2 choices與目前 palette。正式執行期已依此契約接通；任
 
 1. `0x1956B(0x4B)` 先從 source 發布六個對話框展開畫面；問句
    FDTXT `0x1A3` 使用 `(99,127)`、foreground `0xCD`、background `0x4C` 與
-   19-pixel line step。
+   19-pixel line step；緊接的`0x16559(0)`再寫一次DATO #75 frame0，使頭像擁有
+   所有重疊像素。
 2. `0x19953` 再發布四個選項展開畫面；stable choices沿用 cells 48/49與51/52、
    Left／Right選0／1且不環繞、BIOS低字delta>=2才前進pulse。每幀都由Draw
    acknowledgement推進。
@@ -4057,9 +4059,21 @@ FDOTHER #2 choices與目前 palette。正式執行期已依此契約接通；任
    復原source。
 5. 只有接受分支在完整收合與source restore後進既有`endTurn`；取消分支保持
    turn、單位、roster與campaign零修改。DOS tick精確時序與音訊owner仍不外推。
+6. question／accepted／canceled 為三份不可變且互不別名的320×200 frame；回覆
+   預先合成不得污染問句或dialogue。一般X11正常玩家擷取已把三段文字疊印確認為
+   真實重製缺陷，因此測試必須同時驗證像素內容與底層slice不共用。
+7. DATO #75 的`0x9017`是`0x4E8E1`每列由右往左寫的最右端，不是左上角；
+   80像素寬frame實際佔`0x9017-79..0x9017`並水平反轉。原版正常玩家擷取與
+   `0x4E8E1`直接指令共同推翻舊左到右blit，故此修正必須落在共用DATO renderer。
 
 位址、兩條分支原文、原版E2畫面雜湊與重開條件見
 [`fd2_end_turn_confirmation_ui_ida.txt`](../data/ida/fd2_end_turn_confirmation_ui_ida.txt)。
+
+同一份合法 `FD2.SAV` 的未修改原版一般玩家擷取與重製正式鍵盤路徑已完成
+問句穩定畫面比較：肖像與問句子區域差異為0，整幀仍有1692個差異像素，集中於
+YES脈動及戰場單位／游標動畫相位。因此原版一側列`PLAYER-E2`、重製一側仍列
+決定性`RUNTIME-E1`，不宣稱全幀逐像素一致。畫面、雜湊、輸入時間線與限制見
+[`native-end-turn-confirmation-original-vs-remake-e1.json`](../data/ui-traces/native-end-turn-confirmation-original-vs-remake-e1.json)。
 
 2026-08-21 後續閉合：`0x21EB1` 的 caller-specific 排程現已由 IDA／Capstone
 固定為 FDOTHER #3 LUT 9→1九張擴張、200 ms、3→9七張收束、`0x11CAC(0)`

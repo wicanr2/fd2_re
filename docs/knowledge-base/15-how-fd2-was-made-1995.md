@@ -80,7 +80,9 @@ DOS 不顯示中文,他們的解法是 1990 年代台灣遊戲的通行做法,�
   其 command／spell 對照尚未閉合；`+0x22..+0x24` 是 raw transient/modifier bytes，並非法術 bitfield，不能由此命名高階 stat/status。
 - **AI（歷史筆記，地址已撤回）**：舊資料曾以 `0x15140` 描述行動單位 flood-fill／逐落點評分；現況以 `0x13A9F/0x14EF0/0x15B77` raw boundaries 與 SDD fail-closed 狀態為準。
   (預期傷害 = 我 AP×地形% − 目標 DP×地形%;可擊殺 ×2;狀態 ×1.5),取最高分行動。敵與友軍 NPC 共用此引擎。
-- **選單**:方向鍵游標、Enter/Space 確認、ESC 取消等 input fragments 已有證據；全員 end-turn／換邊流程仍未閉合；
+- **選單**:方向鍵游標、Enter/Space 確認、ESC 取消等 input fragments 已有證據；
+  共用空游標 END、確認生命週期與換邊入口已閉合，其他三格 owner、精確時鐘／音訊
+  及逐章一般玩家驗證仍未閉合；
   command submenu 以 5-byte command bitset 列舉候選項，個別 command 是否為法術及其 label 仍須由 table／caller 對照。
 - **省記憶體的巧思**:sprite **不分陣營只存一份**,繪製時用 **23 張 remap LUT**(`FDOTHER` 資源 #3,`LMI1` 容器)
   即時換色——已行動變灰、敵我染色、夜戰色調都靠查表。一份美術,多種樣貌。

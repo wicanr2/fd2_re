@@ -11,6 +11,7 @@ import (
 
 const (
 	nativeChurchPortraitOffset   = 4*320 + 118
+	nativeLowerPortraitRightEdge = 0x9017
 	nativeChurchDecorationOffset = 95*320 + 5
 	nativeChurchGoldOffset       = 99*320 + 16
 	nativeChurchTextOffset       = 119*320 + 12
@@ -112,10 +113,17 @@ func ComposeNativeChurchDialogueOverlayAt(
 			return nil, err
 		}
 	}
-	if err := portrait.BlitAtOffset(frame, 320, portraitOffset); err != nil {
+	if err := blitNativeDialoguePortraitAt(frame, portrait, portraitOffset); err != nil {
 		return nil, err
 	}
 	return frame, nil
+}
+
+func blitNativeDialoguePortraitAt(frame []byte, portrait dato.Frame, offset int) error {
+	if offset == nativeLowerPortraitRightEdge {
+		return portrait.BlitRightToLeftAtOffset(frame, 320, offset)
+	}
+	return portrait.BlitAtOffset(frame, 320, offset)
 }
 
 func renderNativeChurchText(

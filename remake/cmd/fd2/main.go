@@ -174,8 +174,8 @@ type Game struct {
 	nativeTurnStaging          *nativeTurnStagingJob
 	nativeFieldEvent61         *nativeFieldEvent61Job
 	nativeAIIdleRecovery       *nativeAIIdleRecoveryJob // direct 0x13FD4 indexed/audio owner
-	nativeEnding               *nativeEndingPreview     // FD2_ENDING_PREFIX 或 approximate campaign 的 0x2bce5 fail-closed prefix
-	endingNotice               string                   // approximate prefix 無法取得原始素材或停在未還原尾段時的玩家提示
+	nativeEnding               *nativeEndingPreview     // FD2_ENDING_PREFIX 或來源約束 campaign ending；缺原始資料時走明示 fallback
+	endingNotice               string                   // 原始素材不足或來源約束終局無法發布時的玩家提示
 	walk                       *walkAnim                // 移動動畫(沿路徑逐格走,FDICON 方向幀)
 	camp                       *campaign.Runner         // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
 	campSel                    int                      // choice 節點游標
@@ -3214,7 +3214,7 @@ func (g *Game) syncPartyFromBattle() error {
 }
 
 // syncPartyFromBattleRecords 回傳實際發布到持續隊伍的紀錄（record）數。一般戰後
-// 呼叫維持既有相容行為；終局近似邊界另要求至少一筆，避免所有原始身分
+// 呼叫維持既有相容行為；終局來源約束邊界另要求至少一筆，避免所有原始身分
 // （raw identity）都不相符時帶著舊名冊靜默進入角色蒙太奇。
 func (g *Game) syncPartyFromBattleRecords() (int, error) {
 	if g.st == nil {

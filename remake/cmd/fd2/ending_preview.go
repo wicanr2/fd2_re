@@ -49,7 +49,9 @@ type nativeEndingPreview struct {
 const nativeEndingTimelinePath = "assets/endings/native_2bce5.json"
 
 func newNativeEndingPreview() (*nativeEndingPreview, error) {
-	chapter := 29 // 0x2bce5 branches only on exact native chapter 26.
+	// 預設使用內部第29章預覽；保留已還原的章節分支，且只接受明確驗證過的
+	// native chapter 26或29。
+	chapter := 29
 	if raw := os.Getenv("FD2_ENDING_CHAPTER"); raw != "" {
 		value, err := strconv.Atoi(raw)
 		if err != nil || (value != 26 && value != 29) {

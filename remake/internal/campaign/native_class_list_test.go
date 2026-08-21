@@ -27,7 +27,7 @@ func nativeClassListStrings(t *testing.T) *fdtxt.Strings {
 			words = []uint16{2}
 		case 151:
 			words = []uint16{3}
-		case 410, 513:
+		case 410, 0x19c, 0x1a3, 0x1a4, 513:
 			words = []uint16{4}
 		case 593:
 			words = []uint16{4}

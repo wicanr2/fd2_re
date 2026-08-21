@@ -45,6 +45,33 @@
   Enter／Space 回傳1，Escape／Delete回傳-1。穩定選項使用 FDOTHER #2 cells
   48/49 與51/52，選中 pulse 由 BIOS delta 驅動。這一段為**已證實**。
 - `0x197E5` 在 caller 檢查結果前先發布四個選項收合畫面並復原問句區域。
+- `0x17204 push 0; 0x17206 call sub_16559` 位於問句寫入後、選項展開前；因此
+  DATO #75 frame0 必須在問句合成後再寫一次，並擁有與文字重疊的像素。此順序
+  與其他 `0x1956B` caller 的既有 compositor 契約一致。
+
+### `0x4E8E1` 的下框頭像方向（已證實；2026-08-22 動態勘誤）
+
+Docker Capstone 對固定雜湊 EXE 的直接指令為：
+
+```text
+0x4E8E5  mov edi,[ebp+8]       ; caller傳入0x9017
+0x4E8E8  mov esi,[ebp+0xC]
+0x4E8EB  mov ebx,[ebp+0x10]    ; row stride
+0x4E8EE  lodsw                 ; width
+0x4E8F3  lodsw                 ; height
+0x4E8FD  push edi
+0x4E901  call 0x4E916          ; 下一個opaque DATO pixel
+0x4E906  mov [edi],al
+0x4E908  dec edi
+0x4E909  loop 0x4E901
+0x4E90B  pop edi
+0x4E90C  add edi,ebx
+```
+
+因此 `0x9017` 是每列最右端的寫入起點，不是頭像左上角；80像素寬frame的
+左端為`0x9017-79`，而且像素順序水平反轉。未修改原版正常玩家 END 擷取也直接
+顯示 DATO #75 位於下框左側約`x=8..87`，不是舊重製的`x=87..166`。舊
+`dato.Frame.BlitAtOffset(...,0x9017)`左到右解釋已被直接指令與畫面共同否定。
 - 只有「輸入成功且 choice 0」才進 `0x1A4` 與 `0x1A30B`；其餘輸入進共同
   `0x1716F` 取消尾端。
 
@@ -99,6 +126,11 @@ DOS BIOS 每 tick 的精確時序證明，也尚未證明重製端逐像素相�
 4. 接受顯示 `0x1A4`、取消顯示 `0x19C`；各自等待十二個60 Hz remake frames
    近似 `0xC8` ms，再跑五個 dialogue closing frames與 source restore。
 5. 只有接受分支在完整收合後呼叫既有 `endTurn`；取消分支必須零玩法修改。
+6. question、accepted、canceled 必須是三份互不別名的 indexed frame；預先建立
+   回覆不得回寫 question 或 dialogue。2026-08-22 一般 X11 擷取曾直接抓到三段
+   文字同時疊出的別名錯誤，故這是正式動態反證與永久回歸要求。
+7. 非`0x80..0x84`的DATO #75下框路徑必須依`0x4E8E1`以`0x9017`為
+   每列右端、由右向左寫；不得重用以offset為左上角的普通opaque blit。
 
 仍未知／非本批宣稱：DOS BIOS 精確 tick 對齊、每個 opening frame 的牆鐘時間、
 音效 owner，以及其他三格的玩法 owner。

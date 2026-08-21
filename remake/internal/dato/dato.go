@@ -107,3 +107,20 @@ func (f Frame) BlitAtOffset(dst []byte, stride, offset int) error {
 	}
 	return f.BlitAt(dst, stride, offset%stride, offset/stride)
 }
+
+// BlitRightToLeftAtOffset 重現0x4E8E1：offset是每列最右端，來源像素依序
+// 寫入後遞減目的位址；下一列再從原始offset加stride開始。
+func (f Frame) BlitRightToLeftAtOffset(dst []byte, stride, offset int) error {
+	if f.Width <= 0 || f.Height <= 0 || len(f.Pixels) != f.Width*f.Height ||
+		stride <= 0 || offset < 0 || offset%stride < f.Width-1 ||
+		offset/stride+f.Height > len(dst)/stride {
+		return errors.New("dato: right-to-left frame destination is too small")
+	}
+	for row := 0; row < f.Height; row++ {
+		right := offset + row*stride
+		for column := 0; column < f.Width; column++ {
+			dst[right-column] = f.Pixels[row*f.Width+column]
+		}
+	}
+	return nil
+}

@@ -432,9 +432,8 @@ func TestFinalBattleWinFeedsSynchronizedPartyToEndingMontage(t *testing.T) {
 }
 
 func TestCampaignMontageRejectsUncompiledCh29ShotPartyBinding(t *testing.T) {
-	// The original ch29 handler still ends at the unrecovered 0x2bce5 owner.
-	// Screenshot mode must not smuggle its partial LOADCH data into the ending
-	// roster merely to make the montage appear reachable.
+	// 截圖專用 ch29_post.json binding 的0x25970→0x2bce5 campaign owner仍未
+	// 證實；不可把它的部分LOADCH資料偷渡成角色蒙太奇 provenance。
 	_, issues, err := campaign.CompileHandlerBinding(assetPath("assets/cutscenes/bindings/ch29_post.json"))
 	if err != nil {
 		t.Fatal(err)

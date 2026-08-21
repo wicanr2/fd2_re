@@ -1,11 +1,47 @@
 package campaign
 
 import (
+	"bytes"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
+
+func TestNativeBattleEndTurnFramesDoNotAliasAndRedrawPortrait(t *testing.T) {
+	dialogue := make([]byte, 320*200)
+	portrait := dato.Frame{Width: 3, Height: 1, Pixels: []byte{1, 2, 3}}
+	strings, font := nativeClassListStrings(t), nativeClassListFont(t)
+	question, err := ComposeNativeBattleEndTurnQuestion(dialogue, portrait, strings, font)
+	if err != nil {
+		t.Fatal(err)
+	}
+	questionBefore := append([]byte(nil), question...)
+	accepted, err := ComposeNativeBattleEndTurnResponse(question, strings, font, true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	canceled, err := ComposeNativeBattleEndTurnResponse(question, strings, font, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(question, questionBefore) {
+		t.Fatal("預先合成YES／NO回覆污染了問句畫面")
+	}
+	accepted[0], canceled[1] = 7, 8
+	if question[0] == 7 || question[1] == 8 || dialogue[0] == 7 || dialogue[1] == 8 {
+		t.Fatal("question／accepted／canceled／dialogue仍共用底層像素")
+	}
+	if got := question[0x9017]; got != 1 {
+		t.Fatalf("0x16559(0) right-edge pixel=%d want 1", got)
+	}
+	if got := question[0x9017-2 : 0x9017+1]; got[0] != 3 || got[1] != 2 || got[2] != 1 {
+		t.Fatalf("0x4E8E1由右往左寫入=%v", got)
+	}
+	if got := dialogue[0x9017]; got != 0 {
+		t.Fatalf("問句合成污染dialogue portrait pixel=%d", got)
+	}
+}
 
 func nativeClassConfirmCells() []fdother.RawCell {
 	cells := make([]fdother.RawCell, 53)

@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "evidence_level": "原版 PLAYER-E2；重製 RUNTIME-E1 同狀態比較",
+  "scope": "章節 0 current-runtime 的 END 問句穩定畫面",
+  "input": {
+    "executable": {
+      "path": "org_game/炎龍騎士團/FLAME2/FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "save": {
+      "path": "org_game/炎龍騎士團/FLAME2/FD2.SAV",
+      "size": 22987,
+      "md5": "409795ccebc2af340d5c74152c2d471c",
+      "sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f"
+    },
+    "original_execution": {
+      "environment": "一次性 Docker／DOSBox，未修改原版",
+      "source_mount": "原始 FLAME2 唯讀掛載後複製到 tmpfs",
+      "route_patch": false,
+      "debug_shortcut": false,
+      "timeline": "等待3秒；Escape×8略過開場；Down、Down、Return進CONTINUE；等待5秒；Return開面板；Down、Return選END；等待2秒擷取"
+    },
+    "remake_execution": {
+      "environment": "一次性 Docker／Xvfb，正式鍵盤輸入路徑",
+      "source_mount": "相同 FD2.SAV 與玩家資產唯讀掛載",
+      "deterministic_fixture": ["FD2_NATIVE_TITLE_TICK=0", "FD2_SHOT_DETERMINISTIC=1", "FD2_SHOT_FRAME=1502"],
+      "timeline": "Escape；Down、Down、Return進CONTINUE；Return開空游標面板；Down、Return選END；等待選項脈動相位後擷取"
+    }
+  },
+  "screenshots": [
+    {
+      "path": "../../figures/native-end-turn-confirmation-original-dosbox.png",
+      "state": "未修改原版 END 問句",
+      "size": [320, 200],
+      "md5": "cf6eae6035fe8ac6e18227a35fa64526",
+      "sha256": "95295842ef9f8dd09a512ebdcd1472dc83b2e2b70e45f11e70bf2a07c291720f"
+    },
+    {
+      "path": "../../figures/native-end-turn-confirmation-remake-e1.png",
+      "state": "重製正式輸入路徑的決定性 E1 畫面",
+      "size": [640, 400],
+      "md5": "ba91e90b932a683ad78829422f5d699c",
+      "sha256": "6a374abf218b3d0375faa34adf89aa092315f70d4f8cc59aa4c0d91575670cd8"
+    },
+    {
+      "path": "../../figures/native-end-turn-confirmation-original-vs-remake-e1.png",
+      "state": "原版、重製與絕對差異，由上而下排列",
+      "size": [640, 1200],
+      "md5": "e989a5f74e853204074a7bc3d540f6c7",
+      "sha256": "834ba7043463466c124fa684d68580cc6cce43848dd9be1eb7d755d8a1aa99e5"
+    }
+  ],
+  "comparison": {
+    "method": "原版320×200以最近鄰放大至640×400，再作絕對像素差",
+    "whole_frame_absolute_error_pixels": 1692,
+    "dialogue_area_absolute_error_pixels": 276,
+    "portrait_subregion_absolute_error_pixels": 0,
+    "question_subregion_absolute_error_pixels": 0,
+    "remaining_difference": "YES選項脈動相位及戰場單位／游標動畫相位"
+  },
+  "claims": [
+    "一般玩家路徑擷取證實重製端先前把問句、接受句與取消句別名到同一底層畫面，造成三段文字疊印；目前已改為三份不可變畫面。",
+    "原始0x4E8E1指令與原版畫面共同證實0x9017是每列由右往左寫入的右端錨點；修正後肖像與問句子區域可與原版精確重合。"
+  ],
+  "limits": [
+    "重製擷取使用決定性時鐘固定，因此只列RUNTIME-E1，不升格為一般玩家PLAYER-E2。",
+    "整張畫面仍有選項脈動與戰場動畫相位差，不能宣稱逐像素一致。",
+    "這份證據只涵蓋問句穩定畫面；接受、取消、收合、精確DOS tick與音訊仍需另行配對。"
+  ]
+}

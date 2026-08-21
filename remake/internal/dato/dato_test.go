@@ -54,3 +54,17 @@ func TestDATOFrameBlitAtOffsetIsOpaque(t *testing.T) {
 		t.Fatalf("DATO offset blit=%v", dst[3*320+4:3*320+6])
 	}
 }
+
+func TestDATOFrameBlitRightToLeftUsesRightEdgeAnchor(t *testing.T) {
+	dst := make([]byte, 8*4)
+	frame := Frame{Width: 3, Height: 2, Pixels: []byte{1, 2, 3, 4, 5, 6}}
+	if err := frame.BlitRightToLeftAtOffset(dst, 8, 1*8+5); err != nil {
+		t.Fatal(err)
+	}
+	if got := dst[1*8+3 : 1*8+6]; got[0] != 3 || got[1] != 2 || got[2] != 1 {
+		t.Fatalf("第一列由右往左寫入=%v", got)
+	}
+	if got := dst[2*8+3 : 2*8+6]; got[0] != 6 || got[1] != 5 || got[2] != 4 {
+		t.Fatalf("第二列stride=%v", got)
+	}
+}

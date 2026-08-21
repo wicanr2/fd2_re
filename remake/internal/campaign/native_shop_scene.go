@@ -31,7 +31,7 @@ func nativeFacilityPortraitOffset(portraitID int) int {
 	if offset, ok := nativeFacilityPortraitOffsets[portraitID]; ok {
 		return offset
 	}
-	return 0x9017
+	return nativeLowerPortraitRightEdge
 }
 
 // NativeShopAssets preserves the mixed-codec FDOTHER resource selected by

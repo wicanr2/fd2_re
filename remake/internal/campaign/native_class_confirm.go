@@ -32,12 +32,20 @@ const (
 // FDTXT#0x1a3寫到畫面座標(99,127)；輸入必須先是0x1956b(0x4b)完成的
 // DATO#75對話框畫面。
 func ComposeNativeBattleEndTurnQuestion(
-	dialogue []byte, strings *fdtxt.Strings, font *fdtxt.Font,
+	dialogue []byte, portrait dato.Frame, strings *fdtxt.Strings, font *fdtxt.Font,
 ) ([]byte, error) {
-	return ComposeNativeChurchTextAt(
-		dialogue, strings, font, nativeBattleEndQuestionIndex,
+	frame, err := ComposeNativeChurchTextAt(
+		append([]byte(nil), dialogue...), strings, font, nativeBattleEndQuestionIndex,
 		nativeBattleEndQuestionY*320+nativeBattleEndQuestionX,
 	)
+	if err != nil {
+		return nil, err
+	}
+	// 0x17204緊接著呼叫0x16559(0)，所以frame0在文字後再寫一次。
+	if err := blitNativeDialoguePortraitAt(frame, portrait, nativeFacilityPortraitOffset(0x4b)); err != nil {
+		return nil, err
+	}
+	return frame, nil
 }
 
 // ComposeNativeBattleEndTurnResponse 在(99,146)套用分支專屬回覆：
@@ -50,7 +58,7 @@ func ComposeNativeBattleEndTurnResponse(
 		index = nativeBattleEndAcceptedIndex
 	}
 	return ComposeNativeChurchTextAt(
-		question, strings, font, index,
+		append([]byte(nil), question...), strings, font, index,
 		nativeBattleEndResponseY*320+nativeBattleEndQuestionX,
 	)
 }
@@ -227,8 +235,8 @@ func composeNativePreparationQuestion(
 	}
 	// 0x31d70 immediately calls 0x16559(0), so DATO frame zero is written
 	// once more after the text layout and owns every overlapping pixel.
-	if err := portrait.BlitAtOffset(
-		frame, 320, nativeFacilityPortraitOffset(0x4b),
+	if err := blitNativeDialoguePortraitAt(
+		frame, portrait, nativeFacilityPortraitOffset(0x4b),
 	); err != nil {
 		return nil, err
 	}

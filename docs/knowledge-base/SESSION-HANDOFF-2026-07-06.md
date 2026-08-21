@@ -5271,3 +5271,16 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   standalone／campaign blocked 段落也加上歷史標籤，避免覆蓋目前 E1 現況。
 - 尚未提升：同一 raw 戰況的原版／重製逐幀差分、精確 DOS tick 與音訊 owner
   仍缺，因此不是完整 UI E2。
+
+## 2026-08-22：END 問句同狀態比較與 `0x9017` 勘誤
+
+- 一般玩家鍵盤路徑實跑揭露兩個真實缺陷：question／accepted／canceled 共用底層
+  slice，造成三段文字疊印；DATO #75 又把`0x9017`錯當左端，肖像遮住問句。
+- 固定雜湊原版的`0x4E8E1`直接指令顯示每列由傳入的`EDI`右端向左寫入；未修改
+  DOSBox 擷取也顯示80像素肖像位於左側，故舊「`0x9017`是左端／只露出右側
+  『戰場嗎？』」解釋已被否定。歷史段落保留，但不得再作目前規格。
+- 重製端已讓三個畫面各自擁有不可變 backing slice，並新增共用DATO右往左blit。
+  同一存檔問句畫面的肖像與文字子區域差異均為0；全幀仍有1692個差異像素，
+  來自選項脈動與戰場動畫相位。因此原版是`PLAYER-E2`錨點，重製仍是決定性
+  `RUNTIME-E1`，不冒稱逐像素完整一致。證據見
+  [`native-end-turn-confirmation-original-vs-remake-e1.json`](../data/ui-traces/native-end-turn-confirmation-original-vs-remake-e1.json)。
