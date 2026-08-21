@@ -5387,3 +5387,16 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   與[`shop-sell-selection-confirm-ch02-original-vs-remake.png`](../figures/shop-sell-selection-confirm-ch02-original-vs-remake.png)。
 - 本批關閉selection0↔1及Yes／No stable/input E2；success timeline、提交後返回名冊、
   未修改campaign/native save仍待。
+
+## 2026-08-22：原始碼與商店完成度斷言第二輪勘誤
+
+- `growth_test.go` 雖已撤回「轉職系統尚未實作」，`growth.go` 的資料表註解仍殘留
+  同一句舊狀態。本輪改為限定該表只擁有升級成長；正式教會轉職由 campaign／UI
+  owner 實作，不能由 battle package 的表格註解反向判定整個功能不存在。
+- `Beat` 與 cutscene `Node` 的型別註解原稱「一比一」承接原版 handler，範圍過廣。
+  現改為「可逐拍承接已有直接證據的序列」；型別可表達某個 op，不等於每個章節
+  handler 已完整閉合或達到一般玩家 E2。
+- UI-09 原狀態欄把購買成功動畫／扣款原子影格 E2 與賣出名冊／問句 E2 串成
+  `sell ... success/debit stable E2`，同列又把 sell success／return 列為待辦，容易
+  形成互相矛盾的記憶。現明確限定 success／debit 原子影格屬購買路徑；賣出目前只
+  關閉名冊、物品與 Yes／No stable state，成功時間線與返回名冊仍待驗證。

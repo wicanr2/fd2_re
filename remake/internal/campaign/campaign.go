@@ -395,7 +395,9 @@ type HandlerUnitPresent struct {
 
 // Beat 過場原語(doc 50 §1/§2):cutscene 節點的 beats 通常依序執行；if 會在 runtime
 // 選一條 structured arm 插入目前拍之後，再回到共同 continuation。
-// 一比一對映原版 EXE handler 的呼叫序列(LOADCH/PAN/TXT/ACT/SPAWN/JOIN/BGM/FADE/DELAY)。
+// 它可逐拍承接已有直接證據的原版 EXE handler 呼叫序列
+// (LOADCH/PAN/TXT/ACT/SPAWN/JOIN/BGM/FADE/DELAY)；單有 Beat 型別不代表特定 handler
+// 已完整閉合或達到玩家 E2。
 // 每個 op 只用到自己相關的欄位,其餘留零值即可(同 Node 的稀疏欄位風格)。
 type Beat struct {
 	Op                    string                    `json:"op"`               // loadch/pan/walk/dialog/act/spawn/spawn_intro/deactivate_unit/reactivate_nonzero_hp/reset_pose/redraw/...
@@ -519,7 +521,7 @@ func (c *NativeEndingPrefixConfig) IsRecoveredPrefixContract() bool {
 
 // Node 節點。Type: story / cutscene / battle / town / preparation / church / choice /
 // inventory_gate / inventory_recipe / event / shop / ending。
-// cutscene(doc 50):story 的 beats 驅動版——用 Beats 一比一承接原版章 handler 的原語序列,
+// cutscene(doc 50):story 的 beats 驅動版——用 Beats 承接已有證據的原版章 handler 原語序列，
 // 對白與走位/演出天然交錯(平面序列,非「一幕一段」)。Map/Actors/BGM/ExitWalk(s) 等欄位與
 // story 共用同一套場景設置(進節點時的初始擺位、退場走位、淡出轉場),Beats 只負責節點「進行中」
 // 的编排;story 節點型別保留相容,兩者可並存於同一 campaign(逐步遷移,doc50 §2)。

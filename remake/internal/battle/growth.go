@@ -45,7 +45,8 @@ type GrowthRow struct{ AP, DP, DX, HP, MP StatRange }
 // (僅亞雷斯 聖騎士/龍騎士兩列數值全同,growth.json idx 36/54 皆可,已驗證數值一致)。
 // growth.json idx 0-31 = characters.json 32 名角色初始職業(與 tools/gen_campaign.py
 // 既有「idx 對齊 characters.json index,已核對」結論一致);idx 32-67 為轉職後職業
-// (轉職系統本身尚未實作,先保留供未來銜接)。
+// 所用的成長列。正式教會轉職已由 campaign／UI owner 實作；本表只負責升級成長，
+// 不代表教會畫面、轉職條件或持久化已由 battle package 擁有。
 var growthTable = map[string]map[string]GrowthRow{
 	"索爾": {
 		"劍士": {AP: StatRange{6, 7}, DP: StatRange{4, 5}, DX: StatRange{2, 2}, HP: StatRange{8, 11}, MP: StatRange{0, 0}},
