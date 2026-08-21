@@ -1442,97 +1442,24 @@ func (g *Game) handleNativeShopInput(enter bool) bool {
 			return true
 		}
 	case "recipient_consumable", "recipient_equipment":
-		count := len(g.shopRecipients)
-		if g.nativeShopMode == "recipient_consumable" {
-			delta := 0
-			switch {
-			case inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft):
-				delta = -1
-			case inpututil.IsKeyJustPressed(ebiten.KeyArrowRight):
-				delta = 1
-			case inpututil.IsKeyJustPressed(ebiten.KeyArrowUp):
-				delta = -2
-			case inpututil.IsKeyJustPressed(ebiten.KeyArrowDown):
-				delta = 2
-			}
-			if delta != 0 {
-				g.shopRecipientSel = campaign.AdvanceNativeTwoColumnSelection(
-					g.shopRecipientSel, count, delta,
-				)
-				g.nativeShopRecipientStart, _ = campaign.NativeTwoColumnWindow(
-					count, g.shopRecipientSel, g.nativeShopRecipientStart,
-				)
-			}
-		} else {
-			nextSelection, nextStart, ok := advanceNativeShopEquipmentRecipient(
-				count,
-				g.shopRecipientSel,
-				g.nativeShopRecipientStart,
-				inpututil.IsKeyJustPressed(ebiten.KeyArrowUp),
-				inpututil.IsKeyJustPressed(ebiten.KeyArrowDown),
-			)
-			if !ok {
-				g.msg = "原版購買 recipient 游標狀態無效"
-				g.returnToNativeShopPurchaseList()
-				return true
-			}
-			g.shopRecipientSel = nextSelection
-			g.nativeShopRecipientStart = nextStart
-		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-			if !g.beginNativeShopRecipientClosing(
-				g.returnToNativeShopPurchaseList,
-			) {
-				g.returnToNativeShopPurchaseList()
-			}
-			return true
-		}
-		if enter && count != 0 {
-			unit := g.partyRoster[g.shopRecipients[g.shopRecipientSel]]
-			if nativeShopInventoryFull(unit) {
-				openFull := func() {
-					g.nativeShopMode = "recipient_full"
-					if !g.beginNativeShopRecipientFullOpening() {
-						g.msg = "原版購買滿欄訊息無法還原"
-						g.returnToNativeShopPurchaseList()
-					}
-				}
-				if !g.beginNativeShopRecipientClosing(openFull) {
-					openFull()
-				}
-				return true
-			}
-			beginTransaction := func() {
-				if !g.stageNativeShopPurchase() {
-					g.nativeShopHasPendingUnit = false
-					g.nativeShopPendingUnit = battle.Unit{}
-					g.msg = "原版購買交易缺少 raw 資料"
-					g.returnToNativeShopPurchaseList()
-				}
-			}
-			if !g.beginNativeShopRecipientClosing(beginTransaction) {
-				beginTransaction()
-			}
-			return true
-		}
+		return g.handleNativeShopRecipientInput(nativeShopRecipientInput{
+			enter:  enter,
+			escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+			left:   inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft),
+			right:  inpututil.IsKeyJustPressed(ebiten.KeyArrowRight),
+			up:     inpututil.IsKeyJustPressed(ebiten.KeyArrowUp),
+			down:   inpututil.IsKeyJustPressed(ebiten.KeyArrowDown),
+		})
 	case "recipient_full":
-		if enter || inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-			if !g.beginNativeShopRecipientFullClosing(
-				g.returnToNativeShopPurchaseList,
-			) {
-				g.returnToNativeShopPurchaseList()
-			}
-			return true
-		}
+		return g.handleNativeShopRecipientInput(nativeShopRecipientInput{
+			enter:  enter,
+			escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+		})
 	case "no_recipient":
-		if enter || inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-			if !g.beginNativeShopNoEligibleRecipientClosing(
-				g.returnToNativeShopPurchaseList,
-			) {
-				g.returnToNativeShopPurchaseList()
-			}
-			return true
-		}
+		return g.handleNativeShopRecipientInput(nativeShopRecipientInput{
+			enter:  enter,
+			escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+		})
 	case "equip_confirm":
 		if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
 			g.nativeShopEquipSel = campaign.AdvanceNativeClassConfirmation(

@@ -69,3 +69,14 @@ func TestNativeShopEquipmentRecipientRejectsInvalidState(t *testing.T) {
 		}
 	}
 }
+
+func TestNativeShopRecipientInputRejectsUnownedMode(t *testing.T) {
+	g := &Game{nativeShopMode: "purchase"}
+	if g.handleNativeShopRecipientInput(nativeShopRecipientInput{enter: true}) {
+		t.Fatal("recipient input consumer claimed the purchase-list owner")
+	}
+	g.nativeShopMode = "recipient_full"
+	if !g.handleNativeShopRecipientInput(nativeShopRecipientInput{}) {
+		t.Fatal("recipient input consumer released an owned idle state")
+	}
+}

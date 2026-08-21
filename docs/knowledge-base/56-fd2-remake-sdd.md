@@ -1852,6 +1852,39 @@ unit／gold；第一個 callback 先發布新 gold，啟動具型別 credit time
 結果並返回原 actor selection。缺 success／credit任一資源或 raw inventory
 provenance 時整筆交易失敗即關閉，不允許直接跳過可見滾動。
 
+### 商店裝備收件者正常輸入 E1 契約（2026-08-22）
+
+既有 `0x2F0B0` 購買 caller、三列收件者 compositor、滿欄／無合適角色訊息與
+交易 owner 已有直接證據及原始資源回歸；本切片不重開這些位址，而是補正式
+輸入到既有 owner 的消費鏈。正式 `Game.Update` 必須把收件者狀態同一拍的
+Enter、Escape、Left、Right、Up、Down 收斂成一份不可變輸入值，再交給正式
+收件者 consumer；測試亦只能呼叫這個 production consumer，不得直接改
+`nativeShopMode` 冒充收件者輸入。非收件者 mode 必須由它拒絕，不能搶走其他 owner。
+
+對至少六名具完整 native identity／selector／class／八格背包 provenance，且皆
+符合商品裝備類別的可編輯 typed party，必須驗證：
+
+1. `menu(service0)→purchase→confirm Yes→recipient_equipment` 只在四幀服務收合、
+   六幀清單收合、四幀選項收合與五幀對話收合均經 Draw 確認後依序前進；工作
+   存在時新輸入不得穿透；
+2. Down 由 selection0 走到3時，三列 window 的 start 必須由0變1；再 Down 到5
+   時 start為3，Up則依 stateful window 回退。Left／Right在裝備收件者不改選擇；
+3. 選到八格皆 occupied 的角色後按 Enter，必須先播收件者五幀收合，再進
+   `recipient_full` 六幀訊息；Enter／Escape 都以五幀收合回 purchase，不得扣金、
+   改背包或留下 pending transaction；
+4. 若所有角色都不符合該裝備類別，Yes 後必須進 `no_recipient` 六幀訊息；
+   Enter／Escape 收合回 purchase，金額與隊伍維持原子不變；
+5. 非滿欄角色沿同一路徑進 `equip_confirm`；接受後才播放正式 success／debit，
+   發布 typed／raw 背包、裝備能力與金額。取消則不發布；
+6. recipient Escape→purchase、purchase Escape→menu、menu Escape→town 的每個
+   closing job 都必須完成才轉態，並清除未序列化商店暫態。任何 raw projection、
+   原始資產或清單索引不足時失敗即關閉。
+
+這只可提升正式收件者 input consumer 為 `RUNTIME-E1`。測試沒有注入作業系統
+鍵盤事件，也沒有從完整 campaign 抵達商店；目前亦沒有可重播的未修改原版四人
+以上合格收件者存檔。synthetic typed party、route-patched EXE 或截圖入口均不能
+證明 recipient scroll／full／no-recipient 的一般玩家 `PLAYER-E2`。
+
 The `0x318ad` cap gate is now explicit in
 `fdother.NativePreparationPartyLimit`: raw global `[0x53c03] <= 0x1a` yields
 15, while values greater than `0x1a` yield 19. The adapter accepts a native

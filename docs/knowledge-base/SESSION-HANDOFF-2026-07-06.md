@@ -5435,3 +5435,25 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   資料覆蓋數字保留，不與畫面完成度混為一談。
 - 商店賣出「成功時間線與返回仍待」只剩交接檔上一輪的歷史狀態，後方已有本日
   新E2勘誤；依時間序列追溯規則保留原句，不把歷史改寫成當時已完成。
+
+## 2026-08-22：商店裝備收件者正常輸入 E1
+
+- 先重讀既有 `0x2F0B0` 購買、三列收件者、滿欄／無合適角色及交易owner；這些
+  RE與compositor早已閉合，本輪沒有重解位址。SDD先固定正常輸入、UI job發布
+  邊界、原子交易與E1／E2限制，再抽出正式收件者typed input consumer。
+- `Game.Update`在`recipient_equipment`／`recipient_consumable`／`recipient_full`／
+  `no_recipient`仍讀Ebiten普通鍵盤，但同拍Enter／Escape／方向鍵現在收斂成不可變
+  值後交給同一consumer；非收件者mode會拒絕，測試不再直接改mode冒充輸入。
+- 新production regression以六名具identity、selector、class與八格raw背包provenance
+  的typed party，從正式`setupNativeShop`走`menu→purchase→Yes→recipient`。
+  Down三次閉合selection3／start1，水平鍵不動；非滿欄角色再走equip confirmation、
+  success與`0x2D516`扣款，最後以1134元、已插入且裝備的item0返回purchase。
+- 第二、三條路徑分別以第四名八格滿欄及全員不相容驗證`recipient_full`與
+  `no_recipient`；opening／closing／restore逐幀經正式Draw acknowledgment，兩條
+  feedback返回後gold、roster與pending transaction均原子不變。
+- 第四條路徑由recipient直接按Escape，五幀收合與六幀purchase重開後，金額、
+  六人roster與pending transaction同樣不變。聚焦四條Docker／Xvfb測試均通過。
+  這是synthetic typed party的production-input `RUNTIME-E1`；測試直接驅動正式
+  consumer，未注入OS鍵盤，也未從完整campaign抵達商店，因此不是未修改原版一般
+  玩家E2。原版四人以上scroll／full／no-recipient同狀態畫面與equip/transfer child
+  panel仍待。
