@@ -173,6 +173,7 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 	}
 	beats := make([]Beat, 0, len(script.Beats))
 	issues := make([]HandlerCompileIssue, 0)
+	consumedLoopDelayBeat := -1
 	issue := func(i int, input HandlerBeat, reason string) {
 		issues = append(issues, HandlerCompileIssue{Beat: i, Op: input.Op, Source: input.Source, Reason: reason})
 	}
@@ -180,6 +181,10 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 		return Beat{Op: op, Source: input.Source.Addr}
 	}
 	for i, input := range script.Beats {
+		if i == consumedLoopDelayBeat {
+			consumedLoopDelayBeat = -1
+			continue
+		}
 		switch input.Op {
 		case "if":
 			if input.Condition == nil {
@@ -662,6 +667,9 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 				continue
 			}
 			copyLoop := *loop
+			copyLoop.Slot, _ = immediateHandlerInt(input.RawArgs, 0)
+			copyLoop.InitialRadius, _ = immediateHandlerInt(input.RawArgs, 1)
+			copyLoop.RadiusStep, _ = immediateHandlerInt(input.RawArgs, 2)
 			copyLoop.MapDraw.RawArgs = append([]any(nil), loop.MapDraw.RawArgs...)
 			copyLoop.Composite.RawArgs = append([]any(nil), loop.Composite.RawArgs...)
 			copyLoop.Stage.RawArgs = append([]any(nil), loop.Stage.RawArgs...)
@@ -742,11 +750,19 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 			beat := runtime(input, input.Op)
 			resourceID := resource.ResourceID
 			beat.ResourceID = &resourceID
+			beat.ResourceArchive = resource.Archive
+			beat.ResourceOwner = resource.Owner
 			if resource.SFXIndex != nil {
 				index := *resource.SFXIndex
 				beat.SFXIndex = &index
 			}
 			beats = append(beats, beat)
+		case "prepare_chapter_aux_graphics":
+			if input.Source.Addr != "0x24a9a" || input.Source.Target != "0x10652" {
+				issue(i, input, "prepare_chapter_aux_graphics requires recovered ch22 call-site 0x24a9a")
+				continue
+			}
+			beats = append(beats, runtime(input, "native_ch22_prepare_aux"))
 		case "palette_fade":
 			// 0x1f525 performs baseline-minus-delta writes for inclusive deltas
 			// 64..0 and waits 2ms after every write. Keep it separate from the
@@ -773,6 +789,15 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 			if input.Op != "unknown" && (input.NativeSemantic == "" ||
 				input.NativeConfidence == "" || len(input.NativeEvidence) == 0) {
 				issue(i, input, "native call requires semantic/confidence/evidence metadata")
+				continue
+			}
+			if input.NativeTarget == "0x4dbfc" {
+				if input.Source.Addr != "0x24a92" || input.Source.Target != "0x4dbfc" ||
+					len(input.RawArgs) != 1 {
+					issue(i, input, "0x4DBFC ch22 reset requires exact call-site 0x24a92 and one raw owner")
+					continue
+				}
+				beats = append(beats, runtime(input, "native_ch22_reset_grid"))
 				continue
 			}
 			// raw ch20 post calls the no-argument 0x24336 sequence exactly once.
@@ -900,23 +925,45 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 			// exports keep it as unknown until this exact native signature is
 			// recognized; it must not be confused with the black-overlay fade.
 			if input.NativeTarget == "0x11df2" {
-				// ch29 uses EBX as a proven 0x3e..0 descending palette index;
-				// materialize the fixed loop so the editable script has no hidden
-				// register expression. Each update is followed by the native 4ms
-				// wait represented by the adjacent delay beat in the export.
+				// These handlers preserve a register-shaped loop body as one palette
+				// beat followed by one delay beat.  Direction and step are caller-local:
+				// ch22/ch28 include ascending forms, while later calls descend.  Expand
+				// the complete body and consume the adjacent exported delay exactly once.
 				if len(input.RawArgs) >= 3 {
 					if reg, ok := input.RawArgs[0].(string); ok && reg == "ebx" {
 						end, okEnd := immediateHandlerInt(input.RawArgs, 1)
 						delta, okDelta := immediateHandlerInt(input.RawArgs, 2)
 						if okEnd && okDelta && end == 255 && delta == 0 {
-							for value := 0x3e; value >= 0; value-- {
+							start, stop, step, known := 0, 0, 0, false
+							switch input.Source.Addr {
+							case "0x24a24":
+								start, stop, step, known = 0, 0x3e, 2, true
+							case "0x256eb":
+								start, stop, step, known = 0, 0x3f, 1, true
+							case "0x25733", "0x258cd":
+								start, stop, step, known = 0x3e, 0, -1, true
+							}
+							if !known || i+1 >= len(script.Beats) {
+								issue(i, input, "register-bound 0x11df2 loop requires a recovered caller and adjacent 4ms delay")
+								continue
+							}
+							delayInput := script.Beats[i+1]
+							if delayInput.Op != "delay" || delayInput.Ms == nil || *delayInput.Ms != 4 || delayInput.Source.Target != "0x375b2" {
+								issue(i, input, "register-bound 0x11df2 loop has no exact adjacent 4ms delay body")
+								continue
+							}
+							for value := start; ; value += step {
 								palette := runtime(input, "palette_update")
 								palette.PaletteStart, palette.PaletteEnd, palette.PaletteDelta = value, end, delta
 								beats = append(beats, palette)
-								wait := runtime(input, "delay")
+								wait := runtime(delayInput, "delay")
 								wait.Ms = 4
 								beats = append(beats, wait)
+								if value == stop {
+									break
+								}
 							}
+							consumedLoopDelayBeat = i + 1
 							continue
 						}
 					}

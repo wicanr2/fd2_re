@@ -40,9 +40,15 @@ type NativeCh23Loop struct {
 // Native2189ALoop preserves the shared ten-pass indexed presentation helper
 // called by the ch22 post handler.  The inner call-sites and push-shaped raw
 // arguments remain evidence metadata; no portrait, effect, or gameplay name
-// is inferred from the buffer copies.  The runtime deliberately rejects this
-// payload until an indexed 0x2189a adapter is proven.
+// is inferred from the buffer copies. Runtime accepts only the two recovered
+// outer call shapes and requires complete indexed provenance.
 type Native2189ALoop struct {
+	// Slot/InitialRadius/RadiusStep are filled by the handler compiler from the
+	// three outer raw immediates. They are not authored separately in JSON, so
+	// evidence metadata and runtime ABI cannot drift apart.
+	Slot          int               `json:"slot,omitempty"`
+	InitialRadius int               `json:"initial_radius,omitempty"`
+	RadiusStep    int               `json:"radius_step,omitempty"`
 	Repeat        int               `json:"repeat"`
 	StepSource    string            `json:"step_source"`
 	WorkOffset    int               `json:"work_offset"`

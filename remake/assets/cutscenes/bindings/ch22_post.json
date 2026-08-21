@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "handler_script": "../handlers/ch22_post.json",
+  "acting_resources": "../acting/map32.json",
+  "story_index_map": "../dialogue-index/count-aligned.json",
+  "runtime_context": {
+    "slot_count": 86,
+    "story_viewport": true
+  },
+  "dialogue_contexts": {
+    "0x247ea": { "source_dat": "FDTXT_023", "script": "ch23.json" },
+    "0x2481a": { "source_dat": "FDTXT_023", "script": "ch23.json" },
+    "0x24863": { "source_dat": "FDTXT_023", "script": "ch23.json" },
+    "0x248a8": { "source_dat": "FDTXT_023", "script": "ch23.json" },
+    "0x248dd": { "source_dat": "FDTXT_023", "script": "ch23.json" },
+    "0x24921": { "source_dat": "FDTXT_023", "script": "ch23.json" },
+    "0x2495d": { "source_dat": "FDTXT_023", "script": "ch23.json" },
+    "0x249a9": { "source_dat": "FDTXT_023", "script": "ch23.json" },
+    "0x249f5": { "source_dat": "FDTXT_023", "script": "ch23.json" },
+    "0x24b05": { "source_dat": "FDTXT_023", "script": "ch23.json" }
+  },
+  "overrides": {
+    "0x247b4": {
+      "layout": {
+        "units": [
+          { "slot": 0, "x": 20, "y": 19, "pose": 0 },
+          { "slot": 1, "x": 20, "y": 17, "pose": 0 },
+          { "slot": 2, "x": 18, "y": 18, "pose": 0 },
+          { "slot": 3, "x": 19, "y": 18, "pose": 0 },
+          { "slot": 4, "x": 20, "y": 18, "pose": 0 },
+          { "slot": 5, "x": 21, "y": 18, "pose": 0 },
+          { "slot": 6, "x": 22, "y": 18, "pose": 0 },
+          { "slot": 7, "x": 18, "y": 17, "pose": 0 },
+          { "slot": 8, "x": 22, "y": 17, "pose": 0 },
+          { "slot": 9, "x": 18, "y": 16, "pose": 0 },
+          { "slot": 10, "x": 19, "y": 16, "pose": 0 },
+          { "slot": 11, "x": 21, "y": 16, "pose": 0 },
+          { "slot": 12, "x": 22, "y": 16, "pose": 0 },
+          { "slot": 13, "x": 19, "y": 15, "pose": 0 },
+          { "slot": 14, "x": 20, "y": 15, "pose": 0 },
+          { "slot": 15, "x": 21, "y": 15, "pose": 0 },
+          { "slot": 16, "x": 19, "y": 21, "pose": 0 },
+          { "slot": 17, "x": 21, "y": 21, "pose": 2 }
+        ],
+        "cam_x": 336,
+        "cam_y": 336
+      }
+    },
+    "0x2482e": { "act": { "resource": 71 } },
+    "0x24877": { "act": { "resource": 72 } },
+    "0x248f1": { "act": { "resource": 72 } },
+    "0x24a4b": { "resource": { "resource_id": 69, "archive": "FDFIELD.DAT", "owner": "0x53a51" } },
+    "0x24a65": { "resource": { "resource_id": 46, "archive": "FDSHAP.DAT", "owner": "0x53a5d" } },
+    "0x24a7f": { "resource": { "resource_id": 47, "archive": "FDSHAP.DAT", "owner": "0x53a69" } },
+    "0x24aa3": { "pan": { "x": 336, "y": 696, "tile_step": true } },
+    "0x24abe": { "act": { "resource": 73 } },
+    "0x24aca": { "pan": { "x": 336, "y": 336, "tile_step": true } },
+    "0x24ad4": { "act": { "resource": 73 } },
+    "0x24ade": { "act": { "resource": 73 } }
+  }
+}

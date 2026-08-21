@@ -3378,7 +3378,9 @@ slot6 active 條件、SPAWN2、兩段 PAN、800/200ms 與 FDTXT_003 #4 七句也
 - `0x24618` runtime bridge 現依呼叫位址核對 raw cursor：ch21 `0x245ce` 只接受
   Y+3，ch22 pre `0x336e5` 只接受 Y+5；未知來源或偏移失敗即關閉。這修正了
   不能把所有 handler 都套用 Y+3 的過度概括，但不宣稱兩者已完成 indexed renderer。
-- `story_ch23`、`postbattle_ch22_persist→town_ch23`、一般玩家 DOSBox E2、
+- 【歷史快照，現況以 `58-fd2-exe-re-coverage.md` 為準】當時記錄的
+  `story_ch23`、`postbattle_ch22_persist→town_ch23` 節點名稱已由後續勘誤改為
+  `postbattle_ch23_persist→preparation_ch24`；一般玩家 DOSBox E2、
   戰後城鎮／商店／整備／存檔與完整戰役鏈仍保持 blocked；本批只達 E1 的
   靜態證據與資料消費候選。未來接入前仍需 raw runtime trace、同狀態畫面及
   town boundary 回歸。
@@ -4987,7 +4989,8 @@ owner 與部署尾端。兩者主題不同、都保留，撤回先前「舊檔�
   從`battle_ch25`勝利確認進入戰後，走過PAN、spawn、ACT75、JOIN26、sync、
   JOIN29、chapter25，最後進`town_ch26`；另驗證JOIN順序、原始身分持續紀錄與
   town node-boundary save/load。
-- 戰後稽核現為24節點中21 active／3 blocked；剩餘玩家第23、24、29戰。
+- 【2026-08-13 歷史快照；現況統計以 `58-fd2-exe-re-coverage.md` 為準】戰後稽核
+  當時為24節點中21 active／3 blocked；當時剩餘玩家第23、24、29戰。
   本切片只提升為runtime E1，仍缺未修改一般玩家原版同狀態E2與逐像素比較。
 
 ## 2026-08-20：第25戰後 `town_ch26` 祕密商店正常戰間 E1
@@ -5096,3 +5099,23 @@ target builder：由 raw `+6` selector、當下 presentation 座標、完整 run
   玩家第23、29戰。
 - 本批只提升為 `RUNTIME-E1`。handler 入口程序相位、未修改原版同狀態逐幀／
   時序仍缺 `PLAYER-E2`，不得宣稱逐像素或 DOS BIOS 時鐘一致。
+
+## 2026-08-21：raw ch22／玩家第23戰戰後正式接線（RUNTIME-E1）
+
+本條取代較早「`postbattle_ch23_persist` 仍失敗即關閉」及22 active／2 blocked
+的現況敘述；舊段落保留為歷史形成過程。工作順序先補
+[`fd2_ch22_post_ida.txt`](../data/ida/fd2_ch22_post_ida.txt) 的 IDA Pro 9.4 證據，
+再更新 [`56-fd2-remake-sdd.md`](56-fd2-remake-sdd.md) 契約，最後才接正式執行期。
+
+- 原版 `0x1088D` 先建立16筆 persistent records，再由 `0x10B4E` 追加 map22
+  的70筆 records；重製端 ch23 scenario 現以相同順序建立86-slot frontier。
+  現有 authored `initial_groups=0..9` 仍是全群組已在場的近似，event52 在
+  rounds13／15／18／22 的精確追加時序沒有被冒稱已還原。
+- 正式 `ch22_post` binding 固定86 slots、18筆 layout、ACT71／72／73、三項
+  resource reload 與兩個原始 indexed adapter；compiler 零 issue。palette loop
+  依 caller 固定為 `0x24A24` 的0、2、…、62，共32步，且每步只消費一次4 ms。
+- 正常回歸由 `battle_ch23` 的玩家戰果確認進入 handler，不直接呼叫處理器；
+  完成隊伍同步後抵達 `preparation_ch24`，再驗證存檔／讀檔。戰後稽核因此為
+  24節點中23 active／1 blocked，只剩玩家第29戰。
+- 本批只提升為 `RUNTIME-E1`。event52精確時序、高階畫面名稱與未修改原版
+  同狀態 `PLAYER-E2` 仍缺；不得宣稱 DOS 時序或逐像素一致。

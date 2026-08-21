@@ -79,6 +79,8 @@ type Game struct {
 	nativeCh20SkyKey           *nativeCh20SkyKeyJob               // raw ch20 post 0x24336 fixed FDOTHER/ANI/palette sequence
 	nativeCh23State            *nativeCh23AdapterState            // raw ch23 staging/latch/timer state shared across both handler loops
 	nativeCh23Loop             *nativeCh23LoopJob                 // blocking raw ch23 indexed presentation loop
+	native2189A                *native2189AJob                    // blocking raw ch22 post 0x2189A ten-pass presentation
+	nativeCh22Reload           *nativeCh22ReloadState             // atomic FDFIELD69/FDSHAP46/47/FDOTHER42 tail transaction
 	nativeFDOTHERPalettePhase  int                                // process-lifetime 0x4DFCC phase projection (0..15)
 	nativeFullDACWhite         bool                               // exact 0x11DF2(0,255,255) overlay for legacy RGB scenes
 	nativeFullDACBlack         bool                               // exact ch07 post 0x11D40(0,255,64)+mode-13h clear
@@ -438,15 +440,20 @@ type storyFade struct {
 	then  func()
 }
 
-// transitionRevealJob mirrors native 0x24b4d's alternating-buffer present
-// loop. The indexed double-buffer renderer is not available for PNG-backed
-// scenes yet, but timing and frame count remain explicit rather than being
-// misrepresented as a black fade.
+// transitionRevealJob owns native 0x24B4D's two proven row-shifted indexed
+// viewports. The address-specific constructor validates and prepares every
+// buffer before this blocking job can become visible.
 type transitionRevealJob struct {
+	work      []byte
+	frames    [2][]byte
+	palette   color.Palette
+	index     int
 	remaining int
 	ticks     int
 	delay     int
+	drawn     bool
 	then      func()
+	rollback  func()
 }
 
 // storyFadeFrames 淡出/淡入各自幀數(60fps;doc46 要求 0.5–1s,先做快版 0.6s,實測後可調)。
@@ -651,18 +658,25 @@ func (g *Game) stepTransitionReveal() {
 	if job == nil {
 		return
 	}
+	if !job.drawn {
+		return
+	}
 	if job.ticks > 0 {
 		job.ticks--
 		return
 	}
 	job.remaining--
 	if job.remaining <= 0 {
+		job.rollback = nil
 		g.transitionReveal = nil
 		if job.then != nil {
 			job.then()
 		}
 		return
 	}
+	job.index ^= 1
+	g.nativeMapVGA = append(g.nativeMapVGA[:0], job.frames[job.index]...)
+	job.drawn = false
 	// The current tick already presents one frame; wait only the remaining
 	// delay ticks so a 20ms native delay maps to one 60Hz update, not two.
 	job.ticks = job.delay - 1
@@ -1093,10 +1107,13 @@ func (g *Game) fastForwardShotCampaign() error {
 				job.then()
 			}
 		case g.transitionReveal != nil:
-			job := g.transitionReveal
-			g.transitionReveal = nil
-			if job.then != nil {
-				job.then()
+			for ticks := 0; g.transitionReveal != nil && ticks < maxSteps; ticks++ {
+				g.transitionReveal.drawn = true
+				g.transitionReveal.ticks = 0
+				g.stepTransitionReveal()
+			}
+			if g.transitionReveal != nil {
+				return errors.New("shot fast-forward native 0x24B4D exceeded step bound")
 			}
 		case g.nativePaletteRamp != nil:
 			for ticks := 0; g.nativePaletteRamp != nil && ticks < maxSteps; ticks++ {
@@ -1143,6 +1160,14 @@ func (g *Game) fastForwardShotCampaign() error {
 			}
 			if g.nativeCh23Loop != nil {
 				return errors.New("shot fast-forward native ch23 loop exceeded step bound")
+			}
+		case g.native2189A != nil:
+			for ticks := 0; g.native2189A != nil && ticks < maxSteps; ticks++ {
+				g.native2189A.drawn = true
+				g.stepNative2189A()
+			}
+			if g.native2189A != nil {
+				return errors.New("shot fast-forward native 0x2189A exceeded step bound")
 			}
 		case g.beatDelay > 0:
 			g.beatDelay = 0
@@ -1322,11 +1347,9 @@ func (g *Game) beatStart(b campaign.Beat) {
 			g.loadErr = "beat native_2189a_loop:缺少原始十次 loop payload"
 			return
 		}
-		// 0x2189a owns a 10-pass indexed work-buffer/composite/present loop.
-		// Preserve the exact inner call-sites in editable data, but do not turn
-		// it into a generic portrait/effect animation until its indexed source,
-		// palette and 0x219ad consumer are proven in the runtime.
-		g.loadErr = "beat native_2189a_loop: native 0x2189a indexed adapter未完成"
+		if err := g.startNative2189A(*b.Native2189ALoop, g.beatAdvance); err != nil {
+			g.loadErr = "beat native_2189a_loop: " + err.Error()
+		}
 		return
 	case "layout_units":
 		if b.Layout == nil || len(b.Layout.Units) == 0 {
@@ -1757,17 +1780,37 @@ func (g *Game) beatStart(b campaign.Beat) {
 			g.loadErr = "beat transition_reveal:缺少正確 frame count"
 			return
 		}
-		delay := b.RevealDelayMs * 60 / 1000
-		if delay < 1 {
-			delay = 1
+		if err := g.startNative24B4D(b.RevealFrames, b.RevealDelayMs, g.beatAdvance); err != nil {
+			g.loadErr = "beat transition_reveal: " + err.Error()
 		}
-		g.transitionReveal = &transitionRevealJob{remaining: b.RevealFrames, delay: delay, then: g.beatAdvance}
 	case "load_res":
 		if b.ResourceID == nil || *b.ResourceID < 0 {
 			g.loadErr = "beat load_res:缺少 resource_id"
 			return
 		}
-		g.handlerResource = *b.ResourceID
+		if b.Source == "0x24a4b" || b.Source == "0x24a65" || b.Source == "0x24a7f" {
+			if err := g.stageNativeCh22Resource(b); err != nil {
+				g.nativeCh22Reload = nil
+				g.loadErr = "beat load_res: " + err.Error()
+				return
+			}
+		} else {
+			g.handlerResource = *b.ResourceID
+		}
+		g.beatAdvance()
+	case "native_ch22_reset_grid":
+		if err := g.resetNativeCh22ReloadGrid(); err != nil {
+			g.nativeCh22Reload = nil
+			g.loadErr = "beat native_ch22_reset_grid: " + err.Error()
+			return
+		}
+		g.beatAdvance()
+	case "native_ch22_prepare_aux":
+		if err := g.prepareNativeCh22Aux(); err != nil {
+			g.nativeCh22Reload = nil
+			g.loadErr = "beat native_ch22_prepare_aux: " + err.Error()
+			return
+		}
 		g.beatAdvance()
 	case "play_sfx":
 		if b.ResourceID == nil || b.SFXIndex == nil || *b.ResourceID != 88 || (*b.SFXIndex != 1 && *b.SFXIndex != -1) {
@@ -2352,6 +2395,8 @@ func (g *Game) enterNode() {
 	g.nativeCh20SkyKey = nil
 	g.nativeCh23State = nil
 	g.nativeCh23Loop = nil
+	g.native2189A = nil
+	g.nativeCh22Reload = nil
 	g.spawnIntroTransition = nil
 	g.nativeTurnStaging = nil
 	g.nativeFullDACWhite = false
@@ -2632,6 +2677,8 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 	g.nativeCh20SkyKey = nil
 	g.nativeCh23State = nil
 	g.nativeCh23Loop = nil
+	g.native2189A = nil
+	g.nativeCh22Reload = nil
 	g.indexedTransition = nil
 	g.spawnIntroTransition = nil
 	g.nativeTurnStaging = nil
@@ -5978,6 +6025,13 @@ func (g *Game) Update() error {
 		}
 		return nil
 	}
+	if g.native2189A != nil {
+		g.stepNative2189A()
+		if g.shotPath != "" && g.shotTaken {
+			return ebiten.Termination
+		}
+		return nil
+	}
 	// 攻擊演出推進(FIGANI 全身分鏡;演出期間鎖玩家輸入)
 	if g.atk != nil {
 		g.atk.timer--
@@ -6566,6 +6620,28 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		if !g.drawNativeCh23Loop(screen) {
 			g.failNativeCh23Loop(errors.New("presentation unavailable"))
 			ebitenutil.DebugPrint(screen, "native ch23 presentation unavailable")
+		}
+		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
+			g.captureShot(screen)
+		}
+		return
+	}
+	if g.native2189A != nil {
+		screen.Fill(color.Black)
+		if !g.drawNative2189A(screen) {
+			g.failNative2189A(errors.New("presentation unavailable"))
+			ebitenutil.DebugPrint(screen, "native 0x2189A presentation unavailable")
+		}
+		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
+			g.captureShot(screen)
+		}
+		return
+	}
+	if g.transitionReveal != nil {
+		screen.Fill(color.Black)
+		if !g.drawNative24B4D(screen) {
+			g.failNative24B4D(errors.New("presentation unavailable"))
+			ebitenutil.DebugPrint(screen, "native 0x24B4D presentation unavailable")
 		}
 		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
 			g.captureShot(screen)

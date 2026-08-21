@@ -174,6 +174,31 @@ func ComposeNativeUnitPresentTerrainSnapshot(work []byte, in NativeTransitionFra
 	return nil
 }
 
+// ComposeNative24B4DStaging reproduces 0x24B4D's one-time 0x11EEE terrain
+// draw. It differs from the unit-present snapshot only in the proven ninth
+// tile row, which supplies the second row-shifted 312x192 viewport.
+func ComposeNative24B4DStaging(work []byte, in NativeTransitionFrameInput) error {
+	if len(work) != NativeUnitPresentWorkSize {
+		return errors.New("indexedmap: native 0x24B4D work must be exactly 0x25680 bytes")
+	}
+	if in.TerrainBank == nil || in.MapWidth <= 0 || len(in.Cells)%in.MapWidth != 0 ||
+		len(in.TerrainLUT) != 256 {
+		return errors.New("indexedmap: incomplete native 0x24B4D terrain input")
+	}
+	frame := append([]byte(nil), work...)
+	baseX, baseY := workBase%workStride, workBase/workStride
+	if err := in.TerrainBank.BlitNativeTerrainRegion(
+		frame, workStride, baseX, baseY,
+		in.MapWidth, in.Cells, in.Controls,
+		in.CameraX, in.CameraY, 13, 9,
+		in.Flip, in.TerrainCycle, in.TerrainLUT,
+	); err != nil {
+		return fmt.Errorf("indexedmap: native 0x24B4D terrain: %w", err)
+	}
+	copy(work, frame)
+	return nil
+}
+
 // RedrawNativeUnitPresentObjects is the isolated 0x127a9-equivalent callback
 // required after the LMI intro writes and between 0x22046's radial passes.
 // It commits atomically and never redraws terrain/range/HUD.

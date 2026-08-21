@@ -1330,6 +1330,21 @@ func resetNativeMapEventGrid(grid []byte) {
 	}
 }
 
+// ResetNativeMapEventGrid applies 0x4DBFC atomically to the materialized raw
+// four-byte cell buffer. It is exported only for the evidence-bound ch22
+// post-battle resource transaction; callers cannot supply normalized cells.
+func (s *State) ResetNativeMapEventGrid() bool {
+	if s == nil || !s.HasNativeMapEventGrid || s.W <= 0 || s.H <= 0 ||
+		len(s.NativeMapEventGrid) != 4+4*s.W*s.H ||
+		int(s.NativeMapEventGrid[0]) != s.W || int(s.NativeMapEventGrid[2]) != s.H {
+		return false
+	}
+	next := append([]byte(nil), s.NativeMapEventGrid...)
+	resetNativeMapEventGrid(next)
+	s.NativeMapEventGrid = next
+	return true
+}
+
 func loadNativeFieldEvents(
 	mapJSONPath string,
 	w, h int,

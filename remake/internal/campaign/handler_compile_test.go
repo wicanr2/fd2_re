@@ -206,7 +206,7 @@ func TestCompileRejectsObsoleteLoadChapterTextName(t *testing.T) {
 	}
 }
 
-func TestCompileChapterAuxGraphicsRemainsFailClosed(t *testing.T) {
+func TestCompileChapterAuxGraphicsOnlyLowersRecoveredCh22Callsite(t *testing.T) {
 	script := &HandlerScript{Beats: []HandlerBeat{{
 		Op: "prepare_chapter_aux_graphics",
 		Source: HandlerSource{
@@ -215,23 +215,102 @@ func TestCompileChapterAuxGraphicsRemainsFailClosed(t *testing.T) {
 		},
 	}}}
 	beats, issues := CompileHandlerScript(script, HandlerBindings{})
-	if len(beats) != 0 || len(issues) != 1 ||
-		issues[0].Op != "prepare_chapter_aux_graphics" ||
-		issues[0].Source.Target != "0x10652" ||
-		issues[0].Reason != "operation has no proven runtime lowering" {
+	if len(issues) != 0 || len(beats) != 1 || beats[0].Op != "native_ch22_prepare_aux" {
 		t.Fatalf("chapter auxiliary graphics lowering=%#v issues=%#v", beats, issues)
+	}
+	bad := &HandlerScript{Beats: []HandlerBeat{{
+		Op:     "prepare_chapter_aux_graphics",
+		Source: HandlerSource{Addr: "0x108a6", Target: "0x10652"},
+	}}}
+	badBeats, badIssues := CompileHandlerScript(bad, HandlerBindings{})
+	if len(badBeats) != 0 || len(badIssues) != 1 ||
+		badIssues[0].Reason != "prepare_chapter_aux_graphics requires recovered ch22 call-site 0x24a9a" {
+		t.Fatalf("unproven auxiliary caller lowering=%#v issues=%#v", badBeats, badIssues)
+	}
+}
+
+func TestCompileChapter22ReloadPreservesArchiveOwnerAndGridReset(t *testing.T) {
+	script := &HandlerScript{Beats: []HandlerBeat{
+		{Op: "load_res", Source: HandlerSource{Addr: "0x24a4b", Target: "0x111ba"}},
+		{Op: "load_res", Source: HandlerSource{Addr: "0x24a65", Target: "0x111ba"}},
+		{Op: "load_res", Source: HandlerSource{Addr: "0x24a7f", Target: "0x111ba"}},
+		{Op: "native_call", Source: HandlerSource{Addr: "0x24a92", Target: "0x4dbfc"},
+			NativeTarget: "0x4dbfc", NativeSemantic: "native_mask_raw_cells", NativeConfidence: "已證實",
+			NativeEvidence: []string{"docs/data/ida/fd2_ch22_post_ida.txt"}, RawArgs: []any{"dword ptr [0x3a51]"}},
+	}}
+	resources := map[string]HandlerResource{
+		"0x24a4b": {ResourceID: 69, Archive: "FDFIELD.DAT", Owner: "0x53a51"},
+		"0x24a65": {ResourceID: 46, Archive: "FDSHAP.DAT", Owner: "0x53a5d"},
+		"0x24a7f": {ResourceID: 47, Archive: "FDSHAP.DAT", Owner: "0x53a69"},
+	}
+	beats, issues := CompileHandlerScript(script, HandlerBindings{Resource: func(input HandlerBeat) (HandlerResource, bool) {
+		resource, ok := resources[input.Source.Addr]
+		return resource, ok
+	}})
+	if len(issues) != 0 || len(beats) != 4 || beats[3].Op != "native_ch22_reset_grid" {
+		t.Fatalf("compiled reload=%#v issues=%#v", beats, issues)
+	}
+	for index, source := range []string{"0x24a4b", "0x24a65", "0x24a7f"} {
+		want := resources[source]
+		if beats[index].ResourceID == nil || *beats[index].ResourceID != want.ResourceID ||
+			beats[index].ResourceArchive != want.Archive || beats[index].ResourceOwner != want.Owner {
+			t.Fatalf("resource beat%d=%+v want=%+v", index, beats[index], want)
+		}
 	}
 }
 
 func TestCompileDynamicPaletteLoopMaterializesDescendingRange(t *testing.T) {
 	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
 		Op: "unknown", NativeTarget: "0x11df2", RawArgs: []any{"ebx", 255, 0},
+		Source: HandlerSource{Addr: "0x258cd", Target: "0x11df2"},
+	}, {
+		Op: "delay", Ms: intPtr(4), Source: HandlerSource{Addr: "0x258d7", Target: "0x375b2"},
 	}}}, HandlerBindings{})
 	if len(issues) != 0 || len(beats) != 126 {
 		t.Fatalf("dynamic palette beats=%d issues=%#v", len(beats), issues)
 	}
 	if beats[0].Op != "palette_update" || beats[0].PaletteStart != 0x3e || beats[1].Op != "delay" || beats[1].Ms != 4 || beats[124].PaletteStart != 0 || beats[125].Op != "delay" {
 		t.Fatalf("dynamic palette sequence head/tail=%#v ... %#v", beats[:2], beats[124:])
+	}
+}
+
+func TestCompileDynamicPaletteLoopsPreserveCallerDirectionAndConsumeRawDelay(t *testing.T) {
+	tests := []struct {
+		name          string
+		paletteSource string
+		delaySource   string
+		wantCount     int
+		wantFirst     int
+		wantLast      int
+	}{
+		{name: "ch22 even ascending", paletteSource: "0x24a24", delaySource: "0x24a2e", wantCount: 32, wantFirst: 0, wantLast: 0x3e},
+		{name: "ch28 ascending", paletteSource: "0x256eb", delaySource: "0x256f5", wantCount: 64, wantFirst: 0, wantLast: 0x3f},
+		{name: "ch28 descending", paletteSource: "0x25733", delaySource: "0x2573d", wantCount: 63, wantFirst: 0x3e, wantLast: 0},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
+				Op: "native_call", NativeTarget: "0x11df2", RawArgs: []any{"ebx", 255, 0},
+				NativeSemantic: "native_palette_update", NativeConfidence: "已證實", NativeEvidence: []string{"evidence"},
+				Source: HandlerSource{Addr: tc.paletteSource, Target: "0x11df2"},
+			}, {
+				Op: "delay", Ms: intPtr(4), Source: HandlerSource{Addr: tc.delaySource, Target: "0x375b2"},
+			}}}, HandlerBindings{})
+			if len(issues) != 0 || len(beats) != tc.wantCount*2 {
+				t.Fatalf("beats=%d issues=%#v", len(beats), issues)
+			}
+			if beats[0].PaletteStart != tc.wantFirst || beats[len(beats)-2].PaletteStart != tc.wantLast || beats[len(beats)-1].Source != tc.delaySource {
+				t.Fatalf("palette endpoints/delay = first%d last%d tail=%#v", beats[0].PaletteStart, beats[len(beats)-2].PaletteStart, beats[len(beats)-1])
+			}
+		})
+	}
+
+	_, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{
+		Op: "unknown", NativeTarget: "0x11df2", RawArgs: []any{"ebx", 255, 0},
+		Source: HandlerSource{Addr: "0xdead", Target: "0x11df2"},
+	}, {Op: "delay", Ms: intPtr(4), Source: HandlerSource{Addr: "0xbeef", Target: "0x375b2"}}}}, HandlerBindings{})
+	if len(issues) != 1 {
+		t.Fatalf("unknown register-bound caller must fail closed: %#v", issues)
 	}
 }
 
@@ -2298,6 +2377,65 @@ func TestLoadChapter22PostPreservesNative2189ALoops(t *testing.T) {
 	}
 }
 
+func TestCompileCompleteChapter22PostBindingPreservesLayoutResourcesAndPaletteLoop(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch22_post.json")
+	if err != nil || len(issues) != 0 {
+		t.Fatalf("ch22_post err=%v issues=%#v", err, issues)
+	}
+	if len(beats) == 0 || beats[0].Op != "runtime_context" || beats[0].RuntimeContext == nil ||
+		beats[0].RuntimeContext.SlotCount != 86 || !beats[0].RuntimeContext.StoryViewport {
+		t.Fatalf("ch22_post runtime context=%#v", beats)
+	}
+	var layout *HandlerLayout
+	paletteStarts := make([]int, 0, 32)
+	paletteDelays := 0
+	resources := map[string]Beat{}
+	acts := map[string]Beat{}
+	var visitBeats func([]Beat)
+	visitBeats = func(compiled []Beat) {
+		for _, beat := range compiled {
+			switch {
+			case beat.Op == "layout_units":
+				layout = beat.Layout
+			case beat.Op == "palette_update" && beat.Source == "0x24a24":
+				paletteStarts = append(paletteStarts, beat.PaletteStart)
+			case beat.Op == "delay" && beat.Source == "0x24a2e":
+				paletteDelays++
+			case beat.Op == "load_res":
+				resources[beat.Source] = beat
+			case beat.Op == "act":
+				acts[beat.Source] = beat
+			}
+			visitBeats(beat.Then)
+			visitBeats(beat.Else)
+		}
+	}
+	visitBeats(beats)
+	if layout == nil || len(layout.Units) != 18 || layout.CamX != 336 || layout.CamY != 336 ||
+		layout.Units[16] != (HandlerUnitLayout{Slot: 16, X: 19, Y: 21, Pose: 0}) ||
+		layout.Units[17] != (HandlerUnitLayout{Slot: 17, X: 21, Y: 21, Pose: 2}) {
+		t.Fatalf("ch22_post layout=%#v", layout)
+	}
+	if len(paletteStarts) != 32 || paletteDelays != 32 || paletteStarts[0] != 0 || paletteStarts[31] != 0x3e {
+		t.Fatalf("ch22_post palette starts=%#v delays=%d", paletteStarts, paletteDelays)
+	}
+	for source, want := range map[string]HandlerResource{
+		"0x24a4b": {ResourceID: 69, Archive: "FDFIELD.DAT", Owner: "0x53a51"},
+		"0x24a65": {ResourceID: 46, Archive: "FDSHAP.DAT", Owner: "0x53a5d"},
+		"0x24a7f": {ResourceID: 47, Archive: "FDSHAP.DAT", Owner: "0x53a69"},
+	} {
+		got, ok := resources[source]
+		if !ok || got.ResourceID == nil || *got.ResourceID != want.ResourceID || got.ResourceArchive != want.Archive || got.ResourceOwner != want.Owner {
+			t.Fatalf("resource %s=%#v want=%#v", source, got, want)
+		}
+	}
+	for _, source := range []string{"0x2482e", "0x24877", "0x248f1", "0x24abe", "0x24ad4", "0x24ade"} {
+		if _, ok := acts[source]; !ok {
+			t.Fatalf("missing compiled acting source %s", source)
+		}
+	}
+}
+
 func TestCompileNative2189ALoopPreservesRawCallShapeAndFailsClosed(t *testing.T) {
 	loop := &Native2189ALoop{
 		Repeat: 10, StepSource: "caller_arg9", WorkOffset: 0x8088, WorkStride: 456,
@@ -2318,6 +2456,9 @@ func TestCompileNative2189ALoopPreservesRawCallShapeAndFailsClosed(t *testing.T)
 	}
 	if got := beats[0].Native2189ALoop.Present.RawArgs[5]; got != 656644 {
 		t.Fatalf("present raw target=%#v, want 656644", got)
+	}
+	if got := beats[0].Native2189ALoop; got.Slot != 10 || got.InitialRadius != 15 || got.RadiusStep != 1 {
+		t.Fatalf("compiled outer ABI=%+v, want slot10/radius15/step1", got)
 	}
 	bad := *loop
 	bad.Repeat = 9

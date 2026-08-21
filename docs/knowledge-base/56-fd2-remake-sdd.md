@@ -24,12 +24,13 @@
 已存在但尚未全程驗收：story/cutscene BeatRunner、dialog 分頁／捲動、campaign
 node、persistent roster、shop buy/sell/equip、church revive/class-change、
 preparation quota、敵方 AI 窄 consumer 與 indexed ending prefix。2026-08-21
-實跑戰後 audit 為24節點中22 active／2 blocked；玩家第24戰已以70＋16槽位
+實跑戰後 audit 為24節點中23 active／1 blocked；玩家第23戰已以16＋70槽位
+拓撲、raw ch22 indexed／resource adapter 與 `preparation_ch24` 存讀檔提升為 E1；玩家第24戰已以70＋16槽位
 拓撲、raw ch23 兩段 indexed adapter 與 `preparation_ch25` 存讀檔提升為 E1；玩家第25戰已以62→70→71槽位
-拓撲接通 raw ch24 post、`town_ch26` 與存讀檔 E1，玩家第23、29戰仍失敗
+拓撲接通 raw ch24 post、`town_ch26` 與存讀檔 E1，只有玩家第29戰仍失敗
 即關閉。故本檔較早的「20 active／4 blocked」與「玩家第25戰仍阻擋」已失效。
 其餘主要缺口是完整玩家指令／法術／物品交易、相同 raw 狀態敵方回合、戰場與
-戰間 UI、兩個
+戰間 UI、一個
 blocked postbattle、精確終局 renderer／輸入，以及一般玩家 E2；詳見 `58`。
 
 ### 1.3 進度停滯審計（2026-07-27）
@@ -2903,7 +2904,9 @@ CONTINUE `0x101D7`、完整章節 loader `0x108A6`、ch22 post `0x24A9A`。
 因此 handler exporter 的舊 `load_ch_bg` 名稱已撤回，改為
 `prepare_chapter_aux_graphics`。這個可編輯節點仍無正式執行期降階；
 compiler 必須回報 issue，不能猜成背景切換、重繪或完整 LOADCH。
-ch22 post 對應的 indexed buffer owner 尚未完成前維持失敗即關閉。
+【截至2026-07-30的歷史狀態；`0x2189A`／`0x24B4D` buffer owner 已由
+2026-08-21 後續證據部分取代。】當時 ch22 post 對應的 indexed buffer owner
+尚未完成，故維持失敗即關閉。
 直接證據見
 [`fd2_chapter_aux_graphics_10652_ida.txt`](../data/fd2_chapter_aux_graphics_10652_ida.txt)。
 
@@ -3418,7 +3421,7 @@ ACTING53、index8、JOIN16、chapter17。共享 call site 的 ACTING immediate
 這是 2026-08-09 當次稽核快照：24 個標準 postbattle 節點當時為
 **19 active／5 blocked**；其後玩家第22戰曾使當時統計成為20 active／4 blocked，
 其後2026-08-13又成為 **21 active／3 blocked**；以上皆為歷史數字，現況已是
-2026-08-21的 **22 active／2 blocked**。現況以
+2026-08-21後續接線的 **23 active／1 blocked**。現況以
 [`58-fd2-exe-re-coverage.md`](58-fd2-exe-re-coverage.md) 為準。這些統計只表示
 節點接線狀態，不是重製完成百分比。
 
@@ -3470,10 +3473,10 @@ FDTXT_023 0..4、ACTING 68..70、group1 spawn 與 focus/reset 順序。完整
 FDTXT source、ACTING 68..70 與所有 raw call-site；`0x24618` runtime bridge
 只接受來源 `0x336e5` 的 Y+5，並與第 21 戰 `0x245ce` 的 Y+3 明確分開。
 這是 E1 的資料消費候選，不是正式 campaign binding；`story_ch23`、
-`postbattle_ch22_persist→town_ch23`、indexed renderer、一般玩家 DOSBox E2
+`postbattle_ch23_persist→preparation_ch24`、indexed renderer、一般玩家 DOSBox E2
 與戰後城鎮／商店／整備存檔流程仍保持失敗即關閉。
 
-## 2026-08-09 raw ch22 post `0x2189a` 索引呈現原語（玩家第23戰戰後；E1）
+## 2026-08-21 raw ch22 post `0x2189a` 索引呈現轉接規格（玩家第23戰戰後；原語 E1）
 
 合法 IDA Pro 9.4 與 Docker Capstone 以固定雜湊的 `FD2.EXE` 閉合
 `0x24754` 戰後 handler 的三個 `0x2189a` 呼叫點（`0x24978`、`0x249c4`、
@@ -3483,14 +3486,99 @@ stride 456、13×8 原始場景建立、312×192 呈現區域、320 呈現 strid
 原始 push 形狀與 caller 第九參數步進來源均保留於
 [`fd2_ch22_post_ida.txt`](../data/ida/fd2_ch22_post_ida.txt)。
 
-重製端新增 `native_2189a_loop` 可編輯原語，將三個呼叫點與所有 raw 引數
+重製端已有 `native_2189a_loop` 可編輯原語，將三個呼叫點與所有 raw 引數
 寫入 [`ch22_post.json`](../../remake/assets/cutscenes/handlers/ch22_post.json)，
 並以 compiler regression 驗證幾何常數、巢狀位址及錯誤 payload 失敗即關閉。
-執行器尚未具備可證實的 indexed state／buffer adapter，遇到此原語會停止並
-回報未完成；沒有把它猜成肖像、特效或一般 renderer，也沒有接到
-`postbattle_ch22_persist→town_ch23`。`0x24b14`／`0x24bde` 的 persistent
-record 高階意義、一般玩家 runtime frontier、DOSBox E2 與戰後城鎮／商店／
-整備／存檔路徑仍是強推論或未知，維持 fail-closed。
+2026-08-21 的 IDA 勘誤進一步證實外層三個實參依序是 runtime unit slot、初始
+半徑與每輪半徑步進；因此執行期只接受 `(10,15,1)` 與 `(16,30,1)` 兩種已知
+呼叫形狀，不把它泛化成肖像或任意特效。
+
+正式轉接器必須符合下列契約，完成前不得接入 campaign：
+
+1. runtime slot 必須存在且保有原版座標來源；以 `(unitX-cameraX)*24+12`、
+   `(unitY-cameraY)*24+18` 建立畫面中心。缺 slot、相機、原始地圖或 indexed
+   素材時，整個 beat 不得改變可見畫面或戰役狀態。
+2. beat 開始時只建立一次 13×8、stride 456 的 terrain staging snapshot；十輪
+   每輪先還原完整 snapshot，再依序取 FDOTHER resource3 的 LUT 0..9。每張 LUT
+   必須恰為 256 bytes，任何一張缺失都在第一輪前失敗即關閉。
+3. 第 `i` 輪半徑為 `initialRadius+i*radiusStep`；只在 312×192 viewport 內執行
+   `0x219ad` 的向零截斷橫向半徑與 LUT remap，接著以既有 native unit/object
+   規則重畫物件，最後將 312×192 區域發布到 320-stride indexed VGA surface。
+   每輪發布一個可繪 frame；這是重製端 60 Hz 的 E1 排程，不宣稱 DOS 指令週期
+   或逐像素時間完全一致。
+4. 十輪成功後才執行等價 `0x11cac(0)` 的穩態 native frame；所有 staging 必須
+   採先驗證後發布，錯誤時保留 beat 前的 work buffer、VGA surface 與 callback。
+5. 相鄰 `0x24b4d(30)` 不是一般淡入。typed adapter 必須先以當下 raw
+   FDFIELD／FDSHAP／camera 建立 `work+0x8088`、stride456 的13×9 terrain
+   staging，再執行一次完整 `0x11cac(0)` 穩態畫面。之後第 `i` 輪只把
+   `work+0x8088+456*(i&1)` 起始的312×192區塊複製到320-stride VGA，等待20 ms
+   才進下一輪，共30輪；不得每輪重畫 terrain／unit，也不得用只有 timer 的
+   `transitionRevealJob` 冒充。開始前產生完整候選 staging、穩態畫面與兩張交替
+   viewport，任何失敗不得發布第一張；每輪必須經 Draw acknowledgement，完成後
+   才執行 continuation。60 Hz 下每個20 ms等待採至少一個可見 frame 的 E1 排程，
+   不宣稱 DOS 毫秒級時序完全一致。
+6. `0x4dbfc` 以完整 `NativeMapEventGrid` 原地套用 `+1 &= 0x03`、
+   `+2 &= 0x1f`、`+3 = 0xff`；必須先驗證 header 與長度，並以複本確保失敗時
+   不留下半套修改。
+7. `0x24a4b`／`0x24a65`／`0x24a7f` 的三次 `0x111ba` 已由直接 push、raw
+   filename 與 loader ABI 閉合為 `FDFIELD.DAT#69`、`FDSHAP.DAT#46`、
+   `FDSHAP.DAT#47`，並分別回寫 `[0x53a51]`、`[0x53a5d]`、`[0x53a69]`。
+   typed binding 必須同時保存 archive 名稱、index、舊 handle owner 與回寫 owner，
+   不能只留一個無檔名的 `resource_id`。三者須在候選 bundle 中一次解碼並驗證
+   FDFIELD header／cell count、FDSHAP offset table／tile graphics／四位元組 control，
+   成功後才原子取代目前 native terrain bundle；`0x4dbfc` 隨後只操作新 FDFIELD
+   #69 的完整 raw grid。`0x11eee` 已由 IDA 證實直接消費這三個 owner。
+8. `0x10652` 在本 handler 已將 chapter 設為23後，typed adapter 只接受 case23：
+   配置59904-byte staging、解碼 `FDOTHER.DAT#42` 到312-stride buffer、釋放暫時
+   resource，再執行 `0x24d22(0)` 對應的 indexed stage。不得沿用 `0x10652` 其他
+   chapter branch，也不得只記錄「prepare」而不建立後續 ACT73 可消費的 buffer。
+   `0x24d22` 的逐列 rotation 已有 raw ch23 post adapter 證據，可重用其 typed
+   primitive。IDA 已補證 ACT73 的15-beat high-bit 路徑每 beat 呼叫
+   `0x11cac(0)`，後者經 `0x11eee` case23 間接消費 `[0x53aff]`；正式 binding
+   必須以同一份 decoded acting73 驗證這個 slot0／pose0／15-beat consumer，
+   不得把 #42 另畫成不經 indexed compositor 的 RGBA 圖層。
+9. campaign 驗收鏈為 `battle_ch23 → postbattle_ch23_persist → preparation_ch24
+   → story_ch24`，並在 preparation node 驗證 JOIN19／22 分支成果、隊伍同步與
+   save/load；三條 raw predicate 缺 provenance 時仍須停止。這只可提升為 E1，
+   未修改原版的一般玩家同狀態畫面仍另列 E2。
+10. `0x247b4→0x233c6` 的 layout 固定為 slots0..16 的17筆 table，加上 special
+    slot17 `(21,21,2)`；camera 固定 `(14,14)`。X table 是
+    `[20,20,18,19,20,21,22,18,22,18,19,21,22,19,20,21,19]`，Y table 是
+    `[19,17,18,18,18,18,18,17,17,16,16,16,16,15,15,15,21]`，pose0..16
+    全為0。binding 必須 materialize 全18筆，不得把舊「16×17」散文當成維度，
+    也不得漏掉 special slot17 的最後覆寫。
+11. runtime constructor 必須遵守 `0x1088d`：先以16個 persistent／部署 records
+    建 slots0..15，再由 `0x10b4e` 依 group 追加 map22 FDFIELD records。
+    map22 的70筆 raw groups 全 materialize 時 frontier 是86；舊 binding 的
+    `slot_count=70` 只描述 map records，不能用於戰後 handler。重製端現有
+    `initial_groups=0..9` 是「全部敵人已在場」的 authored 近似行為；本切片只把
+    它搬到 party-first runtime append 路徑，保持目前玩家可見參戰集合不變，同時
+    修正 slot identity。event52 在 rounds13／15／18／22 的精確追加時序另列
+    `BLOCKED`，不得由本次86-slot E1 宣稱原版增援 parity。
+12. 正式 binding 只接受 runtime slot count86、story viewport、上述 layout、
+    acting71／72／73、三個帶 archive/index/owner 的 reload，以及所有已證實
+    indexed／palette primitive。完整 handler 編譯不得有 issue；缺 original asset、
+    raw predicate provenance、slot、camera、grid 或 staging 時仍在 campaign
+    mutation 前停止。
+13. register-bound `0x11df2(EBX,255,0)` 必須以來源位址展開：本 handler 的
+    `0x24a24` 是 `EBX=0,2,...,62` 共32次，每次緊接 `0x24a2e` 的4 ms；相鄰
+    ch28 `0x256eb` 是0..63，`0x25733` 與 ch29 `0x258cd` 才是62..0。
+    compiler 展開 loop body 後必須消費緊鄰的單一 exported delay beat，不能把
+    它再附加成第33／65／64次等待，也不能以一個「EBX一律下降」註解泛化。
+
+`0x2189a` typed adapter 已依上述契約實作：compiler 將三個 raw immediate 固化到
+typed payload，runtime 一次預驗證 LUT0..9、候選產生十個 effect frame 與一個
+`0x11cac` 穩態 frame，逐幀發布後才執行 continuation；缺 LUT0 的回歸證實 buffer
+維持不變。`0x4dbfc` 原子公開操作已與三資源候選 bundle 接線：三個 reload 完成
+後只在候選 grid 執行 mask，FDOTHER #42 完整 preflight 成功才原子發布新
+map／assets／state／staging；錯誤 archive、owner 或資源形狀不改 live state。在第7項 resource
+`0x24b4d` typed adapter 也已建立13×9候選 staging、穩態 frame 與兩張 row-shifted
+viewport，經30次 Draw acknowledgement／20 ms E1排程後才 continuation；缺第九列
+時不修改既有 buffer。layout、runtime constructor 與正式 binding 現已依第10至13項
+落地；正常玩家戰果確認回歸由16筆持續隊伍＋70筆 map records 建立86-slot
+frontier，跑完正式 handler、同步隊伍後進 `preparation_ch24`，並在該節點通過
+存檔／讀檔。因此本切片為 `RUNTIME-E1`；event52 的精確增援時序與未修改原版
+同狀態畫面仍分別維持 `BLOCKED`／`PLAYER-E2` 待補。
 
 同一輪又把 `0x247c6` 的 `cmp eax,-1`、`0x24840` 的 persistent lookup
 分支，以及 `0x248b5` 的 `cmp [0x53bef],15; jl` 轉成可編輯巢狀 `if`：
@@ -3498,7 +3586,8 @@ record 高階意義、一般玩家 runtime frontier、DOSBox E2 與戰後城鎮�
 與 `native_round_lt(15)`。這些是原始 byte-level predicate，不是角色或物品
 名稱；compiler 與 BeatRunner regression 只在完整 raw inventory／persistent
 record provenance 存在時選臂，缺資料便停止。這改善了 handler 的控制流可編輯性，
-但不解除 indexed renderer、`postbattle_ch22_persist` 或戰間節點 gate。
+正式 binding 現已以這三個 predicate 執行；缺 raw provenance 仍會失敗即關閉。
+這不解除 event52 時序或一般玩家 E2 gate。
 
 ## 2026-08-09 raw ch24 post `0x24df2` 函式邊界與 owner 勘誤（E1）
 

@@ -33,8 +33,43 @@ FD2.EXE：raw ch22 post／玩家第23戰戰後處理器證據
   呼叫 `0x2189a(10,15,1)`、`0x24b4d(30)`、text index 15、400 ms、
   再呼叫 `0x2189a(10,15,1)`、`0x24b4d(30)`、text index 16、400 ms，
   最後呼叫 `0x2189a(16,30,1)`。
-- 以上只證明原版 handler 的靜態順序；`postbattle_ch22_persist` 尚未因此
-  取得正式執行 binding，也沒有把下一節點猜成城鎮或下一場戰鬥。
+- 【2026-08-21 後續接線勘誤】以上一度只證明原版 handler 的靜態順序；
+  現已由本檔後續 layout、constructor、consumer 證據建立正式
+  `postbattle_ch23_persist` binding，並依既有 authored campaign 進
+  `preparation_ch24`。這不把該節點宣稱為原版 E2 證據。
+
+2026-08-21 `0x247B4` layout 與 LOADCH slot 順序勘誤（IDA 已證實）：
+
+- 上面的「16×17」不是可直接實作的 layout 形狀。合法 IDA Pro 9.4 對
+  `sub_24754`／`sub_233C6` 的 caller ABI 證實：`0x247B4` 傳入三張各17 bytes
+  的 table、inclusive slot range `0..16`、special slot `17`、special
+  `(x,y,pose)=(21,21,2)`，以及 camera `(14,14)`。三張 raw table 位於
+  IDA Linear Executable 線性位址 `0x522A3`／`0x522B4`／`0x522C5`：
+
+  ```text
+  X[0..16]    = 14 14 12 13 14 15 16 12 16 12 13 15 16 13 14 15 13
+  Y[0..16]    = 13 11 12 12 12 12 12 11 11 10 10 10 10 0f 0f 0f 15
+  pose[0..16] = 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  ```
+
+  因此 materialized layout 是 slots0..17 共18筆；slot17 最後由 special
+  實參覆寫，而不是第18張 table entry。這些位址、bytes、range、special 與
+  camera 是「已證實」，角色名稱及故事語意仍不附加。
+- `0x205DA→0x1088D` 的原始 LOADCH 建構順序也由同次 IDA 閉合。
+  `0x1088D` 先令 `dword_53BEB = control[1]`，從 persistent array
+  `[0x53BF7]` 依序複製最多 `control[1]` 筆80-byte records 到 runtime
+  `[0x53A45]`；其後才呼叫 `0x10B4E(0)`，而 `0x10C50` 以
+  `80*dword_53BEB+[0x53A45]` 追加 FDFIELD group0 並遞增 count。
+  map22 固定版 FDFIELD control #67 的 raw header 是16個部署／persistent
+  slots、70筆 map records；group counts 為
+  `0:2, 1:24, 2:6, 3:6, 4:6, 5:6, 6:6, 7:6, 8:4, 9:4`，position #68
+  的86筆則是前70筆 map positions＋後16筆部署格。故完整 materialized
+  frontier 是 `16+70=86`，不是「70個 runtime slots」；開局原始順序至少是
+  persistent slots0..15、group0 slots16..17，後續 groups append。
+- 這直接推翻目前 legacy `ch23.json` 的「先70筆 FDFIELD、後 spawn_party」
+  runtime 順序；ACT71／72 所用 slot16／17 在原版是 group0 兩筆，而非 raw
+  roster 的第17／18筆。何時追加 groups2..9 仍受 event52 與四列 turn control
+  約束；本證據只授權修正 constructor order，不把尚未閉合的增援時序冒稱 exact。
 
 已證實：`0x24b14(100)` 與 `0x24bde(18)` 的 raw 條件
 ------------------------------------------------------
@@ -100,16 +135,107 @@ FD2.EXE：raw ch22 post／玩家第23戰戰後處理器證據
 已證實：相鄰 raw 原語
 ----------------------
 
+2026-08-21 三次 `0x111BA` 資源 ABI 補證：
+
+- IDA 已定位的三個 call-site 再由 Docker Capstone 直接指令交叉驗證；固定版
+  `FD2.EXE` 雜湊同本檔表頭。`0x111BA` 的三個實參依呼叫堆疊與函式內
+  `[esp+0x10/0x14/0x18]` 消費分別為檔名指標、舊配置指標、archive index；它會
+  先釋放非零舊指標，讀取 archive offset pair、配置資源大小並回傳新指標。
+- `0x24A3E..0x24A53`：`0x111BA("FDFIELD.DAT", [0x53A51], 0x45)`，回傳值寫回
+  `[0x53A51]`。字串位址是線性 `0x51A59`，archive index 為 69。
+- `0x24A58..0x24A6D`：`0x111BA("FDSHAP.DAT", [0x53A5D], 0x2E)`，回傳值寫回
+  `[0x53A5D]`。字串位址是線性 `0x51A65`，archive index 為 46。
+- `0x24A72..0x24A87`：`0x111BA("FDSHAP.DAT", [0x53A69], 0x2F)`，回傳值寫回
+  `[0x53A69]`，archive index 為 47。
+- 線性 `0x51A40..0x51A80` 的 raw ASCII 同時保留 `FDTXT.DAT`、`FDOTHER.DAT`、
+  `FDFIELD.DAT`、`FDSHAP.DAT`、`DATO.DAT`、`FDMUS.DAT` 字串次序，故上述檔名
+  不是依相鄰關卡猜測。
+- `0x24A8C` 隨即把新 `[0x53A51]` 傳給 `0x4DBFC`，`0x24A9A` 再呼叫
+  `0x10652`。這證實載入、raw grid reset、chapter-dependent auxiliary setup 的
+  呼叫順序；目前沒有把 `0x10652` 高階命名成特定畫面或宣稱它直接消費
+  `[0x53A5D]/[0x53A69]`，該 consumer 關係仍須由 xref／資料流補證。
+
 - `0x24b4d(30)` 以 `0x11eee` 重建 staging，再以 `0x11eb0` 交替呈現
   兩個 stride 456 的 312×192 區塊；每次呈現後等待 20 ms，共 30 次。
   這是雙緩衝／列呈現的 raw 時序，不命名成淡入淡出或特定動畫。
+
+2026-08-21 `0x24B4D` buffer owner 與 `0x10652` 勘誤（IDA 已證實）：
+
+- IDA Pro 9.4／Hex-Rays 以本檔固定雜湊重新建立一次性 `.i64`；資料庫只在
+  container tmpfs，匯出位址採 IDA Linear Executable 線性位址。`sub_24B4D(a1)`
+  先呼叫 `0x11EEE(work+0x8088,456,13,9,[0x53AA9],[0x53AAD])`，再呼叫一次
+  `0x11CAC(0)`；之後 `i=0..a1-1` 以
+  `src=work+0x8088+456*(i&1)`、source stride456、312×192，複製到線性
+  `0xA0504`、destination stride320，每輪等待20 ms。這證實現行僅計時的
+  `transition_reveal` 不是完整 E1 consumer。
+- `0x11EEE` 的 IDA 偽代碼與 data-xref 共同固定：線性 `0x121AB` 讀
+  `[0x53A51]` 的四位元組 map cells；`0x121EC` 讀 `[0x53A5D]` 的 offset table／
+  tile graphics；`0x12247` 讀 `[0x53A69]` 的四位元組 tile control。故 ch22
+  tail 新載入的 FDFIELD #69、FDSHAP #46/#47 已有直接 renderer consumer，
+  不再是未知資源。
+- `0x10652` 並不直接消費 `[0x53A5D]/[0x53A69]`。它先釋放／清空
+  `[0x53AFF]/[0x53B03]`，再依 `[0x53C03]` 分支；ch22 handler 已在 `0x24957`
+  把 chapter increment 成23，因此 case23 會配置59904 bytes、載入
+  `FDOTHER.DAT#42` 到 `[0x53B03]`、以 `0x4E63D(...,stride312)` 解到
+  `[0x53AFF]`、釋放暫時 resource，最後呼叫 `0x24D22(0)`。
+- 高階名稱仍受限：上述只證實 chapter23 auxiliary indexed staging 與直接
+  consumer，不把 FDOTHER #42 命名成故事物件或特定角色畫面；ACT73 與同狀態
+  一般玩家 E2 仍須 runtime／畫面驗證。
+- FDOTHER #42 的畫面 consumer 不再未知：`0x11CAC` 的固定 indexed chain
+  呼叫 `0x11EEE`；其 `chapter==23` 分支在 BIOS tick 變化時先執行
+  `0x24D22(0)`，再以 source `[0x53AFF]`、stride312、312×192 複製到 terrain
+  staging，之後疊加 terrain／units 並發布 viewport。原版 decoded ACTING73
+  是 high-bit、15-beat、slot0/pose0 資源；`0x1366A` 的 non-zero high-bit
+  分支每 beat 呼叫 `0x11CAC(0)`，所以三次 ACT73 都間接消費上述 #42 staging。
+  這是 renderer owner／資料流的「已證實」；#42 的故事畫面名稱仍未知。
 - `0x11df2(start,end,delta)` 的 Capstone／IDA 交叉驗證固定 DAC 索引
   0..255 的逐色分量加法與 63 夾限；ch22 後段的 raw 呼叫
-  `0x11df2(ebx,255,0)` 仍保留 register provenance。
+  `0x11df2(ebx,255,0)` 位於 `for (EBX=0; EBX<64; EBX+=2)`，每次呼叫後
+  等待4 ms，因此是 start indexes `0,2,...,62` 共32組，不是其他 handler 的
+  `62..0` 下降迴圈。compiler 必須以 caller `0x24A24` 區分方向與步進，並把
+  exporter 緊鄰的 `0x24A2E` 視為 loop body delay，不得在展開後再多執行一次。
 - `0x4dbfc` 對 `dword_53A51` 的原始欄位逐筆清除／遮罩；目前只保留 raw
   初始化描述，沒有把它提升成地圖、單位或存檔語意。
 
+## 2026-08-21 `0x2189A` 完整實參與每輪資料流勘誤（已證實）
+
+合法 IDA Pro 9.4.0.260610／Hex-Rays 在一次性、無網路 Docker 中重新建立
+固定雜湊資料庫；資料庫只在 tmpfs，原版 `FD2.EXE` 唯讀。IDA 函式邊界仍是
+`sub_2189A=0x2189A..0x219AD`、`sub_219AD=0x219AD..0x21A9E`；直接 caller
+包含 `0x24978`、`0x249C4`、`0x24A10`。Capstone 5.0.3 對同一線性位址與
+raw operands 逐項一致。以下結論不使用 Hex-Rays 錯置的 `retaddr` 變數名：
+
+1. `0x218AB` 讀第二個實參，`0x218AF` 讀第一個實參。第一個實參先乘
+   `0x50` 定位 runtime record；record `+0/+1` 各減 camera
+   `[0x53AA9]/[0x53AAD]`，再形成
+   `centerX=(x-cameraX)*24+12`、`centerY=(y-cameraY)*24+18`。
+2. 第二個實參是初始 radius；`0x2198E` 每輪只以第三個實參累加 radius。
+   因此三個 ch22 caller 的 raw `[10,15,1]`／`[16,30,1]` 是
+   `(unitIndex, initialRadius, radiusStep)`，不是九參數 API。
+3. `0x218EA` 配置精確 `0x25680` bytes；`0x21914` 只把13×8 terrain staging
+   建到 snapshot `+0x8088`。每個 `i=0..9` pass 都先以 `memmove` 完整恢復
+   snapshot 到 live work `[0x53A49]`。
+4. `0x21922..0x2192C` 從 boot loader 的 FDOTHER #3 base `[0x53A6D]`
+   取 offset-table entry `i`，故十輪依序消費 LUT `0..9`。`0x21942..0x21955`
+   的七個實參由原始 push 固定為
+   `sub_219AD(centerX,centerY,radius,12,0,192,lut)`；`0x219AD` 逐 scanline
+   以 toward-zero `sqrt(radius²-dy²)*12/10` 計算 span，水平裁切在312 pixels，
+   並由 `sub_4DB9C` 原地套用該256-byte LUT。
+5. 每輪 remap 後才呼叫 `0x127A9` 重畫 unit／foreground objects，接著
+   `0x11EB0(dst=0xA0504,dstStride=320,src=work+0x8088,srcStride=456,
+   width=312,height=192)` 發布 viewport。十輪後才 free snapshot 並呼叫
+   `0x11CAC(0)` 還原 steady frame。
+
+這關閉了舊「`0x2189A` indexed 資料來源、`0x219AD` consumer 與每輪 radius
+生命週期尚未知」的阻擋。高階畫面名稱仍未知；正式 adapter 只能依上述 raw
+順序組合既有 terrain snapshot、`ApplyRadialLUTRemap`、
+`RedrawNativeUnitPresentObjects` 與 viewport copy，不得改成泛用淡入淡出。
+
 ## 2026-08-09 `0x4dbfc` 原始遮罩原語複核（非破壞性）
+
+> 【歷史勘誤】本節稍後所稱「重製端目前只保存 `byte+3` 投影」已被
+> 2026-08-21 的 `State.NativeMapEventGrid` 實檔稽核推翻；舊句只保留用來追溯
+> 錯誤形成原因，不再是現況斷言。
 
 合法 IDA Pro 9.4 Docker 重新建立同一固定雜湊資料庫後，固定函式範圍
 `0x4dbfc..0x4dc34`。它先從輸入指標讀取兩個 raw bytes，計算
@@ -127,16 +253,22 @@ cell[+1] = cell[+1] & 0x03
 單一畫面效果。這是**已證實**的 raw mutation contract，但重製的戰役狀態
 目前只保存 `byte+3` 的投影，未保存同一 cell 的完整 `+1/+2/+3` 原始陣列；
 因此 `ch22_post.json` 的 `0x4dbfc` 仍保留 raw unknown，不能猜測性降級成
-單純 `reset_native_target_field`，`postbattle_ch23_persist` 也維持失敗即關閉。
+單純 `reset_native_target_field`。2026-08-21 重核重製端現況後，這項「只保存
+byte+3 投影」已是過時斷言：`State.NativeMapEventGrid` 由相同 FDFIELD export
+保存四位元組 header 與每格完整 `+0/+1/+2/+3`，`resetNativeMapEventGrid`
+也逐格執行 `+1&=3`、`+2&=0x1f`、`+3=0xff`。因此 raw state 已
+`DATA-READY`；仍需在 SDD 明定 handler 的原子 mutation／rollback，不能僅因
+helper 已存在就直接解除 campaign gate。
 
 證據等級與限制
 --------------
 
 - 上述函式邊界、直接呼叫、迴圈次數、引數順序與幾何常數是 E1 靜態「已證實」；
   IDA 與 Capstone 都以同一份固定雜湊的 FD2.EXE、線性位址基準產出。
-- `0x24b14`／`0x24bde` 的 record 高階意義、`0x2189a` 的畫面用途、
-  raw 工作區生命週期，以及 `postbattle_ch22_persist` 的一般玩家入口，
-  仍是強推論或未知；不得以這份檔案升格為 E2。
+- `0x24b14`／`0x24bde` 的 record 高階意義與 `0x2189a` 的高階畫面用途仍不
+  命名；但 `0x2189A` 的 typed 三實參、十輪 LUT／radius／snapshot／object／
+  viewport 順序與 `0x4DBFC` 完整 raw grid 已閉合。不得以這份靜態證據升格為 E2。
 - 尚無未修改一般玩家 DOSBox 的第23戰戰後→城鎮／商店／整備／存檔擷取，
   也尚未證明 `town_ch23` 的實際節點。原有戰間邊界保持 fail-closed，待
-  raw indexed adapter 與一般玩家路徑證據閉合後才可建立正式 binding。
+  raw indexed adapter 依 SDD 通過 E1 後才可建立正式 binding；一般玩家路徑
+  仍另列 PLAYER-E2，不反向抹除已證實的靜態資料流。

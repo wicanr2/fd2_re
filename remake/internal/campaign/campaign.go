@@ -448,7 +448,11 @@ type Beat struct {
 	// grant_item: original unsigned-byte item identity.
 	ItemID     *int `json:"item_id,omitempty"`
 	ResourceID *int `json:"resource_id,omitempty"`
-	SFXIndex   *int `json:"sfx_index,omitempty"`
+	// ResourceArchive/Owner preserve 0x111BA's filename and old/new handle
+	// owner when a bare numeric archive index would be ambiguous.
+	ResourceArchive string `json:"resource_archive,omitempty"`
+	ResourceOwner   string `json:"resource_owner,omitempty"`
+	SFXIndex        *int   `json:"sfx_index,omitempty"`
 }
 
 // NativeEndingPrefixConfig 是已證實原版結局前綴的狹義戰役入口。它保留精確

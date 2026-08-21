@@ -78,7 +78,6 @@ func TestApproximateCampaignFullUnboundPostbattleBoundaries(t *testing.T) {
 	tests := []struct {
 		postbattle, next string
 	}{
-		{postbattle: "postbattle_ch23_persist", next: "preparation_ch24"},
 		{postbattle: "postbattle_ch29_persist", next: "preparation_ch30"},
 	}
 	for _, tc := range tests {
@@ -124,7 +123,6 @@ func TestApproximateCampaignFullResultConfirmationKeepsUnboundIntermissions(t *t
 	tests := []struct {
 		battle, postbattle, next string
 	}{
-		{battle: "battle_ch23", postbattle: "postbattle_ch23_persist", next: "preparation_ch24"},
 		{battle: "battle_ch29", postbattle: "postbattle_ch29_persist", next: "preparation_ch30"},
 	}
 	for _, tc := range tests {
@@ -163,9 +161,7 @@ func TestApproximateCampaignFullResultConfirmationKeepsUnboundIntermissions(t *t
 }
 
 func TestCampaignFullUnboundPostbattleDefaultsFailClosed(t *testing.T) {
-	for _, nodeID := range []string{
-		"postbattle_ch23_persist", "postbattle_ch29_persist",
-	} {
+	for _, nodeID := range []string{"postbattle_ch29_persist"} {
 		t.Run(nodeID, func(t *testing.T) {
 			campaignData, err := campaign.Load("../../assets/scenarios/campaign_full.json")
 			if err != nil {

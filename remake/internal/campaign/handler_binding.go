@@ -59,8 +59,10 @@ type HandlerBindingOverride struct {
 // HandlerResource binds a native resource-table handle to an editable asset.
 // SFXIndex is optional because LOAD_RES/RELEASE_RES only identify the handle.
 type HandlerResource struct {
-	ResourceID int  `json:"resource_id"`
-	SFXIndex   *int `json:"sfx_index,omitempty"`
+	ResourceID int    `json:"resource_id"`
+	Archive    string `json:"archive,omitempty"`
+	Owner      string `json:"owner,omitempty"`
+	SFXIndex   *int   `json:"sfx_index,omitempty"`
 }
 
 // HandlerActing is a decoded, editable behavioural transcription.  It never
