@@ -5490,3 +5490,21 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - README 改為明寫「賣出子面板圖本身」不包成功／返回，而該後續現已有
   九組 route-patched E2；歷史 `91` 與本檔舊「仍待 sell success」句均追加取代關係，
   避免單純搜尋把已閉合切片重開。未修改一般玩家路徑仍是獨立缺口。
+
+## 2026-08-22：ch02 物品轉移五狀態 partial E2
+
+- 先重讀既有 `0x2F8EA` RE 與正式 transfer owner，於 SDD 固定同狀態契約後才
+  實作截圖入口；本輪沒有重解已閉合函式。入口只接受
+  `intro|source|items|dest_prompt|dest,source,item,selection,start,gold`，由
+  `FD2_SHOT_PARTY_BINDING` 的完整 typed/raw party 推導角色與物品，非法 window、
+  raw provenance 或 compositor 失敗時原子拒絕，且不執行任何背包 mutation。
+- 固定雜湊原版的可拋棄 route-patched 副本，由正常標題、城鎮、武器店與
+  `Right×3→service3` 鍵盤輸入取得 FDTXT512、來源名冊、索爾物品、FDTXT510
+  與目的名冊；目的名冊依原版保留來源索爾。
+- 五組320×200整幀 AE 依序為 `88／1391／2／88／321`。提示差異是翻頁箭頭
+  相位，名冊差異是角色小圖相位；文字、名冊、物品、效果、價格與幾何一致。
+  這是 `PLAYER-E2 route-patched partial`，不是 AE=0 或未修改一般玩家 E2。
+- 證據見
+  [`shop-transfer-ch02-e2.json`](../data/ui-traces/shop-transfer-ch02-e2.json)與
+  [`對照圖`](../figures/shop-transfer-ch02-original-vs-remake.png)。本批不證明
+  mutation、empty/full、cancel/restore、原版存檔、church caller 或其他章節。

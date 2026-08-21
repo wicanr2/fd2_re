@@ -75,6 +75,40 @@ func TestParseNativeShopEquipShotState(t *testing.T) {
 	}
 }
 
+func TestParseNativeShopTransferShotState(t *testing.T) {
+	for _, tc := range []struct {
+		spec                                 string
+		mode                                 string
+		source, item, selection, start, gold int
+		ok                                   bool
+	}{
+		{spec: "intro,0,0,0,0,0", mode: "intro", ok: true},
+		{spec: "source,3,0,0,1,99999999", mode: "source", source: 3, start: 1, gold: 99999999, ok: true},
+		{spec: "items,1,2,0,0,37", mode: "items", source: 1, item: 2, gold: 37, ok: true},
+		{spec: "dest_prompt,0,1,0,0,0", mode: "dest_prompt", item: 1, ok: true},
+		{spec: "dest,0,1,2,0,0", mode: "dest", item: 1, selection: 2, ok: true},
+		{spec: "full,0,0,0,0,0"},
+		{spec: "intro,-1,0,0,0,0"},
+		{spec: "source,0,-1,0,0,0"},
+		{spec: "items,0,0,-1,0,0"},
+		{spec: "dest,0,0,0,-1,0"},
+		{spec: "dest,0,0,0,0,100000000"},
+		{spec: "intro,0,0,0,0"},
+	} {
+		mode, source, item, selection, start, gold, ok :=
+			parseNativeShopTransferShotState(tc.spec)
+		if mode != tc.mode || source != tc.source || item != tc.item ||
+			selection != tc.selection || start != tc.start ||
+			gold != tc.gold || ok != tc.ok {
+			t.Fatalf(
+				"parseNativeShopTransferShotState(%q)=(%q,%d,%d,%d,%d,%d,%v), want (%q,%d,%d,%d,%d,%d,%v)",
+				tc.spec, mode, source, item, selection, start, gold, ok,
+				tc.mode, tc.source, tc.item, tc.selection, tc.start, tc.gold, tc.ok,
+			)
+		}
+	}
+}
+
 func TestParseNativeShopSellShotState(t *testing.T) {
 	for _, tc := range []struct {
 		spec                                string
@@ -396,6 +430,140 @@ func TestNativeShopEquipShotLoadGameAdmission(t *testing.T) {
 	}
 	if !g.setNativeShopEquipShotState("roster", 0, 0, 0, 0) {
 		t.Fatal("loadGame screenshot bootstrap rejected standalone equip roster")
+	}
+}
+
+func TestNativeShopTransferShotUsesBindingPartyProjection(t *testing.T) {
+	const base = "../../../org_game/炎龍騎士團/FLAME2"
+	fdotherPath := filepath.Join(base, "FDOTHER.DAT")
+	if _, err := os.Stat(fdotherPath); err != nil {
+		t.Skip("player-provided original resources are absent")
+	}
+	t.Setenv("FD2_ORIGINAL_FDOTHER", fdotherPath)
+	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(base, "FDTXT.DAT"))
+	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(base, "DATO.DAT"))
+
+	shared, err := loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	shop, err := loadNativeShopUIAssets(shared)
+	if err != nil {
+		t.Fatal(err)
+	}
+	c, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	types, equip, err := campaign.LoadShopEligibility(
+		assetPath("assets/data/item.json"),
+		assetPath("assets/data/class_equip_types.json"),
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	stats, err := campaign.LoadItemStats(assetPath("assets/data/item.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	newGame := func() *Game {
+		runner := campaign.NewRunner(c)
+		runner.Cur = "shop_ch02_weapon"
+		g := &Game{
+			shotPath:      "transfer.png",
+			camp:          runner,
+			nativeClassUI: shared,
+			nativeShopUI:  shop,
+			nativeUIPalette: append(
+				color.Palette(nil), shared.palette...,
+			),
+			shopItemTypes:  types,
+			shopEquipTypes: equip,
+			shopItemStats:  stats,
+		}
+		if err := g.materializeShotPartyFromBinding(
+			"assets/cutscenes/bindings/ch00_pre.json",
+		); err != nil {
+			t.Fatal(err)
+		}
+		if !g.setupNativeShop() {
+			t.Fatal("ch02 weapon shop did not admit native owner")
+		}
+		g.nativeShopUIJob = nil
+		return g
+	}
+
+	for _, tc := range []struct {
+		mode                           string
+		source, item, selection, start int
+		wantMode                       string
+	}{
+		{mode: "intro", wantMode: "transfer_intro"},
+		{mode: "source", wantMode: "transfer_source"},
+		{mode: "items", wantMode: "transfer_items"},
+		{mode: "dest_prompt", wantMode: "transfer_dest_prompt"},
+		{mode: "dest", wantMode: "transfer_dest"},
+	} {
+		g := newGame()
+		if !g.setNativeShopTransferShotState(
+			tc.mode, tc.source, tc.item, tc.selection, tc.start, 0,
+		) || g.nativeShopMode != tc.wantMode || g.nativeShopUIJob != nil {
+			t.Fatalf(
+				"transfer state %q rejected binding party: mode=%q job=%#v",
+				tc.mode, g.nativeShopMode, g.nativeShopUIJob,
+			)
+		}
+		var frame []byte
+		var ok bool
+		switch tc.mode {
+		case "intro", "dest_prompt":
+			frame, ok = g.composeNativeShopTransferMessage()
+		case "source", "dest":
+			frame, ok = g.composeNativeShopTransferRoster()
+		case "items":
+			frame, ok = g.composeNativeShopTransferItems()
+		}
+		if !ok || len(frame) != 320*200 {
+			t.Fatalf("transfer state %q failed final compositor admission", tc.mode)
+		}
+	}
+
+	invalid := newGame()
+	oldMode, oldGold := invalid.nativeShopMode, invalid.gold
+	if invalid.setNativeShopTransferShotState("dest", 4, 0, 0, 0, 37) ||
+		invalid.nativeShopMode != oldMode || invalid.gold != oldGold {
+		t.Fatal("invalid transfer source did not fail atomically")
+	}
+}
+
+func TestNativeShopTransferShotLoadGameAdmission(t *testing.T) {
+	const base = "../../../org_game/炎龍騎士團/FLAME2"
+	fdotherPath := filepath.Join(base, "FDOTHER.DAT")
+	if _, err := os.Stat(fdotherPath); err != nil {
+		t.Skip("player-provided original resources are absent")
+	}
+	t.Setenv("FD2_TITLE", "0")
+	t.Setenv("FD2_SHOT", "transfer.png")
+	t.Setenv("FD2_CAMPAIGN", "assets/scenarios/campaign_full.json")
+	t.Setenv("FD2_CAMP_NODE", "shop_ch02_weapon")
+	t.Setenv("FD2_SHOT_PARTY_BINDING", "assets/cutscenes/bindings/ch00_pre.json")
+	t.Setenv("FD2_ORIGINAL_FDOTHER", fdotherPath)
+	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(base, "FDTXT.DAT"))
+	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(base, "DATO.DAT"))
+
+	g := loadGame()
+	if g.loadErr != "" {
+		t.Fatalf("loadGame screenshot bootstrap: %s", g.loadErr)
+	}
+	if g.nativeShopMode != "menu" || len(g.partyJoinOrder) != 4 {
+		t.Fatalf(
+			"loadGame native shop mode=%q party=%v",
+			g.nativeShopMode, g.partyJoinOrder,
+		)
+	}
+	if !g.setNativeShopTransferShotState("items", 0, 0, 0, 0, 0) ||
+		g.nativeShopMode != "transfer_items" {
+		t.Fatal("loadGame screenshot bootstrap rejected transfer items")
 	}
 }
 

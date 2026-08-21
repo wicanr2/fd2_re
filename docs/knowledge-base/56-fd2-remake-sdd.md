@@ -1923,6 +1923,44 @@ stable E2。正常標題／城鎮／商店／service2／角色輸入已取得名
 [`shop-standalone-equip-ch02-e2.json`](../data/ui-traces/shop-standalone-equip-ch02-e2.json)
 及[`對照圖`](../figures/shop-standalone-equip-ch02-original-vs-remake.png)。
 
+### ch02 物品轉移子面板 E2 契約（2026-08-22）
+
+本切片只消費已閉合的共用 owner `0x2F8EA`，不重解函式本體。原版只可
+使用固定雜湊 `FD2.EXE` 的可拋棄 route-patched 副本；戰鬥略過之後，標題、
+城鎮、武器店、service3、來源角色、物品與目的角色仍由普通鍵盤輸入，
+不得以修存檔或座標注入取代。證據最高只能為 route-patched E2。
+
+第一批同狀態至少保存：
+
+1. service3 Enter 後 FDTXT512「誰的東西呢？」的完整展開穩定幀；
+2. Enter 後來源名冊 selection0／window start0；
+3. 選索爾後，`0x2DC55(mode=1)` 物品清單 selection0／start0，且商店金額不變；
+4. 選短劍後 FDTXT510「要給誰呢？」穩定幀；
+5. Enter 後目的名冊 selection0／start0，來源索爾仍在全 party 名冊內。
+
+重製截圖入口只可接受
+`mode,source,item,selection,start,gold`，其中 `mode` 只能為
+`intro|source|items|dest_prompt|dest`。入口必須先以
+`FD2_SHOT_PARTY_BINDING` 建立完整 typed/raw party，再依序呼叫 production
+`setupNativeShopTransfer`、來源 roster、物品清單與目的 roster owner。`source`與
+`selection` 都是 `partyJoinOrder` 中的索引；`item` 只能選取該來源依 raw signed
+flag 投影後的實際 compact item。禁止注入姓名、record、item ID、背包、
+畫面或名冊像素。非法 window、缺 raw provenance、缺資源或合成器拒絕時，
+所有公開狀態必須原子不變。
+
+原版與重製以 320×200 raw RGB 整幀比較，保存輸入時間線、雜湊、AE 與限制。
+第一批穩定幀不能外推 transfer mutation、self-transfer、empty/full feedback、
+cancel/restore、原版 `FD2.SAV`、church caller 或未修改完整 campaign E2。
+
+實測結果保存於
+[`shop-transfer-ch02-e2.json`](../data/ui-traces/shop-transfer-ch02-e2.json)及
+[`對照圖`](../figures/shop-transfer-ch02-original-vs-remake.png)。五個狀態都由
+正常標題／城鎮／商店鍵盤輸入抵達：物品清單只差2像素；兩個提示各差88像素，
+差異為翻頁箭頭的動畫相位；來源與目的名冊分別為 `AE=1391`、`AE=321`，差異
+集中在角色小圖動畫相位。可見文字、名冊、物品、效果、價格與幾何一致，但
+沒有同步原版動畫 tick，故裁決為 `PLAYER-E2 route-patched partial`，不可寫成
+整幀相同或未修改一般玩家 E2。
+
 The `0x318ad` cap gate is now explicit in
 `fdother.NativePreparationPartyLimit`: raw global `[0x53c03] <= 0x1a` yields
 15, while values greater than `0x1a` yield 19. The adapter accepts a native

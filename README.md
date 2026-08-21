@@ -226,6 +226,14 @@ ch02 獨立裝備的角色名冊與索爾物品／狀態面板：左側為 route
 
 ![ch02 獨立裝備名冊與索爾面板原版／重製 partial E2 對照](docs/figures/shop-standalone-equip-ch02-original-vs-remake.png)
 
+ch02 物品轉移的來源提示／名冊、索爾物品、目的提示／名冊：左側為
+route-patched 原版正常商店輸入，右側為正式重製 owner。文字、物品、價格與
+幾何一致；五組整幀差異為 `AE=88／1391／2／88／321`，剩餘像素來自翻頁箭頭
+或角色小圖動畫相位，因此仍是 partial E2。證據與限制見
+[`shop-transfer-ch02-e2.json`](docs/data/ui-traces/shop-transfer-ch02-e2.json)。
+
+![ch02 物品轉移五狀態原版／重製 partial E2 對照](docs/figures/shop-transfer-ch02-original-vs-remake.png)
+
 ### 讀檔選單
 
 原版與重製的四個空存檔槽畫面已達整幀 RGB 相同；有效槽排版也已有相同結果。

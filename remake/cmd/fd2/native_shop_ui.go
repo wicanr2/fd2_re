@@ -173,6 +173,30 @@ func parseNativeShopEquipShotState(
 	return parts[0], values[0], values[1], values[2], values[3], true
 }
 
+func parseNativeShopTransferShotState(
+	spec string,
+) (mode string, source, item, selection, start, gold int, ok bool) {
+	parts := strings.Split(spec, ",")
+	if len(parts) != 6 ||
+		(parts[0] != "intro" && parts[0] != "source" &&
+			parts[0] != "items" && parts[0] != "dest_prompt" &&
+			parts[0] != "dest") {
+		return "", 0, 0, 0, 0, 0, false
+	}
+	values := make([]int, 5)
+	for i, part := range parts[1:] {
+		value, err := strconv.Atoi(part)
+		if err != nil || value < 0 {
+			return "", 0, 0, 0, 0, 0, false
+		}
+		values[i] = value
+	}
+	if values[4] > 99999999 {
+		return "", 0, 0, 0, 0, 0, false
+	}
+	return parts[0], values[0], values[1], values[2], values[3], values[4], true
+}
+
 func parseNativeShopSellShotState(
 	spec string,
 ) (mode string, unit, selection, start, cycle, gold int, ok bool) {
@@ -498,6 +522,118 @@ func (g *Game) setNativeShopEquipShotState(
 	candidate.itemAnimStep = 11
 	candidate.itemClosing = false
 	candidate.nativeShopUIJob = nil
+	*g = candidate
+	return true
+}
+
+// setNativeShopTransferShotState 只公開正式物品轉移 owner 的五個穩定
+// 狀態。來源、物品與目的角色均由通過驗證的 typed/raw 隊伍推導；
+// 入口不執行 mutation，私有 Game 候選確保任何拒絕都不留部分狀態。
+func (g *Game) setNativeShopTransferShotState(
+	mode string, source, item, selection, start, gold int,
+) bool {
+	if g.shotPath == "" ||
+		(mode != "intro" && mode != "source" && mode != "items" &&
+			mode != "dest_prompt" && mode != "dest") ||
+		source < 0 || item < 0 || selection < 0 || start < 0 ||
+		gold < 0 || gold > 99999999 ||
+		g.camp == nil || g.nativeShopUI == nil || g.nativeClassUI == nil ||
+		g.nativeShopMode != "menu" {
+		return false
+	}
+	candidate := *g
+	candidate.nativeShopUIJob = nil
+	candidate.gold = gold
+	if !candidate.setupNativeShopTransfer() {
+		return false
+	}
+	candidate.nativeShopUIJob = nil
+	if mode == "intro" {
+		if source != 0 || item != 0 || selection != 0 || start != 0 {
+			return false
+		}
+		if _, ok := candidate.composeNativeShopTransferMessage(); !ok {
+			return false
+		}
+		*g = candidate
+		return true
+	}
+
+	candidate.openNativeShopTransferSourceRoster()
+	candidate.nativeShopUIJob = nil
+	if source >= len(candidate.nativeShopTransferIDs) {
+		return false
+	}
+	normalizedStart, visible := campaign.NativeTwoColumnWindow(
+		len(candidate.nativeShopTransferIDs), source, start,
+	)
+	if mode == "source" {
+		if item != 0 || selection != 0 || visible == 0 ||
+			normalizedStart != start {
+			return false
+		}
+		candidate.nativeShopTransferSel = source
+		candidate.nativeShopTransferTop = start
+		if _, ok := candidate.composeNativeShopTransferRoster(); !ok {
+			return false
+		}
+		*g = candidate
+		return true
+	}
+
+	candidate.nativeShopTransferSource = candidate.nativeShopTransferIDs[source]
+	if !candidate.openNativeShopTransferItems() {
+		return false
+	}
+	candidate.nativeShopUIJob = nil
+	if item >= len(candidate.nativeShopTransferItems) {
+		return false
+	}
+	itemStart, itemVisible := campaign.NativeTwoColumnWindow(
+		len(candidate.nativeShopTransferItems), item, start,
+	)
+	if mode == "items" {
+		if selection != 0 || itemVisible == 0 || itemStart != start {
+			return false
+		}
+		candidate.nativeShopTransferSel = item
+		candidate.nativeShopTransferTop = start
+		if _, ok := candidate.composeNativeShopTransferItems(); !ok {
+			return false
+		}
+		*g = candidate
+		return true
+	}
+
+	candidate.nativeShopTransferItem = candidate.nativeShopTransferItems[item]
+	candidate.nativeShopMode = "transfer_dest_prompt"
+	if mode == "dest_prompt" {
+		if selection != 0 || start != 0 {
+			return false
+		}
+		if _, ok := candidate.composeNativeShopTransferMessage(); !ok {
+			return false
+		}
+		*g = candidate
+		return true
+	}
+
+	candidate.openNativeShopTransferDestinationRoster()
+	candidate.nativeShopUIJob = nil
+	if selection >= len(candidate.nativeShopTransferIDs) {
+		return false
+	}
+	destStart, destVisible := campaign.NativeTwoColumnWindow(
+		len(candidate.nativeShopTransferIDs), selection, start,
+	)
+	if destVisible == 0 || destStart != start {
+		return false
+	}
+	candidate.nativeShopTransferSel = selection
+	candidate.nativeShopTransferTop = start
+	if _, ok := candidate.composeNativeShopTransferRoster(); !ok {
+		return false
+	}
 	*g = candidate
 	return true
 }
