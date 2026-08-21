@@ -21,7 +21,7 @@ func TestWriteShotStateTraceRecordsNativeInteractionState(t *testing.T) {
 		ring:                         true,
 		nativeCommandOpen:            true,
 		nativeContinueOpeningConfirm: true,
-		nativeContinueCursorOverlay:  true,
+		nativeSystemCursorOverlay:    true,
 		camp: campaign.NewRunner(&campaign.Campaign{
 			Start: "battle_ch01",
 			Nodes: map[string]*campaign.Node{
@@ -63,7 +63,7 @@ func TestWriteShotStateTraceRecordsNativeInteractionState(t *testing.T) {
 
 func TestWriteShotStateTraceOmitsSelectionWithoutOwner(t *testing.T) {
 	g := &Game{
-		curX: 8, curY: 17, ring: true, nativeContinueCursorOverlay: true,
+		curX: 8, curY: 17, ring: true, nativeSystemCursorOverlay: true,
 		st: &battle.State{W: 24, H: 24},
 	}
 	path := filepath.Join(t.TempDir(), "shot-state-empty-cursor.json")

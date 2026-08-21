@@ -17,10 +17,10 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
-// nativeEndingPreview is an explicit developer oracle for the recovered
-// beginning of 0x2bce5.  It is intentionally separate from campaign endings:
-// the timeline currently blocks at the first unrecovered native operation.
-// FD2_ENDING_PREFIX=1 activates it with player-provided FDOTHER.DAT/ANI.DAT.
+// nativeEndingPreview preserves the recovered 0x2bce5 prefix and also owns
+// the source-bound campaign ending path. It still grades call-time record and
+// global continuity, sound/input ownership and player-path E2 separately;
+// FD2_ENDING_PREFIX=1 remains a developer-only direct preview entry.
 type nativeEndingPreview struct {
 	player                *ending.Player
 	view                  *ebiten.Image
@@ -189,8 +189,8 @@ func (p *nativeEndingPreview) awaitingCampaignFallback() bool {
 }
 
 // consumeNativeEndingAudioAtGate 只消費 after_gate 與目前已還原 0x2c548
-// 邊界精確相符的唯一音訊 cue。後續 track18 由另一個明確的近似 adapter 在
-// 20 組尾段開始時消費，不能把它誤當作此 gate 的精確時序。
+// 邊界精確相符的唯一音訊 cue。後續 track18 由來源約束 E1 尾段 adapter 在
+// 20 組尾段開始時消費；精確停曲與 DOS 時序仍未知。
 func (g *Game) consumeNativeEndingAudioAtGate() {
 	if g == nil || g.nativeEnding == nil || !g.nativeEnding.atNativeMontageGate() ||
 		g.nativeEnding.audioCueConsumed {

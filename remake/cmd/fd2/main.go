@@ -258,89 +258,89 @@ type Game struct {
 	nativeCommandTargetID    int
 	// nativeContinueOpeningConfirm 只由已驗證的原版 FD2.SAV current-runtime
 	// 發布點設一次。它讓該 E2 錨點的第一個 Return 直接開 action overlay；
-	// 一經消費即回到一般選取流程，不可外推為其他戰場的輸入規則。
+	// 一經消費，後續空游標確認由已證實的共用 0x117E7 owner 處理。
 	nativeContinueOpeningConfirm bool
-	// nativeContinueCursorOverlay 是 current-runtime E2 錨點的游標命令格。
-	// 它沒有可接入的 selected-unit owner；只有同一 E2 輸入證實的 Down→END
-	// 可進確認，其餘三格維持失敗即關閉。
-	nativeContinueCursorOverlay bool
-	spellOpen                   bool
-	spellSel                    int
-	itemOpen                    bool // native 0x1b932 eight-slot selector; unsupported effect presentations remain fail-closed
-	itemSel                     int
-	itemAnimStep                int
-	itemClosing                 bool
-	nativeItemTargeting         bool
-	nativeItemTargetID          int
-	nativeItemTargetRawSlot     int
-	nativeItemRelocating        bool
-	nativeItemRelocationUnit    int
-	nativeMovementCostRows      [][]byte
-	nativeRNGState              uint16 // original 0x627b8: initialized to zero, process-lifetime only
-	nativeItemPanel             *ebiten.Image
-	nativeItemPanelBase         []byte
-	nativeItemPanelRecord       []byte
-	nativeItemPanelAssets       *battle.NativeItemPanelDataAssets
-	nativeItemEffectRows        []byte
-	castSp                      *battle.Spell // 施法目標選擇中
-	spells                      []battle.Spell
-	nativeCommandBook           []battle.NativeCommandRecord
-	nativeCommandResistances    map[int]int
-	commandLearn                map[int][]battle.CommandLearnEntry // native portrait-indexed level-up command table
-	bgm                         *audio.Player                      // BGM(doc12 play_bgm 語意:同曲不重播)
-	bgmCur                      string
-	bgmSource                   string                // 音源設定 "fm"/"mt32"(settings.go;F2 切換)
-	debug                       bool                  // F3:開發除錯 HUD(座標/陣營原文等)
-	approximateMode             bool                  // FD2_APPROXIMATE=1:可玩近似模式；不宣稱原版 handler 等價
-	approximatePostbattle       bool                  // 未綁定戰後節點的近似整理提示，等待玩家確認後才進城鎮／整備
-	unitLabels                  bool                  // FD2_UNIT_LABELS=1:cutscene sprite 左上標 [idx]fig+名+座標(協助回報/對映原版 slot)
-	cutsceneLog                 bool                  // FD2_CUTSCENE_LOG=1:過場 node/beat/走位逐步 log 到 stderr(協助對原版資料比對)
-	banner                      string                // 回合橫幅文字(PLAYER/ENEMY PHASE)
-	bannerT                     int                   // 橫幅剩餘 tick
-	sfx                         map[int][]byte        // SFX PCM(doc36 FDOTHER#31 14樣本)
-	sfxSwing                    []byte                // 戰鬥揮擊音(doc36 戰鬥池 #48-64 sub0,七池共用)
-	sfxImpact                   []byte                // 命中音(近似:最短最尖池;attack_id→sfx 對照表 doc36 未 RE)
-	sfxDeath                    []byte                // 陣亡/重擊音(近似:最長池)
-	sfxTransition               []byte                // FDOTHER #88 sub1: ch24 transition SFX
-	sfxSpawnIntro               []byte                // FDOTHER #95 sub0: 0x32999 pass1 raw sample（11025Hz 為既有工具鏈推論）
-	handlerResource             int                   // currently loaded handler resource-table id
-	prevCurX, prevCurY          int                   // 游標移動音偵測
-	aiBusy                      bool                  // AI 回合進行中(逐單位行走動畫)
-	deathRewarded               map[*battle.Unit]bool // 每個死亡 transition 的 reward 只執行一次
-	rng                         *rand.Rand            // 施法擲骰(FD2_SEED 可固定,headless 重現)
-	gold                        int                   // 金幣(商店)
-	items                       []string              // 隊伍道具(名稱;道具效果待實裝)
-	shopSel                     int                   // 商店游標
-	shopRecipientSel            int
-	shopRecipients              []int
-	shopPicking                 bool
-	shopPending                 campaign.Good
-	shopEquipPrompt             bool
-	shopEquipUnit               int
-	shopEquipSlot               int
-	shopItemTypes               map[int]int
-	shopEquipTypes              map[int][]int
-	shopItemPrices              map[int]int
-	shopItemStats               map[int]campaign.ItemStats
-	reviveFeeRates              []int  // church 0x30dc3 class fee words
-	shopMode                    string // buy or sell
-	shopSellPicking             bool
-	shopSellUnitSel             int
-	shopSellSlotSel             int
-	portraits                   map[int][]*ebiten.Image // DATO 頭像:肖像 id → 4 嘴型幀
-	mouthOpen                   bool                    // 嘴型動畫狀態(原版 0x16d00:m0閉/m3開)
-	mouthTimer                  int                     // 閉嘴倒數(原版 rand%30+2 tick)
-	mouthState                  dato.MouthState         // native 0x16d00 cadence adapter
-	curX                        int
-	curY                        int
-	camX                        float64
-	camY                        float64
-	loadErr                     string
+	// nativeSystemCursorOverlay 對應共用 0x117E7 在 0x12C0D 回傳 -1 時
+	// 呼叫的 0x16F55 空游標面板。只有 direction3／END 已有 action owner；
+	// 其餘三格維持失敗即關閉。
+	nativeSystemCursorOverlay bool
+	spellOpen                 bool
+	spellSel                  int
+	itemOpen                  bool // native 0x1b932 eight-slot selector; unsupported effect presentations remain fail-closed
+	itemSel                   int
+	itemAnimStep              int
+	itemClosing               bool
+	nativeItemTargeting       bool
+	nativeItemTargetID        int
+	nativeItemTargetRawSlot   int
+	nativeItemRelocating      bool
+	nativeItemRelocationUnit  int
+	nativeMovementCostRows    [][]byte
+	nativeRNGState            uint16 // original 0x627b8: initialized to zero, process-lifetime only
+	nativeItemPanel           *ebiten.Image
+	nativeItemPanelBase       []byte
+	nativeItemPanelRecord     []byte
+	nativeItemPanelAssets     *battle.NativeItemPanelDataAssets
+	nativeItemEffectRows      []byte
+	castSp                    *battle.Spell // 施法目標選擇中
+	spells                    []battle.Spell
+	nativeCommandBook         []battle.NativeCommandRecord
+	nativeCommandResistances  map[int]int
+	commandLearn              map[int][]battle.CommandLearnEntry // native portrait-indexed level-up command table
+	bgm                       *audio.Player                      // BGM(doc12 play_bgm 語意:同曲不重播)
+	bgmCur                    string
+	bgmSource                 string                // 音源設定 "fm"/"mt32"(settings.go;F2 切換)
+	debug                     bool                  // F3:開發除錯 HUD(座標/陣營原文等)
+	approximateMode           bool                  // FD2_APPROXIMATE=1:可玩近似模式；不宣稱原版 handler 等價
+	approximatePostbattle     bool                  // 未綁定戰後節點的近似整理提示，等待玩家確認後才進城鎮／整備
+	unitLabels                bool                  // FD2_UNIT_LABELS=1:cutscene sprite 左上標 [idx]fig+名+座標(協助回報/對映原版 slot)
+	cutsceneLog               bool                  // FD2_CUTSCENE_LOG=1:過場 node/beat/走位逐步 log 到 stderr(協助對原版資料比對)
+	banner                    string                // 回合橫幅文字(PLAYER/ENEMY PHASE)
+	bannerT                   int                   // 橫幅剩餘 tick
+	sfx                       map[int][]byte        // SFX PCM(doc36 FDOTHER#31 14樣本)
+	sfxSwing                  []byte                // 戰鬥揮擊音(doc36 戰鬥池 #48-64 sub0,七池共用)
+	sfxImpact                 []byte                // 命中音(近似:最短最尖池;attack_id→sfx 對照表 doc36 未 RE)
+	sfxDeath                  []byte                // 陣亡/重擊音(近似:最長池)
+	sfxTransition             []byte                // FDOTHER #88 sub1: ch24 transition SFX
+	sfxSpawnIntro             []byte                // FDOTHER #95 sub0: 0x32999 pass1 raw sample（11025Hz 為既有工具鏈推論）
+	handlerResource           int                   // currently loaded handler resource-table id
+	prevCurX, prevCurY        int                   // 游標移動音偵測
+	aiBusy                    bool                  // AI 回合進行中(逐單位行走動畫)
+	deathRewarded             map[*battle.Unit]bool // 每個死亡 transition 的 reward 只執行一次
+	rng                       *rand.Rand            // 施法擲骰(FD2_SEED 可固定,headless 重現)
+	gold                      int                   // 金幣(商店)
+	items                     []string              // 隊伍道具(名稱;道具效果待實裝)
+	shopSel                   int                   // 商店游標
+	shopRecipientSel          int
+	shopRecipients            []int
+	shopPicking               bool
+	shopPending               campaign.Good
+	shopEquipPrompt           bool
+	shopEquipUnit             int
+	shopEquipSlot             int
+	shopItemTypes             map[int]int
+	shopEquipTypes            map[int][]int
+	shopItemPrices            map[int]int
+	shopItemStats             map[int]campaign.ItemStats
+	reviveFeeRates            []int  // church 0x30dc3 class fee words
+	shopMode                  string // buy or sell
+	shopSellPicking           bool
+	shopSellUnitSel           int
+	shopSellSlotSel           int
+	portraits                 map[int][]*ebiten.Image // DATO 頭像:肖像 id → 4 嘴型幀
+	mouthOpen                 bool                    // 嘴型動畫狀態(原版 0x16d00:m0閉/m3開)
+	mouthTimer                int                     // 閉嘴倒數(原版 rand%30+2 tick)
+	mouthState                dato.MouthState         // native 0x16d00 cadence adapter
+	curX                      int
+	curY                      int
+	camX                      float64
+	camY                      float64
+	loadErr                   string
 
-	// nativeContinueEndTurnConfirm 只承接 chapter0 current-runtime 在未修改原版
-	// E2 觀測到的 END→YES；其餘三個 0x16f55 cell 沒有已證實 owner，仍失敗即關閉。
-	nativeContinueEndTurnConfirm bool
-	nativeContinueEndTurnDelay   int
+	// nativeSystemEndTurnConfirm 承接共用 0x16F55 的 END→YES；其餘三個
+	// cell 沒有已證實 owner，仍失敗即關閉。
+	nativeSystemEndTurnConfirm bool
+	nativeSystemEndTurnDelay   int
 
 	// 截圖鉤子(FD2_SHOT=path 啟用):第 shotFrame 幀存 PNG 後自動退出(有界,供無人值守驗證)
 	frame      int
@@ -2818,7 +2818,7 @@ func (g *Game) captureNativeMapHUDPersistence() {
 func (g *Game) resetBattle(unitsPath, scnPath string) {
 	g.resetActionOverlayLifecycle()
 	g.nativeContinueOpeningConfirm = false
-	g.nativeContinueCursorOverlay = false
+	g.nativeSystemCursorOverlay = false
 	g.nativeCh20SkyKey = nil
 	g.nativeCh23State = nil
 	g.nativeCh23Loop = nil
@@ -4700,22 +4700,22 @@ func (g *Game) stepCampaignMenu(event campaign.MenuEvent) (selected int, confirm
 func (g *Game) ringInput() bool {
 	enter := inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)
 	esc := inpututil.IsKeyJustPressed(ebiten.KeyEscape) || inpututil.IsKeyJustPressed(ebiten.KeyBackspace)
-	if g.nativeContinueEndTurnDelay > 0 {
+	if g.nativeSystemEndTurnDelay > 0 {
 		return true
 	}
-	if g.nativeContinueEndTurnConfirm {
+	if g.nativeSystemEndTurnConfirm {
 		if esc {
-			g.cancelNativeContinueEndTurn()
+			g.cancelNativeSystemEndTurn()
 			return true
 		}
 		if enter {
-			g.confirmNativeContinueEndTurn()
+			g.confirmNativeSystemEndTurn()
 		}
 		return true
 	}
-	if g.nativeContinueCursorOverlay {
+	if g.nativeSystemCursorOverlay {
 		if !g.ring {
-			g.nativeContinueCursorOverlay = false
+			g.nativeSystemCursorOverlay = false
 			return false
 		}
 		if g.actionOverlayBlocksInput() {
@@ -4735,13 +4735,13 @@ func (g *Game) ringInput() bool {
 		}
 		if esc {
 			g.beginActionOverlayClose(func() {
-				g.nativeContinueCursorOverlay = false
+				g.nativeSystemCursorOverlay = false
 				g.msg = ""
 			})
 			return true
 		}
 		if enter {
-			if g.ringSel == 3 && g.beginNativeContinueEndTurn() {
+			if g.ringSel == 3 && g.beginNativeSystemEndTurn() {
 				return true
 			}
 			// 只有 Down→END 已有同一存檔、同一輸入的未修改原版 E2；
@@ -5747,13 +5747,12 @@ func (g *Game) confirm() {
 	cur := battle.Cell{X: g.curX, Y: g.curY}
 	if g.sel == nil { // 選我方單位
 		u := g.st.UnitAt(g.curX, g.curY)
-		nativeContinueOpening := g.consumeNativeContinueOpeningConfirm()
-		if nativeContinueOpening && u == nil {
-			// 未修改原版 current-runtime 的一般玩家畫面與 0x16f55 的關聯
-			// 目前是強推論：save header 記錄的游標格沒有 materialized unit，
-			// Return 仍應直接開 0x1741c 的游標命令格。ActionOverlayOrigin 的
-			// 原始公式也以 visible map cursor 為基準，不是單位座標。
-			g.nativeContinueCursorOverlay = true
+		g.consumeNativeContinueOpeningConfirm()
+		if u == nil && g.nativeSystemOverlayReady() {
+			// 0x117E7 在 0x12C0D 回傳 -1 時直接呼叫 0x16F55；這是共用
+			// 玩家控制器，不是 chapter0 CONTINUE 特例。ActionOverlayOrigin
+			// 以 visible map cursor 為基準，不借用選取單位座標。
+			g.nativeSystemCursorOverlay = true
 			// 0x16f55 將 action selector 初始化為 0；此值只保留輸入游標
 			// 的原始順序，並不替四格指派動作語意。
 			g.beginActionOverlayOpen(0)
@@ -6072,7 +6071,7 @@ func (g *Game) tileAt(idx int) *ebiten.Image {
 func (g *Game) Update() error {
 	g.frame++
 	g.stepActionOverlayLifecycle()
-	g.stepNativeContinueEndTurn()
+	g.stepNativeSystemEndTurn()
 	g.stepNativeClassUILifecycle(time.Now())
 	g.stepNativeChurchUILifecycle(time.Now())
 	g.stepNativeShopUILifecycle(time.Now())
@@ -6637,7 +6636,7 @@ func (g *Game) Update() error {
 			g.msg = ""
 		}
 	}
-	// Tab:結束回合(觸發 on_turn_end 增援事件)。正式版改我方全動完自動結束。
+	// Tab 是重製端快速鍵；原版式正常入口是空游標四格系統面板的 Down→END。
 	if inpututil.IsKeyJustPressed(ebiten.KeyTab) {
 		g.endTurn()
 	}
@@ -7306,7 +7305,7 @@ func (g *Game) captureShot(screen *ebiten.Image) {
 // drawRing shows the native FDOTHER #2 action overlay when the player has
 // supplied FDOTHER.DAT. The historical PNG ring remains a fail-closed fallback.
 func (g *Game) drawRing(screen *ebiten.Image) {
-	if !g.ring || g.m == nil || (g.sel == nil && !g.nativeContinueCursorOverlay) {
+	if !g.ring || g.m == nil || (g.sel == nil && !g.nativeSystemCursorOverlay) {
 		return
 	}
 	tw, th := g.m.TileW, g.m.TileH
@@ -7529,11 +7528,11 @@ func (g *Game) drawNativeActionOverlay(screen *ebiten.Image, cursorX, cursorY fl
 }
 
 // nativeActionOverlayState keeps each original 0x1741c caller's two raw
-// tables separate.  The CONTINUE current-runtime anchor is not a battle-unit
+// tables separate. The shared empty-cursor system owner is not a battle-unit
 // wrapper: it uses 0x16f55's [7,5,6,4]/[0,0,0,0] tables and therefore must not
 // borrow the normalized selected-unit availability approximation.
 func (g *Game) nativeActionOverlayState() fdother.ActionOverlayState {
-	if g != nil && g.nativeContinueCursorOverlay {
+	if g != nil && g.nativeSystemCursorOverlay {
 		return fdother.NativeContinueActionOverlayState()
 	}
 	return fdother.BattleActionOverlayState(g.actionOverlayAvailability())

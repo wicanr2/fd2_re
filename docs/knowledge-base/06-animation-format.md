@@ -23,27 +23,33 @@ AFM - Animation File Manager Version 1.00 Copyright (C) 1993 Lo Yuan Tsung 09/29
 
 `FIGANI.DAT` 是全專案最大檔(15.3 MB)，承載所有戰鬥動畫。
 
-## FIGANI 每動畫結構 [已驗證]
+## FIGANI 每動畫結構［部分已證實；2026-08-22 勘誤］
 
-每個 `FIGANI` 資源 = 一段動畫，自描述其幀數(與 `.DAT` 主容器同一手法):
+每個 `FIGANI` 資源是一段動畫。舊版把 byte0／1 合讀為 little-endian
+`u16 frameCount`，但這與 `0x29409`、`0x29510`、`0x295C3` 的直接 byte 讀取及
+原始資源衝突，現已撤回。固定雜湊原版與 IDA Pro 9.4／Capstone 證據支持：
 
 ```
-+0   uint16 LE  frameCount        (幀數)
-+2   uint16 LE  ?                  (常等於 frameCount;用途待定)
-+4   uint16 LE  ?                  (0/2/5… 可能是播放參數)
-+6   uint16 LE  ?
-+8   uint32[frameCount] LE  各幀資料 offset(相對資源起點)
-          frameCount = (offsets[0] - 8) / 4   ← 自洽驗證
++0   uint8   frameCount             總幀數［已證實］
++1   uint8   preludeFlag            0x2939D 前段分支旗標［已證實］
++2   uint8   preludeFrameCount      旗標非零時的前段幀數［已證實］
++3   uint8   raw                    語意未知
++4   uint8   raw                    0x2B659 消費；高階語意未知
++5..+7     raw                      尚未命名
++8   uint32[frameCount] LE          各幀資料 offset（相對資源起點）［已證實］
 ```
 
-每幀 **13-byte 標頭** + RLE 像素(第 3 輪反組譯 + 視覺驗證,**已完整破解**):
+每幀為 **13-byte 標頭**加 RLE 像素；幾何與透明解碼已證實，`+4..+7` 則只在
+特定 caller 具窄語意，不能宣稱整個格式「已完整破解」：
 
 ```
 +0   int16 LE   dx        該幀「絕對螢幕 X」(320×200 系統)
 +2   int16 LE   dy        該幀「絕對螢幕 Y」
-+4   uint16 LE  = 0
-+6   uint16 LE  = 2
-+8   uint8      = 0
++4   uint8      raw4      終局可達迴圈中重設位移／palette33 phase
++5   uint8      raw5      聲音 marker；owner globals 尚未閉合
++6   uint8      delay     inner present 次數／base scheduler 延遲
++7   uint8      raw7      bit0 在終局配對迴圈控制前後層序；高位不命名
++8   uint8      raw8      語意未知
 +9   uint16 LE  W         點陣解碼寬(realW)
 +11  uint16 LE  H         點陣解碼高(realH)
 +13  …          RLE 像素(解碼到 W×H)

@@ -266,7 +266,7 @@ func (g *Game) publishNativeContinueBattle(
 	candidate.resetActionOverlayLifecycle()
 	// 原版 E2 current-runtime 畫面與 0x16f55 的關聯目前是強推論：游標仍在
 	// 儲存位置時，第一個 Return 應直接開 action overlay。這個一次性旗標
-	// 保留來源邊界，讓後續一般戰場仍走既有的選取／移動流程。
+	// 只保留該 E2 首次輸入邊界；後續空游標面板由共用 0x117E7 owner 處理。
 	candidate.nativeContinueOpeningConfirm = true
 	if !candidate.syncNativeMapView() {
 		return fmt.Errorf("native CONTINUE battle handoff: map view publication failed")
@@ -276,10 +276,9 @@ func (g *Game) publishNativeContinueBattle(
 	return nil
 }
 
-// consumeNativeContinueOpeningConfirm 僅接受剛由原版 CONTINUE 發布的
-// 第一個玩家確認，而且游標必須還在 save header 原樣記錄的位置。任何移動、
-// 非原生發布或第二次確認都退回普通選取；這避免把單一 E2 錨點猜測性推廣成
-// 通用的戰場輸入規則。
+// consumeNativeContinueOpeningConfirm 僅辨識剛由原版 CONTINUE 發布的
+// 第一個玩家確認，而且游標必須還在 save header 原樣記錄的位置。它只記錄
+// 該 E2 首次輸入；共用空游標面板本身另由 0x117E7 直接指令證實。
 func (g *Game) consumeNativeContinueOpeningConfirm() bool {
 	if g == nil || !g.nativeContinueOpeningConfirm {
 		return false

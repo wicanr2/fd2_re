@@ -5236,3 +5236,22 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 現況仍是來源約束 `RUNTIME-E1`，不是 `PLAYER-E2`。未閉合項縮小為
   `0x2C548→0x2C2A6` call-time records／globals 動態連續性、原版3% RNG重播、
   精確音訊與終端輸入、`0x2BCE5` 原版 owner，以及未修改一般玩家第30戰驗證。
+
+## 2026-08-22：共用空游標 END 正式 E1
+
+- 先以合法 IDA Pro 9.4 重讀 `sub_117E7`，再用 Docker Capstone 交叉核對
+  `0x118B3..0x118CC`：main `0x25DCE` 的共用玩家控制器先呼叫 `sub_12C0D`，
+  回傳 `-1` 才進 `sub_16F55`，非負 index 則走單位分支。這推翻把空游標
+  系統面板限制為 chapter0 CONTINUE 一次性特例的舊實作邊界。
+- 新主證據 `fd2_117e7_empty_cursor_system_overlay_ida.txt` 先建立，SDD 再定義
+  完整 FDOTHER #2、四幀 opening／closing、direction3-only END、取消零修改與
+  十二幀近似延遲的失敗即關閉契約，之後才修改 runtime。
+- `nativeSystemCursorOverlay` 現由所有正式 battle 的空格確認共用；缺任一
+  `[21,15,18,12]` 原始圖格時不建立不可見熱區。Down→END 仍沿已閉合的
+  FDTXT `0x1A3／0x1A4`、YES、`0xC8` 邊界與既有敵方回合；其他三格不猜 owner。
+- chapter0 CONTINUE 的 `nativeContinueOpeningConfirm` 只保留其存檔第一個 Return
+  證據；面板與 END 狀態已改用共用命名。聚焦 Docker／Xvfb 回歸涵蓋一般戰場
+  開啟、缺圖格拒絕、CONTINUE handoff、四幀 close、確認／取消、敵方回合與返回。
+- 同批清除 README／FIGANI 格式／終局註解、歷史「只能按 Tab」與商店收件者
+  input仍未接等錯誤現況斷言。這仍是 `RUNTIME-E1`；確認框 indexed renderer、
+  其餘三格 owner與逐章一般玩家 E2 尚未閉合。

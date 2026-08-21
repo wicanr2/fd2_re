@@ -13,11 +13,11 @@
 
 | 順序 | 工作 | 現況 | 下一個可驗收結果 |
 |---:|---|---|---|
-| 0 | 原始碼註解與 Markdown 現況斷言稽核 | `DATA-READY`：本輪再撤回「FIGANI frame count 是 `u16`」、「終局尾段仍只是逐資源近似」及「整個 `0x28A6C` renderer 未接」等舊現況；這是持續性品質閘門，不是一次掃描即永久完成 | 下一輪優先抽查 source comments 與 Markdown，並在每個玩家功能關閉時，以程式、測試與 `58` 現況核對完成度、節點、slot、handler、renderer；錯誤現況直接訂正，歷史證據追加勘誤 |
+| 0 | 原始碼註解與 Markdown 現況斷言稽核 | `DATA-READY`：本輪撤回 FIGANI `u16 frameCount`、終局仍只是近似、玩家第29戰仍 blocked、空游標 END 只限 chapter0、只能按 Tab 與商店收件者輸入未接等舊現況；這是持續性品質閘門，不是一次掃描即永久完成 | 每個玩家功能關閉時，以程式、測試與 `58` 現況核對完成度、節點、slot、handler、renderer；錯誤現況直接訂正，歷史證據追加勘誤 |
 | 1 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式，現為產品31／runtime170／未知1104；舊83 unknown 已拆為80已分類、3已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253` 只追其他 caller／戰役 gate，`0x2BCE5` 追正式 owner，不重解 callee |
 | 2 | 玩家第21戰天空之鑰固定演出 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`：`0x24336` 已接真實 `FDOTHER #34`、`ANI #0`、調色盤循環與正式戰後→城鎮→存讀檔 | 取得未修改原版同狀態 E2，核對第一個動態調色盤相位與相鄰 `layout_units`／ACT63／64；不重解函式本體 |
 | 3 | 玩家第29戰 raw ch28 post 後續驗收 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`；`0x1DB65`原資源 presenter、group9→`0x25535`、持續隊伍、`preparation_ch30` 與存讀檔已正式接通，postbattle admission blocker 已歸零 | 以未修改原版一般玩家路徑取得同狀態逐幀／音訊 E2；高階圖像與sample 3語意仍保留unknown，不阻擋 E1戰役流程 |
-| 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；`0x16F55` END 已接，command 13–16 的玩家與敵方 mode 11 已走完整 #3前段、#6七張、mask、交易後 redraw、#5數字22張與尾停，AI 依 raw selector重建 target array | 補 END／command 13–16 同狀態逐幀逐音訊 E2；再依 `56` family matrix選下一個有完整證據的 command，不重解本批已閉合函式 |
+| 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；共用 `0x117E7` 空游標 `0x16F55` END 已接所有正式 battle，command 13–16 的玩家與敵方 mode 11 已走完整 #3前段、#6七張、mask、交易後 redraw、#5數字22張與尾停，AI 依 raw selector重建 target array | 補 END 確認框／command 13–16 同狀態逐幀逐音訊 E2；再依 `56` family matrix選下一個有完整證據的 command，不重解本批已閉合函式 |
 | 5 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial | 依 `57` 逐個輸入狀態機取得同狀態原版／重製證據，不用單張 layout 圖代替 |
 | 6 | 原版終局精確鏈 | `RUNTIME-E1`：正式 `battle_ch30→ending` 現消費來源約束前綴／角色／20段尾段並停在 #59；80個實際 FIGANI 的 header-zero `0x2939D` raw `+4..+7`、base scheduler 與兩次配對已接；未達 E2 | 以動態 watchpoint／未修改玩家路徑閉合 `0x2C548→0x2C2A6` records／globals 連續性、3% RNG重播、精確音訊／終端輸入、`0x2BCE5` 原版 owner 及第30戰 E2 |
 | 7 | 全戰役抽樣／長程試玩、三平台打包與推廣片 | 核心 gate 未關閉 | 核心垂直切片與代表性晚期玩家路徑完成後才進入發行驗收 |
@@ -143,7 +143,7 @@ handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不�
 - `RE-CLOSED`：合法 IDA Pro 9.4／Hex-Rays 與 Docker Capstone 對固定雜湊
   `FD2.EXE` 共同證實 `0x16F55` direction3→FDTXT `0x1A3`→YES choice0→
   FDTXT `0x1A4`→`delay(0xC8)`→`0x1A30B`；`0x117E7` 是直接 caller。
-- `RUNTIME-E1`：正式 chapter0 current-runtime END 現顯示兩段原文，YES 後先等待
+- `RUNTIME-E1`：正式 battle 共用空游標 END 現顯示兩段原文，YES 後先等待
   十二個60 Hz幀才進 `ENEMY PHASE`。回歸固定四幀 overlay close、確認、延遲、敵方
   回合與玩家回合返回；這不是 DOS BIOS tick 逐時鐘等價。
 - `RE-CLOSED`／`RUNTIME-E1`：command 13–16 wrapper 與共同 indexed presentation
@@ -385,12 +385,12 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 - [~] **ENDING-AUDIO-WIRING**：戰鬥 BGM 以原版 `0x51e63` 30-entry table、
   城鎮／商店以已證實的 `FDMUS_010` 做資料回歸；IDA 已直接證實結局事件
   `0x2c5cf→FDMUS_004`、`0x2c1ac→play_bgm(-1)`、`0x2c1f5→FDMUS_018`。
-  runtime 只在精確 `0x2c548` 消費 `FDMUS_004`；近似模式的 party montage 成功後，
-  `MontageTailPlayer` 會在 20 組近似尾段開始時接上 `FDMUS_018`，依序消費
+  runtime 只在精確 `0x2c548` 消費 `FDMUS_004`；來源約束 E1 的 party montage
+  成功後，`MontageTailPlayer` 會在20組尾段開始時接上 `FDMUS_018`，依序消費
   TAI／BG／FIGANI 與 #58，完成後保持 #59。曲目與大致階段相符，但精確停曲、
   呼叫間隔與畫面同步仍未閉合；素材或 raw provenance 失敗才確認回到可編輯結語。
-  完整 `0x2BCE5` indexed renderer、精確 `0x28a6c` loop、raw terminal owner、一般玩家
-  路徑與 E2 仍失敗即關閉；證據見
+  可達的 header-byte1-zero `0x2939D` 配對迴圈已接；仍未閉合的是 call-time
+  records／globals、3% RNG、raw terminal owner、精確音訊／輸入與一般玩家 E2。證據見
   [`fd2_ending_audio_ida.txt`](../data/ida/fd2_ending_audio_ida.txt)。
 - [~] **RE-AI-14EF0-RUNTIME-CONSUMER-20260810**：raw producer→`0x14EF0`
   route→command／item state-only executor 已接上；`TestAIStepConsumesVerified14EF0CommandRoute`
@@ -1759,7 +1759,9 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
       實作方向:翻頁時啟一個 `dlgScrollT` 計時器(數幀),繪製時把文字整體 y 偏移從 0 平滑插到 -行高×3、
       同時畫「當前頁下移出 + 下一頁自底部進」,期間 clip 在框內矩形;捲完才定位到新頁。
       動 `cmd/fd2/main.go` 對話繪製區 + `dlgAdvance`(翻頁時觸發捲動而非瞬間 dlgPage++)。
-- [ ] **⬜ 自動結束回合**(使用者要求 2026-07-05,不急)：目前 remake 要手動按 Tab 才換回合；
+- [ ] **⬜ 自動結束回合（可選改善，不是 blocker）**：正式 battle 已可由空游標
+      原資源面板的 Down→END 換回合，Tab 只保留為重製端快速鍵；是否在全員完成後
+      自動換邊仍未由原版證據要求。native end-turn 的完整 team predicate／AI completion timing尚未閉合。
       native end-turn 的完整 caller／team predicate／AI completion timing 尚未閉合。`+5 bit7` 只能作 raw
       set/test mutation，不在此 work item 命名 acted/turn，也不能直接宣稱「全員完畢→換邊」。需補 native
       state-machine evidence 後，才決定是否自動 endTurn、是否保留 Tab 提前結束。
@@ -2305,7 +2307,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   Yes/No cells或使用第四個inward frame。production已接list close→confirmation
   open/steady/close→cancel或不足金wait→dialogue close→list reopen。
   真實FDOTHER/FDTXT/DATO regression與更正後indexed fixture已補。recipient
-  selector與inventory-full後續已有E1 production實作；recipient input/scroll、
+  selector與inventory-full後續已有E1 production實作；recipient input/scroll的DOSBox E2、
   no-recipient/full/success仍無DOSBox E2，不能由production接線推論原版操作
   驗收。下一步是optional-equip/success/debit lifecycle及同狀態E2。
 - [x] **UI-SHOP-CONSUMABLE-RECIPIENT-E1**：`0x2f30a`分流已釘死：

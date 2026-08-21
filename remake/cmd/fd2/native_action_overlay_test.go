@@ -26,8 +26,8 @@ func TestNativeActionOffsetXYMatchesFinalOpenFrame(t *testing.T) {
 	}
 }
 
-func TestNativeContinueOverlayUses16F55CellState(t *testing.T) {
-	g := &Game{nativeContinueCursorOverlay: true}
+func TestNativeSystemOverlayUses16F55CellState(t *testing.T) {
+	g := &Game{nativeSystemCursorOverlay: true}
 	state := g.nativeActionOverlayState()
 	want := [4]int{21, 15, 18, 12}
 	for direction := range want {
@@ -35,6 +35,37 @@ func TestNativeContinueOverlayUses16F55CellState(t *testing.T) {
 		if err != nil || got != want[direction] {
 			t.Fatalf("direction %d: index=%d err=%v, want %d", direction, got, err, want[direction])
 		}
+	}
+}
+
+func TestSharedBattleEmptyCursorOpensNativeSystemOverlay(t *testing.T) {
+	g := &Game{
+		m:                 &MapData{W: 20, H: 20, TileW: 24, TileH: 24},
+		st:                &battle.State{W: 20, H: 20},
+		curX:              9,
+		curY:              7,
+		nativeActionCells: nativeSystemOverlayTestCells(),
+	}
+	g.confirm()
+	if !g.ring || !g.nativeSystemCursorOverlay || g.ringSel != 0 ||
+		g.actionOverlayPhase != actionOverlayOpening || g.sel != nil {
+		t.Fatalf("shared 0x117E7 empty-cursor overlay = %+v", g)
+	}
+}
+
+func TestSharedBattleEmptyCursorRejectsIncompleteNativeOverlay(t *testing.T) {
+	cells := nativeSystemOverlayTestCells()
+	cells[18] = nil
+	g := &Game{
+		m:                 &MapData{W: 20, H: 20, TileW: 24, TileH: 24},
+		st:                &battle.State{W: 20, H: 20},
+		curX:              9,
+		curY:              7,
+		nativeActionCells: cells,
+	}
+	g.confirm()
+	if g.ring || g.nativeSystemCursorOverlay || g.sel != nil {
+		t.Fatalf("incomplete FDOTHER #2 opened invisible system overlay: %+v", g)
 	}
 }
 

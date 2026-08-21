@@ -1,0 +1,64 @@
+FD2 0x117E7 空游標系統面板 owner：IDA Pro 9.4／Capstone 5 證據
+=====================================================================
+
+輸入與位址空間
+----------------
+
+- 輸入：`FD2.EXE`，357074 bytes
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 第一工具：使用者授權的 IDA Pro／Hex-Rays `9.4.0.260610`，映像
+  `fd2-ida-authorized-local:latest`，LE loader，IDA 線性位址。原版唯讀，
+  `.i64` 只建於容器 tmpfs；匯出工具為 `tools/ida_probe_functions.py`。
+- 第二工具：`fd2-cap-local`／Capstone 5.0.3，`tools/disasm_le.py`；同為 LE
+  線性位址，不是檔案偏移。
+- 註記政策：保留 `sub_117E7`、`sub_12C0D`、`sub_16F55` 原始名稱、位址與
+  operands；下列語意是受版控附加索引，不取代原始定位。
+
+## 共用 owner 與空游標分支（已證實）
+
+IDA data／code xref 顯示 `sub_117E7` 的直接 caller 是 main dispatcher
+`0x25DCE`；它不是 chapter0 或 CONTINUE 專用函式。玩家確認輸入後的直接控制流：
+
+```text
+0x118B3  call sub_12C0D
+0x118B8  mov  edx,eax
+0x118BA  mov  esi,eax
+0x118BC  cmp  eax,0FFFFFFFFh
+0x118BF  jnz  0x118DA
+0x118C1  call sub_16F55
+0x118C6  mov  esi,eax
+0x118C8  mov  ebx,eax
+0x118CA  test eax,eax
+0x118CC  jz   0x118C1
+```
+
+因此 `sub_12C0D` 回傳 `-1` 時會進入 `sub_16F55`，且後者回傳0時原地重開；
+只有找到 runtime record 的非負 index 才走 `0x118DA` 的單位分支。這個 owner
+存在於共用玩家控制器，不能再把空游標面板限制為 chapter0 CONTINUE 的一次性
+特例。`sub_12C0D` 的完整 record lookup predicate／order 仍是另一個缺口；本結論
+只使用 caller 已明示的 `-1`／非負結果邊界。
+
+## direction 3 的 END 交易（已證實）
+
+`sub_16F55` 的 direction3→FDTXT `0x1A3`→YES choice0→FDTXT `0x1A4`→
+`delay(0xC8)`→`sub_1A30B` 已由
+`fd2_end_turn_command13_owner_ida.txt` 閉合。本檔不重新命名其餘三格，也不把
+60 Hz 十二幀近似宣稱為 DOS tick 等價。
+
+## 重製合約
+
+- 正式戰鬥在沒有選取單位、目前游標格沒有 runtime unit 時，應開啟
+  `sub_16F55` 的原資源四格面板，而非只在 chapter0 CONTINUE 開啟。
+- 面板必須有完整 FDOTHER #2 cell來源；缺資產時失敗即關閉，不可讓不可見的
+  END 熱區仍可操作。
+- 只允許已閉合的 direction3／END。其餘三格仍顯示原資源，但確認時拒絕；
+  不以圖示外觀猜 owner。
+- Escape／Backspace 關閉面板且不改 battle state；YES 必須等四個 close present、
+  顯示第二段原文及十二個重製幀後才進既有敵方回合。
+- 這是共用正式控制器的 `RUNTIME-E1`，不是確認框 indexed renderer 或逐章 E2。
+
+## 重開條件
+
+只有輸入雜湊不同、`0x118B3..0x118CC` 直接指令被反證、同狀態執行結果矛盾，
+或 `sub_12C0D` 的實際 `-1` contract 被直接 writer／consumer 證據推翻時才重開。

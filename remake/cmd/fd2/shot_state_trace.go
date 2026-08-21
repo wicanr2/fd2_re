@@ -81,11 +81,13 @@ func (g *Game) writeShotStateTrace(path string) error {
 		NativeCommandOpen:            g.nativeCommandOpen,
 		SpellOpen:                    g.spellOpen,
 		NativeContinueOpeningConfirm: g.nativeContinueOpeningConfirm,
-		NativeContinueCursorOverlay:  g.nativeContinueCursorOverlay,
-		DialogCount:                  len(g.dialog),
-		BattleEventActive:            g.battleEvent != nil,
-		NativeTurnStagingActive:      g.nativeTurnStaging != nil,
-		LoadError:                    g.loadErr,
+		// JSON field name is retained for compatibility with the 2026-08-11
+		// chapter0 trace; runtime ownership is now the shared 0x117E7 path.
+		NativeContinueCursorOverlay: g.nativeSystemCursorOverlay,
+		DialogCount:                 len(g.dialog),
+		BattleEventActive:           g.battleEvent != nil,
+		NativeTurnStagingActive:     g.nativeTurnStaging != nil,
+		LoadError:                   g.loadErr,
 	}
 	if g.camp != nil {
 		trace.CampaignNode = g.camp.NodeID()

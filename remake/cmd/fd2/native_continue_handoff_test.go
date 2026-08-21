@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
@@ -183,8 +184,17 @@ func TestNativeContinueTitleTimerSeedFailsClosed(t *testing.T) {
 	}
 }
 
-func TestNativeContinueOpeningConfirmUsesExactSavedCursorOnce(t *testing.T) {
+func nativeSystemOverlayTestCells() []*ebiten.Image {
+	cells := make([]*ebiten.Image, nativeActionOverlayCellCount)
+	for _, index := range []int{12, 15, 18, 21} {
+		cells[index] = ebiten.NewImage(1, 1)
+	}
+	return cells
+}
+
+func TestNativeContinueOpeningConfirmHandsOffToSharedSystemOverlay(t *testing.T) {
 	g := &Game{
+		m: &MapData{W: 24, H: 24, TileW: 24, TileH: 24},
 		st: &battle.State{
 			W: 24, H: 24,
 			HasNativeMapViewState: true,
@@ -192,26 +202,29 @@ func TestNativeContinueOpeningConfirmUsesExactSavedCursorOnce(t *testing.T) {
 		},
 		curX: 8, curY: 17,
 		nativeContinueOpeningConfirm: true,
+		nativeActionCells:            nativeSystemOverlayTestCells(),
 	}
 	g.confirm()
-	if g.sel != nil || !g.nativeContinueCursorOverlay || !g.ring ||
+	if g.sel != nil || !g.nativeSystemCursorOverlay || !g.ring ||
 		g.actionOverlayPhase != actionOverlayOpening || g.ringSel != 0 ||
 		g.reach != nil || g.nativeContinueOpeningConfirm {
 		t.Fatalf("first native CONTINUE confirm did not open action overlay: %+v", g)
 	}
 
-	// 已消費的旗標不會把第二次確認或其他狀態再導向 native overlay。
+	// 一次性 CONTINUE 旗標已消費，但 0x117E7 的共用空游標 owner 仍會
+	// 在下一次確認重新開啟同一面板。
 	g.resetActionOverlayLifecycle()
 	g.moved, g.reach = false, nil
 	g.confirm()
-	if g.ring || g.sel != nil || g.moved || g.nativeContinueOpeningConfirm || g.nativeContinueCursorOverlay {
-		t.Fatalf("consumed native CONTINUE bridge leaked into normal selection: %+v", g)
+	if !g.ring || g.sel != nil || g.moved || g.nativeContinueOpeningConfirm || !g.nativeSystemCursorOverlay {
+		t.Fatalf("shared empty-cursor owner was not reusable after CONTINUE bridge: %+v", g)
 	}
 }
 
 func TestNativeContinueOpeningConfirmRejectsMovedCursor(t *testing.T) {
 	unit := &battle.Unit{Camp: battle.Own, OnField: true, HP: 10, X: 7, Y: 17}
 	g := &Game{
+		m: &MapData{W: 24, H: 24, TileW: 24, TileH: 24},
 		st: &battle.State{
 			W: 24, H: 24, Units: []*battle.Unit{unit},
 			HasNativeMapViewState: true,
@@ -219,56 +232,57 @@ func TestNativeContinueOpeningConfirmRejectsMovedCursor(t *testing.T) {
 		},
 		curX: 7, curY: 17,
 		nativeContinueOpeningConfirm: true,
+		nativeActionCells:            nativeSystemOverlayTestCells(),
 	}
 	g.confirm()
-	if g.ring || g.sel != unit || g.moved || g.nativeContinueOpeningConfirm || g.nativeContinueCursorOverlay {
+	if g.ring || g.sel != unit || g.moved || g.nativeContinueOpeningConfirm || g.nativeSystemCursorOverlay {
 		t.Fatalf("moved cursor must stay on normal selection path: %+v", g)
 	}
 }
 
-func TestNativeContinueDownEndYesEntersAndCompletesEnemyPhase(t *testing.T) {
+func TestNativeSystemDownEndYesEntersAndCompletesEnemyPhase(t *testing.T) {
 	state := &battle.State{W: 24, H: 24, Units: []*battle.Unit{
 		{Camp: battle.Own, OnField: true, HP: 10, MaxHP: 10},
 		{Camp: battle.Enemy, OnField: false, HP: 0, MaxHP: 10},
 	}}
 	g := &Game{
 		st: state, sc: &battle.Scenario{}, ring: true, ringSel: 3,
-		nativeContinueCursorOverlay: true,
+		nativeSystemCursorOverlay: true,
 	}
-	if !g.beginNativeContinueEndTurn() {
+	if !g.beginNativeSystemEndTurn() {
 		t.Fatal("verified Down→END route was rejected")
 	}
-	if g.aiBusy || g.nativeContinueEndTurnConfirm {
+	if g.aiBusy || g.nativeSystemEndTurnConfirm {
 		t.Fatal("enemy phase or confirmation started before four close presents")
 	}
 	for present := 0; present < 4; present++ {
 		g.markActionOverlayDrawn()
 		g.stepActionOverlayLifecycle()
 	}
-	if !g.nativeContinueEndTurnConfirm || g.nativeContinueCursorOverlay || g.ring {
+	if !g.nativeSystemEndTurnConfirm || g.nativeSystemCursorOverlay || g.ring {
 		t.Fatalf("END confirmation handoff = confirm:%v overlay:%v ring:%v",
-			g.nativeContinueEndTurnConfirm, g.nativeContinueCursorOverlay, g.ring)
+			g.nativeSystemEndTurnConfirm, g.nativeSystemCursorOverlay, g.ring)
 	}
 	if g.msg == "" {
 		t.Fatal("END confirmation has no visible player prompt")
 	}
 
-	g.confirmNativeContinueEndTurn()
-	if g.aiBusy || g.nativeContinueEndTurnDelay != nativeContinueEndTurnDelayFrames ||
+	g.confirmNativeSystemEndTurn()
+	if g.aiBusy || g.nativeSystemEndTurnDelay != nativeSystemEndTurnDelayFrames ||
 		g.msg != "好的，\n就結束本回合的行動吧！" {
 		t.Fatalf("YES feedback boundary: ai=%v delay=%d msg=%q",
-			g.aiBusy, g.nativeContinueEndTurnDelay, g.msg)
+			g.aiBusy, g.nativeSystemEndTurnDelay, g.msg)
 	}
-	for frame := 1; frame < nativeContinueEndTurnDelayFrames; frame++ {
-		g.stepNativeContinueEndTurn()
+	for frame := 1; frame < nativeSystemEndTurnDelayFrames; frame++ {
+		g.stepNativeSystemEndTurn()
 		if g.aiBusy {
 			t.Fatalf("enemy phase started before 0xC8 ms boundary at frame %d", frame)
 		}
 	}
-	g.stepNativeContinueEndTurn()
-	if !g.aiBusy || g.banner != "ENEMY PHASE" || g.nativeContinueEndTurnDelay != 0 {
+	g.stepNativeSystemEndTurn()
+	if !g.aiBusy || g.banner != "ENEMY PHASE" || g.nativeSystemEndTurnDelay != 0 {
 		t.Fatalf("delayed YES did not enter enemy phase: ai=%v banner=%q delay=%d",
-			g.aiBusy, g.banner, g.nativeContinueEndTurnDelay)
+			g.aiBusy, g.banner, g.nativeSystemEndTurnDelay)
 	}
 	g.aiStep()
 	if g.aiBusy || state.Turn != 1 || g.banner != "PLAYER PHASE" {
@@ -277,19 +291,19 @@ func TestNativeContinueDownEndYesEntersAndCompletesEnemyPhase(t *testing.T) {
 	}
 }
 
-func TestNativeContinueEndTurnRemainsNarrowAndCancelable(t *testing.T) {
+func TestNativeSystemEndTurnRemainsNarrowAndCancelable(t *testing.T) {
 	state := &battle.State{W: 24, H: 24}
 	for direction := 0; direction < 3; direction++ {
-		g := &Game{st: state, ring: true, ringSel: direction, nativeContinueCursorOverlay: true}
-		if g.beginNativeContinueEndTurn() {
+		g := &Game{st: state, ring: true, ringSel: direction, nativeSystemCursorOverlay: true}
+		if g.beginNativeSystemEndTurn() {
 			t.Fatalf("unverified direction %d opened END confirmation", direction)
 		}
 	}
 
-	g := &Game{st: state, nativeContinueEndTurnConfirm: true}
-	g.cancelNativeContinueEndTurn()
-	if g.nativeContinueEndTurnConfirm || g.aiBusy || state.Turn != 0 {
+	g := &Game{st: state, nativeSystemEndTurnConfirm: true}
+	g.cancelNativeSystemEndTurn()
+	if g.nativeSystemEndTurnConfirm || g.aiBusy || state.Turn != 0 {
 		t.Fatalf("cancel mutated turn: confirm=%v ai=%v turn=%d",
-			g.nativeContinueEndTurnConfirm, g.aiBusy, state.Turn)
+			g.nativeSystemEndTurnConfirm, g.aiBusy, state.Turn)
 	}
 }

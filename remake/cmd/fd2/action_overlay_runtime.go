@@ -1,6 +1,8 @@
 package main
 
-const nativeContinueEndTurnDelayFrames = 12 // 0x17259: delay(0xC8 ms)；60 Hz 約十二幀。
+import "github.com/wicanr2/fd2_re/remake/internal/fdother"
+
+const nativeSystemEndTurnDelayFrames = 12 // 0x17259: delay(0xC8 ms)；60 Hz 約十二幀。
 
 const (
 	actionOverlayOpening = "opening"
@@ -101,9 +103,9 @@ func (g *Game) markActionOverlayDrawn() {
 
 func (g *Game) resetActionOverlayLifecycle() {
 	g.ring = false
-	g.nativeContinueCursorOverlay = false
-	g.nativeContinueEndTurnConfirm = false
-	g.nativeContinueEndTurnDelay = 0
+	g.nativeSystemCursorOverlay = false
+	g.nativeSystemEndTurnConfirm = false
+	g.nativeSystemEndTurnDelay = 0
 	g.actionOverlayPhase = ""
 	g.actionOverlayFrame = 0
 	g.actionOverlayAfter = nil
@@ -111,47 +113,65 @@ func (g *Game) resetActionOverlayLifecycle() {
 	g.actionOverlayShotHold = false
 }
 
-// beginNativeContinueEndTurn 只承接 chapter0 current-runtime 已觀測的
-// Down→END。原版 trace 證實 END 會開確認且 YES 會進 ENEMY PHASE；它沒有證實
-// 其餘三個 0x16f55 cell owner，也沒有證實重製端確認提示的像素。
-func (g *Game) beginNativeContinueEndTurn() bool {
-	if g == nil || !g.nativeContinueCursorOverlay || !g.ring || g.ringSel != 3 ||
+// nativeSystemOverlayReady prevents the shared empty-cursor command from
+// becoming an invisible hot zone when FDOTHER #2 is absent or incomplete.
+// Only the four exact 0x16F55 cells are required; their action ownership is
+// still checked separately at confirm time.
+func (g *Game) nativeSystemOverlayReady() bool {
+	if g == nil || g.st == nil || g.m == nil || g.aiBusy || g.result != "" {
+		return false
+	}
+	state := fdother.NativeContinueActionOverlayState()
+	for direction := 0; direction < 4; direction++ {
+		index, err := state.CellIndex(direction)
+		if err != nil || index < 0 || index >= len(g.nativeActionCells) || g.nativeActionCells[index] == nil {
+			return false
+		}
+	}
+	return true
+}
+
+// beginNativeSystemEndTurn 承接共用 0x117E7→0x16F55 的 Down→END。
+// 原版直接指令證實 END 會開確認且 YES 會進 0x1A30B；其餘三格 owner
+// 與重製端確認提示像素仍未閉合。
+func (g *Game) beginNativeSystemEndTurn() bool {
+	if g == nil || !g.nativeSystemCursorOverlay || !g.ring || g.ringSel != 3 ||
 		g.st == nil || g.aiBusy || g.result != "" {
 		return false
 	}
 	g.beginActionOverlayClose(func() {
-		g.nativeContinueCursorOverlay = false
-		g.nativeContinueEndTurnConfirm = true
+		g.nativeSystemCursorOverlay = false
+		g.nativeSystemEndTurnConfirm = true
 		g.msg = "要結束本回合的行動嗎？"
 	})
 	return true
 }
 
-func (g *Game) confirmNativeContinueEndTurn() {
-	if g == nil || !g.nativeContinueEndTurnConfirm {
+func (g *Game) confirmNativeSystemEndTurn() {
+	if g == nil || !g.nativeSystemEndTurnConfirm {
 		return
 	}
-	g.nativeContinueEndTurnConfirm = false
-	g.nativeContinueEndTurnDelay = nativeContinueEndTurnDelayFrames
+	g.nativeSystemEndTurnConfirm = false
+	g.nativeSystemEndTurnDelay = nativeSystemEndTurnDelayFrames
 	// FDTXT_000[0x1A4] 的 0xFFFE 是換行控制碼。原版在這段文字後等待
 	// 0xC8 ms，才呼叫 0x1A30B 進入敵方回合。
 	g.msg = "好的，\n就結束本回合的行動吧！"
 }
 
-func (g *Game) cancelNativeContinueEndTurn() {
-	if g == nil || !g.nativeContinueEndTurnConfirm {
+func (g *Game) cancelNativeSystemEndTurn() {
+	if g == nil || !g.nativeSystemEndTurnConfirm {
 		return
 	}
-	g.nativeContinueEndTurnConfirm = false
+	g.nativeSystemEndTurnConfirm = false
 	g.msg = ""
 }
 
-func (g *Game) stepNativeContinueEndTurn() {
-	if g == nil || g.nativeContinueEndTurnDelay <= 0 {
+func (g *Game) stepNativeSystemEndTurn() {
+	if g == nil || g.nativeSystemEndTurnDelay <= 0 {
 		return
 	}
-	g.nativeContinueEndTurnDelay--
-	if g.nativeContinueEndTurnDelay == 0 {
+	g.nativeSystemEndTurnDelay--
+	if g.nativeSystemEndTurnDelay == 0 {
 		g.msg = ""
 		g.endTurn()
 	}

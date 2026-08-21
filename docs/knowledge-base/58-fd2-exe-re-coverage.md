@@ -1,6 +1,6 @@
 # 58 — `FD2.EXE` 反組譯覆蓋與重製閉合矩陣
 
-> 更新基準：2026-08-21 工作樹。這是判斷「還要不要反組譯」與「重製還缺哪一層」
+> 更新基準：2026-08-22 工作樹。這是判斷「還要不要反組譯」與「重製還缺哪一層」
 > 的唯一現況入口；它不取代位址證據、系統設計、介面矩陣或歷史交接。
 >
 > 原版基準：`FD2.EXE`，357074 位元組，MD5
@@ -56,7 +56,7 @@
 | 30 個 raw chapter 的戰前／戰後處理器 | 部分 | 60 份 handler script；部分 binding | 部分 E1 | 缺完整 E2 | 舊83個 raw unknown 已拆成80個已證實窄呼叫、3個已知但 caller／執行期未閉合的呼叫，已沒有未分類 call site。玩家第29戰 raw ch28 post 現已以綁定的視圖／HUD、`0x35BBA→0x1DB65`、group9、`0x22253`、`0x24B4D`、`0x35E5A`、隊伍同步與 `preparation_ch30` 存讀檔達成 E1；未證實高階圖像／樣本名稱與一般玩家 E2 仍保留。 |
 | 可編輯戰役與持續隊伍 | 部分 | 121 個 story／cutscene 節點；9 個 scripted、56 個 handler-bound、56 個 fallback | 部分 E1 | 缺完整 E2 | 24 個 postbattle 節點目前全部 active；admission blocked 為0。玩家第29戰正常 `story_ch29→battle_ch29` 入口現物化76-slot frontier與已證實視圖／HUD，戰果確認後播放 raw ch28 post，追加group9、同步持續隊伍，再進`preparation_ch30`並通過存讀檔 E1。所有 active 仍只代表正式執行期接入，不代表未修改原版 E2 或逐像素一致。 |
 | 戰鬥資料、移動、公式、勝敗與成長 | 部分偏高 | 部分就緒 | E1 | 部分 | 多項公式與地形資料已有具型別實作；命中／閃避來源、部分經驗交易、回合事件與原版逐狀態驗證仍不完整。需要針對缺欄位補 producer／consumer，不重解已閉合的 AP−DP 等公式。 |
-| 玩家指令、法術、物品與交易 | 部分 | 部分 | 部分 E1／部分失敗即關閉 | 缺完整 E2 | command mask、若干 ID、MP／物品交易與 selector 邊界已解；`0x16F55` direction3→END、FDTXT `0x1A3/0x1A4`、YES、`0xC8` ms 與 `0x1A30B` 已直接閉合，chapter0 current-runtime 正式入口會顯示原文後進敵方回合及返回玩家回合。command 13–16 的 `0x21EB1→0x22046` 16張 FDOTHER #3 LUT 演出已轉成 typed schedule，玩家與敵方 mode 11 正式入口均先演出再交易；AI 依 `0x15311` 在移動後重建 raw target array。缺原始 baseline／records／LUT／palette／visible cursor 時交易不發生。後段 `0x1C4CC/0x1C2DA`、數字 queue、其餘三格 owner、未知 command、複合技與完整 E2 仍未閉合。 |
+| 玩家指令、法術、物品與交易 | 部分 | 部分 | 部分 E1／部分失敗即關閉 | 缺完整 E2 | command mask、若干 ID、MP／物品交易與 selector 邊界已解；共用 `0x117E7` 在 `0x12C0D==-1` 時進 `0x16F55`，direction3→END、FDTXT `0x1A3/0x1A4`、YES、`0xC8` ms 與 `0x1A30B` 均已直接閉合。所有正式 battle 現可由空游標原資源面板進 END、敵方回合及返回玩家回合；缺 FDOTHER #2 時不建立不可見熱區。command 13–16 的 `0x21EB1→0x22046` 16張 FDOTHER #3 LUT 演出已轉成 typed schedule，玩家與敵方 mode 11 正式入口均先演出再交易；AI 依 `0x15311` 在移動後重建 raw target array。缺原始 baseline／records／LUT／palette／visible cursor 時交易不發生。確認框 indexed renderer、其餘三格 owner、未知 command、複合技與完整 E2 仍未閉合。 |
 | 敵方人工智慧 | 底層控制流部分偏高；高階交易部分 | mode／候選／部分 fallback 已資料化 | 多個窄 E1 consumer | 只有原版敵方回合邊界 E2 | `0x13FD4`、`0x14EF0`、mode 5／11 等既有函式邊界與窄 owner 不應反覆重解。缺的是完整 target／command／spell／item transaction、同一 raw 狀態的重製端配對與一般玩家效果；詳見 [`11`](11-enemy-ai.md)。 |
 | 戰場 HUD、指令格、輸入與戰鬥演出 | 部分 | 部分 | 部分 E1 | 少量畫面 E2／多數缺少 | 有 native frame、command overlay、姓名字模、命中色盤與部分 FIGANI consumer；整體操作狀態機、圖示可用性、相同戰況及演出時序仍未完成。完成度只由 [`57` 介面矩陣](57-ui-evidence-matrix.md)判定。 |
 | 城鎮、祕密商店、商店、教會與整備 | 部分偏高 | 部分就緒 | 多個正式 E1 consumer | ch02 若干狀態 E2；其餘部分 | 個別 menu、購買、轉移、復活、轉職與整備已有窄切片。第25戰正式勝利、持續隊伍與存讀檔後，`town_ch26` 已以章節專屬 selection4＋Shift+F5（BIOS `0x58`）揭露selection5、進入variant5、驗證三項商品並經四幀離店返回；錯用ch02的`0x54`會拒絕。這是正常戰間E1，不是未修改原版E2；其餘章節入口、native save、recipient scroll與完整交易仍缺。 |
@@ -103,7 +103,7 @@
 | `0x14EF0` | [`fd2_ai_14ef0_dispatch_ida.txt`](../data/ida/fd2_ai_14ef0_dispatch_ida.txt) | producer 順序與尾端 dispatch | 未知 command／效果／完整 transaction；不重解既有 dispatch |
 | `0x14237` | [`fd2_ai_physical_score_ida.txt`](../data/ida/fd2_ai_physical_score_ida.txt) | 物理候選評分窄切片 | 完整 planner、target transaction 與 E2 |
 | `0x15311`／`0x1548E` | [`fd2_ai_mode11_full_ida_20260810.txt`](../data/ida/fd2_ai_mode11_full_ida_20260810.txt) | mode 11 兩段 owner／順序 | 未知 command、完整演出與 E2 |
-| `0x16F55`、`0x117E7` | [`fd2_end_turn_command13_owner_ida.txt`](../data/ida/fd2_end_turn_command13_owner_ida.txt) | 空游標 direction3→END、FDTXT `0x1A3/0x1A4`、YES、`0xC8` ms、`0x1A30B` 與 caller | 原版 indexed 確認框畫面、其他三格 owner、同狀態重製 E2；不重解 END 分支 |
+| `0x16F55`、`0x117E7` | [`fd2_end_turn_command13_owner_ida.txt`](../data/ida/fd2_end_turn_command13_owner_ida.txt)、[`empty cursor owner`](../data/ida/fd2_117e7_empty_cursor_system_overlay_ida.txt) | `0x12C0D==-1` 空游標 owner、direction3→END、FDTXT `0x1A3/0x1A4`、YES、`0xC8` ms、`0x1A30B` 與所有正式 battle E1 | 原版 indexed 確認框畫面、其他三格 owner、逐章同狀態 E2；不重解 END 分支 |
 | `0x21AD9`／`0x21B18`（command 13–16 wrapper 家族） | [`fd2_end_turn_command13_owner_ida.txt`](../data/ida/fd2_end_turn_command13_owner_ida.txt) | 四個 command literal、wrapper 參數、共同 indexed presentation owner、玩家／AI callers及正式 E1 | 補同狀態逐幀逐音訊 E2；不重解 wrapper |
 | `0x21EB1`／`0x22046`（command 13–16 LUT 演出） | [`fd2_command13_21eb1_presentation_ida.txt`](../data/ida/fd2_command13_21eb1_presentation_ida.txt) | FDOTHER #3 LUT provenance、16張排程、visible-cursor中心、兩段200 ms、sample index11、compositor consumer及玩家／敵方 E1 | 補同狀態逐幀／逐音訊 E2；不重解 loop |
 | `0x1C4CC`／`0x1C2DA`／`0x1E0DB`／`0x1DF58`（command 13–16 後段） | [`fd2_command_numeric_tail_ida.txt`](../data/ida/fd2_command_numeric_tail_ida.txt) | FDOTHER #6七幀、五組snapshot→mask、`0x4DDD7` write mask、transaction後redraw、FDOTHER #5 queue／22-frame reader與玩家／敵方 E1 | 補同狀態逐幀／逐音訊 E2；不重解函式 |
