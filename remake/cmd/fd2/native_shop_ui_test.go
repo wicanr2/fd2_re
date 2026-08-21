@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"strconv"
 	"testing"
 	"time"
 
@@ -298,6 +299,9 @@ func TestNativeShopProductionOwnerDrawsOriginalMenuAndPurchaseList(t *testing.T)
 			g.nativeShopMode, g.nativeShopUIJob != nil,
 		)
 	}
+	assertNativeShopTransactionTownRoundTrip(
+		t, g, 1, 1134, cloneNativeShopUnit(g.partyRoster[0]),
+	)
 	g.nativeShopUIJob = nil
 	g.shopItemTypes[0] = 0
 	g.shopEquipTypes[1] = []int{1, 2, 3, 4, 5, 6}
@@ -370,6 +374,9 @@ func TestNativeShopProductionOwnerDrawsOriginalMenuAndPurchaseList(t *testing.T)
 			g.partyRoster[0].InventorySlots, g.nativeShopMode,
 		)
 	}
+	assertNativeShopTransactionTownRoundTrip(
+		t, g, 2, 137, cloneNativeShopUnit(g.partyRoster[0]),
+	)
 	g.nativeShopUIJob = nil
 	g.nativeShopMode = "sell_empty"
 	if !g.drawNativeShop(screen) ||
@@ -598,6 +605,60 @@ func TestNativeShopProductionOwnerDrawsOriginalMenuAndPurchaseList(t *testing.T)
 		g.itemAnimStep != 0 || g.itemClosing {
 		t.Fatalf("town load retained shop transient state: mode=%q variant=%d transfer=%d itemPanel=%v", g.nativeShopMode, g.nativeShopVariant, g.nativeShopTransferSource, g.nativeItemPanel != nil)
 	}
+}
+
+// assertNativeShopTransactionTownRoundTrip 從正式交易完成點穿越離店、城鎮與
+// 重製 JSON 冷讀檔。重新進店只為讓同一原始資產 fixture 繼續驗證下一種交易；
+// 它不算在持久化證據內。
+func assertNativeShopTransactionTownRoundTrip(
+	t *testing.T, g *Game, slot, wantGold int, want battle.Unit,
+) {
+	t.Helper()
+	g.partyMembers = map[int]bool{0: true}
+	g.partyJoinOrder = []int{0}
+	g.partyDeploy = map[int]bool{0: true}
+	g.handlerChapter = 1
+	g.nativeShopVariant = 1
+	g.nativeShopUIJob = nil
+	g.leaveShop()
+	if g.camp.NodeID() != "town" || g.campSel != 1 {
+		t.Fatalf("shop transaction leave boundary=(%q,%d), want town/1", g.camp.NodeID(), g.campSel)
+	}
+	g.saveGameToSlot(slot)
+	if g.msg != "已存檔(槽位"+strconv.Itoa(slot+1)+"：town)" {
+		t.Fatalf("shop transaction save message=%q", g.msg)
+	}
+
+	g.gold = -1
+	g.partyRoster = nil
+	g.partyMembers = nil
+	g.partyJoinOrder = nil
+	g.partyDeploy = nil
+	g.nativeShopMode = "sell_success"
+	g.nativeShopHasPendingUnit = true
+	g.loadGameFromSlot(slot)
+	restored, ok := g.partyRoster[0]
+	if !ok || g.gold != wantGold ||
+		!reflect.DeepEqual(restored.Inventory, want.Inventory) ||
+		!reflect.DeepEqual(restored.Equipped, want.Equipped) ||
+		!reflect.DeepEqual(restored.InventorySlots, want.InventorySlots) ||
+		!reflect.DeepEqual(restored.NativeInventoryFlags, want.NativeInventoryFlags) ||
+		restored.AP != want.AP || restored.DP != want.DP ||
+		restored.HIT != want.HIT || restored.EV != want.EV ||
+		restored.EquipmentBaseSet != want.EquipmentBaseSet {
+		t.Fatalf("shop transaction JSON round-trip=(gold %d unit %#v), want gold %d unit %#v", g.gold, restored, wantGold, want)
+	}
+	if g.camp.NodeID() != "town" || len(g.partyJoinOrder) != 1 ||
+		!g.partyMembers[0] || !g.partyDeploy[0] ||
+		g.nativeShopMode != "" || g.nativeShopHasPendingUnit {
+		t.Fatalf("shop transaction town restore leaked state: node=%q order=%#v mode=%q pending=%v", g.camp.NodeID(), g.partyJoinOrder, g.nativeShopMode, g.nativeShopHasPendingUnit)
+	}
+
+	// 後續仍需共用這個高成本原始資產 fixture；回到 shop 後不把此步驟當成
+	// 一般玩家或存檔可達性證據。
+	g.camp.Cur = "shop"
+	g.enterNode()
+	g.nativeShopUIJob = nil
 }
 
 func TestNativeShopShotStateIsStrictAndStableMenuOnly(t *testing.T) {

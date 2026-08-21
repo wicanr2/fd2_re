@@ -5341,3 +5341,15 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   source 與 item panel 全部殘留。`loadGameFromSlot` 現在集中清除購買／賣出／裝備／
   轉移選擇器、待提交交易（pending transaction）、索引工作（indexed job）、item panel 與一般 shop 暫態後才
   進入存檔 town。這是重製 JSON `RUNTIME-E1`，不外推成原版 `FD2.SAV` 或商店 E2。
+
+## 2026-08-22：商店購買／賣出跨 town 存讀檔邊界
+
+- SDD 先固定既有正式提交點：購買在物品 staged publish 與 `0x2F4C6` 成功演出後，
+  才由 `0x2D516` 金幣滾動擁有者扣款；賣出在成功演出後才依
+  `0x2D3FF→0x1B8E7→0x1B750` 發布金幣、移除物品與重算。沒有重做 RE。
+- 原始資產 production 測試現於購買 `1234→1134` 及賣出 `100→137` 的 callback
+  完成後，各自實際穿越 `leaveShop→town→JSON save/load`。購買保留第一個 raw
+  空格中的未裝備 item；賣出保留左移後緊密背包、尾格 `0x80` flag／`0xFF` item、
+  裝備投影與能力，並同時核對 membership、join order、deployment 與 chapter。
+- 這關閉商店四種正式 mutation 的重製 JSON `RUNTIME-E1` 持久化；未修改原版
+  `FD2.SAV`、recipient scroll、no-recipient/full及sell/equip/transfer子面板E2仍待。

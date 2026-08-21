@@ -1985,6 +1985,22 @@ original-resource oracle is
    `FD2.SAV` 位元組相容性（byte compatibility）、商店子面板（child panel）的 DOSBox E2，或所有章節
    商店均已完成一般玩家驗收。
 
+### 商店購買／賣出返回城鎮的 JSON 存讀檔契約（2026-08-22）
+
+本契約沿用上方已證實的交易順序。購買必須由 `stageNativeShopPurchase` 先以
+`0x1BB8C` 拓撲發布 staged unit，跑完 variant-specific `0x2F4C6` 成功演出後，
+才由 `0x2D516` 對應的金幣滾動擁有者提交扣款；賣出必須由
+`beginNativeShopSellSuccess` 預檢深複本，跑完同一成功演出後，再依
+`0x2D3FF→0x1B8E7→0x1B750` 順序發布金幣與名冊。確認框或成功演出開始都不是
+可存檔的交易完成點。
+
+兩條成功路徑各自必須在正式提交 callback 完成後，經 `leaveShop` 返回 town，
+再寫入重製 JSON。冷讀檔後，購買需同時保存扣款後金額、插入物品、原始八格
+位置與未裝備旗標；賣出需保存加款後金額、左移後緊密背包、尾格 `0x80` 空位
+旗標、`0xFF` 正規化 item byte 與重算後能力。測試需使用正式 production owner，
+不可用 `ReserveGood`／`SellNativeSlot` 的孤立規則測試代替。此結果仍只屬重製
+JSON `RUNTIME-E1`，不提升原版 `FD2.SAV` 或一般玩家商店 E2。
+
 The other raw branch, `0x2ffa5 → 0x17aed`, is a separate boundary. Direct
 instruction decoding fixes `0x17aed` as a one-argument function; an apparent
 second Hex-Rays argument was a decompiler artifact. Its body
