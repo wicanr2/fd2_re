@@ -116,3 +116,17 @@ raw index `22..24`、`27..29` 為1：
   persistent party 與重複 identity，再由 production title 一次套用
   campaign cursor、gold、party 與 raw metadata 保存值；任何錯誤都留在
   selector，不轉呼 JSON loader，也不部分改寫現有遊戲狀態。
+
+2026-08-22 未修改原版 F5 前置實驗（已證實）
+------------------------------------------------
+
+- `FD2.SAV` 大小22987、MD5 `409795ccebc2af340d5c74152c2d471c`、SHA-256
+  `6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f`；
+  envelope／checksum 合法，current-runtime 是chapter0、12筆，四個chapter slots
+  的`chapter`均為`0xFF`。
+- 一次性 Docker／DOSBox 由正常 `CONTINUE` 進戰場後按 F5；兩秒後仍停在戰場，
+  sandbox `FD2.SAV` 的MD5／SHA-256與輸入完全相同。沒有route patch、debug
+  shortcut或存檔修改。
+- 此結果與`0x30012`只由酒店／整備 caller進入的靜態證據一致：戰場 F5不能
+  取代合法戰間存檔。一般玩家有效槽 E2 必須先正常完成戰鬥並在酒店或整備建立
+  槽位；修改chapter byte或測試fixture只能維持E1。

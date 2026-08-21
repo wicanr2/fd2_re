@@ -10,7 +10,7 @@ const nativeSystemEndTurnDelayFrames = 12 // 0x17259: delay(0xC8 ms)；60 Hz 約
 
 type nativeSystemEndTurnUIState struct {
 	source, dialogue, question []byte
-	accepted, canceled         []byte
+	accepted, canceled         [][]byte
 	choice                     int
 	acceptedOutcome            bool
 }
@@ -167,11 +167,11 @@ func (g *Game) beginNativeSystemEndTurn() bool {
 	if err != nil {
 		return false
 	}
-	accepted, err := campaign.ComposeNativeBattleEndTurnResponse(question, ui.status.Strings, ui.status.Font, true)
+	accepted, err := campaign.NativeBattleEndTurnResponseFrames(question, ui.status.Strings, ui.status.Font, true)
 	if err != nil {
 		return false
 	}
-	canceled, err := campaign.ComposeNativeBattleEndTurnResponse(question, ui.status.Strings, ui.status.Font, false)
+	canceled, err := campaign.NativeBattleEndTurnResponseFrames(question, ui.status.Strings, ui.status.Font, false)
 	if err != nil {
 		return false
 	}
@@ -221,7 +221,13 @@ func (g *Game) finishNativeSystemEndTurnChoice(accepted bool) {
 	g.nativeSystemEndTurnConfirm = false
 	g.nativeSystemEndTurnUI.acceptedOutcome = accepted
 	g.nativeClassUIJob = &nativeClassUIJob{frames: frames, after: func() {
-		g.nativeSystemEndTurnDelay = nativeSystemEndTurnDelayFrames
+		response := g.nativeSystemEndTurnUI.canceled
+		if accepted {
+			response = g.nativeSystemEndTurnUI.accepted
+		}
+		g.nativeClassUIJob = &nativeClassUIJob{frames: response, after: func() {
+			g.nativeSystemEndTurnDelay = nativeSystemEndTurnDelayFrames
+		}}
 	}}
 }
 
@@ -270,10 +276,14 @@ func (g *Game) drawNativeSystemEndTurn(screen *ebiten.Image) bool {
 			return false
 		}
 	} else if g.nativeSystemEndTurnDelay > 0 {
-		frame = state.canceled
+		frames := state.canceled
 		if state.acceptedOutcome {
-			frame = state.accepted
+			frames = state.accepted
 		}
+		if len(frames) == 0 {
+			return false
+		}
+		frame = frames[len(frames)-1]
 	} else {
 		return false
 	}

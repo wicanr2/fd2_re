@@ -53,14 +53,54 @@ func ComposeNativeBattleEndTurnQuestion(
 func ComposeNativeBattleEndTurnResponse(
 	question []byte, strings *fdtxt.Strings, font *fdtxt.Font, accepted bool,
 ) ([]byte, error) {
+	frames, err := NativeBattleEndTurnResponseFrames(question, strings, font, accepted)
+	if err != nil {
+		return nil, err
+	}
+	return append([]byte(nil), frames[len(frames)-1]...), nil
+}
+
+// NativeBattleEndTurnResponseFrames 保留0x15F84在END分支回覆期間直接寫入VGA的
+// 可見過程：每個普通字形發布一個畫格；FFFE只把目的位置移到下一行。
+func NativeBattleEndTurnResponseFrames(
+	question []byte, strings *fdtxt.Strings, font *fdtxt.Font, accepted bool,
+) ([][]byte, error) {
+	if len(question) != 320*200 || strings == nil || font == nil {
+		return nil, errors.New("campaign: 原版戰鬥結束回覆資產無效")
+	}
 	index := nativeBattleEndCanceledIndex
 	if accepted {
 		index = nativeBattleEndAcceptedIndex
 	}
-	return ComposeNativeChurchTextAt(
-		append([]byte(nil), question...), strings, font, index,
-		nativeBattleEndResponseY*320+nativeBattleEndQuestionX,
-	)
+	words, err := strings.Words(index)
+	if err != nil {
+		return nil, err
+	}
+	frame := append([]byte(nil), question...)
+	frames := make([][]byte, 0, len(words))
+	line, column := 0, 0
+	style := fdtxt.NativeGlyphStyle{Foreground: 205, Shadow: 76, Background: 74}
+	for _, word := range words {
+		if word == 0xfffe {
+			line++
+			column = 0
+			continue
+		}
+		if word >= fdtxt.ControlMin {
+			return nil, fmt.Errorf("campaign: 不支援的戰鬥結束回覆控制碼 %#x", word)
+		}
+		offset := nativeBattleEndResponseY*320 + nativeBattleEndQuestionX +
+			line*19*320 + column*fdtxt.GlyphWidth
+		if err := font.BlitNativeGlyph(frame, 320, offset, int(word), style); err != nil {
+			return nil, err
+		}
+		frames = append(frames, append([]byte(nil), frame...))
+		column++
+	}
+	if len(frames) == 0 {
+		return nil, errors.New("campaign: 原版戰鬥結束回覆沒有可見字形")
+	}
+	return frames, nil
 }
 
 // NativeClassConfirmationOpeningFrames reproduces 0x19953's four opening

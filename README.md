@@ -326,11 +326,20 @@ X11 `CONTINUE→Return` 路徑現在會在空游標顯示**強推論**對應原�
 E1 的可見／輸入切片。2026-08-20 已沿同一份原版 E2 輸入證據接通 Down→END→YES：
 四幀面板關閉後才顯示確認。2026-08-21 又由 IDA 9.4／Capstone 直接證實 direction 3、
 `FDTXT_000[0x1A3/0x1A4]`、YES 與 `0xC8` 毫秒延遲；重製端現顯示原文並以十二個
-60 Hz 幀近似延遲，再進敵方回合及返回玩家回合。其餘三格動作效果仍失敗即關閉，
-確認畫面也不宣稱原版像素一致。原始位址、輸入、旁車與雜湊見
+60 Hz 幀近似延遲，再進敵方回合及返回玩家回合。2026-08-22 的密集擷取又證實
+接受與取消原文都會逐字出現；正式重製路徑已改為每個普通字形發布一個畫格，完整句
+之後才開始等待。其餘三格動作效果仍失敗即關閉，確認畫面也不宣稱原版像素一致。
+原始位址、輸入、旁車與雜湊見
 [`native-continue-current-command-remake-e1.json`](docs/data/ui-traces/native-continue-current-command-remake-e1.json)。
 
 ![CONTINUE 空游標命令面板：原版／重製／差異（重製端 E1）](docs/figures/native-continue-current-command-compare-e1.png)
+
+下圖上半是未修改原版一般玩家接受分支，下半是重製端普通鍵盤正式路徑；六格都依
+時間順序呈現字數增加。它證明逐字內容順序與路徑可達性，不代表逐像素、逐毫秒或
+音訊一致；取消分支與完整限制見
+[`END 逐字回覆配對證據`](docs/data/ui-traces/native-end-turn-response-progressive-original-vs-remake-e1.json)。
+
+![END 接受回覆逐字出現：上為原版 E2、下為重製 E1](docs/figures/native-end-turn-response-progressive-yes-original-vs-remake.png)
 
 同一份未修改原版 `FD2.SAV` 也已走到「結束目前單位行動嗎？」→「是」，實際看見
 `ENEMY PHASE`，並在約 10 秒後看到敵方回合的另一個戰場畫面，約 20 秒後回到玩家

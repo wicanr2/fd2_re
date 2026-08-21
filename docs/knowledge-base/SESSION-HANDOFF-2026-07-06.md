@@ -5284,3 +5284,19 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   來自選項脈動與戰場動畫相位。因此原版是`PLAYER-E2`錨點，重製仍是決定性
   `RUNTIME-E1`，不冒稱逐像素完整一致。證據見
   [`native-end-turn-confirmation-original-vs-remake-e1.json`](../data/ui-traces/native-end-turn-confirmation-original-vs-remake-e1.json)。
+
+## 2026-08-22：END 接受／取消逐字回覆正式接通
+
+- 未修改原版 chapter0 CONTINUE 一般玩家路徑的密集擷取直接顯示：接受回覆由
+  「好」逐步長成完整句，取消回覆由「是」逐步長成完整句；這推翻把 `0x15F84`
+  所有 caller 都概括為整句瞬間出現的舊說法。原始位址、雜湊與限制已追加到
+  `fd2_end_turn_confirmation_ui_ida.txt`，歷史過場觀察則保留並縮小適用範圍。
+- 依先建立的 SDD 契約，`NativeBattleEndTurnResponseFrames` 現對每個普通字形發布
+  一個獨立 indexed frame，`0xFFFE` 只換行；正式 action overlay runtime 必須先
+  跑完這批回覆畫面，才開始十二個60 Hz畫格的近似等待與五幀對話框收合。
+- 重製以同一份合法 `FD2.SAV`、`campaign_full.json` 及普通 X11 鍵盤事件完成兩條
+  正常路徑：接受完整回覆後進敵方回合，取消完整回覆後回玩家戰場。兩張接觸表
+  的上半為原版、下半為重製，證據與雜湊見
+  [`native-end-turn-response-progressive-original-vs-remake-e1.json`](../data/ui-traces/native-end-turn-response-progressive-original-vs-remake-e1.json)。
+- 這批結果關閉逐字形內容順序與重製正常輸入可達性，未提升成逐像素／逐毫秒
+  parity；精確 DOS tick、音訊與收合的同動畫相位 E2 仍保留待驗。

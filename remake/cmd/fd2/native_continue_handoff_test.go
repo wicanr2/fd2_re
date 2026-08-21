@@ -288,6 +288,14 @@ func TestNativeSystemDownEndYesEntersAndCompletesEnemyPhase(t *testing.T) {
 		t.Fatalf("YES choice-close boundary: ai=%v delay=%d job=%#v",
 			g.aiBusy, g.nativeSystemEndTurnDelay, g.nativeClassUIJob)
 	}
+	choiceJob := g.nativeClassUIJob
+	for g.nativeClassUIJob == choiceJob {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if g.nativeClassUIJob == nil || len(g.nativeClassUIJob.frames) == 0 {
+		t.Fatal("YES choice close did not start progressive response")
+	}
 	for g.nativeClassUIJob != nil {
 		g.nativeClassUIJob.drawn = true
 		g.stepNativeClassUILifecycle(time.Time{})
@@ -381,6 +389,14 @@ func TestNativeSystemEndTurnNoClosesAndRestoresWithoutTurnMutation(t *testing.T)
 	g.cancelNativeSystemEndTurn()
 	if g.nativeClassUIJob == nil || len(g.nativeClassUIJob.frames) != 4 {
 		t.Fatalf("NO did not start four choice-close frames: %#v", g.nativeClassUIJob)
+	}
+	choiceJob := g.nativeClassUIJob
+	for g.nativeClassUIJob == choiceJob {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if g.nativeClassUIJob == nil || len(g.nativeClassUIJob.frames) == 0 {
+		t.Fatal("NO choice close did not start progressive response")
 	}
 	for g.nativeClassUIJob != nil {
 		g.nativeClassUIJob.drawn = true

@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "evidence_level": "原版一般玩家 E2＋重製正常輸入 E1",
+  "scope": "chapter0 current-runtime 空游標系統選單的 END 接受／取消回覆逐字形發布",
+  "reference": {
+    "executable": {
+      "path": "org_game/炎龍騎士團/FLAME2/FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "save": {
+      "path": "org_game/炎龍騎士團/FLAME2/FD2.SAV",
+      "size": 22987,
+      "md5": "409795ccebc2af340d5c74152c2d471c",
+      "sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f"
+    }
+  },
+  "original_execution": {
+    "image": "fd2-dosbox-screenshot-local:latest",
+    "network": "none",
+    "source_mount": "唯讀 FLAME2 複製到一次性可寫沙箱",
+    "route_patch": false,
+    "debug_shortcut": false,
+    "input": [
+      "Escape×8 跳過原版開場",
+      "Down、Down、Return 進 CONTINUE",
+      "Return 開空游標系統選單",
+      "Down、Return 進 END",
+      "YES：Return；NO：Right、Return"
+    ],
+    "capture": "在接受／取消後密集擷取未修改 DOS 畫面；接觸表取六個字數遞增狀態"
+  },
+  "remake_execution": {
+    "image": "fd2-go-test-local:latest",
+    "display": "Docker Xvfb :99",
+    "network": "none",
+    "campaign": "assets/scenarios/campaign_full.json",
+    "fixtures": [
+      "FD2_NATIVE_TITLE_TICK=0",
+      "FD2_SHOT_DETERMINISTIC=1"
+    ],
+    "input": [
+      "Escape 跳過重製開場",
+      "Down、Down、Return 進 CONTINUE",
+      "Return 開空游標系統選單",
+      "Down、Return 進 END",
+      "YES：Return；NO：Right、Return"
+    ],
+    "input_helper": "tools/docker/fd2-xtest-input.c",
+    "capture": "一般 X11 鍵盤事件後高速讀回正常遊戲視窗；未呼叫遊戲 API 或直接注入 UI 狀態"
+  },
+  "screenshots": [
+    {
+      "path": "../../figures/native-end-turn-response-progressive-yes-original-vs-remake.png",
+      "layout": "上半六格為原版；下半六格為重製；皆依時間由左至右、由上至下",
+      "size": [1920, 1600],
+      "bytes": 736768,
+      "md5": "c84ae920edc3756bfd83cd96ac47c980",
+      "sha256": "0bd53769ea9548ed01f2b0cb855eb3df30274e0ae9e4588acfe671746f9d040c"
+    },
+    {
+      "path": "../../figures/native-end-turn-response-progressive-no-original-vs-remake.png",
+      "layout": "上半六格為原版；下半六格為重製；皆依時間由左至右、由上至下",
+      "size": [1920, 1600],
+      "bytes": 735071,
+      "md5": "cc5cb4fbeccd6c7156bcbc77c63f7900",
+      "sha256": "4ec2e8b94cc2cd168c01d726c0b87002e55acd5745ab752a7f0b56403ce08a1b"
+    }
+  ],
+  "claims": [
+    "原版接受與取消回覆都會把普通字形逐步寫到可見 VGA 畫面，不是立即顯示完整句。",
+    "重製正式執行路徑以同一份 FD2.SAV 與普通鍵盤事件重現逐字形發布；接受分支在完整句後進敵方回合，取消分支回到玩家戰場。",
+    "0xFFFE 只換行，不另外發布空畫格；完整回覆後才開始十二個 60 Hz 畫格的近似等待。"
+  ],
+  "limits": [
+    "接觸表證明內容順序與正常輸入可達性，不是逐像素或逐毫秒相等證據。",
+    "原版擷取與重製擷取未鎖定同一戰場動畫、嘴型及命令框收合相位。",
+    "精確 BIOS tick、0xC8 延遲與回覆期間的音訊仍未閉合；十二畫格只屬重製端近似。",
+    "本證據不外推到系統選單其餘三格、其他章節或有效章節槽 LOAD。"
+  ]
+}

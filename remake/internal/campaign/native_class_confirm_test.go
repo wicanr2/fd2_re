@@ -6,6 +6,7 @@ import (
 
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
 )
 
 func TestNativeBattleEndTurnFramesDoNotAliasAndRedrawPortrait(t *testing.T) {
@@ -40,6 +41,46 @@ func TestNativeBattleEndTurnFramesDoNotAliasAndRedrawPortrait(t *testing.T) {
 	}
 	if got := dialogue[0x9017]; got != 0 {
 		t.Fatalf("問句合成污染dialogue portrait pixel=%d", got)
+	}
+}
+
+func TestNativeBattleEndTurnResponsePublishesOneFramePerGlyph(t *testing.T) {
+	question := make([]byte, 320*200)
+	strings, font := nativeClassListStrings(t), nativeClassListFont(t)
+	for _, accepted := range []bool{true, false} {
+		frames, err := NativeBattleEndTurnResponseFrames(question, strings, font, accepted)
+		if err != nil {
+			t.Fatal(err)
+		}
+		index := nativeBattleEndCanceledIndex
+		if accepted {
+			index = nativeBattleEndAcceptedIndex
+		}
+		words, err := strings.Words(index)
+		if err != nil {
+			t.Fatal(err)
+		}
+		visible := 0
+		for _, word := range words {
+			if word < fdtxt.ControlMin {
+				visible++
+			}
+		}
+		if len(frames) != visible {
+			t.Fatalf("accepted=%v frames=%d visible glyphs=%d", accepted, len(frames), visible)
+		}
+		for i := 1; i < len(frames); i++ {
+			if bytes.Equal(frames[i-1], frames[i]) {
+				t.Fatalf("accepted=%v frame %d did not add a glyph", accepted, i)
+			}
+		}
+		if len(frames) > 1 {
+			before := append([]byte(nil), frames[0]...)
+			frames[len(frames)-1][0] = 99
+			if !bytes.Equal(frames[0], before) {
+				t.Fatalf("accepted=%v progressive frames alias", accepted)
+			}
+		}
 	}
 }
 
