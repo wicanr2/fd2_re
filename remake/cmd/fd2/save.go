@@ -135,13 +135,39 @@ func (g *Game) loadGameFromSlot(slot int) {
 	if d.NativeHUDGateA != nil {
 		g.restoreNativeMapHUDGateA(byte(*d.NativeHUDGateA))
 	}
-	// Node-boundary saves never retain the old battle array. Clearing it also
-	// prevents enterNode from re-capturing the pre-load gate A over the restored
-	// save byte.
+	// 節點邊界存檔不保留舊戰場陣列；先清除它也可避免 enterNode 以讀檔前的
+	// gate A 覆蓋剛還原的存檔值。教會選單、候選與 indexed 工作同屬未序列化
+	// 暫態，必須在進入存檔節點前一併丟棄。
 	g.dialog, g.st, g.sel = nil, nil, nil
 	g.nativeChapterRestore = nil
+	g.clearChurchTransientStateForLoad()
 	g.enterNode()
 	g.msg = fmt.Sprintf("已讀檔(槽位%d：%s)", slot+1, d.Node)
+}
+
+func (g *Game) clearChurchTransientStateForLoad() {
+	g.nativeClassUIJob = nil
+	g.nativeChurchUIJob = nil
+	g.resetNativeClassUIPulse()
+	g.resetNativeChurchUIPulse()
+	g.nativeChurchTextIndex = 0
+	g.churchSel = 0
+	g.churchMode = ""
+	g.churchIDs = nil
+	g.churchRosterStart = 0
+	g.churchVerticalStart = 0
+	g.churchStatusID = -1
+	g.churchStatusPanel = nil
+	g.churchCommandPanel = nil
+	g.churchItemStart = 0
+	g.churchTransferSource = -1
+	g.churchTransferItem = -1
+	g.churchTransferItems = nil
+	g.churchTransferDest = -1
+	g.churchReviveID = -1
+	g.churchReviveFee = 0
+	g.churchClassID = -1
+	g.churchBranches = nil
 }
 
 func (g *Game) restoreNativeMapHUDGateA(gateA byte) {

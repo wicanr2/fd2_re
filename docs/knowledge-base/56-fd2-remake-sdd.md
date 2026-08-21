@@ -320,6 +320,25 @@ Runtime 不應再讓 `main.go` 同時決定資料模型、輸入、規則和像�
 | UI-11 | Preparation | 城鎮出發確認／無城鎮記錄詢問、依名冊門檻略過或進入部署、可選15／19筆另加固定 record0（總上場16／20）、取消、最終確認、進戰場 | partial；`0x2cad7` 與 `0x2d093→0x318ad` 的分流已接資料模型與原版提示。城鎮路徑保留實際 town frame，使用 FDTXT `0x201` 於 `(95,119)`；無城鎮路徑依 `0x2cc04` 清成黑畫面，使用 FDTXT `0x19a` 於 `(100,119)`，肯定結果在完整關框後才存檔。兩者都使用 DATO #75、FDOTHER #5 對話框、FDOTHER #2 Yes／No 與 6＋4＋兩 tick 脈動＋4＋5＋還原生命週期。`0x318ad/0x31e80` 的三區背景、計數、10 欄角色格、游標、彩色／灰色繪法、四向輸入與 `0x17fc0` 狀態已接；`0x320fc` 證實 selection byte i只重排 persistent record i+1，record0固定且不消耗quota。`0x1297d` 的有號 BIOS 低字差值與可見 `0,1,2,1` 待機週期亦已接。`0x31d3c` 最終確認沿用相同生命週期，文字為 FDTXT `0x292`，呈現原畫面後才處理結果。呼叫端也已閉合：城鎮出發 `0x2d16b` 收到 0 會退出，直接整備 `0x2ccd6` 收到 0 則重選。缺任一原始記錄或資源即退回。README 所列整備圖均為 E1 原始資源合成，不是 DOSBox 截圖或正常晚期戰役存檔。跨畫面初始相位、有效晚期存檔及原版實機差分仍缺。`0x1f42d` 屬戰場進入演出，不再列為選人視窗動畫 |
 | UI-12 | Save/load | scene-safe boundary、campaign cursor、flags、party/inventory/equipment、version/checksum、四槽 selector | partial；remake title LOAD 已還原四槽 bounded selector 與原版 indexed compositor。合法 IDA 9.4 固定 reader `0x2602c..0x26098`、writer `0x30012` 及其僅有的 `0x2ccb6/0x2fd93` 戰間呼叫者；兩端只處理 metadata `+0..+9`。production 以綁定參考 EXE 雜湊與 `0x526b9` 的 editable gate table 將 raw chapter 1..29 還原到既有 town／preparation node，先完整驗證 persistent record→typed party、節點型別及重複 identity，再一次套用 campaign cursor、gold、party 與四個 raw option bytes；錯誤不部分 mutation、不誤轉 JSON loader。ch21／ch27 inventory postbattle gate 已在存檔前完成，LOAD 不重播。空槽及修改存檔 chapter1 有效槽畫面均與 DOSBox 全幀 RGB 相同。2026-08-22 未修改原版 CONTINUE 戰場按F5後畫面不變且FD2.SAV雜湊不變，動態支持戰場不能建立chapter slot；合成有效槽 restore 是 E1，仍缺正常打完戰鬥後由酒店／整備建立的有效槽 E2、CONTINUE current-battle、metadata `+10..+39` 其他可能 consumer、刪除／覆寫 |
 
+### 4.1 教會轉職後的重製存檔邊界（RUNTIME-E1 契約）
+
+原版 `0x31793` 目標表、`0x314A7..0x3157A` 寫入與職業顯示／裝備消費端已
+固定轉職會改動的持續角色欄位；這裡不重新推定 `FD2.SAV` 位元組配置。重製自有
+JSON 存檔只在離開教會、回到可編輯 town 節點後建立，並須保存正式
+`applyChurchClassChange` 已發布的完整 typed roster，而不是由測試手動捏出轉職後角色。
+
+現行整合回歸依序執行：town 選單進教會、`NativeClassChangeTarget` 解析唯一分支、
+`applyChurchClassChange`、`leaveChurch`、安全 town 節點存檔、清除目前記憶狀態、再由
+相同槽位讀回。讀回後至少核對 campaign cursor、membership／join order／deployment、
+portrait、class、raw class、battle figure／map selector、MV、EXP、HP／MP、基礎與
+裝備重算欄位、背包及裝備旗標；教會模式、候選陣列與戰場狀態不得跨節點殘留。
+
+2026-08-22 實跑另發現讀檔前的 `churchMode`、候選分支與 indexed 工作原本會
+殘留到 town；`loadGameFromSlot` 現在先原子清除這些未序列化暫態，再進入存檔節點。
+這項契約只證明重製正式轉職交易可穿越自有 JSON 的 town 邊界，列
+`RUNTIME-E1`。它不證明原版四槽 `FD2.SAV`、未修改 DOSBox 的轉職後存讀檔、精確
+隨機成長序列或逐像素教會畫面；這些仍依 UI-10／UI-12 的既有 E2 門檻處理。
+
 `0x50` persistent roster 的匯入邊界已開始由 raw snapshot 推進到具型別
 view。合法 IDA Pro 9.4 重核 `0x112A5` constructor、`0x1145A` equipment
 recompute 與 `0x17EEF→0x17FC0` status consumer，固定 `+5/+6/+7/+8`、

@@ -5300,3 +5300,17 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   [`native-end-turn-response-progressive-original-vs-remake-e1.json`](../data/ui-traces/native-end-turn-response-progressive-original-vs-remake-e1.json)。
 - 這批結果關閉逐字形內容順序與重製正常輸入可達性，未提升成逐像素／逐毫秒
   parity；精確 DOS tick、音訊與收合的同動畫相位 E2 仍保留待驗。
+
+## 2026-08-22：教會轉職跨 town 存讀檔邊界
+
+- 先重讀既有 `0x31793` 目標表、`0x314A7..0x3157A` 寫入、職業顯示與裝備
+  消費證據，不重做已閉合反組譯；SDD 隨後定義正式轉職 mutation 必須經
+  `leaveChurch` 回 town，才可寫入重製自有 JSON 存檔。
+- `TestCampaignTownChurchClassChangeReturnTrace` 現由 town 選單實際進教會，解析
+  悠妮的特殊轉職分支，呼叫 `applyChurchClassChange`，返回 town 後存檔；清空記憶
+  狀態再讀檔，逐項核對 portrait、class／raw class、battle figure、map selector、
+  成長值、EXP、HP／MP、背包、裝備旗標與重算基礎、membership、join order、
+  deployment、金幣、道具及 campaign cursor。
+- 首次回歸揭露 `loadGameFromSlot` 只清戰場，未清讀檔前的 `churchMode`、候選與
+  indexed 工作；正式讀檔邊界現先清除全部教會暫態，再進入存檔節點。這是
+  `RUNTIME-E1` 的重製 JSON 持久化閉合，不外推成原版四槽 `FD2.SAV` 或 DOSBox E2。
