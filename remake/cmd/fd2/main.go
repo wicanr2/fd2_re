@@ -251,11 +251,13 @@ type Game struct {
 	nativeShopTransferIDs    []int
 	nativeShopTransferSel    int
 	nativeShopTransferTop    int
-	nativeCommandLabels      map[int]string
-	nativeCommandOpen        bool
-	nativeCommandSel         int
-	nativeCommand0Targeting  bool
-	nativeCommandTargetID    int
+
+	nativeShopSellRosterCycle int
+	nativeCommandLabels       map[int]string
+	nativeCommandOpen         bool
+	nativeCommandSel          int
+	nativeCommand0Targeting   bool
+	nativeCommandTargetID     int
 	// nativeContinueOpeningConfirm 只由已驗證的原版 FD2.SAV current-runtime
 	// 發布點設一次。它讓該 E2 錨點的第一個 Return 直接開 action overlay；
 	// 一經消費，後續空游標確認由已證實的共用 0x117E7 owner 處理。
@@ -2631,6 +2633,8 @@ func (g *Game) enterNode() {
 						return
 					}
 					g.approximatePostbattle = true
+					// 這是未綁定原版 handler 時才允許的後備流程，只維持 authored
+					// 戰役邊界；不得用來宣稱該章戰後 handler 或一般玩家路徑已達 E2。
 					g.msg = "戰後整理（近似模式；原版 handler 尚未證實）按 Enter 繼續"
 					return
 				}
@@ -5303,9 +5307,10 @@ func (g *Game) stepBattleWalk() {
 	}
 }
 
-// SFX 事件 index(doc36 第 9 輪對照:index 0=游標移動已確認(5 處方向鍵分支證據);
-// 0xc=「已選定」旗標伴隨音(疑確認,handle B 疊播)。戰鬥命中音屬另一獨立池
-// ([0x5411f] 動態子容器,尚未導出)——暫用 UI 池 sfx_03(長音)代打,待戰鬥池導出換正。
+// SFX 事件 index（doc36 第 9 輪對照）：index 0=游標移動已確認（5 處方向鍵
+// 分支證據）；0xc=「已選定」旗標伴隨音（疑確認，handle B 疊播）。戰鬥命中音
+// 屬另一獨立池（[0x5411f] 動態子容器，尚未導出）；目前 sfx_03 只是重製端
+// E1 近似音，不是已證實的原版 owner 或音訊 parity，待戰鬥池證據閉合後替換。
 const (
 	sfxCursor  = 0
 	sfxConfirm = 12
@@ -6364,6 +6369,19 @@ func (g *Game) Update() error {
 					) {
 					return fmt.Errorf(
 						"FD2_SHOT_SHOP_EQUIPMENT_RECIPIENT_STATE expects good,selection,start,cycle,gold on an admitted native equipment recipient party: %q",
+						spec,
+					)
+				}
+			}
+			if spec := os.Getenv("FD2_SHOT_SHOP_SELL_STATE"); spec != "" {
+				mode, unit, selection, start, cycle, gold, ok :=
+					parseNativeShopSellShotState(spec)
+				if !ok ||
+					!g.setNativeShopSellShotState(
+						mode, unit, selection, start, cycle, gold,
+					) {
+					return fmt.Errorf(
+						"FD2_SHOT_SHOP_SELL_STATE expects roster|items,unit,selection,start,cycle,gold on an admitted native sell party: %q",
 						spec,
 					)
 				}

@@ -164,7 +164,7 @@ DOS 原生不能直接顯示中文。漢堂隨遊戲攜帶點陣字型，文字�
 | 動畫與戰鬥演出解碼 | 建立 AFM 增量繪圖虛擬機及 FIGANI 幀解碼器，保存原始座標、調色盤與時序資料 | [`39` AFM](docs/knowledge-base/39-ani-afm-format.md)、[`35` 戰鬥演出](docs/knowledge-base/35-battle-animation-rendering.md) |
 | 遊戲機制反向工程 | 以版本雜湊綁定已閉合的戰鬥規則切片、物品、事件處理器、敵方 AI、章節狀態與戰後路徑；撤回缺少寫入端／消費端的舊斷言 | [`11` 敵方 AI](docs/knowledge-base/11-enemy-ai.md)、[`27` 戰鬥規則](docs/knowledge-base/27-combat-rules-and-validation-checklist.md) |
 | 原版介面逐狀態重建 | 城鎮、商店、讀檔及部分戰鬥介面以原版 indexed 資源重建；多個 ch02 狀態已有整幀 RGB 相同對照 | [`57` 介面證據矩陣](docs/knowledge-base/57-ui-evidence-matrix.md) |
-| 可編輯戰役與持續隊伍 | 對話、事件、章節節點、商店／教會／整備與持續隊伍逐步脫離硬編碼；序章兩次增援及第一章 turn4／5 增援已接原版12次索引呈現與獨立 ACTING，第8戰已依29..41 slots frontier完成洛娜加入與進城，第10戰亦接上60／61 slots、原版 DAC 淡出／淡入、直接 record patch、JOIN11／6與 `town_ch11`。第16戰 raw `ch15_post` 現以 persistent-first 76 slots、四條 raw 分支、JOIN18 與 `town_ch17` save/load 完成重製端 E1；第20戰現依固定名冊第0筆＋15人整備建立83 slots，正確區分round15的增援／JOIN28與round16略過路徑，兩路都保留JOIN25並進`town_ch21`；第27章 event62→event63 已接敵軍 AI 前兩批增援與全白／恢復演出（均為重製端 E1，尚非 DOSBox E2）。第一章測試現已由正式 `State.Result`→`checkResult`→`confirmBattleResult` 進入 `town_ch02`／整備；未綁定 postbattle 節點另有明確近似模式，流程仍保持戰鬥→戰後→城鎮→整備。原版四槽 envelope 與 metadata 驗證已接入，typed party→town／preparation 還原目前只由合成有效槽 fixture 證實；尚未以未修改原版的有效 `FD2.SAV` 完成一般玩家 LOAD E2。chapter0 current-runtime CONTINUE 已接明確存檔／計時種子的重製端 E1 發布，尚非一般玩家 E2 | [`29` 事件系統](docs/knowledge-base/29-remake-extensible-event-system.md)、[`23` 啟動與存檔流程](docs/knowledge-base/23-boot-title-and-scenario-flow.md) |
+| 可編輯戰役與持續隊伍 | 對話、事件、章節節點、商店／教會／整備與持續隊伍逐步脫離硬編碼；序章兩次增援及第一章 turn4／5 增援已接原版12次索引呈現與獨立 ACTING，第8戰已依29..41 slots frontier完成洛娜加入與進城，第10戰亦接上60／61 slots、原版 DAC 淡出／淡入、直接 record patch、JOIN11／6與 `town_ch11`。第16戰 raw `ch15_post` 現以 persistent-first 76 slots、四條 raw 分支、JOIN18 與 `town_ch17` save/load 完成重製端 E1；第20戰現依固定名冊第0筆＋15人整備建立83 slots，正確區分round15的增援／JOIN28與round16略過路徑，兩路都保留JOIN25並進`town_ch21`；第27章 event62→event63 已接敵軍 AI 前兩批增援與全白／恢復演出（均為重製端 E1，尚非 DOSBox E2）。第一章測試現已由正式 `State.Result`→`checkResult`→`confirmBattleResult` 進入 `town_ch02`／整備；未綁定 postbattle 節點另有明確近似模式，流程仍保持戰鬥→戰後→城鎮→整備。原版四槽 envelope 與 metadata 驗證已接入；目前以原生 `FD2.SAV` 為輸入的 typed party→town／preparation 還原屬重製端 `RUNTIME-E1`，且只由合成有效槽 fixture 證實，尚未以未修改原版的有效 `FD2.SAV` 完成一般玩家 LOAD E2。chapter0 current-runtime CONTINUE 已接明確存檔／計時種子的重製端 E1 發布，尚非一般玩家 E2 | [`29` 事件系統](docs/knowledge-base/29-remake-extensible-event-system.md)、[`23` 啟動與存檔流程](docs/knowledge-base/23-boot-title-and-scenario-flow.md) |
 
 這些貢獻各自代表已驗證的子系統，不代表完整 30 章已經可以從頭到尾等價
 遊玩。尚未閉合的玩家路徑、原生存檔還原與介面差距仍列在
@@ -197,6 +197,12 @@ ch02 武器店、道具店與秘密商店：上排為原版，下排為重製；
 商店主選單狀態。
 
 ![ch02 三種商店原版與重製對照](docs/figures/shop-variants-1-3-5-original-vs-remake.png)
+
+ch02 武器店賣出角色名冊與索爾物品清單：上排為 route-patched 原版正常商店
+輸入，下排為正式重製 owner；兩個同步狀態皆為完整 320×200 RGB 相同。這不
+代表未修改的一般玩家戰後路徑或整套賣出流程皆已閉合。
+
+![ch02 賣出子面板原版與重製對照](docs/figures/shop-sell-child-ch02-original-vs-remake.png)
 
 ### 讀檔選單
 

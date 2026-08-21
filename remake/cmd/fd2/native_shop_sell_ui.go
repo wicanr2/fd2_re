@@ -64,7 +64,7 @@ func (g *Game) composeNativeShopSellRoster() ([]byte, bool) {
 			return nil, false
 		}
 		sprite, err := g.nativeClassUI.units.SpriteFor(
-			unit.MapSelectorKey, 0, 0,
+			unit.MapSelectorKey, 0, g.nativeShopSellRosterCycle,
 		)
 		if err != nil {
 			return nil, false

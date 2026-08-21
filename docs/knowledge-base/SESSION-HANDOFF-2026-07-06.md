@@ -5353,3 +5353,22 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   裝備投影與能力，並同時核對 membership、join order、deployment 與 chapter。
 - 這關閉商店四種正式 mutation 的重製 JSON `RUNTIME-E1` 持久化；未修改原版
   `FD2.SAV`、recipient scroll、no-recipient/full及sell/equip/transfer子面板E2仍待。
+
+## 2026-08-22：ch02 賣出角色／物品子面板同狀態 E2
+
+- 先讀既有 `0x2F642..0x2F87C` 賣出證據並在 SDD 固定 E2 契約，沒有重開已閉合
+  RE。原版使用固定雜湊檔案的可丟棄副本，只套用已驗證三處戰鬥略過 patch；
+  由 ch02 town 經正常 Left／Enter／Right／Enter 進入賣出名冊，再以 Enter 進索爾
+  物品清單。故證據是 route-patched E2，不是未修改一般玩家戰後路徑。
+- 高頻原版樣本揭露賣出名冊也消費 FDICON 三個 cycle；舊 production compositor
+  寫死 cycle0。新增 `FD2_SHOT_SHOP_SELL_STATE` 受限 adapter，cycle成為明確
+  renderer state；它只接受完整 typed/raw binding party，拒絕無效 unit、window、
+  cycle或缺少資源的狀態，且失敗原子回復。未證實的正常 runtime cadence仍不猜。
+- 以 `waitpixel:175,90,101,121,121,0.05,400` 同步人物相位後，角色名冊
+  selection0/cycle1與索爾物品selection0分別取得完整320×200 `AE=0`；raw RGB
+  MD5為`62307f5918f1de723055f951a7e6dc6a`與
+  `f5ff2d3650575a93bcc0d795fae7c4ea`。證據見
+  [`shop-sell-child-ch02-e2.json`](../data/ui-traces/shop-sell-child-ch02-e2.json)及
+  [`shop-sell-child-ch02-original-vs-remake.png`](../figures/shop-sell-child-ch02-original-vs-remake.png)。
+- 本切片只關閉兩個 stable child states；selection1、問句、取消／成功 lifecycle、
+  未修改campaign/native save、equip／transfer與recipient scroll仍待。

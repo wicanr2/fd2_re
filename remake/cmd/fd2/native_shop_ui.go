@@ -152,6 +152,27 @@ func parseNativeShopEquipmentRecipientShotState(
 	return values[0], values[1], values[2], values[3], values[4], true
 }
 
+func parseNativeShopSellShotState(
+	spec string,
+) (mode string, unit, selection, start, cycle, gold int, ok bool) {
+	parts := strings.Split(spec, ",")
+	if len(parts) != 6 || (parts[0] != "roster" && parts[0] != "items") {
+		return "", 0, 0, 0, 0, 0, false
+	}
+	values := make([]int, 5)
+	for i, part := range parts[1:] {
+		value, err := strconv.Atoi(part)
+		if err != nil || value < 0 {
+			return "", 0, 0, 0, 0, 0, false
+		}
+		values[i] = value
+	}
+	if values[3] > 2 || values[4] > 99999999 {
+		return "", 0, 0, 0, 0, 0, false
+	}
+	return parts[0], values[0], values[1], values[2], values[3], values[4], true
+}
+
 // setNativeShopShotState is a screenshot-only oracle hook. It may select a
 // stable service-menu frame after setupNativeShop has claimed a proven native
 // shop node. Gold is an explicit visible-state input for the one captured
@@ -358,6 +379,93 @@ func (g *Game) setNativeShopEquipmentRecipientShotState(
 	g.nativeShopRecipientStart = start
 	g.nativeShopRecipientCycle = cycle
 	if _, ok := g.composeNativeShopEquipmentRecipient(); !ok {
+		rollback()
+		return false
+	}
+	return true
+}
+
+// setNativeShopSellShotState exposes only stable states already owned by the
+// production sell compositor. The caller must have materialized a complete
+// typed/raw party; this adapter never invents actors, items, flags, or prices.
+func (g *Game) setNativeShopSellShotState(
+	mode string, unit, selection, start, cycle, gold int,
+) bool {
+	if (mode != "roster" && mode != "items") || unit < 0 ||
+		selection < 0 || start < 0 || cycle < 0 || cycle > 2 ||
+		gold < 0 || gold > 99999999 ||
+		g.camp == nil || g.nativeShopUI == nil ||
+		g.nativeClassUI == nil || g.nativeShopMode != "menu" {
+		return false
+	}
+	n := g.camp.Node()
+	if n == nil || n.Type != "shop" ||
+		n.NativeHubVariant != g.nativeShopVariant {
+		return false
+	}
+	if _, ok := g.nativeShopUI.shops[n.NativeHubVariant]; !ok {
+		return false
+	}
+	if _, ok := g.nativeShopUI.portraits[n.NativeHubVariant]; !ok {
+		return false
+	}
+
+	oldMode, oldUnit, oldSlot, oldRosterTop, oldRosterCycle,
+		oldItemTop, oldGold, oldJob :=
+		g.nativeShopMode, g.shopSellUnitSel, g.shopSellSlotSel,
+		g.nativeShopSellRosterTop, g.nativeShopSellRosterCycle,
+		g.nativeShopSellItemTop,
+		g.gold, g.nativeShopUIJob
+	oldItems := append([]int(nil), g.nativeShopSellItemIDs...)
+	rollback := func() {
+		g.nativeShopMode = oldMode
+		g.shopSellUnitSel = oldUnit
+		g.shopSellSlotSel = oldSlot
+		g.nativeShopSellRosterTop = oldRosterTop
+		g.nativeShopSellRosterCycle = oldRosterCycle
+		g.nativeShopSellItemTop = oldItemTop
+		g.gold = oldGold
+		g.nativeShopUIJob = oldJob
+		g.nativeShopSellItemIDs = oldItems
+	}
+
+	g.nativeShopUIJob = nil
+	g.gold = gold
+	g.nativeShopSellRosterCycle = cycle
+	if !g.setupNativeShopSellRoster() || unit >= len(g.partyJoinOrder) {
+		rollback()
+		return false
+	}
+	g.shopSellUnitSel = unit
+	if mode == "roster" {
+		normalized, visible := campaign.NativeTwoColumnWindow(
+			len(g.partyJoinOrder), selection, start,
+		)
+		if selection != unit || visible == 0 || normalized != start {
+			rollback()
+			return false
+		}
+		g.nativeShopSellRosterTop = start
+		if _, ok := g.composeNativeShopSellRoster(); !ok {
+			rollback()
+			return false
+		}
+		return true
+	}
+	if !g.setupNativeShopSellItems() {
+		rollback()
+		return false
+	}
+	normalized, visible := campaign.NativeTwoColumnWindow(
+		len(g.nativeShopSellItemIDs), selection, start,
+	)
+	if visible == 0 || normalized != start {
+		rollback()
+		return false
+	}
+	g.shopSellSlotSel = selection
+	g.nativeShopSellItemTop = start
+	if _, ok := g.composeNativeShopSellItems(); !ok {
 		rollback()
 		return false
 	}

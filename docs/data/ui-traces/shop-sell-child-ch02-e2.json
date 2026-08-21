@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-22",
+  "evidence_level": "PLAYER-E2-route-patched",
+  "scope": "ch02 variant1 shop sell roster selection0 and Sol item selection0",
+  "reference": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "address_space": "IDA/Capstone LE obj1 linear"
+  },
+  "oracle_sandbox": {
+    "patched_exe_sha256": "7ade244ace954bccec0b89639cded9393973bff586117a19f1fdc168ffcb2105",
+    "patches": [
+      "0x117f3 -> call 0x205be",
+      "0x117f8 -> jmp 0x1187a",
+      "0x205d5 -> jmp 0x206c3"
+    ],
+    "unchanged_scope": "postbattle handler, town/shop handlers, resources, party data and keyboard input",
+    "limitation": "The three patches skip manual battle completion. This is not an unmodified general-player postbattle trace."
+  },
+  "normal_input": [
+    "CONTINUE",
+    "waittown0:Return,0.25,240",
+    "Left",
+    "Return",
+    "Right",
+    "Return",
+    "Return"
+  ],
+  "phase_gate": "waitpixel:175,90,101,121,121,0.05,400",
+  "states": [
+    {
+      "name": "sell_roster_selection0_cycle1",
+      "original_raw_rgb_md5": "62307f5918f1de723055f951a7e6dc6a",
+      "remake_raw_rgb_md5": "62307f5918f1de723055f951a7e6dc6a",
+      "ae": 0
+    },
+    {
+      "name": "sell_items_sol_selection0",
+      "original_raw_rgb_md5": "f5ff2d3650575a93bcc0d795fae7c4ea",
+      "remake_raw_rgb_md5": "f5ff2d3650575a93bcc0d795fae7c4ea",
+      "ae": 0
+    }
+  ],
+  "remake_adapter": {
+    "party": "FD2_SHOT_PARTY_BINDING=assets/cutscenes/bindings/ch00_pre.json",
+    "state": "FD2_SHOT_SHOP_SELL_STATE=roster|items,unit,selection,start,cycle,gold",
+    "limitation": "Screenshot-only typed/raw bootstrap; does not prove native save or campaign persistence."
+  },
+  "figure": "docs/figures/shop-sell-child-ch02-original-vs-remake.png"
+}

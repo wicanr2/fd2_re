@@ -315,7 +315,7 @@ Runtime 不應再讓 `main.go` 同時決定資料模型、輸入、規則和像�
 | UI-06 | Battle HUD | HP/MP/LV/name、面板 sprite、數字 cell、依游標避讓、palette/clip | partial；需以 FDOTHER/UI loader 和截圖差分驗收 |
 | UI-07 | Postbattle | result → handler → reward/roster cleanup → town/shop/rest/preparation 或 ending；不可預設直連下一戰 | partial；campaign schema 與 bounded menu trace 可表達，`town_ch02→preparation_ch02→story_ch02_pre→battle_ch02` 已有可重播 trace。目前24個 postbattle節點全數已接 authored binding；玩家第29戰已達正式 RUNTIME-E1；各節點只代表重製端 E1 admission，不代表一般玩家 E2。玩家第17、18、20戰已依 raw ch16、ch17、ch19 的直接控制流程分別接入60／61→61／62、55與83→84 runtime frontier，並保留 `town_ch18`、`town_ch19`、`town_ch21` 及 save/load 邊界。未綁定節點原有的泛用 `sync_party→set_chapter` 會繞過 runtime guard，現已移除並以空 beats 失敗即關閉。逐關戰間畫面與一般玩家路徑仍不足；直接位址證據見 [`fd2_ch16_post_ida.txt`](../data/fd2_ch16_post_ida.txt)、[`fd2_ch17_post_ida.txt`](../data/fd2_ch17_post_ida.txt)、[`fd2_ch19_post_ida.txt`](../data/ida/fd2_ch19_post_ida.txt)、[`fd2_ch12_post_dispatch_ida.txt`](../data/fd2_ch12_post_dispatch_ida.txt)、[`fd2_ch05_post_dispatch_ida.txt`](../data/fd2_ch05_post_dispatch_ida.txt) 與 [`fd2_post26_28_dispatch_ida.txt`](../data/fd2_post26_28_dispatch_ida.txt) |
 | UI-08 | Town/hub | 可見選單、離開、shop/church/preparation 入口、BGM/SFX、持久隊伍 | partial；`campaign.MenuState` 已與 `choice/town` runtime 共用。ch02 variant0 的 [`selection0–5`](../figures/town-hub-six-selections-original-vs-remake.png) 都已達原版 DOSBox／source-built remake raw RGB 整幀相同；variant1與variant2 selection0–4 另有修改 LOAD 路徑 E2，兩組五項都與指定 pulse 640×400 整幀 AE=0。Left/Right wrap、Shift+F1 reveal、Enter進variant5及Escape回selection5亦有原版 input trace；shop/church/preparation 與 hotel raw route/return trace已接，仍需variant2 selection5 的 BIOS 掃描碼／Enter、未修改玩家路徑與逐章route E2 |
-| UI-09 | Shop | buy/sell、商品／角色／slot 游標、裝備詢問、金錢／庫存原子更新、secret gate | partial；stable scene、四項service menu及purchase/sell/standalone-equip/transfer四條production owner已接原版indexed compositor。equip為角色roster後切入完整item/status panel；transfer保存FDTXT512/511/510/506與raw remove→append/recalc。ch02 variant1/3/5 service0 selected phase、variant5四service/wrap/Escape return、weapon purchase-list四個selection、Yes/No、gold0不足金與gold1000裝備收件者selection0/cycle1均達原版DOSBox／production remake同狀態raw RGB整幀相同；recipient E2使用screenshot-only party bootstrap，DX為E2約束的projection而非直接raw dump。正常campaign JOIN→LOADCH首次typed roster已接runtime regression，但尚非完整playthrough E2或native FD2.SAV。收件者上下 bounded、水平 no-op、六人捲動視窗與錯誤回退已有 E1；另修正pulse double-`/2`、返回selection0、choice-close frame ownership與比較欄位geometry。尚待recipient input/scroll 的 DOSBox E2、no-recipient/full、sell/equip/transfer child panel與其他章節E2 |
+| UI-09 | Shop | buy/sell、商品／角色／slot 游標、裝備詢問、金錢／庫存原子更新、secret gate | partial；stable scene、四項service menu及purchase/sell/standalone-equip/transfer四條production owner已接原版indexed compositor。equip為角色roster後切入完整item/status panel；transfer保存FDTXT512/511/510/506與raw remove→append/recalc。ch02 variant1/3/5 service0 selected phase、variant5四service/wrap/Escape return、weapon purchase-list四個selection、Yes/No、gold0不足金、gold1000裝備收件者selection0/1，以及sell roster selection0/cycle1與索爾items selection0均達route-patched原版／production同狀態raw RGB整幀相同；這些party畫面使用screenshot-only typed/raw bootstrap，不代表完整campaign/native save E2。正常campaign JOIN→LOADCH首次typed roster已接runtime regression。收件者上下 bounded、水平 no-op、六人捲動視窗與錯誤回退已有 E1；另修正pulse double-`/2`、返回selection0、choice-close frame ownership與比較欄位geometry。尚待recipient scroll、no-recipient/full、sell後續問句／成功、equip/transfer child panel與其他章節E2 |
 | UI-10 | Church | revive、class change、費率、候選過濾、確認／取消、缺資料 fail-closed | partial；class path 已對齊 `0x31385→0x31793→0x311DC→0x19953`：Lv>=20、portrait<0x12 且 !=7，三列可見候選、上下 bounded，special>optional>default 自動解析唯一 target，再以左右 Yes/No 確認。`0x31019` 的 FDICON＋四段 FDTXT row、FDOTHER#14 entry16 panel 與 `0x1974c` 六幀 opening 已成 indexed compositor。候選確認／取消會先跑 `0x2d31b` 五幀 closing＋source restore；`0x19953` 已接 FFFC 動態角色名、FDOTHER#2 cells16/17、48/49與51/52 normal/pulse、四幀 opening／`0x197e5` 四幀 choice closing，之後再跑 dialogue closing 五幀＋source restore，最後才 mutation／返回。所有幀只由 Draw acknowledgement 推進。`0x3072f` stable scene 已由FDOTHER#5 raw grid/four-mode digits、FDOTHER#14 entry1、DATO#131與FDTXT585/586合成；`0x2d669`四幀開關、closing source restore及`0x2d85f`兩-tick selected pulse均接runtime並有原版資源artifact。FD2.SAV、raw service0 command overlay與未接callee仍fail-closed |
 | UI-11 | Preparation | 城鎮出發確認／無城鎮記錄詢問、依名冊門檻略過或進入部署、可選15／19筆另加固定 record0（總上場16／20）、取消、最終確認、進戰場 | partial；`0x2cad7` 與 `0x2d093→0x318ad` 的分流已接資料模型與原版提示。城鎮路徑保留實際 town frame，使用 FDTXT `0x201` 於 `(95,119)`；無城鎮路徑依 `0x2cc04` 清成黑畫面，使用 FDTXT `0x19a` 於 `(100,119)`，肯定結果在完整關框後才存檔。兩者都使用 DATO #75、FDOTHER #5 對話框、FDOTHER #2 Yes／No 與 6＋4＋兩 tick 脈動＋4＋5＋還原生命週期。`0x318ad/0x31e80` 的三區背景、計數、10 欄角色格、游標、彩色／灰色繪法、四向輸入與 `0x17fc0` 狀態已接；`0x320fc` 證實 selection byte i只重排 persistent record i+1，record0固定且不消耗quota。`0x1297d` 的有號 BIOS 低字差值與可見 `0,1,2,1` 待機週期亦已接。`0x31d3c` 最終確認沿用相同生命週期，文字為 FDTXT `0x292`，呈現原畫面後才處理結果。呼叫端也已閉合：城鎮出發 `0x2d16b` 收到 0 會退出，直接整備 `0x2ccd6` 收到 0 則重選。缺任一原始記錄或資源即退回。README 所列整備圖均為 E1 原始資源合成，不是 DOSBox 截圖或正常晚期戰役存檔。跨畫面初始相位、有效晚期存檔及原版實機差分仍缺。`0x1f42d` 屬戰場進入演出，不再列為選人視窗動畫 |
 | UI-12 | Save/load | scene-safe boundary、campaign cursor、flags、party/inventory/equipment、version/checksum、四槽 selector | partial；remake title LOAD 已還原四槽 bounded selector 與原版 indexed compositor。合法 IDA 9.4 固定 reader `0x2602c..0x26098`、writer `0x30012` 及其僅有的 `0x2ccb6/0x2fd93` 戰間呼叫者；兩端只處理 metadata `+0..+9`。production 以綁定參考 EXE 雜湊與 `0x526b9` 的 editable gate table 將 raw chapter 1..29 還原到既有 town／preparation node，先完整驗證 persistent record→typed party、節點型別及重複 identity，再一次套用 campaign cursor、gold、party 與四個 raw option bytes；錯誤不部分 mutation、不誤轉 JSON loader。ch21／ch27 inventory postbattle gate 已在存檔前完成，LOAD 不重播。空槽及修改存檔 chapter1 有效槽畫面均與 DOSBox 全幀 RGB 相同。2026-08-22 未修改原版 CONTINUE 戰場按F5後畫面不變且FD2.SAV雜湊不變，動態支持戰場不能建立chapter slot；合成有效槽 restore 是 E1，仍缺正常打完戰鬥後由酒店／整備建立的有效槽 E2、CONTINUE current-battle、metadata `+10..+39` 其他可能 consumer、刪除／覆寫 |
@@ -1762,6 +1762,38 @@ tail item byte to `0xff`, so this projection must not be described as a
 byte-identical FD2.SAV record dump. Missing eight-cell provenance fails
 closed. Roster selection remains at the previous actor after an empty/cancel/
 successful branch, matching the lack of a selector reset before `0x2f70a`.
+
+### ch02 賣出子面板 E2 驗收契約（2026-08-22）
+
+本切片不重開已閉合的 `0x2f642..0x2f87c` 語意，而是驗證其正式消費端。
+原版 oracle 必須從固定雜湊 `FD2.EXE` 的可丟棄副本啟動；副本只允許套用
+已記錄的三處戰鬥略過 patch（`0x117f3→call 0x205be`、
+`0x117f8→jmp 0x1187a`、`0x205d5→jmp 0x206c3`），商店 handler、資源、
+角色資料與鍵盤輸入不得修改。證據等級標成 route-patched E2，不得宣稱為
+未修改的一般玩家戰後路徑。
+
+正常輸入序列必須由 ch02 town selection0 進入 weapon shop，於 service0
+以 Right 到 service1，再以 Enter 進入賣出角色名冊。至少保存下列原子狀態：
+
+1. `sell_roster` selection0 的穩定整幀，以及一次普通方向鍵後的 selection1；
+2. 在 selection0 以 Enter 進入 `sell_items`，保存第一個物品的穩定整幀；
+3. 每張原版圖都必須與正式重製 owner 的同一 selection、window origin、
+   icon／portrait 相位做完整 320×200 RGB 比較，不可遮罩差異；
+4. screenshot-only bootstrap 若用於固定重製狀態，必須要求完整 typed/raw
+   party provenance，且不能提升 campaign persistence 或 native save 等級；
+5. 若任一原版狀態、相位或正式重製 projection 無法同狀態重現，UI-09 維持
+   partial，差異須先分類為輸入、生命週期、資源、相位或 renderer，不得用
+   固定 sleep、硬編姓名或猜測 ABI 關閉。
+
+驗收結果：route-patched 原版依上述正常商店輸入抵達 `sell_roster` 與
+`sell_items`。高頻樣本證實名冊 FDICON 使用三個可見 cycle；受限 adapter 因此
+將 cycle 列為明確狀態，而未猜測正常 runtime cadence。以 `(175,90)` 人物區像素
+同步後，名冊 selection0/cycle1 與索爾物品 selection0 均和正式重製 compositor
+取得完整 320×200 RGB `AE=0`，raw RGB MD5 分別為
+`62307f5918f1de723055f951a7e6dc6a`、`f5ff2d3650575a93bcc0d795fae7c4ea`。
+證據見 [`shop-sell-child-ch02-e2.json`](../data/ui-traces/shop-sell-child-ch02-e2.json)。
+這只關閉兩個 stable child states；selection1、問句、取消／成功生命週期與未修改
+campaign/native save 路徑仍另列 gate。
 
 The `0x318ad` cap gate is now explicit in
 `fdother.NativePreparationPartyLimit`: raw global `[0x53c03] <= 0x1a` yields

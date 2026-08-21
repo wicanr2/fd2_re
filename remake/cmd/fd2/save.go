@@ -162,6 +162,7 @@ func (g *Game) clearShopTransientStateForLoad() {
 	g.nativeShopHasPendingUnit = false
 	g.nativeShopPendingGold = 0
 	g.nativeShopSellRosterTop = 0
+	g.nativeShopSellRosterCycle = 0
 	g.nativeShopSellItemTop = 0
 	g.nativeShopSellConfirmSel = 0
 	g.nativeShopSellItemIDs = nil
