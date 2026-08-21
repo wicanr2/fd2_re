@@ -127,6 +127,31 @@ func TestLatePreHandlersReachTheirPlayerNumberedBattles(t *testing.T) {
 			if g.loadErr != "" || g.camp.NodeID() != tc.wantBattle || g.st == nil {
 				t.Fatalf("%s boundary node=%q state=%v err=%q", tc.start, g.camp.NodeID(), g.st != nil, g.loadErr)
 			}
+			if tc.start == "story_ch29" {
+				if g.sc == nil || !g.sc.RuntimeAppendGroups || len(g.st.Units) != 76 || len(g.st.Roster) != 76 {
+					t.Fatalf("ch29 adopted topology runtime=%v units=%d roster=%d", g.sc != nil && g.sc.RuntimeAppendGroups, len(g.st.Units), len(g.st.Roster))
+				}
+				for index, unit := range g.st.Units {
+					if unit == nil {
+						t.Fatalf("ch29 runtime slot%d is nil", index)
+					}
+					if index < 20 {
+						if unit.Camp != battle.Own {
+							t.Fatalf("ch29 persistent slot%d camp=%v, want own", index, unit.Camp)
+						}
+						continue
+					}
+					if unit.Group != 8 {
+						t.Fatalf("ch29 runtime slot%d group=%d, want group8", index, unit.Group)
+					}
+				}
+				for _, unit := range g.st.Units {
+					if unit != nil && (unit.Group == 1 || unit.Group == 2 || unit.Group == 3 ||
+						(unit.Group >= 4 && unit.Group <= 7) || unit.Group == 9) {
+						t.Fatalf("ch29 source-only/dynamic group%d was materialized at handoff", unit.Group)
+					}
+				}
+			}
 		})
 	}
 }

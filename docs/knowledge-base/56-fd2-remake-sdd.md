@@ -4464,3 +4464,26 @@ DOS BIOS tick 只可映射為重製端有界呈現等待；這是 E1 時序近�
 rollback。`native_palette_pulse` 另以 immutable baseline 執行127次 DAC 寫入，
 保留第64步400 ms hold與最後 baseline restore。兩者是窄 `RUNTIME-E1`，不解除本節
 戰役 topology／binding／E2 gate；`0x33F78` story/focus wrapper 也仍維持失敗即關閉。
+
+## 2026-08-21 玩家第29戰 map28 runtime 拓撲契約
+
+正式證據見
+[`fd2_map28_runtime_topology_ida.txt`](../data/ida/fd2_map28_runtime_topology_ida.txt)。
+固定版 `FD2.EXE` 的 `0x1088D→0x10B4E(0)` 與 raw ch28 pre-handler
+`0x33DBA→0x35822(group8,9,19)` 共同固定一般戰鬥入口：20 筆持續隊伍先建立，
+再追加 group8 的 56 筆，故 handler 到 battle 的基準 frontier 是 76；它不是把
+FDFIELD 的 76 筆來源列全部正規化成 runtime。scenario 必須採
+`runtime_append_groups`，正式 handoff 要保留既有 20＋group8 陣列，且不重播
+`on_battle_start`。
+
+map28 的 event75 只在已證實的 identity-9 branch 啟動 live row：它令 event74
+從 group4 開始，依序逐回追加 groups4、5、6、7；event76 的 progress 到 4 時才
+追加三筆 group1，並把其 base 留給 event79。event79 只消費該三筆，不追加群組。
+raw ch28 post 最後由 `0x25505` 追加一筆 group9，再以 `[runtime_count]-1` 呈現。
+groups2／3 雖存在於 immutable source roster，目前沒有 normal-chain producer；
+event82 也沒有已證實的 live-row producer，因此兩者不得物化或用猜測補洞。
+
+資料與 runtime 必須以原子方式保存上述 live-row mutation、context bytes 與群組
+追加順序；任何缺 raw row、context record、來源群組或唯一 consumer 的情況均
+失敗即關閉。完成 typed event75／74／76／79、正式 ch28 post binding、隊伍同步與
+`preparation_ch30` 存讀檔回歸前，`postbattle_ch29_persist` 仍是 `BLOCKED`。

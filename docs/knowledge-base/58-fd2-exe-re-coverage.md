@@ -108,7 +108,8 @@
 | `0x21EB1`／`0x22046`（command 13–16 LUT 演出） | [`fd2_command13_21eb1_presentation_ida.txt`](../data/ida/fd2_command13_21eb1_presentation_ida.txt) | FDOTHER #3 LUT provenance、16張排程、visible-cursor中心、兩段200 ms、sample index11、compositor consumer及玩家／敵方 E1 | 補同狀態逐幀／逐音訊 E2；不重解 loop |
 | `0x1C4CC`／`0x1C2DA`／`0x1E0DB`／`0x1DF58`（command 13–16 後段） | [`fd2_command_numeric_tail_ida.txt`](../data/ida/fd2_command_numeric_tail_ida.txt) | FDOTHER #6七幀、五組snapshot→mask、`0x4DDD7` write mask、transaction後redraw、FDOTHER #5 queue／22-frame reader與玩家／敵方 E1 | 補同狀態逐幀／逐音訊 E2；不重解函式 |
 | `0x24618` | chapter-specific IDA 證據；例如 [`ch22`](../data/ida/fd2_ch22_pre_ida.txt)、[`ch27/28`](../data/ida/fd2_ch27_ch28_pre_owner_ida.txt) | indexed transition 核心與部分 caller payload | 新 caller 必須另證參數／view；不得把已知 callee 當全新未知 |
-| `0x22253` | [`fd2_ch29_terminal_body_ida.txt`](../data/ida/fd2_ch29_terminal_body_ida.txt)、[`fd2_ch28_post_ida.txt`](../data/ida/fd2_ch28_post_ida.txt) | 共用11＋6＋10、18／24-row bridge、五參數 ABI；`0x25535` caller 已閉合為 `([0x53BEB]-1,15,10,15,10)`，battle-state Ebiten presenter 已達窄 `RUNTIME-E1` | 其他 caller-specific focus／story-array adapter、玩家第29戰 slot topology／group9 consumer、正式 binding 與同狀態 E2；callee 與 `0x25535` payload 不重解 |
+| `0x22253` | [`fd2_ch29_terminal_body_ida.txt`](../data/ida/fd2_ch29_terminal_body_ida.txt)、[`fd2_ch28_post_ida.txt`](../data/ida/fd2_ch28_post_ida.txt) | 共用11＋6＋10、18／24-row bridge、五參數 ABI；`0x25535` caller 已閉合為 `([0x53BEB]-1,15,10,15,10)`，battle-state Ebiten presenter 已達窄 `RUNTIME-E1` | 其他 caller-specific focus／story-array adapter、玩家第29戰正式 binding 與同狀態 E2；callee 與 `0x25535` payload 不重解 |
+| `0x1088D`／`0x33DBA`／`0x35C79`／`0x35C32`／`0x35D60`／`0x35EE6`／`0x2548C`（map28） | [`fd2_map28_runtime_topology_ida.txt`](../data/ida/fd2_map28_runtime_topology_ida.txt) | 玩家第29戰入口20筆持續隊伍＋group8(56)=76；event75啟動event74的groups4..7順序與event76→group1／event79 consumer；post追加group9後以dynamic-last呈現。groups2/3無已證實producer | typed event75／74／76／79、ch28 post binding與E2；event82只有新producer證據才可重開，不重解上述已閉合 mutation |
 | `0x24B14` | ch26 post 直接證據與 [`91`](91-worklist.md) | 天空之鑰 inventory gate | 兩臂視覺／效果；不重解搜尋條件 |
 | `0x24336` | [`fd2_ch20_sky_key_sequence_ida.txt`](../data/ida/fd2_ch20_sky_key_sequence_ida.txt) | 玩家第21戰戰後天空之鑰固定演出：`FDOTHER #34`、`ANI #0`、調色盤與延遲順序；正式重製端 E1 已消費 | 補未修改原版同狀態 E2、第一個動態調色盤相位及相鄰 `layout_units`／ACT63／64；不重解函式本體 |
 | `0x24C1E`／`0x24D22`／`0x11EEE` case 23 | [`fd2_ch23_post_ida.txt`](../data/ida/fd2_ch23_post_ida.txt) | raw ch23／玩家第24戰的 stage 2..14 先寫後畫、`[0x46c] != [0x539f8]` tick gate、312×192 row rotation、#42 staging、零 transient offset、indexed copy ABI 與正式 E1 adapter | 補未修改一般玩家同狀態逐幀／時序 E2；不得重開入口 latch 或把移動中 offset 外推到 handler |
@@ -127,7 +128,7 @@
 
 - 依玩家可見 blocker 擴充既有 IDA 清冊的產品／runtime／driver 分類；不為了提高
   百分比替剩餘1,104筆未知函式猜名稱。
-- 兩個 blocked postbattle 節點的實際未知 branch／native semantics；已知 helper 只補
+- 一個 blocked postbattle 節點（玩家第29戰）的實際未知 branch／native semantics；已知 helper 只補
   caller payload，不重讀 callee。
 - 未知 command／spell／item transaction 與高階效果 owner。
 - `0x28A6C` 精確 renderer、終端輸入、`0x2BCE5` 正式 owner／handoff。
@@ -136,7 +137,7 @@
 ### 不需要再反組譯，應轉實作或工具修正
 
 - 維護 `native_call`／`unresolved_native_call`／`unknown` 三態與分級證據；目前
-  handler 匯出已沒有真正 `unknown` call site，剩餘4筆只追 caller／執行期 gate，
+  handler 匯出已沒有真正 `unknown` call site，剩餘3筆只追 caller／執行期 gate，
   不重解已知 helper。
 - 把已知資料接進正式 UI、campaign、save、audio consumer，補原子失敗與 regression。
 - 依 [`57`](57-ui-evidence-matrix.md)完成戰場、指令、城鎮、教會、整備的輸入狀態機與畫面。
@@ -145,7 +146,7 @@
 ### 需要原版動態驗證，而不是更多靜態反組譯
 
 - 同一 raw save／章節／回合下的原版與重製敵方回合配對。
-- 晚期兩個 blocked postbattle、其餘章節祕密商店的一般玩家 E2、有效槽 LOAD
+- 晚期一個 blocked postbattle（玩家第29戰）、其餘章節祕密商店的一般玩家 E2、有效槽 LOAD
   與跨章 save/load。
 - 第30戰勝利、結局動畫、終端輸入與定格的一般玩家路徑。
 - 戰場 HUD、command grid、法術／物品與命中演出的同狀態影像／音訊時序。

@@ -16,7 +16,7 @@
 | 0 | 原始碼註解與 Markdown 現況斷言稽核 | `DATA-READY`：本輪已修正 `0x2189A`、`0x22253`、legacy `unit_present` 與 handler 三態計數的高信心舊斷言，並修復 manifest 產生器重複鍵；這是持續性品質閘門，不是一次掃描即永久完成 | 下一輪抽查完成度、節點、slot、handler、renderer 舊斷言；錯誤現況直接訂正或刪除，歷史證據則追加勘誤，不抹除形成原因 |
 | 1 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式，現為產品31／runtime170／未知1104；舊83 unknown 已拆為80已分類、3已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253` 只追其他 caller／戰役 gate，`0x2BCE5` 追正式 owner，不重解 callee |
 | 2 | 玩家第21戰天空之鑰固定演出 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`：`0x24336` 已接真實 `FDOTHER #34`、`ANI #0`、調色盤循環與正式戰後→城鎮→存讀檔 | 取得未修改原版同狀態 E2，核對第一個動態調色盤相位與相鄰 `layout_units`／ACT63／64；不重解函式本體 |
-| 3 | 最後一個忠實模式 blocked postbattle | 玩家第23至25戰戰後已達 `RUNTIME-E1`；玩家第29戰的 `0x25535→0x22253` 與 `0x35E5A` presenter 已達窄 E1，但 map28 groups1..7／group8／group9 materialize topology 未閉合，因此節點仍 `BLOCKED` | 先證實第29戰原版 runtime frontier 並修正 scenario append topology，再補 dialog／pan binding、持續隊伍、`preparation_ch30` save/load E1；最後補一般玩家 E2 |
+| 3 | 最後一個忠實模式 blocked postbattle | `RE-CLOSED`：玩家第29戰入口已固定為20筆持續隊伍＋group8的56筆＝76；event75→74依序追加groups4..7、event76追加group1、event79不追加、post追加group9，groups2/3無已證實producer。正式資料與runtime尚未接，故節點仍 `BLOCKED` | 先依規格接 `runtime_append_groups` 與 typed event75／74／76／79，再補 dialog／pan binding、持續隊伍、`preparation_ch30` save/load E1；最後補一般玩家 E2 |
 | 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；`0x16F55` END 已接，command 13–16 的玩家與敵方 mode 11 已走完整 #3前段、#6七張、mask、交易後 redraw、#5數字22張與尾停，AI 依 raw selector重建 target array | 補 END／command 13–16 同狀態逐幀逐音訊 E2；再依 `56` family matrix選下一個有完整證據的 command，不重解本批已閉合函式 |
 | 5 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial | 依 `57` 逐個輸入狀態機取得同狀態原版／重製證據，不用單張 layout 圖代替 |
 | 6 | 原版終局精確鏈 | 近似 E1 可見；忠實模式仍部分阻擋 | 閉合 `0x28A6C` renderer、終端輸入、`0x2BCE5` 正式 owner／handoff及第30戰一般玩家 E2 |

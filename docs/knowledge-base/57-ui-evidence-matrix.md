@@ -148,6 +148,13 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 > frontier、對話／視圖 owner、正式 binding、存檔邊界與一般玩家 E2 仍未閉合；
 > 尤其不得把強推論的固定 slot93 寫入正式資料。
 
+> **2026-08-21 map28 runtime 拓撲勘誤：** IDA 9.4 已固定正常 pre-handler
+> 入口為20筆持續隊伍後追加group8的56筆，正式 battle seam 現保留該76筆順序，
+> 不再把groups1..9全部當作開場單位。event75→74的groups4..7、event76的group1
+> 與post的group9雖已閉合 producer/order，typed live-event consumer與正式戰後
+> binding仍未完成；groups2/3沒有已證實producer，故保持source-only。這項修正
+> 只把入口拓撲提升為 RUNTIME-E1，不解除玩家第29戰整體 fail-closed。
+
 > **2026-08-11 歷史勘誤；blocked 清單已由 2026-08-21 取代。** 玩家第22戰
 > 當時由 fail-closed 提升為 E1；玩家第24戰又於2026-08-21以 raw ch23 indexed
 > adapter 提升為 E1。此歷史清單又由上方玩家第23戰接線勘誤取代。

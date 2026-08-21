@@ -1,0 +1,104 @@
+FD2 map28 runtime materialization topology (player battle 29)
+Date: 2026-08-21
+
+Inputs
+------
+FD2.EXE
+  size: 357074 bytes
+  MD5: b97caf2239a27a896069d03549d96e1e
+  SHA-256: 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f
+FDFIELD.DAT
+  version identity: docs/data/fd2-reference-files.json
+FDFIELD resource 85 (map selector 28 control/unit resource)
+  extracted path: extracted/raw/FDFIELD/FDFIELD_085.bin
+  size: 2107 bytes
+  MD5: 600e972b147b086f7bbd6c3f2aa2dde8
+  SHA-256: a01c382cc898063359afad816430f81629d4978feca2df93a7741f9aa13252fd
+
+Tools and address spaces
+------------------------
+Primary: IDA Pro 9.4 in fd2-ida-authorized-local, 16-bit linear addresses in
+the IDA database made from the fixed FD2.EXE above.  The database was created
+in tmpfs from a read-only original and was not committed.
+Independent instruction check: Capstone in fd2-cap-local; addresses below are
+the same decoded-image linear addresses used by project disassembly exports.
+The original bytes, addresses and operands remain authoritative; the semantic
+labels in this note are additive and carry the evidence levels stated below.
+
+Raw resource shape (confirmed)
+------------------------------
+Resource header bytes are [28,20,76]: map selector 28, 20 deployment records,
+and 76 FDFIELD constructor rows.  The constructor group counts are:
+  group1=3, group2=3, group3=3,
+  group4=2, group5=2, group6=2, group7=2,
+  group8=56, group9=1, group255=2.
+
+The three active identities in the otherwise dormant 16-row turn-control
+table are row0=(turn FF,event 74,raw selector 0), row1=(FF,76,2), and
+row2=(FF,79,0).  Field-control row1 is (event 75,selector 1).  These bytes are
+confirmed data identities; FF means dormant here, not round 255.
+
+Constructor frontier (confirmed)
+--------------------------------
+sub_1088D loads the chapter resources and constructs the persistent party.
+At 0x10B3C it pushes group 0 and calls sub_10B4E at 0x10B3E.  Map28 has no
+group-0 constructor row, so LOADCH leaves the 20 persistent party records.
+
+raw ch28 pre-handler sub_33DBA calls LOADCH, then at 0x33E10..0x33E16 passes
+(group=8,x=9,y=19) through sub_35822.  sub_35822 performs pan, calls
+sub_10B4E(group), then runs its palette/presentation tail.  Group8 contributes
+56 records.  Therefore the normal pre-handler-to-battle handoff has exactly
+20+56=76 current runtime records, ordered persistent party first and group8
+second.  This is the confirmed base frontier; it is not the 76-row raw source
+table rebuilt as a normalized all-groups battle.
+
+Dynamic event chain (confirmed mutations; player reachability of the trigger
+still requires an unmodified runtime capture)
+--------------------------------------------------------------------------
+Field event75 sub_35C79, on its runtime-record +8 == 9 branch, writes current
+context byte +11=1, schedules turn-control row1 for current round+1, writes
+current context byte +10=4, and schedules row0 for the current round.
+
+Turn event74 sub_35C32 reads current context byte +10 and passes it as group to
+sub_35822(group,29,10).  The shared tail at 0x35992 increments that byte.  If
+the pre-increment value is not 7 it schedules row0 for the next round.  From
+event75's seed this appends groups4,5,6,7, one group per activation and in that
+order.
+
+Turn event76 sub_35D60 advances context byte +11 while it is not 4 and
+reschedules row1.  At value 4 it appends group1 via sub_10B4E, saves
+[runtime_count]-3 as the three-record base in context +15, and schedules row2
+for the current round before invoking sub_35E5A.
+
+Turn event79 sub_35EE6 reschedules row2 and uses context +15 plus a modulo-3
+choice to operate on two members of the already appended group1.  It does not
+append another group.
+
+Postbattle append (confirmed)
+-----------------------------
+raw ch28 post-handler sub_2548C pushes group9 and calls sub_10B4E at 0x25505.
+It then passes [runtime_count]-1 to the shared sub_22253 presentation at
+0x25535.  Group9 has one constructor row, so this caller deliberately presents
+the newly appended dynamic last record; it does not prove a fixed slot 93.
+
+Known non-producers and limits
+------------------------------
+event82 sub_35F92 can append the group selected by current context byte +10,
+but map28's static turn-control table contains no event82 row and no producer
+for such a row is presently proven.  No direct normal-chain append for groups2
+or3 was found.  They remain immutable source roster rows, not materialized
+runtime records, until a producer or an unmodified runtime trace proves
+otherwise.  This note therefore does not claim a single fixed final frontier:
+the confirmed base is 76; groups4..7 and group1 are conditional ordered
+extensions; group9 is the one-record postbattle extension.
+
+Implementation consequence (confirmed data contract; runtime work pending)
+-------------------------------------------------------------------------
+The authored ch29 scenario must use runtime append ownership.  The normal
+pre-handler handoff must preserve its 20+group8 runtime array instead of
+rebuilding groups1..9 from all 76 source rows.  Formal runtime code must keep
+groups1,4,5,6,7,9 as pending constructor sources and implement the live event
+mutations above atomically.  Groups2/3 must remain source-only.  Until that
+typed chain and the ch28 post binding are both installed, the campaign node
+postbattle_ch29_persist remains fail-closed.
+
