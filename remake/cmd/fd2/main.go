@@ -82,6 +82,7 @@ type Game struct {
 	nativeCh23Loop             *nativeCh23LoopJob                 // blocking raw ch23 indexed presentation loop
 	native2189A                *native2189AJob                    // blocking raw ch22 post 0x2189A ten-pass presentation
 	nativeUnitPresent          *nativeUnitPresentJob              // blocking shared 0x22253 11+6+bridge+10 indexed presentation
+	nativeCh28PostPresent      *nativeCh28PostPresentJob          // blocking 0x1DB65 13+6+6 indexed presentation
 	nativeCh22Reload           *nativeCh22ReloadState             // atomic FDFIELD69/FDSHAP46/47/FDOTHER42 tail transaction
 	nativeFDOTHERPalettePhase  int                                // process-lifetime 0x4DFCC phase projection (0..15)
 	nativeFullDACWhite         bool                               // exact 0x11DF2(0,255,255) overlay for legacy RGB scenes
@@ -692,7 +693,12 @@ func (g *Game) stepTransitionReveal() {
 // IDA shows that 0x135dd writes [0x53aa9/0x53aad] and
 // [0x53ab1/0x53ab5], but not [0x53ab9/0x53abd].
 func (g *Game) syncStoryNativeMapPanView() bool {
-	if g == nil || !g.hasStoryNativeMapView {
+	if g == nil {
+		return true
+	}
+	ch28Continuity := g.ch28HandlerNativeMapViewContinuity()
+	hasBattleView := ch28Continuity && g.st != nil && g.st.HasNativeMapViewState
+	if !g.hasStoryNativeMapView && !hasBattleView {
 		return true
 	}
 	if g.m == nil || g.m.TileW <= 0 || g.m.TileH <= 0 || g.m.W <= 0 || g.m.H <= 0 ||
@@ -702,6 +708,9 @@ func (g *Game) syncStoryNativeMapPanView() bool {
 		return false
 	}
 	view := g.storyNativeMapView
+	if !g.hasStoryNativeMapView {
+		view = g.st.NativeMapViewState
+	}
 	view.CameraX, view.CameraY = int(g.camX)/g.m.TileW, int(g.camY)/g.m.TileH
 	view.CursorX = view.CameraX + view.VisibleCursorX
 	view.CursorY = view.CameraY + view.VisibleCursorY
@@ -710,7 +719,68 @@ func (g *Game) syncStoryNativeMapPanView() bool {
 		g.loadErr = "native story map view: " + err.Error()
 		return false
 	}
-	g.storyNativeMapView = carrier.NativeMapViewState
+	if g.hasStoryNativeMapView {
+		g.storyNativeMapView = carrier.NativeMapViewState
+	} else {
+		g.st.NativeMapViewState = carrier.NativeMapViewState
+	}
+	// The original uses the same absolute cursor globals throughout the
+	// handler. Keep the generic renderer cursor aligned with that typed carrier
+	// so a following 0x12D7B focus starts from the post-pan position.
+	if ch28Continuity {
+		g.curX, g.curY = view.CursorX, view.CursorY
+	}
+	return true
+}
+
+// ch28HandlerNativeMapViewContinuity is deliberately caller-specific. Raw
+// ch28 pre/post share the six native view globals across the remake's
+// artificial cutscene/battle node boundary. Battle turn-event staging owns a
+// separate private snapshot and must not be mutated by this bridge.
+func (g *Game) ch28HandlerNativeMapViewContinuity() bool {
+	if g == nil {
+		return false
+	}
+	if g.camp == nil {
+		return g.handlerChapter == 28 // narrow unit fixture
+	}
+	id := g.camp.NodeID()
+	return id == "story_ch29" || id == "postbattle_ch29_persist"
+}
+
+// syncStoryNativeMapFocusView mirrors the six globals after one 0x12CEA
+// focus step. Unlike 0x135DD, focus updates absolute and visible cursor while
+// moving the camera only when the native safe band is crossed.
+func (g *Game) syncStoryNativeMapFocusView(visibleX, visibleY int) bool {
+	if g == nil || !g.ch28HandlerNativeMapViewContinuity() {
+		return true
+	}
+	hasBattleView := g.st != nil && g.st.HasNativeMapViewState
+	if !g.hasStoryNativeMapView && !hasBattleView {
+		return true
+	}
+	if g.m == nil || g.m.TileW <= 0 || g.m.TileH <= 0 ||
+		int(g.camX)%g.m.TileW != 0 || int(g.camY)%g.m.TileH != 0 ||
+		g.camX != float64(int(g.camX)) || g.camY != float64(int(g.camY)) {
+		g.loadErr = "native story map view: focus camera is not tile-aligned"
+		return false
+	}
+	originX, originY := int(g.camX)/g.m.TileW, int(g.camY)/g.m.TileH
+	view := battle.NativeMapViewState{
+		CameraX: originX, CameraY: originY,
+		CursorX: g.curX, CursorY: g.curY,
+		VisibleCursorX: visibleX, VisibleCursorY: visibleY,
+	}
+	carrier := &battle.State{W: g.m.W, H: g.m.H}
+	if err := carrier.MaterializeNativeMapViewState(view); err != nil {
+		g.loadErr = "native story map view: " + err.Error()
+		return false
+	}
+	if g.hasStoryNativeMapView {
+		g.storyNativeMapView = carrier.NativeMapViewState
+	} else {
+		g.st.NativeMapViewState = carrier.NativeMapViewState
+	}
 	return true
 }
 
@@ -780,11 +850,21 @@ func (g *Game) stepFocusUnit() {
 		g.focusJob = nil
 		g.beatAdvance()
 	}
+	originX, originY := int(g.camX)/g.m.TileW, int(g.camY)/g.m.TileH
+	screenX, screenY := g.curX-originX, g.curY-originY
+	if g.ch28HandlerNativeMapViewContinuity() && g.hasStoryNativeMapView {
+		screenX, screenY = g.storyNativeMapView.VisibleCursorX, g.storyNativeMapView.VisibleCursorY
+	} else if g.ch28HandlerNativeMapViewContinuity() && g.st != nil && g.st.HasNativeMapViewState {
+		screenX, screenY = g.st.NativeMapViewState.VisibleCursorX, g.st.NativeMapViewState.VisibleCursorY
+	}
 	if g.curX == j.targetX && g.curY == j.targetY {
+		if !g.syncStoryNativeMapFocusView(screenX, screenY) {
+			g.focusJob = nil
+			return
+		}
 		finish()
 		return
 	}
-	originX, originY := int(g.camX)/g.m.TileW, int(g.camY)/g.m.TileH
 	maxOriginX, maxOriginY := g.m.W-13, g.m.H-8
 	if maxOriginX < 0 {
 		maxOriginX = 0
@@ -792,30 +872,41 @@ func (g *Game) stepFocusUnit() {
 	if maxOriginY < 0 {
 		maxOriginY = 0
 	}
-	screenX, screenY := g.curX-originX, g.curY-originY
 	switch {
 	case g.curX > j.targetX:
 		g.curX--
 		if screenX < 2 && originX > 0 {
 			originX--
+		} else {
+			screenX--
 		}
 	case g.curX < j.targetX:
 		g.curX++
 		if screenX > 10 && originX < maxOriginX {
 			originX++
+		} else {
+			screenX++
 		}
 	case g.curY > j.targetY:
 		g.curY--
 		if screenY < 2 && originY > 0 {
 			originY--
+		} else {
+			screenY--
 		}
 	case g.curY < j.targetY:
 		g.curY++
 		if screenY > 5 && originY < maxOriginY {
 			originY++
+		} else {
+			screenY++
 		}
 	}
 	g.camX, g.camY = float64(originX*g.m.TileW), float64(originY*g.m.TileH)
+	if !g.syncStoryNativeMapFocusView(screenX, screenY) {
+		g.focusJob = nil
+		return
+	}
 	if g.curX == j.targetX && g.curY == j.targetY {
 		finish()
 	}
@@ -1189,6 +1280,15 @@ func (g *Game) fastForwardShotCampaign() error {
 			if g.nativeUnitPresent != nil {
 				return errors.New("shot fast-forward native 0x22253 exceeded step bound")
 			}
+		case g.nativeCh28PostPresent != nil:
+			for ticks := 0; g.nativeCh28PostPresent != nil && ticks < maxSteps; ticks++ {
+				g.nativeCh28PostPresent.drawn = true
+				g.nativeCh28PostPresent.wait = 0
+				g.stepNativeCh28PostPresent()
+			}
+			if g.nativeCh28PostPresent != nil {
+				return errors.New("shot fast-forward native 0x1DB65 exceeded step bound")
+			}
 		case g.beatDelay > 0:
 			g.beatDelay = 0
 			g.beatAdvance()
@@ -1282,6 +1382,16 @@ func (g *Game) beatStart(b campaign.Beat) {
 		}
 		if err := g.startNativeUnitPresent(*b.NativeUnitPresent, g.beatAdvance); err != nil {
 			g.loadErr = "beat native_unit_present: " + err.Error()
+		}
+		return
+	case "native_ch28_post_present":
+		if b.NativeCh28PostPresent == nil || b.Source != "0x254c0" ||
+			!b.NativeCh28PostPresent.IsRecoveredContract() {
+			g.loadErr = "beat native_ch28_post_present:缺少原版 0x254c0 payload"
+			return
+		}
+		if err := g.startNativeCh28PostPresent(g.beatAdvance); err != nil {
+			g.loadErr = "beat native_ch28_post_present: " + err.Error()
 		}
 		return
 	case "indexed_transition":
@@ -2426,6 +2536,7 @@ func (g *Game) enterNode() {
 	g.nativeCh23Loop = nil
 	g.native2189A = nil
 	g.nativeUnitPresent = nil
+	g.nativeCh28PostPresent = nil
 	g.nativeCh22Reload = nil
 	g.spawnIntroTransition = nil
 	g.nativeTurnStaging = nil
@@ -2709,6 +2820,7 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 	g.nativeCh23Loop = nil
 	g.native2189A = nil
 	g.nativeUnitPresent = nil
+	g.nativeCh28PostPresent = nil
 	g.nativeCh22Reload = nil
 	g.indexedTransition = nil
 	g.spawnIntroTransition = nil
@@ -5219,6 +5331,7 @@ func (g *Game) loadMap(dir string) error {
 	g.nativeMapDAC = nil
 	g.nativePaletteRamp = nil
 	g.nativePalettePulse = nil
+	g.nativeCh28PostPresent = nil
 	if native, nativeErr := loadNativeMapAssets(dir); nativeErr == nil && nativeMapAssetsAvailable(native) {
 		g.nativeMapAssets = native
 		g.nativeMapDAC = append(g.nativeMapDAC[:0], native.PaletteDAC...)
@@ -6080,6 +6193,13 @@ func (g *Game) Update() error {
 		}
 		return nil
 	}
+	if g.nativeCh28PostPresent != nil {
+		g.stepNativeCh28PostPresent()
+		if g.shotPath != "" && g.shotTaken {
+			return ebiten.Termination
+		}
+		return nil
+	}
 	// 攻擊演出推進(FIGANI 全身分鏡;演出期間鎖玩家輸入)
 	if g.atk != nil {
 		g.atk.timer--
@@ -6691,6 +6811,17 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		if !g.drawNativeUnitPresent(screen) {
 			g.failNativeUnitPresent(errors.New("presentation unavailable"))
 			ebitenutil.DebugPrint(screen, "native 0x22253 presentation unavailable")
+		}
+		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
+			g.captureShot(screen)
+		}
+		return
+	}
+	if g.nativeCh28PostPresent != nil {
+		screen.Fill(color.Black)
+		if !g.drawNativeCh28PostPresent(screen) {
+			g.failNativeCh28PostPresent(errors.New("presentation unavailable"))
+			ebitenutil.DebugPrint(screen, "native 0x1DB65 presentation unavailable")
 		}
 		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
 			g.captureShot(screen)

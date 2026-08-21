@@ -197,6 +197,27 @@ func TestFullCampaignCarriesVerifiedChapter27ViewAndInheritedHUD(t *testing.T) {
 	}
 }
 
+func TestFullCampaignCarriesVerifiedChapter29ViewAndInheritedHUD(t *testing.T) {
+	c, err := Load("../../assets/scenarios/campaign_full.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	n := c.Nodes["battle_ch29"]
+	if n == nil || n.NativeMapView == nil || n.NativeMapHUD != nil || n.NativeMapHUDInherited == nil {
+		t.Fatalf("battle_ch29 native map state=%#v", n)
+	}
+	view := *n.NativeMapView
+	if view.CameraX != 9 || view.CameraY != 56 ||
+		view.CursorX != 15 || view.CursorY != 63 ||
+		view.VisibleCursorX != 6 || view.VisibleCursorY != 7 ||
+		view.RangeMode == nil || *view.RangeMode != 0 {
+		t.Fatalf("battle_ch29 native map view=%+v", view)
+	}
+	if n.NativeMapHUDInherited.DisplayGateB != 1 {
+		t.Fatalf("battle_ch29 inherited HUD=%+v", n.NativeMapHUDInherited)
+	}
+}
+
 func TestInventoryGateRequiresBothTargetsAndRoutesWithoutPlayerChoice(t *testing.T) {
 	itemID := 100
 	c := &Campaign{Start: "gate", Nodes: map[string]*Node{
@@ -358,8 +379,8 @@ func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 		t.Fatalf("sky-key success must preserve the proven ch26_post success tail without reusing ch27_post: %#v", success)
 	}
 	post29 := c.Nodes["postbattle_ch29_persist"]
-	if post29 == nil || post29.Type != "cutscene" || post29.HandlerBinding != "" || post29.Next != "preparation_ch30" || len(post29.Beats) != 0 {
-		t.Fatalf("chapter29 must keep the mismatched ch29 raw handler disconnected: %#v", post29)
+	if post29 == nil || post29.Type != "cutscene" || post29.HandlerBinding != "assets/cutscenes/bindings/ch28_post.json" || post29.Next != "preparation_ch30" || len(post29.Beats) != 0 {
+		t.Fatalf("chapter29 must use the recovered zero-based raw ch28 post handler: %#v", post29)
 	}
 	missing := c.Nodes["story_ch27_post_sky_key_missing"]
 	if missing == nil || missing.Type != "story" || missing.Script != "assets/story/ch27.json" || missing.Scene != "缺少天空之鑰的離別(分支)" || missing.Next != "ending_ch27_no_sky_key" {
@@ -463,7 +484,7 @@ func TestCampaignFullPostbattleBindingsUseVerifiedRawOwner(t *testing.T) {
 		"postbattle_ch25_persist": "assets/cutscenes/bindings/ch24_post.json",
 		"postbattle_ch26_persist": "assets/cutscenes/bindings/ch25_post.json",
 		"postbattle_ch28_persist": "assets/cutscenes/bindings/ch27_post.json",
-		"postbattle_ch29_persist": "",
+		"postbattle_ch29_persist": "assets/cutscenes/bindings/ch28_post.json",
 	}
 	for nodeID, wantBinding := range want {
 		n := c.Nodes[nodeID]
@@ -1130,7 +1151,7 @@ func TestCampaignFullStoryScriptCoverageMatchesAudit(t *testing.T) {
 			generic++
 		}
 	}
-	if storyNodes != 121 || scripted != 9 || handlerBound != 55 || fallback != 57 || retreat != 30 || rumor != 23 || postbattle != 1 || generic != 3 {
+	if storyNodes != 121 || scripted != 9 || handlerBound != 56 || fallback != 56 || retreat != 30 || rumor != 23 || postbattle != 0 || generic != 3 {
 		t.Fatalf("campaign story coverage changed: nodes=%d scripted=%d handler_bound=%d fallback=%d retreat=%d rumor=%d postbattle=%d generic=%d; update the audit before changing claims", storyNodes, scripted, handlerBound, fallback, retreat, rumor, postbattle, generic)
 	}
 }

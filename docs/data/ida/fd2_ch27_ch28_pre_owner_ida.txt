@@ -69,6 +69,44 @@ index 29 -> 0x33E3C
 - map28 group 8 有 56 筆，因此 runnable binding 明列
   `spawn_groups:{8:56}`；實際產生數不同即停止，不能再把缺群組當無作用。
 
+### 戰鬥入口視圖與 HUD 邊界（已證實，E1）
+
+`0x205DA` 先將六個視圖全域清零；`0x33DD7` 的
+`0x135DD(9,56)` 與 `0x35822` 內的 `0x135DD(9,19)` 都同步鏡頭與
+絕對游標，但不寫可見游標。因此共享尾端開始前為：
+
+```text
+camera          = (9,19)
+absolute cursor = (9,19)
+visible cursor  = (0,0)
+```
+
+map28 經雜湊綁定的第一個 own deployment record 是 `(15,63)`；
+acting 86 的 slot 0 只寫 pose 2，沒有移動座標。共享尾端的
+`0x12D7B(0)→0x12CEA` 依 X 先 Y 後、X 安全帶 2..10、Y 安全帶
+2..5 移動；map28 高 64，13×8 viewport 的 Y camera 上限是 56。
+依直接指令規則重播後的六個入口值是：
+
+```text
+camera          = (9,56)
+absolute cursor = (15,63)
+visible cursor  = (6,7)
+```
+
+`0x135DD` 入口寫 selector `[0x51A83]=0`，後續 acting、spawn、dialog、
+reset pose 與 focus 都不改寫，所以第 29 戰入口 selector 是 0。
+主控制器在 `0x25E0B` 進入戰前 handler 前將 HUD gate B
+`[0x51AAC]` 寫 0，並在 handler 返回後的 `0x25E5E` 寫回 1；這是
+共用的 handler table caller，不是 ch27 專屬分支。gate A 與 anchor 仍依
+[`fd2_hud_persistence_ida.txt`](../fd2_hud_persistence_ida.txt) 從存檔／程序狀態繼承，
+不可猜成章節常數。
+
+重製端因此可在 `battle_ch29` 以可編輯 `native_map_view`
+保存上述六值與 `range_mode=0`，再以
+`native_map_hud_inherited.display_gate_b=1` 合併持續 gate A／anchor。
+這只閉合原始位元組→typed data→runtime 的 E1 入口；尚不是未修改
+DOS 一般玩家路徑或逐像素 E2。
+
 ## 部署位置表（已證實）
 
 `0x1088D` 先讀 control byte `+2` 為 `enemy_ally_total`，再令 positions 指標為

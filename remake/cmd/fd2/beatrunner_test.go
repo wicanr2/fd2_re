@@ -607,6 +607,39 @@ func TestBeatFocusUnitWalksCursorAndScrollsAtOriginalSafeBand(t *testing.T) {
 	}
 }
 
+func TestBeatFocusUnitSynchronizesNativeStoryView(t *testing.T) {
+	slot0 := 0
+	g := newBeatTestGame(t, []campaign.Beat{{Op: "focus_unit", Slot: &slot0}})
+	g.m = &MapData{W: 31, H: 64, TileW: 24, TileH: 24, Cols: 8, Tiles: make([]int, 31*64)}
+	g.storyActors = []battle.Unit{{Fig: 0, X: 15, Y: 63, OnField: true}}
+	g.camX, g.camY = 9*24, 19*24
+	g.curX, g.curY = 9, 19
+	g.storyNativeMapView = battle.NativeMapViewState{
+		CameraX: 9, CameraY: 19, CursorX: 9, CursorY: 19,
+	}
+	g.hasStoryNativeMapView = true
+	g.handlerChapter = 28
+	g.beatAdvance()
+	// This unit fixture exercises the handler-chapter owner without a campaign
+	// node. newBeatTestGame installs an unrelated node by default, so remove it
+	// only after focus_unit has materialized its job.
+	g.camp = nil
+	for ticks := 0; g.focusJob != nil && ticks < 100; ticks++ {
+		g.stepFocusUnit()
+	}
+	if g.loadErr != "" || g.focusJob != nil {
+		t.Fatalf("ch28 focus did not finish: job=%#v err=%q", g.focusJob, g.loadErr)
+	}
+	want := battle.NativeMapViewState{
+		CameraX: 9, CameraY: 56, CursorX: 15, CursorY: 63,
+		VisibleCursorX: 6, VisibleCursorY: 7,
+	}
+	if g.storyNativeMapView != want || g.curX != 15 || g.curY != 63 || g.camX != 9*24 || g.camY != 56*24 {
+		t.Fatalf("ch28 focus view=%+v cursor=(%d,%d) camera=(%v,%v), want %+v",
+			g.storyNativeMapView, g.curX, g.curY, g.camX, g.camY, want)
+	}
+}
+
 func TestBeatActingFailsClosedWhenRuntimeSlotWasNotMaterialized(t *testing.T) {
 	slot8 := 8
 	g := newBeatTestGame(t, []campaign.Beat{{Op: "act", Source: "0x32657", Acting: []campaign.ActingFrame{{

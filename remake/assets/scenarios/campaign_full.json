@@ -3952,11 +3952,24 @@
    "map": "assets/maps/map28",
    "units": "assets/maps/map28/map28_units.json",
    "scenario": "assets/scenarios/ch29.json",
+   "native_map_view": {
+    "camera_x": 9,
+    "camera_y": 56,
+    "cursor_x": 15,
+    "cursor_y": 63,
+    "visible_cursor_x": 6,
+    "visible_cursor_y": 7,
+    "range_mode": 0
+   },
+   "native_map_hud_inherited": {
+    "display_gate_b": 1
+   },
    "on_win": "postbattle_ch29_persist",
    "on_lose": "retreat_ch29"
   },
   "postbattle_ch29_persist": {
    "type": "cutscene",
+   "handler_binding": "assets/cutscenes/bindings/ch28_post.json",
    "beats": [],
    "next": "preparation_ch30"
   },

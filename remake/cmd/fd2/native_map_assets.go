@@ -32,7 +32,9 @@ type nativeMapAssets struct {
 	// sub_32999. It is validated independently because steady map rendering
 	// does not require this caller-specific transition.
 	SpawnIntro []fdother.LMI1Entry
-	// CommandHealDigits is the caller-specific FDOTHER #5 LMI1 bank.
+	// CommandHealDigits is the complete FDOTHER #5 LMI1 bank. The historical
+	// field name is retained for existing command-tail callers; ch28 post also
+	// consumes exact entries 0x44..0x4f without assigning them semantic names.
 	// FDOTHER6 is the complete shared #6 bank consumed by command 13..16 and
 	// 0x22253; neither path may rename the archive itself after one effect.
 	CommandHealDigits []fdother.LMI1Entry

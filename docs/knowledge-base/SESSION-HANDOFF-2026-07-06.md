@@ -5161,3 +5161,34 @@ indices3..6。event79、post binding、save/load與E2仍未完成。
 raw-camp0 owner以process-wide `nativeRNGState`前進一次，從state21 base的三筆
 group1選兩個循環相鄰slots，原子設定raw `+5` bit7並reschedule row2。post
 binding、save/load與E2仍未完成。
+
+**2026-08-21 ch28 post raw prelude 補證：** 合法 IDA Pro 9.4 直接重讀
+`sub_2548C`、`sub_35BBA`與`sub_1DB65`。現已固定slots20..tail raw word
+`+0x40`清除、slot20 `+7/+8=0x7E`，並新增只接受76／78／80／82／84／87的
+frontier validator與原子raw transaction。`0x1DB65`另有13＋6＋6次indexed呈現及
+raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整transaction、
+正式binding、持續隊伍／`preparation_ch30` save/load與E2仍待完成。
+
+## 2026-08-21：玩家第29戰 raw ch28 post 正式 E1 閉合
+
+- 依「RE→規格→實作」先在
+  [`fd2_ch27_ch28_pre_owner_ida.txt`](../data/ida/fd2_ch27_ch28_pre_owner_ida.txt)
+  固定第29戰入口 camera `(9,56)`、absolute `(15,63)`、visible `(6,7)`、
+  selector0 與 controller gate B=1；再在 SDD 建立戰後 pan/focus 必須連續
+  同步六欄 `NativeMapViewState` 的契約。
+- `battle_ch29` 現以可編輯 `native_map_view` 與
+  `native_map_hud_inherited` 物化視圖、range selector 與持續 HUD。beat pan
+  不再只改 Ebiten camera，focus 也不再用 `absolute-camera` 覆蓋原版
+  故意保留的 visible cursor。
+- 正式 `postbattle_ch29_persist` binding 消費 `0x35BBA→0x1DB65`
+  13＋6＋6呈現、group9、`0x25535→0x22253`、`0x24B4D`、`0x35E5A`、
+  隊伍同步與 chapter increment，最後進 `preparation_ch30`。此節點的存檔／
+  讀檔回歸保留 roster、join order 與 chapter29。
+- Docker／Xvfb 聚焦回歸
+  `TestChapter29BattleResultRunsCh28PostToPreparation30AndSaveLoad`、視圖同步與
+  campaign 資料測試全數通過。postbattle audit 現為24 active／0 blocked。
+- 這是 `RUNTIME-E1`，不是未修改原版一般玩家 `PLAYER-E2`，也不命名
+  FDOTHER #5 entries `0x44..0x4F` 或 UI SFX sample index3的未證實玩家語意。
+- 本輪再以唯讀子代理程式稽核 source comments 與 Markdown；程式註解無新的
+  高信心錯誤，權威現況文件中的23／1、未綁定、presenter未接等斷言已修正；
+  時間序列歷史則保留並明示由本條取代。

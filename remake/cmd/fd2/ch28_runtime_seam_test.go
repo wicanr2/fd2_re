@@ -2,6 +2,8 @@ package main
 
 import (
 	"os"
+	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -31,6 +33,33 @@ func seedLateCampaignParty(t *testing.T, scenarioPath string, selected int) *Gam
 	}
 	for _, id := range order[1:selected] {
 		g.partyDeploy[id] = true
+	}
+	return g
+}
+
+func newChapter29RuntimeBattle(t *testing.T) *Game {
+	t.Helper()
+	g := seedLateCampaignParty(t, "assets/scenarios/ch29.json", 20)
+	full, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	full.Start = "story_ch29"
+	g.camp = campaign.NewRunner(full)
+	g.enterNode()
+	if g.loadErr != "" {
+		t.Fatalf("story_ch29 entry: %s", g.loadErr)
+	}
+	if err := g.fastForwardShotCampaign(); err != nil {
+		t.Fatalf("story_ch29 normal handler path: %v", err)
+	}
+	if g.loadErr != "" || g.camp.NodeID() != "battle_ch29" || g.st == nil || g.sc == nil {
+		t.Fatalf("story_ch29 boundary node=%q state=%v scenario=%v err=%q", g.camp.NodeID(), g.st != nil, g.sc != nil, g.loadErr)
+	}
+	// Normal play draws at least one steady tactical frame before the result
+	// seam; explicitly invoke that production compositor in this headless test.
+	if err := g.composeNativeMapFrame(); err != nil {
+		t.Fatalf("ch29 steady map frame: %v", err)
 	}
 	return g
 }
@@ -271,5 +300,65 @@ func TestChapter28BattleResultRunsCh27PostToPreparation29(t *testing.T) {
 		if unit.Camp != battle.Own {
 			t.Fatalf("persistent roster id=%d contains non-player camp=%v", id, unit.Camp)
 		}
+	}
+}
+
+func TestChapter29BattleResultRunsCh28PostToPreparation30AndSaveLoad(t *testing.T) {
+	if os.Getenv("FD2_ORIGINAL_FDOTHER") == "" {
+		t.Skip("ch28 post indexed presenter requires the read-only original FDOTHER/FDSHAP/FDICON bundle")
+	}
+	t.Setenv("FD2_MUTE", "1")
+	oldCache := userDataDirCached
+	userDataDirCached = ""
+	t.Setenv("XDG_DATA_HOME", t.TempDir())
+	t.Cleanup(func() { userDataDirCached = oldCache })
+
+	g := newChapter29RuntimeBattle(t)
+	if len(g.st.Units) != 76 || g.camp.NodeID() != "battle_ch29" {
+		t.Fatalf("ch29 start node=%q slots=%d", g.camp.NodeID(), len(g.st.Units))
+	}
+	wantView := battle.NativeMapViewState{
+		CameraX: 9, CameraY: 56, CursorX: 15, CursorY: 63,
+		VisibleCursorX: 6, VisibleCursorY: 7,
+	}
+	if !g.st.HasNativeMapViewState || g.st.NativeMapViewState != wantView ||
+		!g.st.HasNativeMapRangeModeState || g.st.NativeMapRangeMode != 0 ||
+		!g.st.HasNativeMapHUDState || g.st.NativeMapHUDState.DisplayGateB != 1 {
+		t.Fatalf("ch29 native presentation view=%+v range=%d hud=%+v flags=%v/%v/%v",
+			g.st.NativeMapViewState, g.st.NativeMapRangeMode, g.st.NativeMapHUDState,
+			g.st.HasNativeMapViewState, g.st.HasNativeMapRangeModeState, g.st.HasNativeMapHUDState)
+	}
+	g.result = "win"
+	if !g.confirmBattleResult() || g.result != "" || g.camp.NodeID() != "postbattle_ch29_persist" {
+		t.Fatalf("ch29 result confirmation node=%q result=%q err=%q", g.camp.NodeID(), g.result, g.loadErr)
+	}
+	if g.loadErr != "" || g.approximatePostbattle || len(g.beats) == 0 {
+		t.Fatalf("ch28 post admission beats=%d approximate=%v err=%q", len(g.beats), g.approximatePostbattle, g.loadErr)
+	}
+	err := g.fastForwardShotCampaign()
+	if err == nil || !strings.Contains(err.Error(), "reached non-battle node=\"preparation_ch30\"") {
+		t.Fatalf("ch28 post fast-forward boundary err=%v node=%q", err, g.camp.NodeID())
+	}
+	if g.loadErr != "" || g.camp.NodeID() != "preparation_ch30" || g.st != nil || g.handlerChapter != 29 {
+		t.Fatalf("ch29 post boundary node=%q chapter=%d battle=%v err=%q", g.camp.NodeID(), g.handlerChapter, g.st != nil, g.loadErr)
+	}
+	if len(g.partyRoster) == 0 {
+		t.Fatal("ch28 post sync_party did not publish persistent records")
+	}
+	wantRoster := clonePartyRoster(g.partyRoster)
+	wantOrder := append([]int(nil), g.partyJoinOrder...)
+	g.saveGameToSlot(0)
+	if !strings.Contains(g.msg, "preparation_ch30") {
+		t.Fatalf("preparation_ch30 save was not created: %q", g.msg)
+	}
+	g.partyMembers, g.partyJoinOrder, g.partyDeploy, g.partyRoster = nil, nil, nil, nil
+	g.handlerChapter = 0
+	g.st = &battle.State{}
+	g.loadGameFromSlot(0)
+	if g.loadErr != "" || g.camp.NodeID() != "preparation_ch30" || g.st != nil ||
+		g.handlerChapter != 29 || !reflect.DeepEqual(g.partyRoster, wantRoster) ||
+		!reflect.DeepEqual(g.partyJoinOrder, wantOrder) {
+		t.Fatalf("preparation_ch30 save/load mismatch: node=%q chapter=%d roster=%#v order=%v battle=%v err=%q",
+			g.camp.NodeID(), g.handlerChapter, g.partyRoster, g.partyJoinOrder, g.st != nil, g.loadErr)
 	}
 }

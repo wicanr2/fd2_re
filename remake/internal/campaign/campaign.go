@@ -353,6 +353,33 @@ type NativeUnitPresent struct {
 	VisualY         int  `json:"visual_y"`
 }
 
+// NativeCh28PostPresent preserves sub_35BBA(20) plus its mandatory sub_1DB65
+// consumer. Fields are raw archive/index/buffer contracts, not inferred visual
+// or audio names.
+type NativeCh28PostPresent struct {
+	StartSlot       int `json:"start_slot"`
+	PoseFrames      int `json:"pose_frames"`
+	FDOTHERResource int `json:"fdother_resource"`
+	EntryFirst      int `json:"entry_first"`
+	EntryLast       int `json:"entry_last"`
+	SFXResource     int `json:"sfx_resource"`
+	SFXIndex        int `json:"sfx_index"`
+	SFXArg          int `json:"sfx_arg"`
+	WorkSize        int `json:"work_size"`
+	WorkStride      int `json:"work_stride"`
+	ViewBase        int `json:"view_base"`
+	VisibleColumns  int `json:"visible_columns"`
+	VisibleRows     int `json:"visible_rows"`
+}
+
+func (p NativeCh28PostPresent) IsRecoveredContract() bool {
+	return p.StartSlot == 20 && p.PoseFrames == 13 && p.FDOTHERResource == 5 &&
+		p.EntryFirst == 0x44 && p.EntryLast == 0x4f && p.SFXResource == 31 &&
+		p.SFXIndex == 3 && p.SFXArg == 1 && p.WorkSize == 0x25680 &&
+		p.WorkStride == 0x1c8 && p.ViewBase == 0x8088 &&
+		p.VisibleColumns == 13 && p.VisibleRows == 8
+}
+
 // HandlerUnitPresent retains the formerly recovered metadata shape for native
 // 0x22253. It is not currently compilable: later direct trace found 11+6+10
 // presentation phases, so this six-frame schema is deliberately rejected
@@ -386,6 +413,7 @@ type Beat struct {
 	NativeCh20SkyKey      *NativeCh20SkyKeySequence `json:"native_ch20_sky_key_sequence,omitempty"`
 	NativeStagingPresent  *NativeStagingPresent     `json:"native_staging_present,omitempty"`
 	NativeUnitPresent     *NativeUnitPresent        `json:"native_unit_present,omitempty"`
+	NativeCh28PostPresent *NativeCh28PostPresent    `json:"native_ch28_post_present,omitempty"`
 	NativeCh23Loop        *NativeCh23Loop           `json:"native_ch23_loop,omitempty"`
 	Native2189ALoop       *Native2189ALoop          `json:"native_2189a_loop,omitempty"`
 	UnitPresent           *HandlerUnitPresent       `json:"unit_present,omitempty"`

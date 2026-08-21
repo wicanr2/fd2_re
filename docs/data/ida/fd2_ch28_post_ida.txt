@@ -110,6 +110,86 @@ visualY = 10
 在上述拓撲證據閉合前，caller payload 可以列為 `RE-CLOSED`／`DATA-READY`，
 但 campaign 仍必須失敗即關閉。
 
+## `0x254C0..0x254D8` 戰後前置 writer 與 `0x1DB65` consumer 補證（2026-08-21）
+
+本節以同一固定雜湊 `FD2.EXE`、合法 IDA Pro 9.4 一次性 Docker 資料庫重讀；
+位址仍為 IDA 線性位址。原始檔唯讀，資料庫只存在容器 tmpfs。以下保留原始
+函式名與運算元；欄位只以 raw offset 命名。
+
+- `sub_35BBA` 邊界為 `0x35BBA..0x35BF2`。參數20從 `0x254BE` 壓入；loop
+  `0x35BCB..0x35BE9` 對目前 runtime count 內 slots `20..count-1` 逐筆把
+  word `record+0x40` 清為0，然後在 `0x35BEB` 無參數呼叫 `sub_1DB65`。
+- caller 隨後在 `0x254C8` 讀 `[0x53A45]`、`0x254CE` 加 `0x640`
+  （`20*0x50`），並於 `0x254D4`／`0x254D8` 把 slot20 raw `+7`／`+8`
+  各寫為 `0x7E`。既有 handler JSON 漏掉這兩筆直接 writer；正式 typed data
+  不得只 lower `0x35BBA` 而省略它們。
+- `sub_1DB65` 邊界為 `0x1DB65..0x1DEBE`。它掃描所有 runtime records 的
+  raw `+0/+1/+5 bit0/+0x40`；若沒有符合可見視窗且 `bit0=0`、`word40=0`
+  的 record，會把所有 `word40=0` records 的 raw `+5` 設成1後返回。若有，
+  則先執行13次呈現迴圈（含 `0x11EEE`、`0x127E0`、每次一個 BIOS tick），
+  再把同一集合 `+5=1`，接著以暫存畫面、`0x25A96([0x53EEC],3,1)`、
+  `[0x53A81]` entries `0x44..0x4F`、`0x4E85B` 執行兩段各6次的
+  疊圖／present，最後 `0x11CAC(0)` redraw。既有啟動載入與音訊消費端證據
+  已分別確認 `[0x53A81]` 是 `FDOTHER.DAT #5` 的 LMI1 bank，`[0x53EEC]`
+  是 `FDOTHER.DAT #31` 的 UI SFX pool，而 `0x25A96` 是 AIL sample wrapper；
+  因此 archive、entry index 與 raw sample tuple 為**已證實**。entries
+  `0x44..0x4F` 的高階圖像名稱、sample index 3 的玩家語意名稱，以及同狀態
+  像素／聽覺輸出仍是**未知**，不得只用 generic redraw 或推測名稱冒充完整
+  `0x1DB65`。
+
+### 可編輯資料與執行期規格
+
+1. 戰後 raw 前置資料必須原子保存：start slot20、清除 `+0x40/+0x41`、
+   slot20 `+7/+8=0x7E`，以及後續 `0x1DB65` presentation gate。一般戰役
+   constructor 只要對所有 consumer 欄位具備原生 provenance，即可用 typed
+   `+0/+1/+3/+5/+0x40` 與 slot20 `+7/+8` transaction；`CONTINUE` 若另帶完整
+   `0x50` projection，則每個 consumed field 必須先與 typed view 一致。
+   缺欄位、partial raw projection或任一 view 不一致時零修改。
+2. 已證實的正常 materialization 前沿為76；event74每次依序追加2筆
+   groups4／5／6／7，event76 final再追加3筆group1。因此在沒有一般玩家
+   E2進一步收窄前，可接受的 pre-post 前沿集合只能是
+   `76,78,80,82,84,87`；group9再追加1筆，且 `0x25535` 動態選新尾端。
+   這是由已證實 producer 推得的**強推論安全集合**，不是固定 slot93。
+3. 本節先授權 raw writer 與 frontier validator 的 `DATA-READY`／窄
+   `RUNTIME-E1`；`0x1DB65` 原資源 presenter、完整 handler binding、
+   `preparation_ch30` 存讀檔及一般玩家 E2 未完成前，campaign 仍失敗即關閉。
+4. presenter 的可編輯契約必須保留 `FDOTHER resource=5`、entries
+   `0x44..0x4F`、`SFX pool=FDOTHER #31`、sample index `3`、第三參數 `1`，
+   以及13＋6＋6個呈現邊界；這些 raw 識別值不得被未證實的語意名稱取代。
+
+### `0x25511→0x2551D` 視圖連續邊界（已證實，2026-08-21）
+
+`0x25511` 先呼叫 `0x135DD(9,8)`，它寫 camera 與 absolute cursor，
+但不寫 visible cursor；緊接的 `0x2551D` 直接呼叫
+`0x12CEA(15,10)`，依當下 visible cursor 與 13×8 安全帶逐格更新
+camera、absolute 與 visible 三對全域。所以戰後 handler 不可把
+`0x135DD` 誤實作為只改 Ebiten camera，也不可在 cutscene node
+邊界清掉 battle 留下的 visible cursor provenance。
+
+這項連續性是 `0x24B4D` 的前置資料邊界：後者的 terrain staging
+讀當時 camera，不是 `battle_ch29` 入口 camera。重製端必須保留
+pan/focus 後的 typed `NativeMapViewState`，再讓 transition consumer 讀取；
+任一六欄缺少或越界時在更改 frame buffer 前失敗即關閉。這是
+E1 state-flow 規格，不單獨宣稱原版玩家戰鬥結束時的特定游標座標。
+
+## 正式重製接線狀態（2026-08-21 勘誤）
+
+本檔前段「正式 binding、`0x1DB65` presenter、group9 與
+`preparation_ch30` 尚未完成」是研究過程的歷史 gate，現已被取代。
+當前正式路徑已按下列順序通過 Docker／Xvfb 決定性回歸：
+
+```text
+story_ch29 -> ch28_pre -> battle_ch29
+-> postbattle_ch29_persist / ch28_post
+-> preparation_ch30 -> save -> load -> preparation_ch30
+```
+
+此路徑物化已證實的戰鬥入口 view／HUD，消費
+`0x35BBA→0x1DB65` 的13＋6＋6呈現、追加group9、以動態尾slot執行
+`0x25535→0x22253`，並播放`0x24B4D`與`0x35E5A`後同步持續隊伍。
+這項狀態為`RUNTIME-E1`；未修改DOS一般玩家路徑、同狀態逐幀／聽覺
+`PLAYER-E2`、entries `0x44..0x4F`與sample index3的高階語意仍未閉合。
+
 ## `0x35bba(20)` 與共用 `0x1db65` raw 邊界（2026-08-09）
 
 合法 IDA Pro 9.4 與 Docker Capstone 以同一固定版 `FD2.EXE` 重新檢查

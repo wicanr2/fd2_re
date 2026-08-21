@@ -16,7 +16,7 @@
 | 0 | 原始碼註解與 Markdown 現況斷言稽核 | `DATA-READY`：本輪已修正 `0x2189A`、`0x22253`、legacy `unit_present` 與 handler 三態計數的高信心舊斷言，並修復 manifest 產生器重複鍵；這是持續性品質閘門，不是一次掃描即永久完成 | 下一輪抽查完成度、節點、slot、handler、renderer 舊斷言；錯誤現況直接訂正或刪除，歷史證據則追加勘誤，不抹除形成原因 |
 | 1 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式，現為產品31／runtime170／未知1104；舊83 unknown 已拆為80已分類、3已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253` 只追其他 caller／戰役 gate，`0x2BCE5` 追正式 owner，不重解 callee |
 | 2 | 玩家第21戰天空之鑰固定演出 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`：`0x24336` 已接真實 `FDOTHER #34`、`ANI #0`、調色盤循環與正式戰後→城鎮→存讀檔 | 取得未修改原版同狀態 E2，核對第一個動態調色盤相位與相鄰 `layout_units`／ACT63／64；不重解函式本體 |
-| 3 | 最後一個忠實模式 blocked postbattle | `RE-CLOSED`；event75／74／76／79 已 `DATA-READY`／`RUNTIME-E1`：入口為20筆持續隊伍＋group8(56)，後續依序處理groups4..7、group1、六次pulse／對話及event79單步RNG兩目標。post仍未接，故節點保持 `BLOCKED` | 補ch28 post group9、持續隊伍、`preparation_ch30` save/load E1；最後補一般玩家 E2 |
+| 3 | 玩家第29戰 raw ch28 post 後續驗收 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`；`0x1DB65`原資源 presenter、group9→`0x25535`、持續隊伍、`preparation_ch30` 與存讀檔已正式接通，postbattle admission blocker 已歸零 | 以未修改原版一般玩家路徑取得同狀態逐幀／音訊 E2；高階圖像與sample 3語意仍保留unknown，不阻擋 E1戰役流程 |
 | 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；`0x16F55` END 已接，command 13–16 的玩家與敵方 mode 11 已走完整 #3前段、#6七張、mask、交易後 redraw、#5數字22張與尾停，AI 依 raw selector重建 target array | 補 END／command 13–16 同狀態逐幀逐音訊 E2；再依 `56` family matrix選下一個有完整證據的 command，不重解本批已閉合函式 |
 | 5 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial | 依 `57` 逐個輸入狀態機取得同狀態原版／重製證據，不用單張 layout 圖代替 |
 | 6 | 原版終局精確鏈 | 近似 E1 可見；忠實模式仍部分阻擋 | 閉合 `0x28A6C` renderer、終端輸入、`0x2BCE5` 正式 owner／handoff及第30戰一般玩家 E2 |
@@ -65,6 +65,17 @@ handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不�
 - 回歸以seed `0xFFFF`區分零擴展加一與錯誤uint16 overflow；缺第三筆group1
   raw `+5` provenance時RNG、row與units全部零修改。post binding與E2仍待辦。
 
+### 2026-08-21：玩家第29戰 post raw prelude
+
+- `RE-CLOSED`／`DATA-READY`：合法 IDA Pro 9.4 固定 `sub_35BBA` 清除
+  slots20..tail的raw word `+0x40`，caller再把slot20 raw `+7/+8`寫成`0x7E`；
+  `sub_1DB65`不是generic redraw，而有13＋6＋6次indexed呈現與raw `+3/+5` writes。
+- 窄`RUNTIME-E1`：frontier validator只接受已證實producer形成的
+  76／78／80／82／84／87，拒絕跳序group或多出groups2/3；raw transaction
+  當時曾要求完整0x50 projection；後續證據已改為「所有消費欄位必須有 typed provenance，
+  CONTINUE 若另帶完整projection則必須逐欄一致」。原資源`0x1DB65` presenter、group9與正式binding
+  已由本日後續條目完成；本段僅保留當時歷史。
+
 ### 2026-08-21：raw ch28 `0x25535` indexed presenter 與斷言稽核
 
 - `RE-CLOSED`／`DATA-READY`：固定版 caller 已證實為
@@ -81,7 +92,7 @@ handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不�
   修正重複 JSON key，新增冪等回歸。
 - Docker 驗證：Go `go test ./...` 全套、Python 工具56項、918份 JSON（含重複鍵）、
   722個 Markdown 本地目標均通過；handler 為80 classified／3 unresolved／0 unknown，
-  戰後節點仍為23 active／1 blocked。玩家第29戰正式 binding 與 E2 尚未解除。
+  本段是 presenter 接線前的歷史快照；現況為24 active／0 blocked，玩家第29戰正式 binding 已達 E1，仍缺 E2。
 
 ### 2026-08-21：raw ch23／玩家第24戰戰後垂直切片
 
@@ -502,7 +513,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   runner 消費，但完整 campaign 仍因相鄰未閉合尾段失敗即關閉。證據見
   [`fd2_ch22_post_ida.txt`](../data/ida/fd2_ch22_post_ida.txt)。
 - [x] **本輪稽核基線**：以目前 `tools/audit_postbattle_binding_gates.py --json`
-  實際稽核，24 個標準戰後節點為 **23 active／1 blocked**；
+  當時實際稽核為24節點中23 active／1 blocked；後續 raw ch28 post 接線後現況為 **24 active／0 blocked**；
   story/cutscene 為121節點、9個獨立 script、55個 handler binding、57個
   fallback；目前處理器映射缺口是對話6、捲動畫面1，
   原生語意缺口為 0。這些數字只表示已知處理器呼叫能否映射為可編輯原語，
@@ -732,7 +743,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 - [x] **UI-VERTICAL-CH02-TOWN-HOTEL-RAW-RETURN**：新增 `hotel` campaign node、`Game.applyHotelServiceSelection`／`Game.leaveHotel` 與 `TestCampaignTownHotelRawRouteReturnTrace`，驗證 `town_ch02→hotel_ch02→town_ch02`，selector 0/1/2/3 保留 raw resource13 與 `0x2ffa5/0x30012/0x301f4/0x19953→0x197e5` order；未命名服務、不做 party/gold mutation，未知 selector fail-closed。保存 [`town-hotel-raw-return-ch02.json`](../data/ui-traces/town-hotel-raw-return-ch02.json)。
 - [x] **POSTBATTLE-UNBOUND-FAIL-CLOSED**：`Game.enterNode` 對沒有 active handler 的 `postbattle_*` cutscene 拒絕空 beats auto-advance，新增 `TestUnboundPostbattleCutsceneFailsClosed`；流程停在原 node、保留 `loadErr/msg`，避免未完成 persistence/reward handler 被誤當成直接回 town。
 - [x] **POSTBATTLE-SAVE-FAIL-CLOSED**：`saveGameToSlot` 對所有 `postbattle_*` 節點拒絕 F5，新增 `TestSaveRejectsUnboundPostbattleBoundary`；未完成 persistence handler 不會產生假 save。
-- [x] **POSTBATTLE-BINDING-GATE-AUDIT**：新增唯讀 `tools/audit_postbattle_binding_gates.py`，逐一依 handler source address 檢查 generated binding 的 `loadch/pan/dialog/act/layout` 覆蓋；歷史快照曾列18至22 active，**現況以 Docker 實際稽核的23 active／1 blocked為準**。ch09/ch10/ch12/ch18、玩家第23戰raw ch22 post、玩家第24戰raw ch23 post與玩家第25戰raw ch24 post已通過正式 regression並提升為active handler，其餘skeleton禁止自動啟用。
+- [x] **POSTBATTLE-BINDING-GATE-AUDIT**：新增唯讀 `tools/audit_postbattle_binding_gates.py`，逐一依 handler source address 檢查 generated binding 的 `loadch/pan/dialog/act/layout` 覆蓋；歷史快照曾列18至22 active，**歷史快照曾達23 active／1 blocked，現況以 Docker 實際稽核的24 active／0 blocked為準**。ch09/ch10/ch12/ch18、玩家第23戰raw ch22 post、玩家第24戰raw ch23 post與玩家第25戰raw ch24 post已通過正式 regression並提升為active handler，其餘skeleton禁止自動啟用。
 
 ## 第 1 輪 ✅
 - [x] 素材盤點(`FD2.EXE` + 12 `.DAT` + 音效驅動)
@@ -2047,7 +2058,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   ending只做unit1消失，script helpers用兩pair相等。新增
   `PlanNativeUnitPresentCall` byte-boundary regression，不再泛稱兩pair為
   source/destination。
-- [~] **CH29-POST-FLOW-WIRING 勘誤**：撤回 `postbattle_ch29_persist→ch29_post` 的錯接；第29戰依零起算 dispatch 應使用 raw `ch28_post`，未獲 renderer／E2 gate 前保持未綁定並停在 `preparation_ch30` 前。IDA／Capstone 現固定 raw handler table：index26→`0x250cc`、index28→`0x2548c`、index29→`0x25757`；index28 的 `FDTXT_029` 10..15、PAN／SPAWN／`0x24b4d`／palette／`0x11506`→`inc [0x53c03]` 已保存為玩家第29戰候選，index29 的 `0x25970→0x2bce5→0x25975` 仍是獨立 self-loop。這只校正 caller／owner 邊界，不把 table index 單獨命名成玩家戰次；未知 renderer 仍不接 campaign。證據見 [`fd2_ch28_post_ida.txt`](../data/ida/fd2_ch28_post_ida.txt) 與 [`fd2_ch29_terminal_callers_ida.txt`](../data/ida/fd2_ch29_terminal_callers_ida.txt)。
+- [x] **CH29-POST-FLOW-WIRING 歷史勘誤（已由 2026-08-21 E1 閉合取代）**：本項當時撤回 `postbattle_ch29_persist→ch29_post` 的錯接，並在 renderer／E2 gate 尚未具備時保持未綁定；目前正式 `ch28_post` binding、presenter、group9、持續隊伍及 `preparation_ch30` 存讀檔已達 `RUNTIME-E1`，只剩一般玩家 `PLAYER-E2`。原始 handler table 證據仍有效：index26→`0x250cc`、index28→`0x2548c`、index29→`0x25757`；index29 的 `0x25970→0x2bce5→0x25975` 仍是獨立 self-loop。證據見 [`fd2_ch28_post_ida.txt`](../data/ida/fd2_ch28_post_ida.txt) 與 [`fd2_ch29_terminal_callers_ida.txt`](../data/ida/fd2_ch29_terminal_callers_ida.txt)。
 - [x] **RE-PHASE-DISPATCH-GATE**：Docker Capstone 重讀 `0x1d80b` 第一個 phase loop，固定 0x50-byte record stride、`count=[0x53beb]`、raw gates `record+6==1`、`record+5&0x81==0`、`record+0x26==0`；新增 `fdother.FindNativePhaseDispatchCandidates` 與 short-input/opaque-byte regression。只回傳 raw unit/selector，不執行 `0x13a9f` 或命名 event effects。
 - [x] **RE-INVENTORY-COMPACTION-AUDIT**：官方 IDA 9.4 decompiler 直接閉合 `0x1b8e7(int unit,int slot)`：`memmove(record+0x0a+2*slot, record+0x0c+2*slot, 2*(7-slot))`，再寫最後 cell flag `record+0x18=0x80`；新增 `battle.RemoveNativeInventorySlot`，保留 stale tail item byte，並覆蓋 slot0/slot2/slot7/short-input regression。先前「第三個 stack argument 未閉合」斷言已刪除。
 - [x] **RE-UNIT-MODE-DISPATCH**：Docker Capstone 重讀共享 `0x13a9f`，固定 raw gate `record+5&5==0` 與 mode/argument reads `+0x34&0x0f`、`+0x35`、`+0x36`、`+0x3d`；新增 `fdother.PlanNativeUnitMode`，short/gate/masked-mode regression 通過。只保存 mode plan，不呼叫 `0x14ef0/0x14b78/...` 或命名效果；mode 6/8/其他仍保留未命名分支。

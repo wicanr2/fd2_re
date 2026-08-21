@@ -24,7 +24,7 @@
 已存在但尚未全程驗收：story/cutscene BeatRunner、dialog 分頁／捲動、campaign
 node、persistent roster、shop buy/sell/equip、church revive/class-change、
 preparation quota、敵方 AI 窄 consumer 與 indexed ending prefix。2026-08-21
-實跑戰後 audit 為24節點中23 active／1 blocked；玩家第23戰已以16＋70槽位
+實跑戰後 audit 為24節點中24 active／0 blocked；玩家第23戰已以16＋70槽位
 拓撲、raw ch22 indexed／resource adapter 與 `preparation_ch24` 存讀檔提升為 E1；玩家第24戰已以70＋16槽位
 拓撲、raw ch23 兩段 indexed adapter 與 `preparation_ch25` 存讀檔提升為 E1；玩家第25戰已以62→70→71槽位
 拓撲接通 raw ch24 post、`town_ch26` 與存讀檔 E1，只有玩家第29戰仍失敗
@@ -312,7 +312,7 @@ Runtime 不應再讓 `main.go` 同時決定資料模型、輸入、規則和像�
 | UI-04 | Target/range/item selector | 武器 min/max reach、法術 range/AOE、item兩欄四列、不可用目標灰化、確認／取消 | partial；command/item targets與 observed item effects已閉合。`0x1b9de/0x184c0` 固定 compact prefix、input、layout與raw icon IDs；`0x18409` 的12-frame open11→0/close0→11及left/upper/bottom clipped rectangles已有Ebiten adapter。tracked item Enter transaction已接，但indexed effect presentation、完整weapon/AOE/LOS與DOSBox visual diff仍fail-closed |
 | UI-05 | Dialog | 上／下框、portrait anchor、文字避讓、控制碼、分頁／捲動、嘴型、輸入鎖 | partial；`internal/dato.MouthState` 已按 `0x16D00` cadence 接入更新迴圈，native frame/資源與所有 speaker layout 未閉合 |
 | UI-06 | Battle HUD | HP/MP/LV/name、面板 sprite、數字 cell、依游標避讓、palette/clip | partial；需以 FDOTHER/UI loader 和截圖差分驗收 |
-| UI-07 | Postbattle | result → handler → reward/roster cleanup → town/shop/rest/preparation 或 ending；不可預設直連下一戰 | partial；campaign schema 與 bounded menu trace 可表達，`town_ch02→preparation_ch02→story_ch02_pre→battle_ch02` 已有可重播 trace。標準 postbattle 現有19個節點接入零起算 owner 的 authored binding，另5個維持 blocked；玩家第17、18、20戰已依 raw ch16、ch17、ch19 的直接控制流程分別接入60／61→61／62、55與83→84 runtime frontier，並保留 `town_ch18`、`town_ch19`、`town_ch21` 及 save/load 邊界。五個未綁定節點原有的泛用 `sync_party→set_chapter` 會繞過 runtime guard，現已移除；所有未綁定標準節點均以空 beats 失敗即關閉。這批只達 E1，逐關戰間畫面與一般玩家路徑仍不足；直接位址證據見 [`fd2_ch16_post_ida.txt`](../data/fd2_ch16_post_ida.txt)、[`fd2_ch17_post_ida.txt`](../data/fd2_ch17_post_ida.txt)、[`fd2_ch19_post_ida.txt`](../data/ida/fd2_ch19_post_ida.txt)、[`fd2_ch12_post_dispatch_ida.txt`](../data/fd2_ch12_post_dispatch_ida.txt)、[`fd2_ch05_post_dispatch_ida.txt`](../data/fd2_ch05_post_dispatch_ida.txt) 與 [`fd2_post26_28_dispatch_ida.txt`](../data/fd2_post26_28_dispatch_ida.txt) |
+| UI-07 | Postbattle | result → handler → reward/roster cleanup → town/shop/rest/preparation 或 ending；不可預設直連下一戰 | partial；campaign schema 與 bounded menu trace 可表達，`town_ch02→preparation_ch02→story_ch02_pre→battle_ch02` 已有可重播 trace。目前24個 postbattle節點全數已接 authored binding；玩家第29戰已達正式 RUNTIME-E1；各節點只代表重製端 E1 admission，不代表一般玩家 E2。玩家第17、18、20戰已依 raw ch16、ch17、ch19 的直接控制流程分別接入60／61→61／62、55與83→84 runtime frontier，並保留 `town_ch18`、`town_ch19`、`town_ch21` 及 save/load 邊界。未綁定節點原有的泛用 `sync_party→set_chapter` 會繞過 runtime guard，現已移除並以空 beats 失敗即關閉。逐關戰間畫面與一般玩家路徑仍不足；直接位址證據見 [`fd2_ch16_post_ida.txt`](../data/fd2_ch16_post_ida.txt)、[`fd2_ch17_post_ida.txt`](../data/fd2_ch17_post_ida.txt)、[`fd2_ch19_post_ida.txt`](../data/ida/fd2_ch19_post_ida.txt)、[`fd2_ch12_post_dispatch_ida.txt`](../data/fd2_ch12_post_dispatch_ida.txt)、[`fd2_ch05_post_dispatch_ida.txt`](../data/fd2_ch05_post_dispatch_ida.txt) 與 [`fd2_post26_28_dispatch_ida.txt`](../data/fd2_post26_28_dispatch_ida.txt) |
 | UI-08 | Town/hub | 可見選單、離開、shop/church/preparation 入口、BGM/SFX、持久隊伍 | partial；`campaign.MenuState` 已與 `choice/town` runtime 共用。ch02 variant0 的 [`selection0–5`](../figures/town-hub-six-selections-original-vs-remake.png) 都已達原版 DOSBox／source-built remake raw RGB 整幀相同；variant1與variant2 selection0–4 另有修改 LOAD 路徑 E2，兩組五項都與指定 pulse 640×400 整幀 AE=0。Left/Right wrap、Shift+F1 reveal、Enter進variant5及Escape回selection5亦有原版 input trace；shop/church/preparation 與 hotel raw route/return trace已接，仍需variant2 selection5 的 BIOS 掃描碼／Enter、未修改玩家路徑與逐章route E2 |
 | UI-09 | Shop | buy/sell、商品／角色／slot 游標、裝備詢問、金錢／庫存原子更新、secret gate | partial；stable scene、四項service menu及purchase/sell/standalone-equip/transfer四條production owner已接原版indexed compositor。equip為角色roster後切入完整item/status panel；transfer保存FDTXT512/511/510/506與raw remove→append/recalc。ch02 variant1/3/5 service0 selected phase、variant5四service/wrap/Escape return、weapon purchase-list四個selection、Yes/No、gold0不足金與gold1000裝備收件者selection0/cycle1均達原版DOSBox／production remake同狀態raw RGB整幀相同；recipient E2使用screenshot-only party bootstrap，DX為E2約束的projection而非直接raw dump。正常campaign JOIN→LOADCH首次typed roster已接runtime regression，但尚非完整playthrough E2或native FD2.SAV。另修正pulse double-`/2`、返回selection0、choice-close frame ownership與比較欄位geometry。尚待recipient input/scroll、no-recipient/full/success、sell/equip/transfer與其他章節E2 |
 | UI-10 | Church | revive、class change、費率、候選過濾、確認／取消、缺資料 fail-closed | partial；class path 已對齊 `0x31385→0x31793→0x311DC→0x19953`：Lv>=20、portrait<0x12 且 !=7，三列可見候選、上下 bounded，special>optional>default 自動解析唯一 target，再以左右 Yes/No 確認。`0x31019` 的 FDICON＋四段 FDTXT row、FDOTHER#14 entry16 panel 與 `0x1974c` 六幀 opening 已成 indexed compositor。候選確認／取消會先跑 `0x2d31b` 五幀 closing＋source restore；`0x19953` 已接 FFFC 動態角色名、FDOTHER#2 cells16/17、48/49與51/52 normal/pulse、四幀 opening／`0x197e5` 四幀 choice closing，之後再跑 dialogue closing 五幀＋source restore，最後才 mutation／返回。所有幀只由 Draw acknowledgement 推進。`0x3072f` stable scene 已由FDOTHER#5 raw grid/four-mode digits、FDOTHER#14 entry1、DATO#131與FDTXT585/586合成；`0x2d669`四幀開關、closing source restore及`0x2d85f`兩-tick selected pulse均接runtime並有原版資源artifact。FD2.SAV、raw service0 command overlay與未接callee仍fail-closed |
@@ -1140,7 +1140,7 @@ DOSBox 逐幀比較，因此不能宣稱 E2 或原版時序一致。
 `0x24618..0x24754` is a separate map-transition compositor, not an actor `acting` decoder. Its callers include post-handler functions `0x33af1`/`0x33c9d`; it renders a 13×8 terrain region to an offscreen buffer, performs exactly nine strip-composite passes with a caller-supplied progression, then performs palette updates from 0 through 62 in steps of 2 (4 ms each). Its first two arguments feed tile geometry (`arg1*24+12`, `arg2*24+16`); the third starts a radial radius and the fourth increments that radius per pass. `0x22046` supplies a fixed scale of 16 to its two `0x219ad` radial LUT passes and derives its final rectangular radius as `trunc(radius*1.6)`. Its remaining constants are a pass row range `[start_y,end_y)=[0,192)`, not a source coordinate or blit width; the editable fields retain those names. A playable binding must either supply a verified transition adapter or fail closed—never lower it to `act`, `pan`, or an arbitrary fade.
 The `0x22046` inner order is executable as a raw primitive: `fdother.BuildNativeIndexedTransitionPass` preserves its scale-16, second-radial start row, and final-rectangle `a2` alias; `fdother.ApplyIndexedTransitionPass` validates both radial specs and the final centered rectangle before applying the first LUT remap, requiring the caller-owned `0x127a9` redraw callback, then applying the second remap and rectangle LUT. `indexedmap.BuildNativeTerrainCells` materializes the exporter’s raw FDFIELD tile/high-byte arrays, and `indexedmap.ComposeNativeTransitionFrame` supplies the verified terrain→unit/foreground→pass→312×192 viewport composition with atomic work/VGA commit when all raw banks and controls are supplied. `loadNativeMapAssets` requires FDOTHER#3 LUT entries 1..9 and the exact 768-byte FDOTHER#0 six-bit DAC before exposing the all-or-nothing native map bundle. `fdother.BuildNativeIndexedTransitionSchedule` preserves the outer nine-pass FDOTHER#3 LUT index order `9..1`, caller radius progression, 5ms pass delay, 500ms tail hold, and `0x11df2` palette deltas `0..62` step 2 at 4ms; `NativeIndexedTransitionLUT` resolves those raw indices only against the 256-byte bank entries. Docker Capstone recheck of `0x11df2` ([saved disassembly](../data/fd2_11df2_palette_disasm.txt)) proves that every RGB component is reread from immutable `[0x53a65]`, then receives delta and an upper clamp at 63 before DAC output. These steps are baseline-derived range writes, not cumulative additions to the current DAC.
 
-`cmd/fd2` now owns the playable adapter for this contract. Beat start preflights the complete field, tile-aligned camera, raw actor provenance, selector cache, LUTs, buffers and DAC before publishing a job; rejection leaves the existing map buffers unchanged. Each of the nine indexed presents must receive a real `Draw` acknowledgement, the 500ms tail is 30 update ticks, and each of the 32 cumulative DAC mutations must likewise be drawn before continuation. This preserves every native visual state and prevents a fast update loop from collapsing to the last frame. Because Ebiten's 60Hz host presentation cannot display distinct 5ms/4ms native writes at their original wall-clock cadence, the adapter deliberately uses one host present as the minimum duration and does **not** claim DOS timing parity. This transition adapter is executable only for an isolated, fully provisioned candidate; the current `postbattle_ch29_persist` has no active campaign binding and remains fail-closed until its later `0x2bce5` terminal renderer and owner index are complete.
+`cmd/fd2` now owns the playable adapter for this contract. Beat start preflights the complete field, tile-aligned camera, raw actor provenance, selector cache, LUTs, buffers and DAC before publishing a job; rejection leaves the existing map buffers unchanged. Each of the nine indexed presents must receive a real `Draw` acknowledgement, the 500ms tail is 30 update ticks, and each of the 32 cumulative DAC mutations must likewise be drawn before continuation. This preserves every native visual state and prevents a fast update loop from collapsing to the last frame. Because Ebiten's 60Hz host presentation cannot display distinct 5ms/4ms native writes at their original wall-clock cadence, the adapter deliberately uses one host present as the minimum duration and does **not** claim DOS timing parity. Raw ch28 post now consumes this adapter through the formal campaign binding and reaches `preparation_ch30`; this is `RUNTIME-E1`, not DOS timing parity or `PLAYER-E2`. The separate `0x2BCE5` terminal owner remains an ending-path question, not a blocker for this postbattle node.
 
 Native battle-local event state is a separate editable boundary. `[0x53ad5]` points to a 32-byte table, but an index must not be named from a single reader. Entry 12 is set only on the successful `0x356bc` path after item `0xd0` is consumed; that path also runs its presentation, spawns FDFIELD group 1, JOINs char 31, and displays FDTXT #4. ch25 post later reads entry 12 to select its FDTXT base (`+5` or `+8`). Earlier official IDA analysis found only generic indirect dispatcher xrefs and therefore withheld a map-local binding; direct FDFIELD evidence now supersedes that limitation: map25 field slot2 maps selector1 at `(1,46)` to event61/`0x356b7`. The editable rule preserves item D0, entry12, spawn1, JOIN31 and text indices 2/3/4. Its presentation is typed as `FDOTHER.DAT` resource 45, 59 frames, destination offset 48356 in a 320-byte stride surface, transparent mode -1 and two native delay ticks per frame. FDTXT_026 strings 2 and 3 are portrait-less visible messages rather than zero-utterance controls, so the resource has 63 displayed utterances and count-aligns exactly with `ch26.json`; event61 string2/3/4 map to scene0 line10、scene0 line11、scene1 lines0–9. Chapter 26 now uses runtime append construction with only group0 initially materialized, keeping group1/char31 pending until this event. The battle core now separates planning from commit: planning verifies selector1, exact editable rule, native eight-cell inventory projection, entry12 and the pending group1/char31 identity without mutation; commit is rejected until exactly 59 frames were reported, then revalidates D0 before native compact removal, sets entry12, appends group1 and returns char31 to the campaign owner. This core boundary was the prerequisite for the runtime owner described below; it must not be substituted with a treasure or generic party predicate.
 
@@ -2173,8 +2173,8 @@ SDD 通過後按以下順序重審，不先補 renderer 猜測：
 
    Campaign flow correction（2026-08-02 勘誤）：較早把 `ch29_post` 接到
    `postbattle_ch29_persist` 的說法已撤回。scenario `ch29` 載入 raw map28；依主迴圈的
-   零起算 dispatch，第29戰應使用 raw `ch28_post`。該 binding 尚未獲准啟用，因此
-   `postbattle_ch29_persist` 現保持未綁定並由 runtime guard 停在 `preparation_ch30` 前。
+   零起算 dispatch，第29戰應使用 raw `ch28_post`。這是2026-08-02當時的歷史 gate；
+   後續 binding 已獲准並通過 `preparation_ch30` 存讀檔 `RUNTIME-E1`。
    raw `ch29_post` 的 LOADCH／persistent-roster 與 `0x2bce5` 證據仍保留，但其正確 owner
    必須和第30戰結局流程另行閉合，不能用已恢復函式本身推定 campaign 接點。
 
@@ -3343,6 +3343,35 @@ materializer：先按 `0x112A5` 建八格 `[flag,item]`、base AP／DP／DX，�
 [`fd2_join_constructor_word42_ida.txt`](../data/fd2_join_constructor_word42_ida.txt)
 與 [`fd2_persistent_roster_ida.txt`](../data/fd2_persistent_roster_ida.txt)。
 
+### 第 29 戰前置視圖交接規格
+
+`story_ch29→ch28_pre` 必須把原版同一組全域的最終狀態資料化，
+不可因重製端切換 campaign node 而回到零值或上一戰鏡頭。雜湊綁定的
+map28 部署格、acting 86 與 `0x12D7B→0x12CEA` 安全帶規則閉合：
+
+- camera `(9,56)`；absolute cursor `(15,63)`；visible cursor `(6,7)`；
+- `range_mode=0`，來自最後一次 `0x135DD` 的 selector writer；
+- HUD gate B 由主 controller 返回點物化為 1；gate A 與 anchor 只從
+  `NativeMapHUDPersistentState` 繼承。
+
+`battle_ch29` 以 `native_map_view` 與 `native_map_hud_inherited` 承載此契約。
+六個視圖值、selector 或持續 HUD provenance 任一不完整時，indexed
+renderer 與第 29 戰戰後演出均失敗即關閉（fail-closed）。正式回歸必須從
+`story_ch29` 的 handler 播放到 `battle_ch29`，再完成
+`postbattle_ch29_persist→preparation_ch30` 與存讀檔邊界；直接手填 HUD
+或跳節點不能取代這條 E1 玩家路徑。原始指令與來源見
+[`fd2_ch27_ch28_pre_owner_ida.txt`](../data/ida/fd2_ch27_ch28_pre_owner_ida.txt)。
+
+戰後 handler 仍在原版同一組六個全域上連續運作。
+`0x25511:0x135DD(9,8)` 只重定 camera 與 absolute cursor，保留戰鬥結束
+當下的 visible cursor；`0x2551D:0x12CEA(15,10)` 再以安全帶規則
+更新六欄。因此 beat runner 的 pan/focus 必須對已物化的
+`battle.State.NativeMapViewState` 原子同步；不能只改 `Game.camX/camY`，
+也不能用 `absolute-camera` 重算並覆蓋被 pan 故意保留的 visible 值。
+後續 `0x24B4D` 必須消費更新後的 camera；這項同步失敗時不得只用
+入口視圖勉強合成。證據見
+[`fd2_ch28_post_ida.txt`](../data/ida/fd2_ch28_post_ida.txt)。
+
 ## 2026-08-09 勘誤：raw ch15 post 已解除 production gate（E1）
 
 前文「`postbattle_ch16_persist` 維持 unbound」是本輪之前的歷史狀態，現由
@@ -3427,7 +3456,7 @@ ACTING53、index8、JOIN16、chapter17。共享 call site 的 ACTING immediate
 這是 2026-08-09 當次稽核快照：24 個標準 postbattle 節點當時為
 **19 active／5 blocked**；其後玩家第22戰曾使當時統計成為20 active／4 blocked，
 其後2026-08-13又成為 **21 active／3 blocked**；以上皆為歷史數字，現況已是
-2026-08-21後續接線的 **23 active／1 blocked**。現況以
+2026-08-21後續接線的 **24 active／0 blocked**。現況以
 [`58-fd2-exe-re-coverage.md`](58-fd2-exe-re-coverage.md) 為準。這些統計只表示
 節點接線狀態，不是重製完成百分比。
 
@@ -4520,5 +4549,22 @@ event79 已達 `DATA-READY`／`RUNTIME-E1`：raw-camp0 owner使用同一個proce
 設定raw `+5` bit7並把row2排到下一round。`0xFFFF` seed回歸鎖住第二目標不得先
 發生16-bit overflow；缺第三筆provenance時RNG、row與units均保持不變。
 
-正式 ch28 post binding、隊伍同步、`preparation_ch30` 存讀檔與一般玩家 E2 尚未
-完成，因此 `postbattle_ch29_persist` 仍是 `BLOCKED`。
+本段撰寫時，正式 ch28 post binding、隊伍同步與 `preparation_ch30` 存讀檔尚未
+完成，當時 `postbattle_ch29_persist` 仍是 `BLOCKED`；後續條目已取代這個歷史狀態。
+
+### 2026-08-21 ch28 post raw 前置規格
+
+合法 IDA Pro 9.4 補證已固定 `0x254C0→0x35BBA` 的 start slot20、
+`0x254C8..0x254D8` 的 slot20 raw `+7/+8=0x7E`，以及 `0x35BBA` 清除
+slots20..tail 的 raw word `+0x40` 後必定進入 `0x1DB65`。typed raw transaction
+必須要求每筆 `+0/+1/+3/+5/+0x40` provenance並零修改失敗；一般戰役可使用
+constructor 已物化的 typed view，`CONTINUE` 若帶完整 `0x50` projection則還要
+逐欄一致。partial raw projection一律拒絕。可接受的 pre-post
+frontier只允許已證實 producer形成的 `76/78/80/82/84/87`，不得退回固定slot93。
+`0x1DB65` 的13＋6＋6呈現控制流已閉合；啟動載入與 consumer 證據亦已確認
+`[0x53A81]` 是 `FDOTHER.DAT #5` LMI1 bank、疊圖 entries 為 `0x44..0x4F`，
+而 `0x25A96([0x53EEC],3,1)` 從 `FDOTHER.DAT #31` UI SFX pool 播放 raw
+sample index 3。typed presenter 必須保留這些 archive／index／argument 與每次
+present 邊界；不得用未證實名稱取代。entries 的高階圖像身分、sample 3 的玩家
+語意及同狀態像素／聽覺 E2 仍未閉合，因此本規格不授權 generic redraw，也不
+自行解除正式戰後 binding。

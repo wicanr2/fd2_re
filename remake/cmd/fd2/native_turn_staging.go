@@ -93,6 +93,7 @@ func cloneNativeTurnStagingState(source *battle.State) (*battle.State, error) {
 	candidate.NativeMapSelectorCache = source.NativeMapSelectorCache.Clone()
 	candidate.NativeCompositionEventBytes = append([]byte(nil), source.NativeCompositionEventBytes...)
 	candidate.NativeFieldControlRaw = append([]byte(nil), source.NativeFieldControlRaw...)
+	candidate.NativeRuntimeRecords = append([]battle.NativeRuntimeRecordState(nil), source.NativeRuntimeRecords...)
 	return &candidate, nil
 }
 
@@ -128,11 +129,14 @@ func (g *Game) preflightNativeTurnStaging(event battle.NativeTurnEvent) (battle.
 	var baselineFrame []byte
 	indexed := false
 	if nativeMapAssetsAvailable(g.nativeMapAssets) {
-		claimsIndexedState := g.st.HasNativeMapViewState && g.st.HasNativeMapRangeModeState &&
-			g.st.HasNativeMapHUDState && g.st.HasNativeMapCycleState
 		probe := *g
 		probe.st = base
 		probe.nativeMapWork, probe.nativeMapVGA = nil, nil
+		_, hudOK := probe.nativeMapHUDInput()
+		_, rosterErr := base.NativeMapFrameRoster()
+		claimsIndexedState := base.HasNativeMapViewState && base.HasNativeMapRangeModeState &&
+			base.HasNativeMapHUDState && base.HasNativeMapCycleState &&
+			base.NativeMapSelectorCache != nil && hudOK && rosterErr == nil
 		if err := probe.composeNativeMapFrame(); err == nil {
 			baselineFrame = append([]byte(nil), probe.nativeMapVGA...)
 			indexed = true

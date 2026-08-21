@@ -800,6 +800,24 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 				beats = append(beats, runtime(input, "native_ch22_reset_grid"))
 				continue
 			}
+			if input.NativeTarget == "0x35bba" {
+				value, ok := immediateHandlerInt(input.RawArgs, 0)
+				if input.Source.Addr != "0x254c0" || input.Source.Target != "0x35bba" ||
+					len(input.RawArgs) != 1 || !ok || value != 20 {
+					issue(i, input, "0x35BBA ch28 post lowering requires exact 0x254c0 argument 20")
+					continue
+				}
+				beat := runtime(input, "native_ch28_post_present")
+				beat.NativeCh28PostPresent = &NativeCh28PostPresent{
+					StartSlot: 20, PoseFrames: 13,
+					FDOTHERResource: 5, EntryFirst: 0x44, EntryLast: 0x4f,
+					SFXResource: 31, SFXIndex: 3, SFXArg: 1,
+					WorkSize: 0x25680, WorkStride: 0x1c8, ViewBase: 0x8088,
+					VisibleColumns: 13, VisibleRows: 8,
+				}
+				beats = append(beats, beat)
+				continue
+			}
 			if input.NativeTarget == "0x22253" {
 				// ch28 post is the only dynamic-last-slot direct caller currently
 				// admitted. The exporter retains the first four immediate PUSHes and

@@ -32,6 +32,25 @@ func TestCompileCh28PostUnitPresentPreservesDynamicLastSlotABI(t *testing.T) {
 	}
 }
 
+func TestCompileCh28Post35BBARequiresExactPreludeAndPresenterContract(t *testing.T) {
+	input := HandlerBeat{
+		Op: "native_call", NativeTarget: "0x35bba",
+		NativeSemantic: "native_clear_record40_from", NativeConfidence: "已證實",
+		NativeEvidence: []string{"docs/data/ida/fd2_ch28_post_ida.txt"},
+		RawArgs:        []any{float64(20)}, Source: HandlerSource{Addr: "0x254c0", Target: "0x35bba"},
+	}
+	beats, issues := CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{input}}, HandlerBindings{})
+	if len(issues) != 0 || len(beats) != 1 || beats[0].Op != "native_ch28_post_present" ||
+		beats[0].NativeCh28PostPresent == nil || !beats[0].NativeCh28PostPresent.IsRecoveredContract() {
+		t.Fatalf("beats=%#v issues=%#v", beats, issues)
+	}
+	input.RawArgs = []any{float64(19)}
+	beats, issues = CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{input}}, HandlerBindings{})
+	if len(beats) != 0 || len(issues) != 1 {
+		t.Fatalf("wrong start slot compiled: beats=%#v issues=%#v", beats, issues)
+	}
+}
+
 func TestCompileHandlerScriptUsesOnlyExplicitBindings(t *testing.T) {
 	upper := true
 	script := &HandlerScript{Beats: []HandlerBeat{
