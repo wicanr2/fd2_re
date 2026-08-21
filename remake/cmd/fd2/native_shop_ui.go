@@ -152,6 +152,27 @@ func parseNativeShopEquipmentRecipientShotState(
 	return values[0], values[1], values[2], values[3], values[4], true
 }
 
+func parseNativeShopEquipShotState(
+	spec string,
+) (mode string, unit, item, start, gold int, ok bool) {
+	parts := strings.Split(spec, ",")
+	if len(parts) != 5 || (parts[0] != "roster" && parts[0] != "panel") {
+		return "", 0, 0, 0, 0, false
+	}
+	values := make([]int, 4)
+	for i, part := range parts[1:] {
+		value, err := strconv.Atoi(part)
+		if err != nil || value < 0 {
+			return "", 0, 0, 0, 0, false
+		}
+		values[i] = value
+	}
+	if values[3] > 99999999 || (parts[0] == "roster" && values[1] != 0) {
+		return "", 0, 0, 0, 0, false
+	}
+	return parts[0], values[0], values[1], values[2], values[3], true
+}
+
 func parseNativeShopSellShotState(
 	spec string,
 ) (mode string, unit, selection, start, cycle, gold int, ok bool) {
@@ -425,6 +446,59 @@ func (g *Game) setNativeShopEquipmentRecipientShotState(
 		rollback()
 		return false
 	}
+	return true
+}
+
+// setNativeShopEquipShotState 只公開正式獨立裝備 owner 的穩定狀態。角色與已占用
+// 物品格都來自通過驗證的 typed/raw 隊伍，不接受注入的 record、能力或 item ID；
+// 私有 Game 候選確保任何拒絕都不會留下部分狀態。
+func (g *Game) setNativeShopEquipShotState(
+	mode string, unit, item, start, gold int,
+) bool {
+	if g.shotPath == "" || (mode != "roster" && mode != "panel") ||
+		unit < 0 || item < 0 || start < 0 || gold < 0 || gold > 99999999 ||
+		g.camp == nil || g.nativeShopUI == nil || g.nativeClassUI == nil ||
+		g.nativeShopMode != "menu" {
+		return false
+	}
+	candidate := *g
+	candidate.nativeShopUIJob = nil
+	candidate.gold = gold
+	if !candidate.setupNativeShopEquipRoster() ||
+		unit >= len(candidate.partyJoinOrder) {
+		return false
+	}
+	normalizedStart, visible := campaign.NativeTwoColumnWindow(
+		len(candidate.partyJoinOrder), unit, start,
+	)
+	if visible == 0 || normalizedStart != start {
+		return false
+	}
+	candidate.nativeShopEquipUnitSel = unit
+	candidate.nativeShopEquipRosterTop = start
+	if mode == "roster" {
+		if item != 0 {
+			return false
+		}
+		if _, ok := candidate.composeNativeShopEquipRoster(); !ok {
+			return false
+		}
+		*g = candidate
+		return true
+	}
+	_, actor, ok := candidate.nativeShopEquipUnit()
+	if !ok || item >= len(nativeItemRawSlots(&actor)) ||
+		!candidate.openNativeShopEquipPanel() {
+		return false
+	}
+	candidate.itemSel = item
+	if !candidate.refreshNativeItemPanelMode(&actor, true) {
+		return false
+	}
+	candidate.itemAnimStep = 11
+	candidate.itemClosing = false
+	candidate.nativeShopUIJob = nil
+	*g = candidate
 	return true
 }
 

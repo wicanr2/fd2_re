@@ -5457,3 +5457,20 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   consumer，未注入OS鍵盤，也未從完整campaign抵達商店，因此不是未修改原版一般
   玩家E2。原版四人以上scroll／full／no-recipient同狀態畫面與equip/transfer child
   panel仍待。
+
+## 2026-08-22：ch02 獨立裝備名冊／索爾面板 partial E2
+
+- 先以 SDD 固定 `0x2F883→0x1BFFE→0x17E0B` 既有 owner 的同狀態契約，
+  本輪未重解已閉合位址。新增的 screenshot-only adapter 只能由
+  `FD2_SHOT_PARTY_BINDING` 建立的完整 typed/raw party 選取角色與 occupied
+  item slot，並呼叫正式名冊／item-panel owner；非法 window 或資料失敗時原子拒絕。
+- 固定雜湊原版的可拋棄 route-patched 副本，以正常標題、城鎮、武器店、
+  `Right×2→service2→索爾` 輸入取得名冊 selection0 與索爾完整item/status
+  panel；名稱、職業、金額、能力、背包與裝備效果均與重製正式 renderer 相符。
+- 完整320×200 RGB比較未達AE=0：名冊 `AE=1389`集中在四名角色動畫精靈，
+  索爾面板 `AE=1433`包含呈現相位／面板邊緣。嘗試補抓高頻相位時，前一次
+  可拋棄 sandbox 已無法重現同一城鎮簽章，因此有界停止，沒有猜測修改 renderer。
+- 本批是 `PLAYER-E2 route-patched partial`，不證明mutation／restore、service3 transfer、
+  原版存檔或未修改完整campaign。證據見
+  [`shop-standalone-equip-ch02-e2.json`](../data/ui-traces/shop-standalone-equip-ch02-e2.json)
+  與[` 對照圖`](../figures/shop-standalone-equip-ch02-original-vs-remake.png)。

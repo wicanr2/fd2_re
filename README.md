@@ -217,6 +217,14 @@ cycle0／1；九組完整320×200 RGB皆相同。重製也會等金幣動畫完�
 
 ![ch02 賣出成功、金幣滾動與返回名冊原版／重製對照](docs/figures/shop-sell-success-return-ch02-original-vs-remake.png)
 
+ch02 獨立裝備的角色名冊與索爾物品／狀態面板：左側為 route-patched
+原版正常商店輸入，右側為正式重製 owner。可見資料與幾何已對齊，但
+角色精靈與面板呈現相位尚未同步，整幀差異為 `AE=1389`／`1433`；這是
+誠實的 partial E2 對照，不是逐像素完成宣稱。雜湊與限制見
+[`shop-standalone-equip-ch02-e2.json`](docs/data/ui-traces/shop-standalone-equip-ch02-e2.json)。
+
+![ch02 獨立裝備名冊與索爾面板原版／重製 partial E2 對照](docs/figures/shop-standalone-equip-ch02-original-vs-remake.png)
+
 ### 讀檔選單
 
 原版與重製的四個空存檔槽畫面已達整幀 RGB 相同；有效槽排版也已有相同結果。

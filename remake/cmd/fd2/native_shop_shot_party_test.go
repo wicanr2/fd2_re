@@ -44,6 +44,37 @@ func TestParseNativeShopEquipmentRecipientShotState(t *testing.T) {
 	}
 }
 
+func TestParseNativeShopEquipShotState(t *testing.T) {
+	for _, tc := range []struct {
+		spec                    string
+		mode                    string
+		unit, item, start, gold int
+		ok                      bool
+	}{
+		{spec: "roster,0,0,0,0", mode: "roster", ok: true},
+		{spec: "panel,3,2,1,99999999", mode: "panel", unit: 3, item: 2, start: 1, gold: 99999999, ok: true},
+		{spec: "items,0,0,0,0"},
+		{spec: "roster,0,1,0,0"},
+		{spec: "panel,-1,0,0,0"},
+		{spec: "panel,0,-1,0,0"},
+		{spec: "panel,0,0,-1,0"},
+		{spec: "panel,0,0,0,-1"},
+		{spec: "panel,0,0,0,100000000"},
+		{spec: "panel,0,0,0"},
+	} {
+		mode, unit, item, start, gold, ok :=
+			parseNativeShopEquipShotState(tc.spec)
+		if mode != tc.mode || unit != tc.unit || item != tc.item ||
+			start != tc.start || gold != tc.gold || ok != tc.ok {
+			t.Fatalf(
+				"parseNativeShopEquipShotState(%q)=(%q,%d,%d,%d,%d,%v), want (%q,%d,%d,%d,%d,%v)",
+				tc.spec, mode, unit, item, start, gold, ok,
+				tc.mode, tc.unit, tc.item, tc.start, tc.gold, tc.ok,
+			)
+		}
+	}
+}
+
 func TestParseNativeShopSellShotState(t *testing.T) {
 	for _, tc := range []struct {
 		spec                                string
@@ -240,6 +271,131 @@ func TestNativeShopEquipmentRecipientShotUsesBindingPartyProjection(t *testing.T
 		g.shopRecipientSel != oldSelection ||
 		g.nativeShopRecipientStart != oldStart || g.gold != oldGold {
 		t.Fatal("out-of-range recipient state did not fail atomically")
+	}
+}
+
+func TestNativeShopEquipShotUsesBindingPartyProjection(t *testing.T) {
+	const base = "../../../org_game/炎龍騎士團/FLAME2"
+	fdotherPath := filepath.Join(base, "FDOTHER.DAT")
+	if _, err := os.Stat(fdotherPath); err != nil {
+		t.Skip("player-provided original resources are absent")
+	}
+	t.Setenv("FD2_ORIGINAL_FDOTHER", fdotherPath)
+	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(base, "FDTXT.DAT"))
+	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(base, "DATO.DAT"))
+
+	shared, err := loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	shop, err := loadNativeShopUIAssets(shared)
+	if err != nil {
+		t.Fatal(err)
+	}
+	c, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	runner := campaign.NewRunner(c)
+	runner.Cur = "shop_ch02_weapon"
+	types, equip, err := campaign.LoadShopEligibility(
+		assetPath("assets/data/item.json"),
+		assetPath("assets/data/class_equip_types.json"),
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	stats, err := campaign.LoadItemStats(assetPath("assets/data/item.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	newGame := func() *Game {
+		return &Game{
+			shotPath:      "equip.png",
+			camp:          runner,
+			nativeClassUI: shared,
+			nativeShopUI:  shop,
+			nativeUIPalette: append(
+				color.Palette(nil), shared.palette...,
+			),
+			shopItemTypes:  types,
+			shopEquipTypes: equip,
+			shopItemStats:  stats,
+		}
+	}
+	setup := func(g *Game) {
+		t.Helper()
+		if err := g.materializeShotPartyFromBinding(
+			"assets/cutscenes/bindings/ch00_pre.json",
+		); err != nil {
+			t.Fatal(err)
+		}
+		if !g.setupNativeShop() {
+			t.Fatal("ch02 weapon shop did not admit native owner")
+		}
+		g.nativeShopUIJob = nil
+	}
+
+	roster := newGame()
+	setup(roster)
+	if !roster.setNativeShopEquipShotState("roster", 0, 0, 0, 0) ||
+		roster.nativeShopMode != "equip_roster" {
+		t.Fatal("standalone equip roster rejected verified binding party")
+	}
+	if frame, ok := roster.composeNativeShopEquipRoster(); !ok || len(frame) != 320*200 {
+		t.Fatal("standalone equip roster did not pass final compositor admission")
+	}
+
+	panel := newGame()
+	setup(panel)
+	if !panel.setNativeShopEquipShotState("panel", 0, 0, 0, 0) ||
+		panel.nativeShopMode != "equip_panel" || panel.nativeItemPanel == nil ||
+		panel.itemSel != 0 || panel.itemAnimStep != 11 {
+		t.Fatal("standalone equip panel rejected verified binding party")
+	}
+	if len(panel.nativeItemPanelBase) != 320*200 ||
+		len(panel.nativeItemPanelRecord) != 80 ||
+		panel.nativeItemPanelAssets == nil {
+		t.Fatal("standalone equip panel did not pass production item-panel admission")
+	}
+
+	oldMode, oldSel, oldStart, oldGold := panel.nativeShopMode,
+		panel.nativeShopEquipUnitSel, panel.nativeShopEquipRosterTop, panel.gold
+	if panel.setNativeShopEquipShotState("panel", 0, 0, 1, 0) ||
+		panel.nativeShopMode != oldMode ||
+		panel.nativeShopEquipUnitSel != oldSel ||
+		panel.nativeShopEquipRosterTop != oldStart || panel.gold != oldGold {
+		t.Fatal("invalid standalone equip window did not fail atomically")
+	}
+}
+
+func TestNativeShopEquipShotLoadGameAdmission(t *testing.T) {
+	const base = "../../../org_game/炎龍騎士團/FLAME2"
+	fdotherPath := filepath.Join(base, "FDOTHER.DAT")
+	if _, err := os.Stat(fdotherPath); err != nil {
+		t.Skip("player-provided original resources are absent")
+	}
+	t.Setenv("FD2_TITLE", "0")
+	t.Setenv("FD2_SHOT", "equip.png")
+	t.Setenv("FD2_CAMPAIGN", "assets/scenarios/campaign_full.json")
+	t.Setenv("FD2_CAMP_NODE", "shop_ch02_weapon")
+	t.Setenv("FD2_SHOT_PARTY_BINDING", "assets/cutscenes/bindings/ch00_pre.json")
+	t.Setenv("FD2_ORIGINAL_FDOTHER", fdotherPath)
+	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(base, "FDTXT.DAT"))
+	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(base, "DATO.DAT"))
+
+	g := loadGame()
+	if g.loadErr != "" {
+		t.Fatalf("loadGame screenshot bootstrap: %s", g.loadErr)
+	}
+	if g.nativeShopMode != "menu" || len(g.partyJoinOrder) != 4 {
+		t.Fatalf(
+			"loadGame native shop mode=%q party=%v",
+			g.nativeShopMode, g.partyJoinOrder,
+		)
+	}
+	if !g.setNativeShopEquipShotState("roster", 0, 0, 0, 0) {
+		t.Fatal("loadGame screenshot bootstrap rejected standalone equip roster")
 	}
 }
 

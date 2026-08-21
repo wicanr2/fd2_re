@@ -1885,6 +1885,44 @@ Enter、Escape、Left、Right、Up、Down 收斂成一份不可變輸入值，�
 以上合格收件者存檔。synthetic typed party、route-patched EXE 或截圖入口均不能
 證明 recipient scroll／full／no-recipient 的一般玩家 `PLAYER-E2`。
 
+### ch02 獨立裝備子面板 E2 契約（2026-08-22）
+
+本切片沿用已閉合的 `0x2F883→0x1BFFE→0x17E0B`，不重新解釋 service2。
+原版只可使用固定雜湊 `FD2.EXE` 的可丟棄副本，套用已驗證的三處戰鬥略過
+route patch；標題、城鎮、武器店、service選擇、角色選擇與item panel仍使用普通
+鍵盤及未修改商店程式／資源／party。證據等級因此最多是 route-patched E2。
+
+第一批同狀態至少保存：
+
+1. `town ch02→weapon shop→Right×2→service2 Enter` 後的角色名冊
+   selection0／window start0穩定畫面；
+2. 名冊按Enter選索爾，原版11→0展開完成後的完整item/status panel，item
+   selection0為短劍；畫面需保留原始LV、HP／MP、DX／MV、HIT／AP、EV／DP、
+   三項背包、裝備旗標與效果值，不得只比較名冊區；
+3. 若再驗收mutation，必須由普通Enter選擇相容item後，比較同面板原地重建及
+   Escape 0→11關閉／restore／返回原actor名冊；第一批stable state不能外推這些
+   尚未逐幀對拍的邊界。
+
+重製截圖入口只可接受 `mode,unit,item,start,gold`：它必須先以受限
+`FD2_SHOT_PARTY_BINDING`建立完整typed/raw party，再呼叫production
+`setupNativeShopEquipRoster`及`openNativeShopEquipPanel`；panel只能選該角色真實
+occupied raw slot，並固定為production展開完成的step11。禁止注入姓名、record、
+item ID、能力、畫面或動畫影格。任何window、inventory projection、原始資產或
+effect row不足時整個入口失敗且回復原狀態。
+
+原版與重製必須以320×200 raw RGB整幀比較並保存雜湊、AE、輸入時間線與限制。
+即使兩個stable frame達AE=0，也只關閉service2名冊／panel stable E2；mutation、
+restore、完整campaign／原版存檔及service3 transfer仍分開驗收。
+
+2026-08-22 實測結果為 `PLAYER-E2 route-patched partial`，不能升格為上述完整
+stable E2。正常標題／城鎮／商店／service2／角色輸入已取得名冊與索爾面板；
+姓名、職業、金額、能力、三項物品、裝備效果與幾何均一致，但320×200整幀仍分別
+有 `AE=1389` 與 `AE=1433`。名冊差異集中在四名角色的動畫精靈；面板差異包含
+呈現相位與面板邊緣。重跑相位樣本時可拋棄沙箱已無法抵達同一城鎮簽章，因此
+本輪停止，不猜測 sprite／panel renderer。證據與限制見
+[`shop-standalone-equip-ch02-e2.json`](../data/ui-traces/shop-standalone-equip-ch02-e2.json)
+及[`對照圖`](../figures/shop-standalone-equip-ch02-original-vs-remake.png)。
+
 The `0x318ad` cap gate is now explicit in
 `fdother.NativePreparationPartyLimit`: raw global `[0x53c03] <= 0x1a` yields
 15, while values greater than `0x1a` yield 19. The adapter accepts a native

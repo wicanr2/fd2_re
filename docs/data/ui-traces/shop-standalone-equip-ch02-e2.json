@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-22",
+  "evidence_level": "PLAYER-E2-route-patched-partial",
+  "scope": "ch02 variant1 shop standalone-equip roster selection0 and Sol item/status panel selection0",
+  "reference": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "address_space": "IDA LE object 1 linear"
+  },
+  "tools": {
+    "static": "existing IDA Pro 9.4 evidence; closed addresses were not reopened",
+    "dynamic": "DOSBox 0.74-3 in fd2-dosbox-screenshot-local",
+    "remake": "source-built Go/Ebiten under Xvfb in fd2-go-test-local",
+    "comparison": "ImageMagick nearest-neighbour normalization and compare -metric AE"
+  },
+  "oracle_sandbox": {
+    "patched_exe_sha256": "7ade244ace954bccec0b89639cded9393973bff586117a19f1fdc168ffcb2105",
+    "patches": [
+      "file 0x125f3: e8b0020000 -> e8c6ed0000 (linear 0x117f3 call 0x205be)",
+      "file 0x125f8: 83f801740e -> e97d000000 (linear 0x117f8 jmp 0x1187a)",
+      "file 0x213d5: e9a4000000 -> e9e9000000 (linear 0x205d5 jmp 0x206c3)"
+    ],
+    "limitation": "The patches skip manual battle completion only. Shop service2, resources, party data, and keyboard input are unchanged; this is not an unmodified general-player postbattle trace."
+  },
+  "normal_input": [
+    "title Down, Down, Enter -> CONTINUE",
+    "waittown0:Return,0.25,240",
+    "town Left -> weapon shop Enter",
+    "shop Right, Right -> standalone equip Enter",
+    "capture roster selection0",
+    "Enter Sol -> wait for item/status panel -> capture item selection0"
+  ],
+  "phase_gate": "waitpixel:175,90,101,121,121,0.05,400",
+  "same_state_pairs": [
+    {
+      "state": "equip_roster_selection0_start0_gold0",
+      "original_raw_rgb_md5": "62307f5918f1de723055f951a7e6dc6a",
+      "remake_raw_rgb_md5": "0e03196961897b535988c02b72d78ced",
+      "ae": 1389,
+      "classification": "same content and geometry; four roster sprites were captured at a different animation phase"
+    },
+    {
+      "state": "equip_sol_panel_item0_gold0",
+      "original_raw_rgb_md5": "817470aeb6899e233f1d14109eb69b8b",
+      "remake_raw_rgb_md5": "779b320b9bf4add6ceab6b1a29f31ec5",
+      "ae": 1433,
+      "classification": "same visible record, items, effects, and geometry; remaining pixels include presentation phase at the panel edge"
+    }
+  ],
+  "remake_adapter": {
+    "party": "FD2_SHOT_PARTY_BINDING=assets/cutscenes/bindings/ch00_pre.json",
+    "state": "FD2_SHOT_SHOP_EQUIP_STATE=roster|panel,unit,item,start,gold",
+    "contract": "The adapter invokes the production standalone-equip roster and item-panel owners and admits only an occupied raw slot from the typed binding party.",
+    "limitation": "Screenshot-only typed/raw bootstrap; it does not inject records or pixels, but it does not prove native FD2.SAV, mutation/restore, service3 transfer, or an unmodified campaign path."
+  },
+  "result": "PLAYER-E2 partial: route and visible state are captured, but full-frame animation phase parity is not closed and must not be reported as AE=0.",
+  "figure": "docs/figures/shop-standalone-equip-ch02-original-vs-remake.png"
+}

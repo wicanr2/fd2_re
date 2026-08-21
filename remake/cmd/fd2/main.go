@@ -6373,6 +6373,19 @@ func (g *Game) Update() error {
 					)
 				}
 			}
+			if spec := os.Getenv("FD2_SHOT_SHOP_EQUIP_STATE"); spec != "" {
+				mode, unit, item, start, gold, ok :=
+					parseNativeShopEquipShotState(spec)
+				if !ok ||
+					!g.setNativeShopEquipShotState(
+						mode, unit, item, start, gold,
+					) {
+					return fmt.Errorf(
+						"FD2_SHOT_SHOP_EQUIP_STATE expects roster|panel,unit,item,start,gold on an admitted native equip party: %q",
+						spec,
+					)
+				}
+			}
 			if spec := os.Getenv("FD2_SHOT_SHOP_SELL_STATE"); spec != "" {
 				mode, unit, selection, start, cycle, gold, ok :=
 					parseNativeShopSellShotState(spec)
