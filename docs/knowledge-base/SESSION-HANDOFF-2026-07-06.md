@@ -5210,3 +5210,29 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   「終局只在 `FD2_APPROXIMATE=1` 消費」與「`0x2C194` 不是 campaign binding」
   等舊現況斷言；歷史段落保留勘誤原因。原版 owner、精確 renderer／音訊／
   輸入與一般玩家 E2 仍未閉合。
+
+## 2026-08-22：終局20段可達配對 renderer E1
+
+- 本節取代上一節「尚未實作精確 header byte1 工作區、raw `+4..+7` 與兩次
+  配對合成」的當時狀態；舊段保留作為時間序列，不再代表目前現況。
+- 合法 IDA Pro 9.4 重讀 `0x29164`、`0x2939D`、`0x29C90`、`0x29DED`、
+  `0x4E63D` 與 `0x4E916`，並以 Docker Capstone 交叉核對 operands／tables。
+  輸入仍綁定 `docs/data/fd2-reference-files.json` 的 `FD2.EXE` 雜湊；非破壞性
+  證據追加於 `fd2_ch29_tail_nonzero_renderer_ida.txt`。
+- FIGANI header 現確認 byte0 是總 frame 數、byte1 是前段分支旗標、byte2 是
+  旗標非零時的前段 frame 數，不能再解析為 little-endian `u16`。終局20組
+  選到的80個 FIGANI 實檔全部為 byte1=0、byte2=byte0，因此只接原版實際可達
+  的 header-zero 主迴圈；非零前段仍失敗即關閉。
+- `MontageTailPlayer` 現逐 descriptor raw `+6` 執行 inner present，每次推進配對
+  base scheduler；raw `+7 bit0` 決定 auxiliary／base 層序，raw `+4` 重設
+  位移 phase 並讓第一個 inner present 的不透明像素改為 palette index33，第二次
+  配對在最後一個 raw `+4!=0` frame 後結束。兩次配對保持 record0 auxiliary＋
+  record1 base，再 record1 auxiliary＋record0 base。raw `+5` 只保留 marker，
+  因聲音 owner globals 尚未閉合而不猜接音訊。
+- `figani.Frame.BlitTranslated` 新增原子裁切與不透明像素覆寫；測試涵蓋 header
+  byte1 不得污染 frame count、真實資源、raw inner 次數、base scheduler、層序、
+  palette33／位移、最後 effect 終止與非零前段拒絕。Docker／Xvfb 全套
+  `go test ./... -count=1` 通過。
+- 現況仍是來源約束 `RUNTIME-E1`，不是 `PLAYER-E2`。未閉合項縮小為
+  `0x2C548→0x2C2A6` call-time records／globals 動態連續性、原版3% RNG重播、
+  精確音訊與終端輸入、`0x2BCE5` 原版 owner，以及未修改一般玩家第30戰驗證。

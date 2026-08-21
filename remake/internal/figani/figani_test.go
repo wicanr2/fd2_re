@@ -2,6 +2,7 @@ package figani
 
 import (
 	"os"
+	"slices"
 	"testing"
 )
 
@@ -16,8 +17,8 @@ func TestParsePreservesTransparentAndDitherPixels(t *testing.T) {
 	if f.X != 2 || f.Y != 3 || f.Width != 4 || f.Height != 1 || f.Delay != 2 || f.RawByte4 != 4 || f.RawByte5 != 5 || f.RawByte7 != 6 {
 		t.Fatalf("frame=%#v", f)
 	}
-	if a.HeaderByte1 != 0 || a.HeaderByte4 != 0x7e {
-		t.Fatalf("header byte1/byte4=%#x/%#x, want 0/0x7e", a.HeaderByte1, a.HeaderByte4)
+	if a.HeaderByte1 != 0 || a.HeaderByte2 != 0 || a.HeaderByte4 != 0x7e {
+		t.Fatalf("header byte1/byte2/byte4=%#x/%#x/%#x, want 0/0/0x7e", a.HeaderByte1, a.HeaderByte2, a.HeaderByte4)
 	}
 	dst := make([]byte, 50)
 	for i := range dst {
@@ -28,6 +29,19 @@ func TestParsePreservesTransparentAndDitherPixels(t *testing.T) {
 	}
 	if got := dst[32:36]; got[0] != 7 || got[1] != 1 || got[2] != 9 || got[3] != 1 {
 		t.Fatalf("blit=%v", got)
+	}
+}
+
+func TestParseTreatsPreludeFlagAsByteNotFrameCountHighByte(t *testing.T) {
+	// Same valid one-frame resource, with the independently consumed native
+	// byte1 prelude flag and byte2 prelude count both set to one.
+	raw := []byte{1, 1, 1, 0, 0x7e, 0, 12, 0, 12, 0, 0, 0, 2, 0, 3, 0, 4, 5, 2, 6, 0, 4, 0, 1, 0, 0x00, 7, 0x40, 9, 0xc0}
+	a, err := Parse(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(a.Frames) != 1 || a.HeaderByte1 != 1 || a.HeaderByte2 != 1 {
+		t.Fatalf("animation=%#v, want one frame and header bytes 1/1", a)
 	}
 }
 
@@ -42,6 +56,20 @@ func TestDecodeOriginalFIGANIResource(t *testing.T) {
 	}
 	if len(a.Frames) == 0 || a.Frames[0].Width <= 0 || a.Frames[0].Height <= 0 || len(a.Frames[0].Pixels) != a.Frames[0].Width*a.Frames[0].Height {
 		t.Fatalf("decoded resource 13 = %#v", a)
+	}
+}
+
+func TestDecodeOriginalFIGANIPreludeResource(t *testing.T) {
+	const path = "../../../org_game/炎龍騎士團/FLAME2/FIGANI.DAT"
+	a, err := DecodeResource(path, 25)
+	if os.IsNotExist(err) {
+		t.Skip("player-provided FIGANI.DAT is absent")
+	}
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(a.Frames) != 19 || a.HeaderByte1 != 1 || a.HeaderByte2 != 14 {
+		t.Fatalf("prelude resource frames=%d header=%d/%d, want 19 and 1/14", len(a.Frames), a.HeaderByte1, a.HeaderByte2)
 	}
 }
 
@@ -141,5 +169,22 @@ func TestFrameBlitAtBaseShiftsNativeWorkSurface(t *testing.T) {
 	}
 	if got := dst[80+3*640+2]; got != 9 {
 		t.Fatalf("shifted pixel=%d", got)
+	}
+}
+
+func TestFrameBlitTranslatedClipsAndCanOverrideOpaquePixels(t *testing.T) {
+	f := Frame{
+		X: 0, Y: 0, Width: 3, Height: 1,
+		Pixels: []byte{7, 8, 9}, Mask: []byte{1, 0, 1},
+	}
+	dst := []byte{1, 1, 1, 1}
+	fill := byte(33)
+	if err := f.BlitTranslated(dst, 4, -1, 0, &fill); err != nil {
+		t.Fatal(err)
+	}
+	// Source x0 is clipped; transparent source x1 lands at x0 and preserves
+	// its destination; opaque source x2 lands at x1 and receives the override.
+	if got, want := dst, []byte{1, 33, 1, 1}; !slices.Equal(got, want) {
+		t.Fatalf("translated blit=%v want=%v", got, want)
 	}
 }

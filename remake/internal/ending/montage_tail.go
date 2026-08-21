@@ -114,7 +114,7 @@ type MontageTailLoaderPaths struct {
 }
 
 // MontageTailVisualPaths identifies the player-provided archives needed by
-// the approximate visual bridge. The bridge validates every native selector
+// the source-bound visual bridge. The bridge validates every native selector
 // before playback and never writes these archives.
 type MontageTailVisualPaths struct {
 	TAI    string
@@ -320,8 +320,9 @@ type MontageTailVisualSet struct {
 }
 
 // LoadMontageTailVisualSets performs an all-or-nothing preflight of the 20
-// original TAI/BG/FIGANI selector transactions. This closes archive and codec
-// availability only; it does not claim exact 0x2939d composition or timing.
+// original TAI/BG/FIGANI selector transactions. The player additionally
+// validates the actual header branch before admitting 0x2939d composition;
+// archive availability alone still does not prove DOS timing or sound parity.
 func LoadMontageTailVisualSets(tail MontageTail, paths MontageTailVisualPaths) ([]MontageTailVisualSet, error) {
 	if paths.TAI == "" || paths.BG == "" || paths.FIGANI == "" {
 		return nil, fmt.Errorf("ending: montage tail visual archive path is unavailable")
@@ -558,9 +559,9 @@ func (t MontageTail) Plan() ([]MontageTailEntry, error) {
 
 // PlanVisualResources preserves the resource-index arithmetic directly used
 // by the original nonzero 0x28a6c branch. The TAI#3 substitutions are raw
-// selector comparisons, not named character exceptions. Approximate mode may
-// consume this plan without mutating runtime records; faithful mode still needs
-// a separately admitted call-time record snapshot and exact renderer adapter.
+// selector comparisons, not named character exceptions. The source-bound E1
+// player consumes this plan without mutating runtime records; an original E2
+// claim still needs a separately admitted call-time record snapshot.
 func (t MontageTail) PlanVisualResources() ([]MontageTailVisualResources, error) {
 	entries, err := t.Plan()
 	if err != nil {

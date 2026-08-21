@@ -4612,8 +4612,17 @@ persistent raw record、FDFIELD／FDICON／item table、任一20段資源或 bas
 - runtime 已會播放前綴、`0x2C548` 角色蒙太奇、現有的20段原資源
   視覺橋接，最後停在 FDOTHER #59。這是來源約束 E1，不再需要
   `FD2_APPROXIMATE=1`。
-- `figani.Animation` 現已保存 raw header byte1，但現有
-  `MontageTailPlayer` 尚未完整實作本節要求的 header byte1 工作區、raw
-  `+4/+5/+6/+7` 與兩次配對合成。因此可驗收的本輪成果是「正式
-  玩家路徑可達、資產缺失整批拒絕、終局定格」，不是精確
-  `0x28A6C` renderer 已完成。
+- 2026-08-22 direct operand 更正 FIGANI header：byte0為總幀數、byte1為前段
+  旗標、byte2為前段幀數；不得把byte0／1當`u16 frame_count`。終局20段
+  實際選到的80個 FIGANI 全部 byte1=0、byte2=byte0，故本批不進
+  `0x29C90`／`0x29DED` 前段滑入；非本批的 byte1非零資源不可偷渡。
+- 尾段 adapter 必須逐 raw `+6` inner present 執行，每次等待1 tick
+  並推進配對 base scheduler；raw `+7 bit0` 決定 auxiliary／base 前後層。
+  `+4!=0` 將位移相位重置為5，依 raw tables `0x5255F`／`0x52577`
+  消費5→0；第二次配對在最後一個 `+4!=0` frame 完成後結束。
+  effect 首次 inner present 對 base 使用 `0x4E63D(...,33)`：只將 RLE
+  不透明像素覆寫為 palette index33，透明 span 仍保留背景。
+  `+5` 只保存 raw marker，在 sound owner globals 未閉合前不播放猜測樣本。
+- 兩次配對固定為 record0 auxiliary＋record1 base，然後 record1
+  auxiliary＋record0 base；不得畫出被動畫者自己的 base。重製可以320×200
+  indexed surface 呈現這個已證實配對，但仍不宣稱 DOS 逐像素／音訊 E2。

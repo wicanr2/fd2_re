@@ -61,7 +61,7 @@
 | 戰場 HUD、指令格、輸入與戰鬥演出 | 部分 | 部分 | 部分 E1 | 少量畫面 E2／多數缺少 | 有 native frame、command overlay、姓名字模、命中色盤與部分 FIGANI consumer；整體操作狀態機、圖示可用性、相同戰況及演出時序仍未完成。完成度只由 [`57` 介面矩陣](57-ui-evidence-matrix.md)判定。 |
 | 城鎮、祕密商店、商店、教會與整備 | 部分偏高 | 部分就緒 | 多個正式 E1 consumer | ch02 若干狀態 E2；其餘部分 | 個別 menu、購買、轉移、復活、轉職與整備已有窄切片。第25戰正式勝利、持續隊伍與存讀檔後，`town_ch26` 已以章節專屬 selection4＋Shift+F5（BIOS `0x58`）揭露selection5、進入variant5、驗證三項商品並經四幀離店返回；錯用ch02的`0x54`會拒絕。這是正常戰間E1，不是未修改原版E2；其餘章節入口、native save、recipient scroll與完整交易仍缺。 |
 | 音樂與音效 | 格式閉合；owner／時序部分 | 部分就緒 | 部分 E1 | 逐音訊 E2 缺少 | XMIDI、兩類音源與部分曲目／樣本 owner 已知。重點是精確播放時機、停止／切換、效果同步與三平台播放，不需要重解 XMIDI 格式。 |
-| 終局與結局 | 部分 | 來源約束排程已資料化 | E1；正式 `battle_ch30→ending` 已接終端定格 | 缺一般玩家終局 E2 | `0x2BCE5` 前綴、`0x2C548` 角色蒙太奇、20段尾段與 FDOTHER #59 定格已由正式 campaign 以原始資源與持續 raw roster 消費；資產或 provenance 不足時整批失敗即關閉。`0x28A6C` 是戰鬥、事件與終局共用的雙 record renderer；尚缺終局 caller `0x2C2A6` 當下 records／globals、header byte1 工作區、精確配對合成／音訊、終端輸入與原版 owner，不是重解整個 callee。 |
+| 終局與結局 | 部分偏高 | 來源約束排程已資料化 | E1；正式 `battle_ch30→ending` 已接終端定格 | 缺一般玩家終局 E2 | `0x2BCE5` 前綴、`0x2C548` 角色蒙太奇、20段尾段與 FDOTHER #59 定格已由正式 campaign 以原始資源與持續 raw roster 消費；資產或 provenance 不足時整批失敗即關閉。20段實際80個 FIGANI 已證實全部 header byte1=0；runtime 現逐 raw `+6` inner present、`+7 bit0` 層序、`+4` 位移／palette33與最後 effect 終止、base scheduler 執行兩次交叉配對。尚缺 caller `0x2C2A6` 當下 records／globals 動態連續性、3% RNG重播、精確音訊／終端輸入與原版 owner，不是重解整個 `0x28A6C`。 |
 | DOS/4GW、Watcom runtime、Miles 驅動與一般函式庫 | 第一輪分類 | 不適用 | 只在行為外露時處理 | 不適用 | IDA 清冊1305函式中170筆由 Watcom FLIRT 標成 runtime；其餘未分類不能都算產品程式。後續只擴充分級索引，不把函式庫未命名算成 remake 缺口。 |
 | 三平台打包與推廣片 | 不適用 | 部分 | 尚未達發行閘門 | 缺完整玩家驗收 | 這不是反組譯問題。待核心戰役、操作 UI、結局與代表性一般玩家路徑關閉後，再做 Linux／Windows／macOS 打包與影片。 |
 

@@ -70,8 +70,11 @@ status／standoff 路徑，非 0 時略過其一部分並在尾端寫回 1（已
   另 [0x53a49] / [0x53a5d] 為單圖路徑(0x28784)用的 FIGANI buffer(對映既有錨點)。
 - 龍騎兵 / 飛行特例:0x28b72 檢查 `unit[+0x20]==0x13`(職業 0x13=龍騎士)或 `unit[+0x1f] in {4,5}` 且 `unit[+7]==0x1c` → 走特殊組路徑(`call 0x12e38` 換組)。
 
-> 動畫描述子格式(0x2939d / 0x2935b 讀法):`byte[ebp]` = frame 數;`[ebp + i*4 + 8]` = 第 i 幀相對 offset;
-> `byte[ebp+1]` = 類型旗標(0=靜態單幀走 BG 路徑,非 0=多幀動畫)。
+> 動畫描述子格式（2026-08-22 direct operand 勘誤）：`byte[ebp]` = 總 frame
+> 數，`byte[ebp+1]` = `0x2939D` 前段分支旗標，`byte[ebp+2]` = 旗標非零時
+> 先播的幀數，`[ebp+i*4+8]` = 第 i 幀相對 offset。舊「0=靜態單幀／
+> 非0=多幀」斷言無法解釋 byte2 與原始資源，現已撤回；byte0／1也不是
+> little-endian `u16 frame_count`。
 
 ---
 

@@ -51,7 +51,7 @@ func TestNativeEndingPreviewReachesRecoveredPhase0MontageGate(t *testing.T) {
 	}
 }
 
-func TestApproximateCampaignTailHoldsRecoveredTerminalFrame(t *testing.T) {
+func TestSourceBoundCampaignTailHoldsRecoveredTerminalFrame(t *testing.T) {
 	const base = "../../../org_game/炎龍騎士團/FLAME2"
 	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "ANI.DAT"} {
 		if _, err := os.Stat(filepath.Join(base, name)); os.IsNotExist(err) {
@@ -86,7 +86,7 @@ func TestApproximateCampaignTailHoldsRecoveredTerminalFrame(t *testing.T) {
 		t.Fatalf("montage gate err=%v preview=%#v", err, preview)
 	}
 	preview.montage = &ending.MontageCycle{Phase: ending.MontagePhaseCompleted}
-	g := &Game{nativeEnding: preview, approximateMode: true}
+	g := &Game{nativeEnding: preview}
 	if err := g.startCampaignNativeTail(); err != nil {
 		t.Fatal(err)
 	}
@@ -169,7 +169,7 @@ func TestNativeEndingDialogueResumeAllowsSecondNativeTextGate(t *testing.T) {
 	}
 }
 
-func TestApproximateCampaignEndingConsumesOnlyVerifiedGateCueThenReturnsToEditableEpilogue(t *testing.T) {
+func TestSourceBoundCampaignEndingConsumesOnlyVerifiedGateCueThenReturnsToEditableEpilogue(t *testing.T) {
 	p := &ending.Player{
 		Timeline: ending.Timeline{AudioCues: []ending.AudioCue{{
 			Source: "0x2c5cf", Track: 4, DriverArg: 0, AfterGate: "0x2c548", Trigger: "verified gate",
@@ -224,7 +224,7 @@ func TestNativeEndingMontageRecordsUseOnlyPersistentRawProvenance(t *testing.T) 
 	}
 }
 
-func TestApproximateCampaignMontageStartsFromPersistentLoadCHOrder(t *testing.T) {
+func TestSourceBoundCampaignMontageStartsFromPersistentLoadCHOrder(t *testing.T) {
 	const base = "../../../org_game/炎龍騎士團/FLAME2"
 	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "ANI.DAT", "TAI.DAT", "FIGANI.DAT", "DATO.DAT"} {
 		if _, err := os.Stat(filepath.Join(base, name)); err != nil {
@@ -263,10 +263,9 @@ func TestApproximateCampaignMontageStartsFromPersistentLoadCHOrder(t *testing.T)
 		}
 	}
 	g := &Game{
-		nativeEnding:    preview,
-		approximateMode: true,
-		partyMembers:    map[int]bool{0: true, 1: true, 2: true},
-		partyJoinOrder:  []int{0, 1, 2},
+		nativeEnding:   preview,
+		partyMembers:   map[int]bool{0: true, 1: true, 2: true},
+		partyJoinOrder: []int{0, 1, 2},
 		partyRoster: map[int]battle.Unit{
 			0: unit(2, 4), 1: unit(0, 4), 2: unit(2, 4),
 		},
@@ -365,7 +364,7 @@ func TestApproximateCampaignMontageStartsFromPersistentLoadCHOrder(t *testing.T)
 	})
 }
 
-func TestApproximateFinalBattleWinFeedsSynchronizedPartyToEndingMontage(t *testing.T) {
+func TestFinalBattleWinFeedsSynchronizedPartyToEndingMontage(t *testing.T) {
 	const base = "../../../org_game/炎龍騎士團/FLAME2"
 	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "ANI.DAT", "TAI.DAT", "FIGANI.DAT", "DATO.DAT"} {
 		if _, err := os.Stat(filepath.Join(base, name)); err != nil {
@@ -432,7 +431,7 @@ func TestApproximateFinalBattleWinFeedsSynchronizedPartyToEndingMontage(t *testi
 	}
 }
 
-func TestApproximateCampaignMontageRejectsUncompiledCh29ShotPartyBinding(t *testing.T) {
+func TestCampaignMontageRejectsUncompiledCh29ShotPartyBinding(t *testing.T) {
 	// The original ch29 handler still ends at the unrecovered 0x2bce5 owner.
 	// Screenshot mode must not smuggle its partial LOADCH data into the ending
 	// roster merely to make the montage appear reachable.
@@ -450,7 +449,7 @@ func TestApproximateCampaignMontageRejectsUncompiledCh29ShotPartyBinding(t *test
 	}
 }
 
-func TestDirectEndingPreviewCannotUseApproximateCampaignFallback(t *testing.T) {
+func TestDirectEndingPreviewCannotUseCampaignFallback(t *testing.T) {
 	g := &Game{nativeEnding: &nativeEndingPreview{
 		player: &ending.Player{
 			State:   ending.PlaybackBlocked,
@@ -531,6 +530,6 @@ func TestSourceBoundCampaignFinalNodeConsumesRecoveredPrefixThenStops(t *testing
 		t.Fatal("verified FDMUS_004 cue was not consumed at the recovered boundary")
 	}
 	if !g.finishCampaignNativeEndingFallback() || g.nativeEnding != nil || g.endingNotice == "" {
-		t.Fatalf("approximate final fallback did not return to editable ending: preview=%#v notice=%q", g.nativeEnding, g.endingNotice)
+		t.Fatalf("source-bound final fallback did not return to editable ending: preview=%#v notice=%q", g.nativeEnding, g.endingNotice)
 	}
 }

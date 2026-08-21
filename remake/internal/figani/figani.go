@@ -12,13 +12,15 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
-// Animation is a FIGANI resource. HeaderByte4 preserves the raw container
-// byte consumed by the native 0x2b659 path; its gameplay meaning is not yet
-// named. Keeping it prevents presentation-side transaction tracing from
-// silently discarding an original asset input.
+// Animation is a FIGANI resource. The native container uses byte 0 as the
+// total frame count, byte 1 as a prelude flag and byte 2 as the prelude frame
+// count. HeaderByte4 is consumed by 0x2b659 but its gameplay meaning is not
+// yet named. Keeping the raw header bytes prevents presentation-side tracing
+// from silently discarding original inputs.
 type Animation struct {
 	Frames      []Frame
 	HeaderByte1 byte
+	HeaderByte2 byte
 	HeaderByte4 byte
 }
 
@@ -176,9 +178,15 @@ func Parse(raw []byte) (*Animation, error) {
 	if len(raw) < 12 {
 		return nil, errors.New("figani: animation is too short")
 	}
-	n := int(binary.LittleEndian.Uint16(raw))
+	// 0x29409 reads byte 0, while 0x29510/0x295c3 independently read
+	// bytes 1 and 2. Treating bytes 0..1 as a u16 rejects every original
+	// animation whose native prelude flag is set.
+	n := int(raw[0])
 	if n == 0 || 8+4*n > len(raw) {
 		return nil, errors.New("figani: invalid frame table")
+	}
+	if raw[1] != 0 && int(raw[2]) > n {
+		return nil, errors.New("figani: prelude frame count exceeds total frames")
 	}
 	frames := make([]Frame, n)
 	previous := 8 + 4*n
@@ -210,7 +218,7 @@ func Parse(raw []byte) (*Animation, error) {
 		}
 		previous = off
 	}
-	return &Animation{Frames: frames, HeaderByte1: raw[1], HeaderByte4: raw[4]}, nil
+	return &Animation{Frames: frames, HeaderByte1: raw[1], HeaderByte2: raw[2], HeaderByte4: raw[4]}, nil
 }
 
 func decodeRLE(src []byte, width, height int) ([]byte, []byte, error) {
@@ -286,6 +294,41 @@ func (f Frame) BlitAtBase(dst []byte, stride, base int) error {
 			i := y*f.Width + x
 			if f.Mask[i] != 0 {
 				dst[base+(f.Y+y)*stride+f.X+x] = f.Pixels[i]
+			}
+		}
+	}
+	return nil
+}
+
+// BlitTranslated reproduces the 0x2939d staging-buffer displacement while
+// presenting on a bounded indexed surface. Pixels outside that surface are
+// clipped, matching the native 400-stride staging margin followed by a
+// 320-wide viewport copy. When opaqueFill is non-nil, every decoded opaque
+// pixel receives that palette index while transparent spans still preserve
+// the destination, matching 0x4e63d's 0..255 branch. Nil retains the source
+// palette indices as the native -1 branch does.
+func (f Frame) BlitTranslated(dst []byte, stride, dx, dy int, opaqueFill *byte) error {
+	if f.Width <= 0 || f.Height <= 0 || len(f.Pixels) != f.Width*f.Height || len(f.Mask) != len(f.Pixels) || stride <= 0 || len(dst)%stride != 0 {
+		return errors.New("figani: translated frame cannot be blitted to destination")
+	}
+	height := len(dst) / stride
+	for y := 0; y < f.Height; y++ {
+		dstY := f.Y + dy + y
+		if dstY < 0 || dstY >= height {
+			continue
+		}
+		for x := 0; x < f.Width; x++ {
+			dstX := f.X + dx + x
+			if dstX < 0 || dstX >= stride {
+				continue
+			}
+			i := y*f.Width + x
+			if f.Mask[i] != 0 {
+				value := f.Pixels[i]
+				if opaqueFill != nil {
+					value = *opaqueFill
+				}
+				dst[dstY*stride+dstX] = value
 			}
 		}
 	}

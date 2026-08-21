@@ -72,6 +72,46 @@ IDA 將 `0x2939D` 識別為 `sub_2939D`。在 `[0x540FF] != 0` 時：
 它們各自使用32-byte水平位移及 BG frame0／1／2循環。這些是 indexed 畫面
 排程，不是 campaign handoff。
 
+## 2026-08-22 直接 operand 與原始 archive 補證
+
+Capstone 5 對同一雜湊 EXE 直讀 `0x29409..0x295C9`，修正 Hex-Rays
+指標型別可能引起的 header 誤讀：
+
+- `0x29409 movzx eax, byte ptr [ebp]`：header byte0 是**總幀數**，不是
+  little-endian `u16`。
+- `0x29510 movzx eax, byte ptr [ebp+1]`：header byte1 是前段分支旗標。
+- `0x295C3 movzx eax, byte ptr [ebp+2]`：header byte2 是 byte1 非零時先播的
+  前段幀數；主迴圈從當前 frame index 繼續。
+
+唯讀解開玩家原始 `FIGANI.DAT`得到409個 archive entries，264個至少
+8 bytes 的有效 header 中，byte1=0 有249個、byte1=1 有15個。舊 Go
+parser 以 `u16(raw[0:2])` 當幀數，會把這15個資源誤解為256以上幀數；
+這是 decoder 缺陷，不是原始資產壞掉。
+
+`native_2c194_tail.json` 的20組 selector 共及80個不重複的 base／auxiliary
+FIGANI resources；實檔逐80個全部 byte1=0，且 byte2=byte0。因此此終局
+尾段的 `0x2939D` 只走主幀迴圈，`0x29C90`／`0x29DED` 的 header
+byte1 前段滑入在這80個實際輸入上不可達。正式尾段 adapter 應對
+byte1非零的非本批資源失敗即關閉，而不需要猜測一個永遠不會被這
+20段觸發的工作區。
+
+`sub_2939D` 的兩張內建 dword 位移表亦由 raw bytes 固定：
+
+- `0x5255F` = `[0,4,9,14,18,14]`（水平位移）；
+- `0x52577` = `[0,2,4,6,8,10]`（垂直位移）。
+
+在 `[0x540FF]!=0` 時，raw `+4!=0` 會將位移相位重置為5；每個
+raw `+6` inner present 依序消費相位5→0，其後保持0。第二次配對將
+`[0x540FF]` 強制為1，並在最後一個 `+4!=0` frame 的 inner presents
+完成後立即返回；若整個 animation 沒有 `+4!=0`，則保留全幀播放。
+
+IDA Pro 9.4 另重生 `sub_4E63D` 補正 effect 首次 present 的最後參數
+33：當參數是 `-1`時，原始 RLE 不透明像素保留各自 palette index，
+透明 span 保留 destination；當參數在0..255時，所有 RLE 不透明輸出
+統一寫成該 palette index，透明 span 仍保留 destination。因此33是
+配對 base 在 `+4!=0` frame 第一個 inner present 的不透明 palette
+override，不是「填滿透明區」或色鍵。
+
 ## 強推論與仍未知
 
 - **強推論**：`0x1088D(0x1E)` 建立的31筆 loader baseline 可作
