@@ -9,13 +9,13 @@
 > 新工作必須使用 `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`、`PLAYER-E2` 或
 > `BLOCKED` 明列關閉哪一層，不再新增沒有層級的 `[x]`。
 
-## 有效佇列（2026-08-13）
+## 有效佇列（2026-08-21）
 
 | 順序 | 工作 | 現況 | 下一個可驗收結果 |
 |---:|---|---|---|
 | 0 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式，現為產品31／runtime170／未知1104；舊83 unknown 已拆為79已分類、4已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253`／`0x2BCE5` 追 caller／執行期 gate，不重解 callee |
 | 1 | 玩家第21戰天空之鑰固定演出 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`：`0x24336` 已接真實 `FDOTHER #34`、`ANI #0`、調色盤循環與正式戰後→城鎮→存讀檔 | 取得未修改原版同狀態 E2，核對第一個動態調色盤相位與相鄰 `layout_units`／ACT63／64；不重解函式本體 |
-| 2 | 三個忠實模式 blocked postbattle | 玩家第23、24、29戰戰後為 `BLOCKED`；玩家第25戰已達 E1，近似模式不提升 | 每章完成 handler branch、持續隊伍、城鎮／整備及 save/load E1；再各補一般玩家 E2 |
+| 2 | 兩個忠實模式 blocked postbattle | 玩家第23、29戰戰後為 `BLOCKED`；玩家第24、25戰已達 E1，近似模式不提升 | 先完成玩家第23、29戰的 handler branch、持續隊伍、整備及 save/load E1；已接章節再各補一般玩家 E2 |
 | 3 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；`0x16F55` END 已接，command 13–16 的玩家與敵方 mode 11 已走完整 #3前段、#6七張、mask、交易後 redraw、#5數字22張與尾停，AI 依 raw selector重建 target array | 補 END／command 13–16 同狀態逐幀逐音訊 E2；再依 `56` family matrix選下一個有完整證據的 command，不重解本批已閉合函式 |
 | 4 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial | 依 `57` 逐個輸入狀態機取得同狀態原版／重製證據，不用單張 layout 圖代替 |
 | 5 | 原版終局精確鏈 | 近似 E1 可見；忠實模式仍部分阻擋 | 閉合 `0x28A6C` renderer、終端輸入、`0x2BCE5` 正式 owner／handoff及第30戰一般玩家 E2 |
@@ -30,6 +30,22 @@ handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不�
 ---
 
 ## 歷史工作記錄（不可用來計算完成度）
+
+### 2026-08-21：raw ch23／玩家第24戰戰後垂直切片
+
+- `RE-CLOSED`：IDA Pro 9.4 對固定雜湊 `FD2.EXE` 證實 `sub_24C1E` 每次 inner
+  loop 都先呼叫 `sub_24D22(stage)` 再 draw；`sub_11EEE` case23 只在 BIOS
+  tick 改變時旋轉312-byte staging rows。三個 transient offset 的 producer
+  都在自己的共同尾端清零，且不由此 handler 呼叫；舊「入口 latch／offset
+  尚未知而阻擋第一幀」斷言已撤回。
+- `DATA-READY`／`RUNTIME-E1`：production binding 現以 FDOTHER #42、70筆
+  FDFIELD＋16筆 LOADCH runtime、240＋60次 indexed draw、ESI 0..59、兩拍
+  palette gate與原子失敗回復接入 `postbattle_ch24_persist`。正常戰果確認完成
+  `sync_party` 後進 `preparation_ch25`，並驗證該節點存檔／讀檔。
+- `PLAYER-E2`：仍缺未修改原版同狀態逐幀／時序，以及 handler 入口的程序內
+  palette phase；不得宣稱逐像素或 DOS 時鐘一致。主證據見
+  [`fd2_ch23_post_ida.txt`](../data/ida/fd2_ch23_post_ida.txt)，規格見
+  [`56-fd2-remake-sdd.md`](56-fd2-remake-sdd.md)。
 
 ### 2026-08-21：command 13–16 `0x21EB1` indexed 演出
 
@@ -358,18 +374,21 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   `FDOTHER.DAT` #42→312×192 單幀、`0xea00` staging 配置與透明 blit，重製端以
   `DecodeNativeCh23Stage`／`BlitNativeCh23Stage` 保存此窄原語；另以兩個嚴格驗證的
   `native_ch23_loop` beats 保留第一段 30 次、第二段 12 次的完整 call-site、
-  stage 值與 register-shaped arguments。執行器現在要求明示的原始 latch 回呼（raw-latch callback），
-  不會自行把非零 setter 推論成列旋轉；缺 indexed／latch adapter 時失敗即關閉，
-  固定版 raw seed 為 `0x01`；共用尾端固定目的地 `0xA0504`，
-  但入口 latch 的執行期值、中間 `0x53aff` 偏移生命週期、一般玩家畫面與
-  `postbattle_ch23_persist` 仍未閉合。證據見
+  stage 值與 register-shaped arguments。2026-08-21 IDA 函式資料流勘誤證實
+  每個 inner loop 都是 setter-before-draw，故入口 latch 不影響第一個呈現；
+  `0x53aed`／`0x53af1`／`0x53af5` 只在四個移動／呈現 producer 內暫寫，
+  返回前清零，且 `sub_24C1E` 不呼叫它們。固定版 raw seed `0x01` 不進 runtime；
+  production adapter 已依 SDD 接入虛擬 BIOS tick、正式綁定
+  `postbattle_ch24_persist`，並通過70＋16槽位、`preparation_ch25` 與存讀檔 E1；
+  現只缺一般玩家同狀態畫面／時序 E2，不再重解入口 latch。證據見
   [`fd2_ch23_post_ida.txt`](../data/ida/fd2_ch23_post_ida.txt)。
 - [x] **RE-CH23-STAGING-GLOBAL-XREF**：IDA data-xref／Capstone 已固定 `0x53aff`
   的 raw loader owner、`0x51a10` 的 `0x24d22` local owner、`0x539f8` 的
   `0x11eee` tick snapshot owner；`0x53aed`／`0x53af1`／`0x53af5` 的寫入
   分散於 `0x12eaa`、`0x1300d`、`0x13185`、`0x13315` 共用呈現函式。這只
   關閉 offset-state 的靜態 owner 邊界，不把欄位命名成 camera／framebuffer，
-  也不解除 ch23 的 indexed／campaign fail-closed gate。完整位址與輸入雜湊見
+  本條只關閉 offset-state 的靜態 owner；indexed／campaign gate 已由同日正式
+  adapter 另行解除，不得把本條舊語句當成仍 blocked。完整位址與輸入雜湊見
   [`fd2_ch23_post_ida.txt`](../data/ida/fd2_ch23_post_ida.txt)。
 - [x] **ch21 post 證據勘誤**：補明 `0x1f882` 是 0–63、每步 2 ms 的原生
   palette 淡出，不是同步／等待輔助器；`postbattle_ch22_persist` 仍因
@@ -425,12 +444,12 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   `native_2189a_loop` 的 indexed／campaign fail-closed gate。證據見
   [`fd2_ch22_post_ida.txt`](../data/ida/fd2_ch22_post_ida.txt)。
 - [x] **本輪稽核基線**：以目前 `tools/audit_postbattle_binding_gates.py --json`
-  實際稽核，24 個標準戰後節點為 **21 active／3 blocked**；
-  story/cutscene 為 121 節點、9 個獨立 script、53 個 handler binding、59 個
+  實際稽核，24 個標準戰後節點為 **22 active／2 blocked**；
+  story/cutscene 為 121 節點、9 個獨立 script、54 個 handler binding、58 個
   fallback；目前處理器映射缺口是 ACTING 6、對話 6、版面 1、捲動畫面 3，
   原生語意缺口為 0。這些數字只表示已知處理器呼叫能否映射為可編輯原語，
   不代表演出消費端、介面還原或戰役節點已完成。
-  這些是覆蓋統計，不是原版完成百分比。現時仍封鎖的是玩家第23、24、29戰；
+  這些是覆蓋統計，不是原版完成百分比。現時仍封鎖的是玩家第23、29戰；
   第25戰 `0x24df2` 的兩個 `0x112a5` 參數已依中途跳入堆疊 ABI 修正為角色26
   「聖寇拉斯」與29「亞奇梅吉」，並由62→70→71 runtime／存讀檔 E1 消費。
 - [x] **RE-4DBFC-RAW-MASK-CONTRACT**：合法 IDA Pro 9.4 重新固定
@@ -479,7 +498,8 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 - [~] **下一個戰後切片**：玩家第22戰已完成 raw `ch21_post` 的 E1 production
   binding、73／79-slot runtime frontier、持久隊伍同步與 `preparation_ch23`
   邊界；玩家第25戰已完成62→70→71 runtime、JOIN26／29、`town_ch26`與存讀檔
-  E1；玩家第23、24、29戰仍 blocked。每關都必須保留
+  E1；玩家第24戰亦已完成 raw ch23 adapter、70＋16槽位、`preparation_ch25`
+  與存讀檔 E1；目前玩家第23、29戰仍 blocked。每關都必須保留
   town／shop／整備／連戰與存檔邊界，不可只把節點接到下一場戰鬥。
 - [x] **UI-05 重製端對話框執行期擷取**：以 `FD2_CAMPAIGN=1` 的可編輯序章腳本，
   在 Docker／Xvfb 實際產生 640×400 [`dialogue-remake-runtime.png`](../figures/dialogue-remake-runtime.png)。
@@ -508,8 +528,9 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   說成完整 parity。
 - [~] **其餘標準戰後節點**：玩家第22戰的 raw `ch21_post` 已接正式 E1 binding，
   只接受已追加 group1+2（73）或 group1+2+3（79）的 materialized frontier，
-  缺 group2 或更早的 66／72-slot 狀態會停止；玩家第23、24、29戰仍
-  blocked。第17、18戰已由本文件上方的 raw `ch17_post` 切片解除。完成
+  缺 group2 或更早的 66／72-slot 狀態會停止；本歷史段的 blocked 清單已由
+  2026-08-21 raw ch23 adapter 勘誤，目前只剩玩家第23、29戰。第17、18戰已由
+  本文件上方的 raw `ch17_post` 切片解除。完成
   handler後仍需逐關驗證城鎮／商店／整備／存檔邊界，不可只接下一場戰鬥。
 - [x] **玩家第22戰／raw ch21 post E1 垂直切片**：授權 IDA Pro 9.4 已固定
   `0x244b6`、`0x24512→0x233c6`、文字索引4/5/6、ACTING raw 65/66、
@@ -651,7 +672,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 - [x] **UI-VERTICAL-CH02-TOWN-HOTEL-RAW-RETURN**：新增 `hotel` campaign node、`Game.applyHotelServiceSelection`／`Game.leaveHotel` 與 `TestCampaignTownHotelRawRouteReturnTrace`，驗證 `town_ch02→hotel_ch02→town_ch02`，selector 0/1/2/3 保留 raw resource13 與 `0x2ffa5/0x30012/0x301f4/0x19953→0x197e5` order；未命名服務、不做 party/gold mutation，未知 selector fail-closed。保存 [`town-hotel-raw-return-ch02.json`](../data/ui-traces/town-hotel-raw-return-ch02.json)。
 - [x] **POSTBATTLE-UNBOUND-FAIL-CLOSED**：`Game.enterNode` 對沒有 active handler 的 `postbattle_*` cutscene 拒絕空 beats auto-advance，新增 `TestUnboundPostbattleCutsceneFailsClosed`；流程停在原 node、保留 `loadErr/msg`，避免未完成 persistence/reward handler 被誤當成直接回 town。
 - [x] **POSTBATTLE-SAVE-FAIL-CLOSED**：`saveGameToSlot` 對所有 `postbattle_*` 節點拒絕 F5，新增 `TestSaveRejectsUnboundPostbattleBoundary`；未完成 persistence handler 不會產生假 save。
-- [x] **POSTBATTLE-BINDING-GATE-AUDIT**：新增唯讀 `tools/audit_postbattle_binding_gates.py`，逐一依 handler source address 檢查 generated binding 的 `loadch/pan/dialog/act/layout` 覆蓋；歷史快照曾列18、19或20 active，**現況以 Docker 實際稽核的21 active／3 blocked為準**。ch09/ch10/ch12/ch18與玩家第25戰raw ch24 post已通過正式 regression並提升為active handler，其餘skeleton禁止自動啟用。
+- [x] **POSTBATTLE-BINDING-GATE-AUDIT**：新增唯讀 `tools/audit_postbattle_binding_gates.py`，逐一依 handler source address 檢查 generated binding 的 `loadch/pan/dialog/act/layout` 覆蓋；歷史快照曾列18至21 active，**現況以 Docker 實際稽核的22 active／2 blocked為準**。ch09/ch10/ch12/ch18、玩家第24戰raw ch23 post與玩家第25戰raw ch24 post已通過正式 regression並提升為active handler，其餘skeleton禁止自動啟用。
 
 ## 第 1 輪 ✅
 - [x] 素材盤點(`FD2.EXE` + 12 `.DAT` + 音效驅動)
@@ -1461,7 +1482,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   城鎮／商店／整備／存檔仍未關閉。證據見
   [`fd2_ch22_pre_view_reset_ida.txt`](../data/ida/fd2_ch22_pre_view_reset_ida.txt)。
 - [x] **ch23/ch24 pre-handler**：FDTXT_024 index0/index1（14句）與 map23/70-slot、spawn group1、四段鏡頭已接 binding；`story_ch24` 已接回原版 pre-handler，compiler/campaign/battle regression 通過。
-- [~] **ch23 post mapping boundary**：合法 IDA Pro 9.4／Docker Capstone 已固定 raw table index23→`0x24c1e`、初始 dialog `0x24c4c`→FDTXT_024 index2（scene0 line14、scene1 lines0–1），並固定 `0x24d22` 的非零 setter 與 `arg==0` copy branch。`0x17aa9(1)` 已證實為 BIOS tick wait；第二段 `0x11d40` 每個 outer stage 12 次、五個 stage 合計 60 次，formal `(0,255,ESI)` 的 `ESI=0..59`，不可縮窄成 `0..11`。`0x11cac(1/0)` 的 shared 456-stride indexed staging chain 也已固定，只有 `0x11cac(0)` 進一步呼叫 `0x4dfcc`；其 palette cycle 由 `mov ah,0xe0`／`out 0x3c8` 固定寫入 DAC `0xe0..0xef`，舊低位索引斷言已撤回。它本身沒有直接讀 `0x51a10`，但 `0x11eee` 的 case 23（raw chapter `0x17`）已由 Capstone 固定為 `[0x46c] != [0x539f8]` 的 BIOS tick gate，只有變化時才呼叫 `0x24d22(0)`，並將 tick 寫回 `[0x539f8]`；這證實 312-byte staging 列旋轉 raw latch，但不把 tick 當固定影格延遲。`0x11EB0` 的 IDA 偽代碼／Capstone 參數又固定共用尾端 `sub_11EB0(0xA0504,0x140,work+0x8088,0x1C8,0x138,0xC0)`，因此固定目的地位址與複製 ABI 已知；新增 `0x10652` 分支交叉證據：`0x107dd→0x107ea` 只對 raw chapter 23 配置 `0xea00 (=0x138×0xc0)` 並寫入 `[0x53aff]`，`0x107ef..0x10804` 保留 `0x1a4d`／`0x2a`／`[0x53b03]` 的原始載入參數，`0x10809..0x10831` 保留 decode 呼叫與 handle cleanup，`0x1083b` 再呼叫 `0x24d22(0)`；因此 raw staging owner 與 cleanup 邊界已收窄，FDOTHER #42 的 archive identity 已確定，但 #42 的圖形用途、`0x53AED`／`0x53AF5`／`0x53AF1` 中間偏移生命週期、固定版 raw seed（`0x01`）以外的入口 latch 執行期值與 raw state adapter 仍未知。IDA 另以 `0x11eee→0x122dc→0x127a9→0x1acf3→0x11eb0` 固定共用 indexed 消費鏈，且直接交叉參照含 ch23 的 `0x24c63`／`0x24cd3`；這只關閉靜態 E1 consumer evidence，不等於重製已有 raw state/latch adapter。重製端已加入列旋轉、16-entry palette cycle 原語、`RunNativeCh23Loop` raw schedule executor 與兩個 `native_ch23_loop` 候選 beats；executor 只接受精確 staging／callback provenance，任何失敗皆回復 buffer，且仍不接 campaign。一般玩家 E2 仍未閉合，故不接 `postbattle_ch23_persist`。候選檔 [`ch23_post_candidate.json`](../../remake/assets/cutscenes/bindings/ch23_post_candidate.json) 僅供編譯／證據回歸；完整位址與 raw table 勘誤見 [`fd2_ch23_post_ida.txt`](../data/ida/fd2_ch23_post_ida.txt)。
+- [x] **ch23 post mapping boundary（歷史段落，已由2026-08-21垂直切片取代）**：raw table index23=`0x24c1e`、FDTXT_024 index2／3、兩段30×8與12×5迴圈、312×192 staging、BIOS tick gate、ESI 0..59及DAC `0xe0..0xef` 的主證據保留在 [`fd2_ch23_post_ida.txt`](../data/ida/fd2_ch23_post_ida.txt)。本段原有「入口 latch／transient offset 尚未知、僅候選且不能接 campaign」的斷言已被後續 IDA data-flow 與正式 E1 adapter 直接推翻，故刪除其重複細節；現況以本檔有效佇列、[`58`](58-fd2-exe-re-coverage.md)與同日歷史條目為準。
 - [~] **ch24/ch25 pre-handler**：`0x24b4d` 四段 transition count 已 lower 為 `transition_reveal`（20/20/20/60、20ms/frame），FDOTHER#88 sub1 四次 SFX、index=-1 stop、handle release 已接，FDTXT_025 跨 scene 對白已接 `story_ch25`；尚待 indexed double-buffer visual adapter。
 - [~] **ch25/ch26 pre-handler**：FDTXT_026 string0 已以 direct scene0 12-line mapping 接 binding（map25/70-slot、pan、acting76），`story_ch26` 已接回 handler。2026-07-29 已修正未加引號訊息計數，FDTXT_026 全量 63/63 count-aligned；這只關閉文字索引，不自動證明每個條件分支或 event61 玩家路徑。
 - [~] **ch26/ch27 pre-handler**：FDTXT_027 idx0/3/4/5/6/7 已高信心對到 ch27 scene0 全部 21 句，新增六組 editable direct overrides 並接 `story_ch27`；共用 `0x24618` renderer 已完成。IDA／Capstone 又閉合 ch26_pre 返回時的 view `(camera 9,49; cursor 14,54; visible 5,5)` 與 selector0，`battle_ch27` 已資料化並由正式 runtime 消費。HUD 持續擁有者亦已閉合為 save-persistent gate A、process-persistent anchor 與 controller entry gate B=1，`battle_ch27` 已改用 `native_map_hud_inherited`，不猜章節常數；仍缺未修改一般玩家／CONTINUE 的同狀態 E2，以及 `0x24b14` item `0x64` branch 的其餘視覺行為，故不能視為完整章節流程完成。
@@ -2161,7 +2182,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   EXP 不變。三條都由 `0x21082→0x1b8e7` 消耗來源；新增
   `NativeItemCapacityStepRoute`／`ApplyNativeItemCapacityStep` 與
   IDs94/95/96 fixture、atomic removal regression。
-- [~] **RE-RAW-BUFFER-LATCH-24D22**：Docker Capstone 重讀 `0x24d22(arg)`：`arg!=0` 只把低 byte 寫入 global `0x51a10` 後返回；`arg==0` 配置 `latch*0x138` bytes，從 `0x53aff+(0xc0-latch)*0x138` 複製，接著以 `0xbf-latch` 向下做 `0x138` bytes row copy，最後再 copy 一列並經 `0x37416` free。沿 `0x11cac→0x11eee` case 23 的間接呼叫已證實 `0x24d22(0)` 是 312-byte staging 列旋轉消費端；`0x11EB0` 的共用尾端另固定將 312×192 bytes 複製到 `0xA0504`，重製端加入 `RotateNativeCh23Rows`、`ApplyNativeCh23PaletteCycle` 與 #42 staging 解碼原語。tick gate 已證實為 `[0x46c] != [0x539f8]` 的 BIOS tick 變化條件；固定版 raw seed 已證實為 `0x01`，但入口 latch 的執行期值、`0x53AED`／`0x53AF5`／`0x53AF1` 中間偏移生命週期、`dword_53C03` 生命週期與完整 handler 工作仍未閉合，故 production renderer adapter 仍 fail-closed。
+- [x] **RE-RAW-BUFFER-LATCH-24D22**：Docker Capstone 重讀 `0x24d22(arg)`：`arg!=0` 只把低 byte 寫入 global `0x51a10` 後返回；`arg==0` 配置 `latch*0x138` bytes，從 `0x53aff+(0xc0-latch)*0x138` 複製，接著以 `0xbf-latch` 向下做 `0x138` bytes row copy，最後再 copy 一列並經 `0x37416` free。沿 `0x11cac→0x11eee` case 23 的間接呼叫已證實 `0x24d22(0)` 是 312-byte staging 列旋轉消費端；`0x11EB0` 的共用尾端另固定將 312×192 bytes 複製到 `0xA0504`。tick gate 是 `[0x46c] != [0x539f8]`；`sub_24C1E` 在每個 draw 前先寫 stage 2..14，且三個 transient offset producer 都在返回前清零並不由此 handler 呼叫。故原版 RE gate 已閉合，下一步分類為依 SDD 接 production adapter 與 E1／E2，而不是再次反組譯入口 latch。
 - [x] **RE-RAW-MARKER-REWRITE-24E80**：Docker Capstone 閉合 `0x24e80` 的 raw mutation：從 runtime slot `0x10` 到 caller count，若 record `+0x07==0x1f`，寫 `+0=0x10`、`+1=0x06`。新增 `battle.RewriteNativeMarker1F` 與 prefix/nonmatching/bounds regression；欄位仍不命名，不接 renderer 或 roster identity。
 - [~] **RE-CHAPTER-CALLER-24838**：Docker Capstone 重讀唯一 `0x24bde` caller `0x24838`：先以 `0x24b14(0x64)` 分支，成功臂 `dialog #8→join(0x16)`；接著 `0x24bde(0x12)` 命中才走 `dialog #10→acting #0x48→0x32975(0x11)`，缺失時再依 global count `0x53bef<0x0f` 分成 `dialog #13→join(0x13)` 或 `dialog #12→0x32975(0x11)`，共同 sync/presentation 後才進後續 handler。只保存 raw call order；不把 `0x64`、`0x12`、`0x16/0x13` 命名成道具／角色／章節語意，runtime campaign binding 仍 fail-closed。
 - [x] **RE-RAW-RECORD-BYTE5-32975**：Docker Capstone 閉合 `0x32975(index)`：直接覆寫 selected runtime record `index*0x50+0x05 = 1`，不保留其他 bit。新增 `battle.SetNativeRecordByte5One` overwrite/bounds regression；與 `SetNativeRecordBit7` 分離，不把 byte5 命名成 acted/turn/action。

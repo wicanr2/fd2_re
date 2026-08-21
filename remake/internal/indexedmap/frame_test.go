@@ -1,12 +1,41 @@
 package indexedmap
 
 import (
+	"bytes"
 	"errors"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
+
+func TestSeedNativeCh23StagingUsesZeroOffsetAnd456Stride(t *testing.T) {
+	work := make([]byte, NativeUnitPresentWorkSize)
+	staging := make([]byte, 312*192)
+	for row := 0; row < 192; row++ {
+		for col := 0; col < 312; col++ {
+			staging[row*312+col] = byte(row + col)
+		}
+	}
+	if err := SeedNativeCh23Staging(work, staging); err != nil {
+		t.Fatal(err)
+	}
+	for _, row := range []int{0, 1, 191} {
+		for _, col := range []int{0, 17, 311} {
+			if got, want := work[workBase+row*workStride+col], staging[row*312+col]; got != want {
+				t.Fatalf("row=%d col=%d got=%d want=%d", row, col, got, want)
+			}
+		}
+	}
+	if work[workBase+312] != 0 {
+		t.Fatal("ch23 staging overwrote the 456-stride row padding")
+	}
+	short := make([]byte, NativeUnitPresentWorkSize-1)
+	before := append([]byte(nil), short...)
+	if err := SeedNativeCh23Staging(short, staging); err == nil || !bytes.Equal(short, before) {
+		t.Fatal("invalid ch23 work buffer was accepted or partially mutated")
+	}
+}
 
 func solid(v byte) fdicon.Sprite {
 	pixels, mask := make([]byte, 24*24), make([]byte, 24*24)

@@ -77,6 +77,8 @@ type Game struct {
 	nativeMapDAC               []byte                             // current 256xRGB six-bit DAC state for handler palette ramps
 	nativePaletteRamp          *nativePaletteRampJob              // exact 0x1f882/0x1f525 indexed DAC presentation
 	nativeCh20SkyKey           *nativeCh20SkyKeyJob               // raw ch20 post 0x24336 fixed FDOTHER/ANI/palette sequence
+	nativeCh23State            *nativeCh23AdapterState            // raw ch23 staging/latch/timer state shared across both handler loops
+	nativeCh23Loop             *nativeCh23LoopJob                 // blocking raw ch23 indexed presentation loop
 	nativeFDOTHERPalettePhase  int                                // process-lifetime 0x4DFCC phase projection (0..15)
 	nativeFullDACWhite         bool                               // exact 0x11DF2(0,255,255) overlay for legacy RGB scenes
 	nativeFullDACBlack         bool                               // exact ch07 post 0x11D40(0,255,64)+mode-13h clear
@@ -1132,6 +1134,16 @@ func (g *Game) fastForwardShotCampaign() error {
 			if g.nativeCh20SkyKey != nil {
 				return errors.New("shot fast-forward native 0x24336 exceeded step bound")
 			}
+		case g.nativeCh23Loop != nil:
+			for ticks := 0; g.nativeCh23Loop != nil && ticks < maxSteps; ticks++ {
+				g.nativeCh23Loop.drawn = true
+				g.nativeCh23Loop.waitFrames = 0
+				now := g.nativeMapClock.last.Add(nativeBIOSTickPeriod)
+				g.stepNativeCh23LoopAt(now)
+			}
+			if g.nativeCh23Loop != nil {
+				return errors.New("shot fast-forward native ch23 loop exceeded step bound")
+			}
 		case g.beatDelay > 0:
 			g.beatDelay = 0
 			g.beatAdvance()
@@ -1301,10 +1313,9 @@ func (g *Game) beatStart(b campaign.Beat) {
 			g.loadErr = "beat native_ch23_loop:缺少原始兩段 loop payload"
 			return
 		}
-		// The payload preserves the exact 0x24c1e loop schedule, but the PNG
-		// renderer has no indexed 0x51a10/0x53aff latch adapter.  Do not turn
-		// the raw row rotation or DAC writes into a generic fade/redraw.
-		g.loadErr = "beat native_ch23_loop: native ch23 indexed/latch renderer adapter未完成"
+		if err := g.startNativeCh23Loop(*b.NativeCh23Loop, g.beatAdvance); err != nil {
+			g.loadErr = "beat native_ch23_loop: " + err.Error()
+		}
 		return
 	case "native_2189a_loop":
 		if b.Native2189ALoop == nil {
@@ -2339,6 +2350,8 @@ func (g *Game) enterNode() {
 	g.transitionReveal = nil
 	g.indexedTransition = nil
 	g.nativeCh20SkyKey = nil
+	g.nativeCh23State = nil
+	g.nativeCh23Loop = nil
 	g.spawnIntroTransition = nil
 	g.nativeTurnStaging = nil
 	g.nativeFullDACWhite = false
@@ -2617,6 +2630,8 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 	g.nativeContinueOpeningConfirm = false
 	g.nativeContinueCursorOverlay = false
 	g.nativeCh20SkyKey = nil
+	g.nativeCh23State = nil
+	g.nativeCh23Loop = nil
 	g.indexedTransition = nil
 	g.spawnIntroTransition = nil
 	g.nativeTurnStaging = nil
@@ -5956,6 +5971,13 @@ func (g *Game) Update() error {
 		}
 		return nil
 	}
+	if g.nativeCh23Loop != nil {
+		g.stepNativeCh23Loop()
+		if g.shotPath != "" && g.shotTaken {
+			return ebiten.Termination
+		}
+		return nil
+	}
 	// 攻擊演出推進(FIGANI 全身分鏡;演出期間鎖玩家輸入)
 	if g.atk != nil {
 		g.atk.timer--
@@ -6533,6 +6555,17 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		if !g.drawNativeCh20SkyKey(screen) {
 			g.failNativeCh20SkyKey(errors.New("presentation unavailable"))
 			ebitenutil.DebugPrint(screen, "native 0x24336 presentation unavailable")
+		}
+		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
+			g.captureShot(screen)
+		}
+		return
+	}
+	if g.nativeCh23Loop != nil {
+		screen.Fill(color.Black)
+		if !g.drawNativeCh23Loop(screen) {
+			g.failNativeCh23Loop(errors.New("presentation unavailable"))
+			ebitenutil.DebugPrint(screen, "native ch23 presentation unavailable")
 		}
 		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
 			g.captureShot(screen)

@@ -447,10 +447,10 @@ func TestBeatNativeStagingPresentFailsClosedWithoutRendererAdapter(t *testing.T)
 	}
 }
 
-func TestBeatNativeCh23LoopFailsClosedWithoutIndexedLatchAdapter(t *testing.T) {
+func TestBeatNativeCh23LoopFailsClosedOnMalformedRawSchedule(t *testing.T) {
 	g := newBeatTestGame(t, []campaign.Beat{{Op: "native_ch23_loop", NativeCh23Loop: &campaign.NativeCh23Loop{Phase: "initial"}}})
 	g.beatAdvance()
-	if g.loadErr != "beat native_ch23_loop: native ch23 indexed/latch renderer adapter未完成" {
+	if g.loadErr != "beat native_ch23_loop: native ch23 loop differs from recovered contract" {
 		t.Fatalf("native ch23 loop error=%q", g.loadErr)
 	}
 }

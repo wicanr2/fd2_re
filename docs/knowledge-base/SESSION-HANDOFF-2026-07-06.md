@@ -5073,3 +5073,26 @@ target builder：由 raw `+6` selector、當下 presentation 座標、完整 run
   [`fd2_command13_21eb1_presentation_ida.txt`](../data/ida/fd2_command13_21eb1_presentation_ida.txt)。
 - Docker／Xvfb `go test ./... -count=1` 全套、55項工具測試、917份JSON、戰後
   21 active／3 blocked稽核均通過；本批582個具副檔名本地文件目標無斷鏈。
+
+## 2026-08-21：raw ch23／玩家第24戰戰後 adapter 勘誤與 E1 接入
+
+本條取代2026-08-09至本日前所有「入口 latch、三個 transient offset 或第一幀
+來源仍阻擋 `postbattle_ch24_persist`」的舊現況敘述，但保留那些歷史段落作為錯誤
+形成過程。合法 IDA Pro 9.4 直接證實 `sub_24C1E` 在每個 inner loop draw 前都先
+呼叫 `sub_24D22(stage)`；offset globals 的四個 producer 又全在自己的共同尾端清零，
+且不由此 handler 呼叫。`sub_11EEE` case23 的 row rotation 只由 BIOS tick snapshot
+差異觸發，`sub_4DFCC` 的高位 palette window 則另有兩拍 gate。
+
+- 知識庫主證據先更新於
+  [`fd2_ch23_post_ida.txt`](../data/ida/fd2_ch23_post_ida.txt)，再於
+  [`56-fd2-remake-sdd.md`](56-fd2-remake-sdd.md)建立 adapter 規格，最後才接
+  production runtime，遵守「RE→規格→實作」順序。
+- 正式 adapter 消費 FDOTHER #42、312×192 staging、240＋60次 draw、ESI 0..59、
+  相對 BIOS tick與兩拍 palette gate；任何 compose／buffer／palette 錯誤都原子
+  回復且不執行隊伍同步或章節遞增。
+- 正常戰役回歸從 `battle_ch24` 的戰果確認出發，保留 map23 的70筆 FDFIELD＋
+  16筆 LOADCH runtime，完成兩段演出與 `sync_party` 後進 `preparation_ch25`，
+  並在該節點驗證存檔／讀檔。因此戰後稽核現為22 active／2 blocked；剩餘是
+  玩家第23、29戰。
+- 本批只提升為 `RUNTIME-E1`。handler 入口程序相位、未修改原版同狀態逐幀／
+  時序仍缺 `PLAYER-E2`，不得宣稱逐像素或 DOS BIOS 時鐘一致。

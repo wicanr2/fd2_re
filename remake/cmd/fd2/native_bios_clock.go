@@ -53,6 +53,17 @@ func (c *nativeBIOSClock) Sample(now time.Time) int {
 	return int(int16(uint16(c.elapsedTicks)))
 }
 
+// Current returns the last signed low word actually materialized by Sample.
+// It does not advance time. Caller-specific indexed adapters use it as the
+// producer-backed snapshot for native globals that compare against the most
+// recent 0x11CAC draw.
+func (c *nativeBIOSClock) Current() (int, bool) {
+	if c == nil || c.last.IsZero() {
+		return 0, false
+	}
+	return int(int16(uint16(c.elapsedTicks))), true
+}
+
 // advanceNativeMapClock reproduces the one 0x1297d call at the head of one
 // 0x11cac redraw, followed by the independent terrain/unit BIOS-word latches
 // consumed by that same frame. Callers must invoke it from the compositor

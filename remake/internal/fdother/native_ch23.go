@@ -143,6 +143,13 @@ func nativeCh23LoopSpecValid(spec NativeCh23LoopSpec) bool {
 	return false
 }
 
+// IsRecoveredContract reports whether the typed loop is one of the two exact
+// schedules admitted by the raw ch23 handler. Runtime adapters use this same
+// gate instead of duplicating the stage/repeat contract.
+func (spec NativeCh23LoopSpec) IsRecoveredContract() bool {
+	return nativeCh23LoopSpecValid(spec)
+}
+
 func equalNativeCh23Stages(values []int, first, last int) bool {
 	if len(values) != last-first+1 {
 		return false

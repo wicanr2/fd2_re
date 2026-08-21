@@ -25,6 +25,29 @@ const (
 	NativeUnitPresentWorkSize = 0x25680
 )
 
+// SeedNativeCh23Staging reproduces the zero-offset chapter-23 case of
+// 0x11EEE before the shared terrain/range/object/HUD pipeline runs. The raw
+// source is exactly 312x192 with stride 312; the destination begins at
+// work+0x8088 with stride 456. The helper commits atomically and deliberately
+// does not name the staging pixels as a background or transition.
+func SeedNativeCh23Staging(work, staging []byte) error {
+	if len(work) != NativeUnitPresentWorkSize || len(staging) != 312*viewHeight {
+		return errors.New("indexedmap: incomplete native ch23 staging buffers")
+	}
+	last := workBase + (viewHeight-1)*workStride + steadyViewportWidth
+	if last > len(work) {
+		return errors.New("indexedmap: native ch23 staging exceeds work buffer")
+	}
+	next := append([]byte(nil), work...)
+	for row := 0; row < viewHeight; row++ {
+		src := row * steadyViewportWidth
+		dst := workBase + row*workStride
+		copy(next[dst:dst+steadyViewportWidth], staging[src:src+steadyViewportWidth])
+	}
+	copy(work, next)
+	return nil
+}
+
 // FrameInput is the raw, already-selected input required by 0x11cac's normal
 // redraw.  It deliberately keeps all native selectors raw: the caller owns
 // resource selection, map lifetime, palette phase, and unit materialization.

@@ -57,6 +57,24 @@ func TestNativeBIOSClockSeedsCapturedSignedLowWord(t *testing.T) {
 	}
 }
 
+func TestNativeBIOSClockCurrentDoesNotAdvance(t *testing.T) {
+	var clock nativeBIOSClock
+	if _, ok := clock.Current(); ok {
+		t.Fatal("unseeded clock exposed a current tick")
+	}
+	now := time.Unix(900, 0)
+	if !clock.Seed(123, now) {
+		t.Fatal("clock seed rejected")
+	}
+	before := clock
+	if got, ok := clock.Current(); !ok || got != 123 {
+		t.Fatalf("current=(%d,%v), want (123,true)", got, ok)
+	}
+	if clock != before {
+		t.Fatal("Current advanced or mutated the clock")
+	}
+}
+
 func TestGameAdvancesAllNativeMapFrameTimingFromOneBIOSSample(t *testing.T) {
 	g := materializedNativeClockGame(t)
 	start := time.Unix(200, 0)

@@ -25,6 +25,12 @@ FD2.EXE：raw ch23 post／玩家第24戰戰後處理器證據
   `tools/ida_dump_pseudocode.py` 對 `0x11EB0`、`0x11CAC`、`0x11EEE`；
   以下只轉錄與 ch23 目的地／複製 ABI 直接相關的原始參數與位址，未以
   Hex-Rays 自訂名稱取代原始函式名。
+- 2026-08-21 勘誤使用同一個合法 IDA Pro 9.4 Docker 流程，重新匯出
+  `sub_24C1E`、`sub_11EEE`、`sub_12EAA`、`sub_1300D`、`sub_13185`、
+  `sub_13315`、`sub_4DFC0`、`sub_4DFCC` 的函式邊界、直接 caller、原始
+  指令與偽代碼。輸入雜湊、
+  IDA 線性位址基準及非破壞性註記契約均與本節相同；新結論只撤銷下文
+  明列的舊阻擋，不替 raw globals 建立高階名稱。
 
 已證實：raw handler table 的 index 23／24 對應
 -----------------------------------------------
@@ -44,7 +50,9 @@ FD2.EXE：raw ch23 post／玩家第24戰戰後處理器證據
 
 - `0x24c4c` 呼叫 `0x15f84`，text index 2；`0x24cad` 再呼叫同一對白
   播放器，text index 3。兩者的文字來源是 `FDTXT_024`，但不代表
-  `postbattle_ch23_persist` 已可執行。
+  玩家第 23 戰節點 `postbattle_ch23_persist`；依 FDTXT／map owner 與正式
+  campaign 對齊，本 raw ch23 handler 對應的是玩家第 24 戰的
+  `postbattle_ch24_persist`，目前尚未接線。
 - 第一段每個內層迴圈開始前先在 `0x24c81` 呼叫 `0x24d22(EDI)`，
   `EDI` 依序為 2..9；接著在 `0x24c61` 呼叫 `0x11cac(1)`，再於
   `0x24c6b` 呼叫 `0x17aa9(1)`。`EBX` 每段從 0 累加至 29，共 30 次。
@@ -56,6 +64,14 @@ FD2.EXE：raw ch23 post／玩家第24戰戰後處理器證據
 - `0x24cff` 透過 `0x375c0` 將 `0xa0000` 起點的 `0xfa00` bytes 清零，
   接著 `0x24d13` 呼叫 `0x11506`，`0x24d18` 遞增章節。這個尾端順序是
   已證實的 sync／chapter 行為，不等於已證實的戰間整備消費端。
+- **2026-08-21 勘誤（已證實）**：先前把「handler 入口 latch 值」列為
+  第一個呈現的阻擋並不成立。直接控制流程是 `0x24c81→0x24d22(2)` 後才到
+  `0x24c61→0x11cac(1)`；第二段同樣是 `0x24cf2→0x24d22(10)` 後才到
+  `0x24cc1→0x11d40` 與 `0x24cd3→0x11cac(0)`。因此固定檔案 seed `0x01`
+  與進入 `sub_24C1E` 前的 latch 都不會決定兩段的第一個呈現；每段實際
+  可消費的值已由同一函式先寫成 stage 2..14。仍需保留的時序條件只有
+  `sub_11EEE` 依 BIOS tick 是否變化，決定該次 draw 是否執行
+  `sub_24D22(0)`；不能把它改寫成「每個重製影格固定旋轉一次」。
 
 已證實：`0x17aa9(1)` 是 BIOS tick 等待
 ----------------------------------------
@@ -80,13 +96,21 @@ FD2.EXE：raw ch23 post／玩家第24戰戰後處理器證據
   開始前再呼叫 `0x24d22(EDI)`。重製端現以兩個嚴格驗證的
   `native_ch23_loop` 可編輯 beats 保留這 60 組 register-bound palette、
   重繪、tick 與 latch setter 的原始位址。執行器在沒有 indexed／latch
-  adapter 時明確失敗即關閉，因此仍不建立 `postbattle_ch23_persist` binding。
+  adapter 時明確失敗即關閉，因此仍不建立 `postbattle_ch24_persist` binding。
 - `0x4dfcc` 讀取線性位址 `0x60003` 的 31 組 RGB 三元組；其
   `byte_60002=0..15` 以 `3*phase` 為起點，將連續 16 組寫入 DAC
   `0xe0..0xef`。IDA 偽代碼的 `BYTE1(v2)=-32` 與 Docker Capstone 的
   `mov ah,0xe0`／`out dx,al` 共同固定這個高位索引；舊的低位索引
   說法已撤回。重製端 `ApplyNativeCh23PaletteCycle` 保留這個固定視窗
   與原始位址來源；它是 raw palette 原語，不代表完整 palette 時序已接通。
+- **2026-08-21 timer owner 補證（已證實）**：合法 IDA Pro 9.4 偽代碼固定
+  `sub_4DFC0()` 只回傳 signed BIOS low word `[0x46c]`。`sub_4DFCC()` 先以
+  16-bit unsigned 差值比較 `(sub_4DFC0()-word_60000) >= 2`；未達兩 tick
+  立即返回且不寫 DAC。通過才將 `byte_60002` 加一並以 16 wrap、寫
+  DAC `0xe0..0xef`，最後把目前 tick 存回 `word_60000`。因此第二段雖每個
+  draw 都呼叫 `0x4dfcc`，palette phase 並非每個 draw 必然遞增；重製規格
+  必須保留獨立的兩 tick gate。程序進入 handler 前的 `word_60000` 與
+  `byte_60002` 精確值仍屬動態 E2；E1 只可保存相對相位與已證實 gate。
 
 已證實：保留原始名稱的 `0x24d22` raw staging 分支
 --------------------------------------------------
@@ -130,7 +154,7 @@ FD2.EXE：raw ch23 post／玩家第24戰戰後處理器證據
   中間 staging 偏移全域的生命週期及一般玩家 E2 仍未知；共用尾端固定目的地
   `0xA0504` 的位址／複製 ABI 另見下節。
 - `0x1088d` 在 `0x108a6` 呼叫 `0x10652`，只證明此 loader 位於共用 chapter
-  setup 的 caller 內；沒有證據把它接成 `postbattle_ch23_persist` 的正式
+  setup 的 caller 內；沒有證據把它接成 `postbattle_ch24_persist` 的正式
   renderer。重製端維持 fail-closed，不建立資源語意或畫面 adapter。
 - 重製端 `fdother.DecodeNativeCh23Stage`／`BlitNativeCh23Stage` 只消費上述
   已證實的 #42、312×192、`0x4e63d` 透明 blit 邊界；它們保留 raw 幾何與
@@ -151,9 +175,11 @@ FD2.EXE：raw ch23 post／玩家第24戰戰後處理器證據
   low byte，零參數在 `0x24d41/0x24d59/0x24d86/0x24dac/0x24dc9` 讀取它。
   因此「靜態 seed 完全未知」已撤回；但 `0x24c1e` 會在第一段與第二段
   迴圈間寫入 stage 2..14，固定檔案 seed 不能直接當成 handler 入口值。
-- 目前仍缺一般玩家路徑中第一個 zero-argument `0x24d22(0)` 的執行期
-  時序與 caller-owned state snapshot；重製端不把 `0x01` 強制注入
-  `native_ch23_loop` renderer，維持失敗即關閉。
+- 固定 seed 仍不得強制注入重製執行期；但依 `sub_24C1E` 的直接控制流程，
+  stage 2 已在第一個 `0x11cac(1)` 前寫入，所以入口 latch 不再是 production
+  adapter 的阻擋。第一個 draw 是否執行 zero-argument `0x24d22(0)`，應由
+  已證實的 `[0x46c] != [0x539f8]` 虛擬 BIOS tick gate 表示，而不是另猜
+  一個固定初始結果。
 
 已證實：`0x11cac→0x11eee` 透過 case 23 間接消費 raw latch
 ---------------------------------------------------------------
@@ -178,9 +204,10 @@ FD2.EXE：raw ch23 post／玩家第24戰戰後處理器證據
   row stride 與 `0xc0` rows 傳入 `0x11eb0`。配合 `0x10652` 的
   `0x107dd→0x107ea` 配置證據，現在已知 raw ch23 loader 是
   `[0x53aff]` 這個 staging owner pointer 的建立端；ch23 中間目的地公式與
-  共用尾端固定目的地 `0xA0504` 已由 `0x11EB0` 參數閉合，但
-  `0x53AED`／`0x53AF5`／`0x53AF1` 的執行期生命週期與入口 latch 的執行期值
-  仍未知，不能由 `nativeMapWork` 或 PNG framebuffer 代替。
+  共用尾端固定目的地 `0xA0504` 已由 `0x11EB0` 參數閉合。2026-08-21 的
+  producer／cleanup 勘誤另證實，`sub_24C1E` 的 quiescent handler loop 不在
+  三個 transient offset producer 內，也不呼叫它們；因此此 handler 的
+  中間目的地以三個 offset 全為零建立，不需由 PNG framebuffer 猜測替代。
 - IDA Pro 9.4 的 `0x11cac` 函式本體也固定了 indexed 消費鏈：
   `0x11eee` 後依序呼叫 `0x122dc`、`0x127a9`、`0x1acf3`，再由
   `0x11eb0` 以 `312×192`、來源 stride `456` 複製到固定線性目的地；所有 caller 的
@@ -192,11 +219,9 @@ FD2.EXE：raw ch23 post／玩家第24戰戰後處理器證據
   成同一個 generic redraw。重製端現已提供 `RotateNativeCh23Rows`、
   `ApplyNativeCh23PaletteCycle` 兩個 raw 原語，以及保留完整 call-site／
   stage 值的 `native_ch23_loop` 候選 beats；共用 indexed 消費鏈已由 IDA
-  靜態閉合；固定版檔案映像的 raw seed 為 `0x01`，但 handler 入口的執行期
-  latch、`dword_53C03` 生命週期、
-  `0x53aff` staging 擁有者／中間偏移生命週期、raw state adapter 與一般玩家 E2
-  仍未閉合，故仍不建立
-  production binding。
+  靜態閉合；固定版檔案映像的 raw seed 為 `0x01`。入口 latch 與三個
+  transient offset 的舊阻擋已由本檔 2026-08-21 勘誤撤銷；尚未閉合的是
+  依已證實 tick gate 驅動的重製 adapter、production binding 與一般玩家 E2。
 
 已證實：ch23 staging／offset globals 的 owner 邊界
 --------------------------------------------------
@@ -214,8 +239,16 @@ FD2.EXE：raw ch23 post／玩家第24戰戰後處理器證據
   producer。
 - 上述位置只證明共用 indexed／角色呈現流程的 offset-state lifetime；
   不足以把欄位命名成 camera、viewport、framebuffer 或重製端
-  `nativeMapWork`。因此目前只新增 data-xref evidence，raw ch23 的
-  production indexed adapter 與 campaign handoff 仍失敗即關閉。
+  `nativeMapWork`。
+- **2026-08-21 producer／cleanup 勘誤（已證實）**：函式級資料流進一步固定
+  `sub_1300D` 在每次 `sub_11EEE` 前於 `0x130a6` 暫寫 `0x18`，並在呼叫後
+  `0x130e9` 立即清零；`sub_13185` 同樣於 `0x132b3` 暫寫 `0x18`，並在
+  `0x132e6` 清零。`sub_12EAA` 走 `0x12ff4` 清除 `0x53AF5`，
+  `sub_1300D` 與 `sub_13315` 走 `0x13153` 清除它，`sub_13185` 也跳到
+  `0x12ff0→0x12ff4` 的共同清理尾端。`sub_24C1E` 的 caller／callee 集合
+  不包含這四個 producer。故只對 ch23 handler 的兩個 quiescent loop，
+  可證實呼叫 `sub_11EEE` 時 `0x53AED`／`0x53AF1`／`0x53AF5` 已是零；
+  這不把三個 raw globals 改名，也不外推到角色移動中的其他 caller。
 
 已證實：`0x11eb0` 的逐列複製 ABI 與 ch23 的實際目的地
 ---------------------------------------------------------
@@ -233,22 +266,22 @@ FD2.EXE：raw ch23 post／玩家第24戰戰後處理器證據
 - `sub_11EEE` 的 raw chapter 23 case 會先呼叫
   `sub_11EB0(dword_53AED+a1+dword_53AF5+0x1C8*dword_53AF1,
   a2,dword_53AFF,0x138,0x138,0xC0)`；因此 ch23 的中間 staging 目的地公式、
-  `[0x53AFF]` source、312-byte stride／寬度與 192 列均已證實。仍未知的不是
-  固定尾端 `0xA0504` 位址，而是 `0x53AED`／`0x53AF5`／`0x53AF1` 的
-  執行期生命週期、indexed mutation 與 raw latch adapter；重製端仍不接
-  `postbattle_ch23_persist`。
+  `[0x53AFF]` source、312-byte stride／寬度與 192 列均已證實。依上述
+  producer／cleanup 證據，ch23 handler 的兩個 loop 使用零 offset，故來源
+  staging 會複製到 caller 傳入的 `a1`；尚待實作的是保留 BIOS tick gate 的
+  indexed adapter，而不是再猜三個 offset 的高階語意。
 
 限制與目前判定
 --------------
 
 - 本檔是 E1 靜態證據；尚無未修改一般玩家 DOSBox 戰後→整備／存檔的 E2
-  路徑，也尚未閉合一般玩家入口的 latch／tick 狀態生命週期。
-- `postbattle_ch23_persist → preparation_ch24 → story_ch24` 的 campaign
+  路徑。入口 latch 與 transient offset lifetime 的舊阻擋已撤銷；tick 判定
+  本身已閉合為 `[0x46c] != [0x539f8]`，重製 adapter 亦已依 SDD 正式接線。
+- `postbattle_ch24_persist → preparation_ch25 → story_ch25` 的 campaign
   邊界保留；沒有以 generic town、靜態 palette 或猜測性 `indexed copy`
   取代原版流程。
-- 目前仍 fail-closed。帶原始位址、每段 12 次／整段 60 次 loop 順序與 raw latch／tick
-  provenance 的候選已保存於
-  [`ch23_post_candidate.json`](../../../remake/assets/cutscenes/bindings/ch23_post_candidate.json)
-  並有 compiler／runner regression；下一步是把已證實的共用 indexed 消費鏈
-  接到有 raw provenance 的 state/latch adapter，再以一般玩家路徑驗證後，
-  才可評估 production binding。
+- 帶原始位址、每段 12 次／整段 60 次 loop 順序與 raw latch／tick provenance
+  的正式 binding 已保存於
+  [`ch23_post.json`](../../../remake/assets/cutscenes/bindings/ch23_post.json)，並有
+  compiler、runner、正常戰果→整備→存讀檔回歸。缺原始資產、indexed state、
+  clock 或 buffer 時仍失敗即關閉；未修改一般玩家同狀態逐幀／時序 E2 待驗收。

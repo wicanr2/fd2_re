@@ -2201,13 +2201,13 @@ func TestCompileChapter21PostCandidateFailsClosedBelowMinimumRuntimeFrontier(t *
 	}
 }
 
-func TestCompileChapter23PostCandidatePreservesRawLoopSchedule(t *testing.T) {
-	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch23_post_candidate.json")
+func TestCompileChapter23PostProductionPreservesRawLoopSchedule(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch23_post.json")
 	if err != nil {
 		t.Fatal(err)
 	}
 	if len(issues) != 0 {
-		t.Fatalf("ch23_post candidate issues=%#v", issues)
+		t.Fatalf("ch23_post production issues=%#v", issues)
 	}
 	var loops []Beat
 	for _, beat := range beats {
