@@ -17,7 +17,7 @@
 - UI 操作語意以原版為目標：游標、action overlay／command grid、射程／目標、對話框、狀態欄、商店、教會和戰後節點均須有可見且可測的操作入口；未取得 E0/E1/E2 證據的現有 UI 只算 approximation。
 - native indexed renderer 與現代 RGBA/Ebiten 顯示層分離；未完成 native ABI 時不得用泛用淡出、PNG 或空白畫面冒充完成。
 
-### 1.2 現況（2026-08-21 摘要；詳細狀態以 `58` 為準）
+### 1.2 現況（2026-08-22 摘要；詳細狀態以 `58` 為準）
 
 目前不是「沒有程式」，而是「有一個可跑的垂直切片，尚未達 remake」：`remake/cmd/fd2/main.go` 仍承擔 scene state、輸入 dispatch、戰鬥 UI、對話、town、shop、church、preparation 與 Draw；`internal/battle`、`internal/campaign`、`internal/ending`、`internal/figani` 已有可測的部分 primitive。這些 primitive 不等於原版 UI 或完整 campaign。
 
@@ -309,7 +309,7 @@ Runtime 不應再讓 `main.go` 同時決定資料模型、輸入、規則和像�
 |---|---|---|---|
 | UI-01 | Title/main menu | 上下選擇、確認、取消、save/load、游標音效與 focus state | partial；`TitleMenuState`／`TitleSlotState` 已與 Ebiten 輸入共用並有 deterministic trace，仍缺原版逐幀 E2 對照與完整 boot/campaign 接線 |
 | UI-02 | Battle field | 游標格、鏡頭、可移動格、高亮、單位 HUD、方向／面向 | partial；`native-map-ch01-original-video.png`（320×200）與正式 handler 截圖 `native-map-ch01-remake-handler.png`（640×400）不是同一狀態。新圖由 `story_ch00_handler` 的 73 拍快速時鐘保留 LOADCH、JOIN、SPAWN 與 battle handoff，並唯讀掛載原版 `FDOTHER/FDSHAP/FDICON`，再套用 IDA 已證實的 FDFIELD b1 selector；這修正舊 b0 映射造成的敵軍圖像錯誤，也排除舊直接 `battle_ch01` 除錯入口造成的單角色假象。舊圖的場上單位、游標與 HUD 差異不能作為目前渲染器缺陷證據；較早 E1 raw 相機／游標欄位也不等於畫面一致。2026-08-10 已以同一 `FD2.SAV`、相機、游標、回合與單位狀態建立 DOSBox／重製逐幀範圍比較，最近鄰縮放後內容區只剩 22 個畫布邊界差異像素，並以 [`battle-field-ch01-scoped-compare-20260810.png`](../figures/battle-field-ch01-scoped-compare-20260810.png) 固定三欄證據；記為 ch01 scoped E2 candidate，仍不得外推至其他章節、一般玩家 CONTINUE 或完整戰場介面。詳見 [`battle-visual-gap-ch01.json`](../data/ui-traces/battle-visual-gap-ch01.json)。 |
-| UI-03 | Action menu | move/attack/magic/item/status/wait/end-turn 的可見項、enable gate、取消回上一層 | partial；`0x1741c` 的 raw cell index 是 `3*firstArgument + 2*secondArgument`。battle wrapper `0x18d8c` 的第一表固定 `[0,1,2,3]`，所以第二表為 0 時 cells 為 `[0,3,6,9]`、為 1 時為 `[2,5,8,11]`；舊的乘數倒置／`[0,2,4,6]` 斷言已勘誤，詳見 [CONTINUE overlay IDA evidence](../data/ida/fd2_continue_action_overlay_ida.txt)。2026-08-22 IDA 進一步證實共用 `0x117E7` 在 `0x12C0D==-1` 時呼叫 `0x16F55`，故空游標 `[21,15,18,12]` 四格不再限於 chapter0 CONTINUE；正式 battle 現要求完整 FDOTHER #2 後開啟面板，只有 direction3／END 會走四幀關閉、兩段原文、YES／取消與敵方回合，其餘三格仍失敗即關閉。runtime 以 caller-owned lifecycle 呈現 opening `0..3` 與獨立 closing `0..3`，並延後 command/item/spell/attack/wait side effect，直到第四個 close present 完成；因 native loop 無 delay call，只宣稱順序／present count，不宣稱毫秒時長。[8-frame Xvfb artifact](../figures/action-overlay-open-close-remake.png) 由目前 source 與玩家 FDOTHER.DAT read-only mount 產生。native command grid 亦已定為 320×200、每欄四列，label `(18+100*col,103+22*row)`、MP 右側、↑↓ wrap/←→±4 bounded；scenario raw command mask 已可 materialize。Docker/Xvfb 以 player FDOTHER.DAT 捕捉的 [悠妮 command-0 grid](../figures/native-command-grid-remake.png) 證實 mask→label→palette/font→renderer 路徑，非 original visual diff。`fdother.CaptureActionOverlaySnapshot`／`RestoreActionOverlaySnapshot` 與 `ActionOverlaySnapshotOrigin` 現已對齊原版 `0x175a9/0x17643` 的 72×72（`0x1440`）索引快照、每列 `0x1c8` stride、游標各減一格的 owner，並有失敗即關閉回歸；詳見 [IDA snapshot evidence](../data/ida/fd2_action_overlay_snapshot_ida.txt)。現行 Ebiten adapter 尚未消費此快照（每幀由整幅場景重畫避免殘影），因此確認框 indexed renderer、native backup/restore 的正式 consumer、其餘三格 owner與逐章 DOSBox visual diff 仍未關閉。 |
+| UI-03 | Action menu | move/attack/magic/item/status/wait/end-turn 的可見項、enable gate、取消回上一層 | partial；`0x1741c` 的 raw cell index 是 `3*firstArgument + 2*secondArgument`。battle wrapper `0x18d8c` 的第一表固定 `[0,1,2,3]`，所以第二表為 0 時 cells 為 `[0,3,6,9]`、為 1 時為 `[2,5,8,11]`；舊的乘數倒置／`[0,2,4,6]` 斷言已勘誤，詳見 [CONTINUE overlay IDA evidence](../data/ida/fd2_continue_action_overlay_ida.txt)。2026-08-22 IDA 進一步證實共用 `0x117E7` 在 `0x12C0D==-1` 時呼叫 `0x16F55`，故空游標 `[21,15,18,12]` 四格不再限於 chapter0 CONTINUE；正式 battle 現要求完整 FDOTHER #2 後開啟面板，只有 direction3／END 會走四幀命令框關閉，再以 DATO #75、FDOTHER #5/#2、FDTXT `0x1A3/0x1A4/0x19C` 跑6＋4展開、YES／NO、4＋5收合、十二幀回應與來源復原，只有YES才進敵方回合；缺任一資產在關閉命令框前拒絕，其餘三格仍失敗即關閉。runtime 以 caller-owned lifecycle 呈現 opening `0..3` 與獨立 closing `0..3`，並延後 command/item/spell/attack/wait side effect，直到第四個 close present 完成；因 native loop 無 delay call，只宣稱順序／present count，不宣稱毫秒時長。[8-frame Xvfb artifact](../figures/action-overlay-open-close-remake.png) 由目前 source 與玩家 FDOTHER.DAT read-only mount 產生。native command grid 亦已定為 320×200、每欄四列，label `(18+100*col,103+22*row)`、MP 右側、↑↓ wrap/←→±4 bounded；scenario raw command mask 已可 materialize。Docker/Xvfb 以 player FDOTHER.DAT 捕捉的 [悠妮 command-0 grid](../figures/native-command-grid-remake.png) 證實 mask→label→palette/font→renderer 路徑，非 original visual diff。`fdother.CaptureActionOverlaySnapshot`／`RestoreActionOverlaySnapshot` 與 `ActionOverlaySnapshotOrigin` 現已對齊原版 `0x175a9/0x17643` 的 72×72（`0x1440`）索引快照、每列 `0x1c8` stride、游標各減一格的 owner，並有失敗即關閉回歸；詳見 [IDA snapshot evidence](../data/ida/fd2_action_overlay_snapshot_ida.txt)。現行 Ebiten adapter 尚未消費此快照（每幀由整幅場景重畫避免殘影），因此 native snapshot backup/restore 的正式 consumer、其餘三格 owner、精確 tick／音訊與逐章 DOSBox visual diff 仍未關閉。 |
 | UI-04 | Target/range/item selector | 武器 min/max reach、法術 range/AOE、item兩欄四列、不可用目標灰化、確認／取消 | partial；command/item targets與 observed item effects已閉合。`0x1b9de/0x184c0` 固定 compact prefix、input、layout與raw icon IDs；`0x18409` 的12-frame open11→0/close0→11及left/upper/bottom clipped rectangles已有Ebiten adapter。tracked item Enter transaction已接，但indexed effect presentation、完整weapon/AOE/LOS與DOSBox visual diff仍fail-closed |
 | UI-05 | Dialog | 上／下框、portrait anchor、文字避讓、控制碼、分頁／捲動、嘴型、輸入鎖 | partial；`internal/dato.MouthState` 已按 `0x16D00` cadence 接入更新迴圈，native frame/資源與所有 speaker layout 未閉合 |
 | UI-06 | Battle HUD | HP/MP/LV/name、面板 sprite、數字 cell、依游標避讓、palette/clip | partial；需以 FDOTHER/UI loader 和截圖差分驗收 |
@@ -489,6 +489,9 @@ runtime 對 native path 使用 `NativeCommandRecord`，不使用 normalized `Spe
 
 `0x2a6bd` 的 command-0 entry 本身也不能被誤讀成 effect formula：它以 ID 作 presentation mode，command 0 不走 `>=0x20`／`0x18..0x1b` 的 special early branch，而採 generic compositor defaults，並經 `funcs_2ac25[0]=0x26152` 多輪繪製 320×200 battle buffers、FIGANI／FDOTHER cells、present/tick。這是已證實的 renderer boundary；HP、status、MP mutation 的責任仍需沿其後續 callee／caller 另行 dataflow 證明。
 
+> 歷史快照（2026-07-26）：下段保留當時「尚未接 campaign」的研究邊界；它已被
+> 2026-08-22 的正式 `battle_ch30→ending` E1 現況取代，不可再當成目前阻擋狀態。
+
 2026-07-26 official IDA recheck further closes the `0x2c405 → 0x2c548` hand-off boundary. After the 500-pass phase-0 scroll, native code frees staging, allocates one `0x1f400` and two `0xfa00` buffers, loads `TAI.DAT` entry `3` and `FDOTHER.DAT` entry `0x38`, and blits the latter into the first indexed buffer before iterating party records from `[0x53bfb]-1`. This resource/buffer contract is now recorded in `assets/endings/native_2c548.json`/worklist; it does **not** authorize a PNG or generic-fade adapter. The later standalone `internal/ending.MontageCycle` now consumes the proven per-party scheduler and indexed renderer against original resources, but it remains separate from campaign／input handoff and does not claim general-player E2.
 
 Runtime audit correction (2026-07-28): the prefix player already executes
@@ -506,6 +509,9 @@ campaign terminal route.
 The same IDA pass closes the previously omitted `0x29164` mirror branch. When `unit[+6]==0`, the native path at `0x2927e..0x29357` retains the 9-pass `stage=8..0` and `stage*6` DAC cadence, but addresses the primary FIGANI frame at `staging+0x140-stage*10`; `arg4==0` gates the extra TAI#3 and secondary-FIGANI draws. This is now an explicit `mirror_branch` record in the editable montage schema with a loader regression. It remains evidence-only: no PNG approximation or runtime renderer permission follows from the transcription.
 
 `Montage.PlanMirrorFigureFade(unitSide,sideFlag)` exposes that schedule as a pure, testable plan (nine exact offsets and DAC deltas, with the `arg4==0` secondary/platform gate). The planner is deliberately not a pixel adapter and keeps the montage fail-closed.
+
+> 歷史快照（2026-08-09）：下段的 standalone／terminal blocked 是當時狀態；正式
+> campaign 已於後續接通來源約束的 E1 終局，現況與剩餘缺口以 `58` 為準。
 
 2026-08-09 `0x2c548` standalone executor closure：新增
 `internal/ending.LoadMontageCycleAssets` 與 `MontageCycle`，以原始
@@ -3991,6 +3997,9 @@ CONTINUE 的 pending-group／`Game` controller handoff 閘門。未修改原版�
 失敗即關閉。`CAMPAIGN-POSTBATTLE-E2-FULL-PATH` 也仍需逐章保留戰後城鎮／商店／
 整備／存檔節點的正常玩家路徑。
 
+> 歷史快照（2026-08-20）：下段的 chapter0-only／泛用文字層限制已由
+> 2026-08-22 共用 owner 與 indexed renderer 取代，只保留形成過程。
+
 2026-08-20 已把同一輸入證據的狹義消費端接到正式重製路徑：只有 chapter0
 current-runtime 空游標面板的 Down（內部 direction 3）可開啟 END 確認；四個原始
 關閉畫面都完成後才顯示確認提示，Enter／Space 的 YES 才呼叫既有 `endTurn →
@@ -4020,12 +4029,37 @@ cursor→MP／HP→action→range reset 的正式回歸，未猜接其畫格、�
    四幀 opening／closing；其餘三格仍不可由圖示猜 owner。
 3. direction3／END 沿用已閉合的兩段 FDTXT、取消零修改與十二個60 Hz幀近似；
    只有延遲結束才發布敵方回合。
-4. chapter0 CONTINUE 的一次性 opening-confirm 只證明該存檔第一個 Return；
+4. chapter0 CONTINUE 的一次性 opening-confirm（歷史擷取限制）只證明該存檔第一個 Return；
    面板本身改由共用 `nativeSystemCursorOverlay` 狀態承接。這是 `RUNTIME-E1`，
    不提升確認框畫面、DOS tick 或各章一般玩家路徑為 E2。
 
 主證據見
 [`fd2_117e7_empty_cursor_system_overlay_ida.txt`](../data/ida/fd2_117e7_empty_cursor_system_overlay_ida.txt)。
+
+#### END 確認框 indexed renderer（2026-08-22；RUNTIME-E1）
+
+未修改原版 E2 與 IDA caller-specific 參數已把前述「確認提示沿用重製端文字層」
+推翻。`0x16F55` 的 END 分支必須以一個全有或全無的播放器保存：目前320×200
+indexed map source、FDOTHER #5 對話框格、DATO #75 frame0、FDTXT_000／字型、
+FDOTHER #2 choices與目前 palette。正式執行期已依此契約接通；任何來源缺失時不得
+顯示現代文字代用品，也不得關閉命令框或提交回合。
+
+1. `0x1956B(0x4B)` 先從 source 發布六個對話框展開畫面；問句
+   FDTXT `0x1A3` 使用 `(99,127)`、foreground `0xCD`、background `0x4C` 與
+   19-pixel line step。
+2. `0x19953` 再發布四個選項展開畫面；stable choices沿用 cells 48/49與51/52、
+   Left／Right選0／1且不環繞、BIOS低字delta>=2才前進pulse。每幀都由Draw
+   acknowledgement推進。
+3. Enter／Space在choice0接受；choice1或Escape／Backspace取消。兩條路徑都先
+   跑`0x197E5`四個選項收合畫面。
+4. 接受在`(99,146)`繪FDTXT `0x1A4`，取消同址繪`0x19C`；各等待十二個60 Hz
+   remake frames近似原版`0xC8` ms，再依`0x196CB`發布五個dialogue收合畫面並
+   復原source。
+5. 只有接受分支在完整收合與source restore後進既有`endTurn`；取消分支保持
+   turn、單位、roster與campaign零修改。DOS tick精確時序與音訊owner仍不外推。
+
+位址、兩條分支原文、原版E2畫面雜湊與重開條件見
+[`fd2_end_turn_confirmation_ui_ida.txt`](../data/ida/fd2_end_turn_confirmation_ui_ida.txt)。
 
 2026-08-21 後續閉合：`0x21EB1` 的 caller-specific 排程現已由 IDA／Capstone
 固定為 FDOTHER #3 LUT 9→1九張擴張、200 ms、3→9七張收束、`0x11CAC(0)`

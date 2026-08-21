@@ -5255,3 +5255,19 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 同批清除 README／FIGANI 格式／終局註解、歷史「只能按 Tab」與商店收件者
   input仍未接等錯誤現況斷言。這仍是 `RUNTIME-E1`；確認框 indexed renderer、
   其餘三格 owner與逐章一般玩家 E2 尚未閉合。
+
+## 2026-08-22：END 確認框原版索引生命週期接通
+
+- `RE-CLOSED`：合法 IDA Pro 9.4 與未修改原版 chapter0 一般玩家擷取，固定
+  `0x16F55` 的 `0x1956B(0x4B)→0x15F84(FDTXT 0x1A3)→0x19953→
+  0x197E5`，以及接受 `0x1A4`／取消 `0x19C`、`0xC8` ms、`0x196CB` 與
+  接受分支 `0x1A30B`。主證據為
+  [`fd2_end_turn_confirmation_ui_ida.txt`](../data/ida/fd2_end_turn_confirmation_ui_ida.txt)。
+- `RUNTIME-E1`：正式 battle 現以原版 DATO #75、FDOTHER #5/#2、FDTXT 與目前
+  320×200 indexed map source，跑完6個對話展開、4個選項展開、YES／NO、4個選項
+  收合、十二幀回應、5個對話收合及來源復原。缺任一資產時在命令框關閉前拒絕；
+  只有接受分支在來源復原後進敵方回合，取消保持回合零修改。
+- 文件勘誤：舊「確認仍是泛用文字層」已標成歷史快照；`56` 內早期終局
+  standalone／campaign blocked 段落也加上歷史標籤，避免覆蓋目前 E1 現況。
+- 尚未提升：同一 raw 戰況的原版／重製逐幀差分、精確 DOS tick 與音訊 owner
+  仍缺，因此不是完整 UI E2。

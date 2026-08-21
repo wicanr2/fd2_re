@@ -1,8 +1,19 @@
 package main
 
-import "github.com/wicanr2/fd2_re/remake/internal/fdother"
+import (
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+)
 
 const nativeSystemEndTurnDelayFrames = 12 // 0x17259: delay(0xC8 ms)；60 Hz 約十二幀。
+
+type nativeSystemEndTurnUIState struct {
+	source, dialogue, question []byte
+	accepted, canceled         []byte
+	choice                     int
+	acceptedOutcome            bool
+}
 
 const (
 	actionOverlayOpening = "opening"
@@ -106,6 +117,10 @@ func (g *Game) resetActionOverlayLifecycle() {
 	g.nativeSystemCursorOverlay = false
 	g.nativeSystemEndTurnConfirm = false
 	g.nativeSystemEndTurnDelay = 0
+	if g.nativeSystemEndTurnUI != nil {
+		g.nativeClassUIJob = nil
+	}
+	g.nativeSystemEndTurnUI = nil
 	g.actionOverlayPhase = ""
 	g.actionOverlayFrame = 0
 	g.actionOverlayAfter = nil
@@ -131,18 +146,47 @@ func (g *Game) nativeSystemOverlayReady() bool {
 	return true
 }
 
-// beginNativeSystemEndTurn 承接共用 0x117E7→0x16F55 的 Down→END。
-// 原版直接指令證實 END 會開確認且 YES 會進 0x1A30B；其餘三格 owner
-// 與重製端確認提示像素仍未閉合。
+// beginNativeSystemEndTurn 承接共用 0x117E7→0x16F55 的 Down→END，並在
+// 關閉命令框前完整建立 0x1956b→0x19953 的原版索引畫面。任何資產缺失都
+// 失敗即關閉，避免先收掉命令框後才退回不忠實的泛用文字提示。
 func (g *Game) beginNativeSystemEndTurn() bool {
 	if g == nil || !g.nativeSystemCursorOverlay || !g.ring || g.ringSel != 3 ||
-		g.st == nil || g.aiBusy || g.result != "" {
+		g.st == nil || g.aiBusy || g.result != "" || g.nativePreparationUI == nil ||
+		g.nativeClassUI == nil || len(g.nativeMapVGA) != 320*200 {
 		return false
+	}
+	ui := g.nativePreparationUI
+	source := append([]byte(nil), g.nativeMapVGA...)
+	dialogue, err := campaign.ComposeNativePreparationConfirmationDialogue(source, ui.dialogue, ui.portrait)
+	if err != nil {
+		return false
+	}
+	question, err := campaign.ComposeNativeBattleEndTurnQuestion(dialogue, ui.status.Strings, ui.status.Font)
+	if err != nil {
+		return false
+	}
+	accepted, err := campaign.ComposeNativeBattleEndTurnResponse(question, ui.status.Strings, ui.status.Font, true)
+	if err != nil {
+		return false
+	}
+	canceled, err := campaign.ComposeNativeBattleEndTurnResponse(question, ui.status.Strings, ui.status.Font, false)
+	if err != nil {
+		return false
+	}
+	frames, err := campaign.NativePreparationConfirmationOpeningFrames(source, dialogue, question, ui.choices)
+	if err != nil || len(frames) != 10 {
+		return false
+	}
+	state := &nativeSystemEndTurnUIState{
+		source: source, dialogue: dialogue, question: question,
+		accepted: accepted, canceled: canceled,
 	}
 	g.beginActionOverlayClose(func() {
 		g.nativeSystemCursorOverlay = false
 		g.nativeSystemEndTurnConfirm = true
-		g.msg = "要結束本回合的行動嗎？"
+		g.nativeSystemEndTurnUI = state
+		g.resetNativeClassUIPulse()
+		g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
 	})
 	return true
 }
@@ -151,19 +195,32 @@ func (g *Game) confirmNativeSystemEndTurn() {
 	if g == nil || !g.nativeSystemEndTurnConfirm {
 		return
 	}
-	g.nativeSystemEndTurnConfirm = false
-	g.nativeSystemEndTurnDelay = nativeSystemEndTurnDelayFrames
-	// FDTXT_000[0x1A4] 的 0xFFFE 是換行控制碼。原版在這段文字後等待
-	// 0xC8 ms，才呼叫 0x1A30B 進入敵方回合。
-	g.msg = "好的，\n就結束本回合的行動吧！"
+	g.finishNativeSystemEndTurnChoice(true)
 }
 
 func (g *Game) cancelNativeSystemEndTurn() {
 	if g == nil || !g.nativeSystemEndTurnConfirm {
 		return
 	}
+	g.finishNativeSystemEndTurnChoice(false)
+}
+
+func (g *Game) finishNativeSystemEndTurnChoice(accepted bool) {
+	if g.nativeSystemEndTurnUI == nil || g.nativePreparationUI == nil {
+		g.nativeSystemEndTurnConfirm = false
+		return
+	}
+	frames, err := campaign.NativeClassConfirmationClosingFrames(
+		g.nativeSystemEndTurnUI.question, g.nativePreparationUI.choices,
+	)
+	if err != nil || len(frames) != 4 {
+		return
+	}
 	g.nativeSystemEndTurnConfirm = false
-	g.msg = ""
+	g.nativeSystemEndTurnUI.acceptedOutcome = accepted
+	g.nativeClassUIJob = &nativeClassUIJob{frames: frames, after: func() {
+		g.nativeSystemEndTurnDelay = nativeSystemEndTurnDelayFrames
+	}}
 }
 
 func (g *Game) stepNativeSystemEndTurn() {
@@ -172,7 +229,52 @@ func (g *Game) stepNativeSystemEndTurn() {
 	}
 	g.nativeSystemEndTurnDelay--
 	if g.nativeSystemEndTurnDelay == 0 {
-		g.msg = ""
-		g.endTurn()
+		state := g.nativeSystemEndTurnUI
+		if state == nil {
+			return
+		}
+		frames, err := campaign.NativeClassListClosingFrames(state.source, state.dialogue)
+		if err != nil || len(frames) != 5 {
+			return
+		}
+		g.nativeClassUIJob = &nativeClassUIJob{frames: frames, restore: state.source, after: func() {
+			accepted := state.acceptedOutcome
+			g.nativeSystemEndTurnUI = nil
+			if accepted {
+				g.endTurn()
+			}
+		}}
 	}
+}
+
+// drawNativeSystemEndTurn 在 END 對話展開、等待輸入、顯示回覆與收合期間，
+// 完整擁有320×200索引畫面，避免底下的重製指令層穿透。
+func (g *Game) drawNativeSystemEndTurn(screen *ebiten.Image) bool {
+	state := g.nativeSystemEndTurnUI
+	if state == nil || g.nativeClassUI == nil || g.nativePreparationUI == nil {
+		return false
+	}
+	if g.drawNativeClassUIJob(screen) {
+		return true
+	}
+	var frame []byte
+	if g.nativeSystemEndTurnConfirm {
+		var err error
+		frame, err = campaign.ComposeNativeConfirmationChoices(
+			state.question, g.nativePreparationUI.choices,
+			state.choice, g.nativeClassUIPulse/2,
+		)
+		if err != nil {
+			return false
+		}
+	} else if g.nativeSystemEndTurnDelay > 0 {
+		frame = state.canceled
+		if state.acceptedOutcome {
+			frame = state.accepted
+		}
+	} else {
+		return false
+	}
+	g.presentNativeClassFrame(screen, frame)
+	return true
 }

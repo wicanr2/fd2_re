@@ -20,7 +20,40 @@ const (
 	nativeDepartureQuestionX       = 95
 	nativeRecordQuestionIndex      = 410
 	nativeRecordQuestionX          = 100
+	nativeBattleEndQuestionIndex   = 0x1a3
+	nativeBattleEndAcceptedIndex   = 0x1a4
+	nativeBattleEndCanceledIndex   = 0x19c
+	nativeBattleEndQuestionX       = 99
+	nativeBattleEndQuestionY       = 127
+	nativeBattleEndResponseY       = 146
 )
+
+// ComposeNativeBattleEndTurnQuestion 重現 END caller 透過0x15f84把
+// FDTXT#0x1a3寫到畫面座標(99,127)；輸入必須先是0x1956b(0x4b)完成的
+// DATO#75對話框畫面。
+func ComposeNativeBattleEndTurnQuestion(
+	dialogue []byte, strings *fdtxt.Strings, font *fdtxt.Font,
+) ([]byte, error) {
+	return ComposeNativeChurchTextAt(
+		dialogue, strings, font, nativeBattleEndQuestionIndex,
+		nativeBattleEndQuestionY*320+nativeBattleEndQuestionX,
+	)
+}
+
+// ComposeNativeBattleEndTurnResponse 在(99,146)套用分支專屬回覆：
+// YES使用FDTXT#0x1a4，NO／Escape使用FDTXT#0x19c。
+func ComposeNativeBattleEndTurnResponse(
+	question []byte, strings *fdtxt.Strings, font *fdtxt.Font, accepted bool,
+) ([]byte, error) {
+	index := nativeBattleEndCanceledIndex
+	if accepted {
+		index = nativeBattleEndAcceptedIndex
+	}
+	return ComposeNativeChurchTextAt(
+		question, strings, font, index,
+		nativeBattleEndResponseY*320+nativeBattleEndQuestionX,
+	)
+}
 
 // NativeClassConfirmationOpeningFrames reproduces 0x19953's four opening
 // presents with FDOTHER#2 raw cells 16/17.

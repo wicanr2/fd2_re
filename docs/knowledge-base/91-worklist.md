@@ -17,7 +17,7 @@
 | 1 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式，現為產品31／runtime170／未知1104；舊83 unknown 已拆為80已分類、3已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253` 只追其他 caller／戰役 gate，`0x2BCE5` 追正式 owner，不重解 callee |
 | 2 | 玩家第21戰天空之鑰固定演出 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`：`0x24336` 已接真實 `FDOTHER #34`、`ANI #0`、調色盤循環與正式戰後→城鎮→存讀檔 | 取得未修改原版同狀態 E2，核對第一個動態調色盤相位與相鄰 `layout_units`／ACT63／64；不重解函式本體 |
 | 3 | 玩家第29戰 raw ch28 post 後續驗收 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`；`0x1DB65`原資源 presenter、group9→`0x25535`、持續隊伍、`preparation_ch30` 與存讀檔已正式接通，postbattle admission blocker 已歸零 | 以未修改原版一般玩家路徑取得同狀態逐幀／音訊 E2；高階圖像與sample 3語意仍保留unknown，不阻擋 E1戰役流程 |
-| 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；共用 `0x117E7` 空游標 `0x16F55` END 已接所有正式 battle，command 13–16 的玩家與敵方 mode 11 已走完整 #3前段、#6七張、mask、交易後 redraw、#5數字22張與尾停，AI 依 raw selector重建 target array | 補 END 確認框／command 13–16 同狀態逐幀逐音訊 E2；再依 `56` family matrix選下一個有完整證據的 command，不重解本批已閉合函式 |
+| 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；共用 `0x117E7` 空游標 `0x16F55` END 已接原版6＋4展開、YES／NO、兩段回應、4＋5收合與來源復原，command 13–16 的玩家與敵方 mode 11 已走完整 #3前段、#6七張、mask、交易後 redraw、#5數字22張與尾停，AI 依 raw selector重建 target array | 補 END／command 13–16 同狀態逐幀逐音訊 E2與精確tick；再依 `56` family matrix選下一個有完整證據的 command，不重解本批已閉合函式 |
 | 5 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial | 依 `57` 逐個輸入狀態機取得同狀態原版／重製證據，不用單張 layout 圖代替 |
 | 6 | 原版終局精確鏈 | `RUNTIME-E1`：正式 `battle_ch30→ending` 現消費來源約束前綴／角色／20段尾段並停在 #59；80個實際 FIGANI 的 header-zero `0x2939D` raw `+4..+7`、base scheduler 與兩次配對已接；未達 E2 | 以動態 watchpoint／未修改玩家路徑閉合 `0x2C548→0x2C2A6` records／globals 連續性、3% RNG重播、精確音訊／終端輸入、`0x2BCE5` 原版 owner 及第30戰 E2 |
 | 7 | 全戰役抽樣／長程試玩、三平台打包與推廣片 | 核心 gate 未關閉 | 核心垂直切片與代表性晚期玩家路徑完成後才進入發行驗收 |
@@ -146,13 +146,15 @@ handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不�
 - `RUNTIME-E1`：正式 battle 共用空游標 END 現顯示兩段原文，YES 後先等待
   十二個60 Hz幀才進 `ENEMY PHASE`。回歸固定四幀 overlay close、確認、延遲、敵方
   回合與玩家回合返回；這不是 DOS BIOS tick 逐時鐘等價。
+- 2026-08-22 勘誤：上述「顯示兩段原文」是當時的泛用文字層快照；目前已由
+  caller-specific indexed確認生命週期取代，現況以檔首與`57` UI-03為準。
 - `RE-CLOSED`／`RUNTIME-E1`：command 13–16 wrapper 與共同 indexed presentation
   owner 已定位於 `0x21AD9/0x21B99/0x2211C/0x22153→0x21B18`；command 13
   玩家 cursor→MP扣除→HP回復→action提交→range reset 已通過 production 回歸。
   畫格、調色盤、音效與同狀態 E2 尚未移植，詳見
   [`fd2_end_turn_command13_owner_ida.txt`](../data/ida/fd2_end_turn_command13_owner_ida.txt)。
 
-### 2026-08-20：chapter0 空游標 END→YES→敵方回合正式入口
+### 2026-08-20：chapter0 空游標 END→YES→敵方回合正式入口（歷史快照）
 
 - `RE-CLOSED`／`PLAYER-E2` 原版錨點沿用既有
   [`native-enemy-turn-original-e2.json`](../data/ui-traces/native-enemy-turn-original-e2.json)：
@@ -163,6 +165,8 @@ handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不�
   `PLAYER PHASE`。取消不改回合，direction0..2仍失敗即關閉。
 - `PLAYER-E2` 差距：原版一側已有 E2；重製端確認提示仍是文字層，尚缺同一 raw
   roster／鏡頭／游標／tick 的逐幀畫面配對，所以不可宣稱完整 END UI 或 AI parity。
+- 2026-08-22 勘誤：重製端已不再使用文字層，而是接上原版資源的完整確認生命週期；
+  同一 raw 狀態逐幀配對與精確 tick 仍缺，因此 E2 限制不變。
 
 ### 2026-08-20：玩家第25戰後第26章祕密商店正常戰間切片
 
@@ -1199,7 +1203,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
       unsigned mono raw PCM 子樣本)+ 戰鬥音效動態 index(同檔案,依攻擊資料決定 index);播放走
       `AIL_init/set_sample_address/set_sample_loop_count/start_sample`(0x26896/0x26945)。
       待:14 子樣本→UI事件對照、戰鬥動態 index 表還原、remake 端接入(SDL_mixer/ebiten audio)
-- [~] **native action overlay／現行四向 approximation**：官方 IDA 9.4／Capstone 已更正 `0x1741c` 的 raw cell index 為 `3*firstArgumentWord+2*secondArgumentWord`，不是先前乘數倒置的公式。battle wrapper `0x18d8c` 的第一表固定 `[0,1,2,3]`，第二表為 0 時 cells=`[0,3,6,9]`、為 1 時 cells=`[2,5,8,11]`；完整原始定位、raw bytes 與推論等級見 [`fd2_continue_action_overlay_ida.txt`](../data/ida/fd2_continue_action_overlay_ida.txt)。chapter0 current-runtime 的一般 X11 `CONTINUE→Return` 空游標入口**強推論**使用 `0x16f55` 初始表 `[7,5,6,4]`／`[0,0,0,0]`，故呈現 cells=`[21,15,18,12]`；runtime 現完整載入 FDOTHER#2 的 78 cells，並有 [原版／重製／差異 E1 圖](../figures/native-continue-current-command-compare-e1.png) 與旁車。這只閉合可見圖塊與入口，四格 action owner／確認效果仍失敗即關閉。`↑0/←1/→2/↓3` 只屬 `0x18d8c` battle wrapper 的 raw result order，不能外推給 `0x16f55`。先前誤把 `0x1728c` 巢狀 menu 的可切換 `0x12…` states 當作 battle gate 已撤回。visible cursor `column/row` framebuffer byte-address=`+0x8088+0x18*column+(0x18*0x1c8)*row` 亦已閉合；`fdother.BattleActionOverlayState`／`ActionOverlayOrigin`／`BlitActionOverlayFrame` 已把 ABI、open／close 各四幀 offset 與 index-0 transparency 接成 unit-tested primitive。runtime 已改成 caller-owned opening0..3／closing0..3 lifecycle，動畫期間鎖輸入，第四個 close present 後才提交 child menu 或 action；native loop 沒有 delay call，所以只保存順序與 present count，不冒稱原版時長。Docker/Xvfb 用 read-only 玩家 FDOTHER 實跑的 [8-frame artifact](../figures/action-overlay-open-close-remake.png) 逐幀互異。`fdother.CaptureActionOverlaySnapshot`／`RestoreActionOverlaySnapshot`／`ActionOverlaySnapshotOrigin` 已以 unit test 與官方 IDA/Capstone 固定 `72×72=0x1440`、每列 `0x1c8` stride、游標各減一格的 indexed owner（[證據](../data/ida/fd2_action_overlay_snapshot_ida.txt)）；adapter 已採用 `0x1b83d` equipped/ID `<0x80` 前提和 raw command-mask 非零 gate（legacy scripts 才回退 Spells），但仍非 native gate 全等價；目前 Ebiten 每幀整幅重畫，尚未把快照 API 接進 native renderer。command22 是 `unit+0x27` 的已知 writer；仍待正式 runtime consumer、狀態名稱／其他 writer、DOSBox visual diff、attack target geometry、`0x1b8a6` 後 item selector/effect、圖示 provenance、攻防預覽。
+- [~] **native action overlay／現行四向 approximation**：官方 IDA 9.4／Capstone 已更正 `0x1741c` 的 raw cell index 為 `3*firstArgumentWord+2*secondArgumentWord`，不是先前乘數倒置的公式。battle wrapper `0x18d8c` 的第一表固定 `[0,1,2,3]`，第二表為 0 時 cells=`[0,3,6,9]`、為 1 時 cells=`[2,5,8,11]`；完整原始定位、raw bytes 與推論等級見 [`fd2_continue_action_overlay_ida.txt`](../data/ida/fd2_continue_action_overlay_ida.txt)。chapter0 current-runtime 的一般 X11 `CONTINUE→Return` 空游標入口**強推論**使用 `0x16f55` 初始表 `[7,5,6,4]`／`[0,0,0,0]`，故呈現 cells=`[21,15,18,12]`；runtime 現完整載入 FDOTHER#2 的 78 cells，並有 [原版／重製／差異 E1 圖](../figures/native-continue-current-command-compare-e1.png) 與旁車。direction3／END owner與 indexed 確認生命週期已閉合；其餘三格 action owner仍失敗即關閉。`↑0/←1/→2/↓3` 只屬 `0x18d8c` battle wrapper 的 raw result order，不能外推給 `0x16f55`。先前誤把 `0x1728c` 巢狀 menu 的可切換 `0x12…` states 當作 battle gate 已撤回。visible cursor `column/row` framebuffer byte-address=`+0x8088+0x18*column+(0x18*0x1c8)*row` 亦已閉合；`fdother.BattleActionOverlayState`／`ActionOverlayOrigin`／`BlitActionOverlayFrame` 已把 ABI、open／close 各四幀 offset 與 index-0 transparency 接成 unit-tested primitive。runtime 已改成 caller-owned opening0..3／closing0..3 lifecycle，動畫期間鎖輸入，第四個 close present 後才提交 child menu 或 action；native loop 沒有 delay call，所以只保存順序與 present count，不冒稱原版時長。Docker/Xvfb 用 read-only 玩家 FDOTHER 實跑的 [8-frame artifact](../figures/action-overlay-open-close-remake.png) 逐幀互異。`fdother.CaptureActionOverlaySnapshot`／`RestoreActionOverlaySnapshot`／`ActionOverlaySnapshotOrigin` 已以 unit test 與官方 IDA/Capstone 固定 `72×72=0x1440`、每列 `0x1c8` stride、游標各減一格的 indexed owner（[證據](../data/ida/fd2_action_overlay_snapshot_ida.txt)）；adapter 已採用 `0x1b83d` equipped/ID `<0x80` 前提和 raw command-mask 非零 gate（legacy scripts 才回退 Spells），但仍非 native gate 全等價；目前 Ebiten 每幀整幅重畫，尚未把快照 API 接進 native renderer。command22 是 `unit+0x27` 的已知 writer；仍待正式 runtime consumer、狀態名稱／其他 writer、DOSBox visual diff、attack target geometry、`0x1b8a6` 後 item selector/effect、圖示 provenance、攻防預覽。
 - [x] **RE-ATTACK-EQUIPPED-PREDICATE-1B83D**：官方 IDA 9.4 閉合 `0x1b83d(unit,a2)`：八格依序檢查 `flag&0x40`，`a2==0` 僅接受 item `<0x80`，`a2!=0` 僅接受 item `>=0x80`，回第一個 raw slot／`-1`。新增 `battle.NativeEquippedInventorySlot` regression，action overlay 在 constructor raw flags 存在時採用此 predicate；target geometry、damage/effect、renderer 仍 partial。
 - [x] **RE-ITEM-AVAILABILITY-GATE-1B8A6**：`0x1b8a6` 的 raw occupied count 已有 record adapter；新增 Unit-facing `NativeInventoryAvailableCount`，overlay 在八格 constructor flags 存在時以 bit7-clear count 決定 item disabled，`len(Inventory)` 僅是 legacy fallback。
 

@@ -147,7 +147,7 @@ func (g *Game) stepNativeClassUILifecycle(now time.Time) {
 	}
 	if g.nativeClassUIJob == nil &&
 		(g.churchMode == "class_confirm" || g.churchMode == "revive_confirm" ||
-			preparationConfirm || preparationPrompt) {
+			preparationConfirm || preparationPrompt || g.nativeSystemEndTurnConfirm) {
 		g.stepNativeClassUIPulseTick(g.nativeClassUIClock.Sample(now))
 	}
 }

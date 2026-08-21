@@ -4,6 +4,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -249,6 +250,18 @@ func TestNativeSystemDownEndYesEntersAndCompletesEnemyPhase(t *testing.T) {
 		st: state, sc: &battle.Scenario{}, ring: true, ringSel: 3,
 		nativeSystemCursorOverlay: true,
 	}
+	base := "../../../org_game/炎龍騎士團/FLAME2"
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+	var err error
+	g.nativePreparationUI, err = loadNativePreparationUIAssets()
+	if err != nil {
+		t.Skipf("player-provided original UI assets are absent: %v", err)
+	}
+	g.nativeClassUI, err = loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.nativeMapVGA = make([]byte, 320*200)
 	if !g.beginNativeSystemEndTurn() {
 		t.Fatal("verified Down→END route was rejected")
 	}
@@ -259,19 +272,28 @@ func TestNativeSystemDownEndYesEntersAndCompletesEnemyPhase(t *testing.T) {
 		g.markActionOverlayDrawn()
 		g.stepActionOverlayLifecycle()
 	}
-	if !g.nativeSystemEndTurnConfirm || g.nativeSystemCursorOverlay || g.ring {
+	if !g.nativeSystemEndTurnConfirm || g.nativeSystemCursorOverlay || g.ring ||
+		g.nativeClassUIJob == nil || len(g.nativeClassUIJob.frames) != 10 {
 		t.Fatalf("END confirmation handoff = confirm:%v overlay:%v ring:%v",
 			g.nativeSystemEndTurnConfirm, g.nativeSystemCursorOverlay, g.ring)
 	}
-	if g.msg == "" {
-		t.Fatal("END confirmation has no visible player prompt")
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
 	}
 
 	g.confirmNativeSystemEndTurn()
-	if g.aiBusy || g.nativeSystemEndTurnDelay != nativeSystemEndTurnDelayFrames ||
-		g.msg != "好的，\n就結束本回合的行動吧！" {
-		t.Fatalf("YES feedback boundary: ai=%v delay=%d msg=%q",
-			g.aiBusy, g.nativeSystemEndTurnDelay, g.msg)
+	if g.aiBusy || g.nativeSystemEndTurnDelay != 0 || g.nativeClassUIJob == nil ||
+		len(g.nativeClassUIJob.frames) != 4 {
+		t.Fatalf("YES choice-close boundary: ai=%v delay=%d job=%#v",
+			g.aiBusy, g.nativeSystemEndTurnDelay, g.nativeClassUIJob)
+	}
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if g.nativeSystemEndTurnDelay != nativeSystemEndTurnDelayFrames {
+		t.Fatalf("YES response delay=%d", g.nativeSystemEndTurnDelay)
 	}
 	for frame := 1; frame < nativeSystemEndTurnDelayFrames; frame++ {
 		g.stepNativeSystemEndTurn()
@@ -280,9 +302,17 @@ func TestNativeSystemDownEndYesEntersAndCompletesEnemyPhase(t *testing.T) {
 		}
 	}
 	g.stepNativeSystemEndTurn()
-	if !g.aiBusy || g.banner != "ENEMY PHASE" || g.nativeSystemEndTurnDelay != 0 {
-		t.Fatalf("delayed YES did not enter enemy phase: ai=%v banner=%q delay=%d",
-			g.aiBusy, g.banner, g.nativeSystemEndTurnDelay)
+	if g.aiBusy || g.nativeClassUIJob == nil || len(g.nativeClassUIJob.frames) != 5 ||
+		len(g.nativeClassUIJob.restore) != 320*200 {
+		t.Fatalf("dialogue close boundary: ai=%v job=%#v", g.aiBusy, g.nativeClassUIJob)
+	}
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if !g.aiBusy || g.banner != "ENEMY PHASE" || g.nativeSystemEndTurnUI != nil {
+		t.Fatalf("restored YES did not enter enemy phase: ai=%v banner=%q ui=%#v",
+			g.aiBusy, g.banner, g.nativeSystemEndTurnUI)
 	}
 	g.aiStep()
 	if g.aiBusy || state.Turn != 1 || g.banner != "PLAYER PHASE" {
@@ -305,5 +335,69 @@ func TestNativeSystemEndTurnRemainsNarrowAndCancelable(t *testing.T) {
 	if g.nativeSystemEndTurnConfirm || g.aiBusy || state.Turn != 0 {
 		t.Fatalf("cancel mutated turn: confirm=%v ai=%v turn=%d",
 			g.nativeSystemEndTurnConfirm, g.aiBusy, state.Turn)
+	}
+}
+
+func TestNativeSystemEndTurnFailsClosedBeforeOverlayMutation(t *testing.T) {
+	g := &Game{
+		st: &battle.State{W: 24, H: 24}, ring: true, ringSel: 3,
+		nativeSystemCursorOverlay: true,
+	}
+	if g.beginNativeSystemEndTurn() || !g.ring || !g.nativeSystemCursorOverlay ||
+		g.actionOverlayPhase != "" || g.nativeSystemEndTurnUI != nil {
+		t.Fatalf("missing indexed assets mutated END overlay: %+v", g)
+	}
+}
+
+func TestNativeSystemEndTurnNoClosesAndRestoresWithoutTurnMutation(t *testing.T) {
+	state := &battle.State{W: 24, H: 24}
+	g := &Game{
+		st: state, sc: &battle.Scenario{}, ring: true, ringSel: 3,
+		nativeSystemCursorOverlay: true,
+	}
+	base := "../../../org_game/炎龍騎士團/FLAME2"
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+	var err error
+	g.nativePreparationUI, err = loadNativePreparationUIAssets()
+	if err != nil {
+		t.Skipf("player-provided original UI assets are absent: %v", err)
+	}
+	g.nativeClassUI, err = loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.nativeMapVGA = make([]byte, 320*200)
+	if !g.beginNativeSystemEndTurn() {
+		t.Fatal("verified END route was rejected")
+	}
+	for present := 0; present < 4; present++ {
+		g.markActionOverlayDrawn()
+		g.stepActionOverlayLifecycle()
+	}
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	g.cancelNativeSystemEndTurn()
+	if g.nativeClassUIJob == nil || len(g.nativeClassUIJob.frames) != 4 {
+		t.Fatalf("NO did not start four choice-close frames: %#v", g.nativeClassUIJob)
+	}
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	for g.nativeSystemEndTurnDelay > 0 {
+		g.stepNativeSystemEndTurn()
+	}
+	if g.nativeClassUIJob == nil || len(g.nativeClassUIJob.frames) != 5 ||
+		len(g.nativeClassUIJob.restore) != 320*200 {
+		t.Fatalf("NO did not start dialogue close and restore: %#v", g.nativeClassUIJob)
+	}
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if g.nativeSystemEndTurnUI != nil || g.aiBusy || state.Turn != 0 {
+		t.Fatalf("NO mutated turn: ui=%#v ai=%v turn=%d", g.nativeSystemEndTurnUI, g.aiBusy, state.Turn)
 	}
 }

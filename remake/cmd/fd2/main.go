@@ -337,10 +337,11 @@ type Game struct {
 	camY                      float64
 	loadErr                   string
 
-	// nativeSystemEndTurnConfirm 承接共用 0x16F55 的 END→YES；其餘三個
-	// cell 沒有已證實 owner，仍失敗即關閉。
+	// nativeSystemEndTurnConfirm 承接共用 0x16F55 的 END 確認生命週期；
+	// 其餘三個 cell 沒有已證實 owner，仍失敗即關閉。
 	nativeSystemEndTurnConfirm bool
 	nativeSystemEndTurnDelay   int
+	nativeSystemEndTurnUI      *nativeSystemEndTurnUIState
 
 	// 截圖鉤子(FD2_SHOT=path 啟用):第 shotFrame 幀存 PNG 後自動退出(有界,供無人值守驗證)
 	frame      int
@@ -4700,16 +4701,32 @@ func (g *Game) stepCampaignMenu(event campaign.MenuEvent) (selected int, confirm
 func (g *Game) ringInput() bool {
 	enter := inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)
 	esc := inpututil.IsKeyJustPressed(ebiten.KeyEscape) || inpututil.IsKeyJustPressed(ebiten.KeyBackspace)
+	if g.nativeSystemEndTurnUI != nil && g.nativeClassUIJob != nil {
+		return true
+	}
 	if g.nativeSystemEndTurnDelay > 0 {
 		return true
 	}
 	if g.nativeSystemEndTurnConfirm {
+		if g.nativeClassUIJob != nil {
+			return true
+		}
 		if esc {
 			g.cancelNativeSystemEndTurn()
 			return true
 		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) && g.nativeSystemEndTurnUI != nil {
+			g.nativeSystemEndTurnUI.choice = 0
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) && g.nativeSystemEndTurnUI != nil {
+			g.nativeSystemEndTurnUI.choice = 1
+		}
 		if enter {
-			g.confirmNativeSystemEndTurn()
+			if g.nativeSystemEndTurnUI != nil && g.nativeSystemEndTurnUI.choice == 1 {
+				g.cancelNativeSystemEndTurn()
+			} else {
+				g.confirmNativeSystemEndTurn()
+			}
 		}
 		return true
 	}
@@ -4741,7 +4758,10 @@ func (g *Game) ringInput() bool {
 			return true
 		}
 		if enter {
-			if g.ringSel == 3 && g.beginNativeSystemEndTurn() {
+			if g.ringSel == 3 {
+				if !g.beginNativeSystemEndTurn() {
+					g.msg = "原版 END 確認資產不完整，未結束回合"
+				}
 				return true
 			}
 			// 只有 Down→END 已有同一存檔、同一輸入的未修改原版 E2；
@@ -7260,10 +7280,12 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	// Command UI is an indexed-sprite layer; it must not depend on an optional
 	// Chinese font being available in the runtime environment.
-	g.drawRing(screen)
-	g.drawNativeCommandGrid(screen)
-	g.drawSpellMenu(screen)
-	g.drawItemMenu(screen)
+	if !g.drawNativeSystemEndTurn(screen) {
+		g.drawRing(screen)
+		g.drawNativeCommandGrid(screen)
+		g.drawSpellMenu(screen)
+		g.drawItemMenu(screen)
+	}
 
 	// 場景淡出/淡入轉場(doc46 §5.2):全螢幕黑色疊層,alpha 隨 fade.t 漸變。
 	if g.fade != nil {

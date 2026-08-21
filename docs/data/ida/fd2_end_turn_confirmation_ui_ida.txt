@@ -1,0 +1,110 @@
+# FD2 `0x16F55` END 確認介面：caller-specific IDA／原版 E2 證據
+
+## 輸入、工具與位址空間
+
+- 輸入：`FD2.EXE`，357074 bytes
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 第一工具：使用者授權 Docker 映像 `fd2-ida-authorized-local` 內的 IDA Pro／
+  Hex-Rays `9.4.0.260610`，LE loader，IDA 線性位址；資料庫只存在一次性 tmpfs。
+- 動態 oracle：`fd2-dosbox-screenshot-local:latest`，固定 `cycles=12000`，原版目錄
+  唯讀掛載後複製到容器 tmpfs；沒有 route patch、存檔修改或除錯捷徑。
+- 下列位址都是 IDA LE 線性位址，不是檔案偏移。自訂語意只作附加索引，原始
+  `sub_XXXXX`、位址、運算元與推論等級均保留。
+
+## `0x171D0..0x17277` 的完整 END 分支（已證實）
+
+`sub_16F55` 在 `[0x53C57]==3` 後的直接指令固定：
+
+```text
+0x171D0  push 0x4B
+0x171D2  call sub_1956B
+0x171DA  push 1,0x13,0x4A,0x4C,0xCD,0x140,0xA9F23,0x1A3,[0x53A7D]
+0x171FC  call sub_15F84
+0x17204  push 0
+0x17206  call sub_16559
+0x1720E  call sub_19953
+0x17215  call sub_197E5
+0x1721A  cmp ebx,1
+0x17223  cmp [0x53C57],0
+0x17230  push ebx,0x13,0x4A,0x4C,0xCD,0x140,0xAB6E3,0x1A4,[0x53A7D]
+0x17251  call sub_15F84
+0x17259  push 0xC8
+0x1725E  call delay
+0x17266  call sub_196CB
+0x17272  call sub_1A30B
+```
+
+- `0x1956B(0x4B)` 先保存原 320×200 VGA source，使用 FDOTHER #5 的 19×5
+  對話框格與 DATO resource `0x4B`，再以 `0x1974C` 發布六個展開畫面。這是
+  **已證實**，不是由截圖猜測頭像。
+- `0xA9F23 - 0xA0000 = 127*320+99`，故 FDTXT `0x1A3` 的 caller-specific
+  字形起點為 `(99,127)`；foreground `0xCD`、background `0x4C`、line step
+  `0x13` 都由直接參數證實。
+- `0x19953` 發布四個 Yes／No 展開畫面，Left／Right 寫 `[0x53C57]=0/1`；
+  Enter／Space 回傳1，Escape／Delete回傳-1。穩定選項使用 FDOTHER #2 cells
+  48/49 與51/52，選中 pulse 由 BIOS delta 驅動。這一段為**已證實**。
+- `0x197E5` 在 caller 檢查結果前先發布四個選項收合畫面並復原問句區域。
+- 只有「輸入成功且 choice 0」才進 `0x1A4` 與 `0x1A30B`；其餘輸入進共同
+  `0x1716F` 取消尾端。
+
+## 接受與取消的 caller-specific 回覆（已證實）
+
+FDTXT_000 唯讀解碼：
+
+- `0x1A3`：`要結束本回合的行動嗎？`
+- `0x1A4`：`好的，<0xFFFE>就結束本回合的行動吧！`
+- `0x19C`：`是嗎？那麼就不要了．`
+
+接受分支的 `0xAB6E3 - 0xA0000 = 146*320+99`，所以 `0x1A4` 從
+`(99,146)` 開始，`0xFFFE` 依 `0x13` 行距換到 y=165。取消共同尾端
+`0x1716F` 也使用 `0xAB6E3` 與 FDTXT `0x19C`，再同樣等待 `0xC8` 並呼叫
+`sub_196CB`；它不呼叫 `sub_1A30B`。以上均為**已證實**。
+
+`sub_196CB` 直接迴圈令 `ebx=1..5`，逐次呼叫 `sub_1974C`，最後把保存的
+source 複製回 VGA、釋放三個暫存區並呼叫 `sub_11CAC(0)`。因此回覆後的
+對話框收合是五個發布畫面加一次 source restore，亦為**已證實**。
+
+## 未修改原版正常玩家 E2
+
+固定雜湊原版與使用者現有 `FD2.SAV` 經下列正常輸入到達相同 chapter0
+current-runtime 狀態：
+
+```text
+Escape → Down → Down → Return(CONTINUE)
+→ Return(空游標系統面板) → Down(END) → Return
+```
+
+分別走 Left／Right 與 Enter，320×200 client crop 證實：
+
+- END 選中：SHA-256 `332810fbb56927b2892f5dee601cd53187485dc10b477f5a7857a617b3990098`
+- Yes／No 穩定畫面樣本：`42fe24b934fe5ba5dbc876fe5ddc92fffb4028de4daf2306cfe55adf06537885`／
+  `aa4d98380a38c1e82b0954d774ea9b69b06d3fcade681dd5134c19c07da89d44`
+- 接受後回覆樣本：`180e6312f2781c2927510a9ee62130c31ec1c4b5c4643f7ad4ce0c0431bda2fc`
+- 取消後回覆與復原：`70ea56719a7f0d15e279943985408edcc4e1ea94f842fcfa1668fef53b3eb3af`／
+  `fddbf2de6e95ec925a7a9a210579491e563dec3548784b145febc8faa804f8a8`
+- 接受後可達 ENEMY PHASE：`886af03dbc542903d01836922110e210e5bf19c32c88b8f392ab86fd36109409`
+
+這是未修改一般玩家路徑的原版 E2，證明版面、兩個分支與可達性；取樣時間不是
+DOS BIOS 每 tick 的精確時序證明，也尚未證明重製端逐像素相同。
+
+## 重製端契約與限制
+
+1. 只能從目前已驗證的 320×200 indexed map framebuffer 建立 source；缺 map
+   provenance、FDOTHER #2/#5、DATO #75、FDTXT_000、字型或 palette 時整批拒絕。
+2. 開啟順序固定為六個 dialogue frames、caller-specific 問句、四個 choice
+   frames；每個畫面需經 Draw acknowledgement 才前進。
+3. Yes／No 穩定畫面、Left／Right、不環繞選擇與 Escape／Delete 取消沿用
+   `0x19953`。兩條分支都先跑四個 choice closing frames。
+4. 接受顯示 `0x1A4`、取消顯示 `0x19C`；各自等待十二個60 Hz remake frames
+   近似 `0xC8` ms，再跑五個 dialogue closing frames與 source restore。
+5. 只有接受分支在完整收合後呼叫既有 `endTurn`；取消分支必須零玩法修改。
+
+仍未知／非本批宣稱：DOS BIOS 精確 tick 對齊、每個 opening frame 的牆鐘時間、
+音效 owner，以及其他三格的玩法 owner。
+
+## 重開條件
+
+只有原版輸入雜湊不同、上述直接指令被反證、同狀態 E2 結果矛盾，或主證據缺少
+其聲稱的資產／writer／consumer 時才重開。不可因舊文件仍寫「確認框未接」而重做
+`0x16F55`、`0x1956B`、`0x19953` 或 `0x196CB`。
