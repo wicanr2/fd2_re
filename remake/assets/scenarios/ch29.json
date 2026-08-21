@@ -1187,6 +1187,81 @@
       60
     ]
   ],
+  "native_field_event_rules": [
+    {
+      "event_id": 75,
+      "selector": 1,
+      "trigger_gate": "record_byte6_nonzero",
+      "turn_chain": {
+        "handler": "0x35c79",
+        "trigger_record_byte8": 9,
+        "mismatch_text_index": 0,
+        "success_text_index": 1,
+        "state_writes": [
+          {
+            "index": 17,
+            "value": 1
+          },
+          {
+            "index": 16,
+            "value": 4
+          }
+        ],
+        "turn_activations": [
+          {
+            "slot": 1,
+            "event_id": 76,
+            "raw_camp": 2,
+            "turn_delta": 1
+          },
+          {
+            "slot": 0,
+            "event_id": 74,
+            "raw_camp": 0,
+            "turn_delta": 0
+          }
+        ]
+      }
+    }
+  ],
+  "native_turn_events": [
+    {
+      "event_id": 74,
+      "raw_camp": 0,
+      "handler": "0x35c32",
+      "dynamic_group": {
+        "state_index": 16,
+        "minimum": 4,
+        "maximum": 7,
+        "control_slot": 0,
+        "reschedule_delta": 1,
+        "stop_value": 7,
+        "increment": 1
+      },
+      "staging": {
+        "helper": "0x35822",
+        "pan_helper": "0x135dd",
+        "spawn_helper": "0x10b4e",
+        "delay_before_flash_ms": 300,
+        "palette_helper": "0x11df2",
+        "palette_start": 0,
+        "palette_end": 255,
+        "flash_delta": 255,
+        "flash_hold_ms": 200,
+        "restore_delta": 0,
+        "redraw_helper": "0x11cac",
+        "raw_placement_gate": 0,
+        "calls": [
+          {
+            "group": -1,
+            "x": 10,
+            "y": 29,
+            "source": "0x35c4a"
+          }
+        ]
+      }
+    }
+  ],
   "events": [
     {
       "id": "opening",

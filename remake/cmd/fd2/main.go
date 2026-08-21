@@ -2792,7 +2792,12 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 					return
 				}
 			} else {
-				g.dialog = append(g.dialog, sc.Setup(g.st)...)
+				dialogue, err := sc.SetupChecked(g.st)
+				if err != nil {
+					g.loadErr = "scenario setup: " + err.Error()
+					return
+				}
+				g.dialog = append(g.dialog, dialogue...)
 			}
 			g.initializeEquipmentBases(g.st)
 			g.applyScenarioPartyJoins()
@@ -5051,9 +5056,13 @@ func (g *Game) finishSuccessfulUnitAction(actor *battle.Unit, after func()) {
 			after()
 		}
 	}
-	if !g.beginNativeFieldEvent61(actor, finish) {
-		finish()
+	if g.beginNativeFieldEvent61(actor, finish) {
+		return
 	}
+	if g.beginNativeFieldEvent75(actor, finish) {
+		return
+	}
+	finish()
 }
 
 // awardDeathReward 執行 exporter 已 lower 的可編輯 death_reward。原版特殊 handler
@@ -6340,7 +6349,7 @@ func (g *Game) Update() error {
 	g.stepNativePaletteRamp()                    // native 0x1f882/0x1f525 whole-DAC ramps
 	g.stepNativePalettePulse()                   // native 0x35E5A whole-DAC pulse
 	g.stepNativeSpawnIntro()                     // native 0x32999 twelve-pass indexed spawn transition
-	g.stepNativeTurnStaging()                    // event63 raw-camp0 pre-AI staging helper
+	g.stepNativeTurnStaging()                    // typed raw-camp0 pre-AI staging helper
 	if g.camp != nil && g.storyAutoAdvance > 0 { // 無對白節點自動轉場倒數(行軍蒙太奇)
 		g.storyAutoAdvance--
 		if g.storyAutoAdvance == 0 {
@@ -6759,7 +6768,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	if g.nativeTurnStaging != nil && g.nativeTurnStaging.indexed {
 		screen.Fill(color.Black)
 		if !g.drawNativeTurnStaging(screen) {
-			ebitenutil.DebugPrint(screen, "native event63 staging unavailable")
+			ebitenutil.DebugPrint(screen, "native turn staging unavailable")
 		}
 		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
 			g.captureShot(screen)
@@ -8351,7 +8360,12 @@ func loadGame() *Game {
 	if g.st != nil {
 		if sc, err := battle.LoadScenario(assetPath("assets/scenarios/ch01.json")); err == nil {
 			g.sc = sc
-			g.dialog = append(g.dialog, sc.Setup(g.st)...)
+			dialogue, setupErr := sc.SetupChecked(g.st)
+			if setupErr != nil {
+				g.loadErr = "scenario setup: " + setupErr.Error()
+			} else {
+				g.dialog = append(g.dialog, dialogue...)
+			}
 			g.focusOnParty()
 		} else if g.loadErr == "" {
 			g.loadErr = "scenario: " + err.Error()

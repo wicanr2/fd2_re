@@ -16,7 +16,7 @@
 | 0 | 原始碼註解與 Markdown 現況斷言稽核 | `DATA-READY`：本輪已修正 `0x2189A`、`0x22253`、legacy `unit_present` 與 handler 三態計數的高信心舊斷言，並修復 manifest 產生器重複鍵；這是持續性品質閘門，不是一次掃描即永久完成 | 下一輪抽查完成度、節點、slot、handler、renderer 舊斷言；錯誤現況直接訂正或刪除，歷史證據則追加勘誤，不抹除形成原因 |
 | 1 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式，現為產品31／runtime170／未知1104；舊83 unknown 已拆為80已分類、3已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253` 只追其他 caller／戰役 gate，`0x2BCE5` 追正式 owner，不重解 callee |
 | 2 | 玩家第21戰天空之鑰固定演出 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`：`0x24336` 已接真實 `FDOTHER #34`、`ANI #0`、調色盤循環與正式戰後→城鎮→存讀檔 | 取得未修改原版同狀態 E2，核對第一個動態調色盤相位與相鄰 `layout_units`／ACT63／64；不重解函式本體 |
-| 3 | 最後一個忠實模式 blocked postbattle | `RE-CLOSED`：玩家第29戰入口已固定為20筆持續隊伍＋group8的56筆＝76；event75→74依序追加groups4..7、event76追加group1、event79不追加、post追加group9，groups2/3無已證實producer。正式資料與runtime尚未接，故節點仍 `BLOCKED` | 先依規格接 `runtime_append_groups` 與 typed event75／74／76／79，再補 dialog／pan binding、持續隊伍、`preparation_ch30` save/load E1；最後補一般玩家 E2 |
+| 3 | 最後一個忠實模式 blocked postbattle | `RE-CLOSED`；event75→74 已 `DATA-READY`／`RUNTIME-E1`：玩家第29戰入口為20筆持續隊伍＋group8的56筆＝76，成功動作在可編輯對話後啟動event74，並逐回追加groups4..7。event76／79與post仍未接，故節點保持 `BLOCKED` | 依已閉合規格接 typed event76／79，再補ch28 post group9、持續隊伍、`preparation_ch30` save/load E1；最後補一般玩家 E2 |
 | 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；`0x16F55` END 已接，command 13–16 的玩家與敵方 mode 11 已走完整 #3前段、#6七張、mask、交易後 redraw、#5數字22張與尾停，AI 依 raw selector重建 target array | 補 END／command 13–16 同狀態逐幀逐音訊 E2；再依 `56` family matrix選下一個有完整證據的 command，不重解本批已閉合函式 |
 | 5 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial | 依 `57` 逐個輸入狀態機取得同狀態原版／重製證據，不用單張 layout 圖代替 |
 | 6 | 原版終局精確鏈 | 近似 E1 可見；忠實模式仍部分阻擋 | 閉合 `0x28A6C` renderer、終端輸入、`0x2BCE5` 正式 owner／handoff及第30戰一般玩家 E2 |
@@ -32,11 +32,24 @@ handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不�
 
 ## 歷史工作記錄（不可用來計算完成度）
 
+### 2026-08-21：玩家第29戰 event75→74 可編輯事件鏈
+
+- `RE-CLOSED`／`DATA-READY`：IDA Pro 9.4 固定 `sub_35C79` 的 raw `+6/+8`
+  branches、FDTXT_029 indices 0／1、state index17／16 writes與兩筆live-row
+  activations；`sub_35C32`固定groups4..7、鏡頭(10,29)及逐次reschedule。
+  map28事件格以實際31格寬重算為(15,21)；錯誤暫算(28,22)已明確撤回。
+- `RUNTIME-E1`：正式成功動作owner已接event75；index1五句對話完成後才原子
+  啟動event74／76。event74沿用indexed pan／白閃staging，每次只發布一個動態
+  group快照，失敗不污染公開battle state。
+- 決定性回歸覆蓋成功、identity mismatch、缺raw provenance、對話提交邊界、
+  dynamic group preflight與既有event63非對稱回歸。event76／79、post及E2仍待辦。
+
 ### 2026-08-21：raw ch28 `0x25535` indexed presenter 與斷言稽核
 
 - `RE-CLOSED`／`DATA-READY`：固定版 caller 已證實為
   `0x22253([0x53BEB]-1,15,10,15,10)`；腳本只對 `0x25535` lower 成動態最後
-  runtime slot，不把強推論 slot93 寫入資料。map28 materialize topology 仍未閉合。
+  runtime slot，不把強推論 slot93 寫入資料。此段記錄的是當時狀態；map28入口
+  topology及event75→74後續已由本日較新的條目取代。
 - `RUNTIME-E1`：battle-state presenter 預先驗證並播放
   11＋6＋18/24＋10 段，座標只在 bridge 邊界提交；`0x35E5A` 另按
   0..63／400 ms hold／62..0 執行127次 indexed DAC 寫入。缺 asset、raw

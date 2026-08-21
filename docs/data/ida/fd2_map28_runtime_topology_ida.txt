@@ -60,7 +60,8 @@ context byte +11=1, schedules turn-control row1 for current round+1, writes
 current context byte +10=4, and schedules row0 for the current round.
 
 Turn event74 sub_35C32 reads current context byte +10 and passes it as group to
-sub_35822(group,29,10).  The shared tail at 0x35992 increments that byte.  If
+the typed `sub_35822(group,x=10,y=29)` adapter（raw push order是group、29、10）。
+The shared tail at 0x35992 increments that byte.  If
 the pre-increment value is not 7 it schedules row0 for the next round.  From
 event75's seed this appends groups4,5,6,7, one group per activation and in that
 order.
@@ -92,6 +93,41 @@ otherwise.  This note therefore does not claim a single fixed final frontier:
 the confirmed base is 76; groups4..7 and group1 are conditional ordered
 extensions; group9 is the one-record postbattle extension.
 
+## event75／event74 精確指令補證（2026-08-21）
+
+輸入仍為本檔檔首所列 `FD2.EXE` 雜湊；工具為 IDA Pro 9.4，位址均為 IDA
+資料庫線性位址。以下語意等級均為「已證實」，但語意名稱只供導覽，原始
+`sub_*` 名稱與位址保留不變。
+
+- map28 實際地圖大小為 31×64；`native_field_event_slots` 的唯一非負格為
+  `(15,21)`、slot 1。曾以錯誤寬度 29 暫算出的 `(28,22)` 無效，不得引用。
+- `sub_35C79`（`0x35C79..0x35D60`，event75）先檢查觸發單位 record `+6`
+  非零、`[[0x53AD5]+0x11] == 0` 與 record `+8`。`+8 != 9` 時先把觸發
+  record `+7` 交給 `0x1956B`，再消費 FDTXT_029 index 0；`+8 == 9` 時消費
+  index 1，然後寫 event-state
+  `[0x11]=1`、`[0x10]=4`，把 live row 1（event76/raw camp 2）排到
+  `native_round+1`，並把 live row 0（event74/raw camp 0）排到目前 round。
+- `sub_35C32`（`0x35C32..0x35C79`，event74）在 `0x35C4A` 把
+  event-state `[0x10]` 作為 group，呼叫 `0x35822(group,10,29)`。group 不是
+  7 時把 live row 0 排到 `native_round+1`；共同尾端 `0x35992` 將
+  event-state `[0x10]` 加一。因此 event75 的 seed 4 只會依次 materialize
+  groups 4、5、6、7。
+
+### 可編輯資料與執行期契約
+
+1. event75 必須是 selector 1 的欄位事件規則；只有成功動作的共同提交點可
+   呼叫。取消、非法目標或 executor 錯誤不得觸發。
+2. 規則必須明列 raw `+6` gate、raw `+8 == 9`、FDTXT indices 0／1、兩筆
+   event-state writes 與兩筆 live-row activations。缺少 raw provenance、事件格、
+   dormant row identity 或 round 時，失敗即關閉。
+3. index 1 對話播完後，才可把 event-state 與 typed/raw live rows 原子提交；
+   對話中途或重驗失敗不得留下半套 mutation。
+4. event74 必須使用 dynamic-group 規則，唯一 staging call 的 group 由
+   event-state `[0x10]` 解析，範圍只能是 4..7；每次 staging 成功後才更新 row
+   與 state。固定 group 或把 groups 4..7 在開場一次展開都不符合原版。
+5. 本切片只接 event75→74。event76／79 的對話、位元寫入、group1 與 palette
+   消費端另行閉合；不得因共用同一張表而猜測接入。
+
 Implementation consequence (confirmed data contract; runtime work pending)
 -------------------------------------------------------------------------
 The authored ch29 scenario must use runtime append ownership.  The normal
@@ -101,4 +137,3 @@ groups1,4,5,6,7,9 as pending constructor sources and implement the live event
 mutations above atomically.  Groups2/3 must remain source-only.  Until that
 typed chain and the ch28 post binding are both installed, the campaign node
 postbattle_ch29_persist remains fail-closed.
-

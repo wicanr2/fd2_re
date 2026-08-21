@@ -4484,6 +4484,23 @@ groups2／3 雖存在於 immutable source roster，目前沒有 normal-chain pro
 event82 也沒有已證實的 live-row producer，因此兩者不得物化或用猜測補洞。
 
 資料與 runtime 必須以原子方式保存上述 live-row mutation、context bytes 與群組
-追加順序；任何缺 raw row、context record、來源群組或唯一 consumer 的情況均
-失敗即關閉。完成 typed event75／74／76／79、正式 ch28 post binding、隊伍同步與
-`preparation_ch30` 存讀檔回歸前，`postbattle_ch29_persist` 仍是 `BLOCKED`。
+追加順序；任何缺 typed row、context record、來源群組或唯一 consumer 的情況均
+失敗即關閉。完整 raw field view 只有在具 CONTINUE provenance 時才要求並雙寫，
+不得因新戰鬥沒有該 raw view 就捏造來源。
+
+### 2026-08-21 event75→74 實作狀態
+
+- `DATA-READY`：`ch29.json` 已保存 event75 的 selector1、record `+6` gate、
+  record `+8 == 9`、FDTXT_029 indices 0／1、event-state writes，以及 event74／76
+  live-row activations；event74 另保存 state index16 的 dynamic group 4..7 與
+  `0x35822(group,10,29)` 演出參數。
+- `RUNTIME-E1`：成功動作共同提交點會啟動 event75；五句 index1 對話完成後才
+  原子提交 state 與 live rows。event74 每次先私下 materialize 一個 group、建立
+  鏡頭／白閃快照，發布後才將 state 加一及（group 4..6）重排下一回合；group7
+  不再重排。缺 raw `+6/+8`、dormant row identity、來源 group 或 compositor 時
+  維持零修改。
+- 新戰鬥使用雜湊綁定的 typed turn rows；若 CONTINUE 邊界另提供完整 raw field
+  view，則提交時必須先核對並同步該 view。兩者不可互相冒充 provenance。
+
+typed event76／79、正式 ch28 post binding、隊伍同步、`preparation_ch30` 存讀檔
+與一般玩家 E2 尚未完成，因此 `postbattle_ch29_persist` 仍是 `BLOCKED`。

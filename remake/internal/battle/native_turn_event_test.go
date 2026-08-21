@@ -95,3 +95,20 @@ func TestChapter27KeepsEvent63GroupsOutOfInitialRoster(t *testing.T) {
 		t.Fatalf("chapter27 pending groups=%v", st.PendingGroups)
 	}
 }
+
+func TestChapter29KeepsDynamicEvent74GroupsPending(t *testing.T) {
+	sc, err := LoadScenario("../../assets/scenarios/ch29.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !sc.RuntimeAppendGroups || !reflect.DeepEqual(sc.InitialGroups, []int{8}) ||
+		len(sc.NativeFieldEventRules) != 1 || len(sc.NativeTurnEvents) != 1 ||
+		sc.NativeTurnEvents[0].DynamicGroup == nil {
+		t.Fatalf("chapter29 event boundary=%#v", sc)
+	}
+	st := &State{}
+	sc.materializePendingGroups(st)
+	if !reflect.DeepEqual(st.PendingGroups, map[int]bool{4: true, 5: true, 6: true, 7: true}) {
+		t.Fatalf("chapter29 pending groups=%v", st.PendingGroups)
+	}
+}

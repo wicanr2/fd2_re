@@ -202,6 +202,71 @@ func TestEvent62RawDisagreementFailsAtomically(t *testing.T) {
 	}
 }
 
+func TestChapter29Event75PlansAndCommitsExactTurnChain(t *testing.T) {
+	st, err := Load("../../assets/maps/map28/map28_units.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sc, err := LoadScenario("../../assets/scenarios/ch29.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := sc.SetupChecked(st); err != nil {
+		t.Fatal(err)
+	}
+	trigger := &Unit{
+		X: 15, Y: 21,
+		HasNativeRecordByte6: true, NativeRecordByte6: 1,
+		HasNativeRecordByte8: true, NativeRecordByte8: 9,
+	}
+	st.NativeRoundCounter = 8
+	beforeRows := st.NativeTurnEventControls
+	beforeRaw := append([]byte(nil), st.NativeFieldControlRaw...)
+	plan, err := PlanNativeFieldEvent75(st, trigger, 15, 21)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !plan.Activate || plan.Noop || plan.TextIndex != 1 ||
+		st.NativeTurnEventControls != beforeRows || !reflect.DeepEqual(st.NativeFieldControlRaw, beforeRaw) {
+		t.Fatalf("event75 plan=%#v mutated state", plan)
+	}
+	if err := CommitNativeFieldEvent75(st, plan); err != nil {
+		t.Fatal(err)
+	}
+	if st.NativeEventState[17] != 1 || st.NativeEventState[16] != 4 ||
+		st.NativeTurnEventControls[1] != (NativeTurnEventControl{Turn: 9, EventID: 76, RawCamp: 2}) ||
+		st.NativeTurnEventControls[0] != (NativeTurnEventControl{Turn: 8, EventID: 74, RawCamp: 0}) {
+		t.Fatalf("event75 committed state16=%d state17=%d rows=%#v", st.NativeEventState[16], st.NativeEventState[17], st.NativeTurnEventControls[:2])
+	}
+}
+
+func TestChapter29Event75MismatchAndMissingProvenanceDoNotActivate(t *testing.T) {
+	st, err := Load("../../assets/maps/map28/map28_units.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sc, err := LoadScenario("../../assets/scenarios/ch29.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := sc.SetupChecked(st); err != nil {
+		t.Fatal(err)
+	}
+	trigger := &Unit{
+		X: 15, Y: 21,
+		HasNativeRecordByte6: true, NativeRecordByte6: 1,
+		HasNativeRecordByte8: true, NativeRecordByte8: 8,
+	}
+	plan, err := PlanNativeFieldEvent75(st, trigger, 15, 21)
+	if err != nil || plan.Activate || plan.Noop || plan.TextIndex != 0 {
+		t.Fatalf("event75 mismatch plan=%#v err=%v", plan, err)
+	}
+	trigger.HasNativeRecordByte8 = false
+	if _, err := PlanNativeFieldEvent75(st, trigger, 15, 21); err == nil {
+		t.Fatal("event75 accepted missing raw +8 provenance")
+	}
+}
+
 func TestChapter26KeepsWoldPendingUntilEvent61(t *testing.T) {
 	st, err := Load("../../assets/maps/map25/map25_units.json")
 	if err != nil {

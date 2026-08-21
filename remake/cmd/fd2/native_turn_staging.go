@@ -21,9 +21,9 @@ const (
 	nativeTurnStagingFlash
 )
 
-// nativeTurnStagingJob owns event63's two blocking 0x35822 calls. The raw DAC
-// and indexed frame remain separate; roster snapshots are prepared privately
-// before the first camera tick so a bad second call cannot leave group1 live.
+// nativeTurnStagingJob 擁有已閉合 handler 的阻塞式 0x35822 呼叫。raw DAC 與
+// indexed frame 分開保存；第一個鏡頭 tick 前先私下建立所有 roster 快照，避免
+// 後續 call 失敗時留下半套已物化 group。
 type nativeTurnStagingJob struct {
 	event    battle.NativeTurnEvent
 	states   []*battle.State
@@ -62,6 +62,26 @@ func validateNativeEvent63(event battle.NativeTurnEvent) error {
 	return nil
 }
 
+func validateNativeEvent74(event battle.NativeTurnEvent) error {
+	s, dynamic := event.Staging, event.DynamicGroup
+	if event.EventID != 74 || event.RawCamp != 0 || !strings.EqualFold(event.Handler, "0x35c32") ||
+		dynamic == nil || dynamic.StateIndex != 16 || dynamic.Minimum != 4 || dynamic.Maximum != 7 ||
+		dynamic.ControlSlot != 0 || dynamic.RescheduleDelta != 1 || dynamic.StopValue != 7 ||
+		dynamic.Increment != 1 || !strings.EqualFold(s.Helper, "0x35822") ||
+		!strings.EqualFold(s.PanHelper, "0x135dd") || !strings.EqualFold(s.SpawnHelper, "0x10b4e") ||
+		s.DelayBeforeFlashMS != 300 || !strings.EqualFold(s.PaletteHelper, "0x11df2") ||
+		s.PaletteStart != 0 || s.PaletteEnd != 255 || s.FlashDelta != 255 ||
+		s.FlashHoldMS != 200 || s.RestoreDelta != 0 || !strings.EqualFold(s.RedrawHelper, "0x11cac") ||
+		s.RawPlacementGate != 0 || len(s.Calls) != 1 {
+		return errors.New("event74 editable staging signature differs from recovered handler")
+	}
+	call := s.Calls[0]
+	if call.Group != -1 || call.X != 10 || call.Y != 29 || !strings.EqualFold(call.Source, "0x35c4a") {
+		return errors.New("event74 dynamic staging call differs from recovered handler")
+	}
+	return nil
+}
+
 func cloneNativeTurnStagingState(source *battle.State) (*battle.State, error) {
 	if source == nil || source.W <= 0 || source.H <= 0 ||
 		source.NativeMapSelectorCache == nil || source.NativeMapSelectorError != nil {
@@ -72,20 +92,38 @@ func cloneNativeTurnStagingState(source *battle.State) (*battle.State, error) {
 	candidate.Roster = cloneBattleUnitPointers(source.Roster)
 	candidate.NativeMapSelectorCache = source.NativeMapSelectorCache.Clone()
 	candidate.NativeCompositionEventBytes = append([]byte(nil), source.NativeCompositionEventBytes...)
+	candidate.NativeFieldControlRaw = append([]byte(nil), source.NativeFieldControlRaw...)
 	return &candidate, nil
 }
 
-func (g *Game) preflightNativeEvent63(event battle.NativeTurnEvent) ([]*battle.State, []byte, bool, error) {
-	if err := validateNativeEvent63(event); err != nil {
-		return nil, nil, false, err
-	}
+func (g *Game) preflightNativeTurnStaging(event battle.NativeTurnEvent) (battle.NativeTurnEvent, []*battle.State, []byte, bool, error) {
+	resolved := event
 	if g.st == nil || g.m == nil || g.tileset == nil || len(g.tiles) == 0 ||
 		g.m.TileW <= 0 || g.m.TileH <= 0 || g.st.W != g.m.W || g.st.H != g.m.H {
-		return nil, nil, false, errors.New("event63 map/state assets unavailable")
+		return event, nil, nil, false, fmt.Errorf("event%d map/state assets unavailable", event.EventID)
+	}
+	switch event.EventID {
+	case 63:
+		if err := validateNativeEvent63(event); err != nil {
+			return event, nil, nil, false, err
+		}
+	case 74:
+		if err := validateNativeEvent74(event); err != nil {
+			return event, nil, nil, false, err
+		}
+		dynamic := event.DynamicGroup
+		group := int(g.st.NativeEventState[dynamic.StateIndex])
+		if group < dynamic.Minimum || group > dynamic.Maximum {
+			return event, nil, nil, false, fmt.Errorf("event74 dynamic group %d is outside recovered range", group)
+		}
+		resolved.Staging.Calls = append([]battle.NativeTurnStagingCall(nil), event.Staging.Calls...)
+		resolved.Staging.Calls[0].Group = group
+	default:
+		return event, nil, nil, false, fmt.Errorf("event%d has no typed staging adapter", event.EventID)
 	}
 	base, err := cloneNativeTurnStagingState(g.st)
 	if err != nil {
-		return nil, nil, false, err
+		return event, nil, nil, false, err
 	}
 	var baselineFrame []byte
 	indexed := false
@@ -99,32 +137,60 @@ func (g *Game) preflightNativeEvent63(event battle.NativeTurnEvent) ([]*battle.S
 			baselineFrame = append([]byte(nil), probe.nativeMapVGA...)
 			indexed = true
 		} else if claimsIndexedState {
-			return nil, nil, false, fmt.Errorf("event63 claimed indexed baseline frame: %w", err)
+			return event, nil, nil, false, fmt.Errorf("event%d claimed indexed baseline frame: %w", event.EventID, err)
 		}
 	}
 
 	candidate, err := cloneNativeTurnStagingState(g.st)
 	if err != nil {
-		return nil, nil, false, err
+		return event, nil, nil, false, err
 	}
-	states := make([]*battle.State, 0, len(event.Staging.Calls))
-	for i, call := range event.Staging.Calls {
+	states := make([]*battle.State, 0, len(resolved.Staging.Calls))
+	for i, call := range resolved.Staging.Calls {
 		if call.X+13 > g.m.W || call.Y+8 > g.m.H {
-			return nil, nil, false, fmt.Errorf("event63 staging call %d camera exceeds native viewport", i)
+			return event, nil, nil, false, fmt.Errorf("event%d staging call %d camera exceeds native viewport", event.EventID, i)
 		}
 		if n, err := candidate.AppendGroupWithNativePlacement(
-			call.Group, byte(event.Staging.RawPlacementGate),
+			call.Group, byte(resolved.Staging.RawPlacementGate),
 		); err != nil || n <= 0 {
-			return nil, nil, false, fmt.Errorf("event63 staging call %d group %d: append=%d err=%v", i, call.Group, n, err)
+			return event, nil, nil, false, fmt.Errorf("event%d staging call %d group %d: append=%d err=%v", event.EventID, i, call.Group, n, err)
+		}
+		if event.EventID == 74 {
+			dynamic := event.DynamicGroup
+			row := candidate.NativeTurnEventControls[dynamic.ControlSlot]
+			if !candidate.HasNativeTurnEventControlState ||
+				row != (battle.NativeTurnEventControl{Turn: byte(candidate.NativeRoundCounter), EventID: 74, RawCamp: 0}) {
+				return event, nil, nil, false, errors.New("event74 live row identity differs before commit")
+			}
+			offset := 3 + dynamic.ControlSlot*3
+			if candidate.HasNativeFieldControlState {
+				if len(candidate.NativeFieldControlRaw) <= offset+2 ||
+					candidate.NativeFieldControlRaw[offset] != row.Turn ||
+					candidate.NativeFieldControlRaw[offset+1] != row.EventID ||
+					candidate.NativeFieldControlRaw[offset+2] != row.RawCamp {
+					return event, nil, nil, false, errors.New("event74 raw row disagrees with typed controls")
+				}
+			}
+			if call.Group != dynamic.StopValue {
+				next := candidate.NativeRoundCounter + dynamic.RescheduleDelta
+				if next < 0 || next > 0xfe {
+					return event, nil, nil, false, errors.New("event74 rescheduled turn is outside byte range")
+				}
+				candidate.NativeTurnEventControls[dynamic.ControlSlot].Turn = byte(next)
+				if candidate.HasNativeFieldControlState {
+					candidate.NativeFieldControlRaw[offset] = byte(next)
+				}
+			}
+			candidate.NativeEventState[dynamic.StateIndex] += byte(dynamic.Increment)
 		}
 		snapshot, err := cloneNativeTurnStagingState(candidate)
 		if err != nil {
-			return nil, nil, false, err
+			return event, nil, nil, false, err
 		}
 		if indexed {
 			probeState, err := cloneNativeTurnStagingState(snapshot)
 			if err != nil {
-				return nil, nil, false, err
+				return event, nil, nil, false, err
 			}
 			frameProbe := *g
 			frameProbe.st = probeState
@@ -132,12 +198,12 @@ func (g *Game) preflightNativeEvent63(event battle.NativeTurnEvent) ([]*battle.S
 			frameProbe.camY = float64(call.Y * g.m.TileH)
 			frameProbe.nativeMapWork, frameProbe.nativeMapVGA = nil, nil
 			if err := frameProbe.composeNativeMapFrame(); err != nil {
-				return nil, nil, false, fmt.Errorf("event63 staging call %d frame: %w", i, err)
+				return event, nil, nil, false, fmt.Errorf("event%d staging call %d frame: %w", event.EventID, i, err)
 			}
 		}
 		states = append(states, snapshot)
 	}
-	return states, baselineFrame, indexed, nil
+	return resolved, states, baselineFrame, indexed, nil
 }
 
 // startNativeRawCamp0TurnEvents is the sub_1A813(0) owner. Scenarios opt in by
@@ -155,14 +221,14 @@ func (g *Game) startNativeRawCamp0TurnEvents() (bool, error) {
 		return false, nil
 	}
 	if len(events) != 1 {
-		return false, fmt.Errorf("raw camp0 has %d simultaneous handlers; adapter only proves event63", len(events))
+		return false, fmt.Errorf("raw camp0 has %d simultaneous handlers; staging is sequential", len(events))
 	}
-	states, frame, indexed, err := g.preflightNativeEvent63(events[0])
+	resolved, states, frame, indexed, err := g.preflightNativeTurnStaging(events[0])
 	if err != nil {
 		return false, err
 	}
 	job := &nativeTurnStagingJob{
-		event: events[0], states: states,
+		event: resolved, states: states,
 		vga:     append([]byte(nil), frame...),
 		indexed: indexed, then: g.beginEnemyPhase,
 	}
@@ -295,7 +361,7 @@ func (g *Game) stepNativeTurnStaging() {
 }
 
 func (g *Game) failNativeTurnStaging(message string) {
-	g.loadErr = "native event63 staging: " + message
+	g.loadErr = "native turn staging: " + message
 	g.nativeFullDACWhite = false
 	g.camPan = nil
 	g.nativeTurnStaging = nil

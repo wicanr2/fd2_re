@@ -716,6 +716,25 @@ type NativeTurnActivation struct {
 	TurnDelta int  `json:"turn_delta"`
 }
 
+// NativeEventStateWrite 保存 [0x53AD5] 指向之 0x20-byte table 的單一 byte write。
+// Index 刻意保留 raw 形式，其語意只能由所屬 field-event rule 的 caller provenance
+// 決定。
+type NativeEventStateWrite struct {
+	Index int  `json:"index"`
+	Value byte `json:"value"`
+}
+
+// NativeFieldTurnChain 是啟動 dormant live turn rows 的可編輯 field handler。
+// 它不替 event-state bytes 或 RawCamp selectors 猜測玩法名稱。
+type NativeFieldTurnChain struct {
+	Handler            string                  `json:"handler"`
+	TriggerRecordByte8 byte                    `json:"trigger_record_byte8"`
+	MismatchTextIndex  int                     `json:"mismatch_text_index"`
+	SuccessTextIndex   int                     `json:"success_text_index"`
+	StateWrites        []NativeEventStateWrite `json:"state_writes"`
+	TurnActivations    []NativeTurnActivation  `json:"turn_activations"`
+}
+
 // NativeFieldEventRule 保存已閉合 handler 的資料，不自行決定 selector 的呼叫時機。
 type NativeFieldEventRule struct {
 	EventID        int                      `json:"event_id"`
@@ -732,6 +751,7 @@ type NativeFieldEventRule struct {
 	TextIndices    *NativeFieldTextIndices  `json:"text_indices,omitempty"`
 	Presentation   *NativeFieldPresentation `json:"presentation,omitempty"`
 	TurnActivation *NativeTurnActivation    `json:"turn_activation,omitempty"`
+	TurnChain      *NativeFieldTurnChain    `json:"turn_chain,omitempty"`
 }
 
 // TreasureAt 查詢尚未取得的寶物格。

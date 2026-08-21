@@ -2,6 +2,125 @@ package battle
 
 import "fmt"
 
+type NativeFieldEvent75Plan struct {
+	EventID   byte
+	TextIndex int
+	Activate  bool
+	Noop      bool
+
+	trigger *Unit
+	rule    *NativeFieldEventRule
+}
+
+// PlanNativeFieldEvent75 驗證 map28 selector1 handler，不修改 event-state table
+// 或 live turn row。raw +8 != 9 選 FDTXT_029 index0，執行期另以觸發 record +7
+// 呈現肖像；raw +8 == 9 選 index1，並在對話完成後才可啟動 dormant rows。
+func PlanNativeFieldEvent75(st *State, trigger *Unit, x, y int) (NativeFieldEvent75Plan, error) {
+	if st == nil || trigger == nil || trigger.X != x || trigger.Y != y ||
+		!st.HasNativeTurnEventControlState {
+		return NativeFieldEvent75Plan{}, fmt.Errorf("event75: incomplete trigger or live turn controls")
+	}
+	eventID, ok := NativeFieldEventIDAt(st, x, y, 1)
+	if !ok || eventID != 75 {
+		return NativeFieldEvent75Plan{}, fmt.Errorf("event75: selector1 binding is absent")
+	}
+	var rule *NativeFieldEventRule
+	for i := range st.NativeFieldEventRules {
+		candidate := &st.NativeFieldEventRules[i]
+		if candidate.EventID == 75 && candidate.Selector == 1 {
+			rule = candidate
+			break
+		}
+	}
+	wantWrites := []NativeEventStateWrite{{Index: 17, Value: 1}, {Index: 16, Value: 4}}
+	wantTurns := []NativeTurnActivation{
+		{Slot: 1, EventID: 76, RawCamp: 2, TurnDelta: 1},
+		{Slot: 0, EventID: 74, RawCamp: 0, TurnDelta: 0},
+	}
+	if rule == nil || rule.TriggerGate != "record_byte6_nonzero" || rule.TurnChain == nil ||
+		rule.TurnChain.Handler != "0x35c79" || rule.TurnChain.TriggerRecordByte8 != 9 ||
+		rule.TurnChain.MismatchTextIndex != 0 || rule.TurnChain.SuccessTextIndex != 1 ||
+		len(rule.TurnChain.StateWrites) != len(wantWrites) ||
+		len(rule.TurnChain.TurnActivations) != len(wantTurns) {
+		return NativeFieldEvent75Plan{}, fmt.Errorf("event75: editable rule is incomplete")
+	}
+	for i := range wantWrites {
+		if rule.TurnChain.StateWrites[i] != wantWrites[i] {
+			return NativeFieldEvent75Plan{}, fmt.Errorf("event75: state write %d differs from handler", i)
+		}
+	}
+	for i := range wantTurns {
+		if rule.TurnChain.TurnActivations[i] != wantTurns[i] {
+			return NativeFieldEvent75Plan{}, fmt.Errorf("event75: turn activation %d differs from handler", i)
+		}
+	}
+	if !trigger.HasNativeRecordByte6 || !trigger.HasNativeRecordByte8 {
+		return NativeFieldEvent75Plan{}, fmt.Errorf("event75: raw +6/+8 provenance is absent")
+	}
+	plan := NativeFieldEvent75Plan{EventID: eventID, trigger: trigger, rule: rule}
+	if trigger.NativeRecordByte6 == 0 || st.NativeEventState[17] != 0 {
+		plan.Noop = true
+		return plan, nil
+	}
+	if trigger.NativeRecordByte8 != rule.TurnChain.TriggerRecordByte8 {
+		plan.TextIndex = rule.TurnChain.MismatchTextIndex
+		return plan, nil
+	}
+	if st.NativeRoundCounter <= 0 || st.NativeRoundCounter > 0xfe {
+		return NativeFieldEvent75Plan{}, fmt.Errorf("event75: native round is unavailable")
+	}
+	for _, activation := range rule.TurnChain.TurnActivations {
+		row := st.NativeTurnEventControls[activation.Slot]
+		if row != (NativeTurnEventControl{Turn: 0xff, EventID: byte(activation.EventID), RawCamp: activation.RawCamp}) {
+			return NativeFieldEvent75Plan{}, fmt.Errorf("event75: dormant row %d identity mismatch", activation.Slot)
+		}
+	}
+	plan.TextIndex = rule.TurnChain.SuccessTextIndex
+	plan.Activate = true
+	return plan, nil
+}
+
+// CommitNativeFieldEvent75 在 FDTXT_029 index1 完成後重驗 plan，再原子提交
+// event-state 與 typed live rows；只有 state 帶完整 raw field provenance 時才一併
+// 核對並更新該 raw view。
+func CommitNativeFieldEvent75(st *State, plan NativeFieldEvent75Plan) error {
+	if st == nil || !plan.Activate || plan.trigger == nil || plan.rule == nil {
+		return fmt.Errorf("event75: activation plan is unavailable")
+	}
+	recheck, err := PlanNativeFieldEvent75(st, plan.trigger, plan.trigger.X, plan.trigger.Y)
+	if err != nil || !recheck.Activate || recheck.TextIndex != plan.TextIndex {
+		return fmt.Errorf("event75: activation changed before commit: %v", err)
+	}
+	candidateState := st.NativeEventState
+	candidateRows := st.NativeTurnEventControls
+	candidateRaw := append([]byte(nil), st.NativeFieldControlRaw...)
+	for _, write := range plan.rule.TurnChain.StateWrites {
+		candidateState[write.Index] = write.Value
+	}
+	for _, activation := range plan.rule.TurnChain.TurnActivations {
+		turn := st.NativeRoundCounter + activation.TurnDelta
+		if turn < 0 || turn > 0xfe {
+			return fmt.Errorf("event75: scheduled turn is outside byte range")
+		}
+		candidateRows[activation.Slot].Turn = byte(turn)
+		if st.HasNativeFieldControlState {
+			offset := 3 + activation.Slot*3
+			if len(candidateRaw) <= offset+2 || candidateRaw[offset] != 0xff ||
+				candidateRaw[offset+1] != byte(activation.EventID) ||
+				candidateRaw[offset+2] != activation.RawCamp {
+				return fmt.Errorf("event75: raw row %d disagrees with typed controls", activation.Slot)
+			}
+			candidateRaw[offset] = byte(turn)
+		}
+	}
+	st.NativeEventState = candidateState
+	st.NativeTurnEventControls = candidateRows
+	if st.HasNativeFieldControlState {
+		st.NativeFieldControlRaw = candidateRaw
+	}
+	return nil
+}
+
 // NativeFieldEventIDAt 保存 0x13a44 的格子事件 selector：
 // 該格必須具有已驗證的 0..15 slot，event_id 不得為 0xff，且列內 selector
 // 必須等於 caller selector。資料缺失時失敗即關閉。

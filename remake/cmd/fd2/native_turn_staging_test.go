@@ -210,3 +210,40 @@ func TestEvent63UnknownMatchingRowFailsClosedBeforeAI(t *testing.T) {
 		t.Fatalf("unknown row err=%q ai=%v job=%v", g.loadErr, g.aiBusy, g.nativeTurnStaging)
 	}
 }
+
+func TestEvent74PreflightResolvesOneDynamicGroupAtomically(t *testing.T) {
+	g := &Game{}
+	if err := g.loadMap(assetPath("assets/maps/map28")); err != nil {
+		t.Fatal(err)
+	}
+	g.resetBattle("assets/maps/map28/map28_units.json", "assets/scenarios/ch29.json")
+	if g.loadErr != "" || g.st == nil || g.sc == nil {
+		t.Fatalf("chapter29 fixture err=%q", g.loadErr)
+	}
+	c, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !g.materializeNativeMapRuntime(c.Nodes["battle_ch29"]) {
+		t.Fatalf("chapter29 native runtime: %s", g.loadErr)
+	}
+	g.st.NativeRoundCounter = 8
+	g.st.NativeEventState[16] = 4
+	g.st.NativeTurnEventControls[0] = battle.NativeTurnEventControl{Turn: 8, EventID: 74, RawCamp: 0}
+	beforeUnits := cloneBattleUnitPointers(g.st.Units)
+	resolved, states, _, _, err := g.preflightNativeTurnStaging(g.sc.NativeTurnEvents[0])
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(resolved.Staging.Calls) != 1 || resolved.Staging.Calls[0].Group != 4 || len(states) != 1 {
+		t.Fatalf("event74 resolved=%#v states=%d", resolved.Staging.Calls, len(states))
+	}
+	got := states[0]
+	if countActiveGroup(got, 4) == 0 || got.NativeEventState[16] != 5 ||
+		got.NativeTurnEventControls[0] != (battle.NativeTurnEventControl{Turn: 9, EventID: 74, RawCamp: 0}) {
+		t.Fatalf("event74 snapshot group4=%d state16=%d row=%#v", countActiveGroup(got, 4), got.NativeEventState[16], got.NativeTurnEventControls[0])
+	}
+	if !reflect.DeepEqual(g.st.Units, beforeUnits) || g.st.NativeEventState[16] != 4 {
+		t.Fatal("event74 preflight mutated the published state")
+	}
+}

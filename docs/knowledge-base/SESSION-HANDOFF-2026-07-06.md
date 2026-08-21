@@ -5144,3 +5144,9 @@ caller 現已證實 `0x25535→0x22253([0x53BEB]-1,15,10,15,10)`，但只證實�
 - 玩家第29戰仍失敗即關閉：map28 groups1..9 materialize 拓撲、group9後的實際
   runtime frontier、dialog／pan binding、持續隊伍、`preparation_ch30` save/load
   與未修改一般玩家 E2 尚未閉合。
+
+**2026-08-21 勘誤（取代上一點的 map28 groups1..9 概括）：** 一般入口已證實
+為20筆持續隊伍＋group8(56)=76，不會把groups1..9全部物化。event75 selector1
+與event74 groups4..7已成為可編輯資料及正式 `RUNTIME-E1`；event76／79、post
+group9、持續隊伍、`preparation_ch30` save/load與一般玩家E2仍待完成。map28
+事件格依實際寬31重算為(15,21)；暫算(28,22)已撤回。

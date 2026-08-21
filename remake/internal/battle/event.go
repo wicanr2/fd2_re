@@ -13,17 +13,18 @@ import (
 
 // Scenario 一關的劇本(對映原版 FDFIELD turn_events + 青衫 ground truth)。
 type Scenario struct {
-	Chapter               int                  `json:"chapter"`
-	Name                  string               `json:"name"`
-	Map                   int                  `json:"map"`
-	RuntimeAppendGroups   bool                 `json:"runtime_append_groups,omitempty"`          // party first; FDFIELD groups append only when constructed
-	NativeActingResources string               `json:"native_acting_resources,omitempty"`        // asset-root-relative decoded 0x1366A resource set for native battle events
-	InitialGroups         []int                `json:"initial_groups"`                           // 開局即在場的 unit group;其餘待命
-	InitialGroupsAbsent   []InitialGroupAbsent `json:"initial_groups_if_party_absent,omitempty"` // native pre-handler conditional FDFIELD group
-	Party                 []PartyMember        `json:"party"`                                    // 主角隊(不在 FDFIELD roster,on_battle_start 進場)
-	DeployCells           [][2]int             `json:"deploy_cells"`                             // 主角隊進場目標格
-	Events                []Event              `json:"events"`
-	NativeTurnEvents      []NativeTurnEvent    `json:"native_turn_events,omitempty"`
+	Chapter               int                    `json:"chapter"`
+	Name                  string                 `json:"name"`
+	Map                   int                    `json:"map"`
+	RuntimeAppendGroups   bool                   `json:"runtime_append_groups,omitempty"`          // party first; FDFIELD groups append only when constructed
+	NativeActingResources string                 `json:"native_acting_resources,omitempty"`        // asset-root-relative decoded 0x1366A resource set for native battle events
+	InitialGroups         []int                  `json:"initial_groups"`                           // 開局即在場的 unit group;其餘待命
+	InitialGroupsAbsent   []InitialGroupAbsent   `json:"initial_groups_if_party_absent,omitempty"` // native pre-handler conditional FDFIELD group
+	Party                 []PartyMember          `json:"party"`                                    // 主角隊(不在 FDFIELD roster,on_battle_start 進場)
+	DeployCells           [][2]int               `json:"deploy_cells"`                             // 主角隊進場目標格
+	Events                []Event                `json:"events"`
+	NativeFieldEventRules []NativeFieldEventRule `json:"native_field_event_rules,omitempty"`
+	NativeTurnEvents      []NativeTurnEvent      `json:"native_turn_events,omitempty"`
 	pendingJoins          []int
 }
 
@@ -32,10 +33,24 @@ type Scenario struct {
 // not renamed to a faction: sub_1A813 compares the byte at row+5, and each
 // caller owns a different phase boundary.
 type NativeTurnEvent struct {
-	EventID int               `json:"event_id"`
-	RawCamp int               `json:"raw_camp"`
-	Handler string            `json:"handler"`
-	Staging NativeTurnStaging `json:"staging"`
+	EventID      int                     `json:"event_id"`
+	RawCamp      int                     `json:"raw_camp"`
+	Handler      string                  `json:"handler"`
+	Staging      NativeTurnStaging       `json:"staging"`
+	DynamicGroup *NativeTurnDynamicGroup `json:"dynamic_group,omitempty"`
+}
+
+// NativeTurnDynamicGroup 從 raw event-state table 解析一個 0x35822 group 參數，
+// 再套用該 caller 已證實的 live-row／state writes；它與 event63 這類固定 staging
+// calls 分開表示。
+type NativeTurnDynamicGroup struct {
+	StateIndex      int `json:"state_index"`
+	Minimum         int `json:"minimum"`
+	Maximum         int `json:"maximum"`
+	ControlSlot     int `json:"control_slot"`
+	RescheduleDelta int `json:"reschedule_delta"`
+	StopValue       int `json:"stop_value"`
+	Increment       int `json:"increment"`
 }
 
 // NativeTurnStaging is the editable form of the recovered 0x35822 helper.
@@ -274,6 +289,28 @@ func LoadScenario(path string) (*Scenario, error) {
 			}
 		}
 	}
+	seenNativeField := map[[2]int]bool{}
+	for ruleIndex, rule := range sc.NativeFieldEventRules {
+		key := [2]int{rule.EventID, int(rule.Selector)}
+		if rule.EventID < 0 || rule.EventID >= 90 || rule.Selector > 2 ||
+			seenNativeField[key] || rule.TriggerGate == "" || rule.TurnChain == nil ||
+			rule.TurnChain.Handler == "" || len(rule.TurnChain.StateWrites) == 0 ||
+			len(rule.TurnChain.TurnActivations) == 0 {
+			return nil, fmt.Errorf("scenario native field rule %d is invalid", ruleIndex)
+		}
+		seenNativeField[key] = true
+		for _, write := range rule.TurnChain.StateWrites {
+			if write.Index < 0 || write.Index >= 0x20 {
+				return nil, fmt.Errorf("scenario native field rule %d state write is invalid", ruleIndex)
+			}
+		}
+		for _, activation := range rule.TurnChain.TurnActivations {
+			if activation.Slot < 0 || activation.Slot >= 16 || activation.EventID < 0 ||
+				activation.EventID >= 90 || activation.RawCamp < 0 || activation.RawCamp > 0xff {
+				return nil, fmt.Errorf("scenario native field rule %d turn activation is invalid", ruleIndex)
+			}
+		}
+	}
 	seenNativeTurn := map[[2]int]bool{}
 	initialGroups := map[int]bool{}
 	for _, group := range sc.InitialGroups {
@@ -294,9 +331,20 @@ func LoadScenario(path string) (*Scenario, error) {
 			return nil, fmt.Errorf("scenario native turn event %d is invalid", eventIndex)
 		}
 		seenNativeTurn[key] = true
+		if event.DynamicGroup != nil {
+			dynamic := event.DynamicGroup
+			if dynamic.StateIndex < 0 || dynamic.StateIndex >= 0x20 ||
+				dynamic.Minimum < 0 || dynamic.Maximum < dynamic.Minimum || dynamic.Maximum > 0xfe ||
+				dynamic.ControlSlot < 0 || dynamic.ControlSlot >= 16 ||
+				dynamic.RescheduleDelta <= 0 || dynamic.StopValue < dynamic.Minimum ||
+				dynamic.StopValue > dynamic.Maximum || dynamic.Increment <= 0 || len(staging.Calls) != 1 {
+				return nil, fmt.Errorf("scenario native turn event %d dynamic group is invalid", eventIndex)
+			}
+		}
 		seenGroups := map[int]bool{}
 		for callIndex, call := range staging.Calls {
-			if call.Group < 0 || call.Group > 0xff || call.X < 0 || call.Y < 0 ||
+			if (event.DynamicGroup == nil && (call.Group < 0 || call.Group > 0xff)) ||
+				(event.DynamicGroup != nil && call.Group != -1) || call.X < 0 || call.Y < 0 ||
 				call.Source == "" || seenGroups[call.Group] || initialGroups[call.Group] {
 				return nil, fmt.Errorf("scenario native turn event %d staging call %d is invalid", eventIndex, callIndex)
 			}
@@ -306,9 +354,19 @@ func LoadScenario(path string) (*Scenario, error) {
 	return &sc, nil
 }
 
-// Setup 套用劇本初始狀態:把非 initial_groups 的單位設為待命(OnField=false)。
-// 然後觸發 on_battle_start(主角隊進場 + 開場對話)。回傳開場要播的對話。
+// Setup 是既有測試與無原生欄位規則劇本的相容入口。正式執行路徑必須使用
+// SetupChecked，避免把資料綁定錯誤誤當成沒有開場對話。
 func (sc *Scenario) Setup(st *State) []DialogLine {
+	dialogue, _ := sc.SetupChecked(st)
+	return dialogue
+}
+
+// SetupChecked 套用劇本初始狀態並回報原生規則綁定錯誤；正式執行期以此
+// 入口維持失敗即關閉。
+func (sc *Scenario) SetupChecked(st *State) ([]DialogLine, error) {
+	if err := sc.bindNativeFieldEventRules(st); err != nil {
+		return nil, err
+	}
 	if sc.RuntimeAppendGroups {
 		// Keep FDFIELD records as immutable-order constructor inputs. The opening
 		// event materializes the player party first; initial FDFIELD groups follow,
@@ -320,7 +378,7 @@ func (sc *Scenario) Setup(st *State) []DialogLine {
 		for _, group := range sc.InitialGroups {
 			st.AppendGroup(group)
 		}
-		return dialogues
+		return dialogues, nil
 	}
 	if len(sc.InitialGroups) > 0 {
 		init := map[int]bool{}
@@ -342,7 +400,26 @@ func (sc *Scenario) Setup(st *State) []DialogLine {
 			}
 		}
 	}
-	return sc.Fire(st, "on_battle_start", "")
+	return sc.Fire(st, "on_battle_start", ""), nil
+}
+
+func (sc *Scenario) bindNativeFieldEventRules(st *State) error {
+	if sc == nil || st == nil {
+		return fmt.Errorf("scenario field rules: missing scenario or state")
+	}
+	seen := make(map[[2]int]bool)
+	for _, rule := range st.NativeFieldEventRules {
+		seen[[2]int{rule.EventID, int(rule.Selector)}] = true
+	}
+	for _, rule := range sc.NativeFieldEventRules {
+		key := [2]int{rule.EventID, int(rule.Selector)}
+		if rule.EventID < 0 || rule.EventID >= 90 || seen[key] {
+			return fmt.Errorf("scenario field rule event%d selector%d is invalid or duplicated", rule.EventID, rule.Selector)
+		}
+		seen[key] = true
+		st.NativeFieldEventRules = append(st.NativeFieldEventRules, rule)
+	}
+	return nil
 }
 
 func (sc *Scenario) materializePendingGroups(st *State) {
@@ -357,6 +434,12 @@ func (sc *Scenario) materializePendingGroups(st *State) {
 		}
 	}
 	for _, event := range sc.NativeTurnEvents {
+		if event.DynamicGroup != nil {
+			for group := event.DynamicGroup.Minimum; group <= event.DynamicGroup.Maximum; group++ {
+				st.PendingGroups[group] = true
+			}
+			continue
+		}
 		for _, call := range event.Staging.Calls {
 			st.PendingGroups[call.Group] = true
 		}
@@ -403,6 +486,9 @@ func (sc *Scenario) NativeTurnEventsAt(st *State, rawCamp byte) ([]NativeTurnEve
 func (sc *Scenario) AdoptHandlerBattleState(st *State) error {
 	if sc == nil || st == nil || !sc.RuntimeAppendGroups || len(st.Units) == 0 {
 		return fmt.Errorf("battle: handler state cannot satisfy runtime-append scenario")
+	}
+	if err := sc.bindNativeFieldEventRules(st); err != nil {
+		return err
 	}
 	sc.materializePendingGroups(st)
 	for i := range sc.Events {
