@@ -99,9 +99,9 @@ func TestLoadValidation(t *testing.T) {
 
 func TestNativeEndingPrefixRejectsUnprovenCampaignAdmission(t *testing.T) {
 	for name, raw := range map[string]string{
-		"wrong node type": `{"start":"end","nodes":{"end":{"type":"story","native_ending_prefix":{"timeline":"assets/endings/native_2bce5.json","handler":"0x2bce5","chapter":29,"mode":"recovered_prefix_only_fail_closed"}}}}`,
-		"wrong handler":   `{"start":"end","nodes":{"end":{"type":"ending","native_ending_prefix":{"timeline":"assets/endings/native_2bce5.json","handler":"0x2c548","chapter":29,"mode":"recovered_prefix_only_fail_closed"}}}}`,
-		"wrong chapter":   `{"start":"end","nodes":{"end":{"type":"ending","native_ending_prefix":{"timeline":"assets/endings/native_2bce5.json","handler":"0x2bce5","chapter":28,"mode":"recovered_prefix_only_fail_closed"}}}}`,
+		"wrong node type": `{"start":"end","nodes":{"end":{"type":"story","native_ending_prefix":{"timeline":"assets/endings/native_2bce5.json","handler":"0x2bce5","chapter":29,"mode":"source_bound_e1_terminal_hold"}}}}`,
+		"wrong handler":   `{"start":"end","nodes":{"end":{"type":"ending","native_ending_prefix":{"timeline":"assets/endings/native_2bce5.json","handler":"0x2c548","chapter":29,"mode":"source_bound_e1_terminal_hold"}}}}`,
+		"wrong chapter":   `{"start":"end","nodes":{"end":{"type":"ending","native_ending_prefix":{"timeline":"assets/endings/native_2bce5.json","handler":"0x2bce5","chapter":28,"mode":"source_bound_e1_terminal_hold"}}}}`,
 		"wrong mode":      `{"start":"end","nodes":{"end":{"type":"ending","native_ending_prefix":{"timeline":"assets/endings/native_2bce5.json","handler":"0x2bce5","chapter":29,"mode":"ready"}}}}`,
 	} {
 		t.Run(name, func(t *testing.T) {
@@ -710,7 +710,7 @@ func TestCampaignFullPostBattleTownContractMatchesOriginalShopChapters(t *testin
 			}
 		})
 	}
-	if battle30 := campaign.Nodes["battle_ch30"]; battle30 == nil || battle30.OnWin != "ending" || !battle30.ApproximateWinSync {
+	if battle30 := campaign.Nodes["battle_ch30"]; battle30 == nil || battle30.OnWin != "ending" || !battle30.EndingPartySnapshotOnWin {
 		t.Fatalf("battle_ch30 must end campaign: %#v", battle30)
 	}
 	ending := campaign.Nodes["ending"]
@@ -718,7 +718,7 @@ func TestCampaignFullPostBattleTownContractMatchesOriginalShopChapters(t *testin
 		ending.NativeEndingPrefix.Timeline != "assets/endings/native_2bce5.json" ||
 		ending.NativeEndingPrefix.Handler != "0x2bce5" ||
 		ending.NativeEndingPrefix.Chapter != 29 ||
-		ending.NativeEndingPrefix.Mode != NativeEndingPrefixRecoveredOnly {
+		ending.NativeEndingPrefix.Mode != NativeEndingPrefixSourceBoundE1 {
 		t.Fatalf("terminal ending prefix=%#v", ending)
 	}
 }
@@ -862,7 +862,7 @@ func TestEveryContinuingBattleSyncsBeforeOriginalIntermission(t *testing.T) {
 		})
 	}
 
-	if battle30 := c.Nodes["battle_ch30"]; battle30 == nil || battle30.OnWin != "ending" || !battle30.ApproximateWinSync {
+	if battle30 := c.Nodes["battle_ch30"]; battle30 == nil || battle30.OnWin != "ending" || !battle30.EndingPartySnapshotOnWin {
 		t.Fatalf("terminal battle must retain original direct ending edge: %#v", battle30)
 	}
 }
@@ -959,11 +959,11 @@ func TestFullCampaignGraphReachesEndingThroughAllBattles(t *testing.T) {
 	t.Fatalf("campaign graph exceeded %d steps at node %q", maxSteps, r.Cur)
 }
 
-func TestApproximateTerminalPartySyncRejectsNonTerminalEdges(t *testing.T) {
+func TestEndingPartySnapshotRejectsNonTerminalEdges(t *testing.T) {
 	for name, raw := range map[string]string{
-		"non-battle owner":  `{"start":"story","nodes":{"story":{"type":"story","on_win":"ending","approximate_sync_party_on_win":true},"ending":{"type":"ending"}}}`,
-		"non-ending target": `{"start":"battle","nodes":{"battle":{"type":"battle","on_win":"story","approximate_sync_party_on_win":true},"story":{"type":"story"}}}`,
-		"missing win edge":  `{"start":"battle","nodes":{"battle":{"type":"battle","approximate_sync_party_on_win":true}}}`,
+		"non-battle owner":  `{"start":"story","nodes":{"story":{"type":"story","on_win":"ending","ending_party_snapshot_on_win":true},"ending":{"type":"ending"}}}`,
+		"non-ending target": `{"start":"battle","nodes":{"battle":{"type":"battle","on_win":"story","ending_party_snapshot_on_win":true},"story":{"type":"story"}}}`,
+		"missing win edge":  `{"start":"battle","nodes":{"battle":{"type":"battle","ending_party_snapshot_on_win":true}}}`,
 	} {
 		t.Run(name, func(t *testing.T) {
 			path := filepath.Join(t.TempDir(), "invalid-approximate-terminal-sync.json")

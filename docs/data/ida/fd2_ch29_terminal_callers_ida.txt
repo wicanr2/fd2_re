@@ -61,5 +61,9 @@ frame 內容及成功臂後續 chapter owner 仍依各自證據處理。
 - 不可把「`0x25757→0x2bce5` self-loop」改寫成
   `postbattle_ch29_persist→preparation_ch30`；也不可把 table index 29
   直接命名為玩家第 29 戰而跳過 `[0x53c03]` provenance。
-- `postbattle_ch29_persist` 仍保持失敗即關閉；城鎮／商店／整備／存檔邊界
-  仍保留在 campaign graph，等待一般玩家 raw chapter trace 與完整 ending owner。
+- **2026-08-21 勘誤：** `postbattle_ch29_persist` 已由 raw ch28 post 的可編輯
+  binding 、持續隊伍與 `preparation_ch30` 存讀檔回歸達成 E1；上述
+  `0x25757→0x2bce5` 仍是另一個 raw terminal entry，不能因此改名成
+  玩家第29戰戰後處理器。第30戰勝利現由正式 campaign 進入來源約束
+  E1 終局並停在 FDOTHER #59；原版 owner、精確 renderer／音訊與一般玩家
+  E2 仍未閉合。

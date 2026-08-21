@@ -88,5 +88,7 @@ caller 是 `0x2c18f`（位於 `0x2bce5..0x2c39b`），而 `0x2c194` 之後仍有
 因此本證據允許 `MontageCycle` 在**近似戰役模式**以「新輸入」作為 raw word
 變化的受限載體：只在 portrait loop 輪詢、完成當前 portrait 後跳到 final loop；
 它不替 Enter／Space／Esc 命名，也不改變 direct preview 的失敗即關閉邊界。
-`postbattle_ch29_persist`、原版 terminal owner 與一般玩家 E2 仍保持失敗即關閉，
-不能以此證據宣稱完整重製。
+**2026-08-21 勘誤：** `postbattle_ch29_persist` 已由另一條 raw ch28 E1 證據鏈
+閉合；第30戰的正式 ending 節點現可消費上述受限 raw-change 效果。這仍
+不會把輸入命名成 Enter／Space／Esc，也不證明原版 terminal owner、精確
+音訊或一般玩家 E2。

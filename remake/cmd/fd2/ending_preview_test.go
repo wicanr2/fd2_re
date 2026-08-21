@@ -81,7 +81,7 @@ func TestApproximateCampaignTailHoldsRecoveredTerminalFrame(t *testing.T) {
 	if _, err := p.Advance(5000); err != nil || !p.ResumeBlockedDialogue() {
 		t.Fatalf("second ending dialogue gate err=%v blocked=%#v", err, p.Blocked)
 	}
-	preview.campaignApproximate = true
+	preview.campaignSourceBound = true
 	if _, err := p.Advance(7500); err != nil || !preview.atNativeMontageGate() {
 		t.Fatalf("montage gate err=%v preview=%#v", err, preview)
 	}
@@ -178,7 +178,7 @@ func TestApproximateCampaignEndingConsumesOnlyVerifiedGateCueThenReturnsToEditab
 		Blocked: &ending.Segment{Op: "native_finale_montage_opaque", Source: "0x2c548"},
 	}
 	g := &Game{nativeEnding: &nativeEndingPreview{
-		player: p, campaignApproximate: true, montageStartAttempted: true,
+		player: p, campaignSourceBound: true, montageStartAttempted: true,
 		montageStartError: "test admission failure",
 	}}
 	t.Setenv("FD2_MUTE", "1")
@@ -239,7 +239,7 @@ func TestApproximateCampaignMontageStartsFromPersistentLoadCHOrder(t *testing.T)
 	if err != nil {
 		t.Fatal(err)
 	}
-	preview.campaignApproximate = true
+	preview.campaignSourceBound = true
 	for _, elapsed := range []int{0, 1000, 2500, 0, 256, 2000} {
 		if _, err := preview.player.Advance(elapsed); err != nil {
 			t.Fatal(err)
@@ -398,7 +398,7 @@ func TestApproximateFinalBattleWinFeedsSynchronizedPartyToEndingMontage(t *testi
 	final0.Lv, final0.Exp, final0.MaxHP = 40, 88.5, 47
 	final1.Lv, final1.Exp, final1.MaxHP = 39, 44.25, 46
 	g := &Game{
-		camp: runner, approximateMode: true, result: "win",
+		camp: runner, result: "win",
 		st:           &battle.State{Units: []*battle.Unit{&final0, &final1}},
 		partyMembers: map[int]bool{0: true, 1: true}, partyJoinOrder: []int{0, 1},
 		partyRoster: map[int]battle.Unit{0: old0, 1: old1},
@@ -462,29 +462,29 @@ func TestDirectEndingPreviewCannotUseApproximateCampaignFallback(t *testing.T) {
 	}
 }
 
-func TestCampaignMontageRequiresExplicitApproximateMode(t *testing.T) {
+func TestCampaignMontageRequiresSourceBoundCampaignOwner(t *testing.T) {
 	g := &Game{nativeEnding: &nativeEndingPreview{
-		campaignApproximate: true,
+		campaignSourceBound: true,
 		player: &ending.Player{
 			State:   ending.PlaybackBlocked,
 			Blocked: &ending.Segment{Op: "native_finale_montage_opaque", Source: "0x2c548"},
 		},
 	}}
 	if err := g.startCampaignNativeMontage(); err == nil {
-		t.Fatal("campaign montage started without FD2_APPROXIMATE=1")
+		t.Fatal("campaign montage started without complete source-bound assets")
 	}
 }
 
 func TestCampaignEndingRejectsProgrammaticUnprovenPrefix(t *testing.T) {
 	if _, err := newNativeEndingPreviewForCampaign(&campaign.NativeEndingPrefixConfig{
 		Timeline: nativeEndingTimelinePath, Handler: "0x2c548", Chapter: 29,
-		Mode: campaign.NativeEndingPrefixRecoveredOnly,
+		Mode: campaign.NativeEndingPrefixSourceBoundE1,
 	}); err == nil {
 		t.Fatal("programmatic unproven ending prefix was accepted")
 	}
 }
 
-func TestApproximateCampaignFinalNodeConsumesRecoveredPrefixThenStops(t *testing.T) {
+func TestSourceBoundCampaignFinalNodeConsumesRecoveredPrefixThenStops(t *testing.T) {
 	const base = "../../../org_game/炎龍騎士團/FLAME2"
 	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "ANI.DAT"} {
 		if _, err := os.Stat(filepath.Join(base, name)); os.IsNotExist(err) {
@@ -503,10 +503,10 @@ func TestApproximateCampaignFinalNodeConsumesRecoveredPrefixThenStops(t *testing
 	}
 	runner := campaign.NewRunner(c)
 	runner.Cur = "ending"
-	g := &Game{camp: runner, approximateMode: true}
+	g := &Game{camp: runner}
 	g.enterNode()
-	if g.nativeEnding == nil || !g.nativeEnding.campaignApproximate {
-		t.Fatalf("approximate final node did not admit recovered prefix: %#v", g.nativeEnding)
+	if g.nativeEnding == nil || !g.nativeEnding.campaignSourceBound {
+		t.Fatalf("source-bound final node did not admit recovered prefix: %#v", g.nativeEnding)
 	}
 	p := g.nativeEnding.player
 	for _, elapsed := range []int{0, 1000, 2500, 0, 256, 2000} {

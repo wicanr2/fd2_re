@@ -27,11 +27,12 @@ preparation quota、敵方 AI 窄 consumer 與 indexed ending prefix。2026-08-2
 實跑戰後 audit 為24節點中24 active／0 blocked；玩家第23戰已以16＋70槽位
 拓撲、raw ch22 indexed／resource adapter 與 `preparation_ch24` 存讀檔提升為 E1；玩家第24戰已以70＋16槽位
 拓撲、raw ch23 兩段 indexed adapter 與 `preparation_ch25` 存讀檔提升為 E1；玩家第25戰已以62→70→71槽位
-拓撲接通 raw ch24 post、`town_ch26` 與存讀檔 E1，只有玩家第29戰仍失敗
-即關閉。故本檔較早的「20 active／4 blocked」與「玩家第25戰仍阻擋」已失效。
+拓撲接通 raw ch24 post、`town_ch26` 與存讀檔 E1；玩家第29戰 raw ch28 post、
+group9、持續隊伍與 `preparation_ch30` 存讀檔也已達 E1。故本檔較早的
+「20 active／4 blocked」、「玩家第25戰仍阻擋」及「玩家第29戰仍失敗即關閉」
+均已失效。
 其餘主要缺口是完整玩家指令／法術／物品交易、相同 raw 狀態敵方回合、戰場與
-戰間 UI、一個
-blocked postbattle、精確終局 renderer／輸入，以及一般玩家 E2；詳見 `58`。
+戰間 UI、精確終局 renderer／輸入，以及一般玩家 E2；詳見 `58`。
 
 ### 1.3 進度停滯審計（2026-07-27）
 
@@ -4401,6 +4402,12 @@ archive 驗證 20 組近似資源交易、延遲與最終 #59；不過測試以�
 任何尚未閉合的原版 terminal handler 語意。原版 owner、精確終局輸入與一般玩家 E2
 仍維持失敗即關閉。
 
+**2026-08-21 勘誤：**上述是 2026-08-12 的過渡合約。現行欄位已改為
+`ending_party_snapshot_on_win`，並由正式 `battle_ch30→ending` 在移動游標前
+原子同步最後隊伍，不再以 `FD2_APPROXIMATE=1` 作為啟用條件。缺戰場或
+零筆持續身分符合時仍保持勝利結果與當前節點。此變更只閉合
+重製戰役的終局資料邊界，不提升原版 owner、精確 renderer／輸入與 E2。
+
 ## 2026-08-13：玩家第21戰天空之鑰固定演出（E0／E1）
 
 本節是對較早「`0x24336` 尚未 lower」與 handler 匯出仍有一筆真正未知的勘誤；
@@ -4568,3 +4575,45 @@ sample index 3。typed presenter 必須保留這些 archive／index／argument �
 present 邊界；不得用未證實名稱取代。entries 的高階圖像身分、sample 3 的玩家
 語意及同狀態像素／聽覺 E2 仍未閉合，因此本規格不授權 generic redraw，也不
 自行解除正式戰後 binding。
+
+## 2026-08-21 終局 20 段非零 renderer E1 契約
+
+主證據為
+[`fd2_ch29_tail_nonzero_renderer_ida.txt`](../data/ida/fd2_ch29_tail_nonzero_renderer_ida.txt)。
+`0x2C2A6` 的20次呼叫已證實 `[0x540FF]` 全為非零，因此正式重製端不得再走
+`0x28A6C` 的一般戰鬥結果、HP／狀態面板或 mutation 分支。每段的 typed input
+固定為兩筆 loader record value copy、兩組直接 table `+6/+7` 覆寫、table2
+`global_540ff`、TAI／BG與四組 FIGANI；全部20段須在發布第一幀前一次驗證。
+
+每段呈現順序必須保留：
+
+1. `0x29164` 的九段 `8..0` indexed 滑入與 `6*stage` palette；
+2. record0 auxiliary＋record1 base 的第一個 `0x2939D`；
+3. `[0x540FF]=1` 後 record1 auxiliary＋record0 base 的第二個 `0x2939D`；
+4. caller-owned 20-tick等待、FDOTHER #58同 index overlay、78-tick等待與清畫面；
+5. 20段後呈現 FDOTHER #59並永久停留，不進 town、save或下一章。
+
+`0x2939D` 需依 FIGANI raw `+4/+5/+6/+7` 保留有效 frame、音效 marker、inner
+present count與 z-order；animation header byte1 所屬的十段左右滑入亦不可省略。
+目前 sound owner globals沒有已證實 writer，故 E1 renderer只保存 marker並不猜
+sample。原版 1 tick 由重製端採既有約55 ms近似，不宣稱 DOS BIOS逐毫秒一致。
+
+`0x1088D(0x1E)` baseline穿過 `0x2C405` 間接 helper後仍保持完整 records不變，
+目前只有「函式內沒有直接 record store」的強推論，沒有動態 watchpoint。因此
+正式 E1可以在使用者已允許近似的產品界線下消費該 baseline，但 UI／文件必須
+標明來源約束 E1；不得提升為位元 exact、逐像素 parity或 `PLAYER-E2`。缺
+persistent raw record、FDFIELD／FDICON／item table、任一20段資源或 baseline
+一致性時，必須在第一幀前失敗即關閉且不得發布部分結局。
+
+### 現行產品接線狀態
+
+- `campaign_full.json` 的 `battle_ch30` 會先以 `ending_party_snapshot_on_win`
+  同步最後戰場，再進入 `source_bound_e1_terminal_hold`。
+- runtime 已會播放前綴、`0x2C548` 角色蒙太奇、現有的20段原資源
+  視覺橋接，最後停在 FDOTHER #59。這是來源約束 E1，不再需要
+  `FD2_APPROXIMATE=1`。
+- `figani.Animation` 現已保存 raw header byte1，但現有
+  `MontageTailPlayer` 尚未完整實作本節要求的 header byte1 工作區、raw
+  `+4/+5/+6/+7` 與兩次配對合成。因此可驗收的本輪成果是「正式
+  玩家路徑可達、資產缺失整批拒絕、終局定格」，不是精確
+  `0x28A6C` renderer 已完成。

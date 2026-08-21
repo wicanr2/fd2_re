@@ -18,6 +18,7 @@ import (
 // silently discarding an original asset input.
 type Animation struct {
 	Frames      []Frame
+	HeaderByte1 byte
 	HeaderByte4 byte
 }
 
@@ -209,7 +210,7 @@ func Parse(raw []byte) (*Animation, error) {
 		}
 		previous = off
 	}
-	return &Animation{Frames: frames, HeaderByte4: raw[4]}, nil
+	return &Animation{Frames: frames, HeaderByte1: raw[1], HeaderByte4: raw[4]}, nil
 }
 
 func decodeRLE(src []byte, width, height int) ([]byte, []byte, error) {

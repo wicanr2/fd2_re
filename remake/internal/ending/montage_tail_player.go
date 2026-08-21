@@ -26,8 +26,9 @@ const (
 )
 
 // MontageTailPlayer turns the source-proven resource schedule into a bounded,
-// deterministic indexed presentation for explicit approximate mode. It owns
-// no campaign, party, battle or save state.
+// deterministic indexed presentation. Campaign admission is owned by the
+// source-bound E1 caller; this player owns no campaign, party, battle or save
+// state and does not claim exact native 0x28a6c rendering.
 type MontageTailPlayer struct {
 	Tail       MontageTail
 	Assets     MontageTailAssets

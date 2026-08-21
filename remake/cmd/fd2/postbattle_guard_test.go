@@ -81,7 +81,7 @@ func clonePartyRoster(src map[int]battle.Unit) map[int]battle.Unit {
 	return dst
 }
 
-func TestApproximateCampaignFullFinalWinSyncsCurrentPartyBeforeEnding(t *testing.T) {
+func TestCampaignFullFinalWinSyncsCurrentPartyBeforeEnding(t *testing.T) {
 	t.Setenv("FD2_MUTE", "1")
 	campaignData, err := campaign.Load("../../assets/scenarios/campaign_full.json")
 	if err != nil {
@@ -100,7 +100,7 @@ func TestApproximateCampaignFullFinalWinSyncsCurrentPartyBeforeEnding(t *testing
 	current := stale
 	current.Lv, current.Exp, current.HP, current.MaxHP = 40, 77.25, 7, 56
 	g := &Game{
-		camp: runner, approximateMode: true,
+		camp:         runner,
 		st:           &battle.State{Units: []*battle.Unit{&current}},
 		partyMembers: map[int]bool{0: true}, partyJoinOrder: []int{0},
 		partyRoster: map[int]battle.Unit{0: stale},
@@ -115,21 +115,21 @@ func TestApproximateCampaignFullFinalWinSyncsCurrentPartyBeforeEnding(t *testing
 	}
 }
 
-func TestApproximateTerminalPartySyncFailsClosedBeforeCampaignAdvance(t *testing.T) {
+func TestEndingPartySnapshotFailsClosedBeforeCampaignAdvance(t *testing.T) {
 	c := &campaign.Campaign{Start: "battle", Nodes: map[string]*campaign.Node{
-		"battle": {Type: "battle", OnWin: "ending", ApproximateWinSync: true},
+		"battle": {Type: "battle", OnWin: "ending", EndingPartySnapshotOnWin: true},
 		"ending": {Type: "ending"},
 	}}
-	g := &Game{camp: campaign.NewRunner(c), approximateMode: true, result: "win"}
+	g := &Game{camp: campaign.NewRunner(c), result: "win"}
 	if g.confirmBattleResult() || g.camp.NodeID() != "battle" || g.result != "win" ||
 		!strings.Contains(g.loadErr, "缺少已完成的戰場狀態") {
 		t.Fatalf("終局同步失敗仍跨越戰役邊界: node=%q result=%q err=%q", g.camp.NodeID(), g.result, g.loadErr)
 	}
 }
 
-func TestApproximateTerminalPartySyncRejectsZeroMatchedRecords(t *testing.T) {
+func TestEndingPartySnapshotRejectsZeroMatchedRecords(t *testing.T) {
 	c := &campaign.Campaign{Start: "battle", Nodes: map[string]*campaign.Node{
-		"battle": {Type: "battle", OnWin: "ending", ApproximateWinSync: true},
+		"battle": {Type: "battle", OnWin: "ending", EndingPartySnapshotOnWin: true},
 		"ending": {Type: "ending"},
 	}}
 	current := battle.Unit{
@@ -139,7 +139,7 @@ func TestApproximateTerminalPartySyncRejectsZeroMatchedRecords(t *testing.T) {
 	stale := current
 	stale.NativeIdentity = 8
 	g := &Game{
-		camp: campaign.NewRunner(c), approximateMode: true, result: "win",
+		camp: campaign.NewRunner(c), result: "win",
 		st:           &battle.State{Units: []*battle.Unit{&current}},
 		partyMembers: map[int]bool{0: true}, partyRoster: map[int]battle.Unit{0: stale},
 	}
@@ -149,9 +149,9 @@ func TestApproximateTerminalPartySyncRejectsZeroMatchedRecords(t *testing.T) {
 	}
 }
 
-func TestFaithfulModeDoesNotConsumeApproximateTerminalPartySync(t *testing.T) {
+func TestSourceBoundEndingConsumesFinalPartySnapshot(t *testing.T) {
 	c := &campaign.Campaign{Start: "battle", Nodes: map[string]*campaign.Node{
-		"battle": {Type: "battle", OnWin: "ending", ApproximateWinSync: true},
+		"battle": {Type: "battle", OnWin: "ending", EndingPartySnapshotOnWin: true},
 		"ending": {Type: "ending"},
 	}}
 	stale := battle.Unit{Fig: 0, Camp: battle.Own, OnField: true, Lv: 20, HP: 30, MaxHP: 30}
@@ -165,7 +165,7 @@ func TestFaithfulModeDoesNotConsumeApproximateTerminalPartySync(t *testing.T) {
 	if !g.confirmBattleResult() || g.camp.NodeID() != "ending" {
 		t.Fatalf("忠實模式終局邊錯誤: node=%q err=%q", g.camp.NodeID(), g.loadErr)
 	}
-	if got := g.partyRoster[0].Lv; got != 20 {
-		t.Fatalf("忠實模式誤用了近似終局同步: Lv=%d", got)
+	if got := g.partyRoster[0].Lv; got != 21 {
+		t.Fatalf("來源約束終局未消費最後隊伍快照: Lv=%d", got)
 	}
 }

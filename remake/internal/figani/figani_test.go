@@ -16,8 +16,8 @@ func TestParsePreservesTransparentAndDitherPixels(t *testing.T) {
 	if f.X != 2 || f.Y != 3 || f.Width != 4 || f.Height != 1 || f.Delay != 2 || f.RawByte4 != 4 || f.RawByte5 != 5 || f.RawByte7 != 6 {
 		t.Fatalf("frame=%#v", f)
 	}
-	if a.HeaderByte4 != 0x7e {
-		t.Fatalf("HeaderByte4=%#x, want 0x7e", a.HeaderByte4)
+	if a.HeaderByte1 != 0 || a.HeaderByte4 != 0x7e {
+		t.Fatalf("header byte1/byte4=%#x/%#x, want 0/0x7e", a.HeaderByte1, a.HeaderByte4)
 	}
 	dst := make([]byte, 50)
 	for i := range dst {

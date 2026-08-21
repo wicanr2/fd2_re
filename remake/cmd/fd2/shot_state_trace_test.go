@@ -83,9 +83,9 @@ func TestWriteShotStateTraceOmitsSelectionWithoutOwner(t *testing.T) {
 	}
 }
 
-func TestWriteShotStateTracePreservesApproximateEndingGate(t *testing.T) {
+func TestWriteShotStateTracePreservesSourceBoundEndingGate(t *testing.T) {
 	g := &Game{nativeEnding: &nativeEndingPreview{
-		campaignApproximate: true,
+		campaignSourceBound: true,
 		audioCueConsumed:    true,
 		montage: &ending.MontageCycle{
 			Phase:     ending.MontagePhasePortrait,
@@ -111,7 +111,7 @@ func TestWriteShotStateTracePreservesApproximateEndingGate(t *testing.T) {
 	}
 	if got.NativeEnding == nil || got.NativeEnding.PlaybackState != string(ending.PlaybackBlocked) ||
 		got.NativeEnding.BlockedOp != "native_finale_montage_opaque" ||
-		got.NativeEnding.BlockedSource != "0x2c548" || !got.NativeEnding.CampaignApproximate ||
+		got.NativeEnding.BlockedSource != "0x2c548" || !got.NativeEnding.CampaignSourceBound ||
 		!got.NativeEnding.AudioCueConsumed || got.NativeEnding.MontagePhase != string(ending.MontagePhasePortrait) ||
 		got.NativeEnding.MontagePlanIndex == nil || *got.NativeEnding.MontagePlanIndex != 0 ||
 		got.NativeEnding.MontagePlanCount != 3 {

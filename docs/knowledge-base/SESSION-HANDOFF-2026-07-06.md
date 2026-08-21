@@ -5192,3 +5192,21 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 本輪再以唯讀子代理程式稽核 source comments 與 Markdown；程式註解無新的
   高信心錯誤，權威現況文件中的23／1、未綁定、presenter未接等斷言已修正；
   時間序列歷史則保留並明示由本條取代。
+
+## 2026-08-21：第30戰正式終局來源約束 E1
+
+- 依 RE→規格→實作順序，先新增
+  [`fd2_ch29_tail_nonzero_renderer_ida.txt`](../data/ida/fd2_ch29_tail_nonzero_renderer_ida.txt)，
+  用 IDA Pro 9.4 與固定雜湊證明 `0x2C2A6` 的20次 `0x28A6C(0,1)` 均走
+  `[0x540FF]!=0` 視覺分支、兩次固定配對與非戰鬥結果消費邊界。
+- SDD 已建立全有或全無的20段 renderer 契約；`figani.Animation` 開始保存 raw
+  header byte1。現有 `MontageTailPlayer` 仍是來源約束 E1 視覺橋接，
+  尚未實作精確 header byte1 工作區、raw `+4..+7`與兩次配對合成。
+- `battle_ch30` 現以 `ending_party_snapshot_on_win` 原子同步最後隊伍，再進入
+  `source_bound_e1_terminal_hold`；正式 campaign 不再需要 `FD2_APPROXIMATE=1`。
+  必要資產或 raw roster provenance 不足時，整批拒絕並回到可編輯結語；
+  成功時播放前綴、角色蒙太奇、20段尾段並停在 FDOTHER #59。
+- 程式註解與 Markdown 稽核同步撤回「`postbattle_ch29_persist` 仍失敗即關閉」、
+  「終局只在 `FD2_APPROXIMATE=1` 消費」與「`0x2C194` 不是 campaign binding」
+  等舊現況斷言；歷史段落保留勘誤原因。原版 owner、精確 renderer／音訊／
+  輸入與一般玩家 E2 仍未閉合。

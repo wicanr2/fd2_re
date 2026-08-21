@@ -498,8 +498,8 @@ type Beat struct {
 }
 
 // NativeEndingPrefixConfig 是已證實原版結局前綴的狹義戰役入口。它保留精確
-// timeline／handler，不會把不完整的 ending decoder 變成泛用終局場景。runtime
-// 只會在 FD2_APPROXIMATE=1 接受它；預設忠實模式仍在未還原尾段失敗即關閉。
+// timeline／handler，不會把 ending decoder 變成泛用終局場景。來源約束 E1
+// 模式允許正常戰役播放已驗證資源與近似時鐘，但不宣稱 DOS 逐像素／逐音訊 E2。
 type NativeEndingPrefixConfig struct {
 	Timeline string `json:"timeline"`
 	Handler  string `json:"handler"`
@@ -507,14 +507,14 @@ type NativeEndingPrefixConfig struct {
 	Mode     string `json:"mode"`
 }
 
-const NativeEndingPrefixRecoveredOnly = "recovered_prefix_only_fail_closed"
+const NativeEndingPrefixSourceBoundE1 = "source_bound_e1_terminal_hold"
 
 // IsRecoveredPrefixContract 即使呼叫端在記憶體內建構 Campaign、略過 JSON
 // 載入驗證，仍將唯一支援的結局前綴限制在已證實合約內。
 func (c *NativeEndingPrefixConfig) IsRecoveredPrefixContract() bool {
 	return c != nil && c.Timeline == "assets/endings/native_2bce5.json" &&
 		c.Handler == "0x2bce5" && (c.Chapter == 26 || c.Chapter == 29) &&
-		c.Mode == NativeEndingPrefixRecoveredOnly
+		c.Mode == NativeEndingPrefixSourceBoundE1
 }
 
 // Node 節點。Type: story / cutscene / battle / town / preparation / church / choice /
@@ -556,33 +556,33 @@ type Node struct {
 	Next   string `json:"next,omitempty"`    // story/event
 	OnWin  string `json:"on_win,omitempty"`  // battle
 	OnLose string `json:"on_lose,omitempty"` // battle(敗北路線;空=game over)
-	// ApproximateWinSync 是重製近似模式的終局資料邊界；只允許勝利直接進
-	// ending 的 battle 使用，且不可當作原版 handler 證據。
-	ApproximateWinSync bool                      `json:"approximate_sync_party_on_win,omitempty"`
-	Protect            string                    `json:"protect,omitempty"`             // battle:保護目標；空值沿用主角索爾
-	ItemID             *int                      `json:"item_id,omitempty"`             // inventory_gate:原版 unsigned-byte item identity
-	IfPresent          string                    `json:"if_present,omitempty"`          // inventory_gate:全隊任一角色持有 ItemID
-	IfMissing          string                    `json:"if_missing,omitempty"`          // inventory_gate:全隊皆未持有 ItemID
-	ItemIDs            []int                     `json:"item_ids,omitempty"`            // inventory_recipe:逐 item×runtime slot 計數／移除
-	SlotCount          int                       `json:"slot_count,omitempty"`          // inventory_recipe:只掃前 N 個 runtime records
-	RequiredMatches    int                       `json:"required_matches,omitempty"`    // inventory_recipe:原版要求的精確命中組合數
-	RewardItemID       *int                      `json:"reward_item_id,omitempty"`      // inventory_recipe:成功後 grant 的 item
-	IfCrafted          string                    `json:"if_crafted,omitempty"`          // inventory_recipe:成功 arm
-	IfInsufficient     string                    `json:"if_insufficient,omitempty"`     // inventory_recipe:命中數不符 arm
-	Prompt             string                    `json:"prompt,omitempty"`              // choice/preparation
-	PartyLimit         int                       `json:"party_limit,omitempty"`         // preparation: original 0x318ad selection cap (15, late route 19)
-	Cancel             string                    `json:"cancel,omitempty"`              // preparation: native confirmation/selection cancellation target
-	Town               string                    `json:"town,omitempty"`                // town:原版戰後城鎮/營地名稱(可編輯、可存檔的整備 hub)
-	NativeTownVariant  *int                      `json:"native_town_variant,omitempty"` // town:0/1/2→FDOTHER#11/#61/#62
-	NativeSecretGate   *NativeTownSecretGate     `json:"native_secret_gate,omitempty"`  // town:selection+BIOS scan→reveal selection5
-	Options            []Option                  `json:"options,omitempty"`             // choice
-	SetFlags           map[string]bool           `json:"set_flags,omitempty"`
-	Text               string                    `json:"text,omitempty"` // ending:結語
-	NativeEndingPrefix *NativeEndingPrefixConfig `json:"native_ending_prefix,omitempty"`
-	Goods              []Good                    `json:"goods,omitempty"`              // shop:商品
-	NativeHubVariant   int                       `json:"native_hub_variant,omitempty"` // shop:0=custom/generic; original owner uses 1 weapon, 3 item, 5 secret
-	Secret             []Good                    `json:"secret,omitempty"`             // shop:legacy authored conditional goods
-	SecretIf           string                    `json:"secret_if,omitempty"`          // shop:legacy authored flag; not the proven native hidden-entry gate
+	// EndingPartySnapshotOnWin 是重製終局資料邊界；只允許勝利直接進 ending
+	// 的 battle。它保存最後隊伍供回顧，不冒稱原版 FD2.SAV ABI。
+	EndingPartySnapshotOnWin bool                      `json:"ending_party_snapshot_on_win,omitempty"`
+	Protect                  string                    `json:"protect,omitempty"`             // battle:保護目標；空值沿用主角索爾
+	ItemID                   *int                      `json:"item_id,omitempty"`             // inventory_gate:原版 unsigned-byte item identity
+	IfPresent                string                    `json:"if_present,omitempty"`          // inventory_gate:全隊任一角色持有 ItemID
+	IfMissing                string                    `json:"if_missing,omitempty"`          // inventory_gate:全隊皆未持有 ItemID
+	ItemIDs                  []int                     `json:"item_ids,omitempty"`            // inventory_recipe:逐 item×runtime slot 計數／移除
+	SlotCount                int                       `json:"slot_count,omitempty"`          // inventory_recipe:只掃前 N 個 runtime records
+	RequiredMatches          int                       `json:"required_matches,omitempty"`    // inventory_recipe:原版要求的精確命中組合數
+	RewardItemID             *int                      `json:"reward_item_id,omitempty"`      // inventory_recipe:成功後 grant 的 item
+	IfCrafted                string                    `json:"if_crafted,omitempty"`          // inventory_recipe:成功 arm
+	IfInsufficient           string                    `json:"if_insufficient,omitempty"`     // inventory_recipe:命中數不符 arm
+	Prompt                   string                    `json:"prompt,omitempty"`              // choice/preparation
+	PartyLimit               int                       `json:"party_limit,omitempty"`         // preparation: original 0x318ad selection cap (15, late route 19)
+	Cancel                   string                    `json:"cancel,omitempty"`              // preparation: native confirmation/selection cancellation target
+	Town                     string                    `json:"town,omitempty"`                // town:原版戰後城鎮/營地名稱(可編輯、可存檔的整備 hub)
+	NativeTownVariant        *int                      `json:"native_town_variant,omitempty"` // town:0/1/2→FDOTHER#11/#61/#62
+	NativeSecretGate         *NativeTownSecretGate     `json:"native_secret_gate,omitempty"`  // town:selection+BIOS scan→reveal selection5
+	Options                  []Option                  `json:"options,omitempty"`             // choice
+	SetFlags                 map[string]bool           `json:"set_flags,omitempty"`
+	Text                     string                    `json:"text,omitempty"` // ending:結語
+	NativeEndingPrefix       *NativeEndingPrefixConfig `json:"native_ending_prefix,omitempty"`
+	Goods                    []Good                    `json:"goods,omitempty"`              // shop:商品
+	NativeHubVariant         int                       `json:"native_hub_variant,omitempty"` // shop:0=custom/generic; original owner uses 1 weapon, 3 item, 5 secret
+	Secret                   []Good                    `json:"secret,omitempty"`             // shop:legacy authored conditional goods
+	SecretIf                 string                    `json:"secret_if,omitempty"`          // shop:legacy authored flag; not the proven native hidden-entry gate
 }
 
 // Campaign 整張節點圖。
@@ -682,11 +682,11 @@ func Load(path string) (*Campaign, error) {
 				)
 			}
 		}
-		if n.ApproximateWinSync {
+		if n.EndingPartySnapshotOnWin {
 			ending := c.Nodes[n.OnWin]
 			if n.Type != "battle" || n.OnWin == "" || ending == nil || ending.Type != "ending" {
 				return nil, fmt.Errorf(
-					"battle 節點 %q 的 approximate_sync_party_on_win 只能用於直接進入 ending 的勝利邊",
+					"battle 節點 %q 的 ending_party_snapshot_on_win 只能用於直接進入 ending 的勝利邊",
 					id,
 				)
 			}

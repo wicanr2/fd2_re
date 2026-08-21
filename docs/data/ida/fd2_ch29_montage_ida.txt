@@ -76,5 +76,7 @@ portrait loop 與最後 64 段 palette fade 做成可測試的 indexed executor�
 final loop；它不把這個載體命名成 Enter／Space／Esc，也不修改 direct preview 的
 失敗即關閉邊界。raw word 與計時器證據另見
 [`fd2_ch29_input_cleanup_ida.txt`](fd2_ch29_input_cleanup_ida.txt)。
-`postbattle_ch29_persist`、原版 terminal owner、`0x2c194` 尾段與一般玩家 E2
-仍保持失敗即關閉。
+**2026-08-21 勘誤：** raw ch28 的 `postbattle_ch29_persist` 已另以正式 E1
+binding 閉合；`0x2c194` 尾段也已成為第30戰正式 ending 節點的來源約束
+E1 視覺橋接。仍失敗即關閉的是精確 `0x28a6c` 轉接、raw terminal
+owner、精確音訊／輸入與一般玩家 E2，不是已完成的第29戰戰後節點。

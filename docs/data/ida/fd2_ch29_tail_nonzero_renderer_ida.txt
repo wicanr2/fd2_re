@@ -1,0 +1,96 @@
+# FD2 終局 20 段 `0x2C2A6→0x28A6C` 非零分支：IDA Pro 9.4 證據
+
+## 輸入、工具與位址空間
+
+- 輸入：`FD2.EXE`，357074 bytes。
+- MD5：`b97caf2239a27a896069d03549d96e1e`。
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 第一順位：合法 IDA Pro 9.4／Hex-Rays `9.4.0.260610`，於
+  `fd2-ida-authorized-local:latest` 一次性、無網路 Docker 執行；原版唯讀，
+  IDA 資料庫只在容器 `tmpfs`。
+- 交叉驗證沿用既有 Capstone 5 直接指令證據
+  [`fd2_ch29_post_montage_tail_ida.txt`](fd2_ch29_post_montage_tail_ida.txt)。
+- 本檔所有 `0x...` 都是 IDA Linear Executable loader 的線性位址，不是檔案
+  偏移或重製端位址。函式仍保留原始 `sub_...` 名稱；下列語意是附加註記。
+
+## 已證實：`sub_2BCE5` 在每段呼叫前的直接寫入
+
+IDA 將 `0x2BCE5..0x2C39B` 識別為 `sub_2BCE5`。20 次迴圈
+`0x2C253..0x2C33B` 每次依序：
+
+1. 以 table0 的 byte 決定 record0 `+6 = byte < 0x4C ? 2 : 0`，再寫 `+7`。
+2. 以 table1 的 byte決定 record1 `+6 = byte < 0x4C ? 2 : 0`，再寫 `+7`。
+3. 將 table2 byte 寫到 `[0x540FF]`；固定 20 筆皆非零。
+4. 呼叫 `sub_28A6C(0,1)`，之後才切換 FDOTHER #57 palette、等待20 ticks、
+   疊 FDOTHER #58 的同 index frame、等待78 ticks並清 VGA。
+
+因此 renderer 內所有 `[0x540FF]==0` mutation／一般戰鬥結算分支在這20次
+呼叫均不可達。三張表與精確 bytes 仍以既有 tail 證據為主，不在本檔重複。
+
+## 已證實：`sub_28A6C` 的非零資源與兩次配對呼叫
+
+`sub_28A6C(0,1)` 先取得 record0／record1。即使在非零分支，直接指令仍讀：
+
+- 兩筆 record 的 `+0/+1`、`+6/+7`、`+31/+32`；
+- `[0x53C03]` 對應的 raw table byte；
+- `[0x540FF]`。
+
+非零分支隨後以 `[0x540FF]` 覆蓋 TAI 與主要 BG selector；若
+record0 `+7` 為26／54或 record1 `+7` 為55，TAI selector改為3。FIGANI
+選取固定為：
+
+- record1 base：`3 * record1[+7]`；
+- record1 auxiliary：`3 * record1[+7] + 1`；
+- record0 base：`3 * record0[+7]`；
+- record0 auxiliary：`3 * record0[+7] + 1`。
+
+`sub_29164(0, headerByte1, record0Base, record1Base, ...)` 先執行九段
+`8..0` 的 indexed 滑入／palette 排程。之後 `sub_2939D` 一定執行兩次：
+
+1. `(record0 auxiliary, record1 base)`；
+2. 將 `[0x540FF]` 強制寫為1後，執行 `(record1 auxiliary, record0 base)`。
+
+這證實兩組動畫是配對呈現，不是四個資源各自完整播放，也不能在 animated
+record 下方再畫它自己的 base frame。
+
+## 已證實：`sub_2939D` 非零分支不需要一般戰鬥狀態面板
+
+IDA 將 `0x2939D` 識別為 `sub_2939D`。在 `[0x540FF] != 0` 時：
+
+- 六個一般戰鬥結果暫存欄位被清為0，不呼叫 `sub_29F72`；
+- 不讀／寫 record `+0x40` HP，也不呼叫 `sub_2A289` 狀態面板；
+- frame `+5` 非零時仍交給 `sub_25A96`，但其 caller 傳入的兩個 sound owner
+  global 在非零路徑沒有本地 writer，故精確 sample 仍是未知；
+- 依 animation header byte1 選擇 work origin，先處理 header 指定的前段 frames，
+  再逐 frame 讀 `+4`、`+5`、`+6`、`+7`；`+6` 是 inner present 次數，
+  `+7 bit0` 決定 animated／base 的前後順序；
+- 每個 inner present 都使 base scheduler前進一次，並等待1 tick；
+- 當 `[0x540FF]==1` 且最後一個 `+4 != 0` frame 已處理時回傳1，因此第二次
+  配對呼叫有明確終止點，不是無界播放。
+
+`sub_29C90` 與 `sub_29DED` 是 animation header byte1 所擁有的十段左右滑入；
+它們各自使用32-byte水平位移及 BG frame0／1／2循環。這些是 indexed 畫面
+排程，不是 campaign handoff。
+
+## 強推論與仍未知
+
+- **強推論**：`0x1088D(0x1E)` 建立的31筆 loader baseline 可作
+  `0x2C2A6` 的 record0／record1輸入。`sub_2C405` 偽代碼本身只從
+  `[0x53A45]` 取 record pointer及讀 `+7/+8/+0x20`，沒有直接 record store；
+  但其多個間接 helper 尚無動態 watchpoint，不能把「沒有直接 store」升格成
+  完整 records 位元不變的已證實結論。
+- **未知**：兩個 sound owner globals在20段迴圈的精確值、`sub_25A96` 的
+  sample語意、原版每段逐音訊輸出，以及未修改一般玩家 E2。
+- **已證實但不影響此 renderer admission**：20段之後仍有 FDOTHER #58 overlay、
+  #59 terminal frame與 caller self-loop；不可改接 town／shop／下一章。
+
+## 重製裁決
+
+依使用者已確認「重製達成近似效果即可，不追 DOS BIOS／逐毫秒完全一致」，
+正式 E1 可使用：已驗證 loader baseline＋每段直接 `+6/+7/[0x540FF]` writes＋
+上述精確非零視覺排程。必須：
+
+- 保留 baseline 沿用為強推論，不宣稱 record snapshot exact 或 PLAYER-E2；
+- 全部20組資源與兩筆 raw record provenance在開始前一次驗證，缺任一項零發布；
+- 不猜 sound owner；音訊保持未接或另有證據後再接；
+- 完成 FDOTHER #59 後永久停留在終端畫面，不前進 campaign。

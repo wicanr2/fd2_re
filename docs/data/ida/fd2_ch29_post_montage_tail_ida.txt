@@ -139,5 +139,8 @@ node、town、shop、整備、save 或結局 owner。
   `0x2c2a6` 呼叫當下完整 records/globals、精確 `0x28a6c` 20 段轉接器，以及
   這段與終局／戰役／城鎮的 handoff。近似 `MontageTailPlayer` 不解除這些未知項。
 
-因此 `MontageTail` 目前是可編輯、可驗證、失敗即關閉的 raw schedule，
-不是 campaign binding，也不解除 `postbattle_ch29_persist`。
+因此 `MontageTail` 是可編輯、可驗證、失敗即關閉的 raw schedule。
+**2026-08-21 勘誤：** 它現已由第30戰正式 ending 節點以來源約束 E1
+消費，但這只是產品層的可玩視覺橋接，不會追溯性地證明原版 campaign
+owner、精確 `0x28a6c` 輸出或一般玩家 E2；`postbattle_ch29_persist` 則是
+另一條已閉合的 raw ch28 戰後 E1。

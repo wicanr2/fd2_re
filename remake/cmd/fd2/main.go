@@ -848,7 +848,11 @@ func (g *Game) stepFocusUnit() {
 	}
 	finish := func() {
 		g.focusJob = nil
-		g.beatAdvance()
+		// focus_unit 也會被獨立 renderer／證據測試使用；只有 campaign
+		// 擁有者存在時才能接下一拍。這不使 direct-entry 偽造戰役進度。
+		if g.camp != nil {
+			g.beatAdvance()
+		}
 	}
 	originX, originY := int(g.camX)/g.m.TileW, int(g.camY)/g.m.TileH
 	screenX, screenY := g.curX-originX, g.curY-originY
@@ -2721,10 +2725,10 @@ func (g *Game) enterNode() {
 		g.setupNativeShop()
 	case "ending":
 		g.dialog, g.st, g.sel = nil, nil, nil
-		if g.approximateMode && n.NativeEndingPrefix != nil {
+		if n.NativeEndingPrefix != nil {
 			if err := g.startCampaignNativeEnding(n.NativeEndingPrefix); err != nil {
-				// 原始結局資源是玩家自備且不隨專案散布；近似模式可退回
-				// 可編輯結語，但預設忠實模式不會走這條分支。
+				// 原始結局資源是玩家自備且不隨專案散布；載入失敗時保留
+				// 可編輯結語，不發布部分原生演出。
 				g.endingNotice = "原始結局素材不足，顯示可編輯結語。"
 			}
 		}
@@ -4528,16 +4532,15 @@ func (g *Game) confirmBattleResult() bool {
 	}
 	outcome := g.result
 	current := g.camp.Node()
-	// 第 30 戰目前沒有已閉合的原版 terminal handler。明確近似模式可由
-	// campaign 資料要求在直達結局前保存最後一戰的隊伍結果；忠實模式不會
-	// 消費這個欄位，也不會因此把近似同步冒充原版語意。
-	if outcome == "win" && g.approximateMode && current != nil && current.ApproximateWinSync {
+	// 第30戰的可編輯 ending edge明確要求保存最後隊伍，供來源約束 E1 的角色
+	// 終局回顧使用；這是 remake 資料邊界，不冒稱原版 FD2.SAV ABI。
+	if outcome == "win" && current != nil && current.EndingPartySnapshotOnWin {
 		synced, err := g.syncPartyFromBattleRecords()
 		if err == nil && synced == 0 {
 			err = fmt.Errorf("完成的戰場沒有任何持續隊伍身分符合")
 		}
 		if err != nil {
-			g.loadErr = "近似終局隊伍同步失敗: " + err.Error()
+			g.loadErr = "終局隊伍同步失敗: " + err.Error()
 			g.msg = "最終戰結果尚未保存，流程已停止"
 			return false
 		}

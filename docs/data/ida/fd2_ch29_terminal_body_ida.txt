@@ -86,9 +86,10 @@ IDA 函式範圍為 `0x2c405..0x2c9ec`，caller 只有 `0x2c18f`。開頭直接�
   `MontageTail` 可以保存上述 raw schedule，並在原始資源與 buffer provenance
   完整時執行獨立預覽。
 - `0x2c405` 的 montage、`0x2c194..0x2c39a` tail、輸入事件與
-  `postbattle_ch29_persist`／終局 campaign handoff 目前仍未有一般玩家 E2；
+  終局 campaign handoff 目前仍未有一般玩家 E2；
   不把它們接到 town/shop/preparation/save，也不把 `0x1088d(0x1e)` 當作
   玩家戰次證據。
-- 缺少完整 indexed owner 或 raw chapter provenance 時，runtime 必須停止在
-  已證實的獨立畫面邊界（fail-closed），不可用 generic ending 或下一章節
-  替代。
+- **2026-08-21 勘誤：** 正式 `battle_ch30→ending` 已可以來源約束 E1
+  播放前綴、角色蒙太奇、20段尾段並停在 FDOTHER #59；任一必要資產
+  或 raw roster provenance 不足時，整批拒絕並回到可編輯結語，不部分呈現。
+  此 E1 不把 `0x25757` 命名成 campaign owner，也不把近似視覺／時鐘提升為 E2。

@@ -28,7 +28,7 @@ type nativeEndingPreview struct {
 	remainder             time.Duration
 	chapter               int
 	queued                bool
-	campaignApproximate   bool
+	campaignSourceBound   bool
 	audioCueConsumed      bool
 	fdotherPath           string
 	fdtxtPath             string
@@ -132,23 +132,23 @@ func newNativeEndingPreviewForTimeline(timelinePath string, chapter int) (*nativ
 	}, nil
 }
 
-// startCampaignNativeEnding 只啟動已經過明確驗證的戰役節點所選前綴。呼叫端
-// 必須以 FD2_APPROXIMATE=1 保護，正常忠實模式不會悄悄跨過未還原的終局蒙太奇邊界。
+// startCampaignNativeEnding 只啟動已經過明確驗證的戰役節點所選前綴。後續
+// renderer仍以來源約束 E1 標示，不把近似時鐘或未證實音效冒稱為原版 E2。
 func (g *Game) startCampaignNativeEnding(prefix *campaign.NativeEndingPrefixConfig) error {
-	if g == nil || !g.approximateMode {
-		return fmt.Errorf("ending: campaign prefix requires explicit approximate mode")
+	if g == nil {
+		return fmt.Errorf("ending: campaign prefix requires a game owner")
 	}
 	preview, err := newNativeEndingPreviewForCampaign(prefix)
 	if err != nil {
 		return err
 	}
-	preview.campaignApproximate = true
+	preview.campaignSourceBound = true
 	g.nativeEnding = preview
 	return nil
 }
 
 func (p *nativeEndingPreview) atNativeMontageGate() bool {
-	return p != nil && p.campaignApproximate && !p.queued && p.player != nil &&
+	return p != nil && p.campaignSourceBound && !p.queued && p.player != nil &&
 		p.player.State == ending.PlaybackBlocked && p.player.Blocked != nil &&
 		p.player.Blocked.Op == "native_finale_montage_opaque" &&
 		p.player.Blocked.Source == "0x2c548"
@@ -164,9 +164,8 @@ func (p *nativeEndingPreview) runningCampaignTail() bool {
 }
 
 // presentingCampaignTerminal marks the stable terminal image recovered from
-// the final FDOTHER#59 presentation.  It remains an explicit approximate
-// campaign feature until the 20-entry 0x28a6c renderer has its own proven
-// adapter and the raw terminal owner reaches a normal player path.
+// the final FDOTHER#59 presentation.  It is a source-bound E1 campaign feature;
+// call-time record continuity and DOS visual/audio E2 remain separately graded.
 func (p *nativeEndingPreview) presentingCampaignTerminal() bool {
 	return p != nil && p.atNativeMontageGate() && p.tail != nil && p.tailPlayer != nil &&
 		p.tailPlayer.Ready() && !p.reviewPartyOutcomes
@@ -209,8 +208,8 @@ func (g *Game) consumeNativeEndingAudioAtGate() {
 	g.playBGMCount(fmt.Sprintf("FDMUS_%03d", cue.Track), cue.DriverArg)
 }
 
-// finishCampaignNativeEndingFallback 只在明確近似模式且原始資產 admission
-// 失敗時返回可編輯結語。成功呈現 terminal frame 的路徑會永久停留在原版
+// finishCampaignNativeEndingFallback 只在來源約束的原始資產預檢失敗時
+// 返回可編輯結語。成功呈現 terminal frame 的路徑會永久停留在原版
 // 對應的終局畫面，不會回退成 generic ending。
 func (g *Game) finishCampaignNativeEndingFallback() bool {
 	if g == nil || g.nativeEnding == nil || !g.nativeEnding.awaitingCampaignFallback() {
@@ -287,12 +286,12 @@ func (p *nativeEndingPreview) montageArchivePaths() (ending.MontageArchivePaths,
 	return paths, nil
 }
 
-// startCampaignNativeMontage is limited to FD2_APPROXIMATE=1.  It uses the
-// current persistent roster only as a typed, source-provenance carrier; it
-// does not claim that the unmodified general-player path reached 0x2c548.
+// startCampaignNativeMontage 只在來源約束 E1 的終局邊界啟動。它以當前
+// persistent roster 作為具型別、可回查原始記錄的載體；這不證明未修改
+// 原版的一般玩家路徑已到達 0x2c548。
 func (g *Game) startCampaignNativeMontage() error {
-	if g == nil || !g.approximateMode || g.nativeEnding == nil || !g.nativeEnding.atNativeMontageGate() {
-		return fmt.Errorf("ending: native montage requires explicit approximate mode at its recovered gate")
+	if g == nil || g.nativeEnding == nil || !g.nativeEnding.atNativeMontageGate() {
+		return fmt.Errorf("ending: native montage requires the source-bound campaign gate")
 	}
 	p := g.nativeEnding
 	if p.montageStartAttempted {
@@ -329,14 +328,14 @@ func (g *Game) startCampaignNativeMontage() error {
 	return nil
 }
 
-// startCampaignNativeTail admits an explicitly approximate visual bridge for
+// startCampaignNativeTail admits a source-bound E1 visual bridge for
 // the proven 20-entry 0x2c194 resource schedule. It preserves original archive
-// selectors and delays, but does not claim the unresolved native status-panel,
-// slide, sound or call-time record semantics. Faithful mode remains blocked.
+// selectors and delays, but does not claim unresolved sound ownership or
+// call-time record bit equality as DOS E2.
 func (g *Game) startCampaignNativeTail() error {
-	if g == nil || !g.approximateMode || g.nativeEnding == nil || !g.nativeEnding.atNativeMontageGate() ||
+	if g == nil || g.nativeEnding == nil || !g.nativeEnding.atNativeMontageGate() ||
 		g.nativeEnding.montage == nil || !g.nativeEnding.montage.Ready() {
-		return fmt.Errorf("ending: terminal tail requires a completed approximate montage")
+		return fmt.Errorf("ending: terminal tail requires a completed source-bound montage")
 	}
 	p := g.nativeEnding
 	if p.tailStartAttempted {
@@ -660,7 +659,7 @@ func (g *Game) drawNativeEndingPreview(screen *ebiten.Image) {
 		pop := &ebiten.DrawImageOptions{}
 		pop.GeoM.Translate(16, logicalH-56)
 		screen.DrawImage(panel, pop)
-		g.font.Draw(screen, "角色蒙太奇（近似戰役資料）：任意按鍵會在本輪結束後略過中間角色。", 23, logicalH-44, 0.78,
+		g.font.Draw(screen, "角色蒙太奇（來源約束 E1）：任意按鍵會在本輪結束後略過中間角色。", 23, logicalH-44, 0.78,
 			color.RGBA{0xff, 0xe0, 0x90, 0xff})
 	} else if g.nativeEnding.runningCampaignTail() && g.font != nil {
 		panel := ebiten.NewImage(logicalW-32, 42)
@@ -668,7 +667,7 @@ func (g *Game) drawNativeEndingPreview(screen *ebiten.Image) {
 		pop := &ebiten.DrawImageOptions{}
 		pop.GeoM.Translate(16, logicalH-56)
 		screen.DrawImage(panel, pop)
-		g.font.Draw(screen, "終局蒙太奇（原版資源、近似合成）：完成後將停留在 THE END。", 25, logicalH-44, 0.78,
+		g.font.Draw(screen, "終局蒙太奇（原版資源、來源約束 E1）：完成後將停留在 THE END。", 25, logicalH-44, 0.78,
 			color.RGBA{0xff, 0xe0, 0x90, 0xff})
 	} else if g.nativeEnding.awaitingCampaignFallback() && g.font != nil {
 		panel := ebiten.NewImage(logicalW-32, 42)

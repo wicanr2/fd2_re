@@ -54,12 +54,12 @@ type screenshotBattleTrace struct {
 }
 
 // screenshotEndingTrace 保存結局截圖所在的精確 raw 邊界。它刻意只記錄狀態，
-// 不能把已還原前綴或近似戰役回退升格成完整結局宣告。
+// 不能把已還原前綴或來源約束 E1 升格成完整結局 E2 宣告。
 type screenshotEndingTrace struct {
 	PlaybackState       string `json:"playback_state"`
 	BlockedOp           string `json:"blocked_op,omitempty"`
 	BlockedSource       string `json:"blocked_source,omitempty"`
-	CampaignApproximate bool   `json:"campaign_approximate"`
+	CampaignSourceBound bool   `json:"campaign_source_bound"`
 	AudioCueConsumed    bool   `json:"audio_cue_consumed"`
 	MontagePhase        string `json:"montage_phase,omitempty"`
 	MontagePlanIndex    *int   `json:"montage_plan_index,omitempty"`
@@ -93,7 +93,7 @@ func (g *Game) writeShotStateTrace(path string) error {
 	if p := g.nativeEnding; p != nil && p.player != nil {
 		endingTrace := &screenshotEndingTrace{
 			PlaybackState:       string(p.player.State),
-			CampaignApproximate: p.campaignApproximate,
+			CampaignSourceBound: p.campaignSourceBound,
 			AudioCueConsumed:    p.audioCueConsumed,
 		}
 		if p.player.Blocked != nil {

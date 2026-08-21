@@ -4010,7 +4010,7 @@
    "scenario": "assets/scenarios/ch30.json",
    "on_win": "ending",
    "on_lose": "retreat_ch30",
-   "approximate_sync_party_on_win": true
+   "ending_party_snapshot_on_win": true
   },
   "retreat_ch30": {
    "type": "story",
@@ -4032,7 +4032,7 @@
     "timeline": "assets/endings/native_2bce5.json",
     "handler": "0x2bce5",
     "chapter": 29,
-    "mode": "recovered_prefix_only_fail_closed"
+    "mode": "source_bound_e1_terminal_hold"
    },
    "text": "傳說的終章——空魔神殞落。世界得救了，炎龍騎士團踏上返鄉之路；希莉亞也期待著回到王國後，請父王為大家舉辦慶功宴。"
   },
