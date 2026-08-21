@@ -321,14 +321,21 @@ func TestPlayerNativeCommand13RunsCursorTransactionThroughConfirm(t *testing.T) 
 	if err := g.composeNativeMapFrameAt(time.Unix(0, 0)); err != nil {
 		t.Fatal(err)
 	}
+	digits := assets.CommandHealDigits
+	assets.CommandHealDigits = nil
+	g.confirm()
+	if g.nativeHealPresentation != nil || actor.MP != 5 || actor.HP != 40 || actor.Acted {
+		t.Fatalf("missing FDOTHER#5 did not fail closed: job=%v actor=%#v", g.nativeHealPresentation != nil, actor)
+	}
+	assets.CommandHealDigits = digits
 
 	g.confirm()
 	if g.nativeHealPresentation == nil || actor.MP != 5 || actor.HP != 40 || actor.Acted {
 		t.Fatalf("command13 did not stop at presentation boundary: job=%v actor=%#v",
 			g.nativeHealPresentation != nil, actor)
 	}
-	for step := 0; g.nativeHealPresentation != nil && step < 100; step++ {
-		if g.nativeHealPresentation.phase == nativeCommandHealFrames {
+	for step := 0; g.nativeHealPresentation != nil && step < 256; step++ {
+		if phase := g.nativeHealPresentation.phase; phase == nativeCommandHealFrames || phase == nativeCommandHealEffectFrames || phase == nativeCommandHealMaskFrames || phase == nativeCommandHealDigitFrames {
 			g.nativeHealPresentation.drawn = true
 		}
 		g.stepNativeCommandHealPresentation()

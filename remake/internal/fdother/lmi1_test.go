@@ -208,3 +208,34 @@ func TestFDOTHER006NativeUnitPresentBank(t *testing.T) {
 		t.Fatalf("FDOTHER#6 entry#0x7c=%dx%d, want 24x23", e.Width, e.Height)
 	}
 }
+
+func TestFDOTHER005And006CommandHealTailDescriptors(t *testing.T) {
+	const datPath = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
+	if _, err := os.Stat(datPath); err != nil {
+		t.Skip("player-provided FDOTHER.DAT is absent")
+	}
+	digits, err := DecodeLMI1Resource(datPath, NativeCommandHealTailDigitResource)
+	if err != nil {
+		t.Fatal(err)
+	}
+	effect, err := DecodeLMI1Resource(datPath, NativeCommandHealTailEffectResource)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(digits) <= NativeCommandHealTailDigitBias+9 {
+		t.Fatalf("FDOTHER#5 count=%d lacks descriptors %#x..%#x", len(digits), NativeCommandHealTailDigitBias, NativeCommandHealTailDigitBias+9)
+	}
+	if len(effect) < NativeCommandHealTailEffectStart+NativeCommandHealTailEffectFrames {
+		t.Fatalf("FDOTHER#6 count=%d lacks descriptors %#x..%#x", len(effect), NativeCommandHealTailEffectStart, NativeCommandHealTailEffectStart+NativeCommandHealTailEffectFrames-1)
+	}
+	for index := NativeCommandHealTailDigitBias; index <= NativeCommandHealTailDigitBias+9; index++ {
+		if entry := digits[index]; entry.Width <= 0 || entry.Height <= 0 || len(entry.Pixels) != entry.Width*entry.Height {
+			t.Fatalf("FDOTHER#5 descriptor %#x malformed", index)
+		}
+	}
+	for index := NativeCommandHealTailEffectStart; index < NativeCommandHealTailEffectStart+NativeCommandHealTailEffectFrames; index++ {
+		if entry := effect[index]; entry.Width <= 0 || entry.Height <= 0 || len(entry.Pixels) != entry.Width*entry.Height {
+			t.Fatalf("FDOTHER#6 descriptor %#x malformed", index)
+		}
+	}
+}

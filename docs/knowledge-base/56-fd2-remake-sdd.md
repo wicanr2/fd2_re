@@ -3832,6 +3832,57 @@ LUT、palette 或 raw view 時交易不發生；原版每張 5 ms 在 60 Hz 更�
 證據見
 [`fd2_command13_21eb1_presentation_ida.txt`](../data/ida/fd2_command13_21eb1_presentation_ida.txt)。
 
+#### command 13–16 後段演出規格（實作前契約）
+
+本節是 [`fd2_command_numeric_tail_ida.txt`](../data/ida/fd2_command_numeric_tail_ida.txt)
+的重製端消費規格；它不新增原版語意名稱。實作必須以一份具型別且不可變的
+`NativeCommandHealTailSchedule`（實際 Go 名稱可等價調整）保存以下資料，禁止將
+表格與時序常數分散寫入畫面控制器：
+
+- command 13–16 共用 FDOTHER #6 起始 descriptor `0x39`、7 張連續畫格、第一張
+  sample index `12`／loop `1`；每張先恢復完整 indexed baseline，再對所有可見的
+  final target 合成同一張 descriptor。
+- snapshot 切換段使用 sample index `1`／loop `1`、raw compositor 引數 `0xC0`，
+  執行5組「原始 snapshot／重畫 target mask」切換，結尾保留原始 snapshot。
+  重畫端依 `fdicon.Sprite.Mask`（不是 `Pixels!=0`）把24×24 source write spans填成
+  `0xC0`，cycle3改用2，並寫在 target cell上方6列。`0xC0` 只以 raw 值傳遞；
+  沒有原版畫面證據前不得命名其顏色或混合模式。
+- 數值 writer 固定每個可見 target 四欄、水平 position code `2,7,12,17`、
+  descriptor bias `0x69`，並沿用 `AppendNativePresentationDigits` 的右對齊契約。
+- 數值 reader 固定22張 raw frame，垂直表為
+  `15,15,15,15,7,3,1,0,0,1,3,7,15,15,11,9,8,8,9,11,15,15,15,15,15`；
+  第 `q` 欄在第 `f` 張讀 `table[f+(q mod 4)]-3`，glyph 來自 FDOTHER #5。
+  destination 保留原式
+  `work+0x8088+24*(x-cameraX)+10944*(y-cameraY)+positionCode+
+  456*(vertical-3)`，不得用重新估算的文字 baseline 取代。
+
+正式順序固定為：既有 `0x21EB1` 16張前段 → FDOTHER #6七張 → 五組
+snapshot→mask切換與結尾 snapshot → MP／HP transaction → 由每個 target 的實際 restore 回傳值
+建立數值 queue → 完整 steady redraw → 22張數值演出 → 尾停 → action cleanup／
+敵方 AI continuation。數字段 baseline 必須由 transaction後狀態重畫；不可沿用
+`0x1C2DA` 的 mask work buffer或 transaction前的 HUD snapshot。
+玩家與敵方 mode 11 共用這個視覺工作，但 target array 的 owner 保持分離：玩家只
+使用已確認的 cursor target；敵方只使用 `0x15311` 既有 raw selector 重建結果，演出
+期間不得重新規劃或改套玩家 gate。
+
+資源與狀態發布採原子預檢：在任何 MP／HP mutation 前，必須一次確認完整 indexed
+baseline、palette、FDOTHER #3前段 LUT、FDOTHER #6 descriptors `0x39..0x3F`、
+FDOTHER #5 digits `0x69..0x72`、全部可見 target 座標及數值版面都可解碼。任一缺失
+即失敗即關閉，不播放半套演出、不扣 MP、不改 HP，也不執行 action cleanup／AI
+continuation。預檢後若畫面工作仍發生不可恢復錯誤，必須保存 `loadErr` 並停止後續
+continuation；不得把已改變的狀態偽裝成成功完成。演出期間維持既有禁止存檔邊界。
+
+時序只保存可觀察順序，不宣稱逐毫秒一致：原版7張前段的每張1 tick，以及數值段
+每張2 ms，在60 Hz更新迴圈中都至少占一個可見 update；原版兩個200 ms停頓及數值
+尾端500 ms統一以 `nativeDelayTicks` 換算。若未來 renderer 支援更高頻率，須另以
+原版同狀態擷取驗證後才能提高時間忠實度。
+
+實作驗收至少包含：typed schedule 的原始常數回歸；任一 #3／#5／#6 資源缺失時
+玩家與敵方都零 mutation；玩家四個 command 與敵方 mode 11 的狀態邊界；AI 演出
+期間不重新規劃；每 target 四欄、相位索引與右對齊；22張後回復 baseline並完成
+500 ms尾停；存檔仍拒絕演出中狀態。這批只可提升為 `RUNTIME-E1`，未修改原版與
+重製端同狀態逐幀／逐音訊比較完成前，`PLAYER-E2` 維持未完成。
+
 ### 2026-08-11：mode 2 `aiStep` 遊戲層消費端 E1
 
 重製端新增兩個決定性回歸夾具：完整原始來源證據（raw provenance）的 mode 2 物理計畫

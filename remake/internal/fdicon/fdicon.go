@@ -96,6 +96,26 @@ func (b *Bank) SpriteForNativeSlot(cache *NativeSelectorCache, slot, pose, cycle
 // destination rather than treating as ordinary transparency.
 type Sprite struct{ Pixels, Mask, RemapMask []byte }
 
+// BlitConstantMaskAt reproduces 0x4ddd7 after the four-mode source stream has
+// been decoded. Modes 0/1/2 are exactly Sprite.Mask writes, including source
+// value zero; mode 3 remains untouched. The color is a raw palette index.
+func (s Sprite) BlitConstantMaskAt(dst []byte, stride, x, y int, index byte) error {
+	if len(s.Mask) != NativeSize*NativeSize || stride <= 0 || x < 0 || y < 0 ||
+		x+NativeSize > stride || (y+NativeSize)*stride > len(dst) {
+		return errors.New("fdicon: constant-mask destination is incomplete")
+	}
+	next := append([]byte(nil), dst...)
+	for row := 0; row < NativeSize; row++ {
+		for col := 0; col < NativeSize; col++ {
+			if s.Mask[row*NativeSize+col] != 0 {
+				next[(y+row)*stride+x+col] = index
+			}
+		}
+	}
+	copy(dst, next)
+	return nil
+}
+
 // SpriteFor implements the native 0x127e0 selector after 0x11019 has built
 // its pointer table: group×12 + pose×3 + cycle. Pose is runtime +3; cycle is
 // resolved from the global idle/moving counters, not directly from unit +4.

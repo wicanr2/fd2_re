@@ -1,6 +1,7 @@
 package fdicon
 
 import (
+	"bytes"
 	"os"
 	"testing"
 )
@@ -191,5 +192,34 @@ func TestNativePlacementOffsetMatches127E0(t *testing.T) {
 	}
 	if _, err := NativePlacementOffset(0, 0, 0, 0, 0, 0, 2, true); err == nil {
 		t.Fatal("invalid native pixel shift accepted")
+	}
+}
+
+func TestBlitConstantMaskAtUsesWritesNotPixelValues(t *testing.T) {
+	sprite := Sprite{
+		Pixels: make([]byte, NativeSize*NativeSize),
+		Mask:   make([]byte, NativeSize*NativeSize),
+	}
+	sprite.Mask[0] = 1
+	sprite.Mask[NativeSize+2] = 1
+	dst := make([]byte, 32*32)
+	for i := range dst {
+		dst[i] = 7
+	}
+	if err := sprite.BlitConstantMaskAt(dst, 32, 3, 4, 0xc0); err != nil {
+		t.Fatal(err)
+	}
+	if dst[4*32+3] != 0xc0 || dst[5*32+5] != 0xc0 {
+		t.Fatalf("masked pixels were not filled: %x %x", dst[4*32+3], dst[5*32+5])
+	}
+	if dst[4*32+4] != 7 {
+		t.Fatalf("mode-3/unwritten pixel changed: %x", dst[4*32+4])
+	}
+	before := append([]byte(nil), dst...)
+	if err := sprite.BlitConstantMaskAt(dst, 32, -1, 0, 0xc0); err == nil {
+		t.Fatal("out-of-bounds destination accepted")
+	}
+	if !bytes.Equal(dst, before) {
+		t.Fatal("rejected constant-mask blit mutated destination")
 	}
 }

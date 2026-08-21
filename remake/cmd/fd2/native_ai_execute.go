@@ -58,16 +58,13 @@ func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after 
 			}
 			message = fmt.Sprintf("原始指令 %d：命中 %d，傷害 %d", id, hit, total)
 		case id >= 13 && id <= 16:
-			if _, err := g.st.NativeAICommandHealTargets(actor, id); err != nil {
+			targets, err := g.st.NativeAICommandHealTargets(actor, id)
+			if err != nil {
 				return err
 			}
-			return g.startNativeCommandHealPresentation(id, func() {
-				results, err := g.st.ExecuteNativeAICommandHeal(actor, id, g.rng)
-				if err != nil {
-					g.loadErr = fmt.Sprintf("native AI command %d post-presentation transaction: %v", id, err)
-					g.aiBusy = false
-					return
-				}
+			return g.startNativeCommandHealPresentation(id, targets, func() ([]battle.NativeCommandHealResult, error) {
+				return g.st.ExecuteNativeAICommandHeal(actor, id, g.rng)
+			}, func(results []battle.NativeCommandHealResult) {
 				total := 0
 				for _, result := range results {
 					total += result.Restore.Actual

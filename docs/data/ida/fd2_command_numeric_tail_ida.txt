@@ -1,0 +1,155 @@
+# FD2 command 13–16 後段效果與數字 queue：IDA 9.4 證據
+
+## 輸入、工具與位址空間
+
+- 輸入：`FD2.EXE`，357074 bytes
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 第一順位工具：IDA Pro 9.4.0.260610／Hex-Rays，授權 Docker
+  `fd2-ida-authorized-local`；DOS LE loader 的線性位址空間
+- 第二順位工具：Capstone 5.0.3，Docker `fd2-cap-local`；同一線性位址空間
+- IDA 原始名稱：`sub_1C2DA`、`sub_1C4CC`、`sub_1DF58`、`sub_1E0DB`、
+  `sub_1E1DC`、`sub_21B18`、`main`。本文不以語意改名取代原始名稱。
+
+IDA 資料庫只建立於容器 tmpfs，原始執行檔唯讀掛載。以下「已證實」均有直接
+指令、caller／consumer、table bytes 與 Capstone 交叉驗證；視覺名稱未經原版
+同狀態擷取，仍只描述資料流。
+
+## `sub_21B18` 的 command 13–16 順序（已證實）
+
+函式邊界 `0x21B18..0x21B99`。四個 raw 引數依既有 caller 證據是 actor record
+index、command ID、final target count、target-index array；本函式：
+
+1. `0x21B2E` 將 queue count `[0x53EC4]` 清零。
+2. 依相同四個引數呼叫 `sub_1C4CC`，再呼叫 `sub_1C2DA`。
+3. 呼叫 `sub_1CA89(actor,command)`。
+4. 對 final target array 逐筆呼叫 `sub_1C8ED(target,command)`；回傳值與 raw
+   digit bias `0x69`、target index 一起傳入 `sub_1E0DB`。
+5. 跳入既有共同尾端 `0x21190`。數字 queue 的 reader 不在 `sub_21B18` 內；
+   `0x21190` 先呼叫 `sub_11CAC(0)` 完整重畫，再於 `0x2119A` 呼叫
+   `sub_1DF58`；因此數字段 snapshot 是 MP／HP transaction後的 steady redraw，
+   不是 `sub_1C2DA` 留在 work buffer 的 `0xC0` mask。
+
+因此前兩段畫面發生在 MP／HP 交易之前，數字 queue 寫入發生在每個 target 的
+`sub_1C8ED` 回傳之後。這個順序不可在重製端合併成單一文字訊息。
+
+## `sub_1C4CC`：FDOTHER #6 的 command-indexed 前段（已證實）
+
+- 函式邊界 `0x1C4CC..0x1C75E`。它先呼叫 `sub_11CAC(0)`，保存完整
+  `0x25680` framebuffer snapshot，結束前再呼叫 `sub_11CAC(0)`。
+- `[0x53AD1]` 的唯一 boot writer 是 `main` 的 `0x25D19..0x25D2E`：
+  `sub_111BA("FDOTHER.DAT", old, 6)`，所以 frame bank 是 FDOTHER #6。
+- 三張 33-byte raw table：
+
+  | 線性位址 | 角色 | command 13–16 bytes |
+  |---|---|---|
+  | `0x51F33` | FDOTHER #6 起始 descriptor | `39 39 39 39` |
+  | `0x51F54` | frame count | `07 07 07 07` |
+  | `0x51F75` | 第一幀 sample index | `0C 0C 0C 0C` |
+
+- command 13–16 因此各走 FDOTHER #6 descriptors `0x39..0x3F` 共 7 幀。
+  每幀先由 snapshot 恢復完整 framebuffer，再對 final target array 中仍在原始
+  camera 邊界內的 record 呼叫 `sub_4E85B`，接著呈現 312×192 viewport。
+- `i==0` 且 table sample 非零時呼叫 `sub_25A96([0x53B13],12,1)`；每幀
+  `sub_17AA9(1)`。其他 command ID 有硬編碼的額外 sample 時點，但 13–16 不命中。
+
+本文只證實 descriptor、幀數、sample index 與 target/camera 消費，不替這 7 幀
+命名成法術、光效或治療動畫。
+
+## `sub_1C2DA`：五次前後 snapshot 切換（已證實）
+
+- 函式邊界 `0x1C2DA..0x1C4CC`。先播放 raw sample index `1`／loop `1`，保存
+  完整 framebuffer，再依 final target array 對可見 record 重畫 unit layer。
+- command-indexed raw table `0x51F15` 共 30 bytes；command 13–16 均為 `0xC0`。
+  該 byte 傳給 `sub_4DDD7` 的最後引數；其高階色彩／混合名稱仍未知。
+- renderer 每組先呈現保存的原始 snapshot，再呈現目前 work buffer 的 `0xC0`
+  mask版本，各自呼叫 `sub_17AA9(1)`；迴圈5次，最後再呈現原始 snapshot一次。
+
+所以可安全規格化的是「5 組 snapshot→mask切換＋最後 snapshot」與 raw `0xC0`
+參數；不可
+在沒有同狀態原版畫面的情況下宣稱閃白、閃紅或特定 blend mode。
+
+### `sub_4DDD7` 的直接像素契約（已證實；補充實作阻塞）
+
+為避免把 raw `0xC0` 猜成調色盤操作，本輪另以同一固定雜湊輸入重新建立 IDA
+資料庫。`sub_4DDD7` 的邊界是 `0x4DDD7..0x4DE56`；直接 callers 是
+`0x1C357`（本切片）與 `0x1DB58`。IDA 直接指令與 Capstone 5.0.3 對
+`0x4DDD7..0x4DE56` 的獨立輸出一致：
+
+- 它固定處理24列、每列24個 destination pixels，第三個引數同時是 destination
+  stride 與寫入的 raw palette index；每列結束加 `stride-24`。
+- 每個 control byte 的高2 bits 選四種 span，低6 bits 加1是 count：mode0消耗
+  一個 source byte並連續寫 count 格；mode1消耗一個 source byte並隔格寫 count
+  格（destination span為 `2*count`）；mode2消耗 count 個 source bytes並連續寫
+  count格；mode3只前進 destination、完全不寫。所有寫入都使用第三引數的低 byte，
+  不使用被消耗 source byte 的像素值。
+- 因此這是 FDICON 24×24 四模式 RLE 的「依 source write mask 填固定 raw index」
+  consumer。現有 `fdicon.Sprite.Mask` 已在解碼時保存 modes0／1／2 的精確寫入格，
+  `RemapMask`保存mode3；實作可用 `Mask` 填入 `0xC0`，不可用 `Pixels!=0` 代替，
+  因為 source value為0的 write span仍會被 `sub_4DDD7` 寫色。
+
+`sub_1C2DA` 以 target runtime `+2` 的 cache slot選 `slot*12+cycle`；全域 cycle
+不是3時直接使用該值，是3時改用2。destination與前段一致，為
+`work+0x8088+24*(x-cameraX)+10944*(y-cameraY)-2736`，也就是 target cell上方6列。
+這只閉合精確 mask、raw index與座標；`0xC0` 的玩家可見色名仍未知。
+
+## `sub_1E0DB`：數值 queue writer（已證實）
+
+- 函式邊界 `0x1E0DB..0x1E1DC`。只有 target record 通過直接 camera 邊界時才寫入。
+- 每次固定追加 4 筆，寫入：
+  - `[0x53D34+queue]`：水平 position code `2,7,12,17`；
+  - `[0x53DFC+queue]`：target record index；
+  - `[0x53C6C+queue]`：右對齊四欄，leading slot 為0；可見 digit 為
+    `ASCII digit + bias - 0x30`。
+- `sub_21B18` 傳入 bias `0x69`，所以十進位 `0..9` 對應 FDOTHER #5 raw
+  descriptors `0x69..0x72`。queue count `[0x53EC4]` 每個 target 加4。
+- 現有 `AppendNativePresentationDigits` 已保存這個 data-only 契約；它不是 renderer。
+
+## `sub_1DF58`：數字 queue reader／renderer（已證實）
+
+- 函式邊界 `0x1DF58..0x1E0DB`；`[0x53EC4]==0` 時直接返回。
+- `[0x53A81]` 的唯一 boot writer 是 `main` 的 `0x25CE5..0x25CFA`：
+  `sub_111BA("FDOTHER.DAT", old, 5)`，所以 glyph bank 是 FDOTHER #5。
+- 保存完整 framebuffer，走 22 個 frame。每一 frame 都先恢復 snapshot，再逐筆讀
+  queue；glyph descriptor 為 `[0x53C6C]`，target record 為 `[0x53DFC]`，水平
+  position code 為 `[0x53D34]`。
+- 25-byte raw vertical table `0x5202C` 是：
+
+  ```text
+  15 15 15 15 7 3 1 0 0 1 3 7 15 15 11 9 8 8 9 11 15 15 15 15 15
+  ```
+
+  每筆 queue 依 `table[frame + (queue_index mod 4)] - 3` 乘 framebuffer stride
+  `456`，因此四個 digit slot 有一幀相位差。最大索引是 `21+3=24`。
+- glyph destination 的直接公式是
+  `work+0x8088+24*(x-cameraX)+10944*(y-cameraY)+positionCode+
+  456*(vertical-3)`；這是 raw byte offset，不另推測成 UI baseline 名稱。
+- 每 frame 呈現 312×192 viewport，再等待2 ms；22幀後釋放 snapshot並等待500 ms。
+  原版2 ms小於重製端60 Hz更新週期，正式 runtime 只能以「每 raw frame 至少一個
+  可見 update」保存順序，除非日後 renderer 改為更高頻率呈現；不得宣稱逐毫秒一致。
+- command 13–16 的直接 owner 是 `sub_21B18` 尾跳 `0x21190`；該共同尾端的
+  `sub_11CAC(0)→sub_1DF58` 順序由 IDA 直接指令證實。其他 `sub_1DF58` callers
+  不在本切片內，不由此泛化其 queue writer。
+
+## 相鄰 writer `sub_1E1DC`（已證實但不屬本切片）
+
+`sub_1E1DC` 也向同三個 queue 陣列追加4筆，但使用 raw glyph bytes
+`74 75 76 76`，第二欄 position code 是8而不是7。command 13–16 的 `sub_21B18`
+不呼叫它；保留此邊界可避免把兩種 queue writer 合併成同一數字 formatter。
+
+## 證據等級與重製邊界
+
+- `RE-CLOSED`：上述函式邊界、直接 callers、command 13–16 的三張 table bytes、
+  FDOTHER #5／#6 loader provenance、前段7幀、五次 snapshot 切換、queue 格式、
+  22-frame reader、2 ms／500 ms 與 `sub_21B18` 的順序。
+- `DATA-READY`：`NativeCommandHealTailSchedule` 已保存 command table、25-byte
+  vertical table、raw descriptors、samples及時序；data-only digit queue繼續由
+  `AppendNativePresentationDigits`擁有。
+- `RUNTIME-E1`：玩家與敵方 mode 11 正式入口都已接7幀、五組
+  snapshot→mask、transaction後steady redraw、22幀數字與500 ms尾停；兩條入口
+  保持各自 target builder。缺 FDOTHER #5／#6 的focused regression證實零 mutation。
+- `PLAYER-E2`：缺未修改原版同狀態的 command 13–16 逐幀／逐音訊擷取。
+
+重開條件只有輸入雜湊不同、直接指令／table bytes 反證、同狀態執行結果矛盾，或
+本主證據缺少它聲稱已具有的 writer／consumer。後續先寫規格，再依規格接 runtime；
+不再重解上述函式。

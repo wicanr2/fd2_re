@@ -99,6 +99,15 @@ func TestExecuteNativeAICommand13WaitsForIndexedPresentation(t *testing.T) {
 	if err := g.composeNativeMapFrameAt(time.Unix(0, 0)); err != nil {
 		t.Fatal(err)
 	}
+	effect := assets.CommandHealEffect
+	assets.CommandHealEffect = nil
+	if err := g.executeNativeAIAction(plan); err == nil {
+		t.Fatal("AI command13 accepted missing FDOTHER#6")
+	}
+	if actor.MP != 5 || actor.HP != 40 || actor.Acted {
+		t.Fatalf("missing AI FDOTHER#6 mutated actor=%#v", actor)
+	}
+	assets.CommandHealEffect = effect
 	if err := g.executeNativeAIAction(plan); err != nil {
 		t.Fatal(err)
 	}
@@ -111,8 +120,8 @@ func TestExecuteNativeAICommand13WaitsForIndexedPresentation(t *testing.T) {
 		t.Fatalf("aiStep replanned during presentation: job=%v actor=%#v",
 			g.nativeHealPresentation != nil, actor)
 	}
-	for step := 0; g.nativeHealPresentation != nil && step < 100; step++ {
-		if g.nativeHealPresentation.phase == nativeCommandHealFrames {
+	for step := 0; g.nativeHealPresentation != nil && step < 256; step++ {
+		if phase := g.nativeHealPresentation.phase; phase == nativeCommandHealFrames || phase == nativeCommandHealEffectFrames || phase == nativeCommandHealMaskFrames || phase == nativeCommandHealDigitFrames {
 			g.nativeHealPresentation.drawn = true
 		}
 		g.stepNativeCommandHealPresentation()

@@ -5663,16 +5663,14 @@ func (g *Game) confirm() {
 		}
 		if id >= 13 && id <= 16 {
 			actor := g.sel
-			if _, err := g.st.NativeCommandHealTargets(actor, tgt, id); err != nil {
+			targets, err := g.st.NativeCommandHealTargets(actor, tgt, id)
+			if err != nil {
 				g.msg = fmt.Sprintf("原始指令 %d：請選擇有效目標 (%v)", id, err)
 				return
 			}
-			err := g.startNativeCommandHealPresentation(id, func() {
-				results, executeErr := g.st.ExecuteNativeCommandHeal(actor, tgt, id, g.rng)
-				if executeErr != nil {
-					g.loadErr = fmt.Sprintf("native command %d post-presentation transaction: %v", id, executeErr)
-					return
-				}
+			err = g.startNativeCommandHealPresentation(id, targets, func() ([]battle.NativeCommandHealResult, error) {
+				return g.st.ExecuteNativeCommandHeal(actor, tgt, id, g.rng)
+			}, func(results []battle.NativeCommandHealResult) {
 				total := 0
 				for _, result := range results {
 					total += result.Restore.Actual
