@@ -5314,3 +5314,15 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 首次回歸揭露 `loadGameFromSlot` 只清戰場，未清讀檔前的 `churchMode`、候選與
   indexed 工作；正式讀檔邊界現先清除全部教會暫態，再進入存檔節點。這是
   `RUNTIME-E1` 的重製 JSON 持久化閉合，不外推成原版四槽 `FD2.SAV` 或 DOSBox E2。
+
+## 2026-08-22：原始碼註解與首頁完成度斷言勘誤
+
+- 交叉核對 `56`／`57`／`58`、測試與正式消費端後，撤回 README 的「原生
+  `FD2.SAV` 四槽 LOAD 已能還原到具型別隊伍及城鎮／整備邊界」說法。現有證據是
+  原版 envelope／metadata 驗證，加上合成有效槽 fixture 的 typed restore
+  `RUNTIME-E1`；尚未以未修改原版的有效槽完成一般玩家 LOAD E2。
+- `growth_test.go` 舊註解所稱「轉職系統尚未實作」已被正式教會轉職 owner 與
+  跨 town JSON 存讀檔回歸推翻；該測試只負責驗證多職業成長列。
+- `native_ai_runtime.go` 的 mode 2 無候選分支仍未綁到 `0x13FD4` owner，但 mode 11
+  的 `0x14121→0x13FD4` 正式畫面／音訊消費端已達 E1。註解現已限定分支，不再把
+  局部缺口誤寫成整個 `0x13FD4` 尚未接入。

@@ -104,8 +104,8 @@ func TestGainExp_UnknownGrowth_StillLevelsNoStatGain(t *testing.T) {
 	}
 }
 
-// TestGainExp_MultiClassPromotion:growthTable 同一角色多職業列(轉職系統尚未實作,但資料
-// 已備妥)——確認索爾「英雄」職業能查到獨立於「劍士」的成長列。
+// TestGainExp_MultiClassPromotion 驗證 growthTable 的同角色多職業列。正式教會轉職
+// 已由 campaign／UI owner 實作；本測試只確認索爾「英雄」能查到獨立於「劍士」的成長列。
 func TestGainExp_MultiClassPromotion(t *testing.T) {
 	u := &Unit{Camp: Own, Name: "索爾", ClsName: "英雄", Lv: 20, AP: 100, HP: 200, MaxHP: 200}
 	rng := rand.New(rand.NewSource(7))

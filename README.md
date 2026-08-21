@@ -15,7 +15,7 @@
 |---|---|---|
 | 資產與格式 | `.DAT`、RLE 圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與部分 EXE 資料表可重現解析 | 部分執行期改寫、合成器與音訊播放尚未完整接入 |
 | 反向工程 | 資產格式與多個底層原語已高度閉合；戰役處理器、戰鬥規則、敵方 AI、戰間服務、存檔與終局都有具位址的窄切片 | 目前不能誠實換算成整支 EXE 百分比；晚期 handler、完整指令／法術／物品交易、終局與一般玩家 E2 仍未閉合，詳見[反組譯覆蓋矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md) |
-| Go／Ebiten 重製 | 地圖、對話、部分戰鬥、城鎮、商店、教會、整備、自有存檔及場景 BGM 消費可操作；戰鬥曲與城鎮曲已有原版表格回歸；正式第30戰勝利路徑現以來源約束 E1 播放 `0x2BCE5` 前綴、原資源角色最終狀態蒙太奇、20 組尾段與 `FDOTHER#59` 終局定格 | 尚缺完整 30 章一般玩家 E2、終局呼叫時 records／globals 連續性、3% RNG、精確音訊／輸入與跨平台驗收 |
+| Go／Ebiten 重製 | 地圖、對話與部分戰鬥可操作；城鎮、商店、教會、整備、自有 JSON 存檔及場景 BGM 已有窄切片；戰鬥曲與城鎮曲已有原版表格回歸；正式第30戰勝利路徑現以來源約束 E1 播放 `0x2BCE5` 前綴、原資源角色最終狀態蒙太奇、20 組尾段與 `FDOTHER#59` 終局定格 | 尚缺完整原版戰間流程、30 章一般玩家 E2、終局呼叫時 records／globals 連續性、3% RNG、精確音訊／輸入與跨平台驗收 |
 | 原版視覺比對 | ch02 城鎮 variant0 六項、variant1 正常五項、variant2 正常五項（後兩者為修改 LOAD 路徑），以及部分商店、讀檔選單已有整幀 RGB 相同證據 | 尚無可靠的全介面百分比；祕密選項、一般玩家城鎮路徑、戰場、整備、教會與其餘章節仍需同狀態比較，詳見[介面證據矩陣](docs/knowledge-base/57-ui-evidence-matrix.md) |
 
 工作清單中的完成項代表已驗證的函式、格式或切片，**不是遊戲完成百分比**。
@@ -164,7 +164,7 @@ DOS 原生不能直接顯示中文。漢堂隨遊戲攜帶點陣字型，文字�
 | 動畫與戰鬥演出解碼 | 建立 AFM 增量繪圖虛擬機及 FIGANI 幀解碼器，保存原始座標、調色盤與時序資料 | [`39` AFM](docs/knowledge-base/39-ani-afm-format.md)、[`35` 戰鬥演出](docs/knowledge-base/35-battle-animation-rendering.md) |
 | 遊戲機制反向工程 | 以版本雜湊綁定已閉合的戰鬥規則切片、物品、事件處理器、敵方 AI、章節狀態與戰後路徑；撤回缺少寫入端／消費端的舊斷言 | [`11` 敵方 AI](docs/knowledge-base/11-enemy-ai.md)、[`27` 戰鬥規則](docs/knowledge-base/27-combat-rules-and-validation-checklist.md) |
 | 原版介面逐狀態重建 | 城鎮、商店、讀檔及部分戰鬥介面以原版 indexed 資源重建；多個 ch02 狀態已有整幀 RGB 相同對照 | [`57` 介面證據矩陣](docs/knowledge-base/57-ui-evidence-matrix.md) |
-| 可編輯戰役與持續隊伍 | 對話、事件、章節節點、商店／教會／整備與持續隊伍逐步脫離硬編碼；序章兩次增援及第一章 turn4／5 增援已接原版12次索引呈現與獨立 ACTING，第8戰已依29..41 slots frontier完成洛娜加入與進城，第10戰亦接上60／61 slots、原版 DAC 淡出／淡入、直接 record patch、JOIN11／6與 `town_ch11`。第16戰 raw `ch15_post` 現以 persistent-first 76 slots、四條 raw 分支、JOIN18 與 `town_ch17` save/load 完成重製端 E1；第20戰現依固定名冊第0筆＋15人整備建立83 slots，正確區分round15的增援／JOIN28與round16略過路徑，兩路都保留JOIN25並進`town_ch21`；第27章 event62→event63 已接敵軍 AI 前兩批增援與全白／恢復演出（均為重製端 E1，尚非 DOSBox E2）。第一章測試現已由正式 `State.Result`→`checkResult`→`confirmBattleResult` 進入 `town_ch02`／整備；未綁定 postbattle 節點另有明確近似模式，流程仍保持戰鬥→戰後→城鎮→整備；原生 `FD2.SAV` 四槽 LOAD 已能還原到具型別隊伍及城鎮／整備邊界；chapter0 current-runtime CONTINUE 已接明確存檔／計時種子的重製端 E1 發布，尚非一般玩家 E2 | [`29` 事件系統](docs/knowledge-base/29-remake-extensible-event-system.md)、[`23` 啟動與存檔流程](docs/knowledge-base/23-boot-title-and-scenario-flow.md) |
+| 可編輯戰役與持續隊伍 | 對話、事件、章節節點、商店／教會／整備與持續隊伍逐步脫離硬編碼；序章兩次增援及第一章 turn4／5 增援已接原版12次索引呈現與獨立 ACTING，第8戰已依29..41 slots frontier完成洛娜加入與進城，第10戰亦接上60／61 slots、原版 DAC 淡出／淡入、直接 record patch、JOIN11／6與 `town_ch11`。第16戰 raw `ch15_post` 現以 persistent-first 76 slots、四條 raw 分支、JOIN18 與 `town_ch17` save/load 完成重製端 E1；第20戰現依固定名冊第0筆＋15人整備建立83 slots，正確區分round15的增援／JOIN28與round16略過路徑，兩路都保留JOIN25並進`town_ch21`；第27章 event62→event63 已接敵軍 AI 前兩批增援與全白／恢復演出（均為重製端 E1，尚非 DOSBox E2）。第一章測試現已由正式 `State.Result`→`checkResult`→`confirmBattleResult` 進入 `town_ch02`／整備；未綁定 postbattle 節點另有明確近似模式，流程仍保持戰鬥→戰後→城鎮→整備。原版四槽 envelope 與 metadata 驗證已接入，typed party→town／preparation 還原目前只由合成有效槽 fixture 證實；尚未以未修改原版的有效 `FD2.SAV` 完成一般玩家 LOAD E2。chapter0 current-runtime CONTINUE 已接明確存檔／計時種子的重製端 E1 發布，尚非一般玩家 E2 | [`29` 事件系統](docs/knowledge-base/29-remake-extensible-event-system.md)、[`23` 啟動與存檔流程](docs/knowledge-base/23-boot-title-and-scenario-flow.md) |
 
 這些貢獻各自代表已驗證的子系統，不代表完整 30 章已經可以從頭到尾等價
 遊玩。尚未閉合的玩家路徑、原生存檔還原與介面差距仍列在

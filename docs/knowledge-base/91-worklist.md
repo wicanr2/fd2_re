@@ -13,7 +13,7 @@
 
 | 順序 | 工作 | 現況 | 下一個可驗收結果 |
 |---:|---|---|---|
-| 0 | 原始碼註解與 Markdown 現況斷言稽核 | `DATA-READY`：本輪再撤回`0x9017`是左端、END仍使用泛用文字層、終局仍只是近似與`0x2BCE5`只容許chapter26等錯誤現況；較早FIGANI／第29戰／chapter0-only／Tab／商店收件者勘誤均保留可追溯。這是持續性品質閘門，不是一次掃描即永久完成 | 每個玩家功能關閉時，以程式、測試與 `58` 現況核對完成度、節點、slot、handler、renderer；錯誤現況直接訂正，歷史證據追加勘誤 |
+| 0 | 原始碼註解與 Markdown 現況斷言稽核 | `DATA-READY`：本輪再撤回「合成有效槽 fixture 已證明未修改原版四槽 LOAD E2」、「轉職系統尚未實作」與「所有 `0x13FD4` 消費端均未接入」三項過時說法；較早`0x9017`／END文字層／終局／FIGANI／第29戰／chapter0-only／Tab／商店收件者勘誤均保留可追溯。這是持續性品質閘門，不是一次掃描即永久完成 | 每個玩家功能關閉時，以程式、測試與 `58` 現況核對完成度、節點、slot、handler、renderer；錯誤現況直接訂正，歷史證據追加勘誤 |
 | 1 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式，現為產品31／runtime170／未知1104；舊83 unknown 已拆為80已分類、3已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253` 只追其他 caller／戰役 gate，`0x2BCE5` 追正式 owner，不重解 callee |
 | 2 | 玩家第21戰天空之鑰固定演出 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`：`0x24336` 已接真實 `FDOTHER #34`、`ANI #0`、調色盤循環與正式戰後→城鎮→存讀檔 | 取得未修改原版同狀態 E2，核對第一個動態調色盤相位與相鄰 `layout_units`／ACT63／64；不重解函式本體 |
 | 3 | 玩家第29戰 raw ch28 post 後續驗收 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`；`0x1DB65`原資源 presenter、group9→`0x25535`、持續隊伍、`preparation_ch30` 與存讀檔已正式接通，postbattle admission blocker 已歸零 | 以未修改原版一般玩家路徑取得同狀態逐幀／音訊 E2；高階圖像與sample 3語意仍保留unknown，不阻擋 E1戰役流程 |

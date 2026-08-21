@@ -95,9 +95,10 @@ func (s *State) nextNativeAIPhysicalPlan(u *Unit) (*AIPlan, bool, error) {
 		return nil, true, err
 	}
 	if !ok {
-		// 原版此處會落到 0x13FD4 的等待／回復收尾；該 consumer 尚未接入，
-		// 所以沒有候選時也停止，不能把空計畫當作已完成行動。
-		return nil, true, fmt.Errorf("native AI mode 2 produced no physical candidate; 0x13fd4 recovery is unavailable")
+		// 0x13FD4 的正式畫面／音訊 owner 已供 mode 11 的 0x14121 分支消費；
+		// mode 2 的這條無候選邊尚未綁到該 owner，所以仍須停止，不能把空計畫
+		// 當作已完成行動。
+		return nil, true, fmt.Errorf("native AI mode 2 produced no physical candidate; its 0x13fd4 edge is unavailable")
 	}
 	selected := selection.Candidate
 	pathDirections, reachable, err := NativePathDirections(
