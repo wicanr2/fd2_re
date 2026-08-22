@@ -323,6 +323,63 @@ func TestNativeCommandTargetFieldMaterializeAndReset(t *testing.T) {
 	}
 }
 
+func TestPlayerNativeCommand0PublishesNumericResultThroughCursorConfirm(t *testing.T) {
+	_, field, state := completeNativeMapFrameFixture(t)
+	book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
+	for id := range book {
+		book[id] = battle.NativeCommandRecord{ID: id}
+	}
+	book[0] = battle.NativeCommandRecord{
+		ID: 0, Damage: 50, Hit: 100, SelectionMode: 5, EffectMode: 0,
+		MPCost: 2, TargetCode: 0,
+	}
+	actor := state.Units[0]
+	actor.Camp, actor.OnField, actor.HP, actor.MaxHP, actor.MP = battle.Own, true, 28, 28, 8
+	target := &battle.Unit{
+		Camp: battle.Enemy, OnField: true, X: 1, Y: 0,
+		HP: 100, MaxHP: 100, ClassID: 5,
+		NativeRecordByte5: 0, HasNativeRecordByte5: true,
+		NativeRecordByte6: 1, HasNativeRecordByte6: true,
+	}
+	state.Units = append(state.Units, target)
+	state.NativeCommandBook = book
+	state.NativeCompositionEventBytes = make([]byte, state.W*state.H)
+	state.NativeTileBlitModes[target.Y*state.W+target.X] = 0
+	state.MaterializeNativeMapRangeMode(3)
+	g := &Game{
+		m: field, st: state, sel: actor, curX: target.X, curY: target.Y,
+		nativeCommand0Targeting: true, nativeCommandTargetID: 0,
+		nativeRNGState: 1,
+	}
+
+	// 缺少原版 class resistance table 時，正式 confirm 必須保留 modal，
+	// 並在 MP、HP、acted 或 target field 之前失敗即關閉。
+	g.confirm()
+	if actor.MP != 8 || actor.Acted || target.HP != 100 ||
+		!g.nativeCommand0Targeting || g.sel != actor ||
+		state.NativeTileBlitModes[target.Y*state.W+target.X] != 0 {
+		t.Fatalf("command0 missing resistance crossed transaction boundary: actor=%#v target=%#v targeting=%v sel=%#v",
+			actor, target, g.nativeCommand0Targeting, g.sel)
+	}
+	state.NativeCommandResistances = map[int]int{5: 10}
+	g.confirm()
+	if actor.MP != 6 || !actor.Acted || target.HP >= 100 {
+		t.Fatalf("command0 numeric result actor=%#v target=%#v msg=%q", actor, target, g.msg)
+	}
+	if g.nativeCommand0Targeting || g.sel != nil || state.NativeMapRangeMode != 1 {
+		t.Fatalf("command0 cleanup targeting=%v sel=%#v range=%d",
+			g.nativeCommand0Targeting, g.sel, state.NativeMapRangeMode)
+	}
+	for index, value := range state.NativeTileBlitModes {
+		if value != 0xff {
+			t.Fatalf("command0 target field[%d]=%#x want 0xff", index, value)
+		}
+	}
+	if g.msg == "" {
+		t.Fatal("command0 numeric result did not publish its result message")
+	}
+}
+
 func TestPlayerNativeCommand13RunsCursorTransactionThroughConfirm(t *testing.T) {
 	assets, field, state := completeNativeMapFrameFixture(t)
 	for i := range assets.LUTs {

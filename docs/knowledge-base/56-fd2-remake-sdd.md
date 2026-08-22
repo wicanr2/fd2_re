@@ -1095,6 +1095,18 @@ Provenance correction：`0x1088D` 以 `chapter*3` 呼叫 `0x111BA`，後者釋�
 contract：只接受 raw 0..255 cost，MP 不足／無 unit 一律不變更。它刻意不吃 normalized `Spell`，也尚未接 UI，直到
 native candidate confirm、command 0 effect sequence 與原版 renderer 都能一起驗證。
 
+### command 0 正式數值結果邊界（2026-08-22）
+
+command 0 的「數值結果」與「原版 indexed 演出」必須分開計數。正式玩家路徑
+`Game.confirm()` 只有在 `0x115B6` 對應的游標 gate 接受、完整 36 筆 command book、
+composition baseline 與 class resistance table 都存在時，才可呼叫
+`ExecuteBoundNativeCommand0`。成功交易必須一次完成 record 0 的 MP 扣除、
+`0x1C75E→0x1C81F` 命中／傷害與目標 HP、actor acted、死亡獎勵、target field reset、
+range mode 1 與 modal／selection 清理；任一前置缺失不得部分修改。這可由 Game 層
+回歸提升為 `RUNTIME-E1 numeric`，但 `0x2A6BD→0x26152` compositor、sample、數字、
+post-resolution 訊息及同狀態原版逐幀比較仍未接，因此不得把數值 E1 寫成
+command 0 效果演出或完整 `PLAYER-E2`。
+
 升級的 dynamic producer 現已閉合，但僅限資料層：native `0x1e292` 在 EXP 達門檻後增加 runtime
 level，從 `unit+7` 所選 growth row 的 `learn_idx` 經 `0x4e4a2` 查 `0x626b3 + idx*12`，逐一比對最多六組
 `(required_level, command_id)`；命中就呼叫 `0x1d79c` OR command bit，並顯示 FDTXT_000 #587「學會了！」。
