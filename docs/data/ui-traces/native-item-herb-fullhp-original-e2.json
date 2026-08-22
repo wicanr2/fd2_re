@@ -1,0 +1,66 @@
+{
+  "captured_at": "2026-08-22",
+  "classification": "PLAYER-E2",
+  "side": "original",
+  "route_patch": false,
+  "fd2_exe": {
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "fd2_save": {
+    "size": 22987,
+    "md5": "409795ccebc2af340d5c74152c2d471c",
+    "sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f",
+    "chapter": 0,
+    "round": 1,
+    "party_hp": [
+      {"identity": 0, "current": 42, "maximum": 42},
+      {"identity": 9, "current": 28, "maximum": 28},
+      {"identity": 4, "current": 48, "maximum": 48},
+      {"identity": 30, "current": 50, "maximum": 50}
+    ]
+  },
+  "input": {
+    "entry": "標題 CONTINUE 的未修改 current-runtime 存檔",
+    "actor_identity": 0,
+    "actor_coordinate": [7, 14],
+    "item_id": 192,
+    "item_name": "草藥",
+    "item_amount_label": "HP 040",
+    "item_panel_navigation": ["Down", "Down", "Return"],
+    "post_confirm_samples_seconds": [0.3, 1.3, 4.3]
+  },
+  "screenshots": [
+    {
+      "state": "item_panel_initial",
+      "source_sha256": "b30b8f21d031d2920e88016d7faec43db688f3bafd3f0103aed1b2f3545f5146"
+    },
+    {
+      "state": "herb_selected",
+      "source_sha256": "9787df647713696472492ad29ffce50542c6b37f541ff76e1536465324532c6b"
+    },
+    {
+      "state": "after_return_4_3_seconds",
+      "source_sha256": "f06ff198de449996f606037b035c57652b0a98c9cbc1dde2e886ce16741c4b01"
+    }
+  ],
+  "figure": {
+    "path": "docs/figures/native-item-herb-fullhp-original-e2.png",
+    "width": 960,
+    "height": 200,
+    "sha256": "7f54c1b60fcef2ec7358c5f571796f215609928d656faee315a3657303e9b073"
+  },
+  "pixel_checks": {
+    "initial_vs_selected_full_frame_ae": 340,
+    "selected_vs_after_return_4_3_item_row_ae": 0,
+    "item_row_crop": [4, 96, 312, 66]
+  },
+  "observed_result": "兩次向下已把選取脈動移到第三列草藥；Return 後至少 4.3 秒仍留在同一物品面板與同一物品列，沒有進入地圖目標 modal。",
+  "limits": [
+    "本證據只證明四名我方角色皆滿 HP 的 item 192 正常玩家可見結果。",
+    "它不證明其他 HP 回復物品、MP 回復物品、狀態物品或受傷隊伍的行為。",
+    "全畫面少量差異來自索引調色盤／選取脈動；物品三列在確認前後 4.3 秒的裁切像素相同。",
+    "本證據沒有判定原版取消鍵、不可用目標灰化、global selector 6 owner 或效果演出。"
+  ]
+}

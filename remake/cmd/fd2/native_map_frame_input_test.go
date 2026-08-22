@@ -202,6 +202,7 @@ func TestNativeItemTargetEntryOwnsIndexedMapFrameAndFailsClosed(t *testing.T) {
 		sel:             state.Units[0],
 		itemOpen:        true,
 	}
+	state.Units[0].MaxHP = 10
 	state.NativeCompositionEventBytes = make([]byte, state.W*state.H)
 	var err error
 	g.nativeItemEffectRows, err = battle.LoadNativeItemEffectRowPrefix("../../assets/data/native_item_effect_rows.json")

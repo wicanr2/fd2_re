@@ -302,6 +302,30 @@ func (g *Game) beginNativeTargetItem(rawSlot, itemID int) (bool, error) {
 	if err != nil || len(g.st.NativeTileBlitModes) != len(fieldBytes) {
 		return false, fmt.Errorf("native item target field is unavailable")
 	}
+	// 未修改第一戰的一般玩家證據顯示：四名我方都滿 HP 時，type 5
+	// 草藥確認後仍留在 caller-owned item panel，不發布 target modal。
+	// 只對具共同 raw restore transaction 的 type 5 套用這個窄 gate；
+	// type 13 與其他物品沒有同等動態證據，不能外推。
+	if hp && row[0x0d] == 5 {
+		targets, err := battle.NativeAttackCandidates(
+			g.st.W, g.st.H, battle.Cell{X: g.sel.X, Y: g.sel.Y},
+			plan.SelectionMode, plan.SelectionInnerMark, plan.TargetCode,
+			flags, g.st.Units,
+		)
+		if err != nil {
+			return false, err
+		}
+		hasApplicableTarget := false
+		for _, target := range targets {
+			if target != nil && target.HP < target.MaxHP {
+				hasApplicableTarget = true
+				break
+			}
+		}
+		if !hasApplicableTarget {
+			return false, nil
+		}
+	}
 	if plan.EffectMode < 0 || plan.EffectMode > 0xff ||
 		!g.st.MaterializeNativeMapRangeMode(
 			battle.NativeMapOverlaySelectorFromRecordByte(byte(plan.EffectMode)),

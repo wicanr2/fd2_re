@@ -3026,6 +3026,15 @@ owner is a different, still-unintegrated battle presentation path.
 交易都維持失敗即關閉；物品效果的索引演出、不可用目標外觀、取消鍵語意及
 global selector 6 的真正 production owner 仍列為未知。
 
+2026-08-22 一般玩家窄證據：以未修改 `FD2.SAV` 從標題 CONTINUE 進第一戰，
+四名我方角色 HP 都等於 MaxHP；索爾在正常物品面板選到 item 192 草藥
+（`HP 040`）後按 Return，0.3、1.3 與 4.3 秒都仍留在同一物品列，沒有進入
+地圖 target modal。這只把「type 5 HP 回復物品在已證實候選中沒有任何
+`HP < MaxHP` 角色時，保留 caller-owned item panel」提升為窄 `PLAYER-E2`。
+重製入口應在發布 selector／清除面板前完成此 gate；type 13、MP／marker／能力、
+傷害與 relocation 物品不可由本實驗外推。擷取、雜湊與裁切像素檢查見
+[`native-item-herb-fullhp-original-e2.json`](../data/ui-traces/native-item-herb-fullhp-original-e2.json)。
+
 Caller-scope correction (Docker Capstone, 2026-07-26): `0x22253` is shared by the chapter-ending/post handler at `0x250cc`, not command-23-only. That path calls it after `0x1c2da` with unit index `1`, pre-render bytes `0xff/0xff`, and the selected record's raw `+0/+1` bytes, then continues to `0x25089` cleanup and `0x2bce5` ending rendering. The remake therefore treats `SetNativeUnitCoordinateBytes` as a shared raw writer only; command-23 selector, ending layout, renderer, and campaign transition remain independent fail-closed contracts.
 
 The `0x25348` branch audit further fixes the ending-only order: FDOTHER frames `0x0d`, `0x0e`, `0x0f` are presented around `0x1c2da`; the shared `0x22253` write for unit `1` follows with raw `+0/+1`, frame `0x10` follows, and then `0x25089→0x2bce5` enters the terminal self-loop. This is call-order evidence only. The `0x24b14` return and frame IDs remain unnamed, and this branch must not be used as a generic battle→town/shop transition.

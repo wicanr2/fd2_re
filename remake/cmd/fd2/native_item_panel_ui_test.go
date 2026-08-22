@@ -221,6 +221,47 @@ func TestNativeHPRestoreTargetTransactionUsesProcessRNGAndConsumesSource(t *test
 	}
 }
 
+func TestNativeType5HPRestoreKeepsItemPanelWithoutApplicableTarget(t *testing.T) {
+	actor := nativeItemPanelTestUnit()
+	actor.X, actor.Y, actor.OnField = 1, 1, true
+	actor.HP, actor.MaxHP = 100, 100
+	target := nativeItemPanelTestUnit()
+	target.X, target.Y, target.OnField = 1, 2, true
+	target.NativeIdentity = 1
+	target.HP, target.MaxHP = 100, 100
+	state := &battle.State{
+		W: 3, H: 3, Units: []*battle.Unit{actor, target},
+		NativeCompositionEventBytes: make([]byte, 9),
+		NativeTileBlitModes:         []byte{0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff},
+	}
+	if !state.MaterializeNativeMapRangeMode(1) {
+		t.Fatal("baseline selector rejected")
+	}
+	g := &Game{st: state, sel: actor, moved: true, itemOpen: true}
+	var err error
+	g.nativeItemEffectRows, err = battle.LoadNativeItemEffectRowPrefix("../../assets/data/native_item_effect_rows.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	beforeField := append([]byte(nil), state.NativeTileBlitModes...)
+	started, err := g.beginNativeTargetItem(2, 192)
+	if err != nil || started {
+		t.Fatalf("full-HP type5 target started=%v err=%v", started, err)
+	}
+	if !g.itemOpen || g.nativeItemTargeting || state.NativeMapRangeMode != 1 ||
+		!slices.Equal(beforeField, state.NativeTileBlitModes) {
+		t.Fatalf("full-HP gate crossed modal boundary: itemOpen=%v targeting=%v selector=%d field=%v",
+			g.itemOpen, g.nativeItemTargeting, state.NativeMapRangeMode, state.NativeTileBlitModes)
+	}
+
+	target.HP = 99
+	started, err = g.beginNativeTargetItem(2, 192)
+	if err != nil || !started || !g.nativeItemTargeting || g.itemOpen {
+		t.Fatalf("injured target entry started=%v targeting=%v itemOpen=%v err=%v",
+			started, g.nativeItemTargeting, g.itemOpen, err)
+	}
+}
+
 func TestNativeMarkerClearTargetTransactionSyncsTransientAndRNG(t *testing.T) {
 	actor := nativeItemPanelTestUnit()
 	actor.X, actor.Y, actor.OnField = 1, 1, true
