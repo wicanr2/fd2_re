@@ -1,5 +1,5 @@
-FD2 command 17–22 玩家確認 palette／SFX owner（IDA Pro 9.4）
-================================================================
+FD2 command 17–23／25–27 玩家確認 palette／SFX owner（IDA Pro 9.4）
+====================================================================
 
 輸入與工具
 ----------
@@ -21,7 +21,7 @@ FD2 command 17–22 玩家確認 palette／SFX owner（IDA Pro 9.4）
 - IDA direct caller：`sub_1CFF0`；函式清冊顯示一個 direct code xref。
 - `0x1CFF0` 的既有直接指令證據已證實：玩家 target confirm 後，command
   `0x09..0x17` 與 `0x19..0x1B` 先呼叫 `0x1D6C8(commandID)`，再派發
-  `funcs_1541f[commandID]`。因此 IDs17–22 均走本函式；AI `0x15311`
+  `funcs_1541f[commandID]`。因此 IDs17–23與25–27均走本函式；AI `0x15311`
   直接進 effect table，不可外推同一玩家 palette owner。
 
 `0x1D6C8` 直接資料流（已證實）
@@ -44,7 +44,8 @@ Hex-Rays 與 `0x1D6C8:0x75` 原始 bytes 共同顯示：
 三張 table 都是36 bytes，IDA linear ranges 為
 `0x51AAD..0x51AD0`、`0x51AD1..0x51AF4`、`0x51AF5..0x51B18`。
 IDs17、18、19 三者均讀到 raw six-bit DAC `(0x32,0x32,0x32)`；IDs20、21
-為 `(0x3F,0x28,0x1E)`，ID22 為 `(0x23,0,0)`。
+為 `(0x3F,0x28,0x1E)`，ID22 為 `(0x23,0,0)`；IDs25、26、27分別為
+`(0x3F,0x3D,0x2E)`、`(0x0A,0x1F,0)`、`(0x23,0x19,0)`。
 完整108 bytes 已轉成
 `remake/assets/data/native_command_palette_flash.json`，保留全部36個 command
 entries，避免只把三個 magic constants 寫回程式。
@@ -69,5 +70,5 @@ DAC、raw sample 或完整 transaction provenance，必須在 sample／畫面／
   wrapper 的 debit／writer 順序。
 - **強推論**：`0x17AA9(1)` 對現代 60 Hz loop 以「至少一次 Draw acknowledgement」
   呈現；這保留順序與可見 phase，但不是 DOS BIOS tick 的逐毫秒 E2。
-- **未知／未宣稱**：六個 command 的玩家可見名稱、status icon／文字、sample 的
+- **未知／未宣稱**：這些 command 的玩家可見名稱、status icon／文字、sample 的
   高階聲音名稱，以及原版／重製同狀態逐幀與逐音訊 E2。

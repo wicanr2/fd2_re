@@ -822,6 +822,14 @@ record、final targets、MP、RNG、target HP bounds、raw interval與所有呈�
 range／selection cleanup。三個 status 名稱與 expiry feedback 尚未知，玩家訊息只能描述 raw
 offset／交易結果，不得冒稱原版狀態名稱。AI `0x15311` 仍直接進 effect table，不套用此玩家演出。
 
+同一 dispatch 的第二段 `0x19..0x1B` 對應 command 25–27，也必須走相同
+sample／palette owner。ID25 的已證實 writer 是 raw `unit+5 bit7` clear；這個 bit
+不可再投影成 Go `Unit.Acted`。正式 preflight 必須要求 target 的
+`NativeRecordByte5` provenance，交易只清 `0x80` 且不改 target `Acted`。IDs26／27
+分別沿既有 application route 寫 `+0x25/+0x26`；三者均在八個 Draw-ack phases 後
+才扣 MP／發布 target mutation。command23仍有獨立 relocation renderer生命週期，不能只因共用
+palette owner就視為整條玩家演出已接。
+
 IDs20..21 共享另一條「flag-present 才生效」route：`0x22A85/0x22BC6→0x22AA8→0x22AF6` 各以
 command ID 20/21 扣 MP，對每個 final target 讀 `+0x25/+0x26`。該 byte 為零時只走失敗 display；非零時呼叫
 `0x1C916(target,10)` 的既有 HP-restore writer、清零該 byte，並顯示結果。這證實 raw gate、clear 與
@@ -895,8 +903,8 @@ actor raw completion writer。它與 ID20/21「借 record10」的 clear/restore 
 | 24 | 玩家 `2A6BD→276EC→2B659/1CA89→1C81F`：`actor +48 * 15/10 - target +4a`；AI table 另別名 `22153`，不可混用 | `ExecuteNativeCommand24`（state-only final delta） | multi-hit／SFX／native UI 未接 |
 | 28, 29, 31 | 同玩家 `276EC` derived-strike route，倍率分別 20、12、18；各自 record MP/一般 two-stage selector | `ExecuteNativeCommandDerivedStrike` | multi-hit／SFX／native UI 未接 |
 | 30 | `1CFF0→14818→115B6` 先確認 record+3 candidate；再以 saved cursor→confirmed cursor 進 `149F8`，`count=record+3-16`、X-first cardinal line、只收 enemy，最後 `2A6BD→276EC` default倍率18 | `ExecuteNativeCommand30`（顯式兩 cursor、state-only final delta） | native cursor lifecycle／multi-hit／SFX／indexed UI 未接 |
-| 25 | `0x22C04` clear target acted bit | `ExecuteNativeCommand25` | 未接 |
-| 26–27 | `0x22CBF/22E41→22D1B`，分別 write `+0x25/+0x26` | `ExecuteNativeCommandApplication` | 未接 |
+| 25 | `0x1CFF0→1D6C8→22C04`，#88 sub0＋八個DAC phases後清raw target `+5 bit7` | `ExecuteNativeCommand25`要求raw +5 provenance，只清`0x80`而不混用`Acted` | 玩家grid＋palette／sample已接E1；原版feedback／逐音訊E2未接 |
+| 26–27 | `0x1CFF0→1D6C8→22CBF/22E41→22D1B`，分別 write `+0x25/+0x26` | `ExecuteNativeCommandApplication`；完整preflight後才交易 | 玩家grid＋palette／sample已接E1；status名稱、expiry UI與逐音訊E2未接 |
 | 32 | `2A6BD→27FC9→2111A→1C75E` numeric per-final-target；選單 MP gate已知但此 chain 未見 debit | `NativeCompoundCommandPlan(32)` 僅保存 raw callee 順序 | 未接 |
 | 33 | `27FC9` 先清每 target `+25..+27`，再 `211A4(...,800)` restore | `NativeCompoundCommandPlan(33)` 僅保存 direct-clear 順序與 raw amount | 未接 |
 | 34 | `27FC9` 依序呼 `22721/22866/22997`，嘗試三種 modifier writer | `NativeCompoundCommandPlan(34)` 僅保存三個 raw writer 順序 | 未接 |

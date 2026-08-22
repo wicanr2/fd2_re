@@ -465,8 +465,8 @@ func TestPlayerNativeCommand17WaitsForEightPalettePhasesBeforeTransaction(t *tes
 	}
 }
 
-func TestPlayerNativeCommands20And22UseSharedPaletteBoundary(t *testing.T) {
-	for _, commandID := range []int{20, 22} {
+func TestPlayerNativeCommands20To27UseSharedPaletteBoundary(t *testing.T) {
+	for _, commandID := range []int{20, 22, 25, 26} {
 		t.Run(fmt.Sprintf("command_%d", commandID), func(t *testing.T) {
 			assets, field, state := completeNativeMapFrameFixture(t)
 			book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
@@ -485,8 +485,8 @@ func TestPlayerNativeCommands20And22UseSharedPaletteBoundary(t *testing.T) {
 			state.NativeTileBlitModes[0], field.NativeTileBlitModes[0] = 0, 0
 			state.MaterializeNativeMapRangeMode(3)
 
-			if commandID == 22 {
-				book[22].TargetCode = 0
+			if commandID == 22 || commandID == 26 {
+				book[commandID].TargetCode = 0
 			}
 			table, err := battle.LoadNativeCommandPaletteFlashTable("../../assets/data/native_command_palette_flash.json")
 			if err != nil {
@@ -507,10 +507,13 @@ func TestPlayerNativeCommands20And22UseSharedPaletteBoundary(t *testing.T) {
 				NativeRecordByte5: 0, HasNativeRecordByte5: true,
 				NativeRecordByte6: 0, HasNativeRecordByte6: true,
 			}
-			if commandID == 22 {
+			if commandID == 22 || commandID == 26 {
 				target.Camp, target.ClassID, target.HP, target.MaxHP = battle.Enemy, 2, 20, 20
 				target.NativeRecordByte6 = 1
 				target.NativeTransient = [6]byte{}
+			} else if commandID == 25 {
+				target.Acted = true
+				target.NativeRecordByte5 = 0x80
 			}
 			state.Units = append(state.Units, target)
 			state.NativeTileBlitModes[target.Y*state.W+target.X] = 0
@@ -541,6 +544,10 @@ func TestPlayerNativeCommands20And22UseSharedPaletteBoundary(t *testing.T) {
 			}
 			if commandID == 20 && target.NativeTransient[3] != 0 {
 				t.Fatalf("command 20 did not clear raw +0x25: %#v", target.NativeTransient)
+			}
+			if commandID == 25 && (target.NativeRecordByte5 != 0 || !target.Acted) {
+				t.Fatalf("command 25 did not isolate raw +5 bit7: byte5=%#x acted=%v",
+					target.NativeRecordByte5, target.Acted)
 			}
 		})
 	}

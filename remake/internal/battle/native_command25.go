@@ -17,26 +17,19 @@ type NativeCommand25Result struct {
 // Renderer, message feedback and UI remain outside this fail-closed slice.
 func (s *State) ExecuteNativeCommand25(actor, confirmed *Unit) ([]NativeCommand25Result, error) {
 	const commandID = 25
-	if s == nil || len(s.NativeCommandBook) != 36 || s.NativeCommandBook[commandID].ID != commandID {
-		return nil, fmt.Errorf("native command 25 record unavailable")
+	targets, err := s.NativeCommand25Targets(actor, confirmed)
+	if err != nil {
+		return nil, err
 	}
 	record := s.NativeCommandBook[commandID]
-	flags, err := s.NativeCommandBaseFlags()
-	if err != nil {
-		return nil, err
-	}
-	targets, err := NativeCommandEffectTargets(s.W, s.H, actor, confirmed, record.SelectionMode, record.EffectMode, record.TargetCode, flags, s.Units)
-	if err != nil {
-		return nil, err
-	}
 	if !SpendNativeCommandMP(actor, record.MPCost) {
 		return nil, fmt.Errorf("native command 25 insufficient MP")
 	}
 	results := make([]NativeCommand25Result, 0, len(targets))
 	for _, target := range targets {
-		cleared := target.Acted
+		cleared := target.NativeRecordByte5&0x80 != 0
 		if cleared {
-			target.Acted = false
+			target.NativeRecordByte5 &^= 0x80
 		}
 		results = append(results, NativeCommand25Result{Target: target, Cleared: cleared})
 	}
@@ -44,4 +37,36 @@ func (s *State) ExecuteNativeCommand25(actor, confirmed *Unit) ([]NativeCommand2
 	// returns success. It is independent from the target bit that ID25 clears.
 	actor.Acted = true
 	return results, nil
+}
+
+// NativeCommand25Targets performs the complete non-mutating preflight before
+// the player-only 0x1D6C8 presentation. Target raw +5 provenance is mandatory:
+// its bit7 must never be projected from or written through Unit.Acted.
+func (s *State) NativeCommand25Targets(actor, confirmed *Unit) ([]*Unit, error) {
+	const commandID = 25
+	if s == nil || actor == nil || len(s.NativeCommandBook) != 36 ||
+		s.NativeCommandBook[commandID].ID != commandID {
+		return nil, fmt.Errorf("native command 25 record unavailable")
+	}
+	record := s.NativeCommandBook[commandID]
+	if record.MPCost < 0 || actor.MP < record.MPCost {
+		return nil, fmt.Errorf("native command 25 insufficient MP")
+	}
+	flags, err := s.NativeCommandBaseFlags()
+	if err != nil {
+		return nil, err
+	}
+	targets, err := NativeCommandEffectTargets(
+		s.W, s.H, actor, confirmed, record.SelectionMode, record.EffectMode,
+		record.TargetCode, flags, s.Units,
+	)
+	if err != nil {
+		return nil, err
+	}
+	for _, target := range targets {
+		if target == nil || !target.HasNativeRecordByte5 {
+			return nil, fmt.Errorf("native command 25 target lacks raw +5 provenance")
+		}
+	}
+	return targets, nil
 }

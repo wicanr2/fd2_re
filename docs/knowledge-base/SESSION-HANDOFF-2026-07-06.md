@@ -5631,3 +5631,15 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - Docker／Xvfb聚焦測試走過command20的`+0x25`清除及command22 application，完整
   `go test ./... -count=1`亦通過。本批為玩家`RUNTIME-E1`；status名稱、expiry UI、
   精確DOS tick與同狀態逐音訊`PLAYER-E2`仍未閉合。
+
+## 2026-08-22：command 25–27 玩家色盤 owner與raw bit7勘誤
+
+- 既有`0x1CFF0`直接分支`0x19..0x1B`證實25–27同樣先進`0x1D6C8`；沿用
+  已閉合的#88 sub0與八個DAC phases，不重解palette loop。25／26／27色值分別為
+  `(0x3F,0x3D,0x2E)`、`(0x0A,0x1F,0)`、`(0x23,0x19,0)`。
+- 程式稽核發現`ExecuteNativeCommand25`雖在註解宣稱清raw `unit+5 bit7`，實作卻
+  錯改Go `Unit.Acted`。現已要求target具`NativeRecordByte5` provenance，只清
+  `0x80`且保留target `Acted`；缺raw欄位時在sample、palette與MP debit前拒絕。
+- 玩家25–27現均完整preflight，八個Draw phases完成後才執行25 clear或26／27
+  application，再共用range／selection cleanup。核心與玩家聚焦回歸通過；本批仍只到
+  `RUNTIME-E1`，status名稱、expiry UI、精確tick與逐音訊E2未外推。

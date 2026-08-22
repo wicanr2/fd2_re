@@ -43,7 +43,7 @@ hub→preparation/town 做成可重播 input trace；item effect、AI runtime �
 | native IDs24/28/29/31 derived strike | SDD56 UI-03 | 🟡 strict state-only | `ExecuteNativeCommand24`／`ExecuteNativeCommandDerivedStrike` 已依 `0x276EC` 的 verified multiplier 寫 final HP delta；two-stage UI、multi-hit/SFX 未接。legacy `CastArea` 不是證據 | 高 |
 | normalized spell attack/heal/hit | doc02；legacy `magic.go` | 🟡 approximation | `CastArea` 有可玩結算，但 native command ID、target geometry、effect family 和 renderer 沒有逐項閉合；不得以其數字證明原版法術完成 | 高 |
 | native IDs17–19 modifier | SDD56 UI-03 | 🟡 玩家／AI窄E1 | 已驗 `+0x22..+0x24` raw writer／duration；玩家正式grid現依`0x1D6C8`播放#88 sub0與八個DAC phases後才原子發布transaction，AI mode11直接消費transaction。`ApplyNativeRuntimeEquipmentRecalc`保存`0x1B750`精確重算；仍缺phase-expiry正式caller、status UI與同狀態逐音訊E2，不能把legacy Buff視為同一機制 | 高 |
-| native IDs20–22、25–27 clear/application | SDD56 UI-03 | 🟡 玩家20–22窄E1；25–27 state-only | IDs20–22已有raw clear/application executors及玩家`0x1D6C8` #88 sub0／八DAC phase正式入口，完整preflight後才交易；25–27仍只有state executor。status name、expiry UI、完整tick與同狀態逐音訊E2未閉合 | 高 |
+| native IDs20–22、25–27 clear/application | SDD56 UI-03 | 🟡 玩家窄E1 | 六個ID均有raw clear/application executor及玩家`0x1D6C8` #88 sub0／八DAC phase正式入口，完整preflight後才交易；ID25已更正為只清raw `+5 bit7`，不混用`Acted`。status name、expiry UI、完整tick與同狀態逐音訊E2未閉合 | 高 |
 | native ID23 relocation | SDD56 UI-03 | ⚠️ | first-target、mode6 destination legality、MP/座標 transaction已接；`0x22253` 27-present indexed presentation仍缺 | 中 |
 | native IDs32–35 compound | SDD56 UI-03 | ❌ | static helper order 已知，但 MP transaction、rollback、UI/SFX 未閉合；禁止以 legacy combo 實作宣稱完成 | 高 |
 | 經驗值公式(攻擊/恢復/各系術) | doc02 §4.5 | 🟡 normalized approximation | legacy `growth.go`／`CastArea` 的獎勵不證明 native command 逐 ID 的 EXP route；IDs22/32–35 等仍缺原版 transaction/effect evidence | 高 |

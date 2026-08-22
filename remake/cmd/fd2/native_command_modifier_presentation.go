@@ -21,7 +21,7 @@ type nativeCommandModifierPresentationJob struct {
 }
 
 // startNativeCommandPalettePresentation owns the recovered player-only
-// 0x1D6C8 boundary shared by commands 17..22: FDOTHER #88 sub0, then four
+// 0x1D6C8 boundary shared by commands 17..23 and 25..27: FDOTHER #88 sub0, then four
 // command-color/black DAC-entry-zero cycles. The caller's complete transaction
 // preflight runs before sample/palette output, and mutation cannot run until
 // all eight phases were acknowledged by Draw.
@@ -31,8 +31,8 @@ func (g *Game) startNativeCommandPalettePresentation(
 	transaction func() error,
 	then func(),
 ) error {
-	if g == nil || g.st == nil || preflight == nil || transaction == nil ||
-		commandID < 17 || commandID > 22 {
+	validCommand := commandID >= 17 && commandID <= 23 || commandID >= 25 && commandID <= 27
+	if g == nil || g.st == nil || preflight == nil || transaction == nil || !validCommand {
 		return errors.New("native command modifier presentation context unavailable")
 	}
 	if g.nativeModifierPresentation != nil || g.nativeHealPresentation != nil || g.indexedTransition != nil {

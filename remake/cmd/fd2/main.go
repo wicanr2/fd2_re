@@ -6018,6 +6018,51 @@ func (g *Game) confirm() {
 			}
 			return
 		}
+		if id >= 25 && id <= 27 {
+			actor := g.sel
+			var clearResults []battle.NativeCommand25Result
+			var applicationResults []battle.NativeCommandApplicationResult
+			preflight := func() error {
+				if id == 25 {
+					_, err := g.st.NativeCommand25Targets(actor, tgt)
+					return err
+				}
+				_, _, err := g.st.NativeCommandApplicationTargets(actor, tgt, id)
+				return err
+			}
+			transaction := func() error {
+				var err error
+				if id == 25 {
+					clearResults, err = g.st.ExecuteNativeCommand25(actor, tgt)
+				} else {
+					applicationResults, err = g.st.ExecuteNativeCommandApplication(actor, tgt, id, g.rng)
+				}
+				return err
+			}
+			err := g.startNativeCommandPalettePresentation(id, preflight, transaction, func() {
+				if id == 25 {
+					g.msg = fmt.Sprintf("原始指令 25：完成 raw +5 bit7 clear (%d targets)", len(clearResults))
+				} else {
+					for _, result := range applicationResults {
+						if result.Damage > 0 {
+							g.awardDeathReward(result.Target, actor)
+						}
+					}
+					g.msg = fmt.Sprintf("原始指令 %d：完成 raw application (%d targets)", id, len(applicationResults))
+				}
+				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
+				g.finishSuccessfulUnitAction(actor, func() {
+					g.resetNativeTargetField()
+					g.st.MaterializeNativeMapRangeMode(1)
+					g.nativeCommand0Targeting, g.nativeCommandTargetID, g.sel, g.reach, g.moved = false, 0, nil, nil, false
+				})
+				g.checkResult()
+			})
+			if err != nil {
+				g.msg = fmt.Sprintf("原始指令 %d：palette 演出不可用 (%v)", id, err)
+			}
+			return
+		}
 		message := ""
 		var err error
 		var damageTargets []*battle.Unit
@@ -6037,15 +6082,6 @@ func (g *Game) confirm() {
 				damageTargets = append(damageTargets, result.Target)
 			}
 			message = fmt.Sprintf("原始指令 0：命中 %d，傷害 %d", hit, total)
-		case id == 26 || id == 27:
-			results, e := g.st.ExecuteNativeCommandApplication(g.sel, tgt, id, g.rng)
-			err = e
-			for _, result := range results {
-				if result.Damage > 0 {
-					damageTargets = append(damageTargets, result.Target)
-				}
-			}
-			message = fmt.Sprintf("原始指令 %d：完成 raw application (%d targets)", id, len(results))
 		case id == 24 || id == 28 || id == 29 || id == 31:
 			results, e := g.st.ExecuteNativeCommandDerivedStrike(g.sel, tgt, id, g.rng)
 			err = e
@@ -6055,10 +6091,6 @@ func (g *Game) confirm() {
 				damageTargets = append(damageTargets, result.Target)
 			}
 			message = fmt.Sprintf("原始指令 %d：傷害 %d", id, total)
-		case id == 25:
-			results, e := g.st.ExecuteNativeCommand25(g.sel, tgt)
-			err = e
-			message = fmt.Sprintf("原始指令 25：完成 raw clear (%d targets)", len(results))
 		default:
 			err = fmt.Errorf("native command target executor unavailable id=%d", id)
 		}
