@@ -677,7 +677,7 @@ func TestNativeSystemGroupMarchUnknownEventFailsBeforeOverlayMutation(t *testing
 	}
 }
 
-func TestNestedDirectionOneRemainsCurrentRuntimeSaveNotGroupMarch(t *testing.T) {
+func TestNestedDirectionOneCurrentRuntimeSaveFailsClosedWithoutBaseline(t *testing.T) {
 	unit := nativeSystemGroupMarchUnit(0, 0)
 	g := &Game{
 		st:   &battle.State{Units: []*battle.Unit{unit}},
@@ -689,7 +689,8 @@ func TestNestedDirectionOneRemainsCurrentRuntimeSaveNotGroupMarch(t *testing.T) 
 		t.Fatal("nested direction1 was not consumed")
 	}
 	if g.nativeSystemGroupMarch != nil || g.actionOverlayPhase != "" ||
-		!g.nativeSystemNestedOpen || g.msg != "原版目前戰況存檔交易尚未接線" {
+		!g.nativeSystemNestedOpen ||
+		g.msg != "原版目前戰況存檔來源或資產不完整，未寫入檔案" {
 		t.Fatalf("nested save fell into outer group march: %+v", g)
 	}
 }

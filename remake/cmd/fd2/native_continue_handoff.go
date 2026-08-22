@@ -182,6 +182,7 @@ func (g *Game) loadNativeContinueFromCurrentSnapshot(path string) error {
 	); err != nil {
 		return err
 	}
+	candidate.nativeCurrentSavePlain = append([]byte(nil), plain...)
 	*g = candidate
 	return nil
 }
@@ -270,6 +271,7 @@ func (g *Game) publishNativeContinueBattle(
 	candidate.msg, candidate.loadErr = "", ""
 	candidate.nativeChapterRestore = nil
 	candidate.nativeSystemOptions = &options
+	candidate.gold = int(input.Header.Currency)
 	candidate.restoreNativeMapHUDGateA(options.Raw51AAB)
 	candidate.nativeMapWork, candidate.nativeMapVGA = nil, nil
 	candidate.nativeMapClock.Reset()

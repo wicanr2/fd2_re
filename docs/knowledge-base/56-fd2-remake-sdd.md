@@ -5316,6 +5316,38 @@ selector1原版保存完整current-runtime，selector2以`0x10010`完整還原�
 runtime raw欄位、indexed VGA／DAC、panel、字型或文字時不發布第一幀。此切片列為
 `RUNTIME-E1`；尚缺原版同狀態逐幀、BIOS tick相位與輸入flush的`PLAYER-E2`。
 
+### selector1 「保存目前戰況」寫入契約
+
+固定雜湊 `FD2.EXE` 的 `0x19F1A..0x1A198` 直接證實：玩家選 YES 後，
+原版寫入 field control `0x8A3` bytes、persistent records `0xA00` bytes、
+`runtime_count * 0x50` bytes、event state `0x20` bytes 及18-byte header，再重算
+checksum、套用 XOR envelope 並覆寫 `FD2.SAV`。原始位址、caller、
+FDTXT `0x19A/0x19B/0x19C` 與原始檔案交易見
+[`fd2_nested_system_menu_ida.txt`](../data/ida/fd2_nested_system_menu_ida.txt)。
+
+重製端必須把這項交易分成三層：
+
+1. `fdsave` 純函式只將已完整驗證的 `CurrentSnapshot` 覆蓋到一份
+   checksum-valid plaintext 副本。它要求 runtime、persistent count 與實際陣列
+   一致，保留四個 chapter slots 與其他未命名 bytes，不從正規化角色
+   反推不明 ABI。
+2. `Game` 只可從一份已通過 native CONTINUE handoff、且至今仍保留
+   完整 raw baseline 的戰場建立快照。地圖座標、面向、動作、生存／已行動
+   bits、HP／MP、能力、物品與指令等已證實欄位，必須由目前
+   typed state 回填原 raw 副本；任一欄位越界、陣列順序不一致或缺少
+   provenance 時失敗即關閉。runtime 數量相對 baseline 改變時也必須拒絕寫入，
+   直到增援／入隊記錄的 persistent raw 投影另行閉合；不可混寫新 runtime 與舊
+   persistent 區。不允許把可空的 authored battle 假裝成原生快照。
+3. 檔案擁有者先讀取與解碼現存 `FD2.SAV`，私有地建立新 plaintext、
+   checksum 與 envelope，寫入同目錄暫存檔並同步完成後才原子取代。
+   問句、YES／NO、成功／取消文字與面板收合的每一幀均由既有 indexed
+   confirmation owner 呈現；只有確認分支會碰檔案，寫入失敗不得
+   顯示成功文字或收掉可重試的戰場狀態。
+
+本契約首先關閉 selector1；selector2 還需要將現有 title CONTINUE adapter
+改造成可在現行 battle controller 內原子替換的 load transaction，不與 SAVE
+同批猜測接入。兩者都不得落回重製 JSON 存檔。
+
 ## 2026-08-22 巢狀離場規格
 
 主證據為

@@ -279,6 +279,93 @@ func TestInspectCurrentSnapshotRejectsImpossibleCounts(t *testing.T) {
 	}
 }
 
+func TestWriteCurrentSnapshotRoundTripPreservesOpaqueAndChapterSlots(t *testing.T) {
+	plain := make([]byte, FileSize)
+	for index := range plain {
+		plain[index] = byte(index*29 + 7)
+	}
+	snapshot := CurrentSnapshot{
+		Header: CurrentRuntimeHeader{
+			TurnCounter: 17, RuntimeCount: 2, Chapter: 9,
+			CameraX: 3, CameraY: 4, CursorX: 10, CursorY: 11,
+			VisibleCursorX: 7, VisibleCursorY: 7, PersistentCount: 1,
+			Currency: 0x12345678, Raw53AF9: 1, HUDGateA: 0,
+			Raw51E61: 1, Raw51E62: 0,
+		},
+		RuntimeRecords: make([]PersistentRecord, 2),
+	}
+	snapshot.NativeFieldControl[0] = 0x31
+	snapshot.NativeFieldControl[2] = 1
+	snapshot.NativeFieldControl[len(snapshot.NativeFieldControl)-1] = 0x32
+	snapshot.PersistentRecords[0].Raw[8] = 9
+	snapshot.PersistentRecords[len(snapshot.PersistentRecords)-1].Raw[0x4f] = 0xa5
+	snapshot.RuntimeRecords[0].Raw[8] = 4
+	snapshot.RuntimeRecords[1].Raw[8] = 5
+	snapshot.NativeEventState[0] = 0x61
+	snapshot.NativeEventState[len(snapshot.NativeEventState)-1] = 0x62
+
+	beforeSlot := append([]byte(nil), plain[SlotOffset:ChecksumOff]...)
+	beforeRuntimeTail := append(
+		[]byte(nil),
+		plain[CurrentRuntimeRosterOffset+2*UnitSize:CurrentNativeEventStateOffset]...,
+	)
+	gotPlain, err := WriteCurrentSnapshot(plain, snapshot)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(plain[SlotOffset:ChecksumOff], beforeSlot) {
+		t.Fatal("writer mutated caller plaintext")
+	}
+	if !reflect.DeepEqual(gotPlain[SlotOffset:ChecksumOff], beforeSlot) {
+		t.Fatal("writer changed native chapter slots or their opaque metadata")
+	}
+	if !reflect.DeepEqual(
+		gotPlain[CurrentRuntimeRosterOffset+2*UnitSize:CurrentNativeEventStateOffset],
+		beforeRuntimeTail,
+	) {
+		t.Fatal("writer changed unused current-runtime capacity")
+	}
+	stored, err := Encode(gotPlain)
+	if err != nil {
+		t.Fatal(err)
+	}
+	decoded, err := Decode(stored)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := InspectCurrentSnapshot(decoded)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(got, snapshot) {
+		t.Fatalf("current snapshot round-trip mismatch\n got=%#v\nwant=%#v", got, snapshot)
+	}
+}
+
+func TestWriteCurrentSnapshotRejectsMalformedInputWithoutAliasing(t *testing.T) {
+	plain := make([]byte, FileSize)
+	snapshot := CurrentSnapshot{
+		Header:         CurrentRuntimeHeader{RuntimeCount: 2},
+		RuntimeRecords: make([]PersistentRecord, 1),
+	}
+	if _, err := WriteCurrentSnapshot(plain, snapshot); err == nil {
+		t.Fatal("runtime count mismatch unexpectedly accepted")
+	}
+	if plain[CurrentRuntimeHeaderOffset] != 0 {
+		t.Fatal("failed write mutated caller plaintext")
+	}
+	snapshot.Header.RuntimeCount = 1
+	snapshot.Header.PersistentCount = RosterUnits + 1
+	if _, err := WriteCurrentSnapshot(plain, snapshot); err == nil {
+		t.Fatal("oversized persistent count unexpectedly accepted")
+	}
+	snapshot.Header.PersistentCount = 0
+	snapshot.NativeFieldControl[2] = CurrentFieldControlUnitCap + 1
+	if _, err := WriteCurrentSnapshot(plain, snapshot); err == nil {
+		t.Fatal("oversized field unit count unexpectedly accepted")
+	}
+}
+
 func validContinueSnapshot() CurrentSnapshot {
 	snapshot := CurrentSnapshot{
 		Header: CurrentRuntimeHeader{

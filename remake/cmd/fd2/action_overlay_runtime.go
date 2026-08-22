@@ -8,6 +8,7 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
 
 const nativeSystemEndTurnDelayFrames = 12 // 0x17259: delay(0xC8 ms)；60 Hz 約十二幀。
@@ -20,6 +21,9 @@ type nativeSystemEndTurnUIState struct {
 	exitProgram                bool
 	groupMarch                 bool
 	groupMarchPlan             battle.NativeSystemGroupMarchPlan
+	saveCurrent                bool
+	savePath                   string
+	saveStored                 []byte
 }
 
 const (
@@ -304,6 +308,64 @@ func (g *Game) beginNativeNestedSystemExit() bool {
 	return true
 }
 
+// beginNativeNestedCurrentSave owns sub_19DF7 selector1. It prebuilds both
+// the exact encoded replacement and every indexed confirmation frame before
+// closing the nested overlay. Only the later YES publication touches disk.
+func (g *Game) beginNativeNestedCurrentSave() bool {
+	if g == nil || !g.nativeSystemCursorOverlay || !g.nativeSystemNestedOpen ||
+		!g.ring || g.ringSel != 1 || g.st == nil || g.aiBusy || g.result != "" ||
+		g.nativePreparationUI == nil || g.nativeClassUI == nil || len(g.nativeMapVGA) != 320*200 {
+		return false
+	}
+	path, stored, err := g.buildNativeCurrentSaveStored()
+	if err != nil {
+		g.loadErr = err.Error()
+		return false
+	}
+	ui := g.nativePreparationUI
+	source := append([]byte(nil), g.nativeMapVGA...)
+	dialogue, err := campaign.ComposeNativePreparationConfirmationDialogue(source, ui.dialogue, ui.portrait)
+	if err != nil {
+		return false
+	}
+	question, err := campaign.ComposeNativeBattleCurrentSaveQuestion(
+		dialogue, ui.portrait, ui.status.Strings, ui.status.Font,
+	)
+	if err != nil {
+		return false
+	}
+	accepted, err := campaign.NativeBattleCurrentSaveResponseFrames(
+		question, ui.status.Strings, ui.status.Font, true,
+	)
+	if err != nil {
+		return false
+	}
+	canceled, err := campaign.NativeBattleCurrentSaveResponseFrames(
+		question, ui.status.Strings, ui.status.Font, false,
+	)
+	if err != nil {
+		return false
+	}
+	frames, err := campaign.NativePreparationConfirmationOpeningFrames(source, dialogue, question, ui.choices)
+	if err != nil || len(frames) != 10 {
+		return false
+	}
+	state := &nativeSystemEndTurnUIState{
+		source: source, dialogue: dialogue, question: question,
+		accepted: accepted, canceled: canceled,
+		saveCurrent: true, savePath: path, saveStored: append([]byte(nil), stored...),
+	}
+	g.beginActionOverlayClose(func() {
+		g.nativeSystemNestedOpen = false
+		g.nativeSystemCursorOverlay = false
+		g.nativeSystemEndTurnConfirm = true
+		g.nativeSystemEndTurnUI = state
+		g.resetNativeClassUIPulse()
+		g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
+	})
+	return true
+}
+
 // beginNativeSystemGroupMarch 承接 sub_16F55 selector1。它在收掉外層命令框前
 // 完整預演逐單位尋路與事件；任一未知事件使整批保持原狀。
 func (g *Game) beginNativeSystemGroupMarch() bool {
@@ -376,7 +438,9 @@ func (g *Game) activateNativeSystemDirectionOne() bool {
 		return false
 	}
 	if g.nativeSystemNestedOpen {
-		g.msg = "原版目前戰況存檔交易尚未接線"
+		if !g.beginNativeNestedCurrentSave() {
+			g.msg = "原版目前戰況存檔來源或資產不完整，未寫入檔案"
+		}
 		return true
 	}
 	if !g.beginNativeSystemGroupMarch() {
@@ -445,8 +509,23 @@ func (g *Game) finishNativeSystemEndTurnChoice(accepted bool) {
 		return
 	}
 	g.nativeSystemEndTurnConfirm = false
-	g.nativeSystemEndTurnUI.acceptedOutcome = accepted
 	g.nativeClassUIJob = &nativeClassUIJob{frames: frames, after: func() {
+		state := g.nativeSystemEndTurnUI
+		if state == nil {
+			return
+		}
+		if accepted && state.saveCurrent {
+			if err := replaceNativeCurrentSaveAtomic(state.savePath, state.saveStored); err != nil {
+				g.loadErr = err.Error()
+				accepted = false
+			} else if plain, err := fdsave.Decode(state.saveStored); err != nil {
+				g.loadErr = "原版目前戰況存檔：寫入後 baseline 解碼失敗：" + err.Error()
+				accepted = false
+			} else {
+				g.nativeCurrentSavePlain = plain
+			}
+		}
+		state.acceptedOutcome = accepted
 		response := g.nativeSystemEndTurnUI.canceled
 		if accepted {
 			response = g.nativeSystemEndTurnUI.accepted
@@ -485,7 +564,7 @@ func (g *Game) stepNativeSystemEndTurn() {
 					g.nativeSystemGroupMarch = &plan
 					g.nativeSystemGroupMarchStep = 0
 					g.startNextNativeSystemGroupMarchStep()
-				} else {
+				} else if !state.saveCurrent {
 					g.endTurn()
 				}
 			}

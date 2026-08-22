@@ -733,6 +733,64 @@ func InspectCurrentSnapshot(plain []byte) (CurrentSnapshot, error) {
 	return snapshot, nil
 }
 
+// WriteCurrentSnapshot replaces only the current-runtime regions written by
+// native sub_19DF7 selector 1. The chapter-slot area and every other opaque
+// plaintext byte are preserved from the checksum-valid caller image. Callers
+// must use Encode after this function to rebuild the checksum and envelope.
+//
+// The function accepts exact raw records only. It deliberately does not
+// serialize normalized campaign or battle values into the native ABI.
+func WriteCurrentSnapshot(plain []byte, snapshot CurrentSnapshot) ([]byte, error) {
+	if len(plain) != FileSize {
+		return nil, errors.New("fdsave: invalid plaintext size")
+	}
+	runtimeCount := int(snapshot.Header.RuntimeCount)
+	if runtimeCount > RosterUnits*3 || len(snapshot.RuntimeRecords) != runtimeCount {
+		return nil, errors.New("fdsave: current snapshot runtime record count mismatch")
+	}
+	if int(snapshot.Header.PersistentCount) > RosterUnits {
+		return nil, errors.New("fdsave: current snapshot persistent record count exceeds capacity")
+	}
+	if int(snapshot.NativeFieldControl[2]) > CurrentFieldControlUnitCap {
+		return nil, errors.New("fdsave: current snapshot field unit count exceeds capacity")
+	}
+
+	out := append([]byte(nil), plain...)
+	copy(
+		out[CurrentFieldControlOffset:CurrentFieldControlOffset+CurrentFieldControlSize],
+		snapshot.NativeFieldControl[:],
+	)
+	for index := range snapshot.PersistentRecords {
+		start := CurrentPersistentRosterOffset + index*UnitSize
+		copy(out[start:start+UnitSize], snapshot.PersistentRecords[index].Raw[:])
+	}
+	for index := range snapshot.RuntimeRecords {
+		start := CurrentRuntimeRosterOffset + index*UnitSize
+		copy(out[start:start+UnitSize], snapshot.RuntimeRecords[index].Raw[:])
+	}
+	copy(
+		out[CurrentNativeEventStateOffset:CurrentNativeEventStateOffset+CurrentNativeEventStateSize],
+		snapshot.NativeEventState[:],
+	)
+	header := out[CurrentRuntimeHeaderOffset : CurrentRuntimeHeaderOffset+CurrentRuntimeHeaderSize]
+	header[0] = snapshot.Header.TurnCounter
+	header[1] = snapshot.Header.RuntimeCount
+	header[2] = snapshot.Header.Chapter
+	header[3] = snapshot.Header.CameraX
+	header[4] = snapshot.Header.CameraY
+	header[5] = snapshot.Header.CursorX
+	header[6] = snapshot.Header.CursorY
+	header[7] = snapshot.Header.VisibleCursorX
+	header[8] = snapshot.Header.VisibleCursorY
+	header[9] = snapshot.Header.PersistentCount
+	binary.LittleEndian.PutUint32(header[10:14], snapshot.Header.Currency)
+	header[14] = snapshot.Header.Raw53AF9
+	header[15] = snapshot.Header.HUDGateA
+	header[16] = snapshot.Header.Raw51E61
+	header[17] = snapshot.Header.Raw51E62
+	return out, nil
+}
+
 // ActivePersistentRecords returns a copy of the header-delimited current
 // persistent roster.
 func (s CurrentSnapshot) ActivePersistentRecords() []PersistentRecord {

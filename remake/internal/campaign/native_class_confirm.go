@@ -25,6 +25,8 @@ const (
 	nativeBattleEndCanceledIndex   = 0x19c
 	nativeBattleExitQuestionIndex  = 0x19f
 	nativeBattleExitAcceptedIndex  = 0x1a0
+	nativeBattleSaveQuestionIndex  = 0x19a
+	nativeBattleSaveAcceptedIndex  = 0x19b
 	nativeBattleMarchQuestionIndex = 0x1a1
 	nativeBattleMarchAcceptedIndex = 0x1a2
 	nativeBattleEndQuestionX       = 99
@@ -50,6 +52,16 @@ func ComposeNativeBattleExitQuestion(
 ) ([]byte, error) {
 	return composeNativeBattleSystemQuestion(
 		dialogue, portrait, strings, font, nativeBattleExitQuestionIndex,
+	)
+}
+
+// ComposeNativeBattleCurrentSaveQuestion reproduces sub_19DF7 selector1's
+// FDTXT#0x19a question at the shared native battle-system dialogue position.
+func ComposeNativeBattleCurrentSaveQuestion(
+	dialogue []byte, portrait dato.Frame, strings *fdtxt.Strings, font *fdtxt.Font,
+) ([]byte, error) {
+	return composeNativeBattleSystemQuestion(
+		dialogue, portrait, strings, font, nativeBattleSaveQuestionIndex,
 	)
 }
 
@@ -113,6 +125,18 @@ func NativeBattleExitResponseFrames(
 	index := nativeBattleEndCanceledIndex
 	if accepted {
 		index = nativeBattleExitAcceptedIndex
+	}
+	return nativeBattleSystemResponseFrames(question, strings, font, index)
+}
+
+// NativeBattleCurrentSaveResponseFrames uses FDTXT#0x19b only after the
+// native FD2.SAV replacement succeeded. Cancellation shares FDTXT#0x19c.
+func NativeBattleCurrentSaveResponseFrames(
+	question []byte, strings *fdtxt.Strings, font *fdtxt.Font, accepted bool,
+) ([][]byte, error) {
+	index := nativeBattleEndCanceledIndex
+	if accepted {
+		index = nativeBattleSaveAcceptedIndex
 	}
 	return nativeBattleSystemResponseFrames(question, strings, font, index)
 }

@@ -266,6 +266,11 @@ type Game struct {
 	// 發布點設一次。它讓該 E2 錨點的第一個 Return 直接開 action overlay；
 	// 一經消費，後續空游標確認由已證實的共用 0x117E7 owner 處理。
 	nativeContinueOpeningConfirm bool
+	// nativeCurrentSavePlain is the checksum-validated plaintext baseline from
+	// the exact FD2.SAV that produced the active CONTINUE battle. Current-save
+	// writes preserve its chapter slots and opaque bytes; authored battles never
+	// receive this carrier.
+	nativeCurrentSavePlain []byte
 	// nativeSystemCursorOverlay 對應共用 0x117E7 在 0x12C0D 回傳 -1 時
 	// 呼叫的 0x16F55 空游標面板。direction0／巢狀戰場資訊、direction2／設定
 	// 與 direction3／END 已有 action owner；巢狀 direction3 離場亦已閉合到
@@ -2847,6 +2852,7 @@ func (g *Game) captureNativeMapHUDPersistence() {
 func (g *Game) resetBattle(unitsPath, scnPath string) {
 	g.resetActionOverlayLifecycle()
 	g.nativeContinueOpeningConfirm = false
+	g.nativeCurrentSavePlain = nil
 	g.nativeSystemCursorOverlay = false
 	g.nativeCh20SkyKey = nil
 	g.nativeCh23State = nil

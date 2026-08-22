@@ -17,10 +17,32 @@
 | 1 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式，現為產品36／runtime170／未知1099；舊83 unknown 已拆為80已分類、3已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253` 只追其他 caller／戰役 gate，`0x2BCE5` 追正式 owner，不重解 callee |
 | 2 | 玩家第21戰天空之鑰固定演出 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`：`0x24336` 已接真實 `FDOTHER #34`、`ANI #0`、調色盤循環與正式戰後→城鎮→存讀檔 | 取得未修改原版同狀態 E2，核對第一個動態調色盤相位與相鄰 `layout_units`／ACT63／64；不重解函式本體 |
 | 3 | 玩家第29戰 raw ch28 post 後續驗收 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`；`0x1DB65`原資源 presenter、group9→`0x25535`、持續隊伍、`preparation_ch30` 與存讀檔已正式接通，postbattle admission blocker 已歸零 | 以未修改原版一般玩家路徑取得同狀態逐幀／音訊 E2；高階圖像與sample 3語意仍保留unknown，不阻擋 E1戰役流程 |
-| 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 空游標設定、END、nested資訊／離場皆達正式E1。外層selector1已證實使用既有`0x51B91`表且不讀`sub_14B78`回傳；全軍移動現由正式FDTXT／DATO確認、私有動態預演、逐單位路徑、raw bit7與回合收束消費。正式資料僅有的selector1 event61／75亦會在途中暫停，分別完成59幀／JOIN31與對話後turn chain，再續行，達窄`RUNTIME-E1`。存檔／讀檔仍只`RE-CLOSED` | 下一步補原版current-runtime存讀檔或一般玩家同狀態逐幀／逐音訊E2；不得把event61／75接通外推成90-entry所有selector已完成。其後補abbreviated presentation、物品effect、phase-expiry／status UI |
+| 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 空游標設定、END、nested資訊／SAVE／離場皆達正式E1。nested SAVE 現從 checksum-valid CONTINUE baseline 保留四槽與未命名 bytes，只回填已證實 live 欄位，並使用 FDTXT `0x19A/0x19B/0x19C`、checksum、XOR envelope與原子取代；NO或raw矛盾不改檔。外層selector1已證實使用既有`0x51B91`表且不讀`sub_14B78`回傳；全軍移動現由正式FDTXT／DATO確認、私有動態預演、逐單位路徑、raw bit7與回合收束消費。正式資料僅有的selector1 event61／75亦會在途中暫停，分別完成59幀／JOIN31與對話後turn chain，再續行，達窄`RUNTIME-E1` | 下一步接 current-runtime LOAD、動態增援／JOIN 後 persistent raw 同步，或一般玩家同狀態逐幀／逐音訊E2；不得把event61／75接通外推成90-entry所有selector已完成。其後補abbreviated presentation、物品effect、phase-expiry／status UI |
 | 5 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial；ch02賣出成功／加款／返回已有九組AE=0。獨立裝備service2與物品轉移service3也都有正常route-patched子面板證據；service3更已完成索爾短劍→悠妮、返回loop、雙方交易後物品清單及跨`town_ch02`重製JSON冷讀檔。可見內容／幾何一致，但動畫相位未同步，只到partial E2。service2交易已改為私有 unit→raw裝備／重算→完整panel重建→一次發布，palette深層失敗保持roster／能力／panel原子不變，達`RUNTIME-E1`；目前原版CONTINUE快照只進戰場名冊／狀態面板，故mutation／restore E2未冒稱完成。目的名冊取消已接正式五幀收合→來源提示六幀展開，取消不改角色／金幣；取消後self-transfer亦由正式raw transaction消費，兩者達`RUNTIME-E1`。標題 LOAD 的正式確認 owner 現以 checksum-valid 合成原版槽還原 `town_ch02`／typed party／gold／HUD gate，竄改 envelope 原子留在選槽，亦為`RUNTIME-E1`。裝備收件者另以六人typed party沿正式menu→purchase→Yes production input完成三列scroll、滿欄／無合適角色原子返回與正常裝備／扣款`RUNTIME-E1` | 依 `57` 取得原版同狀態證據；商店下一步是service3 empty／full與self／destination-cancel原版畫面；service2尚需可抵達ch02城鎮的原版快照補mutation／restore畫面；LOAD仍需未修改原版有效槽 E2；recipient scroll／no-recipient／full、其他章節與未修改一般玩家路徑仍缺 |
 | 6 | 原版終局精確鏈 | `RUNTIME-E1`：正式 `battle_ch30→ending` 現消費來源約束前綴／角色／20段尾段並停在 #59；80個實際 FIGANI 的 header-zero `0x2939D` raw `+4..+7`、base scheduler 與兩次配對已接；未達 E2 | 以動態 watchpoint／未修改玩家路徑閉合 `0x2C548→0x2C2A6` records／globals 連續性、3% RNG重播、精確音訊／終端輸入、`0x2BCE5` 原版 owner 及第30戰 E2 |
 | 7 | 全戰役抽樣／長程試玩、三平台打包與推廣片 | 核心 gate 未關閉 | 核心垂直切片與代表性晚期玩家路徑完成後才進入發行驗收 |
+
+### 阻擋完整 remake 的剩餘工作
+
+以「玩家能從標題正常玩到終局、戰間補給不中斷、存讀檔可長程使用、三平台可交付」為完成定義，目前只有下列項目會阻擋交付；其他原版內部 helper 或逐像素細節列為非阻擋美化：
+
+1. **長程戰役可達性**：完成一輪不使用 direct-entry、強制勝利或狀態注入的重製端30戰通關，驗證每個戰後→城鎮／商店／整備→下一戰邊界。
+2. **存檔與持續隊伍**：接上current-runtime LOAD，完成動態增援／JOIN 後的persistent raw同步，並用長程玩家路徑驗證章節、金錢、HP／MP、物品、裝備與入隊順序不漂移。
+3. **戰鬥交易完整性**：關閉仍失敗即關閉的指令／法術／物品effect、狀態到期與status UI，並至少以代表性玩家／敵方回合驗證決策、扣款與演出順序。
+4. **戰場與戰間介面**：修正玩家已指出的戰場排版／動畫差異，將ch02以外的早、中、晚期城鎮、商店、教會、整備與祕密商店以正常輸入抽樣。
+5. **終局與音訊**：用第30戰正常路徑驗證records／globals連續性、3% RNG、精確音訊／輸入與最後定格；已接的蒙太奇與20組尾段不再重做。
+6. **發行驗收**：核心路徑關閉後，完成一輪長程試玩報告、Linux／Windows／macOS 封包、平台實機啟動／存檔／音訊抽測，最後才製作推廣影片。
+
+不阻擋交付的項目：整支 `FD2.EXE` 每個函式命名、DOS BIOS 本身、無玩家路徑的helper、以及不影響操作或可讀性的像素級微差。
+
+> **2026-08-22 current-runtime SAVE 閉合：** `sub_19DF7` selector1 已達
+> `RE-CLOSED`／`DATA-READY`／窄 `RUNTIME-E1`。純函式 writer 保留四個
+> chapter slots、未使用 runtime 容量與其他未命名 bytes；Game 只從
+> CONTINUE-projected runtime 回填有 provenance 的座標、raw flags、物品、指令與數值欄位。
+> UI 只在 YES 後以同目錄暫存檔原子取代明確的 `FD2_NATIVE_SAVE`；NO、缺檔、拓撲或
+> raw矛盾都保持原檔；增援／入隊導致runtime數量改變時也拒絕混寫舊persistent區。
+> 已通過 snapshot round-trip、raw overlay、FDTXT index、YES／NO
+> 與原子寫檔聚焦回歸；依使用者指示未再執行最後一輪完整 `go test ./...`，不把此批宣稱為全套綠燈。
 
 > **2026-08-22 command 0 閉合：** 順序4先前所述的正式消費端缺口已關閉。
 > `0x26152` 的 28 幀／7 元素錯開排程、FDOTHER #18／#20、#82/sub1、
