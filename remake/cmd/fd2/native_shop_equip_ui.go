@@ -198,6 +198,24 @@ func (g *Game) applyNativeShopEquipSelection() bool {
 	); err != nil {
 		return false
 	}
+
+	// 0x1c084..0x1c0cc 會在裝備成功後原地重畫面板。先在候選 unit 上完成
+	// 所有 renderer 前置；若重建失敗，既有 panel 與 persistent roster 都不得改變。
+	oldPanel := g.nativeItemPanel
+	oldBase := g.nativeItemPanelBase
+	oldRecord := g.nativeItemPanelRecord
+	oldAssets := g.nativeItemPanelAssets
+	oldEffectRows := g.nativeItemEffectRows
+	oldSelection := g.itemSel
+	if !g.rebuildNativeItemPanelContents(&unit, true) {
+		g.nativeItemPanel = oldPanel
+		g.nativeItemPanelBase = oldBase
+		g.nativeItemPanelRecord = oldRecord
+		g.nativeItemPanelAssets = oldAssets
+		g.nativeItemEffectRows = oldEffectRows
+		g.itemSel = oldSelection
+		return false
+	}
 	g.partyRoster[unitID] = cloneNativeShopUnit(unit)
-	return g.rebuildNativeItemPanelContents(&unit, true)
+	return true
 }

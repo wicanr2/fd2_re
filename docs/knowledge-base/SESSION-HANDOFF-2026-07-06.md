@@ -5569,3 +5569,18 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   state 與 handler chapter 原子不變，錯誤訊息也不再把 checksum 失敗說成空槽。
 - 聚焦 Docker／Xvfb 回歸通過。這是合成 fixture 的 `RUNTIME-E1`，不是由未修改
   原版酒店／整備寫槽後再經標題 LOAD 的一般玩家 E2；該 gate 仍保留。
+
+## 2026-08-22：service2 裝備交易原子發布
+
+- 先依既有 `0x2F883→0x1BFFE→0x1C142→0x1B750` 證據在 SDD 固定原子契約，
+  沒有重解 callee。稽核發現 `applyNativeShopEquipSelection` 原先先寫
+  `partyRoster`，之後才重建 item/status panel；深層 renderer 失敗會留下已改裝
+  角色與舊畫面，違反失敗即關閉。
+- 正式 owner 現在私有 unit 上完成 raw／compact 驗證、裝備與能力重算，再完整
+  建立候選 panel，最後才一次發布 roster。整合回歸刻意在最後移除 palette：函式
+  失敗時 unit、裝備旗標、能力、selection、既有 panel image／buffers 均不變；恢復
+  palette 後同一輸入才成功，既有收合、名冊重開與 JSON round-trip 仍通過。
+- 原版 route-patched 擷取有界重跑後確認：目前 `FD2.SAV／TMP` 的 CONTINUE 只進
+  戰場角色名冊／狀態面板，Return 在兩者間循環，Escape 回標題，無法抵達舊 ch02
+  城鎮簽章。停止重播，不以直接注入替代；service2 mutation／restore 仍是原版 E2
+  缺口，本批裁決只到 `RUNTIME-E1`。

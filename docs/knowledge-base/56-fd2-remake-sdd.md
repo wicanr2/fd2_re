@@ -1923,6 +1923,30 @@ stable E2。正常標題／城鎮／商店／service2／角色輸入已取得名
 [`shop-standalone-equip-ch02-e2.json`](../data/ui-traces/shop-standalone-equip-ch02-e2.json)
 及[`對照圖`](../figures/shop-standalone-equip-ch02-original-vs-remake.png)。
 
+#### service2 裝備交易原子發布契約（2026-08-22）
+
+`applyNativeShopEquipSelection` 不可先寫 `partyRoster` 再嘗試重建 item/status
+panel。正式順序必須是：複製來源 unit→驗證 raw／compact 投影→在私有 unit 執行
+`EquipNativeCompactSlot`／`0x1B750` 重算→以候選 unit 完整重建 panel buffers 與
+Ebiten image→最後一次發布候選 unit。panel 所需 FDOTHER／FDTXT／DATO、effect
+rows、palette 或任何 renderer 前置不足時，unit、背包旗標、能力、selection 與既有
+panel buffers 必須全部不變。
+
+成功後 item panel 留在 step11 並原地顯示新裝備與能力；只有玩家 Escape 才開始
+0→11收合，完成後再以既有六幀 owner 返回同一角色名冊。這是正式 runtime 與重製
+JSON 存檔的 E1 契約，不自行提升為原版 mutation／restore E2。
+
+重製端已依此改為候選發布：測試刻意在相容物品、raw projection 與重算皆成功後
+移除最終 palette，使 panel 建構於最後一步失敗；正式 owner 回傳失敗，來源 unit、
+compact/raw 背包、裝備旗標、能力、item selection 與既有 panel image／buffers 全部
+保持不變。恢復 palette 後同一輸入才一次發布新裝備與 AP，既有 0→11 收合、同角色
+名冊六幀重開與 town JSON round-trip 回歸仍通過，裁決為 `RUNTIME-E1`。
+
+本輪嘗試補原版 mutation E2 時，固定雜湊 route-patched 副本由標題 CONTINUE 載入
+目前 `FD2.SAV／TMP` 後只進入戰場角色名冊／狀態面板；Return 在兩者間循環，Escape
+返回標題，無法抵達先前 ch02 城鎮簽章。依有界停止原則不再重播或猜改快照，因此
+原版 mutation／restore E2 仍未關閉，既有兩張 stable partial E2 也不受影響。
+
 ### ch02 物品轉移子面板 E2 契約（2026-08-22）
 
 本切片只消費已閉合的共用 owner `0x2F8EA`，不重解函式本體。原版只可

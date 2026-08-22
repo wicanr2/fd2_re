@@ -442,6 +442,27 @@ func TestNativeShopProductionOwnerDrawsOriginalMenuAndPurchaseList(t *testing.T)
 	if !g.drawNativeShop(screen) {
 		t.Fatal("native standalone-equip panel did not render in production")
 	}
+	beforeFailedEquip := cloneNativeShopUnit(g.partyRoster[0])
+	beforeFailedPanel := g.nativeItemPanel
+	beforeFailedBase := append([]byte(nil), g.nativeItemPanelBase...)
+	beforeFailedRecord := append([]byte(nil), g.nativeItemPanelRecord...)
+	savedPalette := g.nativeUIPalette
+	g.nativeUIPalette = nil
+	g.itemSel = 1
+	if g.applyNativeShopEquipSelection() {
+		t.Fatal("native standalone-equip published without renderer palette")
+	}
+	if !reflect.DeepEqual(g.partyRoster[0], beforeFailedEquip) ||
+		g.nativeItemPanel != beforeFailedPanel ||
+		!reflect.DeepEqual(g.nativeItemPanelBase, beforeFailedBase) ||
+		!reflect.DeepEqual(g.nativeItemPanelRecord, beforeFailedRecord) ||
+		g.itemSel != 1 {
+		t.Fatalf(
+			"failed native equip leaked state: unit=%#v panel=%p selection=%d",
+			g.partyRoster[0], g.nativeItemPanel, g.itemSel,
+		)
+	}
+	g.nativeUIPalette = savedPalette
 	g.itemSel = 1
 	if !g.applyNativeShopEquipSelection() {
 		t.Fatal("native standalone-equip transaction failed")
