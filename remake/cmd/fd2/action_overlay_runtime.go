@@ -368,6 +368,23 @@ func (g *Game) beginNativeSystemGroupMarch() bool {
 	return true
 }
 
+// activateNativeSystemDirectionOne 固定兩層同一方向的不同 owner：外層
+// sub_16F55 selector1 是全軍移動；巢狀 sub_19DF7 selector1 是 current-runtime
+// FD2.SAV 保存。後者尚未接線時只能失敗即關閉，絕不能落入全軍移動。
+func (g *Game) activateNativeSystemDirectionOne() bool {
+	if g == nil || !g.nativeSystemCursorOverlay || !g.ring || g.ringSel != 1 {
+		return false
+	}
+	if g.nativeSystemNestedOpen {
+		g.msg = "原版目前戰況存檔交易尚未接線"
+		return true
+	}
+	if !g.beginNativeSystemGroupMarch() {
+		g.msg = "原版全軍移動來源或事件不完整，未執行"
+	}
+	return true
+}
+
 // preflightNativeSystemGroupMarchEvents 驗證既有 event61／75 UI owner 的可編輯
 // 對話及原始演出資產。battle planner 已在私有 State 投影驗證 mutation；這裡
 // 補齊只有 Game 層能取得的 presentation admission，避免先移動才發現缺素材。

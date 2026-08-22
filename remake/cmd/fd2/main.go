@@ -4833,9 +4833,7 @@ func (g *Game) ringInput() bool {
 		}
 		if enter {
 			if g.ringSel == 1 {
-				if !g.beginNativeSystemGroupMarch() {
-					g.msg = "原版全軍移動來源或事件不完整，未執行"
-				}
+				g.activateNativeSystemDirectionOne()
 				return true
 			}
 			if g.ringSel == 0 {
@@ -4857,9 +4855,8 @@ func (g *Game) ringInput() bool {
 				}
 				return true
 			}
-			// selector 1／2 的 current-runtime FD2.SAV 交易仍未閉合，
-			// 維持失敗即關閉。
-			g.msg = "原版巢狀系統指令的交易擁有者尚未驗證"
+			// selector2 的 current-runtime FD2.SAV 讀取交易仍未閉合。
+			g.msg = "原版目前戰況讀檔交易尚未接線"
 		}
 		return true
 	}
@@ -4919,8 +4916,10 @@ func (g *Game) ringInput() bool {
 				})
 				return true
 			}
-			// selector 1 的 owner 尚未閉合，不由圖示外觀猜測。
-			g.msg = "原版續戰指令的此動作擁有者尚未驗證"
+			if g.ringSel == 1 {
+				g.activateNativeSystemDirectionOne()
+				return true
+			}
 		}
 		return true
 	}

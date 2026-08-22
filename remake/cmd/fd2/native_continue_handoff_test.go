@@ -600,7 +600,7 @@ func TestNativeSystemGroupMarchRunsAfterConfirmationAndEndsTurn(t *testing.T) {
 		t.Fatal(err)
 	}
 	g.nativeMapVGA = make([]byte, 320*200)
-	if !g.beginNativeSystemGroupMarch() {
+	if !g.activateNativeSystemDirectionOne() {
 		t.Fatal("verified outer selector1 route was rejected")
 	}
 	if unit.X != 0 || unit.Acted || g.nativeSystemEndTurnConfirm {
@@ -670,9 +670,27 @@ func TestNativeSystemGroupMarchUnknownEventFailsBeforeOverlayMutation(t *testing
 		t.Fatal(err)
 	}
 	g.nativeMapVGA = make([]byte, 320*200)
-	if g.beginNativeSystemGroupMarch() || !g.ring || !g.nativeSystemCursorOverlay ||
-		g.actionOverlayPhase != "" || unit.X != 1 || unit.Acted {
+	if !g.activateNativeSystemDirectionOne() || g.actionOverlayPhase != "" ||
+		!g.ring || !g.nativeSystemCursorOverlay ||
+		unit.X != 1 || unit.Acted {
 		t.Fatalf("unknown event mutated group march owner: %+v unit=%+v", g, unit)
+	}
+}
+
+func TestNestedDirectionOneRemainsCurrentRuntimeSaveNotGroupMarch(t *testing.T) {
+	unit := nativeSystemGroupMarchUnit(0, 0)
+	g := &Game{
+		st:   &battle.State{Units: []*battle.Unit{unit}},
+		ring: true, ringSel: 1,
+		nativeSystemCursorOverlay: true,
+		nativeSystemNestedOpen:    true,
+	}
+	if !g.activateNativeSystemDirectionOne() {
+		t.Fatal("nested direction1 was not consumed")
+	}
+	if g.nativeSystemGroupMarch != nil || g.actionOverlayPhase != "" ||
+		!g.nativeSystemNestedOpen || g.msg != "原版目前戰況存檔交易尚未接線" {
+		t.Fatalf("nested save fell into outer group march: %+v", g)
 	}
 }
 
