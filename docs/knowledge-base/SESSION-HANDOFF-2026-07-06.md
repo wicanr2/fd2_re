@@ -5556,3 +5556,16 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   同狀態 E2，以及 empty／full、church caller、原版存檔與未修改玩家路徑仍保留。
 - README 新增以玩家交付門檻計算的自我評估：目前是中後段整合期，保守估計仍有
   30–40% 的產品整合與驗收工作；數字不是 EXE 反組譯率或像素相似率。
+
+## 2026-08-22：標題 LOAD 到原版章節槽正式確認 owner
+
+- 先以 SDD 固定四槽 selector 的原子確認契約，未重解既有
+  `0x2602C..0x26098` reader、`0x30012` writer、envelope 或 chapter gate。
+  `confirmTitleLoadSlot` 現是 Enter／Space 共用 owner；只有完整 native／JSON
+  restore 成功才離開 `loadslots`。
+- checksum-valid 合成原版槽由正式 selector 還原到 `town_ch02`，一次發布悠妮
+  typed/raw record、join order、789 金幣、chapter1 與 HUD gate，並清除舊 battle
+  state／selection。竄改 envelope 保持 selector、campaign、gold、party、battle
+  state 與 handler chapter 原子不變，錯誤訊息也不再把 checksum 失敗說成空槽。
+- 聚焦 Docker／Xvfb 回歸通過。這是合成 fixture 的 `RUNTIME-E1`，不是由未修改
+  原版酒店／整備寫槽後再經標題 LOAD 的一般玩家 E2；該 gate 仍保留。

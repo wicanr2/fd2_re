@@ -51,7 +51,7 @@
 | 子系統 | 原版證據 | 可編輯資料 | 正式執行期 | 玩家驗證 | 目前裁決與下一步 |
 |---|---|---|---|---|---|
 | 檔案版本、容器與主要資產格式 | 閉合 | 就緒 | E1 | 部分 | `.DAT`、圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與多張 EXE 表已有雜湊與重生工具。剩餘多是消費端、音訊時序或個別執行期改寫，不應重解容器格式。 |
-| 開機、標題、LOAD、CONTINUE、存檔 | 部分 | 部分 | 部分 E1 | 原版錨點部分 E2 | 四槽 envelope、checksum、名冊與部分戰間落點已接；current-runtime 有原版與重製各自錨點，但尚缺同一 raw 狀態配對、未修改有效槽完整路徑與部分控制器交接。下一步以動態原版／執行期整合為主。 |
+| 開機、標題、LOAD、CONTINUE、存檔 | 部分 | 部分 | 部分 E1 | 原版錨點部分 E2 | 四槽 envelope、checksum、名冊與部分戰間落點已接；標題 selector 的正式確認 owner 現以 checksum-valid 合成槽完整還原 `town_ch02`、typed/raw party、gold、chapter、HUD gate並清除舊 battle state，竄改 envelope 原子留在選槽。current-runtime 有原版與重製各自錨點；合成有效槽仍只證明 E1，尚缺未修改有效槽完整路徑與同一 raw 狀態配對。 |
 | 對話、頭像與過場原語 | 部分偏高 | 部分就緒 | 部分 E1 | 部分 | `0x15F84`、`0x1366A`、基本 pan／acting／spawn／join 等不應再從零重解。仍須處理 caller-specific layout、indexed renderer、文字分支與實際 chapter binding。 |
 | 30 個 raw chapter 的戰前／戰後處理器 | 部分 | 60 份 handler script；部分 binding | 部分 E1 | 缺完整 E2 | 舊83個 raw unknown 已拆成80個已證實窄呼叫、3個已知但 caller／執行期未閉合的呼叫，已沒有未分類 call site。玩家第29戰 raw ch28 post 現已以綁定的視圖／HUD、`0x35BBA→0x1DB65`、group9、`0x22253`、`0x24B4D`、`0x35E5A`、隊伍同步與 `preparation_ch30` 存讀檔達成 E1；未證實高階圖像／樣本名稱與一般玩家 E2 仍保留。 |
 | 可編輯戰役與持續隊伍 | 部分 | 121 個 story／cutscene 節點；9 個 scripted、56 個 handler-bound、56 個 fallback | 部分 E1 | 缺完整 E2 | 24 個 postbattle 節點目前全部 active；admission blocked 為0。玩家第29戰正常 `story_ch29→battle_ch29` 入口現物化76-slot frontier與已證實視圖／HUD，戰果確認後播放 raw ch28 post，追加group9、同步持續隊伍，再進`preparation_ch30`並通過存讀檔 E1。所有 active 仍只代表正式執行期接入，不代表未修改原版 E2 或逐像素一致。 |

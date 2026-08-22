@@ -2032,6 +2032,28 @@ mode 不能啟動此 owner。取消返回後再沿正式 source→items→destin
 畫面，因此 self／destination-cancel 仍只到重製端 E1；上列原版同狀態 E2 gate
 與 empty／full gate 均保留。
 
+### 標題 LOAD 到原版章節槽的正式確認契約（2026-08-22）
+
+標題四槽 selector 的 Enter／Space 必須只呼叫一個正式確認 owner。該 owner 先以
+`nativeLoadSlotConfirmable` 驗證 envelope／checksum／空槽，再依來源分派原版
+`FD2.SAV` 或重製 JSON；只有完整還原成功才離開 `loadslots`。空槽、竄改 envelope、
+不支援章節、roster／identity 分歧或戰間節點進入失敗時，必須留在四槽畫面並顯示
+錯誤，不得把標題 phase 誤設為遊戲中。
+
+原版槽成功的重製端回歸至少要從 selector owner 消費 checksum-valid fixture，驗證
+正確 `town/preparation` node、chapter、gold、typed/raw party、join order、HUD gate，
+並清除舊 battle state／dialogue／selection。竄改 fixture 則要驗證 phase、campaign、
+gold、party、battle state 與 handler chapter 全部原子不變。合成有效槽只證明
+`RUNTIME-E1`；未修改原版由酒店／整備寫出的有效 `FD2.SAV` 與正常玩家 LOAD
+仍是獨立 E2 gate。
+
+重製端結果已達上述 `RUNTIME-E1`：`confirmTitleLoadSlot` 現是 Enter／Space 共用
+owner；checksum-valid 合成槽由 `FD2_NATIVE_SAVE` 經正式 selector 分派到
+`town_ch02`，一次發布悠妮 typed/raw record、join order、789 金幣、chapter1 與
+HUD gate，並清除舊 battle state／selection。竄改 envelope 則留在 `loadslots`，
+campaign、gold、party、battle state 與 handler chapter 均不變，且不再把 checksum
+失敗誤報為一般空槽。這仍不是未修改原版有效槽 E2。
+
 The `0x318ad` cap gate is now explicit in
 `fdother.NativePreparationPartyLimit`: raw global `[0x53c03] <= 0x1a` yields
 15, while values greater than `0x1a` yield 19. The adapter accepts a native

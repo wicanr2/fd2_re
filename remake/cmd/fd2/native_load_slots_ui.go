@@ -142,6 +142,33 @@ func nativeLoadSlotConfirmable(slot int) (confirmable, native bool) {
 	return true, os.Getenv("FD2_NATIVE_SAVE") != ""
 }
 
+// confirmTitleLoadSlot 是標題四槽 selector 的正式確認擁有者。原版槽只有在
+// checksum、typed restore 與戰間節點進入全部成功後才離開 loadslots；失敗會
+// 保留選槽畫面，避免看似進入遊戲卻留下部分還原狀態。
+func (g *Game) confirmTitleLoadSlot(selected int) bool {
+	confirmable, native := nativeLoadSlotConfirmable(selected)
+	if !confirmable {
+		if native {
+			g.msg = "無法讀取原版存檔槽"
+		} else {
+			g.msg = "空的存檔槽"
+		}
+		return false
+	}
+	if native {
+		if err := g.loadNativeGameFromSlot(
+			os.Getenv("FD2_NATIVE_SAVE"), selected,
+		); err != nil {
+			g.msg = err.Error()
+			return false
+		}
+	} else {
+		g.loadGameFromSlot(selected)
+	}
+	g.titlePhase = ""
+	return true
+}
+
 // loadNativeGameFromSlot owns the original four-slot LOAD transaction. It is
 // deliberately separate from title CONTINUE/current-snapshot restore.
 func (g *Game) loadNativeGameFromSlot(path string, slot int) error {

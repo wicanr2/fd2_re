@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
@@ -125,5 +126,65 @@ func TestLoadNativeGameFromSlotDoesNotPartiallyApplyInvalidRoute(t *testing.T) {
 		len(g.items) != 1 || !g.partyMembers[4] ||
 		g.handlerChapter != 8 || g.nativeChapterRestore != nil {
 		t.Fatalf("failed restore partially mutated game: %#v", g)
+	}
+}
+
+func TestConfirmTitleLoadSlotRestoresVerifiedNativeIntermission(t *testing.T) {
+	graph := &campaign.Campaign{
+		Start: "town_ch02",
+		Nodes: map[string]*campaign.Node{
+			"town_ch02": {Type: "town"},
+		},
+	}
+	g := &Game{
+		camp: campaign.NewRunner(graph), titlePhase: "loadslots", titleSlotSel: 1,
+		gold: 1, items: []string{"stale"},
+		partyMembers: map[int]bool{4: true}, handlerChapter: 8,
+		st: &battle.State{W: 1, H: 1}, sel: &battle.Unit{Fig: 99},
+	}
+	path := writeNativeRestoreFixture(t, 1)
+	t.Setenv("FD2_NATIVE_SAVE", path)
+	if !g.confirmTitleLoadSlot(1) {
+		t.Fatalf("verified title LOAD rejected: %s", g.msg)
+	}
+	yuni, ok := g.partyRoster[9]
+	if g.titlePhase != "" || g.camp.NodeID() != "town_ch02" ||
+		g.gold != 789 || !ok || yuni.Name != "悠妮" ||
+		len(g.partyJoinOrder) != 1 || g.partyJoinOrder[0] != 9 ||
+		g.handlerChapter != 1 || g.st != nil || g.sel != nil ||
+		g.nativeChapterRestore == nil {
+		t.Fatalf("title LOAD did not publish complete intermission restore: %#v", g)
+	}
+}
+
+func TestConfirmTitleLoadSlotRejectsTamperedNativeEnvelopeAtomically(t *testing.T) {
+	path := writeNativeRestoreFixture(t, 1)
+	stored, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	stored[0x123] ^= 1
+	if err := os.WriteFile(path, stored, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("FD2_NATIVE_SAVE", path)
+	graph := &campaign.Campaign{
+		Start: "safe",
+		Nodes: map[string]*campaign.Node{"safe": {Type: "town"}},
+	}
+	state := &battle.State{W: 3, H: 4}
+	g := &Game{
+		camp: campaign.NewRunner(graph), titlePhase: "loadslots", titleSlotSel: 1,
+		gold: 99, items: []string{"keep"},
+		partyMembers: map[int]bool{4: true}, handlerChapter: 8, st: state,
+	}
+	if g.confirmTitleLoadSlot(1) {
+		t.Fatal("tampered title LOAD unexpectedly succeeded")
+	}
+	if g.titlePhase != "loadslots" || g.camp.NodeID() != "safe" ||
+		g.gold != 99 || len(g.items) != 1 || !g.partyMembers[4] ||
+		g.handlerChapter != 8 || g.st != state || g.nativeChapterRestore != nil ||
+		g.msg != "無法讀取原版存檔槽" {
+		t.Fatalf("tampered title LOAD leaked state: %#v", g)
 	}
 }

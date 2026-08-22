@@ -277,24 +277,9 @@ func (g *Game) titleUpdate() bool {
 		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace) {
 			selected, confirm, _ := slots.Step(TitleSlotConfirm)
-			if confirm {
-				confirmable, native := nativeLoadSlotConfirmable(selected)
-				if !confirmable {
-					g.msg = "空的存檔槽"
-					return true
-				}
-				if native {
-					if err := g.loadNativeGameFromSlot(
-						os.Getenv("FD2_NATIVE_SAVE"), selected,
-					); err != nil {
-						g.msg = err.Error()
-						return true
-					}
-				} else {
-					g.loadGameFromSlot(selected)
-				}
+			if confirm && !g.confirmTitleLoadSlot(selected) {
+				return true
 			}
-			g.titlePhase = ""
 		}
 		g.titleSlotSel = slots.Selection
 		return true
