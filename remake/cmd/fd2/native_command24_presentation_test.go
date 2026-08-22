@@ -95,6 +95,30 @@ func TestNativeCommand24PresentationPublishesAtRawMarkers(t *testing.T) {
 	}
 }
 
+func TestNativeCommand24PresentationDrawsNine29164FramesBeforeActorEffect(t *testing.T) {
+	g, actor, target := newNativeCommand24PresentationTestGame(t)
+	if err := g.startNativeCommand24Presentation(actor, target, nil); err != nil {
+		t.Fatal(err)
+	}
+	job := g.nativeCmd24Presentation
+	if len(job.preludeFrames) != 9 || job.preludeFrame != 0 || job.frame != 0 {
+		t.Fatalf("initial 0x29164 state=%#v", job)
+	}
+	screen := ebiten.NewImage(640, 400)
+	for frame := 0; frame < 9; frame++ {
+		if job.preludeFrame != frame || !g.drawNativeCommand24Presentation(screen) {
+			t.Fatalf("0x29164 frame %d unavailable", frame)
+		}
+		g.stepNativeCommand24Presentation()
+		if actor.MP != 30 || actor.Acted || target.HP != 200 || job.frame != 0 {
+			t.Fatalf("0x29164 frame %d crossed gameplay boundary actor=%#v target=%#v", frame, actor, target)
+		}
+	}
+	if job.preludeFrame != 9 || job.frame != 0 || !g.drawNativeCommand24Presentation(screen) {
+		t.Fatalf("actor effect did not follow nine-frame prelude: %#v", job)
+	}
+}
+
 func TestNativeCommand24PresentationRejectsUnprovenActorWithoutMutation(t *testing.T) {
 	g, actor, target := newNativeCommand24PresentationTestGame(t)
 	actor.BattleFig = 4

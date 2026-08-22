@@ -15,11 +15,11 @@
   "imagebase": "0x0",
   "function_count": 1305,
   "classification_counts": {
-    "unknown": 1100,
-    "product": 35,
+    "unknown": 1099,
+    "product": 36,
     "runtime": 170
   },
-  "semantic_annotation_count": 36,
+  "semantic_annotation_count": 37,
   "classification_note": "product/driver only come from the versioned semantic index; runtime is a mechanical IDA FUNC_LIB classification after the configured FLIRT signatures; every other function remains unknown",
   "detail_note": "每筆保留 IDA 函式邊界、分析名稱、旗標、直接 caller 函式與分級語意；逐 call-site 交叉參照由同一匯出器重生，不在此精簡版重複保存",
   "functions": [
@@ -7677,11 +7677,23 @@
       "direct_code_xref_count": 6,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x29164",
+          "classification": "product",
+          "semantic": "依 raw side 分支的九段 indexed figure／TAI 滑入與基準 DAC 減算 compositor",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_command24_presentation_ida.txt",
+            "docs/data/ida/fd2_ch29_montage_ida.txt"
+          ],
+          "scope": "callee兩分支與command24／終局caller實參；個別caller的資產來源、後續owner與E2另證"
+        }
+      ]
     },
     {
       "start": "0x2935b",

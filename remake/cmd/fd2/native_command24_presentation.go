@@ -24,6 +24,8 @@ type nativeCommand24PresentationJob struct {
 	targetFrames         []*ebiten.Image
 	targetPositions      [][2]int
 	targetDelays         []int
+	preludeFrames        []*ebiten.Image
+	preludeFrame         int
 	actorBaseBefore      *ebiten.Image
 	actorBaseAfter       *ebiten.Image
 	targetBaseBefore     *ebiten.Image
@@ -159,6 +161,26 @@ func nativeCommand24IndexedImages(frames [][]byte, palette color.Palette) ([]*eb
 	return out, nil
 }
 
+func nativeCommand24PreludeImages(frames []battlepresent.NativeCommand24PreludeFrame) ([]*ebiten.Image, error) {
+	if len(frames) != 9 {
+		return nil, errors.New("native command24 prelude must contain nine indexed frames")
+	}
+	out := make([]*ebiten.Image, len(frames))
+	for i, frame := range frames {
+		if frame.Stage != 8-i || len(frame.Pixels) != 320*200 {
+			return nil, fmt.Errorf("native command24 prelude frame %d is malformed", i)
+		}
+		palette, err := fdother.VGAPaletteFromDAC(frame.DAC)
+		if err != nil {
+			return nil, err
+		}
+		img := image.NewPaletted(image.Rect(0, 0, 320, 200), palette)
+		copy(img.Pix, frame.Pixels)
+		out[i] = ebiten.NewImageFromImage(img)
+	}
+	return out, nil
+}
+
 func nativeFIGANIImages(animation *figani.Animation, palette color.Palette) ([]*ebiten.Image, [][2]int, error) {
 	if animation == nil || len(animation.Frames) == 0 || len(palette) < 256 {
 		return nil, nil, errors.New("native FIGANI image inputs unavailable")
@@ -206,6 +228,13 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	schedule, err := figani.BuildNativeCommand24Schedule(effect)
 	if err != nil {
 		return err
+	}
+	actorIdle, err := figani.DecodeResource(archive, actor.BattleFig*3)
+	if err != nil {
+		return err
+	}
+	if len(actorIdle.Frames) == 0 {
+		return errors.New("native command24 actor idle FIGANI is empty")
 	}
 	targetIdle, err := figani.DecodeResource(archive, target.BattleFig*3)
 	if err != nil {
@@ -256,6 +285,10 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if err != nil {
 		return err
 	}
+	paletteDAC, err := fdother.ReadResource(fdotherArchive, 0)
+	if err != nil {
+		return err
+	}
 	actorRecordBefore, err := battle.NativeBattlePanelRecordForUnit(actor)
 	if err != nil {
 		return err
@@ -300,6 +333,24 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 		actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter,
 		actorPlatform,
 	)
+	if err != nil {
+		return err
+	}
+	actorPreludeBase, err := nativeCommand24BackgroundBase(
+		actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter,
+		nil,
+	)
+	if err != nil {
+		return err
+	}
+	prelude, err := battlepresent.BuildNativeCommand24PreludeFrames(battlepresent.NativeCommand24PreludeInput{
+		Base: actorPreludeBase, ActorIdle: actorIdle.Frames[0], Platform: actorPlatform,
+		RawSide: actor.NativeRecordByte6, BaselineDAC: paletteDAC,
+	})
+	if err != nil {
+		return err
+	}
+	preludeImages, err := nativeCommand24PreludeImages(prelude)
 	if err != nil {
 		return err
 	}
@@ -367,6 +418,7 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 		actor: actor, target: target, plan: plan, schedule: schedule,
 		effectFrames: effectImages, effectPositions: effectPositions,
 		targetFrames: targetImages, targetPositions: targetPositions, targetDelays: targetDelays,
+		preludeFrames:   preludeImages,
 		actorBaseBefore: baseImages[0], actorBaseAfter: baseImages[1],
 		targetBaseBefore: baseImages[2], targetBaseAfter: baseImages[3],
 		transitionFrames: transitionImages, transitionFrame: -1,
@@ -396,6 +448,10 @@ func (g *Game) stepNativeCommand24Presentation() {
 		return
 	}
 	j.drawn = false
+	if j.preludeFrame < len(j.preludeFrames) {
+		j.preludeFrame++
+		return
+	}
 	if j.transitionFrame >= 0 {
 		j.transitionFrame++
 		if j.transitionFrame >= len(j.transitionFrames) {
@@ -477,6 +533,16 @@ func (g *Game) drawNativeCommand24Presentation(screen *ebiten.Image) bool {
 	if j == nil || j.frame < 0 || j.frame >= len(j.effectFrames) ||
 		j.targetFrame < 0 || j.targetFrame >= len(j.targetFrames) {
 		return false
+	}
+	if j.preludeFrame < len(j.preludeFrames) {
+		if j.preludeFrame < 0 || j.preludeFrames[j.preludeFrame] == nil {
+			return false
+		}
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Scale(2, 2)
+		screen.DrawImage(j.preludeFrames[j.preludeFrame], op)
+		j.drawn = true
+		return true
 	}
 	if j.transitionFrame >= 0 {
 		if j.transitionFrame >= len(j.transitionFrames) {

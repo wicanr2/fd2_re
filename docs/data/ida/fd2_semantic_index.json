@@ -201,6 +201,14 @@
       "scope": "共用 callee；終局 call 0x2c2a6 的 records/globals、精確輸出與輸入時序未閉合"
     },
     {
+      "address": "0x29164",
+      "classification": "product",
+      "semantic": "依 raw side 分支的九段 indexed figure／TAI 滑入與基準 DAC 減算 compositor",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_command24_presentation_ida.txt", "docs/data/ida/fd2_ch29_montage_ida.txt"],
+      "scope": "callee兩分支與command24／終局caller實參；個別caller的資產來源、後續owner與E2另證"
+    },
+    {
       "address": "0x29c90",
       "classification": "product",
       "semantic": "兩段各十次的 BG 三層 640-stride viewport 滑動合成器",

@@ -270,7 +270,7 @@ repo 提供不含 license／遊戲資料的 `tools/docker/fd2-ida.Dockerfile` �
 只在授權 IDA Docker 匯出原始函式邊界、IDA 分析名稱、旗標與直接 caller；
 `tools/compact_fd2_function_inventory.py` 產生受版控的
 [`fd2_function_inventory.json`](../data/ida/fd2_function_inventory.json)。固定雜湊輸入
-辨識1305函式，目前為產品35、Watcom runtime170、未知1100；語意只從
+辨識1305函式，目前為產品36、Watcom runtime170、未知1099；語意只從
 [`fd2_semantic_index.json`](../data/ida/fd2_semantic_index.json) 合併，雜湊不符、
 註記未落在函式起點或缺推論等級／證據時直接拒絕。handler IR 同步拆成
 `native_call`、`unresolved_native_call`、`unknown`；三者都保留原始定位，前兩者
@@ -1159,11 +1159,24 @@ command24的source snapshot另由`0x276EC→0x29164→0x2B659`直接資料流固
 actor BG與扣MP後的indexed actor panel為base；raw `unit+6!=0`且mode=1時保留
 actor TAI於`(164,157)`，最後只疊resource98 frame8。`0x2B659`對command24不畫
 第四參數idle，也不走DAC pulse。正式owner必須在damage plan建立後用私有actor
-record的`MPAfter`預建此snapshot，避免轉場仍顯示扣款前MP。這個snapshot契約
-不代表`0x29164`較早的九段figure fade已接；該prelude仍是獨立partial缺口。
+record的`MPAfter`預建此snapshot，避免轉場仍顯示扣款前MP。同批的`0x29164`
+九段figure fade已由下列caller-specific契約接入；兩者仍分開測試，避免轉場
+source snapshot掩蓋前導畫面缺失。
 `sub_29C90`後的`sub_2B9A1(targetIdle,0,...)`另明確清零兩個idle globals且不
 繪圖；target tail必須從idle frame0／repeat0重新開始，不能沿用actor phase內
 雖有遞增但對command24不可見的局部idle相位。
+
+`0x29164`的command24專屬typed契約不得復用終局的透明TAI#3 helper。caller固定
+傳入`(actorIndex,1,actorIdle,firstTargetIdle,work640,actorBase320,actorTAI)`；因
+第二參數為1，兩支都忽略firstTargetIdle。raw `unit+6==0`在work右半複製base，
+將actorIdle frame0由`-80`逐十像素滑到0並present右viewport；raw非零則在左半
+讓actorTAI與actorIdle由`+80`滑到0，stage0後把TAI固定寫回actorBase。九張畫面
+各自以原始FDOTHER#0 DAC基線做`0x11D40`的`48,42,...,0` subtraction；函式內
+沒有delay，所以正式owner只宣稱Draw順序，不宣稱毫秒。所有九張indexed pixels
+與palette須在開始前一次預建；缺raw side、base、idle、非零分支TAI或DAC時零發布、
+零交易。正式battle presenter現已在effect frame0之前逐Draw消費全部九張，並
+保持九張期間MP、HP與acted不變；因此本窄切片達`RUNTIME-E1`。精確DOS tick／
+音訊、未修改原版逐幀palette比對及「轉職→Lv4學會→施放」E2仍是獨立門檻。
 
 remake 的可編輯資料模型必須至少表達這些 raw facts，而非固定四個 ring action：
 

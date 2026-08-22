@@ -5725,3 +5725,20 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 此批仍是`RUNTIME-E1 partial`。尚未接的是`0x29164`九段figure prelude、精確
   palette／音訊，以及未修改一般玩家「轉職→Lv4學會→施放」E2；不得把已接的
   `0x2B659`來源畫面再次列為反組譯缺口。
+
+## 2026-08-22：command24 `0x29164`九段前導正式接入
+
+- 本段取代上一節把`0x29164`列為未接的現況斷言。合法Docker內IDA Pro 9.4
+  重新匯出`0x276EC`與`0x29164`，固定command24實參為
+  `(actorIndex,1,actorIdle,firstTargetIdle,work640,actorBase320,actorTAI)`；第二
+  參數固定1，所以兩支raw side分支都不畫firstTargetIdle。
+- raw `unit+6==0`以右viewport讓actor idle frame0由`-80`滑到0；raw非零以左
+  viewport讓actor idle與實際TAI由`+80`滑到0。兩支都做stage8..0九次present，
+  每張以FDOTHER#0原始6-bit DAC基線套`0x11D40`的`stage*6`減算；函式內無delay。
+- 新增全有或全無的`BuildNativeCommand24PreludeFrames`與正式Ebiten owner。九張
+  畫面會在effect frame0前逐Draw發布，且期間MP、HP、acted均不變；缺base、
+  actor idle、raw DAC或非零分支TAI時在建立job前失敗即關閉。聚焦回歸同時覆蓋
+  左右兩支像素位移、48→0 DAC、缺件拒絕與九張Draw生命週期。
+- `0x29164`已加入非破壞性語意索引；1305函式現況為產品36、Watcom runtime170、
+  未知1099。command24仍列`RUNTIME-E1 partial`，但剩餘缺口已縮為精確音訊、
+  同狀態逐幀／palette驗證及未修改一般玩家「轉職→Lv4學會→施放」E2。
