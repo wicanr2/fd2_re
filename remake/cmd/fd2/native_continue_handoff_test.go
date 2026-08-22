@@ -546,3 +546,132 @@ func TestNativeNestedSystemExitPublishesEbitenTermination(t *testing.T) {
 		t.Fatalf("Update error=%v want ebiten.Termination", err)
 	}
 }
+
+func nativeSystemGroupMarchUnit(x, y int) *battle.Unit {
+	return &battle.Unit{
+		Camp: battle.Own, X: x, Y: y, OnField: true, HP: 20, MaxHP: 20,
+		MP: 4, MaxMP: 4, AP: 20, DP: 1, MV: 2,
+		BattleFig: 1, HasBattleFig: true,
+		NativeRecordByte5: 0, HasNativeRecordByte5: true,
+		NativeRecordByte6: 2, HasNativeRecordByte6: true,
+		NativeRecordByte34: 0, HasNativeRecordByte34: true,
+		NativeRecordByte35: 0, HasNativeRecordByte35: true,
+		NativeRecordByte36: 0, HasNativeRecordByte36: true,
+		NativeRecordByte8: 1, HasNativeRecordByte8: true,
+		NativeRecordRace: 0, HasNativeRecordRace: true,
+		NativeRecordClass: 0, HasNativeRecordClass: true,
+		NativeRecordWord42: 20, HasNativeRecordWord42: true,
+		NativeRecordWord46: 4, HasNativeRecordWord46: true,
+		NativeMapPresentation:    battle.NativeMapPresentationState{X: byte(x), Y: byte(y)},
+		HasNativeMapPresentation: true,
+		InventorySlots:           []int{0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff},
+		NativeInventoryFlags:     []int{0, 0, 0, 0, 0, 0, 0, 0},
+	}
+}
+
+func TestNativeSystemGroupMarchRunsAfterConfirmationAndEndsTurn(t *testing.T) {
+	unit := nativeSystemGroupMarchUnit(0, 0)
+	state := &battle.State{
+		W: 4, H: 1, Units: []*battle.Unit{unit},
+		NativeCompositionEventBytes: make([]byte, 4),
+		NativeTerrainMoveCodes:      make([]byte, 4),
+		NativeFieldEventSlots:       []int{-1, -1, -1, -1},
+		NativeFieldEvents:           make([]battle.NativeFieldEvent, 16),
+	}
+	rows, err := battle.LoadNativeMovementCostRows(assetPath("assets/data/native_movement_cost_rows.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := state.BindNativeMovementCostRows(rows); err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{
+		st: state, sc: &battle.Scenario{}, m: &MapData{W: 4, H: 1, TileW: 24, TileH: 24},
+		ring: true, ringSel: 1, nativeSystemCursorOverlay: true, curX: 3, curY: 0,
+	}
+	base := "../../../org_game/炎龍騎士團/FLAME2"
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+	g.nativePreparationUI, err = loadNativePreparationUIAssets()
+	if err != nil {
+		t.Skipf("player-provided original UI assets are absent: %v", err)
+	}
+	g.nativeClassUI, err = loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.nativeMapVGA = make([]byte, 320*200)
+	if !g.beginNativeSystemGroupMarch() {
+		t.Fatal("verified outer selector1 route was rejected")
+	}
+	if unit.X != 0 || unit.Acted || g.nativeSystemEndTurnConfirm {
+		t.Fatal("group march mutated before overlay close")
+	}
+	for present := 0; present < 4; present++ {
+		g.markActionOverlayDrawn()
+		g.stepActionOverlayLifecycle()
+	}
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	g.confirmNativeSystemEndTurn()
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	for g.nativeSystemEndTurnDelay > 0 {
+		g.stepNativeSystemEndTurn()
+	}
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if g.walk == nil || unit.Acted {
+		t.Fatalf("group march did not defer transaction to walk: walk=%#v acted=%v", g.walk, unit.Acted)
+	}
+	for g.walk != nil {
+		g.stepBattleWalk()
+	}
+	if !unit.Acted || unit.NativeRecordByte5&0x80 == 0 || unit.X == 0 ||
+		!g.aiBusy || g.nativeSystemGroupMarch != nil {
+		t.Fatalf("group march finish: unit=%+v ai=%v plan=%#v", unit, g.aiBusy, g.nativeSystemGroupMarch)
+	}
+}
+
+func TestNativeSystemGroupMarchUnknownEventFailsBeforeOverlayMutation(t *testing.T) {
+	unit := nativeSystemGroupMarchUnit(1, 0)
+	state := &battle.State{
+		W: 2, H: 1, Units: []*battle.Unit{unit},
+		NativeCompositionEventBytes: make([]byte, 2),
+		NativeTerrainMoveCodes:      make([]byte, 2),
+		NativeFieldEventSlots:       []int{0, -1},
+		NativeFieldEvents:           make([]battle.NativeFieldEvent, 16),
+	}
+	state.NativeFieldEvents[0] = battle.NativeFieldEvent{EventID: 82, Selector: 1}
+	rows, err := battle.LoadNativeMovementCostRows(assetPath("assets/data/native_movement_cost_rows.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := state.BindNativeMovementCostRows(rows); err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{
+		st: state, m: &MapData{W: 2, H: 1, TileW: 24, TileH: 24},
+		ring: true, ringSel: 1, nativeSystemCursorOverlay: true, curX: 0, curY: 0,
+	}
+	base := "../../../org_game/炎龍騎士團/FLAME2"
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+	g.nativePreparationUI, err = loadNativePreparationUIAssets()
+	if err != nil {
+		t.Skipf("player-provided original UI assets are absent: %v", err)
+	}
+	g.nativeClassUI, err = loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.nativeMapVGA = make([]byte, 320*200)
+	if g.beginNativeSystemGroupMarch() || !g.ring || !g.nativeSystemCursorOverlay ||
+		g.actionOverlayPhase != "" || unit.X != 1 || unit.Acted {
+		t.Fatalf("unknown event mutated group march owner: %+v unit=%+v", g, unit)
+	}
+}

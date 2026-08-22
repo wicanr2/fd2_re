@@ -25,6 +25,8 @@ const (
 	nativeBattleEndCanceledIndex   = 0x19c
 	nativeBattleExitQuestionIndex  = 0x19f
 	nativeBattleExitAcceptedIndex  = 0x1a0
+	nativeBattleMarchQuestionIndex = 0x1a1
+	nativeBattleMarchAcceptedIndex = 0x1a2
 	nativeBattleEndQuestionX       = 99
 	nativeBattleEndQuestionY       = 127
 	nativeBattleEndResponseY       = 146
@@ -48,6 +50,16 @@ func ComposeNativeBattleExitQuestion(
 ) ([]byte, error) {
 	return composeNativeBattleSystemQuestion(
 		dialogue, portrait, strings, font, nativeBattleExitQuestionIndex,
+	)
+}
+
+// ComposeNativeBattleGroupMarchQuestion 重現 sub_16F55 selector1 的
+// FDTXT#0x1a1 問句。
+func ComposeNativeBattleGroupMarchQuestion(
+	dialogue []byte, portrait dato.Frame, strings *fdtxt.Strings, font *fdtxt.Font,
+) ([]byte, error) {
+	return composeNativeBattleSystemQuestion(
+		dialogue, portrait, strings, font, nativeBattleMarchQuestionIndex,
 	)
 }
 
@@ -101,6 +113,18 @@ func NativeBattleExitResponseFrames(
 	index := nativeBattleEndCanceledIndex
 	if accepted {
 		index = nativeBattleExitAcceptedIndex
+	}
+	return nativeBattleSystemResponseFrames(question, strings, font, index)
+}
+
+// NativeBattleGroupMarchResponseFrames 使用 selector1 接受文字 FDTXT#0x1a2；
+// 取消仍共用 FDTXT#0x19c。
+func NativeBattleGroupMarchResponseFrames(
+	question []byte, strings *fdtxt.Strings, font *fdtxt.Font, accepted bool,
+) ([][]byte, error) {
+	index := nativeBattleEndCanceledIndex
+	if accepted {
+		index = nativeBattleMarchAcceptedIndex
 	}
 	return nativeBattleSystemResponseFrames(question, strings, font, index)
 }

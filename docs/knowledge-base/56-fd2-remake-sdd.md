@@ -5335,5 +5335,32 @@ window清理接手；不得改成回標題、回城鎮、跳章或未經確認�
 BGM並發布`ebiten.Termination`，取消與缺資產均保持遊戲狀態。此成果列為
 `RUNTIME-E1`，不宣稱原版BGM淡出曲線、BIOS tick或逐幀相位`PLAYER-E2`。
 
-同一證據亦閉合外層selector1的raw loop，但其`sub_14B78`結果與間接effect尚未
-型別化；本規格不授權把它簡化為「逐一呼叫現有敵方AI」。
+同一證據亦閉合外層selector1的raw loop；本段當時尚未識別間接表的原始基址，
+故不授權把它簡化為「逐一呼叫現有敵方AI」。後續補證與正式子集以緊接的
+「外層 selector1 全軍移動規格」為準。
+
+## 2026-08-22 外層 selector1 全軍移動規格
+
+主證據仍為
+[`fd2_system_exit_and_group_march_ida.txt`](../data/ida/fd2_system_exit_and_group_march_ida.txt)。
+後續直接指令補證確認間接表基址是既有`0x51B91`，而 selector1 完全不讀
+`sub_14B78`回傳值。typed planner 必須保存：runtime record原順序、
+`(raw+5)&0x85==0 && raw+6==2`准入、共同目的座標、selector 1、
+`sub_14B78`已閉合的mode0／mode1尋路與逐單位占位變更。
+
+正式執行前必須在私有狀態投影完整預演所有合格單位。每筆移動後以
+`NativeFieldEventIDAt(destination,1)`模擬`0x13A44→0x51A8F`；若事件非空且
+90-entry handler沒有正式執行端，整批在關閉確認框前失敗，不得發布部分移動。
+無事件批次才可依序播放移動，逐筆清raw `+3`、設raw `+5 bit7`／typed acted，
+最後走共同回合收束。取消、無合格單位、raw provenance、成本列、地形、占位或
+確認資產不完整時均不改狀態。
+
+此切片完成後只能列`RUNTIME-E1`：原版FDTXT `0x1A1/0x1A2/0x19C`、200 ms、
+逐單位路徑與無事件交易可閉合；90個全域事件效果、精確音訊／tick與一般玩家
+同狀態比較仍各自保留門檻。
+
+實作現況：正式空游標外層 selector1 已在確認框收合前建立私有逐單位 plan；
+接受後依 record 順序播放路徑，完成每筆才發布座標、raw `+5 bit7`與 typed acted，
+全批結束後進入共同回合收束。FDTXT、第一筆 runtime `+7` DATO肖像、取消、
+200 ms與五幀對話收合均由正式鍵盤 owner 消費。任一路徑遇到尚無正式 handler 的
+selector1格子事件時，在第一幀前整批拒絕。此為`RUNTIME-E1`，不是90事件全支援。

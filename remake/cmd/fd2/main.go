@@ -269,7 +269,8 @@ type Game struct {
 	// nativeSystemCursorOverlay 對應共用 0x117E7 在 0x12C0D 回傳 -1 時
 	// 呼叫的 0x16F55 空游標面板。direction0／巢狀戰場資訊、direction2／設定
 	// 與 direction3／END 已有 action owner；巢狀 direction3 離場亦已閉合到
-	// main 清理出口。巢狀存讀檔與外層 direction1 仍維持失敗即關閉。
+	// main 清理出口；外層 direction1 亦有無事件全軍移動 owner。巢狀存讀檔與
+	// direction1 尚未接線的90-entry事件效果仍維持失敗即關閉。
 	nativeSystemCursorOverlay bool
 	nativeSystemNestedOpen    bool
 	nativeSystemOptionsOpen   bool
@@ -364,6 +365,8 @@ type Game struct {
 	nativeSystemEndTurnDelay   int
 	nativeSystemEndTurnUI      *nativeSystemEndTurnUIState
 	nativeSystemExitRequested  bool
+	nativeSystemGroupMarch     *battle.NativeSystemGroupMarchPlan
+	nativeSystemGroupMarchStep int
 
 	// 截圖鉤子(FD2_SHOT=path 啟用):第 shotFrame 幀存 PNG 後自動退出(有界,供無人值守驗證)
 	frame      int
@@ -4829,6 +4832,12 @@ func (g *Game) ringInput() bool {
 			return true
 		}
 		if enter {
+			if g.ringSel == 1 {
+				if !g.beginNativeSystemGroupMarch() {
+					g.msg = "原版全軍移動來源或事件不完整，未執行"
+				}
+				return true
+			}
 			if g.ringSel == 0 {
 				state, err := g.prepareNativeSystemInfoUI()
 				if err != nil {
@@ -5387,6 +5396,8 @@ type walkAnim struct {
 	seg  int           // 目前段:path[seg] → path[seg+1]
 	tick int           // 原版 unit+4:每格 1..6，第7 tick提交目的格
 	then func()        // 走完回呼(nil=玩家預設:開指令環)
+	// nil 保留既有 selector0；全軍移動明確帶 selector1。
+	nativeEventSelector *byte
 }
 
 func (g *Game) stepBattleWalk() {
@@ -5431,14 +5442,23 @@ func (g *Game) stepBattleWalk() {
 	// 提交 x-1 後，才以新座標呼叫 0x13A44(..., selector0)。
 	// 其餘方向及整條路徑完成都不得泛化成 selector0。
 	if b.X == a.X-1 && b.Y == a.Y {
-		if eventID, ok := battle.NativeFieldEventIDAt(g.st, b.X, b.Y, 0); ok && eventID == 62 {
+		selector := byte(0)
+		if w.nativeEventSelector != nil {
+			selector = *w.nativeEventSelector
+		}
+		if eventID, ok := battle.NativeFieldEventIDAt(g.st, b.X, b.Y, selector); ok &&
+			selector == 0 && eventID == 62 {
 			if _, err := battle.ApplyNativeFieldTurnActivationEvent(g.st, b.X, b.Y, 0); err != nil {
 				g.loadErr = "battle field event62: " + err.Error()
 				g.walk = nil
 				return
 			}
-		} else {
+		} else if selector == 0 {
 			battle.ApplyNativeFieldModeEvent(g.st, w.u, b.X, b.Y, 0)
+		} else if _, ok := battle.NativeFieldEventIDAt(g.st, b.X, b.Y, selector); ok {
+			g.loadErr = "native system group-march event changed after atomic preflight"
+			g.walk = nil
+			return
 		}
 	}
 	w.seg++

@@ -68,6 +68,31 @@ main 0x25DCE call sub_117E7
 `funcs_1199C` effect必須在接runtime前逐項綁定；不可只對所有camp2單位呼叫
 目前重製AI就冒稱等價。
 
+### 2026-08-22 間接表與回傳值補證（已證實）
+
+合法 IDA Pro 9.4 重新匯出 `sub_16F55`，並由 Docker Capstone 從精確指令
+邊界交叉核對 `0x17127..0x17137`：
+
+```text
+0x17127  mov  eax,[0x51A8F]
+0x1712C  push ebx
+0x1712D  call dword ptr [eax*4+0x51B91]
+0x17134  add  esp,4
+0x17137  call sub_134E4
+```
+
+IDA 顯示的 `funcs_1199C[eax*4]` 是分析名稱；原始 fixup 基址為`0x51B91`，
+就是既有 [`fd2_ai_phase_callback_tables_ida.txt`](../fd2_ai_phase_callback_tables_ida.txt)
+已閉合的90-entry全域事件表，不是另一張未知表。`0x17113 call sub_14B78`後
+直接讀`0x51A8F`，沒有保存、比較或分支消費`eax`，因此 selector1 不依賴
+`sub_14B78`回傳值；其可見結果來自移動副作用、格子事件 writer與後續收尾。
+
+重製可據此先完整預演所有合格camp2 record的`sub_14B78`尋路、順序與目的格。
+若任一路徑會使`NativeFieldEventIDAt(..., selector=1)`產生非`0xFF`事件，而
+對應90-entry handler尚未有正式消費端，必須在確認框收合前整批拒絕；不可先移動
+部分單位。沒有事件的批次則可依原順序移動、清raw `+3`、設raw `+5 bit7`，最後
+執行共同回合收束。這是失敗即關閉的產品子集，不外推成全部90事件已完成。
+
 ## 勘誤與重開條件
 
 - `24-callgraph-analysis-log.md`把`0x1A251→0x19DF7`寫成外部

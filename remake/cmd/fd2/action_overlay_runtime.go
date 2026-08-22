@@ -1,8 +1,12 @@
 package main
 
 import (
+	"path/filepath"
+
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+	"github.com/wicanr2/fd2_re/remake/internal/dato"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
@@ -14,6 +18,8 @@ type nativeSystemEndTurnUIState struct {
 	choice                     int
 	acceptedOutcome            bool
 	exitProgram                bool
+	groupMarch                 bool
+	groupMarchPlan             battle.NativeSystemGroupMarchPlan
 }
 
 const (
@@ -122,6 +128,8 @@ func (g *Game) resetActionOverlayLifecycle() {
 	g.nativeSystemEndTurnConfirm = false
 	g.nativeSystemEndTurnDelay = 0
 	g.nativeSystemExitRequested = false
+	g.nativeSystemGroupMarch = nil
+	g.nativeSystemGroupMarchStep = 0
 	if g.nativeSystemEndTurnUI != nil {
 		g.nativeClassUIJob = nil
 	}
@@ -296,6 +304,67 @@ func (g *Game) beginNativeNestedSystemExit() bool {
 	return true
 }
 
+// beginNativeSystemGroupMarch 承接 sub_16F55 selector1。它在收掉外層命令框前
+// 完整預演逐單位尋路與事件；任一未知事件使整批保持原狀。
+func (g *Game) beginNativeSystemGroupMarch() bool {
+	if g == nil || !g.nativeSystemCursorOverlay || !g.ring || g.ringSel != 1 ||
+		g.st == nil || g.m == nil || g.aiBusy || g.result != "" ||
+		g.nativePreparationUI == nil || g.nativeClassUI == nil || len(g.nativeMapVGA) != 320*200 ||
+		len(g.st.Units) == 0 || g.st.Units[0] == nil || !g.st.Units[0].HasBattleFig {
+		return false
+	}
+	plan, err := g.st.PlanNativeSystemGroupMarch(battle.Cell{X: g.curX, Y: g.curY})
+	if err != nil {
+		return false
+	}
+	fdotherPath := nativeFDOTHERPath()
+	if fdotherPath == "" {
+		return false
+	}
+	portraits, err := dato.DecodeResource(
+		filepath.Join(filepath.Dir(fdotherPath), "DATO.DAT"), g.st.Units[0].BattleFig,
+	)
+	if err != nil || len(portraits) == 0 {
+		return false
+	}
+	ui := g.nativePreparationUI
+	source := append([]byte(nil), g.nativeMapVGA...)
+	dialogue, err := campaign.ComposeNativePreparationConfirmationDialogue(source, ui.dialogue, portraits[0])
+	if err != nil {
+		return false
+	}
+	question, err := campaign.ComposeNativeBattleGroupMarchQuestion(
+		dialogue, portraits[0], ui.status.Strings, ui.status.Font,
+	)
+	if err != nil {
+		return false
+	}
+	accepted, err := campaign.NativeBattleGroupMarchResponseFrames(question, ui.status.Strings, ui.status.Font, true)
+	if err != nil {
+		return false
+	}
+	canceled, err := campaign.NativeBattleGroupMarchResponseFrames(question, ui.status.Strings, ui.status.Font, false)
+	if err != nil {
+		return false
+	}
+	frames, err := campaign.NativePreparationConfirmationOpeningFrames(source, dialogue, question, ui.choices)
+	if err != nil || len(frames) != 10 {
+		return false
+	}
+	state := &nativeSystemEndTurnUIState{
+		source: source, dialogue: dialogue, question: question,
+		accepted: accepted, canceled: canceled, groupMarch: true, groupMarchPlan: plan,
+	}
+	g.beginActionOverlayClose(func() {
+		g.nativeSystemCursorOverlay = false
+		g.nativeSystemEndTurnConfirm = true
+		g.nativeSystemEndTurnUI = state
+		g.resetNativeClassUIPulse()
+		g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
+	})
+	return true
+}
+
 func (g *Game) confirmNativeSystemEndTurn() {
 	if g == nil || !g.nativeSystemEndTurnConfirm {
 		return
@@ -357,11 +426,51 @@ func (g *Game) stepNativeSystemEndTurn() {
 			if accepted {
 				if state.exitProgram {
 					g.nativeSystemExitRequested = true
+				} else if state.groupMarch {
+					plan := state.groupMarchPlan
+					g.nativeSystemGroupMarch = &plan
+					g.nativeSystemGroupMarchStep = 0
+					g.startNextNativeSystemGroupMarchStep()
 				} else {
 					g.endTurn()
 				}
 			}
 		}}
+	}
+}
+
+func (g *Game) startNextNativeSystemGroupMarchStep() {
+	for g != nil && g.nativeSystemGroupMarch != nil && g.walk == nil {
+		if g.nativeSystemGroupMarchStep >= len(g.nativeSystemGroupMarch.Steps) {
+			g.nativeSystemGroupMarch = nil
+			g.nativeSystemGroupMarchStep = 0
+			g.endTurn()
+			return
+		}
+		step := g.nativeSystemGroupMarch.Steps[g.nativeSystemGroupMarchStep]
+		if step.UnitIndex < 0 || step.UnitIndex >= len(g.st.Units) || g.st.Units[step.UnitIndex] == nil {
+			g.loadErr = "native system group-march runtime unit disappeared"
+			g.nativeSystemGroupMarch = nil
+			return
+		}
+		finish := func() {
+			if err := g.st.CommitNativeSystemGroupMarchStep(step); err != nil {
+				g.loadErr = "native system group-march commit: " + err.Error()
+				g.nativeSystemGroupMarch = nil
+				return
+			}
+			g.nativeSystemGroupMarchStep++
+			g.startNextNativeSystemGroupMarchStep()
+		}
+		if len(step.Path) < 2 {
+			finish()
+			continue
+		}
+		selector := byte(1)
+		g.walk = &walkAnim{
+			u: g.st.Units[step.UnitIndex], path: append([]battle.Cell(nil), step.Path...),
+			then: finish, nativeEventSelector: &selector,
+		}
 	}
 }
 
