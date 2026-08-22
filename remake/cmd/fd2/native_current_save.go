@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
@@ -41,10 +42,23 @@ func (g *Game) buildNativeCurrentSaveStored() (string, []byte, error) {
 	if err != nil {
 		return "", nil, err
 	}
-	// A changed runtime topology can include reinforcement or JOIN records whose
-	// persistent projection is not closed yet. Refuse to write a mixed snapshot.
-	if len(records) != int(baseline.Header.RuntimeCount) {
-		return "", nil, errors.New("原版目前戰況存檔：增援或入隊後的 persistent raw 同步尚未閉合")
+	joinTable, err := campaign.LoadNativeJoinConstructorTable(
+		assetPath("assets/data/native_join_constructor.json"),
+	)
+	if err != nil {
+		return "", nil, fmt.Errorf("原版目前戰況存檔：JOIN constructor：%w", err)
+	}
+	itemRows, err := battle.LoadNativeItemEffectRowPrefix(
+		assetPath("assets/data/native_item_effect_rows.json"),
+	)
+	if err != nil {
+		return "", nil, fmt.Errorf("原版目前戰況存檔：item rows：%w", err)
+	}
+	persistent, persistentCount, err := campaign.BuildNativeCurrentPersistentRecords(
+		g.st, baseline, joinTable, itemRows,
+	)
+	if err != nil {
+		return "", nil, err
 	}
 	view := g.st.NativeMapViewState
 	for _, value := range []int{
@@ -69,8 +83,10 @@ func (g *Game) buildNativeCurrentSaveStored() (string, []byte, error) {
 	copy(snapshot.NativeFieldControl[:], g.st.NativeFieldControlRaw)
 	snapshot.NativeEventState = g.st.NativeEventState
 	snapshot.RuntimeRecords = records
+	snapshot.PersistentRecords = persistent
 	snapshot.Header.TurnCounter = byte(g.st.NativeRoundCounter)
 	snapshot.Header.RuntimeCount = byte(len(records))
+	snapshot.Header.PersistentCount = persistentCount
 	snapshot.Header.CameraX = byte(view.CameraX)
 	snapshot.Header.CameraY = byte(view.CameraY)
 	snapshot.Header.CursorX = byte(view.CursorX)

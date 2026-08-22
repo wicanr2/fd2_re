@@ -24,6 +24,8 @@ type nativeSystemEndTurnUIState struct {
 	saveCurrent                bool
 	savePath                   string
 	saveStored                 []byte
+	loadCurrent                bool
+	loadCandidate              *Game
 }
 
 const (
@@ -366,6 +368,69 @@ func (g *Game) beginNativeNestedCurrentSave() bool {
 	return true
 }
 
+// beginNativeNestedCurrentLoad owns sub_19DF7 selector2. It builds the whole
+// restore candidate before closing the nested overlay. The live battle is not
+// replaced until the later YES response and dialogue lifecycle complete.
+func (g *Game) beginNativeNestedCurrentLoad() bool {
+	if g == nil || !g.nativeSystemCursorOverlay || !g.nativeSystemNestedOpen ||
+		!g.ring || g.ringSel != 2 || g.st == nil || g.aiBusy || g.result != "" ||
+		g.nativePreparationUI == nil || g.nativeClassUI == nil || len(g.nativeMapVGA) != 320*200 {
+		return false
+	}
+	timer, ok := g.nativeMapClock.Current()
+	if !ok {
+		g.loadErr = "原版目前戰況讀檔：目前戰場時鐘尚未物化"
+		return false
+	}
+	candidate, err := g.prepareNativeContinueFromCurrentSnapshot(nativeCurrentSavePath(), timer)
+	if err != nil {
+		g.loadErr = err.Error()
+		return false
+	}
+	ui := g.nativePreparationUI
+	source := append([]byte(nil), g.nativeMapVGA...)
+	dialogue, err := campaign.ComposeNativePreparationConfirmationDialogue(source, ui.dialogue, ui.portrait)
+	if err != nil {
+		return false
+	}
+	question, err := campaign.ComposeNativeBattleCurrentLoadQuestion(
+		dialogue, ui.portrait, ui.status.Strings, ui.status.Font,
+	)
+	if err != nil {
+		return false
+	}
+	accepted, err := campaign.NativeBattleCurrentLoadResponseFrames(
+		question, ui.status.Strings, ui.status.Font, true,
+	)
+	if err != nil {
+		return false
+	}
+	canceled, err := campaign.NativeBattleCurrentLoadResponseFrames(
+		question, ui.status.Strings, ui.status.Font, false,
+	)
+	if err != nil {
+		return false
+	}
+	frames, err := campaign.NativePreparationConfirmationOpeningFrames(source, dialogue, question, ui.choices)
+	if err != nil || len(frames) != 10 {
+		return false
+	}
+	state := &nativeSystemEndTurnUIState{
+		source: source, dialogue: dialogue, question: question,
+		accepted: accepted, canceled: canceled,
+		loadCurrent: true, loadCandidate: &candidate,
+	}
+	g.beginActionOverlayClose(func() {
+		g.nativeSystemNestedOpen = false
+		g.nativeSystemCursorOverlay = false
+		g.nativeSystemEndTurnConfirm = true
+		g.nativeSystemEndTurnUI = state
+		g.resetNativeClassUIPulse()
+		g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
+	})
+	return true
+}
+
 // beginNativeSystemGroupMarch 承接 sub_16F55 selector1。它在收掉外層命令框前
 // 完整預演逐單位尋路與事件；任一未知事件使整批保持原狀。
 func (g *Game) beginNativeSystemGroupMarch() bool {
@@ -557,7 +622,14 @@ func (g *Game) stepNativeSystemEndTurn() {
 			accepted := state.acceptedOutcome
 			g.nativeSystemEndTurnUI = nil
 			if accepted {
-				if state.exitProgram {
+				if state.loadCurrent {
+					if state.loadCandidate == nil {
+						g.loadErr = "原版目前戰況讀檔：私有候選狀態遺失"
+						return
+					}
+					candidate := *state.loadCandidate
+					*g = candidate
+				} else if state.exitProgram {
 					g.nativeSystemExitRequested = true
 				} else if state.groupMarch {
 					plan := state.groupMarchPlan

@@ -177,6 +177,37 @@ func TestNativeBattleCurrentSaveUsesSelector1TextIndices(t *testing.T) {
 	}
 }
 
+func TestNativeBattleCurrentLoadUsesSelector2TextIndices(t *testing.T) {
+	dialogue := make([]byte, 320*200)
+	portrait := dato.Frame{Width: 1, Height: 1, Pixels: []byte{9}}
+	strings, font := nativeClassListStrings(t), nativeClassListFont(t)
+	question, err := ComposeNativeBattleCurrentLoadQuestion(dialogue, portrait, strings, font)
+	if err != nil {
+		t.Fatal(err)
+	}
+	saveQuestion, err := ComposeNativeBattleCurrentSaveQuestion(dialogue, portrait, strings, font)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if bytes.Equal(question, saveQuestion) {
+		t.Fatal("目前戰況讀檔問句誤用了存檔 FDTXT#0x19a")
+	}
+	accepted, err := NativeBattleCurrentLoadResponseFrames(question, strings, font, true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(accepted) == 0 {
+		t.Fatal("目前戰況讀檔 FDTXT#0x19e 沒有可見接受回覆")
+	}
+	canceled, err := NativeBattleCurrentLoadResponseFrames(question, strings, font, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(canceled) != 1 {
+		t.Fatalf("目前戰況讀檔 NO frames=%d want 1 from FDTXT#0x19c", len(canceled))
+	}
+}
+
 func nativeClassConfirmCells() []fdother.RawCell {
 	cells := make([]fdother.RawCell, 53)
 	for _, index := range []int{16, 17, 48, 49, 51, 52} {

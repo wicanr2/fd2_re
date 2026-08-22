@@ -4861,8 +4861,12 @@ func (g *Game) ringInput() bool {
 				}
 				return true
 			}
-			// selector2 的 current-runtime FD2.SAV 讀取交易仍未閉合。
-			g.msg = "原版目前戰況讀檔交易尚未接線"
+			if g.ringSel == 2 {
+				if !g.beginNativeNestedCurrentLoad() {
+					g.msg = "原版目前戰況讀檔來源或資產不完整，保留目前戰場"
+				}
+				return true
+			}
 		}
 		return true
 	}
@@ -8728,7 +8732,6 @@ func (g *Game) drawBattlePanel(screen *ebiten.Image, x, y float64, name string, 
 		g.fontNm.Draw(screen, name, nx, ny, 1.0, color.RGBA{0xe0, 0xee, 0xff, 0xff})
 	}
 	// 數字使用原版 6×8 digit cell 與 native 7px advance；這只固定素材與
-	// 局部幾何，不代表完整戰鬥狀態欄已達逐像素 E2。
 	drawNum := func(s string, nxN, nyN float64) {
 		for k, ch := range s {
 			if ch < '0' || ch > '9' || g.digits[ch-'0'] == nil {
@@ -9483,6 +9486,18 @@ func (g *Game) endTurn() {
 	}
 	if started {
 		return
+	}
+	// 0x1A552→0x1A55E passes raw selector 0 immediately before enemy AI.
+	// Keep this address-derived phase distinct from normalized Camp values.
+	if g.st.HasNativeRuntimeUnitProjection {
+		expired, err := g.applyNativeTransientPhase(0)
+		if err != nil {
+			g.loadErr = err.Error()
+			return
+		}
+		if len(expired) > 0 {
+			g.msg = fmt.Sprintf("%d 個原始狀態效果到期", len(expired))
+		}
 	}
 	g.beginEnemyPhase()
 }

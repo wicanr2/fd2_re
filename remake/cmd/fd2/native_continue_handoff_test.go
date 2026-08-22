@@ -175,6 +175,32 @@ func TestNativeContinueTitleCallerPublishesRealCurrentSnapshot(t *testing.T) {
 	}
 }
 
+func TestNativeCurrentLoadPreparesPrivateCandidate(t *testing.T) {
+	savePath := filepath.Join(
+		"../../../org_game/炎龍騎士團/FLAME2", "FD2.SAV",
+	)
+	if _, err := os.Stat(savePath); err != nil {
+		t.Skipf("player-provided FD2.SAV is absent: %v", err)
+	}
+	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{camp: campaign.NewRunner(graph), titlePhase: "unchanged"}
+	candidate, err := g.prepareNativeContinueFromCurrentSnapshot(savePath, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if g.titlePhase != "unchanged" || g.st != nil {
+		t.Fatal("private current LOAD preflight mutated the live Game")
+	}
+	if candidate.st == nil || candidate.sc == nil || candidate.camp.NodeID() != "battle_ch01" ||
+		len(candidate.nativeCurrentSavePlain) != fdsave.FileSize {
+		t.Fatalf("current LOAD candidate is incomplete: node=%q state=%p scenario=%p raw=%d",
+			candidate.camp.NodeID(), candidate.st, candidate.sc, len(candidate.nativeCurrentSavePlain))
+	}
+}
+
 func TestNativeContinueTitleTimerSeedFailsClosed(t *testing.T) {
 	t.Setenv("FD2_NATIVE_TITLE_TICK", "")
 	if _, err := nativeContinueTitleTimerSeed(); err == nil {

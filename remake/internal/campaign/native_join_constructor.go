@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
 
 const (
@@ -124,44 +125,11 @@ func (table NativeJoinConstructorTable) MaterializePersistentUnit(
 		return battle.Unit{}, fmt.Errorf("native JOIN character %d HP/MP exceeds raw word", id)
 	}
 
-	var record [0x50]byte
-	record[5] = 0
-	record[6] = 2
-	record[7] = byte(id)
-	record[8] = byte(id)
-	record[9] = 0
-	record[0x0a], record[0x0b] = 0x40, row.defaults[0x0c]
-	record[0x0c], record[0x0d] = 0x40, row.defaults[0x0d]
-	for slot := 0; slot < 4; slot++ {
-		item := row.defaults[0x0e+slot]
-		cell := 0x0e + slot*2
-		if item == 0xff {
-			record[cell] = 0x80
-		}
-		record[cell+1] = item
+	persistent, err := table.MaterializePersistentRecord(id, itemTable)
+	if err != nil {
+		return battle.Unit{}, err
 	}
-	record[0x16], record[0x18] = 0x80, 0x80
-	copy(record[0x1a:0x1e], row.defaults[8:12])
-	record[0x1e] = 0
-	record[0x1f] = row.defaults[0]
-	record[0x20] = row.defaults[1]
-	record[0x21] = byte(level)
-	record[0x31] = 0xff
-	baseAP := nativeJoinWord(row.defaults[:], 0x12) + int(row.growth[0])*level
-	baseDP := nativeJoinWord(row.defaults[:], 0x14) + int(row.growth[2])*level
-	baseDX := nativeJoinWord(row.defaults[:], 0x16) + int(row.growth[4])*level
-	binary.LittleEndian.PutUint16(record[0x37:], uint16(baseAP))
-	binary.LittleEndian.PutUint16(record[0x39:], uint16(baseDP))
-	record[0x3b] = row.defaults[7]
-	record[0x3c] = 0
-	binary.LittleEndian.PutUint16(record[0x3e:], uint16(baseDX))
-	binary.LittleEndian.PutUint16(record[0x40:], uint16(maxHP))
-	binary.LittleEndian.PutUint16(record[0x42:], uint16(maxHP))
-	binary.LittleEndian.PutUint16(record[0x44:], uint16(maxMP))
-	binary.LittleEndian.PutUint16(record[0x46:], uint16(maxMP))
-	if err := battle.ApplyNativeEquipmentRecalc(record[:], itemTable); err != nil {
-		return battle.Unit{}, fmt.Errorf("native JOIN character %d equipment: %w", id, err)
-	}
+	record := persistent.Raw
 
 	unit := base
 	unit.Camp = battle.Own
@@ -211,4 +179,68 @@ func (table NativeJoinConstructorTable) MaterializePersistentUnit(
 		unit.Equipped = append(unit.Equipped, flags&0x40 != 0)
 	}
 	return unit, nil
+}
+
+// MaterializePersistentRecord exposes the exact local 0x50-byte record built
+// by the proven JOIN constructor. It is used when current-battle SAVE must add
+// a newly joined character to the native persistent roster without inventing
+// unknown bytes from a normalized Unit.
+func (table NativeJoinConstructorTable) MaterializePersistentRecord(
+	id int,
+	itemTable []byte,
+) (fdsave.PersistentRecord, error) {
+	row, ok := table.rows[id]
+	if !ok || id < 0 || id > 0xff {
+		return fdsave.PersistentRecord{}, fmt.Errorf("native JOIN character %d has no proven constructor row", id)
+	}
+	level := int(row.defaults[2])
+	if level <= 0 {
+		return fdsave.PersistentRecord{}, fmt.Errorf("native JOIN character %d has invalid level %d", id, level)
+	}
+	maxHP := nativeJoinWord(row.defaults[:], 3) + int(row.growth[6])*(level-1)
+	maxMP := nativeJoinWord(row.defaults[:], 5) + int(row.growth[8])*(level-1)
+	if maxHP < 0 || maxHP > 0xffff || maxMP < 0 || maxMP > 0xffff {
+		return fdsave.PersistentRecord{}, fmt.Errorf("native JOIN character %d HP/MP exceeds raw word", id)
+	}
+
+	var record fdsave.PersistentRecord
+	raw := record.Raw[:]
+	raw[5] = 0
+	raw[6] = 2
+	raw[7] = byte(id)
+	raw[8] = byte(id)
+	raw[9] = 0
+	raw[0x0a], raw[0x0b] = 0x40, row.defaults[0x0c]
+	raw[0x0c], raw[0x0d] = 0x40, row.defaults[0x0d]
+	for slot := 0; slot < 4; slot++ {
+		item := row.defaults[0x0e+slot]
+		cell := 0x0e + slot*2
+		if item == 0xff {
+			raw[cell] = 0x80
+		}
+		raw[cell+1] = item
+	}
+	raw[0x16], raw[0x18] = 0x80, 0x80
+	copy(raw[0x1a:0x1e], row.defaults[8:12])
+	raw[0x1e] = 0
+	raw[0x1f] = row.defaults[0]
+	raw[0x20] = row.defaults[1]
+	raw[0x21] = byte(level)
+	raw[0x31] = 0xff
+	baseAP := nativeJoinWord(row.defaults[:], 0x12) + int(row.growth[0])*level
+	baseDP := nativeJoinWord(row.defaults[:], 0x14) + int(row.growth[2])*level
+	baseDX := nativeJoinWord(row.defaults[:], 0x16) + int(row.growth[4])*level
+	binary.LittleEndian.PutUint16(raw[0x37:], uint16(baseAP))
+	binary.LittleEndian.PutUint16(raw[0x39:], uint16(baseDP))
+	raw[0x3b] = row.defaults[7]
+	raw[0x3c] = 0
+	binary.LittleEndian.PutUint16(raw[0x3e:], uint16(baseDX))
+	binary.LittleEndian.PutUint16(raw[0x40:], uint16(maxHP))
+	binary.LittleEndian.PutUint16(raw[0x42:], uint16(maxHP))
+	binary.LittleEndian.PutUint16(raw[0x44:], uint16(maxMP))
+	binary.LittleEndian.PutUint16(raw[0x46:], uint16(maxMP))
+	if err := battle.ApplyNativeEquipmentRecalc(raw, itemTable); err != nil {
+		return fdsave.PersistentRecord{}, fmt.Errorf("native JOIN character %d equipment: %w", id, err)
+	}
+	return record, nil
 }

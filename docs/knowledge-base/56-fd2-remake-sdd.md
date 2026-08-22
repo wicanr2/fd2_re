@@ -5348,6 +5348,47 @@ FDTXT `0x19A/0x19B/0x19C` 與原始檔案交易見
 改造成可在現行 battle controller 內原子替換的 load transaction，不與 SAVE
 同批猜測接入。兩者都不得落回重製 JSON 存檔。
 
+### selector2「讀取目前戰況」發布契約
+
+selector2 不另造第二套解碼器。它必須重用已閉合的 `Decode`、
+`InspectCurrentSnapshot`、`BuildContinueRuntimeInput` 與五個 typed handoff，差別只在
+caller：標題 CONTINUE 從標題時鐘取得呈現種子；戰場內 LOAD 從目前 battle clock
+取得最近已物化的 signed low word。此值只維持既有動畫 delta 邊界；DOS BIOS、PIT
+與硬體計時細節依公開規格視為平台介面，不再作為 remake 反組譯阻擋。
+
+玩家確認前，應在私有 `Game`、map、scenario 與 `battle.State` 完成檔案解碼、章節
+唯一映射、field／runtime／pending groups／view／HUD／options 與 controller handoff。
+問句使用 FDTXT `0x19D`，接受回覆使用 `0x19E`，取消沿用共同 `0x19C`。只有 YES
+且接受回覆已呈現後才以單次發布取代目前戰場；NO、檔案不存在、checksum 錯誤、
+章節資產不唯一、時鐘來源不存在或任一 typed adapter 失敗，都不得清除目前戰況。
+發布後的 `nativeCurrentSavePlain` 必須換成剛讀取的 plaintext，使下一次 SAVE 仍以
+同一份完整 raw baseline 工作。
+
+current SAVE 的 persistent 同步另採 identity-keyed 交易：既有 persistent records
+先由 baseline 保留未知 bytes，再以 runtime／party 中具 `+8` 原始身分與完整欄位
+provenance 的角色覆蓋已證實欄位；新 JOIN 只能使用已證實 constructor 產生的完整
+raw record，並填入第一個未使用 persistent slot。身分重複、順序衝突、容量超過32、
+找不到 constructor raw 或 runtime 增加不是已知 JOIN／增援時，整次 SAVE 失敗即關閉。
+
+### `sub_1A866` 狀態倒數的正式回合邊界
+
+已證實的第一個正式擁有者是 `0x1A552 call sub_1A813(0)` 後緊接的
+`0x1A55E call sub_1A866`，並且位於 `0x1A58F` 敵方人工智慧入口之前。正式執行期
+因此只在這個原始 selector 0 邊界遞減 raw `+0x22..+0x27`；歸零時再依
+`0x1B750` 重新計算 derived AP／DP／HIT／EV。整批先在私有 runtime records 與
+units 完成，缺少完整原始投影或裝備重算資料時不發布任何變更。
+
+其他 caller 傳入的 selector 1／2 尚未證實等同 normalized `Camp` 或哪個現行
+controller 邊界，故不得為了讓所有陣營都倒數而猜接。介面目前只能誠實顯示
+「原始狀態效果到期」的數量；`+0x22..+0x27` 的完整遊戲名稱／圖示仍未知，不能
+用 legacy `PoisonTurns`／`Sealed` 名稱冒充原版狀態列。
+
+物品方面，`0x20C6F` 已恢復的 type 5..24 分派均已有正式交易消費端：HP／MP、
+marker 清除與套用、HIT／EV、AP／DP、基礎能力／容量、command damage 與 relocation。
+此處的剩餘缺口是 indexed effect presentation、原版取消／不可用目標畫面與同狀態
+逐幀／逐音訊 E2，不再把「物品 effect 尚未接」列成數值交易缺口。未知 command、
+複合技與尚無正式 owner 的法術仍各自失敗即關閉。
+
 ## 2026-08-22 巢狀離場規格
 
 主證據為

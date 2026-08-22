@@ -2,9 +2,11 @@ package campaign
 
 import (
 	"encoding/binary"
+	"path/filepath"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
 
 func completeNativeCurrentSaveUnit() *battle.Unit {
@@ -30,6 +32,42 @@ func completeNativeCurrentSaveUnit() *battle.Unit {
 		NativeCommandMask:    [5]byte{1, 2, 3, 4, 5}, NativeTransient: [6]byte{6, 7, 8, 9, 10, 11},
 		Lv: 12, MV: 5, Exp: 13, DX: 14,
 		HP: 15, MaxHP: 16, MP: 17, MaxMP: 18, AP: 19, DP: 20, HIT: 21, EV: 22,
+	}
+}
+
+func TestBuildNativeCurrentPersistentRecordsAddsOnlyProvenJoin(t *testing.T) {
+	table, err := LoadNativeJoinConstructorTable(filepath.Join("..", "..", "assets", "data", "native_join_constructor.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	itemRows, err := battle.LoadNativeItemEffectRowPrefix(filepath.Join("..", "..", "assets", "data", "native_item_effect_rows.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	joined, err := table.MaterializePersistentUnit(12, battle.Unit{}, itemRows)
+	if err != nil {
+		t.Fatal(err)
+	}
+	baseline := fdsave.CurrentSnapshot{}
+	baseline.Header.RuntimeCount = 1
+	baseline.Header.PersistentCount = 1
+	baseline.PersistentRecords[0].Raw[8] = 4
+	state := &battle.State{
+		Units:                []*battle.Unit{{Camp: battle.Enemy}, &joined},
+		NativeRuntimeRecords: []battle.NativeRuntimeRecordState{{}, {}},
+	}
+	records, count, err := BuildNativeCurrentPersistentRecords(state, baseline, table, itemRows)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if count != 2 || records[0].Raw[8] != 4 || records[1].Raw[8] != 12 ||
+		records[1].Raw[7] != 12 || records[1].Raw[6] != 2 {
+		t.Fatalf("persistent JOIN count=%d first=%d joined=%+v", count, records[0].Raw[8], records[1].View())
+	}
+	joined.NativeIdentity = 4
+	joined.NativeRecordByte8 = 4
+	if _, _, err := BuildNativeCurrentPersistentRecords(state, baseline, table, itemRows); err == nil {
+		t.Fatal("duplicate appended JOIN identity was accepted")
 	}
 }
 

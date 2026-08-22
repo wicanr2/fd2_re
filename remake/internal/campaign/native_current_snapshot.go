@@ -71,3 +71,65 @@ func BuildNativeCurrentRuntimeRecords(
 	}
 	return out, nil
 }
+
+// BuildNativeCurrentPersistentRecords extends the exact persistent baseline
+// only for newly appended own-camp JOIN records. Enemy/ally reinforcements are
+// battle-local and do not consume persistent slots. Every new player record is
+// rebuilt by the proven JOIN constructor; all pre-existing and unused bytes
+// remain byte-identical to the loaded snapshot.
+func BuildNativeCurrentPersistentRecords(
+	state *battle.State,
+	baseline fdsave.CurrentSnapshot,
+	table NativeJoinConstructorTable,
+	itemRows []byte,
+) ([fdsave.RosterUnits]fdsave.PersistentRecord, byte, error) {
+	out := baseline.PersistentRecords
+	count := int(baseline.Header.PersistentCount)
+	oldRuntimeCount := int(baseline.Header.RuntimeCount)
+	if state == nil || count < 0 || count > len(out) || oldRuntimeCount < 0 ||
+		oldRuntimeCount > len(state.Units) || len(state.Units) != len(state.NativeRuntimeRecords) {
+		return out, 0, errors.New("native current save: persistent/runtime baseline is inconsistent")
+	}
+	identities := make(map[byte]struct{}, count)
+	for index := 0; index < count; index++ {
+		id := out[index].Raw[8]
+		if _, exists := identities[id]; exists {
+			return out, 0, fmt.Errorf("native current save: duplicate persistent identity %d", id)
+		}
+		identities[id] = struct{}{}
+	}
+	for index := oldRuntimeCount; index < len(state.Units); index++ {
+		unit := state.Units[index]
+		if unit == nil {
+			return out, 0, fmt.Errorf("native current save: appended runtime unit %d is nil", index)
+		}
+		if unit.Camp != battle.Own {
+			continue
+		}
+		if !unit.HasNativeIdentity || unit.NativeIdentity < 0 || unit.NativeIdentity > 0xff ||
+			!unit.HasNativeRecordByte8 || int(unit.NativeRecordByte8) != unit.NativeIdentity {
+			return out, 0, fmt.Errorf("native current save: appended own unit %d lacks JOIN identity", index)
+		}
+		id := byte(unit.NativeIdentity)
+		if _, exists := identities[id]; exists {
+			return out, 0, fmt.Errorf("native current save: appended own identity %d is not a new JOIN", id)
+		}
+		if count >= len(out) {
+			return out, 0, errors.New("native current save: persistent roster exceeds 32 records")
+		}
+		record, err := table.MaterializePersistentRecord(int(id), itemRows)
+		if err != nil {
+			return out, 0, err
+		}
+		view := record.View()
+		if !unit.HasNativeRecordRace || view.Race != unit.NativeRecordRace ||
+			!unit.HasNativeRecordClass || view.Class != unit.NativeRecordClass ||
+			!unit.HasMapSelectorKey || unit.MapSelectorKey != int(view.RawPresentationKey) {
+			return out, 0, fmt.Errorf("native current save: JOIN identity %d constructor/runtime mismatch", id)
+		}
+		out[count] = record
+		count++
+		identities[id] = struct{}{}
+	}
+	return out, byte(count), nil
+}
