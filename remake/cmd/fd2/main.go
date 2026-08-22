@@ -171,6 +171,7 @@ type Game struct {
 	transitionReveal           *transitionRevealJob
 	indexedTransition          *nativeIndexedTransitionJob
 	nativeHealPresentation     *nativeCommandHealPresentationJob
+	nativeModifierPresentation *nativeCommandModifierPresentationJob
 	spawnIntroTransition       *nativeSpawnIntroJob
 	nativeTurnStaging          *nativeTurnStagingJob
 	nativeFieldEvent61         *nativeFieldEvent61Job
@@ -288,6 +289,7 @@ type Game struct {
 	castSp                    *battle.Spell // 施法目標選擇中
 	spells                    []battle.Spell
 	nativeCommandBook         []battle.NativeCommandRecord
+	nativeCommandPaletteFlash *battle.NativeCommandPaletteFlashTable
 	nativeCommandResistances  map[int]int
 	commandLearn              map[int][]battle.CommandLearnEntry // native portrait-indexed level-up command table
 	bgm                       *audio.Player                      // BGM(doc12 play_bgm 語意:同曲不重播)
@@ -305,6 +307,7 @@ type Game struct {
 	sfxImpact                 []byte                // 命中音(近似:最短最尖池;attack_id→sfx 對照表 doc36 未 RE)
 	sfxDeath                  []byte                // 陣亡/重擊音(近似:最長池)
 	sfxTransition             []byte                // FDOTHER #88 sub1: ch24 transition SFX
+	sfxCommandModifier        []byte                // FDOTHER #88 sub0: 0x1D6C8 command palette owner
 	sfxSpawnIntro             []byte                // FDOTHER #95 sub0: 0x32999 pass1 raw sample（11025Hz 為既有工具鏈推論）
 	handlerResource           int                   // currently loaded handler resource-table id
 	prevCurX, prevCurY        int                   // 游標移動音偵測
@@ -5052,7 +5055,7 @@ func (g *Game) ringInput() bool {
 // executor; other command labels remain visible but fail closed at confirm.
 func (g *Game) nativeCommandTargetSupported(id int) bool {
 	switch id {
-	case 0, 13, 14, 15, 16, 20, 21, 22, 24, 25, 26, 27, 28, 29, 31:
+	case 0, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 31:
 		return true
 	default:
 		return false
@@ -5934,6 +5937,38 @@ func (g *Game) confirm() {
 			}
 			return
 		}
+		if id >= 17 && id <= 19 {
+			actor := g.sel
+			targets, err := g.st.NativeCommandModifierTargets(actor, tgt, id)
+			if err != nil {
+				g.msg = fmt.Sprintf("原始指令 %d：請選擇有效目標 (%v)", id, err)
+				return
+			}
+			err = g.startNativeCommandModifierPresentation(id, actor, targets, func() (battle.NativeCommandModifierResult, error) {
+				result, e := g.st.ExecuteNativeCommandModifier(actor, tgt, id, g.nativeRNGState)
+				if e == nil {
+					g.nativeRNGState = result.RNGState
+				}
+				return result, e
+			}, func(result battle.NativeCommandModifierResult) {
+				count := len(result.WordSteps)
+				if id == 19 {
+					count = len(result.PairSteps)
+				}
+				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
+				g.msg = fmt.Sprintf("原始指令 %d：完成 raw modifier (%d targets)", id, count)
+				g.finishSuccessfulUnitAction(actor, func() {
+					g.resetNativeTargetField()
+					g.st.MaterializeNativeMapRangeMode(1)
+					g.nativeCommand0Targeting, g.nativeCommandTargetID, g.sel, g.reach, g.moved = false, 0, nil, nil, false
+				})
+				g.checkResult()
+			})
+			if err != nil {
+				g.msg = fmt.Sprintf("原始指令 %d：palette 演出不可用 (%v)", id, err)
+			}
+			return
+		}
 		message := ""
 		var err error
 		var damageTargets []*battle.Unit
@@ -6573,6 +6608,7 @@ func (g *Game) Update() error {
 	g.stepTransitionReveal()                     // native 0x24b4d alternating present loop
 	g.stepNativeIndexedTransition()              // native 0x24618 indexed map/palette transition
 	g.stepNativeCommandHealPresentation()        // native 0x21EB1 command 13..16 indexed presentation
+	g.stepNativeCommandModifierPresentation()    // native 0x1D6C8 command 17..19 palette presentation
 	g.stepNativePaletteRamp()                    // native 0x1f882/0x1f525 whole-DAC ramps
 	g.stepNativePalettePulse()                   // native 0x35E5A whole-DAC pulse
 	g.stepNativeSpawnIntro()                     // native 0x32999 twelve-pass indexed spawn transition
@@ -6623,7 +6659,7 @@ func (g *Game) Update() error {
 			clamp(&g.camY, 0, float64(g.m.H*g.m.TileH-logicalH))
 		}
 	}
-	if g.nativeHealPresentation != nil {
+	if g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil {
 		return nil
 	}
 	if !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF5) { // 快速存檔(節點邊界語意:存 campaign 進度)
@@ -6967,6 +7003,16 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		screen.Fill(color.Black)
 		if !g.drawNativeCommandHealPresentation(screen) {
 			ebitenutil.DebugPrint(screen, "native 0x21EB1 presentation unavailable")
+		}
+		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
+			g.captureShot(screen)
+		}
+		return
+	}
+	if g.nativeModifierPresentation != nil {
+		screen.Fill(color.Black)
+		if !g.drawNativeCommandModifierPresentation(screen) {
+			ebitenutil.DebugPrint(screen, "native 0x1D6C8 presentation unavailable")
 		}
 		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
 			g.captureShot(screen)
@@ -8752,6 +8798,11 @@ func loadGame() *Game {
 	); e == nil {
 		g.nativeJoinItemEffectRows = rows
 	}
+	if table, e := battle.LoadNativeCommandPaletteFlashTable(
+		assetPath("assets/data/native_command_palette_flash.json"),
+	); e == nil {
+		g.nativeCommandPaletteFlash = table
+	}
 	g.initializeEquipmentBases(g.st)
 	g.font = loadFont()
 	// 狀態欄名字專用整數尺寸 face(scale 1.0 繪製,避免非整數縮放模糊);orig 名墨高 13px→face 28
@@ -8771,11 +8822,12 @@ func loadGame() *Game {
 	g.rng = rand.New(rand.NewSource(seed))
 	g.sfx = loadSFX()
 	// 戰鬥音效:揮擊/命中/陣亡三段(真素材;attack_id→池 精確對照 doc36 未 RE,故命中/陣亡池為近似選擇)
-	g.sfxSwing = loadWav("assets/sfx/battle_48_00.wav")      // 揮擊(池 sub0,七池共用)
-	g.sfxImpact = loadWav("assets/sfx/battle_64_00.wav")     // 命中(最短最尖池)
-	g.sfxDeath = loadWav("assets/sfx/battle_88_00.wav")      // 陣亡/重擊(最長池)
-	g.sfxTransition = loadWav("assets/sfx/battle_88_01.wav") // ch24 FDOTHER #88 sub1
-	g.sfxSpawnIntro = loadWav("assets/sfx/battle_95_00.wav") // 0x32999 pass1 FDOTHER #95 sub0
+	g.sfxSwing = loadWav("assets/sfx/battle_48_00.wav")           // 揮擊(池 sub0,七池共用)
+	g.sfxImpact = loadWav("assets/sfx/battle_64_00.wav")          // 命中(最短最尖池)
+	g.sfxDeath = loadWav("assets/sfx/battle_88_00.wav")           // 陣亡/重擊(最長池)
+	g.sfxTransition = loadWav("assets/sfx/battle_88_01.wav")      // ch24 FDOTHER #88 sub1
+	g.sfxCommandModifier = loadWav("assets/sfx/battle_88_00.wav") // 0x1D6C8 FDOTHER #88 sub0
+	g.sfxSpawnIntro = loadWav("assets/sfx/battle_95_00.wav")      // 0x32999 pass1 FDOTHER #95 sub0
 	// 戰場 BGM:doc12 推定 track18=戰鬥被使用者實聽推翻(18=商店音樂);戰鬥曲號待聽辨,先不播錯曲
 	if os.Getenv("FD2_TITLE") == "1" || (g.shotPath == "" && os.Getenv("FD2_TITLE") != "0") { // 開頭動畫+主選單(headless 截圖預設跳過)
 		if ta := loadTitleAssets(); ta != nil {
@@ -9236,7 +9288,7 @@ func (g *Game) completeTurnPlayerPhase() {
 // aiStep AI 回合驅動:一次取一個單位的行動計畫,播行走動畫→到位攻擊(全螢幕演出)。
 // 全單位動完 → finishTurn。
 func (g *Game) aiStep() {
-	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeHealPresentation != nil || g.result != "" {
+	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.result != "" {
 		if g.result != "" {
 			g.aiBusy = false
 		}

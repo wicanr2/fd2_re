@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
@@ -260,12 +261,12 @@ func TestNativeActionSelectableRejectsDisabledWordAndInvalidDirection(t *testing
 
 func TestNativeCommandTargetWhitelistKeepsUnresolvedIDsFailClosed(t *testing.T) {
 	g := &Game{}
-	for _, id := range []int{0, 13, 16, 20, 21, 22, 24, 25, 26, 27, 28, 29, 31} {
+	for _, id := range []int{0, 13, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 31} {
 		if !g.nativeCommandTargetSupported(id) {
 			t.Fatalf("verified target/effect id %d was rejected", id)
 		}
 	}
-	for _, id := range []int{-1, 1, 9, 10, 17, 18, 19, 23, 30, 32, 35, 36} {
+	for _, id := range []int{-1, 1, 9, 10, 23, 30, 32, 35, 36} {
 		if g.nativeCommandTargetSupported(id) {
 			t.Fatalf("unresolved target/effect id %d was enabled", id)
 		}
@@ -384,5 +385,81 @@ func TestPlayerNativeCommand13RunsCursorTransactionThroughConfirm(t *testing.T) 
 	}
 	if g.msg != "原始指令 13：回復 60" {
 		t.Fatalf("player command13 message=%q", g.msg)
+	}
+}
+
+func TestPlayerNativeCommand17WaitsForEightPalettePhasesBeforeTransaction(t *testing.T) {
+	assets, field, state := completeNativeMapFrameFixture(t)
+	book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
+	for id := range book {
+		book[id] = battle.NativeCommandRecord{ID: id}
+	}
+	book[17] = battle.NativeCommandRecord{ID: 17, SelectionMode: 1, EffectMode: 0, MPCost: 99, TargetCode: 1}
+	book[18] = battle.NativeCommandRecord{ID: 18, SelectionMode: 1, EffectMode: 0, MPCost: 4, TargetCode: 1}
+	actor := state.Units[0]
+	actor.Camp, actor.OnField = battle.Own, true
+	actor.HP, actor.MaxHP, actor.MP, actor.AP = 40, 100, 10, 100
+	actor.Lv, actor.NativeRecordClass, actor.HasNativeRecordClass = 2, 9, true
+	actor.NativeTransient = [6]byte{}
+	state.NativeCommandBook = book
+	state.NativeCompositionEventBytes = make([]byte, state.W*state.H)
+	state.NativeTileBlitModes[0], field.NativeTileBlitModes[0] = 0, 0
+	state.MaterializeNativeMapRangeMode(3)
+	table, err := battle.LoadNativeCommandPaletteFlashTable("../../assets/data/native_command_palette_flash.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{
+		nativeMapAssets: assets, nativeMapDAC: append([]byte(nil), assets.PaletteDAC...),
+		m: field, st: state, sel: actor, curX: 0, curY: 0,
+		nativeCommand0Targeting: true, nativeCommandTargetID: 17,
+		nativeCommandPaletteFlash: table,
+	}
+
+	// Missing framebuffer and then missing exact sample must both reject before
+	// any palette frame, MP debit or target mutation.
+	g.confirm()
+	if g.nativeModifierPresentation != nil || actor.MP != 10 || actor.AP != 100 || actor.Acted {
+		t.Fatalf("missing framebuffer crossed boundary: job=%v actor=%#v", g.nativeModifierPresentation != nil, actor)
+	}
+	if err := g.composeNativeMapFrameAt(time.Unix(0, 0)); err != nil {
+		t.Fatal(err)
+	}
+	g.confirm()
+	if g.nativeModifierPresentation != nil || actor.MP != 10 || actor.AP != 100 || actor.Acted {
+		t.Fatalf("missing sample crossed boundary: job=%v actor=%#v", g.nativeModifierPresentation != nil, actor)
+	}
+
+	t.Setenv("FD2_MUTE", "1")
+	g.confirm()
+	if g.nativeModifierPresentation == nil || actor.MP != 10 || actor.AP != 100 || actor.Acted {
+		t.Fatalf("command17 did not stop at palette boundary: job=%v actor=%#v", g.nativeModifierPresentation != nil, actor)
+	}
+	if len(g.nativeModifierPresentation.palettes) != 8 {
+		t.Fatalf("palette phases=%d want 8", len(g.nativeModifierPresentation.palettes))
+	}
+	for phase := 0; phase < 8; phase++ {
+		job := g.nativeModifierPresentation
+		if job == nil || job.phase != phase || actor.MP != 10 || actor.AP != 100 || actor.Acted {
+			t.Fatalf("phase %d mutated early: job=%#v actor=%#v", phase, job, actor)
+		}
+		entry := job.palettes[phase][0]
+		r, green, blue, _ := entry.RGBA()
+		black := r == 0 && green == 0 && blue == 0
+		if phase%2 == 0 {
+			if black {
+				t.Fatalf("phase %d command color is black", phase)
+			}
+		} else if !black {
+			t.Fatalf("phase %d black entry=%v", phase, entry)
+		}
+		if !g.drawNativeCommandModifierPresentation(ebiten.NewImage(640, 400)) {
+			t.Fatalf("phase %d did not draw", phase)
+		}
+		g.stepNativeCommandModifierPresentation()
+	}
+	if g.nativeModifierPresentation != nil || actor.MP != 6 || actor.AP != 116 ||
+		actor.NativeTransient[0] != 2 || !actor.Acted {
+		t.Fatalf("command17 transaction actor=%#v job=%v", actor, g.nativeModifierPresentation != nil)
 	}
 }

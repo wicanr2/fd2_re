@@ -1,0 +1,72 @@
+FD2 command 17–19 玩家確認 palette／SFX owner（IDA Pro 9.4）
+================================================================
+
+輸入與工具
+----------
+
+- 輸入：`FD2.EXE`
+- 大小：357074 bytes
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 工具：IDA Pro／Hex-Rays 9.4.0.260610，合法
+  `fd2-ida-authorized-local:latest` Docker image
+- 位址空間：IDA linear address，image base 0
+- 產生日期：2026-08-22
+- 原始 EXE 唯讀；IDA database 位於 container tmpfs，未加入版控。
+
+固定定位與 caller
+------------------
+
+- 原始函式：`sub_1D6C8`，`0x1D6C8..0x1D79C`。
+- IDA direct caller：`sub_1CFF0`；函式清冊顯示一個 direct code xref。
+- `0x1CFF0` 的既有直接指令證據已證實：玩家 target confirm 後，command
+  `0x09..0x17` 與 `0x19..0x1B` 先呼叫 `0x1D6C8(commandID)`，再派發
+  `funcs_1541f[commandID]`。因此 IDs17–19 均走本函式；AI `0x15311`
+  直接進 effect table，不可外推同一玩家 palette owner。
+
+`0x1D6C8` 直接資料流（已證實）
+--------------------------------
+
+Hex-Rays 與 `0x1D6C8:0x75` 原始 bytes 共同顯示：
+
+1. 呼叫 `0x25A96([0x53B13],0,1)`；既有 writer 證實 `[0x53B13]` 是
+   `FDOTHER.DAT #88`，`0x25A96` 是 AIL sample wrapper，所以這是 sub-sample 0。
+2. 迴圈固定四次。
+3. 每次將 VGA DAC index port `0x3C8` 寫 0，再把
+   `byte_51AAD[commandID]`、`byte_51AD1[commandID]`、
+   `byte_51AF5[commandID]` 依序寫至 data port `0x3C9`，接著呼叫
+   `0x17AA9(1)`。
+4. 同一輪再把 palette entry 0 寫成 `(0,0,0)`，再呼叫
+   `0x17AA9(1)`。
+5. 因此正式玩家 owner 是八個一-tick palette phases：
+   `commandColor→black` 重複四次；不包含畫面像素改寫。
+
+三張 table 都是36 bytes，IDA linear ranges 為
+`0x51AAD..0x51AD0`、`0x51AD1..0x51AF4`、`0x51AF5..0x51B18`。
+IDs17、18、19 三者均讀到 raw six-bit DAC `(0x32,0x32,0x32)`。
+完整108 bytes 已轉成
+`remake/assets/data/native_command_palette_flash.json`，保留全部36個 command
+entries，避免只把三個 magic constants 寫回程式。
+
+wrapper 交易順序（已證實）
+--------------------------
+
+- `0x226EA`：先呼 `0x1CA89(actor,18)`，再進 `0x22721`。
+- `0x2282F`：先呼 `0x1CA89(actor,18)`，再進 `0x22866`。
+- `0x22960`：先呼 `0x1CA89(actor,19)`，再進 `0x22997`。
+
+玩家總順序因此是：target confirm → `0x1D6C8` sample＋八 phase palette →
+wrapper MP debit／modifier writer。重製端若缺 palette table、baseline framebuffer、
+DAC、raw sample 或完整 transaction provenance，必須在 sample／畫面／state mutation
+之前拒絕。
+
+證據分級與限制
+----------------
+
+- **已證實**：函式邊界、唯一直接 caller function、三張 table 位址與 bytes、
+  四輪 color／black、每 phase `0x17AA9(1)`、FDOTHER #88 sub0 call tuple、三個
+  wrapper 的 debit／writer 順序。
+- **強推論**：`0x17AA9(1)` 對現代 60 Hz loop 以「至少一次 Draw acknowledgement」
+  呈現；這保留順序與可見 phase，但不是 DOS BIOS tick 的逐毫秒 E2。
+- **未知／未宣稱**：三個 command 的玩家可見名稱、status icon／文字、sample 的
+  高階聲音名稱，以及原版／重製同狀態逐幀與逐音訊 E2。

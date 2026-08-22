@@ -101,6 +101,17 @@ func (s *State) ExecuteNativeAICommandModifier(actor *Unit, commandID int, rngSt
 	return s.executeNativeCommandModifierTargets(actor, targets, commandID, rngState)
 }
 
+// ValidateNativeCommandModifierTargets performs the complete raw projection
+// preflight without consuming RNG or mutating any unit. Presentation owners
+// call this before publishing sample/palette frames.
+func (s *State) ValidateNativeCommandModifierTargets(actor *Unit, targets []*Unit, commandID int) error {
+	if err := s.preflightNativeCommandModifierActor(actor, commandID); err != nil {
+		return err
+	}
+	_, _, err := nativeCommandModifierRecords(targets)
+	return err
+}
+
 func (s *State) preflightNativeCommandModifierActor(actor *Unit, commandID int) error {
 	if s == nil || actor == nil || commandID < 17 || commandID > 19 ||
 		len(s.NativeCommandBook) != NativeCommandRecordCount {
@@ -123,30 +134,9 @@ func (s *State) executeNativeCommandModifierTargets(actor *Unit, targets []*Unit
 	if err := s.preflightNativeCommandModifierActor(actor, commandID); err != nil {
 		return NativeCommandModifierResult{}, err
 	}
-	if len(targets) == 0 || len(targets) > 256 {
-		return NativeCommandModifierResult{}, fmt.Errorf("native command modifier target count=%d", len(targets))
-	}
-	records := make([]byte, len(targets)*nativeRecordSize)
-	indices := make([]byte, len(targets))
-	for i, target := range targets {
-		if target == nil {
-			return NativeCommandModifierResult{}, fmt.Errorf("native command modifier target %d missing", i)
-		}
-		if !target.HasNativeRecordClass || target.Lv < 0 || target.Lv > math.MaxUint8 {
-			return NativeCommandModifierResult{}, fmt.Errorf("native command modifier target %d lacks raw class/level provenance", i)
-		}
-		for _, value := range [...]int{target.AP, target.DP, target.HIT, target.EV} {
-			if value < math.MinInt16 || value > math.MaxInt16 {
-				return NativeCommandModifierResult{}, fmt.Errorf("native command modifier target %d derived word outside range", i)
-			}
-		}
-		base := i * nativeRecordSize
-		records[base+0x20], records[base+0x21] = target.NativeRecordClass, byte(target.Lv)
-		copy(records[base+0x22:base+0x28], target.NativeTransient[:])
-		for j, value := range [...]int{target.AP, target.DP, target.HIT, target.EV} {
-			binary.LittleEndian.PutUint16(records[base+0x48+j*2:], uint16(int16(value)))
-		}
-		indices[i] = byte(i)
+	records, indices, err := nativeCommandModifierRecords(targets)
+	if err != nil {
+		return NativeCommandModifierResult{}, err
 	}
 	result, err := ApplyNativeCommandModifier(records, indices, commandID, rngState)
 	if err != nil {
@@ -169,4 +159,33 @@ func (s *State) executeNativeCommandModifierTargets(actor *Unit, targets []*Unit
 	}
 	actor.Acted = true
 	return result, nil
+}
+
+func nativeCommandModifierRecords(targets []*Unit) ([]byte, []byte, error) {
+	if len(targets) == 0 || len(targets) > 256 {
+		return nil, nil, fmt.Errorf("native command modifier target count=%d", len(targets))
+	}
+	records := make([]byte, len(targets)*nativeRecordSize)
+	indices := make([]byte, len(targets))
+	for i, target := range targets {
+		if target == nil {
+			return nil, nil, fmt.Errorf("native command modifier target %d missing", i)
+		}
+		if !target.HasNativeRecordClass || target.Lv < 0 || target.Lv > math.MaxUint8 {
+			return nil, nil, fmt.Errorf("native command modifier target %d lacks raw class/level provenance", i)
+		}
+		for _, value := range [...]int{target.AP, target.DP, target.HIT, target.EV} {
+			if value < math.MinInt16 || value > math.MaxInt16 {
+				return nil, nil, fmt.Errorf("native command modifier target %d derived word outside range", i)
+			}
+		}
+		base := i * nativeRecordSize
+		records[base+0x20], records[base+0x21] = target.NativeRecordClass, byte(target.Lv)
+		copy(records[base+0x22:base+0x28], target.NativeTransient[:])
+		for j, value := range [...]int{target.AP, target.DP, target.HIT, target.EV} {
+			binary.LittleEndian.PutUint16(records[base+0x48+j*2:], uint16(int16(value)))
+		}
+		indices[i] = byte(i)
+	}
+	return records, indices, nil
 }

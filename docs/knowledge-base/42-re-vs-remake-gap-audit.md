@@ -42,7 +42,7 @@ hub→preparation/town 做成可重播 input trace；item effect、AI runtime �
 | 物理攻擊:**傷害隨機化(0.9×max~max−1)** | doc02 §4.1 | ✅ | `combat.go AttackWithRNG` 呼叫 `magic.go randomizeAmount`(與法術共用同一公式) | — |
 | native IDs24/28/29/31 derived strike | SDD56 UI-03 | 🟡 strict state-only | `ExecuteNativeCommand24`／`ExecuteNativeCommandDerivedStrike` 已依 `0x276EC` 的 verified multiplier 寫 final HP delta；two-stage UI、multi-hit/SFX 未接。legacy `CastArea` 不是證據 | 高 |
 | normalized spell attack/heal/hit | doc02；legacy `magic.go` | 🟡 approximation | `CastArea` 有可玩結算，但 native command ID、target geometry、effect family 和 renderer 沒有逐項閉合；不得以其數字證明原版法術完成 | 高 |
-| native IDs17–19 modifier | SDD56 UI-03 | 🟡 raw recompute adapter | 已驗 `+0x22..+0x24` raw writer／duration；`ApplyNativeRuntimeEquipmentRecalc` 已保存 `0x1B750` 的 binary64 1.15、x87朝零、HIT/EV+15與裝備累加。尚未把 phase expiry、command transaction及presentation接成正式玩法；不能把 legacy Buff 視為同一機制 | 高 |
+| native IDs17–19 modifier | SDD56 UI-03 | 🟡 玩家／AI窄E1 | 已驗 `+0x22..+0x24` raw writer／duration；玩家正式grid現依`0x1D6C8`播放#88 sub0與八個DAC phases後才原子發布transaction，AI mode11直接消費transaction。`ApplyNativeRuntimeEquipmentRecalc`保存`0x1B750`精確重算；仍缺phase-expiry正式caller、status UI與同狀態逐音訊E2，不能把legacy Buff視為同一機制 | 高 |
 | native IDs20–22、25–27 clear/application | SDD56 UI-03 | 🟡 strict state-only | 已有 raw clear/application executors；status name、native UI、完整 tick/expiry 對照未閉合 | 高 |
 | native ID23 relocation | SDD56 UI-03 | ⚠️ | first-target、mode6 destination legality、MP/座標 transaction已接；`0x22253` 27-present indexed presentation仍缺 | 中 |
 | native IDs32–35 compound | SDD56 UI-03 | ❌ | static helper order 已知，但 MP transaction、rollback、UI/SFX 未閉合；禁止以 legacy combo 實作宣稱完成 | 高 |

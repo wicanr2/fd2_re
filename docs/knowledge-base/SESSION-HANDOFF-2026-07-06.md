@@ -5599,3 +5599,21 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   SFX與phase-expiry caller沒有被猜測接入，仍失敗即關閉。
 - `internal/battle` 與 `cmd/fd2` 完整 Docker／Xvfb 套件回歸通過；本批提升的是窄
   `RUNTIME-E1`，不是同狀態原版逐幀／逐音訊 E2。
+
+## 2026-08-22：command 17–19 玩家色盤演出與正式指令入口
+
+- 先以授權 Docker 內 IDA Pro 9.4 重新定位尚未閉合的玩家演出 owner，而非重解
+  已閉合的 modifier writer。固定雜湊 `FD2.EXE` 的 `0x1D6C8..0x1D79C`
+  先播放 `FDOTHER #88` 子音效0，再由三張36-byte六位元 DAC 表依 command ID
+  取色，執行四輪「command color→black」；唯一直接 caller 位於函式
+  `0x1CFF0`。原始位址、表格、caller與推論分級保存在
+  [`fd2_command_modifier_palette_ida.txt`](../data/ida/fd2_command_modifier_palette_ida.txt)。
+- 三張原始 DAC 表已轉成可編輯
+  `native_command_palette_flash.json`。正式玩家 command 17–19 入口現先驗證
+  framebuffer、baseline DAC、typed table、原始 records、目標與精確音效；任一缺漏
+  都不扣 MP、不改 target、不標 acted。每個 phase 必須實際經過 Draw，八幀完成後
+  才原子發布既有 modifier transaction；敵方 mode 11 不誤套玩家 palette owner。
+- 聚焦回歸覆蓋缺 framebuffer、缺 sample、八幀發布邊界與 ID17 的
+  record18 MP debit。此切片提升玩家與敵方 command 17–19 至 `RUNTIME-E1`；尚未
+  證實的 phase-expiry正式 caller、status UI、精確 DOS tick及同狀態逐幀／逐音訊
+  `PLAYER-E2` 仍保留，不以近似行為冒稱原版一致。
