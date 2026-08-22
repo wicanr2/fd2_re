@@ -1,0 +1,93 @@
+FD2 command 24（破龍擊）presentation／learning evidence
+=========================================================
+
+輸入與位址空間
+--------------
+
+- 輸入：FD2.EXE，357074 bytes
+- MD5：b97caf2239a27a896069d03549d96e1e
+- SHA-256：222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f
+- 工具：IDA Pro 9.4／Hex-Rays，Docker 內授權映像
+- 本文件位址均為 IDA linear address；原始名稱保留為 `sub_<address>`。
+- 交叉驗證資產：FIGANI.DAT，15279582 bytes，SHA-256
+  e909314ce37b70701238fd24febc8f61603bbe8d81a9ecbf8f289c97a5b67a1f。
+
+固定控制流（已證實）
+--------------------
+
+1. `sub_2A6BD` 在 `0x2A7F0..0x2A7FB` 對 command 24 或 28..31 呼叫
+   `sub_276EC`。玩家 command 24 不經 AI 的 `funcs_1541F[24]`。
+2. `sub_276EC` 在 `0x277B5..0x277CA` 對 command 24 選倍率15；
+   `0x2781E..0x27836` 計算 `actor raw +0x48 * 15 / 10`。
+3. `0x279CC..0x27A1C` 以 actor raw `+7` 載入 FIGANI
+   `3*selector`（待機）與 `3*selector+2`（本指令特效）。特效沒有 generic
+   `+1` fallback；資源缺失或 frame count 為零時，remake 必須失敗即關閉。
+4. `0x27A23..0x27A31` 將特效交給 `sub_2BC9A`，再呼叫 `sub_1F882`；
+   `sub_2BC9A` 讀 animation header byte4。值非零時，以 `byte4-1` 索引
+   `0x525D6` 的6-byte表。IDA 原始 bytes 為 `30 31 32 33 34 35`，故
+   header byte4=6 選 FDOTHER resource 53。這是已證實的資源選擇，PCM
+   取樣率仍沿用工具鏈推論，不提升為精確音訊 E2。
+5. `0x27AB8..0x27B16` 依序呼叫 `sub_29164` 與 `sub_2B659`。後者只播放
+   animation frame `0..header byte2-1`；每個 raw frame `+5` 非零時呼叫
+   `sub_25A96(audioResource, raw+5, 1)`。raw `+4==1` 時呼叫
+   `sub_1CA89(actor, commandID)` 扣 MP 並重畫 actor。
+6. `sub_2B659` 的 DAC pulse 只在 `command<10 || command>=32` 執行；
+   command 24 不走該 pulse。不得借接 `0x1D6C8` 或 `sub_2B659` 的 DAC
+   色彩表冒充破龍擊演出。
+7. `0x27B33..0x27D9A` 逐 final target 執行：
+   - command 24 先呼叫 `sub_29C90`；該函式以 BG resources 0／1／2 做
+     十列轉場，再建立 target background／idle figure。
+   - `0x27C14..0x27C69` 呼叫 `sub_1C81F(target, actorAP*15/10-targetDP)`，
+     將傷害 clamp 到原 HP，然後暫時恢復原 HP供畫面排程使用。
+   - `0x27C6D..0x27C89` 只有 command 28 把分母設為8；command 24 分母是1。
+   - target phase 從 animation header byte2 播到 frame count-1。raw `+5`
+     非零時播放相同 FDOTHER pool 的子樣本；raw `+4==1` 時設 defender
+     frame selector 33、shake counter 5，並寫入
+     `originalHP - damage * (++impactCount) / 1`。
+   - 每個 frame 重複 raw `+6` 次。shake offsets 直接取 `0x52549` 的
+     `00 04 09 0e 12 0e`；counter 5→0 後恢復 frame selector -1。
+
+因此撤回「command 24 等份多段扣血」：對固定版本而言，第一個 target-phase
+`raw +4==1` 就發布完整最終傷害；其餘畫格只延續特效、守方第33幀與震動。
+
+正常可達資產鏈（已證實／強推論分開）
+--------------------------------------
+
+- 已證實：`0x4E4D1(unit+7)` 取 `0x620A1 + selector*11` growth row；byte10
+  是 `learn_idx`。growth row 32（`0x56001`）的 byte10=4；learn row 4
+  （`0x564E3`）是 `(required level=4, command ID=24)`。
+- 已證實：原版 class-change writer `0x31571..0x3157A` 將 resolved target
+  寫入 live unit `+7`。索爾 portrait0 的 default target table 值是32；可選
+  item89 target50走另一 growth row，其 learn_idx=10，不能外推成破龍擊來源。
+- 已證實：FIGANI resource98（`32*3+2`）共15 frames，header bytes
+  `0f 01 09 00 06 00 00 00`。actor phase 0..8 在 frame4 有
+  `(raw4,raw5,raw6,raw7)=(1,3,2,0)`；target phase 9..14 在 frame10 有
+  `(1,2,2,0)`，其餘 target frames raw4=0。這恰好提供一次 MP marker與一次
+  完整傷害 marker。resource98 SHA-256：
+  `0b8d19d3b1ced9db792fdd46b2e817f858959437fa96297904aabb7f12b0a183`。
+- 已證實：optional target50 的 resource152 header byte4=0且只有4 frames，
+  不屬上述 header6／resource53 破龍擊排程；它也沒有 command24 learn row。
+- 強推論：上述 default class-change→level4 是一般玩家取得破龍擊的正常路徑。
+  尚缺未修改原版從轉職、升級提示到實際施放的連續 E2 擷取，因此不能把本文件
+  當成一般玩家 E2 或逐像素／逐音訊相同證據。
+
+重製契約
+--------
+
+- 學招必須走 `BattleFig/raw +7 → growth learn_idx → command learn row`，不可
+  直接以 Portrait 索引 command learn row。
+- command24 presenter 必須要求 actor `HasBattleFig`、resource `3*BattleFig+2`
+  的完整 raw header/frame schedule、FDOTHER #53 samples3／2、target idle
+  FIGANI、背景與狀態欄輸入全部可用後才開始。
+- actor-phase raw4 marker 扣 MP；target-phase raw4 marker才發布完整傷害。
+  演出開始前須先建立不改公開 state 的完整 damage plan；資產或前置狀態缺失
+  時 MP、HP、Acted、獎勵與 UI target state 全部不變。
+- command24 不使用 `0x1D6C8` 八段 palette，也不使用 `sub_2B659` 的
+  command<10／>=32 DAC pulse。
+
+仍未閉合
+--------
+
+- `sub_29164`／`sub_29C90` 的完整逐像素背景／台座合成與 BIOS tick 對拍。
+- FDOTHER #53 的精確播放格式／取樣率與同狀態逐音訊比較。
+- 未修改原版正常玩家的轉職→level4學招→施放→戰鬥返回連續 E2。

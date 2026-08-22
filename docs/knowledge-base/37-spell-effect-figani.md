@@ -63,20 +63,29 @@ spell-id→FIGANI 索引；spell/command 仍會分流 target geometry、family s
   `funcs_1541f[24]`；該 route 將 derived stat 運算送進 `0x1c81f` HP writer。這已排除「jump table alias 即玩家效果」的捷徑。
 - **presentation boundary**：`0x2a6bd` 的 `funcs_2ac25` entry 確實負責 indexed compositor／結果數字等畫面工作；
   某些 entry 載入 DATO.DAT 並不代表整個 caller 是武器專用，更不構成「沒有 command-specific visual」的證明。
-- **尚未證實**：每個 command ID 的完整 FIGANI／SFX mapping、ID24 的 multi-hit presentation 與其可編輯 remake contract。
+- **command 24 已閉合的窄鏈（2026-08-22）**：`0x276EC` 以 actor raw `+7` 載入
+  `3*selector+2`；正常 default 轉職後 selector32 對應 resource98。其 header
+  byte4=6 經 `0x2BC9A` 選 FDOTHER #53，actor phase sample3／target phase
+  sample2。command24 的 damage denominator 是1，不是等份多段扣血；第一個
+  target `raw+4==1` 即發布完整傷害。完整位址與 raw frame 表見
+  [`fd2_command24_presentation_ida.txt`](../data/ida/fd2_command24_presentation_ida.txt)。
+- **尚未證實**：其他 command ID 的完整 FIGANI／SFX mapping，以及 command24
+  的完整逐像素背景轉場、精確 PCM 取樣率與一般玩家 E2。
 
 ## 結論
 
 **尚未發現「法術 id → FIGANI 特效動畫」的對映公式或表**：`0x28784` 的已證實單圖施法手勢只取
 施法者 `sprite_group×3`/`×3+1`，不讀 spell id。這只排除「另一段 FIGANI 由 spell id 選擇」；角色幀內
 的火花確實是該手勢的一部分。它**不**證明整個 spell presentation 沒有 command-specific 視覺：
-`0x2a6bd` 的 dispatcher／DATO、SFX、命中與多段畫面分支尚未閉合。remake 可以把角色手勢當作已證實的
+`0x2a6bd` 的多數 dispatcher／DATO、SFX與命中畫面分支尚未閉合；command24 的
+`0x276EC` 是目前已閉合的窄例外。remake 可以把角色手勢當作已證實的
 局部 adapter，但不能稱為完整原版施法演出或宣告不需再補特效。
 
 ## 待確認
 
-- `0x2a6bd` 的各 command-specific presentation branch（尤其 `id==0x18` → `0x276ec`、`id>=0x20` → `0x27fc9`）
-  的完整 renderer／SFX／多段命中 contract；不得再以武器 `atk_attr` 對照來命名它們。
+- `0x2a6bd` 其餘 command-specific presentation branch（尤其 `id>=0x20` →
+  `0x27fc9`）的完整 renderer／SFX contract；command24 不得再列成「多段命中
+  未知」，但其 `0x29C90` 完整畫面與精確音訊／E2仍待。
 - 施法 figure displacement 是否對不同法術 `target`(0=單體/1=範圍,spell.json)有差異走位——
   `+0x48/+0x4a` 與 `0x29f72` 不是此問題的座標來源（已重判為 derived AP/DP 與 combat result resolver）；
   仍屬「目標選取與範圍」子題，非本題「特效動畫 id」範圍，未查。

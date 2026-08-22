@@ -9,9 +9,24 @@ import (
 // command 24.  It is deliberately separate from NativeCommandDamage: this
 // route does not read the command's damage/hit bytes or class resistance.
 type NativeCommand24Damage struct {
-	Target *Unit
-	Amount int
-	Damage int
+	Target                  *Unit
+	Amount                  int
+	Damage                  int
+	HPBefore                int
+	HPAfter                 int
+	NativeRecordByte5Before byte
+	NativeRecordByte5After  byte
+}
+
+// NativeCommandDerivedStrikePlan is a mutation-free result of the recovered
+// 0x276EC selector, damage RNG and HP clamp. Presentation owners may publish
+// MP and each target HP at their raw FIGANI markers without rerolling damage.
+type NativeCommandDerivedStrikePlan struct {
+	Actor     *Unit
+	CommandID int
+	MPBefore  int
+	MPAfter   int
+	Results   []NativeCommand24Damage
 }
 
 func nativeCommandDerivedStrikeMultiplier(commandID int) (int, bool) {
@@ -53,9 +68,9 @@ func ResolveNativeCommand24Damage(actorAP, targetDP int, rng *rand.Rand) (amount
 // ExecuteNativeCommand24 is the recovered non-UI player state slice for
 // 0x1CFF0 command 0x18 -> 0x2A6BD -> 0x276EC.  The generic two-stage target
 // list and record24 MP debit are followed by the derived-AP/DP damage route.
-// The original temporarily restores HP while showing its multi-step effect;
-// this state-only slice applies the final equivalent HP delta once.  It does
-// not claim the indexed presentation, SFX, timing, or AI dispatcher alias.
+// The original resource has separate actor and target markers, but command24
+// uses denominator 1 and publishes the complete HP delta at its target marker.
+// This state-only helper applies that final delta without claiming presentation.
 func (s *State) ExecuteNativeCommand24(actor, confirmed *Unit, rng *rand.Rand) ([]NativeCommand24Damage, error) {
 	return s.ExecuteNativeCommandDerivedStrike(actor, confirmed, 24, rng)
 }
@@ -64,6 +79,27 @@ func (s *State) ExecuteNativeCommand24(actor, confirmed *Unit, rng *rand.Rand) (
 // proven player dispatches 24, 28, 29 and 31. ID30 has its own special
 // cursor-selector entry point below; IDs32..35 use 0x27FC9 and stay closed.
 func (s *State) ExecuteNativeCommandDerivedStrike(actor, confirmed *Unit, commandID int, rng *rand.Rand) ([]NativeCommand24Damage, error) {
+	plan, err := s.PlanNativeCommandDerivedStrike(actor, confirmed, commandID, rng)
+	if err != nil {
+		return nil, err
+	}
+	if err := ApplyNativeCommandDerivedStrikeMP(plan); err != nil {
+		return nil, err
+	}
+	for i := range plan.Results {
+		if err := ApplyNativeCommandDerivedStrikeTarget(plan, i); err != nil {
+			return nil, err
+		}
+	}
+	if err := CompleteNativeCommandDerivedStrike(plan); err != nil {
+		return nil, err
+	}
+	return append([]NativeCommand24Damage(nil), plan.Results...), nil
+}
+
+// PlanNativeCommandDerivedStrike validates every target and consumes the
+// caller-owned RNG, but leaves MP, HP and completion state unchanged.
+func (s *State) PlanNativeCommandDerivedStrike(actor, confirmed *Unit, commandID int, rng *rand.Rand) (*NativeCommandDerivedStrikePlan, error) {
 	if s == nil || rng == nil {
 		return nil, fmt.Errorf("missing native derived-strike state/rng")
 	}
@@ -83,22 +119,81 @@ func (s *State) ExecuteNativeCommandDerivedStrike(actor, confirmed *Unit, comman
 	if err != nil {
 		return nil, err
 	}
-	if !SpendNativeCommandMP(actor, record.MPCost) {
-		return nil, fmt.Errorf("native command 24 insufficient MP")
+	if actor == nil || record.MPCost < 0 || record.MPCost > 0xff || actor.MP < record.MPCost {
+		return nil, fmt.Errorf("native command %d insufficient MP", commandID)
 	}
-	results := make([]NativeCommand24Damage, 0, len(targets))
+	plan := &NativeCommandDerivedStrikePlan{
+		Actor: actor, CommandID: commandID, MPBefore: actor.MP, MPAfter: actor.MP - record.MPCost,
+		Results: make([]NativeCommand24Damage, 0, len(targets)),
+	}
 	for _, target := range targets {
+		if target == nil {
+			return nil, fmt.Errorf("native command %d has nil target", commandID)
+		}
 		amount, damage, err := ResolveNativeCommandDerivedStrikeDamage(actor.AP, target.DP, multiplier, rng)
 		if err != nil {
 			return nil, err
 		}
-		target.ApplyHPDamage(damage)
-		results = append(results, NativeCommand24Damage{Target: target, Amount: amount, Damage: damage})
+		appliedDamage := damage
+		if appliedDamage < 0 {
+			appliedDamage = 0
+		}
+		if appliedDamage > target.HP {
+			appliedDamage = target.HP
+		}
+		hpAfter := target.HP - appliedDamage
+		rawByte5After := target.NativeRecordByte5
+		if hpAfter == 0 && target.HasNativeRecordByte5 {
+			rawByte5After = 1
+		}
+		plan.Results = append(plan.Results, NativeCommand24Damage{
+			Target: target, Amount: amount, Damage: appliedDamage,
+			HPBefore: target.HP, HPAfter: hpAfter,
+			NativeRecordByte5Before: target.NativeRecordByte5,
+			NativeRecordByte5After:  rawByte5After,
+		})
 	}
-	// 0x18D8C applies the invoking actor's completion bit after 0x1CFF0
-	// returns success; 0x276EC is such a successful handler route.
-	actor.Acted = true
-	return results, nil
+	return plan, nil
+}
+
+func ApplyNativeCommandDerivedStrikeMP(plan *NativeCommandDerivedStrikePlan) error {
+	if plan == nil || plan.Actor == nil || plan.Actor.MP != plan.MPBefore || plan.Actor.Acted {
+		return fmt.Errorf("native derived-strike MP publish state changed")
+	}
+	plan.Actor.MP = plan.MPAfter
+	return nil
+}
+
+func ApplyNativeCommandDerivedStrikeTarget(plan *NativeCommandDerivedStrikePlan, index int) error {
+	if plan == nil || index < 0 || index >= len(plan.Results) {
+		return fmt.Errorf("native derived-strike target publish index unavailable")
+	}
+	result := plan.Results[index]
+	if result.Target == nil || result.Target.HP != result.HPBefore ||
+		(result.Target.HasNativeRecordByte5 && result.Target.NativeRecordByte5 != result.NativeRecordByte5Before) {
+		return fmt.Errorf("native derived-strike target publish state changed")
+	}
+	result.Target.HP = result.HPAfter
+	if result.Target.HasNativeRecordByte5 {
+		result.Target.NativeRecordByte5 = result.NativeRecordByte5After
+	}
+	return nil
+}
+
+func CompleteNativeCommandDerivedStrike(plan *NativeCommandDerivedStrikePlan) error {
+	if plan == nil || plan.Actor == nil || plan.Actor.MP != plan.MPAfter || plan.Actor.Acted {
+		return fmt.Errorf("native derived-strike completion state changed")
+	}
+	for _, result := range plan.Results {
+		if result.Target == nil || result.Target.HP != result.HPAfter ||
+			(result.Target.HasNativeRecordByte5 && result.Target.NativeRecordByte5 != result.NativeRecordByte5After) {
+			return fmt.Errorf("native derived-strike target is not published")
+		}
+	}
+	// 0x18D8C applies the invoking actor's completion bit only after 0x1CFF0
+	// returns success; presentation owners call this after their final frame.
+	plan.Actor.Acted = true
+	return nil
 }
 
 // ExecuteNativeCommand30 is the bounded player state slice for command 30:

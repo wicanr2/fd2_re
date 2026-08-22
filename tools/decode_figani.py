@@ -1,20 +1,24 @@
 #!/usr/bin/env python3
-"""炎龍騎士團2 — FIGANI 戰鬥動畫逐幀解碼器(第 3 輪,反組譯還原完成)。
+"""炎龍騎士團2 — FIGANI 戰鬥動畫逐幀解碼器。
 
 從 FD2.EXE 反組譯出的 sprite RLE 解碼器(參數化版 0x4F43D)逐指令還原。
-**完整破解**:能把任一 FIGANI 動畫逐幀解出透明 sprite。
+能把格式有效的 FIGANI 動畫逐幀解出透明 sprite；高階演出語意仍須依 caller
+逐項證實，不以工具名稱或成功解圖冒稱完整 renderer。
 
 == 容器(FIGANI.DAT)==
 LLLLLL 容器(見 unpack_dat.py)→ 每個資源 = 一段動畫。
-動畫:u16 frameCount @0、u32[frameCount] 幀 offset @+8(frameCount = (offsets[0]-8)/4)。
+動畫:+0 uint8 frameCount、+1 raw prelude flag、+2 raw prelude frame count、
++4 raw header byte（特定 caller 消費）；u32[frameCount] 幀 offset 從 +8 開始。
 
 == 每幀 ==
 13-byte 標頭:
   +0  int16 dx       320×200 畫布中的絕對螢幕 X
   +2  int16 dy       320×200 畫布中的絕對螢幕 Y
-  +4  u16 = 0
-  +6  u16 = 2
-  +8  u8  = 0
+  +4  u8 raw4       caller-specific marker
+  +5  u8 raw5       caller-specific sample marker
+  +6  u8 delay      frame repeat count
+  +7  u8 raw7       caller-specific flag
+  +8  u8 reserved
   +9  u16 W          點陣解碼寬(realW)
   +11 u16 H          點陣解碼高(realH)
   +13 …  RLE 像素資料(解碼到 W×H)
@@ -35,7 +39,6 @@ LLLLLL 容器(見 unpack_dat.py)→ 每個資源 = 一段動畫。
 import sys
 import os
 import struct
-from PIL import Image
 
 
 def load_palette(path):
@@ -70,8 +73,12 @@ def decode_rle(body, w, h, trans=0):
 
 
 def parse_anim(d):
-    """回傳 [(realW, realH, body_bytes), ...]。"""
-    nf = struct.unpack_from("<H", d, 0)[0]
+    """回傳 [(x,y,w,h,raw4,raw5,delay,raw7,body_bytes), ...]。"""
+    if len(d) < 12:
+        return []
+    nf = d[0]
+    if nf == 0 or 8 + 4 * nf > len(d):
+        return []
     offs = [struct.unpack_from("<I", d, 8 + 4 * i)[0] for i in range(nf)]
     frames = []
     for fi in range(nf):
@@ -79,15 +86,21 @@ def parse_anim(d):
         end = offs[fi + 1] if fi + 1 < nf else len(d)
         if o + 13 > len(d):
             continue
+        x, y = struct.unpack_from("<hh", d, o)
+        raw4, raw5, delay, raw7 = d[o + 4:o + 8]
         w = struct.unpack_from("<H", d, o + 9)[0]
         h = struct.unpack_from("<H", d, o + 11)[0]
         if not (0 < w <= 1024 and 0 < h <= 1024):
             continue
-        frames.append((w, h, d[o + 13:end]))
+        if delay == 0:
+            continue
+        frames.append((x, y, w, h, raw4, raw5, delay, raw7, d[o + 13:end]))
     return frames
 
 
 def render_frame(w, h, body, pal, trans=0):
+    from PIL import Image
+
     px = decode_rle(body, w, h, trans)
     im = Image.frombytes("P", (w, h), px)
     im.putpalette(pal)
@@ -101,22 +114,24 @@ def cmd_frames(src, palp, outdir):
     os.makedirs(outdir, exist_ok=True)
     base = os.path.splitext(os.path.basename(src))[0]
     frames = parse_anim(d)
-    for fi, (w, h, body) in enumerate(frames):
+    for fi, (_, _, w, h, _, _, _, _, body) in enumerate(frames):
         im = render_frame(w, h, body, pal)
         im.convert("RGBA").save(os.path.join(outdir, f"{base}_f{fi:02d}.png"))  # 保留透明背景
     print(f"{base}: {len(frames)} 幀 -> {outdir}")
 
 
 def cmd_gif(src, palp, out):
+    from PIL import Image
+
     d = open(src, "rb").read()
     pal = load_palette(palp)
     frames = parse_anim(d)
     if not frames:
         print("無幀"); return
-    W = max(w for w, h, _ in frames)
-    H = max(h for w, h, _ in frames)
+    W = max(w for _, _, w, _, _, _, _, _, _ in frames)
+    H = max(h for _, _, _, h, _, _, _, _, _ in frames)
     ims = []
-    for w, h, body in frames:
+    for _, _, w, h, _, _, _, _, body in frames:
         canvas = Image.new("P", (W, H), 0)
         canvas.putpalette(pal)
         canvas.paste(render_frame(w, h, body, pal), (0, H - h))
@@ -129,8 +144,8 @@ def cmd_info(src):
     d = open(src, "rb").read()
     frames = parse_anim(d)
     print(f"{os.path.basename(src)}: {len(frames)} 幀")
-    for fi, (w, h, body) in enumerate(frames):
-        print(f"  幀{fi}: {w}x{h}  壓縮={len(body)}B")
+    for fi, (x, y, w, h, raw4, raw5, delay, raw7, body) in enumerate(frames):
+        print(f"  幀{fi}: ({x},{y}) {w}x{h} raw4={raw4} raw5={raw5} delay={delay} raw7={raw7} 壓縮={len(body)}B")
 
 
 def main(argv):

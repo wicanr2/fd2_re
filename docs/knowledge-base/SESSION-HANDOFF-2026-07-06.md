@@ -5658,3 +5658,19 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - Docker／Xvfb整合回歸證實缺renderer不啟動、八段palette前不變更、可觀察
   `0xff/0xff`中間狀態及第二段完成後才交易，提升為`RUNTIME-E1`。原版同狀態
   camera、逐幀、逐音訊及一般玩家`PLAYER-E2`仍待驗收。
+
+## 2026-08-22：command 24 selector32學習鏈與FIGANI演出
+
+- 授權Docker內IDA Pro 9.4閉合`0x276EC`的正常selector32路徑，主證據保存於
+  [`fd2_command24_presentation_ida.txt`](../data/ida/fd2_command24_presentation_ida.txt)。
+  FIGANI資源98的15幀raw schedule中，frame4發布MP並播放FDOTHER #53 sub3，
+  frame10一次發布完整傷害並播放sub2，尾幀才發布acted；command24分母為1，撤回
+  舊「等分multi-hit」說法。
+- 同輪程式稽核修正升級學習索引：原版是`unit+7→11-byte growth row byte10
+  learn_idx→12-byte command row`，不是以portrait直接查command table。selector32
+  經row4在Lv4授予command24；optional selector50使用不同row10。缺raw selector或
+  任一資料表時維持失敗即關閉。
+- 正式玩家owner現以私有damage plan預建交易，只有對應幀實際Draw後才依序發布MP、
+  HP與acted；缺FIGANI／target idle／palette／panel／sample時零修改。畫面仍沿用既有
+  battle background／TAI，尚未接`0x29C90`背景轉場，所以只列`RUNTIME-E1 partial`。
+  未修改原版「轉職→Lv4學會→施放」連續E2、背景逐幀及精確音訊仍待驗收。

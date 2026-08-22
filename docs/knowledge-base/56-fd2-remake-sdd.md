@@ -777,10 +777,15 @@ ID24 必須和上段嚴格分開。`funcs_1541f[24]` 雖然在 AI／自動執行
 玩家 ID24 的效果或 MP ABI。玩家 `0x276ec` 的 state dataflow 已知：它選固定倍率 `15`，算
 `trunc(actor.+0x48 * 15 / 10)`，逐 final target 扣 target `+0x4a` 後送入
 `0x1c81f(target, amount)`；該共用 writer 再以其既有 90–99.9% RNG 路徑扣 `+0x40`、clamp 至零。
-`0x276ec` 先經 `0x2b659`；該 event 對 ID24 以 `0x1ca89(actor,0x18)` 扣 record24 `+5` MP。原版為了
-多段演出會先暫存 total delta、把 HP 復原，再以等份遞減回最終值；state-only remake 因此可一次套用相同
-最終 delta。AI alias 的設計意圖與 native UI/SFX/timing 仍未以 remake regression 關閉，故不可冒充 ID16 heal
-或接入 generic numeric executor。
+`0x276ec` 先經 `0x2b659`；該 event 對 ID24 在 actor effect frame raw `+4==1`
+時以 `0x1ca89(actor,0x18)` 扣 record24 `+5` MP。target loop 會先暫存 total
+delta並恢復 HP，但 `0x27c6d..0x27c89` 只有 ID28 使用分母8；ID24分母是1，
+所以第一個 target effect raw `+4==1` 就發布完整 final delta，並非等份多段扣血。
+default 轉職 selector32 的 resource98 提供一次 actor marker與一次 target marker，
+header byte4=6 又經 `0x2bc9a` 選 FDOTHER #53 的 samples3／2。完整證據見
+[`fd2_command24_presentation_ida.txt`](../data/ida/fd2_command24_presentation_ida.txt)。
+AI alias 的設計意圖、完整 `0x29c90` 逐像素合成、精確 PCM 取樣率與 E2仍未關閉，
+故不可冒充 ID16 heal 或借接 generic numeric／palette executor。
 
 IDs17..19 是第三條 transient-modifier family，亦不能交給 damage/heal executor。ID17
 `0x226EA→0x22721`、ID18 `0x2282F→0x22866`、ID19 `0x22960→0x22997` 都在 final target loop 中先拒絕
@@ -911,7 +916,7 @@ actor raw completion writer。它與 ID20/21「借 record10」的 clear/restore 
 | 20–21 | `0x1CFF0→1D6C8→22A85/22BC6→22AF6`，#88 sub0＋八個DAC phases，clear `+0x25/+0x26` 並借 record10 restore | `ExecuteNativeCommandClearRestore`；完整preflight後才允許玩家演出與交易 | 玩家grid＋八phase palette／sample已接E1；status名稱、expiry UI、精確tick／逐音訊E2未接 |
 | 22 | `0x1CFF0→1D6C8→22BE1→22D1B`，#88 sub0＋八個DAC phases，class/RNG gate、base10 經第二 RNG 實際9 HP、第三 RNG write `+0x27` | `ExecuteNativeCommandApplication`；完整preflight後才允許玩家演出與交易 | 玩家grid＋八phase palette／sample已接E1；status名稱、expiry UI、精確tick／逐音訊E2未接 |
 | 23 | `0x1CFF0→1D6C8→2218A→22253×2` special relocation selector | first target→mode-6 destination cursor、八段palette、離場／入場兩次完整indexed presenter及延後raw transaction已接 | 玩家正式`RUNTIME-E1`；缺同狀態逐幀／逐音訊E2與精確camera choreography核對 |
-| 24 | 玩家 `2A6BD→276EC→2B659/1CA89→1C81F`：`actor +48 * 15/10 - target +4a`；AI table 另別名 `22153`，不可混用 | `ExecuteNativeCommand24`（state-only final delta） | multi-hit／SFX／native UI 未接 |
+| 24 | 玩家 `2A6BD→276EC→2B659/1CA89→1C81F`：`actor +48 * 15/10 - target +4a`；selector32 resource98、FDOTHER #53 samples3／2、damage denominator1；AI table 另別名 `22153`，不可混用 | `ExecuteNativeCommand24`（state-only final delta；presentation transaction待本切片接線） | raw schedule已閉合；indexed UI／精確背景與E2待接 |
 | 28, 29, 31 | 同玩家 `276EC` derived-strike route，倍率分別 20、12、18；各自 record MP/一般 two-stage selector | `ExecuteNativeCommandDerivedStrike` | multi-hit／SFX／native UI 未接 |
 | 30 | `1CFF0→14818→115B6` 先確認 record+3 candidate；再以 saved cursor→confirmed cursor 進 `149F8`，`count=record+3-16`、X-first cardinal line、只收 enemy，最後 `2A6BD→276EC` default倍率18 | `ExecuteNativeCommand30`（顯式兩 cursor、state-only final delta） | native cursor lifecycle／multi-hit／SFX／indexed UI 未接 |
 | 25 | `0x1CFF0→1D6C8→22C04`，#88 sub0＋八個DAC phases後清raw target `+5 bit7` | `ExecuteNativeCommand25`要求raw +5 provenance，只清`0x80`而不混用`Acted` | 玩家grid＋palette／sample已接E1；原版feedback／逐音訊E2未接 |
@@ -1091,15 +1096,34 @@ contract：只接受 raw 0..255 cost，MP 不足／無 unit 一律不變更。�
 native candidate confirm、command 0 effect sequence 與原版 renderer 都能一起驗證。
 
 升級的 dynamic producer 現已閉合，但僅限資料層：native `0x1e292` 在 EXP 達門檻後增加 runtime
-level，從 portrait growth row 的 `learn_idx` 經 `0x4e4a2` 查 `0x626b3 + idx*12`，逐一比對最多六組
+level，從 `unit+7` 所選 growth row 的 `learn_idx` 經 `0x4e4a2` 查 `0x626b3 + idx*12`，逐一比對最多六組
 `(required_level, command_id)`；命中就呼叫 `0x1d79c` OR command bit，並顯示 FDTXT_000 #587「學會了！」。
 `docs/data/exe_tables/command_learn.json` 已保存 20 張 raw table（`FF/FF` sentinel 不轉成假資料）。
 growth-row 的**raw selector**是 direct ABI：`0x4e4d1(unit+7)=0x620a1+unit[+7]*11`，第 11 byte 就是
 `learn_idx`。constructor `0x10d7f..0x10efc` 已閉合 FDFIELD roster `b1→unit+7`；這是 battle
 FIGANI/DATO selector 的來源，並不使它和 map `unit+2` alias。remake `State.GainExp` 因此只在已注入這個
 editable table 時，於剛達到的 level OR exact
-command bit；`remake/assets/data/command_learn.json` 是 runtime copy，`Game` 在每個新 battle state bind
-同一張 table。legacy standalone `GainExp` 與 `Spells` 都不補造結果。
+command bit；`remake/assets/data/command_learn.json` 是 runtime copy，
+`class_change_growth.json`則保留selector→`learn_idx`。`Game`在每個新battle state同時bind兩張表；缺
+`HasBattleFig`、selector row或command row時不學習，且不再以`Portrait`直接索引command table。
+selector32經row4在Lv4授予command24；optional selector50的row10不同，不可沿用。legacy standalone
+`GainExp`與`Spells`都不補造結果。
+
+### command 24 selector32 FIGANI演出契約（RUNTIME-E1 partial）
+
+固定雜湊原版的`0x276EC`以actor raw `unit+7`取`selector*3+2`效果資源。正常
+class-change selector32對應FIGANI資源98；它有15幀，header `(byte1=1, byte2=9,
+byte4=6)`。frame4的raw `(1,3,2,0)`屬actor階段，繪製後發布MP並播放由byte4=6
+映射的FDOTHER #53 sub3；frame10的raw `(1,2,2,0)`屬target階段，繪製後一次發布
+完整傷害並播放sub2。command24分母為1，不能再稱為等分multi-hit。最後一幀後才發布
+`Acted`。正式owner必須先驗證原始FIGANI、target idle、palette、panel、兩個sample、
+single-target plan與selector32；任一缺漏時交易不得開始。
+
+目前adapter以原始actor/effect與target idle indexed幀、原始delay及shake表執行，但背景仍使用
+既有battle scene，尚未還原`0x29C90`的10-row BG 0/1/2轉場。因此本切片只列
+`RUNTIME-E1 partial`，不得宣稱逐幀原版一致；未修改原版的「轉職→Lv4學會→施放」一般玩家
+連續E2仍是獨立驗收門檻。主證據見
+[`fd2_command24_presentation_ida.txt`](../data/ida/fd2_command24_presentation_ida.txt)。
 
 remake 的可編輯資料模型必須至少表達這些 raw facts，而非固定四個 ring action：
 

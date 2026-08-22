@@ -568,7 +568,8 @@ type State struct {
 	SpellBook                []Spell                     // scenario-injected spell table; AI command mapping remains data-only
 	NativeCommandBook        []NativeCommandRecord       // verified raw IDs 0..35; distinct from normalized SpellBook
 	NativeCommandResistances map[int]int                 // verified class raw multiplier; nil means native command effects stay closed
-	CommandLearn             map[int][]CommandLearnEntry // portrait/growth-row idx -> native level-up command pairs
+	CommandLearn             map[int][]CommandLearnEntry // growth-row byte10 learn_idx -> native level-up command pairs
+	CommandLearnSelectors    map[int]int                 // native unit+7 selector -> growth-row byte10 learn_idx
 	AICommandSpell           map[int]int                 // editable item command byte -> spell id; AI ranking remains separate
 	Treasures                map[Cell]Treasure           // FDFIELD composition 地形旗標+slot 與 control chest table 的 join
 	NativeTreasureEventRules map[int]NativeTreasureEventRule

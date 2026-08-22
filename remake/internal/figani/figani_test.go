@@ -73,6 +73,33 @@ func TestDecodeOriginalFIGANIPreludeResource(t *testing.T) {
 	}
 }
 
+func TestNativeCommand24ScheduleMatchesSelector32Resource98(t *testing.T) {
+	const path = "../../../org_game/炎龍騎士團/FLAME2/FIGANI.DAT"
+	animation, err := DecodeResource(path, 98)
+	if os.IsNotExist(err) {
+		t.Skip("player-provided FIGANI.DAT is absent")
+	}
+	if err != nil {
+		t.Fatal(err)
+	}
+	schedule, err := BuildNativeCommand24Schedule(animation)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if schedule.TargetStart != 9 || schedule.ActorImpactFrame != 4 ||
+		schedule.TargetImpactFrame != 10 || schedule.AudioResource != 53 ||
+		schedule.ActorSample != 3 || schedule.TargetSample != 2 ||
+		schedule.ShakeOffsets != [6]int{0, 4, 9, 14, 18, 14} {
+		t.Fatalf("command24 schedule=%#v", schedule)
+	}
+	bad := *animation
+	bad.Frames = append([]Frame(nil), animation.Frames...)
+	bad.Frames[10].RawByte4 = 0
+	if _, err := BuildNativeCommand24Schedule(&bad); err == nil {
+		t.Fatal("command24 accepted missing target impact marker")
+	}
+}
+
 func TestDecodeOriginalPlayerClass19HeaderFlags(t *testing.T) {
 	const path = "../../../org_game/炎龍騎士團/FLAME2/FIGANI.DAT"
 	// Player-reachable class-19 sources use visual groups 4..7 (optional

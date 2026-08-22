@@ -41,6 +41,73 @@ func TestExecuteNativeCommand24RejectsInvalidBookBeforeMutation(t *testing.T) {
 	}
 }
 
+func TestPlanNativeCommand24PublishesMPDamageAndCompletionAtSeparateMarkers(t *testing.T) {
+	actor := &Unit{Camp: Own, OnField: true, X: 0, Y: 0, AP: 100, MP: 30}
+	target := &Unit{Camp: Enemy, OnField: true, X: 1, Y: 0, DP: 20, HP: 200}
+	st := &State{W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: nativeCommand24Book()}
+
+	plan, err := st.PlanNativeCommandDerivedStrike(actor, target, 24, rand.New(rand.NewSource(2)))
+	if err != nil || len(plan.Results) != 1 {
+		t.Fatalf("ID24 plan=%#v err=%v", plan, err)
+	}
+	if actor.MP != 30 || actor.Acted || target.HP != 200 {
+		t.Fatalf("planning mutated public state actor=%#v target=%#v", actor, target)
+	}
+	if err := ApplyNativeCommandDerivedStrikeMP(plan); err != nil {
+		t.Fatal(err)
+	}
+	if actor.MP != 8 || actor.Acted || target.HP != 200 {
+		t.Fatalf("actor marker published wrong state actor=%#v target=%#v", actor, target)
+	}
+	if err := ApplyNativeCommandDerivedStrikeTarget(plan, 0); err != nil {
+		t.Fatal(err)
+	}
+	if target.HP != plan.Results[0].HPAfter || actor.Acted {
+		t.Fatalf("target marker published wrong state actor=%#v target=%#v", actor, target)
+	}
+	if err := CompleteNativeCommandDerivedStrike(plan); err != nil || !actor.Acted {
+		t.Fatalf("completion err=%v actor=%#v", err, actor)
+	}
+}
+
+func TestPlanNativeCommand24PreservesDamageClampAndDeathProjection(t *testing.T) {
+	actor := &Unit{Camp: Own, OnField: true, X: 0, Y: 0, AP: 100, MP: 30}
+	target := &Unit{Camp: Enemy, OnField: true, X: 1, Y: 0, HP: 5, MaxHP: 5,
+		HasNativeRecordByte5: true, NativeRecordByte5: 0}
+	st := &State{W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: nativeCommand24Book()}
+
+	plan, err := st.PlanNativeCommandDerivedStrike(actor, target, 24, rand.New(rand.NewSource(1)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := plan.Results[0].Damage; got != 5 {
+		t.Fatalf("clamped damage=%d want 5", got)
+	}
+	if err := ApplyNativeCommandDerivedStrikeMP(plan); err != nil {
+		t.Fatal(err)
+	}
+	if err := ApplyNativeCommandDerivedStrikeTarget(plan, 0); err != nil {
+		t.Fatal(err)
+	}
+	if target.HP != 0 || target.NativeRecordByte5 != 1 {
+		t.Fatalf("death projection HP=%d raw+5=%02x", target.HP, target.NativeRecordByte5)
+	}
+}
+
+func TestPlanNativeCommand24DoesNotTurnNegativeDamageIntoHealing(t *testing.T) {
+	actor := &Unit{Camp: Own, OnField: true, X: 0, Y: 0, AP: 1, MP: 30}
+	target := &Unit{Camp: Enemy, OnField: true, X: 1, Y: 0, DP: 100, HP: 20, MaxHP: 20}
+	st := &State{W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: nativeCommand24Book()}
+
+	plan, err := st.PlanNativeCommandDerivedStrike(actor, target, 24, rand.New(rand.NewSource(1)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result := plan.Results[0]; result.Damage != 0 || result.HPAfter != 20 {
+		t.Fatalf("negative raw damage changed HP: %#v", result)
+	}
+}
+
 func TestExecuteNativeCommandDerivedStrikeUsesRecoveredID28Multiplier(t *testing.T) {
 	actor := &Unit{Camp: Own, OnField: true, X: 0, Y: 0, AP: 100, MP: 30}
 	target := &Unit{Camp: Enemy, OnField: true, X: 1, Y: 0, DP: 20, HP: 300}

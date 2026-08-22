@@ -25,14 +25,29 @@ func TestNativeCommandMaskConstructorAndDynamicFifthByte(t *testing.T) {
 }
 
 func TestStateGainExpLearnsExactNativeCommandAtLevel(t *testing.T) {
-	u := &Unit{Camp: Own, Name: "索爾", ClsName: "劍士", Portrait: 0, Lv: 1, AP: 6, DP: 4, DX: 2, HP: 42, MaxHP: 42}
-	st := &State{CommandLearn: map[int][]CommandLearnEntry{0: {{RequiredLevel: 2, CommandID: 32}}}}
+	u := &Unit{Camp: Own, Name: "索爾", ClsName: "劍聖", Portrait: 32, BattleFig: 32, HasBattleFig: true, Lv: 3, AP: 6, DP: 4, DX: 2, HP: 42, MaxHP: 42}
+	st := &State{
+		CommandLearn:          map[int][]CommandLearnEntry{4: {{RequiredLevel: 4, CommandID: 24}}},
+		CommandLearnSelectors: map[int]int{32: 4},
+	}
 	events := st.GainExp(u, 100, rand.New(rand.NewSource(1)))
-	if len(events) != 1 || !reflect.DeepEqual(events[0].LearnedCommandIDs, []int{32}) {
+	if len(events) != 1 || !reflect.DeepEqual(events[0].LearnedCommandIDs, []int{24}) {
 		t.Fatalf("level-up learning events=%#v", events)
 	}
-	if got := u.NativeCommandIDs(); !reflect.DeepEqual(got, []int{32}) {
+	if got := u.NativeCommandIDs(); !reflect.DeepEqual(got, []int{24}) {
 		t.Fatalf("native command mask after level=%v", got)
+	}
+}
+
+func TestStateGainExpDoesNotUsePortraitAsLearnRow(t *testing.T) {
+	u := &Unit{Camp: Own, Portrait: 4, BattleFig: 32, HasBattleFig: true, Lv: 3, MaxHP: 1, HP: 1}
+	st := &State{
+		CommandLearn:          map[int][]CommandLearnEntry{4: {{RequiredLevel: 4, CommandID: 24}}},
+		CommandLearnSelectors: map[int]int{32: 0xff},
+	}
+	_ = st.GainExp(u, 100, rand.New(rand.NewSource(1)))
+	if got := u.NativeCommandIDs(); len(got) != 0 {
+		t.Fatalf("portrait was incorrectly used as learn row: %v", got)
 	}
 }
 
@@ -43,6 +58,19 @@ func TestLoadCommandLearnUsesDenseNativeRows(t *testing.T) {
 	}
 	if got := table[0]; len(table) != 20 || !reflect.DeepEqual(got[:2], []CommandLearnEntry{{RequiredLevel: 5, CommandID: 17}, {RequiredLevel: 9, CommandID: 1}}) {
 		t.Fatalf("native learn table=%#v", table[0])
+	}
+}
+
+func TestLoadCommandLearnSelectorsUsesRawBattleFigRows(t *testing.T) {
+	selectors, err := LoadCommandLearnSelectors("../../../docs/data/exe_tables/growth.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, ok := selectors[32]; !ok || got != 4 {
+		t.Fatalf("selector32 learn_idx=%d/%v want 4/true", got, ok)
+	}
+	if _, ok := selectors[4]; ok {
+		t.Fatal("selector4 with raw learn_idx FF was materialized")
 	}
 }
 
