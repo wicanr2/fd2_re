@@ -213,6 +213,9 @@ func nativeCommand0TargetAndTailPixels(
 }
 
 func (g *Game) startNativeCommand0Presentation(actor, target *battle.Unit, then func([]battle.NativeCommandDamageResult)) error {
+	if !g.nativeFullPresentationEnabled() {
+		return errors.New("native abbreviated presentation owner unavailable")
+	}
 	if g == nil || g.st == nil || actor == nil || target == nil || g.nativeCommandScene == nil ||
 		g.nativeCommandPaletteFlash == nil || g.nativeCmd0Presentation != nil ||
 		g.nativeCmd24Presentation != nil || g.nativeHealPresentation != nil ||

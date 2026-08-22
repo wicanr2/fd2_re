@@ -205,6 +205,13 @@ func (g *Game) loadNativeGameFromSlot(path string, slot int) error {
 	if err != nil {
 		return err
 	}
+	options := fdother.NativeSystemOptions{
+		Raw53AF9: plan.Raw53AF9, Raw51AAB: plan.HUDGateA,
+		Raw51E61: plan.Raw51E61, Raw51E62: plan.Raw51E62,
+	}
+	if err := options.Validate(); err != nil {
+		return fmt.Errorf("原版四槽讀檔：系統設定：%w", err)
+	}
 	if uint64(plan.Currency) > uint64(^uint(0)>>1) {
 		return fmt.Errorf(
 			"原版四槽讀檔：金幣 %d 超出目前平台整數範圍",
@@ -226,6 +233,7 @@ func (g *Game) loadNativeGameFromSlot(path string, slot int) error {
 	g.partyDeploy = map[int]bool{}
 	g.handlerChapter = plan.NativeChapterIndex
 	g.restoreNativeMapHUDGateA(plan.HUDGateA)
+	g.nativeSystemOptions = &options
 	// Native chapter slots restore persistent records and metadata, not the
 	// previous battle array. Drop it before enterNode so its old gate A cannot
 	// overwrite the slot byte through the cross-node capture hook.

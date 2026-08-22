@@ -8,6 +8,7 @@ import (
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
 
@@ -208,6 +209,13 @@ func (g *Game) publishNativeContinueBattle(
 	); err != nil {
 		return err
 	}
+	options := fdother.NativeSystemOptions{
+		Raw53AF9: input.Header.Raw53AF9, Raw51AAB: input.Header.HUDGateA,
+		Raw51E61: input.Header.Raw51E61, Raw51E62: input.Header.Raw51E62,
+	}
+	if err := options.Validate(); err != nil {
+		return fmt.Errorf("native CONTINUE battle handoff: system options: %w", err)
+	}
 	if g.m == nil || g.m.W != state.W || g.m.H != state.H {
 		return fmt.Errorf("native CONTINUE battle handoff: map asset is unavailable")
 	}
@@ -261,6 +269,8 @@ func (g *Game) publishNativeContinueBattle(
 	candidate.moved, candidate.result = false, ""
 	candidate.msg, candidate.loadErr = "", ""
 	candidate.nativeChapterRestore = nil
+	candidate.nativeSystemOptions = &options
+	candidate.restoreNativeMapHUDGateA(options.Raw51AAB)
 	candidate.nativeMapWork, candidate.nativeMapVGA = nil, nil
 	candidate.nativeMapClock.Reset()
 	candidate.resetActionOverlayLifecycle()

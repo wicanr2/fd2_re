@@ -37,6 +37,12 @@ func (g *Game) playBGM(track string) {
 // indefinite; one plays the decoded sequence once. The native same-track
 // early return ignores a changed loop count, so bgmCur remains the sole gate.
 func (g *Game) playBGMCount(track string, loopCount int) {
+	if g != nil && !g.currentNativeSystemOptions().MusicEnabled() {
+		if track != "" {
+			g.nativeSystemBGMTrack = track
+		}
+		return
+	}
 	if track == "" || track == g.bgmCur || os.Getenv("FD2_MUTE") != "" || g.shotPath != "" {
 		return
 	}
@@ -74,6 +80,18 @@ func (g *Game) playBGMCount(track string, loopCount int) {
 // cutscene handlers.  Clearing bgmCur allows the following explicit BGM beat
 // to restart the same track.
 func (g *Game) stopBGM() {
+	if g.bgm != nil {
+		g.bgm.Close()
+		g.bgm = nil
+	}
+	g.bgmCur = ""
+	g.nativeSystemBGMTrack = ""
+}
+
+func (g *Game) muteNativeSystemBGM() {
+	if g.bgmCur != "" {
+		g.nativeSystemBGMTrack = g.bgmCur
+	}
 	if g.bgm != nil {
 		g.bgm.Close()
 		g.bgm = nil
@@ -129,7 +147,7 @@ func loadWav(path string) []byte {
 
 // playRaw 直接播 PCM bytes(nil 安全)。
 func (g *Game) playRaw(b []byte) {
-	if b == nil || audioCtx == nil || os.Getenv("FD2_MUTE") != "" || g.shotPath != "" {
+	if b == nil || audioCtx == nil || !g.currentNativeSystemOptions().SFXEnabled() || os.Getenv("FD2_MUTE") != "" || g.shotPath != "" {
 		return
 	}
 	audio.NewPlayerFromBytes(audioCtx, b).Play()
@@ -137,7 +155,7 @@ func (g *Game) playRaw(b []byte) {
 
 // playSFX 播一個音效(疊播;原版雙 handle 0x26896/0x26945 可同時兩個,這裡不限)。
 func (g *Game) playSFX(id int) {
-	if g.sfx == nil || os.Getenv("FD2_MUTE") != "" || g.shotPath != "" {
+	if g.sfx == nil || !g.currentNativeSystemOptions().SFXEnabled() || os.Getenv("FD2_MUTE") != "" || g.shotPath != "" {
 		return
 	}
 	b, ok := g.sfx[id]

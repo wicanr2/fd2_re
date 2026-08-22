@@ -115,6 +115,7 @@ func (g *Game) markActionOverlayDrawn() {
 func (g *Game) resetActionOverlayLifecycle() {
 	g.ring = false
 	g.nativeSystemCursorOverlay = false
+	g.nativeSystemOptionsOpen = false
 	g.nativeSystemEndTurnConfirm = false
 	g.nativeSystemEndTurnDelay = 0
 	if g.nativeSystemEndTurnUI != nil {
@@ -126,6 +127,56 @@ func (g *Game) resetActionOverlayLifecycle() {
 	g.actionOverlayAfter = nil
 	g.actionOverlayDrawn = false
 	g.actionOverlayShotHold = false
+}
+
+func (g *Game) currentNativeSystemOptions() fdother.NativeSystemOptions {
+	if g != nil && g.nativeSystemOptions != nil {
+		return *g.nativeSystemOptions
+	}
+	return fdother.DefaultNativeSystemOptions()
+}
+
+func (g *Game) nativeFullPresentationEnabled() bool {
+	return g == nil || g.currentNativeSystemOptions().FullPresentationEnabled()
+}
+
+func (g *Game) nativeSystemOptionsReady() bool {
+	if _, err := g.currentNativeSystemOptions().ActionOverlayState(); err != nil {
+		return false
+	}
+	for _, index := range [...]int{54, 57, 60, 63, 66, 69, 72, 75} {
+		if index >= len(g.nativeActionCells) || g.nativeActionCells[index] == nil {
+			return false
+		}
+	}
+	return true
+}
+
+func (g *Game) toggleNativeSystemOption(selector int) bool {
+	current := g.currentNativeSystemOptions()
+	next, err := current.Toggle(selector)
+	if err != nil {
+		return false
+	}
+	g.nativeSystemOptions = &next
+	switch selector {
+	case 0:
+		if next.MusicEnabled() {
+			if g.nativeSystemBGMTrack != "" {
+				track := g.nativeSystemBGMTrack
+				g.nativeSystemBGMTrack = ""
+				g.playBGM(track)
+			}
+		} else {
+			g.muteNativeSystemBGM()
+		}
+	case 3:
+		g.restoreNativeMapHUDGateA(next.Raw51AAB)
+		if g.st != nil && g.st.HasNativeMapHUDState {
+			g.st.NativeMapHUDState.DisplayGateA = next.Raw51AAB
+		}
+	}
+	return true
 }
 
 // nativeSystemOverlayReady prevents the shared empty-cursor command from

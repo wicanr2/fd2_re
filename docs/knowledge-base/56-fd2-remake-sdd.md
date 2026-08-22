@@ -5256,3 +5256,33 @@ persistent raw record、FDFIELD／FDICON／item table、任一20段資源或 bas
 - 兩次配對固定為 record0 auxiliary＋record1 base，然後 record1
   auxiliary＋record0 base；不得畫出被動畫者自己的 base。重製可以320×200
   indexed surface 呈現這個已證實配對，但仍不宣稱 DOS 逐像素／音訊 E2。
+
+## 2026-08-22 空游標系統設定選單 E1 契約
+
+主證據為
+[`fd2_system_overlay_options_ida.txt`](../data/ida/fd2_system_overlay_options_ida.txt)。
+固定雜湊 `FD2.EXE` 的 `0x16F55` outer selector 只有 index 2 呼叫
+`0x1728C`；index 0 的巢狀存讀檔／離場與 index 1 的全軍行軍是不同交易，
+不得由本段順便猜測接入。
+
+`0x1728C` 的四個原始 byte 與畫面 cell 契約如下：
+
+| selector | 原始欄位 | 值域 | cell（開／關） | 已證實消費端 |
+|---|---|---|---|---|
+| 0 | `0x51E61` | `0/1` | `54/57` | `0x25977` 音樂音量 gate |
+| 1 | `0x51E62` | `0/1` | `60/63` | `0x25A96`、`0x25B45` PCM gate |
+| 2 | `0x53AF9` | `0/1` | `66/69` | 戰鬥演出路徑 gate；替代演出 owner 尚未閉合 |
+| 3 | `0x51AAB` | `0/1` | `72/75` | `0x1ACF3` 原生狀態列 gate |
+
+typed state 必須在發布第一幀前驗證四值皆為 `0/1`，並要求
+`FDOTHER #2` 至少具有76個可解碼 cell。方向鍵只改 selector；Enter 切換目前
+欄位後重建精確 cell；Escape 走四次 closing present，再回到戰場。開／關音樂
+需保留所選曲目以便重新開啟，音效欄位直接控制 PCM 發布；狀態列欄位同步正式
+HUD persistence。`0x53AF9!=0` 時，在原版 abbreviated presentation owner 未閉合
+前，重製端不得把完整 indexed 演出或任意快速動畫冒充替代路徑，應在交易前
+失敗即關閉。
+
+原版 `FD2.SAV` metadata `+14..+17` 保存這四個 byte；重製 JSON 存檔也必須
+全數持久化。舊 JSON 缺欄位時採原版初始值 `0,1,1,1`，但顯式越界值必須拒絕。
+目前完成本選單只可標成 `RUNTIME-E1`；尚缺同狀態原版逐幀與聽覺驗證，不能
+提升為 `PLAYER-E2`。

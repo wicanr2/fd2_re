@@ -195,6 +195,65 @@ func TestActionOverlayCloseDefersChildMenuUntilFourthPresent(t *testing.T) {
 	}
 }
 
+func TestSystemOptionsOverlayUsesExactCellsAndReturnsAfterFourClosePresents(t *testing.T) {
+	g := &Game{
+		nativeSystemCursorOverlay: true,
+		nativeSystemOptionsOpen:   true,
+		nativeActionCells:         make([]*ebiten.Image, 76),
+	}
+	for _, index := range []int{54, 57, 60, 63, 66, 69, 72, 75} {
+		g.nativeActionCells[index] = ebiten.NewImage(1, 1)
+	}
+	if !g.nativeSystemOptionsReady() {
+		t.Fatal("complete 0x1728c cell bank was rejected")
+	}
+	g.beginActionOverlayOpen(0)
+	for g.actionOverlayBlocksInput() {
+		g.markActionOverlayDrawn()
+		g.stepActionOverlayLifecycle()
+	}
+	if !g.toggleNativeSystemOption(0) {
+		t.Fatal("music option toggle failed")
+	}
+	state := g.nativeActionOverlayState()
+	if cell, err := state.CellIndex(0); err != nil || cell != 57 {
+		t.Fatalf("toggled music cell=%d err=%v, want 57", cell, err)
+	}
+	g.beginActionOverlayClose(func() {
+		g.nativeSystemOptionsOpen = false
+		g.nativeSystemCursorOverlay = false
+	})
+	for present := 0; present < 4; present++ {
+		if !g.nativeSystemOptionsOpen {
+			t.Fatalf("system options closed before present %d", present)
+		}
+		g.markActionOverlayDrawn()
+		g.stepActionOverlayLifecycle()
+	}
+	if g.ring || g.nativeSystemOptionsOpen || g.nativeSystemCursorOverlay {
+		t.Fatalf("system options did not return to field: ring=%v options=%v system=%v", g.ring, g.nativeSystemOptionsOpen, g.nativeSystemCursorOverlay)
+	}
+}
+
+func TestDisabledFullPresentationFailsClosedBeforeAnyCommandTransaction(t *testing.T) {
+	options := fdother.DefaultNativeSystemOptions()
+	options.Raw53AF9 = 1
+	g := &Game{nativeSystemOptions: &options}
+	want := "native abbreviated presentation owner unavailable"
+	if err := g.startNativeCommand0Presentation(nil, nil, nil); err == nil || err.Error() != want {
+		t.Fatalf("command0 gate err=%v, want %q", err, want)
+	}
+	if err := g.startNativeCommand24Presentation(nil, nil, nil); err == nil || err.Error() != want {
+		t.Fatalf("command24 gate err=%v, want %q", err, want)
+	}
+	if err := g.startNativeCommandHealPresentation(17, nil, nil, nil); err == nil || err.Error() != want {
+		t.Fatalf("heal gate err=%v, want %q", err, want)
+	}
+	if err := g.startNativeCommandPalettePresentation(17, nil, nil, nil); err == nil || err.Error() != want {
+		t.Fatalf("palette gate err=%v, want %q", err, want)
+	}
+}
+
 func TestActionOverlayLifecycleCannotSkipAnUndrawnFrame(t *testing.T) {
 	g := &Game{}
 	g.beginActionOverlayOpen(1)

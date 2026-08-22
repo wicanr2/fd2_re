@@ -64,6 +64,9 @@ type saveData struct {
 	PartyRoster    map[int]battle.Unit `json:"party_roster,omitempty"`
 	Chapter        int                 `json:"chapter,omitempty"`
 	NativeHUDGateA *int                `json:"native_hud_gate_a,omitempty"`
+	NativeRaw53AF9 *int                `json:"native_raw_53af9,omitempty"`
+	NativeRaw51E61 *int                `json:"native_raw_51e61,omitempty"`
+	NativeRaw51E62 *int                `json:"native_raw_51e62,omitempty"`
 }
 
 func (g *Game) saveGame() { g.saveGameToSlot(0) }
@@ -94,6 +97,12 @@ func (g *Game) saveGameToSlot(slot int) {
 		gateA := int(g.nativeMapHUDPersistent.DisplayGateA)
 		d.NativeHUDGateA = &gateA
 	}
+	options := g.currentNativeSystemOptions()
+	if g.nativeMapHUDPersistent.HasDisplayGateA {
+		options.Raw51AAB = g.nativeMapHUDPersistent.DisplayGateA
+	}
+	raw53AF9, raw51E61, raw51E62 := int(options.Raw53AF9), int(options.Raw51E61), int(options.Raw51E62)
+	d.NativeRaw53AF9, d.NativeRaw51E61, d.NativeRaw51E62 = &raw53AF9, &raw51E61, &raw51E62
 	raw, err := json.MarshalIndent(d, "", " ")
 	if err != nil {
 		return
@@ -122,8 +131,33 @@ func (g *Game) loadGameFromSlot(slot int) {
 		g.msg = "存檔節點不存在:" + d.Node
 		return
 	}
-	if d.NativeHUDGateA != nil && (*d.NativeHUDGateA < 0 || *d.NativeHUDGateA > 0xff) {
-		g.msg = "存檔 native HUD gate A 超出原始 byte 範圍"
+	options := g.currentNativeSystemOptions()
+	if d.NativeHUDGateA != nil {
+		if *d.NativeHUDGateA < 0 || *d.NativeHUDGateA > 1 {
+			g.msg = "存檔 native HUD gate A 超出原始布林範圍"
+			return
+		}
+		options.Raw51AAB = byte(*d.NativeHUDGateA)
+	}
+	for _, field := range []struct {
+		value  *int
+		target *byte
+	}{
+		{d.NativeRaw53AF9, &options.Raw53AF9},
+		{d.NativeRaw51E61, &options.Raw51E61},
+		{d.NativeRaw51E62, &options.Raw51E62},
+	} {
+		if field.value == nil {
+			continue
+		}
+		if *field.value < 0 || *field.value > 1 {
+			g.msg = "存檔 native 系統設定超出原始布林範圍"
+			return
+		}
+		*field.target = byte(*field.value)
+	}
+	if err := options.Validate(); err != nil {
+		g.msg = "存檔 native 系統設定無效"
 		return
 	}
 	g.captureNativeMapHUDPersistence()
@@ -136,6 +170,7 @@ func (g *Game) loadGameFromSlot(slot int) {
 	if d.NativeHUDGateA != nil {
 		g.restoreNativeMapHUDGateA(byte(*d.NativeHUDGateA))
 	}
+	g.nativeSystemOptions = &options
 	// 節點邊界存檔不保留舊戰場陣列；先清除它也可避免 enterNode 以讀檔前的
 	// gate A 覆蓋剛還原的存檔值。教會選單、候選與 indexed 工作同屬未序列化
 	// 暫態，必須在進入存檔節點前一併丟棄。

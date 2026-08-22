@@ -31,6 +31,9 @@ func (g *Game) startNativeCommandPalettePresentation(
 	transaction func() error,
 	then func(),
 ) error {
+	if !g.nativeFullPresentationEnabled() {
+		return errors.New("native abbreviated presentation owner unavailable")
+	}
 	validCommand := commandID >= 17 && commandID <= 23 || commandID >= 25 && commandID <= 27
 	if g == nil || g.st == nil || preflight == nil || transaction == nil || !validCommand {
 		return errors.New("native command modifier presentation context unavailable")

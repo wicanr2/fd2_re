@@ -1,0 +1,78 @@
+# FD2 `0x16F55→0x1728C` 系統設定面板：IDA Pro 9.4 證據
+
+## 輸入與位址空間
+
+- 輸入：`org_game/炎龍騎士團/FLAME2/FD2.EXE`
+- 大小：357074 bytes
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 第一工具：使用者授權的 IDA Pro `9.4.0.260610`，映像
+  `fd2-ida-authorized-local`；LE loader、IDA 線性位址。
+- 容器：一次性、無網路、原版唯讀；`.i64` 只存在 tmpfs，輸出以 UID/GID
+  1000:1000 寫至 `/tmp` 後整理入本檔。
+- 註記政策：保留 `sub_16F55`、`sub_1728C` 與原始全域位址；下列語意是附加
+  索引，不取代原始定位。
+
+## 外層 selector 2（已證實）
+
+`sub_16F55` 的直接分派是：
+
+```text
+0x16FE4 selector 0 → sub_19DF7（記錄／讀取／離場巢狀選單）
+0x16FF4 selector 1 → FDTXT 0x1A1／0x1A2，全軍行軍交易
+0x171B0 selector 2 → sub_1728C
+0x171C3 selector 3 → FDTXT 0x1A3／0x1A4，結束回合
+```
+
+所以 `0x171B9 call sub_1728C` 固定了外層 selector 2 的 owner；不由圖示外觀
+推測。selector 0、1 的完整交易不因本檔自動升格為重製已完成。
+
+## 四項 raw 設定與顯示 cells（已證實）
+
+`sub_1728C` 先複製第一表 `0x51EAF=[18,20,22,24]` 與第二表
+`0x53F02=[0,0,0,0]`。每次重畫前依四個 raw byte 改寫第一表：
+
+| selector | 原始指令 | 開啟 cell／關閉 cell | 已證實 consumer |
+|---:|---|---|---|
+| 0 | `0x172C4`、`0x17364..0x1739A`：切換 `[0x51E61]`；切為0呼叫 `0x3ADD4(...,0,1000)`，切為1呼叫 `0x3ADD4(...,0x7F,1000)` | 18／19，經 `0x1741C` 公式成 raw cells 54／57 | `sub_25977` 在 `0x25A3A` 以它決定目前 BGM 音量0或0x7F；故「音樂啟用」為已證實 |
+| 1 | `0x172DA`、`0x173C6..0x173E2`：切換 `[0x51E62]` | 20／21，raw cells 60／63 | `sub_25A96`、`sub_25B45` 在 `0x25AB1`／`0x25B60` 以它阻擋兩個 PCM sample handle；故「音效啟用」為已證實 |
+| 2 | `0x172F0`、`0x173A5`：XOR `[0x53AF9]` | raw值0用22，非0用23；raw cells 66／69 | command／AI presentation 與 `0x1A7BD` resource setup 都讀此 gate；它是「戰鬥演出路徑 gate」已證實，較高階的玩家文案名稱不由本檔推定 |
+| 3 | `0x17306`、`0x173BA`：XOR `[0x51AAB]` | 非0用24，0用25；raw cells 72／75 | `sub_1ACF3` 在 `0x1AD0C..0x1AD15` 以它決定是否畫 native map HUD；故「戰場 HUD 顯示」為已證實 |
+
+`0x1741C` 的既有已證實公式是
+`cell=3*firstArgumentWord+2*secondArgumentWord`；本面板第二表固定0，所以上表
+列的是實際 FDOTHER #2 cell，不沿用 battle wrapper 的 availability 表。
+
+原始資料初值為：`[0x53AF9]=0`、`[0x51AAB]=1`、`[0x51E61]=1`、
+`[0x51E62]=1`，即四項皆開啟，首次面板 cells 為54／60／66／72。
+
+## 保存邊界（已證實）
+
+`sub_19DF7` 在 `0x1A0BC..0x1A0DD` 依序把四個 raw byte 寫到目前槽 metadata
+`+14..+17`；原版四槽 parser 已獨立證實同一排列。因此重製的自有 JSON 存檔
+若要保持玩家設定，也必須把四項一起保存；只保存 HUD gate 會造成讀檔後狀態漂移。
+
+## 重製規格
+
+1. 空游標外層 selector 2 必須在四幀 close 完成後才開設定面板。
+2. 設定面板使用 FDOTHER #2 原始 cells 54／57、60／63、66／69、72／75，
+   並沿用 `0x1741C` opening／interactive／closing owner；缺78-cell bank 時在外層
+   close 前失敗即關閉。
+3. ↑／←／→／↓只移動 selector；Enter／Space 切換目前 raw byte並留在面板；
+   Escape 經四幀 close 返回戰場，不結束回合。
+4. 音樂關閉時停止目前重製 BGM，重新開啟時重播剛才的 track；音效關閉後所有
+   `playSFX`／raw PCM consumer 必須靜音。戰鬥演出 gate 與 HUD gate必須由正式
+   presentation／native HUD consumer讀取，不只改圖示。
+5. 原版 LOAD／CONTINUE metadata 與自有 JSON save/load 都保存四項；任何值不在
+   原版布林域0／1時失敗即關閉，不以非零自動正規化。
+6. 本切片只升級 selector 2。selector 0 的巢狀記錄／讀取／離場與 selector 1
+   全軍行軍仍須各自閉合交易、返回與玩家驗證。
+
+## 交叉驗證與重開條件
+
+高影響分派、四個 writer、四個 consumer、資料初值及 table bytes均來自 IDA
+直接指令／資料。2026-08-22 已以 `fd2-cap-local`／Capstone 在 Docker 內覆核
+`0x16FD0..0x17410`；outer dispatch、四個 raw byte 讀寫端、四組 cell base 與
+toggle 分支均和 IDA Pro 9.4 一致。
+只有輸入雜湊不同、原始指令／table 反證、同狀態執行矛盾，或本檔所列 consumer
+其實不存在時才重開；圖示看起來像某個現代設定不是重開理由。

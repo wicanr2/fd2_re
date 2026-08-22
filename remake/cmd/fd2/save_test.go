@@ -119,6 +119,9 @@ func TestCampaignSaveLoadRestoresTownBoundaryAndParty(t *testing.T) {
 			HasDisplayGateA: true, HasAnchorX: true,
 		},
 	}
+	options := g.currentNativeSystemOptions()
+	options.Raw53AF9, options.Raw51E61, options.Raw51E62 = 1, 0, 0
+	g.nativeSystemOptions = &options
 	g.saveGameToSlot(2)
 	if g.msg != "已存檔(槽位3：town_ch02)" {
 		t.Fatalf("save boundary message=%q", g.msg)
@@ -127,6 +130,7 @@ func TestCampaignSaveLoadRestoresTownBoundaryAndParty(t *testing.T) {
 	g.partyMembers, g.partyJoinOrder = nil, nil
 	g.partyDeploy, g.partyRoster = nil, nil
 	g.nativeMapHUDPersistent = battle.InitialNativeMapHUDPersistentState()
+	g.nativeSystemOptions = nil
 	g.shopMode = "sell"
 	g.shopPicking = true
 	g.shopEquipPrompt = true
@@ -155,6 +159,11 @@ func TestCampaignSaveLoadRestoresTownBoundaryAndParty(t *testing.T) {
 	if !g.nativeMapHUDPersistent.HasDisplayGateA || g.nativeMapHUDPersistent.DisplayGateA != 0 ||
 		!g.nativeMapHUDPersistent.HasAnchorX || g.nativeMapHUDPersistent.AnchorX != 1 {
 		t.Fatalf("save HUD persistence=%+v", g.nativeMapHUDPersistent)
+	}
+	gotOptions := g.currentNativeSystemOptions()
+	if gotOptions.Raw53AF9 != 1 || gotOptions.Raw51AAB != 0 ||
+		gotOptions.Raw51E61 != 0 || gotOptions.Raw51E62 != 0 {
+		t.Fatalf("save system options=%+v", gotOptions)
 	}
 	if g.st != nil || g.sel != nil || g.shopMode != "" || g.churchMode != "" ||
 		g.shopPicking || g.shopEquipPrompt || len(g.shopRecipients) != 0 ||
@@ -191,9 +200,34 @@ func TestCampaignLoadRejectsOutOfRangeNativeHUDGateWithoutMutation(t *testing.T)
 	}
 	g.loadGameFromSlot(0)
 	if g.gold != 7 || g.nativeMapHUDPersistent.DisplayGateA != 1 ||
-		g.msg != "存檔 native HUD gate A 超出原始 byte 範圍" {
+		g.msg != "存檔 native HUD gate A 超出原始布林範圍" {
 		t.Fatalf("invalid HUD save mutated game: gold=%d HUD=%+v msg=%q",
 			g.gold, g.nativeMapHUDPersistent, g.msg)
+	}
+}
+
+func TestCampaignLoadRejectsOutOfRangeNativeSystemOptionWithoutMutation(t *testing.T) {
+	t.Setenv("XDG_DATA_HOME", t.TempDir())
+	userDataDirCached = ""
+	c := &campaign.Campaign{Start: "town", Nodes: map[string]*campaign.Node{
+		"town": {Type: "town"},
+	}}
+	invalid := 2
+	raw, err := json.Marshal(saveData{Node: "town", Gold: 99, NativeRaw53AF9: &invalid})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(filepath.Dir(saveSlotPath(0)), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(saveSlotPath(0), raw, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{camp: campaign.NewRunner(c), gold: 7}
+	g.loadGameFromSlot(0)
+	if g.gold != 7 || g.nativeSystemOptions != nil ||
+		g.msg != "存檔 native 系統設定超出原始布林範圍" {
+		t.Fatalf("invalid system option mutated game: gold=%d options=%v msg=%q", g.gold, g.nativeSystemOptions, g.msg)
 	}
 }
 

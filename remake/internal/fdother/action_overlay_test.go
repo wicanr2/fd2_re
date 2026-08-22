@@ -47,6 +47,41 @@ func TestNativeContinueActionOverlayStateMatches16F55InitialTables(t *testing.T)
 	}
 }
 
+func TestNativeSystemOptionsMatch1728CCellsAndBooleanToggles(t *testing.T) {
+	options := DefaultNativeSystemOptions()
+	state, err := options.ActionOverlayState()
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := [4]int{54, 60, 66, 72}
+	for direction := range want {
+		got, err := state.CellIndex(direction)
+		if err != nil || got != want[direction] {
+			t.Fatalf("default direction %d: cell=%d err=%v, want %d", direction, got, err, want[direction])
+		}
+		options, err = options.Toggle(direction)
+		if err != nil {
+			t.Fatal(err)
+		}
+		state, err = options.ActionOverlayState()
+		if err != nil {
+			t.Fatal(err)
+		}
+		got, err = state.CellIndex(direction)
+		if err != nil || got != want[direction]+3 {
+			t.Fatalf("toggled direction %d: cell=%d err=%v, want %d", direction, got, err, want[direction]+3)
+		}
+	}
+	invalid := DefaultNativeSystemOptions()
+	invalid.Raw51E62 = 2
+	if _, err := invalid.ActionOverlayState(); err == nil {
+		t.Fatal("out-of-domain native system option was accepted")
+	}
+	if _, err := options.Toggle(4); err == nil {
+		t.Fatal("out-of-range native system selector was accepted")
+	}
+}
+
 func TestActionOverlayOriginMatchesNativeAddressExpression(t *testing.T) {
 	got, err := ActionOverlayOrigin(6, 5)
 	if err != nil {

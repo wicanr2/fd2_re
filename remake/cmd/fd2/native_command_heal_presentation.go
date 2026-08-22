@@ -71,6 +71,9 @@ func nativeCommandHealTailTargets(st *battle.State, targets []*battle.Unit) ([]i
 }
 
 func (g *Game) startNativeCommandHealPresentation(commandID int, targetUnits []*battle.Unit, transaction func() ([]battle.NativeCommandHealResult, error), then func([]battle.NativeCommandHealResult)) error {
+	if !g.nativeFullPresentationEnabled() {
+		return errors.New("native abbreviated presentation owner unavailable")
+	}
 	if g == nil || transaction == nil {
 		return errors.New("native command heal presentation game/transaction unavailable")
 	}

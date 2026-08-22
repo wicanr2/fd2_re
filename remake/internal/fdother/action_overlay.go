@@ -43,6 +43,70 @@ func NativeContinueActionOverlayState() ActionOverlayState {
 	}
 }
 
+// NativeSystemOptions preserves the four raw bytes read and written by
+// FD2.EXE 0x1728c. The address-derived names keep this typed adapter honest:
+// higher-level meanings come from the independently proven consumers.
+type NativeSystemOptions struct {
+	Raw53AF9 byte
+	Raw51AAB byte
+	Raw51E61 byte
+	Raw51E62 byte
+}
+
+func DefaultNativeSystemOptions() NativeSystemOptions {
+	return NativeSystemOptions{Raw53AF9: 0, Raw51AAB: 1, Raw51E61: 1, Raw51E62: 1}
+}
+
+func (s NativeSystemOptions) Validate() error {
+	values := [...]byte{s.Raw53AF9, s.Raw51AAB, s.Raw51E61, s.Raw51E62}
+	for i, value := range values {
+		if value > 1 {
+			return fmt.Errorf("fdother: native system option %d has raw value %d", i, value)
+		}
+	}
+	return nil
+}
+
+func (s NativeSystemOptions) MusicEnabled() bool            { return s.Raw51E61 == 1 }
+func (s NativeSystemOptions) SFXEnabled() bool              { return s.Raw51E62 == 1 }
+func (s NativeSystemOptions) FullPresentationEnabled() bool { return s.Raw53AF9 == 0 }
+func (s NativeSystemOptions) HUDEnabled() bool              { return s.Raw51AAB == 1 }
+
+// ActionOverlayState reproduces 0x172c4..0x17318. The second argument table
+// is all zero, so each on/off cell is represented directly by the first table.
+func (s NativeSystemOptions) ActionOverlayState() (ActionOverlayState, error) {
+	if err := s.Validate(); err != nil {
+		return ActionOverlayState{}, err
+	}
+	state := ActionOverlayState{}
+	state.DirectionState = [4]int{
+		18 + int(1-s.Raw51E61),
+		20 + int(1-s.Raw51E62),
+		22 + int(s.Raw53AF9),
+		24 + int(1-s.Raw51AAB),
+	}
+	return state, nil
+}
+
+func (s NativeSystemOptions) Toggle(selector int) (NativeSystemOptions, error) {
+	if err := s.Validate(); err != nil {
+		return s, err
+	}
+	switch selector {
+	case 0:
+		s.Raw51E61 ^= 1
+	case 1:
+		s.Raw51E62 ^= 1
+	case 2:
+		s.Raw53AF9 ^= 1
+	case 3:
+		s.Raw51AAB ^= 1
+	default:
+		return s, fmt.Errorf("fdother: native system option selector %d is invalid", selector)
+	}
+	return s, nil
+}
+
 const (
 	nativeFramebufferStride = 0x1c8
 	nativeActionOverlayBase = 0x8088

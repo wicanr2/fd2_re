@@ -10,6 +10,24 @@ FROM ida-pro-9.4-ver2:civ1-py312-v1
 USER root
 COPY --chmod=0755 tools/docker/fd2-ida-entrypoint.sh /usr/local/bin/fd2-ida-entrypoint
 
+# IDA 9.4 的批次模式仍會載入 Qt 平台程式庫。私人基底只帶 IDA 本體，若缺少
+# 這些執行期函式庫，連 `-A -S...` 都會在進入 IDAPython 前失敗。只安裝
+# headless/offscreen 所需的共享函式庫；不在映像內加入原版檔案或授權內容。
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        libdbus-1-3 \
+        libegl1 \
+        libfontconfig1 \
+        libfreetype6 \
+        libgl1 \
+        libglib2.0-0 \
+        libopengl0 \
+        libx11-6 \
+        libxext6 \
+        libxkbcommon0 \
+        libxtst6 \
+    && rm -rf /var/lib/apt/lists/*
+
 # The private base keeps its seed files under /root/.idapro.  Permit traversal
 # only so the non-root entrypoint can copy the already-readable seed files into
 # its ephemeral HOME.  Runtime analysis and bind-mount outputs remain UID/GID

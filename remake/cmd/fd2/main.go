@@ -267,9 +267,11 @@ type Game struct {
 	// 一經消費，後續空游標確認由已證實的共用 0x117E7 owner 處理。
 	nativeContinueOpeningConfirm bool
 	// nativeSystemCursorOverlay 對應共用 0x117E7 在 0x12C0D 回傳 -1 時
-	// 呼叫的 0x16F55 空游標面板。只有 direction3／END 已有 action owner；
-	// 其餘三格維持失敗即關閉。
+	// 呼叫的 0x16F55 空游標面板。direction2／設定與 direction3／END 已有
+	// action owner；巢狀存讀檔與全軍行軍仍維持失敗即關閉。
 	nativeSystemCursorOverlay bool
+	nativeSystemOptionsOpen   bool
+	nativeSystemOptions       *fdother.NativeSystemOptions
 	spellOpen                 bool
 	spellSel                  int
 	itemOpen                  bool // native 0x1b932 eight-slot selector; unsupported effect presentations remain fail-closed
@@ -298,6 +300,7 @@ type Game struct {
 	commandLearnSelectors     map[int]int                        // raw unit+7 -> growth byte10 learn_idx
 	bgm                       *audio.Player                      // BGM(doc12 play_bgm 語意:同曲不重播)
 	bgmCur                    string
+	nativeSystemBGMTrack      string
 	bgmSource                 string                // 音源設定 "fm"/"mt32"(settings.go;F2 切換)
 	debug                     bool                  // F3:開發除錯 HUD(座標/陣營原文等)
 	approximateMode           bool                  // FD2_APPROXIMATE=1:可玩近似模式；不宣稱原版 handler 等價
@@ -4748,6 +4751,43 @@ func (g *Game) ringInput() bool {
 		}
 		return true
 	}
+	if g.nativeSystemOptionsOpen {
+		if !g.ring {
+			g.nativeSystemOptionsOpen = false
+			g.nativeSystemCursorOverlay = false
+			return false
+		}
+		if g.actionOverlayBlocksInput() {
+			return true
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
+			g.ringSel = 0
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
+			g.ringSel = 1
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+			g.ringSel = 2
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
+			g.ringSel = 3
+		}
+		if esc {
+			g.beginActionOverlayClose(func() {
+				g.nativeSystemOptionsOpen = false
+				g.nativeSystemCursorOverlay = false
+				g.msg = ""
+			})
+			return true
+		}
+		if enter {
+			if !g.toggleNativeSystemOption(g.ringSel) {
+				g.msg = "原版系統設定值無效，未變更"
+			}
+			return true
+		}
+		return true
+	}
 	if g.nativeSystemCursorOverlay {
 		if !g.ring {
 			g.nativeSystemCursorOverlay = false
@@ -4782,8 +4822,19 @@ func (g *Game) ringInput() bool {
 				}
 				return true
 			}
-			// 只有 Down→END 已有同一存檔、同一輸入的未修改原版 E2；
-			// 其餘三格不由圖示外觀猜測動作 owner。
+			if g.ringSel == 2 {
+				if !g.nativeSystemOptionsReady() {
+					g.msg = "原版系統設定圖格不完整，未開啟選單"
+					return true
+				}
+				g.beginActionOverlayClose(func() {
+					g.nativeSystemOptionsOpen = true
+					g.beginActionOverlayOpen(0)
+				})
+				return true
+			}
+			// selector 0／1 是不同的巢狀存讀檔與全軍行軍交易；
+			// 不由圖示外觀猜測動作 owner。
 			g.msg = "原版續戰指令的此動作擁有者尚未驗證"
 		}
 		return true
@@ -7815,6 +7866,13 @@ func (g *Game) drawNativeActionOverlay(screen *ebiten.Image, cursorX, cursorY fl
 // wrapper: it uses 0x16f55's [7,5,6,4]/[0,0,0,0] tables and therefore must not
 // borrow the normalized selected-unit availability approximation.
 func (g *Game) nativeActionOverlayState() fdother.ActionOverlayState {
+	if g != nil && g.nativeSystemOptionsOpen {
+		state, err := g.currentNativeSystemOptions().ActionOverlayState()
+		if err == nil {
+			return state
+		}
+		return fdother.ActionOverlayState{Availability: [4]int{-1, -1, -1, -1}}
+	}
 	if g != nil && g.nativeSystemCursorOverlay {
 		return fdother.NativeContinueActionOverlayState()
 	}
