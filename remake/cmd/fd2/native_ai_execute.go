@@ -74,6 +74,17 @@ func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after 
 				g.finishSuccessfulUnitAction(actor, after)
 				g.checkResult()
 			})
+		case id >= 17 && id <= 19:
+			result, err := g.st.ExecuteNativeAICommandModifier(actor, id, g.nativeRNGState)
+			if err != nil {
+				return err
+			}
+			g.nativeRNGState = result.RNGState
+			count := len(result.WordSteps)
+			if id == 19 {
+				count = len(result.PairSteps)
+			}
+			message = fmt.Sprintf("原始指令 %d：完成 raw modifier (%d targets)", id, count)
 		case id == 20 || id == 21:
 			results, err := g.st.ExecuteNativeCommandClearRestore(actor, target, id, g.rng)
 			if err != nil {

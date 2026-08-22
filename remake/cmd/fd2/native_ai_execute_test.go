@@ -132,6 +132,64 @@ func TestExecuteNativeAICommand13WaitsForIndexedPresentation(t *testing.T) {
 	}
 }
 
+func completeNativeAIExecutorUnit() *battle.Unit {
+	return &battle.Unit{
+		OnField: true, HP: 100, MaxHP: 100, MP: 10, MaxMP: 10,
+		AP: 10, DP: 20, HIT: 30, EV: 40, MV: 5, Lv: 1,
+		NativeMapPresentation:    battle.NativeMapPresentationState{},
+		HasNativeMapPresentation: true,
+		BattleFig:                1, HasBattleFig: true,
+		NativeRecordByte8: 1, HasNativeRecordByte8: true,
+		NativeRecordRace: 1, HasNativeRecordRace: true,
+		NativeRecordClass: 1, HasNativeRecordClass: true,
+		NativeRecordByte5: 0, HasNativeRecordByte5: true,
+		NativeRecordByte6: 0, HasNativeRecordByte6: true,
+		NativeRecordByte34: 0x81, HasNativeRecordByte34: true,
+		NativeRecordByte35: 0, HasNativeRecordByte35: true,
+		NativeRecordByte36: 0, HasNativeRecordByte36: true,
+		NativeRecordWord42: 100, HasNativeRecordWord42: true,
+		NativeRecordWord46: 10, HasNativeRecordWord46: true,
+		InventorySlots:       []int{0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff},
+		NativeInventoryFlags: []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80},
+	}
+}
+
+func TestExecuteNativeAIActionConsumesVerifiedCommand17Transaction(t *testing.T) {
+	actor := completeNativeAIExecutorUnit()
+	actor.Camp, actor.MP, actor.AP = battle.Enemy, 10, 100
+	actor.NativeMapPresentation.X, actor.NativeMapPresentation.Y = 0, 0
+	actor.NativeRecordByte5, actor.NativeRecordByte6 = 0, 0
+	actor.NativeTransient = [6]byte{}
+	target := completeNativeAIExecutorUnit()
+	target.Camp, target.AP = battle.Enemy, 200
+	target.NativeMapPresentation.X, target.NativeMapPresentation.Y = 1, 0
+	target.NativeRecordByte5, target.NativeRecordByte6 = 0, 0
+	target.NativeTransient = [6]byte{}
+	book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
+	for id := range book {
+		book[id] = battle.NativeCommandRecord{ID: id}
+	}
+	book[17] = battle.NativeCommandRecord{ID: 17, SelectionMode: 1, EffectMode: 1, MPCost: 99, TargetCode: 1}
+	book[18] = battle.NativeCommandRecord{ID: 18, SelectionMode: 1, EffectMode: 0, MPCost: 4, TargetCode: 1}
+	g := &Game{
+		st: &battle.State{
+			W: 2, H: 1, Units: []*battle.Unit{actor, target},
+			NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: book,
+		},
+		rng: rand.New(rand.NewSource(1)),
+	}
+	plan := &battle.AIPlan{
+		U: actor, Target: target, NativeActionKind: battle.NativeAIActionCommand,
+		NativeCommandID: 17,
+	}
+	if err := g.executeNativeAIAction(plan); err != nil {
+		t.Fatal(err)
+	}
+	if actor.AP != 116 || target.AP != 231 || actor.MP != 6 || !actor.Acted || g.nativeRNGState == 0 {
+		t.Fatalf("actor=%#v target=%#v rng=%#x", actor, target, g.nativeRNGState)
+	}
+}
+
 func TestExecuteNativeAIActionRejectsUnknownItemRoute(t *testing.T) {
 	actor := &battle.Unit{Camp: battle.Enemy, OnField: true, X: 0, Y: 0}
 	target := &battle.Unit{Camp: battle.Own, OnField: true, X: 1, Y: 0}

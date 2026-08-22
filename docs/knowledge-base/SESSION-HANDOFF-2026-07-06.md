@@ -5584,3 +5584,18 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   戰場角色名冊／狀態面板，Return 在兩者間循環，Escape 回標題，無法抵達舊 ch02
   城鎮簽章。停止重播，不以直接注入替代；service2 mutation／restore 仍是原版 E2
   缺口，本批裁決只到 `RUNTIME-E1`。
+
+## 2026-08-22：command 17–19 原子交易與敵方 mode 11 消費端
+
+- 先重讀既有 IDA 證據與 SDD family matrix，沒有重解
+  `0x226EA／0x2282F／0x22960` 或其 writer。規格明確保留 ID17 使用 record17
+  selector、但由 record18 debit MP；ID18／19 分別使用自己的 debit record。
+- 新增 `ExecuteNativeCommandModifier`／`ExecuteNativeAICommandModifier`：final targets
+  先投影到私有 `0x50`-byte records，包含 raw class／level、六個 transient bytes 與
+  derived words；整批 `ApplyNativeCommandModifier` 成功後才一次發布 target、MP與
+  acted。缺record、selector、raw provenance、有效target、MP或16-bit word時零修改。
+- 敵方 `executeNativeAIAction` 現正式消費 IDs17–19，更新process-lifetime 16-bit RNG，
+  再走既有成功動作／AI continuation 邊界。玩家grid、status名稱、專用indexed演出、
+  SFX與phase-expiry caller沒有被猜測接入，仍失敗即關閉。
+- `internal/battle` 與 `cmd/fd2` 完整 Docker／Xvfb 套件回歸通過；本批提升的是窄
+  `RUNTIME-E1`，不是同狀態原版逐幀／逐音訊 E2。

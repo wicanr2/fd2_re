@@ -796,6 +796,14 @@ remake state/UI 仍未閉合，不能據此補出 gameplay names。
 推導「所有 handler 都把自身 command ID 傳給 `0x1CA89`」。ID19 則明確傳 `0x13`。這不改變其
 modifier writer／duration 證據，但阻止錯誤泛化 command transaction ABI。
 
+正式重製交易據此採原子發布契約：ID17 使用 record17 的 selector／target 欄位，但 MP debit
+明確取 record18；ID18／19 分別取 record18／19。所有 final targets 必須先能投影成私有
+`0x50`-byte runtime record，並在私有 buffer 完成 `ApplyNativeCommandModifier`；只有整批成功後，
+才一併發布 `+0x22..+0x24`、`+0x48..+0x4e`、actor MP 與 acted。缺 record、target、raw target
+provenance、16-bit derived word 或 MP 時均在 mutation 前失敗。此契約只關閉 state transaction
+與敵方 mode 11 消費端；因專用 indexed renderer、status label、SFX 與玩家格狀確認仍無證據，
+玩家 UI 不得據此開放 IDs17..19。
+
 IDs20..21 共享另一條「flag-present 才生效」route：`0x22A85/0x22BC6→0x22AA8→0x22AF6` 各以
 command ID 20/21 扣 MP，對每個 final target 讀 `+0x25/+0x26`。該 byte 為零時只走失敗 display；非零時呼叫
 `0x1C916(target,10)` 的既有 HP-restore writer、清零該 byte，並顯示結果。這證實 raw gate、clear 與
@@ -862,7 +870,7 @@ actor raw completion writer。它與 ID20/21「借 record10」的 clear/restore 
 | 0–8 | `0x2A6BD→2B659/1C75E`，two-stage final targets、MP event、numeric hit/HP | `ExecuteNativeCommandDamage`；ID0 有 target slice | 僅 ID0 grid target；compositor/SFX/post-resolution 未接 |
 | 9–12 | direct/`0x21548` tail → `1CA89→1C75E` | `ExecuteNativeCommandDamage` | 未接；numeric 共用不代表演出共用 |
 | 13–16 | `0x21AD9…0x22153→21EB1→21B18→1C8ED/1C916` | `BuildNativeCommandHealPresentationSchedule`＋玩家 `ExecuteNativeCommandHeal`／AI `ExecuteNativeAICommandHeal` | 玩家與敵方 mode 11 的 16 張 FDOTHER #3 LUT 前段已接；AI 依 raw selector 重建 target array；後段索引畫面／數字佇列與格狀確認 E2 未接 |
-| 17–19 | `0x226EA/2282F/22960` modifier writers、`+0x22..+0x24` duration；`__CHP` toward-zero 已釘死 | `ApplyNativeCommandModifier` 已接 raw writer；`ApplyNativeRuntimeEquipmentRecalc` 已保存 `0x1B750` 的 exact 1.15／朝零及HIT/EV+15。command transaction與phase-expiry caller仍未接 | 未接 |
+| 17–19 | `0x226EA/2282F/22960` modifier writers、`+0x22..+0x24` duration；`__CHP` toward-zero 已釘死 | `ExecuteNativeCommandModifier`／`ExecuteNativeAICommandModifier` 已以私有raw records原子發布target duration、derived words、MP與acted；ID17明確由record18扣MP。敵方mode 11已接，phase-expiry caller仍未接 | 未接；玩家grid與專用演出仍失敗即關閉 |
 | 20–21 | `0x22A85/22BC6→22AF6`，clear `+0x25/+0x26` 並借 record10 restore | `ExecuteNativeCommandClearRestore` | 未接 |
 | 22 | `0x22BE1→22D1B`，class/RNG gate、base10 經第二 RNG 實際9 HP、第三 RNG write `+0x27` | `ExecuteNativeCommandApplication` | 未接 |
 | 23 | `0x2218A→22253` special relocation selector | 已接 first target → mode-6 destination cursor；27-present indexed renderer 未接 | 已接 raw MP/座標 transaction |
