@@ -94,3 +94,16 @@ func TestExecuteNativeCommandApplicationRejectsUnknownIDBeforeMutation(t *testin
 		t.Fatalf("unknown application ID must fail closed: actor=%#v err=%v", actor, err)
 	}
 }
+
+func TestExecuteNativeCommandApplicationPreflightsBeforeMPDebit(t *testing.T) {
+	actor := &Unit{Camp: Own, OnField: true, HP: 20, MP: 5, X: 0, Y: 0}
+	target := &Unit{Camp: Enemy, ClassID: 2, OnField: true, HP: -1, X: 1, Y: 0}
+	st := &State{W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: nativeCommandApplicationBook(22)}
+
+	if _, err := st.ExecuteNativeCommandApplication(actor, target, 22, rand.New(rand.NewSource(1))); err == nil {
+		t.Fatal("invalid target HP state accepted")
+	}
+	if actor.MP != 5 || actor.Acted || target.HP != -1 || target.NativeTransient[5] != 0 {
+		t.Fatalf("failed preflight mutated actor=%#v target=%#v", actor, target)
+	}
+}

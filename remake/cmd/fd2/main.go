@@ -5944,19 +5944,68 @@ func (g *Game) confirm() {
 				g.msg = fmt.Sprintf("原始指令 %d：請選擇有效目標 (%v)", id, err)
 				return
 			}
-			err = g.startNativeCommandModifierPresentation(id, actor, targets, func() (battle.NativeCommandModifierResult, error) {
-				result, e := g.st.ExecuteNativeCommandModifier(actor, tgt, id, g.nativeRNGState)
+			var result battle.NativeCommandModifierResult
+			err = g.startNativeCommandPalettePresentation(id, func() error {
+				return g.st.ValidateNativeCommandModifierTargets(actor, targets, id)
+			}, func() error {
+				var e error
+				result, e = g.st.ExecuteNativeCommandModifier(actor, tgt, id, g.nativeRNGState)
 				if e == nil {
 					g.nativeRNGState = result.RNGState
 				}
-				return result, e
-			}, func(result battle.NativeCommandModifierResult) {
+				return e
+			}, func() {
 				count := len(result.WordSteps)
 				if id == 19 {
 					count = len(result.PairSteps)
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.msg = fmt.Sprintf("原始指令 %d：完成 raw modifier (%d targets)", id, count)
+				g.finishSuccessfulUnitAction(actor, func() {
+					g.resetNativeTargetField()
+					g.st.MaterializeNativeMapRangeMode(1)
+					g.nativeCommand0Targeting, g.nativeCommandTargetID, g.sel, g.reach, g.moved = false, 0, nil, nil, false
+				})
+				g.checkResult()
+			})
+			if err != nil {
+				g.msg = fmt.Sprintf("原始指令 %d：palette 演出不可用 (%v)", id, err)
+			}
+			return
+		}
+		if id >= 20 && id <= 22 {
+			actor := g.sel
+			var clearResults []battle.NativeCommandClearRestoreResult
+			var applicationResults []battle.NativeCommandApplicationResult
+			preflight := func() error {
+				if id == 20 || id == 21 {
+					_, _, err := g.st.NativeCommandClearRestoreTargets(actor, tgt, id)
+					return err
+				}
+				_, _, err := g.st.NativeCommandApplicationTargets(actor, tgt, id)
+				return err
+			}
+			transaction := func() error {
+				var err error
+				if id == 20 || id == 21 {
+					clearResults, err = g.st.ExecuteNativeCommandClearRestore(actor, tgt, id, g.rng)
+				} else {
+					applicationResults, err = g.st.ExecuteNativeCommandApplication(actor, tgt, id, g.rng)
+				}
+				return err
+			}
+			err := g.startNativeCommandPalettePresentation(id, preflight, transaction, func() {
+				if id == 20 || id == 21 {
+					g.msg = fmt.Sprintf("原始指令 %d：完成 raw interval 處理 (%d targets)", id, len(clearResults))
+				} else {
+					for _, result := range applicationResults {
+						if result.Damage > 0 {
+							g.awardDeathReward(result.Target, actor)
+						}
+					}
+					g.msg = fmt.Sprintf("原始指令 22：完成 raw application (%d targets)", len(applicationResults))
+				}
+				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
@@ -5988,11 +6037,7 @@ func (g *Game) confirm() {
 				damageTargets = append(damageTargets, result.Target)
 			}
 			message = fmt.Sprintf("原始指令 0：命中 %d，傷害 %d", hit, total)
-		case id == 20 || id == 21:
-			results, e := g.st.ExecuteNativeCommandClearRestore(g.sel, tgt, id, g.rng)
-			err = e
-			message = fmt.Sprintf("原始指令 %d：完成 raw interval 處理 (%d targets)", id, len(results))
-		case id == 22 || id == 26 || id == 27:
+		case id == 26 || id == 27:
 			results, e := g.st.ExecuteNativeCommandApplication(g.sel, tgt, id, g.rng)
 			err = e
 			for _, result := range results {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
 	"os"
 	"path/filepath"
@@ -461,5 +462,86 @@ func TestPlayerNativeCommand17WaitsForEightPalettePhasesBeforeTransaction(t *tes
 	if g.nativeModifierPresentation != nil || actor.MP != 6 || actor.AP != 116 ||
 		actor.NativeTransient[0] != 2 || !actor.Acted {
 		t.Fatalf("command17 transaction actor=%#v job=%v", actor, g.nativeModifierPresentation != nil)
+	}
+}
+
+func TestPlayerNativeCommands20And22UseSharedPaletteBoundary(t *testing.T) {
+	for _, commandID := range []int{20, 22} {
+		t.Run(fmt.Sprintf("command_%d", commandID), func(t *testing.T) {
+			assets, field, state := completeNativeMapFrameFixture(t)
+			book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
+			for id := range book {
+				book[id] = battle.NativeCommandRecord{ID: id}
+			}
+			book[10].Damage = 100
+			book[commandID] = battle.NativeCommandRecord{
+				ID: commandID, SelectionMode: 1, EffectMode: 0, MPCost: 2, TargetCode: 1,
+			}
+			actor := state.Units[0]
+			actor.Camp, actor.OnField, actor.MP = battle.Own, true, 5
+			actor.HP, actor.MaxHP = 10, 100
+			state.NativeCommandBook = book
+			state.NativeCompositionEventBytes = make([]byte, state.W*state.H)
+			state.NativeTileBlitModes[0], field.NativeTileBlitModes[0] = 0, 0
+			state.MaterializeNativeMapRangeMode(3)
+
+			if commandID == 22 {
+				book[22].TargetCode = 0
+			}
+			table, err := battle.LoadNativeCommandPaletteFlashTable("../../assets/data/native_command_palette_flash.json")
+			if err != nil {
+				t.Fatal(err)
+			}
+			g := &Game{
+				nativeMapAssets: assets, nativeMapDAC: append([]byte(nil), assets.PaletteDAC...),
+				m: field, st: state, sel: actor,
+				nativeCommand0Targeting: true, nativeCommandTargetID: commandID,
+				nativeCommandPaletteFlash: table, rng: rand.New(rand.NewSource(0)),
+			}
+			if err := g.composeNativeMapFrameAt(time.Unix(0, 0)); err != nil {
+				t.Fatal(err)
+			}
+			target := &battle.Unit{
+				Camp: battle.Own, OnField: true, HP: 1, MaxHP: 100,
+				X: 1, Y: 0, NativeTransient: [6]byte{0, 0, 0, 3},
+				NativeRecordByte5: 0, HasNativeRecordByte5: true,
+				NativeRecordByte6: 0, HasNativeRecordByte6: true,
+			}
+			if commandID == 22 {
+				target.Camp, target.ClassID, target.HP, target.MaxHP = battle.Enemy, 2, 20, 20
+				target.NativeRecordByte6 = 1
+				target.NativeTransient = [6]byte{}
+			}
+			state.Units = append(state.Units, target)
+			state.NativeTileBlitModes[target.Y*state.W+target.X] = 0
+			g.curX, g.curY = target.X, target.Y
+			if allowed, gateErr := battle.NativeCursorConfirmationAllowed(
+				battle.Cell{X: g.curX, Y: g.curY}, 0, state.NativeMapRangeMode,
+				book[commandID].TargetCode, state.Units,
+			); gateErr != nil || !allowed {
+				t.Fatalf("command %d fixture cursor gate allowed=%v err=%v range=%d targetCode=%d",
+					commandID, allowed, gateErr, state.NativeMapRangeMode, book[commandID].TargetCode)
+			}
+			t.Setenv("FD2_MUTE", "1")
+			g.confirm()
+			if g.nativeModifierPresentation == nil || actor.MP != 5 || actor.Acted {
+				t.Fatalf("command %d crossed pre-presentation boundary: actor=%#v msg=%q", commandID, actor, g.msg)
+			}
+			for phase := 0; phase < 8; phase++ {
+				if !g.drawNativeCommandModifierPresentation(ebiten.NewImage(640, 400)) {
+					t.Fatalf("command %d phase %d did not draw", commandID, phase)
+				}
+				g.stepNativeCommandModifierPresentation()
+			}
+			if g.nativeModifierPresentation != nil || actor.MP != 3 || !actor.Acted ||
+				g.nativeCommand0Targeting || g.sel != nil || state.NativeMapRangeMode != 1 {
+				t.Fatalf("command %d transaction/cleanup actor=%#v job=%v targeting=%v sel=%#v range=%d",
+					commandID, actor, g.nativeModifierPresentation != nil,
+					g.nativeCommand0Targeting, g.sel, state.NativeMapRangeMode)
+			}
+			if commandID == 20 && target.NativeTransient[3] != 0 {
+				t.Fatalf("command 20 did not clear raw +0x25: %#v", target.NativeTransient)
+			}
+		})
 	}
 }

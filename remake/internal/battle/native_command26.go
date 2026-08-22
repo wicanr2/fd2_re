@@ -27,32 +27,14 @@ type NativeCommandApplicationResult struct {
 // (ID26) or +0x26 (ID27). It intentionally does not map any offset onto the
 // legacy named status approximation.
 func (s *State) ExecuteNativeCommandApplication(actor, confirmed *Unit, commandID int, rng *rand.Rand) ([]NativeCommandApplicationResult, error) {
-	if s == nil || rng == nil {
+	if rng == nil {
 		return nil, fmt.Errorf("missing native command application state/rng")
 	}
-	offset := 0
-	switch commandID {
-	case 22:
-		offset = 0x27
-	case 26:
-		offset = 0x25
-	case 27:
-		offset = 0x26
-	default:
-		return nil, fmt.Errorf("native command application unavailable id=%d", commandID)
-	}
-	if len(s.NativeCommandBook) != 36 || s.NativeCommandBook[commandID].ID != commandID {
-		return nil, fmt.Errorf("native command application record unavailable id=%d", commandID)
+	targets, offset, err := s.NativeCommandApplicationTargets(actor, confirmed, commandID)
+	if err != nil {
+		return nil, err
 	}
 	record := s.NativeCommandBook[commandID]
-	flags, err := s.NativeCommandBaseFlags()
-	if err != nil {
-		return nil, err
-	}
-	targets, err := NativeCommandEffectTargets(s.W, s.H, actor, confirmed, record.SelectionMode, record.EffectMode, record.TargetCode, flags, s.Units)
-	if err != nil {
-		return nil, err
-	}
 	if !SpendNativeCommandMP(actor, record.MPCost) {
 		return nil, fmt.Errorf("native command application insufficient MP")
 	}
@@ -72,4 +54,44 @@ func (s *State) ExecuteNativeCommandApplication(actor, confirmed *Unit, commandI
 	}
 	actor.Acted = true
 	return results, nil
+}
+
+// NativeCommandApplicationTargets performs the complete non-mutating target
+// and MP preflight used before the player-only 0x1D6C8 presentation.
+func (s *State) NativeCommandApplicationTargets(actor, confirmed *Unit, commandID int) ([]*Unit, int, error) {
+	if s == nil || actor == nil {
+		return nil, 0, fmt.Errorf("missing native command application state/actor")
+	}
+	offset := 0
+	switch commandID {
+	case 22:
+		offset = 0x27
+	case 26:
+		offset = 0x25
+	case 27:
+		offset = 0x26
+	default:
+		return nil, 0, fmt.Errorf("native command application unavailable id=%d", commandID)
+	}
+	if len(s.NativeCommandBook) != 36 || s.NativeCommandBook[commandID].ID != commandID {
+		return nil, 0, fmt.Errorf("native command application record unavailable id=%d", commandID)
+	}
+	record := s.NativeCommandBook[commandID]
+	if record.MPCost < 0 || actor.MP < record.MPCost {
+		return nil, 0, fmt.Errorf("native command application insufficient MP")
+	}
+	flags, err := s.NativeCommandBaseFlags()
+	if err != nil {
+		return nil, 0, err
+	}
+	targets, err := NativeCommandEffectTargets(s.W, s.H, actor, confirmed, record.SelectionMode, record.EffectMode, record.TargetCode, flags, s.Units)
+	if err != nil {
+		return nil, 0, err
+	}
+	for _, target := range targets {
+		if target == nil || target.HP < 0 {
+			return nil, 0, fmt.Errorf("invalid native command application target state")
+		}
+	}
+	return targets, offset, nil
 }

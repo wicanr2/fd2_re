@@ -44,30 +44,14 @@ type NativeCommandClearRestoreResult struct {
 // native 0x1C916 is deliberately invoked with record10's damage field, then
 // the nonzero target raw interval is cleared. No named status is inferred.
 func (s *State) ExecuteNativeCommandClearRestore(actor, confirmed *Unit, commandID int, rng *rand.Rand) ([]NativeCommandClearRestoreResult, error) {
-	if s == nil || rng == nil {
+	if rng == nil {
 		return nil, fmt.Errorf("missing native command clear/restore state/rng")
 	}
-	offset := 0
-	switch commandID {
-	case 20:
-		offset = 0x25
-	case 21:
-		offset = 0x26
-	default:
-		return nil, fmt.Errorf("native command clear/restore unavailable id=%d", commandID)
-	}
-	if len(s.NativeCommandBook) != 36 || s.NativeCommandBook[commandID].ID != commandID || s.NativeCommandBook[10].ID != 10 {
-		return nil, fmt.Errorf("native command clear/restore records unavailable id=%d", commandID)
+	targets, offset, err := s.NativeCommandClearRestoreTargets(actor, confirmed, commandID)
+	if err != nil {
+		return nil, err
 	}
 	record := s.NativeCommandBook[commandID]
-	flags, err := s.NativeCommandBaseFlags()
-	if err != nil {
-		return nil, err
-	}
-	targets, err := NativeCommandEffectTargets(s.W, s.H, actor, confirmed, record.SelectionMode, record.EffectMode, record.TargetCode, flags, s.Units)
-	if err != nil {
-		return nil, err
-	}
 	if !SpendNativeCommandMP(actor, record.MPCost) {
 		return nil, fmt.Errorf("native command clear/restore insufficient MP")
 	}
@@ -76,10 +60,7 @@ func (s *State) ExecuteNativeCommandClearRestore(actor, confirmed *Unit, command
 		result := NativeCommandClearRestoreResult{Target: target, Offset: offset}
 		duration, _ := target.NativeTransientDuration(offset)
 		if duration != 0 {
-			restore, err := ApplyNativeCommandRestore(target, s.NativeCommandBook[10].Damage, rng)
-			if err != nil {
-				return nil, err
-			}
+			restore, _ := ApplyNativeCommandRestore(target, s.NativeCommandBook[10].Damage, rng)
 			target.SetNativeTransientDuration(offset, 0)
 			result.Cleared, result.Restore = true, restore
 		}
@@ -87,4 +68,42 @@ func (s *State) ExecuteNativeCommandClearRestore(actor, confirmed *Unit, command
 	}
 	actor.Acted = true
 	return results, nil
+}
+
+// NativeCommandClearRestoreTargets performs the complete non-mutating
+// transaction preflight needed before the player-only 0x1D6C8 presentation.
+func (s *State) NativeCommandClearRestoreTargets(actor, confirmed *Unit, commandID int) ([]*Unit, int, error) {
+	if s == nil || actor == nil {
+		return nil, 0, fmt.Errorf("missing native command clear/restore state/actor")
+	}
+	offset := 0
+	switch commandID {
+	case 20:
+		offset = 0x25
+	case 21:
+		offset = 0x26
+	default:
+		return nil, 0, fmt.Errorf("native command clear/restore unavailable id=%d", commandID)
+	}
+	if len(s.NativeCommandBook) != 36 || s.NativeCommandBook[commandID].ID != commandID || s.NativeCommandBook[10].ID != 10 {
+		return nil, 0, fmt.Errorf("native command clear/restore records unavailable id=%d", commandID)
+	}
+	record := s.NativeCommandBook[commandID]
+	if record.MPCost < 0 || actor.MP < record.MPCost || s.NativeCommandBook[10].Damage < 0 {
+		return nil, 0, fmt.Errorf("native command clear/restore cost/amount unavailable")
+	}
+	flags, err := s.NativeCommandBaseFlags()
+	if err != nil {
+		return nil, 0, err
+	}
+	targets, err := NativeCommandEffectTargets(s.W, s.H, actor, confirmed, record.SelectionMode, record.EffectMode, record.TargetCode, flags, s.Units)
+	if err != nil {
+		return nil, 0, err
+	}
+	for _, target := range targets {
+		if target == nil || target.HP < 0 || target.MaxHP < 0 || target.HP > target.MaxHP {
+			return nil, 0, fmt.Errorf("invalid native command clear/restore target state")
+		}
+	}
+	return targets, offset, nil
 }

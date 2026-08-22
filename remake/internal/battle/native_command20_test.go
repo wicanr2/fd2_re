@@ -47,3 +47,16 @@ func TestApplyNativeCommandRestoreClampsStateButReportsRolledAmount(t *testing.T
 		t.Fatalf("restore cap = %#v target=%#v err=%v", got, target, err)
 	}
 }
+
+func TestExecuteNativeCommandClearRestorePreflightsBeforeMPDebit(t *testing.T) {
+	actor := &Unit{Camp: Own, OnField: true, HP: 10, MP: 5, X: 0, Y: 0}
+	target := &Unit{Camp: Own, OnField: true, HP: 11, MaxHP: 10, X: 1, Y: 0, NativeTransient: [6]byte{0, 0, 0, 3}}
+	st := &State{W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: nativeCommandClearRestoreBook(20)}
+
+	if _, err := st.ExecuteNativeCommandClearRestore(actor, target, 20, rand.New(rand.NewSource(2))); err == nil {
+		t.Fatal("invalid target HP state accepted")
+	}
+	if actor.MP != 5 || actor.Acted || target.NativeTransient[3] != 3 || target.HP != 11 {
+		t.Fatalf("failed preflight mutated actor=%#v target=%#v", actor, target)
+	}
+}

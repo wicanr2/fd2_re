@@ -5617,3 +5617,17 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   record18 MP debit。此切片提升玩家與敵方 command 17–19 至 `RUNTIME-E1`；尚未
   證實的 phase-expiry正式 caller、status UI、精確 DOS tick及同狀態逐幀／逐音訊
   `PLAYER-E2` 仍保留，不以近似行為冒稱原版一致。
+
+## 2026-08-22：command 20–22 共用玩家色盤 owner
+
+- 既有 IDA `0x1CFF0→0x1D6C8` 範圍直接涵蓋 command 20–22，故不重解
+  palette loop；證據檔擴充標題與 DAC 值，20／21為`(0x3F,0x28,0x1E)`，22為
+  `(0x23,0,0)`。三者與17–19同樣先播放`FDOTHER #88`子音效0，再走四輪
+  command-color／black。
+- 玩家正式入口不再於游標確認時立即執行20／21 clear／restore或22 application。
+  新增非破壞 preflight，先驗證record、final targets、MP、RNG與HP bounds；八個
+  phase均經Draw後才交易並清理selection／range。深層target失敗時MP、acted、HP與
+  raw interval皆保持不變；AI仍不套用玩家palette owner。
+- Docker／Xvfb聚焦測試走過command20的`+0x25`清除及command22 application，完整
+  `go test ./... -count=1`亦通過。本批為玩家`RUNTIME-E1`；status名稱、expiry UI、
+  精確DOS tick與同狀態逐音訊`PLAYER-E2`仍未閉合。

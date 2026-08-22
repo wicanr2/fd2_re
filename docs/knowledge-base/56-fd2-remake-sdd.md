@@ -814,6 +814,14 @@ entry0 寫為三張36-byte tables 的 command RGB、等待 `0x17AA9(1)`、寫黑
 Draw-ack phases；第八 phase 完成後才執行上述原子交易與range cleanup。AI `0x15311`直接進
 effect table，不套用玩家 `0x1D6C8`。status名稱／icon、DOS精確tick及同狀態逐音訊E2仍未知。
 
+同一玩家 `0x1CFF0→0x1D6C8` dispatch 也涵蓋 command 20–22；它們不可因 effect
+family 不同就略過共同 sample／palette owner。正式入口在演出前必須完整驗證 command
+record、final targets、MP、RNG、target HP bounds、raw interval與所有呈現資產；驗證失敗時
+不得播放 sample、發布 palette、扣 MP 或改 target。八個 Draw-ack phases 完成後，20／21
+才走既有 `+0x25/+0x26` clear／record10 restore，22 才走 `+0x27` application；完成後共用
+range／selection cleanup。三個 status 名稱與 expiry feedback 尚未知，玩家訊息只能描述 raw
+offset／交易結果，不得冒稱原版狀態名稱。AI `0x15311` 仍直接進 effect table，不套用此玩家演出。
+
 IDs20..21 共享另一條「flag-present 才生效」route：`0x22A85/0x22BC6→0x22AA8→0x22AF6` 各以
 command ID 20/21 扣 MP，對每個 final target 讀 `+0x25/+0x26`。該 byte 為零時只走失敗 display；非零時呼叫
 `0x1C916(target,10)` 的既有 HP-restore writer、清零該 byte，並顯示結果。這證實 raw gate、clear 與
@@ -881,8 +889,8 @@ actor raw completion writer。它與 ID20/21「借 record10」的 clear/restore 
 | 9–12 | direct/`0x21548` tail → `1CA89→1C75E` | `ExecuteNativeCommandDamage` | 未接；numeric 共用不代表演出共用 |
 | 13–16 | `0x21AD9…0x22153→21EB1→21B18→1C8ED/1C916` | `BuildNativeCommandHealPresentationSchedule`＋玩家 `ExecuteNativeCommandHeal`／AI `ExecuteNativeAICommandHeal` | 玩家與敵方 mode 11 的 16 張 FDOTHER #3 LUT 前段已接；AI 依 raw selector 重建 target array；後段索引畫面／數字佇列與格狀確認 E2 未接 |
 | 17–19 | `0x1CFF0→1D6C8→226EA/2282F/22960`；#88 sub0、八個DAC phases、modifier writers與`+0x22..+0x24` duration已釘死 | `ExecuteNativeCommandModifier`／`ExecuteNativeAICommandModifier` 已以私有raw records原子發布target duration、derived words、MP與acted；ID17明確由record18扣MP。玩家與敵方mode 11均已接，phase-expiry caller仍未接 | 玩家grid＋八phase palette／sample已接E1；status icon／精確tick／逐音訊E2未接 |
-| 20–21 | `0x22A85/22BC6→22AF6`，clear `+0x25/+0x26` 並借 record10 restore | `ExecuteNativeCommandClearRestore` | 未接 |
-| 22 | `0x22BE1→22D1B`，class/RNG gate、base10 經第二 RNG 實際9 HP、第三 RNG write `+0x27` | `ExecuteNativeCommandApplication` | 未接 |
+| 20–21 | `0x1CFF0→1D6C8→22A85/22BC6→22AF6`，#88 sub0＋八個DAC phases，clear `+0x25/+0x26` 並借 record10 restore | `ExecuteNativeCommandClearRestore`；完整preflight後才允許玩家演出與交易 | 玩家grid＋八phase palette／sample已接E1；status名稱、expiry UI、精確tick／逐音訊E2未接 |
+| 22 | `0x1CFF0→1D6C8→22BE1→22D1B`，#88 sub0＋八個DAC phases，class/RNG gate、base10 經第二 RNG 實際9 HP、第三 RNG write `+0x27` | `ExecuteNativeCommandApplication`；完整preflight後才允許玩家演出與交易 | 玩家grid＋八phase palette／sample已接E1；status名稱、expiry UI、精確tick／逐音訊E2未接 |
 | 23 | `0x2218A→22253` special relocation selector | 已接 first target → mode-6 destination cursor；27-present indexed renderer 未接 | 已接 raw MP/座標 transaction |
 | 24 | 玩家 `2A6BD→276EC→2B659/1CA89→1C81F`：`actor +48 * 15/10 - target +4a`；AI table 另別名 `22153`，不可混用 | `ExecuteNativeCommand24`（state-only final delta） | multi-hit／SFX／native UI 未接 |
 | 28, 29, 31 | 同玩家 `276EC` derived-strike route，倍率分別 20、12、18；各自 record MP/一般 two-stage selector | `ExecuteNativeCommandDerivedStrike` | multi-hit／SFX／native UI 未接 |

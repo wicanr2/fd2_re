@@ -6,7 +6,6 @@ import (
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
@@ -17,22 +16,23 @@ type nativeCommandModifierPresentationJob struct {
 	palettes    []color.Palette
 	phase       int
 	drawn       bool
-	transaction func() (battle.NativeCommandModifierResult, error)
-	then        func(battle.NativeCommandModifierResult)
+	transaction func() error
+	then        func()
 }
 
-// startNativeCommandModifierPresentation owns the recovered player-only
-// 0x1D6C8 boundary: FDOTHER #88 sub0, then four command-color/black DAC entry
-// zero cycles. The state transaction cannot run until all eight phases were
-// acknowledged by Draw.
-func (g *Game) startNativeCommandModifierPresentation(
+// startNativeCommandPalettePresentation owns the recovered player-only
+// 0x1D6C8 boundary shared by commands 17..22: FDOTHER #88 sub0, then four
+// command-color/black DAC-entry-zero cycles. The caller's complete transaction
+// preflight runs before sample/palette output, and mutation cannot run until
+// all eight phases were acknowledged by Draw.
+func (g *Game) startNativeCommandPalettePresentation(
 	commandID int,
-	actor *battle.Unit,
-	targets []*battle.Unit,
-	transaction func() (battle.NativeCommandModifierResult, error),
-	then func(battle.NativeCommandModifierResult),
+	preflight func() error,
+	transaction func() error,
+	then func(),
 ) error {
-	if g == nil || g.st == nil || transaction == nil || commandID < 17 || commandID > 19 {
+	if g == nil || g.st == nil || preflight == nil || transaction == nil ||
+		commandID < 17 || commandID > 22 {
 		return errors.New("native command modifier presentation context unavailable")
 	}
 	if g.nativeModifierPresentation != nil || g.nativeHealPresentation != nil || g.indexedTransition != nil {
@@ -45,7 +45,7 @@ func (g *Game) startNativeCommandModifierPresentation(
 	if g.nativeMapDAC[0] != 0 || g.nativeMapDAC[1] != 0 || g.nativeMapDAC[2] != 0 {
 		return errors.New("native command modifier baseline DAC entry zero is not black")
 	}
-	if err := g.st.ValidateNativeCommandModifierTargets(actor, targets, commandID); err != nil {
+	if err := preflight(); err != nil {
 		return err
 	}
 	if !osMuteOrShot(g) && len(g.sfxCommandModifier) == 0 {
@@ -86,7 +86,7 @@ func (g *Game) stepNativeCommandModifierPresentation() {
 	if j.phase < len(j.palettes) {
 		return
 	}
-	result, err := j.transaction()
+	err := j.transaction()
 	then := j.then
 	g.nativeModifierPresentation = nil
 	if err != nil {
@@ -94,7 +94,7 @@ func (g *Game) stepNativeCommandModifierPresentation() {
 		return
 	}
 	if then != nil {
-		then(result)
+		then()
 	}
 }
 
