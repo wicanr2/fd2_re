@@ -43,6 +43,23 @@ func NativeContinueActionOverlayState() ActionOverlayState {
 	}
 }
 
+// NativeNestedSystemActionOverlayState reproduces sub_19DF7's nested
+// battlefield menu. The first table is [12,13,14,15]. Only the directly
+// proven table writers are represented here: index 1 becomes one when the
+// raw runtime-record predicate matches, and index 2 becomes one when FD2.SAV
+// is absent. The cell variants do not by themselves prove a generic
+// enabled/disabled meaning; action transactions remain owned by callers.
+func NativeNestedSystemActionOverlayState(saveGateSet, saveFileAbsent bool) ActionOverlayState {
+	state := ActionOverlayState{DirectionState: [4]int{12, 13, 14, 15}}
+	if saveGateSet {
+		state.Availability[1] = 1
+	}
+	if saveFileAbsent {
+		state.Availability[2] = 1
+	}
+	return state
+}
+
 // NativeSystemOptions preserves the four raw bytes read and written by
 // FD2.EXE 0x1728c. The address-derived names keep this typed adapter honest:
 // higher-level meanings come from the independently proven consumers.

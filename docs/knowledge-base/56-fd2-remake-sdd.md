@@ -5286,3 +5286,32 @@ HUD persistence。`0x53AF9!=0` 時，在原版 abbreviated presentation owner �
 全數持久化。舊 JSON 缺欄位時採原版初始值 `0,1,1,1`，但顯式越界值必須拒絕。
 目前完成本選單只可標成 `RUNTIME-E1`；尚缺同狀態原版逐幀與聽覺驗證，不能
 提升為 `PLAYER-E2`。
+
+## 2026-08-22 空游標巢狀系統選單前置規格
+
+主證據為
+[`fd2_nested_system_menu_ida.txt`](../data/ida/fd2_nested_system_menu_ida.txt)。
+外層 selector0 必須先驗證 nested cells `36、39/41、42/44、45`，完成外層四次
+closing present後才開巢狀面板。第二表 index1 由 runtime raw `+5` bit組合的
+直接 writer 決定，index2 由 `FD2.SAV` 是否不存在決定；cell變體本身不再被泛化
+命名成啟用／停用語意。缺raw provenance時不可猜值。巢狀Escape經四次closing
+返回戰場，不得觸發任何交易。
+
+selector0的`0x1B1E7`須一次預建320×200 indexed baseline、資訊畫面、12張展開與
+12張收合；資訊畫面消費archive entries `0x85..0x88`、FDTXT、章節、round、
+currency及三camp的typed count。等待輸入期間只推進已證實的animation clock與
+DAC 224..239 pulse。任一資源或count provenance缺失時，巢狀面板不得先收掉。
+
+selector1原版保存完整current-runtime，selector2以`0x10010`完整還原，selector3
+回傳`-1`。現有JSON battle-node restart與原版current-runtime snapshot不是同一
+交易；上層離場目的地也尚未閉合。因此本規格先授權nested selector與selector0
+資訊畫面，不授權把selector1／2接到語意不同的save helper，也不授權猜selector3
+目的地。這些分支完成前仍維持失敗即關閉。
+
+實作現況：`NativeNestedSystemActionOverlayState`、
+`ComposeNativeSystemInfoSurface`、`NativeSystemInfoCampCounts` 與
+`NativeSystemInfoTransitionFrames` 已接到正式空游標鍵盤路徑。selector0會先完整
+預建四個panel、六個十進位欄位、兩行FDTXT、12張展開與12張收合，再關閉巢狀
+面板；等待任意鍵期間沿用已閉合的`0x4DFCC` DAC `0xE0..0xEF`循環。缺完整
+runtime raw欄位、indexed VGA／DAC、panel、字型或文字時不發布第一幀。此切片列為
+`RUNTIME-E1`；尚缺原版同狀態逐幀、BIOS tick相位與輸入flush的`PLAYER-E2`。

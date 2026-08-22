@@ -234,7 +234,9 @@ func blitNativeItemPanelNumber(
 	if width == 2 && value > 99 {
 		return blitNativeItemPanelDigitFrame(frames, dst, destination, 93)
 	}
-	if width != 2 && width != 3 && width != 5 {
+	// sub_187D6 is also called with width 8 by sub_1B41D for the
+	// battlefield-information currency field.
+	if width != 2 && width != 3 && width != 5 && width != 8 {
 		return fmt.Errorf("battle: native item panel number width %d is unsupported", width)
 	}
 	text := fmt.Sprintf("%0*d", width, value)

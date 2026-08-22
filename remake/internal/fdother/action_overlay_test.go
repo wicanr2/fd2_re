@@ -47,6 +47,21 @@ func TestNativeContinueActionOverlayStateMatches16F55InitialTables(t *testing.T)
 	}
 }
 
+func TestNativeNestedSystemActionOverlayStateMatches19DF7Tables(t *testing.T) {
+	state := NativeNestedSystemActionOverlayState(true, true)
+	if state.DirectionState != [4]int{12, 13, 14, 15} ||
+		state.Availability != [4]int{0, 1, 1, 0} {
+		t.Fatalf("nested system state=%+v", state)
+	}
+	want := [4]int{36, 41, 44, 45}
+	for direction := range want {
+		got, err := state.CellIndex(direction)
+		if err != nil || got != want[direction] {
+			t.Fatalf("direction %d: cell=%d err=%v, want %d", direction, got, err, want[direction])
+		}
+	}
+}
+
 func TestNativeSystemOptionsMatch1728CCellsAndBooleanToggles(t *testing.T) {
 	options := DefaultNativeSystemOptions()
 	state, err := options.ActionOverlayState()

@@ -116,6 +116,19 @@ func TestRenderNativeItemPanelDataFailsAtomicallyOnTextControl(t *testing.T) {
 	}
 }
 
+func TestRenderNativeFacilityNumberAccepts1B41DCurrencyWidth(t *testing.T) {
+	assets := nativeItemPanelTestAssets(t, 0)
+	dst := make([]byte, nativeItemPanelBytes)
+	if err := RenderNativeFacilityNumber(assets, dst, 10, 20, 12345678, 31, 8); err != nil {
+		t.Fatal(err)
+	}
+	for digit, want := range []byte{32, 33, 34, 35, 36, 37, 38, 39} {
+		if got := dst[20*320+10+digit*6]; got != want {
+			t.Fatalf("digit %d=%d, want %d", digit, got, want)
+		}
+	}
+}
+
 func TestRenderNativeItemPanelRowsMatches184C0GeometryAndSelection(t *testing.T) {
 	assets := nativeItemPanelTestAssets(t, 0)
 	record := make([]byte, nativeRecordSize)

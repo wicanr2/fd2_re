@@ -1,0 +1,112 @@
+# FD2.EXE 0x19DF7 巢狀系統選單與 0x1B1E7 戰場資訊畫面
+
+日期：2026-08-22
+
+## 輸入與工具
+
+- `FD2.EXE`：357074 bytes
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 第一工具：使用者合法提供的 IDA Pro 9.4.0.260610，Docker
+  `fd2-ida-authorized-local`／`idat`；位址均為 IDA linear address。
+- 第二工具：Docker `fd2-cap-local`／Capstone；已覆核
+  `0x19DF7..0x1A30B` 的直接分派、table stack offsets與交易邊界。
+- 原始函式名、位址與運算元均保留；下列語意是附加層，不取代原始定位。
+
+## `sub_19DF7` 四格分派（已證實）
+
+`0x19E07..0x19E23` 複製第一表 `0x51EF5=[12,13,14,15]` 與第二表
+`0x53F22=[0,0,0,0]`。依 `0x1741C` 的已證實公式，正常 cells 為
+`36/39/42/45`。
+
+- `0x19E25..0x19E71`：`FD2.SAV` 不存在時寫 second table index2=1，
+  讀檔 cell 由42改為44。
+- `0x19E79..0x19EAC`：逐 runtime record 檢查 raw `+5 bit0==0` 且
+  `bit7!=0`；命中時寫 second table index1=1，存檔 cell 由39改為41。
+  這只證實 availability writer；bit組合的玩家語意仍未知。
+- `0x19EB6` opening、`0x19EC6` interactive selector、`0x19EDC` closing，
+  完成後以 `0x11CAC(0)` 重繪 field。
+- Escape／selector return `-1` 於 `0x19EEE..0x19EF5` 回到外層，不執行交易。
+
+selector owner：
+
+| index | 直接指令 | 附加語意 | 等級 |
+|---|---|---|---|
+| 0 | `0x19F03 call sub_1B1E7` | 戰場資訊畫面 | 已證實；見下一節的 renderer consumer |
+| 1 | `0x19F1A..0x1A198` | 保存目前戰況到 `FD2.SAV` | 已證實 |
+| 2 | `0x1A1AA..0x1A256` | 從 `FD2.SAV` 讀取目前戰況 | 已證實 |
+| 3 | `0x1A25B..0x1A306` | 離開戰場並回傳 `-1` | 已證實；上層目的地仍須沿 caller 補證 |
+
+## selector1／2／3 交易（已證實）
+
+- selector1 問句 FDTXT `0x19A`，成功 `0x19B`，取消 `0x19C`。
+  YES且 choice0 時建立 `0x59CB` bytes，依序保存 field control `0x8A3`、
+  persistent records `0xA00`、runtime records `count*0x50`、event state
+  `0x20` 與18-byte header，再 checksum／encode／覆寫 `FD2.SAV`。
+- selector2 問句 `0x19D`，YES文字 `0x19E`；停止BGM後呼叫 `0x10010`，
+  隨後經共同 `0x4E031` input flush 返回戰場 controller。
+- selector3 問句 `0x19F`，YES文字 `0x1A0`；停止BGM、等待200 ms、關閉
+  dialogue後回傳 `-1`。取消沿外層 `0x1716F` 使用共同取消文字 `0x19C`。
+- 四項系統設定保存於 current header `+14..+17`；與
+  `fd2_system_overlay_options_ida.txt` 一致。
+
+## `sub_1B1E7` 戰場資訊畫面（已證實／局部強推論）
+
+已證實的畫面生命週期：
+
+1. 分配兩個 `0xFA00`（320×200）buffer；保存目前 VGA／field source。
+2. `0x1B41D` 以 `0x53A81` archive entries `0x85..0x88`、FDTXT、章節、
+   round、currency及三個 camp的可用單位 count組成資訊畫面。
+3. index `0..11` 各做四個 clipped copy helper後 present，共12次展開。
+4. `0x10620` 偵測 BIOS keyboard head／tail不相等；等待期間呼叫
+   `0x1297D` animation clock、`0x4DFCC` DAC 224..239 palette pulse並重繪。
+5. input 到達後先 `0x4E031` flush，再以 index `11..0` 共12次收合，復原
+   原始 VGA，釋放 buffers，再回到 `0x10C49` field redraw boundary。
+
+`0x1B41D` 中可直接閉合的數值 consumer：
+
+- `0x53C03+1` 以兩位十進位輸出；
+- `0x53BEF` 以三位十進位輸出；
+- `0x53BF3` 以八位十進位輸出；
+- `sub_1B5F1(0/2/1)` 分別計數 camp 0／2／1 中通過 raw record、portrait
+  `!=0x79`、class `!=10` 與 `sub_3453E==0` gate 的單位，再以兩位輸出；
+- 兩行 FDTXT index 由 `2*chapter+0x255`（chapter16且缺item18時減2）與
+  其後一項建立。
+
+直接 call argument固定的畫面幾何如下；這些是 indexed framebuffer座標，
+不是依截圖量測：
+
+| 來源／值 | x | y | 寬／十進位位數 | 高 |
+|---|---:|---:|---:|---:|
+| archive entry `0x85` | 109 | 19 | 102 | 17 |
+| archive entry `0x86` | 75 | 37 | 170 | 117 |
+| archive entry `0x87` | 75 | 155 | 170 | 16 |
+| archive entry `0x88` | 129 | 172 | 63 | 15 |
+| chapter `+1`、frame base42 | 143 | 24 | 2 | — |
+| round、frame base42 | 188 | 24 | 3 | — |
+| currency、frame base31 | 140 | 176 | 8 | — |
+| camp0／2／1、frame base42 | 120／182／228 | 159 | 各2 | — |
+
+`sub_1B5F1` 的三次caller依序傳 raw camp selector `0、2、1`；逐record gate
+直接讀 `+6` camp、`+7 != 0x79`、`+0x1F != 10`及`+5 bit0==0`。其他`+6`
+值只是不匹配三個caller，不可被typed adapter當成損毀record拒絕整個畫面。
+
+entries `0x85..0x88` 的高階美術名稱及兩行章節文字的敘事標題未在本批命名；
+renderer contract已證實，但玩家語意標籤只列為強推論，不可寫死成現代
+「統計頁」或「任務頁」。
+
+## 重製邊界
+
+- nested menu與戰場資訊畫面可依上述 bytes／tables／present order建立 typed
+  E1；缺任一 cell、archive entry、FDTXT、font、raw count source或完整 indexed
+  baseline時，須在外層關閉前失敗即關閉。
+- 原版 selector1 是 current-runtime完整快照，現有重製 JSON 的「戰鬥節點重開」
+  不是同一交易，不得在文件中冒稱相容；正式接線前必須明示產品保存語意。
+- selector2 若讀取重製 JSON，亦不可宣稱等同 `0x10010`；原生 `FD2.SAV`
+  CONTINUE adapter只有在完整 typed handoff成立時才可使用。
+- selector3 的上層目的地未補證前，不可猜成回標題、回城鎮或退出程式。
+
+## 重開條件
+
+只有輸入雜湊不同、原始指令／table直接反證、同狀態執行矛盾，或主證據缺少
+上述writer／consumer時重開。畫面圖示或攻略名稱不足以推翻本分派。

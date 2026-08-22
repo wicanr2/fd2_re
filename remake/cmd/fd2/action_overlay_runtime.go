@@ -115,7 +115,9 @@ func (g *Game) markActionOverlayDrawn() {
 func (g *Game) resetActionOverlayLifecycle() {
 	g.ring = false
 	g.nativeSystemCursorOverlay = false
+	g.nativeSystemNestedOpen = false
 	g.nativeSystemOptionsOpen = false
+	g.nativeSystemInfoUI = nil
 	g.nativeSystemEndTurnConfirm = false
 	g.nativeSystemEndTurnDelay = 0
 	if g.nativeSystemEndTurnUI != nil {

@@ -267,11 +267,15 @@ type Game struct {
 	// 一經消費，後續空游標確認由已證實的共用 0x117E7 owner 處理。
 	nativeContinueOpeningConfirm bool
 	// nativeSystemCursorOverlay 對應共用 0x117E7 在 0x12C0D 回傳 -1 時
-	// 呼叫的 0x16F55 空游標面板。direction2／設定與 direction3／END 已有
-	// action owner；巢狀存讀檔與全軍行軍仍維持失敗即關閉。
+	// 呼叫的 0x16F55 空游標面板。direction0／巢狀戰場資訊、direction2／設定
+	// 與 direction3／END 已有 action owner；巢狀存讀檔／離場與外層
+	// direction1 仍維持失敗即關閉。
 	nativeSystemCursorOverlay bool
+	nativeSystemNestedOpen    bool
 	nativeSystemOptionsOpen   bool
 	nativeSystemOptions       *fdother.NativeSystemOptions
+	nativeSystemInfoAssets    *campaign.NativeSystemInfoAssets
+	nativeSystemInfoUI        *nativeSystemInfoUIState
 	spellOpen                 bool
 	spellSel                  int
 	itemOpen                  bool // native 0x1b932 eight-slot selector; unsupported effect presentations remain fail-closed
@@ -4722,6 +4726,12 @@ func (g *Game) stepCampaignMenu(event campaign.MenuEvent) (selected int, confirm
 func (g *Game) ringInput() bool {
 	enter := inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)
 	esc := inpututil.IsKeyJustPressed(ebiten.KeyEscape) || inpututil.IsKeyJustPressed(ebiten.KeyBackspace)
+	if g.nativeSystemInfoUI != nil {
+		if g.nativeSystemInfoUI.phase == "steady" && len(inpututil.AppendJustPressedKeys(nil)) != 0 {
+			g.closeNativeSystemInfoUI()
+		}
+		return true
+	}
 	if g.nativeSystemEndTurnUI != nil && g.nativeClassUIJob != nil {
 		return true
 	}
@@ -4788,6 +4798,55 @@ func (g *Game) ringInput() bool {
 		}
 		return true
 	}
+	if g.nativeSystemNestedOpen {
+		if !g.ring {
+			g.nativeSystemNestedOpen = false
+			g.nativeSystemCursorOverlay = false
+			return false
+		}
+		if g.actionOverlayBlocksInput() {
+			return true
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
+			g.ringSel = 0
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
+			g.ringSel = 1
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+			g.ringSel = 2
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
+			g.ringSel = 3
+		}
+		if esc {
+			g.beginActionOverlayClose(func() {
+				g.nativeSystemNestedOpen = false
+				g.nativeSystemCursorOverlay = false
+				g.msg = ""
+			})
+			return true
+		}
+		if enter {
+			if g.ringSel == 0 {
+				state, err := g.prepareNativeSystemInfoUI()
+				if err != nil {
+					g.msg = "原版戰場資訊來源不完整，未開啟畫面"
+					return true
+				}
+				g.beginActionOverlayClose(func() {
+					g.nativeSystemNestedOpen = false
+					g.nativeSystemCursorOverlay = false
+					g.nativeSystemInfoUI = state
+				})
+				return true
+			}
+			// selector 1／2 的 current-runtime FD2.SAV 交易，以及
+			// selector 3 的上層離場目的地仍未閉合，維持失敗即關閉。
+			g.msg = "原版巢狀系統指令的交易擁有者尚未驗證"
+		}
+		return true
+	}
 	if g.nativeSystemCursorOverlay {
 		if !g.ring {
 			g.nativeSystemCursorOverlay = false
@@ -4816,6 +4875,17 @@ func (g *Game) ringInput() bool {
 			return true
 		}
 		if enter {
+			if g.ringSel == 0 {
+				if _, ok := g.nativeNestedSystemOverlayState(); !ok {
+					g.msg = "原版巢狀系統選單圖格或狀態不完整"
+					return true
+				}
+				g.beginActionOverlayClose(func() {
+					g.nativeSystemNestedOpen = true
+					g.beginActionOverlayOpen(0)
+				})
+				return true
+			}
 			if g.ringSel == 3 {
 				if !g.beginNativeSystemEndTurn() {
 					g.msg = "原版 END 確認資產不完整，未結束回合"
@@ -4833,8 +4903,7 @@ func (g *Game) ringInput() bool {
 				})
 				return true
 			}
-			// selector 0／1 是不同的巢狀存讀檔與全軍行軍交易；
-			// 不由圖示外觀猜測動作 owner。
+			// selector 1 的 owner 尚未閉合，不由圖示外觀猜測。
 			g.msg = "原版續戰指令的此動作擁有者尚未驗證"
 		}
 		return true
@@ -6307,6 +6376,7 @@ func (g *Game) tileAt(idx int) *ebiten.Image {
 func (g *Game) Update() error {
 	g.frame++
 	g.stepActionOverlayLifecycle()
+	g.stepNativeSystemInfoUI()
 	g.stepNativeSystemEndTurn()
 	g.stepNativeClassUILifecycle(time.Now())
 	g.stepNativeChurchUILifecycle(time.Now())
@@ -6836,6 +6906,10 @@ func (g *Game) Update() error {
 		}
 	}
 	if g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd24Presentation != nil {
+		return nil
+	}
+	if g.nativeSystemInfoUI != nil {
+		g.ringInput()
 		return nil
 	}
 	if !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF5) { // 快速存檔(節點邊界語意:存 campaign 進度)
@@ -7590,6 +7664,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		g.drawItemMenu(screen)
 	}
 
+	// 原版戰場資訊是 320×200 indexed 全畫面，最後覆蓋戰場與選單層。
+	g.drawNativeSystemInfoUI(screen)
+
 	// 場景淡出/淡入轉場(doc46 §5.2):全螢幕黑色疊層,alpha 隨 fade.t 漸變。
 	if g.fade != nil {
 		frac := float64(g.fade.t) / float64(g.fade.total)
@@ -7869,6 +7946,12 @@ func (g *Game) nativeActionOverlayState() fdother.ActionOverlayState {
 	if g != nil && g.nativeSystemOptionsOpen {
 		state, err := g.currentNativeSystemOptions().ActionOverlayState()
 		if err == nil {
+			return state
+		}
+		return fdother.ActionOverlayState{Availability: [4]int{-1, -1, -1, -1}}
+	}
+	if g != nil && g.nativeSystemNestedOpen {
+		if state, ok := g.nativeNestedSystemOverlayState(); ok {
 			return state
 		}
 		return fdother.ActionOverlayState{Availability: [4]int{-1, -1, -1, -1}}
@@ -8863,6 +8946,9 @@ func loadGame() *Game {
 		g.nativeBattleGlyphs = nativeGlyphs
 	}
 	g.nativeActionCells = loadNativeActionCells(g.nativeUIPalette)
+	if systemInfo, err := loadNativeSystemInfoAssets(); err == nil {
+		g.nativeSystemInfoAssets = systemInfo
+	}
 	if loadSlotsUI, err := loadNativeLoadSlotsUIAssets(); err == nil {
 		g.nativeLoadSlotsUI = loadSlotsUI
 	}
