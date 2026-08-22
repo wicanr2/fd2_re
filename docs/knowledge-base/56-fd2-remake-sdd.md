@@ -5348,12 +5348,19 @@ BGM並發布`ebiten.Termination`，取消與缺資產均保持遊戲狀態。此
 `(raw+5)&0x85==0 && raw+6==2`准入、共同目的座標、selector 1、
 `sub_14B78`已閉合的mode0／mode1尋路與逐單位占位變更。
 
-正式執行前必須在私有狀態投影完整預演所有合格單位。每筆移動後以
-`NativeFieldEventIDAt(destination,1)`模擬`0x13A44→0x51A8F`；若事件非空且
-90-entry handler沒有正式執行端，整批在關閉確認框前失敗，不得發布部分移動。
-無事件批次才可依序播放移動，逐筆清raw `+3`、設raw `+5 bit7`／typed acted，
-最後走共同回合收束。取消、無合格單位、raw provenance、成本列、地形、占位或
-確認資產不完整時均不改狀態。
+正式執行前必須在私有狀態投影預演目前可見的合格單位。每一個向左格提交後以
+`NativeFieldEventIDAt(cell,1)`模擬`0x13A44→0x51A8F`；若事件非空且90-entry
+handler沒有正式執行端，整批在關閉確認框前失敗，不得發布部分移動。無事件時
+可依序播放移動，逐筆清raw `+3`、設raw `+5 bit7`／typed acted。
+
+event61／event75 已各有具型別 Plan／Commit 與正式對話／演出 owner，故後續切片
+可在走到事件格時暫停該筆 walk，轉交既有 owner，完成後從同一路徑下一格繼續。
+這兩個 owner 的完整資產與 raw provenance 也必須在接受確認前由私有投影驗證；
+不能先移動再發現 handler 不可執行。event61 會追加 group1 records，而新補證的
+`0x170C6 cmp ebx,dword_53BEB` 與 `0x1100B inc dword_53BEB` 證實原版每輪重讀
+動態 count；因此每筆完成後必須依目前 State 長度續規劃，不能永久消費確認時的
+固定 steps。新 record 是否合格仍只由 raw gate 決定。取消、無合格單位、raw
+provenance、成本列、地形、占位、事件或確認資產不完整時均不改狀態。
 
 此切片完成後只能列`RUNTIME-E1`：原版FDTXT `0x1A1/0x1A2/0x19C`、200 ms、
 逐單位路徑與無事件交易可閉合；90個全域事件效果、精確音訊／tick與一般玩家
@@ -5364,3 +5371,12 @@ BGM並發布`ebiten.Termination`，取消與缺資產均保持遊戲狀態。此
 全批結束後進入共同回合收束。FDTXT、第一筆 runtime `+7` DATO肖像、取消、
 200 ms與五幀對話收合均由正式鍵盤 owner 消費。任一路徑遇到尚無正式 handler 的
 selector1格子事件時，在第一幀前整批拒絕。此為`RUNTIME-E1`，不是90事件全支援。
+
+實作現況：`NativeSystemGroupMarchPlan` 會在深複製 State 上逐格模擬 event61／75；
+event61 的私有 Commit 會追加 group1，使 planner 的動態 `len(Units)` 上限納入新
+record，但不污染 live inventory、roster、event-state 或 turn rows。正式 walk 在
+兩個事件格提交座標後暫停，由既有事件 owner 完成對話、演出及 mutation；成功
+回呼再繼續該路徑與後續動態 record。事件 UI 素材也在確認框關閉前預檢。事件
+owner 回報錯誤、事件綁定在預演後改變，或出現第三種 selector1 event 時，停止
+整批且不得進入共同回合收束。這是既有已證實 handler 的組合，不授權新增猜測
+renderer 或事件語意；正式資料目前只有 event61／75 兩筆 selector1 rule。

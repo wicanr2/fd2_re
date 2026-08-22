@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
@@ -110,7 +111,10 @@ func TestPrepareNativeSystemInfoUIFailsBeforePublicationWithoutRawCount(t *testi
 
 func TestNestedSystemOverlayUsesRuntimeSaveAndFD2SAVGates(t *testing.T) {
 	g := nativeSystemInfoRuntimeTestGame(t)
-	g.nativeActionCells = nativeSystemOverlayTestCells()
+	g.nativeActionCells = make([]*ebiten.Image, nativeActionOverlayCellCount)
+	for _, index := range []int{36, 41, 44, 45} {
+		g.nativeActionCells[index] = ebiten.NewImage(1, 1)
+	}
 	t.Setenv("FD2_NATIVE_SAVE", filepath.Join(t.TempDir(), "missing-FD2.SAV"))
 	state, ok := g.nativeNestedSystemOverlayState()
 	if !ok {

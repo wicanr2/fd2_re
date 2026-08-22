@@ -5398,6 +5398,11 @@ type walkAnim struct {
 	then func()        // 走完回呼(nil=玩家預設:開指令環)
 	// nil 保留既有 selector0；全軍移動明確帶 selector1。
 	nativeEventSelector *byte
+	// 全軍移動的 selector1 事件已在確認前預演；walk 到達指定格時暫停，
+	// 由既有 event61／75 owner 完成後才續行。
+	nativeGroupMarchEvents []battle.NativeSystemGroupMarchEvent
+	nativeGroupMarchEvent  int
+	nativeGroupMarchPaused bool
 }
 
 func (g *Game) stepBattleWalk() {
@@ -5405,7 +5410,16 @@ func (g *Game) stepBattleWalk() {
 	if w == nil || g.m == nil {
 		return
 	}
+	if w.nativeGroupMarchPaused {
+		return
+	}
 	finish := func(pose int) {
+		if w.nativeGroupMarchEvent != len(w.nativeGroupMarchEvents) {
+			g.loadErr = "native system group-march ended before planned field events"
+			g.walk = nil
+			g.nativeSystemGroupMarch = nil
+			return
+		}
 		last := w.path[len(w.path)-1]
 		w.u.SetMapPlacement(last.X, last.Y, pose)
 		g.walk = nil
@@ -5455,10 +5469,29 @@ func (g *Game) stepBattleWalk() {
 			}
 		} else if selector == 0 {
 			battle.ApplyNativeFieldModeEvent(g.st, w.u, b.X, b.Y, 0)
-		} else if _, ok := battle.NativeFieldEventIDAt(g.st, b.X, b.Y, selector); ok {
-			g.loadErr = "native system group-march event changed after atomic preflight"
-			g.walk = nil
-			return
+		} else {
+			eventID, bound := battle.NativeFieldEventIDAt(g.st, b.X, b.Y, selector)
+			planned := w.nativeGroupMarchEvent < len(w.nativeGroupMarchEvents) &&
+				w.nativeGroupMarchEvents[w.nativeGroupMarchEvent].PathIndex == w.seg+1
+			if bound != planned || (planned &&
+				w.nativeGroupMarchEvents[w.nativeGroupMarchEvent].EventID != eventID) {
+				g.loadErr = "native system group-march event changed after atomic preflight"
+				g.walk = nil
+				g.nativeSystemGroupMarch = nil
+				return
+			}
+			if planned {
+				event := w.nativeGroupMarchEvents[w.nativeGroupMarchEvent]
+				w.seg++
+				w.tick = 0
+				w.nativeGroupMarchPaused = true
+				if !g.beginNativeSystemGroupMarchFieldEvent(w, event) {
+					g.loadErr = "native system group-march field event owner rejected runtime state"
+					g.walk = nil
+					g.nativeSystemGroupMarch = nil
+				}
+				return
+			}
 		}
 	}
 	w.seg++

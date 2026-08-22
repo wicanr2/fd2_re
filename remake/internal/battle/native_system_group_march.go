@@ -7,6 +7,17 @@ import "fmt"
 type NativeSystemGroupMarchStep struct {
 	UnitIndex int
 	Path      []Cell
+	Events    []NativeSystemGroupMarchEvent
+}
+
+// NativeSystemGroupMarchEvent 保存一個已在私有投影驗證的 selector1 中途事件。
+// PathIndex 指向 Path 內事件格；TextIndex／Presentation 只供正式 UI owner 在
+// 關閉確認框前驗證既有可編輯素材，不替 handler 新增語意。
+type NativeSystemGroupMarchEvent struct {
+	PathIndex    int
+	EventID      byte
+	TextIndex    int
+	Presentation bool
 }
 
 // NativeSystemGroupMarchPlan 是確認視窗關閉前完成的私有預演結果。
@@ -27,16 +38,14 @@ func (s *State) PlanNativeSystemGroupMarch(destination Cell) (NativeSystemGroupM
 		len(s.NativeTerrainMoveCodes) != s.W*s.H || len(s.NativeCompositionEventBytes) != s.W*s.H {
 		return plan, fmt.Errorf("battle: native system group-march provenance is unavailable")
 	}
-	working := *s
-	working.Units = make([]*Unit, len(s.Units))
-	for index, unit := range s.Units {
-		if unit == nil {
-			return plan, fmt.Errorf("battle: native system group-march unit %d is nil", index)
-		}
-		clone := *unit
-		working.Units[index] = &clone
+	working, err := cloneNativeSystemGroupMarchState(s)
+	if err != nil {
+		return plan, err
 	}
-	for index, unit := range working.Units {
+	// dword_53BEB 是每輪重讀的動態上限；event61 追加的 group1 record
+	// 因此也會在同一批後續接受 raw gate，而不是被確認時的 len 快照截斷。
+	for index := 0; index < len(working.Units); index++ {
+		unit := working.Units[index]
 		if !unit.HasNativeRecordByte5 || !unit.HasNativeRecordByte6 {
 			return NativeSystemGroupMarchPlan{Destination: destination}, fmt.Errorf(
 				"battle: native system group-march unit %d lacks raw gate provenance", index,
@@ -71,24 +80,26 @@ func (s *State) PlanNativeSystemGroupMarch(destination Cell) (NativeSystemGroupM
 				"battle: native system group-march unit %d produced no path", index,
 			)
 		}
-		end := movement.Path[len(movement.Path)-1]
+		step := NativeSystemGroupMarchStep{
+			UnitIndex: index, Path: append([]Cell(nil), movement.Path...),
+		}
 		for segment := 0; segment+1 < len(movement.Path); segment++ {
 			a, b := movement.Path[segment], movement.Path[segment+1]
+			unit.X, unit.Y = b.X, b.Y
+			unit.NativeMapPresentation.X = byte(b.X)
+			unit.NativeMapPresentation.Y = byte(b.Y)
 			if b.X != a.X-1 || b.Y != a.Y {
 				continue
 			}
 			if eventID, ok := NativeFieldEventIDAt(&working, b.X, b.Y, 1); ok {
-				return NativeSystemGroupMarchPlan{Destination: destination}, fmt.Errorf(
-					"battle: native system group-march event %d has no atomic runtime owner", eventID,
-				)
+				event, err := planNativeSystemGroupMarchEvent(&working, unit, segment+1, eventID)
+				if err != nil {
+					return NativeSystemGroupMarchPlan{Destination: destination}, err
+				}
+				step.Events = append(step.Events, event)
 			}
 		}
-		plan.Steps = append(plan.Steps, NativeSystemGroupMarchStep{
-			UnitIndex: index, Path: append([]Cell(nil), movement.Path...),
-		})
-		unit.X, unit.Y = end.X, end.Y
-		unit.NativeMapPresentation.X = byte(end.X)
-		unit.NativeMapPresentation.Y = byte(end.Y)
+		plan.Steps = append(plan.Steps, step)
 		unit.NativeRecordByte5 |= 0x80
 		unit.Acted = true
 	}
@@ -96,6 +107,81 @@ func (s *State) PlanNativeSystemGroupMarch(destination Cell) (NativeSystemGroupM
 		return plan, fmt.Errorf("battle: native system group-march has no eligible unit")
 	}
 	return plan, nil
+}
+
+func cloneNativeSystemGroupMarchUnit(unit *Unit) *Unit {
+	if unit == nil {
+		return nil
+	}
+	clone := *unit
+	clone.Inventory = append([]int(nil), unit.Inventory...)
+	clone.Equipped = append([]bool(nil), unit.Equipped...)
+	clone.InventorySlots = append([]int(nil), unit.InventorySlots...)
+	clone.NativeInventoryFlags = append([]int(nil), unit.NativeInventoryFlags...)
+	clone.Spells = append([]int(nil), unit.Spells...)
+	return &clone
+}
+
+func cloneNativeSystemGroupMarchState(source *State) (State, error) {
+	working := *source
+	if source.NativeMapSelectorCache != nil {
+		working.NativeMapSelectorCache = source.NativeMapSelectorCache.Clone()
+	}
+	working.Units = make([]*Unit, len(source.Units))
+	for index, unit := range source.Units {
+		if unit == nil {
+			return State{}, fmt.Errorf("battle: native system group-march unit %d is nil", index)
+		}
+		working.Units[index] = cloneNativeSystemGroupMarchUnit(unit)
+	}
+	working.Roster = make([]*Unit, len(source.Roster))
+	for index, unit := range source.Roster {
+		if unit == nil {
+			return State{}, fmt.Errorf("battle: native system group-march roster %d is nil", index)
+		}
+		working.Roster[index] = cloneNativeSystemGroupMarchUnit(unit)
+	}
+	working.NativeFieldControlRaw = append([]byte(nil), source.NativeFieldControlRaw...)
+	return working, nil
+}
+
+func planNativeSystemGroupMarchEvent(
+	working *State,
+	trigger *Unit,
+	pathIndex int,
+	eventID byte,
+) (NativeSystemGroupMarchEvent, error) {
+	event := NativeSystemGroupMarchEvent{PathIndex: pathIndex, EventID: eventID}
+	switch eventID {
+	case 61:
+		plan, err := PlanNativeFieldEvent61(working, trigger, trigger.X, trigger.Y)
+		if err != nil {
+			return event, fmt.Errorf("battle: native system group-march event61: %w", err)
+		}
+		event.TextIndex = plan.TextIndex
+		event.Presentation = !plan.MissingItem
+		if !plan.MissingItem {
+			if _, err := CommitNativeFieldEvent61(working, plan, plan.requiredFrames); err != nil {
+				return event, fmt.Errorf("battle: native system group-march event61 projection: %w", err)
+			}
+		}
+	case 75:
+		plan, err := PlanNativeFieldEvent75(working, trigger, trigger.X, trigger.Y)
+		if err != nil {
+			return event, fmt.Errorf("battle: native system group-march event75: %w", err)
+		}
+		event.TextIndex = plan.TextIndex
+		if plan.Activate {
+			if err := CommitNativeFieldEvent75(working, plan); err != nil {
+				return event, fmt.Errorf("battle: native system group-march event75 projection: %w", err)
+			}
+		}
+	default:
+		return event, fmt.Errorf(
+			"battle: native system group-march event %d has no atomic runtime owner", eventID,
+		)
+	}
+	return event, nil
 }
 
 // CommitNativeSystemGroupMarchStep 原子發布一筆已預演移動；動畫 owner 必須在

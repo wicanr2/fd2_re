@@ -675,3 +675,59 @@ func TestNativeSystemGroupMarchUnknownEventFailsBeforeOverlayMutation(t *testing
 		t.Fatalf("unknown event mutated group march owner: %+v unit=%+v", g, unit)
 	}
 }
+
+func TestNativeSystemGroupMarchPausesForEvent75AndResumesAfterDialogue(t *testing.T) {
+	state, err := battle.Load(assetPath("assets/maps/map28/map28_units.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	sc, err := battle.LoadScenario(assetPath("assets/scenarios/ch29.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := sc.SetupChecked(state); err != nil {
+		t.Fatal(err)
+	}
+	actor := nativeSystemGroupMarchUnit(16, 21)
+	actor.NativeRecordByte8 = 9
+	actor.HasNativeRecordByte8 = true
+	actor.BattleFig = 23
+	actor.HasBattleFig = true
+	state.Units = []*battle.Unit{actor}
+	state.NativeRoundCounter = 8
+	step := battle.NativeSystemGroupMarchStep{
+		UnitIndex: 0,
+		Path:      []battle.Cell{{X: 16, Y: 21}, {X: 15, Y: 21}},
+		Events: []battle.NativeSystemGroupMarchEvent{{
+			PathIndex: 1, EventID: 75, TextIndex: 1,
+		}},
+	}
+	plan := battle.NativeSystemGroupMarchPlan{
+		Destination: battle.Cell{X: 15, Y: 21}, Steps: []battle.NativeSystemGroupMarchStep{step},
+	}
+	g := &Game{
+		st: state, sc: sc, m: &MapData{W: state.W, H: state.H, TileW: 24, TileH: 24},
+		nativeSystemGroupMarch: &plan,
+	}
+	g.startNextNativeSystemGroupMarchStep()
+	for tick := 0; tick < 7; tick++ {
+		g.stepBattleWalk()
+	}
+	if g.walk == nil || !g.walk.nativeGroupMarchPaused || g.battleEvent == nil ||
+		state.NativeEventState[16] != 0 || actor.Acted {
+		t.Fatalf("event75 was not paused before dialogue commit: walk=%#v event=%v state=%v acted=%v", g.walk, g.battleEvent != nil, state.NativeEventState[16:18], actor.Acted)
+	}
+	for index := 0; index < 5; index++ {
+		g.dialog = nil
+		g.advanceBattleEvent()
+	}
+	if g.walk == nil || g.walk.nativeGroupMarchPaused || state.NativeEventState[16] != 4 ||
+		state.NativeEventState[17] != 1 {
+		t.Fatalf("event75 did not resume after commit: walk=%#v state=%v", g.walk, state.NativeEventState[16:18])
+	}
+	g.stepBattleWalk()
+	if g.walk != nil || g.nativeSystemGroupMarch != nil || !actor.Acted ||
+		actor.NativeRecordByte5&0x80 == 0 {
+		t.Fatalf("group march did not finish after event75: walk=%#v plan=%#v actor=%+v ai=%v", g.walk, g.nativeSystemGroupMarch, actor, g.aiBusy)
+	}
+}

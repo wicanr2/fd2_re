@@ -93,6 +93,25 @@ IDA 顯示的 `funcs_1199C[eax*4]` 是分析名稱；原始 fixup 基址為`0x51
 部分單位。沒有事件的批次則可依原順序移動、清raw `+3`、設raw `+5 bit7`，最後
 執行共同回合收束。這是失敗即關閉的產品子集，不外推成全部90事件已完成。
 
+### 2026-08-22 selector1 事件後的動態迴圈上限（已證實）
+
+IDA Pro 9.4 重新匯出 `sub_16F55`、event61 `sub_356B7`、`sub_10B4E` 與
+`sub_10C50` 後，閉合了事件可能增加 runtime records 時的迴圈資料流：
+
+- `0x170C1 xor ebx,ebx` 只把目前索引清零；`0x170C6 cmp ebx,dword_53BEB`
+  位於迴圈表頭，每次從事件 handler 返回並經 `0x170C5 inc ebx` 後都重新讀取
+  `dword_53BEB`，沒有保存進入時的 count 快照；
+- event61 在成功演出後於 `0x357E4 push 1; 0x357E6 call sub_10B4E` 加入
+  FDFIELD group 1；`sub_10B4E` 對每筆該 group row 呼叫 `sub_10C50`；
+- `sub_10C50` 以目前 `dword_53BEB` 計算新 record 尾端位址（`0x10C69..0x10C7F`），
+  完成 constructor 後在 `0x1100B inc dword_53BEB` 直接增加同一個迴圈上限。
+
+因此 selector1 的正式執行者不能把接受確認時的 `len(units)` 當作永久上限。
+已證實事件完成後必須從下一個 record index 依目前 runtime count 繼續；新追加
+record 也要接受同一 raw gate。這只證實動態上限與 event61 writer，並不表示新
+record 必然符合 `(raw+5)&0x85==0 && raw+6==2`，實際是否移動仍由其原始欄位裁決。
+event61／event75 的 handler 語意與呈現證據沿用各自既有證據，不由本節重解。
+
 ## 勘誤與重開條件
 
 - `24-callgraph-analysis-log.md`把`0x1A251→0x19DF7`寫成外部

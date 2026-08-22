@@ -205,3 +205,57 @@ func TestNativeEvent61MaterializedRuntimePresentsCommitsAndPersistsWold(t *testi
 		t.Fatal("final FDTXT4 did not return to the completed wait action")
 	}
 }
+
+func TestNativeSystemGroupMarchPausesForEvent61PresentationAndResumes(t *testing.T) {
+	g, trigger := nativeEvent61PlayerGame(t, 0xD0, 0x20)
+	trigger.X, trigger.Y = 2, 46
+	trigger.NativeMapPresentation.X = 2
+	trigger.NativeMapPresentation.Y = 46
+	step := battle.NativeSystemGroupMarchStep{
+		UnitIndex: 0,
+		Path:      []battle.Cell{{X: 2, Y: 46}, {X: 1, Y: 46}},
+		Events: []battle.NativeSystemGroupMarchEvent{{
+			PathIndex: 1, EventID: 61, TextIndex: 3, Presentation: true,
+		}},
+	}
+	plan := battle.NativeSystemGroupMarchPlan{
+		Destination: battle.Cell{X: 1, Y: 46}, Steps: []battle.NativeSystemGroupMarchStep{step},
+	}
+	if !g.preflightNativeSystemGroupMarchEvents(plan) {
+		t.Fatal("event61 presentation assets failed group-march preflight")
+	}
+	g.nativeSystemGroupMarch = &plan
+	g.startNextNativeSystemGroupMarchStep()
+	for tick := 0; tick < 7; tick++ {
+		g.stepBattleWalk()
+	}
+	if g.walk == nil || !g.walk.nativeGroupMarchPaused || g.battleEvent == nil ||
+		g.nativeFieldEvent61 != nil || g.st.NativeEventState[12] != 0 {
+		t.Fatalf("event61 did not pause at text3: walk=%#v event=%v job=%#v state=%d", g.walk, g.battleEvent != nil, g.nativeFieldEvent61, g.st.NativeEventState[12])
+	}
+	g.dialog = nil
+	g.advanceBattleEvent()
+	if g.nativeFieldEvent61 == nil || len(g.nativeFieldEvent61.frames) != 59 {
+		t.Fatalf("event61 presentation did not start: job=%#v err=%q", g.nativeFieldEvent61, g.loadErr)
+	}
+	for frame := 0; frame < 59; frame++ {
+		g.nativeFieldEvent61.drawn = true
+		if !g.nativeFieldEvent61.hasTick {
+			g.stepNativeFieldEvent61Tick(100)
+		}
+		g.stepNativeFieldEvent61Tick(102 + frame*2)
+	}
+	for g.battleEvent != nil {
+		g.dialog = nil
+		g.advanceBattleEvent()
+	}
+	if g.walk == nil || g.walk.nativeGroupMarchPaused || g.st.NativeEventState[12] != 1 ||
+		!g.partyMembers[31] || !reflect.DeepEqual(trigger.Inventory, []int{0x20}) {
+		t.Fatalf("event61 did not resume after commit: walk=%#v state=%d members=%v inventory=%v err=%q", g.walk, g.st.NativeEventState[12], g.partyMembers, trigger.Inventory, g.loadErr)
+	}
+	g.stepBattleWalk()
+	if g.walk != nil || g.nativeSystemGroupMarch != nil || !trigger.Acted ||
+		trigger.NativeRecordByte5&0x80 == 0 {
+		t.Fatalf("group march did not finish after event61: walk=%#v plan=%#v trigger=%+v", g.walk, g.nativeSystemGroupMarch, trigger)
+	}
+}

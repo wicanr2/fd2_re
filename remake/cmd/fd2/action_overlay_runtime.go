@@ -317,6 +317,9 @@ func (g *Game) beginNativeSystemGroupMarch() bool {
 	if err != nil {
 		return false
 	}
+	if !g.preflightNativeSystemGroupMarchEvents(plan) {
+		return false
+	}
 	fdotherPath := nativeFDOTHERPath()
 	if fdotherPath == "" {
 		return false
@@ -362,6 +365,40 @@ func (g *Game) beginNativeSystemGroupMarch() bool {
 		g.resetNativeClassUIPulse()
 		g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
 	})
+	return true
+}
+
+// preflightNativeSystemGroupMarchEvents 驗證既有 event61／75 UI owner 的可編輯
+// 對話及原始演出資產。battle planner 已在私有 State 投影驗證 mutation；這裡
+// 補齊只有 Game 層能取得的 presentation admission，避免先移動才發現缺素材。
+func (g *Game) preflightNativeSystemGroupMarchEvents(plan battle.NativeSystemGroupMarchPlan) bool {
+	for _, step := range plan.Steps {
+		for _, event := range step.Events {
+			switch event.EventID {
+			case 61:
+				if _, ok := event61DialogueActions(0, 10, 2); !ok {
+					return false
+				}
+				if event.Presentation {
+					if _, ok := event61DialogueActions(1, 0, 10); !ok {
+						return false
+					}
+					path := nativeFDOTHERPath()
+					frames, err := fdother.DecodeResource(path, 45)
+					if path == "" || err != nil || len(frames) != 59 {
+						return false
+					}
+				}
+			case 75:
+				probe := &battle.Unit{BattleFig: 0, HasBattleFig: true}
+				if _, ok := event75DialogueActions(event.TextIndex, probe); !ok {
+					return false
+				}
+			default:
+				return false
+			}
+		}
+	}
 	return true
 }
 
@@ -470,7 +507,38 @@ func (g *Game) startNextNativeSystemGroupMarchStep() {
 		g.walk = &walkAnim{
 			u: g.st.Units[step.UnitIndex], path: append([]battle.Cell(nil), step.Path...),
 			then: finish, nativeEventSelector: &selector,
+			nativeGroupMarchEvents: append([]battle.NativeSystemGroupMarchEvent(nil), step.Events...),
 		}
+	}
+}
+
+func (g *Game) beginNativeSystemGroupMarchFieldEvent(
+	walk *walkAnim,
+	event battle.NativeSystemGroupMarchEvent,
+) bool {
+	if g == nil || walk == nil || g.walk != walk || walk.u == nil {
+		return false
+	}
+	beforeErr := g.loadErr
+	resume := func() {
+		if g.walk != walk {
+			return
+		}
+		if g.loadErr != beforeErr {
+			g.walk = nil
+			g.nativeSystemGroupMarch = nil
+			return
+		}
+		walk.nativeGroupMarchEvent++
+		walk.nativeGroupMarchPaused = false
+	}
+	switch event.EventID {
+	case 61:
+		return g.beginNativeFieldEvent61(walk.u, resume)
+	case 75:
+		return g.beginNativeFieldEvent75(walk.u, resume)
+	default:
+		return false
 	}
 }
 
