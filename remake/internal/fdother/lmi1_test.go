@@ -1,6 +1,7 @@
 package fdother
 
 import (
+	"bytes"
 	"encoding/binary"
 	"os"
 	"testing"
@@ -178,6 +179,21 @@ func TestParseLMI1FrameEntryRejectsOtherContainerOrIndex(t *testing.T) {
 	binary.LittleEndian.PutUint32(data[6:], 10)
 	if _, err := ParseLMI1FrameEntry(data, 1); err == nil {
 		t.Fatal("out-of-range LMI1 index was accepted")
+	}
+}
+
+func TestParseLMI1OpaqueEntryUses4E916HighRunCodec(t *testing.T) {
+	data := make([]byte, 10)
+	copy(data, "LMI1")
+	binary.LittleEndian.PutUint16(data[4:], 1)
+	binary.LittleEndian.PutUint32(data[6:], 10)
+	data = append(data, 3, 0, 2, 0, 0xc3, 7, 1, 2, 3)
+	entry, err := ParseLMI1OpaqueEntry(data, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if entry.Width != 3 || entry.Height != 2 || !bytes.Equal(entry.Pixels, []byte{7, 7, 7, 1, 2, 3}) {
+		t.Fatalf("opaque entry=%#v", entry)
 	}
 }
 

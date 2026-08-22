@@ -17,14 +17,7 @@ func NativeItemPanelRecordForUnit(unit *Unit) ([]byte, error) {
 		len(unit.NativeInventoryFlags) != nativeInventoryCells {
 		return nil, errors.New("native item panel: unit lacks raw record provenance")
 	}
-	rawByte8, hasRawByte8 := unit.NativeRecordByte8, unit.HasNativeRecordByte8
-	// Compatibility assets created before raw +8 was separated stored the
-	// same proven player-persistent byte only as NativeIdentity. New runtime
-	// restore paths never use this fallback.
-	if !hasRawByte8 && unit.HasNativeIdentity &&
-		unit.NativeIdentity >= 0 && unit.NativeIdentity <= 0xff {
-		rawByte8, hasRawByte8 = byte(unit.NativeIdentity), true
-	}
+	rawByte8, hasRawByte8 := nativeRecordByte8ForUnit(unit)
 	if !hasRawByte8 {
 		return nil, errors.New("native item panel: unit lacks raw record byte +8")
 	}
@@ -74,6 +67,22 @@ func NativeItemPanelRecordForUnit(unit *Unit) ([]byte, error) {
 	putNativeItemPanelWord(record, 0x4c, unit.HIT)
 	putNativeItemPanelWord(record, 0x4e, unit.EV)
 	return record, nil
+}
+
+func nativeRecordByte8ForUnit(unit *Unit) (byte, bool) {
+	if unit == nil {
+		return 0, false
+	}
+	if unit.HasNativeRecordByte8 {
+		return unit.NativeRecordByte8, true
+	}
+	// Compatibility assets created before raw +8 was separated stored the
+	// same proven player-persistent byte only as NativeIdentity. New runtime
+	// restore paths never use this fallback.
+	if unit.HasNativeIdentity && unit.NativeIdentity >= 0 && unit.NativeIdentity <= 0xff {
+		return byte(unit.NativeIdentity), true
+	}
+	return 0, false
 }
 
 func putNativeItemPanelWord(record []byte, offset, value int) {

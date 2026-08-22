@@ -97,6 +97,14 @@
       "scope": "timer delta 契約；重製 60Hz 近似不等於 DOS wall-clock parity"
     },
     {
+      "address": "0x18c6d",
+      "classification": "product",
+      "semantic": "indexed 戰鬥狀態欄框、HP／MP、等級與姓名的完整窄 compositor",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_battle_status_panel_ida.txt"],
+      "scope": "callee 繪製順序與 raw record 欄位；panel 上下方位置由 0x2a289 caller 決定"
+    },
+    {
       "address": "0x1b8e7",
       "classification": "product",
       "semantic": "八格 inventory cell 左移壓縮並將尾 flag 設為 0x80",
@@ -199,6 +207,14 @@
       "confidence": "已證實",
       "evidence": ["docs/data/ida/fd2_command24_background_transition_ida.txt"],
       "scope": "command24 與 header byte1 caller 可重用的 callee 排程；caller 預建 source／target base 與高階畫面語意另證"
+    },
+    {
+      "address": "0x2a289",
+      "classification": "product",
+      "semantic": "以 runtime record raw +6 與 chapter24 unit17 例外選擇狀態欄上下方 origin",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_battle_status_panel_ida.txt"],
+      "scope": "座標 owner 與 0x18c6d handoff；raw +6 不得命名為 normalized Camp"
     },
     {
       "address": "0x2bce5",

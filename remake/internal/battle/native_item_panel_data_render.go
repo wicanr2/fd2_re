@@ -10,10 +10,11 @@ import (
 )
 
 type NativeItemPanelDataAssets struct {
-	RawCells map[int]fdother.RawCell
-	Frames   map[int]fdother.Frame
-	Strings  *fdtxt.Strings
-	Font     *fdtxt.Font
+	BattlePanel fdother.LMI1Entry
+	RawCells    map[int]fdother.RawCell
+	Frames      map[int]fdother.Frame
+	Strings     *fdtxt.Strings
+	Font        *fdtxt.Font
 }
 
 // RenderNativeItemPanelResources composes 0x17eef and 0x17fc0 as one
@@ -318,6 +319,10 @@ func LoadNativeItemPanelDataAssets(fdotherPath, fdtxtPath string) (NativeItemPan
 	assets := NativeItemPanelDataAssets{
 		RawCells: make(map[int]fdother.RawCell),
 		Frames:   make(map[int]fdother.Frame),
+	}
+	assets.BattlePanel, err = fdother.ParseLMI1OpaqueEntry(raw, 22)
+	if err != nil {
+		return NativeItemPanelDataAssets{}, fmt.Errorf("battle: native battle panel cell 22: %w", err)
 	}
 	for _, index := range []int{
 		23, 24, 25, 26, 27, 28, 29, 30,

@@ -12,16 +12,18 @@ import (
 func newNativeCommand24PresentationTestGame(t *testing.T) (*Game, *battle.Unit, *battle.Unit) {
 	t.Helper()
 	base := filepath.Clean("../../../org_game/炎龍騎士團/FLAME2")
-	figaniPath, fdotherPath, bgPath := filepath.Join(base, "FIGANI.DAT"), filepath.Join(base, "FDOTHER.DAT"), filepath.Join(base, "BG.DAT")
-	if !fileExists(figaniPath) || !fileExists(fdotherPath) || !fileExists(bgPath) {
-		t.Skip("player-provided FIGANI.DAT/FDOTHER.DAT/BG.DAT unavailable")
+	figaniPath, fdotherPath := filepath.Join(base, "FIGANI.DAT"), filepath.Join(base, "FDOTHER.DAT")
+	bgPath, fdtxtPath := filepath.Join(base, "BG.DAT"), filepath.Join(base, "FDTXT.DAT")
+	if !fileExists(figaniPath) || !fileExists(fdotherPath) || !fileExists(bgPath) || !fileExists(fdtxtPath) {
+		t.Skip("player-provided FIGANI.DAT/FDOTHER.DAT/BG.DAT/FDTXT.DAT unavailable")
 	}
 	t.Setenv("FD2_ORIGINAL_FIGANI", figaniPath)
 	t.Setenv("FD2_ORIGINAL_BG", bgPath)
 	t.Setenv("FD2_ORIGINAL_FDOTHER", fdotherPath)
+	t.Setenv("FD2_ORIGINAL_FDTXT", fdtxtPath)
 	t.Setenv("FD2_MUTE", "1")
-	actor := &battle.Unit{Camp: battle.Own, OnField: true, X: 0, Y: 0, AP: 100, MP: 30, MaxMP: 30, HP: 120, MaxHP: 120, BattleFig: 32, HasBattleFig: true}
-	target := &battle.Unit{Camp: battle.Enemy, OnField: true, X: 1, Y: 0, DP: 20, HP: 200, MaxHP: 200, BattleFig: 0, HasBattleFig: true}
+	actor := &battle.Unit{Camp: battle.Own, OnField: true, X: 0, Y: 0, Lv: 4, AP: 100, MP: 30, MaxMP: 30, HP: 120, MaxHP: 120, BattleFig: 32, HasBattleFig: true, NativeRecordByte6: 0, HasNativeRecordByte6: true, NativeRecordByte8: 0, HasNativeRecordByte8: true}
+	target := &battle.Unit{Camp: battle.Enemy, OnField: true, X: 1, Y: 0, Lv: 5, DP: 20, HP: 200, MaxHP: 200, BattleFig: 0, HasBattleFig: true, NativeRecordByte6: 1, HasNativeRecordByte6: true, NativeRecordByte8: 1, HasNativeRecordByte8: true}
 	book := make([]battle.NativeCommandRecord, 36)
 	for id := range book {
 		book[id] = battle.NativeCommandRecord{ID: id}
@@ -140,5 +142,16 @@ func TestNativeCommand24PresentationRejectsMissingTerrainControlWithoutMutation(
 	}
 	if actor.MP != 30 || actor.Acted || target.HP != 200 || g.nativeCmd24Presentation != nil {
 		t.Fatalf("failed terrain preflight mutated state actor=%#v target=%#v", actor, target)
+	}
+}
+
+func TestNativeCommand24PresentationRejectsMissingPanelRawNameWithoutMutation(t *testing.T) {
+	g, actor, target := newNativeCommand24PresentationTestGame(t)
+	target.HasNativeRecordByte8 = false
+	if err := g.startNativeCommand24Presentation(actor, target, nil); err == nil {
+		t.Fatal("missing raw panel name selector was accepted")
+	}
+	if actor.MP != 30 || actor.Acted || target.HP != 200 || g.nativeCmd24Presentation != nil {
+		t.Fatalf("failed panel preflight mutated state actor=%#v target=%#v", actor, target)
 	}
 }

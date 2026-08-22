@@ -5691,3 +5691,19 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   terrain BG＋target idle，狀態欄仍由既有RGBA renderer疊加；因此提升玩家可見
   滑動但仍列`RUNTIME-E1 partial`。尚缺`sub_29164/sub_2B659/sub_2A289`完整
   indexed base與一般玩家E2，不宣稱逐像素相同。
+
+## 2026-08-22：command24 indexed狀態欄接入
+
+- 依RE→規格→實作順序，以合法Docker內IDA Pro 9.4閉合
+  `0x2A289→0x18C6D`。raw `unit+6==0`選`(0,154)`、非零選`(171,4)`，
+  raw chapter24且unit index17強制下方；框是FDOTHER#5 LMI1 entry22，
+  HP／MP bar使用raw entries23..30，數字使用31..52／93，姓名使用
+  FDTXT resource0的`unit+8+1`與FDOTHER#4字模。主證據見
+  [`fd2_battle_status_panel_ida.txt`](../data/ida/fd2_battle_status_panel_ida.txt)。
+- 新增全有或全無的`RenderNativeBattlePanel`與LMI1 opaque-entry decoder；
+  raw `+6/+8`、panel、bar、digits、FDTXT或font任一缺失時不發布部分畫面。
+  command24的actor／target indexed base現正式消費此compositor，20張背景滑動
+  不再額外疊兩塊RGBA panel；MP／HP／Acted仍保持原Draw邊界。
+- 本切片是`RUNTIME-E1 partial`。`0x29164／0x2B659`完整source base、精確
+  palette／音訊與未修改一般玩家「轉職→Lv4學會→施放」E2仍待，不以現有
+  effect frame8近似冒稱逐像素一致。

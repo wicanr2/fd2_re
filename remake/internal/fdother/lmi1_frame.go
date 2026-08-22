@@ -71,3 +71,22 @@ func ParseLMI1RawEntry(data []byte, index int) (RawCell, error) {
 	pixels := append([]byte(nil), data[off+4:off+4+w*h]...)
 	return RawCell{Width: w, Height: h, Pixels: pixels}, nil
 }
+
+// ParseLMI1OpaqueEntry extracts one LMI1 directory entry whose caller sends
+// its width/height payload to 0x4e8af. That primitive decodes the 0x4e916
+// high-run stream and writes every pixel, including palette index zero.
+func ParseLMI1OpaqueEntry(data []byte, index int) (LMI1Entry, error) {
+	if len(data) < 6 || string(data[:4]) != "LMI1" {
+		return LMI1Entry{}, errors.New("fdother: missing LMI1 magic")
+	}
+	count := int(binary.LittleEndian.Uint16(data[4:]))
+	tableEnd := 6 + count*4
+	if count == 0 || tableEnd > len(data) || index < 0 || index >= count {
+		return LMI1Entry{}, errors.New("fdother: LMI1 opaque entry index is invalid")
+	}
+	off := int(binary.LittleEndian.Uint32(data[6+index*4:]))
+	if off < tableEnd || off+4 > len(data) {
+		return LMI1Entry{}, errors.New("fdother: LMI1 opaque entry offset is invalid")
+	}
+	return ParseOpaqueRunCell(data[off:])
+}

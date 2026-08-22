@@ -1,0 +1,64 @@
+FD2 indexed battle status panel evidence
+=========================================
+
+輸入與位址空間
+--------------
+
+- 輸入：FD2.EXE，357074 bytes
+- MD5：b97caf2239a27a896069d03549d96e1e
+- SHA-256：222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f
+- 工具：IDA Pro 9.4／Hex-Rays，授權 Docker 映像
+- 本文件位址均為 IDA flat-loader linear address；保留原始名稱與 raw operand。
+
+`sub_2A289`座標 owner（已證實）
+--------------------------------
+
+`sub_2A289(base320, unitIndex)`讀 runtime record `unit+6`：
+
+- `unit+6 != 0`：panel origin=`base320+1451`，即`(171,4)`；
+- `unit+6 == 0`：panel origin=`base320+49280`，即`(0,154)`；
+- raw chapter global `dword_53C03==24`且`unitIndex==17`時強制使用`(0,154)`。
+
+之後固定呼叫`sub_18C6D(origin,320,unitIndex)`。這是 raw byte gate，不能由
+normalized Camp、OnField或畫面上下方反推。
+
+`sub_18C6D`完整內容（已證實）
+--------------------------------
+
+`sub_18C6D`以80-byte runtime record讀取：
+
+- `+0x21`：一個byte，畫兩位數等級；
+- `+0x40/+0x42`：signed current/max HP；
+- `+0x44/+0x46`：signed current/max MP；
+- `+0x08`：姓名文字索引的raw base，實際FDTXT index為`raw+1`。
+
+繪製順序與座標相對panel origin如下：
+
+1. `sub_4E8AF(origin, FDOTHER#5 LMI1 entry22, stride320)`，opaque 149×42框；
+2. `sub_18795(origin+(21,22), HP, maxHP, base23)`；
+3. `sub_18795(origin+(21,31), MP, maxMP, base26)`；
+4. `sub_187D6(origin+(132,4), unit+0x21, base31, width2)`；
+5. `sub_1875D(origin+(126,21), HP, maxHP, width3)`；
+6. `sub_1875D(origin+(126,30), MP, maxMP, width3)`；
+7. `sub_15F84(FDTXT, unit+8+1, origin+(5,4), stride320,
+   foreground205, shadow76, ...)`。
+
+`sub_18795→sub_17D6F`的bar長度為`current==0 ? 0 : 101*current/max+1`。
+非零HP使用FDOTHER#5 raw entries23／24／25，MP使用26／27／28；零值分支
+逐欄使用entry29並以entry30收尾。max為0時不畫bar。
+
+`sub_1875D`在current==max時選digit base31，否則base42；`sub_187D6`
+以6-pixel步距畫固定寬度數字。三位數超過999使用`base+10`單格，兩位數
+超過99使用entry93。姓名由FDOTHER#4的16×16 1bpp字模繪製，文字索引來自
+FDTXT resource0；控制碼不屬本窄caller的合法輸入。
+
+重製契約
+--------
+
+- compositor接受已解碼的entry22、bar raw cells、digit frames、FDTXT與字模，
+  以及具raw `+6/+8` provenance的80-byte record；不得由角色名、Portrait或Camp
+  猜姓名索引或panel位置。
+- 所有資產、record欄位與目的地先完整驗證，在私人320×200 indexed buffer完成
+  後一次發布；任何錯誤保持原目的地不變。
+- 本證據只閉合狀態欄；`sub_29164` figure／TAI淡入、`sub_2B659` actor演出、
+  command24完整source base與一般玩家E2仍須分開驗證。

@@ -270,7 +270,7 @@ repo 提供不含 license／遊戲資料的 `tools/docker/fd2-ida.Dockerfile` �
 只在授權 IDA Docker 匯出原始函式邊界、IDA 分析名稱、旗標與直接 caller；
 `tools/compact_fd2_function_inventory.py` 產生受版控的
 [`fd2_function_inventory.json`](../data/ida/fd2_function_inventory.json)。固定雜湊輸入
-辨識1305函式，目前為產品32、Watcom runtime170、未知1103；語意只從
+辨識1305函式，目前為產品34、Watcom runtime170、未知1101；語意只從
 [`fd2_semantic_index.json`](../data/ida/fd2_semantic_index.json) 合併，雜湊不符、
 註記未落在函式起點或缺推論等級／證據時直接拒絕。handler IR 同步拆成
 `native_call`、`unresolved_native_call`、`unknown`；三者都保留原始定位，前兩者
@@ -1122,11 +1122,26 @@ single-target plan與selector32；任一缺漏時交易不得開始。
 目前adapter以原始actor/effect與target idle indexed幀、原始delay及shake表執行，並接入
 `0x29C90`兩段各10次的BG 0/1/2 viewport轉場。pure compositor接受caller預建的source／target
 base；正式owner現以raw terrain control選actor／target BG，以actor effect frame8與target idle
-建立可玩base，再沿用既有RGBA panel。這比舊單一battle scene更接近原版，但仍未接
-`sub_2A289`完整indexed狀態欄與`sub_29164/sub_2B659`來源畫面的逐像素base，因此本切片只列
+建立可玩base，並以`0x2A289→0x18C6D`原生indexed狀態欄取代轉場內的RGBA panel。
+這比舊單一battle scene更接近原版，但仍未接`sub_29164/sub_2B659`來源畫面的完整逐像素base，因此本切片只列
 `RUNTIME-E1 partial`，不得宣稱逐幀原版一致；未修改原版的「轉職→Lv4學會→施放」一般玩家
 連續E2仍是獨立驗收門檻。主證據見
 [`fd2_command24_presentation_ida.txt`](../data/ida/fd2_command24_presentation_ida.txt)。
+
+#### `0x2A289→0x18C6D` indexed戰鬥狀態欄契約
+
+合法IDA 9.4已閉合狀態欄的完整窄consumer。位置只由runtime record raw `+6`
+決定：零值在`(0,154)`，非零在`(171,4)`；raw chapter24且unit index17是強制
+下方的直接例外。框為FDOTHER#5 LMI1 entry22的opaque 149×42 cell；HP／MP
+bar使用raw cells23..30，兩／三位數使用frame entries31..52與93，姓名使用
+FDTXT resource0的`record+8+1`及FDOTHER#4 16×16字模。所有座標、數值寬度、
+bar公式與繪製順序以
+[`fd2_battle_status_panel_ida.txt`](../data/ida/fd2_battle_status_panel_ida.txt)
+為準。`battle.RenderNativeBattlePanel`現要求raw `+6/+8` provenance並在私有
+320×200 indexed buffer完整成功後一次發布；缺panel、bar、digit、FDTXT、字模或
+raw selector時保持目的地與command24 MP／HP／Acted不變。正式command24轉場的
+actor／target base已消費此compositor，不再於20張indexed frame上疊兩塊RGBA panel；
+仍不得由Camp、Name、Portrait或BattleFig猜測。
 
 #### command24 `0x29C90`背景轉場契約
 

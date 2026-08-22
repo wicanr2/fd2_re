@@ -15,11 +15,11 @@
   "imagebase": "0x0",
   "function_count": 1305,
   "classification_counts": {
-    "unknown": 1103,
-    "product": 32,
+    "unknown": 1101,
+    "product": 34,
     "runtime": 170
   },
-  "semantic_annotation_count": 33,
+  "semantic_annotation_count": 35,
   "classification_note": "product/driver only come from the versioned semantic index; runtime is a mechanical IDA FUNC_LIB classification after the configured FLIRT signatures; every other function remains unknown",
   "detail_note": "每筆保留 IDA 函式邊界、分析名稱、旗標、直接 caller 函式與分級語意；逐 call-site 交叉參照由同一匯出器重生，不在此精簡版重複保存",
   "functions": [
@@ -3088,11 +3088,22 @@
       "direct_code_xref_count": 2,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x18c6d",
+          "classification": "product",
+          "semantic": "indexed 戰鬥狀態欄框、HP／MP、等級與姓名的完整窄 compositor",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_battle_status_panel_ida.txt"
+          ],
+          "scope": "callee 繪製順序與 raw record 欄位；panel 上下方位置由 0x2a289 caller 決定"
+        }
+      ]
     },
     {
       "start": "0x18d8c",
@@ -7816,11 +7827,22 @@
       "direct_code_xref_count": 15,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x2a289",
+          "classification": "product",
+          "semantic": "以 runtime record raw +6 與 chapter24 unit17 例外選擇狀態欄上下方 origin",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_battle_status_panel_ida.txt"
+          ],
+          "scope": "座標 owner 與 0x18c6d handoff；raw +6 不得命名為 normalized Camp"
+        }
+      ]
     },
     {
       "start": "0x2a2e8",

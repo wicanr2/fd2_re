@@ -81,10 +81,19 @@ func nativeCommand24BGSelector(m *MapData, unit *battle.Unit) (int, error) {
 	return int(m.NativeTerrainControl[tile*4+2]), nil
 }
 
-func nativeCommand24BackgroundBase(background fdother.Frame, overlays ...figani.Frame) ([]byte, error) {
+func nativeCommand24BackgroundBase(
+	background fdother.Frame,
+	panelAssets battle.NativeItemPanelDataAssets,
+	panelRecord []byte,
+	unitIndex, rawChapter int,
+	overlays ...figani.Frame,
+) ([]byte, error) {
 	base := make([]byte, 320*200)
 	background.X, background.Y = 0, 50
 	if err := background.Blit(base, 320, -1); err != nil {
+		return nil, err
+	}
+	if err := battle.RenderNativeBattlePanel(panelAssets, panelRecord, base, unitIndex, rawChapter); err != nil {
 		return nil, err
 	}
 	for _, overlay := range overlays {
@@ -93,6 +102,18 @@ func nativeCommand24BackgroundBase(background fdother.Frame, overlays ...figani.
 		}
 	}
 	return base, nil
+}
+
+func nativeCommand24RuntimeUnitIndex(st *battle.State, unit *battle.Unit) (int, error) {
+	if st == nil || unit == nil {
+		return 0, errors.New("native command24 runtime unit unavailable")
+	}
+	for index, candidate := range st.Units {
+		if candidate == unit {
+			return index, nil
+		}
+	}
+	return 0, errors.New("native command24 unit is not in the runtime array")
 }
 
 func nativeCommand24IndexedImages(frames [][]byte, palette color.Palette) ([]*ebiten.Image, error) {
@@ -193,11 +214,40 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if err != nil {
 		return err
 	}
-	sourceBase, err := nativeCommand24BackgroundBase(actorBG, effect.Frames[schedule.TargetStart-1])
+	fdotherArchive, fdtxtArchive := nativeFDOTHERPath(), nativeFDTXTPath()
+	if fdotherArchive == "" || fdtxtArchive == "" {
+		return errors.New("native command24 player-provided FDOTHER.DAT/FDTXT.DAT unavailable")
+	}
+	panelAssets, err := battle.LoadNativeItemPanelDataAssets(fdotherArchive, fdtxtArchive)
 	if err != nil {
 		return err
 	}
-	targetBase, err := nativeCommand24BackgroundBase(targetBG)
+	actorRecord, err := battle.NativeBattlePanelRecordForUnit(actor)
+	if err != nil {
+		return err
+	}
+	targetRecord, err := battle.NativeBattlePanelRecordForUnit(target)
+	if err != nil {
+		return err
+	}
+	actorIndex, err := nativeCommand24RuntimeUnitIndex(g.st, actor)
+	if err != nil {
+		return err
+	}
+	targetIndex, err := nativeCommand24RuntimeUnitIndex(g.st, target)
+	if err != nil {
+		return err
+	}
+	sourceBase, err := nativeCommand24BackgroundBase(
+		actorBG, panelAssets, actorRecord, actorIndex, g.handlerChapter,
+		effect.Frames[schedule.TargetStart-1],
+	)
+	if err != nil {
+		return err
+	}
+	targetBase, err := nativeCommand24BackgroundBase(
+		targetBG, panelAssets, targetRecord, targetIndex, g.handlerChapter,
+	)
 	if err != nil {
 		return err
 	}
@@ -355,7 +405,6 @@ func (g *Game) drawNativeCommand24Presentation(screen *ebiten.Image) bool {
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(2, 2)
 		screen.DrawImage(j.transitionFrames[j.transitionFrame], op)
-		g.drawNativeCommand24Panels(screen, j)
 		j.drawn = true
 		return true
 	}
