@@ -198,7 +198,7 @@
       "semantic": "command 0 的 28 幀、7 元素錯開 FDOTHER indexed compositor entry",
       "confidence": "已證實",
       "evidence": ["docs/data/ida/fd2_command0_presentation_ida.txt"],
-      "scope": "funcs_2AC25[0] entry；只閉合 mode3/4/5、#18/#20 frame bank 與 #82/sub1 owner，完整 0x2A6BD actor/target scene 及 E2 仍需 caller 整合"
+      "scope": "funcs_2AC25[0] entry；mode3/4/5、#18/#20 frame bank 與 #82/sub1 owner 已閉合；正式 Game 已接 0x2A6BD actor/target scene 為 RUNTIME-E1，精確音訊與同狀態 E2 仍缺"
     },
     {
       "address": "0x28a6c",

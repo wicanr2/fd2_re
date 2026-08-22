@@ -323,8 +323,20 @@ func TestNativeCommandTargetFieldMaterializeAndReset(t *testing.T) {
 	}
 }
 
-func TestPlayerNativeCommand0PublishesNumericResultThroughCursorConfirm(t *testing.T) {
-	_, field, state := completeNativeMapFrameFixture(t)
+func TestPlayerNativeCommand0RunsIndexedPresentationThroughCursorConfirm(t *testing.T) {
+	assets, field, state := completeNativeMapFrameFixture(t)
+	base := filepath.Clean("../../../org_game/炎龍騎士團/FLAME2")
+	for _, name := range []string{"FIGANI.DAT", "FDOTHER.DAT", "BG.DAT", "FDTXT.DAT", "TAI.DAT"} {
+		if !fileExists(filepath.Join(base, name)) {
+			t.Skip("player-provided command0 archives unavailable")
+		}
+	}
+	t.Setenv("FD2_ORIGINAL_FIGANI", filepath.Join(base, "FIGANI.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+	t.Setenv("FD2_ORIGINAL_BG", filepath.Join(base, "BG.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(base, "FDTXT.DAT"))
+	t.Setenv("FD2_ORIGINAL_TAI", filepath.Join(base, "TAI.DAT"))
+	t.Setenv("FD2_MUTE", "1")
 	book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
 	for id := range book {
 		book[id] = battle.NativeCommandRecord{ID: id}
@@ -335,21 +347,44 @@ func TestPlayerNativeCommand0PublishesNumericResultThroughCursorConfirm(t *testi
 	}
 	actor := state.Units[0]
 	actor.Camp, actor.OnField, actor.HP, actor.MaxHP, actor.MP = battle.Own, true, 28, 28, 8
+	actor.MaxMP, actor.NativeRecordByte8, actor.HasNativeRecordByte8 = 8, 0, true
+	actor.InventorySlots, actor.NativeInventoryFlags = make([]int, 8), make([]int, 8)
 	target := &battle.Unit{
 		Camp: battle.Enemy, OnField: true, X: 1, Y: 0,
 		HP: 100, MaxHP: 100, ClassID: 5,
 		NativeRecordByte5: 0, HasNativeRecordByte5: true,
 		NativeRecordByte6: 1, HasNativeRecordByte6: true,
+		BattleFig: 0, HasBattleFig: true,
+		NativeRecordByte8: 1, HasNativeRecordByte8: true,
+		NativeRecordRace: 1, HasNativeRecordRace: true,
+		NativeRecordClass: 1, HasNativeRecordClass: true,
+		InventorySlots: make([]int, 8), NativeInventoryFlags: make([]int, 8),
 	}
 	state.Units = append(state.Units, target)
 	state.NativeCommandBook = book
 	state.NativeCompositionEventBytes = make([]byte, state.W*state.H)
 	state.NativeTileBlitModes[target.Y*state.W+target.X] = 0
 	state.MaterializeNativeMapRangeMode(3)
+	scene, err := battle.LoadNativeCommandSceneTable("../../assets/data/native_command_scene.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	flash, err := battle.LoadNativeCommandPaletteFlashTable("../../assets/data/native_command_palette_flash.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for len(assets.LUTs) <= 14 {
+		lut := make([]byte, 256)
+		for i := range lut {
+			lut[i] = byte(i)
+		}
+		assets.LUTs = append(assets.LUTs, lut)
+	}
 	g := &Game{
 		m: field, st: state, sel: actor, curX: target.X, curY: target.Y,
 		nativeCommand0Targeting: true, nativeCommandTargetID: 0,
-		nativeRNGState: 1,
+		nativeRNGState: 1, nativeMapAssets: assets, nativeUIPalette: loadNativeUIPalette(),
+		nativeCommandScene: scene, nativeCommandPaletteFlash: flash,
 	}
 
 	// 缺少原版 class resistance table 時，正式 confirm 必須保留 modal，
@@ -362,9 +397,48 @@ func TestPlayerNativeCommand0PublishesNumericResultThroughCursorConfirm(t *testi
 			actor, target, g.nativeCommand0Targeting, g.sel)
 	}
 	state.NativeCommandResistances = map[int]int{5: 10}
+	target.HasBattleFig = false
 	g.confirm()
-	if actor.MP != 6 || !actor.Acted || target.HP >= 100 {
-		t.Fatalf("command0 numeric result actor=%#v target=%#v msg=%q", actor, target, g.msg)
+	if g.nativeCmd0Presentation != nil || actor.MP != 8 || actor.Acted || target.HP != 100 || !g.nativeCommand0Targeting {
+		t.Fatal("command0 missing FIGANI provenance crossed presentation boundary")
+	}
+	target.HasBattleFig = true
+	g.confirm()
+	if g.nativeCmd0Presentation == nil || actor.MP != 8 || actor.Acted || target.HP != 100 {
+		t.Fatalf("command0 start crossed transaction boundary actor=%#v target=%#v msg=%q", actor, target, g.msg)
+	}
+	g.stepNativeCommand0Presentation()
+	if actor.MP != 8 || target.HP != 100 || actor.Acted {
+		t.Fatal("command0 advanced without Draw acknowledgement")
+	}
+	screen := ebiten.NewImage(640, 400)
+	hpChanges, mpChanges := 0, 0
+	for steps := 0; g.nativeCmd0Presentation != nil && steps < 512; steps++ {
+		job := g.nativeCmd0Presentation
+		phase, frame := job.phase, job.frame
+		beforeMP, beforeHP := actor.MP, target.HP
+		if !g.drawNativeCommand0Presentation(screen) {
+			t.Fatalf("command0 draw failed at step %d", steps)
+		}
+		g.stepNativeCommand0Presentation()
+		if actor.MP != beforeMP {
+			mpChanges++
+			if phase != nativeCommand0Actor || !job.actorSpecs[frame].PublishMP {
+				t.Fatalf("MP changed outside actor marker phase=%d frame=%d", phase, frame)
+			}
+		}
+		if target.HP != beforeHP {
+			hpChanges++
+			if phase != nativeCommand0Target || !job.targetImpact[frame] {
+				t.Fatalf("HP changed outside target marker phase=%d frame=%d", phase, frame)
+			}
+		}
+	}
+	if g.nativeCmd0Presentation != nil || actor.MP != 6 || !actor.Acted || target.HP >= 100 {
+		t.Fatalf("command0 presentation result actor=%#v target=%#v job=%v msg=%q", actor, target, g.nativeCmd0Presentation != nil, g.msg)
+	}
+	if mpChanges != 1 || hpChanges != 7 {
+		t.Fatalf("command0 publication counts MP=%d HP=%d", mpChanges, hpChanges)
 	}
 	if g.nativeCommand0Targeting || g.sel != nil || state.NativeMapRangeMode != 1 {
 		t.Fatalf("command0 cleanup targeting=%v sel=%#v range=%d",

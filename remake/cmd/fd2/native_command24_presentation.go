@@ -207,7 +207,7 @@ func nativeFIGANIImages(animation *figani.Animation, palette color.Palette) ([]*
 
 func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then func([]battle.NativeCommand24Damage)) error {
 	if g == nil || g.st == nil || g.rng == nil || actor == nil || target == nil ||
-		g.nativeCmd24Presentation != nil || g.nativeHealPresentation != nil ||
+		g.nativeCmd24Presentation != nil || g.nativeCmd0Presentation != nil || g.nativeHealPresentation != nil ||
 		g.nativeModifierPresentation != nil || g.atk != nil {
 		return errors.New("native command24 presentation context unavailable")
 	}

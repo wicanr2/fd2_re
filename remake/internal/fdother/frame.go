@@ -228,3 +228,69 @@ func (f Frame) BlitAt(dst []byte, stride, base, transparent int) error {
 	}
 	return nil
 }
+
+// BlitLUTAt reproduces 0x4e583: it decodes the same four-mode stream as
+// 0x4e63d, but maps every written palette index through a complete 256-byte
+// lookup table. Transparent skips still preserve the destination and dither
+// still writes only the second pixel of each pair.
+func (f Frame) BlitLUTAt(dst []byte, stride, base int, lut []byte) error {
+	if len(lut) != 256 {
+		return errors.New("fdother: LUT blit requires 256 entries")
+	}
+	if f.X < 0 || f.Y < 0 || f.Width <= 0 || f.Height <= 0 || stride < f.X+f.Width {
+		return errors.New("fdother: invalid LUT destination geometry")
+	}
+	if base < 0 || base > len(dst) || f.Y > (len(dst)-base-f.X)/stride || f.Height > (len(dst)-base)/stride-f.Y {
+		return errors.New("fdother: LUT destination is too small")
+	}
+	pos := 4
+	for y := 0; y < f.Height; y++ {
+		row, written := base+(f.Y+y)*stride+f.X, 0
+		for written < f.Width {
+			if pos >= len(f.Pixels) {
+				return fmt.Errorf("fdother: LUT frame RLE ends in row %d", y)
+			}
+			ctrl := f.Pixels[pos]
+			pos++
+			count, mode := int(ctrl&0x3f)+1, ctrl>>6
+			advance := count
+			if mode == 1 {
+				advance *= 2
+			}
+			if written+advance > f.Width {
+				return fmt.Errorf("fdother: LUT frame RLE overruns row %d", y)
+			}
+			switch mode {
+			case 0:
+				if pos >= len(f.Pixels) {
+					return errors.New("fdother: LUT colour run lacks a value")
+				}
+				v := lut[f.Pixels[pos]]
+				pos++
+				for i := 0; i < count; i++ {
+					dst[row+written+i] = v
+				}
+			case 1:
+				if pos >= len(f.Pixels) {
+					return errors.New("fdother: LUT dither run lacks a value")
+				}
+				v := lut[f.Pixels[pos]]
+				pos++
+				for i := 0; i < count; i++ {
+					dst[row+written+2*i+1] = v
+				}
+			case 2:
+				if pos+count > len(f.Pixels) {
+					return errors.New("fdother: LUT literal run exceeds frame data")
+				}
+				for i := 0; i < count; i++ {
+					dst[row+written+i] = lut[f.Pixels[pos+i]]
+				}
+				pos += count
+			case 3:
+			}
+			written += advance
+		}
+	}
+	return nil
+}

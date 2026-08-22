@@ -98,3 +98,66 @@ work + xOffset[j] + stride*yOffset[j]
 
 重開本結論只接受：輸入雜湊不同、原始指令／表 bytes 直接反證、
 同狀態執行結果矛盾，或本檔缺少它宣稱已具備的 writer／consumer。
+
+## `sub_2A6BD` 完整場景輸入補證（2026-08-22）
+
+本節補的是正式 `Game` owner 必須預建的 actor／target 場景，不重開上面的
+`sub_26152` 排程。工具、輸入雜湊與位址空間同本檔開頭；IDA 資料庫仍只存在
+一次性 Docker 的 `tmpfs`。下列結論以 IDA 直接指令與 bytes 為主，Hex-Rays
+只協助核對參數順序。
+
+### 背景、狀態欄與 FIGANI 資源（已證實）
+
+- `0x2A8AB..0x2A90D` 先由 actor 格得到初始 raw selector，再呼
+  `sub_2B5E1(finalTargetCount, finalTargetArray)`；actor record `+6==0` 時
+  交換兩個 selector。`0x2A90F..0x2A93F` 分別把交換後的第一個 selector載為
+  `BG.DAT`，第二個載為 `TAI.DAT`。因此不能把 command 24 的 actor／target
+  BG選擇捷徑直接套到 command 0。
+- `0x2A97E..0x2A9AF` 在同一個 320×200 base 先呼
+  `sub_2A289(base, actor)`、`sub_2A289(base, finalTargetArray[0])`，再把上述
+  BG資源畫在 `(0,50)`。command 0 的初始戰鬥 base 同時含兩方原生狀態欄。
+- `0x2A9B7..0x2AA5C` 以 actor runtime record `+7` 計算 FIGANI base
+  `selector*3`：idle載 `base+0`，actor effect先載 `base+2`；若該資源
+  開頭 word 為0才改載 `base+1`。這是 raw fallback，不可由職業名或 PNG猜測。
+- `0x2AA6C..0x2AAA8` 對每個 final target 以其 runtime `+7` 載
+  `FIGANI selector*3` idle。正式 owner 必須保留 final-target陣列順序。
+
+### actor 前導與 MP 發布（已證實）
+
+- `0x2AAEF..0x2AB17` 固定呼
+  `sub_29164(actor,0,actorIdle,firstTargetIdle,work640,base320,TAI)`。
+  `mode=0` 與 command 24 的 `mode=1` 不同：actor raw `+6==0` 時先把 TAI
+  固定寫入 base，九張 `stage=8..0` 右 viewport畫 actor idle滑入，並固定畫
+  first-target idle；raw `+6!=0` 時九張左 viewport畫 first-target idle，TAI與
+  actor idle一起滑入。兩支每張都套 `stage*6` DAC減算。
+- `0x2AB1A..0x2AB48` 接著呼
+  `sub_2B659(actor,commandID,actorEffect,firstTargetIdle,work640,base320,BG,TAI)`。
+  對 command 0，actor-effect descriptor raw `+4==1` 時，`0x2B749` 呼
+  `sub_1CA89(actor,0)`發布MP，`0x2B756`重畫actor狀態欄；因 ID `<10`，
+  `0x2B770..0x2B7D6` 另以 FDOTHER #3 entry11套 BG／TAI並播放 command
+  sound bank sub0，之後六次寫 command 0 的三個 DAC bytes。這段不是
+  `sub_26152` 的七次 sub1 target impact。
+
+`sub_4E583`（`0x4E583..0x4E6A7`）本身也已以直接指令補核：它讀取與
+`sub_4E63D`相同的 `{u16 width,u16 height,four-mode RLE}`，但每個實際寫入的
+palette index先通過caller傳入的256-byte lookup table；透明skip仍保留目的地，
+dither仍只寫每對像素的第二格。因此它可由typed `Frame`加嚴格 LUT blit重現，
+不可退化成整幀RGB濾鏡或全域調色盤替換。
+
+### 正式 owner 規格邊界
+
+正式 `Game` 接線必須在任何 MP／HP／Acted 修改前一次驗證並預建：
+
+1. final-target陣列、actor／target raw `+6/+7`、`0x1F183` gate輸入與章節初始
+   selector；
+2. BG、TAI、雙狀態欄、actor idle／effect（含 `+2→+1` fallback）、所有 target
+   idle與 FDOTHER #3／#18或#20／#82；
+3. mode0 `0x29164`九張前導、`sub_2B659` actor phase、每個 target的28張
+   `mode4→targetIdle→mode5` 畫面，以及目標間／尾端畫面；
+4. 每張畫面只有在真正 Draw acknowledgement 後才前進；actor raw marker發布MP，
+   七個 target impact marker依序發布分段HP，全部完成才發布Acted與共同清理。
+
+缺少章節 selector、`0x1F183` gate、FDOTHER #3遮罩／DAC pulse、目標間
+`sub_2BA22`或尾端 owner時，不得只播放已完成的28張target效果後就交易；正式路徑
+仍須失敗即關閉。這些是目前由 `DATA-READY` 升為完整 indexed
+`RUNTIME-E1` 的剩餘實作閘門。

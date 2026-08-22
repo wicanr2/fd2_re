@@ -56,3 +56,28 @@ func TestComposeNativeCommand0TargetFrameUsesSideShiftAndRejectsPartialPublish(t
 		t.Fatal("partial effect bank accepted")
 	}
 }
+
+func TestComposeNativeCommand0TargetFrameAllowsNativeWorkMargin(t *testing.T) {
+	base := make([]byte, 320*200)
+	effect := &figani.Animation{Frames: make([]figani.Frame, 16), HeaderByte2: 16}
+	for i := range effect.Frames {
+		effect.Frames[i] = figani.Frame{Width: 1, Height: 1, Pixels: []byte{7}, Mask: []byte{1}}
+	}
+	effect.Frames[0] = figani.Frame{
+		Width: 1, Height: 12, Pixels: make([]byte, 12), Mask: make([]byte, 12),
+	}
+	for i := range effect.Frames[0].Pixels {
+		effect.Frames[0].Pixels[i], effect.Frames[0].Mask[i] = 9, 1
+	}
+	schedule := figani.NativeCommand0PresentationSchedule{
+		Frames: 28, LayerFlags: [7]byte{0}, YOffsets: [7]int{-10},
+	}
+	target := figani.Frame{X: 1, Y: 1, Width: 1, Height: 1, Pixels: []byte{7}, Mask: []byte{1}}
+	got, err := ComposeNativeCommand0TargetFrame(base, target, effect, schedule, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got[0] != 9 || got[320] != 9 || got[321] != 7 {
+		t.Fatalf("native work-margin pixels top=%d next=%d target=%d", got[0], got[320], got[321])
+	}
+}

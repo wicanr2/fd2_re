@@ -719,6 +719,20 @@ mode 0／1／2 與 6／7／8 皆不產生 handler-owned 幀；mode 3 將七個
 完整原始位址、bytes 與資源 owner 見
 [`fd2_command0_presentation_ida.txt`](../data/ida/fd2_command0_presentation_ida.txt)。
 
+正式 command 0 場景 owner 不能只消費上述28張target效果。`0x2A6BD` 的
+caller contract 另要求：以 actor格與 `sub_2B5E1` final-target fold取得 BG／TAI
+selector並依actor raw `+6`交換；在同一base畫actor與first-target兩個原生狀態欄；
+以actor raw `+7`載`FIGANI base+0` idle及`base+2` effect（header word0時fallback
+至`base+1`），再以每個target raw `+7`載idle。actor phase固定先跑
+`sub_29164(...,mode0,...)`九張雙角色前導，再由`sub_2B659`於actor-effect raw
+`+4==1`發布MP、更新狀態欄、套FDOTHER #3 entry11、播放sound bank sub0與六次
+command DAC pulse；target phase才進`sub_26152`的七次sub1／七段HP。
+
+因此 runtime admission 必須先完整預建前導、actor phase、全部target phase、
+目標間轉場與尾端。章節初始selector、`0x1F183` gate、FDOTHER #3遮罩／DAC、
+`sub_2BA22`或尾端任一尚缺時一律零交易，不得把command24 mode1前導、固定BG或
+target-only效果冒充完整場景。完整位址與推論等級仍以同一主證據檔為準。
+
 BG asset boundary：`BG.DAT` 是 LLLLLL archive；generic compositor 的前三個已知 layer #0/#1/#2 都是 `{u16 width,u16 height, 0x4e63d four-mode RLE}` single-frame payload，實測各為 320×100。`fdother.DecodeArchiveSingleFrame` 明確解這種無 frame-directory 的 archive entry，player-archive regression 對三個 layer 解入 320×100 indexed surface。它不替 `0x2b5e1` 的其他 raw selector 命名，也不自動把 current PNG background 當 native layer schedule。
 
 ### UI-03 action chooser availability contract（E0 partial）

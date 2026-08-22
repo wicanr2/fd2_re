@@ -244,6 +244,33 @@ func TestFinaleTAI003IsTransparentPlaceholder(t *testing.T) {
 	}
 }
 
+func TestFrameBlitLUTAtMatches4E583FourModes(t *testing.T) {
+	frame := Frame{
+		Width: 8, Height: 1,
+		Pixels: []byte{8, 0, 1, 0, 0x01, 3, 0x41, 4, 0x80, 5, 0xc0},
+	}
+	lut := make([]byte, 256)
+	for i := range lut {
+		lut[i] = byte(i + 10)
+	}
+	dst := []byte{9, 9, 9, 9, 9, 9, 9, 9}
+	if err := frame.BlitLUTAt(dst, 8, 0, lut); err != nil {
+		t.Fatal(err)
+	}
+	want := []byte{13, 13, 9, 14, 9, 14, 15, 9}
+	if !bytes.Equal(dst, want) {
+		t.Fatalf("0x4e583 modes=%v want=%v", dst, want)
+	}
+}
+
+func TestFrameBlitLUTAtRejectsPartialLookupWithoutMutation(t *testing.T) {
+	frame := Frame{Width: 1, Height: 1, Pixels: []byte{1, 0, 1, 0, 0, 3}}
+	dst := []byte{7}
+	if err := frame.BlitLUTAt(dst, 1, 0, make([]byte, 255)); err == nil || dst[0] != 7 {
+		t.Fatalf("partial LUT accepted or mutated dst=%v err=%v", dst, err)
+	}
+}
+
 func min(a, b int) int {
 	if a < b {
 		return a
