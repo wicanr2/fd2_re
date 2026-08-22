@@ -9487,10 +9487,11 @@ func (g *Game) endTurn() {
 	if started {
 		return
 	}
-	// 0x1A552→0x1A55E passes raw selector 0 immediately before enemy AI.
-	// Keep this address-derived phase distinct from normalized Camp values.
+	// The original runs selector 1 before 0x1D80B, then selector 0 before
+	// 0x1D8BA. This controller merges those two non-player unit scans, so keep
+	// the proven sweep order as one atomic pre-AI transaction.
 	if g.st.HasNativeRuntimeUnitProjection {
-		expired, err := g.applyNativeTransientPhase(0)
+		expired, err := g.applyNativeTransientPhases(1, 0)
 		if err != nil {
 			g.loadErr = err.Error()
 			return
@@ -9655,6 +9656,19 @@ func (g *Game) completeTurn() {
 }
 
 func (g *Game) completeTurnPlayerPhase() {
+	// 0x1A78B→0x1A797 passes selector 2 after the phase presentation and
+	// immediately before range mode 1/player input. Keep the raw selector;
+	// do not substitute normalized Camp.
+	if g.st != nil && g.st.HasNativeRuntimeUnitProjection {
+		expired, err := g.applyNativeTransientPhase(2)
+		if err != nil {
+			g.loadErr = err.Error()
+			return
+		}
+		if len(expired) > 0 {
+			g.msg = fmt.Sprintf("%d 個原始狀態效果到期", len(expired))
+		}
+	}
 	if g.result == "" {
 		g.showBanner("PLAYER PHASE")
 	}

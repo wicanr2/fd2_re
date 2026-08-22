@@ -7,19 +7,14 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
 
-// applyNativeTransientPhase owns one proven sub_1A866(selector) phase sweep.
-// It decrements raw +0x22..+0x27 and, when any byte expires, runs the proven
-// 0x1B750 equipment/derived-stat recalculation before publishing the state.
-func (g *Game) applyNativeTransientPhase(selector byte) ([]battle.NativeTransientExpiry, error) {
+// applyNativeTransientPhases owns one or more ordered sub_1A866(selector)
+// sweeps as a single publication. It decrements raw +0x22..+0x27 and, when
+// any byte expires, runs the proven 0x1B750 equipment/derived-stat
+// recalculation before publishing the state.
+func (g *Game) applyNativeTransientPhases(selectors ...byte) ([]battle.NativeTransientExpiry, error) {
 	if g == nil || g.st == nil || !g.st.HasNativeRuntimeUnitProjection ||
-		len(g.st.Units) != len(g.st.NativeRuntimeRecords) {
+		len(g.st.Units) != len(g.st.NativeRuntimeRecords) || len(selectors) == 0 {
 		return nil, fmt.Errorf("native transient phase: runtime raw projection is incomplete")
-	}
-	itemRows, err := battle.LoadNativeItemEffectRowPrefix(
-		assetPath("assets/data/native_item_effect_rows.json"),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("native transient phase: item rows: %w", err)
 	}
 	candidate := *g.st
 	candidate.Units = make([]*battle.Unit, len(g.st.Units))
@@ -33,14 +28,25 @@ func (g *Game) applyNativeTransientPhase(selector byte) ([]battle.NativeTransien
 	candidate.NativeRuntimeRecords = append(
 		[]battle.NativeRuntimeRecordState(nil), g.st.NativeRuntimeRecords...,
 	)
-	expired := candidate.TickNativeTransientsRaw(selector)
+	selected := make(map[byte]struct{}, len(selectors))
+	var expired []battle.NativeTransientExpiry
+	for _, selector := range selectors {
+		if _, duplicate := selected[selector]; duplicate {
+			return nil, fmt.Errorf("native transient phase: duplicate selector %d", selector)
+		}
+		selected[selector] = struct{}{}
+		expired = append(expired, candidate.TickNativeTransientsRaw(selector)...)
+	}
 	expiredUnits := make(map[*battle.Unit]struct{}, len(expired))
 	for _, event := range expired {
 		expiredUnits[event.Unit] = struct{}{}
 	}
 	for index, unit := range candidate.Units {
-		if !unit.HasNativeRecordByte6 || unit.NativeRecordByte6 != selector ||
+		if !unit.HasNativeRecordByte6 ||
 			!unit.HasNativeRecordByte5 || unit.NativeRecordByte5&1 != 0 {
+			continue
+		}
+		if _, included := selected[unit.NativeRecordByte6]; !included {
 			continue
 		}
 		panel, err := battle.NativeItemPanelRecordForUnit(unit)
@@ -51,6 +57,12 @@ func (g *Game) applyNativeTransientPhase(selector byte) ([]battle.NativeTransien
 		copy(record[6:0x28], panel[6:0x28])
 		copy(record[0x3b:0x48], panel[0x3b:0x48])
 		if _, didExpire := expiredUnits[unit]; didExpire {
+			itemRows, err := battle.LoadNativeItemEffectRowPrefix(
+				assetPath("assets/data/native_item_effect_rows.json"),
+			)
+			if err != nil {
+				return nil, fmt.Errorf("native transient phase: item rows: %w", err)
+			}
 			if err := battle.ApplyNativeRuntimeEquipmentRecalc(record, itemRows); err != nil {
 				return nil, fmt.Errorf("native transient phase: unit %d recompute: %w", index, err)
 			}
@@ -63,4 +75,8 @@ func (g *Game) applyNativeTransientPhase(selector byte) ([]battle.NativeTransien
 	}
 	*g.st = candidate
 	return expired, nil
+}
+
+func (g *Game) applyNativeTransientPhase(selector byte) ([]battle.NativeTransientExpiry, error) {
+	return g.applyNativeTransientPhases(selector)
 }

@@ -1,0 +1,115 @@
+# FD2 `sub_1A866` 狀態倒數到期演出：IDA 9.4 證據
+
+## 輸入、位址空間與工具
+
+- 輸入檔：`FD2.EXE`，357074 位元組。
+- MD5：`b97caf2239a27a896069d03549d96e1e`。
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- IDA：合法授權 Docker 內的 IDA Pro 9.4；Linear Executable loader 的線性位址
+  空間。原始函式名稱保留為 `sub_1A866`、`sub_1B750`、`sub_12D7B`、
+  `sub_1956B`、`sub_15F84`、`sub_4E031`、`sub_1E5C0`、`sub_196CB`。
+- Capstone：`fd2-cap-local` Docker 內的 `tools/disasm_le.py`，只作同一線性
+  位址空間的獨立指令核對。原始 `FD2.EXE` 及授權檔均唯讀掛載；IDA 資料庫與
+  匯出物在暫存目錄，不是本證據的輸入。
+
+所有位址都是 DOS/4GW LE 的 linear address，不是檔案偏移。由專案工具的 LE
+  轉換規則，`0x1A866` 對應 `FD2.EXE` 檔案偏移
+  `0x10E00 + (0x1A866 - 0x10000) = 0x1B666`；原始檔案偏移只用於回查 bytes，
+  不得與 IDA linear address 混寫。
+
+## 函式邊界與直接 caller（已證實）
+
+IDA 的函式邊界為：
+
+- `sub_1A866`: `0x1A866..0x1AA1D`。
+- `sub_1B750`: 由 `0x1AA10` 的到期消費端呼叫；其餘直接 caller 由 Capstone
+  交叉核對為 `0x010AC6`、`0x011003`、`0x01BFB2`、`0x01BFEC`、`0x01C07C`、
+  `0x01E3E2`、`0x021100`、`0x02F499`、`0x02F86F`、`0x02FB92`、`0x031765`。
+- `sub_1A866` 的三個直接 caller 與 selector immediate 為：
+  `0x1A4D1 call sub_1A866(1)`、`0x1A55E call sub_1A866(0)`、
+  `0x1A797 call sub_1A866(2)`。既有 caller 證據另固定 `0x1A4D1` 在
+  `0x1D80B` unit scan 前、`0x1A55E` 在 `0x1D8BA` unit scan 前，而
+  `0x1A797` 在 phase 畫面收束、設定 range mode 1、進入玩家輸入前。
+
+這些 immediate 是原始 selector，不是 normalized `Camp`，本證據不替它們改名。
+
+## 到期 loop 與原始 bytes（已證實）
+
+`sub_1A866` 前半段另有一個以 `+0x40/+0x42` 為輸入的 HP／計數處理；本文件只
+關閉後半段 raw transient loop。該 loop 的直接指令順序如下：
+
+1. 以 `record = base + unitIndex * 0x54` 掃描目前 selector 的 raw records。
+2. 對六個 transient 欄位 `record + 0x22 .. record + 0x27`，只處理非零值；
+   `dec byte ptr [record + offset]` 後，只有歸零才進入演出。
+3. 歸零時先以 `sub_12D7B(recordIndex)` 重畫 map，再將 range mode 由0改為1。
+4. 以 `movzx eax, byte ptr [record + 7]`、`push eax`、`call sub_1956B` 消費
+   raw `unit + 7` 的 DATO／角色呈現來源。這是 raw record 欄位，不直接等於
+   portrait 名稱。
+5. 呼叫 `sub_15F84` 顯示 FDTXT 文字；接著呼叫 present／input helper
+   `sub_4E031`，等待值10，再呼叫 `sub_196CB` 關閉／收束。
+6. 只有上述演出消費端返回後，才以 `sub_1B750(recordIndex)` 重算 derived
+   AP／DP／HIT／EV，然後繼續掃描下一個欄位。
+
+關鍵 raw bytes（檔案偏移 `0x1B666` 起；每行左側仍是 linear address）如下，
+完整範圍可由重生命令重新取得：
+
+```text
+0x01a866  68 38 00 00 00 e8 67 c4 01 00 53 56 57 55 31 ed
+0x01a994  8d 04 3e 0f b6 50 22 85 d2 74 df fe 48 22
+0x01a9aa  a3 83 1a 00 00 55 e8 c6 83 ff ff 83 c4 04
+0x01a9c2  0f b6 46 07 50 e8 9f eb ff ff 83 c4 04
+0x01a9cf  6a 01 6a 13 6a 4a 6a 4c 68 cd 00 00 00
+0x01a9e1  68 23 9f 0a 00 8d 87 e1 01 00 00 50
+0x01a9ed  ff 35 7d 3a 00 00 e8 8c b5 ff ff 83 c4 24
+0x01a9fb  e8 31 36 03 00 6a 0a e8 b9 3b 00 00 83 c4 04
+0x01aa0a  e8 bc ec ff ff 55 e8 3b 0d 00 00 83 c4 04
+```
+
+可重生的完整 IDA／Capstone 文字與 bytes 命令（在 Docker 執行）：
+
+```text
+docker run --rm --network none --memory 256m --cpus 1 --pids-limit 64 \
+  -u "$(id -u):$(id -g)" \
+  -v /home/anr2/cht/fd2:/repo:ro fd2-cap-local \
+  /repo/tools/disasm_le.py \
+  /repo/org_game/炎龍騎士團/FLAME2/FD2.EXE range 1a866 1aa1d
+```
+
+## `sub_15F84` 呼叫參數與 FDTXT（已證實）
+
+到期分支在 `0x1A9CF..0x1A9F3` 依序壓入：
+
+- `1`、`0x13`、`0x4A`、`0x4C`、`0xCD`：原始文字呈現參數，名稱不在本證據中
+  猜測；
+- `0x140`：原始 indexed stride／畫布參數；
+- `0xA9F23`：原始線性文字目的地，對應 VGA offset `0x9F23`；
+- `lea eax, [edi + 0x1E1]`：FDTXT index，因 `edi` 是0..5，故精確為
+  `0x1E1..0x1E6`（十進位481..486）；
+- `[0x53A7D]`：既有 FDTXT／字型來源指標。
+
+因此六個到期文字索引是已證實的 `FDTXT#481..#486`，不是由狀態名稱反推。
+文字內容的中文名稱、圖示意義與 `+0x22..+0x27` 的一一對應仍未知；在未有
+額外 writer／消費端證據前，不得命名為 `PoisonTurns`、`Sealed` 或其他狀態。
+
+## 證據分級與重製邊界
+
+- `RE-CLOSED`（已證實）：`sub_1A866` 邊界、三個 selector caller、六個 raw
+  transient 欄位、歸零條件、`sub_12D7B → sub_1956B → sub_15F84 → sub_4E031`
+  → delay 10 → `sub_196CB → sub_1B750` 的順序、`0x1E1..0x1E6` 文字索引、
+  raw `+7` DATO 來源與文字目的地 `0xA9F23`。
+- `STRONG INFERENCE`（強推論）：`sub_4E031` 是此到期提示的 present／input
+  等待 helper，`10` 是原版選用的等待值；DOS／BIOS／PIT 的實際 tick 換算不在
+  此處重解，重製以平台時序規格近似即可。
+- `UNKNOWN`（未知）：六個 raw 欄位的玩家可見狀態名稱／圖示、`sub_1956B`
+  所選 DATO 資源的語意名稱、精確音訊與逐毫秒原版時序，以及未修改一般玩家
+  路徑的 E2 畫面配對。
+
+重製不可在缺少 FDTXT／DATO／字型／背景來源時猜測發布提示；正式 runtime 應
+預先驗證整批到期呈現資產，失敗即關閉。這份證據只固定原版資料流與時序，不
+宣稱目前重製已達 E2。
+
+## 重開條件
+
+只有 `FD2.EXE` 雜湊不同、直接指令或 caller／consumer 反證、同一 raw 狀態的
+執行期結果矛盾，或證據缺少此處聲稱的 writer／consumer，才可重開本函式。舊
+交接或 exporter 仍寫 `unknown` 不構成重開理由。

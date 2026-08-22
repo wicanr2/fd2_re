@@ -5372,14 +5372,18 @@ raw record，並填入第一個未使用 persistent slot。身分重複、順序
 
 ### `sub_1A866` 狀態倒數的正式回合邊界
 
-已證實的第一個正式擁有者是 `0x1A552 call sub_1A813(0)` 後緊接的
-`0x1A55E call sub_1A866`，並且位於 `0x1A58F` 敵方人工智慧入口之前。正式執行期
-因此只在這個原始 selector 0 邊界遞減 raw `+0x22..+0x27`；歸零時再依
-`0x1B750` 重新計算 derived AP／DP／HIT／EV。整批先在私有 runtime records 與
-units 完成，缺少完整原始投影或裝備重算資料時不發布任何變更。
+三個直接 caller 已由固定雜湊的 IDA／Capstone 指令共同固定：`0x1A4D1→1` 位於
+`0x1D80B` unit scan 前，`0x1A55E→0` 位於 `0x1D8BA` unit scan 前，
+`0x1A797→2` 則在 phase 畫面收束後設定 raw range mode 1、進入玩家輸入前。
+正式執行期依此順序遞減 raw `+0x22..+0x27`；歸零時再依 `0x1B750` 重新計算
+derived AP／DP／HIT／EV。整批先在私有 runtime records 與 units 完成，缺少完整
+原始投影或裝備重算資料時不發布任何變更。
 
-其他 caller 傳入的 selector 1／2 尚未證實等同 normalized `Camp` 或哪個現行
-controller 邊界，故不得為了讓所有陣營都倒數而猜接。介面目前只能誠實顯示
+現行重製 AI controller 將原版 selector 1／0 的兩段 unit scan 合併成單一非玩家
+排程，無法在不重寫 scheduler 的情況下保持兩段 scan 交錯。其最小充分接法是在
+合併排程前以單一交易依序執行 `1→0`，回到玩家輸入前再執行 `2`；這保存各 raw
+record 的倒數邊界與原始 sweep 順序，但不是兩個 unit-scan 的逐指令等價實作。
+selector 仍不得改名或映射成 normalized `Camp`。介面目前只能誠實顯示
 「原始狀態效果到期」的數量；`+0x22..+0x27` 的完整遊戲名稱／圖示仍未知，不能
 用 legacy `PoisonTurns`／`Sealed` 名稱冒充原版狀態列。
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/binary"
+	"reflect"
 	"testing"
 )
 
@@ -65,5 +66,108 @@ func TestNativeTransientPhasePersistsDecrementWithoutEarlyRecalc(t *testing.T) {
 		g.st.NativeRuntimeRecords[0].Raw[0x22] != 1 || unit.AP != 114 {
 		t.Fatalf("expiry=%+v duration=%d raw=%d AP=%d",
 			expired, unit.NativeTransient[0], g.st.NativeRuntimeRecords[0].Raw[0x22], unit.AP)
+	}
+}
+
+func TestNativeTransientPhasesPreserveSelectorOrderAtomically(t *testing.T) {
+	g, _, _ := nativeCurrentSaveTestGame(t)
+	first := g.st.Units[0]
+	first.NativeRecordByte6 = 1
+	first.NativeTransient[0] = 1
+	g.st.NativeRuntimeRecords[0].Raw[6] = 1
+	g.st.NativeRuntimeRecords[0].Raw[0x22] = 1
+
+	secondValue := *first
+	second := &secondValue
+	second.NativeRecordByte6 = 0
+	second.NativeTransient = [6]byte{0, 1}
+	second.NativeIdentity = 31
+	second.NativeRecordByte8 = 31
+	second.NativeMapPresentation.X++
+	second.X++
+	secondRaw := g.st.NativeRuntimeRecords[0]
+	secondRaw.Raw[0]++
+	secondRaw.Raw[6] = 0
+	secondRaw.Raw[8] = 31
+	secondRaw.Raw[0x22], secondRaw.Raw[0x23] = 0, 1
+	g.st.Units = append(g.st.Units, second)
+	g.st.NativeRuntimeRecords = append(g.st.NativeRuntimeRecords, secondRaw)
+
+	expired, err := g.applyNativeTransientPhases(1, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(expired) != 2 || expired[0].Unit != g.st.Units[0] || expired[0].Offset != 0x22 ||
+		expired[1].Unit != g.st.Units[1] || expired[1].Offset != 0x23 {
+		t.Fatalf("ordered expiry=%+v", expired)
+	}
+}
+
+func TestNativeTransientPhasesRejectDuplicateSelectorAtomically(t *testing.T) {
+	g, _, _ := nativeCurrentSaveTestGame(t)
+	g.st.Units[0].NativeRecordByte6 = 1
+	g.st.Units[0].NativeTransient[0] = 2
+	before := *g.st.Units[0]
+	if _, err := g.applyNativeTransientPhases(1, 1); err == nil {
+		t.Fatal("duplicate selector was accepted")
+	}
+	if !reflect.DeepEqual(*g.st.Units[0], before) {
+		t.Fatal("duplicate selector mutated live unit")
+	}
+}
+
+func TestCompleteTurnPlayerPhaseTicksRawSelector2BeforeInput(t *testing.T) {
+	g, _, _ := nativeCurrentSaveTestGame(t)
+	unit := g.st.Units[0]
+	unit.NativeRecordByte6 = 2
+	unit.NativeTransient[0] = 2
+	g.st.NativeRuntimeRecords[0].Raw[6] = 2
+	g.st.NativeRuntimeRecords[0].Raw[0x22] = 2
+	g.result = ""
+
+	g.completeTurnPlayerPhase()
+	if g.loadErr != "" || g.st.Units[0].NativeTransient[0] != 1 ||
+		g.st.NativeRuntimeRecords[0].Raw[0x22] != 1 || g.banner != "PLAYER PHASE" {
+		t.Fatalf("err=%q transient=%d raw=%d banner=%q",
+			g.loadErr, g.st.Units[0].NativeTransient[0],
+			g.st.NativeRuntimeRecords[0].Raw[0x22], g.banner)
+	}
+}
+
+func TestEndTurnTicksRawSelectorsOneThenZeroBeforeEnemyPhase(t *testing.T) {
+	g, _, _ := nativeCurrentSaveTestGame(t)
+	first := g.st.Units[0]
+	first.NativeRecordByte6 = 1
+	first.NativeTransient[0] = 2
+	g.st.NativeRuntimeRecords[0].Raw[6] = 1
+	g.st.NativeRuntimeRecords[0].Raw[0x22] = 2
+
+	secondValue := *first
+	second := &secondValue
+	second.NativeRecordByte6 = 0
+	second.NativeTransient = [6]byte{0, 2}
+	second.NativeIdentity = 31
+	second.NativeRecordByte8 = 31
+	second.NativeMapPresentation.X++
+	second.X++
+	secondRaw := g.st.NativeRuntimeRecords[0]
+	secondRaw.Raw[0]++
+	secondRaw.Raw[6] = 0
+	secondRaw.Raw[8] = 31
+	secondRaw.Raw[0x22], secondRaw.Raw[0x23] = 0, 2
+	g.st.Units = append(g.st.Units, second)
+	g.st.NativeRuntimeRecords = append(g.st.NativeRuntimeRecords, secondRaw)
+
+	g.endTurn()
+	if g.loadErr != "" || !g.aiBusy || g.banner != "ENEMY PHASE" ||
+		g.st.Units[0].NativeTransient[0] != 1 ||
+		g.st.Units[1].NativeTransient[1] != 1 ||
+		g.st.NativeRuntimeRecords[0].Raw[0x22] != 1 ||
+		g.st.NativeRuntimeRecords[1].Raw[0x23] != 1 {
+		t.Fatalf("err=%q ai=%v banner=%q durations=%v/%v raw=%d/%d",
+			g.loadErr, g.aiBusy, g.banner,
+			g.st.Units[0].NativeTransient, g.st.Units[1].NativeTransient,
+			g.st.NativeRuntimeRecords[0].Raw[0x22],
+			g.st.NativeRuntimeRecords[1].Raw[0x23])
 	}
 }
