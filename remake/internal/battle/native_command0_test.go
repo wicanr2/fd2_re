@@ -2,6 +2,17 @@ package battle
 
 import "testing"
 
+func nativeCommand0TestState() (*State, *Unit, *Unit) {
+	actor := &Unit{Camp: Own, X: 0, Y: 0, HP: 20, MP: 3, OnField: true}
+	target := &Unit{Camp: Enemy, ClassID: 5, X: 1, Y: 0, HP: 100, OnField: true}
+	book := make([]NativeCommandRecord, 36)
+	for id := range book {
+		book[id].ID = id
+	}
+	book[0] = NativeCommandRecord{ID: 0, Damage: 50, Hit: 100, SelectionMode: 1, EffectMode: 0, MPCost: 2, TargetCode: 0}
+	return &State{W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: book}, actor, target
+}
+
 func TestExecuteBoundNativeCommand0UsesTwoStageTargetsAndOneMPDebit(t *testing.T) {
 	actor := &Unit{Camp: Own, X: 0, Y: 0, HP: 20, MP: 3, OnField: true}
 	confirmed := &Unit{Camp: Enemy, ClassID: 5, X: 1, Y: 0, HP: 100, OnField: true}
@@ -35,6 +46,54 @@ func TestExecuteBoundNativeCommand0FailsBeforeMPOnMissingResistance(t *testing.T
 	st := &State{W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: book}
 	if _, _, err := st.ExecuteBoundNativeCommand0(actor, target, 1); err == nil || actor.MP != 3 || actor.Acted || target.HP != 100 {
 		t.Fatalf("missing resistance mutated state: mp=%d acted=%v hp=%d err=%v", actor.MP, actor.Acted, target.HP, err)
+	}
+}
+
+func TestPlanBoundNativeCommand0PublishesSevenRecoveredHPStages(t *testing.T) {
+	st, actor, target := nativeCommand0TestState()
+	st.NativeCommandResistances = map[int]int{target.ClassID: 10}
+	actor.MP = 8
+	beforeActorMP, beforeTargetHP := actor.MP, target.HP
+	plan, err := st.PlanBoundNativeCommand0(actor, target, 3)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if actor.MP != beforeActorMP || actor.Acted || target.HP != beforeTargetHP {
+		t.Fatalf("plan mutated state mp=%d acted=%v hp=%d", actor.MP, actor.Acted, target.HP)
+	}
+	if err := ApplyNativeCommandDamageMP(plan); err != nil {
+		t.Fatal(err)
+	}
+	for stage := 1; stage <= 7; stage++ {
+		if err := ApplyNativeCommandDamageStage(plan, 0, stage); err != nil {
+			t.Fatalf("stage %d: %v", stage, err)
+		}
+		want := plan.Results[0].HPBefore - (plan.Results[0].HPBefore-plan.Results[0].HPAfter)*stage/7
+		if target.HP != want {
+			t.Fatalf("stage %d hp=%d want=%d", stage, target.HP, want)
+		}
+	}
+	if err := CompleteNativeCommandDamage(plan); err != nil {
+		t.Fatal(err)
+	}
+	if !actor.Acted || target.HP != plan.Results[0].HPAfter || actor.MP != plan.MPAfter {
+		t.Fatalf("completion mp=%d acted=%v hp=%d plan=%+v", actor.MP, actor.Acted, target.HP, plan)
+	}
+}
+
+func TestPlanBoundNativeCommand0RejectsChangedStateBetweenMarkers(t *testing.T) {
+	st, actor, target := nativeCommand0TestState()
+	st.NativeCommandResistances = map[int]int{target.ClassID: 10}
+	plan, err := st.PlanBoundNativeCommand0(actor, target, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := ApplyNativeCommandDamageMP(plan); err != nil {
+		t.Fatal(err)
+	}
+	target.HP--
+	if err := ApplyNativeCommandDamageStage(plan, 0, 1); err == nil {
+		t.Fatal("changed target state was accepted")
 	}
 }
 

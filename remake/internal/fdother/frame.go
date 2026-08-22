@@ -60,6 +60,21 @@ func ReadResource(datPath string, resource int) ([]byte, error) {
 	return append([]byte(nil), entry...), nil
 }
 
+// ReadNestedResource preserves the two 0x111BA boundaries used by battle
+// sound banks such as command0's FDOTHER #82/sub1. It returns raw bytes only;
+// sample rate, channel layout and playback remain caller-owned evidence.
+func ReadNestedResource(datPath string, resource, nested int) ([]byte, error) {
+	outer, err := ReadResource(datPath, resource)
+	if err != nil {
+		return nil, err
+	}
+	entry, err := ArchiveEntry(outer, nested)
+	if err != nil {
+		return nil, fmt.Errorf("fdother: nested resource %d/%d: %w", resource, nested, err)
+	}
+	return append([]byte(nil), entry...), nil
+}
+
 // ArchiveEntry extracts one raw entry from an LLLLLL archive byte slice.
 // FDOTHER #81 is itself a nested LLLLLL archive; exposing this boundary lets
 // callers validate nested provenance without pretending its payload is a

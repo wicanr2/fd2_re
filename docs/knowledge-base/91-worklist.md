@@ -22,6 +22,15 @@
 | 6 | 原版終局精確鏈 | `RUNTIME-E1`：正式 `battle_ch30→ending` 現消費來源約束前綴／角色／20段尾段並停在 #59；80個實際 FIGANI 的 header-zero `0x2939D` raw `+4..+7`、base scheduler 與兩次配對已接；未達 E2 | 以動態 watchpoint／未修改玩家路徑閉合 `0x2C548→0x2C2A6` records／globals 連續性、3% RNG重播、精確音訊／終端輸入、`0x2BCE5` 原版 owner 及第30戰 E2 |
 | 7 | 全戰役抽樣／長程試玩、三平台打包與推廣片 | 核心 gate 未關閉 | 核心垂直切片與代表性晚期玩家路徑完成後才進入發行驗收 |
 
+> **2026-08-22 command 0 進度縮小：** 順序4所述「仍需
+> `0x2A6BD→0x26152` indexed compositor」現已縮小為正式消費端缺口。
+> `0x26152` 本體的 28 幀／7 元素錯開排程、FDOTHER #18／#20、
+> #82/sub1、back→target→front indexed primitive 與七段 HP plan 已達
+> `RE-CLOSED`／`DATA-READY`。下一個可驗收結果是接入 `0x2A6BD`
+> generic actor／target battle scene owner；正式 `Game` 尚未接線，
+> 所以仍不是 indexed 演出 `RUNTIME-E1`。主證據見
+> [`fd2_command0_presentation_ida.txt`](../data/ida/fd2_command0_presentation_ida.txt)。
+
 ### 反組譯重開規則
 
 已在 `58`「不要重做索引」列出的位址，只有原版雜湊不同、直接指令／跳表反證、

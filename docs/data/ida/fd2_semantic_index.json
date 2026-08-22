@@ -193,6 +193,14 @@
       "scope": "callee mutation；與 sync_party 分離，campaign owner 由 caller 決定"
     },
     {
+      "address": "0x26152",
+      "classification": "product",
+      "semantic": "command 0 的 28 幀、7 元素錯開 FDOTHER indexed compositor entry",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_command0_presentation_ida.txt"],
+      "scope": "funcs_2AC25[0] entry；只閉合 mode3/4/5、#18/#20 frame bank 與 #82/sub1 owner，完整 0x2A6BD actor/target scene 及 E2 仍需 caller 整合"
+    },
+    {
       "address": "0x28a6c",
       "classification": "product",
       "semantic": "雙 runtime-record 索引演出 renderer；含戰鬥、事件與終局 caller",

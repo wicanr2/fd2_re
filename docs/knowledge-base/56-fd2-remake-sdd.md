@@ -704,9 +704,20 @@ non-self target presentations remain outside this completed slice.
 
 `RenderMirrorFigureFadePass` now implements only the proven `0x292ad` indexed primitive: it requires a caller-preseeded 640-stride work surface, presents `work+0x140`, blits primary at `+0x140-stage*10`, conditionally blits secondary for `arg4==0`, and presents the same right viewport again. It validates TAI#3's transparent bytes but does not claim to render the unresolved DATO/portrait or complete montage.
 
-Generic scheduler closure：`funcs_2ac25` 是 command-indexed function bank（ID0 entry `0x26152`）。`0x2a6bd` 先以 mode 0 呼該 entry 取得 animation step count，接著在 640-stride off-screen buffer 的逐 step loop 呼 mode 2、`0x11eb0` copy 320×200 至 VGA、`0x17aa9(1)` tick、再呼 mode 1；收尾的雙 buffer path 還會呼 mode 4。`0x2b9a1` 並非未知 effect，它以 descriptor `frameIndex*4+8` 指向 frame的 byte+6 delay，遞增 `0x540fc`／`0x540fd` subframe counters並在上界 reset。這固定了 phase/order，仍不替每個 command entry 的視覺語意命名。
+Generic scheduler closure：`funcs_2ac25` 是 command-indexed function bank（ID0 entry `0x26152`）。`0x2a6bd` 先以 mode 0 呼該 entry 取得前段 step count；每一步先從 baseline 複製 320×200 至 640-stride work buffer，呼 mode 1，組合 actor FIGANI，再呼 mode 2，最後才複製至 VGA 並 `0x17aa9(1)` tick。每個 final target 另以 mode 3 取得 target-loop count，逐幀依序呼 mode 4、組合 target FIGANI、呼 mode 5後 present／tick；全目標完成後才是 mode 6 與逐幀 mode 7／8 尾段。`0x2b9a1` 並非未知 effect，它以 descriptor `frameIndex*4+8` 指向 frame的 byte+6 delay，遞增 `0x540fc`／`0x540fd` subframe counters並在上界 reset。這固定了 phase/order，仍不替每個 command entry 的視覺語意命名。
 
 Generic presentation 的 BG selector 亦已閉合為 raw dataflow：`0x2a6bd` 呼 `0x2b5e1(finalCount, finalTargetArray)`，後者**倒序**掃 target slot，對該 unit cell 呼 `0x12e38`；若 raw `0x1f183` gate 不通、或累積 selector 為零，才以 decoded control byte+2 取代 selector，最後才餵 `0x111ba("BG.DAT", selector)`。`fdicon.NativeCommandBackgroundSelector` 保留該 strict pure rule。command ID 的 generic branch 不可被說成直接選 BG resource；selector 的高階地形／場景語意仍不命名。
+
+Command 0 專屬 entry `0x26152` 另由 IDA 9.4 直接指令閉合：
+mode 0／1／2 與 6／7／8 皆不產生 handler-owned 幀；mode 3 將七個
+有效 counter 以 `0,-2,...,-12` 錯開並回傳 28，mode 4／5 再依
+`0x523E1` 旗標、`0x523E8` 水平 offset 與 `0x52404` 垂直 row offset，
+將 FDOTHER #18 或 #20 的 raw frames 0..15 異步疊到 640-stride work buffer。
+每個元素 counter==3 時播放 FDOTHER #82 sub1。因此正式 runtime 契約是
+「先完整解碼所需 frame bank／palette／raw target與view、28次draw acknowledgement，
+再發布 MP／HP／acted 交易與清理」；任一前置缺失時維持失敗即關閉。
+完整原始位址、bytes 與資源 owner 見
+[`fd2_command0_presentation_ida.txt`](../data/ida/fd2_command0_presentation_ida.txt)。
 
 BG asset boundary：`BG.DAT` 是 LLLLLL archive；generic compositor 的前三個已知 layer #0/#1/#2 都是 `{u16 width,u16 height, 0x4e63d four-mode RLE}` single-frame payload，實測各為 320×100。`fdother.DecodeArchiveSingleFrame` 明確解這種無 frame-directory 的 archive entry，player-archive regression 對三個 layer 解入 320×100 indexed surface。它不替 `0x2b5e1` 的其他 raw selector 命名，也不自動把 current PNG background 當 native layer schedule。
 

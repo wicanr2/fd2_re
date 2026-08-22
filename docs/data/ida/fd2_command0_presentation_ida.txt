@@ -1,0 +1,100 @@
+# FD2 command 0 `0x2A6BD → 0x26152` indexed presentation：IDA 9.4 證據
+
+## 輸入、工具與位址空間
+
+- 輸入：`FD2.EXE`，357074 bytes
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 第一順位工具：IDA Pro 9.4.0.260610／Hex-Rays，授權 Docker
+  `fd2-ida-authorized-local`；DOS LE loader 線性位址空間
+- IDA 原始名稱：`sub_26152`（`0x26152..0x272B8`）、
+  `sub_2A6BD`（`0x2A6BD..0x2B5E1`）。本文不以語意改名取代原始定位。
+- IDA 資料庫只建立於容器 `tmpfs`；原始執行檔以唯讀方式掛載。
+
+以下的「已證實」只表示直接指令、靜態表 bytes 與 caller／consumer
+已閉合；玩家可見色彩名稱、精確音量與同狀態原版逐幀比對仍未完成。
+
+## `sub_2A6BD` 的 command 0 caller 契約（已證實）
+
+`sub_2A6BD(actor, commandID, finalTargetCount, finalTargetArray)` 對
+`commandID==0` 以 `funcs_2AC25[0]` 呼叫 `sub_26152`。現有主證據已固定
+`0x1CFF0` 在第二階段游標確認後建立 final target array；本輪不重解
+target geometry 或 `0x1C75E → 0x1C81F` 數值 writer。
+
+caller 對 indexed handler 的原始 mode 順序是：
+
+1. mode 0 取前段幀數，每幀依序呼叫 mode 1／mode 2 並呈現；
+2. 每個 final target 先呼 mode 3 初始化並取效果幀數；
+3. 每幀先呼 mode 4，再依 `0x1C75E` 的原始命中結果組合目標圖層，
+   最後呼 mode 5 並 present／tick；
+4. 全部目標完成後，mode 6 取尾段幀數，尾段逐幀呼 mode 7／8。
+
+這修正了「所有 command 都只有一組 mode 0／1／2 迴圈」的過度簡化。
+
+## `sub_26152` command 0 專屬排程（已證實）
+
+`sub_26152(actor, effectBank, work, stride, mode)` 的直接分支：
+
+- mode 0／1／2：本 entry 不畫、回傳 0，所以 command 0 沒有 handler-owned
+  前段幀。
+- mode 3（`0x261C9..0x261EF`）：把八個全域 counter 寫成
+  `0,-2,-4,-6,-8,-10,-12,-14`，回傳 `28`。
+- mode 4（`0x261F4..0x2626F`）：掃前七個 counter。counter 為 3 時呼
+  `sub_25A96(soundBank,1,1)`；counter 在 `0..15` 且對應 flag 為 1 時，呼
+  `sub_2935B(effectBank,counter,destination,stride,-1)`。
+- mode 5（`0x26271..0x262EA`）：以相同條件畫 flag 為 0 的元素，
+  然後把前七個 counter 各加 1；任一 counter 到 9 時回傳 1。此回傳值
+  由 `sub_2A6BD` 用於原始數值分段更新，不是「動畫完成」旗標。
+- mode 6／7／8：本 entry 不畫、回傳 0，所以 command 0 沒有 handler-owned
+  尾段幀。
+
+結果是每個 final target 有 28 個呈現步驟；七個元素以兩幀間隔
+錯開進場。於第 `i` 幀時，元素 `j` 的 raw frame index 為
+`i-2*j`；只有 `0..15` 會送入 `sub_2935B`。
+
+### 直接靜態表 bytes
+
+| 線性位址 | 用途 | raw 值 |
+|---|---|---|
+| `0x523E1` | mode 4／5 圖層旗標 | `00 00 01 00 01 00 00` |
+| `0x523E8` | 七個水平 byte offset | `40,70,120,80,50,100,70` |
+| `0x52404` | 七個垂直 row offset | `0,-10,-20,0,-15,-5,0` |
+
+destination 的直接公式是：
+
+```text
+work + xOffset[j] + stride*yOffset[j]
+```
+
+若 actor runtime record byte `+6==0`，七個水平 offset 在呼叫前全部再加
+`148`。本文只保留 raw camp byte 條件，不將兩側命名成攻擊者／防守者畫面方向。
+
+## 原始資源 owner（已證實）
+
+- `sub_2A6BD` 的 command-indexed ASCII 表前 10 bytes 為
+  `RRSTUVWXYZ`；command 0 因此以 `sub_111BA("FDOTHER.DAT",...,82)`
+  載入 sound bank。
+- `sub_26152` 在每個元素 counter==3 時播放該 bank 的子樣本 1，
+  每個 target 最多七次。
+- 另一張 command-indexed table 依 actor runtime `+6` 選擇 effect bank：
+  `+6!=0` 取 `0x525B9[0]=18`，`+6==0` 取 `0x525C2[0]=20`。
+- effect bank 由 `sub_2935B` 以 raw frame index `0..15` 當作 indexed
+  transparent blit source。因此正式實作必須要求玩家自備 FDOTHER #18／#20
+  至少含 16 張可解碼幀，不得以 PNG、文字訊息或其他 command 特效代替。
+- 實檔 #18／#20 共用 header bytes `10 00 10 00 00 00 00 00`；16 張
+  descriptor 的 raw `+5/+6/+7` 全為0，raw `+4` 只有 frame9 為1，
+  其餘為0。typed loader 以此簽章拒絕被編輯或版本不同的 bank。
+
+## 證據等級與實作邊界
+
+- `RE-CLOSED`：`sub_26152` 函式邊界、mode 0..8 分支、28 幀計數、
+  七個 counter 初值，三張靜態表 bytes，FDOTHER #18／#20 與 #82/sub1
+  owner，以及 `sub_2A6BD` 的呼叫順序。
+- `DATA-READY`：上述值可轉成 command 0 專屬 typed schedule。
+- `RUNTIME-E1`：本證據檔建立時尚未接線；必須由正式
+  `Game.confirm()` 第二階段 target array 啟動，每幀必須 draw acknowledgement，
+  且任一資源、palette、raw target／view provenance 缺失時零交易。
+- `PLAYER-E2`：尚缺未修改原版同狀態的 28 幀、子樣本與結果畫面比對。
+
+重開本結論只接受：輸入雜湊不同、原始指令／表 bytes 直接反證、
+同狀態執行結果矛盾，或本檔缺少它宣稱已具備的 writer／consumer。
