@@ -1961,6 +1961,46 @@ cancel/restore、原版 `FD2.SAV`、church caller 或未修改完整 campaign E2
 沒有同步原版動畫 tick，故裁決為 `PLAYER-E2 route-patched partial`，不可寫成
 整幀相同或未修改一般玩家 E2。
 
+### ch02 物品轉移成功交易 E2 契約（2026-08-22）
+
+本切片沿用上述已閉合的 `0x2F8EA`、`0x1B8E7→0x1BB8C→0x1B750` 與
+兩欄 selector，不新增原版語意。原版仍只在固定雜湊的可拋棄 route-patched
+副本略過手動戰鬥；進入 service3 後必須用普通鍵盤選索爾、短劍、目的角色悠妮，
+並等待正式 closing／opening 完成。成功驗收至少保存：
+
+1. 目的名冊由 selection0 按 Right 到 selection1，再按 Enter；
+2. 交易後自動返回 FDTXT512 來源提示，金幣仍為0；
+3. 再選索爾時，物品清單不再含短劍；
+4. 再選悠妮時，原有兩件物品後追加未裝備短劍；
+5. 重製端同一 transaction 經 `leaveShop→town→JSON save/load` 後，來源／目的
+   compact inventory、`Equipped`、八格 raw slots／flags、能力、金幣與隊伍拓撲不變。
+
+重製截圖入口必須接受
+`mode,source,item,destination,post_source,selection,start,gold`；`mode` 只可為
+`success_intro|success_items`。入口先由 `FD2_SHOT_PARTY_BINDING` 建立完整
+typed/raw party，在私有候選上依序呼叫 production transfer setup、來源 item
+投影、`applyNativeShopTransfer` 與返回 loop；`success_items` 再由交易後的正式來源
+roster／item-list owner 選取 `post_source`。禁止直接改背包、flags、能力、姓名、
+物品或像素；任一索引、raw projection、資源或 compositor 拒絕時，公開 `Game`
+必須原子不變。
+
+此證據只涵蓋一筆 ch02 索爾→悠妮的成功交易與重製 JSON 邊界；不可外推
+self-transfer、empty/full、取消／restore、church caller、原版 `FD2.SAV`、其他章節
+或未修改完整 campaign E2。動畫相位仍須以實際 AE 誠實記錄，不為追逐 tick 猜改
+renderer。
+
+實測證據保存於
+[`shop-transfer-success-ch02-e2.json`](../data/ui-traces/shop-transfer-success-ch02-e2.json)
+及[`對照圖`](../figures/shop-transfer-success-ch02-original-vs-remake.png)。原版由目的
+名冊 selection0 按 Right 選悠妮並 Enter，返回來源提示後再選索爾，只剩皮甲與
+藥草；從該物品清單按 Escape 回 loop，再選悠妮，清單為長棍、長袍、未裝備短劍。
+目的名冊／返回提示／索爾結果／悠妮結果的整幀差異依序為
+`AE=1391／82／2／286`，可見交易資料與幾何一致，剩餘像素是角色、翻頁箭頭或
+物品選取脈動相位。正式重製測試另以同一跨角色 transaction 穿越
+`leaveShop→town_ch02→JSON save/load`，證實雙方 compact/raw 背包、裝備、能力、
+金幣與隊伍順序保存。裁決為 `PLAYER-E2 route-patched partial` 加重製 JSON
+`RUNTIME-E1`；仍不可宣稱完整 campaign 或原版存檔 E2。
+
 The `0x318ad` cap gate is now explicit in
 `fdother.NativePreparationPartyLimit`: raw global `[0x53c03] <= 0x1a` yields
 15, while values greater than `0x1a` yield 19. The adapter accepts a native

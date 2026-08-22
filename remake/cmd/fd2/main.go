@@ -6402,6 +6402,18 @@ func (g *Game) Update() error {
 					)
 				}
 			}
+			if spec := os.Getenv("FD2_SHOT_SHOP_TRANSFER_SUCCESS_STATE"); spec != "" {
+				mode, source, item, destination, postSource, selection, start, gold, ok :=
+					parseNativeShopTransferSuccessShotState(spec)
+				if !ok || !g.setNativeShopTransferSuccessShotState(
+					mode, source, item, destination, postSource, selection, start, gold,
+				) {
+					return fmt.Errorf(
+						"FD2_SHOT_SHOP_TRANSFER_SUCCESS_STATE expects success_intro|success_items,source,item,destination,post_source,selection,start,gold on an admitted native transfer party: %q",
+						spec,
+					)
+				}
+			}
 			if spec := os.Getenv("FD2_SHOT_SHOP_SELL_STATE"); spec != "" {
 				mode, unit, selection, start, cycle, gold, ok :=
 					parseNativeShopSellShotState(spec)

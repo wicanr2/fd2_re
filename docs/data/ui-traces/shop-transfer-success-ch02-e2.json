@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-22",
+  "evidence_level": "PLAYER-E2-route-patched-partial",
+  "scope": "ch02 variant1 shop service3 Sol short sword to Yuni, returned source loop, and both post-transaction item lists",
+  "reference": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "address_space": "IDA LE object 1 linear"
+  },
+  "tools": {
+    "static": "existing IDA Pro 9.4 evidence for 0x2F8EA and 0x1B8E7 -> 0x1BB8C -> 0x1B750; closed addresses were not reopened",
+    "dynamic": "DOSBox 0.74-3 in fd2-dosbox-screenshot-local",
+    "remake": "source-built Go/Ebiten under Xvfb in fd2-go-test-local",
+    "comparison": "ImageMagick top-left 320x200 DOSBox crop, nearest-neighbour remake normalization, and compare -metric AE"
+  },
+  "oracle_sandbox": {
+    "patched_exe_md5": "84cab330ee80be6b5ee9d9580bf003d4",
+    "patched_exe_sha256": "7ade244ace954bccec0b89639cded9393973bff586117a19f1fdc168ffcb2105",
+    "patches": [
+      "file 0x125f3: e8b0020000 -> e8c6ed0000 (linear 0x117f3 call 0x205be)",
+      "file 0x125f8: 83f801740e -> e97d000000 (linear 0x117f8 jmp 0x1187a)",
+      "file 0x213d5: e9a4000000 -> e9e9000000 (linear 0x205d5 jmp 0x206c3)"
+    ],
+    "limitation": "The patches skip manual battle completion only. Shop service3, party records, inventory mutation, and keyboard input are unchanged; this is not an unmodified general-player postbattle trace."
+  },
+  "normal_input": [
+    "title Down, Down, Enter -> CONTINUE",
+    "waittown0:Return,0.25,240",
+    "town Left -> weapon shop Enter",
+    "shop Right, Right, Right -> service3 Enter",
+    "Enter source prompt, Enter Sol, Enter short sword, Enter destination prompt",
+    "destination Right -> Yuni, capture, Enter to commit",
+    "capture returned FDTXT512 prompt",
+    "Enter, Enter Sol, capture post-transfer Sol items",
+    "Escape to return loop, Enter, Right -> Yuni, Enter, capture post-transfer Yuni items"
+  ],
+  "phase_gate": "waitpixel:175,90,101,121,121,0.05,400",
+  "transaction": {
+    "source_before": [0, 132, 192],
+    "source_after_visible": [132, 192],
+    "destination_before": [52, 164],
+    "destination_after_visible": [52, 164, 0],
+    "transferred_item": 0,
+    "destination_equipped": false,
+    "gold_before": 0,
+    "gold_after": 0
+  },
+  "same_state_pairs": [
+    {
+      "state": "transfer_destination_yuni_selection1_start0_gold0",
+      "original_raw_rgb_md5": "af193062ad9f144341221603822fac11",
+      "remake_raw_rgb_md5": "e985288f773c2f99b6773029f2c3a0ba",
+      "ae": 1391,
+      "classification": "same destination selection and geometry; roster sprite animation phase differs"
+    },
+    {
+      "state": "transfer_success_returned_source_prompt_gold0",
+      "original_raw_rgb_md5": "99781eec2f3d298cfabe741efb26c1c4",
+      "remake_raw_rgb_md5": "0932fb3b26322f6cc4db8ac71a8e4567",
+      "ae": 82,
+      "classification": "same returned prompt and geometry; page-arrow animation phase differs"
+    },
+    {
+      "state": "transfer_success_sol_items_without_short_sword_selection0_start0_gold0",
+      "original_raw_rgb_md5": "b2962b63c7f55a6908bba3d372f5d8f3",
+      "remake_raw_rgb_md5": "94dde3d5f7dd52476f5d1f681f56517c",
+      "ae": 2,
+      "classification": "same post-transaction source items, effects, prices, and geometry; two pixels differ"
+    },
+    {
+      "state": "transfer_success_yuni_items_with_short_sword_selection2_start0_gold0",
+      "original_raw_rgb_md5": "379af1d9c6108357264eeab44f21bd29",
+      "remake_raw_rgb_md5": "5f8ecfca33c3100724c323fcfffc2ff9",
+      "ae": 286,
+      "classification": "same post-transaction destination items, effects, prices, and geometry; selected-item pulse phase differs"
+    }
+  ],
+  "remake_adapter": {
+    "party": "FD2_SHOT_PARTY_BINDING=assets/cutscenes/bindings/ch00_pre.json",
+    "state": "FD2_SHOT_SHOP_TRANSFER_SUCCESS_STATE=success_intro|success_items,source,item,destination,post_source,selection,start,gold",
+    "contract": "The adapter clones the admitted typed/raw party, calls the production transfer setup, raw-derived item list, destination roster, applyNativeShopTransfer, and return loop, then exposes only the returned prompt or a post-transaction production item list.",
+    "limitation": "It performs one real production mutation in a screenshot-only private candidate; it does not inject records or pixels and does not prove self-transfer, empty/full, destination cancel, church caller, native FD2.SAV, or an unmodified campaign path."
+  },
+  "remake_persistence": {
+    "level": "RUNTIME-E1",
+    "test": "TestNativeShopTransferSuccessShotMutatesPrivateBindingParty",
+    "boundary": "applyNativeShopTransfer -> leaveShop -> town_ch02 -> JSON save slot -> cold in-memory clear -> load",
+    "asserts": "both compact inventories, Equipped, InventorySlots, NativeInventoryFlags, AP, gold, partyJoinOrder, node, and cleared transfer transient state"
+  },
+  "result": "PLAYER-E2 route-patched partial for the successful shop mutation and visible loop; JSON persistence is RUNTIME-E1, while animation phase and unmodified-campaign/native-save parity remain open.",
+  "figure": "docs/figures/shop-transfer-success-ch02-original-vs-remake.png"
+}

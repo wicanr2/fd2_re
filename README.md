@@ -234,6 +234,14 @@ route-patched 原版正常商店輸入，右側為正式重製 owner。文字、
 
 ![ch02 物品轉移五狀態原版／重製 partial E2 對照](docs/figures/shop-transfer-ch02-original-vs-remake.png)
 
+同一路徑再把索爾的短劍交給悠妮：左側原版、右側重製依序顯示目的角色悠妮、
+交易後返回提示、索爾只剩皮甲／藥草，以及悠妮新增未裝備短劍。四組整幀差異為
+`AE=1391／82／2／286`，剩餘像素屬動畫相位；交易資料與幾何一致。重製端同一
+交易也已通過離店、`town_ch02` 與 JSON 冷讀檔。證據與限制見
+[`shop-transfer-success-ch02-e2.json`](docs/data/ui-traces/shop-transfer-success-ch02-e2.json)。
+
+![ch02 物品轉移成功交易原版／重製 partial E2 對照](docs/figures/shop-transfer-success-ch02-original-vs-remake.png)
+
 ### 讀檔選單
 
 原版與重製的四個空存檔槽畫面已達整幀 RGB 相同；有效槽排版也已有相同結果。

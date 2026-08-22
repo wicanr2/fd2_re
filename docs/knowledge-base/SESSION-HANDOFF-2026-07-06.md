@@ -5523,3 +5523,22 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   目的提示／名冊五狀態已有route-patched partial E2，不再列為 transfer child panel
   未做。仍缺的是動畫相位、service3 mutation／empty／full、church caller、其他章節、
   原版存檔與未修改一般玩家路徑；沒有因文件勘誤把這些真實缺口刪掉。
+
+## 2026-08-22：ch02 物品轉移成功交易 partial E2
+
+- 先以 SDD 固定成功 transaction、返回 loop、雙方清單與 JSON 邊界，再沿用已閉合
+  `0x2F8EA`／`0x1B8E7→0x1BB8C→0x1B750`；沒有重解 callee。新增截圖入口只在
+  私有 party map 呼叫 production owner，任一索引／raw projection／compositor
+  拒絕時公開 roster 原子不變。
+- 固定雜湊原版 route-patched 副本由正常鍵盤選索爾、短劍與悠妮。Enter 交易後
+  自動回 FDTXT512；再選索爾只見皮甲／藥草。從該清單按 Escape 返回 loop 後改選
+  悠妮，可見長棍／長袍／未裝備短劍，金幣保持0。
+- 目的悠妮、返回提示、索爾結果、悠妮結果四組320×200 AE依序為
+  `1391／82／2／286`；內容與幾何一致，差異為角色、翻頁箭頭或物品選取脈動相位。
+  證據見
+  [`shop-transfer-success-ch02-e2.json`](../data/ui-traces/shop-transfer-success-ch02-e2.json)
+  與[`對照圖`](../figures/shop-transfer-success-ch02-original-vs-remake.png)。
+- 正式回歸另把同一跨角色交易穿越`leaveShop→town_ch02→JSON save/load`，冷清空
+  記憶後仍保存雙方 compact/raw 背包、裝備、AP、金幣、隊伍順序與節點，且清除
+  transfer暫態。這是重製JSON `RUNTIME-E1`；self／empty／full／destination-cancel、
+  church caller、原版存檔與未修改一般玩家路徑仍未外推。

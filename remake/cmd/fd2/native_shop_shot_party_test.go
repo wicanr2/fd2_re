@@ -109,6 +109,35 @@ func TestParseNativeShopTransferShotState(t *testing.T) {
 	}
 }
 
+func TestParseNativeShopTransferSuccessShotState(t *testing.T) {
+	for _, tc := range []struct {
+		spec                                                          string
+		mode                                                          string
+		source, item, destination, postSource, selection, start, gold int
+		ok                                                            bool
+	}{
+		{spec: "success_intro,0,0,1,0,0,0,0", mode: "success_intro", destination: 1, ok: true},
+		{spec: "success_items,0,0,1,1,2,0,99999999", mode: "success_items", destination: 1, postSource: 1, selection: 2, gold: 99999999, ok: true},
+		{spec: "intro,0,0,1,0,0,0,0"},
+		{spec: "success_intro,0,0,1,1,0,0,0"},
+		{spec: "success_intro,0,0,1,0,0,0,-1"},
+		{spec: "success_items,0,0,1,1,2,0,100000000"},
+		{spec: "success_items,0,0,1,1,2,0"},
+	} {
+		mode, source, item, destination, postSource, selection, start, gold, ok :=
+			parseNativeShopTransferSuccessShotState(tc.spec)
+		if mode != tc.mode || source != tc.source || item != tc.item ||
+			destination != tc.destination || postSource != tc.postSource ||
+			selection != tc.selection || start != tc.start || gold != tc.gold || ok != tc.ok {
+			t.Fatalf(
+				"parseNativeShopTransferSuccessShotState(%q)=(%q,%d,%d,%d,%d,%d,%d,%d,%v), want (%q,%d,%d,%d,%d,%d,%d,%d,%v)",
+				tc.spec, mode, source, item, destination, postSource, selection, start, gold, ok,
+				tc.mode, tc.source, tc.item, tc.destination, tc.postSource, tc.selection, tc.start, tc.gold, tc.ok,
+			)
+		}
+	}
+}
+
 func TestParseNativeShopSellShotState(t *testing.T) {
 	for _, tc := range []struct {
 		spec                                string
@@ -564,6 +593,172 @@ func TestNativeShopTransferShotLoadGameAdmission(t *testing.T) {
 	if !g.setNativeShopTransferShotState("items", 0, 0, 0, 0, 0) ||
 		g.nativeShopMode != "transfer_items" {
 		t.Fatal("loadGame screenshot bootstrap rejected transfer items")
+	}
+}
+
+func TestNativeShopTransferSuccessShotMutatesPrivateBindingParty(t *testing.T) {
+	const base = "../../../org_game/炎龍騎士團/FLAME2"
+	fdotherPath := filepath.Join(base, "FDOTHER.DAT")
+	if _, err := os.Stat(fdotherPath); err != nil {
+		t.Skip("player-provided original resources are absent")
+	}
+	t.Setenv("FD2_ORIGINAL_FDOTHER", fdotherPath)
+	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(base, "FDTXT.DAT"))
+	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(base, "DATO.DAT"))
+	t.Setenv("XDG_DATA_HOME", t.TempDir())
+	oldCache := userDataDirCached
+	userDataDirCached = ""
+	t.Cleanup(func() { userDataDirCached = oldCache })
+
+	shared, err := loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	shop, err := loadNativeShopUIAssets(shared)
+	if err != nil {
+		t.Fatal(err)
+	}
+	c, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	types, equip, err := campaign.LoadShopEligibility(
+		assetPath("assets/data/item.json"),
+		assetPath("assets/data/class_equip_types.json"),
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	stats, err := campaign.LoadItemStats(assetPath("assets/data/item.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	newGame := func() *Game {
+		runner := campaign.NewRunner(c)
+		runner.Cur = "shop_ch02_weapon"
+		g := &Game{
+			shotPath:        "transfer-success.png",
+			camp:            runner,
+			nativeClassUI:   shared,
+			nativeShopUI:    shop,
+			nativeUIPalette: append(color.Palette(nil), shared.palette...),
+			shopItemTypes:   types,
+			shopEquipTypes:  equip,
+			shopItemStats:   stats,
+		}
+		if err := g.materializeShotPartyFromBinding(
+			"assets/cutscenes/bindings/ch00_pre.json",
+		); err != nil {
+			t.Fatal(err)
+		}
+		if !g.setupNativeShop() {
+			t.Fatal("ch02 weapon shop did not admit native owner")
+		}
+		g.nativeShopUIJob = nil
+		return g
+	}
+
+	intro := newGame()
+	originalSol := cloneNativeShopUnit(intro.partyRoster[0])
+	originalYuni := cloneNativeShopUnit(intro.partyRoster[9])
+	if !intro.setNativeShopTransferSuccessShotState(
+		"success_intro", 0, 0, 1, 0, 0, 0, 37,
+	) || intro.nativeShopMode != "transfer_intro" || intro.gold != 37 {
+		t.Fatal("success transfer intro rejected binding party")
+	}
+	if !reflect.DeepEqual(intro.partyRoster[0].Inventory, []int{132, 192}) ||
+		!reflect.DeepEqual(intro.partyRoster[9].Inventory, []int{52, 164, 0}) ||
+		intro.partyRoster[9].Equipped[2] {
+		t.Fatalf(
+			"success transfer inventory source=%v destination=%v equipped=%v",
+			intro.partyRoster[0].Inventory, intro.partyRoster[9].Inventory,
+			intro.partyRoster[9].Equipped,
+		)
+	}
+	if reflect.DeepEqual(originalSol.Inventory, intro.partyRoster[0].Inventory) ||
+		reflect.DeepEqual(originalYuni.Inventory, intro.partyRoster[9].Inventory) {
+		t.Fatal("success transfer did not change both binding-party projections")
+	}
+	if frame, ok := intro.composeNativeShopTransferMessage(); !ok || len(frame) != 320*200 {
+		t.Fatal("success transfer intro failed final compositor admission")
+	}
+	wantSol := cloneNativeShopUnit(intro.partyRoster[0])
+	wantYuni := cloneNativeShopUnit(intro.partyRoster[9])
+	wantOrder := append([]int(nil), intro.partyJoinOrder...)
+	intro.leaveShop()
+	if intro.camp.NodeID() != "town_ch02" {
+		t.Fatalf("success transfer leave node=%q, want town_ch02", intro.camp.NodeID())
+	}
+	intro.saveGameToSlot(0)
+	intro.partyRoster = nil
+	intro.partyMembers = nil
+	intro.partyJoinOrder = nil
+	intro.partyDeploy = nil
+	intro.gold = 999
+	intro.nativeShopMode = "transfer_full"
+	intro.nativeShopTransferSource = 7
+	intro.nativeShopTransferItem = 6
+	intro.nativeShopTransferItems = []int{6}
+	intro.nativeShopTransferDest = 8
+	intro.nativeShopTransferIDs = []int{7, 8}
+	intro.loadGameFromSlot(0)
+	gotSol, solOK := intro.partyRoster[0]
+	gotYuni, yuniOK := intro.partyRoster[9]
+	if !solOK || !yuniOK || intro.camp.NodeID() != "town_ch02" ||
+		intro.gold != 37 || !reflect.DeepEqual(intro.partyJoinOrder, wantOrder) ||
+		!reflect.DeepEqual(gotSol.Inventory, wantSol.Inventory) ||
+		!reflect.DeepEqual(gotSol.Equipped, wantSol.Equipped) ||
+		!reflect.DeepEqual(gotSol.InventorySlots, wantSol.InventorySlots) ||
+		!reflect.DeepEqual(gotSol.NativeInventoryFlags, wantSol.NativeInventoryFlags) ||
+		gotSol.AP != wantSol.AP || gotSol.DP != wantSol.DP ||
+		gotSol.HIT != wantSol.HIT || gotSol.EV != wantSol.EV ||
+		gotSol.CritPct != wantSol.CritPct || gotSol.MV != wantSol.MV ||
+		gotSol.AtkMin != wantSol.AtkMin || gotSol.AtkMax != wantSol.AtkMax ||
+		!reflect.DeepEqual(gotYuni.Inventory, wantYuni.Inventory) ||
+		!reflect.DeepEqual(gotYuni.Equipped, wantYuni.Equipped) ||
+		!reflect.DeepEqual(gotYuni.InventorySlots, wantYuni.InventorySlots) ||
+		!reflect.DeepEqual(gotYuni.NativeInventoryFlags, wantYuni.NativeInventoryFlags) ||
+		gotYuni.AP != wantYuni.AP || gotYuni.DP != wantYuni.DP ||
+		gotYuni.HIT != wantYuni.HIT || gotYuni.EV != wantYuni.EV ||
+		gotYuni.CritPct != wantYuni.CritPct || gotYuni.MV != wantYuni.MV ||
+		gotYuni.AtkMin != wantYuni.AtkMin || gotYuni.AtkMax != wantYuni.AtkMax ||
+		intro.nativeShopMode != "" ||
+		intro.nativeShopTransferSource != -1 ||
+		len(intro.nativeShopTransferItems) != 0 || len(intro.nativeShopTransferIDs) != 0 {
+		t.Fatalf(
+			"success transfer JSON round-trip node=%q gold=%d order=%v sol=%#v yuni=%#v mode=%q source=%d items=%v ids=%v",
+			intro.camp.NodeID(), intro.gold, intro.partyJoinOrder, gotSol, gotYuni,
+			intro.nativeShopMode, intro.nativeShopTransferSource,
+			intro.nativeShopTransferItems, intro.nativeShopTransferIDs,
+		)
+	}
+
+	items := newGame()
+	if !items.setNativeShopTransferSuccessShotState(
+		"success_items", 0, 0, 1, 1, 2, 0, 0,
+	) || items.nativeShopMode != "transfer_items" ||
+		items.nativeShopTransferSource != 9 || items.nativeShopTransferSel != 2 ||
+		!reflect.DeepEqual(items.nativeShopTransferItems, []int{0, 1, 2}) ||
+		items.partyRoster[9].Inventory[items.nativeShopTransferItems[2]] != 0 {
+		t.Fatalf(
+			"success transfer receiver items mode=%q source=%d selection=%d items=%v",
+			items.nativeShopMode, items.nativeShopTransferSource,
+			items.nativeShopTransferSel, items.nativeShopTransferItems,
+		)
+	}
+	if frame, ok := items.composeNativeShopTransferItems(); !ok || len(frame) != 320*200 {
+		t.Fatal("success transfer receiver items failed final compositor admission")
+	}
+
+	invalid := newGame()
+	beforeSol := cloneNativeShopUnit(invalid.partyRoster[0])
+	beforeYuni := cloneNativeShopUnit(invalid.partyRoster[9])
+	if invalid.setNativeShopTransferSuccessShotState(
+		"success_items", 0, 0, 1, 1, 3, 0, 0,
+	) || !reflect.DeepEqual(invalid.partyRoster[0], beforeSol) ||
+		!reflect.DeepEqual(invalid.partyRoster[9], beforeYuni) ||
+		invalid.nativeShopMode != "menu" {
+		t.Fatal("invalid success selection did not fail atomically")
 	}
 }
 

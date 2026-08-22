@@ -197,6 +197,31 @@ func parseNativeShopTransferShotState(
 	return parts[0], values[0], values[1], values[2], values[3], values[4], true
 }
 
+func parseNativeShopTransferSuccessShotState(
+	spec string,
+) (mode string, source, item, destination, postSource, selection, start, gold int, ok bool) {
+	parts := strings.Split(spec, ",")
+	if len(parts) != 8 ||
+		(parts[0] != "success_intro" && parts[0] != "success_items") {
+		return "", 0, 0, 0, 0, 0, 0, 0, false
+	}
+	values := make([]int, 7)
+	for i, part := range parts[1:] {
+		value, err := strconv.Atoi(part)
+		if err != nil || value < 0 {
+			return "", 0, 0, 0, 0, 0, 0, 0, false
+		}
+		values[i] = value
+	}
+	if values[6] > 99999999 ||
+		(parts[0] == "success_intro" &&
+			(values[3] != 0 || values[4] != 0 || values[5] != 0)) {
+		return "", 0, 0, 0, 0, 0, 0, 0, false
+	}
+	return parts[0], values[0], values[1], values[2], values[3],
+		values[4], values[5], values[6], true
+}
+
 func parseNativeShopSellShotState(
 	spec string,
 ) (mode string, unit, selection, start, cycle, gold int, ok bool) {
@@ -632,6 +657,91 @@ func (g *Game) setNativeShopTransferShotState(
 	candidate.nativeShopTransferSel = selection
 	candidate.nativeShopTransferTop = start
 	if _, ok := candidate.composeNativeShopTransferRoster(); !ok {
+		return false
+	}
+	*g = candidate
+	return true
+}
+
+// setNativeShopTransferSuccessShotState 在私有 party map 上執行正式成功交易，
+// 再公開交易後的來源提示或角色物品清單。任何拒絕都不得改動呼叫者 roster。
+func (g *Game) setNativeShopTransferSuccessShotState(
+	mode string, source, item, destination, postSource, selection, start, gold int,
+) bool {
+	if g.shotPath == "" ||
+		(mode != "success_intro" && mode != "success_items") ||
+		source < 0 || item < 0 || destination < 0 || postSource < 0 ||
+		selection < 0 || start < 0 || gold < 0 || gold > 99999999 ||
+		g.camp == nil || g.nativeShopUI == nil || g.nativeClassUI == nil ||
+		g.nativeShopMode != "menu" {
+		return false
+	}
+	candidate := *g
+	candidate.partyRoster = make(map[int]battle.Unit, len(g.partyRoster))
+	for id, unit := range g.partyRoster {
+		candidate.partyRoster[id] = cloneNativeShopUnit(unit)
+	}
+	candidate.nativeShopUIJob = nil
+	candidate.gold = gold
+	if !candidate.setupNativeShopTransfer() {
+		return false
+	}
+	candidate.nativeShopUIJob = nil
+	candidate.openNativeShopTransferSourceRoster()
+	candidate.nativeShopUIJob = nil
+	if source >= len(candidate.nativeShopTransferIDs) {
+		return false
+	}
+	candidate.nativeShopTransferSource = candidate.nativeShopTransferIDs[source]
+	if !candidate.openNativeShopTransferItems() {
+		return false
+	}
+	candidate.nativeShopUIJob = nil
+	if item >= len(candidate.nativeShopTransferItems) {
+		return false
+	}
+	candidate.nativeShopTransferItem = candidate.nativeShopTransferItems[item]
+	candidate.openNativeShopTransferDestinationRoster()
+	candidate.nativeShopUIJob = nil
+	if destination >= len(candidate.nativeShopTransferIDs) ||
+		!candidate.applyNativeShopTransfer(candidate.nativeShopTransferIDs[destination]) ||
+		!candidate.returnToNativeShopTransferLoop() || candidate.gold != gold {
+		return false
+	}
+	candidate.nativeShopUIJob = nil
+	if mode == "success_intro" {
+		if postSource != 0 || selection != 0 || start != 0 {
+			return false
+		}
+		if _, ok := candidate.composeNativeShopTransferMessage(); !ok {
+			return false
+		}
+		*g = candidate
+		return true
+	}
+
+	candidate.openNativeShopTransferSourceRoster()
+	candidate.nativeShopUIJob = nil
+	if postSource >= len(candidate.nativeShopTransferIDs) {
+		return false
+	}
+	candidate.nativeShopTransferSource = candidate.nativeShopTransferIDs[postSource]
+	if !candidate.openNativeShopTransferItems() {
+		return false
+	}
+	candidate.nativeShopUIJob = nil
+	if selection >= len(candidate.nativeShopTransferItems) {
+		return false
+	}
+	normalizedStart, visible := campaign.NativeTwoColumnWindow(
+		len(candidate.nativeShopTransferItems), selection, start,
+	)
+	if visible == 0 || normalizedStart != start {
+		return false
+	}
+	candidate.nativeShopTransferSel = selection
+	candidate.nativeShopTransferTop = start
+	if _, ok := candidate.composeNativeShopTransferItems(); !ok {
 		return false
 	}
 	*g = candidate
