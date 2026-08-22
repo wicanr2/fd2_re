@@ -497,6 +497,44 @@ func TestNativeShopProductionOwnerDrawsOriginalMenuAndPurchaseList(t *testing.T)
 		g.nativeShopTransferIDs[0] != 0 {
 		t.Fatal("native destination roster incorrectly removed the source actor")
 	}
+	beforeCancel := cloneNativeShopUnit(g.partyRoster[0])
+	beforeCancelGold := g.gold
+	g.nativeShopUIJob = nil
+	if !g.beginNativeShopTransferDestinationCancel() ||
+		g.nativeShopMode != "transfer_dest" ||
+		g.nativeShopUIJob == nil ||
+		len(g.nativeShopUIJob.frames) != 5 ||
+		len(g.nativeShopUIJob.restore) != 320*200 {
+		t.Fatal("native transfer destination cancel did not publish five closing frames")
+	}
+	cancelAfter := g.nativeShopUIJob.after
+	g.nativeShopUIJob = nil
+	cancelAfter()
+	if g.nativeShopMode != "transfer_intro" ||
+		g.nativeShopUIJob == nil || len(g.nativeShopUIJob.frames) != 6 ||
+		g.gold != beforeCancelGold ||
+		!reflect.DeepEqual(g.partyRoster[0], beforeCancel) {
+		t.Fatalf(
+			"native transfer destination cancel leaked state: mode=%q gold=%d unit=%#v",
+			g.nativeShopMode, g.gold, g.partyRoster[0],
+		)
+	}
+	g.nativeShopUIJob = nil
+	if g.beginNativeShopTransferDestinationCancel() ||
+		g.nativeShopMode != "transfer_intro" || g.nativeShopUIJob != nil {
+		t.Fatal("native transfer destination cancel accepted a non-destination state")
+	}
+
+	// 取消回到來源提示後，重新沿正式 owner 選相同來源與物品，才測試 self-transfer。
+	g.openNativeShopTransferSourceRoster()
+	g.nativeShopUIJob = nil
+	g.nativeShopTransferSource = 0
+	if !g.openNativeShopTransferItems() {
+		t.Fatal("native shop transfer item list did not reopen after destination cancel")
+	}
+	g.nativeShopUIJob = nil
+	g.nativeShopTransferItem = g.nativeShopTransferItems[0]
+	g.openNativeShopTransferDestinationRoster()
 	if !g.applyNativeShopTransfer(0) {
 		t.Fatal("native self-transfer raw remove/append failed")
 	}

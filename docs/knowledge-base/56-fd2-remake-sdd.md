@@ -2001,6 +2001,37 @@ renderer。
 金幣與隊伍順序保存。裁決為 `PLAYER-E2 route-patched partial` 加重製 JSON
 `RUNTIME-E1`；仍不可宣稱完整 campaign 或原版存檔 E2。
 
+### ch02 物品轉移目的取消與自我轉移契約（2026-08-22）
+
+ch02 四名實際 party record 都至少有兩件物品，因此本切片不得把任何角色直接
+注入成空背包。先關閉兩條由現況普通輸入直接可達的分支：
+
+1. **目的取消**：索爾→短劍→目的提示→目的名冊後按 Escape；必須先播放正式
+   五幀 roster closing 與來源還原，再開六幀 FDTXT512，背包、裝備、能力與金幣
+   全部不變。輸入端與測試必須共用同一個取消 owner，不可讓測試直接寫 mode。
+2. **自我轉移**：同一路徑在目的名冊直接 Enter 索爾。正式
+   `applyNativeShopTransfer(sourceID)` 必須以同一 unit clone 執行 raw
+   remove→append，再 `RecomputeEquipment`；短劍成為未裝備尾項，索爾物品順序由
+   短劍／皮甲／藥草變成皮甲／藥草／短劍，金幣不變，完成後返回來源 loop。
+
+原版以固定雜湊 route-patched 副本的普通鍵盤分別重播，重製畫面則只可使用
+production owner：取消後的提示沿用無 mutation 的正式 compositor；自我轉移後
+清單沿用 `FD2_SHOT_SHOP_TRANSFER_SUCCESS_STATE`，且 destination 必須等於 source。
+兩條都需保存輸入時間線、320×200 raw RGB、AE 與限制。
+
+這仍不證明 empty/full、跨 caller、原版 `FD2.SAV`、其他章節或未修改完整 campaign。
+empty 必須由可追溯的多筆正常交易或合法 raw 前置狀態取得；full 必須有八個非負
+raw flags。不得為了截圖直接清空或填滿背包。
+
+重製端實作結果為 `RUNTIME-E1`：目的名冊 Escape 現只由
+`beginNativeShopTransferDestinationCancel` 擁有，成功預檢五幀收合後才發布工作，
+收合完成才呼叫既有來源 loop 建立六幀 FDTXT512；預檢失敗不再直接跳過動畫。
+原始資產整合回歸證實取消前後角色、背包、裝備、能力與金幣完全不變，且錯誤
+mode 不能啟動此 owner。取消返回後再沿正式 source→items→destination owner 選
+來源本人，既有 raw remove→append／重算仍產生未裝備尾項。這批未新增 DOSBox
+畫面，因此 self／destination-cancel 仍只到重製端 E1；上列原版同狀態 E2 gate
+與 empty／full gate 均保留。
+
 The `0x318ad` cap gate is now explicit in
 `fdother.NativePreparationPartyLimit`: raw global `[0x53c03] <= 0x1a` yields
 15, while values greater than `0x1a` yield 19. The adapter accepts a native

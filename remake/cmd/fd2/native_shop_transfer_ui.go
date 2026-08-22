@@ -38,6 +38,22 @@ func (g *Game) returnToNativeShopTransferLoop() bool {
 	return g.beginNativeShopTransferMessageOpening()
 }
 
+// beginNativeShopTransferDestinationCancel 是目的角色名冊 Escape 的正式擁有者。
+// 它只安排原版五幀名冊收合；來源提示與六幀展開必須等收合的 after 才發布。
+// 任一合成步驟失敗時不直接改模式，讓呼叫端依失敗即關閉政策停止流程。
+func (g *Game) beginNativeShopTransferDestinationCancel() bool {
+	if g.nativeShopMode != "transfer_dest" || g.nativeShopUIJob != nil {
+		return false
+	}
+	after := func() {
+		if !g.returnToNativeShopTransferLoop() {
+			g.nativeShopMode = ""
+			g.msg = "原版商店 transfer source prompt 無法還原"
+		}
+	}
+	return g.beginNativeShopTransferRosterClosing(after)
+}
+
 func (g *Game) composeNativeShopTransferMessage() ([]byte, bool) {
 	stable, stableOK := g.composeNativeShopStable()
 	_, portrait, portraitID, stateOK := g.nativeShopState()
@@ -133,8 +149,8 @@ func (g *Game) openNativeShopTransferSourceRoster() {
 }
 
 func (g *Game) openNativeShopTransferDestinationRoster() {
-	// 0x2f8ea calls 0x2e6b8 over the full party again. It does not remove the
-	// source actor; selecting oneself performs remove→append raw reordering.
+	// 已證實：0x2f8ea 再以完整隊伍呼叫 0x2e6b8，沒有排除來源角色；
+	// 選自己會依原始背包順序執行 remove→append，並以未裝備狀態放到尾端。
 	g.nativeShopMode = "transfer_dest"
 	g.nativeShopTransferIDs = append(
 		g.nativeShopTransferIDs[:0], g.partyJoinOrder...,

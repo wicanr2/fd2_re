@@ -2124,13 +2124,9 @@ func (g *Game) handleNativeShopInput(enter bool) bool {
 					openMenu()
 				}
 			} else {
-				after := func() {
-					if !g.returnToNativeShopTransferLoop() {
-						g.nativeShopMode = ""
-					}
-				}
-				if !g.beginNativeShopTransferRosterClosing(after) {
-					after()
+				if !g.beginNativeShopTransferDestinationCancel() {
+					g.nativeShopMode = ""
+					g.msg = "原版商店 transfer destination cancel 無法還原"
 				}
 			}
 			return true

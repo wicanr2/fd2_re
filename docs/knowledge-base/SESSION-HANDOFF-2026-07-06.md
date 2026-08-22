@@ -5542,3 +5542,17 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   記憶後仍保存雙方 compact/raw 背包、裝備、AP、金幣、隊伍順序與節點，且清除
   transfer暫態。這是重製JSON `RUNTIME-E1`；self／empty／full／destination-cancel、
   church caller、原版存檔與未修改一般玩家路徑仍未外推。
+
+## 2026-08-22：ch02 目的取消與自我轉移正式生命週期
+
+- 先以 SDD 固定目的名冊取消與 self-transfer 契約，沒有重解已閉合的
+  `0x2F8EA`／`0x1B8E7→0x1BB8C→0x1B750`。目的 Escape 現由
+  `beginNativeShopTransferDestinationCancel` 單一擁有：五幀名冊收合完成後，
+  才以既有來源 loop 建立六幀 FDTXT512；合成失敗不再略過動畫繼續前進。
+- 原始資產整合回歸證實取消前後完整 unit 與 gold 不變，錯誤 mode 不能啟動；
+  取消返回後重新走 source→items→destination 選來源本人，仍由正式 raw
+  remove→append／重算得到未裝備尾項。完整 Docker／Xvfb `go test ./...` 通過。
+- 這批只提升重製端 `RUNTIME-E1`，沒有新增 DOSBox 畫面；因此 self／取消的原版
+  同狀態 E2，以及 empty／full、church caller、原版存檔與未修改玩家路徑仍保留。
+- README 新增以玩家交付門檻計算的自我評估：目前是中後段整合期，保守估計仍有
+  30–40% 的產品整合與驗收工作；數字不是 EXE 反組譯率或像素相似率。
