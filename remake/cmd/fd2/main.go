@@ -7275,35 +7275,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				}
 			}
 		}
-		if g.nativeItemTargeting {
-			ih := ebiten.NewImage(tw, th)
-			ih.Fill(color.RGBA{0x50, 0xd0, 0x80, 0x68})
-			for _, unit := range g.nativeItemSelectionTargets() {
-				op := &ebiten.DrawImageOptions{}
-				op.GeoM.Translate(float64(unit.X*tw)-g.camX, float64(unit.Y*th)-g.camY)
-				target.DrawImage(ih, op)
-			}
-		}
-		if g.nativeItemRelocating {
-			rh := ebiten.NewImage(tw, th)
-			rh.Fill(color.RGBA{0x40, 0xd8, 0xd8, 0x68})
-			for cell := range g.nativeRelocationDestinations() {
-				op := &ebiten.DrawImageOptions{}
-				op.GeoM.Translate(float64(cell.X*tw)-g.camX, float64(cell.Y*th)-g.camY)
-				target.DrawImage(rh, op)
-			}
-		}
-		if g.nativeCommand0Targeting {
-			if targets, err := g.nativeCommandTargetUnits(); err == nil {
-				ch := ebiten.NewImage(tw, th)
-				ch.Fill(color.RGBA{0xff, 0x80, 0x20, 0x68})
-				for _, unit := range targets {
-					op := &ebiten.DrawImageOptions{}
-					op.GeoM.Translate(float64(unit.X*tw)-g.camX, float64(unit.Y*th)-g.camY)
-					target.DrawImage(ch, op)
-				}
-			}
-		}
+		// 原生物品／command 0 目標 modal 只由完整的 0x11CAC 索引畫面
+		// 呈現。缺少 raw target field、LUT 或 range sprite 時，不畫沒有
+		// 原版證據的 RGBA 色塊作後備，避免把 renderer 失敗偽裝成成功。
 		// 攻擊射程高亮(紅;已移動、選攻擊、尚未選中目標的階段,doc32 武器攻擊距離接線 —
 		// 沒有這格高亮,槍兵2格射程會「打得到但畫面看不出範圍」)
 		if g.castSp == nil && g.moved && !g.ring && !g.spellOpen {

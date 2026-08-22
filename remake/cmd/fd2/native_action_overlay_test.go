@@ -96,6 +96,12 @@ func TestNativeMapFrameAdmissionKeepsActionOverlayOnCompleteFrame(t *testing.T) 
 	if !(&Game{nativeCommandOpen: true}).nativeMapFrameAdmission(false, true) {
 		t.Fatal("native command grid was excluded from the complete native map frame")
 	}
+	if !(&Game{sel: &battle.Unit{}, nativeItemTargeting: true}).nativeMapFrameAdmission(false, true) {
+		t.Fatal("item target modal was excluded from the complete native map frame")
+	}
+	if !(&Game{sel: &battle.Unit{}, nativeItemRelocating: true}).nativeMapFrameAdmission(false, true) {
+		t.Fatal("item relocation modal was excluded from the complete native map frame")
+	}
 	if (&Game{sel: &battle.Unit{}}).nativeMapFrameAdmission(false, true) {
 		t.Fatal("ordinary selected-unit movement was admitted without a complete modal state")
 	}

@@ -2321,6 +2321,13 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   type23 destination維持global selector1，只把literal code6傳給
   `0x115b6`，不再把兩個「6」混成同一狀態。focused Docker/Xvfb regression
   覆蓋兩層cancel、重新進入、成功commit與grid/selector reset。
+- [x] **UI-ITEM-TARGET-INDEXED-FAIL-CLOSED**：物品第一階段 target field 與
+  global selector 1..5 已由正式 `0x11CAC` 索引組合器消費；移除原生畫面
+  失敗時仍會露出的綠色 item target、青色 relocation 與橘色 command 0
+  半透明後備層。截圖旁車現可記錄 item targeting／raw ID／relocation modal，
+  缺 HUD、LUT、range sprite 或 raw provenance 時不再以猜測介面冒充成功。
+  物品效果 indexed presentation、disabled target 外觀、原版取消鍵與
+  global selector 6 production owner 仍未知，不因本項升格。
 - [x] **UI-SHOP-PURCHASE-CONFIRM-E1**：完整重讀`0x2f0b0`後保存四組
   六variant FDTXT表；購買問題展開`FFFC`商品名與`FFFA`十進位價格，
   並接原版`0x19953` Yes/No selected pulse。2026-07-28再以指令順序重核

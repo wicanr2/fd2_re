@@ -23,6 +23,9 @@ type screenshotStateTrace struct {
 	NativeCommandOpen      bool    `json:"native_command_open"`
 	NativeCommandTargeting bool    `json:"native_command_targeting"`
 	NativeCommandTargetID  *int    `json:"native_command_target_id,omitempty"`
+	NativeItemTargeting    bool    `json:"native_item_targeting"`
+	NativeItemTargetID     *int    `json:"native_item_target_id,omitempty"`
+	NativeItemRelocating   bool    `json:"native_item_relocating"`
 	SpellOpen              bool    `json:"spell_open"`
 	// 這些欄位只描述輸入是否被既有 modal 阻擋；它們讓普通 X11 重播
 	// 能區分「按鍵未到」和「遊戲刻意尚未接受按鍵」。
@@ -82,6 +85,8 @@ func (g *Game) writeShotStateTrace(path string) error {
 		ActionOverlayOpen:            g.ring,
 		NativeCommandOpen:            g.nativeCommandOpen,
 		NativeCommandTargeting:       g.nativeCommand0Targeting,
+		NativeItemTargeting:          g.nativeItemTargeting,
+		NativeItemRelocating:         g.nativeItemRelocating,
 		SpellOpen:                    g.spellOpen,
 		NativeContinueOpeningConfirm: g.nativeContinueOpeningConfirm,
 		// JSON field name is retained for compatibility with the 2026-08-11
@@ -95,6 +100,10 @@ func (g *Game) writeShotStateTrace(path string) error {
 	if g.nativeCommand0Targeting {
 		commandID := g.nativeCommandTargetID
 		trace.NativeCommandTargetID = &commandID
+	}
+	if g.nativeItemTargeting {
+		itemID := g.nativeItemTargetID
+		trace.NativeItemTargetID = &itemID
 	}
 	if g.camp != nil {
 		trace.CampaignNode = g.camp.NodeID()

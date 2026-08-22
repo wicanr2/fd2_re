@@ -3017,6 +3017,15 @@ does preserve the separately verified global-selector-6 mutation primitive
 (terrain draw, selected cell byte `+3=0`, then foreground), but its production
 owner is a different, still-unintegrated battle presentation path.
 
+2026-08-22 畫面所有權更正：物品第一階段目標欄位已由上述 row 欄位建立，且
+正式 `0x11CAC` 索引組合器可消費可繪製的 global selector 1..5；這一層屬於
+`RUNTIME-E1`，不等於物品效果演出或一般玩家 E2。舊的正規化地圖曾在原生
+組合器失敗前另畫綠色目標、青色傳送目的地與橘色 command 0 半透明方塊；三者
+都沒有原版畫面證據，且會在原生素材缺失時留下看似成功的替代介面，因此不再
+作正式後備畫面。完整 raw 欄位、HUD、LUT 或 range sprite 任一缺失時，畫面與
+交易都維持失敗即關閉；物品效果的索引演出、不可用目標外觀、取消鍵語意及
+global selector 6 的真正 production owner 仍列為未知。
+
 Caller-scope correction (Docker Capstone, 2026-07-26): `0x22253` is shared by the chapter-ending/post handler at `0x250cc`, not command-23-only. That path calls it after `0x1c2da` with unit index `1`, pre-render bytes `0xff/0xff`, and the selected record's raw `+0/+1` bytes, then continues to `0x25089` cleanup and `0x2bce5` ending rendering. The remake therefore treats `SetNativeUnitCoordinateBytes` as a shared raw writer only; command-23 selector, ending layout, renderer, and campaign transition remain independent fail-closed contracts.
 
 The `0x25348` branch audit further fixes the ending-only order: FDOTHER frames `0x0d`, `0x0e`, `0x0f` are presented around `0x1c2da`; the shared `0x22253` write for unit `1` follows with raw `+0/+1`, frame `0x10` follows, and then `0x25089→0x2bce5` enters the terminal self-loop. This is call-order evidence only. The `0x24b14` return and frame IDs remain unnamed, and this branch must not be used as a generic battle→town/shop transition.

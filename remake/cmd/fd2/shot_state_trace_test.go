@@ -56,11 +56,52 @@ func TestWriteShotStateTraceRecordsNativeInteractionState(t *testing.T) {
 		got.Selection == nil || *got.Selection != [2]int{8, 17} || !got.ActionOverlayOpen ||
 		!got.NativeCommandOpen || !got.NativeCommandTargeting ||
 		got.NativeCommandTargetID == nil || *got.NativeCommandTargetID != 0 || got.Battle == nil ||
+		got.NativeItemTargeting || got.NativeItemTargetID != nil || got.NativeItemRelocating ||
 		got.Battle.NativeMapView == nil || got.Battle.NativeMapView.CameraY != 13 ||
 		!got.NativeContinueOpeningConfirm || !got.NativeContinueCursorOverlay || got.DialogCount != 0 ||
 		got.BattleEventActive || got.NativeTurnStagingActive || got.CursorUnit == nil ||
 		!got.CursorUnit.OnField || got.CursorUnit.NativeCommandCount != 1 {
 		t.Fatalf("shot state trace=%#v", got)
+	}
+}
+
+func TestWriteShotStateTraceRecordsNativeItemModal(t *testing.T) {
+	for _, tc := range []struct {
+		name       string
+		targeting  bool
+		relocating bool
+		wantID     bool
+	}{
+		{name: "first target", targeting: true, wantID: true},
+		{name: "relocation destination", relocating: true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			g := &Game{
+				nativeItemTargeting:  tc.targeting,
+				nativeItemTargetID:   0,
+				nativeItemRelocating: tc.relocating,
+			}
+			path := filepath.Join(t.TempDir(), "shot-state-item.json")
+			if err := g.writeShotStateTrace(path); err != nil {
+				t.Fatal(err)
+			}
+			raw, err := os.ReadFile(path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			var got screenshotStateTrace
+			if err := json.Unmarshal(raw, &got); err != nil {
+				t.Fatal(err)
+			}
+			if got.NativeItemTargeting != tc.targeting ||
+				got.NativeItemRelocating != tc.relocating ||
+				(got.NativeItemTargetID != nil) != tc.wantID {
+				t.Fatalf("item modal trace=%#v", got)
+			}
+			if tc.wantID && *got.NativeItemTargetID != 0 {
+				t.Fatalf("item modal ID=%d, want 0", *got.NativeItemTargetID)
+			}
+		})
 	}
 }
 
@@ -82,7 +123,8 @@ func TestWriteShotStateTraceOmitsSelectionWithoutOwner(t *testing.T) {
 		t.Fatal(err)
 	}
 	if got.HasSelection || got.Selection != nil || !got.NativeContinueCursorOverlay ||
-		got.NativeCommandTargeting || got.NativeCommandTargetID != nil {
+		got.NativeCommandTargeting || got.NativeCommandTargetID != nil ||
+		got.NativeItemTargeting || got.NativeItemTargetID != nil || got.NativeItemRelocating {
 		t.Fatalf("empty cursor trace=%#v", got)
 	}
 }

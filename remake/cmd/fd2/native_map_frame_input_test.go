@@ -190,6 +190,52 @@ func TestComposeNativeMapFrameAdmitsOpeningAndInteractiveSelectors(t *testing.T)
 	}
 }
 
+func TestNativeItemTargetEntryOwnsIndexedMapFrameAndFailsClosed(t *testing.T) {
+	assets, field, state := completeNativeMapFrameFixture(t)
+	for i := range assets.Range.Sprites {
+		assets.Range.Sprites[i] = nativeFrameTestSprite(byte(0x20 + i))
+	}
+	g := &Game{
+		nativeMapAssets: assets,
+		m:               field,
+		st:              state,
+		sel:             state.Units[0],
+		itemOpen:        true,
+	}
+	state.NativeCompositionEventBytes = make([]byte, state.W*state.H)
+	var err error
+	g.nativeItemEffectRows, err = battle.LoadNativeItemEffectRowPrefix("../../assets/data/native_item_effect_rows.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := g.composeNativeMapFrameAt(time.Unix(0, 0)); err != nil {
+		t.Fatal(err)
+	}
+	steady := append([]byte(nil), g.nativeMapVGA...)
+	started, err := g.beginNativeTargetItem(0, 192)
+	if err != nil || !started {
+		t.Fatalf("item target entry started=%v err=%v", started, err)
+	}
+	if !g.nativeMapFrameAdmission(false, true) {
+		t.Fatal("item target entry was not admitted to the indexed map owner")
+	}
+	if err := g.composeNativeMapFrameAt(time.Unix(0, int64(time.Second/60))); err != nil {
+		t.Fatal(err)
+	}
+	if bytes.Equal(steady, g.nativeMapVGA) {
+		t.Fatal("item target field did not change the indexed map frame")
+	}
+
+	before := append([]byte(nil), g.nativeMapVGA...)
+	assets.Range = nil
+	if err := g.composeNativeMapFrameAt(time.Unix(0, int64(2*time.Second/60))); err == nil {
+		t.Fatal("missing range sprites admitted an item target frame")
+	}
+	if !bytes.Equal(before, g.nativeMapVGA) {
+		t.Fatal("failed item target frame partially published pixels")
+	}
+}
+
 func TestComposeNativeMapFrameAdvancesTimingOnceAndFailsAtomically(t *testing.T) {
 	assets, field, state := completeNativeMapFrameFixture(t)
 	g := &Game{nativeMapAssets: assets, m: field, st: state}
