@@ -5886,7 +5886,11 @@ func (g *Game) confirm() {
 			return
 		}
 		if applied {
-			g.msg = fmt.Sprintf("物品 %02Xh：原始移位效果完成", g.nativeItemTargetID)
+			if g.nativeModifierPresentation != nil || g.nativeUnitPresent != nil {
+				g.msg = fmt.Sprintf("物品 %02Xh：原始移位演出進行中", g.nativeItemTargetID)
+			} else {
+				g.msg = fmt.Sprintf("物品 %02Xh：原始移位效果完成", g.nativeItemTargetID)
+			}
 		}
 		return
 	}

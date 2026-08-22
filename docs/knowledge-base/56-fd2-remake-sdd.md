@@ -857,6 +857,17 @@ ID23 走 `0x1CFF0` 的 command-`0x17` special selector，不能套 generic two-s
 落點 selection/legality、camera choreography、renderer 與 remake UI 尚未閉合，不能把它泛化成普通 move 或 generic
 target effect。
 
+重製端 command23 正式生命週期（2026-08-22）必須保持這條可見且原子的順序：目的地確認後，先在
+私有 raw records 驗證完整 relocation transaction，再執行共用 `0x1D6C8` 的 #88 sub0 與八個
+Draw-ack 色盤階段；其完成回呼啟動第一次 `0x22253(target,0xff,0xff,currentX,currentY)`，離場完成後
+再啟動第二次 `0x22253(target,destX,destY,destX,destY)`。只有第二段完整結束後，才發布 record23 MP
+debit、raw action bit、item 保留及 action cleanup。destination cursor、terrain／occupancy gate 仍由既有 mode-6
+owner 負責。缺 command book、raw records、FDOTHER #88、DAC、完整 indexed map bundle 或任一 `0x22253`
+前置條件時，必須在第一個 sample／frame 前失敗；演出期間不得接受其他玩家輸入。呈現器若在中途發生
+不可預期錯誤，必須把 target coordinates 與 indexed work/VGA 回復到目的地確認前快照，不可留下
+`0xff/0xff` 的半完成狀態。這項 E1 契約只還原已證實的 palette→disappear→appear→transaction ordering；
+尚不宣稱 camera choreography 或逐幀／逐音訊 E2。
+
 IDs25..27 也已由 jump-table 閉合。ID25 `0x22C04` 以 record25 扣 MP，僅對 final target 已有
 `record+5` bit `0x80` 已設的項目清該 bit，直接保留 raw clear writer（不命名 acted/action-complete）。ID26
 `0x22CBF` 與 ID27 `0x22E41` 分別將 command ID 和 flag offset `+0x25/+0x26` 傳給與 ID22 同一
@@ -899,7 +910,7 @@ actor raw completion writer。它與 ID20/21「借 record10」的 clear/restore 
 | 17–19 | `0x1CFF0→1D6C8→226EA/2282F/22960`；#88 sub0、八個DAC phases、modifier writers與`+0x22..+0x24` duration已釘死 | `ExecuteNativeCommandModifier`／`ExecuteNativeAICommandModifier` 已以私有raw records原子發布target duration、derived words、MP與acted；ID17明確由record18扣MP。玩家與敵方mode 11均已接，phase-expiry caller仍未接 | 玩家grid＋八phase palette／sample已接E1；status icon／精確tick／逐音訊E2未接 |
 | 20–21 | `0x1CFF0→1D6C8→22A85/22BC6→22AF6`，#88 sub0＋八個DAC phases，clear `+0x25/+0x26` 並借 record10 restore | `ExecuteNativeCommandClearRestore`；完整preflight後才允許玩家演出與交易 | 玩家grid＋八phase palette／sample已接E1；status名稱、expiry UI、精確tick／逐音訊E2未接 |
 | 22 | `0x1CFF0→1D6C8→22BE1→22D1B`，#88 sub0＋八個DAC phases，class/RNG gate、base10 經第二 RNG 實際9 HP、第三 RNG write `+0x27` | `ExecuteNativeCommandApplication`；完整preflight後才允許玩家演出與交易 | 玩家grid＋八phase palette／sample已接E1；status名稱、expiry UI、精確tick／逐音訊E2未接 |
-| 23 | `0x2218A→22253` special relocation selector | 已接 first target → mode-6 destination cursor；27-present indexed renderer 未接 | 已接 raw MP/座標 transaction |
+| 23 | `0x1CFF0→1D6C8→2218A→22253×2` special relocation selector | first target→mode-6 destination cursor、八段palette、離場／入場兩次完整indexed presenter及延後raw transaction已接 | 玩家正式`RUNTIME-E1`；缺同狀態逐幀／逐音訊E2與精確camera choreography核對 |
 | 24 | 玩家 `2A6BD→276EC→2B659/1CA89→1C81F`：`actor +48 * 15/10 - target +4a`；AI table 另別名 `22153`，不可混用 | `ExecuteNativeCommand24`（state-only final delta） | multi-hit／SFX／native UI 未接 |
 | 28, 29, 31 | 同玩家 `276EC` derived-strike route，倍率分別 20、12、18；各自 record MP/一般 two-stage selector | `ExecuteNativeCommandDerivedStrike` | multi-hit／SFX／native UI 未接 |
 | 30 | `1CFF0→14818→115B6` 先確認 record+3 candidate；再以 saved cursor→confirmed cursor 進 `149F8`，`count=record+3-16`、X-first cardinal line、只收 enemy，最後 `2A6BD→276EC` default倍率18 | `ExecuteNativeCommand30`（顯式兩 cursor、state-only final delta） | native cursor lifecycle／multi-hit／SFX／indexed UI 未接 |
@@ -2911,10 +2922,11 @@ target and opens a distinct destination cursor, admitting only cells accepted
 by `NativeRelocationDestinationAllowed`. Both first-target cancel and
 destination cancel return directly to the caller-owned item panel; the older
 destination-to-first-target behavior was a remake invention and is removed.
-Only destination confirmation commits command23 MP subtraction plus raw
-coordinates. It requires the exact per-cell
-`NativeTerrainMoveCodes` provenance and fails closed without it. The native
-27-present indexed renderer remains a separate integration gate.
+2026-08-22 runtime correction: destination confirmation先在私有records驗證
+command23 MP subtraction及raw coordinates，並要求精確逐格
+`NativeTerrainMoveCodes` provenance；之後依序執行八段palette與兩次完整
+27-present indexed renderer，第二次完成後才原子發布交易。任一前置缺件都在
+第一個sample／frame前失敗。原版同狀態camera、逐幀與逐音訊E2仍是獨立驗收門檻。
 
 The surrounding selector/grid lifecycle is caller-closed. Item target entry
 writes the global selector as `row[+0x12]+2`, while its first target field is

@@ -400,9 +400,11 @@ func TestNativeCommandDamageItemUsesSharedUint16RNGAndRetainsSource(t *testing.T
 }
 
 func TestNativeRelocationUsesSeparateDestinationCursorAndMode6Legality(t *testing.T) {
-	actor := nativeItemPanelTestUnit()
+	g := completeNativeUnitPresentGame(t)
+	actor := g.st.Units[0]
 	actor.X, actor.Y, actor.OnField, actor.Camp = 0, 0, true, battle.Own
 	actor.NativeIdentity = 24
+	actor.HasNativeIdentity = true
 	actor.NativeRecordByte5, actor.HasNativeRecordByte5 = 0, true
 	actor.MP, actor.MaxMP = 30, 40
 	actor.Inventory = []int{101}
@@ -410,28 +412,49 @@ func TestNativeRelocationUsesSeparateDestinationCursorAndMode6Legality(t *testin
 	actor.InventorySlots = []int{101, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}
 	actor.NativeInventoryFlags = []int{0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
 
-	target := nativeItemPanelTestUnit()
+	target := g.st.Units[1]
 	target.X, target.Y, target.OnField, target.Camp = 1, 0, true, battle.Own
+	if !target.SetNativeMapCoordinatesRaw(1, 0) {
+		t.Fatal("target raw map coordinates unavailable")
+	}
 	target.NativeIdentity = 1
+	target.HasNativeIdentity = true
 	target.NativeRecordClass = 1
+	target.HasNativeRecordClass = true
 	target.NativeRecordByte5, target.HasNativeRecordByte5 = 0, true
+	target.InventorySlots = []int{0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}
+	target.NativeInventoryFlags = []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	g.st.Units = g.st.Units[:2]
 
 	book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
 	for id := range book {
 		book[id].ID = id
 	}
 	book[23].MPCost = 20
-	g := &Game{
-		st: &battle.State{
-			W: 3, H: 3, Units: []*battle.Unit{actor, target},
-			NativeCompositionEventBytes: make([]byte, 9),
-			NativeTileBlitModes:         make([]byte, 9),
-			NativeTerrainMoveCodes:      []byte{2, 2, 2, 2, 2, 2, 2, 2, 2},
-		},
-		sel: actor, moved: true, itemOpen: true,
-		nativeCommandBook: book,
+	g.sel, g.moved, g.itemOpen = actor, true, true
+	g.nativeCommandBook = book
+	g.st.NativeCompositionEventBytes = make([]byte, g.st.W*g.st.H)
+	g.st.NativeTerrainMoveCodes = make([]byte, g.st.W*g.st.H)
+	g.st.NativeTileBlitModes[target.Y*g.st.W+target.X] = 0
+	g.m.NativeTileBlitModes[target.Y*g.st.W+target.X] = 0
+	for index := range g.st.NativeTerrainMoveCodes {
+		g.st.NativeTerrainMoveCodes[index] = 2
+	}
+	g.nativeMapDAC = append([]byte(nil), g.nativeMapAssets.PaletteDAC...)
+	if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{
+		CursorX: 1, CursorY: 0, VisibleCursorX: 1, VisibleCursorY: 0,
+	}); err != nil {
+		t.Fatal(err)
+	}
+	g.camX, g.camY = 0, 0
+	if err := g.composeNativeMapFrame(); err != nil {
+		t.Fatal(err)
 	}
 	var err error
+	g.nativeCommandPaletteFlash, err = battle.LoadNativeCommandPaletteFlashTable("../../assets/data/native_command_palette_flash.json")
+	if err != nil {
+		t.Fatal(err)
+	}
 	g.nativeItemEffectRows, err = battle.LoadNativeItemEffectRowPrefix("../../assets/data/native_item_effect_rows.json")
 	if err != nil {
 		t.Fatal(err)
@@ -447,7 +470,10 @@ func TestNativeRelocationUsesSeparateDestinationCursorAndMode6Legality(t *testin
 		!g.nativeItemRelocating || g.nativeItemTargeting {
 		t.Fatalf("target stage applied=%v relocating=%v targeting=%v err=%v", applied, g.nativeItemRelocating, g.nativeItemTargeting, err)
 	}
-	allFF := []byte{0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}
+	allFF := make([]byte, g.st.W*g.st.H)
+	for index := range allFF {
+		allFF[index] = 0xff
+	}
 	if g.st.NativeMapRangeMode != 1 || !slices.Equal(g.st.NativeTileBlitModes, allFF) {
 		t.Fatalf("destination stage selector/grid=%d/%#v", g.st.NativeMapRangeMode, g.st.NativeTileBlitModes)
 	}
@@ -469,10 +495,38 @@ func TestNativeRelocationUsesSeparateDestinationCursorAndMode6Legality(t *testin
 		destinations[battle.Cell{X: actor.X, Y: actor.Y}] {
 		t.Fatalf("mode6 destinations=%v", destinations)
 	}
-	if applied, err := g.applyNativeRelocationDestination(2, 2); err != nil || !applied {
+	t.Setenv("FD2_MUTE", "1")
+	introPixels := g.nativeMapAssets.FDOTHER6[0x72].Pixels
+	g.nativeMapAssets.FDOTHER6[0x72].Pixels = nil
+	if applied, err := g.applyNativeRelocationDestination(8, 7); err == nil || applied ||
+		g.nativeModifierPresentation != nil || g.nativeUnitPresent != nil ||
+		target.X != 1 || target.Y != 0 || actor.MP != 30 || actor.Acted {
+		t.Fatalf("missing renderer crossed atomic boundary: applied=%v err=%v actor=%#v target=%#v", applied, err, actor, target)
+	}
+	g.nativeMapAssets.FDOTHER6[0x72].Pixels = introPixels
+	if applied, err := g.applyNativeRelocationDestination(8, 7); err != nil || !applied {
 		t.Fatalf("destination applied=%v err=%v", applied, err)
 	}
-	if target.X != 2 || target.Y != 2 || actor.MP != 10 ||
+	if g.nativeModifierPresentation == nil || target.X != 1 || target.Y != 0 || actor.MP != 30 || actor.Acted {
+		t.Fatalf("relocation crossed palette boundary: actor=%#v target=%#v", actor, target)
+	}
+	for phase := 0; phase < 8; phase++ {
+		if !g.drawNativeCommandModifierPresentation(ebiten.NewImage(640, 400)) {
+			t.Fatalf("command23 palette phase %d did not draw", phase)
+		}
+		g.stepNativeCommandModifierPresentation()
+	}
+	if g.nativeModifierPresentation != nil || g.nativeUnitPresent == nil || target.X != 1 || target.Y != 0 || actor.MP != 30 {
+		t.Fatalf("command23 did not enter disappear presentation atomically: actor=%#v target=%#v", actor, target)
+	}
+	sawOffMap := false
+	for steps := 0; g.nativeUnitPresent != nil && steps < 120; steps++ {
+		stepNativeUnitPresentNow(g)
+		if target.X == 0xff && target.Y == 0xff {
+			sawOffMap = true
+		}
+	}
+	if g.nativeUnitPresent != nil || !sawOffMap || target.X != 8 || target.Y != 7 || actor.MP != 10 ||
 		len(actor.Inventory) != 1 || actor.Inventory[0] != 101 ||
 		!actor.Acted || g.sel != nil || g.nativeItemRelocating ||
 		g.st.NativeMapRangeMode != 1 ||

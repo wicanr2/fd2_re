@@ -221,10 +221,12 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 | UI-12 save/load | F5/F9 是重製自有快捷路徑，不得外推為原版戰場存檔；save package 自有 schema。原版 `FD2.SAV` 的 `0x59cb` boundary、rolling-XOR/u32 byte-sum checksum、4×logical `0xa28` records at `+0x312b`（metadata `0x28` + roster `0xa00`）已由真實 sandbox decode、`tools/fd2save.py` 與 `internal/fdsave` regression 覆蓋。合法 IDA 9.4 已固定 reader `0x2602c..0x26098` 與 writer `0x30012`：兩者只處理 metadata `+0..+9`；writer 只由 `0x2cad7` 直接整備與酒店呼叫。production 以雜湊綁定的 `0x526b9` gate table 把 raw chapter 1..29 還原到 `town_ch02..27` 或 `preparation_ch23..30`，先完整驗證 persistent record→typed party、節點型別與重複 identity，再原子套用 campaign cursor、gold、party 與 raw metadata 保存值；ch21/ch27 postbattle inventory gate 不會重播。標題 Enter／Space 現只經正式確認 owner：checksum-valid 合成槽完整還原 `town_ch02`、悠妮 typed/raw record、join order、789金幣、chapter1、HUD gate並清除舊 battle state／selection；竄改 envelope 留在 `loadslots`，campaign／party／gold／battle state 零修改且不落入 JSON loader。空槽及修改存檔chapter1有效槽畫面均與DOSBox全幀相同；未修改CONTINUE戰場按F5後存檔雜湊不變，確認一般玩家有效槽必須先從酒店／整備建立 | partial（空槽 E2；有效槽排版與 restore 為修改／合成路徑 E1，不升為一般玩家 E2） | 正常完成戰鬥後由酒店／整備建立槽位，再走標題LOAD的successful native-load E2；metadata `+10..+39` 其他可能 consumer、CONTINUE current-battle owner、delete/overwrite |
 
 > **2026-08-22 UI-03 勘誤：** 上表 UI-03 的17–22範圍已擴充為玩家
-> command 17–22及25–27 `RUNTIME-E1`。25–27同樣依`0x1D6C8`播放#88 sub0與
+> command 17–23及25–27 `RUNTIME-E1`。25–27同樣依`0x1D6C8`播放#88 sub0與
 > 八個DAC phases，最後一幀前不交易；ID25只清raw`+5 bit7`且不改target
-> `Acted`，26／27經完整preflight後才走application。仍缺同狀態逐幀／逐音訊E2、
-> status／expiry UI與command23 relocation renderer；這項勘誤不提升上述缺口。
+> `Acted`，26／27經完整preflight後才走application。ID23另接mode-6目的地、八段
+> palette及兩次`0x22253`離場／入場，第二段結束才發布MP／座標／action交易。
+> 仍缺同狀態逐幀／逐音訊E2、status／expiry UI與command23精確camera核對；
+> 這項勘誤不提升上述E2缺口。
 
 ### UI-03 dispatch-wrapper recheck（2026-07-25，E0 partial）
 

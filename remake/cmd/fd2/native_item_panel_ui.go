@@ -615,26 +615,97 @@ func (g *Game) applyNativeRelocationDestination(x, y int) (bool, error) {
 	if !ok {
 		return false, fmt.Errorf("native relocation route is unavailable")
 	}
+	plannedRecords := append([]byte(nil), records...)
 	if _, err := battle.ApplyNativeItemRelocation(
-		records, sourceUnit, []byte{byte(g.nativeItemRelocationUnit)},
+		plannedRecords, sourceUnit, []byte{byte(g.nativeItemRelocationUnit)},
 		byte(x), byte(y), route, g.nativeCommandBook,
 	); err != nil {
 		return false, err
 	}
-	for index, unit := range g.st.Units {
-		syncNativeItemRuntimeRecord(unit, records[index*80:(index+1)*80])
+	if g.nativeUnitPresent != nil || g.native2189A != nil || g.transitionReveal != nil ||
+		g.indexedTransition != nil || g.nativePaletteRamp != nil || g.nativePalettePulse != nil ||
+		g.nativeCh20SkyKey != nil || g.nativeCh23Loop != nil {
+		return false, fmt.Errorf("native relocation presentation is already active")
 	}
+	targetSlot := g.nativeItemRelocationUnit
+	target := g.st.Units[targetSlot]
+	disappear := campaign.NativeUnitPresent{
+		Slot: targetSlot,
+		NewX: 0xff, NewY: 0xff,
+		VisualX: target.X, VisualY: target.Y,
+	}
+	disappearJob, err := g.buildNativeUnitPresentJob(
+		disappear, g.st, g.nativeMapWork, g.nativeMapVGA, nil,
+	)
+	if err != nil {
+		return false, err
+	}
+	offMapState, err := cloneNativeUnitPresentState(g.st)
+	if err != nil || !offMapState.Units[targetSlot].SetNativeMapCoordinatesRaw(0xff, 0xff) {
+		return false, fmt.Errorf("native relocation off-map preflight failed")
+	}
+	last := len(disappearJob.vgaFrames) - 1
+	appear := campaign.NativeUnitPresent{
+		Slot: targetSlot,
+		NewX: x, NewY: y,
+		VisualX: x, VisualY: y,
+	}
+	appearJob, err := g.buildNativeUnitPresentJob(
+		appear, offMapState,
+		disappearJob.workFrames[last], disappearJob.vgaFrames[last], nil,
+	)
+	if err != nil {
+		return false, err
+	}
+
 	actor := g.sel
-	actor.NativeRecordByte5 |= 0x80
-	actor.HasNativeRecordByte5 = true
-	g.finishSuccessfulUnitAction(actor, func() {
-		g.resetNativeTargetField()
-		g.st.MaterializeNativeMapRangeMode(1)
-		g.nativeItemRelocating = false
-		g.nativeMovementCostRows = nil
-		g.nativeItemEffectRows = nil
-		g.sel, g.reach, g.moved = nil, nil, false
-	})
+	beforeTarget := *target
+	beforeWork := append([]byte(nil), g.nativeMapWork...)
+	beforeVGA := append([]byte(nil), g.nativeMapVGA...)
+	rollback := func() {
+		if g.st != nil && targetSlot >= 0 && targetSlot < len(g.st.Units) && g.st.Units[targetSlot] != nil {
+			*g.st.Units[targetSlot] = beforeTarget
+		}
+		g.nativeMapWork = append(g.nativeMapWork[:0], beforeWork...)
+		g.nativeMapVGA = append(g.nativeMapVGA[:0], beforeVGA...)
+	}
+	disappearJob.rollback = rollback
+	appearJob.rollback = rollback
+	appearJob.then = func() {
+		if g.st == nil || len(g.st.Units)*80 != len(plannedRecords) ||
+			sourceUnit >= len(g.st.Units) || g.st.Units[sourceUnit] != actor ||
+			targetSlot >= len(g.st.Units) || g.st.Units[targetSlot] != target {
+			rollback()
+			g.loadErr = "native command 23 relocation state changed during presentation"
+			return
+		}
+		for index, unit := range g.st.Units {
+			syncNativeItemRuntimeRecord(unit, plannedRecords[index*80:(index+1)*80])
+		}
+		actor.NativeRecordByte5 |= 0x80
+		actor.HasNativeRecordByte5 = true
+		g.finishSuccessfulUnitAction(actor, func() {
+			g.resetNativeTargetField()
+			g.st.MaterializeNativeMapRangeMode(1)
+			g.nativeItemRelocating = false
+			g.nativeMovementCostRows = nil
+			g.nativeItemEffectRows = nil
+			g.sel, g.reach, g.moved = nil, nil, false
+		})
+		g.msg = fmt.Sprintf("物品 %02Xh：原始移位效果完成", g.nativeItemTargetID)
+	}
+	disappearJob.then = func() {
+		g.nativeUnitPresent = appearJob
+		g.publishNativeUnitPresentFrame()
+	}
+	err = g.startNativeCommandPalettePresentation(23, func() error { return nil }, func() error {
+		g.nativeUnitPresent = disappearJob
+		g.publishNativeUnitPresentFrame()
+		return nil
+	}, nil)
+	if err != nil {
+		return false, err
+	}
 	return true, nil
 }
 

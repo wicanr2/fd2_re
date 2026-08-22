@@ -5643,3 +5643,18 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 玩家25–27現均完整preflight，八個Draw phases完成後才執行25 clear或26／27
   application，再共用range／selection cleanup。核心與玩家聚焦回歸通過；本批仍只到
   `RUNTIME-E1`，status名稱、expiry UI、精確tick與逐音訊E2未外推。
+
+## 2026-08-22：command 23 雙 `0x22253` 玩家生命週期
+
+- 本條取代舊交接中「command23只接座標交易、27-present renderer仍未接」的現況斷言；
+  原始`0x2218A`與`0x22253`證據本身不變，也不重解callee。
+- mode-6目的地確認現先在私有records驗證command23 MP／座標交易，並預建離場及
+  入場兩個完整`0x22253`工作；任一raw record、terrain、palette、sample、indexed
+  asset或兩段renderer前置條件缺失時，都在第一個sample／frame前失敗。
+- 正式順序是`0x1D6C8`的#88 sub0與八個Draw-ack palette phases →
+  `0x22253(target,0xff,0xff,currentX,currentY)` →
+  `0x22253(target,destX,destY,destX,destY)` → 原子發布MP、座標、raw action bit及
+  cleanup；item101維持不消耗。兩段共用目的地確認前的unit／work／VGA rollback。
+- Docker／Xvfb整合回歸證實缺renderer不啟動、八段palette前不變更、可觀察
+  `0xff/0xff`中間狀態及第二段完成後才交易，提升為`RUNTIME-E1`。原版同狀態
+  camera、逐幀、逐音訊及一般玩家`PLAYER-E2`仍待驗收。

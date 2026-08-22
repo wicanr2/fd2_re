@@ -77,45 +77,77 @@ func (g *Game) startNativeUnitPresent(spec campaign.NativeUnitPresent, then func
 		g.nativeCh20SkyKey != nil || g.nativeCh23Loop != nil {
 		return errors.New("native 0x22253 presentation is already active")
 	}
-	if g.st == nil || g.m == nil || !nativeUnitPresentAssetsAvailable(g.nativeMapAssets) ||
-		!g.st.HasNativeMapViewState || len(g.nativeMapWork) != indexedmap.NativeUnitPresentWorkSize ||
-		len(g.nativeMapVGA) != indexedmap.NativeMapVGASize {
-		return errors.New("native 0x22253 indexed map state is unavailable")
+	job, err := g.buildNativeUnitPresentJob(spec, g.st, g.nativeMapWork, g.nativeMapVGA, then)
+	if err != nil {
+		return err
 	}
 	call, err := resolveNativeUnitPresentCall(spec, len(g.st.Units))
 	if err != nil {
 		return err
 	}
-	if call.UnitSlot < 0 || call.UnitSlot >= len(g.st.Units) || g.st.Units[call.UnitSlot] == nil ||
-		!g.st.Units[call.UnitSlot].HasNativeMapPresentation {
-		return fmt.Errorf("native 0x22253 slot %d lacks raw map presentation", call.UnitSlot)
+	beforeWork := append([]byte(nil), g.nativeMapWork...)
+	beforeVGA := append([]byte(nil), g.nativeMapVGA...)
+	beforeUnit := *g.st.Units[call.UnitSlot]
+	job.rollback = func() {
+		g.nativeMapWork = append(g.nativeMapWork[:0], beforeWork...)
+		g.nativeMapVGA = append(g.nativeMapVGA[:0], beforeVGA...)
+		if g.st != nil && call.UnitSlot < len(g.st.Units) && g.st.Units[call.UnitSlot] != nil {
+			*g.st.Units[call.UnitSlot] = beforeUnit
+		}
+	}
+	g.nativeUnitPresent = job
+	g.publishNativeUnitPresentFrame()
+	return nil
+}
+
+// buildNativeUnitPresentJob precomputes one complete 0x22253 call without
+// publishing frames or mutating live state. A caller which owns a multi-call
+// sequence can therefore validate every leg before the first visible output.
+func (g *Game) buildNativeUnitPresentJob(
+	spec campaign.NativeUnitPresent,
+	source *battle.State,
+	initialWork, initialVGA []byte,
+	then func(),
+) (*nativeUnitPresentJob, error) {
+	if g == nil || source == nil || g.m == nil || !nativeUnitPresentAssetsAvailable(g.nativeMapAssets) ||
+		!source.HasNativeMapViewState || len(initialWork) != indexedmap.NativeUnitPresentWorkSize ||
+		len(initialVGA) != indexedmap.NativeMapVGASize {
+		return nil, errors.New("native 0x22253 indexed map state is unavailable")
+	}
+	call, err := resolveNativeUnitPresentCall(spec, len(source.Units))
+	if err != nil {
+		return nil, err
+	}
+	if call.UnitSlot < 0 || call.UnitSlot >= len(source.Units) || source.Units[call.UnitSlot] == nil ||
+		!source.Units[call.UnitSlot].HasNativeMapPresentation {
+		return nil, fmt.Errorf("native 0x22253 slot %d lacks raw map presentation", call.UnitSlot)
 	}
 	if err := fdother.ValidateNativeUnitPresentSchedule(fdother.NativeUnitPresentSchedule()); err != nil {
-		return err
+		return nil, err
 	}
 	bridgeLUT, err := fdother.NativeUnitPresentBridgeLUT(g.nativeMapAssets.LUTs)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	beforeInput, err := g.buildNativeIndexedTransitionInputForState(g.st)
+	beforeInput, err := g.buildNativeIndexedTransitionInputForState(source)
 	if err != nil {
-		return fmt.Errorf("native 0x22253 pre-mutation input: %w", err)
+		return nil, fmt.Errorf("native 0x22253 pre-mutation input: %w", err)
 	}
-	candidate, err := cloneNativeUnitPresentState(g.st)
+	candidate, err := cloneNativeUnitPresentState(source)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	if !candidate.Units[call.UnitSlot].SetNativeMapCoordinatesRaw(int(call.NewX), int(call.NewY)) {
-		return errors.New("native 0x22253 candidate coordinate write failed")
+		return nil, errors.New("native 0x22253 candidate coordinate write failed")
 	}
 	afterInput, err := g.buildNativeIndexedTransitionInputForState(candidate)
 	if err != nil {
-		return fmt.Errorf("native 0x22253 post-mutation input: %w", err)
+		return nil, fmt.Errorf("native 0x22253 post-mutation input: %w", err)
 	}
 
 	terrainSnapshot := make([]byte, indexedmap.NativeUnitPresentWorkSize)
 	if err := indexedmap.ComposeNativeUnitPresentTerrainSnapshot(terrainSnapshot, beforeInput); err != nil {
-		return err
+		return nil, err
 	}
 	job := &nativeUnitPresentJob{
 		palette:  append(color.Palette(nil), g.nativeMapAssets.Palette...),
@@ -136,13 +168,13 @@ func (g *Game) startNativeUnitPresent(spec campaign.NativeUnitPresent, then func
 	}
 
 	work := make([]byte, indexedmap.NativeUnitPresentWorkSize)
-	vga := append([]byte(nil), g.nativeMapVGA...)
+	vga := append([]byte(nil), initialVGA...)
 	for index := 0x72; index <= 0x7c; index++ {
 		if err := indexedmap.ComposeNativeUnitPresentIntroFrame(
 			work, vga, terrainSnapshot, beforeInput, g.nativeMapAssets.FDOTHER6[index],
 			int(call.VisualX), int(call.VisualY),
 		); err != nil {
-			return fmt.Errorf("native 0x22253 intro %#x: %w", index, err)
+			return nil, fmt.Errorf("native 0x22253 intro %#x: %w", index, err)
 		}
 		appendFrame(work, vga, 3) // one native BIOS tick, approximated on 60 Hz host
 	}
@@ -151,17 +183,17 @@ func (g *Game) startNativeUnitPresent(spec campaign.NativeUnitPresent, then func
 		lutSnapshot, terrainSnapshot, beforeInput, g.nativeMapAssets.FDOTHER6[0x7c],
 		int(call.VisualX), int(call.VisualY),
 	); err != nil {
-		return err
+		return nil, err
 	}
-	view := g.st.NativeMapViewState
+	view := source.NativeMapViewState
 	lutFrames, err := fdother.NativeUnitPresentLUTFrames(view.VisibleCursorX, view.VisibleCursorY)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	for index, frame := range lutFrames[:6] {
 		lut := g.nativeMapAssets.LUTs[frame.LUTIndex]
 		if err := indexedmap.ComposeNativeUnitPresentLUTFrame(work, vga, lutSnapshot, lut, beforeInput, frame); err != nil {
-			return fmt.Errorf("native 0x22253 contract %d: %w", index, err)
+			return nil, fmt.Errorf("native 0x22253 contract %d: %w", index, err)
 		}
 		wait := nativeDelayTicks(frame.DelayMs) + frame.DelayTicks*3
 		appendFrame(work, vga, wait)
@@ -177,33 +209,21 @@ func (g *Game) startNativeUnitPresent(spec campaign.NativeUnitPresent, then func
 			return nil
 		},
 	); err != nil {
-		return err
+		return nil, err
 	}
 	work, vga = bridgeWork, bridgeVGA
 	for index, frame := range lutFrames[6:] {
 		lut := g.nativeMapAssets.LUTs[frame.LUTIndex]
 		if err := indexedmap.ComposeNativeUnitPresentLUTFrame(work, vga, lutSnapshot, lut, afterInput, frame); err != nil {
-			return fmt.Errorf("native 0x22253 release %d: %w", index, err)
+			return nil, fmt.Errorf("native 0x22253 release %d: %w", index, err)
 		}
 		appendFrame(work, vga, frame.DelayTicks*3)
 	}
 	if len(job.workFrames) != len(job.vgaFrames) || len(job.waits) != len(job.vgaFrames) ||
 		job.mutationAt != 17 || len(job.vgaFrames) < 45 {
-		return errors.New("native 0x22253 preflight produced an invalid schedule")
+		return nil, errors.New("native 0x22253 preflight produced an invalid schedule")
 	}
-	beforeWork := append([]byte(nil), g.nativeMapWork...)
-	beforeVGA := append([]byte(nil), g.nativeMapVGA...)
-	beforeUnit := *g.st.Units[call.UnitSlot]
-	job.rollback = func() {
-		g.nativeMapWork = append(g.nativeMapWork[:0], beforeWork...)
-		g.nativeMapVGA = append(g.nativeMapVGA[:0], beforeVGA...)
-		if g.st != nil && call.UnitSlot < len(g.st.Units) && g.st.Units[call.UnitSlot] != nil {
-			*g.st.Units[call.UnitSlot] = beforeUnit
-		}
-	}
-	g.nativeUnitPresent = job
-	g.publishNativeUnitPresentFrame()
-	return nil
+	return job, nil
 }
 
 func (g *Game) publishNativeUnitPresentFrame() {
