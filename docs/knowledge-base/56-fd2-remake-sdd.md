@@ -270,7 +270,7 @@ repo 提供不含 license／遊戲資料的 `tools/docker/fd2-ida.Dockerfile` �
 只在授權 IDA Docker 匯出原始函式邊界、IDA 分析名稱、旗標與直接 caller；
 `tools/compact_fd2_function_inventory.py` 產生受版控的
 [`fd2_function_inventory.json`](../data/ida/fd2_function_inventory.json)。固定雜湊輸入
-辨識1305函式，目前為產品34、Watcom runtime170、未知1101；語意只從
+辨識1305函式，目前為產品35、Watcom runtime170、未知1100；語意只從
 [`fd2_semantic_index.json`](../data/ida/fd2_semantic_index.json) 合併，雜湊不符、
 註記未落在函式起點或缺推論等級／證據時直接拒絕。handler IR 同步拆成
 `native_call`、`unresolved_native_call`、`unknown`；三者都保留原始定位，前兩者
@@ -1121,9 +1121,10 @@ single-target plan與selector32；任一缺漏時交易不得開始。
 
 目前adapter以原始actor/effect與target idle indexed幀、原始delay及shake表執行，並接入
 `0x29C90`兩段各10次的BG 0/1/2 viewport轉場。pure compositor接受caller預建的source／target
-base；正式owner現以raw terrain control選actor／target BG，以actor effect frame8與target idle
-建立可玩base，並以`0x2A289→0x18C6D`原生indexed狀態欄取代轉場內的RGBA panel。
-這比舊單一battle scene更接近原版，但仍未接`sub_29164/sub_2B659`來源畫面的完整逐像素base，因此本切片只列
+base；正式owner現以raw terrain control選actor／target BG，以`0x2B659`的
+actor frame0..8、扣MP後source snapshot與重設後target idle建立indexed base，並以
+`0x2A289→0x18C6D`原生狀態欄取代RGBA panel。尚未接的是`sub_29164`進入actor
+phase前的九段figure fade，因此本切片只列
 `RUNTIME-E1 partial`，不得宣稱逐幀原版一致；未修改原版的「轉職→Lv4學會→施放」一般玩家
 連續E2仍是獨立驗收門檻。主證據見
 [`fd2_command24_presentation_ida.txt`](../data/ida/fd2_command24_presentation_ida.txt)。
@@ -1153,6 +1154,16 @@ actor／target base已消費此compositor，不再於20張indexed frame上疊兩
 函式內沒有BIOS tick wait；remake逐Draw呈現只屬平台pacing adapter。完整原始定位、
 表bytes與限制見
 [`fd2_command24_background_transition_ida.txt`](../data/ida/fd2_command24_background_transition_ida.txt)。
+
+command24的source snapshot另由`0x276EC→0x29164→0x2B659`直接資料流固定：
+actor BG與扣MP後的indexed actor panel為base；raw `unit+6!=0`且mode=1時保留
+actor TAI於`(164,157)`，最後只疊resource98 frame8。`0x2B659`對command24不畫
+第四參數idle，也不走DAC pulse。正式owner必須在damage plan建立後用私有actor
+record的`MPAfter`預建此snapshot，避免轉場仍顯示扣款前MP。這個snapshot契約
+不代表`0x29164`較早的九段figure fade已接；該prelude仍是獨立partial缺口。
+`sub_29C90`後的`sub_2B9A1(targetIdle,0,...)`另明確清零兩個idle globals且不
+繪圖；target tail必須從idle frame0／repeat0重新開始，不能沿用actor phase內
+雖有遞增但對command24不可見的局部idle相位。
 
 remake 的可編輯資料模型必須至少表達這些 raw facts，而非固定四個 ring action：
 

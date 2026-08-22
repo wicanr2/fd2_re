@@ -34,6 +34,12 @@ FD2 command 24（破龍擊）presentation／learning evidence
 6. `sub_2B659` 的 DAC pulse 只在 `command<10 || command>=32` 執行；
    command 24 不走該 pulse。不得借接 `0x1D6C8` 或 `sub_2B659` 的 DAC
    色彩表冒充破龍擊演出。
+   同一函式只有在`command<10 || command==28`時才疊第四參數的idle
+   animation；command24的actor phase兩支raw `unit+6`路徑都只在base上疊
+   resource98 frame。raw `+4==1`先扣MP，再以`sub_2A289(base,actor)`重畫
+   actor indexed panel，因此frame8最後一次present使用扣款後MP。`sub_29164`
+   在raw `unit+6!=0`且mode=1時會於返回前把actor TAI resource貼到base
+   `(164,157)`；raw `+6==0`且mode=1時不把TAI保存到base。
 7. `0x27B33..0x27D9A` 逐 final target 執行：
    - command 24 先呼叫 `sub_29C90`；該函式以 BG resources 0／1／2 做
      十列轉場，再建立 target background／idle figure。
@@ -46,6 +52,10 @@ FD2 command 24（破龍擊）presentation／learning evidence
      `originalHP - damage * (++impactCount) / 1`。
    - 每個 frame 重複 raw `+6` 次。shake offsets 直接取 `0x52549` 的
      `00 04 09 0e 12 0e`；counter 5→0 後恢復 frame selector -1。
+   - `sub_29C90`後以`sub_2B9A1(targetIdle,0,...)`把兩個全域idle counters
+     `byte_540FC/byte_540FD`都重設為0且不繪圖。target effect每次present再以
+     transparent參數`-1`呼叫同函式，從idle frame0依各frame raw `+6` delay
+     重新循環。因此remake不得沿用actor phase內`sub_2B659`的局部idle相位。
 
 因此撤回「command 24 等份多段扣血」：對固定版本而言，第一個 target-phase
 `raw +4==1` 就發布完整最終傷害；其餘畫格只延續特效、守方第33幀與震動。
@@ -84,10 +94,17 @@ FD2 command 24（破龍擊）presentation／learning evidence
   時 MP、HP、Acted、獎勵與 UI target state 全部不變。
 - command24 不使用 `0x1D6C8` 八段 palette，也不使用 `sub_2B659` 的
   command<10／>=32 DAC pulse。
+- 進入`sub_29C90`前的最後source frame必須由actor BG、扣MP後indexed actor
+  panel、raw `+6!=0`時的actor TAI，以及resource98 frame8依此順序合成；
+  command24 actor phase不得額外補target idle。這只閉合轉場source snapshot，
+  不等同已接`sub_29164`先前九段figure fade。
+- 20張轉場完成後必須將target idle frame與repeat counter重設為0；target tail
+  的第一個effect present由idle frame0開始。
 
 仍未閉合
 --------
 
-- `sub_29164`／`sub_29C90` 的完整逐像素背景／台座合成與 BIOS tick 對拍。
+- `sub_29164`進入actor phase前的九段figure fade與 BIOS tick／palette對拍；
+  `sub_29C90`兩段viewport與其source／target snapshot已有獨立窄契約。
 - FDOTHER #53 的精確播放格式／取樣率與同狀態逐音訊比較。
 - 未修改原版正常玩家的轉職→level4學招→施放→戰鬥返回連續 E2。

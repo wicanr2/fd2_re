@@ -13,14 +13,15 @@ func newNativeCommand24PresentationTestGame(t *testing.T) (*Game, *battle.Unit, 
 	t.Helper()
 	base := filepath.Clean("../../../org_game/炎龍騎士團/FLAME2")
 	figaniPath, fdotherPath := filepath.Join(base, "FIGANI.DAT"), filepath.Join(base, "FDOTHER.DAT")
-	bgPath, fdtxtPath := filepath.Join(base, "BG.DAT"), filepath.Join(base, "FDTXT.DAT")
-	if !fileExists(figaniPath) || !fileExists(fdotherPath) || !fileExists(bgPath) || !fileExists(fdtxtPath) {
-		t.Skip("player-provided FIGANI.DAT/FDOTHER.DAT/BG.DAT/FDTXT.DAT unavailable")
+	bgPath, fdtxtPath, taiPath := filepath.Join(base, "BG.DAT"), filepath.Join(base, "FDTXT.DAT"), filepath.Join(base, "TAI.DAT")
+	if !fileExists(figaniPath) || !fileExists(fdotherPath) || !fileExists(bgPath) || !fileExists(fdtxtPath) || !fileExists(taiPath) {
+		t.Skip("player-provided FIGANI.DAT/FDOTHER.DAT/BG.DAT/FDTXT.DAT/TAI.DAT unavailable")
 	}
 	t.Setenv("FD2_ORIGINAL_FIGANI", figaniPath)
 	t.Setenv("FD2_ORIGINAL_BG", bgPath)
 	t.Setenv("FD2_ORIGINAL_FDOTHER", fdotherPath)
 	t.Setenv("FD2_ORIGINAL_FDTXT", fdtxtPath)
+	t.Setenv("FD2_ORIGINAL_TAI", taiPath)
 	t.Setenv("FD2_MUTE", "1")
 	actor := &battle.Unit{Camp: battle.Own, OnField: true, X: 0, Y: 0, Lv: 4, AP: 100, MP: 30, MaxMP: 30, HP: 120, MaxHP: 120, BattleFig: 32, HasBattleFig: true, NativeRecordByte6: 0, HasNativeRecordByte6: true, NativeRecordByte8: 0, HasNativeRecordByte8: true}
 	target := &battle.Unit{Camp: battle.Enemy, OnField: true, X: 1, Y: 0, Lv: 5, DP: 20, HP: 200, MaxHP: 200, BattleFig: 0, HasBattleFig: true, NativeRecordByte6: 1, HasNativeRecordByte6: true, NativeRecordByte8: 1, HasNativeRecordByte8: true}
@@ -129,7 +130,8 @@ func TestNativeCommand24PresentationRunsTwentyBackgroundDrawsBeforeDamage(t *tes
 			t.Fatalf("transition frame %d crossed damage boundary", frame)
 		}
 	}
-	if g.nativeCmd24Presentation.transitionFrame != -1 || g.nativeCmd24Presentation.frame != 9 {
+	if g.nativeCmd24Presentation.transitionFrame != -1 || g.nativeCmd24Presentation.frame != 9 ||
+		g.nativeCmd24Presentation.targetFrame != 0 || g.nativeCmd24Presentation.targetRepeat != 0 {
 		t.Fatalf("transition completion=%#v", g.nativeCmd24Presentation)
 	}
 }
@@ -153,5 +155,31 @@ func TestNativeCommand24PresentationRejectsMissingPanelRawNameWithoutMutation(t 
 	}
 	if actor.MP != 30 || actor.Acted || target.HP != 200 || g.nativeCmd24Presentation != nil {
 		t.Fatalf("failed panel preflight mutated state actor=%#v target=%#v", actor, target)
+	}
+}
+
+func TestNativeCommand24PresentationRequiresActorTAIForNonzeroRawSide(t *testing.T) {
+	working, workingActor, workingTarget := newNativeCommand24PresentationTestGame(t)
+	workingActor.NativeRecordByte6 = 1
+	if err := working.startNativeCommand24Presentation(workingActor, workingTarget, nil); err != nil {
+		t.Fatalf("player-provided actor TAI was rejected: %v", err)
+	}
+
+	g, actor, target := newNativeCommand24PresentationTestGame(t)
+	actor.NativeRecordByte6 = 1
+	t.Setenv("FD2_ORIGINAL_TAI", filepath.Join(t.TempDir(), "missing-TAI.DAT"))
+	if err := g.startNativeCommand24Presentation(actor, target, nil); err == nil {
+		t.Fatal("nonzero raw-side actor accepted a missing TAI source")
+	}
+	if actor.MP != 30 || actor.Acted || target.HP != 200 || g.nativeCmd24Presentation != nil {
+		t.Fatalf("failed TAI preflight mutated state actor=%#v target=%#v", actor, target)
+	}
+}
+
+func TestNativeCommand24PresentationDoesNotRequireLegacyRGBABases(t *testing.T) {
+	g, actor, target := newNativeCommand24PresentationTestGame(t)
+	g.bg, g.tai, g.panel = nil, nil, nil
+	if err := g.startNativeCommand24Presentation(actor, target, nil); err != nil {
+		t.Fatalf("indexed player-asset bases were rejected: %v", err)
 	}
 }

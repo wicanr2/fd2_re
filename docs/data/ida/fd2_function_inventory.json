@@ -15,11 +15,11 @@
   "imagebase": "0x0",
   "function_count": 1305,
   "classification_counts": {
-    "unknown": 1101,
-    "product": 34,
+    "unknown": 1100,
+    "product": 35,
     "runtime": 170
   },
-  "semantic_annotation_count": 35,
+  "semantic_annotation_count": 36,
   "classification_note": "product/driver only come from the versioned semantic index; runtime is a mechanical IDA FUNC_LIB classification after the configured FLIRT signatures; every other function remains unknown",
   "detail_note": "每筆保留 IDA 函式邊界、分析名稱、旗標、直接 caller 函式與分級語意；逐 call-site 交叉參照由同一匯出器重生，不在此精簡版重複保存",
   "functions": [
@@ -7952,11 +7952,22 @@
       "direct_code_xref_count": 13,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x2b9a1",
+          "classification": "product",
+          "semantic": "FIGANI idle frame scheduler 的雙 counter reset／delay advance helper",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_command24_presentation_ida.txt"
+          ],
+          "scope": "a2==0只清零全域 frame/repeat；非零才繪製並依 raw frame +6推進，caller的透明參數與時序另證"
+        }
+      ]
     },
     {
       "start": "0x2ba22",

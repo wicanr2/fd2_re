@@ -5707,3 +5707,21 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 本切片是`RUNTIME-E1 partial`。`0x29164／0x2B659`完整source base、精確
   palette／音訊與未修改一般玩家「轉職→Lv4學會→施放」E2仍待，不以現有
   effect frame8近似冒稱逐像素一致。
+
+## 2026-08-22：command24 actor來源畫面與target idle重設勘誤
+
+- 本段取代上一節把`0x2B659`完整來源畫面列為未接的現況斷言；狀態欄本身的
+  原始證據與位址不變。合法Docker內IDA Pro 9.4重新固定`0x2B659`在command24
+  actor階段只播放frame0..header byte2-1（實檔為0..8），且command24不符合
+  `command<10 || command==28`，所以actor階段不畫target idle。
+- frame8後的轉場來源快照現由actor地形BG、扣MP後原生狀態欄、raw `unit+6!=0`
+  時的TAI平台及resource98 frame8組成；raw `+4` marker造成的MP扣除會先反映於
+  私有record，再組成來源畫面。任一BG、TAI、FIGANI、FDTXT、字模、狀態欄或raw
+  provenance缺失時，在任何交易與畫面發布前失敗即關閉。
+- `sub_2B9A1(targetIdle,0)`已證實會把全域待機frame／repeat同時清為0且不繪圖；
+  正式owner在兩段20張背景滑動完成後套用同一重設，再由target base與idle frame0
+  進入尾段。`sub_2B9A1`已加入非破壞性語意索引；1305函式現況為產品35、
+  Watcom runtime170、未知1100。
+- 此批仍是`RUNTIME-E1 partial`。尚未接的是`0x29164`九段figure prelude、精確
+  palette／音訊，以及未修改一般玩家「轉職→Lv4學會→施放」E2；不得把已接的
+  `0x2B659`來源畫面再次列為反組譯缺口。

@@ -24,6 +24,10 @@ type nativeCommand24PresentationJob struct {
 	targetFrames         []*ebiten.Image
 	targetPositions      [][2]int
 	targetDelays         []int
+	actorBaseBefore      *ebiten.Image
+	actorBaseAfter       *ebiten.Image
+	targetBaseBefore     *ebiten.Image
+	targetBaseAfter      *ebiten.Image
 	transitionFrames     []*ebiten.Image
 	transitionFrame      int
 	frame, repeat        int
@@ -68,6 +72,21 @@ func nativeBGPath() string {
 	return ""
 }
 
+func nativeTAIPath() string {
+	for _, key := range []string{"FD2_ORIGINAL_TAI", "FD2_TAI"} {
+		if path := os.Getenv(key); path != "" {
+			return path
+		}
+	}
+	if figaniPath := nativeFIGANIPath(); figaniPath != "" {
+		path := filepath.Join(filepath.Dir(figaniPath), "TAI.DAT")
+		if fileExists(path) {
+			return path
+		}
+	}
+	return ""
+}
+
 func nativeCommand24BGSelector(m *MapData, unit *battle.Unit) (int, error) {
 	if m == nil || unit == nil || m.W <= 0 || m.H <= 0 || len(m.Tiles) != m.W*m.H ||
 		len(m.NativeTerrainControl) == 0 || len(m.NativeTerrainControl)%4 != 0 ||
@@ -86,6 +105,7 @@ func nativeCommand24BackgroundBase(
 	panelAssets battle.NativeItemPanelDataAssets,
 	panelRecord []byte,
 	unitIndex, rawChapter int,
+	platform *fdother.Frame,
 	overlays ...figani.Frame,
 ) ([]byte, error) {
 	base := make([]byte, 320*200)
@@ -95,6 +115,13 @@ func nativeCommand24BackgroundBase(
 	}
 	if err := battle.RenderNativeBattlePanel(panelAssets, panelRecord, base, unitIndex, rawChapter); err != nil {
 		return nil, err
+	}
+	if platform != nil {
+		frame := *platform
+		frame.X, frame.Y = 164, 157
+		if err := frame.Blit(base, 320, -1); err != nil {
+			return nil, err
+		}
 	}
 	for _, overlay := range overlays {
 		if err := overlay.BlitAt(base, 320); err != nil {
@@ -165,8 +192,8 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if !actor.HasBattleFig || actor.BattleFig != 32 || !target.HasBattleFig {
 		return errors.New("native command24 requires proven selector32 actor and target BattleFig")
 	}
-	if g.bg == nil || g.tai == nil || g.panel == nil || len(g.nativeUIPalette) < 256 {
-		return errors.New("native command24 battle background/panel/palette unavailable")
+	if len(g.nativeUIPalette) < 256 {
+		return errors.New("native command24 palette unavailable")
 	}
 	archive := nativeFIGANIPath()
 	if archive == "" {
@@ -186,6 +213,13 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	}
 	if len(targetIdle.Frames) == 0 {
 		return errors.New("native command24 target idle FIGANI is empty")
+	}
+	plan, err := g.st.PlanNativeCommandDerivedStrike(actor, target, 24, g.rng)
+	if err != nil {
+		return err
+	}
+	if len(plan.Results) != 1 || plan.Results[0].Target != target {
+		return errors.New("native command24 normal player path is not a single target")
 	}
 	bgArchive := nativeBGPath()
 	if bgArchive == "" {
@@ -222,11 +256,23 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if err != nil {
 		return err
 	}
-	actorRecord, err := battle.NativeBattlePanelRecordForUnit(actor)
+	actorRecordBefore, err := battle.NativeBattlePanelRecordForUnit(actor)
 	if err != nil {
 		return err
 	}
-	targetRecord, err := battle.NativeBattlePanelRecordForUnit(target)
+	actorAfterMP := *actor
+	actorAfterMP.MP = plan.MPAfter
+	actorRecordAfter, err := battle.NativeBattlePanelRecordForUnit(&actorAfterMP)
+	if err != nil {
+		return err
+	}
+	targetRecordBefore, err := battle.NativeBattlePanelRecordForUnit(target)
+	if err != nil {
+		return err
+	}
+	targetAfterDamage := *target
+	targetAfterDamage.HP = plan.Results[0].HPAfter
+	targetRecordAfter, err := battle.NativeBattlePanelRecordForUnit(&targetAfterDamage)
 	if err != nil {
 		return err
 	}
@@ -238,22 +284,60 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if err != nil {
 		return err
 	}
-	sourceBase, err := nativeCommand24BackgroundBase(
-		actorBG, panelAssets, actorRecord, actorIndex, g.handlerChapter,
-		effect.Frames[schedule.TargetStart-1],
+	var actorPlatform *fdother.Frame
+	if actor.NativeRecordByte6 != 0 {
+		taiArchive := nativeTAIPath()
+		if taiArchive == "" {
+			return errors.New("native command24 player-provided TAI.DAT unavailable")
+		}
+		frame, err := fdother.DecodeArchiveSingleFrame(taiArchive, actorBGSelector)
+		if err != nil {
+			return err
+		}
+		actorPlatform = &frame
+	}
+	actorBaseBefore, err := nativeCommand24BackgroundBase(
+		actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter,
+		actorPlatform,
 	)
 	if err != nil {
 		return err
 	}
-	targetBase, err := nativeCommand24BackgroundBase(
-		targetBG, panelAssets, targetRecord, targetIndex, g.handlerChapter,
+	actorBaseAfter, err := nativeCommand24BackgroundBase(
+		actorBG, panelAssets, actorRecordAfter, actorIndex, g.handlerChapter,
+		actorPlatform,
+	)
+	if err != nil {
+		return err
+	}
+	sourceBase := append([]byte(nil), actorBaseAfter...)
+	if err := effect.Frames[schedule.TargetStart-1].BlitAt(sourceBase, 320); err != nil {
+		return err
+	}
+	targetBaseBefore, err := nativeCommand24BackgroundBase(
+		targetBG, panelAssets, targetRecordBefore, targetIndex, g.handlerChapter,
+		nil,
+	)
+	if err != nil {
+		return err
+	}
+	targetBaseAfter, err := nativeCommand24BackgroundBase(
+		targetBG, panelAssets, targetRecordAfter, targetIndex, g.handlerChapter,
+		nil,
 	)
 	if err != nil {
 		return err
 	}
 	transitionPixels, err := battlepresent.BuildNativeCommand24BackgroundFrames(battlepresent.NativeCommand24BackgroundInputs{
-		Layers: bgLayers, Source: sourceBase, Target: targetBase, TargetIdle: targetIdle.Frames[0],
+		Layers: bgLayers, Source: sourceBase, Target: targetBaseBefore, TargetIdle: targetIdle.Frames[0],
 	})
+	if err != nil {
+		return err
+	}
+	baseImages, err := nativeCommand24IndexedImages(
+		[][]byte{actorBaseBefore, actorBaseAfter, targetBaseBefore, targetBaseAfter},
+		g.nativeUIPalette,
+	)
 	if err != nil {
 		return err
 	}
@@ -279,17 +363,12 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if !osMuteOrShot(g) && (len(g.sfxCommand24Actor) == 0 || len(g.sfxCommand24Target) == 0) {
 		return errors.New("native command24 FDOTHER #53 samples3/2 unavailable")
 	}
-	plan, err := g.st.PlanNativeCommandDerivedStrike(actor, target, 24, g.rng)
-	if err != nil {
-		return err
-	}
-	if len(plan.Results) != 1 || plan.Results[0].Target != target {
-		return errors.New("native command24 normal player path is not a single target")
-	}
 	g.nativeCmd24Presentation = &nativeCommand24PresentationJob{
 		actor: actor, target: target, plan: plan, schedule: schedule,
 		effectFrames: effectImages, effectPositions: effectPositions,
 		targetFrames: targetImages, targetPositions: targetPositions, targetDelays: targetDelays,
+		actorBaseBefore: baseImages[0], actorBaseAfter: baseImages[1],
+		targetBaseBefore: baseImages[2], targetBaseAfter: baseImages[3],
 		transitionFrames: transitionImages, transitionFrame: -1,
 		actorMPBefore: actor.MP, actorActedBefore: actor.Acted, targetHPBefore: target.HP,
 		targetRawByte5Before: target.NativeRecordByte5,
@@ -321,6 +400,7 @@ func (g *Game) stepNativeCommand24Presentation() {
 		j.transitionFrame++
 		if j.transitionFrame >= len(j.transitionFrames) {
 			j.transitionFrame = -1
+			j.targetFrame, j.targetRepeat = 0, 0
 		}
 		return
 	}
@@ -408,32 +488,37 @@ func (g *Game) drawNativeCommand24Presentation(screen *ebiten.Image) bool {
 		j.drawn = true
 		return true
 	}
-	screen.Fill(color.Black)
-	if g.bg != nil {
-		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Scale(2, 2)
-		op.GeoM.Translate(0, 100)
-		screen.DrawImage(g.bg, op)
+	var base *ebiten.Image
+	if j.frame < j.schedule.TargetStart {
+		base = j.actorBaseBefore
+		if j.frame >= j.schedule.ActorImpactFrame {
+			base = j.actorBaseAfter
+		}
+	} else {
+		base = j.targetBaseBefore
+		if j.frame >= j.schedule.TargetImpactFrame {
+			base = j.targetBaseAfter
+		}
 	}
-	g.drawNativeCommand24Panels(screen, j)
-	if g.tai != nil {
-		tb := g.tai.Bounds()
-		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Scale(2, 2)
-		op.GeoM.Translate(482-float64(tb.Dx()), 356-float64(tb.Dy()))
-		screen.DrawImage(g.tai, op)
+	if base == nil {
+		return false
 	}
+	baseOp := &ebiten.DrawImageOptions{}
+	baseOp.GeoM.Scale(2, 2)
+	screen.DrawImage(base, baseOp)
 	shake := 0
 	if j.frame == j.schedule.TargetImpactFrame && !j.damagePublished {
 		shake = j.schedule.ShakeOffsets[5]
 	} else if j.damagePublished && j.shakeCounter >= 0 && j.shakeCounter < len(j.schedule.ShakeOffsets) {
 		shake = j.schedule.ShakeOffsets[j.shakeCounter]
 	}
-	targetPos := j.targetPositions[j.targetFrame]
-	targetOp := &ebiten.DrawImageOptions{}
-	targetOp.GeoM.Scale(2, 2)
-	targetOp.GeoM.Translate(float64((targetPos[0]-shake)*2), float64(targetPos[1]*2))
-	screen.DrawImage(j.targetFrames[j.targetFrame], targetOp)
+	if j.frame >= j.schedule.TargetStart {
+		targetPos := j.targetPositions[j.targetFrame]
+		targetOp := &ebiten.DrawImageOptions{}
+		targetOp.GeoM.Scale(2, 2)
+		targetOp.GeoM.Translate(float64((targetPos[0]-shake)*2), float64(targetPos[1]*2))
+		screen.DrawImage(j.targetFrames[j.targetFrame], targetOp)
+	}
 	effectPos := j.effectPositions[j.frame]
 	effectOp := &ebiten.DrawImageOptions{}
 	effectOp.GeoM.Scale(2, 2)
@@ -441,20 +526,4 @@ func (g *Game) drawNativeCommand24Presentation(screen *ebiten.Image) bool {
 	screen.DrawImage(j.effectFrames[j.frame], effectOp)
 	j.drawn = true
 	return true
-}
-
-func (g *Game) drawNativeCommand24Panels(screen *ebiten.Image, j *nativeCommand24PresentationJob) {
-	if g.font == nil || j == nil {
-		return
-	}
-	displayMP := j.actor.MP
-	if j.frame == j.schedule.ActorImpactFrame && !j.mpPublished {
-		displayMP = j.plan.MPAfter
-	}
-	g.drawBattlePanel(screen, 342, 8, j.actor.Name, j.actor.Lv, j.actor.HP, j.actor.MaxHP, displayMP)
-	displayHP := j.target.HP
-	if (j.frame == j.schedule.TargetImpactFrame || j.damagePublished) && len(j.plan.Results) == 1 {
-		displayHP = j.plan.Results[0].HPAfter
-	}
-	g.drawBattlePanel(screen, 0, 308, j.target.Name, j.target.Lv, displayHP, j.target.MaxHP, j.target.MP)
 }

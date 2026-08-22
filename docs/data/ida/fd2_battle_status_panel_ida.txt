@@ -60,5 +60,8 @@ FDTXT resource0；控制碼不屬本窄caller的合法輸入。
   猜姓名索引或panel位置。
 - 所有資產、record欄位與目的地先完整驗證，在私人320×200 indexed buffer完成
   後一次發布；任何錯誤保持原目的地不變。
-- 本證據只閉合狀態欄；`sub_29164` figure／TAI淡入、`sub_2B659` actor演出、
-  command24完整source base與一般玩家E2仍須分開驗證。
+- 本證據本身只閉合狀態欄。後續
+  [`fd2_command24_presentation_ida.txt`](fd2_command24_presentation_ida.txt)
+  已把`sub_2B659` frame0..8、扣MP後來源快照、條件式TAI與目標待機重設接成
+  正式重製端E1；目前仍須分開驗證的是`sub_29164`九段figure prelude與一般
+  玩家E2，不可用本檔較早的切片邊界重新開啟已閉合的來源畫面。

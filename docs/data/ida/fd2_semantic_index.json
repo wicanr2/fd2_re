@@ -217,6 +217,14 @@
       "scope": "座標 owner 與 0x18c6d handoff；raw +6 不得命名為 normalized Camp"
     },
     {
+      "address": "0x2b9a1",
+      "classification": "product",
+      "semantic": "FIGANI idle frame scheduler 的雙 counter reset／delay advance helper",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_command24_presentation_ida.txt"],
+      "scope": "a2==0只清零全域 frame/repeat；非零才繪製並依 raw frame +6推進，caller的透明參數與時序另證"
+    },
+    {
       "address": "0x2bce5",
       "classification": "product",
       "semantic": "終局前綴與部分尾段 owner",
