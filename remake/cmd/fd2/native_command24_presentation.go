@@ -6,9 +6,12 @@ import (
 	"image"
 	"image/color"
 	"os"
+	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/battlepresent"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
 )
 
@@ -21,6 +24,8 @@ type nativeCommand24PresentationJob struct {
 	targetFrames         []*ebiten.Image
 	targetPositions      [][2]int
 	targetDelays         []int
+	transitionFrames     []*ebiten.Image
+	transitionFrame      int
 	frame, repeat        int
 	targetFrame          int
 	targetRepeat         int
@@ -46,6 +51,64 @@ func nativeFIGANIPath() string {
 		return path
 	}
 	return ""
+}
+
+func nativeBGPath() string {
+	for _, key := range []string{"FD2_ORIGINAL_BG", "FD2_BG"} {
+		if path := os.Getenv(key); path != "" {
+			return path
+		}
+	}
+	if figaniPath := nativeFIGANIPath(); figaniPath != "" {
+		path := filepath.Join(filepath.Dir(figaniPath), "BG.DAT")
+		if fileExists(path) {
+			return path
+		}
+	}
+	return ""
+}
+
+func nativeCommand24BGSelector(m *MapData, unit *battle.Unit) (int, error) {
+	if m == nil || unit == nil || m.W <= 0 || m.H <= 0 || len(m.Tiles) != m.W*m.H ||
+		len(m.NativeTerrainControl) == 0 || len(m.NativeTerrainControl)%4 != 0 ||
+		unit.X < 0 || unit.Y < 0 || unit.X >= m.W || unit.Y >= m.H {
+		return 0, errors.New("native command24 terrain control unavailable")
+	}
+	tile := m.Tiles[unit.Y*m.W+unit.X]
+	if tile < 0 || tile > 0x3ff || tile >= len(m.NativeTerrainControl)/4 {
+		return 0, errors.New("native command24 terrain selector out of range")
+	}
+	return int(m.NativeTerrainControl[tile*4+2]), nil
+}
+
+func nativeCommand24BackgroundBase(background fdother.Frame, overlays ...figani.Frame) ([]byte, error) {
+	base := make([]byte, 320*200)
+	background.X, background.Y = 0, 50
+	if err := background.Blit(base, 320, -1); err != nil {
+		return nil, err
+	}
+	for _, overlay := range overlays {
+		if err := overlay.BlitAt(base, 320); err != nil {
+			return nil, err
+		}
+	}
+	return base, nil
+}
+
+func nativeCommand24IndexedImages(frames [][]byte, palette color.Palette) ([]*ebiten.Image, error) {
+	if len(frames) == 0 || len(palette) < 256 {
+		return nil, errors.New("native command24 indexed frames unavailable")
+	}
+	out := make([]*ebiten.Image, len(frames))
+	for i, pixels := range frames {
+		if len(pixels) != 320*200 {
+			return nil, fmt.Errorf("native command24 indexed frame %d is malformed", i)
+		}
+		img := image.NewPaletted(image.Rect(0, 0, 320, 200), palette)
+		copy(img.Pix, pixels)
+		out[i] = ebiten.NewImageFromImage(img)
+	}
+	return out, nil
 }
 
 func nativeFIGANIImages(animation *figani.Animation, palette color.Palette) ([]*ebiten.Image, [][2]int, error) {
@@ -103,6 +166,51 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if len(targetIdle.Frames) == 0 {
 		return errors.New("native command24 target idle FIGANI is empty")
 	}
+	bgArchive := nativeBGPath()
+	if bgArchive == "" {
+		return errors.New("native command24 player-provided BG.DAT unavailable")
+	}
+	actorBGSelector, err := nativeCommand24BGSelector(g.m, actor)
+	if err != nil {
+		return err
+	}
+	targetBGSelector, err := nativeCommand24BGSelector(g.m, target)
+	if err != nil {
+		return err
+	}
+	var bgLayers [3]fdother.Frame
+	for i := range bgLayers {
+		bgLayers[i], err = fdother.DecodeArchiveSingleFrame(bgArchive, i)
+		if err != nil {
+			return err
+		}
+	}
+	actorBG, err := fdother.DecodeArchiveSingleFrame(bgArchive, actorBGSelector)
+	if err != nil {
+		return err
+	}
+	targetBG, err := fdother.DecodeArchiveSingleFrame(bgArchive, targetBGSelector)
+	if err != nil {
+		return err
+	}
+	sourceBase, err := nativeCommand24BackgroundBase(actorBG, effect.Frames[schedule.TargetStart-1])
+	if err != nil {
+		return err
+	}
+	targetBase, err := nativeCommand24BackgroundBase(targetBG)
+	if err != nil {
+		return err
+	}
+	transitionPixels, err := battlepresent.BuildNativeCommand24BackgroundFrames(battlepresent.NativeCommand24BackgroundInputs{
+		Layers: bgLayers, Source: sourceBase, Target: targetBase, TargetIdle: targetIdle.Frames[0],
+	})
+	if err != nil {
+		return err
+	}
+	transitionImages, err := nativeCommand24IndexedImages(transitionPixels, g.nativeUIPalette)
+	if err != nil {
+		return err
+	}
 	effectImages, effectPositions, err := nativeFIGANIImages(effect, g.nativeUIPalette)
 	if err != nil {
 		return err
@@ -132,6 +240,7 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 		actor: actor, target: target, plan: plan, schedule: schedule,
 		effectFrames: effectImages, effectPositions: effectPositions,
 		targetFrames: targetImages, targetPositions: targetPositions, targetDelays: targetDelays,
+		transitionFrames: transitionImages, transitionFrame: -1,
 		actorMPBefore: actor.MP, actorActedBefore: actor.Acted, targetHPBefore: target.HP,
 		targetRawByte5Before: target.NativeRecordByte5,
 		then:                 then,
@@ -158,6 +267,13 @@ func (g *Game) stepNativeCommand24Presentation() {
 		return
 	}
 	j.drawn = false
+	if j.transitionFrame >= 0 {
+		j.transitionFrame++
+		if j.transitionFrame >= len(j.transitionFrames) {
+			j.transitionFrame = -1
+		}
+		return
+	}
 	frame := j.frame
 	if j.damagePublished && j.shakeCounter >= 0 {
 		j.shakeCounter--
@@ -194,6 +310,9 @@ func (g *Game) stepNativeCommand24Presentation() {
 	}
 	j.repeat = 0
 	j.frame++
+	if j.frame == j.schedule.TargetStart {
+		j.transitionFrame = 0
+	}
 	if j.frame < len(j.effectFrames) {
 		return
 	}
@@ -229,6 +348,17 @@ func (g *Game) drawNativeCommand24Presentation(screen *ebiten.Image) bool {
 		j.targetFrame < 0 || j.targetFrame >= len(j.targetFrames) {
 		return false
 	}
+	if j.transitionFrame >= 0 {
+		if j.transitionFrame >= len(j.transitionFrames) {
+			return false
+		}
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Scale(2, 2)
+		screen.DrawImage(j.transitionFrames[j.transitionFrame], op)
+		g.drawNativeCommand24Panels(screen, j)
+		j.drawn = true
+		return true
+	}
 	screen.Fill(color.Black)
 	if g.bg != nil {
 		op := &ebiten.DrawImageOptions{}
@@ -236,18 +366,7 @@ func (g *Game) drawNativeCommand24Presentation(screen *ebiten.Image) bool {
 		op.GeoM.Translate(0, 100)
 		screen.DrawImage(g.bg, op)
 	}
-	if g.font != nil {
-		displayMP := j.actor.MP
-		if j.frame == j.schedule.ActorImpactFrame && !j.mpPublished {
-			displayMP = j.plan.MPAfter
-		}
-		g.drawBattlePanel(screen, 342, 8, j.actor.Name, j.actor.Lv, j.actor.HP, j.actor.MaxHP, displayMP)
-		displayHP := j.target.HP
-		if (j.frame == j.schedule.TargetImpactFrame || j.damagePublished) && len(j.plan.Results) == 1 {
-			displayHP = j.plan.Results[0].HPAfter
-		}
-		g.drawBattlePanel(screen, 0, 308, j.target.Name, j.target.Lv, displayHP, j.target.MaxHP, j.target.MP)
-	}
+	g.drawNativeCommand24Panels(screen, j)
 	if g.tai != nil {
 		tb := g.tai.Bounds()
 		op := &ebiten.DrawImageOptions{}
@@ -273,4 +392,20 @@ func (g *Game) drawNativeCommand24Presentation(screen *ebiten.Image) bool {
 	screen.DrawImage(j.effectFrames[j.frame], effectOp)
 	j.drawn = true
 	return true
+}
+
+func (g *Game) drawNativeCommand24Panels(screen *ebiten.Image, j *nativeCommand24PresentationJob) {
+	if g.font == nil || j == nil {
+		return
+	}
+	displayMP := j.actor.MP
+	if j.frame == j.schedule.ActorImpactFrame && !j.mpPublished {
+		displayMP = j.plan.MPAfter
+	}
+	g.drawBattlePanel(screen, 342, 8, j.actor.Name, j.actor.Lv, j.actor.HP, j.actor.MaxHP, displayMP)
+	displayHP := j.target.HP
+	if (j.frame == j.schedule.TargetImpactFrame || j.damagePublished) && len(j.plan.Results) == 1 {
+		displayHP = j.plan.Results[0].HPAfter
+	}
+	g.drawBattlePanel(screen, 0, 308, j.target.Name, j.target.Lv, displayHP, j.target.MaxHP, j.target.MP)
 }

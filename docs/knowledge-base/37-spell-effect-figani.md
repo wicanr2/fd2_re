@@ -70,7 +70,8 @@ spell-id→FIGANI 索引；spell/command 仍會分流 target geometry、family s
   target `raw+4==1` 即發布完整傷害。完整位址與 raw frame 表見
   [`fd2_command24_presentation_ida.txt`](../data/ida/fd2_command24_presentation_ida.txt)。
 - **尚未證實**：其他 command ID 的完整 FIGANI／SFX mapping，以及 command24
-  的完整逐像素背景轉場、精確 PCM 取樣率與一般玩家 E2。
+  的完整indexed source／target base、精確 PCM 取樣率與一般玩家 E2。`0x29C90`
+  兩段各10次的BG viewport schedule已接，不再列為整體未知。
 
 ## 結論
 
@@ -85,7 +86,8 @@ spell-id→FIGANI 索引；spell/command 仍會分流 target geometry、family s
 
 - `0x2a6bd` 其餘 command-specific presentation branch（尤其 `id>=0x20` →
   `0x27fc9`）的完整 renderer／SFX contract；command24 不得再列成「多段命中
-  未知」，但其 `0x29C90` 完整畫面與精確音訊／E2仍待。
+  未知」；`0x29C90`的20次viewport已閉合並接線，但完整indexed base、精確
+  音訊／E2仍待。
 - 施法 figure displacement 是否對不同法術 `target`(0=單體/1=範圍,spell.json)有差異走位——
   `+0x48/+0x4a` 與 `0x29f72` 不是此問題的座標來源（已重判為 derived AP/DP 與 combat result resolver）；
   仍屬「目標選取與範圍」子題，非本題「特效動畫 id」範圍，未查。

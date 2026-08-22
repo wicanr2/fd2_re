@@ -193,6 +193,14 @@
       "scope": "共用 callee；終局 call 0x2c2a6 的 records/globals、精確輸出與輸入時序未閉合"
     },
     {
+      "address": "0x29c90",
+      "classification": "product",
+      "semantic": "兩段各十次的 BG 三層 640-stride viewport 滑動合成器",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_command24_background_transition_ida.txt"],
+      "scope": "command24 與 header byte1 caller 可重用的 callee 排程；caller 預建 source／target base 與高階畫面語意另證"
+    },
+    {
       "address": "0x2bce5",
       "classification": "product",
       "semantic": "終局前綴與部分尾段 owner",

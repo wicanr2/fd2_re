@@ -270,7 +270,7 @@ repo 提供不含 license／遊戲資料的 `tools/docker/fd2-ida.Dockerfile` �
 只在授權 IDA Docker 匯出原始函式邊界、IDA 分析名稱、旗標與直接 caller；
 `tools/compact_fd2_function_inventory.py` 產生受版控的
 [`fd2_function_inventory.json`](../data/ida/fd2_function_inventory.json)。固定雜湊輸入
-辨識1305函式，目前為產品31、Watcom runtime170、未知1104；語意只從
+辨識1305函式，目前為產品32、Watcom runtime170、未知1103；語意只從
 [`fd2_semantic_index.json`](../data/ida/fd2_semantic_index.json) 合併，雜湊不符、
 註記未落在函式起點或缺推論等級／證據時直接拒絕。handler IR 同步拆成
 `native_call`、`unresolved_native_call`、`unknown`；三者都保留原始定位，前兩者
@@ -1119,11 +1119,25 @@ byte4=6)`。frame4的raw `(1,3,2,0)`屬actor階段，繪製後發布MP並播放�
 `Acted`。正式owner必須先驗證原始FIGANI、target idle、palette、panel、兩個sample、
 single-target plan與selector32；任一缺漏時交易不得開始。
 
-目前adapter以原始actor/effect與target idle indexed幀、原始delay及shake表執行，但背景仍使用
-既有battle scene，尚未還原`0x29C90`的10-row BG 0/1/2轉場。因此本切片只列
+目前adapter以原始actor/effect與target idle indexed幀、原始delay及shake表執行，並接入
+`0x29C90`兩段各10次的BG 0/1/2 viewport轉場。pure compositor接受caller預建的source／target
+base；正式owner現以raw terrain control選actor／target BG，以actor effect frame8與target idle
+建立可玩base，再沿用既有RGBA panel。這比舊單一battle scene更接近原版，但仍未接
+`sub_2A289`完整indexed狀態欄與`sub_29164/sub_2B659`來源畫面的逐像素base，因此本切片只列
 `RUNTIME-E1 partial`，不得宣稱逐幀原版一致；未修改原版的「轉職→Lv4學會→施放」一般玩家
 連續E2仍是獨立驗收門檻。主證據見
 [`fd2_command24_presentation_ida.txt`](../data/ida/fd2_command24_presentation_ida.txt)。
+
+#### command24 `0x29C90`背景轉場契約
+
+`0x29C90`已由合法IDA 9.4補閉合為兩段各10次的640-stride viewport compositor，
+不是籠統「十列BG動畫」。第一段依resource `0,2,1`循環，把目前VGA從右半滑出；
+第二段依`2,1,0`循環，把預建的target BG／status／idle從左半滑入。兩段viewport
+起點皆為`32*9..32*0`。command24在`0x52363`初值為0，故單一target的BG resource
+必定來自target格raw FDSHAP control byte2，不可用Camp或normalized terrain猜測。
+函式內沒有BIOS tick wait；remake逐Draw呈現只屬平台pacing adapter。完整原始定位、
+表bytes與限制見
+[`fd2_command24_background_transition_ida.txt`](../data/ida/fd2_command24_background_transition_ida.txt)。
 
 remake 的可編輯資料模型必須至少表達這些 raw facts，而非固定四個 ring action：
 

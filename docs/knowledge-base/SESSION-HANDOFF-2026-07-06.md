@@ -5674,3 +5674,20 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   HP與acted；缺FIGANI／target idle／palette／panel／sample時零修改。畫面仍沿用既有
   battle background／TAI，尚未接`0x29C90`背景轉場，所以只列`RUNTIME-E1 partial`。
   未修改原版「轉職→Lv4學會→施放」連續E2、背景逐幀及精確音訊仍待驗收。
+
+## 2026-08-22：command24 `0x29C90`兩段背景滑動
+
+- 合法Docker內IDA Pro 9.4補閉合`sub_29C90`與caller：第一段`i=9..0`依
+  BG resources `i%3`累積貼左半，再present `work640+32*i`；第二段預建target
+  BG／status／idle後，依`(j+2)%3`貼右半並present同一組offset。兩段各10次，
+  函式內沒有BIOS wait。command24的`0x52363`初值是0，故single target必取
+  target格raw FDSHAP control byte2。證據保存於
+  [`fd2_command24_background_transition_ida.txt`](../data/ida/fd2_command24_background_transition_ida.txt)。
+- 新增獨立`battlepresent` pure compositor，固定640×200 work、20個320×200
+  viewport frames、BG 0/1/2順序與32-byte位移；任一base、layer或idle frame無效時
+  不回傳部分結果。正式command24 owner從MapData raw tile/control載入玩家自備
+  BG.DAT，預建全部frames後才允許演出與交易。
+- 目前source base使用actor terrain BG＋resource98 frame8，target base使用target
+  terrain BG＋target idle，狀態欄仍由既有RGBA renderer疊加；因此提升玩家可見
+  滑動但仍列`RUNTIME-E1 partial`。尚缺`sub_29164/sub_2B659/sub_2A289`完整
+  indexed base與一般玩家E2，不宣稱逐像素相同。

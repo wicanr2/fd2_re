@@ -15,11 +15,11 @@
   "imagebase": "0x0",
   "function_count": 1305,
   "classification_counts": {
-    "unknown": 1104,
-    "product": 31,
+    "unknown": 1103,
+    "product": 32,
     "runtime": 170
   },
-  "semantic_annotation_count": 32,
+  "semantic_annotation_count": 33,
   "classification_note": "product/driver only come from the versioned semantic index; runtime is a mechanical IDA FUNC_LIB classification after the configured FLIRT signatures; every other function remains unknown",
   "detail_note": "每筆保留 IDA 函式邊界、分析名稱、旗標、直接 caller 函式與分級語意；逐 call-site 交叉參照由同一匯出器重生，不在此精簡版重複保存",
   "functions": [
@@ -7743,11 +7743,22 @@
       "direct_code_xref_count": 3,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x29c90",
+          "classification": "product",
+          "semantic": "兩段各十次的 BG 三層 640-stride viewport 滑動合成器",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_command24_background_transition_ida.txt"
+          ],
+          "scope": "command24 與 header byte1 caller 可重用的 callee 排程；caller 預建 source／target base 與高階畫面語意另證"
+        }
+      ]
     },
     {
       "start": "0x29ded",

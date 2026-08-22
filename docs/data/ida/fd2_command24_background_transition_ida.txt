@@ -1,0 +1,80 @@
+FD2 command 24 sub_29C90 background transition evidence
+========================================================
+
+輸入與位址空間
+--------------
+
+- 輸入：FD2.EXE，357074 bytes
+- MD5：b97caf2239a27a896069d03549d96e1e
+- SHA-256：222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f
+- 工具：IDA Pro 9.4／Hex-Rays，授權 Docker 映像
+- 本文件位址均為 IDA linear address；保留原始名稱 `sub_<address>`。
+- 交叉驗證資產：BG.DAT，固定雜湊見 `docs/data/fd2-reference-files.json`。
+
+command24 caller資料流（已證實）
+--------------------------------
+
+1. `sub_276EC` 先以actor格呼叫`sub_12E38`，取回raw control byte2，載入
+   actor BG resource。final target array另交`sub_2B5E1`取得target BG selector。
+2. `sub_2B5E1`的初值是`byte_52363[currentCommand]`。`0x52363:0x24`
+   原始bytes為：
+
+   `03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 00 00 00 03 00 00 42 47 2e 44 41 54`
+
+   command24的index24為0。倒序掃單一final target時，`selector==0`必定以
+   `sub_12E38`回傳的control byte2取代，不依賴`sub_1F183`結果。因此remake只可
+   由目標格raw tile→FDSHAP四-byte control→byte2取得resource，不可由地形名稱、
+   Camp、Portrait或BattleFig猜測。
+3. `sub_276EC`在每個command24 final target開始時呼叫：
+
+   `sub_29C90(targetIndex, targetIdleFIGANI, base320, work640, targetBG)`。
+
+   `base320`為64000 bytes，`work640`為128000 bytes；caller在進入前將目前
+   320×200 VGA複製到`work640+320`右半viewport。
+
+`sub_29C90`兩段VGA排程（已證實）
+-----------------------------------
+
+第一段，`i=9..0`共10次：
+
+1. 將BG resource `i % 3`以`0x4E63D(x=0,y=50,stride=640,transparent=-1)`
+   累積貼入`work640`左半。
+2. 以`0x11EB0`把`work640 + 32*i`的320×200 viewport複製至VGA。
+
+因此resource次序是`0,2,1,0,2,1,0,2,1,0`，viewport byte offsets為
+`288,256,224,192,160,128,96,64,32,0`。
+
+接著清除work640與base320，依序建立目標基底：targetBG貼於`(0,50)`、
+`sub_2A289(base320,targetIndex)`畫目標狀態欄、base320複製到work640左半、
+`sub_2935B(targetIdle,frame0,work640,stride640,-1)`畫待機角色。
+
+第二段，`j=9..0`共10次：
+
+1. 將BG resource `(j+2) % 3`以同一transparent blit貼入`work640+320`右半。
+2. 將`work640 + 32*j`的320×200 viewport複製至VGA。
+
+resource次序是`2,1,0,2,1,0,2,1,0,2`，viewport offsets同為
+`288..0`。最後一幀完全顯示目標基底與idle frame0。
+
+時序與限制
+----------
+
+- `sub_29C90`內沒有`sub_17AA9` BIOS tick wait；20次`sub_11EB0`是直接可見
+  present排程。remake以逐Draw acknowledgement呈現，是平台frame pacing adapter，
+  不得稱為原版精確tick。
+- `sub_36CD7(40)`是函式前置helper；本證據不足以命名其高階語意，也不可拿來
+  補造40-tick delay。
+- `sub_2A289→sub_18C6D`目標狀態欄已有獨立UI證據，但目前沒有完整indexed
+  battle-panel compositor。可測的`sub_29C90` primitive應接受caller預建的
+  source／target 320×200基底；近似adapter若暫以已知BG與既有RGBA panel補足，
+  必須標為partial，不能冒稱逐像素相同。
+
+重製契約
+--------
+
+- pure compositor固定640×200 work、320×200 viewport、兩段各10次、上述resource
+  與offset順序；輸入不足或任一blit失敗時不產生部分frames。
+- command24正式owner必須從目前MapData raw tile與完整FDSHAP control取得actor／
+  target BG resource，並要求玩家自備合法BG.DAT。缺原始BG、terrain control、
+  source/target base或target idle時，在MP／HP／Acted發布前失敗即關閉。
+- 本切片不改寫`sub_29164`，也不把TAI#3終局placeholder套入command24。
