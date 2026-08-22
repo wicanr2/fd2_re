@@ -7512,7 +7512,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			}
 			_ = top
 		}
-		if g.msg != "" && len(g.dialog) == 0 { // 攻擊等短訊(無對話框時)
+		if g.shouldDrawTransientBattleMessage() { // 攻擊等短訊(無對話框時)
 			g.font.Draw(screen, g.msg, 8, float64(logicalH)-30, 1.2, color.RGBA{0xff, 0xf0, 0xb4, 0xff})
 		}
 		if g.result != "" { // 勝負(中央大字)
@@ -7556,6 +7556,15 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
 		g.captureShot(screen)
 	}
+}
+
+// shouldDrawTransientBattleMessage 不讓診斷／結果文字覆蓋已還原的原生目標選擇器。
+// 未修改原版的 command 0 玩家軌跡在 LUT 相位循環中只呈現索引地圖、游標與 HUD；
+// modal 關閉後仍保留 g.msg，供拒絕或結果 owner 使用。其餘既有戰鬥短訊在各自
+// caller-specific UI 閉合前維持原本呈現。
+func (g *Game) shouldDrawTransientBattleMessage() bool {
+	return g != nil && g.msg != "" && len(g.dialog) == 0 &&
+		!g.nativeCommand0Targeting
 }
 
 func (g *Game) captureShot(screen *ebiten.Image) {

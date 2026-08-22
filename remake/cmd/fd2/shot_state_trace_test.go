@@ -20,6 +20,8 @@ func TestWriteShotStateTraceRecordsNativeInteractionState(t *testing.T) {
 		sel:                          unit,
 		ring:                         true,
 		nativeCommandOpen:            true,
+		nativeCommand0Targeting:      true,
+		nativeCommandTargetID:        0,
 		nativeContinueOpeningConfirm: true,
 		nativeSystemCursorOverlay:    true,
 		camp: campaign.NewRunner(&campaign.Campaign{
@@ -52,7 +54,8 @@ func TestWriteShotStateTraceRecordsNativeInteractionState(t *testing.T) {
 	if got.Frame != 500 || got.CampaignNode != "battle_ch01" ||
 		got.Cursor != [2]int{8, 17} || !got.HasSelection ||
 		got.Selection == nil || *got.Selection != [2]int{8, 17} || !got.ActionOverlayOpen ||
-		!got.NativeCommandOpen || got.Battle == nil ||
+		!got.NativeCommandOpen || !got.NativeCommandTargeting ||
+		got.NativeCommandTargetID == nil || *got.NativeCommandTargetID != 0 || got.Battle == nil ||
 		got.Battle.NativeMapView == nil || got.Battle.NativeMapView.CameraY != 13 ||
 		!got.NativeContinueOpeningConfirm || !got.NativeContinueCursorOverlay || got.DialogCount != 0 ||
 		got.BattleEventActive || got.NativeTurnStagingActive || got.CursorUnit == nil ||
@@ -78,7 +81,8 @@ func TestWriteShotStateTraceOmitsSelectionWithoutOwner(t *testing.T) {
 	if err := json.Unmarshal(raw, &got); err != nil {
 		t.Fatal(err)
 	}
-	if got.HasSelection || got.Selection != nil || !got.NativeContinueCursorOverlay {
+	if got.HasSelection || got.Selection != nil || !got.NativeContinueCursorOverlay ||
+		got.NativeCommandTargeting || got.NativeCommandTargetID != nil {
 		t.Fatalf("empty cursor trace=%#v", got)
 	}
 }

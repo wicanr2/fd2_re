@@ -12,16 +12,18 @@ import (
 // FD2_SHOT_STATE 時寫出，不改變遊戲控制流或畫面；目的是讓 X11 輸入擷取可證明
 // 自己實際抵達的節點、游標與操作介面，而不是以一張外觀相近的 PNG 冒充同狀態證據。
 type screenshotStateTrace struct {
-	Frame             int     `json:"frame"`
-	TitlePhase        string  `json:"title_phase,omitempty"`
-	CampaignNode      string  `json:"campaign_node,omitempty"`
-	Result            string  `json:"result,omitempty"`
-	Cursor            [2]int  `json:"cursor"`
-	HasSelection      bool    `json:"has_selection"`
-	Selection         *[2]int `json:"selection,omitempty"`
-	ActionOverlayOpen bool    `json:"action_overlay_open"`
-	NativeCommandOpen bool    `json:"native_command_open"`
-	SpellOpen         bool    `json:"spell_open"`
+	Frame                  int     `json:"frame"`
+	TitlePhase             string  `json:"title_phase,omitempty"`
+	CampaignNode           string  `json:"campaign_node,omitempty"`
+	Result                 string  `json:"result,omitempty"`
+	Cursor                 [2]int  `json:"cursor"`
+	HasSelection           bool    `json:"has_selection"`
+	Selection              *[2]int `json:"selection,omitempty"`
+	ActionOverlayOpen      bool    `json:"action_overlay_open"`
+	NativeCommandOpen      bool    `json:"native_command_open"`
+	NativeCommandTargeting bool    `json:"native_command_targeting"`
+	NativeCommandTargetID  *int    `json:"native_command_target_id,omitempty"`
+	SpellOpen              bool    `json:"spell_open"`
 	// 這些欄位只描述輸入是否被既有 modal 阻擋；它們讓普通 X11 重播
 	// 能區分「按鍵未到」和「遊戲刻意尚未接受按鍵」。
 	NativeContinueOpeningConfirm bool                       `json:"native_continue_opening_confirm"`
@@ -79,6 +81,7 @@ func (g *Game) writeShotStateTrace(path string) error {
 		Cursor:                       [2]int{g.curX, g.curY},
 		ActionOverlayOpen:            g.ring,
 		NativeCommandOpen:            g.nativeCommandOpen,
+		NativeCommandTargeting:       g.nativeCommand0Targeting,
 		SpellOpen:                    g.spellOpen,
 		NativeContinueOpeningConfirm: g.nativeContinueOpeningConfirm,
 		// JSON field name is retained for compatibility with the 2026-08-11
@@ -88,6 +91,10 @@ func (g *Game) writeShotStateTrace(path string) error {
 		BattleEventActive:           g.battleEvent != nil,
 		NativeTurnStagingActive:     g.nativeTurnStaging != nil,
 		LoadError:                   g.loadErr,
+	}
+	if g.nativeCommand0Targeting {
+		commandID := g.nativeCommandTargetID
+		trace.NativeCommandTargetID = &commandID
 	}
 	if g.camp != nil {
 		trace.CampaignNode = g.camp.NodeID()

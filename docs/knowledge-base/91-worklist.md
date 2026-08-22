@@ -17,7 +17,7 @@
 | 1 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式，現為產品36／runtime170／未知1099；舊83 unknown 已拆為80已分類、3已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253` 只追其他 caller／戰役 gate，`0x2BCE5` 追正式 owner，不重解 callee |
 | 2 | 玩家第21戰天空之鑰固定演出 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`：`0x24336` 已接真實 `FDOTHER #34`、`ANI #0`、調色盤循環與正式戰後→城鎮→存讀檔 | 取得未修改原版同狀態 E2，核對第一個動態調色盤相位與相鄰 `layout_units`／ACT63／64；不重解函式本體 |
 | 3 | 玩家第29戰 raw ch28 post 後續驗收 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`；`0x1DB65`原資源 presenter、group9→`0x25535`、持續隊伍、`preparation_ch30` 與存讀檔已正式接通，postbattle admission blocker 已歸零 | 以未修改原版一般玩家路徑取得同狀態逐幀／音訊 E2；高階圖像與sample 3語意仍保留unknown，不阻擋 E1戰役流程 |
-| 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；共用 `0x117E7` 空游標 `0x16F55` END 已接原版6＋4展開、YES／NO、兩段逐字形回應、4＋5收合與來源復原；同一存檔問句畫面的肖像／文字子區域已與原版相同，整幀仍受選項與戰場動畫相位影響。command 13–16 的玩家與敵方 mode 11 已走完整 #3前段、#6七張、mask、交易後 redraw、#5數字22張與尾停。command 17–23及25–27玩家均依`0x1D6C8`播放#88 sub0與八個command-color／black DAC phases，第八幀Draw確認後才進後續；command23再依序完成兩次`0x22253`離場／入場才交易；17–19敵方raw selector亦已接，ID17正確由record18扣MP；ID25只清raw`+5 bit7`。command24的正常selector32學習鏈、資源98之15幀演出、`0x29164`九段雙分支角色／TAI滑入與DAC減算、`0x2B659` actor indexed base、扣MP後source snapshot、`0x29C90`兩段20次BG滑動、target idle reset及`0x2A289→0x18C6D`狀態欄已接`RUNTIME-E1 partial`，MP／完整單次傷害／acted各自在已證實Draw邊界發布 | 補 END接受／取消／收合及command 13–16逐幀逐音訊 E2與精確tick；command 17–23及25–27下一缺口是phase-expiry正式caller、status UI與同狀態逐幀／逐音訊E2；command24尚缺精確音訊與未修改一般玩家「轉職→Lv4學會→施放」E2；其他command family仍待 |
+| 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 底層 RE 與多個窄 `RUNTIME-E1` 已有；共用 `0x117E7` 空游標 `0x16F55` END 已接原版6＋4展開、YES／NO、兩段逐字形回應、4＋5收合與來源復原；同一存檔問句畫面的肖像／文字子區域已與原版相同，整幀仍受選項與戰場動畫相位影響。2026-08-22 同一未修改存檔已由標題正常走到悠妮 command 0 目標模式；原版四相位為窄 `PLAYER-E2`，重製正式 modal 為 `RUNTIME-E1`，且不再覆蓋診斷短訊。command 13–16 的玩家與敵方 mode 11 已走完整 #3前段、#6七張、mask、交易後 redraw、#5數字22張與尾停。command 17–23及25–27玩家均依`0x1D6C8`播放#88 sub0與八個command-color／black DAC phases，第八幀Draw確認後才進後續；command23再依序完成兩次`0x22253`離場／入場才交易；17–19敵方raw selector亦已接，ID17正確由record18扣MP；ID25只清raw`+5 bit7`。command24的正常selector32學習鏈、資源98之15幀演出、`0x29164`九段雙分支角色／TAI滑入與DAC減算、`0x2B659` actor indexed base、扣MP後source snapshot、`0x29C90`兩段20次BG滑動、target idle reset及`0x2A289→0x18C6D`狀態欄已接`RUNTIME-E1 partial`，MP／完整單次傷害／acted各自在已證實Draw邊界發布 | command0仍需effect結果、同時鐘相位比較及其他target contracts；補 END接受／取消／收合及command 13–16逐幀逐音訊 E2與精確tick；command 17–23及25–27下一缺口是phase-expiry正式caller、status UI與同狀態逐幀／逐音訊E2；command24尚缺精確音訊與未修改一般玩家「轉職→Lv4學會→施放」E2；其他command family仍待 |
 | 5 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial；ch02賣出成功／加款／返回已有九組AE=0。獨立裝備service2與物品轉移service3也都有正常route-patched子面板證據；service3更已完成索爾短劍→悠妮、返回loop、雙方交易後物品清單及跨`town_ch02`重製JSON冷讀檔。可見內容／幾何一致，但動畫相位未同步，只到partial E2。service2交易已改為私有 unit→raw裝備／重算→完整panel重建→一次發布，palette深層失敗保持roster／能力／panel原子不變，達`RUNTIME-E1`；目前原版CONTINUE快照只進戰場名冊／狀態面板，故mutation／restore E2未冒稱完成。目的名冊取消已接正式五幀收合→來源提示六幀展開，取消不改角色／金幣；取消後self-transfer亦由正式raw transaction消費，兩者達`RUNTIME-E1`。標題 LOAD 的正式確認 owner 現以 checksum-valid 合成原版槽還原 `town_ch02`／typed party／gold／HUD gate，竄改 envelope 原子留在選槽，亦為`RUNTIME-E1`。裝備收件者另以六人typed party沿正式menu→purchase→Yes production input完成三列scroll、滿欄／無合適角色原子返回與正常裝備／扣款`RUNTIME-E1` | 依 `57` 取得原版同狀態證據；商店下一步是service3 empty／full與self／destination-cancel原版畫面；service2尚需可抵達ch02城鎮的原版快照補mutation／restore畫面；LOAD仍需未修改原版有效槽 E2；recipient scroll／no-recipient／full、其他章節與未修改一般玩家路徑仍缺 |
 | 6 | 原版終局精確鏈 | `RUNTIME-E1`：正式 `battle_ch30→ending` 現消費來源約束前綴／角色／20段尾段並停在 #59；80個實際 FIGANI 的 header-zero `0x2939D` raw `+4..+7`、base scheduler 與兩次配對已接；未達 E2 | 以動態 watchpoint／未修改玩家路徑閉合 `0x2C548→0x2C2A6` records／globals 連續性、3% RNG重播、精確音訊／終端輸入、`0x2BCE5` 原版 owner 及第30戰 E2 |
 | 7 | 全戰役抽樣／長程試玩、三平台打包與推廣片 | 核心 gate 未關閉 | 核心垂直切片與代表性晚期玩家路徑完成後才進入發行驗收 |
@@ -29,6 +29,12 @@
 handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不到筆記，都不是理由。
 
 ---
+
+### 2026-08-22 名稱勘誤
+
+歷史條目中的 chapter0 `CONTINUE→Return` 空游標四格畫面應稱為**系統／行動覆蓋層**，
+不是原生 command grid。原生 command grid 是選取場上單位後取得 raw command mask 的
+另一條路徑；兩者不可再用同一名稱推導 action owner。
 
 ## 歷史工作記錄（不可用來計算完成度）
 

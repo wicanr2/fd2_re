@@ -70,6 +70,11 @@
   9 張擴張、200 ms 停格、7 張收束與 200 ms 尾停排程播放索引畫面演出；原始
   資產或畫面狀態不完整時不扣 MP、不改 HP。數字佇列及同狀態
   原版逐幀／逐音訊比較仍待完成。
+- 戰場操作新增一條未修改原版的一般玩家錨點：由標題 CONTINUE 正常選到悠妮，
+  確認原地移動後進入 command 0 目標模式。原版四個時間點證實範圍亮區是動態 LUT
+  生命週期；重製也由一般鍵盤路徑抵達相同座標與指令 ID，並移除原版沒有的診斷
+  短訊。原版側為窄 `PLAYER-E2`、重製側仍為 deterministic `RUNTIME-E1`；兩側時鐘
+  相位未同步，不宣稱逐像素一致。
 - 正式來源約束 E1 已播放終局前綴、隊員最終狀態與20組原版資源尾段，最後停在
   `FDOTHER#59`；實檔可達的 header-byte1-zero `0x2939D` 配對迴圈已接。仍缺
   `0x2C2A6` 呼叫時 records／globals 連續性、3% RNG、精確音訊／輸入與一般玩家 E2。
@@ -81,6 +86,12 @@
 [工作清單](docs/knowledge-base/91-worklist.md)，畫面狀態看
 [介面證據矩陣](docs/knowledge-base/57-ui-evidence-matrix.md)。原版與重製的實測命令、
 雜湊及限制見[遊戲測試報告](docs/reports/game-test-2026-08-11.md)。
+
+![原版與重製的悠妮 command 0 目標選擇：原版、重製與差異](docs/figures/native-command0-target-original-vs-remake-e1.png)
+
+*上、中、下依序為未修改原版約 0.5 秒相位、重製端一般鍵盤路徑，以及絕對差異。
+原版 20 相位 LUT 與重製時鐘未鎖在同一相位，因此此圖用來核對操作狀態、排版與
+差異範圍，不是逐像素一致宣稱；四相位與雜湊見[擷取紀錄](docs/data/ui-traces/native-command0-target-original-vs-remake-e1.json)。*
 
 ![重製端玩家第21戰天空之鑰固定演出：FDOTHER 前段、ANI、FDOTHER 尾段](docs/figures/ch21-sky-key-sequence-remake-e1.png)
 

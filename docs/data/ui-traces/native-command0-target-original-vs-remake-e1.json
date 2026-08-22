@@ -1,0 +1,80 @@
+{
+  "schema": "fd2-ui-trace-v1",
+  "captured_at": "2026-08-22",
+  "scope": "chapter-0 current battle, unit 9 (悠妮), native command 0 target selector",
+  "reference": {
+    "executable": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "save": {
+      "file": "FD2.SAV",
+      "size": 22987,
+      "md5": "409795ccebc2af340d5c74152c2d471c",
+      "sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f"
+    }
+  },
+  "original": {
+    "evidence_level": "PLAYER-E2",
+    "route": "unmodified title CONTINUE, cursor to (10,15), select unit, confirm zero-distance move, open command grid, choose command 0",
+    "route_patch": false,
+    "direct_entry": false,
+    "debug_state_injection": false,
+    "captures": [
+      {
+        "elapsed_seconds": 0.1,
+        "sha256": "65be9167cf4c7c6ab9532e098ba0dc76b60204940dbe26bfaeca5c3b1af7a74e"
+      },
+      {
+        "elapsed_seconds": 0.5,
+        "sha256": "c2da372e3a5591b46a3b266f17afab96587518c0381db120651903fd7e067695"
+      },
+      {
+        "elapsed_seconds": 1.0,
+        "sha256": "683a4e604d5bcaad78a2b70a040f9b97a99b9f3c67f441df435eed51af5d4702"
+      },
+      {
+        "elapsed_seconds": 2.0,
+        "sha256": "7f7c8434746096ab222a5ddf3b13155ca7a9f6d2e5091238d2f61d1be037d4d6"
+      }
+    ],
+    "observation": "目標模式不是單一靜態高亮：同一未修改玩家路徑可見約 20 相位的索引調色盤循環，亮區由顯著轉淡後回到接近一般地圖。"
+  },
+  "remake": {
+    "evidence_level": "RUNTIME-E1",
+    "route": "FD2_TITLE=1 with the same native save, ordinary X11 keys from title CONTINUE to command 0 target selector",
+    "deterministic_capture": true,
+    "frame": 1500,
+    "image_sha256": "67f93c2ecf46ada5c2825a8dc9787201b135a083980c773c7192a07348510381",
+    "state_sha256": "a4624f5fd6905e1eafa943aca9645c5d6f0ec181645d5d4aed51a9d28c376207",
+    "state_assertions": {
+      "campaign_node": "battle_ch01",
+      "cursor": [10, 15],
+      "selection": [10, 15],
+      "native_command_targeting": true,
+      "native_command_target_id": 0,
+      "native_command_open": false,
+      "dialog_count": 0
+    },
+    "presentation_correction": "目標 modal 期間不再把重製端診斷字串覆蓋在原版索引畫面；拒絕與結果訊息仍由原有 owner 保留。"
+  },
+  "derived_artifacts": [
+    {
+      "path": "docs/figures/native-command0-target-original-phase-sequence.png",
+      "sha256": "6e154b365d1c08022302d4e99bc74eb03b9c9e8851ddcf699fc33035c644e2a7",
+      "description": "原版 0.1／0.5／1.0／2.0 秒四階段，僅作 LUT 生命週期證據"
+    },
+    {
+      "path": "docs/figures/native-command0-target-original-vs-remake-e1.png",
+      "sha256": "8104a5e87ac609eae8ceb0e7418b2e63b6196b96116b89e04b4cc5505d542cd5",
+      "description": "由上而下為原版 0.5 秒、重製 frame 1500、絕對差異；最近鄰正規化為 640×400",
+      "absolute_error_pixels": 40828
+    }
+  ],
+  "limits": [
+    "原版與重製不是同一 BIOS／Ebiten 時鐘相位，因此 AE 只用來揭露差異，不宣稱逐像素一致。",
+    "本證據只關閉 chapter 0、悠妮、command 0 的目標選擇入口與可見 LUT 生命週期。",
+    "不證明 command 0 命中／傷害結果、武器 min/max、AOE、LOS、物品目標或其他 command family。",
+    "原版一側是未修改一般玩家 PLAYER-E2；重製一側因 deterministic frame capture 仍列 RUNTIME-E1。"
+  ]
+}
