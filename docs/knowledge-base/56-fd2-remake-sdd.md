@@ -5304,9 +5304,9 @@ DAC 224..239 pulse。任一資源或count provenance缺失時，巢狀面板不�
 
 selector1原版保存完整current-runtime，selector2以`0x10010`完整還原，selector3
 回傳`-1`。現有JSON battle-node restart與原版current-runtime snapshot不是同一
-交易；上層離場目的地也尚未閉合。因此本規格先授權nested selector與selector0
-資訊畫面，不授權把selector1／2接到語意不同的save helper，也不授權猜selector3
-目的地。這些分支完成前仍維持失敗即關閉。
+交易，因此本段只授權nested selector與selector0資訊畫面，不授權把selector1／2
+接到語意不同的save helper。selector3目的地後續已由本頁「巢狀離場規格」閉合；
+本段當時的未知狀態不可再作為現況斷言。
 
 實作現況：`NativeNestedSystemActionOverlayState`、
 `ComposeNativeSystemInfoSurface`、`NativeSystemInfoCampCounts` 與
@@ -5315,3 +5315,25 @@ selector1原版保存完整current-runtime，selector2以`0x10010`完整還原�
 面板；等待任意鍵期間沿用已閉合的`0x4DFCC` DAC `0xE0..0xEF`循環。缺完整
 runtime raw欄位、indexed VGA／DAC、panel、字型或文字時不發布第一幀。此切片列為
 `RUNTIME-E1`；尚缺原版同狀態逐幀、BIOS tick相位與輸入flush的`PLAYER-E2`。
+
+## 2026-08-22 巢狀離場規格
+
+主證據為
+[`fd2_system_exit_and_group_march_ida.txt`](../data/ida/fd2_system_exit_and_group_march_ida.txt)。
+巢狀selector3必須沿用DATO #75、FDTXT `0x19F/0x1A0/0x19C`、共同YES／NO
+四幀展開／收合、逐字形回覆與200 ms等待；任何資產不完整時須在巢狀四格收合前
+拒絕。取消只收合對話並回戰場，不改戰鬥或戰役狀態。
+
+接受路徑只有在問句、選擇框、接受回覆、200 ms及對話框收合都完成呈現後，才可
+發布程式結束結果。重製端以`ebiten.Termination`離開主迴圈，讓既有defer／audio／
+window清理接手；不得改成回標題、回城鎮、跳章或未經確認直接關閉。原版
+`sub_25977(-1,1)`的精確BGM淡出仍屬音訊E2，不阻擋先以現有安全停止流程達
+`RUNTIME-E1`。
+
+實作現況：正式巢狀 selector3 已使用上述索引問句與逐字回覆，並把結束要求延後到
+十二個60 Hz近似等待畫格及五個對話框收合畫格全部呈現後；只有接受分支會先停止
+BGM並發布`ebiten.Termination`，取消與缺資產均保持遊戲狀態。此成果列為
+`RUNTIME-E1`，不宣稱原版BGM淡出曲線、BIOS tick或逐幀相位`PLAYER-E2`。
+
+同一證據亦閉合外層selector1的raw loop，但其`sub_14B78`結果與間接effect尚未
+型別化；本規格不授權把它簡化為「逐一呼叫現有敵方AI」。

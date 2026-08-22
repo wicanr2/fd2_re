@@ -23,6 +23,8 @@ const (
 	nativeBattleEndQuestionIndex   = 0x1a3
 	nativeBattleEndAcceptedIndex   = 0x1a4
 	nativeBattleEndCanceledIndex   = 0x19c
+	nativeBattleExitQuestionIndex  = 0x19f
+	nativeBattleExitAcceptedIndex  = 0x1a0
 	nativeBattleEndQuestionX       = 99
 	nativeBattleEndQuestionY       = 127
 	nativeBattleEndResponseY       = 146
@@ -34,8 +36,27 @@ const (
 func ComposeNativeBattleEndTurnQuestion(
 	dialogue []byte, portrait dato.Frame, strings *fdtxt.Strings, font *fdtxt.Font,
 ) ([]byte, error) {
+	return composeNativeBattleSystemQuestion(
+		dialogue, portrait, strings, font, nativeBattleEndQuestionIndex,
+	)
+}
+
+// ComposeNativeBattleExitQuestion 重現 sub_19DF7 selector3 在相同原版對話座標
+// 寫入的 FDTXT#0x19f 問句。
+func ComposeNativeBattleExitQuestion(
+	dialogue []byte, portrait dato.Frame, strings *fdtxt.Strings, font *fdtxt.Font,
+) ([]byte, error) {
+	return composeNativeBattleSystemQuestion(
+		dialogue, portrait, strings, font, nativeBattleExitQuestionIndex,
+	)
+}
+
+func composeNativeBattleSystemQuestion(
+	dialogue []byte, portrait dato.Frame, strings *fdtxt.Strings, font *fdtxt.Font,
+	index int,
+) ([]byte, error) {
 	frame, err := ComposeNativeChurchTextAt(
-		append([]byte(nil), dialogue...), strings, font, nativeBattleEndQuestionIndex,
+		append([]byte(nil), dialogue...), strings, font, index,
 		nativeBattleEndQuestionY*320+nativeBattleEndQuestionX,
 	)
 	if err != nil {
@@ -65,12 +86,30 @@ func ComposeNativeBattleEndTurnResponse(
 func NativeBattleEndTurnResponseFrames(
 	question []byte, strings *fdtxt.Strings, font *fdtxt.Font, accepted bool,
 ) ([][]byte, error) {
-	if len(question) != 320*200 || strings == nil || font == nil {
-		return nil, errors.New("campaign: 原版戰鬥結束回覆資產無效")
-	}
 	index := nativeBattleEndCanceledIndex
 	if accepted {
 		index = nativeBattleEndAcceptedIndex
+	}
+	return nativeBattleSystemResponseFrames(question, strings, font, index)
+}
+
+// NativeBattleExitResponseFrames 保留 selector3 逐字發布的 FDTXT#0x1a0
+// 接受回覆；取消則與 END 共用 FDTXT#0x19c。
+func NativeBattleExitResponseFrames(
+	question []byte, strings *fdtxt.Strings, font *fdtxt.Font, accepted bool,
+) ([][]byte, error) {
+	index := nativeBattleEndCanceledIndex
+	if accepted {
+		index = nativeBattleExitAcceptedIndex
+	}
+	return nativeBattleSystemResponseFrames(question, strings, font, index)
+}
+
+func nativeBattleSystemResponseFrames(
+	question []byte, strings *fdtxt.Strings, font *fdtxt.Font, index int,
+) ([][]byte, error) {
+	if len(question) != 320*200 || strings == nil || font == nil {
+		return nil, errors.New("campaign: 原版戰鬥結束回覆資產無效")
 	}
 	words, err := strings.Words(index)
 	if err != nil {

@@ -84,6 +84,37 @@ func TestNativeBattleEndTurnResponsePublishesOneFramePerGlyph(t *testing.T) {
 	}
 }
 
+func TestNativeBattleExitUsesSelector3TextIndices(t *testing.T) {
+	dialogue := make([]byte, 320*200)
+	portrait := dato.Frame{Width: 1, Height: 1, Pixels: []byte{9}}
+	strings, font := nativeClassListStrings(t), nativeClassListFont(t)
+	exitQuestion, err := ComposeNativeBattleExitQuestion(dialogue, portrait, strings, font)
+	if err != nil {
+		t.Fatal(err)
+	}
+	endQuestion, err := ComposeNativeBattleEndTurnQuestion(dialogue, portrait, strings, font)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if bytes.Equal(exitQuestion, endQuestion) {
+		t.Fatal("離場問句誤用了 END 的 FDTXT#0x1a3")
+	}
+	accepted, err := NativeBattleExitResponseFrames(exitQuestion, strings, font, true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(accepted) != 3 {
+		t.Fatalf("離場 YES frames=%d want 3 from FDTXT#0x1a0", len(accepted))
+	}
+	canceled, err := NativeBattleExitResponseFrames(exitQuestion, strings, font, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(canceled) != 1 {
+		t.Fatalf("離場 NO frames=%d want 1 from shared FDTXT#0x19c", len(canceled))
+	}
+}
+
 func nativeClassConfirmCells() []fdother.RawCell {
 	cells := make([]fdother.RawCell, 53)
 	for _, index := range []int{16, 17, 48, 49, 51, 52} {

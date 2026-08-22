@@ -268,8 +268,8 @@ type Game struct {
 	nativeContinueOpeningConfirm bool
 	// nativeSystemCursorOverlay 對應共用 0x117E7 在 0x12C0D 回傳 -1 時
 	// 呼叫的 0x16F55 空游標面板。direction0／巢狀戰場資訊、direction2／設定
-	// 與 direction3／END 已有 action owner；巢狀存讀檔／離場與外層
-	// direction1 仍維持失敗即關閉。
+	// 與 direction3／END 已有 action owner；巢狀 direction3 離場亦已閉合到
+	// main 清理出口。巢狀存讀檔與外層 direction1 仍維持失敗即關閉。
 	nativeSystemCursorOverlay bool
 	nativeSystemNestedOpen    bool
 	nativeSystemOptionsOpen   bool
@@ -363,6 +363,7 @@ type Game struct {
 	nativeSystemEndTurnConfirm bool
 	nativeSystemEndTurnDelay   int
 	nativeSystemEndTurnUI      *nativeSystemEndTurnUIState
+	nativeSystemExitRequested  bool
 
 	// 截圖鉤子(FD2_SHOT=path 啟用):第 shotFrame 幀存 PNG 後自動退出(有界,供無人值守驗證)
 	frame      int
@@ -4841,8 +4842,14 @@ func (g *Game) ringInput() bool {
 				})
 				return true
 			}
-			// selector 1／2 的 current-runtime FD2.SAV 交易，以及
-			// selector 3 的上層離場目的地仍未閉合，維持失敗即關閉。
+			if g.ringSel == 3 {
+				if !g.beginNativeNestedSystemExit() {
+					g.msg = "原版離場確認資產不完整，未離開遊戲"
+				}
+				return true
+			}
+			// selector 1／2 的 current-runtime FD2.SAV 交易仍未閉合，
+			// 維持失敗即關閉。
 			g.msg = "原版巢狀系統指令的交易擁有者尚未驗證"
 		}
 		return true
@@ -6379,6 +6386,9 @@ func (g *Game) Update() error {
 	g.stepNativeSystemInfoUI()
 	g.stepNativeSystemEndTurn()
 	g.stepNativeClassUILifecycle(time.Now())
+	if g.nativeSystemExitRequested {
+		return ebiten.Termination
+	}
 	g.stepNativeChurchUILifecycle(time.Now())
 	g.stepNativeShopUILifecycle(time.Now())
 	g.stepNativeTownUILifecycle(g.nativeTownUIClock.Sample(time.Now()))

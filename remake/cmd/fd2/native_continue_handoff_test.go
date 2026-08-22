@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"os"
 	"path/filepath"
 	"testing"
@@ -415,5 +416,133 @@ func TestNativeSystemEndTurnNoClosesAndRestoresWithoutTurnMutation(t *testing.T)
 	}
 	if g.nativeSystemEndTurnUI != nil || g.aiBusy || state.Turn != 0 {
 		t.Fatalf("NO mutated turn: ui=%#v ai=%v turn=%d", g.nativeSystemEndTurnUI, g.aiBusy, state.Turn)
+	}
+}
+
+func TestNativeNestedSystemExitTerminatesOnlyAfterAcceptedClose(t *testing.T) {
+	state := &battle.State{W: 24, H: 24}
+	g := &Game{
+		st: state, sc: &battle.Scenario{}, ring: true, ringSel: 3,
+		nativeSystemCursorOverlay: true, nativeSystemNestedOpen: true,
+		bgmCur: "battle.xmi", nativeSystemBGMTrack: "battle.xmi",
+	}
+	base := "../../../org_game/炎龍騎士團/FLAME2"
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+	var err error
+	g.nativePreparationUI, err = loadNativePreparationUIAssets()
+	if err != nil {
+		t.Skipf("player-provided original UI assets are absent: %v", err)
+	}
+	g.nativeClassUI, err = loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.nativeMapVGA = make([]byte, 320*200)
+	if !g.beginNativeNestedSystemExit() {
+		t.Fatal("verified nested selector3 exit route was rejected")
+	}
+	if g.nativeSystemExitRequested || !g.nativeSystemNestedOpen {
+		t.Fatal("exit was published before nested overlay close")
+	}
+	for present := 0; present < 4; present++ {
+		g.markActionOverlayDrawn()
+		g.stepActionOverlayLifecycle()
+	}
+	if !g.nativeSystemEndTurnConfirm || g.nativeSystemNestedOpen || g.ring ||
+		g.nativeSystemEndTurnUI == nil || !g.nativeSystemEndTurnUI.exitProgram {
+		t.Fatalf("nested exit confirmation handoff failed: %+v", g)
+	}
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	g.confirmNativeSystemEndTurn()
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if g.nativeSystemEndTurnDelay != nativeSystemEndTurnDelayFrames ||
+		g.bgmCur != "" || g.nativeSystemBGMTrack != "" || g.nativeSystemExitRequested {
+		t.Fatalf("accepted response boundary: delay=%d bgm=%q saved=%q exit=%v",
+			g.nativeSystemEndTurnDelay, g.bgmCur, g.nativeSystemBGMTrack,
+			g.nativeSystemExitRequested)
+	}
+	for g.nativeSystemEndTurnDelay > 0 {
+		g.stepNativeSystemEndTurn()
+	}
+	if g.nativeClassUIJob == nil || g.nativeSystemExitRequested {
+		t.Fatal("exit was published before dialogue closing frames")
+	}
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if !g.nativeSystemExitRequested || g.aiBusy || state.Turn != 0 {
+		t.Fatalf("completed exit boundary: exit=%v ai=%v turn=%d",
+			g.nativeSystemExitRequested, g.aiBusy, state.Turn)
+	}
+}
+
+func TestNativeNestedSystemExitCancelAndMissingAssetsStayInGame(t *testing.T) {
+	missing := &Game{
+		st: &battle.State{W: 24, H: 24}, ring: true, ringSel: 3,
+		nativeSystemCursorOverlay: true, nativeSystemNestedOpen: true,
+	}
+	if missing.beginNativeNestedSystemExit() || !missing.ring ||
+		!missing.nativeSystemNestedOpen || missing.actionOverlayPhase != "" ||
+		missing.nativeSystemExitRequested {
+		t.Fatalf("missing assets mutated nested exit owner: %+v", missing)
+	}
+
+	state := &battle.State{W: 24, H: 24}
+	g := &Game{
+		st: state, sc: &battle.Scenario{}, ring: true, ringSel: 3,
+		nativeSystemCursorOverlay: true, nativeSystemNestedOpen: true,
+	}
+	base := "../../../org_game/炎龍騎士團/FLAME2"
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+	var err error
+	g.nativePreparationUI, err = loadNativePreparationUIAssets()
+	if err != nil {
+		t.Skipf("player-provided original UI assets are absent: %v", err)
+	}
+	g.nativeClassUI, err = loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.nativeMapVGA = make([]byte, 320*200)
+	if !g.beginNativeNestedSystemExit() {
+		t.Fatal("verified nested selector3 exit route was rejected")
+	}
+	for present := 0; present < 4; present++ {
+		g.markActionOverlayDrawn()
+		g.stepActionOverlayLifecycle()
+	}
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	g.cancelNativeSystemEndTurn()
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	for g.nativeSystemEndTurnDelay > 0 {
+		g.stepNativeSystemEndTurn()
+	}
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if g.nativeSystemExitRequested || g.aiBusy || state.Turn != 0 || g.nativeSystemEndTurnUI != nil {
+		t.Fatalf("cancel mutated game state: exit=%v ai=%v turn=%d ui=%#v",
+			g.nativeSystemExitRequested, g.aiBusy, state.Turn, g.nativeSystemEndTurnUI)
+	}
+}
+
+func TestNativeNestedSystemExitPublishesEbitenTermination(t *testing.T) {
+	g := &Game{nativeSystemExitRequested: true}
+	if err := g.Update(); !errors.Is(err, ebiten.Termination) {
+		t.Fatalf("Update error=%v want ebiten.Termination", err)
 	}
 }

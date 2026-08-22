@@ -1,0 +1,77 @@
+# FD2.EXE 巢狀離場 consumer與外層 selector1 raw loop
+
+日期：2026-08-22
+
+## 輸入與工具
+
+- `FD2.EXE`：357074 bytes
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 第一工具：使用者合法提供的 IDA Pro 9.4.0.260610；Docker
+  `fd2-ida-authorized-local`、`idat`、LE loader，位址均為IDA linear address。
+- 本批以`tools/ida_probe_functions.py`重新匯出`sub_19DF7`、`sub_16F55`、
+  `sub_117E7`與`main`的函式邊界、直接指令及xref。原版唯讀，資料庫只在
+  容器tmpfs；原始名稱與位址保留，語意是附加層。
+
+## `sub_19DF7` selector3（已證實）
+
+`0x1A25B..0x1A306` 的直接順序：
+
+1. `sub_1956B(0x4B)`建立DATO #75對話框；
+2. `sub_15F84`以FDTXT `0x19F`、indexed目的位址`0xA9F23`及既有
+   `0xCD/0x4C/0x4A`樣式畫問句；
+3. `sub_16559(0)`重畫portrait，`sub_19953`取得YES／NO，
+   `sub_197E5`收合；
+4. 只有selector return `1`且choice global `0`才走接受分支；取消共用
+   `0x1716F`的FDTXT `0x19C`；
+5. 接受時畫FDTXT `0x1A0`於`0xAB6E3`，呼叫`sub_25977(-1,1)`、
+   `delay(0xC8)`、`sub_196CB`，最後`mov eax,-1`返回。
+
+因此問句、接受、取消、200 ms與回傳碼均為已證實；高階按鈕文案可由原始
+FDTXT顯示，不需要在程式碼另造現代文字。
+
+## `-1` 的完整上層 consumer（已證實）
+
+直接caller鏈：
+
+```text
+main 0x25DCE call sub_117E7
+  0x118C1 call sub_16F55
+    0x16FED call sub_19DF7
+```
+
+- `sub_16F55`在`0x16FED`後直接跳共同 epilogue，未覆寫`eax`，故傳回`-1`。
+- `sub_117E7`的`0x118C6..0x118D9`只讓0重開面板，1正規化成0；`-1`原樣
+  傳回main。
+- main在`0x25E74..0x25E86`檢查`esi==-1`後寫`edi=1`；`0x25E8F`因
+  `edi!=0`離開遊戲主迴圈，執行`sub_37B88`及DOS interrupt復原後返回。
+
+所以selector3的玩家目的地是「結束目前程式並走全域清理」，不是回標題、城鎮、
+下一章或只關閉面板。這項結論同時否定先前現況文件的「上層目的地未知」。
+
+## `sub_16F55` 外層 selector1 raw loop（已證實；高階名稱仍保守）
+
+`0x16FF4..0x1716A` 的直接交易：
+
+- DATO來源為目前record `+7`，問句／接受FDTXT為`0x1A1/0x1A2`，取消
+  共用`0x19C`；只有YES且choice0執行；
+- 保存`0x53AB1/0x53AB5`，清`0x51A83`與`0x51AAC`；
+- 依runtime array原順序掃`0..count-1`，只處理
+  `(record+5)&0x85==0 && record+6==2`；
+- 對每筆先以record `+0/+1`呼叫`sub_12CEA`，設`0x51A8F=0xFF`，再呼叫
+  `sub_14B78(savedAB1,savedAB5,index,1)`；若`0x51A8F!=0xFF`則依
+  `funcs_1199C`間接分派，之後依序`sub_134E4`、`sub_13512(index)`；
+- 全部完成後`sub_11CAC(0)`、`sub_1A30B`，恢復兩個gate並返回1。
+
+既有文件依原文稱它「全軍行軍」，但本批只把上述raw predicate、呼叫順序、
+間接分派及共同回合收束列為已證實。`sub_14B78`輸入、路徑／目標結果與
+`funcs_1199C` effect必須在接runtime前逐項綁定；不可只對所有camp2單位呼叫
+目前重製AI就冒稱等價。
+
+## 勘誤與重開條件
+
+- `24-callgraph-analysis-log.md`把`0x1A251→0x19DF7`寫成外部
+  「讀檔／過場子模組」是舊線性callgraph描述；`0x1A251`實際位於
+  `sub_19DF7`內，是selector2呼叫`sub_10010`的位置，不是caller。
+- 只有輸入雜湊不同、上述直接指令／xref反證、同狀態執行矛盾，或主證據缺少
+  聲稱的consumer時才重開。圖示名稱與攻略不足以改寫raw loop。

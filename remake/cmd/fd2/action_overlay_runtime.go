@@ -13,6 +13,7 @@ type nativeSystemEndTurnUIState struct {
 	accepted, canceled         [][]byte
 	choice                     int
 	acceptedOutcome            bool
+	exitProgram                bool
 }
 
 const (
@@ -120,6 +121,7 @@ func (g *Game) resetActionOverlayLifecycle() {
 	g.nativeSystemInfoUI = nil
 	g.nativeSystemEndTurnConfirm = false
 	g.nativeSystemEndTurnDelay = 0
+	g.nativeSystemExitRequested = false
 	if g.nativeSystemEndTurnUI != nil {
 		g.nativeClassUIJob = nil
 	}
@@ -246,6 +248,54 @@ func (g *Game) beginNativeSystemEndTurn() bool {
 	return true
 }
 
+// beginNativeNestedSystemExit 承接 sub_19DF7 selector3。原版只在 YES
+// 回覆、停止音樂、0xC8 延遲與對話框完整收合後，才把 -1 傳回 main 的清理出口。
+// 因此重製端也延後發布終止要求；資產或來源不完整時保持巢狀選單不變。
+func (g *Game) beginNativeNestedSystemExit() bool {
+	if g == nil || !g.nativeSystemCursorOverlay || !g.nativeSystemNestedOpen ||
+		!g.ring || g.ringSel != 3 || g.st == nil || g.aiBusy || g.result != "" ||
+		g.nativePreparationUI == nil || g.nativeClassUI == nil || len(g.nativeMapVGA) != 320*200 {
+		return false
+	}
+	ui := g.nativePreparationUI
+	source := append([]byte(nil), g.nativeMapVGA...)
+	dialogue, err := campaign.ComposeNativePreparationConfirmationDialogue(source, ui.dialogue, ui.portrait)
+	if err != nil {
+		return false
+	}
+	question, err := campaign.ComposeNativeBattleExitQuestion(
+		dialogue, ui.portrait, ui.status.Strings, ui.status.Font,
+	)
+	if err != nil {
+		return false
+	}
+	accepted, err := campaign.NativeBattleExitResponseFrames(question, ui.status.Strings, ui.status.Font, true)
+	if err != nil {
+		return false
+	}
+	canceled, err := campaign.NativeBattleExitResponseFrames(question, ui.status.Strings, ui.status.Font, false)
+	if err != nil {
+		return false
+	}
+	frames, err := campaign.NativePreparationConfirmationOpeningFrames(source, dialogue, question, ui.choices)
+	if err != nil || len(frames) != 10 {
+		return false
+	}
+	state := &nativeSystemEndTurnUIState{
+		source: source, dialogue: dialogue, question: question,
+		accepted: accepted, canceled: canceled, exitProgram: true,
+	}
+	g.beginActionOverlayClose(func() {
+		g.nativeSystemNestedOpen = false
+		g.nativeSystemCursorOverlay = false
+		g.nativeSystemEndTurnConfirm = true
+		g.nativeSystemEndTurnUI = state
+		g.resetNativeClassUIPulse()
+		g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
+	})
+	return true
+}
+
 func (g *Game) confirmNativeSystemEndTurn() {
 	if g == nil || !g.nativeSystemEndTurnConfirm {
 		return
@@ -279,6 +329,9 @@ func (g *Game) finishNativeSystemEndTurnChoice(accepted bool) {
 			response = g.nativeSystemEndTurnUI.accepted
 		}
 		g.nativeClassUIJob = &nativeClassUIJob{frames: response, after: func() {
+			if accepted && g.nativeSystemEndTurnUI != nil && g.nativeSystemEndTurnUI.exitProgram {
+				g.stopBGM()
+			}
 			g.nativeSystemEndTurnDelay = nativeSystemEndTurnDelayFrames
 		}}
 	}}
@@ -302,7 +355,11 @@ func (g *Game) stepNativeSystemEndTurn() {
 			accepted := state.acceptedOutcome
 			g.nativeSystemEndTurnUI = nil
 			if accepted {
-				g.endTurn()
+				if state.exitProgram {
+					g.nativeSystemExitRequested = true
+				} else {
+					g.endTurn()
+				}
 			}
 		}}
 	}
