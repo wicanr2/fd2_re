@@ -9284,6 +9284,15 @@ func loadGame() *Game {
 			}
 		}
 	}
+	if os.Getenv("FD2_SHOT_TITLE_MENU") == "1" {
+		if g.shotPath == "" || g.titleAssets == nil {
+			g.loadErr = "FD2_SHOT_TITLE_MENU requires FD2_SHOT and loaded title assets"
+			return g
+		}
+		// 有界畫面 oracle：只跳過開場排程，不改正式玩家預設流程。
+		g.titlePhase = "menu"
+		g.titleSel, g.titleFlash = 0, 0
+	}
 	if shotState := os.Getenv("FD2_SHOT_LOAD_STATE"); shotState != "" {
 		selection, ok := parseNativeLoadSlotShotState(shotState)
 		if !ok || g.shotPath == "" || g.nativeLoadSlotsUI == nil {

@@ -2,6 +2,28 @@ package main
 
 import "testing"
 
+func TestTitleMenuShotOracleRequiresExplicitOutput(t *testing.T) {
+	t.Setenv("FD2_TITLE", "0")
+	t.Setenv("FD2_SHOT_TITLE_MENU", "1")
+	t.Setenv("FD2_SHOT", "")
+	t.Setenv("FD2_MUTE", "1")
+	g := loadGame()
+	if g.loadErr != "FD2_SHOT_TITLE_MENU requires FD2_SHOT and loaded title assets" {
+		t.Fatalf("title menu shot guard error=%q", g.loadErr)
+	}
+}
+
+func TestTitleMenuShotOracleEntersBoundedMenuState(t *testing.T) {
+	t.Setenv("FD2_TITLE", "1")
+	t.Setenv("FD2_SHOT_TITLE_MENU", "1")
+	t.Setenv("FD2_SHOT", t.TempDir()+"/title.png")
+	t.Setenv("FD2_MUTE", "1")
+	g := loadGame()
+	if g.loadErr != "" || g.titleAssets == nil || g.titlePhase != "menu" || g.titleSel != 0 || g.titleFlash != 0 {
+		t.Fatalf("title menu shot state phase=%q sel=%d flash=%d assets=%v err=%q", g.titlePhase, g.titleSel, g.titleFlash, g.titleAssets != nil, g.loadErr)
+	}
+}
+
 func TestTitleMenuTraceWrapsAndConfirmsAfterFlash(t *testing.T) {
 	var s TitleMenuState
 	if s.Step(TitleMenuUp) != TitleMenuNoAction || s.Selection != 2 {

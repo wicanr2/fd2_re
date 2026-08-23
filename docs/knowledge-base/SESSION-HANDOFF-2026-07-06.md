@@ -5828,3 +5828,23 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 聚焦Docker回歸通過3個battle原子交易案例，以及Xvfb正式ID33／34 confirm與
   whitelist。`0x27FC9` indexed presentation、score／EXP、ID32／35、AI、其他
   BattleFig與一般玩家E2仍失敗即關閉。
+
+## 2026-08-23：README／有效佇列同步與後續 polish 入口
+
+- README評估快照更新為2026-08-23，補入ID33／34正式class19玩家狀態交易；仍明示
+  `0x27FC9` indexed畫面、score／EXP、ID32／35、敵方owner與E2未完成，沒有把綠色
+  交易測試寫成畫面等價。文化保存段落、AFM署名、DOS中文、音源與圖片圖說未刪改。
+- `91`有效佇列日期同步；下一個玩家可見工作回到戰場介面美化，只採已有原版
+  座標／截圖證據且能建立決定性回歸的有界差異，不因「polish」猜補renderer。
+
+## 2026-08-23：標題畫面有界 polish 與執行期重擷取
+
+- 正式標題選單移除原版不存在的 `♪ F2 <source>` 常駐提示，但保留 F2 音源切換
+  功能；未改動原版按鍵路由或 CONTINUE 語意。為避免截圖靠時間碰運氣，新增只在
+  同時指定 `FD2_SHOT` 時生效的 `FD2_SHOT_TITLE_MENU=1` 有界畫面 oracle；缺少輸出
+  或標題資產時失敗即關閉，不會影響一般玩家入口。
+- Docker／Xvfb 重新產生 [`title-remake-runtime.png`](../figures/title-remake-runtime.png)，
+  SHA-256 為 `13ff759213d9ccf1c72f687553d131554a8e360a0e5adb40a7cfcaaccc06266d`。
+  新 oracle 的必要輸出／選單狀態測試及既有標題循環、CONTINUE 選項測試皆通過。
+- 戰場 ch01 既有 exact-state 比較只剩22個邊界像素差，但目前證據不足以唯一歸因；
+  本輪沒有為了消除數字而猜改 renderer。logozoom仍是近似，維持後續非阻擋美化。

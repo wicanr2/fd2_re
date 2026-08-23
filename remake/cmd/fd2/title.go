@@ -364,11 +364,7 @@ func (g *Game) drawTitle(screen *ebiten.Image) {
 			iop.GeoM.Translate(float64((320-b.Dx())/2*2), float64((162+i*9)*2)) // dosbox 實拍座標:y=162/171/180、間距9@320
 			screen.DrawImage(it, iop)
 		}
-		// 音源設定提示（F2 切換預錄 OGG；只近似原版 SETSOUND 的選擇意圖）
-		if g.font != nil {
-			g.font.Draw(screen, "♪ F2  "+bgmSourceName[g.bgmSource], 8, float64(logicalH)-24, 0.9,
-				color.RGBA{0xa0, 0xc0, 0xff, 0xff})
-		}
+		// F2 仍可切換重製端音源，但原版標題沒有常駐提示；忠實畫面不疊診斷文字。
 	case "loadslots":
 		if g.drawNativeLoadSlots(screen) {
 			return

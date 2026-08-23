@@ -9,7 +9,7 @@
 > 新工作必須使用 `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`、`PLAYER-E2` 或
 > `BLOCKED` 明列關閉哪一層，不再新增沒有層級的 `[x]`。
 
-## 有效佇列（2026-08-22）
+## 有效佇列（2026-08-23）
 
 | 順序 | 工作 | 現況 | 下一個可驗收結果 |
 |---:|---|---|---|
@@ -19,7 +19,7 @@
 | 3 | 玩家第29戰 raw ch28 post 後續驗收 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`；`0x1DB65`原資源 presenter、group9→`0x25535`、持續隊伍、`preparation_ch30` 與存讀檔已正式接通，postbattle admission blocker 已歸零 | 以未修改原版一般玩家路徑取得同狀態逐幀／音訊 E2；高階圖像與sample 3語意仍保留unknown，不阻擋 E1戰役流程 |
 | 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 多項正式E1維持；ID33／34已有受限class19玩家state owner：selector4／5／6／7／20只作52／28 MP gate不扣款；33清raw `+0x25..+0x27`再固定`0x320`回復，34的17→18→19私有stages全成才發布，兩者正式grid→confirm已驗證。這不包含`0x27FC9`演出／score／EXP。ID32／35仍關閉 | 下一步依證據補ID32／35交易，或取得`0x27FC9` indexed presentation／一般玩家E2；不得用legacy combo外推，也不得把AI套入玩家owner |
 | 4a | 玩家／敵方指令 `28／29／31` 原版演出 | `RE-CLOSED`（caller分歧與取得路徑窄稽核）／`RUNTIME-E1`：29玩家正式confirm已接多目標indexed owner與整批回復。28／31的固定learn table與32筆player defaults均無command bit，已知mask OR writer又只有level-up direct caller；因此「無已證實一般玩家取得來源」為強推論，不再把尋找selector列成交付阻擋，也不宣稱死碼 | 下一個可驗收結果改為command29敵方owner或未修改玩家同狀態逐幀／音訊E2。28／31只在動態原版出現command bit、找到新mask writer或同actor raw `+7` provenance時重開 |
-| 5 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial；ch02賣出成功／加款／返回已有九組AE=0。獨立裝備service2與物品轉移service3也都有正常route-patched子面板證據；service3更已完成索爾短劍→悠妮、返回loop、雙方交易後物品清單及跨`town_ch02`重製JSON冷讀檔。可見內容／幾何一致，但動畫相位未同步，只到partial E2。service2交易已改為私有 unit→raw裝備／重算→完整panel重建→一次發布，palette深層失敗保持roster／能力／panel原子不變，達`RUNTIME-E1`；目前原版CONTINUE快照只進戰場名冊／狀態面板，故mutation／restore E2未冒稱完成。目的名冊取消已接正式五幀收合→來源提示六幀展開，取消不改角色／金幣；取消後self-transfer亦由正式raw transaction消費，兩者達`RUNTIME-E1`。標題 LOAD 的正式確認 owner 現以 checksum-valid 合成原版槽還原 `town_ch02`／typed party／gold／HUD gate，竄改 envelope 原子留在選槽，亦為`RUNTIME-E1`。裝備收件者另以六人typed party沿正式menu→purchase→Yes production input完成三列scroll、滿欄／無合適角色原子返回與正常裝備／扣款`RUNTIME-E1` | 依 `57` 取得原版同狀態證據；商店下一步是service3 empty／full與self／destination-cancel原版畫面；service2尚需可抵達ch02城鎮的原版快照補mutation／restore畫面；LOAD仍需未修改原版有效槽 E2；recipient scroll／no-recipient／full、其他章節與未修改一般玩家路徑仍缺 |
+| 5 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial；ch02賣出成功／加款／返回已有九組AE=0。獨立裝備service2與物品轉移service3也都有正常route-patched子面板證據；service3更已完成索爾短劍→悠妮、返回loop、雙方交易後物品清單及跨`town_ch02`重製JSON冷讀檔。可見內容／幾何一致，但動畫相位未同步，只到partial E2。service2交易已改為私有 unit→raw裝備／重算→完整panel重建→一次發布，palette深層失敗保持roster／能力／panel原子不變，達`RUNTIME-E1`；目前原版CONTINUE快照只進戰場名冊／狀態面板，故mutation／restore E2未冒稱完成。目的名冊取消已接正式五幀收合→來源提示六幀展開，取消不改角色／金幣；取消後self-transfer亦由正式raw transaction消費，兩者達`RUNTIME-E1`。標題 LOAD 的正式確認 owner 現以 checksum-valid 合成原版槽還原 `town_ch02`／typed party／gold／HUD gate，竄改 envelope 原子留在選槽，亦為`RUNTIME-E1`。裝備收件者另以六人typed party沿正式menu→purchase→Yes production input完成三列scroll、滿欄／無合適角色原子返回與正常裝備／扣款`RUNTIME-E1`。2026-08-23 已移除標題畫面非原版 F2 常駐提示並重擷取執行期圖片；功能快捷鍵仍保留 | 依 `57` 取得原版同狀態證據；商店下一步是service3 empty／full與self／destination-cancel原版畫面；service2尚需可抵達ch02城鎮的原版快照補mutation／restore畫面；LOAD仍需未修改原版有效槽 E2；recipient scroll／no-recipient／full、其他章節與未修改一般玩家路徑仍缺。標題logozoom仍只到近似，不以猜測追逐像素 |
 | 6 | 原版終局精確鏈 | `RUNTIME-E1`：正式 `battle_ch30→ending` 現消費來源約束前綴／角色／20段尾段並停在 #59；80個實際 FIGANI 的 header-zero `0x2939D` raw `+4..+7`、base scheduler 與兩次配對已接；未達 E2 | 以動態 watchpoint／未修改玩家路徑閉合 `0x2C548→0x2C2A6` records／globals 連續性、3% RNG重播、精確音訊／終端輸入、`0x2BCE5` 原版 owner 及第30戰 E2 |
 | 7 | 全戰役抽樣／長程試玩、三平台打包與推廣片 | 核心 gate 未關閉 | 核心垂直切片與代表性晚期玩家路徑完成後才進入發行驗收 |
 
