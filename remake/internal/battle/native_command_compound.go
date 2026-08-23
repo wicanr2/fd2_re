@@ -11,8 +11,9 @@ type NativeCompoundStep struct {
 }
 
 // NativeCompoundCommandPlan returns the verified helper order for IDs 32..35.
-// It is a data-only bridge for editable scripts; target selection, MP debit,
-// transaction/rollback, presentation, and runtime mutation remain closed.
+// It remains a data-only evidence bridge: bounded player transactions for
+// IDs33..35 consume it or the same order elsewhere, while target selection,
+// presentation and mutation stay outside this plan itself.
 func NativeCompoundCommandPlan(commandID int) ([]NativeCompoundStep, bool) {
 	var steps []NativeCompoundStep
 	switch commandID {

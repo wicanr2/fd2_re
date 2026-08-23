@@ -472,6 +472,11 @@ UI 還原採「先操作契約、再 renderer fidelity」的垂直順序，不�
 
 在 `UI-01…UI-12` 每項至少有一個 deterministic input script、預期 state trace 和 screenshot artifact；只通過 Go unit test 不算 UI 完成。截圖測試需記錄解析度、幀號、輸入序列，並比較 cursor/menu/dialog/panel 的 bounding boxes。無法取得原版 ground truth 的項目標為 blocked/assumption，不得用「看起來合理」關閉。
 
+2026-08-23 使用者決定：全戰役長程通關改由人工遊玩後回報問題，不再作為代理程式
+工作項目。現有章節、戰後、城鎮、存讀檔與持續隊伍的決定性回歸仍保留；人工回報
+的問題再建立最小重現案例。這項決定只取消高成本的全程自動／代理試玩，不降低每個
+新戰鬥指令、敵方人工智慧與介面切片的原版證據、正式執行期及聚焦驗證標準。
+
 ### UI-03 native command data contract（E0 partial）
 
 原版 `0x1c269` 將 0x50-byte unit record 的 `+0x1a..+0x1e` bit array 展開為
@@ -1047,7 +1052,7 @@ IDs32..35；原始可達來源是 portrait/visual group 4..7 的 optional class-
 因此可證實這些**玩家可達 class-19 路徑不經已知 MP debit sink**，即使 record `+5` 的 selector gate 仍要求
 76/52/28/36 MP。這不是「所有 runtime entity 免費」或 transaction rollback 的結論；AI／未盤點 runtime unit
 visual group、其他 MP writer 與其餘 compound transaction 仍未閉合；下段只對已證實
-class19玩家來源開放ID34，其他路徑保持 fail-closed。
+class19玩家來源開放ID33／34／35，其他路徑保持 fail-closed。
 
 The wrapper's only direct caller is `0x2a7ce`, entered from `0x2a6bd` when
 the opaque command selector is `>=0x20`; it passes four caller-owned values
@@ -1066,8 +1071,8 @@ targets, or infer effect/status names.
 依`0x22721→0x22866→0x22997`順序連續套用17／18／19三個raw modifier，三段全部
 成功後才一次發布`+0x22..+0x24`與`+0x48..+0x4E`、保留MP並設定actor `Acted`。
 缺class／selector／target raw provenance、MP gate、RNG或任一stage時零修改。這一段
-只定義ID34 state transaction；ID33契約見下段。`0x27FC9` indexed presentation、
-ID32／35交易、AI／其他visual group與一般玩家E2仍失敗即關閉。
+只定義ID34 state transaction；ID33／35契約見下段。`0x27FC9` indexed presentation、
+ID32交易、AI／其他visual group與一般玩家E2仍失敗即關閉。
 
 指令33採用相同的窄玩家來源閘門，但保留自己的 raw 交易：只接受
 `NativeRecordClass==19`與已證實可達的BattleFig 4／5／6／7／20；record33的52 MP
@@ -1079,6 +1084,19 @@ raw bytes、RNG與`Acted`；任一失敗保持actor／targets零修改。這只�
 state transaction；indexed presentation、score／EXP、AI、其他BattleFig與高階狀態名
 仍失敗即關閉。主證據見
 [`fd2_command33_transaction_ida.txt`](../data/ida/fd2_command33_transaction_ida.txt)。
+
+指令35沿用同一個已證實的窄玩家來源閘門：只接受`NativeRecordClass==19`與
+BattleFig 4／5／6／7／20；record35的36 MP只作可用性門檻，這五條FIGANI資源
+路徑不經已知`0x1CA89`扣款點。正式交易只建立一次final target陣列與私有`0x50`
+records，依原始順序呼叫三次`0x22D1B`：command26寫`+0x25`、command22寫
+`+0x27`、command27寫`+0x26`。三段共用並依序推進同一RNG state；全部完成後才
+一次發布HP、三個raw marker、最終RNG與actor `Acted`。缺class／BattleFig、target
+raw provenance、MP gate、target geometry或任一stage時，actor與所有targets保持
+零修改。這只關閉ID35玩家state transaction；`0x27FC9` indexed presentation、
+score／EXP、AI、其他BattleFig及高階狀態名稱仍失敗即關閉。ID32在
+`0x2111A→0x1C75E`與既有item damage helper的直接差異閉合前不接runtime。
+主證據見
+[`fd2_command35_transaction_ida.txt`](../data/ida/fd2_command35_transaction_ida.txt)。
 
 command 0 的 selector boundary 也已縮小：`0x1cff0` 對一般 record（非 command `0x17`／`0x1e` special
 branch）先以 actor cell、`record[+3]`、`record[+6]` 呼叫 `0x14818`，把可選中心的 unit indices 寫進 caller
@@ -5440,7 +5458,7 @@ FDTXT #481..486 與 `0x9F23` 文字位置；每筆以六幀展開、五幀收合
 marker 清除與套用、HIT／EV、AP／DP、基礎能力／容量、command damage 與 relocation。
 此處的剩餘缺口是 indexed effect presentation、原版取消／不可用目標畫面與同狀態
 逐幀／逐音訊 E2，不再把「物品 effect 尚未接」列成數值交易缺口。未知 command、
-複合技中ID33／34已具受限玩家state owner；ID32／35與尚無正式owner的法術仍各自失敗即關閉。
+複合技中ID33／34／35已具受限玩家state owner；ID32與尚無正式owner的法術仍各自失敗即關閉。
 
 ## 2026-08-22 巢狀離場規格
 

@@ -5860,3 +5860,23 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   `(175,90)`與`(176,90)`，不在物品清單 renderer；原版色值均為`(138,158,158)`，
   重製擷取為相鄰動畫相位`(101,121,121)`與`(117,138,138)`。因此靜態物品內容在
   該狀態一致，但整體仍只列route-patched partial E2；沒有為追求AE數字修改店員動畫。
+
+## 2026-08-23：ID35 class19 玩家原子 state transaction與長程測試決策
+
+- 使用者決定不再由代理程式執行全戰役長程通關；往後由使用者正常遊玩並回報
+  問題，代理程式將回報整理成最小重現案例。章節邊界、存讀檔、隊伍持續與
+  戰間節點的有界回歸仍保留，不能用這項決定刪除既有契約測試。
+- 依既有原版證據先寫入系統設計契約，再新增
+  [`fd2_command35_transaction_ida.txt`](../data/ida/fd2_command35_transaction_ida.txt)：
+  ID35只對具raw provenance的class19玩家來源與BattleFig selector
+  4／5／6／7／20開放；record35的36 MP只作可用性閘門，已證實分支不在此扣款。
+- `ExecuteNativeCompoundCommand35`在私有records與共享RNG上依原版順序執行
+  `0x22D1B`三段：command26寫`+0x25`、command22寫`+0x27`、command27寫
+  `+0x26`。任一段失敗都不發布HP、raw marker、RNG或`Acted`；三段全成才一次
+  原子發布。
+- 正式command grid→target confirm已接入ID35；聚焦Docker回歸涵蓋成功順序、
+  固定RNG、marker／HP結果，以及缺target、未證實selector、MP不足的零修改失敗。
+- 此批只達ID35玩家state transaction的`RUNTIME-E1`。`0x27FC9` indexed演出、
+  score／EXP、敵方owner與一般玩家E2仍未閉合；ID32仍等待
+  `0x2111A→0x1C75E`與既有item helper的直接差異證據。command29敵方路徑缺少
+  selector／resource／owner證據，不能把玩家多目標交易猜接到AI。

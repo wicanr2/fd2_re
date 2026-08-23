@@ -38,7 +38,7 @@ func (s *State) ExecuteNativeCompoundCommand33(actor, confirmed *Unit, rngState 
 	if err != nil {
 		return NativeCompoundCommand33Result{}, err
 	}
-	records, indices, err := nativeCompoundCommand33Records(targets)
+	records, indices, err := nativeCompoundCommandTargetRecords(targets)
 	if err != nil {
 		return NativeCompoundCommand33Result{}, err
 	}
@@ -59,9 +59,9 @@ func (s *State) ExecuteNativeCompoundCommand33(actor, confirmed *Unit, rngState 
 	return NativeCompoundCommand33Result{Restore: restore}, nil
 }
 
-func nativeCompoundCommand33Records(targets []*Unit) ([]byte, []byte, error) {
+func nativeCompoundCommandTargetRecords(targets []*Unit) ([]byte, []byte, error) {
 	if len(targets) == 0 || len(targets) > 256 {
-		return nil, nil, fmt.Errorf("native compound command 33 target count=%d", len(targets))
+		return nil, nil, fmt.Errorf("native compound command target count=%d", len(targets))
 	}
 	records := make([]byte, len(targets)*nativeRecordSize)
 	indices := make([]byte, len(targets))
@@ -69,7 +69,7 @@ func nativeCompoundCommand33Records(targets []*Unit) ([]byte, []byte, error) {
 		if target == nil || !target.HasNativeRecordClass || !target.HasBattleFig ||
 			target.Lv < 0 || target.Lv > math.MaxUint8 || target.BattleFig < 0 || target.BattleFig > math.MaxUint8 ||
 			target.HP < 0 || target.HP > math.MaxUint16 || target.MaxHP < 0 || target.MaxHP > math.MaxUint16 {
-			return nil, nil, fmt.Errorf("native compound command 33 target %d lacks raw restore provenance", index)
+			return nil, nil, fmt.Errorf("native compound command target %d lacks raw provenance", index)
 		}
 		base := index * nativeRecordSize
 		records[base+7] = byte(target.BattleFig)

@@ -1,0 +1,66 @@
+FD2 command 35 bounded player transaction — IDA Pro 9.4 evidence
+=================================================================
+
+Evidence identity
+-----------------
+
+- Input: FD2.EXE, size 357074
+- MD5: b97caf2239a27a896069d03549d96e1e
+- SHA-256: 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f
+- Address space: IDA Pro 9.4 flat-loader linear addresses
+- Static sources: official IDA 9.4 instruction review recorded in the
+  2026-07-26 handoff; canonical Docker Capstone order recheck recorded on
+  2026-07-27. This file consolidates those versioned conclusions and does not
+  rename or mutate an IDA database.
+
+Question
+--------
+
+Can player command ID35 publish a bounded raw state transaction without
+guessing the remaining 0x27FC9 indexed presentation, score/EXP consumer, or
+gameplay names for record+0x25..+0x27?
+
+Direct and inherited evidence
+-----------------------------
+
+- **Proven:** 0x2A6BD enters 0x27FC9 through its sole direct call at 0x2A7CE
+  for command selectors >=0x20. The caller supplies actor and the already-built
+  final target byte array.
+- **Proven:** the ID35 branch in 0x27FC9 calls 0x22D1B three times in this
+  exact order: command26 with marker record+0x25, command22 with marker
+  record+0x27, then command27 with marker record+0x26.
+- **Proven, inherited 0x22D1B contract:** a nonzero marker or target class
+  record+0x20 equal to 0x19/0x1A skips application. Otherwise the first RNG
+  remainder must be below 50; success calls 0x1C81F with base amount10,
+  consumes the damage RNG, consumes a third RNG, and writes RNG%4+2 to the
+  supplied marker. ApplyNativeRawApplication already preserves this sequence.
+- **Proven, inherited resource evidence:** class19 supplies player-reachable
+  IDs32..35. BattleFig 4/5/6/7/20 select FIGANI resources 13/16/19/22/61;
+  their container header byte+4 values 2/2/2/5/5 bypass the only known
+  0x2B659 branch to the 0x1CA89 MP debit sink. Record35 still supplies the
+  36-point availability gate. This evidence does not cover AI or other visual
+  groups.
+
+Remake contract
+---------------
+
+- Accept only a player actor with raw class19 and BattleFig 4/5/6/7/20.
+- Build the normal final target list once, then build complete private 0x50
+  records containing raw class/level/BattleFig, record+0x22..+0x27 and HP.
+- Run the three 0x22D1B stages in the proven 26/+0x25, 22/+0x27, 27/+0x26
+  order while threading a single RNG state.
+- Publish HP, raw markers, final RNG and actor Acted only after every target
+  passes preflight and all three private stages complete. Record35 MP is an
+  availability gate and is not debited for these five proven player sources.
+- **Unknown/fail-closed:** 0x27FC9 indexed frames, exact SFX/palette timing,
+  score/EXP, AI owner, other BattleFig sources and gameplay/status names.
+
+Verification
+------------
+
+- internal/battle tests use RNG seed1; both targets apply all three stages in
+  the fixed order and finish at RNG state 0x5541.
+- incomplete target provenance, unproven BattleFig and insufficient MP leave
+  actor and all targets unchanged.
+- cmd/fd2 production confirm consumes command35 only after the normal raw
+  cursor-confirm gate; command32 remains outside the whitelist.
