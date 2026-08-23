@@ -48,6 +48,21 @@ func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after 
 				g.finishSuccessfulUnitAction(actor, after)
 				g.checkResult()
 			})
+		case id == 6:
+			return g.startNativeCommand6Presentation(actor, target, func(results []battle.NativeCommandDamageResult) {
+				hit, total := 0, 0
+				for _, result := range results {
+					if result.Hit {
+						hit++
+						total += result.Damage
+					}
+					g.awardDeathReward(result.Target, actor)
+				}
+				actor.SetMapPose(dirToward(actor.X, actor.Y, target.X, target.Y))
+				g.msg = fmt.Sprintf("原始指令 6：命中 %d，傷害 %d", hit, total)
+				g.finishSuccessfulUnitAction(actor, after)
+				g.checkResult()
+			})
 		case id >= 1 && id <= 12:
 			var results []battle.NativeCommandDamageResult
 			var next uint16

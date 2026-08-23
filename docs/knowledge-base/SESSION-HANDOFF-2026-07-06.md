@@ -6000,7 +6000,8 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - handler `0x27053..0x270E6` 的 side／channel 分流亦已資料化：7張前導
   mode1→mode2、12張target、7張尾段mode8→mode7 現都有 typed layer 與
   indexed compositor 回歸。下一個單一缺口是正式 Game owner 的原子接線；
-  玩家ID6目前 fail-closed，敵方ID6目前仍是 state-only。
+  玩家ID6當時 fail-closed，敵方ID6當時仍是 state-only；此歷史狀態已由下方
+  「command6 正式 Game owner」段落取代。
 - 後續沿完整 back-edge 勘誤上述簡寫：前導實際是
   mode1(`0x2AD13`)→actor→mode2(`0x2AC8E`)；尾段是
   mode7(`0x2B23B`)→actor/target→mode8(`0x2B1B6`)。原 typed plan/compositor
@@ -6012,4 +6013,22 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - `BuildNativeCommand6EffectSequence` 現一次預建全部 handler-owned frames：
   7張前導、每target 12張與五個HP stage、每boundary 9張、7張尾段；兩目標
   fixture 與 malformed stage base 零partial-output 回歸通過。正式 Game job
-  尚未建立，玩家仍 fail-closed、敵方仍 state-only。
+  當時尚未建立，玩家仍 fail-closed、敵方仍 state-only；此歷史狀態已由下段
+  取代。
+
+## 2026-08-24：command6 正式 Game owner 接入玩家與敵方
+
+- 上一段最後一句的現況已由本段取代：正式 Game job 已建立，玩家確認與敵方
+  mode 11 的 ID6 都必須先完成同一批原子 admission，不再走玩家 fail-closed／
+  敵方 state-only 的舊分歧。
+- admission 一次驗證 common `0x29164/0x2B659` 前導與 actor phase、全部 final
+  targets、#32/#33 effect、#87 sub0..3、BG／TAI／面板、FIGANI 與 raw provenance；
+  任一項缺失時 MP、HP、RNG、`Acted` 都不變。
+- 工作逐 Draw acknowledgement 發布 MP marker 與每目標五段 HP；全部 handler
+  frames 完成後才發布 `Acted`、RNG 及 continuation。執行中若 stage 次序或公開
+  狀態被改動，會回復 actor MP／`Acted` 與所有 target HP。
+- 新的生命週期回歸已驗證「未 Draw 不改狀態」、「完整畫格後一次完成」及
+  「執行中矛盾整批回復」。此切片提升為 indexed `RUNTIME-E1`。
+- 音訊證據仍保守：#87 sub0／1／2／3 分別屬 common actor、target mode5、front
+  mode0、tail mode6；目前 target sample 以每張呈現畫格一次播放近似，未重現
+  單幀內全部 raw 呼叫的疊音，因此不宣稱精確音訊或 `PLAYER-E2`。

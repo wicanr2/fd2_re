@@ -162,7 +162,7 @@ func TestAIStepStopsMode2WithoutMovementProvenance(t *testing.T) {
 	}
 }
 
-func TestAIStepConsumesVerified14EF0CommandRoute(t *testing.T) {
+func TestAIStep14EF0CommandRejectsMissingPresentationAfterMovement(t *testing.T) {
 	actor := nativeAIConsumerUnit(0, 0, 1, 2)
 	actor.NativeCommandMask[0] = 1
 	actor.NativeInventoryFlags = []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
@@ -207,11 +207,11 @@ func TestAIStepConsumesVerified14EF0CommandRoute(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	if g.loadErr != "" || g.aiBusy || g.walk != nil || g.atk != nil || state.Turn != 1 {
-		t.Fatalf("0x14ef0 command completion ai=%v walk=%v atk=%v turn=%d err=%q", g.aiBusy, g.walk != nil, g.atk != nil, state.Turn, g.loadErr)
+	if g.loadErr == "" || g.aiBusy || g.walk != nil || g.atk != nil || state.Turn != 0 {
+		t.Fatalf("0x14ef0 missing presentation did not stop atomically: ai=%v walk=%v atk=%v turn=%d err=%q", g.aiBusy, g.walk != nil, g.atk != nil, state.Turn, g.loadErr)
 	}
-	if actor.X != 1 || actor.Y != 0 || actor.MP != 2 || target.HP >= target.MaxHP {
-		t.Fatalf("0x14ef0 command route did not commit numeric owner: actor=(%d,%d) mp=%d targetHP=%d/%d", actor.X, actor.Y, actor.MP, target.HP, target.MaxHP)
+	if actor.X != 1 || actor.Y != 0 || actor.MP != 4 || target.HP != target.MaxHP || actor.Acted {
+		t.Fatalf("0x14ef0 missing presentation mutated command transaction: actor=(%d,%d) mp=%d acted=%v targetHP=%d/%d", actor.X, actor.Y, actor.MP, actor.Acted, target.HP, target.MaxHP)
 	}
 }
 
@@ -805,7 +805,7 @@ func TestAIStepConsumesVerifiedMode8Completion(t *testing.T) {
 	}
 }
 
-func TestAIStepConsumesVerifiedMode11StagesInNativeOrder(t *testing.T) {
+func TestAIStepMode11RejectsMissingCommandPresentationAfterMovement(t *testing.T) {
 	actor := nativeAIConsumerUnit(0, 0, 1, 11)
 	actor.NativeCommandMask[0] = 1
 	actor.NativeInventoryFlags = []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
@@ -852,23 +852,18 @@ func TestAIStepConsumesVerifiedMode11StagesInNativeOrder(t *testing.T) {
 	if g.loadErr != "" || g.walk == nil {
 		t.Fatalf("mode-11 first stage did not start: walk=%v err=%q", g.walk != nil, g.loadErr)
 	}
-	firstStageObserved := false
 	for step := 0; step < 240 && (g.aiBusy || g.walk != nil || g.atk != nil); step++ {
 		if err := g.Update(); err != nil {
 			t.Fatal(err)
 		}
-		if !firstStageObserved && actor.MP == 253 && target.HP < target.MaxHP {
-			firstStageObserved = true
-			if g.walk == nil && g.atk == nil {
-				t.Fatal("mode-11 continuation returned without starting its second native stage")
-			}
-		}
 	}
-	if g.loadErr != "" {
-		t.Fatalf("mode-11 native continuation failed: %s", g.loadErr)
+	if g.loadErr == "" {
+		t.Fatal("mode-11 accepted command0 without its formal presentation context")
 	}
-	if !firstStageObserved || g.aiBusy || g.walk != nil || g.atk != nil || state.Turn != 1 || target.HP >= target.MaxHP {
-		t.Fatalf("mode-11 stages did not complete: first=%v ai=%v walk=%v atk=%v turn=%d targetHP=%d/%d", firstStageObserved, g.aiBusy, g.walk != nil, g.atk != nil, state.Turn, target.HP, target.MaxHP)
+	if g.aiBusy || g.walk != nil || g.atk != nil || state.Turn != 0 || actor.MP != 255 ||
+		actor.Acted || target.HP != target.MaxHP {
+		t.Fatalf("mode-11 missing presentation mutated transaction: ai=%v walk=%v atk=%v turn=%d mp=%d acted=%v targetHP=%d/%d",
+			g.aiBusy, g.walk != nil, g.atk != nil, state.Turn, actor.MP, actor.Acted, target.HP, target.MaxHP)
 	}
 }
 

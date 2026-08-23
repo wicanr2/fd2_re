@@ -218,6 +218,7 @@ func (g *Game) startNativeCommand0Presentation(actor, target *battle.Unit, then 
 	}
 	if g == nil || g.st == nil || actor == nil || target == nil || g.nativeCommandScene == nil ||
 		g.nativeCommandPaletteFlash == nil || g.nativeCmd0Presentation != nil ||
+		g.nativeCmd6Presentation != nil ||
 		g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeHealPresentation != nil ||
 		g.nativeModifierPresentation != nil || g.atk != nil {
 		return errors.New("native command0 presentation context unavailable")

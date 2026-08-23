@@ -59,28 +59,32 @@
 | 玩家指令、法術、物品與交易 | 部分 | 部分 | 部分 E1／部分失敗即關閉 | 缺完整 E2 | command mask、若干 ID、MP／物品交易與 selector 邊界已解；物品第一階段 raw target field 及 drawable selector 1..5 現由正式 `0x11CAC` 索引畫面消費，缺原生 HUD／LUT／range sprite 時不再顯示綠／青／橘色猜測後備層。未修改第一戰存檔另以正常輸入證實四名我方皆滿 HP 時，item 192 草藥確認後至少4.3秒仍留在物品面板；type 5 現只在已證實候選中存在 `HP < MaxHP` 時發布 target modal，形成窄原版 `PLAYER-E2`／重製 `RUNTIME-E1`。這不包含受傷狀態原版 target modal、其他 item type、indexed item effect、disabled target 外觀、原版取消鍵或 global selector 6 owner。共用 `0x117E7` 在 `0x12C0D==-1` 時進 `0x16F55`。direction3→END 現以原版 DATO #75、FDOTHER #5/#2、FDTXT `0x1A3/0x1A4/0x19C` 跑完6＋4展開、YES／NO、4＋5收合、接受／取消逐字形回覆、來源復原與十二個60 Hz畫格近似，只有YES才進`0x1A30B`；普通鍵盤正式路徑與原版密集擷取已形成動態配對，精確時序／音訊仍未閉合。缺任一資產時在命令框關閉前拒絕。command 13–16 的 `0x21EB1→0x22046` 16張 FDOTHER #3 LUT 演出已轉成 typed schedule，玩家與敵方 mode 11 正式入口均先演出再交易；AI 依 `0x15311` 在移動後重建 raw target array。command 17–19 的 raw modifier transaction已由玩家與敵方mode 11正式消費；ID17依原版由record18扣MP。玩家command 17–22均依`0x1D6C8`先播放#88 sub0與八個commandColor／black DAC phases，第八個Draw acknowledgement後才發布交易；20／21才清`+0x25/+0x26`並借record10 restore，22才經class／RNG gate寫`+0x27`。command 24 的正常 selector32 路徑現依資源98的15幀 raw schedule，在frame4發布MP並播放FDOTHER #53 sub3，在frame10發布單一完整傷害並播放sub2，最後一幀才標記行動完成；兩標記間依raw terrain control選BG，播放`0x29C90`兩段各10次的640-stride viewport滑動。`0x2A289→0x18C6D`的entry22框、HP／MP bar、數字與raw姓名亦已接進actor／target indexed base，轉場不再重疊RGBA雙panel。缺原始FIGANI、BG、terrain control、target idle、palette、panel cells／font／text、sample或raw selector即零交易。升級學習端亦已修正為`unit+7→growth byte10 learn_idx→command_learn`，不再誤用portrait直接查表。`sub_2B659` actor base、扣MP後source snapshot與`sub_2B9A1` target idle reset已接；`sub_29164`九段雙分支角色／TAI滑入與DAC減算已接；精確音訊與一般玩家E2仍缺，故只列partial。AI不套用玩家palette owner。缺baseline／DAC／table／sample／records／target／MP／RNG時交易不發生。ID33／34／35現只對具raw class19及selector4／5／6／7／20的玩家來源開放：record33／34／35分別做52／28／36 MP gate，但已證實來源均不在此分支扣款；33在私有records清`+0x25..+0x27`後以固定`0x320`走`0x211A4`回復，34依`0x22721→0x22866→0x22997`完成三段，35依`0x22D1B`以command26／22／27及`+0x25/+0x27/+0x26`完成三段。三者都只在全部stage成功後原子發布，正式command grid→target confirm回歸已通過。這只關閉state transaction，`0x27FC9` indexed presentation、score／EXP、ID32、AI／其他visual group仍失敗即關閉。其他未知 command、狀態高階名稱、精確 DOS tick／音訊與完整 E2 仍未閉合；phase-expiry caller 與其 FDTXT／DATO／redraw／recalc 消費順序已由 [`fd2_transient_expiry_presentation_ida.txt`](../data/ida/fd2_transient_expiry_presentation_ida.txt) RE-CLOSED，selector 1→0／2 的倒數、歸零重算與 raw 同步已達 `RUNTIME-E1`，indexed 到期訊息已達 `RUNTIME-E1`；status colors／entries `0x37..0x39` 已由正式角色面板消費；精確 tick／音訊、高階名稱與一般玩家 E2 仍待。 |
 | 指令28／29／31校正 | 閉合caller分歧；28／31正常取得來源未見 | command29資產與typed schedule就緒 | 28／31校正後數值E1；29玩家indexed owner E1 | 29缺E2；28／31非阻擋 | `0x276EC`已固定三支renderer／分母分歧。command29已由正式玩家confirm消費selector34／resource104並逐target原子發布。另以IDA固定command-mask OR writer只有level-up direct caller；固定learn table與32筆player defaults都不授予28／31，故「一般玩家無已證實取得來源」列強推論，不猜selector、不把它們當交付阻擋，也不冒稱死碼。主證據見[`fd2_command28_29_31_presentation_ida.txt`](../data/ida/fd2_command28_29_31_presentation_ida.txt)與[`fd2_command28_31_reachability_ida.txt`](../data/ida/fd2_command28_31_reachability_ida.txt)。 |
 | 敵方人工智慧 | 底層控制流部分偏高；高階交易部分 | mode／候選／部分 fallback 已資料化 | 多個窄 E1 consumer | 只有原版敵方回合邊界 E2 | `0x13FD4`、`0x14EF0`、mode 5／11 等既有函式邊界與窄 owner 不應反覆重解。command 17–19 現已有 raw-selector target array→原子modifier transaction→AI成功動作邊界；selector 1→0 phase-expiry caller 也已依原順序接在合併的非玩家排程前。仍缺其他未接 command／item transaction、到期提示精確 tick／音訊、同一 raw 狀態的重製端配對與一般玩家效果。詳見 [`11`](11-enemy-ai.md)。 |
-| 戰場 HUD、指令格、輸入與戰鬥演出 | 部分 | 部分 | 部分 E1 | 少量畫面 E2／多數缺少 | 有 native frame、command overlay、姓名字模、命中色盤與部分 FIGANI consumer。2026-08-22 已以同一未修改存檔由標題正常操作至悠妮 command 0 目標模式：原版四相位動態 LUT 為窄 `PLAYER-E2`，重製普通 X11 路徑達同座標／ID modal 為 `RUNTIME-E1`；時鐘相位未同步，故不是逐像素 parity。command 0 現由正式 Game confirm 接入 `0x2A6BD→0x29164→0x2B659→0x26152` 的完整預建與逐 Draw 發布：九段滑入、施術者效果、28 幀／7 元素錯開目標效果、七段 HP 與 LUT 尾段均達 indexed `RUNTIME-E1`，缺素材或 raw provenance 時在 MP／HP 前失敗即關閉。仍缺 #82 精確取樣率的人耳驗證及原版／重製同狀態逐幀、逐音訊 E2。整體操作狀態機、圖示可用性、其他 commands、相同戰況及演出時序仍未完成。完成度只由 [`57` 介面矩陣](57-ui-evidence-matrix.md)判定。 |
+| 戰場 HUD、指令格、輸入與戰鬥演出 | 部分 | 部分 | 部分 E1 | 少量畫面 E2／多數缺少 | 有 native frame、command overlay、姓名字模、命中色盤與部分 FIGANI consumer。2026-08-22 已以同一未修改存檔由標題正常操作至悠妮 command 0 目標模式：原版四相位動態 LUT 為窄 `PLAYER-E2`，重製普通 X11 路徑達同座標／ID modal 為 `RUNTIME-E1`；時鐘相位未同步，故不是逐像素 parity。command 0 現由正式 Game confirm 接入 `0x2A6BD→0x29164→0x2B659→0x26152` 的完整預建與逐 Draw 發布：九段滑入、施術者效果、28 幀／7 元素錯開目標效果、七段 HP 與 LUT 尾段均達 indexed `RUNTIME-E1`，缺素材或 raw provenance 時在 MP／HP 前失敗即關閉。command 6 亦已接正式玩家與敵方 owner，涵蓋 common 前導／actor、全目標 orbit、九幀目標間過場、五段 HP 與尾段，達 indexed `RUNTIME-E1`；#87 單幀多呼叫混音仍只近似。兩者仍缺原版／重製同狀態逐幀、逐音訊 E2。整體操作狀態機、圖示可用性、其他 commands、相同戰況及演出時序仍未完成。完成度只由 [`57` 介面矩陣](57-ui-evidence-matrix.md)判定。 |
 
 2026-08-24 補證：`0x525AF` 是 command 0..9 的 HP 分段除數表；typed
 傷害計畫已不再把 command0 的七段套給全部 ID。command6 使用五段，並通過
-決定性發布／越界拒絕回歸；其 12 張 target compositor 尚未接正式 Game owner，
-故仍維持 `DATA-READY`，不得提升為畫面 `RUNTIME-E1`。
+決定性發布／越界拒絕回歸；其 12 張 target compositor 已由下述正式 Game owner
+消費，這個舊的「尚未接 owner」狀態已失效。
 
 同日續補：command6 的 7 張前導 orbit、12 張 target、7 張尾段 orbit 已全部
 轉成具型別 layer／sequence 與 indexed compositor，包含 side 分流及前五個
-marker 才發布 HP 的契約。正式 Game owner、音訊時序與正常 producer 尚未接，
-狀態仍是 `DATA-READY`。
+marker 才發布 HP 的契約。正式 Game owner 與正常玩家／敵方 producer 現已接入；
+逐呼叫音訊時序及一般玩家原版配對仍未閉合。
 
 同日 `sub_2BA22` 唯一 caller／八參數 ABI／九幀相鄰目標水平過場亦由
 IDA／Capstone 閉合並完成 typed sequence/compositor。控制流勘誤同時固定：
 前導是 mode1→actor→mode2，尾段是 mode7→actor/target→mode8；舊有依 call
 位址排序的相反說法已撤回。正式 owner 現不再缺多目標畫面資料，但仍須一次
-預建 common prelude／actor phase、音訊與所有目標後才能提升 `RUNTIME-E1`。
+預建 common prelude／actor phase、音訊與所有目標後才能提升 `RUNTIME-E1`；
+下段所述工作已滿足這項門檻。
 
 command6 handler-owned 全批次預建器現已實作並以兩目標 fixture 驗證
 `7 + 12×target + 9×boundary + 7` 的形狀、每目標五個 HP stage，以及 malformed
-晚期輸入零 partial output。這仍是正式 Game owner 的 admission 層；common
-`0x29164/0x2B659`、#87 音訊及 producer continuation 尚未接，故不提升 E1。
+晚期輸入零 partial output。正式 Game owner 現將 common `0x29164/0x2B659`、
+#87 sub0..3、所有 final targets 與玩家／敵方 continuation 一次預檢後接入；
+MP、五段 HP、`Acted` 與 RNG 均在對應 Draw 邊界發布，失敗時整批回復，達 indexed
+`RUNTIME-E1`。目前 #87 mode5 的多次 raw 呼叫以每呈現畫格一次播放近似，未宣稱
+逐呼叫混音、精確取樣率或一般玩家 `PLAYER-E2`。
 | 城鎮、祕密商店、商店、教會與整備 | 部分偏高 | 部分就緒 | 多個正式 E1 consumer | ch02 若干狀態 E2；其餘部分 | 個別 menu、購買、賣出、轉移、復活、轉職與整備已有窄切片；ch02 賣出已由正常商店輸入走完角色／物品／Yes-No、成功、向上金幣滾動及返回名冊，九組 route-patched 原版／正式重製畫面皆整幀 AE=0。獨立裝備 service2 另由正常商店輸入取得名冊與索爾面板，但動畫相位未同步，整幀仍為 AE=1389／1433；正式交易現先在私有 unit 完成 raw 裝備、重算與 panel 重建，最後才發布，深層 renderer 失敗不再污染 roster／能力／既有 panel，達 `RUNTIME-E1`。service3 物品轉移除五個選擇狀態外，現也由正常商店輸入完成索爾短劍→悠妮，返回 loop 後原版索爾只剩皮甲／藥草、悠妮追加未裝備短劍；四個成功交易畫面 AE=1391／82／2／286。可見內容與幾何一致，剩餘差異是角色、翻頁箭頭或選取脈動相位，故仍列 route-patched partial E2。重製同一跨角色交易又穿越 `town_ch02` JSON 冷讀檔，保存雙方 compact/raw 背包、裝備、能力、金幣與隊伍順序。目的名冊取消現由正式 owner 依五幀收合→來源提示六幀展開發布，取消不改角色／金幣；取消後重新進入的 self-transfer 仍走既有 raw remove→append／重算，達 `RUNTIME-E1`。裝備收件者以六名具完整 raw provenance 的 typed party，從正式 menu→purchase→Yes 進三列面板，走過 scroll、滿欄／無合適角色原子返回與成功裝備／扣款，亦達 `RUNTIME-E1`；這些都不是原版 E2。教會轉職與其他商店 mutation 也能返回 town，再穿越重製 JSON 存讀檔。第25戰後的 `town_ch26` 祕密商店 E1 亦已接通。這些不等於未修改一般玩家戰間 E2；其餘章節入口、原版存檔、recipient scroll／no-recipient／full、service2 原版 mutation／restore畫面、transfer empty／full、self／destination-cancel 的原版同狀態畫面、church caller及完整交易仍缺。 |
 | 音樂與音效 | 格式閉合；owner／時序部分 | 部分就緒 | 部分 E1 | 逐音訊 E2 缺少 | XMIDI、兩類音源與部分曲目／樣本 owner 已知。重點是精確播放時機、停止／切換、效果同步與三平台播放，不需要重解 XMIDI 格式。 |
 | 終局與結局 | 部分偏高 | 來源約束排程已資料化 | E1；正式 `battle_ch30→ending` 已接終端定格 | 缺一般玩家終局 E2 | `0x2BCE5` 前綴、`0x2C548` 角色蒙太奇、20段尾段與 FDOTHER #59 定格已由正式 campaign 以原始資源與持續 raw roster 消費；資產或 provenance 不足時整批失敗即關閉。20段實際80個 FIGANI 已證實全部 header byte1=0；runtime 現逐 raw `+6` inner present、`+7 bit0` 層序、`+4` 位移／palette33與最後 effect 終止、base scheduler 執行兩次交叉配對。尚缺 caller `0x2C2A6` 當下 records／globals 動態連續性、3% RNG重播、精確音訊／終端輸入與原版 owner，不是重解整個 `0x28A6C`。 |

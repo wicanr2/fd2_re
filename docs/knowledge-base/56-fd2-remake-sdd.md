@@ -790,6 +790,15 @@ idle、每對 target 的 transition base、actor effect、#32/#33 effect 與前�
 HP stage，Game 才可發布 MP；任何晚期 target、idle delay、frame bounds 或 base
 缺失都在零交易時失敗即關閉。
 
+正式 Game owner 已按這份 admission 契約接到玩家確認與敵方 mode 11 的 ID6
+continuation。它在建立工作前一次驗證 common `0x29164/0x2B659` 前導與施術者
+階段、全部 final targets、#32/#33、#87 sub0..3、面板與 raw provenance；逐張
+Draw acknowledgement 後才依原始 marker 發布一次 MP、每目標五段 HP，全部完成
+後才發布 `Acted`、RNG 與玩家／敵方 continuation。任何執行中矛盾都回復施術者
+MP／`Acted` 及所有目標 HP。此切片為 indexed `RUNTIME-E1`；#87 的四個子樣本
+owner 已固定，但 mode5 在單幀內的多次 raw sample 呼叫目前以每張呈現畫格一次
+播放近似，尚未宣稱逐呼叫混音、精確取樣率或一般玩家 `PLAYER-E2`。
+
 ID1另以`NativeCommand1PresentationSchedule`保存`0x262EF`的兩組八槽
 mode4→target→mode5合成：X=`[-59,-39,0,39,55,39,0,-39]`、
 Y=`[-10,-24,-30,-24,-10,4,10,4]`、X anchor=`0x50`，raw side零值再加

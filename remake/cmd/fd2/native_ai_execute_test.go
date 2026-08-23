@@ -8,7 +8,7 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
 
-func TestExecuteNativeAIActionReusesVerifiedCommandDamageRoute(t *testing.T) {
+func TestExecuteNativeAICommand0RejectsMissingPresentationBeforeMutation(t *testing.T) {
 	actor := &battle.Unit{
 		Camp: battle.Enemy, HP: 20, MaxHP: 20, MP: 4, MaxMP: 4,
 		AP: 30, DP: 1, HIT: 100, EV: 0, ClassID: 1,
@@ -40,10 +40,10 @@ func TestExecuteNativeAIActionReusesVerifiedCommandDamageRoute(t *testing.T) {
 		U: actor, Target: target, NativeActionKind: battle.NativeAIActionCommand,
 		NativeCommandID: 0,
 	}
-	if err := g.executeNativeAIAction(plan); err != nil {
-		t.Fatal(err)
+	if err := g.executeNativeAIAction(plan); err == nil {
+		t.Fatal("AI command0 accepted a missing formal presentation context")
 	}
-	if !actor.Acted || actor.MP != 2 || target.HP >= 20 {
+	if actor.Acted || actor.MP != 4 || target.HP != 20 {
 		t.Fatalf("actor=%+v target=%+v", actor, target)
 	}
 }
