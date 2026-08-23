@@ -83,3 +83,57 @@ func TestNativeChurchStatusUsesPlayerOriginalAssets(t *testing.T) {
 		t.Fatal("native command panel twelve-frame closing did not start")
 	}
 }
+
+func TestNativeChurchStatusPublishesRawTransientIndicators(t *testing.T) {
+	const base = "../../../org_game/炎龍騎士團/FLAME2/"
+	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "DATO.DAT"} {
+		if _, err := os.Stat(base + name); err != nil {
+			t.Skip("player-provided original archives are absent")
+		}
+	}
+	t.Setenv("FD2_ORIGINAL_FDOTHER", base+"FDOTHER.DAT")
+	t.Setenv("FD2_ORIGINAL_FDTXT", base+"FDTXT.DAT")
+	t.Setenv("FD2_ORIGINAL_DATO", base+"DATO.DAT")
+	assets, err := loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	unit := *nativeItemPanelTestUnit()
+	unit.NativeIdentity, unit.HasNativeIdentity = 9, true
+	unit.MapSelectorKey, unit.HasMapSelectorKey = 9, true
+	g := &Game{
+		nativeClassUI: assets,
+		partyRoster:   map[int]battle.Unit{9: unit},
+	}
+	plain, _, ok := g.prepareNativeChurchStatus(9)
+	if !ok {
+		t.Fatal("plain native status panel was unavailable")
+	}
+	unit.NativeTransient = [6]byte{1, 1, 1, 1, 1, 1}
+	g.partyRoster[9] = unit
+	flagged, _, ok := g.prepareNativeChurchStatus(9)
+	if !ok {
+		t.Fatal("flagged native status panel was unavailable")
+	}
+	for _, region := range [][4]int{
+		{157, 67, 18, 9}, {157, 79, 18, 9},
+		{117, 67, 18, 9}, {117, 79, 18, 9},
+		{194, 68, 30, 20}, {229, 68, 30, 20}, {264, 68, 30, 20},
+	} {
+		if !nativeStatusRegionDiffers(plain, flagged, region) {
+			t.Fatalf("raw transient indicator region %v did not change", region)
+		}
+	}
+}
+
+func nativeStatusRegionDiffers(a, b []byte, region [4]int) bool {
+	for y := region[1]; y < region[1]+region[3]; y++ {
+		for x := region[0]; x < region[0]+region[2]; x++ {
+			offset := y*320 + x
+			if a[offset] != b[offset] {
+				return true
+			}
+		}
+	}
+	return false
+}

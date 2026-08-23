@@ -5742,3 +5742,18 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - `0x29164`已加入非破壞性語意索引；1305函式現況為產品36、Watcom runtime170、
   未知1099。command24仍列`RUNTIME-E1 partial`，但剩餘缺口已縮為精確音訊、
   同狀態逐幀／palette驗證及未修改一般玩家「轉職→Lv4學會→施放」E2。
+
+## 2026-08-23：`sub_17FC0` transient 狀態面板勘誤
+
+- 本段訂正較早把「status icon／UI 全部未接」列為缺口的說法。授權 Docker 內
+  IDA Pro 9.4 以非破壞性 offset probe 固定 `sub_17FC0`：raw
+  `+0x22/+0x23/+0x24` 非零時分別把 AP、DP、HIT／EV 的 digit base 從
+  `0x2A` 切到 `0x77`，並不另畫三個圖示；raw `+0x25/+0x26/+0x27` 非零時才
+  分別畫 FDOTHER #5 entries `0x37/0x38/0x39` 到三個固定位置。主證據見
+  [`fd2_status_panel_transient_indicators_ida.txt`](../data/ida/fd2_status_panel_transient_indicators_ida.txt)。
+- 既有 `NativeItemPanelDataPlanFor→RenderNativeItemPanelData→prepareNativeChurchStatus`
+  已精確保存上述 offsets、colors、entries、位置與十二幀角色狀態面板 owner；
+  新增原始資產 production regression，驗證六個 raw 欄位都會改變各自的玩家可見
+  區域。因此本項提升為 `RE-CLOSED`／`RUNTIME-E1`，不再列 remake 阻擋。
+- 尚未證實的是三個圖示與前三個 color indicator 的高階玩家名稱、精確 tick／音訊
+  與未修改一般玩家同狀態 E2；不得再造六個猜測圖示，也不得重解 `sub_17FC0`。

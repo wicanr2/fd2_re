@@ -1,0 +1,72 @@
+# FD2 `sub_17FC0` raw transient 狀態面板指示：IDA 9.4 證據
+
+## 輸入與位址空間
+
+- 輸入：`FD2.EXE`，357074 bytes。
+- MD5：`b97caf2239a27a896069d03549d96e1e`。
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 工具：使用者授權 Docker 內的 IDA Pro 9.4；Linear Executable loader 的
+  線性位址空間。原始函式名、位址與運算元保持不變。
+- 交叉驗證：`tools/ida_probe_record_offsets.py` 只列出直接位移運算元，不替
+  `+0x22..+0x27` 命名。
+
+本文件位址都是 IDA linear address，不是檔案偏移。狀態面板主函式保留原名
+`sub_17FC0`，邊界為 `0x17FC0..0x182AD`；直接 caller 是
+`0x17FB6`（`sub_17EEF`）與 `0x31F1F`（`sub_31E80`）。
+
+## `+0x22..+0x24`：能力數字顏色（已證實）
+
+`sub_17FC0` 不為前三個 raw transient 欄位畫獨立圖示，而是切換既有能力數字的
+FDOTHER #5 digit base：
+
+- `0x180F5..0x1811A`：讀 `record+0x22`；零值使用 entry base `0x2A`，非零
+  使用 `0x77`，再以 `sub_187D6` 畫 `record+0x48` 到 `(157,67)`。
+- `0x18122..0x18147`：讀 `record+0x23`；同樣在 `0x2A/0x77` 間選擇，畫
+  `record+0x4A` 到 `(157,79)`。
+- `0x1816C..0x18191`：讀 `record+0x24`；選出的 base 先畫
+  `record+0x4C` 到 `(117,67)`，再於 `0x18199..0x181AD` 以同一 base 畫
+  `record+0x4E` 到 `(117,79)`。
+
+座標由 `destination = callerBase + constant` 且 stride=`0x140` 換算。這些欄位
+與 derived AP／DP／HIT／EV 的關係另由 `sub_1B750` writer／consumer 證據支持；
+本函式只證實玩家可見顏色，不以顏色替 raw 欄位建立新名稱。
+
+## `+0x25..+0x27`：三個條件式圖示（已證實）
+
+`0x18271..0x182AB` 以 `esi=0..2` 逐欄讀 `record[esi+0x25]`：
+
+1. 零值直接略過。
+2. 非零時以 `entry = esi + 0x37` 從 `[0x53A81]` 呼叫 `sub_1685C`。
+3. `[0x53A81]` 的 boot writer 與既有證據已固定為 `FDOTHER.DAT #5` LMI1 bank。
+4. 目的地為 `callerBase + 0x55C2 + esi*0x23`，即：
+   - `+0x25` → entry `0x37`，`(194,68)`；
+   - `+0x26` → entry `0x38`，`(229,68)`；
+   - `+0x27` → entry `0x39`，`(264,68)`。
+
+這三個 entry 是原版圖像資源索引；其玩家可見名稱仍未由本函式證實，不能以
+legacy `PoisonTurns`、`Sealed` 或攻略名詞取代 raw offset。
+
+## 重製消費與證據分級
+
+- `RE-CLOSED`：函式邊界、兩個 caller、四組能力數字位置、`0x2A/0x77`
+  digit base、三個 raw gate、FDOTHER #5 entries `0x37..0x39` 與目的地。
+- `RUNTIME-E1`：`battle.NativeItemPanelDataPlanFor` 已保存相同 raw offsets、
+  colors、entries 與位置；`RenderNativeItemPanelData` 先在私人 320×200 indexed
+  buffer 完成後發布。`prepareNativeChurchStatus` 由正式角色名冊建立80-byte raw
+  record，再將該面板接入十二幀展開與 church status input owner。
+- `UNKNOWN`：三個圖示的高階狀態名稱、精確 DOS tick／音訊，以及未修改一般
+  玩家同狀態畫面 E2。
+
+因此「原版狀態圖示完全未接」是過時斷言：前三欄本來就是數字顏色，後三欄的
+原始 indexed 圖示與正式重製消費端均已存在。剩餘缺口只能寫成高階名稱與 E2，
+不得再次重解 `sub_17FC0` 或另造六個圖示。
+
+## 重生命令與重開條件
+
+在授權 IDA Docker 內以 `tools/ida_probe_record_offsets.py` 掃描
+`FD2_IDA_RECORD_OFFSETS="22 23 24 25 26 27"`，再以
+`tools/ida_probe_functions.py` 匯出 `FD2_IDA_ADDRESSES="0x17fc0"`。輸入檔與
+IDA 資料庫分別唯讀／暫存，輸出不依賴自訂改名。
+
+只有輸入雜湊不同、直接指令或 raw FDOTHER directory 反證、相同 raw record 的
+執行結果矛盾，或目前主證據缺少其聲稱的 caller／consumer，才可重開。
