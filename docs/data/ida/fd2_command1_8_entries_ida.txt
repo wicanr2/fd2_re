@@ -1,0 +1,75 @@
+FD2 command 1–8 funcs_2AC25 entries — IDA Pro 9.4 evidence
+================================================================
+
+Evidence identity
+-----------------
+
+- Input: FD2.EXE, size 357074
+- MD5: b97caf2239a27a896069d03549d96e1e
+- SHA-256: 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f
+- Tool/address space: licensed IDA Pro 9.4 Docker workflow, LE linear
+  addresses; original input read-only. Capstone was used only for raw-table
+  byte verification.
+
+Address-base correction
+-----------------------
+
+The table at 0x523B9 stores LE raw values 0x16152, 0x162EF, 0x16528,
+0x16795, 0x169D3, 0x16BFD, 0x16E39, 0x172B8 and 0x174B0 for IDs0..8.
+These are not IDA linear addresses. The verified linear targets are:
+
+```text
+ID0 0x26152  ID1 0x262EF  ID2 0x26528  ID3 0x26795  ID4 0x269D3
+ID5 0x26BFD  ID6 0x26E39  ID7 0x272B8  ID8 0x274B0
+```
+
+This is anchored by the already closed 0x26152 command0 entry, caller
+0x2A6BD and enemy consumer 0x15311. An earlier probe interpreted ID5..8 as
+0x16xxx and consequently inspected unrelated functions; all semantics from
+that probe are withdrawn. The corrected ID5..8 results below came from fresh
+xrefs and instruction review at 0x26xxx/0x27xxx.
+
+Verified entry contracts
+------------------------
+
+- **ID1 0x262EF:** mode3 returns31 and seeds eight counters 0,-2..-14;
+  mode4/5 draws two groups of four, advances counters, emits the direct sample
+  marker at counter5 and completes at9. Offset tables 0x52420/0x52440;
+  raw actor +6 zero adds 0x94 horizontally.
+- **ID2 0x26528:** mode0 returns29; mode3 returns12; mode4 uses raw frame15;
+  mode5 advances frames 0x10..0x11; mode6 seeds frame0x0A and returns10.
+  Offset/state tables are 0x52460/0x52490/0x5249C.
+- **ID3 0x26795:** mode0 initializes twelve RNG-rotated slots and returns2;
+  mode3 returns40; mode6 sets the stop flag and returns20; modes2/5/8 draw
+  and advance twelve slots with descriptor-selected sample calls.
+- **ID4 0x269D3:** same raw family with six slots; mode0 returns2, mode3
+  returns12, mode6 returns8; modes2/5/8 complete at the proven counter3
+  marker. Offset table 0x524A8.
+- **ID5 0x26BFD:** six RNG-phased channels; mode0 returns1, mode3 returns12,
+  mode6 returns8; modes2/5/8 use state 0x5401C..0x54053 and offset table
+  0x524D0. Raw actor +6 zero adds 0x8F horizontally.
+- **ID6 0x26E39:** mode0 plays direct sample tuple and returns7; mode3
+  initializes five counters and returns12; mode6 sets raw tail state; modes
+  1/2/7/8 compute five coordinates, while4/5 draw and advance them. Tables
+  0x524F8/0x5250C; state 0x54054..0x54096.
+- **ID7 0x272B8:** four initialized counter/index groups, three rendered
+  channels; mode0 returns2, mode3 returns32, mode6 returns16; modes2/5/8
+  use offset table 0x52511 and two direct sample call forms.
+- **ID8 0x274B0:** sixteen counters 0,-2..-30; mode0 returns3, mode3
+  returns34, mode6 returns2; modes2/5 draw sixteen channels and publish the
+  two direct sample markers. Table 0x52539; modes1/4/7/8 return zero.
+
+Shared consumer and remake boundary
+-----------------------------------
+
+- **Proven:** 0x2A6BD invokes the indexed entry in generic order mode0,
+  actor modes2/1, per-target modes3 then4/5, and tail modes6 then8/7.
+- **Proven:** enemy 0x15311 enters 0x2A6BD only for command ID below10 when
+  raw 0x53AF9 is zero. The existing ID0 presenter therefore cannot stand in
+  for ID1..8: channel counts, mode returns, state, offsets and samples differ.
+- **DATA-READY only:** these contracts are sufficient for editable typed
+  schedules. They do not yet prove a runtime renderer, HP/MP publication,
+  score/EXP, normal enemy producer for every ID, or PLAYER-E2.
+- **Fail-closed:** each entry requires its exact decoded effect banks,
+  descriptor delays, actor raw +6/+7, final target provenance, BG/TAI/panel
+  scene, samples and every Draw acknowledgement before state publication.

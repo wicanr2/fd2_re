@@ -5919,3 +5919,13 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 聚焦Docker／Xvfb回歸證實缺presenter context時敵方ID0的MP、HP、RNG、Acted
   皆不變；既有玩家完整演出回歸仍通過。ID1–8各有獨立`funcs_2AC25` entry，
   尚未具型別化，不能以ID0專屬schedule代替。
+
+## 2026-08-23：command1–8 entry清冊與`0x10000`位址基準勘誤
+
+- IDA 9.4與raw table交叉核對固定`0x523B9`內值是LE raw target，不是IDA線性
+  位址；ID0–8需加`0x10000`，正確為`0x26152..0x274B0`。第一次ID5–8探針因
+  少加基準而分析到不相干`0x16xxx`函式，相關語意已全部撤回，未進runtime。
+- 新主證據
+  [`fd2_command1_8_entries_ida.txt`](../data/ida/fd2_command1_8_entries_ida.txt)
+  保存八個entry的mode回傳、channel/counter、offset/state table、sample marker與
+  失敗即關閉條件。目前為`RE-CLOSED/DATA-READY`，尚未宣稱renderer或E2。
