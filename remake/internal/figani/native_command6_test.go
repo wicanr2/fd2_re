@@ -45,6 +45,39 @@ func TestNativeCommand6CoordinatesPreserveFivePointFormula(t *testing.T) {
 	}
 }
 
+func TestNativeCommand6TargetPlanCompletesOnSecondFrame(t *testing.T) {
+	schedule, _ := BuildNativeCommand6PresentationSchedule(1, command6TestAnimation())
+	points := NativeCommand6Coordinates(10, schedule.BaseByte)
+	first, err := PlanNativeCommand6TargetFrame(NewNativeCommand6TargetState(), schedule, points, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if first.Complete || len(first.Mode4) != 2 || len(first.Mode5) != 2 || first.Next.Counters != [5]int{1, 0, -1, -2, -3} {
+		t.Fatalf("first target frame=%+v", first)
+	}
+	second, err := PlanNativeCommand6TargetFrame(first.Next, schedule, points, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !second.Complete || second.Next.Counters != [5]int{2, 1, 0, -1, -2} {
+		t.Fatalf("second target frame=%+v", second)
+	}
+	if len(second.Mode5) != 3 || !second.Mode5[2].Secondary || second.Mode5[2].Frame != 5 || second.Mode5[2].Channel != 0 {
+		t.Fatalf("second secondary layers=%+v", second.Mode5)
+	}
+}
+
+func TestNativeCommand6ZeroSideDrawsOnlyMode5Main(t *testing.T) {
+	schedule, _ := BuildNativeCommand6PresentationSchedule(0, command6TestAnimation())
+	frame, err := PlanNativeCommand6TargetFrame(NewNativeCommand6TargetState(), schedule, NativeCommand6Coordinates(10, schedule.BaseByte), 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(frame.Mode4) != 0 || len(frame.Mode5) != 5 {
+		t.Fatalf("zero-side layers mode4=%d mode5=%d", len(frame.Mode4), len(frame.Mode5))
+	}
+}
+
 func TestOriginalFDOTHERCommand6ResourcesMatchRecoveredSignatures(t *testing.T) {
 	const path = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
 	for _, tc := range []struct {

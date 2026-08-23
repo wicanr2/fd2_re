@@ -795,6 +795,14 @@ X=`fistp(cos*radius+baseByte)`，Y=`fistp(sin*radius*1.2+30)`；角度轉換常�
 本輪五點繪製後分別將radius加／減6。此純函式可供未來compositor使用，但不
 自行發布global state。
 
+ID6 target compositor使用可複製的`NativeCommand6TargetState`，初始counter為
+`[0,-1,-2,-3,-4]`、secondary全零。每張先產生mode4 main layers，再畫target，
+再產生mode5 main與secondary layers；非零side只畫main channels0/1，零side只在
+mode5畫全部main channels。負counter使用frame4，state1令secondary=5；mode5後
+counter modulo5，任一變2即完成，secondary在`point+(-60,-20)`畫5..9後歸零。
+原始初態因此固定兩張target frame。compositor只接受十幀已驗證effect與完整
+schedule，任一frame／座標越界整張拒絕；音效與數值發布仍不在此primitive。
+
 BG asset boundary：`BG.DAT` 是 LLLLLL archive；generic compositor 的前三個已知 layer #0/#1/#2 都是 `{u16 width,u16 height, 0x4e63d four-mode RLE}` single-frame payload，實測各為 320×100。`fdother.DecodeArchiveSingleFrame` 明確解這種無 frame-directory 的 archive entry，player-archive regression 對三個 layer 解入 320×100 indexed surface。它不替 `0x2b5e1` 的其他 raw selector 命名，也不自動把 current PNG background 當 native layer schedule。
 
 ### UI-03 action chooser availability contract（E0 partial）
