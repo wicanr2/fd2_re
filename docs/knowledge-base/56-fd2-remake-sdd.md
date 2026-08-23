@@ -738,6 +738,14 @@ command DAC pulse；target phase才進`sub_26152`的七次sub1／七段HP。
 `sub_2BA22`或尾端任一尚缺時一律零交易，不得把command24 mode1前導、固定BG或
 target-only效果冒充完整場景。完整位址與推論等級仍以同一主證據檔為準。
 
+敵方mode 11的`0x15311`在command ID `<10`且raw `[0x53AF9]==0`時同樣直接進
+`0x2A6BD`。因此ID0不得在AI分支繞過上述完整場景、直接發布state-only傷害；正式
+敵方ID0 owner重用同一個已驗證的command0 presenter，但保留敵方continuation與
+死亡獎勵邊界，不執行玩家target-field／selection cleanup。`Raw53AF9`由
+`nativeFullPresentationEnabled`保留：非零時不猜用這條路由。ID1–8雖也可能進
+generic wrapper，但各自`funcs_2AC25` entry尚未具型別化，不得因ID0已接而共用
+ID0專屬#18／#20 schedule。
+
 BG asset boundary：`BG.DAT` 是 LLLLLL archive；generic compositor 的前三個已知 layer #0/#1/#2 都是 `{u16 width,u16 height, 0x4e63d four-mode RLE}` single-frame payload，實測各為 320×100。`fdother.DecodeArchiveSingleFrame` 明確解這種無 frame-directory 的 archive entry，player-archive regression 對三個 layer 解入 320×100 indexed surface。它不替 `0x2b5e1` 的其他 raw selector 命名，也不自動把 current PNG background 當 native layer schedule。
 
 ### UI-03 action chooser availability contract（E0 partial）

@@ -5907,3 +5907,15 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   RNG與修改HP的物理結算。缺素材時不扣HP、不發死亡獎勵、不標記行動完成。
 - 聚焦Docker／Xvfb回歸證實mode11缺FIGANI時actor／target與演出狀態均不變；
   這是重製端`RUNTIME-E1`原子失敗邊界，不是一般玩家原版E2。
+
+## 2026-08-23：敵方 ID0 共用 `0x2A6BD→0x26152` 完整演出
+
+- `0x15311`直接證據顯示command ID `<10`且`Raw53AF9==0`時進`0x2A6BD`；
+  ID0不再由AI分支直接執行state-only傷害，而是重用已閉合的command0場景
+  presenter。`nativeFullPresentationEnabled`保留raw gate，不猜非零路由。
+- presenter仍先完整預建BG／TAI、雙狀態欄、actor與target FIGANI、#18／#20、
+  #82與LUT；每個Draw marker依原順序發布MP與七段HP。完成後使用敵方
+  continuation與死亡獎勵，不執行玩家selection／target-field cleanup。
+- 聚焦Docker／Xvfb回歸證實缺presenter context時敵方ID0的MP、HP、RNG、Acted
+  皆不變；既有玩家完整演出回歸仍通過。ID1–8各有獨立`funcs_2AC25` entry，
+  尚未具型別化，不能以ID0專屬schedule代替。

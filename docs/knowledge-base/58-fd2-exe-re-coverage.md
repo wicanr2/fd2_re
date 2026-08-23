@@ -79,6 +79,12 @@ RNG並發布HP／死亡獎勵；缺素材維持零交易。另確認敵方17–1
 effect table，原版不經玩家專用`0x1D6C8` palette owner，故不把玩家八相位演出
 誤接到AI。此為`RUNTIME-E1`原子邊界，仍缺正常敵方回合同狀態E2。
 
+**2026-08-23 敵方 command0 演出接線**：`0x15311`在ID `<10`且
+`Raw53AF9==0`時進`0x2A6BD`；正式敵方ID0已改用既有完整
+`0x2A6BD→0x26152` presenter，不再直接發布state-only傷害。預建失敗時MP、HP、
+RNG與`Acted`均不變；完成後才交給敵方continuation與死亡獎勵。ID1–8的
+`funcs_2AC25` entry仍各自失敗即關閉，不能外推ID0專屬演出。
+
 ## 四、目前可重生的數字，以及不能怎麼解讀
 
 2026-08-21 以唯讀 Docker 實跑現有稽核：

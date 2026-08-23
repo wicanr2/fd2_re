@@ -33,17 +33,28 @@ func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after 
 		var message string
 		damageTargets := make([]*battle.Unit, 0)
 		switch {
-		case id >= 0 && id <= 12:
+		case id == 0:
+			return g.startNativeCommand0Presentation(actor, target, func(results []battle.NativeCommandDamageResult) {
+				hit, total := 0, 0
+				for _, result := range results {
+					if result.Hit {
+						hit++
+						total += result.Damage
+					}
+					g.awardDeathReward(result.Target, actor)
+				}
+				actor.SetMapPose(dirToward(actor.X, actor.Y, target.X, target.Y))
+				g.msg = fmt.Sprintf("原始指令 0：命中 %d，傷害 %d", hit, total)
+				g.finishSuccessfulUnitAction(actor, after)
+				g.checkResult()
+			})
+		case id >= 1 && id <= 12:
 			var results []battle.NativeCommandDamageResult
 			var next uint16
 			var err error
-			if id == 0 {
-				results, next, err = g.st.ExecuteBoundNativeCommand0(actor, target, g.nativeRNGState)
-			} else {
-				results, next, err = g.st.ExecuteNativeCommandDamage(
-					actor, target, id, g.st.NativeCommandResistances, g.nativeRNGState,
-				)
-			}
+			results, next, err = g.st.ExecuteNativeCommandDamage(
+				actor, target, id, g.st.NativeCommandResistances, g.nativeRNGState,
+			)
 			if err != nil {
 				return err
 			}
