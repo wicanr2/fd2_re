@@ -5896,3 +5896,14 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   缺raw provenance的原子失敗，以及正式grid→confirm路徑。
 - 此批只達ID32玩家state transaction的`RUNTIME-E1`。`0x1C4CC→0x1CAC7`、
   `0x1E0DB/0x1E1DC`結果畫面、score／EXP、AI與一般玩家E2仍未閉合。
+
+## 2026-08-23：敵方物理攻擊 FIGANI 預檢與17–19 caller勘誤
+
+- 重新核對`fd2_command_modifier_palette_ida.txt`與`0x15311`直接分派：敵方
+  command17–19不經玩家`0x1CFF0→0x1D6C8`，因此目前AI state-only modifier
+  owner不是漏播玩家palette；不得把#88與八相位硬套到敵方回合。
+- 修正mode 2一般AI及mode 11 `0x1548E`的高風險順序：兩者現在都先驗證攻方
+  attack FIGANI、守方idle FIGANI及成對descriptor delay，通過後才呼叫會消耗
+  RNG與修改HP的物理結算。缺素材時不扣HP、不發死亡獎勵、不標記行動完成。
+- 聚焦Docker／Xvfb回歸證實mode11缺FIGANI時actor／target與演出狀態均不變；
+  這是重製端`RUNTIME-E1`原子失敗邊界，不是一般玩家原版E2。

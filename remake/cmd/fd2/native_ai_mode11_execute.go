@@ -85,6 +85,11 @@ func (g *Game) executeNativeAIMode11Physical(plan *battle.AIPlan, after func()) 
 		return
 	}
 	actor, target := plan.U, plan.Target
+	if !g.nativeAttackPresentationAvailable(actor.BattleFig, target.BattleFig) {
+		g.loadErr = fmt.Sprintf("native AI mode 11 0x1548e FIGANI unavailable: %d -> %d", actor.BattleFig, target.BattleFig)
+		g.aiBusy = false
+		return
+	}
 	actor.SetMapPose(dirToward(actor.X, actor.Y, target.X, target.Y))
 	defHP0 := target.HP
 	attackResult, err := g.resolvePhysicalAttack(actor, target)

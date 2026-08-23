@@ -5586,6 +5586,9 @@ func battleFPT() int {
 // 不得宣稱畫面已播放。
 func (g *Game) newAtkAnim(atkGroup, defGroup int, atkName, defName string,
 	atkHP, atkMax, atkLV, atkMP, defLV, defMP, defHP0, defHP1, defMax, terrain int, atkOwn bool) *atkAnim {
+	if !g.nativeAttackPresentationAvailable(atkGroup, defGroup) {
+		return nil
+	}
 	fpt := battleFPT()
 	af := figaniIndex(atkGroup) + 1
 	frames := g.figani[af]
@@ -5614,6 +5617,29 @@ func (g *Game) newAtkAnim(atkGroup, defGroup int, atkName, defName string,
 		defHP0: defHP0, defHP1: defHP1, defMax: defMax, timer: total, total: total,
 		fpt: fpt, terrain: terrain, atkOwn: atkOwn, figaniTimeline: timeline,
 		bodyTicks: bodyTicks}
+}
+
+// nativeAttackPresentationAvailable 執行 newAtkAnim 所需的完整資產與排程檢查，
+// 但不消耗戰鬥亂數，也不修改 HP；敵方 AI 以此作為失敗即關閉的交易預檢。
+func (g *Game) nativeAttackPresentationAvailable(atkGroup, defGroup int) bool {
+	if g == nil {
+		return false
+	}
+	fpt := battleFPT()
+	af := figaniIndex(atkGroup) + 1
+	frames := g.figani[af]
+	delays, ok := g.figaniDelays[af]
+	if len(frames) == 0 || !ok || len(delays) != len(frames) {
+		return false
+	}
+	df := figaniIndex(defGroup)
+	defFrames := g.figani[df]
+	defDelays, defOK := g.figaniDelays[df]
+	if len(defFrames) == 0 || !defOK || len(defDelays) != len(defFrames) {
+		return false
+	}
+	_, err := figani.NewDisplayScheduler(delays, fpt)
+	return err == nil
 }
 
 func (g *Game) finishAttackPresentation() {
@@ -9894,6 +9920,11 @@ func (g *Game) aiStep() {
 			}
 			if anm == "" {
 				anm = u.ClsName
+			}
+			if !g.nativeAttackPresentationAvailable(u.BattleFig, tgt.BattleFig) {
+				g.loadErr = fmt.Sprintf("AI FIGANI attack presentation unavailable: %d -> %d", u.BattleFig, tgt.BattleFig)
+				g.aiBusy = false
+				return
 			}
 			hp0 := tgt.HP
 			attackResult, err := g.resolvePhysicalAttack(u, tgt)

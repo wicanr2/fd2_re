@@ -73,6 +73,12 @@
 正式grid→confirm已接；仍失敗即關閉的是`0x1C4CC→0x1CAC7` indexed演出、
 `0x1E0DB/0x1E1DC`結果畫面、score／EXP、AI、其他visual group與一般玩家E2。
 
+**2026-08-23 敵方物理提交補強**：mode 2與mode 11 `0x1548E`正式入口現先預檢
+攻方attack FIGANI、守方idle FIGANI與descriptor delay，全部可建立排程後才消耗
+RNG並發布HP／死亡獎勵；缺素材維持零交易。另確認敵方17–19由`0x15311`直接進
+effect table，原版不經玩家專用`0x1D6C8` palette owner，故不把玩家八相位演出
+誤接到AI。此為`RUNTIME-E1`原子邊界，仍缺正常敵方回合同狀態E2。
+
 ## 四、目前可重生的數字，以及不能怎麼解讀
 
 2026-08-21 以唯讀 Docker 實跑現有稽核：

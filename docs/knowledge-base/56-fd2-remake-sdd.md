@@ -4539,6 +4539,15 @@ handoff 或一般玩家回合證據。
   parity，也不替其他 `0x13FD4` caller 猜測玩法。驗收入口與剩餘 gate 以
   `docs/knowledge-base/91-worklist.md` 為準。
 
+敵方物理攻擊的重製端提交契約另採原子失敗邊界：mode 2一般AI與mode 11
+`0x1548E`都必須先確認攻方attack FIGANI、守方idle FIGANI及兩者descriptor delay
+可建立完整排程，才可呼叫會消耗RNG並修改HP的`AttackWithRNG`。因此缺任一演出
+資產時不得扣HP、發死亡獎勵、消耗RNG或標記行動完成；不能先做state transaction
+再以文字結果代替原版全螢幕戰鬥演出。這是重製端失敗即關閉與原子發布契約，
+不冒稱DOS內部存在資產錯誤分支。玩家專用`0x1D6C8`只屬玩家
+command17–23／25–27；敵方`0x15311`直接進effect table，故敵方17–19維持
+state-only owner是caller差異，不是遺漏palette演出。
+
 ## 2026-08-11：玩家第22戰戰後→整備 E1 邊界
 
 raw `ch21_post`（玩家第22戰戰後）已從候選提升為正式可編輯 binding：
