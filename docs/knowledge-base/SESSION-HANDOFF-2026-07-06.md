@@ -5771,3 +5771,18 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 主證據見[`fd2_command28_29_31_presentation_ida.txt`](../data/ida/fd2_command28_29_31_presentation_ida.txt)。
   command29已有growth selector34→resource104資產鏈；28／31的一般玩家actor
   selector及三者正式玩家／敵方indexed owner仍未閉合，繼續失敗即關閉而不猜資源。
+
+## 2026-08-23：command29 玩家多目標 indexed owner
+
+- 本段取代上一段「command29 正式玩家 indexed owner 未閉合」的現況斷言；原始
+  caller 分歧與 selector34→resource104 證據不變。系統設計先固定原子契約，正式
+  玩家 confirm 才接入獨立 command29 owner。
+- owner 預建九段 mode1 前導、一次 actor phase、FDOTHER #50 samples1／4，以及
+  每個 final target 各自的 indexed BG／panel／idle 與 20 張 `0x29C90` 轉場。
+  actor marker 只扣一次 MP；每個 target 都從 idle frame0 重設，並在自己的 marker
+  發布 HP。全部 target 完成後才設定 `Acted` 並由 callback 發放死亡獎勵。
+- 多目標回歸證實發布順序與單次 MP；第二個目標 marker 前刻意改變狀態時，正式
+  owner 會把 actor MP／`Acted` 及所有 target HP／raw `+5` 整批回復。selector 非34
+  或任一原始資產／raw provenance 缺失時保持零修改。
+- 本切片為玩家 `RUNTIME-E1`，不是一般玩家原版 E2。敵方 caller、command28／31
+  actor selector與演出仍未閉合，不得把此 owner 外推共用。

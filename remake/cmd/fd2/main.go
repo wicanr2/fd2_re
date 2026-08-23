@@ -174,6 +174,7 @@ type Game struct {
 	nativeModifierPresentation *nativeCommandModifierPresentationJob
 	nativeCmd0Presentation     *nativeCommand0PresentationJob
 	nativeCmd24Presentation    *nativeCommand24PresentationJob
+	nativeCmd29Presentation    *nativeCommand29PresentationJob
 	spawnIntroTransition       *nativeSpawnIntroJob
 	nativeTurnStaging          *nativeTurnStagingJob
 	nativeFieldEvent61         *nativeFieldEvent61Job
@@ -6318,7 +6319,30 @@ func (g *Game) confirm() {
 				g.msg = "原始指令 0：indexed 演出不可用 (" + err.Error() + ")"
 			}
 			return
-		case id == 28 || id == 29 || id == 31:
+		case id == 29:
+			actor := g.sel
+			err := g.startNativeCommand29Presentation(actor, tgt, func(results []battle.NativeCommand24Damage) {
+				total := 0
+				for _, result := range results {
+					total += result.Damage
+					if result.Damage > 0 {
+						g.awardDeathReward(result.Target, actor)
+					}
+				}
+				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
+				g.msg = fmt.Sprintf("原始指令 29：傷害 %d", total)
+				g.finishSuccessfulUnitAction(actor, func() {
+					g.resetNativeTargetField()
+					g.st.MaterializeNativeMapRangeMode(1)
+					g.nativeCommand0Targeting, g.nativeCommandTargetID, g.sel, g.reach, g.moved = false, 0, nil, nil, false
+				})
+				g.checkResult()
+			})
+			if err != nil {
+				g.msg = "原始指令 29：indexed 演出不可用 (" + err.Error() + ")"
+			}
+			return
+		case id == 28 || id == 31:
 			results, e := g.st.ExecuteNativeCommandDerivedStrike(g.sel, tgt, id, g.rng)
 			err = e
 			total := 0
@@ -6931,6 +6955,7 @@ func (g *Game) Update() error {
 	g.stepNativeCommandModifierPresentation()    // native 0x1D6C8 command 17..19 palette presentation
 	g.stepNativeCommand0Presentation()           // native 0x2A6BD→0x26152 command0 battle presentation
 	g.stepNativeCommand24Presentation()          // native 0x276EC selector32 FIGANI presentation
+	g.stepNativeCommand29Presentation()          // native 0x276EC selector34 multi-target FIGANI presentation
 	g.stepNativePaletteRamp()                    // native 0x1f882/0x1f525 whole-DAC ramps
 	g.stepNativePalettePulse()                   // native 0x35E5A whole-DAC pulse
 	g.stepNativeSpawnIntro()                     // native 0x32999 twelve-pass indexed spawn transition
@@ -6981,7 +7006,7 @@ func (g *Game) Update() error {
 			clamp(&g.camY, 0, float64(g.m.H*g.m.TileH-logicalH))
 		}
 	}
-	if g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd24Presentation != nil {
+	if g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil {
 		return nil
 	}
 	if g.nativeSystemInfoUI != nil {
@@ -7361,6 +7386,17 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		if !g.drawNativeCommand24Presentation(screen) {
 			g.failNativeCommand24Presentation(errors.New("draw unavailable"))
 			ebitenutil.DebugPrint(screen, "native 0x276EC presentation unavailable")
+		}
+		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
+			g.captureShot(screen)
+		}
+		return
+	}
+	if g.nativeCmd29Presentation != nil {
+		screen.Fill(color.Black)
+		if !g.drawNativeCommand29Presentation(screen) {
+			g.failNativeCommand29Presentation(errors.New("draw unavailable"))
+			ebitenutil.DebugPrint(screen, "native command29 presentation unavailable")
 		}
 		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
 			g.captureShot(screen)
@@ -9682,7 +9718,7 @@ func (g *Game) finishNativeTransientPlayerPhase() {
 // aiStep AI 回合驅動:一次取一個單位的行動計畫,播行走動畫→到位攻擊(全螢幕演出)。
 // 全單位動完 → finishTurn。
 func (g *Game) aiStep() {
-	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd24Presentation != nil || g.result != "" {
+	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.result != "" {
 		if g.result != "" {
 			g.aiBusy = false
 		}

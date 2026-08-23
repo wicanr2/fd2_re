@@ -945,6 +945,17 @@ actor raw completion writer。它與 ID20/21「借 record10」的 clear/restore 
 | 23 | `0x1CFF0→1D6C8→2218A→22253×2` special relocation selector | first target→mode-6 destination cursor、八段palette、離場／入場兩次完整indexed presenter及延後raw transaction已接 | 玩家正式`RUNTIME-E1`；缺同狀態逐幀／逐音訊E2與精確camera choreography核對 |
 | 24 | 玩家 `2A6BD→276EC→2B659/1CA89→1C81F`：`actor +48 * 15/10 - target +4a`；selector32 resource98、FDOTHER #53 samples3／2、damage denominator1；AI table 另別名 `22153`，不可混用 | `ExecuteNativeCommand24`＋正式marker交易 | indexed actor／target base、前導、轉場與SFX已達E1；精確時序／音訊與E2待接 |
 | 28, 29, 31 | 同玩家 `276EC` derived-strike route，倍率分別20、12、18；28的target writer分母8且略過`29C90`，29／31分母1並保留逐target轉場 | `ExecuteNativeCommandDerivedStrike`；28已修正為單一可達impact marker發布roll的1/8，29／31補有獨立倍率回歸；`BuildNativeCommandDerivedStrikeSchedule`保存command-specific header／marker／audio／base／prelude／transition契約 | typed schedule已就緒；正式indexed owner／SFX播放與E2未接，不得借用command24 resource98 |
+
+指令 29 的玩家演出採獨立、原子化的多目標契約。只有 actor 的原始
+`BattleFig=34`、FIGANI resource104、FDOTHER #50 sample1／4、完整 raw command
+record 與所有 final targets 的 indexed background／idle 資產都可用時，正式 owner
+才可啟動。actor phase 只播放一次，並在 actor marker 只扣一次 MP；之後每個 final
+target 都各自播放 20 張 `0x29C90` 轉場、從 idle frame0 重設自己的游標，並在該
+target marker 發布對應 HP。所有 target 完成後才設定 `Acted` 並發放死亡獎勵。
+任一目標的資產、marker 或狀態發布失敗時，必須回復 actor 的 MP／`Acted` 及所有
+已發布 target 的 HP／raw `+5`，不得保留部分提交。這項契約只接玩家指令 29；敵方
+caller 的演出 owner、指令 28 的不同 prelude／無轉場路徑，以及指令 31 的 actor
+selector 尚未證實，仍維持失敗即關閉。
 | 30 | `1CFF0→14818→115B6` 先確認 record+3 candidate；再以 saved cursor→confirmed cursor 進 `149F8`，`count=record+3-16`、X-first cardinal line、只收 enemy，最後 `2A6BD→276EC` default倍率18 | `ExecuteNativeCommand30`（顯式兩 cursor、state-only final delta） | native cursor lifecycle／multi-hit／SFX／indexed UI 未接 |
 | 25 | `0x1CFF0→1D6C8→22C04`，#88 sub0＋八個DAC phases後清raw target `+5 bit7` | `ExecuteNativeCommand25`要求raw +5 provenance，只清`0x80`而不混用`Acted` | 玩家grid＋palette／sample已接E1；原版feedback／逐音訊E2未接 |
 | 26–27 | `0x1CFF0→1D6C8→22CBF/22E41→22D1B`，分別 write `+0x25/+0x26` | `ExecuteNativeCommandApplication`；完整preflight後才交易 | 玩家grid＋palette／sample已接E1；status名稱、expiry UI與逐音訊E2未接 |
