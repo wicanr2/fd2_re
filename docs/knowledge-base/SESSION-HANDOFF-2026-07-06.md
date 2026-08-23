@@ -5997,3 +5997,7 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - `NativeCommandDamagePlan` 現保存 command-specific `DamageStages`；ID6
   五段發布及第六段失敗即關閉回歸已通過。這只解除 numeric transaction
   的錯誤共用，不代表 ID6 正式 Game presenter 或一般玩家 E2 已完成。
+- handler `0x27053..0x270E6` 的 side／channel 分流亦已資料化：7張前導
+  mode1→mode2、12張target、7張尾段mode8→mode7 現都有 typed layer 與
+  indexed compositor 回歸。下一個單一缺口是正式 Game owner 的原子接線；
+  玩家ID6目前 fail-closed，敵方ID6目前仍是 state-only。

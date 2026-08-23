@@ -45,3 +45,39 @@ func ComposeNativeCommand6TargetFrame(base []byte, target figani.Frame, effect *
 	}
 	return out, nil
 }
+
+// ComposeNativeCommand6OrbitFrame preserves the caller's mode order for one
+// front or tail iteration. State and sound publication remain outside it.
+func ComposeNativeCommand6OrbitFrame(base []byte, effect *figani.Animation, frame figani.NativeCommand6OrbitFrame) ([]byte, error) {
+	if len(base) != nativeCommand0SurfaceSize || effect == nil || len(effect.Frames) != figani.NativeCommand6EffectFrameCount {
+		return nil, errors.New("battlepresent: incomplete command6 orbit frame input")
+	}
+	work := make([]byte, nativeCommand0WorkStride*nativeCommand0WorkHeight)
+	for y := 0; y < 200; y++ {
+		at := nativeCommand0ViewportBase + y*nativeCommand0WorkStride
+		copy(work[at:at+320], base[y*320:(y+1)*320])
+	}
+	draw := func(layers []figani.NativeCommand6Layer) error {
+		for _, layer := range layers {
+			if layer.Frame != 4 {
+				return fmt.Errorf("battlepresent: command6 orbit frame %d unavailable", layer.Frame)
+			}
+			if err := blitCommand0WorkFrame(work, effect.Frames[layer.Frame], layer.X, layer.Y); err != nil {
+				return fmt.Errorf("battlepresent: command6 mode%d channel%d: %w", layer.Mode, layer.Channel, err)
+			}
+		}
+		return nil
+	}
+	if err := draw(frame.First); err != nil {
+		return nil, err
+	}
+	if err := draw(frame.Second); err != nil {
+		return nil, err
+	}
+	out := make([]byte, nativeCommand0SurfaceSize)
+	for y := 0; y < 200; y++ {
+		at := nativeCommand0ViewportBase + y*nativeCommand0WorkStride
+		copy(out[y*320:(y+1)*320], work[at:at+320])
+	}
+	return out, nil
+}

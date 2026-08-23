@@ -32,3 +32,19 @@ func TestComposeNativeCommand6TargetFrameRejectsInvalidLayer(t *testing.T) {
 		t.Fatal("out-of-range command6 layer accepted")
 	}
 }
+
+func TestComposeNativeCommand6OrbitFramePreservesLayerOrder(t *testing.T) {
+	effect := &figani.Animation{Frames: make([]figani.Frame, figani.NativeCommand6EffectFrameCount), HeaderByte2: figani.NativeCommand6EffectFrameCount}
+	effect.Frames[4] = figani.Frame{Width: 1, Height: 1, Pixels: []byte{7}, Mask: []byte{1}}
+	frame := figani.NativeCommand6OrbitFrame{
+		First:  []figani.NativeCommand6Layer{{Mode: 1, Frame: 4, X: 1, Y: 1}},
+		Second: []figani.NativeCommand6Layer{{Mode: 2, Frame: 4, X: 2, Y: 1}},
+	}
+	got, err := ComposeNativeCommand6OrbitFrame(make([]byte, 320*200), effect, frame)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got[1*320+1] != 7 || got[1*320+2] != 7 {
+		t.Fatalf("orbit pixels=%d,%d", got[1*320+1], got[1*320+2])
+	}
+}

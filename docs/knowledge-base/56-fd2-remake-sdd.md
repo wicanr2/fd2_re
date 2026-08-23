@@ -770,6 +770,11 @@ command-specific denominator；只做狀態交易時可直接發布最後一段�
 presenter 必須依 marker 逐段發布。command6 是 5 段 HP、12 張 target frame、
 11 個 raw marker，後 6 個 marker 不可重複寫 HP。
 
+command6 的 orbit 合成也採 typed layer：raw side 非零時 mode1/7 只畫
+channel0..1、mode2/8 只畫 channel2..4；raw side 零時只有 mode2/8 畫全部
+五個 channel。全部固定 effect frame4。前導從 radius0 開始，每輪
+mode1→mode2 後加6；尾段從 radius42 開始，每輪 mode8 後減6再 mode7。
+
 ID1另以`NativeCommand1PresentationSchedule`保存`0x262EF`的兩組八槽
 mode4→target→mode5合成：X=`[-59,-39,0,39,55,39,0,-39]`、
 Y=`[-10,-24,-30,-24,-10,4,10,4]`、X anchor=`0x50`，raw side零值再加

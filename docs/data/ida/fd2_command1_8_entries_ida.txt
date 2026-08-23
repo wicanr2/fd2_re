@@ -212,6 +212,13 @@ preserved.
   the eleven raw markers continue animation but do not write HP.
 - Mode6 at `0x2B166` supplies seven tail frames. Each calls mode8 at
   `0x2B1B6`, then mode7 at `0x2B23B`.
+- The direct handler branch `0x27053..0x270E6` fixes the orbit layers. For
+  raw side nonzero, mode1/7 draw channels0..1 and mode2/8 draw channels2..4.
+  For raw side zero, mode1/7 draw nothing and mode2/8 draw all five channels.
+  Every orbit layer uses effect frame4 at the five computed coordinates.
+  Mode2 increments radius by6 after drawing; mode8 decrements radius by6
+  after drawing. Mode0 starts radius0 and mode6 starts radius42, so the seven
+  front and seven tail iterations are exact inverse radial schedules.
 
 This closes the shared schedule and HP consumer as proven evidence. It does
 not rename `0x2A289` as a separate numeric-text writer: the directly proven

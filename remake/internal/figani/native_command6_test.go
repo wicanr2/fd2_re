@@ -45,6 +45,32 @@ func TestNativeCommand6CoordinatesPreserveFivePointFormula(t *testing.T) {
 	}
 }
 
+func TestNativeCommand6OrbitPlansPreserveModeOrderAndSideSplit(t *testing.T) {
+	schedule, _ := BuildNativeCommand6PresentationSchedule(1, command6TestAnimation())
+	front, err := PlanNativeCommand6PreludeFrame(0, 1, schedule)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(front.First) != 2 || len(front.Second) != 3 || front.First[0].Mode != 1 || front.Second[0].Mode != 2 || front.NextRadius != 6 {
+		t.Fatalf("front=%+v", front)
+	}
+	tail, err := PlanNativeCommand6TailFrame(42, 1, schedule)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(tail.First) != 3 || len(tail.Second) != 2 || tail.First[0].Mode != 8 || tail.Second[0].Mode != 7 || tail.NextRadius != 36 {
+		t.Fatalf("tail=%+v", tail)
+	}
+	zeroSchedule, _ := BuildNativeCommand6PresentationSchedule(0, command6TestAnimation())
+	zero, err := PlanNativeCommand6PreludeFrame(0, 0, zeroSchedule)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(zero.First) != 0 || len(zero.Second) != 5 {
+		t.Fatalf("zero-side front=%+v", zero)
+	}
+}
+
 func TestNativeCommand6TargetPlanMarksNumericBoundaryWithoutEndingLoop(t *testing.T) {
 	schedule, _ := BuildNativeCommand6PresentationSchedule(1, command6TestAnimation())
 	points := NativeCommand6Coordinates(10, schedule.BaseByte)
@@ -84,6 +110,37 @@ func TestNativeCommand6TargetPlanRunsMode3TwelveFrameBudget(t *testing.T) {
 	}
 	if markers != 11 {
 		t.Fatalf("numeric marker count=%d want11 across mode3 budget12", markers)
+	}
+}
+
+func TestNativeCommand6TargetSequenceConsumesOnlyFirstFiveMarkers(t *testing.T) {
+	schedule, _ := BuildNativeCommand6PresentationSchedule(1, command6TestAnimation())
+	frames, err := BuildNativeCommand6TargetSequence(schedule, NativeCommand6Coordinates(10, schedule.BaseByte), 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(frames) != NativeCommand6TargetFrames {
+		t.Fatalf("frames=%d want=%d", len(frames), NativeCommand6TargetFrames)
+	}
+	markers, published := 0, 0
+	for index, frame := range frames {
+		if frame.NumericMarker {
+			markers++
+		}
+		if frame.HPStage != 0 {
+			published++
+			if frame.HPStage != published {
+				t.Fatalf("frame %d HP stage=%d want=%d", index, frame.HPStage, published)
+			}
+		}
+	}
+	if markers != 11 || published != NativeCommand6DamageStages {
+		t.Fatalf("markers=%d published=%d", markers, published)
+	}
+	for index := 6; index < len(frames); index++ {
+		if frames[index].HPStage != 0 {
+			t.Fatalf("late frame %d republished HP stage %d", index, frames[index].HPStage)
+		}
 	}
 }
 

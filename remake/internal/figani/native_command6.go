@@ -9,6 +9,8 @@ const (
 	NativeCommand6EffectFrameCount = 10
 	NativeCommand6ChannelCount     = 5
 	NativeCommand6SoundResource    = 87
+	NativeCommand6TargetFrames     = 12
+	NativeCommand6DamageStages     = 5
 )
 
 var nativeCommand6DwordTable = [NativeCommand6ChannelCount]int{10, 8, 3, 0, 0}
@@ -33,6 +35,12 @@ type NativeCommand6TargetFrame struct {
 	Mode4, Mode5  []NativeCommand6Layer
 	Next          NativeCommand6TargetState
 	NumericMarker bool
+	HPStage       int
+}
+
+type NativeCommand6OrbitFrame struct {
+	First, Second []NativeCommand6Layer
+	NextRadius    int
 }
 
 // NativeCommand6PresentationSchedule 保存 0x26E39 已由直接指令閉合的
@@ -60,6 +68,53 @@ func NativeCommand6Coordinates(radius int, baseByte byte) [NativeCommand6Channel
 		}
 	}
 	return points
+}
+
+func nativeCommand6OrbitLayers(mode, radius int, rawSide byte, schedule NativeCommand6PresentationSchedule) ([]NativeCommand6Layer, error) {
+	if schedule.EffectResource != 32 && schedule.EffectResource != 33 {
+		return nil, fmt.Errorf("figani: command6 orbit schedule unavailable")
+	}
+	points := NativeCommand6Coordinates(radius, schedule.BaseByte)
+	layers := make([]NativeCommand6Layer, 0, NativeCommand6ChannelCount)
+	for channel, point := range points {
+		draw := false
+		if rawSide == 0 {
+			draw = mode == 2 || mode == 8
+		} else if mode == 1 || mode == 7 {
+			draw = channel < 2
+		} else if mode == 2 || mode == 8 {
+			draw = channel > 1
+		}
+		if draw {
+			layers = append(layers, NativeCommand6Layer{Mode: mode, Channel: channel, Frame: 4, X: point.X, Y: point.Y})
+		}
+	}
+	return layers, nil
+}
+
+func PlanNativeCommand6PreludeFrame(radius int, rawSide byte, schedule NativeCommand6PresentationSchedule) (NativeCommand6OrbitFrame, error) {
+	first, err := nativeCommand6OrbitLayers(1, radius, rawSide, schedule)
+	if err != nil {
+		return NativeCommand6OrbitFrame{}, err
+	}
+	second, err := nativeCommand6OrbitLayers(2, radius, rawSide, schedule)
+	if err != nil {
+		return NativeCommand6OrbitFrame{}, err
+	}
+	return NativeCommand6OrbitFrame{First: first, Second: second, NextRadius: radius + 6}, nil
+}
+
+func PlanNativeCommand6TailFrame(radius int, rawSide byte, schedule NativeCommand6PresentationSchedule) (NativeCommand6OrbitFrame, error) {
+	first, err := nativeCommand6OrbitLayers(8, radius, rawSide, schedule)
+	if err != nil {
+		return NativeCommand6OrbitFrame{}, err
+	}
+	next := radius - 6
+	second, err := nativeCommand6OrbitLayers(7, next, rawSide, schedule)
+	if err != nil {
+		return NativeCommand6OrbitFrame{}, err
+	}
+	return NativeCommand6OrbitFrame{First: first, Second: second, NextRadius: next}, nil
 }
 
 func NewNativeCommand6TargetState() NativeCommand6TargetState {
@@ -143,6 +198,31 @@ func PlanNativeCommand6TargetFrame(state NativeCommand6TargetState, schedule Nat
 		}
 	}
 	return NativeCommand6TargetFrame{Mode4: mode4, Mode5: mode5, Next: next, NumericMarker: numericMarker}, nil
+}
+
+// BuildNativeCommand6TargetSequence binds the twelve mode3 frames to the
+// outer 0x2A6BD consumer. All eleven raw markers remain visible, but only the
+// first five publish HP because 0x525AF[6] is five.
+func BuildNativeCommand6TargetSequence(schedule NativeCommand6PresentationSchedule, points [NativeCommand6ChannelCount]NativeCommand6Point, rawSide byte) ([]NativeCommand6TargetFrame, error) {
+	state := NewNativeCommand6TargetState()
+	frames := make([]NativeCommand6TargetFrame, 0, NativeCommand6TargetFrames)
+	hpStage := 0
+	for index := 0; index < NativeCommand6TargetFrames; index++ {
+		frame, err := PlanNativeCommand6TargetFrame(state, schedule, points, rawSide)
+		if err != nil {
+			return nil, err
+		}
+		if frame.NumericMarker && hpStage < NativeCommand6DamageStages {
+			hpStage++
+			frame.HPStage = hpStage
+		}
+		frames = append(frames, frame)
+		state = frame.Next
+	}
+	if hpStage != NativeCommand6DamageStages {
+		return nil, fmt.Errorf("figani: command6 HP marker count incomplete: %d", hpStage)
+	}
+	return frames, nil
 }
 
 func BuildNativeCommand6PresentationSchedule(rawSide byte, effect *Animation) (NativeCommand6PresentationSchedule, error) {
