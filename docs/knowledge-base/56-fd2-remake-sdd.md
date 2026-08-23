@@ -1052,7 +1052,7 @@ IDs32..35；原始可達來源是 portrait/visual group 4..7 的 optional class-
 因此可證實這些**玩家可達 class-19 路徑不經已知 MP debit sink**，即使 record `+5` 的 selector gate 仍要求
 76/52/28/36 MP。這不是「所有 runtime entity 免費」或 transaction rollback 的結論；AI／未盤點 runtime unit
 visual group、其他 MP writer 與其餘 compound transaction 仍未閉合；下段只對已證實
-class19玩家來源開放ID33／34／35，其他路徑保持 fail-closed。
+class19玩家來源開放ID32／33／34／35，其他路徑保持 fail-closed。
 
 The wrapper's only direct caller is `0x2a7ce`, entered from `0x2a6bd` when
 the opaque command selector is `>=0x20`; it passes four caller-owned values
@@ -1093,10 +1093,20 @@ records，依原始順序呼叫三次`0x22D1B`：command26寫`+0x25`、command22
 一次發布HP、三個raw marker、最終RNG與actor `Acted`。缺class／BattleFig、target
 raw provenance、MP gate、target geometry或任一stage時，actor與所有targets保持
 零修改。這只關閉ID35玩家state transaction；`0x27FC9` indexed presentation、
-score／EXP、AI、其他BattleFig及高階狀態名稱仍失敗即關閉。ID32在
-`0x2111A→0x1C75E`與既有item damage helper的直接差異閉合前不接runtime。
+score／EXP、AI、其他BattleFig及高階狀態名稱仍失敗即關閉。
 主證據見
 [`fd2_command35_transaction_ida.txt`](../data/ida/fd2_command35_transaction_ida.txt)。
+
+指令32同樣只開放已證實的class19玩家來源與BattleFig 4／5／6／7／20；record32
+的76 MP只作可用性門檻。正式交易使用caller final-target geometry，並固定取
+command32 raw row與每個target class的`word_51F96` multiplier；依target順序共用
+同一RNG，未命中只推進一次，命中再推進第二次並套用`0x1C75E→0x1C81F`傷害公式。
+所有target row、raw provenance、HP與resistance均先驗證，全部可解析後才一次發布
+HP、最終RNG與actor `Acted`；不寫`+0x25..+0x27`，也不在這五條已證實來源扣MP。
+這只關閉ID32玩家state transaction；`0x1C4CC→0x1CAC7` indexed presentation、
+逐target的`0x1E0DB/0x1E1DC`結果畫面、score／EXP、AI與一般玩家E2仍失敗即關閉。
+主證據見
+[`fd2_command32_transaction_ida.txt`](../data/ida/fd2_command32_transaction_ida.txt)。
 
 command 0 的 selector boundary 也已縮小：`0x1cff0` 對一般 record（非 command `0x17`／`0x1e` special
 branch）先以 actor cell、`record[+3]`、`record[+6]` 呼叫 `0x14818`，把可選中心的 unit indices 寫進 caller

@@ -5880,3 +5880,19 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   score／EXP、敵方owner與一般玩家E2仍未閉合；ID32仍等待
   `0x2111A→0x1C75E`與既有item helper的直接差異證據。command29敵方路徑缺少
   selector／resource／owner證據，不能把玩家多目標交易猜接到AI。
+
+## 2026-08-23：ID32 class19 玩家原子 command-damage transaction
+
+- 授權Docker內IDA Pro 9.4固定`0x2857F..0x28594`的ID32分支、
+  `0x2111A..0x211A4`逐target wrapper與`0x1C75E..0x1C81F`數值writer；主證據為
+  [`fd2_command32_transaction_ida.txt`](../data/ida/fd2_command32_transaction_ida.txt)。
+  數值公式、命中／傷害RNG與既有typed helper相同，但原版另有固定command32 row、
+  caller final-target list及`0x1C4CC→0x1CAC7`前置演出。
+- 正式交易只接受raw class19與BattleFig 4／5／6／7／20的玩家來源，record32
+  76 MP只作gate；先驗證所有target raw provenance、class resistance與HP，在私有
+  結果中按順序推進共享RNG，最後才一次發布HP、RNG與`Acted`。未命中只消耗一次
+  RNG，命中消耗兩次；不寫raw marker，也不在這五條已證實來源扣MP。
+- 聚焦Docker回歸涵蓋命中、未命中單次RNG、未證實selector、MP不足、缺resistance、
+  缺raw provenance的原子失敗，以及正式grid→confirm路徑。
+- 此批只達ID32玩家state transaction的`RUNTIME-E1`。`0x1C4CC→0x1CAC7`、
+  `0x1E0DB/0x1E1DC`結果畫面、score／EXP、AI與一般玩家E2仍未閉合。

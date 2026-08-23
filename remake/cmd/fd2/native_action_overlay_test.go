@@ -327,12 +327,12 @@ func TestNativeActionSelectableRejectsDisabledWordAndInvalidDirection(t *testing
 
 func TestNativeCommandTargetWhitelistKeepsUnresolvedIDsFailClosed(t *testing.T) {
 	g := &Game{}
-	for _, id := range []int{0, 13, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 31, 33, 34, 35} {
+	for _, id := range []int{0, 13, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35} {
 		if !g.nativeCommandTargetSupported(id) {
 			t.Fatalf("verified target/effect id %d was rejected", id)
 		}
 	}
-	for _, id := range []int{-1, 1, 9, 10, 23, 30, 32, 36} {
+	for _, id := range []int{-1, 1, 9, 10, 23, 30, 36} {
 		if g.nativeCommandTargetSupported(id) {
 			t.Fatalf("unresolved target/effect id %d was enabled", id)
 		}
@@ -439,6 +439,37 @@ func TestNativeCommand35ConfirmConsumesProvenClass19Transaction(t *testing.T) {
 		actor.NativeTransient[3] == 0 || actor.NativeTransient[4] == 0 || actor.NativeTransient[5] == 0 ||
 		target.NativeTransient[3] == 0 || target.NativeTransient[4] == 0 || target.NativeTransient[5] == 0 {
 		t.Fatalf("command35 production confirm did not publish all stages actor=%#v target=%#v msg=%q", actor, target, g.msg)
+	}
+}
+
+func TestNativeCommand32ConfirmConsumesProvenClass19Transaction(t *testing.T) {
+	actor := &battle.Unit{
+		Camp: battle.Own, OnField: true, X: 0, Y: 0, HP: 100, MaxHP: 100, MP: 80, Lv: 20,
+		ClassID: 5, BattleFig: 4, HasBattleFig: true, NativeRecordClass: 19, HasNativeRecordClass: true,
+		HasNativeRecordByte5: true,
+	}
+	target := &battle.Unit{
+		Camp: battle.Enemy, OnField: true, X: 1, Y: 0, HP: 100, MaxHP: 100, Lv: 12,
+		ClassID: 5, BattleFig: 5, HasBattleFig: true, NativeRecordClass: 2, HasNativeRecordClass: true,
+		HasNativeRecordByte5: true,
+	}
+	book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
+	for id := range book {
+		book[id] = battle.NativeCommandRecord{ID: id}
+	}
+	book[32] = battle.NativeCommandRecord{ID: 32, Damage: 50, Hit: 100, SelectionMode: 1, EffectMode: 0, MPCost: 76, TargetCode: 0}
+	state := &battle.State{
+		W: 2, H: 1, Units: []*battle.Unit{actor, target}, NativeCommandBook: book,
+		NativeCommandResistances: map[int]int{5: 10}, NativeCompositionEventBytes: make([]byte, 2),
+		NativeTileBlitModes: make([]byte, 2), NativeMapRangeMode: 2, HasNativeMapRangeModeState: true,
+	}
+	g := &Game{
+		m: &MapData{W: 2, H: 1}, st: state, sel: actor, curX: 1, curY: 0,
+		nativeCommand0Targeting: true, nativeCommandTargetID: 32, nativeRNGState: 7,
+	}
+	g.confirm()
+	if !actor.Acted || actor.MP != 80 || target.HP >= 100 || g.nativeRNGState == 7 {
+		t.Fatalf("command32 production confirm did not publish actor=%#v target=%#v msg=%q", actor, target, g.msg)
 	}
 }
 

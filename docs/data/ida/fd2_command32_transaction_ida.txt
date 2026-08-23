@@ -1,0 +1,53 @@
+FD2 command 32 bounded player transaction — IDA Pro 9.4 evidence
+=================================================================
+
+Evidence identity
+-----------------
+
+- Input: FD2.EXE, size 357074
+- MD5: b97caf2239a27a896069d03549d96e1e
+- SHA-256: 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f
+- Tool/address space: licensed IDA Pro 9.4 Docker workflow; flat-loader
+  linear addresses. The original input was mounted read-only.
+- Annotation policy: original names and addresses are retained. Gameplay
+  semantics below are additive and carry an explicit evidence level.
+
+Direct control and data flow
+----------------------------
+
+- **Proven:** 0x2A7CE is the sole direct call to sub_27FC9
+  (0x27FC9..0x286BD). At 0x2857F the wrapper compares arg_4 with 0x20,
+  then 0x28586..0x28594 passes command32, caller-owned target bytes/count and
+  actor to sub_2111A.
+- **Proven:** sub_2111A (0x2111A..0x211A4) calls 0x1C4CC and 0x1CAC7 before
+  its target loop. For each caller target, 0x21176 calls
+  0x1C75E(target, commandID); the return selects 0x1E0DB or 0x1E1DC.
+  The tail calls 0x11CAC and 0x1DF58.
+- **Proven:** sub_1C75E (0x1C75E..0x1C81F) indexes command row 0x4E516 and
+  class multiplier word_51F96. Base is signed row.word[0] * multiplier / 10.
+  One 0x4E893 RNG roll applies row.byte[2] as the hit threshold; a hit enters
+  0x1C81F and consumes a second roll for
+  floor(base*0.9)+floor((rng%100)*base/1000), then clamps HP at zero.
+- **Proven:** this chain does not write record+0x25..+0x27. 0x1C75E itself
+  neither debits MP nor writes score/EXP. This negative local observation does
+  not prove that a higher caller has no score/EXP consumer.
+- **Proven, inherited resource evidence:** class19 player BattleFig
+  4/5/6/7/20 reaches FIGANI 13/16/19/22/61. Their header byte+4 values
+  2/2/2/5/5 bypass the only known 0x2B659 call to the 0x1CA89 MP debit sink;
+  record32 still supplies its 76-point availability gate. No AI or other
+  visual group is covered.
+
+Remake contract
+---------------
+
+- Accept only the proven player class19/BattleFig sources, a verified ID32
+  command row, sufficient MP, complete native target geometry and a class
+  resistance for every final target.
+- Resolve the already-built final target list in order with one shared RNG:
+  one roll on a miss, two on a hit. Stage every HP result privately, then
+  publish HP, final RNG and actor Acted atomically after all preflight checks.
+- Do not write raw transient markers and do not debit MP for these five proven
+  sources.
+- **Unknown/fail-closed:** the 0x1C4CC→0x1CAC7 indexed presentation,
+  0x1E0DB/0x1E1DC result frames, exact SFX/palette timing, score/EXP, AI,
+  other BattleFig sources and general-player E2.

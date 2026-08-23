@@ -66,6 +66,13 @@
 | DOS/4GW、Watcom runtime、Miles 驅動與一般函式庫 | 第一輪分類 | 不適用 | 只在行為外露時處理 | 不適用 | IDA 清冊1305函式中170筆由 Watcom FLIRT 標成 runtime；其餘未分類不能都算產品程式。後續只擴充分級索引，不把函式庫未命名算成 remake 缺口。 |
 | 三平台打包與推廣片 | 不適用 | 部分 | 尚未達發行閘門 | 缺完整玩家驗收 | 這不是反組譯問題。待核心戰役、操作 UI、結局與代表性一般玩家路徑關閉後，再做 Linux／Windows／macOS 打包與影片。 |
 
+**2026-08-23 ID32 現況勘誤**：上表「玩家指令、法術、物品與交易」列尾端仍保留
+本批開始時「ID32失敗即關閉」的快照文字；該單一敘述已由
+[`fd2_command32_transaction_ida.txt`](../data/ida/fd2_command32_transaction_ida.txt)
+取代。ID32現與33／34／35同為受限class19玩家state transaction `RUNTIME-E1`，
+正式grid→confirm已接；仍失敗即關閉的是`0x1C4CC→0x1CAC7` indexed演出、
+`0x1E0DB/0x1E1DC`結果畫面、score／EXP、AI、其他visual group與一般玩家E2。
+
 ## 四、目前可重生的數字，以及不能怎麼解讀
 
 2026-08-21 以唯讀 Docker 實跑現有稽核：
