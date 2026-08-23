@@ -209,6 +209,7 @@ type Game struct {
 	nativeClassUI            *nativeClassUIAssets
 	nativeLoadSlotsUI        *nativeLoadSlotsUIAssets
 	nativeClassUIJob         *nativeClassUIJob
+	transientUI              bool
 	nativeClassUIClock       nativeBIOSClock
 	nativeClassUIPulse       int
 	nativeClassUILastTick    int
@@ -6448,6 +6449,9 @@ func (g *Game) Update() error {
 	g.stepNativeSystemInfoUI()
 	g.stepNativeSystemEndTurn()
 	g.stepNativeClassUILifecycle(time.Now())
+	if g.transientUI {
+		return nil
+	}
 	if g.nativeSystemExitRequested {
 		return ebiten.Termination
 	}
@@ -7729,6 +7733,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	// Command UI is an indexed-sprite layer; it must not depend on an optional
 	// Chinese font being available in the runtime environment.
+	if g.transientUI && g.drawNativeClassUIJob(screen) {
+		return
+	}
 	if !g.drawNativeSystemEndTurn(screen) {
 		g.drawRing(screen)
 		g.drawNativeCommandGrid(screen)
@@ -9491,14 +9498,10 @@ func (g *Game) endTurn() {
 	// 0x1D8BA. This controller merges those two non-player unit scans, so keep
 	// the proven sweep order as one atomic pre-AI transaction.
 	if g.st.HasNativeRuntimeUnitProjection {
-		expired, err := g.applyNativeTransientPhases(1, 0)
-		if err != nil {
+		if err := g.beginNativeTransientPhases([]byte{1, 0}, g.beginEnemyPhase); err != nil {
 			g.loadErr = err.Error()
-			return
 		}
-		if len(expired) > 0 {
-			g.msg = fmt.Sprintf("%d 個原始狀態效果到期", len(expired))
-		}
+		return
 	}
 	g.beginEnemyPhase()
 }
@@ -9660,15 +9663,15 @@ func (g *Game) completeTurnPlayerPhase() {
 	// immediately before range mode 1/player input. Keep the raw selector;
 	// do not substitute normalized Camp.
 	if g.st != nil && g.st.HasNativeRuntimeUnitProjection {
-		expired, err := g.applyNativeTransientPhase(2)
-		if err != nil {
+		if err := g.beginNativeTransientPhases([]byte{2}, g.finishNativeTransientPlayerPhase); err != nil {
 			g.loadErr = err.Error()
-			return
 		}
-		if len(expired) > 0 {
-			g.msg = fmt.Sprintf("%d 個原始狀態效果到期", len(expired))
-		}
+		return
 	}
+	g.finishNativeTransientPlayerPhase()
+}
+
+func (g *Game) finishNativeTransientPlayerPhase() {
 	if g.result == "" {
 		g.showBanner("PLAYER PHASE")
 	}

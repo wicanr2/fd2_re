@@ -5383,9 +5383,14 @@ derived AP／DP／HIT／EV。整批先在私有 runtime records 與 units 完成
 排程，無法在不重寫 scheduler 的情況下保持兩段 scan 交錯。其最小充分接法是在
 合併排程前以單一交易依序執行 `1→0`，回到玩家輸入前再執行 `2`；這保存各 raw
 record 的倒數邊界與原始 sweep 順序，但不是兩個 unit-scan 的逐指令等價實作。
-selector 仍不得改名或映射成 normalized `Camp`。介面目前只能誠實顯示
-「原始狀態效果到期」的數量；`+0x22..+0x27` 的完整遊戲名稱／圖示仍未知，不能
-用 legacy `PoisonTurns`／`Sealed` 名稱冒充原版狀態列。
+selector 仍不得改名或映射成 normalized `Camp`。到期畫面依
+[`fd2_transient_expiry_presentation_ida.txt`](../data/ida/fd2_transient_expiry_presentation_ida.txt)
+消費目前 320×200 indexed map、raw `+7` 的 DATO 第一幀、FDOTHER #5 對話框、
+FDTXT #481..486 與 `0x9F23` 文字位置；每筆以六幀展開、五幀收合並復原來源。
+整批畫面先完整預建，缺背景、DATO、字型、文字或對話格時連倒數交易也不發布；
+最後一幀完成繪製才續接敵方或玩家階段。這是來源約束的 `RUNTIME-E1`，尚未證明
+原版精確停留 tick、音訊或一般玩家 E2。`+0x22..+0x27` 的完整遊戲名稱／圖示仍
+未知，不能用 legacy `PoisonTurns`／`Sealed` 名稱冒充原版狀態列。
 
 物品方面，`0x20C6F` 已恢復的 type 5..24 分派均已有正式交易消費端：HP／MP、
 marker 清除與套用、HIT／EV、AP／DP、基礎能力／容量、command damage 與 relocation。

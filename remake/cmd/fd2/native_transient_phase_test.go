@@ -2,8 +2,10 @@ package main
 
 import (
 	"encoding/binary"
+	"path/filepath"
 	"reflect"
 	"testing"
+	"time"
 )
 
 func TestNativeTransientPhaseExpiresAndRecomputesAtomically(t *testing.T) {
@@ -169,5 +171,62 @@ func TestEndTurnTicksRawSelectorsOneThenZeroBeforeEnemyPhase(t *testing.T) {
 			g.st.Units[0].NativeTransient, g.st.Units[1].NativeTransient,
 			g.st.NativeRuntimeRecords[0].Raw[0x22],
 			g.st.NativeRuntimeRecords[1].Raw[0x23])
+	}
+}
+
+func TestNativeTransientPresentationFailsClosedBeforeCountdown(t *testing.T) {
+	g, _, _ := nativeCurrentSaveTestGame(t)
+	unit := g.st.Units[0]
+	unit.NativeRecordByte6 = 2
+	unit.NativeTransient[0] = 1
+	g.st.NativeRuntimeRecords[0].Raw[6] = 2
+	g.st.NativeRuntimeRecords[0].Raw[0x22] = 1
+
+	if err := g.beginNativeTransientPhases([]byte{2}, nil); err == nil {
+		t.Fatal("missing indexed presentation assets were accepted")
+	}
+	if g.st.Units[0].NativeTransient[0] != 1 ||
+		g.st.NativeRuntimeRecords[0].Raw[0x22] != 1 ||
+		g.nativeClassUIJob != nil || g.transientUI {
+		t.Fatal("failed presentation published countdown or UI state")
+	}
+}
+
+func TestNativeTransientPresentationUsesOriginalIndexedAssets(t *testing.T) {
+	const base = "../../../org_game/炎龍騎士團/FLAME2"
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(base, "FDTXT.DAT"))
+	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(base, "DATO.DAT"))
+	g, _, _ := nativeCurrentSaveTestGame(t)
+	assets, err := loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.nativeClassUI = assets
+	g.nativeMapVGA = make([]byte, 320*200)
+	unit := g.st.Units[0]
+	unit.NativeRecordByte6 = 2
+	unit.NativeTransient[0] = 1
+	g.st.NativeRuntimeRecords[0].Raw[6] = 2
+	g.st.NativeRuntimeRecords[0].Raw[0x22] = 1
+	continued := false
+
+	if err := g.beginNativeTransientPhases([]byte{2}, func() { continued = true }); err != nil {
+		t.Fatal(err)
+	}
+	if continued || !g.transientUI || g.nativeClassUIJob == nil ||
+		len(g.nativeClassUIJob.frames) != 11 || len(g.nativeClassUIJob.restore) != 320*200 ||
+		g.st.Units[0].NativeTransient[0] != 0 ||
+		g.st.NativeRuntimeRecords[0].Raw[0x22] != 0 {
+		t.Fatalf("continued=%v presenting=%v job=%v duration=%d raw=%d",
+			continued, g.transientUI, g.nativeClassUIJob != nil,
+			g.st.Units[0].NativeTransient[0], g.st.NativeRuntimeRecords[0].Raw[0x22])
+	}
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if !continued || g.transientUI {
+		t.Fatalf("continued=%v presenting=%v", continued, g.transientUI)
 	}
 }
