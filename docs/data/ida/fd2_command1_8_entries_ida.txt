@@ -105,6 +105,40 @@ This closes the pure indexed compositor as `DATA-READY`; MP/HP/audio/action
 publication order and a normal unmodified enemy-turn capture remain outside
 0x262EF, so production transaction wiring remains fail-closed.
 
+ID1 outer-loop correction (2026-08-24)
+--------------------------------------
+
+Fresh IDA Pro 9.4 analysis initially exposed a database-boundary hazard: IDA
+merged 0x262EF into the preceding `sub_26152`, and Hex-Rays consequently
+produced a contradictory seven-slot body. Direct instructions from the fixed
+FD2.EXE fingerprint, independently decoded with Capstone 5.0.3, resolve the
+actual contract without renaming either original function:
+
+- `0x2630C/0x2631A` copy eight X and eight Y dwords; `0x26374..0x26379`
+  initializes eight counters and returns **31**, not nine.
+- mode4 draws slots0..3 at `0x26391..0x263D4`, then slots4..7 at
+  `0x263D6..0x26433`; mode5 draws the swapped groups at
+  `0x26448..0x264E1`. The earlier eight-slot layer description remains valid.
+- `0x264E3..0x26526` increments all eight counters on every mode5 call. It
+  returns numeric marker1 whenever a counter becomes9, producing eight HP
+  markers at target-frame steps `8,10,12,14,16,18,20,22` across the full
+  31-frame target budget. These align exactly with command1's denominator8.
+- The same increment loop directly calls `0x25A96(sound,1,1)` whenever a
+  counter becomes5, producing eight local sample markers at steps
+  `4,6,8,10,12,14,16,18`. Therefore the older claim that `0x262EF` has no
+  direct sample call is withdrawn; it resulted from an incomplete function
+  view.
+- Steps23..30 remain part of the owner loop even after the last numeric marker;
+  they may present only the target idle layer after all effect counters leave
+  `[0,15)`. A nine-frame compositor truncates both seven HP stages and the
+  animation tail and must not be used by a formal owner.
+
+Inference level: **proven** for the instructions, marker steps and 31-frame
+budget. The semantic role of sample1 is intentionally not named beyond its
+direct local owner. Formal Game ownership remains `DATA-READY` until common
+actor, all-target admission, transaction publication and continuation tests
+are connected.
+
 ID2 compositor correction and exact data (2026-08-23)
 ------------------------------------------------------
 

@@ -1,6 +1,7 @@
 package figani
 
 import (
+	"fmt"
 	"os"
 	"testing"
 )
@@ -29,7 +30,7 @@ func TestNativeCommand1SchedulePreservesRawTablesAndSides(t *testing.T) {
 	}
 }
 
-func TestNativeCommand1ModeFramesAndCompletion(t *testing.T) {
+func TestNativeCommand1ModeFramesAndMarkers(t *testing.T) {
 	counters, err := NativeCommand1Counters(0)
 	if err != nil || counters != [8]int{0, -2, -4, -6, -8, -10, -12, -14} {
 		t.Fatalf("mode3 counters=%v err=%v", counters, err)
@@ -44,10 +45,26 @@ func TestNativeCommand1ModeFramesAndCompletion(t *testing.T) {
 		t.Fatal("counter15 must not draw")
 	}
 	if _, err := NativeCommand1Counters(NativeCommand1PresentationFrames); err == nil {
-		t.Fatal("frame after the first completion marker was accepted")
+		t.Fatal("frame after the 31-frame target budget was accepted")
 	}
-	if !NativeCommand1Complete([8]int{8, 2, 0, -2, -4, -6, -8, -10}) || NativeCommand1Complete(counters) {
-		t.Fatalf("completion contract mismatch")
+	var numericSteps, sampleSteps []int
+	for step := 0; step < NativeCommand1PresentationFrames; step++ {
+		numeric, sample, err := NativeCommand1TargetMarkers(step)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if numeric {
+			numericSteps = append(numericSteps, step)
+		}
+		if sample {
+			sampleSteps = append(sampleSteps, step)
+		}
+	}
+	if got, want := fmt.Sprint(numericSteps), "[8 10 12 14 16 18 20 22]"; got != want {
+		t.Fatalf("numeric markers=%s want=%s", got, want)
+	}
+	if got, want := fmt.Sprint(sampleSteps), "[4 6 8 10 12 14 16 18]"; got != want {
+		t.Fatalf("sample markers=%s want=%s", got, want)
 	}
 }
 

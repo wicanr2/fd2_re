@@ -802,12 +802,16 @@ owner 已固定，但 mode5 在單幀內的多次 raw sample 呼叫目前以每�
 ID1另以`NativeCommand1PresentationSchedule`保存`0x262EF`的兩組八槽
 mode4→target→mode5合成：X=`[-59,-39,0,39,55,39,0,-39]`、
 Y=`[-10,-24,-30,-24,-10,4,10,4]`、X anchor=`0x50`，raw side零值再加
-`0x94`；slot0由counter0開始，任一遞增後等於9即完成，故共九張target frame。
+`0x94`。mode3回傳31，所以正式target budget是31張，不是九張；八個counter
+各自在遞增後等於9時產生numeric marker，依序落在step
+`8,10,12,14,16,18,20,22`，恰好對應八段HP。counter等於5的八個step
+`4,6,8,10,12,14,16,18`另直接播放sample1；step23..30仍須呈現，不可在最後
+numeric marker後提前收尾。
 資源#19/#21都必須是30-frame FIGANI，缺幀或格式不符即拒絕。
-2026-08-23勘誤：`0x262EF`本身沒有`0x25A96/0x25B45`呼叫，先前把counter5
-寫成ID1本地sample marker是錯誤斷言，已從typed data刪除；音訊與MP／HP發布
-仍由未閉合的外層owner負責，因此此合成器目前只列`DATA-READY`，不假裝成
-正式敵方`RUNTIME-E1`。
+2026-08-24再勘誤：先前受不完整IDA函式邊界影響而撤回counter5 sample marker；
+完整直接指令`0x26514..0x26523`證實`0x25A96(sound,1,1)`確實在ID1本地。
+音效高階名稱與正式Game owner仍未閉合，因此此合成器目前只列`DATA-READY`，
+不假裝成正式敵方`RUNTIME-E1`。
 
 ID2使用獨立`NativeCommand2PresentationSchedule`：raw side非零選FDOTHER #26，
 零值選#27，兩者都必須是18-frame FIGANI；音訊容器固定#83且只保存直接

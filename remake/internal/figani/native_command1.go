@@ -6,7 +6,7 @@ const (
 	NativeCommand1EffectFrameCount   = 30
 	NativeCommand1ChannelCount       = 8
 	NativeCommand1AnchorX            = 0x50
-	NativeCommand1PresentationFrames = 9
+	NativeCommand1PresentationFrames = 31
 )
 
 var nativeCommand1XOffsets = [NativeCommand1ChannelCount]int{-59, -39, 0, 39, 55, 39, 0, -39}
@@ -80,12 +80,20 @@ func NativeCommand1ModeFrame(mode, slot, counter int) (frame, offsetIndex int, o
 	}
 }
 
-// NativeCommand1Complete 保存 mode 5 在 counter 遞增後等於 9 時回傳完成。
-func NativeCommand1Complete(counters [NativeCommand1ChannelCount]int) bool {
+// NativeCommand1TargetMarkers 保存 mode 5 遞增八個 staggered counter 後的
+// 直接消費端：等於9時回傳 numeric marker，等於5時播放 sample1。
+func NativeCommand1TargetMarkers(step int) (numeric, sample bool, err error) {
+	counters, err := NativeCommand1Counters(step)
+	if err != nil {
+		return false, false, err
+	}
 	for _, counter := range counters {
 		if counter+1 == 9 {
-			return true
+			numeric = true
+		}
+		if counter+1 == 5 {
+			sample = true
 		}
 	}
-	return false
+	return numeric, sample, nil
 }

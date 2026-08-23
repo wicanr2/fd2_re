@@ -6032,3 +6032,17 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 音訊證據仍保守：#87 sub0／1／2／3 分別屬 common actor、target mode5、front
   mode0、tail mode6；目前 target sample 以每張呈現畫格一次播放近似，未重現
   單幀內全部 raw 呼叫的疊音，因此不宣稱精確音訊或 `PLAYER-E2`。
+
+## 2026-08-24：command1 九張target舊結論撤回
+
+- 重新以IDA Pro 9.4建立資料庫時，`0x262EF`被錯誤併入前一個函式，Hex-Rays
+  產生與舊證據矛盾的七槽結果；此輸出未被當成事實。Capstone直接指令確認
+  mode4／5仍各處理完整八槽，但mode3在`0x26379`回傳31，正式target loop是
+  31張，不是過去文件寫的九張。
+- mode5在31張內讓八個staggered counter分別抵達9，numeric marker精確落在
+  step `8,10,12,14,16,18,20,22`，與HP denominator8一致。counter抵達5時又在
+  `0x26514..0x26523`直接播放sample1，落在step
+  `4,6,8,10,12,14,16,18`；「ID1沒有本地sample call」舊斷言撤回。
+- typed schedule／compositor已改為接受完整31張並輸出兩組marker；正式Game
+  owner仍待common actor、全目標原子admission與continuation接線，所以維持
+  `DATA-READY`。

@@ -110,8 +110,10 @@ effect table，原版不經玩家專用`0x1D6C8` palette owner，故不把玩家
 RNG與`Acted`均不變；完成後才交給敵方continuation與死亡獎勵。ID1–8的
 `funcs_2AC25`不能外推ID0專屬演出。ID1現已閉合`0x262EF`的八槽位移、
 mode4→target→mode5順序與FDOTHER #19/#21 30-frame資源，並有純indexed
-compositor及原始資產回歸；勘誤：此entry沒有直接sample call。它只到
-`DATA-READY`，因外層MP／HP／音訊發布順序與正常producer E2未閉合，正式AI仍是
+compositor及原始資產回歸。2026-08-24直接指令再勘誤：mode3回傳31，八個
+numeric marker分布於step `8..22`的偶數步，八個sample1 marker分布於step
+`4..18`的偶數步；舊「九張、無直接sample call」已撤回。它只到
+`DATA-READY`，因common actor、全目標原子admission與正式producer尚未閉合，正式AI仍是
 既有state-only數值路徑而非完整演出；不得把「數值可執行」誤寫成「renderer
 失敗即關閉」或`RUNTIME-E1`畫面完成。
 
