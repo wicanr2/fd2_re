@@ -5211,7 +5211,7 @@ func (g *Game) ringInput() bool {
 // executor; other command labels remain visible but fail closed at confirm.
 func (g *Game) nativeCommandTargetSupported(id int) bool {
 	switch id {
-	case 0, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 31:
+	case 0, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 31, 34:
 		return true
 	default:
 		return false
@@ -6111,6 +6111,24 @@ func (g *Game) confirm() {
 		)
 		if gateErr != nil || !allowed {
 			g.msg = fmt.Sprintf("原始指令 %d：游標確認不合法", id)
+			return
+		}
+		if id == 34 {
+			actor := g.sel
+			result, err := g.st.ExecuteNativeCompoundCommand34(actor, tgt, g.nativeRNGState)
+			if err != nil {
+				g.msg = fmt.Sprintf("原始指令 34：請選擇有效目標 (%v)", err)
+				return
+			}
+			g.nativeRNGState = result.RNGState
+			actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
+			g.msg = "原始指令 34：完成三段 raw modifier"
+			g.finishSuccessfulUnitAction(actor, func() {
+				g.resetNativeTargetField()
+				g.st.MaterializeNativeMapRangeMode(1)
+				g.nativeCommand0Targeting, g.nativeCommandTargetID, g.sel, g.reach, g.moved = false, 0, nil, nil, false
+			})
+			g.checkResult()
 			return
 		}
 		if id >= 13 && id <= 16 {

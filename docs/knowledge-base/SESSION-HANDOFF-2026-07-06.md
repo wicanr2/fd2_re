@@ -5801,3 +5801,16 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   28或31，不得排除猜配。只有動態玩家路徑出現bit、找到新mask writer，或同actor
   raw `+7`與bit成對時才重開。證據見
   [`fd2_command28_31_reachability_ida.txt`](../data/ida/fd2_command28_31_reachability_ida.txt)。
+
+## 2026-08-23：ID34 class19 玩家原子 state transaction
+
+- 先依既有`0x27FC9`主證據寫規格，再接runtime；沒有重解helper。只接受raw
+  `NativeRecordClass==19`、`BattleFig`為4／5／6／7／20、record34 MP gate與
+  完整final-target raw provenance。這五條可達FIGANI resource已證實繞過唯一
+  `0x1CA89` debit sink，所以MP需至少28但成功後保持不變；不外推其他visual group。
+- 新交易以record34兩階段geometry建立私有`0x50` records，依
+  `0x22721→0x22866→0x22997`套用17／18／19；三段全成才一次發布raw
+  `+0x22..+0x24`、derived `+0x48..+0x4E`與actor `Acted`。缺任一stage零修改。
+- 正式command whitelist現開放ID34；command grid→target confirm→三段交易測試與
+  selector／target fail-closed測試通過。此為`RUNTIME-E1` state slice；
+  `0x27FC9` indexed presentation、EXP、ID32／33／35、AI與E2仍未完成。

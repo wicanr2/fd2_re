@@ -1046,7 +1046,8 @@ IDs32..35；原始可達來源是 portrait/visual group 4..7 的 optional class-
 而 `0x27fc9` 唯一 caller 是 `0x2a6bd`，`0x2b659` 是這條 presentation path 中唯一的 `0x1ca89` call site。
 因此可證實這些**玩家可達 class-19 路徑不經已知 MP debit sink**，即使 record `+5` 的 selector gate 仍要求
 76/52/28/36 MP。這不是「所有 runtime entity 免費」或 transaction rollback 的結論；AI／未盤點 runtime unit
-visual group、其他 MP writer 與 compound effect ordering 仍未閉合，engine 保持 fail-closed。
+visual group、其他 MP writer 與其餘 compound transaction 仍未閉合；下段只對已證實
+class19玩家來源開放ID34，其他路徑保持 fail-closed。
 
 The wrapper's only direct caller is `0x2a7ce`, entered from `0x2a6bd` when
 the opaque command selector is `>=0x20`; it passes four caller-owned values
@@ -1057,6 +1058,16 @@ then indexed redraw/present loops and resource cleanup run for all four IDs.
 marker/amount bytes as editable data. `Callee==0` denotes ID33's three direct
 byte clears, not a guessed helper. The plan does not execute, debit MP, choose
 targets, or infer effect/status names.
+
+指令34先形成一條受限的玩家狀態交易：只接受具完整raw class／selector provenance、
+`NativeRecordClass==19`且`BattleFig`為已證實可達group 4／5／6／7／20的actor；record34
+只作MP selector gate，不扣MP，因這五條固定資源路徑已證實全部繞過唯一已知
+`0x1CA89` sink。正式交易以record34的兩階段final targets建立私有`0x50` records，
+依`0x22721→0x22866→0x22997`順序連續套用17／18／19三個raw modifier，三段全部
+成功後才一次發布`+0x22..+0x24`與`+0x48..+0x4E`、保留MP並設定actor `Acted`。
+缺class／selector／target raw provenance、MP gate、RNG或任一stage時零修改。這只
+關閉ID34 state transaction；`0x27FC9` indexed presentation、ID32／33／35交易、
+AI／其他visual group與一般玩家E2仍失敗即關閉。
 
 command 0 的 selector boundary 也已縮小：`0x1cff0` 對一般 record（非 command `0x17`／`0x1e` special
 branch）先以 actor cell、`record[+3]`、`record[+6]` 呼叫 `0x14818`，把可選中心的 unit indices 寫進 caller
@@ -5418,7 +5429,7 @@ FDTXT #481..486 與 `0x9F23` 文字位置；每筆以六幀展開、五幀收合
 marker 清除與套用、HIT／EV、AP／DP、基礎能力／容量、command damage 與 relocation。
 此處的剩餘缺口是 indexed effect presentation、原版取消／不可用目標畫面與同狀態
 逐幀／逐音訊 E2，不再把「物品 effect 尚未接」列成數值交易缺口。未知 command、
-複合技與尚無正式 owner 的法術仍各自失敗即關閉。
+複合技中只有ID34已具受限玩家state owner；ID32／33／35與尚無正式owner的法術仍各自失敗即關閉。
 
 ## 2026-08-22 巢狀離場規格
 

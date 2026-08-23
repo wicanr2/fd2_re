@@ -327,15 +327,47 @@ func TestNativeActionSelectableRejectsDisabledWordAndInvalidDirection(t *testing
 
 func TestNativeCommandTargetWhitelistKeepsUnresolvedIDsFailClosed(t *testing.T) {
 	g := &Game{}
-	for _, id := range []int{0, 13, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 31} {
+	for _, id := range []int{0, 13, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 31, 34} {
 		if !g.nativeCommandTargetSupported(id) {
 			t.Fatalf("verified target/effect id %d was rejected", id)
 		}
 	}
-	for _, id := range []int{-1, 1, 9, 10, 23, 30, 32, 35, 36} {
+	for _, id := range []int{-1, 1, 9, 10, 23, 30, 32, 33, 35, 36} {
 		if g.nativeCommandTargetSupported(id) {
 			t.Fatalf("unresolved target/effect id %d was enabled", id)
 		}
+	}
+}
+
+func TestNativeCommand34ConfirmConsumesProvenClass19Transaction(t *testing.T) {
+	actor := &battle.Unit{
+		Camp: battle.Own, OnField: true, X: 0, Y: 0, HP: 100, MaxHP: 100, MP: 30,
+		AP: 100, DP: 80, HIT: 60, EV: 50, Lv: 20,
+		BattleFig: 4, HasBattleFig: true, NativeRecordClass: 19, HasNativeRecordClass: true,
+	}
+	target := &battle.Unit{
+		Camp: battle.Own, OnField: true, X: 1, Y: 0, HP: 90, MaxHP: 90,
+		AP: 70, DP: 60, HIT: 50, EV: 40, Lv: 12,
+		BattleFig: 5, HasBattleFig: true, NativeRecordClass: 2, HasNativeRecordClass: true,
+	}
+	book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
+	for id := range book {
+		book[id] = battle.NativeCommandRecord{ID: id}
+	}
+	book[34] = battle.NativeCommandRecord{ID: 34, SelectionMode: 5, EffectMode: 3, MPCost: 28, TargetCode: 1}
+	state := &battle.State{
+		W: 2, H: 1, Units: []*battle.Unit{actor, target}, NativeCommandBook: book,
+		NativeCompositionEventBytes: make([]byte, 2), NativeTileBlitModes: make([]byte, 2),
+	}
+	g := &Game{
+		m: &MapData{W: 2, H: 1}, st: state, sel: actor, curX: 1, curY: 0,
+		nativeCommand0Targeting: true, nativeCommandTargetID: 34, nativeRNGState: 1,
+	}
+	g.confirm()
+	if !actor.Acted || actor.MP != 30 || actor.NativeTransient[0] == 0 ||
+		actor.NativeTransient[1] == 0 || actor.NativeTransient[2] == 0 ||
+		target.NativeTransient[0] == 0 || target.NativeTransient[1] == 0 || target.NativeTransient[2] == 0 {
+		t.Fatalf("command34 production confirm did not publish all stages actor=%#v target=%#v msg=%q", actor, target, g.msg)
 	}
 }
 

@@ -149,6 +149,12 @@ func (s *State) executeNativeCommandModifierTargets(actor *Unit, targets []*Unit
 	if !SpendNativeCommandMP(actor, s.NativeCommandBook[debitID].MPCost) {
 		return NativeCommandModifierResult{}, fmt.Errorf("native command modifier insufficient MP after preflight")
 	}
+	publishNativeCommandModifierRecords(targets, records)
+	actor.Acted = true
+	return result, nil
+}
+
+func publishNativeCommandModifierRecords(targets []*Unit, records []byte) {
 	for i, target := range targets {
 		base := i * nativeRecordSize
 		copy(target.NativeTransient[:], records[base+0x22:base+0x28])
@@ -157,8 +163,6 @@ func (s *State) executeNativeCommandModifierTargets(actor *Unit, targets []*Unit
 		target.HIT = int(int16(binary.LittleEndian.Uint16(records[base+0x4c:])))
 		target.EV = int(int16(binary.LittleEndian.Uint16(records[base+0x4e:])))
 	}
-	actor.Acted = true
-	return result, nil
 }
 
 func nativeCommandModifierRecords(targets []*Unit) ([]byte, []byte, error) {
