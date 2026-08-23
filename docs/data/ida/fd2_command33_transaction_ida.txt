@@ -1,0 +1,69 @@
+FD2 command 33 bounded player transaction — IDA Pro 9.4 evidence
+=================================================================
+
+Evidence identity
+-----------------
+
+- Input: FD2.EXE, size 357074
+- MD5: b97caf2239a27a896069d03549d96e1e
+- SHA-256: 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f
+- Tool: IDA Pro 9.4, flat-loader linear address space
+- Exporter: tools/ida_probe_functions.py
+- Analysis policy: fresh disposable `.i64`; original names, operands, addresses
+  and direct xrefs retained; no rename, type, or database comment mutation.
+
+Question
+--------
+
+Can player command ID 33 publish a bounded state transaction without guessing
+the remaining `0x27FC9` indexed presentation or gameplay/status names?
+
+Direct instructions
+-------------------
+
+- **Proven:** `sub_2A6BD` is called by both the player selector owner
+  (`0x1D43C`, caller `sub_1CFF0`) and the enemy dispatcher
+  (`0x15400`, caller `sub_15311`). At `0x2A7B3..0x2A7CE`, selectors `>=0x20`
+  pass `(actor, selector, target_count, target_bytes)` to the sole direct
+  `sub_27FC9` call.
+- **Proven:** `sub_27FC9` is `0x27FC9..0x286BD`; its only direct xref is
+  `0x2A7CE`. It completes the common resource/presentation setup before the
+  ID-specific state branch.
+- **Proven:** the ID 33 branch begins at `0x285A1`. For every caller-owned
+  target byte, `0x285AC..0x285D5` computes the corresponding `0x50`-byte
+  runtime record and executes `memset(record+0x25, 0, 3)`. It then calls
+  `sub_211A4(actor, target_count, target_bytes, 0x320)` at
+  `0x285DC..0x285ED`.
+- **Proven:** the wrapper later joins its common tail at `0x286B0`; ID 33 does
+  not enter the ID 34 modifier calls at `0x285F4..0x28648`.
+- **Proven, inherited evidence:** `sub_211A4` is already closed as the ordered
+  target-list wrapper over the `sub_1C916` raw HP writer; the typed remake
+  implementation is `ApplyNativeRawHPRestoreList`.
+- **Proven, inherited resource evidence:** class 19 is the player-reachable
+  source for IDs 32..35. BattleFig selectors 4/5/6/7/20 select FIGANI
+  resources 13/16/19/22/61, whose container header byte `+4` values are
+  2/2/2/5/5. They bypass the only `sub_2B659` branch that calls the known
+  `sub_1CA89` MP debit sink (`header+4 == 1`). Command record 33 still supplies
+  the 52-point availability gate.
+
+Remake contract
+---------------
+
+- **Proven/bounded:** accept only a player actor with raw class 19 and
+  BattleFig 4/5/6/7/20; use record 33 to build the normal final target array;
+  require MP >= record cost but do not debit these proven routes.
+- Build private `0x50` target records with the raw fields consumed by
+  `sub_1C916`, clear `+0x25..+0x27`, then apply the ordered `0x320` HP restore.
+  Publish HP, the three cleared bytes, RNG and `Acted` only after all targets
+  pass preflight and the batch completes.
+- **Unknown/fail-closed:** indexed frames, exact samples, palette timing,
+  score/EXP consumer, enemy owner, other BattleFig sources and gameplay names
+  for `+0x25..+0x27` remain outside this transaction.
+
+Reproduction
+------------
+
+Run the authorized `fd2-ida-authorized-local` image without network, mount the
+original executable read-only, create a fresh `.i64` under `/tmp`, and export
+`FD2_IDA_ADDRESSES="0x27fc9 0x2a6bd 0x211a4"` with
+`tools/ida_probe_functions.py`. Delete the disposable database after review.

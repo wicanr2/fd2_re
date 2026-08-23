@@ -5814,3 +5814,17 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 正式command whitelist現開放ID34；command grid→target confirm→三段交易測試與
   selector／target fail-closed測試通過。此為`RUNTIME-E1` state slice；
   `0x27FC9` indexed presentation、EXP、ID32／33／35、AI與E2仍未完成。
+
+## 2026-08-23：command33 受限玩家 raw clear＋HP restore transaction
+
+- `RE-CLOSED`：授權 IDA Pro 9.4 以固定雜湊 `FD2.EXE` 的一次性資料庫重新固定
+  `0x27FC9` 唯一 caller `0x2A7CE`，以及ID33分支`0x285AC..0x285ED`：逐final
+  target清`+0x25..+0x27`，再以固定`0x320`呼叫`0x211A4`。新主證據為
+  [`fd2_command33_transaction_ida.txt`](../data/ida/fd2_command33_transaction_ida.txt)。
+- `RUNTIME-E1`：正式玩家command grid→cursor confirm現只對raw class19與BattleFig
+  4／5／6／7／20開放；record33的52 MP只作gate，不扣這五條已證實繞過debit
+  sink的來源。交易在私有records完成三byte clear與完整target-list回復後才一次發布
+  HP／raw transient／RNG／`Acted`，任一raw provenance或後段失敗均零修改。
+- 聚焦Docker回歸通過3個battle原子交易案例，以及Xvfb正式ID33／34 confirm與
+  whitelist。`0x27FC9` indexed presentation、score／EXP、ID32／35、AI、其他
+  BattleFig與一般玩家E2仍失敗即關閉。

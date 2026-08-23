@@ -17,7 +17,7 @@ type NativeCompoundCommand34Result struct {
 func (s *State) ExecuteNativeCompoundCommand34(actor, confirmed *Unit, rngState uint16) (NativeCompoundCommand34Result, error) {
 	const commandID = 34
 	if s == nil || actor == nil || actor.Acted || !actor.HasNativeRecordClass ||
-		actor.NativeRecordClass != 19 || !actor.HasBattleFig || !nativeCompoundCommand34PlayerSelector(actor.BattleFig) ||
+		actor.NativeRecordClass != 19 || !actor.HasBattleFig || !nativeCompoundPlayerSelector(actor.BattleFig) ||
 		len(s.NativeCommandBook) != NativeCommandRecordCount || s.NativeCommandBook[commandID].ID != commandID {
 		return NativeCompoundCommand34Result{}, fmt.Errorf("native compound command 34 player provenance unavailable")
 	}
@@ -56,7 +56,7 @@ func (s *State) ExecuteNativeCompoundCommand34(actor, confirmed *Unit, rngState 
 	return result, nil
 }
 
-func nativeCompoundCommand34PlayerSelector(selector int) bool {
+func nativeCompoundPlayerSelector(selector int) bool {
 	switch selector {
 	case 4, 5, 6, 7, 20:
 		return true

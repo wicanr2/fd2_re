@@ -1065,9 +1065,20 @@ targets, or infer effect/status names.
 `0x1CA89` sink。正式交易以record34的兩階段final targets建立私有`0x50` records，
 依`0x22721→0x22866→0x22997`順序連續套用17／18／19三個raw modifier，三段全部
 成功後才一次發布`+0x22..+0x24`與`+0x48..+0x4E`、保留MP並設定actor `Acted`。
-缺class／selector／target raw provenance、MP gate、RNG或任一stage時零修改。這只
-關閉ID34 state transaction；`0x27FC9` indexed presentation、ID32／33／35交易、
-AI／其他visual group與一般玩家E2仍失敗即關閉。
+缺class／selector／target raw provenance、MP gate、RNG或任一stage時零修改。這一段
+只定義ID34 state transaction；ID33契約見下段。`0x27FC9` indexed presentation、
+ID32／35交易、AI／其他visual group與一般玩家E2仍失敗即關閉。
+
+指令33採用相同的窄玩家來源閘門，但保留自己的 raw 交易：只接受
+`NativeRecordClass==19`與已證實可達的BattleFig 4／5／6／7／20；record33的52 MP
+只作可用性門檻，這五條FIGANI資源路徑不經已知`0x1CA89`扣款點。正式交易先用
+record33建立final targets，在私有`0x50` records逐筆清`+0x25..+0x27`，再依
+`0x285DC..0x285ED`以固定`0x320`呼叫已具型別的`ApplyNativeRawHPRestoreList`。
+所有目標、raw class／level／BattleFig、HP範圍與RNG均通過後，才一次發布HP、三個
+raw bytes、RNG與`Acted`；任一失敗保持actor／targets零修改。這只關閉ID33玩家
+state transaction；indexed presentation、score／EXP、AI、其他BattleFig與高階狀態名
+仍失敗即關閉。主證據見
+[`fd2_command33_transaction_ida.txt`](../data/ida/fd2_command33_transaction_ida.txt)。
 
 command 0 的 selector boundary 也已縮小：`0x1cff0` 對一般 record（非 command `0x17`／`0x1e` special
 branch）先以 actor cell、`record[+3]`、`record[+6]` 呼叫 `0x14818`，把可選中心的 unit indices 寫進 caller
@@ -5429,7 +5440,7 @@ FDTXT #481..486 與 `0x9F23` 文字位置；每筆以六幀展開、五幀收合
 marker 清除與套用、HIT／EV、AP／DP、基礎能力／容量、command damage 與 relocation。
 此處的剩餘缺口是 indexed effect presentation、原版取消／不可用目標畫面與同狀態
 逐幀／逐音訊 E2，不再把「物品 effect 尚未接」列成數值交易缺口。未知 command、
-複合技中只有ID34已具受限玩家state owner；ID32／33／35與尚無正式owner的法術仍各自失敗即關閉。
+複合技中ID33／34已具受限玩家state owner；ID32／35與尚無正式owner的法術仍各自失敗即關閉。
 
 ## 2026-08-22 巢狀離場規格
 
