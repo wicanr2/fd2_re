@@ -92,6 +92,11 @@ func LoadNativeCommandIndexedEntryTable(path string) (*NativeCommandIndexedEntry
 				return nil, fmt.Errorf("native command indexed entry %d sample marker is invalid", entry.CommandID)
 			}
 		}
+		if entry.CommandID == 6 && (entry.InitChannels != 5 || entry.DrawChannels != 5 ||
+			entry.ModeReturns["0"] != 7 || entry.ModeReturns["3"] != 12 || entry.ModeReturns["6"] != 7 ||
+			entry.UsesRNG || len(entry.SampleMarkers) != 3) {
+			return nil, errors.New("native command indexed entry 6 direct-instruction contract is invalid")
+		}
 		seen[entry.CommandID] = true
 	}
 	return &table, nil

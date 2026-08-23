@@ -781,6 +781,20 @@ frame15；mode5在零side先於`base-1-stride`畫frame15，再一律於
 schema填入這三張表。mode1／2／7／8的`0x2673F`座標來源與外層數值發布尚未
 完整資料化，因此本輪只允許target純合成器達`DATA-READY`。
 
+ID6以`NativeCommand6PresentationSchedule`保存`0x26E39`直接指令契約：
+mode0／3／6回傳7／12／7，五個runtime channel，raw dword table
+`[10,8,3,0,0]`與byte table`[10,8,3,0,0]`。raw side零值只反轉前三個
+dword、清前三個byte，並把base byte由30改為90。資源必須依side選#32/#33
+且為10-frame FIGANI；#87 nested samples1／2／3都必須存在。mode0直接sample2、
+mode6直接sample3、mode5分支使用sample1。mode1／2／7／8的浮點座標結果、
+mode4／5完整per-side圖層與外層數值發布未完成typed compositor前，只列
+`DATA-READY`，禁止採用已被原始指令否定的六槽／十項座標解釋。
+浮點座標另固定為五個`channel*72°`：`0x3C885→fcos`、`0x3C898→fsin`，
+X=`fistp(cos*radius+baseByte)`，Y=`fistp(sin*radius*1.2+30)`；角度轉換常數
+保留原始single-precision `0x3C8EFA2D`，轉整數使用nearest-even。mode2／8只在
+本輪五點繪製後分別將radius加／減6。此純函式可供未來compositor使用，但不
+自行發布global state。
+
 BG asset boundary：`BG.DAT` 是 LLLLLL archive；generic compositor 的前三個已知 layer #0/#1/#2 都是 `{u16 width,u16 height, 0x4e63d four-mode RLE}` single-frame payload，實測各為 320×100。`fdother.DecodeArchiveSingleFrame` 明確解這種無 frame-directory 的 archive entry，player-archive regression 對三個 layer 解入 320×100 indexed surface。它不替 `0x2b5e1` 的其他 raw selector 命名，也不自動把 current PNG background 當 native layer schedule。
 
 ### UI-03 action chooser availability contract（E0 partial）

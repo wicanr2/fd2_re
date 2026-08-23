@@ -96,6 +96,13 @@ ID2的`0x26528`亦已修正為自身state `0x53F7E..0x53F80`、#26/#27
 資產回歸達`DATA-READY`；mode1／2／7／8 helper座標、外層交易及正常敵方回合
 仍未閉合，不宣稱正式演出。
 
+ID6的`0x26E39`已由完整直接指令與原始資產交叉驗證：五個local table值、
+mode0／3／6回傳7／12／7、#32/#33十幀FIGANI及#87 samples1／2／3均已成
+strict typed schedule與實檔回歸，達`DATA-READY`。一次子代理探針曾誤解為
+六槽／mode0回傳2；Capstone完整body顯示那是錯誤函式資料流，尚未進版控且已
+撤回。`0x3C885/0x3C898`另由直接`fcos/fsin`閉合五點座標純函式；mode4／5完整圖層、外層交易及正常敵方回合
+仍未閉合，因此正式AI繼續使用既有state-only數值路徑，不冒稱演出E1。
+
 另經AI mode交叉核對，map13 index0雖有command30 bit，但raw mode低四位為8，
 `0x13A9A`直接走`0x1317D`，不進`0x14EF0/0x1598A/0x15311`。因此它不是敵方
 command30 producer，也不構成缺少AI executor的交付阻擋。

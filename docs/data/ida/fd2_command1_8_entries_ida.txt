@@ -51,7 +51,7 @@ Verified entry contracts
   mode6 returns8; modes2/5/8 use state 0x5401C..0x54053 and offset table
   0x524D0. Raw actor +6 zero adds 0x8F horizontally.
 - **ID6 0x26E39:** mode0 plays direct sample tuple and returns7; mode3
-  initializes five counters and returns12; mode6 sets raw tail state; modes
+  initializes five counters and returns12; mode6 plays sample3 and returns7; modes
   1/2/7/8 compute five coordinates, while4/5 draw and advance them. Tables
   0x524F8/0x5250C; state 0x54054..0x54096.
 - **ID7 0x272B8:** four initialized counter/index groups, three rendered
@@ -127,3 +127,40 @@ ID2 compositor correction and exact data (2026-08-23)
 
 The target compositor is `DATA-READY`; mode1/2/7/8 exact helper positions,
 outer MP/HP publication and a normal enemy-turn capture remain separate gates.
+
+ID6 direct-instruction correction and asset boundary (2026-08-24)
+----------------------------------------------------------------
+
+Capstone re-read of the complete 0x26E39..0x272B7 body resolves a discarded
+probe which had confused this entry with a different six-slot handler:
+
+- Entry setup copies exactly five signed dwords from 0x524F8
+  (`10,8,3,0,0`) to local `[esp+0..0x13]`, then five bytes from 0x5250C
+  (`10,8,3,0,0`) to `[esp+0x24..0x28]`. These tables are indexed by the
+  mode4/5 animation state0..4, not by ten selectors. If actor raw +6==0,
+  only the first three dwords are negated and the first three bytes cleared;
+  the raw base byte changes from30 to90.
+- Mode0 calls 0x25A96(sound,2,1), clears 0x54095/0x54096 and returns7.
+  Mode3 initializes five counters at 0,-1,-2,-3,-4 plus five secondary bytes,
+  swaps/copies the 0x5405C..0x54078 coordinate state, sets 0x54096 and returns12.
+  Mode6 calls 0x25A96(sound,3,1), writes 0x54095=42, then joins the mode0
+  return7 tail. The previous typed mode6 return0 is withdrawn.
+- Modes1/2/7/8 compute five coordinates into 0x54054 and 0x54068; modes2/8
+  respectively add/subtract6 from 0x54095. Modes4/5 consume the local dword
+  and byte tables with those coordinates. Mode5 advances each counter modulo5,
+  marks completion when the incremented counter equals2, uses 0x25B45 sample1,
+  and conditionally uses 0x25A96 sample1 at the directly visible branches.
+- 0x2A6BD selects FDOTHER #32 for raw +6!=0 or #33 for raw +6==0 and sound
+  container #87. #32/#33 are verified 10-frame FIGANI resources; #87 is an
+  LLLLLL container with five nested payloads.
+- 0x3C885 wraps 0x3C7B6, whose direct instruction is `fcos`; 0x3C898 wraps
+  0x3C7CF, whose direct instruction is `fsin`. For channel i=0..4 the angle
+  is `i*72*(float32 pi/180)`. The stored coordinates are FPU-rounded
+  `X=cos(angle)*radius+baseByte` and
+  `Y=sin(angle)*radius*1.2+30`; mode2 adds6 to radius after drawing and mode8
+  subtracts6.
+
+This closes the entry schedule, floating coordinate primitive and real-asset
+boundary as `DATA-READY`. The complete per-side mode4/5 compositor,
+outer transaction markers and normal enemy-turn comparison remain open; no
+renderer may substitute the discarded six-slot interpretation.

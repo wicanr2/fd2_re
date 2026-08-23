@@ -5960,3 +5960,22 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   此為`DATA-READY`；`0x2673F` helper其餘座標與外層MP／HP／音訊發布尚未接。
 - 同批盤點排除假缺口：map13 index0的command30 bit附著於raw mode8，原版直接走
   `0x1317D`而不進`0x14EF0/0x15311`，所以沒有敵方command30 owner需要補。
+
+## 2026-08-24：command6 `0x26E39` direct body與資源schedule
+
+- 初次子代理回報把相鄰六槽handler資料誤套到`0x26E39`；主流程以
+  `fd2-cap-local`重讀完整`0x26E39..0x272B7`，原始指令直接推翻該結果。錯誤的
+  mode0=2／mode6=8與六槽JSON未提交，權威契約仍以本段與主證據為準。
+- 正確entry setup複製五個dword`[10,8,3,0,0]`與五個byte同值；raw side零值
+  只反轉前三個dword、清前三個byte並把base 30改90。mode0播sample2回傳7；
+  mode3初始化五槽回傳12；mode6播sample3、state=42後回傳7。
+- `NativeCommand6PresentationSchedule`依side嚴格選FDOTHER #32/#33，兩者實檔
+  都是十幀FIGANI；#87 nested samples1／2／3亦逐一驗證非空。strict indexed
+  entry loader另固定mode6=7，避免舊typed值0回流。
+- `0x3C885→0x3C7B6`直接執行`fcos`，`0x3C898→0x3C7CF`直接執行`fsin`；
+  `NativeCommand6Coordinates`保存`channel*72°`、原始float弧度常數、
+  X=`cos*radius+base`、Y=`sin*radius*1.2+30`與nearest-even轉整數。radius10的
+  兩個side五點固定回歸已通過。
+- 此批達`RE-CLOSED/DATA-READY`。mode4／5完整counter／secondary-effect
+  compositor、外層MP／HP／音訊發布與正常敵方回合尚未接，AI仍是
+  state-only數值路徑，不宣稱renderer E1。

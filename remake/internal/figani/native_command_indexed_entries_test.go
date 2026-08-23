@@ -29,6 +29,11 @@ func TestLoadNativeCommandIndexedEntryTablePreservesCorrectedLinearEntries(t *te
 	if len(entry2.OffsetTables) != 0 || len(entry2.StateRanges) != 1 || len(entry2.SampleMarkers) != 3 {
 		t.Fatalf("command2 corrected ownership=%#v", entry2)
 	}
+	entry6, _ := table.Schedule(6)
+	if entry6.ModeReturns["0"] != 7 || entry6.ModeReturns["3"] != 12 || entry6.ModeReturns["6"] != 7 ||
+		entry6.InitChannels != 5 || entry6.DrawChannels != 5 || len(entry6.SampleMarkers) != 3 {
+		t.Fatalf("command6 direct-instruction contract=%#v", entry6)
+	}
 }
 
 func TestLoadNativeCommandIndexedEntryTableRejectsRawUnrelocatedAddress(t *testing.T) {
