@@ -102,7 +102,8 @@ strict typed schedule與實檔回歸，達`DATA-READY`。一次子代理探針�
 六槽／mode0回傳2；Capstone完整body顯示那是錯誤函式資料流，尚未進版控且已
 撤回。`0x3C885/0x3C898`另由直接`fcos/fsin`閉合五點座標純函式；mode4／5完整圖層、外層交易及正常敵方回合
 現亦以兩張typed target draw plan與indexed compositor閉合，包含side分支、
-counter modulo5、frame4負值替代及frame5..9 secondary effect。外層actor/tail、
+十二張mode3 budget、counter numeric marker、frame4負值替代及frame5..9
+secondary effect。外層actor/tail、
 交易marker及正常敵方回合仍未閉合，因此正式AI繼續使用既有state-only數值
 路徑，不冒稱演出E1。
 

@@ -177,11 +177,14 @@ ID6 mode4/5 target draw plan (2026-08-24)
 - A main draw uses the precomputed five-point coordinate plus
   `localDword[state]` on X and `localByte[state]` on Y. The ordering is all
   mode4 main layers, target idle, then all mode5 main layers.
-- Mode5 then increments every counter modulo5 and marks complete when an
-  incremented counter equals2. A nonzero secondary byte draws that frame at
+- Mode5 then increments every counter modulo5 and returns the raw numeric
+  marker when an incremented counter equals2. A nonzero secondary byte draws that frame at
   `(point.X-60,point.Y-20)`, then increments modulo10. Because channel0 starts
-  at0, the first pass leaves it1 and the second pass leaves it2; the native
-  target loop therefore completes after two mode4→target→mode5 frames.
+  at0, the first pass leaves it1 and the second pass first raises the marker.
+  This does not end the target loop: mode3's return12 fixes twelve
+  mode4→target→mode5 frames. Across that budget the marker is false once then
+  true eleven times.
 
-The typed draw plan/compositor may publish only pixels. Sample1 call variants,
-MP/HP and action completion remain owned by the outer presentation job.
+The typed draw plan/compositor may publish only pixels and preserve the raw
+numeric marker. Sample1 call variants, MP/HP and action completion remain owned
+by the outer presentation job.

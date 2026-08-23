@@ -5976,10 +5976,13 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   `NativeCommand6Coordinates`保存`channel*72°`、原始float弧度常數、
   X=`cos*radius+base`、Y=`sin*radius*1.2+30`與nearest-even轉整數。radius10的
   兩個side五點固定回歸已通過。
-- `NativeCommand6TargetState/Plan`再保存mode3初始counter、兩張
-  mode4→target→mode5、side主圖層選擇、counter modulo5完成與frame5..9
+- `NativeCommand6TargetState/Plan`再保存mode3初始counter、十二張
+  mode4→target→mode5、side主圖層選擇、counter modulo5 marker與frame5..9
   secondary effect；`battlepresent` indexed compositor依原順序合成且拒絕
   越界frame。兩套受影響套件完整回歸通過。
+- 後續讀共用`0x2A6BD` consumer立即勘誤：mode3回傳12才是target frame預算；
+  mode5在counter==2的回傳1是raw numeric marker，不是第二張動畫完成。
+  程式欄位已改為`NumericMarker`，十二張回歸固定第一張false、後十一張true。
 - 此批達`RE-CLOSED/DATA-READY`。共用actor/tail、外層MP／HP／音訊發布與
   正常敵方回合尚未接，AI仍是
   state-only數值路徑，不宣稱renderer E1。

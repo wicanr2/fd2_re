@@ -30,9 +30,9 @@ type NativeCommand6Layer struct {
 }
 
 type NativeCommand6TargetFrame struct {
-	Mode4, Mode5 []NativeCommand6Layer
-	Next         NativeCommand6TargetState
-	Complete     bool
+	Mode4, Mode5  []NativeCommand6Layer
+	Next          NativeCommand6TargetState
+	NumericMarker bool
 }
 
 // NativeCommand6PresentationSchedule 保存 0x26E39 已由直接指令閉合的
@@ -119,14 +119,14 @@ func PlanNativeCommand6TargetFrame(state NativeCommand6TargetState, schedule Nat
 	if err != nil {
 		return NativeCommand6TargetFrame{}, err
 	}
-	complete := false
+	numericMarker := false
 	for channel := range next.Counters {
 		next.Counters[channel]++
 		if next.Counters[channel] == 5 {
 			next.Counters[channel] = 0
 		}
 		if next.Counters[channel] == 2 {
-			complete = true
+			numericMarker = true
 		}
 		if secondary := next.Secondary[channel]; secondary != 0 {
 			if secondary >= NativeCommand6EffectFrameCount {
@@ -142,7 +142,7 @@ func PlanNativeCommand6TargetFrame(state NativeCommand6TargetState, schedule Nat
 			}
 		}
 	}
-	return NativeCommand6TargetFrame{Mode4: mode4, Mode5: mode5, Next: next, Complete: complete}, nil
+	return NativeCommand6TargetFrame{Mode4: mode4, Mode5: mode5, Next: next, NumericMarker: numericMarker}, nil
 }
 
 func BuildNativeCommand6PresentationSchedule(rawSide byte, effect *Animation) (NativeCommand6PresentationSchedule, error) {
