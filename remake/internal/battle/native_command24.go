@@ -138,6 +138,14 @@ func (s *State) PlanNativeCommandDerivedStrike(actor, confirmed *Unit, commandID
 		if appliedDamage < 0 {
 			appliedDamage = 0
 		}
+		// 0x27c6d..0x27d4d publishes damage*impactCount/denominator.
+		// Command 28 selects denominator 8 and its reachable FIGANI target tail
+		// contains one raw +4 impact marker; there is no final reconciliation at
+		// 0x27e51..0x27fc8.  The state-only result therefore is damage/8, not the
+		// full pre-presentation roll used by commands 24, 29 and 31.
+		if commandID == 28 {
+			appliedDamage /= 8
+		}
 		if appliedDamage > target.HP {
 			appliedDamage = target.HP
 		}

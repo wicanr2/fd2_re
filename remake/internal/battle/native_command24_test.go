@@ -1,6 +1,7 @@
 package battle
 
 import (
+	"fmt"
 	"math/rand"
 	"testing"
 )
@@ -108,7 +109,7 @@ func TestPlanNativeCommand24DoesNotTurnNegativeDamageIntoHealing(t *testing.T) {
 	}
 }
 
-func TestExecuteNativeCommandDerivedStrikeUsesRecoveredID28Multiplier(t *testing.T) {
+func TestExecuteNativeCommandDerivedStrikeUsesRecoveredID28MultiplierAndDenominator(t *testing.T) {
 	actor := &Unit{Camp: Own, OnField: true, X: 0, Y: 0, AP: 100, MP: 30}
 	target := &Unit{Camp: Enemy, OnField: true, X: 1, Y: 0, DP: 20, HP: 300}
 	book := nativeCommand24Book()
@@ -116,11 +117,38 @@ func TestExecuteNativeCommandDerivedStrikeUsesRecoveredID28Multiplier(t *testing
 	st := &State{W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: book}
 
 	got, err := st.ExecuteNativeCommandDerivedStrike(actor, target, 28, rand.New(rand.NewSource(2)))
-	if err != nil || len(got) != 1 || got[0].Amount != 180 || got[0].Damage < 162 || got[0].Damage > 179 {
+	if err != nil || len(got) != 1 || got[0].Amount != 180 || got[0].Damage < 20 || got[0].Damage > 22 {
 		t.Fatalf("ID28 result=%#v err=%v", got, err)
 	}
 	if actor.MP != 8 || !actor.Acted || target.HP != 300-got[0].Damage {
 		t.Fatalf("ID28 state actor=%#v target=%#v result=%#v", actor, target, got[0])
+	}
+}
+
+func TestExecuteNativeCommandDerivedStrikeUsesRecoveredID29And31Multipliers(t *testing.T) {
+	for _, tc := range []struct {
+		id         int
+		multiplier int
+	}{
+		{id: 29, multiplier: 12},
+		{id: 31, multiplier: 18},
+	} {
+		t.Run(fmt.Sprintf("id%d", tc.id), func(t *testing.T) {
+			actor := &Unit{Camp: Own, OnField: true, X: 0, Y: 0, AP: 100, MP: 40}
+			target := &Unit{Camp: Enemy, OnField: true, X: 1, Y: 0, DP: 20, HP: 300}
+			book := nativeCommand24Book()
+			book[tc.id] = NativeCommandRecord{ID: tc.id, SelectionMode: 1, EffectMode: 0, MPCost: 26, TargetCode: 0}
+			st := &State{W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: book}
+
+			got, err := st.ExecuteNativeCommandDerivedStrike(actor, target, tc.id, rand.New(rand.NewSource(2)))
+			wantAmount := actor.AP*tc.multiplier/10 - target.DP
+			if err != nil || len(got) != 1 || got[0].Amount != wantAmount || got[0].Damage <= 0 {
+				t.Fatalf("result=%#v err=%v want amount=%d", got, err, wantAmount)
+			}
+			if actor.MP != 14 || !actor.Acted || target.HP != 300-got[0].Damage {
+				t.Fatalf("state actor=%#v target=%#v result=%#v", actor, target, got[0])
+			}
+		})
 	}
 }
 

@@ -1,0 +1,88 @@
+FD2 commands 28／29／31 `sub_276EC` caller-specific presentation evidence
+=========================================================================
+
+輸入與位址空間
+--------------
+
+- 輸入：`FD2.EXE`，357074 bytes
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 第一工具：IDA Pro 9.4，`fd2-ida-authorized-local:latest`，Linear
+  Executable loader 的 IDA linear address；原始名稱保留為 `sub_<address>`。
+- 資產交叉驗證：`FIGANI.DAT`，15279582 bytes，SHA-256
+  `e909314ce37b70701238fd24febc8f61603bbe8d81a9ecbf8f289c97a5b67a1f`。
+- 本文件只追加語意與推論等級，不改寫 IDA 原始函式名、位址或運算元。
+
+共用交易與三個分支（已證實）
+----------------------------
+
+1. `sub_2A6BD` 的 `0x2A7F0..0x2A7FB` 對 command 24 或 28..31 呼叫
+   `sub_276EC`。`sub_276EC` 在 `0x277B5..0x27805` 選倍率：24→15、
+   28→20、29→12，其餘此入口值（含31）→18。
+2. `0x279CC..0x27A1C` 一律由 actor raw `+7` 載入 FIGANI
+   `3*selector` idle 與 `3*selector+2` effect。command ID 不直接選固定
+   effect resource，重製端不可把 command24 的 selector32／resource98 套給其他指令。
+3. `0x27AA3..0x27ADA` 傳給 `sub_29164` 的第二參數是
+   `command != 28`。因此 command28 使用 mode0，必須疊 first-target idle；
+   command24／29／31 使用 mode1，不在此前導 helper 疊該 target idle。
+4. `0x27982..0x279C9` 只有 command28 以 first target 的 BG 建立 base、再重畫
+   first-target panel；其他三支使用 actor BG／actor panel。這不是單純的 palette
+   差異，而是 command28 的場景來源不同。
+5. `0x27B85..0x27BC9` 只有 command28 **略過** `sub_29C90`；command24、29、31
+   均對每個 final target執行20張背景轉場。因此29／31可重用已閉合的背景 primitive，
+   但仍須使用自己的動態 actor effect 與 target array。
+6. `0x27C6D..0x27C89` 只有 command28 將傷害發布分母設為8；其他三支為1。
+   每個 target effect frame raw `+4==1` 時，`0x27D15..0x27D4D` 寫入：
+
+   `HP = originalHP - rolledDamage * (++impactCount) / denominator`
+
+   target loop 或函式尾端沒有把未發布的餘數補成完整 `rolledDamage`。因此
+   command28 的正式數值結果必須依實際 impact marker 數計算，不能先把完整 roll
+   當成最終 HP delta。
+7. `sub_2B659` 在 `0x2B6F4..0x2B738` 對 command24或28..31的 actor-phase
+   raw `+5` 播放 sample；raw `+4==1` 於 `0x2B749..0x2B763` 扣該 command MP
+   並重畫 actor。`0x2B7E0..0x2B801` 又顯示 command28和IDs<10才疊傳入的
+   target idle；29／31不走這支。
+
+FIGANI 全檔 marker 盤點（已證實的資產形狀）
+---------------------------------------------
+
+以固定雜湊 `FIGANI.DAT` 的409個 archive entries逐筆解析 animation header、
+frame offset與raw `+4..+7`。在所有 `3*selector+2` entries中，只有三個
+`header byte1=1` 的 effect tail含 target-phase `raw+4==1`：
+
+| selector／resource | header `(count,b1,b2,b4)` | target impact frame |
+|---|---|---|
+| 18／56 | `(14,1,9,2)` | 11 |
+| 32／98 | `(15,1,9,6)` | 10 |
+| 34／104 | `(18,1,11,3)` | 14 |
+
+三者每個 target tail都只有一個 impact marker。selector32／resource98已由獨立
+command24證據閉合；growth selector34的`learn_idx=6→command29`亦有原始表證據，
+故 resource104是command29一般學招路徑的已證實資產。selector18與command28或31
+的正常角色 owner尚缺未修改 runtime record／一般玩家擷取，不以攻略角色名提升為
+二進位事實。
+
+重製影響與證據等級
+--------------------
+
+- **已證實／數值勘誤：** command28在一個可達 target impact marker時只發布
+  rolled damage的`1/8`。舊重製端 `ExecuteNativeCommandDerivedStrike` 對28一次
+  扣完整 roll，與直接 writer矛盾，必須修正；29／31仍以分母1發布完整 roll。
+- **已證實／renderer分歧：** command28必須使用first-target base、mode0前導、
+  actor phase target idle且略過背景轉場；29／31使用actor base、mode1前導並逐
+  target執行背景轉場。不可用一個固定command24 schedule遮蔽這些分支。
+- **未知／失敗即關閉：** command28與31的一般玩家actor selector、其連續正常
+  取得／施放路徑、精確音訊取樣與同狀態逐幀結果。正式演出owner在這些來源閉合前
+  不得猜selector或借用resource98／104。
+
+重生命令與重開條件
+--------------------
+
+IDA：在授權、無網路、一次性Docker中以`tools/ida_probe_functions.py`匯出
+`FD2_IDA_ADDRESSES="0x276ec 0x29164 0x2b659 0x29c90"`；原版唯讀，`.i64`與
+文字輸出只寫`/tmp`。FIGANI盤點以`tools/unpack_dat.py::parse_directory`讀取
+409筆directory，逐筆保留header與frame raw bytes，不產生儲存庫資產。
+
+只有輸入雜湊不同、直接指令或FIGANI raw bytes反證、同狀態執行結果矛盾，或本文
+缺少其聲稱已具備的writer／consumer時才可重開。

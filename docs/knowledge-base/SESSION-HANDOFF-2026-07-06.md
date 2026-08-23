@@ -5757,3 +5757,17 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   區域。因此本項提升為 `RE-CLOSED`／`RUNTIME-E1`，不再列 remake 阻擋。
 - 尚未證實的是三個圖示與前三個 color indicator 的高階玩家名稱、精確 tick／音訊
   與未修改一般玩家同狀態 E2；不得再造六個猜測圖示，也不得重解 `sub_17FC0`。
+
+## 2026-08-23：commands 28／29／31 caller分歧與command28數值勘誤
+
+- 授權Docker內IDA Pro 9.4重新匯出`sub_276EC`、`sub_29164`、`sub_2B659`、
+  `sub_29C90`。command28使用first-target BG／panel、`sub_29164` mode0、actor
+  phase target idle並略過`sub_29C90`；29／31使用actor base、mode1且逐final
+  target執行背景轉場。這否定直接複製command24固定selector32 presenter的做法。
+- `0x27C6D..0x27D4D`對command28固定分母8，函式尾端沒有補差。固定雜湊
+  FIGANI.DAT的409筆全檔掃描又證實所有可達effect每個target tail都只有一個
+  `raw+4==1` marker，因此舊`ExecuteNativeCommandDerivedStrike`對28扣完整roll
+  是重製端錯誤，已修正為roll/8；29／31維持分母1並補獨立倍率回歸。
+- 主證據見[`fd2_command28_29_31_presentation_ida.txt`](../data/ida/fd2_command28_29_31_presentation_ida.txt)。
+  command29已有growth selector34→resource104資產鏈；28／31的一般玩家actor
+  selector及三者正式玩家／敵方indexed owner仍未閉合，繼續失敗即關閉而不猜資源。

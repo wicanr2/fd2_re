@@ -100,6 +100,45 @@ func TestNativeCommand24ScheduleMatchesSelector32Resource98(t *testing.T) {
 	}
 }
 
+func TestNativeCommand29ScheduleMatchesGrowthSelector34Resource104(t *testing.T) {
+	const path = "../../../org_game/炎龍騎士團/FLAME2/FIGANI.DAT"
+	animation, err := DecodeResource(path, 104)
+	if os.IsNotExist(err) {
+		t.Skip("player-provided FIGANI.DAT is absent")
+	}
+	if err != nil {
+		t.Fatal(err)
+	}
+	schedule, err := BuildNativeCommandDerivedStrikeSchedule(animation, 29)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if schedule.CommandID != 29 || schedule.TargetStart != 11 ||
+		schedule.ActorImpactFrame != 6 || schedule.TargetImpactFrame != 14 ||
+		schedule.DamageDenominator != 1 || schedule.AudioResource != 50 ||
+		schedule.ActorSample != 1 || schedule.TargetSample != 4 ||
+		schedule.UsesTargetBase || schedule.PreludeMode != 1 || !schedule.UsesBGTransition ||
+		len(schedule.FrameDelays) != 18 {
+		t.Fatalf("command29 schedule=%#v", schedule)
+	}
+}
+
+func TestNativeCommand28ScheduleKeepsCallerSpecificPresentationBranches(t *testing.T) {
+	animation := &Animation{HeaderByte1: 1, HeaderByte2: 2, HeaderByte4: 2, Frames: []Frame{
+		{Delay: 1}, {Delay: 2, RawByte4: 1, RawByte5: 3},
+		{Delay: 4}, {Delay: 2, RawByte4: 1, RawByte5: 4},
+	}}
+	schedule, err := BuildNativeCommandDerivedStrikeSchedule(animation, 28)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if schedule.DamageDenominator != 8 || !schedule.UsesTargetBase ||
+		schedule.PreludeMode != 0 || schedule.UsesBGTransition ||
+		schedule.AudioResource != 49 || schedule.ActorSample != 3 || schedule.TargetSample != 4 {
+		t.Fatalf("command28 schedule=%#v", schedule)
+	}
+}
+
 func TestDecodeOriginalPlayerClass19HeaderFlags(t *testing.T) {
 	const path = "../../../org_game/炎龍騎士團/FLAME2/FIGANI.DAT"
 	// Player-reachable class-19 sources use visual groups 4..7 (optional
