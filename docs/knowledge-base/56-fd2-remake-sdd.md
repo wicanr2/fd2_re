@@ -783,6 +783,13 @@ actor raw `+6` 決定的正／負水平方向推出，再讓下一目標以
 frame0→mode5。command6 不使用 command3/7 的 scanline page flip。正式 owner
 必須為每對相鄰 final target 預建這九幀；不得直接瞬切下一目標。
 
+正式 command6 owner 使用 `BuildNativeCommand6EffectSequence` 作原子 admission：
+輸入必須一次提供每個 final target 的六份狀態欄 base（stage0..5）、全部 target
+idle、每對 target 的 transition base、actor effect、#32/#33 effect 與前／尾 base。
+只有完整產出 7 張前導、每目標12張、每對目標9張、7張尾段及每目標恰五個
+HP stage，Game 才可發布 MP；任何晚期 target、idle delay、frame bounds 或 base
+缺失都在零交易時失敗即關閉。
+
 ID1另以`NativeCommand1PresentationSchedule`保存`0x262EF`的兩組八槽
 mode4→target→mode5合成：X=`[-59,-39,0,39,55,39,0,-39]`、
 Y=`[-10,-24,-30,-24,-10,4,10,4]`、X anchor=`0x50`，raw side零值再加

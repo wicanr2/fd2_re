@@ -6009,3 +6009,7 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   多目標過場已閉合並實作：目前目標以35×1..4推出，下一目標以35×4..0
   收回，每幀 mode4→actor末幀→target idle0→mode5。command6 不使用
   command3/7 scanline page flip；聚焦回歸通過。
+- `BuildNativeCommand6EffectSequence` 現一次預建全部 handler-owned frames：
+  7張前導、每target 12張與五個HP stage、每boundary 9張、7張尾段；兩目標
+  fixture 與 malformed stage base 零partial-output 回歸通過。正式 Game job
+  尚未建立，玩家仍 fail-closed、敵方仍 state-only。
