@@ -5929,3 +5929,20 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   [`fd2_command1_8_entries_ida.txt`](../data/ida/fd2_command1_8_entries_ida.txt)
   保存八個entry的mode回傳、channel/counter、offset/state table、sample marker與
   失敗即關閉條件。目前為`RE-CLOSED/DATA-READY`，尚未宣稱renderer或E2。
+
+## 2026-08-23：command1 `0x262EF`純indexed compositor與sample勘誤
+
+- IDA Pro 9.4重核固定兩張signed-int32位移表：X為
+  `[-59,-39,0,39,55,39,0,-39]`，Y為
+  `[-10,-24,-30,-24,-10,4,10,4]`；mode3 seeds `0,-2..-14`，mode4與
+  mode5交換前／後四槽的offset與frame+15來源，mode5遞增後任一counter等於9即
+  完成。
+- 勘誤：`0x262EF`沒有`0x25A96/0x25B45`直接call；早先寫入ID1的counter5
+  sample marker已從主證據、typed JSON及SDD刪除。音訊屬外層owner，不能靠handler
+  名稱或其他command類比補值。
+- `NativeCommand1PresentationSchedule`會嚴格接受raw side非零的FDOTHER #19或
+  raw side零值的#21，兩者必須各為30-frame FIGANI；純compositor依原順序合成
+  mode4→target idle→mode5，原始玩家資產回歸已通過。
+- 此切片為`RE-CLOSED/DATA-READY`，不是正式`RUNTIME-E1`。AI ID1目前仍沿用
+  state-only數值交易；外層MP／HP／音訊發布順序與正常未修改敵方producer未閉合，
+  所以尚未把純compositor接成正式行動演出。

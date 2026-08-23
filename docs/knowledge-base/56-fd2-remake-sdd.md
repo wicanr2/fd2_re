@@ -754,6 +754,24 @@ sample marker，typed schedule必須逐entry保存，不能共用ID0七元素排
 完整校正與mode契約見
 [`fd2_command1_8_entries_ida.txt`](../data/ida/fd2_command1_8_entries_ida.txt)。
 
+可編輯資料契約使用一筆一entry的`NativeCommandIndexedEntrySchedule`，固定保存
+command ID、IDA線性entry、mode0／3／6回傳值、初始化／實際繪製channel數、
+會繪製的mode、raw side零值水平位移、offset/state table、是否消耗`0x4E893`
+及直接sample marker。載入器必須綁定固定EXE雜湊、`0x523B9`表與
+`0x2A6BD` mode順序，並要求ID1–8完整且不重複；未知marker可省略，但不可填入
+推測值。此表只解除`DATA-READY`，renderer仍須逐entry驗證實際effect bank與
+descriptor後才可提升`RUNTIME-E1`。
+
+ID1另以`NativeCommand1PresentationSchedule`保存`0x262EF`的兩組八槽
+mode4→target→mode5合成：X=`[-59,-39,0,39,55,39,0,-39]`、
+Y=`[-10,-24,-30,-24,-10,4,10,4]`、X anchor=`0x50`，raw side零值再加
+`0x94`；slot0由counter0開始，任一遞增後等於9即完成，故共九張target frame。
+資源#19/#21都必須是30-frame FIGANI，缺幀或格式不符即拒絕。
+2026-08-23勘誤：`0x262EF`本身沒有`0x25A96/0x25B45`呼叫，先前把counter5
+寫成ID1本地sample marker是錯誤斷言，已從typed data刪除；音訊與MP／HP發布
+仍由未閉合的外層owner負責，因此此合成器目前只列`DATA-READY`，不假裝成
+正式敵方`RUNTIME-E1`。
+
 BG asset boundary：`BG.DAT` 是 LLLLLL archive；generic compositor 的前三個已知 layer #0/#1/#2 都是 `{u16 width,u16 height, 0x4e63d four-mode RLE}` single-frame payload，實測各為 320×100。`fdother.DecodeArchiveSingleFrame` 明確解這種無 frame-directory 的 archive entry，player-archive regression 對三個 layer 解入 320×100 indexed surface。它不替 `0x2b5e1` 的其他 raw selector 命名，也不自動把 current PNG background 當 native layer schedule。
 
 ### UI-03 action chooser availability contract（E0 partial）

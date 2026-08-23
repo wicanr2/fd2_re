@@ -33,8 +33,8 @@ Verified entry contracts
 ------------------------
 
 - **ID1 0x262EF:** mode3 returns31 and seeds eight counters 0,-2..-14;
-  mode4/5 draws two groups of four, advances counters, emits the direct sample
-  marker at counter5 and completes at9. Offset tables 0x52420/0x52440;
+  mode4/5 draws two groups of four, advances counters and completes at9;
+  this entry has no direct sample call. Offset tables 0x52420/0x52440;
   raw actor +6 zero adds 0x94 horizontally.
 - **ID2 0x26528:** mode0 returns29; mode3 returns12; mode4 uses raw frame15;
   mode5 advances frames 0x10..0x11; mode6 seeds frame0x0A and returns10.
@@ -73,3 +73,32 @@ Shared consumer and remake boundary
 - **Fail-closed:** each entry requires its exact decoded effect banks,
   descriptor delays, actor raw +6/+7, final target provenance, BG/TAI/panel
   scene, samples and every Draw acknowledgement before state publication.
+
+ID1 compositor correction and exact data (2026-08-23)
+------------------------------------------------------
+
+The earlier compact ID1 sentence above incorrectly attributed a direct sample
+marker to 0x262EF. Fresh IDA instruction review proves that this entry calls
+neither 0x25A96 nor 0x25B45. Audio belongs to the outer 0x2B659/caller family;
+the editable ID1 schedule therefore has no local sample marker.
+
+- 0x52420 signed int32 X values: `-59,-39,0,39,55,39,0,-39`.
+- 0x52440 signed int32 Y values: `-10,-24,-30,-24,-10,4,10,4`.
+- mode3 counters: `0,-2,-4,-6,-8,-10,-12,-14`.
+- mode4 draws slots0..3 as frame=counter at offsets0..3, then slots4..7
+  as frame=counter+15 at offsets0..3.
+- mode5 draws slots0..3 as frame=counter+15 at offsets4..7, then slots4..7
+  as frame=counter at offsets4..7; it increments all counters and returns
+  complete when any incremented counter equals9. Because slot0 starts at0,
+  the target loop therefore presents nine mode4→target→mode5 frames.
+- Both modes draw only counters in `[0,15)`. Destination includes X anchor
+  `+0x50`; raw actor `+6==0` adds another `+0x94` to X.
+- 0x2935B logical ABI is `(effectResource,frame,destination,stride,-1)`.
+- 0x2A6BD selects FDOTHER #19 for raw actor `+6!=0` and #21 for `+6==0`.
+  Both are 30-frame FIGANI resources; respective resource MD5 values are
+  `7d217fc16e58e4fbd64ae0a9ddfff211` and
+  `8b6d7f2e01f3246033c322c3ab6233be`.
+
+This closes the pure indexed compositor as `DATA-READY`; MP/HP/audio/action
+publication order and a normal unmodified enemy-turn capture remain outside
+0x262EF, so production transaction wiring remains fail-closed.

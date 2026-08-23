@@ -83,7 +83,12 @@ effect table，原版不經玩家專用`0x1D6C8` palette owner，故不把玩家
 `Raw53AF9==0`時進`0x2A6BD`；正式敵方ID0已改用既有完整
 `0x2A6BD→0x26152` presenter，不再直接發布state-only傷害。預建失敗時MP、HP、
 RNG與`Acted`均不變；完成後才交給敵方continuation與死亡獎勵。ID1–8的
-`funcs_2AC25` entry仍各自失敗即關閉，不能外推ID0專屬演出。
+`funcs_2AC25`不能外推ID0專屬演出。ID1現已閉合`0x262EF`的八槽位移、
+mode4→target→mode5順序與FDOTHER #19/#21 30-frame資源，並有純indexed
+compositor及原始資產回歸；勘誤：此entry沒有直接sample call。它只到
+`DATA-READY`，因外層MP／HP／音訊發布順序與正常producer E2未閉合，正式AI仍是
+既有state-only數值路徑而非完整演出；不得把「數值可執行」誤寫成「renderer
+失敗即關閉」或`RUNTIME-E1`畫面完成。
 
 ## 四、目前可重生的數字，以及不能怎麼解讀
 
