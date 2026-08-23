@@ -762,6 +762,14 @@ command ID、IDA線性entry、mode0／3／6回傳值、初始化／實際繪製c
 推測值。此表只解除`DATA-READY`，renderer仍須逐entry驗證實際effect bank與
 descriptor後才可提升`RUNTIME-E1`。
 
+command 0..8 的 HP 動畫分段不可共用固定七段。原版 `0x525AF..0x525B7`
+依序給出 `7,8,6,13,6,6,5,5,16`；`0x2AEC9..0x2AF2E` 只在 entry 的
+mode5 回傳 1 且 `stage<=denominator` 時發布
+`old-(old-new)*stage/denominator`。因此 typed numeric plan 必須保存
+command-specific denominator；只做狀態交易時可直接發布最後一段，但正式
+presenter 必須依 marker 逐段發布。command6 是 5 段 HP、12 張 target frame、
+11 個 raw marker，後 6 個 marker 不可重複寫 HP。
+
 ID1另以`NativeCommand1PresentationSchedule`保存`0x262EF`的兩組八槽
 mode4→target→mode5合成：X=`[-59,-39,0,39,55,39,0,-39]`、
 Y=`[-10,-24,-30,-24,-10,4,10,4]`、X anchor=`0x50`，raw side零值再加

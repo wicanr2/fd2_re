@@ -16,7 +16,7 @@ type NativeCommandDamageResult struct {
 
 // NativeCommandDamagePlan is the mutation-free half of 0x2A6BD's numeric
 // transaction.  Presentation owners use it to publish MP before the target
-// loop and HP at sub_26152's seven raw impact markers without rerolling RNG.
+// loop and HP at the command-specific raw impact markers without rerolling RNG.
 type NativeCommandDamagePlan struct {
 	Actor                  *Unit
 	CommandID              int
@@ -24,6 +24,7 @@ type NativeCommandDamagePlan struct {
 	ActorActedBefore       bool
 	RNGBefore, RNGAfter    uint16
 	Results                []NativeCommandDamageResult
+	DamageStages           int
 	publishedTargetStages  []int
 	mpPublished, completed bool
 }
@@ -61,7 +62,7 @@ func (s *State) ExecuteNativeCommandDamage(actor, confirmed *Unit, commandID int
 		return nil, rngState, err
 	}
 	for index := range plan.Results {
-		if err := ApplyNativeCommandDamageStage(plan, index, 7); err != nil {
+		if err := ApplyNativeCommandDamageStage(plan, index, plan.DamageStages); err != nil {
 			return nil, rngState, err
 		}
 	}
@@ -73,7 +74,7 @@ func (s *State) ExecuteNativeCommandDamage(actor, confirmed *Unit, commandID int
 
 // PlanNativeCommandDamage consumes the verified RNG sequence but leaves all
 // Unit fields unchanged.  The result captures exact pre/post HP for atomic
-// presentation admission and seven-stage publication.
+// command-indexed publication denominator for atomic presentation admission.
 func (s *State) PlanNativeCommandDamage(actor, confirmed *Unit, commandID int, resistByClass map[int]int, rngState uint16) (*NativeCommandDamagePlan, error) {
 	if s == nil {
 		return nil, fmt.Errorf("missing native command state")
@@ -101,10 +102,15 @@ func (s *State) PlanNativeCommandDamage(actor, confirmed *Unit, commandID int, r
 	if actor == nil || actor.Acted || record.MPCost < 0 || record.MPCost > 0xff || actor.MP < record.MPCost {
 		return nil, fmt.Errorf("native command damage insufficient MP")
 	}
+	damageStages, err := nativeCommandDamageStages(commandID)
+	if err != nil {
+		return nil, err
+	}
 	plan := &NativeCommandDamagePlan{
 		Actor: actor, CommandID: commandID, MPBefore: actor.MP, MPAfter: actor.MP - record.MPCost,
 		ActorActedBefore: actor.Acted, RNGBefore: rngState,
-		Results: make([]NativeCommandDamageResult, 0, len(targets)), publishedTargetStages: make([]int, len(targets)),
+		DamageStages: damageStages,
+		Results:      make([]NativeCommandDamageResult, 0, len(targets)), publishedTargetStages: make([]int, len(targets)),
 	}
 	for _, target := range targets {
 		resolved, nextRNG, err := ResolveNativeCommandDamage(record.Damage, record.Hit, resistByClass[target.ClassID], rngState)
@@ -127,6 +133,20 @@ func (s *State) PlanNativeCommandDamage(actor, confirmed *Unit, commandID int, r
 	return plan, nil
 }
 
+// nativeCommandDamageStages preserves the 0x525AF command0..9 table consumed
+// by 0x2AEC9. Commands9..12 do not use the shared indexed target presenter in
+// the current engine slice, so their state-only transaction publishes once.
+func nativeCommandDamageStages(commandID int) (int, error) {
+	shared := [...]int{7, 8, 6, 13, 6, 6, 5, 5, 16}
+	if commandID >= 0 && commandID < len(shared) {
+		return shared[commandID], nil
+	}
+	if commandID >= 9 && commandID <= 12 {
+		return 1, nil
+	}
+	return 0, fmt.Errorf("native command damage stages unavailable id=%d", commandID)
+}
+
 func ApplyNativeCommandDamageMP(plan *NativeCommandDamagePlan) error {
 	if plan == nil || plan.Actor == nil || plan.mpPublished || plan.completed ||
 		plan.Actor.MP != plan.MPBefore || plan.Actor.Acted != plan.ActorActedBefore {
@@ -138,22 +158,23 @@ func ApplyNativeCommandDamageMP(plan *NativeCommandDamagePlan) error {
 }
 
 // ApplyNativeCommandDamageStage publishes the exact intermediate HP formula
-// used by 0x2A6BD with command0's denominator seven.  A caller may jump
-// directly to stage7 for state-only execution; presentation advances 1..7.
+// used by 0x2A6BD with the command-indexed denominator from 0x525AF. A caller
+// may jump directly to the final stage for state-only execution.
 func ApplyNativeCommandDamageStage(plan *NativeCommandDamagePlan, index, stage int) error {
-	if plan == nil || !plan.mpPublished || plan.completed || index < 0 || index >= len(plan.Results) || stage < 1 || stage > 7 {
+	if plan == nil || !plan.mpPublished || plan.completed || plan.DamageStages < 1 ||
+		index < 0 || index >= len(plan.Results) || stage < 1 || stage > plan.DamageStages {
 		return fmt.Errorf("native command damage stage unavailable")
 	}
 	result := plan.Results[index]
 	previous := plan.publishedTargetStages[index]
-	if stage < previous || (stage != 7 && stage != previous+1) || result.Target == nil {
+	if stage < previous || (stage != plan.DamageStages && stage != previous+1) || result.Target == nil {
 		return fmt.Errorf("native command damage stage order changed")
 	}
-	wantCurrent := result.HPBefore - (result.HPBefore-result.HPAfter)*previous/7
+	wantCurrent := result.HPBefore - (result.HPBefore-result.HPAfter)*previous/plan.DamageStages
 	if result.Target.HP != wantCurrent {
 		return fmt.Errorf("native command damage target publish state changed")
 	}
-	result.Target.HP = result.HPBefore - (result.HPBefore-result.HPAfter)*stage/7
+	result.Target.HP = result.HPBefore - (result.HPBefore-result.HPAfter)*stage/plan.DamageStages
 	plan.publishedTargetStages[index] = stage
 	return nil
 }
@@ -164,7 +185,7 @@ func CompleteNativeCommandDamage(plan *NativeCommandDamagePlan) error {
 		return fmt.Errorf("native command damage completion state changed")
 	}
 	for index, result := range plan.Results {
-		if result.Target == nil || plan.publishedTargetStages[index] != 7 || result.Target.HP != result.HPAfter {
+		if result.Target == nil || plan.publishedTargetStages[index] != plan.DamageStages || result.Target.HP != result.HPAfter {
 			return fmt.Errorf("native command damage target is not fully published")
 		}
 	}

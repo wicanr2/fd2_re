@@ -188,3 +188,32 @@ ID6 mode4/5 target draw plan (2026-08-24)
 The typed draw plan/compositor may publish only pixels and preserve the raw
 numeric marker. Sample1 call variants, MP/HP and action completion remain owned
 by the outer presentation job.
+
+ID6 outer consumer and HP staging (2026-08-24)
+------------------------------------------------
+
+The input remains the fixed FD2.EXE fingerprint at the head of this file.
+IDA Pro 9.4 in the licensed Docker flow established the function and data
+flow; fd2-cap-local/Capstone 5.0.3 independently checked the direct
+instructions. Original IDA name `sub_2A6BD` and DOS LE linear addresses are
+preserved.
+
+- `0x525AF..0x525B8` is the command0..9 HP-stage denominator table:
+  `07 08 06 0D 06 06 05 05 10 14`. Command6 consumes
+  `0x525AF+6=0x525B5`, value5.
+- The mode0 return at `0x2AC25` controls seven prelude frames for command6.
+  Each frame calls mode1 at `0x2AC8E`, then mode2 at `0x2AD13`.
+- For each target, mode3 at `0x2B0B9` supplies twelve frames. Each frame calls
+  mode4 at `0x2ADC2`, draws the target layer, then calls mode5 at `0x2AEB6`.
+- Only a mode5 return of1 enters `0x2AEC0..0x2AF2E`. While `stage<=5`, the
+  consumer writes target record `+0x40` as
+  `old-(old-new)*stage/5`, then calls `0x2A289` to redraw the status panel.
+  The fifth marker reaches the exact `sub_1C75E` result. The remaining six of
+  the eleven raw markers continue animation but do not write HP.
+- Mode6 at `0x2B166` supplies seven tail frames. Each calls mode8 at
+  `0x2B1B6`, then mode7 at `0x2B23B`.
+
+This closes the shared schedule and HP consumer as proven evidence. It does
+not rename `0x2A289` as a separate numeric-text writer: the directly proven
+role is status-panel redraw after the record write. Player-visible runtime and
+audio remain below RUNTIME-E1 until the formal owner is connected.

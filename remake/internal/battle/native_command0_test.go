@@ -97,6 +97,42 @@ func TestPlanBoundNativeCommand0RejectsChangedStateBetweenMarkers(t *testing.T) 
 	}
 }
 
+func TestNativeCommand6PublishesRecoveredFiveHPStages(t *testing.T) {
+	book := make([]NativeCommandRecord, NativeCommandRecordCount)
+	for id := range book {
+		book[id].ID = id
+	}
+	book[6] = NativeCommandRecord{ID: 6, Damage: 90, Hit: 100, SelectionMode: 1, EffectMode: 0, MPCost: 2, TargetCode: 0}
+	actor := &Unit{Camp: Own, X: 0, Y: 0, HP: 20, MP: 5, OnField: true}
+	target := &Unit{Camp: Enemy, ClassID: 5, X: 1, Y: 0, HP: 103, OnField: true}
+	st := &State{W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: book}
+	plan, err := st.PlanNativeCommandDamage(actor, target, 6, map[int]int{5: 10}, 3)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if plan.DamageStages != 5 {
+		t.Fatalf("command6 stages=%d want=5", plan.DamageStages)
+	}
+	if err := ApplyNativeCommandDamageMP(plan); err != nil {
+		t.Fatal(err)
+	}
+	for stage := 1; stage <= plan.DamageStages; stage++ {
+		if err := ApplyNativeCommandDamageStage(plan, 0, stage); err != nil {
+			t.Fatalf("stage %d: %v", stage, err)
+		}
+		want := plan.Results[0].HPBefore - (plan.Results[0].HPBefore-plan.Results[0].HPAfter)*stage/5
+		if target.HP != want {
+			t.Fatalf("stage %d hp=%d want=%d", stage, target.HP, want)
+		}
+	}
+	if err := ApplyNativeCommandDamageStage(plan, 0, 6); err == nil {
+		t.Fatal("command6 accepted sixth HP marker")
+	}
+	if err := CompleteNativeCommandDamage(plan); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestExecuteNativeCommandDamageAcceptsRecoveredIDOne(t *testing.T) {
 	book := make([]NativeCommandRecord, 36)
 	for id := range book {

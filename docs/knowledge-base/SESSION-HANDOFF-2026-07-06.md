@@ -5986,3 +5986,14 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 此批達`RE-CLOSED/DATA-READY`。共用actor/tail、外層MP／HP／音訊發布與
   正常敵方回合尚未接，AI仍是
   state-only數值路徑，不宣稱renderer E1。
+
+## 2026-08-24：command6 共用 owner 的 HP 分段已閉合
+
+- 授權 IDA Pro 9.4 Docker 與 Capstone 5.0.3 直接指令共同確認：
+  `0x525AF..0x525B8` 是 command0..9 分段除數；ID6 為5。
+- ID6 前導是7幀 mode1→mode2；每個 target 是12幀
+  mode4→target→mode5；11個 raw marker 中只有前5個更新 record `+0x40`，
+  第5個精確到達 `sub_1C75E` 結果；尾段是7幀 mode8→mode7。
+- `NativeCommandDamagePlan` 現保存 command-specific `DamageStages`；ID6
+  五段發布及第六段失敗即關閉回歸已通過。這只解除 numeric transaction
+  的錯誤共用，不代表 ID6 正式 Game presenter 或一般玩家 E2 已完成。
