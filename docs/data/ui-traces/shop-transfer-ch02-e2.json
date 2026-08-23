@@ -58,7 +58,7 @@
       "original_raw_rgb_md5": "f1f7a5fc827c6075c3b5f5700c9cc4b1",
       "remake_raw_rgb_md5": "f5ff2d3650575a93bcc0d795fae7c4ea",
       "ae": 2,
-      "classification": "same items, effects, prices, and geometry; two pixels differ"
+      "classification": "same items, effects, prices, and geometry; the only differences are shopkeeper-background animation pixels (175,90) and (176,90), not item-list renderer output"
     },
     {
       "state": "transfer_destination_prompt_short_sword_gold0",
@@ -81,6 +81,6 @@
     "contract": "The adapter invokes only the production transfer setup, source roster, raw-derived item list, destination prompt, and destination roster owners after a complete typed/raw party admission.",
     "limitation": "Screenshot-only typed/raw bootstrap; it does not mutate inventory or inject records or pixels, and it does not prove self-transfer, empty/full feedback, cancel/restore, native FD2.SAV, the church caller, or an unmodified campaign path."
   },
-  "result": "PLAYER-E2 partial: the normal route-patched shop input and visible states are captured, but animation-phase and unmodified-campaign parity remain open.",
+  "result": "PLAYER-E2 partial: the normal route-patched shop input and visible states are captured. The item-list state's two differing pixels are both in the animated shopkeeper background, so the static item-list content is exact for this state; animation-phase and unmodified-campaign parity remain open.",
   "figure": "docs/figures/shop-transfer-ch02-original-vs-remake.png"
 }

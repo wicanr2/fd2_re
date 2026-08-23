@@ -5848,3 +5848,15 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   新 oracle 的必要輸出／選單狀態測試及既有標題循環、CONTINUE 選項測試皆通過。
 - 戰場 ch01 既有 exact-state 比較只剩22個邊界像素差，但目前證據不足以唯一歸因；
   本輪沒有為了消除數字而猜改 renderer。logozoom仍是近似，維持後續非阻擋美化。
+
+## 2026-08-23：開場逐幕輸入 fidelity 與 service3 兩像素勘誤
+
+- `0x20421` AFM 播放器的第三參數與既有 index3／index1 證據已足以規定輸入：
+  按鍵只中斷當前標為 `skippable` 的幕，接著繼續下一幕。正式標題 runtime 已移除
+  「ESC 無條件跳整段」的重製便利分支；不可略過幕忽略按鍵。純狀態測試直接固定
+  `cutIdx` 前進、frame／tick歸零且 `titlePhase` 仍為 `cutscene`，並與既有標題選單
+  測試一同在 Docker／Xvfb 通過。
+- ch02 service3 物品清單舊有AE=2已用既有對照圖重算：唯一差異座標是店員背景的
+  `(175,90)`與`(176,90)`，不在物品清單 renderer；原版色值均為`(138,158,158)`，
+  重製擷取為相鄰動畫相位`(101,121,121)`與`(117,138,138)`。因此靜態物品內容在
+  該狀態一致，但整體仍只列route-patched partial E2；沒有為追求AE數字修改店員動畫。

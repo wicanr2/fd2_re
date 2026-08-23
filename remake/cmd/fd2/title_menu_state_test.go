@@ -2,6 +2,25 @@ package main
 
 import "testing"
 
+func TestTitleCutSkipIsPerStepAndDoesNotGrantEscapeOverride(t *testing.T) {
+	g := &Game{titlePhase: "cutscene", cutIdx: 2, cutFrame: 7, cutTick: 3}
+	if !g.trySkipTitleCutStep(cutStep{skip: true}, true) {
+		t.Fatal("skippable AFM step rejected a pressed key")
+	}
+	if g.cutIdx != 3 || g.titlePhase != "cutscene" || g.cutFrame != 0 || g.cutTick != 0 {
+		t.Fatalf("skipped step state idx=%d phase=%q frame=%d tick=%d", g.cutIdx, g.titlePhase, g.cutFrame, g.cutTick)
+	}
+	if g.trySkipTitleCutStep(cutStep{skip: false}, true) {
+		t.Fatal("non-skippable AFM step accepted a pressed key")
+	}
+	if g.cutIdx != 3 || g.titlePhase != "cutscene" {
+		t.Fatal("rejected skip changed the opening state")
+	}
+	if g.trySkipTitleCutStep(cutStep{skip: true}, false) {
+		t.Fatal("skippable AFM step advanced without input")
+	}
+}
+
 func TestTitleMenuShotOracleRequiresExplicitOutput(t *testing.T) {
 	t.Setenv("FD2_TITLE", "0")
 	t.Setenv("FD2_SHOT_TITLE_MENU", "1")

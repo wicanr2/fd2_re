@@ -140,6 +140,16 @@ func (g *Game) cutAdvance() {
 	}
 }
 
+// trySkipTitleCutStep 保存原版 AFM 播放器的第三參數契約：按鍵只中斷
+// 明確標為 skippable 的當前幕；它不代表略過其後整段開場。
+func (g *Game) trySkipTitleCutStep(step cutStep, anyKey bool) bool {
+	if !step.skip || !anyKey {
+		return false
+	}
+	g.cutAdvance()
+	return true
+}
+
 // titleUpdate 處理開頭動畫/主選單輸入。回傳 true = 仍在 title 流程。
 func (g *Game) titleUpdate() bool {
 	switch g.titlePhase {
@@ -153,12 +163,10 @@ func (g *Game) titleUpdate() bool {
 		if g.cutIdx == 0 && g.cutFrame == 0 && g.cutTick == 0 {
 			g.playBGM("FDMUS_018") // 開場/標題曲(RE 確認:boot 0x025db5 play_bgm(18,0),doc12 §15)
 		}
-		// 按鍵跳過:該步 skippable 才可按任意鍵跳(原版旗標);ESC 一律跳整段(remake 便利)。
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) ||
-			(step.skip && len(inpututil.AppendJustPressedKeys(nil)) > 0) {
-			g.titlePhase = "menu"
-			g.titleSel = 0
-			g.cutCur = nil
+		// 原版第三參數只允許中斷當前 AFM 幕；不可跳過後續不可略過的幕。
+		if g.trySkipTitleCutStep(
+			step, len(inpututil.AppendJustPressedKeys(nil)) > 0,
+		) {
 			return true
 		}
 		if step.kind == "static" { // FDOTHER 靜態幕:hold step.tick 個 tick
