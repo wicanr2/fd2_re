@@ -5946,3 +5946,17 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 此切片為`RE-CLOSED/DATA-READY`，不是正式`RUNTIME-E1`。AI ID1目前仍沿用
   state-only數值交易；外層MP／HP／音訊發布順序與正常未修改敵方producer未閉合，
   所以尚未把純compositor接成正式行動演出。
+
+## 2026-08-23：command2 `0x26528` compositor與ID3 table勘誤
+
+- IDA Pro 9.4重核固定ID2只使用`0x53F7E..0x53F80` state；
+  `0x52460/0x52490/0x5249C`由相鄰ID3讀取，先前JSON把三表掛ID2是錯誤，
+  已移除並在strict loader加入ID2不得帶offset table的反向檢查。
+- raw side非零選FDOTHER #26，零值選#27，兩者實檔都是18-frame FIGANI；#83
+  是四子項raw sample container，ID2直接消費sample1／2／3。typed schedule與
+  原始資產回歸會拒絕缺幀、錯side資源或缺sample。
+- 純compositor保存mode4→target→mode5：非零side先於`+1-stride`畫frame15；
+  零side在target後於`-1-stride`補frame15；最後一律於`+1-stride`畫state16。
+  此為`DATA-READY`；`0x2673F` helper其餘座標與外層MP／HP／音訊發布尚未接。
+- 同批盤點排除假缺口：map13 index0的command30 bit附著於raw mode8，原版直接走
+  `0x1317D`而不進`0x14EF0/0x15311`，所以沒有敵方command30 owner需要補。

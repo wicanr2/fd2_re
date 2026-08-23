@@ -36,9 +36,11 @@ Verified entry contracts
   mode4/5 draws two groups of four, advances counters and completes at9;
   this entry has no direct sample call. Offset tables 0x52420/0x52440;
   raw actor +6 zero adds 0x94 horizontally.
-- **ID2 0x26528:** mode0 returns29; mode3 returns12; mode4 uses raw frame15;
-  mode5 advances frames 0x10..0x11; mode6 seeds frame0x0A and returns10.
-  Offset/state tables are 0x52460/0x52490/0x5249C.
+- **ID2 0x26528:** mode0 returns29; mode3 returns12 and sets state16;
+  mode4 uses raw frame15; mode5 draws state16, increments it, emits sample2
+  and completes at17; mode6 seeds state10, emits sample3 and returns10.
+  State is 0x53F7E..0x53F80. This entry does not read
+  0x52460/0x52490/0x5249C; those tables belong to ID3.
 - **ID3 0x26795:** mode0 initializes twelve RNG-rotated slots and returns2;
   mode3 returns40; mode6 sets the stop flag and returns20; modes2/5/8 draw
   and advance twelve slots with descriptor-selected sample calls.
@@ -102,3 +104,26 @@ the editable ID1 schedule therefore has no local sample marker.
 This closes the pure indexed compositor as `DATA-READY`; MP/HP/audio/action
 publication order and a normal unmodified enemy-turn capture remain outside
 0x262EF, so production transaction wiring remains fail-closed.
+
+ID2 compositor correction and exact data (2026-08-23)
+------------------------------------------------------
+
+- 0x26528 is the corrected IDA linear entry. Mode0 clears 0x53F7E..0x53F80
+  and returns29; mode3 writes state16 and returns12.
+- Target mode4 draws frame15 at `base +1-stride` only for actor raw +6!=0.
+  Mode5 first draws frame15 at `base -1-stride` only for raw +6==0, then
+  always draws the current state frame at `base +1-stride`. It increments the
+  state; state17 emits sample2 and returns complete, while state18 resets16.
+- Mode6 emits sample3, writes state10 and returns10. The shared mode1/2/7/8
+  helper advances its own state; mode2/8 emit sample1 at state7, mode2 alone
+  rewrites state10 to15, and state16 draws frame16.
+- sub_2935B logical ABI remains `(source,frame,destination,stride,-1)`.
+- 0x2A6BD selects FDOTHER #26 for raw +6!=0 or #27 for raw +6==0; both are
+  strict 18-frame FIGANI banks. FDOTHER #83 is a four-subresource raw sample
+  container; this entry directly selects samples1/2/3 without assigning a
+  high-level audio name.
+- Correction: 0x52460/0x52490/0x5249C are read by adjacent ID3 at 0x26795,
+  not by ID2. Any earlier ID2 typed table association is withdrawn.
+
+The target compositor is `DATA-READY`; mode1/2/7/8 exact helper positions,
+outer MP/HP publication and a normal enemy-turn capture remain separate gates.

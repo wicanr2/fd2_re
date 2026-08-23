@@ -73,7 +73,7 @@ func LoadNativeCommandIndexedEntryTable(path string) (*NativeCommandIndexedEntry
 		want, ok := nativeCommandIndexedEntries[entry.CommandID]
 		if !ok || seen[entry.CommandID] || entry.Entry != want || entry.InitChannels <= 0 ||
 			entry.DrawChannels <= 0 || entry.DrawChannels > entry.InitChannels || len(entry.DrawModes) == 0 ||
-			len(entry.OffsetTables) == 0 {
+			(entry.CommandID != 2 && len(entry.OffsetTables) == 0) || (entry.CommandID == 2 && len(entry.OffsetTables) != 0) {
 			return nil, fmt.Errorf("native command indexed entry %d is invalid", entry.CommandID)
 		}
 		for _, mode := range [...]string{"0", "3", "6"} {

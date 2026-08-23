@@ -90,6 +90,16 @@ compositor及原始資產回歸；勘誤：此entry沒有直接sample call。它
 既有state-only數值路徑而非完整演出；不得把「數值可執行」誤寫成「renderer
 失敗即關閉」或`RUNTIME-E1`畫面完成。
 
+ID2的`0x26528`亦已修正為自身state `0x53F7E..0x53F80`、#26/#27
+18-frame FIGANI與#83 samples1／2／3；`0x52460/0x52490/0x5249C`實為ID3
+資料，舊ID2關聯已撤回。mode4→target→mode5單張純indexed compositor與原始
+資產回歸達`DATA-READY`；mode1／2／7／8 helper座標、外層交易及正常敵方回合
+仍未閉合，不宣稱正式演出。
+
+另經AI mode交叉核對，map13 index0雖有command30 bit，但raw mode低四位為8，
+`0x13A9A`直接走`0x1317D`，不進`0x14EF0/0x1598A/0x15311`。因此它不是敵方
+command30 producer，也不構成缺少AI executor的交付阻擋。
+
 ## 四、目前可重生的數字，以及不能怎麼解讀
 
 2026-08-21 以唯讀 Docker 實跑現有稽核：

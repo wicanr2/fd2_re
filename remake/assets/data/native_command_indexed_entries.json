@@ -31,11 +31,15 @@
       "init_channels": 10,
       "draw_channels": 10,
       "draw_modes": [1, 2, 4, 5, 7, 8],
-      "raw_side_zero_x_shift": 148,
-      "offset_tables": ["0x52460", "0x52490", "0x5249C"],
-      "state_ranges": [],
+      "raw_side_zero_x_shift": 0,
+      "offset_tables": [],
+      "state_ranges": ["0x53F7E..0x53F80"],
       "uses_rng": false,
-      "sample_markers": []
+      "sample_markers": [
+        {"mode": 2, "channel": -1, "counter": 7, "callee": "0x25A96"},
+        {"mode": 5, "channel": -1, "counter": 17, "callee": "0x25A96"},
+        {"mode": 6, "channel": -1, "counter": 10, "callee": "0x25A96"}
+      ]
     },
     {
       "command_id": 3,

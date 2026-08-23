@@ -772,6 +772,15 @@ Y=`[-10,-24,-30,-24,-10,4,10,4]`、X anchor=`0x50`，raw side零值再加
 仍由未閉合的外層owner負責，因此此合成器目前只列`DATA-READY`，不假裝成
 正式敵方`RUNTIME-E1`。
 
+ID2使用獨立`NativeCommand2PresentationSchedule`：raw side非零選FDOTHER #26，
+零值選#27，兩者都必須是18-frame FIGANI；音訊容器固定#83且只保存直接
+sample索引1／2／3。mode3寫state16；mode4只在非零side於`base+1-stride`畫
+frame15；mode5在零side先於`base-1-stride`畫frame15，再一律於
+`base+1-stride`畫state frame，遞增到17時完成。2026-08-23勘誤：
+`0x52460/0x52490/0x5249C`是ID3資料，ID2完全不讀；typed entry不得為了滿足
+schema填入這三張表。mode1／2／7／8的`0x2673F`座標來源與外層數值發布尚未
+完整資料化，因此本輪只允許target純合成器達`DATA-READY`。
+
 BG asset boundary：`BG.DAT` 是 LLLLLL archive；generic compositor 的前三個已知 layer #0/#1/#2 都是 `{u16 width,u16 height, 0x4e63d four-mode RLE}` single-frame payload，實測各為 320×100。`fdother.DecodeArchiveSingleFrame` 明確解這種無 frame-directory 的 archive entry，player-archive regression 對三個 layer 解入 320×100 indexed surface。它不替 `0x2b5e1` 的其他 raw selector 命名，也不自動把 current PNG background 當 native layer schedule。
 
 ### UI-03 action chooser availability contract（E0 partial）

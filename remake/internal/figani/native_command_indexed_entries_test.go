@@ -25,6 +25,10 @@ func TestLoadNativeCommandIndexedEntryTablePreservesCorrectedLinearEntries(t *te
 	if entry8.Entry == "0x174B0" || entry8.ModeReturns["3"] != 34 || len(entry8.SampleMarkers) != 2 {
 		t.Fatalf("command8 address-base correction=%#v", entry8)
 	}
+	entry2, _ := table.Schedule(2)
+	if len(entry2.OffsetTables) != 0 || len(entry2.StateRanges) != 1 || len(entry2.SampleMarkers) != 3 {
+		t.Fatalf("command2 corrected ownership=%#v", entry2)
+	}
 }
 
 func TestLoadNativeCommandIndexedEntryTableRejectsRawUnrelocatedAddress(t *testing.T) {
