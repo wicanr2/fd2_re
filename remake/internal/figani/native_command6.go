@@ -41,6 +41,14 @@ type NativeCommand6TargetFrame struct {
 type NativeCommand6OrbitFrame struct {
 	First, Second []NativeCommand6Layer
 	NextRadius    int
+	DrawTarget    bool
+}
+
+type NativeCommand6TransitionFrame struct {
+	Mode4, Mode5  []NativeCommand6Layer
+	UseNextTarget bool
+	TargetOffsetX int
+	Next          NativeCommand6TargetState
 }
 
 // NativeCommand6PresentationSchedule 保存 0x26E39 已由直接指令閉合的
@@ -105,16 +113,16 @@ func PlanNativeCommand6PreludeFrame(radius int, rawSide byte, schedule NativeCom
 }
 
 func PlanNativeCommand6TailFrame(radius int, rawSide byte, schedule NativeCommand6PresentationSchedule) (NativeCommand6OrbitFrame, error) {
-	first, err := nativeCommand6OrbitLayers(8, radius, rawSide, schedule)
+	first, err := nativeCommand6OrbitLayers(7, radius, rawSide, schedule)
 	if err != nil {
 		return NativeCommand6OrbitFrame{}, err
 	}
 	next := radius - 6
-	second, err := nativeCommand6OrbitLayers(7, next, rawSide, schedule)
+	second, err := nativeCommand6OrbitLayers(8, radius, rawSide, schedule)
 	if err != nil {
 		return NativeCommand6OrbitFrame{}, err
 	}
-	return NativeCommand6OrbitFrame{First: first, Second: second, NextRadius: next}, nil
+	return NativeCommand6OrbitFrame{First: first, Second: second, NextRadius: next, DrawTarget: true}, nil
 }
 
 func NewNativeCommand6TargetState() NativeCommand6TargetState {
@@ -221,6 +229,40 @@ func BuildNativeCommand6TargetSequence(schedule NativeCommand6PresentationSchedu
 	}
 	if hpStage != NativeCommand6DamageStages {
 		return nil, fmt.Errorf("figani: command6 HP marker count incomplete: %d", hpStage)
+	}
+	return frames, nil
+}
+
+// BuildNativeCommand6TransitionSequence reproduces the command6 branch of
+// sub_2BA22. It preserves the target-effect counter state left by the current
+// target while generating four outgoing and five incoming frames.
+func BuildNativeCommand6TransitionSequence(state NativeCommand6TargetState, schedule NativeCommand6PresentationSchedule, points [NativeCommand6ChannelCount]NativeCommand6Point, rawSide byte) ([]NativeCommand6TransitionFrame, error) {
+	direction := -1
+	if rawSide == 0 {
+		direction = 1
+	}
+	frames := make([]NativeCommand6TransitionFrame, 0, 9)
+	appendFrame := func(useNext bool, step int) error {
+		planned, err := PlanNativeCommand6TargetFrame(state, schedule, points, rawSide)
+		if err != nil {
+			return err
+		}
+		frames = append(frames, NativeCommand6TransitionFrame{
+			Mode4: planned.Mode4, Mode5: planned.Mode5, UseNextTarget: useNext,
+			TargetOffsetX: direction * 35 * step, Next: planned.Next,
+		})
+		state = planned.Next
+		return nil
+	}
+	for step := 1; step <= 4; step++ {
+		if err := appendFrame(false, step); err != nil {
+			return nil, err
+		}
+	}
+	for step := 4; step >= 0; step-- {
+		if err := appendFrame(true, step); err != nil {
+			return nil, err
+		}
 	}
 	return frames, nil
 }

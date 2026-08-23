@@ -202,7 +202,9 @@ preserved.
   `07 08 06 0D 06 06 05 05 10 14`. Command6 consumes
   `0x525AF+6=0x525B5`, value5.
 - The mode0 return at `0x2AC25` controls seven prelude frames for command6.
-  Each frame calls mode1 at `0x2AC8E`, then mode2 at `0x2AD13`.
+  Each frame calls mode1 at `0x2AD13`, draws the actor effect, then calls
+  mode2 at `0x2AC8E`. Earlier text had the two call addresses reversed;
+  direct instructions fix the ordering and operands stated here.
 - For each target, mode3 at `0x2B0B9` supplies twelve frames. Each frame calls
   mode4 at `0x2ADC2`, draws the target layer, then calls mode5 at `0x2AEB6`.
 - Only a mode5 return of1 enters `0x2AEC0..0x2AF2E`. While `stage<=5`, the
@@ -210,17 +212,50 @@ preserved.
   `old-(old-new)*stage/5`, then calls `0x2A289` to redraw the status panel.
   The fifth marker reaches the exact `sub_1C75E` result. The remaining six of
   the eleven raw markers continue animation but do not write HP.
-- Mode6 at `0x2B166` supplies seven tail frames. Each calls mode8 at
-  `0x2B1B6`, then mode7 at `0x2B23B`.
+- Mode6 at `0x2B166` supplies seven tail frames. Control enters each iteration
+  at `0x2B1F6`: it calls mode7 at `0x2B23B`, draws actor and target idle,
+  then reaches mode8 at `0x2B1B6` through the back edge. Earlier text sorted
+  call addresses and incorrectly stated mode8→mode7; the executed order is
+  mode7→actor/target→mode8.
 - The direct handler branch `0x27053..0x270E6` fixes the orbit layers. For
   raw side nonzero, mode1/7 draw channels0..1 and mode2/8 draw channels2..4.
   For raw side zero, mode1/7 draw nothing and mode2/8 draw all five channels.
   Every orbit layer uses effect frame4 at the five computed coordinates.
   Mode2 increments radius by6 after drawing; mode8 decrements radius by6
   after drawing. Mode0 starts radius0 and mode6 starts radius42, so the seven
-  front and seven tail iterations are exact inverse radial schedules.
+  front iterations are mode1→actor→mode2 at radii 0..36 and the seven tail
+  iterations are mode7→actor/target→mode8 at radii 42..6.
 
 This closes the shared schedule and HP consumer as proven evidence. It does
 not rename `0x2A289` as a separate numeric-text writer: the directly proven
 role is status-panel redraw after the record write. Player-visible runtime and
 audio remain below RUNTIME-E1 until the formal owner is connected.
+
+`sub_2BA22` adjacent-target transition (2026-08-24)
+----------------------------------------------------
+
+Licensed IDA Pro 9.4 fixes the original function boundary at
+`0x2BA22..0x2BC9A`; Capstone 5.0.3 independently finds its only direct caller
+at `sub_2A6BD+0x139C` (`0x2B059`). Addresses use the same DOS LE linear space
+and fixed executable fingerprint as this file.
+
+The eight arguments, proven from caller pushes and consumers, are actor raw
+unit ID, command ID, actor FIGANI effect, current-target idle FIGANI, shared
+work buffer, 64000-byte framebuffer, next-target idle FIGANI, and the repeated
+command ID. The composition page is `work+0x49C0`.
+
+- Actor raw record `+6==0` selects positive horizontal direction; nonzero
+  selects negative direction.
+- Frames1..4 draw current-target idle frame0 at `direction*35*step`.
+- Frames5..9 draw next-target idle frame0 at offsets
+  `direction*35*{4,3,2,1,0}`.
+- Every frame calls indexed mode4, draws actor-effect last frame, draws the
+  displaced target idle, calls indexed mode5, presents, then ticks once.
+- Commands3 and7 alternate the `work+0x49C0` and one-scanline-earlier pages;
+  command6 keeps the fixed page.
+- The function exits through shared epilogue `0x2A5C8`; it has no numeric
+  transaction or typed return consumed by the caller.
+
+This is the nine-frame transition between adjacent final targets, not the
+twelve-frame per-target effect. It is `DATA-READY`; missing handler/effect/
+idle/framebuffer provenance remains fail-closed.

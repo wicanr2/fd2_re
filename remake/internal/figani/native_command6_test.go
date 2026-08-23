@@ -58,7 +58,7 @@ func TestNativeCommand6OrbitPlansPreserveModeOrderAndSideSplit(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(tail.First) != 3 || len(tail.Second) != 2 || tail.First[0].Mode != 8 || tail.Second[0].Mode != 7 || tail.NextRadius != 36 {
+	if len(tail.First) != 2 || len(tail.Second) != 3 || tail.First[0].Mode != 7 || tail.Second[0].Mode != 8 || tail.NextRadius != 36 || !tail.DrawTarget {
 		t.Fatalf("tail=%+v", tail)
 	}
 	zeroSchedule, _ := BuildNativeCommand6PresentationSchedule(0, command6TestAnimation())
@@ -141,6 +141,33 @@ func TestNativeCommand6TargetSequenceConsumesOnlyFirstFiveMarkers(t *testing.T) 
 		if frames[index].HPStage != 0 {
 			t.Fatalf("late frame %d republished HP stage %d", index, frames[index].HPStage)
 		}
+	}
+}
+
+func TestNativeCommand6TransitionSequencePreservesNineFrameSlide(t *testing.T) {
+	schedule, _ := BuildNativeCommand6PresentationSchedule(1, command6TestAnimation())
+	points := NativeCommand6Coordinates(10, schedule.BaseByte)
+	targets, err := BuildNativeCommand6TargetSequence(schedule, points, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	frames, err := BuildNativeCommand6TransitionSequence(targets[len(targets)-1].Next, schedule, points, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantOffsets := []int{-35, -70, -105, -140, -140, -105, -70, -35, 0}
+	if len(frames) != len(wantOffsets) {
+		t.Fatalf("transition frames=%d", len(frames))
+	}
+	for index, frame := range frames {
+		if frame.TargetOffsetX != wantOffsets[index] || frame.UseNextTarget != (index >= 4) {
+			t.Fatalf("frame %d=%+v", index, frame)
+		}
+	}
+	zeroSchedule, _ := BuildNativeCommand6PresentationSchedule(0, command6TestAnimation())
+	zero, err := BuildNativeCommand6TransitionSequence(NewNativeCommand6TargetState(), zeroSchedule, NativeCommand6Coordinates(10, zeroSchedule.BaseByte), 0)
+	if err != nil || zero[0].TargetOffsetX != 35 || zero[8].TargetOffsetX != 0 {
+		t.Fatalf("zero-side transition=%+v err=%v", zero, err)
 	}
 }
 

@@ -773,7 +773,15 @@ presenter 必須依 marker 逐段發布。command6 是 5 段 HP、12 張 target 
 command6 的 orbit 合成也採 typed layer：raw side 非零時 mode1/7 只畫
 channel0..1、mode2/8 只畫 channel2..4；raw side 零時只有 mode2/8 畫全部
 五個 channel。全部固定 effect frame4。前導從 radius0 開始，每輪
-mode1→mode2 後加6；尾段從 radius42 開始，每輪 mode8 後減6再 mode7。
+mode1→actor effect→mode2 後加6；尾段從 radius42 開始，每輪
+mode7→actor effect／target idle→mode8，並在 mode8 後減6。先前依 call 位址
+排序成 mode8→mode7 的說法已撤回；正式 typed plan 以迴圈 back-edge 為準。
+
+多目標間的 `sub_2BA22` 固定產生九幀：目前目標以 `35×{1,2,3,4}` 依
+actor raw `+6` 決定的正／負水平方向推出，再讓下一目標以
+`35×{4,3,2,1,0}` 收回。每幀仍是 mode4→actor effect末幀→target idle
+frame0→mode5。command6 不使用 command3/7 的 scanline page flip。正式 owner
+必須為每對相鄰 final target 預建這九幀；不得直接瞬切下一目標。
 
 ID1另以`NativeCommand1PresentationSchedule`保存`0x262EF`的兩組八槽
 mode4→target→mode5合成：X=`[-59,-39,0,39,55,39,0,-39]`、
