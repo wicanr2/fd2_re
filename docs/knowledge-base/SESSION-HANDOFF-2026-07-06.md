@@ -5786,3 +5786,18 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   或任一原始資產／raw provenance 缺失時保持零修改。
 - 本切片為玩家 `RUNTIME-E1`，不是一般玩家原版 E2。敵方 caller、command28／31
   actor selector與演出仍未閉合，不得把此 owner 外推共用。
+
+## 2026-08-23：command28／31 正常取得路徑裁決
+
+- 本段勘誤前文把「尋找28／31一般玩家actor selector」列為持續待辦的現況。
+  授權Docker內IDA Pro 9.4窄探針固定runtime mask OR writer `sub_1D79C`
+  (`0x1D79C..0x1D80B`)只有`0x1E39A`一筆direct caller，位於level-up
+  `sub_1E292`；caller依raw `+7`→growth `+10`→12-byte learn row掃六組pair。
+- 固定command-learn表沒有ID28／31，32筆player constructor defaults也都沒有
+  byte3 bit4／bit7。故「未修改一般玩家目前沒有已證實取得來源」提升為強推論，
+  不再把兩者renderer列為remake交付阻擋；但因間接／未分類writer仍可能存在，
+  不宣稱死碼。
+- selector18雖是全FIGANI僅剩的impact-effect候選，沒有producer／consumer可綁到
+  28或31，不得排除猜配。只有動態玩家路徑出現bit、找到新mask writer，或同actor
+  raw `+7`與bit成對時才重開。證據見
+  [`fd2_command28_31_reachability_ida.txt`](../data/ida/fd2_command28_31_reachability_ida.txt)。

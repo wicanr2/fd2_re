@@ -1,0 +1,61 @@
+FD2 command 28／31 一般玩家取得路徑窄稽核（IDA Pro 9.4）
+============================================================
+
+輸入與位址空間
+--------------
+
+- 輸入：`FD2.EXE`
+- 大小：357074 bytes
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 工具：使用者授權的 IDA Pro 9.4，`fd2-ida-authorized-local` Docker image
+- 位址：下列皆為 IDA linear address
+- 原始名稱保留為 `sub_*`；反編譯輸出只作導覽，裁決以直接指令、caller、原始表
+  與既有 constructor 證據為準。
+
+已證實：已知 runtime command-mask OR writer
+-------------------------------------------
+
+1. 原始函式 `sub_1D79C` 範圍 `0x1D79C..0x1D80B`。`0x1D7FB` 所在資料流以
+   `80*actor + [0x53A45] + 0x1A + commandID/8` 定位 command-mask byte，再 OR
+   `commandID%8` 的 bit。這與受版控的 `Unit.NativeCommandMask` ABI 一致。
+2. IDA database 的 direct code xref 只有一筆：`0x1E39A`，位於原始函式
+   `sub_1E292`（`0x1E292..0x1E529`）。沒有第二個 direct caller。
+3. `sub_1E292` 的直接指令固定下列鏈：
+   - `0x1E2F8..0x1E2FD`：讀 actor raw `+7`，呼叫 `sub_4E4D1`；
+   - `0x1E4D1..0x1E4E5`：讀 growth row `+10`，非 `0xFF` 才呼叫
+     `sub_4E4A2`；
+   - `0x1E36E..0x1E380`：最多掃六組 `{required_level, commandID}`；
+   - `0x1E382..0x1E39A`：等級相等時把 pair 的 commandID 傳給
+     `sub_1D79C(actor, commandID)`。
+4. `sub_4E4D1` 是 `0x620A1 + 11*selector` 的 growth-row accessor；
+   `sub_4E4A2` 是 `0x626B3 + 12*learn_idx` 的 command-learn accessor。
+
+已證實：固定資料表沒有正常授予 28／31
+---------------------------------------
+
+- [`command_learn.json`](../../../remake/assets/data/command_learn.json) 是上述
+  `0x626B3` 表的可編輯匯出；所有列都沒有 command ID28 或 ID31。
+- [`character_defaults.json`](../exe_tables/character_defaults.json) 的32筆固定
+  constructor defaults，其四個 `initial_command_mask` bytes 都沒有 ID28
+  （byte3 bit4）或 ID31（byte3 bit7）。`0x10F7F` constructor 將這四 bytes 複製
+  到 runtime `+0x1A..+0x1D` 的既有證據不變。
+- 固定 FIGANI 全檔只有 selector18／32／34 的 effect resource 具有 target impact
+  marker；selector32、34已分別綁定 command24、29的正常學招鏈。selector18沒有
+  任何 producer／consumer 證據可綁到 command28或31，不能用排除法猜配。
+- FDTXT command label 中 ID28 有「淒煌斬」，ID31 是空字串；名稱存在或空白都
+  不能證明一般玩家可取得。
+
+裁決與推論等級
+--------------
+
+- **已證實：** 固定版本的既有正常玩家 constructor defaults與level-up learn table
+  不會授予 command28／31；已知 command-mask OR writer也只有上述level-up direct
+  caller。
+- **強推論：** command28／31在未修改的一般玩家路徑沒有可證實的取得來源，因而
+  不應阻擋 remake 收尾，也不應猜 selector接正式 indexed owner。
+- **未知：** 是否存在間接呼叫、未分類raw mask writer、開發／作弊存檔或其他非
+  正常路徑可開啟兩個command；因此本證據不把它們宣稱為「死碼」或「永遠不可達」。
+- **重開條件：** 原版未修改玩家路徑動態擷取出現ID28／31、找到另一個直接／間接
+  command-mask writer，或同一 actor state 同時提供raw `+7`與command bit。未達
+  其中之一前，state-only相容交易可保留，正式演出維持失敗即關閉。

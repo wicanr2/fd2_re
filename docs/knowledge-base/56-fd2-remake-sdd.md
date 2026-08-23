@@ -956,6 +956,15 @@ target marker 發布對應 HP。所有 target 完成後才設定 `Acted` 並發�
 已發布 target 的 HP／raw `+5`，不得保留部分提交。這項契約只接玩家指令 29；敵方
 caller 的演出 owner、指令 28 的不同 prelude／無轉場路徑，以及指令 31 的 actor
 selector 尚未證實，仍維持失敗即關閉。
+
+2026-08-23 的正常取得路徑窄稽核進一步固定：runtime command-mask OR writer
+`0x1D79C`只有`0x1E292`升級流程的單一direct caller；該流程依raw `+7`解析growth
+row `+10`的`learn_idx`，再掃六組level／command pair。固定command-learn表與32筆
+player constructor defaults都不含ID28／31。因此目前只能把兩者列為「沒有已證實
+的一般玩家取得來源」的強推論，不宣稱死碼；它們不阻擋remake交付，也不准用
+selector18排除猜測補演出。若未修改玩家動態路徑出現兩者、發現另一個mask writer，
+或取得同一actor的raw `+7`與command bit，才重開正式owner。完整證據見
+[`fd2_command28_31_reachability_ida.txt`](../data/ida/fd2_command28_31_reachability_ida.txt)。
 | 30 | `1CFF0→14818→115B6` 先確認 record+3 candidate；再以 saved cursor→confirmed cursor 進 `149F8`，`count=record+3-16`、X-first cardinal line、只收 enemy，最後 `2A6BD→276EC` default倍率18 | `ExecuteNativeCommand30`（顯式兩 cursor、state-only final delta） | native cursor lifecycle／multi-hit／SFX／indexed UI 未接 |
 | 25 | `0x1CFF0→1D6C8→22C04`，#88 sub0＋八個DAC phases後清raw target `+5 bit7` | `ExecuteNativeCommand25`要求raw +5 provenance，只清`0x80`而不混用`Acted` | 玩家grid＋palette／sample已接E1；原版feedback／逐音訊E2未接 |
 | 26–27 | `0x1CFF0→1D6C8→22CBF/22E41→22D1B`，分別 write `+0x25/+0x26` | `ExecuteNativeCommandApplication`；完整preflight後才交易 | 玩家grid＋palette／sample已接E1；status名稱、expiry UI與逐音訊E2未接 |
