@@ -1001,6 +1001,13 @@ Draw後發布，target HP在60張主段結束及steady redraw後一次發布，�
 標記 acted。任何晚期錯誤都要回復 MP、HP、acted、RNG及indexed buffers。此規格
 只要求原版可見順序與資料契約；delay10的DOS wall-clock不追逐硬體逐週期一致。
 
+同日敵方consumer補充：`0x15311..0x1548E` 對IDs10／11／12以
+`funcs_1541F[eax*4]`分別進`0x21527／0x2185F／0x21A9E`，所以mode 11及其他
+正常敵方command caller不得落回同步`ExecuteNativeCommandDamage`。正式敵方owner
+重用上述完整預建與逐Draw交易，但完成回呼只銜接AI continuation、死亡獎勵、
+朝向與成功動作邊界；不得執行玩家target-field／selection cleanup。首幀前缺任一
+raw surface／LUT／sample／HUD／target provenance時，敵方MP／HP／RNG／Acted皆不變。
+
 IDs13..16 是另一條已閉合的治療核心，不能併入上面的 damage route。其 jump-table handlers
 `0x21AD9/0x21B99/0x2211C/0x22153` 各以 ID `13/14/15/16` 和各自的演出參數跳到共同
 `0x21B18`；它在 generic target-confirm 後，以同一 final target array 呼叫專用 indexed 演出
@@ -1154,7 +1161,7 @@ actor raw completion writer。它與 ID20/21「借 record10」的 clear/restore 
 |---|---|---|---|
 | 0–8 | `0x2A6BD→2B659/1C75E`，two-stage final targets、MP event、numeric hit/HP | `ExecuteNativeCommandDamage` 與 command-specific staged plans | IDs0–3、5–8已有正式玩家／敵方indexed owner；ID4缺已證實正常玩家producer，不猜接；各ID仍缺同狀態E2 |
 | 9 | 玩家 `1CFF0→1D6C8→214AD→1C4CC/1DF58`；敵方 gate `15311→2A6BD→275D6` | 玩家 `PlanNativeCommandDamage`；敵方 `PlanNativeAICommandDamageSingleTarget` 明確消費 mode11 producer target | 玩家 #80 selector0／14／15、八段色盤、27張#6與22張#5結果；敵方 raw-side-zero #44/#90、11/20/60/20/8 與20段HP均已接 `RUNTIME-E1`；兩方 owner 不共用，E2仍待 |
-| 10–12 | wrappers→ID11／12 #80 selector2與`2189A`→`21548`三張取樣表／四surface×60張／selector13→`1CA89→1C75E` | `ExecuteNativeCommandDamage`；typed schedule、逐像素fixed-point compositor與正式玩家owner已接 | `RUNTIME-E1`：ID11／12前導、主段、結果佇列、MP／HP／RNG／acted交易與rollback均已接；numeric 共用不代表演出共用，缺任一raw surface／LUT／sample仍失敗即關閉；同狀態逐幀／逐音訊E2待補 |
+| 10–12 | wrappers→ID11／12 #80 selector2與`2189A`→`21548`三張取樣表／四surface×60張／selector13→`1CA89→1C75E` | `ExecuteNativeCommandDamage`；typed schedule、逐像素fixed-point compositor與正式玩家／敵方owner已接 | `RUNTIME-E1`：ID11／12前導、主段、結果佇列、MP／HP／RNG／acted交易與rollback均已接；敵方`0x15311→funcs_1541F`亦走同一逐Draw owner，不再同步發布；numeric 共用不代表演出共用，缺任一raw surface／LUT／sample仍失敗即關閉；同狀態逐幀／逐音訊E2待補 |
 | 13–16 | `0x21AD9…0x22153→21EB1→21B18→1C8ED/1C916` | `BuildNativeCommandHealPresentationSchedule`＋玩家 `ExecuteNativeCommandHeal`／AI `ExecuteNativeAICommandHeal` | 玩家與敵方 mode 11 的 16 張 FDOTHER #3 LUT 前段已接；AI 依 raw selector 重建 target array；後段索引畫面／數字佇列與格狀確認 E2 未接 |
 | 17–19 | `0x1CFF0→1D6C8→226EA/2282F/22960`；#80 selector0、八個DAC phases、modifier writers與`+0x22..+0x24` duration已釘死 | `ExecuteNativeCommandModifier`／`ExecuteNativeAICommandModifier` 已以私有raw records原子發布target duration、derived words、MP與acted；ID17明確由record18扣MP。玩家與敵方mode 11、phase-expiry caller與 `sub_17FC0` status color consumer均已接 | 玩家grid＋八phase palette／sample、倒數、到期提示及status color已接E1；高階名稱、精確tick／逐音訊E2未接 |
 | 20–21 | `0x1CFF0→1D6C8→22A85/22BC6→22AF6`，#80 selector0＋八個DAC phases，clear `+0x25/+0x26` 並借 record10 restore | `ExecuteNativeCommandClearRestore`；完整preflight後才允許玩家演出與交易 | 玩家grid＋八phase palette／sample已接E1；status名稱、expiry UI、精確tick／逐音訊E2未接 |

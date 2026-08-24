@@ -7,8 +7,8 @@ import (
 )
 
 // executeNativeAIAction consumes only the route selected by the raw
-// 0x14ef0 bridge.  It deliberately reuses the same state-only command/item
-// executors as the player UI; no normalized spell or guessed item effect is
+// 0x14ef0 bridge.  Recovered indexed owners are mandatory where the original
+// caller consumes them; no normalized spell or guessed item effect is
 // substituted when a command ID is outside the recovered families.
 func (g *Game) executeNativeAIAction(plan *battle.AIPlan) error {
 	return g.executeNativeAIActionWithContinuation(plan, nil)
@@ -153,6 +153,16 @@ func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after 
 				g.finishSuccessfulUnitAction(actor, after)
 				g.checkResult()
 			})
+		case id >= 10 && id <= 12:
+			return g.startNativeCommand1012Presentation(actor, target, id, func(results []battle.NativeCommandDamageResult) {
+				for _, result := range results {
+					g.awardDeathReward(result.Target, actor)
+				}
+				actor.SetMapPose(dirToward(actor.X, actor.Y, target.X, target.Y))
+				g.msg = fmt.Sprintf("原始指令 %d：完成敵方 indexed 演出", id)
+				g.finishSuccessfulUnitAction(actor, after)
+				g.checkResult()
+			})
 		case id == 6:
 			return g.startNativeCommand6Presentation(actor, target, func(results []battle.NativeCommandDamageResult) {
 				hit, total := 0, 0
@@ -168,26 +178,6 @@ func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after 
 				g.finishSuccessfulUnitAction(actor, after)
 				g.checkResult()
 			})
-		case id >= 1 && id <= 12:
-			var results []battle.NativeCommandDamageResult
-			var next uint16
-			var err error
-			results, next, err = g.st.ExecuteNativeCommandDamage(
-				actor, target, id, g.st.NativeCommandResistances, g.nativeRNGState,
-			)
-			if err != nil {
-				return err
-			}
-			g.nativeRNGState = next
-			hit, total := 0, 0
-			for _, result := range results {
-				if result.Hit {
-					hit++
-					total += result.Damage
-				}
-				damageTargets = append(damageTargets, result.Target)
-			}
-			message = fmt.Sprintf("原始指令 %d：命中 %d，傷害 %d", id, hit, total)
 		case id >= 13 && id <= 16:
 			targets, err := g.st.NativeAICommandHealTargets(actor, id)
 			if err != nil {

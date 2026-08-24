@@ -6305,3 +6305,16 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   聚焦回歸；Docker／Xvfb內完整`go test ./... -count=1`亦以實際結束碼0通過。
   指令35因此提升為受限class19玩家`RUNTIME-E1`；下一個切片轉向仍有正常producer
   的敵方caller-specific演出／commit順序，不重做玩家ID32–35。
+
+## 2026-08-25：敵方指令10–12正式使用 indexed owner
+
+- 既有IDA Pro 9.4主證據已固定`0x15311..0x1548E`透過
+  `funcs_1541F[eax*4]`將IDs10／11／12分別送入`0x21527／0x2185F／0x21A9E`；
+  這三個wrapper不是玩家專用。先前敵方執行端落入同步
+  `ExecuteNativeCommandDamage`，會跳過三輪取樣、60張主段、音效與Draw發布邊界。
+- `executeNativeAIActionWithContinuation`現將IDs10–12交給既有正式owner；MP在首張
+  main Draw後發布，HP／RNG在60張主段完成後發布，結果尾停後才發布`Acted`並銜接
+  mode 11 continuation。缺原始地圖／LUT／sample／HUD／target provenance時零交易。
+- 原始資產敵方ID10端到端測試已固定「未Draw不發布」及完成後MP／HP／Acted／
+  continuation邊界；IDs11／12沿同一switch與既有typed schedule保留各自`0x2189A`
+  前導。這是`RUNTIME-E1`，不宣稱同狀態逐幀／逐音訊E2。

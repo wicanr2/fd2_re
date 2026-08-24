@@ -38,6 +38,18 @@ FD2 玩家指令 10–12 indexed 演出家族非破壞性證據
   已由 `fd2_ch22_post_ida.txt` 獨立閉合；這裡只新增兩個 command caller 的
   exact arguments，不重解 callee。
 
+敵方 `0x15311` 消費端（已證實）
+--------------------------------
+
+- `0x15311..0x1548E` 以原始 command ID 索引 `funcs_1541F[eax*4]`；表中
+  IDs10／11／12 分別指向 `sub_21527`／`sub_2185F`／`sub_21A9E`。因此這三個
+  wrapper 同時是正常敵方 command producer 的畫面 consumer，不是玩家專用入口。
+- 這條路徑本身已保留 `sub_1CA89` MP 扣款、三輪取樣、60次present、結果queue
+  與完成尾段。remake 的敵方 caller 必須交給同一個逐Draw正式owner；不得先以
+  state-only helper發布MP／HP／RNG／Acted，再略過畫面直接續排下一個AI stage。
+- 此補充只關閉既有IDA交叉參照與跳表的consumer關係，不新增技能高階名稱，
+  也不宣稱同狀態逐幀／逐音訊E2。
+
 `sub_21548` 共用演出（已證實）
 --------------------------------
 

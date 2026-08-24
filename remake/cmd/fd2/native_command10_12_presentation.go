@@ -47,7 +47,9 @@ func (g *Game) startNativeCommand1012Presentation(actor, confirmed *battle.Unit,
 		g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil ||
 		g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil ||
 		g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil ||
-		g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.indexedTransition != nil {
+		g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil ||
+		g.nativeCmd33Presentation != nil || g.nativeCmd34Presentation != nil || g.nativeCmd35Presentation != nil ||
+		g.indexedTransition != nil {
 		return errors.New("native command10-12 presentation already active")
 	}
 	schedule, err := fdother.BuildNativeCommand10To12Schedule(commandID)
