@@ -21,6 +21,11 @@ func TestLoadNativeCommandIndexedEntryTablePreservesCorrectedLinearEntries(t *te
 	if entry7.InitChannels != 4 || entry7.DrawChannels != 3 || entry7.ModeReturns["3"] != 32 || len(entry7.SampleMarkers) != 6 {
 		t.Fatalf("command7 raw channel contract=%#v", entry7)
 	}
+	entry3, _ := table.Schedule(3)
+	if entry3.RawSideZeroXShift != 20 || entry3.UsesRNG || len(entry3.StateRanges) != 1 ||
+		entry3.StateRanges[0] != "0x53F81..0x53FE3" || len(entry3.SampleMarkers) != 6 {
+		t.Fatalf("command3 direct-instruction correction=%#v", entry3)
+	}
 	entry8, _ := table.Schedule(8)
 	if entry8.Entry == "0x174B0" || entry8.ModeReturns["3"] != 34 || len(entry8.SampleMarkers) != 2 {
 		t.Fatalf("command8 address-base correction=%#v", entry8)

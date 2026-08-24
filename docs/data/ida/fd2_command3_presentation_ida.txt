@@ -1,0 +1,91 @@
+# FD2 第 3 號指令 `0x26795` indexed 演出證據
+
+## 固定輸入與工具
+
+- 原版 `FD2.EXE`：357074 bytes；MD5
+  `b97caf2239a27a896069d03549d96e1e`；SHA-256
+  `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 原版 `FDOTHER.DAT`：3382481 bytes；MD5
+  `22f56e5027edc7c766ad34ca4e5aca93`；SHA-256
+  `a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`。
+- 第一工具：使用者授權的 IDA Pro 9.4／Hex-Rays 9.4.0.260610，於
+  `fd2-ida-authorized-local` 無網路一次性 Docker 內建立暫存資料庫；位址均為
+  DOS LE loader、image base 0 的 IDA 線性位址。
+- 第二工具：`fd2-cap-local`／Capstone 5.0.3，獨立解碼固定範圍
+  `0x26795..0x269D3`；原版執行檔唯讀。
+- IDA 自動分析將 entry 錯併入 `0x26152..0x272B8`。因此函式邊界與偽代碼只供
+  導覽；本結論採入口表 `0x523B9[3]`、下一個 entry `0x269D3`、直接指令及
+  Capstone 交叉驗證，不修改或採信錯併邊界。
+
+## entry、caller 與模式（已證實）
+
+- `0x523B9[3]` 指向 `0x26795`；共用 consumer `0x2A6BD` 依 mode
+  0→2／1、每目標3→4／5、尾段6→8／7 呼叫 indexed entry。IDA 顯示
+  `0x2AC25..0x2BBF8` 的直接交叉參照及 `0x523B9` data xref。
+- mode0 (`0x2680A..0x26841`)：12 個 counter 寫成
+  `0,-2,-4,...,-22`；12 個 position 寫成 `0..11`；next-position=12、stop=0、
+  toggle=0，回傳2。
+- mode3 (`0x26846..0x26850`)：只回傳40，不重設 entry state。
+- mode6 (`0x26855..0x26866`)：stop=1，回傳20。
+- 只有 mode2／5／8 進入同一 draw／advance loop；其他 mode回傳0。
+- **舊斷言撤回**：`0x26795..0x269D3` 沒有呼叫 `0x4E893` 或其他 RNG helper。
+  mode0 是確定性 stagger，不是「12 個 RNG-rotated slots」；可編輯資料的
+  `uses_rng=true` 必須改成false。
+
+## 原始資料表、狀態與繪圖 ABI（已證實）
+
+- `0x52460` 的12個 signed dword：
+  `30,0,70,40,130,70,-30,30,110,80,-10,30`。
+- `0x52490` 的12個 byte vertical-row offset：
+  `0,10,0,20,5,20,0,10,0,18,0,10`。
+- `0x5249C` 的12個 byte effect-frame base：
+  `22,0,0,0,0,0,11,0,22,0,0,0`。
+- actor raw record `+6==0` 時，`0x267F3..0x267FF` 對全部12個水平偏移加20；
+  舊 JSON 的 `raw_side_zero_x_shift=0` 必須改成20。
+- counters：`0x53F81..0x53FB0`（12×dword）；positions：
+  `0x53FB1..0x53FE0`（12×dword）；next-position `0x53FE1`、stop
+  `0x53FE2`、toggle `0x53FE3`。
+- 每次 draw mode先令toggle=`(toggle+1)%2`。counter在`0..10`時呼叫
+  `sub_2935B(effect, frameBase[position]+counter,
+  destination+xOffset[position]-verticalOffset[position]*stride,stride,-1)`；
+  每一 entry state因此固定畫兩張，只有toggle=0才推進。
+- toggle=0時，counter先依下節處理sample，再加1。新counter=3令本次mode回傳1；
+  新counter=11且stop=0時，next-position先加1再mod12、指派該slot並把counter清0。
+
+## effect、sample 與 marker（已證實）
+
+- `0x2A6BD` 效果表：raw `+6!=0`使用`0x525B9[3]=39`；raw `+6==0`
+  使用`0x525C2[3]=43`。
+- FDOTHER #39：48466 bytes，MD5 `184cc795e28d1c69e7406a3a742177c4`，
+  SHA-256 `0411135067a69452ae0033d6e7441af817d15b0e74e8fe6c58ca7ec1959ae07c`。
+  FDOTHER #43：57305 bytes，MD5 `1cb0845315bf1ad2085ad8d445199b81`，
+  SHA-256 `088a3f9268466b2ce82cb1a0165f38ebe85e2eedce6b8a17e77cfdaa43fe6e54`。
+  兩者 header 均為`21 00 21 00 00 00 00 00`、33幀；entry最大索引
+  `frameBase22+counter10=32`，不得縮成一般 descriptor-delay 動畫。
+- 共用 ASCII sound table 的 ID3 是`T`＝FDOTHER #84。#84為24389 bytes，MD5
+  `cfd7c11829f0d42ad0f666765ca6febe`，SHA-256
+  `174b6ff284d36f335357ea89177c760cbef97c3a6c66feadc1cd68c0ee575e89`；
+  sub0／1／2分別6561／8940／8866 bytes，sub3是零長度 sentinel。sub0仍由
+  common actor marker消費。
+- toggle=0、pre-increment counter=0且`frameBase[position]!=0`時，
+  `0x2691E..0x2692D`呼叫`0x25A96(sound,2,1)`，因此handler消費#84 sub2。
+- increment後counter=3且`frameBase[position]==0`時，`0x26951..0x26960`
+  呼叫`0x25B45(sound,1,1)`，因此handler消費#84 sub1；不論是否播放，
+  `0x26963`都令本次mode回傳1。
+- mode0後的兩張front已先advance一次，其中front step1播放sub2。其後mode3的
+  40張target含20次advance，共14個raw numeric marker，落在zero-based step
+  `3,7,11,15,19,23,25,27,29,31,33,35,37,39`；`0x525AF[3]=13`使前13個
+  發布HP stage1..13，最後step39不可再次寫HP。第一target的sub2 marker在step
+  `23,31`；sub1 marker在step `7,11,15,19,23,25,29,31,33,37,39`。
+
+## 證據分級與重製邊界
+
+- 上述入口、直接指令、三張表、狀態、資源、sample ABI及第一target marker為
+  **已證實（RE-CLOSED）**。
+- typed planner必須保存跨front、target、九張boundary、下一target與tail的同一
+  state；mode6只設stop，不可重置。只有每target前13個raw numeric marker可發布
+  HP stage1..13，第14個仍保留raw marker但HP stage為0。
+- 原版process-wide RNG仍屬外層傷害計畫，不可因撤回entry RNG就改變數值交易。
+- typed planner／compositor及#39／#43／#84原始資產回歸已完成，達
+  `DATA-READY`。本文件不證明未修改一般玩家逐幀／音訊一致，也不替「天火術」
+  名稱推導動畫高階語意；正式owner完成前runtime維持失敗即關閉。

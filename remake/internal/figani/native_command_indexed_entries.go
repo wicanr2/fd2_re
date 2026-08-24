@@ -19,10 +19,12 @@ type NativeCommandIndexedEntrySource struct {
 }
 
 type NativeCommandIndexedSampleMarker struct {
-	Mode    int    `json:"mode"`
-	Channel int    `json:"channel"`
-	Counter int    `json:"counter"`
-	Callee  string `json:"callee"`
+	Mode             int    `json:"mode"`
+	Channel          int    `json:"channel"`
+	Counter          int    `json:"counter"`
+	CounterPhase     string `json:"counter_phase,omitempty"`
+	FrameBaseNonzero *bool  `json:"frame_base_nonzero,omitempty"`
+	Callee           string `json:"callee"`
 }
 
 // NativeCommandIndexedEntrySchedule 保存原版 funcs_2AC25 的逐 entry raw
@@ -87,9 +89,30 @@ func LoadNativeCommandIndexedEntryTable(path string) (*NativeCommandIndexedEntry
 			}
 		}
 		for _, marker := range entry.SampleMarkers {
-			if marker.Mode < 0 || marker.Mode > 8 || marker.Channel >= entry.DrawChannels ||
+			if marker.Mode < 0 || marker.Mode > 8 || marker.Channel >= entry.DrawChannels || marker.Channel < -1 ||
 				(marker.Callee != "0x25A96" && marker.Callee != "0x25B45") {
 				return nil, fmt.Errorf("native command indexed entry %d sample marker is invalid", entry.CommandID)
+			}
+		}
+		if entry.CommandID == 3 {
+			if entry.InitChannels != 12 || entry.DrawChannels != 12 || entry.RawSideZeroXShift != 20 ||
+				entry.ModeReturns["0"] != 2 || entry.ModeReturns["3"] != 40 || entry.ModeReturns["6"] != 20 ||
+				entry.UsesRNG || len(entry.OffsetTables) != 3 || entry.OffsetTables[0] != "0x52460" ||
+				entry.OffsetTables[1] != "0x52490" || entry.OffsetTables[2] != "0x5249C" ||
+				len(entry.StateRanges) != 1 || entry.StateRanges[0] != "0x53F81..0x53FE3" || len(entry.SampleMarkers) != 6 {
+				return nil, errors.New("native command indexed entry 3 direct-instruction contract is invalid")
+			}
+			for index, marker := range entry.SampleMarkers {
+				wantMode := [...]int{2, 2, 5, 5, 8, 8}[index]
+				wantCounter := [...]int{0, 3, 0, 3, 0, 3}[index]
+				wantPhase := [...]string{"pre", "post", "pre", "post", "pre", "post"}[index]
+				wantCallee := [...]string{"0x25A96", "0x25B45", "0x25A96", "0x25B45", "0x25A96", "0x25B45"}[index]
+				wantFrameBaseNonzero := index%2 == 0
+				if marker.Mode != wantMode || marker.Channel != -1 || marker.Counter != wantCounter ||
+					marker.CounterPhase != wantPhase || marker.FrameBaseNonzero == nil ||
+					*marker.FrameBaseNonzero != wantFrameBaseNonzero || marker.Callee != wantCallee {
+					return nil, errors.New("native command indexed entry 3 sample contract is invalid")
+				}
 			}
 		}
 		if entry.CommandID == 6 && (entry.InitChannels != 5 || entry.DrawChannels != 5 ||

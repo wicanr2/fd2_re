@@ -888,6 +888,26 @@ mode 11共用同一工作。MP、五段HP、`Acted`與數值計畫RNG只在對�
 indexed `RUNTIME-E1`。原版外層numeric-marker shake尚未形成同狀態動態證據，
 不猜接額外畫面亂數，也不宣稱`PLAYER-E2`。
 
+ID3 使用獨立 `NativeCommand3PresentationSchedule` 與可複製state。舊「12個
+RNG-rotated slots」已被固定範圍直接指令推翻：mode0確定性初始化12個counter
+`0,-2,...,-22`、position `0..11`、next-position12、stop0、toggle0，沒有呼叫
+`0x4E893`。mode0／3／6回傳2／40／20；mode6只設stop，mode2／5／8共用
+toggle雙張及12槽推進，state跨target與九張boundary持續。
+
+三張表固定為：`0x52460` signed X
+`[30,0,70,40,130,70,-30,30,110,80,-10,30]`、`0x52490` vertical row
+`[0,10,0,20,5,20,0,10,0,18,0,10]`、`0x5249C` frame base
+`[22,0,0,0,0,0,11,0,22,0,0,0]`。raw side零值將全部X加20。
+counter 0..10畫`frameBase[position]+counter`；toggle=0才推進，pre-counter0且
+frame base非零播放#84 sub2，post-counter3且frame base為零播放#84 sub1，後者
+不影響numeric marker本身。每target 40張的13個HP marker固定在step
+`3,7,11,15,19,23,25,27,29,31,33,35,37`；step39是第14個raw marker，不重複
+寫HP。使用#39／#43的33幀直接索引效果。typed planner／compositor現已保存
+2張front、每target 40張、每boundary 9張、20張tail與持續state，達
+`DATA-READY`；正式owner尚未完成，不得讓
+玩家／敵方繞過演出直接發布交易。主證據見
+[`fd2_command3_presentation_ida.txt`](../data/ida/fd2_command3_presentation_ida.txt)。
+
 ID6以`NativeCommand6PresentationSchedule`保存`0x26E39`直接指令契約：
 mode0／3／6回傳7／12／7，五個runtime channel，raw dword table
 `[10,8,3,0,0]`與byte table`[10,8,3,0,0]`。raw side零值只反轉前三個
