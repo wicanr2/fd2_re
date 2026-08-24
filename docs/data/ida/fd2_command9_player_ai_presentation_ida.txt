@@ -22,8 +22,8 @@
 
 ## 玩家路徑：`0x1CFF0 -> 0x214AD`
 
-- `sub_1CFF0` 對 ID9 先呼叫 `sub_1D6C8(9)`：以既有 writer 綁定至
-  FDOTHER #88 的 `[0x53B13]` 呼叫 raw selector0，交替寫入 command9 的 raw
+- `sub_1CFF0` 對 ID9 先呼叫 `sub_1D6C8(9)`：`sub_1D4CB` 以常數 `0x50`
+  載入 FDOTHER #80 至 `[0x53B13]`，再呼叫 raw selector0，交替寫入 command9 的 raw
   palette triplet 與黑色各四次，每次一 tick。
 - `sub_214AD` 的順序固定為：清空數字佇列 → `sub_1C4CC(actor,9,count,targets)` →
   `sub_1CA89(actor,9)` 扣 MP → `sub_1C75E(*targets,9)` 只計算第一個 target →
@@ -33,8 +33,8 @@
   `0x51F54[9]=27`、`0x51F75[9]=14`。因此逐張取 FDOTHER #6 descriptor
   87..113、每張在所有 target map cell blit、copy 312×192、delay 一 tick。
   frame 0 對同一 `[0x53B13]` 呼叫 raw selector14；frame 15 與 19 呼叫
-  selector15。#88 的外層 chunk 索引不可與這個 AIL selector 層混稱；正式音訊
-  owner 在 resolver 補證前只保存 raw call tuple，不宣稱是外層 sub14/sub15。
+  selector15。實檔 #80 有16個有效子樣本，selector14／15 分別為
+  10099／2813-byte raw PCM；不能再借用 ch24 局部覆寫的 #88。
 - 命中數字的 descriptor bias 是 94，故十個數字為 FDOTHER #5 entries 94..103。
   未命中 raw descriptors 位於 `0x5204A`，為 `74 75 76 76`（十進位
   116、117、118、118）。`sub_1DF58` 固定 22 frames、每張 2ms、結束 hold

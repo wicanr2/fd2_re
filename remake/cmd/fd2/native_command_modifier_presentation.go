@@ -21,7 +21,7 @@ type nativeCommandModifierPresentationJob struct {
 }
 
 // startNativeCommandPalettePresentation owns the recovered player-only
-// 0x1D6C8 boundary shared by commands 17..23 and 25..27: FDOTHER #88 sub0, then four
+// 0x1D6C8 boundary shared by commands 17..23 and 25..27: FDOTHER #80 selector0, then four
 // command-color/black DAC-entry-zero cycles. The caller's complete transaction
 // preflight runs before sample/palette output, and mutation cannot run until
 // all eight phases were acknowledged by Draw.
@@ -52,7 +52,7 @@ func (g *Game) startNativeCommandPalettePresentation(
 		return err
 	}
 	if !osMuteOrShot(g) && len(g.sfxCommandModifier) == 0 {
-		return errors.New("native command modifier FDOTHER #88 sub0 unavailable")
+		return errors.New("native command modifier FDOTHER #80 selector0 unavailable")
 	}
 	phases, err := g.nativeCommandPaletteFlash.NativeCommandPaletteFlashPhases(commandID)
 	if err != nil {

@@ -18,7 +18,7 @@ func TestBuildNativeCommand9PlayerSchedulePreservesRawTables(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if s.EffectStart != 87 || s.EffectFrames != 27 || s.InitialSample != 14 || s.RepeatSample != 15 ||
+	if s.EffectStart != 87 || s.EffectFrames != 27 || s.SoundResource != 80 || s.InitialSample != 14 || s.RepeatSample != 15 ||
 		s.RepeatSampleFrames != [2]int{15, 19} || s.ResultDigitBias != 94 ||
 		s.ResultMissDescriptors != [4]int{116, 117, 118, 118} || s.ResultFrames != 22 {
 		t.Fatalf("command9 player schedule=%#v", s)
@@ -49,5 +49,11 @@ func TestNativeCommand9PlayerOriginalDescriptors(t *testing.T) {
 	}
 	if _, err := BuildNativeCommand9PlayerSchedule(effect, result); err != nil {
 		t.Fatal(err)
+	}
+	for _, selector := range []int{0, 14, 15} {
+		raw, err := ReadNestedResource(path, NativeCommand9PlayerSoundResource, selector)
+		if err != nil || len(raw) == 0 {
+			t.Fatalf("FDOTHER #80 selector %d len=%d err=%v", selector, len(raw), err)
+		}
 	}
 }

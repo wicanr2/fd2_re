@@ -1,0 +1,50 @@
+FD2 玩家指令音效 handle `[0x53B13]` 非破壞性證據
+====================================================
+
+輸入與工具
+----------
+
+- `FD2.EXE`：357074 bytes；MD5 `b97caf2239a27a896069d03549d96e1e`；
+  SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- IDA Pro 9.4，IDA linear address、image base 0；授權
+  `fd2-ida-authorized-local` Docker 映像，原檔唯讀。
+- Capstone 5.0.3／`fd2-cap-local` 只作直接指令及 caller 交叉驗證。
+- 產生日期：2026-08-25。
+
+`sub_1D4CB` writer（已證實）
+----------------------------
+
+IDA 保留原始名稱 `sub_1D4CB`，邊界 `0x1D4CB..0x1D4F6`：
+
+```text
+0x1D4D5  mov dword_53B13, 0
+0x1D4DF  push 50h
+0x1D4E1  push 0
+0x1D4E3  push offset aFdotherDat
+0x1D4E8  call sub_111BA
+0x1D4F0  mov dword_53B13, eax
+```
+
+`0x50` 是十進位 80。因此這個玩家戰鬥初始化 writer 將
+`FDOTHER.DAT #80` 的 handle 寫入 `[0x53B13]`，不是 `#88`。直接 caller 為
+`0x1540A`、`0x1D446`、`0x20C87`、`0x2462D`、`0x2474A`、`0x2857A`。
+實檔 #80 是 116165-byte、17-entry 巢狀容器，其中 16 個子樣本有效；
+selector 0、14、15 的 raw PCM 長度分別是 6561、10099、2813 bytes。
+
+`0x3396A` 的局部覆寫（已證實）
+--------------------------------
+
+另一段原始控制流先呼叫 `sub_205DA`，再於 `0x33979..0x33994` 清除同一
+全域並以常數 `0x58`（十進位 88）載入 `FDOTHER.DAT #88`；接著只用 selector1
+配合四次 `sub_24B4D(20/20/20/60)`。這是既有 ch24 transition 的局部 owner，
+不能反向證明 `sub_1D4CB` 或一般玩家 command 的 handle 也是 #88。
+
+勘誤與證據分級
+----------------
+
+- **已證實**：兩個 writer 的原始常數、寫入位址、`sub_1D4CB` caller、#80
+  實檔 selector 邊界，以及 ch24 區段對 #88 selector1 的直接消費。
+- **勘誤**：先前文件只看到 `0x33979` writer，遂把所有 `[0x53B13]` 消費端
+  泛化為 #88。玩家 `0x1D6C8` selector0 與 `0x1C4CC` selector14／15 必須改綁
+  #80；ch24 transition 的 #88 selector1 保留。
+- **未知／不宣稱**：兩個資源的高階音效名稱，以及逐取樣／DOS 硬體時序。

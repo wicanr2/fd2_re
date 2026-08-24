@@ -1037,7 +1037,8 @@ provenance、16-bit derived word 或 MP 時均在 mutation 前失敗。此契約
 
 2026-08-22 的窄 IDA 補證已解除上句的 renderer gate，取代「沒有 renderer 證據」的舊狀態：
 玩家 `0x1CFF0` 在 IDs17..19 的 target confirm 後先呼叫 `0x1D6C8(commandID)`；該函式播放
-`0x25A96([0x53B13],0,1)`，亦即已證實的 `FDOTHER #88` sub0，然後固定四輪將 DAC palette
+`0x25A96([0x53B13],0,1)`；2026-08-25 重核 `sub_1D4CB` 證實該 handle 由常數
+`0x50` 載入，故為 `FDOTHER #80` selector0，而不是曾被 ch24 局部 writer 載入的 #88；然後固定四輪將 DAC palette
 entry0 寫為三張36-byte tables 的 command RGB、等待 `0x17AA9(1)`、寫黑、再等待
 `0x17AA9(1)`。三個 ID 的 raw six-bit RGB 均為 `(0x32,0x32,0x32)`。完整 table 已成為
 `native_command_palette_flash.json`，正式玩家 owner 必須在 sample、baseline framebuffer、
@@ -1089,11 +1090,11 @@ ID23 走 `0x1CFF0` 的 command-`0x17` special selector，不能套 generic two-s
 target effect。
 
 重製端 command23 正式生命週期（2026-08-22）必須保持這條可見且原子的順序：目的地確認後，先在
-私有 raw records 驗證完整 relocation transaction，再執行共用 `0x1D6C8` 的 #88 sub0 與八個
+私有 raw records 驗證完整 relocation transaction，再執行共用 `0x1D6C8` 的 #80 selector0 與八個
 Draw-ack 色盤階段；其完成回呼啟動第一次 `0x22253(target,0xff,0xff,currentX,currentY)`，離場完成後
 再啟動第二次 `0x22253(target,destX,destY,destX,destY)`。只有第二段完整結束後，才發布 record23 MP
 debit、raw action bit、item 保留及 action cleanup。destination cursor、terrain／occupancy gate 仍由既有 mode-6
-owner 負責。缺 command book、raw records、FDOTHER #88、DAC、完整 indexed map bundle 或任一 `0x22253`
+owner 負責。缺 command book、raw records、FDOTHER #80、DAC、完整 indexed map bundle 或任一 `0x22253`
 前置條件時，必須在第一個 sample／frame 前失敗；演出期間不得接受其他玩家輸入。呈現器若在中途發生
 不可預期錯誤，必須把 target coordinates 與 indexed work/VGA 回復到目的地確認前快照，不可留下
 `0xff/0xff` 的半完成狀態。這項 E1 契約只還原已證實的 palette→disappear→appear→transaction ordering；
@@ -1138,12 +1139,12 @@ actor raw completion writer。它與 ID20/21「借 record10」的 clear/restore 
 | IDs | 原版已驗 dataflow | engine 狀態 | UI / renderer 狀態 |
 |---|---|---|---|
 | 0–8 | `0x2A6BD→2B659/1C75E`，two-stage final targets、MP event、numeric hit/HP | `ExecuteNativeCommandDamage` 與 command-specific staged plans | IDs0–3、5–8已有正式玩家／敵方indexed owner；ID4缺已證實正常玩家producer，不猜接；各ID仍缺同狀態E2 |
-| 9 | 玩家 `1CFF0→1D6C8→214AD→1C4CC/1DF58`；敵方 gate `15311→2A6BD→275D6` | 玩家 numeric core；敵方 `PlanNativeAICommandDamageSingleTarget` 明確消費 mode11 producer target | 敵方 raw-side-zero #44/#90、11/20/60/20/8 與20段HP已接 `RUNTIME-E1`；玩家27張#6與22張結果動畫僅 `DATA-READY`，不可共用敵方 owner |
+| 9 | 玩家 `1CFF0→1D6C8→214AD→1C4CC/1DF58`；敵方 gate `15311→2A6BD→275D6` | 玩家 `PlanNativeCommandDamage`；敵方 `PlanNativeAICommandDamageSingleTarget` 明確消費 mode11 producer target | 玩家 #80 selector0／14／15、八段色盤、27張#6與22張#5結果；敵方 raw-side-zero #44/#90、11/20/60/20/8 與20段HP均已接 `RUNTIME-E1`；兩方 owner 不共用，E2仍待 |
 | 10–12 | `0x21548` tail → `1CA89→1C75E` | `ExecuteNativeCommandDamage` | 未接；numeric 共用不代表演出共用 |
 | 13–16 | `0x21AD9…0x22153→21EB1→21B18→1C8ED/1C916` | `BuildNativeCommandHealPresentationSchedule`＋玩家 `ExecuteNativeCommandHeal`／AI `ExecuteNativeAICommandHeal` | 玩家與敵方 mode 11 的 16 張 FDOTHER #3 LUT 前段已接；AI 依 raw selector 重建 target array；後段索引畫面／數字佇列與格狀確認 E2 未接 |
-| 17–19 | `0x1CFF0→1D6C8→226EA/2282F/22960`；#88 sub0、八個DAC phases、modifier writers與`+0x22..+0x24` duration已釘死 | `ExecuteNativeCommandModifier`／`ExecuteNativeAICommandModifier` 已以私有raw records原子發布target duration、derived words、MP與acted；ID17明確由record18扣MP。玩家與敵方mode 11、phase-expiry caller與 `sub_17FC0` status color consumer均已接 | 玩家grid＋八phase palette／sample、倒數、到期提示及status color已接E1；高階名稱、精確tick／逐音訊E2未接 |
-| 20–21 | `0x1CFF0→1D6C8→22A85/22BC6→22AF6`，#88 sub0＋八個DAC phases，clear `+0x25/+0x26` 並借 record10 restore | `ExecuteNativeCommandClearRestore`；完整preflight後才允許玩家演出與交易 | 玩家grid＋八phase palette／sample已接E1；status名稱、expiry UI、精確tick／逐音訊E2未接 |
-| 22 | `0x1CFF0→1D6C8→22BE1→22D1B`，#88 sub0＋八個DAC phases，class/RNG gate、base10 經第二 RNG 實際9 HP、第三 RNG write `+0x27` | `ExecuteNativeCommandApplication`；完整preflight後才允許玩家演出與交易 | 玩家grid＋八phase palette／sample已接E1；status名稱、expiry UI、精確tick／逐音訊E2未接 |
+| 17–19 | `0x1CFF0→1D6C8→226EA/2282F/22960`；#80 selector0、八個DAC phases、modifier writers與`+0x22..+0x24` duration已釘死 | `ExecuteNativeCommandModifier`／`ExecuteNativeAICommandModifier` 已以私有raw records原子發布target duration、derived words、MP與acted；ID17明確由record18扣MP。玩家與敵方mode 11、phase-expiry caller與 `sub_17FC0` status color consumer均已接 | 玩家grid＋八phase palette／sample、倒數、到期提示及status color已接E1；高階名稱、精確tick／逐音訊E2未接 |
+| 20–21 | `0x1CFF0→1D6C8→22A85/22BC6→22AF6`，#80 selector0＋八個DAC phases，clear `+0x25/+0x26` 並借 record10 restore | `ExecuteNativeCommandClearRestore`；完整preflight後才允許玩家演出與交易 | 玩家grid＋八phase palette／sample已接E1；status名稱、expiry UI、精確tick／逐音訊E2未接 |
+| 22 | `0x1CFF0→1D6C8→22BE1→22D1B`，#80 selector0＋八個DAC phases，class/RNG gate、base10 經第二 RNG 實際9 HP、第三 RNG write `+0x27` | `ExecuteNativeCommandApplication`；完整preflight後才允許玩家演出與交易 | 玩家grid＋八phase palette／sample已接E1；status名稱、expiry UI、精確tick／逐音訊E2未接 |
 | 23 | `0x1CFF0→1D6C8→2218A→22253×2` special relocation selector | first target→mode-6 destination cursor、八段palette、離場／入場兩次完整indexed presenter及延後raw transaction已接 | 玩家正式`RUNTIME-E1`；缺同狀態逐幀／逐音訊E2與精確camera choreography核對 |
 | 24 | 玩家 `2A6BD→276EC→2B659/1CA89→1C81F`：`actor +48 * 15/10 - target +4a`；selector32 resource98、FDOTHER #53 samples3／2、damage denominator1；AI table 另別名 `22153`，不可混用 | `ExecuteNativeCommand24`＋正式marker交易 | indexed actor／target base、前導、轉場與SFX已達E1；精確時序／音訊與E2待接 |
 | 28, 29, 31 | 同玩家 `276EC` derived-strike route，倍率分別20、12、18；28的target writer分母8且略過`29C90`，29／31分母1並保留逐target轉場 | `ExecuteNativeCommandDerivedStrike`；28已修正為單一可達impact marker發布roll的1/8，29／31補有獨立倍率回歸；`BuildNativeCommandDerivedStrikeSchedule`保存command-specific header／marker／audio／base／prelude／transition契約 | typed schedule已就緒；正式indexed owner／SFX播放與E2未接，不得借用command24 resource98 |
@@ -1168,7 +1169,7 @@ selector18排除猜測補演出。若未修改玩家動態路徑出現兩者、�
 或取得同一actor的raw `+7`與command bit，才重開正式owner。完整證據見
 [`fd2_command28_31_reachability_ida.txt`](../data/ida/fd2_command28_31_reachability_ida.txt)。
 | 30 | `1CFF0→14818→115B6` 先確認 record+3 candidate；再以 saved cursor→confirmed cursor 進 `149F8`，`count=record+3-16`、X-first cardinal line、只收 enemy，最後 `2A6BD→276EC` default倍率18 | `ExecuteNativeCommand30`（顯式兩 cursor、state-only final delta） | native cursor lifecycle／multi-hit／SFX／indexed UI 未接 |
-| 25 | `0x1CFF0→1D6C8→22C04`，#88 sub0＋八個DAC phases後清raw target `+5 bit7` | `ExecuteNativeCommand25`要求raw +5 provenance，只清`0x80`而不混用`Acted` | 玩家grid＋palette／sample已接E1；原版feedback／逐音訊E2未接 |
+| 25 | `0x1CFF0→1D6C8→22C04`，#80 selector0＋八個DAC phases後清raw target `+5 bit7` | `ExecuteNativeCommand25`要求raw +5 provenance，只清`0x80`而不混用`Acted` | 玩家grid＋palette／sample已接E1；原版feedback／逐音訊E2未接 |
 | 26–27 | `0x1CFF0→1D6C8→22CBF/22E41→22D1B`，分別 write `+0x25/+0x26` | `ExecuteNativeCommandApplication`；完整preflight後才交易 | 玩家grid＋palette／sample已接E1；status名稱、expiry UI與逐音訊E2未接 |
 | 32 | `2A6BD→27FC9→2111A→1C75E` numeric per-final-target；選單 MP gate已知但此 chain 未見 debit | `NativeCompoundCommandPlan(32)` 僅保存 raw callee 順序 | 未接 |
 | 33 | `27FC9` 先清每 target `+25..+27`，再 `211A4(...,800)` restore | `NativeCompoundCommandPlan(33)` 僅保存 direct-clear 順序與 raw amount | 未接 |

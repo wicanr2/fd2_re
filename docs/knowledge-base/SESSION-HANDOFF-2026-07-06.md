@@ -6158,3 +6158,18 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   target geometry。正式 owner 完整預建119張handler與common phases，逐Draw發布
   MP、HP、`Acted`與RNG，錯誤整筆回復；聚焦Docker／Xvfb回歸通過，敵方提升
   indexed `RUNTIME-E1`。下一步是玩家map owner，再進IDs10–12。
+
+# 2026-08-25：`[0x53B13]` 勘誤與第 9 號玩家 map owner
+
+- 授權 Docker 內 IDA Pro 9.4 直接證實 `sub_1D4CB` 在 `0x1D4DF` push
+  `0x50`，將 FDOTHER #80 載入 `[0x53B13]`；舊結論只看到 ch24
+  `0x33979..0x33994` 對同全域的局部 #88 覆寫，錯誤泛化到一般玩家 command。
+  canonical evidence 為
+  [`fd2_command_sound_handle_53b13_ida.txt`](../data/ida/fd2_command_sound_handle_53b13_ida.txt)。
+- 真實 #80 有16個有效子樣本；selector0／14／15 均已由原始資產回歸驗證。
+  `0x1D6C8` 及玩家第9號正式改用 #80，ch24與command7各自的 #88 owner保留。
+- 玩家第9號現為獨立 map owner：#80 selector0與八段色盤 → #6 entries87..113
+  （frame0播14、frame15／19播15）→ 原子MP／單一target HP → #5命中數字或
+  未命中116／117／118／118共22張 → 500ms hold → acted／callback。所有畫面與
+  音效先預檢，晚期錯誤會回復MP、HP、acted、RNG及indexed buffers。聚焦
+  Docker回歸通過，提升為`RUNTIME-E1`；一般玩家同狀態逐幀／逐音訊仍非E2。

@@ -180,6 +180,7 @@ type Game struct {
 	nativeCmd6Presentation     *nativeCommand6PresentationJob
 	nativeCmd7Presentation     *nativeCommand7PresentationJob
 	nativeCmd8Presentation     *nativeCommand8PresentationJob
+	nativeCmd9Player           *nativeCommand9PlayerJob
 	nativeCmd9AIPresentation   *nativeCommand9AIPresentationJob
 	nativeCmd24Presentation    *nativeCommand24PresentationJob
 	nativeCmd29Presentation    *nativeCommand29PresentationJob
@@ -334,7 +335,7 @@ type Game struct {
 	sfxImpact                 []byte                // 命中音(近似:最短最尖池;attack_id→sfx 對照表 doc36 未 RE)
 	sfxDeath                  []byte                // 陣亡/重擊音(近似:最長池)
 	sfxTransition             []byte                // FDOTHER #88 sub1: ch24 transition SFX
-	sfxCommandModifier        []byte                // FDOTHER #88 sub0: 0x1D6C8 command palette owner
+	sfxCommandModifier        []byte                // FDOTHER #80 selector0: 0x1D6C8 command palette owner
 	sfxCommand24Actor         []byte                // FDOTHER #53 sub3: selector32 resource98 actor marker
 	sfxCommand24Target        []byte                // FDOTHER #53 sub2: selector32 resource98 target marker
 	sfxCommand0Actor          []byte                // FDOTHER #82 sub0: 0x2B659 actor raw +4 marker
@@ -357,6 +358,9 @@ type Game struct {
 	sfxCommand8Actor          []byte                // FDOTHER #90 sub0: common actor marker
 	sfxCommand8Sub1           []byte                // FDOTHER #90 sub1: 0x274B0 pre-counter0 marker
 	sfxCommand8Sub2           []byte                // FDOTHER #90 sub2: 0x274B0 pre-counter4 marker
+	sfxCommand9PlayerPalette  []byte                // FDOTHER #80 selector0: 0x1D6C8 palette marker
+	sfxCommand9PlayerInitial  []byte                // FDOTHER #80 selector14: 0x1C4CC frame0
+	sfxCommand9PlayerRepeat   []byte                // FDOTHER #80 selector15: 0x1C4CC frame15／19
 	sfxSpawnIntro             []byte                // FDOTHER #95 sub0: 0x32999 pass1 raw sample（11025Hz 為既有工具鏈推論）
 	handlerResource           int                   // currently loaded handler resource-table id
 	prevCurX, prevCurY        int                   // 游標移動音偵測
@@ -6587,6 +6591,30 @@ func (g *Game) confirm() {
 				g.msg = "原始指令 8：indexed 演出不可用 (" + err.Error() + ")"
 			}
 			return
+		case id == 9:
+			actor := g.sel
+			err = g.startNativeCommand9PlayerPresentation(actor, tgt, func(results []battle.NativeCommandDamageResult) {
+				hit, total := 0, 0
+				for _, result := range results {
+					if result.Hit {
+						hit++
+						total += result.Damage
+						g.awardDeathReward(result.Target, actor)
+					}
+				}
+				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
+				g.msg = fmt.Sprintf("原始指令 9：命中 %d，傷害 %d", hit, total)
+				g.finishSuccessfulUnitAction(actor, func() {
+					g.resetNativeTargetField()
+					g.st.MaterializeNativeMapRangeMode(1)
+					g.nativeCommand0Targeting, g.nativeCommandTargetID, g.sel, g.reach, g.moved = false, 0, nil, nil, false
+				})
+				g.checkResult()
+			})
+			if err != nil {
+				g.msg = "原始指令 9：indexed 演出不可用 (" + err.Error() + ")"
+			}
+			return
 		case id == 6:
 			actor := g.sel
 			err := g.startNativeCommand6Presentation(actor, tgt, func(results []battle.NativeCommandDamageResult) {
@@ -7253,6 +7281,7 @@ func (g *Game) Update() error {
 	g.stepNativeCommand6Presentation()           // native 0x2A6BD→0x26E39 command6 battle presentation
 	g.stepNativeCommand7Presentation()           // native 0x2A6BD→0x272B8 command7 battle presentation
 	g.stepNativeCommand8Presentation()           // native 0x2A6BD→0x274B0 command8 battle presentation
+	g.stepNativeCommand9PlayerPresentation()     // native 0x1CFF0→0x214AD player command9 map presentation
 	g.stepNativeCommand9AIPresentation()         // native 0x2A6BD→0x275D6 enemy command9 presentation
 	g.stepNativeCommand24Presentation()          // native 0x276EC selector32 FIGANI presentation
 	g.stepNativeCommand29Presentation()          // native 0x276EC selector34 multi-target FIGANI presentation
@@ -7306,7 +7335,7 @@ func (g *Game) Update() error {
 			clamp(&g.camY, 0, float64(g.m.H*g.m.TileH-logicalH))
 		}
 	}
-	if g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil {
+	if g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil {
 		return nil
 	}
 	if g.nativeSystemInfoUI != nil {
@@ -7752,6 +7781,17 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		if !g.drawNativeCommand8Presentation(screen) {
 			g.failNativeCommand8Presentation(errors.New("draw unavailable"))
 			ebitenutil.DebugPrint(screen, "native command8 presentation unavailable")
+		}
+		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
+			g.captureShot(screen)
+		}
+		return
+	}
+	if g.nativeCmd9Player != nil {
+		screen.Fill(color.Black)
+		if !g.drawNativeCommand9PlayerPresentation(screen) {
+			g.failNativeCommand9PlayerPresentation(errors.New("draw unavailable"))
+			ebitenutil.DebugPrint(screen, "native command9 player presentation unavailable")
 		}
 		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
 			g.captureShot(screen)
@@ -9614,34 +9654,37 @@ func loadGame() *Game {
 	g.rng = rand.New(rand.NewSource(seed))
 	g.sfx = loadSFX()
 	// 戰鬥音效:揮擊/命中/陣亡三段(真素材;attack_id→池 精確對照 doc36 未 RE,故命中/陣亡池為近似選擇)
-	g.sfxSwing = loadWav("assets/sfx/battle_48_00.wav")           // 揮擊(池 sub0,七池共用)
-	g.sfxImpact = loadWav("assets/sfx/battle_64_00.wav")          // 命中(最短最尖池)
-	g.sfxDeath = loadWav("assets/sfx/battle_88_00.wav")           // 陣亡/重擊(最長池)
-	g.sfxTransition = loadWav("assets/sfx/battle_88_01.wav")      // ch24 FDOTHER #88 sub1
-	g.sfxCommandModifier = loadWav("assets/sfx/battle_88_00.wav") // 0x1D6C8 FDOTHER #88 sub0
-	g.sfxCommand24Actor = loadWav("assets/sfx/battle_53_03.wav")  // 0x276EC selector32 actor raw+5
-	g.sfxCommand24Target = loadWav("assets/sfx/battle_53_02.wav") // 0x276EC selector32 target raw+5
-	g.sfxCommand0Actor = loadWav("assets/sfx/battle_82_00.wav")   // 0x2B659 command0 actor marker
-	g.sfxCommand0Target = loadWav("assets/sfx/battle_82_01.wav")  // 0x26152 seven target markers
-	g.sfxCommand2Actor = loadWav("assets/sfx/battle_83_00.wav")   // common 0x2B659 actor marker
-	g.sfxCommand2Mode2 = loadWav("assets/sfx/battle_83_01.wav")   // 0x26528 mode2/8
-	g.sfxCommand2Mode5 = loadWav("assets/sfx/battle_83_02.wav")   // 0x26528 mode5
-	g.sfxCommand2Mode6 = loadWav("assets/sfx/battle_83_03.wav")   // 0x26528 mode6
-	g.sfxCommand3Actor = loadWav("assets/sfx/battle_84_00.wav")   // common 0x2B659 actor marker
-	g.sfxCommand3Sub1 = loadWav("assets/sfx/battle_84_01.wav")    // 0x26795 post-counter3／zero frame-base
-	g.sfxCommand3Sub2 = loadWav("assets/sfx/battle_84_02.wav")    // 0x26795 pre-counter0／nonzero frame-base
-	g.sfxCommand5Actor = loadWav("assets/sfx/battle_86_00.wav")   // common 0x2B659 actor marker
-	g.sfxCommand5Target = loadWav("assets/sfx/battle_86_01.wav")  // 0x26BFD channel0／3 sample index1
-	g.sfxCommand6Actor = loadWav("assets/sfx/battle_87_00.wav")   // common 0x2B659 actor marker
-	g.sfxCommand6Target = loadWav("assets/sfx/battle_87_01.wav")  // 0x26E39 mode5 markers
-	g.sfxCommand6Front = loadWav("assets/sfx/battle_87_02.wav")   // 0x26E39 mode0
-	g.sfxCommand6Tail = loadWav("assets/sfx/battle_87_03.wav")    // 0x26E39 mode6
-	g.sfxCommand7Actor = loadWav("assets/sfx/battle_88_00.wav")   // common 0x2B659 actor marker
-	g.sfxCommand7Target = loadWav("assets/sfx/battle_88_01.wav")  // 0x272B8 channel0／1 sample index1
-	g.sfxCommand8Actor = loadWav("assets/sfx/battle_90_00.wav")   // common 0x2B659 actor marker
-	g.sfxCommand8Sub1 = loadWav("assets/sfx/battle_90_01.wav")    // 0x274B0 pre-counter0
-	g.sfxCommand8Sub2 = loadWav("assets/sfx/battle_90_02.wav")    // 0x274B0 pre-counter4
-	g.sfxSpawnIntro = loadWav("assets/sfx/battle_95_00.wav")      // 0x32999 pass1 FDOTHER #95 sub0
+	g.sfxSwing = loadWav("assets/sfx/battle_48_00.wav")                 // 揮擊(池 sub0,七池共用)
+	g.sfxImpact = loadWav("assets/sfx/battle_64_00.wav")                // 命中(最短最尖池)
+	g.sfxDeath = loadWav("assets/sfx/battle_88_00.wav")                 // 陣亡/重擊(最長池)
+	g.sfxTransition = loadWav("assets/sfx/battle_88_01.wav")            // ch24 FDOTHER #88 sub1
+	g.sfxCommandModifier = loadWav("assets/sfx/battle_80_00.wav")       // 0x1D6C8 FDOTHER #80 selector0
+	g.sfxCommand24Actor = loadWav("assets/sfx/battle_53_03.wav")        // 0x276EC selector32 actor raw+5
+	g.sfxCommand24Target = loadWav("assets/sfx/battle_53_02.wav")       // 0x276EC selector32 target raw+5
+	g.sfxCommand0Actor = loadWav("assets/sfx/battle_82_00.wav")         // 0x2B659 command0 actor marker
+	g.sfxCommand0Target = loadWav("assets/sfx/battle_82_01.wav")        // 0x26152 seven target markers
+	g.sfxCommand2Actor = loadWav("assets/sfx/battle_83_00.wav")         // common 0x2B659 actor marker
+	g.sfxCommand2Mode2 = loadWav("assets/sfx/battle_83_01.wav")         // 0x26528 mode2/8
+	g.sfxCommand2Mode5 = loadWav("assets/sfx/battle_83_02.wav")         // 0x26528 mode5
+	g.sfxCommand2Mode6 = loadWav("assets/sfx/battle_83_03.wav")         // 0x26528 mode6
+	g.sfxCommand3Actor = loadWav("assets/sfx/battle_84_00.wav")         // common 0x2B659 actor marker
+	g.sfxCommand3Sub1 = loadWav("assets/sfx/battle_84_01.wav")          // 0x26795 post-counter3／zero frame-base
+	g.sfxCommand3Sub2 = loadWav("assets/sfx/battle_84_02.wav")          // 0x26795 pre-counter0／nonzero frame-base
+	g.sfxCommand5Actor = loadWav("assets/sfx/battle_86_00.wav")         // common 0x2B659 actor marker
+	g.sfxCommand5Target = loadWav("assets/sfx/battle_86_01.wav")        // 0x26BFD channel0／3 sample index1
+	g.sfxCommand6Actor = loadWav("assets/sfx/battle_87_00.wav")         // common 0x2B659 actor marker
+	g.sfxCommand6Target = loadWav("assets/sfx/battle_87_01.wav")        // 0x26E39 mode5 markers
+	g.sfxCommand6Front = loadWav("assets/sfx/battle_87_02.wav")         // 0x26E39 mode0
+	g.sfxCommand6Tail = loadWav("assets/sfx/battle_87_03.wav")          // 0x26E39 mode6
+	g.sfxCommand7Actor = loadWav("assets/sfx/battle_88_00.wav")         // common 0x2B659 actor marker
+	g.sfxCommand7Target = loadWav("assets/sfx/battle_88_01.wav")        // 0x272B8 channel0／1 sample index1
+	g.sfxCommand8Actor = loadWav("assets/sfx/battle_90_00.wav")         // common 0x2B659 actor marker
+	g.sfxCommand8Sub1 = loadWav("assets/sfx/battle_90_01.wav")          // 0x274B0 pre-counter0
+	g.sfxCommand8Sub2 = loadWav("assets/sfx/battle_90_02.wav")          // 0x274B0 pre-counter4
+	g.sfxCommand9PlayerPalette = loadWav("assets/sfx/battle_80_00.wav") // 0x1D6C8 selector0
+	g.sfxCommand9PlayerInitial = loadWav("assets/sfx/battle_80_14.wav") // 0x1C4CC frame0
+	g.sfxCommand9PlayerRepeat = loadWav("assets/sfx/battle_80_15.wav")  // 0x1C4CC frame15／19
+	g.sfxSpawnIntro = loadWav("assets/sfx/battle_95_00.wav")            // 0x32999 pass1 FDOTHER #95 sub0
 	// 戰場 BGM:doc12 推定 track18=戰鬥被使用者實聽推翻(18=商店音樂);戰鬥曲號待聽辨,先不播錯曲
 	if os.Getenv("FD2_TITLE") == "1" || (g.shotPath == "" && os.Getenv("FD2_TITLE") != "0") { // 開頭動畫+主選單(headless 截圖預設跳過)
 		if ta := loadTitleAssets(); ta != nil {
@@ -10133,7 +10176,7 @@ func (g *Game) finishNativeTransientPlayerPhase() {
 // aiStep AI 回合驅動:一次取一個單位的行動計畫,播行走動畫→到位攻擊(全螢幕演出)。
 // 全單位動完 → finishTurn。
 func (g *Game) aiStep() {
-	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.result != "" {
+	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.result != "" {
 		if g.result != "" {
 			g.aiBusy = false
 		}

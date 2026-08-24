@@ -9,7 +9,7 @@ const (
 	NativeCommand9PlayerEffectResource = 6
 	NativeCommand9PlayerEffectStart    = 87
 	NativeCommand9PlayerEffectFrames   = 27
-	NativeCommand9PlayerSoundResource  = 88
+	NativeCommand9PlayerSoundResource  = 80
 	NativeCommand9PlayerInitialSample  = 14
 	NativeCommand9PlayerRepeatSample   = 15
 	NativeCommand9ResultResource       = 5

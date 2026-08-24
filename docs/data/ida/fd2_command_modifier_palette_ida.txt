@@ -11,7 +11,7 @@ FD2 command 17–23／25–27 玩家確認 palette／SFX owner（IDA Pro 9.4）
 - 工具：IDA Pro／Hex-Rays 9.4.0.260610，合法
   `fd2-ida-authorized-local:latest` Docker image
 - 位址空間：IDA linear address，image base 0
-- 產生日期：2026-08-22
+- 產生日期：2026-08-22；2026-08-25 追加 writer 勘誤
 - 原始 EXE 唯讀；IDA database 位於 container tmpfs，未加入版控。
 
 固定定位與 caller
@@ -29,8 +29,10 @@ FD2 command 17–23／25–27 玩家確認 palette／SFX owner（IDA Pro 9.4）
 
 Hex-Rays 與 `0x1D6C8:0x75` 原始 bytes 共同顯示：
 
-1. 呼叫 `0x25A96([0x53B13],0,1)`；既有 writer 證實 `[0x53B13]` 是
-   `FDOTHER.DAT #88`，`0x25A96` 是 AIL sample wrapper，所以這是 sub-sample 0。
+1. 呼叫 `0x25A96([0x53B13],0,1)`；`sub_1D4CB` 直接以常數 `0x50`
+   （十進位80）載入 `FDOTHER.DAT #80` 至 `[0x53B13]`，`0x25A96` 是 AIL
+   sample wrapper，所以這是 #80 selector0。舊版誤把 ch24 `0x33979` 的局部
+   #88 覆寫泛化到本函式；完整勘誤見 `fd2_command_sound_handle_53b13_ida.txt`。
 2. 迴圈固定四次。
 3. 每次將 VGA DAC index port `0x3C8` 寫 0，再把
    `byte_51AAD[commandID]`、`byte_51AD1[commandID]`、
@@ -66,7 +68,7 @@ DAC、raw sample 或完整 transaction provenance，必須在 sample／畫面／
 ----------------
 
 - **已證實**：函式邊界、唯一直接 caller function、三張 table 位址與 bytes、
-  四輪 color／black、每 phase `0x17AA9(1)`、FDOTHER #88 sub0 call tuple、三個
+  四輪 color／black、每 phase `0x17AA9(1)`、FDOTHER #80 selector0 call tuple、三個
   wrapper 的 debit／writer 順序。
 - **強推論**：`0x17AA9(1)` 對現代 60 Hz loop 以「至少一次 Draw acknowledgement」
   呈現；這保留順序與可見 phase，但不是 DOS BIOS tick 的逐毫秒 E2。

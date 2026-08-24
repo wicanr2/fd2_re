@@ -35,7 +35,7 @@ SAMPLE_RATE = 11025  # 推定值,見 docs/knowledge-base/36-sfx-audio-data.md �
 
 # 戰鬥音效候選池:PCM 特徵(值集中 0x80 附近、std 窄)比對確認,見 doc36 第 10 輪。
 # 精確「哪個 index 對應哪招」仍是動態值(攻擊資料決定),此處先把整個候選家族導出。
-BATTLE_EXPORT_INDICES = [48, 49, 50, 51, 52, 53, 64, 78, 82, 84, 86, 87, 88, 90, 95]
+BATTLE_EXPORT_INDICES = [48, 49, 50, 51, 52, 53, 64, 78, 80, 82, 84, 86, 87, 88, 90, 95]
 
 
 def export_container(data: bytes, name_prefix: str, label: str):

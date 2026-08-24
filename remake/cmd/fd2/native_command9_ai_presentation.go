@@ -57,7 +57,7 @@ func (g *Game) startNativeCommand9AIPresentation(actor, confirmed *battle.Unit, 
 		g.nativeCommandPaletteFlash == nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil ||
 		g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil ||
 		g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil ||
-		g.nativeCmd9AIPresentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil ||
+		g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil ||
 		g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.atk != nil {
 		return errors.New("native command9 AI presentation context unavailable")
 	}
