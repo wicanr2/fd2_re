@@ -69,3 +69,99 @@ func TestExecuteNativeCompoundCommand32RejectsMissingProvenanceAtomically(t *tes
 		}
 	}
 }
+
+func TestPlanNativeCompoundCommand32DoesNotPublishState(t *testing.T) {
+	st, actor, target := nativeCompound32Fixture()
+	plan, err := st.PlanNativeCompoundCommand32(actor, target, 7)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(plan.Result.Targets) != 1 || target.HP != 100 || actor.Acted || actor.MP != 80 {
+		t.Fatalf("command32 plan published state: plan=%+v actor=%#v target=%#v", plan, actor, target)
+	}
+	if err := ApplyNativeCompoundCommand32Target(plan, 0); err != nil {
+		t.Fatal(err)
+	}
+	if target.HP != plan.Result.Targets[0].HPAfter || actor.Acted {
+		t.Fatalf("command32 target boundary mismatch: plan=%+v actor=%#v target=%#v", plan, actor, target)
+	}
+	if err := CompleteNativeCompoundCommand32(plan); err != nil {
+		t.Fatal(err)
+	}
+	if !actor.Acted || actor.MP != 80 {
+		t.Fatalf("command32 completion mismatch: actor=%#v", actor)
+	}
+}
+
+func TestNativeCompoundCommand32PlanFailsClosedAcrossBoundaries(t *testing.T) {
+	t.Run("complete before target", func(t *testing.T) {
+		st, actor, target := nativeCompound32Fixture()
+		plan, err := st.PlanNativeCompoundCommand32(actor, target, 7)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := CompleteNativeCompoundCommand32(plan); err == nil {
+			t.Fatal("command32 completed before publishing its target")
+		}
+		if target.HP != 100 || actor.Acted {
+			t.Fatalf("failed completion mutated actor=%#v target=%#v", actor, target)
+		}
+	})
+
+	t.Run("target changed", func(t *testing.T) {
+		st, actor, target := nativeCompound32Fixture()
+		plan, err := st.PlanNativeCompoundCommand32(actor, target, 7)
+		if err != nil {
+			t.Fatal(err)
+		}
+		target.HP--
+		if err := ApplyNativeCompoundCommand32Target(plan, 0); err == nil {
+			t.Fatal("command32 published over changed target state")
+		}
+		if target.HP != 99 || actor.Acted {
+			t.Fatalf("failed publication changed actor=%#v target=%#v", actor, target)
+		}
+	})
+
+	t.Run("abort restores published target", func(t *testing.T) {
+		st, actor, target := nativeCompound32Fixture()
+		plan, err := st.PlanNativeCompoundCommand32(actor, target, 7)
+		if err != nil {
+			t.Fatal(err)
+		}
+		plan.Result.Targets[0].HPAfter = 1 // Public report is not transaction authority.
+		if err := ApplyNativeCompoundCommand32Target(plan, 0); err != nil {
+			t.Fatal(err)
+		}
+		if target.HP == 1 {
+			t.Fatal("command32 trusted a caller-mutated public result")
+		}
+		if err := AbortNativeCompoundCommand32(plan); err != nil {
+			t.Fatal(err)
+		}
+		if target.HP != 100 || actor.Acted {
+			t.Fatalf("command32 rollback mismatch: actor=%#v target=%#v", actor, target)
+		}
+	})
+
+	t.Run("repeat and out of range publication", func(t *testing.T) {
+		st, actor, target := nativeCompound32Fixture()
+		plan, err := st.PlanNativeCompoundCommand32(actor, target, 7)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := ApplyNativeCompoundCommand32Target(plan, -1); err == nil {
+			t.Fatal("command32 accepted negative target index")
+		}
+		if err := ApplyNativeCompoundCommand32Target(plan, 0); err != nil {
+			t.Fatal(err)
+		}
+		publishedHP := target.HP
+		if err := ApplyNativeCompoundCommand32Target(plan, 0); err == nil {
+			t.Fatal("command32 published a target twice")
+		}
+		if target.HP != publishedHP || actor.Acted {
+			t.Fatalf("repeated publication changed actor=%#v target=%#v", actor, target)
+		}
+	})
+}

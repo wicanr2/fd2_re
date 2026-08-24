@@ -1,0 +1,68 @@
+FD2 玩家指令 32–35 `0x27FC9` 共用 indexed 演出非破壞性證據
+================================================================
+
+輸入、工具與位址空間
+--------------------
+
+- `FD2.EXE`：357074 bytes；MD5 `b97caf2239a27a896069d03549d96e1e`；
+  SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- IDA Pro 9.4／Hex-Rays，IDA linear address、image base 0；授權
+  `fd2-ida-authorized-local` Docker 映像。原始檔唯讀，暫存 `.i64` 只在 `/tmp`。
+- Capstone 5.0.3／`fd2-cap-local` 交叉驗證直接指令與 raw table。
+- 產生日期：2026-08-25。保留原始 `sub_*` 名稱；本文語意均為附加層。
+
+函式、caller 與共用入口（已證實）
+----------------------------------
+
+- `sub_27FC9` 範圍 `0x27FC9..0x286BD`；唯一 direct caller 是
+  `sub_2A6BD` 的 `0x2A7CE`。輸入仍是 `(actor,commandID,targetCount,targetArray)`。
+- `0x28024..0x28189` 由 actor raw record 載入 TAI／BG、`BattleFig*3`
+  的 FIGANI actor resources、FDOTHER `commandID+33`（IDs32..35 即 #65..68）及
+  sound resource table `0x5255B={91,92,93,94}`，再呼叫
+  `sub_29164(actor,1,...)` 與 `sub_2B659(actor,commandID,...)`。
+- `sub_2B659` 讀 FIGANI container frames；header frame raw `+4==1` 時才呼
+  `sub_1CA89(actor,commandID)`。已閉合的 class19 正常玩家 resources
+  #13/#16/#19/#22/#61，其 header byte4 是 `2/2/2/5/5`，因此這五條來源不經
+  已知 MP debit sink；record MP 仍是進入前 availability gate。
+
+`sub_27FC9` 畫面排程（已證實）
+--------------------------------
+
+1. `sub_2B659` 返回後等待6 ticks。
+2. actor frame0向右滑8張，位移 `20*i`；每張等待1 tick。
+3. FDOTHER #65..68 frame0以 `30*j`、`j=8..0` 滑入9張；每張等待1 tick。
+4. ID33／34把frame0先合成進steady base；其後依序呈現 effect frames
+   `1..count-1`，每張等待2 ticks。ID32／35在frame1呼
+   `sub_25B45(sound,2,frame)`；ID34 frame2、ID33 frame6呼
+   `sub_25A96(sound,1,1)`。
+5. ID32／35另呈現11張交替尾段：effect最後兩張依 `m&1`切換，每張2 ticks，
+   偶數 `m`播放sound selector1。每張之後呼叫 `sub_286BD`，delta為
+   `40-4*m`。
+6. 四個 command 的 `sub_286BD` RGB raw table位於
+   `0x5254F..0x5255A`：ID32 `(63,63,63)`、ID33 `(51,57,63)`、
+   ID34 `(53,0,0)`、ID35 `(53,58,9)`。釋放暫存後以delta0復位，重建
+   FDSHAP／steady indexed map，再從delta0..40每步delay6漸入。
+
+`sub_286BD` 的直接像素色盤契約亦已補齊：函式範圍
+`0x286BD..0x28784`，輸入是半開區間`[start,end)`、delta及三個raw RGB bytes。
+對每個DAC index/component，它讀不可變baseline `[0x53A65+3*index+component]`，
+輸出 `raw + trunc(delta*(baseline-raw)/40)`；有號除法向零截斷。`0x27FC9`三個
+call sites均固定`start=0,end=0xFF`，所以只改index 0..254，保留index255。
+11張尾段使用delta `40-4*m`；其後delta0固定為raw RGB，重建steady map，再以
+delta `0..40`恢復baseline。這不是全色盤減法，也不可套用`0x11D40`的減算helper。
+7. 停止並釋放sound後，才依ID分派command-specific tail：
+   ID32→`sub_2111A`；ID33先清每target raw `+0x25..+0x27`再
+   `sub_211A4(...,800)`；ID34依序`sub_22721→sub_22866→sub_22997`；
+   ID35依序`sub_22D1B(command26,+0x25)`、`(22,+0x27)`、`(27,+0x26)`。
+
+證據分級與實作停止線
+--------------------
+
+- **已證實**：上述唯一caller、資源公式、raw sound／RGB table、滑入張數與位移、
+  main／tail frame順序、sample markers、palette delta、steady restore及四條tail順序。
+- **強推論**：以現代引擎一次 Draw acknowledgement 對應一次原版present；保留順序，
+  不宣稱DOS tick逐毫秒一致。
+- **未知**：高階技能名稱、`sub_286BD`的通用敘事名稱、同狀態逐像素／逐音訊E2。
+- 正式 owner 必須先完整驗證 actor／target indexed base、#65..68 effect、#91..94
+  必需samples、palette、command-specific tail資產與私有交易；第一張畫面前任一缺件
+  都失敗即關閉。不得只播共用前段後直接呼叫現有state executor而省略原版tail。

@@ -126,6 +126,7 @@ func (g *Game) markActionOverlayDrawn() {
 }
 
 func (g *Game) resetActionOverlayLifecycle() {
+	g.cancelNativeCommand32Presentation()
 	g.ring = false
 	g.nativeSystemCursorOverlay = false
 	g.nativeSystemNestedOpen = false

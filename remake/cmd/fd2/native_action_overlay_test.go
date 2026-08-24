@@ -442,7 +442,7 @@ func TestNativeCommand35ConfirmConsumesProvenClass19Transaction(t *testing.T) {
 	}
 }
 
-func TestNativeCommand32ConfirmConsumesProvenClass19Transaction(t *testing.T) {
+func TestNativeCommand32ConfirmFailsClosedWithoutIndexedPresentation(t *testing.T) {
 	actor := &battle.Unit{
 		Camp: battle.Own, OnField: true, X: 0, Y: 0, HP: 100, MaxHP: 100, MP: 80, Lv: 20,
 		ClassID: 5, BattleFig: 4, HasBattleFig: true, NativeRecordClass: 19, HasNativeRecordClass: true,
@@ -468,8 +468,8 @@ func TestNativeCommand32ConfirmConsumesProvenClass19Transaction(t *testing.T) {
 		nativeCommand0Targeting: true, nativeCommandTargetID: 32, nativeRNGState: 7,
 	}
 	g.confirm()
-	if !actor.Acted || actor.MP != 80 || target.HP >= 100 || g.nativeRNGState == 7 {
-		t.Fatalf("command32 production confirm did not publish actor=%#v target=%#v msg=%q", actor, target, g.msg)
+	if actor.Acted || actor.MP != 80 || target.HP != 100 || g.nativeRNGState != 7 || g.nativeCmd32Presentation != nil {
+		t.Fatalf("command32 missing presentation mutated actor=%#v target=%#v msg=%q", actor, target, g.msg)
 	}
 }
 

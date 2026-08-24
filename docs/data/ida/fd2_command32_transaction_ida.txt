@@ -48,6 +48,7 @@ Remake contract
   publish HP, final RNG and actor Acted atomically after all preflight checks.
 - Do not write raw transient markers and do not debit MP for these five proven
   sources.
-- **Unknown/fail-closed:** the 0x1C4CC→0x1CAC7 indexed presentation,
-  0x1E0DB/0x1E1DC result frames, exact SFX/palette timing, score/EXP, AI,
-  other BattleFig sources and general-player E2.
+- **Correction 2026-08-25:** the `0x1C4CC→0x1CAC7` indexed presentation and
+  `0x1E0DB/0x1E1DC→0x1DF58` result-frame order are now RE-CLOSED in
+  `fd2_command32_tail_presentation_ida.txt`. Exact same-state pixel/audio E2,
+  score/EXP, AI, other BattleFig sources and general-player E2 remain unknown.

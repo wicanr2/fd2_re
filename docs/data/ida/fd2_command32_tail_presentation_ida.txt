@@ -1,0 +1,65 @@
+# FD2 玩家指令 32 `0x2111A` 後段 indexed 演出非破壞性證據
+
+## 輸入、工具與位址空間
+
+- 輸入 `FD2.EXE`，357074 bytes；MD5 `b97caf2239a27a896069d03549d96e1e`；
+  SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 第一順位工具為授權 Docker 內 IDA Pro 9.4.0.260610／Hex-Rays，IDA
+  linear address、image base 0；原始執行檔唯讀，暫存 `.i64` 只寫入 `/tmp`。
+- 保留原始名稱 `sub_2111A`、`sub_1C4CC`、`sub_1CAC7`、`sub_1CB94`、
+  `sub_1C75E`、`sub_1E0DB`、`sub_1E1DC`、`sub_1DF58`。本文件不以語意名稱
+  取代原始定位。產生日期：2026-08-25。
+
+## caller 與完整順序（已證實）
+
+- `sub_2111A` 範圍 `0x2111A..0x211A4`；直接 callers 是 `0x2100B` 與
+  指令32共用 owner 的 `0x28594`。
+- `0x21130..0x21151` 先以相同的 actor、command ID、target count、target
+  byte array 呼叫 `sub_1C4CC`，再呼叫 `sub_1CAC7`。
+- `0x21168..0x2118E` 依 target array 順序呼叫 `sub_1C75E(target,commandID)`；
+  非零傷害以 raw digit bias `0x5E` 呼叫 `sub_1E0DB`，零值則呼叫
+  `sub_1E1DC`。最後 `0x21190..0x2119A` 完整重畫並呼叫 `sub_1DF58`。
+
+## `sub_1C4CC` 的 ID32 表列（已證實）
+
+三張33-byte表 `0x51F33`、`0x51F54`、`0x51F75` 的 index32 分別是
+`0x40`、`0x0A`、`0x09`。因此 ID32 使用 FDOTHER #6 descriptors
+`0x40..0x49` 共10張；第一張播放 raw sample9，每張 present 後等待1 tick。
+target座標與可視邊界、snapshot恢復及 descriptor blit 契約沿用已閉合的
+`sub_1C4CC` 證據，不由本文件重新命名效果。
+
+## `sub_1CAC7` 與 `sub_1CB94`（已證實）
+
+- `sub_1CAC7` 範圍 `0x1CAC7..0x1CB94`；直接 callers 是 `0x2114C` 與
+  `0x213F3`。`0x1CAD3..0x1CAE3` 以 raw descriptor `0x4A` 呼叫
+  `sub_1CB94` 產生第一個320×200 work snapshot；`0x1CAFA..0x1CB05` 以
+  descriptor `0x4B` 產生第二個 snapshot。
+- `0x1CB11..0x1CB79` 固定做四組切換：先 present descriptor `0x4A`
+  snapshot 的312×192 viewport並等待90 ms，再 present descriptor `0x4B`
+  snapshot並等待90 ms。結束後呼叫 `sub_11CAC(0)` 完整重畫。
+- `sub_1CB94` 範圍 `0x1CB94..0x1CD17`。它先依 camera 重建地形區域；遍歷
+  runtime records時，target array 成員在原 unit sprite 位置改畫呼叫者指定的
+  FDOTHER #6 descriptor，非 target 則依 selector cache、idle cycle與raw side
+  繪製原 unit sprite。它不是調色盤切換，也不是只修改 target HP。
+- 重製端60 Hz仍須至少逐 Draw 保存 `0x4A→0x4B` 四組順序；這是現代引擎
+  時序近似，不宣稱DOS wall-clock parity。
+
+## 傷害與數字段（已證實）
+
+- 每個 target 在上述兩段演出完成後才呼叫 `sub_1C75E`。命中傷害與 miss 的
+  RNG契約由既有 `fd2_command32_transaction_ida.txt` 承載。
+- 非零結果以 bias `0x5E` 寫四欄十進位 descriptor；零結果使用
+  `sub_1E1DC` 的固定 miss descriptors。`sub_1DF58` 依既有25-byte垂直表呈現
+  22張、每張2 ms，最後等待500 ms。
+
+## 證據分級與重製契約
+
+- **已證實**：上述函式邊界、callers、直接指令、ID32三張table bytes、
+  descriptors `0x40..0x49`、sample9、`0x4A/0x4B` 四組90 ms切換、傷害後
+  queue writer分流、bias `0x5E`與數字段順序。
+- **強推論**：每個原版 present 映射成至少一個 Ebiten Draw acknowledgement。
+- **未知**：效果與音效的高階技能名稱、同狀態逐像素／逐音訊 E2。
+- 正式 owner 必須在第一張畫面前驗證 FDOTHER #5/#6 descriptors、sample9、
+  actor/targets map provenance、indexed work/VGA、palette與完整交易；任何缺件均
+  失敗即關閉。HP只能在 `0x4A/0x4B` 切換後的每 target 數字段邊界發布；中途
+  失敗必須回復先前已發布的HP、RNG與 `Acted`。

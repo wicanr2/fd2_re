@@ -6190,3 +6190,56 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   前導、60張主段、#5結果與音訊；MP／HP／RNG／acted採Draw邊界交易，晚期失敗
   回復全部狀態及indexed buffers。原始selector、取樣、交易與前導消失的回歸通過，
   達`RUNTIME-E1`；一般玩家同狀態逐幀／逐音訊仍非E2，不重解`0x2189A/0x219AD`。
+
+# 2026-08-25：指令 30 取得停止線與 32–35 共用演出
+
+- 指令30的特殊雙游標／四格cardinal line與`0x276EC` default倍率18仍為已證實
+  相容核心；但32筆player defaults及固定learn table都沒有ID30，唯一敵方bit30
+  又屬mode8而不進command scorer。因此目前不猜接正式UI，列為無正常producer的
+  強推論；出現動態反證才重開。
+- 授權Docker內IDA Pro 9.4與Capstone固定`0x27FC9`的#65..68 effect、#91..94
+  sound、8張actor＋9張effect滑入、main frames、ID32／35的11張尾段、四組raw RGB
+  palette及steady restore；完整證據見
+  [`fd2_command32_35_presentation_ida.txt`](../data/ida/fd2_command32_35_presentation_ida.txt)。
+- `BuildNativeCompoundPresentationSchedule`已保存共用與各ID marker差異；原檔回歸
+  同時證實ID33 sound selector2為空且原控制流不消費，預檢不得錯誤要求。現達
+  `RE-CLOSED`／`DATA-READY`；下一步依SDD接正式indexed owner與四條tail，不重解
+  已閉合transaction helpers。
+
+## 2026-08-25：指令32 command-specific tail 補證與資料化（未提交批次）
+
+- 續接 `b3f4dcef` 後未提交的 IDs32–35 共用演出批次；未重做已閉合的
+  `0x27FC9`。授權 Docker 內 IDA Pro 9.4 新閉合尚未知的
+  `0x2111A→0x1CAC7→0x1CB94`：ID32先播FDOTHER #6 descriptors
+  `0x40..0x49`（#80 sample9），再以 `0x4A/0x4B` 做四組各90 ms切換，之後
+  才逐target套用傷害並由bias `0x5E`／miss queue進22張數字段。
+- canonical evidence新增
+  [`fd2_command32_tail_presentation_ida.txt`](../data/ida/fd2_command32_tail_presentation_ida.txt)；
+  舊 transaction 文件已追加勘誤，不再把整段 indexed tail 列為未知。
+- `fdother.NativeCommand32TailSchedule` 已保存 raw descriptors、sample、切換、
+  digit table與時序，並以原始 `FDOTHER.DAT` 驗證 #5/#6及#80 selector9。
+  `battlepresent.BuildNativeCommand32TailFrames` 會在第一張畫面前原子預建10張
+  effect、8張toggle與22張result；缺任一 descriptor 不改 caller buffers。
+- `NativeCompoundCommand32Plan` 改為私有target snapshot、逐target發布與可預檢
+  rollback；公開結果遭改寫不再能竄改交易。Docker窄回歸已通過
+  `internal/battle`、`internal/fdother`、`internal/figani`、`internal/battlepresent`。
+- 下一步不是再做RE，而是把已DATA-READY的共用段及ID32 tail接成單一
+  Draw-acknowledged Game owner；完整owner成功前仍不提交，且 IDs33–35 不得
+  跳過各自 command-specific tail。
+
+## 2026-08-25：指令32正式 indexed owner（未提交批次）
+
+- 正式指令格的ID32確認現改由單一`nativeCommand32PresentationJob`接管，不再直接
+  執行數值helper。擁有者在第一張畫面前完整預建actor／effect滑入、#65主段、
+  11張共用尾段、DAC插值與地圖漸入，以及#6效果、`0x4A/0x4B`切換與#5結果段。
+- `sub_286BD`已由授權Docker內IDA Pro 9.4與Capstone交叉固定為逐DAC component
+  `raw + trunc(delta*(baseline-raw)/40)`；`0x27FC9`固定處理半開區間`[0,255)`，
+  所以palette index255保持不變。這不是`0x11D40`的色盤減算。
+- 所有畫面完成繪製前不發布交易；切換邊界後才發布目標HP與最終RNG，22張結果及
+  500 ms尾停完成後才發布`Acted`與完成回呼。取消、讀檔、切換節點或晚期錯誤會
+  回復HP、RNG與indexed buffers。缺#65、#91 selector1／2、#80 selector9、#5／#6、
+  原始actor／target idle、panel或palette時在首幀前失敗即關閉。
+- 原始資產非靜音端到端、無Draw不發布、HP發布邊界、尾停、晚期回復及overlay reset
+  的Docker／Xvfb聚焦回歸均已通過，現提升為受限class19玩家`RUNTIME-E1`。
+  IDs33–35仍只具state transaction；下一個玩家價值切片是ID33正式共用段與
+  `0x211A4`專用清除／回復尾段，不重做ID32。

@@ -59,3 +59,19 @@ FD2 command 28／31 一般玩家取得路徑窄稽核（IDA Pro 9.4）
 - **重開條件：** 原版未修改玩家路徑動態擷取出現ID28／31、找到另一個直接／間接
   command-mask writer，或同一 actor state 同時提供raw `+7`與command bit。未達
   其中之一前，state-only相容交易可保留，正式演出維持失敗即關閉。
+
+2026-08-25 補充勘誤：ID30採相同取得停止線
+------------------------------------------
+
+- 重新機械檢查同一份32筆 `character_defaults.json` 與完整
+  `command_learn.json`，ID30（byte3 bit6）同樣沒有任何固定授予列。上述唯一已知
+  command-mask OR writer／level-up caller證據沒有改變。
+- `0x1D287..0x1D364` 與 `sub_149F8 0x149F8..0x14B1A` 另由本日IDA Pro 9.4及
+  Capstone重核，仍證實ID30的saved／confirmed cursor、`record+3-16`四步、X-first
+  cardinal line與enemy filter；這只證明相容控制流，不證明玩家取得來源。
+- map13 index0雖有byte3 bit6，但raw AI mode低四位為8，既有
+  [`fd2_ai_mode_dispatch_ida.txt`](fd2_ai_mode_dispatch_ida.txt)已固定它直接走
+  `0x1317D`，不進command scorer／`0x15311`。
+- 因此「ID30目前沒有已證實正常玩家或敵方producer」為**強推論**，不是死碼宣告；
+  state-only相容核心保留，正式UI／演出不列交付阻擋。重開條件同上，另加未修改
+  敵方回合實際進入command30 scorer／owner。

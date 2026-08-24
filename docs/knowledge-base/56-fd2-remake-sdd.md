@@ -1266,6 +1266,21 @@ IDs32..35；原始可達來源是 portrait/visual group 4..7 的 optional class-
 visual group、其他 MP writer 與其餘 compound transaction 仍未閉合；下段只對已證實
 class19玩家來源開放ID32／33／34／35，其他路徑保持 fail-closed。
 
+2026-08-25 補齊 `0x27FC9` 正式演出規格。typed schedule必須保存FDOTHER
+effect `commandID+33`（#65..68）、sound `commandID+59`（#91..94）、actor右移
+8張×20、effect frame0反向滑入9張×30、6-tick前停、main frames `1..count-1`
+每張delay2，以及raw RGB table：32=`63/63/63`、33=`51/57/63`、
+34=`53/0/0`、35=`53/58/9`。ID33／34先把effect frame0合成進steady base；
+ID32／35在main frame1使用sound selector2，ID34 frame2與ID33 frame6使用
+selector1。ID32／35另有11張最後兩frame交替尾段、偶數frame selector1及
+palette delta `40-4*m`。共用段結束後必須重建indexed map並完成delta0..40、
+delay6漸入，才依序進各ID已證實的command-specific tail；不可用現有state
+executor跳過`0x2111A/0x211A4`或三段modifier/application畫面。正式owner在第一張
+前必須完整預建共用段、tail資產與私有交易；缺任何實際消費的sample（ID33的
+selector2原檔為空且不應誤要求）、effect、palette、actor／target base或raw
+provenance都失敗即關閉。完整證據見
+[`fd2_command32_35_presentation_ida.txt`](../data/ida/fd2_command32_35_presentation_ida.txt)。
+
 The wrapper's only direct caller is `0x2a7ce`, entered from `0x2a6bd` when
 the opaque command selector is `>=0x20`; it passes four caller-owned values
 without a proven normalized type. Inside `0x27fc9`, resource setup and the
@@ -1283,8 +1298,9 @@ targets, or infer effect/status names.
 依`0x22721→0x22866→0x22997`順序連續套用17／18／19三個raw modifier，三段全部
 成功後才一次發布`+0x22..+0x24`與`+0x48..+0x4E`、保留MP並設定actor `Acted`。
 缺class／selector／target raw provenance、MP gate、RNG或任一stage時零修改。這一段
-只定義ID34 state transaction；ID33／35契約見下段。`0x27FC9` indexed presentation、
-ID32交易、AI／其他visual group與一般玩家E2仍失敗即關閉。
+只定義ID34 state transaction；ID33／35契約見下段。ID32的正式演出擁有者已由
+後文規格與實作取代此處早期限制；ID33／34／35 indexed presentation、AI／其他
+visual group與一般玩家E2仍失敗即關閉。
 
 指令33採用相同的窄玩家來源閘門，但保留自己的 raw 交易：只接受
 `NativeRecordClass==19`與已證實可達的BattleFig 4／5／6／7／20；record33的52 MP
@@ -1313,12 +1329,22 @@ score／EXP、AI、其他BattleFig及高階狀態名稱仍失敗即關閉。
 的76 MP只作可用性門檻。正式交易使用caller final-target geometry，並固定取
 command32 raw row與每個target class的`word_51F96` multiplier；依target順序共用
 同一RNG，未命中只推進一次，命中再推進第二次並套用`0x1C75E→0x1C81F`傷害公式。
-所有target row、raw provenance、HP與resistance均先驗證，全部可解析後才一次發布
-HP、最終RNG與actor `Acted`；不寫`+0x25..+0x27`，也不在這五條已證實來源扣MP。
-這只關閉ID32玩家state transaction；`0x1C4CC→0x1CAC7` indexed presentation、
-逐target的`0x1E0DB/0x1E1DC`結果畫面、score／EXP、AI與一般玩家E2仍失敗即關閉。
-主證據見
-[`fd2_command32_transaction_ida.txt`](../data/ida/fd2_command32_transaction_ida.txt)。
+所有target row、raw provenance、HP與resistance均先驗證，全部可解析後建立私有
+交易；每筆HP只在對應數字段邊界發布，全部完成後才發布最終RNG與actor `Acted`；
+中途失敗反向回復已發布HP。不寫`+0x25..+0x27`，也不在這五條已證實來源扣MP。
+
+2026-08-25補證已閉合ID32 command-specific tail：`0x1C4CC`由三張33-byte表
+取index32，固定使用FDOTHER #6 descriptors `0x40..0x49`共10張、第一張播放
+#80 sample9、每張delay1；`0x1CAC7→0x1CB94`先建立descriptor `0x4A`與`0x4B`
+兩個target替代snapshot，再做四組`0x4A→0x4B`切換、各等待90 ms，最後steady
+redraw。之後才逐target呼`0x1C75E`，非零結果以bias `0x5E`寫數字queue，零值
+走固定miss queue，最後由`0x1DF58`呈現22張與500 ms尾停。typed schedule必須
+驗證FDOTHER #5/#6與sample9。正式owner現已把這段接在`0x27FC9`共用段之後：先
+完整預建所有畫面，切換畫面完成繪製後才逐目標發布HP與最終RNG，22張結果及
+500 ms尾停完成後才發布`Acted`；取消或晚期失敗會回復HP、RNG及indexed buffers。
+score／EXP、AI、精確同狀態畫面／音訊及一般玩家E2仍失敗即關閉。
+主證據見[`fd2_command32_transaction_ida.txt`](../data/ida/fd2_command32_transaction_ida.txt)
+與[`fd2_command32_tail_presentation_ida.txt`](../data/ida/fd2_command32_tail_presentation_ida.txt)。
 
 command 0 的 selector boundary 也已縮小：`0x1cff0` 對一般 record（非 command `0x17`／`0x1e` special
 branch）先以 actor cell、`record[+3]`、`record[+6]` 呼叫 `0x14818`，把可選中心的 unit indices 寫進 caller
@@ -5689,7 +5715,9 @@ FDTXT #481..486 與 `0x9F23` 文字位置；每筆以六幀展開、五幀收合
 marker 清除與套用、HIT／EV、AP／DP、基礎能力／容量、command damage 與 relocation。
 此處的剩餘缺口是 indexed effect presentation、原版取消／不可用目標畫面與同狀態
 逐幀／逐音訊 E2，不再把「物品 effect 尚未接」列成數值交易缺口。未知 command、
-複合技中ID33／34／35已具受限玩家state owner；ID32與尚無正式owner的法術仍各自失敗即關閉。
+複合技中ID32已具受限class19玩家的正式indexed owner與原子交易，ID33／34／35
+已具受限玩家state owner；尚無正式owner的法術及ID33／34／35完整演出仍各自
+失敗即關閉。
 
 ## 2026-08-22 巢狀離場規格
 

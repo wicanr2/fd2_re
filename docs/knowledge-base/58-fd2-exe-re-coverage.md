@@ -123,12 +123,12 @@ handler frame、common actor／tail 與原始資產先完整預建，才逐 Draw
 | DOS/4GW、Watcom runtime、Miles 驅動與一般函式庫 | 第一輪分類 | 不適用 | 只在行為外露時處理 | 不適用 | IDA 清冊1305函式中170筆由 Watcom FLIRT 標成 runtime；其餘未分類不能都算產品程式。後續只擴充分級索引，不把函式庫未命名算成 remake 缺口。 |
 | 三平台打包與推廣片 | 不適用 | 部分 | 尚未達發行閘門 | 缺完整玩家驗收 | 這不是反組譯問題。待核心戰役、操作 UI、結局與代表性一般玩家路徑關閉後，再做 Linux／Windows／macOS 打包與影片。 |
 
-**2026-08-23 ID32 現況勘誤**：上表「玩家指令、法術、物品與交易」列尾端仍保留
-本批開始時「ID32失敗即關閉」的快照文字；該單一敘述已由
-[`fd2_command32_transaction_ida.txt`](../data/ida/fd2_command32_transaction_ida.txt)
-取代。ID32現與33／34／35同為受限class19玩家state transaction `RUNTIME-E1`，
-正式grid→confirm已接；仍失敗即關閉的是`0x1C4CC→0x1CAC7` indexed演出、
-`0x1E0DB/0x1E1DC`結果畫面、score／EXP、AI、其他visual group與一般玩家E2。
+**2026-08-25 ID32 現況勘誤**：上表長列保留了本批開始時「ID32失敗即關閉」的
+歷史快照文字；現況由[`fd2_command32_transaction_ida.txt`](../data/ida/fd2_command32_transaction_ida.txt)、
+[`fd2_command32_35_presentation_ida.txt`](../data/ida/fd2_command32_35_presentation_ida.txt)
+與[`fd2_command32_tail_presentation_ida.txt`](../data/ida/fd2_command32_tail_presentation_ida.txt)
+取代。ID32已由正式grid→confirm接到受限class19玩家indexed owner及原子交易，達
+`RUNTIME-E1`；仍失敗即關閉的是score／EXP、AI、其他visual group與一般玩家E2。
 
 **2026-08-23 敵方物理提交補強**：mode 2與mode 11 `0x1548E`正式入口現先預檢
 攻方attack FIGANI、守方idle FIGANI與descriptor delay，全部可建立排程後才消耗
@@ -262,6 +262,8 @@ command30 producer，也不構成缺少AI executor的交付阻擋。
 | `0x1C4CC`／`0x1C2DA`／`0x1E0DB`／`0x1DF58`（command 13–16 後段） | [`fd2_command_numeric_tail_ida.txt`](../data/ida/fd2_command_numeric_tail_ida.txt) | FDOTHER #6七幀、五組snapshot→mask、`0x4DDD7` write mask、transaction後redraw、FDOTHER #5 queue／22-frame reader與玩家／敵方 E1 | 補同狀態逐幀／逐音訊 E2；不重解函式 |
 | `0x1D4CB`／`0x1D6C8`（玩家 command sound writer／palette owner） | [`fd2_command_sound_handle_53b13_ida.txt`](../data/ida/fd2_command_sound_handle_53b13_ida.txt)、[`fd2_command_modifier_palette_ida.txt`](../data/ida/fd2_command_modifier_palette_ida.txt) | `sub_1D4CB` 以常數0x50載入FDOTHER #80至`[0x53B13]`；`0x1D6C8`唯一caller為`0x1CFF0`，消費#80 selector0、三張36-byte DAC table與四輪color／black；17–23與25–27玩家正式E1均先演出後交易，23並串接兩次`0x22253`離場／入場。ch24 `0x33979` 對同全域的#88覆寫是另一個局部owner | 只補command23同狀態camera／逐幀、精確tick與逐音訊E2；phase-expiry與status panel已由後列主證據關閉；不重解palette loop或`0x22253` callee |
 | `0x1F558`／`0x21527..0x21AD9`（玩家 commands10–12） | [`fd2_command10_12_presentation_ida.txt`](../data/ida/fd2_command10_12_presentation_ida.txt) | `RE-CLOSED`／`DATA-READY`／`RUNTIME-E1`：三wrapper、ID11／12的#80 selector2與`0x2189A`實參、共用三張取樣表、四surface×60張、#80 selector13八個marker及numeric tail順序已閉合；typed fixed-point compositor、正式玩家owner與MP／HP／RNG／acted原子rollback已接 | 不重解`0x2189A/0x219AD`；一般玩家同狀態逐幀／逐音訊E2另列 |
+| `0x27FC9..0x286BD`（玩家 commands32–35 共用演出） | [`fd2_command32_35_presentation_ida.txt`](../data/ida/fd2_command32_35_presentation_ida.txt) | `RE-CLOSED`／`DATA-READY`；ID32 `RUNTIME-E1`：唯一caller、#65..68效果、#91..94按ID音效、兩段滑入、main／11張可選tail、raw RGB插值、steady restore及四條command-specific tail已閉合。ID32正式owner逐Draw消費#65/#91、actor／effect滑入、11張tail與0..40 map ramp，再進專用tail；中途失敗回復HP／RNG／indexed buffers | IDs33–35仍須接各自正式indexed owner與command-specific tail；不得只播共用前段後直接呼state executor；ID32一般玩家同狀態E2另列 |
+| `0x2111A..0x211A4`／`0x1CAC7..0x1CD17`（ID32 command-specific tail） | [`fd2_command32_tail_presentation_ida.txt`](../data/ida/fd2_command32_tail_presentation_ida.txt) | `RE-CLOSED`／`DATA-READY`／`RUNTIME-E1`：ID32 #6 `0x40..0x49`、#80 sample9、`0x4A/0x4B`四組90 ms切換、傷害後queue分流、bias `0x5E`與22張數字段均由正式玩家owner消費；HP／RNG只在切換後發布，尾停後才發布`Acted`。非靜音原始資產端到端及晚期rollback回歸已通過 | 精確同狀態逐幀／逐音訊與一般玩家E2另列；不重解tail函式 |
 | `0x1A866`／`0x1B750`（transient 到期呈現） | [`fd2_transient_expiry_presentation_ida.txt`](../data/ida/fd2_transient_expiry_presentation_ida.txt) | `RE-CLOSED`：selector `1/0/2` 三個 caller；raw `+0x22..+0x27` 倒數／歸零；`sub_12D7B` 重畫、`sub_1956B(raw +7)` DATO 來源、`sub_15F84` FDTXT `0x1E1..0x1E6`（481..486）文字、`0x4E031` present／input、delay10、`sub_196CB` 關閉與 `sub_1B750` derived recalc 順序 | 正式 UI 已以目前 indexed map、raw +7 DATO、FDTXT 481..486 建立並在完整預建後原子發布；下一步只補精確 tick／音訊、狀態高階名稱與一般玩家 E2；status colors／icons另由 `0x17FC0` 主證據關閉，不猜六個 raw 欄位名稱、不重解 `sub_1A866` 函式本體 |
 | `0x17FC0`（角色 status colors／icons） | [`fd2_status_panel_transient_indicators_ida.txt`](../data/ida/fd2_status_panel_transient_indicators_ida.txt) | `RE-CLOSED`／`RUNTIME-E1`：`+0x22..+0x24` 切換 digit base `0x2A/0x77`；`+0x25..+0x27` 非零時消費 FDOTHER #5 entries `0x37..0x39`；typed plan、indexed renderer、church status 正式 owner 與原始資產 regression 均已接 | 只補高階名稱、精確 tick／音訊與一般玩家 E2；不另造六個圖示、不重解函式 |
 | `0x24618` | chapter-specific IDA 證據；例如 [`ch22`](../data/ida/fd2_ch22_pre_ida.txt)、[`ch27/28`](../data/ida/fd2_ch27_ch28_pre_owner_ida.txt) | indexed transition 核心與部分 caller payload | 新 caller 必須另證參數／view；不得把已知 callee 當全新未知 |
