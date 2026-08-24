@@ -6060,3 +6060,15 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   完整`cmd/fd2`首次重跑只發現並修正舊白名單測試，後續全套因既有商店fixture
   在25秒內仍載入大型binding而觸發測試逾時，並非本切片失敗；故本批依聚焦
   回歸列indexed `RUNTIME-E1`，不宣稱整套測試已於本輪綠燈或`PLAYER-E2`。
+
+## 2026-08-24：command2 `0x2673F` 與完整phase budget
+
+- IDA新資料庫仍把`0x26528/0x2673F`錯併到前一函式，故未採其偽代碼語意；
+  Capstone直接指令固定`0x2673F`只在caller給定原位畫`effect[state]`，以獨立
+  repeat byte和FIGANI descriptor delay推進frame，沒有另一組未知座標。
+- mode0→29張front；mode3→12張target，六個HP／sample2 marker在偶數
+  step0..10；每個boundary九張仍推進同一frame16/17並在偶數step播sample2，
+  但不發布HP；mode6播sample3、設frame10→10張tail。raw side決定由mode1/7
+  或mode2/8實際呼叫helper，後者在pre-draw frame7播sample1。
+- 舊JSON的`init_channels/draw_channels=10`是schema placeholder，不能當十通道
+  renderer證據；後續typed state改以單一frame/repeat表示。

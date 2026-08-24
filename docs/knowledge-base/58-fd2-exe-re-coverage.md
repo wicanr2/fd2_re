@@ -120,9 +120,11 @@ RNG、`Acted`依Draw邊界發布且可整批回復，提升為indexed `RUNTIME-E
 
 ID2的`0x26528`亦已修正為自身state `0x53F7E..0x53F80`、#26/#27
 18-frame FIGANI與#83 samples1／2／3；`0x52460/0x52490/0x5249C`實為ID3
-資料，舊ID2關聯已撤回。mode4→target→mode5單張純indexed compositor與原始
-資產回歸達`DATA-READY`；mode1／2／7／8 helper座標、外層交易及正常敵方回合
-仍未閉合，不宣稱正式演出。
+資料，舊ID2關聯已撤回。`0x2673F`現由直接指令閉合為單一frame/repeat、原位
+effect draw與descriptor-delay推進；29張front、每target12張／六HP marker、
+每boundary九張及10張tail皆已轉成typed state／compositor primitive，並以原始
+#26/#27資產驗證不越界，達完整`DATA-READY`。正式Game owner、玩家／敵方
+continuation與同狀態E2仍未接，不宣稱`RUNTIME-E1`。
 
 ID6的`0x26E39`已由完整直接指令與原始資產交叉驗證：五個local table值、
 mode0／3／6回傳7／12／7、#32/#33十幀FIGANI及#87 samples1／2／3均已成

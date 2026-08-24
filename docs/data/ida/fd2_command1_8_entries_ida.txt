@@ -162,6 +162,43 @@ ID2 compositor correction and exact data (2026-08-23)
 The target compositor is `DATA-READY`; mode1/2/7/8 exact helper positions,
 outer MP/HP publication and a normal enemy-turn capture remain separate gates.
 
+ID2 helper and complete outer schedule (2026-08-24)
+----------------------------------------------------
+
+Licensed IDA Pro 9.4 was used first on a fresh temporary database. As with
+ID1, its inherited function boundary merged 0x26528/0x2673F into the earlier
+`sub_26152`, so the decompiler output was rejected as a navigation artifact.
+Capstone 5.0.3 then decoded the fixed FD2.EXE bytes directly:
+
+- `0x2673F..0x26794` receives pointers to state and repeat bytes, destination,
+  stride and effect. It draws `effect[state]` at the caller-provided
+  destination with no additional coordinate offset, increments repeat, and
+  advances state when repeat reaches that FIGANI frame descriptor's delay.
+- mode0 at `0x26575..0x2658F` clears frame/repeat state and returns29. Across
+  these 29 front frames, raw side nonzero calls the helper through mode1;
+  raw side zero calls it through mode2. Front mode1/2 rewrites frame10 to15
+  before drawing. Mode2/8 plays sample1 when the pre-draw frame is7.
+- mode3 writes frame16 and returns12. Each mode5 increments frame; becoming17
+  plays sample2 and returns numeric marker1, becoming18 resets to16. The
+  12-frame target loop therefore alternates frame16/17 and publishes six HP
+  markers at steps `0,2,4,6,8,10`, matching command2 denominator6.
+- `sub_2BA22` continues the same mode4/5 state for nine boundary frames. Its
+  numeric return is ignored by the caller, but sample2 still occurs at
+  boundary steps `0,2,4,6,8`; target and actor layers retain the already
+  proven horizontal transition contract.
+- mode6 plays sample3, writes frame10 and returns10. Tail mode7/8 uses the same
+  helper and preserves the repeat byte left by the front phase; it does not
+  apply the front-only frame10→15 rewrite.
+- The editable JSON values `init_channels:10`, `draw_channels:10` and
+  `channel:-1` are historical schema placeholders, not ten-channel evidence.
+  ID2 owns one frame/repeat state pair and one effect draw per active helper
+  call; future typed data must not interpret those fields as channels.
+
+Inference level: **proven** for bytes, helper ABI/data flow, phase budgets,
+marker positions and sample indices. Exact player-visible timing remains
+`DATA-READY` until the complete Game owner prebuilds every phase and binds
+MP/HP/Acted/RNG publication.
+
 ID6 direct-instruction correction and asset boundary (2026-08-24)
 ----------------------------------------------------------------
 
