@@ -6401,3 +6401,19 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   交易；重複／越界／缺來源時 HP、inventory、RNG、Acted 均不變。
 - 純 battle 套件及 Docker／Xvfb 介面套件聚焦回歸通過。這批是
   `RE-CLOSED`／`RUNTIME-E1`；caller-specific indexed item 演出與同狀態 E2 仍待。
+
+## 2026-08-25：AI item type 5／13 正式 `0x211A4` indexed 尾段
+
+- canonical synthesis明確排除指令33的`0x27FC9`／#66／#92前導，只沿
+  `0x15055→0x20C6F→0x211A4`重用固定command13尾段。
+- 新owner先在detached raw records預算完整target list交易，並預建FDOTHER #6
+  `0x39..0x3F`、#80 sample12／1、五組`0xC0` mask、post-state map與22張bias
+  `0x69`數字段。mask Draw後才發布HP／inventory／RNG，500 ms尾停後才發布
+  `Acted`與AI continuation；晚期取消回復全部交易與indexed buffers。
+- 原始資產端到端、未Draw不發布、晚期回復與缺indexed map失敗即關閉聚焦測試均
+  通過；完整`cmd/fd2`套件在移除會改變產品契約的全域`FD2_MUTE=1`後乾淨通過。
+  這批達`RUNTIME-E1`；下一個缺口是type20／24 `0x1CD17`與type21 `0x1CAC7`。
+- 提交前唯讀審查另抓到command-damage致死只回填HP、漏掉raw `+5 bit0`，以及
+  presenter防重入與roster-change rollback邊界；現已同步死亡位元、完整拒絕其他
+  active presenter，並在拓撲改變時安全清理而不索引越界。致死雙target與拓撲變更
+  回歸加入後，全套`go test ./... -count=1`再次通過。

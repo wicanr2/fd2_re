@@ -298,7 +298,7 @@ func TestApplyNativeAITargetItemConsumesCompleteCommandDamageList(t *testing.T) 
 	for id := range book {
 		book[id] = battle.NativeCommandRecord{ID: id}
 	}
-	book[2] = battle.NativeCommandRecord{ID: 2, Damage: 30, Hit: 100}
+	book[2] = battle.NativeCommandRecord{ID: 2, Damage: 200, Hit: 100}
 	g := &Game{
 		st:                   &battle.State{W: 3, H: 1, Units: []*battle.Unit{actor, first, second}},
 		nativeItemEffectRows: rows,
@@ -315,9 +315,11 @@ func TestApplyNativeAITargetItemConsumesCompleteCommandDamageList(t *testing.T) 
 	if err := g.applyNativeAITargetItem(plan); err != nil {
 		t.Fatal(err)
 	}
-	if first.HP >= 100 || second.HP >= 100 || actor.InventorySlots[0] != 1 ||
+	if first.HP != 0 || second.HP != 0 || first.NativeRecordByte5&1 == 0 || second.NativeRecordByte5&1 == 0 ||
+		actor.InventorySlots[0] != 1 ||
 		actor.NativeInventoryFlags[0]&0x80 != 0 || g.nativeRNGState == 0x2345 {
-		t.Fatalf("complete AI damage list was not committed: first=%d second=%d slot=%d flags=%#x rng=%#x",
-			first.HP, second.HP, actor.InventorySlots[0], actor.NativeInventoryFlags[0], g.nativeRNGState)
+		t.Fatalf("complete lethal AI damage list was not committed: first=%d/%#x second=%d/%#x slot=%d flags=%#x rng=%#x",
+			first.HP, first.NativeRecordByte5, second.HP, second.NativeRecordByte5,
+			actor.InventorySlots[0], actor.NativeInventoryFlags[0], g.nativeRNGState)
 	}
 }

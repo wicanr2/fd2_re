@@ -215,7 +215,7 @@ func TestAIStep14EF0CommandRejectsMissingPresentationAfterMovement(t *testing.T)
 	}
 }
 
-func TestAIStepConsumesVerified14EF0ItemRoute(t *testing.T) {
+func TestAIStepStops14EF0ItemRouteWithoutIndexedPresentation(t *testing.T) {
 	actor := nativeAIConsumerUnit(0, 0, 1, 2)
 	actor.InventorySlots[0] = 192 // raw row 192: type-5 route, 0x211A4
 	actor.NativeInventoryFlags = []int{0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
@@ -253,22 +253,19 @@ func TestAIStepConsumesVerified14EF0ItemRoute(t *testing.T) {
 		rng:    rand.New(rand.NewSource(1)),
 	}
 
-	beforeItem := actor.InventorySlots[0]
+	beforeItem, beforeHP := actor.InventorySlots[0], target.HP
 	g.aiStep()
-	if g.loadErr != "" || (g.walk != nil && g.walk.u != actor) || g.atk != nil {
-		t.Fatalf("0x14ef0 item route did not start from raw plan: walk=%v atk=%v targeting=%v ai=%v err=%q", g.walk != nil, g.atk != nil, g.nativeItemTargeting, g.aiBusy, g.loadErr)
-	}
-	for step := 0; step < 96 && (g.aiBusy || g.walk != nil || g.atk != nil || g.nativeFieldEvent61 != nil); step++ {
+	for step := 0; step < 96 && g.loadErr == "" && (g.aiBusy || g.walk != nil || g.atk != nil); step++ {
 		if err := g.Update(); err != nil {
 			t.Fatal(err)
 		}
 	}
-	if g.loadErr != "" || g.aiBusy || g.walk != nil || g.atk != nil || state.Turn != 1 {
-		t.Fatalf("0x14ef0 item completion ai=%v walk=%v atk=%v turn=%d err=%q", g.aiBusy, g.walk != nil, g.atk != nil, state.Turn, g.loadErr)
+	if g.loadErr == "" || g.aiBusy || g.walk != nil || g.atk != nil || state.Turn != 0 {
+		t.Fatalf("0x14ef0 missing indexed owner did not stop: ai=%v walk=%v atk=%v turn=%d err=%q", g.aiBusy, g.walk != nil, g.atk != nil, state.Turn, g.loadErr)
 	}
-	if actor.InventorySlots[0] != 0xff || actor.NativeInventoryFlags[0]&0x80 == 0 ||
-		target.HP <= 1 || target.HP > target.MaxHP || beforeItem != 192 {
-		t.Fatalf("0x14ef0 item route did not commit type-5 transaction: slot=%d flags=%#x targetHP=%d/%d", actor.InventorySlots[0], actor.NativeInventoryFlags[0], target.HP, target.MaxHP)
+	if actor.InventorySlots[0] != beforeItem || actor.NativeInventoryFlags[0]&0x80 != 0 ||
+		target.HP != beforeHP || actor.Acted {
+		t.Fatalf("missing indexed owner mutated transaction: slot=%d flags=%#x targetHP=%d acted=%v", actor.InventorySlots[0], actor.NativeInventoryFlags[0], target.HP, actor.Acted)
 	}
 }
 

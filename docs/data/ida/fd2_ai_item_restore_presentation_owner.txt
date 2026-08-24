@@ -1,0 +1,43 @@
+# FD2 AI item type 5／13 `0x211A4` indexed owner synthesis
+
+- Input: `FD2.EXE`, 357074 bytes
+- MD5: `b97caf2239a27a896069d03549d96e1e`
+- SHA-256: `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- Primary tool: IDA Pro 9.4；位址為 IDA 線性位址，image base 0。
+- Secondary tool: Capstone 5.0.3 Docker direct-instruction cross-check。
+- Evidence date: `2026-08-25`
+
+## 已證實的 caller 鏈
+
+- `sub_15055 (0x15055..0x15311)` 以完整 target count／byte list 呼叫
+  `sub_20C6F`；主證據見
+  [`fd2_ai_15055_item_target_list_ida.txt`](fd2_ai_15055_item_target_list_ida.txt)。
+- `sub_20C6F` 的 item type 5／13 分支在 `0x20CE0` 直接呼叫
+  `sub_211A4(actor,count,targetBytes,rowWord+0x0E)`；type 5 後續另經
+  `0x1B8E7` 消耗來源 slot，type 13 不消耗。這項 ABI 已由 SDD 既有
+  `0x20C6F` IDA pseudocode 與 raw transaction 測試閉合。
+- `sub_211A4 (0x211A4..0x21206)` 在 `0x211BA..0x211D2` 固定傳 command
+  常數 `13`，依序呼叫 `sub_1C4CC`、`sub_1C2DA`；再逐 target 呼叫
+  `sub_1C916` 與 `sub_1E0DB`，最後跳 `0x21190` 共用 steady redraw／數字段／
+  尾停。原始指令與資源表證據見
+  [`fd2_command33_tail_presentation_ida.txt`](fd2_command33_tail_presentation_ida.txt)
+  及 [`fd2_command_numeric_tail_ida.txt`](fd2_command_numeric_tail_ida.txt)。
+
+## 不可沿用的前導
+
+- 指令 33 的 `0x27FC9`、FDOTHER #66／#92、actor／effect slide 與 palette ramp
+  位於另一個 caller；item type 5／13 從 `0x20CE0` 直接進 `0x211A4`，不經該
+  前導。正式 AI item owner 只能重用 `0x211A4` 尾段 compositor，不能啟動完整
+  command 33 presenter。
+
+## 正式執行規格
+
+- 完整預建 FDOTHER #6 descriptors `0x39..0x3F`、#80 sample12、五組 raw mask
+  `0xC0`（sample1）、post-transaction map、FDOTHER #5 bias `0x69` 的22張數字段，
+  才可發布 presenter。
+- HP、inventory 與 RNG 保持私有，直到最後一組 mask 已被 `Draw` 確認後一次發布；
+  數字段與500 ms有界尾停完成後才發布 `Acted`／AI continuation。
+- 缺 target list、raw records、地圖/LUT/descriptor/sample/HUD 或 late draw 時失敗
+  即關閉；若交易已發布，必須回復 HP、inventory、RNG 與 indexed buffers。
+- 本切片只把 type 5／13 提升為 caller-specific indexed `RUNTIME-E1`；DOS tick
+  逐週期、精確混音與同狀態一般玩家 `PLAYER-E2` 不由此宣稱完成。

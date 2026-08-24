@@ -131,6 +131,7 @@ func (g *Game) resetActionOverlayLifecycle() {
 	g.cancelNativeCommand33Presentation()
 	g.cancelNativeCommand34Presentation()
 	g.cancelNativeCommand35Presentation()
+	g.cancelNativeAIItemPresentation()
 	g.ring = false
 	g.nativeSystemCursorOverlay = false
 	g.nativeSystemNestedOpen = false

@@ -5932,3 +5932,17 @@ resistance provenance。只有正常評分可產生正分且已有數值 owner �
 20、21、24 可進入此交易；任一驗證失敗時不發布 raw records、HP、inventory、
 RNG 或 acted 狀態。這只建立 RUNTIME-E1；indexed item 演出與 PLAYER-E2 仍分開
 保留。
+
+### `0x15055→0x20C6F→0x211A4` type 5／13 indexed 演出規格
+
+type 5／13 的 AI item caller 直接進 `0x211A4`，因此只消費它固定 command 13 的
+FDOTHER #6 `0x39..0x3F`、#80 sample12、`0xC0` 五組 mask、sample1、bias
+`0x69` 數字段與500 ms尾停；不得帶入指令33專屬的 `0x27FC9`／#66／#92前導。
+完整來源鏈與失敗邊界見
+[`fd2_ai_item_restore_presentation_owner.txt`](../data/ida/fd2_ai_item_restore_presentation_owner.txt)。
+
+正式 owner 必須先在 detached raw records 完成完整 target list 的 HP／inventory／
+RNG交易，並預建所有 indexed frames。最後一組mask經Draw確認後才可一次發布交易與
+post-state map；22張數字段及尾停完成後才發布`Acted`與AI continuation。取消、缺
+資產或晚期Draw失敗必須回復交易、RNG與indexed buffers。這是`RUNTIME-E1`規格，
+不宣稱精確DOS tick／混音或一般玩家`PLAYER-E2`。
