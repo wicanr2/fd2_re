@@ -12,31 +12,33 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
 )
 
-type nativeCommand8PresentationPhase uint8
+type nativeCommand9AIPresentationPhase uint8
 
 const (
-	nativeCommand8CommonPrelude nativeCommand8PresentationPhase = iota
-	nativeCommand8Actor
-	nativeCommand8Handler
-	nativeCommand8CommonTail
+	nativeCommand9AICommonPrelude nativeCommand9AIPresentationPhase = iota
+	nativeCommand9AIActor
+	nativeCommand9AIHandler
+	nativeCommand9AICommonTail
 )
 
-type nativeCommand8HandlerFrame struct {
+type nativeCommand9AIHandlerFrame struct {
 	image              *ebiten.Image
 	hpStage            int
 	playSub1, playSub2 bool
+	holdAfter          int
 }
 
-type nativeCommand8PresentationJob struct {
+type nativeCommand9AIPresentationJob struct {
 	actor                  *battle.Unit
 	plan                   *battle.NativeCommandDamagePlan
 	prelude                []*ebiten.Image
 	actorBlack, actorPulse []*ebiten.Image
 	actorSpecs             []battlepresent.NativeCommand0ActorFrame
-	handler                []nativeCommand8HandlerFrame
+	handler                []nativeCommand9AIHandlerFrame
 	tail                   []*ebiten.Image
-	phase                  nativeCommand8PresentationPhase
+	phase                  nativeCommand9AIPresentationPhase
 	frame                  int
+	hold                   int
 	pulseBlack             bool
 	drawn, mpPublished     bool
 	actorMPBefore          int
@@ -45,32 +47,35 @@ type nativeCommand8PresentationJob struct {
 	then                   func([]battle.NativeCommandDamageResult)
 }
 
-func (g *Game) startNativeCommand8Presentation(actor, confirmed *battle.Unit, then func([]battle.NativeCommandDamageResult)) error {
+// startNativeCommand9AIPresentation owns only the 0x15311 gated enemy route.
+// The player 0x214AD map compositor is deliberately a separate owner.
+func (g *Game) startNativeCommand9AIPresentation(actor, confirmed *battle.Unit, then func([]battle.NativeCommandDamageResult)) error {
 	if !g.nativeFullPresentationEnabled() {
 		return errors.New("native abbreviated presentation owner unavailable")
 	}
 	if g == nil || g.st == nil || actor == nil || confirmed == nil || g.nativeCommandScene == nil ||
 		g.nativeCommandPaletteFlash == nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil ||
 		g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil ||
-		g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9AIPresentation != nil ||
-		g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeHealPresentation != nil ||
-		g.nativeModifierPresentation != nil || g.atk != nil {
-		return errors.New("native command8 presentation context unavailable")
+		g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil ||
+		g.nativeCmd9AIPresentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil ||
+		g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.atk != nil {
+		return errors.New("native command9 AI presentation context unavailable")
 	}
-	if !actor.HasBattleFig || !actor.HasNativeRecordByte6 || len(g.nativeUIPalette) != 256 || len(g.nativeMapAssets.LUTs) <= 14 {
-		return errors.New("native command8 raw actor provenance unavailable")
+	if !actor.HasBattleFig || !actor.HasNativeRecordByte6 || actor.NativeRecordByte6 != 0 ||
+		len(g.nativeUIPalette) != 256 || len(g.nativeMapAssets.LUTs) <= 14 {
+		return errors.New("native command9 AI raw-side-zero actor provenance unavailable")
 	}
-	plan, err := g.st.PlanNativeCommandDamage(actor, confirmed, 8, g.st.NativeCommandResistances, g.nativeRNGState)
+	plan, err := g.st.PlanNativeAICommandDamageSingleTarget(actor, confirmed, 9, g.st.NativeCommandResistances, g.nativeRNGState)
 	if err != nil {
 		return err
 	}
-	if len(plan.Results) != 1 || plan.Results[0].Target != confirmed || plan.DamageStages != figani.NativeCommand8DamageStages ||
-		len(g.st.NativeCommandBook) != battle.NativeCommandRecordCount || g.st.NativeCommandBook[8].EffectMode != 0 {
-		return errors.New("native command8 single final target unavailable")
+	if len(plan.Results) != 1 || plan.Results[0].Target != confirmed || plan.DamageStages != figani.NativeCommand9AIDamageStages ||
+		len(g.st.NativeCommandBook) != battle.NativeCommandRecordCount || g.st.NativeCommandBook[9].EffectMode != 0 {
+		return errors.New("native command9 AI single final target unavailable")
 	}
 	target := plan.Results[0].Target
 	if target == nil || !target.HasBattleFig || !target.HasNativeRecordByte6 {
-		return errors.New("native command8 raw target provenance unavailable")
+		return errors.New("native command9 AI raw target provenance unavailable")
 	}
 
 	initial, err := g.nativeCommandScene.InitialBackground(g.handlerChapter)
@@ -99,13 +104,11 @@ func (g *Game) startNativeCommand8Presentation(actor, confirmed *battle.Unit, th
 	}
 	targetSelector := fdicon.NativeCommandBackgroundSelector(initial, []fdicon.NativeCommandBackgroundTarget{{Gate: targetGate, Control: targetControl}})
 	bgSelector, taiSelector := targetSelector, actorSelector
-	if actor.NativeRecordByte6 == 0 {
-		bgSelector, taiSelector = actorSelector, targetSelector
-	}
+
 	figaniPath, bgPath, taiPath := nativeFIGANIPath(), nativeBGPath(), nativeTAIPath()
 	fdotherPath, fdtxtPath := nativeFDOTHERPath(), nativeFDTXTPath()
 	if figaniPath == "" || bgPath == "" || taiPath == "" || fdotherPath == "" || fdtxtPath == "" {
-		return errors.New("native command8 player-provided archives unavailable")
+		return errors.New("native command9 AI player-provided archives unavailable")
 	}
 	background, err := fdother.DecodeArchiveSingleFrame(bgPath, int(bgSelector))
 	if err != nil {
@@ -127,25 +130,21 @@ func (g *Game) startNativeCommand8Presentation(actor, confirmed *battle.Unit, th
 	if err != nil {
 		return err
 	}
-	effectResource := 28
-	if actor.NativeRecordByte6 == 0 {
-		effectResource = 30
-	}
-	effect, err := figani.DecodeResource(fdotherPath, effectResource)
+	effect, err := figani.DecodeResource(fdotherPath, figani.NativeCommand9AIEffectResource)
 	if err != nil {
 		return err
 	}
-	schedule, err := figani.BuildNativeCommand8PresentationSchedule(actor.NativeRecordByte6, effect)
+	schedule, err := figani.BuildNativeCommand9AISchedule(actor.NativeRecordByte6, effect)
 	if err != nil {
 		return err
 	}
 	for sample := 0; sample <= 2; sample++ {
 		if raw, readErr := fdother.ReadNestedResource(fdotherPath, schedule.SoundResource, sample); readErr != nil || len(raw) == 0 {
-			return fmt.Errorf("native command8 FDOTHER #90 sub%d unavailable", sample)
+			return fmt.Errorf("native command9 AI FDOTHER #90 sub%d unavailable", sample)
 		}
 	}
 	if !osMuteOrShot(g) && (len(g.sfxCommand8Actor) == 0 || len(g.sfxCommand8Sub1) == 0 || len(g.sfxCommand8Sub2) == 0) {
-		return errors.New("native command8 converted #90 samples unavailable")
+		return errors.New("native command9 AI converted #90 samples unavailable")
 	}
 	panelAssets, err := battle.LoadNativeItemPanelDataAssets(fdotherPath, fdtxtPath)
 	if err != nil {
@@ -173,10 +172,10 @@ func (g *Game) startNativeCommand8Presentation(actor, confirmed *battle.Unit, th
 	if err != nil {
 		return err
 	}
-	targetBases := make([][]byte, figani.NativeCommand8DamageStages+1)
-	for stage := 0; stage <= figani.NativeCommand8DamageStages; stage++ {
+	targetBases := make([][]byte, figani.NativeCommand9AIDamageStages+1)
+	for stage := 0; stage <= figani.NativeCommand9AIDamageStages; stage++ {
 		staged := *target
-		staged.HP = plan.Results[0].HPBefore - (plan.Results[0].HPBefore-plan.Results[0].HPAfter)*stage/figani.NativeCommand8DamageStages
+		staged.HP = plan.Results[0].HPBefore - (plan.Results[0].HPBefore-plan.Results[0].HPAfter)*stage/figani.NativeCommand9AIDamageStages
 		record, err := battle.NativeBattlePanelRecordForUnit(&staged)
 		if err != nil {
 			return err
@@ -220,9 +219,9 @@ func (g *Game) startNativeCommand8Presentation(actor, confirmed *battle.Unit, th
 	}
 	pulseDAC := append([]byte(nil), dac...)
 	if len(pulseDAC) != 256*3 || len(g.nativeCommandPaletteFlash.Entries) != battle.NativeCommandRecordCount {
-		return errors.New("native command8 DAC inputs unavailable")
+		return errors.New("native command9 AI DAC inputs unavailable")
 	}
-	copy(pulseDAC[:3], g.nativeCommandPaletteFlash.Entries[8][:])
+	copy(pulseDAC[:3], g.nativeCommandPaletteFlash.Entries[9][:])
 	pulsePalette, err := fdother.VGAPaletteFromDAC(pulseDAC)
 	if err != nil {
 		return err
@@ -231,31 +230,37 @@ func (g *Game) startNativeCommand8Presentation(actor, confirmed *battle.Unit, th
 	if err != nil {
 		return err
 	}
-	sequence, err := battlepresent.BuildNativeCommand8EffectSequence(battlepresent.NativeCommand8EffectInput{FrontBase: targetBases[0], TailBase: targetBases[figani.NativeCommand8DamageStages], TargetBases: [][][]byte{targetBases}, ActorEffect: actorEffect, TargetIdle: []*figani.Animation{targetIdle}, Effect: effect, Schedule: schedule, RawSide: actor.NativeRecordByte6})
+	sequence, err := battlepresent.BuildNativeCommand9AISequence(battlepresent.NativeCommand9AIInput{BeforeBase: targetBases[0], AfterBase: targetBases[figani.NativeCommand9AIDamageStages], TargetBases: targetBases, Actor: actorIdle, Target: targetIdle, Effect: effect, Schedule: schedule})
 	if err != nil {
 		return err
 	}
-	handler := make([]nativeCommand8HandlerFrame, 0, len(sequence.Front)+len(sequence.Targets[0])+len(sequence.Tail))
-	appendFrames := func(frames []battlepresent.NativeCommand8RenderedFrame) error {
+	handler := make([]nativeCommand9AIHandlerFrame, 0, 119)
+	appendFrames := func(frames []battlepresent.NativeCommand9RenderedFrame) error {
 		for _, rendered := range frames {
 			images, err := nativeCommand0Images([][]byte{rendered.Pixels}, g.nativeUIPalette)
 			if err != nil {
 				return err
 			}
-			handler = append(handler, nativeCommand8HandlerFrame{image: images[0], hpStage: rendered.HPStage, playSub1: rendered.PlaySub1, playSub2: rendered.PlaySub2})
+			handler = append(handler, nativeCommand9AIHandlerFrame{image: images[0], hpStage: rendered.HPStage, playSub1: rendered.PlaySub1, playSub2: rendered.PlaySub2})
 		}
 		return nil
 	}
-	if err := appendFrames(sequence.Front); err != nil {
+	if err := appendFrames(sequence.SlideIn); err != nil {
 		return err
 	}
-	if err := appendFrames(sequence.Targets[0]); err != nil {
-		return err
+	if len(handler) == 0 {
+		return errors.New("native command9 AI slide-in unavailable")
 	}
-	if err := appendFrames(sequence.Tail); err != nil {
-		return err
+	handler[len(handler)-1].holdAfter = nativeDelayTicks(schedule.SlideInHoldMS)
+	for _, frames := range [][]battlepresent.NativeCommand9RenderedFrame{sequence.Front, sequence.Target, sequence.Tail, sequence.SlideOut} {
+		if err := appendFrames(frames); err != nil {
+			return err
+		}
 	}
-	tailPixels, err := nativeCommand1TailPixels(targetBases[figani.NativeCommand8DamageStages], background, platform, actorEffect, targetIdle, sequence.NextIdleFrame, sequence.NextIdleRepeat, g.nativeMapAssets.LUTs)
+	if len(handler) != 119 {
+		return errors.New("native command9 AI handler frame count unavailable")
+	}
+	tailPixels, err := nativeCommand1TailPixels(targetBases[figani.NativeCommand9AIDamageStages], background, platform, actorEffect, targetIdle, sequence.NextIdleFrame, sequence.NextIdleRepeat, g.nativeMapAssets.LUTs)
 	if err != nil {
 		return err
 	}
@@ -263,15 +268,12 @@ func (g *Game) startNativeCommand8Presentation(actor, confirmed *battle.Unit, th
 	if err != nil {
 		return err
 	}
-	if len(handler) != figani.NativeCommand8FrontFrames+figani.NativeCommand8TargetFrames+figani.NativeCommand8TailFrames {
-		return errors.New("native command8 handler frames unavailable")
-	}
-	g.nativeCmd8Presentation = &nativeCommand8PresentationJob{actor: actor, plan: plan, prelude: preludeImages, actorBlack: actorBlack, actorPulse: actorPulse, actorSpecs: actorSpecs, handler: handler, tail: commonTail, actorMPBefore: actor.MP, actorActedBefore: actor.Acted, targetHPBefore: target.HP, then: then}
+	g.nativeCmd9AIPresentation = &nativeCommand9AIPresentationJob{actor: actor, plan: plan, prelude: preludeImages, actorBlack: actorBlack, actorPulse: actorPulse, actorSpecs: actorSpecs, handler: handler, tail: commonTail, actorMPBefore: actor.MP, actorActedBefore: actor.Acted, targetHPBefore: target.HP, then: then}
 	return nil
 }
 
-func (g *Game) failNativeCommand8Presentation(err error) {
-	j := g.nativeCmd8Presentation
+func (g *Game) failNativeCommand9AIPresentation(err error) {
+	j := g.nativeCmd9AIPresentation
 	if j == nil {
 		return
 	}
@@ -279,28 +281,28 @@ func (g *Game) failNativeCommand8Presentation(err error) {
 	if len(j.plan.Results) == 1 && j.plan.Results[0].Target != nil {
 		j.plan.Results[0].Target.HP = j.targetHPBefore
 	}
-	g.nativeCmd8Presentation = nil
-	g.loadErr = "native command8 presentation: " + err.Error()
+	g.nativeCmd9AIPresentation = nil
+	g.loadErr = "native command9 AI presentation: " + err.Error()
 }
 
-func (g *Game) stepNativeCommand8Presentation() {
-	j := g.nativeCmd8Presentation
+func (g *Game) stepNativeCommand9AIPresentation() {
+	j := g.nativeCmd9AIPresentation
 	if j == nil || !j.drawn {
 		return
 	}
 	j.drawn = false
 	switch j.phase {
-	case nativeCommand8CommonPrelude:
+	case nativeCommand9AICommonPrelude:
 		j.frame++
 		if j.frame >= len(j.prelude) {
-			j.phase, j.frame = nativeCommand8Actor, 0
+			j.phase, j.frame = nativeCommand9AIActor, 0
 		}
-	case nativeCommand8Actor:
+	case nativeCommand9AIActor:
 		spec := j.actorSpecs[j.frame]
 		if spec.Pulse && !j.pulseBlack {
 			if spec.PublishMP && !j.mpPublished {
 				if err := battle.ApplyNativeCommandDamageMP(j.plan); err != nil {
-					g.failNativeCommand8Presentation(err)
+					g.failNativeCommand9AIPresentation(err)
 					return
 				}
 				j.mpPublished = true
@@ -311,7 +313,7 @@ func (g *Game) stepNativeCommand8Presentation() {
 		}
 		if spec.PublishMP && !j.mpPublished {
 			if err := battle.ApplyNativeCommandDamageMP(j.plan); err != nil {
-				g.failNativeCommand8Presentation(err)
+				g.failNativeCommand9AIPresentation(err)
 				return
 			}
 			j.mpPublished = true
@@ -321,16 +323,26 @@ func (g *Game) stepNativeCommand8Presentation() {
 		j.frame++
 		if j.frame >= len(j.actorBlack) {
 			if !j.mpPublished {
-				g.failNativeCommand8Presentation(errors.New("actor MP marker was not presented"))
+				g.failNativeCommand9AIPresentation(errors.New("actor MP marker was not presented"))
 				return
 			}
-			j.phase, j.frame = nativeCommand8Handler, 0
+			j.phase, j.frame = nativeCommand9AIHandler, 0
 		}
-	case nativeCommand8Handler:
+	case nativeCommand9AIHandler:
+		if j.hold > 0 {
+			j.hold--
+			if j.hold == 0 {
+				j.frame++
+				if j.frame >= len(j.handler) {
+					j.phase, j.frame = nativeCommand9AICommonTail, 0
+				}
+			}
+			return
+		}
 		frame := j.handler[j.frame]
 		if frame.hpStage != 0 {
 			if err := battle.ApplyNativeCommandDamageStage(j.plan, 0, frame.hpStage); err != nil {
-				g.failNativeCommand8Presentation(err)
+				g.failNativeCommand9AIPresentation(err)
 				return
 			}
 		}
@@ -340,51 +352,55 @@ func (g *Game) stepNativeCommand8Presentation() {
 		if frame.playSub2 {
 			g.playRaw(g.sfxCommand8Sub2)
 		}
+		if frame.holdAfter > 0 {
+			j.hold = frame.holdAfter
+			return
+		}
 		j.frame++
 		if j.frame >= len(j.handler) {
-			j.phase, j.frame = nativeCommand8CommonTail, 0
+			j.phase, j.frame = nativeCommand9AICommonTail, 0
 		}
-	case nativeCommand8CommonTail:
+	case nativeCommand9AICommonTail:
 		j.frame++
 		if j.frame < len(j.tail) {
 			return
 		}
 		if err := battle.CompleteNativeCommandDamage(j.plan); err != nil {
-			g.failNativeCommand8Presentation(err)
+			g.failNativeCommand9AIPresentation(err)
 			return
 		}
 		g.nativeRNGState = j.plan.RNGAfter
 		then, results := j.then, append([]battle.NativeCommandDamageResult(nil), j.plan.Results...)
-		g.nativeCmd8Presentation = nil
+		g.nativeCmd9AIPresentation = nil
 		if then != nil {
 			then(results)
 		}
 	}
 }
 
-func (g *Game) drawNativeCommand8Presentation(screen *ebiten.Image) bool {
-	j := g.nativeCmd8Presentation
+func (g *Game) drawNativeCommand9AIPresentation(screen *ebiten.Image) bool {
+	j := g.nativeCmd9AIPresentation
 	if j == nil || screen == nil {
 		return false
 	}
 	var frame *ebiten.Image
 	switch j.phase {
-	case nativeCommand8CommonPrelude:
+	case nativeCommand9AICommonPrelude:
 		if j.frame >= 0 && j.frame < len(j.prelude) {
 			frame = j.prelude[j.frame]
 		}
-	case nativeCommand8Actor:
+	case nativeCommand9AIActor:
 		if j.frame >= 0 && j.frame < len(j.actorBlack) && j.frame < len(j.actorPulse) && j.frame < len(j.actorSpecs) {
 			frame = j.actorBlack[j.frame]
 			if j.actorSpecs[j.frame].Pulse && !j.pulseBlack {
 				frame = j.actorPulse[j.frame]
 			}
 		}
-	case nativeCommand8Handler:
+	case nativeCommand9AIHandler:
 		if j.frame >= 0 && j.frame < len(j.handler) {
 			frame = j.handler[j.frame].image
 		}
-	case nativeCommand8CommonTail:
+	case nativeCommand9AICommonTail:
 		if j.frame >= 0 && j.frame < len(j.tail) {
 			frame = j.tail[j.frame]
 		}

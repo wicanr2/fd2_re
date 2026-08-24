@@ -1,0 +1,80 @@
+# FD2 第 9 號戰鬥指令：玩家與敵方雙路徑非破壞性證據
+
+證據等級：已證實（confirmed），限於本文件列出的直接指令、資料表、呼叫關係、
+資源邊界與排程。技能名稱只由既有文字表供導覽，不用來反推二進位語意。
+
+## 輸入、工具與位址空間
+
+- `FD2.EXE`：357074 bytes；MD5 `b97caf2239a27a896069d03549d96e1e`；SHA-256
+  `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- `FDOTHER.DAT`：3382481 bytes；MD5 `22f56e5027edc7c766ad34ca4e5aca93`；
+  SHA-256 `a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`。
+- IDA Pro `9.4.0.260610`，DOS extender loader，IDA linear address、image base 0；
+  以授權 Docker 流程建立暫存資料庫並匯出函式、caller 與 pseudocode。
+- Capstone `5.0.3`（`fd2-cap-local`）只作第二套直接指令、raw bytes 與 fixup
+  交叉驗證。
+- 原始名稱與邊界：玩家 `sub_214AD 0x214AD..0x21527`、共用 descriptor
+  compositor `sub_1C4CC`、敵方共同 owner `sub_2A6BD`、indexed entry
+  `sub_275D6 0x275D6..0x276EC`。所有語意都是附加層，原始名稱與位址保留。
+- command record #9 raw `e7 03 32 03 00 1e 00`：數值 999、命中 50、選取距離
+  3、effect/range byte 0、MP 30、target byte 0。正式 owner 因 record 與兩個
+  consumer 都只處理第一個 target，限制為單一 target。
+
+## 玩家路徑：`0x1CFF0 -> 0x214AD`
+
+- `sub_1CFF0` 對 ID9 先呼叫 `sub_1D6C8(9)`：以既有 writer 綁定至
+  FDOTHER #88 的 `[0x53B13]` 呼叫 raw selector0，交替寫入 command9 的 raw
+  palette triplet 與黑色各四次，每次一 tick。
+- `sub_214AD` 的順序固定為：清空數字佇列 → `sub_1C4CC(actor,9,count,targets)` →
+  `sub_1CA89(actor,9)` 扣 MP → `sub_1C75E(*targets,9)` 只計算第一個 target →
+  命中時 `sub_1E0DB(value,94,*targets)`，未命中時 `sub_1E1DC(*targets)` →
+  map redraw → `sub_1DF58` 消費數字／未命中佇列。
+- `sub_1C4CC` 從三個 33-byte raw tables 取 ID9：`0x51F33[9]=87`、
+  `0x51F54[9]=27`、`0x51F75[9]=14`。因此逐張取 FDOTHER #6 descriptor
+  87..113、每張在所有 target map cell blit、copy 312×192、delay 一 tick。
+  frame 0 對同一 `[0x53B13]` 呼叫 raw selector14；frame 15 與 19 呼叫
+  selector15。#88 的外層 chunk 索引不可與這個 AIL selector 層混稱；正式音訊
+  owner 在 resolver 補證前只保存 raw call tuple，不宣稱是外層 sub14/sub15。
+- 命中數字的 descriptor bias 是 94，故十個數字為 FDOTHER #5 entries 94..103。
+  未命中 raw descriptors 位於 `0x5204A`，為 `74 75 76 76`（十進位
+  116、117、118、118）。`sub_1DF58` 固定 22 frames、每張 2ms、結束 hold
+  500ms；25-byte vertical table 為
+  `0f 0f 0f 0f 07 03 01 00 00 01 03 07 0f 0f 0b 09 08 08 09 0b 0f 0f 0f 0f 0f`。
+
+## 敵方路徑：`0x15311 -> 0x2A6BD -> 0x275D6`
+
+- `sub_15311` 只在 command ID `<10` 且 raw global `0x53AF9==0` 時呼叫
+  `sub_2A6BD`；其他情況走 handler table `0x51D01[id]`。因此第 9 號敵方演出
+  不可借用玩家 `sub_214AD` 畫面。
+- `0x523B9[9] -> sub_275D6`。mode 0 初始化 `byte_540FB=0`、
+  `byte_540FA=1` 並回傳 20；mode 3 回 60；mode 6 回 20。mode 1／7 在 toggle
+  為零時畫 effect frame0，再翻轉 toggle；mode4 固定畫 frame0；mode5 畫
+  `byte_540FA >> 1`，遞增前 counter 6 播 sound sub1、counter 36 播 sub2，
+  遞增後 counter 在 17..43 時回傳數值標記。
+- `0x525AF[9]=20`，所以 27 個 raw 數值標記只有前 20 個發布 HP 分段；60 次
+  mode5 從 counter1 走到61，最大 effect frame 為30。
+- `sub_2A6BD` 的 sound ASCII table `RRSTUVWXYZ` 使 ID9 取 FDOTHER #90；共同
+  actor consumer 使用 sub0，entry 直接使用 sub1／sub2。
+- raw-side-zero effect table 從 `0x525C2` 完整複製十筆，ID9 是 #44。另一個
+  `0x525B9` table 在 `0x2A784..0x2A792` 只複製九筆；直接 lookup
+  `0x2AACB` 對 ID9 會讀取未初始化 stack padding，沒有可重現的第十筆。
+  因此 typed 敵方排程只接受 raw side 0；非零 side 必須失敗即關閉，不把相鄰
+  `0x525C2` byte 誤稱為該 table 的已證實 ID9 值。
+- 第 9 號另有 outer 特例：共同 scheduler 前做 11 張 actor 水平移出
+  （`k=0..10`，`k==10` 不畫 actor），scheduler 後做 8 張水平移入
+  （`k=7..0`），每步 10 pixels；prelude 後 hold 500ms。共同 front／target／tail
+  中都略過一般 actor FIGANI layer，只留下 entry effect 與 target layer。
+- 單一 target 之後仍執行共同三張 LUT tail 與一張 steady frame，再停止、釋放
+  #90。多 target 會沿用不重設的 counter，但 command record 與玩家 handler
+  都限定單一 target；重製不得用這個偶然可迭代外框擴張正式幾何。
+
+## 可審查規格與停止線
+
+- 玩家 typed 規格必須保存 palette/sample、27 張 #6 descriptor、單一 target
+  damage、命中／未命中 #5 佇列與 22 張 result 動畫；數值交易只能在對應畫面
+  已 Draw 後發布。
+- 敵方 typed 規格必須保存 #44、#90、20/60/20、toggle、counter、兩個 sample
+  marker、27 raw marker／20 HP stages 與 11/8 actor slide；只接受 raw side 0。
+- 兩條路徑可以共用數值交易與低階 blit primitive，但不可共用視覺 owner。
+- 本文件關閉 `RE-CLOSED` 並使 typed data 可達 `DATA-READY`；在正式 Game owner、
+  原子 rollback 與正常玩家抽測完成前，不得標成 `PLAYER-E2`。

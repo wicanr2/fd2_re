@@ -6143,3 +6143,18 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   MP、16段HP、`Acted`與RNG逐Draw發布並可整批回復。#90已加入音效匯出清冊，
   聚焦Docker／Xvfb回歸通過，提升為indexed `RUNTIME-E1`；未修改原版逐幀／精確
   疊音仍不是`PLAYER-E2`。
+
+# 2026-08-25：第 9 號敵方 indexed owner 與玩家 typed 規格
+
+- IDA Pro 9.4／Capstone 對固定雜湊閉合玩家 `0x214AD→0x1C4CC/0x1DF58`
+  與敵方 `0x15311→0x2A6BD→0x275D6`；兩條畫面不可共用。canonical evidence
+  為 `docs/data/ida/fd2_command9_player_ai_presentation_ida.txt`。
+- 玩家保存 #6 entries87..113、raw selectors14／15、單一target、#5 digits／miss與
+  22張result，目前 `DATA-READY`。音訊 selector 不再誤寫成外層 #88 sub14/sub15。
+- 敵方只接受 raw side0 的 #44（31幀）與 #90 sub0..2；entry 固定20／60／20、
+  27個raw marker／20個HP stage，outer另有11／8張actor slide。raw side非零的
+  table只複製九筆，ID9讀未初始化padding，故失敗即關閉。
+- 新增 AI producer-target 單目標 planner，修正舊共用 planner 錯套玩家陣營
+  target geometry。正式 owner 完整預建119張handler與common phases，逐Draw發布
+  MP、HP、`Acted`與RNG，錯誤整筆回復；聚焦Docker／Xvfb回歸通過，敵方提升
+  indexed `RUNTIME-E1`。下一步是玩家map owner，再進IDs10–12。

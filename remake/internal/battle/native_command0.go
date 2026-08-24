@@ -133,15 +133,59 @@ func (s *State) PlanNativeCommandDamage(actor, confirmed *Unit, commandID int, r
 	return plan, nil
 }
 
+// PlanNativeAICommandDamageSingleTarget consumes the explicit target array
+// already produced by 0x15311 for the 0x2A6BD route. It must not re-run the
+// player-only 0x1CFF0 two-stage selector, whose native camp predicate is not
+// relative to the enemy actor. The narrow entry currently accepts only a
+// proven one-target record and preserves the same MP/resistance/RNG contract.
+func (s *State) PlanNativeAICommandDamageSingleTarget(actor, target *Unit, commandID int, resistByClass map[int]int, rngState uint16) (*NativeCommandDamagePlan, error) {
+	if s == nil || actor == nil || target == nil || actor.Camp != Enemy || target.Camp == Enemy ||
+		!actor.OnField || !target.OnField || actor.HP <= 0 || target.HP <= 0 {
+		return nil, fmt.Errorf("native AI command single target unavailable")
+	}
+	if commandID < 0 || commandID > 9 || len(s.NativeCommandBook) != NativeCommandRecordCount || s.NativeCommandBook[commandID].ID != commandID {
+		return nil, fmt.Errorf("native AI command damage record unavailable id=%d", commandID)
+	}
+	record := s.NativeCommandBook[commandID]
+	if record.EffectMode != 0 || record.TargetCode != 0 || actor.Acted || record.MPCost < 0 || record.MPCost > 0xff || actor.MP < record.MPCost {
+		return nil, fmt.Errorf("native AI command single-target contract unavailable id=%d", commandID)
+	}
+	resistance, ok := resistByClass[target.ClassID]
+	if !ok || resistance < 0 || resistance > 10 {
+		return nil, fmt.Errorf("native AI command damage missing resistance class=%d", target.ClassID)
+	}
+	stages, err := nativeCommandDamageStages(commandID)
+	if err != nil {
+		return nil, err
+	}
+	resolved, nextRNG, err := ResolveNativeCommandDamage(record.Damage, record.Hit, resistance, rngState)
+	if err != nil {
+		return nil, err
+	}
+	hpAfter := target.HP
+	if resolved.Hit {
+		hpAfter -= resolved.Damage
+		if hpAfter < 0 {
+			hpAfter = 0
+		}
+	}
+	return &NativeCommandDamagePlan{
+		Actor: actor, CommandID: commandID, MPBefore: actor.MP, MPAfter: actor.MP - record.MPCost,
+		ActorActedBefore: actor.Acted, RNGBefore: rngState, RNGAfter: nextRNG, DamageStages: stages,
+		Results:               []NativeCommandDamageResult{{Target: target, NativeCommandDamage: resolved, HPBefore: target.HP, HPAfter: hpAfter}},
+		publishedTargetStages: make([]int, 1),
+	}, nil
+}
+
 // nativeCommandDamageStages preserves the 0x525AF command0..9 table consumed
-// by 0x2AEC9. Commands9..12 do not use the shared indexed target presenter in
-// the current engine slice, so their state-only transaction publishes once.
+// by 0x2AEC9. Commands10..12 do not use that indexed target presenter in the
+// current engine slice, so their state-only transaction publishes once.
 func nativeCommandDamageStages(commandID int) (int, error) {
-	shared := [...]int{7, 8, 6, 13, 6, 6, 5, 5, 16}
+	shared := [...]int{7, 8, 6, 13, 6, 6, 5, 5, 16, 20}
 	if commandID >= 0 && commandID < len(shared) {
 		return shared[commandID], nil
 	}
-	if commandID >= 9 && commandID <= 12 {
+	if commandID >= 10 && commandID <= 12 {
 		return 1, nil
 	}
 	return 0, fmt.Errorf("native command damage stages unavailable id=%d", commandID)

@@ -52,6 +52,7 @@ type NativeCommandIndexedEntryTable struct {
 var nativeCommandIndexedEntries = map[int]string{
 	1: "0x262EF", 2: "0x26528", 3: "0x26795", 4: "0x269D3",
 	5: "0x26BFD", 6: "0x26E39", 7: "0x272B8", 8: "0x274B0",
+	9: "0x275D6",
 }
 
 func LoadNativeCommandIndexedEntryTable(path string) (*NativeCommandIndexedEntryTable, error) {
@@ -75,7 +76,8 @@ func LoadNativeCommandIndexedEntryTable(path string) (*NativeCommandIndexedEntry
 		want, ok := nativeCommandIndexedEntries[entry.CommandID]
 		if !ok || seen[entry.CommandID] || entry.Entry != want || entry.InitChannels <= 0 ||
 			entry.DrawChannels <= 0 || entry.DrawChannels > entry.InitChannels || len(entry.DrawModes) == 0 ||
-			(entry.CommandID != 2 && len(entry.OffsetTables) == 0) || (entry.CommandID == 2 && len(entry.OffsetTables) != 0) {
+			(entry.CommandID != 2 && entry.CommandID != 9 && len(entry.OffsetTables) == 0) ||
+			((entry.CommandID == 2 || entry.CommandID == 9) && len(entry.OffsetTables) != 0) {
 			return nil, fmt.Errorf("native command indexed entry %d is invalid", entry.CommandID)
 		}
 		for _, mode := range [...]string{"0", "3", "6"} {
@@ -166,6 +168,22 @@ func LoadNativeCommandIndexedEntryTable(path string) (*NativeCommandIndexedEntry
 				if marker.Mode != wantMode || marker.Channel != -1 || marker.Counter != wantCounter ||
 					marker.CounterPhase != "pre" || marker.FrameBaseNonzero != nil || marker.Callee != wantCallee {
 					return nil, errors.New("native command indexed entry 8 sample contract is invalid")
+				}
+			}
+		}
+		if entry.CommandID == 9 {
+			if entry.InitChannels != 1 || entry.DrawChannels != 1 || entry.RawSideZeroXShift != 0 ||
+				entry.ModeReturns["0"] != 20 || entry.ModeReturns["3"] != 60 || entry.ModeReturns["6"] != 20 ||
+				entry.UsesRNG || len(entry.OffsetTables) != 0 || len(entry.StateRanges) != 1 ||
+				entry.StateRanges[0] != "0x540FA..0x540FB" || len(entry.SampleMarkers) != 2 {
+				return nil, errors.New("native command indexed entry 9 direct-instruction contract is invalid")
+			}
+			for index, marker := range entry.SampleMarkers {
+				wantCounter := [...]int{6, 36}[index]
+				wantCallee := [...]string{"0x25A96", "0x25B45"}[index]
+				if marker.Mode != 5 || marker.Channel != -1 || marker.Counter != wantCounter ||
+					marker.CounterPhase != "pre" || marker.FrameBaseNonzero != nil || marker.Callee != wantCallee {
+					return nil, errors.New("native command indexed entry 9 sample contract is invalid")
 				}
 			}
 		}

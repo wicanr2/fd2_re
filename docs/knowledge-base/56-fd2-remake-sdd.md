@@ -1137,8 +1137,9 @@ actor raw completion writer。它與 ID20/21「借 record10」的 clear/restore 
 
 | IDs | 原版已驗 dataflow | engine 狀態 | UI / renderer 狀態 |
 |---|---|---|---|
-| 0–8 | `0x2A6BD→2B659/1C75E`，two-stage final targets、MP event、numeric hit/HP | `ExecuteNativeCommandDamage`；ID0 有 target slice | 僅 ID0 grid target；compositor/SFX/post-resolution 未接 |
-| 9–12 | direct/`0x21548` tail → `1CA89→1C75E` | `ExecuteNativeCommandDamage` | 未接；numeric 共用不代表演出共用 |
+| 0–8 | `0x2A6BD→2B659/1C75E`，two-stage final targets、MP event、numeric hit/HP | `ExecuteNativeCommandDamage` 與 command-specific staged plans | IDs0–3、5–8已有正式玩家／敵方indexed owner；ID4缺已證實正常玩家producer，不猜接；各ID仍缺同狀態E2 |
+| 9 | 玩家 `1CFF0→1D6C8→214AD→1C4CC/1DF58`；敵方 gate `15311→2A6BD→275D6` | 玩家 numeric core；敵方 `PlanNativeAICommandDamageSingleTarget` 明確消費 mode11 producer target | 敵方 raw-side-zero #44/#90、11/20/60/20/8 與20段HP已接 `RUNTIME-E1`；玩家27張#6與22張結果動畫僅 `DATA-READY`，不可共用敵方 owner |
+| 10–12 | `0x21548` tail → `1CA89→1C75E` | `ExecuteNativeCommandDamage` | 未接；numeric 共用不代表演出共用 |
 | 13–16 | `0x21AD9…0x22153→21EB1→21B18→1C8ED/1C916` | `BuildNativeCommandHealPresentationSchedule`＋玩家 `ExecuteNativeCommandHeal`／AI `ExecuteNativeAICommandHeal` | 玩家與敵方 mode 11 的 16 張 FDOTHER #3 LUT 前段已接；AI 依 raw selector 重建 target array；後段索引畫面／數字佇列與格狀確認 E2 未接 |
 | 17–19 | `0x1CFF0→1D6C8→226EA/2282F/22960`；#88 sub0、八個DAC phases、modifier writers與`+0x22..+0x24` duration已釘死 | `ExecuteNativeCommandModifier`／`ExecuteNativeAICommandModifier` 已以私有raw records原子發布target duration、derived words、MP與acted；ID17明確由record18扣MP。玩家與敵方mode 11、phase-expiry caller與 `sub_17FC0` status color consumer均已接 | 玩家grid＋八phase palette／sample、倒數、到期提示及status color已接E1；高階名稱、精確tick／逐音訊E2未接 |
 | 20–21 | `0x1CFF0→1D6C8→22A85/22BC6→22AF6`，#88 sub0＋八個DAC phases，clear `+0x25/+0x26` 並借 record10 restore | `ExecuteNativeCommandClearRestore`；完整preflight後才允許玩家演出與交易 | 玩家grid＋八phase palette／sample已接E1；status名稱、expiry UI、精確tick／逐音訊E2未接 |
@@ -5760,3 +5761,20 @@ common tail 與 #90 sub0..2。玩家確認與敵方 mode 11 都走同一 owner�
 HP、`Acted` 與 RNG 只在對應 Draw acknowledgement 後發布，任何晚期錯誤會回復
 actor／target。此為來源約束的 `RUNTIME-E1`；未修改一般玩家逐幀、音訊疊加與
 同狀態敵方回合仍不是 `PLAYER-E2`。
+
+## 2026-08-25：第 9 號玩家／敵方雙路徑規格
+
+主證據為
+[`fd2_command9_player_ai_presentation_ida.txt`](../data/ida/fd2_command9_player_ai_presentation_ida.txt)。
+玩家路徑固定為 `0x1D6C8→0x214AD→0x1C4CC→0x1DF58`：#6 descriptors
+87..113、raw sound selectors 14／15、單一 target、#5 digits 94..103 或 miss
+116／117／118／118、22張 result。敵方 route 則由 `0x15311` 提供 target array，
+走 `0x2A6BD→0x275D6`；只在 raw side0 使用完整十筆 table 的 #44，固定 #90、
+11張移出、20 front、60 target、20 tail、8張移入，27個 raw marker 中前20個發布HP。
+
+兩條視覺 owner 不得合併。敵方 planner 必須直接消費 mode11 producer 已選定的
+單一 target，不可重新套玩家 `0x1CFF0` target-code geometry。正式敵方 owner
+一次預建所有119張 handler frame、common actor與tail；MP、20段HP、`Acted`與RNG
+只在 Draw acknowledgement 後發布，任何錯誤整筆回復。raw side非零因原版只複製
+九筆效果 table 而拒絕，不讀未初始化 stack padding。敵方達 `RUNTIME-E1`；玩家
+仍停在 `DATA-READY`，等 raw selector14／15 的音訊 resolver 與 map owner 接線。

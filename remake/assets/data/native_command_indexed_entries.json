@@ -151,6 +151,22 @@
         {"mode": 5, "channel": -1, "counter": 0, "counter_phase": "pre", "callee": "0x25A96"},
         {"mode": 5, "channel": -1, "counter": 4, "counter_phase": "pre", "callee": "0x25B45"}
       ]
+    },
+    {
+      "command_id": 9,
+      "entry": "0x275D6",
+      "mode_returns": {"0": 20, "3": 60, "6": 20},
+      "init_channels": 1,
+      "draw_channels": 1,
+      "draw_modes": [1, 4, 5, 7],
+      "raw_side_zero_x_shift": 0,
+      "offset_tables": [],
+      "state_ranges": ["0x540FA..0x540FB"],
+      "uses_rng": false,
+      "sample_markers": [
+        {"mode": 5, "channel": -1, "counter": 6, "counter_phase": "pre", "callee": "0x25A96"},
+        {"mode": 5, "channel": -1, "counter": 36, "counter_phase": "pre", "callee": "0x25B45"}
+      ]
     }
   ]
 }

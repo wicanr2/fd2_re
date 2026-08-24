@@ -31,6 +31,12 @@ func TestLoadNativeCommandIndexedEntryTablePreservesCorrectedLinearEntries(t *te
 		len(entry8.StateRanges) != 1 || entry8.StateRanges[0] != "0x540BA..0x540F9" || len(entry8.SampleMarkers) != 4 {
 		t.Fatalf("command8 address-base correction=%#v", entry8)
 	}
+	entry9, _ := table.Schedule(9)
+	if entry9.Entry != "0x275D6" || entry9.ModeReturns["0"] != 20 || entry9.ModeReturns["3"] != 60 ||
+		entry9.ModeReturns["6"] != 20 || len(entry9.StateRanges) != 1 || entry9.StateRanges[0] != "0x540FA..0x540FB" ||
+		len(entry9.SampleMarkers) != 2 {
+		t.Fatalf("command9 direct-instruction contract=%#v", entry9)
+	}
 	entry2, _ := table.Schedule(2)
 	if len(entry2.OffsetTables) != 0 || len(entry2.StateRanges) != 1 || len(entry2.SampleMarkers) != 3 {
 		t.Fatalf("command2 corrected ownership=%#v", entry2)

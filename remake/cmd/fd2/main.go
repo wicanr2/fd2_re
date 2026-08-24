@@ -180,6 +180,7 @@ type Game struct {
 	nativeCmd6Presentation     *nativeCommand6PresentationJob
 	nativeCmd7Presentation     *nativeCommand7PresentationJob
 	nativeCmd8Presentation     *nativeCommand8PresentationJob
+	nativeCmd9AIPresentation   *nativeCommand9AIPresentationJob
 	nativeCmd24Presentation    *nativeCommand24PresentationJob
 	nativeCmd29Presentation    *nativeCommand29PresentationJob
 	spawnIntroTransition       *nativeSpawnIntroJob
@@ -7252,6 +7253,7 @@ func (g *Game) Update() error {
 	g.stepNativeCommand6Presentation()           // native 0x2A6BD→0x26E39 command6 battle presentation
 	g.stepNativeCommand7Presentation()           // native 0x2A6BD→0x272B8 command7 battle presentation
 	g.stepNativeCommand8Presentation()           // native 0x2A6BD→0x274B0 command8 battle presentation
+	g.stepNativeCommand9AIPresentation()         // native 0x2A6BD→0x275D6 enemy command9 presentation
 	g.stepNativeCommand24Presentation()          // native 0x276EC selector32 FIGANI presentation
 	g.stepNativeCommand29Presentation()          // native 0x276EC selector34 multi-target FIGANI presentation
 	g.stepNativePaletteRamp()                    // native 0x1f882/0x1f525 whole-DAC ramps
@@ -7304,7 +7306,7 @@ func (g *Game) Update() error {
 			clamp(&g.camY, 0, float64(g.m.H*g.m.TileH-logicalH))
 		}
 	}
-	if g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil {
+	if g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil {
 		return nil
 	}
 	if g.nativeSystemInfoUI != nil {
@@ -7750,6 +7752,17 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		if !g.drawNativeCommand8Presentation(screen) {
 			g.failNativeCommand8Presentation(errors.New("draw unavailable"))
 			ebitenutil.DebugPrint(screen, "native command8 presentation unavailable")
+		}
+		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
+			g.captureShot(screen)
+		}
+		return
+	}
+	if g.nativeCmd9AIPresentation != nil {
+		screen.Fill(color.Black)
+		if !g.drawNativeCommand9AIPresentation(screen) {
+			g.failNativeCommand9AIPresentation(errors.New("draw unavailable"))
+			ebitenutil.DebugPrint(screen, "native command9 AI presentation unavailable")
 		}
 		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
 			g.captureShot(screen)
@@ -10120,7 +10133,7 @@ func (g *Game) finishNativeTransientPlayerPhase() {
 // aiStep AI 回合驅動:一次取一個單位的行動計畫,播行走動畫→到位攻擊(全螢幕演出)。
 // 全單位動完 → finishTurn。
 func (g *Game) aiStep() {
-	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.result != "" {
+	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.result != "" {
 		if g.result != "" {
 			g.aiBusy = false
 		}
