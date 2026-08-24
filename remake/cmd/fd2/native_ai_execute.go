@@ -288,42 +288,10 @@ func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after 
 			}
 			g.nativeItemEffectRows = rows
 		}
-		previousSel := g.sel
-		g.sel = actor
-		g.moved = true
-		g.itemOpen = false
-		g.nativeItemTargeting = false
-		g.nativeItemRelocating = false
-		applied, err := g.applyNativeImmediateItem(plan.NativeItemSlot, plan.NativeItemID)
-		if err != nil {
-			g.sel = previousSel
+		if err := g.applyNativeAITargetItem(plan); err != nil {
 			return err
 		}
-		if applied {
-			g.msg = fmt.Sprintf("原始物品 %02Xh：完成自動效果", plan.NativeItemID)
-			g.finishSuccessfulUnitAction(actor, after)
-			g.checkResult()
-			return nil
-		}
-		targeting, err := g.beginNativeTargetItem(plan.NativeItemSlot, plan.NativeItemID)
-		if err != nil {
-			g.sel = previousSel
-			return err
-		}
-		if !targeting {
-			g.sel = previousSel
-			return fmt.Errorf("native AI item %02Xh has no closed effect route", plan.NativeItemID)
-		}
-		applied, err = g.applyNativeTargetItem(target)
-		if err != nil {
-			g.sel = previousSel
-			return err
-		}
-		if !applied || g.nativeItemRelocating {
-			g.sel = previousSel
-			return fmt.Errorf("native AI item %02Xh requires an unresolved relocation route", plan.NativeItemID)
-		}
-		g.msg = fmt.Sprintf("原始物品 %02Xh：完成自動效果", plan.NativeItemID)
+		g.msg = fmt.Sprintf("原始物品 %02Xh：完成完整目標清單效果", plan.NativeItemID)
 		g.finishSuccessfulUnitAction(actor, after)
 		g.checkResult()
 		return nil

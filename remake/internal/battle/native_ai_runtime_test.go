@@ -314,6 +314,9 @@ func TestNextAIPlanUses14EF0ItemWinnerAndRetainsRawTarget(t *testing.T) {
 		plan.Target != target {
 		t.Fatalf("item plan=%+v", plan)
 	}
+	if len(plan.NativeItemTargetIndices) != 1 || plan.NativeItemTargetIndices[0] != 1 {
+		t.Fatalf("item target list=%v want detached raw [1]", plan.NativeItemTargetIndices)
+	}
 	if len(plan.Path) < 2 || plan.Path[len(plan.Path)-1] != (Cell{X: 1, Y: 0}) {
 		t.Fatalf("item path=%v want destination (1,0)", plan.Path)
 	}

@@ -6388,3 +6388,16 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   admission；實檔`TargetCode=0`會因此拒絕玩家陣營目標。現已統一改走既有
   `0x1598A`證據的raw `+6` target-code轉換與目的格effect array，完整回歸通過；
   玩家路徑仍使用原本兩階段游標契約。
+
+## 2026-08-25：正常 AI 道具完整 target list 交易
+
+- 授權 Docker 內 IDA Pro 9.4 重新核對 `sub_15055 (0x15055..0x15311)`：它以
+  winner destination 重跑 `0x14818/0x149F8`，再把完整 target count／list 傳給
+  `0x20C6F`。主證據為
+  [`fd2_ai_15055_item_target_list_ida.txt`](../data/ida/fd2_ai_15055_item_target_list_ida.txt)。
+- 修正重製端 `AIPlan` 只保存第一目標、執行時借用玩家確認游標重算的錯誤資料流。
+  現在 plan 保存 detached raw target list，AI 專用 owner 驗證 actor／slot／item／
+  全部 indices 後，原子提交正常正分 type 5／13／20／21／24 的 HP 或 command-damage
+  交易；重複／越界／缺來源時 HP、inventory、RNG、Acted 均不變。
+- 純 battle 套件及 Docker／Xvfb 介面套件聚焦回歸通過。這批是
+  `RE-CLOSED`／`RUNTIME-E1`；caller-specific indexed item 演出與同狀態 E2 仍待。

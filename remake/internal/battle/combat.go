@@ -262,10 +262,14 @@ type AIPlan struct {
 	// 0x14ef0.  None keeps the legacy planner contract; the other values are
 	// only executable when the corresponding raw candidate, target and
 	// movement provenance are complete.
-	NativeActionKind        NativeAIActionKind
-	NativeCommandID         int
-	NativeItemSlot          int
-	NativeItemID            int
+	NativeActionKind NativeAIActionKind
+	NativeCommandID  int
+	NativeItemSlot   int
+	NativeItemID     int
+	// NativeItemTargetIndices preserves the complete raw roster-order list
+	// scored by 0x1567e.  The 0x15055 owner consumes the whole list after
+	// movement; Target is only the first target used by the movement planner.
+	NativeItemTargetIndices []byte
 	NativeActionDestination Cell
 	NativeAI14EF0Route      NativeAI14EF0Tail
 	NativeActionScore       int

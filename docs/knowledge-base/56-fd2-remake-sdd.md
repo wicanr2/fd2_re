@@ -5294,9 +5294,10 @@ movement-cost 與 `NativeTileBlitModes` provenance。`NextAIPlan` 實際選出
 交易回復目標 HP、消耗來源欄位並提交回合。`TestAIStepStops14EF0ItemRouteWithoutItemRows`
 確認缺少 item rows 時在 HP、背包、行動旗標與回合變更前失敗即關閉。
 
-這只閉合已核對 type-5／`0x211A4` 的一個重製端 E1 consumer；不替 item 192 命名玩法，
-也不宣稱 type-5 以外的 item、`0x15055` relocation、未知 command／spell 演出或原版
-一般玩家 E2。其餘物品與完整敵方回合仍依工作清單維持未完成。
+這是 2026-08-11 當時只閉合 type-5／`0x211A4` 的窄 E1 紀錄。2026-08-25 的
+IDA Pro 9.4 補證已確認 `0x15055` 重建並消費完整 target list；正式 AI owner 也已改為
+保存 winner 全清單並原子消費正常正分 type 5／13／20／21／24 的既有數值交易。
+它仍不替 item 192 命名玩法，也不宣稱 relocation、indexed item 演出或一般玩家 E2。
 
 ## 2026-08-11：可編輯敵方／友軍 NPC 法術後備（fallback）E1
 
@@ -5914,3 +5915,20 @@ actor／target。此為來源約束的 `RUNTIME-E1`；未修改一般玩家逐�
 20／21 digit bias `0x69`，22為`0x5E`。五組mask完成後才可原子發布MP、狀態、
 HP與原生RNG，22張數字段與500 ms有界尾停完成後才可發布`Acted`。任何失敗或取消
 均回復整筆交易；marker高階名稱仍未知，不得猜測。
+
+### `0x15055` 正常 AI 道具目標清單交易
+
+`0x15055` 不只消費 winner 的第一個 target。IDA Pro 9.4 直接指令確認，它在
+winner destination `[0x53C37/0x53C3B]` 依 item row `+0x10` 再呼叫
+`0x14818` 或 `0x149F8`，將 helper 回傳的完整 target count 與本地 target list
+一併傳給 `0x20C6F`。主證據為
+[`fd2_ai_15055_item_target_list_ida.txt`](../data/ida/fd2_ai_15055_item_target_list_ida.txt)。
+
+重製端規格如下：`ScoreNativeAI1567E` 的 strict-greater winner 必須把完整且保持
+raw roster 順序的 target indices 複製進 `AIPlan`；移動完成後，AI 專用交易直接
+消費這份 detached list，不借用玩家的確認游標或重新選取介面。執行前須完整驗證
+actor、inventory slot／item ID、item row、每個 target raw index，以及 command／
+resistance provenance。只有正常評分可產生正分且已有數值 owner 的 type 5、13、
+20、21、24 可進入此交易；任一驗證失敗時不發布 raw records、HP、inventory、
+RNG 或 acted 狀態。這只建立 RUNTIME-E1；indexed item 演出與 PLAYER-E2 仍分開
+保留。

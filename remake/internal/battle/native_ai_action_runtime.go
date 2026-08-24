@@ -182,6 +182,7 @@ func (s *State) nextNativeAI14EF0Plan(u *Unit) (*AIPlan, bool, error) {
 		}
 		plan.NativeActionKind = NativeAIActionItem
 		plan.NativeItemSlot, plan.NativeItemID = item.InventorySlot, item.ItemID
+		plan.NativeItemTargetIndices = append([]byte(nil), item.TargetIndices...)
 		plan.NativeAI14EF0Route = route
 		plan.NativeActionScore = item.MaxScore
 		return plan, true, nil

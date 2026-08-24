@@ -1,0 +1,55 @@
+# FD2 AI 0x15055 item target-list consumer — IDA Pro 9.4 evidence
+
+- Input: `FD2.EXE`
+- Size: `357074` bytes
+- MD5: `b97caf2239a27a896069d03549d96e1e`
+- SHA-256: `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- Tool: IDA Pro 9.4；本文位址均為 IDA 線性位址，不是檔案偏移。
+- Evidence date: `2026-08-25`
+- Confidence: 下列控制流、參數與資料流為已證實；效果名稱仍以既有
+  `0x20C6F` 各分支證據為準，本檔不替未知類型補語意。
+
+## 原始函式與呼叫端
+
+- 原始名稱／邊界：`sub_15055`, `0x15055..0x15311`。
+- 直接呼叫端：`0x15006`、`0x15039`，兩者都位於
+  `sub_14EF0 (0x14EF0..0x15055)`。
+- `0x1507C..0x15096` 以 `[0x53C3F]` 與 actor index 呼叫 `0x1B722`，再以
+  回傳 item ID 呼叫 `0x4E56C` 取得 item row。
+
+## winner destination 會重建完整 target list
+
+- `0x150C2` 讀 item row `+0x10` command byte。
+- command byte `>0x0F` 時，`0x150D1..0x150F6` 將 command 減 `0x10`，以
+  `[0x53C37]`、`[0x53C3B]`、actor 原始座標與本地清單緩衝呼叫 `0x149F8`。
+- command byte `<=0x0F` 時，`0x150FB..0x15119` 以
+  `[0x53C37]`、`[0x53C3B]`、item row `+0x12` 與本地清單緩衝呼叫
+  `0x14818`。
+- 兩條分支都在 `0x1511C` 將 helper 回傳值保存於 `EDI`；後續
+  `0x152E5..0x152F5` 依序傳入 actor index、`[0x53C3F]`、`EDI` 與本地清單
+  緩衝，呼叫 `sub_20C6F`。因此 `EDI` 是 target count，清單緩衝是完整 target
+  list；不能只保留第一個 target 後借用玩家游標重新推導。
+
+## 與 0x1567E producer 的閉合關係
+
+- `sub_1567E (0x1567E..0x15880)` 在每個 candidate destination 先產生完整
+  target list，再於 `0x157F0..0x157FD` 將 item ID、target count 與清單傳給
+  `sub_15880` 評分。
+- strict-greater winner 在 `0x15808..0x15823` 寫入 score、destination X/Y 與
+  inventory slot 到 `[0x53C33/37/3B/3F]`。原版不把該候選清單存成全域；
+  `0x15055` 依同一 destination 與同一 item row 重建它。
+- 重製端可以保存 winner 當時已算出的 detached raw target list，等價取代原版
+  第二次幾何計算；但必須完整保存順序，並在執行前重新驗證 actor、item row、
+  slot 與所有 raw index。這是資料流等價實作，不表示原版有 target-list 全域。
+
+## 重製規格邊界
+
+- `AIPlan` 必須保存 `ScoreNativeAI1567E` winner 的完整 raw target-index list，
+  不得只保存 `TargetIndices[0]`。
+- 正常 producer 目前只有 item type `5`、`13`、`20`、`21`、`24` 能取得正分；
+  runtime 只接既有已閉合的 HP restore 與 command-damage transaction。
+- item ID／slot、完整 target list、raw record、command row 或 resistance 任一缺失
+  時失敗即關閉，且不得消耗行動、物品、HP 或 RNG。
+- 本切片只關閉數值／存檔狀態交易（RUNTIME-E1）。`0x20C6F` 各 item 分支的
+  indexed 演出與一般玩家路徑仍須另有 caller-specific 證據，不能由本檔外推為
+  PLAYER-E2。

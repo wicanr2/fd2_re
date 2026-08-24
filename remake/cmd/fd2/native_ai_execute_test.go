@@ -223,3 +223,101 @@ func TestExecuteNativeAIActionRejectsUnknownItemRoute(t *testing.T) {
 		t.Fatal("failed item route consumed actor action")
 	}
 }
+
+func TestApplyNativeAITargetItemConsumesCompleteRestoreList(t *testing.T) {
+	actor := completeNativeAIExecutorUnit()
+	actor.Camp, actor.X, actor.Y = battle.Enemy, 0, 0
+	actor.NativeMapPresentation.X, actor.NativeMapPresentation.Y = 0, 0
+	actor.InventorySlots[0], actor.NativeInventoryFlags[0] = 1, 0x40
+	first := completeNativeAIExecutorUnit()
+	first.Camp, first.X, first.Y, first.HP = battle.Enemy, 1, 0, 10
+	first.NativeMapPresentation.X, first.NativeMapPresentation.Y = 1, 0
+	second := completeNativeAIExecutorUnit()
+	second.Camp, second.X, second.Y, second.HP = battle.Enemy, 2, 0, 20
+	second.NativeMapPresentation.X, second.NativeMapPresentation.Y = 2, 0
+	rows := make([]byte, 2*battle.NativeItemEffectRowSize)
+	row := rows[battle.NativeItemEffectRowSize:]
+	row[0x0d], row[0x0e] = 13, 30
+	g := &Game{
+		st:                   &battle.State{W: 3, H: 1, Units: []*battle.Unit{actor, first, second}},
+		nativeItemEffectRows: rows,
+		nativeRNGState:       0x1234,
+	}
+	plan := &battle.AIPlan{
+		U: actor, Target: first, NativeActionKind: battle.NativeAIActionItem,
+		NativeItemSlot: 0, NativeItemID: 1, NativeItemTargetIndices: []byte{1, 2},
+	}
+	if err := g.applyNativeAITargetItem(plan); err != nil {
+		t.Fatal(err)
+	}
+	if first.HP <= 10 || second.HP <= 20 || actor.InventorySlots[0] != 1 ||
+		actor.NativeInventoryFlags[0]&0x80 != 0 || g.nativeRNGState == 0x1234 {
+		t.Fatalf("complete AI restore list was not committed: first=%d second=%d slot=%d flags=%#x rng=%#x",
+			first.HP, second.HP, actor.InventorySlots[0], actor.NativeInventoryFlags[0], g.nativeRNGState)
+	}
+}
+
+func TestApplyNativeAITargetItemRejectsInvalidListAtomically(t *testing.T) {
+	actor := completeNativeAIExecutorUnit()
+	actor.Camp, actor.X, actor.Y = battle.Enemy, 0, 0
+	actor.InventorySlots[0], actor.NativeInventoryFlags[0] = 1, 0x40
+	target := completeNativeAIExecutorUnit()
+	target.Camp, target.X, target.Y, target.HP = battle.Enemy, 1, 0, 10
+	rows := make([]byte, 2*battle.NativeItemEffectRowSize)
+	rows[battle.NativeItemEffectRowSize+0x0d] = 13
+	rows[battle.NativeItemEffectRowSize+0x0e] = 30
+	g := &Game{
+		st:                   &battle.State{W: 2, H: 1, Units: []*battle.Unit{actor, target}},
+		nativeItemEffectRows: rows, nativeRNGState: 0x4567,
+	}
+	plan := &battle.AIPlan{
+		U: actor, Target: target, NativeActionKind: battle.NativeAIActionItem,
+		NativeItemSlot: 0, NativeItemID: 1, NativeItemTargetIndices: []byte{1, 1},
+	}
+	if err := g.applyNativeAITargetItem(plan); err == nil {
+		t.Fatal("duplicate raw target list unexpectedly executed")
+	}
+	if target.HP != 10 || actor.InventorySlots[0] != 1 || g.nativeRNGState != 0x4567 {
+		t.Fatalf("failed AI item list mutated state: hp=%d slot=%d rng=%#x",
+			target.HP, actor.InventorySlots[0], g.nativeRNGState)
+	}
+}
+
+func TestApplyNativeAITargetItemConsumesCompleteCommandDamageList(t *testing.T) {
+	actor := completeNativeAIExecutorUnit()
+	actor.Camp, actor.X, actor.Y = battle.Enemy, 0, 0
+	actor.InventorySlots[0], actor.NativeInventoryFlags[0] = 1, 0x40
+	first := completeNativeAIExecutorUnit()
+	first.Camp, first.X, first.Y, first.HP = battle.Own, 1, 0, 100
+	second := completeNativeAIExecutorUnit()
+	second.Camp, second.X, second.Y, second.HP = battle.Own, 2, 0, 100
+	rows := make([]byte, 2*battle.NativeItemEffectRowSize)
+	row := rows[battle.NativeItemEffectRowSize:]
+	row[0x0d], row[0x0e], row[0x0f] = 20, 2, 0
+	book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
+	for id := range book {
+		book[id] = battle.NativeCommandRecord{ID: id}
+	}
+	book[2] = battle.NativeCommandRecord{ID: 2, Damage: 30, Hit: 100}
+	g := &Game{
+		st:                   &battle.State{W: 3, H: 1, Units: []*battle.Unit{actor, first, second}},
+		nativeItemEffectRows: rows,
+		nativeCommandBook:    book,
+		nativeCommandResistances: map[int]int{
+			first.ClassID: 10,
+		},
+		nativeRNGState: 0x2345,
+	}
+	plan := &battle.AIPlan{
+		U: actor, Target: first, NativeActionKind: battle.NativeAIActionItem,
+		NativeItemSlot: 0, NativeItemID: 1, NativeItemTargetIndices: []byte{1, 2},
+	}
+	if err := g.applyNativeAITargetItem(plan); err != nil {
+		t.Fatal(err)
+	}
+	if first.HP >= 100 || second.HP >= 100 || actor.InventorySlots[0] != 1 ||
+		actor.NativeInventoryFlags[0]&0x80 != 0 || g.nativeRNGState == 0x2345 {
+		t.Fatalf("complete AI damage list was not committed: first=%d second=%d slot=%d flags=%#x rng=%#x",
+			first.HP, second.HP, actor.InventorySlots[0], actor.NativeInventoryFlags[0], g.nativeRNGState)
+	}
+}

@@ -414,6 +414,91 @@ func syncNativeItemRuntimeRecord(unit *battle.Unit, record []byte) {
 	}
 }
 
+// applyNativeAITargetItem consumes the complete 0x1567e winner list at the
+// 0x15055 boundary. It deliberately bypasses the player-owned cursor/modal:
+// the original AI owner rebuilds the whole list from its saved destination
+// and passes that list to 0x20c6f. All mutable records stay detached until
+// item, target and effect provenance have passed validation.
+func (g *Game) applyNativeAITargetItem(plan *battle.AIPlan) error {
+	if g == nil || g.st == nil || plan == nil || plan.U == nil ||
+		plan.NativeActionKind != battle.NativeAIActionItem || len(plan.NativeItemTargetIndices) == 0 {
+		return fmt.Errorf("native AI item target-list context is unavailable")
+	}
+	actorIndex := -1
+	for index, unit := range g.st.Units {
+		if unit == plan.U {
+			actorIndex = index
+			break
+		}
+	}
+	if actorIndex < 0 || plan.NativeItemSlot < 0 || plan.NativeItemSlot >= 8 ||
+		len(plan.U.InventorySlots) != 8 || len(plan.U.NativeInventoryFlags) != 8 ||
+		plan.U.NativeInventoryFlags[plan.NativeItemSlot]&0x80 != 0 ||
+		plan.U.InventorySlots[plan.NativeItemSlot] != plan.NativeItemID {
+		return fmt.Errorf("native AI item source provenance is unavailable")
+	}
+	rowOffset, err := battle.NativeItemEffectRowOffset(plan.NativeItemID)
+	if err != nil || rowOffset+battle.NativeItemEffectRowSize > len(g.nativeItemEffectRows) {
+		return fmt.Errorf("native AI item row %d is unavailable", plan.NativeItemID)
+	}
+	row := g.nativeItemEffectRows[rowOffset : rowOffset+battle.NativeItemEffectRowSize]
+	targets := make([]*battle.Unit, len(plan.NativeItemTargetIndices))
+	seen := make(map[byte]bool, len(targets))
+	for index, rawIndex := range plan.NativeItemTargetIndices {
+		if seen[rawIndex] || int(rawIndex) >= len(g.st.Units) || g.st.Units[rawIndex] == nil {
+			return fmt.Errorf("native AI item target index %d is invalid", rawIndex)
+		}
+		seen[rawIndex] = true
+		targets[index] = g.st.Units[rawIndex]
+	}
+	if targets[0] != plan.Target {
+		return fmt.Errorf("native AI item first target does not match movement plan")
+	}
+	records, err := nativeItemRuntimeRecords(g.st.Units)
+	if err != nil {
+		return err
+	}
+	amount := binary.LittleEndian.Uint16(row[0x0e:0x10])
+	nextRNG := g.nativeRNGState
+	if route, ok := battle.NativeItemHPRestoreRouteForType(row[0x0d], amount); ok {
+		result, err := battle.ApplyNativeItemHPRestore(
+			records, plan.NativeItemTargetIndices, route, g.nativeRNGState,
+			actorIndex, plan.NativeItemSlot,
+		)
+		if err != nil {
+			return err
+		}
+		nextRNG = result.RNGState
+	} else if route, ok := battle.NativeItemCommandDamageRouteForType(row[0x0d], amount); ok {
+		// The shared command helper mutates Unit HP. Use detached copies so a
+		// later validation error cannot partially publish the multi-target list.
+		clones := make([]*battle.Unit, len(targets))
+		for index, target := range targets {
+			clone := *target
+			clones[index] = &clone
+		}
+		_, state, err := battle.ApplyNativeItemCommandDamage(
+			clones, route, g.nativeCommandBook, g.nativeCommandResistances,
+			g.nativeRNGState,
+		)
+		if err != nil {
+			return err
+		}
+		nextRNG = state
+		for index, rawIndex := range plan.NativeItemTargetIndices {
+			base := int(rawIndex) * 80
+			binary.LittleEndian.PutUint16(records[base+0x40:base+0x42], uint16(int16(clones[index].HP)))
+		}
+	} else {
+		return fmt.Errorf("native AI item type %d has no positive-score transaction owner", row[0x0d])
+	}
+	for index, unit := range g.st.Units {
+		syncNativeItemRuntimeRecord(unit, records[index*80:(index+1)*80])
+	}
+	g.nativeRNGState = nextRNG
+	return nil
+}
+
 // applyNativeTargetItem commits the closed targeted families using original
 // raw target-list order and the shared process-lifetime 16-bit RNG state.
 func (g *Game) applyNativeTargetItem(confirmed *battle.Unit) (bool, error) {
