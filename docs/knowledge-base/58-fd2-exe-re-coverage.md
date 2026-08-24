@@ -123,8 +123,10 @@ ID2的`0x26528`亦已修正為自身state `0x53F7E..0x53F80`、#26/#27
 資料，舊ID2關聯已撤回。`0x2673F`現由直接指令閉合為單一frame/repeat、原位
 effect draw與descriptor-delay推進；29張front、每target12張／六HP marker、
 每boundary九張及10張tail皆已轉成typed state／compositor primitive，並以原始
-#26/#27資產驗證不越界，達完整`DATA-READY`。正式Game owner、玩家／敵方
-continuation與同狀態E2仍未接，不宣稱`RUNTIME-E1`。
+#26/#27資產驗證不越界；正式Game owner現已一次預建29張front、各target
+12張、相鄰target九張、10張handler tail與共同四張tail，並接入玩家與敵方
+continuation。MP、六段HP、`Acted`、RNG只在Draw確認後發布，失敗整批回復，
+達indexed `RUNTIME-E1`；未修改原版同狀態逐幀／音訊仍缺，不宣稱E2。
 
 ID6的`0x26E39`已由完整直接指令與原始資產交叉驗證：五個local table值、
 mode0／3／6回傳7／12／7、#32/#33十幀FIGANI及#87 samples1／2／3均已成

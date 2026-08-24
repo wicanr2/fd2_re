@@ -77,7 +77,7 @@ func (g *Game) startNativeCommandHealPresentation(commandID int, targetUnits []*
 	if g == nil || transaction == nil {
 		return errors.New("native command heal presentation game/transaction unavailable")
 	}
-	if g.nativeHealPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.indexedTransition != nil {
+	if g.nativeHealPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.indexedTransition != nil {
 		return errors.New("native command heal presentation already active")
 	}
 	if g.st == nil || !g.st.HasNativeMapViewState || len(g.nativeMapVGA) != indexedmap.NativeMapVGASize || len(g.nativeMapWork) != indexedmap.NativeUnitPresentWorkSize {

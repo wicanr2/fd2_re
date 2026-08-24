@@ -7,9 +7,8 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
 )
 
-// ComposeNativeCommand2TargetFrame reproduces 0x26528's single
-// mode4→target→mode5 pass from state16. It does not implement the separately
-// owned mode1/2/7/8 helper or publish command state.
+// ComposeNativeCommand2TargetFrame 重現 0x26528 單張
+// mode4→target→mode5 合成；狀態推進與戰鬥數值發布由外層 owner 負責。
 func ComposeNativeCommand2TargetFrame(base []byte, target figani.Frame, effect *figani.Animation, schedule figani.NativeCommand2PresentationSchedule, rawSide byte, stateFrame int) ([]byte, error) {
 	wantResource := 26
 	if rawSide == 0 {

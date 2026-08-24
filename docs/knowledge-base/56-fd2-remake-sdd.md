@@ -835,8 +835,9 @@ step`0,2,4,6,8,10`產生六個HP／sample2 marker；九張boundary沿用同一�
 sample2落在`0,2,4,6,8`但numeric return不被caller消費；mode6播sample3、設
 frame10並給10張tail。front mode2與tail mode8另在pre-draw frame7播sample1。
 typed schedule必須保存front留下的repeat供tail延續；JSON舊`10 channels`只屬
-schema placeholder，不得解讀成十個繪製通道。完整Game owner接線前維持
-`DATA-READY`。
+schema placeholder，不得解讀成十個繪製通道。正式Game owner一次預建完整
+phase，玩家與敵方共用相同continuation；MP、六段HP、`Acted`與RNG只在Draw
+確認後發布，缺資產或執行錯誤整批回復，達indexed `RUNTIME-E1`。
 
 ID6以`NativeCommand6PresentationSchedule`保存`0x26E39`直接指令契約：
 mode0／3／6回傳7／12／7，五個runtime channel，raw dword table

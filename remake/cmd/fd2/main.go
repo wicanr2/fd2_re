@@ -174,6 +174,7 @@ type Game struct {
 	nativeModifierPresentation *nativeCommandModifierPresentationJob
 	nativeCmd0Presentation     *nativeCommand0PresentationJob
 	nativeCmd1Presentation     *nativeCommand1PresentationJob
+	nativeCmd2Presentation     *nativeCommand2PresentationJob
 	nativeCmd6Presentation     *nativeCommand6PresentationJob
 	nativeCmd24Presentation    *nativeCommand24PresentationJob
 	nativeCmd29Presentation    *nativeCommand29PresentationJob
@@ -333,6 +334,10 @@ type Game struct {
 	sfxCommand24Target        []byte                // FDOTHER #53 sub2: selector32 resource98 target marker
 	sfxCommand0Actor          []byte                // FDOTHER #82 sub0: 0x2B659 actor raw +4 marker
 	sfxCommand0Target         []byte                // FDOTHER #82 sub1: 0x26152 seven target markers
+	sfxCommand2Actor          []byte                // FDOTHER #83 sub0: common 0x2B659 actor marker
+	sfxCommand2Mode2          []byte                // FDOTHER #83 sub1: 0x26528 mode2/8 marker
+	sfxCommand2Mode5          []byte                // FDOTHER #83 sub2: 0x26528 mode5 marker
+	sfxCommand2Mode6          []byte                // FDOTHER #83 sub3: 0x26528 mode6 marker
 	sfxCommand6Actor          []byte                // FDOTHER #87 sub0: common 0x2B659 actor marker
 	sfxCommand6Target         []byte                // FDOTHER #87 sub1: command6 mode5 counter markers
 	sfxCommand6Front          []byte                // FDOTHER #87 sub2: command6 mode0 before seven front frames
@@ -5217,7 +5222,7 @@ func (g *Game) ringInput() bool {
 // executor; other command labels remain visible but fail closed at confirm.
 func (g *Game) nativeCommandTargetSupported(id int) bool {
 	switch id {
-	case 0, 1, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35:
+	case 0, 1, 2, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35:
 		return true
 	default:
 		return false
@@ -6447,6 +6452,30 @@ func (g *Game) confirm() {
 				g.msg = "原始指令 1：indexed 演出不可用 (" + err.Error() + ")"
 			}
 			return
+		case id == 2:
+			actor := g.sel
+			err := g.startNativeCommand2Presentation(actor, tgt, func(results []battle.NativeCommandDamageResult) {
+				hit, total := 0, 0
+				for _, result := range results {
+					if result.Hit {
+						hit++
+						total += result.Damage
+						g.awardDeathReward(result.Target, actor)
+					}
+				}
+				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
+				g.msg = fmt.Sprintf("原始指令 2：命中 %d，傷害 %d", hit, total)
+				g.finishSuccessfulUnitAction(actor, func() {
+					g.resetNativeTargetField()
+					g.st.MaterializeNativeMapRangeMode(1)
+					g.nativeCommand0Targeting, g.nativeCommandTargetID, g.sel, g.reach, g.moved = false, 0, nil, nil, false
+				})
+				g.checkResult()
+			})
+			if err != nil {
+				g.msg = "原始指令 2：indexed 演出不可用 (" + err.Error() + ")"
+			}
+			return
 		case id == 6:
 			actor := g.sel
 			err := g.startNativeCommand6Presentation(actor, tgt, func(results []battle.NativeCommandDamageResult) {
@@ -7107,6 +7136,7 @@ func (g *Game) Update() error {
 	g.stepNativeCommandModifierPresentation()    // native 0x1D6C8 command 17..19 palette presentation
 	g.stepNativeCommand0Presentation()           // native 0x2A6BD→0x26152 command0 battle presentation
 	g.stepNativeCommand1Presentation()           // native 0x2A6BD→0x262EF command1 battle presentation
+	g.stepNativeCommand2Presentation()           // native 0x2A6BD→0x26528 command2 battle presentation
 	g.stepNativeCommand6Presentation()           // native 0x2A6BD→0x26E39 command6 battle presentation
 	g.stepNativeCommand24Presentation()          // native 0x276EC selector32 FIGANI presentation
 	g.stepNativeCommand29Presentation()          // native 0x276EC selector34 multi-target FIGANI presentation
@@ -7551,6 +7581,17 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		if !g.drawNativeCommand1Presentation(screen) {
 			g.failNativeCommand1Presentation(errors.New("draw unavailable"))
 			ebitenutil.DebugPrint(screen, "native command1 presentation unavailable")
+		}
+		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
+			g.captureShot(screen)
+		}
+		return
+	}
+	if g.nativeCmd2Presentation != nil {
+		screen.Fill(color.Black)
+		if !g.drawNativeCommand2Presentation(screen) {
+			g.failNativeCommand2Presentation(errors.New("draw unavailable"))
+			ebitenutil.DebugPrint(screen, "native command2 presentation unavailable")
 		}
 		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
 			g.captureShot(screen)
@@ -9411,6 +9452,10 @@ func loadGame() *Game {
 	g.sfxCommand24Target = loadWav("assets/sfx/battle_53_02.wav") // 0x276EC selector32 target raw+5
 	g.sfxCommand0Actor = loadWav("assets/sfx/battle_82_00.wav")   // 0x2B659 command0 actor marker
 	g.sfxCommand0Target = loadWav("assets/sfx/battle_82_01.wav")  // 0x26152 seven target markers
+	g.sfxCommand2Actor = loadWav("assets/sfx/battle_83_00.wav")   // common 0x2B659 actor marker
+	g.sfxCommand2Mode2 = loadWav("assets/sfx/battle_83_01.wav")   // 0x26528 mode2/8
+	g.sfxCommand2Mode5 = loadWav("assets/sfx/battle_83_02.wav")   // 0x26528 mode5
+	g.sfxCommand2Mode6 = loadWav("assets/sfx/battle_83_03.wav")   // 0x26528 mode6
 	g.sfxCommand6Actor = loadWav("assets/sfx/battle_87_00.wav")   // common 0x2B659 actor marker
 	g.sfxCommand6Target = loadWav("assets/sfx/battle_87_01.wav")  // 0x26E39 mode5 markers
 	g.sfxCommand6Front = loadWav("assets/sfx/battle_87_02.wav")   // 0x26E39 mode0

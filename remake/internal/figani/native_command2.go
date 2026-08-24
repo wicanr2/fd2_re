@@ -28,8 +28,8 @@ type NativeCommand2HelperFrame struct {
 	HPStage       int
 }
 
-// NativeCommand2PresentationSchedule 保存 0x26528 已閉合的資源與
-// target mode契約；mode1/2/7/8 helper仍須另一份座標證據。
+// NativeCommand2PresentationSchedule 保存 0x26528 已閉合的資源契約；
+// 各 phase 的 frame/repeat 排程由同檔 typed builder 建立。
 type NativeCommand2PresentationSchedule struct {
 	EffectResource int
 	SoundResource  int

@@ -6072,3 +6072,13 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   或mode2/8實際呼叫helper，後者在pre-draw frame7播sample1。
 - 舊JSON的`init_channels/draw_channels=10`是schema placeholder，不能當十通道
   renderer證據；後續typed state改以單一frame/repeat表示。
+### 2026-08-24：第 2 號指令正式演出 owner
+
+- 以已閉合的 `0x26528`／`0x2673F` typed schedule 建立一次預建的 Game job：
+  29張front、每target 12張與六個HP marker、相鄰target九張、10張handler
+  tail及共同四張tail；玩家確認與敵方人工智慧共用同一 continuation。
+- `FDOTHER #83` sub0保留給共同actor marker，sub1／2／3分別依原始
+  mode2／5／6數字載入，不替音色加未證實名稱。
+- MP、HP、`Acted`與RNG皆只在畫格經 Draw 確認後發布；新增決定性測試證明
+  未Draw不改狀態、完整播放才提交、中途錯誤整批回復。狀態提升為indexed
+  `RUNTIME-E1`，未修改原版一般玩家逐幀／音訊比較仍是E2缺口。
