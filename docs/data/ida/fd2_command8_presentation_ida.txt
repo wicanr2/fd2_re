@@ -1,0 +1,33 @@
+# FD2 第 8 號 indexed battle handler：非破壞性 IDA 證據
+
+證據等級：已證實（confirmed），僅限下列直接指令、資料表、資源形狀與呼叫契約；畫面語意與技能名稱仍未知。
+
+## 輸入與工具
+
+- `FD2.EXE`：357074 bytes；MD5 `b97caf2239a27a896069d03549d96e1e`；SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- IDA Pro 9.4，DOS extender loader，IDA linear address、image base 0；授權 Docker 唯讀分析。
+- Capstone（`fd2-cap-local`）只作第二套逐指令交叉驗證。
+- 原始名稱與函式邊界：`sub_274B0`, `0x274B0..0x275D6`。緊接的 `sub_275D6` 是另一個函式，不屬本 entry；本證據不替它附加語意。
+- indexed entry table：`0x523B9[8] -> 0x274B0`；共同 consumer：`0x2A6BD`。
+
+## mode 契約與狀態
+
+- `0x274D5..0x27525`：讀取 mode。mode 0 回傳 3、mode 3 回傳 34、mode 6 回傳 2；只有 mode 2／5 進入繪圖迴圈，其他 mode 回傳 0。
+- mode 0 在 `0x274E2..0x274F3` 初始化 16 個 `dword`：`0,-2,...,-30`。因此狀態範圍為 `0x540BA..0x540F9`（含）；舊索引的 `0x540BA..0x540C9` 已由直接指令否定。
+- `0x274C5..0x274D1` 從 `0x52539` 複製 16 bytes 到區域表；raw bytes 為 `00 08 18 10 08 00 18 10 00 08 18 10 08 00 18 10`，是每通道的 frame base。
+- `0x27539..0x2756E`：counter 落在 `[0,8)` 時，以 `frame_base[channel]+counter` 呼叫原始 `0x2935B`；此 entry 沒有 X／Y 位移與陣營分支。
+- `0x27571..0x2758A`：遞增前 counter 為 0 時呼叫 `0x25A96(sound,1,1)`。
+- `0x2758D..0x275A6`：遞增前 counter 為 4 時呼叫 `0x25B45(sound,2,1)`。
+- `0x275A9..0x275C3`：每次 mode 2／5 呼叫後 counter 加一；遞增後 counter 為 4 時回傳數值標記 1。
+
+## 資源與可驗收排程
+
+- `0x525B9[8]=28`（raw side 非零），`0x525C2[8]=30`（raw side 零）。`FDOTHER.DAT` #28／#30 均為 32 frame，全部 delay 1；最大索引 `24+7=31`，沒有越界。
+- 音訊表第 8 筆為 `Z`，即 `FDOTHER.DAT` #90；共同 actor 消費 sub0，本 entry 直接消費 sub1／sub2。
+- 共同 outer 依 mode 回傳形成 3 front、每 target 34、target 間 9、handler tail 2 frame。mode 2／5 都推進相同 counter。
+- front 3 次後，第一個 target 的遞增後 counter==4 標記出現在零基 frame `0,2,...,30`，共 16 次；這是可實作的分段 HP 發布契約。
+
+## 停止線
+
+- 上述只證明 entry 的排程、frame index、音訊 subresource 與數值標記；不以推測命名技能或圖像內容。
+- 未修改一般玩家路徑尚未完成，故本項可達 `RE-CLOSED`／`DATA-READY`，不可標為 `PLAYER-E2`。

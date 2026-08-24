@@ -6129,3 +6129,13 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 正式Game owner現由玩家確認與敵方mode 11共用；MP、HP、`Acted`與數值RNG
   逐Draw發布並可整批回復。#84已加入可重生音效匯出清冊；完整Go回歸通過後
   提升為indexed `RUNTIME-E1`，未修改原版逐幀／精確疊音仍不是`PLAYER-E2`。
+# 2026-08-25：第 8 號 indexed 指令補證
+
+- 合法 IDA Pro 9.4 與 Docker Capstone 固定 `sub_274B0` 為
+  `0x274B0..0x275D6`；相鄰 `sub_275D6` 不屬本 entry。
+- 修正 indexed JSON：16 個 `dword` counter 範圍是
+  `0x540BA..0x540F9`；mode 2 與 mode 5 都具有遞增前 counter 0／4 的兩個
+  sample marker。
+- FDOTHER #28／#30 的32幀與 #90 sub0..2 已核對；typed planner 保存
+  3／34／9／2排程及每target 16個HP stage。目前為`RE-CLOSED`／`DATA-READY`，
+  正式 compositor／player／AI owner 尚待下一批，不得誤記為`RUNTIME-E1`。

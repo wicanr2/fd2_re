@@ -5739,3 +5739,16 @@ record，但不污染 live inventory、roster、event-state 或 turn rows。正�
 owner 回報錯誤、事件綁定在預演後改變，或出現第三種 selector1 event 時，停止
 整批且不得進入共同回合收束。這是既有已證實 handler 的組合，不授權新增猜測
 renderer 或事件語意；正式資料目前只有 event61／75 兩筆 selector1 rule。
+
+## 2026-08-25：第 8 號 indexed 指令排程規格
+
+主證據為
+[`fd2_command8_presentation_ida.txt`](../data/ida/fd2_command8_presentation_ida.txt)。
+typed schedule 只接受 32 幀的 FDOTHER #28（raw side 非零）或 #30（raw side 零），
+並固定音訊資源 #90。mode 0 建立 16 個 `-2*channel` counter；每次 mode 2／5
+只在 counter 0..7 繪製 `frameBase[channel]+counter`，於遞增前 0／4 分別標記
+sub1／sub2，遞增後 4 發布 raw numeric marker。前導 3 次後，每 target 的 34 次
+mode 5 必須形成 16 個 HP stage；target 間 9 次 mode 5 保留同一 state，尾段 2 次
+亦繼續推進。資源幀數、schedule 或任何 index 不符時整批失敗即關閉；不得以技能
+名稱、任意位移或相鄰 `sub_275D6` 補洞。此規格只達 `DATA-READY`，正式
+player／AI owner 完成前不得發布 MP／HP 交易。

@@ -27,7 +27,8 @@ func TestLoadNativeCommandIndexedEntryTablePreservesCorrectedLinearEntries(t *te
 		t.Fatalf("command3 direct-instruction correction=%#v", entry3)
 	}
 	entry8, _ := table.Schedule(8)
-	if entry8.Entry == "0x174B0" || entry8.ModeReturns["3"] != 34 || len(entry8.SampleMarkers) != 2 {
+	if entry8.Entry == "0x174B0" || entry8.ModeReturns["3"] != 34 ||
+		len(entry8.StateRanges) != 1 || entry8.StateRanges[0] != "0x540BA..0x540F9" || len(entry8.SampleMarkers) != 4 {
 		t.Fatalf("command8 address-base correction=%#v", entry8)
 	}
 	entry2, _ := table.Schedule(2)

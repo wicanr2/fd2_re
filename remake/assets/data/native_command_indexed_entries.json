@@ -143,11 +143,13 @@
       "draw_modes": [2, 5],
       "raw_side_zero_x_shift": 0,
       "offset_tables": ["0x52539"],
-      "state_ranges": ["0x540BA..0x540C9"],
+      "state_ranges": ["0x540BA..0x540F9"],
       "uses_rng": false,
       "sample_markers": [
-        {"mode": 5, "channel": -1, "counter": 0, "callee": "0x25A96"},
-        {"mode": 5, "channel": -1, "counter": 4, "callee": "0x25B45"}
+        {"mode": 2, "channel": -1, "counter": 0, "counter_phase": "pre", "callee": "0x25A96"},
+        {"mode": 2, "channel": -1, "counter": 4, "counter_phase": "pre", "callee": "0x25B45"},
+        {"mode": 5, "channel": -1, "counter": 0, "counter_phase": "pre", "callee": "0x25A96"},
+        {"mode": 5, "channel": -1, "counter": 4, "counter_phase": "pre", "callee": "0x25B45"}
       ]
     }
   ]
