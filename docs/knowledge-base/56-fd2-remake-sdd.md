@@ -1186,7 +1186,7 @@ selector18排除猜測補演出。若未修改玩家動態路徑出現兩者、�
 | 25 | `0x1CFF0→1D6C8→22C04`，#80 selector0＋八個DAC phases後清raw target `+5 bit7` | `ExecuteNativeCommand25`要求raw +5 provenance，只清`0x80`而不混用`Acted` | 玩家grid＋palette／sample已接E1；原版feedback／逐音訊E2未接 |
 | 26–27 | `0x1CFF0→1D6C8→22CBF/22E41→22D1B`，分別 write `+0x25/+0x26` | `ExecuteNativeCommandApplication`；完整preflight後才交易 | 玩家grid＋palette／sample已接E1；status名稱、expiry UI與逐音訊E2未接 |
 | 32 | `2A6BD→27FC9→2111A→1C75E` numeric per-final-target；選單 MP gate已知但此 chain 未見 debit | `NativeCompoundCommandPlan(32)` 僅保存 raw callee 順序 | 未接 |
-| 33 | `27FC9` 先清每 target `+25..+27`，再 `211A4(...,800)` restore | `NativeCompoundCommandPlan(33)` 僅保存 direct-clear 順序與 raw amount | 未接 |
+| 33 | `27FC9` 先清每 target `+25..+27`，再 `211A4(...,800)`；`211A4`固定以command13走`1C4CC→1C2DA→1C916→1E0DB→21190` | `NativeCompoundCommandPlan(33)`保存私有清除／回復交易；正式owner重用已證實的第13號raw descriptors／mask／digits，但不重播`21EB1` | 受限class19玩家`RUNTIME-E1`；E2待補 |
 | 34 | `27FC9` 依序呼 `22721/22866/22997`，嘗試三種 modifier writer | `NativeCompoundCommandPlan(34)` 僅保存三個 raw writer 順序 | 未接 |
 | 35 | `27FC9` 依序以 IDs26/22/27 呼 `22D1B`，對 `+25/+27/+26` 三 application gates | `NativeCompoundCommandPlan(35)` 僅保存 marker offsets/呼叫順序 | 未接 |
 
@@ -1308,10 +1308,26 @@ visual group與一般玩家E2仍失敗即關閉。
 record33建立final targets，在私有`0x50` records逐筆清`+0x25..+0x27`，再依
 `0x285DC..0x285ED`以固定`0x320`呼叫已具型別的`ApplyNativeRawHPRestoreList`。
 所有目標、raw class／level／BattleFig、HP範圍與RNG均通過後，才一次發布HP、三個
-raw bytes、RNG與`Acted`；任一失敗保持actor／targets零修改。這只關閉ID33玩家
-state transaction；indexed presentation、score／EXP、AI、其他BattleFig與高階狀態名
-仍失敗即關閉。主證據見
+raw bytes、RNG與`Acted`；任一失敗保持actor／targets零修改。score／EXP、AI、
+其他BattleFig與高階狀態名仍失敗即關閉。主證據見
 [`fd2_command33_transaction_ida.txt`](../data/ida/fd2_command33_transaction_ida.txt)。
+
+2026-08-25 補齊指令33專用尾段規格。`0x211A4`在函式內硬編碼command
+`0x0D`，所以正式owner在`0x27FC9`共用段及0..40地圖漸入後，只接第13號的
+raw尾段：FDOTHER #6 `0x39..0x3F`七張（#80 sample12）、#80 sample1、五組
+snapshot→raw mask `0xC0`切換、固定`0x320`回復、FDOTHER #5 bias `0x69`
+結果queue、22張數字段及500 ms尾停。不得重播第13號的`0x21EB1`前置，也不得
+在這五條已證實class19來源猜扣MP。mask切換最後一張完成繪製後才原子發布
+HP、raw `+0x25..+0x27`與RNG；尾停後才發布`Acted`。首幀前須驗證#66、#92
+selector1、#5／#6、#80 selector1／12、actor／target indexed base、palette、
+panel與私有交易；任一缺件零修改。主證據見
+[`fd2_command33_tail_presentation_ida.txt`](../data/ida/fd2_command33_tail_presentation_ida.txt)。
+
+正式`nativeCommand33PresentationJob`現已依此規格接入玩家grid→confirm：所有
+共用與專用畫面在首幀前建妥，#92 selector1位於effect frame6，#80 selector12／1
+分別位於七張效果與mask切換入口；發布邊界、尾停完成、讀檔／節點切換取消及晚期
+錯誤均由私有plan保護。非靜音原始資產端到端與完整Docker／Xvfb回歸已通過，故
+提升為`RUNTIME-E1`；score／EXP、敵方owner、精確逐幀／逐音訊與E2仍未閉合。
 
 指令35沿用同一個已證實的窄玩家來源閘門：只接受`NativeRecordClass==19`與
 BattleFig 4／5／6／7／20；record35的36 MP只作可用性門檻，這五條FIGANI資源
@@ -5715,8 +5731,8 @@ FDTXT #481..486 與 `0x9F23` 文字位置；每筆以六幀展開、五幀收合
 marker 清除與套用、HIT／EV、AP／DP、基礎能力／容量、command damage 與 relocation。
 此處的剩餘缺口是 indexed effect presentation、原版取消／不可用目標畫面與同狀態
 逐幀／逐音訊 E2，不再把「物品 effect 尚未接」列成數值交易缺口。未知 command、
-複合技中ID32已具受限class19玩家的正式indexed owner與原子交易，ID33／34／35
-已具受限玩家state owner；尚無正式owner的法術及ID33／34／35完整演出仍各自
+複合技中ID32／33已具受限class19玩家的正式indexed owner與原子交易，ID34／35
+已具受限玩家state owner；尚無正式owner的法術及ID34／35完整演出仍各自
 失敗即關閉。
 
 ## 2026-08-22 巢狀離場規格

@@ -2,8 +2,8 @@ package battle
 
 import "fmt"
 
-// NativeCompoundCommand32Target preserves the per-target 0x1C75E result
-// without claiming the still-unrestored indexed success/failure presentation.
+// NativeCompoundCommand32Target preserves the per-target 0x1C75E transaction
+// result consumed by the separate indexed presentation owner.
 type NativeCompoundCommand32Target struct {
 	Target   *Unit
 	Damage   NativeCommandDamage

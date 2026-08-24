@@ -139,7 +139,7 @@ func TestNativeCommand32PresentationPublishesOnlyAfterDrawBoundary(t *testing.T)
 	g := &Game{nativeRNGState: 7, nativeMapWork: append([]byte(nil), baselineWork...), nativeMapVGA: append([]byte(nil), baselineVGA...)}
 	g.nativeCmd32Presentation = &nativeCommand32PresentationJob{
 		actor: actor, plan: plan,
-		frames:    []nativeCommand32PresentedFrame{{image: ebiten.NewImage(1, 1), delay: 1}, {image: ebiten.NewImage(1, 1), delay: 1}},
+		frames:    []nativeCompoundPresentedFrame{{image: ebiten.NewImage(1, 1), delay: 1}, {image: ebiten.NewImage(1, 1), delay: 1}},
 		publishAt: 1, rngBefore: 7, baselineWork: baselineWork, baselineVGA: baselineVGA,
 		postTransactionWork: postWork, postVGA: postVGA,
 		then: func(battle.NativeCompoundCommand32Result) { callback++ },
@@ -171,7 +171,7 @@ func TestNativeCommand32PresentationFailureRollsBackPublishedState(t *testing.T)
 	baselineVGA := make([]byte, indexedmap.NativeMapVGASize)
 	g := &Game{nativeRNGState: 7, nativeMapWork: append([]byte(nil), baselineWork...), nativeMapVGA: append([]byte(nil), baselineVGA...)}
 	g.nativeCmd32Presentation = &nativeCommand32PresentationJob{
-		actor: actor, plan: plan, frames: []nativeCommand32PresentedFrame{{image: ebiten.NewImage(1, 1), delay: 1}},
+		actor: actor, plan: plan, frames: []nativeCompoundPresentedFrame{{image: ebiten.NewImage(1, 1), delay: 1}},
 		publishAt: 0, published: true, rngBefore: 7, baselineWork: baselineWork, baselineVGA: baselineVGA,
 	}
 	if err := battle.ApplyNativeCompoundCommand32Target(plan, 0); err != nil {

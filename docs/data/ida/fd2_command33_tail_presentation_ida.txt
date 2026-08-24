@@ -1,0 +1,55 @@
+# FD2 玩家指令 33 `0x211A4` 專用 indexed 尾段非破壞性證據
+
+## 輸入、工具與位址空間
+
+- 輸入 `FD2.EXE`，357074 bytes；MD5 `b97caf2239a27a896069d03549d96e1e`；
+  SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 第一順位工具為授權 Docker 內 IDA Pro 9.4.0.260610／Hex-Rays，IDA
+  linear address、image base 0；原始執行檔唯讀，暫存 `.i64` 只寫入 `/tmp`。
+- 第二順位工具為 Docker 內 Capstone 5.0.3；直接指令範圍
+  `0x211A4..0x21206` 與 IDA 輸出一致。產生日期：2026-08-25。
+- 保留原始名稱 `sub_211A4`、`sub_1C4CC`、`sub_1C2DA`、`sub_1C916`、
+  `sub_1E0DB`、`sub_1DF58`；本文件語意均為附加層。
+
+## caller 與完整順序（已證實）
+
+- `sub_211A4` 範圍 `0x211A4..0x21206`；直接 callers 是物品分派器
+  `0x20CE0` 與指令33共用 owner 的 `0x285ED`。
+- `0x211BA..0x211D2` 將 caller 的 actor、target count、target byte array
+  原樣傳遞，但把演出 command 常數固定成 `0x0D`，依序呼叫
+  `sub_1C4CC(actor,13,count,targets)` 與 `sub_1C2DA(actor,13,count,targets)`。
+  因此指令33只重用第13號的 raw 尾段；它不會重播第13號 wrapper 的
+  `0x21EB1` 前置演出，也不會在此呼叫 `sub_1CA89`。
+- `0x211DE..0x21202` 逐 target 呼叫
+  `sub_1C916(target,callerAmount)`；指令33 caller 在 `0x285E8` 傳入固定
+  `0x320`。每筆回傳值立即以 digit bias `0x69`、同一 target index 呼叫
+  `sub_1E0DB`。
+- `0x21204` 跳到共用尾端 `0x21190`；既有主證據已固定其
+  `sub_11CAC(0)→sub_1DF58` steady redraw、22張數字段與500 ms尾停。
+
+## 被固定常數選中的既有資料（已證實）
+
+`0x211A4` 的硬編碼 command `0x0D` 直接選中已閉合的第13號 raw 表列：
+
+- FDOTHER #6 descriptors `0x39..0x3F` 共7張；第一張播放 #80 sample12，
+  每張等待1 tick。
+- `sub_1C2DA` 使用 raw mask index `0xC0`，播放 #80 sample1，呈現5組
+  snapshot→mask切換及最後snapshot。
+- `sub_1E0DB` 使用 FDOTHER #5 digit bias `0x69`；`sub_1DF58` 呈現22張、
+  每張2 ms近似及500 ms尾停。
+
+上述 descriptor、sample、mask、queue與座標契約的主證據仍是
+[`fd2_command_numeric_tail_ida.txt`](fd2_command_numeric_tail_ida.txt)；本文件只
+證明指令33 caller確實以常數13消費該資料，不複製或重開已閉合函式。
+
+## 證據分級與重製契約
+
+- **已證實**：函式邊界、兩個direct callers、常數13、呼叫順序、caller amount
+  `0x320`、digit bias `0x69`及共用尾跳。
+- **強推論**：原版每次present映射成至少一個Ebiten Draw acknowledgement；
+  2 ms／500 ms採現代引擎有界近似，不宣稱DOS逐毫秒一致。
+- **未知**：高階技能／raw marker名稱、score／EXP最終消費、同狀態逐像素與
+  逐音訊E2、敵方正式owner。
+- 正式玩家owner必須先完整預建`0x27FC9`共用段及本尾段。5組mask切換完成前
+  不可發布HP、raw `+0x25..+0x27`或RNG；22張結果及尾停完成前不可發布
+  `Acted`。取消或晚期失敗必須回復所有已發布狀態。

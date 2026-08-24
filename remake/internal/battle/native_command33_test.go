@@ -58,3 +58,57 @@ func TestExecuteNativeCompoundCommand33RejectsUnprovenPlayerSelector(t *testing.
 		t.Fatalf("unproven selector transaction actor=%#v err=%v", actor, err)
 	}
 }
+
+func TestNativeCompoundCommand33PlanPublishesOnlyAtExplicitBoundary(t *testing.T) {
+	st, actor, target := nativeCompound33Fixture()
+	actorHP, actorRaw, targetHP, targetRaw := actor.HP, actor.NativeTransient, target.HP, target.NativeTransient
+	plan, err := st.PlanNativeCompoundCommand33(actor, target, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if actor.HP != actorHP || actor.NativeTransient != actorRaw || target.HP != targetHP || target.NativeTransient != targetRaw || actor.Acted {
+		t.Fatalf("plan mutated live state actor=%#v target=%#v", actor, target)
+	}
+	if err := PublishNativeCompoundCommand33(plan); err != nil {
+		t.Fatal(err)
+	}
+	if actor.HP != actor.MaxHP || target.HP != target.MaxHP || actor.NativeTransient[3] != 0 || target.NativeTransient[5] != 0 || actor.Acted {
+		t.Fatalf("publication boundary mismatch actor=%#v target=%#v", actor, target)
+	}
+	if err := CompleteNativeCompoundCommand33(plan); err != nil {
+		t.Fatal(err)
+	}
+	if !actor.Acted {
+		t.Fatal("completion did not publish Acted")
+	}
+}
+
+func TestNativeCompoundCommand33AbortRestoresPublishedBatch(t *testing.T) {
+	st, actor, target := nativeCompound33Fixture()
+	actorHP, actorRaw, targetHP, targetRaw := actor.HP, actor.NativeTransient, target.HP, target.NativeTransient
+	plan, err := st.PlanNativeCompoundCommand33(actor, target, 7)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := PublishNativeCompoundCommand33(plan); err != nil {
+		t.Fatal(err)
+	}
+	if err := AbortNativeCompoundCommand33(plan); err != nil {
+		t.Fatal(err)
+	}
+	if actor.HP != actorHP || actor.NativeTransient != actorRaw || target.HP != targetHP || target.NativeTransient != targetRaw || actor.Acted {
+		t.Fatalf("abort did not restore batch actor=%#v target=%#v", actor, target)
+	}
+}
+
+func TestNativeCompoundCommand33ChangedTargetFailsBeforePublication(t *testing.T) {
+	st, actor, target := nativeCompound33Fixture()
+	plan, err := st.PlanNativeCompoundCommand33(actor, target, 9)
+	if err != nil {
+		t.Fatal(err)
+	}
+	target.HP++
+	if err := PublishNativeCompoundCommand33(plan); err == nil || actor.HP != 40 || actor.Acted {
+		t.Fatalf("changed target publication actor=%#v target=%#v err=%v", actor, target, err)
+	}
+}

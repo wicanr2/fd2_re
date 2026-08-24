@@ -6243,3 +6243,20 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   的Docker／Xvfb聚焦回歸均已通過，現提升為受限class19玩家`RUNTIME-E1`。
   IDs33–35仍只具state transaction；下一個玩家價值切片是ID33正式共用段與
   `0x211A4`專用清除／回復尾段，不重做ID32。
+
+## 2026-08-25：指令33正式 indexed owner（未提交批次）
+
+- 授權Docker內IDA Pro 9.4與Capstone交叉固定`0x211A4..0x21206`：函式把演出
+  command硬編碼成13，依序呼`0x1C4CC→0x1C2DA→0x1C916→0x1E0DB`，再跳
+  `0x21190`；指令33 caller固定傳`0x320`。因此專用尾段合法重用#6
+  `0x39..0x3F`、#80 selector12／1、raw mask `0xC0`、bias `0x69`與22張結果，
+  但不重播command13的`0x21EB1`前置。canonical evidence為
+  [`fd2_command33_tail_presentation_ida.txt`](../data/ida/fd2_command33_tail_presentation_ida.txt)。
+- `NativeCompoundCommand33Plan`現把HP與raw `+0x25..+0x27`清除／回復留在私有
+  transaction，mask切換Draw完成才發布，500 ms尾停後才發布`Acted`；取消或晚期
+  失敗會回復HP、raw、RNG與indexed buffers。
+- 正式grid→confirm owner完整預建#66／#92共用段、0..40地圖漸入及上述專用尾段。
+  原始資產非靜音端到端、無Draw不發布、晚期rollback、overlay reset及完整
+  Docker／Xvfb `go test ./... -count=1`均通過，提升為受限class19玩家
+  `RUNTIME-E1`。下一個切片是ID34三段modifier的畫面consumer補證與正式owner；
+  不重做ID32／33。

@@ -374,7 +374,7 @@ func TestNativeCommand34ConfirmConsumesProvenClass19Transaction(t *testing.T) {
 	}
 }
 
-func TestNativeCommand33ConfirmConsumesProvenClass19Transaction(t *testing.T) {
+func TestNativeCommand33ConfirmFailsClosedWithoutIndexedPresentation(t *testing.T) {
 	actor := &battle.Unit{
 		Camp: battle.Own, OnField: true, X: 0, Y: 0, HP: 40, MaxHP: 100, MP: 60, Lv: 20,
 		BattleFig: 4, HasBattleFig: true, NativeRecordClass: 19, HasNativeRecordClass: true,
@@ -402,10 +402,10 @@ func TestNativeCommand33ConfirmConsumesProvenClass19Transaction(t *testing.T) {
 		nativeCommand0Targeting: true, nativeCommandTargetID: 33, nativeRNGState: 1,
 	}
 	g.confirm()
-	if !actor.Acted || actor.MP != 60 || actor.HP != actor.MaxHP || target.HP != target.MaxHP ||
-		actor.NativeTransient[3] != 0 || actor.NativeTransient[4] != 0 || actor.NativeTransient[5] != 0 ||
-		target.NativeTransient[3] != 0 || target.NativeTransient[4] != 0 || target.NativeTransient[5] != 0 {
-		t.Fatalf("command33 production confirm did not publish restore/clear actor=%#v target=%#v msg=%q", actor, target, g.msg)
+	if actor.Acted || actor.MP != 60 || actor.HP != 40 || target.HP != 10 ||
+		actor.NativeTransient != [6]byte{1, 2, 3, 4, 5, 6} ||
+		target.NativeTransient != [6]byte{7, 8, 9, 10, 11, 12} {
+		t.Fatalf("command33 missing indexed input mutated state actor=%#v target=%#v msg=%q", actor, target, g.msg)
 	}
 }
 

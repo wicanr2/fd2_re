@@ -12,7 +12,7 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
 
-type nativeCommand32PresentedFrame struct {
+type nativeCompoundPresentedFrame struct {
 	image       *ebiten.Image
 	delay       int
 	sound       []byte
@@ -22,7 +22,7 @@ type nativeCommand32PresentedFrame struct {
 type nativeCommand32PresentationJob struct {
 	actor                        *battle.Unit
 	plan                         *battle.NativeCompoundCommand32Plan
-	frames                       []nativeCommand32PresentedFrame
+	frames                       []nativeCompoundPresentedFrame
 	frame, repeat                int
 	publishAt                    int
 	published, drawn, holding    bool
@@ -58,7 +58,7 @@ func nativeCommand32ClonedState(st *battle.State, result battle.NativeCompoundCo
 	return &clone, nil
 }
 
-func nativeCommand32ImagesWithDAC(frames [][]byte, baselineDAC []byte, deltas []int, raw [3]byte) ([]*ebiten.Image, error) {
+func nativeCompoundImagesWithDAC(frames [][]byte, baselineDAC []byte, deltas []int, raw [3]byte) ([]*ebiten.Image, error) {
 	if len(frames) != len(deltas) {
 		return nil, errors.New("native command32 frame/DAC schedule mismatch")
 	}
@@ -81,7 +81,7 @@ func nativeCommand32ImagesWithDAC(frames [][]byte, baselineDAC []byte, deltas []
 	return out, nil
 }
 
-func appendNativeCommand32Frames(dst []nativeCommand32PresentedFrame, images []*ebiten.Image, delay int) ([]nativeCommand32PresentedFrame, error) {
+func appendNativeCompoundFrames(dst []nativeCompoundPresentedFrame, images []*ebiten.Image, delay int) ([]nativeCompoundPresentedFrame, error) {
 	if len(images) == 0 || delay <= 0 {
 		return nil, errors.New("native command32 presented frames unavailable")
 	}
@@ -89,7 +89,7 @@ func appendNativeCommand32Frames(dst []nativeCommand32PresentedFrame, images []*
 		if image == nil {
 			return nil, errors.New("native command32 nil presented frame")
 		}
-		dst = append(dst, nativeCommand32PresentedFrame{image: image, delay: delay})
+		dst = append(dst, nativeCompoundPresentedFrame{image: image, delay: delay})
 	}
 	return dst, nil
 }
@@ -240,7 +240,7 @@ func (g *Game) startNativeCommand32Presentation(actor, confirmed *battle.Unit, t
 	for index := range tailDeltas {
 		tailDeltas[index] = 40 - 4*index
 	}
-	commonTailImages, err := nativeCommand32ImagesWithDAC(common.Tail, paletteDAC, tailDeltas, commonSchedule.PaletteRGB)
+	commonTailImages, err := nativeCompoundImagesWithDAC(common.Tail, paletteDAC, tailDeltas, commonSchedule.PaletteRGB)
 	if err != nil {
 		return err
 	}
@@ -306,51 +306,51 @@ func (g *Game) startNativeCommand32Presentation(actor, confirmed *battle.Unit, t
 		rampPixels = append(rampPixels, append([]byte(nil), g.nativeMapVGA...))
 		rampDeltas = append(rampDeltas, delta)
 	}
-	rampImages, err := nativeCommand32ImagesWithDAC(rampPixels, g.nativeMapDAC, rampDeltas, commonSchedule.PaletteRGB)
+	rampImages, err := nativeCompoundImagesWithDAC(rampPixels, g.nativeMapDAC, rampDeltas, commonSchedule.PaletteRGB)
 	if err != nil {
 		return err
 	}
 
-	frames := make([]nativeCommand32PresentedFrame, 0)
-	if frames, err = appendNativeCommand32Frames(frames, preludeImages, 1); err != nil {
+	frames := make([]nativeCompoundPresentedFrame, 0)
+	if frames, err = appendNativeCompoundFrames(frames, preludeImages, 1); err != nil {
 		return err
 	}
-	if frames, err = appendNativeCommand32Frames(frames, actorImages, 1); err != nil {
+	if frames, err = appendNativeCompoundFrames(frames, actorImages, 1); err != nil {
 		return err
 	}
 	frames[len(frames)-1].delay += commonSchedule.PreludeHoldTicks
-	if frames, err = appendNativeCommand32Frames(frames, actorSlide, 1); err != nil {
+	if frames, err = appendNativeCompoundFrames(frames, actorSlide, 1); err != nil {
 		return err
 	}
-	if frames, err = appendNativeCommand32Frames(frames, effectSlide, 1); err != nil {
+	if frames, err = appendNativeCompoundFrames(frames, effectSlide, 1); err != nil {
 		return err
 	}
 	mainStart := len(frames)
-	if frames, err = appendNativeCommand32Frames(frames, mainImages, commonSchedule.MainDelayTicks); err != nil {
+	if frames, err = appendNativeCompoundFrames(frames, mainImages, commonSchedule.MainDelayTicks); err != nil {
 		return err
 	}
 	frames[mainStart].sound = loadWav(assetPath("assets/sfx/battle_91_02.wav"))
 	tailStart := len(frames)
-	if frames, err = appendNativeCommand32Frames(frames, commonTailImages, commonSchedule.MainDelayTicks); err != nil {
+	if frames, err = appendNativeCompoundFrames(frames, commonTailImages, commonSchedule.MainDelayTicks); err != nil {
 		return err
 	}
 	commonSample1 := loadWav(assetPath("assets/sfx/battle_91_01.wav"))
 	for index := 0; index < len(commonTailImages); index += 2 {
 		frames[tailStart+index].sound = commonSample1
 	}
-	if frames, err = appendNativeCommand32Frames(frames, rampImages, 6); err != nil {
+	if frames, err = appendNativeCompoundFrames(frames, rampImages, 6); err != nil {
 		return err
 	}
 	effectStart := len(frames)
-	if frames, err = appendNativeCommand32Frames(frames, tailEffectImages, tailSchedule.EffectDelayTicks); err != nil {
+	if frames, err = appendNativeCompoundFrames(frames, tailEffectImages, tailSchedule.EffectDelayTicks); err != nil {
 		return err
 	}
 	frames[effectStart].sound = loadWav(assetPath("assets/sfx/battle_80_09.wav"))
-	if frames, err = appendNativeCommand32Frames(frames, toggleImages, nativeDelayTicks(tailSchedule.ToggleDelayMS)); err != nil {
+	if frames, err = appendNativeCompoundFrames(frames, toggleImages, nativeDelayTicks(tailSchedule.ToggleDelayMS)); err != nil {
 		return err
 	}
 	publishAt := len(frames)
-	if frames, err = appendNativeCommand32Frames(frames, resultImages, 1); err != nil {
+	if frames, err = appendNativeCompoundFrames(frames, resultImages, 1); err != nil {
 		return err
 	}
 	if !osMuteOrShot(g) {
