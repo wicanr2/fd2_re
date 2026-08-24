@@ -5747,8 +5747,16 @@ renderer 或事件語意；正式資料目前只有 event61／75 兩筆 selector
 typed schedule 只接受 32 幀的 FDOTHER #28（raw side 非零）或 #30（raw side 零），
 並固定音訊資源 #90。mode 0 建立 16 個 `-2*channel` counter；每次 mode 2／5
 只在 counter 0..7 繪製 `frameBase[channel]+counter`，於遞增前 0／4 分別標記
-sub1／sub2，遞增後 4 發布 raw numeric marker。前導 3 次後，每 target 的 34 次
-mode 5 必須形成 16 個 HP stage；target 間 9 次 mode 5 保留同一 state，尾段 2 次
-亦繼續推進。資源幀數、schedule 或任何 index 不符時整批失敗即關閉；不得以技能
-名稱、任意位移或相鄰 `sub_275D6` 補洞。此規格只達 `DATA-READY`，正式
-player／AI owner 完成前不得發布 MP／HP 交易。
+sub1／sub2，遞增後 4 發布 raw numeric marker。前導 3 次後，單一 target 的 34 次
+mode 5 必須形成 16 個 HP stage，尾段 2 次繼續推進。此 entry 不回收 counter；
+在 caller／target producer 補證前，多目標輸入必須拒絕，不能猜接共用九幀過場。
+資源幀數、schedule 或任何 index 不符時整批失敗即關閉；不得以技能
+名稱、任意位移或相鄰 `sub_275D6` 補洞。
+
+固定 command record #8 raw `b8 01 64 08 00 18 00` 的 effect/range byte 為0；正式
+owner 只接受 `PlanNativeCommandDamage` 的單一 final target，並一次預建
+common prelude、actor pulse、3＋34＋2 handler frames、16＋1 個 HP panel base、
+common tail 與 #90 sub0..2。玩家確認與敵方 mode 11 都走同一 owner；MP、16 段
+HP、`Acted` 與 RNG 只在對應 Draw acknowledgement 後發布，任何晚期錯誤會回復
+actor／target。此為來源約束的 `RUNTIME-E1`；未修改一般玩家逐幀、音訊疊加與
+同狀態敵方回合仍不是 `PLAYER-E2`。

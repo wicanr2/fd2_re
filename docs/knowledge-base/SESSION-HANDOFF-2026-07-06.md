@@ -6137,5 +6137,9 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   `0x540BA..0x540F9`；mode 2 與 mode 5 都具有遞增前 counter 0／4 的兩個
   sample marker。
 - FDOTHER #28／#30 的32幀與 #90 sub0..2 已核對；typed planner 保存
-  3／34／9／2排程及每target 16個HP stage。目前為`RE-CLOSED`／`DATA-READY`，
-  正式 compositor／player／AI owner 尚待下一批，不得誤記為`RUNTIME-E1`。
+  3／34／2單一target排程及16個HP stage。後續合成器測試證實counter不回收，
+  已立即撤回猜接共用九幀多目標過場的說法；多目標在caller補證前拒絕。目前為`RE-CLOSED`／`DATA-READY`，
+  後續已完成正式單一target compositor與Game owner；玩家確認／敵方mode 11共用，
+  MP、16段HP、`Acted`與RNG逐Draw發布並可整批回復。#90已加入音效匯出清冊，
+  聚焦Docker／Xvfb回歸通過，提升為indexed `RUNTIME-E1`；未修改原版逐幀／精確
+  疊音仍不是`PLAYER-E2`。

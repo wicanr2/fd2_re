@@ -9,6 +9,7 @@
 - Capstone（`fd2-cap-local`）只作第二套逐指令交叉驗證。
 - 原始名稱與函式邊界：`sub_274B0`, `0x274B0..0x275D6`。緊接的 `sub_275D6` 是另一個函式，不屬本 entry；本證據不替它附加語意。
 - indexed entry table：`0x523B9[8] -> 0x274B0`；共同 consumer：`0x2A6BD`。
+- 固定 command record #8 raw `b8 01 64 08 00 18 00`：damage 440、hit 100、selection distance 8、effect/range byte 0、MP 24、target byte 0；byte 4 的 0 與單一 target owner 一致。
 
 ## mode 契約與狀態
 
@@ -24,7 +25,7 @@
 
 - `0x525B9[8]=28`（raw side 非零），`0x525C2[8]=30`（raw side 零）。`FDOTHER.DAT` #28／#30 均為 32 frame，全部 delay 1；最大索引 `24+7=31`，沒有越界。
 - 音訊表第 8 筆為 `Z`，即 `FDOTHER.DAT` #90；共同 actor 消費 sub0，本 entry 直接消費 sub1／sub2。
-- 共同 outer 依 mode 回傳形成 3 front、每 target 34、target 間 9、handler tail 2 frame。mode 2／5 都推進相同 counter。
+- 共同 outer 依 mode 回傳形成 3 front、34 target、2 handler tail frame。entry 的 counter 不回收；把共用 9-frame target boundary 外推成可重複多目標會讓第二個 target 得到零個 marker，因此正式 owner 在 caller／target producer 補證前只接受單一 target，多目標失敗即關閉。
 - front 3 次後，第一個 target 的遞增後 counter==4 標記出現在零基 frame `0,2,...,30`，共 16 次；這是可實作的分段 HP 發布契約。
 
 ## 停止線

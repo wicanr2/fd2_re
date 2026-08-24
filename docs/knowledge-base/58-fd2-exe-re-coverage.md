@@ -93,8 +93,11 @@ MP、五段 HP、`Acted` 與 RNG 均在對應 Draw 邊界發布，失敗時整�
 皆會消費 `0x52539` 的 16 個 frame base、在遞增前 counter 0／4 呼叫音訊
 sub1／sub2，並在遞增後 counter 4 回傳數值標記。FDOTHER #28／#30 均有精確
 32 幀，#90 提供共同 actor sub0 與 handler sub1／sub2。typed planner 已保存
-3／34／9／2 frame 外層契約及每 target 16 個 HP stage；正式 Game owner 與
-一般玩家 E2 尚未接，不能外推為完整演出。主證據見
+3／34／2 frame 單一 target 契約及 16 個 HP stage；entry 不回收 counter，故
+多目標在 caller 補證前失敗即關閉。正式 Game owner 現已由玩家確認與敵方
+mode 11 共用，完整預建 common／actor／handler／tail，並逐 Draw 發布 MP、16 段
+HP、`Acted` 與 RNG；失敗整批回復，達 indexed `RUNTIME-E1`。一般玩家 E2 尚未接，
+不能外推為完整原版一致。主證據見
 [`fd2_command8_presentation_ida.txt`](../data/ida/fd2_command8_presentation_ida.txt)。
 | 城鎮、祕密商店、商店、教會與整備 | 部分偏高 | 部分就緒 | 多個正式 E1 consumer | ch02 若干狀態 E2；其餘部分 | 個別 menu、購買、賣出、轉移、復活、轉職與整備已有窄切片；ch02 賣出已由正常商店輸入走完角色／物品／Yes-No、成功、向上金幣滾動及返回名冊，九組 route-patched 原版／正式重製畫面皆整幀 AE=0。獨立裝備 service2 另由正常商店輸入取得名冊與索爾面板，但動畫相位未同步，整幀仍為 AE=1389／1433；正式交易現先在私有 unit 完成 raw 裝備、重算與 panel 重建，最後才發布，深層 renderer 失敗不再污染 roster／能力／既有 panel，達 `RUNTIME-E1`。service3 物品轉移除五個選擇狀態外，現也由正常商店輸入完成索爾短劍→悠妮，返回 loop 後原版索爾只剩皮甲／藥草、悠妮追加未裝備短劍；四個成功交易畫面 AE=1391／82／2／286。可見內容與幾何一致，剩餘差異是角色、翻頁箭頭或選取脈動相位，故仍列 route-patched partial E2。重製同一跨角色交易又穿越 `town_ch02` JSON 冷讀檔，保存雙方 compact/raw 背包、裝備、能力、金幣與隊伍順序。目的名冊取消現由正式 owner 依五幀收合→來源提示六幀展開發布，取消不改角色／金幣；取消後重新進入的 self-transfer 仍走既有 raw remove→append／重算，達 `RUNTIME-E1`。裝備收件者以六名具完整 raw provenance 的 typed party，從正式 menu→purchase→Yes 進三列面板，走過 scroll、滿欄／無合適角色原子返回與成功裝備／扣款，亦達 `RUNTIME-E1`；這些都不是原版 E2。教會轉職與其他商店 mutation 也能返回 town，再穿越重製 JSON 存讀檔。第25戰後的 `town_ch26` 祕密商店 E1 亦已接通。這些不等於未修改一般玩家戰間 E2；其餘章節入口、原版存檔、recipient scroll／no-recipient／full、service2 原版 mutation／restore畫面、transfer empty／full、self／destination-cancel 的原版同狀態畫面、church caller及完整交易仍缺。 |
 | 音樂與音效 | 格式閉合；owner／時序部分 | 部分就緒 | 部分 E1 | 逐音訊 E2 缺少 | XMIDI、兩類音源與部分曲目／樣本 owner 已知。重點是精確播放時機、停止／切換、效果同步與三平台播放，不需要重解 XMIDI 格式。 |

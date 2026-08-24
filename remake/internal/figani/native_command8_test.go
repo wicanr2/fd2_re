@@ -1,6 +1,11 @@
 package figani
 
-import "testing"
+import (
+	"os"
+	"testing"
+
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+)
 
 func command8TestAnimation() *Animation {
 	frames := make([]Frame, NativeCommand8EffectFrameCount)
@@ -77,5 +82,34 @@ func TestNativeCommand8TransitionAndTail(t *testing.T) {
 	tail, _, err := BuildNativeCommand8TailSequence(state, s)
 	if err != nil || len(tail) != 2 {
 		t.Fatalf("tail=%d err=%v", len(tail), err)
+	}
+}
+
+func TestOriginalFDOTHERCommand8ResourcesMatchRecoveredShapes(t *testing.T) {
+	const path = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
+	for _, tc := range []struct {
+		resource int
+		side     byte
+	}{{28, 1}, {30, 0}} {
+		animation, err := DecodeResource(path, tc.resource)
+		if os.IsNotExist(err) {
+			t.Skip("player-provided FDOTHER.DAT is absent")
+		}
+		if err != nil {
+			t.Fatalf("resource %d: %v", tc.resource, err)
+		}
+		schedule, err := BuildNativeCommand8PresentationSchedule(tc.side, animation)
+		if err != nil || schedule.EffectResource != tc.resource {
+			t.Fatalf("resource %d schedule=%+v err=%v", tc.resource, schedule, err)
+		}
+	}
+	for _, sample := range []int{0, 1, 2} {
+		raw, err := fdother.ReadNestedResource(path, NativeCommand8SoundResource, sample)
+		if os.IsNotExist(err) {
+			t.Skip("player-provided FDOTHER.DAT is absent")
+		}
+		if err != nil || len(raw) == 0 {
+			t.Fatalf("resource 90 sample %d len=%d err=%v", sample, len(raw), err)
+		}
 	}
 }
