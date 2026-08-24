@@ -131,7 +131,8 @@ continuation。MP、六段HP、`Acted`、RNG只在Draw確認後發布，失敗�
 ID5的`0x26BFD`已由IDA Pro 9.4完整直接指令、Capstone及原始資產交叉閉合：
 mode0／3／6回傳1／12／8；六個counter、十位置循環、六條RNG phase、stop gate、
 `0x524D0`水平offset、raw side零值`+143`、#24／#25十二張delay0效果、#86
-sub0／sub1與六個直接sample marker均已保存。舊JSON把channel3誤寫成counter3，
+sub0／sub1與六個直接sample marker均已保存；sub0屬common actor，兩個handler
+callee都以sample index1消費sub1。舊JSON把channel3誤寫成counter3，
 並漏掉mode2／8與`0x25A96`，現已訂正。typed planner保存跨target與九張boundary
 持續state，第一target九個raw marker中只讓前六個發布HP；indexed compositor
 保存actor／target／effect層序，工具也不再把合法delay0 frame丟棄，達
@@ -142,6 +143,15 @@ sub0／sub1與六個直接sample marker均已保存。舊JSON把channel3誤寫�
 原版process-wide RNG與既有整批damage plan的跨target交錯列為明示近似，不猜測
 改寫數值順序。主證據見
 [`fd2_command5_presentation_ida.txt`](../data/ida/fd2_command5_presentation_ida.txt)。
+
+ID7的`0x272B8..0x274B0`已由IDA Pro 9.4、Capstone與原始資產閉合：mode0／3／6
+回傳2／32／16；四組初始化但只render前三組，toggle令每個counter畫面重複兩張，
+state跨target與九張boundary持續。`0x52511`十個offset、raw side零值`+130`、
+#37／#38五張效果、#88 sub0 actor／sub1 handler、三種draw mode的六個直接sample
+marker，以及第一target七個raw marker／前五段HP均已保存。舊JSON只列mode5的
+兩個sample marker，現已補齊mode2／8。此切片達`RE-CLOSED`／`DATA-READY`，
+正式Game owner尚未接入；主證據見
+[`fd2_command7_presentation_ida.txt`](../data/ida/fd2_command7_presentation_ida.txt)。
 
 ID6的`0x26E39`已由完整直接指令與原始資產交叉驗證：五個local table值、
 mode0／3／6回傳7／12／7、#32/#33十幀FIGANI及#87 samples1／2／3均已成

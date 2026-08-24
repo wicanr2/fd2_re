@@ -851,7 +851,8 @@ marker落在step `0,2,4,6,7,8,9,10,11`，只允許前六個發布HP stage1..6。
 正式 compositor 的固定順序為：front／tail 的無圖層mode1／7→actor→target→
 mode2／8 effect；target 是無圖層mode4→target→mode5 effect；boundary 是
 無圖層mode4→actor末幀→位移target→mode5 effect。channel0／3在pre-increment
-counter0時分別消費FDOTHER #86 sub0／sub1，三個draw mode皆適用。資源必須為
+counter0時經兩個不同播放handle消費同一FDOTHER #86 sub1，三個draw mode皆適用；
+common actor marker另用#86 sub0。資源必須為
 12張可直接索引的FIGANI；其descriptor delay0合法，不可拿通用display scheduler
 的正delay要求拒絕。typed planner、全批次預建器與indexed compositor現已由
 玩家確認及敵方mode 11的正式Game owner消費，達`RUNTIME-E1`。
@@ -862,10 +863,25 @@ counter0時分別消費FDOTHER #86 sub0／sub1，三個draw mode皆適用。資�
 同狀態動態證據顯示玩家可見矛盾時才重開這項排序。
 
 第5號正式owner一次預建common前導／actor、1張front、每target 12張、每boundary
-9張、8張handler tail與共同4張LUT tail；#86 sub0同時服務common actor與channel0，
-sub1服務channel3。MP、六段HP、`Acted`及數值計畫的RNG都只在對應Draw確認後發布，
+9張、8張handler tail與共同4張LUT tail；#86 sub0服務common actor，sub1服務
+channel0／3的兩個handler播放handle。MP、六段HP、`Acted`及數值計畫的RNG都只在對應Draw確認後發布，
 執行中矛盾回復actor MP／`Acted`與全部target HP。缺#24／#25、#86、BG／TAI、
 FIGANI、面板、raw provenance或任一晚期base時維持零交易。
+
+ID7 使用獨立 `NativeCommand7PresentationSchedule` 與可複製state。mode0初始化
+四組counter `0,-3,-6,-9`和position `0..3`，但只有前三組進render loop；
+next-position=4、stop=0、toggle=0。每次mode2／5／8先切換toggle，非零時只畫
+`counter 0..4`的effect frame且不推進；零值時才在畫後處理sample、counter與
+reset，因此每個state固定呈現兩張。counter增至2產生numeric marker，增至7且
+stop未設時先把next-position加1後mod10，再指派position與清counter；mode3只回傳
+32而不重設，mode6設stop後回傳16。
+
+raw side非零／零分別選FDOTHER #37／#38，兩者都是5-frame FIGANI；零值側將
+十個offset `30,-10,70,20,100,130,40,80,110,60`全加130。handler在toggle=0、
+pre-increment counter1時，channel0／1經兩個播放handle消費同一#88 sub1；common
+actor另用#88 sub0。兩張front後第一target的raw marker位於step
+`1,7,13,15,21,27,29`，只准前五個發布HP stage1..5。typed planner及compositor
+現已完成並達`DATA-READY`；正式owner接入前仍不得讓玩家／敵方繞過演出直接發布交易。
 
 ID6以`NativeCommand6PresentationSchedule`保存`0x26E39`直接指令契約：
 mode0／3／6回傳7／12／7，五個runtime channel，raw dword table

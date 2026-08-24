@@ -153,7 +153,7 @@ func (g *Game) startNativeCommand5Presentation(actor, confirmed *battle.Unit, th
 			return fmt.Errorf("native command5 FDOTHER #86 sub%d unavailable", sample)
 		}
 	}
-	if !osMuteOrShot(g) && (len(g.sfxCommand5Primary) == 0 || len(g.sfxCommand5Secondary) == 0) {
+	if !osMuteOrShot(g) && (len(g.sfxCommand5Actor) == 0 || len(g.sfxCommand5Target) == 0) {
 		return errors.New("native command5 converted #86 samples unavailable")
 	}
 	panelAssets, err := battle.LoadNativeItemPanelDataAssets(fdotherPath, fdtxtPath)
@@ -358,7 +358,7 @@ func (g *Game) stepNativeCommand5Presentation() {
 					return
 				}
 				j.mpPublished = true
-				g.playRaw(g.sfxCommand5Primary)
+				g.playRaw(g.sfxCommand5Actor)
 			}
 			j.pulseBlack = true
 			return
@@ -369,7 +369,7 @@ func (g *Game) stepNativeCommand5Presentation() {
 				return
 			}
 			j.mpPublished = true
-			g.playRaw(g.sfxCommand5Primary)
+			g.playRaw(g.sfxCommand5Actor)
 		}
 		j.pulseBlack = false
 		j.frame++
@@ -389,10 +389,10 @@ func (g *Game) stepNativeCommand5Presentation() {
 			}
 		}
 		if frame.playPrimary {
-			g.playRaw(g.sfxCommand5Primary)
+			g.playRaw(g.sfxCommand5Target)
 		}
 		if frame.playSecondary {
-			g.playRaw(g.sfxCommand5Secondary)
+			g.playRaw(g.sfxCommand5Target)
 		}
 		j.frame++
 		if j.frame < len(j.handler) {

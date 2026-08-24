@@ -113,6 +113,22 @@ func LoadNativeCommandIndexedEntryTable(path string) (*NativeCommandIndexedEntry
 				}
 			}
 		}
+		if entry.CommandID == 7 {
+			if entry.InitChannels != 4 || entry.DrawChannels != 3 ||
+				entry.ModeReturns["0"] != 2 || entry.ModeReturns["3"] != 32 || entry.ModeReturns["6"] != 16 ||
+				entry.UsesRNG || len(entry.OffsetTables) != 1 || entry.OffsetTables[0] != "0x52511" ||
+				len(entry.SampleMarkers) != 6 {
+				return nil, errors.New("native command indexed entry 7 direct-instruction contract is invalid")
+			}
+			for index, marker := range entry.SampleMarkers {
+				wantMode := [...]int{2, 2, 5, 5, 8, 8}[index]
+				wantChannel := [...]int{0, 1, 0, 1, 0, 1}[index]
+				wantCallee := [...]string{"0x25A96", "0x25B45", "0x25A96", "0x25B45", "0x25A96", "0x25B45"}[index]
+				if marker.Mode != wantMode || marker.Channel != wantChannel || marker.Counter != 1 || marker.Callee != wantCallee {
+					return nil, errors.New("native command indexed entry 7 sample contract is invalid")
+				}
+			}
+		}
 		seen[entry.CommandID] = true
 	}
 	return &table, nil

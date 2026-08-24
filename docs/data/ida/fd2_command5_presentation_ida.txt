@@ -73,6 +73,9 @@ step `0,2,4,6,7,8,9,10,11`；只有前六個 step
   `0x25A96(sound,1,1)`；同條件的 channel3 呼叫
   `0x25B45(sound,1,1)`。舊 typed JSON 將它縮成「mode5 counter3」是錯誤
   斷言：3是 channel index，不是 counter，且三個 draw mode 都可能消費。
+  兩個 callee 是不同播放 handle，但第三個參數同為 sample index1；handler
+  兩支都消費 #86 sub1。共用 actor marker 才消費 #86 sub0，不可把 callee
+  差異誤寫成兩個不同子樣本。
 
 ## 重製規格與限制
 
@@ -89,4 +92,3 @@ step `0,2,4,6,7,8,9,10,11`；只有前六個 step
   原版 RNG parity；不得用未證實順序改寫戰鬥數值。
 - 尚缺未修改原版一般玩家／敵方同狀態逐幀與逐音訊 E2；這不阻擋建立保留
   已證實畫面時序、且缺資產時失敗即關閉的 indexed `RUNTIME-E1`。
-

@@ -339,8 +339,8 @@ type Game struct {
 	sfxCommand2Mode2          []byte                // FDOTHER #83 sub1: 0x26528 mode2/8 marker
 	sfxCommand2Mode5          []byte                // FDOTHER #83 sub2: 0x26528 mode5 marker
 	sfxCommand2Mode6          []byte                // FDOTHER #83 sub3: 0x26528 mode6 marker
-	sfxCommand5Primary        []byte                // FDOTHER #86 sub0: actor／channel0 marker
-	sfxCommand5Secondary      []byte                // FDOTHER #86 sub1: channel3 marker
+	sfxCommand5Actor          []byte                // FDOTHER #86 sub0: common actor marker
+	sfxCommand5Target         []byte                // FDOTHER #86 sub1: channel0／3 handler markers
 	sfxCommand6Actor          []byte                // FDOTHER #87 sub0: common 0x2B659 actor marker
 	sfxCommand6Target         []byte                // FDOTHER #87 sub1: command6 mode5 counter markers
 	sfxCommand6Front          []byte                // FDOTHER #87 sub2: command6 mode0 before seven front frames
@@ -9482,26 +9482,26 @@ func loadGame() *Game {
 	g.rng = rand.New(rand.NewSource(seed))
 	g.sfx = loadSFX()
 	// 戰鬥音效:揮擊/命中/陣亡三段(真素材;attack_id→池 精確對照 doc36 未 RE,故命中/陣亡池為近似選擇)
-	g.sfxSwing = loadWav("assets/sfx/battle_48_00.wav")             // 揮擊(池 sub0,七池共用)
-	g.sfxImpact = loadWav("assets/sfx/battle_64_00.wav")            // 命中(最短最尖池)
-	g.sfxDeath = loadWav("assets/sfx/battle_88_00.wav")             // 陣亡/重擊(最長池)
-	g.sfxTransition = loadWav("assets/sfx/battle_88_01.wav")        // ch24 FDOTHER #88 sub1
-	g.sfxCommandModifier = loadWav("assets/sfx/battle_88_00.wav")   // 0x1D6C8 FDOTHER #88 sub0
-	g.sfxCommand24Actor = loadWav("assets/sfx/battle_53_03.wav")    // 0x276EC selector32 actor raw+5
-	g.sfxCommand24Target = loadWav("assets/sfx/battle_53_02.wav")   // 0x276EC selector32 target raw+5
-	g.sfxCommand0Actor = loadWav("assets/sfx/battle_82_00.wav")     // 0x2B659 command0 actor marker
-	g.sfxCommand0Target = loadWav("assets/sfx/battle_82_01.wav")    // 0x26152 seven target markers
-	g.sfxCommand2Actor = loadWav("assets/sfx/battle_83_00.wav")     // common 0x2B659 actor marker
-	g.sfxCommand2Mode2 = loadWav("assets/sfx/battle_83_01.wav")     // 0x26528 mode2/8
-	g.sfxCommand2Mode5 = loadWav("assets/sfx/battle_83_02.wav")     // 0x26528 mode5
-	g.sfxCommand2Mode6 = loadWav("assets/sfx/battle_83_03.wav")     // 0x26528 mode6
-	g.sfxCommand5Primary = loadWav("assets/sfx/battle_86_00.wav")   // 0x2B659 actor／0x26BFD channel0
-	g.sfxCommand5Secondary = loadWav("assets/sfx/battle_86_01.wav") // 0x26BFD channel3
-	g.sfxCommand6Actor = loadWav("assets/sfx/battle_87_00.wav")     // common 0x2B659 actor marker
-	g.sfxCommand6Target = loadWav("assets/sfx/battle_87_01.wav")    // 0x26E39 mode5 markers
-	g.sfxCommand6Front = loadWav("assets/sfx/battle_87_02.wav")     // 0x26E39 mode0
-	g.sfxCommand6Tail = loadWav("assets/sfx/battle_87_03.wav")      // 0x26E39 mode6
-	g.sfxSpawnIntro = loadWav("assets/sfx/battle_95_00.wav")        // 0x32999 pass1 FDOTHER #95 sub0
+	g.sfxSwing = loadWav("assets/sfx/battle_48_00.wav")           // 揮擊(池 sub0,七池共用)
+	g.sfxImpact = loadWav("assets/sfx/battle_64_00.wav")          // 命中(最短最尖池)
+	g.sfxDeath = loadWav("assets/sfx/battle_88_00.wav")           // 陣亡/重擊(最長池)
+	g.sfxTransition = loadWav("assets/sfx/battle_88_01.wav")      // ch24 FDOTHER #88 sub1
+	g.sfxCommandModifier = loadWav("assets/sfx/battle_88_00.wav") // 0x1D6C8 FDOTHER #88 sub0
+	g.sfxCommand24Actor = loadWav("assets/sfx/battle_53_03.wav")  // 0x276EC selector32 actor raw+5
+	g.sfxCommand24Target = loadWav("assets/sfx/battle_53_02.wav") // 0x276EC selector32 target raw+5
+	g.sfxCommand0Actor = loadWav("assets/sfx/battle_82_00.wav")   // 0x2B659 command0 actor marker
+	g.sfxCommand0Target = loadWav("assets/sfx/battle_82_01.wav")  // 0x26152 seven target markers
+	g.sfxCommand2Actor = loadWav("assets/sfx/battle_83_00.wav")   // common 0x2B659 actor marker
+	g.sfxCommand2Mode2 = loadWav("assets/sfx/battle_83_01.wav")   // 0x26528 mode2/8
+	g.sfxCommand2Mode5 = loadWav("assets/sfx/battle_83_02.wav")   // 0x26528 mode5
+	g.sfxCommand2Mode6 = loadWav("assets/sfx/battle_83_03.wav")   // 0x26528 mode6
+	g.sfxCommand5Actor = loadWav("assets/sfx/battle_86_00.wav")   // common 0x2B659 actor marker
+	g.sfxCommand5Target = loadWav("assets/sfx/battle_86_01.wav")  // 0x26BFD channel0／3 sample index1
+	g.sfxCommand6Actor = loadWav("assets/sfx/battle_87_00.wav")   // common 0x2B659 actor marker
+	g.sfxCommand6Target = loadWav("assets/sfx/battle_87_01.wav")  // 0x26E39 mode5 markers
+	g.sfxCommand6Front = loadWav("assets/sfx/battle_87_02.wav")   // 0x26E39 mode0
+	g.sfxCommand6Tail = loadWav("assets/sfx/battle_87_03.wav")    // 0x26E39 mode6
+	g.sfxSpawnIntro = loadWav("assets/sfx/battle_95_00.wav")      // 0x32999 pass1 FDOTHER #95 sub0
 	// 戰場 BGM:doc12 推定 track18=戰鬥被使用者實聽推翻(18=商店音樂);戰鬥曲號待聽辨,先不播錯曲
 	if os.Getenv("FD2_TITLE") == "1" || (g.shotPath == "" && os.Getenv("FD2_TITLE") != "0") { // 開頭動畫+主選單(headless 截圖預設跳過)
 		if ta := loadTitleAssets(); ta != nil {

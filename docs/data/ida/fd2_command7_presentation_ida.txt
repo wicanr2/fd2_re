@@ -1,0 +1,77 @@
+# FD2 第 7 號指令 `0x272B8` indexed 演出：IDA Pro 9.4 證據
+
+## 輸入、工具與位址空間
+
+- `FD2.EXE`：357074 bytes；MD5 `b97caf2239a27a896069d03549d96e1e`；
+  SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- `FDOTHER.DAT`：3382481 bytes；MD5 `22f56e5027edc7c766ad34ca4e5aca93`。
+- 第一順位工具：使用者合法授權的 IDA Pro 9.4.0.260610，於
+  `fd2-ida-authorized-local` 無網路一次性 Docker 內建立暫存 `.i64`。IDA 位址
+  均為 DOS LE loader 線性位址、image base 0。Capstone 5.0.3／
+  `fd2-cap-local` 又獨立核對完整 `0x272B8..0x274AF`。
+- IDA 將原始函式固定為 `sub_272B8`、範圍 `0x272B8..0x274B0`；本檔只附加
+  第 7 號導覽語意，不以改名取代原始位址、bytes或運算元。共用 caller仍是
+  `sub_2A6BD` 的 command-indexed間接呼叫。
+
+## mode、state 與圖層排程（已證實）
+
+`0x272B8(actor,effect,destination,stride,mode)`：
+
+- 進入時複製 `0x52511` 的10個 signed dword至local table。actor raw record
+  `+6==0` 時，`0x272FA` 對全部10值加 `0x82`（130）。
+- `mode0` 在 `0x27310..0x27347` 初始化四組counter
+  `0,-3,-6,-9`與position `0,1,2,3`；next-position設4、stop與toggle清0，
+  回傳2。只有前三組進後續draw loop，第四組不能冒稱rendered channel。
+- `mode3`只回傳32，不重設state。`mode6`先把stop設1再回傳16。
+- 只有`mode2／5／8`進共用loop。每次呼叫先把toggle加1後 `%2`；三個channel
+  都可在 `0 <= counter < 5` 時直接畫 effect frame=`counter`，destination為
+  caller base加local table[position]，垂直位置只來自frame本身。
+- toggle非零時只畫圖，不增加counter、不播handler sample、不產生numeric marker。
+  toggle為零時才在畫圖後處理sample、counter加1與reset，因此每個counter畫面
+  固定重複兩次；這不是FIGANI descriptor delay scheduler。
+- toggle為零且pre-increment counter==1時，channel0呼
+  `0x25A96(sound,1,1)`，channel1呼`0x25B45(sound,1,1)`；兩者第三參數都指定
+  sample index1，只是播放handle不同。channel2沒有直接sample call。
+- counter增加後等於2時回傳numeric marker。counter增加到7且stop=0時，先將
+  共用next-position加1並 `%10`，再把該值寫入channel position、counter重設0；
+  因此初值4之後第一個循環位置是5。stop=1的tail不再reset。
+
+`0x52511` 的10個 signed dword為：
+`30,-10,70,20,100,130,40,80,110,60`。
+
+共用caller固定front／target／tail預算為2／32／16；相鄰target仍由
+`sub_2BA22`消費相同state九張。`0x525AF[7]`為5，故每個target只發布前五個
+numeric marker。從mode0後兩張front結束的第一個target，32張內raw marker落在
+step `1,7,13,15,21,27,29`，HP stage1..5只用`1,7,13,15,21`；channel0 sample
+落在`1,15,29`，channel1 sample落在`7,21`。這些位置由直接指令機械模擬取得，
+不替聲音或效果命名。
+
+## 效果與音效資源（已證實）
+
+- `sub_2A6BD` 的效果表：raw `+6!=0`時ID7取`0x525B9[7]=37`；raw `+6==0`
+  時取`0x525C2[7]=38`。
+- FDOTHER #37：9181 bytes；MD5 `63fad393945564a9ee6512773ae27f8b`；
+  SHA-256 `7b383e33b53aa89b7bcf24a8a694213b556d0a68247616337edaa20288788288`。
+  FDOTHER #38：11079 bytes；MD5 `c02d6fe8cffb3d63398be5501773207a`；
+  SHA-256 `76b30b77a2939175fa2a057032130f1d3db89367bf427731127e0f583c4ce8e4`。
+  兩者header均為`05 00 05 00 00 00 00 00`、各5張可解碼frame；descriptor
+  delay依序為`2,2,2,2,4`，但本entry直接依counter選frame，沒有呼叫通用delay
+  scheduler。
+- command sound table中ID7為ASCII `X`＝十進位FDOTHER #88。#88為14953-byte
+  `LLLLLL`，MD5 `82aaf57ee4064d3f31f88def50ae9d3c`，SHA-256
+  `a4e00033ed5e76f0f1915c828bcb6aea6d61d8d22ff6271aac96c687ffe6a9d3`；
+  sub0／sub1為6561／8374 bytes，sub2是零長度sentinel。common actor marker
+  消費sub0，handler兩個播放handle都以sample index1消費sub1。
+
+## 重製映射與限制
+
+- **RE-CLOSED／DATA-READY**：函式邊界、mode預算、四組初始化／三組render、
+  toggle雙張、counter／position／stop、10個offset、#37／#38、#88、sample與
+  七個raw marker／五段HP gate均已閉合。
+- typed state必須跨target與九張boundary持續；不能每target重設，也不能把
+  第四組初始化資料畫成第四通道。compositor依mode1／4／7無handler layer、
+  mode2／5／8後置effect的共用caller順序實作。
+- `sub_2A6BD` 的numeric-marker shake仍會消耗process-wide RNG；handler本身不
+  消耗RNG。正式owner若沿用既有整批damage plan而未重現shake RNG交錯，必須列為
+  視覺RNG近似，不得宣稱原版RNG parity。
+- 尚缺正式Game owner與未修改一般玩家／敵方同狀態逐幀、逐音訊 E2。

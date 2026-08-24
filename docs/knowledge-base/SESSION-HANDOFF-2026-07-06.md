@@ -6087,7 +6087,9 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 
 - IDA Pro 9.4、Capstone與固定雜湊原始資產共同閉合六通道counter／position／
   phase、十位置循環、mode0／3／6的1／12／8預算、#24／#25十二張delay0效果及
-  #86 sub0／sub1。舊JSON將channel3誤寫為counter3並漏掉mode2／8、`0x25A96`
+  #86 sub0／sub1。後續ABI勘誤固定sub0屬common actor；handler的`0x25A96`與
+  `0x25B45`雖為不同播放handle，第三參數都指定sample index1，因此兩者同用sub1。
+  舊JSON將channel3誤寫為counter3並漏掉mode2／8、`0x25A96`
   的斷言已撤回；六個直接sample marker已逐筆保存。
 - typed planner與全批次indexed compositor保留front→targets→九張boundaries→
   tail的同一state。正式Game owner一次預建common前導／actor、1張front、每target

@@ -18,7 +18,7 @@ func TestLoadNativeCommandIndexedEntryTablePreservesCorrectedLinearEntries(t *te
 		}
 	}
 	entry7, _ := table.Schedule(7)
-	if entry7.InitChannels != 4 || entry7.DrawChannels != 3 || entry7.ModeReturns["3"] != 32 {
+	if entry7.InitChannels != 4 || entry7.DrawChannels != 3 || entry7.ModeReturns["3"] != 32 || len(entry7.SampleMarkers) != 6 {
 		t.Fatalf("command7 raw channel contract=%#v", entry7)
 	}
 	entry8, _ := table.Schedule(8)
