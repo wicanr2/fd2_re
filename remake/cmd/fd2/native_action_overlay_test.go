@@ -339,7 +339,7 @@ func TestNativeCommandTargetWhitelistKeepsUnresolvedIDsFailClosed(t *testing.T) 
 	}
 }
 
-func TestNativeCommand34ConfirmConsumesProvenClass19Transaction(t *testing.T) {
+func TestNativeCommand34ConfirmFailsClosedWithoutIndexedPresentation(t *testing.T) {
 	actor := &battle.Unit{
 		Camp: battle.Own, OnField: true, X: 0, Y: 0, HP: 100, MaxHP: 100, MP: 30,
 		AP: 100, DP: 80, HIT: 60, EV: 50, Lv: 20,
@@ -367,10 +367,8 @@ func TestNativeCommand34ConfirmConsumesProvenClass19Transaction(t *testing.T) {
 		nativeCommand0Targeting: true, nativeCommandTargetID: 34, nativeRNGState: 1,
 	}
 	g.confirm()
-	if !actor.Acted || actor.MP != 30 || actor.NativeTransient[0] == 0 ||
-		actor.NativeTransient[1] == 0 || actor.NativeTransient[2] == 0 ||
-		target.NativeTransient[0] == 0 || target.NativeTransient[1] == 0 || target.NativeTransient[2] == 0 {
-		t.Fatalf("command34 production confirm did not publish all stages actor=%#v target=%#v msg=%q", actor, target, g.msg)
+	if actor.Acted || actor.MP != 30 || actor.NativeTransient != [6]byte{} || target.NativeTransient != [6]byte{} || g.nativeCmd34Presentation != nil || g.msg == "" {
+		t.Fatalf("command34 missing indexed assets did not fail closed actor=%#v target=%#v msg=%q", actor, target, g.msg)
 	}
 }
 

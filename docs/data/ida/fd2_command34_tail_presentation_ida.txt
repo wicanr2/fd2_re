@@ -1,0 +1,58 @@
+# FD2 玩家指令 34 三段 modifier 尾段非破壞性證據
+
+## 輸入、工具與位址空間
+
+- 輸入 `FD2.EXE`，357074 bytes；MD5 `b97caf2239a27a896069d03549d96e1e`；
+  SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 第一順位工具為授權 Docker 內 IDA Pro 9.4.0.260610／Hex-Rays，IDA
+  linear address、image base 0；原始執行檔唯讀，暫存 `.i64` 只寫入 `/tmp`。
+- 第二順位工具為 Docker 內 Capstone 5.0.3，用於核對直接指令與 raw table bytes。
+  產生日期：2026-08-25。
+- 保留原始名稱 `sub_22721`、`sub_22866`、`sub_22997`、`sub_1C4CC`、
+  `sub_1C2DA`、`sub_1E0DB`、`sub_1E1DC`、`sub_1DF58`；本文件語意均為附加層。
+
+## caller、writer 與 consumer（已證實）
+
+- `sub_22721` 範圍 `0x22721..0x2282F`；直接 caller 包含指令34 owner 的
+  `0x28607`。它硬編碼 command 17，依序呼叫 `sub_1C4CC`、`sub_1C2DA`，
+  再逐 target 檢查 raw `+0x22`。零 marker 分支寫 marker、增加 word `+0x48`
+  並呼叫 `sub_1E0DB(delta,0x69,target)`；非零分支呼叫 `sub_1E1DC(target)`。
+- `sub_22866` 範圍 `0x22866..0x22960`；指令34 caller 是 `0x28625`。
+  它硬編碼 command 18，以相同畫面順序處理 marker `+0x23` 與 word `+0x4A`。
+- `sub_22997` 範圍 `0x22997..0x22A85`；指令34 caller 是 `0x28643`。
+  它硬編碼 command 19，以相同畫面順序處理 marker `+0x24`，並對 words
+  `+0x4C/+0x4E`各加 `0x0F`；數字 consumer 的 value 固定為 `0x0F`。
+- 三個函式的非零 marker 分支都不寫 record，並改走 `sub_1E1DC` 的四個固定
+  glyph queue；最後都執行 `sub_11CAC(0)→sub_1DF58`，即22張數字段與500 ms尾停。
+- `0x27FC9` 依上述三個 caller 位址嚴格按 17→18→19 執行；每一段都有自己的
+  effect、mask、writer／queue、steady redraw、22張數字段及尾停，不能合併成一次
+  無畫面的狀態發布。
+
+## raw table 與額外 sample marker（已證實）
+
+以 command ID 索引原版表 `0x51F15／0x51F33／0x51F54／0x51F75`：
+
+| command | raw mask | FDOTHER #6 起點 | 幀數 | 首幀 #80 sample | 額外 sample marker |
+|---:|---:|---:|---:|---:|---|
+| 17 | `0x92` | `0xB7` | 8 | 6 | 無 |
+| 18 | `0x48` | `0x7E` | 12 | 7 | frame 4 再播 sample 7 |
+| 19 | `0xD8` | `0x93` | 11 | 8 | frame 3、6 再播 sample 8 |
+
+`sub_1C2DA` 每段均播放 #80 sample1，並呈現五組 snapshot→mask 及最後
+snapshot。`sub_1E0DB` 的 digit bias 固定 `0x69`；`sub_1E1DC` 的固定 queue
+為 glyph `74/75/76/76`，position codes `2/8/12/17`。通用座標、mask 與數字段
+primitive 的主證據仍是 `fd2_command_numeric_tail_ida.txt`，本文件只固定指令34
+確實消費的三列與順序。
+
+## 證據分級與正式重製契約
+
+- **已證實**：三個函式邊界、指令34 direct caller、command 常數、raw table bytes、
+  sample marker、marker／word writer、processed／skipped queue consumer及三段順序。
+- **強推論**：原版每次 present 映射成至少一個 Ebiten Draw acknowledgement；
+  2 ms／500 ms採現代引擎有界近似，不宣稱 DOS 逐毫秒一致。
+- **未知**：三個 raw marker 與 derived words 的高階技能名稱、score／EXP消費、
+  同狀態逐像素與逐音訊 E2，以及非玩家 owner。
+- 正式玩家 owner 必須先完整預建 `0x27FC9` 共用段及三段尾段。每段五組 mask
+  完成後，才發布該段 marker／word 與 RNG；其數字段及500 ms尾停完成後才可開始
+  下一段。第三段完成前不得設定 `Acted`。取消或任何晚期失敗必須回復三段所有
+  已發布狀態與 RNG。

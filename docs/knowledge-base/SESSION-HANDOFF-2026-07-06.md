@@ -6260,3 +6260,21 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   Docker／Xvfb `go test ./... -count=1`均通過，提升為受限class19玩家
   `RUNTIME-E1`。下一個切片是ID34三段modifier的畫面consumer補證與正式owner；
   不重做ID32／33。
+
+## 2026-08-25：指令34三段 modifier 正式 indexed owner
+
+- 授權Docker內IDA Pro 9.4與Capstone固定`0x22721／0x22866／0x22997`不只是
+  state writer：三者分別硬編碼command17／18／19，各自呼叫`0x1C4CC→0x1C2DA`，
+  再依raw marker走`0x1E0DB`數值或`0x1E1DC`固定queue，最後各自執行22張數字段
+  與500 ms尾停。canonical evidence為
+  [`fd2_command34_tail_presentation_ida.txt`](../data/ida/fd2_command34_tail_presentation_ida.txt)。
+- typed schedule保存三列FDOTHER #6起點`0xB7／0x7E／0x93`、幀數`8／12／11`、
+  #80 sample `6／7／8`、raw mask `0x92／0x48／0xD8`及額外sample marker。
+- `NativeCompoundCommand34Plan`現先在私有records計算三段快照；正式`Game` owner
+  完整預建#67／#93共用段、0..40地圖漸入與三段tail。每段mask完成後才發布該段
+  raw＋RNG，數字段及尾停完成後才進下一段，第三段結束才發布`Acted`。晚期失敗
+  或overlay reset會回復三段狀態、RNG與indexed buffers。
+- 原始資產非靜音端到端、無Draw不發布、逐段發布、晚期回復、overlay reset及
+  Docker／Xvfb完整`go test ./... -count=1`均已通過，提升為受限class19玩家
+  `RUNTIME-E1`。下一個切片是ID35三段
+  application的畫面consumer與正式owner；不重做ID32–34。

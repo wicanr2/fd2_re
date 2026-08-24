@@ -56,7 +56,7 @@ func (g *Game) startNativeCommand33Presentation(actor, confirmed *battle.Unit, t
 	if !g.nativeFullPresentationEnabled() || g == nil || g.st == nil || actor == nil || confirmed == nil {
 		return errors.New("native command33 presentation context unavailable")
 	}
-	if g.nativeCmd33Presentation != nil || g.nativeCmd32Presentation != nil || g.nativeHealPresentation != nil ||
+	if g.nativeCmd34Presentation != nil || g.nativeCmd33Presentation != nil || g.nativeCmd32Presentation != nil || g.nativeHealPresentation != nil ||
 		g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil ||
 		g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil ||
 		g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil ||

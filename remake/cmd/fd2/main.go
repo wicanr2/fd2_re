@@ -187,6 +187,7 @@ type Game struct {
 	nativeCmd29Presentation    *nativeCommand29PresentationJob
 	nativeCmd32Presentation    *nativeCommand32PresentationJob
 	nativeCmd33Presentation    *nativeCommand33PresentationJob
+	nativeCmd34Presentation    *nativeCommand34PresentationJob
 	spawnIntroTransition       *nativeSpawnIntroJob
 	nativeTurnStaging          *nativeTurnStagingJob
 	nativeFieldEvent61         *nativeFieldEvent61Job
@@ -6218,20 +6219,22 @@ func (g *Game) confirm() {
 		}
 		if id == 34 {
 			actor := g.sel
-			result, err := g.st.ExecuteNativeCompoundCommand34(actor, tgt, g.nativeRNGState)
+			err := g.startNativeCommand34Presentation(actor, tgt, func(result battle.NativeCompoundCommand34Result) {
+				g.nativeRNGState = result.RNGState
+				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
+				g.msg = "原始指令 34：完成三段 indexed modifier"
+				g.finishSuccessfulUnitAction(actor, func() {
+					g.resetNativeTargetField()
+					g.st.MaterializeNativeMapRangeMode(1)
+					g.nativeCommand0Targeting, g.nativeCommandTargetID, g.sel, g.reach, g.moved = false, 0, nil, nil, false
+				})
+				g.checkResult()
+			})
 			if err != nil {
 				g.msg = fmt.Sprintf("原始指令 34：請選擇有效目標 (%v)", err)
 				return
 			}
-			g.nativeRNGState = result.RNGState
-			actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
-			g.msg = "原始指令 34：完成三段 raw modifier"
-			g.finishSuccessfulUnitAction(actor, func() {
-				g.resetNativeTargetField()
-				g.st.MaterializeNativeMapRangeMode(1)
-				g.nativeCommand0Targeting, g.nativeCommandTargetID, g.sel, g.reach, g.moved = false, 0, nil, nil, false
-			})
-			g.checkResult()
+			g.msg = "原始指令 34：indexed 演出進行中"
 			return
 		}
 		if id == 35 {
@@ -7323,6 +7326,7 @@ func (g *Game) Update() error {
 	g.stepNativeCommand29Presentation()          // native 0x276EC selector34 multi-target FIGANI presentation
 	g.stepNativeCommand32Presentation()          // native 0x27FC9→0x2111A player command32 presentation
 	g.stepNativeCommand33Presentation()          // native 0x27FC9→0x211A4 player command33 presentation
+	g.stepNativeCommand34Presentation()          // native 0x27FC9→0x22721/0x22866/0x22997 player command34 presentation
 	g.stepNativePaletteRamp()                    // native 0x1f882/0x1f525 whole-DAC ramps
 	g.stepNativePalettePulse()                   // native 0x35E5A whole-DAC pulse
 	g.stepNativeSpawnIntro()                     // native 0x32999 twelve-pass indexed spawn transition
@@ -7373,7 +7377,7 @@ func (g *Game) Update() error {
 			clamp(&g.camY, 0, float64(g.m.H*g.m.TileH-logicalH))
 		}
 	}
-	if g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil || g.nativeCmd33Presentation != nil {
+	if g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil || g.nativeCmd33Presentation != nil || g.nativeCmd34Presentation != nil {
 		return nil
 	}
 	if g.nativeSystemInfoUI != nil {
@@ -7895,6 +7899,13 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		screen.Fill(color.Black)
 		if !g.drawNativeCommand33Presentation(screen) {
 			g.failNativeCommand33Presentation(errors.New("draw input unavailable"))
+		}
+		return
+	}
+	if g.nativeCmd34Presentation != nil {
+		screen.Fill(color.Black)
+		if !g.drawNativeCommand34Presentation(screen) {
+			g.failNativeCommand34Presentation(errors.New("draw input unavailable"))
 		}
 		return
 	}
@@ -10245,7 +10256,7 @@ func (g *Game) finishNativeTransientPlayerPhase() {
 // aiStep AI 回合驅動:一次取一個單位的行動計畫,播行走動畫→到位攻擊(全螢幕演出)。
 // 全單位動完 → finishTurn。
 func (g *Game) aiStep() {
-	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil || g.nativeCmd33Presentation != nil || g.result != "" {
+	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil || g.nativeCmd33Presentation != nil || g.nativeCmd34Presentation != nil || g.result != "" {
 		if g.result != "" {
 			g.aiBusy = false
 		}
