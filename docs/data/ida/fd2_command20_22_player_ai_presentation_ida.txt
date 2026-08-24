@@ -1,0 +1,70 @@
+# FD2 指令 20–22 玩家／敵方共用尾段非破壞性證據
+
+## 輸入、工具與位址空間
+
+- 輸入 `FD2.EXE`，357074 bytes；MD5 `b97caf2239a27a896069d03549d96e1e`；
+  SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 第一順位工具：授權 Docker 內 IDA Pro 9.4.0.260610／Hex-Rays，IDA
+  linear address、image base 0；原始執行檔唯讀，暫存 `.i64` 只寫入 `/tmp`。
+- 第二順位工具：Docker 內 Capstone 5.0.3，覆核 raw table 與直接指令。
+  產生日期：2026-08-25。
+- 保留原始名稱與位址；下列功能描述只是帶證據等級的附加語意。
+
+## dispatch、wrapper、writer 與 consumer（已證實）
+
+- `sub_15311` 的 `0x1541F` 以 command ID 索引 loaded jump table `0x51D01`。
+  同一雜湊的 raw entries 20／21／22 是
+  `0x00012A85／0x00012BC6／0x00012BE1`，套用 obj1 base 後為
+  `sub_22A85／sub_22BC6／sub_22BE1`。三個入口同時有玩家
+  `sub_1CFF0` 的 indirect xref，因此玩家與敵方共用同一尾段 owner；只有玩家
+  另先經 `sub_1D6C8` palette 前段。
+- `sub_22A85` 將 command20、marker `+0x25` 傳給
+  `sub_22AA8→sub_22AF6`；`sub_22BC6` 以 tail jump 將 command21、marker
+  `+0x26` 傳入同一路徑。`sub_22AA8` 先清 queue 狀態並呼叫 `sub_1CA89`，
+  `sub_22AF6` 再依序呼叫 `sub_1C4CC`、`sub_1C2DA`。
+- `sub_22AF6` 逐 target 讀 marker；零值呼叫 `sub_1E1DC`，非零值呼叫
+  `sub_1C916(target,10)`、以 `sub_1E0DB(actual,0x69,target)`排入結果、清 marker，
+  最後 `sub_11CAC(0)`。`sub_22AA8` 在 queue 非空時 tail jump `sub_1DF58`。
+- `sub_22BE1` 將 command22、marker `+0x27` 傳給
+  `sub_22CDA→sub_22D1B`。`sub_22D1B` 同樣先呼叫 `sub_1C4CC`、
+  `sub_1C2DA`；成功分支呼叫 `sub_1C81F(target,10)`，以
+  `sub_1E0DB(actual,0x5E,target)`排入結果，再以第三次 RNG 寫 marker。
+  marker非零、class `0x19／0x1A`或第一RNG gate失敗時改呼叫`sub_1E1DC`。
+  queue非空時由既有共同尾端進`sub_1DF58`。
+- 因此現行敵方同步 executor 直接完成MP／HP／marker／`Acted`，以及現行玩家
+  palette完成後直接執行transaction，兩者都跳過原版handler-owned尾段；這是
+  玩家可見執行期缺口，不是原版語意未知。
+
+## raw presentation rows（已證實）
+
+以 command ID 索引 `0x51F15／0x51F33／0x51F54／0x51F75`：
+
+| command | raw mask | FDOTHER #6 起點 | 幀數 | 首幀 #80 sample | 額外 sample marker | digit bias |
+|---:|---:|---:|---:|---:|---|---:|
+| 20 | `0xC0` | `0xCC` | 13 | 4 | 無 | `0x69` |
+| 21 | `0xC0` | `0xD9` | 13 | 4 | 無 | `0x69` |
+| 22 | `0x23` | `0xAA` | 13 | 3 | zero-based frame 7 | `0x5E` |
+
+三段均有五組 snapshot→mask、最後 snapshot、22張數字段與500 ms尾停；
+通用 primitive 的主證據是 `fd2_command_numeric_tail_ida.txt`。時間採現代引擎
+有界近似，不能宣稱 DOS wall-clock 逐毫秒一致。
+
+## 正式重製契約與證據等級
+
+- **已證實**：jump-table entries、函式邊界、玩家／敵方共用入口、command／marker
+  常數、effect與mask consumer、writer／skip queue、raw schedule與numeric consumer。
+- **強推論**：每次原版present對應至少一次Ebiten Draw acknowledgement；2 ms／
+  500 ms採有界近似。
+- **未知**：三個marker的高階狀態名稱、score／EXP最終消費，以及同狀態逐像素／
+  逐音訊E2。
+- 玩家owner：先完成`sub_1D6C8`八個palette階段，再進對應尾段。敵方owner：
+  不得加入玩家palette，直接進對應尾段。兩者都只能在五組mask完成後發布MP、
+  HP／marker與RNG，22張數字段及500 ms尾停後才發布`Acted`並續接控制流程；取消
+  或晚期失敗須回復整筆交易。
+
+## 可重生命令
+
+IDA Docker：以 `tools/ida_probe_functions.py` 匯出
+`FD2_IDA_ADDRESSES="0x1541f 0x22a85 0x22aa8 0x22af6 0x22bc6 0x22be1 0x22cda 0x22d1b"`。
+Capstone Docker：以 `tools/disasm_le.py` 重讀 `0x51D01`、四張`0x51F15`起始表，
+以及 range `0x22A85..0x22E41`。原始檔唯讀，容器一次性且無網路。

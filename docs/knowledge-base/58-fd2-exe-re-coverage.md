@@ -148,6 +148,16 @@ indices17／18／19分別是`0x226EA／0x2282F／0x22960`；三個wrapper會進�
 `0x1D6C8`八相位palette，但正式owner必須呈現對應單段尾段並在mask／結果hold邊界
 發布交易；主證據為[`fd2_command34_tail_presentation_ida.txt`](../data/ida/fd2_command34_tail_presentation_ida.txt)。
 
+**2026-08-25 敵方20–22尾段勘誤**：同一loaded table indices20／21／22已由
+IDA Pro 9.4與raw bytes閉合為`0x22A85／0x22BC6／0x22BE1`；wrapper分別進
+`0x22AF6` clear/restore或`0x22D1B` application，三者都消費`0x1C4CC`效果、
+`0x1C2DA`遮罩、結果queue與`0x1DF58`數字段。正式敵方owner現以raw selector
+重建target array、原生16-bit RNG私下預算；mask完成後才發布MP／HP／marker／RNG，
+22張數字段與500 ms尾停後才發布`Acted`。ID20原始資產端到端與取消回復聚焦
+回歸已通過，達`RUNTIME-E1`；玩家20–22目前仍只有`0x1D6C8`palette前段，尚待
+把同一handler tail串在其後。主證據為
+[`fd2_command20_22_player_ai_presentation_ida.txt`](../data/ida/fd2_command20_22_player_ai_presentation_ida.txt)。
+
 **2026-08-23 敵方 command0 演出接線**：`0x15311`在ID `<10`且
 `Raw53AF9==0`時進`0x2A6BD`；正式敵方ID0已改用既有完整
 `0x2A6BD→0x26152` presenter，不再直接發布state-only傷害。預建失敗時MP、HP、

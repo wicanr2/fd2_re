@@ -5875,3 +5875,14 @@ actor／target。此為來源約束的 `RUNTIME-E1`；未修改一般玩家逐�
 只在 Draw acknowledgement 後發布，任何錯誤整筆回復。raw side非零因原版只複製
 九筆效果 table 而拒絕，不讀未初始化 stack padding。敵方達 `RUNTIME-E1`；玩家
 仍停在 `DATA-READY`，等 raw selector14／15 的音訊 resolver 與 map owner 接線。
+### 指令20–22玩家／敵方共用尾段契約（2026-08-25）
+
+[`fd2_command20_22_player_ai_presentation_ida.txt`](../data/ida/fd2_command20_22_player_ai_presentation_ida.txt)
+已由IDA Pro 9.4主證據與Capstone覆核閉合`funcs_1541F[20..22]`。正式執行期不得再把
+20／21同步clear/restore或22同步application視為完整owner：玩家須先完成`0x1D6C8`
+八個palette階段，玩家與敵方其後都須執行各自`0x1C4CC→0x1C2DA→writer/skip queue→
+0x1DF58`尾段；敵方不播放玩家palette。raw rows依序是20=`CC/13/4/C0`、
+21=`D9/13/4/C0`、22=`AA/13/3/23`，22另於zero-based frame7重播sample3；
+20／21 digit bias `0x69`，22為`0x5E`。五組mask完成後才可原子發布MP、狀態、
+HP與原生RNG，22張數字段與500 ms有界尾停完成後才可發布`Acted`。任何失敗或取消
+均回復整筆交易；marker高階名稱仍未知，不得猜測。

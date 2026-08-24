@@ -207,12 +207,25 @@ func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after 
 				g.checkResult()
 			})
 		case id == 20 || id == 21:
-			results, err := g.st.ExecuteNativeCommandClearRestore(actor, target, id, g.rng)
-			if err != nil {
-				return err
-			}
-			message = fmt.Sprintf("原始指令 %d：完成 raw interval 處理 (%d targets)", id, len(results))
-		case id == 22 || id == 26 || id == 27:
+			return g.startNativeAICommand2022Presentation(actor, id, func(result *battle.NativeAICommand2022Plan) {
+				actor.SetMapPose(dirToward(actor.X, actor.Y, target.X, target.Y))
+				g.msg = fmt.Sprintf("原始指令 %d：完成敵方 indexed 尾段 (%d targets)", id, len(result.Results))
+				g.finishSuccessfulUnitAction(actor, after)
+				g.checkResult()
+			})
+		case id == 22:
+			return g.startNativeAICommand2022Presentation(actor, id, func(result *battle.NativeAICommand2022Plan) {
+				for _, entry := range result.Results {
+					if entry.Apply != nil && entry.Apply.Damage.Actual > 0 {
+						g.awardDeathReward(entry.Target, actor)
+					}
+				}
+				actor.SetMapPose(dirToward(actor.X, actor.Y, target.X, target.Y))
+				g.msg = fmt.Sprintf("原始指令 22：完成敵方 indexed 尾段 (%d targets)", len(result.Results))
+				g.finishSuccessfulUnitAction(actor, after)
+				g.checkResult()
+			})
+		case id == 26 || id == 27:
 			results, err := g.st.ExecuteNativeCommandApplication(actor, target, id, g.rng)
 			if err != nil {
 				return err

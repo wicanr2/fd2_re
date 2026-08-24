@@ -6334,3 +6334,17 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   `Acted`並續接mode 11；取消及晚期失敗回復全部交易與indexed buffers。
 - 原始資產敵方ID17端到端與缺資產失敗即關閉回歸已通過；IDs18／19共用同一
   typed owner但保留各自raw schedule。這是`RUNTIME-E1`，精確音訊與E2仍待。
+
+## 2026-08-25：敵方指令20–22正式handler tail
+
+- 授權Docker內IDA Pro 9.4閉合`funcs_1541F[20..22]`為
+  `0x22A85／0x22BC6／0x22BE1`；20／21進`0x22AF6`，22進`0x22D1B`，三者
+  都有`0x1C4CC→0x1C2DA→queue→0x1DF58`，推翻敵方同步state-only已完整的假設。
+- raw rows為20=`CC/13/4/C0`、21=`D9/13/4/C0`、22=`AA/13/3/23`，22於
+  zero-based frame7重播sample3；20／21 digit bias `0x69`，22為`0x5E`。
+- 新typed plan依`0x15311` raw selector重建targets，以原生16-bit RNG在私有records
+  預算clear/restore或application。正式敵方owner預建effect、五組mask、steady
+  redraw與22張數字段；mask後發布MP／HP／marker／RNG，500 ms尾停後才發布
+  `Acted`並續接AI。取消回復狀態、RNG與indexed buffers。
+- 原始資產ID20端到端及聚焦Docker／Xvfb回歸通過，提升為`RUNTIME-E1`。玩家
+  20–22仍只接`0x1D6C8`palette，下一批須把同一尾段接在palette後，不重做本次RE。
