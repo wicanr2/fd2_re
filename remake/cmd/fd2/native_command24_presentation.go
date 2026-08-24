@@ -210,7 +210,7 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 		return errors.New("native abbreviated presentation owner unavailable")
 	}
 	if g == nil || g.st == nil || g.rng == nil || actor == nil || target == nil ||
-		g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeHealPresentation != nil ||
+		g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeHealPresentation != nil ||
 		g.nativeModifierPresentation != nil || g.atk != nil {
 		return errors.New("native command24 presentation context unavailable")
 	}

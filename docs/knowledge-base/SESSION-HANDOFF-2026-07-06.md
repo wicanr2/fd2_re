@@ -6099,3 +6099,18 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   聚焦回歸與完整Go回歸使用有界Xvfb通過。原版handler phase／marker shake／damage
   的process-wide RNG跨target交錯目前採局部視覺RNG近似，不宣稱RNG parity或
   未修改原版`PLAYER-E2`。
+
+### 2026-08-24：第 7 號指令 `0x272B8` 與正式 owner
+
+- IDA Pro 9.4、Capstone與固定雜湊原始資產共同閉合四組初始化／三組render、
+  toggle雙張、十位置循環、mode0／3／6的2／32／16預算、#37／#38五張效果與
+  #88 sub0／sub1；六個直接sample marker及第一target七個raw marker均已逐筆保存。
+- typed planner／compositor保留跨target及九張boundary的同一state。正式Game
+  owner一次預建common前導／actor、兩張front、每target 32張與前五個HP stage、
+  每boundary九張、16張handler tail及共同四張LUT tail；玩家確認與敵方mode 11
+  共用同一工作。
+- MP、HP、`Acted`與數值計畫RNG都在Draw確認後才發布；中途stage矛盾會整批回復。
+  完整Go回歸使用有界Xvfb通過，切片提升為indexed `RUNTIME-E1`。未修改原版
+  一般玩家逐幀／音訊比較與外層numeric-marker shake仍未達`PLAYER-E2`。
+- 同批修正敵方更新閘門：所有已接正式演出擁有者的指令都會阻塞下一個人工智慧
+  動作，避免前一個演出尚未完成就啟動下一單位。

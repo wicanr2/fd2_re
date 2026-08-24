@@ -149,8 +149,11 @@ ID7的`0x272B8..0x274B0`已由IDA Pro 9.4、Capstone與原始資產閉合：mode
 state跨target與九張boundary持續。`0x52511`十個offset、raw side零值`+130`、
 #37／#38五張效果、#88 sub0 actor／sub1 handler、三種draw mode的六個直接sample
 marker，以及第一target七個raw marker／前五段HP均已保存。舊JSON只列mode5的
-兩個sample marker，現已補齊mode2／8。此切片達`RE-CLOSED`／`DATA-READY`，
-正式Game owner尚未接入；主證據見
+兩個sample marker，現已補齊mode2／8。typed planner／compositor現由正式
+Game owner消費，一次預建common前導／actor、2張front、每target 32張、每boundary
+9張、16張handler tail及共同4張LUT tail；玩家確認與敵方mode 11共用逐Draw發布
+及整批回復交易，完整Go回歸通過，提升為indexed `RUNTIME-E1`。未修改原版一般
+玩家逐幀／音訊比較及外層numeric-marker shake仍是E2缺口；主證據見
 [`fd2_command7_presentation_ida.txt`](../data/ida/fd2_command7_presentation_ida.txt)。
 
 ID6的`0x26E39`已由完整直接指令與原始資產交叉驗證：五個local table值、

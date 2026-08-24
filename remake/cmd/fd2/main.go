@@ -177,6 +177,7 @@ type Game struct {
 	nativeCmd2Presentation     *nativeCommand2PresentationJob
 	nativeCmd5Presentation     *nativeCommand5PresentationJob
 	nativeCmd6Presentation     *nativeCommand6PresentationJob
+	nativeCmd7Presentation     *nativeCommand7PresentationJob
 	nativeCmd24Presentation    *nativeCommand24PresentationJob
 	nativeCmd29Presentation    *nativeCommand29PresentationJob
 	spawnIntroTransition       *nativeSpawnIntroJob
@@ -345,6 +346,8 @@ type Game struct {
 	sfxCommand6Target         []byte                // FDOTHER #87 sub1: command6 mode5 counter markers
 	sfxCommand6Front          []byte                // FDOTHER #87 sub2: command6 mode0 before seven front frames
 	sfxCommand6Tail           []byte                // FDOTHER #87 sub3: command6 mode6 before seven tail frames
+	sfxCommand7Actor          []byte                // FDOTHER #88 sub0: common actor marker
+	sfxCommand7Target         []byte                // FDOTHER #88 sub1: 0x272B8 channel0／1 playback handles
 	sfxSpawnIntro             []byte                // FDOTHER #95 sub0: 0x32999 pass1 raw sample（11025Hz 為既有工具鏈推論）
 	handlerResource           int                   // currently loaded handler resource-table id
 	prevCurX, prevCurY        int                   // 游標移動音偵測
@@ -6503,6 +6506,30 @@ func (g *Game) confirm() {
 				g.msg = "原始指令 5：indexed 演出不可用 (" + err.Error() + ")"
 			}
 			return
+		case id == 7:
+			actor := g.sel
+			err = g.startNativeCommand7Presentation(actor, tgt, func(results []battle.NativeCommandDamageResult) {
+				hit, total := 0, 0
+				for _, result := range results {
+					if result.Hit {
+						hit++
+						total += result.Damage
+						g.awardDeathReward(result.Target, actor)
+					}
+				}
+				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
+				g.msg = fmt.Sprintf("原始指令 7：命中 %d，傷害 %d", hit, total)
+				g.finishSuccessfulUnitAction(actor, func() {
+					g.resetNativeTargetField()
+					g.st.MaterializeNativeMapRangeMode(1)
+					g.nativeCommand0Targeting, g.nativeCommandTargetID, g.sel, g.reach, g.moved = false, 0, nil, nil, false
+				})
+				g.checkResult()
+			})
+			if err != nil {
+				g.msg = "原始指令 7：indexed 演出不可用 (" + err.Error() + ")"
+			}
+			return
 		case id == 6:
 			actor := g.sel
 			err := g.startNativeCommand6Presentation(actor, tgt, func(results []battle.NativeCommandDamageResult) {
@@ -7166,6 +7193,7 @@ func (g *Game) Update() error {
 	g.stepNativeCommand2Presentation()           // native 0x2A6BD→0x26528 command2 battle presentation
 	g.stepNativeCommand5Presentation()           // native 0x2A6BD→0x26BFD command5 battle presentation
 	g.stepNativeCommand6Presentation()           // native 0x2A6BD→0x26E39 command6 battle presentation
+	g.stepNativeCommand7Presentation()           // native 0x2A6BD→0x272B8 command7 battle presentation
 	g.stepNativeCommand24Presentation()          // native 0x276EC selector32 FIGANI presentation
 	g.stepNativeCommand29Presentation()          // native 0x276EC selector34 multi-target FIGANI presentation
 	g.stepNativePaletteRamp()                    // native 0x1f882/0x1f525 whole-DAC ramps
@@ -7218,7 +7246,7 @@ func (g *Game) Update() error {
 			clamp(&g.camY, 0, float64(g.m.H*g.m.TileH-logicalH))
 		}
 	}
-	if g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil {
+	if g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil {
 		return nil
 	}
 	if g.nativeSystemInfoUI != nil {
@@ -7631,6 +7659,17 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		if !g.drawNativeCommand5Presentation(screen) {
 			g.failNativeCommand5Presentation(errors.New("draw unavailable"))
 			ebitenutil.DebugPrint(screen, "native command5 presentation unavailable")
+		}
+		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
+			g.captureShot(screen)
+		}
+		return
+	}
+	if g.nativeCmd7Presentation != nil {
+		screen.Fill(color.Black)
+		if !g.drawNativeCommand7Presentation(screen) {
+			g.failNativeCommand7Presentation(errors.New("draw unavailable"))
+			ebitenutil.DebugPrint(screen, "native command7 presentation unavailable")
 		}
 		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
 			g.captureShot(screen)
@@ -9501,6 +9540,8 @@ func loadGame() *Game {
 	g.sfxCommand6Target = loadWav("assets/sfx/battle_87_01.wav")  // 0x26E39 mode5 markers
 	g.sfxCommand6Front = loadWav("assets/sfx/battle_87_02.wav")   // 0x26E39 mode0
 	g.sfxCommand6Tail = loadWav("assets/sfx/battle_87_03.wav")    // 0x26E39 mode6
+	g.sfxCommand7Actor = loadWav("assets/sfx/battle_88_00.wav")   // common 0x2B659 actor marker
+	g.sfxCommand7Target = loadWav("assets/sfx/battle_88_01.wav")  // 0x272B8 channel0／1 sample index1
 	g.sfxSpawnIntro = loadWav("assets/sfx/battle_95_00.wav")      // 0x32999 pass1 FDOTHER #95 sub0
 	// 戰場 BGM:doc12 推定 track18=戰鬥被使用者實聽推翻(18=商店音樂);戰鬥曲號待聽辨,先不播錯曲
 	if os.Getenv("FD2_TITLE") == "1" || (g.shotPath == "" && os.Getenv("FD2_TITLE") != "0") { // 開頭動畫+主選單(headless 截圖預設跳過)
@@ -9993,7 +10034,7 @@ func (g *Game) finishNativeTransientPlayerPhase() {
 // aiStep AI 回合驅動:一次取一個單位的行動計畫,播行走動畫→到位攻擊(全螢幕演出)。
 // 全單位動完 → finishTurn。
 func (g *Game) aiStep() {
-	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.result != "" {
+	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.result != "" {
 		if g.result != "" {
 			g.aiBusy = false
 		}

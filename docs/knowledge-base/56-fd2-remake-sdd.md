@@ -881,7 +881,12 @@ raw side非零／零分別選FDOTHER #37／#38，兩者都是5-frame FIGANI；�
 pre-increment counter1時，channel0／1經兩個播放handle消費同一#88 sub1；common
 actor另用#88 sub0。兩張front後第一target的raw marker位於step
 `1,7,13,15,21,27,29`，只准前五個發布HP stage1..5。typed planner及compositor
-現已完成並達`DATA-READY`；正式owner接入前仍不得讓玩家／敵方繞過演出直接發布交易。
+現已由正式Game owner消費：一次預建common前導／actor、兩張front、每target
+32張、每boundary九張、16張handler tail及共同四張LUT tail；玩家確認與敵方
+mode 11共用同一工作。MP、五段HP、`Acted`與數值計畫RNG只在對應Draw確認後
+發布，執行中stage矛盾會回復actor MP／`Acted`及全部target HP，達
+indexed `RUNTIME-E1`。原版外層numeric-marker shake尚未形成同狀態動態證據，
+不猜接額外畫面亂數，也不宣稱`PLAYER-E2`。
 
 ID6以`NativeCommand6PresentationSchedule`保存`0x26E39`直接指令契約：
 mode0／3／6回傳7／12／7，五個runtime channel，raw dword table
