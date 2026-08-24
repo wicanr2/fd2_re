@@ -135,8 +135,10 @@ raw side零值將`0x52460`的12個X全部加20。`0x52490／0x5249C`分別是ver
 及frame-base表；#39／#43均為33幀效果，#84 sub0屬common actor、sub1／sub2
 屬handler。mode0／3／6的2／40／20預算、toggle雙張、state範圍、sample條件與
 每target 14個raw marker／前13段HP均已保存。typed planner／compositor已原子
-預建2張front、每target40張、每boundary9張及20張tail，原始資產回歸通過，達
-`RE-CLOSED`／`DATA-READY`；正式Game owner仍待完成，主證據見
+預建2張front、每target40張、每boundary9張及20張tail，原始資產回歸通過。
+正式Game owner現一次預建common前導／actor、完整handler及共同4張LUT tail；
+玩家確認與敵方mode 11共用逐Draw發布／整批回復，提升為indexed `RUNTIME-E1`。
+同handle同畫格的raw sample疊音與未修改原版一般玩家逐幀／音訊仍不宣稱E2；主證據見
 [`fd2_command3_presentation_ida.txt`](../data/ida/fd2_command3_presentation_ida.txt)。
 
 ID5的`0x26BFD`已由IDA Pro 9.4完整直接指令、Capstone及原始資產交叉閉合：

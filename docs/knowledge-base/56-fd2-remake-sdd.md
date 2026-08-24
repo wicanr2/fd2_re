@@ -903,9 +903,12 @@ frame base非零播放#84 sub2，post-counter3且frame base為零播放#84 sub1�
 不影響numeric marker本身。每target 40張的13個HP marker固定在step
 `3,7,11,15,19,23,25,27,29,31,33,35,37`；step39是第14個raw marker，不重複
 寫HP。使用#39／#43的33幀直接索引效果。typed planner／compositor現已保存
-2張front、每target 40張、每boundary 9張、20張tail與持續state，達
-`DATA-READY`；正式owner尚未完成，不得讓
-玩家／敵方繞過演出直接發布交易。主證據見
+2張front、每target 40張、每boundary 9張、20張tail與持續state。正式Game
+owner一次預建common前導／actor、完整handler及共同四張LUT tail；玩家確認與
+敵方mode 11共用同一工作。#84 sub0服務common actor，sub1／sub2依entry條件
+服務handler；MP、前13段HP、`Acted`與數值RNG只在對應Draw後發布，中途矛盾
+整批回復，達indexed `RUNTIME-E1`。同一畫格若有多個同handle raw sample call，
+現以一次播放呈現，不宣稱精確疊音或`PLAYER-E2`。主證據見
 [`fd2_command3_presentation_ida.txt`](../data/ida/fd2_command3_presentation_ida.txt)。
 
 ID6以`NativeCommand6PresentationSchedule`保存`0x26E39`直接指令契約：

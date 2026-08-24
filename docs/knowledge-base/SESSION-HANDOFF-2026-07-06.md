@@ -6114,3 +6114,18 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   一般玩家逐幀／音訊比較與外層numeric-marker shake仍未達`PLAYER-E2`。
 - 同批修正敵方更新閘門：所有已接正式演出擁有者的指令都會阻塞下一個人工智慧
   動作，避免前一個演出尚未完成就啟動下一單位。
+
+### 2026-08-24：第 3 號指令 `0x26795` 勘誤與正式 owner
+
+- 新建授權IDA Pro 9.4暫存資料庫時，IDA把entry錯併入`0x26152..0x272B8`；
+  因此拒用該函式邊界／偽代碼，改由`0x523B9[3]`、下一entry`0x269D3`與
+  Capstone固定範圍裁決。
+- 舊「12個RNG-rotated slots」及JSON的`uses_rng=true`／raw side零位移已撤回：
+  entry沒有RNG call，mode0確定性建立`0,-2..-22`，raw side零值將12個X加20。
+  三張表、`0x53F81..0x53FE3` state、#39／#43 33幀效果與#84 sub0／1／2均已閉合。
+- typed planner／compositor保存2張front、每target40張、每boundary9張、20張tail
+  及持續state。每target有14個raw marker，只有前13個依denominator發布HP；
+  step39保留raw marker但不重複寫HP。
+- 正式Game owner現由玩家確認與敵方mode 11共用；MP、HP、`Acted`與數值RNG
+  逐Draw發布並可整批回復。#84已加入可重生音效匯出清冊；完整Go回歸通過後
+  提升為indexed `RUNTIME-E1`，未修改原版逐幀／精確疊音仍不是`PLAYER-E2`。
