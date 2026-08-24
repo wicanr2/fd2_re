@@ -43,11 +43,14 @@ func (g *Game) startNative2189A(loop campaign.Native2189ALoop, then func()) erro
 		return errors.New("native 0x2189A presentation is already active")
 	}
 	slot, initialRadius, radiusStep := loop.Slot, loop.InitialRadius, loop.RadiusStep
-	if !((slot == 10 && initialRadius == 15 && radiusStep == 1) ||
-		(slot == 16 && initialRadius == 30 && radiusStep == 1)) || loop.Repeat != 10 ||
+	ch22Call := (slot == 10 && initialRadius == 15 && radiusStep == 1) ||
+		(slot == 16 && initialRadius == 30 && radiusStep == 1)
+	commandCall := slot >= 0 && ((initialRadius == 15 && radiusStep == 10) ||
+		(initialRadius == 30 && radiusStep == 16))
+	if !(ch22Call || commandCall) || loop.Repeat != 10 ||
 		loop.WorkOffset != 0x8088 || loop.WorkStride != 456 ||
 		loop.ClipWidth != 312 || loop.ClipHeight != 192 {
-		return errors.New("native 0x2189A call differs from recovered ch22 contract")
+		return errors.New("native 0x2189A call differs from recovered ch22/command11-12 contracts")
 	}
 	if g.st == nil || g.m == nil || !nativeMapAssetsAvailable(g.nativeMapAssets) ||
 		!g.st.HasNativeMapViewState || len(g.nativeMapWork) != indexedmap.NativeUnitPresentWorkSize ||

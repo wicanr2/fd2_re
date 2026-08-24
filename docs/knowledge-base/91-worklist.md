@@ -1298,7 +1298,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   gate RNG→damage RNG（base10 實際9 HP）→duration RNG 三 draws。
   `ExecuteNativeCommandApplication` 已同步修正。UI/status labels 與其餘
   engine integration 待。
-- [~] **native command IDs10..12 compositor family**：ID10 `0x21527`、ID11 `0x2185F`、ID12 `0x21A9E` 都會進 `0x21548` 的 320×200/640-stride indexed presentation；**修正舊斷言**：其尾端已直接定位 `1CA89→per-target 1C75E`，故 numeric state core 已由 `ExecuteNativeCommandDamage` 支援。`0x2189A/219AD` scroll/composite、專用演出/SFX/UI 仍待，不可從數值共用推論 visual equivalence。
+- [~] **native command IDs10..12 compositor family**：`RE-CLOSED`／`DATA-READY`／`RUNTIME-E1`。IDA Pro 9.4 已固定 ID10 `0x21527`、ID11 `0x2185F`、ID12 `0x21A9E` wrappers；11／12先播放#80 selector2並各呼`0x2189A(actor,15,10)`／`(actor,30,16)`，再進共用`0x21548`。typed schedule、`0x1F558`等價fixed-point compositor、四surface×60張、selector13八個marker、#5結果佇列及正式玩家owner均已接；MP／HP／RNG／acted只在Draw邊界發布，晚期失敗完整rollback。剩一般玩家同狀態逐幀／逐音訊E2；`0x2189A/219AD`不重解，不可從數值共用推論visual equivalence。
 - [x] **scenario native command-mask bridge**：`PartyMember.initial_command_mask` 已接 exact four-byte source，loader 對 malformed length fail-closed；`gen_campaign.py` 從 EXE `character_defaults.json` 依角色 index 合併至 ch01..ch30 而不覆寫既有手工 scenario 欄位。戰後 persistent snapshot 也保留完整五-byte runtime mask，level-up OR 不會跨 town/preparation 消失。ch01 悠妮 `[1,0,0,0]` 有 per-scenario materialization regression；不可由 normalized `Spells` 反造 raw bytes。待：逐章真機 availability 對照、未知 command effect／frame renderer。
 - [~] **魔法系統**（資料表與基礎 Cast 已接，native command/effect 尚未閉合）: `magic.go`
       讀取 `spells.json` 的 36 條 EXE dump 與 normalized 名稱；`CastArea` 的範圍、命中、

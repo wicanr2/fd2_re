@@ -182,6 +182,7 @@ type Game struct {
 	nativeCmd8Presentation     *nativeCommand8PresentationJob
 	nativeCmd9Player           *nativeCommand9PlayerJob
 	nativeCmd9AIPresentation   *nativeCommand9AIPresentationJob
+	nativeCmd1012              *nativeCommand1012Job
 	nativeCmd24Presentation    *nativeCommand24PresentationJob
 	nativeCmd29Presentation    *nativeCommand29PresentationJob
 	spawnIntroTransition       *nativeSpawnIntroJob
@@ -361,6 +362,8 @@ type Game struct {
 	sfxCommand9PlayerPalette  []byte                // FDOTHER #80 selector0: 0x1D6C8 palette marker
 	sfxCommand9PlayerInitial  []byte                // FDOTHER #80 selector14: 0x1C4CC frame0
 	sfxCommand9PlayerRepeat   []byte                // FDOTHER #80 selector15: 0x1C4CC frame15／19
+	sfxCommand1012Prelude     []byte                // FDOTHER #80 selector2: command11／12 0x2189A prelude
+	sfxCommand1012Main        []byte                // FDOTHER #80 selector13: 0x21548 frame markers
 	sfxSpawnIntro             []byte                // FDOTHER #95 sub0: 0x32999 pass1 raw sample（11025Hz 為既有工具鏈推論）
 	handlerResource           int                   // currently loaded handler resource-table id
 	prevCurX, prevCurY        int                   // 游標移動音偵測
@@ -6615,6 +6618,30 @@ func (g *Game) confirm() {
 				g.msg = "原始指令 9：indexed 演出不可用 (" + err.Error() + ")"
 			}
 			return
+		case id >= 10 && id <= 12:
+			actor := g.sel
+			err = g.startNativeCommand1012Presentation(actor, tgt, id, func(results []battle.NativeCommandDamageResult) {
+				hit, total := 0, 0
+				for _, result := range results {
+					if result.Hit {
+						hit++
+						total += result.Damage
+						g.awardDeathReward(result.Target, actor)
+					}
+				}
+				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
+				g.msg = fmt.Sprintf("原始指令 %d：命中 %d，傷害 %d", id, hit, total)
+				g.finishSuccessfulUnitAction(actor, func() {
+					g.resetNativeTargetField()
+					g.st.MaterializeNativeMapRangeMode(1)
+					g.nativeCommand0Targeting, g.nativeCommandTargetID, g.sel, g.reach, g.moved = false, 0, nil, nil, false
+				})
+				g.checkResult()
+			})
+			if err != nil {
+				g.msg = fmt.Sprintf("原始指令 %d：indexed 演出不可用 (%v)", id, err)
+			}
+			return
 		case id == 6:
 			actor := g.sel
 			err := g.startNativeCommand6Presentation(actor, tgt, func(results []battle.NativeCommandDamageResult) {
@@ -7283,6 +7310,7 @@ func (g *Game) Update() error {
 	g.stepNativeCommand8Presentation()           // native 0x2A6BD→0x274B0 command8 battle presentation
 	g.stepNativeCommand9PlayerPresentation()     // native 0x1CFF0→0x214AD player command9 map presentation
 	g.stepNativeCommand9AIPresentation()         // native 0x2A6BD→0x275D6 enemy command9 presentation
+	g.stepNativeCommand1012Presentation()        // native 0x21527/0x2185F/0x21A9E player map presentation
 	g.stepNativeCommand24Presentation()          // native 0x276EC selector32 FIGANI presentation
 	g.stepNativeCommand29Presentation()          // native 0x276EC selector34 multi-target FIGANI presentation
 	g.stepNativePaletteRamp()                    // native 0x1f882/0x1f525 whole-DAC ramps
@@ -7335,7 +7363,7 @@ func (g *Game) Update() error {
 			clamp(&g.camY, 0, float64(g.m.H*g.m.TileH-logicalH))
 		}
 	}
-	if g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil {
+	if g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil {
 		return nil
 	}
 	if g.nativeSystemInfoUI != nil {
@@ -7803,6 +7831,17 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		if !g.drawNativeCommand9AIPresentation(screen) {
 			g.failNativeCommand9AIPresentation(errors.New("draw unavailable"))
 			ebitenutil.DebugPrint(screen, "native command9 AI presentation unavailable")
+		}
+		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
+			g.captureShot(screen)
+		}
+		return
+	}
+	if g.nativeCmd1012 != nil {
+		screen.Fill(color.Black)
+		if !g.drawNativeCommand1012Presentation(screen) {
+			g.failNativeCommand1012Presentation(errors.New("draw unavailable"))
+			ebitenutil.DebugPrint(screen, "native command10-12 presentation unavailable")
 		}
 		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
 			g.captureShot(screen)
@@ -9684,6 +9723,8 @@ func loadGame() *Game {
 	g.sfxCommand9PlayerPalette = loadWav("assets/sfx/battle_80_00.wav") // 0x1D6C8 selector0
 	g.sfxCommand9PlayerInitial = loadWav("assets/sfx/battle_80_14.wav") // 0x1C4CC frame0
 	g.sfxCommand9PlayerRepeat = loadWav("assets/sfx/battle_80_15.wav")  // 0x1C4CC frame15／19
+	g.sfxCommand1012Prelude = loadWav("assets/sfx/battle_80_02.wav")    // command11／12 prelude
+	g.sfxCommand1012Main = loadWav("assets/sfx/battle_80_13.wav")       // 0x21548 markers
 	g.sfxSpawnIntro = loadWav("assets/sfx/battle_95_00.wav")            // 0x32999 pass1 FDOTHER #95 sub0
 	// 戰場 BGM:doc12 推定 track18=戰鬥被使用者實聽推翻(18=商店音樂);戰鬥曲號待聽辨,先不播錯曲
 	if os.Getenv("FD2_TITLE") == "1" || (g.shotPath == "" && os.Getenv("FD2_TITLE") != "0") { // 開頭動畫+主選單(headless 截圖預設跳過)
@@ -10176,7 +10217,7 @@ func (g *Game) finishNativeTransientPlayerPhase() {
 // aiStep AI 回合驅動:一次取一個單位的行動計畫,播行走動畫→到位攻擊(全螢幕演出)。
 // 全單位動完 → finishTurn。
 func (g *Game) aiStep() {
-	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.result != "" {
+	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.result != "" {
 		if g.result != "" {
 			g.aiBusy = false
 		}

@@ -84,3 +84,24 @@ func TestNative2189AMissingLUTFailsBeforeMutation(t *testing.T) {
 		t.Fatal("failed preflight changed indexed state")
 	}
 }
+
+func TestNative2189AAcceptsRecoveredCommand11CallShape(t *testing.T) {
+	g := completeNative2189AGame(t)
+	loop := recoveredNative2189ALoop()
+	loop.RadiusStep = 10
+	if err := g.startNative2189A(loop, nil); err != nil {
+		t.Fatal(err)
+	}
+	if got := len(g.native2189A.vgaFrames); got != 11 {
+		t.Fatalf("command11 frames=%d want 11", got)
+	}
+}
+
+func TestNative2189ARejectsUnrecoveredCallShape(t *testing.T) {
+	g := completeNative2189AGame(t)
+	loop := recoveredNative2189ALoop()
+	loop.RadiusStep = 9
+	if err := g.startNative2189A(loop, nil); err == nil {
+		t.Fatal("unrecovered radius step was accepted")
+	}
+}

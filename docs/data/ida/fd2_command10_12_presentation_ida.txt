@@ -1,0 +1,83 @@
+FD2 玩家指令 10–12 indexed 演出家族非破壞性證據
+====================================================
+
+輸入、工具與位址空間
+--------------------
+
+- `FD2.EXE`：357074 bytes；MD5 `b97caf2239a27a896069d03549d96e1e`；
+  SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- IDA Pro 9.4，IDA linear address、image base 0；授權
+  `fd2-ida-authorized-local` Docker 映像，原檔唯讀。
+- Capstone 5.0.3／`fd2-cap-local` 只交叉驗證 raw tables 與直接指令。
+- 產生日期：2026-08-25。原始名稱全部保留；本文件語意是外部附加層。
+
+函式與 caller（已證實）
+-----------------------
+
+| 原始函式 | IDA linear 範圍 | direct caller call site |
+|---|---|---|
+| `sub_1F558` | `0x1F558..0x1F6EF` | `0x201A2,0x20363,0x216D0` |
+| `sub_21527` | `0x21527..0x21548` | `0x1541F,0x1D479` |
+| `sub_21548` | `0x21548..0x2185F` | `0x2153F` |
+| `sub_2185F` | `0x2185F..0x2189A` | `0x1541F,0x1D479` |
+| `sub_2189A` | `0x2189A..0x219AD` | `0x151A2,0x21883,0x21AC2,0x24978,0x249C4,0x24A10` |
+| `sub_219AD` | `0x219AD..0x21A9E` | `0x21955,0x2206F,0x22093` |
+| `sub_21A9E` | `0x21A9E..0x21AD9` | `0x1541F,0x1D479` |
+
+三個 wrapper（已證實）
+----------------------
+
+- `sub_21527` 保留 caller 的 actor／count／target-array 實參，只把 command
+  literal 10 插入後呼叫 `sub_21548`。
+- `sub_2185F` 先呼叫 `sub_25A96([0x53B13],2,1)`；`sub_1D4CB` 已證實
+  `[0x53B13]` 是 FDOTHER #80。接著呼叫
+  `sub_2189A(actorSlot,15,10)`，再以 command literal 11 進 `sub_21548`。
+- `sub_21A9E` 同樣先播放 #80 selector2，呼叫
+  `sub_2189A(actorSlot,30,16)`，再以 command literal 12 進 `sub_21548`。
+- `sub_2189A` 的 ABI 與十輪 LUT0..9、snapshot、object redraw、viewport copy
+  已由 `fd2_ch22_post_ida.txt` 獨立閉合；這裡只新增兩個 command caller 的
+  exact arguments，不重解 callee。
+
+`sub_21548` 共用演出（已證實）
+--------------------------------
+
+1. `0x2159A..0x215A7` 在任何 heap／畫面操作前呼叫
+   `sub_1CA89(actor,commandID)` 扣 MP。
+2. 保存 `[0x53A5D]` 後以 `sub_1399C` 取得暫存來源；配置一個64000-byte
+   surface、兩個153216-byte work buffers及一個16384-byte pointer grid。
+3. raw tables 是三組 signed 32-bit triplet：
+
+   ```text
+   0x52096: 128,   0,-128   ; X origin offsets
+   0x520A2: 128,   0, 128   ; Y origin offsets
+   0x520AE: 131, 128, 125   ; fixed-point sampling increments
+   ```
+
+4. 三輪依 phase 呼叫 `sub_1F558(xOrigin,yOrigin,increment,pointerGrid)`，再把
+   work `+0x504` 的312×192、stride456 viewport 複製到三個 surface，並重畫
+   raw `+5 bit0==0` 的 runtime objects。`sub_1F558` 自己先清64000-byte輸出，
+   再以 `0xC00` fixed-point、312×192 clip及pointer grid逐像素取樣；三輪表值
+   因此不可正規化為單一縮放常數。
+5. `0x21744..0x217BC` 固定發布60張、每張 delay10；frame index 以 `i % 4`
+   在原始 surface與三張衍生 surface間循環。`i<43 && i%6==0` 時播放
+   `sub_25A96([0x53B13],13,1)`，所以 marker 是
+   `0,6,12,18,24,30,36,42`，資源為 FDOTHER #80 selector13。
+6. free 所有暫存後復原 `[0x53A49]`／`[0x53A5D]`，呼叫 `sub_11CAC(0)`；
+   對每個 target 依序呼叫 `sub_1C75E(target,commandID)`，命中則
+   `sub_1E0DB(value,94,target)`，未命中則 `sub_1E1DC(target)`；最後再
+   `sub_11CAC(0)→sub_1DF58`。因此數值尾端與第9號相同，但前段 compositor
+   不同，不能共用整個視覺 owner。
+
+證據分級與停止線
+----------------
+
+- **已證實**：上述函式邊界、call sites、wrapper literals、#80 selector2／13、
+  `sub_2189A` 兩組三實參、三張 raw table、三輪取樣、四 surface循環、60張、
+  八個音效 marker、MP／target／result consumer順序。
+- **強推論**：將每次原版 present／delay10 對應成現代引擎一次 Draw acknowledgement；
+  保留可見順序，但不宣稱 DOS wall-clock 逐毫秒一致。
+- **未知／不宣稱**：技能高階名稱、畫面效果敘事名稱、`sub_1399C` 的通用用途、
+  同狀態逐像素／逐音訊 E2。
+- 正式實作必須先完整預建 `sub_2189A`（ID11／12）、四 surface、60張與結果
+  佇列，再發布第一個 MP 或畫面；缺 #80 selector2／13、LUT、raw map buffers、
+  pointer grid來源、target或數值表時失敗即關閉。

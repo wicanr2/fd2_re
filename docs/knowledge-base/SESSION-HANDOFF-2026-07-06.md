@@ -6173,3 +6173,20 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   未命中116／117／118／118共22張 → 500ms hold → acted／callback。所有畫面與
   音效先預檢，晚期錯誤會回復MP、HP、acted、RNG及indexed buffers。聚焦
   Docker回歸通過，提升為`RUNTIME-E1`；一般玩家同狀態逐幀／逐音訊仍非E2。
+
+# 2026-08-25：指令 10–12 演出證據與 typed schedule
+
+- 授權 Docker 內 IDA Pro 9.4 固定 `0x21527／0x2185F／0x21A9E` wrappers、
+  `0x21548` common owner及`0x1F558` consumer。ID11／12先用#80 selector2與
+  `0x2189A(actor,15,10)`／`(actor,30,16)`；ID10沒有此前導。
+- common owner的三組signed表為X`128/0/-128`、Y`128/0/128`、increment
+  `131/128/125`；原始surface與三張衍生surface循環60張，前43張每6張以#80
+  selector13播放一次，共八個marker。其後才steady redraw、逐target數值與22張
+  結果。完整非破壞性證據見
+  [`fd2_command10_12_presentation_ida.txt`](../data/ida/fd2_command10_12_presentation_ida.txt)。
+- `BuildNativeCommand10To12Schedule` 已保存wrapper差異、raw tables、60張與音效
+  markers；`ComposeNativeCommand10To12Surface` 以原始`0xC00` fixed-point逐像素
+  取樣並重畫物件。正式Game owner已串接ID10直接主段、ID11／12共用`0x2189A`
+  前導、60張主段、#5結果與音訊；MP／HP／RNG／acted採Draw邊界交易，晚期失敗
+  回復全部狀態及indexed buffers。原始selector、取樣、交易與前導消失的回歸通過，
+  達`RUNTIME-E1`；一般玩家同狀態逐幀／逐音訊仍非E2，不重解`0x2189A/0x219AD`。
