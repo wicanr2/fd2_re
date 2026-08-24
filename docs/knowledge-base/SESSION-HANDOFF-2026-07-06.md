@@ -6346,5 +6346,13 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   預算clear/restore或application。正式敵方owner預建effect、五組mask、steady
   redraw與22張數字段；mask後發布MP／HP／marker／RNG，500 ms尾停後才發布
   `Acted`並續接AI。取消回復狀態、RNG與indexed buffers。
-- 原始資產ID20端到端及聚焦Docker／Xvfb回歸通過，提升為`RUNTIME-E1`。玩家
-  20–22仍只接`0x1D6C8`palette，下一批須把同一尾段接在palette後，不重做本次RE。
+- 原始資產ID20端到端及聚焦Docker／Xvfb回歸通過，提升為`RUNTIME-E1`。
+
+### 同批後續勘誤：玩家20–22尾段已接通
+
+- `PlanNativePlayerCommand2022`沿用玩家confirmed-cursor target contract，但與敵方
+  共用原生16-bit RNG及私有raw transaction。正式player owner現在把八個
+  `0x1D6C8` palette Draw放在effect之前，mask後才發布交易，numeric tail及尾停後
+  才完成行動；缺任一資產保持零交易。
+- 原始資產玩家ID20測試與玩家20／22 typed plan回歸通過，因此先前「下一批須接」
+  已失效；玩家與敵方20–22皆為`RUNTIME-E1`，同狀態逐幀／逐音訊E2仍待。

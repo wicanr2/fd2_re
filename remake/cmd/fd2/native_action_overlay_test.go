@@ -791,8 +791,8 @@ func TestPlayerNativeCommand17WaitsForEightPalettePhasesBeforeTransaction(t *tes
 	}
 }
 
-func TestPlayerNativeCommands20To27UseSharedPaletteBoundary(t *testing.T) {
-	for _, commandID := range []int{20, 22, 25, 26} {
+func TestPlayerNativeCommands25To27UseSharedPaletteBoundary(t *testing.T) {
+	for _, commandID := range []int{25, 26} {
 		t.Run(fmt.Sprintf("command_%d", commandID), func(t *testing.T) {
 			assets, field, state := completeNativeMapFrameFixture(t)
 			book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
@@ -830,6 +830,7 @@ func TestPlayerNativeCommands20To27UseSharedPaletteBoundary(t *testing.T) {
 			target := &battle.Unit{
 				Camp: battle.Own, OnField: true, HP: 1, MaxHP: 100,
 				X: 1, Y: 0, NativeTransient: [6]byte{0, 0, 0, 3},
+				NativeRecordClass: 2, HasNativeRecordClass: true, BattleFig: 0, HasBattleFig: true, Lv: 1,
 				NativeRecordByte5: 0, HasNativeRecordByte5: true,
 				NativeRecordByte6: 0, HasNativeRecordByte6: true,
 			}
@@ -853,16 +854,30 @@ func TestPlayerNativeCommands20To27UseSharedPaletteBoundary(t *testing.T) {
 			}
 			t.Setenv("FD2_MUTE", "1")
 			g.confirm()
-			if g.nativeModifierPresentation == nil || actor.MP != 5 || actor.Acted {
+			fullTail := commandID == 20 || commandID == 22
+			if (fullTail && g.nativeAICommandModifier == nil) || (!fullTail && g.nativeModifierPresentation == nil) || actor.MP != 5 || actor.Acted {
 				t.Fatalf("command %d crossed pre-presentation boundary: actor=%#v msg=%q", commandID, actor, g.msg)
 			}
-			for phase := 0; phase < 8; phase++ {
-				if !g.drawNativeCommandModifierPresentation(ebiten.NewImage(640, 400)) {
-					t.Fatalf("command %d phase %d did not draw", commandID, phase)
+			if fullTail {
+				screen := ebiten.NewImage(640, 400)
+				for step := 0; g.nativeAICommandModifier != nil && step < 512; step++ {
+					if !g.drawNativeAICommandModifierPresentation(screen) {
+						t.Fatalf("command %d step %d did not draw", commandID, step)
+					}
+					g.stepNativeAICommandModifierPresentation()
+					if g.nativeAICommandModifier != nil && g.nativeAICommandModifier.holding {
+						g.nativeAICommandModifier.hold = 0
+					}
 				}
-				g.stepNativeCommandModifierPresentation()
+			} else {
+				for phase := 0; phase < 8; phase++ {
+					if !g.drawNativeCommandModifierPresentation(ebiten.NewImage(640, 400)) {
+						t.Fatalf("command %d phase %d did not draw", commandID, phase)
+					}
+					g.stepNativeCommandModifierPresentation()
+				}
 			}
-			if g.nativeModifierPresentation != nil || actor.MP != 3 || !actor.Acted ||
+			if g.nativeModifierPresentation != nil || g.nativeAICommandModifier != nil || actor.MP != 3 || !actor.Acted ||
 				g.nativeCommand0Targeting || g.sel != nil || state.NativeMapRangeMode != 1 {
 				t.Fatalf("command %d transaction/cleanup actor=%#v job=%v targeting=%v sel=%#v range=%d",
 					commandID, actor, g.nativeModifierPresentation != nil,

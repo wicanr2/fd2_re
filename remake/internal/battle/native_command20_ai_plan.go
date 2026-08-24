@@ -2,9 +2,11 @@ package battle
 
 import "fmt"
 
-// NativeAICommand2022Plan is the state-only transaction for the enemy routes
-// 0x22A85, 0x22BC6 and 0x22BE1.  It deliberately uses the raw selector owner
-// and the native 16-bit RNG adapters; presentation remains a caller concern.
+// NativeAICommand2022Plan is the private state transaction for the shared
+// 0x22A85, 0x22BC6 and 0x22BE1 handlers. Enemy and player constructors keep
+// their distinct target owners while sharing the native 16-bit RNG adapters;
+// presentation remains a caller concern. The historical AI name is retained
+// to avoid obscuring the first evidence-backed consumer.
 type NativeAICommand2022Plan struct {
 	Actor     *Unit
 	CommandID int
@@ -104,6 +106,31 @@ func (s *State) PlanNativeAICommand2022(actor *Unit, commandID int, rngState uin
 	if err != nil {
 		return nil, err
 	}
+	return s.planNativeCommand2022Targets(actor, commandID, targets, rngState)
+}
+
+// PlanNativePlayerCommand2022 builds the same raw 0x22A85/0x22BC6/0x22BE1
+// calculation for a normal player-confirmed cursor.  Target selection stays
+// in the existing player preflight functions; this method only shares the
+// non-mutating raw-record calculation with the enemy route.
+func (s *State) PlanNativePlayerCommand2022(actor, confirmed *Unit, commandID int, rngState uint16) (*NativeAICommand2022Plan, error) {
+	var targets []*Unit
+	var err error
+	switch commandID {
+	case 20, 21:
+		targets, _, err = s.NativeCommandClearRestoreTargets(actor, confirmed, commandID)
+	case 22:
+		targets, _, err = s.NativeCommandApplicationTargets(actor, confirmed, commandID)
+	default:
+		return nil, fmt.Errorf("native player command 20-22 unsupported id=%d", commandID)
+	}
+	if err != nil {
+		return nil, err
+	}
+	return s.planNativeCommand2022Targets(actor, commandID, targets, rngState)
+}
+
+func (s *State) planNativeCommand2022Targets(actor *Unit, commandID int, targets []*Unit, rngState uint16) (*NativeAICommand2022Plan, error) {
 	records, indices, err := nativeCompoundCommandTargetRecords(targets)
 	if err != nil {
 		return nil, err

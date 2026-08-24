@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"image"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -62,8 +63,15 @@ func nativeCommand2022ClonedState(st *battle.State, plan *battle.NativeAICommand
 // both funcs_1541F and the player table. Enemy callers intentionally omit the
 // player-only 0x1D6C8 palette prelude.
 func (g *Game) startNativeAICommand2022Presentation(actor *battle.Unit, commandID int, then func(*battle.NativeAICommand2022Plan)) error {
-	if !g.nativeFullPresentationEnabled() || g == nil || g.st == nil || actor == nil || commandID < 20 || commandID > 22 {
-		return errors.New("native AI command 20-22 presentation context unavailable")
+	return g.startNativeCommand2022Presentation(actor, nil, commandID, false, then)
+}
+
+func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit, commandID int, player bool, then func(*battle.NativeAICommand2022Plan)) error {
+	if g == nil || !g.nativeFullPresentationEnabled() || g.st == nil || actor == nil || commandID < 20 || commandID > 22 {
+		return errors.New("native command 20-22 presentation context unavailable")
+	}
+	if player && confirmed == nil {
+		return errors.New("native player command 20-22 confirmed target unavailable")
 	}
 	if g.nativeAICommandModifier != nil || g.nativeModifierPresentation != nil || g.nativeHealPresentation != nil ||
 		g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil ||
@@ -78,7 +86,13 @@ func (g *Game) startNativeAICommand2022Presentation(actor *battle.Unit, commandI
 		len(g.nativeMapVGA) != indexedmap.NativeMapVGASize || !nativeMapAssetsAvailable(g.nativeMapAssets) {
 		return errors.New("native AI command 20-22 indexed map state unavailable")
 	}
-	plan, err := g.st.PlanNativeAICommand2022(actor, commandID, g.nativeRNGState)
+	var plan *battle.NativeAICommand2022Plan
+	var err error
+	if player {
+		plan, err = g.st.PlanNativePlayerCommand2022(actor, confirmed, commandID, g.nativeRNGState)
+	} else {
+		plan, err = g.st.PlanNativeAICommand2022(actor, commandID, g.nativeRNGState)
+	}
 	if err != nil {
 		return err
 	}
@@ -195,17 +209,39 @@ func (g *Game) startNativeAICommand2022Presentation(actor *battle.Unit, commandI
 	if err != nil {
 		return err
 	}
-	frames := make([]nativeCompoundPresentedFrame, 0, len(effectImages)+schedule.MaskPairs*2+1+len(digitImages))
+	frames := make([]nativeCompoundPresentedFrame, 0, 8+len(effectImages)+schedule.MaskPairs*2+1+len(digitImages))
+	if player {
+		if g.nativeCommandPaletteFlash == nil || (!osMuteOrShot(g) && len(g.sfxCommandModifier) == 0) {
+			return errors.New("native player command 20-22 palette assets unavailable")
+		}
+		phases, phaseErr := g.nativeCommandPaletteFlash.NativeCommandPaletteFlashPhases(commandID)
+		if phaseErr != nil || len(phases) != 8 {
+			return errors.New("native player command 20-22 palette phases unavailable")
+		}
+		for _, rgb := range phases {
+			dac := append([]byte(nil), g.nativeMapDAC...)
+			copy(dac[:3], rgb[:])
+			palette, paletteErr := fdother.VGAPaletteFromDAC(dac)
+			if paletteErr != nil {
+				return paletteErr
+			}
+			indexed := image.NewPaletted(image.Rect(0, 0, 320, 200), palette)
+			copy(indexed.Pix, baselineVGA)
+			frames = append(frames, nativeCompoundPresentedFrame{image: ebiten.NewImageFromImage(indexed), delay: 1})
+		}
+		frames[0].sound = g.sfxCommandModifier
+	}
 	if frames, err = appendNativeCompoundFrames(frames, effectImages, 1); err != nil {
 		return err
 	}
 	effectSample := loadWav(assetPath(fmt.Sprintf("assets/sfx/battle_80_%02d.wav", schedule.EffectSample)))
-	frames[0].sound = effectSample
+	effectStart := len(frames) - len(effectImages)
+	frames[effectStart].sound = effectSample
 	for _, rawFrame := range schedule.ExtraSampleFrameIndices {
 		if rawFrame <= 0 || rawFrame >= schedule.EffectFrames {
 			return errors.New("native AI command 20-22 extra sample frame unavailable")
 		}
-		frames[rawFrame].sound = effectSample
+		frames[effectStart+rawFrame].sound = effectSample
 	}
 	maskStart := len(frames)
 	for index := 0; index < schedule.MaskPairs*2+1; index++ {

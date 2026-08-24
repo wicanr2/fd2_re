@@ -154,8 +154,9 @@ IDA Pro 9.4與raw bytes閉合為`0x22A85／0x22BC6／0x22BE1`；wrapper分別進
 `0x1C2DA`遮罩、結果queue與`0x1DF58`數字段。正式敵方owner現以raw selector
 重建target array、原生16-bit RNG私下預算；mask完成後才發布MP／HP／marker／RNG，
 22張數字段與500 ms尾停後才發布`Acted`。ID20原始資產端到端與取消回復聚焦
-回歸已通過，達`RUNTIME-E1`；玩家20–22目前仍只有`0x1D6C8`palette前段，尚待
-把同一handler tail串在其後。主證據為
+回歸已通過，達`RUNTIME-E1`。後續同批已讓玩家20–22以confirmed-cursor target
+plan保留`0x1D6C8`八相位palette，再串同一handler tail；原始資產ID20測試固定
+完整Draw／發布／完成邊界，玩家與敵方皆達`RUNTIME-E1`。主證據為
 [`fd2_command20_22_player_ai_presentation_ida.txt`](../data/ida/fd2_command20_22_player_ai_presentation_ida.txt)。
 
 **2026-08-23 敵方 command0 演出接線**：`0x15311`在ID `<10`且

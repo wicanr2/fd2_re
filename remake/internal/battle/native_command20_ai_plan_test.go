@@ -14,10 +14,12 @@ func nativeAI2022Book(id int) []NativeCommandRecord {
 
 func nativeAI2022State(id int) (*State, *Unit, *Unit) {
 	actor := completeNativeAIScoringUnit()
-	actor.Camp, actor.MP, actor.NativeRecordByte6 = Enemy, 8, 1
+	actor.Camp, actor.OnField, actor.MP, actor.NativeRecordByte6 = Enemy, true, 8, 1
+	actor.X, actor.Y = 0, 0
 	actor.NativeMapPresentation.X, actor.NativeMapPresentation.Y = 0, 0
 	target := completeNativeAIScoringUnit()
-	target.Camp, target.HP, target.MaxHP = Enemy, 20, 100
+	target.Camp, target.OnField, target.HP, target.MaxHP = Enemy, true, 20, 100
+	target.X, target.Y = 1, 0
 	target.NativeMapPresentation.X, target.NativeMapPresentation.Y = 1, 0
 	return &State{W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: nativeAI2022Book(id)}, actor, target
 }
@@ -69,5 +71,52 @@ func TestPlanNativeAICommand22UsesNativeApplicationAndCompletes(t *testing.T) {
 	}
 	if !applied || target.HP > 20 {
 		t.Fatalf("application did not publish plan=%#v target=%#v", plan, target)
+	}
+}
+
+func TestPlanNativePlayerCommand20UsesConfirmedCursorTargets(t *testing.T) {
+	st, actor, target := nativeAI2022State(20)
+	st.NativeCommandBook[20].SelectionMode, st.NativeCommandBook[20].EffectMode, st.NativeCommandBook[20].TargetCode = 1, 0, 1
+	actor.Camp = Own
+	target.Camp = Own
+	target.NativeTransient[3] = 3
+	plan, err := st.PlanNativePlayerCommand2022(actor, target, 20, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(plan.Targets) == 0 || plan.Targets[0] != target || len(plan.Results) == 0 {
+		t.Fatalf("unexpected player targets/results: %#v", plan)
+	}
+	if target.NativeTransient[3] != 3 || actor.MP != 8 {
+		t.Fatal("player planning mutated live state")
+	}
+	if err := PublishNativeAICommand2022(plan); err != nil {
+		t.Fatal(err)
+	}
+	if target.NativeTransient[3] != 0 || actor.MP != 6 || actor.Acted {
+		t.Fatalf("publish actor=%#v target=%#v", actor, target)
+	}
+}
+
+func TestPlanNativePlayerCommand22UsesConfirmedCursorTargets(t *testing.T) {
+	st, actor, target := nativeAI2022State(22)
+	st.NativeCommandBook[22].SelectionMode, st.NativeCommandBook[22].EffectMode, st.NativeCommandBook[22].TargetCode = 1, 0, 0
+	actor.Camp = Own
+	target.Camp = Enemy
+	plan, err := st.PlanNativePlayerCommand2022(actor, target, 22, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(plan.Targets) == 0 || plan.Targets[0] != target || len(plan.Results) == 0 || plan.Results[0].Apply == nil {
+		t.Fatalf("unexpected player targets/results: %#v", plan)
+	}
+	if target.HP != 20 || actor.MP != 8 {
+		t.Fatal("player planning mutated live state")
+	}
+	if err := PublishNativeAICommand2022(plan); err != nil {
+		t.Fatal(err)
+	}
+	if actor.MP != 6 || actor.Acted {
+		t.Fatalf("publish actor=%#v", actor)
 	}
 }
