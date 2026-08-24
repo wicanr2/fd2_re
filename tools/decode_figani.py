@@ -16,7 +16,7 @@ LLLLLL 容器(見 unpack_dat.py)→ 每個資源 = 一段動畫。
   +2  int16 dy       320×200 畫布中的絕對螢幕 Y
   +4  u8 raw4       caller-specific marker
   +5  u8 raw5       caller-specific sample marker
-  +6  u8 delay      frame repeat count
+  +6  u8 delay      caller-specific repeat count；直接索引效果可為 0
   +7  u8 raw7       caller-specific flag
   +8  u8 reserved
   +9  u16 W          點陣解碼寬(realW)
@@ -91,8 +91,6 @@ def parse_anim(d):
         w = struct.unpack_from("<H", d, o + 9)[0]
         h = struct.unpack_from("<H", d, o + 11)[0]
         if not (0 < w <= 1024 and 0 < h <= 1024):
-            continue
-        if delay == 0:
             continue
         frames.append((x, y, w, h, raw4, raw5, delay, raw7, d[o + 13:end]))
     return frames

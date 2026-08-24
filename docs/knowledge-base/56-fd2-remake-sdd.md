@@ -839,6 +839,28 @@ schema placeholder，不得解讀成十個繪製通道。正式Game owner一次�
 phase，玩家與敵方共用相同continuation；MP、六段HP、`Acted`與RNG只在Draw
 確認後發布，缺資產或執行錯誤整批回復，達indexed `RUNTIME-E1`。
 
+ID5 使用獨立 `NativeCommand5PresentationSchedule` 與可複製狀態：六個 counter
+初值為 `0,-2,-4,-6,-8,-10`，position 為 `0..5`，next-position 為6；mode0
+逐通道消耗 `0x4E893()%2*6` 建立相位。raw side非零／零分別選FDOTHER #24／#25，
+零值側另將 `0x524D0` 的十個水平 offset 全部加143。只有mode2／5／8畫
+`phase+counter`，每張畫完才遞增；counter到7且stop未設時依共用next-position
+循環位置並重新取相位。mode3只回傳12而不重設，故每個target、九張boundary及
+下一target必須延續同一狀態；mode6先設stop再給八張tail。第一個target的raw
+marker落在step `0,2,4,6,7,8,9,10,11`，只允許前六個發布HP stage1..6。
+
+正式 compositor 的固定順序為：front／tail 的無圖層mode1／7→actor→target→
+mode2／8 effect；target 是無圖層mode4→target→mode5 effect；boundary 是
+無圖層mode4→actor末幀→位移target→mode5 effect。channel0／3在pre-increment
+counter0時分別消費FDOTHER #86 sub0／sub1，三個draw mode皆適用。資源必須為
+12張可直接索引的FIGANI；其descriptor delay0合法，不可拿通用display scheduler
+的正delay要求拒絕。typed planner與indexed compositor已達`DATA-READY`，正式
+Game owner接入前仍不可把它宣稱`RUNTIME-E1`。
+
+第5號另保留一項明示近似：原版handler phase／reseed、外層marker shake及damage
+共用process-wide RNG並跨target交錯；現有數值計畫會先解析整批target。正式owner
+可使用局部視覺RNG以避免改變既有戰鬥數值，但不得發布為原版RNG parity，日後只有
+同狀態動態證據顯示玩家可見矛盾時才重開這項排序。
+
 ID6以`NativeCommand6PresentationSchedule`保存`0x26E39`直接指令契約：
 mode0／3／6回傳7／12／7，五個runtime channel，raw dword table
 `[10,8,3,0,0]`與byte table`[10,8,3,0,0]`。raw side零值只反轉前三個

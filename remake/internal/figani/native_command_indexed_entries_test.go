@@ -34,6 +34,11 @@ func TestLoadNativeCommandIndexedEntryTablePreservesCorrectedLinearEntries(t *te
 		entry6.InitChannels != 5 || entry6.DrawChannels != 5 || len(entry6.SampleMarkers) != 3 {
 		t.Fatalf("command6 direct-instruction contract=%#v", entry6)
 	}
+	entry5, _ := table.Schedule(5)
+	if entry5.ModeReturns["0"] != 1 || entry5.ModeReturns["3"] != 12 || entry5.ModeReturns["6"] != 8 ||
+		entry5.InitChannels != 6 || entry5.DrawChannels != 6 || !entry5.UsesRNG || len(entry5.SampleMarkers) != 6 {
+		t.Fatalf("command5 direct-instruction contract=%#v", entry5)
+	}
 }
 
 func TestLoadNativeCommandIndexedEntryTableRejectsRawUnrelocatedAddress(t *testing.T) {

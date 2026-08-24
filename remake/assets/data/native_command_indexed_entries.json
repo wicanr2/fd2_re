@@ -81,7 +81,14 @@
       "offset_tables": ["0x524D0"],
       "state_ranges": ["0x5401C..0x54053"],
       "uses_rng": true,
-      "sample_markers": [{"mode": 5, "channel": -1, "counter": 3, "callee": "0x25B45"}]
+      "sample_markers": [
+        {"mode": 2, "channel": 0, "counter": 0, "callee": "0x25A96"},
+        {"mode": 2, "channel": 3, "counter": 0, "callee": "0x25B45"},
+        {"mode": 5, "channel": 0, "counter": 0, "callee": "0x25A96"},
+        {"mode": 5, "channel": 3, "counter": 0, "callee": "0x25B45"},
+        {"mode": 8, "channel": 0, "counter": 0, "callee": "0x25A96"},
+        {"mode": 8, "channel": 3, "counter": 0, "callee": "0x25B45"}
+      ]
     },
     {
       "command_id": 6,

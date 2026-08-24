@@ -1,0 +1,92 @@
+# FD2 第 5 號指令 `0x26BFD` indexed 演出：IDA Pro 9.4 證據
+
+## 輸入、工具與位址空間
+
+- `FD2.EXE`：357074 bytes；MD5 `b97caf2239a27a896069d03549d96e1e`；
+  SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- `FDOTHER.DAT`：3382481 bytes；MD5 `22f56e5027edc7c766ad34ca4e5aca93`。
+- 第一順位工具：使用者合法授權的 IDA Pro 9.4.0.260610，
+  `fd2-ida-authorized-local` 一次性無網路 Docker；位址均為 DOS LE loader 的
+  IDA 線性位址、image base 0。Capstone 5.0.3／`fd2-cap-local` 對完整
+  `0x26BFD..0x26E38` 直接指令做第二套核對。
+- IDA 將 `0x26BFD` 合併在原始 `sub_26152` 的
+  `0x26152..0x272B8` 大函式邊界內；這只作導覽，不把錯誤的大函式邊界當成
+  第 5 號 entry 語意。共用 caller 是原始 `sub_2A6BD`，entry-table 間接呼叫點
+  包含 `0x2AC25`、`0x2AC8E`、`0x2AD13`、`0x2ADC2`、`0x2AEB6`、
+  `0x2AF8D`、`0x2B0B9`、`0x2B166`、`0x2B1B6`、`0x2B23B`、
+  `0x2BA99`、`0x2BAEB`、`0x2BBA6`、`0x2BBF8`。
+
+本檔只替原始定位附加第 5 號導覽語意；推論等級逐節標示，不改名取代原始
+函式、位址、運算元或 table bytes。
+
+## entry 與 state 排程（已證實）
+
+`0x26BFD(actor,effect,destination,stride,mode)`：
+
+- `mode0` 在 `0x26C65..0x26CB7` 建立六個 channel：counter 為
+  `0,-2,-4,-6,-8,-10`，position index 為 `0..5`，每個 channel 呼叫
+  `sub_4E893` 後以 `%2*6` 寫 frame phase；next-position byte 設6，stop byte
+  清零，回傳1。
+- `mode3` 不重設 state，只回傳12。這表示多目標時下一個 target 延續前一個
+  target 與九張 boundary 留下的 channel state。
+- `mode6` 只把 stop byte 設1並回傳8；tail 不再把 counter7 的 channel 重設。
+- 只有 `mode2／5／8` 進入 `0x26CFA..0x26E2B` 的六-channel draw／advance
+  loop；`mode1／4／7` 不畫第 5 號 effect。
+- channel 僅在 `0 <= counter < 6` 時畫一層。frame index 是
+  `phase(0或6)+counter`；destination 是 caller base 加 position table 的水平
+  offset，垂直座標只來自 frame 自身。畫完才增加 counter。
+- counter 增加後等於2時回傳 numeric marker。counter 增加到7且 stop=0時，
+  position 依共用 next-position byte循環 `0..9`，counter重設0，再呼叫
+  `sub_4E893()%2*6` 取得新 phase。
+
+共用 caller 固定 front／target／tail 預算為1／12／8；相鄰 target 另由
+`sub_2BA22` 消費相同 state 九張。`0x525AF` command-indexed bytes 是
+`07 08 06 0d 06 06 05 05 10 14`，因此 ID5 每個 target 只發布前六個
+numeric marker；後續 raw marker與 boundary／tail marker仍推進演出，但不再發布HP。
+
+直接從 mode0 後執行一張 front，第一個 target 的12張 raw numeric marker落在
+step `0,2,4,6,7,8,9,10,11`；只有前六個 step
+`0,2,4,6,7,8` 對應HP stage1..6。這是 counter 指令的機械結果，不替效果命名。
+
+## offset、效果與音效資源（已證實）
+
+- `0x524D0` 的10個 signed dword 水平 offset：
+  `30,50,70,40,80,100,70,30,60,90`。actor raw record `+6==0` 時，
+  `0x26C40..0x26C54` 對10值各加143；未將兩側命名成攻／守方向。
+- `sub_2A6BD` 的效果選擇表 `0x525B9` bytes
+  `12 13 1a 27 16 18 20 25 1c`，raw `+6!=0` 的 ID5 取十進位 #24；
+  `0x525C2` bytes `14 15 1b 2b 17 19 21 26 1e`，raw `+6==0` 取 #25。
+- FDOTHER #24：15344 bytes，MD5 `3179fde43e809c648c630a3ee5f28f9b`，
+  SHA-256 `aa0b997de515236cadc5e2cc81db422bb5d14f6b9eb82a8d744dba876400cfb4`。
+  FDOTHER #25：16882 bytes，MD5 `8e664436ee6830a25b1601d6bb9a8b07`，
+  SHA-256 `98f19c479f14cb174e51634501feda67d82decac8b929d39802ceed47fd7d15d`。
+  兩者 header 都是 `0c 00 0c 00 00 00 00 00`、各12張可解碼 frame；
+  descriptor raw `+4..+7` 均為0。這些 frame 由 entry 直接索引，raw delay0
+  不是 malformed；舊 `tools/decode_figani.py info` 因跳過 delay0而回報0張，
+  不可拿該工具輸出否定實檔。
+- 共用 ASCII sound table 前10 bytes 是 `RRSTUVWXYZ`，ID5 對應 `V`＝十進位
+  FDOTHER #86。#86 是11670-byte `LLLLLL`，MD5
+  `1a5b99c25a53c7bf2d56ed37a37e70f9`，SHA-256
+  `1f6c6bc4c8359055debef78e6a03b107a61b51592ea0f95d2dd5a54663e829f0`；
+  sub0／sub1 為6561／5091 bytes，sub2是零長度 sentinel。
+- 在 `mode2／5／8` 共用 loop，pre-increment counter0 的 channel0 呼叫
+  `0x25A96(sound,1,1)`；同條件的 channel3 呼叫
+  `0x25B45(sound,1,1)`。舊 typed JSON 將它縮成「mode5 counter3」是錯誤
+  斷言：3是 channel index，不是 counter，且三個 draw mode 都可能消費。
+
+## 重製規格與限制
+
+- **RE-CLOSED／DATA-READY**：entry state、1／12／8預算、九張 boundary
+  consumer、10個 offset、#24／#25、#86、兩個 sample handle、raw marker與
+  六段HP gate均已由 IDA／Capstone／原始資產閉合。
+- typed planner 必須保存 counter、position、phase、next-position與stop；多目標
+  不可為每個 target 重設 state。compositor只畫 indexed effect layers，不發布
+  MP／HP／`Acted`。
+- `sub_4E893` 是 process-wide RNG。第 5 號 handler 的 phase／reseed與
+  `sub_2A6BD` numeric-marker shake會和 target damage RNG交錯；目前共用
+  `PlanNativeCommandDamage` 先解析整批 target，尚未保存這項跨 target 的原版
+  RNG交錯。正式 owner若先採局部視覺 RNG，必須明列為已知近似、不得宣稱
+  原版 RNG parity；不得用未證實順序改寫戰鬥數值。
+- 尚缺未修改原版一般玩家／敵方同狀態逐幀與逐音訊 E2；這不阻擋建立保留
+  已證實畫面時序、且缺資產時失敗即關閉的 indexed `RUNTIME-E1`。
+

@@ -128,6 +128,18 @@ effect draw與descriptor-delay推進；29張front、每target12張／六HP marke
 continuation。MP、六段HP、`Acted`、RNG只在Draw確認後發布，失敗整批回復，
 達indexed `RUNTIME-E1`；未修改原版同狀態逐幀／音訊仍缺，不宣稱E2。
 
+ID5的`0x26BFD`已由IDA Pro 9.4完整直接指令、Capstone及原始資產交叉閉合：
+mode0／3／6回傳1／12／8；六個counter、十位置循環、六條RNG phase、stop gate、
+`0x524D0`水平offset、raw side零值`+143`、#24／#25十二張delay0效果、#86
+sub0／sub1與六個直接sample marker均已保存。舊JSON把channel3誤寫成counter3，
+並漏掉mode2／8與`0x25A96`，現已訂正。typed planner保存跨target與九張boundary
+持續state，第一target九個raw marker中只讓前六個發布HP；indexed compositor
+保存actor／target／effect層序，工具也不再把合法delay0 frame丟棄，達
+`RE-CLOSED`／`DATA-READY`。正式Game owner尚未接入，所以不是`RUNTIME-E1`；
+原版process-wide RNG與既有整批damage plan的跨target交錯列為明示近似，不猜測
+改寫數值順序。主證據見
+[`fd2_command5_presentation_ida.txt`](../data/ida/fd2_command5_presentation_ida.txt)。
+
 ID6的`0x26E39`已由完整直接指令與原始資產交叉驗證：五個local table值、
 mode0／3／6回傳7／12／7、#32/#33十幀FIGANI及#87 samples1／2／3均已成
 strict typed schedule與實檔回歸，達`DATA-READY`。一次子代理探針曾誤解為
