@@ -113,9 +113,10 @@ mode4→target→mode5順序與FDOTHER #19/#21 30-frame資源，並有純indexed
 compositor及原始資產回歸。2026-08-24直接指令再勘誤：mode3回傳31，八個
 numeric marker分布於step `8..22`的偶數步，八個sample1 marker分布於step
 `4..18`的偶數步；舊「九張、無直接sample call」已撤回。它只到
-`DATA-READY`，因common actor、全目標原子admission與正式producer尚未閉合，正式AI仍是
-既有state-only數值路徑而非完整演出；不得把「數值可執行」誤寫成「renderer
-失敗即關閉」或`RUNTIME-E1`畫面完成。
+`DATA-READY`。同日後續正式owner已一次預建common actor、每目標31張／八HP
+marker、每boundary九張及四張common tail，並接入玩家與敵方producer；MP、HP、
+RNG、`Acted`依Draw邊界發布且可整批回復，提升為indexed `RUNTIME-E1`。仍缺
+#82取樣率人耳確認及正常未修改玩家／敵方同狀態逐幀、逐音訊`PLAYER-E2`。
 
 ID2的`0x26528`亦已修正為自身state `0x53F7E..0x53F80`、#26/#27
 18-frame FIGANI與#83 samples1／2／3；`0x52460/0x52490/0x5249C`實為ID3

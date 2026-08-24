@@ -39,8 +39,12 @@ func TestBuildNativeCommand1TargetSequencePreservesThirtyOneFramesAndEightMarker
 	if err != nil {
 		t.Fatal(err)
 	}
-	target := figani.Frame{Width: 1, Height: 1, Pixels: []byte{99}, Mask: []byte{1}}
-	sequence, err := BuildNativeCommand1TargetSequence(make([]byte, 320*200), target, effect, schedule)
+	target := &figani.Animation{Frames: []figani.Frame{{Width: 1, Height: 1, Pixels: []byte{99}, Mask: []byte{1}, Delay: 2}}}
+	bases := make([][]byte, 9)
+	for index := range bases {
+		bases[index] = make([]byte, 320*200)
+	}
+	sequence, err := BuildNativeCommand1TargetSequence(bases, target, effect, schedule)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -61,6 +65,22 @@ func TestBuildNativeCommand1TargetSequencePreservesThirtyOneFramesAndEightMarker
 		if sequence.HPStages[step] != stage+1 {
 			t.Fatalf("step%d HP stage=%d want=%d", step, sequence.HPStages[step], stage+1)
 		}
+	}
+	if sequence.NextIdleFrame != 0 || sequence.NextIdleRepeat != 1 {
+		t.Fatalf("next idle=(%d,%d) want=(0,1)", sequence.NextIdleFrame, sequence.NextIdleRepeat)
+	}
+}
+
+func TestBuildNativeCommand1TransitionFramesUsesNineRecoveredOffsets(t *testing.T) {
+	actor := &figani.Animation{Frames: []figani.Frame{{Width: 1, Height: 1, Pixels: []byte{7}, Mask: []byte{1}}}}
+	current := &figani.Animation{Frames: []figani.Frame{{Width: 1, Height: 1, Pixels: []byte{8}, Mask: []byte{1}}}}
+	next := &figani.Animation{Frames: []figani.Frame{{Width: 1, Height: 1, Pixels: []byte{9}, Mask: []byte{1}}}}
+	frames, err := BuildNativeCommand1TransitionFrames(make([]byte, 320*200), actor, current, next, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(frames) != 9 || frames[0][35] != 8 || frames[3][140] != 8 || frames[4][140] != 9 || frames[8][0] != 9 {
+		t.Fatalf("command1 transition shape/offsets changed")
 	}
 }
 

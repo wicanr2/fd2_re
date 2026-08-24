@@ -12,8 +12,8 @@ const (
 var nativeCommand1XOffsets = [NativeCommand1ChannelCount]int{-59, -39, 0, 39, 55, 39, 0, -39}
 var nativeCommand1YOffsets = [NativeCommand1ChannelCount]int{-10, -24, -30, -24, -10, 4, 10, 4}
 
-// NativeCommand1PresentationSchedule 保存 0x262EF 的 mode 3/4/5
-// 純繪製契約。音效與數值發布屬於外層 owner，不在此資料中猜測。
+// NativeCommand1PresentationSchedule 保存 0x262EF 的 mode 3/4/5 純繪製契約。
+// 直接 sample1 與 numeric marker 由 NativeCommand1TargetMarkers 分開保存。
 type NativeCommand1PresentationSchedule struct {
 	EffectResource int
 	SideXShift     int

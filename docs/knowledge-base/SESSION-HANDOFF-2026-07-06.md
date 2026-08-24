@@ -6046,3 +6046,17 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - typed schedule／compositor已改為接受完整31張並輸出兩組marker；正式Game
   owner仍待common actor、全目標原子admission與continuation接線，所以維持
   `DATA-READY`。
+
+## 2026-08-24：command1 正式玩家／敵方 owner
+
+- 上段最後一句已由本段取代：正式owner一次預建common prelude／actor、每個
+  final target的31張與九份stage base、每對相鄰目標九張`sub_2BA22`轉場，以及
+  最後四張common LUT tail；玩家target whitelist與敵方mode 11均接同一工作。
+- #82 sub0只在common actor MP marker播放；sub1只在ID1本地八個counter==5
+  marker播放。每個numeric marker在Draw acknowledgement後依序發布stage1..8；
+  全部tail後才發布`Acted`、RNG與continuation。
+- 決定性回歸覆蓋未Draw零交易、完整交易及執行中stage矛盾整批回復；
+  `internal/figani`、`internal/battlepresent`與command1／AI聚焦測試通過。
+  完整`cmd/fd2`首次重跑只發現並修正舊白名單測試，後續全套因既有商店fixture
+  在25秒內仍載入大型binding而觸發測試逾時，並非本切片失敗；故本批依聚焦
+  回歸列indexed `RUNTIME-E1`，不宣稱整套測試已於本輪綠燈或`PLAYER-E2`。

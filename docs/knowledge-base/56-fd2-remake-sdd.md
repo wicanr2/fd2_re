@@ -813,6 +813,15 @@ numeric marker後提前收尾。
 音效高階名稱與正式Game owner仍未閉合，因此此合成器目前只列`DATA-READY`，
 不假裝成正式敵方`RUNTIME-E1`。
 
+正式 Game owner 現已按修正後契約接入玩家確認與敵方 mode 11：一次預建 common
+`0x29164/0x2B659`、每個 final target 的31張與八段狀態底圖、每對目標九張
+`sub_2BA22` 轉場及四張 common LUT tail。#82 sub0在施術者MP marker播放，
+sub1只在上述八個本地sample marker播放；逐 Draw acknowledgement 後才發布一次
+MP、每目標八段HP，全部tail完成後才發布`Acted`、RNG與continuation。任一預建
+缺件維持零交易，執行中矛盾則回復施術者MP／`Acted`與所有目標HP。此切片達
+indexed `RUNTIME-E1`；尚缺正常未修改玩家／敵方同狀態逐幀、逐音訊
+`PLAYER-E2`與#82取樣率的人耳確認。
+
 ID2使用獨立`NativeCommand2PresentationSchedule`：raw side非零選FDOTHER #26，
 零值選#27，兩者都必須是18-frame FIGANI；音訊容器固定#83且只保存直接
 sample索引1／2／3。mode3寫state16；mode4只在非零side於`base+1-stride`畫
