@@ -161,3 +161,27 @@ func TestExecuteNativeCommandDamageAcceptsRecoveredCompositorIDTen(t *testing.T)
 		t.Fatalf("ID10 numeric route = %#v actor=%#v target=%#v err=%v", got, actor, target, err)
 	}
 }
+
+func TestPlanNativeAICommand4UsesRawSelectorTargetArray(t *testing.T) {
+	actor := completeNativeAIScoringUnit()
+	actor.Camp, actor.OnField, actor.Acted = Enemy, true, false
+	actor.NativeMapPresentation.X, actor.NativeMapPresentation.Y = 0, 0
+	actor.NativeRecordByte6, actor.MP = 0, 10
+	target := completeNativeAIScoringUnit()
+	target.Camp, target.OnField, target.ClassID = Own, true, 5
+	target.NativeMapPresentation.X, target.NativeMapPresentation.Y = 1, 0
+	target.NativeRecordByte6, target.HP = 1, 100
+	book := make([]NativeCommandRecord, NativeCommandRecordCount)
+	for id := range book {
+		book[id] = NativeCommandRecord{ID: id}
+	}
+	book[4] = NativeCommandRecord{ID: 4, Damage: 40, Hit: 100, SelectionMode: 4, EffectMode: 1, MPCost: 4, TargetCode: 0}
+	st := &State{W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: []byte{0, 0}, NativeCommandBook: book}
+	plan, err := st.PlanNativeAICommandDamage(actor, 4, map[int]int{5: 10}, 3)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(plan.Results) != 1 || plan.Results[0].Target != target || plan.DamageStages != 6 || actor.MP != 10 || target.HP != 100 {
+		t.Fatalf("AI command4 plan=%+v actorMP=%d targetHP=%d", plan, actor.MP, target.HP)
+	}
+}

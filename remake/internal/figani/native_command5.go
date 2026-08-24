@@ -21,10 +21,15 @@ const (
 var nativeCommand5XOffsets = [NativeCommand5PositionCount]int{30, 50, 70, 40, 80, 100, 70, 30, 60, 90}
 
 type NativeCommand5PresentationSchedule struct {
-	EffectResource int
-	SoundResource  int
-	SoundIndices   [2]int
-	XOffsets       [NativeCommand5PositionCount]int
+	CommandID                                 int
+	EffectResource                            int
+	SoundResource                             int
+	SoundIndices                              [2]int
+	XOffsets                                  [NativeCommand5PositionCount]int
+	EffectFrames, PhaseStride, ActiveCounters int
+	FrontFrames, TargetFrames, TailFrames     int
+	MarkerCounter, ResetCounter               int
+	SampleEveryChannel                        bool
 }
 
 type NativeCommand5State struct {
@@ -72,36 +77,73 @@ func BuildNativeCommand5PresentationSchedule(rawSide byte, effect *Animation) (N
 		}
 	}
 	return NativeCommand5PresentationSchedule{
+		CommandID:      5,
 		EffectResource: resource,
 		SoundResource:  NativeCommand5SoundResource,
 		SoundIndices:   [2]int{0, 1},
 		XOffsets:       nativeCommand5XOffsets,
+		EffectFrames:   NativeCommand5EffectFrameCount, PhaseStride: 6, ActiveCounters: 6,
+		FrontFrames: NativeCommand5FrontFrames, TargetFrames: NativeCommand5TargetFrames,
+		TailFrames: NativeCommand5TailFrames, MarkerCounter: 2, ResetCounter: 7,
 	}, nil
+}
+
+// BuildNativeCommand4PresentationSchedule 保存 0x269D3 已證實的六槽變體。
+// 型別沿用相同的六槽狀態容器，但所有會不同的原版常數都留在 schedule，
+// 不把第5號資源或 marker 偷渡給第4號。
+func BuildNativeCommand4PresentationSchedule(rawSide byte, effect *Animation) (NativeCommand5PresentationSchedule, error) {
+	resource := 22
+	if rawSide == 0 {
+		resource = 23
+	}
+	if effect == nil || effect.HeaderByte1 != 0 || effect.HeaderByte2 != 14 || effect.HeaderByte4 != 0 || len(effect.Frames) != 14 {
+		return NativeCommand5PresentationSchedule{}, fmt.Errorf("figani: command4 FDOTHER #%d signature mismatch", resource)
+	}
+	for index, frame := range effect.Frames {
+		if frame.Width <= 0 || frame.Height <= 0 || len(frame.Pixels) != frame.Width*frame.Height || len(frame.Mask) != len(frame.Pixels) {
+			return NativeCommand5PresentationSchedule{}, fmt.Errorf("figani: command4 FDOTHER #%d frame %d malformed", resource, index)
+		}
+	}
+	return NativeCommand5PresentationSchedule{CommandID: 4, EffectResource: resource, SoundResource: 85,
+		SoundIndices: [2]int{0, 1}, XOffsets: nativeCommand5XOffsets, EffectFrames: 14,
+		PhaseStride: 7, ActiveCounters: 7, FrontFrames: 2, TargetFrames: 12,
+		TailFrames: 8, MarkerCounter: 3, ResetCounter: 8, SampleEveryChannel: true}, nil
 }
 
 // NewNativeCommand5State 重現 mode0：六個相位各消耗一次 0x4E893，
 // 並保留下一個循環位置 6。raw side 只影響畫面水平錨點，不影響狀態。
-func NewNativeCommand5State(rng uint16) NativeCommand5State {
+func NewNativeCommand5StateForSchedule(rng uint16, schedule NativeCommand5PresentationSchedule) NativeCommand5State {
 	state := NativeCommand5State{NextPosition: NativeCommand5ChannelCount, RNG: rng}
 	for channel := 0; channel < NativeCommand5ChannelCount; channel++ {
 		state.Counters[channel] = -2 * channel
 		state.Positions[channel] = channel
 		state.RNG = fdother.NativeRNGStep(state.RNG)
-		state.Phases[channel] = int(state.RNG%2) * 6
+		state.Phases[channel] = int(state.RNG%2) * schedule.PhaseStride
 	}
 	return state
+}
+
+func NewNativeCommand5State(rng uint16) NativeCommand5State {
+	return NewNativeCommand5StateForSchedule(rng, NativeCommand5PresentationSchedule{PhaseStride: 6})
 }
 
 // PlanNativeCommand5DrawFrame 重現 mode2／5／8 共用的六通道迴圈。
 // mode1／4／7 不畫 handler effect，故不在此函式內表示。
 func PlanNativeCommand5DrawFrame(state NativeCommand5State, schedule NativeCommand5PresentationSchedule, rawSide byte) (NativeCommand5Frame, error) {
-	if schedule.EffectResource != 24 && schedule.EffectResource != 25 {
+	if schedule.CommandID != 4 && schedule.CommandID != 5 {
 		return NativeCommand5Frame{}, fmt.Errorf("figani: command5 schedule unavailable")
 	}
 	wantResource := 24
+	if schedule.CommandID == 4 {
+		wantResource = 22
+	}
 	xShift := 0
 	if rawSide == 0 {
-		wantResource = 25
+		if schedule.CommandID == 4 {
+			wantResource = 23
+		} else {
+			wantResource = 25
+		}
 		xShift = 143
 	}
 	if schedule.EffectResource != wantResource {
@@ -112,34 +154,34 @@ func PlanNativeCommand5DrawFrame(state NativeCommand5State, schedule NativeComma
 	frame := NativeCommand5Frame{Next: next}
 	for channel := 0; channel < NativeCommand5ChannelCount; channel++ {
 		counter := next.Counters[channel]
-		if counter >= 0 && counter < 6 {
+		if counter >= 0 && counter < schedule.ActiveCounters {
 			position := next.Positions[channel]
 			if position < 0 || position >= len(schedule.XOffsets) {
 				return NativeCommand5Frame{}, fmt.Errorf("figani: command5 position %d unavailable", position)
 			}
 			effectFrame := next.Phases[channel] + counter
-			if effectFrame < 0 || effectFrame >= NativeCommand5EffectFrameCount {
+			if effectFrame < 0 || effectFrame >= schedule.EffectFrames {
 				return NativeCommand5Frame{}, fmt.Errorf("figani: command5 effect frame %d unavailable", effectFrame)
 			}
 			frame.Layers = append(frame.Layers, NativeCommand5Layer{Channel: channel, Frame: effectFrame, X: schedule.XOffsets[position] + xShift})
-			if counter == 0 && channel == 0 {
+			if counter == 0 && (schedule.SampleEveryChannel || channel == 0) {
 				frame.PlayPrimary = true
 			}
-			if counter == 0 && channel == 3 {
+			if counter == 0 && !schedule.SampleEveryChannel && channel == 3 {
 				frame.PlaySecondary = true
 			}
 		}
 
 		next.Counters[channel]++
-		if next.Counters[channel] == 2 {
+		if next.Counters[channel] == schedule.MarkerCounter {
 			frame.NumericMarker = true
 		}
-		if next.Counters[channel] == 7 && !next.Stop {
+		if next.Counters[channel] == schedule.ResetCounter && !next.Stop {
 			next.Positions[channel] = next.NextPosition
 			next.NextPosition = (next.NextPosition + 1) % NativeCommand5PositionCount
 			next.Counters[channel] = 0
 			next.RNG = fdother.NativeRNGStep(next.RNG)
-			next.Phases[channel] = int(next.RNG%2) * 6
+			next.Phases[channel] = int(next.RNG%2) * schedule.PhaseStride
 		}
 	}
 	frame.Next = next
@@ -147,9 +189,9 @@ func PlanNativeCommand5DrawFrame(state NativeCommand5State, schedule NativeComma
 }
 
 func BuildNativeCommand5TargetSequence(state NativeCommand5State, schedule NativeCommand5PresentationSchedule, rawSide byte) ([]NativeCommand5Frame, NativeCommand5State, error) {
-	frames := make([]NativeCommand5Frame, 0, NativeCommand5TargetFrames)
+	frames := make([]NativeCommand5Frame, 0, schedule.TargetFrames)
 	hpStage := 0
-	for index := 0; index < NativeCommand5TargetFrames; index++ {
+	for index := 0; index < schedule.TargetFrames; index++ {
 		frame, err := PlanNativeCommand5DrawFrame(state, schedule, rawSide)
 		if err != nil {
 			return nil, state, err
@@ -197,8 +239,8 @@ func BuildNativeCommand5TransitionSequence(state NativeCommand5State, schedule N
 
 func BuildNativeCommand5TailSequence(state NativeCommand5State, schedule NativeCommand5PresentationSchedule, rawSide byte) ([]NativeCommand5Frame, NativeCommand5State, error) {
 	state.Stop = true
-	frames := make([]NativeCommand5Frame, 0, NativeCommand5TailFrames)
-	for index := 0; index < NativeCommand5TailFrames; index++ {
+	frames := make([]NativeCommand5Frame, 0, schedule.TailFrames)
+	for index := 0; index < schedule.TailFrames; index++ {
 		frame, err := PlanNativeCommand5DrawFrame(state, schedule, rawSide)
 		if err != nil {
 			return nil, state, err

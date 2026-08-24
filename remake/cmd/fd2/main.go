@@ -355,6 +355,8 @@ type Game struct {
 	sfxCommand3Sub2           []byte                // FDOTHER #84 sub2: 0x26795 pre-counter0／nonzero frame-base marker
 	sfxCommand5Actor          []byte                // FDOTHER #86 sub0: common actor marker
 	sfxCommand5Target         []byte                // FDOTHER #86 sub1: channel0／3 handler markers
+	sfxCommand4Actor          []byte                // FDOTHER #85 sub0: common actor marker
+	sfxCommand4Target         []byte                // FDOTHER #85 sub1: 0x269D3 six-slot markers
 	sfxCommand6Actor          []byte                // FDOTHER #87 sub0: common 0x2B659 actor marker
 	sfxCommand6Target         []byte                // FDOTHER #87 sub1: command6 mode5 counter markers
 	sfxCommand6Front          []byte                // FDOTHER #87 sub2: command6 mode0 before seven front frames
@@ -9729,6 +9731,8 @@ func loadGame() *Game {
 	g.sfxCommand3Sub2 = loadWav("assets/sfx/battle_84_02.wav")          // 0x26795 pre-counter0／nonzero frame-base
 	g.sfxCommand5Actor = loadWav("assets/sfx/battle_86_00.wav")         // common 0x2B659 actor marker
 	g.sfxCommand5Target = loadWav("assets/sfx/battle_86_01.wav")        // 0x26BFD channel0／3 sample index1
+	g.sfxCommand4Actor = loadWav("assets/sfx/battle_85_00.wav")         // common 0x2B659 actor marker
+	g.sfxCommand4Target = loadWav("assets/sfx/battle_85_01.wav")        // 0x269D3 six-slot sample index1
 	g.sfxCommand6Actor = loadWav("assets/sfx/battle_87_00.wav")         // common 0x2B659 actor marker
 	g.sfxCommand6Target = loadWav("assets/sfx/battle_87_01.wav")        // 0x26E39 mode5 markers
 	g.sfxCommand6Front = loadWav("assets/sfx/battle_87_02.wav")         // 0x26E39 mode0

@@ -29,7 +29,7 @@ func command5Present(work []byte) []byte {
 }
 
 func drawCommand5Layers(work []byte, effect *figani.Animation, layers []figani.NativeCommand5Layer) error {
-	if effect == nil || len(effect.Frames) != figani.NativeCommand5EffectFrameCount {
+	if effect == nil || (len(effect.Frames) != figani.NativeCommand5EffectFrameCount && len(effect.Frames) != 14) {
 		return errors.New("battlepresent: command5 effect unavailable")
 	}
 	for _, layer := range layers {

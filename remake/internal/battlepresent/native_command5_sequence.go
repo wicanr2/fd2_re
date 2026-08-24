@@ -62,17 +62,19 @@ func BuildNativeCommand5EffectSequence(in NativeCommand5EffectInput) (NativeComm
 	}
 
 	out := NativeCommand5EffectSequence{Targets: make([][]NativeCommand5RenderedFrame, len(in.TargetIdle))}
-	state := figani.NewNativeCommand5State(in.VisualRNG)
-	front, err := figani.PlanNativeCommand5DrawFrame(state, in.Schedule, in.RawSide)
-	if err != nil {
-		return NativeCommand5EffectSequence{}, err
+	state := figani.NewNativeCommand5StateForSchedule(in.VisualRNG, in.Schedule)
+	for index := 0; index < in.Schedule.FrontFrames; index++ {
+		front, err := figani.PlanNativeCommand5DrawFrame(state, in.Schedule, in.RawSide)
+		if err != nil {
+			return NativeCommand5EffectSequence{}, err
+		}
+		frontPixels, err := ComposeNativeCommand5OrbitFrame(in.FrontBase, in.ActorEffect, in.TargetIdle[0], in.Effect, front)
+		if err != nil {
+			return NativeCommand5EffectSequence{}, err
+		}
+		out.Front = append(out.Front, NativeCommand5RenderedFrame{Pixels: frontPixels, PlayPrimary: front.PlayPrimary, PlaySecondary: front.PlaySecondary})
+		state = front.Next
 	}
-	frontPixels, err := ComposeNativeCommand5OrbitFrame(in.FrontBase, in.ActorEffect, in.TargetIdle[0], in.Effect, front)
-	if err != nil {
-		return NativeCommand5EffectSequence{}, err
-	}
-	out.Front = append(out.Front, NativeCommand5RenderedFrame{Pixels: frontPixels, PlayPrimary: front.PlayPrimary, PlaySecondary: front.PlaySecondary})
-	state = front.Next
 
 	lastIdleFrame, lastIdleRepeat := 0, 0
 	for targetIndex, idle := range in.TargetIdle {

@@ -48,6 +48,24 @@ func TestExecuteNativeAICommand0RejectsMissingPresentationBeforeMutation(t *test
 	}
 }
 
+func TestExecuteNativeAICommand4RejectsMissingPresentationBeforeMutation(t *testing.T) {
+	actor := &battle.Unit{Camp: battle.Enemy, HP: 20, MP: 4, OnField: true, X: 0, Y: 0}
+	target := &battle.Unit{Camp: battle.Own, HP: 20, OnField: true, X: 1, Y: 0}
+	book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
+	for id := range book {
+		book[id] = battle.NativeCommandRecord{ID: id}
+	}
+	book[4] = battle.NativeCommandRecord{ID: 4, Damage: 10, Hit: 100, SelectionMode: 1, EffectMode: 1, MPCost: 2, TargetCode: 1}
+	g := &Game{st: &battle.State{W: 2, H: 1, Units: []*battle.Unit{actor, target}, NativeCompositionEventBytes: []byte{0, 0}, NativeCommandBook: book, NativeCommandResistances: map[int]int{}}, rng: rand.New(rand.NewSource(1))}
+	plan := &battle.AIPlan{U: actor, Target: target, NativeActionKind: battle.NativeAIActionCommand, NativeCommandID: 4}
+	if err := g.executeNativeAIAction(plan); err == nil {
+		t.Fatal("AI command4 accepted missing formal presentation context")
+	}
+	if actor.Acted || actor.MP != 4 || target.HP != 20 {
+		t.Fatalf("actor=%+v target=%+v", actor, target)
+	}
+}
+
 func TestExecuteNativeAICommand13WaitsForIndexedPresentation(t *testing.T) {
 	assets, field, state := completeNativeMapFrameFixture(t)
 	for i := range assets.LUTs {

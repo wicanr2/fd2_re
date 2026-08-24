@@ -6371,3 +6371,20 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   時保留該byte。玩家25原始資產測試證實只清confirmed target，其他target保留，
   全成功時不播放空白數字段；敵方26原始資產測試證實使用raw selector而非玩家target。
   兩者均通過，這批提升為`RUNTIME-E1`，同狀態逐幀／逐音訊E2仍待。
+
+## 2026-08-25：敵方第4號指令正式 indexed owner
+
+- IDA Pro 9.4先閉合`0x269D3..0x26BFC`，Capstone再核對完整指令與
+  `0x524A8／0x525AF` bytes。ID4是正常AI attack scorer可產生的候選；六槽
+  state、2／12／8預算、六段HP、#22／#23十四張FIGANI與#85 sub0／sub1均已
+  寫入canonical evidence及SDD，玩家producer仍未知而不猜接。
+- 正式敵方owner使用raw `+6` target-code轉換，從選定目的格重建final target
+  array，逐Draw發布MP／HP／`Acted`／RNG並支援整批回復。聚焦測試同時抓到
+  ID4／5 loader gate把實檔`EffectMode=1`誤寫成2，已依`spells.json` raw byte
+  修正；第5號玩家／敵方既有路徑因此也不再被錯誤拒絕。
+- 同畫格多次#85 sub1目前合併播放，明列為混音近似；未修改敵方同狀態逐幀／
+  音訊仍是E2，不重開已閉合entry。
+- 追查ID4測試時確認所有敵方ID0..8 presenter仍共用玩家confirmed-cursor
+  admission；實檔`TargetCode=0`會因此拒絕玩家陣營目標。現已統一改走既有
+  `0x1598A`證據的raw `+6` target-code轉換與目的格effect array，完整回歸通過；
+  玩家路徑仍使用原本兩階段游標契約。

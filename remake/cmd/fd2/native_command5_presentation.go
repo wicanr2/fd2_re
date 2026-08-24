@@ -30,6 +30,7 @@ type nativeCommand5HandlerFrame struct {
 }
 
 type nativeCommand5PresentationJob struct {
+	commandID              int
 	actor                  *battle.Unit
 	plan                   *battle.NativeCommandDamagePlan
 	prelude                []*ebiten.Image
@@ -44,10 +45,22 @@ type nativeCommand5PresentationJob struct {
 	actorMPBefore          int
 	actorActedBefore       bool
 	targetHPBefore         []int
+	actorSFX, targetSFX    []byte
 	then                   func([]battle.NativeCommandDamageResult)
 }
 
 func (g *Game) startNativeCommand5Presentation(actor, confirmed *battle.Unit, then func([]battle.NativeCommandDamageResult)) error {
+	return g.startNativeCommand45Presentation(actor, confirmed, 5, then)
+}
+
+func (g *Game) startNativeCommand4AIPresentation(actor, confirmed *battle.Unit, then func([]battle.NativeCommandDamageResult)) error {
+	return g.startNativeCommand45Presentation(actor, confirmed, 4, then)
+}
+
+func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, commandID int, then func([]battle.NativeCommandDamageResult)) error {
+	if commandID != 4 && commandID != 5 {
+		return errors.New("native command4/5 owner unavailable")
+	}
 	if !g.nativeFullPresentationEnabled() {
 		return errors.New("native abbreviated presentation owner unavailable")
 	}
@@ -61,12 +74,18 @@ func (g *Game) startNativeCommand5Presentation(actor, confirmed *battle.Unit, th
 	if !actor.HasBattleFig || !actor.HasNativeRecordByte6 || len(g.nativeUIPalette) != 256 || len(g.nativeMapAssets.LUTs) <= 14 {
 		return errors.New("native command5 raw actor provenance unavailable")
 	}
-	plan, err := g.st.PlanNativeCommandDamage(actor, confirmed, 5, g.st.NativeCommandResistances, g.nativeRNGState)
+	var plan *battle.NativeCommandDamagePlan
+	var err error
+	if actor.Camp == battle.Enemy {
+		plan, err = g.st.PlanNativeAICommandDamage(actor, commandID, g.st.NativeCommandResistances, g.nativeRNGState)
+	} else {
+		plan, err = g.st.PlanNativeCommandDamage(actor, confirmed, commandID, g.st.NativeCommandResistances, g.nativeRNGState)
+	}
 	if err != nil {
 		return err
 	}
 	if len(plan.Results) == 0 || plan.DamageStages != figani.NativeCommand5DamageStages ||
-		len(g.st.NativeCommandBook) != battle.NativeCommandRecordCount || g.st.NativeCommandBook[5].EffectMode != 2 {
+		len(g.st.NativeCommandBook) != battle.NativeCommandRecordCount || g.st.NativeCommandBook[commandID].EffectMode != 1 {
 		return errors.New("native command5 final targets unavailable")
 	}
 	for _, result := range plan.Results {
@@ -137,24 +156,40 @@ func (g *Game) startNativeCommand5Presentation(actor, confirmed *battle.Unit, th
 		}
 	}
 	effectResource := 24
+	if commandID == 4 {
+		effectResource = 22
+	}
 	if actor.NativeRecordByte6 == 0 {
-		effectResource = 25
+		if commandID == 4 {
+			effectResource = 23
+		} else {
+			effectResource = 25
+		}
 	}
 	effect, err := figani.DecodeResource(fdotherPath, effectResource)
 	if err != nil {
 		return err
 	}
-	schedule, err := figani.BuildNativeCommand5PresentationSchedule(actor.NativeRecordByte6, effect)
+	var schedule figani.NativeCommand5PresentationSchedule
+	if commandID == 4 {
+		schedule, err = figani.BuildNativeCommand4PresentationSchedule(actor.NativeRecordByte6, effect)
+	} else {
+		schedule, err = figani.BuildNativeCommand5PresentationSchedule(actor.NativeRecordByte6, effect)
+	}
 	if err != nil {
 		return err
 	}
 	for sample := 0; sample <= 1; sample++ {
 		if raw, readErr := fdother.ReadNestedResource(fdotherPath, schedule.SoundResource, sample); readErr != nil || len(raw) == 0 {
-			return fmt.Errorf("native command5 FDOTHER #86 sub%d unavailable", sample)
+			return fmt.Errorf("native command%d FDOTHER #%d sub%d unavailable", commandID, schedule.SoundResource, sample)
 		}
 	}
-	if !osMuteOrShot(g) && (len(g.sfxCommand5Actor) == 0 || len(g.sfxCommand5Target) == 0) {
-		return errors.New("native command5 converted #86 samples unavailable")
+	actorSFX, targetSFX := g.sfxCommand5Actor, g.sfxCommand5Target
+	if commandID == 4 {
+		actorSFX, targetSFX = g.sfxCommand4Actor, g.sfxCommand4Target
+	}
+	if !osMuteOrShot(g) && (len(actorSFX) == 0 || len(targetSFX) == 0) {
+		return fmt.Errorf("native command%d converted samples unavailable", commandID)
 	}
 	panelAssets, err := battle.LoadNativeItemPanelDataAssets(fdotherPath, fdtxtPath)
 	if err != nil {
@@ -249,7 +284,7 @@ func (g *Game) startNativeCommand5Presentation(actor, confirmed *battle.Unit, th
 	if len(pulseDAC) != 256*3 || len(g.nativeCommandPaletteFlash.Entries) != battle.NativeCommandRecordCount {
 		return errors.New("native command5 DAC inputs unavailable")
 	}
-	copy(pulseDAC[:3], g.nativeCommandPaletteFlash.Entries[5][:])
+	copy(pulseDAC[:3], g.nativeCommandPaletteFlash.Entries[commandID][:])
 	pulsePalette, err := fdother.VGAPaletteFromDAC(pulseDAC)
 	if err != nil {
 		return err
@@ -312,9 +347,9 @@ func (g *Game) startNativeCommand5Presentation(actor, confirmed *battle.Unit, th
 		return errors.New("native command5 handler frames unavailable")
 	}
 	g.nativeCmd5Presentation = &nativeCommand5PresentationJob{
-		actor: actor, plan: plan, prelude: preludeImages, actorBlack: actorBlack, actorPulse: actorPulse,
+		commandID: commandID, actor: actor, plan: plan, prelude: preludeImages, actorBlack: actorBlack, actorPulse: actorPulse,
 		actorSpecs: actorSpecs, handler: handler, tail: commonTail, actorMPBefore: actor.MP, actorActedBefore: actor.Acted,
-		targetHPBefore: make([]int, len(plan.Results)), then: then,
+		targetHPBefore: make([]int, len(plan.Results)), actorSFX: actorSFX, targetSFX: targetSFX, then: then,
 	}
 	for index, result := range plan.Results {
 		g.nativeCmd5Presentation.targetHPBefore[index] = result.Target.HP
@@ -334,7 +369,7 @@ func (g *Game) failNativeCommand5Presentation(err error) {
 		}
 	}
 	g.nativeCmd5Presentation = nil
-	g.loadErr = "native command5 presentation: " + err.Error()
+	g.loadErr = fmt.Sprintf("native command%d presentation: %s", j.commandID, err)
 }
 
 func (g *Game) stepNativeCommand5Presentation() {
@@ -358,7 +393,7 @@ func (g *Game) stepNativeCommand5Presentation() {
 					return
 				}
 				j.mpPublished = true
-				g.playRaw(g.sfxCommand5Actor)
+				g.playRaw(j.actorSFX)
 			}
 			j.pulseBlack = true
 			return
@@ -369,7 +404,7 @@ func (g *Game) stepNativeCommand5Presentation() {
 				return
 			}
 			j.mpPublished = true
-			g.playRaw(g.sfxCommand5Actor)
+			g.playRaw(j.actorSFX)
 		}
 		j.pulseBlack = false
 		j.frame++
@@ -389,10 +424,10 @@ func (g *Game) stepNativeCommand5Presentation() {
 			}
 		}
 		if frame.playPrimary {
-			g.playRaw(g.sfxCommand5Target)
+			g.playRaw(j.targetSFX)
 		}
 		if frame.playSecondary {
-			g.playRaw(g.sfxCommand5Target)
+			g.playRaw(j.targetSFX)
 		}
 		j.frame++
 		if j.frame < len(j.handler) {

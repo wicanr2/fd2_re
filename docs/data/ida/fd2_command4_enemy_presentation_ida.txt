@@ -1,0 +1,67 @@
+# FD2 第 4 號指令敵方 indexed 演出：IDA Pro 9.4 證據
+
+## 輸入、工具與位址空間
+
+- `FD2.EXE`：357074 bytes；MD5 `b97caf2239a27a896069d03549d96e1e`；
+  SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- `FDOTHER.DAT`：3382481 bytes；MD5 `22f56e5027edc7c766ad34ca4e5aca93`。
+- 第一順位工具：使用者授權的 IDA Pro 9.4.0.260610，於
+  `fd2-ida-authorized-local:latest` 一次性、無網路 Docker 容器執行；原版唯讀，
+  暫存資料庫未加入版控。IDA 位址是 DOS LE loader 的線性位址、image base 0。
+- 第二工具：Capstone 5.0.3／`fd2-cap-local:latest`，獨立核對
+  `0x269D3..0x26BFC` 與 `0x524A8`、`0x525AF` 原始位元組。
+- IDA 把 `0x269D3` 併入 `sub_26152` 的過大函式邊界；本文保留該原始名稱，
+  但以 `funcs_2AC25[4]`、下一入口 `0x26BFD` 和直接指令界定本段，不採用合併後
+  偽代碼作語意證據。
+
+## 正常敵方來源與共用消費者（已證實）
+
+- `0x1598A／0x15B77` 的攻擊型 command 評分涵蓋 ID0..12；ID4 可產生正分候選，
+  不屬於 ID23..25／28以上的零分停止範圍。
+- mode 11 在 `0x15311` 對 command ID `<10` 且 raw `[0x53AF9]==0` 呼叫
+  `0x2A6BD`；後者透過 `funcs_2AC25[4]` 間接消費 `0x269D3`。
+- 本證據只解除敵方 raw-selector owner。尚未找到一般玩家取得／確認 ID4 的
+  producer，因此不得把同一 handler 猜接到玩家指令選單。
+
+## `0x269D3` 狀態與時序（已證實）
+
+- mode0 初始化六組 counter `0,-2,-4,-6,-8,-10`、position `0..5`，
+  next-position=6、stop=0。每組各呼叫一次 `0x4E893`，phase 為
+  `(rng % 2) * 7`，回傳前導預算2。
+- mode3 不重設狀態，回傳每目標12張；mode6 設 stop=1，回傳尾段8張。
+- 只有 mode2／5／8 進六槽迴圈。`0 <= counter < 7` 時畫
+  `effect[phase+counter]`；每槽畫後 counter 加1。增加後等於3時回傳 numeric
+  marker；增加到8且 stop=0 時，以遞增後 `%10` 的 next-position 重置該槽，
+  counter清0並再取一次 phase RNG。
+- `0x525AF[4]=6`，所以每個 target 只發布前六個 numeric marker為六段HP；
+  boundary／tail 的後續 marker只延續演出，不得重複寫HP。
+- `0x524A8` 十個 signed dword offset為
+  `30,50,70,40,80,100,70,30,60,90`；actor raw `+6==0` 時全部加143。
+- counter在遞增前等於0時，每個通道都直接呼叫
+  `0x25A96(sound,1,1)`。同一畫格可能發生多次同 handle 呼叫；重製若只播放一次，
+  必須標為混音近似，不可宣稱逐呼叫音訊一致。
+
+## 原始資源（已證實）
+
+- `0x525B9[4]=22`（raw `+6!=0`），`0x525C2[4]=23`（raw `+6==0`）。
+- FDOTHER #22：8866 bytes；MD5 `42621f0aed0107daf489260205c16f6f`；
+  SHA-256 `44a5372aeb24db4a50aec85643b2768530600679bce9d1cb883d601c696f2722`。
+- FDOTHER #23：9904 bytes；MD5 `a39912ff48916f451d249e2d4050f86d`；
+  SHA-256 `63cce8512e8596ecb3e4910fe6b180890617a7ebc13026f44f5c232624779447`。
+  兩者 header均為`0e 00 0e 00 00 00 00 00`，各14張直接索引FIGANI frame。
+- 共用 sound table 的 ID4 byte為 ASCII `U`＝FDOTHER #85。#85為13959-byte
+  `LLLLLL`，MD5 `fdc1dd1f47b4f44a17beb98a6279a5bc`，SHA-256
+  `fcbbe69a80887ca9da7896080741c0c5ee693958d05fb31d28f366c309b7fa17`；
+  sub0／sub1／sentinel長度為6561／7380／0。共用 actor marker消費sub0，
+  `0x269D3` 的六槽呼叫消費sub1。
+
+## 重製契約與等級
+
+- **RE-CLOSED／DATA-READY**：enemy producer、caller、entry bytes、狀態、
+  2／12／8預算、九張共用target boundary、十個offset、六段HP gate、#22／#23、
+  #85與sample owner均已閉合。
+- typed state必須跨front、targets、boundary與tail持續；不得每target重設。
+  正式owner須預建完整批次，逐Draw發布MP／六段HP，完成後才發布`Acted`與數值RNG；
+  缺任一原始資產或raw provenance即零交易。
+- handler視覺RNG與傷害RNG的原版交錯尚無同狀態動態證據，重製採局部視覺RNG時
+  明列為近似。一般敵方逐幀／逐音訊仍待`PLAYER-E2`；玩家ID4仍失敗即關閉。

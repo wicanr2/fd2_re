@@ -62,7 +62,13 @@ func (g *Game) startNativeCommand7Presentation(actor, confirmed *battle.Unit, th
 	if !actor.HasBattleFig || !actor.HasNativeRecordByte6 || len(g.nativeUIPalette) != 256 || len(g.nativeMapAssets.LUTs) <= 14 {
 		return errors.New("native command7 raw actor provenance unavailable")
 	}
-	plan, err := g.st.PlanNativeCommandDamage(actor, confirmed, 7, g.st.NativeCommandResistances, g.nativeRNGState)
+	var plan *battle.NativeCommandDamagePlan
+	var err error
+	if actor.Camp == battle.Enemy {
+		plan, err = g.st.PlanNativeAICommandDamage(actor, 7, g.st.NativeCommandResistances, g.nativeRNGState)
+	} else {
+		plan, err = g.st.PlanNativeCommandDamage(actor, confirmed, 7, g.st.NativeCommandResistances, g.nativeRNGState)
+	}
 	if err != nil {
 		return err
 	}

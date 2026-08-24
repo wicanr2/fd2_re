@@ -177,6 +177,73 @@ func (s *State) PlanNativeAICommandDamageSingleTarget(actor, target *Unit, comma
 	}, nil
 }
 
+// PlanNativeAICommandDamage rebuilds the exact final target array selected by
+// 0x1598A/0x15311 from the actor's raw +6 selector and selected destination.
+// It intentionally bypasses the player-only confirmed-cursor admission.
+func (s *State) PlanNativeAICommandDamage(actor *Unit, commandID int, resistByClass map[int]int, rngState uint16) (*NativeCommandDamagePlan, error) {
+	if s == nil || actor == nil || actor.Camp != Enemy || !actor.HasNativeRecordByte6 || !actor.HasNativeMapPresentation ||
+		commandID < 0 || commandID > 9 || len(s.NativeCommandBook) != NativeCommandRecordCount || s.NativeCommandBook[commandID].ID != commandID {
+		return nil, fmt.Errorf("native AI command damage selector unavailable id=%d", commandID)
+	}
+	selector := int(actor.NativeRecordByte6)
+	if selector != 0 && selector != 1 {
+		return nil, fmt.Errorf("native AI command selector=%d is outside 0/1", selector)
+	}
+	records, err := NativeAIScoringRecords(s.Units)
+	if err != nil {
+		return nil, err
+	}
+	record := s.NativeCommandBook[commandID]
+	targetCode, err := nativeAIScoredCommandTargetCode(record.TargetCode, selector)
+	if err != nil {
+		return nil, err
+	}
+	flags, err := s.NativeCommandBaseFlags()
+	if err != nil {
+		return nil, err
+	}
+	indices, err := nativeAIScoredCommandTargetIndices(s.W, s.H, records, len(s.Units),
+		Cell{X: int(actor.NativeMapPresentation.X), Y: int(actor.NativeMapPresentation.Y)}, record.EffectMode, targetCode, flags)
+	if err != nil {
+		return nil, err
+	}
+	if len(indices) == 0 {
+		return nil, fmt.Errorf("native AI command damage target array is empty")
+	}
+	if actor.Acted || record.MPCost < 0 || record.MPCost > 0xff || actor.MP < record.MPCost {
+		return nil, fmt.Errorf("native AI command damage insufficient MP")
+	}
+	stages, err := nativeCommandDamageStages(commandID)
+	if err != nil {
+		return nil, err
+	}
+	plan := &NativeCommandDamagePlan{Actor: actor, CommandID: commandID, MPBefore: actor.MP, MPAfter: actor.MP - record.MPCost,
+		ActorActedBefore: actor.Acted, RNGBefore: rngState, DamageStages: stages,
+		Results: make([]NativeCommandDamageResult, 0, len(indices)), publishedTargetStages: make([]int, len(indices))}
+	for _, index := range indices {
+		target := s.Units[int(index)]
+		resistance, ok := resistByClass[target.ClassID]
+		if !ok || resistance < 0 || resistance > 10 {
+			return nil, fmt.Errorf("native AI command damage missing resistance class=%d", target.ClassID)
+		}
+		resolved, next, err := ResolveNativeCommandDamage(record.Damage, record.Hit, resistance, rngState)
+		if err != nil {
+			return nil, err
+		}
+		rngState = next
+		hpAfter := target.HP
+		if resolved.Hit {
+			hpAfter -= resolved.Damage
+			if hpAfter < 0 {
+				hpAfter = 0
+			}
+		}
+		plan.Results = append(plan.Results, NativeCommandDamageResult{Target: target, NativeCommandDamage: resolved, HPBefore: target.HP, HPAfter: hpAfter})
+	}
+	plan.RNGAfter = rngState
+	return plan, nil
+}
+
 // nativeCommandDamageStages preserves the 0x525AF command0..9 table consumed
 // by 0x2AEC9. Commands10..12 do not use that indexed target presenter in the
 // current engine slice, so their state-only transaction publishes once.

@@ -839,6 +839,24 @@ schema placeholder，不得解讀成十個繪製通道。正式Game owner一次�
 phase，玩家與敵方共用相同continuation；MP、六段HP、`Acted`與RNG只在Draw
 確認後發布，缺資產或執行錯誤整批回復，達indexed `RUNTIME-E1`。
 
+ID4只開放已證實的敵方mode 11 owner。`0x1598A／0x15B77`可把ID4評為正分，
+`0x15311→0x2A6BD→funcs_2AC25[4]`再消費`0x269D3`；尚無一般玩家producer，
+玩家入口不得猜接。typed schedule保存六槽counter `0,-2..-10`、position0..5、
+next-position6、`(rng%2)*7` phase、14-frame #22／#23效果、#85 sub0／sub1、
+十個offset `30,50,70,40,80,100,70,30,60,90`及raw side零值+143。
+front／target／tail預算固定2／12／8，counter遞增至3產生raw marker；每target只消費
+前六個marker發布六段HP，九張boundary延續同一state。正式敵方owner必須先預建
+所有phase並在Draw後發布，失敗回復MP／HP／`Acted`／RNG。正式實作已使用
+`PlanNativeAICommandDamage`重現raw `+6` target-code轉換與目的格目標陣列，
+不再錯用玩家confirmed-cursor admission；達indexed `RUNTIME-E1`。同畫格六槽sample1
+目前合併為一次播放，只列混音近似。主證據為
+[`fd2_command4_enemy_presentation_ida.txt`](../data/ida/fd2_command4_enemy_presentation_ida.txt)。
+
+同一修正適用`0x15311→0x2A6BD`的敵方ID0..8正式owner：所有敵方damage
+presenter現在都先走`PlanNativeAICommandDamage`，依raw `+6`轉換target code並從
+actor已選目的格重建effect array；玩家路徑才保留`0x1CFF0` confirmed-cursor
+admission。這是既有AI candidate證據的消費端訂正，不改寫各entry compositor。
+
 ID5 使用獨立 `NativeCommand5PresentationSchedule` 與可複製狀態：六個 counter
 初值為 `0,-2,-4,-6,-8,-10`，position 為 `0..5`，next-position 為6；mode0
 逐通道消耗 `0x4E893()%2*6` 建立相位。raw side非零／零分別選FDOTHER #24／#25，

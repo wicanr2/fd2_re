@@ -207,6 +207,20 @@ raw side零值將`0x52460`的12個X全部加20。`0x52490／0x5249C`分別是ver
 同handle同畫格的raw sample疊音與未修改原版一般玩家逐幀／音訊仍不宣稱E2；主證據見
 [`fd2_command3_presentation_ida.txt`](../data/ida/fd2_command3_presentation_ida.txt)。
 
+ID4的`0x269D3..0x26BFC`已由IDA Pro 9.4、Capstone與原始資產閉合：正常敵方
+評分器可產生ID4，`0x15311→0x2A6BD→funcs_2AC25[4]`是正式消費鏈；六槽
+counter／position／`(rng%2)*7` phase、2／12／8預算、六段HP gate、十個offset、
+raw side零值+143、#22／#23十四張效果及#85 sub0／sub1均為`RE-CLOSED`／
+`DATA-READY`。正式敵方owner現以raw `+6` selector從選定目的格重建目標陣列，
+一次預建2張front、每target12張、每boundary9張、8張handler tail與共同4張tail；
+逐Draw發布MP／六段HP，完成後才發布`Acted`與數值RNG，執行失敗整批回復，達
+indexed `RUNTIME-E1`。同畫格多次sample1目前合併播放，列為混音近似。
+玩家producer仍未知，不猜接；未修改敵方同狀態逐幀／音訊E2另列。主證據見
+[`fd2_command4_enemy_presentation_ida.txt`](../data/ida/fd2_command4_enemy_presentation_ida.txt)。
+本批另把相同raw-selector target-array契約接回全部敵方ID0..8 presenter；先前
+共用玩家confirmed-cursor admission會在實檔`TargetCode=0`下拒絕敵方攻擊目標，
+該消費端錯誤已撤回。各ID既有entry證據與畫面排程不因此重開。
+
 ID5的`0x26BFD`已由IDA Pro 9.4完整直接指令、Capstone及原始資產交叉閉合：
 mode0／3／6回傳1／12／8；六個counter、十位置循環、六條RNG phase、stop gate、
 `0x524D0`水平offset、raw side零值`+143`、#24／#25十二張delay0效果、#86

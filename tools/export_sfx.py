@@ -9,7 +9,8 @@ FDOTHER.DAT 資源 #31 是巢狀 `LLLLLL` 容器(見 docs/knowledge-base/36-sfx-
 (見 docs/knowledge-base/36 待辦),沿用文件既有推定值 11025Hz ── 1995 年 AIL 遊戲常見預設值。
 
 第 10 輪新增 `--battle` 模式:戰鬥音效走另一批 FDOTHER.DAT 子資源；其中
-`#48/#49/#50/#51/#52/#53/#64/#78/#88` 是動態候選池，`#82/#84/#90` 分別是 command 0／3／8
+`#48/#49/#50/#51/#52/#53/#64/#78` 是動態候選池，`#82`與`#84..#88`及`#90`
+分別包含 command 0、3..8
 由 `0x2A6BD→0x26152/0x26795/0x274B0` 證實的 actor／handler 音效資源，`#95` 是 0x32999
 第 1 次呈現直接使用的固定資源；`#91..#94` 是 commands32..35 的
 `0x27FC9` 共用 indexed owner 音效資源（見 docs/knowledge-base/36），
@@ -36,7 +37,7 @@ SAMPLE_RATE = 11025  # 推定值,見 docs/knowledge-base/36-sfx-audio-data.md �
 
 # 戰鬥音效候選池:PCM 特徵(值集中 0x80 附近、std 窄)比對確認,見 doc36 第 10 輪。
 # 精確「哪個 index 對應哪招」仍是動態值(攻擊資料決定),此處先把整個候選家族導出。
-BATTLE_EXPORT_INDICES = [48, 49, 50, 51, 52, 53, 64, 78, 80, 82, 84, 86, 87, 88, 90, 91, 92, 93, 94, 95]
+BATTLE_EXPORT_INDICES = [48, 49, 50, 51, 52, 53, 64, 78, 80, 82, 84, 85, 86, 87, 88, 90, 91, 92, 93, 94, 95]
 
 
 def export_container(data: bytes, name_prefix: str, label: str):
