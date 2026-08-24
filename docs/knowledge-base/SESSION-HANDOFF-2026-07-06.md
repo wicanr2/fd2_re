@@ -6082,3 +6082,18 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - MP、HP、`Acted`與RNG皆只在畫格經 Draw 確認後發布；新增決定性測試證明
   未Draw不改狀態、完整播放才提交、中途錯誤整批回復。狀態提升為indexed
   `RUNTIME-E1`，未修改原版一般玩家逐幀／音訊比較仍是E2缺口。
+
+### 2026-08-24：第 5 號指令 `0x26BFD` 與正式 owner
+
+- IDA Pro 9.4、Capstone與固定雜湊原始資產共同閉合六通道counter／position／
+  phase、十位置循環、mode0／3／6的1／12／8預算、#24／#25十二張delay0效果及
+  #86 sub0／sub1。舊JSON將channel3誤寫為counter3並漏掉mode2／8、`0x25A96`
+  的斷言已撤回；六個直接sample marker已逐筆保存。
+- typed planner與全批次indexed compositor保留front→targets→九張boundaries→
+  tail的同一state。正式Game owner一次預建common前導／actor、1張front、每target
+  12張與前六個HP stage、每boundary 9張、8張handler tail及共同4張LUT tail，
+  玩家確認與敵方mode 11現共用同一工作。
+- MP、HP、`Acted`與數值計畫RNG都在Draw確認後才發布；中途stage矛盾會整批回復。
+  聚焦回歸與完整Go回歸使用有界Xvfb通過。原版handler phase／marker shake／damage
+  的process-wide RNG跨target交錯目前採局部視覺RNG近似，不宣稱RNG parity或
+  未修改原版`PLAYER-E2`。

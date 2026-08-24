@@ -135,7 +135,10 @@ sub0／sub1與六個直接sample marker均已保存。舊JSON把channel3誤寫�
 並漏掉mode2／8與`0x25A96`，現已訂正。typed planner保存跨target與九張boundary
 持續state，第一target九個raw marker中只讓前六個發布HP；indexed compositor
 保存actor／target／effect層序，工具也不再把合法delay0 frame丟棄，達
-`RE-CLOSED`／`DATA-READY`。正式Game owner尚未接入，所以不是`RUNTIME-E1`；
+`RE-CLOSED`／`DATA-READY`。正式Game owner現已一次預建common前導／actor、
+1張front、每target 12張、每boundary 9張、8張handler tail與共同4張LUT tail，
+並接入玩家確認及敵方mode 11；MP、六段HP、`Acted`與數值RNG依Draw發布且可整批
+回復，提升為indexed `RUNTIME-E1`。
 原版process-wide RNG與既有整批damage plan的跨target交錯列為明示近似，不猜測
 改寫數值順序。主證據見
 [`fd2_command5_presentation_ida.txt`](../data/ida/fd2_command5_presentation_ida.txt)。

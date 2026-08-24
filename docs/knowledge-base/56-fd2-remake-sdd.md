@@ -853,13 +853,19 @@ mode2／8 effect；target 是無圖層mode4→target→mode5 effect；boundary �
 無圖層mode4→actor末幀→位移target→mode5 effect。channel0／3在pre-increment
 counter0時分別消費FDOTHER #86 sub0／sub1，三個draw mode皆適用。資源必須為
 12張可直接索引的FIGANI；其descriptor delay0合法，不可拿通用display scheduler
-的正delay要求拒絕。typed planner與indexed compositor已達`DATA-READY`，正式
-Game owner接入前仍不可把它宣稱`RUNTIME-E1`。
+的正delay要求拒絕。typed planner、全批次預建器與indexed compositor現已由
+玩家確認及敵方mode 11的正式Game owner消費，達`RUNTIME-E1`。
 
 第5號另保留一項明示近似：原版handler phase／reseed、外層marker shake及damage
 共用process-wide RNG並跨target交錯；現有數值計畫會先解析整批target。正式owner
-可使用局部視覺RNG以避免改變既有戰鬥數值，但不得發布為原版RNG parity，日後只有
+目前owner使用局部視覺RNG以避免改變既有戰鬥數值，但不得發布為原版RNG parity，日後只有
 同狀態動態證據顯示玩家可見矛盾時才重開這項排序。
+
+第5號正式owner一次預建common前導／actor、1張front、每target 12張、每boundary
+9張、8張handler tail與共同4張LUT tail；#86 sub0同時服務common actor與channel0，
+sub1服務channel3。MP、六段HP、`Acted`及數值計畫的RNG都只在對應Draw確認後發布，
+執行中矛盾回復actor MP／`Acted`與全部target HP。缺#24／#25、#86、BG／TAI、
+FIGANI、面板、raw provenance或任一晚期base時維持零交易。
 
 ID6以`NativeCommand6PresentationSchedule`保存`0x26E39`直接指令契約：
 mode0／3／6回傳7／12／7，五個runtime channel，raw dword table
