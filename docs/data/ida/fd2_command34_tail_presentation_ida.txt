@@ -35,10 +35,11 @@
 | command | raw mask | FDOTHER #6 起點 | 幀數 | 首幀 #80 sample | 額外 sample marker |
 |---:|---:|---:|---:|---:|---|
 | 17 | `0x92` | `0xB7` | 8 | 6 | 無 |
-| 18 | `0x48` | `0x7E` | 12 | 7 | frame 4 再播 sample 7 |
-| 19 | `0xD8` | `0x93` | 11 | 8 | frame 3、6 再播 sample 8 |
+| 18 | `0x48` | `0x7E` | 12 | 7 | raw frame index 4 再播 sample 7 |
+| 19 | `0xD8` | `0x93` | 11 | 8 | raw frame index 3、6 再播 sample 8 |
 
-`sub_1C2DA` 每段均播放 #80 sample1，並呈現五組 snapshot→mask 及最後
+`sub_1C4CC` 的frame counter從0開始；上述額外marker必須直接作零起算index，
+不可再減一。`sub_1C2DA` 每段均播放 #80 sample1，並呈現五組 snapshot→mask 及最後
 snapshot。`sub_1E0DB` 的 digit bias 固定 `0x69`；`sub_1E1DC` 的固定 queue
 為 glyph `74/75/76/76`，position codes `2/8/12/17`。通用座標、mask 與數字段
 primitive 的主證據仍是 `fd2_command_numeric_tail_ida.txt`，本文件只固定指令34

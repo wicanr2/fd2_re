@@ -14,7 +14,7 @@ func TestBuildNativeCommand34TailSchedulePreservesRawRows(t *testing.T) {
 			t.Fatalf("row %d=%#v", index, row)
 		}
 	}
-	if len(rows[0].ExtraSampleFrames) != 0 || len(rows[1].ExtraSampleFrames) != 1 || rows[1].ExtraSampleFrames[0] != 4 || len(rows[2].ExtraSampleFrames) != 2 || rows[2].ExtraSampleFrames[0] != 3 || rows[2].ExtraSampleFrames[1] != 6 {
-		t.Fatalf("extra sample markers=%#v %#v %#v", rows[0].ExtraSampleFrames, rows[1].ExtraSampleFrames, rows[2].ExtraSampleFrames)
+	if len(rows[0].ExtraSampleFrameIndices) != 0 || len(rows[1].ExtraSampleFrameIndices) != 1 || rows[1].ExtraSampleFrameIndices[0] != 4 || len(rows[2].ExtraSampleFrameIndices) != 2 || rows[2].ExtraSampleFrameIndices[0] != 3 || rows[2].ExtraSampleFrameIndices[1] != 6 {
+		t.Fatalf("extra sample markers=%#v %#v %#v", rows[0].ExtraSampleFrameIndices, rows[1].ExtraSampleFrameIndices, rows[2].ExtraSampleFrameIndices)
 	}
 }

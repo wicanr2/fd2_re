@@ -5863,6 +5863,9 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 
 ## 2026-08-23：ID35 class19 玩家原子 state transaction與長程測試決策
 
+> 歷史快照：本段「只有 state transaction／缺 indexed 演出」已由下方
+> 2026-08-25 指令35正式 indexed owner 紀錄取代。
+
 - 使用者決定不再由代理程式執行全戰役長程通關；往後由使用者正常遊玩並回報
   問題，代理程式將回報整理成最小重現案例。章節邊界、存讀檔、隊伍持續與
   戰間節點的有界回歸仍保留，不能用這項決定刪除既有契約測試。
@@ -6241,7 +6244,8 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   原始actor／target idle、panel或palette時在首幀前失敗即關閉。
 - 原始資產非靜音端到端、無Draw不發布、HP發布邊界、尾停、晚期回復及overlay reset
   的Docker／Xvfb聚焦回歸均已通過，現提升為受限class19玩家`RUNTIME-E1`。
-  IDs33–35仍只具state transaction；下一個玩家價值切片是ID33正式共用段與
+  當時IDs33–35仍只具state transaction（此句已由後續三段正式owner紀錄取代）；
+  該輪下一個玩家價值切片是ID33正式共用段與
   `0x211A4`專用清除／回復尾段，不重做ID32。
 
 ## 2026-08-25：指令33正式 indexed owner（未提交批次）
@@ -6278,3 +6282,26 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   Docker／Xvfb完整`go test ./... -count=1`均已通過，提升為受限class19玩家
   `RUNTIME-E1`。下一個切片是ID35三段
   application的畫面consumer與正式owner；不重做ID32–34。
+
+## 2026-08-25：指令35三段 application 正式 indexed owner
+
+- 授權Docker內IDA Pro 9.4固定`sub_22D1B`範圍`0x22D1B..0x22E41`；指令35
+  三個direct callers為`0x28664／0x28686／0x286A8`。每次呼叫都先執行
+  `0x1C4CC→0x1C2DA`，成功以`0x1E0DB(actual,0x5E,target)`輸出數字，跳過時
+  走`0x1E1DC`固定queue，再各自進22張數字段與500 ms尾停。
+- 一次錯誤的raw擷取曾把IDA線性位址直接當檔案偏移，得到#80不存在的sample25／26；
+  該值未接入正式runtime。改用`tools/disasm_le.py data`做LE object mapping後，
+  正確三列為：command26=`start0x8A/count9/sample3/mask0xC0`、22=
+  `0xAA/13/3/0x23`且零起算frame index7重播sample3、27=`0x9E/12/2/0xC0`。
+  canonical evidence為
+  [`fd2_command35_tail_presentation_ida.txt`](../data/ida/fd2_command35_tail_presentation_ida.txt)。
+- 同一直接指令也訂正指令34額外sample marker：`edi`從0開始，既有raw indices
+  `4`與`3／6`不可減一；正式owner與typed欄位已改成明示零起算index。
+- `NativeCompoundCommand35Plan`現保存三段私有HP／raw快照；正式`Game` owner完整
+  預建#68／#94共用段、11張共用tail、地圖漸入與三段application tail。每段mask
+  後才發布HP／marker／RNG，第三段尾停後才發布`Acted`；晚期失敗及overlay reset
+  會整批回復。
+- 原始資產非靜音端到端、無Draw不發布、逐段發布、晚期回復與overlay reset均有
+  聚焦回歸；Docker／Xvfb內完整`go test ./... -count=1`亦以實際結束碼0通過。
+  指令35因此提升為受限class19玩家`RUNTIME-E1`；下一個切片轉向仍有正常producer
+  的敵方caller-specific演出／commit順序，不重做玩家ID32–35。

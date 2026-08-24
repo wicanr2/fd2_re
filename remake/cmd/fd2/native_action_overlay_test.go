@@ -407,7 +407,7 @@ func TestNativeCommand33ConfirmFailsClosedWithoutIndexedPresentation(t *testing.
 	}
 }
 
-func TestNativeCommand35ConfirmConsumesProvenClass19Transaction(t *testing.T) {
+func TestNativeCommand35ConfirmFailsClosedWithoutIndexedPresentation(t *testing.T) {
 	actor := &battle.Unit{
 		Camp: battle.Own, OnField: true, X: 0, Y: 0, HP: 100, MaxHP: 100, MP: 40, Lv: 20,
 		BattleFig: 4, HasBattleFig: true, NativeRecordClass: 19, HasNativeRecordClass: true,
@@ -433,10 +433,8 @@ func TestNativeCommand35ConfirmConsumesProvenClass19Transaction(t *testing.T) {
 		nativeCommand0Targeting: true, nativeCommandTargetID: 35, nativeRNGState: 1,
 	}
 	g.confirm()
-	if !actor.Acted || actor.MP != 40 || actor.HP >= 100 || target.HP >= 90 ||
-		actor.NativeTransient[3] == 0 || actor.NativeTransient[4] == 0 || actor.NativeTransient[5] == 0 ||
-		target.NativeTransient[3] == 0 || target.NativeTransient[4] == 0 || target.NativeTransient[5] == 0 {
-		t.Fatalf("command35 production confirm did not publish all stages actor=%#v target=%#v msg=%q", actor, target, g.msg)
+	if actor.Acted || actor.MP != 40 || actor.HP != 100 || target.HP != 90 || actor.NativeTransient != [6]byte{} || target.NativeTransient != [6]byte{} || g.nativeCmd35Presentation != nil || g.msg == "" {
+		t.Fatalf("command35 missing indexed assets did not fail closed actor=%#v target=%#v msg=%q", actor, target, g.msg)
 	}
 }
 

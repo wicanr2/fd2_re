@@ -1,0 +1,52 @@
+# FD2 玩家指令 35 三段 application 尾段非破壞性證據
+
+## 輸入、工具與位址空間
+
+- 輸入 `FD2.EXE`，357074 bytes；MD5 `b97caf2239a27a896069d03549d96e1e`；
+  SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 第一順位工具為授權 Docker 內 IDA Pro 9.4.0.260610／Hex-Rays，IDA
+  linear address、image base 0；原始執行檔唯讀，資料庫只存在容器 tmpfs。
+- 第二順位工具為 Docker 內 Capstone 5.0.3／直接 raw byte 擷取。產生日期：
+  2026-08-25。
+- 保留原始名稱 `sub_22D1B`、`sub_1C4CC`、`sub_1C2DA`、`sub_1C81F`、
+  `sub_1E0DB`、`sub_1E1DC`、`sub_1DF58`；本文件語意均為附加層。
+
+## caller、writer 與畫面 consumer（已證實）
+
+- `sub_22D1B` 範圍 `0x22D1B..0x22E41`；指令35 direct callers 是
+  `0x28664／0x28686／0x286A8`。三次呼叫依序傳入 command26／marker `+0x25`、
+  command22／marker `+0x27`、command27／marker `+0x26`。
+- 每次 `sub_22D1B` 都先以該 command 呼叫 `sub_1C4CC` 與 `sub_1C2DA`，不是
+  純狀態 writer。逐 target 的 marker 非零、class `0x19／0x1A`或第一 RNG gate
+  未通過時呼叫 `sub_1E1DC(target)`；通過時呼叫 `sub_1C81F(target,10)`，立即把
+  回傳的實際傷害以 `sub_1E0DB(value,0x5E,target)`加入結果 queue，之後再寫 marker。
+- 迴圈結束呼叫 `sub_11CAC(0)`，再依既有共同尾端進22張數字段與500 ms尾停。
+  因此三次 application 各有完整 effect、mask、queue與尾停，不能合併成一次發布。
+
+## raw presentation rows（已證實）
+
+以 command ID 索引原版表 `0x51F15／0x51F33／0x51F54／0x51F75`：
+
+| command | raw mask | FDOTHER #6 起點 | 幀數 | 首幀 #80 sample | 額外 sample marker |
+|---:|---:|---:|---:|---:|---|
+| 26 | `0xC0` | `0x8A` | 9 | 3 | 無 |
+| 22 | `0x23` | `0xAA` | 13 | 3 | raw frame index 7 再播 sample 3 |
+| 27 | `0xC0` | `0x9E` | 12 | 2 | 無 |
+
+表列以 `tools/disasm_le.py data` 做LE物件線性位址映射後擷取；不可把線性位址
+直接當檔案偏移。`sub_1C4CC` 的 frame counter `edi` 從0開始；所以 command22 的 `edi==7` 是
+第八張畫面，不可誤轉成第七張。`sub_1C2DA` 每段播放 #80 sample1並呈現五組
+snapshot→mask及最後snapshot。成功 queue 的 digit bias 是 `0x5E`；跳過 queue
+沿用 `sub_1E1DC` 已閉合的固定 glyph `74/75/76/76`與position `2/8/12/17`。
+
+## 證據分級與正式重製契約
+
+- **已證實**：函式邊界、三個direct caller、command／marker順序、raw tables、
+  command22額外sample的零起算frame index、成功／跳過queue及writer順序。
+- **強推論**：每次原版present映射成至少一個Ebiten Draw acknowledgement；
+  2 ms／500 ms使用現代引擎有界近似，不宣稱DOS逐毫秒一致。
+- **未知**：三個marker的高階狀態名稱、score／EXP最終消費、同狀態逐像素／
+  逐音訊E2與非玩家owner。
+- 正式玩家owner須先預建`0x27FC9`共用段與三段尾段。每段mask完成後才發布該段
+  HP／marker／RNG；其22張數字段與尾停結束後才進下一段。第三段結束前不得發布
+  `Acted`。取消或晚期失敗必須回復所有已發布狀態與indexed buffers。
