@@ -182,11 +182,11 @@ func TestExecuteNativeAIActionConsumesVerifiedCommand17Transaction(t *testing.T)
 		U: actor, Target: target, NativeActionKind: battle.NativeAIActionCommand,
 		NativeCommandID: 17,
 	}
-	if err := g.executeNativeAIAction(plan); err != nil {
-		t.Fatal(err)
+	if err := g.executeNativeAIAction(plan); err == nil {
+		t.Fatal("enemy modifier accepted missing indexed map assets")
 	}
-	if actor.AP != 116 || target.AP != 231 || actor.MP != 6 || !actor.Acted || g.nativeRNGState == 0 {
-		t.Fatalf("actor=%#v target=%#v rng=%#x", actor, target, g.nativeRNGState)
+	if actor.AP != 100 || target.AP != 200 || actor.MP != 10 || actor.Acted || g.nativeRNGState != 0 {
+		t.Fatalf("failed presentation mutated actor=%#v target=%#v rng=%#x", actor, target, g.nativeRNGState)
 	}
 }
 

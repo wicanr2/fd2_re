@@ -5902,9 +5902,12 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 
 ## 2026-08-23：敵方物理攻擊 FIGANI 預檢與17–19 caller勘誤
 
+> 歷史勘誤：下句只證明敵方不播放玩家palette前段；「state-only即完整」已由
+> 2026-08-25 `funcs_1541F`跳表與handler tail證據推翻。
+
 - 重新核對`fd2_command_modifier_palette_ida.txt`與`0x15311`直接分派：敵方
-  command17–19不經玩家`0x1CFF0→0x1D6C8`，因此目前AI state-only modifier
-  owner不是漏播玩家palette；不得把#88與八相位硬套到敵方回合。
+  command17–19不經玩家`0x1CFF0→0x1D6C8`，因此AI不應播放玩家palette；
+  當時的state-only owner仍漏了wrapper內建tail，但不得把#88與八相位硬套到敵方回合。
 - 修正mode 2一般AI及mode 11 `0x1548E`的高風險順序：兩者現在都先驗證攻方
   attack FIGANI、守方idle FIGANI及成對descriptor delay，通過後才呼叫會消耗
   RNG與修改HP的物理結算。缺素材時不扣HP、不發死亡獎勵、不標記行動完成。
@@ -6318,3 +6321,16 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 原始資產敵方ID10端到端測試已固定「未Draw不發布」及完成後MP／HP／Acted／
   continuation邊界；IDs11／12沿同一switch與既有typed schedule保留各自`0x2189A`
   前導。這是`RUNTIME-E1`，不宣稱同狀態逐幀／逐音訊E2。
+
+## 2026-08-25：敵方指令17–19單段 handler tail
+
+- 舊文件正確指出敵方`0x15311`不經玩家專用`0x1D6C8`八相位palette，但錯把這項
+  caller差異延伸成「敵方state-only即完整」。同雜湊raw跳表`0x51D01`
+  indices17／18／19經LE mapping固定為`0x226EA／0x2282F／0x22960`；三個wrapper
+  仍會進已閉合的`0x22721／0x22866／0x22997`effect／mask／numeric tail。
+- 新`NativeAICommandModifierPlan`先在私有records計算單段結果；正式Game owner
+  依實際ID只預建對應FDOTHER #6效果、#80 sample、五組mask、steady redraw、22張
+  數字段與500 ms尾停。mask完成後才發布MP／raw modifier／RNG，尾停後才發布
+  `Acted`並續接mode 11；取消及晚期失敗回復全部交易與indexed buffers。
+- 原始資產敵方ID17端到端與缺資產失敗即關閉回歸已通過；IDs18／19共用同一
+  typed owner但保留各自raw schedule。這是`RUNTIME-E1`，精確音訊與E2仍待。

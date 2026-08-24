@@ -172,6 +172,7 @@ type Game struct {
 	indexedTransition          *nativeIndexedTransitionJob
 	nativeHealPresentation     *nativeCommandHealPresentationJob
 	nativeModifierPresentation *nativeCommandModifierPresentationJob
+	nativeAICommandModifier    *nativeAICommandModifierPresentationJob
 	nativeCmd0Presentation     *nativeCommand0PresentationJob
 	nativeCmd1Presentation     *nativeCommand1PresentationJob
 	nativeCmd2Presentation     *nativeCommand2PresentationJob
@@ -7314,6 +7315,7 @@ func (g *Game) Update() error {
 	g.stepNativeIndexedTransition()              // native 0x24618 indexed map/palette transition
 	g.stepNativeCommandHealPresentation()        // native 0x21EB1 command 13..16 indexed presentation
 	g.stepNativeCommandModifierPresentation()    // native 0x1D6C8 command 17..19 palette presentation
+	g.stepNativeAICommandModifierPresentation()  // native 0x1541F enemy command17..19 handler tail
 	g.stepNativeCommand0Presentation()           // native 0x2A6BD→0x26152 command0 battle presentation
 	g.stepNativeCommand1Presentation()           // native 0x2A6BD→0x262EF command1 battle presentation
 	g.stepNativeCommand2Presentation()           // native 0x2A6BD→0x26528 command2 battle presentation
@@ -7381,7 +7383,7 @@ func (g *Game) Update() error {
 			clamp(&g.camY, 0, float64(g.m.H*g.m.TileH-logicalH))
 		}
 	}
-	if g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil || g.nativeCmd33Presentation != nil || g.nativeCmd34Presentation != nil || g.nativeCmd35Presentation != nil {
+	if g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeAICommandModifier != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil || g.nativeCmd33Presentation != nil || g.nativeCmd34Presentation != nil || g.nativeCmd35Presentation != nil {
 		return nil
 	}
 	if g.nativeSystemInfoUI != nil {
@@ -7742,6 +7744,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		}
 		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
 			g.captureShot(screen)
+		}
+		return
+	}
+	if g.nativeAICommandModifier != nil {
+		screen.Fill(color.Black)
+		if !g.drawNativeAICommandModifierPresentation(screen) {
+			g.failNativeAICommandModifierPresentation(errors.New("draw unavailable"))
+			ebitenutil.DebugPrint(screen, "native AI modifier presentation unavailable")
 		}
 		return
 	}
@@ -10267,7 +10277,7 @@ func (g *Game) finishNativeTransientPlayerPhase() {
 // aiStep AI 回合驅動:一次取一個單位的行動計畫,播行走動畫→到位攻擊(全螢幕演出)。
 // 全單位動完 → finishTurn。
 func (g *Game) aiStep() {
-	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil || g.nativeCmd33Presentation != nil || g.nativeCmd34Presentation != nil || g.nativeCmd35Presentation != nil || g.result != "" {
+	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeAICommandModifier != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil || g.nativeCmd33Presentation != nil || g.nativeCmd34Presentation != nil || g.nativeCmd35Presentation != nil || g.result != "" {
 		if g.result != "" {
 			g.aiBusy = false
 		}

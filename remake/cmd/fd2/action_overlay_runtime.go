@@ -126,6 +126,7 @@ func (g *Game) markActionOverlayDrawn() {
 }
 
 func (g *Game) resetActionOverlayLifecycle() {
+	g.cancelNativeAICommandModifierPresentation()
 	g.cancelNativeCommand32Presentation()
 	g.cancelNativeCommand33Presentation()
 	g.cancelNativeCommand34Presentation()

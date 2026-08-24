@@ -27,6 +27,12 @@
 - `0x27FC9` 依上述三個 caller 位址嚴格按 17→18→19 執行；每一段都有自己的
   effect、mask、writer／queue、steady redraw、22張數字段及尾停，不能合併成一次
   無畫面的狀態發布。
+- 敵方 `0x15311` 在 `0x1541F` 以 command ID 索引 loaded table `0x51D01`。
+  以 `tools/disasm_le.py data` 對同一雜湊做LE物件映射後，raw table indices
+  17／18／19分別是`0x000126EA／0x0001282F／0x00012960`；套用obj1 base後即
+  `sub_226EA／sub_2282F／sub_22960`。三個wrapper各自扣款後進上述
+  `sub_22721／sub_22866／sub_22997`，所以敵方雖不經玩家專用`sub_1D6C8`
+  palette前段，仍會消費各自的單段effect、mask、數字queue與尾停。
 
 ## raw table 與額外 sample marker（已證實）
 
@@ -51,9 +57,12 @@ primitive 的主證據仍是 `fd2_command_numeric_tail_ida.txt`，本文件只�
   sample marker、marker／word writer、processed／skipped queue consumer及三段順序。
 - **強推論**：原版每次 present 映射成至少一個 Ebiten Draw acknowledgement；
   2 ms／500 ms採現代引擎有界近似，不宣稱 DOS 逐毫秒一致。
-- **未知**：三個 raw marker 與 derived words 的高階技能名稱、score／EXP消費、
-  同狀態逐像素與逐音訊 E2，以及非玩家 owner。
+- **未知**：三個 raw marker 與 derived words 的高階技能名稱、score／EXP消費，
+  以及同狀態逐像素與逐音訊 E2。
 - 正式玩家 owner 必須先完整預建 `0x27FC9` 共用段及三段尾段。每段五組 mask
   完成後，才發布該段 marker／word 與 RNG；其數字段及500 ms尾停完成後才可開始
   下一段。第三段完成前不得設定 `Acted`。取消或任何晚期失敗必須回復三段所有
   已發布狀態與 RNG。
+- 正式敵方owner不得套用玩家`0x1D6C8` palette前段；它只依實際command ID預建
+  對應的一段尾段。五組mask完成後才發布MP、marker／word與RNG，22張數字段及
+  500 ms尾停後才發布`Acted`並續接AI stage；取消或晚期失敗必須回復整段交易。

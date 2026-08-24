@@ -1065,7 +1065,11 @@ entry0 寫為三張36-byte tables 的 command RGB、等待 `0x17AA9(1)`、寫黑
 `native_command_palette_flash.json`，正式玩家 owner 必須在 sample、baseline framebuffer、
 黑色entry0、完整DAC、typed table與全部raw transaction provenance都通過後，才發布八個
 Draw-ack phases；第八 phase 完成後才執行上述原子交易與range cleanup。AI `0x15311`直接進
-effect table，不套用玩家 `0x1D6C8`。status名稱／icon、DOS精確tick及同狀態逐音訊E2仍未知。
+effect table，不套用玩家 `0x1D6C8`。但`funcs_1541F` raw indices17／18／19已分別固定為
+`0x226EA／0x2282F／0x22960`，三者仍會進`0x22721／0x22866／0x22997`內建的單段
+effect／mask／numeric tail。正式敵方owner因此只省略palette前段：五組mask完成後發布
+MP、marker／derived word與RNG，22張數字段及500 ms尾停後才發布`Acted`並續接AI。
+status名稱／icon、DOS精確tick及同狀態逐音訊E2仍未知。
 
 同一玩家 `0x1CFF0→0x1D6C8` dispatch 也涵蓋 command 20–22；它們不可因 effect
 family 不同就略過共同 sample／palette owner。正式入口在演出前必須完整驗證 command
@@ -1163,7 +1167,7 @@ actor raw completion writer。它與 ID20/21「借 record10」的 clear/restore 
 | 9 | 玩家 `1CFF0→1D6C8→214AD→1C4CC/1DF58`；敵方 gate `15311→2A6BD→275D6` | 玩家 `PlanNativeCommandDamage`；敵方 `PlanNativeAICommandDamageSingleTarget` 明確消費 mode11 producer target | 玩家 #80 selector0／14／15、八段色盤、27張#6與22張#5結果；敵方 raw-side-zero #44/#90、11/20/60/20/8 與20段HP均已接 `RUNTIME-E1`；兩方 owner 不共用，E2仍待 |
 | 10–12 | wrappers→ID11／12 #80 selector2與`2189A`→`21548`三張取樣表／四surface×60張／selector13→`1CA89→1C75E` | `ExecuteNativeCommandDamage`；typed schedule、逐像素fixed-point compositor與正式玩家／敵方owner已接 | `RUNTIME-E1`：ID11／12前導、主段、結果佇列、MP／HP／RNG／acted交易與rollback均已接；敵方`0x15311→funcs_1541F`亦走同一逐Draw owner，不再同步發布；numeric 共用不代表演出共用，缺任一raw surface／LUT／sample仍失敗即關閉；同狀態逐幀／逐音訊E2待補 |
 | 13–16 | `0x21AD9…0x22153→21EB1→21B18→1C8ED/1C916` | `BuildNativeCommandHealPresentationSchedule`＋玩家 `ExecuteNativeCommandHeal`／AI `ExecuteNativeAICommandHeal` | 玩家與敵方 mode 11 的 16 張 FDOTHER #3 LUT 前段已接；AI 依 raw selector 重建 target array；後段索引畫面／數字佇列與格狀確認 E2 未接 |
-| 17–19 | `0x1CFF0→1D6C8→226EA/2282F/22960`；#80 selector0、八個DAC phases、modifier writers與`+0x22..+0x24` duration已釘死 | `ExecuteNativeCommandModifier`／`ExecuteNativeAICommandModifier` 已以私有raw records原子發布target duration、derived words、MP與acted；ID17明確由record18扣MP。玩家與敵方mode 11、phase-expiry caller與 `sub_17FC0` status color consumer均已接 | 玩家grid＋八phase palette／sample、倒數、到期提示及status color已接E1；高階名稱、精確tick／逐音訊E2未接 |
+| 17–19 | 玩家`0x1CFF0→1D6C8→226EA/2282F/22960`；敵方`0x15311→1541F table→226EA/2282F/22960`；modifier writers與`+0x22..+0x24` duration已釘死 | 玩家／敵方皆以私有raw records原子發布target duration、derived words、MP與acted；ID17明確由record18扣MP。玩家先走#80 selector0＋八個DAC phases；敵方省略該玩家前段但仍走各wrapper內建的單段effect／mask／numeric tail | `RUNTIME-E1`：玩家grid／palette、敵方單段tail、倒數、到期提示及status color已接；高階名稱、精確tick／逐音訊E2未接 |
 | 20–21 | `0x1CFF0→1D6C8→22A85/22BC6→22AF6`，#80 selector0＋八個DAC phases，clear `+0x25/+0x26` 並借 record10 restore | `ExecuteNativeCommandClearRestore`；完整preflight後才允許玩家演出與交易 | 玩家grid＋八phase palette／sample已接E1；status名稱、expiry UI、精確tick／逐音訊E2未接 |
 | 22 | `0x1CFF0→1D6C8→22BE1→22D1B`，#80 selector0＋八個DAC phases，class/RNG gate、base10 經第二 RNG 實際9 HP、第三 RNG write `+0x27` | `ExecuteNativeCommandApplication`；完整preflight後才允許玩家演出與交易 | 玩家grid＋八phase palette／sample已接E1；status名稱、expiry UI、精確tick／逐音訊E2未接 |
 | 23 | `0x1CFF0→1D6C8→2218A→22253×2` special relocation selector | first target→mode-6 destination cursor、八段palette、離場／入場兩次完整indexed presenter及延後raw transaction已接 | 玩家正式`RUNTIME-E1`；缺同狀態逐幀／逐音訊E2與精確camera choreography核對 |
@@ -4833,8 +4837,9 @@ handoff 或一般玩家回合證據。
 資產時不得扣HP、發死亡獎勵、消耗RNG或標記行動完成；不能先做state transaction
 再以文字結果代替原版全螢幕戰鬥演出。這是重製端失敗即關閉與原子發布契約，
 不冒稱DOS內部存在資產錯誤分支。玩家專用`0x1D6C8`只屬玩家
-command17–23／25–27；敵方`0x15311`直接進effect table，故敵方17–19維持
-state-only owner是caller差異，不是遺漏palette演出。
+command17–23／25–27；敵方`0x15311`直接進effect table，故敵方17–19不套用
+palette前段。但先前進一步稱其可維持state-only的句子已失效：跳表會進三個wrapper，
+而wrapper後的writer本身擁有effect／mask／numeric tail，正式runtime必須保留該段。
 
 ## 2026-08-11：玩家第22戰戰後→整備 E1 邊界
 

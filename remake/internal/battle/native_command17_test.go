@@ -121,3 +121,38 @@ func TestExecuteNativeAICommandModifierUsesRawSelectorTargets(t *testing.T) {
 		t.Fatalf("result=%#v actor=%#v target=%#v", got, actor, target)
 	}
 }
+
+func TestNativeAICommandModifierPlanPublishesAndRollsBackAtTailBoundary(t *testing.T) {
+	actor := completeNativeAIScoringUnit()
+	actor.NativeMapPresentation.X, actor.NativeMapPresentation.Y = 0, 0
+	actor.NativeRecordByte5, actor.NativeRecordByte6 = 0, 0
+	actor.NativeTransient = [6]byte{}
+	actor.Camp, actor.MP, actor.AP = Enemy, 10, 100
+	target := completeNativeAIScoringUnit()
+	target.NativeMapPresentation.X, target.NativeMapPresentation.Y = 1, 0
+	target.NativeRecordByte5, target.NativeRecordByte6 = 0, 0
+	target.NativeTransient = [6]byte{}
+	target.Camp, target.AP = Enemy, 200
+	book := nativeCommandModifierBook(17)
+	book[17].EffectMode = 1
+	st := &State{W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: book}
+	plan, err := st.PlanNativeAICommandModifier(actor, 17, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if actor.AP != 100 || target.AP != 200 || actor.MP != 10 || actor.Acted {
+		t.Fatal("plan mutated live state")
+	}
+	if err := PublishNativeAICommandModifier(plan); err != nil {
+		t.Fatal(err)
+	}
+	if actor.AP != 116 || target.AP != 231 || actor.MP != 6 || actor.Acted {
+		t.Fatalf("publish boundary actor=%#v target=%#v", actor, target)
+	}
+	if err := AbortNativeAICommandModifier(plan); err != nil {
+		t.Fatal(err)
+	}
+	if actor.AP != 100 || target.AP != 200 || actor.MP != 10 || actor.Acted {
+		t.Fatalf("rollback actor=%#v target=%#v", actor, target)
+	}
+}

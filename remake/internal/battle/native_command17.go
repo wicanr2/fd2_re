@@ -94,11 +94,111 @@ func (s *State) ExecuteNativeCommandModifier(actor, confirmed *Unit, commandID i
 // ExecuteNativeAICommandModifier consumes only the raw target array rebuilt
 // for the recovered mode-11 owner.
 func (s *State) ExecuteNativeAICommandModifier(actor *Unit, commandID int, rngState uint16) (NativeCommandModifierResult, error) {
-	targets, err := s.NativeAICommandModifierTargets(actor, commandID)
+	plan, err := s.PlanNativeAICommandModifier(actor, commandID, rngState)
 	if err != nil {
 		return NativeCommandModifierResult{}, err
 	}
-	return s.executeNativeCommandModifierTargets(actor, targets, commandID, rngState)
+	if err := PublishNativeAICommandModifier(plan); err != nil {
+		_ = AbortNativeAICommandModifier(plan)
+		return NativeCommandModifierResult{}, err
+	}
+	if err := CompleteNativeAICommandModifier(plan); err != nil {
+		_ = AbortNativeAICommandModifier(plan)
+		return NativeCommandModifierResult{}, err
+	}
+	return plan.Result, nil
+}
+
+// NativeAICommandModifierPlan keeps the single 0x226EA/0x2282F/0x22960
+// transaction private until the handler-owned mask boundary has been drawn.
+type NativeAICommandModifierPlan struct {
+	Actor     *Unit
+	CommandID int
+	Targets   []*Unit
+	Result    NativeCommandModifierResult
+	After     []NativeCommand34TargetState
+	mpBefore  int
+	mpAfter   int
+	before    []NativeCommand34TargetState
+	published bool
+	completed bool
+}
+
+func (s *State) PlanNativeAICommandModifier(actor *Unit, commandID int, rngState uint16) (*NativeAICommandModifierPlan, error) {
+	if actor == nil || actor.Acted {
+		return nil, fmt.Errorf("native AI command modifier actor unavailable")
+	}
+	targets, err := s.NativeAICommandModifierTargets(actor, commandID)
+	if err != nil {
+		return nil, err
+	}
+	records, indices, err := nativeCommandModifierRecords(targets)
+	if err != nil {
+		return nil, err
+	}
+	result, err := ApplyNativeCommandModifier(records, indices, commandID, rngState)
+	if err != nil {
+		return nil, err
+	}
+	debitID := commandID
+	if commandID == 17 {
+		debitID = 18
+	}
+	cost := s.NativeCommandBook[debitID].MPCost
+	if cost < 0 || actor.MP < cost {
+		return nil, fmt.Errorf("native AI command modifier MP debit unavailable")
+	}
+	shadow := make([]*Unit, len(targets))
+	for index, target := range targets {
+		copied := *target
+		shadow[index] = &copied
+	}
+	publishNativeCommandModifierRecords(shadow, records)
+	after := nativeCommand34States(shadow)
+	for index := range after {
+		after[index].Target = targets[index]
+	}
+	return &NativeAICommandModifierPlan{
+		Actor: actor, CommandID: commandID, Targets: append([]*Unit(nil), targets...), Result: result,
+		After: after, mpBefore: actor.MP, mpAfter: actor.MP - cost, before: nativeCommand34States(targets),
+	}, nil
+}
+
+func PublishNativeAICommandModifier(plan *NativeAICommandModifierPlan) error {
+	if plan == nil || plan.Actor == nil || plan.published || plan.completed || plan.Actor.Acted ||
+		plan.Actor.MP != plan.mpBefore || !nativeCommand34EqualCurrent(plan.before) {
+		return fmt.Errorf("native AI command modifier publish boundary unavailable")
+	}
+	nativeCommand34Publish(plan.After)
+	plan.Actor.MP = plan.mpAfter
+	plan.published = true
+	return nil
+}
+
+func CompleteNativeAICommandModifier(plan *NativeAICommandModifierPlan) error {
+	if plan == nil || plan.Actor == nil || !plan.published || plan.completed || plan.Actor.Acted ||
+		plan.Actor.MP != plan.mpAfter || !nativeCommand34EqualCurrent(plan.After) {
+		return fmt.Errorf("native AI command modifier completion boundary unavailable")
+	}
+	plan.Actor.Acted = true
+	plan.completed = true
+	return nil
+}
+
+func AbortNativeAICommandModifier(plan *NativeAICommandModifierPlan) error {
+	if plan == nil {
+		return nil
+	}
+	if plan.completed {
+		return fmt.Errorf("native AI command modifier completed plan cannot abort")
+	}
+	nativeCommand34Publish(plan.before)
+	if plan.Actor != nil {
+		plan.Actor.MP = plan.mpBefore
+		plan.Actor.Acted = false
+	}
+	plan.published = false
+	return nil
 }
 
 // ValidateNativeCommandModifierTargets performs the complete raw projection
