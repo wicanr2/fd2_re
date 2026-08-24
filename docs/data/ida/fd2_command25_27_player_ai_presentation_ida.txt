@@ -1,0 +1,56 @@
+# FD2 指令 25–27 玩家／敵方演出非破壞性證據
+
+## 輸入、工具與位址空間
+
+- 輸入 `FD2.EXE`，357074 bytes；MD5 `b97caf2239a27a896069d03549d96e1e`；
+  SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 第一順位工具為授權 Docker 內 IDA Pro 9.4.0.260610／Hex-Rays，採 IDA
+  linear address、image base 0。原始執行檔與儲存庫唯讀，暫存 `.i64` 及報告只在
+  `/tmp/fd2-ida-command2527`。產生日期：2026-08-25。
+- 第二順位工具為 Docker 內 Capstone 5.0.3／LE raw table 擷取。下列名稱保留
+  IDA 原始名稱；括號內語意只是帶分級的附加註記。
+
+## dispatch、caller 與 handler（已證實）
+
+- `funcs_1541F` 的 raw 32-bit entries 25／26／27 分別是 `0x12C04`、
+  `0x12CBF`、`0x12E41`，經 LE object base 載入為 `sub_22C04`、
+  `sub_22CBF`、`sub_22E41`。同一間接表由敵方／自動行動 owner
+  `sub_15311` 的 `0x1541F` 與玩家 selector owner `sub_1CFF0` 的
+  `0x1D479` 消費。
+- `sub_22C04`（ID25）先以 command 25 呼叫 `sub_1CA89`，再依序呼叫
+  `sub_1C4CC`、`sub_1C2DA`。每個 target 若 raw `record+5 bit 0x80`
+  未設，呼叫 `sub_1E1DC(target)`；已設則清除此 bit，且不呼叫
+  `sub_1E0DB`。迴圈後呼叫 `sub_11CAC(0)`，只有 `dword_53EC4 != 0`
+  才呼叫 `sub_1DF58`。因此全數成功時沒有結果數字段，至少一個失敗時才有
+  failure glyph queue 與共同數字段。
+- `sub_22CBF`（ID26）與 `sub_22E41`（ID27）分別把 command／marker
+  `(26,+0x25)`、`(27,+0x26)` 轉送到 `sub_22CDA→sub_22D1B`。
+  `sub_22D1B` 依序擁有 `sub_1C4CC` 效果、`sub_1C2DA` 遮罩、成功
+  `sub_1E0DB(actual damage,0x5E,target)`／失敗 `sub_1E1DC(target)`，
+  並在 queue 非空時進 `sub_1DF58`。
+
+## raw presentation rows（已證實）
+
+四張 command-indexed byte tables 為 `0x51F15／0x51F33／0x51F54／0x51F75`：
+
+| command | raw mask | FDOTHER #6 起點 | 幀數 | 首幀 #80 sample | digit bias |
+|---:|---:|---:|---:|---:|---:|
+| 25 | `0xC0` | `0xBF` | 13 | 5 | failure-only |
+| 26 | `0xC0` | `0x8A` | 9 | 3 | `0x5E` |
+| 27 | `0xC0` | `0x9E` | 12 | 2 | `0x5E` |
+
+三列都沒有 handler 內額外 sample marker。遮罩沿用五組 snapshot→mask 與最後
+snapshot；`sub_1DF58` 的22張數字段與500 ms尾停契約沿用
+[`fd2_command_numeric_tail_ida.txt`](fd2_command_numeric_tail_ida.txt)。
+
+## producer 與接線界線
+
+- **已證實**：玩家 `sub_1CFF0` 可依指令索引進25–27；敵方 `sub_15311`
+  也以同一 raw 指令索引 dispatch。AI scoring 的 ID26／27 zero-flag 分支已有
+  獨立原始證據及正式 raw selector producer，因此26／27可接敵方正常路徑。
+- **未知／失敗即關閉**：現有 AI scoring 沒有 ID25 的正常選擇 producer；不得只因
+  jump-table 有 entry 就讓敵方自行選擇25。ID25本批只接玩家 confirmed-cursor owner。
+- **強推論**：每個 DOS present 對應至少一個 Ebiten Draw acknowledgement；2 ms
+  與500 ms採現代引擎有界近似，不宣稱逐硬體 tick 一致。
+- **未知**：raw `+5 bit7`、`+0x25`、`+0x26` 的高階名稱，以及同狀態逐像素／
+  逐音訊 E2。正式實作只保存 raw 交易，不把名稱寫成遊戲規則。

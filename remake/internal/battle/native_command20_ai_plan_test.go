@@ -120,3 +120,47 @@ func TestPlanNativePlayerCommand22UsesConfirmedCursorTargets(t *testing.T) {
 		t.Fatalf("publish actor=%#v", actor)
 	}
 }
+
+func TestPlanNativePlayerCommand25ClearsOnlyRawByte5AndRollsBack(t *testing.T) {
+	st, actor, target := nativeAI2022State(25)
+	st.NativeCommandBook[25].SelectionMode, st.NativeCommandBook[25].EffectMode, st.NativeCommandBook[25].TargetCode = 1, 0, 1
+	actor.Camp, target.Camp = Own, Own
+	target.NativeRecordByte5, target.HasNativeRecordByte5 = 0x80, true
+	plan, err := st.PlanNativePlayerCommand2022(actor, target, 25, 0x1234)
+	if err != nil || len(plan.Results) != 1 || !plan.Results[0].Command25 || !plan.Results[0].ClearedByte5 {
+		t.Fatalf("plan=%#v err=%v", plan, err)
+	}
+	if target.NativeRecordByte5 != 0x80 || actor.MP != 8 || actor.Acted {
+		t.Fatal("command25 planning mutated live state")
+	}
+	if err := PublishNativeAICommand2022(plan); err != nil {
+		t.Fatal(err)
+	}
+	if target.NativeRecordByte5 != 0 || actor.MP != 6 || actor.Acted || plan.RNGState != 0x1234 {
+		t.Fatalf("published actor=%#v target=%#v plan=%#v", actor, target, plan)
+	}
+	if err := AbortNativeAICommand2022(plan); err != nil {
+		t.Fatal(err)
+	}
+	if target.NativeRecordByte5 != 0x80 || actor.MP != 8 || actor.Acted {
+		t.Fatal("command25 rollback failed")
+	}
+}
+
+func TestPlanNativeAICommand26UsesRawSelectorApplication(t *testing.T) {
+	st, actor, target := nativeAI2022State(26)
+	actor.NativeTransient[3], target.NativeTransient[3] = 0, 0
+	plan, err := st.PlanNativeAICommand2022(actor, 26, 0)
+	if err != nil || len(plan.Results) == 0 {
+		t.Fatalf("plan=%#v err=%v", plan, err)
+	}
+	found := false
+	for _, result := range plan.Results {
+		if result.Target == target && result.Apply != nil && result.Offset == 0x25 {
+			found = true
+		}
+	}
+	if !found || target.NativeTransient[3] != 0 || target.HP != 20 || actor.MP != 8 {
+		t.Fatalf("AI26 plan did not preserve raw-selector transaction: %#v", plan)
+	}
+}

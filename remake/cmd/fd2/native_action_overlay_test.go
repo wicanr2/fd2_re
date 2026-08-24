@@ -791,8 +791,8 @@ func TestPlayerNativeCommand17WaitsForEightPalettePhasesBeforeTransaction(t *tes
 	}
 }
 
-func TestPlayerNativeCommands25To27UseSharedPaletteBoundary(t *testing.T) {
-	for _, commandID := range []int{25, 26} {
+func TestPlayerNativeCommands25To27RejectMissingHandlerTailAssets(t *testing.T) {
+	for _, commandID := range []int{25, 26, 27} {
 		t.Run(fmt.Sprintf("command_%d", commandID), func(t *testing.T) {
 			assets, field, state := completeNativeMapFrameFixture(t)
 			book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
@@ -854,41 +854,14 @@ func TestPlayerNativeCommands25To27UseSharedPaletteBoundary(t *testing.T) {
 			}
 			t.Setenv("FD2_MUTE", "1")
 			g.confirm()
-			fullTail := commandID == 20 || commandID == 22
-			if (fullTail && g.nativeAICommandModifier == nil) || (!fullTail && g.nativeModifierPresentation == nil) || actor.MP != 5 || actor.Acted {
-				t.Fatalf("command %d crossed pre-presentation boundary: actor=%#v msg=%q", commandID, actor, g.msg)
+			expectedByte5 := byte(0)
+			if commandID == 25 {
+				expectedByte5 = 0x80
 			}
-			if fullTail {
-				screen := ebiten.NewImage(640, 400)
-				for step := 0; g.nativeAICommandModifier != nil && step < 512; step++ {
-					if !g.drawNativeAICommandModifierPresentation(screen) {
-						t.Fatalf("command %d step %d did not draw", commandID, step)
-					}
-					g.stepNativeAICommandModifierPresentation()
-					if g.nativeAICommandModifier != nil && g.nativeAICommandModifier.holding {
-						g.nativeAICommandModifier.hold = 0
-					}
-				}
-			} else {
-				for phase := 0; phase < 8; phase++ {
-					if !g.drawNativeCommandModifierPresentation(ebiten.NewImage(640, 400)) {
-						t.Fatalf("command %d phase %d did not draw", commandID, phase)
-					}
-					g.stepNativeCommandModifierPresentation()
-				}
-			}
-			if g.nativeModifierPresentation != nil || g.nativeAICommandModifier != nil || actor.MP != 3 || !actor.Acted ||
-				g.nativeCommand0Targeting || g.sel != nil || state.NativeMapRangeMode != 1 {
-				t.Fatalf("command %d transaction/cleanup actor=%#v job=%v targeting=%v sel=%#v range=%d",
-					commandID, actor, g.nativeModifierPresentation != nil,
-					g.nativeCommand0Targeting, g.sel, state.NativeMapRangeMode)
-			}
-			if commandID == 20 && target.NativeTransient[3] != 0 {
-				t.Fatalf("command 20 did not clear raw +0x25: %#v", target.NativeTransient)
-			}
-			if commandID == 25 && (target.NativeRecordByte5 != 0 || !target.Acted) {
-				t.Fatalf("command 25 did not isolate raw +5 bit7: byte5=%#x acted=%v",
-					target.NativeRecordByte5, target.Acted)
+			if g.nativeModifierPresentation != nil || g.nativeAICommandModifier != nil || actor.MP != 5 || actor.Acted ||
+				target.NativeRecordByte5 != expectedByte5 {
+				t.Fatalf("command %d missing tail crossed boundary: MP=%d acted=%v targetByte5=%#x msg=%q",
+					commandID, actor.MP, actor.Acted, target.NativeRecordByte5, g.msg)
 			}
 		})
 	}

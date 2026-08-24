@@ -1145,6 +1145,16 @@ two-stage final targets、扣各自 MP；每個 target 只在 raw `+0x27/+0x25/+
 mutation，但 handler 已成功時仍遵循原版 MP debit/actor raw completion writer；unknown ID、缺 raw data 或 invalid target 在
 mutation 前拒絕。此 route 不映射 legacy Poisoned/Paralyzed fields，UI/renderer 仍 fail-closed。
 
+指令25–27正式演出規格（2026-08-25）由
+[`fd2_command25_27_player_ai_presentation_ida.txt`](../data/ida/fd2_command25_27_player_ai_presentation_ida.txt)
+約束：玩家25–27先完成既有`0x1D6C8`八段色盤，敵方26／27不套玩家色盤；之後每個owner
+都依各自raw row完成FDOTHER #6 effect、五組mask及最後snapshot。交易只能在mask的Draw
+acknowledgement後原子發布；26／27再播放成功數字或失敗glyph的22張數字段與500 ms尾停，
+才發布`Acted`並續接玩家／AI。25只為raw `+5 bit7`未設且在鏡頭內的targets建立failure queue；
+若queue為空，原版不呼叫`sub_1DF58`，故直接在mask後完成，不可硬播空白數字段。任何晚期失敗
+必須回復MP、HP、raw bytes、RNG、`Acted`及indexed work/VGA。敵方25沒有已證實正常AI
+producer，維持失敗即關閉；不可因dispatch table存在就猜測接線。
+
 `State.ExecuteNativeCommandClearRestore` 對 IDs20/21 亦已接 strict non-UI core：各自 record 只供 target/MP；
 final target 的 raw `+0x25/+0x26` 非零時，才以 **record10** 的 raw damage 呼 `ApplyNativeCommandRestore`，再清同一
 raw byte。restore 精確算 `amount*9/10 + rand()%100*amount/1000`、HP cap，並分開報告 rolled value 與實際

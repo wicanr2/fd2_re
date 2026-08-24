@@ -19,6 +19,7 @@ type nativeAICommandModifierPresentationJob struct {
 	frame, repeat             int
 	publishAt, endAt          int
 	drawn, holding, published bool
+	skipHold                  bool
 	hold                      int
 	rngBefore                 uint16
 	baselineWork, baselineVGA []byte
@@ -29,7 +30,7 @@ type nativeAICommandModifierPresentationJob struct {
 
 func nativeCommand2022ClonedState(st *battle.State, plan *battle.NativeAICommand2022Plan) (*battle.State, error) {
 	if st == nil || plan == nil || len(st.Units) == 0 || len(plan.Results) == 0 {
-		return nil, errors.New("native AI command 20-22 cloned state unavailable")
+		return nil, errors.New("native command tail cloned state unavailable")
 	}
 	clone := *st
 	clone.Units = make([]*battle.Unit, len(st.Units))
@@ -44,8 +45,8 @@ func nativeCommand2022ClonedState(st *battle.State, plan *battle.NativeAICommand
 	}
 	for index, result := range plan.Results {
 		copied := byOriginal[result.Target]
-		if copied == nil || result.Offset < 0x22 || result.Offset > 0x27 {
-			return nil, fmt.Errorf("native AI command 20-22 cloned target %d unavailable", index)
+		if copied == nil || (!result.Command25 && (result.Offset < 0x22 || result.Offset > 0x27)) {
+			return nil, fmt.Errorf("native command tail cloned target %d unavailable", index)
 		}
 		if result.Restore != nil && result.Restore.Applied {
 			copied.HP += result.Restore.Restore.Actual
@@ -54,6 +55,9 @@ func nativeCommand2022ClonedState(st *battle.State, plan *battle.NativeAICommand
 		if result.Apply != nil && result.Apply.Applied {
 			copied.HP -= result.Apply.Damage.Actual
 			copied.SetNativeTransientDuration(result.Offset, result.Apply.Marker)
+		}
+		if result.Command25 && result.ClearedByte5 {
+			copied.NativeRecordByte5 &^= 0x80
 		}
 	}
 	return &clone, nil
@@ -67,11 +71,11 @@ func (g *Game) startNativeAICommand2022Presentation(actor *battle.Unit, commandI
 }
 
 func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit, commandID int, player bool, then func(*battle.NativeAICommand2022Plan)) error {
-	if g == nil || !g.nativeFullPresentationEnabled() || g.st == nil || actor == nil || commandID < 20 || commandID > 22 {
-		return errors.New("native command 20-22 presentation context unavailable")
+	if g == nil || !g.nativeFullPresentationEnabled() || g.st == nil || actor == nil || commandID < 20 || commandID > 27 || commandID == 23 || commandID == 24 || (!player && commandID == 25) {
+		return errors.New("native command tail presentation context unavailable")
 	}
 	if player && confirmed == nil {
-		return errors.New("native player command 20-22 confirmed target unavailable")
+		return errors.New("native player command tail confirmed target unavailable")
 	}
 	if g.nativeAICommandModifier != nil || g.nativeModifierPresentation != nil || g.nativeHealPresentation != nil ||
 		g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil ||
@@ -80,11 +84,11 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 		g.nativeCmd9AIPresentation != nil || g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil ||
 		g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil || g.nativeCmd33Presentation != nil ||
 		g.nativeCmd34Presentation != nil || g.nativeCmd35Presentation != nil || g.indexedTransition != nil || g.atk != nil {
-		return errors.New("native AI command 20-22 presentation already active")
+		return errors.New("native command tail presentation already active")
 	}
 	if !g.st.HasNativeMapViewState || len(g.nativeMapWork) != indexedmap.NativeUnitPresentWorkSize ||
 		len(g.nativeMapVGA) != indexedmap.NativeMapVGASize || !nativeMapAssetsAvailable(g.nativeMapAssets) {
-		return errors.New("native AI command 20-22 indexed map state unavailable")
+		return errors.New("native command tail indexed map state unavailable")
 	}
 	var plan *battle.NativeAICommand2022Plan
 	var err error
@@ -109,7 +113,7 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 	}
 	if schedule == nil || len(g.nativeMapAssets.FDOTHER6) < schedule.EffectStart+schedule.EffectFrames ||
 		len(g.nativeMapAssets.CommandHealDigits) <= schedule.DigitBias+9 {
-		return errors.New("native AI command 20-22 tail descriptors unavailable")
+		return errors.New("native command tail descriptors unavailable")
 	}
 	view := g.st.NativeMapViewState
 	tailTargets, err := nativeCommandHealTailTargets(g.st, plan.Targets)
@@ -129,7 +133,7 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 	}
 	hud, ok := g.nativeMapHUDInput()
 	if !ok {
-		return errors.New("native AI command 20-22 HUD unavailable")
+		return errors.New("native command tail HUD unavailable")
 	}
 	mapPalette, err := fdother.VGAPaletteFromDAC(g.nativeMapDAC)
 	if err != nil {
@@ -169,7 +173,7 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 			}
 		}
 		if record < 0 {
-			return errors.New("native AI command 20-22 result target unavailable")
+			return errors.New("native command tail result target unavailable")
 		}
 		inCamera := result.Target.X >= view.CameraX && result.Target.X < view.CameraX+12 && result.Target.Y >= view.CameraY-1 && result.Target.Y <= view.CameraY+7
 		processed, value := false, 0
@@ -177,6 +181,13 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 			processed, value = result.Restore.Applied, result.Restore.Restore.Actual
 		} else if result.Apply != nil {
 			processed, value = result.Apply.Applied, result.Apply.Damage.Actual
+		} else if result.Command25 {
+			// 0x22C04 has no success digit writer. Only an uncleared target
+			// enters sub_1E1DC and therefore creates a numeric-tail queue.
+			processed = result.ClearedByte5
+			if processed {
+				continue
+			}
 		}
 		if processed {
 			queue, err = battle.AppendNativePresentationDigits(queue, value, schedule.DigitBias, record, inCamera)
@@ -190,12 +201,14 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 		}
 	}
 	digitPixels := make([][]byte, 0, schedule.DigitFrames)
-	for frame := 0; frame < schedule.DigitFrames; frame++ {
-		work, vga := append([]byte(nil), postWork...), append([]byte(nil), postVGA...)
-		if err := indexedmap.ComposeNativeCommandHealDigitFrame(work, vga, postWork, g.nativeMapAssets.CommandHealDigits, queue, tailTargets, view.CameraX, view.CameraY, schedule.DigitVertical, frame); err != nil {
-			return err
+	if len(queue) > 0 {
+		for frame := 0; frame < schedule.DigitFrames; frame++ {
+			work, vga := append([]byte(nil), postWork...), append([]byte(nil), postVGA...)
+			if err := indexedmap.ComposeNativeCommandHealDigitFrame(work, vga, postWork, g.nativeMapAssets.CommandHealDigits, queue, tailTargets, view.CameraX, view.CameraY, schedule.DigitVertical, frame); err != nil {
+				return err
+			}
+			digitPixels = append(digitPixels, vga)
 		}
-		digitPixels = append(digitPixels, vga)
 	}
 	effectImages, err := nativeCommand24IndexedImages(effectPixels, mapPalette)
 	if err != nil {
@@ -205,18 +218,21 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 	if err != nil {
 		return err
 	}
-	digitImages, err := nativeCommand24IndexedImages(digitPixels, mapPalette)
-	if err != nil {
-		return err
+	var digitImages []*ebiten.Image
+	if len(digitPixels) > 0 {
+		digitImages, err = nativeCommand24IndexedImages(digitPixels, mapPalette)
+		if err != nil {
+			return err
+		}
 	}
 	frames := make([]nativeCompoundPresentedFrame, 0, 8+len(effectImages)+schedule.MaskPairs*2+1+len(digitImages))
 	if player {
 		if g.nativeCommandPaletteFlash == nil || (!osMuteOrShot(g) && len(g.sfxCommandModifier) == 0) {
-			return errors.New("native player command 20-22 palette assets unavailable")
+			return errors.New("native player command tail palette assets unavailable")
 		}
 		phases, phaseErr := g.nativeCommandPaletteFlash.NativeCommandPaletteFlashPhases(commandID)
 		if phaseErr != nil || len(phases) != 8 {
-			return errors.New("native player command 20-22 palette phases unavailable")
+			return errors.New("native player command tail palette phases unavailable")
 		}
 		for _, rgb := range phases {
 			dac := append([]byte(nil), g.nativeMapDAC...)
@@ -239,7 +255,7 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 	frames[effectStart].sound = effectSample
 	for _, rawFrame := range schedule.ExtraSampleFrameIndices {
 		if rawFrame <= 0 || rawFrame >= schedule.EffectFrames {
-			return errors.New("native AI command 20-22 extra sample frame unavailable")
+			return errors.New("native command tail extra sample frame unavailable")
 		}
 		frames[effectStart+rawFrame].sound = effectSample
 	}
@@ -249,13 +265,15 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 	}
 	frames[maskStart].sound = loadWav(assetPath("assets/sfx/battle_80_01.wav"))
 	publishAt := len(frames)
-	if frames, err = appendNativeCompoundFrames(frames, digitImages, 1); err != nil {
-		return err
+	if len(digitImages) > 0 {
+		if frames, err = appendNativeCompoundFrames(frames, digitImages, 1); err != nil {
+			return err
+		}
 	}
 	if !osMuteOrShot(g) && (len(effectSample) == 0 || len(frames[maskStart].sound) == 0) {
-		return errors.New("native AI command 20-22 raw sample unavailable")
+		return errors.New("native command tail raw sample unavailable")
 	}
-	g.nativeAICommandModifier = &nativeAICommandModifierPresentationJob{actor: actor, plan2022: plan, frames: frames, publishAt: publishAt, endAt: len(frames), rngBefore: g.nativeRNGState, baselineWork: baselineWork, baselineVGA: baselineVGA, stageWork: postWork, stageVGA: postVGA, then2022: then}
+	g.nativeAICommandModifier = &nativeAICommandModifierPresentationJob{actor: actor, plan2022: plan, frames: frames, publishAt: publishAt, endAt: len(frames), skipHold: len(digitImages) == 0, rngBefore: g.nativeRNGState, baselineWork: baselineWork, baselineVGA: baselineVGA, stageWork: postWork, stageVGA: postVGA, then2022: then}
 	return nil
 }
 
@@ -512,7 +530,10 @@ func (g *Game) stepNativeAICommandModifierPresentation() {
 			return
 		}
 		j.frame = next - 1
-		j.holding, j.hold = true, nativeDelayTicks(500)
+		j.holding = true
+		if !j.skipHold {
+			j.hold = nativeDelayTicks(500)
+		}
 		return
 	}
 	j.frame = next

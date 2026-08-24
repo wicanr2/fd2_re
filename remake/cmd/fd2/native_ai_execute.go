@@ -226,16 +226,17 @@ func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after 
 				g.checkResult()
 			})
 		case id == 26 || id == 27:
-			results, err := g.st.ExecuteNativeCommandApplication(actor, target, id, g.rng)
-			if err != nil {
-				return err
-			}
-			for _, result := range results {
-				if result.Damage > 0 {
-					damageTargets = append(damageTargets, result.Target)
+			return g.startNativeAICommand2022Presentation(actor, id, func(result *battle.NativeAICommand2022Plan) {
+				for _, entry := range result.Results {
+					if entry.Apply != nil && entry.Apply.Damage.Actual > 0 {
+						g.awardDeathReward(entry.Target, actor)
+					}
 				}
-			}
-			message = fmt.Sprintf("原始指令 %d：完成 raw application (%d targets)", id, len(results))
+				actor.SetMapPose(dirToward(actor.X, actor.Y, target.X, target.Y))
+				g.msg = fmt.Sprintf("原始指令 %d：完成敵方 indexed 尾段 (%d targets)", id, len(result.Results))
+				g.finishSuccessfulUnitAction(actor, after)
+				g.checkResult()
+			})
 		case id == 24 || id == 28 || id == 29 || id == 31:
 			results, err := g.st.ExecuteNativeCommandDerivedStrike(actor, target, id, g.rng)
 			if err != nil {
@@ -248,11 +249,7 @@ func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after 
 			}
 			message = fmt.Sprintf("原始指令 %d：傷害 %d", id, total)
 		case id == 25:
-			results, err := g.st.ExecuteNativeCommand25(actor, target)
-			if err != nil {
-				return err
-			}
-			message = fmt.Sprintf("原始指令 25：完成 raw clear (%d targets)", len(results))
+			return fmt.Errorf("native AI command 25 has no confirmed normal producer")
 		default:
 			return fmt.Errorf("native AI command executor unavailable id=%d", id)
 		}

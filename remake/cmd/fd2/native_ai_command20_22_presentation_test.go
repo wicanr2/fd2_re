@@ -88,6 +88,82 @@ func TestExecuteNativeAICommand20UsesOriginalIndexedTail(t *testing.T) {
 	}
 }
 
+func TestExecuteNativeAICommand26UsesOriginalIndexedTail(t *testing.T) {
+	base := filepath.Clean("../../../org_game/炎龍騎士團/FLAME2")
+	for key, path := range map[string]string{
+		"FD2_ORIGINAL_FIGANI": filepath.Join(base, "FIGANI.DAT"), "FD2_ORIGINAL_FDOTHER": filepath.Join(base, "FDOTHER.DAT"),
+		"FD2_ORIGINAL_FDTXT": filepath.Join(base, "FDTXT.DAT"), "FD2_ORIGINAL_BG": filepath.Join(base, "BG.DAT"), "FD2_ORIGINAL_TAI": filepath.Join(base, "TAI.DAT"),
+	} {
+		if !fileExists(path) {
+			t.Skip("player-provided original archives unavailable")
+		}
+		t.Setenv(key, path)
+	}
+	g := &Game{rng: rand.New(rand.NewSource(26)), nativeUIPalette: loadNativeUIPalette()}
+	if err := g.loadMap("assets/maps/map0"); err != nil {
+		t.Fatal(err)
+	}
+	g.resetBattle("assets/maps/map0/map0_units.json", "assets/scenarios/ch01.json")
+	if g.loadErr != "" || len(g.st.Units) < 6 {
+		t.Fatalf("fixture err=%q units=%d", g.loadErr, len(g.st.Units))
+	}
+	actor, target := g.st.Units[4], g.st.Units[5]
+	g.st.Units = []*battle.Unit{actor, target}
+	actor.SetMapPlacement(0, 0, 3)
+	target.SetMapPlacement(1, 0, 3)
+	if err := actor.MaterializeNativeMapPresentation(); err != nil {
+		t.Fatal(err)
+	}
+	if err := target.MaterializeNativeMapPresentation(); err != nil {
+		t.Fatal(err)
+	}
+	for _, unit := range []*battle.Unit{actor, target} {
+		unit.Camp, unit.OnField = battle.Enemy, true
+		unit.NativeRecordByte5, unit.NativeRecordByte6 = 0, 1
+		unit.HasNativeRecordByte5, unit.HasNativeRecordByte6 = true, true
+		unit.NativeTransient = [6]byte{}
+	}
+	actor.HP, actor.MaxHP, actor.MP, actor.Acted = 100, 100, 10, false
+	target.HP, target.MaxHP = 50, 100
+	book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
+	for id := range book {
+		book[id] = battle.NativeCommandRecord{ID: id}
+	}
+	book[26] = battle.NativeCommandRecord{ID: 26, SelectionMode: 1, EffectMode: 1, MPCost: 2, TargetCode: 1}
+	g.st.NativeCommandBook = book
+	g.st.NativeCompositionEventBytes = make([]byte, g.st.W*g.st.H)
+	if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{CameraX: 0, CameraY: 0, CursorX: 1, CursorY: 0, VisibleCursorX: 1, VisibleCursorY: 0}); err != nil {
+		t.Fatal(err)
+	}
+	if !g.st.MaterializeNativeMapHUDState(1, 1, 1) || !g.st.MaterializeNativeMapRangeMode(1) {
+		t.Fatal("HUD/range unavailable")
+	}
+	if err := g.composeNativeMapFrame(); err != nil {
+		t.Fatal(err)
+	}
+	g.nativeRNGState = 0
+	continued := 0
+	if err := g.executeNativeAIActionWithContinuation(&battle.AIPlan{U: actor, Target: target, NativeActionKind: battle.NativeAIActionCommand, NativeCommandID: 26}, func() { continued++ }); err != nil {
+		t.Fatal(err)
+	}
+	if g.nativeAICommandModifier == nil || target.HP != 50 || target.NativeTransient[3] != 0 || actor.MP != 10 || actor.Acted {
+		t.Fatal("command26 transaction crossed first Draw boundary")
+	}
+	screen := ebiten.NewImage(640, 400)
+	for steps := 0; g.nativeAICommandModifier != nil && steps < 512; steps++ {
+		if !g.drawNativeAICommandModifierPresentation(screen) {
+			t.Fatalf("draw failed at %d", steps)
+		}
+		g.stepNativeAICommandModifierPresentation()
+		if g.nativeAICommandModifier != nil && g.nativeAICommandModifier.holding {
+			g.nativeAICommandModifier.hold = 0
+		}
+	}
+	if g.nativeAICommandModifier != nil || actor.HP >= 100 || actor.NativeTransient[3] == 0 || target.HP != 50 || actor.MP != 8 || !actor.Acted || continued != 1 {
+		t.Fatalf("command26 owner incomplete actor=%#v target=%#v continued=%d", actor, target, continued)
+	}
+}
+
 func TestPlayerNativeCommand20UsesPaletteThenOriginalIndexedTail(t *testing.T) {
 	t.Setenv("FD2_MUTE", "1")
 	base := filepath.Clean("../../../org_game/炎龍騎士團/FLAME2")
@@ -169,5 +245,86 @@ func TestPlayerNativeCommand20UsesPaletteThenOriginalIndexedTail(t *testing.T) {
 	}
 	if target.HP <= 50 || target.NativeTransient[3] != 0 || actor.MP != 8 || !actor.Acted || continued != 1 {
 		t.Fatalf("player owner incomplete actor=%#v target=%#v continued=%d", actor, target, continued)
+	}
+}
+
+func TestPlayerNativeCommand25UsesOriginalTailWithoutEmptyNumericHold(t *testing.T) {
+	t.Setenv("FD2_MUTE", "1")
+	base := filepath.Clean("../../../org_game/炎龍騎士團/FLAME2")
+	for key, path := range map[string]string{
+		"FD2_ORIGINAL_FIGANI": filepath.Join(base, "FIGANI.DAT"), "FD2_ORIGINAL_FDOTHER": filepath.Join(base, "FDOTHER.DAT"),
+		"FD2_ORIGINAL_FDTXT": filepath.Join(base, "FDTXT.DAT"), "FD2_ORIGINAL_BG": filepath.Join(base, "BG.DAT"), "FD2_ORIGINAL_TAI": filepath.Join(base, "TAI.DAT"),
+	} {
+		if !fileExists(path) {
+			t.Skip("player-provided original archives unavailable")
+		}
+		t.Setenv(key, path)
+	}
+	g := &Game{rng: rand.New(rand.NewSource(25)), nativeUIPalette: loadNativeUIPalette()}
+	if err := g.loadMap("assets/maps/map0"); err != nil {
+		t.Fatal(err)
+	}
+	g.resetBattle("assets/maps/map0/map0_units.json", "assets/scenarios/ch01.json")
+	if g.loadErr != "" || len(g.st.Units) < 6 {
+		t.Fatalf("fixture err=%q units=%d", g.loadErr, len(g.st.Units))
+	}
+	paletteTable, err := battle.LoadNativeCommandPaletteFlashTable("../../assets/data/native_command_palette_flash.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.nativeCommandPaletteFlash = paletteTable
+	actor, target := g.st.Units[4], g.st.Units[5]
+	g.st.Units = []*battle.Unit{actor, target}
+	actor.SetMapPlacement(0, 0, 3)
+	target.SetMapPlacement(1, 0, 3)
+	if err := actor.MaterializeNativeMapPresentation(); err != nil {
+		t.Fatal(err)
+	}
+	if err := target.MaterializeNativeMapPresentation(); err != nil {
+		t.Fatal(err)
+	}
+	actor.Camp, actor.HP, actor.MaxHP, actor.MP, actor.Acted = battle.Own, 100, 100, 10, false
+	target.Camp, target.HP, target.MaxHP = battle.Own, 50, 100
+	for _, unit := range []*battle.Unit{actor, target} {
+		unit.NativeRecordByte5, unit.NativeRecordByte6 = 0, 0
+		unit.HasNativeRecordByte5, unit.HasNativeRecordByte6 = true, true
+	}
+	actor.NativeRecordByte5, target.NativeRecordByte5 = 0x80, 0x80
+	book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
+	for id := range book {
+		book[id] = battle.NativeCommandRecord{ID: id}
+	}
+	book[25] = battle.NativeCommandRecord{ID: 25, SelectionMode: 1, EffectMode: 0, MPCost: 2, TargetCode: 1}
+	g.st.NativeCommandBook = book
+	g.st.NativeCompositionEventBytes = make([]byte, g.st.W*g.st.H)
+	if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{CameraX: 0, CameraY: 0, CursorX: 1, CursorY: 0, VisibleCursorX: 1, VisibleCursorY: 0}); err != nil {
+		t.Fatal(err)
+	}
+	if !g.st.MaterializeNativeMapHUDState(1, 1, 1) || !g.st.MaterializeNativeMapRangeMode(1) {
+		t.Fatal("HUD/range unavailable")
+	}
+	if err := g.composeNativeMapFrame(); err != nil {
+		t.Fatal(err)
+	}
+	continued := 0
+	if err := g.startNativeCommand2022Presentation(actor, target, 25, true, func(*battle.NativeAICommand2022Plan) { continued++ }); err != nil {
+		t.Fatal(err)
+	}
+	job := g.nativeAICommandModifier
+	if job == nil || !job.skipHold || job.publishAt != job.endAt || actor.NativeRecordByte5 != 0x80 || target.NativeRecordByte5 != 0x80 || actor.MP != 10 {
+		if job == nil {
+			t.Fatal("command25 presentation job unavailable")
+		}
+		t.Fatalf("command25 pre-publish skip=%v publish=%d end=%d actorByte5=%#x targetByte5=%#x MP=%d", job.skipHold, job.publishAt, job.endAt, actor.NativeRecordByte5, target.NativeRecordByte5, actor.MP)
+	}
+	screen := ebiten.NewImage(640, 400)
+	for step := 0; g.nativeAICommandModifier != nil && step < 256; step++ {
+		if !g.drawNativeAICommandModifierPresentation(screen) {
+			t.Fatalf("draw failed at %d", step)
+		}
+		g.stepNativeAICommandModifierPresentation()
+	}
+	if g.nativeAICommandModifier != nil || actor.NativeRecordByte5 != 0x80 || target.NativeRecordByte5 != 0 || actor.MP != 8 || !actor.Acted || continued != 1 {
+		t.Fatalf("command25 owner incomplete actorByte5=%#x targetByte5=%#x MP=%d acted=%v continued=%d", actor.NativeRecordByte5, target.NativeRecordByte5, actor.MP, actor.Acted, continued)
 	}
 }

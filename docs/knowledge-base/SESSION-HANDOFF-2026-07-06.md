@@ -6356,3 +6356,18 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   才完成行動；缺任一資產保持零交易。
 - 原始資產玩家ID20測試與玩家20／22 typed plan回歸通過，因此先前「下一批須接」
   已失效；玩家與敵方20–22皆為`RUNTIME-E1`，同狀態逐幀／逐音訊E2仍待。
+
+## 2026-08-25：玩家25–27與敵方26／27正式handler tail
+
+- 授權Docker內IDA Pro 9.4及Capstone raw table固定entries25／26／27為
+  `0x22C04／0x22CBF／0x22E41`。25的raw row是`BF/13/5/C0`，只在
+  `record+5 bit7`未設時建立failure queue；26／27分別是`8A/9/3/C0`、
+  `9E/12/2/C0`，並共用`0x22D1B`的effect／mask／成功或失敗queue。
+- 先建立canonical evidence與SDD，再擴充既有私有raw plan及indexed owner。
+  玩家25–27保留八段palette，敵方26／27直接進handler tail；mask Draw後才發布
+  MP／HP／raw byte／RNG，必要的數字段與尾停後才發布`Acted`。敵方25沒有已證實
+  正常AI scoring producer，仍失敗即關閉。
+- 端到端測試發現共用私有record建構器沒有複製raw `+5`；已修正為有provenance
+  時保留該byte。玩家25原始資產測試證實只清confirmed target，其他target保留，
+  全成功時不播放空白數字段；敵方26原始資產測試證實使用raw selector而非玩家target。
+  兩者均通過，這批提升為`RUNTIME-E1`，同狀態逐幀／逐音訊E2仍待。

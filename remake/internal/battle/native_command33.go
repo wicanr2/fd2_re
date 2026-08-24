@@ -191,6 +191,7 @@ func nativeCompoundCommandTargetRecords(targets []*Unit) ([]byte, []byte, error)
 			return nil, nil, fmt.Errorf("native compound command target %d lacks raw provenance", index)
 		}
 		base := index * nativeRecordSize
+		records[base+5] = target.NativeRecordByte5
 		records[base+7] = byte(target.BattleFig)
 		records[base+0x20], records[base+0x21] = target.NativeRecordClass, byte(target.Lv)
 		copy(records[base+0x22:base+0x28], target.NativeTransient[:])

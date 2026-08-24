@@ -6347,35 +6347,16 @@ func (g *Game) confirm() {
 		}
 		if id >= 25 && id <= 27 {
 			actor := g.sel
-			var clearResults []battle.NativeCommand25Result
-			var applicationResults []battle.NativeCommandApplicationResult
-			preflight := func() error {
+			err := g.startNativeCommand2022Presentation(actor, tgt, id, true, func(plan *battle.NativeAICommand2022Plan) {
 				if id == 25 {
-					_, err := g.st.NativeCommand25Targets(actor, tgt)
-					return err
-				}
-				_, _, err := g.st.NativeCommandApplicationTargets(actor, tgt, id)
-				return err
-			}
-			transaction := func() error {
-				var err error
-				if id == 25 {
-					clearResults, err = g.st.ExecuteNativeCommand25(actor, tgt)
+					g.msg = fmt.Sprintf("原始指令 25：完成 palette 與 indexed 尾段 (%d targets)", len(plan.Results))
 				} else {
-					applicationResults, err = g.st.ExecuteNativeCommandApplication(actor, tgt, id, g.rng)
-				}
-				return err
-			}
-			err := g.startNativeCommandPalettePresentation(id, preflight, transaction, func() {
-				if id == 25 {
-					g.msg = fmt.Sprintf("原始指令 25：完成 raw +5 bit7 clear (%d targets)", len(clearResults))
-				} else {
-					for _, result := range applicationResults {
-						if result.Damage > 0 {
+					for _, result := range plan.Results {
+						if result.Apply != nil && result.Apply.Damage.Actual > 0 {
 							g.awardDeathReward(result.Target, actor)
 						}
 					}
-					g.msg = fmt.Sprintf("原始指令 %d：完成 raw application (%d targets)", id, len(applicationResults))
+					g.msg = fmt.Sprintf("原始指令 %d：完成 palette 與 indexed 尾段 (%d targets)", id, len(plan.Results))
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
 				g.finishSuccessfulUnitAction(actor, func() {
@@ -6386,7 +6367,7 @@ func (g *Game) confirm() {
 				g.checkResult()
 			})
 			if err != nil {
-				g.msg = fmt.Sprintf("原始指令 %d：palette 演出不可用 (%v)", id, err)
+				g.msg = fmt.Sprintf("原始指令 %d：完整演出不可用 (%v)", id, err)
 			}
 			return
 		}
