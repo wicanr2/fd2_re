@@ -246,9 +246,9 @@ func TestEndingTimelinePreservesVerifiedAudioCueOrder(t *testing.T) {
 		t.Fatalf("audio cues=%#v", timeline.AudioCues)
 	}
 	want := []AudioCue{
-		{Source: "0x2c5cf", Track: 4, DriverArg: 0, AfterGate: "0x2c548", Trigger: "0x2c405 after phase0 before party cycle"},
-		{Source: "0x2c1ac", Track: -1, DriverArg: 1, Trigger: "0x2bce5 after 0x2c405 returns before FDOTHER#60"},
-		{Source: "0x2c1f5", Track: 18, DriverArg: 0, Trigger: "0x2bce5 after FDOTHER#60 frame before post-montage loop"},
+		{Source: "0x2c5cf", Track: 4, DriverArg: 0, RuntimeStage: "party_cycle_start", AfterGate: "0x2c548", Trigger: "0x2c405 after phase0 before party cycle"},
+		{Source: "0x2c1ac", Track: -1, DriverArg: 1, RuntimeStage: "tail_stop", Trigger: "0x2bce5 after 0x2c405 returns before FDOTHER#60"},
+		{Source: "0x2c1f5", Track: 18, DriverArg: 0, RuntimeStage: "tail_start", Trigger: "0x2bce5 after FDOTHER#60 frame before post-montage loop"},
 	}
 	for i := range want {
 		if timeline.AudioCues[i] != want[i] {
@@ -263,6 +263,15 @@ func TestEndingTimelinePreservesVerifiedAudioCueOrder(t *testing.T) {
 	got[0].Track = 99
 	if p.VerifiedAudioCues()[0].Track != 4 {
 		t.Fatal("audio cue accessor exposed mutable timeline state")
+	}
+	if cue, ok := p.AudioCueForRuntimeStage("tail_stop"); !ok || cue != want[1] {
+		t.Fatalf("tail stop cue=%#v ok=%v", cue, ok)
+	}
+	if cue, ok := p.AudioCueForRuntimeStage("tail_start"); !ok || cue != want[2] {
+		t.Fatalf("tail start cue=%#v ok=%v", cue, ok)
+	}
+	if cue, ok := p.AudioCueForRuntimeStage("unknown"); ok || cue != (AudioCue{}) {
+		t.Fatalf("unknown runtime stage leaked cue=%#v ok=%v", cue, ok)
 	}
 	p.State = PlaybackBlocked
 	p.Blocked = &Segment{Op: "native_finale_montage_opaque", Source: "0x2c548"}

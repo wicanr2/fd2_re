@@ -6074,3 +6074,21 @@ runtime 只有在所有條件都完整時才能選擇原生路徑：
 不得靜默回到現代自動換行。沒有 `NativeDialogueLayout` 的既有章節仍走原本可玩
 renderer，直到各自 caller 完成 RE／typed binding。Enter 依 typed pages 推進；
 本切片先重現穩定頁面，不冒稱逐字、嘴型、開／關框中間幀或 DOS E2。
+
+## 2026-08-25：終局三筆音訊 cue 的具型別消費規格
+
+主證據為 [`fd2_ending_audio_ida.txt`](../data/ida/fd2_ending_audio_ida.txt)。這個
+切片不重開 `0x2BCE5`／`0x2C405` renderer，只把已證實的三個
+`sub_25977` call site 接回既有正式終局 E1：
+
+1. `0x2C5CF`：party cycle 前播放 raw track 4、driver arg 0。
+2. `0x2C1AC`：party cycle 返回後、尾段資產呈現前發出 raw stop（track -1、
+   driver arg 1）。
+3. `0x2C1F5`：FDOTHER #60 已取得、20筆尾段開始前播放 raw track 18、driver arg 0。
+
+`AudioCue` 必須另存穩定的 `runtime_stage`，只接受上述三個 stage，且來源位址不得
+重複。正式 runtime 只能以 stage 查詢 cue，不得再硬寫曲目索引；stage、來源、曲目
+或 driver arg 缺漏時，尾段必須在改變目前音訊前失敗即關閉。為保持資產預檢原子性，
+重製端先完整建立尾段 player，再依 `tail_stop→tail_start` 順序發布兩筆 cue；這是
+原始呼叫順序的 E1 消費，不宣稱還原兩個 call site 之間的 DOS wall-clock、DAC／PIT
+或人耳逐毫秒 E2。

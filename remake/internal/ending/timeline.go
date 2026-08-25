@@ -29,9 +29,10 @@ type Resource struct {
 // FDMUS.DAT resource index. Trigger is deliberately a source-stage label,
 // not a claim that the current fail-closed Player can execute that stage.
 type AudioCue struct {
-	Source    string `json:"source"`
-	Track     int    `json:"track"`
-	DriverArg int    `json:"driver_arg"`
+	Source       string `json:"source"`
+	Track        int    `json:"track"`
+	DriverArg    int    `json:"driver_arg"`
+	RuntimeStage string `json:"runtime_stage"`
 	// AfterGate 是允許消費此音訊的精確 raw 停止邊界。空字串代表該 cue
 	// 仍只有觀測用途，因為其原版畫面／流程 owner 尚未還原。
 	AfterGate string `json:"after_gate,omitempty"`
@@ -110,10 +111,22 @@ func LoadTimeline(path string) (*Timeline, error) {
 		return nil, fmt.Errorf("ending timeline %q has no recovered segments", path)
 	}
 	seenAudioGates := map[string]bool{}
+	seenAudioSources := map[string]bool{}
+	seenAudioStages := map[string]bool{}
+	validAudioStages := map[string]bool{
+		"party_cycle_start": true,
+		"tail_stop":         true,
+		"tail_start":        true,
+	}
 	for i, cue := range timeline.AudioCues {
-		if cue.Source == "" || cue.Track < -1 || cue.Track > 0xff || cue.DriverArg < 0 || cue.DriverArg > 1 || cue.Trigger == "" {
+		if cue.Source == "" || cue.Track < -1 || cue.Track > 0xff || cue.DriverArg < 0 || cue.DriverArg > 1 || cue.Trigger == "" || !validAudioStages[cue.RuntimeStage] {
 			return nil, fmt.Errorf("ending timeline %q audio cue %d is incomplete", path, i)
 		}
+		if seenAudioSources[cue.Source] || seenAudioStages[cue.RuntimeStage] {
+			return nil, fmt.Errorf("ending timeline %q audio cue %d duplicates source or runtime stage", path, i)
+		}
+		seenAudioSources[cue.Source] = true
+		seenAudioStages[cue.RuntimeStage] = true
 		if cue.AfterGate != "" {
 			if cue.AfterGate != "0x2c548" || seenAudioGates[cue.AfterGate] {
 				return nil, fmt.Errorf("ending timeline %q audio cue %d has an unverified or duplicate gate", path, i)

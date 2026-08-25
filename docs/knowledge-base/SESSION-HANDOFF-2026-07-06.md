@@ -6550,3 +6550,17 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   Xvfb trap與180秒外層timeout的Docker容器完整通過（campaign 1.611s、
   cmd/fd2 17.916s）。直接勝利測試因不經Draw，明確注入test-only indexed
   baseline；像素 compositor另以真實原版資產驗證，該baseline不作E2證據。
+
+## 2026-08-25：終局定格／隊伍回顧現況勘誤與音訊 cue 正式接線
+
+- 實檔稽核確認正式 `battle_ch30→ending` 已在20段尾段後永久保持 FDOTHER #59；
+  Enter／Space 可進入重製端明示的隊伍最終狀態循環，Enter／Space／Escape 返回同一
+  定格。這項玩家需求已完成，不再誤列為待辦，也不把重製輸入冒稱原版 self-loop。
+- `native_2bce5.json` 的三筆 `0x25977` call 現加入不可重複的 typed
+  `runtime_stage`。正式 runtime 以資料消費 `0x2C5CF→FDMUS_004`、
+  `0x2C1AC→stop`、`0x2C1F5→FDMUS_018`，移除尾段硬寫 track；任一 stage、位址或
+  raw 參數不符都在改變音訊前失敗即關閉。
+- `internal/ending` 聚焦回歸通過；`cmd/fd2` 三條正式終局整合回歸在一次性無網路、
+  4GB／2 CPU、Xvfb trap與明確 `/tmp` Go build cache 的 Docker 容器通過。這關閉
+  raw cue 的 `RUNTIME-E1`，不宣稱兩 call 之間的 DOS wall-clock、逐音訊 E2、
+  `0x2C548→0x2C2A6` call-time records／globals、3% RNG或原版終端按鍵。

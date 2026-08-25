@@ -203,6 +203,10 @@ func (g *Game) consumeNativeEndingAudioAtGate() {
 		return
 	}
 	g.nativeEnding.audioCueConsumed = true
+	g.emitNativeEndingAudioCue(cue)
+}
+
+func (g *Game) emitNativeEndingAudioCue(cue ending.AudioCue) {
 	if cue.Track < 0 {
 		g.stopBGM()
 		return
@@ -347,6 +351,16 @@ func (g *Game) startCampaignNativeTail() error {
 		return fmt.Errorf("ending: terminal tail admission already failed")
 	}
 	p.tailStartAttempted = true
+	stopCue, ok := p.player.AudioCueForRuntimeStage("tail_stop")
+	if !ok || stopCue.Source != "0x2c1ac" || stopCue.Track != -1 || stopCue.DriverArg != 1 {
+		p.tailStartError = "ending: verified tail stop cue is unavailable"
+		return fmt.Errorf("%s", p.tailStartError)
+	}
+	startCue, ok := p.player.AudioCueForRuntimeStage("tail_start")
+	if !ok || startCue.Source != "0x2c1f5" || startCue.Track != 18 || startCue.DriverArg != 0 {
+		p.tailStartError = "ending: verified tail start cue is unavailable"
+		return fmt.Errorf("%s", p.tailStartError)
+	}
 	tail, err := ending.LoadMontageTail(assetPath("assets/endings/native_2c194_tail.json"))
 	if err != nil {
 		p.tailStartError = err.Error()
@@ -384,10 +398,10 @@ func (g *Game) startCampaignNativeTail() error {
 	p.tailPlayer = player
 	p.tailWait = 0
 	p.last = time.Time{}
-	// 原版在尾段先停止前曲，並在 20-entry loop 前啟動 FDMUS_018。
-	// 近似端在視覺排程開始時消費同一資源，但不宣稱精確音訊間隔。
-	g.stopBGM()
-	g.playBGMCount("FDMUS_018", 0)
+	// 資產完整 admission 後才依資料發布兩筆 cue，避免深層載入失敗留下半套音訊
+	// 狀態；順序與 raw 參數已證實，兩筆之間的 DOS wall-clock 仍不宣稱精確。
+	g.emitNativeEndingAudioCue(stopCue)
+	g.emitNativeEndingAudioCue(startCue)
 	return nil
 }
 

@@ -38,10 +38,11 @@
 
 `remake/assets/endings/native_2bce5.json` 以 `audio_cues` 保存三筆位址、曲目
 索引、第二參數與觸發階段；`ending.Player.VerifiedAudioCues` 只讀出證據序列。
-目前近似戰役只在精確 `0x2c548` 邊界消費 `FDMUS_004`。已通過來源驗證的 party
-montage 成功完成後，`MontageTailPlayer` 會播放 20 組 TAI／BG／FIGANI 與
-FDOTHER#58 的近似尾段；播放器開始前停止前曲、接線 `FDMUS_018`，完成後才保持
-`FDOTHER#59`。這不是原版 `0x2c1ac→0x2c1f5` 的精確時序重建：精確
+目前正式來源約束 E1 在精確 `0x2c548` 邊界消費 `FDMUS_004`。已通過來源驗證的
+party montage 成功完成後，`MontageTailPlayer` 會播放 20 組 TAI／BG／FIGANI 與
+FDOTHER#58 的尾段；三筆 cue 現均以 `runtime_stage` 保存，runtime 不再硬寫曲目：
+尾段資產完整 admission 後依 `0x2c1ac` 停曲、`0x2c1f5` 接上 `FDMUS_018`，完成後
+保持 `FDOTHER#59`。這仍不是原版 `0x2c1ac→0x2c1f5` 的精確時序重建：精確
 `0x28a6c` 合成、停曲間隔與畫面同步仍未還原。`FDMUS_018` 的曲目索引與第二參數
-仍是已證實 raw call；音樂內容、實際 loop 行為、一般玩家終局可達性與逐音訊 E2
-均未由這個近似轉接器證實。
+是已證實 raw call；音樂內容、實際 loop 行為、一般玩家終局可達性與逐音訊 E2
+均未由這個 E1 轉接器證實。

@@ -107,6 +107,20 @@ func (p *Player) VerifiedAudioCues() []AudioCue {
 	return append([]AudioCue(nil), p.Timeline.AudioCues...)
 }
 
+// AudioCueForRuntimeStage 只依資料中已驗證且不重複的執行期階段取出 cue；
+// 它不播放音訊，也不允許 caller 略過對應的畫面／資產 admission。
+func (p *Player) AudioCueForRuntimeStage(stage string) (AudioCue, bool) {
+	if p == nil || stage == "" {
+		return AudioCue{}, false
+	}
+	for _, cue := range p.Timeline.AudioCues {
+		if cue.RuntimeStage == stage {
+			return cue, true
+		}
+	}
+	return AudioCue{}, false
+}
+
 // AudioCueAtBlockedBoundary 只回傳 after_gate 與目前失敗即關閉邊界精確相符的
 // 音訊 cue。它不前進播放、不略過 renderer，也不讓尚未還原 owner 的 cue 被
 // 提前消費。
