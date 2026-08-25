@@ -1,0 +1,74 @@
+# FD2.EXE `sub_33F78` 最終戰前舞台單位演出 wrapper
+
+## 輸入與工具
+
+- 輸入：`FD2.EXE`，357074 bytes。
+- MD5：`b97caf2239a27a896069d03549d96e1e`。
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 主工具：合法授權 Docker 內 IDA Pro 9.4／Hex-Rays `9.4.0.260610`；IDA 線性位址。
+- 交叉驗證：`fd2-cap-local` 內 Capstone 5；LE object 1 線性位址。
+- 原始 EXE 唯讀；IDA 資料庫與 log 只置於容器 tmpfs。
+
+## 函式與 caller（已證實）
+
+- 原始 IDA 名稱／範圍：`sub_33F78`, `0x33F78..0x33FAF`，55 bytes。
+- IDA 清冊的直接 caller functions：`sub_33E3C` 與 `sub_35F92`；本切片只消費
+  `sub_33E3C` 內七個 immediate call sites，不外推另一 caller 的產品語意。
+- `sub_33E3C` 的七組 caller push-order 已由版控 handler 保存為
+  `[y,x,slot]`：`[5,21,21]`、`[5,23,22]`、`[5,20,23]`、`[5,24,24]`、
+  `[18,22,24]`、`[18,21,25]`、`[18,23,26]`。
+
+## 原始 bytes／指令（已證實）
+
+IDA 直接導出的完整 bytes：
+
+```text
+68 18 00 00 00 e8 55 2d 00 00
+ff 74 24 0c ff 74 24 0c e8 5b ed fd ff 83 c4 08
+ff 74 24 0c ff 74 24 0c ff 74 24 14 ff 74 24 14
+ff 74 24 14 e8 a8 e2 fe ff 83 c4 14 c3
+```
+
+Capstone 獨立重播：
+
+```text
+0x33F78 push 0x18
+0x33F7D call 0x36CD7
+0x33F82 push [esp+0x0C]
+0x33F86 push [esp+0x0C]
+0x33F8A call 0x12CEA
+0x33F8F add esp,8
+0x33F92 push [esp+0x0C]
+0x33F96 push [esp+0x0C]
+0x33F9A push [esp+0x14]
+0x33F9E push [esp+0x14]
+0x33FA2 push [esp+0x14]
+0x33FA6 call 0x22253
+0x33FAB add esp,0x14
+0x33FAE ret
+```
+
+令 entry 的三個 C 引數為 `A=slot, B=x, C=y`。第一組兩次動態 stack push
+依序送出 `C,B`，故 callee 看到 `(B,C)=(x,y)`。第二組五次 push 依序送出
+`C,B,C,B,A`，故 callee 看到 `(A,B,C,B,C)=(slot,x,y,x,y)`。
+
+## 消費端與勘誤
+
+- `0x12CEA(x,y)`：已證實是阻塞式視圖／游標 focus consumer；Hex-Rays 顯示其
+  X、Y 迴圈分別比較目標與 `[0x53AB1]`、`[0x53AB5]`，每步走既有 scroll helper
+  並 present。這裡沒有 `slot` 引數。
+- `0x22253(slot,x,y,x,y)`：已證實消費 runtime `0x50` stride record，執行既有
+  11＋6＋bridge＋10 索引演出，於 bridge 前後把該 record 座標寫成 `(x,y)`。
+- **勘誤（已證實）**：舊 `91`／compiler comment 的
+  `0x12CEA(slot,x)` 是 stack-offset 誤讀；正確為 `0x12CEA(x,y)`。原始位址與
+  bytes 保留於上方，後續不得再以欄位名稱反向覆蓋這份定位。
+
+## 重製邊界
+
+- `RE-CLOSED`：只對上述固定版 wrapper、七個 `sub_33E3C` immediate callers 與
+  兩個 callee 的參數資料流成立。
+- `DATA-READY`：typed beat 必須保存 `slot,x,y`；focus 目標直接等於 `x,y`，
+  不另存可漂移的 `focus_x/focus_y` 副本。
+- runtime 必須先完整預檢既有 `0x22253` indexed job，再執行 focus，完成後才發布
+  job；任何 slot、raw map presentation、資產、視圖或 frame preflight 缺漏均失敗即關閉。
+- 精確 DOS 每步時間與未修改一般玩家同狀態比較仍是 E2，不影響此 ABI 接線。

@@ -1156,7 +1156,7 @@ func TestCampaignFullStoryScriptCoverageMatchesAudit(t *testing.T) {
 			generic++
 		}
 	}
-	if storyNodes != 121 || scripted != 9 || handlerBound != 56 || fallback != 56 || retreat != 30 || rumor != 23 || postbattle != 0 || generic != 3 {
+	if storyNodes != 121 || scripted != 9 || handlerBound != 57 || fallback != 55 || retreat != 30 || rumor != 23 || postbattle != 0 || generic != 2 {
 		t.Fatalf("campaign story coverage changed: nodes=%d scripted=%d handler_bound=%d fallback=%d retreat=%d rumor=%d postbattle=%d generic=%d; update the audit before changing claims", storyNodes, scripted, handlerBound, fallback, retreat, rumor, postbattle, generic)
 	}
 }

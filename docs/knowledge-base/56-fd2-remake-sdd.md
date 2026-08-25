@@ -2936,9 +2936,10 @@ SDD 通過後按以下順序重審，不先補 renderer 猜測：
    `0x22253` 會載入 FDOTHER immediate `0x51`（十進位 **81**）的 nested `LLLLLL` entry（outer 18710 bytes、directory first-word `0x12`；nested payload #1 為 9782 bytes），但完整 stack-slot trace 顯示此 local pointer 不傳入 `0x22470`／`0x22547`／`0x22656`，尾端只 free；它是 resource lifetime，**不是** pixel/frame source。`0x11eee` 是背景／tile redraw；boot 載入 FDOTHER #3 到 `0x53a6d`。FDOTHER #6 是 230-entry `LMI1` bank：`0x22470` 先以 entries `0x72..0x7c` 做 **11** 次 LMI present/tick（#0x72=12×21，#0x73..0x7b=20×22，+0x1f6=#0x7c=24×23）；`0x22547` 再倒序 #3 entries5→0 做 **6** 次 10ms remap present＋2 ticks；最後 `0x22656` 以 #3 entries0→9 做 **10** 次 remap present/tick，合計 27 次 present。其共用 compositor `0x22046` 有六個靜態 caller，並非只屬於 unit presentation：它兩次呼 `0x219ad`，後者以 `sqrt(radius²-dy²)*scale/10` 的 scanline span 作 in-place LUT remap；接著自身對第二個矩形範圍做同一 LUT remap。重新映射六個參數也更正舊斷言：unit-present 的 radius 固定11、scale固定16；`trunc((24*[0x53abd]+15)/5)*LUTIndex` 是 first-radial/final-rectangle **startY**，不是 radius。second radial從centerY開始，final rectangle水平半徑17。`NativeUnitPresentLUTPass/Frames`已保存完整6+10 geometry；`RunNativeUnitPresentLUTFrame`並固定每frame先restore完整`0x25680` snapshot，再執行first radial→mandatory object redraw→second radial→rectangle→present，禁止錯誤累積LUT。`indexedmap`現另有exact terrain-only snapshot、object-only redraw、312×192 viewport copy，以及atomic intro/LUT frame composers。snapshot ownership已閉合為同一allocation在`0x22547`由terrain-only轉成terrain+final-LMI，contract/release共用；不再列為未知 blocker。剩餘Ebiten blocker是從目前Game狀態一致提供原版`unit+3/+4` pose/motion、selector globals/BIOS-tick call timing與中間strip-copy bridge；缺任一仍不可用normalized PNG/Dir猜值。先前6-frame schema禁止接runtime。`internal/fdother.ArchiveEntry` 僅驗證 #81 nested raw boundary，不可把它寫成 layout、音訊或 frame table。
    **2026-08-21 現況勘誤**：上段「剩餘 Ebiten blocker」是 2026-07-26
    的歷史狀態。battle-state adapter 現已嚴格取得 `unit+3/+4`、selector、
-   visible cursor 與 strip bridge，並先預算全部影格再發布。仍未閉合的是
-   `0x33F78` 等 story/focus caller、第29戰 runtime topology 與原版 BIOS timing E2；
-   舊六影格 schema 仍禁止接 runtime。
+   visible cursor 與 strip bridge，並先預算全部影格再發布。**2026-08-25
+   後續勘誤**：`0x33F78` story/focus caller 已接窄 `RUNTIME-E1`；目前只保留
+   一般玩家路徑 E2、精確時序／音訊與其他未具 binding 的 caller，不再把此 wrapper
+   owner 本身列為未接。舊六影格 schema 仍禁止接 runtime。
 
 3. **Battle interaction**：追 action menu enable gates、weapon reach、spell inventory/targeting、end-turn 判定、HUD anchor；每一項先找 caller/data flow，再改 Go。
 
@@ -5529,7 +5530,7 @@ bridge、10 張 FDOTHER #3 release。座標只能在第六張 contract 完成之
 正式 `Beat` 使用新的 `native_unit_present` payload，完整保存五參數，不沿用已被
 反證的六影格 `HandlerUnitPresent` schema。可編輯數值仍須綁定 caller：
 
-- `0x33F78` wrapper 只接受已證實的 `(slot,x,y)` immediate，先套用其 focus，
+- `0x33F78` wrapper 只接受已證實的 `(slot,x,y)` immediate，先聚焦 `(x,y)`，
   再 lower 為 `(slot,x,y,x,y)`；
 - raw ch28 post 的 `0x25535` 只接受原始壓棧
   `10,15,10,15,[0x53BEB]-1`，lower 為「執行當下最後一個 materialized slot」
@@ -5577,7 +5578,10 @@ DOS BIOS tick 只可映射為重製端有界呈現等待；這是 E1 時序近�
 決定性回歸覆蓋51-frame分支、mutation boundary、缺 FDOTHER #6 零修改與執行期
 rollback。`native_palette_pulse` 另以 immutable baseline 執行127次 DAC 寫入，
 保留第64步400 ms hold與最後 baseline restore。兩者是窄 `RUNTIME-E1`，不解除本節
-戰役 topology／binding／E2 gate；`0x33F78` story/focus wrapper 也仍維持失敗即關閉。
+戰役 topology／binding／E2 gate。**2026-08-25 後續勘誤**：`0x33F78`
+story/focus wrapper 已接窄 `RUNTIME-E1`；缺任何 story runtime、原生視圖、selector、
+LUT、palette 或 presenter 資產時，該次演出仍在 focus 前失敗即關閉。這不提升一般
+玩家 E2，也不把其他 caller 視為自動完成。
 
 ## 2026-08-21 玩家第29戰 map28 runtime 拓撲契約
 
@@ -6240,6 +6244,26 @@ opening frame0須先實際呈現，完整頁前忽略確認，Enter／Space只�
 重製端先完整建立尾段 player，再依 `tail_stop→tail_start` 順序發布兩筆 cue；這是
 原始呼叫順序的 E1 消費，不宣稱還原兩個 call site 之間的 DOS wall-clock、DAC／PIT
 或人耳逐毫秒 E2。
+
+## 2026-08-25：最終戰前 `sub_33F78` staging wrapper 規格
+
+主證據為
+[`fd2_ch29_staging_wrapper_ida.txt`](../data/ida/fd2_ch29_staging_wrapper_ida.txt)。
+handler exporter 的三個 raw immediate 依原始 push 順序保存為 `[y,x,slot]`；compiler
+必須轉成單一 typed `NativeStagingPresent{Slot,X,Y}`，不得再保存推導錯誤或可能漂移的
+`FocusX／FocusY`。wrapper 的固定生命週期是：
+
+1. `sub_12CEA(x,y)` 逐格移動原始游標／視圖至 `(x,y)`；不是 `(slot,x)`。
+2. `sub_22253(slot,x,y,x,y)` 消費既有 11＋6＋bridge＋10 indexed owner。
+3. 該 owner 的 bridge 邊界才把 runtime slot 座標發布成 `(x,y)`；完整收尾後才前進
+   下一個 handler beat。
+
+正式 runtime 在開始 focus 前須以預測的 focus 終點、目前 story runtime array、原始
+map selector key、地形／單位 bank、FDOTHER #6 entries `0x72..0x7C`、LUT、palette、
+work／VGA snapshot 完整預建整個 `0x22253` job。任一資料不完整時不開始 focus、不改
+story unit、framebuffer 或 beat cursor。預建成功後，focus 與 indexed job 依序發布；
+slot 座標只在既有 mutation boundary 原子同步回 story array。這達 `RUNTIME-E1` 時仍
+不代表精確 DOS tick 或一般玩家 E2。
 
 ## 2026-08-25：終局 `0x2939D` 外層 RNG 安全裁決
 

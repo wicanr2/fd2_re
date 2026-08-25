@@ -130,6 +130,71 @@ func TestNativeUnitPresentRuntimeFailureRollsBackCoordinateAndBuffers(t *testing
 	}
 }
 
+func storyStagingFixture(t *testing.T) *Game {
+	t.Helper()
+	g := completeNativeUnitPresentGame(t)
+	view := g.st.NativeMapViewState
+	g.storyActors = make([]battle.Unit, len(g.st.Units))
+	for index, unit := range g.st.Units {
+		g.storyActors[index] = *unit
+	}
+	g.storyNativeMapView, g.hasStoryNativeMapView = view, true
+	g.curX, g.curY = view.CursorX, view.CursorY
+	g.st = nil
+	return g
+}
+
+func TestNativeStagingPresentFocusesXYThenMutatesStorySlotAtBridge(t *testing.T) {
+	g := storyStagingFixture(t)
+	spec := campaign.NativeStagingPresent{Slot: 2, X: 8, Y: 7}
+	oldX, oldY := g.storyActors[spec.Slot].X, g.storyActors[spec.Slot].Y
+	if err := g.startNativeStagingPresent(spec); err != nil {
+		t.Fatal(err)
+	}
+	if g.focusJob == nil || g.focusJob.targetX != spec.X || g.focusJob.targetY != spec.Y || g.nativeUnitPresent != nil {
+		t.Fatalf("focus=%#v present=%#v", g.focusJob, g.nativeUnitPresent)
+	}
+	for steps := 0; g.focusJob != nil && steps < 100; steps++ {
+		g.stepFocusUnit()
+	}
+	if g.focusJob != nil || g.nativeUnitPresent == nil || g.curX != spec.X || g.curY != spec.Y {
+		t.Fatalf("focus did not hand off: focus=%#v present=%#v cursor=(%d,%d)", g.focusJob, g.nativeUnitPresent, g.curX, g.curY)
+	}
+	if !g.hasStoryNativeMapView || g.storyNativeMapView.CursorX != spec.X || g.storyNativeMapView.CursorY != spec.Y {
+		t.Fatalf("focus did not publish native story view: %#v", g.storyNativeMapView)
+	}
+	for g.nativeUnitPresent.frame < g.nativeUnitPresent.mutationAt {
+		stepNativeUnitPresentNow(g)
+	}
+	if g.storyActors[spec.Slot].X != spec.X || g.storyActors[spec.Slot].Y != spec.Y {
+		t.Fatalf("story slot did not mutate at bridge: %#v", g.storyActors[spec.Slot])
+	}
+	if oldX == spec.X && oldY == spec.Y {
+		t.Fatal("fixture did not exercise a coordinate change")
+	}
+	for steps := 0; g.nativeUnitPresent != nil && steps < 100; steps++ {
+		stepNativeUnitPresentNow(g)
+	}
+	if g.nativeUnitPresent != nil || g.loadErr != "" {
+		t.Fatalf("staging did not finish: present=%#v err=%q", g.nativeUnitPresent, g.loadErr)
+	}
+}
+
+func TestNativeStagingPresentPreflightFailureStartsNoFocus(t *testing.T) {
+	g := storyStagingFixture(t)
+	spec := campaign.NativeStagingPresent{Slot: 2, X: 8, Y: 7}
+	beforeUnit := g.storyActors[spec.Slot]
+	beforeCamX, beforeCamY, beforeCurX, beforeCurY := g.camX, g.camY, g.curX, g.curY
+	g.nativeMapAssets.FDOTHER6[0x72].Pixels = nil
+	if err := g.startNativeStagingPresent(spec); err == nil {
+		t.Fatal("malformed staging assets were accepted")
+	}
+	if g.focusJob != nil || g.nativeUnitPresent != nil || !reflect.DeepEqual(g.storyActors[spec.Slot], beforeUnit) ||
+		g.camX != beforeCamX || g.camY != beforeCamY || g.curX != beforeCurX || g.curY != beforeCurY {
+		t.Fatal("failed staging preflight changed focus, story slot, or camera")
+	}
+}
+
 type assertionError string
 
 func (e assertionError) Error() string { return string(e) }

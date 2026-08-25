@@ -34,6 +34,14 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 旁車鎖定 `0x2BE44`、`waiting`、第 1／5 區塊且一般對話佇列為零。這只關閉重製端
 正式 renderer，不提升第 30 戰一般玩家 E2。
 
+> **2026-08-25 最終戰前劇情勘誤（E1）：** `story_ch30` 已停止使用兩句通用後備，
+> 改由正式 `ch29_pre` binding 消費 `LOADCH`、21句 FDTXT_030 對話及七個
+> `0x33F78` staging caller。wrapper 先聚焦 `(x,y)`，再由既有 `0x22253` owner
+> 於 bridge 邊界發布 story slot 座標；任何必要資產或原生視圖缺失時，focus 前即
+> 失敗即關閉。Docker／Xvfb 正式節點畫面與限制見
+> [`story-ch30-pre-remake-e1.json`](../data/ui-traces/story-ch30-pre-remake-e1.json)。
+> 單張圖不證明七次 staging 的每一幀，也不提升第29戰戰後→整備→最終戰前的一般玩家 E2。
+
 ### 2026-08-11：未修改原版敵方回合 E2 錨點
 
 以固定雜湊的 `FD2.EXE`／`FD2.SAV`，在一次性 Docker DOSBox 中由

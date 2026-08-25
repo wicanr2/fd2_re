@@ -676,11 +676,13 @@ D3/D5 不採「搬走敵人全部 inventory」的猜法，而使用上述特殊�
 現行 battle-state indexed DAC adapter 已按此 127-step 排程達到窄 RUNTIME-E1；
 缺少 indexed DAC surface 時仍必須 fail-closed，禁止用 delay 或 RGBA fade 假裝完成。
 
-`0x33f78` 則是不同的 ch29 staging wrapper：原始 push-order 為 `[y,x,slot]`，它先
-`0x12cea(slot,x)`，再精確轉交 `0x22253(slot,x,y,x,y)`。因此 compiler 保存
-`native_staging_present` 的 slot/x/y 與 focus payload。battle-state caller `0x25535`
-已有完整 `11+6+bridge+10` presenter；本 wrapper 的 story/focus owner 仍未接通，
-必須 fail-closed，不能因共用 compositor 存在就降成 spawn 或 pan。
+`0x33f78` 則是不同的 ch29 staging wrapper。2026-08-25 以完整 body 重新固定原始
+push-order `[y,x,slot]` 後，已推翻舊的 `0x12cea(slot,x)` 解讀：wrapper 實際先呼叫
+`0x12cea(x,y)`，再精確轉交 `0x22253(slot,x,y,x,y)`。compiler 因此只保存
+`NativeStagingPresent{Slot,X,Y}`，不再建立重複且錯誤的 focus 欄位。正式
+`story_ch30` binding 已以 story runtime array、原生視圖與共用
+`11+6+bridge+10` presenter 接通七個 caller，座標只在 bridge 邊界發布；缺任一
+資產或來源仍在 focus 前失敗即關閉，不能降成 spawn 或 pan。
 
 ## 4. 未解(低優先)+ 工具紀律
 

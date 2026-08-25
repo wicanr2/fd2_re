@@ -6689,3 +6689,23 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   且一般 `dialog_count=0`，直接排除舊一般 RGBA 對話 owner。完整命令摘要、輸入與 PNG
   雜湊見 [`ending-dialogue-native-indexed-remake-e1.json`](../data/ui-traces/ending-dialogue-native-indexed-remake-e1.json)。
   這是開發用直接預覽，仍不提升第 30 戰一般玩家 E2。
+
+## 2026-08-25：最終戰前 `0x33F78` story owner 與舊 ABI 勘誤
+
+- 合法 Docker 內 IDA Pro 9.4.0.260610 及 Docker Capstone 重讀完整
+  `sub_33F78=0x33F78..0x33FAF`。原始三參數為 `(slot,x,y)`；wrapper 實際呼叫
+  `sub_12CEA(x,y)`，再呼叫 `sub_22253(slot,x,y,x,y)`。這直接推翻本交接檔
+  2026-07-26 條目記錄的 `0x12CEA(slot,x)`，舊條目保留作錯誤形成的追溯索引。
+- 新主證據 [`fd2_ch29_staging_wrapper_ida.txt`](../data/ida/fd2_ch29_staging_wrapper_ida.txt)
+  同列保存固定 EXE 雜湊、IDA 版本、線性位址、原始 bytes、caller 與 Capstone
+  位址基準。compiler 已刪除錯誤的重複 `FocusX／FocusY` 投影，只保留
+  `NativeStagingPresent{Slot,X,Y}`。
+- `story_ch30` 已從兩句通用後備改為正式 `ch29_pre` binding，資料化 `LOADCH`、
+  21句 FDTXT_030 對話與七次 staging。runtime 在開始 focus 前，以預測的原生視圖、
+  story runtime array、selector、地形、FDOTHER #6、LUT、palette 與 work／VGA
+  完整預建 `0x22253` job；story slot 只在既有 bridge 邊界發布。缺任一來源時零可見修改。
+- Docker 聚焦回歸通過 `internal/campaign` 與 `cmd/fd2`，並由正式
+  `FD2_CAMP_NODE=story_ch30` 在 Docker／Xvfb 擷取
+  [`story-ch30-pre-remake-e1.png`](../figures/story-ch30-pre-remake-e1.png)。這達窄
+  `RUNTIME-E1`；單張圖不證明七次 staging 每一幀，且第29戰戰後→整備→最終戰前
+  的一般玩家 E2、精確 DOS 時序與音訊仍待。

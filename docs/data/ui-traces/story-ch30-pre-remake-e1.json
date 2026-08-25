@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-25T18:14:59+08:00",
+  "evidence_level": "RUNTIME-E1",
+  "source_base_commit": "6e4f2cba",
+  "runtime_node": "story_ch30",
+  "handler_binding": "remake/assets/cutscenes/bindings/ch29_pre.json",
+  "screenshot": {
+    "path": "docs/figures/story-ch30-pre-remake-e1.png",
+    "width": 640,
+    "height": 400,
+    "sha256": "b59c4ca28e5f95f4c8a9ca0085c931f9e92e160b65037bb9c8e245c4b5b999eb"
+  },
+  "command_contract": {
+    "image": "fd2-go-test-local",
+    "network": "none",
+    "display": "Xvfb :99, 800x600x24",
+    "environment": {
+      "FD2_CAMPAIGN": "assets/scenarios/campaign_full.json",
+      "FD2_CAMP_NODE": "story_ch30",
+      "FD2_MUTE": "1",
+      "FD2_SHOT_FRAME": "90"
+    }
+  },
+  "input_reference": "docs/data/fd2-reference-files.json",
+  "proves": [
+    "正式 campaign 可載入 story_ch30 的 ch29_pre binding",
+    "LOADCH 後的原生地圖、角色與可編輯 ch30 第一段對話可在重製端呈現",
+    "截圖工作負載在一次性 Docker/Xvfb 容器內完成"
+  ],
+  "does_not_prove": [
+    "第 29 戰戰後經整備進入最終戰前的未修改一般玩家 E2 路徑",
+    "七次 0x33F78 staging 的每一幀皆已由此單張截圖驗證",
+    "原版逐像素、精確 DOS 時序或音訊一致"
+  ]
+}

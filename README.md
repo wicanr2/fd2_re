@@ -164,6 +164,13 @@ writer／consumer 時重開。
 一般玩家路徑、音訊播放或原版逐像素比較。輸入、雜湊與限制見
 [擷取紀錄](docs/data/ui-traces/ending-dialogue-native-indexed-remake-e1.json)。*
 
+![重製端最終戰前劇情：正式 ch29_pre binding](docs/figures/story-ch30-pre-remake-e1.png)
+
+*這是 Docker／Xvfb 由正式 `story_ch30` 節點擷取的重製端 E1 畫面，證明 raw ch29 pre
+binding 已接 `LOADCH`、原生地圖與可編輯 ch30 對話；它不是第29戰戰後至最終戰前的
+一般玩家 E2，也不以單張圖宣稱七次 staging 或原版逐像素一致。命令、雜湊與限制見
+[擷取紀錄](docs/data/ui-traces/story-ch30-pre-remake-e1.json)。*
+
 所有文件中的 `FD2.EXE` 位址目前只適用於大小 `357074` 位元組、MD5
 `b97caf2239a27a896069d03549d96e1e` 的版本。SHA-256 與相關檔案雜湊見
 [`fd2-reference-files.json`](docs/data/fd2-reference-files.json)；版本不同時

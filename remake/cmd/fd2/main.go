@@ -574,6 +574,8 @@ type battleEventRun struct {
 // 游標接近 13×8 視窗邊緣時才推進 map origin，並非直接把目標置中。
 type focusUnitJob struct {
 	targetX, targetY int
+	then             func()
+	nativeView       bool
 }
 
 // actPoseJob 承接 beat「act」。acting 非空時按原版 0x1366a 規則播放：正常 frame
@@ -841,7 +843,11 @@ func (g *Game) ch28HandlerNativeMapViewContinuity() bool {
 // focus step. Unlike 0x135DD, focus updates absolute and visible cursor while
 // moving the camera only when the native safe band is crossed.
 func (g *Game) syncStoryNativeMapFocusView(visibleX, visibleY int) bool {
-	if g == nil || !g.ch28HandlerNativeMapViewContinuity() {
+	if g == nil {
+		return true
+	}
+	ownedByNativeWrapper := g.focusJob != nil && g.focusJob.nativeView
+	if !g.ch28HandlerNativeMapViewContinuity() && !ownedByNativeWrapper {
 		return true
 	}
 	hasBattleView := g.st != nil && g.st.HasNativeMapViewState
@@ -937,15 +943,18 @@ func (g *Game) stepFocusUnit() {
 	}
 	finish := func() {
 		g.focusJob = nil
-		// focus_unit 也會被獨立 renderer／證據測試使用；只有 campaign
-		// 擁有者存在時才能接下一拍。這不使 direct-entry 偽造戰役進度。
-		if g.camp != nil {
+		if j.then != nil {
+			j.then()
+			// 有明確 continuation 的 native wrapper 自行接管下一階段。
+		} else if g.camp != nil {
+			// 一般 focus beat 由 campaign 擁有者接下一拍；direct-entry
+			// renderer／證據測試不會因此偽造戰役進度。
 			g.beatAdvance()
 		}
 	}
 	originX, originY := int(g.camX)/g.m.TileW, int(g.camY)/g.m.TileH
 	screenX, screenY := g.curX-originX, g.curY-originY
-	if g.ch28HandlerNativeMapViewContinuity() && g.hasStoryNativeMapView {
+	if (g.ch28HandlerNativeMapViewContinuity() || j.nativeView) && g.hasStoryNativeMapView {
 		screenX, screenY = g.storyNativeMapView.VisibleCursorX, g.storyNativeMapView.VisibleCursorY
 	} else if g.ch28HandlerNativeMapViewContinuity() && g.st != nil && g.st.HasNativeMapViewState {
 		screenX, screenY = g.st.NativeMapViewState.VisibleCursorX, g.st.NativeMapViewState.VisibleCursorY
@@ -1560,14 +1569,13 @@ func (g *Game) beatStart(b campaign.Beat) {
 		g.beatAdvance()
 	case "native_staging_present":
 		present := b.NativeStagingPresent
-		if present == nil || present.Slot < 0 || present.X < 0 || present.Y < 0 || present.FocusX != present.Slot || present.FocusY != present.X {
+		if present == nil || present.Slot < 0 || present.X < 0 || present.Y < 0 {
 			g.loadErr = "beat native_staging_present:缺少原版 wrapper ABI payload"
 			return
 		}
-		// 0x33f78 calls 0x22253 after focusing. The shared battle-state
-		// presenter is available, but this story-array/focus owner remains
-		// separate; it is not a spawn, position change, or ordinary camera pan.
-		g.loadErr = "beat native_staging_present: 0x33f78 story/focus adapter未完成"
+		if err := g.startNativeStagingPresent(*present); err != nil {
+			g.loadErr = "beat native_staging_present: " + err.Error()
+		}
 		return
 	case "native_ch23_loop":
 		if b.NativeCh23Loop == nil {

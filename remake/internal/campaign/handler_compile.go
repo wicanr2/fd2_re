@@ -1168,9 +1168,9 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 					continue
 				}
 				// Extracted arguments retain native push order [y,x,slot]. The
-				// wrapper calls 0x12cea(slot,x), then 0x22253(slot,x,y,x,y).
+				// wrapper calls 0x12cea(x,y), then 0x22253(slot,x,y,x,y).
 				beat := runtime(input, "native_staging_present")
-				beat.NativeStagingPresent = &NativeStagingPresent{Slot: slot, X: x, Y: y, FocusX: slot, FocusY: x}
+				beat.NativeStagingPresent = &NativeStagingPresent{Slot: slot, X: x, Y: y}
 				beats = append(beats, beat)
 				continue
 			}

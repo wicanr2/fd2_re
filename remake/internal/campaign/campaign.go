@@ -329,16 +329,13 @@ func (s *NativeCh20SkyKeySequence) IsRecoveredContract() bool {
 }
 
 // NativeStagingPresent preserves the exact 0x33f78 wrapper ABI. It focuses
-// (FocusX, FocusY), then invokes 0x22253 with (Slot, X, Y, X, Y). The callee
-// has a recovered 11+6+10 indexed choreography. The shared battle-state
-// presenter exists, but this wrapper remains data-only until its preceding
-// focus and story-runtime-array owner are wired without guessing.
+// (X,Y), then invokes 0x22253 with (Slot,X,Y,X,Y).  Focus coordinates are not
+// duplicated: the old FocusX=Slot/FocusY=X projection was disproved by the
+// wrapper's original stack offsets.
 type NativeStagingPresent struct {
-	Slot   int `json:"slot"`
-	X      int `json:"x"`
-	Y      int `json:"y"`
-	FocusX int `json:"focus_x"`
-	FocusY int `json:"focus_y"`
+	Slot int `json:"slot"`
+	X    int `json:"x"`
+	Y    int `json:"y"`
 }
 
 // NativeUnitPresent preserves 0x22253's five-argument ABI. LastRuntimeSlot is

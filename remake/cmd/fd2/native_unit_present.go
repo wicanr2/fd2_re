@@ -29,6 +29,7 @@ type nativeUnitPresentJob struct {
 	unitSlot   int
 	newX       int
 	newY       int
+	mutate     func() bool
 	mutated    bool
 	then       func()
 	rollback   func()
@@ -88,6 +89,10 @@ func (g *Game) startNativeUnitPresent(spec campaign.NativeUnitPresent, then func
 	beforeWork := append([]byte(nil), g.nativeMapWork...)
 	beforeVGA := append([]byte(nil), g.nativeMapVGA...)
 	beforeUnit := *g.st.Units[call.UnitSlot]
+	job.mutate = func() bool {
+		return g.st != nil && call.UnitSlot < len(g.st.Units) && g.st.Units[call.UnitSlot] != nil &&
+			g.st.Units[call.UnitSlot].SetNativeMapCoordinatesRaw(int(call.NewX), int(call.NewY))
+	}
 	job.rollback = func() {
 		g.nativeMapWork = append(g.nativeMapWork[:0], beforeWork...)
 		g.nativeMapVGA = append(g.nativeMapVGA[:0], beforeVGA...)
@@ -151,7 +156,8 @@ func (g *Game) buildNativeUnitPresentJob(
 	}
 	job := &nativeUnitPresentJob{
 		palette:  append(color.Palette(nil), g.nativeMapAssets.Palette...),
-		unitSlot: call.UnitSlot, newX: int(call.NewX), newY: int(call.NewY), then: then,
+		unitSlot: call.UnitSlot, newX: int(call.NewX), newY: int(call.NewY),
+		then: then,
 	}
 	if len(g.nativeMapDAC) == 256*3 {
 		if current, paletteErr := fdother.VGAPaletteFromDAC(g.nativeMapDAC); paletteErr == nil {
@@ -260,8 +266,13 @@ func (g *Game) stepNativeUnitPresent() {
 		return
 	}
 	if next == j.mutationAt && !j.mutated {
-		if g.st == nil || j.unitSlot >= len(g.st.Units) || g.st.Units[j.unitSlot] == nil ||
-			!g.st.Units[j.unitSlot].SetNativeMapCoordinatesRaw(j.newX, j.newY) {
+		mutated := false
+		if j.mutate != nil {
+			mutated = j.mutate()
+		} else if g.st != nil && j.unitSlot >= 0 && j.unitSlot < len(g.st.Units) && g.st.Units[j.unitSlot] != nil {
+			mutated = g.st.Units[j.unitSlot].SetNativeMapCoordinatesRaw(j.newX, j.newY)
+		}
+		if !mutated {
 			g.failNativeUnitPresent(errors.New("coordinate mutation boundary unavailable"))
 			return
 		}

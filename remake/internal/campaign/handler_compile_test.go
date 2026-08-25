@@ -1822,7 +1822,7 @@ func TestCompileNativeStagingPresent33F78PreservesWrapperABI(t *testing.T) {
 	if len(issues) != 0 || len(beats) != 1 || beats[0].Op != "native_staging_present" || beats[0].NativeStagingPresent == nil {
 		t.Fatalf("0x33f78 beats=%#v issues=%#v", beats, issues)
 	}
-	if got := beats[0].NativeStagingPresent; got.Slot != 22 || got.X != 23 || got.Y != 5 || got.FocusX != 22 || got.FocusY != 23 {
+	if got := beats[0].NativeStagingPresent; got.Slot != 22 || got.X != 23 || got.Y != 5 {
 		t.Fatalf("0x33f78 payload=%#v", got)
 	}
 	_, issues = CompileHandlerScript(&HandlerScript{Beats: []HandlerBeat{{Op: "unknown", NativeTarget: "0x33f78", RawArgs: []any{5, 23}}}}, HandlerBindings{})
@@ -1832,18 +1832,24 @@ func TestCompileNativeStagingPresent33F78PreservesWrapperABI(t *testing.T) {
 }
 
 func TestCompileChapter29PreLowersEveryNativeStagingPresent(t *testing.T) {
-	script, err := LoadHandlerScript("../../assets/cutscenes/handlers/ch29_pre.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	beats, issues := CompileHandlerScript(script, HandlerBindings{})
-	for _, issue := range issues {
-		if issue.Source.Target == "0x33f78" {
-			t.Fatalf("ch29 unresolved staging: %#v", issue)
-		}
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch29_pre.json")
+	if err != nil || len(issues) != 0 {
+		t.Fatalf("ch29 pre binding compile err=%v issues=%#v", err, issues)
 	}
 	want := map[string]bool{"0x33ea4": false, "0x33eb2": false, "0x33ec0": false, "0x33ece": false, "0x33f45": false, "0x33f53": false, "0x33f61": false}
+	dialogCounts := map[string]int{}
+	var load *LoadCHState
 	for _, beat := range beats {
+		if beat.Op == "loadch" {
+			load = beat.LoadCH
+		}
+		if beat.Op == "dialog" {
+			count := beat.Count
+			if count < 1 {
+				count = 1
+			}
+			dialogCounts[beat.Source] += count
+		}
 		if _, ok := want[beat.Source]; ok {
 			if beat.Op != "native_staging_present" || beat.NativeStagingPresent == nil {
 				t.Fatalf("ch29 source %s=%#v", beat.Source, beat)
@@ -1855,6 +1861,12 @@ func TestCompileChapter29PreLowersEveryNativeStagingPresent(t *testing.T) {
 		if !seen {
 			t.Errorf("ch29 staging source %s was not lowered", source)
 		}
+	}
+	if load == nil || load.Chapter != 29 || load.Map != "assets/maps/map29" || load.SlotCount != 70 || load.Script != "assets/story/ch30.json" {
+		t.Fatalf("ch29 pre loadch=%#v", load)
+	}
+	if dialogCounts["0x33e80"] != 10 || dialogCounts["0x33ef5"] != 5 || dialogCounts["0x33f21"] != 6 {
+		t.Fatalf("ch29 pre dialogue counts=%#v", dialogCounts)
 	}
 }
 

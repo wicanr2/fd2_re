@@ -439,10 +439,10 @@ func TestBeatClearNativeRecordBit7PreservesOtherBits(t *testing.T) {
 	}
 }
 
-func TestBeatNativeStagingPresentFailsClosedWithoutRendererAdapter(t *testing.T) {
-	g := newBeatTestGame(t, []campaign.Beat{{Op: "native_staging_present", NativeStagingPresent: &campaign.NativeStagingPresent{Slot: 22, X: 23, Y: 5, FocusX: 22, FocusY: 23}}})
+func TestBeatNativeStagingPresentFailsClosedWithoutStoryRuntime(t *testing.T) {
+	g := newBeatTestGame(t, []campaign.Beat{{Op: "native_staging_present", NativeStagingPresent: &campaign.NativeStagingPresent{Slot: 22, X: 23, Y: 5}}})
 	g.beatAdvance()
-	if g.loadErr != "beat native_staging_present: 0x33f78 story/focus adapter未完成" {
+	if g.loadErr == "" || g.focusJob != nil || g.nativeUnitPresent != nil {
 		t.Fatalf("native staging present error=%q", g.loadErr)
 	}
 }
