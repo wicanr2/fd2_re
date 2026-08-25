@@ -42,6 +42,25 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 > [`story-ch30-pre-remake-e1.json`](../data/ui-traces/story-ch30-pre-remake-e1.json)。
 > 單張圖不證明七次 staging 的每一幀，也不提升第29戰戰後→整備→最終戰前的一般玩家 E2。
 
+### 2026-08-25：代表性戰間介面抽測契約
+
+早期、中期與終局前的抽測固定使用 `campaign_full.json`，並由正式 `Game` 邊界
+消費選單、服務返回、整備取消／確認、持續隊伍及存讀檔；自建 campaign fixture
+或直接指定節點只可協助定位，不能列入這批完成證據。最小代表路徑為：
+
+- `town_ch02→church_ch02→town_ch02`：正式城鎮選項及教會返回；
+- `town_ch17→preparation_ch17→town_ch17/story_ch17`：正式城鎮輸入、城鎮來源
+  畫面與整備取消／確認；
+- `battle_ch29→postbattle_ch29_persist→preparation_ch30→story_ch30→battle_ch30`：
+  正式戰果確認、raw ch28 post、持續隊伍、存讀檔、最終戰前 binding 及戰場物化。
+
+2026-08-25 回歸已通過上述三段，且晚期路徑確實執行19人選擇、存讀檔、21句對話、
+七次 staging 及第30戰物化。測試也抓出並修正 LOADCH 未同步一般游標、story view
+六欄混用及新 scene actor 缺原生呈現載體三個只在連續路徑出現的缺陷。這仍只提升
+重製端正式資料與執行期的代表性 `RUNTIME-E1`；未注入作業系統鍵盤的測試、快速
+略過可見等待，以及直接節點擷圖都不提升未修改原版一般玩家 `PLAYER-E2`。三張
+直接節點擷圖目前只作本地診斷，不加入版控或進度百分比。
+
 ### 2026-08-11：未修改原版敵方回合 E2 錨點
 
 以固定雜湊的 `FD2.EXE`／`FD2.SAV`，在一次性 Docker DOSBox 中由

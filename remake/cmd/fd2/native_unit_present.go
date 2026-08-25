@@ -273,7 +273,12 @@ func (g *Game) stepNativeUnitPresent() {
 			mutated = g.st.Units[j.unitSlot].SetNativeMapCoordinatesRaw(j.newX, j.newY)
 		}
 		if !mutated {
-			g.failNativeUnitPresent(errors.New("coordinate mutation boundary unavailable"))
+			detail := ""
+			if j.unitSlot >= 0 && j.unitSlot < len(g.storyActors) {
+				u := g.storyActors[j.unitSlot]
+				detail = fmt.Sprintf(" slot=%d fig=%d group=%d target=(%d,%d) current=(%d,%d) native=%v", j.unitSlot, u.Fig, u.Group, j.newX, j.newY, u.X, u.Y, u.HasNativeMapPresentation)
+			}
+			g.failNativeUnitPresent(fmt.Errorf("coordinate mutation boundary unavailable%s", detail))
 			return
 		}
 		j.mutated = true

@@ -144,12 +144,32 @@ func storyStagingFixture(t *testing.T) *Game {
 	return g
 }
 
+func TestNativeStagingFocusUsesOneStoryViewAfterLoadCH(t *testing.T) {
+	g := storyStagingFixture(t)
+	// A preceding battle may leave the generic cursor at an unrelated value.
+	// Once LOADCH has published its six-field story view, focus must not mix
+	// this stale pair with the story-visible cursor.
+	g.curX, g.curY = 0, 0
+	_, _, view, err := g.nativeFocusEndpoint(8, 7)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if view.CursorX != 8 || view.CursorY != 7 ||
+		view.VisibleCursorX != view.CursorX-view.CameraX ||
+		view.VisibleCursorY != view.CursorY-view.CameraY {
+		t.Fatalf("story focus view=%+v", view)
+	}
+}
+
 func TestNativeStagingPresentFocusesXYThenMutatesStorySlotAtBridge(t *testing.T) {
 	g := storyStagingFixture(t)
 	spec := campaign.NativeStagingPresent{Slot: 2, X: 8, Y: 7}
 	oldX, oldY := g.storyActors[spec.Slot].X, g.storyActors[spec.Slot].Y
 	if err := g.startNativeStagingPresent(spec); err != nil {
 		t.Fatal(err)
+	}
+	if g.curX != g.storyNativeMapView.CursorX || g.curY != g.storyNativeMapView.CursorY {
+		t.Fatalf("focus owner cursor=(%d,%d), story=%+v", g.curX, g.curY, g.storyNativeMapView)
 	}
 	if g.focusJob == nil || g.focusJob.targetX != spec.X || g.focusJob.targetY != spec.Y || g.nativeUnitPresent != nil {
 		t.Fatalf("focus=%#v present=%#v", g.focusJob, g.nativeUnitPresent)

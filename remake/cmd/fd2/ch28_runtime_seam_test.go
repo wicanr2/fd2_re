@@ -361,4 +361,29 @@ func TestChapter29BattleResultRunsCh28PostToPreparation30AndSaveLoad(t *testing.
 		t.Fatalf("preparation_ch30 save/load mismatch: node=%q chapter=%d roster=%#v order=%v battle=%v err=%q",
 			g.camp.NodeID(), g.handlerChapter, g.partyRoster, g.partyJoinOrder, g.st != nil, g.loadErr)
 	}
+	if g.acceptTownDeparturePrompt() || !g.prepSelecting {
+		t.Fatal("preparation_ch30 skipped its 19-member selection pass")
+	}
+	for i := 0; i < g.prepLimit; i++ {
+		g.prepSel = i
+		if !g.togglePreparationSelection() {
+			t.Fatalf("preparation_ch30 could not select roster index %d", i)
+		}
+	}
+	if g.prepSelecting || !g.prepConfirm || g.preparationSelected() != 19 {
+		t.Fatalf("preparation_ch30 selection state selecting=%v confirm=%v selected=%d", g.prepSelecting, g.prepConfirm, g.preparationSelected())
+	}
+	if got := g.camp.Advance("confirm"); got != "story_ch30" {
+		t.Fatalf("preparation_ch30 confirm=%q, want story_ch30", got)
+	}
+	g.enterNode()
+	if g.loadErr != "" || g.camp.NodeID() != "story_ch30" || len(g.beats) == 0 {
+		t.Fatalf("story_ch30 entry node=%q beats=%d err=%q", g.camp.NodeID(), len(g.beats), g.loadErr)
+	}
+	if err := g.fastForwardShotCampaign(); err != nil {
+		t.Fatalf("story_ch30→battle_ch30: %v", err)
+	}
+	if g.loadErr != "" || g.camp.NodeID() != "battle_ch30" || g.st == nil || g.sc == nil {
+		t.Fatalf("battle_ch30 boundary node=%q state=%v scenario=%v err=%q", g.camp.NodeID(), g.st != nil, g.sc != nil, g.loadErr)
+	}
 }

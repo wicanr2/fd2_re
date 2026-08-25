@@ -6690,6 +6690,20 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   雜湊見 [`ending-dialogue-native-indexed-remake-e1.json`](../data/ui-traces/ending-dialogue-native-indexed-remake-e1.json)。
   這是開發用直接預覽，仍不提升第 30 戰一般玩家 E2。
 
+## 2026-08-25：第29戰後至第30戰連續路徑勘誤
+
+- 新正式回歸從第29戰勝利確認開始，執行 raw ch28 post、group9、持續隊伍同步、
+  `preparation_ch30` 19人選擇與存讀檔，再完整消費 ch29 pre 的21句對話與七次
+  staging，最後物化 `battle_ch30`。早期 `town_ch02→church_ch02→town_ch02`
+  與中期 `town_ch17→preparation_ch17→town/story` 也改以 `campaign_full.json`
+  抽測，不再用 fixture 代替正式資料。
+- 此路徑推翻「直接 `story_ch30` E1 足以證明最終戰前串接」的隱含假設：舊戰場
+  游標未被 LOADCH 同步歸零、story view 六欄被跨載體混用，且新 scene actor 缺
+  原生呈現載體。三者已依既有 LOADCH／`0x12CEA`／constructor 證據修正；未知
+  renderer 語意沒有放寬。
+- Docker／Xvfb 聚焦回歸通過。這是重製端連續 `RUNTIME-E1`，不是未修改原版
+  鍵盤輸入、逐幀畫面或音訊 `PLAYER-E2`。
+
 ## 2026-08-25：最終戰前 `0x33F78` story owner 與舊 ABI 勘誤
 
 - 合法 Docker 內 IDA Pro 9.4.0.260610 及 Docker Capstone 重讀完整

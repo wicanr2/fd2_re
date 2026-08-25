@@ -22,6 +22,10 @@ func (g *Game) nativeFocusEndpoint(targetX, targetY int) (int, int, battle.Nativ
 	cursorX, cursorY := g.curX, g.curY
 	screenX, screenY := cursorX-originX, cursorY-originY
 	if g.hasStoryNativeMapView {
+		// The six globals are one typed state. Mixing the story-visible cursor
+		// with g.curX/g.curY from a preceding battle creates an impossible
+		// cursor-camera identity after LOADCH and PAN.
+		cursorX, cursorY = g.storyNativeMapView.CursorX, g.storyNativeMapView.CursorY
 		screenX, screenY = g.storyNativeMapView.VisibleCursorX, g.storyNativeMapView.VisibleCursorY
 	}
 	maxOriginX, maxOriginY := g.m.W-13, g.m.H-8
@@ -73,7 +77,11 @@ func (g *Game) nativeFocusEndpoint(targetX, targetY int) (int, int, battle.Nativ
 	}
 	carrier := &battle.State{W: g.m.W, H: g.m.H}
 	if err := carrier.MaterializeNativeMapViewState(view); err != nil {
-		return 0, 0, battle.NativeMapViewState{}, err
+		return 0, 0, battle.NativeMapViewState{}, fmt.Errorf(
+			"%w: view=%+v map=%dx%d start_cursor=(%d,%d) start_origin=(%d,%d)",
+			err, view, g.m.W, g.m.H, g.curX, g.curY,
+			int(g.camX)/g.m.TileW, int(g.camY)/g.m.TileH,
+		)
 	}
 	return originX * g.m.TileW, originY * g.m.TileH, carrier.NativeMapViewState, nil
 }
@@ -127,6 +135,7 @@ func (g *Game) buildNativeStagingPresentJob(spec campaign.NativeStagingPresent) 
 	if err != nil {
 		return nil, err
 	}
+	job.unitSlot = spec.Slot
 	beforeUnit := g.storyActors[spec.Slot]
 	beforeWork, beforeVGA := append([]byte(nil), g.nativeMapWork...), append([]byte(nil), g.nativeMapVGA...)
 	beforeCamX, beforeCamY, beforeCurX, beforeCurY := g.camX, g.camY, g.curX, g.curY
@@ -150,6 +159,10 @@ func (g *Game) startNativeStagingPresent(spec campaign.NativeStagingPresent) err
 	if err != nil {
 		return err
 	}
+	// buildNativeStagingPresentJob has already preflighted the complete
+	// transaction. Publish the story carrier's absolute cursor to the generic
+	// focus owner before its first step; both represent the same raw globals.
+	g.curX, g.curY = g.storyNativeMapView.CursorX, g.storyNativeMapView.CursorY
 	g.focusJob = &focusUnitJob{targetX: spec.X, targetY: spec.Y, nativeView: true, then: func() {
 		g.nativeUnitPresent = job
 		g.publishNativeUnitPresentFrame()

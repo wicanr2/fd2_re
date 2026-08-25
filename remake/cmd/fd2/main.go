@@ -2538,6 +2538,19 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 		}
 	}
 	g.storySpawned[0] = true
+	// LOADCH has constructed these runtime records before any hard-coded
+	// 0x22253 coordinate writer can consume them. Scenario/FDFIELD JSON keeps
+	// the raw coordinates but is not itself a live runtime record, so publish
+	// the verified +0/+1/+3/+4 presentation carrier now. Persistent actors that
+	// already carry it retain their exact pose/motion state.
+	for i := range g.storyActors {
+		if g.storyActors[i].HasNativeMapPresentation {
+			continue
+		}
+		if err := g.storyActors[i].MaterializeNativeMapPresentation(); err != nil {
+			return fmt.Errorf("story actor %d native presentation: %w", i, err)
+		}
+	}
 	g.storyCompositionEventBytes = append(g.storyCompositionEventBytes[:0], roster.NativeCompositionEventBytes...)
 	g.storyRosterPath = state.Roster
 	g.storyPartyScenario = state.PartyScenario
@@ -2546,6 +2559,10 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 	g.walkFirst, g.followWalk = false, false
 	g.camMaxY = float64(state.CamMaxY)
 	g.camX, g.camY = float64(state.CamX), float64(state.CamY)
+	// 0x205DA/0x1088D resets the absolute cursor globals together with the
+	// scene-only native view.  Keeping the generic renderer cursor from the
+	// preceding battle makes the first 0x12CEA focus start from stale bounds.
+	g.curX, g.curY = 0, 0
 	g.storyNativeMapView = loadCHView
 	g.hasStoryNativeMapView = true
 	g.campLines = lines
@@ -3675,6 +3692,24 @@ func (g *Game) preparationSelected() int {
 	return n
 }
 
+// togglePreparationSelection is the production owner for the Enter branch of
+// the 0x318ad selection loop.  It changes only the current editable deployment
+// flag and enters the verified 0x31d3c confirmation owner at the exact quota.
+func (g *Game) togglePreparationSelection() bool {
+	if !g.prepSelecting || g.prepSel < 0 || g.prepSel >= len(g.prepIDs) {
+		return false
+	}
+	id := g.prepIDs[g.prepSel]
+	g.partyDeploy[id] = !g.partyDeploy[id]
+	if g.preparationSelected() == g.prepLimit {
+		g.prepSelecting = false
+		g.prepConfirm = true
+		g.prepConfirmSel = 0
+		g.beginNativePreparationConfirmationOpening()
+	}
+	return true
+}
+
 // acceptTownDeparturePrompt reproduces the 0x2d13d..0x2d161 caller gate.
 // prepIDs models the selectable records (native [0x53bfb]-1); persistent
 // record zero is fixed outside this list. At most cap selectable records skip
@@ -4140,17 +4175,8 @@ func (g *Game) campInput() bool {
 			if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
 				movePreparation(0x50)
 			}
-			if enter && len(g.prepIDs) > 0 {
-				id := g.prepIDs[g.prepSel]
-				g.partyDeploy[id] = !g.partyDeploy[id]
-				// 0x31a68 exits the selection loop once its 0x0f/0x13 quota is
-				// met, but 0x31d3c..0x31db4 still presents final confirmation.
-				if g.preparationSelected() == g.prepLimit {
-					g.prepSelecting = false
-					g.prepConfirm = true
-					g.prepConfirmSel = 0
-					g.beginNativePreparationConfirmationOpening()
-				}
+			if enter {
+				g.togglePreparationSelection()
 			}
 			if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 				if townBacked {

@@ -1602,12 +1602,17 @@ func TestChapter22PreLoadCHUsesSelectedPartyAndRawViewReset(t *testing.T) {
 	for _, id := range order[1:16] {
 		deploy[id] = true
 	}
-	g := &Game{partyMembers: members, partyJoinOrder: order, partyDeploy: deploy}
+	g := &Game{partyMembers: members, partyJoinOrder: order, partyDeploy: deploy, curX: 15, curY: 63}
 	if err := g.applyLoadCH(loadCH); err != nil {
 		t.Fatal(err)
 	}
 	if len(g.storyRoster) != 70 || len(g.storyActors) != 18 {
 		t.Fatalf("ch22_pre runtime roster/actors=%d/%d, want 70/18", len(g.storyRoster), len(g.storyActors))
+	}
+	for i, actor := range g.storyActors {
+		if !actor.HasNativeMapPresentation {
+			t.Fatalf("LOADCH story actor %d lacks native presentation", i)
+		}
 	}
 	for slot, id := range order[:16] {
 		if g.storyActors[slot].Fig != id {
@@ -1616,6 +1621,9 @@ func TestChapter22PreLoadCHUsesSelectedPartyAndRawViewReset(t *testing.T) {
 	}
 	if !g.hasStoryNativeMapView || g.storyNativeMapView != (battle.NativeMapViewState{}) {
 		t.Fatalf("LOADCH view=%#v has=%v, want proven zero reset", g.storyNativeMapView, g.hasStoryNativeMapView)
+	}
+	if g.curX != 0 || g.curY != 0 {
+		t.Fatalf("LOADCH generic cursor=(%d,%d), want proven zero reset", g.curX, g.curY)
 	}
 	g.camPan = &camPanJob{toX: float64(14 * g.m.TileW), toY: float64(32 * g.m.TileH), tileStep: true}
 	for ticks := 0; g.camPan != nil && ticks < 100; ticks++ {
