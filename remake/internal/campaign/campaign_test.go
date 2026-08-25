@@ -419,7 +419,12 @@ func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 	if ch29 == nil || ch29.Type != "cutscene" || ch29.HandlerBinding != "assets/cutscenes/bindings/ch28_pre.json" || ch29.Next != "battle_ch29" {
 		t.Fatalf("chapter29 must execute raw-index-28 ch28_pre handler: %#v", ch29)
 	}
-	if badEnding == nil || badEnding.Type != "ending" || badEnding.Text == "" {
+	if badEnding == nil || badEnding.Type != "ending" || badEnding.Text == "" ||
+		badEnding.NativeEndingPrefix == nil ||
+		badEnding.NativeEndingPrefix.Timeline != "assets/endings/native_2bce5.json" ||
+		badEnding.NativeEndingPrefix.Handler != "0x2bce5" ||
+		badEnding.NativeEndingPrefix.Chapter != 26 ||
+		badEnding.NativeEndingPrefix.Mode != NativeEndingPrefixSourceBoundE1 {
 		t.Fatalf("missing sky key must reach an editable bad ending: %#v", badEnding)
 	}
 	battle21 := c.Nodes["battle_ch21"]

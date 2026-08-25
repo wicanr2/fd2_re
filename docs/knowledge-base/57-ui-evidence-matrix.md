@@ -71,8 +71,11 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 已證實的 `FDMUS_010`；這些是資料回歸，不代表每章一般玩家 E2。`ending` 的三個
 已證實事件與位址、檔案雜湊見 [`fd2_ending_audio_ida.txt`](../data/ida/fd2_ending_audio_ida.txt)。
 可編輯結語的空白 BGM 只呼叫已證實的 `play_bgm(-1)` 停曲；`0x2BCE5` 的 indexed
-前綴現由正式 `battle_ch30→ending` 以嚴格來源約束 E1 `native_ending_prefix`
-啟動，不再依賴 `FD2_APPROXIMATE=1`。它在 `0x2c548` 消費 `FDMUS_004`，並以 persistent raw roster
+前綴現由正式 `battle_ch30→ending` 與第27戰缺天空之鑰的
+`0x250CC→0x2545D` 分支，以各自 chapter29／26 的嚴格來源約束 E1
+`native_ending_prefix` 啟動，不再依賴 `FD2_APPROXIMATE=1`；後者會消費
+`FDTXT_027` index17..20 的兩個原版文字閘門，不再只顯示通用結語。最終戰路徑
+在 `0x2c548` 消費 `FDMUS_004`，並以 persistent raw roster
 播放 `MontageCycle`；cycle 成功完成後，`MontageTailPlayer` 會消費 20 組原版
 TAI／BG／FIGANI、descriptor `+6` 延遲與 FDOTHER#58 疊圖，再保持 `FDOTHER#59`；只有
 素材／raw provenance admission 失敗才回到可編輯結語。`FDMUS_018` 在近似尾段開始時

@@ -6651,3 +6651,9 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   frame3 indexed overlay，初次等待先抽2..31，開嘴一個合格tick後關閉重抽，缺
   四幀DATO或overlay即整句fail-closed。Docker dato／campaign與Xvfb cmd/fd2
   ch24→town26接縫回歸通過；每兩個60 Hz更新仍只宣稱時序近似，E2未提升。
+- 2026-08-25 第27戰缺天空之鑰原生終局接線：未重做`sub_2BCE5`。既有
+  `fd2_post26_28_dispatch_ida.txt`已證實raw index26／`0x250CC`是玩家第27戰
+  戰後owner，missing arm於`0x2545D`呼叫`0x2BCE5`；既有timeline也已保存
+  chapter26的`FDTXT_027` index17..20。`ending_ch27_no_sky_key`現使用chapter26
+  來源約束prefix，正式runtime測試驗證兩個原版文字閘門；缺原始資產仍整批回退
+  可編輯結語。這是`RUNTIME-E1`，不提升呼叫當下globals／輸入或一般玩家E2。

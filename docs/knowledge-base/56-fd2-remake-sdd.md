@@ -5396,11 +5396,13 @@ mode-7 `+0x35/+0x36` 目的地、地形／組成與 movement-cost provenance 的
   改為 `j=0`。因此近似 runtime 只在 portrait loop 把「新輸入」作為這個 raw-change
   載體，完成當前角色後跳到 final loop。它沒有把任一鍵命名為原版 Enter、Space 或
   Escape。
-- 最終 `ending` 節點仍受 `FD2_APPROXIMATE=1` 保護。抵達 `0x2c548` 時，runtime
-  只從 persistent JOIN chronology 經現有 LOADCH 的 deployed-order 投影取 raw
+- **現況勘誤（2026-08-25）：**最終 `ending` 與第27戰 missing ending 已不再受
+  `FD2_APPROXIMATE=1` 保護；兩者分別以 chapter29／26 的來源約束合約進入同一
+  前綴。抵達 `0x2c548` 時，runtime只從 persistent JOIN chronology 經現有
+  LOADCH 的 deployed-order 投影取 raw
   `+6/+7/+8/+0x20`，並以原始 `FDOTHER/TAI/FIGANI/DATO/FDTXT` 建立 montage。
   缺任何 raw provenance 或素材時，不建立半張畫面，保留明確的可編輯結語回退；
-  direct preview 和預設忠實模式不跨越此 gate。
+  direct preview 不跨越此 gate。
 - 第 29 戰 `ch29_post` 的 `0x25970→0x2bce5` 仍是一個未編譯的原始 owner；
   截圖隊伍輔助程式會拒絕其不完整的 LOADCH，而不把它偷渡成 montage 的隊伍來源。
   因此上述持續隊伍（persistent roster）是近似終局節點既有的型別化資料載體，
@@ -6155,6 +6157,29 @@ frame3 頭像覆蓋結果。DATO 少於四幀、portrait overlay 越界、頁面
 在目前頁已完整發布且 cadence 為開嘴時消費該頁 frame3，其餘狀態仍消費既有
 progressive／opening／closing frame。這一切片驗收 `RUNTIME-E1`；原版同狀態逐幀
 比較與亂數序列仍列 `PLAYER-E2` 缺口。
+
+## 2026-08-25：第27戰缺少天空之鑰的原生終局入口規格
+
+本切片不重解 `sub_2BCE5`。主證據
+[`fd2_post26_28_dispatch_ida.txt`](../data/fd2_post26_28_dispatch_ida.txt) 已把
+玩家第27戰戰後 owner 固定為 raw index26／`0x250CC`：item `0x64` 缺少臂在
+`0x2545D` 呼叫 `0x2BCE5` 並進入自迴圈。另有
+[`fd2_ch29_terminal_body_ida.txt`](../data/ida/fd2_ch29_terminal_body_ida.txt)
+固定該直接 caller；既有 `native_2bce5.json` 也已將 chapter26 的
+`FDTXT_027` index17..20 兩個文字閘門映射成可編輯 `ch27.json` scene3 lines1..4。
+
+因此 `inventory_gate_ch27_sky_key` 的 missing 路徑仍先播放已資料化的17句離別，
+其終點 `ending_ch27_no_sky_key` 必須使用同一來源約束
+`native_ending_prefix`，chapter 固定26；不可再只顯示通用重製結語。這個入口與
+最終戰 chapter29 共用同一 handler／timeline 驗證，但 chapter 值不得互換，否則
+會選錯原版文字臂。
+
+進入 ending 前不製造新的 battle snapshot；蒙太奇只可消費既有 persistent
+roster 與 JOIN chronology。原始資產、四個 raw record provenance 或任一預建階段
+不足時，整批在公開前失敗即關閉並顯示該節點的可編輯結語。成功驗收須同時證明
+`battle_ch27→inventory gate→missing story→chapter26 native ending` 的資料拓撲、
+chapter26 兩個原版文字閘門，以及缺來源時不部分發布。這是 `RUNTIME-E1`；
+`0x2545D` 呼叫當下動態 globals、原版輸入與未修改玩家 E2 仍分級保留。
 
 ## 2026-08-25：終局三筆音訊 cue 的具型別消費規格
 

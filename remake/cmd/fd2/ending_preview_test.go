@@ -448,6 +448,58 @@ func TestCampaignMontageRejectsUncompiledCh29ShotPartyBinding(t *testing.T) {
 	}
 }
 
+func TestMissingSkyKeyEndingStartsChapter26NativeBranch(t *testing.T) {
+	const base = "../../../org_game/炎龍騎士團/FLAME2"
+	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "ANI.DAT"} {
+		if _, err := os.Stat(filepath.Join(base, name)); err != nil {
+			t.Skip("player-provided ending resources are unavailable")
+		}
+	}
+	t.Setenv("FD2_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+	t.Setenv("FD2_FDTXT", filepath.Join(base, "FDTXT.DAT"))
+	t.Setenv("FD2_ANI", filepath.Join(base, "ANI.DAT"))
+	t.Setenv("FD2_MUTE", "1")
+
+	campaignData, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	runner := campaign.NewRunner(campaignData)
+	runner.Cur = "ending_ch27_no_sky_key"
+	if _, err := newNativeEndingPreviewForCampaign(runner.Node().NativeEndingPrefix); err != nil {
+		t.Fatalf("chapter26原生終局前置驗證失敗: %v", err)
+	}
+	g := &Game{camp: runner}
+	g.enterNode()
+	if g.nativeEnding == nil || !g.nativeEnding.campaignSourceBound || g.nativeEnding.chapter != 26 {
+		t.Fatalf("缺少天空之鑰未進入chapter26原生終局: preview=%#v err=%q notice=%q node=%#v", g.nativeEnding, g.loadErr, g.endingNotice, g.camp.Node())
+	}
+	for _, elapsed := range []int{0, 1000, 2500, 0, 256, 2000} {
+		if _, err := g.nativeEnding.player.Advance(elapsed); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := g.queueNativeEndingDialogue(); err != nil {
+		t.Fatal(err)
+	}
+	if len(g.dialog) != 1 || g.dialog[0].Speaker != 4 || g.dialog[0].Text != "看!是..是黃金城!" {
+		t.Fatalf("chapter26第一文字閘門=%#v", g.dialog)
+	}
+	g.dialog = nil
+	if !g.resumeNativeEndingDialogue() {
+		t.Fatal("chapter26第一文字閘門無法恢復")
+	}
+	if _, err := g.nativeEnding.player.Advance(5000); err != nil {
+		t.Fatal(err)
+	}
+	if err := g.queueNativeEndingDialogue(); err != nil {
+		t.Fatal(err)
+	}
+	if len(g.dialog) != 3 || g.dialog[2].Speaker != 21 || g.dialog[1].Speaker != 24 || g.dialog[0].Speaker != 26 {
+		t.Fatalf("chapter26第二文字閘門=%#v", g.dialog)
+	}
+}
+
 func TestDirectEndingPreviewCannotUseCampaignFallback(t *testing.T) {
 	g := &Game{nativeEnding: &nativeEndingPreview{
 		player: &ending.Player{
