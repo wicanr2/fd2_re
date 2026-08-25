@@ -4,6 +4,17 @@
 (AppImage squashfs)內既讀不到 `assets/`、也寫不了存檔,詳見 `38-editor-design.md` §6.5 的設計討論;
 本篇是那份設計的**實作紀錄 + 驗證證據**。
 
+> **2026-08-25 現況勘誤：**本篇第2節的 AppImage 結果是歷史封包證據，不代表
+> 每個新提交都已重新封裝。提交 `8e7683b1` 已以現行 `fd2-go-test-local` 在
+> Docker／Xvfb 實際建置並啟動 Linux x86_64 執行檔至 `town_ch02`，擷取有效
+> 320×200 城鎮畫面；執行檔 SHA-256 為
+> `8d29122a162dec8f5873cfd183d8352f3b56d0891da714e3ac70c22f07f432ab`。
+> 同一提交也以可重建的 `remake/packaging/Dockerfile.mingw` 產生 Windows x86_64
+> GUI PE，SHA-256 為
+> `665b2cd49823fb74a2531188b6867592a2ae53b178af0b350308a9d6b85a2a8e`；這只證明
+> 交叉編譯與格式，不證明 Windows 能啟動。macOS 工作流程目前執行次數為零，
+> 本輪因既有 GitHub 權杖失效而無法派送；這是驗證授權受阻，不是編譯失敗。
+
 ## 1. 資產路徑解析層(`remake/cmd/fd2/assets.go`)
 
 ### 1.1 三層查找,不混層
@@ -120,7 +131,7 @@ XDG 慣例,桌面版走 `assetPath()` 三層查找的**第 3 層(cwd 相對)**�
 - 依 worklist 慣例如實標記:**已編譯,未實機測試**。下一步需要 Windows 實機(或 GitHub Actions
   `windows-latest` runner)跑一次 headless 截圖驗證,補齊這塊證據缺口。
 
-## 4. macOS(評估,未實作)
+## 4. macOS（工作流程已建立，尚未成功執行）
 
 ### 4.1 為什麼不能純 docker 跨編
 

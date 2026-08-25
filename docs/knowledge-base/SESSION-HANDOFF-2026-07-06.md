@@ -6723,3 +6723,22 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   [`story-ch30-pre-remake-e1.png`](../figures/story-ch30-pre-remake-e1.png)。這達窄
   `RUNTIME-E1`；單張圖不證明七次 staging 每一幀，且第29戰戰後→整備→最終戰前
   的一般玩家 E2、精確 DOS 時序與音訊仍待。
+
+## 2026-08-25：目前 HEAD 發行與代表性演出抽測
+
+- 提交 `8e7683b1` 已在一次性 Docker／Xvfb 中建置 Linux x86_64 並由正常
+  `town_ch02` 入口啟動、取得有效 320×200 城鎮畫面。執行檔 SHA-256 為
+  `8d29122a162dec8f5873cfd183d8352f3b56d0891da714e3ac70c22f07f432ab`；本輪沒有
+  重建 AppImage，因此不得把歷史 AppImage 驗證冒稱為目前 HEAD 封包驗證。
+- 以 `remake/packaging/Dockerfile.mingw` 重建 `fd2-build-mingw`，產生 Windows
+  x86_64 GUI PE；`objdump` 證實為 `pei-x86-64`／`PE32+`／Windows GUI，SHA-256
+  為 `665b2cd49823fb74a2531188b6867592a2ae53b178af0b350308a9d6b85a2a8e`。尚未在
+  Windows runner 執行，故不宣稱啟動成功。
+- `.github/workflows/build-macos.yml` 已被 GitHub 辨識，但執行次數仍為零；本輪
+  派送得到 HTTP 401，離線檢查顯示既有權杖失效。此項標為驗證授權受阻，不記成
+  macOS 編譯失敗，也不在 Linux 偽造 Apple 工具鏈成果。
+- 代表性正式戰鬥呈現的 Docker／Xvfb 聚焦回歸通過：玩家普通攻擊、敵方指令13、
+  指令24 raw marker 與指令29多目標依序發布。終局程式與既有回歸亦再次核對：
+  尾段資產全部通過後才依 `0x2C1AC` 停曲、`0x2C1F5` 啟動 `FDMUS_018`；20組尾段
+  未完成前不顯示終局，完成後停在 `FDOTHER#59`，隊伍回顧結束可返回同一定格。
+  這些是重製端 `RUNTIME-E1` 驗證；精確 DOS 音畫同步與一般玩家 E2 不因此提升。
