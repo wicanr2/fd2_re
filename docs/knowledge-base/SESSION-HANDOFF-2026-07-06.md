@@ -6667,3 +6667,25 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   聚焦Docker回歸通過。19×5 indexed opening、六個opening bands、`sub_2D31B` closing
   與一般玩家E2仍失敗即關閉；完整證據見
   [`fd2_ending_dialogue_owner_ida.txt`](../data/ida/fd2_ending_dialogue_owner_ida.txt)。
+- 2026-08-25 `sub_2C39B` 19×5純indexed compositor：先補原版oracle回歸，逐word
+  重建FDTXT_027／030的speaker controls、operands、FFFD pages與FFFE rows，並與
+  timeline完全比對。既有同雜湊`fd2_end_turn_confirmation_ui_ida.txt`已閉合共用
+  `sub_1974C`六段310px crop與`sub_2D31B`五段crop＋source restore，故本輪不重解
+  callee；新增pure compositor重播19×5 base、right-to-left DATO anchor、四列逐glyph、
+  mouth overlay與完整開關框。Docker `internal/ending`回歸通過。目前只到
+  `DATA-READY`；尚未把frames接到正式ending逐Draw／Enter生命週期，因此介面比例與
+  `PLAYER-E2`均未提升。
+- 2026-08-25 `sub_2C39B`正式19×5生命週期：上段`DATA-READY`限制已解除。ending
+  gate現在先原子預建每個block的initial portrait opening、所有逐句speaker pages、
+  frame3 mouth及closing；逐Draw狀態機保證opening frame0先呈現，完整glyph頁前不接受
+  Enter／Space，逐頁／逐句完成後跑五段crop與source restore，最後才resume同一timeline
+  gate。chapter26兩個文字閘門及chapter29第一閘門五blocks的原始FDOTHER／DATO／字模
+  預建回歸、缺資產零發布與完整`cmd/fd2`回歸均通過；一般RGBA ending框已移除。
+  本切片提升為`RUNTIME-E1`，只保留精確DOS tick／global RNG及一般玩家E2。
+- 2026-08-25 `sub_2C39B`玩家可見 E1 證據：以 `fd2-go-test-local` 的一次性、無網路、
+  受資源限制 Docker 容器執行 `FD2_ENDING_PREFIX=1`，原始 DAT 唯讀，擷取
+  [`ending-dialogue-native-indexed-remake-e1.png`](../figures/ending-dialogue-native-indexed-remake-e1.png)。
+  狀態旁車固定 `0x2BE44`、`dialogue_phase=waiting`、第 1／5 區塊、第 1 句、第 1 頁，
+  且一般 `dialog_count=0`，直接排除舊一般 RGBA 對話 owner。完整命令摘要、輸入與 PNG
+  雜湊見 [`ending-dialogue-native-indexed-remake-e1.json`](../data/ui-traces/ending-dialogue-native-indexed-remake-e1.json)。
+  這是開發用直接預覽，仍不提升第 30 戰一般玩家 E2。

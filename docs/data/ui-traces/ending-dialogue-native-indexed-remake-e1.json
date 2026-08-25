@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "evidence_level": "E1",
+  "scope": "重製端直接預覽抵達 chapter29 第一個 0x2C39B 文字閘門，呈現原版 19×5 索引對話 owner",
+  "input": {
+    "reference": {
+      "executable": {
+        "path": "org_game/炎龍騎士團/FLAME2/FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      "player_assets": [
+        {
+          "path": "org_game/炎龍騎士團/FLAME2/FDOTHER.DAT",
+          "size": 3382481,
+          "md5": "22f56e5027edc7c766ad34ca4e5aca93",
+          "sha256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
+        },
+        {
+          "path": "org_game/炎龍騎士團/FLAME2/FDTXT.DAT",
+          "size": 120502,
+          "md5": "fe5c487ce4313485f1da9d48d35b05f9",
+          "sha256": "a4555f8a0e61e884b4f504d56a8bdde11672583bbbbc6506281ae10dcdfb1f69"
+        },
+        {
+          "path": "org_game/炎龍騎士團/FLAME2/ANI.DAT",
+          "size": 2437547,
+          "md5": "81315bcbb78764361c5137ab0f714f7e",
+          "sha256": "be909c71d0f1121b6632ae931d978e990f6d54c830f4e0509cd6862187c4d963"
+        }
+      ]
+    },
+    "remake_execution": {
+      "image": "fd2-go-test-local:latest",
+      "display": "Docker Xvfb",
+      "network": "none",
+      "entry": "FD2_ENDING_PREFIX=1；開發用直接預覽，不是第30戰一般玩家路徑",
+      "environment": {
+        "FD2_TITLE": "0",
+        "FD2_MUTE": "1",
+        "FD2_ENDING_PREFIX": "1",
+        "FD2_ENDING_CHAPTER": "29",
+        "FD2_SHOT_FRAME": "503"
+      },
+      "command_summary": "docker run --rm、唯讀 /src、只有 docs/figures 與 docs/data/ui-traces 可寫；Xvfb 執行 go run -buildvcs=false ./cmd/fd2"
+    }
+  },
+  "editable_contract": {
+    "timeline": "remake/assets/endings/native_2bce5.json",
+    "dialogue_field": "else_dialogue[].native_utterances",
+    "handler": "0x2C39B",
+    "chapter": 29,
+    "source_branch": "0x2BE44",
+    "renderer": "19×5 indexed owner；六段開框、逐字／分頁／嘴型、五段收框與 source restore"
+  },
+  "capture": {
+    "state_sidecar": "ending-dialogue-native-indexed-remake-e1-state.json",
+    "frame": 504,
+    "playback_state": "blocked",
+    "blocked_op": "native_text_branch_opaque",
+    "blocked_source": "0x2be44",
+    "dialogue_phase": "waiting",
+    "dialogue_block": 0,
+    "dialogue_block_count": 5,
+    "dialogue_utterance": 0,
+    "dialogue_page": 0,
+    "ordinary_dialog_count": 0
+  },
+  "screenshot": {
+    "path": "../../figures/ending-dialogue-native-indexed-remake-e1.png",
+    "role": "重製端 Docker／Xvfb 執行期畫面；證明正式索引 owner 已呈現完整第一頁，不是原版擷取或逐像素對照",
+    "size": [640, 400],
+    "bytes": 17854,
+    "md5": "1c1e3154765bc777c1368dcd10edd814",
+    "sha256": "7f20f56d1a93d6878e723dc255cf98e84cbf581cb0036587d121dddd87f7358d"
+  },
+  "limits": [
+    "直接預覽略過第30戰、戰後流程與一般玩家輸入，因此不能提升為 PLAYER-E2。",
+    "畫面使用重製端近似時鐘；尚未與未修改原版的同狀態逐幀鎖相比較。",
+    "FD2_MUTE=1，這張圖不提供音訊證據。",
+    "特殊 DATO ID 0x80..0x84 的 sub_1956B anchor 尚無本資料集消費者；builder 對其失敗即關閉。"
+  ]
+}

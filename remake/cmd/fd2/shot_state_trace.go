@@ -71,6 +71,12 @@ type screenshotEndingTrace struct {
 	MontagePlanCount    int    `json:"montage_plan_count,omitempty"`
 	MontageInputPending bool   `json:"montage_input_pending,omitempty"`
 	MontageStartError   string `json:"montage_start_error,omitempty"`
+	DialoguePhase       string `json:"dialogue_phase,omitempty"`
+	DialogueBlock       *int   `json:"dialogue_block,omitempty"`
+	DialogueBlockCount  int    `json:"dialogue_block_count,omitempty"`
+	DialogueUtterance   *int   `json:"dialogue_utterance,omitempty"`
+	DialoguePage        *int   `json:"dialogue_page,omitempty"`
+	DialogueWaiting     bool   `json:"dialogue_waiting,omitempty"`
 }
 
 func (g *Game) writeShotStateTrace(path string) error {
@@ -124,6 +130,15 @@ func (g *Game) writeShotStateTrace(path string) error {
 			endingTrace.MontagePlanIndex = &index
 			endingTrace.MontagePlanCount = len(p.montage.Plans)
 			endingTrace.MontageInputPending = p.montageInputPending
+		}
+		if p.dialogue != nil {
+			endingTrace.DialoguePhase = p.dialogue.Phase.String()
+			block, utterance, page := p.dialogue.Block, p.dialogue.Utterance, p.dialogue.Page
+			endingTrace.DialogueBlock = &block
+			endingTrace.DialogueBlockCount = len(p.dialogue.Blocks)
+			endingTrace.DialogueUtterance = &utterance
+			endingTrace.DialoguePage = &page
+			endingTrace.DialogueWaiting = p.dialogue.Waiting()
 		}
 		endingTrace.MontageStartError = p.montageStartError
 		trace.NativeEnding = endingTrace

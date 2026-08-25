@@ -6194,11 +6194,34 @@ runtime speaker；`control_source=caller_2c39b` 只允許原字串完全沒有sp
 時使用，control必須空白且operand須等於initial portrait。逐句數必須等於editable
 `count`，page／row不可空白；任一不符即在timeline載入時失敗即關閉。
 
-一般結局runtime先消費此資料修正每句speaker，不再以block initial portrait覆蓋
-所有台詞。這只關閉typed data→runtime speaker；19×5 indexed compositor、六段opening、
-mouth／input wait、`sub_2D31B` closing與同狀態E2仍另列，不能偷用ch24的19×5／三列
-caller。原始FDTXT oracle測試須逐word重建所有utterance並與版控timeline相等，避免
-可編輯文字日後漂移掉控制碼與分頁。
+一般結局 runtime 消費此資料修正每句說話者，不再以區塊初始頭像覆蓋所有台詞。
+原始 FDTXT oracle 測試須逐 word 重建所有 utterance 並與版控 timeline 相等，避免
+可編輯文字日後漂移掉控制碼與分頁。下節的 19×5 索引畫面 owner 已在同批把這份
+資料接到正式逐幀生命週期；只有精確 DOS tick 與一般玩家 E2 仍另列。
+
+### `sub_2C39B` 19×5 indexed compositor 規格（2026-08-25）
+
+沿用同雜湊共用callee證據，不重解`sub_1974C`／`sub_2D31B`。每個block開啟時先從
+caller-owned 320×200 indexed source，建立FDOTHER #5的`(x=5,y=112,19×5)`格網並以
+caller initial portrait貼在right-edge anchor `0x9017`。六張opening逐張從未修改source
+取底，再把stable buffer的310像素寬切片由source y112搬到destination y
+`177,164,151,138,125,112`；不是ch24的五張格網尺寸。
+目前兩條結局臂的DATO ID均走一般anchor；若未來資料出現`0x80..0x84`，因其使用
+`sub_1956B`特殊anchor switch，正式builder須拒絕而不能仍貼到`0x9017`。
+
+每個utterance切換為其typed operand的DATO frame0，文字從VGA offset`0x9514`開始，
+逐row增加`19*320`，逐glyph增加16；foreground／shadow／background固定
+`0xCD/0x4C/0x4A`。每頁允許1..4列、每列1..13 glyph；每個普通glyph完成後保存一張
+indexed frame，`FFFE/FFFD`只由typed pages決定列／頁，不另造可見glyph。DATO需至少
+四幀，完整頁等待輸入時才可用frame3建立嘴型overlay；精確cadence仍另列為近似。
+
+最後一句確認後，以最後stable dialogue base為來源執行`sub_2D31B`五張crop，目的y
+`125,138,151,164,177`，再發布原始source restore。opening、所有speaker bases、所有
+pages、mouth frame與closing必須在第一張公開前完整預建；任一資產、字形、portrait、
+頁面或bounds失敗時零畫面發布。正式ending runtime現以預建狀態機逐Draw消費：
+opening frame0須先實際呈現，完整頁前忽略確認，Enter／Space只在等待期換頁／換句，
+最後source restore呈現後才resume text gate；缺任一原始資產時queue、VGA與timeline
+均零修改。這條畫面owner達`RUNTIME-E1`，精確DOS tick與一般玩家E2仍另列。
 
 ## 2026-08-25：終局三筆音訊 cue 的具型別消費規格
 

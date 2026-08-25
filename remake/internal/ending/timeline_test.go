@@ -1,6 +1,14 @@
 package ending
 
-import "testing"
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+	"reflect"
+	"testing"
+
+	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
+)
 
 func TestNative2BCE5TimelineIsRecoveredButNotPlayable(t *testing.T) {
 	timeline, err := LoadTimeline("../../assets/endings/native_2bce5.json")
@@ -69,4 +77,141 @@ func equalInts(a, b []int) bool {
 		}
 	}
 	return true
+}
+
+func TestNative2BCE5DialogueUtterancesMatchOriginalFDTXTWords(t *testing.T) {
+	timeline, err := LoadTimeline("../../assets/endings/native_2bce5.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	glyphs := loadEndingOracleGlyphs(t)
+	tables := map[string]*fdtxt.Strings{}
+	for _, source := range []string{"FDTXT_027", "FDTXT_030"} {
+		raw, err := os.ReadFile("../../../extracted/raw/FDTXT/" + source + ".bin")
+		if err != nil {
+			t.Skip("extracted ending FDTXT oracle is absent")
+		}
+		tables[source], err = fdtxt.Parse(raw)
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+	for _, segmentIndex := range []int{9, 13} {
+		segment := timeline.Segments[segmentIndex]
+		blocks := append(append([]DialogueBlock(nil), segment.ThenDialogue...), segment.ElseDialogue...)
+		for _, block := range blocks {
+			words, err := tables[block.SourceDAT].Words(block.StringIndex)
+			if err != nil {
+				t.Fatal(err)
+			}
+			want, err := decodeEndingOracleUtterances(words, block.PortraitID, glyphs)
+			if err != nil {
+				t.Fatalf("%s index%d: %v", block.SourceDAT, block.StringIndex, err)
+			}
+			if !reflect.DeepEqual(block.NativeUtterances, want) {
+				t.Fatalf("%s index%d native utterances\ngot  %#v\nwant %#v", block.SourceDAT, block.StringIndex, block.NativeUtterances, want)
+			}
+		}
+	}
+}
+
+func loadEndingOracleGlyphs(t *testing.T) map[uint16]string {
+	t.Helper()
+	raw, err := os.ReadFile("../../../docs/data/glyph_map.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var encoded map[string]json.RawMessage
+	if err := json.Unmarshal(raw, &encoded); err != nil {
+		t.Fatal(err)
+	}
+	glyphs := make(map[uint16]string, len(encoded))
+	for key, value := range encoded {
+		if key == "_comment" {
+			continue
+		}
+		var index int
+		var text string
+		if _, err := fmt.Sscanf(key, "%d", &index); err != nil || index < 0 || index > 0xffff {
+			t.Fatalf("invalid glyph map key %q", key)
+		}
+		if err := json.Unmarshal(value, &text); err != nil {
+			t.Fatal(err)
+		}
+		glyphs[uint16(index)] = text
+	}
+	return glyphs
+}
+
+func decodeEndingOracleUtterances(words []uint16, callerPortrait int, glyphs map[uint16]string) ([]NativeDialogueUtterance, error) {
+	isSpeaker := func(word uint16) bool { return word >= 0xffec && word <= 0xffef }
+	hasSpeaker := false
+	for _, word := range words {
+		hasSpeaker = hasSpeaker || isSpeaker(word)
+	}
+	decodePages := func(body []uint16) ([][]string, error) {
+		var pages [][]string
+		var page []string
+		var row string
+		flushRow := func() {
+			if row != "" {
+				page = append(page, row)
+				row = ""
+			}
+		}
+		flushPage := func() {
+			flushRow()
+			if len(page) > 0 {
+				pages = append(pages, page)
+				page = nil
+			}
+		}
+		for _, word := range body {
+			switch word {
+			case 0xfffe:
+				flushRow()
+			case 0xfffd:
+				flushPage()
+			default:
+				text, ok := glyphs[word]
+				if !ok {
+					return nil, fmt.Errorf("glyph %#x is absent from glyph_map", word)
+				}
+				row += text
+			}
+		}
+		flushPage()
+		return pages, nil
+	}
+	if !hasSpeaker {
+		pages, err := decodePages(words)
+		if err != nil {
+			return nil, err
+		}
+		return []NativeDialogueUtterance{{ControlSource: "caller_2c39b", Operand: callerPortrait, Pages: pages}}, nil
+	}
+	var utterances []NativeDialogueUtterance
+	for cursor := 0; cursor < len(words); {
+		if !isSpeaker(words[cursor]) {
+			cursor++
+			continue
+		}
+		if cursor+1 >= len(words) {
+			return nil, fmt.Errorf("speaker control at end of string")
+		}
+		control, operand := words[cursor], words[cursor+1]
+		cursor += 2
+		start := cursor
+		for cursor < len(words) && !isSpeaker(words[cursor]) {
+			cursor++
+		}
+		pages, err := decodePages(words[start:cursor])
+		if err != nil {
+			return nil, err
+		}
+		utterances = append(utterances, NativeDialogueUtterance{
+			ControlSource: "fdtxt", Control: fmt.Sprintf("%04X", control), Operand: int(operand), Pages: pages,
+		})
+	}
+	return utterances, nil
 }

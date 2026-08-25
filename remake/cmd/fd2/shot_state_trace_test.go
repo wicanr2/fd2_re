@@ -164,3 +164,40 @@ func TestWriteShotStateTracePreservesSourceBoundEndingGate(t *testing.T) {
 		t.Fatalf("ending trace=%#v", got.NativeEnding)
 	}
 }
+
+func TestWriteShotStateTracePreservesNativeEndingDialogueOwner(t *testing.T) {
+	playback := &ending.NativeDialoguePlayback{
+		Blocks:    make([]ending.NativeDialogueBlockFrames, 5),
+		Block:     0,
+		Utterance: 0,
+		Page:      0,
+		Phase:     ending.NativeDialogueWaiting,
+	}
+	g := &Game{nativeEnding: &nativeEndingPreview{
+		player: &ending.Player{
+			State:   ending.PlaybackBlocked,
+			Blocked: &ending.Segment{Op: "native_text_branch_opaque", Source: "0x2be44"},
+		},
+		dialogue: playback,
+	}}
+	path := filepath.Join(t.TempDir(), "shot-state-ending-dialogue.json")
+	if err := g.writeShotStateTrace(path); err != nil {
+		t.Fatal(err)
+	}
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got screenshotStateTrace
+	if err := json.Unmarshal(raw, &got); err != nil {
+		t.Fatal(err)
+	}
+	endingTrace := got.NativeEnding
+	if endingTrace == nil || endingTrace.DialoguePhase != "waiting" ||
+		endingTrace.DialogueBlock == nil || *endingTrace.DialogueBlock != 0 ||
+		endingTrace.DialogueBlockCount != 5 || endingTrace.DialogueUtterance == nil ||
+		*endingTrace.DialogueUtterance != 0 || endingTrace.DialoguePage == nil ||
+		*endingTrace.DialoguePage != 0 || !endingTrace.DialogueWaiting {
+		t.Fatalf("ending dialogue trace=%#v", endingTrace)
+	}
+}

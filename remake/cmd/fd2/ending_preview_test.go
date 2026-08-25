@@ -112,16 +112,62 @@ func TestSourceBoundCampaignTailHoldsRecoveredTerminalFrame(t *testing.T) {
 	}
 }
 
-func TestNativeEndingDialogLinesUsePerUtteranceNativeSpeakers(t *testing.T) {
-	lines, err := nativeEndingDialogLines([]ending.DialogueBlock{{PortraitID: 37, SourceDAT: "FDTXT_030", StringIndex: 2, Script: "ch30.json", SceneIndex: 1, Line: 0, Count: 6, NativeUtterances: []ending.NativeDialogueUtterance{{Operand: 4}, {Operand: 24}, {Operand: 126}, {Operand: 0}, {Operand: 126}, {Operand: 122}}}, {PortraitID: 21, SourceDAT: "FDTXT_030", StringIndex: 3, Script: "ch30.json", SceneIndex: 1, Line: 6, Count: 2, NativeUtterances: []ending.NativeDialogueUtterance{{Operand: 126}, {Operand: 123}}}})
-	if err != nil || len(lines) != 8 {
-		t.Fatalf("lines=%d err=%v", len(lines), err)
-	}
-	want := []int{4, 24, 126, 0, 126, 122, 126, 123}
-	for i, line := range lines {
-		if line.Speaker != want[i] || line.Text == "" {
-			t.Fatalf("line %d=%#v want speaker %d", i, line, want[i])
+func TestFinalEndingFirstTextGatePrebuildsAllNativeSpeakerFrames(t *testing.T) {
+	const base = "../../../org_game/炎龍騎士團/FLAME2"
+	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "ANI.DAT", "DATO.DAT"} {
+		if _, err := os.Stat(filepath.Join(base, name)); err != nil {
+			t.Skip("player-provided ending resources are unavailable")
 		}
+	}
+	t.Setenv("FD2_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+	t.Setenv("FD2_FDTXT", filepath.Join(base, "FDTXT.DAT"))
+	t.Setenv("FD2_ANI", filepath.Join(base, "ANI.DAT"))
+	preview, err := newNativeEndingPreviewForTimeline(nativeEndingTimelinePath, 29)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, elapsed := range []int{0, 1000, 2500, 0, 256, 2000} {
+		if _, err := preview.player.Advance(elapsed); err != nil {
+			t.Fatal(err)
+		}
+	}
+	g := &Game{nativeEnding: preview}
+	if err := g.queueNativeEndingDialogue(); err != nil {
+		t.Fatal(err)
+	}
+	p := preview.dialogue
+	if p == nil || len(p.Blocks) != 5 || len(p.Blocks[0].Utterances) != 6 || len(p.Blocks[0].Utterances[2].Pages) != 2 || len(p.Blocks[4].Utterances[0].Pages) != 1 {
+		t.Fatalf("final ending native prebuild=%#v", p)
+	}
+	if got := len(p.Blocks[4].Utterances[0].Pages[0]); got <= 1 {
+		t.Fatalf("four-row final utterance did not publish progressive glyph frames: %d", got)
+	}
+	if len(g.dialog) != 0 || preview.dialogueView == nil {
+		t.Fatal("final ending fell back to ordinary RGBA dialogue")
+	}
+}
+
+func TestNativeEndingDialoguePrebuildFailurePublishesNothing(t *testing.T) {
+	compositor := ending.NewIndexedCompositor()
+	compositor.VGA[0] = 0x5a
+	p := &nativeEndingPreview{
+		chapter:     29,
+		fdotherPath: "/missing/FDOTHER.DAT",
+		player: &ending.Player{
+			Compositor: compositor,
+			State:      ending.PlaybackBlocked,
+			Blocked: &ending.Segment{Op: "native_text_branch_opaque", ElseDialogue: []ending.DialogueBlock{{
+				PortraitID: 4, SourceDAT: "FDTXT_030", Script: "ch30.json", StringIndex: 2, SceneIndex: 1, Line: 0, Count: 1,
+				NativeUtterances: []ending.NativeDialogueUtterance{{ControlSource: "fdtxt", Control: "FFEE", Operand: 4, Pages: [][]string{{"甲"}}}},
+			}}},
+		},
+	}
+	g := &Game{nativeEnding: p}
+	if err := g.queueNativeEndingDialogue(); err == nil {
+		t.Fatal("missing original dialogue assets were accepted")
+	}
+	if p.queued || p.dialogue != nil || p.dialogueView != nil || compositor.VGA[0] != 0x5a {
+		t.Fatalf("failed prebuild published partial state: queued=%v dialogue=%#v view=%#v vga0=%#x", p.queued, p.dialogue, p.dialogueView, compositor.VGA[0])
 	}
 }
 
@@ -158,13 +204,10 @@ func TestNativeEndingDialogueResumeAllowsSecondNativeTextGate(t *testing.T) {
 		}},
 	}
 	player.Segment = 13
-	if err := g.queueNativeEndingDialogue(); err != nil {
-		t.Fatal(err)
-	}
-	if !g.nativeEnding.queued || len(g.dialog) != 1 ||
-		g.dialog[0].Speaker != 9 || g.dialog[0].Text == "" {
-		t.Fatalf("second recovered ending dialogue = queued=%v lines=%#v",
-			g.nativeEnding.queued, g.dialog)
+	g.nativeEnding.queued = true
+	if !g.resumeNativeEndingDialogue() || g.nativeEnding.queued || player.State != ending.PlaybackRunning || player.Blocked != nil || player.Segment != 14 {
+		t.Fatalf("second recovered ending dialogue resume = queued=%v state=%s blocked=%#v segment=%d",
+			g.nativeEnding.queued, player.State, player.Blocked, player.Segment)
 	}
 }
 
@@ -481,12 +524,16 @@ func TestMissingSkyKeyEndingStartsChapter26NativeBranch(t *testing.T) {
 	if err := g.queueNativeEndingDialogue(); err != nil {
 		t.Fatal(err)
 	}
-	if len(g.dialog) != 1 || g.dialog[0].Speaker != 4 || g.dialog[0].Text != "看!是..是黃金城!" {
-		t.Fatalf("chapter26第一文字閘門=%#v", g.dialog)
+	if g.nativeEnding.dialogue == nil || len(g.nativeEnding.dialogue.Blocks) != 1 || g.nativeEnding.dialogueView == nil || len(g.dialog) != 0 {
+		t.Fatalf("chapter26第一個19×5文字閘門=%#v", g.nativeEnding)
 	}
-	g.dialog = nil
-	if !g.resumeNativeEndingDialogue() {
-		t.Fatal("chapter26第一文字閘門無法恢復")
+	for steps := 0; g.nativeEnding.dialogue != nil && steps < 1000; steps++ {
+		if err := g.stepNativeEndingDialogue(g.nativeEnding.dialogue.Waiting()); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if g.nativeEnding.dialogue != nil || g.nativeEnding.queued || g.nativeEnding.player.State != ending.PlaybackRunning {
+		t.Fatalf("chapter26第一文字閘門未在完整收框後恢復: %#v", g.nativeEnding)
 	}
 	if _, err := g.nativeEnding.player.Advance(5000); err != nil {
 		t.Fatal(err)
@@ -494,8 +541,8 @@ func TestMissingSkyKeyEndingStartsChapter26NativeBranch(t *testing.T) {
 	if err := g.queueNativeEndingDialogue(); err != nil {
 		t.Fatal(err)
 	}
-	if len(g.dialog) != 3 || g.dialog[2].Speaker != 21 || g.dialog[1].Speaker != 24 || g.dialog[0].Speaker != 26 {
-		t.Fatalf("chapter26第二文字閘門=%#v", g.dialog)
+	if g.nativeEnding.dialogue == nil || len(g.nativeEnding.dialogue.Blocks) != 3 || g.nativeEnding.dialogueView == nil || len(g.dialog) != 0 {
+		t.Fatalf("chapter26第二個19×5文字閘門=%#v", g.nativeEnding)
 	}
 }
 

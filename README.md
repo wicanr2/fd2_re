@@ -126,7 +126,8 @@ writer／consumer 時重開。
   因此不列為一般玩家 E2。
 - 正式來源約束 E1 已播放終局前綴、隊員最終狀態與20組原版資源尾段，最後停在
   `FDOTHER#59`；實檔可達的 header-byte1-zero `0x2939D` 配對迴圈已接。結局文字
-  也已分開保存開框初始頭像與 FDTXT 逐句角色，不再把整段台詞錯畫成同一人。仍缺
+  也已分開保存開框初始頭像與 FDTXT 逐句角色，並接上原版19×5索引對話框的六段
+  開框、逐字／分頁／嘴型及五段收框，不再把整段台詞錯畫成同一人。仍缺
   `0x2C2A6` 呼叫時 records／globals 連續性、精確音訊／輸入與一般玩家 E2。原版
   3%外層預算在這條非零分支讀取未初始化區域值，不再誤列為可直接移植的重播規則。
 
@@ -156,10 +157,12 @@ writer／consumer 時重開。
 近似合成總覽；不是原版擷取、逐像素對照或精確 `0x28A6C` 輸出。產生方式、雜湊與
 限制見[擷取紀錄](docs/data/ui-traces/ending-tail-20-segments-approximate-remake-e1.json)。*
 
-![重製端近似模式的結局前段：到第一個原版文字閘門](docs/figures/ending-prefix-approximate-remake-e1.png)
+![重製端原生結局對話：19×5 索引框與逐句說話者](docs/figures/ending-dialogue-native-indexed-remake-e1.png)
 
-*這是 Docker／Xvfb 的重製端 E1 直接節點擷取；不是第 30 戰一般玩家路徑、音訊播放
-或原版逐像素比較。輸入、雜湊與限制見[擷取紀錄](docs/data/ui-traces/ending-prefix-approximate-remake-e1.json)。*
+*這是 Docker／Xvfb 的重製端 E1 直接預覽擷取；狀態旁車證明畫面位於
+`0x2BE44` 的第一個 19×5 索引對話等待頁，且沒有使用一般對話佇列。它不是第 30 戰
+一般玩家路徑、音訊播放或原版逐像素比較。輸入、雜湊與限制見
+[擷取紀錄](docs/data/ui-traces/ending-dialogue-native-indexed-remake-e1.json)。*
 
 所有文件中的 `FD2.EXE` 位址目前只適用於大小 `357074` 位元組、MD5
 `b97caf2239a27a896069d03549d96e1e` 的版本。SHA-256 與相關檔案雜湊見

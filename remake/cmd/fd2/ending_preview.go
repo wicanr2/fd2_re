@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"image/color"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -13,6 +14,7 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/afm"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+	"github.com/wicanr2/fd2_re/remake/internal/dato"
 	"github.com/wicanr2/fd2_re/remake/internal/ending"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
@@ -44,6 +46,10 @@ type nativeEndingPreview struct {
 	tailStartError        string
 	reviewPartyOutcomes   bool
 	reviewCycles          int
+	dialogue              *ending.NativeDialoguePlayback
+	dialogueView          *ebiten.Image
+	dialogueMouth         dato.MouthState
+	dialogueMouthReady    bool
 }
 
 const nativeEndingTimelinePath = "assets/endings/native_2bce5.json"
@@ -479,23 +485,6 @@ func (g *Game) returnCampaignTerminalFromReview() error {
 	return nil
 }
 
-func nativeEndingDialogLines(blocks []ending.DialogueBlock) ([]battle.DialogLine, error) {
-	var out []battle.DialogLine
-	for _, block := range blocks {
-		lines := loadStoryScriptAt(handlerStoryPath(block.Script), "", &block.SceneIndex)
-		if block.Line < 0 || block.Count <= 0 || block.Line+block.Count > len(lines) {
-			return nil, fmt.Errorf("ending: dialogue %s scene=%d line=%d count=%d is unavailable", block.Script, block.SceneIndex, block.Line, block.Count)
-		}
-		if len(block.NativeUtterances) != block.Count {
-			return nil, fmt.Errorf("ending: dialogue %s index=%d lacks native utterance provenance", block.SourceDAT, block.StringIndex)
-		}
-		for index, line := range lines[block.Line : block.Line+block.Count] {
-			out = append(out, battle.DialogLine{Speaker: block.NativeUtterances[index].Operand, Text: line.Text})
-		}
-	}
-	return out, nil
-}
-
 func (g *Game) queueNativeEndingDialogue() error {
 	p := g.nativeEnding
 	if p == nil || p.queued {
@@ -505,16 +494,144 @@ func (g *Game) queueNativeEndingDialogue() error {
 	if !ok {
 		return nil
 	}
-	lines, err := nativeEndingDialogLines(blocks)
+	playback, err := g.prepareNativeEndingDialogue(blocks)
 	if err != nil {
 		return err
 	}
-	for i := len(lines) - 1; i >= 0; i-- {
-		g.dialog = append(g.dialog, lines[i])
-	}
-	g.dlgPage, g.dlgScrollT, g.dlgScrollFrom = 0, 0, 0
+	p.dialogue = playback
+	p.dialogueView = ebiten.NewImage(ending.Width, ending.Height)
+	p.dialogueMouth = dato.MouthState{}
+	p.dialogueMouthReady = false
 	p.queued = true
+	return g.syncNativeEndingDialogueView()
+}
+
+func (g *Game) prepareNativeEndingDialogue(blocks []ending.DialogueBlock) (*ending.NativeDialoguePlayback, error) {
+	if g == nil || g.nativeEnding == nil || g.nativeEnding.player == nil || g.nativeEnding.player.Compositor == nil || len(g.nativeEnding.player.Compositor.VGA) != ending.Bytes {
+		return nil, fmt.Errorf("ending: indexed dialogue source is unavailable")
+	}
+	font, glyphs, err := loadNativeBattleNameAssets()
+	if err != nil {
+		return nil, err
+	}
+	resource5, err := fdother.ReadResource(g.nativeEnding.fdotherPath, 5)
+	if err != nil {
+		return nil, err
+	}
+	dialogueCells := make([]fdother.RawCell, 20)
+	for index := range dialogueCells {
+		dialogueCells[index], err = fdother.ParseLMI1RawEntry(resource5, index)
+		if err != nil {
+			return nil, err
+		}
+	}
+	datoPath := filepath.Join(filepath.Dir(g.nativeEnding.fdotherPath), "DATO.DAT")
+	if _, err := os.Stat(datoPath); err != nil {
+		return nil, fmt.Errorf("ending: DATO.DAT is unavailable: %w", err)
+	}
+	background := append([]byte(nil), g.nativeEnding.player.Compositor.VGA...)
+	prepared := make([]ending.NativeDialogueBlockFrames, 0, len(blocks))
+	for blockIndex, block := range blocks {
+		if block.PortraitID >= 0x80 && block.PortraitID <= 0x84 {
+			return nil, fmt.Errorf("ending: block %d portrait %d requires an unimplemented special anchor", blockIndex, block.PortraitID)
+		}
+		initial, err := dato.DecodeResource(filepath.Clean(datoPath), block.PortraitID)
+		if err != nil || len(initial) < 4 {
+			return nil, fmt.Errorf("ending: block %d initial portrait %d is unavailable", blockIndex, block.PortraitID)
+		}
+		initialBase, err := ending.ComposeNativeDialogueBase(background, dialogueCells, initial[0])
+		if err != nil {
+			return nil, err
+		}
+		opening, err := ending.ComposeNativeDialogueOpeningFrames(background, initialBase)
+		if err != nil {
+			return nil, err
+		}
+		closing, err := ending.ComposeNativeDialogueClosingFrames(background, initialBase)
+		if err != nil {
+			return nil, err
+		}
+		utterances := make([]ending.NativeDialogueUtteranceFrames, len(block.NativeUtterances))
+		for utteranceIndex, native := range block.NativeUtterances {
+			if native.Operand >= 0x80 && native.Operand <= 0x84 {
+				return nil, fmt.Errorf("ending: block %d utterance %d portrait %d requires an unimplemented special anchor", blockIndex, utteranceIndex, native.Operand)
+			}
+			portraits, err := dato.DecodeResource(filepath.Clean(datoPath), native.Operand)
+			if err != nil || len(portraits) < 4 {
+				return nil, fmt.Errorf("ending: block %d utterance %d portrait %d is unavailable", blockIndex, utteranceIndex, native.Operand)
+			}
+			base, err := ending.ComposeNativeDialogueBase(background, dialogueCells, portraits[0])
+			if err != nil {
+				return nil, err
+			}
+			utterances[utteranceIndex].Pages = make([][][]byte, len(native.Pages))
+			utterances[utteranceIndex].MouthOpen = make([][]byte, len(native.Pages))
+			for page := range native.Pages {
+				frames, err := ending.ComposeNativeDialogueProgressiveFrames(base, font, glyphs, native.Pages, page)
+				if err != nil {
+					return nil, err
+				}
+				utterances[utteranceIndex].Pages[page] = frames
+				mouth, err := ending.ComposeNativeDialogueMouthFrame(frames[len(frames)-1], portraits[3])
+				if err != nil {
+					return nil, err
+				}
+				utterances[utteranceIndex].MouthOpen[page] = mouth
+			}
+		}
+		prepared = append(prepared, ending.NativeDialogueBlockFrames{Opening: opening, Utterances: utterances, Closing: closing})
+	}
+	return ending.NewNativeDialoguePlayback(prepared)
+}
+
+func (g *Game) syncNativeEndingDialogueView() error {
+	p := g.nativeEnding
+	if p == nil || p.dialogue == nil || p.dialogueView == nil {
+		return nil
+	}
+	frame := p.dialogue.CurrentFrame(p.dialogueMouth.Open)
+	rgba, err := p.player.Compositor.RGBAFrame(frame)
+	if err != nil {
+		return err
+	}
+	p.dialogueView.WritePixels(rgba.Pix)
 	return nil
+}
+
+func (g *Game) stepNativeEndingDialogue(confirm bool) error {
+	p := g.nativeEnding
+	if p == nil || p.dialogue == nil {
+		return nil
+	}
+	wasWaiting := p.dialogue.Waiting()
+	if confirm {
+		p.dialogue.Confirm()
+	} else {
+		p.dialogue.Step()
+	}
+	if p.dialogue.Done() {
+		p.dialogue, p.dialogueView = nil, nil
+		p.dialogueMouth, p.dialogueMouthReady = dato.MouthState{}, false
+		g.resumeNativeEndingDialogue()
+		return nil
+	}
+	if !p.dialogue.Waiting() {
+		p.dialogueMouth, p.dialogueMouthReady = dato.MouthState{}, false
+	} else if !wasWaiting || !p.dialogueMouthReady {
+		p.dialogueMouth = dato.MouthState{Countdown: rand.Intn(30) + 2}
+		p.dialogueMouthReady = true
+	} else if g.frame%2 == 0 {
+		randomMod30 := 0
+		if p.dialogueMouth.Open {
+			randomMod30 = rand.Intn(30)
+		}
+		next, err := p.dialogueMouth.Tick(randomMod30)
+		if err != nil {
+			return err
+		}
+		p.dialogueMouth = next
+	}
+	return g.syncNativeEndingDialogueView()
 }
 
 // resumeNativeEndingDialogue releases exactly the text gate whose queued
@@ -527,6 +644,8 @@ func (g *Game) resumeNativeEndingDialogue() bool {
 		return false
 	}
 	p.queued = false
+	p.dialogue, p.dialogueView = nil, nil
+	p.dialogueMouth, p.dialogueMouthReady = dato.MouthState{}, false
 	return true
 }
 
@@ -670,8 +789,11 @@ func (g *Game) drawNativeEndingPreview(screen *ebiten.Image) {
 	screen.Fill(color.RGBA{0, 0, 0, 0xff})
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(2, 2)
-	screen.DrawImage(g.nativeEnding.view, op)
-	g.drawNativeEndingDialogue(screen)
+	view := g.nativeEnding.view
+	if g.nativeEnding.dialogueView != nil {
+		view = g.nativeEnding.dialogueView
+	}
+	screen.DrawImage(view, op)
 	if g.nativeEnding.runningCampaignMontage() && g.font != nil {
 		panel := ebiten.NewImage(logicalW-32, 42)
 		panel.Fill(color.RGBA{0x10, 0x1c, 0x40, 0xe8})
@@ -707,49 +829,5 @@ func (g *Game) drawNativeEndingPreview(screen *ebiten.Image) {
 		// 原生結局前綴與其他場景共用同一證據掛鉤：輸出狀態旁車、回報載入
 		// 錯誤，並讓 Update 結束有界的截圖流程。
 		g.captureShot(screen)
-	}
-}
-
-// drawNativeEndingDialogue retains the ordinary DATO portrait/font/dialogue
-// semantics for the recovered 0x2c39b blocks while the indexed ending image
-// remains visible underneath.  Later native operations stay blocked.
-func (g *Game) drawNativeEndingDialogue(screen *ebiten.Image) {
-	if g.font == nil || len(g.dialog) == 0 {
-		return
-	}
-	dl := g.dialog[len(g.dialog)-1]
-	upper := dl.Speaker >= 32
-	by := 198.0
-	if upper {
-		by = 4
-	}
-	box := ebiten.NewImage(620, 198)
-	box.Fill(color.RGBA{0x2c, 0x44, 0x84, 0xf2})
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(10, by)
-	screen.DrawImage(box, op)
-	const scale = 2.1
-	hx, tx, ty := 16.0, 216.0, by+24
-	hy := by + (198-80*scale)/2
-	if upper {
-		hx, tx, ty = float64(logicalW)-16-80*scale, 32, by+46
-	}
-	if fr := g.portraits[dl.Speaker]; len(fr) > 0 {
-		po := &ebiten.DrawImageOptions{}
-		if upper {
-			po.GeoM.Scale(scale, scale)
-			po.GeoM.Translate(hx, hy)
-		} else {
-			po.GeoM.Scale(-scale, scale)
-			po.GeoM.Translate(hx+80*scale, hy)
-		}
-		screen.DrawImage(fr[0], po)
-	} else {
-		tx = 32
-	}
-	lines := dlgWrap(dl)
-	start := g.dlgPage * 3
-	for i := 0; i < 3 && start+i < len(lines); i++ {
-		g.font.Draw(screen, lines[start+i], tx, ty+float64(i)*38, 1.7, color.RGBA{0xf0, 0xf4, 0xff, 0xff})
 	}
 }

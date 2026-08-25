@@ -6999,18 +6999,16 @@ func (g *Game) Update() error {
 			// never reaches this adapter.
 			_ = g.startCampaignNativeTail()
 		}
+		dialogueWasQueued := g.nativeEnding.dialogue != nil
 		if err := g.queueNativeEndingDialogue(); err != nil {
 			g.loadErr = "native ending dialogue: " + err.Error()
 			return err
 		}
 		g.consumeNativeEndingAudioAtGate()
-		g.stepDlgAnim()
-		if g.dlgScrollT > 0 {
-			g.dlgScrollT--
-		}
-		if len(g.dialog) > 0 && endingConfirm {
-			if g.dlgAdvance() && len(g.dialog) == 0 {
-				g.resumeNativeEndingDialogue()
+		if dialogueWasQueued {
+			if err := g.stepNativeEndingDialogue(endingConfirm); err != nil {
+				g.loadErr = "native ending dialogue: " + err.Error()
+				return err
 			}
 		}
 		if endingConfirm && g.finishCampaignNativeEndingFallback() {
@@ -9677,9 +9675,8 @@ func loadGame() *Game {
 			return g
 		}
 		g.nativeEnding = preview
-		// The preview intentionally bypasses map/battle loading, but native
-		// 0x2c39b dialogue still uses the ordinary player-provided DATO faces
-		// and FD font once it reaches its recovered text branch.
+		// 直接預覽刻意略過地圖／戰鬥載入；抵達已還原文字分支後，
+		// 0x2c39b owner 仍只使用玩家提供的 DATO、FDOTHER 與 FDTXT 資產。
 		g.portraits = loadPortraits()
 		g.font = loadFont()
 		return g

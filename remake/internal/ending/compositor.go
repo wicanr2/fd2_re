@@ -29,15 +29,25 @@ type IndexedCompositor struct {
 }
 
 func (c *IndexedCompositor) RGBA() *image.RGBA {
+	out, _ := c.RGBAFrame(c.VGA)
+	return out
+}
+
+// RGBAFrame projects a caller-owned indexed frame through the compositor's
+// current DAC without mutating VGA or the recovered ending timeline.
+func (c *IndexedCompositor) RGBAFrame(frame []byte) (*image.RGBA, error) {
+	if c == nil || len(frame) != Bytes {
+		return nil, errors.New("ending: indexed RGBA frame is invalid")
+	}
 	out := image.NewRGBA(image.Rect(0, 0, Width, Height))
-	for i, index := range c.VGA {
+	for i, index := range frame {
 		p := int(index) * 3
 		out.Pix[i*4] = (c.Palette[p] << 2) | (c.Palette[p] >> 4)
 		out.Pix[i*4+1] = (c.Palette[p+1] << 2) | (c.Palette[p+1] >> 4)
 		out.Pix[i*4+2] = (c.Palette[p+2] << 2) | (c.Palette[p+2] >> 4)
 		out.Pix[i*4+3] = 0xff
 	}
-	return out
+	return out, nil
 }
 
 type ANIPlayer struct {

@@ -53,8 +53,16 @@ block 的 `portrait_id` 套給 block 內全部 editable lines，會把 chapter29
 - 本檔閉合 initial portrait 與 per-utterance speaker 的來源，不把二者合併。
 - `sub_2C39B` 使用19×5下框，並允許 index6 四個文字列；不可直接套 ch24 最高三列
   的 `NativeDialogueLayout` validator或其 `sub_165AC/sub_16B43` opening／closing。
-- 本切片可先修正 typed timeline 與一般 runtime speaker；19×5 indexed ending
-  compositor、六段 opening、`sub_2D31B` closing及一般玩家 E2仍須另立規格。
+- 共用callee的畫面排程不需重解：
+  [`fd2_end_turn_confirmation_ui_ida.txt`](fd2_end_turn_confirmation_ui_ida.txt)
+  已以同雜湊IDA與未修改原版E2固定`sub_1974C`六段opening為310像素寬、來源
+  y=112、目的y=`177,164,151,138,125,112`；`sub_2D31B`則呼叫同callee五次，
+  目的y=`125,138,151,164,177`，最後restore caller source。`sub_2C39B`直接呼叫
+  這兩個共用owner，故結局可重用此crop排程；不能改用ch24的格網snapshot排程。
+- `0x2C3BC..0x2C3DD`另固定文字destination `0xA9514`（VGA offset `0x9514`）、
+  stride320、顏色`CD/4C/4A`、line step19；正式compositor仍須驗證DATO／字形／
+  framebuffer邊界並在整批預建後發布。
+- 一般玩家 E2、精確嘴型／輸入時序仍須另立驗收，不由靜態排程提升。
 
 ## 可重生命令
 
