@@ -45,9 +45,6 @@ func MaterializeNativeContinuePendingGroups(
 		state.W != assetState.W || state.H != assetState.H {
 		return fmt.Errorf("native CONTINUE pending groups: chapter asset mismatch")
 	}
-	if !scenario.RuntimeAppendGroups {
-		return fmt.Errorf("native CONTINUE pending groups: scenario lacks native append ownership")
-	}
 	if !state.HasNativeFieldControlState ||
 		!state.HasNativeRuntimeUnitProjection ||
 		state.NativeRoundCounter != int(input.Header.TurnCounter) {
@@ -72,6 +69,28 @@ func MaterializeNativeContinuePendingGroups(
 	schedule, err := nativeContinueSpawnSchedule(scenario)
 	if err != nil {
 		return fmt.Errorf("native CONTINUE pending groups: %w", err)
+	}
+	if !scenario.RuntimeAppendGroups {
+		if len(schedule) != 0 {
+			return fmt.Errorf("native CONTINUE pending groups: static scenario declares future groups")
+		}
+		for _, rule := range assetState.NativeFieldEventRules {
+			if rule.SpawnGroup != nil {
+				return fmt.Errorf(
+					"native CONTINUE pending groups: static scenario field event %d declares a future group",
+					rule.EventID,
+				)
+			}
+		}
+		candidate := *state
+		candidate.Roster = make([]*battle.Unit, 0)
+		candidate.PendingGroups = make(map[int]bool)
+		if err := candidate.BindNativeFutureItemRows(itemRows); err != nil {
+			return fmt.Errorf("native CONTINUE pending groups: %w", err)
+		}
+		candidate.HasNativePendingGroupBinding = true
+		*state = candidate
+		return nil
 	}
 	currentTurn := int(input.Header.TurnCounter)
 	if currentTurn <= 0 {

@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "title": "原版第30戰正常 CONTINUE 候選錨點",
+  "captured_at": "2026-08-25",
+  "classification": "來源可追溯的候選 PLAYER-E2；第三方存檔不是本專案從頭通關產物",
+  "source": {
+    "page": "https://playerlin.orgfree.com/fdps/fd2save.htm",
+    "download": "https://playerlin.orgfree.com/download/fdsave/fd2/fd2002.zip",
+    "site_description": "002：正常的存檔、在最後一關",
+    "zip_sha256": "1b713af443539913919f37617c92286c634a62020d0c7e534f051f6d5101fcd5",
+    "save_sha256": "a0e5519c49b52bbeab9c3bb1cf36957c42f02877a4c218ad54611952f74d6780",
+    "save_size": 22987
+  },
+  "original": {
+    "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "image": "../../figures/native-battle-ch30-original-candidate.png",
+    "image_sha256": "aa485377ed85bf6bc5e0d9da31e1466005b16887e9e8be4edc36d4acfd328c7a",
+    "container": "fd2-dosbox-screenshot-local:latest",
+    "sandbox": "原始 FLAME2 唯讀掛載後複製至一次性 tmpfs /game；候選存檔覆蓋 tmpfs 內 FD2.SAV",
+    "input": "wait 10s；Escape×8；Down×2；Return；wait 8s；capture",
+    "mutation": "沒有修改 FD2.EXE、記憶體、章節、路由或畫面"
+  },
+  "decoded_save": {
+    "checksum": "0x0019a751",
+    "current_chapter": "0x1d",
+    "turn": 12,
+    "runtime_count": 33,
+    "persistent_count": 31,
+    "camera": [16, 16],
+    "cursor": [21, 20],
+    "visible_cursor": [5, 4],
+    "chapter_slots": [27, 26, 29, 28]
+  },
+  "remake_result": {
+    "level": "RUNTIME-E1",
+    "test": "TestNativeContinueTitleCallerPublishesLateBattleCandidate",
+    "verified": "同一存檔發布 battle_ch30、33筆場上單位、31人持續隊伍、回合12與相同鏡頭／游標",
+    "gui_limit": "重製普通 X11 開場略過時間線尚未穩定抵達標題 CONTINUE；兩次旁車均正確辨識為新遊戲，未冒稱配對成功"
+  },
+  "limits": [
+    "第三方分享站無法證明存檔從頭到尾完全未修改",
+    "本紀錄只證明候選存檔能由固定版原版正常 CONTINUE 進入第30戰",
+    "尚未取得第29戰正常玩家錨點、同狀態重製 GUI 圖或完整終局輸入／音訊 E2"
+  ]
+}

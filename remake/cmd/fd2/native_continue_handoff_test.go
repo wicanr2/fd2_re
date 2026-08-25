@@ -175,6 +175,47 @@ func TestNativeContinueTitleCallerPublishesRealCurrentSnapshot(t *testing.T) {
 	}
 }
 
+func TestNativeContinueTitleCallerPublishesLateBattleCandidate(t *testing.T) {
+	savePath := os.Getenv("FD2_LATE_NATIVE_SAVE")
+	if savePath == "" {
+		t.Skip("未提供外部晚期 FD2.SAV 候選")
+	}
+	stored, err := os.ReadFile(savePath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	plain, err := fdsave.Decode(stored)
+	if err != nil {
+		t.Fatal(err)
+	}
+	snapshot, err := fdsave.InspectCurrentSnapshot(plain)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if snapshot.Header.Chapter != 0x1d || snapshot.Header.RuntimeCount != 0x21 ||
+		snapshot.Header.PersistentCount != 0x1f {
+		t.Fatalf("晚期候選 header=%+v，不是已審查的第30戰來源", snapshot.Header)
+	}
+	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("FD2_NATIVE_TITLE_TICK", "0")
+	g := &Game{camp: campaign.NewRunner(graph), titlePhase: "menu"}
+	if err := g.loadNativeContinueFromCurrentSnapshot(savePath); err != nil {
+		t.Fatal(err)
+	}
+	if g.camp == nil || g.camp.NodeID() != "battle_ch30" || g.st == nil || g.sc == nil ||
+		g.titlePhase != "" || g.st.NativeRoundCounter != 0x0c ||
+		len(g.st.Units) != 0x21 || len(g.partyJoinOrder) != 0x1f ||
+		g.curX != 0x15 || g.curY != 0x14 ||
+		g.st.NativeMapViewState.CameraX != 0x10 || g.st.NativeMapViewState.CameraY != 0x10 {
+		t.Fatalf("晚期 CONTINUE 發布不完整：node=%q title=%q units=%d party=%d round=%d cursor=(%d,%d) view=%+v",
+			g.camp.NodeID(), g.titlePhase, len(g.st.Units), len(g.partyJoinOrder),
+			g.st.NativeRoundCounter, g.curX, g.curY, g.st.NativeMapViewState)
+	}
+}
+
 func TestNativeCurrentLoadPreparesPrivateCandidate(t *testing.T) {
 	savePath := filepath.Join(
 		"../../../org_game/炎龍騎士團/FLAME2", "FD2.SAV",

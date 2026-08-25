@@ -81,6 +81,40 @@ func TestMaterializeNativeContinuePendingGroupsBindsCurrentAndFutureSchedule(t *
 	}
 }
 
+func TestMaterializeNativeContinuePendingGroupsAcceptsProvenStaticScenario(t *testing.T) {
+	input := nativePendingGroupsInput(t, 1, nil)
+	state, assetState, scenario, itemRows := nativePendingGroupsFixture(t, input)
+	scenario.RuntimeAppendGroups = false
+	scenario.Events = nil
+	assetState.NativeFieldEventRules = nil
+	state.NativeFieldEventRules = nil
+	if err := MaterializeNativeContinuePendingGroups(
+		state, input, 0, assetState, scenario, itemRows,
+	); err != nil {
+		t.Fatal(err)
+	}
+	if !state.HasNativePendingGroupBinding || state.Roster == nil ||
+		len(state.Roster) != 0 || state.PendingGroups == nil || len(state.PendingGroups) != 0 {
+		t.Fatalf("靜態 pending binding 不完整：roster=%v pending=%v bound=%v",
+			state.Roster, state.PendingGroups, state.HasNativePendingGroupBinding)
+	}
+}
+
+func TestMaterializeNativeContinuePendingGroupsRejectsStaticFutureSchedule(t *testing.T) {
+	input := nativePendingGroupsInput(t, 1, nil)
+	state, assetState, scenario, itemRows := nativePendingGroupsFixture(t, input)
+	scenario.RuntimeAppendGroups = false
+	if err := MaterializeNativeContinuePendingGroups(
+		state, input, 0, assetState, scenario, itemRows,
+	); err == nil {
+		t.Fatal("缺少 runtime append owner 的 future schedule 被接受")
+	}
+	if state.HasNativePendingGroupBinding || state.Roster != nil || state.PendingGroups != nil {
+		t.Fatalf("失敗的靜態 future schedule 污染 state：roster=%v pending=%v bound=%v",
+			state.Roster, state.PendingGroups, state.HasNativePendingGroupBinding)
+	}
+}
+
 func TestMaterializeNativeContinuePendingGroupsKeepsSavedTurnPending(t *testing.T) {
 	input := nativePendingGroupsInput(t, 4, nil)
 	state, assetState, scenario, itemRows := nativePendingGroupsFixture(t, input)

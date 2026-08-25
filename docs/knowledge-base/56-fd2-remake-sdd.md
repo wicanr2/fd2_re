@@ -5525,6 +5525,35 @@ montage 四個邊界的 ID／順序／raw `+7/+8` 與一筆最終數值變更。
 `RUNTIME-E1` 的連續性；沒有未修改 DOSBox 同存檔、同輸入與同畫面，不能標成
 `PLAYER-E2`。
 
+### 2026-08-25：第 30 戰外部原版存檔候選驗證規格
+
+2003 年 Player Lin 保存站的 `fd2002.zip` 標註為「正常的存檔、在最後一關」。本輪
+只把它當作來源可追溯的候選 oracle，不把站方文字升格為未修改通關事實。候選 ZIP
+的 SHA-256 為 `1b713af443539913919f37617c92286c634a62020d0c7e534f051f6d5101fcd5`；
+內含單一 `Fd2.sav`（22987 bytes），通過原版 rolling-XOR 與 checksum，current-runtime
+header 為 chapter `0x1d`、turn `0x0c`、runtime count `0x21`、persistent count
+`0x1f`，四個章節槽依序為 `0x1b／0x1a／0x1d／0x1c`。候選檔只留在隔離暫存區，
+不加入儲存庫。
+
+驗收必須同時滿足：固定雜湊且未修改的 `FD2.EXE`、原始遊戲目錄唯讀複製至一次性
+tmpfs、標題普通輸入 `CONTINUE`、無記憶體／章節／路由注入，以及重製端對同一原生
+存檔的完整私有 preflight。2026-08-25 已由正常 `CONTINUE` 抵達原版第30戰戰場；
+由於存檔是第三方分享而非本專案從頭產生，目前只列「候選 E2」，不可取代未修改完整
+玩家路徑。重製端另以 `FD2_LATE_NATIVE_SAVE` 選擇性整合測試消費同一檔案；環境未
+提供時必須略過，不得把候選資料或其角色數值固化進測試 fixture。
+
+第30戰的 authored FDFIELD 有 groups 0–3 共13名敵軍與57個非場上槽，scenario 的
+`initial_groups` 恰為0–3，唯一事件是 `spawn_party`；沒有 `spawn_group`、回合增援或
+格子增援。候選 current-runtime 的33筆也恰為20名我方加13名敵軍。因此 CONTINUE
+pending adapter 對這種靜態 scenario 應建立已驗證的空 roster／空 pending binding；
+只有 schedule 或 field rule 實際宣告 future group 時才仍要求 `runtime_append_groups`。
+正式 handoff 驗證 binding 結果，不再以 append 旗標代替「是否存在待處理群組」的證明。
+同一私有交易還必須以原生四槽 LOAD 已採用的
+`MaterializeNativePersistentPartyRecord` 轉換 current snapshot 的 persistent prefix，
+依槽位保存 JOIN chronology，並只將目前 runtime 中具相同原始 identity 的我方標為
+部署。重複 identity、缺 catalog provenance，或場上我方不存在於 persistent prefix
+時整筆拒絕；不得發布只有戰場而沒有持續隊伍的半套 CONTINUE。
+
 ## 2026-08-13：玩家第21戰天空之鑰固定演出（E0／E1）
 
 本節是對較早「`0x24336` 尚未 lower」與 handler 匯出仍有一筆真正未知的勘誤；

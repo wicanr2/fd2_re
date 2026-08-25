@@ -178,6 +178,16 @@ func (g *Game) prepareNativeContinueFromCurrentSnapshot(path string, timer int) 
 	if err := campaign.MaterializeNativeContinueRuntimeUnits(state, input, catalog); err != nil {
 		return Game{}, err
 	}
+	members, order, deploy, roster, err := materializeNativeContinuePersistentParty(
+		snapshot, state, catalog,
+	)
+	if err != nil {
+		return Game{}, err
+	}
+	candidate.partyMembers = members
+	candidate.partyJoinOrder = order
+	candidate.partyDeploy = deploy
+	candidate.partyRoster = roster
 	if err := campaign.MaterializeNativeContinueMapTiming(state, input); err != nil {
 		return Game{}, err
 	}
@@ -202,6 +212,44 @@ func (g *Game) prepareNativeContinueFromCurrentSnapshot(path string, timer int) 
 	}
 	candidate.nativeCurrentSavePlain = append([]byte(nil), plain...)
 	return candidate, nil
+}
+
+func materializeNativeContinuePersistentParty(
+	snapshot fdsave.CurrentSnapshot,
+	state *battle.State,
+	catalog *campaign.NativeCharacterCatalog,
+) (map[int]bool, []int, map[int]bool, map[int]battle.Unit, error) {
+	members := make(map[int]bool)
+	order := make([]int, 0, int(snapshot.Header.PersistentCount))
+	deploy := make(map[int]bool)
+	roster := make(map[int]battle.Unit)
+	for index, record := range snapshot.ActivePersistentRecords() {
+		unit, err := campaign.MaterializeNativePersistentPartyRecord(record, catalog)
+		if err != nil {
+			return nil, nil, nil, nil, fmt.Errorf(
+				"原版續戰：持續隊伍紀錄 %d：%w", index, err,
+			)
+		}
+		id := unit.NativeIdentity
+		if members[id] {
+			return nil, nil, nil, nil, fmt.Errorf("原版續戰：持續隊伍重複 identity %d", id)
+		}
+		members[id] = true
+		order = append(order, id)
+		roster[id] = unit
+	}
+	for index, unit := range state.Units {
+		if unit == nil || unit.Camp != battle.Own {
+			continue
+		}
+		if !unit.HasNativeIdentity || !members[unit.NativeIdentity] {
+			return nil, nil, nil, nil, fmt.Errorf(
+				"原版續戰：場上我方紀錄 %d 缺少持續隊伍 identity", index,
+			)
+		}
+		deploy[unit.NativeIdentity] = true
+	}
+	return members, order, deploy, roster, nil
 }
 
 // publishNativeContinueBattle is the application-owned half of the native

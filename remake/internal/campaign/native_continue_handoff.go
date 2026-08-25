@@ -67,9 +67,6 @@ func ValidateNativeContinueBattleHandoff(
 		state.H != input.Context.FieldHeight {
 		return fmt.Errorf("native CONTINUE battle handoff: chapter asset mismatch")
 	}
-	if !scenario.RuntimeAppendGroups {
-		return fmt.Errorf("native CONTINUE battle handoff: scenario lacks native append ownership")
-	}
 	if !state.HasNativeFieldControlState ||
 		!state.HasNativeRuntimeUnitProjection ||
 		!state.HasNativePendingGroupBinding ||

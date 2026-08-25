@@ -6763,3 +6763,21 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 終局角色回顧改依完整 `partyJoinOrder`：最終戰部署成員使用戰果同步後狀態，未部署
   成員保留冷讀狀態，符合「回顧全隊最終狀態」的重製需求。這批是正式重製
   `RUNTIME-E1`，沒有提升未修改原版鍵盤、逐幀與音訊 `PLAYER-E2`。
+
+## 2026-08-25：外部正常末關存檔候選與第30戰 CONTINUE 修正
+
+- Player Lin 2003年保存站 `fd2002.zip` 的002項標註為正常最後一關存檔。候選通過
+  原版 rolling-XOR／checksum；current header 為chapter `0x1d`、turn12、33筆runtime、
+  31筆persistent。固定雜湊且未修改的原版由標題普通 `CONTINUE` 成功抵達第30戰；
+  擷取與雜湊見 [`native-battle-ch30-original-candidate.json`](../data/ui-traces/native-battle-ch30-original-candidate.json)。
+- 同檔首次進重製 preflight 時，暴露所有 CONTINUE 都誤要求
+  `runtime_append_groups`。第30戰 authored scenario只有initial groups0–3與
+  `spawn_party`，沒有任何future group；adapter現對此建立空pending binding，仍拒絕
+  帶future group卻缺append owner的資料。
+- 第二次測試暴露原生 current snapshot 只發布戰場，未發布持續隊伍。現沿用原生四槽
+  LOAD 的 `MaterializeNativePersistentPartyRecord`，依persistent槽位建立31人JOIN／roster，
+  並由場上我方identity建立部署集合。重複或游離identity整批拒絕。
+- 同一候選整合測試現通過 `battle_ch30`、33筆場上單位、31人持續隊伍、turn12與相同
+  camera／cursor；既有chapter0 CONTINUE亦通過。第三方來源無法證明從頭未修改通關，
+  故只列候選E2；重製普通X11開場時間線兩次未抵達CONTINUE，旁車均正確辨識為新遊戲，
+  不把直接測試或錯誤畫面冒稱GUI配對。
