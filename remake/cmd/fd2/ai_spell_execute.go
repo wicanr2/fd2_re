@@ -97,7 +97,8 @@ func (g *Game) executeAISpell(plan *battle.AIPlan) error {
 		def := first.Target
 		attackerName, defenderName := actorDisplayName(actor), actorDisplayName(def)
 		g.atk = g.newAtkAnim(actor.BattleFig, def.BattleFig, attackerName, defenderName,
-			actor.HP, actor.MaxHP, actor.Lv, actor.MP, def.Lv, def.MP,
+			actor.HP, actor.MaxHP, actor.Lv, actor.MP, actor.MaxMP,
+			def.Lv, def.MP, def.MaxMP,
 			def.HP+first.Amount, def.HP, def.MaxHP, g.terrainAt(def.X, def.Y), actor.Camp == battle.Own)
 		if g.atk != nil {
 			g.atk.after = finish

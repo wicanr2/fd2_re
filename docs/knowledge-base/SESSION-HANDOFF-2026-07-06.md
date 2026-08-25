@@ -6500,3 +6500,16 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - Docker／Xvfb重抓後，frame76相對同一原版錨點的`AE`由位移修正後1330再降至903；
   新遮罩顯示姓名差異已消失，剩餘主要是HP／MP數字與橫條。這才是姓名正式
   `RUNTIME-E1`的玩家可見驗證，仍不是一般玩家E2。
+
+## 2026-08-25：普通攻擊接通既有 `0x18C6D` indexed狀態欄核心
+
+- 稽核發現command24等indexed演出早已使用完整entry22框、23..30 bar cells與
+  31..52／93 digits，但普通全螢幕攻擊仍另畫RGBA實心bar及7px digit advance。
+  新typed可見值入口重用同一核心；FDOTHER-only載入器只要求實際消費的框、bar、
+  digit，不再錯誤綁定本切片不消費的FDTXT。
+- 玩家物理、玩家法術、敵方物理、敵方法術與mode11 caller同步保留MaxMP；缺
+  FDOTHER#5或palette時不宣稱indexed parity，仍維持既有E1 fallback。
+- 同一frame76全幅`AE`由903降至519。逐像素座標證明519恰為oracle的左邊1px
+  200點加底邊剩餘319點；排除舊三欄比較圖反向裁切的合成邊框後，內容矩形
+  `(x=1,y=0,w=319,h=199)`為`AE=0／RMSE=0`。原始oracle未保存在repo且目前只由
+  舊比較圖重建，因此此結果維持固定fixture `RUNTIME-E1`，不冒稱一般玩家E2。

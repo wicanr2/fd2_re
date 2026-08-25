@@ -29,6 +29,9 @@
 `0x5255F／0x52577`是六相位水平／垂直位移，不是idle descriptor。玩家攻擊的
 第一個相位5接入`(-14,-10)`後，完整序列最佳frame76由`AE=4436`降至`AE=1330`；
 修正姓名索引的`_comment`解析、真正啟用FDOTHER#4字模後再降至`AE=903`。
+普通攻擊再重用既有`0x18C6D` indexed bar／digit核心，全幅降至519；519恰為舊
+三欄比較圖oracle的左邊與底邊合成邊框，排除後319×199內容區`AE=0／RMSE=0`。
+此固定fixture不再列renderer像素缺口；後續只需新的未修改一般玩家E2抽驗。
 完整六相位因缺`0x29F72` raw owner仍只到`DATA-READY`，不得猜接；後續只補代表性
 一般玩家E2。可重跑入口為`tools/docker/fd2-battle-series-compare.sh`。
 

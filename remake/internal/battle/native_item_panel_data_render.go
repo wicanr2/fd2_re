@@ -17,6 +17,41 @@ type NativeItemPanelDataAssets struct {
 	Font        *fdtxt.Font
 }
 
+// LoadNativeBattlePanelValueAssets只解碼0x18C6D框、bar與digit consumer需要的
+// FDOTHER#5資料；姓名由另一個具FDTXT／FDOTHER#4 provenance的caller處理時，
+// 不應因此強迫載入不會消費的文字資產。
+func LoadNativeBattlePanelValueAssets(fdotherPath string) (NativeItemPanelDataAssets, error) {
+	raw, err := fdother.ReadResource(fdotherPath, 5)
+	if err != nil {
+		return NativeItemPanelDataAssets{}, fmt.Errorf("battle: native battle panel FDOTHER#5: %w", err)
+	}
+	assets := NativeItemPanelDataAssets{
+		RawCells: make(map[int]fdother.RawCell),
+		Frames:   make(map[int]fdother.Frame),
+	}
+	assets.BattlePanel, err = fdother.ParseLMI1OpaqueEntry(raw, 22)
+	if err != nil {
+		return NativeItemPanelDataAssets{}, fmt.Errorf("battle: native battle panel cell 22: %w", err)
+	}
+	for index := 23; index <= 30; index++ {
+		assets.RawCells[index], err = fdother.ParseLMI1RawEntry(raw, index)
+		if err != nil {
+			return NativeItemPanelDataAssets{}, fmt.Errorf("battle: native battle panel raw cell %d: %w", index, err)
+		}
+	}
+	for index := 31; index <= 52; index++ {
+		assets.Frames[index], err = fdother.ParseLMI1FrameEntry(raw, index)
+		if err != nil {
+			return NativeItemPanelDataAssets{}, fmt.Errorf("battle: native battle panel frame %d: %w", index, err)
+		}
+	}
+	assets.Frames[93], err = fdother.ParseLMI1FrameEntry(raw, 93)
+	if err != nil {
+		return NativeItemPanelDataAssets{}, fmt.Errorf("battle: native battle panel frame 93: %w", err)
+	}
+	return assets, nil
+}
+
 // RenderNativeItemPanelResources composes 0x17eef and 0x17fc0 as one
 // transaction. The DATO resource selector is read from the native unit record
 // at +7; no normalized portrait or class field is substituted.

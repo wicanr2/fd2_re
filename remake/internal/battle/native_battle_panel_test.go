@@ -54,6 +54,36 @@ func TestRenderNativeBattlePanelMatches18C6DBottomGeometry(t *testing.T) {
 	}
 }
 
+func TestRenderNativeBattlePanelValuesAtReuses18C6DBarAndDigitCore(t *testing.T) {
+	dst := make([]byte, 320*200)
+	err := RenderNativeBattlePanelValuesAt(nativeBattlePanelTestAssets(t), dst, 0, 154,
+		NativeBattlePanelValues{Level: 2, HP: 8, MaxHP: 28, MP: 0, MaxMP: 0})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if dst[(154+22)*320+21] != 23 || dst[(154+22)*320+22] != 24 ||
+		dst[(154+22)*320+50] != 25 {
+		t.Fatal("HP 8/28 did not consume native 23/24/25 cells and +1 endpoint")
+	}
+	if dst[(154+4)*320+132] != 31 || dst[(154+4)*320+138] != 33 {
+		t.Fatal("level 02 did not consume native digit frames")
+	}
+}
+
+func TestRenderNativeBattlePanelValuesAtFailsAtomically(t *testing.T) {
+	assets := nativeBattlePanelTestAssets(t)
+	delete(assets.Frames, 31)
+	dst := bytes.Repeat([]byte{77}, 320*200)
+	want := append([]byte(nil), dst...)
+	if err := RenderNativeBattlePanelValuesAt(assets, dst, 0, 154,
+		NativeBattlePanelValues{Level: 2, HP: 8, MaxHP: 28}); err == nil {
+		t.Fatal("missing digit frame was accepted")
+	}
+	if !bytes.Equal(dst, want) {
+		t.Fatal("failed value render mutated its destination")
+	}
+}
+
 func TestRenderNativeBattlePanelUsesTopAndRawChapter24Exception(t *testing.T) {
 	assets := nativeBattlePanelTestAssets(t)
 	top := make([]byte, 320*200)

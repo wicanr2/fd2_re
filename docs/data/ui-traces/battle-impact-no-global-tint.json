@@ -29,6 +29,7 @@
       "命中幀的狀態欄在 impact 邊界立即顯示 post-hit HP，不再以未有原始欄位依據的中間值緩降",
       "守方 FIGANI 待機幀消費各資源 descriptor +6 與 FD2_BATTLE_FPT；缺延遲表時失敗即關閉",
       "第一個E1命中相位依0x2939D直接consumer，在玩家攻擊分支套用(-14,-10)；完整六相位仍未接入",
+      "普通攻擊狀態欄重用0x18C6D的FDOTHER#5 indexed bar與digit核心，不再另畫RGBA實心條",
       "這不是原版 DOSBox 同狀態擷取，也不能證明逐像素一致"
     ]
   },
@@ -36,15 +37,19 @@
     "path": "docs/figures/battle-impact-no-global-tint.png",
     "width": 640,
     "height": 400,
-    "md5": "9c9c7213fe00f98e4edb08b164c2dbc3",
-    "sha256": "ac473036429310a6f7dae6da36281740814193b1032e847ae97fac959b16a411"
+    "md5": "451c2b6ecad6019498adbd92aace546a",
+    "sha256": "0bb492511bb0c0858cd343f4e7ebcb5633426c65d3e1102e36467341aff88ee8"
   },
   "normalized_comparison": {
     "path": "docs/figures/battle-impact-compare-20260825.png",
     "normalization": "原版 DOSBox 640x480 影像以 2.4 倍垂直取樣正規化為 320x200；重製端 640x400 以 2 倍最近鄰縮小為 320x200；右欄為逐 RGB 差異遮罩",
-    "diff_pixels": 903,
-    "md5": "8ca3363e9a75fc1ed89c414eaf58d962",
-    "sha256": "d2f1be0fc97639efb9fd3e69b8242699fb780c52c6128892434be11878ac5b7f"
+    "diff_pixels": 519,
+    "md5": "cc9c4a9931b10aa6009274298d979f5a",
+    "sha256": "9da7f6f3475ce7c156841088e4066a3b5dc239556a5183c8b731952989639c1a",
+    "scoped_content_rect": {"x": 1, "y": 0, "width": 319, "height": 199},
+    "scoped_content_diff_pixels": 0,
+    "scoped_content_rmse": 0,
+    "border_exclusion_reason": "oracle由舊三欄比較圖左欄反向裁切，帶入左邊1px與底邊1px的合成邊框；519=200+319，並非遊戲內容像素"
   },
   "current_source_phase_audit": {
     "generated_at": "2026-08-25",
@@ -54,11 +59,13 @@
     "best_frame": 76,
     "best_absolute_error_pixels": 4436,
     "next_frame_absolute_error_pixels": 8835,
-    "conclusion": "接入IDA直接consumer證實的第一個phase5負向位移後，最佳frame76由4436降至1330個差異像素；再修正原版姓名字模索引載入後降至903。守方命中剪影與姓名的主要差異已消除。2026-08-10的3933、修正前4436與位移後1330均保留為歷史量測。",
+    "conclusion": "接入phase5負向位移後由4436降至1330；修正姓名字模索引後降至903；普通攻擊重用0x18C6D indexed bar／digit核心後全幅為519。這519恰為舊比較圖oracle的左邊與底邊合成邊框，排除後319x199內容區AE=0、RMSE=0。",
     "post_displacement_best_frame": 76,
     "post_displacement_best_absolute_error_pixels": 1330,
     "post_displacement_base_head": "66372c27a54659d3bd6f506cf858d2f612a7f49d",
     "post_native_name_best_absolute_error_pixels": 903,
+    "post_indexed_panel_full_frame_absolute_error_pixels": 519,
+    "post_indexed_panel_scoped_content_absolute_error_pixels": 0,
     "limits": "未修改原版只有一張命中錨點，未提供同一次攻擊的原版完整逐幀序列；本量測不證明原版精確畫格時鐘。完整六相位因缺0x29F72 raw owner而未接入。"
   },
   "evidence_scope": [

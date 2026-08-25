@@ -1573,7 +1573,11 @@ bar公式與繪製順序以
 320×200 indexed buffer完整成功後一次發布；缺panel、bar、digit、FDTXT、字模或
 raw selector時保持目的地與command24 MP／HP／Acted不變。正式command24轉場的
 actor／target base已消費此compositor，不再於20張indexed frame上疊兩塊RGBA panel；
-仍不得由Camp、Name、Portrait或BattleFig猜測。
+仍不得由Camp、Name、Portrait或BattleFig猜測。普通全螢幕攻擊另可重用同一
+bar／digit核心，接受caller已擁有的HP、MaxHP、MP、MaxMP、Lv與panel原點；這只
+授權素材、公式及座標的E1消費，不把normalized陣營原點冒充raw `+6`，姓名仍由
+已證實的FDOTHER#4橋處理。缺完整FDOTHER#5 cells／frames或palette時維持舊E1
+畫面，不以程式色塊宣稱原版indexed parity。
 
 #### command24 `0x29C90`背景轉場契約
 

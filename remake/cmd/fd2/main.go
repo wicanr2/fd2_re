@@ -436,22 +436,24 @@ type Game struct {
 	msg                string // 短訊息(攻擊傷害等)
 	// 地圖單位 sprite(FDICON 待機分鏡):fig index → 幀序列
 	sprites            map[int][]*ebiten.Image
-	figani             map[int][]*ebiten.Image         // 攻擊全身動畫(FIGANI):fig → 幀序列
-	figaniDelays       map[int][]int                   // 原始 FIGANI descriptor +6 delay，與 PNG 幀數一一對齊
-	atk                *atkAnim                        // 進行中的攻擊演出
-	bg                 *ebiten.Image                   // 戰鬥背景(BG.DAT,by 戰場;map0=BG_004 森林)
-	tai                *ebiten.Image                   // 我方腳下台座(TAI.DAT;0x29164 載 0x28c46,doc35 §3.3)
-	panel              *ebiten.Image                   // 狀態欄框素材(FDOTHER#5 LMI1 #22,149×42;含bevel+HP/MP標籤+槽,doc35 §4)
-	dlgBox             *ebiten.Image                   // 對話框框素材(FDOTHER#5 LMI1 #21,310×99;orig 下框(5,112)@320)
-	dlgGrad            *ebiten.Image                   // 對話框內部漸層(比對頭像底色 40,69,138→56,85,154 消接縫色差;lazy 建)
-	fontNm             *Font                           // 狀態欄名字(整數尺寸 face,scale1 銳利)
-	nativeBattleFont   *fdtxt.Font                     // 全螢幕戰鬥狀態欄 FDOTHER#4 16×16 字模
-	nativeBattleGlyphs map[string]int                  // Unicode→原版 glyph 索引（未知字元失敗即關閉）
-	digits             [10]*ebiten.Image               // 狀態欄數字 0-9(LMI1 #31-40 原版 digit cell,白/藍影)
-	redSil             map[*ebiten.Image]*ebiten.Image // E1 紅色剪影近似快取；不是 raw DAC 脈衝本身
-	dim                *ebiten.Image                   // 全螢幕暗化/底板共用(回合橫幅、單位面板)
-	figMeta            map[int][][2]int                // FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(doc06;動畫走位全靠它)
-	font               *Font                           // 原版點陣中文字型(doc 08)
+	figani             map[int][]*ebiten.Image                     // 攻擊全身動畫(FIGANI):fig → 幀序列
+	figaniDelays       map[int][]int                               // 原始 FIGANI descriptor +6 delay，與 PNG 幀數一一對齊
+	atk                *atkAnim                                    // 進行中的攻擊演出
+	bg                 *ebiten.Image                               // 戰鬥背景(BG.DAT,by 戰場;map0=BG_004 森林)
+	tai                *ebiten.Image                               // 我方腳下台座(TAI.DAT;0x29164 載 0x28c46,doc35 §3.3)
+	panel              *ebiten.Image                               // 狀態欄框素材(FDOTHER#5 LMI1 #22,149×42;含bevel+HP/MP標籤+槽,doc35 §4)
+	dlgBox             *ebiten.Image                               // 對話框框素材(FDOTHER#5 LMI1 #21,310×99;orig 下框(5,112)@320)
+	dlgGrad            *ebiten.Image                               // 對話框內部漸層(比對頭像底色 40,69,138→56,85,154 消接縫色差;lazy 建)
+	fontNm             *Font                                       // 狀態欄名字(整數尺寸 face,scale1 銳利)
+	nativeBattleFont   *fdtxt.Font                                 // 全螢幕戰鬥狀態欄 FDOTHER#4 16×16 字模
+	nativeBattleGlyphs map[string]int                              // Unicode→原版 glyph 索引（未知字元失敗即關閉）
+	nativeBattlePanel  *battle.NativeItemPanelDataAssets           // 0x18C6D框／bar／digit indexed素材
+	nativeBattleValues map[nativeBattlePanelValueKey]*ebiten.Image // 可見值panel快取
+	digits             [10]*ebiten.Image                           // 狀態欄數字 0-9(LMI1 #31-40 原版 digit cell,白/藍影)
+	redSil             map[*ebiten.Image]*ebiten.Image             // E1 紅色剪影近似快取；不是 raw DAC 脈衝本身
+	dim                *ebiten.Image                               // 全螢幕暗化/底板共用(回合橫幅、單位面板)
+	figMeta            map[int][][2]int                            // FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(doc06;動畫走位全靠它)
+	font               *Font                                       // 原版點陣中文字型(doc 08)
 
 	nativeChapterRestore *campaign.NativeChapterSlotRestorePlan // 四槽 LOAD 的已驗證戰間狀態；未知 raw bytes 僅保存、不猜接
 
@@ -465,7 +467,8 @@ type atkAnim struct {
 	atkFig, defFig   int    // 攻方(右土台)/ 守方(左)FIGANI
 	atkName, defName string // 名字(資訊條)
 	atkHP, atkMax    int
-	atkMP, defMP     int
+	atkMP, atkMaxMP  int
+	defMP, defMaxMP  int
 	atkLV, defLV     int
 	defHP0, defHP1   int // 守方攻擊前/後 HP(impact 抽乾動畫)
 	defMax           int
@@ -5628,7 +5631,8 @@ func battleFPT() int {
 // 資料驅動(doc06)。缺少一一配對的延遲表時返回 nil，呼叫端必須明確記錄呈現缺口，
 // 不得宣稱畫面已播放。
 func (g *Game) newAtkAnim(atkGroup, defGroup int, atkName, defName string,
-	atkHP, atkMax, atkLV, atkMP, defLV, defMP, defHP0, defHP1, defMax, terrain int, atkOwn bool) *atkAnim {
+	atkHP, atkMax, atkLV, atkMP, atkMaxMP, defLV, defMP, defMaxMP,
+	defHP0, defHP1, defMax, terrain int, atkOwn bool) *atkAnim {
 	if !g.nativeAttackPresentationAvailable(atkGroup, defGroup) {
 		return nil
 	}
@@ -5656,7 +5660,8 @@ func (g *Game) newAtkAnim(atkGroup, defGroup int, atkName, defName string,
 	bodyTicks := timeline.BodyTicks()
 	total := bodyTicks + 4*fpt // 尾段停格 4 幀時間
 	return &atkAnim{atkFig: af, defFig: figaniIndex(defGroup), atkName: atkName, defName: defName,
-		atkHP: atkHP, atkMax: atkMax, atkLV: atkLV, atkMP: atkMP, defLV: defLV, defMP: defMP,
+		atkHP: atkHP, atkMax: atkMax, atkLV: atkLV, atkMP: atkMP, atkMaxMP: atkMaxMP,
+		defLV: defLV, defMP: defMP, defMaxMP: defMaxMP,
 		defHP0: defHP0, defHP1: defHP1, defMax: defMax, timer: total, total: total,
 		fpt: fpt, terrain: terrain, atkOwn: atkOwn, figaniTimeline: timeline,
 		bodyTicks: bodyTicks}
@@ -6118,7 +6123,8 @@ func (g *Game) confirm() {
 				nm = tgt.ClsName
 			}
 			g.atk = g.newAtkAnim(g.sel.BattleFig, tgt.BattleFig, g.sel.Name, nm,
-				g.sel.HP, g.sel.MaxHP, g.sel.Lv, g.sel.MP, tgt.Lv, tgt.MP,
+				g.sel.HP, g.sel.MaxHP, g.sel.Lv, g.sel.MP, g.sel.MaxMP,
+				tgt.Lv, tgt.MP, tgt.MaxMP,
 				tgt.HP+first.Amount, tgt.HP, tgt.MaxHP, g.terrainAt(tgt.X, tgt.Y), true)
 		}
 		actor := g.sel
@@ -6740,7 +6746,8 @@ func (g *Game) confirm() {
 		g.msg = playerPhysicalAttackMessage(g.sel, tgt, attackResult)
 		actor := g.sel
 		g.atk = g.newAtkAnim(actor.BattleFig, tgt.BattleFig, anm, nm,
-			actor.HP, actor.MaxHP, actor.Lv, actor.MP, tgt.Lv, tgt.MP,
+			actor.HP, actor.MaxHP, actor.Lv, actor.MP, actor.MaxMP,
+			tgt.Lv, tgt.MP, tgt.MaxMP,
 			defHP0, tgt.HP, tgt.MaxHP, g.terrainAt(g.curX, g.curY), true) // 戰鬥背景 = 守方格地形
 		if g.atk != nil {
 			g.atk.after = func() {
@@ -7237,7 +7244,8 @@ func (g *Game) Update() error {
 			if v := os.Getenv("FD2_SHOT_ATTACK"); v != "" { // 全螢幕戰鬥演出(驗證用):亞雷斯打盜賊
 				g.dialog = nil // 清開場對白(避免蓋住演出)
 				fig, _ := strconv.Atoi(v)
-				g.atk = g.newAtkAnim(fig, 96, "亞雷斯", "盜賊", 48, 48, 1, 0, 2, 0, 28, 8, 28, 0, true)
+				g.atk = g.newAtkAnim(fig, 96, "亞雷斯", "盜賊",
+					48, 48, 1, 0, 0, 2, 0, 0, 28, 8, 28, 0, true)
 				if g.atk == nil {
 					g.loadErr = fmt.Sprintf("FD2_SHOT_ATTACK FIGANI presentation unavailable: %d", fig)
 				}
@@ -9168,11 +9176,11 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		// 位置=模板匹配 orig:我方 (171,4)@320、敵方 (0,154)@320(下欄匹配 err=0 像素全等)
 		// 欄位按「陣營」分:我方欄右上、敵方欄左下(atkOwn=false 表敵攻我,資料對調)
 		if a.atkOwn {
-			g.drawBattlePanel(screen, 342, 8, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP) // 我方(攻)右上
-			g.drawBattlePanel(screen, 0, 308, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 敵方(守)左下
+			g.drawBattlePanel(screen, 342, 8, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP, a.atkMaxMP) // 我方(攻)右上
+			g.drawBattlePanel(screen, 0, 308, a.defName, a.defLV, dhp, a.defMax, a.defMP, a.defMaxMP)     // 敵方(守)左下
 		} else {
-			g.drawBattlePanel(screen, 342, 8, a.defName, a.defLV, dhp, a.defMax, a.defMP)     // 我方(守)右上
-			g.drawBattlePanel(screen, 0, 308, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP) // 敵方(攻)左下
+			g.drawBattlePanel(screen, 342, 8, a.defName, a.defLV, dhp, a.defMax, a.defMP, a.defMaxMP)     // 我方(守)右上
+			g.drawBattlePanel(screen, 0, 308, a.atkName, a.atkLV, a.atkHP, a.atkMax, a.atkMP, a.atkMaxMP) // 敵方(攻)左下
 		}
 	}
 
@@ -9245,7 +9253,7 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 // drawBattlePanel 原版戰鬥狀態欄:用 FDOTHER#5 LMI1 #22 框素材(149×42,含 bevel + HP/MP標籤 +
 // LV‧ + 血條槽,codec 反組譯 0x4e916 破解,doc35 §4),只疊上名字 / LV數字 / 血條填充 / HP-MP數值。
 // 框內槽 native:HP y22-26、MP y31-35、x26-145(量測)。
-func (g *Game) drawBattlePanel(screen *ebiten.Image, x, y float64, name string, lv, hp, mx, mp int) {
+func (g *Game) drawBattlePanel(screen *ebiten.Image, x, y float64, name string, lv, hp, mx, mp, maxMP int) {
 	panel := g.panel
 	// orig 是 149×42 原生尺寸 blit(非拉伸滿半屏;網格比對 v37 抓到的差異)→ 固定 ×2
 	const sc = 2.0
@@ -9259,7 +9267,10 @@ func (g *Game) drawBattlePanel(screen *ebiten.Image, x, y float64, name string, 
 		o.GeoM.Translate(bx, by)
 		screen.DrawImage(im, o)
 	}
-	if panel != nil { // 框素材(bevel + HP/MP標籤 + LV‧ + 槽 全來自原版;palette 已 6→8bit 校正)
+	nativeValuesDrawn := g.drawNativeBattlePanelValues(screen, x, y, battle.NativeBattlePanelValues{
+		Level: lv, HP: hp, MaxHP: mx, MP: mp, MaxMP: maxMP,
+	})
+	if !nativeValuesDrawn && panel != nil { // 框素材(bevel + HP/MP標籤 + LV‧ + 槽 全來自原版;palette 已 6→8bit 校正)
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)
 		op.GeoM.Translate(x, y)
@@ -9281,14 +9292,18 @@ func (g *Game) drawBattlePanel(screen *ebiten.Image, x, y float64, name string, 
 		fillRect(slotX, slotY, w, lightH, light)             // 頂邊亮(orig 漸層)
 		fillRect(slotX, slotY+lightH, w, slotH-lightH, body) // 本體
 	}
-	drawFill(rnd(y+22*sc), float64(hp)/float64(mx),
-		color.RGBA{0xf8, 0xe8, 0x80, 0xff}, color.RGBA{0xf0, 0xc8, 0x30, 0xff}) // HP 黃
+	if !nativeValuesDrawn {
+		drawFill(rnd(y+22*sc), float64(hp)/float64(mx),
+			color.RGBA{0xf8, 0xe8, 0x80, 0xff}, color.RGBA{0xf0, 0xc8, 0x30, 0xff}) // HP 黃
+	}
 	mpmx := mp
 	if mpmx < 1 {
 		mpmx = 1
 	}
-	drawFill(rnd(y+31*sc), float64(mp)/float64(mpmx),
-		color.RGBA{0xf0, 0x70, 0x60, 0xff}, color.RGBA{0xc8, 0x28, 0x20, 0xff}) // MP 紅
+	if !nativeValuesDrawn {
+		drawFill(rnd(y+31*sc), float64(mp)/float64(mpmx),
+			color.RGBA{0xf0, 0x70, 0x60, 0xff}, color.RGBA{0xc8, 0x28, 0x20, 0xff}) // MP 紅
+	}
 	// 排版(0x18C6D直接caller):名(5,4) 16px;LV數字接框內「LV‧」後(132,4);
 	// HP/MP 數值與槽同列(125,20)/(125,29) 8px
 	_ = white
@@ -9303,6 +9318,9 @@ func (g *Game) drawBattlePanel(screen *ebiten.Image, x, y float64, name string, 
 			g.fontNm.Draw(screen, name, nx+o[0], ny+o[1], 1.0, dk)
 		}
 		g.fontNm.Draw(screen, name, nx, ny, 1.0, color.RGBA{0xe0, 0xee, 0xff, 0xff})
+	}
+	if nativeValuesDrawn {
+		return
 	}
 	// 數字使用原版 6×8 digit cell 與 native 7px advance；這只固定素材與
 	drawNum := func(s string, nxN, nyN float64) {
@@ -9588,6 +9606,10 @@ func loadGame() *Game {
 	if nativeFont, nativeGlyphs, err := loadNativeBattleNameAssets(); err == nil {
 		g.nativeBattleFont = nativeFont
 		g.nativeBattleGlyphs = nativeGlyphs
+	}
+	if panelAssets, err := battle.LoadNativeBattlePanelValueAssets(nativeFDOTHERPath()); err == nil {
+		g.nativeBattlePanel = &panelAssets
+		g.nativeBattleValues = make(map[nativeBattlePanelValueKey]*ebiten.Image)
 	}
 	g.nativeActionCells = loadNativeActionCells(g.nativeUIPalette)
 	if systemInfo, err := loadNativeSystemInfoAssets(); err == nil {
@@ -9939,7 +9961,7 @@ func (g *Game) drawUnitHUD(screen *ebiten.Image, u *battle.Unit) {
 	}
 	const bh = 84.0 // 149×42 原生 ×2
 	bx, by := 6.0, float64(logicalH)-bh-6-20
-	g.drawBattlePanel(screen, bx, by, nm, u.Lv, u.HP, u.MaxHP, u.MP)
+	g.drawBattlePanel(screen, bx, by, nm, u.Lv, u.HP, u.MaxHP, u.MP, u.MaxMP)
 	g.font.Draw(screen, fmt.Sprintf("AP %d  DP %d  MV %d", u.AP, u.DP, u.MV), bx+8, by+bh+2, 0.9, color.RGBA{0xc8, 0xe0, 0xff, 0xff})
 }
 
@@ -10395,7 +10417,8 @@ func (g *Game) aiStep() {
 			g.awardDeathReward(tgt, u)
 			g.msg = playerPhysicalAttackMessage(u, tgt, attackResult)
 			g.atk = g.newAtkAnim(u.BattleFig, tgt.BattleFig, anm, nm,
-				u.HP, u.MaxHP, u.Lv, u.MP, tgt.Lv, tgt.MP,
+				u.HP, u.MaxHP, u.Lv, u.MP, u.MaxMP,
+				tgt.Lv, tgt.MP, tgt.MaxMP,
 				hp0, tgt.HP, tgt.MaxHP, g.terrainAt(tgt.X, tgt.Y), u.Camp == battle.Own)
 			if g.atk != nil {
 				g.atk.after = finish

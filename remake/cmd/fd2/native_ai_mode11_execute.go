@@ -109,7 +109,7 @@ func (g *Game) executeNativeAIMode11Physical(plan *battle.AIPlan, after func()) 
 	}
 	g.atk = g.newAtkAnim(actor.BattleFig, target.BattleFig,
 		attackerName, defenderName, actor.HP, actor.MaxHP, actor.Lv, actor.MP,
-		target.Lv, target.MP, defHP0, target.HP, target.MaxHP,
+		actor.MaxMP, target.Lv, target.MP, target.MaxMP, defHP0, target.HP, target.MaxHP,
 		g.terrainAt(target.X, target.Y), actor.Camp == battle.Own)
 	if g.atk == nil {
 		g.loadErr = fmt.Sprintf("native AI mode 11 0x1548e FIGANI unavailable: %d -> %d", actor.BattleFig, target.BattleFig)

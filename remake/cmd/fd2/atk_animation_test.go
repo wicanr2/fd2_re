@@ -15,7 +15,7 @@ func TestNewAtkAnimRequiresNativeDelayPairing(t *testing.T) {
 		},
 		figaniDelays: map[int][]int{13: {1, 2, 1}, 288: {1, 2, 1}},
 	}
-	a := g.newAtkAnim(4, 96, "亞雷斯", "盜賊", 48, 48, 1, 0, 2, 0, 28, 8, 28, 0, true)
+	a := g.newAtkAnim(4, 96, "亞雷斯", "盜賊", 48, 48, 1, 0, 0, 2, 0, 0, 28, 8, 28, 0, true)
 	if a == nil || a.figaniTimeline == nil {
 		t.Fatal("paired FIGANI delay schedule did not create an attack presentation")
 	}
@@ -27,7 +27,7 @@ func TestNewAtkAnimRequiresNativeDelayPairing(t *testing.T) {
 	}
 
 	g.figaniDelays = nil
-	if got := g.newAtkAnim(4, 96, "亞雷斯", "盜賊", 48, 48, 1, 0, 2, 0, 28, 8, 28, 0, true); got != nil {
+	if got := g.newAtkAnim(4, 96, "亞雷斯", "盜賊", 48, 48, 1, 0, 0, 2, 0, 0, 28, 8, 28, 0, true); got != nil {
 		t.Fatal("unpaired FIGANI PNGs received a guessed attack timeline")
 	}
 }
@@ -40,7 +40,7 @@ func TestNewAtkAnimLeavesNativeImpactDACUnwired(t *testing.T) {
 		},
 		figaniDelays: map[int][]int{13: {1, 2, 1}, 288: {1, 2, 1}},
 	}
-	a := g.newAtkAnim(4, 96, "亞雷斯", "盜賊", 48, 48, 1, 0, 2, 0, 28, 8, 28, 0, true)
+	a := g.newAtkAnim(4, 96, "亞雷斯", "盜賊", 48, 48, 1, 0, 0, 2, 0, 0, 28, 8, 28, 0, true)
 	if a == nil {
 		t.Fatal("paired FIGANI delay schedule did not create an attack presentation")
 	}
