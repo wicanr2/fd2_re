@@ -6657,3 +6657,13 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   chapter26的`FDTXT_027` index17..20。`ending_ch27_no_sky_key`現使用chapter26
   來源約束prefix，正式runtime測試驗證兩個原版文字閘門；缺原始資產仍整批回退
   可編輯結語。這是`RUNTIME-E1`，不提升呼叫當下globals／輸入或一般玩家E2。
+- 2026-08-25 `sub_2C39B`逐句speaker勘誤：合法Docker內IDA Pro 9.4.0.260610
+  固定`sub_2C39B(0x2C39B..0x2C405)`與`sub_1956B(0x1956B..0x196CB)`，Capstone
+  交叉驗證原始bytes。caller arg0只負責19×5框開啟時的initial DATO portrait；
+  FDTXT_030 index2..7另含逐句`FFEE/FFEF` speaker operands。這直接否定2026-07-20
+  「每句都用block portrait_id」的舊runtime說法。timeline現分開保存initial portrait
+  與每句control／operand／pages，正式bridge依序顯示4／24／126／0／126／122等原始
+  speaker；FDTXT_027 index17..20沒有內嵌speaker，才沿用caller arg0。ending與cmd/fd2
+  聚焦Docker回歸通過。19×5 indexed opening、六個opening bands、`sub_2D31B` closing
+  與一般玩家E2仍失敗即關閉；完整證據見
+  [`fd2_ending_dialogue_owner_ida.txt`](../data/ida/fd2_ending_dialogue_owner_ida.txt)。

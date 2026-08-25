@@ -486,8 +486,11 @@ func nativeEndingDialogLines(blocks []ending.DialogueBlock) ([]battle.DialogLine
 		if block.Line < 0 || block.Count <= 0 || block.Line+block.Count > len(lines) {
 			return nil, fmt.Errorf("ending: dialogue %s scene=%d line=%d count=%d is unavailable", block.Script, block.SceneIndex, block.Line, block.Count)
 		}
-		for _, line := range lines[block.Line : block.Line+block.Count] {
-			out = append(out, battle.DialogLine{Speaker: block.PortraitID, Text: line.Text})
+		if len(block.NativeUtterances) != block.Count {
+			return nil, fmt.Errorf("ending: dialogue %s index=%d lacks native utterance provenance", block.SourceDAT, block.StringIndex)
+		}
+		for index, line := range lines[block.Line : block.Line+block.Count] {
+			out = append(out, battle.DialogLine{Speaker: block.NativeUtterances[index].Operand, Text: line.Text})
 		}
 	}
 	return out, nil

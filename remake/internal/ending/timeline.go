@@ -74,13 +74,25 @@ type Segment struct {
 // helper. PortraitID is a DATO.DAT resource index: 0x2c39b forwards its first
 // caller argument to 0x1956b, which loads archive 0x51a70 (DATO.DAT).
 type DialogueBlock struct {
-	PortraitID  int    `json:"portrait_id"`
-	SourceDAT   string `json:"source_dat"`
-	Script      string `json:"script"`
-	StringIndex int    `json:"string_index"`
-	SceneIndex  int    `json:"scene_index"`
-	Line        int    `json:"line"`
-	Count       int    `json:"count"`
+	// PortraitID 是 sub_2C39B arg0 的 opening initial portrait，不代表
+	// FDTXT block 內每個 utterance 的 speaker。
+	PortraitID       int                       `json:"portrait_id"`
+	SourceDAT        string                    `json:"source_dat"`
+	Script           string                    `json:"script"`
+	StringIndex      int                       `json:"string_index"`
+	SceneIndex       int                       `json:"scene_index"`
+	Line             int                       `json:"line"`
+	Count            int                       `json:"count"`
+	NativeUtterances []NativeDialogueUtterance `json:"native_utterances"`
+}
+
+// NativeDialogueUtterance 保存 sub_2C39B caller portrait 之後，真正由
+// FDTXT speaker control 或 caller fallback 選出的逐句 speaker 與 raw 分頁。
+type NativeDialogueUtterance struct {
+	ControlSource string     `json:"control_source"`
+	Control       string     `json:"control"`
+	Operand       int        `json:"operand"`
+	Pages         [][]string `json:"pages"`
 }
 
 // PlaybackState tells a presentation adapter why a native ending timeline
@@ -165,6 +177,27 @@ func LoadTimeline(path string) (*Timeline, error) {
 		for j, block := range append(append([]DialogueBlock(nil), segment.ThenDialogue...), segment.ElseDialogue...) {
 			if block.PortraitID < 0 || block.SourceDAT == "" || block.Script == "" || block.StringIndex < 0 || block.SceneIndex < 0 || block.Line < 0 || block.Count <= 0 {
 				return nil, fmt.Errorf("ending timeline %q segment %d dialogue %d is incomplete", path, i, j)
+			}
+			if len(block.NativeUtterances) != block.Count {
+				return nil, fmt.Errorf("ending timeline %q segment %d dialogue %d has %d native utterances for count %d", path, i, j, len(block.NativeUtterances), block.Count)
+			}
+			for k, utterance := range block.NativeUtterances {
+				validFDTXTControl := utterance.Control == "FFEC" || utterance.Control == "FFED" || utterance.Control == "FFEE" || utterance.Control == "FFEF"
+				validSource := utterance.ControlSource == "fdtxt" && validFDTXTControl ||
+					utterance.ControlSource == "caller_2c39b" && utterance.Control == "" && utterance.Operand == block.PortraitID
+				if !validSource || utterance.Operand < 0 || utterance.Operand > 0xffff || len(utterance.Pages) == 0 {
+					return nil, fmt.Errorf("ending timeline %q segment %d dialogue %d utterance %d has invalid control provenance", path, i, j, k)
+				}
+				for page, rows := range utterance.Pages {
+					if len(rows) == 0 || len(rows) > 4 {
+						return nil, fmt.Errorf("ending timeline %q segment %d dialogue %d utterance %d page %d has %d rows", path, i, j, k, page, len(rows))
+					}
+					for row, text := range rows {
+						if count := len([]rune(text)); count == 0 || count > 13 {
+							return nil, fmt.Errorf("ending timeline %q segment %d dialogue %d utterance %d page %d row %d has %d glyphs", path, i, j, k, page, row, count)
+						}
+					}
+				}
 			}
 		}
 	}

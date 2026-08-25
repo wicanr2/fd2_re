@@ -6181,6 +6181,25 @@ roster 與 JOIN chronology。原始資產、四個 raw record provenance 或任�
 chapter26 兩個原版文字閘門，以及缺來源時不部分發布。這是 `RUNTIME-E1`；
 `0x2545D` 呼叫當下動態 globals、原版輸入與未修改玩家 E2 仍分級保留。
 
+### `sub_2C39B` initial portrait／逐句說話者資料契約（2026-08-25）
+
+主證據為
+[`fd2_ending_dialogue_owner_ida.txt`](../data/ida/fd2_ending_dialogue_owner_ida.txt)。
+timeline 的每個 `DialogueBlock` 必須同時保存 caller `initial_portrait_id` 與逐句
+`native_utterances`；後者逐筆保存控制來源、raw `FFEC..FFEF`（若有）、operand
+及 `FFFE/FFFD` pages。兩者不可再共用一個看似代表所有台詞的 `portrait_id`。
+
+`control_source=fdtxt` 時 control 必須是四種已知speaker code，operand即該句
+runtime speaker；`control_source=caller_2c39b` 只允許原字串完全沒有speaker code
+時使用，control必須空白且operand須等於initial portrait。逐句數必須等於editable
+`count`，page／row不可空白；任一不符即在timeline載入時失敗即關閉。
+
+一般結局runtime先消費此資料修正每句speaker，不再以block initial portrait覆蓋
+所有台詞。這只關閉typed data→runtime speaker；19×5 indexed compositor、六段opening、
+mouth／input wait、`sub_2D31B` closing與同狀態E2仍另列，不能偷用ch24的19×5／三列
+caller。原始FDTXT oracle測試須逐word重建所有utterance並與版控timeline相等，避免
+可編輯文字日後漂移掉控制碼與分頁。
+
 ## 2026-08-25：終局三筆音訊 cue 的具型別消費規格
 
 主證據為 [`fd2_ending_audio_ida.txt`](../data/ida/fd2_ending_audio_ida.txt)。這個

@@ -112,18 +112,15 @@ func TestSourceBoundCampaignTailHoldsRecoveredTerminalFrame(t *testing.T) {
 	}
 }
 
-func TestNativeEndingDialogLinesUseNativePortraitIDs(t *testing.T) {
-	lines, err := nativeEndingDialogLines([]ending.DialogueBlock{{PortraitID: 37, Script: "ch30.json", SceneIndex: 1, Line: 0, Count: 6}, {PortraitID: 21, Script: "ch30.json", SceneIndex: 1, Line: 6, Count: 2}})
+func TestNativeEndingDialogLinesUsePerUtteranceNativeSpeakers(t *testing.T) {
+	lines, err := nativeEndingDialogLines([]ending.DialogueBlock{{PortraitID: 37, SourceDAT: "FDTXT_030", StringIndex: 2, Script: "ch30.json", SceneIndex: 1, Line: 0, Count: 6, NativeUtterances: []ending.NativeDialogueUtterance{{Operand: 4}, {Operand: 24}, {Operand: 126}, {Operand: 0}, {Operand: 126}, {Operand: 122}}}, {PortraitID: 21, SourceDAT: "FDTXT_030", StringIndex: 3, Script: "ch30.json", SceneIndex: 1, Line: 6, Count: 2, NativeUtterances: []ending.NativeDialogueUtterance{{Operand: 126}, {Operand: 123}}}})
 	if err != nil || len(lines) != 8 {
 		t.Fatalf("lines=%d err=%v", len(lines), err)
 	}
+	want := []int{4, 24, 126, 0, 126, 122, 126, 123}
 	for i, line := range lines {
-		want := 37
-		if i >= 6 {
-			want = 21
-		}
-		if line.Speaker != want || line.Text == "" {
-			t.Fatalf("line %d=%#v want speaker %d", i, line, want)
+		if line.Speaker != want[i] || line.Text == "" {
+			t.Fatalf("line %d=%#v want speaker %d", i, line, want[i])
 		}
 	}
 }
@@ -134,7 +131,8 @@ func TestNativeEndingDialogueResumeAllowsSecondNativeTextGate(t *testing.T) {
 		Blocked: &ending.Segment{
 			Op: "native_text_branch_opaque",
 			ElseDialogue: []ending.DialogueBlock{{
-				PortraitID: 37, Script: "ch30.json", SceneIndex: 1, Line: 0, Count: 1,
+				PortraitID: 37, SourceDAT: "FDTXT_030", StringIndex: 2, Script: "ch30.json", SceneIndex: 1, Line: 0, Count: 1,
+				NativeUtterances: []ending.NativeDialogueUtterance{{Operand: 4}},
 			}},
 		},
 		Segment: 9,
@@ -155,7 +153,8 @@ func TestNativeEndingDialogueResumeAllowsSecondNativeTextGate(t *testing.T) {
 	player.Blocked = &ending.Segment{
 		Op: "native_text_branch_opaque",
 		ElseDialogue: []ending.DialogueBlock{{
-			PortraitID: 45, Script: "ch30.json", SceneIndex: 1, Line: 13, Count: 1,
+			PortraitID: 45, SourceDAT: "FDTXT_030", StringIndex: 7, Script: "ch30.json", SceneIndex: 1, Line: 13, Count: 1,
+			NativeUtterances: []ending.NativeDialogueUtterance{{Operand: 9}},
 		}},
 	}
 	player.Segment = 13
@@ -163,7 +162,7 @@ func TestNativeEndingDialogueResumeAllowsSecondNativeTextGate(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !g.nativeEnding.queued || len(g.dialog) != 1 ||
-		g.dialog[0].Speaker != 45 || g.dialog[0].Text == "" {
+		g.dialog[0].Speaker != 9 || g.dialog[0].Text == "" {
 		t.Fatalf("second recovered ending dialogue = queued=%v lines=%#v",
 			g.nativeEnding.queued, g.dialog)
 	}

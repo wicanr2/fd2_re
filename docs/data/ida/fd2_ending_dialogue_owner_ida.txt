@@ -1,0 +1,69 @@
+# FD2 終局 `sub_2C39B` 對話框／說話者 owner 證據
+
+## 輸入、工具與位址空間
+
+- 輸入：`FD2.EXE`，357074 bytes。
+- MD5：`b97caf2239a27a896069d03549d96e1e`。
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 第一順位：合法 IDA Pro 9.4.0.260610，`fd2-ida-authorized-local` 一次性、
+  無網路 Docker；原始檔唯讀，資料庫只寫 `/tmp`。
+- 交叉驗證：`fd2-cap-local` 內 Capstone 5.0.3。
+- 本檔位址均為 DOS LE loader 的 IDA linear address；IDA 原名及原始運算元保留。
+
+## 已證實：`sub_2C39B(0x2C39B..0x2C405)` 的 caller-owned 框
+
+IDA 直接交叉參照列出 `sub_2BCE5` 內12個 call site；函式本體順序為：
+
+1. `0x2C3AB` 將 caller arg0 傳給 `sub_1956B`；
+2. `0x2C3BC..0x2C3DD` 以固定參數呼叫 `sub_15F84`：current FDTXT、caller
+   arg1 string index、destination `0xA9514`、stride320、foreground `0xCD`、
+   shadow `0x4C`、background `0x4A`、width `0x13`、最後參數1；
+3. `0x2C3E5` 呼叫 `sub_16559(0)`，`0x2C3EF` 呼叫 `sub_16C57(0)`；
+4. `0x2C3F9` 呼叫 `sub_2D31B` 收框。
+
+`sub_1956B(0x1956B..0x196CB)` 先建立 `(x=5,y=112,columns=19,rows=5)` 的
+FDOTHER #5框，並依 arg0載入DATO。除 arg0 `0x80..0x84` 各有特殊 anchor 外，
+一般值固定寫 `[0x53C67]=0x9017`，再 opaque貼入 staging；最後以
+`sub_1974C` 發布六個 opening band。上述 call order、座標、色碼、frame0 mouth、
+等待與 closing owner均為**已證實**。
+
+## 已證實：caller portrait 不等於每句說話者
+
+固定雜湊的玩家 `FDTXT.DAT` 以既有 strict archive／FDTXT parser 在無網路 Docker
+中重讀：
+
+- `FDTXT_027` index17..20 不含 `FFEC..FFEF`，只含普通字形與 `FFFE`。因此
+  chapter26臂的每個 block確實沿用 `sub_2C39B` arg0：4、21、24、26。
+- `FDTXT_030` index2..7 的內嵌 speaker controls／operands 分別為：
+  - index2：`FFEE 4`、`FFEE 24`、`FFEF 126`、`FFEE 0`、`FFEF 126`、`FFEF 122`；
+  - index3：`FFEF 126`、`FFEF 123`；
+  - index4：`FFEF 126`、`FFEF 124`；
+  - index5：`FFEF 126`、`FFEF 125`；
+  - index6：`FFEF 126`；
+  - index7：`FFEE 9`。
+
+index2另含一個`FFFD`翻頁；其餘列界由`FFFE`保存。故舊 runtime 將 timeline
+block 的 `portrait_id` 套給 block 內全部 editable lines，會把 chapter29 的14句
+錯畫成37／21／26／105／32／45六個 caller portrait；這個說法已被 raw controls
+直接否定。arg0仍是 opening 時先貼的 initial portrait，不能刪除；真正逐句 speaker
+必須優先消費內嵌控制碼。這項 caller／consumer 分層為**已證實**。
+
+## 證據邊界
+
+- 本檔閉合 initial portrait 與 per-utterance speaker 的來源，不把二者合併。
+- `sub_2C39B` 使用19×5下框，並允許 index6 四個文字列；不可直接套 ch24 最高三列
+  的 `NativeDialogueLayout` validator或其 `sub_165AC/sub_16B43` opening／closing。
+- 本切片可先修正 typed timeline 與一般 runtime speaker；19×5 indexed ending
+  compositor、六段 opening、`sub_2D31B` closing及一般玩家 E2仍須另立規格。
+
+## 可重生命令
+
+```text
+IDA：FD2_IDA_ADDRESSES="0x2c39b 0x1956b"，執行
+  /opt/ida-pro-9.4/idat -A -c -o/work/fd2-ending-2c39b.i64
+  -S/workspace/tools/ida_probe_functions.py /input/FD2.EXE
+Capstone：
+  tools/disasm_le.py FD2.EXE range 0x2c39b 0x2c405
+  tools/disasm_le.py FD2.EXE range 0x195e1 0x196cb
+FDTXT：既有 `tools/unpack_dat.py` 與 strict word parser，resource27/30上述索引。
+```
