@@ -73,3 +73,15 @@ func TestNativeStoryDialogueInputFailsClosedWithoutProgressiveFrames(t *testing.
 		t.Fatal("native story dialogue advanced without its indexed progressive frames")
 	}
 }
+
+func TestNativeStoryOpeningFrameIndexPreservesFiveStageOrder(t *testing.T) {
+	want := []int{0, 0, 1, 2, 3, 4, 4, 4}
+	for tick, expected := range want {
+		if got := nativeStoryOpeningFrameIndex(tick, 5); got != expected {
+			t.Fatalf("opening tick%d=%d, want %d", tick, got, expected)
+		}
+	}
+	if got := nativeStoryOpeningFrameIndex(0, 0); got != -1 {
+		t.Fatalf("missing opening frames returned index %d", got)
+	}
+}

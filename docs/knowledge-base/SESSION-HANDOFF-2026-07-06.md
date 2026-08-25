@@ -6609,3 +6609,18 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 本輪曾嘗試重播 ch02 物品轉移取消原版畫面；補丁後 EXE 雜湊與既有 oracle 完全
   一致，但目前唯一 SAV／TMP 已無法在120秒內抵達城鎮。依有界停止原則未修改存檔、
   未注入背包，也未把重製端既有 empty/full/self/cancel E1 冒稱原版 E2。
+
+## 2026-08-25：ch24_post 五階段原生開框 E1
+
+- 沿用 `sub_165AC` 已保存的五次 `sub_168B6` 直接呼叫，將
+  `4×2→8×3→12×4→16×5→19×5` 做成 caller-specific indexed opening；沒有
+  重解基本 renderer，也沒有把 opening 倒放冒充尚未證實的 closing。
+- 五張格網在公開前整批預建，最後才交給既有 portrait＋逐字 frame0。共用七個
+  重製更新週期依序消費五張並重複末張，明示為時序近似而非 DOS tick parity。
+- Docker 聚焦回歸通過原始 FDOTHER #5 資產的五階段擴張、caller-owned background
+  不變、runtime frame index與逐字輸入 gate。ch24剩餘畫面缺口收斂為 closing、嘴型
+  與一般玩家同狀態 E2。
+- 第一次完整套件回歸在 Oto／ALSA 列舉容器音訊裝置時發生原生崩潰，堆疊不在本輪
+  程式。以同一映像、同一測試命令加入容器內 `pcm/ctl type null` 的
+  `ALSA_CONFIG_PATH` 後乾淨重跑，`internal/campaign` 與 `cmd/fd2` 均通過；此項歸類
+  為驗證環境設定，不是產品缺陷。

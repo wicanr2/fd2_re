@@ -13,6 +13,7 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	g.nativeDialogueFrames = nil
 	g.nativeDialogueProgressive = nil
 	g.nativeDialogueProgress = -1
+	g.nativeDialogueOpening = nil
 	if len(g.dialog) == 0 || g.dialog[len(g.dialog)-1].NativeDialogue == nil {
 		return nil
 	}
@@ -63,6 +64,12 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	if dl.Upper == nil || *dl.Upper != wantUpper {
 		return errors.New("native story dialogue: control and upper/lower binding disagree")
 	}
+	opening, err := campaign.ComposeNativeStoryDialogueOpeningFrames(
+		g.nativeMapVGA, g.nativeClassUI.dialogue, layout,
+	)
+	if err != nil {
+		return err
+	}
 	frames := make([][]byte, len(layout.Pages))
 	progressive := make([][][]byte, len(layout.Pages))
 	for page := range layout.Pages {
@@ -77,7 +84,22 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	}
 	g.nativeDialogueFrames = frames
 	g.nativeDialogueProgressive = progressive
+	g.nativeDialogueOpening = opening
 	return nil
+}
+
+func nativeStoryOpeningFrameIndex(tick, count int) int {
+	if count <= 0 {
+		return -1
+	}
+	index := tick - 1
+	if index < 0 {
+		index = 0
+	}
+	if index >= count {
+		index = count - 1
+	}
+	return index
 }
 
 func (g *Game) stepNativeStoryDialogueProgress() {
@@ -98,6 +120,13 @@ func (g *Game) drawNativeStoryDialogue(screen *ebiten.Image) bool {
 	}
 	// 本切片只呈現已證實的穩定頁。原生開／關框插值尚未實作時，保持 indexed
 	// 地圖可見，避免短暫閃出正規化對話介面。
+	if g.dlgPhase == 2 {
+		index := nativeStoryOpeningFrameIndex(g.dlgT, len(g.nativeDialogueOpening))
+		if index >= 0 {
+			g.presentNativeClassFrame(screen, g.nativeDialogueOpening[index])
+		}
+		return true
+	}
 	if g.dlgPhase != 0 {
 		return true
 	}

@@ -6089,6 +6089,18 @@ glyph。頁面完成前 Enter 不得換頁或換句；進到下一頁或下一�
 中間幀沒有由本切片取得新證據，仍不得接入此 caller-specific owner；穩定頁與逐字
 序列提升為 `RUNTIME-E1`，一般玩家同狀態比較仍另列。
 
+### ch24_post 五階段開框規格（2026-08-25）
+
+沿用 `sub_165AC` 已證實的五次 `sub_168B6` 參數，依序從 caller-owned indexed
+背景建立 `4×2、8×3、12×4、16×5、19×5` 格網，固定 `(x=5,y=2/112)` 與
+FDOTHER #5。這五張 opening frame 不猜測中間 portrait；完整19×5發布後才交給
+既有 portrait＋逐字 frame0。所有五張須在第一張公開前完整預建，缺 cell、背景、
+layout 或 bounds 時整句失敗即關閉。
+
+目前共用 `dlgPhase` 有七個重製更新週期；ch24 caller 只保證依序至少顯示上述五張，
+多出的更新重複最後一張，不宣稱 DOS tick。closing 不得倒放 opening，仍保持未接；
+嘴型亦不屬本規格。
+
 ## 2026-08-25：終局三筆音訊 cue 的具型別消費規格
 
 主證據為 [`fd2_ending_audio_ida.txt`](../data/ida/fd2_ending_audio_ida.txt)。這個

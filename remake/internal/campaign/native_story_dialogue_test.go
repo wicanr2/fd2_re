@@ -229,6 +229,21 @@ func TestComposeNativeStoryDialoguePageUsesOriginalIndexedAssets(t *testing.T) {
 	if string(progressive[0]) == string(progressive[len(progressive)-1]) {
 		t.Fatal("progressive sequence did not publish any visible glyph")
 	}
+	opening, err := ComposeNativeStoryDialogueOpeningFrames(background, cells, layout)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(opening) != len(nativeStoryOpeningGridSizes) {
+		t.Fatalf("opening frames=%d, want %d", len(opening), len(nativeStoryOpeningGridSizes))
+	}
+	for i := 1; i < len(opening); i++ {
+		if string(opening[i-1]) == string(opening[i]) {
+			t.Fatalf("opening grid stage %d did not expand", i)
+		}
+	}
+	if background[nativeStoryUpperFrameY*320+5] != 7 {
+		t.Fatal("native story opening mutated its caller-owned background")
+	}
 	bad := *layout
 	bad.Pages = [][]string{{"🙂"}}
 	if _, err := ComposeNativeStoryDialoguePage(background, cells, portraits[0], font, index, &bad, 0); err == nil {

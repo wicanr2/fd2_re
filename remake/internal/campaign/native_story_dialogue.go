@@ -21,6 +21,43 @@ const (
 	nativeStoryMaximumLineGlyph = 13
 )
 
+var nativeStoryOpeningGridSizes = [...][2]int{{4, 2}, {8, 3}, {12, 4}, {16, 5}, {19, 5}}
+
+// ComposeNativeStoryDialogueOpeningFrames 保存 sub_165AC 五次 sub_168B6 的
+// columns/rows 順序。這些幀只有 FDOTHER #5 格網；portrait 與文字由後續
+// progressive frame0 接手，避免猜測中間 portrait 時序。
+func ComposeNativeStoryDialogueOpeningFrames(
+	background []byte,
+	dialogueCells []fdother.RawCell,
+	layout *NativeDialogueLayout,
+) ([][]byte, error) {
+	if len(background) != 320*200 || len(dialogueCells) <= 17 {
+		return nil, errors.New("campaign: native story dialogue opening assets are invalid")
+	}
+	if err := layout.Validate(); err != nil {
+		return nil, fmt.Errorf("campaign: %w", err)
+	}
+	frameY := nativeStoryLowerFrameY
+	if layout.Control == "FFEF" || layout.Control == "FFED" {
+		frameY = nativeStoryUpperFrameY
+	}
+	frames := make([][]byte, 0, len(nativeStoryOpeningGridSizes))
+	for _, size := range nativeStoryOpeningGridSizes {
+		frame := append([]byte(nil), background...)
+		placements, err := fdother.PlanNativeDialogueFrameGrid(320, 5, frameY, size[0], size[1])
+		if err != nil {
+			return nil, err
+		}
+		for _, placement := range placements {
+			if err := dialogueCells[placement.ResourceIndex].BlitOpaqueAtOffset(frame, 320, placement.DestinationByte); err != nil {
+				return nil, err
+			}
+		}
+		frames = append(frames, frame)
+	}
+	return frames, nil
+}
+
 // ComposeNativeStoryDialoguePage 使用已證實的 FDOTHER #5 格網、DATO 頭像、
 // FDOTHER #4 字模與具型別 FFFE／FFFD 投影，建立一頁穩定的 0x15F84 故事畫面。
 // 開關框插值與逐字時序刻意不納入這個穩定頁 compositor。

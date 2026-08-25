@@ -170,6 +170,7 @@ type Game struct {
 	nativeDialogueFrames       [][]byte        // caller-specific 0x15F84 stable indexed pages
 	nativeDialogueProgressive  [][][]byte      // 每頁 frame0框／頭像，之後逐字形發布
 	nativeDialogueProgress     int             // 目前頁已發布的逐字 frame；-1尚未開始
+	nativeDialogueOpening      [][]byte        // caller-specific sub_165AC五階段格網
 	fade                       *storyFade      // 場景淡出/淡入轉場(doc46 §5.2)
 	transitionReveal           *transitionRevealJob
 	indexedTransition          *nativeIndexedTransitionJob

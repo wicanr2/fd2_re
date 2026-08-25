@@ -111,6 +111,18 @@ frame」正式消費端。它仍不證明每個 frame 的 DOS wall-clock、Ebite
 更新週期、嘴型 frame、`sub_165AC／sub_16B43` 全部開關框中間畫面或一般玩家 E2；
 這些限制不得由逐字順序外推。
 
+## 2026-08-25：`sub_165AC` 五階段開框的可消費邊界
+
+本文件前段已保存 `sub_165AC` 的五次直接 `sub_168B6` 呼叫：`(4,2)`、`(8,3)`、
+`(12,4)`、`(16,5)`、`(19,5)`，共同使用 caller 的 `(x=5,y=2/112)`、stride320
+與 FDOTHER #5。這五組 columns／rows 及順序為**已證實**；每一階段以同一保存的
+VGA source 建立格網，最後一階段等於既有穩定頁的完整19×5框。
+
+ch24 caller 可據此發布五張無文字的 indexed opening frames，之後才進入既有
+portrait＋逐字序列。Ebiten 如何把五張來源幀分配到60 Hz更新仍只是重製近似；
+`sub_16B43` closing、portrait 在每個開框中間階段是否可見及嘴型仍未由本段提升，
+不得反向播放 opening 冒充 closing。
+
 ## 可重生命令
 
 ```text
