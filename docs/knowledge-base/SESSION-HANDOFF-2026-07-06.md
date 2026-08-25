@@ -6564,3 +6564,17 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   4GB／2 CPU、Xvfb trap與明確 `/tmp` Go build cache 的 Docker 容器通過。這關閉
   raw cue 的 `RUNTIME-E1`，不宣稱兩 call 之間的 DOS wall-clock、逐音訊 E2、
   `0x2C548→0x2C2A6` call-time records／globals、3% RNG或原版終端按鍵。
+
+## 2026-08-25：終局 `0x2939D` 3%外層斷言勘誤
+
+- 合法 IDA Pro 9.4 與 Docker Capstone 5.0.3 重新閉合 `sub_2939D`：
+  `0x2946A..0x29480` 的 `%100 < 3` 只把外層預算由1改為2，不足以證明穩定重播。
+- 終局 `[0x540FF] != 0` 會跳過 `0x294A9` 的 `var_4C` 初始化；但 raw `+4 != 0`
+  時，`0x29742` 仍以該區域值寫 `var_44`，`0x2975A` 仍寫 record `+0x40`，
+  `0x29B4C` 再依 `var_44` 取消或保留第二輪。舊「非零分支不寫HP」斷言撤回。
+- 第二次配對在 `[0x540FF] == 1` 的最後效果幀由 `0x29B27..0x29B47`
+  直接返回，早於外層第二輪 consumer。第一次配對是否因殘留 stack 值重播屬
+  未知／未定義實作殘留，不是可編輯資料契約。
+- 正式 `MontageTailPlayer` 維持有界、決定性的兩次配對，不模擬未初始化堆疊（stack）、
+  不額外改 party HP，也不新增隱藏 RNG owner。這項限制已從交付阻擋降為非阻擋
+  原版考古；後續歷史段落的「3% RNG重播待接」由本勘誤取代。

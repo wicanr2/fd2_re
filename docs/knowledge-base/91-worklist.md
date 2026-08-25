@@ -20,10 +20,16 @@
 | 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 敵方ID0／4、玩家／敵方ID1／2／3／5／6／7／8／9／10／11／12、玩家／敵方IDs17–22、玩家25–27及敵方26／27均已有caller-specific indexed owner；受限class19玩家ID32–35亦達`RUNTIME-E1`。ID4現使用#22／#23／#85逐Draw發布六段HP；敵方ID0..8也已全部改依raw `+6` selector與選定目的格重建目標陣列，不再錯走玩家confirmed-cursor admission。同時修正ID4／5實檔`EffectMode=1` gate。`0x15055`也已保存並消費`0x1567E` winner的完整raw target list；正常正分item type5／13／20／21／24的數值與caller-specific indexed演出均達`RUNTIME-E1`：分別走`0x211A4`、`0x1CD17`、`0x1CAC7`，具Draw發布與完整回復邊界。玩家正常item38／79也已共用後兩個owner，不再於確認時同步跳過畫面。33圖全量mask稽核再證實，排除mode8後的正常非玩家command producer只有ID0–7、9–18、20–22、26、27，全部已有indexed owner；唯一ID30位於mode8，不進scorer。敵方25缺正常AI producer，維持失敗即關閉；ID4無已證實正常玩家producer；28／30／31沒有已證實正常玩家取得來源。 | 已閉合正式owner不重做；物品演出與正常非玩家command producer不再列E1缺口。下一步只補狀態高階名稱與代表性同狀態E2 |
 | 4a | 玩家／敵方指令 `28／29／31` 原版演出 | `RE-CLOSED`（caller分歧與取得路徑窄稽核）／`RUNTIME-E1`：29玩家正式confirm已接多目標indexed owner與整批回復。28／31的固定learn table與32筆player defaults均無command bit，已知mask OR writer又只有level-up direct caller；因此「無已證實一般玩家取得來源」為強推論，不再把尋找selector列成交付阻擋，也不宣稱死碼。現有章節原始遮罩亦未找到ID29敵方producer，不猜接敵方owner | 下一個可驗收結果是command29未修改玩家同狀態逐幀／音訊E2。28／31只在動態原版出現command bit、找到新mask writer或同actor raw `+7` provenance時重開；敵方29只在出現正常producer時重開 |
 | 5 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial；ch02賣出成功／加款／返回已有九組AE=0。獨立裝備service2與物品轉移service3也都有正常route-patched子面板證據；service3更已完成索爾短劍→悠妮、返回loop、雙方交易後物品清單及跨`town_ch02`重製JSON冷讀檔。物品清單舊記AE=2已定位為店員背景動畫`(175,90)/(176,90)`兩點相位差，靜態清單內容在該狀態一致；其他可見內容／幾何一致，但動畫相位未同步，只到partial E2。service2交易已改為私有 unit→raw裝備／重算→完整panel重建→一次發布，palette深層失敗保持roster／能力／panel原子不變，達`RUNTIME-E1`；目前原版CONTINUE快照只進戰場名冊／狀態面板，故mutation／restore E2未冒稱完成。目的名冊取消已接正式五幀收合→來源提示六幀展開，取消不改角色／金幣；取消後self-transfer亦由正式raw transaction消費，兩者達`RUNTIME-E1`。標題 LOAD 的正式確認 owner 現以 checksum-valid 合成原版槽還原 `town_ch02`／typed party／gold／HUD gate，竄改 envelope 原子留在選槽，亦為`RUNTIME-E1`。裝備收件者另以六人typed party沿正式menu→purchase→Yes production input完成三列scroll、滿欄／無合適角色原子返回與正常裝備／扣款`RUNTIME-E1`。`ch24_post`兩筆文字 lookup 的18句上下框、`FFFE/FFFD` pages、原版 indexed框／頭像／字模 stable-page renderer與正式 town26／祕密商店 runner均達caller-specific `RUNTIME-E1`。2026-08-23 已移除標題畫面非原版 F2 常駐提示，並讓開場按鍵只中斷原始旗標允許略過的當前幕；F2功能仍保留 | ch24只剩逐字、嘴型、開關框中間幀與未修改同狀態E2；其他故事 caller 仍需各自 binding。商店下一步是service3 empty／full與self／destination-cancel原版畫面；service2尚需原版mutation／restore畫面；LOAD仍需未修改有效槽E2。 |
-| 6 | 原版終局精確鏈 | `RUNTIME-E1`：正式 `battle_ch30→ending` 現消費來源約束前綴／角色／20段尾段並停在 #59；可選隊伍最終狀態循環已接。三筆具位址音訊 cue 也改由 typed `runtime_stage` 正式消費，不再硬寫 track；80個實際 FIGANI 的 header-zero `0x2939D` raw `+4..+7`、base scheduler 與兩次配對已接；未達 E2 | 以動態 watchpoint／未修改玩家路徑閉合 `0x2C548→0x2C2A6` records／globals 連續性、3% RNG重播、精確音訊時序／原版終端輸入、`0x2BCE5` 原版 owner及第30戰 E2；不重做定格、回顧循環或三筆 raw cue |
+| 6 | 原版終局精確鏈 | `RUNTIME-E1`：正式 `battle_ch30→ending` 現消費來源約束前綴／角色／20段尾段並停在 #59；可選隊伍最終狀態循環已接。三筆具位址音訊 cue 也改由 typed `runtime_stage` 正式消費，不再硬寫 track；80個實際 FIGANI 的 header-zero `0x2939D` raw `+4..+7`、base scheduler 與兩次配對已接；3%外層預算已證實依賴非零分支未初始化區域值，降為非阻擋考古限制；未達 E2 | 以動態 watchpoint／未修改玩家路徑閉合 `0x2C548→0x2C2A6` records／globals 連續性、精確音訊時序／原版終端輸入、`0x2BCE5` 原版 owner及第30戰 E2；不重做定格、回顧循環、未初始化堆疊實作殘留或三筆 raw cue |
 | 7 | 三平台打包與推廣片 | 核心 gate 未關閉；全戰役長程遊玩已改由使用者人工進行，不再列入代理程式工作佇列 | 戰鬥指令／敵方AI、終局與代表性介面切片完成後，進行三平台啟動／存檔／音訊抽測與推廣片製作 |
 
 ### 阻擋完整 remake 的剩餘工作
+
+> **2026-08-25 終局3%外層勘誤：**後段歷史項目仍出現的「3% RNG重播待接」已失效。
+> IDA／Capstone 已證實終局非零分支跳過 `var_4C` 初始化，卻仍以
+> `var_4C→var_44→record+0x40` 決定外層第二輪；第二次配對又在
+> `[0x540FF]==1` 的最後效果幀提前返回。正式重製不模擬未初始化堆疊（stack）／HP 寫入，
+> 此題降為非阻擋原版考古限制。檔首有效佇列與 `58` 取代後段舊措辭。
 
 2026-08-25 戰場命中位移已閉合並接上E1錨點：IDA直接consumer證實
 `0x5255F／0x52577`是六相位水平／垂直位移，不是idle descriptor。玩家攻擊的
@@ -40,7 +46,7 @@
 1. **戰鬥交易完整性**：物品 type 5–24與ID32／33／34／35受限玩家state transaction不再列數值缺口；狀態到期owner與raw indicators已接。command28／31無已證實一般玩家取得來源，不列阻擋。33圖全量mask稽核已關閉正常非玩家command producer的E1覆蓋；剩餘阻擋是狀態高階名稱，以及代表性玩家／敵方回合的精確演出與音訊順序。
 2. **存檔與持續隊伍窄回歸**：current-runtime LOAD 與動態增援／JOIN 後的 persistent raw 同步已達窄 `RUNTIME-E1`；維持已知章節、金錢、HP／MP、物品、裝備與入隊順序的決定性邊界測試。長程漂移改由使用者人工回報後重現。
 3. **戰場與戰間介面**：修正玩家已指出的戰場排版／動畫差異，將ch02以外的早、中、晚期城鎮、商店、教會、整備與祕密商店以正常輸入抽樣。
-4. **終局與音訊**：用第30戰正常路徑驗證records／globals連續性、3% RNG、精確音訊／輸入與最後定格；已接的蒙太奇與20組尾段不再重做。
+4. **終局與音訊**：用第30戰正常路徑驗證records／globals連續性、精確音訊／輸入與最後定格；已接的蒙太奇與20組尾段不再重做。3%外層預算依賴未初始化區域值，只保留為非阻擋考古限制。
 5. **發行驗收**：核心路徑關閉後，完成Linux／Windows／macOS封包、平台實機啟動／存檔／音訊抽測，最後才製作推廣影片；全戰役遊玩問題由使用者人工回報。
 
 不阻擋交付的項目：整支 `FD2.EXE` 每個函式命名、DOS BIOS 本身、無玩家路徑的helper、以及不影響操作或可讀性的像素級微差。
@@ -454,7 +460,8 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   TAI／BG／FIGANI 與 #58，完成後保持 #59。raw 曲目、參數與順序已正式接線；精確停曲、
   呼叫間隔與畫面同步仍未閉合；素材或 raw provenance 失敗才確認回到可編輯結語。
   可達的 header-byte1-zero `0x2939D` 配對迴圈已接；仍未閉合的是 call-time
-  records／globals、3% RNG、raw terminal owner、精確音訊／輸入與一般玩家 E2。證據見
+  records／globals、raw terminal owner、精確音訊／輸入與一般玩家 E2。3%外層預算
+  依賴未初始化區域值，不接入正式重製。證據見
   [`fd2_ending_audio_ida.txt`](../data/ida/fd2_ending_audio_ida.txt)。
 - [~] **RE-AI-14EF0-RUNTIME-CONSUMER-20260810**：raw producer→`0x14EF0`
   route→command／item state-only executor 已接上；`TestAIStepConsumesVerified14EF0CommandRoute`

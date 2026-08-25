@@ -6092,3 +6092,20 @@ renderer，直到各自 caller 完成 RE／typed binding。Enter 依 typed pages
 重製端先完整建立尾段 player，再依 `tail_stop→tail_start` 順序發布兩筆 cue；這是
 原始呼叫順序的 E1 消費，不宣稱還原兩個 call site 之間的 DOS wall-clock、DAC／PIT
 或人耳逐毫秒 E2。
+
+## 2026-08-25：終局 `0x2939D` 外層 RNG 安全裁決
+
+主證據為
+[`fd2_ch29_tail_nonzero_renderer_ida.txt`](../data/ida/fd2_ch29_tail_nonzero_renderer_ida.txt)。
+`0x2946A..0x29480` 的確以 `sub_4E893() % 100 < 3` 將外層預算由1提高為2；但
+終局非零分支跳過 `var_4C` 初始化，raw `+4` consumer仍以該區域值計算
+`var_44`、寫 record `+0x40`，並由 `var_44` 決定是否保留第二輪。第二次配對又會在
+`[0x540FF] == 1` 的最後效果幀直接返回。因此「終局固定有3%機率重播一整段」不是
+可編輯資產或穩定控制流契約。
+
+正式重製端維持目前有界、決定性的兩次配對，不模擬未初始化堆疊（stack）、不額外寫入
+party HP，也不新增視覺重播或隱藏 RNG owner。這是潔淨室安全裁決，不宣稱 DOS
+逐執行個案一致。若日後為了原版考古取得呼叫入口堆疊（call-entry stack）／record 動態追蹤（trace），應
+另記為非阻擋 oracle；除非能證明玩家可見且穩定的資料契約，否則不得改變正式
+runtime。現有 `nativeRNGState` 不為這個終局實作殘留額外前進，避免把沒有後續
+玩家狀態 consumer 的未定義行為固化成引擎規則。
