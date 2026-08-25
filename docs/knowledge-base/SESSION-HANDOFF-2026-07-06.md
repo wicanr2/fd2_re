@@ -6624,3 +6624,23 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   程式。以同一映像、同一測試命令加入容器內 `pcm/ctl type null` 的
   `ALSA_CONFIG_PATH` 後乾淨重跑，`internal/campaign` 與 `cmd/fd2` 均通過；此項歸類
   為驗證環境設定，不是產品缺陷。
+
+## 2026-08-25：ch24_post 保存畫面收框與游標尾段 E1
+
+- 合法 IDA Pro 9.4 重新核對 `sub_16B43` 的五個直接 caller 與完整指令，並由
+  Docker Capstone 交叉驗證原始 bytes。`sub_165AC` 五張 snapshot 的含義與
+  `sub_16B43` 指標4→0 restore 直接證實收框為
+  `16×5→12×4→8×3→4×2→原背景`；這項勘誤取代「closing 未知」舊限制，沒有
+  用 opening 猜測性倒播。
+- 非零 `var_20` 的尾段會以 FDOTHER #5 entry0 從框邊移回可見游標。
+  `FFED/FFEC` 分別固定2／112；`FFEF/FFEE` 只在 `0x12C60` 第一張 scene-unit
+  array 找到 raw `+8==operand` 且 `0x3453E` 的 raw `+5 bit0==0` 時採2／112，
+  否則為0。runtime 現以保留的 raw `+8/+5` 重播，不從 speaker 或上下框猜測。
+- compositor 在接受最後一次 Enter 前原子預建五張 snapshot 結果與完整可選尾段；
+  caller 保留舊句直到全部 frame 發布完才 pop 並 `beatAdvance`，期間輸入無效。
+  第25戰正式勝利接縫測試逐句消費18次收框後仍完成 JOIN26／29、抵達
+  `town_ch26`；原始資產 compositor、查找失敗邊界與生命週期測試均在
+  `fd2-go-test-local` Docker／Xvfb 通過。
+- 本批仍只宣稱 caller-specific `RUNTIME-E1`；嘴型、一般玩家同狀態 DOS 畫面與
+  DOS wall-clock 保持未閉合。IDA 一次性資料庫／輸出位於
+  `/tmp/fd2-ch24-closing-ida`，交接前已刪除。

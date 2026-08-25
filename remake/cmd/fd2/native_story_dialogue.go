@@ -14,6 +14,9 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	g.nativeDialogueProgressive = nil
 	g.nativeDialogueProgress = -1
 	g.nativeDialogueOpening = nil
+	g.nativeDialogueClosing = nil
+	g.nativeDialogueClosingT = 0
+	g.nativeDialogueClosingLive = false
 	if len(g.dialog) == 0 || g.dialog[len(g.dialog)-1].NativeDialogue == nil {
 		return nil
 	}
@@ -70,6 +73,19 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	if err != nil {
 		return err
 	}
+	if !native.HasMotionTargetY {
+		return errors.New("native story dialogue: closing motion target provenance is unavailable")
+	}
+	if native.MotionTargetY != 0 && !g.hasStoryNativeMapView {
+		return errors.New("native story dialogue: closing cursor/view provenance is unavailable")
+	}
+	closing, err := campaign.ComposeNativeStoryDialogueClosingFrames(
+		g.nativeMapVGA, g.nativeClassUI.dialogue, layout, native.MotionTargetY,
+		g.storyNativeMapView.VisibleCursorX, g.storyNativeMapView.VisibleCursorY,
+	)
+	if err != nil {
+		return err
+	}
 	frames := make([][]byte, len(layout.Pages))
 	progressive := make([][][]byte, len(layout.Pages))
 	for page := range layout.Pages {
@@ -85,6 +101,7 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	g.nativeDialogueFrames = frames
 	g.nativeDialogueProgressive = progressive
 	g.nativeDialogueOpening = opening
+	g.nativeDialogueClosing = closing
 	return nil
 }
 
@@ -103,6 +120,14 @@ func nativeStoryOpeningFrameIndex(tick, count int) int {
 }
 
 func (g *Game) stepNativeStoryDialogueProgress() {
+	if g != nil && g.nativeDialogueClosingLive {
+		if g.nativeDialogueClosingT < len(g.nativeDialogueClosing)-1 {
+			g.nativeDialogueClosingT++
+			return
+		}
+		g.finishNativeStoryDialogueClosing()
+		return
+	}
 	if g == nil || g.dlgPhase != 0 || len(g.dialog) == 0 ||
 		g.dialog[len(g.dialog)-1].NativeDialogue == nil || g.dlgScrollT > 0 ||
 		g.dlgPage < 0 || g.dlgPage >= len(g.nativeDialogueProgressive) {
@@ -114,12 +139,49 @@ func (g *Game) stepNativeStoryDialogueProgress() {
 	}
 }
 
+func (g *Game) beginNativeStoryDialogueClosing() bool {
+	if g == nil || g.nativeDialogueClosingLive || len(g.dialog) == 0 ||
+		g.dialog[len(g.dialog)-1].NativeDialogue == nil || len(g.nativeDialogueClosing) == 0 {
+		return false
+	}
+	g.nativeDialogueClosingLive = true
+	// campInput 位於本幀一般 step 之後；立即發布 frame0，避免先出現空白幀。
+	g.nativeDialogueClosingT = 0
+	return true
+}
+
+func (g *Game) finishNativeStoryDialogueClosing() {
+	if g == nil || !g.nativeDialogueClosingLive {
+		return
+	}
+	g.nativeDialogueClosingLive = false
+	g.nativeDialogueClosingT = 0
+	if len(g.dialog) > 0 {
+		g.dialog = g.dialog[:len(g.dialog)-1]
+	}
+	g.dlgPage, g.dlgScrollT, g.dlgScrollFrom, g.nativeDialogueProgress = 0, 0, 0, -1
+	g.dlgShown, g.dlgPhase, g.dlgT = dlgNone, 0, 0
+	if g.camp != nil && g.camp.Node() != nil && g.camp.Node().Type == "cutscene" {
+		g.beatAdvance()
+	}
+}
+
 func (g *Game) drawNativeStoryDialogue(screen *ebiten.Image) bool {
 	if g == nil || len(g.dialog) == 0 || g.dialog[len(g.dialog)-1].NativeDialogue == nil {
 		return false
 	}
-	// 本切片只呈現已證實的穩定頁。原生開／關框插值尚未實作時，保持 indexed
-	// 地圖可見，避免短暫閃出正規化對話介面。
+	if g.nativeDialogueClosingLive {
+		index := g.nativeDialogueClosingT
+		if index >= len(g.nativeDialogueClosing) {
+			index = len(g.nativeDialogueClosing) - 1
+		}
+		if index >= 0 {
+			g.presentNativeClassFrame(screen, g.nativeDialogueClosing[index])
+		}
+		return true
+	}
+	// caller-specific 開框、穩定頁與收框都只呈現完整預建的 indexed frame；
+	// 任一階段缺失時不回退到正規化對話介面。
 	if g.dlgPhase == 2 {
 		index := nativeStoryOpeningFrameIndex(g.dlgT, len(g.nativeDialogueOpening))
 		if index >= 0 {

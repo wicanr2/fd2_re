@@ -144,7 +144,9 @@ type Game struct {
 	nativeJoinBases            campaign.NativeJoinBaseTable
 	hasNativeJoinBases         bool
 	nativeJoinItemEffectRows   []byte
-	handlerChapter             int             // 原版 [0x53c03]；set_chapter 與無立即數 LOADCH 的 resource chapter
+	handlerChapter             int // 原版 [0x53c03]；set_chapter 與無立即數 LOADCH 的 resource chapter
+	handlerInheritedMapView    battle.NativeMapViewState
+	hasHandlerInheritedMapView bool
 	storyWalks                 []*storyWalkJob // 場景走位動畫佇列(doc46 §5.3);逐幀推進、完成後移除
 	storyAutoAdvance           int             // story 節點無對白時的自動轉場倒數幀(doc46 行軍蒙太奇,0=不自動)
 	storyView                  *ebiten.Image   // story 場景離屏世界層(320×200,放大 storyZoom 倍貼上畫布;2-1 原版取景)
@@ -171,7 +173,10 @@ type Game struct {
 	nativeDialogueProgressive  [][][]byte      // 每頁 frame0框／頭像，之後逐字形發布
 	nativeDialogueProgress     int             // 目前頁已發布的逐字 frame；-1尚未開始
 	nativeDialogueOpening      [][]byte        // caller-specific sub_165AC五階段格網
-	fade                       *storyFade      // 場景淡出/淡入轉場(doc46 §5.2)
+	nativeDialogueClosing      [][]byte        // caller-specific sub_16B43 snapshot restore＋可選游標尾段
+	nativeDialogueClosingT     int
+	nativeDialogueClosingLive  bool
+	fade                       *storyFade // 場景淡出/淡入轉場(doc46 §5.2)
 	transitionReveal           *transitionRevealJob
 	indexedTransition          *nativeIndexedTransitionJob
 	nativeHealPresentation     *nativeCommandHealPresentationJob
@@ -1448,6 +1453,10 @@ func (g *Game) beatStart(b campaign.Beat) {
 		}
 		if b.RuntimeContext.StoryViewport {
 			g.storyBG = true
+			if g.hasHandlerInheritedMapView {
+				g.storyNativeMapView = g.handlerInheritedMapView
+				g.hasStoryNativeMapView = true
+			}
 		}
 		g.beatAdvance()
 	case "unit_present":
@@ -2121,16 +2130,60 @@ func (g *Game) resolveCampaignDialogLine(line campaign.Line, upperOverride *bool
 	var native *battle.NativeDialogueLayout
 	layout := nativeOverride
 	if layout != nil {
+		motionTargetY, err := g.resolveNativeStoryDialogueMotionTarget(layout)
+		if err != nil {
+			return battle.DialogLine{}, err
+		}
 		native = &battle.NativeDialogueLayout{
 			SourceDAT: layout.SourceDAT, StringIndex: layout.StringIndex,
 			Utterance: layout.Utterance, Control: layout.Control, Operand: layout.Operand,
-			Pages: make([][]string, len(layout.Pages)),
+			Pages: make([][]string, len(layout.Pages)), MotionTargetY: motionTargetY, HasMotionTargetY: true,
 		}
 		for i := range layout.Pages {
 			native.Pages[i] = append([]string(nil), layout.Pages[i]...)
 		}
 	}
 	return battle.DialogLine{Speaker: speaker, Text: line.Text, Upper: upper, NativeDialogue: native}, nil
+}
+
+// resolveNativeStoryDialogueMotionTarget 重播 sub_15F84 的 var_20 writer。
+// FFED/FFEC 是 caller 常數；FFEF/FFEE 只在 sub_12C60 的第一張0x50-byte
+// scene-unit array 找到 raw +8，且 sub_3453E 證實的 raw +5 bit0 為0時命中。
+func (g *Game) resolveNativeStoryDialogueMotionTarget(layout *campaign.NativeDialogueLayout) (int, error) {
+	switch layout.Control {
+	case "FFED":
+		return 2, nil
+	case "FFEC":
+		return 112, nil
+	case "FFEF", "FFEE":
+	default:
+		return 0, fmt.Errorf("native story dialogue: unsupported motion control %q", layout.Control)
+	}
+	units := make([]*battle.Unit, 0, len(g.storyActors))
+	if g.st != nil {
+		units = append(units, g.st.Units...)
+	} else {
+		for index := range g.storyActors {
+			units = append(units, &g.storyActors[index])
+		}
+	}
+	for index, unit := range units {
+		if unit == nil || !unit.HasNativeRecordByte5 ||
+			(!unit.HasNativeRecordByte8 && !unit.HasNativeIdentity) {
+			return 0, fmt.Errorf("native story dialogue: scene unit %d lacks 0x12C60 raw +8/+5 provenance", index)
+		}
+		rawIdentity := unit.NativeIdentity
+		if unit.HasNativeRecordByte8 {
+			rawIdentity = int(unit.NativeRecordByte8)
+		}
+		if rawIdentity == layout.Operand && unit.NativeRecordByte5&1 == 0 {
+			if layout.Control == "FFEF" {
+				return 2, nil
+			}
+			return 112, nil
+		}
+	}
+	return 0, nil
 }
 
 func (g *Game) evalBeatCondition(condition *campaign.BeatCondition) (bool, error) {
@@ -2640,6 +2693,15 @@ func (g *Game) enterNode() {
 		return
 	}
 	g.captureNativeMapHUDPersistence()
+	// 原版故事 renderer 與戰場共用 [0x53AB9]/[0x53ABD] 等視圖全域；在戰果
+	// handler 清除 battle.State 前保存該 raw carrier，只有明示 story_viewport
+	// 的 runtime_context 才能領回，避免一般故事節點繼承陳舊視圖。
+	g.hasHandlerInheritedMapView = g.st != nil && g.st.HasNativeMapViewState
+	if g.hasHandlerInheritedMapView {
+		g.handlerInheritedMapView = g.st.NativeMapViewState
+	} else {
+		g.handlerInheritedMapView = battle.NativeMapViewState{}
+	}
 	g.resetActionOverlayLifecycle()
 	g.nativeEnding = nil
 	g.endingNotice = ""
@@ -3899,7 +3961,20 @@ func (g *Game) campInput() bool {
 		// BeatRunner 驅動:目前這一拍是不是「等對白播完」全看 g.dialog 是否非空
 		// (只有 dialog beat 會填它),其餘拍(pan/walk/act/fade/delay)Enter 無作用,
 		// 交給 Update 各自的計時/佇列機制推進,不在這裡搶著 advance。
+		if enter && len(g.dialog) > 0 && g.nativeDialogueClosingLive {
+			return true
+		}
 		if enter && len(g.dialog) > 0 {
+			current := g.dialog[len(g.dialog)-1]
+			if current.NativeDialogue != nil && g.dlgPage+1 >= dlgPageCount(current) &&
+				g.dlgPage >= 0 && g.dlgPage < len(g.nativeDialogueProgressive) &&
+				len(g.nativeDialogueProgressive[g.dlgPage]) > 0 &&
+				g.nativeDialogueProgress >= len(g.nativeDialogueProgressive[g.dlgPage])-1 {
+				if !g.beginNativeStoryDialogueClosing() {
+					g.loadErr = "native story dialogue: verified closing frames are unavailable"
+				}
+				return true
+			}
 			if g.dlgAdvance() && len(g.dialog) == 0 { // 翻頁優先;翻完換句、句盡才進下一拍
 				g.beatAdvance()
 			}

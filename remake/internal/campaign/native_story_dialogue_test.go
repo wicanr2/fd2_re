@@ -147,7 +147,7 @@ func TestComposeNativeStoryDialoguePageUsesOriginalIndexedAssets(t *testing.T) {
 		t.Fatal(err)
 	}
 	cells := make([]fdother.RawCell, 20)
-	for index := 1; index <= 19; index++ {
+	for index := 0; index <= 19; index++ {
 		cells[index], err = fdother.ParseLMI1RawEntry(resource5, index)
 		if err != nil {
 			t.Fatal(err)
@@ -243,6 +243,22 @@ func TestComposeNativeStoryDialoguePageUsesOriginalIndexedAssets(t *testing.T) {
 	}
 	if background[nativeStoryUpperFrameY*320+5] != 7 {
 		t.Fatal("native story opening mutated its caller-owned background")
+	}
+	closing, err := ComposeNativeStoryDialogueClosingFrames(background, cells, layout, 0, 0, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(closing) != 5 || string(closing[0]) != string(opening[3]) ||
+		string(closing[1]) != string(opening[2]) || string(closing[2]) != string(opening[1]) ||
+		string(closing[3]) != string(opening[0]) || string(closing[4]) != string(background) {
+		t.Fatal("sub_16B43 snapshot restore order differs from 16x5..background")
+	}
+	motion, err := ComposeNativeStoryDialogueClosingFrames(background, cells, layout, 2, 2, 3)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(motion) != 5+2+3+1 || string(motion[len(motion)-1]) == string(background) {
+		t.Fatalf("closing motion frames=%d or final cursor overlay is missing", len(motion))
 	}
 	bad := *layout
 	bad.Pages = [][]string{{"🙂"}}

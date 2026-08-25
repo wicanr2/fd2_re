@@ -123,6 +123,68 @@ portrait＋逐字序列。Ebiten 如何把五張來源幀分配到60 Hz更新仍
 `sub_16B43` closing、portrait 在每個開框中間階段是否可見及嘴型仍未由本段提升，
 不得反向播放 opening 冒充 closing。
 
+## 2026-08-25 勘誤：`sub_16B43` 保存畫面的收框與可選移動尾段
+
+前段把 `sub_16B43` 整體列為未知已被本輪 IDA 直接指令與 Capstone 原始 bytes
+推翻。輸入、雜湊、工具與位址空間同本文件「版本與工具」；本輪一次性 IDA
+資料庫只寫入 `/tmp/fd2-ch24-closing-ida`，沒有改名或覆寫原始定位。
+
+`sub_15F84` 對 `sub_16B43` 只有五個直接呼叫：`0x1616C`、`0x16256`、
+`0x1638F`、`0x1640B`、`0x164CF`。每一處都先呼叫 `sub_16559(0)` 與
+`sub_16C57(0)`，再依序傳入 `var_1C`（`sub_165AC` 回傳的五指標陣列）及
+`var_20`。這項 caller／consumer 關係為**已證實**。
+
+`sub_165AC` 在每次擴框前各保存一張 `310×86`、stride320 的 VGA strip；五張
+依序是原背景、4×2後、8×3後、12×4後、16×5後。`sub_16B43` 的
+`0x16B54..0x16B9A` 從指標4倒序呼叫 `sub_15E71`，因此實際可見收框狀態固定為：
+
+```text
+16×5 → 12×4 → 8×3 → 4×2 → 原背景
+```
+
+前四次 restore 後各呼叫 `delay(10)`；最後原背景 restore 後不等待。
+`sub_15E71` 直接以 `sub_4E92C(snapshot,VGA,320)` 復原並釋放 snapshot，故這不是
+把開框參數猜測性倒播，而是**已證實**的 caller-owned framebuffer snapshot
+消費順序。portrait／文字在第一個 restore 即隨 19×5 完整框一併消失。
+
+若 `var_20==0`，`0x16B9D..0x16BA2` 立即返回。非零時另有一段**已證實**的
+游標／視圖移動尾段；它不是五張 snapshot 的一部分：
+
+```text
+cursorX = 24*[0x53AB9]+4
+cursorY = 24*[0x53ABD]+4
+total   = [0x53AB9]+[0x53ABD]
+for i=0..total:
+    x = 5 - trunc((5-cursorX)*i/total)
+    y = var_20 - trunc((var_20-cursorY)*i/total)
+```
+
+每一步以 FDOTHER #5 LMI directory `word[+6]`（entry0）交給 `sub_15E9E` 疊在
+VGA `(x,y)`，`delay(10)` 後由 `sub_15E71` 復原；`total==0` 時直接返回。
+`[0x53AB9]/[0x53ABD]` 只沿用既有已證實的 camera-relative visible cursor
+X／Y 語意。本段的座標、entry、迴圈邊界及 restore 順序均為**已證實**；60 Hz
+應重複幾幀仍只可標成重製近似。
+
+`var_20` writer 亦由 caller 直接指令分開保存：`FFED=2`、`FFEC=112`；
+`FFEF/FFEE` 先呼叫 `sub_12C60(operand)`，只有回傳非 `-1` 才分別寫2／112，
+否則寫0。重製端不得僅由上／下框、靜態 speaker 或角色名稱猜測查找命中；必須
+保留 `0x12C60` 的 runtime identity lookup provenance，無法重建時失敗即關閉。
+
+本輪同一 IDA 9.4 資料庫再核對 `0x12C60..0x12CEA` 與其直接 consumer
+`0x3453E..0x34565`：第一張 `[0x53A45]`、count `[0x53BEB]`、stride0x50 的表
+以 record `+8` 比對 operand，並且只有 `record[+5]&1==0` 才回傳該索引；第二張
+`[0x53BF7]` 即使命中也只保存 pointer，函式仍回傳 `-1`。因此移動尾段的命中
+契約可精確縮成「目前已 materialize 第一張 scene-unit array 中，第一筆
+`NativeIdentity==operand` 且 raw byte5 bit0 為0的 record」。這兩個函式的原始
+名稱、位址與欄位偏移均保留；把 bit0 描述為 active／inactive 只沿用既有 runtime
+投影，不取代原始 byte 判斷。
+
+證據等級限制：五張收框、可選尾段公式及四控制碼的 `var_20` writer 已達
+**已證實**；ch24 一般玩家同狀態畫面、DOS wall-clock 與 `0x3453E` 額外過濾器
+的高階語意仍未知。`0x3453E` 的高階玩法名稱仍不另作推論，但其 `record[+5]&1`
+consumer 已閉合。舊的「closing 未知／不得反向播放」警告只保留其歷史原因，
+由本勘誤取代，不得再次用來重開相同 RE。
+
 ## 可重生命令
 
 ```text
@@ -131,6 +193,9 @@ IDA：tools/ida_probe_functions.py
 
 IDA：tools/ida_dump_pseudocode.py
   FD2_IDA_ADDRESSES="15F84 165AC 168B6"
+
+IDA：tools/ida_probe_functions.py
+  FD2_IDA_ADDRESSES="0x15F84 0x15E71 0x15E9E 0x165AC 0x16B43"
 
 Capstone：
   tools/disasm_le.py FD2.EXE range 0x15f84 0x164e8

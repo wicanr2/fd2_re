@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
 
 func TestNativeStoryDialogueProgressBlocksInputUntilPageComplete(t *testing.T) {
@@ -41,6 +42,49 @@ func TestNativeStoryDialogueProgressBlocksInputUntilPageComplete(t *testing.T) {
 	}
 	if !g.dlgAdvance() || len(g.dialog) != 0 || g.nativeDialogueProgress != -1 {
 		t.Fatalf("completed page did not advance/reset: progress=%d dialog=%d", g.nativeDialogueProgress, len(g.dialog))
+	}
+}
+
+func TestNativeStoryDialogueMotionTargetReplays12C60ActiveRawLookup(t *testing.T) {
+	layout := &campaign.NativeDialogueLayout{Control: "FFEE", Operand: 21}
+	g := &Game{storyActors: []battle.Unit{
+		{NativeRecordByte8: 21, HasNativeRecordByte8: true, NativeRecordByte5: 1, HasNativeRecordByte5: true},
+		{NativeRecordByte8: 21, HasNativeRecordByte8: true, NativeRecordByte5: 0, HasNativeRecordByte5: true},
+	}}
+	if got, err := g.resolveNativeStoryDialogueMotionTarget(layout); err != nil || got != 112 {
+		t.Fatalf("FFEE active lookup target=%d err=%v, want 112", got, err)
+	}
+	g.storyActors[1].NativeRecordByte5 = 1
+	if got, err := g.resolveNativeStoryDialogueMotionTarget(layout); err != nil || got != 0 {
+		t.Fatalf("FFEE inactive-only lookup target=%d err=%v, want 0", got, err)
+	}
+	g.storyActors[1].HasNativeRecordByte5 = false
+	if _, err := g.resolveNativeStoryDialogueMotionTarget(layout); err == nil {
+		t.Fatal("missing raw +5 provenance did not fail closed")
+	}
+	if got, err := g.resolveNativeStoryDialogueMotionTarget(&campaign.NativeDialogueLayout{Control: "FFED"}); err != nil || got != 2 {
+		t.Fatalf("FFED direct target=%d err=%v, want 2", got, err)
+	}
+}
+
+func TestNativeStoryDialogueClosingKeepsOldLineUntilAllFramesPublished(t *testing.T) {
+	g := &Game{
+		dialog:                []battle.DialogLine{{NativeDialogue: &battle.NativeDialogueLayout{Pages: [][]string{{"甲"}}}}},
+		nativeDialogueClosing: [][]byte{{1}, {2}, {3}},
+		dlgShown:              1,
+	}
+	if !g.beginNativeStoryDialogueClosing() || len(g.dialog) != 1 || g.nativeDialogueClosingT != 0 {
+		t.Fatal("closing did not retain its caller-owned old line")
+	}
+	for want := 1; want < 3; want++ {
+		g.stepNativeStoryDialogueProgress()
+		if !g.nativeDialogueClosingLive || g.nativeDialogueClosingT != want || len(g.dialog) != 1 {
+			t.Fatalf("closing stage%d state live=%v tick=%d dialog=%d", want, g.nativeDialogueClosingLive, g.nativeDialogueClosingT, len(g.dialog))
+		}
+	}
+	g.stepNativeStoryDialogueProgress()
+	if g.nativeDialogueClosingLive || len(g.dialog) != 0 || g.dlgShown != dlgNone {
+		t.Fatalf("closing completion live=%v dialog=%d shown=%d", g.nativeDialogueClosingLive, len(g.dialog), g.dlgShown)
 	}
 }
 

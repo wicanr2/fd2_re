@@ -6098,8 +6098,43 @@ FDOTHER #5。這五張 opening frame 不猜測中間 portrait；完整19×5發�
 layout 或 bounds 時整句失敗即關閉。
 
 目前共用 `dlgPhase` 有七個重製更新週期；ch24 caller 只保證依序至少顯示上述五張，
-多出的更新重複最後一張，不宣稱 DOS tick。closing 不得倒放 opening，仍保持未接；
-嘴型亦不屬本規格。
+多出的更新重複最後一張，不宣稱 DOS tick。嘴型不屬本規格。
+
+### ch24_post 保存畫面收框規格（2026-08-25）
+
+同一主證據的 `0x16B43..0x16C57` 已推翻「closing 未知」舊限制。正式 compositor
+不得從 opening frame 就地倒序，而須依 `sub_165AC` 的五個 snapshot 含義建立
+`16×5、12×4、8×3、4×2、原背景` 五個結果；這等價於原版逐一 restore 的可見
+畫面，且第一張不得保留完整19×5框、portrait 或文字。五張必須在接受最後一次
+Enter 前全部預建成功，缺背景／格網／bounds 時維持原句並失敗即關閉。
+
+第五張原背景後是否還有移動尾段，由原版 `var_20` 決定，不能由 `Upper` 或靜態
+speaker 猜測：
+
+- `FFED` 固定2、`FFEC` 固定112；
+- `FFEF／FFEE` 必須重播 `0x12C60(operand)` 的 runtime identity lookup；命中才
+  分別為2／112，未命中為0；
+- 非零時還須具備 `[0x53AB9]/[0x53ABD]` 對應的可見游標座標，以及 FDOTHER #5
+  entry0，才能依 canonical evidence 的整數公式預建完整尾段；任一 provenance
+  缺失不得只省略尾段後繼續。
+
+查找的 raw `+8` 可來自 FDFIELD runtime record 的 `NativeRecordByte8`，或已由
+JOIN／persistent constructor 明確證實為同一 `+8` 欄位的 `NativeIdentity`；後者
+不是從 Fig、portrait 或角色名稱回填。raw `+5` 仍須具備獨立 provenance，不能從
+HP／OnField 反推。
+
+戰果 handler 進入 cutscene 時，原版這六個視圖全域不會因重製端切換 node 自動
+消失。故重製端須在清除 battle.State 前保存其 `NativeMapViewState`，且只有 binding
+明示 `runtime_context.story_viewport=true` 時才能安裝到場景載體；一般 story node
+不得繼承。direct-entry 測試若未走正常 battle node，必須明示注入一份符合
+cursor-camera identity 的 raw view，並標示不構成 E2。
+
+收框由對話 caller 擁有：最後一頁逐字發布完成後，Enter 只啟動收框，不得先 pop
+該句、載入下一拍或覆寫舊背景。每個重製更新依序發布一張 indexed frame，最後一張
+發布完畢後才清除舊句並呼叫既有 `beatAdvance`；執行期間後續 Enter 無效。這項
+更新分配只標為時序近似，不宣稱 DOS wall-clock。只有五張
+snapshot 與可選尾段皆有 caller-specific typed input 時，才可把本切片標成
+`RUNTIME-E1`；一般玩家同狀態比較仍為 `PLAYER-E2` 缺口。
 
 ## 2026-08-25：終局三筆音訊 cue 的具型別消費規格
 

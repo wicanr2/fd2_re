@@ -961,6 +961,9 @@ func TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary(t
 	// TestComposeNativeStoryDialoguePageUsesOriginalIndexedAssets 驗證；此橋接不構成
 	// 未修改一般玩家路徑的 E2 證據。
 	g.nativeMapVGA = make([]byte, 320*200)
+	if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{}); err != nil {
+		t.Fatal(err)
+	}
 	g.result = "win"
 	if !g.confirmBattleResult() || g.camp.NodeID() != "postbattle_ch25_persist" || g.loadErr != "" {
 		t.Fatalf("chapter25 result handoff node=%q err=%q", g.camp.NodeID(), g.loadErr)
@@ -980,8 +983,18 @@ func TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary(t
 				}
 				nativePages = append(nativePages, len(g.dialog[i].NativeDialogue.Pages))
 			}
-			g.dialog = nil
-			g.beatAdvance()
+			current := g.dialog[len(g.dialog)-1]
+			if !current.NativeDialogue.HasMotionTargetY || len(g.nativeDialogueClosing) < 5 {
+				t.Fatalf("ch24 runtime dialog lacks proven closing: line=%#v frames=%d", current, len(g.nativeDialogueClosing))
+			}
+			g.dlgPage = len(g.nativeDialogueProgressive) - 1
+			g.nativeDialogueProgress = len(g.nativeDialogueProgressive[g.dlgPage]) - 1
+			if !g.beginNativeStoryDialogueClosing() {
+				t.Fatal("ch24 runtime dialog refused its caller-owned closing")
+			}
+			for g.nativeDialogueClosingLive {
+				g.stepNativeStoryDialogueProgress()
+			}
 		}
 		g.tick(1)
 		if g.st != nil && len(g.st.Units) > maxSlots {
