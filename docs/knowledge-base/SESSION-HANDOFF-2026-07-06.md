@@ -6430,3 +6430,16 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   HP／death bit／RNG，來源物品保留，尾停後才`Acted`。主證據：
   `docs/data/ida/fd2_ai_item_damage_1cd17_owner.txt`。本批達`RUNTIME-E1`；下一個
   物品缺口只剩type21的`0x1CAC7`，同狀態逐幀／音訊仍為E2。
+
+## 2026-08-25：AI item type 21 正式 `0x1CAC7` indexed 尾段
+
+- 沿用已閉合的`fd2_command32_tail_presentation_ida.txt`，不重解`0x1CAC7`；新增
+  caller-specific synthesis，把正常item29／38／51／99固定到command6／1／7／6。
+  command1依raw表用#6 `0x31..0x38`與#80 sample6，command6／7用`0x40..0x49`
+  與sample9；其後共用`0x4A→0x4B`四組90 ms toggle及22張結果。
+- framebuffer builder已抽成真正共用的`0x1CAC7`核心，但command32與type21仍各自
+  驗證caller契約；type21不借用玩家command32前導或一般command21的`0x22BC6`。
+- 原始item38／command1正常AI入口證實前16個Draw不發布，最後toggle後才原子提交
+  HP／death bit／RNG，來源物品與MP保留，尾停後才`Acted`。本批達
+  `RUNTIME-E1`；正常正分type5／13／20／21／24的indexed物品演出至此均接通，
+  後續只補代表性E2或新正常producer。

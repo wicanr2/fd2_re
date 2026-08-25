@@ -212,6 +212,116 @@ func TestExecuteNativeAIItemDamageUsesOriginalIndexed1CD17Tail(t *testing.T) {
 	}
 }
 
+func TestExecuteNativeAIItemType21UsesOriginalIndexed1CAC7Tail(t *testing.T) {
+	base := filepath.Clean("../../../org_game/炎龍騎士團/FLAME2")
+	for key, name := range map[string]string{
+		"FD2_ORIGINAL_FIGANI": "FIGANI.DAT", "FD2_ORIGINAL_FDOTHER": "FDOTHER.DAT",
+		"FD2_ORIGINAL_FDTXT": "FDTXT.DAT", "FD2_ORIGINAL_BG": "BG.DAT",
+	} {
+		path := filepath.Join(base, name)
+		if !fileExists(path) {
+			t.Skip("player-provided original archives unavailable")
+		}
+		t.Setenv(key, path)
+	}
+	g := &Game{rng: rand.New(rand.NewSource(13)), nativeUIPalette: loadNativeUIPalette()}
+	if err := g.loadMap("assets/maps/map0"); err != nil {
+		t.Fatal(err)
+	}
+	g.resetBattle("assets/maps/map0/map0_units.json", "assets/scenarios/ch01.json")
+	if g.loadErr != "" || len(g.st.Units) < 6 {
+		t.Fatalf("fixture err=%q units=%d", g.loadErr, len(g.st.Units))
+	}
+	actor, target := g.st.Units[4], g.st.Units[5]
+	g.st.Units = []*battle.Unit{actor, target}
+	actor.SetMapPlacement(0, 0, 3)
+	target.SetMapPlacement(1, 0, 3)
+	if err := actor.MaterializeNativeMapPresentation(); err != nil {
+		t.Fatal(err)
+	}
+	if err := target.MaterializeNativeMapPresentation(); err != nil {
+		t.Fatal(err)
+	}
+	actor.Camp, actor.HP, actor.MaxHP, actor.Acted = battle.Enemy, 80, 80, false
+	actor.NativeRecordByte5, actor.NativeRecordByte6 = 0, 1
+	actor.HasNativeRecordByte5, actor.HasNativeRecordByte6 = true, true
+	actor.InventorySlots = []int{38, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}
+	actor.NativeInventoryFlags = []int{0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	target.Camp, target.HP, target.MaxHP = battle.Own, 80, 80
+	target.NativeRecordByte5, target.NativeRecordByte6 = 0, 0
+	target.HasNativeRecordByte5, target.HasNativeRecordByte6 = true, true
+	target.InventorySlots = []int{0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}
+	target.NativeInventoryFlags = []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	var err error
+	g.nativeItemEffectRows, err = battle.LoadNativeItemEffectRowPrefix("../../assets/data/native_item_effect_rows.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.nativeCommandBook, err = battle.LoadNativeCommandRecords("../../assets/spells.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.nativeCommandResistances, err = battle.LoadNativeCommandResistances("../../assets/data/native_command_resistances.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.st.NativeCompositionEventBytes = make([]byte, g.st.W*g.st.H)
+	if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{
+		CameraX: 0, CameraY: 0, CursorX: 1, CursorY: 0, VisibleCursorX: 1, VisibleCursorY: 0,
+	}); err != nil {
+		t.Fatal(err)
+	}
+	if !g.st.MaterializeNativeMapHUDState(1, 1, 1) || !g.st.MaterializeNativeMapRangeMode(1) {
+		t.Fatal("HUD/range unavailable")
+	}
+	if err := g.composeNativeMapFrame(); err != nil {
+		t.Fatal(err)
+	}
+	plan := &battle.AIPlan{
+		U: actor, Target: target, NativeActionKind: battle.NativeAIActionItem,
+		NativeItemSlot: 0, NativeItemID: 38, NativeItemTargetIndices: []byte{1},
+	}
+	g.nativeRNGState = 7
+	tx, err := g.planNativeAITargetItem(plan)
+	if err != nil || tx.damageRoute == nil || tx.damageRoute.CommandID != 1 ||
+		tx.damageRoute.Presentation != 0x1cac7 || len(tx.damage) != 1 {
+		t.Fatalf("original type21 transaction=%#v err=%v", tx, err)
+	}
+	expectedHP, expectedRNG := int(int16(binary.LittleEndian.Uint16(tx.after[80+0x40:80+0x42]))), tx.rngAfter
+	continued := 0
+	if err := g.executeNativeAIActionWithContinuation(plan, func() { continued++ }); err != nil {
+		t.Fatal(err)
+	}
+	job := g.nativeAIItemPresentation
+	if job == nil || len(job.frames) != 38 || job.publishAt != 16 || target.HP != 80 ||
+		g.nativeRNGState != 7 || actor.InventorySlots[0] != 38 {
+		t.Fatalf("type21 pre-publish job=%#v hp=%d rng=%#x slot=%d", job, target.HP, g.nativeRNGState, actor.InventorySlots[0])
+	}
+	for index := range job.frames {
+		job.frames[index].delay = 1
+	}
+	screen := ebiten.NewImage(640, 400)
+	for steps := 0; g.nativeAIItemPresentation != nil && steps < 128; steps++ {
+		if !g.drawNativeAIItemPresentation(screen) {
+			t.Fatalf("draw failed at %d", steps)
+		}
+		g.stepNativeAIItemPresentation()
+		if steps < 15 && (target.HP != 80 || g.nativeRNGState != 7) {
+			t.Fatalf("type21 published before final toggle Draw at step %d: hp=%d rng=%#x", steps, target.HP, g.nativeRNGState)
+		}
+		if g.nativeAIItemPresentation != nil && g.nativeAIItemPresentation.holding {
+			g.nativeAIItemPresentation.hold = 0
+		}
+	}
+	if g.nativeAIItemPresentation != nil || target.HP != expectedHP || g.nativeRNGState != expectedRNG ||
+		actor.InventorySlots[0] != 38 || actor.NativeInventoryFlags[0]&0x80 != 0 ||
+		!actor.Acted || continued != 1 {
+		t.Fatalf("AI type21 item incomplete: hp=%d/%d rng=%#x/%#x slot=%d flags=%#x acted=%v continued=%d",
+			target.HP, expectedHP, g.nativeRNGState, expectedRNG, actor.InventorySlots[0],
+			actor.NativeInventoryFlags[0], actor.Acted, continued)
+	}
+}
+
 func TestNativeAIItemPresentationLateCancelRollsBack(t *testing.T) {
 	actor := completeNativeAIExecutorUnit()
 	target := completeNativeAIExecutorUnit()

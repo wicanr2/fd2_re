@@ -5959,3 +5959,17 @@ post-state map；22張數字段及尾停完成後才發布`Acted`與AI continuat
   與 RNG，接著從 post-state steady frame 播放命中數值或固定失敗文字。
 - 任一素材、raw selector、record index、framebuffer 或原始狀態不一致皆零 mutation；
   中途取消若已發布，須還原完整 raw records 與 RNG。直接套用 helper 不算呈現完成。
+
+### 敵方 type 21 物品傷害演出規格（0x1CAC7）
+
+- 主證據：`docs/data/ida/fd2_ai_item_type21_1cac7_owner.txt`。只接受正常正分物品
+  已證實選到的command1／6／7；其他command失敗即關閉。
+- command1使用FDOTHER #6 `0x31`起8張與#80 sample6；command6／7使用`0x40`
+  起10張與sample9。三者其後共用descriptor `0x4A／0x4B`四組90 ms切換、
+  steady redraw、bias `0x5E`或固定miss queue、22張結果與500 ms尾停。
+- runtime必須先在detached transaction預建effect、兩張target替代snapshot、四組
+  toggle、post-state map及結果queue。最後一張toggle跨過Draw後才原子發布HP、
+  death bit與RNG；尾停後才發布`Acted`與AI continuation。來源物品與MP均不變。
+- 缺raw target list、selector cache、camera、FDOTHER #5／#6、sample、indexed
+  framebuffer或原始狀態時零mutation；中途取消沿共同AI item owner回復完整records、
+  RNG及indexed buffers。不得借用一般command21的`0x22BC6`尾段。

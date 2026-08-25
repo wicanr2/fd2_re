@@ -6,6 +6,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/battlepresent"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
@@ -54,6 +55,9 @@ func (g *Game) startNativeAIItemRestorePresentation(plan *battle.AIPlan, then fu
 	if tx.restore == nil {
 		if tx.damageRoute != nil && tx.damageRoute.Presentation == 0x1cd17 {
 			return g.startNativeAIItemDamagePresentation(tx, then)
+		}
+		if tx.damageRoute != nil && tx.damageRoute.Presentation == 0x1cac7 {
+			return g.startNativeAIItemType21Presentation(tx, then)
 		}
 		return false, nil
 	}
@@ -197,6 +201,117 @@ func (g *Game) startNativeAIItemRestorePresentation(plan *battle.AIPlan, then fu
 		return false, err
 	}
 	if !osMuteOrShot(g) && (len(frames[0].sound) == 0 || len(frames[maskStart].sound) == 0) {
+		return false, errors.New("native AI item required raw sample unavailable")
+	}
+	g.nativeAIItemPresentation = &nativeAIItemPresentationJob{
+		transaction: tx, frames: frames, publishAt: publishAt,
+		baselineWork: baselineWork, baselineVGA: baselineVGA,
+		postTransactionWork: postWork, postVGA: postVGA, then: then,
+	}
+	return true, nil
+}
+
+// startNativeAIItemType21Presentation owns the type21 caller of 0x2111a.
+// It reuses only the shared 0x1cac7 framebuffer contract, not command32's
+// player prelude or transaction owner.
+func (g *Game) startNativeAIItemType21Presentation(tx *nativeAIItemTransaction, then func()) (bool, error) {
+	if g == nil || g.st == nil || tx == nil || tx.damageRoute == nil ||
+		tx.damageRoute.ItemType != 21 || tx.damageRoute.Presentation != 0x1cac7 ||
+		len(tx.damage) != len(tx.targets) {
+		return false, errors.New("native AI item type21 presentation context unavailable")
+	}
+	if !g.nativeFullPresentationEnabled() {
+		return false, errors.New("native AI item indexed presentation unavailable")
+	}
+	if g.nativeAIItemPresentation != nil || g.nativeHealPresentation != nil ||
+		g.nativeModifierPresentation != nil || g.nativeAICommandModifier != nil ||
+		g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil ||
+		g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil ||
+		g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil ||
+		g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil ||
+		g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil ||
+		g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil ||
+		g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil ||
+		g.nativeCmd33Presentation != nil || g.nativeCmd34Presentation != nil ||
+		g.nativeCmd35Presentation != nil || g.indexedTransition != nil || g.atk != nil {
+		return false, errors.New("native AI item presentation already active")
+	}
+	if !g.st.HasNativeMapViewState || len(g.nativeMapWork) != indexedmap.NativeUnitPresentWorkSize ||
+		len(g.nativeMapVGA) != indexedmap.NativeMapVGASize || len(g.nativeMapDAC) != 256*3 ||
+		!nativeMapAssetsAvailable(g.nativeMapAssets) {
+		return false, errors.New("native AI item indexed map state unavailable")
+	}
+	a := g.nativeMapAssets
+	schedule, err := fdother.BuildNativeAIItemType21TailSchedule(
+		tx.damageRoute.CommandID, a.FDOTHER6, a.CommandHealDigits,
+	)
+	if err != nil {
+		return false, err
+	}
+	tailTargets, err := nativeCommandHealTailTargets(g.st, tx.targets)
+	if err != nil {
+		return false, err
+	}
+	results := make([]battlepresent.NativeAIItemType21TailResult, len(tx.damage))
+	for index, result := range tx.damage {
+		results[index] = battlepresent.NativeAIItemType21TailResult{
+			TargetRecord: tailTargets[index].RecordIndex, Hit: result.Hit, Damage: result.Damage,
+		}
+	}
+	baselineWork, baselineVGA := append([]byte(nil), g.nativeMapWork...), append([]byte(nil), g.nativeMapVGA...)
+	clonedState, err := nativeAIItemClonedState(g.st, tx)
+	if err != nil {
+		return false, err
+	}
+	hud, ok := g.nativeMapHUDInput()
+	if !ok {
+		return false, errors.New("native AI item post-transaction HUD unavailable")
+	}
+	postInput, err := buildNativeMapFrameInput(a, g.m, clonedState, nativeMapFrameRuntime{HUD: hud})
+	if err != nil {
+		return false, err
+	}
+	postWork, postVGA := append([]byte(nil), baselineWork...), append([]byte(nil), baselineVGA...)
+	if err := indexedmap.ComposeNativeFrame(postWork, postVGA, postInput); err != nil {
+		return false, err
+	}
+	view := g.st.NativeMapViewState
+	tail, err := battlepresent.BuildNativeAIItemType21TailFrames(
+		baselineWork, baselineVGA, postWork, postVGA, a.FDOTHER6, a.CommandHealDigits,
+		tailTargets, results, view.CameraX, view.CameraY, schedule,
+	)
+	if err != nil {
+		return false, err
+	}
+	palette, err := fdother.VGAPaletteFromDAC(g.nativeMapDAC)
+	if err != nil {
+		return false, err
+	}
+	effectImages, err := nativeCommand24IndexedImages(tail.Effect, palette)
+	if err != nil {
+		return false, err
+	}
+	toggleImages, err := nativeCommand24IndexedImages(tail.Toggle, palette)
+	if err != nil {
+		return false, err
+	}
+	resultImages, err := nativeCommand24IndexedImages(tail.Result, palette)
+	if err != nil {
+		return false, err
+	}
+	frames := make([]nativeCompoundPresentedFrame, 0, len(effectImages)+len(toggleImages)+len(resultImages))
+	if frames, err = appendNativeCompoundFrames(frames, effectImages, schedule.EffectDelayTicks); err != nil {
+		return false, err
+	}
+	frames[0].sound = loadWav(assetPath(fmt.Sprintf("assets/sfx/battle_80_%02d.wav", schedule.EffectSample)))
+	if frames, err = appendNativeCompoundFrames(frames, toggleImages, nativeDelayTicks(schedule.ToggleDelayMS)); err != nil {
+		return false, err
+	}
+	publishAt := len(frames)
+	if frames, err = appendNativeCompoundFrames(frames, resultImages, 1); err != nil {
+		return false, err
+	}
+	if !osMuteOrShot(g) && len(frames[0].sound) == 0 {
 		return false, errors.New("native AI item required raw sample unavailable")
 	}
 	g.nativeAIItemPresentation = &nativeAIItemPresentationJob{

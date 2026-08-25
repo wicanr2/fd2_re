@@ -1,0 +1,73 @@
+# 敵方物品 type 21：0x1CAC7 caller-specific 演出擁有者
+
+## 版本、工具與證據來源
+
+- 輸入：`FD2.EXE`，357074 bytes
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 位址：IDA Pro 9.4 image base 0 的線性位址；原始名稱與位址均保留。
+- 本文件是既有已閉合證據的 caller-specific synthesis，不重新反組譯 callee：
+  `fd2_command32_tail_presentation_ida.txt`、`fd2_command32_transaction_ida.txt`
+  與 `fd2_ai_15055_item_target_list_ida.txt`。原始主證據均由合法 IDA Pro 9.4
+  Docker 產生；raw table bytes 曾由 Docker Capstone 交叉驗證。
+
+## type 21 caller（已證實）
+
+`sub_20C6F` 的 type 21 分支把 item row word 當作 command ID，沿
+`sub_2111A (0x2111A..0x211A4)` 依序執行：
+
+```text
+sub_1C4CC(actor, commandID, targetCount, targetBytes)
+sub_1CAC7(actor, targetCount, targetBytes)
+for target in targetBytes:
+    value = sub_1C75E(target, commandID)
+    value != 0 ? sub_1E0DB(value,0x5E,target) : sub_1E1DC(target)
+sub_11CAC(0)
+sub_1DF58()
+```
+
+正常敵方正分 item 29／38／51／99 對應 command 6／1／7／6。dispatcher 不呼
+`sub_1CA89`，也不呼 `sub_1B8E7`，所以不扣 MP、不移除來源物品。
+
+## sub_1C4CC caller-specific 表（已證實）
+
+原始三張33-byte表的相關項目：
+
+| command | `0x51F33` start | `0x51F54` frames | `0x51F75` initial sample |
+|---:|---:|---:|---:|
+| 1 | `0x31` | 8 | 6 |
+| 6 | `0x40` | 10 | 9 |
+| 7 | `0x40` | 10 | 9 |
+
+因此 type 21 typed schedule 只能接受 command 1／6／7。effect 使用 FDOTHER #6，
+每張呈現後等待1 tick；command1第一張播放#80 sample6，command6／7播放sample9。
+這三個 command 不命中 `sub_1C4CC` 的額外 sample hardcode 分支。
+
+## sub_1CAC7／sub_1CB94（已證實、沿用主證據）
+
+- `sub_1CAC7 (0x1CAC7..0x1CB94)` 先以 descriptor `0x4A`、`0x4B` 分別呼叫
+  `sub_1CB94` 建立兩個 320×200 snapshot。
+- 固定做四組切換：先呈現 `0x4A` snapshot 的312×192 viewport並等待90 ms，
+  再呈現 `0x4B` snapshot並等待90 ms；最後 `sub_11CAC(0)` steady redraw。
+- `sub_1CB94 (0x1CB94..0x1CD17)` 重建地形與單位：target array成員以指定
+  FDOTHER #6 descriptor取代原單位sprite，非target仍使用selector cache、idle cycle
+  與raw side。重製端既有完整 indexed snapshot compositor可保存其玩家可見契約。
+
+## 結果尾段（已證實）
+
+- 命中使用raw digit bias `0x5E`；未命中使用glyph `74 75 76 76`與位置
+  `2/8/12/17`。
+- `sub_1DF58` 呈現22張結果、每張2 ms，最後等待500 ms。60 Hz重製端至少逐Draw
+  保存順序，不宣稱DOS wall-clock一致。
+
+## 分級與重製邊界
+
+- `RE-CLOSED`：type21 caller、item→command mapping、effect表項、`0x1CAC7`四組
+  toggle、結果queue與來源保留。
+- `DATA-READY`：可建立只接受command1／6／7的共用`0x1CAC7` typed schedule。
+- `RUNTIME-E1`：待正常敵方物品入口以完整raw target list接 effect→toggle→
+  publish→result，並沿共同transaction支援回復。
+- `PLAYER-E2`：待未修改原版同狀態逐幀／逐音訊比較。
+
+重開條件只有輸入雜湊不同、直接指令／raw table反證、同狀態結果矛盾，或主證據
+缺少所宣稱的writer／consumer；不得因runtime尚未接通而重解`0x1CAC7`。
