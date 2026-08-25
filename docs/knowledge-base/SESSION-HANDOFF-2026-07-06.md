@@ -6527,3 +6527,26 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 聚焦回歸：`internal/campaign` typed binding通過；`cmd/fd2` 整合測試在具明確
   Xvfb trap及120秒外層上限的無網路容器通過。第一次無DISPLAY失敗已分類為環境，
   `xvfb-run`殼層不退出的容器亦已停止刪除，未留下FD2背景容器。
+
+## 2026-08-25：`ch24_post` 原生 indexed 對話穩定頁接線
+
+- 合法 IDA Pro 9.4／Hex-Rays Docker 重新固定 `sub_15F84→sub_165AC→
+  sub_168B6` 的 caller／consumer：最終框格為 `(5,2)`／`(5,112)`、文字起點
+  `(15,9)`／`(95,119)`、字距16、行距19；`FFFE` 在 `0x16319..0x16365`
+  換行，`FFFD` 在 `0x15FC4..0x16044` 另呼叫 `sub_16C57(1)`。舊文件的
+  `0x17119`／`0x16DC4→0x17A57` 已訂正。主證據為
+  `docs/data/ida/fd2_story_dialogue_layout_ida.txt`，保留原始名稱、位址、bytes、
+  雜湊與推論等級。
+- FDTXT_025 index6／7 的18句現保存 raw control、operand 及可編輯 Unicode
+  pages；Docker 回歸逐字比較原始 words，頁數依序為
+  `2,2,2,1,1,3,1,1,1,1,1,2,1,3,1,2,1,1`。未知 glyph、超過三列／13字、
+  control與Upper衝突均失敗即關閉。
+- 正式 renderer 以目前320×200 indexed map為 source，使用FDOTHER #5框、
+  DATO portrait、FDOTHER #4字模與CD／4C／4A style預建每頁；正式第25戰戰後
+  runner逐句驗證頁面後仍完成slot70、JOIN26／29、town26存讀檔與Shift+F5
+  祕密商店返回。這是stable-page `RUNTIME-E1`；逐字、嘴型、開關框中間幀及
+  未修改DOS同狀態E2仍未宣稱。
+- `go test ./internal/campaign ./cmd/fd2 -count=1` 在一次性無網路、限資源、
+  Xvfb trap與180秒外層timeout的Docker容器完整通過（campaign 1.611s、
+  cmd/fd2 17.916s）。直接勝利測試因不經Draw，明確注入test-only indexed
+  baseline；像素 compositor另以真實原版資產驗證，該baseline不作E2證據。

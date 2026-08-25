@@ -1183,6 +1183,7 @@ func TestCh24PostBindingResolvesPersistentJoins(t *testing.T) {
 	var joined []int
 	var spawnGroups []int
 	var dialogUpper []bool
+	var dialogPages []int
 	for _, beat := range beats {
 		if beat.Op == "join" {
 			joined = append(joined, beat.CharID)
@@ -1197,7 +1198,11 @@ func TestCh24PostBindingResolvesPersistentJoins(t *testing.T) {
 			if beat.Upper == nil {
 				t.Fatalf("ch24 dialog %#v lost its raw FFEC..FFEF placement", beat)
 			}
+			if beat.NativeDialogue == nil {
+				t.Fatalf("ch24 dialog %#v lost its FFFE/FFFD page projection", beat)
+			}
 			dialogUpper = append(dialogUpper, *beat.Upper)
+			dialogPages = append(dialogPages, len(beat.NativeDialogue.Pages))
 		}
 	}
 	if len(spawnGroups) != 1 || spawnGroups[0] != 2 {
@@ -1217,6 +1222,10 @@ func TestCh24PostBindingResolvesPersistentJoins(t *testing.T) {
 		if dialogUpper[i] != wantUpper[i] {
 			t.Fatalf("ch24 compiled dialog placement %d=%v, want %v", i, dialogUpper[i], wantUpper[i])
 		}
+	}
+	wantPages := []int{2, 2, 2, 1, 1, 3, 1, 1, 1, 1, 1, 2, 1, 3, 1, 2, 1, 1}
+	if !reflect.DeepEqual(dialogPages, wantPages) {
+		t.Fatalf("ch24 compiled native pages=%v, want %v", dialogPages, wantPages)
 	}
 }
 

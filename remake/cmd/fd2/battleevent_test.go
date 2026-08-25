@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
 	"time"
 
@@ -896,6 +897,13 @@ func TestChapter20PostRoundGateControlsReinforcementAndJoinBeforeTown21(t *testi
 }
 
 func TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary(t *testing.T) {
+	base := filepath.Clean("../../../org_game/炎龍騎士團/FLAME2")
+	if _, err := os.Stat(filepath.Join(base, "FDOTHER.DAT")); err != nil {
+		t.Skip("chapter25 native dialogue regression requires the read-only original asset bundle")
+	}
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(base, "FDTXT.DAT"))
+	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(base, "DATO.DAT"))
 	order := []int{0, 4, 9, 30, 1, 8, 2, 10, 13, 12, 5, 6, 11, 14, 17, 15}
 	g := &Game{
 		partyMembers:   make(map[int]bool, len(order)),
@@ -948,12 +956,18 @@ func TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary(t
 	runner := campaign.NewRunner(campaignData)
 	runner.Cur = "battle_ch25"
 	g.camp = runner
+	// 此測試未繪製前一個戰鬥 frame 就直接進入勝利，因此注入正常 Draw loop 已持有的
+	// indexed baseline。原版資產的像素合成另由
+	// TestComposeNativeStoryDialoguePageUsesOriginalIndexedAssets 驗證；此橋接不構成
+	// 未修改一般玩家路徑的 E2 證據。
+	g.nativeMapVGA = make([]byte, 320*200)
 	g.result = "win"
 	if !g.confirmBattleResult() || g.camp.NodeID() != "postbattle_ch25_persist" || g.loadErr != "" {
 		t.Fatalf("chapter25 result handoff node=%q err=%q", g.camp.NodeID(), g.loadErr)
 	}
 	maxSlots := len(g.st.Units)
 	var dialogUpper []bool
+	var nativePages []int
 	for frame := 0; frame < 12000 && g.camp.NodeID() != "town_ch26"; frame++ {
 		if len(g.dialog) != 0 {
 			for i := len(g.dialog) - 1; i >= 0; i-- {
@@ -961,6 +975,10 @@ func TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary(t
 					t.Fatalf("ch24 runtime dialog %#v lost its explicit native placement", g.dialog[i])
 				}
 				dialogUpper = append(dialogUpper, *g.dialog[i].Upper)
+				if g.dialog[i].NativeDialogue == nil || len(g.nativeDialogueFrames) != len(g.dialog[i].NativeDialogue.Pages) {
+					t.Fatalf("ch24 runtime dialog lost native pages: line=%#v frames=%d", g.dialog[i], len(g.nativeDialogueFrames))
+				}
+				nativePages = append(nativePages, len(g.dialog[i].NativeDialogue.Pages))
 			}
 			g.dialog = nil
 			g.beatAdvance()
@@ -992,6 +1010,10 @@ func TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary(t
 		if dialogUpper[i] != wantUpper[i] {
 			t.Fatalf("chapter25 post dialog placement %d=%v, want %v", i, dialogUpper[i], wantUpper[i])
 		}
+	}
+	wantPages := []int{2, 2, 2, 1, 1, 3, 1, 1, 1, 1, 1, 2, 1, 3, 1, 2, 1, 1}
+	if !reflect.DeepEqual(nativePages, wantPages) {
+		t.Fatalf("chapter25 post native pages=%v, want %v", nativePages, wantPages)
 	}
 	for _, id := range []int{26, 29} {
 		joined, ok := g.partyRoster[id]

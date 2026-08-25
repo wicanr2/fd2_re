@@ -468,6 +468,9 @@ type Beat struct {
 	// 草地撞見幕實測(doc55 截圖 18-03-10):亞雷斯(id4,<32)進場那句仍走上框——原版並非單純按
 	// id 分上下框,推測與進場/位置有關,尚未逆得通則;先開這個 per-beat 覆蓋做最小修正,別動全域規則。
 	Upper *bool `json:"upper,omitempty"`
+	// NativeDialogue 保存具 caller 證據的 FFFE／FFFD 頁面；未提供時，既有編輯場景
+	// 繼續使用正規化 renderer。
+	NativeDialogue *NativeDialogueLayout `json:"native_dialogue,omitempty"`
 
 	Group int `json:"group,omitempty"` // spawn:原版 FDFIELD 群組編號
 	// RawPlacementGate retains the exact per-call [0x53AFA] byte. Handler

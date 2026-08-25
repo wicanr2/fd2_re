@@ -38,9 +38,59 @@ type HandlerDialog struct {
 
 // HandlerDialogLine is one runtime dialog beat within a HandlerDialog group.
 type HandlerDialogLine struct {
-	Line  int   `json:"line"`
-	Count int   `json:"count,omitempty"`
-	Upper *bool `json:"upper,omitempty"`
+	Line           int                   `json:"line"`
+	Count          int                   `json:"count,omitempty"`
+	Upper          *bool                 `json:"upper,omitempty"`
+	NativeDialogue *NativeDialogueLayout `json:"native_dialogue,omitempty"`
+}
+
+// NativeDialogueLayout 是已證實 FDTXT 呼叫中單句對白的可編輯投影。
+// Pages 保留 FFFD，頁內列保留 FFFE；執行期不得從現代字型的 Text 欄位反推。
+type NativeDialogueLayout struct {
+	SourceDAT   string     `json:"source_dat"`
+	StringIndex int        `json:"string_index"`
+	Utterance   int        `json:"utterance"`
+	Control     string     `json:"control"`
+	Operand     int        `json:"operand"`
+	Pages       [][]string `json:"pages"`
+}
+
+func (layout *NativeDialogueLayout) Validate() error {
+	if layout == nil || layout.SourceDAT == "" || layout.StringIndex < 0 || layout.Utterance < 0 || layout.Operand < 0 || layout.Operand > 0xffff {
+		return fmt.Errorf("native dialogue layout lacks source provenance")
+	}
+	upper := layout.Control == "FFEF" || layout.Control == "FFED"
+	lower := layout.Control == "FFEE" || layout.Control == "FFEC"
+	if !upper && !lower {
+		return fmt.Errorf("native dialogue layout has unsupported control %q", layout.Control)
+	}
+	if len(layout.Pages) == 0 {
+		return fmt.Errorf("native dialogue layout has no pages")
+	}
+	for page, rows := range layout.Pages {
+		if len(rows) == 0 || len(rows) > 3 {
+			return fmt.Errorf("native dialogue layout page %d has %d rows", page, len(rows))
+		}
+		for row, text := range rows {
+			count := len([]rune(text))
+			if count == 0 || count > 13 {
+				return fmt.Errorf("native dialogue layout page %d row %d has %d glyphs", page, row, count)
+			}
+		}
+	}
+	return nil
+}
+
+func cloneNativeDialogueLayout(layout *NativeDialogueLayout) *NativeDialogueLayout {
+	if layout == nil {
+		return nil
+	}
+	out := *layout
+	out.Pages = make([][]string, len(layout.Pages))
+	for i := range layout.Pages {
+		out.Pages[i] = append([]string(nil), layout.Pages[i]...)
+	}
+	return &out
 }
 
 // HandlerDialogSegment is one contiguous scene range within a native lookup.
@@ -461,6 +511,10 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 				for _, line := range d.Lines {
 					beat := runtime(input, "dialog")
 					beat.Line, beat.Count, beat.Upper = line.Line, line.Count, line.Upper
+					if err := attachNativeDialogueLayout(&beat, line.NativeDialogue); err != nil {
+						issue(i, input, err.Error())
+						continue
+					}
 					beat.Script, beat.Scene, beat.SceneIndex = d.Script, d.Scene, d.SceneIndex
 					beats = append(beats, beat)
 				}
@@ -479,6 +533,10 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 					beat.Line, beat.Count, beat.Upper = line.Line, line.Count, line.Upper
 					if line.Upper == nil {
 						beat.Upper = segment.Upper
+					}
+					if err := attachNativeDialogueLayout(&beat, line.NativeDialogue); err != nil {
+						issue(i, input, err.Error())
+						continue
 					}
 					beat.Script, beat.Scene, beat.SceneIndex = segment.Script, segment.Scene, segment.SceneIndex
 					beats = append(beats, beat)
@@ -1267,6 +1325,21 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 		}
 	}
 	return beats, issues
+}
+
+func attachNativeDialogueLayout(beat *Beat, layout *NativeDialogueLayout) error {
+	if layout == nil {
+		return nil
+	}
+	if err := layout.Validate(); err != nil {
+		return err
+	}
+	wantUpper := layout.Control == "FFEF" || layout.Control == "FFED"
+	if beat.Upper == nil || *beat.Upper != wantUpper {
+		return fmt.Errorf("native dialogue control %s disagrees with typed upper=%v", layout.Control, beat.Upper)
+	}
+	beat.NativeDialogue = cloneNativeDialogueLayout(layout)
+	return nil
 }
 
 func immediateHandlerInt(args []any, index int) (int, bool) {

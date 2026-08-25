@@ -74,9 +74,13 @@
    → 確認 **`DATO.DAT` = 人物頭像**;`0x4F6AF` 舊位址作廢,實際 blit 用 `0x4E8AF`/`0x4E8E1`。
 
 ### 換行 / 捲動 / 翻頁
-- **`0xFFFE` 換行**(`0x17119`):行計數 `[esp+0x1C]`+1,游標 = 框基底 + 行高 × 行數。
+- **`0xFFFE` 換行**(`0x16319`–`0x16365`):行計數 `[esp+0x1C]`+1,游標 = 框基底 + 行高 × 行數。
   **每框最多 3 行**;到第 3 行再換行 → `call 0x17C24`(捲動 / 等一下)後行數 −1。
-- **`0xFFFD` 翻頁**(`0x16DC4`):同換行,但額外 `call 0x17A57(1)`(等待按鍵 + 清框),進下一頁。
+- **`0xFFFD` 翻頁**(`0x15FC4`–`0x16044`):同換行,但額外
+  `call 0x16C57(1)`（等待按鍵並更新／清理框內頁面）,進下一頁。舊位址
+  `0x16DC4`／callee `0x17A57` 是把相鄰外層輸入流程誤套到此分支，已由
+  [`fd2_story_dialogue_layout_ida.txt`](../data/ida/fd2_story_dialogue_layout_ida.txt)
+  的 IDA 直接指令與 raw bytes 訂正。
 
 ## 對話框／地圖 UI 素材邊界（第 6 輪原結論已修正）
 
@@ -97,6 +101,9 @@ FDOTHER.DAT 確實供應框、字型與多組地圖 UI sprite；但舊版把
 - **`0x165AC`／`0x16B43`**：確有 FDOTHER sprite、插值 blit 與背景
   strip restore；但因舊參數命名錯誤，本文件不再稱它們是對話框
   zoom-in/zoom-out。待 caller-level UI state 關閉後再命名。
+- **2026-08-25 caller 補證**：`0x165AC` 的故事對話 caller 已閉合；最終格網是
+  `sub_168B6(VGA,320,5,y,19,5)`，上框 `y=2`、下框 `y=112`。這只授權
+  故事對話最終框與其開／關中間幀來源，不把同 helper 的其他 caller 一併命名。
 - **每 tick 重繪 / 嘴型 `0x16C57`**:同樣吃 `[0x53A81]` 框圖 + `[0x53A81]` 文字區,配 `0x4E893` 動畫進度推進。
 - **3D 立體邊(深藍 + 淺藍)**:就畫在 FDOTHER entry #5 那張框圖的像素裡 → remake 應**直接抽 FDOTHER 框圖貼**,
   不要自己 drawRect + 描邊湊立體感(顏色 / 邊框寬度都燒在素材)。

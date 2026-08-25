@@ -6043,3 +6043,34 @@ post-state map；22張數字段及尾停完成後才發布`Acted`與AI continuat
 - 正式AI executor只接受已有indexed owner的ID0–22與26／27。不得讓無正常producer
   的ID24／28／29／31借用玩家derived-strike helper同步改HP／RNG／Acted；未知ID在
   transaction之前失敗即關閉。
+
+## 2026-08-25：ch24_post 原生故事對話穩定頁規格
+
+主證據為
+[`fd2_story_dialogue_layout_ida.txt`](../data/ida/fd2_story_dialogue_layout_ida.txt)。
+本切片只處理 `0x24E1B` 的 FDTXT_025 index6 與 `0x24E62` 的 index7；不得把
+這兩個 caller 的版面資料默認套到其他章節。
+
+每個 `HandlerDialogLine` 可帶一份 `NativeDialogueLayout`：必填原始
+`source_dat`、`string_index`、`utterance`、四種開框 `control`、raw `operand`
+及 `pages`。`pages` 是可編輯的 Unicode 二維陣列；每頁1至3列，每列最多13個
+原版可見 glyph，包含原版的 `『』` 與行首全形空白。這份資料是原始
+`FFFE/FFFD` 的 typed 投影，不是由現代字型寬度即時推算；`Text` 繼續保存供
+搜尋、無原版資產 fallback 及翻譯層使用，不能反過來覆蓋證據版面。
+
+編譯器須逐句保留這份 layout 到 `campaign.Beat` 與 `battle.DialogLine`。正式
+runtime 只有在所有條件都完整時才能選擇原生路徑：
+
+1. 目前 frame 是320×200 indexed map，FDOTHER #5、#4 font、palette 與對應
+   DATO portrait 均已載入。
+2. `Upper` 與 control 分支一致：`FFEF/FFED` 必須為上框，`FFEE/FFEC` 必須為下框。
+3. `source_dat/string_index/utterance` 與 caller binding 一致；頁／列數、glyph
+   索引與13字上限全部有效。
+4. 框格固定由 FDOTHER #5 放在 `(5,2)` 或 `(5,112)`；頭像目的 offset 為
+   `0x728`／`0x9017`；文字起點 `(15,9)`／`(95,119)`，字距16、行距19，style
+   `CD/4C/4A`。
+
+原生資產存在但這份證據 layout 無效時，整個 handler dialog beat 失敗即關閉，
+不得靜默回到現代自動換行。沒有 `NativeDialogueLayout` 的既有章節仍走原本可玩
+renderer，直到各自 caller 完成 RE／typed binding。Enter 依 typed pages 推進；
+本切片先重現穩定頁面，不冒稱逐字、嘴型、開／關框中間幀或 DOS E2。

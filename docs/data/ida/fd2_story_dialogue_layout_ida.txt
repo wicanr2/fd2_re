@@ -1,0 +1,112 @@
+# FD2 故事對話框、斷行與翻頁證據
+
+## 版本與工具
+
+- 輸入：`FD2.EXE`，357074 bytes。
+- MD5：`b97caf2239a27a896069d03549d96e1e`。
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 第一工具：使用者授權的 IDA Pro 9.4／Hex-Rays，映像
+  `fd2-ida-authorized-local:latest`，DOS LE loader 的 IDA linear address。
+- 交叉驗證：`fd2-cap-local:latest`／Capstone；原始執行檔唯讀，資料庫只在
+  `/tmp/fd2-dialogue-layout-ida` 的一次性工作目錄建立。
+- 本文件採非破壞性註記：`sub_15F84`、`sub_165AC`、`sub_1685C`、
+  `sub_168B6`、`sub_16B43`、`sub_16C57` 與所有原始位址均保留。
+
+## 已證實：故事開框 consumer 與原生座標
+
+IDA 對 `sub_165AC` 的直接交叉參照只有 `0x161D7` 與 `0x162BC`，兩者都在
+`sub_15F84` 的 `FFEF(-17)`／`FFEE(-18)` 分支；`FFED(-19)`／`FFEC(-20)`
+則經共享尾段跳回同兩個 call。四條路徑因此共同消費同一開框 compositor，
+不是可任意套用到其他 UI 的泛用「縮放框」名稱。
+
+`sub_15F84` 的直接指令固定：
+
+- `0x16174`：上框 portrait destination `0x728`；`0x161D7` 呼叫
+  `sub_165AC(record[0], record[1], 2)`；`0x16218/0x16220` 把文字目的位址設成
+  `0xA0B4F`，相對 VGA `0xB4F = (15,9)`。
+- `0x1625E`：下框 portrait destination `0x9017`；`0x162BC` 呼叫
+  `sub_165AC(record[0], record[1], 112)`；`0x162FD/0x16305` 把文字目的位址設成
+  `0xA951F`，相對 VGA `0x951F = (95,119)`。
+- `0x16397..0x163DC` 與 `0x16413..0x16458` 證實 `FFED/FFEC` 以
+  `operand*0x50 + [0x53A45]` 取得 runtime record，再取 record `+7` 載入 DATO；
+  不可把 operand 當固定肖像 ID。
+- 四分支都把原始 record 前兩個 bytes 傳給 `sub_165AC`，並以
+  `0x4E8AF`（上）／`0x4E8E1`（下）貼頭像。這兩個 record bytes 的高階語意
+  本輪仍是未知，不建立猜測名稱。
+
+`sub_165AC` 的最後一幀依序執行：
+
+```text
+sub_4E96F(save=310×86, source=VGA+320*y+5, stride=320)
+sub_168B6(VGA, 320, 5, y, 4,2)
+sub_168B6(VGA, 320, 5, y, 8,3)
+sub_168B6(VGA, 320, 5, y,12,4)
+sub_168B6(VGA, 320, 5, y,16,5)
+sub_168B6(VGA, 320, 5, y,19,5)
+```
+
+`y` 由 caller／`[0x53C67]` 固定為上框 `2` 或下框 `112`。`sub_168B6`
+逐格以 `sub_1685C` 從 `[0x53A81]`（FDOTHER #5）貼 index 1..17，再以 index 13
+填滿內部；最終參數是 `x=5, y=2/112, columns=19, rows=5`。這是**已證實**的
+故事框格座標；舊文件把 `[0x53AB9]/[0x53ABD]` 命名成框寬高的說法仍維持撤回，
+因為它們只參與開框前相機／游標相對過場，不決定上述最終框格。
+
+## 已證實：`FFFE`／`FFFD` 的 consumer
+
+- `0x1630D` 讀下一個 signed uint16 word。
+- `0x16319..0x16365`：`FFFE(-2)` 只增加行號，目的位址為
+  `base + line*19*320`；若故事框已在第3行又換行，`0x16341` 呼叫
+  `sub_16E24` 後把行號減一，形成三行窗口捲動。
+- `0x15FC4..0x16044`：`FFFD(-3)` 先採相同換行／三行窗口規則，再於
+  `0x16034` 呼叫 `sub_16C57(1)`，等待輸入並清理／更新框內頁面。
+- 普通 glyph 在 `0x1645F..0x1647F` 呼叫 `sub_4EA2A`，之後目的位址加16。
+  `ch24_post` caller 已證實傳入 style `foreground=0xCD, shadow=0x4C,
+  background=0x4A`、`stride=320`、`line_step=19`。
+
+Capstone 原始 bytes 視窗至少保存以下回查錨點：
+
+```text
+0x15fc4  83 f8 fd 0f 85 7c 00 00 00 81 3d 67 3c 00 00 28
+0x16024  00 00 75 0a 6a 00 e8 2a 05 00 00 83 c4 04 6a 01
+0x16034  e8 1e 0c 00 00 83 c4 04 c7 44 24 58 01 00 00 00
+0x16140  83 f8 ef 0f 85 e1 00 00 00 83 7c 24 18 00 74 24
+0x16170  00 83 c4 08 c7 05 67 3c 00 00 28 07 00 00 0f b7
+0x16210  c7 44 24 1c 00 00 00 00 c7 44 24 40 4f 0b 0a 00
+0x165ac  68 28 00 00 00 e8 21 07 02 00 53 56 57 83 7c 24
+```
+
+## ch24_post index 6／7 可編輯投影
+
+原始 `FDTXT_025.bin`：3350 bytes；MD5
+`5ecbe03ee3be4654fcfa638bf0dbfd4e`；SHA-256
+`d8bba8eb5f2f0a52a3dd237d6dc308b3e932af577c43b818409fa63bca89433a`。
+本輪以 raw uint16 words 逐句切分，保留四種開框碼、operand、`FFFE` 與 `FFFD`。
+
+- index6：7句；每句 page 數依序 `2,2,2,1,1,3,1`。
+- index7：11句；每句 page 數依序 `1,1,1,1,2,1,3,1,2,1,1`。
+- 每頁最多3列；每列原始可見 glyph 最多13個，後續列含原版全形空白。
+- index6 utterance0、2、5 的 `FFED operand=16` 是 runtime slot；其他
+  `FFED` 同理。index7 的 `FFEF operand=29/16` 與 `FFEE operand=0/21/4`
+  仍保留原始 identity lookup operand，不把它命名成 DATO selector。
+
+證據分級：raw words、控制碼次序、頁／列切分、caller 實參及上述 compositor
+座標均為**已證實**。把可編輯 Unicode 列重新映射到同一 FDOTHER glyph index，
+屬 remake 的 typed data 投影；未知字元、超過3列的 page、與原始 control／operand
+不一致時必須失敗即關閉。逐字發布、嘴型、開／關框中間幀與未修改 DOS 一般玩家
+畫面比較仍未完成，不得由穩定頁面 renderer 升格為 E2。
+
+## 可重生命令
+
+```text
+IDA：tools/ida_probe_functions.py
+  FD2_IDA_ADDRESSES="0x15F84 0x165AC 0x1685C 0x168B6 0x16B43 0x16C57"
+
+IDA：tools/ida_dump_pseudocode.py
+  FD2_IDA_ADDRESSES="15F84 165AC 168B6"
+
+Capstone：
+  tools/disasm_le.py FD2.EXE range 0x15f84 0x164e8
+  tools/disasm_le.py FD2.EXE data  0x15fc4 128
+  tools/disasm_le.py FD2.EXE data  0x16140 256
+  tools/disasm_le.py FD2.EXE data  0x165ac 256
+```

@@ -227,9 +227,21 @@ type NativeFollowingActing struct {
 
 // DialogLine 一句對話(說話者肖像 + 文本),供 UI 畫頭像+嘴型+文字。
 type DialogLine struct {
-	Speaker int
-	Text    string
-	Upper   *bool // 對話框上下位置覆蓋(nil=沿用預設「id>=32 走上框」規則;見 campaign.Beat.Upper)
+	Speaker        int
+	Text           string
+	Upper          *bool // 對話框上下位置覆蓋(nil=沿用預設「id>=32 走上框」規則;見 campaign.Beat.Upper)
+	NativeDialogue *NativeDialogueLayout
+}
+
+// NativeDialogueLayout 是 campaign 編輯資料中 FFFE／FFFD 頁面的執行期副本。
+// 型別留在 battle，避免泛用戰鬥套件反向依賴 campaign 編譯器。
+type NativeDialogueLayout struct {
+	SourceDAT   string
+	StringIndex int
+	Utterance   int
+	Control     string
+	Operand     int
+	Pages       [][]string
 }
 
 // LoadScenario 讀 scenario JSON。

@@ -167,6 +167,7 @@ type Game struct {
 	dlgPage                    int             // 目前對白的頁碼(0起);一句>3行時分頁,Enter 先翻頁翻完才換句(使用者回饋 2026-07-05)
 	dlgScrollT                 int             // 分頁捲動剩餘幀數(0=靜止)
 	dlgScrollFrom              int             // 分頁捲動開始頁碼
+	nativeDialogueFrames       [][]byte        // caller-specific 0x15F84 stable indexed pages
 	fade                       *storyFade      // 場景淡出/淡入轉場(doc46 §5.2)
 	transitionReveal           *transitionRevealJob
 	indexedTransition          *nativeIndexedTransitionJob
@@ -1706,7 +1707,7 @@ func (g *Game) beatStart(b campaign.Beat) {
 		g.dlgPage = 0                                  // 新對白從第一頁起
 		for i := end - 1; i >= b.Line && i >= 0; i-- { // 反序堆疊(同 enterNode story 分支慣例)
 			ln := lines[i]
-			dialogLine, err := g.resolveCampaignDialogLine(ln, b.Upper)
+			dialogLine, err := g.resolveCampaignDialogLine(ln, b.Upper, b.NativeDialogue)
 			if err != nil {
 				g.dialog = nil
 				g.loadErr = "beat dialog:" + err.Error()
@@ -1717,6 +1718,12 @@ func (g *Game) beatStart(b campaign.Beat) {
 		if len(g.dialog) == 0 { // line/count 對不到資料:跳拍避免卡死
 			g.loadErr = fmt.Sprintf("beat dialog:line=%d count=%d 對不到 script lines(len=%d)", b.Line, n, len(lines))
 			g.beatAdvance()
+			return
+		}
+		if err := g.prepareNativeDialogueFrames(); err != nil {
+			g.dialog = nil
+			g.loadErr = "beat dialog:" + err.Error()
+			return
 		}
 	case "act":
 		if len(b.Acting) > 0 {
@@ -2086,7 +2093,7 @@ func (g *Game) beatStart(b campaign.Beat) {
 	}
 }
 
-func (g *Game) resolveCampaignDialogLine(line campaign.Line, upperOverride *bool) (battle.DialogLine, error) {
+func (g *Game) resolveCampaignDialogLine(line campaign.Line, upperOverride *bool, nativeOverride *campaign.NativeDialogueLayout) (battle.DialogLine, error) {
 	speaker := line.Speaker
 	if line.SpeakerSlot != nil {
 		slot := *line.SpeakerSlot
@@ -2108,7 +2115,19 @@ func (g *Game) resolveCampaignDialogLine(line campaign.Line, upperOverride *bool
 	if upperOverride != nil {
 		upper = upperOverride
 	}
-	return battle.DialogLine{Speaker: speaker, Text: line.Text, Upper: upper}, nil
+	var native *battle.NativeDialogueLayout
+	layout := nativeOverride
+	if layout != nil {
+		native = &battle.NativeDialogueLayout{
+			SourceDAT: layout.SourceDAT, StringIndex: layout.StringIndex,
+			Utterance: layout.Utterance, Control: layout.Control, Operand: layout.Operand,
+			Pages: make([][]string, len(layout.Pages)),
+		}
+		for i := range layout.Pages {
+			native.Pages[i] = append([]string(nil), layout.Pages[i]...)
+		}
+	}
+	return battle.DialogLine{Speaker: speaker, Text: line.Text, Upper: upper, NativeDialogue: native}, nil
 }
 
 func (g *Game) evalBeatCondition(condition *campaign.BeatCondition) (bool, error) {
@@ -2482,6 +2501,16 @@ func equalIntOrder(a, b []int) bool {
 // dlgWrap 把一句對白依框寬換行成顯示列(繪製與 Enter 分頁共用同一套,確保頁數一致)。
 // 換行寬度與繪製碼一致:下框到框右緣;上框(說話者 id>=32,頭像在右)止於頭像左緣前。
 func dlgWrap(dl battle.DialogLine) []string {
+	if dl.NativeDialogue != nil {
+		var lines []string
+		for _, page := range dl.NativeDialogue.Pages {
+			lines = append(lines, page...)
+			for len(lines)%3 != 0 {
+				lines = append(lines, "")
+			}
+		}
+		return lines
+	}
 	const ps = 2.1
 	upper := dl.Speaker >= 32
 	bx, tx := 10.0, 216.0
@@ -2509,6 +2538,12 @@ func dlgWrap(dl battle.DialogLine) []string {
 
 // dlgPageCount 該句對白的總頁數(每頁最多 3 行)。
 func dlgPageCount(dl battle.DialogLine) int {
+	if dl.NativeDialogue != nil {
+		if len(dl.NativeDialogue.Pages) > 0 {
+			return len(dl.NativeDialogue.Pages)
+		}
+		return 1
+	}
 	n := (len(dlgWrap(dl)) + 2) / 3
 	if n < 1 {
 		n = 1
@@ -8137,6 +8172,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		nativeMapPresented = g.drawNativeMapFrame(screen)
 	}
 
+	nativeStoryDialogueDrawn := g.drawNativeStoryDialogue(screen)
+
 	// 中文層(原版點陣字型,doc 08):選中單位名 + 對話框(DebugPrint 不支援中文)
 	if g.font != nil {
 		if g.st != nil && !legacyViewport && !nativeMapPresented { // 選中單位中文名(放游標格上方,避開頂部 DebugPrint)
@@ -8152,7 +8189,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				}
 			}
 		}
-		if len(g.dialog) > 0 && !(g.storyBG && g.walkFirst && len(g.storyWalks) > 0) && g.dlgShown != dlgNone {
+		if !nativeStoryDialogueDrawn && len(g.dialog) > 0 && !(g.storyBG && g.walkFirst && len(g.storyWalks) > 0) && g.dlgShown != dlgNone {
 			// 對話框:原版素材(FDOTHER#5 LMI1 #21,310×99 素藍細邊框)+ orig 量測佈局。
 			// walk_first 節點在進場走位期間不顯示(2-1:原版索爾走到王座前對話框才出現)。
 			// 換人說話:框先垂直收合再展開(stepDlgAnim 相位;使用者回饋 #3),相位中不畫文字/頭像。
