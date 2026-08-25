@@ -29,6 +29,13 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 | save/load | 50–60% | 四槽 input、native save envelope、原版 indexed loadslots 與 chapter-slot→typed party→town/preparation restore owner 已接；current battle 的巢狀 LOAD 也會先完成私有 typed handoff，YES 後才原子替換。SAVE 會保留未知 bytes，並對具證據的新我方 JOIN 同步 persistent raw。重製 JSON LOAD 亦先驗證 JOIN／membership／部署／materialized roster 拓撲；新的 `Game` 已能冷讀 `preparation_ch30` 後繼續第30戰與終局，錯誤拓撲則原子拒絕。2003年外部末關候選存檔通過原版 checksum，固定版原版由普通 `CONTINUE` 抵達第30戰；重製同檔也發布相同回合／鏡頭／游標、33筆場上單位與31人持續隊伍。因第三方 provenance 不完整，只列候選E2，見 [`native-battle-ch30-original-candidate.json`](../data/ui-traces/native-battle-ch30-original-candidate.json)。空槽及修改存檔 chapter1 有效槽畫面均與 DOSBox 全幀 RGB 相同。一般玩家有效槽 E2與delete/overwrite仍缺；長程往返改由使用者人工回報問題，不列代理工作項目 |
 | ending | 60–70%（E1；來源約束終局） | prefix 已跑到 `0x2c548`；`sub_2C39B`的19×5框、caller initial portrait與FDTXT逐句speaker來源已閉合，timeline保存每句control／operand／pages。正式ending已用原版indexed owner逐Draw呈現六段opening、最多四列逐glyph、完整頁嘴型、Enter／Space分頁／換句、五段closing與source restore；不再使用一般RGBA框，完成收框後才resume timeline。chapter26兩個文字閘門與chapter29第一閘門五個blocks均有原始資產預建／生命週期回歸；缺資產整批零發布。正式 `battle_ch30→ending` 現以 persistent JOIN roster 的 raw `+6/+7/+8/+0x20` 同步最後隊伍並執行原資源角色蒙太奇；全新 `Game` 的冷讀連續回歸已由 `preparation_ch30` 經一般戰果接縫抵達此處，部署成員採最終戰更新，未部署成員保留冷讀狀態，回顧循環依完整 JOIN 時序涵蓋全隊。缺戰場、零筆身分符合、缺任一原始資產或 raw provenance 時不發布部分終局，而是整批回到可編輯結語。其後 `MontageTailPlayer` 預檢 20 組共80個 TAI／BG／FIGANI selector；實檔全部 header byte1=0，因此正式 E1 現逐 raw `+6` inner present、`+7 bit0` 層序、base scheduler、`+4` 位移與 palette33 override執行兩次交叉配對，第二次在最後 effect frame 結束；再依 caller 的20／78 ticks疊 FDOTHER #58，完成後保持 #59。[20 組總覽](../figures/ending-tail-20-segments-approximate-remake-e1.png)仍只是 E1，因為 `0x1088d(0x1e)` 的31-record baseline 穿過 `0x2c548` 的位元連續性、聲音 owner、原版輸入時序與一般玩家路徑尚未閉合。`0x2939D` 的3%外層預算在終局非零分支讀取未初始化區域值，不能當作穩定重播契約，已降為非阻擋原版考古限制。外部片尾錄影把 #59 對應為 `THE END` 是**強推論**，見 [`ch30-ending-youtube-visual-side-evidence.json`](../data/ui-traces/ch30-ending-youtube-visual-side-evidence.json)，不是一般玩家 E2。Enter／空白鍵開啟、Enter／空白鍵／Esc 關閉的角色回顧循環是重製版延伸；一般玩家 E2 仍未完成 |
 
+> **2026-08-25 第30戰同狀態反證：** 來源可追溯的末關候選存檔現可由原版普通
+> `CONTINUE` 與重製普通 X11 鍵盤分別抵達相同 round／camera／cursor。重製側仍用
+> `FD2_NOCUT=1` 與固定 title tick，故只列 E1；實際畫面已暴露 map29 外圍地形錯誤
+> 圖樣及可見單位配置差異。此反證不降低 ch01 scoped 候選結果，但禁止把 ch01
+> 外推為晚期戰場完成。證據見
+> [`native-battle-ch30-original-candidate.json`](../data/ui-traces/native-battle-ch30-original-candidate.json)。
+
 終局 19×5 owner 的最新玩家可見 E1 證據見
 [`ending-dialogue-native-indexed-remake-e1.json`](../data/ui-traces/ending-dialogue-native-indexed-remake-e1.json)；
 旁車鎖定 `0x2BE44`、`waiting`、第 1／5 區塊且一般對話佇列為零。這只關閉重製端

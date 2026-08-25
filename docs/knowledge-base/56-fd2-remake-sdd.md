@@ -6371,3 +6371,19 @@ runtime。現有 `nativeRNGState` 不為這個終局實作殘留額外前進，�
 呈現前資產、FDICON selector、palette或 sample #4 缺失時維持零 HP／零 `Acted`
 並停止，不能把無畫面的同步回復當成成功。聚焦回歸須同時固定接受、gate拒絕與
 資產失敗三條路徑。
+
+## 2026-08-25：第30戰同存檔一般鍵盤畫面驗證
+
+來源可追溯但非本專案從頭通關的最後一關候選存檔，已在重製端以普通 X11
+`Escape×2→Down×2→Return` 走正式標題 `CONTINUE`。`FD2_NOCUT=1` 只關閉尚未
+達 E2 的重製開場排程；`FD2_NATIVE_TITLE_TICK=0` 固定原版 BIOS 低字種子，因此
+本側仍是 `RUNTIME-E1`。frame 600 旁車確認 `battle_ch30`、native round 12、camera
+`(16,16)` 與 cursor `(21,20)`，和候選存檔 header 一致。
+
+同狀態畫面同時反證「晚期戰場渲染已可視為完成」：map29 外圍地形出現大量錯誤
+圖樣，畫面內可見單位配置也未與原版候選畫面一致。這不是透明背景可忽略差異，
+不得放入 README 當代表成果或提升為像素配對。後續修正必須先分別核對
+FDSHAP terrain destination-preserving spans 的 steady-frame 初始目的面，以及
+33筆 current-runtime record 到 native unit layer 的可見性／座標；不得以 RGBA
+補色、靜態背景或手排單位掩蓋。完整輸入、圖片雜湊與限制見
+[`native-battle-ch30-original-candidate.json`](../data/ui-traces/native-battle-ch30-original-candidate.json)。

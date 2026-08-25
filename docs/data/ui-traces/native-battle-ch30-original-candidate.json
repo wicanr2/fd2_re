@@ -35,11 +35,21 @@
     "level": "RUNTIME-E1",
     "test": "TestNativeContinueTitleCallerPublishesLateBattleCandidate",
     "verified": "同一存檔發布 battle_ch30、33筆場上單位、31人持續隊伍、回合12與相同鏡頭／游標",
-    "gui_limit": "重製普通 X11 開場略過時間線尚未穩定抵達標題 CONTINUE；兩次旁車均正確辨識為新遊戲，未冒稱配對成功"
+    "gui": {
+      "image": "../../figures/native-battle-ch30-remake-candidate-e1.png",
+      "image_sha256": "6a9ff080643c5dcd1f34142b66692672b424d3d84d435cbb036345bb63aa9c9c",
+      "container": "fd2-go-test-local:latest",
+      "input": "FD2_NOCUT=1；Escape×2；Down×2；Return；等待至frame 600",
+      "input_helper": "tools/docker/fd2-xtest-input.c",
+      "state": "battle_ch30；native round 12；camera (16,16)；cursor (21,20)",
+      "classification": "普通X11鍵盤事件走正式CONTINUE，但FD2_NOCUT與FD2_NATIVE_TITLE_TICK=0仍是明示夾具，故只列RUNTIME-E1"
+    },
+    "visual_gap": "同狀態畫面顯示map29外圍地形有大量錯誤圖樣，且可見單位配置尚未與原版候選畫面一致；這是未關閉缺陷，不宣稱像素配對"
   },
   "limits": [
     "第三方分享站無法證明存檔從頭到尾完全未修改",
     "本紀錄只證明候選存檔能由固定版原版正常 CONTINUE 進入第30戰",
-    "尚未取得第29戰正常玩家錨點、同狀態重製 GUI 圖或完整終局輸入／音訊 E2"
+    "尚未取得第29戰正常玩家錨點或完整終局輸入／音訊 E2",
+    "重製GUI已能由普通鍵盤抵達同一節點與view，但map29地形／單位畫面差異尚未關閉"
   ]
 }

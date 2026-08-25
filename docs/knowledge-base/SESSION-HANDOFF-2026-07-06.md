@@ -6779,5 +6779,11 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   並由場上我方identity建立部署集合。重複或游離identity整批拒絕。
 - 同一候選整合測試現通過 `battle_ch30`、33筆場上單位、31人持續隊伍、turn12與相同
   camera／cursor；既有chapter0 CONTINUE亦通過。第三方來源無法證明從頭未修改通關，
-  故只列候選E2；重製普通X11開場時間線兩次未抵達CONTINUE，旁車均正確辨識為新遊戲，
-  不把直接測試或錯誤畫面冒稱GUI配對。
+  故只列候選E2。後續以 `FD2_NOCUT=1` 關閉尚未達E2的重製開場排程，普通X11
+  `Escape×2→Down×2→Return` 已沿正式 `CONTINUE` 抵達相同 `battle_ch30`、round12、
+  camera／cursor；`FD2_NATIVE_TITLE_TICK=0` 仍是明示夾具，重製側只列E1。
+- 該同狀態重製畫面並未通過忠實度驗收：map29外圍地形有大量錯誤圖樣，可見單位
+  配置也與原版候選畫面不一致。圖片與旁車已加入
+  [`native-battle-ch30-original-candidate.json`](../data/ui-traces/native-battle-ch30-original-candidate.json)
+  作為反證錨點；後續先核對destination-preserving terrain span的初始目的面與33筆
+  runtime record的native unit layer，不得以靜態背景或手排單位掩蓋。
