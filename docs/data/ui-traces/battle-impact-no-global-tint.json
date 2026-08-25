@@ -45,6 +45,17 @@
     "md5": "77aa0fac4c2eac994445979f175d41b8",
     "sha256": "61f8f79d5a2e32208925462ccea4177769a3103b0b092b33c6d2122597298c50"
   },
+  "current_source_phase_audit": {
+    "generated_at": "2026-08-25",
+    "remake_head": "de8cec3eafc42526a53d56154837c17494e33ad5",
+    "method": "以目前原始碼重建完整 FD2_SHOT_SERIES，再由 tools/docker/fd2-battle-series-compare.sh 將每幀最近鄰正規化為 320x200，逐幀計算未遮罩 RGB AE",
+    "oracle": "由 battle-impact-compare-20260810.png 左欄的 320x200 原版內容區重建；該比較圖本身不是新的原版擷取",
+    "best_frame": 76,
+    "best_absolute_error_pixels": 4436,
+    "next_frame_absolute_error_pixels": 8835,
+    "conclusion": "目前最佳相位仍有4436個差異像素，主要集中於守方命中剪影；差異不能再單純歸因於固定第77幀挑錯。2026-08-10的3933是當時原始碼與當時產物的歷史量測，不是目前HEAD的數值。",
+    "limits": "未修改原版只有一張命中錨點，未提供同一次攻擊的原版完整逐幀序列；本量測不證明原版精確畫格時鐘，也不授權猜接FIGANI位移。"
+  },
   "evidence_scope": [
     "重製端畫面修正",
     "IDA/Capstone 已證實原版命中色盤分支是條件式 DAC 脈衝",

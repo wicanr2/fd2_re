@@ -6464,3 +6464,12 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   回歸已加入。
 - `91`原「其他正常producer仍缺owner」已撤回；下一個戰鬥缺口只剩狀態高階名稱
   與代表性同狀態逐幀／音訊E2。新writer或動態trace出現時才重開ID集合。
+
+## 2026-08-25：命中畫面逐幀相位稽核
+
+- 以 `de8cec3e` 目前原始碼在一次性、無網路、受資源限制的 Docker／Xvfb 容器重建
+  完整 `FD2_SHOT_SERIES`，再逐幀正規化到320×200與既有原版命中錨點比較。
+- 最佳為frame76，未遮罩RGB `AE=4436`；第二名frame74為`AE=8835`。因此既有
+  3933數值只屬2026-08-10當時產物，且目前差異不能只歸因於挑錯frame77。
+- 新增 `tools/docker/fd2-battle-series-compare.sh` 固定量測方式。差異主要集中於守方
+  命中剪影；`0x2939D` 的進度／疊層消費端尚未閉合，不以肉眼猜接位移常數。
