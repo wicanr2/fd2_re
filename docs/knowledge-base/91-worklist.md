@@ -27,7 +27,8 @@
 
 2026-08-25 戰場命中位移已閉合並接上E1錨點：IDA直接consumer證實
 `0x5255F／0x52577`是六相位水平／垂直位移，不是idle descriptor。玩家攻擊的
-第一個相位5接入`(-14,-10)`後，完整序列最佳frame76由`AE=4436`降至`AE=1330`。
+第一個相位5接入`(-14,-10)`後，完整序列最佳frame76由`AE=4436`降至`AE=1330`；
+修正姓名索引的`_comment`解析、真正啟用FDOTHER#4字模後再降至`AE=903`。
 完整六相位因缺`0x29F72` raw owner仍只到`DATA-READY`，不得猜接；後續只補代表性
 一般玩家E2。可重跑入口為`tools/docker/fd2-battle-series-compare.sh`。
 
@@ -1243,6 +1244,9 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
       以 `FDOTHER_004.bin`＋`unicode_to_glyph.json` 逐字 render，未知字元才保留
       TTF fallback，並以 Docker/Xvfb 產生 [`battle-native-name-remake.png`](../figures/battle-native-name-remake.png)。
       這是戰鬥狀態欄 E1 消費端修正，不代表全螢幕演出或一般玩家 DOSBox E2。
+      **2026-08-25勘誤**：舊載入器因頂層`_comment`字串整批失敗，上述2026-08-10
+      圖實際仍是TTF fallback；現已修正解析、`+(5,4)`原點與實檔「盜賊」回歸，
+      並重抓同名圖。E1狀態以本勘誤後產物為準。
 
 ## 第 8 輪（歷史玩法盤點 round；魔法／SFX／campaign 目前仍是 partial）
 > 使用者指示:檢視腳本系統一路到移動/觸發戰鬥/魔法,盤點缺口逐項補。

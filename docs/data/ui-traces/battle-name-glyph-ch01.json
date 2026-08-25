@@ -35,10 +35,10 @@
     "path": "docs/figures/battle-native-name-remake.png",
     "width": 640,
     "height": 400,
-    "md5": "86da76005c28c561b0a3a92ea726202b",
-    "sha256": "b38f26c9475cf4eb34fd4505dac4f035eed76c3291a63bc1f2044732dc7b5ae9",
+    "md5": "9c9c7213fe00f98e4edb08b164c2dbc3",
+    "sha256": "ac473036429310a6f7dae6da36281740814193b1032e847ae97fac959b16a411",
     "command": "FD2_SHOT_ATTACK=4 FD2_SHOT_FRAME=20 FD2_TITLE=0 FD2_MUTE=1",
-    "provenance": "fd2-go-test-local Docker／Xvfb；原版 FDOTHER.DAT 唯讀掛載；重製端目前 source 重新建置。畫面只作 E1 artifact，沒有替代未修改一般玩家 DOSBox 比對。"
+    "provenance": "2026-08-25以fd2-go-test-local Docker／Xvfb重新擷取frame76；原版 FDOTHER.DAT 唯讀掛載。載入器已明確略過unicode_to_glyph.json的_comment，盜賊姓名走FDOTHER#4字模而非TTF fallback。畫面只作 E1 artifact，沒有替代未修改一般玩家 DOSBox 比對。"
   },
   "result": {
     "status": "已接入可編輯重製端",

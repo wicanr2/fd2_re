@@ -1564,7 +1564,9 @@ phase前的九段figure fade，因此本切片只列
 決定：零值在`(0,154)`，非零在`(171,4)`；raw chapter24且unit index17是強制
 下方的直接例外。框為FDOTHER#5 LMI1 entry22的opaque 149×42 cell；HP／MP
 bar使用raw cells23..30，兩／三位數使用frame entries31..52與93，姓名使用
-FDTXT resource0的`record+8+1`及FDOTHER#4 16×16字模。所有座標、數值寬度、
+FDTXT resource0的`record+8+1`及FDOTHER#4 16×16字模。姓名呼叫原點固定為
+panel `+(5,4)`；`0x4EA2A` 的左下陰影可寫到 `x-1`，因此重製端暫存面必須保留
+左側一像素，不可把暫存面的邊界誤當成姓名原點。所有座標、數值寬度、
 bar公式與繪製順序以
 [`fd2_battle_status_panel_ida.txt`](../data/ida/fd2_battle_status_panel_ida.txt)
 為準。`battle.RenderNativeBattlePanel`現要求raw `+6/+8` provenance並在私有
@@ -4710,6 +4712,11 @@ Capstone 證據已確認 `0x18c6d→0x15f84→0x4ea2a` 消費 FDOTHER#4 的 16×
 1bpp glyph；重製端現以可版控的 `FDOTHER_004.bin` 與
 `unicode_to_glyph.json` 逐字建立索引畫面，再以原版前景／陰影索引放大 2×。
 缺少字模或 Unicode 對映時才退回既有 TTF，未知字元不會被猜測成其他 glyph。
+
+2026-08-25執行期稽核發現上述索引載入曾因JSON頂層`_comment`字串被直接解成
+`map[string]int`而整批失敗，初始化又退回TTF；因此2026-08-10截圖只能證明素材
+存在，不能證明正式消費端真的啟用。現改為只明確略過`_comment`，其餘key仍必須
+是合法整數glyph且在字模範圍內；「盜賊」實檔載入與同狀態抓圖是新的驗收閘門。
 
 Docker／Xvfb 實際產生 [`battle-native-name-remake.png`](../figures/battle-native-name-remake.png)，
 完整輸入雜湊與命令見 [`battle-name-glyph-ch01.json`](../data/ui-traces/battle-name-glyph-ch01.json)。

@@ -9289,7 +9289,7 @@ func (g *Game) drawBattlePanel(screen *ebiten.Image, x, y float64, name string, 
 	}
 	drawFill(rnd(y+31*sc), float64(mp)/float64(mpmx),
 		color.RGBA{0xf0, 0x70, 0x60, 0xff}, color.RGBA{0xc8, 0x28, 0x20, 0xff}) // MP 紅
-	// 排版(對照 orig 放大量測,native):名(8,2) 16px;LV數字接框內「LV‧」後(133,3) 9px;
+	// 排版(0x18C6D直接caller):名(5,4) 16px;LV數字接框內「LV‧」後(132,4);
 	// HP/MP 數值與槽同列(125,20)/(125,29) 8px
 	_ = white
 	// 名字：原版 0x15f84→0x4ea2a 使用 FDOTHER#4 16×16 glyph；只有

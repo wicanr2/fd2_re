@@ -2,10 +2,21 @@ package main
 
 import (
 	"encoding/binary"
+	"image/color"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
 )
+
+func TestBundledNativeBattleNameAssetsCoverImpactFixture(t *testing.T) {
+	font, index, err := loadNativeBattleNameAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, ok := nativeBattleNameImage(font, index, color.Palette{}, "盜賊"); !ok {
+		t.Fatal("bundled native battle name assets reject impact fixture name")
+	}
+}
 
 func TestRenderNativeBattleNameIndexedPreservesNativeShadowABI(t *testing.T) {
 	raw := make([]byte, 2*fdtxt.GlyphBytes)
@@ -34,5 +45,11 @@ func TestRenderNativeBattleNameIndexedRejectsUnknownCharacter(t *testing.T) {
 	}
 	if _, _, _, err := renderNativeBattleNameIndexed(font, map[string]int{"甲": 0}, "乙", 0xcd, 0x4c); err == nil {
 		t.Fatal("unknown native battle glyph silently accepted")
+	}
+}
+
+func TestNativeBattleNameOriginPreserves18C6DCallerCoordinates(t *testing.T) {
+	if nativeBattleNameOriginX != 5 || nativeBattleNameOriginY != 4 {
+		t.Fatalf("native battle name origin=(%d,%d), want (5,4)", nativeBattleNameOriginX, nativeBattleNameOriginY)
 	}
 }

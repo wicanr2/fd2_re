@@ -6488,3 +6488,15 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   1330；守方剪影主要位置差異已消除。新圖為
   `docs/figures/battle-impact-compare-20260825.png`。這仍不是一般玩家E2、完整DAC、
   六相位逐幀或精確音訊證據。
+
+## 2026-08-25：戰鬥姓名字模消費端勘誤
+
+- 2026-08-10「姓名已接FDOTHER#4」只證明素材與孤立helper；實檔
+  `unicode_to_glyph.json`含`_comment`字串，舊載入器直接解成`map[string]int`
+  必定整批失敗，而初始化靜默退回TTF。該舊截圖與完成宣稱因此撤回。
+- 新載入器只明確略過`_comment`，其餘key仍須為範圍內整數glyph；實檔「盜賊」
+  載入測試通過。另依既有IDA caller把姓名原點從錯誤`+(8,2)`改回`+(5,4)`，
+  並保留`0x4EA2A`陰影所需的`x-1`暫存欄。
+- Docker／Xvfb重抓後，frame76相對同一原版錨點的`AE`由位移修正後1330再降至903；
+  新遮罩顯示姓名差異已消失，剩餘主要是HP／MP數字與橫條。這才是姓名正式
+  `RUNTIME-E1`的玩家可見驗證，仍不是一般玩家E2。

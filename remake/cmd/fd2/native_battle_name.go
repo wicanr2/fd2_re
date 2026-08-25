@@ -11,6 +11,11 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
 )
 
+const (
+	nativeBattleNameOriginX = 5
+	nativeBattleNameOriginY = 4
+)
+
 // nativeBattleNameAssets 是全螢幕戰鬥狀態欄的原版姓名字模來源。
 // 原版 0x18c6d→0x15f84 走 FDOTHER#4 的 16×16 1bpp glyph，不與對話／現代
 // UTF-8 字型共用；索引表仍是可編輯資產，未知字元一律拒絕 native 路徑。
@@ -27,9 +32,20 @@ func loadNativeBattleNameAssets() (*fdtxt.Font, map[string]int, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	index := make(map[string]int)
-	if err := json.Unmarshal(indexRaw, &index); err != nil {
+	encoded := make(map[string]json.RawMessage)
+	if err := json.Unmarshal(indexRaw, &encoded); err != nil {
 		return nil, nil, err
+	}
+	index := make(map[string]int, len(encoded))
+	for key, value := range encoded {
+		if key == "_comment" {
+			continue
+		}
+		var glyph int
+		if err := json.Unmarshal(value, &glyph); err != nil {
+			return nil, nil, fmt.Errorf("native battle name glyph %q: %w", key, err)
+		}
+		index[key] = glyph
 	}
 	for key, glyph := range index {
 		if glyph < 0 || glyph >= font.GlyphCount() {
@@ -115,10 +131,9 @@ func (g *Game) drawNativeBattleName(screen *ebiten.Image, x, y float64, name str
 	}
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(2, 2)
-	// The indexed helper reserves one native pixel for the x-1 shadow write;
-	// place that margin immediately before the evidence-backed local x=8 name
-	// origin inside the 149×42 panel.
-	op.GeoM.Translate(x+(8-1)*2, y+2*2)
+	// 索引輔助函式為 x-1 陰影保留一個原生像素。0x18C6D 傳給 0x15F84 的
+	// 座標是 panel+(5,4)，因此暫存面從原生 x=4 開始，第一個前景像素仍在 x=5。
+	op.GeoM.Translate(x+(nativeBattleNameOriginX-1)*2, y+nativeBattleNameOriginY*2)
 	screen.DrawImage(img, op)
 	return true
 }

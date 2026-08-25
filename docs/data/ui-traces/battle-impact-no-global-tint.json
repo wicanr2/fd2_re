@@ -36,15 +36,15 @@
     "path": "docs/figures/battle-impact-no-global-tint.png",
     "width": 640,
     "height": 400,
-    "md5": "0d2edfabab5f31b94785aac32fe6c9cf",
-    "sha256": "f8baaf64ce476de846a304794014720d0e0f6a2563cdd60187fb26b6e6cb622b"
+    "md5": "9c9c7213fe00f98e4edb08b164c2dbc3",
+    "sha256": "ac473036429310a6f7dae6da36281740814193b1032e847ae97fac959b16a411"
   },
   "normalized_comparison": {
     "path": "docs/figures/battle-impact-compare-20260825.png",
     "normalization": "原版 DOSBox 640x480 影像以 2.4 倍垂直取樣正規化為 320x200；重製端 640x400 以 2 倍最近鄰縮小為 320x200；右欄為逐 RGB 差異遮罩",
-    "diff_pixels": 1330,
-    "md5": "80f476f9f02ff156c338243ef12eb63d",
-    "sha256": "c308eb179784af5a21f74d2b693db0e24af9504374d292bc8ccc375af36556b6"
+    "diff_pixels": 903,
+    "md5": "8ca3363e9a75fc1ed89c414eaf58d962",
+    "sha256": "d2f1be0fc97639efb9fd3e69b8242699fb780c52c6128892434be11878ac5b7f"
   },
   "current_source_phase_audit": {
     "generated_at": "2026-08-25",
@@ -54,10 +54,11 @@
     "best_frame": 76,
     "best_absolute_error_pixels": 4436,
     "next_frame_absolute_error_pixels": 8835,
-    "conclusion": "接入IDA直接consumer證實的第一個phase5負向位移後，最佳frame76由4436降至1330個差異像素；守方命中剪影的主要位置差異已消除。2026-08-10的3933與本節原4436均保留為歷史量測。",
+    "conclusion": "接入IDA直接consumer證實的第一個phase5負向位移後，最佳frame76由4436降至1330個差異像素；再修正原版姓名字模索引載入後降至903。守方命中剪影與姓名的主要差異已消除。2026-08-10的3933、修正前4436與位移後1330均保留為歷史量測。",
     "post_displacement_best_frame": 76,
     "post_displacement_best_absolute_error_pixels": 1330,
     "post_displacement_base_head": "66372c27a54659d3bd6f506cf858d2f612a7f49d",
+    "post_native_name_best_absolute_error_pixels": 903,
     "limits": "未修改原版只有一張命中錨點，未提供同一次攻擊的原版完整逐幀序列；本量測不證明原版精確畫格時鐘。完整六相位因缺0x29F72 raw owner而未接入。"
   },
   "evidence_scope": [
