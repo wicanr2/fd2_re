@@ -6075,6 +6075,20 @@ runtime 只有在所有條件都完整時才能選擇原生路徑：
 renderer，直到各自 caller 完成 RE／typed binding。Enter 依 typed pages 推進；
 本切片先重現穩定頁面，不冒稱逐字、嘴型、開／關框中間幀或 DOS E2。
 
+### ch24_post 逐字形發布規格（2026-08-25）
+
+沿用同一份 `fd2_story_dialogue_layout_ida.txt`，不重開 `0x15F84`。直接指令
+`0x1645F..0x1647F` 已證實普通 glyph 每次寫入 VGA 後才前進16像素，`FFFE`
+只切換下一列；因此 index6／7 每頁須從「框＋頭像、尚無文字」開始，依 typed
+page 的列順序與每列字序預建一組 indexed frame，每張只比前一張多一個完整原版
+glyph。頁面完成前 Enter 不得換頁或換句；進到下一頁或下一句時進度歸零。
+
+正式 runtime 只消費完整預建成功的 frame 序列。任一字形、portrait、框格、頁面
+或 indexed buffer 缺漏時，整句在發布前失敗即關閉。重製以每次更新發布一個 glyph
+作為可重現時序，這只是 renderer 順序近似，不宣稱 DOS wall-clock。嘴型與開／關框
+中間幀沒有由本切片取得新證據，仍不得接入此 caller-specific owner；穩定頁與逐字
+序列提升為 `RUNTIME-E1`，一般玩家同狀態比較仍另列。
+
 ## 2026-08-25：終局三筆音訊 cue 的具型別消費規格
 
 主證據為 [`fd2_ending_audio_ida.txt`](../data/ida/fd2_ending_audio_ida.txt)。這個

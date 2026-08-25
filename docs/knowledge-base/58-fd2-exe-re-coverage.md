@@ -52,7 +52,7 @@
 |---|---|---|---|---|---|
 | 檔案版本、容器與主要資產格式 | 閉合 | 就緒 | E1 | 部分 | `.DAT`、圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與多張 EXE 表已有雜湊與重生工具。剩餘多是消費端、音訊時序或個別執行期改寫，不應重解容器格式。 |
 | 開機、標題、LOAD、CONTINUE、存檔 | 部分 | 部分 | 部分 E1 | 原版錨點部分 E2 | 四槽 envelope、checksum、名冊與部分戰間落點已接；標題 selector 的正式確認 owner 現以 checksum-valid 合成槽完整還原 `town_ch02`、typed/raw party、gold、chapter、HUD gate並清除舊 battle state，竄改 envelope 原子留在選槽。current-runtime CONTINUE 與巢狀 SAVE／LOAD 已有正式 E1：LOAD 先完成私有候選 handoff，YES 後才原子替換；SAVE 保留四槽與未命名 bytes，非我方增援不占 persistent slot，具 constructor／identity 證據的新我方 JOIN 追加完整 raw record。尚缺未修改有效四槽與同 raw 狀態 E2；長程遊玩改由使用者人工回報，不列代理工作項目。 |
-| 對話、頭像與過場原語 | 部分偏高 | ch24穩定頁就緒 | 部分 E1 | 部分 | `0x15F84`、`0x1366A`、基本 pan／acting／spawn／join 等不應再從零重解。`ch24_post` 兩個 lookup 的18句已由 raw `FFED/FFEF/FFEE/FFFE/FFFD` 建成 typed pages；[`fd2_story_dialogue_layout_ida.txt`](../data/ida/fd2_story_dialogue_layout_ida.txt) 閉合最終格網與文字座標。正式第25戰戰後 runner 已消費原版框、頭像、字模與穩定頁後抵達 town26／祕密商店，達 caller-specific `RUNTIME-E1`。只重開逐字、嘴型、開關中間幀、E2或其他 caller binding。 |
+| 對話、頭像與過場原語 | 部分偏高 | ch24穩定頁／逐字序列就緒 | 部分 E1 | 部分 | `0x15F84`、`0x1366A`、基本 pan／acting／spawn／join 等不應再從零重解。`ch24_post` 兩個 lookup 的18句已由 raw `FFED/FFEF/FFEE/FFFE/FFFD` 建成 typed pages；[`fd2_story_dialogue_layout_ida.txt`](../data/ida/fd2_story_dialogue_layout_ida.txt) 閉合最終格網、文字座標及`0x1645F..0x1647F`逐字寫入順序。正式第25戰戰後 runner 已消費原版框、頭像、字模，以及每頁從空文字到逐字完成的indexed序列後抵達 town26／祕密商店，達 caller-specific `RUNTIME-E1`。只重開嘴型、開關中間幀、E2或其他 caller binding；不把重製每更新一字冒稱DOS精確時鐘。 |
 | 30 個 raw chapter 的戰前／戰後處理器 | 部分 | 60 份 handler script；部分 binding | 部分 E1 | 缺完整 E2 | 舊83個 raw unknown 已拆成80個已證實窄呼叫、3個已知但 caller／執行期未閉合的呼叫，已沒有未分類 call site。玩家第29戰 raw ch28 post 現已以綁定的視圖／HUD、`0x35BBA→0x1DB65`、group9、`0x22253`、`0x24B4D`、`0x35E5A`、隊伍同步與 `preparation_ch30` 存讀檔達成 E1；未證實高階圖像／樣本名稱與一般玩家 E2 仍保留。 |
 | 可編輯戰役與持續隊伍 | 部分 | 121 個 story／cutscene 節點；9 個 scripted、56 個 handler-bound、56 個 fallback | 部分 E1 | 缺完整 E2 | 24 個 postbattle 節點目前全部 active；admission blocked 為0。玩家第29戰正常 `story_ch29→battle_ch29` 入口現物化76-slot frontier與已證實視圖／HUD，戰果確認後播放 raw ch28 post，追加group9、同步持續隊伍，再進`preparation_ch30`並通過存讀檔 E1。所有 active 仍只代表正式執行期接入，不代表未修改原版 E2 或逐像素一致。 |
 | 戰鬥資料、移動、公式、勝敗與成長 | 部分偏高 | 部分就緒 | E1 | 部分 | 多項公式與地形資料已有具型別實作；命中／閃避來源、部分經驗交易、回合事件與原版逐狀態驗證仍不完整。需要針對缺欄位補 producer／consumer，不重解已閉合的 AP−DP 等公式。 |
@@ -302,7 +302,7 @@ command30 producer，也不構成缺少AI executor的交付阻擋。
 
 | 位址／家族 | 現有主證據 | 已閉合範圍 | 仍可做的工作 |
 |---|---|---|---|
-| `0x15F84` | [`29`](29-remake-extensible-event-system.md)、[`fd2_story_dialogue_layout_ida.txt`](../data/ida/fd2_story_dialogue_layout_ida.txt)、各 handler 直接指令 | 基本 renderer、四種故事開框碼、`FFFE/FFFD`、最終格網與 ch24 index6/7 已 `RE-CLOSED` | 只開其他 caller-specific binding、逐字／嘴型／開關中間幀與 E2；不重解基本函式角色 |
+| `0x15F84` | [`29`](29-remake-extensible-event-system.md)、[`fd2_story_dialogue_layout_ida.txt`](../data/ida/fd2_story_dialogue_layout_ida.txt)、各 handler 直接指令 | 基本 renderer、四種故事開框碼、`FFFE/FFFD`、最終格網、逐字寫入順序與 ch24 index6/7 已 `RE-CLOSED`；ch24逐字indexed owner達`RUNTIME-E1` | 只開其他 caller-specific binding、嘴型／開關中間幀與 E2；不重解基本函式角色或逐字順序 |
 | `0x1366A` | [`50`](50-cutscene-script-system-design.md)、`chapter_beats` | acting 呼叫原語 | 個別資源、場景時序與畫面；不重解原語本身 |
 | `0x11DF2` | [`fd2_11df2_palette_disasm.txt`](../data/fd2_11df2_palette_disasm.txt) | palette range/delta helper | caller 時序與畫面；應回填 exporter |
 | `0x1F882`、`0x25052` | [`91`](91-worklist.md) 對應直接指令證據 | 兩種不同 palette ramp | runtime renderer／caller E2；不再稱 vsync |

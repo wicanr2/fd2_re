@@ -210,6 +210,25 @@ func TestComposeNativeStoryDialoguePageUsesOriginalIndexedAssets(t *testing.T) {
 	if background[nativeStoryUpperText] != 7 {
 		t.Fatal("native story compositor mutated its caller-owned background")
 	}
+	progressive, err := ComposeNativeStoryDialogueProgressiveFrames(
+		background, cells, portraits[0], font, index, layout, 1,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantFrames := 1
+	for _, row := range layout.Pages[1] {
+		wantFrames += len([]rune(row))
+	}
+	if len(progressive) != wantFrames {
+		t.Fatalf("progressive frames=%d, want frame0 plus %d glyphs", len(progressive), wantFrames-1)
+	}
+	if string(progressive[len(progressive)-1]) != string(page1) {
+		t.Fatal("progressive final frame differs from stable page")
+	}
+	if string(progressive[0]) == string(progressive[len(progressive)-1]) {
+		t.Fatal("progressive sequence did not publish any visible glyph")
+	}
 	bad := *layout
 	bad.Pages = [][]string{{"🙂"}}
 	if _, err := ComposeNativeStoryDialoguePage(background, cells, portraits[0], font, index, &bad, 0); err == nil {

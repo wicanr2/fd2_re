@@ -33,6 +33,27 @@ func ComposeNativeStoryDialoguePage(
 	layout *NativeDialogueLayout,
 	page int,
 ) ([]byte, error) {
+	frames, err := ComposeNativeStoryDialogueProgressiveFrames(
+		background, dialogueCells, portrait, font, glyphIndex, layout, page,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return frames[len(frames)-1], nil
+}
+
+// ComposeNativeStoryDialogueProgressiveFrames 保存 0x15F84 每寫入一個普通
+// glyph 才前進目的位址的發布順序。第0張只有完整框與頭像；後續每張各新增一個
+// glyph。幀數不代表 DOS wall-clock，只是 caller 可決定性消費的順序契約。
+func ComposeNativeStoryDialogueProgressiveFrames(
+	background []byte,
+	dialogueCells []fdother.RawCell,
+	portrait dato.Frame,
+	font *fdtxt.Font,
+	glyphIndex map[string]int,
+	layout *NativeDialogueLayout,
+	page int,
+) ([][]byte, error) {
 	if len(background) != 320*200 || len(dialogueCells) <= 17 || font == nil || glyphIndex == nil {
 		return nil, errors.New("campaign: native story dialogue assets are invalid")
 	}
@@ -60,6 +81,8 @@ func ComposeNativeStoryDialoguePage(
 	if err := blitNativeDialoguePortraitAt(frame, portrait, portraitOffset); err != nil {
 		return nil, err
 	}
+	frames := make([][]byte, 0, 1+nativeStoryMaximumLineGlyph*len(layout.Pages[page]))
+	frames = append(frames, append([]byte(nil), frame...))
 	style := fdtxt.NativeGlyphStyle{Foreground: 0xcd, Shadow: 0x4c, Background: 0x4a}
 	for row, text := range layout.Pages[page] {
 		runes := []rune(text)
@@ -75,7 +98,8 @@ func ComposeNativeStoryDialoguePage(
 			if err := font.BlitNativeGlyph(frame, 320, destination, glyph, style); err != nil {
 				return nil, err
 			}
+			frames = append(frames, append([]byte(nil), frame...))
 		}
 	}
-	return frame, nil
+	return frames, nil
 }

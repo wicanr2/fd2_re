@@ -168,6 +168,8 @@ type Game struct {
 	dlgScrollT                 int             // 分頁捲動剩餘幀數(0=靜止)
 	dlgScrollFrom              int             // 分頁捲動開始頁碼
 	nativeDialogueFrames       [][]byte        // caller-specific 0x15F84 stable indexed pages
+	nativeDialogueProgressive  [][][]byte      // 每頁 frame0框／頭像，之後逐字形發布
+	nativeDialogueProgress     int             // 目前頁已發布的逐字 frame；-1尚未開始
 	fade                       *storyFade      // 場景淡出/淡入轉場(doc46 §5.2)
 	transitionReveal           *transitionRevealJob
 	indexedTransition          *nativeIndexedTransitionJob
@@ -2557,9 +2559,21 @@ func (g *Game) dlgAdvance() bool {
 	if g.dlgScrollT > 0 { // 捲動尚未完成時，Enter 不得跳過下一頁
 		return false
 	}
+	if len(g.dialog) > 0 && g.dialog[len(g.dialog)-1].NativeDialogue != nil {
+		if g.dlgPage < 0 || g.dlgPage >= len(g.nativeDialogueProgressive) ||
+			len(g.nativeDialogueProgressive[g.dlgPage]) == 0 {
+			// 已宣告原生 caller 卻缺正式幀時，不得退回可玩但未證實的換頁路徑。
+			return false
+		}
+		if g.nativeDialogueProgress < len(g.nativeDialogueProgressive[g.dlgPage])-1 {
+			// 原版 0x15F84 尚在逐字寫入時不會回到外層輸入 owner。
+			return false
+		}
+	}
 	if len(g.dialog) > 0 && g.dlgPage+1 < dlgPageCount(g.dialog[len(g.dialog)-1]) {
 		g.dlgScrollFrom = g.dlgPage
 		g.dlgPage++
+		g.nativeDialogueProgress = -1
 		g.dlgScrollT = dlgScrollFrames
 		return false
 	}
@@ -2569,6 +2583,7 @@ func (g *Game) dlgAdvance() bool {
 	g.dlgPage = 0
 	g.dlgScrollT = 0
 	g.dlgScrollFrom = 0
+	g.nativeDialogueProgress = -1
 	return true
 }
 
@@ -7049,6 +7064,7 @@ func (g *Game) Update() error {
 			g.mouthTimer = next.Countdown
 		}
 	}
+	g.stepNativeStoryDialogueProgress()
 	// 截圖模式:到指定幀後自動退出(畫面已於 Draw 存檔)。逐幀攻擊序列
 	// 只有 `FD2_SHOT_SERIES` 時也必須進入同一個 setup，否則攻擊演出永遠
 	// 不會建立，逐幀工具只能得到空目錄而無法驗證 GUI 時序。

@@ -11,6 +11,8 @@ import (
 
 func (g *Game) prepareNativeDialogueFrames() error {
 	g.nativeDialogueFrames = nil
+	g.nativeDialogueProgressive = nil
+	g.nativeDialogueProgress = -1
 	if len(g.dialog) == 0 || g.dialog[len(g.dialog)-1].NativeDialogue == nil {
 		return nil
 	}
@@ -62,17 +64,32 @@ func (g *Game) prepareNativeDialogueFrames() error {
 		return errors.New("native story dialogue: control and upper/lower binding disagree")
 	}
 	frames := make([][]byte, len(layout.Pages))
+	progressive := make([][][]byte, len(layout.Pages))
 	for page := range layout.Pages {
-		frames[page], err = campaign.ComposeNativeStoryDialoguePage(
+		progressive[page], err = campaign.ComposeNativeStoryDialogueProgressiveFrames(
 			g.nativeMapVGA, g.nativeClassUI.dialogue, portraits[0],
 			g.nativeClassUI.font, g.nativeBattleGlyphs, layout, page,
 		)
 		if err != nil {
 			return err
 		}
+		frames[page] = progressive[page][len(progressive[page])-1]
 	}
 	g.nativeDialogueFrames = frames
+	g.nativeDialogueProgressive = progressive
 	return nil
+}
+
+func (g *Game) stepNativeStoryDialogueProgress() {
+	if g == nil || g.dlgPhase != 0 || len(g.dialog) == 0 ||
+		g.dialog[len(g.dialog)-1].NativeDialogue == nil || g.dlgScrollT > 0 ||
+		g.dlgPage < 0 || g.dlgPage >= len(g.nativeDialogueProgressive) {
+		return
+	}
+	frames := g.nativeDialogueProgressive[g.dlgPage]
+	if len(frames) > 0 && g.nativeDialogueProgress < len(frames)-1 {
+		g.nativeDialogueProgress++
+	}
 }
 
 func (g *Game) drawNativeStoryDialogue(screen *ebiten.Image) bool {
@@ -84,9 +101,20 @@ func (g *Game) drawNativeStoryDialogue(screen *ebiten.Image) bool {
 	if g.dlgPhase != 0 {
 		return true
 	}
-	if g.dlgPage < 0 || g.dlgPage >= len(g.nativeDialogueFrames) {
+	if g.dlgPage < 0 || g.dlgPage >= len(g.nativeDialogueProgressive) {
 		return true
 	}
-	g.presentNativeClassFrame(screen, g.nativeDialogueFrames[g.dlgPage])
+	frames := g.nativeDialogueProgressive[g.dlgPage]
+	if len(frames) == 0 {
+		return true
+	}
+	progress := g.nativeDialogueProgress
+	if progress < 0 {
+		progress = 0
+	}
+	if progress >= len(frames) {
+		progress = len(frames) - 1
+	}
+	g.presentNativeClassFrame(screen, frames[progress])
 	return true
 }

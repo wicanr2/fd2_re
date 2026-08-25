@@ -6592,3 +6592,20 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - Docker聚焦回歸通過 internal/battle 的候選／decision，以及 cmd/fd2 的正常攻擊、
   缺movement provenance、拒絕gate共用收尾與缺presentation失敗即關閉。此批達
   `RUNTIME-E1`；精確音訊與未修改原版同狀態E2仍待人工抽驗。
+## 2026-08-25：ch24_post 原生故事對話逐字發布 E1
+
+- 先重讀 `fd2_story_dialogue_layout_ida.txt` 與 `58/56/57/91`，沒有重解已閉合的
+  `0x15F84`。直接指令 `0x1645F..0x1647F` 已證實普通 glyph 每次寫入 VGA 後才
+  前進16像素；舊證據中把逐字發布整體列為未知的措辭已追加勘誤。
+- `ComposeNativeStoryDialogueProgressiveFrames` 現從完整原版框／頭像且無文字的
+  frame0 開始，依 typed page 列序與字序每次新增一個完整 indexed glyph；穩定頁
+  compositor 改取同一序列最後一幀，避免兩套 renderer 漂移。
+- ch24正式 runtime 只在全頁預建成功後發布逐字序列；頁面完成前 Enter 不得換頁，
+  翻頁／換句會重置進度。每次更新一字是可重現近似，不宣稱 DOS wall-clock；嘴型、
+  開／關框中間幀與一般玩家同狀態 E2 仍保持未閉合。
+- Docker／Xvfb 聚焦回歸通過 `internal/campaign` 與 `cmd/fd2` 的 layout、原始資產
+  compositor、逐字輸入 gate 及第25戰後相關測試。測試同時修正「每個 glyph 都必然
+  改變像素」的錯誤假設：原版全形空白仍有 glyph call／游標前進，但可能不改畫面。
+- 本輪曾嘗試重播 ch02 物品轉移取消原版畫面；補丁後 EXE 雜湊與既有 oracle 完全
+  一致，但目前唯一 SAV／TMP 已無法在120秒內抵達城鎮。依有界停止原則未修改存檔、
+  未注入背包，也未把重製端既有 empty/full/self/cancel E1 冒稱原版 E2。
