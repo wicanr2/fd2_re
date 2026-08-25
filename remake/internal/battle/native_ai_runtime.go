@@ -95,10 +95,21 @@ func (s *State) nextNativeAIPhysicalPlan(u *Unit) (*AIPlan, bool, error) {
 		return nil, true, err
 	}
 	if !ok {
-		// 0x13FD4 的正式畫面／音訊 owner 已供 mode 11 的 0x14121 分支消費；
-		// mode 2 的這條無候選邊尚未綁到該 owner，所以仍須停止，不能把空計畫
-		// 當作已完成行動。
-		return nil, true, fmt.Errorf("native AI mode 2 produced no physical candidate; its 0x13fd4 edge is unavailable")
+		// 0x13C06/0x13C0F 在 0x14237 回傳零時消費 0x13FD4。接受恢復
+		// 與合法的閘門拒絕都要保留，兩者皆不可掉入正規化規劃器（planner）。
+		decision, err := PlanNativeAIIdleRecovery(records, len(s.Units), actor)
+		if err != nil {
+			return nil, true, fmt.Errorf("native AI mode 2 0x13fd4: %w", err)
+		}
+		plan := &AIPlan{
+			U: u, SpellID: -1, NativeMode2Physical: true,
+			NativeModeFallbackActive: true, NativeModeFallback: 2,
+			NativeScoredCommands: s.nativeAIPlanScoredCommands(u),
+		}
+		if decision.Accepted {
+			plan.NativeIdleRecovery = &decision
+		}
+		return plan, true, nil
 	}
 	selected := selection.Candidate
 	pathDirections, reachable, err := NativePathDirections(

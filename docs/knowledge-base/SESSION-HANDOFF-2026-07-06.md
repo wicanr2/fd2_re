@@ -6578,3 +6578,17 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 正式 `MontageTailPlayer` 維持有界、決定性的兩次配對，不模擬未初始化堆疊（stack）、
   不額外改 party HP，也不新增隱藏 RNG owner。這項限制已從交付阻擋降為非阻擋
   原版考古；後續歷史段落的「3% RNG重播待接」由本勘誤取代。
+
+## 2026-08-25：敵方 mode 2 無候選正式接入 `0x13FD4`
+
+- 沿用已閉合 `fd2_ai_mode_dispatch_ida.txt`：mode 2 的 `0x14237` 回傳0後，
+  `0x13C0F` 必定呼叫 `0x13FD4`；沒有重解 `0x14237` 或另造 normalized fallback。
+- `nextNativeAIPhysicalPlan` 現在只在完整 raw 候選計算得到空集合時建立 mode2 fallback。
+  `PlanNativeAIIdleRecovery` 接受時保存 typed decision；HP已滿或 raw `+0x25/+0x26`
+  gate拒絕時保存合法零修改 common-tail plan。
+- 正式 `aiStep` 將 accepted decision交給既有三個Draw邊界的 indexed／sample #4
+  owner；完成後才加HP並標記單位。資產／sample缺失保持HP與`Acted`不變；gate拒絕
+  則不播放、不改HP但正常完成單位，不再卡住敵方回合。
+- Docker聚焦回歸通過 internal/battle 的候選／decision，以及 cmd/fd2 的正常攻擊、
+  缺movement provenance、拒絕gate共用收尾與缺presentation失敗即關閉。此批達
+  `RUNTIME-E1`；精確音訊與未修改原版同狀態E2仍待人工抽驗。

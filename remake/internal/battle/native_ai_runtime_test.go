@@ -171,8 +171,9 @@ func TestNextAIPlanMode2FailsClosedWithoutEquippedLowItem(t *testing.T) {
 	}
 }
 
-func TestNextAIPlanMode2FailsClosedWithoutPhysicalCandidate(t *testing.T) {
+func TestNextAIPlanMode2NoPhysicalCandidateUsesAccepted13FD4Decision(t *testing.T) {
 	actor := nativeAIRuntimeUnit(0, 0, 0, 2)
+	actor.HP = 10
 	actor.InventorySlots[0] = 1
 	actor.NativeInventoryFlags[0] = 0x40
 	state := &State{
@@ -192,8 +193,35 @@ func TestNextAIPlanMode2FailsClosedWithoutPhysicalCandidate(t *testing.T) {
 		t.Fatal(err)
 	}
 	plan := state.NextAIPlan()
-	if plan == nil || plan.NativeError == nil {
-		t.Fatalf("plan=%+v want no-candidate fail-closed error", plan)
+	if plan == nil || plan.NativeError != nil || !plan.NativeModeFallbackActive ||
+		plan.NativeModeFallback != 2 || !plan.NativeMode2Physical || plan.NativeIdleRecovery == nil {
+		t.Fatalf("plan=%+v want accepted mode-2 0x13fd4 fallback", plan)
+	}
+	if plan.NativeIdleRecovery.CurrentHP != 10 || plan.NativeIdleRecovery.MaximumHP != 20 ||
+		plan.NativeIdleRecovery.NextHP != 14 {
+		t.Fatalf("recovery=%+v want 10/20 -> 14", plan.NativeIdleRecovery)
+	}
+}
+
+func TestNextAIPlanMode2NoPhysicalCandidateCompletesRejected13FD4Tail(t *testing.T) {
+	actor := nativeAIRuntimeUnit(0, 0, 0, 2)
+	actor.InventorySlots[0] = 1
+	actor.NativeInventoryFlags[0] = 0x40
+	state := &State{
+		W: 1, H: 1, Units: []*Unit{actor},
+		NativeCompositionEventBytes: []byte{0}, NativeTerrainMoveCodes: []byte{0},
+	}
+	if err := state.BindNativeFutureItemRows(make([]byte, 2*NativeItemEffectRowSize)); err != nil {
+		t.Fatal(err)
+	}
+	state.nativeFutureItemRows[NativeItemEffectRowSize+0x0c] = 1
+	if err := state.BindNativeMovementCostRows(nativeAIRuntimeCostRows()); err != nil {
+		t.Fatal(err)
+	}
+	plan := state.NextAIPlan()
+	if plan == nil || plan.NativeError != nil || !plan.NativeModeFallbackActive ||
+		plan.NativeModeFallback != 2 || plan.NativeIdleRecovery != nil || plan.Target != nil {
+		t.Fatalf("plan=%+v want rejected 0x13fd4 common-tail plan", plan)
 	}
 }
 

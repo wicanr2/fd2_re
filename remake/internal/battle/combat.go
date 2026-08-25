@@ -290,6 +290,10 @@ type AIPlan struct {
 	// 脫離的 runtime record、0x4e555 移動表與已驗證的 0x14237 評分契約時才為真。
 	// 它不代表前置 0x14ef0 路由或所有 native mode 已閉合。
 	NativeMode2Physical bool
+	// NativeIdleRecovery 保存非 mode11 分派器（dispatcher）抵達的已接受 0x13FD4
+	// 原始決策。已證實 fallback 上的 nil 表示恢復閘門（recovery gate）拒絕，
+	// 共用收尾仍須完成該單位。
+	NativeIdleRecovery *NativeAIIdleRecoveryDecision
 	// NativeError 是失敗即關閉的來源／執行期錯誤；非 nil 時，命令層 runner
 	// 必須在消耗單位行動前停止。
 	NativeError error

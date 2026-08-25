@@ -6109,3 +6109,26 @@ party HP，也不新增視覺重播或隱藏 RNG owner。這是潔淨室安全�
 另記為非阻擋 oracle；除非能證明玩家可見且穩定的資料契約，否則不得改變正式
 runtime。現有 `nativeRNGState` 不為這個終局實作殘留額外前進，避免把沒有後續
 玩家狀態 consumer 的未定義行為固化成引擎規則。
+
+## 2026-08-25：敵方 mode 2 無物理候選接入 `0x13FD4` 規格
+
+主證據沿用
+[`fd2_ai_mode_dispatch_ida.txt`](../data/ida/fd2_ai_mode_dispatch_ida.txt) 與
+[`fd2_ai_13fd4_full_ida_20260810.txt`](../data/ida/fd2_ai_13fd4_full_ida_20260810.txt)，
+不重解 `0x14237` 或 `0x13FD4`。已證實的 caller 鏈是 mode 2 的
+`0x14EF0` 失敗後呼叫 `0x14237`；其回傳0時由 `0x13C0F` 呼叫 `0x13FD4`，
+再進共用收尾。這不是正規化 AI 的「隨便待機」，也不可讓無候選錯誤卡住整個敵方回合。
+
+具型別計畫須在同一份 detached raw records 上保存以下兩種合法結果：
+
+1. `PlanNativeAIIdleRecovery` 接受時，保留完整 decision，交給既有正式 indexed／
+   音訊 owner `beginNativeAIIdleRecovery`；第三個 Draw 確認後才發布 HP，隨後才由
+   共用收尾標記該單位完成。
+2. HP已滿或 raw `+0x25/+0x26` gate拒絕時，`0x13FD4` 是合法零修改返回；不播放
+   恢復演出、不改 HP，但仍必須進共用收尾，不能退回正規化攻擊或留下未行動單位。
+
+缺 raw record、mode、selector、移動／地形／組成、物品來源或候選計算本身出錯時，
+仍維持失敗即關閉；只有已完整執行 `0x14237` 並得到「無候選」才可進本分支。
+呈現前資產、FDICON selector、palette或 sample #4 缺失時維持零 HP／零 `Acted`
+並停止，不能把無畫面的同步回復當成成功。聚焦回歸須同時固定接受、gate拒絕與
+資產失敗三條路徑。

@@ -162,6 +162,54 @@ func TestAIStepStopsMode2WithoutMovementProvenance(t *testing.T) {
 	}
 }
 
+func TestAIStepMode2NoCandidateCompletesRejected13FD4Tail(t *testing.T) {
+	actor := nativeAIConsumerUnit(0, 0, 0, 2)
+	actor.HP = 20 // 原始 +0x40 等於此 fixture 已固定的原始 +0x42 值。
+	actor.InventorySlots[0] = 1
+	actor.NativeInventoryFlags[0] = 0x40
+	state := &battle.State{
+		W: 1, H: 1, Units: []*battle.Unit{actor},
+		NativeCompositionEventBytes: []byte{0}, NativeTerrainMoveCodes: []byte{0},
+	}
+	itemRows := make([]byte, 2*battle.NativeItemEffectRowSize)
+	itemRows[battle.NativeItemEffectRowSize+0x0c] = 1
+	if err := state.BindNativeFutureItemRows(itemRows); err != nil {
+		t.Fatal(err)
+	}
+	if err := state.BindNativeMovementCostRows(nativeAIConsumerCostRows()); err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{st: state, aiBusy: true}
+	g.aiStep()
+	if g.loadErr != "" || !actor.Acted {
+		t.Fatalf("mode-2 rejected 0x13fd4 tail err=%q acted=%v", g.loadErr, actor.Acted)
+	}
+}
+
+func TestAIStepMode2NoCandidateRecoveryFailsClosedWithoutPresentation(t *testing.T) {
+	actor := nativeAIConsumerUnit(0, 0, 0, 2)
+	actor.HP = 10
+	actor.InventorySlots[0] = 1
+	actor.NativeInventoryFlags[0] = 0x40
+	state := &battle.State{
+		W: 1, H: 1, Units: []*battle.Unit{actor},
+		NativeCompositionEventBytes: []byte{0}, NativeTerrainMoveCodes: []byte{0},
+	}
+	itemRows := make([]byte, 2*battle.NativeItemEffectRowSize)
+	itemRows[battle.NativeItemEffectRowSize+0x0c] = 1
+	if err := state.BindNativeFutureItemRows(itemRows); err != nil {
+		t.Fatal(err)
+	}
+	if err := state.BindNativeMovementCostRows(nativeAIConsumerCostRows()); err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{st: state, aiBusy: true}
+	g.aiStep()
+	if g.loadErr == "" || g.aiBusy || actor.Acted || actor.HP != 10 {
+		t.Fatalf("mode-2 recovery failure err=%q ai=%v acted=%v hp=%d", g.loadErr, g.aiBusy, actor.Acted, actor.HP)
+	}
+}
+
 func TestAIStep14EF0CommandRejectsMissingPresentationAfterMovement(t *testing.T) {
 	actor := nativeAIConsumerUnit(0, 0, 1, 2)
 	actor.NativeCommandMask[0] = 1
