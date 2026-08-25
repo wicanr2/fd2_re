@@ -430,3 +430,16 @@ type20／24 在最後 `0x1CD17` blend Draw 後、type21 在最後 `0x1CAC7` togg
 正常玩家路徑與既有敵方路徑皆通過；缺 indexed context 時保留目標模式、HP、RNG、
 inventory 與 action，達 `RUNTIME-E1`。未修改原版同狀態逐幀／音訊仍是
 `PLAYER-E2`，不因此重開兩個已閉合 renderer。
+
+## 十三、2026-08-25：固定非玩家 command producer 覆蓋閉合
+
+[`fd2_nonplayer_command_producer_coverage_20260825.txt`](../data/ida/fd2_nonplayer_command_producer_coverage_20260825.txt)
+把固定雜湊 FDFIELD 的 33 圖、1887 筆 roster command mask 與既有
+`0x13A9F→0x14EF0→0x1598A→0x15311` IDA 控制流程合併重算。排除不進 scorer 的
+mode8 後，正常非玩家 producer 只有 ID0–7、9–18、20–22、26、27，全部已有
+caller-specific indexed owner；ID8／19雖無固定初始bit，仍保留已閉合owner。
+唯一ID30位於map13 index0 mode8，不構成command30 producer。正式AI admission
+因此只接受ID0–22與26／27，並移除ID24／28／29／31借玩家derived-strike helper
+同步改HP的捷徑；資產全量覆蓋與拒絕零mutation回歸均通過，達`RUNTIME-E1`。
+這關閉「仍有正常敵方command producer缺owner」的舊待辦；剩餘戰鬥阻擋是狀態
+高階名稱與代表性同狀態`PLAYER-E2`，不是再猜接靜態mask中不存在的ID。

@@ -14,6 +14,14 @@ func (g *Game) executeNativeAIAction(plan *battle.AIPlan) error {
 	return g.executeNativeAIActionWithContinuation(plan, nil)
 }
 
+// nativeAICommandHasIndexedOwner is the fail-closed admission set for the
+// 0x15311 route. Fixed FDFIELD producers use only a subset; IDs 8 and 19 stay
+// admitted because their recovered owners already exist, without claiming a
+// fixed non-player producer. Player-only derived-strike helpers are excluded.
+func nativeAICommandHasIndexedOwner(id int) bool {
+	return id >= 0 && id <= 22 || id == 26 || id == 27
+}
+
 // executeNativeAIActionWithContinuation reuses the recovered command/item
 // owner for mode 11 without prematurely handing control back to NextAIPlan.
 // The continuation runs only after the existing successful-action boundary
@@ -30,8 +38,9 @@ func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after 
 			return fmt.Errorf("native command %d has no raw target", plan.NativeCommandID)
 		}
 		id := plan.NativeCommandID
-		var message string
-		damageTargets := make([]*battle.Unit, 0)
+		if !nativeAICommandHasIndexedOwner(id) {
+			return fmt.Errorf("native AI command %d has no recovered indexed owner", id)
+		}
 		switch {
 		case id == 0:
 			return g.startNativeCommand0Presentation(actor, target, func(results []battle.NativeCommandDamageResult) {
@@ -252,30 +261,9 @@ func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after 
 				g.finishSuccessfulUnitAction(actor, after)
 				g.checkResult()
 			})
-		case id == 24 || id == 28 || id == 29 || id == 31:
-			results, err := g.st.ExecuteNativeCommandDerivedStrike(actor, target, id, g.rng)
-			if err != nil {
-				return err
-			}
-			total := 0
-			for _, result := range results {
-				total += result.Damage
-				damageTargets = append(damageTargets, result.Target)
-			}
-			message = fmt.Sprintf("原始指令 %d：傷害 %d", id, total)
-		case id == 25:
-			return fmt.Errorf("native AI command 25 has no confirmed normal producer")
 		default:
 			return fmt.Errorf("native AI command executor unavailable id=%d", id)
 		}
-		for _, dead := range damageTargets {
-			g.awardDeathReward(dead, actor)
-		}
-		actor.SetMapPose(dirToward(actor.X, actor.Y, target.X, target.Y))
-		g.msg = message
-		g.finishSuccessfulUnitAction(actor, after)
-		g.checkResult()
-		return nil
 
 	case battle.NativeAIActionItem:
 		if target == nil {

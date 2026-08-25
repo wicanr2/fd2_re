@@ -1,0 +1,58 @@
+# 非玩家 command mask 正常產生端覆蓋（2026-08-25）
+
+## 輸入、工具與位址空間
+
+- `FD2.EXE`：357074 bytes；MD5 `b97caf2239a27a896069d03549d96e1e`；
+  SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- `FDFIELD.DAT`：243169 bytes；MD5 `ecdb0436d26adfe5d107f2713fa7e9a2`；
+  SHA-256 `b0cf75d94f58603f091c7462c0494f0e83bd6edfb04c1acbf83ed4d938c7a513`。
+- 第一順位控制流程證據：IDA Pro 9.4 線性位址，沿用
+  `fd2_ai_14ef0_dispatch_ida.txt`、`fd2_ai_mode_dispatch_ida.txt`、
+  `fd2_command1_8_entries_ida.txt`、`fd2_command10_12_presentation_ida.txt`、
+  `fd2_command13_21eb1_presentation_ida.txt`、
+  `fd2_command25_27_player_ai_presentation_ida.txt` 與各 command owner 主證據。
+- 資料來源：`tools/parse_field.py` 從固定雜湊 FDFIELD 的 33 張地圖、1887 筆
+  roster rows 匯出的 `initial_command_mask` 與 `native_record_byte34`。本輪使用
+  `fd2-cap-local` 一次性無網路 Docker 對 checked-in JSON 做唯讀重算；沒有重新
+  命名 IDA 函式或把 JSON 名稱當成二進位證據。
+
+## 原始 mask 分布（已證實）
+
+非玩家 roster 只有 raw camp 0（目前資料投影為 `enemy`）帶非零 command mask；
+raw command ID 的總筆數為：
+
+```text
+0:22 1:24 2:35 3:4 4:14 5:46 6:62 7:14 9:10 10:2 11:9 12:11
+13:19 14:23 15:20 16:8 17:22 18:14 20:25 21:10 22:40 26:60 27:38 30:1
+```
+
+ID 8／19 雖有正式 owner，但固定 FDFIELD 初始 mask 沒有 producer。ID
+23／24／25／28／29／31 同樣為零筆；不得因 `executeNativeAIAction` 曾有同步
+數值 helper，就宣稱存在正常敵方入口。
+
+唯一 ID30 是 map13 roster index0，raw `record+0x34 & 0x0F == 8`、raw camp0、
+`record+0x46 == 0`。`sub_13A9F` 的 mode8 由直接指令證實不執行 `0x14EF0`／
+`0x1598A`，而是直接進共同完成路徑；因此這個 bit 不是正常 command30 producer。
+
+排除 mode8 後，固定資產能進 command scorer 的 ID 集合為：
+
+```text
+0 1 2 3 4 5 6 7 9 10 11 12 13 14 15 16 17 18 20 21 22 26 27
+```
+
+上述集合全部已有 caller-specific indexed owner。ID8／19 的既有 owner API 保留；
+這份固定資產盤點既不提供非玩家 producer，也不反推它們是死碼或宣稱有動態 writer。
+
+## 分級與重製邊界
+
+- `RE-CLOSED`：固定 FDFIELD 初始非玩家 command mask 集合、唯一 ID30 的
+  map／slot／mode8 排除，以及 mode8 不進 scorer 的控制流程。
+- `DATA-READY`：正式執行期可用明確 allow-list 表達「已有 indexed owner」；
+  它是 admission gate，不替 command 命名玩法。
+- `RUNTIME-E1`：既有正常 producer 集合均已有 owner；舊 ID24／28／29／31
+  同步 AI helper 應移除，沒有新 producer 時必須失敗即關閉。
+- `PLAYER-E2`：仍需代表性未修改原版敵方回合逐幀／音訊與選定命令比較；本盤點
+  不能證明特定地圖在動態狀態一定選中某個 command。
+
+重開條件：FDFIELD 雜湊不同、找到新的非玩家 command-mask writer、動態未修改
+原版 trace 顯示上述集合外 ID 進入 `0x15311`，或直接指令反證 mode8 路由。

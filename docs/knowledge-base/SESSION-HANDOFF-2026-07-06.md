@@ -6453,3 +6453,14 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   期間raw `+5 bit7`與`Acted`仍不發布；尾停後才清理目標模式，來源物品保持不變。
 - 缺indexed map／資產時不再退回同步直接結算；HP、RNG、inventory、action及目標
   modal皆維持。這批達`RUNTIME-E1`，同狀態未修改原版逐幀／音訊仍為E2。
+
+## 2026-08-25：正常非玩家 command producer 全量覆蓋閉合
+
+- Docker唯讀重算33張固定FDFIELD衍生地圖：排除mode8後，正常command scorer
+  producer集合為ID0–7、9–18、20–22、26、27，全部已有indexed owner。唯一ID30
+  在map13 index0 mode8，不進`0x14EF0／0x1598A`。
+- 正式AI admission只接受ID0–22與26／27；移除ID24／28／29／31借玩家
+  derived-strike helper同步改血的無正常來源捷徑。全圖coverage與拒絕零mutation
+  回歸已加入。
+- `91`原「其他正常producer仍缺owner」已撤回；下一個戰鬥缺口只剩狀態高階名稱
+  與代表性同狀態逐幀／音訊E2。新writer或動態trace出現時才重開ID集合。

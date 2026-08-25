@@ -5988,3 +5988,15 @@ post-state map；22張數字段及尾停完成後才發布`Acted`與AI continuat
   framebuffer 或音訊前置檢查失敗時，保留玩家物品目標模式、actor、targets、inventory、
   RNG 與 action 狀態；不得退回舊有的同步直接結算。中途取消沿共用 transaction
   回復完整 raw records、RNG 與 indexed buffers。
+
+### 非玩家 command 正常產生端覆蓋與失敗邊界
+
+- 主證據：`docs/data/ida/fd2_nonplayer_command_producer_coverage_20260825.txt`。
+  固定 FDFIELD 初始 mask 排除 mode8 後，能進 command scorer 的 ID 只有
+  0–7、9–18、20–22、26、27；全部已有 caller-specific indexed owner。
+- ID8／19雖未出現在固定初始 mask，仍保留既有正式 owner API；這不宣稱另有非玩家
+  producer，也不能由靜態缺席宣稱死碼。ID23／24／25／28／29／31沒有固定非玩家 producer；唯一ID30位於mode8，
+  不進`0x14EF0／0x1598A`。若未來取得新writer或動態trace，必須先重開證據層。
+- 正式AI executor只接受已有indexed owner的ID0–22與26／27。不得讓無正常producer
+  的ID24／28／29／31借用玩家derived-strike helper同步改HP／RNG／Acted；未知ID在
+  transaction之前失敗即關閉。

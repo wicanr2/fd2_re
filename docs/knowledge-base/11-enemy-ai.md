@@ -733,3 +733,17 @@ mode 2 物理候選／路徑、mode 3／9 raw 查找、mode 5 事件尾端、mod
 既有 `0x211A4` HP 交易 owner，完成目標回復、來源欄位消耗與回合提交；缺少 item
 table 時在狀態變更前失敗即關閉。這只提升一個已核對 row 的 E1 consumer，不代表
 其他 item／relocation、未知 command／spell 演出或原版一般玩家 E2。
+
+## 2026-08-25：固定非玩家 command producer 覆蓋勘誤
+
+較早「其他有正常producer但未接通的command／spell演出」待辦已由固定資產全量
+稽核收窄。33張FDFIELD匯出mask排除mode8後，能進`0x1598A`的ID只有
+0–7、9–18、20–22、26、27；全部已有caller-specific indexed owner。唯一ID30
+是map13 index0 mode8，依既有IDA直接指令不進`0x14EF0／0x1598A`。詳細雜湊、
+計數、工具與重開條件見
+[`fd2_nonplayer_command_producer_coverage_20260825.txt`](../data/ida/fd2_nonplayer_command_producer_coverage_20260825.txt)。
+
+正式executor現移除ID24／28／29／31借玩家derived-strike同步結算的無來源捷徑，
+並以33圖全量測試確保任何新producer缺indexed owner時立即失敗。這只關閉固定資產
+的`RUNTIME-E1`覆蓋；動態writer、新原版trace、狀態高階名稱及逐幀／音訊E2仍可
+各自重開，不能宣稱完整敵方AI已達原版等價。
