@@ -13,7 +13,7 @@ func TestMouthStateOpenClosesWithNativeRange(t *testing.T) {
 
 func TestMouthStateClosedOpensAtZero(t *testing.T) {
 	next, err := (MouthState{Countdown: 1}).Tick(0)
-	if err != nil || !next.Open || next.Countdown != 0 || next.FrameIndex() != 3 {
+	if err != nil || next.Open || next.Countdown != 0 || next.FrameIndex() != 0 {
 		t.Fatalf("got %#v err=%v", next, err)
 	}
 	next, err = (MouthState{}).Tick(0)
@@ -34,5 +34,8 @@ func TestMouthStateRejectsInvalidRandom(t *testing.T) {
 		if _, err := (MouthState{Open: true}).Tick(r); err == nil {
 			t.Fatalf("random=%d accepted", r)
 		}
+	}
+	if _, err := (MouthState{Countdown: -1}).Tick(0); err == nil {
+		t.Fatal("negative countdown accepted")
 	}
 }

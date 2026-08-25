@@ -171,6 +171,7 @@ type Game struct {
 	dlgScrollFrom              int             // 分頁捲動開始頁碼
 	nativeDialogueFrames       [][]byte        // caller-specific 0x15F84 stable indexed pages
 	nativeDialogueProgressive  [][][]byte      // 每頁 frame0框／頭像，之後逐字形發布
+	nativeDialogueMouthOpen    [][]byte        // 每頁完整文字＋DATO frame3 indexed overlay
 	nativeDialogueProgress     int             // 目前頁已發布的逐字 frame；-1尚未開始
 	nativeDialogueOpening      [][]byte        // caller-specific sub_165AC五階段格網
 	nativeDialogueClosing      [][]byte        // caller-specific sub_16B43 snapshot restore＋可選游標尾段
@@ -410,6 +411,7 @@ type Game struct {
 	mouthOpen                 bool                    // 嘴型動畫狀態(原版 0x16d00:m0閉/m3開)
 	mouthTimer                int                     // 閉嘴倒數(原版 rand%30+2 tick)
 	mouthState                dato.MouthState         // native 0x16d00 cadence adapter
+	nativeDialogueMouthReady  bool                    // 完整頁等待期已取初始閉嘴倒數
 	curX                      int
 	curY                      int
 	camX                      float64
@@ -2628,6 +2630,7 @@ func (g *Game) dlgAdvance() bool {
 		g.dlgScrollFrom = g.dlgPage
 		g.dlgPage++
 		g.nativeDialogueProgress = -1
+		g.resetNativeStoryDialogueMouth()
 		g.dlgScrollT = dlgScrollFrames
 		return false
 	}
@@ -2638,6 +2641,7 @@ func (g *Game) dlgAdvance() bool {
 	g.dlgScrollT = 0
 	g.dlgScrollFrom = 0
 	g.nativeDialogueProgress = -1
+	g.resetNativeStoryDialogueMouth()
 	return true
 }
 
@@ -7127,20 +7131,8 @@ func (g *Game) Update() error {
 	// 移動動畫:原版每格 unit+4=1..6，第7 tick提交目的格。
 	g.stepBattleWalk()
 	g.aiStep() // AI 回合驅動(aiBusy 時逐單位行走→攻擊演出)
-	// 嘴型動畫沿用 0x16d00 已知節奏（doc14）：每 2 frame 一 tick；閉嘴隨機
-	// 2–31 tick、開嘴一瞬。這是重製時序，尚無同狀態原版逐幀 E2 比較。
-	if len(g.dialog) > 0 && g.frame%2 == 0 {
-		randomMod30 := 0
-		if g.mouthState.Open {
-			randomMod30 = rand.Intn(30)
-		}
-		if next, err := g.mouthState.Tick(randomMod30); err == nil {
-			g.mouthState = next
-			g.mouthOpen = next.FrameIndex() == 3
-			g.mouthTimer = next.Countdown
-		}
-	}
 	g.stepNativeStoryDialogueProgress()
+	g.stepDialogueMouth()
 	// 截圖模式:到指定幀後自動退出(畫面已於 Draw 存檔)。逐幀攻擊序列
 	// 只有 `FD2_SHOT_SERIES` 時也必須進入同一個 setup，否則攻擊演出永遠
 	// 不會建立，逐幀工具只能得到空目錄而無法驗證 GUI 時序。

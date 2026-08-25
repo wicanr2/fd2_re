@@ -26,14 +26,18 @@ func (s MouthState) Tick(randomMod30 int) (MouthState, error) {
 	if randomMod30 < 0 || randomMod30 >= 30 {
 		return MouthState{}, fmt.Errorf("dato: random mouth value %d outside [0,30)", randomMod30)
 	}
+	if s.Countdown < 0 {
+		return MouthState{}, fmt.Errorf("dato: mouth countdown %d is negative", s.Countdown)
+	}
 	if s.Open {
 		return MouthState{Countdown: randomMod30 + 2}, nil
 	}
 	next := s
-	next.Countdown--
-	if next.Countdown <= 0 {
+	// sub_16C57 採用 post-decrement：只有舊值為零才張嘴；正值則減一後存回。
+	if next.Countdown == 0 {
 		next.Open = true
-		next.Countdown = 0
+		return next, nil
 	}
+	next.Countdown--
 	return next, nil
 }

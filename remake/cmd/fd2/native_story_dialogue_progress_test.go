@@ -107,6 +107,41 @@ func TestNativeStoryDialogueProgressWaitsForStableDialoguePhase(t *testing.T) {
 	}
 }
 
+func TestNativeStoryDialogueMouthRunsOnlyWhileCompletePageWaitsForInput(t *testing.T) {
+	g := &Game{
+		dialog:                    []battle.DialogLine{{NativeDialogue: &battle.NativeDialogueLayout{Pages: [][]string{{"甲"}}}}},
+		dlgPhase:                  0,
+		nativeDialogueProgress:    0,
+		nativeDialogueProgressive: [][][]byte{{make([]byte, 1), make([]byte, 1)}},
+		nativeDialogueMouthOpen:   [][]byte{make([]byte, 320*200)},
+	}
+	g.stepDialogueMouth()
+	if g.nativeDialogueMouthReady || g.mouthOpen {
+		t.Fatal("progressive glyph phase started the stable-page mouth owner")
+	}
+	g.nativeDialogueProgress = 1
+	g.stepDialogueMouth()
+	if !g.nativeDialogueMouthReady || g.mouthOpen || g.mouthState.Countdown < 2 || g.mouthState.Countdown > 31 {
+		t.Fatalf("initial wait state = ready:%v open:%v countdown:%d", g.nativeDialogueMouthReady, g.mouthOpen, g.mouthState.Countdown)
+	}
+	g.mouthState.Countdown = 0
+	g.frame = 2
+	g.stepDialogueMouth()
+	if !g.mouthOpen || g.mouthState.FrameIndex() != 3 {
+		t.Fatalf("zero post-decrement did not select frame3: %+v", g.mouthState)
+	}
+	g.frame = 4
+	g.stepDialogueMouth()
+	if g.mouthOpen || g.mouthState.Countdown < 2 || g.mouthState.Countdown > 31 {
+		t.Fatalf("one-tick mouth did not close/resample: %+v", g.mouthState)
+	}
+	g.dlgScrollT = 1
+	g.stepDialogueMouth()
+	if g.nativeDialogueMouthReady || g.mouthOpen || g.mouthState.Countdown != 0 {
+		t.Fatalf("page scroll did not reset mouth owner: %+v", g.mouthState)
+	}
+}
+
 func TestNativeStoryDialogueInputFailsClosedWithoutProgressiveFrames(t *testing.T) {
 	g := &Game{
 		dialog: []battle.DialogLine{{

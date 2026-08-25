@@ -185,6 +185,41 @@ X／Y 語意。本段的座標、entry、迴圈邊界及 restore 順序均為**�
 consumer 已閉合。舊的「closing 未知／不得反向播放」警告只保留其歷史原因，
 由本勘誤取代，不得再次用來重開相同 RE。
 
+## 2026-08-25：`sub_16C57` 等待輸入期間的嘴型 consumer
+
+輸入仍為本文固定雜湊的 `FD2.EXE`。第一工具為授權 Docker 內 IDA Pro
+9.4.0.260610，DOS LE linear address；本輪另以既有 Capstone image 保存直接 bytes
+交叉驗證。IDA 原名、位址與運算元均未改寫。
+
+`sub_16559` 的完整函式範圍為 `0x16559..0x165AC`。它以 caller 的 frame index
+讀 `[0x53A85]+index*4` 的相對指標，再加回 DATO resource base；目的固定為
+`VGA+[0x53C67]`。`[0x53C67]==0x9017` 時呼叫 `sub_4E8E1`，其餘故事上框走
+`sub_4E8AF`，stride320。故「frame index → 目前 DATO 頭像畫格 → 目前框 portrait
+anchor」為**已證實**，不是從輸出 PNG 名稱推論。
+
+`0x16D00` 位於 `sub_16C57(0x16C57..0x16E24)`，不是獨立函式。直接指令證實：
+
+- `0x16C99..0x16CAA` 在進入等待迴圈前先取 `sub_4E893()%30+2`，作為閉嘴倒數；
+- `0x16D00..0x16D18` 只有 BIOS frame word `[0x46C]` 與上次值差至少2才推進；
+- 狀態非零時，`0x16D5F..0x16D7D` 呼叫 `sub_16559(0)`，重新取
+  `sub_4E893()%30+2`，並把狀態清零；
+- 狀態為零時，`0x16D84..0x16D95` 先對倒數做 post-decrement，舊值為0才呼叫
+  `sub_16559(3)` 並把狀態設1；
+- `0x16CF3` 輪詢 `sub_10620`，輸入未到前才反覆進上述 mouth loop；輸入抵達後
+  走 `0x16DAB` 以後的頁面／掃描碼尾段。
+
+因此 frame0=閉嘴、frame3=短暫開嘴，以及「初始閉嘴倒數、開嘴一個合格 tick、
+再閉嘴並重抽2..31」均為**已證實**。更精確地說，post-decrement 令初值N在舊值
+依序為N..0後才開嘴；重製可保存相同狀態轉移，60 Hz如何對應 BIOS frame word仍
+只標為時序近似。
+
+caller 邊界同樣重要：`sub_15F84` 只在 `FFFD` 的 `0x16034` 與字串結束／換框前的
+`0x1615C、0x16246、0x1637F、0x163FB、0x164BF` 呼叫 `sub_16C57`。普通 glyph
+寫入 `0x1645F..0x1647F` 期間不呼叫它。故 ch24 indexed runtime 只可在完整 page
+已發布、等待玩家輸入時切換 m0／m3；opening、逐字發布中、page scroll、closing
+均固定不啟動嘴型。這項等待期 owner 為**已證實**；全域 RNG stream 與未修改 DOS
+逐幀 E2仍未閉合。
+
 ## 可重生命令
 
 ```text

@@ -311,7 +311,7 @@ Runtime 不應再讓 `main.go` 同時決定資料模型、輸入、規則和像�
 | UI-02 | Battle field | 游標格、鏡頭、可移動格、高亮、單位 HUD、方向／面向 | partial；`native-map-ch01-original-video.png`（320×200）與正式 handler 截圖 `native-map-ch01-remake-handler.png`（640×400）不是同一狀態。新圖由 `story_ch00_handler` 的 73 拍快速時鐘保留 LOADCH、JOIN、SPAWN 與 battle handoff，並唯讀掛載原版 `FDOTHER/FDSHAP/FDICON`，再套用 IDA 已證實的 FDFIELD b1 selector；這修正舊 b0 映射造成的敵軍圖像錯誤，也排除舊直接 `battle_ch01` 除錯入口造成的單角色假象。舊圖的場上單位、游標與 HUD 差異不能作為目前渲染器缺陷證據；較早 E1 raw 相機／游標欄位也不等於畫面一致。2026-08-10 已以同一 `FD2.SAV`、相機、游標、回合與單位狀態建立 DOSBox／重製逐幀範圍比較，最近鄰縮放後內容區只剩 22 個畫布邊界差異像素，並以 [`battle-field-ch01-scoped-compare-20260810.png`](../figures/battle-field-ch01-scoped-compare-20260810.png) 固定三欄證據；記為 ch01 scoped E2 candidate，仍不得外推至其他章節、一般玩家 CONTINUE 或完整戰場介面。詳見 [`battle-visual-gap-ch01.json`](../data/ui-traces/battle-visual-gap-ch01.json)。 |
 | UI-03 | Action menu | move/attack/magic/item/status/wait/end-turn 的可見項、enable gate、取消回上一層 | partial；`0x1741c` 的 raw cell index 是 `3*firstArgument + 2*secondArgument`。battle wrapper `0x18d8c` 的第一表固定 `[0,1,2,3]`，所以第二表為 0 時 cells 為 `[0,3,6,9]`、為 1 時為 `[2,5,8,11]`；舊的乘數倒置／`[0,2,4,6]` 斷言已勘誤，詳見 [CONTINUE overlay IDA evidence](../data/ida/fd2_continue_action_overlay_ida.txt)。2026-08-22 IDA 進一步證實共用 `0x117E7` 在 `0x12C0D==-1` 時呼叫 `0x16F55`，故空游標 `[21,15,18,12]` 四格不再限於 chapter0 CONTINUE；正式 battle 現要求完整 FDOTHER #2 後開啟面板，只有 direction3／END 會走四幀命令框關閉，再以 DATO #75、FDOTHER #5/#2、FDTXT `0x1A3/0x1A4/0x19C` 跑6＋4展開、YES／NO、4＋5收合、接受／取消回覆逐字形發布、完整句後再等待十二個60 Hz畫格並復原來源；只有YES才進敵方回合。缺任一資產在關閉命令框前拒絕，其餘三格仍失敗即關閉。runtime 以 caller-owned lifecycle 呈現 opening `0..3` 與獨立 closing `0..3`，並延後 command/item/spell/attack/wait side effect，直到第四個 close present 完成；因 native loop 無 delay call，只宣稱順序／present count，不宣稱毫秒時長。[8-frame Xvfb artifact](../figures/action-overlay-open-close-remake.png) 由目前 source 與玩家 FDOTHER.DAT read-only mount 產生。native command grid 亦已定為 320×200、每欄四列，label `(18+100*col,103+22*row)`、MP 右側、↑↓ wrap/←→±4 bounded；scenario raw command mask 已可 materialize。Docker/Xvfb 以 player FDOTHER.DAT 捕捉的 [悠妮 command-0 grid](../figures/native-command-grid-remake.png) 證實 mask→label→palette/font→renderer 路徑，非 original visual diff。`fdother.CaptureActionOverlaySnapshot`／`RestoreActionOverlaySnapshot` 與 `ActionOverlaySnapshotOrigin` 現已對齊原版 `0x175a9/0x17643` 的 72×72（`0x1440`）索引快照、每列 `0x1c8` stride、游標各減一格的 owner，並有失敗即關閉回歸；詳見 [IDA snapshot evidence](../data/ida/fd2_action_overlay_snapshot_ida.txt)。現行 Ebiten adapter 尚未消費此快照（每幀由整幅場景重畫避免殘影），因此 native snapshot backup/restore 的正式 consumer、其餘三格 owner、精確 tick／音訊與逐章 DOSBox visual diff 仍未關閉。 |
 | UI-04 | Target/range/item selector | 武器 min/max reach、法術 range/AOE、item兩欄四列、不可用目標灰化、確認／取消 | partial；command/item targets與 observed item effects已閉合。`0x1b9de/0x184c0` 固定 compact prefix、input、layout與raw icon IDs；`0x18409` 的12-frame open11→0/close0→11及left/upper/bottom clipped rectangles已有Ebiten adapter。2026-08-22 已以同一未修改 `FD2.SAV` 從標題 CONTINUE 正常操作至悠妮 command 0 目標模式，原版四次擷取證實 `0x51A97` 20相位 LUT 是動態生命週期；重製也由一般 X11 輸入抵達同一座標與command ID的正式modal，並停止覆蓋非原版診斷短訊。原版為窄 `PLAYER-E2`、重製為deterministic `RUNTIME-E1`，兩側時鐘相位不同，不能宣稱逐像素一致。tracked item Enter transaction已接，但indexed effect presentation、完整weapon/AOE/LOS與其他commands的DOSBox visual diff仍fail-closed |
-| UI-05 | Dialog | 上／下框、portrait anchor、文字避讓、控制碼、分頁／捲動、嘴型、輸入鎖 | partial；`internal/dato.MouthState` 已按 `0x16D00` cadence 接入更新迴圈，native frame/資源與所有 speaker layout 未閉合 |
+| UI-05 | Dialog | 上／下框、portrait anchor、文字避讓、控制碼、分頁／捲動、嘴型、輸入鎖 | partial；ch24兩個lookup已用原版indexed frame接通開框、逐字、完整頁等待期m0/m3嘴型與收框；`internal/dato.MouthState`保存`0x16D00` post-decrement，其他caller layout與同狀態E2仍未閉合 |
 | UI-06 | Battle HUD | HP/MP/LV/name、面板 sprite、數字 cell、依游標避讓、palette/clip | partial；需以 FDOTHER/UI loader 和截圖差分驗收 |
 | UI-07 | Postbattle | result → handler → reward/roster cleanup → town/shop/rest/preparation 或 ending；不可預設直連下一戰 | partial；campaign schema 與 bounded menu trace 可表達，`town_ch02→preparation_ch02→story_ch02_pre→battle_ch02` 已有可重播 trace。目前24個 postbattle節點全數已接 authored binding；玩家第29戰已達正式 RUNTIME-E1；各節點只代表重製端 E1 admission，不代表一般玩家 E2。玩家第17、18、20戰已依 raw ch16、ch17、ch19 的直接控制流程分別接入60／61→61／62、55與83→84 runtime frontier，並保留 `town_ch18`、`town_ch19`、`town_ch21` 及 save/load 邊界。未綁定節點原有的泛用 `sync_party→set_chapter` 會繞過 runtime guard，現已移除並以空 beats 失敗即關閉。逐關戰間畫面與一般玩家路徑仍不足；直接位址證據見 [`fd2_ch16_post_ida.txt`](../data/fd2_ch16_post_ida.txt)、[`fd2_ch17_post_ida.txt`](../data/fd2_ch17_post_ida.txt)、[`fd2_ch19_post_ida.txt`](../data/ida/fd2_ch19_post_ida.txt)、[`fd2_ch12_post_dispatch_ida.txt`](../data/fd2_ch12_post_dispatch_ida.txt)、[`fd2_ch05_post_dispatch_ida.txt`](../data/fd2_ch05_post_dispatch_ida.txt) 與 [`fd2_post26_28_dispatch_ida.txt`](../data/fd2_post26_28_dispatch_ida.txt) |
 | UI-08 | Town/hub | 可見選單、離開、shop/church/preparation 入口、BGM/SFX、持久隊伍 | partial；`campaign.MenuState` 已與 `choice/town` runtime 共用。ch02 variant0 的 [`selection0–5`](../figures/town-hub-six-selections-original-vs-remake.png) 都已達原版 DOSBox／source-built remake raw RGB 整幀相同；variant1與variant2 selection0–4 另有修改 LOAD 路徑 E2，兩組五項都與指定 pulse 640×400 整幀 AE=0。Left/Right wrap、Shift+F1 reveal、Enter進variant5及Escape回selection5亦有原版 input trace；shop/church/preparation 與 hotel raw route/return trace已接，仍需variant2 selection5 的 BIOS 掃描碼／Enter、未修改玩家路徑與逐章route E2 |
@@ -6135,6 +6135,26 @@ cursor-camera identity 的 raw view，並標示不構成 E2。
 更新分配只標為時序近似，不宣稱 DOS wall-clock。只有五張
 snapshot 與可選尾段皆有 caller-specific typed input 時，才可把本切片標成
 `RUNTIME-E1`；一般玩家同狀態比較仍為 `PLAYER-E2` 缺口。
+
+### ch24_post 完整頁等待輸入嘴型規格（2026-08-25）
+
+沿用 [`fd2_story_dialogue_layout_ida.txt`](../data/ida/fd2_story_dialogue_layout_ida.txt)
+的 `sub_16C57`／`sub_16559` 證據，不重開 `0x15F84`。嘴型 owner 只存在於完整
+page 已發布、等待輸入的穩定期：opening、逐字發布、page scroll 與 closing 一律
+固定 frame0 並重設 cadence。第一次進入等待期時先取 `random%30+2` 作閉嘴倒數；
+每個合格 tick 對倒數做 post-decrement，舊值為0才貼 frame3。frame3 只維持一個
+合格 tick，下一個合格 tick 貼回 frame0、重抽倒數並回到閉嘴狀態。
+
+重製仍以每兩個60 Hz更新作一個合格 tick；這是 BIOS frame word 閘門的時序近似，
+不宣稱 DOS wall-clock 或全域亂數序列一致。換頁、換句及開始收框都必須清除嘴型
+狀態，下一個完整頁重新初始化。
+
+原生 indexed runtime 必須在公開句子前，從每頁完整 frame0 穩定頁另預建一張
+frame3 頭像覆蓋結果。DATO 少於四幀、portrait overlay 越界、頁面或穩定幀缺漏時，
+整句失敗即關閉；不得退回 RGBA 頭像、靜態 frame0 或逐字期間猜測性動畫。Draw 只
+在目前頁已完整發布且 cadence 為開嘴時消費該頁 frame3，其餘狀態仍消費既有
+progressive／opening／closing frame。這一切片驗收 `RUNTIME-E1`；原版同狀態逐幀
+比較與亂數序列仍列 `PLAYER-E2` 缺口。
 
 ## 2026-08-25：終局三筆音訊 cue 的具型別消費規格
 

@@ -162,7 +162,7 @@ func TestComposeNativeStoryDialoguePageUsesOriginalIndexedAssets(t *testing.T) {
 		t.Fatal(err)
 	}
 	portraits, err := dato.DecodeResource(filepath.Join(base, "DATO.DAT"), 26)
-	if err != nil || len(portraits) == 0 {
+	if err != nil || len(portraits) < 4 {
 		t.Fatalf("DATO#26 portrait: count=%d err=%v", len(portraits), err)
 	}
 	rawIndex, err := os.ReadFile("../../assets/fonts/unicode_to_glyph.json")
@@ -209,6 +209,17 @@ func TestComposeNativeStoryDialoguePageUsesOriginalIndexedAssets(t *testing.T) {
 	}
 	if background[nativeStoryUpperText] != 7 {
 		t.Fatal("native story compositor mutated its caller-owned background")
+	}
+	page0BeforeMouth := append([]byte(nil), page0...)
+	mouth, err := ComposeNativeStoryDialogueMouthFrame(page0, portraits[3], layout)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(mouth) != 320*200 || string(mouth) == string(page0) {
+		t.Fatal("DATO frame3 did not produce a distinct indexed mouth frame")
+	}
+	if string(page0) != string(page0BeforeMouth) {
+		t.Fatal("mouth compositor mutated its caller-owned source")
 	}
 	progressive, err := ComposeNativeStoryDialogueProgressiveFrames(
 		background, cells, portraits[0], font, index, layout, 1,

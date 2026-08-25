@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"math/rand"
 	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -12,11 +13,13 @@ import (
 func (g *Game) prepareNativeDialogueFrames() error {
 	g.nativeDialogueFrames = nil
 	g.nativeDialogueProgressive = nil
+	g.nativeDialogueMouthOpen = nil
 	g.nativeDialogueProgress = -1
 	g.nativeDialogueOpening = nil
 	g.nativeDialogueClosing = nil
 	g.nativeDialogueClosingT = 0
 	g.nativeDialogueClosingLive = false
+	g.resetNativeStoryDialogueMouth()
 	if len(g.dialog) == 0 || g.dialog[len(g.dialog)-1].NativeDialogue == nil {
 		return nil
 	}
@@ -51,7 +54,7 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	}
 	dl := g.dialog[0]
 	portraits, err := dato.DecodeResource(filepath.Clean(datoPath), dl.Speaker)
-	if err != nil || len(portraits) == 0 {
+	if err != nil || len(portraits) < 4 {
 		return errors.New("native story dialogue: speaker portrait is unavailable")
 	}
 	native := dl.NativeDialogue
@@ -88,6 +91,7 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	}
 	frames := make([][]byte, len(layout.Pages))
 	progressive := make([][][]byte, len(layout.Pages))
+	mouthOpen := make([][]byte, len(layout.Pages))
 	for page := range layout.Pages {
 		progressive[page], err = campaign.ComposeNativeStoryDialogueProgressiveFrames(
 			g.nativeMapVGA, g.nativeClassUI.dialogue, portraits[0],
@@ -97,9 +101,16 @@ func (g *Game) prepareNativeDialogueFrames() error {
 			return err
 		}
 		frames[page] = progressive[page][len(progressive[page])-1]
+		mouthOpen[page], err = campaign.ComposeNativeStoryDialogueMouthFrame(
+			frames[page], portraits[3], layout,
+		)
+		if err != nil {
+			return err
+		}
 	}
 	g.nativeDialogueFrames = frames
 	g.nativeDialogueProgressive = progressive
+	g.nativeDialogueMouthOpen = mouthOpen
 	g.nativeDialogueOpening = opening
 	g.nativeDialogueClosing = closing
 	return nil
@@ -145,9 +156,70 @@ func (g *Game) beginNativeStoryDialogueClosing() bool {
 		return false
 	}
 	g.nativeDialogueClosingLive = true
+	g.resetNativeStoryDialogueMouth()
 	// campInput 位於本幀一般 step 之後；立即發布 frame0，避免先出現空白幀。
 	g.nativeDialogueClosingT = 0
 	return true
+}
+
+func (g *Game) resetNativeStoryDialogueMouth() {
+	if g == nil {
+		return
+	}
+	g.nativeDialogueMouthReady = false
+	g.mouthState = dato.MouthState{}
+	g.mouthOpen, g.mouthTimer = false, 0
+}
+
+func (g *Game) nativeStoryDialogueAtInputWait() bool {
+	if g == nil || g.nativeDialogueClosingLive || g.dlgPhase != 0 || g.dlgScrollT != 0 ||
+		len(g.dialog) == 0 || g.dialog[len(g.dialog)-1].NativeDialogue == nil ||
+		g.dlgPage < 0 || g.dlgPage >= len(g.nativeDialogueProgressive) ||
+		g.dlgPage >= len(g.nativeDialogueMouthOpen) || len(g.nativeDialogueMouthOpen[g.dlgPage]) != 320*200 {
+		return false
+	}
+	frames := g.nativeDialogueProgressive[g.dlgPage]
+	return len(frames) > 0 && g.nativeDialogueProgress >= len(frames)-1
+}
+
+func (g *Game) stepDialogueMouth() {
+	if g == nil || len(g.dialog) == 0 {
+		g.resetNativeStoryDialogueMouth()
+		return
+	}
+	if g.dialog[len(g.dialog)-1].NativeDialogue == nil {
+		if g.frame%2 != 0 {
+			return
+		}
+		randomMod30 := 0
+		if g.mouthState.Open {
+			randomMod30 = rand.Intn(30)
+		}
+		if next, err := g.mouthState.Tick(randomMod30); err == nil {
+			g.mouthState, g.mouthOpen, g.mouthTimer = next, next.FrameIndex() == 3, next.Countdown
+		}
+		return
+	}
+	if !g.nativeStoryDialogueAtInputWait() {
+		g.resetNativeStoryDialogueMouth()
+		return
+	}
+	if !g.nativeDialogueMouthReady {
+		g.mouthState = dato.MouthState{Countdown: rand.Intn(30) + 2}
+		g.nativeDialogueMouthReady = true
+		g.mouthOpen, g.mouthTimer = false, g.mouthState.Countdown
+		return
+	}
+	if g.frame%2 != 0 {
+		return
+	}
+	randomMod30 := 0
+	if g.mouthState.Open {
+		randomMod30 = rand.Intn(30)
+	}
+	if next, err := g.mouthState.Tick(randomMod30); err == nil {
+		g.mouthState, g.mouthOpen, g.mouthTimer = next, next.FrameIndex() == 3, next.Countdown
+	}
 }
 
 func (g *Game) finishNativeStoryDialogueClosing() {
@@ -155,6 +227,7 @@ func (g *Game) finishNativeStoryDialogueClosing() {
 		return
 	}
 	g.nativeDialogueClosingLive = false
+	g.resetNativeStoryDialogueMouth()
 	g.nativeDialogueClosingT = 0
 	if len(g.dialog) > 0 {
 		g.dialog = g.dialog[:len(g.dialog)-1]
@@ -206,6 +279,10 @@ func (g *Game) drawNativeStoryDialogue(screen *ebiten.Image) bool {
 	if progress >= len(frames) {
 		progress = len(frames) - 1
 	}
-	g.presentNativeClassFrame(screen, frames[progress])
+	frame := frames[progress]
+	if g.mouthOpen && progress == len(frames)-1 && g.dlgPage < len(g.nativeDialogueMouthOpen) {
+		frame = g.nativeDialogueMouthOpen[g.dlgPage]
+	}
+	g.presentNativeClassFrame(screen, frame)
 	return true
 }

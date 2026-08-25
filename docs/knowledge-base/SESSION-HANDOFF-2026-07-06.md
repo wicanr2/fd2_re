@@ -6644,3 +6644,10 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 本批仍只宣稱 caller-specific `RUNTIME-E1`；嘴型、一般玩家同狀態 DOS 畫面與
   DOS wall-clock 保持未閉合。IDA 一次性資料庫／輸出位於
   `/tmp/fd2-ch24-closing-ida`，交接前已刪除。
+- 2026-08-25 ch24_post indexed嘴型閉合：授權Docker內IDA Pro 9.4.0.260610與
+  Capstone交叉驗證`sub_16C57(0x16C57..0x16E24)`／`sub_16559(0x16559..0x165AC)`。
+  frame0／frame3分別為閉／開嘴，post-decrement cadence只在完整page等待輸入時
+  運行；opening、逐字、捲動、closing不進此owner。正式runtime現為每頁預建
+  frame3 indexed overlay，初次等待先抽2..31，開嘴一個合格tick後關閉重抽，缺
+  四幀DATO或overlay即整句fail-closed。Docker dato／campaign與Xvfb cmd/fd2
+  ch24→town26接縫回歸通過；每兩個60 Hz更新仍只宣稱時序近似，E2未提升。

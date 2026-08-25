@@ -138,6 +138,31 @@ func ComposeNativeStoryDialoguePage(
 	return frames[len(frames)-1], nil
 }
 
+// ComposeNativeStoryDialogueMouthFrame 對應 sub_16559：保留穩定 indexed page，
+// 再把所選 DATO frame 貼到 caller-owned 上／下框頭像 anchor。caller 必須先驗證
+// DATO 四幀資源邊界，才可傳入 frame3。
+func ComposeNativeStoryDialogueMouthFrame(
+	stablePage []byte,
+	portrait dato.Frame,
+	layout *NativeDialogueLayout,
+) ([]byte, error) {
+	if len(stablePage) != 320*200 {
+		return nil, errors.New("campaign: native story dialogue mouth base is invalid")
+	}
+	if err := layout.Validate(); err != nil {
+		return nil, fmt.Errorf("campaign: %w", err)
+	}
+	portraitOffset := nativeStoryLowerPortrait
+	if layout.Control == "FFEF" || layout.Control == "FFED" {
+		portraitOffset = nativeStoryUpperPortrait
+	}
+	frame := append([]byte(nil), stablePage...)
+	if err := blitNativeDialoguePortraitAt(frame, portrait, portraitOffset); err != nil {
+		return nil, err
+	}
+	return frame, nil
+}
+
 // ComposeNativeStoryDialogueProgressiveFrames 保存 0x15F84 每寫入一個普通
 // glyph 才前進目的位址的發布順序。第0張只有完整框與頭像；後續每張各新增一個
 // glyph。幀數不代表 DOS wall-clock，只是 caller 可決定性消費的順序契約。
