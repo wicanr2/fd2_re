@@ -93,8 +93,19 @@ mode 0 重複來源、mode 1 交錯、mode 2 literal、mode 3 skip。重製端�
   0x4DC34 像素 consumer、0x1E0DB／0x1E1DC 分流與 0x1DF58 尾段。
 - `DATA-READY`：本證據允許建立只接受 command 0／2／3 的 caller-specific 排程；
   其他 command 不得由這三項泛化。
-- `RUNTIME-E1`：待正式敵方物品入口原子接上 effect→blend→publish→result queue。
+- `RUNTIME-E1`：正式敵方與玩家物品入口均已原子接上
+  effect→blend→publish→result queue；缺 indexed context 的玩家入口回歸證實零交易。
 - `PLAYER-E2`：待未修改原版同狀態逐幀與音訊抽樣。
 
 重開條件只有輸入雜湊不同、直接指令／raw table 反證、同狀態執行結果矛盾，或本證據
 缺少它聲稱具備的 writer／consumer。
+
+## 玩家 caller 的完成邊界（已證實）
+
+同一個 `sub_20C6F` 亦由玩家物品 owner `0x1BE45` 直接呼叫；玩家游標只先建立並傳入
+最終 raw target count／byte list，不改變上述 type 20／24 callee 契約。外層
+`sub_1BBDC` 必須等 `sub_20C6F` 完整返回後，才呼叫 `sub_13512` 將 actor raw record
+`+5` 的 bit 7 設為一。因此玩家正式執行期也不得在八張 effect、十張 blend、結果
+佇列與 500 ms 尾停之前發布行動完成；HP、death bit 與 RNG 的可見發布仍以最後一張
+blend 的 Draw 邊界為準。這項補證只建立玩家 caller 的時序與共用 consumer，不把
+玩家確認游標或訊息列猜成新的演出 owner。

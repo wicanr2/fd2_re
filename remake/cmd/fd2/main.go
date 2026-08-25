@@ -6145,7 +6145,11 @@ func (g *Game) confirm() {
 			}
 			return
 		}
-		g.msg = fmt.Sprintf("物品 %02Xh：原始回復效果完成", g.nativeItemTargetID)
+		if g.nativeAIItemPresentation != nil {
+			g.msg = fmt.Sprintf("物品 %02Xh：原始傷害演出進行中", g.nativeItemTargetID)
+		} else {
+			g.msg = fmt.Sprintf("物品 %02Xh：原始回復效果完成", g.nativeItemTargetID)
+		}
 		return
 	}
 	if g.nativeItemRelocating {

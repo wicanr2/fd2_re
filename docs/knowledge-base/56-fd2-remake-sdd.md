@@ -5973,3 +5973,18 @@ post-state map；22張數字段及尾停完成後才發布`Acted`與AI continuat
 - 缺raw target list、selector cache、camera、FDOTHER #5／#6、sample、indexed
   framebuffer或原始狀態時零mutation；中途取消沿共同AI item owner回復完整records、
   RNG及indexed buffers。不得借用一般command21的`0x22BC6`尾段。
+
+### 玩家 type 20／21／24 正常確認演出規格
+
+- 主證據沿用 `fd2_ai_item_damage_1cd17_owner.txt` 與
+  `fd2_ai_item_type21_1cac7_owner.txt` 的玩家 caller 補證。玩家與敵方共用
+  `sub_20C6F` 的 raw target list、command damage 與 indexed 尾段；差異只在玩家
+  確認游標與完成 callback，不另造第二套 renderer 或 transaction。
+- 確認目標後先以 detached raw records、RNG、target list 與索引資產預建完整幀列。
+  type 20／24 在最後一張 `0x1CD17` blend Draw 後，type 21 在最後一張
+  `0x1CAC7` toggle Draw 後，才原子發布 HP、death bit 與 RNG。結果佇列和 500 ms
+  尾停完成後，才設定 actor raw `+5` bit 7、`Acted` 並退出物品目標模式。
+- 任一 command provenance、raw target index、camera、selector cache、FDOTHER、
+  framebuffer 或音訊前置檢查失敗時，保留玩家物品目標模式、actor、targets、inventory、
+  RNG 與 action 狀態；不得退回舊有的同步直接結算。中途取消沿共用 transaction
+  回復完整 raw records、RNG 與 indexed buffers。

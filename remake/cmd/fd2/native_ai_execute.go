@@ -288,7 +288,7 @@ func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after 
 			}
 			g.nativeItemEffectRows = rows
 		}
-		started, err := g.startNativeAIItemRestorePresentation(plan, func() {
+		started, err := g.startNativeTargetItemPresentation(plan, func() {
 			g.msg = fmt.Sprintf("原始物品 %02Xh：完成完整目標清單效果", plan.NativeItemID)
 			g.finishSuccessfulUnitAction(actor, after)
 			g.checkResult()

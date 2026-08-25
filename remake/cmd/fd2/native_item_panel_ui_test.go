@@ -393,7 +393,7 @@ func TestNativeRetainedMarkerApplicationSyncsDamageAndThreeRNGSteps(t *testing.T
 	}
 }
 
-func TestNativeCommandDamageItemUsesSharedUint16RNGAndRetainsSource(t *testing.T) {
+func TestNativeCommandDamageItemFailsClosedWithoutIndexedPresentation(t *testing.T) {
 	actor := nativeItemPanelTestUnit()
 	actor.X, actor.Y, actor.OnField, actor.Camp = 0, 0, true, battle.Own
 	actor.NativeRecordByte5, actor.HasNativeRecordByte5 = 0, true
@@ -430,13 +430,13 @@ func TestNativeCommandDamageItemUsesSharedUint16RNGAndRetainsSource(t *testing.T
 	if targeting, err := g.beginNativeTargetItem(0, 56); err != nil || !targeting {
 		t.Fatalf("targeting=%v err=%v", targeting, err)
 	}
-	if applied, err := g.applyNativeTargetItem(target); err != nil || !applied {
-		t.Fatalf("applied=%v err=%v", applied, err)
+	if applied, err := g.applyNativeTargetItem(target); err == nil || applied {
+		t.Fatalf("missing indexed presentation applied=%v err=%v", applied, err)
 	}
-	state := fdother.NativeRNGStep(fdother.NativeRNGStep(0))
-	if target.HP >= 200 || g.nativeRNGState != state ||
-		len(actor.Inventory) != 1 || actor.Inventory[0] != 56 || !actor.Acted {
-		t.Fatalf("command item actor=%#v target=%#v rng=%#x", actor, target, g.nativeRNGState)
+	if target.HP != 200 || g.nativeRNGState != 0 ||
+		len(actor.Inventory) != 1 || actor.Inventory[0] != 56 || actor.Acted ||
+		actor.NativeRecordByte5&0x80 != 0 || !g.nativeItemTargeting {
+		t.Fatalf("failed command item mutated actor=%#v target=%#v rng=%#x targeting=%v", actor, target, g.nativeRNGState, g.nativeItemTargeting)
 	}
 }
 

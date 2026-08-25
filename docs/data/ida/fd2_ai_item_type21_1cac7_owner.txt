@@ -65,9 +65,19 @@ sub_1DF58()
 - `RE-CLOSED`：type21 caller、item→command mapping、effect表項、`0x1CAC7`四組
   toggle、結果queue與來源保留。
 - `DATA-READY`：可建立只接受command1／6／7的共用`0x1CAC7` typed schedule。
-- `RUNTIME-E1`：待正常敵方物品入口以完整raw target list接 effect→toggle→
-  publish→result，並沿共同transaction支援回復。
+- `RUNTIME-E1`：正常敵方與玩家物品入口均以完整raw target list接
+  effect→toggle→publish→result，並沿共同transaction保存回復邊界。
 - `PLAYER-E2`：待未修改原版同狀態逐幀／逐音訊比較。
 
 重開條件只有輸入雜湊不同、直接指令／raw table反證、同狀態結果矛盾，或主證據
 缺少所宣稱的writer／consumer；不得因runtime尚未接通而重解`0x1CAC7`。
+
+## 玩家 caller 的完成邊界（已證實）
+
+玩家物品 owner `0x1BE45` 與敵方 owner 一樣直接呼叫 `sub_20C6F`，並把玩家游標已
+決定的 raw target count／byte list 交給 type 21 分支。玩家外層 `sub_1BBDC` 只在
+整個 `sub_20C6F` 返回後，才由 `sub_13512` 設定 actor raw record `+5` bit 7。
+因此 command 1／6／7 的 effect、四組 `0x4A→0x4B` 切換、結果佇列與 500 ms 尾停
+必須先完成，玩家 action 才能結束；HP、death bit 與 RNG 仍只能在最後一張 toggle
+跨過 Draw 後原子發布。玩家 caller 不加入 command32 前導，也不借用一般 command21
+的 `0x22BC6` 尾段。

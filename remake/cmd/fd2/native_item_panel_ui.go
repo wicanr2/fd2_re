@@ -589,11 +589,40 @@ func (g *Game) applyNativeTargetItem(confirmed *battle.Unit) (bool, error) {
 	if sourceUnit < 0 {
 		return false, fmt.Errorf("native item source is absent from runtime roster")
 	}
+	amount := binary.LittleEndian.Uint16(row[0x0e:0x10])
+	if _, ok := battle.NativeItemCommandDamageRouteForType(row[0x0d], amount); ok {
+		if len(targets) == 0 {
+			return false, fmt.Errorf("native command-damage item has no final target")
+		}
+		actor := g.sel
+		presentationPlan := &battle.AIPlan{
+			U: actor, Target: targets[0], NativeActionKind: battle.NativeAIActionItem,
+			NativeItemSlot: g.nativeItemTargetRawSlot, NativeItemID: g.nativeItemTargetID,
+			NativeItemTargetIndices: append([]byte(nil), targetIndices...),
+		}
+		started, err := g.startNativeTargetItemPresentation(presentationPlan, func() {
+			actor.NativeRecordByte5 |= 0x80
+			actor.HasNativeRecordByte5 = true
+			g.msg = fmt.Sprintf("物品 %02Xh：原始傷害演出完成", g.nativeItemTargetID)
+			g.finishSuccessfulUnitAction(actor, func() {
+				g.nativeItemTargeting = false
+				g.nativeItemEffectRows = nil
+				g.sel, g.reach, g.moved = nil, nil, false
+			})
+			g.checkResult()
+		})
+		if err != nil {
+			return false, err
+		}
+		if !started {
+			return false, fmt.Errorf("native item type %d indexed presentation unavailable", row[0x0d])
+		}
+		return true, nil
+	}
 	records, err := nativeItemRuntimeRecords(g.st.Units)
 	if err != nil {
 		return false, err
 	}
-	amount := binary.LittleEndian.Uint16(row[0x0e:0x10])
 	nextRNG := g.nativeRNGState
 	if route, ok := battle.NativeItemHPRestoreRouteForType(row[0x0d], amount); ok {
 		result, err := battle.ApplyNativeItemHPRestore(
@@ -646,21 +675,6 @@ func (g *Game) applyNativeTargetItem(confirmed *battle.Unit) (bool, error) {
 			return false, err
 		}
 		nextRNG = state
-	} else if route, ok := battle.NativeItemCommandDamageRouteForType(row[0x0d], amount); ok {
-		_, state, err := battle.ApplyNativeItemCommandDamage(
-			targets, route, g.nativeCommandBook,
-			g.nativeCommandResistances, g.nativeRNGState,
-		)
-		if err != nil {
-			return false, err
-		}
-		nextRNG = state
-		for index, unit := range g.st.Units {
-			binary.LittleEndian.PutUint16(
-				records[index*80+0x40:index*80+0x42],
-				uint16(int16(unit.HP)),
-			)
-		}
 	} else if _, ok := battle.NativeItemRelocationRouteForType(row[0x0d], amount); ok {
 		if len(targetIndices) == 0 {
 			return false, fmt.Errorf("native relocation has no target")

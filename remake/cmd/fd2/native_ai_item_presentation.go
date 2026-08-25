@@ -40,11 +40,10 @@ func nativeAIItemClonedState(st *battle.State, tx *nativeAIItemTransaction) (*ba
 	return &clone, nil
 }
 
-// startNativeAIItemRestorePresentation owns only the 0x211A4 tail reached
-// directly by item types 5/13. It intentionally excludes command33's
-// 0x27FC9 prelude and keeps the detached transaction private through the
-// final 0x1C2DA mask Draw boundary.
-func (g *Game) startNativeAIItemRestorePresentation(plan *battle.AIPlan, then func()) (bool, error) {
+// startNativeTargetItemPresentation dispatches the caller-specific 0x20c6f
+// indexed tail shared by normal player and AI item owners. Type 5/13 excludes
+// command33's 0x27fc9 prelude; type 20/21/24 retain their own closed tails.
+func (g *Game) startNativeTargetItemPresentation(plan *battle.AIPlan, then func()) (bool, error) {
 	if g == nil || g.st == nil || plan == nil || plan.U == nil {
 		return false, errors.New("native AI item presentation context unavailable")
 	}

@@ -20,7 +20,7 @@
 
 ### 距離完整重製還有多遠
 
-> **評估快照：2026-08-23。** 本節依目前正式執行期、介面證據矩陣與一般玩家
+> **評估快照：2026-08-25。** 本節依目前正式執行期、介面證據矩陣與一般玩家
 > 驗證狀態整理；後續成果應以可重跑證據更新各門檻，不應只因新增反組譯筆記就
 > 下修剩餘比例。
 
@@ -488,9 +488,10 @@ nearest fallback、mode 1 可依 raw blocked-coordinate 完成 movement-only 路
 mode 8 走共同的行動完成分支，`0x14EF0` 已有 raw command route 進入已驗證的
 數值執行器；`0x15055` 也會保存並消費 `0x1567E` 勝出候選的完整 raw target list，
 使正常正分 item type 5／13／20／21／24 在移動後以同一目標順序完成原子數值交易，
-不再借用玩家游標只重算第一目標；type 5／13更已接回原版`0x211A4`的7張indexed效果、
-五組mask、兩段音效與22張數字段，mask經Draw後才發布交易。mode 11 可依序消費兩段 command／physical stage；
-缺少來源則停止而不標記單位已行動。這些是可驗證的 AI 消費端切片，不是原版 E2 等價性（parity）；indexed 物品演出、
+不再借用玩家游標只重算第一目標；type 5／13已接回原版`0x211A4`，type20／24與
+type21也分別接回`0x1CD17`與`0x1CAC7`。玩家正常item79／38現在共用後兩個演出
+owner，不再於確認時同步跳過畫面；各路徑都在已證實Draw邊界才發布交易。mode 11 可依序消費兩段 command／physical stage；
+缺少來源則停止而不標記單位已行動。這些是可驗證的 AI 消費端切片，不是原版 E2 等價性（parity）；
 未知命令／法術效果與未修改原版同狀態逐幀配對仍列於 [`11` 敵方 AI](docs/knowledge-base/11-enemy-ai.md)
 與 [`91` 工作清單](docs/knowledge-base/91-worklist.md)。
 

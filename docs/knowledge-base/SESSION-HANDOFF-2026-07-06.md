@@ -6443,3 +6443,13 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   HP／death bit／RNG，來源物品與MP保留，尾停後才`Acted`。本批達
   `RUNTIME-E1`；正常正分type5／13／20／21／24的indexed物品演出至此均接通，
   後續只補代表性E2或新正常producer。
+
+## 2026-08-25：玩家 item type 20／21／24 不再同步跳過 indexed 尾段
+
+- canonical owner補入`0x1BE45→sub_20C6F`玩家caller與`sub_1BBDC→sub_13512`
+  完成邊界；玩家與敵方共用target list、damage transaction及`0x1CD17／0x1CAC7`，
+  只保留各自的游標與完成callback。
+- 正式玩家item79／38測試證實：最後blend／toggle Draw前HP與RNG不變，500 ms尾停
+  期間raw `+5 bit7`與`Acted`仍不發布；尾停後才清理目標模式，來源物品保持不變。
+- 缺indexed map／資產時不再退回同步直接結算；HP、RNG、inventory、action及目標
+  modal皆維持。這批達`RUNTIME-E1`，同狀態未修改原版逐幀／音訊仍為E2。

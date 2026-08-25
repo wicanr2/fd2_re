@@ -212,6 +212,138 @@ func TestExecuteNativeAIItemDamageUsesOriginalIndexed1CD17Tail(t *testing.T) {
 	}
 }
 
+func TestPlayerDamageItemsUseOriginalIndexedTails(t *testing.T) {
+	for _, tc := range []struct {
+		name                    string
+		itemID, frames, publish int
+	}{
+		{name: "type24_1CD17", itemID: 79, frames: 40, publish: 18},
+		{name: "type21_1CAC7", itemID: 38, frames: 38, publish: 16},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			testPlayerDamageItemUsesOriginalIndexedTail(t, tc.itemID, tc.frames, tc.publish)
+		})
+	}
+}
+
+func testPlayerDamageItemUsesOriginalIndexedTail(t *testing.T, itemID, wantFrames, wantPublish int) {
+	base := filepath.Clean("../../../org_game/炎龍騎士團/FLAME2")
+	for key, name := range map[string]string{
+		"FD2_ORIGINAL_FIGANI": "FIGANI.DAT", "FD2_ORIGINAL_FDOTHER": "FDOTHER.DAT",
+		"FD2_ORIGINAL_FDTXT": "FDTXT.DAT", "FD2_ORIGINAL_BG": "BG.DAT",
+	} {
+		path := filepath.Join(base, name)
+		if !fileExists(path) {
+			t.Skip("player-provided original archives unavailable")
+		}
+		t.Setenv(key, path)
+	}
+	g := &Game{rng: rand.New(rand.NewSource(13)), nativeUIPalette: loadNativeUIPalette()}
+	if err := g.loadMap("assets/maps/map0"); err != nil {
+		t.Fatal(err)
+	}
+	g.resetBattle("assets/maps/map0/map0_units.json", "assets/scenarios/ch01.json")
+	if g.loadErr != "" || len(g.st.Units) < 6 {
+		t.Fatalf("fixture err=%q units=%d", g.loadErr, len(g.st.Units))
+	}
+	actor, target := g.st.Units[4], g.st.Units[5]
+	g.st.Units = []*battle.Unit{actor, target}
+	actor.SetMapPlacement(0, 0, 3)
+	target.SetMapPlacement(1, 0, 3)
+	if err := actor.MaterializeNativeMapPresentation(); err != nil {
+		t.Fatal(err)
+	}
+	if err := target.MaterializeNativeMapPresentation(); err != nil {
+		t.Fatal(err)
+	}
+	actor.Camp, actor.HP, actor.MaxHP, actor.Acted = battle.Own, 80, 80, false
+	actor.NativeRecordByte5, actor.NativeRecordByte6 = 0, 0
+	actor.HasNativeRecordByte5, actor.HasNativeRecordByte6 = true, true
+	actor.Inventory = []int{itemID}
+	actor.Equipped = []bool{false}
+	actor.InventorySlots = []int{itemID, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}
+	actor.NativeInventoryFlags = []int{0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	target.Camp, target.HP, target.MaxHP = battle.Enemy, 80, 80
+	target.NativeRecordByte5, target.NativeRecordByte6 = 0, 1
+	target.HasNativeRecordByte5, target.HasNativeRecordByte6 = true, true
+	target.InventorySlots = []int{0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}
+	target.NativeInventoryFlags = []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	rows, err := battle.LoadNativeItemEffectRowPrefix("../../assets/data/native_item_effect_rows.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.nativeItemEffectRows = rows
+	g.nativeCommandBook, err = battle.LoadNativeCommandRecords("../../assets/spells.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.nativeCommandResistances, err = battle.LoadNativeCommandResistances("../../assets/data/native_command_resistances.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.st.NativeCompositionEventBytes = make([]byte, g.st.W*g.st.H)
+	if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{
+		CameraX: 0, CameraY: 0, CursorX: 1, CursorY: 0, VisibleCursorX: 1, VisibleCursorY: 0,
+	}); err != nil {
+		t.Fatal(err)
+	}
+	if !g.st.MaterializeNativeMapHUDState(1, 1, 1) || !g.st.MaterializeNativeMapRangeMode(1) {
+		t.Fatal("HUD/range unavailable")
+	}
+	if err := g.composeNativeMapFrame(); err != nil {
+		t.Fatal(err)
+	}
+	g.sel, g.moved, g.itemOpen, g.nativeRNGState = actor, true, true, 7
+	if targeting, err := g.beginNativeTargetItem(0, itemID); err != nil || !targeting {
+		t.Fatalf("targeting=%v err=%v", targeting, err)
+	}
+	plan := &battle.AIPlan{
+		U: actor, Target: target, NativeActionKind: battle.NativeAIActionItem,
+		NativeItemSlot: 0, NativeItemID: itemID, NativeItemTargetIndices: []byte{1},
+	}
+	tx, err := g.planNativeAITargetItem(plan)
+	if err != nil {
+		t.Fatal(err)
+	}
+	expectedHP, expectedRNG := int(int16(binary.LittleEndian.Uint16(tx.after[80+0x40:80+0x42]))), tx.rngAfter
+	if applied, err := g.applyNativeTargetItem(target); err != nil || !applied {
+		t.Fatalf("applied=%v err=%v", applied, err)
+	}
+	job := g.nativeAIItemPresentation
+	if job == nil || len(job.frames) != wantFrames || job.publishAt != wantPublish || target.HP != 80 ||
+		g.nativeRNGState != 7 || actor.Acted || actor.NativeRecordByte5&0x80 != 0 ||
+		!g.nativeItemTargeting {
+		t.Fatalf("player pre-publish job=%#v hp=%d rng=%#x acted=%v byte5=%#x targeting=%v",
+			job, target.HP, g.nativeRNGState, actor.Acted, actor.NativeRecordByte5, g.nativeItemTargeting)
+	}
+	for index := range job.frames {
+		job.frames[index].delay = 1
+	}
+	screen := ebiten.NewImage(640, 400)
+	for steps := 0; g.nativeAIItemPresentation != nil && steps < 128; steps++ {
+		if !g.drawNativeAIItemPresentation(screen) {
+			t.Fatalf("draw failed at %d", steps)
+		}
+		g.stepNativeAIItemPresentation()
+		if steps < wantPublish-1 && (target.HP != 80 || g.nativeRNGState != 7) {
+			t.Fatalf("player transaction published before final blend Draw at step %d: hp=%d rng=%#x", steps, target.HP, g.nativeRNGState)
+		}
+		if g.nativeAIItemPresentation != nil && g.nativeAIItemPresentation.holding {
+			if actor.Acted || actor.NativeRecordByte5&0x80 != 0 {
+				t.Fatalf("player action completed during result hold: acted=%v byte5=%#x", actor.Acted, actor.NativeRecordByte5)
+			}
+			g.nativeAIItemPresentation.hold = 0
+		}
+	}
+	if g.nativeAIItemPresentation != nil || target.HP != expectedHP || g.nativeRNGState != expectedRNG ||
+		actor.InventorySlots[0] != itemID || actor.NativeInventoryFlags[0]&0x80 != 0 ||
+		!actor.Acted || actor.NativeRecordByte5&0x80 == 0 || g.nativeItemTargeting || g.sel != nil {
+		t.Fatalf("player damage item incomplete: hp=%d/%d rng=%#x/%#x slot=%d flags=%#x acted=%v byte5=%#x targeting=%v sel=%v",
+			target.HP, expectedHP, g.nativeRNGState, expectedRNG, actor.InventorySlots[0],
+			actor.NativeInventoryFlags[0], actor.Acted, actor.NativeRecordByte5, g.nativeItemTargeting, g.sel)
+	}
+}
+
 func TestExecuteNativeAIItemType21UsesOriginalIndexed1CAC7Tail(t *testing.T) {
 	base := filepath.Clean("../../../org_game/炎龍騎士團/FLAME2")
 	for key, name := range map[string]string{

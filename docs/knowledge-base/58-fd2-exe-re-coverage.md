@@ -418,3 +418,15 @@ toggle Draw後才原子發布HP／death bit／RNG，來源物品與MP保持不�
 `Acted`；缺素材、selector、raw狀態或重入均零交易並可完整回復，達`RUNTIME-E1`。
 至此正常正分type5／13／20／21／24的數值與caller-specific indexed演出均已接通；
 後續只做代表性E2或新正常producer，不再以「缺物品演出」重開這三個tail。
+
+## 十二、2026-08-25：玩家 item type 20／21／24 共用 `0x20C6F` indexed owner
+
+上述兩份 canonical owner 的玩家 caller 補證確認 `0x1BE45→sub_20C6F` 與敵方入口
+共用完整 raw target list 及 caller-specific indexed tail；`sub_1BBDC` 只在 callee
+完整返回後才經 `sub_13512` 設 actor raw `+5` bit7。正式玩家確認入口因此已移除
+同步直接改 HP／RNG／`Acted` 的捷徑，改由共同 detached transaction 預建並播放：
+type20／24 在最後 `0x1CD17` blend Draw 後、type21 在最後 `0x1CAC7` toggle Draw 後
+發布 HP／death bit／RNG，結果尾停後才發布 raw bit7 與 `Acted`。原始 item79／38
+正常玩家路徑與既有敵方路徑皆通過；缺 indexed context 時保留目標模式、HP、RNG、
+inventory 與 action，達 `RUNTIME-E1`。未修改原版同狀態逐幀／音訊仍是
+`PLAYER-E2`，不因此重開兩個已閉合 renderer。
