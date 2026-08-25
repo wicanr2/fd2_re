@@ -1182,6 +1182,7 @@ func TestCh24PostBindingResolvesPersistentJoins(t *testing.T) {
 	}
 	var joined []int
 	var spawnGroups []int
+	var dialogUpper []bool
 	for _, beat := range beats {
 		if beat.Op == "join" {
 			joined = append(joined, beat.CharID)
@@ -1192,12 +1193,30 @@ func TestCh24PostBindingResolvesPersistentJoins(t *testing.T) {
 			}
 			spawnGroups = append(spawnGroups, beat.Group)
 		}
+		if beat.Op == "dialog" {
+			if beat.Upper == nil {
+				t.Fatalf("ch24 dialog %#v lost its raw FFEC..FFEF placement", beat)
+			}
+			dialogUpper = append(dialogUpper, *beat.Upper)
+		}
 	}
 	if len(spawnGroups) != 1 || spawnGroups[0] != 2 {
 		t.Fatalf("ch24 group2 materializer was not retained: %v", spawnGroups)
 	}
 	if len(joined) != 2 || joined[0] != 26 || joined[1] != 29 {
 		t.Fatalf("ch24 compiled join order=%v, want [26 29]", joined)
+	}
+	wantUpper := []bool{
+		true, false, true, false, false, true, false,
+		true, false, true, false, true, false, true, false, true, true, true,
+	}
+	if len(dialogUpper) != len(wantUpper) {
+		t.Fatalf("ch24 compiled dialog placements=%v, want %v", dialogUpper, wantUpper)
+	}
+	for i := range wantUpper {
+		if dialogUpper[i] != wantUpper[i] {
+			t.Fatalf("ch24 compiled dialog placement %d=%v, want %v", i, dialogUpper[i], wantUpper[i])
+		}
 	}
 }
 

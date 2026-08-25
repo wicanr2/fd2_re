@@ -4624,6 +4624,15 @@ materializer，不進 runtime。`ch25.json` 已改採 `runtime_append_groups`，
 章節25與 town node-boundary save/load。這解除 runtime E1 gate；尚缺未修改一般
 玩家原版同狀態 E2，不宣稱逐像素或完整玩家路徑一致。
 
+2026-08-25 的 caller-specific 對話規格只處理這個 handler 的兩個已證實 lookup。
+`0x24E1B`／index6 必須將 scene2 lines0..6 物化為
+`上、下、上、下、下、上、下`；`0x24E62`／index7 必須將 lines7..17 物化為
+`上、下、上、下、上、下、上、下、上、上、上`。來源是原始 FDTXT words 的
+`FFED/FFEF` 上框及 `FFEE` 下框，不得回退到 `speaker>=32` 猜測。typed beats
+必須把 `Upper` 帶到普通 Enter／Space 對話生命週期，缺少 explicit mapping 時
+此切片失敗即關閉。本切片不宣稱原生 indexed frame、完整 FFxx renderer、逐字
+發布、嘴型時序或 E2；那些仍需各自的正式 consumer 與同狀態原版比較。
+
 ## 2026-08-09 raw ch29 terminal body `0x2bce5→0x2c405`（E1）
 
 合法 IDA Pro 9.4 與 Docker Capstone 以固定版 `FD2.EXE` 重讀終局函式完整範圍；

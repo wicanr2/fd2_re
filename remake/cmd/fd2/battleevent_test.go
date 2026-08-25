@@ -953,8 +953,15 @@ func TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary(t
 		t.Fatalf("chapter25 result handoff node=%q err=%q", g.camp.NodeID(), g.loadErr)
 	}
 	maxSlots := len(g.st.Units)
+	var dialogUpper []bool
 	for frame := 0; frame < 12000 && g.camp.NodeID() != "town_ch26"; frame++ {
 		if len(g.dialog) != 0 {
+			for i := len(g.dialog) - 1; i >= 0; i-- {
+				if g.dialog[i].Upper == nil {
+					t.Fatalf("ch24 runtime dialog %#v lost its explicit native placement", g.dialog[i])
+				}
+				dialogUpper = append(dialogUpper, *g.dialog[i].Upper)
+			}
 			g.dialog = nil
 			g.beatAdvance()
 		}
@@ -973,6 +980,18 @@ func TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary(t
 		len(g.partyJoinOrder) != len(order)+2 ||
 		g.partyJoinOrder[len(order)] != 26 || g.partyJoinOrder[len(order)+1] != 29 {
 		t.Fatalf("chapter25 joins members=%v order=%v", g.partyMembers, g.partyJoinOrder)
+	}
+	wantUpper := []bool{
+		true, false, true, false, false, true, false,
+		true, false, true, false, true, false, true, false, true, true, true,
+	}
+	if len(dialogUpper) != len(wantUpper) {
+		t.Fatalf("chapter25 post dialog placements=%v, want %v", dialogUpper, wantUpper)
+	}
+	for i := range wantUpper {
+		if dialogUpper[i] != wantUpper[i] {
+			t.Fatalf("chapter25 post dialog placement %d=%v, want %v", i, dialogUpper[i], wantUpper[i])
+		}
 	}
 	for _, id := range []int{26, 29} {
 		joined, ok := g.partyRoster[id]

@@ -6513,3 +6513,17 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   200點加底邊剩餘319點；排除舊三欄比較圖反向裁切的合成邊框後，內容矩形
   `(x=1,y=0,w=319,h=199)`為`AE=0／RMSE=0`。原始oracle未保存在repo且目前只由
   舊比較圖重建，因此此結果維持固定fixture `RUNTIME-E1`，不冒稱一般玩家E2。
+
+## 2026-08-25：`ch24_post` caller-specific 對話上下框接線
+
+- 合法 IDA Pro 9.4 一次性 Docker 資料庫補存 `sub_24DF2` 兩個 `0x15F84`
+  caller 的完整 push 實參；原始 `FDTXT_025.bin` 另綁定3350 bytes、MD5
+  `5ecbe03ee3be4654fcfa638bf0dbfd4e`與SHA-256
+  `d8bba8eb5f2f0a52a3dd237d6dc308b3e932af577c43b818409fa63bca89433a`。
+- index6／7 共18個 utterance 的 `FFED/FFEF/FFEE` 已投影成 binding 的 explicit
+  `Upper`，正式第25戰戰後 runner 逐句消費後仍完成slot70、JOIN26／29、
+  `town_ch26`、存檔與祕密商店子測試。這是 caller-specific `RUNTIME-E1`；一般
+  故事對話仍使用RGBA／現代字型路徑，不宣稱indexed frame、完整FFxx或E2。
+- 聚焦回歸：`internal/campaign` typed binding通過；`cmd/fd2` 整合測試在具明確
+  Xvfb trap及120秒外層上限的無網路容器通過。第一次無DISPLAY失敗已分類為環境，
+  `xvfb-run`殼層不退出的容器亦已停止刪除，未留下FD2背景容器。

@@ -67,6 +67,41 @@ ACTING、JOIN 建構器 26／29 與共享尾段」。本檔舊版曾因重製端
 map control再加16名隊員而得到錯誤的86-slot State，並據此阻擋正式接線；
 2026-08-13的執行期拓撲勘誤見下方「目前判定」。
 
+## 2026-08-25 補證：兩個 `sub_15F84` caller 的原始實參與上下框序列
+
+本節沒有重解 `sub_15F84`。合法 IDA Pro 9.4 一次性 Docker 資料庫只重生
+`sub_24DF2` 的函式邊界、唯一 table caller、直接指令與 Hex-Rays 實參；固定版
+`FD2.EXE` 與位址空間仍沿用檔首雜湊與 IDA linear address。IDA 對兩個 caller
+都保留同一組原始實參：
+
+```text
+0x24dfc..0x24e1b  push 1,13h,4Ah,4Ch,0CDh,140h,0A0000h,6,dword_53A79
+0x24e43..0x24e62  push 1,13h,4Ah,4Ch,0CDh,140h,0A0000h,7,dword_53A79
+```
+
+Hex-Rays 僅作資料流導覽，將它們顯示為
+`sub_15F84(a1,dword_53A79,index,0xA0000,320,205,76,74,19,1)`；直接
+push 順序才是主證據。`sub_15F84` 內 `0xFFED/0xFFEF` 走上框、
+`0xFFEE/0xFFEC` 走下框，並把後續 operand 另交給已閉合的身分／runtime-slot
+肖像來源。這些控制碼不能由譯文中的角色編號取代。
+
+固定版 `FDTXT_025.bin` 為3350 bytes、MD5
+`5ecbe03ee3be4654fcfa638bf0dbfd4e`、SHA-256
+`d8bba8eb5f2f0a52a3dd237d6dc308b3e932af577c43b818409fa63bca89433a`；其 raw
+uint16 words 顯示：
+
+- index6 七個 utterance 的開框控制依序為
+  `FFED, FFEE, FFED, FFEE, FFEE, FFED, FFEE`，因此可編輯 scene2 lines0..6
+  的上下框依序是 `上、下、上、下、下、上、下`。
+- index7 十一個 utterance 的開框控制依序為
+  `FFEF, FFEE, FFEF, FFEE, FFEF, FFEE, FFEF, FFEE, FFEF, FFEF, FFEF`，
+  因此 scene2 lines7..17 依序是 `上、下、上、下、上、下、上、下、上、上、上`。
+
+證據分級：上述 caller 實參、control words 與上下框投影為**已證實**；把 operand
+直接命名成 DATO id、把所有 `0x15F84` caller 視為同一 layout，或宣稱目前重製
+已具原生 indexed frame／逐字發布，均仍是未證實且不得接入。本節只授權
+`ch24_post` 兩個已知 lookup 的 typed `Upper` 資料與既有 UI 消費端。
+
 ## 已證實：`0x10b4e(2)` 的 FDFIELD group materializer 與 map24 列數
 
 本輪以合法 IDA Pro 9.4 追查 `sub_10B4E`（`0x10b4e..0x10c50`）及其唯一

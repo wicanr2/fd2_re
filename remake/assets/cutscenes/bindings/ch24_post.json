@@ -18,6 +18,38 @@
       "script": "ch25.json"
     }
   },
+  "dialogue_overrides": {
+    "0x24e1b#6": {
+      "script": "ch25.json",
+      "scene_index": 2,
+      "lines": [
+        { "line": 0, "upper": true },
+        { "line": 1, "upper": false },
+        { "line": 2, "upper": true },
+        { "line": 3, "upper": false },
+        { "line": 4, "upper": false },
+        { "line": 5, "upper": true },
+        { "line": 6, "upper": false }
+      ]
+    },
+    "0x24e62#7": {
+      "script": "ch25.json",
+      "scene_index": 2,
+      "lines": [
+        { "line": 7, "upper": true },
+        { "line": 8, "upper": false },
+        { "line": 9, "upper": true },
+        { "line": 10, "upper": false },
+        { "line": 11, "upper": true },
+        { "line": 12, "upper": false },
+        { "line": 13, "upper": true },
+        { "line": 14, "upper": false },
+        { "line": 15, "upper": true },
+        { "line": 16, "upper": true },
+        { "line": 17, "upper": true }
+      ]
+    }
+  },
   "overrides": {
     "0x24e27": { "pan": { "x": 96, "y": 384, "tile_step": true } },
     "0x24e3b": { "act": { "resource": 75 } }
