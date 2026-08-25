@@ -6746,3 +6746,20 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   與早／中／晚戰間抽測加2、Linux啟動及Windows交叉編譯加1。未修改原版一般玩家
   E2、Windows真機與macOS CI均未提前計分；這次訂正取代仍把上述成果全部列為未做
   的68分快照。
+
+## 2026-08-25：最終整備冷讀檔至終局的持續隊伍閉合（E1）
+
+- 既有第29戰連續回歸在同一個 `Game` 清空欄位後讀檔，會保留未被序列化的程序內
+  狀態，不能證明真正冷啟動。本輪改為由 `campaign_full.json` 建立全新 `Game`，
+  冷讀 `preparation_ch30` 存檔，再走19人選擇、`story_ch30`、`battle_ch30`、正常
+  `endTurn→aiStep` 戰果接縫與正式終局前綴／回顧。
+- JSON LOAD 現在發布前驗證 JOIN 順序不得重複、membership 與順序互相一致，且部署
+  及 materialized roster 不得指向未加入角色；錯誤拓撲維持現行節點、金錢與隊伍
+  完全不變。未部署的歷史成員仍可只保留加入時序，等待日後有證據的 LOADCH／JOIN
+  constructor 物化，避免破壞早期合法存檔。
+- 連續測試抓出 `resetBattle` 的真實缺陷：非 `runtime_append_groups` scenario 曾先採用
+  handler roster，判定不採用後卻未恢復 authored battle，導致第30戰我方重複成40人。
+  現只在合約明確允許時才採 handler state；一般 `spawn_party` 保留 scenario 本體。
+- 終局角色回顧改依完整 `partyJoinOrder`：最終戰部署成員使用戰果同步後狀態，未部署
+  成員保留冷讀狀態，符合「回顧全隊最終狀態」的重製需求。這批是正式重製
+  `RUNTIME-E1`，沒有提升未修改原版鍵盤、逐幀與音訊 `PLAYER-E2`。

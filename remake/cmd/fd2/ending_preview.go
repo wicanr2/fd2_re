@@ -310,7 +310,9 @@ func (g *Game) startCampaignNativeMontage() error {
 		return nil
 	}
 	p.montageStartAttempted = true
-	order := g.loadCHPartyOrder(nil)
+	// 最終戰部署只是暫時選擇；終局回顧依永久 JOIN 時序涵蓋所有入隊角色。
+	// 部署成員已由 EndingPartySnapshotOnWin 帶入戰果，後備成員則保留冷讀快照。
+	order := append([]int(nil), g.partyJoinOrder...)
 	units, groups, err := nativeEndingMontageRecords(order, g.partyRoster)
 	if err != nil {
 		p.montageStartError = err.Error()

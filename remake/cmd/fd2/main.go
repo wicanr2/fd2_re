@@ -3085,23 +3085,6 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 		g.bindCommandLearn(st)
 		g.bindNativeCommandBook(st)
 		g.bindNativeCommandResistances(st)
-		if adoptHandlerState {
-			st.Units = nil
-			st.Roster = make([]*battle.Unit, len(handlerRoster))
-			for i := range handlerRoster {
-				st.Roster[i] = &handlerRoster[i]
-			}
-			st.NativeMapSelectorCache = nil
-			st.NativeMapSelectorError = nil
-			actors := make([]*battle.Unit, len(handlerActors))
-			for i := range handlerActors {
-				actors[i] = &handlerActors[i]
-			}
-			if err := st.AppendNativeMapSelectorBatch(actors); err != nil {
-				g.loadErr = "handler battle roster: " + err.Error()
-				return
-			}
-		}
 	}
 	g.result, g.sel, g.reach, g.moved = "", nil, nil, false
 	g.atk, g.walk, g.dialog, g.msg = nil, nil, nil, ""
@@ -3128,6 +3111,24 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 			}
 			g.sc = sc
 			if adoptHandlerState {
+				// 只有 runtime-append scenario 可用 handler 前置陣列取代 authored state。
+				// 若在讀到 scenario 合約前就取代，後續 fallback 即使關閉採用旗標，
+				// handler 單位仍會殘留，普通 spawn_party 便會重複加入玩家隊伍。
+				g.st.Units = nil
+				g.st.Roster = make([]*battle.Unit, len(handlerRoster))
+				for i := range handlerRoster {
+					g.st.Roster[i] = &handlerRoster[i]
+				}
+				g.st.NativeMapSelectorCache = nil
+				g.st.NativeMapSelectorError = nil
+				actors := make([]*battle.Unit, len(handlerActors))
+				for i := range handlerActors {
+					actors[i] = &handlerActors[i]
+				}
+				if err := g.st.AppendNativeMapSelectorBatch(actors); err != nil {
+					g.loadErr = "handler battle roster: " + err.Error()
+					return
+				}
 				if err := sc.AdoptHandlerBattleState(g.st); err != nil {
 					g.loadErr = "handler battle scenario: " + err.Error()
 					return

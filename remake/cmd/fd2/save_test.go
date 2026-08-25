@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -228,6 +229,45 @@ func TestCampaignLoadRejectsOutOfRangeNativeSystemOptionWithoutMutation(t *testi
 	if g.gold != 7 || g.nativeSystemOptions != nil ||
 		g.msg != "存檔 native 系統設定超出原始布林範圍" {
 		t.Fatalf("invalid system option mutated game: gold=%d options=%v msg=%q", g.gold, g.nativeSystemOptions, g.msg)
+	}
+}
+
+func TestCampaignLoadRejectsBrokenPersistentPartyTopologyWithoutMutation(t *testing.T) {
+	oldCache := userDataDirCached
+	userDataDirCached = ""
+	t.Setenv("XDG_DATA_HOME", t.TempDir())
+	t.Cleanup(func() { userDataDirCached = oldCache })
+	c := &campaign.Campaign{Start: "town", Nodes: map[string]*campaign.Node{
+		"town": {Type: "town"}, "preparation": {Type: "preparation"},
+	}}
+	broken := saveData{
+		Node: "preparation", Gold: 999,
+		PartyMembers: map[int]bool{0: true}, PartyJoinOrder: []int{0, 0},
+		PartyDeploy: map[int]bool{0: true}, PartyRoster: map[int]battle.Unit{0: {Name: "索爾"}},
+	}
+	raw, err := json.Marshal(broken)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(filepath.Dir(saveSlotPath(0)), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(saveSlotPath(0), raw, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	wantRoster := map[int]battle.Unit{9: {Name: "悠妮", HP: 17}}
+	g := &Game{
+		camp: campaign.NewRunner(c), gold: 7,
+		partyMembers: map[int]bool{9: true}, partyJoinOrder: []int{9},
+		partyDeploy: map[int]bool{9: true}, partyRoster: clonePartyRoster(wantRoster),
+	}
+	g.loadGameFromSlot(0)
+	if g.camp.NodeID() != "town" || g.gold != 7 ||
+		!reflect.DeepEqual(g.partyJoinOrder, []int{9}) ||
+		!reflect.DeepEqual(g.partyRoster, wantRoster) ||
+		g.msg != "存檔持續隊伍的 JOIN 順序重複角色 0" {
+		t.Fatalf("broken party save mutated state: node=%q gold=%d order=%v roster=%#v msg=%q",
+			g.camp.NodeID(), g.gold, g.partyJoinOrder, g.partyRoster, g.msg)
 	}
 }
 

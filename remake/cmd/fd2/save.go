@@ -69,6 +69,49 @@ type saveData struct {
 	NativeRaw51E62 *int                `json:"native_raw_51e62,omitempty"`
 }
 
+// validateSavePartyTopology 在 loadGameFromSlot 發布戰役或介面狀態前，拒絕不完整的
+// 持續隊伍交易。JSON 存檔雖是重製邊界而非原版 FD2.SAV ABI，其 JOIN 順序、
+// membership、部署與名冊仍必須描述同一支一致的隊伍。
+func validateSavePartyTopology(d saveData) error {
+	if len(d.PartyJoinOrder) == 0 && len(d.PartyMembers) == 0 && len(d.PartyDeploy) == 0 && len(d.PartyRoster) == 0 {
+		return nil
+	}
+	seen := make(map[int]bool, len(d.PartyJoinOrder))
+	for _, id := range d.PartyJoinOrder {
+		if seen[id] {
+			return fmt.Errorf("存檔持續隊伍的 JOIN 順序重複角色 %d", id)
+		}
+		seen[id] = true
+		if !d.PartyMembers[id] {
+			return fmt.Errorf("存檔持續隊伍的 JOIN 角色 %d 不在隊伍中", id)
+		}
+	}
+	for id, member := range d.PartyMembers {
+		if !member {
+			continue
+		}
+		if !seen[id] {
+			return fmt.Errorf("存檔隊伍角色 %d 缺少 JOIN 順序", id)
+		}
+	}
+	for id, deployed := range d.PartyDeploy {
+		if deployed && (!d.PartyMembers[id] || !seen[id]) {
+			return fmt.Errorf("存檔部署角色 %d 不在持續隊伍中", id)
+		}
+		if deployed {
+			if _, ok := d.PartyRoster[id]; !ok {
+				return fmt.Errorf("存檔部署角色 %d 缺少名冊紀錄", id)
+			}
+		}
+	}
+	for id := range d.PartyRoster {
+		if !d.PartyMembers[id] || !seen[id] {
+			return fmt.Errorf("存檔名冊角色 %d 不在持續隊伍順序中", id)
+		}
+	}
+	return nil
+}
+
 func (g *Game) saveGame() { g.saveGameToSlot(0) }
 
 func (g *Game) saveGameToSlot(slot int) {
@@ -129,6 +172,10 @@ func (g *Game) loadGameFromSlot(slot int) {
 	}
 	if _, ok := g.camp.C.Nodes[d.Node]; !ok {
 		g.msg = "存檔節點不存在:" + d.Node
+		return
+	}
+	if err := validateSavePartyTopology(d); err != nil {
+		g.msg = err.Error()
 		return
 	}
 	options := g.currentNativeSystemOptions()

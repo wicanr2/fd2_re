@@ -27,9 +27,11 @@ func seedLateCampaignParty(t *testing.T, scenarioPath string, selected int) *Gam
 		partyMembers:   make(map[int]bool, len(order)),
 		partyJoinOrder: append([]int(nil), order...),
 		partyDeploy:    make(map[int]bool, selected-1),
+		partyRoster:    make(map[int]battle.Unit, len(order)),
 	}
-	for _, id := range order {
-		g.partyMembers[id] = true
+	for _, unit := range scenario.PartyUnits(nil) {
+		g.partyMembers[unit.Fig] = true
+		g.partyRoster[unit.Fig] = *unit
 	}
 	for _, id := range order[1:selected] {
 		g.partyDeploy[id] = true
@@ -303,7 +305,7 @@ func TestChapter28BattleResultRunsCh27PostToPreparation29(t *testing.T) {
 	}
 }
 
-func TestChapter29BattleResultRunsCh28PostToPreparation30AndSaveLoad(t *testing.T) {
+func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testing.T) {
 	if os.Getenv("FD2_ORIGINAL_FDOTHER") == "" {
 		t.Skip("ch28 post indexed presenter requires the read-only original FDOTHER/FDSHAP/FDICON bundle")
 	}
@@ -351,15 +353,20 @@ func TestChapter29BattleResultRunsCh28PostToPreparation30AndSaveLoad(t *testing.
 	if !strings.Contains(g.msg, "preparation_ch30") {
 		t.Fatalf("preparation_ch30 save was not created: %q", g.msg)
 	}
-	g.partyMembers, g.partyJoinOrder, g.partyDeploy, g.partyRoster = nil, nil, nil, nil
-	g.handlerChapter = 0
-	g.st = &battle.State{}
+	// Cold-load through a new Game and campaign runner. Reusing the old Game
+	// would let un-serialized runtime fields accidentally satisfy the final
+	// preparation or ending admission contract.
+	coldCampaign, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	g = &Game{camp: campaign.NewRunner(coldCampaign)}
 	g.loadGameFromSlot(0)
 	if g.loadErr != "" || g.camp.NodeID() != "preparation_ch30" || g.st != nil ||
 		g.handlerChapter != 29 || !reflect.DeepEqual(g.partyRoster, wantRoster) ||
 		!reflect.DeepEqual(g.partyJoinOrder, wantOrder) {
-		t.Fatalf("preparation_ch30 save/load mismatch: node=%q chapter=%d roster=%#v order=%v battle=%v err=%q",
-			g.camp.NodeID(), g.handlerChapter, g.partyRoster, g.partyJoinOrder, g.st != nil, g.loadErr)
+		t.Fatalf("preparation_ch30 save/load mismatch: node=%q chapter=%d roster=%#v order=%v battle=%v err=%q msg=%q",
+			g.camp.NodeID(), g.handlerChapter, g.partyRoster, g.partyJoinOrder, g.st != nil, g.loadErr, g.msg)
 	}
 	if g.acceptTownDeparturePrompt() || !g.prepSelecting {
 		t.Fatal("preparation_ch30 skipped its 19-member selection pass")
@@ -380,10 +387,103 @@ func TestChapter29BattleResultRunsCh28PostToPreparation30AndSaveLoad(t *testing.
 	if g.loadErr != "" || g.camp.NodeID() != "story_ch30" || len(g.beats) == 0 {
 		t.Fatalf("story_ch30 entry node=%q beats=%d err=%q", g.camp.NodeID(), len(g.beats), g.loadErr)
 	}
+	if len(g.storyActors) != 27 {
+		t.Fatalf("story_ch30 LOADCH runtime=%d, want selected leader+19 and seven group0 records", len(g.storyActors))
+	}
 	if err := g.fastForwardShotCampaign(); err != nil {
 		t.Fatalf("story_ch30→battle_ch30: %v", err)
 	}
 	if g.loadErr != "" || g.camp.NodeID() != "battle_ch30" || g.st == nil || g.sc == nil {
 		t.Fatalf("battle_ch30 boundary node=%q state=%v scenario=%v err=%q", g.camp.NodeID(), g.st != nil, g.sc != nil, g.loadErr)
+	}
+	deployed := 0
+	campCounts := make(map[battle.Camp]int)
+	groupCounts := make(map[int]int)
+	var progressed *battle.Unit
+	progressedRosterID := -1
+	for _, unit := range g.st.Units {
+		if unit == nil {
+			continue
+		}
+		campCounts[unit.Camp]++
+		groupCounts[unit.Group]++
+		if unit.Camp != battle.Own {
+			continue
+		}
+		deployed++
+		if progressed != nil {
+			continue
+		}
+		rawIdentity, ok := unit.NativeIdentity, unit.HasNativeIdentity
+		if !ok && unit.HasNativeRecordByte8 {
+			rawIdentity, ok = int(unit.NativeRecordByte8), true
+		}
+		if !ok {
+			continue
+		}
+		for id, roster := range g.partyRoster {
+			rosterIdentity, rosterOK := roster.NativeIdentity, roster.HasNativeIdentity
+			if !rosterOK && roster.HasNativeRecordByte8 {
+				rosterIdentity, rosterOK = int(roster.NativeRecordByte8), true
+			}
+			if rosterOK && rosterIdentity == rawIdentity {
+				progressed, progressedRosterID = unit, id
+				break
+			}
+		}
+	}
+	if deployed != 20 || progressed == nil || progressedRosterID < 0 {
+		t.Fatalf("battle_ch30 cold-load deployment=%d progressed=%v rosterID=%d camps=%v groups=%v partyDeploy=%v",
+			deployed, progressed != nil, progressedRosterID, campCounts, groupCounts, g.partyDeploy)
+	}
+	progressed.Lv++
+	progressed.Exp = 77.5
+	wantFinalLevel := progressed.Lv
+	for _, unit := range g.st.Units {
+		if unit != nil && unit.Camp == battle.Enemy {
+			unit.HP, unit.OnField = 0, false
+		}
+	}
+	// Produce the win through the normal end-turn/enemy-phase completion seam;
+	// only the enemy-dead fixture is shortened, not the campaign result owner.
+	g.endTurn()
+	if !g.aiBusy {
+		t.Fatal("battle_ch30 end turn did not enter the enemy phase")
+	}
+	g.aiStep()
+	if g.aiBusy || g.result != "win" || g.camp.NodeID() != "battle_ch30" {
+		t.Fatalf("battle_ch30 result seam busy=%v result=%q node=%q err=%q", g.aiBusy, g.result, g.camp.NodeID(), g.loadErr)
+	}
+	if !g.confirmBattleResult() || g.loadErr != "" || g.result != "" ||
+		g.camp.NodeID() != "ending" || g.nativeEnding == nil || !g.nativeEnding.campaignSourceBound {
+		t.Fatalf("battle_ch30→ending node=%q result=%q preview=%v err=%q", g.camp.NodeID(), g.result, g.nativeEnding != nil, g.loadErr)
+	}
+	if got := g.partyRoster[progressedRosterID]; got.Lv != wantFinalLevel || got.Exp != 77.5 {
+		t.Fatalf("final battle progress did not reach persistent ending roster: id=%d unit=%#v", progressedRosterID, got)
+	}
+	for _, elapsed := range []int{0, 1000, 2500, 0, 256, 2000} {
+		if _, err := g.nativeEnding.player.Advance(elapsed); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if !g.nativeEnding.player.ResumeBlockedDialogue() {
+		t.Fatal("final ending first native dialogue gate was unavailable")
+	}
+	if _, err := g.nativeEnding.player.Advance(5000); err != nil || !g.nativeEnding.player.ResumeBlockedDialogue() {
+		t.Fatalf("final ending second native dialogue gate: %v", err)
+	}
+	if _, err := g.nativeEnding.player.Advance(7500); err != nil || !g.nativeEnding.atNativeMontageGate() {
+		t.Fatalf("final ending montage gate err=%v preview=%#v", err, g.nativeEnding)
+	}
+	if err := g.startCampaignNativeMontage(); err != nil {
+		t.Fatal(err)
+	}
+	gotMontage := g.nativeEnding.montage
+	if gotMontage == nil || len(gotMontage.Units) != len(g.partyJoinOrder) {
+		gotRecords := 0
+		if gotMontage != nil {
+			gotRecords = len(gotMontage.Units)
+		}
+		t.Fatalf("cold-loaded ending montage records=%d join order=%d", gotRecords, len(g.partyJoinOrder))
 	}
 }
