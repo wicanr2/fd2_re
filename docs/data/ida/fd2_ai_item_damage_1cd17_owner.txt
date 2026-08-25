@@ -1,0 +1,100 @@
+# 敵方物品 type 20／24：0x1CD17 演出擁有者
+
+## 版本、工具與位址空間
+
+- 輸入：`FD2.EXE`，357074 bytes
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 第一順位工具：IDA Pro 9.4，`fd2-ida-authorized-local` 一次性無網路 Docker
+- 位址：IDA 資料庫線性位址；原版檔案唯讀，資料庫只寫 `/tmp/fd2-id-item-damage`
+- 原始函式名均保留；下列語意是附加註記，不取代原始定位。
+
+## caller 與 type 分支（已證實）
+
+`sub_20C6F`（`0x20C6F..0x21082`）由敵方物品 owner `sub_15055` 的
+`0x152F0` 及玩家物品 owner `0x1BE45` 呼叫。type 20／24 共用：
+
+```text
+0x20F5F cmp eax,14h
+0x20F64 cmp eax,18h
+0x20F6D ...                         ; shared branch
+0x20F80 call sub_1C4CC
+0x20F9B call sub_1CD17
+0x20FA3..0x20FE3 target loop
+             call sub_1C75E(target, commandID)
+             nonzero -> sub_1E0DB(value,5Eh,target)
+             zero    -> sub_1E1DC(target)
+             call sub_11CAC(0)
+             call sub_1DF58
+```
+
+兩個演出呼叫都收到 actor、item row word 所指的 command ID、原始 target count
+與 target byte list。此分支沒有 `sub_1CA89` MP 扣除，也沒有物品移除呼叫。
+
+## sub_1C4CC 的 caller-specific 表（已證實）
+
+原始表：
+
+```text
+0x51F33 descriptor starts:
+31 31 31 31 40 40 40 40 4c 57 31 31 31 39 39 39 39 b7 7e 93 cc d9 aa 31 31 bf 8a 9e 31 31 00 00 40
+0x51F54 effect counts:
+08 08 08 08 0a 0a 0a 0a 0b 1b 08 08 08 07 07 07 07 08 0c 0b 0d 0d 0d 08 08 0d 09 0c 08 08 00 00 0a
+0x51F75 initial samples:
+06 06 06 06 09 09 09 09 0a 0e 00 00 00 0c 0c 0c 0c 06 07 08 04 04 03 00 00 05 03 02 00 00 00 00 09
+```
+
+已知敵方正分物品中，type 20 的 item 11／56／60 選 command 2／0／2，type 24
+的 item 79 選 command 3。因此本切片只接受 command 0、2、3：皆使用 FDOTHER #6
+descriptor `0x31` 起算 8 幀，第一幀播放 raw sample #80/#6。額外 sample 分支只屬
+command 8／9／18／19／22／25。type 20／24 分支不呼叫 `sub_1C2DA`，不可加入
+command 13–16 的五組 mask。
+
+## sub_1CD17（0x1CD17..0x1CEED，已證實）
+
+直接 caller 是 `0x20F9B`、`0x21263`、`0x212F5`。函式先複製 30-byte raw table：
+
+```text
+0x52006:
+20 20 20 20 08 08 08 08 c8 08 08 08 08 08 10 10 10 10 08 08 10 10 10 08 08 10 10 10 08 08
+```
+
+接著保存完整 framebuffer，執行恰好 10 幀。每幀先還原 snapshot；每個可見 target
+以 raw record `+2` 的 selector slot 乘 12，加入 `[0x53C0B]` 閒置週期；若週期為 3，
+直接改用 2。`[0x53C0B]` 的資料初值與 `sub_1297D` owner 已另由
+`docs/data/fd2_continue_map_timing_seed_ida.txt` 閉合，因此此處不另造週期來源。
+
+每個 target 呼叫
+`sub_4DC34(source,destination,456,table_52006[commandID],7-(frame%8))`，
+呈現 312×192 viewport，等待 1 tick。十幀後恢復並呈現原 snapshot。
+
+## sub_4DC34（0x4DC34..0x4DCC6，已證實）
+
+唯一直接 caller 是 `0x1CDF9`。它解碼 24×24 的四模式 RLE；每個實際寫入像素為：
+
+```text
+((sourceByte + blendByte) & 7) + lowByte(table_52006[commandID])
+```
+
+mode 0 重複來源、mode 1 交錯、mode 2 literal、mode 3 skip。重製端既有
+`fdicon.Sprite.Pixels`／`Mask` 足以保存此 consumer：`Mask==0` 不寫入，其他像素套用
+上述 raw 算式。command 0／2／3 的表值皆為 `0x20`；它只是直接參數，不把它
+推測命名成 palette band。
+
+## 數字／失敗文字 consumer（已證實）
+
+- 命中：`sub_1E0DB` 以 bias `0x5E` 建立數值 queue。
+- 未命中：`sub_1E1DC` 固定 glyph `74 75 76 76`、位置 `2/8/12/17`。
+- `sub_1DF58` 使用既有 25-byte vertical table，呈現 22 幀後等待 500 ms。
+
+## 分級與重製邊界
+
+- `RE-CLOSED`：type 20／24 caller、0x1C4CC command 0／2／3 表項、0x1CD17 十幀、
+  0x4DC34 像素 consumer、0x1E0DB／0x1E1DC 分流與 0x1DF58 尾段。
+- `DATA-READY`：本證據允許建立只接受 command 0／2／3 的 caller-specific 排程；
+  其他 command 不得由這三項泛化。
+- `RUNTIME-E1`：待正式敵方物品入口原子接上 effect→blend→publish→result queue。
+- `PLAYER-E2`：待未修改原版同狀態逐幀與音訊抽樣。
+
+重開條件只有輸入雜湊不同、直接指令／raw table 反證、同狀態執行結果矛盾，或本證據
+缺少它聲稱具備的 writer／consumer。

@@ -5946,3 +5946,16 @@ RNG交易，並預建所有 indexed frames。最後一組mask經Draw確認後才
 post-state map；22張數字段及尾停完成後才發布`Acted`與AI continuation。取消、缺
 資產或晚期Draw失敗必須回復交易、RNG與indexed buffers。這是`RUNTIME-E1`規格，
 不宣稱精確DOS tick／混音或一般玩家`PLAYER-E2`。
+### 敵方 type 20／24 物品傷害演出規格（0x1CD17）
+
+- 主證據：`docs/data/ida/fd2_ai_item_damage_1cd17_owner.txt`。只接受已證實會由敵方
+  正分物品選到的 command 0／2／3；其他 command 失敗即關閉。
+- typed data 固定保存 FDOTHER #6 `0x31` 起 8 幀、sample #80/#6、`0x1CD17`
+  十幀 blend `7,6,5,4,3,2,1,0,7,6`、raw table 值 `0x20`、數值 bias `0x5E`、
+  22 幀 vertical table 與 500 ms 尾停。此 owner 不含 mask、MP 扣除或物品消耗。
+- runtime 必須在 detached transaction 上先完成全部素材、selector cache、camera、
+  framebuffer、queue 與 post-state 合成。先播放 8 幀 effect，再以當下 idle cycle
+  （3 remap 至 2）播放十幀 snapshot blend；十幀 Draw 邊界後才原子發布 HP、death bit
+  與 RNG，接著從 post-state steady frame 播放命中數值或固定失敗文字。
+- 任一素材、raw selector、record index、framebuffer 或原始狀態不一致皆零 mutation；
+  中途取消若已發布，須還原完整 raw records 與 RNG。直接套用 helper 不算呈現完成。

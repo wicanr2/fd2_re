@@ -423,13 +423,14 @@ func syncNativeItemRuntimeRecord(unit *battle.Unit, record []byte) {
 // and passes that list to 0x20c6f. All mutable records stay detached until
 // item, target and effect provenance have passed validation.
 type nativeAIItemTransaction struct {
-	before    []byte
-	after     []byte
-	targets   []*battle.Unit
-	restore   *battle.NativeRawRestoreBatch
-	damage    []battle.NativeCommandDamage
-	rngBefore uint16
-	rngAfter  uint16
+	before      []byte
+	after       []byte
+	targets     []*battle.Unit
+	restore     *battle.NativeRawRestoreBatch
+	damage      []battle.NativeCommandDamage
+	damageRoute *battle.NativeItemCommandDamageRoute
+	rngBefore   uint16
+	rngAfter    uint16
 }
 
 func (g *Game) planNativeAITargetItem(plan *battle.AIPlan) (*nativeAIItemTransaction, error) {
@@ -503,6 +504,7 @@ func (g *Game) planNativeAITargetItem(plan *battle.AIPlan) (*nativeAIItemTransac
 			return nil, err
 		}
 		tx.damage, tx.rngAfter = results, state
+		tx.damageRoute = &route
 		for index, rawIndex := range plan.NativeItemTargetIndices {
 			base := int(rawIndex) * 80
 			records[base+5] = clones[index].NativeRecordByte5

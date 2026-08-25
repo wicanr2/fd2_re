@@ -6417,3 +6417,16 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   presenter防重入與roster-change rollback邊界；現已同步死亡位元、完整拒絕其他
   active presenter，並在拓撲改變時安全清理而不索引越界。致死雙target與拓撲變更
   回歸加入後，全套`go test ./... -count=1`再次通過。
+
+## 2026-08-25：AI item type 20／24 正式 `0x1CD17` indexed 尾段
+
+- IDA Pro 9.4閉合`0x20C6F→0x1C4CC→0x1CD17`與`0x4DC34` consumer；本輪訂正
+  舊摘要：`0x4DC34`第四參數是`0x52006[commandID]`，不是target record index。
+  command0／2／3皆取raw `0x20`，像素寫入為`((source+blend)&7)+0x20`。
+- caller-specific typed schedule只接受command0／2／3：FDOTHER #6 `0x31..0x38`、
+  #80 sample6、十張blend `7,6,5,4,3,2,1,0,7,6`、命中bias`0x5E`或失敗
+  glyph `74 75 76 76`，再接22張結果與500 ms尾停；不借入type5／13 mask。
+- 正常type24 item79原始資產入口已證實前18個Draw不發布，最後blend後才原子發布
+  HP／death bit／RNG，來源物品保留，尾停後才`Acted`。主證據：
+  `docs/data/ida/fd2_ai_item_damage_1cd17_owner.txt`。本批達`RUNTIME-E1`；下一個
+  物品缺口只剩type21的`0x1CAC7`，同狀態逐幀／音訊仍為E2。

@@ -80,6 +80,39 @@ func ComposeNativeCommandHealMaskFrame(work, vga, snapshot []byte, units *fdicon
 	return nil
 }
 
+// ComposeNativeAIItemDamageBlendFrame reproduces one 0x1cd17 snapshot frame.
+func ComposeNativeAIItemDamageBlendFrame(work, vga, snapshot []byte, units *fdicon.Bank, cache *fdicon.NativeSelectorCache, targets []NativeCommandHealTailTarget, cameraX, cameraY, idleCycle, blend int, rawBase byte) error {
+	if len(work) != NativeUnitPresentWorkSize || len(snapshot) != NativeUnitPresentWorkSize ||
+		len(vga) != NativeMapVGASize || units == nil || cache == nil ||
+		idleCycle < 0 || idleCycle > 3 || blend < 0 || blend > 7 {
+		return errors.New("indexedmap: incomplete native AI item damage blend input")
+	}
+	if idleCycle == 3 {
+		idleCycle = 2
+	}
+	frame := append([]byte(nil), snapshot...)
+	for _, target := range targets {
+		sprite, err := units.SpriteForNativeSlot(cache, target.SelectorSlot, 0, idleCycle)
+		if err != nil {
+			return fmt.Errorf("indexedmap: AI item damage target %d selector: %w", target.RecordIndex, err)
+		}
+		x, y, err := nativeCommandTailOrigin(target.X, target.Y, cameraX, cameraY, 0, -6)
+		if err != nil {
+			return err
+		}
+		if err := sprite.BlitNativeDamageBlendAt(frame, workStride, x, y, blend, rawBase); err != nil {
+			return fmt.Errorf("indexedmap: AI item damage target %d: %w", target.RecordIndex, err)
+		}
+	}
+	viewport := append([]byte(nil), vga...)
+	if err := CopyNativeUnitPresentViewport(viewport, frame); err != nil {
+		return err
+	}
+	copy(work, frame)
+	copy(vga, viewport)
+	return nil
+}
+
 // ComposeNativeCommandHealDigitFrame consumes one typed 0x1df58 queue frame.
 func ComposeNativeCommandHealDigitFrame(work, vga, snapshot []byte, digits []fdother.LMI1Entry, queue []battle.NativePresentationDigit, targets []NativeCommandHealTailTarget, cameraX, cameraY int, vertical [25]int, frameIndex int) error {
 	if len(work) != NativeUnitPresentWorkSize || len(snapshot) != NativeUnitPresentWorkSize || len(vga) != NativeMapVGASize || frameIndex < 0 || frameIndex >= 22 {

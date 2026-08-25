@@ -52,6 +52,9 @@ func (g *Game) startNativeAIItemRestorePresentation(plan *battle.AIPlan, then fu
 		return false, err
 	}
 	if tx.restore == nil {
+		if tx.damageRoute != nil && tx.damageRoute.Presentation == 0x1cd17 {
+			return g.startNativeAIItemDamagePresentation(tx, then)
+		}
 		return false, nil
 	}
 	if !g.nativeFullPresentationEnabled() {
@@ -204,6 +207,161 @@ func (g *Game) startNativeAIItemRestorePresentation(plan *battle.AIPlan, then fu
 	return true, nil
 }
 
+// startNativeAIItemDamagePresentation owns type 20/24's caller-specific
+// 0x1c4cc -> 0x1cd17 -> result queue path. The transaction remains detached
+// until the final blend frame has crossed a Draw boundary.
+func (g *Game) startNativeAIItemDamagePresentation(tx *nativeAIItemTransaction, then func()) (bool, error) {
+	if g == nil || g.st == nil || tx == nil || tx.damageRoute == nil || len(tx.damage) != len(tx.targets) {
+		return false, errors.New("native AI item damage presentation context unavailable")
+	}
+	if !g.nativeFullPresentationEnabled() {
+		return false, errors.New("native AI item indexed presentation unavailable")
+	}
+	if g.nativeAIItemPresentation != nil || g.nativeHealPresentation != nil ||
+		g.nativeModifierPresentation != nil || g.nativeAICommandModifier != nil ||
+		g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil ||
+		g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil ||
+		g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil ||
+		g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil ||
+		g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil ||
+		g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil ||
+		g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil ||
+		g.nativeCmd33Presentation != nil || g.nativeCmd34Presentation != nil ||
+		g.nativeCmd35Presentation != nil || g.indexedTransition != nil || g.atk != nil {
+		return false, errors.New("native AI item presentation already active")
+	}
+	if !g.st.HasNativeMapViewState || !g.st.HasNativeMapCycleState ||
+		len(g.nativeMapWork) != indexedmap.NativeUnitPresentWorkSize ||
+		len(g.nativeMapVGA) != indexedmap.NativeMapVGASize || len(g.nativeMapDAC) != 256*3 ||
+		!nativeMapAssetsAvailable(g.nativeMapAssets) {
+		return false, errors.New("native AI item indexed map state unavailable")
+	}
+	schedule, err := fdother.BuildNativeAIItemDamageTailSchedule(tx.damageRoute.CommandID)
+	if err != nil {
+		return false, err
+	}
+	a := g.nativeMapAssets
+	if len(a.FDOTHER6) < schedule.EffectStart+schedule.EffectFrames ||
+		len(a.CommandHealDigits) <= schedule.DigitBias+9 {
+		return false, errors.New("native AI item damage descriptors unavailable")
+	}
+	view := g.st.NativeMapViewState
+	tailTargets, err := nativeCommandHealTailTargets(g.st, tx.targets)
+	if err != nil {
+		return false, err
+	}
+	visible := make([]indexedmap.NativeCommandHealTailTarget, 0, len(tailTargets))
+	for _, target := range tailTargets {
+		if target.X >= view.CameraX-1 && target.X <= view.CameraX+12 &&
+			target.Y >= view.CameraY-1 && target.Y <= view.CameraY+8 {
+			visible = append(visible, target)
+		}
+	}
+	baselineWork := append([]byte(nil), g.nativeMapWork...)
+	baselineVGA := append([]byte(nil), g.nativeMapVGA...)
+	effectPixels := make([][]byte, 0, schedule.EffectFrames)
+	for frame := 0; frame < schedule.EffectFrames; frame++ {
+		work, vga := append([]byte(nil), baselineWork...), append([]byte(nil), baselineVGA...)
+		if err := indexedmap.ComposeNativeCommandHealEffectFrame(work, vga, baselineWork,
+			a.FDOTHER6[schedule.EffectStart+frame], visible, view.CameraX, view.CameraY); err != nil {
+			return false, err
+		}
+		effectPixels = append(effectPixels, vga)
+	}
+	blendPixels := make([][]byte, 0, schedule.BlendFrames)
+	for frame := 0; frame < schedule.BlendFrames; frame++ {
+		work, vga := append([]byte(nil), baselineWork...), append([]byte(nil), baselineVGA...)
+		if err := indexedmap.ComposeNativeAIItemDamageBlendFrame(work, vga, baselineWork,
+			a.Units, g.st.NativeMapSelectorCache, visible, view.CameraX, view.CameraY,
+			g.st.NativeMapCycleState.Idle, schedule.Blend[frame], byte(schedule.RawBase)); err != nil {
+			return false, err
+		}
+		blendPixels = append(blendPixels, vga)
+	}
+	clonedState, err := nativeAIItemClonedState(g.st, tx)
+	if err != nil {
+		return false, err
+	}
+	hud, ok := g.nativeMapHUDInput()
+	if !ok {
+		return false, errors.New("native AI item post-transaction HUD unavailable")
+	}
+	postInput, err := buildNativeMapFrameInput(a, g.m, clonedState, nativeMapFrameRuntime{HUD: hud})
+	if err != nil {
+		return false, err
+	}
+	postWork, postVGA := append([]byte(nil), baselineWork...), append([]byte(nil), baselineVGA...)
+	if err := indexedmap.ComposeNativeFrame(postWork, postVGA, postInput); err != nil {
+		return false, err
+	}
+	queue := make([]battle.NativePresentationDigit, 0, len(tx.damage)*4)
+	for index, result := range tx.damage {
+		target := tailTargets[index]
+		inCamera := target.X >= view.CameraX && target.X < view.CameraX+12 &&
+			target.Y >= view.CameraY-1 && target.Y <= view.CameraY+7
+		if result.Hit {
+			queue, err = battle.AppendNativePresentationDigits(queue, result.Damage,
+				schedule.DigitBias, target.RecordIndex, inCamera)
+			if err != nil {
+				return false, err
+			}
+		} else if inCamera {
+			for slot, glyph := range [...]int{74, 75, 76, 76} {
+				queue = append(queue, battle.NativePresentationDigit{
+					PositionCode: [...]int{2, 8, 12, 17}[slot], Target: target.RecordIndex, Digit: glyph,
+				})
+			}
+		}
+	}
+	digitPixels := make([][]byte, 0, schedule.DigitFrames)
+	for frame := 0; frame < schedule.DigitFrames; frame++ {
+		work, vga := append([]byte(nil), postWork...), append([]byte(nil), postVGA...)
+		if err := indexedmap.ComposeNativeCommandHealDigitFrame(work, vga, postWork,
+			a.CommandHealDigits, queue, tailTargets, view.CameraX, view.CameraY,
+			schedule.DigitVertical, frame); err != nil {
+			return false, err
+		}
+		digitPixels = append(digitPixels, vga)
+	}
+	palette, err := fdother.VGAPaletteFromDAC(g.nativeMapDAC)
+	if err != nil {
+		return false, err
+	}
+	effectImages, err := nativeCommand24IndexedImages(effectPixels, palette)
+	if err != nil {
+		return false, err
+	}
+	blendImages, err := nativeCommand24IndexedImages(blendPixels, palette)
+	if err != nil {
+		return false, err
+	}
+	digitImages, err := nativeCommand24IndexedImages(digitPixels, palette)
+	if err != nil {
+		return false, err
+	}
+	frames := make([]nativeCompoundPresentedFrame, 0, len(effectImages)+len(blendImages)+len(digitImages))
+	if frames, err = appendNativeCompoundFrames(frames, effectImages, schedule.EffectFrameDelayTicks); err != nil {
+		return false, err
+	}
+	frames[0].sound = loadWav(assetPath("assets/sfx/battle_80_06.wav"))
+	if frames, err = appendNativeCompoundFrames(frames, blendImages, schedule.BlendDelayTicks); err != nil {
+		return false, err
+	}
+	publishAt := len(frames)
+	if frames, err = appendNativeCompoundFrames(frames, digitImages, schedule.DigitFrameDelayTicks); err != nil {
+		return false, err
+	}
+	if !osMuteOrShot(g) && len(frames[0].sound) == 0 {
+		return false, errors.New("native AI item required raw sample unavailable")
+	}
+	g.nativeAIItemPresentation = &nativeAIItemPresentationJob{
+		transaction: tx, frames: frames, publishAt: publishAt,
+		baselineWork: baselineWork, baselineVGA: baselineVGA,
+		postTransactionWork: postWork, postVGA: postVGA, then: then,
+	}
+	return true, nil
+}
+
 func (g *Game) cancelNativeAIItemPresentation() {
 	if g == nil {
 		return
@@ -290,7 +448,7 @@ func (g *Game) stepNativeAIItemPresentation() {
 	j.frame = next
 	if j.frame >= len(j.frames) {
 		if !j.published {
-			g.failNativeAIItemPresentation(errors.New("required item mask boundary was not presented"))
+			g.failNativeAIItemPresentation(errors.New("required item publication boundary was not presented"))
 			return
 		}
 		j.frame = len(j.frames) - 1

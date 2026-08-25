@@ -38,6 +38,47 @@ func TestComposeNativeCommandHealEffectAndMaskUseRecoveredOrigin(t *testing.T) {
 	}
 }
 
+func TestComposeNativeAIItemDamageBlendUsesRawTableBaseAndCycleRemap(t *testing.T) {
+	snapshot := make([]byte, NativeUnitPresentWorkSize)
+	work := make([]byte, NativeUnitPresentWorkSize)
+	vga := make([]byte, NativeMapVGASize)
+	pixels := make([]byte, fdicon.NativeSize*fdicon.NativeSize)
+	mask := make([]byte, len(pixels))
+	pixels[0], pixels[1], mask[0] = 6, 7, 1
+	bank := &fdicon.Bank{Sprites: make([]fdicon.Sprite, 12)}
+	bank.Sprites[2] = fdicon.Sprite{Pixels: pixels, Mask: mask, RemapMask: make([]byte, len(mask))}
+	var cache fdicon.NativeSelectorCache
+	if _, err := cache.SlotFor(0); err != nil {
+		t.Fatal(err)
+	}
+	target := NativeCommandHealTailTarget{RecordIndex: 9, X: 0, Y: 0, SelectorSlot: 0}
+	if err := ComposeNativeAIItemDamageBlendFrame(work, vga, snapshot, bank, &cache,
+		[]NativeCommandHealTailTarget{target}, 0, 0, 3, 7, 0x20); err != nil {
+		t.Fatal(err)
+	}
+	origin := workBase - 6*workStride
+	if work[origin] != 0x25 || work[origin+1] != 0 {
+		t.Fatalf("blend pixels=%#x %#x", work[origin], work[origin+1])
+	}
+}
+
+func TestComposeNativeAIItemDamageBlendRejectsAtomically(t *testing.T) {
+	snapshot := make([]byte, NativeUnitPresentWorkSize)
+	work := make([]byte, NativeUnitPresentWorkSize)
+	work[0] = 0x77
+	vga := make([]byte, NativeMapVGASize)
+	before := append([]byte(nil), work...)
+	if err := ComposeNativeAIItemDamageBlendFrame(work, vga, snapshot, &fdicon.Bank{},
+		&fdicon.NativeSelectorCache{}, nil, 0, 0, 4, 0, 0x20); err == nil {
+		t.Fatal("invalid idle cycle accepted")
+	}
+	for i := range work {
+		if work[i] != before[i] {
+			t.Fatal("rejected blend mutated work")
+		}
+	}
+}
+
 func TestComposeNativeCommandHealDigitFrameUsesQueuePhaseAndTarget(t *testing.T) {
 	snapshot := make([]byte, NativeUnitPresentWorkSize)
 	work := make([]byte, NativeUnitPresentWorkSize)
