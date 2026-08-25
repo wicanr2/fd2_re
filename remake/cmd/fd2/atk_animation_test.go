@@ -97,3 +97,23 @@ func TestBattleImpactHPCommitsPostHitValueAtImpactBoundary(t *testing.T) {
 		t.Fatalf("post-impact HP=%d, want 8", got)
 	}
 }
+
+func TestNativeImpactDisplacementPreserves2939DPhaseAndDirection(t *testing.T) {
+	want := [][2]int{{0, 0}, {4, 2}, {9, 4}, {14, 6}, {18, 8}, {14, 10}}
+	for phase, expected := range want {
+		dx, dy, ok := nativeImpactDisplacement(phase, false)
+		if !ok || dx != expected[0] || dy != expected[1] {
+			t.Fatalf("positive phase %d=(%d,%d)/%v, want %v/true", phase, dx, dy, ok, expected)
+		}
+		dx, dy, ok = nativeImpactDisplacement(phase, true)
+		if !ok || dx != -expected[0] || dy != -expected[1] {
+			t.Fatalf("negative phase %d=(%d,%d)/%v, want (%d,%d)/true",
+				phase, dx, dy, ok, -expected[0], -expected[1])
+		}
+	}
+	for _, phase := range []int{-1, len(want)} {
+		if dx, dy, ok := nativeImpactDisplacement(phase, false); ok || dx != 0 || dy != 0 {
+			t.Fatalf("invalid phase %d=(%d,%d)/%v", phase, dx, dy, ok)
+		}
+	}
+}

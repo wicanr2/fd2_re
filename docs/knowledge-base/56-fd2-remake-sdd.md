@@ -4753,6 +4753,29 @@ post-hit HP，重製端已移除沒有 raw provenance 的 8 tick 中間值；守
 `FD2_BATTLE_FPT` 的純排程橋消費；攻守任一延遲表缺失即失敗即關閉。這只收緊
 renderer 輸入契約，不能把排程本身解讀成命中、傷害或 DAC 語意。
 
+### 2026-08-25：`0x2939D` 命中位移規格（RE-CLOSED／DATA-READY）
+
+IDA Pro 9.4 的直接 consumer 推翻舊「`0x5255F／0x52577` 是 idle fallback」說法：
+兩張表是六相位水平／垂直位移，依序由相位5→0消費：
+
+```text
+(14,10), (18,8), (14,6), (9,4), (4,2), (0,0)
+```
+
+`0x29F72` 第一個未命名輸出為0時，同時啟用相位5與 palette override 33；每個
+frame `+6` inner present後相位減一。第一個 unit raw `+6==0` 使用正方向，非零
+使用負方向。玩家攻擊盜賊的第二次配對因此把守方 idle base 的第一幀從 header
+座標 `(16,40)` 移到 `(2,30)`，其紅色像素邊界與原版命中錨點對上；這只閉合
+剪影位移，不代表其餘畫面像素完全一致。主證據見
+[`fd2_battle_impact_displacement_ida.txt`](../data/ida/fd2_battle_impact_displacement_ida.txt)。
+
+重製端資料規格新增純位移排程：輸入為原始相位與正負方向，輸出為 `(dx,dy)`；
+超出六相位即失敗即關閉。完整六相位目前只到 `DATA-READY`。由於原始
+`0x29F72` 欄位尚未進入 `AttackResult`，正式執行期只把既有 E1 剪影錨點接到
+已觀測的第一個相位5：玩家側攻擊採負方向、敵方側採正方向。不得把 Crit／Hit
+或其他 normalized欄位宣稱為原始 trigger；完整相位生命週期、DAC與精確觸發仍
+失敗即關閉。
+
 ## 2026-08-10：人工智慧與結局音訊的證據閉合更新
 
 本輪把原始人工智慧與終局音訊拆成可驗證的邊界，沒有把尚未證實的演出語意

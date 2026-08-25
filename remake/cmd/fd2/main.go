@@ -9028,6 +9028,25 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 // 190,0,0）。它只約束剪影近似的顏色，不代表已接上 0x2939d 的 DAC 脈衝。
 var nativeImpactSilhouetteColor = color.RGBA{0xbe, 0x00, 0x00, 0xff}
 
+var nativeImpactHorizontalDisplacement = [...]int{0, 4, 9, 14, 18, 14}
+var nativeImpactVerticalDisplacement = [...]int{0, 2, 4, 6, 8, 10}
+
+// nativeImpactDisplacement 保存 0x2939D 對 0x5255F／0x52577 的直接消費契約。
+// phase 是原始 5→0 位移相位；negative 對應第一筆 runtime record raw +6 非零
+// 的分支。它不判斷命中、暴擊或 0x29F72 未命名輸出，只轉換已由 caller 擁有的
+// 原始相位與方向。
+func nativeImpactDisplacement(phase int, negative bool) (dx, dy int, ok bool) {
+	if phase < 0 || phase >= len(nativeImpactHorizontalDisplacement) {
+		return 0, 0, false
+	}
+	dx = nativeImpactHorizontalDisplacement[phase]
+	dy = nativeImpactVerticalDisplacement[phase]
+	if negative {
+		dx, dy = -dx, -dy
+	}
+	return dx, dy, true
+}
+
 // battleImpactHP 對應 orig_05 可見的命中邊界：守方在命中演出開始前保留原 HP，
 // 命中開始後立即顯示扣血後 HP。原始傷害／演出寫入者仍未知，因此不從這個邊界
 // 推導其他 native 時序。
@@ -9166,12 +9185,23 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		}
 		img := fr[fi]
 		// E1 紅色剪影近似；原版 DAC 條件尚未由 raw presentation adapter 提供。
-		if prog >= impactS && prog < impactE && (prog/2)%2 == 0 {
+		impactSilhouette := prog >= impactS && prog < impactE && (prog/2)%2 == 0
+		if impactSilhouette {
 			img = g.redSilhouette(img)
 		}
 		dx, dy := 16.0, 41.0
 		if m := g.figMeta[a.defFig]; fi < len(m) {
 			dx, dy = float64(m[fi][0]), float64(m[fi][1])
+		}
+		if impactSilhouette {
+			// 現有 AttackResult 尚未帶入 0x29F72 的 raw trigger，因此 E1
+			// 剪影只重播原版命中錨點已觀察到的第一個 phase5 present。
+			// 玩家攻擊位於 0x2939D 的 raw +6 非零（負向）視覺分支；
+			// 反向攻擊使用對稱正向分支。完整 5→0 生命週期待 raw owner。
+			if ox, oy, ok := nativeImpactDisplacement(5, a.atkOwn); ok {
+				dx += float64(ox)
+				dy += float64(oy)
+			}
 		}
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)

@@ -8,26 +8,27 @@
     "md5": "b97caf2239a27a896069d03549d96e1e",
     "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
     "remake_head_before_change": "0782257",
-    "working_tree_change": "移除沒有原始欄位來源支撐的 RGBA 全畫面紅罩；只保留守方紅剪影，攻方維持 FIGANI 原色；命中邊界立即提交 post-hit HP，剪影 E1 色值對齊原版擷取 RGB 190,0,0；守方待機幀改消費 descriptor +6 排程"
+    "working_tree_change": "移除沒有原始欄位來源支撐的 RGBA 全畫面紅罩；只保留守方紅剪影，攻方維持 FIGANI 原色；命中邊界立即提交 post-hit HP，剪影 E1 色值對齊原版擷取 RGB 190,0,0；守方待機幀改消費 descriptor +6 排程；2026-08-25再依IDA直接consumer接入第一個命中位移相位"
   },
   "capture": {
     "container_image": "fd2-go-test-local:latest",
-    "display": "Xvfb :99 1024x768x24",
+    "display": "xvfb-run 自動配置，1280x1024x24",
     "environment": {
       "FD2_SHOT_ATTACK": "4",
       "FD2_SHOT_FRAME": "3",
-      "FD2_SHOT_SERIES": "/hosttmp/fd2-battle-after5/frames",
+      "FD2_SHOT_SERIES": "/out/frames",
       "FD2_SHOT_DETERMINISTIC": "1",
       "FD2_TITLE": "0",
       "FD2_MUTE": "1",
       "FD2_ORIGINAL_FDOTHER": "org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
     },
-    "selected_frame": 77,
+    "selected_frame": 76,
     "notes": [
       "背景、台座與狀態欄不再被未證實的全畫面紅色 RGBA 覆蓋",
       "守方受擊者以目前 E1 的紅色剪影近似呈現，剪影色值採原版 impact 擷取的 RGB 190,0,0；攻方維持原本 FIGANI 幀",
       "命中幀的狀態欄在 impact 邊界立即顯示 post-hit HP，不再以未有原始欄位依據的中間值緩降",
       "守方 FIGANI 待機幀消費各資源 descriptor +6 與 FD2_BATTLE_FPT；缺延遲表時失敗即關閉",
+      "第一個E1命中相位依0x2939D直接consumer，在玩家攻擊分支套用(-14,-10)；完整六相位仍未接入",
       "這不是原版 DOSBox 同狀態擷取，也不能證明逐像素一致"
     ]
   },
@@ -35,15 +36,15 @@
     "path": "docs/figures/battle-impact-no-global-tint.png",
     "width": 640,
     "height": 400,
-    "md5": "15b4e22f09a732abcb0caf32daaa565d",
-    "sha256": "58423664e32ebddff09768b191a059b15c3d0595462ee8ec4feb1584d7b599fe"
+    "md5": "0d2edfabab5f31b94785aac32fe6c9cf",
+    "sha256": "f8baaf64ce476de846a304794014720d0e0f6a2563cdd60187fb26b6e6cb622b"
   },
   "normalized_comparison": {
-    "path": "docs/figures/battle-impact-compare-20260810.png",
+    "path": "docs/figures/battle-impact-compare-20260825.png",
     "normalization": "原版 DOSBox 640x480 影像以 2.4 倍垂直取樣正規化為 320x200；重製端 640x400 以 2 倍最近鄰縮小為 320x200；右欄為逐 RGB 差異遮罩",
-    "diff_pixels": 3933,
-    "md5": "77aa0fac4c2eac994445979f175d41b8",
-    "sha256": "61f8f79d5a2e32208925462ccea4177769a3103b0b092b33c6d2122597298c50"
+    "diff_pixels": 1330,
+    "md5": "80f476f9f02ff156c338243ef12eb63d",
+    "sha256": "c308eb179784af5a21f74d2b693db0e24af9504374d292bc8ccc375af36556b6"
   },
   "current_source_phase_audit": {
     "generated_at": "2026-08-25",
@@ -53,8 +54,11 @@
     "best_frame": 76,
     "best_absolute_error_pixels": 4436,
     "next_frame_absolute_error_pixels": 8835,
-    "conclusion": "目前最佳相位仍有4436個差異像素，主要集中於守方命中剪影；差異不能再單純歸因於固定第77幀挑錯。2026-08-10的3933是當時原始碼與當時產物的歷史量測，不是目前HEAD的數值。",
-    "limits": "未修改原版只有一張命中錨點，未提供同一次攻擊的原版完整逐幀序列；本量測不證明原版精確畫格時鐘，也不授權猜接FIGANI位移。"
+    "conclusion": "接入IDA直接consumer證實的第一個phase5負向位移後，最佳frame76由4436降至1330個差異像素；守方命中剪影的主要位置差異已消除。2026-08-10的3933與本節原4436均保留為歷史量測。",
+    "post_displacement_best_frame": 76,
+    "post_displacement_best_absolute_error_pixels": 1330,
+    "post_displacement_base_head": "66372c27a54659d3bd6f506cf858d2f612a7f49d",
+    "limits": "未修改原版只有一張命中錨點，未提供同一次攻擊的原版完整逐幀序列；本量測不證明原版精確畫格時鐘。完整六相位因缺0x29F72 raw owner而未接入。"
   },
   "evidence_scope": [
     "重製端畫面修正",

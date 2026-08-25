@@ -6473,3 +6473,18 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   3933數值只屬2026-08-10當時產物，且目前差異不能只歸因於挑錯frame77。
 - 新增 `tools/docker/fd2-battle-series-compare.sh` 固定量測方式。差異主要集中於守方
   命中剪影；`0x2939D` 的進度／疊層消費端尚未閉合，不以肉眼猜接位移常數。
+
+## 2026-08-25：`0x2939D` 命中位移 consumer 閉合與 E1 接線
+
+- 因上段量測與舊「idle fallback」斷言矛盾，使用IDA Pro 9.4只窄查consumer：
+  `0x5255F／0x52577`已證實是水平`[0,4,9,14,18,14]`與垂直
+  `[0,2,4,6,8,10]`六相位位移；`0x29A21`逐present由相位5降至0，第一個unit
+  raw `+6`決定正負方向。主證據為
+  `docs/data/ida/fd2_battle_impact_displacement_ida.txt`。
+- 重製端完整六相位只到`DATA-READY`；因`AttackResult`仍缺`0x29F72` raw owner，
+  正式執行期只把既有E1剪影錨點接到已觀測的第一個phase5。玩家攻擊採負向
+  `(-14,-10)`，不把Crit／Hit冒充原始trigger。
+- Docker／Xvfb重建完整序列後，最佳仍是frame76，未遮罩RGB `AE`由4436降至
+  1330；守方剪影主要位置差異已消除。新圖為
+  `docs/figures/battle-impact-compare-20260825.png`。這仍不是一般玩家E2、完整DAC、
+  六相位逐幀或精確音訊證據。

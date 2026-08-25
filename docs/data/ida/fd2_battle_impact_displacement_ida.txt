@@ -1,0 +1,94 @@
+# FD2 `0x2939D` 命中剪影位移 consumer（IDA Pro 9.4 證據）
+
+## 輸入、工具與位址空間
+
+- 輸入：`org_game/炎龍騎士團/FLAME2/FD2.EXE`
+- 大小：357074位元組
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 第一工具：使用者合法提供的 IDA Pro 9.4.0.260610／Hex-Rays，
+  `fd2-ida-authorized-local:latest`，一次性無網路 Docker；原版唯讀，資料庫只在
+  容器 tmpfs。
+- 位址皆為 IDA Linear Executable loader 的線性位址，不是檔案偏移。函式保留
+  `sub_...` 原始名稱；本文語意是有分級的外部註記。
+
+## 窄重開原因
+
+舊 `35-battle-animation-rendering.md` 把 `0x5255F／0x52577` 稱為 idle／fallback
+描述子；較新的 raw bytes 已證明兩者是六個 dword 的數值表，但一般戰鬥分支的
+consumer 沒有寫入主證據。同一狀態影像又量到重製守方剪影相對原版恰差
+`(+14,+10)`。本輪只補表格 consumer 與 caller 方向，不重解已閉合的 DAC、傷害或
+整個 `0x2939D`。
+
+## 已證實：兩張表是位移，不是動畫描述子
+
+`sub_2939D` 進場直接複製：
+
+```text
+0x293C8..0x293D4  0x5255F → stack[6 dword]
+0x293D6..0x293E4  0x52577 → stack[6 dword]
+```
+
+固定 raw 值為：
+
+```text
+horizontal = [0, 4, 9, 14, 18, 14]
+vertical   = [0, 2, 4,  6,  8, 10]
+```
+
+在 `0x2977D..0x29789`，`sub_29F72` 輸出結構第一個未命名 dword為0時，函式把
+相位 `esi` 設為5，並把 palette override 設為33。每個 raw frame `+6` inner
+present 在 `0x29A4A` 讀 `vertical[esi]`；`0x2980F` 以
+`base + horizontal[esi] + vertical[esi]*400` 合成正方向地址，`0x29AE3..0x29AF2`
+則以相同兩值相減。`0x29A21..0x29A25` 每次 present 後把非零相位減一。
+
+因此第一至第六個 inner present 的位移依序為：
+
+```text
+(14,10), (18,8), (14,6), (9,4), (4,2), (0,0)
+```
+
+這是**已證實**的 indexed 位移排程；表格不是 FIGANI descriptor、待機動畫或
+fallback 資源。
+
+## 已證實：`0x28A6C` caller 決定正負方向
+
+`sub_28A6C` 在 `0x28E9A` 第一次呼叫
+`sub_2939D(arg0,arg4,resourceA,baseA,...)`。正常戰鬥若回傳條件允許，
+`0x28EE0` 第二次以交換的 unit index 與另一組 FIGANI resource 呼叫。`sub_2939D`
+在 `0x29A99..0x29AA3` 讀第一個 unit index 對應 record raw `+6`：
+
+- raw `+6==0`：使用 `0x2980F` 的正方向位移；
+- raw `+6!=0`：使用 `0x29AE3..0x29AF2` 的負方向位移。
+
+玩家亞雷斯攻擊盜賊的第二次配對由玩家 record 作第一 unit index，因此走負方向；
+該配對的 base descriptor 是守方 FIGANI idle。palette override 33與負向位移會一起
+套在守方 base frame，第一個 present 正是 header座標減 `(14,10)`。
+
+## 影像交叉證據與分級
+
+- **已證實**：原始表值、相位5→0、每 present遞減、raw `+6` 正負分支、
+  `sub_2935B` 的 palette override 33 consumer。
+- **強推論**：既有原版命中錨點的紅色守方剪影就是上述第二次配對的第一個
+  inner present。它的紅色像素邊界為 `x=2..124,y=30..139`；同資源重製 frame76
+  未位移邊界為 `x=16..138,y=40..149`，差值恰為 `(-14,-10)`。
+- **未知**：`sub_29F72` 第一個輸出 dword的高階名稱、所有命中／失敗分支的
+  producer、原版完整逐幀序列與精確音訊。
+
+## 重製限制
+
+重製端目前沒有 `sub_29F72` 原始輸出結構。正式 renderer 只能把這六相位位移接到
+既有、明確標為 E1 近似的紅色剪影視覺分支；不得把一般命中、暴擊或任一 normalized
+欄位改名為該輸出。玩家攻擊走負方向、敵方攻擊走正方向仍是現有 `atkOwn` 視覺側別
+的近似橋，不冒稱 raw `+6` 完整轉接。缺原始欄位時 DAC 與精確觸發仍失敗即關閉。
+
+## 可重生查詢
+
+IDA `tools/ida_probe_functions.py`：
+
+```text
+FD2_IDA_ADDRESSES="0x28a6c 0x2935b 0x2939d 0x29c90 0x29ded"
+```
+
+輸出應包含 `0x293CF／0x293DF` 表格複製、`0x2977D／0x29784` 相位初始化、
+`0x2980F／0x29AE3` 正負地址與 `0x29A21` 相位遞減。

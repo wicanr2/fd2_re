@@ -375,8 +375,11 @@ remake 對不準的根因即在此:該照各 frame header 的寬高 + 下面的�
   終局尾段的非零 branch 不據此取得 `0x29f72` 結果；不可把該 resolver 當位移輸出，
   也不可把它猜接到尾段。
   幀的 (dx,dy) 內嵌(§2.2)→ **swing 斬擊弧 = 逐幀位移 + 換幀**。
-- **idle / fallback 描述子**:0x2939d 進場 `rep movsd` 從 **0x5255f**(6 dword)與 **0x52577**(6 dword)複製預設描述子到區域 frame
-  (0x293cf / 0x293df)→ 沒有真實動畫時的**待機姿態 fallback**。
+- **命中位移表**：0x2939d進場`rep movsd`從 **0x5255f** 與 **0x52577**
+  各複製6個dword；IDA直接consumer證實它們分別是水平
+  `[0,4,9,14,18,14]`與垂直`[0,2,4,6,8,10]`位移。命中分支由相位5逐次降至0，
+  再依第一個unit raw `+6`選擇加／減；它們不是idle／fallback描述子。完整證據見
+  [`fd2_battle_impact_displacement_ida.txt`](../data/ida/fd2_battle_impact_displacement_ida.txt)。
 - **閃紅 / figure 淡入涉及色盤操作,但不是無條件的全畫面紅罩**:
   - **0x11d40** 是 VGA DAC 寫入迴圈:`push 0x3c8 / push 0x3c9; call 0x37795`(0x11d5c / 0x11d73)→
     out 到埠 **0x3c8(palette index)/0x3c9(palette data)**。0x37795 = DAC 埠寫入原語。
@@ -446,7 +449,7 @@ remake 對不準的根因即在此:該照各 frame header 的寬高 + 下面的�
 | [0x53a81] | **FDOTHER.DAT resource #5** 的 LMI1 UI directory；boot `0x25c97` 明確呼叫 `0x111ba(...,5)`，不是待確認來源 |
 | [0x53a7d] / [0x53a85] | `[0x53a7d]` boot 載入 FDTXT.DAT #0；`[0x53a85]` 是會被 caller 重載的工作指標（例如 `0x17eef` 依 unit `+7` 載 DATO portrait），不可跨 scene 固定命名成單一容器 |
 | 0x52363 | 章節→演出參數表 `[4,9,14,18,14,0,…]`(`[0x53c03]` 索引) |
-| 0x5255f / 0x52577 | idle / fallback 動畫描述子(各 6 dword) |
+| 0x5255f / 0x52577 | 命中水平／垂直位移表（各6 dword；相位5→0） |
 | [0x53a45] | 單位陣列基底(每單位 80 byte) |
 | [0x540ff] | renderer 分支輸入（強推論；正式戰鬥 phase 解讀不得外推至終局尾段） |
 | [0x54117] / [0x5411b] | 攻方 / 守方 FIGANI 動畫描述子 buffer |
@@ -477,7 +480,7 @@ remake 對不準的根因即在此:該照各 frame header 的寬高 + 下面的�
    `0x29164`另載TAI.DAT sprite，不是BG層或程式純色。TAI entry、raw selector
    與跨角色對齊仍待逐caller驗證。
 4. **狀態欄(血條框)** ✅(本輪嚴格 RE 重做,§4):真函式 = **0x18c6d**(座標器 0x2a289,byte[+6]→ 我方(0,154)/敵方(171,4))。**0x29164 不是狀態欄,是 figure + 台座(TAI.DAT)淡入**(舊標錯已改)。三元素釘死:**① 框/深藍底/立體 bevel = 素材 sprite**(0x4e8af blit [0x53a81]+0x5e);**② HP/MP 條 = 程式畫**(0x18795 算 `len=cur*101/max+1` → 0x17d6f 逐欄 blit [0x53a81] 漸層欄 cell,空槽 0x1d;HP=unit+0x40/+0x42、MP=+0x44/+0x46);**③ 名 = `0x15f84→0x4ea2a` 以 `[0x53a75]` FDOTHER#4 font畫 16×16 glyph**、**數值 = 6px digit cell**([0x53a81],0x187d6)。`[0x53a81]` loader 已由 boot `0x25c97` 定案為 FDOTHER #5；`[0x53a85]` 是 DATO mouth-frame工作指標，不再誤稱字模。
-5. **正式戰鬥動畫控制** ✅：`[0x540ff]` 的 0／非零 branch、0x2939d 幀迴圈與 `idiv 100` 百分比進度已固定；`[0x540ff]==0` 的正式戰鬥 branch 才消費 `0x29f72`。幀 (dx,dy) 的 swing 斬擊弧、**命中色盤脈衝的條件式 VGA DAC 0x3c8/0x3c9 寫入**（原始 frame `+4`、傷害步進與 `0x29f72` 欄位共同控制，證據見 §8）、HP 條非色盤及 idle fallback 0x5255f/0x52577 都不外推到終局尾段。**待確認**：原始輸出欄位的完整 producer/consumer、各 caller 的 schedule 與一般玩家路徑幀數。
+5. **正式戰鬥動畫控制** ✅：`[0x540ff]` 的 0／非零 branch、0x2939d 幀迴圈與 `idiv 100` 百分比進度已固定；`[0x540ff]==0` 的正式戰鬥 branch 才消費 `0x29f72`。幀 (dx,dy) 的 swing 斬擊弧、**命中色盤脈衝的條件式 VGA DAC 0x3c8/0x3c9 寫入**（原始 frame `+4`、傷害步進與 `0x29f72` 欄位共同控制，證據見 §8）、HP 條非色盤，以及0x5255f/0x52577命中位移都不外推到終局尾段。**待確認**：原始輸出欄位的完整 producer/consumer、各 caller 的 schedule 與一般玩家路徑幀數。
 6. **座標系** ✅:320×200、VGA 0xa0000、**work stride 640 但只 present 左半 320**(雙寬 off-screen 預備區,用途待確認)。
 
 ## 2026-08-10：命中色盤脈衝與戰場畫面修正（E0／E1）
@@ -512,6 +515,15 @@ remake 對不準的根因即在此:該照各 frame header 的寬高 + 下面的�
 原版 DOSBox 640×480 以垂直 2.4 倍取樣正規化為 320×200，重製端 640×400 以 2 倍
 最近鄰縮小，右欄是逐 RGB 差異遮罩。此固定命中 fixture 尚有 3933 個差異像素，
 因此只關閉 HP 中間值與剪影色值兩項可見差異，未提升為完整戰鬥介面或一般玩家 E2。
+
+### 8.2 2026-08-25：命中位移 consumer 與 E1 錨點
+
+IDA Pro 9.4直接consumer證實`0x5255F／0x52577`不是待機描述子，而是由相位5降至0
+消費的水平／垂直位移。重製端目前只把既有E1剪影接到已觀測的第一個相位5；玩家
+攻擊採`(-14,-10)`，未猜接尚無raw owner的完整六相位生命週期。完整序列重新量測後，
+最佳frame76由`AE=4436`降至`AE=1330`；新對照圖為
+[`battle-impact-compare-20260825.png`](../figures/battle-impact-compare-20260825.png)。
+這是`RUNTIME-E1`畫面改善，不是一般玩家E2或完整DAC／音訊時序證據。
 
 同輪修正守方 FIGANI 待機排程：重製端原先以固定 `(prog/6)` 循環選幀，現改依
 各守方資源的 descriptor `+6` 與 `FD2_BATTLE_FPT` 以純排程橋選幀；攻方與守方
