@@ -1,0 +1,51 @@
+{
+  "name": "第23戰戰果至 preparation_ch24 正式輸入與冷讀",
+  "date": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "reference": {
+    "FD2.EXE": {
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "canonical_re": "docs/data/ida/fd2_ch22_post_ida.txt",
+    "design": "docs/knowledge-base/56-fd2-remake-sdd.md#preparation_ch24-正式輸入與冷讀邊界2026-08-27"
+  },
+  "route": [
+    "battle_ch23",
+    "postbattle_ch23_persist",
+    "preparation_ch24",
+    "story_ch24"
+  ],
+  "runtime_frontier": {
+    "persistent_units": 16,
+    "map_units": 70,
+    "maximum_materialized_slots": 86,
+    "selectable_records": 15,
+    "fixed_record_zero_outside_quota": true
+  },
+  "formal_input_trace": [
+    "戰果確認後完成綁定 handler 並同步16人持續隊伍",
+    "preparation_ch24 記錄提示選擇肯定，indexed 關框後寫入槽位1",
+    "以全新 Game 與 campaign runner 冷讀槽位1，恢復節點、JOIN順序與角色 raw 欄位",
+    "冷讀後記錄提示選擇否定，進入零部署的15人選擇",
+    "選滿15人後進最終確認，先取消並驗證部署旗標歸零",
+    "再次以正式輸入選滿15人，肯定後完成 indexed 關框並進入 story_ch24"
+  ],
+  "atomic_checks": [
+    "冷讀前後 HP、MP、native identity、raw +5/+6、raw class 與40-bit command mask 相同",
+    "取消最終確認不離開 preparation_ch24，且不保留部署旗標",
+    "campaign 只由既有 closing continuation 前進，不直接改寫節點"
+  ],
+  "verification": {
+    "test": "TestChapter23BattleResultRunsBoundPostbattleAndReachesPreparation24SaveBoundary",
+    "result": "pass",
+    "docker_network": "none",
+    "xvfb": true
+  },
+  "limitations": [
+    "戰場由測試建立的16筆 persistent records 與70筆 authored map records 組成，不是從未修改原版長程通關取得。",
+    "測試與實際鍵盤共用具型別整備 consumer，但測試沒有注入作業系統鍵盤事件。",
+    "本紀錄沒有原版 DOSBox 同狀態畫面，不提升為 PLAYER-E2，也不宣稱逐幀或精確音訊一致。"
+  ]
+}

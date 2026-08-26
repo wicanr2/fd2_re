@@ -42,6 +42,14 @@
 > 邊界共同驗證完整角色發布。教會四項 service 的 remake 正常輸入至此均達
 > `RUNTIME-E1`；後續只做代表性原版同狀態畫面／音訊 E2，不再重做 menu 或 callee。
 
+> **2026-08-27 第23戰後整備正式輸入：** 鍵盤與測試現在共用單一 preparation
+> typed consumer。正式戰果確認跑完`postbattle_ch23_persist`後，記錄提示肯定會在
+> indexed關框後存檔；全新`Game`冷讀同槽，再以提示否定進15人選取、最終確認取消
+> 重選及肯定，最後抵達`story_ch24`。節點、JOIN順序、HP／MP、native identity、
+> raw +5／+6／class與command mask均跨冷讀保持；取消不離開節點且清空部署旗標。
+> 此項達正常重製輸入`RUNTIME-E1`，未修改原版畫面／音訊E2仍另列，不重開raw ch22
+> post或`0x318AD／0x31D3C`。
+
 > **2026-08-25 最終戰前現況：** `story_ch30` 已由兩句通用後備改接正式
 > `ch29_pre` binding；`0x33F78` 的 `(slot,x,y)` wrapper、`0x12CEA(x,y)` focus、
 > `0x22253` story-array bridge、21句對話及七個 caller 均達窄 `RUNTIME-E1`。

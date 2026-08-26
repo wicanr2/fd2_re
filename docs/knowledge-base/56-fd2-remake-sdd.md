@@ -4719,6 +4719,31 @@ record provenance 存在時選臂，缺資料便停止。這改善了 handler �
 正式 binding 現已以這三個 predicate 執行；缺 raw provenance 仍會失敗即關閉。
 這不解除 event52 時序或一般玩家 E2 gate。
 
+### `preparation_ch24` 正式輸入與冷讀邊界（2026-08-27）
+
+本切片不重開上述 raw ch22 post／玩家第23戰 handler。正式驗收起點仍是
+`confirmBattleResult()` 進入 `postbattle_ch23_persist`，跑完綁定 handler 後抵達
+沒有 town cancel 的 `preparation_ch24`。整備輸入必須由鍵盤與決定性回歸共用一個
+具型別 consumer，依序擁有三個既有狀態：
+
+1. `prompt`：先完整呈現 FDTXT `0x19a` 記錄提示。肯定分支只在 indexed 關框與
+   source restore 後呼叫正式 SAVE，再進入零初始化的選人階段；否定或 Escape
+   不得離開節點，也必須進入同一選人階段。
+2. `selection`：左右／上下只透過既有 `MoveNativePreparationRosterCursor`，Enter
+   只透過 `togglePreparationSelection`。persistent record 0 固定出戰、不占15人名額；
+   第15筆被選後才進 `0x31d3c` 最終確認。Escape 在無 town 的節點只重置選人，
+   不得回到不存在的城鎮或直接跳 `story_ch24`。
+3. `confirmation`：左右切換肯定／取消；取消與 Escape 在完整關框後重開零初始化
+   選人。只有肯定可在完整 confirmation closing／source restore 後執行
+   `confirmPreparationDeparture()`，進入 `story_ch24`。
+
+存檔驗收必須使用同一批由 post handler 同步的 persistent roster。以新 `Game` 冷讀
+`preparation_ch24` 後，節點、JOIN 順序、完整角色 raw record 與金錢須保持一致；
+重新進入整備仍須依 `0x318c7` 清空部署旗標，不能把存檔當成已選名單。測試可逐幀
+確認 indexed job 以縮短等待，但不得略過 continuation 或直接改寫 campaign node。
+此鏈最多提升 `RUNTIME-E1`；測試建構戰場與重製 JSON 存檔都不能替代未修改原版
+一般玩家 `PLAYER-E2`。
+
 ## 2026-08-09 raw ch24 post `0x24df2` 函式邊界與 owner 勘誤（E1）
 
 固定版 `FD2.EXE` 的 IDA Pro 9.4 與 Docker Capstone 共同固定 handler table

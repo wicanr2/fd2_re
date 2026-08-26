@@ -7390,3 +7390,18 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   證據見 [`native-church-menu-ch02-remake-e1.json`](../data/ui-traces/native-church-menu-ch02-remake-e1.json)。
 - 此成果只提升正式重製端主選單 `RUNTIME-E1`；oracle 不是未修改 DOSBox 擷取，
   church caller 的一般玩家 E2、精確音訊與原版存檔仍保留為抽驗限制。
+
+## 2026-08-27：第23戰後 `preparation_ch24` 正式輸入與冷讀
+
+- 沿用已閉合的 raw ch22 post／玩家第23戰 handler，不重開 IDA。新增 SDD 窄契約，
+  將無城鎮整備的記錄提示、選人及最終確認三態收斂成鍵盤與回歸共用的
+  `nativePreparationInput` consumer；原本的 indexed closing／restore continuation
+  與失敗即關閉邊界保持不變。
+- 正式戰果確認由16筆 persistent＋70筆 map records 的86-slot frontier 跑完
+  `postbattle_ch23_persist`，抵達`preparation_ch24`。記錄提示肯定在關框後寫槽位1，
+  再由全新`Game`與campaign runner冷讀同槽；節點、16人JOIN順序與角色raw欄位保持。
+- 冷讀後以正式consumer走提示否定、15人選滿、最終確認取消並清空部署，再次選滿
+  15人及肯定，完整關框後抵達`story_ch24`。Docker／Xvfb聚焦回歸通過，證據見
+  [`ch23-post-preparation-ch24-input-e1.json`](../data/ui-traces/ch23-post-preparation-ch24-input-e1.json)。
+- 沒有建立 direct-entry 截圖 fixture；現有測試戰場仍由已證實的 typed records建立，
+  不是未修改原版長程通關。此題提升正常重製輸入`RUNTIME-E1`，不冒稱PLAYER-E2。

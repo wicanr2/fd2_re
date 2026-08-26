@@ -4213,118 +4213,14 @@ func (g *Game) campInput() bool {
 		return true
 	case "preparation", "church":
 		if n.Type == "preparation" {
-			if g.nativeClassUIBlocksInput() {
-				return true
-			}
-			townBacked := n.Cancel != ""
-			leavePreparation := func(outcome string) {
-				if g.camp.Advance(outcome) != "" {
-					g.enterNode()
-				}
-			}
-			if g.prepConfirm {
-				closeThen := func(after func()) {
-					if !g.beginNativePreparationConfirmationClosing(after) {
-						after()
-					}
-				}
-				if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) || inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
-					g.prepConfirmSel ^= 1
-					g.resetNativeClassUIPulse()
-				}
-				if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-					if townBacked {
-						closeThen(func() { leavePreparation("cancel") })
-					} else {
-						closeThen(g.restartPreparationSelection)
-					}
-				}
-				if enter {
-					if g.prepConfirmSel == 0 {
-						g.confirmPreparationDeparture()
-					} else if townBacked {
-						closeThen(func() { leavePreparation("cancel") })
-					} else {
-						closeThen(g.restartPreparationSelection)
-					}
-				}
-				return true
-			}
-			if !g.prepSelecting {
-				closeThen := func(after func()) {
-					if !g.beginNativePreparationPromptClosing(after) {
-						after()
-					}
-				}
-				if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) || inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
-					g.prepConfirmSel ^= 1
-					g.resetNativeClassUIPulse()
-				}
-				if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-					if townBacked {
-						closeThen(func() {
-							g.prepPromptSource = nil
-							leavePreparation("cancel")
-						})
-					} else {
-						closeThen(g.restartPreparationSelection)
-					}
-					return true
-				}
-				if enter {
-					if !townBacked {
-						closeThen(func() {
-							if g.prepConfirmSel == 0 {
-								g.saveGame()
-							}
-							g.restartPreparationSelection()
-						})
-					} else if g.prepConfirmSel != 0 {
-						closeThen(func() {
-							g.prepPromptSource = nil
-							leavePreparation("cancel")
-						})
-					} else {
-						closeThen(func() {
-							if g.acceptTownDeparturePrompt() {
-								g.prepPromptSource = nil
-								leavePreparation("confirm")
-							}
-						})
-					}
-				}
-				return true
-			}
-			movePreparation := func(scanCode byte) {
-				if next, err := fdother.MoveNativePreparationRosterCursor(
-					g.prepSel, len(g.prepIDs), scanCode,
-				); err == nil {
-					g.prepSel = next
-				}
-			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
-				movePreparation(0x4b)
-			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
-				movePreparation(0x4d)
-			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
-				movePreparation(0x48)
-			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
-				movePreparation(0x50)
-			}
-			if enter {
-				g.togglePreparationSelection()
-			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-				if townBacked {
-					leavePreparation("cancel")
-				} else {
-					g.restartPreparationSelection()
-				}
-			}
-			return true
+			return g.handleNativePreparationInput(nativePreparationInput{
+				left:   inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft),
+				right:  inpututil.IsKeyJustPressed(ebiten.KeyArrowRight),
+				up:     inpututil.IsKeyJustPressed(ebiten.KeyArrowUp),
+				down:   inpututil.IsKeyJustPressed(ebiten.KeyArrowDown),
+				enter:  enter,
+				escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+			})
 		}
 		if g.nativeClassUIBlocksInput() || g.nativeChurchUIBlocksInput() {
 			return true
