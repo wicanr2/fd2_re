@@ -54,8 +54,9 @@
   回顧隊伍最終狀態，Enter／Space／Escape 回到同一定格。三筆具原始位址的 BGM cue
   也已由資料接入正式終局；仍缺第30戰一般玩家 E2、原始狀態連續性、精確音訊時序
   與完整來源存檔。2003年保存站的正常末關候選已由未修改原版普通 `CONTINUE` 進入
-  第30戰，並促使重製同檔補齊33筆場上單位與31人持續隊伍；因第三方存檔 provenance
-  不完整，目前仍只列候選 E2，不提高上述完成門檻。
+  第30戰；同一程序再以普通鍵盤走完 `END→YES`、敵方演出並交回玩家操作權，且促使
+  重製同檔補齊33筆場上單位與31人持續隊伍。因第三方存檔來源（provenance）不完整，目前
+  仍只列候選 E2，不提高上述完成門檻。
 - 普通攻擊固定 fixture 的戰場內容區已達原版／重製 AE=0，代表性玩家／敵方 indexed 演出回歸亦已通過；這不外推成所有戰場狀態 E2。其餘 HUD、法術／物品動畫與戰間介面仍需一般玩家同狀態擷圖。全戰役長程遊玩由使用者人工回報問題，不作為代理程式工作佇列。
 
 相反地，已閉合的資產容器、字型／文字、多個戰後處理器與已有主證據的原語，
@@ -193,6 +194,14 @@ writer／consumer 時重開。
 `0x4DFCC`的`0xE0..0xEF` DAC cycle接通後，320×200同相位差異由16,281降至0像素。
 它是可重生的 E1 分階段診斷，不冒稱另一次
 鍵盤擷取、逐像素一致或完整E2；來源、雜湊與限制見
+[擷取紀錄](docs/data/ui-traces/native-battle-ch30-original-candidate.json)。*
+
+![未修改原版第30戰候選：END確認、敵方階段、交回玩家操作權](docs/figures/native-battle-ch30-original-turn-cycle-candidate.png)
+
+*三格都來自固定雜湊 `FD2.EXE` 的同一個 Docker／DOSBox 程序，依序為普通鍵盤
+`END` 確認、`ENEMY PHASE`，以及約150秒後以 `Return` 開啟索爾狀態面板。執行檔、
+記憶體、章節、路由與畫面均未修改；但起點是第三方保存存檔且容器停用音訊，所以
+只列單次連續候選 E2，不宣稱從第一戰通關或精確音訊一致。來源、輸入與雜湊見
 [擷取紀錄](docs/data/ui-traces/native-battle-ch30-original-candidate.json)。*
 
 ![不使用開場略過或固定標題計時，由正常鍵盤 CONTINUE 抵達並操作第30戰](docs/figures/native-battle-ch30-remake-controllable-e1.png)

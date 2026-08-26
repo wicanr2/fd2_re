@@ -6913,3 +6913,19 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   `RUNTIME-E1`；敵軍全滅 fixture 與未送 OS 鍵盤不提升為 `PLAYER-E2`。
 - README 玩家交付自評由78調至79；增加的是戰役流程／隊伍持續／存讀檔一分，
   依據為上述同一條可重跑正式介面長鏈，不是新增反組譯筆記。
+
+## 2026-08-26：第30戰未修改原版單次回合循環候選 E2
+
+- 重新下載 Player Lin `fd2002.zip`，ZIP 與 `Fd2.sav` SHA-256 分別重現
+  `1b713af443539913919f37617c92286c634a62020d0c7e534f051f6d5101fcd5` 與
+  `a0e5519c49b52bbeab9c3bb1cf36957c42f02877a4c218ad54611952f74d6780`。固定版
+  `FD2.EXE` SHA-256 仍為 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 原始遊戲唯讀掛載後複製到一次性 `/tmp` 沙箱；未修改執行檔、記憶體、章節、
+  路由或畫面。同一 DOSBox 程序只用普通鍵盤完成
+  `CONTINUE→END→YES→ENEMY PHASE`，執行完整敵方演出；150秒後再按 Return，原版
+  開啟索爾狀態面板，直接證實控制權已交回玩家。
+- 這取代先前「完整開場可操作」與「有界 END 診斷」分屬兩次程序、不能合併的限制。
+  三格320×200圖、輸入時間線及雜湊已加入
+  [`native-battle-ch30-original-candidate.json`](../data/ui-traces/native-battle-ch30-original-candidate.json)。
+  裁決仍是候選 `PLAYER-E2`：第三方存檔無法證明從頭通關，`nosound` 容器也沒有
+  精確音訊證據；重製正式敵方AI consumer維持`RUNTIME-E1`，不因原版證據自動升級。

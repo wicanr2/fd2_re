@@ -54,12 +54,14 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 > `native_continue_cursor_overlay=true`，原版indexed空游標面板實際可見。這證明正常
 > GUI不只載入第30戰，也把操作權交給玩家；仍不外推為完整來源或從第一戰通關E2。
 
-> **同日敵方回合補證：** 同一雜湊鎖定末關候選以正式CONTINUE進`battle_ch30`，
-> 在明示`FD2_SHOT_TITLE_MENU=1`的有界診斷中由普通XTest操作`END→YES`，實際跑完
-> mode11演出並返回round13、player turn。另一次不設`FD2_NOCUT`、標題fixture或
-> timer覆寫的完整開場重播仍可抵達round12並取得操作權，但自動END確認落在原生
-> 開框期間，未形成單次連續round13證據。因此敵方回合維持`RUNTIME-E1`，不提升為
-> 完整一般玩家`PLAYER-E2`。
+> **同日敵方回合補證與勘誤：** 先前原版證據只分開證明可操作第30戰與有界
+> `END→YES`診斷，不能合併成單次連續鏈。2026-08-26 重新由雜湊一致的第三方候選
+> 存檔建立乾淨tmpfs副本；固定版原版未修改執行檔、記憶體、章節、路由或畫面，
+> 同一DOSBox程序以普通鍵盤完成`CONTINUE→END→YES→ENEMY PHASE`，執行敵方演出後
+> 再接受普通Return並開啟索爾狀態面板，直接證實控制權交回玩家。三格圖與時間線見
+> [`native-battle-ch30-original-candidate.json`](../data/ui-traces/native-battle-ch30-original-candidate.json)。
+> 這提升為未修改原版執行與輸入的單次連續候選E2；第三方存檔來源與停用音訊仍使
+> 它不能證明從頭通關、完整來源（provenance）或精確音訊，重製敵方回合本身仍為E1。
 
 > **同日正式戰役長鏈補證：** 冷讀 `preparation_ch30` 後的正式
 > `story_ch30→battle_ch30` 先前只驗證單位數與結果接縫，實際缺少 HUD／range entry，

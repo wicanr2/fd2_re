@@ -5653,6 +5653,14 @@ schedule／field rule 判定，不再由此旗標代替。
 部署。重複 identity、缺 catalog provenance，或場上我方不存在於 persistent prefix
 時整筆拒絕；不得發布只有戰場而沒有持續隊伍的半套 CONTINUE。
 
+2026-08-26 的動態驗收已把原版候選延伸成同一程序的完整回合循環：乾淨沙箱中的
+固定版原版只接受普通鍵盤，依序完成 `CONTINUE→END→YES→ENEMY PHASE`、敵方實際
+戰鬥演出，150秒後再接受 Return 並開啟索爾狀態面板。這證明該候選狀態會把控制權
+交回玩家，也取代先前分開兩次重播而不能合併的限制。證據仍只列候選 E2：第三方
+存檔無完整通關來源（provenance），且本次 DOSBox 停用音訊，不能支持精確音訊裁決。
+三格畫面、完整輸入與雜湊見
+[`native-battle-ch30-original-candidate.json`](../data/ui-traces/native-battle-ch30-original-candidate.json)。
+
 ## 2026-08-13：玩家第21戰天空之鑰固定演出（E0／E1）
 
 本節是對較早「`0x24336` 尚未 lower」與 handler 匯出仍有一筆真正未知的勘誤；

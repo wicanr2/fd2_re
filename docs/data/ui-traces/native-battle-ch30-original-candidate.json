@@ -18,7 +18,23 @@
     "container": "fd2-dosbox-screenshot-local:latest",
     "sandbox": "原始 FLAME2 唯讀掛載後複製至一次性 tmpfs /game；候選存檔覆蓋 tmpfs 內 FD2.SAV",
     "input": "wait 10s；Escape×8；Down×2；Return；wait 8s；capture",
-    "mutation": "沒有修改 FD2.EXE、記憶體、章節、路由或畫面"
+    "mutation": "沒有修改 FD2.EXE、記憶體、章節、路由或畫面",
+    "continuous_turn_cycle": {
+      "captured_at": "2026-08-26",
+      "input": "wait 10s；Escape×8；Down×2；Return(CONTINUE)；wait 8s；Return；Down；Return(END)；Return(YES)；wait 150s；Return",
+      "verified": "同一個未修改原版程序由第30戰 round12 開啟 END 問句，接受 YES 後顯示 ENEMY PHASE、執行敵方戰鬥演出，最後普通 Return 開啟索爾狀態面板，證明控制權已回到玩家",
+      "images": {
+        "contact_sheet": "../../figures/native-battle-ch30-original-turn-cycle-candidate.png",
+        "contact_sheet_sha256": "40ea12602bde1f42b4587c9433ec939fe6ed9e1595096f2a79c73c80464cc854",
+        "end_confirmation": "../../figures/native-battle-ch30-original-end-confirm-candidate.png",
+        "end_confirmation_sha256": "54bd21762588b280a848805d75e5ce5f0074ff58e0752a919281d0e07feb3071",
+        "enemy_phase": "../../figures/native-battle-ch30-original-enemy-phase-candidate.png",
+        "enemy_phase_sha256": "4891c0fdc8b0fbaabd8aaefbaa87cea86ef11939a41bad5bbbabb48441885519",
+        "player_control_return": "../../figures/native-battle-ch30-original-player-return-candidate.png",
+        "player_control_return_sha256": "3da59cdcae255307ce5a97a4fff3960208c6f33c1bed176e03e0c434ddfe9f98"
+      },
+      "classification": "未修改原版執行檔與普通鍵盤的單次連續候選 PLAYER-E2；第三方存檔來源（provenance）仍不完整，且 nosound 容器不提供精確音訊證據"
+    }
   },
   "decoded_save": {
     "checksum": "0x0019a751",
