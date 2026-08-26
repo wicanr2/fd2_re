@@ -5604,9 +5604,22 @@ chronology-only，等後續具證據的 LOADCH／JOIN constructor 物化；不�
 不得帶舊 roster 靜默進入 ending。驗收至少比較存檔前、冷讀檔後、最終戰部署及
 montage 四個邊界的 ID／順序／raw `+7/+8` 與一筆最終數值變更。
 
-這條連續回歸仍以正式結果確認接縫縮短完整戰鬥時間，因此只提升重製端
-`RUNTIME-E1` 的連續性；沒有未修改 DOSBox 同存檔、同輸入與同畫面，不能標成
-`PLAYER-E2`。
+這條連續回歸仍以敵軍全滅 fixture 縮短完整戰鬥時間，因此只提升重製端
+`RUNTIME-E1` 的連續性；但第 30 戰的回合結束不得再直接呼叫戰鬥 helper。驗收必須
+先由共用空游標操作面板選取 END，完整消費四幀收合、十幀確認展開、YES 回覆、
+十二個 60 Hz 近似等待畫格與五幀復原，之後才進敵方回合、發布勝利結果並由正式
+戰果確認進入 ending。這能防止戰役／存檔測試繞過玩家實際使用的操作生命週期，
+但沒有未修改 DOSBox 同存檔、同輸入與同畫面，仍不能標成 `PLAYER-E2`。
+
+2026-08-26 的正常介面回歸發現，舊資料把 ch30 當成非 runtime-append 靜態
+scenario，因而在 `story_ch30→battle_ch30` 丟棄 LOADCH 已建立的 party→group0
+selector 順序；相容 setup 又讓原始 FDFIELD 單位留在 selector cache 之外，正式
+indexed map 無法 admission。現行合約改為保留 handler actors，以 immutable
+`NativePositionRecord(group,x,y,rawKey)` 從 roster 原子扣除已物化列，再依
+`initial_groups 0..3` 補建仍留在 roster 的 groups。若來源列仍存在，只能依上述
+不可變來源鍵精確扣除；`SPAWN` 已先消耗來源列的 actor 可以沒有剩餘列。無法精確
+配對的剩餘列必須保留待後續群組建構，selector 建構失敗則停止；不得以 Fig、目前
+移動後座標或 renderer fallback 對齊。
 
 ### 2026-08-25：第 30 戰外部原版存檔候選驗證規格
 
@@ -5628,8 +5641,11 @@ tmpfs、標題普通輸入 `CONTINUE`、無記憶體／章節／路由注入，�
 第30戰的 authored FDFIELD 有 groups 0–3 共13名敵軍與57個非場上槽，scenario 的
 `initial_groups` 恰為0–3，唯一事件是 `spawn_party`；沒有 `spawn_group`、回合增援或
 格子增援。候選 current-runtime 的33筆也恰為20名我方加13名敵軍。因此 CONTINUE
-pending adapter 對這種靜態 scenario 應建立已驗證的空 roster／空 pending binding；
-只有 schedule 或 field rule 實際宣告 future group 時才仍要求 `runtime_append_groups`。
+pending adapter 對此狀態建立已驗證的空 roster／空 pending binding。2026-08-26
+勘誤：`runtime_append_groups` 在正常 pre-handler 路徑還負責原版 party→FDFIELD
+constructor 順序，不能因「沒有未來增援」而關閉；ch30 現由 LOADCH 的 party＋group0
+起步，再以 raw origin 去重後補 groups1–3。CONTINUE 是否有 pending group 仍依實際
+schedule／field rule 判定，不再由此旗標代替。
 正式 handoff 驗證 binding 結果，不再以 append 旗標代替「是否存在待處理群組」的證明。
 同一私有交易還必須以原生四槽 LOAD 已採用的
 `MaterializeNativePersistentPartyRecord` 轉換 current snapshot 的 persistent prefix，

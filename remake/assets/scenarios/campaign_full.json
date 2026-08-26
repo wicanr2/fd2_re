@@ -4015,6 +4015,18 @@
    "map": "assets/maps/map29",
    "units": "assets/maps/map29/map29_units.json",
    "scenario": "assets/scenarios/ch30.json",
+   "native_map_view": {
+    "camera_x": 16,
+    "camera_y": 14,
+    "cursor_x": 23,
+    "cursor_y": 18,
+    "visible_cursor_x": 7,
+    "visible_cursor_y": 4,
+    "range_mode": 0
+   },
+   "native_map_hud_inherited": {
+    "display_gate_b": 1
+   },
    "on_win": "ending",
    "on_lose": "retreat_ch30",
    "ending_party_snapshot_on_win": true

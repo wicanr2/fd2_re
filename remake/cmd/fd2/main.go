@@ -2953,7 +2953,7 @@ func (g *Game) enterNode() {
 			if err := g.startCampaignNativeEnding(n.NativeEndingPrefix); err != nil {
 				// 原始結局資源是玩家自備且不隨專案散布；載入失敗時保留
 				// 可編輯結語，不發布部分原生演出。
-				g.endingNotice = "原始結局素材不足，顯示可編輯結語。"
+				g.endingNotice = "原始結局素材不足，顯示可編輯結語：" + err.Error()
 			}
 		}
 	}
@@ -3116,10 +3116,11 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 				// 只有 runtime-append scenario 可用 handler 前置陣列取代 authored state。
 				// 若在讀到 scenario 合約前就取代，後續 fallback 即使關閉採用旗標，
 				// handler 單位仍會殘留，普通 spawn_party 便會重複加入玩家隊伍。
+				remainingRoster := pruneHandlerMaterializedRoster(handlerActors, handlerRoster)
 				g.st.Units = nil
-				g.st.Roster = make([]*battle.Unit, len(handlerRoster))
-				for i := range handlerRoster {
-					g.st.Roster[i] = &handlerRoster[i]
+				g.st.Roster = make([]*battle.Unit, len(remainingRoster))
+				for i := range remainingRoster {
+					g.st.Roster[i] = &remainingRoster[i]
 				}
 				g.st.NativeMapSelectorCache = nil
 				g.st.NativeMapSelectorError = nil
@@ -3149,6 +3150,48 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 			g.focusOnParty()
 		}
 	}
+}
+
+type handlerRosterOriginKey struct {
+	group        int
+	x, y, rawKey uint16
+}
+
+// pruneHandlerMaterializedRoster removes only FDFIELD rows already copied by
+// the immediately preceding LOADCH. Persistent party constructors have no
+// NativePositionRecord and are intentionally ignored. Matching the immutable
+// raw position/key provenance rather than current X/Y keeps staged movement
+// from duplicating an initial group at the battle handoff.
+func pruneHandlerMaterializedRoster(actors, roster []battle.Unit) []battle.Unit {
+	want := make(map[handlerRosterOriginKey]int)
+	for _, actor := range actors {
+		if !actor.HasNativePositionRecord {
+			continue
+		}
+		key := handlerRosterOriginKey{
+			group: actor.Group, x: actor.NativePositionRecord.XWord,
+			y: actor.NativePositionRecord.YWord, rawKey: actor.NativePositionRecord.RawKey,
+		}
+		want[key]++
+	}
+	remaining := make([]battle.Unit, 0, len(roster))
+	for _, row := range roster {
+		if row.HasNativePositionRecord {
+			key := handlerRosterOriginKey{
+				group: row.Group, x: row.NativePositionRecord.XWord,
+				y: row.NativePositionRecord.YWord, rawKey: row.NativePositionRecord.RawKey,
+			}
+			if want[key] > 0 {
+				want[key]--
+				continue
+			}
+		}
+		remaining = append(remaining, row)
+	}
+	// A SPAWN beat consumes its FDFIELD source rows before this boundary, so a
+	// materialized actor may legitimately have no row left to remove. Exact
+	// provenance matches are removed when present; unmatched rows stay pending.
+	return remaining
 }
 
 // bindNativeCommandBook gives each freshly loaded battle the immutable raw

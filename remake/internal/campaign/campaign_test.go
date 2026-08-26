@@ -218,6 +218,27 @@ func TestFullCampaignCarriesVerifiedChapter29ViewAndInheritedHUD(t *testing.T) {
 	}
 }
 
+func TestFullCampaignCarriesVerifiedChapter30ViewAndInheritedHUD(t *testing.T) {
+	c, err := Load("../../assets/scenarios/campaign_full.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	n := c.Nodes["battle_ch30"]
+	if n == nil || n.NativeMapView == nil || n.NativeMapHUD != nil || n.NativeMapHUDInherited == nil {
+		t.Fatalf("battle_ch30 native map state=%#v", n)
+	}
+	view := *n.NativeMapView
+	if view.CameraX != 16 || view.CameraY != 14 ||
+		view.CursorX != 23 || view.CursorY != 18 ||
+		view.VisibleCursorX != 7 || view.VisibleCursorY != 4 ||
+		view.RangeMode == nil || *view.RangeMode != 0 {
+		t.Fatalf("battle_ch30 native map view=%+v", view)
+	}
+	if n.NativeMapHUDInherited.DisplayGateB != 1 {
+		t.Fatalf("battle_ch30 inherited HUD=%+v", n.NativeMapHUDInherited)
+	}
+}
+
 func TestInventoryGateRequiresBothTargetsAndRoutesWithoutPlayerChoice(t *testing.T) {
 	itemID := 100
 	c := &Campaign{Start: "gate", Nodes: map[string]*Node{

@@ -72,3 +72,21 @@ Capstone 獨立重播：
 - runtime 必須先完整預檢既有 `0x22253` indexed job，再執行 focus，完成後才發布
   job；任何 slot、raw map presentation、資產、視圖或 frame preflight 缺漏均失敗即關閉。
 - 精確 DOS 每步時間與未修改一般玩家同狀態比較仍是 E2，不影響此 ABI 接線。
+
+## 2026-08-26：`sub_33E3C` 最後視圖與戰場交接補證
+
+- **已證實**：同一固定雜湊的 IDA operand 匯出顯示 `0x33F69` 在
+  `sub_33E3C` 返回前把原始 `dword_51A83` 寫為 `1`；既有 HUD 資料流已把
+  這個欄位固定為 controller entry 的 display gate B。原始定位仍保留於
+  [`fd2_51a83_xrefs.txt`](fd2_51a83_xrefs.txt)，本檔不以語意名稱取代 operand。
+- **已證實**：最後三次 wrapper 依序 focus `(22,24)`、`(21,25)`、`(23,26)`，
+  其後 handler 執行既有 `reset_pose` 與 `sub_12D7B(slot0)→sub_12CEA`。因此
+  戰場接手的六欄視圖來源是最後一次 focus 的 slot0 record，不是上一張存檔或
+  任意地圖中心。
+- **來源約束 E1**：以版控 `ch29_pre` binding、map29 LOADCH、20 人正式整備及
+  上述已證實 focus 狀態機做決定性重播，最後 typed view 為 camera `(16,14)`、
+  absolute cursor `(23,18)`、visible cursor `(7,4)`。這是原始 bytes／typed data
+  的可重跑消費結果，不提升為未修改原版畫面 E2。
+- **重製裁決**：`battle_ch30` 的可編輯 entry 可消費上述六欄 view、無範圍覆蓋
+  selector `0`，並以 persistent gate A／anchor 加上已證實 gate B `1` 建立 HUD。
+  任一欄缺失仍失敗即關閉，不得由 renderer 猜測游標或 HUD。

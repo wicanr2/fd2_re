@@ -6894,3 +6894,22 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   合併宣稱單次連續`PLAYER-E2`。
 - README玩家交付自評由77調至78；只增加操作介面與原版視覺忠實度一分，依據是
   先前已閉合的第30戰整幀AE=0與正常鍵盤可操作證據，不因本次孤立RE筆記加分。
+
+## 2026-08-26：第29戰冷讀至第30戰正常介面長鏈勘誤
+
+- 既有 `TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding` 雖已跨全新
+  `Game`，但第30戰仍直接呼叫 `endTurn()`，且未先要求原生 map compositor admission。
+  新回歸因此抓出 `battle_ch30` 缺 `NativeMapHUDState`／range entry，以及 ch30 被錯標
+  非 `runtime_append_groups`、導致 FDFIELD units 留在 selector cache 外的產品缺口。
+- 固定雜湊 IDA 證據沿用 `sub_33F78`、最後 `sub_12D7B(slot0)` 與 `0x33F69`
+  `dword_51A83=1`；決定性 handler 重播固定最後 typed view 為 camera `(16,14)`、
+  cursor `(23,18)`、visible `(7,4)`。證據與分級已追加到
+  `fd2_ch29_staging_wrapper_ida.txt`，沒有重開 renderer。
+- runtime 現以 immutable `NativePositionRecord(group,x,y,rawKey)` 從 handler roster
+  扣除 LOADCH 已物化列，保留 party→group0 selector 順序，再依 ch30 initial groups
+  補 groups1–3。缺列或 selector 失敗即關閉，不以 Fig／目前座標猜測配對。
+- 同一聚焦回歸已連續通過：第29戰戰後、19人整備存讀檔、ch29_pre、原生第30戰
+  map、END→YES完整介面、敵方回合、勝利、兩個終局文字閘門與角色蒙太奇。仍是
+  `RUNTIME-E1`；敵軍全滅 fixture 與未送 OS 鍵盤不提升為 `PLAYER-E2`。
+- README 玩家交付自評由78調至79；增加的是戰役流程／隊伍持續／存讀檔一分，
+  依據為上述同一條可重跑正式介面長鏈，不是新增反組譯筆記。

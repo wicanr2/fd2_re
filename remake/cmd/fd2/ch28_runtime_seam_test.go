@@ -2,9 +2,11 @@ package main
 
 import (
 	"os"
+	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
@@ -159,7 +161,7 @@ func TestLatePreHandlersReachTheirPlayerNumberedBattles(t *testing.T) {
 				t.Fatalf("%s boundary node=%q state=%v err=%q", tc.start, g.camp.NodeID(), g.st != nil, g.loadErr)
 			}
 			if tc.start == "story_ch29" {
-				if g.sc == nil || !g.sc.RuntimeAppendGroups || len(g.st.Units) != 76 || len(g.st.Roster) != 76 {
+				if g.sc == nil || !g.sc.RuntimeAppendGroups || len(g.st.Units) != 76 || len(g.st.Roster) != 20 {
 					t.Fatalf("ch29 adopted topology runtime=%v units=%d roster=%d", g.sc != nil && g.sc.RuntimeAppendGroups, len(g.st.Units), len(g.st.Roster))
 				}
 				for index, unit := range g.st.Units {
@@ -306,9 +308,14 @@ func TestChapter28BattleResultRunsCh27PostToPreparation29(t *testing.T) {
 }
 
 func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testing.T) {
-	if os.Getenv("FD2_ORIGINAL_FDOTHER") == "" {
+	fdotherPath := os.Getenv("FD2_ORIGINAL_FDOTHER")
+	if fdotherPath == "" {
 		t.Skip("ch28 post indexed presenter requires the read-only original FDOTHER/FDSHAP/FDICON bundle")
 	}
+	// 地圖 renderer 與 ending loader 歷史上使用不同環境鍵；兩者都指向
+	// 同一個玩家唯讀 archive，避免測試環境碰巧預設其中一個鍵才通過。
+	t.Setenv("FD2_FDOTHER", fdotherPath)
+	t.Setenv("FD2_ANI", filepath.Join(filepath.Dir(fdotherPath), "ANI.DAT"))
 	t.Setenv("FD2_MUTE", "1")
 	oldCache := userDataDirCached
 	userDataDirCached = ""
@@ -444,11 +451,62 @@ func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testi
 			unit.HP, unit.OnField = 0, false
 		}
 	}
-	// Produce the win through the normal end-turn/enemy-phase completion seam;
-	// only the enemy-dead fixture is shortened, not the campaign result owner.
-	g.endTurn()
+	// 只縮短敵軍全滅條件；回合結束仍走玩家可見的空游標操作面板、END、
+	// YES 回覆與完整索引畫面生命週期，不可用 endTurn helper 繞過介面。
+	// 上方冷讀刻意以最小 Game 驗證序列化邊界；正常程式啟動則會先由
+	// loadMap 建立原生資產包。此處透過同一正式 loader 補回該啟動前置，
+	// 不直接注入 HUD、selector 或畫面 buffer。
+	if err := g.loadMap(assetPath("assets/maps/map29")); err != nil {
+		t.Fatalf("battle_ch30 native map assets: %v", err)
+	}
+	if !nativeMapAssetsAvailable(g.nativeMapAssets) {
+		t.Fatal("battle_ch30 native map asset bundle unavailable")
+	}
+	if err := g.composeNativeMapFrame(); err != nil {
+		t.Fatalf("battle_ch30 steady native frame: %v (cursor=%d,%d map=%v hud=%v cycle=%v selector=%v range=%v/%d)",
+			err, g.curX, g.curY, g.m != nil, g.st.HasNativeMapHUDState,
+			g.st.HasNativeMapCycleState, g.st.NativeMapSelectorCache != nil,
+			g.st.HasNativeMapRangeModeState, g.st.NativeMapRangeMode)
+	}
+	g.nativePreparationUI, err = loadNativePreparationUIAssets()
+	if err != nil {
+		t.Fatalf("battle_ch30 END preparation assets: %v", err)
+	}
+	g.nativeClassUI, err = loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatalf("battle_ch30 END class assets: %v", err)
+	}
+	g.ring, g.ringSel, g.nativeSystemCursorOverlay = true, 3, true
+	if !g.beginNativeSystemEndTurn() {
+		t.Fatal("battle_ch30 player END route was rejected")
+	}
+	for present := 0; present < 4; present++ {
+		g.markActionOverlayDrawn()
+		g.stepActionOverlayLifecycle()
+	}
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	g.confirmNativeSystemEndTurn()
+	choiceJob := g.nativeClassUIJob
+	for g.nativeClassUIJob == choiceJob {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	for g.nativeSystemEndTurnDelay > 0 {
+		g.stepNativeSystemEndTurn()
+	}
+	for g.nativeClassUIJob != nil {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
 	if !g.aiBusy {
-		t.Fatal("battle_ch30 end turn did not enter the enemy phase")
+		t.Fatal("battle_ch30 END→YES did not enter the enemy phase")
 	}
 	g.aiStep()
 	if g.aiBusy || g.result != "win" || g.camp.NodeID() != "battle_ch30" {
@@ -456,7 +514,7 @@ func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testi
 	}
 	if !g.confirmBattleResult() || g.loadErr != "" || g.result != "" ||
 		g.camp.NodeID() != "ending" || g.nativeEnding == nil || !g.nativeEnding.campaignSourceBound {
-		t.Fatalf("battle_ch30→ending node=%q result=%q preview=%v err=%q", g.camp.NodeID(), g.result, g.nativeEnding != nil, g.loadErr)
+		t.Fatalf("battle_ch30→ending node=%q result=%q preview=%v err=%q notice=%q", g.camp.NodeID(), g.result, g.nativeEnding != nil, g.loadErr, g.endingNotice)
 	}
 	if got := g.partyRoster[progressedRosterID]; got.Lv != wantFinalLevel || got.Exp != 77.5 {
 		t.Fatalf("final battle progress did not reach persistent ending roster: id=%d unit=%#v", progressedRosterID, got)

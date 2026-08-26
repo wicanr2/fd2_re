@@ -384,6 +384,31 @@ func TestAdoptHandlerBattleStateSkipsRepeatedOpeningAndKeepsTurnGroups(t *testin
 	}
 }
 
+func TestAdoptHandlerBattleStateAppendsUnmaterializedInitialGroups(t *testing.T) {
+	party := &Unit{Camp: Own, MapSelectorKey: 0, HasMapSelectorKey: true, X: 1, Y: 1}
+	if err := party.MaterializeNativeMapPresentation(); err != nil {
+		t.Fatal(err)
+	}
+	group0 := &Unit{Camp: Enemy, Group: 0, MapSelectorKey: 100, HasMapSelectorKey: true, X: 2, Y: 2}
+	group1 := &Unit{Camp: Enemy, Group: 1, MapSelectorKey: 101, HasMapSelectorKey: true, X: 3, Y: 3}
+	st := &State{Roster: []*Unit{group0, group1}}
+	if err := st.AppendNativeMapSelectorBatch([]*Unit{party}); err != nil {
+		t.Fatal(err)
+	}
+	sc := &Scenario{RuntimeAppendGroups: true, InitialGroups: []int{0, 1}}
+	if err := sc.AdoptHandlerBattleState(st); err != nil {
+		t.Fatal(err)
+	}
+	if len(st.Units) != 3 || st.Units[1] != group0 || st.Units[2] != group1 || len(st.Roster) != 0 {
+		t.Fatalf("adopted initial groups units=%#v roster=%#v", st.Units, st.Roster)
+	}
+	for index, unit := range st.Units {
+		if !unit.HasMapSelectorSlot || !unit.HasNativeMapPresentation {
+			t.Fatalf("adopted unit%d lacks native selector/presentation: %#v", index, unit)
+		}
+	}
+}
+
 func TestChapter8UsesNativePartyThenGroup0RuntimeOrder(t *testing.T) {
 	st, err := Load("../../assets/maps/map7/map7_units.json")
 	if err != nil {

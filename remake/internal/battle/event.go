@@ -577,6 +577,17 @@ func (sc *Scenario) AdoptHandlerBattleState(st *State) error {
 		return err
 	}
 	sc.materializePendingGroups(st)
+	// LOADCH always constructs party first and may already have appended one or
+	// more initial FDFIELD groups. The caller removes those source rows from
+	// Roster before this boundary; append every declared initial group now so a
+	// no-op preserves an already materialized group while remaining groups keep
+	// the original selector-cache order.
+	for _, group := range sc.InitialGroups {
+		st.AppendGroup(group)
+		if st.NativeMapSelectorError != nil {
+			return fmt.Errorf("battle: adopted initial group %d: %w", group, st.NativeMapSelectorError)
+		}
+	}
 	for i := range sc.Events {
 		event := &sc.Events[i]
 		if event.Trigger == "on_battle_start" {
