@@ -68,7 +68,10 @@ func (layout *NativeDialogueLayout) Validate() error {
 		return fmt.Errorf("native dialogue layout has no pages")
 	}
 	for page, rows := range layout.Pages {
-		if len(rows) == 0 || len(rows) > 3 {
+		// 0x16319..0x16365 的 line==3 分支會呼叫 sub_16E24 並把
+		// 行號減一。三列是原版可視窗口，不是 raw page 的邏輯列上限；
+		// 保留後續 FFFE 列，renderer 再以同一三列窗口消費。
+		if len(rows) == 0 || len(rows) > 64 {
 			return fmt.Errorf("native dialogue layout page %d has %d rows", page, len(rows))
 		}
 		for row, text := range rows {

@@ -139,6 +139,81 @@ func TestCh01PreNativeDialogueLayoutsMatchOriginalControlWords(t *testing.T) {
 	}
 }
 
+func TestCh00PreNativeDialogueLayoutsMatchOriginalControlWords(t *testing.T) {
+	glyphRaw, err := os.ReadFile("../../../docs/data/glyph_map.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var encoded map[string]json.RawMessage
+	if err := json.Unmarshal(glyphRaw, &encoded); err != nil {
+		t.Fatal(err)
+	}
+	glyphs := make(map[uint16]string, len(encoded))
+	for key, value := range encoded {
+		if key == "_comment" {
+			continue
+		}
+		var text string
+		if err := json.Unmarshal(value, &text); err != nil {
+			t.Fatal(err)
+		}
+		var index int
+		if _, err := fmt.Sscanf(key, "%d", &index); err != nil || index < 0 || index > 0xffff {
+			t.Fatalf("invalid glyph map key %q", key)
+		}
+		glyphs[uint16(index)] = text
+	}
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch00_pre.json")
+	if err != nil || len(issues) != 0 {
+		t.Fatalf("compile ch00_pre binding: issues=%v err=%v", issues, err)
+	}
+	type sourceString struct {
+		source string
+		index  int
+	}
+	got := make(map[sourceString][]*NativeDialogueLayout)
+	for _, beat := range beats {
+		if beat.Op == "dialog" && beat.NativeDialogue != nil {
+			key := sourceString{source: beat.NativeDialogue.SourceDAT, index: beat.NativeDialogue.StringIndex}
+			got[key] = append(got[key], beat.NativeDialogue)
+		}
+	}
+	total := 0
+	for source, count := range map[string]int{"FDTXT_033": 6, "FDTXT_032": 10, "FDTXT_001": 3} {
+		raw, err := os.ReadFile("../../../extracted/raw/FDTXT/" + source + ".bin")
+		if err != nil {
+			t.Skipf("extracted %s oracle is absent", source)
+		}
+		stringsTable, err := fdtxt.Parse(raw)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for stringIndex := 0; stringIndex < count; stringIndex++ {
+			words, err := stringsTable.Words(stringIndex)
+			if err != nil {
+				t.Fatal(err)
+			}
+			want, err := decodeOriginalNativeDialogueLayouts(source, stringIndex, words, glyphs)
+			if err != nil {
+				t.Fatal(err)
+			}
+			layouts := got[sourceString{source: source, index: stringIndex}]
+			if len(layouts) != len(want) {
+				t.Fatalf("%s index%d layouts=%d, want %d", source, stringIndex, len(layouts), len(want))
+			}
+			for i := range want {
+				if !reflect.DeepEqual(layouts[i], want[i]) {
+					t.Fatalf("%s index%d utterance%d\ngot  %#v\nwant %#v", source, stringIndex, i, layouts[i], want[i])
+				}
+			}
+			total += len(want)
+		}
+	}
+	if total != 97 {
+		t.Fatalf("ch00 native dialogue utterances=%d, want 97", total)
+	}
+}
+
 func decodeOriginalNativeDialogueLayouts(source string, stringIndex int, words []uint16, glyphs map[uint16]string) ([]*NativeDialogueLayout, error) {
 	isSpeaker := func(word uint16) bool { return word >= 0xffec && word <= 0xffef }
 	var layouts []*NativeDialogueLayout

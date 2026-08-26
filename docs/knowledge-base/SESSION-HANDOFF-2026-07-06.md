@@ -7421,3 +7421,24 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   Go快取重跑時在編譯階段達外層期限，沒有測試斷言失敗，故不宣稱新一輪完整套件
   綠燈。證據見[`ch01-pre-native-dialogue-cold-load-e1.json`](../data/ui-traces/ch01-pre-native-dialogue-cold-load-e1.json)。
   仍缺未修改DOSBox同狀態畫面／音訊與作業系統鍵盤注入，因此只到`RUNTIME-E1`。
+
+## 2026-08-27：序章97句原生故事對話正式長鏈
+
+- 沿用已閉合的`sub_15F84`通用生命週期與`ch00_pre`原始caller資料，不重開renderer。
+  新可重生工具把`FDTXT_033` index0..5、`FDTXT_032` index0..9與`FDTXT_001`
+  index0..2的raw controls展開為19個caller、97份可編輯`native_dialogue`版面。
+- speaker owner改由原始控制碼決定：`FFED／FFEC`以runtime slot取raw `+7`，
+  `FFEF／FFEE`以raw `+8` identity查找active unit後取raw `+7`。四列raw頁面在
+  三列可見窗口採10幀上捲近似；它是重製端可重現時序，不冒稱DOS精確時鐘。
+- map32正式21-slot名冊由既有`export_runtime_roster.py`重生。前兩筆特殊劇情角色
+  缺constructor-table race/class來源，只在私人背景clone補0／0以選擇保守前景重畫；
+  正式scene units、戰鬥狀態與存檔均不被寫回，明示為使用者接受的99%視覺近似。
+- Docker／Xvfb實際回歸由`story_ch00_handler`消費全部97句，再走`battle_ch01`、
+  戰後、`town_ch02`、`preparation_ch02`、`story_ch02_pre`至`battle_ch02`；生成器
+  `--check`、正式名冊重生`cmp`、資料／編譯／runtime測試也通過。證據見
+  [`ch00-pre-native-dialogue-e1.json`](../data/ui-traces/ch00-pre-native-dialogue-e1.json)。
+  尚缺未修改DOSBox同狀態逐幀、精確音訊與作業系統鍵盤事件，故維持`RUNTIME-E1`。
+- 同輪`go test ./internal/campaign ./cmd/fd2`的campaign套件通過；`cmd/fd2`全套件另在
+  `TestPlayerNativeCommand17WaitsForEightPalettePhasesBeforeTransaction`因容器未提供
+  該sample而失敗。此題不在序章切片的變更資料流；序章五個runtime測試與正式長鏈
+  隨後以相同映像、無網路、明確Xvfb生命週期重跑均通過，不把全套件失敗藏成綠燈。

@@ -1,0 +1,66 @@
+{
+  "name": "序章97句原生故事對話正式路徑",
+  "date": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "reference": {
+    "FD2.EXE": {
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "canonical_re": [
+      "docs/data/chapter_beats/ch00_pre.json",
+      "docs/data/ida/fd2_story_dialogue_layout_ida.txt"
+    ],
+    "design": "docs/knowledge-base/56-fd2-remake-sdd.md#ch00_pre-序章97句原生故事對話2026-08-27"
+  },
+  "route": [
+    "story_ch00_handler",
+    "battle_ch01",
+    "postbattle_ch01",
+    "town_ch02",
+    "preparation_ch02",
+    "story_ch02_pre",
+    "battle_ch02"
+  ],
+  "native_dialogue": {
+    "handler_entry": "0x3231B",
+    "callers": 19,
+    "sources": {
+      "FDTXT_033": { "string_indices": [0, 1, 2, 3, 4, 5], "utterances": 41 },
+      "FDTXT_032": { "string_indices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], "utterances": 37 },
+      "FDTXT_001": { "string_indices": [0, 1, 2], "utterances": 19 }
+    },
+    "utterances": 97,
+    "controls": ["FFEC", "FFED", "FFEE", "FFEF", "FFFE", "FFFD"]
+  },
+  "runtime_corrections": [
+    "劇情地圖狀態從目前LOADCH地圖深複製逐格native_tile_blit_modes",
+    "map32正式21-slot名冊由既有export_runtime_roster.py完整重生",
+    "FFED與FFEC由runtime slot取raw +7；FFEF與FFEE以raw +8查找後取raw +7",
+    "map32兩筆無constructor-table來源的特殊劇情角色只在私有背景clone採保守前景重畫，不污染戰鬥或存檔",
+    "四列raw頁面在三列可見窗口內使用10幀向上捲動近似"
+  ],
+  "verification": {
+    "generator": "generate_native_story_dialogue.py --check；export_runtime_roster.py重生後cmp一致",
+    "data_tests": [
+      "TestCh00PreNativeDialogueLayoutsMatchOriginalControlWords",
+      "TestCompileCompleteChapter0Binding"
+    ],
+    "runtime_tests": [
+      "TestMaterializeNativeStoryMapStateUsesCurrentLOADCHTerrain",
+      "TestMaterializeNativeStoryMapStateRejectsIncompleteLOADCHTerrain",
+      "TestComposeNativeStoryMapFrameKeepsApproximationPrivate",
+      "TestNativeStoryDialogueSpeakerUsesRawControlOwner"
+    ],
+    "integrated_test": "TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne",
+    "result": "pass",
+    "docker_network": "none",
+    "xvfb": "explicit PID with exit trap"
+  },
+  "limitations": [
+    "測試使用與正式鍵盤共用的具型別輸入consumer，但未注入作業系統鍵盤事件",
+    "map32前兩筆foreground gate為局部99%視覺近似，不宣稱raw race/class已證實",
+    "尚無未修改原版DOSBox同狀態逐幀與精確音訊，因此不提升為PLAYER-E2"
+  ]
+}

@@ -698,10 +698,10 @@ func TestCompileCompleteChapter0Binding(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if d := binding.Overrides["0x32382"].Dialog; d == nil || d.Scene != "王座廳,傳位" || len(d.Lines) != 6 {
+	if d := binding.DialogueOverrides["0x32382#0"]; len(d.Lines) != 6 || d.SceneIndex == nil || *d.SceneIndex != 0 {
 		t.Fatalf("throne FDTXT #0 binding = %#v, want six contextual lines", d)
 	}
-	if d := binding.Overrides["0x3244d"].Dialog; d == nil || d.Scene != "王城一隅,亞雷斯撞見" || len(d.Lines) != 5 {
+	if d := binding.DialogueOverrides["0x3244d#2"]; len(d.Lines) != 5 || d.SceneIndex == nil || *d.SceneIndex != 1 {
 		t.Fatalf("grass FDTXT #2 binding = %#v, want five contextual lines", d)
 	}
 	script, err := LoadHandlerScript("../../assets/cutscenes/handlers/ch00_pre.json")
@@ -757,6 +757,7 @@ func TestCompileCompleteChapter0Binding(t *testing.T) {
 		0:  {"assets/maps/map0", "assets/maps/map0/map0_units.json", 30},
 	}
 	dialogCounts := map[string]int{}
+	nativeDialogues := 0
 	for _, beat := range beats {
 		pan = pan || beat.Op == "pan" && beat.X == 72 && beat.Y == 816
 		if want, ok := panTargets[beat.Source]; ok && beat.Op == "pan" && beat.X == want[0] && beat.Y == want[1] {
@@ -765,6 +766,10 @@ func TestCompileCompleteChapter0Binding(t *testing.T) {
 		dialog = dialog || beat.Op == "dialog" && beat.Line == 0
 		if beat.Op == "dialog" {
 			dialogCounts[beat.Source]++
+			if beat.NativeDialogue == nil {
+				t.Fatalf("compiled ch00 dialog %s line%d lacks raw native layout", beat.Source, beat.Line)
+			}
+			nativeDialogues++
 		}
 		if beat.Op == "act" && beat.Source == "0x32461" && len(beat.Acting) == 3 {
 			u := beat.Acting[0].Units[0]
@@ -836,6 +841,7 @@ func TestCompileCompleteChapter0Binding(t *testing.T) {
 		t.Fatalf("loaded binding did not lower its proven pan/dialog/slot-acting overrides: %#v", beats)
 	}
 	for source, want := range map[string]int{
+		"0x32382": 6, "0x323cb": 13, "0x3244d": 5, "0x32488": 4, "0x324c3": 1, "0x324fe": 12,
 		"0x32586": 5, "0x325c1": 1, "0x325fc": 1, "0x32643": 2, "0x3267e": 2,
 		"0x326c3": 3, "0x326fe": 6, "0x32739": 2, "0x32774": 8, "0x327af": 7,
 		"0x3286e": 5, "0x328ec": 2, "0x32952": 12,
@@ -843,6 +849,9 @@ func TestCompileCompleteChapter0Binding(t *testing.T) {
 		if got := dialogCounts[source]; got != want {
 			t.Fatalf("compiled dialog %s emitted %d editable lines, want %d", source, got, want)
 		}
+	}
+	if nativeDialogues != 97 {
+		t.Fatalf("compiled ch00 native dialogues=%d, want 97", nativeDialogues)
 	}
 }
 

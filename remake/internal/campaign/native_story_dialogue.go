@@ -19,6 +19,8 @@ const (
 	nativeStoryGlyphStep        = 16
 	nativeStoryLineStep         = 19
 	nativeStoryMaximumLineGlyph = 13
+	nativeStoryVisibleRows      = 3
+	nativeStoryScrollFrames     = 10
 )
 
 var nativeStoryOpeningGridSizes = [...][2]int{{4, 2}, {8, 3}, {12, 4}, {16, 5}, {19, 5}}
@@ -202,10 +204,39 @@ func ComposeNativeStoryDialogueProgressiveFrames(
 	if err := blitNativeDialoguePortraitAt(frame, portrait, portraitOffset); err != nil {
 		return nil, err
 	}
-	frames := make([][]byte, 0, 1+nativeStoryMaximumLineGlyph*len(layout.Pages[page]))
+	frames := make([][]byte, 0, 1+nativeStoryMaximumLineGlyph*len(layout.Pages[page])+nativeStoryScrollFrames)
 	frames = append(frames, append([]byte(nil), frame...))
 	style := fdtxt.NativeGlyphStyle{Foreground: 0xcd, Shadow: 0x4c, Background: 0x4a}
 	for row, text := range layout.Pages[page] {
+		visibleRow := row
+		if row >= nativeStoryVisibleRows {
+			// sub_16E24 的完整逐像素時鐘未納入本切片；直接指令只固定
+			// 第三列後先捲動19px並把logical line減一。沿用重製既有
+			// 10幀近似，且每幀都只改框內三列文字窗口。
+			textX, textY := textOffset%320, textOffset/320
+			windowX := textX - 1 // 包含 0x4EA2A 左下 shadow
+			windowW := nativeStoryMaximumLineGlyph*nativeStoryGlyphStep + 1
+			windowH := nativeStoryVisibleRows * nativeStoryLineStep
+			before := append([]byte(nil), frame...)
+			for step := 1; step <= nativeStoryScrollFrames; step++ {
+				shift := nativeStoryLineStep * step / nativeStoryScrollFrames
+				next := append([]byte(nil), frame...)
+				for y := 0; y < windowH; y++ {
+					for x := 0; x < windowW; x++ {
+						dst := (textY+y)*320 + windowX + x
+						sourceY := y + shift
+						if sourceY < windowH {
+							next[dst] = before[(textY+sourceY)*320+windowX+x]
+						} else {
+							next[dst] = style.Background
+						}
+					}
+				}
+				frames = append(frames, next)
+				frame = next
+			}
+			visibleRow = nativeStoryVisibleRows - 1
+		}
 		runes := []rune(text)
 		if len(runes) == 0 || len(runes) > nativeStoryMaximumLineGlyph {
 			return nil, fmt.Errorf("campaign: native story dialogue row %d has %d glyphs", row, len(runes))
@@ -215,7 +246,7 @@ func ComposeNativeStoryDialogueProgressiveFrames(
 			if !ok || glyph < 0 || glyph >= font.GlyphCount() {
 				return nil, fmt.Errorf("campaign: native story dialogue glyph %q is unavailable", string(r))
 			}
-			destination := textOffset + row*nativeStoryLineStep*320 + column*nativeStoryGlyphStep
+			destination := textOffset + visibleRow*nativeStoryLineStep*320 + column*nativeStoryGlyphStep
 			if err := font.BlitNativeGlyph(frame, 320, destination, glyph, style); err != nil {
 				return nil, err
 			}

@@ -13,7 +13,16 @@ func (g *Game) materializeNativeStoryMapState(source *battle.State) error {
 	if g == nil || source == nil || g.m == nil || !g.hasStoryNativeMapView {
 		return errors.New("native story map: source, field, or raw view is unavailable")
 	}
+	if g.m.W <= 0 || g.m.H <= 0 || len(g.m.Tiles) != g.m.W*g.m.H ||
+		len(g.m.NativeTileBlitModes) != len(g.m.Tiles) {
+		return errors.New("native story map: LOADCH terrain renderer inputs are incomplete")
+	}
 	candidate := *source
+	// 劇情地圖的 terrain owner 是目前 LOADCH 的可編輯地圖，不是建立
+	// roster fixture 時所沿用的上一個 battle.State。逐格複製可避免後續
+	// overlay 修改回寫 MapData，也確保 buildNativeMapFrameInput 只收到同一張圖。
+	candidate.W, candidate.H = g.m.W, g.m.H
+	candidate.NativeTileBlitModes = append([]byte(nil), g.m.NativeTileBlitModes...)
 	candidate.Units = nil
 	candidate.Roster = nil
 	candidate.NativeMapSelectorCache = nil
@@ -70,10 +79,41 @@ func (g *Game) composeNativeStoryMapFrame() error {
 	if err := g.storyNativeMapState.MaterializeNativeMapViewState(g.storyNativeMapView); err != nil {
 		return err
 	}
+	// map32 前兩筆特殊劇情角色不在目前閉合的 constructor table 範圍，
+	// 因而沒有 0x129EC gate 的 raw race/class。99% 玩家可見模式只在本次
+	// 背景合成的私有 clone 採保守前景重畫；不可污染 storyActors、戰鬥或存檔。
+	frameState := *g.storyNativeMapState
+	frameState.Units = make([]*battle.Unit, len(g.storyNativeMapState.Units))
+	for index, unit := range g.storyNativeMapState.Units {
+		if unit == nil {
+			return errors.New("native story map: roster contains a nil unit")
+		}
+		clone := *unit
+		if !clone.HasNativeRecordRace || !clone.HasNativeRecordClass {
+			if !clone.HasNativeMapPresentation || !clone.HasNativeRecordByte5 || !clone.HasBattleFig {
+				return errors.New("native story map: approximate foreground gate lacks required provenance")
+			}
+			if !clone.HasNativeRecordRace {
+				clone.NativeRecordRace, clone.HasNativeRecordRace = 0, true
+			}
+			if !clone.HasNativeRecordClass {
+				clone.NativeRecordClass, clone.HasNativeRecordClass = 0, true
+			}
+		}
+		frameState.Units[index] = &clone
+	}
 	previous := g.st
-	g.st = g.storyNativeMapState
+	g.st = &frameState
 	err := g.composeNativeMapFrame()
-	g.storyNativeMapState = g.st
+	// composeNativeMapFrame 會更新時序全域值，但私有角色clone只供畫面使用；
+	// 只發布時序，不以近似角色取代正式場景角色。
+	g.storyNativeMapState.NativeMapCycleState = g.st.NativeMapCycleState
+	g.storyNativeMapState.HasNativeMapCycleState = g.st.HasNativeMapCycleState
+	g.storyNativeMapState.NativeTerrainPhaseState = g.st.NativeTerrainPhaseState
+	g.storyNativeMapState.HasNativeTerrainPhaseState = g.st.HasNativeTerrainPhaseState
+	g.storyNativeMapState.NativeTerrainFlipState = g.st.NativeTerrainFlipState
+	g.storyNativeMapState.NativeUnitPixelShiftState = g.st.NativeUnitPixelShiftState
+	g.storyNativeMapState.HasNativeMapBinaryTimingState = g.st.HasNativeMapBinaryTimingState
 	g.st = previous
 	return err
 }

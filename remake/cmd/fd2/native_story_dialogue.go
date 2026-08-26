@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"math/rand"
 	"path/filepath"
 
@@ -64,7 +65,7 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	dl := g.dialog[0]
 	portraits, err := dato.DecodeResource(filepath.Clean(datoPath), dl.Speaker)
 	if err != nil || len(portraits) < 4 {
-		return errors.New("native story dialogue: speaker portrait is unavailable")
+		return fmt.Errorf("native story dialogue: speaker portrait %d is unavailable (frames=%d): %v", dl.Speaker, len(portraits), err)
 	}
 	native := dl.NativeDialogue
 	layout := &campaign.NativeDialogueLayout{

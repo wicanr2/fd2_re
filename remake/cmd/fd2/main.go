@@ -169,7 +169,7 @@ type Game struct {
 	dlgUpper                   *bool           // 與 dlgShown 同步的上/下框覆蓋(來自 DialogLine.Upper;nil=沿用預設規則)
 	dlgPhase                   int             // 對話框動畫相位:0=常態 1=縮小(換人前收合) 2=展開
 	dlgT                       int             // 對話框動畫相位內計時(幀)
-	dlgPage                    int             // 目前對白的頁碼(0起);一句>3行時分頁,Enter 先翻頁翻完才換句(使用者回饋 2026-07-05)
+	dlgPage                    int             // 目前FFFD頁碼；頁內第4個FFFE邏輯列由原版三列窗口捲動，不另造頁
 	dlgScrollT                 int             // 分頁捲動剩餘幀數(0=靜止)
 	dlgScrollFrom              int             // 分頁捲動開始頁碼
 	nativeDialogueFrames       [][]byte        // caller-specific 0x15F84 stable indexed pages
@@ -2147,10 +2147,15 @@ func (g *Game) resolveCampaignDialogLine(line campaign.Line, upperOverride *bool
 	var native *battle.NativeDialogueLayout
 	layout := nativeOverride
 	if layout != nil {
+		resolvedSpeaker, err := g.resolveNativeStoryDialogueSpeaker(layout)
+		if err != nil {
+			return battle.DialogLine{}, err
+		}
 		motionTargetY, err := g.resolveNativeStoryDialogueMotionTarget(layout)
 		if err != nil {
 			return battle.DialogLine{}, err
 		}
+		speaker = resolvedSpeaker
 		native = &battle.NativeDialogueLayout{
 			SourceDAT: layout.SourceDAT, StringIndex: layout.StringIndex,
 			Utterance: layout.Utterance, Control: layout.Control, Operand: layout.Operand,
@@ -2161,6 +2166,48 @@ func (g *Game) resolveCampaignDialogLine(line campaign.Line, upperOverride *bool
 		}
 	}
 	return battle.DialogLine{Speaker: speaker, Text: line.Text, Upper: upper, NativeDialogue: native}, nil
+}
+
+// resolveNativeStoryDialogueSpeaker 重播 sub_15F84 的 DATO selector owner。
+// FFED/FFEC 的 operand 是第一張 runtime array slot；FFEF/FFEE 則先以
+// raw +8 查找 active record，命中後取 raw +7，未命中保留 direct-DATO operand。
+func (g *Game) resolveNativeStoryDialogueSpeaker(layout *campaign.NativeDialogueLayout) (int, error) {
+	units := make([]*battle.Unit, 0, len(g.storyActors))
+	if g.st != nil {
+		units = append(units, g.st.Units...)
+	} else {
+		for index := range g.storyActors {
+			units = append(units, &g.storyActors[index])
+		}
+	}
+	switch layout.Control {
+	case "FFED", "FFEC":
+		if layout.Operand < 0 || layout.Operand >= len(units) || units[layout.Operand] == nil ||
+			!units[layout.Operand].HasBattleFig {
+			return 0, fmt.Errorf("native story dialogue: runtime speaker slot %d lacks raw +7 provenance", layout.Operand)
+		}
+		return units[layout.Operand].BattleFig, nil
+	case "FFEF", "FFEE":
+	default:
+		return 0, fmt.Errorf("native story dialogue: unsupported speaker control %q", layout.Control)
+	}
+	for index, unit := range units {
+		if unit == nil || !unit.HasNativeRecordByte5 ||
+			(!unit.HasNativeRecordByte8 && !unit.HasNativeIdentity) {
+			return 0, fmt.Errorf("native story dialogue: scene unit %d lacks speaker raw +8/+5 provenance", index)
+		}
+		rawIdentity := unit.NativeIdentity
+		if unit.HasNativeRecordByte8 {
+			rawIdentity = int(unit.NativeRecordByte8)
+		}
+		if rawIdentity == layout.Operand && unit.NativeRecordByte5&1 == 0 {
+			if !unit.HasBattleFig {
+				return 0, fmt.Errorf("native story dialogue: matched identity %d lacks raw +7 provenance", layout.Operand)
+			}
+			return unit.BattleFig, nil
+		}
+	}
+	return layout.Operand, nil
 }
 
 // resolveNativeStoryDialogueMotionTarget 重播 sub_15F84 的 var_20 writer。
@@ -2690,7 +2737,7 @@ func dlgWrap(dl battle.DialogLine) []string {
 	return lines
 }
 
-// dlgPageCount 該句對白的總頁數(每頁最多 3 行)。
+// dlgPageCount 該句對白的FFFD總頁數；FFFE只形成頁內邏輯列與三列窗口捲動。
 func dlgPageCount(dl battle.DialogLine) int {
 	if dl.NativeDialogue != nil {
 		if len(dl.NativeDialogue.Pages) > 0 {

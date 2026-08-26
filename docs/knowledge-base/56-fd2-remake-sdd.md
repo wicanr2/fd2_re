@@ -4773,6 +4773,46 @@ indexed frame owner，但不得直接清除 dialog、改寫 campaign node，亦�
 鍵盤 consumer 或單張截圖提升為未修改原版 `PLAYER-E2`。依玩家可見99%門檻，幾何、
 內容與生命週期一致即可；DOS BIOS 掃描碼、逐週期 tick 與精確音訊不在本切片範圍。
 
+### `ch00_pre` 序章97句原生故事對話（2026-08-27）
+
+本切片沿用已閉合的`sub_15F84`原生對話生命週期、固定版`FD2.EXE`
+`sub_3231B`序章handler及[`ch00_pre.json`](../data/chapter_beats/ch00_pre.json)直接
+caller，不重開renderer或三段LOADCH。原始handler共有19個對話caller：
+
+- map32／`FDTXT_033`：`0x32382／0x323CB／0x3244D／0x32488／0x324C3／0x324FE`，
+  string0..5展開41句；
+- map31／`FDTXT_032`：`0x32586／0x325C1／0x325FC／0x32643／0x3267E／0x326C3／
+  0x326FE／0x32739／0x32774／0x327AF`，string0..9展開37句；
+- map0／`FDTXT_001`：`0x3286E／0x328EC／0x32952`，string0..2展開19句。
+
+合計97句的正式資料不可由可編輯台詞、人物名或舊`upper`欄位反推。每句必須直接
+保存來源FDTXT、physical string index、utterance index、`FFEC..FFEF` control、
+operand、`FFFE`邏輯列界、`FFFD`頁界與raw glyph投影。`0x16319..0x16365`已證實
+第三列後的`FFFE`會呼叫`sub_16E24`並把行號減一，因此三列是**可視窗口高度**，不是
+raw page可保存的邏輯列數；typed data不得截掉第四列以後的原文。為避免手工複製造成漂移，受版控
+產生器只接受binding既有caller→來源映射與count-aligned line map；它必須逐項比對
+handler raw text index，拒絕未知control、缺glyph、空頁、單列超出13字、句數不符或
+同key既有內容不同，並以穩定JSON格式重生`dialogue_overrides`。
+
+正式執行期沿用前一切片的延遲indexed場景載體與單一`nativeStoryInput` owner：每次
+LOADCH使舊場景失效，第一個原生caller才依已證實terrain、first-seen unit selector、
+raw view與隱藏HUD建立私有背景；SPAWN延續同一selector cache。每句完成opening、逐字、
+多頁等待／嘴型與closing後才推進下一beat。頁內第四列起沿用既有10幀文字上捲近似，
+每次發布後的穩定畫面只保留最後三列；精確DOS wall-clock不在99%門檻。任一場景資產、selector、版面或provenance
+不足時保持節點與公開狀態不變並失敗即關閉，不得回退到現代RGBA框假裝成功。
+
+map32 的前兩筆特殊劇情角色沒有落在目前已閉合的 constructor table 範圍，因而
+缺少 `0x129EC` gate 所讀的 raw race/class。這不阻擋99%玩家可見門檻：只在劇情
+背景合成的私有 roster clone 中以 `(0,0)` 令 gate 採保守「重畫前景」分支；不回寫
+`storyActors`、戰鬥狀態或存檔，也不宣稱這兩個 raw bytes 已證實。其餘19筆仍必須
+使用完整 constructor provenance；一般戰鬥 compositor 維持失敗即關閉。
+
+驗收以正式`story_ch00_handler→battle_ch01`路徑為界：19個caller／97句全數具有
+`NativeDialogueLayout`；至少橫跨map32、map31、map0並同時涵蓋上／下框與多頁；測試
+只能透過正式具型別故事輸入及`Game.Update`生命週期前進，不可直接清除`dialog`、跳
+beat或改節點。此鏈最高為`RUNTIME-E1`；沒有未修改DOSBox同狀態截圖／音訊與作業系統
+鍵盤注入時，不提升為`PLAYER-E2`。依99%玩家可見門檻，不追DOS逐tick或BIOS掃描碼。
+
 ## 2026-08-09 raw ch24 post `0x24df2` 函式邊界與 owner 勘誤（E1）
 
 固定版 `FD2.EXE` 的 IDA Pro 9.4 與 Docker Capstone 共同固定 handler table

@@ -144,6 +144,53 @@ func storyStagingFixture(t *testing.T) *Game {
 	return g
 }
 
+func TestMaterializeNativeStoryMapStateUsesCurrentLOADCHTerrain(t *testing.T) {
+	g := storyStagingFixture(t)
+	source := completeNativeUnitPresentGame(t).st
+	g.m.NativeTileBlitModes[0] = 0x2a
+	if err := g.materializeNativeStoryMapState(source); err != nil {
+		t.Fatal(err)
+	}
+	if g.storyNativeMapState.W != g.m.W || g.storyNativeMapState.H != g.m.H ||
+		!bytes.Equal(g.storyNativeMapState.NativeTileBlitModes, g.m.NativeTileBlitModes) {
+		t.Fatalf("story terrain=%dx%d/%#v, LOADCH=%dx%d/%#v",
+			g.storyNativeMapState.W, g.storyNativeMapState.H, g.storyNativeMapState.NativeTileBlitModes,
+			g.m.W, g.m.H, g.m.NativeTileBlitModes)
+	}
+	g.storyNativeMapState.NativeTileBlitModes[0] = 0x11
+	if g.m.NativeTileBlitModes[0] != 0x2a {
+		t.Fatal("story terrain state aliases editable LOADCH data")
+	}
+}
+
+func TestMaterializeNativeStoryMapStateRejectsIncompleteLOADCHTerrain(t *testing.T) {
+	g := storyStagingFixture(t)
+	source := completeNativeUnitPresentGame(t).st
+	g.m.NativeTileBlitModes = g.m.NativeTileBlitModes[:len(g.m.NativeTileBlitModes)-1]
+	if err := g.materializeNativeStoryMapState(source); err == nil {
+		t.Fatal("incomplete LOADCH terrain renderer inputs were accepted")
+	}
+	if g.storyNativeMapState != nil {
+		t.Fatal("failed materialization published a partial story state")
+	}
+}
+
+func TestComposeNativeStoryMapFrameKeepsApproximationPrivate(t *testing.T) {
+	g := storyStagingFixture(t)
+	source := completeNativeUnitPresentGame(t).st
+	if err := g.materializeNativeStoryMapState(source); err != nil {
+		t.Fatal(err)
+	}
+	actor := g.storyNativeMapState.Units[0]
+	actor.HasNativeRecordRace, actor.HasNativeRecordClass = false, false
+	if err := g.composeNativeStoryMapFrame(); err != nil {
+		t.Fatal(err)
+	}
+	if actor.HasNativeRecordRace || actor.HasNativeRecordClass {
+		t.Fatal("story foreground approximation leaked into canonical actor state")
+	}
+}
+
 func TestNativeStagingFocusUsesOneStoryViewAfterLoadCH(t *testing.T) {
 	g := storyStagingFixture(t)
 	// A preceding battle may leave the generic cursor at an unrelated value.

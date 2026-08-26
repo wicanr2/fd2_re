@@ -1373,6 +1373,7 @@ func TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne(t *testin
 	t.Setenv("FD2_ORIGINAL_FDSHAP", filepath.Join(originalBase, "FDSHAP.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(originalBase, "FDTXT.DAT"))
 	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(originalBase, "DATO.DAT"))
+	t.Setenv("FD2_MUTE", "1")
 
 	c, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
 	if err != nil {
@@ -1384,19 +1385,47 @@ func TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne(t *testin
 		t.Fatalf("enter ch00 handler: %s", g.loadErr)
 	}
 
-	// Drive the same blocking jobs that Update owns and dismiss each compiled
-	// dialog beat as campInput would.  The bound keeps this a regression test:
-	// an unresolved native op or a stalled handler must fail instead of being
-	// silently skipped.
+	// Drive the same blocking jobs and native dialogue lifecycle that Update
+	// owns.  Dialogues may only advance through the typed story consumer; this
+	// deliberately forbids the historical g.dialog=nil test shortcut.
 	spawnIntroFrames := 0
-	for frame := 0; frame < 100000 && g.camp.NodeID() != "battle_ch01"; frame++ {
+	type ch00DialogueKey struct {
+		source                          string
+		stringIndex, utterance, speaker int
+	}
+	seenCh00Dialogue := make(map[ch00DialogueKey]bool)
+	for frame := 0; frame < 240000 && g.camp.NodeID() != "battle_ch01"; frame++ {
 		if len(g.dialog) > 0 {
-			g.dialog = nil
-			g.beatAdvance()
+			current := g.dialog[len(g.dialog)-1]
+			if current.NativeDialogue == nil || current.Upper == nil ||
+				len(g.nativeDialogueProgressive) != len(current.NativeDialogue.Pages) ||
+				len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != 5 {
+				t.Fatalf("ch00 dialog lost indexed lifecycle: %#v", current)
+			}
+			key := ch00DialogueKey{
+				source: current.NativeDialogue.SourceDAT, stringIndex: current.NativeDialogue.StringIndex,
+				utterance: current.NativeDialogue.Utterance, speaker: current.Speaker,
+			}
+			seenCh00Dialogue[key] = true
+			if g.nativeStoryDialogueAtInputWait() {
+				if !g.handleNativeStoryInput(g.camp.Node(), nativeStoryInput{enter: true}) {
+					t.Fatal("ch00 formal story input was rejected")
+				}
+			}
 		}
-		g.tick(1)
+		if err := g.Update(); err != nil {
+			t.Fatalf("compiled ch00 Update: %v", err)
+		}
 		if g.loadErr != "" {
-			t.Fatalf("compiled ch00 handler stopped at beat %d/%d: %s", g.beatIdx, len(g.beats), g.loadErr)
+			var dialogue any
+			if len(g.dialog) > 0 {
+				dialogue = g.dialog[len(g.dialog)-1]
+			}
+			var beat any
+			if g.beatIdx >= 0 && g.beatIdx < len(g.beats) {
+				beat = g.beats[g.beatIdx]
+			}
+			t.Fatalf("compiled ch00 handler stopped at beat %d/%d: %s; beat=%#v dialogue=%#v", g.beatIdx, len(g.beats), g.loadErr, beat, dialogue)
 		}
 		if g.spawnIntroTransition != nil {
 			spawnIntroFrames++
@@ -1405,6 +1434,9 @@ func TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne(t *testin
 	}
 	if g.camp.NodeID() != "battle_ch01" {
 		t.Fatalf("compiled ch00 handler did not reach battle_ch01: node=%q beat=%d/%d", g.camp.NodeID(), g.beatIdx, len(g.beats))
+	}
+	if len(seenCh00Dialogue) != 97 {
+		t.Fatalf("compiled ch00 formal native dialogues=%d, want 97", len(seenCh00Dialogue))
 	}
 	if g.st == nil || g.sc == nil {
 		t.Fatalf("battle handoff did not materialize state/scenario: st=%v sc=%v", g.st != nil, g.sc != nil)

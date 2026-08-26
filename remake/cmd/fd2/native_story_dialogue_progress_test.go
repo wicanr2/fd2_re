@@ -67,6 +67,26 @@ func TestNativeStoryDialogueMotionTargetReplays12C60ActiveRawLookup(t *testing.T
 	}
 }
 
+func TestNativeStoryDialogueSpeakerUsesRawControlOwner(t *testing.T) {
+	g := &Game{storyActors: []battle.Unit{
+		{BattleFig: 48, HasBattleFig: true, NativeRecordByte8: 7, HasNativeRecordByte8: true, HasNativeRecordByte5: true},
+		{BattleFig: 30, HasBattleFig: true, NativeRecordByte8: 30, HasNativeRecordByte8: true, HasNativeRecordByte5: true},
+	}}
+	if got, err := g.resolveNativeStoryDialogueSpeaker(&campaign.NativeDialogueLayout{Control: "FFEF", Operand: 30}); err != nil || got != 30 {
+		t.Fatalf("identity speaker=%d err=%v, want raw +7 30", got, err)
+	}
+	if got, err := g.resolveNativeStoryDialogueSpeaker(&campaign.NativeDialogueLayout{Control: "FFEC", Operand: 0}); err != nil || got != 48 {
+		t.Fatalf("slot speaker=%d err=%v, want raw +7 48", got, err)
+	}
+	if got, err := g.resolveNativeStoryDialogueSpeaker(&campaign.NativeDialogueLayout{Control: "FFEE", Operand: 39}); err != nil || got != 39 {
+		t.Fatalf("fallback speaker=%d err=%v, want direct DATO 39", got, err)
+	}
+	g.storyActors[1].NativeRecordByte5 = 1
+	if got, err := g.resolveNativeStoryDialogueSpeaker(&campaign.NativeDialogueLayout{Control: "FFEF", Operand: 30}); err != nil || got != 30 {
+		t.Fatalf("inactive fallback speaker=%d err=%v, want direct DATO 30", got, err)
+	}
+}
+
 func TestNativeStoryDialogueClosingKeepsOldLineUntilAllFramesPublished(t *testing.T) {
 	g := &Game{
 		dialog:                []battle.DialogLine{{NativeDialogue: &battle.NativeDialogueLayout{Pages: [][]string{{"甲"}}}}},
