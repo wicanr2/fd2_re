@@ -263,6 +263,30 @@ func TestNextAIPlanMode2NoPhysicalCandidateCompletesRejected13FD4Tail(t *testing
 	}
 }
 
+func TestNextAIPlanMode2RoutesFailed14EF0ProducerTo13FD4(t *testing.T) {
+	actor := nativeAIRuntimeUnit(0, 0, 0, 2)
+	actor.HP = 10
+	actor.InventorySlots[0] = 1
+	actor.NativeInventoryFlags[0] = 0x40
+	state := &State{
+		W: 1, H: 1, Units: []*Unit{actor},
+		NativeCompositionEventBytes: []byte{0}, NativeTerrainMoveCodes: []byte{0},
+		NativeCommandBook: make([]NativeCommandRecord, NativeCommandRecordCount),
+	}
+	if err := state.BindNativeFutureItemRows(make([]byte, 2*NativeItemEffectRowSize)); err != nil {
+		t.Fatal(err)
+	}
+	state.nativeFutureItemRows[NativeItemEffectRowSize+0x0c] = 1
+	if err := state.BindNativeMovementCostRows(nativeAIRuntimeCostRows()); err != nil {
+		t.Fatal(err)
+	}
+	plan := state.NextAIPlan()
+	if plan == nil || plan.NativeError != nil || !plan.NativeModeFallbackActive ||
+		plan.NativeModeFallback != 2 || !plan.NativeMode2Physical || plan.NativeIdleRecovery == nil {
+		t.Fatalf("plan=%+v want failed 0x14ef0 producer routed to mode-2 0x13fd4", plan)
+	}
+}
+
 func TestNativeAIPhysicalHelper1DEBEKeepsRawPredicateBoundaries(t *testing.T) {
 	target := make([]byte, nativeRecordSize)
 	target[0], target[1] = 1, 0

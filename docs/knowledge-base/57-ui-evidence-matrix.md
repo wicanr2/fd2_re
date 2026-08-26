@@ -88,6 +88,12 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 > [`native-battle-ch29-original-candidate.json`](../data/ui-traces/native-battle-ch29-original-candidate.json)；
 > 第三方來源、停用音訊及尚未完成第29戰勝利→第30戰仍是限制。
 
+> **同日重製第29戰回合交接：** 同一 `fd2004` 固定雜湊槽由重製正式標題事件
+> `CONTINUE` 進入 `battle_ch29`，再由正式 END／YES 介面驅動完整敵方回合；沒有
+> 清空敵軍、預設 `Acted` 或直接呼叫回合捷徑。至少一名敵軍實際行動，回合數增加並
+> 回到 `PLAYER PHASE`，76筆 runtime／31人 persistent 拓撲保持不變。這關閉的是
+> 重製 `RUNTIME-E1`；外部來源與停用音訊不允許提升為完整 `PLAYER-E2`。
+
 > **同日晚期有效槽 LOAD→第30戰補證：** Player Lin `fd2021.zip` 的 checksum-valid
 > `fd2last.sav` 保存 raw chapter `0x1c` slot 0。固定版未修改原版在同一 DOSBox 程序
 > 由普通標題 LOAD 讀槽，選 NO 跳過再次記錄，連按19次 Return 完成晚期整備，接受

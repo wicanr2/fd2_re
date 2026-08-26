@@ -651,10 +651,20 @@ func (s *State) NextAIPlan() *AIPlan {
 		}
 		if nativePlan, handled, err := s.nextNativeAI14EF0Plan(u); handled {
 			if err != nil {
-				// A failed 0x14ef0 producer is only allowed to continue through
-				// the exact raw mode fallback.  If that fallback is unavailable,
-				// preserve the original evidence error and stop before the
-				// normalized planner can consume the unit.
+				// mode 2 的 0x14EF0 生產端可能因 0x14237 沒有候選而無法建立
+				// target provenance；原版 caller 此時會消費 0x13FD4，不是進入
+				// 通用 mode fallback。先交回已閉合的物理／恢復橋，仍失敗才
+				// 保留失敗即關閉。
+				if physical, physicalHandled, physicalErr := s.nextNativeAIPhysicalPlan(u); physicalHandled {
+					if physicalErr != nil {
+						return &AIPlan{U: u, SpellID: -1, NativeError: physicalErr}
+					}
+					if physical != nil {
+						return physical
+					}
+				}
+				// 其他 mode 只允許進入各自的原始分派後備；若沒有正式
+				// consumer，保留證據錯誤，不讓正規化規劃器接手。
 				if fallback, fallbackHandled, fallbackErr := s.nextNativeAIModeFallbackPlan(u); fallbackHandled {
 					if fallbackErr != nil {
 						return &AIPlan{U: u, SpellID: -1, NativeError: fallbackErr}

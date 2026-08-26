@@ -71,8 +71,9 @@ type DisplayScheduler struct {
 	done           bool
 }
 
-// NewDisplayScheduler constructs a strict delay timeline from raw descriptor
-// delays.  Zero or negative delays are rejected instead of being normalised.
+// NewDisplayScheduler 依原始 descriptor delay 建立嚴格時間軸。
+// 0x2B9A1 會先呈現目前幀，再把 subframe 加一並比較 delay；因此 delay=0
+// 與 delay=1 都會呈現一次。負值不是 byte descriptor 的合法輸入，仍須拒絕。
 func NewDisplayScheduler(delays []int, ticksPerNative int) (*DisplayScheduler, error) {
 	if len(delays) == 0 {
 		return nil, errors.New("figani: display scheduler has no frames")
@@ -84,12 +85,16 @@ func NewDisplayScheduler(delays []int, ticksPerNative int) (*DisplayScheduler, e
 	frames := make([]Frame, len(delays))
 	total := 0
 	for i, delay := range delays {
-		if delay <= 0 {
+		if delay < 0 {
 			return nil, fmt.Errorf("figani: frame %d has invalid delay %d", i, delay)
 		}
 		starts[i] = total
 		frames[i] = Frame{Delay: delay}
-		total += delay * ticksPerNative
+		effectiveDelay := delay
+		if effectiveDelay == 0 {
+			effectiveDelay = 1
+		}
+		total += effectiveDelay * ticksPerNative
 	}
 	starts[len(delays)] = total
 	return &DisplayScheduler{

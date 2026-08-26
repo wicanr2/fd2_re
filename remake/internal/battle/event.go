@@ -504,6 +504,13 @@ func (sc *Scenario) bindNativeFieldEventRules(st *State) error {
 	return nil
 }
 
+// BindNativeFieldEventRules 只把劇本的可編輯格子規則綁到既有戰場狀態。
+// 原版 CONTINUE 已保存 live runtime，不能呼叫 SetupChecked 重播開場或重建單位；
+// 這個窄入口讓續戰交易仍使用和正常新戰鬥相同的驗證與重複鍵拒絕規則。
+func (sc *Scenario) BindNativeFieldEventRules(st *State) error {
+	return sc.bindNativeFieldEventRules(st)
+}
+
 func (sc *Scenario) materializePendingGroups(st *State) {
 	st.PendingGroups = map[int]bool{}
 	for _, event := range sc.Events {

@@ -213,7 +213,6 @@ func TestDisplaySchedulerHonoursNativeDelaysAndScale(t *testing.T) {
 func TestDisplaySchedulerRejectsUnknownDelayState(t *testing.T) {
 	for name, delays := range map[string][]int{
 		"empty":    nil,
-		"zero":     {1, 0},
 		"negative": {1, -1},
 	} {
 		t.Run(name, func(t *testing.T) {
@@ -224,6 +223,22 @@ func TestDisplaySchedulerRejectsUnknownDelayState(t *testing.T) {
 	}
 	if _, err := NewDisplayScheduler([]int{1}, 0); err == nil {
 		t.Fatal("zero display scale was accepted")
+	}
+}
+
+func TestDisplaySchedulerPresentsZeroDelayFrameOnce(t *testing.T) {
+	s, err := NewDisplayScheduler([]int{1, 0, 2}, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if s.BodyTicks() != 4 {
+		t.Fatalf("body ticks=%d, want 4", s.BodyTicks())
+	}
+	for tick, want := range []int{0, 1, 2, 2} {
+		got, presented, _, stepErr := s.Step()
+		if stepErr != nil || !presented || got != want {
+			t.Fatalf("tick %d frame=%d presented=%v err=%v, want %d", tick, got, presented, stepErr, want)
+		}
 	}
 }
 

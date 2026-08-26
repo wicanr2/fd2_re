@@ -711,6 +711,12 @@ non-self target presentations remain outside this completed slice.
 
 Generic scheduler closure：`funcs_2ac25` 是 command-indexed function bank（ID0 entry `0x26152`）。`0x2a6bd` 先以 mode 0 呼該 entry 取得前段 step count；每一步先從 baseline 複製 320×200 至 640-stride work buffer，呼 mode 1，組合 actor FIGANI，再呼 mode 2，最後才複製至 VGA 並 `0x17aa9(1)` tick。每個 final target 另以 mode 3 取得 target-loop count，逐幀依序呼 mode 4、組合 target FIGANI、呼 mode 5後 present／tick；全目標完成後才是 mode 6 與逐幀 mode 7／8 尾段。`0x2b9a1` 並非未知 effect，它以 descriptor `frameIndex*4+8` 指向 frame的 byte+6 delay，遞增 `0x540fc`／`0x540fd` subframe counters並在上界 reset。這固定了 phase/order，仍不替每個 command entry 的視覺語意命名。
 
+`0x2b9a1` 的零延遲邊界也由同一控制流固定：caller 先呈現目前幀，之後才把
+subframe 加一並與 descriptor `+6` 比較。因此 raw delay `0` 不是毀損或空幀，
+而是和 delay `1` 一樣只呈現一個 native tick 後換幀。通用顯示排程可拒絕負數
+或缺表，但不得拒絕固定 `FIGANI.DAT` 中的零值；重製端以一次呈現保存這個 ABI，
+不改寫原始 descriptor。
+
 Generic presentation 的 BG selector 亦已閉合為 raw dataflow：`0x2a6bd` 呼 `0x2b5e1(finalCount, finalTargetArray)`，後者**倒序**掃 target slot，對該 unit cell 呼 `0x12e38`；若 raw `0x1f183` gate 不通、或累積 selector 為零，才以 decoded control byte+2 取代 selector，最後才餵 `0x111ba("BG.DAT", selector)`。`fdicon.NativeCommandBackgroundSelector` 保留該 strict pure rule。command ID 的 generic branch 不可被說成直接選 BG resource；selector 的高階地形／場景語意仍不命名。
 
 Command 0 專屬 entry `0x26152` 另由 IDA 9.4 直接指令閉合：
@@ -6487,6 +6493,12 @@ runtime。現有 `nativeRNGState` 不為這個終局實作殘留額外前進，�
 並停止，不能把無畫面的同步回復當成成功。聚焦回歸須同時固定接受、gate拒絕與
 資產失敗三條路徑。
 
+呈現 owner 必須先消費同一函式內、位於兩段 `0x1DA16` 之前的
+`[0x51A83]=0 → 0x12D7B(actor)`。既有 `0x12D7B→0x12CEA` 證據已固定其為
+游標／鏡頭安全帶同步；range mode 為0時逐格不等待。因此重製端先用相同安全帶
+同步到 actor，再建立三張 indexed 畫格。鏡頭外 actor 不是錯誤，也不可用裁掉
+整張 FDICON 或略過恢復取代這個 caller 順序。
+
 ## 2026-08-25：第30戰同存檔一般鍵盤畫面驗證
 
 來源可追溯但非本專案從頭通關的最後一關候選存檔，已在重製端以普通 X11
@@ -6573,6 +6585,18 @@ cursor `(16,63)`、visible cursor `(6,7)`；四個 chapter slot 依序為
 相似畫面不可接受。`TestNativeContinueTitleCallerPublishesChapter29Candidate` 已以外部
 fixed-hash 存檔通過上述正式 handoff，達 `RUNTIME-E1`；測試預設無外部檔時略過，
 不把第三方存檔變成倉庫相依項目。
+
+下一層第29戰重製驗收不得直接呼叫 `loadNativeContinueFromCurrentSnapshot`。它必須從
+正式標題 selection 0 送出兩次 Down、Confirm 與24次 Tick，讓單一具型別事件擁有者
+發布 `battle_ch29`。進場後沿用共用空游標操作面板的 END／YES 完整索引生命週期，
+並保留固定槽中的76筆 runtime、31筆持續名冊與原始敵軍，不得清空敵軍、直接設定
+`aiBusy` 或呼叫 `endTurn`。
+
+敵軍回合須以有界正式 Update／Draw 驅動所有行走與 indexed 演出；成功條件是至少
+一名原始敵軍完成計畫、沒有 `loadErr`、回合數增加並回到 `PLAYER PHASE`，而且76筆
+runtime 拓撲與31筆持續名冊在交接後保持一致。原版候選已完成同一玩家輸入序列，
+因此這個測試只關閉重製端正常輸入 `RUNTIME-E1`；第三方 provenance 與停用音訊的
+限制不變，不把兩側不同 raw 時點冒稱逐幀或音訊一致。
 
 ## 2026-08-26：晚期有效槽 LOAD 至第30戰一般輸入候選規格
 

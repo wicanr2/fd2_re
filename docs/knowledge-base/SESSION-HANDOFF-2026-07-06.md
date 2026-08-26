@@ -7042,3 +7042,20 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 修正後同一測試完成敵軍回合、回合數增加、回到 `PLAYER PHASE`，29筆持續名冊與
   固定隊長＋19名部署者保持完整。此批為 `RUNTIME-E1`；第三方來源與停用音訊使其
   仍不是完整 `PLAYER-E2`。README 玩家交付自評由80調為81／100。
+
+## 2026-08-26：固定第29戰槽重製 CONTINUE／敵軍回合交接
+
+- 沿用 `fd2004.zip`／`FD2.SAV` 固定 SHA-256，聚焦回歸從正式標題事件
+  `Down×2→Confirm→Tick×24` 進入 `battle_ch29`，再消費 END／YES indexed 介面；
+  不直接呼叫 native handoff、`endTurn`，也不清空或預先標記敵軍。
+- 第一輪真實回歸揭露原生存檔交接未綁定 scenario 的 field-event typed rules；現以
+  `BindNativeFieldEventRules` 只綁規則、不重播 `SetupChecked` 開場。後續又揭露
+  `0x14EF0` 失敗時 mode 2 被送進通用未閉合 fallback；正式順序現先交回已閉合的
+  `0x14237→0x13FD4` owner，並有完整 command table 形狀的聚焦測試。
+- 固定 `FIGANI.DAT` resource 337 frame19 的 descriptor delay為0。`0x2B9A1` 已證實
+  先呈現、再遞增比較，因此零值與一樣呈現一次；排程器不再把合法原始值當損壞。
+  `0x13FD4` 呈現也先消費既有 `0x12D7B→0x12CEA` 安全帶同步，鏡頭外 actor 不再被
+  誤判成 FDICON 越界。
+- 同一測試現在至少觀察一名敵軍實際 `Acted`，完整結束敵方回合、回合數增加並回到
+  `PLAYER PHASE`；76筆 runtime、31人 persistent 均保留。此批為 `RUNTIME-E1`，
+  第三方來源與停用音訊限制不變。README 玩家交付自評由81調為82／100。

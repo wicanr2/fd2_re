@@ -6139,7 +6139,7 @@ func loadFIGANIDelays() (map[int][]int, error) {
 			return nil, fmt.Errorf("FIGANI %d has no frame delays", id)
 		}
 		for frame, delay := range delays {
-			if delay <= 0 {
+			if delay < 0 {
 				return nil, fmt.Errorf("FIGANI %d frame %d has invalid delay %d", id, frame, delay)
 			}
 		}
@@ -9362,8 +9362,11 @@ func figaniFrameAtDisplayTick(delays []int, ticksPerNative, tick int) (int, bool
 	}
 	total := 0
 	for _, delay := range delays {
-		if delay <= 0 {
+		if delay < 0 {
 			return 0, false
+		}
+		if delay == 0 {
+			delay = 1
 		}
 		total += delay * ticksPerNative
 	}
@@ -9372,6 +9375,9 @@ func figaniFrameAtDisplayTick(delays []int, ticksPerNative, tick int) (int, bool
 	}
 	remaining := tick % total
 	for i, delay := range delays {
+		if delay == 0 {
+			delay = 1
+		}
 		span := delay * ticksPerNative
 		if remaining < span {
 			return i, true

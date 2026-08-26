@@ -143,6 +143,16 @@ func (g *Game) prepareNativeContinueFromCurrentSnapshot(path string, timer int) 
 		assetState.W != state.W || assetState.H != state.H {
 		return Game{}, errors.New("原版續戰：戰場資產與 current-runtime 章節不一致")
 	}
+	// CONTINUE 保留存檔中的 live roster／turn rows，不能用 SetupChecked 重播
+	// on_battle_start；但正常戰鬥由 SetupChecked 綁入的 editable field rules 仍是
+	// event75 等 runtime consumer 的必要來源。只綁規則到私有候選與未變動基準，
+	// 後續 pending-group topology 比對才能在發布前拒絕任何分歧。
+	if err := scenario.BindNativeFieldEventRules(state); err != nil {
+		return Game{}, fmt.Errorf("原版續戰：field rules：%w", err)
+	}
+	if err := scenario.BindNativeFieldEventRules(assetState); err != nil {
+		return Game{}, fmt.Errorf("原版續戰：field rules baseline：%w", err)
+	}
 	if err := candidate.bindNativeFutureItemRows(state); err != nil {
 		return Game{}, fmt.Errorf("原版續戰：future item rows：%w", err)
 	}

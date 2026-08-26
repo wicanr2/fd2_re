@@ -235,6 +235,9 @@ func TestNativeContinueTitleCallerPublishesChapter29Candidate(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	if sum := sha256.Sum256(stored); hex.EncodeToString(sum[:]) != "6f7095eca2c424bad60c37d2ce1f651a1d13f27d3342413c143369a8c99c46f8" {
+		t.Fatalf("第29戰候選 SHA-256=%s，不是已審查來源", hex.EncodeToString(sum[:]))
+	}
 	plain, err := fdsave.Decode(stored)
 	if err != nil {
 		t.Fatal(err)
@@ -252,9 +255,32 @@ func TestNativeContinueTitleCallerPublishesChapter29Candidate(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Setenv("FD2_NATIVE_TITLE_TICK", "")
-	g := &Game{camp: campaign.NewRunner(graph), titlePhase: "menu"}
-	if err := g.loadNativeContinueFromCurrentSnapshot(savePath); err != nil {
-		t.Fatal(err)
+	t.Setenv("FD2_NATIVE_SAVE", savePath)
+	base := "../../../org_game/炎龍騎士團/FLAME2"
+	for key, name := range map[string]string{
+		"FD2_ORIGINAL_FDOTHER": "FDOTHER.DAT",
+		"FD2_ORIGINAL_FIGANI":  "FIGANI.DAT",
+		"FD2_ORIGINAL_FDTXT":   "FDTXT.DAT",
+		"FD2_ORIGINAL_DATO":    "DATO.DAT",
+		"FD2_ORIGINAL_BG":      "BG.DAT",
+		"FD2_ORIGINAL_TAI":     "TAI.DAT",
+	} {
+		t.Setenv(key, filepath.Join(base, name))
+	}
+	g := loadGame()
+	if g.loadErr != "" {
+		t.Fatalf("第29戰候選正式啟動資產：%s", g.loadErr)
+	}
+	g.camp, g.titlePhase, g.titleSel = campaign.NewRunner(graph), "menu", 0
+	if !g.applyTitleMenuEvent(TitleMenuDown) || !g.applyTitleMenuEvent(TitleMenuDown) ||
+		g.titleSel != 2 || !g.applyTitleMenuEvent(TitleMenuConfirm) {
+		t.Fatalf("第29戰候選未由正式標題 CONTINUE 輸入擁有者接受：sel=%d flash=%d",
+			g.titleSel, g.titleFlash)
+	}
+	for tick := 0; tick < 24; tick++ {
+		if !g.applyTitleMenuEvent(TitleMenuTick) {
+			t.Fatalf("第29戰候選標題確認 tick %d 未被消費", tick)
+		}
 	}
 	if g.camp == nil || g.camp.NodeID() != "battle_ch29" || g.st == nil || g.sc == nil ||
 		g.titlePhase != "" || g.st.NativeRoundCounter != 2 ||
@@ -264,6 +290,83 @@ func TestNativeContinueTitleCallerPublishesChapter29Candidate(t *testing.T) {
 		t.Fatalf("第29戰 CONTINUE 發布不完整：node=%q title=%q units=%d party=%d round=%d cursor=(%d,%d) view=%+v",
 			g.camp.NodeID(), g.titlePhase, len(g.st.Units), len(g.partyJoinOrder),
 			g.st.NativeRoundCounter, g.curX, g.curY, g.st.NativeMapViewState)
+	}
+
+	if err := g.composeNativeMapFrame(); err != nil {
+		t.Fatalf("第29戰候選穩定畫面：%v", err)
+	}
+	g.nativePreparationUI, err = loadNativePreparationUIAssets()
+	if err != nil {
+		t.Fatalf("第29戰 END 整備資產：%v", err)
+	}
+	g.nativeClassUI, err = loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatalf("第29戰 END 對話資產：%v", err)
+	}
+	g.ring, g.ringSel, g.nativeSystemCursorOverlay = true, 3, true
+	if !g.beginNativeSystemEndTurn() {
+		t.Fatal("第29戰候選玩家 END 路徑被拒絕")
+	}
+	for present := 0; present < 4; present++ {
+		g.markActionOverlayDrawn()
+		g.stepActionOverlayLifecycle()
+	}
+	for step := 0; g.nativeClassUIJob != nil && step < 256; step++ {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if g.nativeClassUIJob != nil {
+		t.Fatal("第29戰 END 提示開框超過256步")
+	}
+	g.confirmNativeSystemEndTurn()
+	for step := 0; g.nativeClassUIJob != nil && step < 512; step++ {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if g.nativeClassUIJob != nil {
+		t.Fatal("第29戰 YES 回覆演出超過512步")
+	}
+	for step := 0; g.nativeSystemEndTurnDelay > 0 && step < 256; step++ {
+		g.stepNativeSystemEndTurn()
+	}
+	if g.nativeSystemEndTurnDelay != 0 {
+		t.Fatal("第29戰 YES 延遲超過256步")
+	}
+	for step := 0; g.nativeClassUIJob != nil && step < 256; step++ {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if g.nativeClassUIJob != nil || !g.aiBusy || g.banner != "ENEMY PHASE" {
+		t.Fatalf("第29戰 END→YES 未進敵方回合：job=%v ai=%v banner=%q err=%q",
+			g.nativeClassUIJob != nil, g.aiBusy, g.banner, g.loadErr)
+	}
+
+	beforeTurn := g.st.Turn
+	actedEnemy := false
+	screen := ebiten.NewImage(logicalW, logicalH)
+	for frame := 0; g.aiBusy && g.loadErr == "" && frame < 60000; frame++ {
+		if err := g.Update(); err != nil {
+			t.Fatalf("第29戰敵方回合更新：%v", err)
+		}
+		// 攻擊演出的狀態由 Update 推進；單元測試直接 Draw 會在 Ebiten
+		// 正式遊戲迴圈外觸發 ReadPixels 命令佇列限制。其他以 Draw 作為
+		// 發布閘門的原生工作仍照常繪製。
+		if g.atk == nil {
+			g.Draw(screen)
+		}
+		for _, unit := range g.st.Units {
+			if unit != nil && unit.Camp == battle.Enemy && unit.Acted {
+				actedEnemy = true
+				break
+			}
+		}
+	}
+	if g.loadErr != "" || g.aiBusy || !actedEnemy || g.st.Turn != beforeTurn+1 ||
+		g.banner != "PLAYER PHASE" || len(g.st.Units) != 0x4c ||
+		len(g.partyJoinOrder) != 0x1f {
+		t.Fatalf("第29戰敵方回合未完整交回控制：ai=%v acted=%v turn=%d→%d banner=%q units=%d party=%d err=%q",
+			g.aiBusy, actedEnemy, beforeTurn, g.st.Turn, g.banner,
+			len(g.st.Units), len(g.partyJoinOrder), g.loadErr)
 	}
 }
 

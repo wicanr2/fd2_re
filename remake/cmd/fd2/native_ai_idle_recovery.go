@@ -45,7 +45,7 @@ type nativeAIIdleRecoveryJob struct {
 func (g *Game) beginNativeAIIdleRecovery(
 	actor *battle.Unit, decision battle.NativeAIIdleRecoveryDecision, after func(),
 ) error {
-	if g == nil || g.st == nil || actor == nil {
+	if g == nil || g.st == nil || g.m == nil || actor == nil {
 		return fmt.Errorf("native AI 0x13fd4: runtime state is unavailable")
 	}
 	if g.nativeAIIdleRecovery != nil {
@@ -95,16 +95,57 @@ func (g *Game) beginNativeAIIdleRecovery(
 	// pre-job failure restores the caller's state.
 	g.st.NativeMapRangeMode = 0
 	g.st.HasNativeMapRangeModeState = true
+	beforeCamX, beforeCamY := g.camX, g.camY
+	beforeCurX, beforeCurY := g.curX, g.curY
+	beforeBattleView := g.st.NativeMapViewState
+	beforeBattleViewHas := g.st.HasNativeMapViewState
+	beforeStoryView := g.storyNativeMapView
+	beforeStoryViewHas := g.hasStoryNativeMapView
+	restoreFocus := func() {
+		g.camX, g.camY = beforeCamX, beforeCamY
+		g.curX, g.curY = beforeCurX, beforeCurY
+		g.st.NativeMapViewState = beforeBattleView
+		g.st.HasNativeMapViewState = beforeBattleViewHas
+		g.storyNativeMapView = beforeStoryView
+		g.hasStoryNativeMapView = beforeStoryViewHas
+	}
+	// 0x12D7B 先把 actor 座標交給 0x12CEA。range mode 已是 0，所以原版
+	// 不在逐格同步間等待；這裡以同一個安全帶實作同步完成游標／鏡頭，再建立
+	// 0x1DA16 畫格，避免把鏡頭外的合法 actor 誤判成損壞資產。
+	if g.focusJob != nil {
+		restoreRange()
+		return fmt.Errorf("native AI 0x13fd4: coordinate synchronization is already active")
+	}
+	g.focusJob = &focusUnitJob{
+		targetX: actor.X, targetY: actor.Y, nativeView: true,
+		then: func() {},
+	}
+	limit := g.m.W + g.m.H + 2
+	for step := 0; g.focusJob != nil && step < limit; step++ {
+		g.stepFocusUnit()
+	}
+	if g.focusJob != nil || g.loadErr != "" {
+		g.focusJob = nil
+		restoreFocus()
+		restoreRange()
+		if g.loadErr != "" {
+			return fmt.Errorf("native AI 0x13fd4: coordinate synchronization: %s", g.loadErr)
+		}
+		return fmt.Errorf("native AI 0x13fd4: coordinate synchronization exceeded %d steps", limit)
+	}
 	if err := g.composeNativeMapFrame(); err != nil {
+		restoreFocus()
 		restoreRange()
 		return fmt.Errorf("native AI 0x13fd4: source frame: %w", err)
 	}
 	frames, err := g.buildNativeAIIdleRecoveryFrames(actor, presentation)
 	if err != nil {
+		restoreFocus()
 		restoreRange()
 		return err
 	}
 	if len(frames) != 3 {
+		restoreFocus()
 		restoreRange()
 		return fmt.Errorf("native AI 0x13fd4: frame owner returned %d frames, want 3", len(frames))
 	}

@@ -58,8 +58,8 @@ func TestFIGANIFrameAtDisplayTickUsesNativeDelays(t *testing.T) {
 			t.Fatalf("tick %d -> frame %d/%v, want %d/true", tick, got, ok, expected)
 		}
 	}
-	if _, ok := figaniFrameAtDisplayTick([]int{1, 0}, 2, 0); ok {
-		t.Fatal("invalid native delay unexpectedly produced a frame")
+	if got, ok := figaniFrameAtDisplayTick([]int{1, 0}, 2, 2); !ok || got != 1 {
+		t.Fatalf("zero delay frame=%d/%v, want frame 1 presented once", got, ok)
 	}
 }
 
