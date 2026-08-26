@@ -1,0 +1,32 @@
+{
+  "date": "2026-08-27",
+  "classification": "Ubuntu 24.04／Wine 9.0 煙霧測試；不是 Windows 真機驗收",
+  "build_commit": "a5bbaf3fe603fa088fdb7c508ef413bf2ddb8070",
+  "package": "remake/packaging/dist/fd2-windows-x86_64.zip",
+  "package_sha256": "931397d8b60f85af976c68017d17f238a77ab904d4b00d8081e0267ceb0eb286",
+  "environment": {
+    "image": "coab-wine-smoke:ubuntu-noble-20260826",
+    "wine": "wine-9.0 (Ubuntu 9.0~repack-4build3)",
+    "display": "Xvfb",
+    "network": "none",
+    "original_assets": "唯讀掛載；只供本機驗證，不在ZIP內"
+  },
+  "town_input": {
+    "start_node": "town_ch02",
+    "injected_keys": ["Left", "Return"],
+    "observed_node": "shop_ch02_weapon",
+    "frame": 300,
+    "screenshot": "docs/figures/release-windows-wine-shop-ch02.png",
+    "screenshot_sha256": "50b658719d1c79cc60e04fb8771aad5383c27755a02bb6a977387e8d2276ff29",
+    "caveat": "證明封包接收X11／Wine鍵盤並離開城鎮；自動注入方向對映不作原版方向忠實度證據"
+  },
+  "save_input": {
+    "start_node": "town_ch02",
+    "injected_key": "F5",
+    "written_path": "XDG_DATA_HOME/fd2_re/fd2_save.json",
+    "saved_node": "town_ch02",
+    "save_bytes": 1632,
+    "save_sha256": "c155402eea3be32105c29314f2b18ec168827ef1a133640d1bd104049f01363e",
+    "atomic_json_parse": "pass"
+  }
+}

@@ -14,6 +14,14 @@
 > `931397d8b60f85af976c68017d17f238a77ab904d4b00d8081e0267ceb0eb286`；內含GUI PE與
 > 受版控scenario／story／spells共72項。兩包均逐名確認未夾帶原版EXE、DAT或存檔。
 > Windows真機與macOS CI仍是外部平台驗收，不由Linux交叉建置冒稱完成。
+>
+> 同一AppImage另在既有Ubuntu 24.04 Noble映像以相同空工作目錄／唯讀資產啟動，
+> `town_ch02`畫面與Debian系工具映像達`AE=0/256000`。Windows ZIP則在Wine 9.0／
+> Xvfb實際接收城鎮方向鍵＋確認並離開`town_ch02`，另一次F5於Windows路徑寫出
+> 1,632-byte、node=`town_ch02`的可解析JSON存檔；見
+> [`release-windows-wine-smoke.json`](../data/ui-traces/release-windows-wine-smoke.json)及
+> [商店畫面](../figures/release-windows-wine-shop-ch02.png)。X11自動注入的方向對映不作
+> 原版方向忠實度證據；Wine通過也不取代Windows真機。
 
 > **2026-08-25 現況勘誤：**本篇第2節的 AppImage 結果是歷史封包證據，不代表
 > 每個新提交都已重新封裝。提交 `8e7683b1` 已以現行 `fd2-go-test-local` 在

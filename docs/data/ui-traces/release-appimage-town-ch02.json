@@ -4,6 +4,19 @@
   "package_sha256": "f085dc58ba021a118114ec33b1972e2500e61c51141b02f35d7cfbb720acadfb",
   "package_bytes": 5306872,
   "launch": "空工作目錄；--appimage-extract-and-run；唯讀XDG玩家資產；Docker/Xvfb",
+  "platform_runs": [
+    {
+      "image": "fd2-go-test-local:latest",
+      "base": "Debian系工具映像",
+      "campaign_node": "town_ch02"
+    },
+    {
+      "image": "coab-wine-smoke:ubuntu-noble-20260826",
+      "base": "Ubuntu 24.04 Noble",
+      "campaign_node": "town_ch02",
+      "frame_difference_from_debian": "AE=0/256000; MAE=0"
+    }
+  ],
   "frame": 90,
   "campaign_node": "town_ch02",
   "cursor": [

@@ -7299,3 +7299,17 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   frame90正式抵達`town_ch02`並輸出PNG／狀態旁車。Windows ZIP逐名72項；AppImage
   解包80個檔案；兩者都沒有原版EXE、DAT或存檔。產物與證據均為目前UID/GID。
 - Windows真機與macOS CI仍未驗收；Linux封包成功不能替代它們。工作後無FD2容器殘留。
+
+## 2026-08-27：Ubuntu 24.04與Wine 9.0封包煙霧驗收
+
+- 沿用本機既有`coab-wine-smoke:ubuntu-noble-20260826`，未下載或新建重複映像。
+  同一AppImage在Ubuntu 24.04 Noble、空工作目錄、唯讀玩家資產下抵達`town_ch02`；
+  與Debian系工具映像的640×400畫面為`AE=0/256000`、MAE=0。
+- 同一映像的Wine 9.0實際啟動Windows ZIP內`fd2.exe`。Xvfb／xdotool送出方向鍵與
+  Return後，frame300狀態已離開`town_ch02`進`shop_ch02_weapon`；這證明封包接收
+  鍵盤與正式節點轉場，但自動注入方向對映不作原版方向忠實度證據。
+- 第二次獨立Wine程序送出F5，在Windows格式`XDG_DATA_HOME`寫出1,632-byte
+  `fd2_save.json`；JSON完整解析且node=`town_ch02`，SHA-256
+  `c155402eea3be32105c29314f2b18ec168827ef1a133640d1bd104049f01363e`。
+- 這使發行自評由3／10增至4／10、總分87／100。Wine不是Windows真機；macOS仍需
+  真實CI。工作後容器均退出，沒有留下Wine／Xvfb程序。
