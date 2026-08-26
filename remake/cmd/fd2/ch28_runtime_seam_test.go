@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -10,6 +11,7 @@ import (
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+	"github.com/wicanr2/fd2_re/remake/internal/ending"
 )
 
 func seedLateCampaignParty(t *testing.T, scenarioPath string, selected int) *Game {
@@ -560,5 +562,79 @@ func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testi
 			gotRecords = len(gotMontage.Units)
 		}
 		t.Fatalf("cold-loaded ending montage records=%d join order=%d", gotRecords, len(g.partyJoinOrder))
+	}
+	for i, id := range g.partyJoinOrder {
+		unit, ok := g.partyRoster[id]
+		if !ok || len(gotMontage.Units[i]) <= 0x20 {
+			t.Fatalf("cold-loaded ending montage record %d/id %d is unavailable", i, id)
+		}
+		record := gotMontage.Units[i]
+		identity := unit.NativeRecordByte8
+		if !unit.HasNativeRecordByte8 {
+			identity = byte(unit.NativeIdentity)
+		}
+		if record[6] != unit.NativeRecordByte6 || record[7] != byte(unit.BattleFig) ||
+			record[8] != identity || record[0x20] != unit.NativeRecordClass {
+			t.Fatalf("cold-loaded ending montage record %d/id %d lost raw provenance: got=%#v unit=%#v",
+				i, id, []byte{record[6], record[7], record[8], record[0x20]}, unit)
+		}
+	}
+
+	// Use the recovered raw-input skip contract to keep this cross-save test
+	// bounded: finish the current portrait, then jump to the final party loop.
+	// This still runs the admitted montage and all 20 tail segments; it does not
+	// replace the persistent roster with an ending-only fixture.
+	now := time.Unix(100, 0)
+	for steps := 0; !g.nativeEnding.montage.Ready(); steps++ {
+		if steps >= 8192 {
+			t.Fatalf("cold-loaded ending montage did not complete within 8192 ticks: phase=%s plan=%d/%d",
+				g.nativeEnding.montage.Phase, g.nativeEnding.montage.PlanIndex,
+				len(g.nativeEnding.montage.Plans))
+		}
+		if g.nativeEnding.montage.Phase == ending.MontagePhasePortrait &&
+			g.nativeEnding.montage.PlanIndex < len(g.nativeEnding.montage.Plans)-1 {
+			g.nativeEnding.montageInputPending = true
+		}
+		now = now.Add(approximateNativeMontageTick)
+		if err := g.nativeEnding.advance(now, &g.nativeRNGState); err != nil {
+			t.Fatalf("cold-loaded ending montage tick %d: %v", steps, err)
+		}
+	}
+	if err := g.startCampaignNativeTail(); err != nil {
+		t.Fatalf("cold-loaded ending tail admission: %v", err)
+	}
+	now = now.Add(time.Second)
+	if err := g.nativeEnding.advance(now, &g.nativeRNGState); err != nil {
+		t.Fatal(err)
+	}
+	now = now.Add(30 * time.Minute)
+	if err := g.nativeEnding.advance(now, &g.nativeRNGState); err != nil {
+		t.Fatalf("cold-loaded ending tail: %v", err)
+	}
+	if !g.nativeEnding.presentingCampaignTerminal() {
+		t.Fatalf("cold-loaded ending did not reach the permanent terminal frame: %#v", g.nativeEnding.tailPlayer)
+	}
+	held := append([]byte(nil), g.nativeEnding.player.Compositor.VGA...)
+	now = now.Add(time.Hour)
+	if err := g.nativeEnding.advance(now, &g.nativeRNGState); err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(held, g.nativeEnding.player.Compositor.VGA) {
+		t.Fatal("cold-loaded ending terminal frame changed while held")
+	}
+	if err := g.startCampaignPartyOutcomeReview(); err != nil {
+		t.Fatalf("cold-loaded party outcome review: %v", err)
+	}
+	if !g.nativeEnding.reviewingCampaignPartyOutcomes() ||
+		len(g.nativeEnding.montage.Units) != len(wantOrder) {
+		t.Fatalf("cold-loaded party review state=%v records=%d order=%d",
+			g.nativeEnding.reviewingCampaignPartyOutcomes(), len(g.nativeEnding.montage.Units), len(wantOrder))
+	}
+	if err := g.returnCampaignTerminalFromReview(); err != nil {
+		t.Fatal(err)
+	}
+	if !g.nativeEnding.presentingCampaignTerminal() ||
+		!bytes.Equal(held, g.nativeEnding.player.Compositor.VGA) {
+		t.Fatal("cold-loaded party review did not restore the permanent terminal frame")
 	}
 }

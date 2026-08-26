@@ -118,7 +118,8 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 > ch29_pre 最後 `sub_12D7B(slot0)` 的 typed view `(camera 16,14；cursor 23,18；visible
 > 7,4)`、`0x33F69` gate B=1 與 selector0 建立 entry；handler 已物化 rows 依 immutable
 > raw origin 扣除，再補 groups1–3。跨全新 `Game` 回歸現連續走完原生 map、END→YES、
-> 敵方回合、勝利、ending 文字閘門及角色蒙太奇。這提升重製端 `RUNTIME-E1`，不把
+> 敵方回合、勝利、ending 文字閘門、角色蒙太奇、20 組尾段、永久定格、隊伍回顧
+> 及返回同一定格；JOIN 順序與 persistent raw `+6/+7/+8/+0x20` 全程保持一致。這提升重製端 `RUNTIME-E1`，不把
 > 敵軍全滅 fixture 或未送 OS 鍵盤的測試冒稱 `PLAYER-E2`。
 
 終局 19×5 owner 的最新玩家可見 E1 證據見

@@ -7116,3 +7116,18 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   旁車與 README 已同步，自評由83調為84／100。依使用者指定的99%忠實度門檻，
   這個初始整備畫面不再開啟 DOS 逐週期 polish；第29戰 writer 建槽 provenance
   保留為證據限制，不再視為 remake 產品阻擋。
+
+## 2026-08-26：最終整備冷讀檔到終局定格的隊伍連續性
+
+- 系統設計先加入有界驗收契約，再延伸既有
+  `TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding`；沒有重開
+  已閉合的終局反組譯，也沒有猜接新的 renderer／handler。
+- 回歸由全新 `Game` 冷讀 `preparation_ch30`，連續走過最終戰、戰果、兩段終局
+  文字、角色蒙太奇、20 組尾段、`FDOTHER #59` 永久定格、隊伍最終狀態回顧，
+  並返回同一張定格畫面。每位蒙太奇角色均核對 JOIN 順序與 persistent raw
+  `+6/+7/+8/+0x20`；定格在額外一小時更新後保持不變。
+- Docker／Xvfb 聚焦回歸通過。中段使用既有、來源已證實的輸入略過契約並以
+  敵軍全滅 fixture 縮短時間，因此只提升為 `RUNTIME-E1`；它證實重製端從冷讀檔
+  到終局的 records／globals 連續性，不冒稱未修改原版或作業系統鍵盤的
+  `PLAYER-E2`。原版 `0x2C2A6` 呼叫當下完整動態狀態仍是 E2 證據限制，不是
+  第29戰產品阻擋。README 自評由84調為85／100。
