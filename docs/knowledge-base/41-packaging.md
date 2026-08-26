@@ -181,6 +181,25 @@ SHA-256由同一無網路容器再次驗證。
 - `libXau`/`libXdmcp`/`libbsd`/`libmd` 是 X11 認證鏈的傳遞依賴,目標機器理論上都有,但沒有在
   非 Debian 系發行版(如 Arch/Fedora)上實測執行。
 
+### 2.5 Linux 原生持續整合封包契約
+
+Linux 發行物必須由 `ubuntu-latest` 的正式工作流程重建，不可只引用開發主機上
+既有的 `packaging/dist`。工作流程先從受版控的 `Dockerfile.appimage` 建立鎖定工具
+映像，再呼叫 `build-appimage.sh`；正式組包容器維持無網路、一次性及目前 runner
+UID/GID 寫入。產物完成後，必須從空白工作目錄執行實際
+`FD2-x86_64.AppImage --appimage-extract-and-run`。Ebiten 的 Linux 後端會在進入
+`main` 前初始化 X11，因此此步必須由有界的 Xvfb 擁有程序，不可把缺少 `DISPLAY`
+造成的初始化失敗誤判成封包資料缺陷；其後再以
+`FD2_PACKAGE_SELF_CHECK=1` 具型別驗證全部戰役轉場、36 個唯一法術 ID 及所有劇情
+引用。只有自我檢查退出碼為零，才可上傳 AppImage 與 SHA-256。
+SHA-256 清單只記錄 `FD2-x86_64.AppImage` 相對檔名，不得洩漏建置容器內的
+`/src/packaging/dist` 絕對路徑，並須能在下載後的同一目錄直接以 `sha256sum -c`
+驗證。
+
+這項契約證明的是 Linux x86_64 原生程序、AppImage 唯讀資產層與可散布資料完整性；
+非互動 runner 不證明實體桌面的視窗、鍵盤、音訊、顯示伺服器相容性或長時間遊玩。
+這些仍須與 Debian／Ubuntu 既有畫面證據及後續玩家回報分開記錄。
+
 ## 3. Windows(`remake/packaging/build-windows.sh`)
 
 ### 3.1 Windows 原生持續整合契約

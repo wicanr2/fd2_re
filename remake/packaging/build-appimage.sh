@@ -47,7 +47,8 @@ docker run --rm --network none \
       --runtime-file /opt/appimage-tools/runtime-x86_64 \
       "$appdir" "$dist/FD2-x86_64.AppImage"
     file "$dist/FD2-x86_64.AppImage" | tee "$dist/FD2-x86_64.AppImage.file.txt"
-    sha256sum "$dist/FD2-x86_64.AppImage" | tee "$dist/FD2-x86_64.AppImage.sha256"
+    cd "$dist"
+    sha256sum FD2-x86_64.AppImage | tee FD2-x86_64.AppImage.sha256
   '
 
 echo "完成：$REMAKE_ROOT/packaging/dist/FD2-x86_64.AppImage"
