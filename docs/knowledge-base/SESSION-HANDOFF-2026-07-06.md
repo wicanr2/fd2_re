@@ -7548,3 +7548,12 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 聚焦Docker／Xvfb測試與6／29生成器檢查通過，證據見
   [`ch19-post-native-dialogue-e1.json`](../data/ui-traces/ch19-post-native-dialogue-e1.json)。
   未修改DOSBox同狀態、精確音訊與town21原版輸入仍屬E2限制，依99%門檻不阻擋。
+
+## 2026-08-27：第8戰後兩個caller／8句原生對話與奇數frontier
+
+- 沿用已閉合的`sub_234BB`、event27 frontier與共用renderer。FDTXT_008 index3／4
+  的5＋3句已通過固定raw equality並重生成typed版面。
+- 正式29與41 slots邊界均以共用具型別輸入完成8句，再依序ACTING、全黑、JOIN5、
+  同步、chapter8與`town_ch09`，並通過存讀檔；不再直接清除`g.dialog`。證據見
+  [`ch07-post-native-dialogue-e1.json`](../data/ui-traces/ch07-post-native-dialogue-e1.json)。
+- 31至39由相同runtime_context接受；未修改DOSBox同狀態與精確DAC仍屬E2限制。

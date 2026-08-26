@@ -4,7 +4,15 @@
   "acting_resources": "../acting/map32.json",
   "story_index_map": "../dialogue-index/count-aligned.json",
   "runtime_context": {
-    "slot_counts": [29, 31, 33, 35, 37, 39, 41],
+    "slot_counts": [
+      29,
+      31,
+      33,
+      35,
+      37,
+      39,
+      41
+    ],
     "story_viewport": true
   },
   "dialogue_contexts": {
@@ -21,23 +29,250 @@
     "0x234fe": {
       "layout": {
         "units": [
-          { "slot": 0, "x": 14, "y": 20, "pose": 2 },
-          { "slot": 1, "x": 13, "y": 20, "pose": 2 },
-          { "slot": 2, "x": 15, "y": 20, "pose": 2 },
-          { "slot": 3, "x": 12, "y": 19, "pose": 2 },
-          { "slot": 4, "x": 13, "y": 19, "pose": 2 },
-          { "slot": 5, "x": 14, "y": 18, "pose": 2 },
-          { "slot": 6, "x": 16, "y": 19, "pose": 2 },
-          { "slot": 7, "x": 11, "y": 18, "pose": 2 },
-          { "slot": 8, "x": 15, "y": 19, "pose": 2 },
-          { "slot": 9, "x": 17, "y": 18, "pose": 2 },
-          { "slot": 28, "x": 14, "y": 16, "pose": 0 }
+          {
+            "slot": 0,
+            "x": 14,
+            "y": 20,
+            "pose": 2
+          },
+          {
+            "slot": 1,
+            "x": 13,
+            "y": 20,
+            "pose": 2
+          },
+          {
+            "slot": 2,
+            "x": 15,
+            "y": 20,
+            "pose": 2
+          },
+          {
+            "slot": 3,
+            "x": 12,
+            "y": 19,
+            "pose": 2
+          },
+          {
+            "slot": 4,
+            "x": 13,
+            "y": 19,
+            "pose": 2
+          },
+          {
+            "slot": 5,
+            "x": 14,
+            "y": 18,
+            "pose": 2
+          },
+          {
+            "slot": 6,
+            "x": 16,
+            "y": 19,
+            "pose": 2
+          },
+          {
+            "slot": 7,
+            "x": 11,
+            "y": 18,
+            "pose": 2
+          },
+          {
+            "slot": 8,
+            "x": 15,
+            "y": 19,
+            "pose": 2
+          },
+          {
+            "slot": 9,
+            "x": 17,
+            "y": 18,
+            "pose": 2
+          },
+          {
+            "slot": 28,
+            "x": 14,
+            "y": 16,
+            "pose": 0
+          }
         ],
         "cam_x": 192,
         "cam_y": 336
       }
     },
-    "0x23539": { "act": { "resource": 33 } },
-    "0x2357e": { "act": { "resource": 34 } }
+    "0x23539": {
+      "act": {
+        "resource": 33
+      }
+    },
+    "0x2357e": {
+      "act": {
+        "resource": 34
+      }
+    }
+  },
+  "dialogue_overrides": {
+    "0x23525#3": {
+      "script": "ch08.json",
+      "scene_index": 3,
+      "lines": [
+        {
+          "line": 0,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_008",
+            "string_index": 3,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 8,
+            "pages": [
+              [
+                "『唉！事情為什麼會變成這樣",
+                "　．．我得去見父王一面，",
+                "　把事情弄個清楚才行。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_008",
+            "string_index": 3,
+            "utterance": 1,
+            "control": "FFEF",
+            "operand": 5,
+            "pages": [
+              [
+                "『公主殿下，現在宮中情勢混",
+                "　亂，請容屬下隨行，以保護",
+                "　殿下的安全。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_008",
+            "string_index": 3,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 8,
+            "pages": [
+              [
+                "『剛才妳說妳是史卡迪家的人",
+                "　．．可是指騎士世家的史卡",
+                "　迪家族？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_008",
+            "string_index": 3,
+            "utterance": 3,
+            "control": "FFEF",
+            "operand": 5,
+            "pages": [
+              [
+                "『是的！我史卡迪家的族人世",
+                "　代都擔負保護王族的使命，",
+                "　如今雖然我家族只剩下我一"
+              ],
+              [
+                "　個人，屬下仍會盡忠職守，",
+                "　誓以性命保護殿下的安全。",
+                "　』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 4,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_008",
+            "string_index": 3,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 8,
+            "pages": [
+              [
+                "『我明白了，妳就跟我來吧．",
+                "　．索爾，亞雷斯，以後我還",
+                "　要借重你們的力量，你們也"
+              ],
+              [
+                "　和我一起進城吧！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x23560#4": {
+      "script": "ch08.json",
+      "scene_index": 3,
+      "lines": [
+        {
+          "line": 5,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_008",
+            "string_index": 4,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『希莉亞．．是王國公主？",
+                "　那悠妮的身份又是怎麼",
+                "　一回事？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 6,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_008",
+            "string_index": 4,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『很簡單，是我們搞錯啦。",
+                "　現在該怎麼辦？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 7,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_008",
+            "string_index": 4,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『事到如今，也只有跟著希莉",
+                "　亞進去看看了。走吧！』"
+              ]
+            ]
+          }
+        }
+      ]
+    }
   }
 }

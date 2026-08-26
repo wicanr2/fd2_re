@@ -7146,3 +7146,19 @@ chapter20與`town_ch21`。具型別輸入必須完成opening、逐字、嘴型�
 [`fd2_ch19_post_native_dialogue.md`](../data/ida/fd2_ch19_post_native_dialogue.md)。
 驗收包含六caller全量raw equality、round15／16正式輸入、83／84 frontier、JOIN25／28、
 `town_ch21`與存讀檔。此項最高為`RUNTIME-E1`；未修改DOSBox同狀態與精確音訊另列E2。
+
+## 玩家第 8 戰戰後 8 句原生對話與奇數 frontier（2026-08-27）
+
+本切片沿用已閉合的 `sub_234BB` 與共用renderer，不重開反組譯。`0x23525`／index3
+產生5筆、`0x23560`／index4產生3筆 `NativeDialogueLayout`；每筆保存control、
+operand、頁／列及原始glyph token並通過固定raw equality。
+
+正式執行期必須接受event27形成的29、31、33、35、37、39、41全部合法slot counts，
+不更動其拓撲。具型別輸入完成八句opening、逐字、嘴型、分頁與closing後，才依原始
+順序執行ACTING33／34、全黑、JOIN5、`sync_party`、chapter8與`town_ch09`。缺版面、
+地圖底圖、映射、raw provenance或原始資產時，在任何隊伍交易前失敗即關閉。
+
+原始位址、雜湊、控制碼與frontier契約見
+[`fd2_ch07_post_native_dialogue.md`](../data/ida/fd2_ch07_post_native_dialogue.md)。
+驗收包含全量raw equality、至少29與41兩個邊界的正式輸入、JOIN5、全黑復原、
+`town_ch09`與存讀檔。此項最高為`RUNTIME-E1`，未修改DOSBox同狀態另列E2。

@@ -280,6 +280,10 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 > JOIN25／28；round16播放共同15句、維持83 slots且只JOIN25。兩路都以具型別輸入
 > 完成收框後進`town_ch21`並通過存讀檔，列`RUNTIME-E1`。未修改DOSBox同狀態E2
 > 仍缺，但依99%門檻不再阻擋，也不得重開`sub_23E74`。
+> **2026-08-27 第8戰戰後原生對話補證：** raw ch07 post兩個caller／8句已由
+> FDTXT_008固定raw建立原生版面。正式29與41 slots邊界均以具型別輸入播放完整8句，
+> 再執行ACTING、全黑、JOIN5、同步、`town_ch09`與存讀檔，列`RUNTIME-E1`。
+> 31至39由相同typed frontier契約接受；未修改DOSBox E2仍缺但不阻擋99%門檻。
 > **2026-08-21 最新勘誤：玩家第23戰戰後已提升為 E1。** raw ch22 handler
 > 現依原版 persistent-first constructor 建立16筆持續隊伍＋70筆 map records，
 > 以86-slot正式 binding 消費18-slot layout、三個 raw predicate、`0x2189A`、

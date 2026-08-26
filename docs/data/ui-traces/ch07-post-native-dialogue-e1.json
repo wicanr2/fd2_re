@@ -1,0 +1,18 @@
+{
+  "name": "第8戰後兩個caller／8句原生對話與29／41-slot城鎮路徑",
+  "date": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "reference": {
+    "FD2.EXE": {"size": 357074, "md5": "b97caf2239a27a896069d03549d96e1e", "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"},
+    "FDTXT_008.bin": {"size": 1896, "md5": "b4152116d5778d70804ef0ea0e6f255c", "sha256": "26fc6f2f6692d84bdce790525989c55bd4655cd9549d8a1a8bdc28dec52e2c02"},
+    "canonical_re": "docs/data/ida/fd2_ch07_post_ida.txt",
+    "binding_evidence": "docs/data/ida/fd2_ch07_post_native_dialogue.md"
+  },
+  "native_dialogue": {"handler": "0x234bb", "callers": ["0x23525", "0x23560"], "source": "FDTXT_008", "string_indices": [3, 4], "utterance_counts": [5, 3], "total_utterances": 8},
+  "formal_routes": [
+    {"frontier": 29, "reachable_utterances": 8, "join": 5, "destination": "town_ch09"},
+    {"frontier": 41, "reachable_utterances": 8, "join": 5, "destination": "town_ch09"}
+  ],
+  "verification": {"generator": "2 callers / 8 utterances --check", "data_test": "TestCh07PostNativeDialogueLayoutsMatchOriginalControlWords", "integrated_test": "TestChapter8PostJoinsLornaPersistsPartyAndEntersTown9", "full_packages": "go test ./internal/battle ./internal/campaign ./cmd/fd2 -count=1", "result": "pass", "docker_network": "none", "xvfb": "explicit PID with exit trap"},
+  "limitations": ["29與41是合法frontier邊界抽樣；31至39由相同typed runtime_context接受。", "未修改DOSBox同狀態、精確DAC時序與town09原版輸入仍缺，故不提升為PLAYER-E2。"]
+}
