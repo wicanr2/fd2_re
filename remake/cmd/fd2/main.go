@@ -4406,47 +4406,23 @@ func (g *Game) campInput() bool {
 			})
 			return true
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-			if g.churchMode == "class_confirm" {
-				if !g.beginNativeClassConfirmationClosing(g.returnToNativeClassList) {
-					g.returnToNativeClassList()
-				}
-				return true
+		if g.churchMode == "class" || g.churchMode == "class_confirm" {
+			delta := 0
+			if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) ||
+				inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
+				delta = -1
+			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) ||
+				inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
+				delta = 1
 			}
-			if g.churchMode == "class" {
-				if !g.beginNativeClassListClosing(g.returnToNativeChurchMenu) {
-					g.returnToNativeChurchMenu()
-				}
-				return true
-			}
-			g.returnToNativeChurchMenu()
+			g.handleNativeChurchClassInput(nativeChurchClassInput{
+				delta: delta, enter: enter,
+				escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+			})
 			return true
 		}
-		if g.churchMode == "class_confirm" {
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
-				g.churchSel = campaign.AdvanceNativeClassConfirmation(g.churchSel, -1)
-			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
-				g.churchSel = campaign.AdvanceNativeClassConfirmation(g.churchSel, 1)
-			}
-			if enter {
-				if g.churchSel == 0 {
-					apply := func() {
-						if g.applyChurchClassChange(0) {
-							g.beginNativeClassListOpening()
-							return
-						}
-						g.returnToNativeClassList()
-					}
-					if !g.beginNativeClassConfirmationClosing(apply) {
-						apply()
-					}
-				} else {
-					if !g.beginNativeClassConfirmationClosing(g.returnToNativeClassList) {
-						g.returnToNativeClassList()
-					}
-				}
-			}
+		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+			g.returnToNativeChurchMenu()
 			return true
 		}
 		if g.churchMode == "revive" {
@@ -4461,37 +4437,6 @@ func (g *Game) campInput() bool {
 				escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
 			})
 			return true
-		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.churchSel > 0 {
-			g.churchSel--
-		}
-		listLen := len(g.churchIDs)
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.churchSel+1 < listLen {
-			g.churchSel++
-		}
-		if g.churchMode == "class" {
-			g.churchVerticalStart, _ = campaign.NativeThreeRowWindow(
-				listLen, g.churchSel, g.churchVerticalStart,
-			)
-		}
-		if enter && len(g.churchIDs) > 0 {
-			id := g.churchIDs[g.churchSel]
-			u := g.partyRoster[id]
-			target, ok := campaign.NativeClassChangeTarget(&u, g.classChangeTable)
-			if !ok {
-				g.msg = "缺少原版轉職目標資料"
-			} else {
-				openConfirmation := func() {
-					g.churchClassID = id
-					g.churchBranches = []campaign.ClassChangeBranch{target}
-					g.churchMode = "class_confirm"
-					g.churchSel = 0
-					g.beginNativeClassConfirmationOpening()
-				}
-				if !g.beginNativeClassListClosing(openConfirmation) {
-					openConfirmation()
-				}
-			}
 		}
 		return true
 	case "shop":

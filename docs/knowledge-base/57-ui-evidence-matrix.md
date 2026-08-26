@@ -361,6 +361,9 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 > raw index 2 現也由 typed consumer 走完候選、費用確認、No／Escape、不足金、
 > 成功 indexed timeline／BGM cue、最後一名後 empty feedback 與返回 menu。只有
 > `reviveChurchUnit` 真正成功才播放成功演出；取消／不足金維持金錢與角色零修改。
+> raw index 3 亦由 typed consumer 走完 class list→confirmation→取消／成功→重建名冊；
+> default／special target table 缺列時零修改，成功才一次發布 portrait、class、raw class、
+> selector、成長、裝備重算與背包消耗。既有 town→JSON 冷讀檔回歸保持通過。
 
 > **2026-08-22 UI-03 勘誤：** 上表 UI-03 的17–22範圍已擴充為玩家
 > command 17–23及25–27 `RUNTIME-E1`。25–27同樣依`0x1D6C8`播放#80 selector0與

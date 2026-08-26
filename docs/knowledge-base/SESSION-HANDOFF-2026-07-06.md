@@ -7154,3 +7154,9 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   播放既有 track21→indexed timeline→track14，最後一名完成後經empty feedback返回menu。
   同時修正深層 `reviveChurchUnit` 拒絕時仍誤播成功演出的風險。此項為
   production-input `RUNTIME-E1`，無聲Docker不提升精確音訊 E2。
+- raw index 3 最後由 `nativeChurchClassInput` 接管 class list 與 confirmation。
+  第一輪 fixture 只提供 special target、缺 default row，正確被 table shape 失敗即關閉；
+  補回完整 default／special table 後，同一 Docker 命令通過取消、缺 target 零修改與
+  成功完整發布。成功結果另由既有 town→JSON 冷讀檔回歸保存 portrait、class、raw
+  class、selector、成長、裝備與背包。教會四項 service 至此均達 production-input
+  `RUNTIME-E1`，README 85／100 自評不變。

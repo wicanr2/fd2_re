@@ -34,6 +34,9 @@
 > raw index 2 復活也已覆蓋成功、取消、不足金與最後一名後 empty→menu；深層交易
 > 失敗不再誤播成功演出。此項達 production-input `RUNTIME-E1`，精確音訊與原版畫面
 > 仍留 E2。
+> raw index 3 轉職也完成 class list／confirm production input，並與既有 JSON 冷讀檔
+> 邊界共同驗證完整角色發布。教會四項 service 的 remake 正常輸入至此均達
+> `RUNTIME-E1`；後續只做代表性原版同狀態畫面／音訊 E2，不再重做 menu 或 callee。
 
 > **2026-08-25 最終戰前現況：** `story_ch30` 已由兩句通用後備改接正式
 > `ch29_pre` binding；`0x33F78` 的 `(slot,x,y)` wrapper、`0x12CEA(x,y)` focus、

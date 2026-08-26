@@ -183,6 +183,8 @@ typed consumer 完整往返。此項為 `RUNTIME-E1`，church caller 同狀態 E
 以正式狀態驗證跨角色成功、自我轉移、取消與滿欄零交易。
 raw index 2 復活亦已沿 typed input 覆蓋候選→確認→成功／不足金／取消→empty／menu，
 成功交易才啟動既有 track 21→indexed timeline→track 14 owner。
+raw index 3 轉職也已沿 typed input 覆蓋候選、唯一 target 確認、取消、缺表拒絕與
+成功完整 persistent unit 發布；四項教會服務至此均有正式 input owner。
 
 **2026-08-25 ID32 現況勘誤**：上表長列保留了本批開始時「ID32失敗即關閉」的
 歷史快照文字；現況由[`fd2_command32_transaction_ida.txt`](../data/ida/fd2_command32_transaction_ida.txt)、

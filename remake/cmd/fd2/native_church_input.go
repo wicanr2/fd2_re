@@ -33,6 +33,12 @@ type nativeChurchReviveInput struct {
 	escape bool
 }
 
+type nativeChurchClassInput struct {
+	delta  int
+	enter  bool
+	escape bool
+}
+
 func (g *Game) handleNativeChurchMenuInput(input nativeChurchMenuInput) bool {
 	if g.churchMode != "menu" || g.nativeChurchUIBlocksInput() {
 		return false
@@ -363,6 +369,81 @@ func (g *Game) handleNativeChurchReviveInput(input nativeChurchReviveInput) bool
 			if !g.beginNativeChurchReviveMessageClosing(after) {
 				after()
 			}
+		}
+		return true
+	default:
+		return false
+	}
+}
+
+func (g *Game) handleNativeChurchClassInput(input nativeChurchClassInput) bool {
+	if g.nativeChurchUIBlocksInput() || g.nativeClassUIBlocksInput() {
+		return false
+	}
+	switch g.churchMode {
+	case "class":
+		if input.escape {
+			if !g.beginNativeClassListClosing(g.returnToNativeChurchMenu) {
+				g.returnToNativeChurchMenu()
+			}
+			return true
+		}
+		if input.delta < 0 && g.churchSel > 0 {
+			g.churchSel--
+		} else if input.delta > 0 && g.churchSel+1 < len(g.churchIDs) {
+			g.churchSel++
+		}
+		g.churchVerticalStart, _ = campaign.NativeThreeRowWindow(
+			len(g.churchIDs), g.churchSel, g.churchVerticalStart,
+		)
+		if !input.enter || len(g.churchIDs) == 0 || g.churchSel >= len(g.churchIDs) {
+			return true
+		}
+		id := g.churchIDs[g.churchSel]
+		unit := g.partyRoster[id]
+		target, ok := campaign.NativeClassChangeTarget(&unit, g.classChangeTable)
+		if !ok {
+			g.msg = "缺少原版轉職目標資料"
+			return true
+		}
+		openConfirmation := func() {
+			g.churchClassID = id
+			g.churchBranches = []campaign.ClassChangeBranch{target}
+			g.churchMode, g.churchSel = "class_confirm", 0
+			g.beginNativeClassConfirmationOpening()
+		}
+		if !g.beginNativeClassListClosing(openConfirmation) {
+			openConfirmation()
+		}
+		return true
+	case "class_confirm":
+		if input.escape {
+			if !g.beginNativeClassConfirmationClosing(g.returnToNativeClassList) {
+				g.returnToNativeClassList()
+			}
+			return true
+		}
+		if input.delta != 0 {
+			g.churchSel = campaign.AdvanceNativeClassConfirmation(g.churchSel, input.delta)
+		}
+		if !input.enter {
+			return true
+		}
+		if g.churchSel != 0 {
+			if !g.beginNativeClassConfirmationClosing(g.returnToNativeClassList) {
+				g.returnToNativeClassList()
+			}
+			return true
+		}
+		apply := func() {
+			if g.applyChurchClassChange(0) {
+				g.beginNativeClassListOpening()
+				return
+			}
+			g.returnToNativeClassList()
+		}
+		if !g.beginNativeClassConfirmationClosing(apply) {
+			apply()
 		}
 		return true
 	default:

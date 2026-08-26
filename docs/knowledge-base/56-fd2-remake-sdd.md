@@ -5955,6 +5955,14 @@ track 14 並重建候選名冊；不足金與 No／Escape 均不得改金錢或�
 復活後進 empty feedback，再返回教會主選單。音訊只驗證既有 cue／生命週期，不追
 DAC／PIT 硬體時序。
 
+raw index 3 的 `0x31385` 轉職 caller 必須由單一 typed consumer 擁有 class list 與
+class_confirm。名冊只接受 `ClassChangeCandidates`，確認前以 editable table 的
+`NativeClassChangeTarget` 固定唯一 target；缺 target 時留在名冊且零修改。Yes 必須
+等 confirmation 關框／restore 後才呼叫 `applyChurchClassChange(0)`，成功才一次發布
+portrait、class、selector、成長、裝備重算與 inventory 消耗，再重建候選名冊；No／
+Escape 與缺 growth row 均保持 persistent roster 不變。既有 JSON 冷讀檔回歸仍負責
+證明轉職結果跨 town 邊界保存，typed input 測試不可用直接設定 `class_confirm` 取代。
+
 ## 2026-08-22 空游標系統設定選單 E1 契約
 
 主證據為
