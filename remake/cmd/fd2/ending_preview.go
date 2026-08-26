@@ -787,6 +787,21 @@ func (p *nativeEndingPreview) advance(now time.Time, nativeRNG *uint16) error {
 	return nil
 }
 
+// nativeEndingEvidenceOverlay 只提供玩家主動開啟的除錯 HUD。來源等級與
+// 播放說明不是原版終局的一部分，正式成功路徑不得污染320×200畫布。
+func (g *Game) nativeEndingEvidenceOverlay() (string, float64, bool) {
+	if g == nil || !g.debug || g.nativeEnding == nil {
+		return "", 0, false
+	}
+	if g.nativeEnding.runningCampaignMontage() {
+		return "角色蒙太奇（來源約束 E1）：任意按鍵會在本輪結束後略過中間角色。", 23, true
+	}
+	if g.nativeEnding.runningCampaignTail() {
+		return "終局蒙太奇（原版資源、來源約束 E1）：完成後將停留在 THE END。", 25, true
+	}
+	return "", 0, false
+}
+
 func (g *Game) drawNativeEndingPreview(screen *ebiten.Image) {
 	screen.Fill(color.RGBA{0, 0, 0, 0xff})
 	op := &ebiten.DrawImageOptions{}
@@ -796,21 +811,13 @@ func (g *Game) drawNativeEndingPreview(screen *ebiten.Image) {
 		view = g.nativeEnding.dialogueView
 	}
 	screen.DrawImage(view, op)
-	if g.nativeEnding.runningCampaignMontage() && g.font != nil {
+	if message, x, ok := g.nativeEndingEvidenceOverlay(); ok && g.font != nil {
 		panel := ebiten.NewImage(logicalW-32, 42)
 		panel.Fill(color.RGBA{0x10, 0x1c, 0x40, 0xe8})
 		pop := &ebiten.DrawImageOptions{}
 		pop.GeoM.Translate(16, logicalH-56)
 		screen.DrawImage(panel, pop)
-		g.font.Draw(screen, "角色蒙太奇（來源約束 E1）：任意按鍵會在本輪結束後略過中間角色。", 23, logicalH-44, 0.78,
-			color.RGBA{0xff, 0xe0, 0x90, 0xff})
-	} else if g.nativeEnding.runningCampaignTail() && g.font != nil {
-		panel := ebiten.NewImage(logicalW-32, 42)
-		panel.Fill(color.RGBA{0x10, 0x1c, 0x40, 0xe8})
-		pop := &ebiten.DrawImageOptions{}
-		pop.GeoM.Translate(16, logicalH-56)
-		screen.DrawImage(panel, pop)
-		g.font.Draw(screen, "終局蒙太奇（原版資源、來源約束 E1）：完成後將停留在 THE END。", 25, logicalH-44, 0.78,
+		g.font.Draw(screen, message, x, logicalH-44, 0.78,
 			color.RGBA{0xff, 0xe0, 0x90, 0xff})
 	} else if g.nativeEnding.awaitingCampaignFallback() && g.font != nil {
 		panel := ebiten.NewImage(logicalW-32, 42)

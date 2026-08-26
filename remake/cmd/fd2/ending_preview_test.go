@@ -12,6 +12,26 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/ending"
 )
 
+func TestNativeEndingEvidenceOverlayIsDebugOnly(t *testing.T) {
+	preview := &nativeEndingPreview{
+		campaignSourceBound: true,
+		player: &ending.Player{
+			State:   ending.PlaybackBlocked,
+			Blocked: &ending.Segment{Op: "native_finale_montage_opaque", Source: "0x2c548"},
+		},
+		montage: &ending.MontageCycle{Phase: ending.MontagePhaseSecondary},
+	}
+	g := &Game{nativeEnding: preview}
+	if message, _, ok := g.nativeEndingEvidenceOverlay(); ok || message != "" {
+		t.Fatalf("正式終局顯示了開發證據提示：%q", message)
+	}
+	g.debug = true
+	message, x, ok := g.nativeEndingEvidenceOverlay()
+	if !ok || message == "" || x != 23 {
+		t.Fatalf("除錯終局提示=(%q,%.0f,%v)", message, x, ok)
+	}
+}
+
 func TestNativeEndingPreviewReachesRecoveredPhase0MontageGate(t *testing.T) {
 	const base = "../../../org_game/炎龍騎士團/FLAME2"
 	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "ANI.DAT"} {
