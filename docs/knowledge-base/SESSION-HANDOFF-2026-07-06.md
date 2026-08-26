@@ -7339,3 +7339,14 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   job `98273613960`在`macos-14`完成arm64／amd64、lipo、bundle，並成功執行「從空白工作目錄
   驗證bundle資產解析」步驟；DMG／tar.gz與artifact上傳亦成功。一次性觸發分支已刪除。
   這是macOS封包資料解析E1，不冒稱實體Mac視窗、輸入、存檔、音訊或Gatekeeper驗收。
+
+## 2026-08-27：macOS 封包具型別完整性閘門
+
+- 初版`FD2_PACKAGE_SELF_CHECK`只對campaign／spells／首末章呼叫`json.Valid`，無法發現
+  中段story漏包、懸空campaign轉場、法術筆數或重複ID。本輪先在41／56固定規格，再改用
+  正式`campaign.Load`、`battle.LoadSpells`，要求36筆ID 0..35各一次，並排序逐讀全部非空
+  `Node.Script`；缺檔、錯JSON或資料契約錯誤均失敗即關閉。
+- Docker聚焦回歸包含合法bundle、無效story及懸空story三臂；正式資料的空cwd模擬`.app`
+  亦通過。真實macOS [run 32999934526](https://github.com/wicanr2/fd2_re/actions/runs/32999934526)、
+  job `98278796187`成功執行相同bundle binary自我檢查，並完成DMG／tar.gz及artifact上傳。
+  一次性觸發分支已刪除；實體Mac視窗／輸入／存檔／音訊仍是外部驗收。

@@ -3075,7 +3075,9 @@ SDD 通過後按以下順序重審，不先補 renderer 猜測：
    XDG／AppImage 層之後、執行檔目錄／cwd 後備之前，插入既有 bundle 的
    `../Resources/<relative-path>`；只有指定檔案或目錄確實存在時才承認候選。
    `assetGlob` 採相同的整層順位。持續整合必須從空白 cwd 執行封裝內的 universal binary
-   自我檢查；戰役、法術表及早期／晚期劇情 JSON 任一缺失或語法無效時，立即失敗即關閉。
+   自我檢查；正式`campaign.Load`必須接受完整節點圖與轉場，`battle.LoadSpells`所得資料須
+   恰含ID 0..35各一筆，且campaign每個非空`Node.Script`都必須可由同一資產解析層找到並
+   解成JSON。任一條件不成立時立即失敗即關閉；只檢查首／末章或JSON語法不足以證明封包完整。
 
    Native unit table export boundary (2026-07-26): `tools/extract_native_unit_tables.py` reads the LE object through `le_xref` and emits only raw records: `high_class` `0x61af9` (68×10, helper `0x4e4ff`, selector `FDFIELD b1-0x44`), `lower_class` `0x61da1` (32×24, helper `0x4e4e8`, selector `FDFIELD b1` in the lower branch), and `lower_aux` `0x620a1` (68×11, helper `0x4e4d1`, same selector). Docker extraction against the real FD2.EXE validates all 68/32/68 records. The JSON deliberately keeps selector provenance and `bytes_hex` without assigning gameplay names; it is an editable RE fixture, not permission to substitute portrait/class or to enable HUD optional unit/HP.
 

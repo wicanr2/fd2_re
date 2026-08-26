@@ -39,6 +39,12 @@
 > `campaign_full.json`、`spells.json`、`ch01.json`與`ch30.json`；其後DMG／tar.gz及artifact
 > 上傳亦成功。這關閉「封包內建資料無法解析」的實際缺陷，但仍不等於視窗、輸入、存檔、
 > 音訊、簽章或實體Mac驗收。
+>
+> **具型別完整性加強：**run 32998426963只抽四份JSON語法；後續提交`b9ebf7ca`改以正式
+> campaign／spell loader驗證全部轉場、36個唯一法術ID與所有非空`Node.Script`引用。
+> 真實[run 32999934526](https://github.com/wicanr2/fd2_re/actions/runs/32999934526)、job
+> `98278796187`再次從空白cwd成功執行bundle binary，之後的DMG／tar.gz與artifact上傳亦通過。
+> 缺任一中段劇情檔、懸空轉場、法術筆數／ID錯誤都會在發行封包階段失敗，不再只靠首末章抽樣。
 
 > **2026-08-25 現況勘誤：**本篇第2節的 AppImage 結果是歷史封包證據，不代表
 > 每個新提交都已重新封裝。提交 `8e7683b1` 已以現行 `fd2-go-test-local` 在
@@ -96,9 +102,11 @@
 萬用字元批次載入(sprite/portrait/figani 逐檔 glob)用 `assetGlob`,同樣五層查找,但**第一層有命中
 就整層採用,不同層的檔案不混拼**(避免玩家覆蓋一半、AppImage 基底補另一半這種不一致狀態)。
 
-macOS 封裝必須在空白 cwd 實際執行 bundle 內 binary 的 `FD2_PACKAGE_SELF_CHECK=1` 模式，至少解析
-`campaign_full.json`、`spells.json`、首章與終章 story JSON。這個檢查只驗證可散布資料的封裝與解析，
-不啟動視窗，也不要求玩家自備的原版衍生素材；任一檔缺失或 JSON 無效即以非零狀態失敗。
+macOS 封裝必須在空白 cwd 實際執行 bundle 內 binary 的 `FD2_PACKAGE_SELF_CHECK=1` 模式。
+檢查必須以正式具型別載入器驗證`campaign_full.json`的起點與全部轉場、確認`spells.json`
+恰有ID 0..35各一筆，並逐一解析campaign所有非空`Node.Script`引用；因此不是只抽首／末章或
+只呼叫`json.Valid`。這個檢查只驗證可散布資料的封裝與解析，不要求玩家自備的原版衍生素材；
+任一檔缺失、重複ID、筆數錯誤、懸空轉場或JSON無效即以非零狀態失敗。
 
 可寫檔(存檔 `fd2_save.json`、設定 `fd2_settings.json`)一律走 `userDataPath()` → `$XDG_DATA_HOME/fd2_re/`,
 不再用 cwd(唯讀 mount 內無法寫入;這條規則不分 AppImage/開發模式,全平台統一)。

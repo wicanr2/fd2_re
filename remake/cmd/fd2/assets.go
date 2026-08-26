@@ -19,6 +19,10 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sort"
+
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
 
 var exeDirCached string
@@ -160,23 +164,47 @@ func assetGlob(pattern string) []string {
 	return nil
 }
 
-// packageSelfCheck 驗證正式封包必帶的可散布 JSON，也同時驗證 assetPath
-// 能從封包結構解析路徑。它刻意不要求玩家自行提供的原版衍生資產。
+// packageSelfCheck 驗證正式封包必帶的可散布資料，也同時驗證 assetPath
+// 能從封包結構解析所有劇情引用。它刻意不要求玩家自行提供的原版衍生資產。
 func packageSelfCheck() error {
-	required := []string{
-		"assets/scenarios/campaign_full.json",
-		"assets/spells.json",
-		"assets/story/ch01.json",
-		"assets/story/ch30.json",
+	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		return fmt.Errorf("載入完整戰役: %w", err)
 	}
-	for _, rel := range required {
+	spells, err := battle.LoadSpells(assetPath("assets/spells.json"))
+	if err != nil {
+		return fmt.Errorf("載入法術表: %w", err)
+	}
+	if len(spells) != 36 {
+		return fmt.Errorf("法術表筆數為 %d，應為 36", len(spells))
+	}
+	seenSpell := [36]bool{}
+	for _, spell := range spells {
+		if spell.ID < 0 || spell.ID >= len(seenSpell) || seenSpell[spell.ID] {
+			return fmt.Errorf("法術表含無效或重複 ID %d", spell.ID)
+		}
+		seenSpell[spell.ID] = true
+	}
+
+	scriptSet := make(map[string]struct{})
+	for _, node := range graph.Nodes {
+		if node.Script != "" {
+			scriptSet[node.Script] = struct{}{}
+		}
+	}
+	scripts := make([]string, 0, len(scriptSet))
+	for rel := range scriptSet {
+		scripts = append(scripts, rel)
+	}
+	sort.Strings(scripts)
+	for _, rel := range scripts {
 		path := assetPath(rel)
 		raw, err := os.ReadFile(path)
 		if err != nil {
-			return fmt.Errorf("讀取 %s: %w", rel, err)
+			return fmt.Errorf("讀取戰役引用 %s: %w", rel, err)
 		}
 		if !json.Valid(raw) {
-			return fmt.Errorf("%s 不是有效 JSON", rel)
+			return fmt.Errorf("戰役引用 %s 不是有效 JSON", rel)
 		}
 	}
 	return nil

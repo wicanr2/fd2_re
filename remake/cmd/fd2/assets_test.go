@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -73,20 +74,30 @@ func TestPackageSelfCheckUsesMacBundleAndFailsClosed(t *testing.T) {
 	macOS := filepath.Join(bundle, "FD2.app", "Contents", "MacOS")
 	useFakeExecutableDir(t, macOS)
 	resources := filepath.Join(bundle, "FD2.app", "Contents", "Resources")
-	for _, rel := range []string{
-		"assets/scenarios/campaign_full.json",
-		"assets/spells.json",
-		"assets/story/ch01.json",
-		"assets/story/ch30.json",
-	} {
-		writeTestAsset(t, filepath.Join(resources, rel), "{}")
+	campaignJSON := `{"start":"s","nodes":{"s":{"type":"story","script":"assets/story/ch01.json"}}}`
+	writeTestAsset(t, filepath.Join(resources, "assets/scenarios/campaign_full.json"), campaignJSON)
+	spells := make([]map[string]int, 36)
+	for id := range spells {
+		spells[id] = map[string]int{"id": id}
 	}
+	spellJSON, err := json.Marshal(spells)
+	if err != nil {
+		t.Fatal(err)
+	}
+	writeTestAsset(t, filepath.Join(resources, "assets/spells.json"), string(spellJSON))
+	writeTestAsset(t, filepath.Join(resources, "assets/story/ch01.json"), "{}")
 	if err := packageSelfCheck(); err != nil {
 		t.Fatalf("packageSelfCheck: %v", err)
 	}
 
-	writeTestAsset(t, filepath.Join(resources, "assets/story/ch30.json"), "not json")
+	writeTestAsset(t, filepath.Join(resources, "assets/story/ch01.json"), "not json")
 	if err := packageSelfCheck(); err == nil {
 		t.Fatal("packageSelfCheck accepted invalid bundled JSON")
+	}
+	writeTestAsset(t, filepath.Join(resources, "assets/story/ch01.json"), "{}")
+	writeTestAsset(t, filepath.Join(resources, "assets/scenarios/campaign_full.json"),
+		`{"start":"s","nodes":{"s":{"type":"story","script":"assets/story/missing.json"}}}`)
+	if err := packageSelfCheck(); err == nil {
+		t.Fatal("packageSelfCheck accepted a missing campaign script")
 	}
 }
