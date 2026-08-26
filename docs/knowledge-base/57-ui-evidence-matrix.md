@@ -355,6 +355,9 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 > 名冊→十二段狀態開框→十四段指令面板切換→十二段關框／source restore→同一名冊；
 > persistent ID 與 raw transient panel 全程沿正式 owner。這仍不替代 church caller
 > 的未修改原版畫面 E2。
+> raw index 1 亦已由單一 typed consumer 走完 source／item／destination／full：
+> 跨角色成功、自我 remove→append、目的取消及八格滿欄原子拒絕均經完整關框／restore，
+> 不再只有 shop caller 的 production-input 回歸。
 
 > **2026-08-22 UI-03 勘誤：** 上表 UI-03 的17–22範圍已擴充為玩家
 > command 17–23及25–27 `RUNTIME-E1`。25–27同樣依`0x1D6C8`播放#80 selector0與

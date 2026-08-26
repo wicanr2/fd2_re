@@ -28,6 +28,9 @@
 > 後才發布。status 又沿正式 consumer 走完名冊→狀態→指令→同一名冊的完整面板
 > 生命週期。menu dispatch 與 raw index 0 已達 `RUNTIME-E1`，後續只留 church caller
 > 原版同狀態 E2。
+> raw index 1 的 source／item／destination／full 也已共用正式 consumer；跨角色成功、
+> 自我 remove→append、取消與滿欄零交易均達 `RUNTIME-E1`，不再把 church transfer
+> production input 列為缺口。
 
 > **2026-08-25 最終戰前現況：** `story_ch30` 已由兩句通用後備改接正式
 > `ch29_pre` binding；`0x33F78` 的 `(slot,x,y)` wrapper、`0x12CEA(x,y)` focus、

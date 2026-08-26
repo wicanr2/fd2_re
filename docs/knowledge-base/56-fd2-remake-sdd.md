@@ -5939,6 +5939,14 @@ raw index 0 的後續也必須共用具型別 consumer：兩欄名冊沿既有
 目前面板採相同關閉規則。任一 panel provenance 缺失時不得發布半成品，必須返回
 名冊並保留明示錯誤。
 
+raw index 1 的共用 `0x2F8EA` 教會 caller 也必須由單一 typed consumer 擁有
+`transfer_source`、`transfer_item`、`transfer_dest` 與 `transfer_full`。游標與兩欄
+window 使用同一原版 helper；每次子畫面切換都先完成既有關框／source restore。
+來源取消回主選單，物品或目的取消回來源名冊。目的 raw 8-byte flags 顯示八格皆占用
+時只開 FDTXT506 滿欄提示且零交易；自我轉移仍執行原版 remove→append，異角色成功
+才同時發布雙方 raw inventory 與重算結果。任何 flags、compact projection 或索引失配
+均原子拒絕，不得因抽出輸入 consumer 而降低既有失敗即關閉邊界。
+
 ## 2026-08-22 空游標系統設定選單 E1 契約
 
 主證據為

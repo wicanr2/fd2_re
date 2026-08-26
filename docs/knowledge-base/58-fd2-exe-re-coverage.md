@@ -179,6 +179,8 @@ handler frame、common actor／tail 與原始資產先完整預建，才逐 Draw
 正式鍵盤與測試現共用 typed menu consumer，並把服務發布延後至四段關框及
 source restore 之後。raw index 0 的名冊、狀態、指令面板與返回名冊也已沿同一
 typed consumer 完整往返。此項為 `RUNTIME-E1`，church caller 同狀態 E2 仍缺。
+同一教會 input owner 又已覆蓋共用 `0x2F8EA` 的 source／item／destination／full，
+以正式狀態驗證跨角色成功、自我轉移、取消與滿欄零交易。
 
 **2026-08-25 ID32 現況勘誤**：上表長列保留了本批開始時「ID32失敗即關閉」的
 歷史快照文字；現況由[`fd2_command32_transaction_ida.txt`](../data/ida/fd2_command32_transaction_ida.txt)、

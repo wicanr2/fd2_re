@@ -7145,3 +7145,7 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   名冊確認，經十二段狀態開框、十四段 status→command 切換、十二段關框與 source
   restore，返回同一名冊。聚焦回歸與既有復活／轉職往返全部通過，分級仍為
   `RUNTIME-E1`。
+- raw index 1 隨後也由 `nativeChurchTransferInput` 接管 source／item／destination／full。
+  Docker／Xvfb 回歸沿正式關框與 source restore 驗證跨角色成功、目的取消零修改、
+  八格滿欄零交易，以及自我 remove→append；未新增金錢 writer 或確認框。此項關閉
+  church transfer 的 production-input `RUNTIME-E1`，原版同狀態畫面仍另列 E2。

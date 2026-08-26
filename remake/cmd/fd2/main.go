@@ -4365,144 +4365,26 @@ func (g *Game) campInput() bool {
 			return true
 		}
 		if g.churchMode == "transfer_full" {
-			if enter || inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-				if !g.beginNativeChurchTransferFullClosing(g.returnToNativeTransferSource) {
-					g.returnToNativeTransferSource()
-				}
-			}
+			g.handleNativeChurchTransferInput(nativeChurchTransferInput{
+				enter: enter, escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+			})
 			return true
 		}
 		if g.churchMode == "transfer_source" || g.churchMode == "transfer_item" || g.churchMode == "transfer_dest" {
-			listLen := len(g.churchIDs)
-			if g.churchMode == "transfer_item" {
-				listLen = len(g.churchTransferItems)
-			}
+			delta := 0
 			if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
-				g.churchSel = campaign.AdvanceNativeTwoColumnSelection(g.churchSel, listLen, -1)
+				delta = -1
+			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+				delta = 1
+			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
+				delta = -2
+			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
+				delta = 2
 			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
-				g.churchSel = campaign.AdvanceNativeTwoColumnSelection(g.churchSel, listLen, 1)
-			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
-				g.churchSel = campaign.AdvanceNativeTwoColumnSelection(g.churchSel, listLen, -2)
-			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
-				g.churchSel = campaign.AdvanceNativeTwoColumnSelection(g.churchSel, listLen, 2)
-			}
-			if g.churchMode == "transfer_item" {
-				g.churchItemStart, _ = campaign.NativeTwoColumnWindow(
-					listLen, g.churchSel, g.churchItemStart,
-				)
-			} else {
-				g.churchRosterStart, _ = campaign.NativeTwoColumnWindow(
-					listLen, g.churchSel, g.churchRosterStart,
-				)
-			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-				switch g.churchMode {
-				case "transfer_source":
-					if !g.beginNativeChurchRosterClosing(g.returnToNativeChurchMenu) {
-						g.returnToNativeChurchMenu()
-					}
-					return true
-				case "transfer_item":
-					if !g.beginNativeChurchTransferItemClosing(g.returnToNativeTransferSource) {
-						g.returnToNativeTransferSource()
-					}
-					return true
-				case "transfer_dest":
-					if !g.beginNativeChurchRosterClosing(g.returnToNativeTransferSource) {
-						g.returnToNativeTransferSource()
-					}
-					return true
-				}
-			}
-			if enter && listLen > 0 && g.churchSel < listLen {
-				switch g.churchMode {
-				case "transfer_source":
-					sourceID := g.churchIDs[g.churchSel]
-					items := g.churchTransferItemSlots(sourceID)
-					if len(items) == 0 {
-						g.msg = "沒東西了！"
-						return true
-					}
-					openItems := func() {
-						g.churchTransferSource = sourceID
-						g.churchTransferItems = items
-						g.churchMode = "transfer_item"
-						g.churchSel = 0
-						g.churchItemStart = 0
-						g.beginNativeChurchTransferItemOpening()
-					}
-					if !g.beginNativeChurchRosterClosing(openItems) {
-						openItems()
-					}
-				case "transfer_item":
-					itemSlot := g.churchTransferItems[g.churchSel]
-					openDestinations := func() {
-						g.churchTransferItem = itemSlot
-						g.churchIDs = g.churchTransferDestinationIDs(g.churchTransferSource)
-						g.churchMode = "transfer_dest"
-						g.churchSel = 0
-						g.churchRosterStart = 0
-						g.nativeChurchTextIndex = 510
-						g.beginNativeChurchRosterOpening()
-					}
-					if !g.beginNativeChurchTransferItemClosing(openDestinations) {
-						openDestinations()
-					}
-				case "transfer_dest":
-					destinationID := g.churchIDs[g.churchSel]
-					apply := func() {
-						source := g.partyRoster[g.churchTransferSource]
-						itemID := source.Inventory[g.churchTransferItem]
-						destination := g.partyRoster[destinationID]
-						count, err := battle.NativeInventoryAvailableCount(destination.NativeInventoryFlags)
-						if err != nil {
-							g.msg = fmt.Sprintf("目的角色缺少原版 8-byte 物品欄旗標：%v", err)
-							g.returnToNativeTransferSource()
-							return
-						}
-						if count == 8 {
-							g.churchTransferDest = destinationID
-							g.churchMode = "transfer_full"
-							if !g.beginNativeChurchTransferFullOpening() {
-								g.msg = "無法還原原版物品欄已滿提示"
-								g.returnToNativeTransferSource()
-							}
-							return
-						}
-						if destinationID == g.churchTransferSource {
-							if err := battle.TransferNativeInventoryItem(
-								&source, g.churchTransferItem, &source,
-							); err != nil {
-								g.msg = err.Error()
-							} else {
-								campaign.RecomputeEquipment(
-									&source, g.shopItemStats,
-								)
-								g.partyRoster[g.churchTransferSource] = source
-								g.msg = fmt.Sprintf(
-									"物品 %02Xh 已轉移", itemID,
-								)
-							}
-						} else if err := battle.TransferNativeInventoryItem(&source, g.churchTransferItem, &destination); err != nil {
-							g.msg = err.Error()
-						} else {
-							campaign.RecomputeEquipment(
-								&source, g.shopItemStats,
-							)
-							g.partyRoster[g.churchTransferSource] = source
-							g.partyRoster[destinationID] = destination
-							g.msg = fmt.Sprintf("物品 %02Xh 已轉移", itemID)
-						}
-						g.returnToNativeTransferSource()
-					}
-					if !g.beginNativeChurchRosterClosing(apply) {
-						apply()
-					}
-				}
-			}
+			g.handleNativeChurchTransferInput(nativeChurchTransferInput{
+				delta: delta, enter: enter,
+				escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+			})
 			return true
 		}
 		if g.churchMode == "revive_confirm" {
