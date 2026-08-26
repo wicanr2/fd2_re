@@ -20,6 +20,41 @@
 同步插播 AFM 或靜態幕；插播返回後仍在同一迴圈，等待30ms、遞減 `esi`，下一輪
 重新複製下一個完整捲動畫面。AFM／靜態幕是暫停點，不是捲動前後的獨立串列。
 
+## `sub_1F894` 前導發行商畫面（已證實）
+
+主捲動前另有一段不能省略成 AFM 3 的前導畫面。IDA 9.4 直接指令固定如下：
+
+```text
+0x1F8D6  push 4Dh                         ; FDOTHER #77
+0x1F8DB  call sub_111BA
+0x1F8FD  push 4Ch                         ; FDOTHER #76，768-byte VGA palette
+0x1F902  call sub_111BA
+0x1F927  push 4Ah                         ; FDOTHER #74，320x200 0x4E63D frame
+0x1F92C  call sub_111BA
+0x1F93B..0x1F94A  call sub_4E63D           ; blit #74 to VGA
+0x1F952  call sub_1F525                   ; palette fade-in
+0x1F957  push 1;   call sub_17AA9
+0x1F961  push 1Eh; call sub_17AA9          ; total 31 BIOS ticks
+0x1F96B  call sub_1F882                   ; palette fade-out
+```
+
+玩家自備固定版 `FDOTHER.DAT` 的三個 raw entry：
+
+| entry | bytes | MD5 | SHA-256 | 裁決 |
+|---:|---:|---|---|---|
+| 74 | 6585 | `48533366ad6a23bd6af906d88cbd39c6` | `fa2e695f2a25430802d03154ff6bfdd3372aa3e89c912a67dc6da70cb5cd42e5` | `40 01 c8 00` 幾何；以已證實 `0x4E63D` 四模式 RLE 解出320×200畫面 |
+| 76 | 768 | `2eff61ca4274827d5a24ac89632da7b0` | `79d17da02ec2e5b0b14d2ebc9dd156d9ab69d7fc99df5008847dfa33fe72139d` | 256×RGB 六位元 DAC palette |
+| 77 | 52031 | `3c0a8e570be878a9eea436c7d79375aa` | `4276bfc6bf4b9f7ae0815f4f15a8f74aff33c5c29d4a2b5d2a5a6ec30540ce13` | `LLLLLL` 巢狀資源；本切片不替它猜測高階名稱 |
+
+`remake/cmd/fd2-title-prelude-oracle` 只從玩家自備 `FDOTHER.DAT` 重生證據圖；
+`#74 + #76` 的可見內容是黑底「漢堂國際資訊」發行商標誌。現存本機
+`extracted/title_re/dosbox_seq/frame_000.png` 已是後續 AFM 3 的龍紋過渡幀，
+不是發行商標誌；舊文件以它作為「從漢堂標誌起算」的時間原點已撤回。
+
+`sub_17AA9` 的 `[0x46C]` 是 BIOS tick source；重製依公開 18.2065Hz 契約把31 tick
+投影為約1.70秒。`sub_1F525`／`sub_1F882` 各自已由其他 canonical 證據閉合為
+65×2ms淡入／64×2ms淡出。這是硬體規格近似，不追 DOS busy-wait 的逐週期一致。
+
 ## 直接指令與資料流
 
 ### 主迴圈、畫面來源與30ms步進（已證實）

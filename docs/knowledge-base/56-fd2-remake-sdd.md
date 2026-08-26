@@ -6858,5 +6858,24 @@ index／delay／skippable。Docker／Xvfb 另須實跑目前 source，確認屠�
 並再次與原版穩定畫面達 `AE=0/64000`。旁車狀態分別見
 [`title-interleaved-dragon-remake-e1.json`](../data/ui-traces/title-interleaved-dragon-remake-e1.json)
 與 [`title-interleaved-menu-remake-e1.json`](../data/ui-traces/title-interleaved-menu-remake-e1.json)。
-這達成上述 `RUNTIME-E1`；原版32.3秒是從發行商標誌起算，故不直接拿2.9秒差宣稱
-遊戲排程仍錯，也不把目前未實作的發行商標誌時間算進 `sub_1F894`。
+這達成上述 `RUNTIME-E1`。2026-08-27 實檔複核確認舊擷取的 `frame_000` 已是
+AFM 3 龍紋過渡幀，不是發行商標誌；舊「32.3秒從發行商標誌起算」已撤回，
+不得再拿該時間差推算 `sub_1F894` 前導幕。
+
+### 標題前導發行商畫面
+
+`sub_1F894` 在 AFM 3 前先載入 `FDOTHER #77`，再以 `#76` 調色盤把 `#74`
+四模式 RLE 畫面繪至320×200 VGA；接著執行65×2ms淡入、31個 BIOS tick 停留與
+64×2ms淡出。正式重製資料來源必須是玩家自備 `FDOTHER.DAT`，不可把原版 PNG
+加入版控。`#74/#76` 缺失、幾何或 palette 不合法時，這個可選前導幕失敗即關閉並
+直接進既有 AFM 3；不得以 `#77` 或自製圖猜補。
+
+60Hz 投影固定為8幀淡入、103幀穩定停留、8幀淡出，共119幀；這對應約1.98秒，
+而不是 DOS 逐週期重現。淡入與淡出只調整玩家可見亮度，完整畫面中段必須與
+`#74 + #76` 的 indexed 解碼結果一致。按鍵不得略過本幕：直接指令只在後續
+AFM 3 的第三參數及捲動列 owner 檢查輸入。
+
+決定性測試須固定資源號、320×200幾何、原始 indexed 畫面雜湊、119幀三相排程，
+以及前導結束後進 AFM 3。Docker／Xvfb 正常啟動則需擷取穩定標誌幀，並確認完整
+流程仍可自然抵達既有 `AE=0/64000` 主選單。canonical 位址與資產雜湊見
+[`fd2_title_scroll_schedule_ida.txt`](../data/ida/fd2_title_scroll_schedule_ida.txt)。

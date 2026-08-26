@@ -7230,6 +7230,21 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   惡魔臉定格。聚焦回歸鎖定完整順序、起訖、幀數、AFM delay與skippable。
 - Docker／Xvfb 實跑於frame652（約10.9秒）抵達 AFM #5 frame12／scrollY330 的
   屠龍白閃，舊錄影約5秒；frame1765（約29.4秒）自然抵達主選單，並再次達
-  `AE=0/64000`。原版32.3秒從發行商標誌起算，逐轉場／音訊仍只到E1。
+  `AE=0/64000`。本段當時誤稱原版32.3秒從發行商標誌起算；2026-08-27實檔複核
+  確認舊`frame_000`已是AFM 3龍紋過渡幀，該時間原點斷言已由下方勘誤取代。
 - 新增 [`title-interleaved-dragon-remake.png`](../figures/title-interleaved-dragon-remake.png)
   與兩份旁車 trace。原版、IDA授權與資料庫維持唯讀／tmpfs，沒有加入版控。
+
+## 2026-08-27：標題前導漢堂發行商畫面接入
+
+- 延伸同一`sub_1F894` IDA主證據，直接指令固定AFM 3前依序載入`FDOTHER #77`、
+  `#76`調色盤及`#74`畫面；`#74 + #76`經既有`0x4E63D`四模式RLE解碼後為
+  320×200黑底漢堂國際資訊標誌。`#77`只保留巢狀資源定位，不猜高階語意。
+- 新增不夾帶原版素材的`fd2-title-prelude-oracle`，鎖定indexed畫面SHA-256
+  `9ffe75b509e191db498528a584e63f4b048075257c0ab4e2ffe6a0140182f7bf`；正式runtime
+  只從玩家自備`FDOTHER.DAT`解碼，非法資產失敗即關閉並略過本幕。
+- 31個BIOS tick與兩側2ms palette fade依規格投影為8＋103＋8個60Hz幀。
+  Docker／Xvfb正常啟動第60幀與解碼oracle達640×400 `AE=0/256000`；新增119幀後，
+  frame1884仍自然抵達既有`AE=0`主選單。焦點排程、解碼與輸入回歸通過。
+- 舊`dosbox_seq/frame_000`實際為AFM 3龍紋過渡而非漢堂標誌，因此本幕維持
+  `RUNTIME-E1`；原版runtime E2、兩段wipe／logo揭示與精確音訊仍待補。

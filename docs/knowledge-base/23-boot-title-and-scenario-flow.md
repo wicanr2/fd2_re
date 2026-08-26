@@ -104,7 +104,7 @@ DOS/4GW entry 0x3c964 ──► Watcom CRT ──► main 0x25bf4
 
 > 方法:docker `dq3-dosbox`(Xvfb+dosbox 0.74-3+xdotool+import),`machine=svga_s3`,視窗 640×480(≈遊戲座標,org_play_notes.md 已驗證的換算)。
 > 連拍 300 幀、**單次不中斷**、間隔 0.15s(第一次拍到一半停下來分析,結果中間空了 177 秒沒拍到東西,教訓:**連拍中途不要停下來看圖,看完再拍或先拍完整段再看**)。
-> 幀序全部保留在 `extracted/title_re/dosbox_seq/frame_000.png`–`frame_299.png`(本機,未 commit),`_contact_sheet.png` 是全幀縮圖總覽,`_menu_grid.png` 是選單座標網格圖。
+> 幀序全部保留在 `extracted/title_re/dosbox_seq/frame_000.png`–`frame_299.png`(本機,未 commit),`_contact_sheet.png` 是全幀縮圖總覽,`_menu_grid.png` 是選單座標網格圖。2026-08-27 重新檢視實檔後確認 `frame_000` 已是 AFM 3 的龍紋過渡幀，不是漢堂發行商標誌；因此這組擷取不包含 `sub_1F894` 最前面的 `FDOTHER #74 + #76` 發行商幕，也不能再以 `frame_000` 當該幕的時間原點。
 > 容器內 dosbox 手動啟動確認:`MIXER:Can't open audio: No available audio device, running in nosound mode`——**容器完全沒有音訊裝置(不只是聽不到,是 dosbox 根本沒建虛擬音效輸出)**,所以配樂時機本輪**無法驗證**,如實標注,不腦補。
 
 ### ① logo 進場方式:**裁決 = 純縮放(zoom),不是旋轉**,且 doc23 §2.3「非飛入/縮放」的結論不成立
@@ -133,7 +133,7 @@ DOS/4GW entry 0x3c964 ──► Watcom CRT ──► main 0x25bf4
 
 ### ③ 立繪捲動:**doc23 §2.1 的捲動只是整段開場動畫的一小部分,不是玩家看到的唯一內容**
 
-實機看到的開場,遠比 doc23 §2 描述的「角色立繪捲動 → 抹除轉場 → 主選單」豐富。從漢堂發行商 logo(frame_000)到 logo 縮放進場前的紅閃光(frame_184),**共約 32.3 秒**,期間依序出現(幀序對照 `extracted/title_re/dosbox_seq/_contact_sheet.png`):
+實機看到的開場,遠比 doc23 §2 描述的「角色立繪捲動 → 抹除轉場 → 主選單」豐富。這組擷取由 AFM 3 過渡畫面(frame_000)到 logo 縮放進場前的紅閃光(frame_184)，依0.15秒擷取間隔約 **27.6 秒**；早先「從漢堂 logo 起算32.3秒」已由實檔反證撤回。期間依序出現(幀序對照 `extracted/title_re/dosbox_seq/_contact_sheet.png`):
 
 1. 紅底黑色守護者剪影漸顯(frame_003–011)→ 守護者盔甲全身像細節(frame_012–014、027–028)
 2. 藍髮主角(索爾)半身像特寫(frame_046–051)

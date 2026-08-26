@@ -1,0 +1,36 @@
+{
+  "date": "2026-08-27",
+  "classification": "RUNTIME-E1",
+  "input": {
+    "archive": "player-provided FDOTHER.DAT",
+    "fdother_resource": 74,
+    "palette_resource": 76,
+    "frame_sha256": "fa2e695f2a25430802d03154ff6bfdd3372aa3e89c912a67dc6da70cb5cd42e5",
+    "palette_sha256": "79d17da02ec2e5b0b14d2ebc9dd156d9ab69d7fc99df5008847dfa33fe72139d",
+    "decoded_indexed_sha256": "9ffe75b509e191db498528a584e63f4b048075257c0ab4e2ffe6a0140182f7bf"
+  },
+  "runtime": {
+    "image": "../../figures/title-publisher-remake.png",
+    "image_sha256": "ade9af59031d2b8d3ed2bfabc141a93ada06a6e149949c9bb5d2aaffb2bf80aa",
+    "shot_frame": 60,
+    "title_phase": "cutscene",
+    "title_cut_step": 0,
+    "title_cut_kind": "publisher",
+    "schedule_60hz_frames": {
+      "fade_in": 8,
+      "hold": 103,
+      "fade_out": 8,
+      "total": 119
+    }
+  },
+  "comparison": {
+    "oracle": "FDOTHER #74 decoded with #76 palette by the verified 0x4E63D adapter",
+    "scale": "320x200 to 640x400 nearest-neighbour",
+    "pixel_ae": "0/256000"
+  },
+  "limits": [
+    "The surviving DOSBox frame_000 capture starts in AFM 3 and does not contain this publisher screen.",
+    "BIOS 18.2065 Hz hold and 2 ms DAC fades are projected to 60 Hz; this is not DOS cycle parity.",
+    "The comparison proves the decoded stable frame and remake renderer, not an unmodified original runtime E2 capture."
+  ]
+}

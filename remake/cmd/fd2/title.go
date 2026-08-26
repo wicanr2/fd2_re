@@ -1,5 +1,5 @@
-// title.go — 開頭動畫與主選單。目前接入已驗證的 AFM／FDOTHER 資源、
-// 個別選單輸入與局部排程；完整原版幕序、交錯捲動與 DAC 時序仍未達 E2。
+// title.go — 開頭動畫與主選單。目前接入已驗證的發行商畫面、AFM／FDOTHER
+// 資源、個別選單輸入與交錯排程；兩段 wipe、logo 揭示與精確 DAC 時序仍未達 E2。
 // ① 魔王立繪 320×735(FDOTHER #0x45-0x49 五幀直疊)由下往上垂直捲動(視窗 200 高,
 //
 //	src y=535→0,原版 0x1fa85;任意鍵跳過)。淡入目前仍用 ColorScale 作 E1
@@ -24,11 +24,13 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/wicanr2/fd2_re/remake/internal/afm"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
 type titleAssets struct {
 	scroll    *ebiten.Image       // 320×735 立繪
 	title     *ebiten.Image       // 320×200 標題畫面
+	publisher *ebiten.Image       // FDOTHER #74 + palette #76 漢堂發行商畫面
 	items     [3][2]*ebiten.Image // START/LOAD/CONTINUE ×(未選/選中)
 	cutStatic [2]*ebiten.Image    // 靜態幕:0=守護者(FDOTHER#100)、1=浮空城(#75)
 	aniPath   string              // 玩家自備 ANI.DAT 路徑(""=無,退回捲動 fallback)
@@ -109,6 +111,7 @@ type cutStep struct {
 }
 
 var cutScript = []cutStep{
+	{kind: "publisher", tick: 119}, // 8幀淡入＋103幀31 BIOS tick近似＋8幀淡出
 	{kind: "afm", res: 3, tick: 5, skip: true},
 	{kind: "scroll", tick: 153, scrollFrom: 535, scrollTo: 450},
 	{kind: "static", res: 0, tick: 45}, // FDOTHER #100，原版 esi=450 插播
@@ -155,6 +158,9 @@ func loadTitleAssets() *titleAssets {
 	}
 	t.cutStatic[0] = ld("assets/title/cut_guardian.png") // 缺→該靜態幕自動跳過
 	t.cutStatic[1] = ld("assets/title/cut_castle.png")
+	if publisher, err := decodeNativeTitlePublisher(nativeFDOTHERPath()); err == nil {
+		t.publisher = ebiten.NewImageFromImage(publisher)
+	}
 	if t.scroll == nil || t.title == nil {
 		// 素材缺(玩家未自備,或 cwd 不是 remake/ 導致相對路徑解不到)→ 跳過開頭直接進遊戲。
 		// playfix #2:silent 失敗很難查,留診斷訊息(不影響行為,只在 stderr 印一行)。
@@ -182,6 +188,53 @@ func loadTitleAssets() *titleAssets {
 		}
 	}
 	return t
+}
+
+// decodeNativeTitlePublisher 僅消費玩家自備 FDOTHER.DAT。#74 的四模式 RLE、
+// #76 的六位元 DAC palette 與320×200幾何均不符合時即拒絕，不使用猜測 fallback。
+func decodeNativeTitlePublisher(path string) (*image.Paletted, error) {
+	if path == "" {
+		return nil, fmt.Errorf("FDOTHER.DAT unavailable")
+	}
+	frameRaw, err := fdother.ReadResource(path, 74)
+	if err != nil {
+		return nil, err
+	}
+	paletteRaw, err := fdother.ReadResource(path, 76)
+	if err != nil {
+		return nil, err
+	}
+	frame, err := fdother.ParseSingleFrame(frameRaw)
+	if err != nil {
+		return nil, err
+	}
+	if frame.Width != 320 || frame.Height != 200 {
+		return nil, fmt.Errorf("title publisher geometry=%dx%d, want 320x200", frame.Width, frame.Height)
+	}
+	pixels := make([]byte, 320*200)
+	if err := frame.Blit(pixels, 320, -1); err != nil {
+		return nil, err
+	}
+	palette, err := fdother.ParseVGAPalette(paletteRaw)
+	if err != nil {
+		return nil, err
+	}
+	indexed := image.NewPaletted(image.Rect(0, 0, 320, 200), palette)
+	copy(indexed.Pix, pixels)
+	return indexed, nil
+}
+
+func titlePublisherBrightness(tick int) float32 {
+	switch {
+	case tick < 0 || tick >= 119:
+		return 0
+	case tick < 8:
+		return float32(tick+1) / 8
+	case tick < 111:
+		return 1
+	default:
+		return float32(119-tick) / 8
+	}
 }
 
 // loadCutClip 執行期解碼指定 ANI.DAT 資源號為 ebiten 影格。失敗回 nil。
@@ -256,6 +309,17 @@ func (g *Game) titleUpdate() bool {
 		if g.trySkipTitleCutStep(
 			step, len(inpututil.AppendJustPressedKeys(nil)) > 0,
 		) {
+			return true
+		}
+		if step.kind == "publisher" {
+			if g.titleAssets.publisher == nil {
+				g.cutAdvance()
+				return true
+			}
+			g.cutTick++
+			if g.cutTick >= step.tick {
+				g.cutAdvance()
+			}
 			return true
 		}
 		if step.kind == "static" { // FDOTHER 靜態幕:hold step.tick 個 tick
@@ -371,6 +435,12 @@ func (g *Game) drawTitle(screen *ebiten.Image) {
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(2, 2)
 		switch step := cutScript[g.cutIdx]; {
+		case step.kind == "publisher":
+			if ta.publisher != nil {
+				s := titlePublisherBrightness(g.cutTick)
+				op.ColorScale.Scale(s, s, s, 1)
+				screen.DrawImage(ta.publisher, op)
+			}
 		case step.kind == "static":
 			if img := ta.cutStatic[step.res]; img != nil {
 				screen.DrawImage(img, op)

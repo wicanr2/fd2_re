@@ -1,10 +1,16 @@
 package main
 
-import "testing"
+import (
+	"crypto/sha256"
+	"fmt"
+	"os"
+	"path/filepath"
+	"testing"
+)
 
 func TestTitleCutScriptMatchesNativeInterleavedSchedule(t *testing.T) {
 	wantKinds := []string{
-		"afm", "scroll", "static", "scroll", "afm", "afm", "scroll",
+		"publisher", "afm", "scroll", "static", "scroll", "afm", "afm", "scroll",
 		"afm", "afm", "scroll", "afm", "scroll", "afm", "scroll",
 		"static", "scroll", "hold", "afm",
 	}
@@ -63,14 +69,51 @@ func TestTitleCutScriptMatchesNativeInterleavedSchedule(t *testing.T) {
 func TestTitleCutAdvanceRestoresNativeScrollBoundary(t *testing.T) {
 	g := &Game{titlePhase: "cutscene", cutIdx: 0, cutFrame: 7, cutTick: 3}
 	g.cutAdvance()
-	if g.cutIdx != 1 || g.cutFrame != 0 || g.cutTick != 0 || g.scrollY != 535 {
-		t.Fatalf("first scroll boundary idx=%d frame=%d tick=%d y=%v", g.cutIdx, g.cutFrame, g.cutTick, g.scrollY)
+	if g.cutIdx != 1 || g.cutFrame != 0 || g.cutTick != 0 {
+		t.Fatalf("publisher boundary idx=%d frame=%d tick=%d", g.cutIdx, g.cutFrame, g.cutTick)
 	}
-	g.cutIdx = 2 // guardian static → native resumes at the same esi=450
+	g.cutAdvance()
+	if g.cutIdx != 2 || g.scrollY != 535 {
+		t.Fatalf("first scroll boundary idx=%d y=%v", g.cutIdx, g.scrollY)
+	}
+	g.cutIdx = 3 // guardian static → native resumes at the same esi=450
 	g.scrollY = 450
 	g.cutAdvance()
-	if g.cutIdx != 3 || g.scrollY != 450 {
+	if g.cutIdx != 4 || g.scrollY != 450 {
 		t.Fatalf("guardian resume idx=%d y=%v", g.cutIdx, g.scrollY)
+	}
+}
+
+func TestTitlePublisherScheduleAndBrightness(t *testing.T) {
+	if got := cutScript[0]; got.kind != "publisher" || got.tick != 119 || got.skip {
+		t.Fatalf("publisher step=%+v", got)
+	}
+	for tick, want := range map[int]float32{-1: 0, 0: 0.125, 7: 1, 8: 1, 110: 1, 111: 1, 118: 0.125, 119: 0} {
+		if got := titlePublisherBrightness(tick); got != want {
+			t.Fatalf("publisher brightness tick %d=%v, want %v", tick, got, want)
+		}
+	}
+}
+
+func TestNativeTitlePublisherUsesFixedFDOTHERResources(t *testing.T) {
+	path := filepath.Join("../../../org_game/炎龍騎士團/FLAME2", "FDOTHER.DAT")
+	if _, err := os.Stat(path); err != nil {
+		t.Skipf("玩家自備 FDOTHER.DAT 不存在：%v", err)
+	}
+	indexed, err := decodeNativeTitlePublisher(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := indexed.Bounds().Dx(); got != 320 {
+		t.Fatalf("publisher width=%d", got)
+	}
+	if got := indexed.Bounds().Dy(); got != 200 {
+		t.Fatalf("publisher height=%d", got)
+	}
+	got := fmt.Sprintf("%x", sha256.Sum256(indexed.Pix))
+	const want = "9ffe75b509e191db498528a584e63f4b048075257c0ab4e2ffe6a0140182f7bf"
+	if got != want {
+		t.Fatalf("publisher indexed sha256=%s, want %s", got, want)
 	}
 }
 
@@ -103,7 +146,7 @@ func TestTitleCutSkipIsPerStepAndDoesNotGrantEscapeOverride(t *testing.T) {
 }
 
 func TestTitleScrollKeyJumpsToNativeLogoBoundary(t *testing.T) {
-	g := &Game{titlePhase: "cutscene", cutIdx: 3, cutFrame: 4, cutTick: 17, scrollY: 441}
+	g := &Game{titlePhase: "cutscene", cutIdx: 4, cutFrame: 4, cutTick: 17, scrollY: 441}
 	if !g.trySkipTitleCutStep(cutStep{kind: "scroll"}, true) {
 		t.Fatal("native scroll key did not enter the logo boundary")
 	}
