@@ -361,7 +361,9 @@ func TestSourceBoundCampaignMontageStartsFromPersistentLoadCHOrder(t *testing.T)
 	// Game.Update records a raw input change here. The preview must carry it
 	// until the recovered portrait boundary consumes it; it must not interpret
 	// a particular key or jump out before the current portrait completes.
-	g.nativeEnding.montageInputPending = true
+	if err := g.applyNativeEndingInput(false, false, true); err != nil {
+		t.Fatal(err)
+	}
 	for steps := 0; g.nativeEnding.montage.PlanIndex != len(g.nativeEnding.montage.Plans)-1 && steps < 1024; steps++ {
 		now = now.Add(approximateNativeMontageTick)
 		if err := g.nativeEnding.advance(now, &g.nativeRNGState); err != nil {
@@ -392,7 +394,7 @@ func TestSourceBoundCampaignMontageStartsFromPersistentLoadCHOrder(t *testing.T)
 			t.Fatal("tail did not reach the terminal frame")
 		}
 		held := append([]byte(nil), g.nativeEnding.player.Compositor.VGA...)
-		if err := g.startCampaignPartyOutcomeReview(); err != nil {
+		if err := g.applyNativeEndingInput(true, false, true); err != nil {
 			t.Fatal(err)
 		}
 		if !g.nativeEnding.reviewingCampaignPartyOutcomes() || g.nativeEnding.montage.Ready() ||
@@ -416,7 +418,7 @@ func TestSourceBoundCampaignMontageStartsFromPersistentLoadCHOrder(t *testing.T)
 			t.Fatalf("party outcome review did not loop through terminal: review=%v phase=%s cycles=%d",
 				g.nativeEnding.reviewingCampaignPartyOutcomes(), g.nativeEnding.montage.Phase, g.nativeEnding.reviewCycles)
 		}
-		if err := g.returnCampaignTerminalFromReview(); err != nil {
+		if err := g.applyNativeEndingInput(false, true, true); err != nil {
 			t.Fatal(err)
 		}
 		if !g.nativeEnding.presentingCampaignTerminal() || g.nativeEnding.reviewingCampaignPartyOutcomes() ||

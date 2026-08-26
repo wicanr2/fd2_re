@@ -7273,3 +7273,14 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   因那不是冒充原版成功畫面的路徑。
 - 聚焦Docker／Xvfb測試鎖定正式模式無提示、除錯模式才有提示。這是玩家可見忠實度
   修正，不提升一般玩家E2，也不重開`0x2C2A6`或`0x28A6C`反組譯。
+
+## 2026-08-27：第30戰終局單一正式輸入消費端
+
+- 舊回歸直接設定`montageInputPending`，並直接呼叫回顧start／return helper；雖然
+  `Game.Update`已有按鍵分支，這不足以證明測試與正式玩家走同一狀態轉移。
+- 新`applyNativeEndingInput`成為唯一Game層owner：任意新鍵只保存蒙太奇raw-change、
+  定格Enter／Space啟動重製回顧、回顧Enter／Space／Escape回復同一終端影格。
+  `Game.Update`及兩條來源約束回歸都改用此owner，不再直接改內部旗標。
+- Docker／Xvfb聚焦測試包含最終整備冷讀→第30戰→終局長鏈，通過蒙太奇略過、20段
+  尾聲、永久定格、回顧與返回。這關閉重製端正式輸入接線；原版特定scan code與
+  精確輸入時序仍為未知，不猜接、不提升一般玩家E2。

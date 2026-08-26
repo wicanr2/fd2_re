@@ -188,6 +188,25 @@ func (p *nativeEndingPreview) reviewingCampaignPartyOutcomes() bool {
 		p.tailPlayer.Ready() && p.reviewPartyOutcomes
 }
 
+// applyNativeEndingInput 是正式 Game.Update 與回歸共用的終局輸入 owner。
+// anyKey 只保存0x2c950已證實的raw-change條件；它不猜特定DOS scan code。
+func (g *Game) applyNativeEndingInput(confirm, escape, anyKey bool) error {
+	if g == nil || g.nativeEnding == nil {
+		return nil
+	}
+	if g.nativeEnding.reviewingCampaignPartyOutcomes() && (confirm || escape) {
+		return g.returnCampaignTerminalFromReview()
+	}
+	if g.nativeEnding.presentingCampaignTerminal() && confirm {
+		return g.startCampaignPartyOutcomeReview()
+	}
+	if !g.nativeEnding.reviewingCampaignPartyOutcomes() && g.nativeEnding.montage != nil &&
+		!g.nativeEnding.montage.Ready() && anyKey {
+		g.nativeEnding.montageInputPending = true
+	}
+	return nil
+}
+
 // awaitingCampaignFallback only admits the editable epilogue after the
 // recovered montage has completed, or after its source-provenance admission
 // has failed.  The game starts the montage before it polls the fallback key.

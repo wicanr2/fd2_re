@@ -6837,21 +6837,11 @@ func (g *Game) Update() error {
 	if g.nativeEnding != nil {
 		endingConfirm := inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace)
 		reviewExit := inpututil.IsKeyJustPressed(ebiten.KeyEscape)
-		if g.nativeEnding.reviewingCampaignPartyOutcomes() && (endingConfirm || reviewExit) {
-			if err := g.returnCampaignTerminalFromReview(); err != nil {
-				g.loadErr = "native ending review: " + err.Error()
-				return err
-			}
-		} else if g.nativeEnding.presentingCampaignTerminal() && endingConfirm {
-			if err := g.startCampaignPartyOutcomeReview(); err != nil {
-				g.loadErr = "native ending review: " + err.Error()
-				return err
-			}
-		}
-		if !g.nativeEnding.reviewingCampaignPartyOutcomes() && g.nativeEnding.montage != nil && !g.nativeEnding.montage.Ready() && len(inpututil.AppendJustPressedKeys(nil)) != 0 {
-			// 0x2c950 does not decode Enter/Space.  Preserve a raw changed-input
-			// condition until the recovered portrait loop polls it.
-			g.nativeEnding.montageInputPending = true
+		if err := g.applyNativeEndingInput(
+			endingConfirm, reviewExit, len(inpututil.AppendJustPressedKeys(nil)) != 0,
+		); err != nil {
+			g.loadErr = "native ending input: " + err.Error()
+			return err
 		}
 		if err := g.nativeEnding.advance(time.Now(), &g.nativeRNGState); err != nil {
 			g.loadErr = "native ending: " + err.Error()

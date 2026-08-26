@@ -593,7 +593,9 @@ func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testi
 		}
 		if g.nativeEnding.montage.Phase == ending.MontagePhasePortrait &&
 			g.nativeEnding.montage.PlanIndex < len(g.nativeEnding.montage.Plans)-1 {
-			g.nativeEnding.montageInputPending = true
+			if err := g.applyNativeEndingInput(false, false, true); err != nil {
+				t.Fatalf("cold-loaded ending input tick %d: %v", steps, err)
+			}
 		}
 		now = now.Add(approximateNativeMontageTick)
 		if err := g.nativeEnding.advance(now, &g.nativeRNGState); err != nil {
@@ -622,7 +624,7 @@ func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testi
 	if !bytes.Equal(held, g.nativeEnding.player.Compositor.VGA) {
 		t.Fatal("cold-loaded ending terminal frame changed while held")
 	}
-	if err := g.startCampaignPartyOutcomeReview(); err != nil {
+	if err := g.applyNativeEndingInput(true, false, true); err != nil {
 		t.Fatalf("cold-loaded party outcome review: %v", err)
 	}
 	if !g.nativeEnding.reviewingCampaignPartyOutcomes() ||
@@ -630,7 +632,7 @@ func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testi
 		t.Fatalf("cold-loaded party review state=%v records=%d order=%d",
 			g.nativeEnding.reviewingCampaignPartyOutcomes(), len(g.nativeEnding.montage.Units), len(wantOrder))
 	}
-	if err := g.returnCampaignTerminalFromReview(); err != nil {
+	if err := g.applyNativeEndingInput(false, true, true); err != nil {
 		t.Fatal(err)
 	}
 	if !g.nativeEnding.presentingCampaignTerminal() ||
