@@ -195,6 +195,13 @@ writer／consumer 時重開。
 鍵盤擷取、逐像素一致或完整E2；來源、雜湊與限制見
 [擷取紀錄](docs/data/ui-traces/native-battle-ch30-original-candidate.json)。*
 
+![不使用開場略過或固定標題計時，由正常鍵盤 CONTINUE 抵達第30戰](docs/figures/native-battle-ch30-remake-normal-title-e1.png)
+
+*另一條正式 GUI 重播完整播放重製開場，不設定 `FD2_NOCUT` 或
+`FD2_NATIVE_TITLE_TICK`，只以普通 X11 鍵盤送出 `Down、Down、Return`；frame 7202
+旁車證實抵達 `battle_ch30`、round 12及相同鏡頭／游標。這關閉重製端測試捷徑，
+但第三方存檔來源仍只容許候選 E2。*
+
 所有文件中的 `FD2.EXE` 位址目前只適用於大小 `357074` 位元組、MD5
 `b97caf2239a27a896069d03549d96e1e` 的版本。SHA-256 與相關檔案雜湊見
 [`fd2-reference-files.json`](docs/data/fd2-reference-files.json)；版本不同時

@@ -81,6 +81,8 @@ title tick與精確音訊仍只到`RUNTIME-E1`／候選E2；主紀錄見
 `FD2_NATIVE_TITLE_TICK`只保留為決定性測試覆寫。未設定環境變數的早期實檔與外部
 第30戰候選都已通過正式title publication回歸。既有畫面擷取本身仍使用固定tick，
 所以其證據分級不變；但「玩家必須設定timer環境變數」已不再是runtime阻擋。
+同日Docker／Xvfb正式GUI再完整播放開場，不設定`FD2_NOCUT`或timer覆寫，只送普通
+`Down、Down、Return`，於frame7202抵達相同第30戰狀態；圖與旁車已加入主紀錄。
 
 2026-08-24 補證：`0x525AF` 是 command 0..9 的 HP 分段除數表；typed
 傷害計畫已不再把 command0 的七段套給全部 ID。command6 使用五段，並通過

@@ -6864,3 +6864,7 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   `FD2_NATIVE_TITLE_TICK`只保留為決定性測試覆寫，格式錯誤仍失敗即關閉。
 - 使用者提供的早期實檔與外部第30戰候選，都在明確清空該環境變數時通過正式
   title publication回歸。既有第30戰圖片仍是固定tick擷取，分級不因本測試升為E2。
+- Docker／Xvfb另完整播放重製開場，不設`FD2_NOCUT`或timer覆寫；約90秒後只送
+  `Down、Down、Return`，frame7202旁車證實`battle_ch30`、round12、camera
+  `(16,16)`、cursor`(21,20)`，且無dialog／battle event／turn staging。新圖
+  `native-battle-ch30-remake-normal-title-e1.png`為640×400正式runtime擷取。

@@ -43,6 +43,12 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 > renderer差異，但第三方存檔、固定title tick與非全程來源仍只容許候選E2，不能
 > 外推成所有第30戰時點、其他章節或完整一般玩家通關E2。
 
+> **2026-08-26 正常標題路徑補驗：** 另一次正式GUI重播完整播放重製開場，未設定
+> `FD2_NOCUT`或`FD2_NATIVE_TITLE_TICK`，只在選單以普通X11事件輸入
+> `Down、Down、Return`；frame7202旁車證實抵達相同`battle_ch30`／round12／camera／
+> cursor，且沒有dialog、battle event或turn staging。這關閉重製端兩項測試夾具，
+> 不改變第三方存檔provenance與完整通關E2限制。
+
 終局 19×5 owner 的最新玩家可見 E1 證據見
 [`ending-dialogue-native-indexed-remake-e1.json`](../data/ui-traces/ending-dialogue-native-indexed-remake-e1.json)；
 旁車鎖定 `0x2BE44`、`waiting`、第 1／5 區塊且一般對話佇列為零。這只關閉重製端
