@@ -55,13 +55,27 @@ type NativeDialogueLayout struct {
 	Pages       [][]string `json:"pages"`
 }
 
+// nativeDialogueLineGlyphLimit 保存固定原版FDTXT已觀察到的每種speaker control
+// 列寬。它是原始資料的接受上限，不是任意新文字的自動排版規則。
+func nativeDialogueLineGlyphLimit(control string) (int, bool) {
+	switch control {
+	case "FFEC":
+		return 13, true
+	case "FFED":
+		return 15, true
+	case "FFEE", "FFEF":
+		return 14, true
+	default:
+		return 0, false
+	}
+}
+
 func (layout *NativeDialogueLayout) Validate() error {
 	if layout == nil || layout.SourceDAT == "" || layout.StringIndex < 0 || layout.Utterance < 0 || layout.Operand < 0 || layout.Operand > 0xffff {
 		return fmt.Errorf("native dialogue layout lacks source provenance")
 	}
-	upper := layout.Control == "FFEF" || layout.Control == "FFED"
-	lower := layout.Control == "FFEE" || layout.Control == "FFEC"
-	if !upper && !lower {
+	lineGlyphLimit, ok := nativeDialogueLineGlyphLimit(layout.Control)
+	if !ok {
 		return fmt.Errorf("native dialogue layout has unsupported control %q", layout.Control)
 	}
 	if len(layout.Pages) == 0 {
@@ -76,8 +90,8 @@ func (layout *NativeDialogueLayout) Validate() error {
 		}
 		for row, text := range rows {
 			count := len([]rune(text))
-			if count == 0 || count > 13 {
-				return fmt.Errorf("native dialogue layout page %d row %d has %d glyphs", page, row, count)
+			if count == 0 || count > lineGlyphLimit {
+				return fmt.Errorf("native dialogue layout page %d row %d has %d glyphs, limit %d for %s", page, row, count, lineGlyphLimit, layout.Control)
 			}
 		}
 	}

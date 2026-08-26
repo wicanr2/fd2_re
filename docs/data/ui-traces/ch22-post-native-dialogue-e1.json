@@ -1,0 +1,71 @@
+{
+  "name": "第23戰後十個caller／56句原生故事對話與整備冷讀路徑",
+  "date": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "reference": {
+    "FD2.EXE": {
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "FDTXT_023.bin": {
+      "size": 7168,
+      "md5": "1bf6aad45f46d2f56a7e5c9f464a7ac5",
+      "sha256": "bcc278aa9c07196693d582df9ebe3b7f34976e08286ac5f73d6da6884eeff54d"
+    },
+    "canonical_re": "docs/data/ida/fd2_ch22_post_dialogue_binding.txt",
+    "design": "docs/knowledge-base/56-fd2-remake-sdd.md#raw-ch22_post-第23戰後十個-caller56句原生對話2026-08-27"
+  },
+  "native_dialogue": {
+    "handler": "0x24754",
+    "caller_count": 10,
+    "source": "FDTXT_023",
+    "string_indices": [8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+    "utterance_counts": [11, 8, 2, 9, 4, 6, 3, 1, 2, 10],
+    "total_utterances": 56,
+    "line_glyph_limits": {
+      "FFEC": 13,
+      "FFED": 15,
+      "FFEE": 14,
+      "FFEF": 14
+    }
+  },
+  "branch_contract": [
+    "第一分支只消費index8或index9",
+    "第二分支只消費index10加11、index12或index13",
+    "index14至17是共同尾段",
+    "sync_party位於index14之前"
+  ],
+  "formal_route": {
+    "nodes": [
+      "battle_ch23",
+      "postbattle_ch23_persist",
+      "preparation_ch24",
+      "save_slot_1",
+      "cold_load_new_Game",
+      "story_ch24"
+    ],
+    "reachable_string_indices": [9, 10, 11, 14, 15, 16, 17],
+    "reachable_utterances": 35,
+    "maximum_materialized_slots": 86,
+    "persistent_roster_count": 16,
+    "preparation_quota": 15
+  },
+  "verification": {
+    "generator": "10 callers / 56 utterances --check",
+    "data_tests": [
+      "TestCh22PostNativeDialogueLayoutsMatchOriginalControlWords",
+      "TestNativeDialogueLayoutUsesControlSpecificOriginalLineLimits"
+    ],
+    "integrated_test": "TestChapter23BattleResultRunsBoundPostbattleAndReachesPreparation24SaveBoundary",
+    "full_packages": "go test ./internal/campaign ./cmd/fd2 -count=1",
+    "result": "pass",
+    "docker_network": "none",
+    "xvfb": "explicit PID with exit trap"
+  },
+  "limitations": [
+    "56句全量由raw equality與互斥分支資料共同驗證；單次正式路徑只會看到合法子集，不強迫同時走互斥分支。",
+    "測試使用與正式鍵盤共用的具型別故事與整備輸入，但未注入作業系統鍵盤事件。",
+    "沒有未修改原版DOSBox同狀態逐幀、精確音訊或長程通關證據，因此不提升為PLAYER-E2。"
+  ]
+}

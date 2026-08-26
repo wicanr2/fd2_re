@@ -4837,6 +4837,35 @@ binding須明示`runtime_context.story_viewport=true`，並只接受已資料化
 `town_ch02`落點，以及後續`preparation_ch02`存檔／全新`Game`冷讀不退化。本切片最高為
 `RUNTIME-E1`；未修改原版同狀態逐幀、精確音訊與作業系統鍵盤事件仍另列。
 
+### raw `ch22_post` 第23戰後十個 caller／56句原生對話（2026-08-27）
+
+canonical證據為
+[`fd2_ch22_post_dialogue_binding.txt`](../data/ida/fd2_ch22_post_dialogue_binding.txt)。
+本切片沿用已閉合的handler `0x24754`、`sub_15F84`與既有indexed transition，不重開
+renderer。十個caller依序消費`FDTXT_023` index8..17，各自展開
+`11,8,2,9,4,6,3,1,2,10`句，合計**56句**；舊盤點的89是整份FDTXT index0..17
+總句數，不是本handler的驗收數，後續不得沿用。
+
+第一個原始分支只會消費index8或9；第二個只會消費index10＋11、index12或index13；
+index14..17則是共同尾段。故單一路徑不得被測試強迫同時播放互斥分支；資料層須證明
+56句全部與raw controls／operands／pages相等，分支fixture與正式玩家路徑再共同證明
+合法子集及順序。`sync_party`固定在index14之前，不能因對話資料化移到handler尾端，
+也不能在前段對話尚未完整收框時提早發布持續隊伍。
+
+原始資料反證舊的全域13字validator：`FFEC`已觀察上限13 glyph、`FFED`為15、
+`FFEE`與`FFEF`為14。產生器、具型別驗證器與indexed compositor必須由每句raw
+control選擇相同上限；超限時整句失敗即關閉，不得截字、自動換行或猜造頁界。這是
+固定雜湊原始資料的可接受形狀，不宣稱原版可為任意新文本自動排版。
+
+binding沿用86-slot戰後場景與`story_viewport=true`，十個caller均須具備
+caller-specific `NativeDialogueLayout`。產生器必須以
+`--expected-callers 10 --expected-utterances 56`鎖定形狀，並拒絕unknown control、
+缺glyph、非唯一count-aligned target或舊binding漂移。正式驗收從第23戰戰果確認進
+raw ch22 post，只使用與鍵盤共用的具型別故事輸入及`Game.Update`完成實際可達分支，
+再經既有提示存檔、全新`Game`冷讀、15人整備與取消重選抵達`story_ch24`；不得直接
+清除dialog、跳beat或改寫節點。完成後最高為`RUNTIME-E1`，未修改原版同狀態逐幀、
+精確音訊與作業系統鍵盤事件仍不提升為`PLAYER-E2`。
+
 ## 2026-08-09 raw ch24 post `0x24df2` 函式邊界與 owner 勘誤（E1）
 
 固定版 `FD2.EXE` 的 IDA Pro 9.4 與 Docker Capstone 共同固定 handler table

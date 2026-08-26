@@ -7460,3 +7460,28 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   原先`g.dialog=nil→beatAdvance`捷徑已刪除。證據見
   [`ch00-post-native-dialogue-e1.json`](../data/ui-traces/ch00-post-native-dialogue-e1.json)。
   仍缺未修改原版同狀態逐幀、精確音訊與作業系統鍵盤事件，故維持`RUNTIME-E1`。
+
+## 2026-08-27：第23戰後十個caller／56句原生對話正式路徑
+
+- canonical證據先新增
+  [`fd2_ch22_post_dialogue_binding.txt`](../data/ida/fd2_ch22_post_dialogue_binding.txt)，
+  固定handler`0x24754`的十個`0x15F84` caller與FDTXT_023 index8..17。各index展開
+  `11,8,2,9,4,6,3,1,2,10`句，合計56句；舊盤點的89是整份FDTXT_023，已勘誤。
+- raw index12直接反證全域13字validator；固定原版已觀察control上限為
+  `FFEC=13／FFED=15／FFEE=14／FFEF=14`。產生器、compiler與indexed compositor
+  現共用相同失敗即關閉契約，不截字、不自動換行。產生器也改為遞迴走訪handler
+  互斥分支，否則只會錯漏成4 caller／16句。
+- 十個caller／56句已由固定raw equality完整驗證。正式第23戰戰果路徑依fixture的
+  合法分支播放index9、10、11、14..17共35句；每句均由與鍵盤共用的typed input完成
+  opening、逐字、分頁、嘴型與closing，之後才按原位置`sync_party`，再經記錄提示
+  存檔、全新`Game`冷讀、15人整備與取消重選抵達`story_ch24`。舊
+  `g.dialog=nil→beatAdvance`捷徑已由此正式回歸移除。
+- Docker／Xvfb聚焦回歸、完整`go test ./internal/campaign ./cmd/fd2 -count=1`與
+  10／56生成器`--check`均通過；序章19／97及第1戰後1／13
+  亦無漂移。`ch01_pre`檢查只顯示舊檔為人工壓縮JSON格式，隔離重生沒有內容差異，
+  因此未混入無關格式改寫。證據見
+  [`ch22-post-native-dialogue-e1.json`](../data/ui-traces/ch22-post-native-dialogue-e1.json)。
+  完整套件首輪錯把`FD2_MUTE=1`設在全域，使刻意驗證缺sample拒絕的測試走錯分支；
+  移除該環境變數後以同一Docker／Xvfb命令乾淨重跑，`cmd/fd2`全部通過。這是驗證
+  命令配置勘誤，不是產品缺陷。
+  尚缺未修改DOSBox同狀態逐幀、精確音訊及作業系統鍵盤事件，維持`RUNTIME-E1`。

@@ -8,54 +8,1353 @@
     "story_viewport": true
   },
   "dialogue_contexts": {
-    "0x247ea": { "source_dat": "FDTXT_023", "script": "ch23.json" },
-    "0x2481a": { "source_dat": "FDTXT_023", "script": "ch23.json" },
-    "0x24863": { "source_dat": "FDTXT_023", "script": "ch23.json" },
-    "0x248a8": { "source_dat": "FDTXT_023", "script": "ch23.json" },
-    "0x248dd": { "source_dat": "FDTXT_023", "script": "ch23.json" },
-    "0x24921": { "source_dat": "FDTXT_023", "script": "ch23.json" },
-    "0x2495d": { "source_dat": "FDTXT_023", "script": "ch23.json" },
-    "0x249a9": { "source_dat": "FDTXT_023", "script": "ch23.json" },
-    "0x249f5": { "source_dat": "FDTXT_023", "script": "ch23.json" },
-    "0x24b05": { "source_dat": "FDTXT_023", "script": "ch23.json" }
+    "0x247ea": {
+      "source_dat": "FDTXT_023",
+      "script": "ch23.json"
+    },
+    "0x2481a": {
+      "source_dat": "FDTXT_023",
+      "script": "ch23.json"
+    },
+    "0x24863": {
+      "source_dat": "FDTXT_023",
+      "script": "ch23.json"
+    },
+    "0x248a8": {
+      "source_dat": "FDTXT_023",
+      "script": "ch23.json"
+    },
+    "0x248dd": {
+      "source_dat": "FDTXT_023",
+      "script": "ch23.json"
+    },
+    "0x24921": {
+      "source_dat": "FDTXT_023",
+      "script": "ch23.json"
+    },
+    "0x2495d": {
+      "source_dat": "FDTXT_023",
+      "script": "ch23.json"
+    },
+    "0x249a9": {
+      "source_dat": "FDTXT_023",
+      "script": "ch23.json"
+    },
+    "0x249f5": {
+      "source_dat": "FDTXT_023",
+      "script": "ch23.json"
+    },
+    "0x24b05": {
+      "source_dat": "FDTXT_023",
+      "script": "ch23.json"
+    }
   },
   "overrides": {
     "0x247b4": {
       "layout": {
         "units": [
-          { "slot": 0, "x": 20, "y": 19, "pose": 0 },
-          { "slot": 1, "x": 20, "y": 17, "pose": 0 },
-          { "slot": 2, "x": 18, "y": 18, "pose": 0 },
-          { "slot": 3, "x": 19, "y": 18, "pose": 0 },
-          { "slot": 4, "x": 20, "y": 18, "pose": 0 },
-          { "slot": 5, "x": 21, "y": 18, "pose": 0 },
-          { "slot": 6, "x": 22, "y": 18, "pose": 0 },
-          { "slot": 7, "x": 18, "y": 17, "pose": 0 },
-          { "slot": 8, "x": 22, "y": 17, "pose": 0 },
-          { "slot": 9, "x": 18, "y": 16, "pose": 0 },
-          { "slot": 10, "x": 19, "y": 16, "pose": 0 },
-          { "slot": 11, "x": 21, "y": 16, "pose": 0 },
-          { "slot": 12, "x": 22, "y": 16, "pose": 0 },
-          { "slot": 13, "x": 19, "y": 15, "pose": 0 },
-          { "slot": 14, "x": 20, "y": 15, "pose": 0 },
-          { "slot": 15, "x": 21, "y": 15, "pose": 0 },
-          { "slot": 16, "x": 19, "y": 21, "pose": 0 },
-          { "slot": 17, "x": 21, "y": 21, "pose": 2 }
+          {
+            "slot": 0,
+            "x": 20,
+            "y": 19,
+            "pose": 0
+          },
+          {
+            "slot": 1,
+            "x": 20,
+            "y": 17,
+            "pose": 0
+          },
+          {
+            "slot": 2,
+            "x": 18,
+            "y": 18,
+            "pose": 0
+          },
+          {
+            "slot": 3,
+            "x": 19,
+            "y": 18,
+            "pose": 0
+          },
+          {
+            "slot": 4,
+            "x": 20,
+            "y": 18,
+            "pose": 0
+          },
+          {
+            "slot": 5,
+            "x": 21,
+            "y": 18,
+            "pose": 0
+          },
+          {
+            "slot": 6,
+            "x": 22,
+            "y": 18,
+            "pose": 0
+          },
+          {
+            "slot": 7,
+            "x": 18,
+            "y": 17,
+            "pose": 0
+          },
+          {
+            "slot": 8,
+            "x": 22,
+            "y": 17,
+            "pose": 0
+          },
+          {
+            "slot": 9,
+            "x": 18,
+            "y": 16,
+            "pose": 0
+          },
+          {
+            "slot": 10,
+            "x": 19,
+            "y": 16,
+            "pose": 0
+          },
+          {
+            "slot": 11,
+            "x": 21,
+            "y": 16,
+            "pose": 0
+          },
+          {
+            "slot": 12,
+            "x": 22,
+            "y": 16,
+            "pose": 0
+          },
+          {
+            "slot": 13,
+            "x": 19,
+            "y": 15,
+            "pose": 0
+          },
+          {
+            "slot": 14,
+            "x": 20,
+            "y": 15,
+            "pose": 0
+          },
+          {
+            "slot": 15,
+            "x": 21,
+            "y": 15,
+            "pose": 0
+          },
+          {
+            "slot": 16,
+            "x": 19,
+            "y": 21,
+            "pose": 0
+          },
+          {
+            "slot": 17,
+            "x": 21,
+            "y": 21,
+            "pose": 2
+          }
         ],
         "cam_x": 336,
         "cam_y": 336
       }
     },
-    "0x2482e": { "act": { "resource": 71 } },
-    "0x24877": { "act": { "resource": 72 } },
-    "0x248f1": { "act": { "resource": 72 } },
-    "0x24a4b": { "resource": { "resource_id": 69, "archive": "FDFIELD.DAT", "owner": "0x53a51" } },
-    "0x24a65": { "resource": { "resource_id": 46, "archive": "FDSHAP.DAT", "owner": "0x53a5d" } },
-    "0x24a7f": { "resource": { "resource_id": 47, "archive": "FDSHAP.DAT", "owner": "0x53a69" } },
-    "0x24aa3": { "pan": { "x": 336, "y": 696, "tile_step": true } },
-    "0x24abe": { "act": { "resource": 73 } },
-    "0x24aca": { "pan": { "x": 336, "y": 336, "tile_step": true } },
-    "0x24ad4": { "act": { "resource": 73 } },
-    "0x24ade": { "act": { "resource": 73 } }
+    "0x2482e": {
+      "act": {
+        "resource": 71
+      }
+    },
+    "0x24877": {
+      "act": {
+        "resource": 72
+      }
+    },
+    "0x248f1": {
+      "act": {
+        "resource": 72
+      }
+    },
+    "0x24a4b": {
+      "resource": {
+        "resource_id": 69,
+        "archive": "FDFIELD.DAT",
+        "owner": "0x53a51"
+      }
+    },
+    "0x24a65": {
+      "resource": {
+        "resource_id": 46,
+        "archive": "FDSHAP.DAT",
+        "owner": "0x53a5d"
+      }
+    },
+    "0x24a7f": {
+      "resource": {
+        "resource_id": 47,
+        "archive": "FDSHAP.DAT",
+        "owner": "0x53a69"
+      }
+    },
+    "0x24aa3": {
+      "pan": {
+        "x": 336,
+        "y": 696,
+        "tile_step": true
+      }
+    },
+    "0x24abe": {
+      "act": {
+        "resource": 73
+      }
+    },
+    "0x24aca": {
+      "pan": {
+        "x": 336,
+        "y": 336,
+        "tile_step": true
+      }
+    },
+    "0x24ad4": {
+      "act": {
+        "resource": 73
+      }
+    },
+    "0x24ade": {
+      "act": {
+        "resource": 73
+      }
+    }
+  },
+  "dialogue_overrides": {
+    "0x247ea#8": {
+      "script": "ch23.json",
+      "scene_index": 3,
+      "lines": [
+        {
+          "line": 0,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 8,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 22,
+            "pages": [
+              [
+                "『不愧是古代人建造的機兵，",
+                "　應付起來真是棘手的很．幸",
+                "　好大家都能獨當一面，才能",
+                "　順利消滅這些敵人。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 8,
+            "utterance": 1,
+            "control": "FFEF",
+            "operand": 19,
+            "pages": [
+              [
+                "『危機已過，現在我們可以仔",
+                "　細研究這個遺跡了。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 8,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『卡里斯叔叔，這遺跡到底有",
+                "　什麼秘密，你還沒告訴我們",
+                "　呢！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 8,
+            "utterance": 3,
+            "control": "FFEF",
+            "operand": 22,
+            "pages": [
+              [
+                "『是這樣嗎？其貫我也是從古",
+                "　籍上看來的。據說眼前這個",
+                "　小丘是古代人所造的飛行用"
+              ],
+              [
+                "　具，經由一支傳送法杖的力",
+                "　量，可以把擁有「天空之鑰",
+                "　」的人帶到黃金的城堡上去"
+              ],
+              [
+                "　。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 4,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 8,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『天空之鑰？那不就在我們手",
+                "　上嗎？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 5,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 8,
+            "utterance": 5,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『「傳送之杖」也有啊！我們",
+                "　就是被它傳送到這裡來的。",
+                "　』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 6,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 8,
+            "utterance": 6,
+            "control": "FFEF",
+            "operand": 22,
+            "pages": [
+              [
+                "『真的？那真是太巧了！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 7,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 8,
+            "utterance": 7,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『我一直認為，最近大陸上的",
+                "　天地異變和神秘敵人都和這",
+                "　「黃金城」有關。在古代傳"
+              ],
+              [
+                "　說中，黃金城總和戰爭、災",
+                "　厄等脫不了關係，所以我們",
+                "　一直都在追查這其中的關聯"
+              ],
+              [
+                "　。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 8,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 8,
+            "utterance": 8,
+            "control": "FFEF",
+            "operand": 22,
+            "pages": [
+              [
+                "『這確是有加以查明的必要。",
+                "　索爾殿下，既然這兩件東西",
+                "　都已到手，可以讓我和你們"
+              ],
+              [
+                "　一起去看看嗎？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 9,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 8,
+            "utterance": 9,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『當然可以！有卡里斯叔叔同",
+                "　行，什麼對手都不足為懼了",
+                "　！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 10,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 8,
+            "utterance": 10,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『是呀！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x2481a#9": {
+      "script": "ch23.json",
+      "scene_index": 4,
+      "lines": [
+        {
+          "line": 0,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 9,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 22,
+            "pages": [
+              [
+                "『不愧是古代人建造的機兵，",
+                "　應付起來真是棘手的很．幸",
+                "　好大家都能獨當一面，才能"
+              ],
+              [
+                "　順利消滅這些敵人。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 9,
+            "utterance": 1,
+            "control": "FFEF",
+            "operand": 19,
+            "pages": [
+              [
+                "『危機已過，現在我們可以仔",
+                "　細研究這個遺跡了。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 9,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『卡里斯叔叔，這遺跡到底有",
+                "　什麼秘密，你還沒告訴我們",
+                "　呢！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 9,
+            "utterance": 3,
+            "control": "FFEF",
+            "operand": 22,
+            "pages": [
+              [
+                "『是這樣嗎？其貫我也是從古",
+                "　籍上看來的，據說此地可能",
+                "　藏有「天空之鑰」。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 4,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 9,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『我聽過這東西，據說它是通",
+                "　往黃金城堡的唯一方法。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 5,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 9,
+            "utterance": 5,
+            "control": "FFEF",
+            "operand": 22,
+            "pages": [
+              [
+                "『我們並未遇料到會有敵人出",
+                "　現，這回算是相當的驚險．",
+                "　不過，我想我還是先回城休"
+              ],
+              [
+                "　義一下好了，將軍殿下，這",
+                "　裡就先交給你了。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 6,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 9,
+            "utterance": 6,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『卡里斯叔叔，你要多保重喔",
+                "　！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 7,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 9,
+            "utterance": 7,
+            "control": "FFEF",
+            "operand": 22,
+            "pages": [
+              [
+                "『索爾殿下，您和亞雷斯也要",
+                "　多小心！不過以你們的表現",
+                "　看來，我想我是可以放心了"
+              ],
+              [
+                "　。我們後會有期！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x24863#10": {
+      "script": "ch23.json",
+      "scene_index": 5,
+      "lines": [
+        {
+          "line": 0,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 10,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『羅德曼，那你打算怎麼辦呢",
+                "　？我很希望能有像你這樣的",
+                "　武士加入，這對我們的戰力",
+                "　有很大的提昇。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 10,
+            "utterance": 1,
+            "control": "FFEF",
+            "operand": 19,
+            "pages": [
+              [
+                "『我．唉，我想．我還是不太",
+                "　適合。老友，我也要回城了",
+                "　，希望你們此行順利，都能"
+              ],
+              [
+                "　平安歸來。．．』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x248a8#11": {
+      "script": "ch23.json",
+      "scene_index": 5,
+      "lines": [
+        {
+          "line": 2,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 11,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 18,
+            "pages": [
+              [
+                "『唉，都是因為我的關係．．",
+                "　』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 11,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 6,
+            "pages": [
+              [
+                "『前輩，這怎麼說？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 4,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 11,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 18,
+            "pages": [
+              [
+                "『這是一件很久以前的往事了",
+                "　．．那時羅德曼將軍還在禁",
+                "　衛軍統領任內，而我才剛成"
+              ],
+              [
+                "　為禁衛軍騎士不久．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 5,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 11,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 6,
+            "pages": [
+              [
+                "『啊！我想起來了！那時前輩",
+                "　妳向將軍他．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 6,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 11,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 18,
+            "pages": [
+              [
+                "『是的，那時還年輕的我被感",
+                "　情沖昏了頭，在大庭廣眾面",
+                "　前向將軍表明愛意。但是將"
+              ],
+              [
+                "　軍的夫人妮莉公主是陛下最",
+                "　小的妹妹，我這麼做讓他非",
+                "　常為難，結果將軍向陛下請"
+              ],
+              [
+                "　調邊疆，就只為了避開我．",
+                "　．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 7,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 11,
+            "utterance": 5,
+            "control": "FFEE",
+            "operand": 6,
+            "pages": [
+              [
+                "『原來是這樣．．。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 8,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 11,
+            "utterance": 6,
+            "control": "FFEE",
+            "operand": 18,
+            "pages": [
+              [
+                "『那時的我傷心欲絕，雖把全",
+                "　部心思用在劍術上，仍然忘",
+                "　不了這件事，因此才又離開"
+              ],
+              [
+                "　騎士團到深山中修練．這麼",
+                "　多年以後，我已經不再釋懷",
+                "　，但將軍還這麼在乎這件事"
+              ],
+              [
+                "　，你們就可以知道當年我讓",
+                "　他多麼困掖了。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 9,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 11,
+            "utterance": 7,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『沒關係！密蒂前輩，將軍的",
+                "　份就算是由妳代替了，今後",
+                "　妳不但是為了大家而戰，也"
+              ],
+              [
+                "　是為了將軍而戰，過去的遺",
+                "　憾和感傷，就讓它在戰陣中",
+                "　煙消雲散！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 10,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 11,
+            "utterance": 8,
+            "control": "FFEE",
+            "operand": 18,
+            "pages": [
+              [
+                "『．索爾，謝謝你。我會記住",
+                "　這句話的。』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x24921#13": {
+      "script": "ch23.json",
+      "scene_index": 7,
+      "lines": [
+        {
+          "line": 0,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 13,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『羅德曼，那你打算怎麼辦呢",
+                "　？我很希望能有像你這樣的",
+                "　武士加入，這對我們的戰力"
+              ],
+              [
+                "　有很大的提昇。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 13,
+            "utterance": 1,
+            "control": "FFEF",
+            "operand": 19,
+            "pages": [
+              [
+                "『是嗎？難得聽你這樣誇讚我",
+                "　，如果我這把老骨頭還能派",
+                "　得上用場，那當然是樂意之"
+              ],
+              [
+                "　至。哈哈哈！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 13,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 8,
+            "pages": [
+              [
+                "『太好啦！我知道羅德曼將軍",
+                "　的戰技一直都是沒話說的！",
+                "　』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 13,
+            "utterance": 3,
+            "control": "FFEF",
+            "operand": 19,
+            "pages": [
+              [
+                "『咦，妳不是．妳不是希莉亞",
+                "　公主嗎？為何殿下．會在這",
+                "　裡？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 4,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 13,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 8,
+            "pages": [
+              [
+                "『將軍你都可以蹺班來考古了",
+                "　，我怎麼可以待在宮裏發呆",
+                "　呢？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 5,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 13,
+            "utterance": 5,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『好啦，別大驚小怪了，為了",
+                "　解決這件事情，王國的強者",
+                "　勇士幾乎都到齊了，我們先"
+              ],
+              [
+                "　想想接下來要怎麼辦吧！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x248dd#12": {
+      "script": "ch23.json",
+      "scene_index": 6,
+      "lines": [
+        {
+          "line": 0,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 12,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『羅德曼，那你打算怎麼辦呢",
+                "　？我很希望能有像你這樣的",
+                "　武士加入，這對我們的戰力",
+                "　有很大的提昇。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 12,
+            "utterance": 1,
+            "control": "FFEF",
+            "operand": 19,
+            "pages": [
+              [
+                "『老友，我很希望能與你們同行",
+                "　，可是我是受陛下的任命，",
+                "　在此擔任邊防將軍，"
+              ],
+              [
+                "　除非有陛下的諭命，否則擅",
+                "　離職守視同抗命。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 12,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 18,
+            "pages": [
+              [
+                "『是這樣嗎？．真是遺憾，我本",
+                "　來以為可以再看到你昔日的",
+                "　英婆呢．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 12,
+            "utterance": 3,
+            "control": "FFEF",
+            "operand": 19,
+            "pages": [
+              [
+                "『這也是件沒辦法的事．老友，",
+                "　保重！我得回城了。願你們",
+                "　此行順利，平安歸來。』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x2495d#14": {
+      "script": "ch23.json",
+      "scene_index": 8,
+      "lines": [
+        {
+          "line": 0,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 14,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 24,
+            "pages": [
+              [
+                "『．我試了一下，這小丘上的",
+                "　法陣好像對這法杖上的魔力",
+                "　有反應，所以我想貫驗看看"
+              ],
+              [
+                "　，看能不能讓它飛起來．。",
+                "　』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 14,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 8,
+            "pages": [
+              [
+                "『快試，快試！我等不及要看",
+                "　了！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 14,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 24,
+            "pages": [
+              [
+                "『好吧，那我現在就開始．米",
+                "　洛耶爾‧希里卡恩‧耶‧哈",
+                "　洛納！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x249a9#15": {
+      "script": "ch23.json",
+      "scene_index": 8,
+      "lines": [
+        {
+          "line": 3,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 15,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『地震了！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x249f5#16": {
+      "script": "ch23.json",
+      "scene_index": 8,
+      "lines": [
+        {
+          "line": 4,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 16,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『哇啊啊，好可怕！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 5,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 16,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 24,
+            "pages": [
+              [
+                "『可能要起飛了，大家站穩！",
+                "　』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x24b05#17": {
+      "script": "ch23.json",
+      "scene_index": 8,
+      "lines": [
+        {
+          "line": 6,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 17,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 8,
+            "pages": [
+              [
+                "『哇！飛了，飛了！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 7,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 17,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 27,
+            "pages": [
+              [
+                "『真是神奇！古代人的智慧和",
+                "　力量，果然不是我們所能想",
+                "　像的。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 8,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 17,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『這飛行岩開始高速飛行了．",
+                "　希爾法，你知道它是要飛到",
+                "　哪裡去嗎？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 9,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 17,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 24,
+            "pages": [
+              [
+                "『嗄？這．我也太不清楚，我",
+                "　只有使用這法杖啟動它而已",
+                "　，現在．現在它是在飛它自"
+              ],
+              [
+                "　己的。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 10,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 17,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『那．那怎麼辦？我們總不能",
+                "　就這樣一直飛下去吧！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 11,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 17,
+            "utterance": 5,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『別緊張．．這飛天丘總會飛",
+                "　到一個目的地的，這是在很",
+                "　久以前就已經決定好了的．"
+              ],
+              [
+                "　．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 12,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 17,
+            "utterance": 6,
+            "control": "FFEE",
+            "operand": 24,
+            "pages": [
+              [
+                "『悠妮小姐，妳知道和這飛行",
+                "　岩有關的事嗎？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 13,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 17,
+            "utterance": 7,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『．好像有點印象．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 14,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 17,
+            "utterance": 8,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『既然悠妮這麼說，我們就靜",
+                "　觀其變吧！看看這玩意到底",
+                "　會把我們帶到哪裡去！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 15,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_023",
+            "string_index": 17,
+            "utterance": 9,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『呀呼！這樣飛真是過癒呢！",
+                "　』"
+              ]
+            ]
+          }
+        }
+      ]
+    }
   }
 }

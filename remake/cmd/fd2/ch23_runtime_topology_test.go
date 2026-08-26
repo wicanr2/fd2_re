@@ -80,6 +80,7 @@ func TestChapter23BattleResultRunsBoundPostbattleAndReachesPreparation24SaveBoun
 	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(base, "FDICON.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(base, "FDTXT.DAT"))
 	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(base, "DATO.DAT"))
+	t.Setenv("FD2_MUTE", "1")
 	g, order := newChapter23RuntimeBattle(t)
 	shared, err := loadNativeClassUIAssets()
 	if err != nil {
@@ -131,29 +132,43 @@ func TestChapter23BattleResultRunsBoundPostbattleAndReachesPreparation24SaveBoun
 		t.Fatalf("chapter23 result handoff node=%q result=%q err=%q", g.camp.NodeID(), g.result, g.loadErr)
 	}
 	maxSlots := len(g.st.Units)
+	type nativeDialogueKey struct{ stringIndex, utterance int }
+	seenNativeDialogue := make(map[nativeDialogueKey]bool)
 	for frame := 0; frame < 50000 && g.camp.NodeID() != "preparation_ch24"; frame++ {
 		if g.transitionReveal != nil {
 			g.transitionReveal.drawn = true
 			g.transitionReveal.ticks = 0
-			g.stepTransitionReveal()
 		}
 		if g.native2189A != nil {
 			g.native2189A.drawn = true
-			g.stepNative2189A()
 		}
 		if g.indexedTransition != nil {
 			g.indexedTransition.drawn = true
-			g.stepNativeIndexedTransition()
 		}
 		if g.nativePaletteRamp != nil {
 			g.nativePaletteRamp.drawn = true
-			g.stepNativePaletteRamp()
 		}
 		if len(g.dialog) != 0 {
-			g.dialog = nil
-			g.beatAdvance()
+			current := g.dialog[len(g.dialog)-1]
+			if current.NativeDialogue == nil || current.Upper == nil ||
+				current.NativeDialogue.SourceDAT != "FDTXT_023" ||
+				current.NativeDialogue.StringIndex < 8 || current.NativeDialogue.StringIndex > 17 ||
+				len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) < 5 ||
+				len(g.nativeDialogueProgressive) != len(current.NativeDialogue.Pages) {
+				t.Fatalf("ch22_post dialog lost indexed lifecycle: %#v", current)
+			}
+			seenNativeDialogue[nativeDialogueKey{
+				stringIndex: current.NativeDialogue.StringIndex,
+				utterance:   current.NativeDialogue.Utterance,
+			}] = true
+			if g.nativeStoryDialogueAtInputWait() &&
+				!g.handleNativeStoryInput(g.camp.Node(), nativeStoryInput{enter: true}) {
+				t.Fatal("ch22_post formal story input was rejected")
+			}
 		}
-		g.tick(1)
+		if err := g.Update(); err != nil {
+			t.Fatalf("ch22_post Update: %v", err)
+		}
 		if g.st != nil && len(g.st.Units) > maxSlots {
 			maxSlots = len(g.st.Units)
 		}
@@ -163,6 +178,21 @@ func TestChapter23BattleResultRunsBoundPostbattleAndReachesPreparation24SaveBoun
 	}
 	if g.camp.NodeID() != "preparation_ch24" || g.handlerChapter != 23 || g.st != nil || maxSlots != 86 {
 		t.Fatalf("chapter23 post boundary node=%q chapter=%d state=%v maxSlots=%d", g.camp.NodeID(), g.handlerChapter, g.st != nil, maxSlots)
+	}
+	wantDialogueCounts := map[int]int{9: 8, 10: 2, 11: 9, 14: 3, 15: 1, 16: 2, 17: 10}
+	for stringIndex, want := range wantDialogueCounts {
+		got := 0
+		for key := range seenNativeDialogue {
+			if key.stringIndex == stringIndex {
+				got++
+			}
+		}
+		if got != want {
+			t.Fatalf("ch22_post FDTXT_023 index%d native dialogues=%d, want %d", stringIndex, got, want)
+		}
+	}
+	if len(seenNativeDialogue) != 35 {
+		t.Fatalf("ch22_post formal reachable native dialogues=%d, want 35", len(seenNativeDialogue))
 	}
 	if len(g.partyRoster) != len(order) {
 		t.Fatalf("chapter23 synced roster=%d, want %d", len(g.partyRoster), len(order))

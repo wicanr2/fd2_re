@@ -1,0 +1,75 @@
+# raw ch22 post 十個 caller／56句原生對話綁定證據
+
+## 版本、工具與位址空間
+
+- 原版輸入：`FD2.EXE`，357074 bytes；MD5
+  `b97caf2239a27a896069d03549d96e1e`；SHA-256
+  `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 對話輸入：同一合法原版解出的`FDTXT_023.bin`，7168 bytes；MD5
+  `1bf6aad45f46d2f56a7e5c9f464a7ac5`；SHA-256
+  `bcc278aa9c07196693d582df9ebe3b7f34976e08286ac5f73d6da6884eeff54d`。
+- 第一工具：既有授權IDA Pro 9.4 canonical證據
+  [`fd2_ch22_post_ida.txt`](fd2_ch22_post_ida.txt)與
+  [`fd2_story_dialogue_layout_ida.txt`](fd2_story_dialogue_layout_ida.txt)，採DOS LE
+  loader的IDA linear address。caller分支與`sub_15F84`通用consumer均已閉合，本切片
+  不重開renderer、條件或戰後indexed transition。
+- FDTXT offset／control重算：一次性無網路`python:3.12-slim`容器，原始輸入唯讀；
+  原始名稱、位址、controls與operands皆保留。
+
+## 已證實：十個caller與raw string順序
+
+handler入口為IDA linear `0x24754`。十個`sub_15F84` caller依控制流為：
+
+```text
+0x247EA -> FDTXT_023 #8   （第一分支then）
+0x2481A -> FDTXT_023 #9   （第一分支else）
+0x24863 -> FDTXT_023 #10  （第二分支identity18 present）
+0x248A8 -> FDTXT_023 #11  （同一分支ACT／deactivate後）
+0x248DD -> FDTXT_023 #12  （identity18 absent且raw round >=15）
+0x24921 -> FDTXT_023 #13  （identity18 absent且raw round <15）
+0x2495D -> FDTXT_023 #14  （sync_party／chapter23後共同尾段）
+0x249A9 -> FDTXT_023 #15  （第一段0x2189A／0x24B4D後）
+0x249F5 -> FDTXT_023 #16  （第二段0x2189A／0x24B4D後）
+0x24B05 -> FDTXT_023 #17  （資源／palette／ACT73共同尾端）
+```
+
+`count-aligned.json`對每個index均只有一個`ch23.json` target。raw utterance數依
+index8..17為`11,8,2,9,4,6,3,1,2,10`，合計**56句**。舊盤點把整份
+`FDTXT_023` index0..17的89句誤列為post子集；89不可再作本handler驗收數。
+
+## 已證實：分支可見集合與共同尾端
+
+- 第一分支只會消費#8或#9；第二分支只會消費#10+#11、#12或#13。
+- #14、#15、#16、#17一定在共同尾端，且原始順序穿插已閉合的
+  `0x2189A`、`0x24B4D`、資源載入、palette與ACT73 consumer。
+- 因此單次正常玩家路徑只會看到56句的合法子集；56句全量驗收必須由raw資料／編譯
+  equality及分支fixture共同完成，不得強迫一次遊玩同時走互斥分支。
+- `0x24933 sync_party`位於#14之前；正式runtime不可因對話資料化而把同步移到handler
+  尾端，也不可在#8..13尚未完整收框前提早發布persistent roster。
+
+## 2026-08-27 raw列寬勘誤
+
+本切片重算時，#12三句第一列分別是`FFEF/FFEE/FFEF`且各14 glyph。這直接反證把
+ch24樣本的「最多13 glyph」外推成全FDTXT validator。相鄰合法原版
+`FDTXT_010.bin`（4494 bytes；MD5`57c3da8cddf0496473ac76dfe8b9f1be`；SHA-256
+`17a2838e4abd4b1624953b415a8b1e38e35d2eb26c4a89a339e591dc33dba007`）另有一列
+`FFED` 15 glyph。固定原版已觀察的control上限為：
+
+```text
+FFEC 13
+FFED 15
+FFEE 14
+FFEF 14
+```
+
+這四個數值是雜湊綁定原始資料的**已證實資料形狀**，不是原版renderer會替任意
+新文字自動排版的證明。typed validator與indexed compositor必須接受這些合法列，
+並拒絕超過相同control上限的可編輯資料；不可截字、換成現代自動換行或猜造FFFE。
+
+## 證據分級與限制
+
+- caller、分支、string index、sync位置與後續consumer順序：**已證實**。
+- 56句controls／operands／頁列、唯一editable mapping與上述列寬：**已證實**。
+- 正式重製端原生對話消費：實作前為`DATA-READY`；不得預寫成`RUNTIME-E1`。
+- 未修改原版同狀態逐幀、精確音訊與作業系統鍵盤事件仍缺；實作完成最高先列
+  `RUNTIME-E1`，不冒稱`PLAYER-E2`。

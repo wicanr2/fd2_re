@@ -13,6 +13,12 @@ SPEAKER_CONTROLS = set(range(0xFFEC, 0xFFF0))
 ROW_BREAK = 0xFFFE
 PAGE_BREAK = 0xFFFD
 STRING_END = 0xFFFF
+LINE_GLYPH_LIMITS = {
+    0xFFEC: 13,
+    0xFFED: 15,
+    0xFFEE: 14,
+    0xFFEF: 14,
+}
 
 
 def load_json(path: Path):
@@ -90,8 +96,16 @@ def decode_layouts(source: str, string_index: int, words: list[int], glyphs: dic
             raise ValueError(
                 f"{source}#{string_index}: empty or over-height page {pages!r}"
             )
-        if any(len(row_text) > 13 for page_rows in pages for row_text in page_rows):
-            raise ValueError(f"{source}#{string_index}: row exceeds 13 glyphs")
+        line_glyph_limit = LINE_GLYPH_LIMITS[control]
+        if any(
+            len(row_text) > line_glyph_limit
+            for page_rows in pages
+            for row_text in page_rows
+        ):
+            raise ValueError(
+                f"{source}#{string_index}: row exceeds {line_glyph_limit} glyphs "
+                f"for {control:04X}"
+            )
         layouts.append(
             {
                 "source_dat": source,
@@ -118,6 +132,14 @@ def mapping_for(index_data, source: str, script: str, string_index: int):
     return mappings[0], mappings[0]["targets"][0]
 
 
+def iter_handler_beats(beats):
+    """依受版控handler順序走訪所有beat及互斥分支，不自行判斷條件。"""
+    for beat in beats:
+        yield beat
+        yield from iter_handler_beats(beat.get("then", []))
+        yield from iter_handler_beats(beat.get("else", []))
+
+
 def generate(
     binding_path: Path,
     raw_dir: Path,
@@ -135,7 +157,8 @@ def generate(
     overrides = {}
     callers = 0
     utterances = 0
-    for beat in handler["beats"]:
+    all_beats = list(iter_handler_beats(handler["beats"]))
+    for beat in all_beats:
         if beat["op"] != "dialog":
             continue
         callers += 1
@@ -182,7 +205,7 @@ def generate(
     # caller-specific dialogue_overrides 完整建立後，移除同位址的舊現代
     # overrides.dialog，否則 compiler 的地址覆寫會遮蔽raw tuple版面。
     # 同一地址若另有其他具型別操作則必須保留；本工具不清除整個override。
-    for beat in handler["beats"]:
+    for beat in all_beats:
         if beat["op"] != "dialog":
             continue
         addr = beat["source"]["addr"]

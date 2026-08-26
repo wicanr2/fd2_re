@@ -222,6 +222,20 @@ caller 邊界同樣重要：`sub_15F84` 只在 `FFFD` 的 `0x16034` 與字串結
 
 ## 可重生命令
 
+## 2026-08-27：列寬只可依 speaker control 套用，不得全域固定13字
+
+本文件較早由 `FDTXT_025` index6／7 樣本觀察到的「最多13 glyph」，只證實該
+樣本的資料形狀，不能外推成所有 `sub_15F84` caller 的全域上限。raw ch22 post
+十個 caller 的雜湊綁定重算在 `FDTXT_023` index12 找到三個合法14-glyph首列，
+control依序為 `FFEF／FFEE／FFEF`；相鄰固定版 `FDTXT_010` 另有合法15-glyph
+`FFED`列。完整caller、檔案雜湊與分支證據見
+[`fd2_ch22_post_dialogue_binding.txt`](fd2_ch22_post_dialogue_binding.txt)。
+
+對目前固定原版所有FDTXT的唯讀資料形狀掃描，已觀察上限為：
+`FFEC=13`、`FFED=15`、`FFEE=14`、`FFEF=14`。這些值是**已證實的原始資料
+admissibility**，不是任意新文字的自動排版規則。重製端必須依control接受合法列並
+拒絕超限資料；不得截斷、改寫raw列界或用現代自動換行掩蓋錯誤。
+
 ```text
 IDA：tools/ida_probe_functions.py
   FD2_IDA_ADDRESSES="0x15F84 0x165AC 0x1685C 0x168B6 0x16B43 0x16C57"

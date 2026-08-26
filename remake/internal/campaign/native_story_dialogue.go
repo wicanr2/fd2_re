@@ -10,17 +10,16 @@ import (
 )
 
 const (
-	nativeStoryUpperFrameY      = 2
-	nativeStoryLowerFrameY      = 112
-	nativeStoryUpperPortrait    = 0x728
-	nativeStoryLowerPortrait    = 0x9017
-	nativeStoryUpperText        = 0x0b4f
-	nativeStoryLowerText        = 0x951f
-	nativeStoryGlyphStep        = 16
-	nativeStoryLineStep         = 19
-	nativeStoryMaximumLineGlyph = 13
-	nativeStoryVisibleRows      = 3
-	nativeStoryScrollFrames     = 10
+	nativeStoryUpperFrameY   = 2
+	nativeStoryLowerFrameY   = 112
+	nativeStoryUpperPortrait = 0x728
+	nativeStoryLowerPortrait = 0x9017
+	nativeStoryUpperText     = 0x0b4f
+	nativeStoryLowerText     = 0x951f
+	nativeStoryGlyphStep     = 16
+	nativeStoryLineStep      = 19
+	nativeStoryVisibleRows   = 3
+	nativeStoryScrollFrames  = 10
 )
 
 var nativeStoryOpeningGridSizes = [...][2]int{{4, 2}, {8, 3}, {12, 4}, {16, 5}, {19, 5}}
@@ -186,6 +185,10 @@ func ComposeNativeStoryDialogueProgressiveFrames(
 	if page < 0 || page >= len(layout.Pages) {
 		return nil, fmt.Errorf("campaign: native story dialogue page %d is unavailable", page)
 	}
+	lineGlyphLimit, ok := nativeDialogueLineGlyphLimit(layout.Control)
+	if !ok {
+		return nil, fmt.Errorf("campaign: native story dialogue control %q is unsupported", layout.Control)
+	}
 	upper := layout.Control == "FFEF" || layout.Control == "FFED"
 	frameY, portraitOffset, textOffset := nativeStoryLowerFrameY, nativeStoryLowerPortrait, nativeStoryLowerText
 	if upper {
@@ -204,7 +207,7 @@ func ComposeNativeStoryDialogueProgressiveFrames(
 	if err := blitNativeDialoguePortraitAt(frame, portrait, portraitOffset); err != nil {
 		return nil, err
 	}
-	frames := make([][]byte, 0, 1+nativeStoryMaximumLineGlyph*len(layout.Pages[page])+nativeStoryScrollFrames)
+	frames := make([][]byte, 0, 1+lineGlyphLimit*len(layout.Pages[page])+nativeStoryScrollFrames)
 	frames = append(frames, append([]byte(nil), frame...))
 	style := fdtxt.NativeGlyphStyle{Foreground: 0xcd, Shadow: 0x4c, Background: 0x4a}
 	for row, text := range layout.Pages[page] {
@@ -215,7 +218,7 @@ func ComposeNativeStoryDialogueProgressiveFrames(
 			// 10幀近似，且每幀都只改框內三列文字窗口。
 			textX, textY := textOffset%320, textOffset/320
 			windowX := textX - 1 // 包含 0x4EA2A 左下 shadow
-			windowW := nativeStoryMaximumLineGlyph*nativeStoryGlyphStep + 1
+			windowW := lineGlyphLimit*nativeStoryGlyphStep + 1
 			windowH := nativeStoryVisibleRows * nativeStoryLineStep
 			before := append([]byte(nil), frame...)
 			for step := 1; step <= nativeStoryScrollFrames; step++ {
@@ -238,7 +241,7 @@ func ComposeNativeStoryDialogueProgressiveFrames(
 			visibleRow = nativeStoryVisibleRows - 1
 		}
 		runes := []rune(text)
-		if len(runes) == 0 || len(runes) > nativeStoryMaximumLineGlyph {
+		if len(runes) == 0 || len(runes) > lineGlyphLimit {
 			return nil, fmt.Errorf("campaign: native story dialogue row %d has %d glyphs", row, len(runes))
 		}
 		for column, r := range runes {
