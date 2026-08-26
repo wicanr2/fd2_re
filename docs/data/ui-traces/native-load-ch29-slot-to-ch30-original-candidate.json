@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "title": "原版晚期有效槽 LOAD→19人整備→第30戰候選 E2",
+  "captured_at": "2026-08-26",
+  "classification": "來源可追溯的候選 PLAYER-E2；外部保存存檔不是本專案由第29戰勝利產生",
+  "source": {
+    "page": "https://playerlin.orgfree.com/fdps/fd2save.htm",
+    "download": "https://playerlin.orgfree.com/download/fdsave/fd2/fd2021.zip",
+    "site_description": "021：最終版／最終關存檔；所有隊員等級全滿、沒有凱麗，並註記讀取戰場紀錄即可",
+    "zip_sha256": "6968a02be61fd76a64a7b1142c7752ee3d11ef035d59c1cc9badede16b2a93a5",
+    "save_member": "fd2last.sav",
+    "save_sha256": "f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f",
+    "save_size": 22987,
+    "checksum": "0x001ab96c"
+  },
+  "decoded_save": {
+    "current_runtime": {
+      "chapter": "0x1d",
+      "turn": 4,
+      "runtime_count": 27,
+      "persistent_count": 29,
+      "camera": [17, 12],
+      "cursor": [22, 17],
+      "visible_cursor": [5, 5]
+    },
+    "chapter_slots": [28, 29, 26, 27],
+    "slot_0": {
+      "raw_chapter": "0x1c",
+      "persistent_count": 29,
+      "currency": 60,
+      "native_gate_bytes": "01000101"
+    }
+  },
+  "original": {
+    "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "container": "fd2-dosbox-screenshot-local:latest",
+    "sandbox": "原始 FLAME2 唯讀掛載後複製至一次性 /tmp 沙箱；外部 fd2last.sav 只覆蓋沙箱內 FD2.SAV",
+    "mutation": "沒有修改 FD2.EXE、存檔欄位、記憶體、章節、路由或畫面；錯選 SAVE 的早期嘗試已丟棄並重建沙箱",
+    "input": [
+      "等待10秒；Escape×8 收斂開場；Down；Return 選擇 LOAD",
+      "在四槽 selector 以預設 slot 0 按 Return",
+      "原版進入 0x2CAD7 後顯示『要記錄戰況嗎？』；Right 選 NO；Return",
+      "19人整備畫面連按 Return 19 次；原版每次選取後自動移到下一人",
+      "在『確定要進入戰場嗎？』以預設 YES 按 Return",
+      "普通 Return 逐頁消費最終戰前劇情與 staging",
+      "抵達第30戰後再按 Return，顯示玩家單位移動範圍"
+    ],
+    "verified": "同一未修改原版程序由標題 LOAD 讀取 raw chapter 0x1c 有效槽，走過 save-NO、19人整備、最終出戰確認與原版戰前劇情，抵達第30戰並交付玩家控制權",
+    "images": {
+      "slots": "../../figures/native-load-ch29-original-slots-candidate.png",
+      "slots_sha256": "6387f5976279c684c619539cf30cfa33d7dce780896acf730cab248217fcafa7",
+      "save_no": "../../figures/native-load-ch29-original-save-no-candidate.png",
+      "save_no_sha256": "f5463397f6f69aee0bb2ff6ec0d54fb44563846a3ee30af0352632a394471796",
+      "preparation": "../../figures/native-load-ch29-original-preparation-candidate.png",
+      "preparation_sha256": "61808a88b03c46971d413fb20ab9640d54768128a46670d308b99d0e8930b2e2",
+      "deploy_confirm": "../../figures/native-load-ch29-original-deploy-confirm-candidate.png",
+      "deploy_confirm_sha256": "7b242df10154ff37d445e2048a498903062d682cb4c453d729e84deaa3d10ec2",
+      "battle_ch30_control": "../../figures/native-load-ch29-original-battle-ch30-control-candidate.png",
+      "battle_ch30_control_sha256": "6bfddc1fb63b7c5fb1f24ba59f4aa1c541030297ad9d2dbcfa98a569ef714be3",
+      "contact_sheet": "../../figures/native-load-ch29-to-ch30-original-candidate.png",
+      "contact_sheet_sha256": "3e1c394b41098233a4496bfcd26ca25b306174f6f019d50cd3a56c335a74767e"
+    }
+  },
+  "decision": {
+    "level": "候選 PLAYER-E2",
+    "closed": [
+      "未修改固定版原版的正常標題 LOAD 可消費 checksum-valid 晚期有效槽",
+      "raw chapter 0x1c LOAD 後會進 preparation-only save prompt",
+      "選 NO 後可達原版19人整備與最終出戰確認",
+      "普通輸入可由該有效槽連續抵達第30戰並取得玩家控制權"
+    ]
+  },
+  "limits": [
+    "外部保存站沒有提供從第一戰到第29戰勝利寫槽的完整來源鏈，不能證明 slot 0 是未修改長程通關產物",
+    "本紀錄從既有 raw chapter 0x1c 槽開始，不證明第29戰勝利、raw ch28 post 與寫槽發生在同一程序",
+    "nosound 容器不提供精確音訊證據",
+    "連續 Return 用於普通對話輸入，但沒有逐句擷取全部21句與七次 staging 的每一幀",
+    "較早誤選 save-YES 與額外方向鍵造成隔人選取的畫面已拒收，不作證據"
+  ]
+}

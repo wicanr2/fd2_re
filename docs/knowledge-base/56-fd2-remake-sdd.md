@@ -317,8 +317,8 @@ Runtime 不應再讓 `main.go` 同時決定資料模型、輸入、規則和像�
 | UI-08 | Town/hub | 可見選單、離開、shop/church/preparation 入口、BGM/SFX、持久隊伍 | partial；`campaign.MenuState` 已與 `choice/town` runtime 共用。ch02 variant0 的 [`selection0–5`](../figures/town-hub-six-selections-original-vs-remake.png) 都已達原版 DOSBox／source-built remake raw RGB 整幀相同；variant1與variant2 selection0–4 另有修改 LOAD 路徑 E2，兩組五項都與指定 pulse 640×400 整幀 AE=0。Left/Right wrap、Shift+F1 reveal、Enter進variant5及Escape回selection5亦有原版 input trace；shop/church/preparation 與 hotel raw route/return trace已接，仍需variant2 selection5 的 BIOS 掃描碼／Enter、未修改玩家路徑與逐章route E2 |
 | UI-09 | Shop | buy/sell、商品／角色／slot 游標、裝備詢問、金錢／庫存原子更新、secret gate | partial；四條production owner已接原版indexed compositor。ch02 variant1/3/5 service、purchase list／Yes-No／不足金／收件者，以及sell roster／items／Yes-No均有route-patched原版／production同狀態整幀相同。賣出短劍後的五個成功原子影格、`0x2D3FF`向上金幣滾動11／36元及返回原actor名冊cycle0／1又有九組整幀相同；正式擁有者分成success、credit、inventory publish三個邊界，不能直接跳新金額或提前移除背包。service2名冊／面板與service3來源提示／名冊、物品、目的提示／名冊已有route-patched partial E2；物品清單舊有AE=2已定位為店員背景兩點動畫相位，靜態清單在該狀態一致，其餘動畫相位尚未同步。這些party畫面使用screenshot-only typed/raw bootstrap，不代表完整campaign/native save E2。正常campaign JOIN→LOADCH、四種mutation→town→JSON save/load及ch26祕密商店已有E1。尚待recipient scroll、no-recipient/full、service2動畫相位與mutation／restore、service3 mutation／empty／full、其他章節、原版存檔與未修改一般玩家E2；不再把service3五個穩定子面板列為未做 |
 | UI-10 | Church | revive、class change、費率、候選過濾、確認／取消、缺資料 fail-closed | partial；class path 已對齊 `0x31385→0x31793→0x311DC→0x19953`：Lv>=20、portrait<0x12 且 !=7，三列可見候選、上下 bounded，special>optional>default 自動解析唯一 target，再以左右 Yes/No 確認。`0x31019` 的 FDICON＋四段 FDTXT row、FDOTHER#14 entry16 panel 與 `0x1974c` 六幀 opening 已成 indexed compositor。候選確認／取消會先跑 `0x2d31b` 五幀 closing＋source restore；`0x19953` 已接 FFFC 動態角色名、FDOTHER#2 cells16/17、48/49與51/52 normal/pulse、四幀 opening／`0x197e5` 四幀 choice closing，之後再跑 dialogue closing 五幀＋source restore，最後才 mutation／返回。所有幀只由 Draw acknowledgement 推進。`0x3072f` stable scene 已由FDOTHER#5 raw grid/four-mode digits、FDOTHER#14 entry1、DATO#131與FDTXT585/586合成；`0x2d669`四幀開關、closing source restore及`0x2d85f`兩-tick selected pulse均接runtime並有原版資源artifact。FD2.SAV、raw service0 command overlay與未接callee仍fail-closed |
-| UI-11 | Preparation | 城鎮出發確認／無城鎮記錄詢問、依名冊門檻略過或進入部署、可選15／19筆另加固定 record0（總上場16／20）、取消、最終確認、進戰場 | partial；`0x2cad7` 與 `0x2d093→0x318ad` 的分流已接資料模型與原版提示。城鎮路徑保留實際 town frame，使用 FDTXT `0x201` 於 `(95,119)`；無城鎮路徑依 `0x2cc04` 清成黑畫面，使用 FDTXT `0x19a` 於 `(100,119)`，肯定結果在完整關框後才存檔。兩者都使用 DATO #75、FDOTHER #5 對話框、FDOTHER #2 Yes／No 與 6＋4＋兩 tick 脈動＋4＋5＋還原生命週期。`0x318ad/0x31e80` 的三區背景、計數、10 欄角色格、游標、彩色／灰色繪法、四向輸入與 `0x17fc0` 狀態已接；`0x320fc` 證實 selection byte i只重排 persistent record i+1，record0固定且不消耗quota。`0x1297d` 的有號 BIOS 低字差值與可見 `0,1,2,1` 待機週期亦已接。`0x31d3c` 最終確認沿用相同生命週期，文字為 FDTXT `0x292`，呈現原畫面後才處理結果。呼叫端也已閉合：城鎮出發 `0x2d16b` 收到 0 會退出，直接整備 `0x2ccd6` 收到 0 則重選。缺任一原始記錄或資源即退回。README 所列整備圖均為 E1 原始資源合成，不是 DOSBox 截圖或正常晚期戰役存檔。跨畫面初始相位、有效晚期存檔及原版實機差分仍缺。`0x1f42d` 屬戰場進入演出，不再列為選人視窗動畫 |
-| UI-12 | Save/load | scene-safe boundary、campaign cursor、flags、party/inventory/equipment、version/checksum、四槽 selector | partial；remake title LOAD 已還原四槽 bounded selector 與原版 indexed compositor。合法 IDA 9.4 固定 reader `0x2602c..0x26098`、writer `0x30012` 及其僅有的 `0x2ccb6/0x2fd93` 戰間呼叫者；兩端只處理 metadata `+0..+9`。production 以綁定參考 EXE 雜湊與 `0x526b9` 的 editable gate table 將 raw chapter 1..29 還原到既有 town／preparation node，先完整驗證 persistent record→typed party、節點型別及重複 identity，再一次套用 campaign cursor、gold、party 與四個 raw option bytes；錯誤不部分 mutation、不誤轉 JSON loader。ch21／ch27 inventory postbattle gate 已在存檔前完成，LOAD 不重播。空槽及修改存檔 chapter1 有效槽畫面均與 DOSBox 全幀 RGB 相同。2026-08-22 未修改原版 CONTINUE 戰場按F5後畫面不變且FD2.SAV雜湊不變，動態支持戰場不能建立chapter slot；合成有效槽 restore 是 E1，仍缺正常打完戰鬥後由酒店／整備建立的有效槽 E2、CONTINUE current-battle、metadata `+10..+39` 其他可能 consumer、刪除／覆寫 |
+| UI-11 | Preparation | 城鎮出發確認／無城鎮記錄詢問、依名冊門檻略過或進入部署、可選15／19筆另加固定 record0（總上場16／20）、取消、最終確認、進戰場 | partial；`0x2cad7` 與 `0x2d093→0x318ad` 的分流已接資料模型與原版提示。城鎮路徑保留實際 town frame，使用 FDTXT `0x201` 於 `(95,119)`；無城鎮路徑依 `0x2cc04` 清成黑畫面，使用 FDTXT `0x19a` 於 `(100,119)`，肯定結果在完整關框後才存檔。兩者都使用 DATO #75、FDOTHER #5 對話框、FDOTHER #2 Yes／No 與 6＋4＋兩 tick 脈動＋4＋5＋還原生命週期。`0x318ad/0x31e80` 的三區背景、計數、10 欄角色格、游標、彩色／灰色繪法、四向輸入與 `0x17fc0` 狀態已接；`0x320fc` 證實 selection byte i只重排 persistent record i+1，record0固定且不消耗quota。`0x1297d` 的有號 BIOS 低字差值與可見 `0,1,2,1` 待機週期亦已接。`0x31d3c` 最終確認沿用相同生命週期，文字為 FDTXT `0x292`，呈現原畫面後才處理結果。呼叫端也已閉合：城鎮出發 `0x2d16b` 收到 0 會退出，直接整備 `0x2ccd6` 收到 0 則重選。缺任一原始記錄或資源即退回。2026-08-26 外部 checksum-valid 晚期槽已由未修改原版普通 LOAD 走過 save-NO、19人選擇、最終確認與戰前劇情至第30戰，形成候選 E2；仍缺同狀態重製像素差分、跨畫面初始相位及第29戰勝利寫槽的完整來源鏈。`0x1f42d` 屬戰場進入演出，不再列為選人視窗動畫 |
+| UI-12 | Save/load | scene-safe boundary、campaign cursor、flags、party/inventory/equipment、version/checksum、四槽 selector | partial；remake title LOAD 已還原四槽 bounded selector 與原版 indexed compositor。合法 IDA 9.4 固定 reader `0x2602c..0x26098`、writer `0x30012` 及其僅有的 `0x2ccb6/0x2fd93` 戰間呼叫者；兩端只處理 metadata `+0..+9`。production 以綁定參考 EXE 雜湊與 `0x526b9` 的 editable gate table 將 raw chapter 1..29 還原到既有 town／preparation node，先完整驗證 persistent record→typed party、節點型別及重複 identity，再一次套用 campaign cursor、gold、party 與四個 raw option bytes；錯誤不部分 mutation、不誤轉 JSON loader。ch21／ch27 inventory postbattle gate 已在存檔前完成，LOAD 不重播。空槽及修改存檔 chapter1 有效槽畫面均與 DOSBox 全幀 RGB 相同。2026-08-26 外部 checksum-valid raw chapter `0x1c` 槽已由未修改原版正常 LOAD 恢復並走到19人整備與第30戰，達候選 E2；仍缺第29戰勝利當下由原版 writer 建槽的完整來源、metadata `+10..+39` 其他可能 consumer、刪除／覆寫及同狀態重製差分。2026-08-22 未修改原版 CONTINUE 戰場按F5後畫面不變且FD2.SAV雜湊不變，動態支持戰場不能建立chapter slot |
 
 ### 4.1 教會轉職後的重製存檔邊界（RUNTIME-E1 契約）
 
@@ -6573,3 +6573,29 @@ cursor `(16,63)`、visible cursor `(6,7)`；四個 chapter slot 依序為
 相似畫面不可接受。`TestNativeContinueTitleCallerPublishesChapter29Candidate` 已以外部
 fixed-hash 存檔通過上述正式 handoff，達 `RUNTIME-E1`；測試預設無外部檔時略過，
 不把第三方存檔變成倉庫相依項目。
+
+## 2026-08-26：晚期有效槽 LOAD 至第30戰一般輸入候選規格
+
+Player Lin 保存站的 `fd2021.zip` 內含 checksum-valid `fd2last.sav`；頁面明載這是
+最終關存檔、全隊等級全滿且沒有凱麗，因此只可作來源可追溯的外部候選，不能冒稱
+本專案或未修改長程通關產物。解碼後 current-runtime 是 raw chapter `0x1d`，四槽為
+`0x1c／0x1d／0x1a／0x1b`；slot 0 有29筆持續記錄與60金幣。ZIP、存檔、EXE、圖片
+雜湊與完整限制見
+[`native-load-ch29-slot-to-ch30-original-candidate.json`](../data/ui-traces/native-load-ch29-slot-to-ch30-original-candidate.json)。
+
+原版驗收必須從乾淨沙箱的標題普通 `LOAD` 開始，不得直接呼叫 reader 或修改 slot。
+選擇 slot 0 後，`0x2602C..0x26098` 還原 raw chapter `0x1c`，再依既有
+`0x26098→0x2CAD7` 進 preparation-only 分支。畫面必須先顯示「要記錄戰況嗎？」；
+選 NO 才略過 `0x30012` writer 並進 `0x318AD`。若選 YES，原版會回到四槽 writer，
+該路徑不得誤記為 LOAD 失敗或成功進場。
+
+29筆持續名冊使 `0x318AD` 要求選19人；每次 Return 選取後原版會自動把游標移至
+下一筆，因此一般輸入是連按19次 Return，而不是每次額外送 Right。滿額後必須進
+`0x31D3C` 的「確定要進入戰場嗎？」；接受後以普通 Return 消費最終戰前劇情，最後
+抵達第30戰，再按 Return 可顯示玩家單位移動範圍。2026-08-26 同一 DOSBox 程序已
+走完以上全鏈，將有效晚期槽、save-NO、19人整備、出戰確認與第30戰控制權提升為
+候選 `PLAYER-E2`。
+
+此候選只替重製端既有 `preparation_ch30→story_ch30→battle_ch30` E1 提供原版正常
+輸入錨點；不新增或改寫 runtime 規則。仍未閉合的是第29戰勝利、raw ch28 post 與
+原版 writer 建立此 slot 的同一程序來源，以及精確音訊和逐句／逐 staging 幀比較。

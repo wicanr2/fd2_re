@@ -6977,3 +6977,23 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 裁決提升為第29戰一輪玩家／敵方控制權交接的單次連續候選 `PLAYER-E2`；第三方
   存檔沒有完整來源聲明、容器停用音訊，且尚未從第29戰勝利連續抵達第30戰，因此
   不提升為完整第29→30戰一般玩家 E2，也不調高 README 的79分自評。
+
+## 2026-08-26：晚期有效槽正常 LOAD→19人整備→第30戰候選 E2
+
+- Player Lin `fd2021.zip`／`fd2last.sav` SHA-256 分別為
+  `6968a02be61fd76a64a7b1142c7752ee3d11ef035d59c1cc9badede16b2a93a5`、
+  `f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f`；native
+  checksum `0x001ab96c`。current-runtime raw chapter `0x1d`，四槽為
+  `0x1c／0x1d／0x1a／0x1b`；slot 0 有29筆 persistent 與60金幣。
+- 固定版未修改原版在同一個乾淨 Docker／DOSBox 程序由標題普通 LOAD 選 slot 0；
+  `0x2602C..0x26098` 還原後依既有 `0x2CAD7` 顯示「要記錄戰況嗎？」。選 NO 跳過
+  writer，再連按19次 Return；原版每次選取後會自動移到下一人，額外送 Right 會形成
+  隔人選取，相關誤操作畫面已拒收。
+- 滿19人後原版顯示「確定要進入戰場嗎？」；接受 YES，再以普通 Return 逐頁消費
+  最終戰前劇情與 staging，最後抵達第30戰。後續 Return 顯示玩家單位移動範圍，
+  直接證實控制權。四格圖、輸入與雜湊見
+  [`native-load-ch29-slot-to-ch30-original-candidate.json`](../data/ui-traces/native-load-ch29-slot-to-ch30-original-candidate.json)。
+- 裁決為有效晚期槽、preparation-only save prompt、19人整備、出戰確認與第30戰控制權
+  的候選 `PLAYER-E2`。保存站明載全隊等級全滿且沒有凱麗，並未提供第29戰勝利→
+  writer建槽的完整來源，因此不冒稱未修改全程通關。README玩家交付自評由79調至80，
+  只增加戰役／存讀檔1分。
