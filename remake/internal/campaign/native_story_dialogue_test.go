@@ -667,6 +667,75 @@ func TestCh06PostNativeDialogueLayoutsMatchOriginalControlWords(t *testing.T) {
 	}
 }
 
+func TestCh15PostNativeDialogueLayoutsMatchOriginalControlWords(t *testing.T) {
+	raw, err := os.ReadFile("../../../extracted/raw/FDTXT/FDTXT_016.bin")
+	if err != nil {
+		t.Skip("extracted FDTXT_016 oracle is absent")
+	}
+	stringsTable, err := fdtxt.Parse(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	glyphRaw, err := os.ReadFile("../../../docs/data/glyph_map.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var encoded map[string]json.RawMessage
+	if err := json.Unmarshal(glyphRaw, &encoded); err != nil {
+		t.Fatal(err)
+	}
+	glyphs := make(map[uint16]string, len(encoded))
+	for key, value := range encoded {
+		if key == "_comment" {
+			continue
+		}
+		var text string
+		var index int
+		if err := json.Unmarshal(value, &text); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := fmt.Sscanf(key, "%d", &index); err != nil || index < 0 || index > 0xffff {
+			t.Fatalf("invalid glyph map key %q", key)
+		}
+		glyphs[uint16(index)] = text
+	}
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch15_post.json")
+	if err != nil || len(issues) != 0 {
+		t.Fatalf("compile ch15_post binding: issues=%v err=%v", issues, err)
+	}
+	got := make(map[int][]*NativeDialogueLayout, 3)
+	var collect func([]Beat)
+	collect = func(items []Beat) {
+		for _, beat := range items {
+			if beat.Op == "dialog" && beat.NativeDialogue != nil {
+				got[beat.NativeDialogue.StringIndex] = append(got[beat.NativeDialogue.StringIndex], beat.NativeDialogue)
+			}
+			collect(beat.Then)
+			collect(beat.Else)
+		}
+	}
+	collect(beats)
+	total := 0
+	for stringIndex := 2; stringIndex <= 4; stringIndex++ {
+		words, err := stringsTable.Words(stringIndex)
+		if err != nil {
+			t.Fatal(err)
+		}
+		want, err := decodeOriginalNativeDialogueLayouts("FDTXT_016", stringIndex, words, glyphs)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !reflect.DeepEqual(got[stringIndex], want) {
+			t.Fatalf("FDTXT_016 index%d layouts=%d want=%d\ngot  %#v\nwant %#v",
+				stringIndex, len(got[stringIndex]), len(want), got[stringIndex], want)
+		}
+		total += len(want)
+	}
+	if total != 23 {
+		t.Fatalf("ch15_post native dialogue utterances=%d, want 23", total)
+	}
+}
+
 func TestNativeDialogueLayoutUsesControlSpecificOriginalLineLimits(t *testing.T) {
 	limits := map[string]int{"FFEC": 13, "FFED": 15, "FFEE": 14, "FFEF": 14}
 	for control, limit := range limits {

@@ -7567,3 +7567,14 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   兩路都完成同步、chapter7、`town_ch08`與存讀檔，不再直接清除`g.dialog`。證據見
   [`ch06-post-native-dialogue-e1.json`](../data/ui-traces/ch06-post-native-dialogue-e1.json)。
 - 未修改DOSBox同狀態、精確音訊與town08原版輸入仍屬E2限制；依99%門檻不阻擋。
+
+## 2026-08-27：第16戰後三個caller／23句原生對話與四條分支
+
+- 沿用已閉合的`sub_23A0A`、76-slot topology、round／inactive／word42分支與
+  共用renderer。FDTXT_016 index2／3／4的3＋5＋15句已通過固定raw equality並
+  重生成typed版面。
+- round>18、inactive>4、word42<`0x140`及word42>=`0x140`四條正式路徑分別以
+  具型別輸入完成8／8／0／15句；只有最後一條JOIN18。四路均抵達`town_ch17`並
+  通過存讀檔。證據見
+  [`ch15-post-native-dialogue-e1.json`](../data/ui-traces/ch15-post-native-dialogue-e1.json)。
+- 未修改DOSBox同狀態、精確音訊與town17原版輸入仍屬E2限制；依99%門檻不阻擋。

@@ -7178,3 +7178,20 @@ byte5。active分支以具型別輸入播放8句後JOIN12，inactive分支播放
 [`fd2_ch06_post_native_dialogue.md`](../data/ida/fd2_ch06_post_native_dialogue.md)。
 驗收包含全量raw equality、active／inactive正式輸入、JOIN12正反例、`town_ch08`與
 存讀檔。此項最高為`RUNTIME-E1`，未修改DOSBox同狀態與精確音訊另列E2。
+
+## 玩家第 16 戰戰後 23 句原生對話與四條分支（2026-08-27）
+
+本切片沿用已閉合的`sub_23A0A`、76-slot persistent-first拓撲、round／inactive／
+word42分支與共用renderer，不重開反組譯。`0x23ADC`／index2、`0x23B17`／index3、
+`0x23B40`／index4分別產生3、5、15筆`NativeDialogueLayout`。
+
+正式執行期必須保持四條原始路徑：round>18與inactive>4均播放index2→ACTING49→
+index3，共8句且不JOIN；兩者皆否時，word42<`0x140`為零句且不JOIN，只有
+word42>=`0x140`播放index4的15句並JOIN18。所有具型別輸入完成closing後才進
+chapter16與`town_ch17`，四路均驗證存讀檔。缺原始資產、mapping、native frame、
+branch provenance或76-slot frontier時，在交易前失敗即關閉。
+
+原始位址、雜湊、控制碼與分支契約見
+[`fd2_ch15_post_native_dialogue.md`](../data/ida/fd2_ch15_post_native_dialogue.md)。
+驗收包含全量raw equality、四條正式輸入、JOIN18正反例、`town_ch17`與存讀檔。
+此項最高為`RUNTIME-E1`，未修改DOSBox同狀態與精確音訊另列E2。

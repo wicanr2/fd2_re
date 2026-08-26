@@ -1,0 +1,20 @@
+{
+  "name": "第16戰後三個caller／23句原生對話與四條分支城鎮路徑",
+  "date": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "reference": {
+    "FD2.EXE": {"size": 357074, "md5": "b97caf2239a27a896069d03549d96e1e", "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"},
+    "FDTXT_016.bin": {"size": 3258, "md5": "f8d041321824c90c86d3527e21dfca0c", "sha256": "6b702dd3a5d91d119d63ceda2470e1f33e10d6f7a385dff82fbc451ac590eaa9"},
+    "canonical_re": "docs/data/fd2_ch15_post_ida.txt",
+    "binding_evidence": "docs/data/ida/fd2_ch15_post_native_dialogue.md"
+  },
+  "native_dialogue": {"handler": "0x23a0a", "callers": ["0x23adc", "0x23b17", "0x23b40"], "source": "FDTXT_016", "string_indices": [2, 3, 4], "utterance_counts": [3, 5, 15], "total_utterances": 23},
+  "formal_routes": [
+    {"round": 19, "inactive_count": 0, "word42": 320, "reachable_indices": [2, 3], "reachable_utterances": 8, "join18": false, "destination": "town_ch17"},
+    {"round": 18, "inactive_count": 5, "word42": 320, "reachable_indices": [2, 3], "reachable_utterances": 8, "join18": false, "destination": "town_ch17"},
+    {"round": 18, "inactive_count": 4, "word42": 319, "reachable_indices": [], "reachable_utterances": 0, "join18": false, "destination": "town_ch17"},
+    {"round": 18, "inactive_count": 4, "word42": 320, "reachable_indices": [4], "reachable_utterances": 15, "join18": true, "destination": "town_ch17"}
+  ],
+  "verification": {"generator": "3 callers / 23 utterances --check", "data_test": "TestCh15PostNativeDialogueLayoutsMatchOriginalControlWords", "integrated_test": "TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary", "full_packages": "go test ./internal/battle ./internal/campaign ./cmd/fd2 -count=1", "result": "pass", "docker_network": "none", "xvfb": "explicit PID with exit trap"},
+  "limitations": ["word42<0x140分支正確為零句，不以現代補文填充。", "未修改DOSBox同狀態、精確音訊與town17原版輸入仍缺，故不提升為PLAYER-E2。"]
+}

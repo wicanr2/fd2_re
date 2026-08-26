@@ -1245,18 +1245,33 @@ func TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary(t
 }
 
 func TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary(t *testing.T) {
+	const originalBase = "../../../org_game/炎龍騎士團/FLAME2"
+	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.DAT", "FDTXT.DAT", "DATO.DAT"} {
+		if _, err := os.Stat(filepath.Join(originalBase, archive)); err != nil {
+			t.Skipf("player-provided original %s is absent: %v", archive, err)
+		}
+	}
+	t.Setenv("FD2_ORIGINAL_FDFIELD", filepath.Join(originalBase, "FDFIELD.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDSHAP", filepath.Join(originalBase, "FDSHAP.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(originalBase, "FDOTHER.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(originalBase, "FDTXT.DAT"))
+	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(originalBase, "DATO.DAT"))
+	t.Setenv("FD2_MUTE", "1")
 	order := []int{0, 4, 9, 30, 1, 8, 2, 10, 13, 12, 5, 6, 11, 14, 17, 15}
 	tests := []struct {
-		name       string
-		round      int
-		inactive   int
-		word42     uint16
-		wantJoin18 bool
+		name        string
+		round       int
+		inactive    int
+		word42      uint16
+		wantJoin18  bool
+		wantDialog  int
+		wantIndices map[int]bool
 	}{
-		{name: "round_gt_18", round: 19, inactive: 0, word42: 0x140},
-		{name: "inactive_gt_4", round: 18, inactive: 5, word42: 0x140},
+		{name: "round_gt_18", round: 19, inactive: 0, word42: 0x140, wantDialog: 8, wantIndices: map[int]bool{2: true, 3: true}},
+		{name: "inactive_gt_4", round: 18, inactive: 5, word42: 0x140, wantDialog: 8, wantIndices: map[int]bool{2: true, 3: true}},
 		{name: "word42_below_gate", round: 18, inactive: 4, word42: 0x13f},
-		{name: "word42_join18", round: 18, inactive: 4, word42: 0x140, wantJoin18: true},
+		{name: "word42_join18", round: 18, inactive: 4, word42: 0x140, wantJoin18: true, wantDialog: 15, wantIndices: map[int]bool{4: true}},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
@@ -1312,6 +1327,14 @@ func TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary(t *testing.T) {
 					g.st.Units[i].NativeRecordByte5 = 0
 				}
 			}
+			g.curX, g.curY = 0, 0
+			if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{}); err != nil ||
+				!g.st.MaterializeNativeMapHUDState(1, 1, 1) || !g.st.MaterializeNativeMapRangeMode(1) {
+				t.Fatalf("chapter16 native view setup err=%v", err)
+			}
+			if err := g.composeNativeMapFrame(); err != nil {
+				t.Fatal(err)
+			}
 			beats, issues, err := campaign.CompileHandlerBinding(assetPath("assets/cutscenes/bindings/ch15_post.json"))
 			if err != nil || len(issues) != 0 {
 				t.Fatalf("ch15_post compile err=%v issues=%#v", err, issues)
@@ -1325,18 +1348,31 @@ func TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary(t *testing.T) {
 			})
 			g.beats, g.beatIdx, g.storyBG = beats, -1, true
 			g.beatAdvance()
-			for frame := 0; frame < 12000 && g.camp.NodeID() != "town_ch17"; frame++ {
+			seen := make(map[int]bool, test.wantDialog)
+			seenIndices := make(map[int]bool, len(test.wantIndices))
+			for frame := 0; frame < 40000 && g.camp.NodeID() != "town_ch17"; frame++ {
 				if len(g.dialog) != 0 {
-					g.dialog = nil
-					g.beatAdvance()
+					current := g.dialog[len(g.dialog)-1]
+					if current.NativeDialogue == nil || current.Upper == nil || current.NativeDialogue.SourceDAT != "FDTXT_016" ||
+						!test.wantIndices[current.NativeDialogue.StringIndex] || len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != 5 {
+						t.Fatalf("ch15_post dialog lost indexed lifecycle: %#v", current)
+					}
+					seen[current.NativeDialogue.StringIndex*100+current.NativeDialogue.Utterance] = true
+					seenIndices[current.NativeDialogue.StringIndex] = true
+					if g.nativeStoryDialogueAtInputWait() && !g.handleNativeStoryInput(g.camp.Node(), nativeStoryInput{enter: true}) {
+						t.Fatal("ch15_post formal story input was rejected")
+					}
 				}
-				g.tick(1)
+				if err := g.Update(); err != nil {
+					t.Fatal(err)
+				}
 				if g.loadErr != "" {
 					t.Fatalf("ch15_post stopped at beat %d/%d: %s", g.beatIdx, len(g.beats), g.loadErr)
 				}
 			}
-			if g.camp.NodeID() != "town_ch17" || g.handlerChapter != 16 || g.st != nil {
-				t.Fatalf("ch15_post boundary node=%q chapter=%d st=%v", g.camp.NodeID(), g.handlerChapter, g.st != nil)
+			if g.camp.NodeID() != "town_ch17" || g.handlerChapter != 16 || g.st != nil ||
+				len(seen) != test.wantDialog || len(seenIndices) != len(test.wantIndices) {
+				t.Fatalf("ch15_post boundary node=%q chapter=%d st=%v dialogs=%d/%d indices=%v/%v", g.camp.NodeID(), g.handlerChapter, g.st != nil, len(seen), test.wantDialog, seenIndices, test.wantIndices)
 			}
 			if got := g.partyMembers[18]; got != test.wantJoin18 {
 				t.Fatalf("JOIN18 membership=%v, want %v", got, test.wantJoin18)
@@ -1348,20 +1384,22 @@ func TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary(t *testing.T) {
 			} else if _, ok := g.partyRoster[18]; ok {
 				t.Fatal("non-join branch materialized JOIN18")
 			}
+			t.Setenv("XDG_DATA_HOME", t.TempDir())
+			userDataDirCached = ""
+			g.saveGameToSlot(2)
+			if g.msg != "已存檔(槽位3：town_ch17)" {
+				t.Fatalf("town17 save message=%q", g.msg)
+			}
+			g.camp.Cur = "postbattle_ch16_persist"
+			g.partyMembers, g.partyJoinOrder = nil, nil
+			g.partyDeploy, g.partyRoster = nil, nil
+			g.loadGameFromSlot(2)
+			wantOrder := 16
 			if test.wantJoin18 {
-				t.Setenv("XDG_DATA_HOME", t.TempDir())
-				userDataDirCached = ""
-				g.saveGameToSlot(2)
-				if g.msg != "已存檔(槽位3：town_ch17)" {
-					t.Fatalf("town17 save message=%q", g.msg)
-				}
-				g.camp.Cur = "postbattle_ch16_persist"
-				g.partyMembers, g.partyJoinOrder = nil, nil
-				g.partyDeploy, g.partyRoster = nil, nil
-				g.loadGameFromSlot(2)
-				if g.camp.NodeID() != "town_ch17" || !g.partyMembers[18] || len(g.partyJoinOrder) != 17 {
-					t.Fatalf("town17 save/load node=%q members=%v order=%v roster=%v", g.camp.NodeID(), g.partyMembers, g.partyJoinOrder, g.partyRoster)
-				}
+				wantOrder = 17
+			}
+			if g.camp.NodeID() != "town_ch17" || g.partyMembers[18] != test.wantJoin18 || len(g.partyJoinOrder) != wantOrder {
+				t.Fatalf("town17 save/load node=%q members=%v order=%v roster=%v", g.camp.NodeID(), g.partyMembers, g.partyJoinOrder, g.partyRoster)
 			}
 		})
 	}

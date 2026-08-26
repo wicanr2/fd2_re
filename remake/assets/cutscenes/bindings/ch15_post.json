@@ -4,37 +4,589 @@
   "acting_resources": "../acting/map32.json",
   "story_index_map": "../dialogue-index/count-aligned.json",
   "dialogue_contexts": {
-    "0x23adc": { "source_dat": "FDTXT_016", "script": "ch16.json" },
-    "0x23b17": { "source_dat": "FDTXT_016", "script": "ch16.json" },
-    "0x23b40": { "source_dat": "FDTXT_016", "script": "ch16.json" }
+    "0x23adc": {
+      "source_dat": "FDTXT_016",
+      "script": "ch16.json"
+    },
+    "0x23b17": {
+      "source_dat": "FDTXT_016",
+      "script": "ch16.json"
+    },
+    "0x23b40": {
+      "source_dat": "FDTXT_016",
+      "script": "ch16.json"
+    }
   },
-  "runtime_context": { "slot_count": 76 },
+  "runtime_context": {
+    "slot_count": 76
+  },
   "overrides": {
     "0x23a5e": {
       "layout": {
         "units": [
-          { "slot": 0, "x": 28, "y": 28, "pose": 0 },
-          { "slot": 1, "x": 27, "y": 27, "pose": 0 },
-          { "slot": 2, "x": 28, "y": 27, "pose": 0 },
-          { "slot": 3, "x": 29, "y": 27, "pose": 0 },
-          { "slot": 4, "x": 30, "y": 27, "pose": 0 },
-          { "slot": 5, "x": 25, "y": 28, "pose": 0 },
-          { "slot": 6, "x": 26, "y": 28, "pose": 0 },
-          { "slot": 7, "x": 27, "y": 28, "pose": 0 },
-          { "slot": 8, "x": 26, "y": 27, "pose": 0 },
-          { "slot": 9, "x": 29, "y": 28, "pose": 0 },
-          { "slot": 10, "x": 30, "y": 28, "pose": 0 },
-          { "slot": 11, "x": 31, "y": 28, "pose": 0 },
-          { "slot": 12, "x": 25, "y": 29, "pose": 0 },
-          { "slot": 13, "x": 26, "y": 29, "pose": 0 },
-          { "slot": 14, "x": 30, "y": 29, "pose": 0 },
-          { "slot": 15, "x": 31, "y": 29, "pose": 0 },
-          { "slot": 65, "x": 28, "y": 30, "pose": 2 }
+          {
+            "slot": 0,
+            "x": 28,
+            "y": 28,
+            "pose": 0
+          },
+          {
+            "slot": 1,
+            "x": 27,
+            "y": 27,
+            "pose": 0
+          },
+          {
+            "slot": 2,
+            "x": 28,
+            "y": 27,
+            "pose": 0
+          },
+          {
+            "slot": 3,
+            "x": 29,
+            "y": 27,
+            "pose": 0
+          },
+          {
+            "slot": 4,
+            "x": 30,
+            "y": 27,
+            "pose": 0
+          },
+          {
+            "slot": 5,
+            "x": 25,
+            "y": 28,
+            "pose": 0
+          },
+          {
+            "slot": 6,
+            "x": 26,
+            "y": 28,
+            "pose": 0
+          },
+          {
+            "slot": 7,
+            "x": 27,
+            "y": 28,
+            "pose": 0
+          },
+          {
+            "slot": 8,
+            "x": 26,
+            "y": 27,
+            "pose": 0
+          },
+          {
+            "slot": 9,
+            "x": 29,
+            "y": 28,
+            "pose": 0
+          },
+          {
+            "slot": 10,
+            "x": 30,
+            "y": 28,
+            "pose": 0
+          },
+          {
+            "slot": 11,
+            "x": 31,
+            "y": 28,
+            "pose": 0
+          },
+          {
+            "slot": 12,
+            "x": 25,
+            "y": 29,
+            "pose": 0
+          },
+          {
+            "slot": 13,
+            "x": 26,
+            "y": 29,
+            "pose": 0
+          },
+          {
+            "slot": 14,
+            "x": 30,
+            "y": 29,
+            "pose": 0
+          },
+          {
+            "slot": 15,
+            "x": 31,
+            "y": 29,
+            "pose": 0
+          },
+          {
+            "slot": 65,
+            "x": 28,
+            "y": 30,
+            "pose": 2
+          }
         ],
         "cam_x": 528,
         "cam_y": 600
       }
     },
-    "0x23af0": { "act": { "resource": 49 } }
+    "0x23af0": {
+      "act": {
+        "resource": 49
+      }
+    }
+  },
+  "dialogue_overrides": {
+    "0x23adc#2": {
+      "script": "ch16.json",
+      "scene_index": 1,
+      "lines": [
+        {
+          "line": 1,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 2,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 18,
+            "pages": [
+              [
+                "『嗯，一場不錯的仗，但是耗",
+                "　時太久了．．賽可邦德，有",
+                "　關獸人的情況我已經明白了"
+              ],
+              [
+                "　，等一下我馬上要趕到艾斯",
+                "　島去，如果你的朋友也想湊",
+                "　湊熱鬧的話，就由你帶他們"
+              ],
+              [
+                "　去吧，我應該告訴過你艾斯",
+                "　島的位置。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 2,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 15,
+            "pages": [
+              [
+                "『是的，我確貫記得。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 2,
+            "utterance": 2,
+            "control": "FFEF",
+            "operand": 18,
+            "pages": [
+              [
+                "『艾斯島情勢非比尋常，叫他",
+                "　們量力而為，不要把小命送",
+                "　掉了。我走了。』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x23b17#3": {
+      "script": "ch16.json",
+      "scene_index": 1,
+      "lines": [
+        {
+          "line": 4,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 3,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『哼，這女人真是夠覓張了！",
+                "　我．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 5,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 3,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『唉，索爾，我們技不如人，",
+                "　你還想怎麼樣？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 6,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 3,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 13,
+            "pages": [
+              [
+                "『我們還是先趕到艾斯島上觀",
+                "　察一下情勢，或許還有我們",
+                "　可以幫忙的地方．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 7,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 3,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『也只好這樣了！索爾，別無",
+                "　精打采的，我們走吧！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 8,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 3,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『可惡，我才不肯認輸呢！",
+                "　等著瞧！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x23b40#4": {
+      "script": "ch16.json",
+      "scene_index": 1,
+      "lines": [
+        {
+          "line": 9,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 4,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 18,
+            "pages": [
+              [
+                "『各位，漂亮的一仗！真是把",
+                "　團隊合作的精神發揮到了極",
+                "　致，我個人非常佩服。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 10,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 4,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 5,
+            "pages": [
+              [
+                "『閣下的劍技也極為高超，",
+                "　真是讓我們開了眼界。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 11,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 4,
+            "utterance": 2,
+            "control": "FFEF",
+            "operand": 18,
+            "pages": [
+              [
+                "『謝謝。那麼，我想各位會到",
+                "　這裡來，相信都和我有著相",
+                "　同的目的，現在已查明敵方"
+              ],
+              [
+                "　部隊正集結在北方的艾斯島",
+                "　上，接下來就由我帶領各位",
+                "　前去，將敵人一舉殲滅。我"
+              ],
+              [
+                "　想各位都沒有意見吧？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 12,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 4,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『我有意見！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 13,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 4,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『索．索爾？你怎麼了？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 14,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 4,
+            "utterance": 5,
+            "control": "FFEF",
+            "operand": 18,
+            "pages": [
+              [
+                "『你有什麼意見，就說出來聽",
+                "　聽看吧。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 15,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 4,
+            "utterance": 6,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『既然是我們戰技高超，我們",
+                "　為什麼要由妳來帶領？應該",
+                "　是妳加入我們，然後嚮導我"
+              ],
+              [
+                "　們到艾斯島去才對，不是嗎",
+                "　？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 16,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 4,
+            "utterance": 7,
+            "control": "FFEE",
+            "operand": 12,
+            "pages": [
+              [
+                "『索爾大哥，密蒂閣下也算是",
+                "　劍士中的前輩，你也多少敬",
+                "　老尊賢一下嘛．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 17,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 4,
+            "utterance": 8,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『哼，我才不服！會打架的才",
+                "　算高手，我從小就這麼認為",
+                "　。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 18,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 4,
+            "utterance": 9,
+            "control": "FFEF",
+            "operand": 18,
+            "pages": [
+              [
+                "『呻呻．小子，你年紀這麼輕",
+                "　就有如此的膽識和武藝，我",
+                "　很欣賞．．也好，我一個人"
+              ],
+              [
+                "　過了這麼多年，也好久沒有",
+                "　營過被人帶領的滋味了，我",
+                "　就加入你們吧！劍聖密蒂，"
+              ],
+              [
+                "　以後請各位多多指教。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 19,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 4,
+            "utterance": 10,
+            "control": "FFEE",
+            "operand": 15,
+            "pages": [
+              [
+                "『我不敢相信，一向自視極高",
+                "　美貌而又驕傲的劍聖密蒂，",
+                "　居然就這樣折服在索爾的氣"
+              ],
+              [
+                "　魄之下了．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 20,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 4,
+            "utterance": 11,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『這就是王者的霸氣啊！不愧",
+                "　是索爾，光這一點我就比不",
+                "　上他了。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 21,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 4,
+            "utterance": 12,
+            "control": "FFEE",
+            "operand": 13,
+            "pages": [
+              [
+                "『那麼，密蒂閣下，這就請妳",
+                "　帶領我們到艾斯島去吧！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 22,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 4,
+            "utterance": 13,
+            "control": "FFEF",
+            "operand": 18,
+            "pages": [
+              [
+                "『我既然已經加入你們，稱呼",
+                "　我時閣下兩個字就可以不必",
+                "　了，對吧，索爾？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 23,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_016",
+            "string_index": 4,
+            "utterance": 14,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『哼，我才．我才不在乎這些",
+                "　事呢！我們快上路吧！』"
+              ]
+            ]
+          }
+        }
+      ]
+    }
   }
 }
