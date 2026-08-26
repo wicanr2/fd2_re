@@ -7362,3 +7362,16 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 第二次[run 33000820996](https://github.com/wicanr2/fd2_re/actions/runs/33000820996)、job
   `98281879552`的原生建置、空cwd具型別執行、ZIP與artifact全部success；一次性觸發分支已刪除。
   此項證明Windows原生程序與封包資料解析，不冒稱實體玩家桌面的視窗、鍵盤、存檔、音訊或防毒驗收。
+
+## 2026-08-27：Linux AppImage 原生持續整合與可攜雜湊
+
+- 新增正式`build-linux.yml`：`ubuntu-latest`由受版控`Dockerfile.appimage`建立鎖定
+  工具映像，再以一次性無網路容器組包；從空白cwd執行實際AppImage的具型別自我
+  檢查，成功後才複驗SHA-256並上傳artifact。
+- 本機第一輪揭露Ebiten在`main`前初始化X11，純headless會先崩潰；第二輪使用
+  `xvfb-run`後又留下無界Xvfb。正式流程改由明確PID／trap擁有Xvfb、等待X11 socket
+  並以60秒`timeout`限制AppImage。舊雜湊清單另保存容器內絕對路徑，現改為同目錄
+  可直接驗證的`FD2-x86_64.AppImage`相對檔名。
+- 真實[run 33002216602](https://github.com/wicanr2/fd2_re/actions/runs/33002216602)、job
+  `98286706193`於`ubuntu-latest`完成映像建置、無網路組包、空cwd具型別執行、雜湊
+  複驗與artifact上傳。這是Linux原生封包E1，不冒稱實體桌面輸入、音訊或長時間遊玩。

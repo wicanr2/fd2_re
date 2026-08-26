@@ -4,9 +4,9 @@
 (AppImage squashfs)內既讀不到 `assets/`、也寫不了存檔,詳見 `38-editor-design.md` §6.5 的設計討論;
 本篇是那份設計的**實作紀錄 + 驗證證據**。
 
-> **2026-08-27 最新發行候選：**提交`a5bbaf3f`已由現有鎖定映像重新產出兩個
-> 無原版資產封包。Linux AppImage為5,306,872 bytes，SHA-256
-> `f085dc58ba021a118114ec33b1972e2500e61c51141b02f35d7cfbb720acadfb`；從空工作目錄
+> **2026-08-27 最新發行候選：**Linux提交`77017ead`及既有Windows封包均不含原版資產。
+> Linux AppImage為5,306,872 bytes，SHA-256
+> `9e54d32e1e928c42b62012a30c2e64b77e5de2dcaf42ec56bbda01f88951ca4d`；從空工作目錄
 > 以唯讀XDG玩家資產實際啟動至`town_ch02`，見
 > [`release-appimage-town-ch02.png`](../figures/release-appimage-town-ch02.png)及
 > [狀態紀錄](../data/ui-traces/release-appimage-town-ch02.json)。Windows ZIP為
@@ -199,6 +199,12 @@ SHA-256 清單只記錄 `FD2-x86_64.AppImage` 相對檔名，不得洩漏建置�
 這項契約證明的是 Linux x86_64 原生程序、AppImage 唯讀資產層與可散布資料完整性；
 非互動 runner 不證明實體桌面的視窗、鍵盤、音訊、顯示伺服器相容性或長時間遊玩。
 這些仍須與 Debian／Ubuntu 既有畫面證據及後續玩家回報分開記錄。
+
+真實[Linux run 33002216602](https://github.com/wicanr2/fd2_re/actions/runs/33002216602)、
+job `98286706193`已在`ubuntu-latest`成功完成鎖定Docker映像建置、無網路AppImage
+組包、空白cwd＋有界Xvfb具型別自我檢查、可攜SHA-256複驗與artifact上傳。首次本機
+試跑暴露兩項封包驗證缺陷：缺`DISPLAY`會在進入`main`前失敗，舊雜湊清單又保存
+容器內`/src/packaging/dist`絕對路徑；兩者均在正式工作流程前修正並以同一命令重跑通過。
 
 ## 3. Windows(`remake/packaging/build-windows.sh`)
 

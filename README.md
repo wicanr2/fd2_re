@@ -82,7 +82,7 @@ records／globals 連續性，因此戰役／隊伍持續項增加1分。測試�
 | 戰鬥規則、玩家指令與敵方 AI | 20 | 19 | 正常產生端的主要交易與 indexed owner 已達 E1；固定晚期槽現於第29、30戰都由正式標題／整備入口，再經 END／YES、原始敵軍陣容與 indexed 演出完成一輪控制權交接。玩家普通攻擊、敵方指令13、指令24及指令29多目標正式呈現回歸亦通過，仍缺原版同狀態逐音訊／逐幀 E2 |
 | 操作介面與原版視覺忠實度 | 15 | 14 | ch02 城鎮／商店與普通攻擊固定fixture已有整幀或內容區AE=0。外部末關候選另由不略過開場、不固定標題計時的普通鍵盤CONTINUE抵達並操作第30戰；IDA閉合並接通`FDOTHER #55`輔助底面與`0x4DFCC` DAC cycle後，同一raw狀態與合法相位組合達320×200整幀AE=0。固定晚期槽的初始整備現也由正式LOAD擷取；凍結相位0並分開兩套原版數字字形後，同狀態整幀AE=0。教會與其他章節的代表性比對尚未完成 |
 | 結局與音訊 | 10 | 9 | 正式第30戰可經一般戰果接縫進來源約束終局並停在定格；部署成員保留最終戰結果，未部署成員保留冷讀狀態，完整 JOIN 隊伍可進最終回顧。短音效播放器可疊播、保留至自然結束並於退出清理；實際 MT-32 資產亦已在無音效裝置的 Docker 中完成曲目4→停止→曲目18的解碼與切換。仍缺人耳、原版呼叫當下完整動態狀態、原版輸入與三平台精確音訊驗收 |
-| 三平台發行與推廣 | 10 | 7 | 最新`a5bbaf3f`已重建Linux AppImage與Windows x86_64 ZIP。AppImage於Debian系及Ubuntu 24.04抵達`town_ch02`且畫面AE=0；Windows ZIP於Wine 9.0接收城鎮按鍵、進商店並以F5寫出可解析存檔。[Windows run 33000820996](https://github.com/wicanr2/fd2_re/actions/runs/33000820996)又在真正`windows-latest`建置並從空白cwd執行GUI `fd2.exe`具型別封包檢查。macOS [run 32999934526](https://github.com/wicanr2/fd2_re/actions/runs/32999934526)同樣驗證universal bundle、全部戰役轉場、36個唯一法術ID及所有劇情引用。這仍不等於Windows／macOS實體玩家桌面的視窗、輸入與音訊驗收；最終版號封包與推廣影片尚待 |
+| 三平台發行與推廣 | 10 | 7 | [Linux run 33002216602](https://github.com/wicanr2/fd2_re/actions/runs/33002216602)已在真正`ubuntu-latest`重建AppImage，從空白cwd執行具型別封包檢查、複驗可攜SHA-256並上傳artifact；既有AppImage亦在Debian系及Ubuntu 24.04抵達`town_ch02`且畫面AE=0。[Windows run 33000820996](https://github.com/wicanr2/fd2_re/actions/runs/33000820996)與macOS [run 32999934526](https://github.com/wicanr2/fd2_re/actions/runs/32999934526)同樣驗證各自原生封包、全部戰役轉場、36個唯一法術ID及所有劇情引用。這仍不等於Windows／macOS實體玩家桌面的視窗、輸入與音訊驗收；最終版號封包與推廣影片尚待 |
 | **總計** | **100** | **90** | **尚未達到發行候選版** |
 
 這個估值不是依據已解出的位址數量，而是依據玩家交付門檻。截至本次快照，
@@ -116,7 +116,7 @@ writer／consumer 時重開。
 | 操作介面忠實度 | ch02 城鎮／商店有多組 E2；晚期有效槽、整備與第30戰有候選E2長鏈，其餘多為 E1 | 補戰場 HUD／動畫、教會、整備同狀態像素比較及其他章節戰間介面；不要求無玩家影響的 DOS 硬體逐像素復刻 |
 | 隊伍持續與原生存讀檔 | 重製格式可用，current-runtime SAVE／LOAD 與增援／JOIN raw 同步已有窄 E1；外部晚期有效槽已由原版普通LOAD抵達第30戰，重製也由標題正常事件還原29人／60金幣、完成19人整備並部署20人進最終戰 | 抽驗代表性章節的金錢、HP／MP、物品、裝備與隊伍順序；長程漂移由人工回報建立窄重現案例。第29戰勝利當下的原版 writer 來源只保留為考證限制 |
 | 結局與音訊 | 終局前綴、角色蒙太奇、20 組尾段、19×5 對話、永久定格及冷讀隊伍回顧均可達 E1 | 抽驗原版呼叫當下完整動態狀態、原版輸入與精確音訊時序；不重現依賴未初始化堆疊的3%偶發外層，也不重做已完成的定格／回顧循環 |
-| Linux／Windows／macOS 發行 | AppImage已在Debian系與Ubuntu 24.04抵達`town_ch02`且畫面一致；Windows ZIP已由Wine 9.0驗證輸入、節點轉場與F5存檔，run 33000820996另由真正Windows runner執行封包內GUI程式；macOS run 32999934526亦在真實`macos-14`驗證完整可散布戰役資料 | 補Windows／macOS實體玩家桌面的視窗、輸入、存檔與音訊，處理簽章／Gatekeeper，最後建立版號封包與推廣影片 |
+| Linux／Windows／macOS 發行 | AppImage已在Debian系與Ubuntu 24.04抵達`town_ch02`且畫面一致；Linux run 33002216602另由真正Ubuntu runner重建、執行、驗證雜湊並上傳封包。Windows run 33000820996與macOS run 32999934526亦已執行各自原生封包的完整可散布資料檢查 | 補Windows／macOS實體玩家桌面的視窗、輸入、存檔與音訊，處理簽章／Gatekeeper，最後建立版號封包與推廣影片 |
 
 因此，接下來不再以「多解一個位址」當成進度，而以每條
 「原版證據→可編輯資料→正式執行期→介面→存檔→玩家測試」垂直鏈是否關閉來前進。
