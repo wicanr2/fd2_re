@@ -2510,6 +2510,17 @@ compact/raw 背包、裝備旗標、能力、item selection 與既有 panel imag
 返回標題，無法抵達先前 ch02 城鎮簽章。依有界停止原則不再重播或猜改快照，因此
 原版 mutation／restore E2 仍未關閉，既有兩張 stable partial E2 也不受影響。
 
+#### service2 正式輸入 consumer 契約
+
+`equip_roster` 與 `equip_panel` 必須由正式 Ebiten 鍵盤及決定性回歸共用單一 typed
+consumer。名冊方向鍵沿 `AdvanceNativeTwoColumnSelection`／`NativeTwoColumnWindow`；
+Enter 先完成五幀關框與 source restore，才預建 item panel。面板方向鍵必須轉成
+原版 scan code 72／80／75／77 並由 `AdvanceNativeItemSelector` 消費；相容 item 的
+Enter 只能經上述候選 unit→panel rebuild→一次發布交易。不相容 item 無提示且零修改，
+空背包仍可開 panel 並由 Escape 正常收合。Escape 必須完成0→11收合、六幀同角色名冊
+重開；名冊 Escape 再關框返回 service selection 2。這只關閉 production-input
+`RUNTIME-E1`，不替代原版 mutation／restore E2。
+
 ### ch02 物品轉移子面板 E2 契約（2026-08-22）
 
 本切片只消費已閉合的共用 owner `0x2F8EA`，不重解函式本體。原版只可

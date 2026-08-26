@@ -5,6 +5,73 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
 
+func (g *Game) handleNativeShopEquipInput(input nativeShopTransferInput) bool {
+	switch g.nativeShopMode {
+	case "equip_roster":
+		count := len(g.partyJoinOrder)
+		if input.delta != 0 {
+			g.nativeShopEquipUnitSel = campaign.AdvanceNativeTwoColumnSelection(
+				g.nativeShopEquipUnitSel, count, input.delta,
+			)
+			g.nativeShopEquipRosterTop, _ = campaign.NativeTwoColumnWindow(
+				count, g.nativeShopEquipUnitSel, g.nativeShopEquipRosterTop,
+			)
+		}
+		if input.escape {
+			openMenu := func() {
+				g.nativeShopMode = "menu"
+				g.nativeShopServiceSel = 2
+				g.beginNativeShopServiceOpening()
+			}
+			if !g.beginNativeShopEquipRosterClosing(openMenu) {
+				openMenu()
+			}
+			return true
+		}
+		if input.enter && count != 0 {
+			openPanel := func() {
+				if !g.openNativeShopEquipPanel() {
+					g.nativeShopMode = ""
+					g.msg = "原版商店 equip item panel 無法還原"
+				}
+			}
+			if !g.beginNativeShopEquipRosterClosing(openPanel) {
+				openPanel()
+			}
+		}
+		return true
+	case "equip_panel":
+		if g.nativeShopEquipPanelBlocksInput() {
+			return true
+		}
+		if input.escape {
+			g.beginNativeShopEquipPanelClose()
+			return true
+		}
+		_, unit, ok := g.nativeShopEquipUnit()
+		if !ok {
+			return true
+		}
+		rawSlots := nativeItemRawSlots(&unit)
+		if len(rawSlots) != 0 && input.delta != 0 {
+			scanCode := map[int]int{-2: 72, 2: 80, -1: 75, 1: 77}[input.delta]
+			selected, _, err := battle.AdvanceNativeItemSelector(
+				g.itemSel, len(rawSlots), scanCode, false, 0,
+			)
+			if err == nil && selected != g.itemSel {
+				g.itemSel = selected
+				g.refreshNativeItemPanelMode(&unit, true)
+			}
+		}
+		if input.enter && !g.applyNativeShopEquipSelection() {
+			g.msg = "原版商店 equip transaction 缺少 raw 對映"
+		}
+		return true
+	default:
+		return false
+	}
+}
+
 func (g *Game) setupNativeShopEquipRoster() bool {
 	if len(g.partyJoinOrder) == 0 {
 		return false

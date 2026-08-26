@@ -7160,3 +7160,14 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   成功完整發布。成功結果另由既有 town→JSON 冷讀檔回歸保存 portrait、class、raw
   class、selector、成長、裝備與背包。教會四項 service 至此均達 production-input
   `RUNTIME-E1`，README 85／100 自評不變。
+
+## 2026-08-26：商店 service2 共用正式輸入
+
+- 沿用已閉合 `0x2F883→0x1BFFE→0x17E0B` 與既有原子交易，不重解 callee；
+  `equip_roster`／`equip_panel` 現由正式鍵盤與測試共用 typed consumer。
+- 回歸從 service menu Right×2 走過角色名冊、Down（scan80）選第二筆物品、成功
+  裝備、0→11收合、同角色名冊重開及返回 service selection2；另驗證不相容 item
+  零修改與空背包可正常開／關。第一輪以Right（scan77）期待selection1失敗，重讀
+  既有 selector 契約後確認直排兩筆必須用Down，consumer行為正確。
+- 此批為 production-input `RUNTIME-E1`；原版 mutation／restore 畫面 E2 仍未提升，
+  README 85／100 自評不變。

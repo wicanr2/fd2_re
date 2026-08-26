@@ -2010,89 +2010,9 @@ func (g *Game) handleNativeShopInputState(input nativeShopTransferInput) bool {
 			return true
 		}
 	case "equip_roster":
-		count := len(g.partyJoinOrder)
-		delta := 0
-		switch {
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft):
-			delta = -1
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowRight):
-			delta = 1
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowUp):
-			delta = -2
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowDown):
-			delta = 2
-		}
-		if delta != 0 {
-			g.nativeShopEquipUnitSel = campaign.AdvanceNativeTwoColumnSelection(
-				g.nativeShopEquipUnitSel, count, delta,
-			)
-			g.nativeShopEquipRosterTop, _ = campaign.NativeTwoColumnWindow(
-				count, g.nativeShopEquipUnitSel,
-				g.nativeShopEquipRosterTop,
-			)
-		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-			openMenu := func() {
-				g.nativeShopMode = "menu"
-				g.nativeShopServiceSel = 2
-				g.beginNativeShopServiceOpening()
-			}
-			if !g.beginNativeShopEquipRosterClosing(openMenu) {
-				openMenu()
-			}
-			return true
-		}
-		if enter && count != 0 {
-			openPanel := func() {
-				if !g.openNativeShopEquipPanel() {
-					g.nativeShopMode = ""
-					g.msg = "原版商店 equip item panel 無法還原"
-				}
-			}
-			if !g.beginNativeShopEquipRosterClosing(openPanel) {
-				openPanel()
-			}
-			return true
-		}
+		return g.handleNativeShopEquipInput(input)
 	case "equip_panel":
-		if g.nativeShopEquipPanelBlocksInput() {
-			return true
-		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-			g.beginNativeShopEquipPanelClose()
-			return true
-		}
-		_, unit, ok := g.nativeShopEquipUnit()
-		if !ok {
-			return true
-		}
-		rawSlots := nativeItemRawSlots(&unit)
-		if len(rawSlots) != 0 {
-			key := 0
-			switch {
-			case inpututil.IsKeyJustPressed(ebiten.KeyArrowUp):
-				key = 72
-			case inpututil.IsKeyJustPressed(ebiten.KeyArrowDown):
-				key = 80
-			case inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft):
-				key = 75
-			case inpututil.IsKeyJustPressed(ebiten.KeyArrowRight):
-				key = 77
-			}
-			if key != 0 {
-				selected, _, err := battle.AdvanceNativeItemSelector(
-					g.itemSel, len(rawSlots), key, false, 0,
-				)
-				if err == nil && selected != g.itemSel {
-					g.itemSel = selected
-					g.refreshNativeItemPanelMode(&unit, true)
-				}
-			}
-		}
-		if enter && !g.applyNativeShopEquipSelection() {
-			g.msg = "原版商店 equip transaction 缺少 raw 對映"
-		}
-		return true
+		return g.handleNativeShopEquipInput(input)
 	case "transfer_intro":
 		if enter || input.escape {
 			if !g.beginNativeShopTransferMessageClosing(

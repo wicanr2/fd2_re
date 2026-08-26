@@ -23,6 +23,10 @@
 | 6 | 原版終局精確鏈 | `RUNTIME-E1`：第27戰缺天空之鑰現在沿正式typed gate進chapter26 `0x2BCE5`前綴與`FDTXT_027`兩個原版文字閘門，不再只顯示通用結語；chapter29 `sub_2C39B`文字把caller initial portrait與14句FDTXT speaker拆開，正式19×5 indexed owner逐Draw消費六段opening、四列逐glyph、mouth、Enter／Space、五段closing與source restore，收框後才resume，不再使用一般RGBA框。正式`battle_ch30→ending`則消費chapter29來源約束前綴／角色／20段尾段並停在#59，可選隊伍最終狀態循環已接。全新`Game`冷讀最終整備槽後，JOIN順序與persistent raw `+6/+7/+8/+0x20`已連續保存到定格、回顧及返回。三筆具位址音訊cue由typed `runtime_stage`正式消費；玩家自備MT-32 OGG的`FDMUS_004→stop→FDMUS_018`已實際解碼、建立與切換播放器，但無聲Docker不證明人耳輸出。80個實際FIGANI的header-zero `0x2939D` raw `+4..+7`、base scheduler與兩次配對已接；3%外層預算依賴未初始化區域值，降為非阻擋考古限制；未達E2 | 下一步只補原版 caller `0x2C2A6` 當下完整動態狀態、精確音訊時序／原版終端輸入及第27／30戰E2。不重做重製端連續性、speaker mapping、19×5 owner、兩個文字臂、定格、回顧循環、未初始化堆疊實作殘留或三筆raw cue |
 | 7 | 三平台打包與推廣片 | 目前 HEAD 已通過 Linux Docker／Xvfb 建置、啟動與城鎮擷圖；Windows x86_64 GUI PE 已完成交叉編譯與格式檢查，但未做 Windows 執行；macOS 工作流程尚無執行紀錄，派送受失效 GitHub 權杖阻擋。全戰役長程遊玩由使用者人工進行 | 補 Windows 真機啟動／輸入／存檔／音訊抽測；修復 GitHub 驗證後執行 macOS CI 並做相同抽測；核心門檻關閉後才產最終封包與推廣片 |
 
+> **2026-08-26 service2 正式輸入補證：** 獨立裝備已由正式 service menu→角色→
+> item→成功／不相容／空背包→收合→同角色名冊→menu 完整往返，達 production-input
+> `RUNTIME-E1`。後續只留原版 mutation／restore 畫面與代表性章節 E2，不再重做交易。
+
 > **2026-08-26 教會正式輸入補證：** `0x3072F` 四項服務現由正式鍵盤與回歸
 > 共用 typed consumer；status／transfer／revive／class 均在關框與 source restore
 > 後才發布。status 又沿正式 consumer 走完名冊→狀態→指令→同一名冊的完整面板
