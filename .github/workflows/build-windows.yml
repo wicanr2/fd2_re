@@ -1,0 +1,67 @@
+# build-windows.yml — 在真正的 Windows runner 建置並執行封包自我檢查。
+name: Build Windows x86_64
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*-windows']
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: remake
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: 啟用 runner 內建 MinGW 工具鏈
+        run: |
+          "C:\msys64\mingw64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: 建置並組裝 Windows 封包
+        run: |
+          $dist = "packaging/dist/windows"
+          Remove-Item -Recurse -Force $dist -ErrorAction SilentlyContinue
+          New-Item -ItemType Directory -Force "$dist/assets/scenarios", "$dist/assets/story" | Out-Null
+          $env:CGO_ENABLED = "1"
+          go build -trimpath -buildvcs=false -ldflags="-s -w -H=windowsgui" -o "$dist/fd2.exe" ./cmd/fd2
+          Copy-Item -Recurse -Force "assets/scenarios/*" "$dist/assets/scenarios/"
+          Copy-Item -Recurse -Force "assets/story/*" "$dist/assets/story/"
+          Copy-Item -Force "assets/spells.json" "$dist/assets/spells.json"
+
+      - name: 從空白工作目錄執行具型別封包檢查
+        run: |
+          $exe = (Resolve-Path "packaging/dist/windows/fd2.exe").Path
+          $empty = Join-Path $env:RUNNER_TEMP "fd2-package-check"
+          Remove-Item -Recurse -Force $empty -ErrorAction SilentlyContinue
+          New-Item -ItemType Directory -Force $empty | Out-Null
+          Push-Location $empty
+          try {
+            $env:FD2_PACKAGE_SELF_CHECK = "1"
+            $env:XDG_DATA_HOME = Join-Path $empty "xdg"
+            & $exe
+            if ($LASTEXITCODE -ne 0) {
+              throw "FD2 封裝自我檢查失敗，退出碼 $LASTEXITCODE"
+            }
+          } finally {
+            Pop-Location
+          }
+
+      - name: 產生 ZIP 與雜湊
+        run: |
+          $archive = "packaging/dist/fd2-windows-x86_64.zip"
+          Remove-Item -Force $archive -ErrorAction SilentlyContinue
+          Compress-Archive -Path "packaging/dist/windows/*" -DestinationPath $archive
+          Get-FileHash -Algorithm SHA256 $archive | Format-List
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fd2-windows-x86_64
+          path: remake/packaging/dist/fd2-windows-x86_64.zip
+          if-no-files-found: error

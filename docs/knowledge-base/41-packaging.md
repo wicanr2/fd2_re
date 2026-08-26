@@ -183,6 +183,16 @@ SHA-256由同一無網路容器再次驗證。
 
 ## 3. Windows(`remake/packaging/build-windows.sh`)
 
+### 3.1 Windows 原生持續整合契約
+
+Linux／MinGW容器仍是可重現的正式交叉封包來源，但Wine只能提供相容層煙霧測試。
+GitHub Actions的`windows-latest`流程必須另以原生Go／MinGW工具鏈建置同一GUI程式，
+只封入`assets/scenarios`、`assets/story`與`assets/spells.json`。組裝後須切換到空白工作目錄，
+直接執行ZIP目錄內的`fd2.exe`並設定`FD2_PACKAGE_SELF_CHECK=1`；其驗收條件與macOS相同：
+完整campaign轉場、36個唯一法術ID與全部story引用均通過。任何資料缺漏、程式非零退出、
+封包失敗或artifact缺失都必須讓workflow失敗。此項只證明Windows原生程序與公開資料封包，
+不取代實體玩家桌面的視窗、鍵盤、存檔、音訊或防毒軟體驗收。
+
 CGO 跨編:`packaging/Dockerfile.mingw` 建一個 `golang:1.22-bookworm` + `gcc-mingw-w64-x86-64` 的
 image(`fd2-build-mingw`),並預抓 Go modules、內建`file`／`zip`；正式封包容器關閉網路。
 `CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc`。

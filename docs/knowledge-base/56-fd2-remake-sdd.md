@@ -3079,6 +3079,11 @@ SDD 通過後按以下順序重審，不先補 renderer 猜測：
    恰含ID 0..35各一筆，且campaign每個非空`Node.Script`都必須可由同一資產解析層找到並
    解成JSON。任一條件不成立時立即失敗即關閉；只檢查首／末章或JSON語法不足以證明封包完整。
 
+   Windows原生封包契約（2026-08-27）：Linux／MinGW的可重現交叉封包與Wine煙霧測試之外，
+   `windows-latest`必須以Windows原生程序重建`fd2.exe`及相同三類公開資料，從空白cwd執行
+   `FD2_PACKAGE_SELF_CHECK=1`，再產ZIP與artifact。自我檢查沿用上述具型別條件；它證明
+   Windows載入器、執行檔相鄰`assets`解析與封包內容，不冒稱互動視窗、音訊或實體機驗收。
+
    Native unit table export boundary (2026-07-26): `tools/extract_native_unit_tables.py` reads the LE object through `le_xref` and emits only raw records: `high_class` `0x61af9` (68×10, helper `0x4e4ff`, selector `FDFIELD b1-0x44`), `lower_class` `0x61da1` (32×24, helper `0x4e4e8`, selector `FDFIELD b1` in the lower branch), and `lower_aux` `0x620a1` (68×11, helper `0x4e4d1`, same selector). Docker extraction against the real FD2.EXE validates all 68/32/68 records. The JSON deliberately keeps selector provenance and `bytes_hex` without assigning gameplay names; it is an editable RE fixture, not permission to substitute portrait/class or to enable HUD optional unit/HP.
 
    可編輯單位邊界：`tools/export_units.py` 接受可選的原始表 JSON，在建構器公式來源完整時可寫出 `native_constructor:{branch,index,record,aux_record}`、`native_record_word42` 與 `native_record_word46`。為避免每列複製完整表格，`tools/sync_native_selector_fields.py --native-tables` 只將已被消費的 race/class 原始位元組、初始命令遮罩、`word42` 與 `word46` 合併到 33 張地圖，保留其餘人工校正欄位。`battle.NativeConstructorTable` 仍是經驗證的可選稽核物件；記錄格式錯誤時失敗即關閉，不退回以 portrait/class 猜測。
