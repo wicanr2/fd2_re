@@ -6929,3 +6929,19 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   [`native-battle-ch30-original-candidate.json`](../data/ui-traces/native-battle-ch30-original-candidate.json)。
   裁決仍是候選 `PLAYER-E2`：第三方存檔無法證明從頭通關，`nosound` 容器也沒有
   精確音訊證據；重製正式敵方AI consumer維持`RUNTIME-E1`，不因原版證據自動升級。
+
+## 2026-08-26：service3 empty／full／取消／自我轉移正式輸入回歸
+
+- 沿用已閉合的共用 `0x2F8EA` owner 與既有 ch02 service3 規格，沒有重新反組譯。
+  `handleNativeShopInput` 現先把 Ebiten Enter／Escape／方向鍵轉成
+  `nativeShopTransferInput`，正式執行與決定性測試共用同一個狀態 consumer。
+- 新回歸由商店四項選單 Right×3 正常進入 service3，逐一消費提示、來源名冊、
+  物品名冊與目的名冊的 opening／closing／restore Draw acknowledgment；沒有直接
+  寫 `nativeShopMode`，也沒有直接呼叫 transaction helper。
+- 三條路徑已驗證：空背包顯示 empty 並無修改返回；八格滿欄顯示 full 且來源、
+  目的、金幣原子不變；目的名冊取消後回到來源提示，再重新進入並選來源本人，
+  依 raw remove→append 把第一件物品移到未裝備尾端。聚焦測試與完整 `cmd/fd2`
+  套件均在 Docker／Xvfb 通過。
+- 裁決為 production-input `RUNTIME-E1`。測試使用具完整 raw provenance 的 typed
+  party，但未送 OS 鍵盤、也不是完整 campaign 或未修改原版存檔；service3 四分支
+  的原版同狀態畫面 E2 仍保留。

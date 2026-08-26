@@ -1579,7 +1579,39 @@ func (g *Game) stepNativeShopUIPulseTick(rawTick int) {
 	g.nativeShopUIPulse = (g.nativeShopUIPulse + 1) & 3
 }
 
+type nativeShopTransferInput struct {
+	enter, escape bool
+	delta         int
+}
+
+func currentNativeShopTransferInput(enter bool) nativeShopTransferInput {
+	delta := 0
+	switch {
+	case inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft):
+		delta = -1
+	case inpututil.IsKeyJustPressed(ebiten.KeyArrowRight):
+		delta = 1
+	case inpututil.IsKeyJustPressed(ebiten.KeyArrowUp):
+		delta = -2
+	case inpututil.IsKeyJustPressed(ebiten.KeyArrowDown):
+		delta = 2
+	}
+	return nativeShopTransferInput{
+		enter: enter, escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+		delta: delta,
+	}
+}
+
 func (g *Game) handleNativeShopInput(enter bool) bool {
+	return g.handleNativeShopInputState(currentNativeShopTransferInput(enter))
+}
+
+// handleNativeShopInputState is the typed service3 input consumer used by both
+// Ebiten and deterministic production-path tests. The top-level service menu
+// also consumes its horizontal delta so tests enter service3 through the same
+// selection path; other shop owners retain their existing input handling.
+func (g *Game) handleNativeShopInputState(input nativeShopTransferInput) bool {
+	enter := input.enter
 	if g.nativeShopMode == "" {
 		return false
 	}
@@ -1588,11 +1620,11 @@ func (g *Game) handleNativeShopInput(enter bool) bool {
 	}
 	switch g.nativeShopMode {
 	case "menu":
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
+		if input.delta == -1 {
 			g.nativeShopServiceSel = (g.nativeShopServiceSel + 3) % 4
 			g.resetNativeShopUIPulse()
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+		if input.delta == 1 {
 			g.nativeShopServiceSel = (g.nativeShopServiceSel + 1) % 4
 			g.resetNativeShopUIPulse()
 		}
@@ -2062,7 +2094,7 @@ func (g *Game) handleNativeShopInput(enter bool) bool {
 		}
 		return true
 	case "transfer_intro":
-		if enter || inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if enter || input.escape {
 			if !g.beginNativeShopTransferMessageClosing(
 				g.openNativeShopTransferSourceRoster,
 			) {
@@ -2071,7 +2103,7 @@ func (g *Game) handleNativeShopInput(enter bool) bool {
 		}
 		return true
 	case "transfer_empty", "transfer_full":
-		if enter || inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if enter || input.escape {
 			after := func() {
 				if !g.returnToNativeShopTransferLoop() {
 					g.nativeShopMode = ""
@@ -2084,7 +2116,7 @@ func (g *Game) handleNativeShopInput(enter bool) bool {
 		}
 		return true
 	case "transfer_dest_prompt":
-		if enter || inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if enter || input.escape {
 			if !g.beginNativeShopTransferMessageClosing(
 				g.openNativeShopTransferDestinationRoster,
 			) {
@@ -2094,17 +2126,7 @@ func (g *Game) handleNativeShopInput(enter bool) bool {
 		return true
 	case "transfer_source", "transfer_dest":
 		count := len(g.nativeShopTransferIDs)
-		delta := 0
-		switch {
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft):
-			delta = -1
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowRight):
-			delta = 1
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowUp):
-			delta = -2
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowDown):
-			delta = 2
-		}
+		delta := input.delta
 		if delta != 0 {
 			g.nativeShopTransferSel = campaign.AdvanceNativeTwoColumnSelection(
 				g.nativeShopTransferSel, count, delta,
@@ -2113,7 +2135,7 @@ func (g *Game) handleNativeShopInput(enter bool) bool {
 				count, g.nativeShopTransferSel, g.nativeShopTransferTop,
 			)
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if input.escape {
 			if g.nativeShopMode == "transfer_source" {
 				openMenu := func() {
 					g.nativeShopMode = "menu"
@@ -2190,17 +2212,7 @@ func (g *Game) handleNativeShopInput(enter bool) bool {
 		}
 	case "transfer_items":
 		count := len(g.nativeShopTransferItems)
-		delta := 0
-		switch {
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft):
-			delta = -1
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowRight):
-			delta = 1
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowUp):
-			delta = -2
-		case inpututil.IsKeyJustPressed(ebiten.KeyArrowDown):
-			delta = 2
-		}
+		delta := input.delta
 		if delta != 0 {
 			g.nativeShopTransferSel = campaign.AdvanceNativeTwoColumnSelection(
 				g.nativeShopTransferSel, count, delta,
@@ -2209,7 +2221,7 @@ func (g *Game) handleNativeShopInput(enter bool) bool {
 				count, g.nativeShopTransferSel, g.nativeShopTransferTop,
 			)
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if input.escape {
 			after := func() {
 				if !g.returnToNativeShopTransferLoop() {
 					g.nativeShopMode = ""

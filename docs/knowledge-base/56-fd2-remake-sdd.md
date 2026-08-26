@@ -2613,6 +2613,14 @@ mode 不能啟動此 owner。取消返回後再沿正式 source→items→destin
 畫面，因此 self／destination-cancel 仍只到重製端 E1；上列原版同狀態 E2 gate
 與 empty／full gate 均保留。
 
+正常輸入回歸不得再直接寫 `nativeShopMode` 或呼叫 transaction helper。service3 的
+production adapter 必須先把 Ebiten 的 Enter／Escape／方向鍵轉成具型別
+`nativeShopTransferInput`，再由同一 consumer 驅動提示、來源名冊、物品名冊、目的
+名冊、empty／full、自我轉移與目的取消。測試只能呼叫這個具型別輸入 consumer，且
+每個 opening／closing／restore 工作都要經 Draw acknowledgment 完成後才送下一個
+輸入。這能證明正式狀態機可達與交易原子性；它仍是重製端 `RUNTIME-E1`，不能取代
+上述未修改原版畫面 E2。
+
 ### 標題 LOAD 到原版章節槽的正式確認契約（2026-08-22）
 
 標題四槽 selector 的 Enter／Space 必須只呼叫一個正式確認 owner。該 owner 先以
