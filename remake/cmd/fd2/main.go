@@ -94,6 +94,7 @@ type Game struct {
 	tiles                      []*ebiten.Image     // 切好的圖塊
 	st                         *battle.State       // 戰鬥狀態(單位)
 	nativeMapClock             nativeBIOSClock     // battle-local 18.2065Hz BIOS low-word adapter
+	nativeTitleClock           nativeBIOSClock     // title-lifetime 18.2065Hz timer seed for normal CONTINUE
 	sc                         *battle.Scenario    // 劇本(事件系統,doc 29)
 	dialog                     []battle.DialogLine // 待顯示對話(事件產生,含說話者)
 	storyBG                    bool                // 場景背景模式(story 節點指定 Map):鏡頭固定不跟游標,不畫單位/游標/HUD(doc23 §4)

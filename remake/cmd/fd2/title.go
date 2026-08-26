@@ -19,6 +19,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -152,6 +153,9 @@ func (g *Game) trySkipTitleCutStep(step cutStep, anyKey bool) bool {
 
 // titleUpdate 處理開頭動畫/主選單輸入。回傳 true = 仍在 title 流程。
 func (g *Game) titleUpdate() bool {
+	// Cross-platform projection of the original title caller's BIOS low word.
+	// It is sampled throughout the normal title path, not synthesized from the save.
+	g.nativeTitleClock.Sample(time.Now())
 	switch g.titlePhase {
 	case "cutscene":
 		if g.cutIdx >= len(cutScript) {
@@ -253,8 +257,8 @@ func (g *Game) titleUpdate() bool {
 			case TitleMenuContinue:
 				// Original selection 2 restores FD2.SAV's current-runtime
 				// snapshot through 0x10010; it is not remake JSON slot 0.  The
-				// caller supplies the original save and signed BIOS seed; every
-				// missing/ambiguous owner remains fail-closed in the title.
+				// caller supplies the original save; the title's monotonic clock
+				// supplies the signed timer seed. Ambiguous owners remain fail-closed.
 				if err := g.loadNativeContinueFromCurrentSnapshot(
 					os.Getenv("FD2_NATIVE_SAVE"),
 				); err != nil {

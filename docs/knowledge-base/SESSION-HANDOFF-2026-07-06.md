@@ -6855,3 +6855,12 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   `cad50796bbcb10184fae69ab48393d7153fb7eb0349b9e45f3bf1a9490003d7d`。
   這是第三方存檔的同相位候選E2，不冒稱完整來源或從頭通關E2。
 - README自評因此由76調至77；增加的是正式runtime畫面與可重跑整幀比對。
+
+## 2026-08-26：標題 CONTINUE 移除必填 timer 環境變數
+
+- 原版證據已足以限制資料流：標題caller在確認CONTINUE時提供signed 16-bit timer
+  seed；該值不是FD2.SAV欄位。依硬體停止線，不再深挖BIOS逐週期時序。
+- 正式標題現在以既有18.2065Hz跨平台單調時鐘近似器持續取樣並自行提供low word；
+  `FD2_NATIVE_TITLE_TICK`只保留為決定性測試覆寫，格式錯誤仍失敗即關閉。
+- 使用者提供的早期實檔與外部第30戰候選，都在明確清空該環境變數時通過正式
+  title publication回歸。既有第30戰圖片仍是固定tick擷取，分級不因本測試升為E2。

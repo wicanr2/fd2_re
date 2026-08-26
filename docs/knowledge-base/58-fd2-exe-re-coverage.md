@@ -76,6 +76,12 @@ unit覆蓋假說。後續合法IDA Pro 9.4閉合`0x10652→0x11EEE→0x4EB90`：
 title tick與精確音訊仍只到`RUNTIME-E1`／候選E2；主紀錄見
 [`native-battle-ch30-original-candidate.json`](../data/ui-traces/native-battle-ch30-original-candidate.json)。
 
+2026-08-26 正常玩家接續勘誤：原版caller只要求確認`CONTINUE`當下的signed
+16-bit timer seed；重製正式標題現由跨平台18.2065Hz單調時鐘近似器自行提供，
+`FD2_NATIVE_TITLE_TICK`只保留為決定性測試覆寫。未設定環境變數的早期實檔與外部
+第30戰候選都已通過正式title publication回歸。既有畫面擷取本身仍使用固定tick，
+所以其證據分級不變；但「玩家必須設定timer環境變數」已不再是runtime阻擋。
+
 2026-08-24 補證：`0x525AF` 是 command 0..9 的 HP 分段除數表；typed
 傷害計畫已不再把 command0 的七段套給全部 ID。command6 使用五段，並通過
 決定性發布／越界拒絕回歸；其 12 張 target compositor 已由下述正式 Game owner

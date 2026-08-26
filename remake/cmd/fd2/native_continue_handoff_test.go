@@ -165,7 +165,7 @@ func TestNativeContinueTitleCallerPublishesRealCurrentSnapshot(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Setenv("FD2_NATIVE_TITLE_TICK", "0")
+	t.Setenv("FD2_NATIVE_TITLE_TICK", "")
 	g := &Game{
 		camp:       campaign.NewRunner(graph),
 		titlePhase: "menu",
@@ -210,7 +210,7 @@ func TestNativeContinueTitleCallerPublishesLateBattleCandidate(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Setenv("FD2_NATIVE_TITLE_TICK", "0")
+	t.Setenv("FD2_NATIVE_TITLE_TICK", "")
 	g := &Game{camp: campaign.NewRunner(graph), titlePhase: "menu"}
 	if err := g.loadNativeContinueFromCurrentSnapshot(savePath); err != nil {
 		t.Fatal(err)
@@ -584,14 +584,25 @@ func TestNativeCurrentLoadPreparesPrivateCandidate(t *testing.T) {
 	}
 }
 
-func TestNativeContinueTitleTimerSeedFailsClosed(t *testing.T) {
+func TestNativeContinueTitleTimerSeedUsesRuntimeClockAndRejectsBadOverride(t *testing.T) {
 	t.Setenv("FD2_NATIVE_TITLE_TICK", "")
-	if _, err := nativeContinueTitleTimerSeed(); err == nil {
-		t.Fatal("missing signed BIOS tick was accepted")
+	g := &Game{}
+	if tick, err := g.nativeContinueTitleTimerSeed(); err != nil || tick != 0 {
+		t.Fatalf("runtime title seed=(%d,%v), want (0,nil)", tick, err)
+	}
+	if !g.nativeTitleClock.Seed(123, time.Unix(400, 0)) {
+		t.Fatal("title clock seed rejected")
+	}
+	if tick, err := g.nativeContinueTitleTimerSeed(); err != nil || tick != 123 {
+		t.Fatalf("current title seed=(%d,%v), want (123,nil)", tick, err)
 	}
 	t.Setenv("FD2_NATIVE_TITLE_TICK", "32768")
-	if _, err := nativeContinueTitleTimerSeed(); err == nil {
+	if _, err := g.nativeContinueTitleTimerSeed(); err == nil {
 		t.Fatal("out-of-range signed BIOS tick was accepted")
+	}
+	t.Setenv("FD2_NATIVE_TITLE_TICK", "-321")
+	if tick, err := g.nativeContinueTitleTimerSeed(); err != nil || tick != -321 {
+		t.Fatalf("explicit title override=(%d,%v), want (-321,nil)", tick, err)
 	}
 }
 

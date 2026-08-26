@@ -5256,8 +5256,11 @@ BIOS 時鐘、`0x10494/0x105ED` 重繪／延遲（redraw/delay）、逐像素或
 條件與雜湊見
 [`native-continue-current-runtime-remake-e1.json`](../data/ui-traces/native-continue-current-runtime-remake-e1.json)。
 
-目前仍保持失敗即關閉的邊界：`FD2_NATIVE_TITLE_TICK` 是明確輸入的 signed BIOS tick，
-尚未由跨平台執行期自行重建原版 `0x25D83..0x25D8B` 的時鐘／重繪時序；多章節動態待處理
+2026-08-26 收尾規格：原版 caller 需要的是當下 signed 16-bit timer seed，不是存檔
+欄位。正式標題流程改由既有18.2065Hz單調時鐘近似器自啟動起持續取樣，在玩家確認
+`CONTINUE`時提供目前low word；`FD2_NATIVE_TITLE_TICK`只保留為決定性測試覆寫。
+這是硬體規格近似（hardware-spec approximation），不宣稱DOS BIOS逐週期相同；覆寫
+格式錯誤仍失敗即關閉，正常未設定環境變數則不得再阻擋玩家載入。多章節動態待處理
 群組寫入器／公式、未修改一般玩家同一 raw runtime 的重製／原版 E2、action 選取擁有者與
 status/equipment panel、戰後城鎮／商店／整備／存檔全路徑，以及 mode 11、`0x13FD4`、
 mode 5 的完整目標／指令／法術／道具人工智慧語意仍未解除。

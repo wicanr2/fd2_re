@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
@@ -53,12 +54,13 @@ func (g *Game) resolveNativeContinueBattleSource(chapter int) (nativeContinueBat
 	return matches[0], nil
 }
 
-func nativeContinueTitleTimerSeed() (int, error) {
+func (g *Game) nativeContinueTitleTimerSeed() (int, error) {
 	raw := os.Getenv("FD2_NATIVE_TITLE_TICK")
 	if raw == "" {
-		return 0, errors.New(
-			"原版續戰：缺少 FD2_NATIVE_TITLE_TICK（必須由標題呼叫端提供 signed BIOS tick）",
-		)
+		if tick, ok := g.nativeTitleClock.Current(); ok {
+			return tick, nil
+		}
+		return g.nativeTitleClock.Sample(time.Now()), nil
 	}
 	tick, err := strconv.Atoi(raw)
 	if err != nil || tick < -0x8000 || tick > 0x7fff {
@@ -70,10 +72,10 @@ func nativeContinueTitleTimerSeed() (int, error) {
 // loadNativeContinueFromCurrentSnapshot owns the title CONTINUE application
 // caller.  It resolves an exact editable battle source, builds every typed
 // adapter on private state, and publishes only after the complete handoff is
-// valid.  Missing save, timer, assets, or an ambiguous chapter mapping keeps
+// valid. Missing save, invalid deterministic timer override, assets, or an ambiguous chapter mapping keeps
 // the title active and never mutates the current battle.
 func (g *Game) loadNativeContinueFromCurrentSnapshot(path string) error {
-	timer, err := nativeContinueTitleTimerSeed()
+	timer, err := g.nativeContinueTitleTimerSeed()
 	if err != nil {
 		return err
 	}
