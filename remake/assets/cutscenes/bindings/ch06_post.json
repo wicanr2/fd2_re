@@ -3,7 +3,10 @@
   "handler_script": "../handlers/ch06_post.json",
   "story_index_map": "../dialogue-index/count-aligned.json",
   "runtime_context": {
-    "slot_counts": [34, 44],
+    "slot_counts": [
+      34,
+      44
+    ],
     "story_viewport": true
   },
   "dialogue_contexts": {
@@ -20,20 +23,299 @@
     "0x23358": {
       "layout": {
         "units": [
-          { "slot": 0, "x": 12, "y": 4, "pose": 0 },
-          { "slot": 1, "x": 11, "y": 4, "pose": 0 },
-          { "slot": 2, "x": 13, "y": 4, "pose": 0 },
-          { "slot": 3, "x": 10, "y": 5, "pose": 3 },
-          { "slot": 4, "x": 14, "y": 5, "pose": 1 },
-          { "slot": 5, "x": 10, "y": 6, "pose": 3 },
-          { "slot": 6, "x": 14, "y": 6, "pose": 1 },
-          { "slot": 7, "x": 9, "y": 7, "pose": 3 },
-          { "slot": 8, "x": 15, "y": 7, "pose": 1 },
-          { "slot": 43, "x": 12, "y": 7, "pose": 2 }
+          {
+            "slot": 0,
+            "x": 12,
+            "y": 4,
+            "pose": 0
+          },
+          {
+            "slot": 1,
+            "x": 11,
+            "y": 4,
+            "pose": 0
+          },
+          {
+            "slot": 2,
+            "x": 13,
+            "y": 4,
+            "pose": 0
+          },
+          {
+            "slot": 3,
+            "x": 10,
+            "y": 5,
+            "pose": 3
+          },
+          {
+            "slot": 4,
+            "x": 14,
+            "y": 5,
+            "pose": 1
+          },
+          {
+            "slot": 5,
+            "x": 10,
+            "y": 6,
+            "pose": 3
+          },
+          {
+            "slot": 6,
+            "x": 14,
+            "y": 6,
+            "pose": 1
+          },
+          {
+            "slot": 7,
+            "x": 9,
+            "y": 7,
+            "pose": 3
+          },
+          {
+            "slot": 8,
+            "x": 15,
+            "y": 7,
+            "pose": 1
+          },
+          {
+            "slot": 43,
+            "x": 12,
+            "y": 7,
+            "pose": 2
+          }
         ],
         "cam_x": 144,
         "cam_y": 48
       }
+    }
+  },
+  "dialogue_overrides": {
+    "0x233b2#5": {
+      "script": "ch07.json",
+      "scene_index": 5,
+      "lines": [
+        {
+          "line": 0,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_007",
+            "string_index": 5,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『看來我們又被人家誤會了",
+                "　，索爾，現在我們該怎麼辦",
+                "　？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_007",
+            "string_index": 5,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『那還用說，當然是殺進王",
+                "　城去弄個明白！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_007",
+            "string_index": 5,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 10,
+            "pages": [
+              [
+                "『嗯，夠氣魄！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_007",
+            "string_index": 5,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 8,
+            "pages": [
+              [
+                "『我們快上路吧！這件事不",
+                "　弄個清楚，更麻煩的事還在",
+                "　後頭呢！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x2337f#4": {
+      "script": "ch07.json",
+      "scene_index": 4,
+      "lines": [
+        {
+          "line": 0,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_007",
+            "string_index": 4,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 12,
+            "pages": [
+              [
+                "『多謝你們的幫忙！連王國的",
+                "　精銳部隊也不是你們對手，",
+                "　你們到底是什麼來歷？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_007",
+            "string_index": 4,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『這個說起來很麻煩，此地又",
+                "　很危險，我看妳還是回家睡",
+                "　覺好了。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_007",
+            "string_index": 4,
+            "utterance": 2,
+            "control": "FFEF",
+            "operand": 12,
+            "pages": [
+              [
+                "『什麼，你竟敢小看我！若是",
+                "　聽到我老師的名字，包準你",
+                "　嚇一大跳．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_007",
+            "string_index": 4,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 13,
+            "pages": [
+              [
+                "『凱麗小姐，妳的身手的確是",
+                "　很不錯，可以請問妳的老師",
+                "　是哪一位嗎？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 4,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_007",
+            "string_index": 4,
+            "utterance": 4,
+            "control": "FFEF",
+            "operand": 12,
+            "pages": [
+              [
+                "『這個．還是不能告訴你！",
+                "　不過，如果你們願意讓我加",
+                "　入的話，我可以考慮透露一"
+              ],
+              [
+                "　點。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 5,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_007",
+            "string_index": 4,
+            "utterance": 5,
+            "control": "FFEE",
+            "operand": 13,
+            "pages": [
+              [
+                "『歡迎！我們就要和王國軍",
+                "　大戰，正愁人手不夠，有妳",
+                "　加入真是再好不過了。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 6,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_007",
+            "string_index": 4,
+            "utterance": 6,
+            "control": "FFEF",
+            "operand": 12,
+            "pages": [
+              [
+                "『以後我們就是伙伴了，",
+                "　請大家多多指教！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 7,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_007",
+            "string_index": 4,
+            "utterance": 7,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『此地不宜久留，",
+                "　凱麗小姐，",
+                "　我們這就上路吧！』"
+              ]
+            ]
+          }
+        }
+      ]
     }
   }
 }

@@ -7557,3 +7557,13 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   同步、chapter8與`town_ch09`，並通過存讀檔；不再直接清除`g.dialog`。證據見
   [`ch07-post-native-dialogue-e1.json`](../data/ui-traces/ch07-post-native-dialogue-e1.json)。
 - 31至39由相同runtime_context接受；未修改DOSBox同狀態與精確DAC仍屬E2限制。
+
+## 2026-08-27：第7戰後條件式兩個caller／12句原生對話
+
+- 沿用已閉合的`sub_232E8`、event25／state17／slot43窄契約與共用renderer。
+  FDTXT_007 index4／5的8＋4句已通過固定raw equality並重生成typed版面；同一
+  `0x233B2`位於互斥分支時只計一個caller，生成器會接受相同context但拒絕衝突。
+- active／inactive兩條正式路徑分別以具型別輸入完成8／4句；只有active執行JOIN12，
+  兩路都完成同步、chapter7、`town_ch08`與存讀檔，不再直接清除`g.dialog`。證據見
+  [`ch06-post-native-dialogue-e1.json`](../data/ui-traces/ch06-post-native-dialogue-e1.json)。
+- 未修改DOSBox同狀態、精確音訊與town08原版輸入仍屬E2限制；依99%門檻不阻擋。

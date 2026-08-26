@@ -7162,3 +7162,19 @@ operand、頁／列及原始glyph token並通過固定raw equality。
 [`fd2_ch07_post_native_dialogue.md`](../data/ida/fd2_ch07_post_native_dialogue.md)。
 驗收包含全量raw equality、至少29與41兩個邊界的正式輸入、JOIN5、全黑復原、
 `town_ch09`與存讀檔。此項最高為`RUNTIME-E1`，未修改DOSBox同狀態另列E2。
+
+## 玩家第 7 戰戰後條件式 12 句原生對話（2026-08-27）
+
+本切片沿用已閉合的`sub_232E8`、event25／state17／slot43窄契約與共用renderer，
+不重開反組譯。`0x2337F`／index4產生8筆、`0x233B2`／index5產生4筆
+`NativeDialogueLayout`；同一`0x233B2`出現在互斥分支時只算一個原始caller。
+
+正式執行期只接受已證實的34／44 slots；state17==1且44 slots時再讀slot43 raw
+byte5。active分支以具型別輸入播放8句後JOIN12，inactive分支播放4句且不入隊；
+兩路均完成closing後才同步、進chapter7與`town_ch08`，並驗證存讀檔。缺原始資產、
+唯一mapping、native frame、producer或frontier時，在隊伍交易前失敗即關閉。
+
+原始位址、雜湊、控制碼與分支契約見
+[`fd2_ch06_post_native_dialogue.md`](../data/ida/fd2_ch06_post_native_dialogue.md)。
+驗收包含全量raw equality、active／inactive正式輸入、JOIN12正反例、`town_ch08`與
+存讀檔。此項最高為`RUNTIME-E1`，未修改DOSBox同狀態與精確音訊另列E2。

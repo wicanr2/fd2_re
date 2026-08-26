@@ -1,0 +1,18 @@
+{
+  "name": "第7戰後條件式兩個caller／12句原生對話與城鎮存讀檔路徑",
+  "date": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "reference": {
+    "FD2.EXE": {"size": 357074, "md5": "b97caf2239a27a896069d03549d96e1e", "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"},
+    "FDTXT_007.bin": {"size": 2022, "md5": "5038c14a9dc2e71dcbca84859b0f0607", "sha256": "5d6556ce04c644c71e1fd8070167dffe34a9b20ebdfa8e291bc80167463720ca"},
+    "canonical_re": "docs/data/ida/fd2_ch06_post_event25_ida.txt",
+    "binding_evidence": "docs/data/ida/fd2_ch06_post_native_dialogue.md"
+  },
+  "native_dialogue": {"handler": "0x232e8", "callers": ["0x2337f", "0x233b2"], "source": "FDTXT_007", "string_indices": [4, 5], "utterance_counts": [8, 4], "total_unique_utterances": 12},
+  "formal_routes": [
+    {"frontier": 44, "state17": 1, "slot43_raw_byte5": 0, "reachable_string_index": 4, "reachable_utterances": 8, "join": 12, "destination": "town_ch08"},
+    {"frontier": 44, "state17": 1, "slot43_raw_byte5": 1, "reachable_string_index": 5, "reachable_utterances": 4, "join": null, "destination": "town_ch08"}
+  ],
+  "verification": {"generator": "2 unique callers / 12 utterances --check", "data_test": "TestCh06PostNativeDialogueLayoutsMatchOriginalControlWords", "integrated_test": "TestChapter7PostBranchesOnKeliRawInactiveStateThenEntersTown8", "result": "pass", "docker_network": "none", "xvfb": "explicit PID with exit trap"},
+  "limitations": ["兩條正式路徑互斥，不把0x233b2重複計數。", "未修改DOSBox同狀態、精確音訊與town08原版輸入仍缺，故不提升為PLAYER-E2。"]
+}

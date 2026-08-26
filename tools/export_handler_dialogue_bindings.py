@@ -250,9 +250,18 @@ def export_handler(
                 skipped.append(dialog_diagnostic(beat, source_dat, "multi_scene_target", "one dialog string crosses scenes; runtime adapter required"))
                 continue
             script = mapping["script"]
+            context = {"source_dat": source_dat, "script": script}
             if addr in contexts:
-                raise ValueError(f"handler {handler_path} repeats dialog source address {addr}")
-            contexts[addr] = {"source_dat": source_dat, "script": script}
+                if contexts[addr] != context:
+                    raise ValueError(
+                        f"handler {handler_path} repeats dialog source address {addr} "
+                        "with a conflicting context"
+                    )
+                # Structured handlers may repeat the same native call site in
+                # mutually exclusive arms. One address still has exactly one
+                # runtime context; do not reject or double-count that tuple.
+                continue
+            contexts[addr] = context
         return source_dat, reason, origin
 
     process_beats(beats, current_source, context_reason, context_origin, "beats")

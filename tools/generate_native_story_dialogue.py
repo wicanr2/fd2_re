@@ -165,17 +165,24 @@ def generate(
     overrides = {}
     callers = 0
     utterances = 0
+    seen_calls = set()
     all_beats = list(iter_handler_beats(handler["beats"]))
     for beat in all_beats:
         if beat["op"] != "dialog":
             continue
-        callers += 1
         addr = beat["source"]["addr"].lower()
         string_index = beat["text_index"]
         context = contexts.get(addr)
         if context is None:
             raise ValueError(f"{addr}: missing dialogue_context")
         source, script = context["source_dat"], context["script"]
+        call_key = (addr, string_index, source, script)
+        if call_key in seen_calls:
+            # A structured handler may contain the same machine-code caller in
+            # mutually exclusive branches. It remains one original call tuple.
+            continue
+        seen_calls.add(call_key)
+        callers += 1
         if source not in raw_cache:
             raw_cache[source] = parse_fdtxt(raw_dir / f"{source}.bin")
         if string_index < 0 or string_index >= len(raw_cache[source]):
