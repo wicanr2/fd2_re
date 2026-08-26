@@ -1515,12 +1515,27 @@ func TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne(t *testin
 	if !g.confirmBattleResult() || g.result != "" || g.camp.NodeID() != "story_ch02" {
 		t.Fatalf("battle result confirmation node=%q result=%q, want story_ch02 and cleared result", g.camp.NodeID(), g.result)
 	}
-	for frame := 0; frame < 10000 && g.camp.NodeID() != "town_ch02"; frame++ {
+	seenPostDialogue := make(map[[3]int]bool)
+	closingWithCursorTail := false
+	for frame := 0; frame < 120000 && g.camp.NodeID() != "town_ch02"; frame++ {
 		if len(g.dialog) > 0 {
-			g.dialog = nil
-			g.beatAdvance()
+			current := g.dialog[len(g.dialog)-1]
+			if current.NativeDialogue == nil || current.Upper == nil ||
+				current.NativeDialogue.SourceDAT != "FDTXT_001" || current.NativeDialogue.StringIndex != 9 ||
+				len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) < 5 ||
+				len(g.nativeDialogueProgressive) != len(current.NativeDialogue.Pages) {
+				t.Fatalf("ch00_post dialog lost indexed lifecycle: %#v", current)
+			}
+			closingWithCursorTail = closingWithCursorTail || len(g.nativeDialogueClosing) > 5
+			seenPostDialogue[[3]int{current.NativeDialogue.StringIndex, current.NativeDialogue.Utterance, current.Speaker}] = true
+			if g.nativeStoryDialogueAtInputWait() &&
+				!g.handleNativeStoryInput(g.camp.Node(), nativeStoryInput{enter: true}) {
+				t.Fatal("ch00_post formal story input was rejected")
+			}
 		}
-		g.tick(1)
+		if err := g.Update(); err != nil {
+			t.Fatalf("compiled ch00_post Update: %v", err)
+		}
 		if g.loadErr != "" {
 			t.Fatalf("compiled ch00 post stopped at beat %d/%d: %s", g.beatIdx, len(g.beats), g.loadErr)
 		}
@@ -1530,6 +1545,12 @@ func TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne(t *testin
 	}
 	if len(g.partyRoster) != 5 {
 		t.Fatalf("postbattle persistent roster=%#v, want five joined records", g.partyRoster)
+	}
+	if len(seenPostDialogue) != 13 {
+		t.Fatalf("ch00_post formal native dialogues=%d, want 13", len(seenPostDialogue))
+	}
+	if !closingWithCursorTail {
+		t.Fatal("ch00_post never consumed the raw-identity cursor closing tail")
 	}
 	if got := g.camp.Advance("opt2"); got != "preparation_ch02" {
 		t.Fatalf("town exit=%q, want preparation_ch02", got)

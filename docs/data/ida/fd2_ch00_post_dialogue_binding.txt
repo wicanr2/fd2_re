@@ -1,0 +1,71 @@
+# ch00_post 第1戰後13句原生對話綁定證據
+
+## 版本、工具與位址空間
+
+- 原版輸入：`FD2.EXE`，357074 bytes；MD5
+  `b97caf2239a27a896069d03549d96e1e`；SHA-256
+  `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 對話輸入：由同一合法原版解出的`FDTXT_001.bin`，4360 bytes；MD5
+  `9eca938730cd57ddc7e18f37f474219a`；SHA-256
+  `6023d15b7e54498bd7b77e6a0e6729b9a544c18a3c6718ba7496fb7b88cd94c1`。
+- 第一工具：既有授權IDA Pro 9.4／Hex-Rays canonical證據
+  [`fd2_story_dialogue_layout_ida.txt`](fd2_story_dialogue_layout_ida.txt)，使用DOS LE loader
+  的IDA linear address。generic `sub_15F84`、raw speaker control、`FFFE／FFFD`與
+  speaker owner均已閉合，本切片不重開renderer。
+- caller來源：受版控raw exporter
+  [`chapter_beats/ch00_post.json`](../chapter_beats/ch00_post.json)及其editable投影
+  `remake/assets/cutscenes/handlers/ch00_post.json`。原始名稱、位址與運算元保持不變。
+- FDTXT解碼由一次性無網路`python:3.12-slim`容器執行
+  `tools/generate_native_story_dialogue.py`的offset／control parser；這是資料擷取，
+  不是新的EXE反組譯工具。
+
+## 已證實：caller、consumer與播放順序
+
+- raw handler入口為IDA linear `0x22EF6`。
+- `0x22F1F`呼叫原始`sub_15F84`，第二參數為immediate `9`，第一參數為
+  `dword ptr [0x3A79]`；在目前raw table context中選取`FDTXT_001` string9。
+- 返回後`0x22F27`呼叫`0x11506`同步runtime→persistent roster；`0x22F2C`再把章節
+  設為1。故正式順序必須是「13句完整收框→隊伍同步→進`town_ch02`」，不可先發布
+  持續隊伍或直接跳城鎮。
+- `count-aligned.json`對`FDTXT_001／ch01.json／string9`只有一個target：scene index7
+  的line0..12，raw utterance與editable line均為13；沒有跨scene歧義。
+
+## 已證實：13句raw版面
+
+`FDTXT_001` string9依序含13個speaker controls；tuple為
+`(utterance,control,operand,page-row-counts)`：
+
+```text
+0  FFEE 4  [2]
+1  FFEF 3  [3,3]
+2  FFEE 4  [1]
+3  FFEF 3  [3,4]
+4  FFEE 0  [1]
+5  FFEE 4  [3]
+6  FFEE 9  [2]
+7  FFEF 3  [3]
+8  FFEF 1  [3]
+9  FFEE 4  [4]
+10 FFEF 1  [1]
+11 FFEF 3  [3]
+12 FFEE 0  [2]
+```
+
+其中utterance3第二頁與utterance9各有4個邏輯列；依既有IDA直接指令，它們由
+三列可見窗口捲動，不可截成三列或自行拆成新`FFFD`頁。`FFEE／FFEF`先以raw `+8`
+identity查找active scene unit，命中後取raw `+7`作DATO selector；沒有命中時才保留
+direct-DATO operand。這是已證實的generic consumer，本切片只建立caller-specific資料。
+
+## 證據分級與限制
+
+- caller、string index、後續sync／chapter順序：**已證實**。
+- 13句controls、operands、頁／列界與唯一editable line mapping：**已證實**。
+- 正式重製端消費及第1戰後正常路徑：尚待本切片實作與回歸，現階段為
+  **DATA-READY**，不可先寫成`RUNTIME-E1`。
+- 重製端第1戰可由4人party＋group1／2的12-slot開場，依已資料化的turn3
+  group3／7、turn4 group4、turn5 group5、turn6 group6依序形成
+  `12／14／18／23／27` frontiers。這組數字只作binding的fail-closed admission，
+  是**來源約束的重製端E1集合**，不是新的原版post handler語意；caller順序不依賴
+  任一特定frontier。
+- 尚無未修改原版同狀態逐幀、精確音訊與作業系統鍵盤注入；即使實作通過，最高
+  先列`RUNTIME-E1`，不冒稱`PLAYER-E2`。

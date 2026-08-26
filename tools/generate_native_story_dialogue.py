@@ -118,7 +118,13 @@ def mapping_for(index_data, source: str, script: str, string_index: int):
     return mappings[0], mappings[0]["targets"][0]
 
 
-def generate(binding_path: Path, raw_dir: Path, glyph_map: Path):
+def generate(
+    binding_path: Path,
+    raw_dir: Path,
+    glyph_map: Path,
+    expected_callers: int,
+    expected_utterances: int,
+):
     binding = load_json(binding_path)
     handler = load_json((binding_path.parent / binding["handler_script"]).resolve())
     index_data = load_json((binding_path.parent / binding["story_index_map"]).resolve())
@@ -166,8 +172,11 @@ def generate(binding_path: Path, raw_dir: Path, glyph_map: Path):
             "lines": typed_lines,
         }
         utterances += len(layouts)
-    if callers != 19 or utterances != 97:
-        raise ValueError(f"ch00 expected 19 callers/97 utterances, got {callers}/{utterances}")
+    if callers != expected_callers or utterances != expected_utterances:
+        raise ValueError(
+            f"expected {expected_callers} callers/{expected_utterances} utterances, "
+            f"got {callers}/{utterances}"
+        )
     binding["dialogue_overrides"] = overrides
 
     # caller-specific dialogue_overrides 完整建立後，移除同位址的舊現代
@@ -191,10 +200,18 @@ def main() -> int:
     parser.add_argument("binding", type=Path)
     parser.add_argument("--raw-dir", type=Path, required=True)
     parser.add_argument("--glyph-map", type=Path, required=True)
+    parser.add_argument("--expected-callers", type=int, required=True)
+    parser.add_argument("--expected-utterances", type=int, required=True)
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     generated = json.dumps(
-        generate(args.binding.resolve(), args.raw_dir.resolve(), args.glyph_map.resolve()),
+        generate(
+            args.binding.resolve(),
+            args.raw_dir.resolve(),
+            args.glyph_map.resolve(),
+            args.expected_callers,
+            args.expected_utterances,
+        ),
         ensure_ascii=False,
         indent=2,
     ) + "\n"

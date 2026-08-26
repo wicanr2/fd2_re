@@ -863,16 +863,19 @@ func TestCompileCompleteChapter0PostBinding(t *testing.T) {
 	if len(issues) != 0 {
 		t.Fatalf("ch00_post unresolved issues: %#v", issues)
 	}
-	if len(beats) != 15 { // original FDTXT #9 expands to 13 lines, then sync + chapter assignment
-		t.Fatalf("ch00_post compiled %d beats, want 15: %#v", len(beats), beats)
+	if len(beats) != 16 || beats[0].Op != "runtime_context" || beats[0].RuntimeContext == nil ||
+		!beats[0].RuntimeContext.StoryViewport ||
+		!reflect.DeepEqual(beats[0].RuntimeContext.SlotCounts, []int{12, 14, 18, 23, 27}) {
+		t.Fatalf("ch00_post compiled beats/context = %d/%#v", len(beats), beats[0])
 	}
 	for i := 0; i < 13; i++ {
-		if beats[i].Op != "dialog" || beats[i].SceneIndex == nil || *beats[i].SceneIndex != 7 {
-			t.Fatalf("post dialog beat %d = %#v", i, beats[i])
+		beat := beats[i+1]
+		if beat.Op != "dialog" || beat.SceneIndex == nil || *beat.SceneIndex != 7 || beat.NativeDialogue == nil {
+			t.Fatalf("post dialog beat %d = %#v", i, beat)
 		}
 	}
-	if beats[13].Op != "sync_party" || beats[14].Op != "set_chapter" || beats[14].Chapter == nil || *beats[14].Chapter != 1 {
-		t.Fatalf("post tail = %#v", beats[13:])
+	if beats[14].Op != "sync_party" || beats[15].Op != "set_chapter" || beats[15].Chapter == nil || *beats[15].Chapter != 1 {
+		t.Fatalf("post tail = %#v", beats[14:])
 	}
 }
 

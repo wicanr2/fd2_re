@@ -4813,6 +4813,30 @@ map32 的前兩筆特殊劇情角色沒有落在目前已閉合的 constructor t
 beat或改節點。此鏈最高為`RUNTIME-E1`；沒有未修改DOSBox同狀態截圖／音訊與作業系統
 鍵盤注入時，不提升為`PLAYER-E2`。依99%玩家可見門檻，不追DOS逐tick或BIOS掃描碼。
 
+### `ch00_post` 第1戰後13句原生故事對話（2026-08-27）
+
+canonical證據為
+[`fd2_ch00_post_dialogue_binding.txt`](../data/ida/fd2_ch00_post_dialogue_binding.txt)。本切片
+不得重開`sub_15F84`；只把handler `0x22EF6`的唯一caller `0x22F1F`、
+`FDTXT_001` string9與既有`ch01.json` scene7 line0..12建立caller-specific typed資料。
+生成器必須以`--expected-callers 1 --expected-utterances 13`鎖定本切片形狀，並拒絕
+unknown control、缺glyph、非唯一count-aligned target、句數漂移或舊binding不一致。
+
+正式順序固定為13句原生opening／逐字／`FFFD`換頁／三列窗口捲動／嘴型等待／closing
+全部完成後，才執行`sync_party`與`set_chapter(1)`，再由campaign既有edge進
+`town_ch02`。speaker必須沿共用owner處理`FFEE／FFEF` raw identity→raw `+7`；缺scene
+unit provenance時保留節點與隊伍且失敗即關閉，不得回退到現代RGBA框。utterance3第二頁
+及utterance9的第四個邏輯列必須由同一10幀／19px有界捲動近似消費，不可截字或改造頁界。
+binding須明示`runtime_context.story_viewport=true`，並只接受已資料化事件可形成的
+`12／14／18／23／27` frontiers，讓`enterNode`在清除人工節點狀態前把戰場
+`NativeMapViewState`交給收框owner；其他cutscene仍不得繼承陳舊視圖。
+
+驗收必須從正式第1戰勝利確認進`story_ch02`，只使用與鍵盤共用的
+`nativeStoryInput`／`Game.Update`推進13句；測試不得直接清除`g.dialog`、呼叫
+`beatAdvance`或跳過closing。完成後核對原始tuple順序、persistent JOIN順序／raw欄位、
+`town_ch02`落點，以及後續`preparation_ch02`存檔／全新`Game`冷讀不退化。本切片最高為
+`RUNTIME-E1`；未修改原版同狀態逐幀、精確音訊與作業系統鍵盤事件仍另列。
+
 ## 2026-08-09 raw ch24 post `0x24df2` 函式邊界與 owner 勘誤（E1）
 
 固定版 `FD2.EXE` 的 IDA Pro 9.4 與 Docker Capstone 共同固定 handler table

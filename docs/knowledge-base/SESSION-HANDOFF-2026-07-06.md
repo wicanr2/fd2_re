@@ -7442,3 +7442,21 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   `TestPlayerNativeCommand17WaitsForEightPalettePhasesBeforeTransaction`因容器未提供
   該sample而失敗。此題不在序章切片的變更資料流；序章五個runtime測試與正式長鏈
   隨後以相同映像、無網路、明確Xvfb生命週期重跑均通過，不把全套件失敗藏成綠燈。
+
+## 2026-08-27：第1戰後13句原生對話與戰況視圖交接
+
+- canonical證據先寫入
+  [`fd2_ch00_post_dialogue_binding.txt`](../data/ida/fd2_ch00_post_dialogue_binding.txt)，
+  再於SDD固定typed資料、戰況frontier、失敗即關閉與驗收條件，最後才接runtime。
+- `FDTXT_001` string9的13句現逐句保存`FFEE／FFEF`、operand、頁／列界；兩個四列
+  raw頁面沿既有三列窗口捲動，不截字。通用生成器新增明示expected caller／utterance
+  參數，可同時檢查序章19／97與戰後1／13，不再把序章數字寫死成全域契約。
+- 第一輪正式長鏈正確揭露戰後cutscene缺收框view provenance。binding現只接受
+  第1戰事件可形成的12／14／18／23／27-slot frontiers，並明示`story_viewport=true`，
+  讓`enterNode`保存的原生戰況視圖交給對話收框；其他故事節點仍不得繼承。
+- 正式回歸由第1戰勝利確認進`story_ch02`，使用與鍵盤共用的typed input完成13句，
+  實際涵蓋多頁、四列窗口與raw-identity游標尾段；最後才同步5人persistent roster，
+  再走`town_ch02`、整備存檔、全新`Game`冷讀、第2戰前20句至`battle_ch02`。
+  原先`g.dialog=nil→beatAdvance`捷徑已刪除。證據見
+  [`ch00-post-native-dialogue-e1.json`](../data/ui-traces/ch00-post-native-dialogue-e1.json)。
+  仍缺未修改原版同狀態逐幀、精確音訊與作業系統鍵盤事件，故維持`RUNTIME-E1`。

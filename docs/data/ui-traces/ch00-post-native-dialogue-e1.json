@@ -1,0 +1,66 @@
+{
+  "name": "第1戰後13句原生故事對話與持續隊伍正式路徑",
+  "date": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "reference": {
+    "FD2.EXE": {
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "FDTXT_001.bin": {
+      "size": 4360,
+      "md5": "9eca938730cd57ddc7e18f37f474219a",
+      "sha256": "6023d15b7e54498bd7b77e6a0e6729b9a544c18a3c6718ba7496fb7b88cd94c1"
+    },
+    "canonical_re": "docs/data/ida/fd2_ch00_post_dialogue_binding.txt",
+    "design": "docs/knowledge-base/56-fd2-remake-sdd.md#ch00_post-第1戰後13句原生故事對話2026-08-27"
+  },
+  "route": [
+    "battle_ch01",
+    "story_ch02",
+    "town_ch02",
+    "preparation_ch02",
+    "save_slot_1",
+    "cold_load_new_Game",
+    "story_ch02_pre",
+    "battle_ch02"
+  ],
+  "native_dialogue": {
+    "handler": "0x22EF6",
+    "caller": "0x22F1F",
+    "source": "FDTXT_001",
+    "string_index": 9,
+    "utterances": 13,
+    "controls": ["FFEE", "FFEF"],
+    "runtime_slot_counts": [12, 14, 18, 23, 27],
+    "story_viewport": true
+  },
+  "verification": {
+    "generator": "ch00_pre 19/97 --check；ch00_post 1/13 --check",
+    "data_tests": [
+      "TestCh00PostNativeDialogueLayoutsMatchOriginalControlWords",
+      "TestCompileCompleteChapter0PostBinding"
+    ],
+    "integrated_test": "TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne",
+    "covered_lifecycle": [
+      "five-stage opening",
+      "progressive glyphs",
+      "FFFD pages",
+      "four-logical-row scrolling",
+      "mouth wait",
+      "snapshot closing",
+      "raw-identity cursor tail",
+      "sync_party after closing",
+      "new-Game cold load"
+    ],
+    "result": "pass",
+    "docker_network": "none",
+    "xvfb": "explicit PID with exit trap"
+  },
+  "limitations": [
+    "測試使用與正式鍵盤共用的具型別輸入consumer，但未注入作業系統鍵盤事件",
+    "12／14／18／23／27是重製端來源約束的admission集合，不冒稱原版post handler新語意",
+    "尚無未修改原版DOSBox同狀態逐幀與精確音訊，因此不提升為PLAYER-E2"
+  ]
+}
