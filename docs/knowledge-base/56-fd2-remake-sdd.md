@@ -6387,3 +6387,35 @@ FDSHAP terrain destination-preserving spans 的 steady-frame 初始目的面，�
 33筆 current-runtime record 到 native unit layer 的可見性／座標；不得以 RGBA
 補色、靜態背景或手排單位掩蓋。完整輸入、圖片雜湊與限制見
 [`native-battle-ch30-original-candidate.json`](../data/ui-traces/native-battle-ch30-original-candidate.json)。
+
+### 第30戰 indexed frame 分階段診斷規格
+
+既有 IDA／Capstone 主證據已閉合 `0x11CAC` 的正式順序為
+`0x11EEE terrain → 0x122DC range → 0x127A9 unit → 0x129EC foreground →
+0x1ACF3 HUD → 0x11EB0 viewport`，本題不得重解這些 helper。候選存檔的33筆
+runtime records 中，raw `+5 bit0` 判定19筆 active；依 `0x127E0` camera bounds，
+其中18筆落在可繪範圍。這只證明 admission 數量，不證明每筆最後仍可見。
+
+為區分「未 admission／selector 失敗」與「後續合法或錯誤覆蓋」，
+`indexedmap` 可提供只供測試／證據產生器使用的 observer。observer 必須在同一個
+私有候選 work buffer 上，依序收到 terrain、range、units、foreground、HUD 與
+viewport-copy 後的不可回寫 snapshot；未設定 observer 時，正式 `ComposeFrame`
+的函式簽章、交易與輸出完全不變。observer 本身失敗時不得發布 work／VGA 或改寫
+cells，避免診斷工具破壞正式失敗原子性。
+
+候選診斷至少保存每階段像素雜湊、unit-stage 新寫像素、foreground／HUD 後被取代
+像素，以及每筆 raw index、active、camera admission、selector slot、座標與24×24
+placement。只有同一 record 在 unit stage 有可辨識寫入、又在後續階段被非原版
+結果取代，才可把缺陷歸到 foreground／HUD；若 unit stage 已無寫入，須回到
+selector／mask／placement。不得以手排角色、停用 foreground、靜態背景或 RGBA
+補色作正式修正。
+
+2026-08-26 實測勘誤：前一張重製候選圖沒有提供 `FD2_ORIGINAL_FDOTHER`，因此
+`loadNativeMapAssets` 拒絕 all-or-nothing 原生資產，畫面靜默走舊 PNG fallback；
+其洋紅雜訊與大地圖構圖不是 indexed compositor 的輸出，不得再用來推論
+`0x11CAC`、terrain 或 foreground 有錯。補齊既有玩家自備資產契約後，observer
+依序取得六階段，unit stage 寫入8281像素，foreground／HUD 覆蓋該批unit像素均為0；
+普通X11鍵盤 `CONTINUE` 的frame903旁車亦固定 `battle_ch30`、round12、camera
+`(16,16)`、cursor `(21,20)`，並輸出正式indexed畫面。剩餘可見差異限縮為水面／
+游標等動畫相位與精確音訊；第三方存檔及固定title tick仍使本結果維持
+`RUNTIME-E1`／候選E2，不升格為完整一般玩家E2或逐像素一致。

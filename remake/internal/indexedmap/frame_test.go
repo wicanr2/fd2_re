@@ -88,6 +88,90 @@ func TestComposeFramePreservesNativeLayerOrder(t *testing.T) {
 	}
 }
 
+func TestComposeFrameObserverReportsDetachedOrderedStages(t *testing.T) {
+	cache := &fdicon.NativeSelectorCache{}
+	if _, err := cache.SlotFor(0); err != nil {
+		t.Fatal(err)
+	}
+	foreground := bank(12, 0)
+	foreground.Sprites[1] = solid(4)
+	work, vga := make([]byte, workStride*300), make([]byte, NativeMapVGASize)
+	cells := make([]fdicon.NativeTerrainCell, 13*8)
+	for i := range cells {
+		cells[i].BlitMode = 0xff
+	}
+	in := FrameInput{
+		TerrainBank: bank(12, 1), RangeBank: bank(20, 2),
+		UnitBank: bank(12, 3), ForegroundBank: foreground,
+		SelectorCache: cache, Cells: cells,
+		Controls: []byte{0x80, 0, 0, 0}, LUT: make([]byte, 256), MapWidth: 13,
+		RangeMode:       1,
+		Units:           []fdicon.NativeUnitLayerEntry{{X: 0, Y: 0, Slot: 0}},
+		ForegroundUnits: []fdicon.NativeForegroundLayerEntry{{X: 0, Y: 0}},
+	}
+	var stages []FrameStage
+	err := ComposeFrameObserved(work, vga, in, func(frame []byte) error {
+		frame[workBase] = 5
+		return nil
+	}, func(stage FrameStage, observedWork, observedVGA []byte) error {
+		stages = append(stages, stage)
+		// Observer slices are detached. Deliberately corrupt both snapshots;
+		// neither write may reach the pending transaction.
+		observedWork[workBase] = 0xee
+		observedVGA[steadyViewportOffset] = 0xee
+		return nil
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := []FrameStage{
+		FrameStageTerrain, FrameStageRange, FrameStageUnits,
+		FrameStageForeground, FrameStageHUD, FrameStageViewport,
+	}
+	if len(stages) != len(want) {
+		t.Fatalf("observer stages=%v want=%v", stages, want)
+	}
+	for index := range want {
+		if stages[index] != want[index] {
+			t.Fatalf("observer stages=%v want=%v", stages, want)
+		}
+	}
+	if work[workBase] != 5 || vga[steadyViewportOffset] != 5 {
+		t.Fatalf("observer mutated transaction: work=%#x vga=%#x", work[workBase], vga[steadyViewportOffset])
+	}
+}
+
+func TestComposeFrameObserverFailureIsAtomic(t *testing.T) {
+	cache := &fdicon.NativeSelectorCache{}
+	if _, err := cache.SlotFor(0); err != nil {
+		t.Fatal(err)
+	}
+	work, vga := make([]byte, workStride*300), make([]byte, NativeMapVGASize)
+	work[workBase], vga[steadyViewportOffset] = 0x31, 0x32
+	beforeWork, beforeVGA := append([]byte(nil), work...), append([]byte(nil), vga...)
+	cells := make([]fdicon.NativeTerrainCell, 13*8)
+	for i := range cells {
+		cells[i].BlitMode = 0xff
+	}
+	in := FrameInput{
+		TerrainBank: bank(12, 1), RangeBank: bank(20, 2),
+		UnitBank: bank(12, 3), ForegroundBank: bank(12, 4),
+		SelectorCache: cache, Cells: cells,
+		Controls: []byte{0, 0, 0, 0}, LUT: make([]byte, 256), MapWidth: 13,
+		RangeMode: 1,
+	}
+	err := ComposeFrameObserved(work, vga, in, func([]byte) error { return nil },
+		func(stage FrameStage, _, _ []byte) error {
+			if stage == FrameStageUnits {
+				return errors.New("stop after units")
+			}
+			return nil
+		})
+	if err == nil || !bytes.Equal(work, beforeWork) || !bytes.Equal(vga, beforeVGA) {
+		t.Fatalf("observer failure leaked transaction: err=%v", err)
+	}
+}
+
 func TestComposeFrameRejectsMissingHUDBeforeMutation(t *testing.T) {
 	work, vga := make([]byte, 456*300), make([]byte, NativeMapVGASize)
 	beforeWork, beforeVGA := append([]byte(nil), work...), append([]byte(nil), vga...)

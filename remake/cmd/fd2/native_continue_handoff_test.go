@@ -1,7 +1,12 @@
 package main
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
 	"errors"
+	"image"
+	"image/png"
 	"os"
 	"path/filepath"
 	"testing"
@@ -10,7 +15,9 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
+	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
 
 func TestNativeContinueBattlePublicationFromRealCurrentSnapshot(t *testing.T) {
@@ -213,6 +220,194 @@ func TestNativeContinueTitleCallerPublishesLateBattleCandidate(t *testing.T) {
 		t.Fatalf("晚期 CONTINUE 發布不完整：node=%q title=%q units=%d party=%d round=%d cursor=(%d,%d) view=%+v",
 			g.camp.NodeID(), g.titlePhase, len(g.st.Units), len(g.partyJoinOrder),
 			g.st.NativeRoundCounter, g.curX, g.curY, g.st.NativeMapViewState)
+	}
+}
+
+func TestNativeContinueLateBattleIndexedStages(t *testing.T) {
+	savePath := os.Getenv("FD2_LATE_NATIVE_SAVE")
+	outputDir := os.Getenv("FD2_LATE_NATIVE_STAGE_DIR")
+	if savePath == "" || outputDir == "" {
+		t.Skip("未提供外部晚期 FD2.SAV 與明確的分階段輸出目錄")
+	}
+	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("FD2_NATIVE_TITLE_TICK", "0")
+	t.Setenv("FD2_TITLE", "0")
+	t.Setenv("FD2_CAMPAIGN", "")
+	originalBase := "../../../org_game/炎龍騎士團/FLAME2"
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(originalBase, "FDOTHER.DAT"))
+	g := loadGame()
+	if g.loadErr != "" {
+		t.Fatal(g.loadErr)
+	}
+	g.camp, g.titlePhase = campaign.NewRunner(graph), "menu"
+	if err := g.loadNativeContinueFromCurrentSnapshot(savePath); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := loadNativeMapAssets(assetPath("assets/maps/map29")); err != nil {
+		t.Fatalf("map29 原生資產載入錯誤：%v", err)
+	}
+	if g.camp.NodeID() != "battle_ch30" || g.st == nil || g.m == nil ||
+		!nativeMapAssetsAvailable(g.nativeMapAssets) {
+		t.Fatalf(
+			"晚期 CONTINUE 未建立完整第30戰 indexed frame input: node=%q state=%v map=%v assets=%v",
+			g.camp.NodeID(), g.st != nil, g.m != nil, nativeMapAssetsAvailable(g.nativeMapAssets),
+		)
+	}
+	hud, ok := g.nativeMapHUDInput()
+	if !ok {
+		t.Fatal("晚期 CONTINUE 缺少原生 HUD input")
+	}
+	in, err := buildNativeMapFrameInput(
+		g.nativeMapAssets, g.m, g.st, nativeMapFrameRuntime{HUD: hud},
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(outputDir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+
+	const (
+		workStride = fdicon.NativeMapStride
+		workBase   = 0x8088
+		viewWidth  = 320
+		viewHeight = 200
+	)
+	stageNames := map[indexedmap.FrameStage]string{
+		indexedmap.FrameStageTerrain:    "terrain",
+		indexedmap.FrameStageRange:      "range",
+		indexedmap.FrameStageUnits:      "units",
+		indexedmap.FrameStageForeground: "foreground",
+		indexedmap.FrameStageHUD:        "hud",
+		indexedmap.FrameStageViewport:   "viewport",
+	}
+	type stageResult struct {
+		Name           string `json:"name"`
+		WorkSHA256     string `json:"work_sha256"`
+		ViewportSHA256 string `json:"viewport_sha256"`
+		Image          string `json:"image"`
+	}
+	type unitResult struct {
+		Index  int  `json:"index"`
+		X      int  `json:"x"`
+		Y      int  `json:"y"`
+		HP     int  `json:"hp"`
+		Byte5  byte `json:"native_record_byte5"`
+		Camp   int  `json:"camp"`
+		Active bool `json:"active"`
+	}
+	results := make([]stageResult, 0, len(stageNames))
+	stageWork := make(map[indexedmap.FrameStage][]byte)
+	writeStage := func(stage indexedmap.FrameStage, work []byte) error {
+		name, exists := stageNames[stage]
+		if !exists {
+			return errors.New("未知 indexed frame stage")
+		}
+		viewport := make([]byte, viewWidth*viewHeight)
+		if err := fdicon.CopyNativeIndexedRegion(
+			viewport[4*viewWidth+4:], viewWidth,
+			work[workBase:], workStride, 312, 192,
+		); err != nil {
+			return err
+		}
+		img := image.NewPaletted(image.Rect(0, 0, viewWidth, viewHeight), g.nativeMapAssets.Palette)
+		copy(img.Pix, viewport)
+		imageName := name + ".png"
+		file, err := os.Create(filepath.Join(outputDir, imageName))
+		if err != nil {
+			return err
+		}
+		encodeErr := png.Encode(file, img)
+		closeErr := file.Close()
+		if encodeErr != nil {
+			return encodeErr
+		}
+		if closeErr != nil {
+			return closeErr
+		}
+		workHash, viewportHash := sha256.Sum256(work), sha256.Sum256(viewport)
+		results = append(results, stageResult{
+			Name: name, WorkSHA256: hex.EncodeToString(workHash[:]),
+			ViewportSHA256: hex.EncodeToString(viewportHash[:]), Image: imageName,
+		})
+		stageWork[stage] = append([]byte(nil), work...)
+		return nil
+	}
+	work := make([]byte, indexedmap.NativeUnitPresentWorkSize)
+	vga := make([]byte, indexedmap.NativeMapVGASize)
+	if err := indexedmap.ComposeNativeFrameObserved(
+		work, vga, in,
+		func(stage indexedmap.FrameStage, observedWork, _ []byte) error {
+			return writeStage(stage, observedWork)
+		},
+	); err != nil {
+		t.Fatal(err)
+	}
+	rangeWork, unitsWork := stageWork[indexedmap.FrameStageRange], stageWork[indexedmap.FrameStageUnits]
+	foregroundWork, hudWork := stageWork[indexedmap.FrameStageForeground], stageWork[indexedmap.FrameStageHUD]
+	if len(rangeWork) == 0 || len(unitsWork) == 0 || len(foregroundWork) == 0 || len(hudWork) == 0 {
+		t.Fatal("indexed observer 未回傳完整中間階段")
+	}
+	unitWrites, foregroundOverwrites, hudOverwrites := 0, 0, 0
+	for index := range unitsWork {
+		if unitsWork[index] == rangeWork[index] {
+			continue
+		}
+		unitWrites++
+		if foregroundWork[index] != unitsWork[index] {
+			foregroundOverwrites++
+		}
+		if hudWork[index] != foregroundWork[index] {
+			hudOverwrites++
+		}
+	}
+	active, admitted := 0, 0
+	units := make([]unitResult, 0, len(g.st.Units))
+	view := g.st.NativeMapViewState
+	for index, unit := range in.Frame.Units {
+		runtimeUnit := g.st.Units[index]
+		units = append(units, unitResult{
+			Index: index, X: unit.X, Y: unit.Y, HP: runtimeUnit.HP,
+			Byte5: unit.Flags, Camp: int(runtimeUnit.Camp), Active: !unit.Inactive,
+		})
+		if unit.Inactive {
+			continue
+		}
+		active++
+		if unit.X >= view.CameraX-1 && unit.X <= view.CameraX+12 &&
+			unit.Y >= view.CameraY-1 && unit.Y <= view.CameraY+8 {
+			admitted++
+		}
+	}
+	summary := struct {
+		CampaignNode         string        `json:"campaign_node"`
+		RuntimeCount         int           `json:"runtime_count"`
+		ActiveCount          int           `json:"active_count"`
+		CameraAdmittedCount  int           `json:"camera_admitted_count"`
+		UnitWrites           int           `json:"unit_stage_written_pixels"`
+		ForegroundOverwrites int           `json:"foreground_overwritten_unit_pixels"`
+		HUDOverwrites        int           `json:"hud_overwritten_remaining_unit_pixels"`
+		Stages               []stageResult `json:"stages"`
+		Units                []unitResult  `json:"units"`
+	}{
+		CampaignNode: g.camp.NodeID(), RuntimeCount: len(g.st.Units),
+		ActiveCount: active, CameraAdmittedCount: admitted,
+		UnitWrites: unitWrites, ForegroundOverwrites: foregroundOverwrites,
+		HUDOverwrites: hudOverwrites, Stages: results, Units: units,
+	}
+	raw, err := json.MarshalIndent(summary, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw = append(raw, '\n')
+	if err := os.WriteFile(filepath.Join(outputDir, "stages.json"), raw, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if active != 19 || admitted != 18 || unitWrites == 0 {
+		t.Fatalf("晚期 stage admission=%d/%d unit writes=%d", admitted, active, unitWrites)
 	}
 }
 

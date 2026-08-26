@@ -76,6 +76,25 @@ type NativeFrameInput struct {
 	HUDCache             *fdicon.NativeSelectorCache
 }
 
+// FrameStage identifies one completed pass of the recovered steady native
+// map compositor.  It is exposed only so evidence generators and regression
+// tests can distinguish admission from a later overwrite; production callers
+// continue to use ComposeFrame or ComposeNativeFrame without an observer.
+type FrameStage uint8
+
+const (
+	FrameStageTerrain FrameStage = iota
+	FrameStageRange
+	FrameStageUnits
+	FrameStageForeground
+	FrameStageHUD
+	FrameStageViewport
+)
+
+// FrameObserver receives detached work/VGA snapshots after each completed
+// pass. Mutating either slice cannot affect the compositor transaction.
+type FrameObserver func(stage FrameStage, work, vga []byte) error
+
 // NativeTransitionFrameInput is the raw layer subset used by 0x24618. Unlike
 // the steady tactical redraw, the transition starts with terrain only; the
 // middle 0x127a9 callback adds unit and foreground layers between two LUT
@@ -388,7 +407,13 @@ func BuildNativeTerrainCells(tiles []int, blitModes []byte) ([]fdicon.NativeTerr
 // accepting an arbitrary callback. All source data remain explicit and any
 // rejection keeps work/VGA unchanged through ComposeFrame's transaction.
 func ComposeNativeFrame(work, vga []byte, in NativeFrameInput) error {
-	return ComposeFrame(work, vga, in.Frame, func(dst []byte) error {
+	return ComposeNativeFrameObserved(work, vga, in, nil)
+}
+
+// ComposeNativeFrameObserved preserves ComposeNativeFrame's strict HUD owner
+// while exposing detached stage snapshots to bounded diagnostics.
+func ComposeNativeFrameObserved(work, vga []byte, in NativeFrameInput, observer FrameObserver) error {
+	return composeFrame(work, vga, in.Frame, func(dst []byte) error {
 		// 0x11cfa passes [0x53a49]+0x8088 to 0x1acf3, not the allocation
 		// base. HUD row/column offsets are therefore viewport-relative, just
 		// like the preceding 0x11eee terrain destination.
@@ -396,7 +421,7 @@ func ComposeNativeFrame(work, vga []byte, in NativeFrameInput) error {
 			return errors.New("indexedmap: native HUD viewport base outside work buffer")
 		}
 		return BlitNativeMapHUD(in.Frames, in.HUDTerrain, in.HUDUnits, in.HUDCache, dst[workBase:], in.HUD)
-	})
+	}, observer)
 }
 
 // ComposeNativeTransitionFrame performs one verified indexed 0x24618 frame:
@@ -446,6 +471,17 @@ func ComposeNativeTransitionFrame(work, vga []byte, in NativeTransitionFrameInpu
 // order. All work happens on a private clone first, so rejected editable input
 // or a HUD error never leaves either caller buffer partially changed.
 func ComposeFrame(work, vga []byte, in FrameInput, renderHUD func([]byte) error) error {
+	return composeFrame(work, vga, in, renderHUD, nil)
+}
+
+// ComposeFrameObserved is the callback-HUD form used by package-level
+// diagnostics. Observer failure follows the same atomic rejection contract as
+// any compositor pass.
+func ComposeFrameObserved(work, vga []byte, in FrameInput, renderHUD func([]byte) error, observer FrameObserver) error {
+	return composeFrame(work, vga, in, renderHUD, observer)
+}
+
+func composeFrame(work, vga []byte, in FrameInput, renderHUD func([]byte) error, observer FrameObserver) error {
 	if renderHUD == nil || len(work)%workStride != 0 || len(vga) < NativeMapVGASize || in.MapWidth <= 0 || len(in.Cells)%in.MapWidth != 0 {
 		return errors.New("indexedmap: incomplete native frame input")
 	}
@@ -457,6 +493,9 @@ func ComposeFrame(work, vga []byte, in FrameInput, renderHUD func([]byte) error)
 	baseX, baseY := workBase%workStride, workBase/workStride
 	if err := in.TerrainBank.BlitNativeTerrainRegion(frame, workStride, baseX, baseY, in.MapWidth, cells, in.Controls, in.CameraX, in.CameraY, 13, 8, in.Flip, in.TerrainCycle, in.LUT); err != nil {
 		return fmt.Errorf("indexedmap: terrain: %w", err)
+	}
+	if err := observeFrameStage(observer, FrameStageTerrain, frame, vga); err != nil {
+		return err
 	}
 	if in.RangeMode == 6 {
 		if in.CursorX < 0 || in.CursorY < 0 || in.CursorX >= in.MapWidth ||
@@ -470,14 +509,26 @@ func ComposeFrame(work, vga []byte, in FrameInput, renderHUD func([]byte) error)
 	} else if err := fdother.BlitNativeRangeOverlay(in.RangeBank, frame, in.CameraX, in.CameraY, 13, 8, in.RangeMode, in.CursorX, in.CursorY); err != nil {
 		return fmt.Errorf("indexedmap: range: %w", err)
 	}
+	if err := observeFrameStage(observer, FrameStageRange, frame, vga); err != nil {
+		return err
+	}
 	if err := in.UnitBank.BlitNativeUnitLayer(frame, workStride, in.SelectorCache, in.Units, in.CameraX, in.CameraY, 12, 7, in.IdleCycle, in.MovingCycle, in.PixelShift); err != nil {
 		return fmt.Errorf("indexedmap: units: %w", err)
+	}
+	if err := observeFrameStage(observer, FrameStageUnits, frame, vga); err != nil {
+		return err
 	}
 	if err := in.ForegroundBank.BlitNativeForegroundLayer(frame, workStride, in.ForegroundUnits, in.MapWidth, cells, in.Controls, in.CameraX, in.CameraY, 12, 7, in.Flip, in.LUT); err != nil {
 		return fmt.Errorf("indexedmap: foreground: %w", err)
 	}
+	if err := observeFrameStage(observer, FrameStageForeground, frame, vga); err != nil {
+		return err
+	}
 	if err := renderHUD(frame); err != nil {
 		return fmt.Errorf("indexedmap: HUD: %w", err)
+	}
+	if err := observeFrameStage(observer, FrameStageHUD, frame, vga); err != nil {
+		return err
 	}
 	copyFrame := append([]byte(nil), vga...)
 	if err := fdicon.CopyNativeIndexedRegion(
@@ -487,8 +538,25 @@ func ComposeFrame(work, vga []byte, in FrameInput, renderHUD func([]byte) error)
 	); err != nil {
 		return fmt.Errorf("indexedmap: viewport copy: %w", err)
 	}
+	if err := observeFrameStage(observer, FrameStageViewport, frame, copyFrame); err != nil {
+		return err
+	}
 	copy(work, frame)
 	copy(vga, copyFrame)
 	copy(in.Cells, cells)
+	return nil
+}
+
+func observeFrameStage(observer FrameObserver, stage FrameStage, work, vga []byte) error {
+	if observer == nil {
+		return nil
+	}
+	if err := observer(
+		stage,
+		append([]byte(nil), work...),
+		append([]byte(nil), vga...),
+	); err != nil {
+		return fmt.Errorf("indexedmap: frame observer stage %d: %w", stage, err)
+	}
 	return nil
 }

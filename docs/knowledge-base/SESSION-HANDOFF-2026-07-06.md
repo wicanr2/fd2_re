@@ -6787,3 +6787,25 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   [`native-battle-ch30-original-candidate.json`](../data/ui-traces/native-battle-ch30-original-candidate.json)
   作為反證錨點；後續先核對destination-preserving terrain span的初始目的面與33筆
   runtime record的native unit layer，不得以靜態背景或手排單位掩蓋。
+## 2026-08-26：第30戰 indexed 一般鍵盤候選勘誤
+
+- 舊圖 `native-battle-ch30-remake-candidate-e1.png` 未設定
+  `FD2_ORIGINAL_FDOTHER`；`loadNativeMapAssets` 因 `FDOTHER.DAT unavailable`
+  失敗，當時畫面實際走PNG fallback。洋紅雜訊與大地圖構圖不是正式
+  `0x11CAC` indexed compositor輸出，先前據此列出的terrain／unit renderer阻擋
+  已撤回，但舊圖保留作錯誤形成原因。
+- 新增只供測試／證據產生器使用的分階段observer；production
+  `ComposeFrame`／`ComposeNativeFrame`介面不變。observer依terrain、range、units、
+  foreground、HUD、viewport順序收到detached snapshot，observer失敗時work／VGA／
+  cells仍維持原子不變。
+- 外部末關候選的33筆runtime records形成19筆active、18筆camera-admitted；unit
+  stage寫入8281像素，foreground與HUD覆蓋該批unit像素均為0。這排除「後段合法
+  前景把角色吃掉」的舊假說。
+- Docker／Xvfb在載入`campaign_full.json`與玩家自備原版資產後，以普通X11
+  `Escape×2→Down×2→Return`抵達`battle_ch30`。frame903旁車固定round12、camera
+  `(16,16)`、cursor `(21,20)`、`native_continue_opening_confirm=true`，且無dialog、
+  battle event或turn staging；新圖為
+  `native-battle-ch30-remake-indexed-candidate-e1.png`。
+- 本結果仍使用第三方存檔、`FD2_NOCUT=1`與固定title tick，只列
+  `RUNTIME-E1`／候選E2。後續只需補第29／30戰完整來源、動畫相位、精確音訊與
+  終局輸入，不重解已閉合的`0x11CAC`層順序。
