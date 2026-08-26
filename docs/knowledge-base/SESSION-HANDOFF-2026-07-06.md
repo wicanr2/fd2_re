@@ -7520,3 +7520,17 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   [`ch17-post-native-dialogue-e1.json`](../data/ui-traces/ch17-post-native-dialogue-e1.json)。
   未修改DOSBox同狀態逐幀與精確音訊仍缺，故維持`RUNTIME-E1`；依99%玩家可見門檻
   不再阻擋重製，也不得重開此已閉合切片。
+
+## 2026-08-27：第13戰後一個caller／12句原生對話正式路徑
+
+- 沿用已閉合的raw ch12 table interior entry `0x2389f`、唯一對話caller
+  `0x238c8`及共用renderer，不重開反組譯。新增
+  [`fd2_ch12_post_native_dialogue.md`](../data/fd2_ch12_post_native_dialogue.md)
+  固定`FDTXT_013` index9的12句control／operand與跨scene3／4映射。
+- 共用產生器將兩個count-aligned targets重生成有序`segments`；固定raw equality
+  逐筆通過。正式回歸從ch12_pre LOADCH建立map12／ch13戰況，以共用具型別輸入完成
+  opening、逐字、嘴型、分頁與closing，之後才`sync_party→JOIN3→chapter13`，進
+  `town_ch14`並通過存讀檔；舊直接清除對話捷徑未使用。
+- 聚焦Docker／Xvfb測試與1／12生成器檢查通過，證據見
+  [`ch12-post-native-dialogue-e1.json`](../data/ui-traces/ch12-post-native-dialogue-e1.json)。
+  未修改DOSBox同狀態、精確音訊與town14原版輸入仍屬E2限制，依99%門檻不阻擋。

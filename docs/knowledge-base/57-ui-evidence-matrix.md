@@ -270,6 +270,11 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 > closing後，才JOIN21／7、進`town_ch19`及驗證存讀檔。原始控制碼相等與正式路徑
 > Docker／Xvfb回歸均通過，列`RUNTIME-E1`；未修改DOSBox同狀態E2仍缺，但依99%
 > 玩家可見門檻不再阻擋，也不得因E2缺口重開已閉合的`0x23cd5`。
+> **2026-08-27 第13戰戰後原生對話補證：** raw ch12 post 的唯一 caller
+> `0x238c8`現以`FDTXT_013` index9建立12句原生版面，保持scene3／4兩段順序。
+> 正式具型別輸入完整播放後，才同步15人、JOIN3、進`town_ch14`及驗證存讀檔；
+> raw equality與Docker／Xvfb回歸通過，列`RUNTIME-E1`。未修改DOSBox同狀態E2
+> 仍缺，但依99%玩家可見門檻不再阻擋，也不得重開`0x2389f` dispatch。
 > **2026-08-21 最新勘誤：玩家第23戰戰後已提升為 E1。** raw ch22 handler
 > 現依原版 persistent-first constructor 建立16筆持續隊伍＋70筆 map records，
 > 以86-slot正式 binding 消費18-slot layout、三個 raw predicate、`0x2189A`、

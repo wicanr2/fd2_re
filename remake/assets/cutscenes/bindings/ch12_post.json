@@ -8,5 +8,264 @@
       "script": "ch13.json"
     }
   },
-  "overrides": {}
+  "overrides": {},
+  "dialogue_overrides": {
+    "0x238c8#9": {
+      "segments": [
+        {
+          "script": "ch13.json",
+          "scene": "精靈蜜致謝,獸人大軍動向",
+          "scene_index": 3,
+          "lines": [
+            {
+              "line": 0,
+              "upper": true,
+              "native_dialogue": {
+                "source_dat": "FDTXT_013",
+                "string_index": 9,
+                "utterance": 0,
+                "control": "FFEF",
+                "operand": 72,
+                "pages": [
+                  [
+                    "『你們不是貝克威和珊嗎？",
+                    "　還有好久不見的哈瓦那老爹",
+                    "　幸好你們帶了幫手來，要不"
+                  ],
+                  [
+                    "　然我們真會抵擋不住了。』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 1,
+              "upper": true,
+              "native_dialogue": {
+                "source_dat": "FDTXT_013",
+                "string_index": 9,
+                "utterance": 1,
+                "control": "FFEF",
+                "operand": 72,
+                "pages": [
+                  [
+                    "『不過，你們又怎麼會知道",
+                    "　獸人大軍前來攻擊呢？』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 2,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_013",
+                "string_index": 9,
+                "utterance": 2,
+                "control": "FFEE",
+                "operand": 14,
+                "pages": [
+                  [
+                    "『湊巧啦！",
+                    "　還好這些朋友願意幫忙。",
+                    "　城中的居民呢？』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 3,
+              "upper": true,
+              "native_dialogue": {
+                "source_dat": "FDTXT_013",
+                "string_index": 9,
+                "utterance": 3,
+                "control": "FFEF",
+                "operand": 72,
+                "pages": [
+                  [
+                    "『我們事先收到警告，",
+                    "　居民都連夜撤到安全的地方",
+                    "　去了。"
+                  ],
+                  [
+                    "　不過聽說獸人大軍還在離哈",
+                    "　斯米爾不遠的蘭迪平原駐紮",
+                    "　眼前情勢仍然很險惡．．』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 4,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_013",
+                "string_index": 9,
+                "utterance": 4,
+                "control": "FFEE",
+                "operand": 13,
+                "pages": [
+                  [
+                    "『對了，獸人大軍為何要攻打",
+                    "　哈斯米爾？我到現在還是不",
+                    "　明白。』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 5,
+              "upper": true,
+              "native_dialogue": {
+                "source_dat": "FDTXT_013",
+                "string_index": 9,
+                "utterance": 5,
+                "control": "FFEF",
+                "operand": 72,
+                "pages": [
+                  [
+                    "『這一點我們也不清楚，不過",
+                    "　牠們在開戰前曾大聲宣言，",
+                    "　要把精靈族殺戮殆盡，為何"
+                  ],
+                  [
+                    "　如此我們並不清楚．．』"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "script": "ch13.json",
+          "scene": "商議先發制人",
+          "scene_index": 4,
+          "lines": [
+            {
+              "line": 0,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_013",
+                "string_index": 9,
+                "utterance": 6,
+                "control": "FFEE",
+                "operand": 0,
+                "pages": [
+                  [
+                    "『還不簡單！獸人大軍現在不",
+                    "　是駐紮在那個什麼平原嗎？",
+                    "　我們去把他們殺個人仰馬翻"
+                  ],
+                  [
+                    "　，再抓幾個來問問不就好了",
+                    "　？』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 1,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_013",
+                "string_index": 9,
+                "utterance": 7,
+                "control": "FFEE",
+                "operand": 4,
+                "pages": [
+                  [
+                    "『典型的索爾作風．．不過",
+                    "　也不失為一個好方法。』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 2,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_013",
+                "string_index": 9,
+                "utterance": 8,
+                "control": "FFEE",
+                "operand": 8,
+                "pages": [
+                  [
+                    "『是啊，讓那些獸人繼續待在",
+                    "　那裡太危險了，先把牠們在",
+                    "　野外殲滅，免得牠們又來進"
+                  ],
+                  [
+                    "　攻。』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 3,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_013",
+                "string_index": 9,
+                "utterance": 9,
+                "control": "FFEE",
+                "operand": 9,
+                "pages": [
+                  [
+                    "『正好老爹也來了，",
+                    "　我們的戰力大增，要對付",
+                    "　那些獸人相信不是難事。"
+                  ],
+                  [
+                    "　老爹，你會和我們一起去吧",
+                    "　！』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 4,
+              "upper": true,
+              "native_dialogue": {
+                "source_dat": "FDTXT_013",
+                "string_index": 9,
+                "utterance": 10,
+                "control": "FFEF",
+                "operand": 3,
+                "pages": [
+                  [
+                    "『當然！就這幾隻獸人，",
+                    "　那能讓我過癒呢！再說，",
+                    "　我也想看看這些日子以來，"
+                  ],
+                  [
+                    "　小子長進了多少。",
+                    "　哈哈哈！』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 5,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_013",
+                "string_index": 9,
+                "utterance": 11,
+                "control": "FFEE",
+                "operand": 0,
+                "pages": [
+                  [
+                    "『既然如此，那我們稍事休息",
+                    "　之後就出發吧！』"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
 }

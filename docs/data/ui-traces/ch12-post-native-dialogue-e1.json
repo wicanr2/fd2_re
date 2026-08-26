@@ -1,0 +1,47 @@
+{
+  "name": "第13戰後一個caller／12句原生故事對話與town_ch14存讀檔路徑",
+  "date": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "reference": {
+    "FD2.EXE": {
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "FDTXT_013.bin": {
+      "size": 2360,
+      "md5": "f6a60a04661f2308154b259a3fd4830a",
+      "sha256": "1fde41ba41b05ae8d3ea1d9c5ad9f47382d9ef6029ff5fe840f5f4eefb22206f"
+    },
+    "canonical_re": "docs/data/fd2_ch12_post_dispatch_ida.txt",
+    "binding_evidence": "docs/data/fd2_ch12_post_native_dialogue.md"
+  },
+  "native_dialogue": {
+    "handler": "0x2389f",
+    "caller": "0x238c8",
+    "source": "FDTXT_013",
+    "string_index": 9,
+    "utterances": 12,
+    "segments": ["ch13.json scene3 lines0..5", "ch13.json scene4 lines0..5"]
+  },
+  "formal_route": {
+    "nodes": ["battle_ch13", "postbattle_ch13_persist", "town_ch14", "save_slot_2", "load_slot_2"],
+    "party_before_join": 15,
+    "joined_character": 3,
+    "order": ["dialogue", "sync_party", "JOIN3", "chapter13", "town_ch14"]
+  },
+  "verification": {
+    "generator": "1 caller / 12 utterances --check",
+    "data_test": "TestCh12PostNativeDialogueLayoutsMatchOriginalControlWords",
+    "integrated_test": "TestChapter13PostNativeDialogueJoins3Town14SaveBoundary",
+    "full_packages": "go test ./internal/battle ./internal/campaign ./cmd/fd2 -count=1",
+    "result": "pass",
+    "docker_network": "none",
+    "xvfb": "explicit PID with exit trap"
+  },
+  "limitations": [
+    "逐句版面與固定FDTXT raw相等；現代場景名稱不是原版ABI。",
+    "測試使用與正式鍵盤共用的具型別輸入，但未注入作業系統鍵盤事件。",
+    "沒有未修改DOSBox同狀態逐幀、精確音訊或town14原版輸入證據，因此不提升為PLAYER-E2。"
+  ]
+}

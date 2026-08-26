@@ -7110,3 +7110,21 @@ ANI 缺失時仍可保留明示的舊 `scroll→logozoom` 可玩 fallback，但�
 steps、ANI #1 可中斷但只離開當前幕，以及完成後進主選單。Docker／Xvfb 必須擷取
 純紅、ANI #1與近白／穩定選單代表幀；原版代表幀只在相近狀態下比較順序與構圖，
 沒有相同相位時不宣稱逐像素 E2。
+
+## 玩家第 13 戰戰後 12 句原生對話（2026-08-27）
+
+本切片只 lower 已閉合的 raw ch12 post，不重開 `sub_15F84` 或 table dispatch。
+`0x238c8` 的 `FDTXT_013` index9 必須產生12筆 `NativeDialogueLayout`，依
+`count-aligned.json` 分成 `ch13.json` scene3 lines0..5與scene4 lines0..5兩個
+有序 `segments`。跨場景只切換可編輯行號，不重設原始 utterance 序號。
+
+每筆 layout 保存 control、operand、頁／列與原始 glyph token；compiler 與 renderer
+沿用 control-specific 13／15／14／14格上限。缺 caller context、唯一 mapping、原始
+glyph、對話框／頭像／地圖底圖，或分段總行數不等於12時，在任何隊伍交易前失敗即
+關閉。正式輸入完成 opening、逐字、嘴型、分頁與 closing 後，才允許既有 handler
+依序執行 `sync_party→JOIN3→chapter13→town_ch14`；禁止直接清除對話或提前同步。
+
+原始位址、雜湊、12筆 control／operand 與證據等級見
+[`fd2_ch12_post_native_dialogue.md`](../data/fd2_ch12_post_native_dialogue.md)。
+驗收包含固定 raw equality、跨場景順序、正式具型別輸入、持續隊伍／JOIN3與
+`town_ch14`存讀檔。此項最高為`RUNTIME-E1`，未修改DOSBox同狀態與精確音訊另列E2。
