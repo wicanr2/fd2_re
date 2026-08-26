@@ -2440,6 +2440,53 @@ func (g *Game) loadCHPartyOrder(state *campaign.LoadCHState) []int {
 	return order
 }
 
+func (g *Game) nativeRestoredPartyUnitsForLoadCH(
+	order []int, deploy []battle.Cell, scenario *battle.Scenario,
+) ([]*battle.Unit, error) {
+	if g == nil || g.nativeChapterRestore == nil {
+		return nil, nil
+	}
+	if len(order) == 0 || len(deploy) < len(order) {
+		return nil, fmt.Errorf(
+			"原版 LOADCH 部署格／順序長度不符：deploy=%d order=%d",
+			len(deploy), len(order),
+		)
+	}
+	templates := make(map[int]battle.Unit)
+	if scenario != nil {
+		for _, unit := range scenario.PartyUnits(nil) {
+			if unit != nil {
+				templates[unit.Fig] = *unit
+			}
+		}
+	}
+	units := make([]*battle.Unit, 0, len(order))
+	for index, id := range order {
+		source, ok := g.partyRoster[id]
+		if !ok || !source.HasNativeIdentity || source.NativeIdentity != id ||
+			!source.HasMapSelectorKey {
+			return nil, fmt.Errorf(
+				"原版 LOADCH 隊伍 slot %d 缺 persistent identity %d 來源",
+				index, id,
+			)
+		}
+		unit, hasTemplate := templates[id]
+		if hasTemplate {
+			applyPersistentStats(&unit, &source)
+		} else {
+			unit = cloneNativeShopUnit(source)
+		}
+		unit.Camp = battle.Own
+		unit.Fig = id
+		unit.BattleFig = unit.MapSelectorKey
+		unit.HasBattleFig = true
+		unit.X, unit.Y = deploy[index].X, deploy[index].Y
+		unit.Group, unit.OnField, unit.Acted = 0, true, false
+		units = append(units, &unit)
+	}
+	return units, nil
+}
+
 // applyLoadCH is the remake adapter for original 0x205da/0x1088d.  The
 // original operation selects FDTXT chapter+1 and the three FDFIELD resources
 // for the same chapter in one call; it is not merely a camera/map command.
@@ -2482,7 +2529,6 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 		// A normal campaign reaches this LOADCH after JOIN established permanent
 		// membership. Direct scene/debug starts have no membership history and
 		// use the evidence-backed PartyOrder stored in the editable binding.
-		filterScenarioParty(scenario, g.battlePartyMembers())
 		partyOrder := g.loadCHPartyOrder(state)
 		// A binding's PartyOrder describes the normal permanent chronology.  Once
 		// preparation has an active selection, the projected deployed order is the
@@ -2490,16 +2536,25 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 		if len(g.partyJoinOrder) != 0 && len(g.partyDeploy) == 0 && len(state.PartyOrder) != 0 && !equalIntOrder(partyOrder, state.PartyOrder) {
 			return fmt.Errorf("party JOIN chronology %v differs from binding %v", partyOrder, state.PartyOrder)
 		}
-		if err := reorderScenarioParty(scenario, partyOrder); err != nil {
+		if restored, err := g.nativeRestoredPartyUnitsForLoadCH(
+			partyOrder, roster.OwnDeploy, scenario,
+		); err != nil {
 			return fmt.Errorf("party scenario %q: %w", state.PartyScenario, err)
+		} else if restored != nil {
+			party = restored
+		} else {
+			filterScenarioParty(scenario, g.battlePartyMembers())
+			if err := reorderScenarioParty(scenario, partyOrder); err != nil {
+				return fmt.Errorf("party scenario %q: %w", state.PartyScenario, err)
+			}
+			party = scenario.PartyUnits(roster.OwnDeploy)
 		}
-		party = scenario.PartyUnits(roster.OwnDeploy)
 		// Native JOIN has already created persistent records before a normal
 		// campaign reaches this LOADCH. The remake JOIN beat records membership
 		// and chronology, so seed only records that are still absent from the
 		// typed roster. Direct/debug LOADCH replay has no JOIN history and must
 		// not silently manufacture persistent campaign state.
-		if len(g.partyJoinOrder) != 0 {
+		if len(g.partyJoinOrder) != 0 && g.nativeChapterRestore == nil {
 			g.initializeEquipmentBases(&battle.State{Units: party})
 			if err := g.seedPersistentPartyFromLoadCH(partyOrder, party); err != nil {
 				return fmt.Errorf("party scenario %q persistence: %w", state.PartyScenario, err)
@@ -3098,10 +3153,16 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 			// is filtered by the permanent membership established by JOIN.  A
 			// direct chapter/debug start has no JOIN history and therefore keeps
 			// the authored scenario party intact.
-			filterScenarioParty(sc, g.battlePartyMembers())
-			if err := reorderScenarioParty(sc, g.partyJoinOrder); err != nil {
-				g.loadErr = "scenario party order: " + err.Error()
-				return
+			if !(adoptHandlerState && g.nativeChapterRestore != nil) {
+				filterScenarioParty(sc, g.battlePartyMembers())
+				partyOrder := g.partyJoinOrder
+				if len(g.partyDeploy) != 0 {
+					partyOrder = g.loadCHPartyOrder(nil)
+				}
+				if err := reorderScenarioParty(sc, partyOrder); err != nil {
+					g.loadErr = "scenario party order: " + err.Error()
+					return
+				}
 			}
 			if adoptHandlerState && !sc.RuntimeAppendGroups {
 				// Matching asset paths alone do not prove that the following battle
@@ -3342,7 +3403,12 @@ func applyPersistentStats(dst, src *battle.Unit) {
 	dst.AtkMin, dst.AtkMax = src.AtkMin, src.AtkMax
 	dst.BaseAP, dst.BaseDP, dst.BaseHIT, dst.BaseEV, dst.BaseMV = src.BaseAP, src.BaseDP, src.BaseHIT, src.BaseEV, src.BaseMV
 	dst.BaseAtkMin, dst.BaseAtkMax, dst.EquipmentBaseSet = src.BaseAtkMin, src.BaseAtkMax, src.EquipmentBaseSet
-	dst.Portrait, dst.Fig, dst.BattleFig = src.Portrait, src.Fig, src.BattleFig
+	// Portrait 與 Fig 是目的端 constructor 的穩定 authored 身分／呈現欄位。
+	// 原版 persistent record 沒有已證實的 portrait selector；它只在 +8 保存身分、
+	// +7 保存可變 presentation selector，因此此處不可覆蓋兩者。
+	if src.HasBattleFig {
+		dst.BattleFig, dst.HasBattleFig = src.BattleFig, true
+	}
 	dst.MapSelectorKey, dst.HasMapSelectorKey = src.MapSelectorKey, src.HasMapSelectorKey
 	dst.Exp, dst.ExpPerLevel = src.Exp, src.ExpPerLevel
 	dst.Spells = append(dst.Spells[:0], src.Spells...)
@@ -3752,6 +3818,27 @@ func (g *Game) togglePreparationSelection() bool {
 		g.prepConfirm = true
 		g.prepConfirmSel = 0
 		g.beginNativePreparationConfirmationOpening()
+	} else if g.partyDeploy[id] && g.prepSel+1 < len(g.prepIDs) {
+		// 未修改原版晚期 LOAD trace 證實：選取一筆後會前進至下一筆。一般玩家因此
+		// 可連按 Return 達到名額，不需要測試或 controller 直接寫游標。
+		g.prepSel++
+	}
+	return true
+}
+
+// confirmPreparationDeparture 擁有 0x31D3C 的肯定分支；原生索引關框必須先於戰役
+// 轉場完成，決定性玩家路徑測試與鍵盤輸入共用此 consumer。
+func (g *Game) confirmPreparationDeparture() bool {
+	if g.camp == nil || !g.prepConfirm || g.prepConfirmSel != 0 {
+		return false
+	}
+	after := func() {
+		if g.camp.Advance("confirm") != "" {
+			g.enterNode()
+		}
+	}
+	if !g.beginNativePreparationConfirmationClosing(after) {
+		after()
 	}
 	return true
 }
@@ -4148,7 +4235,7 @@ func (g *Game) campInput() bool {
 				}
 				if enter {
 					if g.prepConfirmSel == 0 {
-						closeThen(func() { leavePreparation("confirm") })
+						g.confirmPreparationDeparture()
 					} else if townBacked {
 						closeThen(func() { leavePreparation("cancel") })
 					} else {

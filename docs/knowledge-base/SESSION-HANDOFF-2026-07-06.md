@@ -7010,3 +7010,21 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   完整發布29人／60金幣／HUD gate並進最終戰整備；聚焦 campaign／cmd 測試均通過。
 - 此批關閉重製 `RUNTIME-E1` 路由差分，不提升第三方存檔的完整 `PLAYER-E2` 等級，
   README 自評仍維持80／100。
+
+## 2026-08-26：晚期有效槽重製正常輸入至第30戰
+
+- 標題主選單與四槽 selector 現各有單一具型別事件擁有者；Ebiten 鍵盤與測試共用
+  同一 consumer。固定雜湊回歸由 selection 0 送 Down、Confirm、24次 Tick，再以
+  slot Confirm 進正式 chapter restore，不再直接呼叫 `confirmTitleLoadSlot`。
+- 真實測試證實重製選人原先不會自動前進，連按 Return 會反覆切換同一人；正式
+  `togglePreparationSelection` 現於勾選成功後移至下一筆，連續19次即可進 `0x31D3C`
+  對應確認。最終肯定分支也改由鍵盤與測試共用的正式 owner 消費。
+- 第一輪進 `story_ch30` 又揭露 `units=19/order=20`：固定隊長＋19名選取者包含 identity 3，
+  但 authored `ch30.json` 只列30名候選，缺 identity 3／19。原版 LOADCH 來源是已還原
+  persistent records；現行 native restore 因此從29筆已驗證 roster 依選定順序物化20人，
+  套用 map29 的20個 `own_deploy`，不在 scenario 猜造缺角能力。
+- 聚焦測試現由標題正常事件走過 slot 0、29人還原、19次 Return、最終確認、完整 ch29 pre
+  至 `battle_ch30`，並驗證20名我方及 identity 3 都保留。相關 fdsave／campaign／cmd
+  完整回歸通過；此批為 `RUNTIME-E1`，外部存檔 provenance 限制不變。
+- 這一節也取代本交接較早「preparation 仍是 Enter／Esc 直接 Advance placeholder」的
+  歷史現況說法；歷史段落只保留發現脈絡，不再代表目前程式。

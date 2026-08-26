@@ -34,7 +34,9 @@
 > **2026-08-26 晚期四槽 LOAD 修正：** `fd2021` slot 0 已由重製正式 selector
 > 還原29人、60金幣與 raw metadata，並由來源綁定的 editable override 進
 > `preparation_ch30`。舊 `raw+1` 會誤進 `preparation_ch29` 的斷言與實作已由聚焦
-> 回歸取代；不再把「同狀態重製差分」列為這個固定槽的待辦。
+> 回歸取代。後續正式標題事件、19次自動前進選取、最終確認與 ch29 pre 亦已用同檔
+> 抵達 `battle_ch30`；20名部署者直接來自 persistent records，不受 authored scenario
+> 漏列 identity 3／19 影響。不再把這個固定槽的重製正常輸入接線列為待辦。
 
 ### 阻擋完整 remake 的剩餘工作
 

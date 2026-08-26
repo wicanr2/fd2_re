@@ -34,6 +34,59 @@ type titleAssets struct {
 	aniPath   string              // 玩家自備 ANI.DAT 路徑(""=無,退回捲動 fallback)
 }
 
+// applyTitleMenuEvent 是標題主選單輸入的單一具型別擁有者；Ebiten 鍵盤與
+// 決定性玩家路徑測試都必須經過此接縫。
+func (g *Game) applyTitleMenuEvent(event TitleMenuEvent) bool {
+	if g.titlePhase != "menu" {
+		return false
+	}
+	menu := TitleMenuState{Selection: g.titleSel, FlashTicks: g.titleFlash}
+	if event == TitleMenuUp || event == TitleMenuDown {
+		g.playSFX(sfxCursor)
+	} else if event == TitleMenuConfirm {
+		g.playSFX(sfxConfirm)
+	}
+	action := menu.Step(event)
+	g.titleSel, g.titleFlash = menu.Selection, menu.FlashTicks
+	switch action {
+	case TitleMenuLoadSlots:
+		g.titleSlotSel = 0
+		g.titlePhase = "loadslots"
+	case TitleMenuContinue:
+		if err := g.loadNativeContinueFromCurrentSnapshot(
+			os.Getenv("FD2_NATIVE_SAVE"),
+		); err != nil {
+			g.msg = err.Error()
+		}
+	case TitleMenuStart:
+		g.titlePhase = ""
+	}
+	return true
+}
+
+// applyTitleSlotEvent 擁有四槽有界 selector 與原子 LOAD 確認；原版資料驗證失敗時
+// 保持 selector 啟用，不發布部分狀態。
+func (g *Game) applyTitleSlotEvent(event TitleSlotEvent) bool {
+	if g.titlePhase != "loadslots" {
+		return false
+	}
+	slots := TitleSlotState{Selection: g.titleSlotSel}
+	if event == TitleSlotUp || event == TitleSlotDown {
+		g.playSFX(sfxCursor)
+	}
+	selected, confirm, cancel := slots.Step(event)
+	g.titleSlotSel = slots.Selection
+	if cancel {
+		g.titlePhase = "menu"
+		return true
+	}
+	if confirm {
+		g.playSFX(sfxConfirm)
+		return g.confirmTitleLoadSlot(selected)
+	}
+	return true
+}
+
 // 開場過場腳本是重製端 E1 排程：AFM 動畫幕由 ANI.DAT 解碼，FDOTHER 靜態幕
 // 使用已辨識資源；doc39 §10 已推翻舊 cutSeq，指出原版捲動會穿插在各幕之間，
 // 目前 cutScript 尚未重現該完整交錯順序。delay 與 skippable 僅保留已證實的
@@ -234,66 +287,33 @@ func (g *Game) titleUpdate() bool {
 		}
 		return true
 	case "menu":
-		menu := TitleMenuState{Selection: g.titleSel, FlashTicks: g.titleFlash}
 		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
-			menu.Step(TitleMenuUp)
-			g.playSFX(sfxCursor)
+			g.applyTitleMenuEvent(TitleMenuUp)
 		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
-			menu.Step(TitleMenuDown)
-			g.playSFX(sfxCursor)
+			g.applyTitleMenuEvent(TitleMenuDown)
 		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace) {
-			menu.Step(TitleMenuConfirm)
-			g.playSFX(sfxConfirm)
+			g.applyTitleMenuEvent(TitleMenuConfirm)
 		}
-		if action := menu.Step(TitleMenuTick); action != TitleMenuNoAction {
-			g.titleSel, g.titleFlash = menu.Selection, menu.FlashTicks
-			switch action {
-			case TitleMenuLoadSlots:
-				g.titleSlotSel = 0
-				g.titlePhase = "loadslots"
-				return true
-			case TitleMenuContinue:
-				// Original selection 2 restores FD2.SAV's current-runtime
-				// snapshot through 0x10010; it is not remake JSON slot 0.  The
-				// caller supplies the original save; the title's monotonic clock
-				// supplies the signed timer seed. Ambiguous owners remain fail-closed.
-				if err := g.loadNativeContinueFromCurrentSnapshot(
-					os.Getenv("FD2_NATIVE_SAVE"),
-				); err != nil {
-					g.msg = err.Error()
-				}
-				return true
-			}
-			g.titlePhase = "" // START 或讀檔後 → 進遊戲
-		}
-		g.titleSel, g.titleFlash = menu.Selection, menu.FlashTicks
+		g.applyTitleMenuEvent(TitleMenuTick)
 		return true
 	case "loadslots":
-		slots := TitleSlotState{Selection: g.titleSlotSel}
 		// Native 0x30550 selector: four bounded slots, no wrap, Enter/Space
 		// confirms and Esc cancels back to the title menu.
 		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.titleSlotSel > 0 {
-			slots.Step(TitleSlotUp)
-			g.playSFX(sfxCursor)
+			g.applyTitleSlotEvent(TitleSlotUp)
 		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.titleSlotSel < 3 {
-			slots.Step(TitleSlotDown)
-			g.playSFX(sfxCursor)
+			g.applyTitleSlotEvent(TitleSlotDown)
 		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-			slots.Step(TitleSlotCancel)
-			g.titlePhase = "menu"
+			g.applyTitleSlotEvent(TitleSlotCancel)
 			return true
 		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace) {
-			selected, confirm, _ := slots.Step(TitleSlotConfirm)
-			if confirm && !g.confirmTitleLoadSlot(selected) {
-				return true
-			}
+			g.applyTitleSlotEvent(TitleSlotConfirm)
 		}
-		g.titleSlotSel = slots.Selection
 		return true
 	}
 	return false

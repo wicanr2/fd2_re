@@ -234,3 +234,86 @@ func TestConfirmTitleLoadSlotRestoresExternalLateSlotToFinalPreparation(t *testi
 			g.nativeChapterRestore)
 	}
 }
+
+func TestExternalLateSlotUsesProductionTitleAndPreparationInputOwners(t *testing.T) {
+	path := os.Getenv("FD2_LATE_CHAPTER_SLOT_SAVE")
+	if path == "" {
+		t.Skip("未提供固定雜湊的外部晚期章節槽存檔")
+	}
+	stored, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := fmt.Sprintf("%x", sha256.Sum256(stored)); got != lateChapterSlotSaveSHA256 {
+		t.Fatalf("外部晚期章節槽存檔 SHA-256=%s，不是已審查來源", got)
+	}
+	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{
+		camp: campaign.NewRunner(graph), titlePhase: "menu", titleSel: 0,
+	}
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(
+		"../../../org_game/炎龍騎士團/FLAME2", "FDOTHER.DAT",
+	))
+	t.Setenv("FD2_NATIVE_SAVE", path)
+	if !g.applyTitleMenuEvent(TitleMenuDown) || g.titleSel != 1 ||
+		!g.applyTitleMenuEvent(TitleMenuConfirm) {
+		t.Fatalf("標題 LOAD 選項輸入未被正式 owner 消費：phase=%q sel=%d flash=%d",
+			g.titlePhase, g.titleSel, g.titleFlash)
+	}
+	for i := 0; i < 24; i++ {
+		if !g.applyTitleMenuEvent(TitleMenuTick) {
+			t.Fatalf("標題確認 tick %d 未被消費", i)
+		}
+	}
+	if g.titlePhase != "loadslots" || g.titleSlotSel != 0 {
+		t.Fatalf("標題 LOAD 未進四槽 selector：phase=%q slot=%d", g.titlePhase, g.titleSlotSel)
+	}
+	if !g.applyTitleSlotEvent(TitleSlotConfirm) ||
+		g.titlePhase != "" || g.camp.NodeID() != "preparation_ch30" {
+		t.Fatalf("slot 0 正式確認未進最終整備：phase=%q node=%q msg=%q",
+			g.titlePhase, g.camp.NodeID(), g.msg)
+	}
+	if g.acceptTownDeparturePrompt() || !g.prepSelecting || g.prepSel != 0 {
+		t.Fatalf("29人槽未進19人選取：selecting=%v cursor=%d ids=%d",
+			g.prepSelecting, g.prepSel, len(g.prepIDs))
+	}
+	for i := 0; i < 19; i++ {
+		if !g.togglePreparationSelection() {
+			t.Fatalf("第 %d 次連續 Return 未被整備 owner 消費", i+1)
+		}
+	}
+	if g.prepSelecting || !g.prepConfirm || g.preparationSelected() != 19 {
+		t.Fatalf("19次 Return 未完成原版式選人：selecting=%v confirm=%v selected=%d cursor=%d",
+			g.prepSelecting, g.prepConfirm, g.preparationSelected(), g.prepSel)
+	}
+	if !g.confirmPreparationDeparture() || g.camp.NodeID() != "story_ch30" ||
+		len(g.beats) == 0 || g.loadErr != "" {
+		t.Fatalf("最終出戰確認未進正式 story_ch30：node=%q beats=%d err=%q",
+			g.camp.NodeID(), len(g.beats), g.loadErr)
+	}
+	if err := g.fastForwardShotCampaign(); err != nil {
+		t.Fatalf("外部晚期槽 story_ch30→battle_ch30：%v", err)
+	}
+	if g.camp.NodeID() != "battle_ch30" || g.st == nil || g.sc == nil ||
+		g.loadErr != "" {
+		t.Fatalf("外部晚期槽未抵達最終戰：node=%q state=%v scenario=%v err=%q",
+			g.camp.NodeID(), g.st != nil, g.sc != nil, g.loadErr)
+	}
+	own, hasIdentity3 := 0, false
+	for _, unit := range g.st.Units {
+		if unit == nil || unit.Camp != battle.Own {
+			continue
+		}
+		own++
+		if unit.Fig == 3 && unit.HasNativeIdentity && unit.NativeIdentity == 3 {
+			hasIdentity3 = true
+		}
+	}
+	if own != 20 || !hasIdentity3 {
+		t.Fatalf("外部晚期槽最終戰部署 own=%d identity3=%v，未保留固定隊長＋19人",
+			own, hasIdentity3)
+	}
+}

@@ -6609,3 +6609,23 @@ Player Lin 保存站的 `fd2021.zip` 內含 checksum-valid `fd2last.sav`；頁�
 `preparation_ch29`，應先以測試揭露差異，再把例外寫成受版本與來源約束的可編輯路由；
 不得在標題 controller 內硬寫 fd2021 檔名或以直接節點注入繞過正式 LOAD。雜湊、槽位、
 metadata、路由或 campaign 節點任一不符時，交易必須失敗且保留原選槽狀態。
+
+下一個正常輸入門檻不得在測試中直接呼叫 `confirmTitleLoadSlot`。標題主選單與四槽
+selector 應各有單一具型別事件擁有者；Ebiten 的 Up／Down／Enter／Space／Esc 只負責
+轉成同一事件。固定雜湊回歸必須從主選單 selection 0 送出 Down、Confirm、24次 Tick，
+由正式 action 進 `loadslots`，再以 slot Confirm 觸發 checksum、typed restore 與
+`preparation_ch30` 發布。接著接受 standalone 記錄提示、依原版自動前進的名冊順序
+連續確認19人、接受最終出戰確認，必須抵達正式 `story_ch30` handler。測試可以直接
+驅動這些具型別事件／既有 production helper，但不得直接改 `titlePhase`、campaign
+游標、`partyDeploy` 或呼叫 chapter restore plan；GUI 鍵盤映射與狀態擁有者分離後，
+任何拒絕仍須保留當前標題／整備階段，不能發布半套隊伍。
+
+真實槽可能包含 authored `ch30.json` 沒有列出的合法 persistent identity；本次固定槽
+選出的20人（固定 record 0＋19筆選取）包含 identity 3，而現行 scenario 只列30名
+候選且缺 identity 3／19。原版 LOADCH 的玩家來源是已還原 persistent records，不是
+重製 scenario 預設名冊。因此 native chapter restore 存在時，`LOADCH` 必須依選定
+JOIN order 從已驗證 `partyRoster` 物化20名玩家，再套用 map29 的20個 `own_deploy`
+位置；每筆都必須有相符 native identity、raw presentation key 與完整 typed record，
+任一缺漏即整批拒絕。一般新遊戲仍用 authored scenario constructor；不得為通過外部
+存檔而在 `ch30.json` 猜造 identity 3／19 的初始能力。進入 battle 時的 scenario order
+也必須投影當次 deployment，不可拿29人永久 JOIN chronology 去重排20人戰場名冊。
