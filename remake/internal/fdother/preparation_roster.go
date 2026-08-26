@@ -21,12 +21,14 @@ const (
 // NativePreparationAssets is the exact mixed-codec subset consumed while
 // 0x318ad builds the 320×200 selection frame. FDOTHER #5 entries 20 and 21
 // go through opaque 0x4e8af, while entry 137 and digits 31..40 go through
-// transparent four-mode 0x4e63d. Keeping those types distinct prevents the
+// transparent four-mode 0x4e63d. The two sub_187D6 calls select separate
+// digit ranges 31..40 and 42..51. Keeping those types distinct prevents the
 // shared LMI1 directory from erasing the native codec boundary.
 type NativePreparationAssets struct {
 	UpperRight, Lower LMI1Entry
 	UpperLeft         Frame
-	Digits            [10]Frame
+	QuotaDigits       [10]Frame
+	RemainingDigits   [10]Frame
 	Cursor, Units     *fdicon.Bank
 }
 
@@ -47,9 +49,13 @@ func DecodeNativePreparationAssets(fdotherPath, fdiconPath string) (*NativePrepa
 	if err != nil {
 		return nil, err
 	}
-	var digits [10]Frame
-	for digit := range digits {
-		digits[digit], err = ParseLMI1FrameEntry(resource5, 31+digit)
+	var quotaDigits, remainingDigits [10]Frame
+	for digit := range quotaDigits {
+		quotaDigits[digit], err = ParseLMI1FrameEntry(resource5, 31+digit)
+		if err != nil {
+			return nil, err
+		}
+		remainingDigits[digit], err = ParseLMI1FrameEntry(resource5, 42+digit)
 		if err != nil {
 			return nil, err
 		}
@@ -67,7 +73,8 @@ func DecodeNativePreparationAssets(fdotherPath, fdiconPath string) (*NativePrepa
 	}
 	assets := &NativePreparationAssets{
 		UpperRight: entries[20], Lower: entries[21], UpperLeft: upperLeft,
-		Digits: digits, Cursor: cursor, Units: units,
+		QuotaDigits: quotaDigits, RemainingDigits: remainingDigits,
+		Cursor: cursor, Units: units,
 	}
 	if assets.UpperRight.Width != 223 || assets.UpperRight.Height != 86 ||
 		assets.Lower.Width != 310 || assets.Lower.Height != 99 ||
@@ -221,10 +228,10 @@ func ComposeNativePreparationFrame(
 	}
 	// 0x31ea9..0x31ec6 先畫原始 quota；只有第二組數字才使用
 	// sub_320ce 的已選人數，計算 quota-selected。
-	if err := blitNativePreparationTwoDigits(assets.Digits, frame, 61, 35, limit); err != nil {
+	if err := blitNativePreparationTwoDigits(assets.QuotaDigits, frame, 61, 35, limit); err != nil {
 		return nil, err
 	}
-	if err := blitNativePreparationTwoDigits(assets.Digits, frame, 61, 73, limit-selectedCount); err != nil {
+	if err := blitNativePreparationTwoDigits(assets.RemainingDigits, frame, 61, 73, limit-selectedCount); err != nil {
 		return nil, err
 	}
 	if err := BlitNativePreparationRoster(

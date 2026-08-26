@@ -49,5 +49,9 @@ func (g *Game) prepareReviewedLatePreparationShot() error {
 		}
 		g.prepIdleCycle = phase
 	}
+	// 這個入口用來比對一個指定的合法圖像相位。若仍讓正式 BIOS
+	// 時鐘在擷取前推進，環境變數的值就不是實際被擷取的相位。
+	// 只凍結固定雜湊截圖；正常遊戲仍使用 0→1→2→1 週期。
+	g.prepShotCycleFrozen = true
 	return nil
 }

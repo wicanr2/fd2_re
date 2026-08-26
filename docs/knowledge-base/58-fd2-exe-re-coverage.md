@@ -81,10 +81,11 @@
 > **2026-08-26 晚期整備同狀態勘誤：** 固定 `fd2last.sav` 現有只在截圖模式
 > 啟用的正式 LOAD 擷取入口；它先由 `confirmTitleLoadSlot(0)` 還原29人／60金幣，
 > 再走既有記錄提示 owner 進 `preparation_ch30`，不手工建立名冊或 campaign cursor。
-> 原版候選初始畫面為 `19／19`，直接重讀 `0x31EA9..0x31EFB` 證實第一組是quota、
-> 第二組才是quota減已選；重製已修正舊 `00／19`。三個合法角色相位的同狀態
-> AE為9255／3763／9255，剩餘差異集中灰階角色格，因此本批只提升整備
-> `RUNTIME-E1`視覺證據，不冒稱AE=0或完整E2。主紀錄見
+> 舊截圖入口在擷取前仍推進圖像相位，所9255／3763／9255不是有效的
+> 三相位比較；「灰階角色 selector／RLE／調色盤差異」斷言已被28格相位0
+> 逐格 `AE=0` 否定。IDA 另證實兩組數字使用 FDOTHER #5 entries 31..40
+> 與42..51；凍結相位並接通第二套字形後，固定初始狀態達
+> `AE=0/64000`。本批仍只是重製 `RUNTIME-E1`，不外推完整整備E2。主紀錄見
 > [`native-load-ch29-preparation-original-remake-e1.json`](../data/ui-traces/native-load-ch29-preparation-original-remake-e1.json)。
 
 2026-08-26 晚期戰場勘誤：舊第30戰重製候選圖未提供玩家自備

@@ -40,6 +40,9 @@ func (g *Game) stepNativePreparationUILifecycle(now time.Time) {
 	if n == nil || n.Type != "preparation" {
 		return
 	}
+	if g.prepShotCycleFrozen {
+		return
+	}
 	g.stepNativePreparationCycleTick(g.prepClock.Sample(now))
 }
 

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "title": "固定晚期槽第30戰整備：原版／重製同邏輯狀態比較",
   "captured_at": "2026-08-26",
-  "classification": "原版候選 PLAYER-E2 對重製 RUNTIME-E1；同邏輯狀態、合法相位配對，不是逐像素一致",
+  "classification": "原版候選 PLAYER-E2 對重製 RUNTIME-E1；固定槽、同邏輯狀態與合法相位0為全畫面 AE=0，不外推其他時點或章節",
   "source": {
     "original_trace": "native-load-ch29-slot-to-ch30-original-candidate.json",
     "save_sha256": "f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f",
@@ -19,32 +19,35 @@
       "selected": 0,
       "cursor": 0,
       "gold": 60,
-      "sprite_phase": 1
+      "sprite_phase": 0
     },
-    "image_sha256": "13c4fab2cf75ad13c7055c6832e4ab03853cd8383acfdf7026316350f66bf6d8"
+    "image_sha256_640x400": "51f0e8531dfee4089db3531372faee7e536dbf14f9343522134ca7bf8d95d505",
+    "normalized_image_sha256_320x200": "fcdf950d442138fc41b122d7c4e6af2128339659d007c200a520643ad4548bf3"
   },
   "comparison": {
     "normalization": "重製640×400以最近鄰縮至320×200；原版維持320×200；未裁切",
-    "legal_phase_ae": {
-      "0": 9255,
-      "1": 3763,
-      "2": 9255
-    },
-    "chosen_phase": 1,
-    "absolute_error_pixels": 3763,
-    "diff_sha256": "d193ddb70b0c81b4e12a21f953ef14ed2661ad0ee9203181578d64727a5ba1d7",
-    "contact_sheet": "../../figures/native-load-ch29-preparation-original-remake-phase1.png",
-    "contact_sheet_sha256": "495d99720e3fcac91f7d451ba0b61fe8e0032060d3de58dee2222036b487a7be"
+    "sprite_phase": 0,
+    "absolute_error_pixels": 0,
+    "total_pixels": 64000,
+    "contact_sheet": "../../figures/native-load-ch29-preparation-original-remake-phase0.png",
+    "contact_sheet_sha256": "25f5f1893c38feb11a04be2b15a08ef8cb192e8ad8fcc23fed45227b596d07f4"
   },
   "verified": [
-    "0x31EA9..0x31EC6 的第一組數字是 quota；重製已由錯誤00修正為19",
-    "0x31EDB..0x31EFB 的第二組數字是 quota-selected；初始狀態為19",
-    "面板、文字、右上角色狀態與名冊格幾何在肉眼比較下對齊",
-    "三個合法待機相位中 phase 1 的絕對像素差最低"
+    "0x31EA9..0x31EC6 的第一組數字是 quota，並使用 FDOTHER #5 entries 31..40",
+    "0x31EDB..0x31EFB 的第二組數字是 quota-selected，並使用 FDOTHER #5 entries 42..51",
+    "0x1088D→0x11019 依 persistent raw +7 首見順序建快取；0x31FBB 從槽1略過固定隊長",
+    "固定槽的29個 raw +7 key 全部唯一；除隊長外的28格以現有 typed key 與相位0逐格 AE=0",
+    "固定雜湊截圖入口會凍結明確指定的圖像相位；一般玩家時鐘仍依 0→1→2→1 週期推進",
+    "固定槽、初始選人狀態與相位0下，全畫面 64000 像素全數相同"
+  ],
+  "corrections": [
+    "舊旁車的9255／3763／9255並非三個被凍結相位的有效比較；截圖前時鐘仍推進相位",
+    "舊說法「剩餘差異集中於灰階角色 selector／RLE／調色盤」已被28格逐格 AE=0 直接否定",
+    "凍結相位後剩餘39像素全在第二組19；改用 entries 42..51 後全畫面 AE=0"
   ],
   "limits": [
-    "原版候選沒有保存 BIOS tick，因此 phase 1 是合法相位配對，不是同一 wall-clock 證明",
-    "剩餘3763個差異像素集中在灰階角色格與第二組數字；其 selector、RLE或調色盤來源尚未閉合",
-    "不得把本圖宣稱為AE=0、完整整備E2或所有章節整備畫面一致"
+    "原版候選圖來自第三方分享槽，沒有第29戰勝利當下由原版 writer 建槽的完整來源鏈",
+    "AE=0 只適用於這個固定槽的初始選人狀態與圖像相位0，不證明選取／取消／確認動畫、其他隊伍組成、其他章節或音訊 E2",
+    "不得由本圖宣稱完整整備 E2、第29戰勝利到第30戰完整來源鏈，或全戰役畫面一致"
   ]
 }

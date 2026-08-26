@@ -7098,3 +7098,21 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 這只提升整備 `RUNTIME-E1` 視覺證據，不冒稱AE=0或完整E2；README自評仍維持
   83／100。下一個窄缺口是灰階角色格的selector／RLE／調色盤來源，不重做已閉合
   的整備流程或計數。
+
+## 2026-08-26：固定晚期槽整備畫面勘誤與 AE=0
+
+- 前節的9255／3763／9255不是有效的三相位比較：
+  `FD2_SHOT_LATE_PREPARATION_PHASE` 只設初值，但擷取前正式時鐘仍推進圖像相位。
+  現只在固定雜湊截圖入口凍結指定相位；一般玩家仍使用原待機週期。
+- 合法 IDA Pro 9.4 重讀 `0x1088D`、`0x11019`、`0x31E80`與`0x4DE56`；
+  固定槽的29個 raw `+7` key 全部唯一，`0x31FBB` 從快取槽1略過隊長。
+  現有 typed key 在相位0與原版28個可選格逐格全數相等，直接否定舊
+  「selector／RLE／調色盤差異」斷言。
+- 凍結相位後只剩第二組 `19` 的39個像素。`sub_187D6` 的第四參數是
+  FDOTHER #5 字形起始項目：quota使用31..40，quota-selected使用42..51。
+  重製分開兩套 typed 字形後，固定初始狀態達320×200整幀 `AE=0/64000`。
+- 成果圖更正為
+  [`native-load-ch29-preparation-original-remake-phase0.png`](../figures/native-load-ch29-preparation-original-remake-phase0.png)；
+  旁車與 README 已同步，自評由83調為84／100。依使用者指定的99%忠實度門檻，
+  這個初始整備畫面不再開啟 DOS 逐週期 polish；第29戰 writer 建槽 provenance
+  保留為證據限制，不再視為 remake 產品阻擋。

@@ -72,6 +72,26 @@ func TestNativePreparationLifecycleRunsOnlyForActiveSelection(t *testing.T) {
 	}
 }
 
+func TestNativePreparationFixedHashShotFreezesRequestedCycle(t *testing.T) {
+	g := &Game{
+		camp: campaign.NewRunner(&campaign.Campaign{
+			Start: "prep",
+			Nodes: map[string]*campaign.Node{
+				"prep": {Type: "preparation"},
+			},
+		}),
+		nativePreparationUI: &nativePreparationUIAssets{},
+		prepSelecting:       true,
+		prepIdleCycle:       2,
+		prepShotCycleFrozen: true,
+	}
+	g.stepNativePreparationUILifecycle(time.Unix(100, 0))
+	g.stepNativePreparationUILifecycle(time.Unix(200, 0))
+	if g.prepIdleCycle != 2 {
+		t.Fatalf("固定雜湊截圖相位被時鐘推進為 %d", g.prepIdleCycle)
+	}
+}
+
 func TestNativePreparationConfirmationUses19953PulseCadence(t *testing.T) {
 	g := &Game{
 		camp: campaign.NewRunner(&campaign.Campaign{

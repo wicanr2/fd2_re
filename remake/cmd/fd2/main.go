@@ -117,6 +117,7 @@ type Game struct {
 	prepClock                  nativeBIOSClock     // preparation 0x31e80→0x1297d 的 BIOS 低字來源
 	prepIdleCycle              int                 // 原版 [0x53c0b] 0..3；繪圖時 3 正規化為1
 	prepLastTick               int                 // 原版 [0x53c0f] 有號 BIOS 低字 latch
+	prepShotCycleFrozen        bool                // 固定雜湊截圖專用；一般玩家路徑永不設定
 	prepPromptSource           []byte              // 0x1956b 前的 town 畫面或 0x2cc04 黑色來源
 	churchSel                  int                 // church service menu cursor (0..3)
 	churchMode                 string              // menu / status_* / transfer_* / revive* / class / class_confirm
