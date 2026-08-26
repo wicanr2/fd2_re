@@ -197,8 +197,8 @@ func (p *nativeEndingPreview) awaitingCampaignFallback() bool {
 }
 
 // consumeNativeEndingAudioAtGate 只消費 after_gate 與目前已還原 0x2c548
-// 邊界精確相符的唯一音訊 cue。後續 track18 由來源約束 E1 尾段 adapter 在
-// 20 組尾段開始時消費；精確停曲與 DOS 時序仍未知。
+// 邊界精確相符的唯一音訊 cue。後續 tail_stop／track18 由來源約束 E1 尾段
+// adapter 在20組尾段前依已證實順序消費；只保留 DOS wall-clock 為未知。
 func (g *Game) consumeNativeEndingAudioAtGate() {
 	if g == nil || g.nativeEnding == nil || !g.nativeEnding.atNativeMontageGate() ||
 		g.nativeEnding.audioCueConsumed {

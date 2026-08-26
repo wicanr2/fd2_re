@@ -7072,3 +7072,10 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   `go test ./cmd/fd2 -count=1` 於 Docker／Xvfb 通過。這是重製播放可靠性修正，
   沒有改 raw sample index、cue 時序或 loop count，也不提升原版逐音訊 E2；README
   自評維持82／100。
+- 後續以本機合法轉出的 MT-32 OGG 實際驗證終局音訊順序：`FDMUS_004` 成功解碼並
+  建立播放器，`stopBGM` 清除 player／current track，再由 `FDMUS_018` 建立新播放器；
+  版控 `sfx_04.wav` 也會建立並留存在 voice 清單。Docker 沒有實體 ALSA 裝置，故
+  這只證明解碼／播放器／切換／生命週期，不是人耳、裝置延遲或三平台音訊 E2。
+  README 後續依固定權重把「結局與音訊」由8分調為9分，總分為83／100；其他分項
+  不變。第30戰整備長鏈也已移除測試端逐筆游標注入，改為驗證19次 Return 的原版
+  自動前進順序，END／YES／ENEMY PHASE 等待均設256幀上限，超限直接失敗。

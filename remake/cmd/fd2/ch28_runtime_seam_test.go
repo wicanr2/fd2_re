@@ -379,9 +379,14 @@ func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testi
 		t.Fatal("preparation_ch30 skipped its 19-member selection pass")
 	}
 	for i := 0; i < g.prepLimit; i++ {
-		g.prepSel = i
+		if g.prepSel != i {
+			t.Fatalf("preparation_ch30 cursor=%d before selection %d; Return did not follow the original auto-advance order", g.prepSel, i)
+		}
 		if !g.togglePreparationSelection() {
 			t.Fatalf("preparation_ch30 could not select roster index %d", i)
+		}
+		if i+1 < g.prepLimit && g.prepSel != i+1 {
+			t.Fatalf("preparation_ch30 cursor=%d after selection %d, want %d", g.prepSel, i, i+1)
 		}
 	}
 	if g.prepSelecting || !g.prepConfirm || g.preparationSelected() != 19 {
@@ -484,24 +489,36 @@ func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testi
 		g.markActionOverlayDrawn()
 		g.stepActionOverlayLifecycle()
 	}
-	for g.nativeClassUIJob != nil {
+	for steps := 0; g.nativeClassUIJob != nil; steps++ {
+		if steps >= 256 {
+			t.Fatal("battle_ch30 END opening did not settle within 256 frames")
+		}
 		g.nativeClassUIJob.drawn = true
 		g.stepNativeClassUILifecycle(time.Time{})
 	}
 	g.confirmNativeSystemEndTurn()
 	choiceJob := g.nativeClassUIJob
-	for g.nativeClassUIJob == choiceJob {
+	for steps := 0; g.nativeClassUIJob == choiceJob; steps++ {
+		if steps >= 256 {
+			t.Fatal("battle_ch30 END confirmation did not publish its response within 256 frames")
+		}
 		g.nativeClassUIJob.drawn = true
 		g.stepNativeClassUILifecycle(time.Time{})
 	}
-	for g.nativeClassUIJob != nil {
+	for steps := 0; g.nativeClassUIJob != nil; steps++ {
+		if steps >= 256 {
+			t.Fatal("battle_ch30 END response did not settle within 256 frames")
+		}
 		g.nativeClassUIJob.drawn = true
 		g.stepNativeClassUILifecycle(time.Time{})
 	}
 	for g.nativeSystemEndTurnDelay > 0 {
 		g.stepNativeSystemEndTurn()
 	}
-	for g.nativeClassUIJob != nil {
+	for steps := 0; g.nativeClassUIJob != nil; steps++ {
+		if steps >= 256 {
+			t.Fatal("battle_ch30 ENEMY PHASE banner did not settle within 256 frames")
+		}
 		g.nativeClassUIJob.drawn = true
 		g.stepNativeClassUILifecycle(time.Time{})
 	}

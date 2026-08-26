@@ -6443,6 +6443,10 @@ audio context 時不得建立 voice。這只修正現代引擎資源生命週期
 sample index、call order、loop count，也不宣稱 DOS 混音器或 wall-clock 精確一致。
 遊戲主迴圈返回時必須關閉仍存活的短音效與背景音樂播放器，避免平台封包退出後
 保留音訊裝置或 native buffer；這是現代資源清理，不對應新的原版 handler。
+本機玩家自備音樂驗收另以實際 MT-32 OGG 固定終局順序：`FDMUS_004` 必須成功
+解碼並建立播放器，stop 後 `bgm`／`bgmCur` 清空，再由 `FDMUS_018` 建立新播放器。
+無聲 Docker 沒有實體 ALSA 輸出，只能證明解碼、播放器建立、切換與清理；人耳、
+裝置延遲與三平台輸出仍須在真機驗收，不得由此測試提升為逐音訊 E2。
 
 ## 2026-08-25：最終戰前 `sub_33F78` staging wrapper 規格
 

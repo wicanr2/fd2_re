@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
 
 type fakeSFXVoice struct {
 	playing bool
@@ -49,5 +52,44 @@ func TestCloseAudioPlayersClosesRemainingSFXVoices(t *testing.T) {
 
 	if !first.closed || !second.closed || g.sfxVoices != nil {
 		t.Fatalf("closed=%v/%v voices=%v", first.closed, second.closed, g.sfxVoices)
+	}
+}
+
+func TestPlayRawRetainsRealAudioPlayer(t *testing.T) {
+	t.Setenv("FD2_MUTE", "")
+	pcm := loadWav("assets/sfx/sfx_04.wav")
+	if len(pcm) == 0 || audioCtx == nil {
+		t.Fatal("versioned SFX fixture did not decode into an audio context")
+	}
+	g := &Game{}
+	g.playRaw(pcm)
+	defer g.closeAudioPlayers()
+
+	if len(g.sfxVoices) != 1 || g.sfxVoices[0] == nil {
+		t.Fatalf("retained voices=%d, want one real player", len(g.sfxVoices))
+	}
+}
+
+func TestEndingMT32TracksDecodeAndSwitchAtRuntime(t *testing.T) {
+	t.Setenv("FD2_MUTE", "")
+	for _, track := range []string{"FDMUS_004", "FDMUS_018"} {
+		if _, err := os.Stat(musicPath("mt32", track)); err != nil {
+			t.Skipf("玩家自備 MT-32 OGG 不存在：%v", err)
+		}
+	}
+	g := &Game{bgmSource: "mt32"}
+	defer g.closeAudioPlayers()
+
+	g.playBGMCount("FDMUS_004", 0)
+	if g.bgm == nil || g.bgmCur != "FDMUS_004" {
+		t.Fatalf("party-cycle track player=%p current=%q", g.bgm, g.bgmCur)
+	}
+	g.stopBGM()
+	if g.bgm != nil || g.bgmCur != "" {
+		t.Fatalf("ending stop left player=%p current=%q", g.bgm, g.bgmCur)
+	}
+	g.playBGMCount("FDMUS_018", 0)
+	if g.bgm == nil || g.bgmCur != "FDMUS_018" {
+		t.Fatalf("tail track player=%p current=%q", g.bgm, g.bgmCur)
 	}
 }
