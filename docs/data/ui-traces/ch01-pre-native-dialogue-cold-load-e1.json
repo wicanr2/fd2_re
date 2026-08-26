@@ -1,0 +1,62 @@
+{
+  "name": "第2戰前原生故事對話與整備冷讀",
+  "date": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "reference": {
+    "FD2.EXE": {
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "canonical_re": [
+      "docs/data/chapter_beats/ch01_pre.json",
+      "docs/data/ida/fd2_story_dialogue_layout_ida.txt"
+    ],
+    "design": "docs/knowledge-base/56-fd2-remake-sdd.md#ch01_pre-原生故事對話與第2戰冷啟動邊界2026-08-27"
+  },
+  "route": [
+    "town_ch02",
+    "preparation_ch02",
+    "story_ch02_pre",
+    "battle_ch02"
+  ],
+  "native_dialogue": {
+    "handler_entry": "0x32D18",
+    "callers": ["0x32D66", "0x32DBB", "0x32E24", "0x3320C"],
+    "source": "FDTXT_002",
+    "string_indices": [0, 1, 2, 3],
+    "utterances": 20,
+    "upper": 12,
+    "lower": 8,
+    "controls": ["FFED", "FFEE", "FFEF", "FFFE", "FFFD"]
+  },
+  "formal_input_trace": [
+    "在 preparation_ch02 可存檔邊界寫入槽位1",
+    "以全新 Game 與 campaign runner 冷讀槽位1",
+    "以共用具型別整備輸入進入 story_ch02_pre",
+    "以共用具型別故事輸入完成20句開框、逐字、換頁、嘴型等待與收框",
+    "由 handler 正常尾端物化 battle_ch02"
+  ],
+  "atomic_checks": [
+    "冷讀前後 JOIN 順序固定為0、9、4、30、1",
+    "HP、MP、native identity、raw class與command mask保持一致",
+    "原生地圖場景只在caller需要原生對話時建立，不把cutscene單位升格成可操作戰鬥狀態",
+    "缺少原始selector、字形或版面來源時失敗即關閉"
+  ],
+  "verification": {
+    "data_tests": [
+      "TestCompileCompleteChapter1PreUsesChapter2ContextAndSharedTail",
+      "TestCh01PreNativeDialogueLayoutsMatchOriginalControlWords"
+    ],
+    "data_result": "pass",
+    "integrated_test": "TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne",
+    "integrated_result": "pass（同一工作批次先前聚焦執行）；本次冷快取重跑在編譯階段達外層期限，沒有測試斷言失敗",
+    "docker_network": "none",
+    "xvfb": true
+  },
+  "limitations": [
+    "序章舊式對話在測試前段仍以既有測試縮短，不是從標題開始的完整鍵盤遊玩。",
+    "測試與正式鍵盤共用具型別輸入消費端，但測試沒有注入作業系統鍵盤事件。",
+    "尚無未修改原版 DOSBox 同狀態截圖與精確音訊，不提升為 PLAYER-E2。"
+  ]
+}

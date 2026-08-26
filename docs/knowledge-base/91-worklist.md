@@ -50,6 +50,13 @@
 > 此項達正常重製輸入`RUNTIME-E1`，未修改原版畫面／音訊E2仍另列，不重開raw ch22
 > post或`0x318AD／0x31D3C`。
 
+> **2026-08-27 第2戰前原生故事對話：** `ch01_pre`四個原始caller的20句已由
+> `FDTXT_002` raw control建立逐句typed版面；`preparation_ch02`存檔後以全新
+> `Game`冷讀，再用正式整備／故事輸入完成12句上框、8句下框及完整原生生命週期，
+> 正常物化`battle_ch02`。資料／編譯聚焦回歸通過；同批整合測試先前聚焦執行通過，
+> 本次冷快取重跑在編譯階段達外層期限而無斷言失敗。此項為`RUNTIME-E1`，不冒稱
+> DOSBox同狀態`PLAYER-E2`；其餘故事caller需各自綁定，不重解通用renderer。
+
 > **2026-08-25 最終戰前現況：** `story_ch30` 已由兩句通用後備改接正式
 > `ch29_pre` binding；`0x33F78` 的 `(slot,x,y)` wrapper、`0x12CEA(x,y)` focus、
 > `0x22253` story-array bridge、21句對話及七個 caller 均達窄 `RUNTIME-E1`。

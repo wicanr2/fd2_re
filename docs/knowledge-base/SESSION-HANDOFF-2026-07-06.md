@@ -7405,3 +7405,19 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   [`ch23-post-preparation-ch24-input-e1.json`](../data/ui-traces/ch23-post-preparation-ch24-input-e1.json)。
 - 沒有建立 direct-entry 截圖 fixture；現有測試戰場仍由已證實的 typed records建立，
   不是未修改原版長程通關。此題提升正常重製輸入`RUNTIME-E1`，不冒稱PLAYER-E2。
+
+## 2026-08-27：第2戰前20句原生故事對話與冷讀邊界
+
+- 沿用已閉合的`sub_15F84`生命週期與`ch01_pre`原始caller證據，不重開通用renderer。
+  `0x32D66／0x32DBB／0x32E24／0x3320C`消費的`FDTXT_002` index0..3已逐句保存
+  raw speaker control、operand、列／頁界，展開為20份typed版面；上／下框為12／8句。
+- LOADCH cutscene新增延遲建立的indexed場景載體：只在caller實際要求原生對話時，
+  才以已證實terrain、unit selector與raw view組出無戰鬥HUD背景；缺selector或來源即
+  失敗即關閉。舊式沒有原生對話的handler不受影響，也不把場景單位升格成戰鬥規則。
+- `preparation_ch02`可存檔邊界以全新`Game`冷讀後，正式具型別整備／故事輸入可完成
+  20句opening、逐字、換頁、嘴型等待與closing，最後物化`battle_ch02`；JOIN順序
+  `[0,9,4,30,1]`及HP／MP、native identity、raw class、command mask保持。
+- Docker純資料／編譯聚焦回歸通過；同批整合測試先前聚焦執行通過。本次改以冷
+  Go快取重跑時在編譯階段達外層期限，沒有測試斷言失敗，故不宣稱新一輪完整套件
+  綠燈。證據見[`ch01-pre-native-dialogue-cold-load-e1.json`](../data/ui-traces/ch01-pre-native-dialogue-cold-load-e1.json)。
+  仍缺未修改DOSBox同狀態畫面／音訊與作業系統鍵盤注入，因此只到`RUNTIME-E1`。

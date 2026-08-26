@@ -40,7 +40,16 @@ func (g *Game) prepareNativeDialogueFrames() error {
 		}
 		g.nativeBattleFont, g.nativeBattleGlyphs = font, glyphs
 	}
-	if len(g.nativeMapVGA) != 320*200 {
+	if g.st == nil && g.storyNativeMapState == nil && g.storyNativeMapSource != nil {
+		if err := g.materializeNativeStoryMapState(g.storyNativeMapSource); err != nil {
+			return err
+		}
+	}
+	if g.st == nil && g.storyNativeMapState != nil {
+		if err := g.composeNativeStoryMapFrame(); err != nil {
+			return err
+		}
+	} else if len(g.nativeMapVGA) != 320*200 {
 		if err := g.composeNativeMapFrame(); err != nil {
 			return err
 		}

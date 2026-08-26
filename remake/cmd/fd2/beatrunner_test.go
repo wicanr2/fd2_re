@@ -1369,6 +1369,10 @@ func TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne(t *testin
 		t.Skip("player-provided FDOTHER.DAT is absent")
 	}
 	t.Setenv("FD2_ORIGINAL_FDOTHER", fdotherPath)
+	t.Setenv("FD2_ORIGINAL_FDFIELD", filepath.Join(originalBase, "FDFIELD.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDSHAP", filepath.Join(originalBase, "FDSHAP.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(originalBase, "FDTXT.DAT"))
+	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(originalBase, "DATO.DAT"))
 
 	c, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
 	if err != nil {
@@ -1506,8 +1510,85 @@ func TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne(t *testin
 			g.prepIDs, g.preparationSelected(), g.prepSelecting, g.prepConfirm,
 		)
 	}
-	if !g.acceptTownDeparturePrompt() {
-		t.Fatal("fixed record0 plus four selectable records should skip 0x318ad after record confirmation")
+
+	// preparation_ch02 是可存檔的正式節點邊界。以全新 Game 冷讀，而不是
+	// 清除同一實例的欄位，證明第2戰前原生對話會消費真正的 JOIN 名冊。
+	t.Setenv("XDG_DATA_HOME", t.TempDir())
+	userDataDirCached = ""
+	g.saveGameToSlot(0)
+	if g.msg != "已存檔(槽位1：preparation_ch02)" {
+		t.Fatalf("chapter2 preparation save=%q", g.msg)
+	}
+	coldCampaign, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	cold := &Game{camp: campaign.NewRunner(coldCampaign)}
+	cold.loadGameFromSlot(0)
+	if cold.loadErr != "" || cold.camp.NodeID() != "preparation_ch02" ||
+		!reflect.DeepEqual(cold.partyJoinOrder, []int{0, 9, 4, 30, 1}) || len(cold.partyRoster) != 5 {
+		t.Fatalf("chapter2 cold load node=%q order=%v roster=%d err=%q",
+			cold.camp.NodeID(), cold.partyJoinOrder, len(cold.partyRoster), cold.loadErr)
+	}
+	for _, id := range cold.partyJoinOrder {
+		got, want := cold.partyRoster[id], g.partyRoster[id]
+		if got.HP != want.HP || got.MP != want.MP || got.NativeIdentity != want.NativeIdentity ||
+			got.NativeRecordClass != want.NativeRecordClass || got.NativeCommandMask != want.NativeCommandMask {
+			t.Fatalf("chapter2 cold roster id=%d got=%#v want=%#v", id, got, want)
+		}
+	}
+	if !cold.handleNativePreparationInput(nativePreparationInput{enter: true}) ||
+		cold.camp.NodeID() != "story_ch02_pre" {
+		t.Fatalf("chapter2 formal departure node=%q err=%q", cold.camp.NodeID(), cold.loadErr)
+	}
+
+	seenDialogue := make(map[[3]int]bool)
+	upper, lower := 0, 0
+	for frame := 0; frame < 120000 && cold.camp.NodeID() != "battle_ch02"; frame++ {
+		if len(cold.dialog) > 0 {
+			current := cold.dialog[len(cold.dialog)-1]
+			if current.NativeDialogue == nil || current.Upper == nil ||
+				len(cold.nativeDialogueProgressive) != len(current.NativeDialogue.Pages) ||
+				len(cold.nativeDialogueOpening) != 5 || len(cold.nativeDialogueClosing) != 5 {
+				t.Fatalf("ch01_pre dialog lost indexed lifecycle: %#v", current)
+			}
+			key := [3]int{current.NativeDialogue.StringIndex, current.NativeDialogue.Utterance, current.Speaker}
+			if !seenDialogue[key] {
+				seenDialogue[key] = true
+				if *current.Upper {
+					upper++
+				} else {
+					lower++
+				}
+			}
+			if cold.nativeStoryDialogueAtInputWait() {
+				page := cold.dlgPage
+				if !cold.handleNativeStoryInput(cold.camp.Node(), nativeStoryInput{enter: true}) {
+					t.Fatal("ch01_pre formal story input was rejected")
+				}
+				if page+1 >= len(current.NativeDialogue.Pages) && !cold.nativeDialogueClosingLive {
+					t.Fatal("ch01_pre final page did not enter verified closing")
+				}
+			}
+		}
+		if err := cold.Update(); err != nil {
+			t.Fatalf("ch01_pre Update: %v", err)
+		}
+		if cold.loadErr != "" {
+			t.Fatalf("ch01_pre stopped at beat %d/%d: %s", cold.beatIdx, len(cold.beats), cold.loadErr)
+		}
+	}
+	if cold.loadErr != "" || cold.camp.NodeID() != "battle_ch02" || cold.st == nil || cold.sc == nil {
+		t.Fatalf("chapter2 handoff node=%q state=%v scenario=%v err=%q beat=%d/%d dialog=%d phase=%d scroll=%d closing=%v walks=%d act=%v pan=%v focus=%v delay=%d",
+			cold.camp.NodeID(), cold.st != nil, cold.sc != nil, cold.loadErr,
+			cold.beatIdx, len(cold.beats), len(cold.dialog), cold.dlgPhase, cold.dlgScrollT,
+			cold.nativeDialogueClosingLive, len(cold.storyWalks), cold.actJob != nil,
+			cold.camPan != nil, cold.focusJob != nil, cold.beatDelay)
+	}
+	if len(seenDialogue) != 20 || upper != 12 || lower != 8 ||
+		!reflect.DeepEqual(cold.partyJoinOrder, []int{0, 9, 4, 30, 1}) {
+		t.Fatalf("chapter2 native dialogs=%d upper/lower=%d/%d order=%v",
+			len(seenDialogue), upper, lower, cold.partyJoinOrder)
 	}
 }
 

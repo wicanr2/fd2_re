@@ -4744,6 +4744,35 @@ record provenance 存在時選臂，缺資料便停止。這改善了 handler �
 此鏈最多提升 `RUNTIME-E1`；測試建構戰場與重製 JSON 存檔都不能替代未修改原版
 一般玩家 `PLAYER-E2`。
 
+### `ch01_pre` 原生故事對話與第2戰冷啟動邊界（2026-08-27）
+
+本切片沿用已閉合的 `sub_15F84` 故事對話生命週期與
+[`ch01_pre.json`](../data/chapter_beats/ch01_pre.json) 所保存的原始處理器定位，不重開通用
+renderer。固定版 `FD2.EXE` 的玩家第2戰前處理器入口為 `0x32D18`；四個直接對話
+caller `0x32D66／0x32DBB／0x32E24／0x3320C` 依序消費 `FDTXT_002` index 0..3，
+展開為1＋3＋6＋10，共20句。每句原生版面必須直接保存該 FDTXT 字串內的
+`FFEC..FFEF` speaker control、後接 operand、`FFFE` 列界與 `FFFD` 頁界；不得從
+現代可編輯文字、speaker 名稱或 `ch24_post` 的框位反推。
+
+正式資料契約如下：
+
+1. `ch01_pre` binding 的每一個展開 dialog beat 都必須帶完整
+   `NativeDialogueLayout`，且 `source_dat/string_index/utterance` 與四個 caller
+   的實際 lookup 一致；缺字形、未知 control、空頁、超出13字×3列或 authored text
+   與 raw 分頁不一致時，binding 編譯失敗。
+2. runtime 沿用原生五階段開框、逐字、完整頁等待時嘴型、換頁及五階段收框；框位
+   只由 raw control 決定。既有 acting、PAN、SPAWN 與 `LOADCH` 的
+   `[0,9,4,30,1]` persistent 順序不得因改用原生對話而改變。
+3. 正常玩家路徑從 `town_ch02→preparation_ch02` 的記錄邊界建立存檔；全新 `Game`
+   冷讀後，必須用正式整備與故事輸入抵達 `battle_ch02`。節點、JOIN順序、HP／MP、
+   native identity、raw class、command mask及第2戰出生前沿在發布前整批驗證；任一
+   必要資產或 provenance 缺失即零發布。
+
+這條鏈只提升早期戰役的 caller-specific `RUNTIME-E1`。Docker 測試可逐幀確認既有
+indexed frame owner，但不得直接清除 dialog、改寫 campaign node，亦不得把重製端
+鍵盤 consumer 或單張截圖提升為未修改原版 `PLAYER-E2`。依玩家可見99%門檻，幾何、
+內容與生命週期一致即可；DOS BIOS 掃描碼、逐週期 tick 與精確音訊不在本切片範圍。
+
 ## 2026-08-09 raw ch24 post `0x24df2` 函式邊界與 owner 勘誤（E1）
 
 固定版 `FD2.EXE` 的 IDA Pro 9.4 與 Docker Capstone 共同固定 handler table

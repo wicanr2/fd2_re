@@ -985,6 +985,11 @@ func TestCompileCompleteChapter1PreUsesChapter2ContextAndSharedTail(t *testing.T
 	if len(dialogs) != 20 {
 		t.Fatalf("FDTXT_002 #0..3 dialogs=%d, want 1+3+6+10", len(dialogs))
 	}
+	for i, dialog := range dialogs {
+		if dialog.NativeDialogue == nil {
+			t.Fatalf("FDTXT_002 dialog %d lacks caller-bound native layout: %#v", i, dialog)
+		}
+	}
 	for i, start := range []int{0, 1, 4, 10} {
 		if dialogs[start].Line != start || dialogs[start].Script != "ch02.json" || dialogs[start].SceneIndex == nil || *dialogs[start].SceneIndex != 0 {
 			t.Fatalf("dialog group %d start = %#v", i, dialogs[start])

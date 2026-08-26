@@ -475,6 +475,8 @@ type Game struct {
 
 	storyNativeMapView    battle.NativeMapViewState // LOADCH 後原版六個視圖全域的場景專用載體；不冒充 battle.State
 	hasStoryNativeMapView bool                      // 僅在已證實的 LOADCH 視圖重設與 pan 步進後有效
+	storyNativeMapSource  *battle.State             // LOADCH 的完整 renderer source；只在 caller 要求原生對話時 materialize
+	storyNativeMapState   *battle.State             // LOADCH 場景的 indexed terrain/unit timing 載體；不含戰鬥規則或可見 HUD
 }
 
 // atkAnim 是重製端 E1 全螢幕戰鬥演出；土台、角色、斬擊弧與血條使用
@@ -2399,6 +2401,7 @@ func (g *Game) materializeStoryGroup(group int) int {
 			return 0
 		}
 		materialized := 0
+		start := len(g.storyActors)
 		for _, actor := range g.storyRoster {
 			if actor.Group == group {
 				actor.OnField = true
@@ -2407,6 +2410,12 @@ func (g *Game) materializeStoryGroup(group int) int {
 			}
 		}
 		if materialized > 0 {
+			if g.storyNativeMapState != nil {
+				if err := g.appendNativeStoryMapActors(start); err != nil {
+					g.loadErr = "story SPAWN native map state: " + err.Error()
+					return 0
+				}
+			}
 			g.storySpawned[group] = true
 		}
 		return materialized
@@ -2625,6 +2634,8 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 	g.curX, g.curY = 0, 0
 	g.storyNativeMapView = loadCHView
 	g.hasStoryNativeMapView = true
+	g.storyNativeMapSource = roster
+	g.storyNativeMapState = nil
 	g.campLines = lines
 	return nil
 }
@@ -2812,6 +2823,8 @@ func (g *Game) enterNode() {
 	g.walkFirst, g.followWalk, g.camMaxY = false, false, 0
 	g.storyNativeMapView = battle.NativeMapViewState{}
 	g.hasStoryNativeMapView = false
+	g.storyNativeMapSource = nil
+	g.storyNativeMapState = nil
 	g.camPan, g.focusJob, g.actJob, g.beats, g.beatIdx, g.beatDelay = nil, nil, nil, nil, -1, 0
 	g.transitionReveal = nil
 	g.indexedTransition = nil
@@ -4130,42 +4143,9 @@ func (g *Game) campInput() bool {
 	}
 	switch n.Type {
 	case "story":
-		// 淡出/淡入或走位動畫進行中(doc46 §5.2/§5.3)不接受輸入,避免重複觸發轉場。
-		if enter && g.fade == nil && len(g.storyWalks) == 0 {
-			if g.dlgAdvance() && len(g.dialog) == 0 { // 翻頁優先;翻完換句、句盡才進下一節點
-				g.advanceStoryNode(n)
-			}
-		}
-		return true
+		return g.handleNativeStoryInput(n, nativeStoryInput{enter: enter})
 	case "cutscene":
-		if g.approximatePostbattle {
-			if enter {
-				g.continueApproximatePostbattle()
-			}
-			return true
-		}
-		// BeatRunner 驅動:目前這一拍是不是「等對白播完」全看 g.dialog 是否非空
-		// (只有 dialog beat 會填它),其餘拍(pan/walk/act/fade/delay)Enter 無作用,
-		// 交給 Update 各自的計時/佇列機制推進,不在這裡搶著 advance。
-		if enter && len(g.dialog) > 0 && g.nativeDialogueClosingLive {
-			return true
-		}
-		if enter && len(g.dialog) > 0 {
-			current := g.dialog[len(g.dialog)-1]
-			if current.NativeDialogue != nil && g.dlgPage+1 >= dlgPageCount(current) &&
-				g.dlgPage >= 0 && g.dlgPage < len(g.nativeDialogueProgressive) &&
-				len(g.nativeDialogueProgressive[g.dlgPage]) > 0 &&
-				g.nativeDialogueProgress >= len(g.nativeDialogueProgressive[g.dlgPage])-1 {
-				if !g.beginNativeStoryDialogueClosing() {
-					g.loadErr = "native story dialogue: verified closing frames are unavailable"
-				}
-				return true
-			}
-			if g.dlgAdvance() && len(g.dialog) == 0 { // 翻頁優先;翻完換句、句盡才進下一拍
-				g.beatAdvance()
-			}
-		}
-		return true
+		return g.handleNativeStoryInput(n, nativeStoryInput{enter: enter})
 	case "choice", "town":
 		nativeTown := n.Type == "town" && n.NativeTownVariant != nil
 		if nativeTown {

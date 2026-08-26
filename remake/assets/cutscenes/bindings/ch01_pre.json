@@ -9,6 +9,48 @@
     "0x32e24": { "source_dat": "FDTXT_002", "script": "ch02.json" },
     "0x3320c": { "source_dat": "FDTXT_002", "script": "ch02.json" }
   },
+  "dialogue_overrides": {
+    "0x32d66#0": {
+      "script": "ch02.json", "scene_index": 0,
+      "lines": [
+        { "line": 0, "upper": true, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 0, "utterance": 0, "control": "FFEF", "operand": 4, "pages": [["『我們已經抵達羅德鎮了。", "　聽說這裡是沿岸最繁榮的城", "　鎮，我們可以在這裡歇一下"], ["　，順便到酒店裡打聽一下消", "　息．』"]] } }
+      ]
+    },
+    "0x32dbb#1": {
+      "script": "ch02.json", "scene_index": 0,
+      "lines": [
+        { "line": 1, "upper": false, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 1, "utterance": 0, "control": "FFEE", "operand": 0, "pages": [["『亞雷斯，我看你的情報有誤", "　這裡連半個人都沒有，", "　倒像是座鬼城！』"]] } },
+        { "line": 2, "upper": true, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 1, "utterance": 1, "control": "FFEF", "operand": 9, "pages": [["『好可怕．』"]] } },
+        { "line": 3, "upper": false, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 1, "utterance": 2, "control": "FFEE", "operand": 1, "pages": [["『這可怪了，上次我和老爹來", "　這裡買酒的時候，鎮上還熱", "　鬧的很啊！怎麼會．』"]] } }
+      ]
+    },
+    "0x32e24#2": {
+      "script": "ch02.json", "scene_index": 0,
+      "lines": [
+        { "line": 4, "upper": true, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 2, "utterance": 0, "control": "FFED", "operand": 5, "pages": [["『啊！強盜來了！快逃啊！』"]] } },
+        { "line": 5, "upper": false, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 2, "utterance": 1, "control": "FFEE", "operand": 0, "pages": [["『等等！我們不是強盜！』"]] } },
+        { "line": 6, "upper": true, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 2, "utterance": 2, "control": "FFED", "operand": 5, "pages": [["『你們不是強盜，", "　那你們是來幹什麼的？』"]] } },
+        { "line": 7, "upper": false, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 2, "utterance": 3, "control": "FFEE", "operand": 4, "pages": [["『我們不過是路過此地，", "　想在鎮上休息一下而已！", "　請把事情說個清楚，"], ["　說不定我們可以助各位一臂", "　之力！』"]] } },
+        { "line": 8, "upper": true, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 2, "utterance": 4, "control": "FFED", "operand": 5, "pages": [["『唉！你們這些小毛頭能做什", "　麼？竄兇極惡的強盜團預告", "　要在此時洗劫本鎮，鎮上的"], ["　人都逃光了，我們是回來多", "　帶走一些財物的，馬上也要", "　逃離此地。你們也快逃吧，"], ["　要是碰上了那群強盜就糟啦", "　！』"]] } },
+        { "line": 9, "upper": false, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 2, "utterance": 5, "control": "FFEE", "operand": 30, "pages": [["『．．！！！』"]] } }
+      ]
+    },
+    "0x3320c#3": {
+      "script": "ch02.json", "scene_index": 0,
+      "lines": [
+        { "line": 10, "upper": true, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 3, "utterance": 0, "control": "FFED", "operand": 11, "pages": [["『呀呼！", "　我們照預告準時抵達！", "　咦？"], ["　居然還有不怕死的沒走？』"]] } },
+        { "line": 11, "upper": true, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 3, "utterance": 1, "control": "FFED", "operand": 5, "pages": [["『啊！強盜來了！", "　完啦！』"]] } },
+        { "line": 12, "upper": true, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 3, "utterance": 2, "control": "FFED", "operand": 11, "pages": [["『我們不是說過，我們來的時", "　候不准有人留在鎮上嗎？", "　你們是活的不耐煩了！』"]] } },
+        { "line": 13, "upper": true, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 3, "utterance": 3, "control": "FFED", "operand": 5, "pages": [["『．啊，強盜大人，", "　請放我們一馬，", "　以後不敢了．』"]] } },
+        { "line": 14, "upper": false, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 3, "utterance": 4, "control": "FFEE", "operand": 4, "pages": [["『這些強盜真猖狂啊！索爾，", "　我們來教訓他們一頓！』"]] } },
+        { "line": 15, "upper": false, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 3, "utterance": 5, "control": "FFEE", "operand": 0, "pages": [["『什麼教訓！不用給這些傢伙", "　悔改的機會，把他們全宰了", "　再說！』"]] } },
+        { "line": 16, "upper": false, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 3, "utterance": 6, "control": "FFEE", "operand": 1, "pages": [["『我贊成！』"]] } },
+        { "line": 17, "upper": true, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 3, "utterance": 7, "control": "FFED", "operand": 11, "pages": [["『哎呀！那群小伙子說要把", "　我們全宰了呢！』"]] } },
+        { "line": 18, "upper": true, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 3, "utterance": 8, "control": "FFED", "operand": 12, "pages": [["『好可怕呀！我好怕！』"]] } },
+        { "line": 19, "upper": true, "native_dialogue": { "source_dat": "FDTXT_002", "string_index": 3, "utterance": 9, "control": "FFED", "operand": 11, "pages": [["『既然如此，我們就陪他們玩", "　個兩手！上！』"]] } }
+      ]
+    }
+  },
   "overrides": {
     "0x32d22": {
       "loadch": {
