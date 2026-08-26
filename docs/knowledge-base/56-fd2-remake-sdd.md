@@ -6599,3 +6599,13 @@ Player Lin 保存站的 `fd2021.zip` 內含 checksum-valid `fd2last.sav`；頁�
 此候選只替重製端既有 `preparation_ch30→story_ch30→battle_ch30` E1 提供原版正常
 輸入錨點；不新增或改寫 runtime 規則。仍未閉合的是第29戰勝利、raw ch28 post 與
 原版 writer 建立此 slot 的同一程序來源，以及精確音訊和逐句／逐 staging 幀比較。
+
+重製端的下一層驗收必須直接消費同一個外部 `fd2last.sav`，不得把29筆角色資料複製成
+合成 fixture。可選測試環境 `FD2_LATE_CHAPTER_SLOT_SAVE` 只接受檔案 SHA-256
+`f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f`，並從標題
+`confirmTitleLoadSlot(0)` 正式擁有者進入；成功交易應保留29人加入順序、29筆 roster、
+60金幣與 raw metadata `01／00／01／01`，且落在能依正常19人整備繼續最終戰的
+`preparation_ch30`。若現行 `raw+1` 靜態節點映射把這個已由原版普通輸入證實的槽導向
+`preparation_ch29`，應先以測試揭露差異，再把例外寫成受版本與來源約束的可編輯路由；
+不得在標題 controller 內硬寫 fd2021 檔名或以直接節點注入繞過正式 LOAD。雜湊、槽位、
+metadata、路由或 campaign 節點任一不符時，交易必須失敗且保留原選槽狀態。

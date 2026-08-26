@@ -72,12 +72,14 @@ metadata `+10..+39`；這個結論只限上述三條已查路徑，不外推為�
 
 兩個 writer caller 都位於戰間流程，而且 LOAD reader 載入後重新呼叫
 `0x2CAD7`。因此合法恢復點是 gate table 決定的城鎮／整備入口，而不是重播
-上一戰的 postbattle handler。`[0x53C03]` 是 zero-based raw chapter index，
-畫面章數與重製節點尾碼為 `raw+1`。原始 `0x526B9` 30-byte table只有
+上一戰的 postbattle handler。`[0x53C03]` 是 zero-based raw chapter index。
+較早曾把畫面章數與重製節點尾碼一概寫成 `raw+1`；此概括已由下方 raw `0x1c`
+有效槽實驗訂正。原始 `0x526B9` 30-byte table只有
 raw index `22..24`、`27..29` 為1：
 
-- gate 0：`town_ch(raw+1)`；
-- gate 1：`preparation_ch(raw+1)`。
+- gate 0：預設 `town_ch(raw+1)`；
+- gate 1：預設 `preparation_ch(raw+1)`；
+- raw `0x1c` 的已證實有效落點例外見下方勘誤。
 
 這也表示 ch21 的物品合成與 ch27 的物品 gate 已在存檔前執行；LOAD 不得
 回到 `inventory_recipe_ch21_sky_key` 或
@@ -116,6 +118,23 @@ raw index `22..24`、`27..29` 為1：
   persistent party 與重複 identity，再由 production title 一次套用
   campaign cursor、gold、party 與 raw metadata 保存值；任何錯誤都留在
   selector，不轉呼 JSON loader，也不部分改寫現有遊戲狀態。
+
+2026-08-26 有效晚期槽勘誤
+---------------------------
+
+較早把所有有效落點直接概括成 `raw+1`，只證實了 `0x526B9` gate 選擇城鎮或
+整備的窄作用，沒有證實 `0x2CAD7` 及後續 pre-handler 對每個 raw chapter 的最終
+玩家可見節點。固定雜湊 `fd2last.sav` 的 slot 0 保存 raw chapter `0x1c`；未修改
+固定版 `FD2.EXE` 由普通標題 LOAD、save-NO 與19次 Return 連續抵達最終戰。重製
+正式 selector 對同檔的聚焦測試則證明舊映射會停在 `preparation_ch29`，直接反證
+這個 raw 值的有效落點可由 `raw+1` 單獨推出。
+
+此勘誤不替間接控制流猜測內部 writer，也不改寫原始 30-byte table。重製資料層
+必須保留該表，另以來源綁定的 effective-route override 把 raw `0x1c` 導向
+`preparation_ch30`；證據來源為
+`docs/data/ui-traces/native-load-ch29-slot-to-ch30-original-candidate.json`，等級限於
+「已證實此固定輸入的玩家可見落點」。其他 raw chapter 仍沿用既有規則，只有新的
+直接指令或同狀態執行反證才可增加 override。
 
 2026-08-22 未修改原版 F5 前置實驗（已證實）
 ------------------------------------------------

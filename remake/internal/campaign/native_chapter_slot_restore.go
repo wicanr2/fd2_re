@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
@@ -26,9 +27,20 @@ type NativeIntermissionGateSource struct {
 // 0x2cad7. Zero enters the selectable town hub; nonzero enters preparation
 // directly. Entries use the raw [0x53c03] chapter index, not display chapter.
 type NativeIntermissionGateTable struct {
-	SchemaVersion int                          `json:"schema_version"`
-	Source        NativeIntermissionGateSource `json:"source"`
-	Entries       []byte                       `json:"entries"`
+	SchemaVersion           int                               `json:"schema_version"`
+	Source                  NativeIntermissionGateSource      `json:"source"`
+	Entries                 []byte                            `json:"entries"`
+	EffectiveRouteOverrides []NativeIntermissionRouteOverride `json:"effective_route_overrides"`
+}
+
+// NativeIntermissionRouteOverride preserves a player-visible effective route
+// that cannot be derived from the 0x526b9 binary gate alone. It supplements,
+// rather than rewrites, the original table and must carry reviewable evidence.
+type NativeIntermissionRouteOverride struct {
+	RawChapter    int    `json:"raw_chapter"`
+	EntryNode     string `json:"entry_node"`
+	Evidence      string `json:"evidence"`
+	EvidenceLevel string `json:"evidence_level"`
 }
 
 // LoadNativeIntermissionGateTable loads and validates a complete version-bound
@@ -55,9 +67,9 @@ func (table *NativeIntermissionGateTable) validate() error {
 	if table == nil {
 		return fmt.Errorf("native intermission gate: missing table")
 	}
-	if table.SchemaVersion != 1 {
+	if table.SchemaVersion != 2 {
 		return fmt.Errorf(
-			"native intermission gate: schema version=%d, want 1",
+			"native intermission gate: schema version=%d, want 2",
 			table.SchemaVersion,
 		)
 	}
@@ -81,6 +93,18 @@ func (table *NativeIntermissionGateTable) validate() error {
 				index, value,
 			)
 		}
+	}
+	seen := make(map[int]bool)
+	for _, override := range table.EffectiveRouteOverrides {
+		if override.RawChapter < 0 || override.RawChapter >= len(table.Entries) ||
+			override.EntryNode == "" || override.Evidence == "" ||
+			override.EvidenceLevel != "confirmed-fixed-input" || seen[override.RawChapter] {
+			return fmt.Errorf(
+				"native intermission gate: invalid effective route override for raw chapter %d",
+				override.RawChapter,
+			)
+		}
+		seen[override.RawChapter] = true
 	}
 	return nil
 }
@@ -149,6 +173,21 @@ func BuildNativeChapterSlotRestorePlan(
 	if table.Entries[rawChapter] != 0 {
 		nodeType = "preparation"
 		nodeID = fmt.Sprintf("preparation_ch%02d", displayChapter)
+	}
+	for _, override := range table.EffectiveRouteOverrides {
+		if override.RawChapter == rawChapter {
+			nodeID = override.EntryNode
+			if strings.HasPrefix(nodeID, "preparation_") {
+				nodeType = "preparation"
+			} else if strings.HasPrefix(nodeID, "town_") {
+				nodeType = "town"
+			} else {
+				return NativeChapterSlotRestorePlan{}, fmt.Errorf(
+					"native chapter restore: unsupported effective route %q", nodeID,
+				)
+			}
+			break
+		}
 	}
 	node, ok := graph.Nodes[nodeID]
 	if !ok || node == nil || node.Type != nodeType {

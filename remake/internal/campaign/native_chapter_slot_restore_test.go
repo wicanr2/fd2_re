@@ -82,6 +82,26 @@ func TestNativeIntermissionGateRoutesEverySaveableChapterToCampaignNode(
 	}
 }
 
+func TestNativeIntermissionGatePreservesLateEffectiveRouteOverride(t *testing.T) {
+	catalog, table := loadNativeRestoreTestAssets(t)
+	graph, err := Load("../../assets/scenarios/campaign_full.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	snapshot := fdsave.ChapterSlotSnapshot{
+		Slot:     0,
+		Verified: fdsave.VerifiedMetadata{Chapter: 28},
+	}
+	plan, err := BuildNativeChapterSlotRestorePlan(snapshot, catalog, table, graph)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if plan.NativeChapterIndex != 28 || plan.DisplayChapter != 29 ||
+		plan.EntryNode != "preparation_ch30" {
+		t.Fatalf("raw chapter 28 effective route=%#v", plan)
+	}
+}
+
 func TestBuildNativeChapterSlotRestorePlanRoutesAfterPostbattleGates(t *testing.T) {
 	catalog, table := loadNativeRestoreTestAssets(t)
 	graph := &Campaign{Nodes: map[string]*Node{

@@ -1,7 +1,9 @@
 package main
 
 import (
+	"crypto/sha256"
 	"encoding/binary"
+	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -10,6 +12,8 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
+
+const lateChapterSlotSaveSHA256 = "f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f"
 
 func writeNativeRestoreFixture(
 	t *testing.T, rawChapter byte,
@@ -187,5 +191,46 @@ func TestConfirmTitleLoadSlotRejectsTamperedNativeEnvelopeAtomically(t *testing.
 		g.handlerChapter != 8 || g.st != state || g.nativeChapterRestore != nil ||
 		g.msg != "無法讀取原版存檔槽" {
 		t.Fatalf("tampered title LOAD leaked state: %#v", g)
+	}
+}
+
+func TestConfirmTitleLoadSlotRestoresExternalLateSlotToFinalPreparation(t *testing.T) {
+	path := os.Getenv("FD2_LATE_CHAPTER_SLOT_SAVE")
+	if path == "" {
+		t.Skip("未提供固定雜湊的外部晚期章節槽存檔")
+	}
+	stored, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := fmt.Sprintf("%x", sha256.Sum256(stored)); got != lateChapterSlotSaveSHA256 {
+		t.Fatalf("外部晚期章節槽存檔 SHA-256=%s，不是已審查來源", got)
+	}
+	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{
+		camp: campaign.NewRunner(graph), titlePhase: "loadslots", titleSlotSel: 0,
+		gold: 1, items: []string{"stale"},
+		partyMembers: map[int]bool{4: true}, handlerChapter: 8,
+		st: &battle.State{W: 1, H: 1}, sel: &battle.Unit{Fig: 99},
+	}
+	t.Setenv("FD2_NATIVE_SAVE", path)
+	if !g.confirmTitleLoadSlot(0) {
+		t.Fatalf("已驗證晚期 slot 0 被正式 LOAD 拒絕：%s", g.msg)
+	}
+	if g.titlePhase != "" || g.camp.NodeID() != "preparation_ch30" ||
+		g.gold != 60 || len(g.partyMembers) != 29 || len(g.partyJoinOrder) != 29 ||
+		len(g.partyRoster) != 29 || len(g.partyDeploy) != 0 ||
+		g.handlerChapter != 0x1c || g.st != nil || g.sel != nil ||
+		g.nativeChapterRestore == nil || g.nativeChapterRestore.Raw51E62 != 1 ||
+		g.currentNativeSystemOptions().Raw51E61 != 1 ||
+		!g.nativeMapHUDPersistent.HasDisplayGateA ||
+		g.nativeMapHUDPersistent.DisplayGateA != 1 {
+		t.Fatalf("晚期 slot 0 未完整發布最終戰整備：node=%q gold=%d members=%d order=%d roster=%d deploy=%d chapter=%d state=%p selector=%p restore=%#v",
+			g.camp.NodeID(), g.gold, len(g.partyMembers), len(g.partyJoinOrder),
+			len(g.partyRoster), len(g.partyDeploy), g.handlerChapter, g.st, g.sel,
+			g.nativeChapterRestore)
 	}
 }

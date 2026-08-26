@@ -6997,3 +6997,16 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   的候選 `PLAYER-E2`。保存站明載全隊等級全滿且沒有凱麗，並未提供第29戰勝利→
   writer建槽的完整來源，因此不冒稱未修改全程通關。README玩家交付自評由79調至80，
   只增加戰役／存讀檔1分。
+
+## 2026-08-26：晚期有效槽重製正式 LOAD 路由修正
+
+- 新增可選的 `FD2_LATE_CHAPTER_SLOT_SAVE` 聚焦回歸；測試先鎖定上述 SAV SHA-256，
+  再由 `confirmTitleLoadSlot(0)` 正式擁有者消費同一外部檔，不複製角色資料為 fixture。
+- 第一輪真實測試證明29人、60金幣及 metadata `01／00／01／01` 都正確，但舊
+  `raw+1` 映射把 raw `0x1c` 發布到 `preparation_ch29`，與未修改原版普通 LOAD
+  已抵達最終戰的玩家可見結果矛盾。
+- 原始 `0x526B9` 30-byte gate 表未被改寫；`native_intermission_gate.json` schema 2
+  另保存 raw 28 → `preparation_ch30` 的來源綁定有效路由覆寫。正式 LOAD 重跑後
+  完整發布29人／60金幣／HUD gate並進最終戰整備；聚焦 campaign／cmd 測試均通過。
+- 此批關閉重製 `RUNTIME-E1` 路由差分，不提升第三方存檔的完整 `PLAYER-E2` 等級，
+  README 自評仍維持80／100。

@@ -51,6 +51,12 @@
 | 子系統 | 原版證據 | 可編輯資料 | 正式執行期 | 玩家驗證 | 目前裁決與下一步 |
 |---|---|---|---|---|---|
 | 檔案版本、容器與主要資產格式 | 閉合 | 就緒 | E1 | 部分 | `.DAT`、圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與多張 EXE 表已有雜湊與重生工具。剩餘多是消費端、音訊時序或個別執行期改寫，不應重解容器格式。 |
+
+> **2026-08-26 晚期四槽 LOAD 勘誤：** 同一固定雜湊 `fd2last.sav` 現已由重製
+> 正式 selector 還原 slot 0 的29人、60金幣與 raw metadata，並進
+> `preparation_ch30`。聚焦回歸先證明舊 `raw+1` 映射會誤進
+> `preparation_ch29`；原始 `0x526B9` 表保持不變，玩家可見例外改由具證據來源的
+> 可編輯覆寫保存。此批達 `RUNTIME-E1`，第三方來源仍不升完整 `PLAYER-E2`。
 | 開機、標題、LOAD、CONTINUE、存檔 | 部分 | 部分 | 部分 E1 | 原版錨點部分 E2 | 四槽 envelope、checksum、名冊與部分戰間落點已接；標題 selector 的正式確認 owner 現以 checksum-valid 合成槽完整還原 `town_ch02`、typed/raw party、gold、chapter、HUD gate並清除舊 battle state，竄改 envelope 原子留在選槽。current-runtime CONTINUE 與巢狀 SAVE／LOAD 已有正式 E1：LOAD 先完成私有候選 handoff，YES 後才原子替換；SAVE 保留四槽與未命名 bytes，非我方增援不占 persistent slot，具 constructor／identity 證據的新我方 JOIN 追加完整 raw record。重製 JSON LOAD 現另在發布前驗證 JOIN 順序、membership、部署與 materialized roster 的拓撲一致性；錯誤存檔不會部分改寫現行遊戲。新 `Game` 冷讀 `preparation_ch30` 後可保留完整加入順序並繼續終局。外部2003年第30戰候選已由未修改原版普通 `CONTINUE` 進場，重製亦以同檔還原33筆場上單位與31人持續隊伍；fixed-hash `fd2004` 候選也由普通 CONTINUE 進玩家第29戰並完成一輪控制權交接。另有 checksum-valid `fd2021` raw chapter `0x1c` 槽由未修改原版普通 LOAD 連續走過 save-NO、19人整備、戰前劇情至可操作第30戰。三者均非本專案從頭產生，只列候選E2。尚缺第29戰勝利當下由原版 writer 建槽的完整來源、delete／overwrite及跨章同狀態差分；長程遊玩改由使用者人工回報，不列代理工作項目。 |
 | 對話、頭像與過場原語 | 部分偏高 | ch24開框／穩定頁／逐字／嘴型／收框序列就緒 | 部分 E1 | 部分 | `0x15F84`、`0x1366A`、基本 pan／acting／spawn／join 等不應再從零重解。`ch24_post` 兩個 lookup 的18句已由 raw `FFED/FFEF/FFEE/FFFE/FFFD` 建成 typed pages；[`fd2_story_dialogue_layout_ida.txt`](../data/ida/fd2_story_dialogue_layout_ida.txt) 閉合`sub_165AC`五階段開框、最終格網、文字座標、`0x1645F..0x1647F`逐字順序、`sub_16C57→sub_16559`完整頁等待期m0/m3嘴型，以及`sub_16B43`的16×5→12×4→8×3→4×2→原背景 snapshot restore與可選游標尾段。正式第25戰戰後 runner 以 raw `+8/+5` 重播`0x12C60→0x3453E`命中，保留舊句直到收框完成才前進，並抵達 town26／祕密商店，達 caller-specific `RUNTIME-E1`。只重開E2或其他 caller binding；不把重製更新分配冒稱DOS精確時鐘。 |
 | 30 個 raw chapter 的戰前／戰後處理器 | 部分 | 60 份 handler script；部分 binding | 部分 E1 | 缺完整 E2 | 舊83個 raw unknown 已拆成80個已證實窄呼叫、3個已知但 caller／執行期未閉合的呼叫，已沒有未分類 call site。玩家第29戰 raw ch28 post 現已以綁定的視圖／HUD、`0x35BBA→0x1DB65`、group9、`0x22253`、`0x24B4D`、`0x35E5A`、隊伍同步與 `preparation_ch30` 存讀檔達成 E1；最終戰前 raw ch29 pre 亦已綁定 `LOADCH`、21句對話與七次 `0x33F78` 原生 staging。未證實高階圖像／樣本名稱與一般玩家 E2 仍保留。 |

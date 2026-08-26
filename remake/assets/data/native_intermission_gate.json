@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "source": {
     "reference_file": "docs/data/fd2-reference-files.json",
     "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
@@ -9,5 +9,13 @@
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 1, 1, 1, 0, 0, 1, 1, 1
+  ],
+  "effective_route_overrides": [
+    {
+      "raw_chapter": 28,
+      "entry_node": "preparation_ch30",
+      "evidence": "docs/data/ui-traces/native-load-ch29-slot-to-ch30-original-candidate.json",
+      "evidence_level": "confirmed-fixed-input"
+    }
   ]
 }

@@ -31,6 +31,11 @@
 > 只在連續路徑暴露的 LOADCH／story view 狀態錯誤。一般玩家 E2、精確時序／音訊
 > 仍歸順序3與6驗收，不再把 wrapper owner 或 generic compositor 列為待實作。
 
+> **2026-08-26 晚期四槽 LOAD 修正：** `fd2021` slot 0 已由重製正式 selector
+> 還原29人、60金幣與 raw metadata，並由來源綁定的 editable override 進
+> `preparation_ch30`。舊 `raw+1` 會誤進 `preparation_ch29` 的斷言與實作已由聚焦
+> 回歸取代；不再把「同狀態重製差分」列為這個固定槽的待辦。
+
 ### 阻擋完整 remake 的剩餘工作
 
 > **2026-08-25 終局3%外層勘誤：**後段歷史項目仍出現的「3% RNG重播待接」已失效。
