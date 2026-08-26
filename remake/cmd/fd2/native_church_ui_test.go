@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
 
 func TestNativeChurchUILifecyclePresentsOpeningAndClosingRestore(t *testing.T) {
@@ -111,5 +112,53 @@ func TestNativeChurchRuntimeUsesPlayerOriginalSceneAssets(t *testing.T) {
 		len(g.nativeChurchUIJob.frames) != 4 ||
 		len(g.nativeChurchUIJob.restore) != 320*200 {
 		t.Fatal("native church closing/restore unexpectedly fell back")
+	}
+}
+
+func TestNativeChurchMenuTypedInputDispatchesAllFourServices(t *testing.T) {
+	const base = "../../../org_game/炎龍騎士團/FLAME2"
+	fdotherPath := filepath.Join(base, "FDOTHER.DAT")
+	if _, err := os.Stat(fdotherPath); err != nil {
+		t.Skip("player-provided original resources are absent")
+	}
+	t.Setenv("FD2_ORIGINAL_FDOTHER", fdotherPath)
+	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(base, "FDTXT.DAT"))
+	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(base, "DATO.DAT"))
+	assets, err := loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for selection, wantMode := range []string{"status_roster", "transfer_source", "revive_empty", "class"} {
+		g := &Game{
+			nativeClassUI: assets,
+			churchMode:    "menu", churchSel: selection,
+			nativeChurchTextIndex: 585,
+			partyJoinOrder:        []int{9},
+			partyRoster: map[int]battle.Unit{9: {
+				Name: "悠妮", Portrait: 9, HP: 10, MaxHP: 10,
+				Inventory: []int{1}, Equipped: []bool{false},
+			}},
+		}
+		if !g.handleNativeChurchMenuInput(nativeChurchMenuInput{enter: true}) {
+			t.Fatalf("selection %d was not consumed", selection)
+		}
+		if g.churchMode != "menu" || g.nativeChurchUIJob == nil {
+			t.Fatalf("selection %d published before menu closing: mode=%q job=%#v",
+				selection, g.churchMode, g.nativeChurchUIJob)
+		}
+		for steps := 0; g.nativeChurchUIJob != nil; steps++ {
+			if steps >= 8 {
+				t.Fatalf("selection %d closing did not settle", selection)
+			}
+			g.nativeChurchUIJob.drawn = true
+			g.stepNativeChurchUILifecycle(time.Time{})
+		}
+		if g.churchMode != wantMode {
+			t.Fatalf("selection %d mode=%q want=%q", selection, g.churchMode, wantMode)
+		}
+		if selection < 2 && len(g.churchIDs) != 1 {
+			t.Fatalf("selection %d roster=%v", selection, g.churchIDs)
+		}
 	}
 }

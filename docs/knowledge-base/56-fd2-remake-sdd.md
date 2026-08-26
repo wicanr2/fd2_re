@@ -5916,6 +5916,21 @@ persistent raw record、FDFIELD／FDICON／item table、任一20段資源或 bas
 `RUNTIME-E1` 從存檔到定格的狀態連續性；未修改原版的精確輸入／音訊 E2
 仍另行分級，不得由此測試提升。
 
+### 教會四項服務的正式輸入驗收
+
+原版主證據仍為已閉合的 `0x2D7BD` 左右循環與 `0x3072F` 四分派：raw index 0
+進 `0x2FFA5` 狀態／指令面板、1 進共用 `0x2F8EA` 物品轉移、2 進
+`0x30DC3` 復活、3 進 `0x31385` 轉職。這個切片不重解四個 callee，只把既有
+鍵盤分派抽成單一具型別 consumer，讓正式 Ebiten 鍵盤與決定性回歸共用。
+
+consumer 只在 `churchMode == "menu"` 且沒有未完成的原生 UI job 時接受輸入。
+左右移動必須沿既有四項循環並重設脈動；Escape 必須先播放四段關框再離開；
+Enter 必須保存目前 selection，先播放四段關框與 source restore，最後才初始化
+對應服務的 typed roster／文字索引／開框 owner。任何來源畫面或深層服務資產
+失敗時沿既有失敗即關閉路徑返回教會選單，不可先發布交易。驗收至少由同一
+consumer 逐項證明四個 raw index 抵達各自模式；這只提升正常重製輸入
+`RUNTIME-E1`，不替代教會 caller 的未修改原版同狀態 E2。
+
 ## 2026-08-22 空游標系統設定選單 E1 契約
 
 主證據為

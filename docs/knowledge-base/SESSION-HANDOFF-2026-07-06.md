@@ -7131,3 +7131,13 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   到終局的 records／globals 連續性，不冒稱未修改原版或作業系統鍵盤的
   `PLAYER-E2`。原版 `0x2C2A6` 呼叫當下完整動態狀態仍是 E2 證據限制，不是
   第29戰產品阻擋。README 自評由84調為85／100。
+
+## 2026-08-26：教會四項服務共用正式輸入
+
+- 沿用已閉合的 `0x2D7BD` 左右循環與 `0x3072F` 四分派，不重解四個 callee；
+  將原本埋在 `Update` 的鍵盤分派抽成 `nativeChurchMenuInput` 單一 typed consumer。
+- status、transfer、revive、class 四項都先完成四段關框與 source restore，才發布
+  各自 roster／文字索引／開框 owner。決定性回歸逐項從同一 consumer 驗證目的
+  mode，且既有 `0x17AED` 面板生命週期回歸一併通過。
+- 此批關閉正常重製輸入 `RUNTIME-E1`，不冒稱 church caller 的未修改原版畫面 E2；
+  README 85／100 自評不變。

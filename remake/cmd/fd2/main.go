@@ -4329,59 +4329,16 @@ func (g *Game) campInput() bool {
 			return true
 		}
 		if g.churchMode == "menu" {
+			delta := 0
 			if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
-				g.churchSel = campaign.AdvanceNativeChurchServiceSelection(g.churchSel, -1)
-				g.resetNativeChurchUIPulse()
+				delta = -1
+			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+				delta = 1
 			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
-				g.churchSel = campaign.AdvanceNativeChurchServiceSelection(g.churchSel, 1)
-				g.resetNativeChurchUIPulse()
-			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-				if !g.beginNativeChurchMenuClosing(g.leaveChurch) {
-					g.leaveChurch()
-				}
-				return true
-			}
-			if enter {
-				selected := g.churchSel
-				openService := func() {
-					switch selected {
-					case 0: // 0x2ffa5 caller-owned roster → 0x17aed(actor)
-						g.churchMode = "status_roster"
-						g.churchIDs = g.churchRosterIDs()
-						g.churchSel = 0
-						g.churchRosterStart = 0
-						g.beginNativeChurchRosterOpening()
-					case 1: // native 0x2f8ea raw source→destination inventory transfer
-						g.churchMode = "transfer_source"
-						g.churchIDs = g.churchTransferSourceIDs()
-						g.churchSel = 0
-						g.churchRosterStart = 0
-						g.nativeChurchTextIndex = 512
-						g.beginNativeChurchRosterOpening()
-					case 2, 3: // native 0x30dc3 revive / 0x31385 class-change services
-						g.churchMode = map[int]string{2: "revive", 3: "class"}[selected]
-						g.churchIDs = g.churchCandidates(g.churchMode)
-						g.churchSel = 0
-						g.churchVerticalStart = 0
-						if g.churchMode == "class" {
-							g.beginNativeClassListOpening()
-						} else if len(g.churchIDs) == 0 {
-							g.openNativeChurchReviveEmpty()
-						} else {
-							g.nativeChurchTextIndex = 589
-							g.beginNativeChurchReviveListOpening()
-						}
-					default:
-						g.msg = "此教會服務尚待原版 callee 完整接線"
-						g.returnToNativeChurchMenu()
-					}
-				}
-				if !g.beginNativeChurchMenuClosing(openService) {
-					openService()
-				}
-			}
+			g.handleNativeChurchMenuInput(nativeChurchMenuInput{
+				delta: delta, enter: enter,
+				escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+			})
 			return true
 		}
 		if g.churchMode == "status_roster" {

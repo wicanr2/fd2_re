@@ -175,6 +175,10 @@ handler frame、common actor／tail 與原始資產先完整預建，才逐 Draw
 | DOS/4GW、Watcom runtime、Miles 驅動與一般函式庫 | 第一輪分類 | 不適用 | 只在行為外露時處理 | 不適用 | IDA 清冊1305函式中170筆由 Watcom FLIRT 標成 runtime；其餘未分類不能都算產品程式。後續只擴充分級索引，不把函式庫未命名算成 remake 缺口。 |
 | 三平台打包與推廣片 | 不適用 | 部分 | 尚未達發行閘門 | 缺完整玩家驗收 | 這不是反組譯問題。待核心戰役、操作 UI、結局與代表性一般玩家路徑關閉後，再做 Linux／Windows／macOS 打包與影片。 |
 
+**2026-08-26 教會入口補證**：`0x3072F` 四項服務不再只有分散 callee 回歸；
+正式鍵盤與測試現共用 typed menu consumer，並把服務發布延後至四段關框及
+source restore 之後。此項為 `RUNTIME-E1`，church caller 同狀態 E2 仍缺。
+
 **2026-08-25 ID32 現況勘誤**：上表長列保留了本批開始時「ID32失敗即關閉」的
 歷史快照文字；現況由[`fd2_command32_transaction_ida.txt`](../data/ida/fd2_command32_transaction_ida.txt)、
 [`fd2_command32_35_presentation_ida.txt`](../data/ida/fd2_command32_35_presentation_ida.txt)
