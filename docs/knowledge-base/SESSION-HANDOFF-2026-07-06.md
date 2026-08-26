@@ -7079,3 +7079,22 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   README 後續依固定權重把「結局與音訊」由8分調為9分，總分為83／100；其他分項
   不變。第30戰整備長鏈也已移除測試端逐筆游標注入，改為驗證19次 Return 的原版
   自動前進順序，END／YES／ENEMY PHASE 等待均設256幀上限，超限直接失敗。
+
+## 2026-08-26：固定晚期槽整備同狀態畫面補證
+
+- 新增只在 `FD2_SHOT_LATE_PREPARATION=1` 啟用的固定雜湊截圖入口；它要求
+  `FD2_SHOT`、固定 `fd2last.sav` SHA-256 與正式 `campaign_full`，再由
+  `confirmTitleLoadSlot(0)` 和既有記錄提示 owner 進 `preparation_ch30`。任何雜湊、
+  節點、29人名冊、60金幣、19人quota或原生介面素材不符即拒絕產圖。
+- 原版候選圖的初始狀態顯示 `19／19`，但第一輪重製顯示 `00／19`。Docker Capstone
+  直接重讀 `0x31EA9..0x31EFB`，確認第一組數字直接取quota，第二組才取
+  `quota-selected_count`；合成器已修正，真實資產與正式LOAD聚焦回歸通過。
+- 三個合法待機相位的320×200絕對像素差依序為9255／3763／9255；相位1的面板、
+  文字、右上狀態與角色格幾何肉眼對齊，剩餘差異集中灰階角色格與第二組數字。
+  成果圖為
+  [`native-load-ch29-preparation-original-remake-phase1.png`](../figures/native-load-ch29-preparation-original-remake-phase1.png)，
+  旁車為
+  [`native-load-ch29-preparation-original-remake-e1.json`](../data/ui-traces/native-load-ch29-preparation-original-remake-e1.json)。
+- 這只提升整備 `RUNTIME-E1` 視覺證據，不冒稱AE=0或完整E2；README自評仍維持
+  83／100。下一個窄缺口是灰階角色格的selector／RLE／調色盤來源，不重做已閉合
+  的整備流程或計數。

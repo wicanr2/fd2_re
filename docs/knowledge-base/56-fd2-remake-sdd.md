@@ -6685,3 +6685,26 @@ JOIN order 從已驗證 `partyRoster` 物化20名玩家，再套用 map29 的20�
 關閉；不得為了讓回合結束而略過演出或改走正規化後備人工智慧。外部來源仍只把這條
 重製正常路徑提升為 `RUNTIME-E1`；在原版與重製的同一 raw 戰況、輸入及音訊完成
 配對前，不升為完整 `PLAYER-E2`。
+
+### 固定晚期槽的整備畫面截圖契約
+
+為建立與既有未修改原版 `preparation_ch30` 候選圖的同狀態比較，重製端可在明確
+設定 `FD2_SHOT` 與 `FD2_SHOT_LATE_PREPARATION=1` 時，從 `FD2_NATIVE_SAVE`
+讀取同一份外部晚期槽。這個入口只接受 SHA-256
+`f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f`，並須先載入
+正式 `campaign_full.json`，再呼叫既有 `confirmTitleLoadSlot(0)`；不得直接複製
+29筆角色、指定 campaign cursor 或手工建立 preparation renderer 狀態。
+
+正式 LOAD 成功後，入口只接受 standalone 記錄提示，使既有 preparation owner
+進入19人選取；截圖邊界固定為 selection 0、尚未部署任何可選角色、29筆 persistent
+roster、60金幣與 `preparation_ch30`。`0x31EA9..0x31EFB` 已直接證實此時主畫面
+第一組數字是 quota、第二組是 `quota - selected_count`，所以同狀態應顯示
+`19／19`，不能把第一組誤畫成 `00`。檔案雜湊、節點、名冊、quota、renderer 資產或
+截圖模式任一不符時必須設定 `loadErr` 並停止，不產生可誤認為同狀態的圖片。這個
+入口只縮短驗證導覽，不改一般玩家啟動流程；其圖片仍是重製 `RUNTIME-E1`，必須另以
+320×200 正規化、相位與絕對像素差說明才能提升任何視覺結論。
+
+角色待機圖有 `0／1／2／1` 四步合法顯示週期。原版候選圖是在普通輸入流程中擷取，
+沒有保存當下 BIOS tick；截圖入口因此允許用 `FD2_SHOT_LATE_PREPARATION_PHASE=0..2`
+只選擇一個合法圖像相位，以三者的同狀態差分辨識候選圖。這個值只影響截圖初始化，
+不得改寫名冊、選取旗標或一般玩家時鐘；缺值預設0，越界或非整數則失敗即關閉。

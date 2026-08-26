@@ -78,6 +78,15 @@
 > 邊界遺失；現已直接從槽記錄保留至 AI scorer，不替三欄附加未證實高階名稱。
 > 此批為 `RUNTIME-E1`，第三方來源與停用音訊仍不升完整 `PLAYER-E2`。
 
+> **2026-08-26 晚期整備同狀態勘誤：** 固定 `fd2last.sav` 現有只在截圖模式
+> 啟用的正式 LOAD 擷取入口；它先由 `confirmTitleLoadSlot(0)` 還原29人／60金幣，
+> 再走既有記錄提示 owner 進 `preparation_ch30`，不手工建立名冊或 campaign cursor。
+> 原版候選初始畫面為 `19／19`，直接重讀 `0x31EA9..0x31EFB` 證實第一組是quota、
+> 第二組才是quota減已選；重製已修正舊 `00／19`。三個合法角色相位的同狀態
+> AE為9255／3763／9255，剩餘差異集中灰階角色格，因此本批只提升整備
+> `RUNTIME-E1`視覺證據，不冒稱AE=0或完整E2。主紀錄見
+> [`native-load-ch29-preparation-original-remake-e1.json`](../data/ui-traces/native-load-ch29-preparation-original-remake-e1.json)。
+
 2026-08-26 晚期戰場勘誤：舊第30戰重製候選圖未提供玩家自備
 `FDOTHER.DAT`，因此原生資產組拒絕載入並走PNG fallback；其洋紅地形與構圖不能
 再當作`0x11CAC` renderer缺陷。補齊既有`FD2_ORIGINAL_FDOTHER`契約後，普通X11

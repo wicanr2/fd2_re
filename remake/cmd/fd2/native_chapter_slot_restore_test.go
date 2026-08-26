@@ -15,8 +15,6 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
 
-const lateChapterSlotSaveSHA256 = "f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f"
-
 func writeNativeRestoreFixture(
 	t *testing.T, rawChapter byte,
 ) string {
@@ -205,7 +203,7 @@ func TestConfirmTitleLoadSlotRestoresExternalLateSlotToFinalPreparation(t *testi
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got := fmt.Sprintf("%x", sha256.Sum256(stored)); got != lateChapterSlotSaveSHA256 {
+	if got := fmt.Sprintf("%x", sha256.Sum256(stored)); got != reviewedLateChapterSlotSaveSHA256 {
 		t.Fatalf("外部晚期章節槽存檔 SHA-256=%s，不是已審查來源", got)
 	}
 	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
@@ -237,6 +235,55 @@ func TestConfirmTitleLoadSlotRestoresExternalLateSlotToFinalPreparation(t *testi
 	}
 }
 
+func TestReviewedLatePreparationShotUsesProductionLoadOwner(t *testing.T) {
+	path := os.Getenv("FD2_LATE_CHAPTER_SLOT_SAVE")
+	if path == "" {
+		t.Skip("未提供固定雜湊的外部晚期章節槽存檔")
+	}
+	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{camp: campaign.NewRunner(graph), shotPath: "late-preparation.png"}
+	t.Setenv("FD2_NATIVE_SAVE", path)
+	t.Setenv("FD2_SHOT_LATE_PREPARATION", "1")
+	if err := g.prepareReviewedLatePreparationShot(); err != nil {
+		t.Fatal(err)
+	}
+	if g.titlePhase != "" || g.camp.NodeID() != "preparation_ch30" ||
+		!g.prepSelecting || g.prepSel != 0 || g.prepLimit != 19 ||
+		g.preparationSelected() != 0 || len(g.partyRoster) != 29 || g.gold != 60 {
+		t.Fatalf("晚期整備截圖未停在正式初始選人邊界：phase=%q node=%q selecting=%v cursor=%d limit=%d selected=%d roster=%d gold=%d",
+			g.titlePhase, g.camp.NodeID(), g.prepSelecting, g.prepSel, g.prepLimit,
+			g.preparationSelected(), len(g.partyRoster), g.gold)
+	}
+}
+
+func TestReviewedLatePreparationShotRejectsNonScreenshotUse(t *testing.T) {
+	t.Setenv("FD2_SHOT_LATE_PREPARATION", "1")
+	if err := (&Game{}).prepareReviewedLatePreparationShot(); err == nil {
+		t.Fatal("晚期整備截圖入口接受非截圖模式")
+	}
+}
+
+func TestReviewedLatePreparationShotRejectsInvalidSpritePhase(t *testing.T) {
+	path := os.Getenv("FD2_LATE_CHAPTER_SLOT_SAVE")
+	if path == "" {
+		t.Skip("未提供固定雜湊的外部晚期章節槽存檔")
+	}
+	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{camp: campaign.NewRunner(graph), shotPath: "late-preparation.png"}
+	t.Setenv("FD2_NATIVE_SAVE", path)
+	t.Setenv("FD2_SHOT_LATE_PREPARATION", "1")
+	t.Setenv("FD2_SHOT_LATE_PREPARATION_PHASE", "3")
+	if err := g.prepareReviewedLatePreparationShot(); err == nil {
+		t.Fatal("晚期整備截圖入口接受越界的角色圖像相位")
+	}
+}
+
 func TestExternalLateSlotUsesProductionTitleAndPreparationInputOwners(t *testing.T) {
 	path := os.Getenv("FD2_LATE_CHAPTER_SLOT_SAVE")
 	if path == "" {
@@ -246,7 +293,7 @@ func TestExternalLateSlotUsesProductionTitleAndPreparationInputOwners(t *testing
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got := fmt.Sprintf("%x", sha256.Sum256(stored)); got != lateChapterSlotSaveSHA256 {
+	if got := fmt.Sprintf("%x", sha256.Sum256(stored)); got != reviewedLateChapterSlotSaveSHA256 {
 		t.Fatalf("外部晚期章節槽存檔 SHA-256=%s，不是已審查來源", got)
 	}
 	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))

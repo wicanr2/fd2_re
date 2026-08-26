@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "title": "固定晚期槽第30戰整備：原版／重製同邏輯狀態比較",
+  "captured_at": "2026-08-26",
+  "classification": "原版候選 PLAYER-E2 對重製 RUNTIME-E1；同邏輯狀態、合法相位配對，不是逐像素一致",
+  "source": {
+    "original_trace": "native-load-ch29-slot-to-ch30-original-candidate.json",
+    "save_sha256": "f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f",
+    "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "original_image": "../../figures/native-load-ch29-original-preparation-candidate.png",
+    "original_image_sha256": "61808a88b03c46971d413fb20ab9640d54768128a46670d308b99d0e8930b2e2"
+  },
+  "remake": {
+    "route": "campaign_full → 正式 confirmTitleLoadSlot(0) → preparation_ch30 記錄提示 NO → 0x318AD 對應選人初始狀態",
+    "state": {
+      "persistent_roster": 29,
+      "selectable_roster": 28,
+      "quota": 19,
+      "selected": 0,
+      "cursor": 0,
+      "gold": 60,
+      "sprite_phase": 1
+    },
+    "image_sha256": "13c4fab2cf75ad13c7055c6832e4ab03853cd8383acfdf7026316350f66bf6d8"
+  },
+  "comparison": {
+    "normalization": "重製640×400以最近鄰縮至320×200；原版維持320×200；未裁切",
+    "legal_phase_ae": {
+      "0": 9255,
+      "1": 3763,
+      "2": 9255
+    },
+    "chosen_phase": 1,
+    "absolute_error_pixels": 3763,
+    "diff_sha256": "d193ddb70b0c81b4e12a21f953ef14ed2661ad0ee9203181578d64727a5ba1d7",
+    "contact_sheet": "../../figures/native-load-ch29-preparation-original-remake-phase1.png",
+    "contact_sheet_sha256": "495d99720e3fcac91f7d451ba0b61fe8e0032060d3de58dee2222036b487a7be"
+  },
+  "verified": [
+    "0x31EA9..0x31EC6 的第一組數字是 quota；重製已由錯誤00修正為19",
+    "0x31EDB..0x31EFB 的第二組數字是 quota-selected；初始狀態為19",
+    "面板、文字、右上角色狀態與名冊格幾何在肉眼比較下對齊",
+    "三個合法待機相位中 phase 1 的絕對像素差最低"
+  ],
+  "limits": [
+    "原版候選沒有保存 BIOS tick，因此 phase 1 是合法相位配對，不是同一 wall-clock 證明",
+    "剩餘3763個差異像素集中在灰階角色格與第二組數字；其 selector、RLE或調色盤來源尚未閉合",
+    "不得把本圖宣稱為AE=0、完整整備E2或所有章節整備畫面一致"
+  ]
+}

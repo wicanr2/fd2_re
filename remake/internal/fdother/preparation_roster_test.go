@@ -154,4 +154,21 @@ func TestDecodeAndComposeNativePreparationAssetsFromPlayerArchive(t *testing.T) 
 	if bytes.Equal(frame, make([]byte, len(frame))) {
 		t.Fatal("native preparation frame is empty")
 	}
+	// 0x31ea9 畫 quota（15），0x31edb 畫 quota-selected（14）。兩個數字格
+	// 都和原始字形項目比較，避免第一組再次被已選人數悄悄取代。
+	want := append([]byte(nil), frame...)
+	if err := blitNativePreparationTwoDigits(assets.Digits, want, 61, 35, 15); err != nil {
+		t.Fatal(err)
+	}
+	if err := blitNativePreparationTwoDigits(assets.Digits, want, 61, 73, 14); err != nil {
+		t.Fatal(err)
+	}
+	for _, box := range [][4]int{{61, 35, 12, 8}, {61, 73, 12, 8}} {
+		for y := box[1]; y < box[1]+box[3]; y++ {
+			start := y*320 + box[0]
+			if !bytes.Equal(frame[start:start+box[2]], want[start:start+box[2]]) {
+				t.Fatalf("native preparation count differs at box %#v", box)
+			}
+		}
+	}
 }

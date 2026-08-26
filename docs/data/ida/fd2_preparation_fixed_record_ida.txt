@@ -21,6 +21,25 @@
 - `0x31A54` 只切換目前 selection byte；`0x31A60→sub_320CE` 計數。
 - 只有計數等於 quota 時，`0x31A6C` 才標記成功並呼叫 `sub_320FC(table)`。
 
+已證實：主畫面兩個數字的來源（2026-08-26 補證）
+--------------------------------------------------
+
+- `0x319C1..0x319CC` 呼叫 `sub_31E80(destination, quota, selection_table,
+  cursor)`；呼叫端的 `EBP` 是上述15／19名 quota，`ESP+0x24` 是30-byte
+  selection table。
+- `0x31EA9..0x31EC6` 先把第二參數 quota 直接送進 `sub_187D6`，畫在
+  `(49,31)` 的第一組二位數。這一組不是目前已選人數。
+- `0x31EC9..0x31ED8` 對同一 selection table 呼叫 `sub_320CE` 計數；
+  `0x31EDB..0x31EFB` 以 `quota - selected_count` 畫在 `(42,66)` 的第二組
+  二位數。
+- 未修改原版晚期槽進入19人整備的初始畫面同時顯示 `19／19`，與上述直接
+  指令一致。舊重製把第一組誤畫為 `selected_count`，因此初始畫面成為
+  `00／19`；這個解釋由直接指令與同狀態截圖共同否定。
+
+本節使用與檔首相同的固定雜湊與 IDA 9.4 位址空間；Capstone 5.0.3
+`fd2-cap-local` 於 Docker 唯讀重讀 `0x318AD..0x31A30` 與
+`0x31E80..0x32004`，只作直接指令交叉驗證。上述語意等級為「已證實」。
+
 已證實：persistent record 0 固定、不在 selection table
 -------------------------------------------------------
 

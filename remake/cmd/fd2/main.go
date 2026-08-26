@@ -10145,6 +10145,12 @@ func loadGame() *Game {
 		}
 		if c, err := campaign.Load(assetPath(cp)); err == nil {
 			g.camp = campaign.NewRunner(c)
+			if os.Getenv("FD2_SHOT_LATE_PREPARATION") == "1" {
+				if err := g.prepareReviewedLatePreparationShot(); err != nil {
+					g.loadErr = err.Error()
+				}
+				return g
+			}
 			if os.Getenv("FD2_CAMP_CLASS_FIXTURE") != "" {
 				// Bounded headless oracle only: construct one native-eligible
 				// Lv20+ roster record so xvfb can exercise the church target UI.

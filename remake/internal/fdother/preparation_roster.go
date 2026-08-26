@@ -219,7 +219,9 @@ func ComposeNativePreparationFrame(
 	if err := assets.UpperLeft.BlitAt(frame, 320, 7*320+5, -1); err != nil {
 		return nil, err
 	}
-	if err := blitNativePreparationTwoDigits(assets.Digits, frame, 61, 35, selectedCount); err != nil {
+	// 0x31ea9..0x31ec6 先畫原始 quota；只有第二組數字才使用
+	// sub_320ce 的已選人數，計算 quota-selected。
+	if err := blitNativePreparationTwoDigits(assets.Digits, frame, 61, 35, limit); err != nil {
 		return nil, err
 	}
 	if err := blitNativePreparationTwoDigits(assets.Digits, frame, 61, 73, limit-selectedCount); err != nil {
