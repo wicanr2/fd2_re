@@ -7059,3 +7059,16 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 同一測試現在至少觀察一名敵軍實際 `Acted`，完整結束敵方回合、回合數增加並回到
   `PLAYER PHASE`；76筆 runtime、31人 persistent 均保留。此批為 `RUNTIME-E1`，
   第三方來源與停用音訊限制不變。README 玩家交付自評由81調為82／100。
+
+## 2026-08-26：短音效播放器生命週期修正
+
+- 稽核現代音訊層發現背景音樂 player 有保留，但 `playRaw`／`playSFX` 都在
+  `Play()` 後立即丟失 `*audio.Player`；既有 raw sample owner 因此無法可靠保證播放
+  到尾，也沒有自然結束後的回收邊界。
+- `Game` 現保留可疊播 `sfxVoice` 清單；主 `Update` 每幀關閉並移除已停止 voice，
+  程式主迴圈返回時關閉所有剩餘短音效與背景音樂播放器。音效關閉、靜音、截圖、
+  空 PCM 或沒有 audio context 時仍不建立 voice。
+- fake voice 決定性回歸固定「播放中保留、停止後關閉、退出全關閉」；完整
+  `go test ./cmd/fd2 -count=1` 於 Docker／Xvfb 通過。這是重製播放可靠性修正，
+  沒有改 raw sample index、cue 時序或 loop count，也不提升原版逐音訊 E2；README
+  自評維持82／100。

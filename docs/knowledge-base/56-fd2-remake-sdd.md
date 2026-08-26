@@ -6433,6 +6433,17 @@ opening frame0須先實際呈現，完整頁前忽略確認，Enter／Space只�
 原始呼叫順序的 E1 消費，不宣稱還原兩個 call site 之間的 DOS wall-clock、DAC／PIT
 或人耳逐毫秒 E2。
 
+### 共用短音效播放器生命週期
+
+原版多個 presentation caller 允許不同播放 handle 疊音；重製端因此不能在
+`Play()` 後立即丟失短音效播放器，也不能用單一全域播放器讓後一聲截斷前一聲。
+共用音訊層須保留每個已啟動的播放器，直到其 `IsPlaying()` 轉為 false；主更新迴圈
+每幀關閉並移除已結束播放器。音效關閉、`FD2_MUTE`、截圖模式、空 PCM 或尚未建立
+audio context 時不得建立 voice。這只修正現代引擎資源生命週期，不改動任何 raw
+sample index、call order、loop count，也不宣稱 DOS 混音器或 wall-clock 精確一致。
+遊戲主迴圈返回時必須關閉仍存活的短音效與背景音樂播放器，避免平台封包退出後
+保留音訊裝置或 native buffer；這是現代資源清理，不對應新的原版 handler。
+
 ## 2026-08-25：最終戰前 `sub_33F78` staging wrapper 規格
 
 主證據為

@@ -15,6 +15,11 @@ import (
 
 var audioCtx *audio.Context
 
+type sfxVoice interface {
+	IsPlaying() bool
+	Close() error
+}
+
 // musicPath 依音源設定回傳曲檔路徑:assets/music_<source>/,缺檔則 fallback 到 assets/music/
 // (單資料夾佈局的舊行為/玩家只備一套時)。
 func musicPath(source, track string) string {
@@ -150,7 +155,7 @@ func (g *Game) playRaw(b []byte) {
 	if b == nil || audioCtx == nil || !g.currentNativeSystemOptions().SFXEnabled() || os.Getenv("FD2_MUTE") != "" || g.shotPath != "" {
 		return
 	}
-	audio.NewPlayerFromBytes(audioCtx, b).Play()
+	g.playPCMVoice(b)
 }
 
 // playSFX 播一個音效(疊播;原版雙 handle 0x26896/0x26945 可同時兩個,這裡不限)。
@@ -162,5 +167,53 @@ func (g *Game) playSFX(id int) {
 	if !ok || audioCtx == nil {
 		return
 	}
-	audio.NewPlayerFromBytes(audioCtx, b).Play()
+	g.playPCMVoice(b)
+}
+
+func (g *Game) playPCMVoice(b []byte) {
+	if g == nil || len(b) == 0 || audioCtx == nil {
+		return
+	}
+	player := audio.NewPlayerFromBytes(audioCtx, b)
+	g.sfxVoices = append(g.sfxVoices, player)
+	player.Play()
+}
+
+// stepSFXVoices 每幀回收已自然結束的短音效；仍在播放者保持獨立 voice，
+// 讓原版不同 handle 的疊播不會被後一個 sample 截斷。
+func (g *Game) stepSFXVoices() {
+	if g == nil || len(g.sfxVoices) == 0 {
+		return
+	}
+	active := g.sfxVoices[:0]
+	for _, voice := range g.sfxVoices {
+		if voice == nil {
+			continue
+		}
+		if voice.IsPlaying() {
+			active = append(active, voice)
+			continue
+		}
+		_ = voice.Close()
+	}
+	for i := len(active); i < len(g.sfxVoices); i++ {
+		g.sfxVoices[i] = nil
+	}
+	g.sfxVoices = active
+}
+
+func (g *Game) closeAudioPlayers() {
+	if g == nil {
+		return
+	}
+	if g.bgm != nil {
+		_ = g.bgm.Close()
+		g.bgm = nil
+	}
+	for _, voice := range g.sfxVoices {
+		if voice != nil {
+			_ = voice.Close()
+		}
+	}
+	g.sfxVoices = nil
 }

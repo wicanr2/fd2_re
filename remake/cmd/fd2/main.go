@@ -350,6 +350,7 @@ type Game struct {
 	banner                    string                // 回合橫幅文字(PLAYER/ENEMY PHASE)
 	bannerT                   int                   // 橫幅剩餘 tick
 	sfx                       map[int][]byte        // SFX PCM(doc36 FDOTHER#31 14樣本)
+	sfxVoices                 []sfxVoice            // 保留疊播播放器至自然結束，避免 Play 後立即失去生命週期
 	sfxSwing                  []byte                // 戰鬥揮擊音(doc36 戰鬥池 #48-64 sub0,七池共用)
 	sfxImpact                 []byte                // 命中音(近似:最短最尖池;attack_id→sfx 對照表 doc36 未 RE)
 	sfxDeath                  []byte                // 陣亡/重擊音(近似:最長池)
@@ -7103,6 +7104,7 @@ func (g *Game) tileAt(idx int) *ebiten.Image {
 
 func (g *Game) Update() error {
 	g.frame++
+	g.stepSFXVoices()
 	g.stepActionOverlayLifecycle()
 	g.stepNativeSystemInfoUI()
 	g.stepNativeSystemEndTurn()
@@ -10778,7 +10780,9 @@ func main() {
 	ebiten.SetWindowSize(logicalW*2, logicalH*2)
 	ebiten.SetWindowTitle("炎龍騎士團2 重製 (fd2_re)")
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
-	if err := ebiten.RunGame(loadGame()); err != nil {
+	g := loadGame()
+	defer g.closeAudioPlayers()
+	if err := ebiten.RunGame(g); err != nil {
 		log.Fatal(err)
 	}
 }
