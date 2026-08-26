@@ -6416,6 +6416,10 @@ selector／mask／placement。不得以手排角色、停用 foreground、靜態
 `0x11CAC`、terrain 或 foreground 有錯。補齊既有玩家自備資產契約後，observer
 依序取得六階段，unit stage 寫入8281像素，foreground／HUD 覆蓋該批unit像素均為0；
 普通X11鍵盤 `CONTINUE` 的frame903旁車亦固定 `battle_ch30`、round12、camera
-`(16,16)`、cursor `(21,20)`，並輸出正式indexed畫面。剩餘可見差異限縮為水面／
-游標等動畫相位與精確音訊；第三方存檔及固定title tick仍使本結果維持
-`RUNTIME-E1`／候選E2，不升格為完整一般玩家E2或逐像素一致。
+`(16,16)`、cursor `(21,20)`，並輸出正式indexed畫面。縮回320×200後與原版
+`AE=16281/64000`；再把typed terrain phase固定為0..19逐一重組，20張仍全部得到
+相同AE，直接反證「剩餘水／冰差異只屬動畫相位」。下一步必須核對
+destination-preserving terrain spans開始前的work buffer內容或DAC baseline；
+不得先把零值buffer、靜態底圖或任一phase猜接正式runtime。第三方存檔及固定
+title tick仍使本結果維持`RUNTIME-E1`／候選E2，不升格為完整一般玩家E2或
+逐像素一致。

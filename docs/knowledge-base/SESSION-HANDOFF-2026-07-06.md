@@ -6809,3 +6809,9 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 - 本結果仍使用第三方存檔、`FD2_NOCUT=1`與固定title tick，只列
   `RUNTIME-E1`／候選E2。後續只需補第29／30戰完整來源、動畫相位、精確音訊與
   終局輸入，不重解已閉合的`0x11CAC`層順序。
+
+**同日勘誤：**上述「後續只需動畫相位」在20-phase實驗後立即失效。新圖縮回
+320×200與原版為`AE=16281/64000`；把terrain phase固定為0..19逐一重組，20張
+AE完全相同。這證明水／冰差異不能歸因於phase未同步；下一步改查
+destination-preserving spans開始前的work buffer初值或DAC baseline。原始層順序、
+unit admission及foreground／HUD零覆蓋結論仍有效。

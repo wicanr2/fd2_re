@@ -46,12 +46,12 @@
       "previous_rejected_image": "../../figures/native-battle-ch30-remake-candidate-e1.png",
       "previous_rejection": "舊擷取未提供FD2_ORIGINAL_FDOTHER，native map assets不可用而靜默走PNG fallback；洋紅雜訊與大地圖構圖不能再當作indexed compositor缺陷證據"
     },
-    "visual_gap": "正式indexed擷取已消除舊PNG fallback的洋紅雜訊，並以33筆runtime records形成19筆active、18筆camera-admitted單位；terrain→range→units→foreground→HUD→viewport六階段均成功。原版與重製的水面／游標動畫相位尚未同步，因此不宣稱像素配對或完整E2"
+    "visual_gap": "正式indexed擷取已消除舊PNG fallback的洋紅雜訊，並以33筆runtime records形成19筆active、18筆camera-admitted單位；terrain→range→units→foreground→HUD→viewport六階段均成功。縮回320×200後與原版AE=16281／64000；terrain phase 0..19逐一重組仍全部得到相同AE，直接反證『只差動畫相位』。差異集中於水／冰底圖與動畫物件，下一步須核對destination-preserving terrain spans的初始work buffer或DAC baseline，不宣稱像素配對或完整E2"
   },
   "limits": [
     "第三方分享站無法證明存檔從頭到尾完全未修改",
     "本紀錄只證明候選存檔能由固定版原版正常 CONTINUE 進入第30戰",
     "尚未取得第29戰正常玩家錨點或完整終局輸入／音訊 E2",
-    "重製GUI已能由普通鍵盤抵達同一節點與view並使用正式indexed compositor；動畫相位、精確音訊與完整來源仍未關閉"
+    "重製GUI已能由普通鍵盤抵達同一節點與view並使用正式indexed compositor；水／冰底圖初始來源、精確音訊與完整來源仍未關閉"
   ]
 }

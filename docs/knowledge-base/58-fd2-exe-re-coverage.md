@@ -66,9 +66,10 @@
 再當作`0x11CAC` renderer缺陷。補齊既有`FD2_ORIGINAL_FDOTHER`契約後，普通X11
 鍵盤由標題`CONTINUE`抵達`battle_ch30`／round12／camera `(16,16)`／cursor
 `(21,20)`，正式indexed六階段輸出19筆active、18筆camera-admitted與8281個
-unit-stage寫入像素，foreground／HUD覆蓋該批像素均為0。這關閉舊terrain／unit
-layer阻擋，但第三方存檔、固定title tick、動畫相位與精確音訊仍只到
-`RUNTIME-E1`／候選E2；主紀錄見
+unit-stage寫入像素，foreground／HUD覆蓋該批像素均為0。這關閉舊PNG fallback與
+unit覆蓋假說，但沒有關閉terrain：320×200比較仍為`AE=16281/64000`，且phase
+0..19逐一重組全部相同，反證只差動畫相位。須續查destination-preserving底圖初值
+或DAC來源；第三方存檔、固定title tick與精確音訊仍只到`RUNTIME-E1`／候選E2；主紀錄見
 [`native-battle-ch30-original-candidate.json`](../data/ui-traces/native-battle-ch30-original-candidate.json)。
 
 2026-08-24 補證：`0x525AF` 是 command 0..9 的 HP 分段除數表；typed
