@@ -62,21 +62,26 @@ def decode_layouts(source: str, string_index: int, words: list[int], glyphs: dic
         control, operand = words[cursor], words[cursor + 1]
         cursor += 2
         pages: list[list[str]] = []
+        glyph_pages: list[list[list[str]]] = []
         page: list[str] = []
-        row = ""
+        glyph_page: list[list[str]] = []
+        row: list[str] = []
 
         def flush_row():
             nonlocal row
             if row:
-                page.append(row)
-                row = ""
+                page.append("".join(row))
+                glyph_page.append(row)
+                row = []
 
         def flush_page():
-            nonlocal page
+            nonlocal page, glyph_page
             flush_row()
             if page:
                 pages.append(page)
+                glyph_pages.append(glyph_page)
                 page = []
+                glyph_page = []
 
         while cursor < len(words) and words[cursor] not in SPEAKER_CONTROLS:
             word = words[cursor]
@@ -90,7 +95,7 @@ def decode_layouts(source: str, string_index: int, words: list[int], glyphs: dic
             elif word not in glyphs:
                 raise ValueError(f"{source}#{string_index}: glyph {word:#x} absent")
             else:
-                row += glyphs[word]
+                row.append(glyphs[word])
         flush_page()
         if not pages or any(len(page_rows) > 64 for page_rows in pages):
             raise ValueError(
@@ -98,24 +103,27 @@ def decode_layouts(source: str, string_index: int, words: list[int], glyphs: dic
             )
         line_glyph_limit = LINE_GLYPH_LIMITS[control]
         if any(
-            len(row_text) > line_glyph_limit
-            for page_rows in pages
-            for row_text in page_rows
+            len(row_tokens) > line_glyph_limit
+            for page_rows in glyph_pages
+            for row_tokens in page_rows
         ):
             raise ValueError(
                 f"{source}#{string_index}: row exceeds {line_glyph_limit} glyphs "
                 f"for {control:04X}"
             )
-        layouts.append(
-            {
-                "source_dat": source,
-                "string_index": string_index,
-                "utterance": len(layouts),
-                "control": f"{control:04X}",
-                "operand": operand,
-                "pages": pages,
-            }
-        )
+        layout = {
+            "source_dat": source,
+            "string_index": string_index,
+            "utterance": len(layouts),
+            "control": f"{control:04X}",
+            "operand": operand,
+            "pages": pages,
+        }
+        # 一字一glyph時Pages可無損反推；只有多rune原版glyph需要額外token層，
+        # 避免把所有既有binding膨脹成重複資料。
+        if any(len(token) != 1 for page_rows in glyph_pages for row in page_rows for token in row):
+            layout["glyph_pages"] = glyph_pages
+        layouts.append(layout)
     return layouts
 
 

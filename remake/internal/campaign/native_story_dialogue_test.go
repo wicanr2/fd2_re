@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
@@ -343,23 +344,42 @@ func TestNativeDialogueLayoutUsesControlSpecificOriginalLineLimits(t *testing.T)
 	limits := map[string]int{"FFEC": 13, "FFED": 15, "FFEE": 14, "FFEF": 14}
 	for control, limit := range limits {
 		t.Run(control, func(t *testing.T) {
+			tokens := make([]string, limit)
+			for i := range tokens {
+				tokens[i] = "甲"
+			}
 			layout := &NativeDialogueLayout{
 				SourceDAT: "FDTXT_TEST", Control: control,
-				Pages: [][]string{{"甲"}},
+				Pages: [][]string{{strings.Join(tokens, "")}}, GlyphPages: [][][]string{{tokens}},
 			}
-			row := make([]rune, limit)
-			for i := range row {
-				row[i] = '甲'
-			}
-			layout.Pages[0][0] = string(row)
 			if err := layout.Validate(); err != nil {
 				t.Fatalf("exact original limit %d rejected: %v", limit, err)
 			}
 			layout.Pages[0][0] += "乙"
+			layout.GlyphPages[0][0] = append(layout.GlyphPages[0][0], "乙")
 			if err := layout.Validate(); err == nil {
 				t.Fatalf("control %s accepted %d glyphs above limit %d", control, limit+1, limit)
 			}
 		})
+	}
+}
+
+func TestNativeDialogueLayoutPreservesMultiRuneOriginalGlyphTokens(t *testing.T) {
+	layout := &NativeDialogueLayout{
+		SourceDAT: "FDTXT_029", StringIndex: 12, Control: "FFEF", Operand: 126,
+		Pages:      [][]string{{"『ASR-07，妳的系統真的受損"}},
+		GlyphPages: [][][]string{{{"『", "AS", "R-", "07", "，", "妳", "的", "系", "統", "真", "的", "受", "損"}}},
+	}
+	if err := layout.Validate(); err != nil {
+		t.Fatalf("13 raw glyphs expanded to 16 Unicode runes were rejected: %v", err)
+	}
+	tokens, err := layout.glyphTokens(0, 0, layout.Pages[0][0])
+	if err != nil || len(tokens) != 13 {
+		t.Fatalf("multi-rune glyph tokens=%v err=%v", tokens, err)
+	}
+	layout.GlyphPages[0][0][1] = "A"
+	if err := layout.Validate(); err == nil {
+		t.Fatal("glyph tokens that no longer join to authored text were accepted")
 	}
 }
 
@@ -380,19 +400,24 @@ func decodeOriginalNativeDialogueLayouts(source string, stringIndex int, words [
 		}
 		cursor += 2
 		var pages [][]string
+		var glyphPages [][][]string
 		var page []string
-		var row string
+		var glyphPage [][]string
+		var row []string
 		flushRow := func() {
-			if row != "" {
-				page = append(page, row)
-				row = ""
+			if len(row) != 0 {
+				page = append(page, strings.Join(row, ""))
+				glyphPage = append(glyphPage, row)
+				row = nil
 			}
 		}
 		flushPage := func() {
 			flushRow()
 			if len(page) > 0 {
 				pages = append(pages, page)
+				glyphPages = append(glyphPages, glyphPage)
 				page = nil
+				glyphPage = nil
 			}
 		}
 		for cursor < len(words) && !isSpeaker(words[cursor]) {
@@ -410,11 +435,22 @@ func decodeOriginalNativeDialogueLayouts(source string, stringIndex int, words [
 				if !ok {
 					return nil, fmt.Errorf("FDTXT glyph %#x is absent from glyph_map", word)
 				}
-				row += text
+				row = append(row, text)
 			}
 		}
 		flushPage()
 		layout.Pages = pages
+		multiRune := false
+		for _, glyphPage := range glyphPages {
+			for _, glyphRow := range glyphPage {
+				for _, token := range glyphRow {
+					multiRune = multiRune || len([]rune(token)) != 1
+				}
+			}
+		}
+		if multiRune {
+			layout.GlyphPages = glyphPages
+		}
 		if err := layout.Validate(); err != nil {
 			return nil, err
 		}

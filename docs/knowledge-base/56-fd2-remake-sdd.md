@@ -4857,6 +4857,14 @@ index14..17則是共同尾段。故單一路徑不得被測試強迫同時播放
 control選擇相同上限；超限時整句失敗即關閉，不得截字、自動換行或猜造頁界。這是
 固定雜湊原始資料的可接受形狀，不宣稱原版可為任意新文本自動排版。
 
+同日後段資料盤點補上不可省略的token契約：上限計算單位是raw FDTXT ordinary word，
+不是Unicode rune。`FDTXT_029` index12的`ASR-07`由三個各自展開兩字元的原版glyph
+組成，13個raw格會形成16個Unicode字元。`NativeDialogueLayout`因此須為非一字一
+glyph的列另存與`pages`同形的`glyph_pages`；每個token對應一個raw word，串接後
+必須等於可搜尋整列，renderer逐token查原版字形並前進16px。一字一glyph時`pages`
+可無損反推而不重複保存；產生器遇到多rune glyph卻未建立`glyph_pages`即不得宣稱
+raw equality。舊資料的逐rune路徑不可外推成多字元glyph支援。
+
 binding沿用86-slot戰後場景與`story_viewport=true`，十個caller均須具備
 caller-specific `NativeDialogueLayout`。產生器必須以
 `--expected-callers 10 --expected-utterances 56`鎖定形狀，並拒絕unknown control、

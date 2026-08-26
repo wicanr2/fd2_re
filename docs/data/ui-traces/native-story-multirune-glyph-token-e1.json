@@ -1,0 +1,55 @@
+{
+  "name": "原版多Unicode字元glyph的具型別token投影",
+  "date": "2026-08-27",
+  "evidence_level": "DATA-READY",
+  "reference": {
+    "FD2.EXE": {
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "FDTXT_029.bin": {
+      "size": 4792,
+      "md5": "ab53bd9f0287c9a6a523e91034833b61",
+      "sha256": "bfa38ae06217a1866bf960ed3aed69cdedc8ddb8903d775d5cdbbaab19256403"
+    },
+    "canonical_re": "docs/data/ida/fd2_story_dialogue_layout_ida.txt",
+    "design": "docs/knowledge-base/56-fd2-remake-sdd.md"
+  },
+  "oracle": {
+    "source_dat": "FDTXT_029",
+    "string_index": 12,
+    "control": "FFEF",
+    "operand": 126,
+    "raw_glyph_words": 13,
+    "unicode_runes": 16,
+    "multi_rune_tokens": [
+      {"word": "0x660", "text": "AS"},
+      {"word": "0x661", "text": "R-"},
+      {"word": "0x654", "text": "07"}
+    ]
+  },
+  "typed_contract": [
+    "pages保留可搜尋的Unicode整列",
+    "非一字一glyph的列另存同形glyph_pages",
+    "每個token對應一個raw ordinary word並前進16px",
+    "token串接結果必須與pages整列完全相同",
+    "一字一glyph資料維持可逆逐rune投影，不重複膨脹JSON"
+  ],
+  "verification": {
+    "tests": [
+      "TestNativeDialogueLayoutPreservesMultiRuneOriginalGlyphTokens",
+      "TestNativeDialogueLayoutUsesControlSpecificOriginalLineLimits",
+      "TestCh22PostNativeDialogueLayoutsMatchOriginalControlWords",
+      "TestChapter23BattleResultRunsBoundPostbattleAndReachesPreparation24SaveBoundary"
+    ],
+    "generator_probe": "FDTXT_029 #12: unicode_runes=16, raw_tokens=13, tokens prefix=['『','AS','R-','07']",
+    "full_packages": "go test ./internal/battle ./internal/campaign ./cmd/fd2 -count=1",
+    "result": "pass",
+    "docker_network": "none"
+  },
+  "limitations": [
+    "本紀錄閉合資料與renderer token邊界；FDTXT_029 caller尚未在正式戰役節點建立NativeDialogueLayout。",
+    "沒有未修改DOSBox同狀態畫面，因此不提升為PLAYER-E2。"
+  ]
+}

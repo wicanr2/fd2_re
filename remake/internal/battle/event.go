@@ -242,6 +242,7 @@ type NativeDialogueLayout struct {
 	Control     string
 	Operand     int
 	Pages       [][]string
+	GlyphPages  [][][]string
 	// MotionTargetY 是 sub_15F84 var_20 的 caller-resolved runtime 值。
 	// 它不屬於可編輯 FDTXT bytes；HasMotionTarget=false 時原生收框必須失敗即關閉。
 	MotionTargetY    int

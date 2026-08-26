@@ -240,14 +240,17 @@ func ComposeNativeStoryDialogueProgressiveFrames(
 			}
 			visibleRow = nativeStoryVisibleRows - 1
 		}
-		runes := []rune(text)
-		if len(runes) == 0 || len(runes) > lineGlyphLimit {
-			return nil, fmt.Errorf("campaign: native story dialogue row %d has %d glyphs", row, len(runes))
+		tokens, err := layout.glyphTokens(page, row, text)
+		if err != nil {
+			return nil, fmt.Errorf("campaign: %w", err)
 		}
-		for column, r := range runes {
-			glyph, ok := glyphIndex[string(r)]
+		if len(tokens) == 0 || len(tokens) > lineGlyphLimit {
+			return nil, fmt.Errorf("campaign: native story dialogue row %d has %d glyphs", row, len(tokens))
+		}
+		for column, token := range tokens {
+			glyph, ok := glyphIndex[token]
 			if !ok || glyph < 0 || glyph >= font.GlyphCount() {
-				return nil, fmt.Errorf("campaign: native story dialogue glyph %q is unavailable", string(r))
+				return nil, fmt.Errorf("campaign: native story dialogue glyph %q is unavailable", token)
 			}
 			destination := textOffset + visibleRow*nativeStoryLineStep*320 + column*nativeStoryGlyphStep
 			if err := font.BlitNativeGlyph(frame, 320, destination, glyph, style); err != nil {

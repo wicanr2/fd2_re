@@ -76,6 +76,15 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	for i := range native.Pages {
 		layout.Pages[i] = append([]string(nil), native.Pages[i]...)
 	}
+	if len(native.GlyphPages) != 0 {
+		layout.GlyphPages = make([][][]string, len(native.GlyphPages))
+		for page := range native.GlyphPages {
+			layout.GlyphPages[page] = make([][]string, len(native.GlyphPages[page]))
+			for row := range native.GlyphPages[page] {
+				layout.GlyphPages[page][row] = append([]string(nil), native.GlyphPages[page][row]...)
+			}
+		}
+	}
 	wantUpper := layout.Control == "FFEF" || layout.Control == "FFED"
 	if dl.Upper == nil || *dl.Upper != wantUpper {
 		return errors.New("native story dialogue: control and upper/lower binding disagree")

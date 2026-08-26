@@ -7485,3 +7485,21 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   移除該環境變數後以同一Docker／Xvfb命令乾淨重跑，`cmd/fd2`全部通過。這是驗證
   命令配置勘誤，不是產品缺陷。
   尚缺未修改DOSBox同狀態逐幀、精確音訊及作業系統鍵盤事件，維持`RUNTIME-E1`。
+
+## 2026-08-27：原版glyph格與Unicode rune分離
+
+- 下一切片唯讀盤點時，舊validator在`FDTXT_029` index12的`FFEF operand=126`列報
+  超過14字。raw重讀證明該列仍只有13個ordinary words；`0x660→AS`、`0x661→R-`、
+  `0x654→07`三個原版glyph各展開兩個Unicode rune，使可搜尋文字長16但畫面只佔
+  13個16px格。先前13／15／14／14的control-specific raw上限仍成立，錯的是用
+  `len([]rune)`作為格數。
+- `NativeDialogueLayout`新增可選`glyph_pages`。只有非一字一glyph的列才保存token
+  層，避免既有大量JSON重複膨脹；validator要求token串接等於`pages`文字，compositor
+  逐token查原版字形並前進16px。campaign→battle→正式故事UI會深拷貝且保留nil／空
+  語意；缺token或形狀不一致即失敗即關閉。
+- Docker探針實際得到`unicode_runes=16／raw_tokens=13`及token前綴
+  `['『','AS','R-','07']`。聚焦資料、compositor、raw ch22 equality及正式第23戰路徑
+  回歸均通過；完整Docker／Xvfb
+  `go test ./internal/battle ./internal/campaign ./cmd/fd2 -count=1`亦全數通過。證據見
+  [`native-story-multirune-glyph-token-e1.json`](../data/ui-traces/native-story-multirune-glyph-token-e1.json)。
+  這先關閉後段對話資料模型，不代表`FDTXT_029` caller已接正式戰役或達E2。

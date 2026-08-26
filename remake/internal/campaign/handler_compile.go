@@ -1,6 +1,9 @@
 package campaign
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // HandlerPoint is a remake camera coordinate supplied by a campaign-specific
 // mapping.  Handler scripts deliberately retain the original grid coordinate;
@@ -53,6 +56,9 @@ type NativeDialogueLayout struct {
 	Control     string     `json:"control"`
 	Operand     int        `json:"operand"`
 	Pages       [][]string `json:"pages"`
+	// GlyphPages 與Pages同形；每個token對應一個原始FDTXT ordinary word。
+	// 單一原版glyph可能映成多個Unicode rune，故不可由Pages反推token數。
+	GlyphPages [][][]string `json:"glyph_pages,omitempty"`
 }
 
 // nativeDialogueLineGlyphLimit 保存固定原版FDTXT已觀察到的每種speaker control
@@ -88,14 +94,48 @@ func (layout *NativeDialogueLayout) Validate() error {
 		if len(rows) == 0 || len(rows) > 64 {
 			return fmt.Errorf("native dialogue layout page %d has %d rows", page, len(rows))
 		}
+		if len(layout.GlyphPages) != 0 && (page >= len(layout.GlyphPages) || len(layout.GlyphPages[page]) != len(rows)) {
+			return fmt.Errorf("native dialogue layout page %d glyph rows do not match text rows", page)
+		}
 		for row, text := range rows {
-			count := len([]rune(text))
+			tokens, err := layout.glyphTokens(page, row, text)
+			if err != nil {
+				return err
+			}
+			count := len(tokens)
 			if count == 0 || count > lineGlyphLimit {
 				return fmt.Errorf("native dialogue layout page %d row %d has %d glyphs, limit %d for %s", page, row, count, lineGlyphLimit, layout.Control)
 			}
 		}
 	}
+	if len(layout.GlyphPages) != 0 && len(layout.GlyphPages) != len(layout.Pages) {
+		return fmt.Errorf("native dialogue layout has %d glyph pages for %d text pages", len(layout.GlyphPages), len(layout.Pages))
+	}
 	return nil
+}
+
+func (layout *NativeDialogueLayout) glyphTokens(page, row int, text string) ([]string, error) {
+	if len(layout.GlyphPages) == 0 {
+		runes := []rune(text)
+		tokens := make([]string, len(runes))
+		for i, r := range runes {
+			tokens[i] = string(r)
+		}
+		return tokens, nil
+	}
+	if page < 0 || page >= len(layout.GlyphPages) || row < 0 || row >= len(layout.GlyphPages[page]) {
+		return nil, fmt.Errorf("native dialogue layout page %d row %d lacks raw glyph tokens", page, row)
+	}
+	tokens := layout.GlyphPages[page][row]
+	if strings.Join(tokens, "") != text {
+		return nil, fmt.Errorf("native dialogue layout page %d row %d glyph tokens disagree with text", page, row)
+	}
+	for token, value := range tokens {
+		if value == "" {
+			return nil, fmt.Errorf("native dialogue layout page %d row %d token %d is empty", page, row, token)
+		}
+	}
+	return tokens, nil
 }
 
 func cloneNativeDialogueLayout(layout *NativeDialogueLayout) *NativeDialogueLayout {
@@ -106,6 +146,15 @@ func cloneNativeDialogueLayout(layout *NativeDialogueLayout) *NativeDialogueLayo
 	out.Pages = make([][]string, len(layout.Pages))
 	for i := range layout.Pages {
 		out.Pages[i] = append([]string(nil), layout.Pages[i]...)
+	}
+	if len(layout.GlyphPages) != 0 {
+		out.GlyphPages = make([][][]string, len(layout.GlyphPages))
+		for page := range layout.GlyphPages {
+			out.GlyphPages[page] = make([][]string, len(layout.GlyphPages[page]))
+			for row := range layout.GlyphPages[page] {
+				out.GlyphPages[page][row] = append([]string(nil), layout.GlyphPages[page][row]...)
+			}
+		}
 	}
 	return &out
 }

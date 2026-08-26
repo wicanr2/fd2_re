@@ -236,6 +236,20 @@ control依序為 `FFEF／FFEE／FFEF`；相鄰固定版 `FDTXT_010` 另有合法
 admissibility**，不是任意新文字的自動排版規則。重製端必須依control接受合法列並
 拒絕超限資料；不得截斷、改寫raw列界或用現代自動換行掩蓋錯誤。
 
+### 同日勘誤：glyph數不得以Unicode rune數代替
+
+上述13／15／14／14是每列原始FDTXT ordinary word數，不是Unicode code point數。
+固定版`FDTXT_029` index12第一個`FFEF operand=126`列只有13個raw glyph，其中
+`0x660→"AS"`、`0x661→"R-"`、`0x654→"07"`各展開成兩個Unicode字元；可編輯文字
+因此顯示為16個rune，但原版仍只佔13個16-pixel glyph格。直接以`len([]rune)`驗證或
+逐rune查字形會錯誤拒絕／錯畫合法原版資料。
+
+正式typed投影必須在可搜尋的Unicode整列之外，為任何非一字一glyph的列逐頁逐列
+保存原始glyph token；token數套用control-specific上限，token串接後必須等於Unicode
+整列。indexed compositor逐token查`unicode_to_glyph`並每token前進16px。一字一glyph
+時`pages`本身可無損反推，不必重複保存；無法無損反推卻缺token時必須失敗即關閉。
+這項資料模型勘誤為**已證實**。
+
 ```text
 IDA：tools/ida_probe_functions.py
   FD2_IDA_ADDRESSES="0x15F84 0x165AC 0x1685C 0x168B6 0x16B43 0x16C57"

@@ -2159,10 +2159,20 @@ func (g *Game) resolveCampaignDialogLine(line campaign.Line, upperOverride *bool
 		native = &battle.NativeDialogueLayout{
 			SourceDAT: layout.SourceDAT, StringIndex: layout.StringIndex,
 			Utterance: layout.Utterance, Control: layout.Control, Operand: layout.Operand,
-			Pages: make([][]string, len(layout.Pages)), MotionTargetY: motionTargetY, HasMotionTargetY: true,
+			Pages:         make([][]string, len(layout.Pages)),
+			MotionTargetY: motionTargetY, HasMotionTargetY: true,
 		}
 		for i := range layout.Pages {
 			native.Pages[i] = append([]string(nil), layout.Pages[i]...)
+		}
+		if len(layout.GlyphPages) != 0 {
+			native.GlyphPages = make([][][]string, len(layout.GlyphPages))
+			for page := range layout.GlyphPages {
+				native.GlyphPages[page] = make([][]string, len(layout.GlyphPages[page]))
+				for row := range layout.GlyphPages[page] {
+					native.GlyphPages[page][row] = append([]string(nil), layout.GlyphPages[page][row]...)
+				}
+			}
 		}
 	}
 	return battle.DialogLine{Speaker: speaker, Text: line.Text, Upper: upper, NativeDialogue: native}, nil
