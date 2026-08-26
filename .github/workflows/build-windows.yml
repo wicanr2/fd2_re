@@ -19,6 +19,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: '1.22'
+          cache-dependency-path: remake/go.sum
 
       - name: 啟用 runner 內建 MinGW 工具鏈
         run: |
@@ -45,9 +46,15 @@ jobs:
           try {
             $env:FD2_PACKAGE_SELF_CHECK = "1"
             $env:XDG_DATA_HOME = Join-Path $empty "xdg"
-            & $exe
-            if ($LASTEXITCODE -ne 0) {
-              throw "FD2 封裝自我檢查失敗，退出碼 $LASTEXITCODE"
+            $stdout = Join-Path $empty "stdout.txt"
+            $stderr = Join-Path $empty "stderr.txt"
+            $process = Start-Process -FilePath $exe -WorkingDirectory $empty -Wait -PassThru `
+              -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+            if (Test-Path $stdout) { Get-Content $stdout }
+            if (Test-Path $stderr) { Get-Content $stderr }
+            if ($process.ExitCode -ne 0) {
+              $detail = if (Test-Path $stderr) { Get-Content $stderr -Raw } else { "沒有標準錯誤輸出" }
+              throw "FD2 封裝自我檢查失敗，退出碼 $($process.ExitCode)：$detail"
             }
           } finally {
             Pop-Location

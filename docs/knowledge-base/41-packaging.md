@@ -203,16 +203,19 @@ XDG 慣例,桌面版走 `assetPath()` 三層查找的**第 3 層(cwd 相對)**�
 `fd2.exe` 旁的 `assets/` 資料夾即可,不強制走 `%USERPROFILE%\.local\share`(該路徑仍是存檔/設定
 的落點,兩者不衝突)。
 
-### 3.1 驗證(誠實揭露:封包完成,執行未在真機驗證)
+### 3.2 驗證
 
 - `file fd2.exe` 確認 `PE32+ executable (GUI) x86-64, for MS Windows`——交叉編譯產物格式正確。
 - ZIP 由同一容器組裝並立即以 `sha256sum -c` 驗證；輸出檔與目錄抽查均為目前
   使用者 UID/GID，不再需要 root 或事後 `chown`。
-- 嘗試用 Wine(headless Xvfb)smoke test:`wine fd2.exe` 掛起逾時(60–90 秒無回應,無錯誤輸出)。
-  Wine + Xvfb + OpenGL(Ebiten Windows 後端走 win32+wgl)是已知脆弱組合,掛起不代表 exe 本身有問題,
-  但也**不構成「跑得起來」的證據**——沒有 Windows 實機或穩定的 Wine GL 環境,無法排除兩者。
-- 依 worklist 慣例如實標記:**已編譯,未實機測試**。下一步需要 Windows 實機(或 GitHub Actions
-  `windows-latest` runner)跑一次 headless 截圖驗證,補齊這塊證據缺口。
+- Wine 9.0／Xvfb後續已實際接收城鎮輸入、進入商店並寫出可解析F5存檔；這仍是相容層證據。
+- 真實[Windows run 33000820996](https://github.com/wicanr2/fd2_re/actions/runs/33000820996)、
+  job `98281879552`在`windows-latest`成功完成原生CGO建置、公開資產組裝，並從空白cwd
+  以`Start-Process -Wait`執行GUI子系統`fd2.exe`的具型別自我檢查；ZIP、SHA-256及artifact
+  上傳亦全部成功。首次run `33000572634`的建置已成功，但PowerShell直接呼叫GUI程式無法
+  可靠取得退出狀態；改用明確process owner後通過，故該次失敗分類為驗證腳本問題。
+- 尚未證實的是實體玩家桌面的視窗繪製、鍵盤、存檔、音訊、防毒軟體與長時間執行；
+  Windows runner的非互動自我檢查不冒稱這些項目完成。
 
 ## 4. macOS（工作流程與 bundle 自我檢查已在真實 runner 成功）
 

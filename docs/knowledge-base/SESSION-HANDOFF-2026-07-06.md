@@ -7350,3 +7350,15 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   亦通過。真實macOS [run 32999934526](https://github.com/wicanr2/fd2_re/actions/runs/32999934526)、
   job `98278796187`成功執行相同bundle binary自我檢查，並完成DMG／tar.gz及artifact上傳。
   一次性觸發分支已刪除；實體Mac視窗／輸入／存檔／音訊仍是外部驗收。
+
+## 2026-08-27：Windows 原生封包與程序自我檢查
+
+- 新增正式`build-windows.yml`：`windows-latest`使用runner內建MinGW，以CGO建置GUI
+  `fd2.exe`，只組裝可散布scenario／story／spells，從空白cwd執行與macOS相同的具型別
+  `FD2_PACKAGE_SELF_CHECK=1`，成功後才產ZIP、SHA-256及artifact。
+- 首次run `33000572634`建置成功，但PowerShell直接呼叫GUI子系統程式時檢查步驟退出1，
+  公開log又不提供stderr。工作流程改用`Start-Process -Wait -PassThru`、重導stdout／stderr並
+  檢查`ExitCode`；這是Windows GUI process owner修正，不是遊戲資料或renderer改動。
+- 第二次[run 33000820996](https://github.com/wicanr2/fd2_re/actions/runs/33000820996)、job
+  `98281879552`的原生建置、空cwd具型別執行、ZIP與artifact全部success；一次性觸發分支已刪除。
+  此項證明Windows原生程序與封包資料解析，不冒稱實體玩家桌面的視窗、鍵盤、存檔、音訊或防毒驗收。
