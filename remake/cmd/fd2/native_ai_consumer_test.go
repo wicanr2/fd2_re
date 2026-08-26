@@ -210,7 +210,7 @@ func TestAIStepMode2NoCandidateRecoveryFailsClosedWithoutPresentation(t *testing
 	}
 }
 
-func TestAIStep14EF0CommandRejectsMissingPresentationAfterMovement(t *testing.T) {
+func TestAIStep14EF0CommandRejectsMissingPresentationWhileStationary(t *testing.T) {
 	actor := nativeAIConsumerUnit(0, 0, 1, 2)
 	actor.NativeCommandMask[0] = 1
 	actor.NativeInventoryFlags = []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
@@ -241,24 +241,10 @@ func TestAIStep14EF0CommandRejectsMissingPresentationAfterMovement(t *testing.T)
 		rng:    rand.New(rand.NewSource(1)),
 	}
 	g.aiStep()
-	if g.loadErr != "" || g.walk == nil || g.walk.u != actor || g.atk != nil || len(g.walk.path) < 2 ||
-		g.walk.path[len(g.walk.path)-1] != (battle.Cell{X: 1, Y: 0}) {
-		t.Fatalf("0x14ef0 command route did not start raw movement: walk=%v atk=%v path=%v err=%q", g.walk != nil, g.atk != nil, func() []battle.Cell {
-			if g.walk == nil {
-				return nil
-			}
-			return g.walk.path
-		}(), g.loadErr)
-	}
-	for step := 0; step < 96 && (g.aiBusy || g.walk != nil); step++ {
-		if err := g.Update(); err != nil {
-			t.Fatal(err)
-		}
-	}
 	if g.loadErr == "" || g.aiBusy || g.walk != nil || g.atk != nil || state.Turn != 0 {
-		t.Fatalf("0x14ef0 missing presentation did not stop atomically: ai=%v walk=%v atk=%v turn=%d err=%q", g.aiBusy, g.walk != nil, g.atk != nil, state.Turn, g.loadErr)
+		t.Fatalf("0x14ef0 stationary command did not stop atomically: ai=%v walk=%v atk=%v turn=%d err=%q", g.aiBusy, g.walk != nil, g.atk != nil, state.Turn, g.loadErr)
 	}
-	if actor.X != 1 || actor.Y != 0 || actor.MP != 4 || target.HP != target.MaxHP || actor.Acted {
+	if actor.X != 0 || actor.Y != 0 || actor.MP != 4 || target.HP != target.MaxHP || actor.Acted {
 		t.Fatalf("0x14ef0 missing presentation mutated command transaction: actor=(%d,%d) mp=%d acted=%v targetHP=%d/%d", actor.X, actor.Y, actor.MP, actor.Acted, target.HP, target.MaxHP)
 	}
 }
@@ -850,7 +836,7 @@ func TestAIStepConsumesVerifiedMode8Completion(t *testing.T) {
 	}
 }
 
-func TestAIStepMode11RejectsMissingCommandPresentationAfterMovement(t *testing.T) {
+func TestAIStepMode11RejectsMissingCommandPresentationWhileStationary(t *testing.T) {
 	actor := nativeAIConsumerUnit(0, 0, 1, 11)
 	actor.NativeCommandMask[0] = 1
 	actor.NativeInventoryFlags = []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
@@ -890,18 +876,9 @@ func TestAIStepMode11RejectsMissingCommandPresentationAfterMovement(t *testing.T
 		figaniDelays: map[int][]int{3: {1, 1, 1}, 4: {1, 1, 1}},
 	}
 
-	// aiStep must consume the raw mode-11 transaction.  The first call only
-	// starts its first movement/action stage; subsequent Update calls prove the
-	// continuation reaches the second stage instead of asking NextAIPlan again.
+	// 0x15311 owns command target/effect geometry, not an actor movement path.
+	// Missing presentation therefore rejects the first stage in place.
 	g.aiStep()
-	if g.loadErr != "" || g.walk == nil {
-		t.Fatalf("mode-11 first stage did not start: walk=%v err=%q", g.walk != nil, g.loadErr)
-	}
-	for step := 0; step < 240 && (g.aiBusy || g.walk != nil || g.atk != nil); step++ {
-		if err := g.Update(); err != nil {
-			t.Fatal(err)
-		}
-	}
 	if g.loadErr == "" {
 		t.Fatal("mode-11 accepted command0 without its formal presentation context")
 	}
@@ -909,6 +886,9 @@ func TestAIStepMode11RejectsMissingCommandPresentationAfterMovement(t *testing.T
 		actor.Acted || target.HP != target.MaxHP {
 		t.Fatalf("mode-11 missing presentation mutated transaction: ai=%v walk=%v atk=%v turn=%d mp=%d acted=%v targetHP=%d/%d",
 			g.aiBusy, g.walk != nil, g.atk != nil, state.Turn, actor.MP, actor.Acted, target.HP, target.MaxHP)
+	}
+	if actor.X != 0 || actor.Y != 0 {
+		t.Fatalf("mode-11 0x15311 moved actor to (%d,%d)", actor.X, actor.Y)
 	}
 }
 

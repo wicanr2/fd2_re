@@ -156,10 +156,10 @@ func (s *State) nextNativeAI14EF0Plan(u *Unit) (*AIPlan, bool, error) {
 		if !command.HasPositiveWinner || len(command.PositiveWinner.TargetIndices) == 0 {
 			return nil, true, fmt.Errorf("native AI 0x14ef0 selected 0x15311 without command target")
 		}
-		plan, err := s.nativeAIPlanForDestination(
-			u, actorRecord, selector,
+		plan, err := s.nativeAIPlanForStationarySelection(
+			u, actorRecord,
 			Cell{X: command.PositiveWinner.X, Y: command.PositiveWinner.Y},
-			int(command.PositiveWinner.TargetIndices[0]), costRow,
+			int(command.PositiveWinner.TargetIndices[0]),
 		)
 		if err != nil {
 			return nil, true, err
@@ -228,7 +228,7 @@ func (s *State) nativeAI14EF0PhysicalSelection(
 		int(actorRecord[0x3b]), geometry, flags, baseFlags,
 		s.NativeTerrainMoveCodes, costRow,
 		func(raw NativeAIPhysicalAttackRawCandidate) (NativePhysicalAttackScoreInput, error) {
-			return s.nativeAIPhysicalScoreInput(raw, item.Row)
+			return s.nativeAIPhysicalScoreInput(raw, s.nativeFutureItemRows)
 		},
 	)
 	if err != nil {
@@ -236,6 +236,28 @@ func (s *State) nativeAI14EF0PhysicalSelection(
 	}
 	selection, ok, err := SelectNativePhysicalAttackCandidate(candidates)
 	return selection, ok, err
+}
+
+// nativeAIPlanForStationarySelection owns 0x15311's selected command result.
+// Unlike 0x1548E, 0x15311 never calls 0x14B78: its winner coordinates feed
+// target/effect presentation while the actor remains at the current cell.
+func (s *State) nativeAIPlanForStationarySelection(
+	u *Unit, actorRecord []byte, destination Cell, targetIndex int,
+) (*AIPlan, error) {
+	if s == nil || u == nil || len(actorRecord) != nativeRecordSize ||
+		destination.X < 0 || destination.Y < 0 || destination.X >= s.W || destination.Y >= s.H ||
+		targetIndex < 0 || targetIndex >= len(s.Units) || s.Units[targetIndex] == nil {
+		return nil, fmt.Errorf("native AI stationary destination/target is malformed")
+	}
+	origin := Cell{X: int(actorRecord[0]), Y: int(actorRecord[1])}
+	if origin.X < 0 || origin.Y < 0 || origin.X >= s.W || origin.Y >= s.H {
+		return nil, fmt.Errorf("native AI stationary actor origin is malformed")
+	}
+	return &AIPlan{
+		U: u, Path: []Cell{origin}, Target: s.Units[targetIndex], SpellID: -1,
+		NativeScoredCommands:    s.nativeAIPlanScoredCommands(u),
+		NativeActionDestination: destination,
+	}, nil
 }
 
 // nativeAIPlanForDestination replays 0x14b78's movement transaction for a

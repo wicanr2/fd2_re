@@ -99,6 +99,41 @@ func TestNextAIPlanUsesVerifiedMode2PhysicalCandidate(t *testing.T) {
 	}
 }
 
+func TestNextAIPlanPhysicalHelperUsesFullTargetItemTable(t *testing.T) {
+	actor := nativeAIRuntimeUnit(0, 0, 1, 2)
+	actor.InventorySlots[0] = 1
+	actor.NativeInventoryFlags[0] = 0x40
+	target := nativeAIRuntimeUnit(2, 0, 0, 0)
+	target.Camp = Own
+	target.AP, target.DP = 1, 1
+	target.InventorySlots[0] = 0x1f
+	target.NativeInventoryFlags[0] = 0x40
+	state := &State{
+		W: 3, H: 1, Units: []*Unit{actor, target},
+		NativeCompositionEventBytes: []byte{0, 0, 0},
+		NativeTerrainMoveCodes:      []byte{0, 0, 0},
+	}
+	rows := make([]byte, 0x20*NativeItemEffectRowSize)
+	rows[NativeItemEffectRowSize+0x0c] = 1
+	rows[0x1f*NativeItemEffectRowSize+0x0b] = 1
+	if err := state.BindNativeFutureItemRows(rows); err != nil {
+		t.Fatal(err)
+	}
+	if err := state.BindNativeMovementCostRows(nativeAIRuntimeCostRows()); err != nil {
+		t.Fatal(err)
+	}
+	plan := state.NextAIPlan()
+	if plan == nil || plan.NativeError != nil {
+		if plan == nil {
+			t.Fatal("mode-2 plan is nil")
+		}
+		t.Fatalf("mode-2 target item 0x1f plan error: %v", plan.NativeError)
+	}
+	if plan.Target != target {
+		t.Fatalf("plan target=%p want %p", plan.Target, target)
+	}
+}
+
 func TestNextAIPlanMode11BuildsOrderedDirectStages(t *testing.T) {
 	actor := nativeAIRuntimeUnit(0, 0, 1, 11)
 	actor.NativeCommandMask[0] = 1
@@ -135,6 +170,9 @@ func TestNextAIPlanMode11BuildsOrderedDirectStages(t *testing.T) {
 	if plan.NativeMode11Stages[0].Action == nil ||
 		plan.NativeMode11Stages[0].Action.NativeActionKind != NativeAIActionCommand {
 		t.Fatalf("first mode11 action=%+v, want command owner", plan.NativeMode11Stages[0].Action)
+	}
+	if got := plan.NativeMode11Stages[0].Action.Path; len(got) != 1 || got[0] != (Cell{X: 0, Y: 0}) {
+		t.Fatalf("first mode11 command path=%v, want stationary actor origin", got)
 	}
 	if plan.NativeMode11Stages[1].Stage.Ordinal != 2 {
 		t.Fatalf("second mode11 stage=%+v", plan.NativeMode11Stages[1].Stage)
@@ -298,8 +336,10 @@ func TestNextAIPlanUses14EF0CommandWinnerAndRetainsRawTarget(t *testing.T) {
 		plan.NativeAI14EF0Route != NativeAI14EF0Call15311 || plan.Target != target {
 		t.Fatalf("command plan=%+v", plan)
 	}
-	if len(plan.Path) < 2 || plan.Path[len(plan.Path)-1] != (Cell{X: 1, Y: 0}) {
-		t.Fatalf("command path=%v want destination (1,0)", plan.Path)
+	if len(plan.Path) != 1 || plan.Path[0] != (Cell{X: 0, Y: 0}) ||
+		plan.NativeActionDestination != (Cell{X: 1, Y: 0}) {
+		t.Fatalf("command path=%v destination=%v want stationary origin and effect (1,0)",
+			plan.Path, plan.NativeActionDestination)
 	}
 }
 

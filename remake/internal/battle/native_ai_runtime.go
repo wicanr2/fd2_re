@@ -84,7 +84,7 @@ func (s *State) nextNativeAIPhysicalPlan(u *Unit) (*AIPlan, bool, error) {
 		// 目標幾何看到的是不可變的 low5 base，而不是前段移動佔用寫入值。
 		geometry, baseFlags, baseFlags, s.NativeTerrainMoveCodes, costRow,
 		func(raw NativeAIPhysicalAttackRawCandidate) (NativePhysicalAttackScoreInput, error) {
-			return s.nativeAIPhysicalScoreInput(raw, item.Row)
+			return s.nativeAIPhysicalScoreInput(raw, s.nativeFutureItemRows)
 		},
 	)
 	if err != nil {

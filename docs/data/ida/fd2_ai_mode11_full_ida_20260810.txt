@@ -124,6 +124,22 @@ mode 11 的直接指令如下：
 - 後續經 `0x1B653`、`0x1DB65`、`0x1AA1D` 做 raw 收尾，清除
   `[0x53EC8]`／`[0x51A83]`，返回一。
 
+2026-08-26 runtime consumer 勘誤：第30戰正常 `END→YES` 動態重播證實重製端
+曾把 `[0x53C27]/[0x53C2B]` 當成 actor 移動目的地，因而以「path不可達」拒絕合法
+mode11 command winner。上述原始 body 已直接反證該接法：`sub_15311` 沒有呼叫
+`0x14B78`，兩個座標只重新餵給 `0x14818` 形成 command target array；相對地，下一節
+`sub_1548E` 才明確把 `[0x53C43]/[0x53C47]` 交給 `0x14B78`。因此正式 typed owner
+必須讓`0x15311`保持actor原地、保留winner座標作effect destination；只有`0x1548E`
+消費移動路徑。這是**已證實 consumer 勘誤**，不為command命名高階玩法。
+
+同一重播在進入`0x1548E`物理演出時又揭露重製資產邊界：actor／target的已證實
+`BattleFig`為126／56，依既有FIGANI trio契約需要attack resource 379與idle resource
+168。兩者不在倉庫的22筆預匯出PNG子集，但玩家自備原版`FIGANI.DAT`是正式演出
+來源；這不是把缺圖猜成替代角色。正式consumer可在交易前按精確resource ID解碼
+原始archive，只有兩筆影格、descriptor `+6` delay與內嵌座標全部通過既有parser後
+才能原子發布。缺archive、資源、色盤或排程仍須失敗即關閉。這是**已證實的重製
+consumer／資產所有權勘誤**；不改動`0x1548E`的原版控制流結論。
+
 ## `0x1548E`：第二段結果的消費邊界
 
 `sub_1548E` 範圍為 `0x1548E..0x1567E`；直接 caller 是 mode 11 的

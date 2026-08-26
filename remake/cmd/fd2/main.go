@@ -10593,8 +10593,8 @@ func (g *Game) aiStep() {
 			if anm == "" {
 				anm = u.ClsName
 			}
-			if !g.nativeAttackPresentationAvailable(u.BattleFig, tgt.BattleFig) {
-				g.loadErr = fmt.Sprintf("AI FIGANI attack presentation unavailable: %d -> %d", u.BattleFig, tgt.BattleFig)
+			if err := g.ensureNativeAttackPresentation(u.BattleFig, tgt.BattleFig); err != nil {
+				g.loadErr = fmt.Sprintf("AI FIGANI attack presentation unavailable: %d -> %d: %v", u.BattleFig, tgt.BattleFig, err)
 				g.aiBusy = false
 				return
 			}

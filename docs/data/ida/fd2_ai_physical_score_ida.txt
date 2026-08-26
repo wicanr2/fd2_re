@@ -98,3 +98,15 @@ Capstone：python3 tools/disasm_le.py FD2.EXE range 0x1debe 0x1df58
 
 原始 FD2.EXE、IDA database、授權檔與暫存資料不納入儲存庫；本文件只保存可重生
 的位址級證據與輸入版本指紋。
+
+## 2026-08-26 runtime consumer 勘誤
+
+- Docker／Xvfb 以外部第30戰候選走正式 `CONTINUE→END→YES`，mode 11 單位8在
+  `0x14237` 候選 `(21,17)` 評分 target 時，重製端回報 item `0x1f` 的 row offset
+  `0x2c9` 超出 23-byte table。這是重製 consumer 反證，不是新的原版語意。
+- 回查本檔既有已證實資料流：actor 的 `0x14288..0x142BE` 只先選自己的單一 row，
+  但 `0x14496→sub_1DEBE(target,x,y)` 內又對 target 呼叫 `0x1B83D→0x1B722→0x4E56C`。
+  因此 `sub_1DEBE` 的 typed consumer 必須持有完整 `0x602AD + item*0x17` 表，不能
+  把 actor 的單一 23-byte row 當成全表傳入。
+- 證據分級：上述原版鏈仍為**已證實**；「兩個 Go caller 傳錯 buffer」為目前 source
+  的**已證實缺陷**。修正只改資料所有權，不改 item ID、row stride或高階語意名稱。

@@ -3348,6 +3348,29 @@ mean the item selector UI or indexed presentations are integrated.
 
 Official IDA 9.4 also closes the small presentation helper `0x1e0db(value, digitBias, target)`: after a camera-bounds check it formats `value` as four decimal digits and appends four raw queue entries with position codes `2,7,12,17`, target index, and digit bytes; `0x1e1dc` writes a parallel four-byte queue from a global raw source. This is a presentation-queue ABI, not proof of HP/MP/damage/heal semantics. The adjacent `0x1debe(actor,x,y)` gate only checks active state, Manhattan adjacency, and equipped row byte `+0x0b <= 1`; it must not be promoted to a universal weapon max-range rule.
 
+2026-08-26 第30戰正常GUI動態反證補充：`0x14237` 的 actor item row與
+`0x1DEBE`內部重新查找target item row是兩個不同生命週期。候選geometry仍使用actor
+的detached 23-byte row；score resolver呼叫`nativeAIPhysicalHelper1DEBE`時必須傳入
+State已綁定的完整item table。任何caller把actor row傳成table都屬型別契約錯誤；正式
+修正須同時覆蓋mode2與mode11／`0x14EF0`共用物理候選，並以target裝備item `0x1f`
+以上的測試避免單列fixture再次掩蓋越界。缺完整表仍維持失敗即關閉。
+
+同一動態重播的下一個反證是mode11 `0x15311` winner被誤送入`0x14B78`路徑檢查。
+IDA已證實`0x15311`不呼叫移動函式：`[0x53C27]/[0x53C2B]`只作command effect／target
+geometry；`0x1548E`才把另一組`[0x53C43]/[0x53C47]`送入`0x14B78`。正式規格因此
+分成stationary command plan與physical movement plan：前者Path只保留actor origin，
+但`NativeActionDestination`仍保存winner座標供presentation／effect owner使用；後者
+維持可達性與direction path失敗即關閉。`0x14EF0→0x15311`與mode11 direct caller
+必須共用stationary契約，不能只修一個入口。
+
+`0x1548E`物理演出的FIGANI預檢不得把倉庫內的預匯出PNG子集誤當成完整原版
+archive。若精確的`BattleFig*3+1`攻擊資源或`BattleFig*3`守方待機資源尚未在記憶體，
+正式runtime可從玩家唯讀提供的`FIGANI.DAT`按需解碼。此補載必須是原子交易：先把
+兩個resource的所有影格、透明mask、內嵌座標、descriptor `+6` delay與display
+scheduler全部驗證到暫存值，全部成功後才發布到`figani`／`figMeta`／`figaniDelays`；
+任一失敗不得留下半組資產，也不得退回其他figure、固定幀數或猜測delay。一般AI
+物理owner與mode11 `0x1548E`共用同一預檢，避免晚期角色只在其中一條路徑失敗。
+
 The remake has a data-only `battle.AppendNativePresentationDigits` adapter with right-alignment, bias, camera no-op, and raw position-code regression coverage. It deliberately stops before renderer, palette, SFX, or gameplay naming.
 
 Official IDA 9.4 decompilation of the shared type-6/7 callee

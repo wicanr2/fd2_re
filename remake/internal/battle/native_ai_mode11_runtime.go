@@ -59,9 +59,9 @@ func (s *State) nextNativeAIMode11Plan(u *Unit) (*AIPlan, bool, error) {
 			if targetIndex < 0 || targetIndex >= len(s.Units) || s.Units[targetIndex] == nil {
 				return nil, true, fmt.Errorf("native AI mode 11 command target provenance is unavailable")
 			}
-			action, err := s.nativeAIPlanForDestination(
-				u, actorRecord, selector,
-				Cell{X: winner.X, Y: winner.Y}, targetIndex, costRow,
+			action, err := s.nativeAIPlanForStationarySelection(
+				u, actorRecord,
+				Cell{X: winner.X, Y: winner.Y}, targetIndex,
 			)
 			if err != nil {
 				return nil, true, fmt.Errorf("native AI mode 11 0x15311 path: %w", err)

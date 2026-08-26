@@ -54,6 +54,13 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 > `native_continue_cursor_overlay=true`，原版indexed空游標面板實際可見。這證明正常
 > GUI不只載入第30戰，也把操作權交給玩家；仍不外推為完整來源或從第一戰通關E2。
 
+> **同日敵方回合補證：** 同一雜湊鎖定末關候選以正式CONTINUE進`battle_ch30`，
+> 在明示`FD2_SHOT_TITLE_MENU=1`的有界診斷中由普通XTest操作`END→YES`，實際跑完
+> mode11演出並返回round13、player turn。另一次不設`FD2_NOCUT`、標題fixture或
+> timer覆寫的完整開場重播仍可抵達round12並取得操作權，但自動END確認落在原生
+> 開框期間，未形成單次連續round13證據。因此敵方回合維持`RUNTIME-E1`，不提升為
+> 完整一般玩家`PLAYER-E2`。
+
 終局 19×5 owner 的最新玩家可見 E1 證據見
 [`ending-dialogue-native-indexed-remake-e1.json`](../data/ui-traces/ending-dialogue-native-indexed-remake-e1.json)；
 旁車鎖定 `0x2BE44`、`waiting`、第 1／5 區塊且一般對話佇列為零。這只關閉重製端

@@ -6872,3 +6872,25 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   `opening_confirm=false`、`action_overlay_open=true`、
   `native_continue_cursor_overlay=true`，畫面可見原版indexed空游標操作面板。
   `native-battle-ch30-remake-controllable-e1.png`因此成為README的新玩家可見成果圖。
+
+## 2026-08-26：第30戰敵方回合動態修正與 round13 返回
+
+- 候選末關`FD2.SAV`維持SHA-256
+  `a0e5519c49b52bbeab9c3bb1cf36957c42f02877a4c218ad54611952f74d6780`；原版archive
+  全部唯讀掛載，Docker／Xvfb以普通XTest操作正式CONTINUE與`END→YES`。
+- 第一個動態缺陷是`0x14237`把actor的單一23-byte item row誤傳為完整table；target
+  裝備`0x1f`時因此越界。兩個caller現傳State綁定的完整item table，並新增高ID回歸。
+- 第二個動態缺陷是把`0x15311` winner座標誤當actor移動目的地。既有IDA主證據直接
+  反證：`0x15311`不呼叫`0x14B78`，正式plan現保持actor原地並只保存effect
+  destination；`0x1548E`仍獨占移動路徑。
+- 第三個缺口是倉庫預匯出FIGANI子集不含末關BattleFig 126／56需要的resource
+  379／168。正式AI物理owner現從玩家唯讀`FIGANI.DAT`精確按需解碼，先驗證兩筆
+  frames／mask／positions／descriptor delays／scheduler，全部成功後才原子發布；
+  不使用替代figure或固定delay。
+- 明示`FD2_SHOT_TITLE_MENU=1`的有界診斷最後抵達`battle_ch30`、round13、player
+  turn、camera`(16,16)`、cursor`(21,20)`，無dialog／battle event／turn staging或
+  load error。另一次不設`FD2_NOCUT`、title fixture或timer覆寫的完整開場仍抵達
+  round12並取得indexed操作權；自動END確認鍵落在原生開框期間，故不把兩次證據
+  合併宣稱單次連續`PLAYER-E2`。
+- README玩家交付自評由77調至78；只增加操作介面與原版視覺忠實度一分，依據是
+  先前已閉合的第30戰整幀AE=0與正常鍵盤可操作證據，不因本次孤立RE筆記加分。
