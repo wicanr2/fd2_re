@@ -1,0 +1,28 @@
+# Linux x86_64 AppImage 建置映像。工具只在 image build 階段下載並驗證雜湊；
+# 正式封包命令關閉網路，且以目前使用者 UID/GID 寫入 packaging/dist。
+FROM golang:1.22-bookworm
+
+ARG LINUXDEPLOY_SHA256=421ca71d5c69ea97c6309276232990d43df1dcece0edfaa26bbf926ff96ed12e
+ARG APPIMAGETOOL_SHA256=a6d71e2b6cd66f8e8d16c37ad164658985e0cf5fcaa950c90a482890cb9d13e0
+ARG APPIMAGE_RUNTIME_SHA256=1cc49bcf1e2ccd593c379adb17c9f85a36d619088296504de95b1d06215aebbf
+ARG LINUXDEPLOY_URL=https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+ARG APPIMAGETOOL_URL=https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
+ARG APPIMAGE_RUNTIME_URL=https://github.com/AppImage/type2-runtime/releases/download/continuous/runtime-x86_64
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ca-certificates curl file patchelf desktop-file-utils \
+        pkg-config libasound2-dev xorg-dev libgl1-mesa-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /opt/appimage-tools \
+    && curl -fL --retry 3 -o /opt/appimage-tools/linuxdeploy.AppImage "$LINUXDEPLOY_URL" \
+    && curl -fL --retry 3 -o /opt/appimage-tools/appimagetool.AppImage "$APPIMAGETOOL_URL" \
+    && curl -fL --retry 3 -o /opt/appimage-tools/runtime-x86_64 "$APPIMAGE_RUNTIME_URL" \
+    && echo "$LINUXDEPLOY_SHA256  /opt/appimage-tools/linuxdeploy.AppImage" | sha256sum -c - \
+    && echo "$APPIMAGETOOL_SHA256  /opt/appimage-tools/appimagetool.AppImage" | sha256sum -c - \
+    && echo "$APPIMAGE_RUNTIME_SHA256  /opt/appimage-tools/runtime-x86_64" | sha256sum -c - \
+    && chmod 0755 /opt/appimage-tools/*.AppImage
+
+WORKDIR /src
+COPY remake/go.mod remake/go.sum ./
+RUN go mod download

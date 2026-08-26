@@ -24,6 +24,17 @@
 > `fd2.exe` 為 `PE32+ executable (GUI) x86-64`。這關閉可重現 Windows 封包，
 > 仍不等於 Windows 真機啟動／輸入／存檔／音訊驗收。macOS workflow 同日移除
 > PNG 假 `.icns`，改由 `sips` 與 `iconutil` 產生原生圖示；尚待真實 CI 執行。
+>
+> **2026-08-26 Linux AppImage 現況：** 新增
+> `packaging/Dockerfile.appimage`，將 `linuxdeploy`、`appimagetool`及Type-2 runtime
+> 三個原本會在封包階段下載的檔案，改在image build階段取得並分別核對受版控
+> SHA-256。`build-appimage.sh`目前只啟動單一無網路、指定UID/GID、3 GiB／2 CPU／
+> 384 pids的一次性容器；主機不再清檔、複製、下載、root寫入或事後`chown`。
+> 實際`FD2-x86_64.AppImage`為5,298,680 bytes，SHA-256
+> `0a619a3a431c37ba73f790bf8817a9915cb08d8ff9b99ebd893142307a6c4e63`。
+> 以唯讀玩家資產作XDG覆蓋層，從空工作目錄經`--appimage-extract-and-run`抵達
+> `town_ch02`並產生203,943-byte PNG，產物雜湊複驗通過。這是Linux封包與啟動
+> E1，不外推成其他Linux發行版、音訊或實機長程驗收。
 
 ## 1. 資產路徑解析層(`remake/cmd/fd2/assets.go`)
 
@@ -70,8 +81,9 @@ IDENTICAL
 
 ## 2. Linux AppImage(`remake/packaging/build-appimage.sh`)
 
-全程 docker(`fd2-build` image:`golang:1.22-bookworm` + ebiten X11/ALSA headers),不污染系統;
-`linuxdeploy`/`appimagetool` 用 `--appimage-extract-and-run` 執行,不需要 host 有 FUSE。
+全程使用`fd2-build-appimage` image（`golang:1.22-bookworm`、Ebiten X11／ALSA
+headers及雜湊鎖定AppImage工具），不污染主機；正式封包階段關閉網路。
+`linuxdeploy`／`appimagetool`用`--appimage-extract-and-run`執行，不需要host FUSE。
 
 流程:編譯 Linux amd64 binary → 組 AppDir(`AppRun` + `.desktop` + 圖示 + 只放已入庫資產的
 `assets/`)→ `linuxdeploy` 掃 ELF 依賴補齊 `libXau`/`libXdmcp`/`libbsd`/`libmd` 等動態庫
@@ -97,23 +109,19 @@ AppImage runtime 正常執行時已經設好 `APPDIR`;這行是給「直接執�
 
 ### 2.3 驗證(三個情境都實測,非推論)
 
-**A. 全新玩家(尚未跑 export 工具,XDG 空)**——headless 跑 `FD2-x86_64.AppImage`:不崩潰、
-乾淨顯示「缺 assets/(tileset.png + map.json),用 tools/export_engine_assets.py 產生」提示並在
-第 20 幀正常存下截圖證明。
+**A. 全新玩家(尚未跑 export 工具,XDG 空)**——本段舊版曾宣稱可在第20幀存下
+缺資產提示截圖；2026-08-26以現行封包重跑時，程式確實啟動並回報缺`map.json`，
+但證據截圖鉤子依現行失敗即關閉契約拒絕`loadErr`畫面並正常結束。因此舊截圖宣稱
+已撤回；它只證明缺資產路徑沒有崩潰，不再當作目前畫面證據。
 
-> 這條路徑原本測不出來——`Draw()` 的 `g.m == nil` fallback 分支舊版沒呼叫 `saveShot`,補了這行
-> (`cmd/fd2/main.go`,+3 行)截圖鉤子才對這個狀態也生效。順手修的既有缺口,不是本次任務的核心改動。
+**B. 玩家已跑 export 工具(XDG 填滿完整資產)**——2026-08-26由空工作目錄直接
+執行實際`FD2-x86_64.AppImage --appimage-extract-and-run`，唯讀XDG覆蓋層載入
+玩家資產，Xvfb抵達正式`town_ch02`並成功輸出203,943-byte PNG；AppImage
+SHA-256由同一無網路容器再次驗證。
 
-**B. 玩家已跑 export 工具(XDG 填滿完整資產)**——直接執行 `FD2-x86_64.AppImage --appimage-extract-and-run`
-(headless Xvfb,空 cwd):
-
-```
-$ cmp verify_dev.png verify_appimage_direct.png
-IDENTICAL
-```
-
-真正打包出來的 AppImage 檔案,從空目錄雙擊等效執行,渲染結果與原本 dev 模式(`go run` 在
-`remake/` 目錄下)逐位元組相同——資產解析三層邏輯在真實打包產物上驗證通過。
+較早封包曾留下`cmp verify_dev.png verify_appimage_direct.png → IDENTICAL`的歷史
+結果；本次沒有重跑該兩張舊檔比較，因此只宣稱目前封包能由空工作目錄消費XDG
+覆蓋層並產生有效城鎮畫面，不把舊比較外推成目前提交的逐位元組證據。
 
 ### 2.4 已知限制
 
@@ -202,7 +210,8 @@ remake/packaging/
   AppRun                        AppImage 進入點
   fd2.desktop                   桌面項目
   gen_icon.py / fd2.png         原創圖示(PIL 產生,非抽取素材)
-  build-appimage.sh             Linux AppImage 建置腳本(docker fd2-build)
+  Dockerfile.appimage           雜湊鎖定工具與相依項目的Linux封包映像
+  build-appimage.sh             Linux AppImage單一無網路容器建置腳本
   Dockerfile.mingw              Windows 跨編 docker image 定義
   build-windows.sh              Windows exe 建置腳本(docker fd2-build-mingw)
   dist/                         建置產物(gitignore,可重跑腳本重建)

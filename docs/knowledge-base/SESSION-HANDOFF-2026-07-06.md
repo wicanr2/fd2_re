@@ -7189,3 +7189,20 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - macOS workflow同時移除PNG冒充`.icns`，改由`sips`建立標準iconset後交給
   `iconutil`；尚待真實macOS CI。工作後沒有FD2容器殘留，發現的既有VMS映像
   屬其他專案，未予刪除。
+
+## 2026-08-26：Linux AppImage 離線可重現封包
+
+- 新增`remake/packaging/Dockerfile.appimage`。image build階段下載並驗證
+  `linuxdeploy` SHA-256 `421ca71d...ed12e`、`appimagetool`
+  `a6d71e2b...d13e0`及Type-2 runtime `1cc49bcf...aebbf`；正式封包關閉網路。
+- `build-appimage.sh`改為主機只啟動單一`--rm`容器；容器限制3 GiB／2 CPU／
+  384 pids，以目前UID/GID完成清理、Go建置、公開資產組裝、依賴收集、封裝、
+  `file`與SHA-256，不再root寫入、事後`chown`或在runtime下載工具。
+- 第一輪離線封包正確暴露`appimagetool`仍會下載Type-2 runtime而停止；補入第三份
+  鎖定檔與`--runtime-file`後重跑成功。產物`FD2-x86_64.AppImage`為5,298,680
+  bytes，SHA-256 `0a619a3a431c37ba73f790bf8817a9915cb08d8ff9b99ebd893142307a6c4e63`。
+- 空XDG啟動會回報缺`map.json`，但現行證據截圖鉤子依失敗即關閉規則拒絕
+  `loadErr`畫面；因此`41`舊「缺資產提示截圖已成功」斷言撤回。改以唯讀玩家
+  資產作XDG覆蓋層，從空工作目錄實跑AppImage抵達`town_ch02`，產生203,943-byte
+  PNG；產物與畫面UID/GID均為1000:1000，AppImage checksum複驗通過。
+- 沒有FD2容器殘留。唯一懸空清單項經前批確認屬其他VMS專案，未刪除。

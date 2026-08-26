@@ -1,8 +1,8 @@
 #!/bin/bash
 # build-appimage.sh — 產出 FD2-x86_64.AppImage(Linux 桌面散布版)。
 #
-# 全程 docker(fd2-build image:golang:1.22-bookworm + ebiten X11/ALSA 開發headers),
-# 不污染系統;linuxdeploy/appimagetool 用 --appimage-extract-and-run 執行(不需 host FUSE)。
+# 全程使用 fd2-build-appimage Docker image；linuxdeploy/appimagetool 在 image build
+# 階段下載並驗證固定 SHA-256，正式封包容器關閉網路且不需要 host FUSE。
 #
 # 打包內容(見 docs/knowledge-base/41-packaging.md「版權資產分離」):
 #   AppDir/assets/ 只放已入庫的原創內容 —— scenarios/、story/、spells.json(remake/.gitignore 例外清單)。
@@ -10,55 +10,44 @@
 #   玩家自備原版跑 tools/export_engine_assets.py 等,把產出解到 ~/.local/share/fd2_re/assets/
 #   (assetPath 三層查找的 XDG 覆蓋層,見 cmd/fd2/assets.go)。
 set -euo pipefail
-cd "$(dirname "$(readlink -f "$0")")/.."   # remake/
+REMAKE_ROOT="$(cd "$(dirname "$0")/.." && pwd -P)"
 
-DIST=packaging/dist
-APPDIR="$DIST/AppDir"
-# docker 內以 root 寫入的檔案(linuxdeploy/appimagetool 產物)歸 root 所有,host 使用者刪不掉;
-# 用同一個 image 以 root 身分先要回擁有權,再讓 host 使用者的 rm -rf 正常運作。
-[ -d "$DIST" ] && docker run --rm -v "$PWD":/src -w /src fd2-build:latest \
-  chown -R "$(id -u)":"$(id -g)" "$DIST" || true
-rm -rf "$APPDIR"
-mkdir -p "$APPDIR/usr/bin" "$APPDIR/usr/share/applications" \
-         "$APPDIR/usr/share/icons/hicolor/256x256/apps" \
-         "$APPDIR/assets/scenarios" "$APPDIR/assets/story"
+# 主機只負責啟動 Docker；檔案清理、編譯、AppDir 組裝、依賴收集、封裝與雜湊
+# 全部在一次性容器內完成。packaging/dist 是唯一可寫輸出。
+docker run --rm --network none \
+  --memory 3g --cpus 2 --pids-limit 384 \
+  --user "$(id -u):$(id -g)" \
+  -e HOME=/tmp/home -e GOCACHE=/tmp/go-cache -e ARCH=x86_64 \
+  -v "$REMAKE_ROOT":/src -w /src \
+  fd2-build-appimage:latest bash -euo pipefail -c '
+    dist=/src/packaging/dist
+    appdir="$dist/AppDir"
+    rm -rf "$appdir" "$dist/FD2-x86_64.AppImage" \
+      "$dist/FD2-x86_64.AppImage.sha256" "$dist/FD2-x86_64.AppImage.file.txt"
+    mkdir -p "$appdir/usr/bin" "$appdir/usr/share/applications" \
+      "$appdir/usr/share/icons/hicolor/256x256/apps" \
+      "$appdir/assets/scenarios" "$appdir/assets/story" /tmp/home /tmp/go-cache /tmp/appimage-work
 
-echo "== 1/4 編譯 Linux binary(docker fd2-build)=="
-docker run --rm -v "$PWD":/src -w /src -e GOCACHE=/src/.gocache fd2-build:latest bash -c '
-  CGO_ENABLED=1 go build -trimpath -ldflags="-s -w" -o packaging/dist/AppDir/usr/bin/fd2 ./cmd/fd2
-'
+    CGO_ENABLED=1 go build -trimpath -buildvcs=false -ldflags="-s -w" \
+      -o "$appdir/usr/bin/fd2" ./cmd/fd2
+    install -m 0755 packaging/AppRun "$appdir/AppRun"
+    install -m 0644 packaging/fd2.desktop "$appdir/fd2.desktop"
+    install -m 0644 packaging/fd2.desktop "$appdir/usr/share/applications/fd2.desktop"
+    install -m 0644 packaging/fd2.png "$appdir/fd2.png"
+    install -m 0644 packaging/fd2.png "$appdir/usr/share/icons/hicolor/256x256/apps/fd2.png"
+    cp -R assets/scenarios/. "$appdir/assets/scenarios/"
+    cp -R assets/story/. "$appdir/assets/story/"
+    cp assets/spells.json "$appdir/assets/spells.json"
 
-echo "== 2/4 組 AppDir(唯讀基底:只放已入庫的原創資產)=="
-cp packaging/AppRun "$APPDIR/AppRun"; chmod +x "$APPDIR/AppRun"
-cp packaging/fd2.desktop "$APPDIR/fd2.desktop"
-cp packaging/fd2.desktop "$APPDIR/usr/share/applications/fd2.desktop"
-cp packaging/fd2.png "$APPDIR/fd2.png"
-cp packaging/fd2.png "$APPDIR/usr/share/icons/hicolor/256x256/apps/fd2.png"
-cp -r assets/scenarios/. "$APPDIR/assets/scenarios/"
-cp -r assets/story/.    "$APPDIR/assets/story/"
-cp assets/spells.json   "$APPDIR/assets/spells.json"
+    cd /tmp/appimage-work
+    /opt/appimage-tools/linuxdeploy.AppImage --appimage-extract-and-run \
+      --appdir "$appdir" --executable "$appdir/usr/bin/fd2" \
+      --desktop-file "$appdir/fd2.desktop" --icon-file "$appdir/fd2.png"
+    /opt/appimage-tools/appimagetool.AppImage --appimage-extract-and-run \
+      --runtime-file /opt/appimage-tools/runtime-x86_64 \
+      "$appdir" "$dist/FD2-x86_64.AppImage"
+    file "$dist/FD2-x86_64.AppImage" | tee "$dist/FD2-x86_64.AppImage.file.txt"
+    sha256sum "$dist/FD2-x86_64.AppImage" | tee "$dist/FD2-x86_64.AppImage.sha256"
+  '
 
-echo "== 3/4 linuxdeploy 補齊動態函式庫(libX11/libasound 等)=="
-docker run --rm -v "$PWD":/src -w /src fd2-build:latest bash -c '
-  set -e
-  command -v file >/dev/null || (apt-get update -qq && apt-get install -y -qq file)  # appimagetool 依賴
-  cd packaging/dist
-  [ -f linuxdeploy-x86_64.AppImage ] || curl -sL -o linuxdeploy-x86_64.AppImage \
-    https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
-  [ -f appimagetool-x86_64.AppImage ] || curl -sL -o appimagetool-x86_64.AppImage \
-    https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
-  chmod +x linuxdeploy-x86_64.AppImage appimagetool-x86_64.AppImage
-  ./linuxdeploy-x86_64.AppImage --appimage-extract-and-run \
-    --appdir AppDir \
-    --executable AppDir/usr/bin/fd2 \
-    --desktop-file AppDir/fd2.desktop \
-    --icon-file AppDir/fd2.png
-
-  echo "== 4/4 封裝 AppImage =="
-  ARCH=x86_64 ./appimagetool-x86_64.AppImage --appimage-extract-and-run AppDir FD2-x86_64.AppImage
-'
-
-docker run --rm -v "$PWD":/src -w /src fd2-build:latest chown -R "$(id -u)":"$(id -g)" "$DIST"  # 要回擁有權
-
-echo "完成:$DIST/FD2-x86_64.AppImage"
-ls -la "$DIST"/*.AppImage
+echo "完成：$REMAKE_ROOT/packaging/dist/FD2-x86_64.AppImage"
