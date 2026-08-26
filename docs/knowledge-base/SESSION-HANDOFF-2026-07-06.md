@@ -7503,3 +7503,20 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   `go test ./internal/battle ./internal/campaign ./cmd/fd2 -count=1`亦全數通過。證據見
   [`native-story-multirune-glyph-token-e1.json`](../data/ui-traces/native-story-multirune-glyph-token-e1.json)。
   這先關閉後段對話資料模型，不代表`FDTXT_029` caller已接正式戰役或達E2。
+
+## 2026-08-27：第18戰後四個caller／21句原生對話正式路徑
+
+- 沿用已閉合的`sub_23CD5`與通用`sub_15F84`生命週期，不重做反組譯。新增
+  [`fd2_ch17_post_native_dialogue.md`](../data/fd2_ch17_post_native_dialogue.md)
+  固定四個caller、FDTXT_018 index7／8／9／10的5／2／2／12句及同步先於對話的
+  原始順序；合計21句。
+- `count-aligned.json`已明示index10跨scene3 line9與scene4 lines0..10。產生器不再
+  錯誤限制一個原始字串只能有單一target，現將多target依序輸出為`segments`，並以
+  各段行數總和核對原始句數；缺context、空映射或句數不等即失敗即關閉。
+- 固定raw equality證明四個caller全部21份`NativeDialogueLayout`與FDTXT控制碼一致。
+  正式第18戰戰後回歸使用與鍵盤共用的具型別輸入及`Game.Update`完成opening、逐字、
+  嘴型、分頁與closing，不再直接清除`g.dialog`；之後才JOIN21／7、進`town_ch19`並
+  驗證存讀檔。聚焦Docker／Xvfb測試與4／21生成器`--check`通過，證據見
+  [`ch17-post-native-dialogue-e1.json`](../data/ui-traces/ch17-post-native-dialogue-e1.json)。
+  未修改DOSBox同狀態逐幀與精確音訊仍缺，故維持`RUNTIME-E1`；依99%玩家可見門檻
+  不再阻擋重製，也不得重開此已閉合切片。

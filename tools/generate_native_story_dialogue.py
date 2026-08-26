@@ -135,9 +135,9 @@ def mapping_for(index_data, source: str, script: str, string_index: int):
     if len(scripts) != 1 or scripts[0]["status"] != "count_aligned":
         raise ValueError(f"{source}/{script}: no unique count-aligned mapping")
     mappings = [item for item in scripts[0]["mappings"] if item["string_index"] == string_index]
-    if len(mappings) != 1 or len(mappings[0]["targets"]) != 1:
-        raise ValueError(f"{source}/{script}#{string_index}: no unique target")
-    return mappings[0], mappings[0]["targets"][0]
+    if len(mappings) != 1 or not mappings[0]["targets"]:
+        raise ValueError(f"{source}/{script}#{string_index}: no unique mapping")
+    return mappings[0], mappings[0]["targets"]
 
 
 def iter_handler_beats(beats):
@@ -180,28 +180,44 @@ def generate(
             raw_cache[source] = parse_fdtxt(raw_dir / f"{source}.bin")
         if string_index < 0 or string_index >= len(raw_cache[source]):
             raise ValueError(f"{addr}: {source} string {string_index} out of range")
-        mapping, target = mapping_for(index_data, source, script, string_index)
+        mapping, targets = mapping_for(index_data, source, script, string_index)
         layouts = decode_layouts(source, string_index, raw_cache[source][string_index], glyphs)
-        lines = target["lines"]
-        if mapping["utterance_count"] != len(layouts) or len(lines) != len(layouts):
+        line_count = sum(len(target["lines"]) for target in targets)
+        if mapping["utterance_count"] != len(layouts) or line_count != len(layouts):
             raise ValueError(
-                f"{addr}: mapping/raw/line count={mapping['utterance_count']}/{len(layouts)}/{len(lines)}"
-            )
-        typed_lines = []
-        for line, layout in zip(lines, layouts):
-            typed_lines.append(
-                {
-                    "line": line,
-                    "upper": layout["control"] in ("FFED", "FFEF"),
-                    "native_dialogue": layout,
-                }
+                f"{addr}: mapping/raw/line count={mapping['utterance_count']}/{len(layouts)}/{line_count}"
             )
         key = f"{addr}#{string_index}"
-        overrides[key] = {
-            "script": script,
-            "scene_index": target["scene_index"],
-            "lines": typed_lines,
-        }
+        layout_cursor = 0
+        segments = []
+        for target in targets:
+            typed_lines = []
+            for line in target["lines"]:
+                layout = layouts[layout_cursor]
+                layout_cursor += 1
+                typed_lines.append(
+                    {
+                        "line": line,
+                        "upper": layout["control"] in ("FFED", "FFEF"),
+                        "native_dialogue": layout,
+                    }
+                )
+            segments.append(
+                {
+                    "script": script,
+                    "scene": target["scene"],
+                    "scene_index": target["scene_index"],
+                    "lines": typed_lines,
+                }
+            )
+        if len(segments) == 1:
+            overrides[key] = {
+                "script": script,
+                "scene_index": segments[0]["scene_index"],
+                "lines": segments[0]["lines"],
+            }
+        else:
+            overrides[key] = {"segments": segments}
         utterances += len(layouts)
     if callers != expected_callers or utterances != expected_utterances:
         raise ValueError(

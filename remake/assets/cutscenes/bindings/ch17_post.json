@@ -19,33 +19,452 @@
     "0x23dd6": {
       "source_dat": "FDTXT_018",
       "script": "ch18.json"
+    },
+    "0x23e11": {
+      "source_dat": "FDTXT_018",
+      "script": "ch18.json"
     }
   },
   "dialogue_overrides": {
+    "0x23d60#7": {
+      "script": "ch18.json",
+      "scene_index": 3,
+      "lines": [
+        {
+          "line": 0,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_018",
+            "string_index": 7,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 21,
+            "pages": [
+              [
+                "『多謝大家的幫助！瑪琳，索",
+                "　菲亞，貝克威，很高興你們",
+                "　能趕來此地與我會合：還有"
+              ],
+              [
+                "　不少我認識的朋友們，我也",
+                "　在此向你們問好。至於幾位",
+                "　初次見面的．這幾位年輕的"
+              ],
+              [
+                "　勇士們怎麼稱呼呢？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_018",
+            "string_index": 7,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『約拿先生，我叫索爾，這兩",
+                "　位是我的好友亞雷斯和悠妮",
+                "　小姐，我們來自東方的羅特"
+              ],
+              [
+                "　帝亞。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_018",
+            "string_index": 7,
+            "utterance": 2,
+            "control": "FFEF",
+            "operand": 21,
+            "pages": [
+              [
+                "『啊！羅特帝亞嗎？那可真是",
+                "　遠道而來了。不知道你們為",
+                "　何大老遠前來此地？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_018",
+            "string_index": 7,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『老貫說，是想請約拿先生您",
+                "　醫治悠妮小姐的失憶症．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 4,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_018",
+            "string_index": 7,
+            "utterance": 4,
+            "control": "FFEF",
+            "operand": 21,
+            "pages": [
+              [
+                "『失憶症？這可難倒我了，如",
+                "　果是魔法所造成的，我或許",
+                "　還能幫得上忙：但若是頭部"
+              ],
+              [
+                "　受傷或是疾病引起的，那就",
+                "　是僧侶分內的工作了．．．",
+                "　不過既然你們都大老遠跑來"
+              ],
+              [
+                "　了，我還是幫她看看吧，悠",
+                "　妮小姐，請妳過來這邊．』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x23d9b#8": {
+      "script": "ch18.json",
+      "scene_index": 3,
+      "lines": [
+        {
+          "line": 5,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_018",
+            "string_index": 8,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 21,
+            "pages": [
+              [
+                "『嗯．．有趣，有趣！這種事",
+                "　我還是第一次見到．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 6,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_018",
+            "string_index": 8,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『約拿先生，怎麼樣？』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x23dd6#9": {
+      "script": "ch18.json",
+      "scene_index": 3,
+      "lines": [
+        {
+          "line": 7,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_018",
+            "string_index": 9,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 21,
+            "pages": [
+              [
+                "『壞消息是，我無法醫治她的",
+                "　失憶症，這有特別的原因：",
+                "　好消息則是，或許我能告訴"
+              ],
+              [
+                "　你她來自何處。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 8,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_018",
+            "string_index": 9,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『這樣也行，我們本來就是要",
+                "　送她回家的。約拿先生，能",
+                "　告訴我們地點在哪裡嗎？』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
     "0x23e11#10": {
       "segments": [
         {
           "script": "ch18.json",
           "scene": "約拿引見,查問悠妮身世",
           "scene_index": 3,
-          "lines": [{ "line": 9 }]
+          "lines": [
+            {
+              "line": 9,
+              "upper": true,
+              "native_dialogue": {
+                "source_dat": "FDTXT_018",
+                "string_index": 10,
+                "utterance": 0,
+                "control": "FFEF",
+                "operand": 21,
+                "pages": [
+                  [
+                    "『現在還不行，因為這涉及我",
+                    "　正在調查的古代秘密，我自",
+                    "　己也無法確定．．不過，也"
+                  ],
+                  [
+                    "　許在這次的事情告一段落之",
+                    "　後，我就可以給你們一個確",
+                    "　切的答案。』"
+                  ]
+                ]
+              }
+            }
+          ]
         },
         {
           "script": "ch18.json",
           "scene": "索爾抉擇,繼續同行",
           "scene_index": 4,
           "lines": [
-            { "line": 0 },
-            { "line": 1 },
-            { "line": 2 },
-            { "line": 3 },
-            { "line": 4 },
-            { "line": 5 },
-            { "line": 6 },
-            { "line": 7 },
-            { "line": 8 },
-            { "line": 9 },
-            { "line": 10 }
+            {
+              "line": 0,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_018",
+                "string_index": 10,
+                "utterance": 1,
+                "control": "FFEE",
+                "operand": 0,
+                "pages": [
+                  [
+                    "『那就是說，我們又得．．",
+                    "　唉！』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 1,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_018",
+                "string_index": 10,
+                "utterance": 2,
+                "control": "FFEE",
+                "operand": 4,
+                "pages": [
+                  [
+                    "『索爾，別嘆氣啦！我們不如",
+                    "　就跟著大家完成這場痛快的",
+                    "　大冒險，這種經驗以後也很"
+                  ],
+                  [
+                    "　難再有啦！』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 2,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_018",
+                "string_index": 10,
+                "utterance": 3,
+                "control": "FFEE",
+                "operand": 8,
+                "pages": [
+                  [
+                    "『是啊！索爾，",
+                    "　你要是不在了，以後的戰鬥",
+                    "　就沒人領導了！』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 3,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_018",
+                "string_index": 10,
+                "utterance": 4,
+                "control": "FFEE",
+                "operand": 0,
+                "pages": [
+                  [
+                    "『可是，我只是想趕快回復悠",
+                    "　妮的記憶．．』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 4,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_018",
+                "string_index": 10,
+                "utterance": 5,
+                "control": "FFEE",
+                "operand": 9,
+                "pages": [
+                  [
+                    "『沒關係，索爾，我一直有種",
+                    "　奇異的預感，我覺得．我覺",
+                    "　得好像只要再這樣走下去，"
+                  ],
+                  [
+                    "　事情一定會有結果的，所以",
+                    "　我想．我希望能繼續這段旅",
+                    "　程．．』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 5,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_018",
+                "string_index": 10,
+                "utterance": 6,
+                "control": "FFEE",
+                "operand": 0,
+                "pages": [
+                  [
+                    "『真．真的嗎？好極了，既然",
+                    "　妳這麼認為，我就沒有意見",
+                    "　了！』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 6,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_018",
+                "string_index": 10,
+                "utterance": 7,
+                "control": "FFEE",
+                "operand": 10,
+                "pages": [
+                  [
+                    "『萬歲！",
+                    "　索爾他們會留下來了！』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 7,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_018",
+                "string_index": 10,
+                "utterance": 8,
+                "control": "FFEE",
+                "operand": 13,
+                "pages": [
+                  [
+                    "『索爾，我們以後要靠你出力",
+                    "　的地方還很多，歡迎你繼續",
+                    "　和我們一起奮鬥。』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 8,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_018",
+                "string_index": 10,
+                "utterance": 9,
+                "control": "FFEE",
+                "operand": 0,
+                "pages": [
+                  [
+                    "『謝謝大家！』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 9,
+              "upper": true,
+              "native_dialogue": {
+                "source_dat": "FDTXT_018",
+                "string_index": 10,
+                "utterance": 10,
+                "control": "FFEF",
+                "operand": 21,
+                "pages": [
+                  [
+                    "『呵呵呵，這裡可不是個敘舊",
+                    "　的好地方，前面的路上有個",
+                    "　小鎮，我們還是先離開這個"
+                  ],
+                  [
+                    "　危險的山崖，去那裡好好休",
+                    "　息一下吧！』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 10,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_018",
+                "string_index": 10,
+                "utterance": 11,
+                "control": "FFEE",
+                "operand": 0,
+                "pages": [
+                  [
+                    "『我同意！大家上路吧！』"
+                  ]
+                ]
+              }
+            }
           ]
         }
       ]
@@ -55,31 +474,133 @@
     "0x23d39": {
       "layout": {
         "units": [
-          { "slot": 0, "x": 16, "y": 7, "pose": 3 },
-          { "slot": 1, "x": 16, "y": 8, "pose": 3 },
-          { "slot": 2, "x": 15, "y": 6, "pose": 3 },
-          { "slot": 3, "x": 15, "y": 7, "pose": 3 },
-          { "slot": 4, "x": 15, "y": 8, "pose": 3 },
-          { "slot": 5, "x": 15, "y": 9, "pose": 3 },
-          { "slot": 6, "x": 14, "y": 6, "pose": 3 },
-          { "slot": 7, "x": 14, "y": 7, "pose": 3 },
-          { "slot": 8, "x": 14, "y": 8, "pose": 3 },
-          { "slot": 9, "x": 14, "y": 9, "pose": 3 },
-          { "slot": 10, "x": 16, "y": 5, "pose": 0 },
-          { "slot": 11, "x": 17, "y": 5, "pose": 0 },
-          { "slot": 12, "x": 18, "y": 5, "pose": 0 },
-          { "slot": 13, "x": 16, "y": 10, "pose": 2 },
-          { "slot": 14, "x": 17, "y": 10, "pose": 2 },
-          { "slot": 15, "x": 18, "y": 10, "pose": 2 },
-          { "slot": 16, "x": 19, "y": 7, "pose": 1 },
-          { "slot": 17, "x": 25, "y": 8, "pose": 1 }
+          {
+            "slot": 0,
+            "x": 16,
+            "y": 7,
+            "pose": 3
+          },
+          {
+            "slot": 1,
+            "x": 16,
+            "y": 8,
+            "pose": 3
+          },
+          {
+            "slot": 2,
+            "x": 15,
+            "y": 6,
+            "pose": 3
+          },
+          {
+            "slot": 3,
+            "x": 15,
+            "y": 7,
+            "pose": 3
+          },
+          {
+            "slot": 4,
+            "x": 15,
+            "y": 8,
+            "pose": 3
+          },
+          {
+            "slot": 5,
+            "x": 15,
+            "y": 9,
+            "pose": 3
+          },
+          {
+            "slot": 6,
+            "x": 14,
+            "y": 6,
+            "pose": 3
+          },
+          {
+            "slot": 7,
+            "x": 14,
+            "y": 7,
+            "pose": 3
+          },
+          {
+            "slot": 8,
+            "x": 14,
+            "y": 8,
+            "pose": 3
+          },
+          {
+            "slot": 9,
+            "x": 14,
+            "y": 9,
+            "pose": 3
+          },
+          {
+            "slot": 10,
+            "x": 16,
+            "y": 5,
+            "pose": 0
+          },
+          {
+            "slot": 11,
+            "x": 17,
+            "y": 5,
+            "pose": 0
+          },
+          {
+            "slot": 12,
+            "x": 18,
+            "y": 5,
+            "pose": 0
+          },
+          {
+            "slot": 13,
+            "x": 16,
+            "y": 10,
+            "pose": 2
+          },
+          {
+            "slot": 14,
+            "x": 17,
+            "y": 10,
+            "pose": 2
+          },
+          {
+            "slot": 15,
+            "x": 18,
+            "y": 10,
+            "pose": 2
+          },
+          {
+            "slot": 16,
+            "x": 19,
+            "y": 7,
+            "pose": 1
+          },
+          {
+            "slot": 17,
+            "x": 25,
+            "y": 8,
+            "pose": 1
+          }
         ],
         "cam_x": 432,
         "cam_y": 96
       }
     },
-    "0x23d74": { "act": { "resource": 56 } },
-    "0x23daf": { "act": { "resource": 57 } },
-    "0x23dea": { "act": { "resource": 58 } }
+    "0x23d74": {
+      "act": {
+        "resource": 56
+      }
+    },
+    "0x23daf": {
+      "act": {
+        "resource": 57
+      }
+    },
+    "0x23dea": {
+      "act": {
+        "resource": 58
+      }
+    }
   }
 }

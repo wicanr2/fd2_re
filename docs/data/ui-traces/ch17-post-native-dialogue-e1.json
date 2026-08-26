@@ -1,0 +1,52 @@
+{
+  "name": "第18戰後四個caller／21句原生故事對話與城鎮存讀檔路徑",
+  "date": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "reference": {
+    "FD2.EXE": {
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "FDTXT_018.bin": {
+      "size": 4094,
+      "md5": "4a412601778db583329e8e657370b978",
+      "sha256": "711e391401ce3b242ca4f78d96bd8d9dad8b5c30a78805e01f8b75927dae4b4c"
+    },
+    "canonical_re": "docs/data/fd2_ch17_post_ida.txt",
+    "binding_evidence": "docs/data/fd2_ch17_post_native_dialogue.md",
+    "design": "docs/knowledge-base/56-fd2-remake-sdd.md#2026-08-09-勘誤raw-ch17-post-是玩家第18戰e1"
+  },
+  "native_dialogue": {
+    "handler": "0x23cd5",
+    "callers": ["0x23d60", "0x23d9b", "0x23dd6", "0x23e11"],
+    "source": "FDTXT_018",
+    "string_indices": [7, 8, 9, 10],
+    "utterance_counts": [5, 2, 2, 12],
+    "total_utterances": 21,
+    "cross_scene": {
+      "string_index": 10,
+      "segments": ["scene3 line9", "scene4 lines0..10"]
+    }
+  },
+  "formal_route": {
+    "nodes": ["battle_ch18", "postbattle_ch18_persist", "town_ch19", "save_slot_3", "load_slot_3"],
+    "reachable_utterances": 21,
+    "initial_runtime_slots": 55,
+    "joined_characters": [21, 7]
+  },
+  "verification": {
+    "generator": "4 callers / 21 utterances --check",
+    "data_test": "TestCh17PostNativeDialogueLayoutsMatchOriginalControlWords",
+    "integrated_test": "TestChapter18PostJoins21And7Town19SaveBoundary",
+    "full_packages": "go test ./internal/battle ./internal/campaign ./cmd/fd2 -count=1；cmd/fd2因2 GB容器上限被終止後，改以4 GB有界容器單獨重跑通過",
+    "result": "pass",
+    "docker_network": "none",
+    "xvfb": "explicit PID with exit trap"
+  },
+  "limitations": [
+    "逐句版面與原始FDTXT控制碼相等，現代場景名稱不是原版ABI。",
+    "測試使用與正式鍵盤共用的具型別故事輸入，但未注入作業系統鍵盤事件。",
+    "沒有未修改原版DOSBox同狀態逐幀或精確音訊證據，因此不提升為PLAYER-E2。"
+  ]
+}

@@ -1251,6 +1251,20 @@ func TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary(t *testing.T) {
 }
 
 func TestChapter18PostJoins21And7Town19SaveBoundary(t *testing.T) {
+	const originalBase = "../../../org_game/炎龍騎士團/FLAME2"
+	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.DAT", "FDTXT.DAT", "DATO.DAT"} {
+		if _, err := os.Stat(filepath.Join(originalBase, archive)); err != nil {
+			t.Skipf("player-provided original %s is absent: %v", archive, err)
+		}
+	}
+	t.Setenv("FD2_ORIGINAL_FDFIELD", filepath.Join(originalBase, "FDFIELD.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDSHAP", filepath.Join(originalBase, "FDSHAP.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(originalBase, "FDOTHER.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(originalBase, "FDTXT.DAT"))
+	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(originalBase, "DATO.DAT"))
+	t.Setenv("FD2_MUTE", "1")
+
 	order := []int{0, 4, 9, 30, 1, 8, 2, 10, 13, 12, 5, 6, 11, 14, 17, 15, 18, 16}
 	g := &Game{
 		partyMembers:   make(map[int]bool, len(order)),
@@ -1262,6 +1276,9 @@ func TestChapter18PostJoins21And7Town19SaveBoundary(t *testing.T) {
 	}
 	for _, id := range order[1:] {
 		g.partyDeploy[id] = true
+	}
+	if err := g.loadMap("assets/maps/map17"); err != nil {
+		t.Fatal(err)
 	}
 	pre, issues, err := campaign.CompileHandlerBinding(assetPath("assets/cutscenes/bindings/ch17_pre.json"))
 	if err != nil || len(issues) != 0 || len(pre) == 0 || pre[0].LoadCH == nil {
@@ -1279,6 +1296,27 @@ func TestChapter18PostJoins21And7Town19SaveBoundary(t *testing.T) {
 			t.Fatalf("ch18 persistent-first slot%d=%#v, want fig%d", i, g.st.Units[i], id)
 		}
 	}
+	emptyX, emptyY, found := 0, 0, false
+	for y := 0; y < g.st.H && !found; y++ {
+		for x := 0; x < g.st.W; x++ {
+			if g.st.UnitAt(x, y) == nil {
+				emptyX, emptyY, found = x, y, true
+				break
+			}
+		}
+	}
+	if !found {
+		t.Fatal("chapter18 map has no empty cursor cell")
+	}
+	g.curX, g.curY = emptyX, emptyY
+	if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{
+		CursorX: emptyX, CursorY: emptyY, VisibleCursorX: emptyX, VisibleCursorY: emptyY,
+	}); err != nil || !g.st.MaterializeNativeMapHUDState(1, 1, 1) || !g.st.MaterializeNativeMapRangeMode(1) {
+		t.Fatalf("chapter18 native view setup err=%v", err)
+	}
+	if err := g.composeNativeMapFrame(); err != nil {
+		t.Fatal(err)
+	}
 	beats, issues, err := campaign.CompileHandlerBinding(assetPath("assets/cutscenes/bindings/ch17_post.json"))
 	if err != nil || len(issues) != 0 {
 		t.Fatalf("ch17_post compile err=%v issues=%#v", err, issues)
@@ -1292,18 +1330,36 @@ func TestChapter18PostJoins21And7Town19SaveBoundary(t *testing.T) {
 	})
 	g.beats, g.beatIdx, g.storyBG = beats, -1, true
 	g.beatAdvance()
-	for frame := 0; frame < 12000 && g.camp.NodeID() != "town_ch19"; frame++ {
+	type dialogueKey struct{ stringIndex, utterance int }
+	seenDialogue := make(map[dialogueKey]bool, 21)
+	for frame := 0; frame < 50000 && g.camp.NodeID() != "town_ch19"; frame++ {
 		if len(g.dialog) != 0 {
-			g.dialog = nil
-			g.beatAdvance()
+			current := g.dialog[len(g.dialog)-1]
+			if current.NativeDialogue == nil || current.Upper == nil ||
+				current.NativeDialogue.SourceDAT != "FDTXT_018" ||
+				current.NativeDialogue.StringIndex < 7 || current.NativeDialogue.StringIndex > 10 ||
+				len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != 5 ||
+				len(g.nativeDialogueProgressive) != len(current.NativeDialogue.Pages) {
+				t.Fatalf("ch17_post dialog lost indexed lifecycle: %#v", current)
+			}
+			seenDialogue[dialogueKey{current.NativeDialogue.StringIndex, current.NativeDialogue.Utterance}] = true
+			if g.nativeStoryDialogueAtInputWait() &&
+				!g.handleNativeStoryInput(g.camp.Node(), nativeStoryInput{enter: true}) {
+				t.Fatal("ch17_post formal story input was rejected")
+			}
 		}
-		g.tick(1)
+		if err := g.Update(); err != nil {
+			t.Fatalf("ch17_post Update: %v", err)
+		}
 		if g.loadErr != "" {
 			t.Fatalf("ch17_post stopped at beat %d/%d: %s", g.beatIdx, len(g.beats), g.loadErr)
 		}
 	}
 	if g.camp.NodeID() != "town_ch19" || g.handlerChapter != 18 || g.st != nil {
 		t.Fatalf("ch17_post boundary node=%q chapter=%d st=%v", g.camp.NodeID(), g.handlerChapter, g.st != nil)
+	}
+	if len(seenDialogue) != 21 {
+		t.Fatalf("ch17_post formal native dialogues=%d, want 21", len(seenDialogue))
 	}
 	for _, id := range []int{21, 7} {
 		if !g.partyMembers[id] {

@@ -4510,6 +4510,13 @@ E2。當時其餘 blocked postbattle 包含玩家第17、18、22、23、24、29�
   保存指標或原始執行檔位元組。
 - FDTXT_018 index10 明確跨越 `ch18.json` scene3 line9 與 scene4 lines0..10；
   binding 使用 `dialogue_overrides.segments`，禁止把跨場景字串壓成單一場景。
+- 四個 caller 必須由原始控制碼產生逐句 `NativeDialogueLayout`：index7／8／9／10
+  分別是5／2／2／12句，共21句。產生器將 `count-aligned.json` 的一個或多個
+  有序 `targets` 轉成單段 `lines` 或多段 `segments`；跨場景只切開可編輯行號，
+  不重設同一 caller 的原始句序。原始 glyph token、控制碼、operand、換行與
+  分頁均需逐筆相等；缺 context、映射不唯一或各段行數總和不等於原始句數時
+  失敗即關閉。完整資料契約見
+  [`fd2_ch17_post_native_dialogue.md`](../data/fd2_ch17_post_native_dialogue.md)。
 - map17 的 group0 37筆加 18個 persistent party records 形成55-slot runtime；
   JOIN21／7 的 current runtime array 沒有 raw +8 記錄，原版 sub_112A5 直接從
   角色資料表建構 persistent record。重製因此只接受已標示「強推論」的
