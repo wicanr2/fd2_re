@@ -2751,6 +2751,20 @@ FDTXT585/586, entry1 decorations and chapter-dependent resource state must be
 materialized together before this primitive may replace the authored runtime
 fallback. No cell is assigned a service label from its position.
 
+#### 教會主選單穩定畫面擷取契約（2026-08-27）
+
+`FD2_SHOT_CHURCH_STATE=selection,pulse,gold` 只可在正式 campaign 的
+`church` 節點、`setupChurch` 已建立 `menu` 模式，且完整原版 indexed 資產已由
+`loadNativeClassUIAssets` 接受後生效。`selection`限0..3、`pulse`限0..3、`gold`
+限0..99999999；入口只清除尚未呈現的 opening job，設定這三個原始可見狀態，並以
+正式 `composeNativeChurchMenuFrame` 預檢完整320×200畫面。任一條件不足時須回復
+原狀並拒絕截圖，不得落入現代RGBA後備選單。
+
+此入口不建立 church、party或角色，不推進campaign、不執行服務與交易，也不注入
+字串、資產或像素。它只讓正常 `Game.Draw` 在固定脈動相位重播既有 production owner，
+用於和原始資源oracle做同狀態比較；因此最多提升重製端`RUNTIME-E1`畫面證據，不能
+取代未修改原版DOSBox的一般玩家`PLAYER-E2`。
+
 The two raw service branches share a second selector contract. `0x2e6b8` is a
 roster/list selector used by `0x2ffa5` and `0x2f8ea`: left/right move by one,
 up/down move by two, movement is bounded (no wrap), and the visible window

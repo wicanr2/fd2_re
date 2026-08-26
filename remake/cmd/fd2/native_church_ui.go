@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -13,6 +15,67 @@ type nativeChurchUIJob struct {
 	frame   int
 	drawn   bool
 	after   func()
+}
+
+func parseNativeChurchShotState(spec string) (selection, pulse, gold int, ok bool) {
+	parts := strings.Split(spec, ",")
+	if len(parts) != 3 {
+		return 0, 0, 0, false
+	}
+	selection, err := strconv.Atoi(parts[0])
+	if err != nil || selection < 0 || selection > 3 {
+		return 0, 0, 0, false
+	}
+	pulse, err = strconv.Atoi(parts[1])
+	if err != nil || pulse < 0 || pulse > 3 {
+		return 0, 0, 0, false
+	}
+	gold, err = strconv.Atoi(parts[2])
+	if err != nil || gold < 0 || gold > 99999999 {
+		return 0, 0, 0, false
+	}
+	return selection, pulse, gold, true
+}
+
+// setNativeChurchShotState 只固定正式教會主選單的可見原始狀態。它要求
+// campaign、節點、資產與 production owner 都已存在，不建立 church、party
+// 或像素；預檢失敗時完整回復，避免截到現代後備畫面。
+func (g *Game) setNativeChurchShotState(selection, pulse, gold int) bool {
+	if selection < 0 || selection > 3 || pulse < 0 || pulse > 3 ||
+		gold < 0 || gold > 99999999 || g.camp == nil ||
+		g.nativeClassUI == nil || g.churchMode != "menu" {
+		return false
+	}
+	n := g.camp.Node()
+	if n == nil || n.Type != "church" {
+		return false
+	}
+	oldJob, oldSelection, oldPulse, oldGold :=
+		g.nativeChurchUIJob, g.churchSel, g.nativeChurchUIPulse, g.gold
+	oldClock, oldLastTick, oldHasTick :=
+		g.nativeChurchUIClock, g.nativeChurchUILastTick, g.nativeChurchUIHasTick
+	oldShotHold := g.nativeChurchUIShotHold
+	rollback := func() {
+		g.nativeChurchUIJob = oldJob
+		g.churchSel = oldSelection
+		g.nativeChurchUIPulse = oldPulse
+		g.gold = oldGold
+		g.nativeChurchUIClock = oldClock
+		g.nativeChurchUILastTick = oldLastTick
+		g.nativeChurchUIHasTick = oldHasTick
+		g.nativeChurchUIShotHold = oldShotHold
+	}
+	g.nativeChurchUIJob = nil
+	g.churchSel = selection
+	g.resetNativeChurchUIPulse()
+	g.nativeChurchUIPulse = pulse
+	g.gold = gold
+	g.nativeChurchUIShotHold = true
+	if _, ok := g.composeNativeChurchMenuFrame(); !ok {
+		rollback()
+		return false
+	}
+	return true
 }
 
 func (g *Game) composeNativeChurchScene() ([]byte, bool) {
@@ -122,7 +185,7 @@ func (g *Game) stepNativeChurchUILifecycle(now time.Time) {
 			}
 		}
 	}
-	if g.nativeChurchUIJob == nil && g.churchMode == "menu" {
+	if g.nativeChurchUIJob == nil && g.churchMode == "menu" && !g.nativeChurchUIShotHold {
 		g.stepNativeChurchUIPulseTick(g.nativeChurchUIClock.Sample(now))
 	}
 }

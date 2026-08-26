@@ -7375,3 +7375,18 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 真實[run 33002216602](https://github.com/wicanr2/fd2_re/actions/runs/33002216602)、job
   `98286706193`於`ubuntu-latest`完成映像建置、無網路組包、空cwd具型別執行、雜湊
   複驗與artifact上傳。這是Linux原生封包E1，不冒稱實體桌面輸入、音訊或長時間遊玩。
+
+## 2026-08-27：正式教會主選單畫面與過時 oracle 勘誤
+
+- 新增失敗即關閉的 `FD2_SHOT_CHURCH_STATE=selection,pulse,gold`：只接受正式
+  `church` 節點、`menu` 模式與完整原版 indexed 資產，並在擷取期間固定脈衝；
+  不建立角色、劇情節點、文字或像素。狀態旁車另記錄 mode、selection、pulse、
+  gold 與 hold，避免把動畫相位誤判成 renderer 缺陷。
+- 由 `campaign_full.json` 的 `church_ch02`、frame20、selection0、pulse2、gold1000
+  重生640×400正式 runtime 畫面。最近鄰縮回320×200後，與同一原始資產及現行
+  `fd2-church-menu-oracle` 產物達 `AE=0/64000`。
+- 舊版版控 oracle 與現行產生器相差320點；它是過時圖片，不是正式 runtime 的
+  0.5%視覺缺陷。本輪已替換 oracle 與舊現代後備 `church-current-remake.png`，
+  證據見 [`native-church-menu-ch02-remake-e1.json`](../data/ui-traces/native-church-menu-ch02-remake-e1.json)。
+- 此成果只提升正式重製端主選單 `RUNTIME-E1`；oracle 不是未修改 DOSBox 擷取，
+  church caller 的一般玩家 E2、精確音訊與原版存檔仍保留為抽驗限制。

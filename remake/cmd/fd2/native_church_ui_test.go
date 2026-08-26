@@ -8,7 +8,78 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
+
+func TestNativeChurchShotStateIsStrictAndStableMenuOnly(t *testing.T) {
+	for _, tc := range []struct {
+		spec                   string
+		selection, pulse, gold int
+		ok                     bool
+	}{
+		{spec: "0,0,0", ok: true},
+		{spec: "3,3,99999999", selection: 3, pulse: 3, gold: 99999999, ok: true},
+		{spec: "-1,0,0"}, {spec: "4,0,0"},
+		{spec: "0,-1,0"}, {spec: "0,4,0"},
+		{spec: "0,0,-1"}, {spec: "0,0,100000000"},
+		{spec: "1"}, {spec: "1,2"}, {spec: "1,2,3,4"}, {spec: "x,0,0"},
+	} {
+		selection, pulse, gold, ok := parseNativeChurchShotState(tc.spec)
+		if ok != tc.ok || selection != tc.selection || pulse != tc.pulse || gold != tc.gold {
+			t.Fatalf("parseNativeChurchShotState(%q)=(%d,%d,%d,%v), want (%d,%d,%d,%v)",
+				tc.spec, selection, pulse, gold, ok,
+				tc.selection, tc.pulse, tc.gold, tc.ok)
+		}
+	}
+
+	const base = "../../../org_game/炎龍騎士團/FLAME2"
+	fdotherPath := filepath.Join(base, "FDOTHER.DAT")
+	if _, err := os.Stat(fdotherPath); err != nil {
+		t.Skip("player-provided original resources are absent")
+	}
+	t.Setenv("FD2_ORIGINAL_FDOTHER", fdotherPath)
+	assets, err := loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{
+		camp: campaign.NewRunner(&campaign.Campaign{
+			Start: "church", Nodes: map[string]*campaign.Node{"church": {Type: "church"}},
+		}),
+		nativeClassUI: assets,
+		churchMode:    "menu", churchSel: 2, nativeChurchUIPulse: 0,
+		nativeChurchTextIndex: 585, nativeChurchUIJob: &nativeChurchUIJob{},
+		gold: 7, nativeChurchUIHasTick: true, nativeChurchUILastTick: 123,
+	}
+	if !g.setNativeChurchShotState(0, 2, 1000) {
+		t.Fatal("native church screenshot state rejected")
+	}
+	if g.churchSel != 0 || g.nativeChurchUIPulse != 2 || g.gold != 1000 ||
+		g.nativeChurchUIJob != nil || g.nativeChurchUIHasTick || g.nativeChurchUILastTick != 0 ||
+		!g.nativeChurchUIShotHold {
+		t.Fatalf("church shot state=(selection %d pulse %d gold %d job %v last %d has %v)",
+			g.churchSel, g.nativeChurchUIPulse, g.gold, g.nativeChurchUIJob != nil,
+			g.nativeChurchUILastTick, g.nativeChurchUIHasTick)
+	}
+	g.stepNativeChurchUILifecycle(time.Unix(100, 0))
+	g.stepNativeChurchUILifecycle(time.Unix(101, 0))
+	if g.nativeChurchUIPulse != 2 {
+		t.Fatalf("stable church shot pulse advanced=%d", g.nativeChurchUIPulse)
+	}
+	if frame, ok := g.composeNativeChurchMenuFrame(); !ok || len(frame) != 320*200 {
+		t.Fatal("native church screenshot state did not reach production compositor")
+	}
+
+	g.churchMode = "revive"
+	if g.setNativeChurchShotState(0, 0, 0) {
+		t.Fatal("non-menu church screenshot state accepted")
+	}
+	g.churchMode = "menu"
+	g.camp.C.Nodes["church"] = &campaign.Node{Type: "town"}
+	if g.setNativeChurchShotState(0, 0, 0) {
+		t.Fatal("non-church screenshot state accepted")
+	}
+}
 
 func TestNativeChurchUILifecyclePresentsOpeningAndClosingRestore(t *testing.T) {
 	g := &Game{nativeChurchUIJob: &nativeChurchUIJob{

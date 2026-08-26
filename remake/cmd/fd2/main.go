@@ -255,6 +255,7 @@ type Game struct {
 	nativeChurchUIPulse      int
 	nativeChurchUILastTick   int
 	nativeChurchUIHasTick    bool
+	nativeChurchUIShotHold   bool
 	nativeChurchTextIndex    int
 	nativeShopUI             *nativeShopUIAssets
 	nativeShopUIJob          *nativeClassUIJob
@@ -7000,6 +7001,15 @@ func (g *Game) Update() error {
 		// FD2_SHOT_RING on battle-start event scenarios.
 		if !g.shotSetup && g.frame >= g.shotFrame-1 {
 			g.shotSetup = true
+			if spec := os.Getenv("FD2_SHOT_CHURCH_STATE"); spec != "" {
+				selection, pulse, gold, ok := parseNativeChurchShotState(spec)
+				if !ok || !g.setNativeChurchShotState(selection, pulse, gold) {
+					return fmt.Errorf(
+						"FD2_SHOT_CHURCH_STATE expects selection 0..3,pulse 0..3,gold 0..99999999 on a stable native church menu: %q",
+						spec,
+					)
+				}
+			}
 			if spec := os.Getenv("FD2_SHOT_TOWN_STATE"); spec != "" {
 				selection, pulse, ok := parseNativeTownShotState(spec)
 				if !ok || !g.setNativeTownShotState(selection, pulse) {

@@ -1,0 +1,43 @@
+{
+  "name": "church_ch02 正式教會主選單與原始資源 oracle",
+  "evidence_level": "RUNTIME-E1",
+  "date": "2026-08-27",
+  "source_campaign": "remake/assets/scenarios/campaign_full.json",
+  "campaign_node": "church_ch02",
+  "state": {
+    "mode": "menu",
+    "selection": 0,
+    "pulse": 2,
+    "gold": 1000,
+    "shot_hold": true,
+    "frame": 20
+  },
+  "reference_files": {
+    "FD2.EXE": "sha256:222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "FDOTHER.DAT": "sha256:a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce",
+    "FDTXT.DAT": "sha256:a4555f8a0e61e884b4f504d56a8bdde11672583bbbbc6506281ae10dcdfb1f69",
+    "DATO.DAT": "sha256:dff859783606ee95d9811e1e564bcb230ef53c4df9130e8b6d42ad37bc8c27bd"
+  },
+  "artifacts": {
+    "runtime_640x400": {
+      "path": "docs/figures/church-current-remake.png",
+      "sha256": "a13a55c7cd81fe281235218881a82afd9e26b4a909b520d219b717f0dad8a965"
+    },
+    "oracle_320x200": {
+      "path": "docs/figures/native-church-menu-indexed.png",
+      "sha256": "a601bbfca8e2254484e91ac37bd961b6dba44e0b1843c07a63f51a850b13b9bf"
+    }
+  },
+  "comparison": {
+    "runtime_resize": "nearest-neighbor 640x400 to 320x200",
+    "absolute_error_pixels": 0,
+    "pixel_count": 64000,
+    "similarity_percent": 100.0
+  },
+  "correction": "舊版 oracle PNG 比現行產生器少了選取格的最新狀態，曾造成 AE=320/64000；以相同原始資產重生後，正式 runtime 與現行 oracle 為 AE=0。",
+  "limitations": [
+    "oracle 是由已閉合的原始資源 compositor 產生，不是未修改原版 DOSBox 擷取。",
+    "此證據只閉合重製正式 church_ch02 主選單的 RUNTIME-E1 畫面，不提升為 PLAYER-E2。",
+    "教會服務的原版 caller 同狀態畫面、精確音訊與一般玩家 DOSBox 路徑仍需另行抽驗。"
+  ]
+}

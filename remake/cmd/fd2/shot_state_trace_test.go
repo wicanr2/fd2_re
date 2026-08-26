@@ -129,6 +129,36 @@ func TestWriteShotStateTraceOmitsSelectionWithoutOwner(t *testing.T) {
 	}
 }
 
+func TestWriteShotStateTraceRecordsStableChurchMenuState(t *testing.T) {
+	g := &Game{
+		camp: campaign.NewRunner(&campaign.Campaign{
+			Start: "church_ch02",
+			Nodes: map[string]*campaign.Node{
+				"church_ch02": {Type: "church"},
+			},
+		}),
+		churchMode: "menu", churchSel: 0, nativeChurchUIPulse: 2,
+		gold: 1000, nativeChurchUIShotHold: true,
+	}
+	path := filepath.Join(t.TempDir(), "shot-state-church.json")
+	if err := g.writeShotStateTrace(path); err != nil {
+		t.Fatal(err)
+	}
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got screenshotStateTrace
+	if err := json.Unmarshal(raw, &got); err != nil {
+		t.Fatal(err)
+	}
+	if got.CampaignNode != "church_ch02" || got.Church == nil ||
+		got.Church.Mode != "menu" || got.Church.Selection != 0 ||
+		got.Church.Pulse != 2 || got.Church.Gold != 1000 || !got.Church.ShotHold {
+		t.Fatalf("church trace=%#v", got)
+	}
+}
+
 func TestWriteShotStateTracePreservesSourceBoundEndingGate(t *testing.T) {
 	g := &Game{nativeEnding: &nativeEndingPreview{
 		campaignSourceBound: true,

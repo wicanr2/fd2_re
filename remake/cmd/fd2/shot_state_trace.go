@@ -33,12 +33,23 @@ type screenshotStateTrace struct {
 	NativeContinueOpeningConfirm bool                       `json:"native_continue_opening_confirm"`
 	NativeContinueCursorOverlay  bool                       `json:"native_continue_cursor_overlay"`
 	NativeEnding                 *screenshotEndingTrace     `json:"native_ending,omitempty"`
+	Church                       *screenshotChurchTrace     `json:"church,omitempty"`
 	DialogCount                  int                        `json:"dialog_count"`
 	BattleEventActive            bool                       `json:"battle_event_active"`
 	NativeTurnStagingActive      bool                       `json:"native_turn_staging_active"`
 	CursorUnit                   *screenshotCursorUnitTrace `json:"cursor_unit,omitempty"`
 	LoadError                    string                     `json:"load_error,omitempty"`
 	Battle                       *screenshotBattleTrace     `json:"battle,omitempty"`
+}
+
+// screenshotChurchTrace 固定教會主選單可見的原始選擇、脈衝與金幣狀態，
+// 避免把動畫相位不同造成的像素差誤判為排版或 renderer 缺陷。
+type screenshotChurchTrace struct {
+	Mode      string `json:"mode"`
+	Selection int    `json:"selection"`
+	Pulse     int    `json:"pulse"`
+	Gold      int    `json:"gold"`
+	ShotHold  bool   `json:"shot_hold"`
 }
 
 // screenshotTitleCutTrace 讓有界 Xvfb 擷取能證明自己位於哪一個原版排程邊界；
@@ -128,6 +139,15 @@ func (g *Game) writeShotStateTrace(path string) error {
 			ScrollY:    g.scrollY,
 			ScrollFrom: step.scrollFrom,
 			ScrollTo:   step.scrollTo,
+		}
+	}
+	if g.camp != nil {
+		if node := g.camp.Node(); node != nil && node.Type == "church" {
+			trace.Church = &screenshotChurchTrace{
+				Mode: g.churchMode, Selection: g.churchSel,
+				Pulse: g.nativeChurchUIPulse, Gold: g.gold,
+				ShotHold: g.nativeChurchUIShotHold,
+			}
 		}
 	}
 	if g.nativeCommand0Targeting {
