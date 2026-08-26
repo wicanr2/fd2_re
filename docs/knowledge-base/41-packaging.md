@@ -13,7 +13,7 @@
 > 4,895,851 bytes，SHA-256
 > `931397d8b60f85af976c68017d17f238a77ab904d4b00d8081e0267ceb0eb286`；內含GUI PE與
 > 受版控scenario／story／spells共72項。兩包均逐名確認未夾帶原版EXE、DAT或存檔。
-> Windows真機與macOS CI仍是外部平台驗收，不由Linux交叉建置冒稱完成。
+> Windows真機與macOS實體機操作仍是外部平台驗收，不由Linux交叉建置冒稱完成。
 >
 > 同一AppImage另在既有Ubuntu 24.04 Noble映像以相同空工作目錄／唯讀資產啟動，
 > `town_ch02`畫面與Debian系工具映像達`AE=0/256000`。Windows ZIP則在Wine 9.0／
@@ -30,6 +30,15 @@
 > workflow成功閘門涵蓋。官方API記錄artifact `fd2-macos-universal` ID 9616984049、
 > 19,299,516 bytes、未過期。無憑證下載端點回應401，故本輪不能在本機解包核對；
 > 更不能以CI綠燈冒稱實體Mac啟動、輸入、存檔、音訊或Gatekeeper驗收。
+>
+> **macOS bundle 資產勘誤與執行驗證：**上述首次CI成功後發現 `.app` 把資料放在
+> `Contents/Resources/assets`，舊 runtime 卻只會從 `Contents/MacOS/assets` 後備查找；因此
+> 首次run不能證明戰役資料可讀。提交`54b4f0a3`依本篇§1契約加入bundle層與失敗即關閉的
+> `FD2_PACKAGE_SELF_CHECK=1`。真實[run 32998426963](https://github.com/wicanr2/fd2_re/actions/runs/32998426963)
+> 的job `98273613960`已在`macos-14`從空白cwd實際執行universal bundle binary，並成功解析
+> `campaign_full.json`、`spells.json`、`ch01.json`與`ch30.json`；其後DMG／tar.gz及artifact
+> 上傳亦成功。這關閉「封包內建資料無法解析」的實際缺陷，但仍不等於視窗、輸入、存檔、
+> 音訊、簽章或實體Mac驗收。
 
 > **2026-08-25 現況勘誤：**本篇第2節的 AppImage 結果是歷史封包證據，不代表
 > 每個新提交都已重新封裝。提交 `8e7683b1` 已以現行 `fd2-go-test-local` 在
@@ -65,7 +74,7 @@
 
 ## 1. 資產路徑解析層(`remake/cmd/fd2/assets.go`)
 
-### 1.1 三層查找,不混層
+### 1.1 五層查找,不混層
 
 唯讀資產(`assets/...` 相對路徑)依序:
 
@@ -75,13 +84,21 @@
 2. **AppImage 唯讀基底** `$APPDIR/assets/...`(僅在 `APPDIR` 環境變數有設時查;AppImage runtime
    執行時會自動設好)——只含**已入庫的原創內容**:`assets/scenarios/`、`assets/story/`、`assets/spells.json`
    (與 `remake/.gitignore` 的例外清單完全一致,見下方「版權資產分離」)。
-3. **cwd 相對**(開發模式既有行為,`APPDIR` 未設、XDG 也無覆蓋時)——`go run`/`go build` 後直接在
+3. **macOS app bundle 唯讀基底**：執行檔若位於 `FD2.app/Contents/MacOS/`，查找同一 bundle 的
+   `Contents/Resources/assets/...`。只有候選實際存在時才採用；不可因路徑外觀像 `.app` 就吞掉
+   後續開發模式。這一層位於 AppImage 後、執行檔同目錄前，且同樣禁止跨層拼接。
+4. **執行檔所在目錄相對**：支援從任意 cwd 直接啟動可攜式 binary。
+5. **cwd 與其祖先相對**(開發模式既有行為)——`go run`/`go build` 後直接在
    `remake/` 目錄執行,行為與改動前完全一致。
 
-三層都沒有 → 回傳未改寫的 cwd 相對路徑,呼叫端的 `os.ReadFile` 自然得到「檔案不存在」,行為與改動前一致。
+五層都沒有 → 回傳未改寫的 cwd 相對路徑,呼叫端的 `os.ReadFile` 自然得到「檔案不存在」,行為與改動前一致。
 
-萬用字元批次載入(sprite/portrait/figani 逐檔 glob)用 `assetGlob`,同樣三層查找,但**第一層有命中
+萬用字元批次載入(sprite/portrait/figani 逐檔 glob)用 `assetGlob`,同樣五層查找,但**第一層有命中
 就整層採用,不同層的檔案不混拼**(避免玩家覆蓋一半、AppImage 基底補另一半這種不一致狀態)。
+
+macOS 封裝必須在空白 cwd 實際執行 bundle 內 binary 的 `FD2_PACKAGE_SELF_CHECK=1` 模式，至少解析
+`campaign_full.json`、`spells.json`、首章與終章 story JSON。這個檢查只驗證可散布資料的封裝與解析，
+不啟動視窗，也不要求玩家自備的原版衍生素材；任一檔缺失或 JSON 無效即以非零狀態失敗。
 
 可寫檔(存檔 `fd2_save.json`、設定 `fd2_settings.json`)一律走 `userDataPath()` → `$XDG_DATA_HOME/fd2_re/`,
 不再用 cwd(唯讀 mount 內無法寫入;這條規則不分 AppImage/開發模式,全平台統一)。
@@ -179,7 +196,7 @@ XDG 慣例,桌面版走 `assetPath()` 三層查找的**第 3 層(cwd 相對)**�
 - 依 worklist 慣例如實標記:**已編譯,未實機測試**。下一步需要 Windows 實機(或 GitHub Actions
   `windows-latest` runner)跑一次 headless 截圖驗證,補齊這塊證據缺口。
 
-## 4. macOS（工作流程已建立，尚未成功執行）
+## 4. macOS（工作流程與 bundle 自我檢查已在真實 runner 成功）
 
 ### 4.1 為什麼不能純 docker 跨編
 
@@ -204,17 +221,12 @@ build)直接原生編譯。草稿見 `.github/workflows/build-macos.yml`:
 - 版權資產一樣不 ship,`.app` 內只放 `assets/scenarios`、`assets/story`、`assets/spells.json`;
   玩家資產一樣走 XDG fallback(見 §1.2)。
 
-### 4.3 未驗證項目(誠實揭露)
+### 4.3 已驗證與仍未驗證項目
 
-這份 workflow **從未在真的 GitHub Actions 上跑過**(此輪工作沒有觸發 CI 的授權範圍),下列都是
-待確認,不是既成結論:
-
-- `CGO_CFLAGS="-arch x86_64"` 這種跨架構 CGO 編譯,ebiten 依賴的 `purego`/`oto`(音訊)是否真的
-  乾淨過關——只是沿用 Go 官方文件記載的已知模式,沒有實測。
-- workflow 已用 `sips` 產生16／32／128／256／512及其2倍尺寸，再由`iconutil`
-  建立真正的 `.icns`；仍須在第一次 macOS CI 執行時驗證圖示集合與 bundle。
-- 未簽署 app 會被 Gatekeeper 擋,需要玩家自己 `xattr -dr com.apple.quarantine FD2.app`,
-  README 待補這段安裝說明。
+真實run `32998426963`已證實雙架構CGO、`lipo`、原生`.icns`、bundle、空白cwd資料解析、
+DMG／tar.gz及artifact上傳。仍未驗證的是實體Mac上的視窗、鍵盤、存檔與音訊，以及簽章／公證。
+未簽署app可能被Gatekeeper阻擋；測試者可依README使用
+`xattr -dr com.apple.quarantine FD2.app`，但這不是正式發行方案。
 
 ## 5. 版權資產分離(三平台一致)
 
@@ -242,5 +254,5 @@ remake/packaging/
   Dockerfile.mingw              Windows 跨編 docker image 定義
   build-windows.sh              Windows exe 建置腳本(docker fd2-build-mingw)
   dist/                         建置產物(gitignore,可重跑腳本重建)
-.github/workflows/build-macos.yml   macOS universal binary CI 草稿(未跑過,見 §4.3)
+.github/workflows/build-macos.yml   macOS universal binary、bundle自我檢查與封包流程
 ```

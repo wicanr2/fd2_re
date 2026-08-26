@@ -81,6 +81,14 @@ jobs:
           PLIST
           chmod +x "$APP/Contents/MacOS/fd2"
 
+      - name: 從空白工作目錄驗證 bundle 資產解析
+        run: |
+          EMPTY_DIR="$(mktemp -d)"
+          trap 'rm -rf "$EMPTY_DIR"' EXIT
+          cd "$EMPTY_DIR"
+          FD2_PACKAGE_SELF_CHECK=1 \
+            "$GITHUB_WORKSPACE/remake/packaging/dist/FD2.app/Contents/MacOS/fd2"
+
       - name: 產 .dmg(APFS,CI 上直接 hdiutil)+ .tar.gz(雙保險,見 mac-app-cross-pack skill §1.6)
         run: |
           cd packaging/dist

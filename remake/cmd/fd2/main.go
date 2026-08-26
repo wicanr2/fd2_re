@@ -10471,6 +10471,13 @@ func (g *Game) aiStep() {
 }
 
 func main() {
+	if os.Getenv("FD2_PACKAGE_SELF_CHECK") == "1" {
+		if err := packageSelfCheck(); err != nil {
+			log.Fatal("封裝自我檢查失敗: ", err)
+		}
+		fmt.Println("FD2 封裝自我檢查通過")
+		return
+	}
 	ebiten.SetWindowSize(logicalW*2, logicalH*2)
 	ebiten.SetWindowTitle("炎龍騎士團2 重製 (fd2_re)")
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)

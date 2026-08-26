@@ -7327,3 +7327,15 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - artifact下載API在無憑證下回應401；因此只證明CI建置與上傳，不宣稱本機解包、
   實體Mac啟動、輸入、存檔、音訊、簽章或Gatekeeper通過。發行自評由4／10增至
   5／10，總分88／100。
+# 2026-08-27：macOS bundle 資產路徑與真實 CI 執行閉合
+
+- 發現先前成功的macOS workflow把可散布資料放在`FD2.app/Contents/Resources/assets`，
+  runtime卻只查XDG、AppImage、`Contents/MacOS/assets`及cwd；因此舊CI只證明建置，不能證明
+  `.app`可讀戰役。`assetPath`／`assetGlob`現新增標準bundle Resources整層，順位位於
+  XDG／AppImage之後、執行檔目錄／cwd之前；候選不存在時繼續後備，不混層。
+- 新增`FD2_PACKAGE_SELF_CHECK=1`，只驗證封包依法可帶的campaign、spells及首／末章story
+  JSON，缺檔或語法錯誤均失敗即關閉。Docker聚焦單元測試及空cwd模擬`.app`執行均通過。
+- 真實GitHub Actions [run 32998426963](https://github.com/wicanr2/fd2_re/actions/runs/32998426963)、
+  job `98273613960`在`macos-14`完成arm64／amd64、lipo、bundle，並成功執行「從空白工作目錄
+  驗證bundle資產解析」步驟；DMG／tar.gz與artifact上傳亦成功。一次性觸發分支已刪除。
+  這是macOS封包資料解析E1，不冒稱實體Mac視窗、輸入、存檔、音訊或Gatekeeper驗收。

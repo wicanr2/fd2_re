@@ -3070,6 +3070,13 @@ SDD 通過後按以下順序重審，不先補 renderer 猜測：
 
    Regression/harness closure (2026-07-26): Docker image `fd2-go-test-local` already contains Xvfb; running `GOMAXPROCS=1 GOFLAGS=-p=1 xvfb-run -a -s "-screen 0 1280x1024x24" go test ./...` passes every remake package. `cmd/fd2.assetPath` now searches cwd ancestors after the existing user-data/AppImage/executable layers, because Go runs package tests with cwd `cmd/fd2`; this fixes test/runtime asset resolution without weakening the editable-user override or fail-closed resource rules. The ch14 continuation-line assertion now follows FDTXT_015 count-aligned indices 2/5 (scene lines 4..12 / 4..8), and conditional ch16 SPAWN remains branch-local after LOADCH with no merged-slot assumption.
 
+   macOS bundle 資產契約（2026-08-27）：可散布的專案資料位於
+   `FD2.app/Contents/Resources/assets`，執行檔則位於 `Contents/MacOS`。資產解析因此在
+   XDG／AppImage 層之後、執行檔目錄／cwd 後備之前，插入既有 bundle 的
+   `../Resources/<relative-path>`；只有指定檔案或目錄確實存在時才承認候選。
+   `assetGlob` 採相同的整層順位。持續整合必須從空白 cwd 執行封裝內的 universal binary
+   自我檢查；戰役、法術表及早期／晚期劇情 JSON 任一缺失或語法無效時，立即失敗即關閉。
+
    Native unit table export boundary (2026-07-26): `tools/extract_native_unit_tables.py` reads the LE object through `le_xref` and emits only raw records: `high_class` `0x61af9` (68×10, helper `0x4e4ff`, selector `FDFIELD b1-0x44`), `lower_class` `0x61da1` (32×24, helper `0x4e4e8`, selector `FDFIELD b1` in the lower branch), and `lower_aux` `0x620a1` (68×11, helper `0x4e4d1`, same selector). Docker extraction against the real FD2.EXE validates all 68/32/68 records. The JSON deliberately keeps selector provenance and `bytes_hex` without assigning gameplay names; it is an editable RE fixture, not permission to substitute portrait/class or to enable HUD optional unit/HP.
 
    可編輯單位邊界：`tools/export_units.py` 接受可選的原始表 JSON，在建構器公式來源完整時可寫出 `native_constructor:{branch,index,record,aux_record}`、`native_record_word42` 與 `native_record_word46`。為避免每列複製完整表格，`tools/sync_native_selector_fields.py --native-tables` 只將已被消費的 race/class 原始位元組、初始命令遮罩、`word42` 與 `word46` 合併到 33 張地圖，保留其餘人工校正欄位。`battle.NativeConstructorTable` 仍是經驗證的可選稽核物件；記錄格式錯誤時失敗即關閉，不退回以 portrait/class 猜測。
