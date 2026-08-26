@@ -7534,3 +7534,17 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 聚焦Docker／Xvfb測試與1／12生成器檢查通過，證據見
   [`ch12-post-native-dialogue-e1.json`](../data/ui-traces/ch12-post-native-dialogue-e1.json)。
   未修改DOSBox同狀態、精確音訊與town14原版輸入仍屬E2限制，依99%門檻不阻擋。
+
+## 2026-08-27：第20戰後六個caller／29句原生對話與round分支
+
+- 沿用已閉合的`sub_23E74`、round gate、83／84 frontier及共用renderer，不重開
+  反組譯。新增
+  [`fd2_ch19_post_native_dialogue.md`](../data/ida/fd2_ch19_post_native_dialogue.md)
+  固定FDTXT_020 index11..16的六caller／29句、控制碼、場景及同步位置。
+- 六caller全量raw equality通過。正式round15路徑以共用具型別輸入播放29句、spawn
+  group1、JOIN25／28並到84 slots；round16只播放共同15句、維持83 slots且不JOIN28。
+  兩路都保持index12後JOIN25再同步、最後index13與chapter20，進`town_ch21`並通過
+  存讀檔；原先直接`g.dialog=nil`的測試捷徑已移除。
+- 聚焦Docker／Xvfb測試與6／29生成器檢查通過，證據見
+  [`ch19-post-native-dialogue-e1.json`](../data/ui-traces/ch19-post-native-dialogue-e1.json)。
+  未修改DOSBox同狀態、精確音訊與town21原版輸入仍屬E2限制，依99%門檻不阻擋。

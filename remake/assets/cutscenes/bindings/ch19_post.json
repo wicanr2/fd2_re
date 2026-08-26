@@ -5,20 +5,651 @@
   "story_index_map": "../dialogue-index/count-aligned.json",
   "runtime_context": {
     "slot_count": 83,
-    "spawn_groups": { "1": 1 }
+    "spawn_groups": {
+      "1": 1
+    }
   },
   "dialogue_contexts": {
-    "0x23fa2": { "source_dat": "FDTXT_020", "script": "ch20.json" },
-    "0x23fdd": { "source_dat": "FDTXT_020", "script": "ch20.json" },
-    "0x2403e": { "source_dat": "FDTXT_020", "script": "ch20.json" },
-    "0x24079": { "source_dat": "FDTXT_020", "script": "ch20.json" },
-    "0x240b4": { "source_dat": "FDTXT_020", "script": "ch20.json" },
-    "0x240e5": { "source_dat": "FDTXT_020", "script": "ch20.json" }
+    "0x23fa2": {
+      "source_dat": "FDTXT_020",
+      "script": "ch20.json"
+    },
+    "0x23fdd": {
+      "source_dat": "FDTXT_020",
+      "script": "ch20.json"
+    },
+    "0x2403e": {
+      "source_dat": "FDTXT_020",
+      "script": "ch20.json"
+    },
+    "0x24079": {
+      "source_dat": "FDTXT_020",
+      "script": "ch20.json"
+    },
+    "0x240b4": {
+      "source_dat": "FDTXT_020",
+      "script": "ch20.json"
+    },
+    "0x240e5": {
+      "source_dat": "FDTXT_020",
+      "script": "ch20.json"
+    }
   },
   "overrides": {
-    "0x23fb6": { "act": { "resource": 59 } },
-    "0x24017": { "act": { "resource": 60 } },
-    "0x24052": { "act": { "resource": 61 } },
-    "0x2408d": { "act": { "resource": 62 } }
+    "0x23fb6": {
+      "act": {
+        "resource": 59
+      }
+    },
+    "0x24017": {
+      "act": {
+        "resource": 60
+      }
+    },
+    "0x24052": {
+      "act": {
+        "resource": 61
+      }
+    },
+    "0x2408d": {
+      "act": {
+        "resource": 62
+      }
+    }
+  },
+  "dialogue_overrides": {
+    "0x23fa2#11": {
+      "script": "ch20.json",
+      "scene_index": 1,
+      "lines": [
+        {
+          "line": 9,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 11,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『這雖是一場苦戰，但感謝神",
+                "　庇佑我們獲得最後的勝利。",
+                "　對了，你們是怎麼碰上這件"
+              ],
+              [
+                "　怪事的？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 10,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 11,
+            "utterance": 1,
+            "control": "FFEF",
+            "operand": 25,
+            "pages": [
+              [
+                "『我們在行經此地時，忽然就",
+                "　遭到這些傢伙和隱形的沼澤",
+                "　怪物攻擊，幸好各位趕來援"
+              ],
+              [
+                "　助，不然我們大概已經不明",
+                "　不白的死在這裡了。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 11,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 11,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 27,
+            "pages": [
+              [
+                "『為何那些傢伙要封鎖死之沼",
+                "　澤？想要阻止我們前往北方",
+                "　嗎？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 12,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 11,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 72,
+            "pages": [
+              [
+                "『可能和來路不明的黑暗軍進",
+                "　攻「聖靈之塔」一事有關．",
+                "　．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 13,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 11,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 13,
+            "pages": [
+              [
+                "『什麼？真有此事？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 14,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 11,
+            "utterance": 5,
+            "control": "FFEF",
+            "operand": 72,
+            "pages": [
+              [
+                "『是的，我們這一支精靈族住",
+                "　在亞述森林，世代負責守護",
+                "　聖地。最近集結的黑暗軍似"
+              ],
+              [
+                "　想進攻聖靈之塔，長老深恐",
+                "　我們的兵力抵敵不住，所以",
+                "　派遣我們向哈斯米爾求救，"
+              ],
+              [
+                "　沒想到敵方已在此布下陷阱",
+                "　．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 15,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 11,
+            "utterance": 6,
+            "control": "FFEE",
+            "operand": 14,
+            "pages": [
+              [
+                "『聖靈之塔究竟有什麼秘密，",
+                "　值得那些傢伙拼命進攻？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 16,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 11,
+            "utterance": 7,
+            "control": "FFEF",
+            "operand": 72,
+            "pages": [
+              [
+                "『我們也不知道，因為那裡已",
+                "　有數百年沒人進去過了．．",
+                "　不過長老深信黑暗軍一旦攻"
+              ],
+              [
+                "　佔聖靈之塔，後果一定不堪",
+                "　設想，所以嚴令我們務必死",
+                "　守。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 17,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 11,
+            "utterance": 8,
+            "control": "FFEE",
+            "operand": 13,
+            "pages": [
+              [
+                "『原來如此。哈斯米爾也遭到",
+                "　敵方攻擊而死傷慘重，救兵",
+                "　可以不必去求了，我們這就"
+              ],
+              [
+                "　去亞述森林增援。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 18,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 11,
+            "utterance": 9,
+            "control": "FFEF",
+            "operand": 72,
+            "pages": [
+              [
+                "『謝謝你們！這樣我們就可以",
+                "　放心的回去覆命了！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x23fdd#12": {
+      "script": "ch20.json",
+      "scene_index": 2,
+      "lines": [
+        {
+          "line": 0,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 12,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『嗯，看來你似乎是個忍者，",
+                "　這個職業現在已經不多見了",
+                "　．．你往後有何打算？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 12,
+            "utterance": 1,
+            "control": "FFEF",
+            "operand": 25,
+            "pages": [
+              [
+                "『我在這森林中隱居多年，這",
+                "　些年來的和平生活，讓我以",
+                "　為這一身技藝已經沒有用了"
+              ],
+              [
+                "　，現在我發現這種想法好像",
+                "　是錯了．如果你們不介意的",
+                "　話，我願意加入你們，與黑"
+              ],
+              [
+                "　暗軍周旋到底！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 12,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『要與黑暗軍對陣，人手再多",
+                "　也不會嫌夠的。歡迎加入！",
+                "　』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x2403e#14": {
+      "script": "ch20.json",
+      "scene_index": 3,
+      "lines": [
+        {
+          "line": 0,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 14,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 28,
+            "pages": [
+              [
+                "『嘎呼吱！希哩呼喀嚕．．",
+                "　』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 14,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 27,
+            "pages": [
+              [
+                "『這不是下等魔族嗎？怎麼會",
+                "　在此出現？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 14,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『看起來好像沒有敵意的樣子",
+                "　，只可惜我不懂魔族的語言",
+                "　．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 14,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『你說什麼？我聽不清楚，稍",
+                "　等一下。』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x24079#15": {
+      "script": "ch20.json",
+      "scene_index": 3,
+      "lines": [
+        {
+          "line": 4,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 15,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 28,
+            "pages": [
+              [
+                "『嘎呼吱！希哩呼喀嚕．．",
+                "　』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 5,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 15,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『嗯，嗯．．我明白了，我會",
+                "　向他們替你求情的。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 6,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 15,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『悠妮，妳懂得它們的話？』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x240b4#16": {
+      "script": "ch20.json",
+      "scene_index": 3,
+      "lines": [
+        {
+          "line": 7,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 16,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『是的，我聽得懂牠在說些什",
+                "　麼，不過我不知道為何我聽",
+                "　得懂．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 8,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 16,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『沒關係，悠妮小姐，牠和你",
+                "　說了些什麼？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 9,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 16,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『他說他叫達克塞，是下等的",
+                "　魔族戰士，因為對首領的命",
+                "　令產生了懷疑，而被處以監"
+              ],
+              [
+                "　禁的刑罰，原先是由「死亡",
+                "　骷髏」所看管，後來我們打",
+                "　倒了負責防守死之沼澤的敵"
+              ],
+              [
+                "　軍，他才乘亂逃了出來。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 10,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 16,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『惡魔族也牽涉其中嗎？這比",
+                "　我想像的還麻煩．．那麼，",
+                "　這位達克塞先生對我們有何"
+              ],
+              [
+                "　指教呢？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 11,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 16,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『他說魔族已遭人以某種方式",
+                "　操縱，他希望能加入我們一",
+                "　行，拯救惡魔族免於毀滅的"
+              ],
+              [
+                "　命運。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 12,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 16,
+            "utterance": 5,
+            "control": "FFEE",
+            "operand": 27,
+            "pages": [
+              [
+                "『惡魔族能夠信任嗎？何況又",
+                "　是下等的惡魔．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 13,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 16,
+            "utterance": 6,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『沒關係！只要有心對抗黑暗",
+                "　軍者，都可以加入我們一行",
+                "　！我們要先能相信別人，才"
+              ],
+              [
+                "　能得到別人的信任。不是嗎",
+                "　？』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x240e5#13": {
+      "script": "ch20.json",
+      "scene_index": 2,
+      "lines": [
+        {
+          "line": 3,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 13,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 21,
+            "pages": [
+              [
+                "『遺憾的是，現在沒時間歡迎",
+                "　新人了，事態緊急，我們得",
+                "　立刻趕往亞述森林。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 4,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_020",
+            "string_index": 13,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『沒問題！我們上路囉！』"
+              ]
+            ]
+          }
+        }
+      ]
+    }
   }
 }

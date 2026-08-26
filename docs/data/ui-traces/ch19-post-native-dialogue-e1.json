@@ -1,0 +1,57 @@
+{
+  "name": "第20戰後六個caller／29句原生對話與round15／16城鎮存讀檔路徑",
+  "date": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "reference": {
+    "FD2.EXE": {
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "FDTXT_020.bin": {
+      "size": 3836,
+      "md5": "fcbfb5783bc0b00cbe2ebff08986408c",
+      "sha256": "64711c85deab36737fea9c12fb7b1280e6dfb3a596865cc3e133c18b61fca1c8"
+    },
+    "canonical_re": "docs/data/ida/fd2_ch19_post_ida.txt",
+    "binding_evidence": "docs/data/ida/fd2_ch19_post_native_dialogue.md"
+  },
+  "native_dialogue": {
+    "handler": "0x23e74",
+    "callers": ["0x23fa2", "0x23fdd", "0x2403e", "0x24079", "0x240b4", "0x240e5"],
+    "source": "FDTXT_020",
+    "string_indices": [11, 12, 14, 15, 16, 13],
+    "utterance_counts": [10, 3, 4, 3, 7, 2],
+    "total_utterances": 29
+  },
+  "formal_routes": [
+    {
+      "round": 15,
+      "reachable_utterances": 29,
+      "maximum_slots": 84,
+      "joins": [25, 28],
+      "destination": "town_ch21"
+    },
+    {
+      "round": 16,
+      "reachable_utterances": 15,
+      "maximum_slots": 83,
+      "joins": [25],
+      "destination": "town_ch21"
+    }
+  ],
+  "verification": {
+    "generator": "6 callers / 29 utterances --check",
+    "data_test": "TestCh19PostNativeDialogueLayoutsMatchOriginalControlWords",
+    "integrated_test": "TestChapter20PostRoundGateControlsReinforcementAndJoinBeforeTown21",
+    "full_packages": "go test ./internal/battle ./internal/campaign ./cmd/fd2 -count=1",
+    "result": "pass",
+    "docker_network": "none",
+    "xvfb": "explicit PID with exit trap"
+  },
+  "limitations": [
+    "29句全量由raw equality驗證；round16只消費合法共同子集15句。",
+    "測試使用與正式鍵盤共用的具型別輸入，但未注入作業系統鍵盤事件。",
+    "沒有未修改DOSBox同狀態逐幀、精確音訊或town21原版輸入證據，因此不提升為PLAYER-E2。"
+  ]
+}

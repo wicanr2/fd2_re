@@ -7128,3 +7128,21 @@ glyph、對話框／頭像／地圖底圖，或分段總行數不等於12時，�
 [`fd2_ch12_post_native_dialogue.md`](../data/fd2_ch12_post_native_dialogue.md)。
 驗收包含固定 raw equality、跨場景順序、正式具型別輸入、持續隊伍／JOIN3與
 `town_ch14`存讀檔。此項最高為`RUNTIME-E1`，未修改DOSBox同狀態與精確音訊另列E2。
+
+## 玩家第 20 戰戰後 29 句原生對話與 round 分支（2026-08-27）
+
+本切片只消費已閉合的 `sub_23E74`、`native_round_gt(15)` 與共用故事對話原語，
+不重開 handler 或 renderer。六個 caller 依 FDTXT_020 index11、12、14、15、16、13
+產生10、3、4、3、7、2筆 `NativeDialogueLayout`，全量29句；每句保存 control、
+operand、頁／列及原始 glyph token，並逐筆對固定 raw equality。
+
+執行期必須維持兩條合法玩家路徑：round15播放全部29句、spawn group1並JOIN28，
+runtime frontier由83到84；round16只播放共同的index11／12／13共15句，維持83 slots
+且不JOIN28。兩路都先在index12後JOIN25再`sync_party`，最後播放index13、進
+chapter20與`town_ch21`。具型別輸入必須完成opening、逐字、嘴型、分頁與closing；
+缺資產、mapping、raw provenance或版面資料時，在交易前失敗即關閉。
+
+原始位址、雜湊、句數、分支與同步位置見
+[`fd2_ch19_post_native_dialogue.md`](../data/ida/fd2_ch19_post_native_dialogue.md)。
+驗收包含六caller全量raw equality、round15／16正式輸入、83／84 frontier、JOIN25／28、
+`town_ch21`與存讀檔。此項最高為`RUNTIME-E1`；未修改DOSBox同狀態與精確音訊另列E2。

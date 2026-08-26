@@ -794,20 +794,28 @@ func TestChapter20PreparationBuildsFixedLeaderPlusFifteenSlotFrontier(t *testing
 
 func TestChapter20PostRoundGateControlsReinforcementAndJoinBeforeTown21(t *testing.T) {
 	originalBase := "../../../org_game/炎龍騎士團/FLAME2"
-	fdotherPath := filepath.Join(originalBase, "FDOTHER.DAT")
-	if _, err := os.Stat(fdotherPath); err != nil {
-		t.Skip("player-provided FDOTHER.DAT is absent")
+	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.DAT", "FDTXT.DAT", "DATO.DAT"} {
+		if _, err := os.Stat(filepath.Join(originalBase, archive)); err != nil {
+			t.Skipf("player-provided original %s is absent: %v", archive, err)
+		}
 	}
-	t.Setenv("FD2_ORIGINAL_FDOTHER", fdotherPath)
+	t.Setenv("FD2_ORIGINAL_FDFIELD", filepath.Join(originalBase, "FDFIELD.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDSHAP", filepath.Join(originalBase, "FDSHAP.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(originalBase, "FDOTHER.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(originalBase, "FDTXT.DAT"))
+	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(originalBase, "DATO.DAT"))
+	t.Setenv("FD2_MUTE", "1")
 	order := []int{0, 9, 4, 30, 1, 8, 2, 10, 13, 12, 5, 6, 11, 14, 17, 15, 18}
 	for _, test := range []struct {
 		name       string
 		round      int
 		wantJoin28 bool
 		wantSlots  int
+		wantDialog int
 	}{
-		{name: "round15_runs_optional_arm", round: 15, wantJoin28: true, wantSlots: 84},
-		{name: "round16_skips_optional_arm", round: 16, wantJoin28: false, wantSlots: 83},
+		{name: "round15_runs_optional_arm", round: 15, wantJoin28: true, wantSlots: 84, wantDialog: 29},
+		{name: "round16_skips_optional_arm", round: 16, wantJoin28: false, wantSlots: 83, wantDialog: 15},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			g := &Game{
@@ -872,15 +880,30 @@ func TestChapter20PostRoundGateControlsReinforcementAndJoinBeforeTown21(t *testi
 			g.beats, g.beatIdx, g.storyBG = beats, -1, true
 			g.beatAdvance()
 			maxSlots := len(g.st.Units)
-			for frame := 0; frame < 12000 && g.camp.NodeID() != "town_ch21"; frame++ {
+			type dialogueKey struct{ stringIndex, utterance int }
+			seenDialogue := make(map[dialogueKey]bool, test.wantDialog)
+			for frame := 0; frame < 80000 && g.camp.NodeID() != "town_ch21"; frame++ {
 				if g.nativePaletteRamp != nil {
 					g.nativePaletteRamp.drawn = true
 				}
 				if len(g.dialog) != 0 {
-					g.dialog = nil
-					g.beatAdvance()
+					current := g.dialog[len(g.dialog)-1]
+					if current.NativeDialogue == nil || current.Upper == nil ||
+						current.NativeDialogue.SourceDAT != "FDTXT_020" ||
+						current.NativeDialogue.StringIndex < 11 || current.NativeDialogue.StringIndex > 16 ||
+						len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != 5 ||
+						len(g.nativeDialogueProgressive) != len(current.NativeDialogue.Pages) {
+						t.Fatalf("ch19_post dialog lost indexed lifecycle: %#v", current)
+					}
+					seenDialogue[dialogueKey{current.NativeDialogue.StringIndex, current.NativeDialogue.Utterance}] = true
+					if g.nativeStoryDialogueAtInputWait() &&
+						!g.handleNativeStoryInput(g.camp.Node(), nativeStoryInput{enter: true}) {
+						t.Fatal("ch19_post formal story input was rejected")
+					}
 				}
-				g.tick(1)
+				if err := g.Update(); err != nil {
+					t.Fatalf("ch19_post Update: %v", err)
+				}
 				if g.st != nil && len(g.st.Units) > maxSlots {
 					maxSlots = len(g.st.Units)
 				}
@@ -889,8 +912,22 @@ func TestChapter20PostRoundGateControlsReinforcementAndJoinBeforeTown21(t *testi
 				}
 			}
 			if g.camp.NodeID() != "town_ch21" || g.handlerChapter != 20 || !g.partyMembers[25] ||
-				g.partyMembers[28] != test.wantJoin28 || maxSlots != test.wantSlots {
-				t.Fatalf("round%d node=%q chapter=%d join25=%v join28=%v maxSlots=%d", test.round, g.camp.NodeID(), g.handlerChapter, g.partyMembers[25], g.partyMembers[28], maxSlots)
+				g.partyMembers[28] != test.wantJoin28 || maxSlots != test.wantSlots || len(seenDialogue) != test.wantDialog {
+				t.Fatalf("round%d node=%q chapter=%d join25=%v join28=%v maxSlots=%d dialogues=%d",
+					test.round, g.camp.NodeID(), g.handlerChapter, g.partyMembers[25], g.partyMembers[28], maxSlots, len(seenDialogue))
+			}
+			t.Setenv("XDG_DATA_HOME", t.TempDir())
+			userDataDirCached = ""
+			g.saveGameToSlot(0)
+			if g.msg != "已存檔(槽位1：town_ch21)" {
+				t.Fatalf("round%d town21 save message=%q", test.round, g.msg)
+			}
+			g.camp.Cur = "postbattle_ch20_persist"
+			g.partyMembers, g.partyJoinOrder = nil, nil
+			g.partyDeploy, g.partyRoster = nil, nil
+			g.loadGameFromSlot(0)
+			if g.camp.NodeID() != "town_ch21" || !g.partyMembers[25] || g.partyMembers[28] != test.wantJoin28 {
+				t.Fatalf("round%d town21 load node=%q members=%v order=%v", test.round, g.camp.NodeID(), g.partyMembers, g.partyJoinOrder)
 			}
 		})
 	}
