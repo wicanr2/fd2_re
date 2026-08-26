@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
 
@@ -98,11 +99,19 @@ func TestNativeCh23LoopsPreserveSetterTickPaletteAndContinuation(t *testing.T) {
 	if got, want := g.nativeFDOTHERPalettePhase, (phaseBefore+30)&15; got != want {
 		t.Fatalf("palette phase=%d want=%d", got, want)
 	}
-	// rawESI=59 is the final full-DAC subtraction; its odd tick does not pass
-	// the independent two-tick palette gate, so every baseline component is 4.
+	// rawESI=59 is the final full-DAC subtraction. 0x11CAC(0) then owns
+	// 0x4DFCC: indices outside E0..EF remain baseline-minus-59 (=4), while the
+	// dynamic range retains the most recent raw palette-cycle window.
+	wantDAC := make([]byte, 256*3)
+	for i := range wantDAC {
+		wantDAC[i] = 4
+	}
+	if err := fdother.ApplyNativeDACPaletteCycleE0EF(wantDAC, g.nativeFDOTHERPalettePhase); err != nil {
+		t.Fatal(err)
+	}
 	for i, component := range g.nativeMapDAC {
-		if component != 4 {
-			t.Fatalf("final DAC[%d]=%d, want 4", i, component)
+		if component != wantDAC[i] {
+			t.Fatalf("final DAC[%d]=%d, want %d", i, component, wantDAC[i])
 		}
 	}
 }

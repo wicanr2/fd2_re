@@ -110,6 +110,37 @@ func TestApplyNativeDACPaletteCycleE0EFRejectsInvalidAtomically(t *testing.T) {
 	}
 }
 
+func TestAdvanceNativeDACPaletteCycleE0EFMatchesUnsignedTickGate(t *testing.T) {
+	dac := make([]byte, 256*3)
+	phase, tick, advanced, err := AdvanceNativeDACPaletteCycleE0EF(dac, 0, 0, 1)
+	if err != nil || advanced || phase != 0 || tick != 0 {
+		t.Fatalf("sub-threshold state=(%d,%d,%v) err=%v", phase, tick, advanced, err)
+	}
+	phase, tick, advanced, err = AdvanceNativeDACPaletteCycleE0EF(dac, phase, tick, 2)
+	if err != nil || !advanced || phase != 1 || tick != 2 {
+		t.Fatalf("accepted state=(%d,%d,%v) err=%v", phase, tick, advanced, err)
+	}
+	if got := dac[0xe0*3 : 0xe0*3+3]; got[0] != 0x0d || got[1] != 0x14 || got[2] != 0x25 {
+		t.Fatalf("phase1 entry=%#v", got)
+	}
+	phase, tick, advanced, err = AdvanceNativeDACPaletteCycleE0EF(dac, 15, 0x7fff, -0x7fff)
+	if err != nil || !advanced || phase != 0 || tick != -0x7fff {
+		t.Fatalf("wrapped state=(%d,%d,%v) err=%v", phase, tick, advanced, err)
+	}
+}
+
+func TestAdvanceNativeDACPaletteCycleE0EFRejectsAtomically(t *testing.T) {
+	dac := make([]byte, 256*3)
+	dac[0xe0*3] = 0x3f
+	want := append([]byte(nil), dac...)
+	if _, _, _, err := AdvanceNativeDACPaletteCycleE0EF(dac, 16, 0, 2); err == nil {
+		t.Fatal("invalid phase accepted")
+	}
+	if !bytes.Equal(dac, want) {
+		t.Fatal("rejected cycle mutated DAC")
+	}
+}
+
 func TestRunNativeCh23InitialLoopPreservesRawSchedule(t *testing.T) {
 	staging := make([]byte, NativeCh23StageStride*NativeCh23StageHeight)
 	for row := 0; row < NativeCh23StageHeight; row++ {

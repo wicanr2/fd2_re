@@ -18,11 +18,10 @@ import (
 // address-shaped because the original evidence only proves staging, latch and
 // timer contracts, not a higher-level transition meaning.
 type nativeCh23AdapterState struct {
-	staging             []byte
-	latch               int
-	tickSnapshot        int
-	paletteTickSnapshot int
-	initialComplete     bool
+	staging         []byte
+	latch           int
+	tickSnapshot    int
+	initialComplete bool
 }
 
 type nativeCh23LoopJob struct {
@@ -63,6 +62,7 @@ func (g *Game) snapshotNativeCh23LoopState() func() {
 	beforeDAC := append([]byte(nil), g.nativeMapDAC...)
 	beforeClock := g.nativeMapClock
 	beforePhase := g.nativeFDOTHERPalettePhase
+	beforePaletteTick := g.nativeFDOTHERPaletteTick
 	return func() {
 		if g.st == state {
 			*state = beforeState
@@ -73,6 +73,7 @@ func (g *Game) snapshotNativeCh23LoopState() func() {
 		g.nativeMapDAC = append(g.nativeMapDAC[:0], beforeDAC...)
 		g.nativeMapClock = beforeClock
 		g.nativeFDOTHERPalettePhase = beforePhase
+		g.nativeFDOTHERPaletteTick = beforePaletteTick
 	}
 }
 
@@ -111,10 +112,7 @@ func (g *Game) startNativeCh23Loop(loop campaign.NativeCh23Loop, then func()) er
 		if err := fdother.BlitNativeCh23Stage(frame, staging); err != nil {
 			return fmt.Errorf("FDOTHER #42 staging: %w", err)
 		}
-		g.nativeCh23State = &nativeCh23AdapterState{
-			staging: staging, tickSnapshot: currentTick,
-			paletteTickSnapshot: currentTick,
-		}
+		g.nativeCh23State = &nativeCh23AdapterState{staging: staging, tickSnapshot: currentTick}
 	} else if g.nativeCh23State == nil || !g.nativeCh23State.initialComplete {
 		return errors.New("native ch23 palette loop lacks completed initial state")
 	}
@@ -146,8 +144,6 @@ func (g *Game) prepareNativeCh23Draw(now time.Time) error {
 	candidateGame.nativeMapWork = append([]byte(nil), g.nativeMapWork...)
 	candidateGame.nativeMapVGA = append([]byte(nil), g.nativeMapVGA...)
 	candidateGame.nativeMapDAC = append([]byte(nil), g.nativeMapDAC...)
-	candidatePhase := g.nativeFDOTHERPalettePhase
-
 	rawTick := candidateGame.nativeMapClock.Sample(now)
 	if rawTick != candidateAdapter.tickSnapshot {
 		if err := fdother.RotateNativeCh23Rows(candidateAdapter.staging, candidateAdapter.latch); err != nil {
@@ -160,13 +156,6 @@ func (g *Game) prepareNativeCh23Draw(now time.Time) error {
 			candidateGame.nativeMapDAC, g.nativeMapAssets.PaletteDAC, 0, 255, j.rawESI,
 		); err != nil {
 			return err
-		}
-		if uint16(rawTick)-uint16(candidateAdapter.paletteTickSnapshot) >= 2 {
-			candidatePhase = (candidatePhase + 1) & 15
-			if err := fdother.ApplyNativeDACPaletteCycleE0EF(candidateGame.nativeMapDAC, candidatePhase); err != nil {
-				return err
-			}
-			candidateAdapter.paletteTickSnapshot = rawTick
 		}
 	}
 	if err := indexedmap.SeedNativeCh23Staging(candidateGame.nativeMapWork, candidateAdapter.staging); err != nil {
@@ -186,7 +175,8 @@ func (g *Game) prepareNativeCh23Draw(now time.Time) error {
 	g.nativeMapWork = candidateGame.nativeMapWork
 	g.nativeMapVGA = candidateGame.nativeMapVGA
 	g.nativeMapDAC = candidateGame.nativeMapDAC
-	g.nativeFDOTHERPalettePhase = candidatePhase
+	g.nativeFDOTHERPalettePhase = candidateGame.nativeFDOTHERPalettePhase
+	g.nativeFDOTHERPaletteTick = candidateGame.nativeFDOTHERPaletteTick
 	j.palette = palette
 	j.waitFrames = 3
 	j.drawn = false

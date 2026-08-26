@@ -239,7 +239,7 @@ func TestNativeItemTargetEntryOwnsIndexedMapFrameAndFailsClosed(t *testing.T) {
 
 func TestComposeNativeMapFrameAdvancesTimingOnceAndFailsAtomically(t *testing.T) {
 	assets, field, state := completeNativeMapFrameFixture(t)
-	g := &Game{nativeMapAssets: assets, m: field, st: state}
+	g := &Game{nativeMapAssets: assets, nativeMapDAC: append([]byte(nil), assets.PaletteDAC...), m: field, st: state}
 	start := time.Unix(500, 0)
 	if err := g.composeNativeMapFrameAt(start); err != nil {
 		t.Fatal(err)
@@ -255,6 +255,12 @@ func TestComposeNativeMapFrameAdvancesTimingOnceAndFailsAtomically(t *testing.T)
 		got.LastTimerTick != 5 {
 		t.Fatalf("second compositor timing=%+v", got)
 	}
+	if g.nativeFDOTHERPalettePhase != 1 || g.nativeFDOTHERPaletteTick != 5 {
+		t.Fatalf("second compositor palette phase=%d tick=%d", g.nativeFDOTHERPalettePhase, g.nativeFDOTHERPaletteTick)
+	}
+	if got := g.nativeMapDAC[0xe0*3 : 0xe0*3+3]; got[0] != 0x0d || got[1] != 0x14 || got[2] != 0x25 {
+		t.Fatalf("second compositor E0 DAC=%#v", got)
+	}
 
 	if !state.MaterializeNativeMapRangeMode(6) {
 		t.Fatal("raw selector 6 rejected by State")
@@ -264,6 +270,8 @@ func TestComposeNativeMapFrameAdvancesTimingOnceAndFailsAtomically(t *testing.T)
 	beforeFlip := state.NativeTerrainFlipState
 	beforeShift := state.NativeUnitPixelShiftState
 	beforeClock := g.nativeMapClock
+	beforeDAC := append([]byte(nil), g.nativeMapDAC...)
+	beforePalettePhase, beforePaletteTick := g.nativeFDOTHERPalettePhase, g.nativeFDOTHERPaletteTick
 	beforeVGA := append([]byte(nil), g.nativeMapVGA...)
 	if err := g.composeNativeMapFrameAt(start.Add(10 * nativeBIOSTickPeriod)); err == nil {
 		t.Fatal("non-drawable selector was accepted")
@@ -272,7 +280,9 @@ func TestComposeNativeMapFrameAdvancesTimingOnceAndFailsAtomically(t *testing.T)
 		state.NativeTerrainPhaseState != beforeTerrain ||
 		state.NativeTerrainFlipState != beforeFlip ||
 		state.NativeUnitPixelShiftState != beforeShift ||
-		g.nativeMapClock != beforeClock || !bytes.Equal(g.nativeMapVGA, beforeVGA) {
+		g.nativeMapClock != beforeClock || !bytes.Equal(g.nativeMapVGA, beforeVGA) ||
+		!bytes.Equal(g.nativeMapDAC, beforeDAC) || g.nativeFDOTHERPalettePhase != beforePalettePhase ||
+		g.nativeFDOTHERPaletteTick != beforePaletteTick {
 		t.Fatal("failed compositor transaction changed timing or pixels")
 	}
 }

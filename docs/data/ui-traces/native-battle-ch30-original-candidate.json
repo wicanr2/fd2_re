@@ -48,12 +48,13 @@
     },
     "aux_surface_diagnostic": {
       "image": "../../figures/native-battle-ch30-remake-aux-candidate-e1.png",
-      "image_sha256": "193d825761051e20422e96cf52d28b65a5963c0d1cdaf2708182a3a0d21f5330",
+      "image_sha256": "cad50796bbcb10184fae69ab48393d7153fb7eb0349b9e45f3bf1a9490003d7d",
       "raw_phase": 10,
-      "ae_320x200": 3242,
+      "palette_phase": 0,
+      "ae_320x200": 0,
       "classification": "同一typed狀態的分階段compositor診斷；不是另一次普通鍵盤GUI擷取，也不提升為完整E2"
     },
-    "visual_gap": "正式indexed擷取已消除舊PNG fallback的洋紅雜訊，並以33筆runtime records形成19筆active、18筆camera-admitted單位；terrain→range→units→foreground→HUD→viewport六階段均成功。合法IDA Pro 9.4其後閉合0x10652→0x11EEE→0x4EB90：raw chapter28／29先以FDOTHER #55與16-byte列偏移表建立312×192底面，再覆蓋destination-preserving terrain tiles。正式runtime接通後，同狀態16個raw phase的最佳phase10由AE=16281降至AE=3242；剩餘差異集中於游標／角色動畫相位。第三方存檔與固定title tick仍使結果停在RUNTIME-E1／候選E2，不宣稱逐像素一致或完整E2"
+    "visual_gap": "正式indexed擷取已消除舊PNG fallback的洋紅雜訊，並以33筆runtime records形成19筆active、18筆camera-admitted單位；terrain→range→units→foreground→HUD→viewport六階段均成功。合法IDA Pro 9.4先閉合0x10652→0x11EEE→0x4EB90的FDOTHER #55輔助底面，再閉合0x11CAC(0)→0x4DFCC的DAC E0..EF cycle。正式runtime接通兩者後，同一typed狀態的合法aux phase10／palette phase0達AE=0/64000。第三方存檔與固定title tick仍使結果停在RUNTIME-E1／候選E2；這證明該相位整幀像素相同，但不外推為完整來源、從頭通關或所有動畫時點E2"
   },
   "limits": [
     "第三方分享站無法證明存檔從頭到尾完全未修改",

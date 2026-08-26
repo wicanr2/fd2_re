@@ -110,6 +110,25 @@ func ApplyNativeDACPaletteCycleE0EF(dac []byte, phase int) error {
 	return nil
 }
 
+// AdvanceNativeDACPaletteCycleE0EF reproduces 0x4DFCC's unsigned BIOS-word
+// gate and process-lifetime phase update. The DAC changes only when at least
+// two low-word ticks elapsed; invalid state leaves every input byte untouched.
+func AdvanceNativeDACPaletteCycleE0EF(dac []byte, phase, lastTimerTick, rawTimerTick int) (nextPhase, nextTimerTick int, advanced bool, err error) {
+	if len(dac) != 256*3 || phase < 0 || phase > 15 ||
+		lastTimerTick < -0x8000 || lastTimerTick > 0x7fff ||
+		rawTimerTick < -0x8000 || rawTimerTick > 0x7fff {
+		return phase, lastTimerTick, false, errors.New("fdother: invalid native DAC cycle timing state")
+	}
+	if uint16(rawTimerTick)-uint16(lastTimerTick) < 2 {
+		return phase, lastTimerTick, false, nil
+	}
+	nextPhase = (phase + 1) & 15
+	if err := ApplyNativeDACPaletteCycleE0EF(dac, nextPhase); err != nil {
+		return phase, lastTimerTick, false, err
+	}
+	return nextPhase, rawTimerTick, true, nil
+}
+
 // NativeCh23LoopSpec 是 raw ch23 handler 的一段固定排程。它只描述
 // 0x24c61..0x24cf2 的呼叫次數、0x24d22 stage 值與原始 ESI 參數；不把
 // 0x11cac 的畫面內容或 0x11d40 的第三參數命名成遊戲語意。

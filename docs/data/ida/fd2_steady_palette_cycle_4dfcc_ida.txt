@@ -1,0 +1,58 @@
+FD2 steady map `0x4DFCC` DAC `0xE0..0xEF` cycle（IDA Pro 9.4）
+================================================================
+
+輸入與位址空間
+--------------
+
+- 輸入：`FD2.EXE`，357074 bytes
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 第一順位：使用者合法 IDA Pro 9.4／Hex-Rays 9.4.0.260610，
+  `fd2-ida-authorized-local:latest` 一次性、無網路 Docker。
+- 第二順位：`fd2-cap-local`／Capstone 5.0.3，覆核 caller、body與raw表。
+- 位址均為 DOS LE loader 的 IDA 線性位址；保留原始名稱
+  `sub_11CAC`、`sub_4DFC0`、`sub_4DFCC`。
+
+caller／consumer
+---------------
+
+- `sub_11CAC` 在 `0x11CB7` 先呼叫 `sub_1297D`；當形式參數 `a1==0` 時，
+  `0x11CC3` 直接呼叫 `sub_4DFCC`，之後才於 `0x11CC8..` 進入
+  `sub_11EEE→sub_122DC→sub_127A9→sub_1ACF3→sub_11EB0` 的 steady frame。
+- 因此 `0x4DFCC` 是一般 `0x11CAC(0)` 畫面的正式 DAC consumer，不只屬於
+  ch23 handler或資訊面板。`0x11CAC(1)` 明確略過它。
+- `sub_4DFC0` 只有一項行為：讀取 BIOS timer low word `[0x046C]`。
+
+`sub_4DFCC` 已證實行為
+----------------------
+
+1. 以 unsigned 16-bit 計算 `BIOS_tick - word_60000`；結果小於2就返回，不寫DAC。
+2. 通過gate後，`byte_60002`加一並以16回繞。
+3. 來源從 `0x60003 + 3*phase` 起；依序將16組RGB寫入VGA DAC indices
+   `0xE0..0xEF`，所以每一phase是93-byte表中的一個16色滑動視窗。
+4. 寫完後重新讀`[0x046C]`並保存到`word_60000`。
+
+`0x60003..0x6005F` 的93 bytes為：
+
+```
+0e 15 26 0d 14 25 0d 14 25 0d 14 25 0c 13 24 0c
+13 24 0b 12 23 0b 12 23 0b 12 23 0b 12 23 0c 13
+24 0c 13 24 0d 14 25 0e 15 26 0e 15 26 0e 15 26
+0e 15 26 0d 14 25 0d 14 25 0d 14 25 0c 13 24 0c
+13 24 0b 12 23 0b 12 23 0b 12 23 0b 12 23 0c 13
+24 0c 13 24 0d 14 25 0e 15 26 0e 15 26
+```
+
+證據分級與重製邊界
+------------------
+
+- **已證實**：caller gate、BIOS timer來源、unsigned delta gate、phase推進、
+  DAC index範圍、93-byte raw表及寫入順序。
+- **已證實勘誤**：先前只在ch23／資訊介面使用既有
+  `ApplyNativeDACPaletteCycleE0EF`，使一般steady map永久停在FDOTHER #0
+  baseline。第30戰#55大量使用index `0xE0`，因此同形狀水面出現系統性色差。
+- **未知／不命名**：高階「水面」只是畫面描述；函式本體是跨章節共享DAC
+  cycle，不得命名為第30戰專用水色函式。
+- 重製正式`ComposeNativeMapFrameAt`只在等價的steady `0x11CAC(0)`交易內更新；
+  必須先在私有DAC／phase／tick candidate執行，後續frame失敗時不得發布。
+  phase、tick或DAC形狀越界時失敗即關閉。

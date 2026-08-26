@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"image"
+	"image/color"
 	"image/png"
 	"os"
 	"path/filepath"
@@ -17,6 +18,7 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
@@ -367,6 +369,123 @@ func TestNativeContinueLateBattleIndexedStages(t *testing.T) {
 		}
 		encodeErr := png.Encode(file, img)
 		closeErr := file.Close()
+		if encodeErr != nil {
+			t.Fatal(encodeErr)
+		}
+		if closeErr != nil {
+			t.Fatal(closeErr)
+		}
+	}
+	if oraclePath := os.Getenv("FD2_LATE_NATIVE_ORACLE"); oraclePath != "" {
+		oracleFile, err := os.Open(oraclePath)
+		if err != nil {
+			t.Fatal(err)
+		}
+		oracle, _, decodeErr := image.Decode(oracleFile)
+		closeErr := oracleFile.Close()
+		if decodeErr != nil {
+			t.Fatal(decodeErr)
+		}
+		if closeErr != nil {
+			t.Fatal(closeErr)
+		}
+		if oracle.Bounds() != image.Rect(0, 0, viewWidth, viewHeight) {
+			t.Fatalf("原版候選尺寸=%v want 320x200", oracle.Bounds())
+		}
+		type phaseMatch struct {
+			AE           int `json:"ae"`
+			Aux          int `json:"aux_phase"`
+			Idle         int `json:"idle_cycle"`
+			Moving       int `json:"moving_cycle"`
+			Flip         int `json:"terrain_flip"`
+			PixelShift   int `json:"unit_pixel_shift"`
+			Palette      int `json:"palette_phase"`
+			Combinations int `json:"combinations"`
+		}
+		best := phaseMatch{AE: viewWidth * viewHeight, Combinations: 16 * 4 * 4 * 2 * 2}
+		var bestVGA []byte
+		for aux := 0; aux < 16; aux++ {
+			for idle := 0; idle < 4; idle++ {
+				for moving := 0; moving < 4; moving++ {
+					for flip := 0; flip < 2; flip++ {
+						for shift := 0; shift < 2; shift++ {
+							candidate := in
+							candidate.Frame.ChapterAuxPhase = aux
+							candidate.Frame.IdleCycle = idle
+							candidate.Frame.MovingCycle = moving
+							candidate.Frame.Flip = flip
+							candidate.Frame.PixelShift = shift
+							candidateWork := make([]byte, indexedmap.NativeUnitPresentWorkSize)
+							candidateVGA := make([]byte, indexedmap.NativeMapVGASize)
+							if err := indexedmap.ComposeNativeFrame(candidateWork, candidateVGA, candidate); err != nil {
+								t.Fatalf("相位組合aux=%d idle=%d moving=%d flip=%d shift=%d: %v", aux, idle, moving, flip, shift, err)
+							}
+							ae := 0
+							for y := 0; y < viewHeight; y++ {
+								for x := 0; x < viewWidth; x++ {
+									gotR, gotG, gotB, _ := g.nativeMapAssets.Palette[candidateVGA[y*viewWidth+x]].RGBA()
+									wantR, wantG, wantB, _ := oracle.At(x, y).RGBA()
+									if gotR != wantR || gotG != wantG || gotB != wantB {
+										ae++
+									}
+								}
+							}
+							if ae < best.AE {
+								best.AE, best.Aux, best.Idle, best.Moving, best.Flip, best.PixelShift = ae, aux, idle, moving, flip, shift
+								bestVGA = append(bestVGA[:0], candidateVGA...)
+							}
+						}
+					}
+				}
+			}
+		}
+		geometryBest := best
+		best.AE = viewWidth * viewHeight
+		var bestPalette color.Palette
+		for palettePhase := 0; palettePhase < 16; palettePhase++ {
+			dac := append([]byte(nil), g.nativeMapAssets.PaletteDAC...)
+			if err := fdother.ApplyNativeDACPaletteCycleE0EF(dac, palettePhase); err != nil {
+				t.Fatal(err)
+			}
+			palette, err := fdother.VGAPaletteFromDAC(dac)
+			if err != nil {
+				t.Fatal(err)
+			}
+			ae := 0
+			for y := 0; y < viewHeight; y++ {
+				for x := 0; x < viewWidth; x++ {
+					gotR, gotG, gotB, _ := palette[bestVGA[y*viewWidth+x]].RGBA()
+					wantR, wantG, wantB, _ := oracle.At(x, y).RGBA()
+					if gotR != wantR || gotG != wantG || gotB != wantB {
+						ae++
+					}
+				}
+			}
+			if ae < best.AE {
+				best = geometryBest
+				best.AE, best.Palette = ae, palettePhase
+				bestPalette = palette
+			}
+		}
+		if best.AE != 0 || best.Aux != 10 || best.Idle != 0 || best.Moving != 0 ||
+			best.Flip != 0 || best.PixelShift != 0 || best.Palette != 0 {
+			t.Fatalf("第30戰相位配對未閉合：%+v", best)
+		}
+		bestJSON, err := json.MarshalIndent(best, "", "  ")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(outputDir, "animation-phase-best.json"), append(bestJSON, '\n'), 0o644); err != nil {
+			t.Fatal(err)
+		}
+		bestImage := image.NewPaletted(image.Rect(0, 0, viewWidth, viewHeight), bestPalette)
+		copy(bestImage.Pix, bestVGA)
+		bestFile, err := os.Create(filepath.Join(outputDir, "animation-phase-best.png"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		encodeErr := png.Encode(bestFile, bestImage)
+		closeErr = bestFile.Close()
 		if encodeErr != nil {
 			t.Fatal(encodeErr)
 		}

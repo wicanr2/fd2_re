@@ -86,6 +86,7 @@ type Game struct {
 	nativeCh28PostPresent      *nativeCh28PostPresentJob          // blocking 0x1DB65 13+6+6 indexed presentation
 	nativeCh22Reload           *nativeCh22ReloadState             // atomic FDFIELD69/FDSHAP46/47/FDOTHER42 tail transaction
 	nativeFDOTHERPalettePhase  int                                // process-lifetime 0x4DFCC phase projection (0..15)
+	nativeFDOTHERPaletteTick   int                                // process-lifetime 0x4DFCC unsigned BIOS low-word snapshot
 	nativeFullDACWhite         bool                               // exact 0x11DF2(0,255,255) overlay for legacy RGB scenes
 	nativeFullDACBlack         bool                               // exact ch07 post 0x11D40(0,255,64)+mode-13h clear
 	nativeMapHUDPersistent     battle.NativeMapHUDPersistentState // gate A save-persistent；anchor process-persistent
@@ -10245,6 +10246,24 @@ func (g *Game) composeNativeMapFrameAt(now time.Time) error {
 	if auxPhase < 0 {
 		auxPhase += 16
 	}
+	currentDAC := g.nativeMapDAC
+	if len(currentDAC) == 0 && nativeMapAssetsAvailable(a) {
+		// loadMap normally owns this initialization. Direct compositor owners
+		// may materialize the same complete original bundle without passing
+		// through loadMap; the immutable bundled baseline is the only safe
+		// equivalent initial DAC, not a synthesized palette.
+		currentDAC = a.PaletteDAC
+	}
+	if len(currentDAC) != 256*3 {
+		return errors.New("native map frame: current DAC unavailable")
+	}
+	candidateDAC := append([]byte(nil), currentDAC...)
+	candidatePalettePhase, candidatePaletteTick, _, err := fdother.AdvanceNativeDACPaletteCycleE0EF(
+		candidateDAC, g.nativeFDOTHERPalettePhase, g.nativeFDOTHERPaletteTick, rawTick,
+	)
+	if err != nil {
+		return fmt.Errorf("native map frame: steady DAC cycle: %w", err)
+	}
 	in, err := buildNativeMapFrameInput(
 		a, g.m, &candidateState, nativeMapFrameRuntime{HUD: hud, ChapterAuxPhase: auxPhase},
 	)
@@ -10262,6 +10281,9 @@ func (g *Game) composeNativeMapFrameAt(now time.Time) error {
 	}
 	*g.st = candidateState
 	g.nativeMapClock = candidateGame.nativeMapClock
+	g.nativeMapDAC = candidateDAC
+	g.nativeFDOTHERPalettePhase = candidatePalettePhase
+	g.nativeFDOTHERPaletteTick = candidatePaletteTick
 	return nil
 }
 

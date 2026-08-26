@@ -6836,3 +6836,22 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   普通鍵盤GUI擷取或完整E2；剩餘差異主要是游標／角色動畫時點。
 - README玩家交付自評由75調至76；增加的是已接正式runtime且可見的末關戰場忠實度，
   不是因新增孤立RE筆記加分。
+
+## 2026-08-26：第30戰 steady DAC cycle 與整幀 AE=0
+
+- 1024組已證實aux／unit／terrain動畫狀態枚舉後，最佳仍為aux phase10、idle0、
+  moving0、flip0、unit shift0，`AE=3242`未再下降；差異遮罩集中在#55透明底面區。
+- RGB histogram顯示原版主要色`(56,85,154)`對應DAC `(14,21,38)`，重製色
+  `(52,81,150)`則來自FDOTHER #0的index`0xE0` baseline `(13,20,37)`。這觸發
+  `0x4DFCC`窄重開，而非猜改#55像素。
+- 合法IDA Pro 9.4／Capstone證實`0x11CAC(0)`於`0x11CC3`固定呼叫`0x4DFCC`；
+  `0x4DFC0`直接讀BIOS low word`[0x46C]`，unsigned delta>=2時phase加一並以16
+  回繞，再將`0x60003`的93-byte滑動視窗寫到DAC `0xE0..0xEF`。`0x11CAC(1)`略過。
+- 正式`composeNativeMapFrameAt`現在把DAC／phase／tick與work／VGA／battle timing
+  一起作原子交易。ch23移除舊的重複palette owner，仍由其原始`0x11CAC(0)`自然消費；
+  回歸固定兩tick gate、16-bit wrap與失敗零發布。
+- 同一typed戰況再枚舉16個raw DAC phase後，aux phase10／palette phase0達
+  `AE=0/64000`。成果圖雜湊更新為
+  `cad50796bbcb10184fae69ab48393d7153fb7eb0349b9e45f3bf1a9490003d7d`。
+  這是第三方存檔的同相位候選E2，不冒稱完整來源或從頭通關E2。
+- README自評因此由76調至77；增加的是正式runtime畫面與可重跑整幀比對。

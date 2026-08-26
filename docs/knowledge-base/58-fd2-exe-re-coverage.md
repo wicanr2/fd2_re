@@ -70,8 +70,10 @@ unit-stage寫入像素，foreground／HUD覆蓋該批像素均為0。這關閉�
 unit覆蓋假說。後續合法IDA Pro 9.4閉合`0x10652→0x11EEE→0x4EB90`：raw chapter
 28／29會先以`FDOTHER #55`和16-byte列偏移表建立312×192底面，再覆蓋會保留目的像素
 的terrain tiles。正式runtime已接此typed底面並維持原子失敗；同狀態16相位比較的
-最佳raw phase 10由`AE=16281/64000`降至`AE=3242/64000`，剩餘差異集中在游標／角色
-動畫相位。第三方存檔、固定title tick與精確音訊仍只到`RUNTIME-E1`／候選E2；主紀錄見
+最佳raw phase 10先由`AE=16281/64000`降至`AE=3242/64000`。後續又閉合
+`0x11CAC(0)→0x4DFCC`的BIOS兩tick gate與DAC `0xE0..0xEF`滑動表；正式runtime接通後，
+同一typed狀態的合法aux phase10／palette phase0達`AE=0/64000`。第三方存檔、固定
+title tick與精確音訊仍只到`RUNTIME-E1`／候選E2；主紀錄見
 [`native-battle-ch30-original-candidate.json`](../data/ui-traces/native-battle-ch30-original-candidate.json)。
 
 2026-08-24 補證：`0x525AF` 是 command 0..9 的 HP 分段除數表；typed

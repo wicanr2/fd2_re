@@ -3928,6 +3928,36 @@ terrain tiles。這取代「第30戰只差 terrain LUT／DAC」的舊縮限。
 直接證據見
 [`fd2_ch29_aux_terrain_surface_ida.txt`](../data/ida/fd2_ch29_aux_terrain_surface_ida.txt)。
 
+### 2026-08-26 — steady `0x11CAC(0)` 的 `0x4DFCC` DAC cycle
+
+第30戰#55底面接通後的剩餘差異主要是palette index `0xE0`：原版同狀態大量
+顯示DAC `(14,21,38)`，重製仍使用FDOTHER #0 baseline `(13,20,37)`。IDA／Capstone
+已證實原因是`0x11CAC`在argument 0時、terrain之前固定呼叫`0x4DFCC`；後者以
+BIOS low word的unsigned delta>=2為gate，推進16-phase raw counter，並將93-byte
+表的一個16色滑動視窗寫到DAC `0xE0..0xEF`。
+
+正式設計沿用既有`ApplyNativeDACPaletteCycleE0EF`，但把owner補回一般steady map：
+
+1. `Game`保存process-lifetime raw phase與16-bit tick snapshot；map load不因更換
+   terrain資產而重置這兩項，符合原版globals生命週期。
+2. `composeNativeMapFrameAt`取得與`0x1297D`相同的battle-local BIOS sample後，在
+   私有DAC clone上執行unsigned delta gate；只有gate通過才`phase=(phase+1)&15`、
+   覆寫`0xE0..0xEF`並更新tick snapshot。
+3. indexed work／VGA、battle timing、DAC、phase與tick必須作為同一交易發布；
+   HUD、資產或任何後續pass失敗時全部維持原值。
+4. `0x11CAC(1)` caller不走此cycle；其他blocking palette job仍保有各自owner，
+   不可在共用Draw路徑重複推進。
+
+直接證據見
+[`fd2_steady_palette_cycle_4dfcc_ida.txt`](../data/ida/fd2_steady_palette_cycle_4dfcc_ida.txt)。
+
+同一外部末關候選的重製端枚舉先固定所有具證據的幾何／動畫狀態：
+`aux 16 × idle 4 × moving 4 × terrain flip 2 × unit shift 2`共1024組；最佳幾何
+仍為aux phase10及其他四項初值0。再只對該indexed frame枚舉16個原始DAC phase，
+palette phase0得到`AE=0/64000`。這同時反證剩餘3242像素來自游標／角色動畫的舊判斷；
+它們其實全由缺失的`0x4DFCC` palette owner造成。測試只輸出最佳組合及旁車，
+不把枚舉值寫進production或手工修改場景。
+
 ### 2026-07-30 — CONTINUE runtime input preflight
 
 合法 IDA Pro 9.4 與 Capstone 已閉合 `0x10010` 的 selector 重建：
@@ -6456,5 +6486,6 @@ chapter28／29載入`FDOTHER #55`，`0x11EEE`先呼叫`0x4EB90`，依16-byte raw
 偏移並複製312×192底面，再進terrain tile loop。正式compositor已在私有work clone
 先建立此底面；缺#55、尺寸錯誤或phase越界皆整幀拒絕。同一候選16相位比較中，
 phase10把`AE=16281/64000`降至`AE=3242/64000`，約減少80.1%；剩餘主要是游標與
-角色動畫時點。這是`RE-CLOSED`／`DATA-READY`／`RUNTIME-E1`，第三方存檔及不同
+角色動畫時點的判斷已被後續`0x4DFCC`證據推翻；實際缺口是steady DAC cycle。
+該中間階段是`RE-CLOSED`／`DATA-READY`／`RUNTIME-E1`，第三方存檔及不同
 擷取時點仍不構成完整`PLAYER-E2`。
