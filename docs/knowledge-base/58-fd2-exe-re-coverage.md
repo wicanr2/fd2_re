@@ -83,6 +83,8 @@ title tick與精確音訊仍只到`RUNTIME-E1`／候選E2；主紀錄見
 所以其證據分級不變；但「玩家必須設定timer環境變數」已不再是runtime阻擋。
 同日Docker／Xvfb正式GUI再完整播放開場，不設定`FD2_NOCUT`或timer覆寫，只送普通
 `Down、Down、Return`，於frame7202抵達相同第30戰狀態；圖與旁車已加入主紀錄。
+再送一次`Return`的獨立重播於frame6300消費opening confirm並開啟共用indexed空游標
+操作面板，證明正式GUI已把戰場操作權交給玩家，而非只停在載入完成狀態。
 
 2026-08-24 補證：`0x525AF` 是 command 0..9 的 HP 分段除數表；typed
 傷害計畫已不再把 command0 的七段套給全部 ID。command6 使用五段，並通過

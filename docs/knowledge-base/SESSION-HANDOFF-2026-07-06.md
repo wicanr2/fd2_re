@@ -6868,3 +6868,7 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   `Down、Down、Return`，frame7202旁車證實`battle_ch30`、round12、camera
   `(16,16)`、cursor`(21,20)`，且無dialog／battle event／turn staging。新圖
   `native-battle-ch30-remake-normal-title-e1.png`為640×400正式runtime擷取。
+- 第二次獨立重播在CONTINUE後再送一次`Return`；frame6300旁車為
+  `opening_confirm=false`、`action_overlay_open=true`、
+  `native_continue_cursor_overlay=true`，畫面可見原版indexed空游標操作面板。
+  `native-battle-ch30-remake-controllable-e1.png`因此成為README的新玩家可見成果圖。

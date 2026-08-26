@@ -49,6 +49,11 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 > cursor，且沒有dialog、battle event或turn staging。這關閉重製端兩項測試夾具，
 > 不改變第三方存檔provenance與完整通關E2限制。
 
+> **同日可操作邊界：** 相同時間線在CONTINUE發布後再送一次普通`Return`；frame6300
+> 旁車證實`opening_confirm=false`、`action_overlay_open=true`、
+> `native_continue_cursor_overlay=true`，原版indexed空游標面板實際可見。這證明正常
+> GUI不只載入第30戰，也把操作權交給玩家；仍不外推為完整來源或從第一戰通關E2。
+
 終局 19×5 owner 的最新玩家可見 E1 證據見
 [`ending-dialogue-native-indexed-remake-e1.json`](../data/ui-traces/ending-dialogue-native-indexed-remake-e1.json)；
 旁車鎖定 `0x2BE44`、`waiting`、第 1／5 區塊且一般對話佇列為零。這只關閉重製端
