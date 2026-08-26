@@ -226,6 +226,47 @@ func TestNativeContinueTitleCallerPublishesLateBattleCandidate(t *testing.T) {
 	}
 }
 
+func TestNativeContinueTitleCallerPublishesChapter29Candidate(t *testing.T) {
+	savePath := os.Getenv("FD2_CH29_NATIVE_SAVE")
+	if savePath == "" {
+		t.Skip("未提供外部第29戰 FD2.SAV 候選")
+	}
+	stored, err := os.ReadFile(savePath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	plain, err := fdsave.Decode(stored)
+	if err != nil {
+		t.Fatal(err)
+	}
+	snapshot, err := fdsave.InspectCurrentSnapshot(plain)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if snapshot.Header.Chapter != 0x1c || snapshot.Header.RuntimeCount != 0x4c ||
+		snapshot.Header.PersistentCount != 0x1f || snapshot.Header.TurnCounter != 2 {
+		t.Fatalf("第29戰候選 header=%+v，不是已審查的來源", snapshot.Header)
+	}
+	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("FD2_NATIVE_TITLE_TICK", "")
+	g := &Game{camp: campaign.NewRunner(graph), titlePhase: "menu"}
+	if err := g.loadNativeContinueFromCurrentSnapshot(savePath); err != nil {
+		t.Fatal(err)
+	}
+	if g.camp == nil || g.camp.NodeID() != "battle_ch29" || g.st == nil || g.sc == nil ||
+		g.titlePhase != "" || g.st.NativeRoundCounter != 2 ||
+		len(g.st.Units) != 0x4c || len(g.partyJoinOrder) != 0x1f ||
+		g.curX != 0x10 || g.curY != 0x3f ||
+		g.st.NativeMapViewState.CameraX != 0x0a || g.st.NativeMapViewState.CameraY != 0x38 {
+		t.Fatalf("第29戰 CONTINUE 發布不完整：node=%q title=%q units=%d party=%d round=%d cursor=(%d,%d) view=%+v",
+			g.camp.NodeID(), g.titlePhase, len(g.st.Units), len(g.partyJoinOrder),
+			g.st.NativeRoundCounter, g.curX, g.curY, g.st.NativeMapViewState)
+	}
+}
+
 func TestNativeContinueLateBattleIndexedStages(t *testing.T) {
 	savePath := os.Getenv("FD2_LATE_NATIVE_SAVE")
 	outputDir := os.Getenv("FD2_LATE_NATIVE_STAGE_DIR")

@@ -6945,3 +6945,24 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 裁決為 production-input `RUNTIME-E1`。測試使用具完整 raw provenance 的 typed
   party，但未送 OS 鍵盤、也不是完整 campaign 或未修改原版存檔；service3 四分支
   的原版同狀態畫面 E2 仍保留。
+
+## 2026-08-26：第29戰未修改原版普通 CONTINUE 候選錨點
+
+- Player Lin 保存站 `fd2004.zip` 與其中 `FD2.SAV` SHA-256 分別為
+  `5f2badb009f27c661303d77043f9745416c522e46ea8388463dd5117b029bdc7`、
+  `6f7095eca2c424bad60c37d2ce1f651a1d13f27d3342413c143369a8c99c46f8`；站方描述
+  為「不太有練」的存檔，未宣稱完全未修改，因此只列候選 E2。
+- 解碼 current snapshot 固定 chapter `0x1c`、round 2、runtime 76、persistent 31、
+  camera `(10,56)`、cursor `(16,63)`。固定版 `FD2.EXE` SHA-256 仍為
+  `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 原始目錄唯讀複製至一次性沙箱後，只用普通鍵盤
+  `Escape×8→Down→等待→Down→等待→Return` 進入第29戰；20秒後戰場穩定，再按
+  Return 開啟原版指令環，證實操作權。較早以重複 Down 或過早送鍵誤入 START／LOAD
+  的畫面已拒收，沒有寫入證據。
+- 圖、雜湊、輸入與限制見
+  [`native-battle-ch29-original-candidate.json`](../data/ui-traces/native-battle-ch29-original-candidate.json)。
+  這補上未修改執行檔／普通輸入的第29戰候選錨點，但尚未證明第29戰勝利→raw post→
+  整備／存讀檔→第30戰為同一原版連續程序。
+- 重製聚焦回歸 `TestNativeContinueTitleCallerPublishesChapter29Candidate` 只在明確提供
+  `FD2_CH29_NATIVE_SAVE` 時執行；同檔正式發布 `battle_ch29`、76筆 runtime、31人
+  persistent、round 2與相同 camera／cursor，達 `RUNTIME-E1`。第三方存檔不加入版控。

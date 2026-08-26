@@ -6547,3 +6547,26 @@ phase10把`AE=16281/64000`降至`AE=3242/64000`，約減少80.1%；剩餘主要�
 角色動畫時點的判斷已被後續`0x4DFCC`證據推翻；實際缺口是steady DAC cycle。
 該中間階段是`RE-CLOSED`／`DATA-READY`／`RUNTIME-E1`，第三方存檔及不同
 擷取時點仍不構成完整`PLAYER-E2`。
+
+## 2026-08-26：第29戰第三方存檔正常 CONTINUE 候選規格
+
+公開保存站的 `fd2004.zip` 提供固定雜湊 `FD2.SAV`；站方只描述為「不太有練」的
+存檔，沒有宣稱完全未修改，因此證據上限是候選 `PLAYER-E2`。解碼後 current-runtime
+標頭為 chapter `0x1c`、round 2、runtime 76、persistent 31、camera `(10,56)`、
+cursor `(16,63)`、visible cursor `(6,7)`；四個 chapter slot 依序為
+`0x1c／0x1d／0x1a／0x1b`。完整來源與雜湊見
+[`native-battle-ch29-original-candidate.json`](../data/ui-traces/native-battle-ch29-original-candidate.json)。
+
+原版驗收固定使用未修改固定版 `FD2.EXE`，由唯讀原始目錄複製至一次性沙箱；標題
+以普通鍵盤 `Escape×8` 收斂動畫，再把兩次 Down 分開送出後確認 CONTINUE。戰場穩定
+畫面後再送 Return，必須開啟原版指令環。這只證實候選存檔能進第29戰並把操作權交給
+玩家，不證明第29戰勝利、戰後、整備、存讀檔與第30戰已形成同一原版連續程序。
+
+重製端不得把第三方存檔加入版控。可選聚焦回歸只從 `FD2_CH29_NATIVE_SAVE` 讀取外部
+檔，先鎖定上述 header，再經正式 `loadNativeContinueFromCurrentSnapshot` 發布；驗收
+必須得到 `battle_ch29`、76筆場上單位、31人持續隊伍、round 2與相同 camera／cursor。
+標頭、章節映射、單位拓撲或原生 indexed 資產任一不符時失敗即關閉，不可回退到
+序章、直接節點或手工物化戰場。GUI 抓圖另須由狀態旁車證實 `battle_ch29`；只看到
+相似畫面不可接受。`TestNativeContinueTitleCallerPublishesChapter29Candidate` 已以外部
+fixed-hash 存檔通過上述正式 handoff，達 `RUNTIME-E1`；測試預設無外部檔時略過，
+不把第三方存檔變成倉庫相依項目。
