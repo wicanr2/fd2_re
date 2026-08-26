@@ -6966,3 +6966,14 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 重製聚焦回歸 `TestNativeContinueTitleCallerPublishesChapter29Candidate` 只在明確提供
   `FD2_CH29_NATIVE_SAVE` 時執行；同檔正式發布 `battle_ch29`、76筆 runtime、31人
   persistent、round 2與相同 camera／cursor，達 `RUNTIME-E1`。第三方存檔不加入版控。
+
+## 2026-08-26：第29戰未修改原版單次回合循環候選 E2
+
+- 以上述 `fd2004` 固定雜湊存檔重新建立乾淨沙箱；同一個有界 Docker／DOSBox 程序
+  由普通 `CONTINUE` 進場，再以普通鍵盤連續完成 `END→YES→ENEMY PHASE`。
+- 約150秒後敵方演出完成；再按 Return 開啟索爾狀態面板，直接證實操作權已交回
+  玩家。確認框、敵方階段與玩家返回三格圖及 SHA-256 已加入
+  [`native-battle-ch29-original-candidate.json`](../data/ui-traces/native-battle-ch29-original-candidate.json)。
+- 裁決提升為第29戰一輪玩家／敵方控制權交接的單次連續候選 `PLAYER-E2`；第三方
+  存檔沒有完整來源聲明、容器停用音訊，且尚未從第29戰勝利連續抵達第30戰，因此
+  不提升為完整第29→30戰一般玩家 E2，也不調高 README 的79分自評。

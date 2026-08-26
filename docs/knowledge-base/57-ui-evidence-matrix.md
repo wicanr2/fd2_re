@@ -72,6 +72,13 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 > 這補上第29戰未修改執行檔／普通輸入的候選錨點，但第三方存檔來源不完整，且尚未
 > 從該戰勝利連續走到第30戰，因此不升格為完整第29→30戰一般玩家 E2。
 
+> **同日第29戰單次回合循環補證：** 以上述相同固定雜湊存檔重新建立乾淨沙箱；同一
+> DOSBox程序由普通`CONTINUE`進場後，連續完成`END→YES→ENEMY PHASE`，等待約150秒
+> 完成敵方演出，再以普通Return開啟索爾狀態面板。這把第29戰候選由「可操作錨點」
+> 提升為一輪玩家／敵方控制權交接的單次連續候選E2。三格畫面與完整時間線仍沿用
+> [`native-battle-ch29-original-candidate.json`](../data/ui-traces/native-battle-ch29-original-candidate.json)；
+> 第三方來源、停用音訊及尚未完成第29戰勝利→第30戰仍是限制。
+
 > **同日正式戰役長鏈補證：** 冷讀 `preparation_ch30` 後的正式
 > `story_ch30→battle_ch30` 先前只驗證單位數與結果接縫，實際缺少 HUD／range entry，
 > 且非 runtime-append setup 使 FDFIELD 單位留在 selector cache 外。現行資料以

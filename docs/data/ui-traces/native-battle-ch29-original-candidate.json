@@ -15,17 +15,37 @@
     "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
     "container": "fd2-dosbox-screenshot-local:latest",
     "sandbox": "原始 FLAME2 唯讀掛載後複製至一次性 /tmp 沙箱；候選存檔只覆蓋沙箱內 FD2.SAV",
-    "input": "wait 10s；Escape×8；Down；wait 1s；Down；wait 1s；Return(CONTINUE)；wait 20s；capture；Return；wait 2s；capture",
+    "input": "wait 10s；Escape×8；Down；wait 1s；Down；wait 1s；Return(CONTINUE)；wait 20s；capture；Return；wait 2s；capture；Down；wait 1s；Return(END)；wait 2s；capture；Return(YES)；wait 3s；capture；wait 150s；capture；Return；wait 2s；capture",
     "mutation": "沒有修改 FD2.EXE、記憶體、章節、路由或畫面；兩次 Down 分開送出，避免 DOSBox 遺漏重複鍵",
-    "verified": "普通 CONTINUE 顯示 raw chapter 0x1c 戰場；後續普通 Return 開啟原版指令環，證明玩家已取得操作權",
+    "verified": "普通 CONTINUE 顯示 raw chapter 0x1c 戰場；同一程序以普通輸入完成 END→YES→ENEMY PHASE，等待敵方演出後再以 Return 開啟索爾狀態面板，證明控制權交回玩家",
     "images": {
       "field": "../../figures/native-battle-ch29-original-candidate.png",
       "field_sha256": "c8b71f96c27074baf67f79e360d8f1b89c4bedf85a27ee226a707b298988efc5",
       "action_ring": "../../figures/native-battle-ch29-original-action-ring-candidate.png",
       "action_ring_sha256": "4ee88aef130739ef7b80f8cd6edcccc3ff1b1b6329e5895bc1867fdbf779a328",
       "contact_sheet": "../../figures/native-battle-ch29-original-control-candidate.png",
-      "contact_sheet_sha256": "71b67605198d479d506fda496ef2b9c87be0d08e1e577dbcb68d5787c2a0f3f5"
+      "contact_sheet_sha256": "71b67605198d479d506fda496ef2b9c87be0d08e1e577dbcb68d5787c2a0f3f5",
+      "end_confirm": "../../figures/native-battle-ch29-original-end-confirm-candidate.png",
+      "end_confirm_sha256": "84ce82b3a5139aa8369c9b1ccd4ffd63caed70dc1f75914a204197506bd0fa56",
+      "enemy_phase": "../../figures/native-battle-ch29-original-enemy-phase-candidate.png",
+      "enemy_phase_sha256": "5fe2d15726659a349d2e77cf59b100fc8105c0663c6d945a7f678aff21540727",
+      "player_return": "../../figures/native-battle-ch29-original-player-return-candidate.png",
+      "player_return_sha256": "84b580101b9dbdcac13922ab3009298e4f12121d4012529b639bb3fdb7dbaf2d",
+      "turn_cycle": "../../figures/native-battle-ch29-original-turn-cycle-candidate.png",
+      "turn_cycle_sha256": "71ce3428b6155ac3ff06336246dc47d1456c220bfc201abb73acdf73e94b7881"
     }
+  },
+  "continuous_turn_cycle": {
+    "process": "同一個有界 Docker／DOSBox 程序；沒有重啟、讀檔或狀態注入",
+    "sequence": [
+      "普通 Return 開啟指令環",
+      "Down 後 Return 選擇 END",
+      "確認框以預設 YES 接受",
+      "畫面顯示 ENEMY PHASE",
+      "等待約 150 秒完成敵方演出",
+      "普通 Return 開啟索爾狀態面板"
+    ],
+    "decision": "未修改原版執行與普通輸入的單次連續候選 PLAYER-E2；證明第29戰可完成一輪玩家／敵方控制權交接"
   },
   "decoded_save": {
     "checksum": "0x00191102",
@@ -48,7 +68,7 @@
   },
   "limits": [
     "分享站說明沒有宣稱完全未修改，無法證明存檔從頭到尾的完整來源",
-    "本紀錄證明固定版未修改原版由普通 CONTINUE 進第29戰並可開啟指令環，不證明已從第29戰勝利連續進第30戰",
+    "本紀錄證明固定版未修改原版由普通 CONTINUE 進第29戰並完成一輪玩家／敵方控制權交接，不證明已從第29戰勝利連續進第30戰",
     "nosound 容器不提供精確音訊證據",
     "較早未分離 Down 或過早送鍵的擷取曾誤入 START／LOAD；那些畫面已拒收且不作證據"
   ]

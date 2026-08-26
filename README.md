@@ -189,12 +189,13 @@ writer／consumer 時重開。
 回歸仍不是未修改原版的一般玩家 E2，也不以單張圖宣稱原版逐像素一致。命令、雜湊與限制見
 [擷取紀錄](docs/data/ui-traces/story-ch30-pre-remake-e1.json)。*
 
-![未修改原版第29戰候選：戰場與普通 Return 開啟指令環](docs/figures/native-battle-ch29-original-control-candidate.png)
+![未修改原版第29戰候選：END確認、敵方階段、交回玩家操作權](docs/figures/native-battle-ch29-original-turn-cycle-candidate.png)
 
 *固定雜湊 `fd2004` 候選存檔由未修改 `FD2.EXE` 的普通標題 `CONTINUE` 進入
-原始章節值 `0x1c`；左圖是穩定戰場，右圖是再按一次 `Return` 後的原版指令環。
-這補上第29戰可操作錨點，但存檔仍來自第三方分享站，也尚未從該戰勝利連續走到
-第30戰，因此只列候選 E2。來源、輸入、雜湊與拒收的錯誤路徑見
+原始章節值 `0x1c`；三格來自同一個 Docker／DOSBox 程序，依序為普通鍵盤
+`END` 確認、`ENEMY PHASE`，以及約 150 秒後以 `Return` 開啟索爾狀態面板。
+這補上第29戰完整一輪玩家／敵方控制權交接，但存檔仍來自第三方分享站，也尚未
+從該戰勝利連續走到第30戰，因此只列候選 E2。來源、輸入、雜湊與拒收的錯誤路徑見
 [擷取紀錄](docs/data/ui-traces/native-battle-ch29-original-candidate.json)。*
 
 ![重製端第30戰：接通原版輔助底面的原生索引戰場](docs/figures/native-battle-ch30-remake-aux-candidate-e1.png)
