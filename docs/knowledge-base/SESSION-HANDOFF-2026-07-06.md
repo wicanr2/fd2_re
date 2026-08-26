@@ -7206,3 +7206,15 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   資產作XDG覆蓋層，從空工作目錄實跑AppImage抵達`town_ch02`，產生203,943-byte
   PNG；產物與畫面UID/GID均為1000:1000，AppImage checksum複驗通過。
 - 沒有FD2容器殘留。唯一懸空清單項經前批確認屬其他VMS專案，未刪除。
+
+## 2026-08-26：標題穩定主選單像素閉合
+
+- 由目前原始碼在 `fd2-go-test-local` 一次性、無網路、指定UID/GID的容器內重建，
+  以 `FD2_SHOT_TITLE_MENU=1` 擷取正式 Ebiten renderer；修正前整幀
+  `AE=917/64000`，差異邊界只在三列選單 `x=129..190、y=162..189`，背景與標題
+  美術沒有差異。
+- 規格先固定共同向下兩列的原生座標 `164／173／182`；接入後重新擷取並以最近鄰
+  縮回320×200，與未修改原版 `title-original-dosbox.png` 達整幀
+  `AE=0/64000`。更新 `title-remake-runtime.png`，並以決定性單元測試鎖定三列。
+- 此結果撤回 `57` 的60–70%穩定選單粗估，但只關閉靜態主選單；完整開場幕序與
+  `logozoom` 仍為近似。沒有新開 RE，也不把透明合成候選的差異誤當正式 runtime。

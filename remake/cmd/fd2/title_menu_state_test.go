@@ -2,6 +2,15 @@ package main
 
 import "testing"
 
+func TestTitleMenuRowsMatchStableDOSBoxOracle(t *testing.T) {
+	want := [...]int{164, 173, 182}
+	for item, y := range want {
+		if got := titleMenuY(item); got != y {
+			t.Fatalf("title menu row %d = %d, want %d", item, got, y)
+		}
+	}
+}
+
 func TestTitleCutSkipIsPerStepAndDoesNotGrantEscapeOverride(t *testing.T) {
 	g := &Game{titlePhase: "cutscene", cutIdx: 2, cutFrame: 7, cutTick: 3}
 	if !g.trySkipTitleCutStep(cutStep{skip: true}, true) {

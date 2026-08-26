@@ -34,6 +34,15 @@ type titleAssets struct {
 	aniPath   string              // 玩家自備 ANI.DAT 路徑(""=無,退回捲動 fallback)
 }
 
+const (
+	titleMenuTopY = 164
+	titleMenuGapY = 9
+)
+
+func titleMenuY(item int) int {
+	return titleMenuTopY + item*titleMenuGapY
+}
+
 // applyTitleMenuEvent 是標題主選單輸入的單一具型別擁有者；Ebiten 鍵盤與
 // 決定性玩家路徑測試都必須經過此接縫。
 func (g *Game) applyTitleMenuEvent(event TitleMenuEvent) bool {
@@ -393,7 +402,7 @@ func (g *Game) drawTitle(screen *ebiten.Image) {
 			b := it.Bounds()
 			iop := &ebiten.DrawImageOptions{}
 			iop.GeoM.Scale(2, 2)
-			iop.GeoM.Translate(float64((320-b.Dx())/2*2), float64((162+i*9)*2)) // dosbox 實拍座標:y=162/171/180、間距9@320
+			iop.GeoM.Translate(float64((320-b.Dx())/2*2), float64(titleMenuY(i)*2)) // 同狀態 DOSBox 最佳匹配:y=164/173/182、間距9@320
 			screen.DrawImage(it, iop)
 		}
 		// F2 仍可切換重製端音源，但原版標題沒有常駐提示；忠實畫面不疊診斷文字。

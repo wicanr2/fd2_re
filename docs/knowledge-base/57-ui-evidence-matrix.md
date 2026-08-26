@@ -16,7 +16,7 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 
 | 畫面／流程 | 視覺還原估計 | 直接證據與主要差距 |
 |---|---:|---|
-| title/main menu | 60–70% | Docker／Xvfb 已擷取重製端實際標題選單 [`title-remake-runtime.png`](../figures/title-remake-runtime.png)，與 DOSBox oracle [`title-original-dosbox.png`](../figures/title-original-dosbox.png) 可在 320×200 內容上直接對照；非原版 F2 常駐提示已自正式標題移除，F2切換功能仍保留。開場按鍵現只中斷原始第三參數允許略過的當前 AFM 幕並繼續下一幕，不再由 ESC 無條件略過整段；logozoom仍是近似。CONTINUE 的 typed adapter 與 `Game` 原子發布契約已有 E1 回歸，但正式標題 caller 尚未提供 signed BIOS tick、泛用 pending-group writer／formula，故 current-battle restore 仍 fail-closed。README 的 `title.png` 仍只是錯色盤的 raw 解碼產物，不可當 runtime screenshot |
+| title/main menu | 穩定選單100%；完整開場partial | 2026-08-26 由目前原始碼重新建置並以 Docker／Xvfb 擷取 [`title-remake-runtime.png`](../figures/title-remake-runtime.png)，最近鄰縮回320×200後與 DOSBox oracle [`title-original-dosbox.png`](../figures/title-original-dosbox.png) 達整幀 `AE=0/64000`；三列原生座標為164／173／182。非原版 F2 常駐提示已移除，F2切換功能仍保留。這只關閉穩定主選單畫面；開場按鍵逐幕契約已接，但完整幕序與 `logozoom` 仍為近似。LOAD／CONTINUE 的正式事件、外部晚期有效槽及 current-battle restore 已達來源約束 E1，第三方來源與一般玩家 E2 限制另依 `58` 記錄。README 的研究圖不可當 runtime screenshot |
 | tactical field/HUD | 50–60%（E1；ch01、ch29及ch30候選錨點） | 目前正式 `story_ch00_handler` 截圖 `native-map-ch01-remake-handler.png` 與 `native-map-ch01-original-video.png` 仍是不同狀態，只能證明原始資源／渲染輸入及隊伍 handoff 已被消費；重製圖已改以唯讀原版 `FDOTHER/FDSHAP/FDICON` 與 IDA 已證實的 FDFIELD b1 selector 產生，修正舊 b0 映射的敵軍圖像錯誤。舊 pair 的場上單位、游標與 HUD 差異不能作為目前渲染器缺陷證據；舊 `native-map-ch01-remake.png` 是直接節點除錯歷史證據，不再作正式比較。較早 E1 raw 相機／游標欄位也不等於畫面像素一致。2026-08-10 另以同一 `FD2.SAV`、相機、游標、回合與單位狀態建立 DOSBox／重製逐幀範圍比較，最近鄰縮放後內容區只剩 22 個畫布邊界差異像素，記為 ch01 scoped E2 candidate。2026-08-26 又以外部末關候選從正式標題普通鍵盤 `CONTINUE` 抵達 `battle_ch30`；旁車配對round12、camera `(16,16)`、cursor `(21,20)`，正式indexed六階段寫入18筆鏡頭內單位，且foreground／HUD未覆蓋unit stage。舊洋紅亂圖已勘誤為未提供`FD2_ORIGINAL_FDOTHER`而走PNG fallback，不是renderer缺陷。合法IDA其後閉合並接通`FDOTHER #55`輔助底面與`0x11CAC(0)→0x4DFCC`的DAC `0xE0..0xEF` cycle；同一typed戰況的合法aux phase10／palette phase0達320×200整幀`AE=0/64000`。另以fixed-hash `fd2004`候選由未修改原版普通CONTINUE抵達玩家第29戰並以Return開啟指令環，重製正式handoff亦還原76筆場上單位、31人持續隊伍及相同round／camera／cursor；因第三方來源仍只列候選。這些候選都不能外推成其他章節或完整操作界面E2，精確音訊與完整存檔provenance仍缺。2026-07-29 稽核發現只有 map0 曾帶 `native_tile_blit_modes/native_terrain_control`，現已從雜湊鎖定的 FDFIELD／FDSHAP 同步至全部 33 圖並有全圖 regression；這只閉合 renderer inputs，不是全遊戲視覺 E2。ch26 又由 pre-handler PAN/FOCUS 與 cursor state machine 閉合 event61 所需 runtime view/HUD E1；ch27 的 selector0→event62→event63 raw camp0 敵軍 AI 前 runner、兩批增援與全白／恢復演出已達重製端 E1，戰前 view／selector0 及 inherited HUD owner 也已閉合並接線。gate A 由存檔保存、anchor 為程序內持續、gate B 由 controller 物化；ch02+ 其餘畫面、一般玩家／CONTINUE 同 roster/event/tick DOSBox 像素差分、該時點角色 raw record 的實際值，以及 `0x12c0d` 的 exact raw lookup predicate/order 仍待補齊 |
 | action/command/item/target UI | 45–55% | action skin、command grid、item panel已有原資源 indexed adapters；command grid 另有空 ID／selected 越界失敗即關閉回歸。command0完整`0x2A6BD→0x26152` presenter現由玩家與`Raw53AF9==0`的敵方ID0共用，但各自保留cleanup／continuation。玩家物品type20／21／24正常確認已共用`0x1CD17／0x1CAC7` indexed owner，最後畫面邊界後才發布傷害，尾停後才結束行動；缺素材時保留目標模式並零交易。33圖固定非玩家command mask排除mode8後的正常producer均已有indexed owner；剩餘差距是完整availability動態對照、selector 6/7+、狀態高階名稱與同狀態DOSBox畫面／音訊比較 |
 | story dialogue | 60–70%（ch24_post opening＋stable-page＋progressive＋mouth＋closing E1） | `ch24_post` index6/7 的18句已由 raw `FFED/FFEF/FFEE` 固定上／下框，再逐字對照 `FFFE/FFFD` 投影成可編輯 pages；正式第25戰戰後 runner 現使用原版 FDOTHER #5 `(5,2/112)` 的五段開框、DATO portrait、FDOTHER #4字模及原生文字座標。`sub_16C57`等待輸入期間的post-decrement已接成完整頁限定的m0/m3 indexed嘴型，opening／逐字／捲動／closing均重設；`sub_16B43`另以真實snapshot含義收成`16×5→12×4→8×3→4×2→原背景`，非零`var_20`再由raw `+8/+5`查找、可見游標與FDOTHER #5 entry0重播移動尾段。舊句在完整收框前不會pop，正式接縫仍走到 `town_ch26`／祕密商店，達窄 `RUNTIME-E1`。更新分配是可重現近似，不是DOS精確時鐘；同狀態DOS畫面與其他 caller仍缺，其他caller仍走既有RGBA路徑。README 的舊runtime圖不是本切片成果圖 |
@@ -548,8 +548,10 @@ START 分支首個可重現對話 crop 為 `docs/figures/ch01-dialogue-original-
 E2 anchor；它不涵蓋 upper/right speaker、FFxx control code、完整 pagination timing 或 remake renderer。
 
 重製端標題選單的 Docker／Xvfb 實際擷取為 `docs/figures/title-remake-runtime.png`
-（640×400 輸出、2× 原生內容；2026-08-23重擷取版已移除非原版F2常駐提示）。它是重製端 E1 執行期證據，
-不是未修改一般玩家 E2，也不解除 CONTINUE current-battle、完整開場動畫或輸入差分缺口。
+（640×400 輸出、2× 原生內容；2026-08-26由目前原始碼重建）。三列改為原生
+`y=164／173／182` 後，最近鄰縮回320×200與上述 DOSBox oracle 達整幀
+`AE=0/64000`。這關閉穩定主選單畫面，但它仍只是重製端 E1 執行期證據；不外推
+完整開場幕序、`logozoom`、所有 LOAD／CONTINUE 狀態或一般玩家 E2。
 
 ### D8 native trace（2026-07-25，E0 partial）
 
