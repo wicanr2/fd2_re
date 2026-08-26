@@ -28,12 +28,14 @@ import (
 )
 
 type titleAssets struct {
-	scroll    *ebiten.Image       // 320×735 立繪
-	title     *ebiten.Image       // 320×200 標題畫面
-	publisher *ebiten.Image       // FDOTHER #74 + palette #76 漢堂發行商畫面
-	items     [3][2]*ebiten.Image // START/LOAD/CONTINUE ×(未選/選中)
-	cutStatic [2]*ebiten.Image    // 靜態幕:0=守護者(FDOTHER#100)、1=浮空城(#75)
-	aniPath   string              // 玩家自備 ANI.DAT 路徑(""=無,退回捲動 fallback)
+	scroll         *ebiten.Image       // 320×735 立繪
+	title          *ebiten.Image       // 320×200 標題畫面
+	publisher      *ebiten.Image       // FDOTHER #74 + palette #76 漢堂發行商畫面
+	redFadeFrames  [20]*ebiten.Image   // sub_286BD phase 40→0，FDOTHER #69..73/#101
+	titleFadeFrame [20]*ebiten.Image   // sub_286BD phase 0→40，FDOTHER #7/#8
+	items          [3][2]*ebiten.Image // START/LOAD/CONTINUE ×(未選/選中)
+	cutStatic      [2]*ebiten.Image    // 靜態幕:0=守護者(FDOTHER#100)、1=浮空城(#75)
+	aniPath        string              // 玩家自備 ANI.DAT 路徑(""=無,退回捲動 fallback)
 }
 
 const (
@@ -102,7 +104,7 @@ func (g *Game) applyTitleSlotEvent(event TitleSlotEvent) bool {
 // 投影成60Hz typed steps。原始位址、caller 與直接指令見
 // docs/data/ida/fd2_title_scroll_schedule_ida.txt；這裡只擁有 runtime 排程。
 type cutStep struct {
-	kind       string // "afm"／"static"／"scroll"／"hold"
+	kind       string // "publisher"／"afm"／"static"／"scroll"／"hold"／palette steps
 	res        int    // afm:ANI.DAT index；static:cutStatic index
 	tick       int    // afm:每幀；其他:整個 step 的60Hz幀數
 	skip       bool   // afm 是否可由任意鍵中斷
@@ -129,7 +131,19 @@ var cutScript = []cutStep{
 	{kind: "static", res: 1, tick: 60}, // FDOTHER #75，原版 esi=10 插播
 	{kind: "scroll", tick: 18, scrollFrom: 10, scrollTo: 0},
 	{kind: "hold", tick: 60}, // 原版 esi=0 額外1000ms
+	{kind: "redfade", tick: 20},
+	{kind: "redhold", tick: 6},
 	{kind: "afm", res: 1, tick: 1, skip: true},
+	{kind: "titlefade", tick: 20},
+}
+
+func titleLogoTransitionIndex() int {
+	for i, step := range cutScript {
+		if step.kind == "redfade" {
+			return i
+		}
+	}
+	return len(cutScript)
 }
 
 // aniCandidates 找玩家自備 ANI.DAT(未夾帶版權素材,執行期解碼)。
@@ -160,6 +174,12 @@ func loadTitleAssets() *titleAssets {
 	t.cutStatic[1] = ld("assets/title/cut_castle.png")
 	if publisher, err := decodeNativeTitlePublisher(nativeFDOTHERPath()); err == nil {
 		t.publisher = ebiten.NewImageFromImage(publisher)
+	}
+	if red, title, err := decodeNativeTitlePaletteTransitions(nativeFDOTHERPath()); err == nil {
+		for i := range red {
+			t.redFadeFrames[i] = ebiten.NewImageFromImage(red[i])
+			t.titleFadeFrame[i] = ebiten.NewImageFromImage(title[i])
+		}
 	}
 	if t.scroll == nil || t.title == nil {
 		// 素材缺(玩家未自備,或 cwd 不是 remake/ 導致相對路徑解不到)→ 跳過開頭直接進遊戲。
@@ -224,6 +244,99 @@ func decodeNativeTitlePublisher(path string) (*image.Paletted, error) {
 	return indexed, nil
 }
 
+func nativeTitlePaletted(pixels, dac []byte) (*image.Paletted, error) {
+	if len(pixels) != 320*200 {
+		return nil, fmt.Errorf("title indexed framebuffer=%d, want 64000", len(pixels))
+	}
+	palette, err := fdother.ParseVGAPalette(dac)
+	if err != nil {
+		return nil, err
+	}
+	indexed := image.NewPaletted(image.Rect(0, 0, 320, 200), palette)
+	copy(indexed.Pix, pixels)
+	return indexed, nil
+}
+
+// decodeNativeTitlePaletteTransitions 以玩家自備 FDOTHER 重建 sub_286BD 的兩個
+// caller-specific indexed source。20個60Hz幀保留原版0／40端點與signed /40公式。
+func decodeNativeTitlePaletteTransitions(path string) ([20]*image.Paletted, [20]*image.Paletted, error) {
+	var redFrames, titleFrames [20]*image.Paletted
+	if path == "" {
+		return redFrames, titleFrames, fmt.Errorf("FDOTHER.DAT unavailable")
+	}
+	scrollDAC, err := fdother.ReadResource(path, 101)
+	if err != nil {
+		return redFrames, titleFrames, err
+	}
+	scroll := make([]byte, 320*735)
+	for i := 0; i < 5; i++ {
+		raw, readErr := fdother.ReadResource(path, 69+i)
+		if readErr != nil {
+			return redFrames, titleFrames, readErr
+		}
+		frame, parseErr := fdother.ParseSingleFrame(raw)
+		if parseErr != nil {
+			return redFrames, titleFrames, parseErr
+		}
+		if frame.Width != 320 || frame.Height != 147 {
+			return redFrames, titleFrames, fmt.Errorf("title scroll resource %d geometry=%dx%d", 69+i, frame.Width, frame.Height)
+		}
+		frame.Y = 147 * i
+		if err := frame.Blit(scroll, 320, -1); err != nil {
+			return redFrames, titleFrames, err
+		}
+	}
+
+	titleArchive, err := fdother.ReadResource(path, 7)
+	if err != nil {
+		return redFrames, titleFrames, err
+	}
+	titleRaw, err := fdother.ArchiveEntry(titleArchive, 0)
+	if err != nil {
+		return redFrames, titleFrames, err
+	}
+	titleFrame, err := fdother.ParseSingleFrame(titleRaw)
+	if err != nil {
+		return redFrames, titleFrames, err
+	}
+	if titleFrame.Width != 320 || titleFrame.Height != 200 {
+		return redFrames, titleFrames, fmt.Errorf("title base geometry=%dx%d", titleFrame.Width, titleFrame.Height)
+	}
+	titlePixels := make([]byte, 320*200)
+	if err := titleFrame.Blit(titlePixels, 320, -1); err != nil {
+		return redFrames, titleFrames, err
+	}
+	titleDAC, err := fdother.ReadResource(path, 8)
+	if err != nil {
+		return redFrames, titleFrames, err
+	}
+
+	for tick := 0; tick < 20; tick++ {
+		phase := titlePalettePhase(tick)
+		redDAC, interpolateErr := fdother.InterpolateNativeCompoundDAC(
+			scrollDAC, 0, 255, 40-phase, [3]byte{63, 0, 0},
+		)
+		if interpolateErr != nil {
+			return redFrames, titleFrames, interpolateErr
+		}
+		redFrames[tick], err = nativeTitlePaletted(scroll[:320*200], redDAC)
+		if err != nil {
+			return redFrames, titleFrames, err
+		}
+		fadeDAC, interpolateErr := fdother.InterpolateNativeCompoundDAC(
+			titleDAC, 0, 255, phase, [3]byte{56, 60, 63},
+		)
+		if interpolateErr != nil {
+			return redFrames, titleFrames, interpolateErr
+		}
+		titleFrames[tick], err = nativeTitlePaletted(titlePixels, fadeDAC)
+		if err != nil {
+			return redFrames, titleFrames, err
+		}
+	}
+	return redFrames, titleFrames, nil
+}
+
 func titlePublisherBrightness(tick int) float32 {
 	switch {
 	case tick < 0 || tick >= 119:
@@ -235,6 +348,27 @@ func titlePublisherBrightness(tick int) float32 {
 	default:
 		return float32(119-tick) / 8
 	}
+}
+
+// titlePalettePhase 把原版41個8ms DAC相位投影到20個60Hz畫面，保留0與40端點。
+func titlePalettePhase(tick int) int {
+	if tick <= 0 {
+		return 0
+	}
+	if tick >= 19 {
+		return 40
+	}
+	return (tick*40 + 9) / 19
+}
+
+func titlePaletteBlend(op *ebiten.DrawImageOptions, factor float64, base color.RGBA) {
+	op.ColorM.Scale(factor, factor, factor, 1)
+	op.ColorM.Translate(
+		(1-factor)*float64(base.R)/255,
+		(1-factor)*float64(base.G)/255,
+		(1-factor)*float64(base.B)/255,
+		0,
+	)
 }
 
 // loadCutClip 執行期解碼指定 ANI.DAT 資源號為 ebiten 影格。失敗回 nil。
@@ -277,7 +411,7 @@ func (g *Game) trySkipTitleCutStep(step cutStep, anyKey bool) bool {
 	if step.kind == "scroll" {
 		// sub_1F894 0x1FC59..0x1FC66：每列後的 pending key 直接進
 		// wipe／ANI #1，不是 AFM 第三參數的「只中斷當前幕」。
-		g.cutIdx = len(cutScript) - 1
+		g.cutIdx = titleLogoTransitionIndex()
 		g.cutCur = nil
 		g.cutFrame, g.cutTick = 0, 0
 		return true
@@ -334,6 +468,13 @@ func (g *Game) titleUpdate() bool {
 			return true
 		}
 		if step.kind == "hold" {
+			g.cutTick++
+			if g.cutTick >= step.tick {
+				g.cutAdvance()
+			}
+			return true
+		}
+		if step.kind == "redfade" || step.kind == "redhold" || step.kind == "titlefade" {
 			g.cutTick++
 			if g.cutTick >= step.tick {
 				g.cutAdvance()
@@ -454,6 +595,24 @@ func (g *Game) drawTitle(screen *ebiten.Image) {
 			if ta.scroll != nil {
 				op.GeoM.Translate(0, -g.scrollY*2)
 				screen.DrawImage(ta.scroll, op)
+			}
+		case step.kind == "redfade":
+			if frame := ta.redFadeFrames[min(g.cutTick, len(ta.redFadeFrames)-1)]; frame != nil {
+				screen.DrawImage(frame, op)
+			} else if ta.scroll != nil {
+				factor := float64(40-titlePalettePhase(g.cutTick)) / 40
+				titlePaletteBlend(op, factor, color.RGBA{R: 0xff, A: 0xff})
+				screen.DrawImage(ta.scroll, op)
+			}
+		case step.kind == "redhold":
+			screen.Fill(color.RGBA{R: 0xff, A: 0xff})
+		case step.kind == "titlefade":
+			if frame := ta.titleFadeFrame[min(g.cutTick, len(ta.titleFadeFrame)-1)]; frame != nil {
+				screen.DrawImage(frame, op)
+			} else if ta.title != nil {
+				factor := float64(titlePalettePhase(g.cutTick)) / 40
+				titlePaletteBlend(op, factor, color.RGBA{R: 0xe3, G: 0xf3, B: 0xff, A: 0xff})
+				screen.DrawImage(ta.title, op)
 			}
 		default:
 			if g.cutCur != nil && g.cutFrame < len(g.cutCur) {

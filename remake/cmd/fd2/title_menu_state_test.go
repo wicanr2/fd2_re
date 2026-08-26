@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/sha256"
 	"fmt"
+	"image"
 	"os"
 	"path/filepath"
 	"testing"
@@ -12,7 +13,7 @@ func TestTitleCutScriptMatchesNativeInterleavedSchedule(t *testing.T) {
 	wantKinds := []string{
 		"publisher", "afm", "scroll", "static", "scroll", "afm", "afm", "scroll",
 		"afm", "afm", "scroll", "afm", "scroll", "afm", "scroll",
-		"static", "scroll", "hold", "afm",
+		"static", "scroll", "hold", "redfade", "redhold", "afm", "titlefade",
 	}
 	if len(cutScript) != len(wantKinds) {
 		t.Fatalf("cut step count = %d, want %d", len(cutScript), len(wantKinds))
@@ -95,6 +96,60 @@ func TestTitlePublisherScheduleAndBrightness(t *testing.T) {
 	}
 }
 
+func TestTitleLogoPaletteTransitionSchedule(t *testing.T) {
+	start := titleLogoTransitionIndex()
+	if start < 0 || start+3 >= len(cutScript) {
+		t.Fatalf("logo transition start=%d len=%d", start, len(cutScript))
+	}
+	want := []cutStep{
+		{kind: "redfade", tick: 20},
+		{kind: "redhold", tick: 6},
+		{kind: "afm", res: 1, tick: 1, skip: true},
+		{kind: "titlefade", tick: 20},
+	}
+	for i, expected := range want {
+		got := cutScript[start+i]
+		if got.kind != expected.kind || got.tick != expected.tick || got.res != expected.res || got.skip != expected.skip {
+			t.Fatalf("logo transition step %d=%+v, want %+v", i, got, expected)
+		}
+	}
+	wantPhases := map[int]int{-1: 0, 0: 0, 1: 2, 9: 19, 10: 21, 18: 38, 19: 40, 20: 40}
+	for tick, expected := range wantPhases {
+		if got := titlePalettePhase(tick); got != expected {
+			t.Fatalf("palette phase tick %d=%d, want %d", tick, got, expected)
+		}
+	}
+}
+
+func TestNativeTitlePaletteTransitionsUseIndexedFDOTHERFrames(t *testing.T) {
+	path := filepath.Join("../../../org_game/炎龍騎士團/FLAME2", "FDOTHER.DAT")
+	if _, err := os.Stat(path); err != nil {
+		t.Skipf("玩家未提供 FDOTHER.DAT：%v", err)
+	}
+	red, title, err := decodeNativeTitlePaletteTransitions(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for i := range red {
+		for _, item := range []struct {
+			name  string
+			frame *image.Paletted
+		}{
+			{name: "red", frame: red[i]}, {name: "title", frame: title[i]},
+		} {
+			if item.frame == nil || item.frame.Bounds() != image.Rect(0, 0, 320, 200) {
+				t.Fatalf("%s transition frame %d=%v", item.name, i, item.frame)
+			}
+		}
+	}
+	if got := red[0].Palette[0]; got == red[19].Palette[0] {
+		t.Fatalf("red transition endpoints unexpectedly equal: %v", got)
+	}
+	if got := title[0].Palette[0]; got == title[19].Palette[0] {
+		t.Fatalf("title transition endpoints unexpectedly equal: %v", got)
+	}
+}
+
 func TestNativeTitlePublisherUsesFixedFDOTHERResources(t *testing.T) {
 	path := filepath.Join("../../../org_game/炎龍騎士團/FLAME2", "FDOTHER.DAT")
 	if _, err := os.Stat(path); err != nil {
@@ -150,7 +205,7 @@ func TestTitleScrollKeyJumpsToNativeLogoBoundary(t *testing.T) {
 	if !g.trySkipTitleCutStep(cutStep{kind: "scroll"}, true) {
 		t.Fatal("native scroll key did not enter the logo boundary")
 	}
-	if g.cutIdx != len(cutScript)-1 || g.cutCur != nil || g.cutFrame != 0 || g.cutTick != 0 {
+	if g.cutIdx != titleLogoTransitionIndex() || g.cutCur != nil || g.cutFrame != 0 || g.cutTick != 0 {
 		t.Fatalf("scroll skip state idx=%d frame=%d tick=%d", g.cutIdx, g.cutFrame, g.cutTick)
 	}
 }

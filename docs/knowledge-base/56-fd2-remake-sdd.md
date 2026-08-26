@@ -6879,3 +6879,29 @@ AFM 3 的第三參數及捲動列 owner 檢查輸入。
 以及前導結束後進 AFM 3。Docker／Xvfb 正常啟動則需擷取穩定標誌幀，並確認完整
 流程仍可自然抵達既有 `AE=0/64000` 主選單。canonical 位址與資產雜湊見
 [`fd2_title_scroll_schedule_ida.txt`](../data/ida/fd2_title_scroll_schedule_ida.txt)。
+
+### 標題揭示前後調色盤轉場
+
+舊規格把 `0x1FC66..0x1FD7A` 稱為兩段 wipe，現由 `sub_286BD` 直接指令勘誤為
+DAC 線性插值；caller 的半開區間 `[0,255)`只更新index0..254並保留index255，
+且不改 framebuffer 幾何。正式 ANI 可用路徑固定為：
+
+1. 最後的 `scrollY=0` 畫面在328ms內由目前 palette 轉至六位元純紅 `(63,0,0)`。
+2. 純紅保持100ms，隨後硬切至真實 ANI #1；ANI 自己負責「2」縮入與 logo 顯像。
+3. ANI #1 完成後繪製 FDOTHER #7 最終標題底圖，從六位元近白 `(56,60,63)`
+   在328ms內轉回 palette #8 原色，再進正式主選單。
+
+60Hz typed runtime 以20幀紅色插值＋6幀紅色保持＋真實 ANI #1＋20幀近白至原色
+呈現。每個20幀 step 都以 `phase=round(t*40/19)` 投影完整0..40端點；第一段反向
+使用40..0。RGBA presenter可用等價的線性色彩矩陣近似原 DAC 公式，但必須確保
+純紅、近白與原色三個端點準確；此項標為 hardware-spec approximation／
+`RUNTIME-E1`，不得冒稱41個 DOS 相位逐色捨入一致。
+
+ANI 缺失時仍可保留明示的舊 `scroll→logozoom` 可玩 fallback，但它不是忠實模式
+證據，也不得在 ANI 可用時被正式路徑呼叫。按鍵於第一段 palette 轉場後已不再
+重新檢查；ANI #1 自己的第三參數仍可中斷該幕，之後必須照常顯示第二段標題淡入。
+
+決定性測試須固定 step 順序、20／6／20幀、兩段 phase 端點、不可略過的 palette
+steps、ANI #1 可中斷但只離開當前幕，以及完成後進主選單。Docker／Xvfb 必須擷取
+純紅、ANI #1與近白／穩定選單代表幀；原版代表幀只在相近狀態下比較順序與構圖，
+沒有相同相位時不宣稱逐像素 E2。

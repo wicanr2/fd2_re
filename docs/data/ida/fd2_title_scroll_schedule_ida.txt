@@ -125,9 +125,64 @@
 
 ## 轉場尾段
 
-- `0x1FC66..0x1FC90`：41步、每步8ms的第一段 wipe；其後100ms。
-- `0x1FD14`：`sub_20421(1,15,1)`，即 ANI #1 標題揭示。
-- `0x1FD52..0x1FD7A`：41步、每步8ms的第二段 wipe，然後進正式主選單。
+2026-08-27 以同一 IDA Pro 9.4 `.i64` 補查 `sub_286BD` 的直接指令後，撤回本段
+舊「wipe」名稱：它不搬移、遮罩或改寫 framebuffer，只對 VGA DAC 做線性調色盤
+插值。caller 的 `end=255` 是半開區間，所以更新 index `0..254`、保留 index255；
+不得誤寫成全部256色。原始函式名、位址與運算元保留如下。
+
+### `sub_286BD` 插值公式（已證實）
+
+`sub_286BD(start,end,phase,baseR,baseG,baseB)` 對半開區間 `[start,end)` 的每一色：
+
+```text
+0x286CB  mov edi,[arg_8]                  ; phase
+0x286D3  mov ebp,28h                     ; denominator 40
+0x286DD  push ebx; push 3C8h; call outp  ; DAC index
+0x286F2..0x28710  out = baseR + phase*(palette.R-baseR)/40
+0x2871E..0x2873B  out = baseG + phase*(palette.G-baseG)/40
+0x28749..0x28766  out = baseB + phase*(palette.B-baseB)/40
+0x28774  inc ebx
+0x28775  cmp ebx,[arg_4]; jl 0x286DD
+```
+
+除法是 signed `idiv 40`，故中間負差值依 x86 規則向零截斷；重製的逐相位精確
+indexed adapter若日後需要 E2，必須保留此捨入，不可改成無條件 floor。
+
+### 第一段：目前畫面轉純紅（已證實）
+
+```text
+0x1FC66  mov esi,28h
+0x1FC6D..0x1FC7B  sub_286BD(0,255,esi,63,0,0)
+0x1FC83  delay(8)
+0x1FC8D  dec esi
+0x1FC90  jge 0x1FC6D
+0x1FC92  delay(100)
+```
+
+phase由40遞減至0，共41相位：第一幀是目前 palette，最後一幀的 index `0..254`
+皆為六位元純紅 `(63,0,0)`，index255維持原值。它只改 DAC，最後的惡魔臉
+indexed framebuffer 保持不變；現有原版frame186仍因可見像素不使用不同的index255
+而呈現整幀純紅。
+
+### ANI #1 與第二段：近白標題轉原色（已證實）
+
+```text
+0x1FCB6..0x1FCE4  load FDOTHER #7 and palette #8
+0x1FCE9..0x1FCFA  clear VGA
+0x1FD0E..0x1FD14  sub_20421(1,15,1)       ; ANI #1，真實 logo 揭示
+0x1FD2C..0x1FD35  sub_11DF2(0,255,64)     ; saturate DAC
+0x1FD3D..0x1FD4A  sub_16886(VGA,320,#7,0); draw final title base
+0x1FD52  xor esi,esi
+0x1FD56..0x1FD64  sub_286BD(0,255,esi,56,60,63)
+0x1FD6C  delay(8)
+0x1FD76  inc esi
+0x1FD7A  jle 0x1FD56
+```
+
+第二段 phase由0遞增至40，共41相位：index `0..254`從近白六位元基色
+`(56,60,63)` 回到 palette #8 原色，index255仍保留。DOSBox `frame_185..194`
+的純紅→黑／ANI #1縮入→泛白→穩定選單
+順序與此資料流一致；影片只作動態旁證，直接指令才是主證據。
 
 ## 重製映射與證據邊界
 
@@ -136,8 +191,9 @@
   回到同一捲動位置。
 - 60Hz 重製以累積毫秒而非逐 DOS busy-wait 近似；這是玩家可見時序映射，不重現
   DOS `INT 21h` 或硬體 wall-clock。
-- 色盤淡入／淡出、兩段 wipe 與 ANI #1 的逐幀像素仍各自依既有 renderer 能力；
-  本證據只閉合排程與畫面來源恢復，不能外推逐像素／逐音訊 E2。
+- 兩段 palette 插值與 ANI #1 的 caller 排程已閉合；60Hz 重製可依328ms映射為
+  每段20幀，這是玩家可見近似，不是41個 DOS DAC 相位逐一 present。沒有相同時間戳
+  原版畫面前仍不能外推逐像素／逐音訊 E2。
 - 原版影片從開場到屠龍閃光約14.7秒，整段至標題約32.3秒，僅作動態交叉驗證；
   位址、caller 與直接指令才是本排程主證據。
 
