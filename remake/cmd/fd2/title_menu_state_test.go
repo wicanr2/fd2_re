@@ -2,6 +2,78 @@ package main
 
 import "testing"
 
+func TestTitleCutScriptMatchesNativeInterleavedSchedule(t *testing.T) {
+	wantKinds := []string{
+		"afm", "scroll", "static", "scroll", "afm", "afm", "scroll",
+		"afm", "afm", "scroll", "afm", "scroll", "afm", "scroll",
+		"static", "scroll", "hold", "afm",
+	}
+	if len(cutScript) != len(wantKinds) {
+		t.Fatalf("cut step count = %d, want %d", len(cutScript), len(wantKinds))
+	}
+	for i, kind := range wantKinds {
+		if cutScript[i].kind != kind {
+			t.Fatalf("cut step %d kind = %q, want %q", i, cutScript[i].kind, kind)
+		}
+	}
+
+	wantScroll := [][3]int{
+		{535, 450, 153}, {450, 330, 216}, {330, 210, 216},
+		{210, 110, 180}, {110, 25, 153}, {25, 10, 27}, {10, 0, 18},
+	}
+	var gotScroll [][3]int
+	for _, step := range cutScript {
+		if step.kind == "scroll" {
+			gotScroll = append(gotScroll, [3]int{step.scrollFrom, step.scrollTo, step.tick})
+		}
+	}
+	if len(gotScroll) != len(wantScroll) {
+		t.Fatalf("scroll segment count = %d, want %d", len(gotScroll), len(wantScroll))
+	}
+	for i := range wantScroll {
+		if gotScroll[i] != wantScroll[i] {
+			t.Fatalf("scroll segment %d = %v, want %v", i, gotScroll[i], wantScroll[i])
+		}
+	}
+
+	wantAFM := [][3]int{
+		{3, 5, 1}, {4, 5, 0}, {5, 3, 0}, {6, 5, 0},
+		{7, 3, 0}, {8, 5, 0}, {0, 1, 0}, {1, 1, 1},
+	}
+	var gotAFM [][3]int
+	for _, step := range cutScript {
+		if step.kind == "afm" {
+			skip := 0
+			if step.skip {
+				skip = 1
+			}
+			gotAFM = append(gotAFM, [3]int{step.res, step.tick, skip})
+		}
+	}
+	if len(gotAFM) != len(wantAFM) {
+		t.Fatalf("AFM step count = %d, want %d", len(gotAFM), len(wantAFM))
+	}
+	for i := range wantAFM {
+		if gotAFM[i] != wantAFM[i] {
+			t.Fatalf("AFM step %d = %v, want %v", i, gotAFM[i], wantAFM[i])
+		}
+	}
+}
+
+func TestTitleCutAdvanceRestoresNativeScrollBoundary(t *testing.T) {
+	g := &Game{titlePhase: "cutscene", cutIdx: 0, cutFrame: 7, cutTick: 3}
+	g.cutAdvance()
+	if g.cutIdx != 1 || g.cutFrame != 0 || g.cutTick != 0 || g.scrollY != 535 {
+		t.Fatalf("first scroll boundary idx=%d frame=%d tick=%d y=%v", g.cutIdx, g.cutFrame, g.cutTick, g.scrollY)
+	}
+	g.cutIdx = 2 // guardian static → native resumes at the same esi=450
+	g.scrollY = 450
+	g.cutAdvance()
+	if g.cutIdx != 3 || g.scrollY != 450 {
+		t.Fatalf("guardian resume idx=%d y=%v", g.cutIdx, g.scrollY)
+	}
+}
+
 func TestTitleMenuRowsMatchStableDOSBoxOracle(t *testing.T) {
 	want := [...]int{164, 173, 182}
 	for item, y := range want {
@@ -27,6 +99,16 @@ func TestTitleCutSkipIsPerStepAndDoesNotGrantEscapeOverride(t *testing.T) {
 	}
 	if g.trySkipTitleCutStep(cutStep{skip: true}, false) {
 		t.Fatal("skippable AFM step advanced without input")
+	}
+}
+
+func TestTitleScrollKeyJumpsToNativeLogoBoundary(t *testing.T) {
+	g := &Game{titlePhase: "cutscene", cutIdx: 3, cutFrame: 4, cutTick: 17, scrollY: 441}
+	if !g.trySkipTitleCutStep(cutStep{kind: "scroll"}, true) {
+		t.Fatal("native scroll key did not enter the logo boundary")
+	}
+	if g.cutIdx != len(cutScript)-1 || g.cutCur != nil || g.cutFrame != 0 || g.cutTick != 0 {
+		t.Fatalf("scroll skip state idx=%d frame=%d tick=%d", g.cutIdx, g.cutFrame, g.cutTick)
 	}
 }
 

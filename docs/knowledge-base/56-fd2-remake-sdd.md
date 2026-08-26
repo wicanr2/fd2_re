@@ -6812,3 +6812,51 @@ START 選中相位及共同向下兩列的幾何投影重建同一狀態後，�
 原生列座標；Docker 執行期擷取須證明整幀 `AE<=640/64000`（至少99%像素相同）。
 達標後不再微調已相同的穩定主選單畫面。這個契約只
 關閉靜態主選單畫面，不外推尚屬近似的 `logozoom` 或完整開場幕序。
+
+### `sub_1F894` 開場交錯排程契約（2026-08-26）
+
+canonical 主證據為
+[`fd2_title_scroll_schedule_ida.txt`](../data/ida/fd2_title_scroll_schedule_ida.txt)。正式開場
+在 ANI.DAT 可用時必須依下列單一狀態機執行；不得先播完整 AFM 串列再另播一次捲動：
+
+| 順序 | 原版狀態 | 重製 typed step | 玩家可見邊界 |
+|---:|---|---|---|
+| 1 | 迴圈前 | AFM 3，90ms／幀，可中斷 | 完成或合法中斷後才進捲動 |
+| 2 | `esi 535→450` | 2550ms 捲動 | 到450停住 |
+| 3 | `esi=450` | FDOTHER #100 靜態幕 | 返回同一450視窗 |
+| 4 | `450→330` | 3600ms 捲動 | 到330停住 |
+| 5 | `esi=330` | AFM 4（90ms）→5（50ms） | 兩幕不可中斷 |
+| 6 | `330→210` | 3600ms 捲動 | 到210停住 |
+| 7 | `esi=210` | AFM 6（90ms）→7（50ms） | 兩幕不可中斷 |
+| 8 | `210→110` | 3000ms 捲動 | 到110停住 |
+| 9 | `esi=110` | AFM 8，90ms／幀 | 不可中斷 |
+| 10 | `110→25` | 2550ms 捲動 | 到25停住 |
+| 11 | `esi=25` | AFM 0，15ms／幀 | 不可中斷 |
+| 12 | `25→10` | 450ms 捲動 | 到10停住 |
+| 13 | `esi=10` | FDOTHER #75 靜態幕 | 返回同一10視窗 |
+| 14 | `10→0` | 300ms 捲動＋1000ms定格 | 露出立繪頂端惡魔臉 |
+| 15 | wipe／標題揭示 | AFM 1，15ms／幀，可中斷 | 完成後進主選單 |
+
+60Hz runtime 中上述捲動區間皆能整數映射為153、216、216、180、153、27、18幀；
+每幀以該區間的起訖 `esi` 線性投影，不累積浮點速度誤差。AFM 仍依既有真實 frame count
+與 caller-specific delay 播放，素材缺失時沿現有失敗即關閉／明示 fallback，不合成不存在
+的原版幕。靜態幕使用現有 #100／#75 解碼資產；其 palette fade 的 DOS 逐週期時序不列
+交付 gate，但插播完成後必須回到相同 `esi`，不得重設捲動。
+
+輸入有兩個不同 owner：AFM 只在第三參數非零的 index3／1 中斷當前幕；捲動主迴圈則於
+每列30ms後呼叫 `sub_10620`，任意 pending key 會直接進標題 wipe，略過剩餘捲動與尚未
+觸發的中間幕。正式 typed input 必須保留此區別；不得恢復舊版「任意 ESC 無條件略過
+所有 phase」，也不得把捲動列後的直接分支刪成完全不可略過。
+
+決定性測試至少固定完整 step 順序、所有捲動起訖、總捲動535列、每段幀數與 AFM
+index／delay／skippable。Docker／Xvfb 另須實跑目前 source，確認屠龍閃光由舊約5秒
+延後到接近原版14.7秒的同量級，完整開場能自然抵達已達 `AE=0` 的穩定主選單。
+沒有相同時間戳逐幀配對前只標 `RUNTIME-E1`，不冒稱完整開場 `PLAYER-E2`。
+
+實際 Docker／Xvfb 驗證於 runtime frame652 抵達 AFM #5 frame12、`scrollY=330` 的
+屠龍白閃，約10.9秒；舊錄影同幕約5秒。frame1765（約29.4秒）自然抵達主選單，
+並再次與原版穩定畫面達 `AE=0/64000`。旁車狀態分別見
+[`title-interleaved-dragon-remake-e1.json`](../data/ui-traces/title-interleaved-dragon-remake-e1.json)
+與 [`title-interleaved-menu-remake-e1.json`](../data/ui-traces/title-interleaved-menu-remake-e1.json)。
+這達成上述 `RUNTIME-E1`；原版32.3秒是從發行商標誌起算，故不直接拿2.9秒差宣稱
+遊戲排程仍錯，也不把目前未實作的發行商標誌時間算進 `sub_1F894`。

@@ -1,0 +1,110 @@
+# `sub_1F894` 開場捲動／AFM 交錯排程（IDA 主證據）
+
+## 輸入與工具
+
+- 輸入：`FD2.EXE`，357074 位元組
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 主工具：IDA Pro 9.4／Hex-Rays `9.4.0.260610`，LE 線性位址空間，
+  `fd2-ida-authorized-local:latest`，2026-08-26，一次性 Docker、原版唯讀。
+- 第二工具：Capstone 5.0.3，LE 線性位址空間，`fd2-cap-local:latest`。
+- 原始 IDA 名稱全部保留：`sub_1F894`、`sub_1F73F`、`sub_1F81E`、
+  `sub_20421`；本檔語意名稱只是附加導覽，不取代原始定位。
+
+## 問題與裁決
+
+問題：重製端舊 `cutScript` 把 AFM／靜態幕全部播完後才單獨捲動，是否符合原版？
+
+裁決（**已證實**）：不符合。`sub_1F894` 的主迴圈以 `esi=0x217`（535）開始，
+每輪先把 `scroll_buffer + esi*320` 的320×200視窗複製到 VGA，再依目前 `esi`
+同步插播 AFM 或靜態幕；插播返回後仍在同一迴圈，等待30ms、遞減 `esi`，下一輪
+重新複製下一個完整捲動畫面。AFM／靜態幕是暫停點，不是捲動前後的獨立串列。
+
+## 直接指令與資料流
+
+### 主迴圈、畫面來源與30ms步進（已證實）
+
+```text
+0x1FA85  mov esi,217h
+0x1FA8C  dec esi
+0x1FA8D  test esi,esi
+0x1FA8F  jl 0x1FC66
+0x1FA95..0x1FABB  push 0C8h,140h,140h,(edi+esi*320),140h,0A0000h
+0x1FABB  call sub_11EB0
+0x1FC3A  push 1Eh
+0x1FC40  call j___delay
+0x1FC48  test esi,esi
+0x1FC4C  push 3E8h
+0x1FC51  call j___delay       ; 只在 esi==0 額外停留1000ms
+0x1FC59  call sub_10620       ; 每一列後檢查 pending key
+0x1FC60  jz 0x1FA8C
+```
+
+`edi` 是 `0x1FA1E..0x1FA55` 將 FDOTHER `#0x45..#0x49` 五張320×147圖
+依 `147*index` 疊成的320×735緩衝。`sub_11EB0` 的來源寫入端與下一輪 consumer
+共同證實：任一插播結束後，主迴圈會重繪當前捲動視窗再繼續。
+`sub_10620` 回傳非零時不跳回 `0x1FA8C`，而是直接進 `0x1FC66` wipe／標題揭示；
+所以捲動區間的任意鍵會略過剩餘捲動與尚未觸發的中間幕。這與 AFM 第三參數是兩個
+不同 owner：不可中斷的 AFM 本身仍不輪詢按鍵。
+
+### 明確 `esi` 觸發點（已證實）
+
+```text
+0x1FADD  cmp esi,19h       ; 25  → sub_1F81E(index0,delay15,palette0)
+0x1FB36  cmp esi,14Ah      ; 330 → index4,delay90,palette99；接 index5,delay50,palette0
+0x1FB59  cmp esi,0D2h      ; 210 → index6,delay90,palette99；接 index7,delay50,palette0
+0x1FB7F  cmp esi,6Eh       ; 110 → index8,delay90,palette99
+0x1FB94  cmp esi,1C2h      ; 450 → sub_1F73F(scroll, palette99, image100)
+0x1FBA4  cmp esi,0Ah       ; 10  → sub_1F73F(scroll, palette76, image75)
+```
+
+呼叫參數由 caller 的右到左 push 直接固定：
+
+```text
+0x1FB43..0x1FB49  push 63h; push 5Ah; push 4; call sub_1F81E
+0x1FB51..0x1FAE8  push 0;   push 32h; push 5; call sub_1F81E
+0x1FB66..0x1FB6C  push 63h; push 5Ah; push 6; call sub_1F81E
+0x1FB74..0x1FAE8  push 0;   push 32h; push 7; call sub_1F81E
+0x1FB89..0x1FAE8  push 63h; push 5Ah; push 8; call sub_1F81E
+0x1FAE2..0x1FAE8  push 0;   push 0Fh; push 0; call sub_1F81E
+```
+
+`sub_1F81E` 於 `0x1F870..0x1F87A` 把 `(index,delay,0)` 轉交
+`sub_20421`，所以迴圈內六個 AFM 都不可按鍵中斷。迴圈前
+`0x1F9AC..0x1F9B2` 直接呼叫 `sub_20421(3,90,1)`；轉場後
+`0x1FD0E..0x1FD14` 直接呼叫 `sub_20421(1,15,1)`，只有這兩幕可中斷。
+
+### 靜態幕返回捲動來源（已證實）
+
+`sub_1F73F` 唯一 caller 是 `0x1FBAF`。它在完成圖像載入、淡入、停留與淡出後：
+
+```text
+0x1F7C9..0x1F7D6  load FDOTHER #65 palette
+0x1F7E3..0x1F80F  sub_11EB0(dst=0xA0000,src=scroll_base+esi*320,320x200)
+0x1F817             call sub_1F525
+0x1F81D             retn
+```
+
+這直接證實靜態插播會恢復 caller 傳入的同一捲動視窗；重製端不得在靜態幕後跳到
+另一份獨立背景或把捲動重設。
+
+## 轉場尾段
+
+- `0x1FC66..0x1FC90`：41步、每步8ms的第一段 wipe；其後100ms。
+- `0x1FD14`：`sub_20421(1,15,1)`，即 ANI #1 標題揭示。
+- `0x1FD52..0x1FD7A`：41步、每步8ms的第二段 wipe，然後進正式主選單。
+
+## 重製映射與證據邊界
+
+- 可安全實作：535→0 的捲動位置、30ms步進、上述六個明確觸發位置、AFM index／
+  每幀 delay／skippable、捲動列後的任意鍵略過、兩個靜態幕與1000ms尾停；插播後
+  回到同一捲動位置。
+- 60Hz 重製以累積毫秒而非逐 DOS busy-wait 近似；這是玩家可見時序映射，不重現
+  DOS `INT 21h` 或硬體 wall-clock。
+- 色盤淡入／淡出、兩段 wipe 與 ANI #1 的逐幀像素仍各自依既有 renderer 能力；
+  本證據只閉合排程與畫面來源恢復，不能外推逐像素／逐音訊 E2。
+- 原版影片從開場到屠龍閃光約14.7秒，整段至標題約32.3秒，僅作動態交叉驗證；
+  位址、caller 與直接指令才是本排程主證據。
+
+狀態：`RE-CLOSED`。只有輸入雜湊不同、上述直接指令被反證，或正式 runtime 的
+同狀態畫面順序與原版矛盾時才可重開；不得再以舊 `cutScript` 或單一影片印象重解。

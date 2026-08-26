@@ -7218,3 +7218,18 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   `AE=0/64000`。更新 `title-remake-runtime.png`，並以決定性單元測試鎖定三列。
 - 此結果撤回 `57` 的60–70%穩定選單粗估，但只關閉靜態主選單；完整開場幕序與
   `logozoom` 仍為近似。沒有新開 RE，也不把透明合成候選的差異誤當正式 runtime。
+
+## 2026-08-26：`sub_1F894` 開場交錯排程接入
+
+- 以固定雜湊 `FD2.EXE`、授權 IDA Pro 9.4 Docker 主證據及 Capstone 5.0.3
+  第二驗證，新增 [`fd2_title_scroll_schedule_ida.txt`](../data/ida/fd2_title_scroll_schedule_ida.txt)。
+  它保留原始函式名與線性位址，閉合535→0、30ms步進、六個插播位置、AFM參數及
+  `sub_1F73F` 返回相同捲動視窗的 consumer，狀態為 `RE-CLOSED`。
+- 正式 `cutScript` 不再先播完動畫再單獨捲動，改成七段153／216／216／180／153／
+  27／18幀捲動，穿插 AFM 3、4、5、6、7、8、0、1與兩張靜態幕；最後保留1000ms
+  惡魔臉定格。聚焦回歸鎖定完整順序、起訖、幀數、AFM delay與skippable。
+- Docker／Xvfb 實跑於frame652（約10.9秒）抵達 AFM #5 frame12／scrollY330 的
+  屠龍白閃，舊錄影約5秒；frame1765（約29.4秒）自然抵達主選單，並再次達
+  `AE=0/64000`。原版32.3秒從發行商標誌起算，逐轉場／音訊仍只到E1。
+- 新增 [`title-interleaved-dragon-remake.png`](../figures/title-interleaved-dragon-remake.png)
+  與兩份旁車 trace。原版、IDA授權與資料庫維持唯讀／tmpfs，沒有加入版控。

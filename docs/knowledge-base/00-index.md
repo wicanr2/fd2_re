@@ -55,7 +55,7 @@
 | remake 過場**引擎**(BeatRunner / cutscene 節點 / beats DSL)怎麼設計 | **`50`**(§2 DSL,§3 全33關管線) |
 | **某一幕的原始資料×解讀**(handler beat 反組譯 + acting hex+解碼 + roster + campaign 對映 + 可疑點,供人工覆核) | `scene-decode/ch1-throne.md`(皇宮)、`scene-decode/ch1-meadow.md`(草地);每幕一份 |
 | 全 33 關過場 beats(機器可讀) | `docs/data/chapter_beats/chNN_{pre,post}.json` |
-| 開機/標題/主選單/劇情自動過場流程(反組譯) | `23` + `39`(ANI.DAT AFM 開場) |
+| 開機/標題/主選單/劇情自動過場流程(反組譯) | `23` + `39`(ANI.DAT AFM 開場)；`sub_1F894` 捲動／AFM 交錯的 canonical IDA 主證據見 [`fd2_title_scroll_schedule_ida.txt`](../data/ida/fd2_title_scroll_schedule_ida.txt) |
 
 ### 角色 / 單位 / 數值
 | 我想知道… | 查 |

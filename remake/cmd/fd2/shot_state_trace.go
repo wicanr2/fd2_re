@@ -12,21 +12,22 @@ import (
 // FD2_SHOT_STATE 時寫出，不改變遊戲控制流或畫面；目的是讓 X11 輸入擷取可證明
 // 自己實際抵達的節點、游標與操作介面，而不是以一張外觀相近的 PNG 冒充同狀態證據。
 type screenshotStateTrace struct {
-	Frame                  int     `json:"frame"`
-	TitlePhase             string  `json:"title_phase,omitempty"`
-	CampaignNode           string  `json:"campaign_node,omitempty"`
-	Result                 string  `json:"result,omitempty"`
-	Cursor                 [2]int  `json:"cursor"`
-	HasSelection           bool    `json:"has_selection"`
-	Selection              *[2]int `json:"selection,omitempty"`
-	ActionOverlayOpen      bool    `json:"action_overlay_open"`
-	NativeCommandOpen      bool    `json:"native_command_open"`
-	NativeCommandTargeting bool    `json:"native_command_targeting"`
-	NativeCommandTargetID  *int    `json:"native_command_target_id,omitempty"`
-	NativeItemTargeting    bool    `json:"native_item_targeting"`
-	NativeItemTargetID     *int    `json:"native_item_target_id,omitempty"`
-	NativeItemRelocating   bool    `json:"native_item_relocating"`
-	SpellOpen              bool    `json:"spell_open"`
+	Frame                  int                      `json:"frame"`
+	TitlePhase             string                   `json:"title_phase,omitempty"`
+	TitleCut               *screenshotTitleCutTrace `json:"title_cut,omitempty"`
+	CampaignNode           string                   `json:"campaign_node,omitempty"`
+	Result                 string                   `json:"result,omitempty"`
+	Cursor                 [2]int                   `json:"cursor"`
+	HasSelection           bool                     `json:"has_selection"`
+	Selection              *[2]int                  `json:"selection,omitempty"`
+	ActionOverlayOpen      bool                     `json:"action_overlay_open"`
+	NativeCommandOpen      bool                     `json:"native_command_open"`
+	NativeCommandTargeting bool                     `json:"native_command_targeting"`
+	NativeCommandTargetID  *int                     `json:"native_command_target_id,omitempty"`
+	NativeItemTargeting    bool                     `json:"native_item_targeting"`
+	NativeItemTargetID     *int                     `json:"native_item_target_id,omitempty"`
+	NativeItemRelocating   bool                     `json:"native_item_relocating"`
+	SpellOpen              bool                     `json:"spell_open"`
 	// 這些欄位只描述輸入是否被既有 modal 阻擋；它們讓普通 X11 重播
 	// 能區分「按鍵未到」和「遊戲刻意尚未接受按鍵」。
 	NativeContinueOpeningConfirm bool                       `json:"native_continue_opening_confirm"`
@@ -38,6 +39,19 @@ type screenshotStateTrace struct {
 	CursorUnit                   *screenshotCursorUnitTrace `json:"cursor_unit,omitempty"`
 	LoadError                    string                     `json:"load_error,omitempty"`
 	Battle                       *screenshotBattleTrace     `json:"battle,omitempty"`
+}
+
+// screenshotTitleCutTrace 讓有界 Xvfb 擷取能證明自己位於哪一個原版排程邊界；
+// 它只旁車記錄既有狀態，不提供跳段或改寫正式開場的入口。
+type screenshotTitleCutTrace struct {
+	Step       int     `json:"step"`
+	Kind       string  `json:"kind"`
+	Resource   int     `json:"resource,omitempty"`
+	Frame      int     `json:"frame,omitempty"`
+	Tick       int     `json:"tick"`
+	ScrollY    float64 `json:"scroll_y,omitempty"`
+	ScrollFrom int     `json:"scroll_from,omitempty"`
+	ScrollTo   int     `json:"scroll_to,omitempty"`
 }
 
 // screenshotCursorUnitTrace 只輸出目前游標格的互動資格，避免把角色名稱或
@@ -102,6 +116,19 @@ func (g *Game) writeShotStateTrace(path string) error {
 		BattleEventActive:           g.battleEvent != nil,
 		NativeTurnStagingActive:     g.nativeTurnStaging != nil,
 		LoadError:                   g.loadErr,
+	}
+	if g.titlePhase == "cutscene" && g.cutIdx >= 0 && g.cutIdx < len(cutScript) {
+		step := cutScript[g.cutIdx]
+		trace.TitleCut = &screenshotTitleCutTrace{
+			Step:       g.cutIdx,
+			Kind:       step.kind,
+			Resource:   step.res,
+			Frame:      g.cutFrame,
+			Tick:       g.cutTick,
+			ScrollY:    g.scrollY,
+			ScrollFrom: step.scrollFrom,
+			ScrollTo:   step.scrollTo,
+		}
 	}
 	if g.nativeCommand0Targeting {
 		commandID := g.nativeCommandTargetID

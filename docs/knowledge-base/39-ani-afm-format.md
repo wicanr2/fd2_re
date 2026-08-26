@@ -373,3 +373,11 @@ AFM 幕之後才發生的獨立收尾動畫。remake 現行 `cutScript`(`title.g
 VGA framebuffer 會整片覆蓋畫面,esi 迴圈恢復後捲動迴圈如何接回(重繪已完成的列、還是從
 黑畫面繼續疊)沒有反組譯到,貿然依現有資訊重寫 `cutScript` 交錯結構有落地錯誤的風險,
 留待下一輪深入 `0x11eb0`/`0x1f894` 逐指令補完再動手,不在本輪臆測實作。
+
+> **2026-08-26 勘誤／閉合：** 上述是當時尚未完成 consumer 追查的歷史限制。
+> 合法 IDA Pro 9.4 已確認 `sub_1F73F` 在 `0x1F7E3..0x1F817` 以 caller 傳入的
+> `scroll_base+esi*320` 重畫完整320×200視窗並淡入；`sub_1F894` 返回後也由下一輪
+> `0x1FA95..0x1FABB` 重畫下一個 `esi`。正式 runtime 現已依535列與六個插播點交錯
+> 播放，frame652抵達屠龍白閃、frame1765自然抵達AE0選單。canonical 主證據見
+> [`fd2_title_scroll_schedule_ida.txt`](../data/ida/fd2_title_scroll_schedule_ida.txt)。
+> 本段舊錄影數據保留為問題形成史，不再代表現況待辦。

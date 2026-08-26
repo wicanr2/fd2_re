@@ -96,29 +96,37 @@ func (g *Game) applyTitleSlotEvent(event TitleSlotEvent) bool {
 	return true
 }
 
-// 開場過場腳本是重製端 E1 排程：AFM 動畫幕由 ANI.DAT 解碼，FDOTHER 靜態幕
-// 使用已辨識資源；doc39 §10 已推翻舊 cutSeq，指出原版捲動會穿插在各幕之間，
-// 目前 cutScript 尚未重現該完整交錯順序。delay 與 skippable 僅保留已證實的
-// 局部輸入，不得把這份表當成原版完整排程真值。
+// 開場過場腳本把 sub_1F894 已證實的 esi=535→0 捲動與 AFM／FDOTHER 插播
+// 投影成60Hz typed steps。原始位址、caller 與直接指令見
+// docs/data/ida/fd2_title_scroll_schedule_ida.txt；這裡只擁有 runtime 排程。
 type cutStep struct {
-	kind string // "afm"=ANI.DAT 動畫幕 / "static"=FDOTHER 靜態幕
-	res  int    // afm:ANI.DAT 資源號 / static:cutStatic 索引(0 守護者/1 浮空城)
-	tick int    // afm:每幀停留 tick / static:整幕 hold tick
-	skip bool   // 是否可按鍵跳過
+	kind       string // "afm"／"static"／"scroll"／"hold"
+	res        int    // afm:ANI.DAT index；static:cutStatic index
+	tick       int    // afm:每幀；其他:整個 step 的60Hz幀數
+	skip       bool   // afm 是否可由任意鍵中斷
+	scrollFrom int    // scroll 的原版 esi 起點
+	scrollTo   int    // scroll 的原版 esi 終點
 }
 
 var cutScript = []cutStep{
-	{"afm", 3, 5, true},       // 守護者(動畫)
-	{"static", 0, 45, false},  // ①守護者靜態收尾(FDOTHER#100,esi=0x1c2)
-	{"afm", 4, 5, false},      // 索爾
-	{"afm", 5, 3, false},      // 屠龍
-	{"afm", 6, 5, false},      // 二角
-	{"afm", 7, 3, false},      // 騎馬夜行
-	{"afm", 8, 5, false},      // 群像
-	{"afm", 0, 1, false},      // 金鎖(96 幀)
-	{"static", 1, 60, false},  // ⑥滿月浮空城(FDOTHER#75,esi=0x0a,含 +1000ms 停留)
-	{"scroll", 0, 220, false}, // 魔王立繪垂直捲動(FDOTHER#0x45-49),捲到頂露出⑨惡魔臉特寫(doc23 §2.4⑦)
-	{"afm", 1, 1, true},       // 標題「2」logo(硬切紅閃光後)
+	{kind: "afm", res: 3, tick: 5, skip: true},
+	{kind: "scroll", tick: 153, scrollFrom: 535, scrollTo: 450},
+	{kind: "static", res: 0, tick: 45}, // FDOTHER #100，原版 esi=450 插播
+	{kind: "scroll", tick: 216, scrollFrom: 450, scrollTo: 330},
+	{kind: "afm", res: 4, tick: 5},
+	{kind: "afm", res: 5, tick: 3},
+	{kind: "scroll", tick: 216, scrollFrom: 330, scrollTo: 210},
+	{kind: "afm", res: 6, tick: 5},
+	{kind: "afm", res: 7, tick: 3},
+	{kind: "scroll", tick: 180, scrollFrom: 210, scrollTo: 110},
+	{kind: "afm", res: 8, tick: 5},
+	{kind: "scroll", tick: 153, scrollFrom: 110, scrollTo: 25},
+	{kind: "afm", res: 0, tick: 1},
+	{kind: "scroll", tick: 27, scrollFrom: 25, scrollTo: 10},
+	{kind: "static", res: 1, tick: 60}, // FDOTHER #75，原版 esi=10 插播
+	{kind: "scroll", tick: 18, scrollFrom: 10, scrollTo: 0},
+	{kind: "hold", tick: 60}, // 原版 esi=0 額外1000ms
+	{kind: "afm", res: 1, tick: 1, skip: true},
 }
 
 // aniCandidates 找玩家自備 ANI.DAT(未夾帶版權素材,執行期解碼)。
@@ -200,13 +208,28 @@ func (g *Game) cutAdvance() {
 	if g.cutIdx >= len(cutScript) {
 		g.titlePhase = "menu"
 		g.titleSel = 0
+		return
+	}
+	if next := cutScript[g.cutIdx]; next.kind == "scroll" {
+		g.scrollY = float64(next.scrollFrom)
 	}
 }
 
-// trySkipTitleCutStep 保存原版 AFM 播放器的第三參數契約：按鍵只中斷
-// 明確標為 skippable 的當前幕；它不代表略過其後整段開場。
+// trySkipTitleCutStep 保存兩個原版 input owner：AFM 第三參數只中斷明確
+// skippable 的當前幕；sub_1F894 捲動列後的 pending key 則直接進標題揭示。
 func (g *Game) trySkipTitleCutStep(step cutStep, anyKey bool) bool {
-	if !step.skip || !anyKey {
+	if !anyKey {
+		return false
+	}
+	if step.kind == "scroll" {
+		// sub_1F894 0x1FC59..0x1FC66：每列後的 pending key 直接進
+		// wipe／ANI #1，不是 AFM 第三參數的「只中斷當前幕」。
+		g.cutIdx = len(cutScript) - 1
+		g.cutCur = nil
+		g.cutFrame, g.cutTick = 0, 0
+		return true
+	}
+	if !step.skip {
 		return false
 	}
 	g.cutAdvance()
@@ -246,15 +269,24 @@ func (g *Game) titleUpdate() bool {
 			}
 			return true
 		}
-		if step.kind == "scroll" { // 魔王立繪垂直捲動,捲到頂(惡魔臉)→ 下一幕
+		if step.kind == "hold" {
+			g.cutTick++
+			if g.cutTick >= step.tick {
+				g.cutAdvance()
+			}
+			return true
+		}
+		if step.kind == "scroll" { // 原版 esi 區間；AFM／靜態幕只暫停，不重設位置
 			if g.titleAssets.scroll == nil {
 				g.cutAdvance()
 				return true
 			}
 			g.cutTick++
-			g.scrollY = 535 * (1 - float64(g.cutTick)/float64(step.tick)) // 535→0(底→頂)
+			progress := float64(g.cutTick) / float64(step.tick)
+			g.scrollY = float64(step.scrollFrom) +
+				float64(step.scrollTo-step.scrollFrom)*progress
 			if g.cutTick >= step.tick {
-				g.scrollY = 0
+				g.scrollY = float64(step.scrollTo)
 				g.cutAdvance()
 			}
 			return true
@@ -346,6 +378,11 @@ func (g *Game) drawTitle(screen *ebiten.Image) {
 		case step.kind == "scroll":
 			if ta.scroll != nil {
 				op.GeoM.Translate(0, -g.scrollY*2) // 視窗=大圖 y=scrollY 起 200 列
+				screen.DrawImage(ta.scroll, op)
+			}
+		case step.kind == "hold":
+			if ta.scroll != nil {
+				op.GeoM.Translate(0, -g.scrollY*2)
 				screen.DrawImage(ta.scroll, op)
 			}
 		default:
