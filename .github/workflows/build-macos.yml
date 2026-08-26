@@ -51,14 +51,21 @@ jobs:
             -output "packaging/dist/FD2.app/Contents/MacOS/fd2"
           lipo -info "packaging/dist/FD2.app/Contents/MacOS/fd2"   # 驗證雙弧,非雙弧就該讓這步失敗
 
-      - name: 組 .app bundle(Info.plist + 已入庫資產 + 圖示)
+      - name: 組 .app bundle(Info.plist + 已入庫資產 + 原生圖示)
         run: |
           APP=packaging/dist/FD2.app
           mkdir -p "$APP/Contents/Resources/assets/scenarios" "$APP/Contents/Resources/assets/story"
           cp -r assets/scenarios/. "$APP/Contents/Resources/assets/scenarios/"
           cp -r assets/story/.    "$APP/Contents/Resources/assets/story/"
           cp assets/spells.json   "$APP/Contents/Resources/assets/spells.json"
-          cp packaging/fd2.png    "$APP/Contents/Resources/fd2.icns" || true  # TODO: 需轉 .icns(iconutil),目前先放 png 佔位
+          ICONSET=packaging/dist/fd2.iconset
+          mkdir -p "$ICONSET"
+          for size in 16 32 128 256 512; do
+            sips -z "$size" "$size" packaging/fd2.png --out "$ICONSET/icon_${size}x${size}.png" >/dev/null
+            retina=$((size * 2))
+            sips -z "$retina" "$retina" packaging/fd2.png --out "$ICONSET/icon_${size}x${size}@2x.png" >/dev/null
+          done
+          iconutil -c icns "$ICONSET" -o "$APP/Contents/Resources/fd2.icns"
           cat > "$APP/Contents/Info.plist" <<'PLIST'
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -68,6 +75,7 @@ jobs:
             <key>CFBundleName</key><string>炎龍騎士團2 重製</string>
             <key>CFBundlePackageType</key><string>APPL</string>
             <key>CFBundleShortVersionString</key><string>0.1</string>
+            <key>CFBundleIconFile</key><string>fd2.icns</string>
             <key>NSHighResolutionCapable</key><true/>
           </dict></plist>
           PLIST
@@ -90,6 +98,5 @@ jobs:
 # 未驗證項目(需要真的跑一次這個 workflow 才能確認,見 41-packaging.md §4「已知落差」):
 #   - CGO_CFLAGS="-arch x86_64" 跨架構編譯在 ebiten 的 cgo(purego/oto 音訊)是否真的乾淨過關
 #     (未在 macOS 實機測過,只是沿用 Go 官方文件的已知模式)。
-#   - fd2.icns 目前是佔位;正式版要用 packaging/gen_icon.py 產的 fd2.png 跑 iconutil 轉 .icns。
 #   - 未簽署 app 在使用者端會被 Gatekeeper 擋,需要 `xattr -dr com.apple.quarantine FD2.app`
 #     (README 待補這段安裝說明,同 mac-app-cross-pack skill 段 3)。

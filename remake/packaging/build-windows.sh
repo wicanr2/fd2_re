@@ -6,25 +6,32 @@
 # tools/export_engine_assets.py 產生後,放到 exe 旁的 assets/ 資料夾(Windows 無 XDG 概念,
 # 桌面版走「cwd 相對 assets/」這條既有 fallback,見 cmd/fd2/assets.go assetPath 第 3 層)。
 set -euo pipefail
-cd "$(dirname "$(readlink -f "$0")")/.."   # remake/
+REMAKE_ROOT="$(cd "$(dirname "$0")/.." && pwd -P)"
 
-DIST=packaging/dist/windows
-rm -rf "$DIST"
-mkdir -p "$DIST/assets/scenarios" "$DIST/assets/story"
+# 主機只負責啟動 Docker；清理、編譯、資產組裝、格式檢查與壓縮全部在一次性容器內。
+# packaging/dist 是唯一可寫輸出，原始碼與資產在同一掛載內維持不變。
+docker run --rm --network none \
+  --memory 3g --cpus 2 --pids-limit 384 \
+  --user "$(id -u):$(id -g)" \
+  -e HOME=/tmp/home -e GOCACHE=/tmp/go-cache \
+  -v "$REMAKE_ROOT":/src -w /src \
+  fd2-build-mingw:latest bash -euo pipefail -c '
+    dist=packaging/dist/windows
+    archive=packaging/dist/fd2-windows-x86_64.zip
+    rm -rf "$dist" "$archive"
+    mkdir -p "$dist/assets/scenarios" "$dist/assets/story" /tmp/home /tmp/go-cache
 
-echo "== 編譯 Windows amd64(CGO + mingw-w64)=="
-docker run --rm -v "$PWD":/src -w /src -e GOCACHE=/src/.gocache fd2-build-mingw:latest bash -c '
-  CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ \
-    go build -trimpath -ldflags="-s -w -H=windowsgui" -o packaging/dist/windows/fd2.exe ./cmd/fd2
-'
-docker run --rm -v "$PWD":/src -w /src fd2-build-mingw:latest chown -R "$(id -u)":"$(id -g)" "$DIST"
+    CGO_ENABLED=1 GOOS=windows GOARCH=amd64 \
+      CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ \
+      go build -trimpath -buildvcs=false -ldflags="-s -w -H=windowsgui" \
+      -o "$dist/fd2.exe" ./cmd/fd2
 
-cp -r assets/scenarios/. "$DIST/assets/scenarios/"
-cp -r assets/story/.    "$DIST/assets/story/"
-cp assets/spells.json   "$DIST/assets/spells.json"
+    cp -R assets/scenarios/. "$dist/assets/scenarios/"
+    cp -R assets/story/. "$dist/assets/story/"
+    cp assets/spells.json "$dist/assets/spells.json"
+    file "$dist/fd2.exe" | tee packaging/dist/fd2-windows-x86_64.file.txt
+    (cd "$dist" && zip -qr "../fd2-windows-x86_64.zip" .)
+    sha256sum "$archive" | tee packaging/dist/fd2-windows-x86_64.sha256
+  '
 
-(cd packaging/dist/windows && zip -qr ../fd2-windows-x86_64.zip .)
-
-echo "完成:packaging/dist/fd2-windows-x86_64.zip"
-file packaging/dist/windows/fd2.exe
-ls -la packaging/dist/fd2-windows-x86_64.zip
+echo "完成：$REMAKE_ROOT/packaging/dist/fd2-windows-x86_64.zip"

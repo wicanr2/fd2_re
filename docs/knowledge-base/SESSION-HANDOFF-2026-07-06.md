@@ -7171,3 +7171,21 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   既有 selector 契約後確認直排兩筆必須用Down，consumer行為正確。
 - 此批為 production-input `RUNTIME-E1`；原版 mutation／restore 畫面 E2 仍未提升，
   README 85／100 自評不變。
+
+## 2026-08-26：第29戰99%產品結案與Windows封包衛生修正
+
+- 依使用者明確接受的玩家可見99%相似門檻，第29戰正式入口、76-slot戰況、
+  END／YES、敵方回合、戰果、raw ch28 post、持續隊伍、19人整備／冷讀檔與
+  第30戰接縫已列為 remake 完成。原版writer建槽完整來源、逐幀與精確音訊只保留
+  為證據限制／可選polish，不再阻擋交付或觸發重做已閉合RE。
+- `remake/packaging/build-windows.sh` 已改為主機只啟動單一 Docker；容器使用
+  `--rm --network none`、3 GiB、2 CPU、384 pids及目前UID/GID，內部完成清理、
+  CGO交叉編譯、公開資產組裝、PE檢查、ZIP與SHA-256。`Dockerfile.mingw`在建置
+  image時預抓modules並加入`file`／`zip`，正式封包不需網路。
+- 實跑產物`fd2-windows-x86_64.zip`為4,887,398 bytes，SHA-256
+  `a8601c8e3e88b71054e4de1624f421f98ae539d8417c816f7722877294182d5f`；
+  `fd2.exe`為x86-64 GUI PE，輸出UID/GID為1000:1000，checksum複驗通過。
+  這不宣稱Windows真機已驗收。
+- macOS workflow同時移除PNG冒充`.icns`，改由`sips`建立標準iconset後交給
+  `iconutil`；尚待真實macOS CI。工作後沒有FD2容器殘留，發現的既有VMS映像
+  屬其他專案，未予刪除。

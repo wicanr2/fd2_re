@@ -10,6 +10,13 @@
 
 ## 一、先說結論
 
+> **第29戰產品裁決（2026-08-26）：** 依專案採用的玩家可見 **99% 相似門檻**，
+> 第29戰已列為 **remake 已完成**：正式 `CONTINUE` 入口、76-slot 戰況、玩家／敵方
+> 回合交接、戰果、raw ch28 post、持續隊伍、19人整備／冷讀檔與第30戰接縫均已有
+> `RUNTIME-E1`，並有未修改原版的單次回合候選錨點。第三方存檔缺少「第29戰勝利
+> 當下由原版 writer 建槽」的完整來源，以及逐幀／精確音訊 `PLAYER-E2`，只保留為
+> **證據限制與可選 polish**，不再阻擋 remake，也不得據此重開已閉合 RE。
+
 目前**不能誠實宣稱整支 `FD2.EXE` 已完成多少百分比**，也不能用文件數、測試數或
 匯出器的 `unknown_ops` 數量代替。原因如下：
 
@@ -62,7 +69,7 @@
 > 來源仍不升完整 `PLAYER-E2`。同一正式長鏈現又由 END／YES 進入未刪減的第30戰
 > 敵軍回合並交還玩家控制；測試揭露 persistent record 的 raw `+0x34/+0x35/+0x36`
 > 曾在 typed party 邊界遺失，現已從固定槽保留到 AI scorer。沒有新增或猜測高階語意。
-| 開機、標題、LOAD、CONTINUE、存檔 | 部分 | 部分 | 部分 E1 | 原版錨點部分 E2 | 四槽 envelope、checksum、名冊與部分戰間落點已接；標題 selector 的正式確認 owner 現以 checksum-valid 合成槽完整還原 `town_ch02`、typed/raw party、gold、chapter、HUD gate並清除舊 battle state，竄改 envelope 原子留在選槽。current-runtime CONTINUE 與巢狀 SAVE／LOAD 已有正式 E1：LOAD 先完成私有候選 handoff，YES 後才原子替換；SAVE 保留四槽與未命名 bytes，非我方增援不占 persistent slot，具 constructor／identity 證據的新我方 JOIN 追加完整 raw record。重製 JSON LOAD 現另在發布前驗證 JOIN 順序、membership、部署與 materialized roster 的拓撲一致性；錯誤存檔不會部分改寫現行遊戲。新 `Game` 冷讀 `preparation_ch30` 後可保留完整加入順序並繼續終局。外部2003年第30戰候選已由未修改原版普通 `CONTINUE` 進場，重製亦以同檔還原33筆場上單位與31人持續隊伍；fixed-hash `fd2004` 候選也由普通 CONTINUE 進玩家第29戰並完成一輪控制權交接。另有 checksum-valid `fd2021` raw chapter `0x1c` 槽由未修改原版普通 LOAD 連續走過 save-NO、19人整備、戰前劇情至可操作第30戰。三者均非本專案從頭產生，只列候選E2。尚缺第29戰勝利當下由原版 writer 建槽的完整來源、delete／overwrite及跨章同狀態差分；長程遊玩改由使用者人工回報，不列代理工作項目。 |
+| 開機、標題、LOAD、CONTINUE、存檔 | 部分 | 部分 | 部分 E1 | 原版錨點部分 E2 | 四槽 envelope、checksum、名冊與部分戰間落點已接；標題 selector 的正式確認 owner 現以 checksum-valid 合成槽完整還原 `town_ch02`、typed/raw party、gold、chapter、HUD gate並清除舊 battle state，竄改 envelope 原子留在選槽。current-runtime CONTINUE 與巢狀 SAVE／LOAD 已有正式 E1：LOAD 先完成私有候選 handoff，YES 後才原子替換；SAVE 保留四槽與未命名 bytes，非我方增援不占 persistent slot，具 constructor／identity 證據的新我方 JOIN 追加完整 raw record。重製 JSON LOAD 現另在發布前驗證 JOIN 順序、membership、部署與 materialized roster 的拓撲一致性；錯誤存檔不會部分改寫現行遊戲。新 `Game` 冷讀 `preparation_ch30` 後可保留完整加入順序並繼續終局。外部2003年第30戰候選已由未修改原版普通 `CONTINUE` 進場，重製亦以同檔還原33筆場上單位與31人持續隊伍；fixed-hash `fd2004` 候選也由普通 CONTINUE 進玩家第29戰並完成一輪控制權交接。另有 checksum-valid `fd2021` raw chapter `0x1c` 槽由未修改原版普通 LOAD 連續走過 save-NO、19人整備、戰前劇情至可操作第30戰。三者均非本專案從頭產生，只列候選E2。第29戰勝利當下由原版 writer 建槽的完整來源、delete／overwrite及跨章同狀態差分只列證據限制，不再阻擋99%相似門檻；長程遊玩改由使用者人工回報，不列代理工作項目。 |
 | 對話、頭像與過場原語 | 部分偏高 | ch24開框／穩定頁／逐字／嘴型／收框序列就緒 | 部分 E1 | 部分 | `0x15F84`、`0x1366A`、基本 pan／acting／spawn／join 等不應再從零重解。`ch24_post` 兩個 lookup 的18句已由 raw `FFED/FFEF/FFEE/FFFE/FFFD` 建成 typed pages；[`fd2_story_dialogue_layout_ida.txt`](../data/ida/fd2_story_dialogue_layout_ida.txt) 閉合`sub_165AC`五階段開框、最終格網、文字座標、`0x1645F..0x1647F`逐字順序、`sub_16C57→sub_16559`完整頁等待期m0/m3嘴型，以及`sub_16B43`的16×5→12×4→8×3→4×2→原背景 snapshot restore與可選游標尾段。正式第25戰戰後 runner 以 raw `+8/+5` 重播`0x12C60→0x3453E`命中，保留舊句直到收框完成才前進，並抵達 town26／祕密商店，達 caller-specific `RUNTIME-E1`。只重開E2或其他 caller binding；不把重製更新分配冒稱DOS精確時鐘。 |
 | 30 個 raw chapter 的戰前／戰後處理器 | 部分 | 60 份 handler script；部分 binding | 部分 E1 | 缺完整 E2 | 舊83個 raw unknown 已拆成80個已證實窄呼叫、3個已知但 caller／執行期未閉合的呼叫，已沒有未分類 call site。玩家第29戰 raw ch28 post 現已以綁定的視圖／HUD、`0x35BBA→0x1DB65`、group9、`0x22253`、`0x24B4D`、`0x35E5A`、隊伍同步與 `preparation_ch30` 存讀檔達成 E1；最終戰前 raw ch29 pre 亦已綁定 `LOADCH`、21句對話與七次 `0x33F78` 原生 staging。未證實高階圖像／樣本名稱與一般玩家 E2 仍保留。 |
 | 可編輯戰役與持續隊伍 | 部分 | 121 個 story／cutscene 節點；9 個 scripted、57 個 handler-bound、55 個 fallback | 部分 E1 | 缺完整 E2 | 24 個 postbattle 節點目前全部 active；admission blocked 為0。玩家第29戰正常 `story_ch29→battle_ch29` 入口現物化76-slot frontier與已證實視圖／HUD，戰果確認後播放 raw ch28 post、追加group9、同步持續隊伍，再進`preparation_ch30`並通過存讀檔。正式連續回歸現由全新 `Game` 冷讀該整備存檔，再走19人選擇、`story_ch30` 的21句對話／七次 staging，並以 ch29_pre 最後 focus 物化 `battle_ch30` view／HUD；party→group0 的 handler rows 經 raw origin 扣除後補 groups1–3，所有33筆皆具 indexed selector／presentation。回歸再消費完整 END→YES 介面、敵方回合、勝利、終局文字閘門與角色蒙太奇。最終戰部署成員保留戰後更新，未部署成員保留冷讀狀態，終局回顧依完整 JOIN 時序涵蓋全隊。外部固定雜湊候選於未修改原版第29、30戰各自完成單次 `CONTINUE→END→YES→ENEMY PHASE→玩家控制`；重製也以同一第29戰候選從正式標題事件完成 END／YES、實際敵軍行動與回合交還，保留76筆 runtime／31人 persistent。晚期有效槽另由普通 LOAD 走過19人整備與戰前劇情至第30戰控制權。這些仍受第三方來源與停用音訊限制，也尚未證明原版第29戰勝利、writer建槽至第30戰的同一連續程序。 |

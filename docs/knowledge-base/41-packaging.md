@@ -14,6 +14,16 @@
 > `665b2cd49823fb74a2531188b6867592a2ae53b178af0b350308a9d6b85a2a8e`；這只證明
 > 交叉編譯與格式，不證明 Windows 能啟動。macOS 工作流程目前執行次數為零，
 > 本輪因既有 GitHub 權杖失效而無法派送；這是驗證授權受阻，不是編譯失敗。
+>
+> **2026-08-26 Windows 封包勘誤：** `build-windows.sh` 已移除主機端
+> `rm`／`cp`／`zip`、root-owned 輸出與事後遞迴 `chown`。目前由單一
+> `docker run --rm --network none`、UID/GID `1000:1000`、3 GiB／2 CPU／384 pids
+> 的容器完成清理、CGO 交叉編譯、資產組裝、PE 檢查、ZIP 與 SHA-256。實際產物
+> `fd2-windows-x86_64.zip` 為 4,887,398 bytes，SHA-256
+> `a8601c8e3e88b71054e4de1624f421f98ae539d8417c816f7722877294182d5f`；其中
+> `fd2.exe` 為 `PE32+ executable (GUI) x86-64`。這關閉可重現 Windows 封包，
+> 仍不等於 Windows 真機啟動／輸入／存檔／音訊驗收。macOS workflow 同日移除
+> PNG 假 `.icns`，改由 `sips` 與 `iconutil` 產生原生圖示；尚待真實 CI 執行。
 
 ## 1. 資產路徑解析層(`remake/cmd/fd2/assets.go`)
 
@@ -114,7 +124,8 @@ IDENTICAL
 ## 3. Windows(`remake/packaging/build-windows.sh`)
 
 CGO 跨編:`packaging/Dockerfile.mingw` 建一個 `golang:1.22-bookworm` + `gcc-mingw-w64-x86-64` 的
-image(`fd2-build-mingw`),`CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc`。
+image(`fd2-build-mingw`),並預抓 Go modules、內建`file`／`zip`；正式封包容器關閉網路。
+`CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc`。
 `-ldflags="-H=windowsgui"` 讓正式版雙擊不彈 cmd 黑窗。
 
 產物 `fd2-windows-x86_64.zip`:`fd2.exe` + 已入庫資產(scenarios/story/spells.json)。Windows 沒有
@@ -122,9 +133,11 @@ XDG 慣例,桌面版走 `assetPath()` 三層查找的**第 3 層(cwd 相對)**�
 `fd2.exe` 旁的 `assets/` 資料夾即可,不強制走 `%USERPROFILE%\.local\share`(該路徑仍是存檔/設定
 的落點,兩者不衝突)。
 
-### 3.1 驗證(誠實揭露:編譯過,執行未在真機驗證)
+### 3.1 驗證(誠實揭露:封包完成,執行未在真機驗證)
 
 - `file fd2.exe` 確認 `PE32+ executable (GUI) x86-64, for MS Windows`——交叉編譯產物格式正確。
+- ZIP 由同一容器組裝並立即以 `sha256sum -c` 驗證；輸出檔與目錄抽查均為目前
+  使用者 UID/GID，不再需要 root 或事後 `chown`。
 - 嘗試用 Wine(headless Xvfb)smoke test:`wine fd2.exe` 掛起逾時(60–90 秒無回應,無錯誤輸出)。
   Wine + Xvfb + OpenGL(Ebiten Windows 後端走 win32+wgl)是已知脆弱組合,掛起不代表 exe 本身有問題,
   但也**不構成「跑得起來」的證據**——沒有 Windows 實機或穩定的 Wine GL 環境,無法排除兩者。
@@ -163,8 +176,8 @@ build)直接原生編譯。草稿見 `.github/workflows/build-macos.yml`:
 
 - `CGO_CFLAGS="-arch x86_64"` 這種跨架構 CGO 編譯,ebiten 依賴的 `purego`/`oto`(音訊)是否真的
   乾淨過關——只是沿用 Go 官方文件記載的已知模式,沒有實測。
-- `fd2.icns` 目前是用 PNG 佔位(workflow 裡直接複製 `fd2.png`),正式版要用 `iconutil` 轉真正的
-  `.icns`(多解析度),`gen_icon.py` 產的原始 PNG 已備好,轉檔步驟待補。
+- workflow 已用 `sips` 產生16／32／128／256／512及其2倍尺寸，再由`iconutil`
+  建立真正的 `.icns`；仍須在第一次 macOS CI 執行時驗證圖示集合與 bundle。
 - 未簽署 app 會被 Gatekeeper 擋,需要玩家自己 `xattr -dr com.apple.quarantine FD2.app`,
   README 待補這段安裝說明。
 
