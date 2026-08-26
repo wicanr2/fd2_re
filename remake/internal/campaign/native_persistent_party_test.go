@@ -90,6 +90,7 @@ func TestMaterializeNativePersistentPartyRecordPreservesProvenFields(t *testing.
 	copy(record.Raw[0x1a:0x1f], []byte{1, 2, 3, 4, 5})
 	record.Raw[0x1f], record.Raw[0x20], record.Raw[0x21] = 1, 5, 7
 	copy(record.Raw[0x22:0x28], []byte{6, 7, 8, 9, 10, 11})
+	record.Raw[0x34], record.Raw[0x35], record.Raw[0x36] = 0x81, 0x22, 0x33
 	record.Raw[0x3b], record.Raw[0x3c] = 6, 42
 	for offset, value := range map[int]int16{
 		0x37: 10, 0x39: 11, 0x3e: 12,
@@ -110,6 +111,9 @@ func TestMaterializeNativePersistentPartyRecordPreservesProvenFields(t *testing.
 		unit.BaseAP != 10 || unit.BaseHIT != 12 ||
 		!unit.HasNativeRecordWord42 || unit.NativeRecordWord42 != 14 ||
 		!unit.HasNativeRecordWord46 || unit.NativeRecordWord46 != 16 ||
+		!unit.HasNativeRecordByte34 || unit.NativeRecordByte34 != 0x81 ||
+		!unit.HasNativeRecordByte35 || unit.NativeRecordByte35 != 0x22 ||
+		!unit.HasNativeRecordByte36 || unit.NativeRecordByte36 != 0x33 ||
 		unit.DX != 12 || unit.Exp != 42 ||
 		len(unit.Inventory) != 1 || unit.Inventory[0] != 0x12 ||
 		!unit.Equipped[0] {

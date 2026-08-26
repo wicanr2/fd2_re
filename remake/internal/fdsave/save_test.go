@@ -174,6 +174,7 @@ func TestPersistentRecordViewUsesProvenOffsetsAndSignedWords(t *testing.T) {
 	record.Raw[0x20] = 7
 	record.Raw[0x21] = 8
 	copy(record.Raw[0x22:0x28], []byte{9, 10, 11, 12, 13, 14})
+	record.Raw[0x34], record.Raw[0x35], record.Raw[0x36] = 0x81, 0x22, 0x33
 	record.Raw[0x3b] = 15
 	record.Raw[0x3c] = 16
 	for offset, value := range map[int]int16{
@@ -199,6 +200,7 @@ func TestPersistentRecordViewUsesProvenOffsetsAndSignedWords(t *testing.T) {
 		got.CommandMask != ([5]byte{1, 2, 3, 4, 5}) ||
 		got.Race != 6 || got.Class != 7 || got.Level != 8 ||
 		got.Transient != ([6]byte{9, 10, 11, 12, 13, 14}) ||
+		got.RawByte34 != 0x81 || got.RawByte35 != 0x22 || got.RawByte36 != 0x33 ||
 		got.BaseAP != -17 || got.BaseDP != 18 ||
 		got.Movement != 15 || got.Experience != 16 ||
 		got.DX != -19 || got.HP != 20 || got.MaxHP != 21 ||

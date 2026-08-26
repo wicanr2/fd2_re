@@ -19,6 +19,9 @@ func TestApplyPersistentStatsPreservesDynamicNativeCommandMask(t *testing.T) {
 		NativeTransient:   [6]byte{1, 2, 3, 4, 5, 6},
 		NativeRecordByte5: 1, HasNativeRecordByte5: true,
 		NativeRecordByte6: 7, HasNativeRecordByte6: true,
+		NativeRecordByte34: 0x81, HasNativeRecordByte34: true,
+		NativeRecordByte35: 0x22, HasNativeRecordByte35: true,
+		NativeRecordByte36: 0x33, HasNativeRecordByte36: true,
 		NativeRecordWord42: 0x140, HasNativeRecordWord42: true,
 		NativeRecordWord46: 0x24, HasNativeRecordWord46: true,
 		NativeInventoryFlags: []int{0x40, 0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80},
@@ -29,6 +32,11 @@ func TestApplyPersistentStatsPreservesDynamicNativeCommandMask(t *testing.T) {
 	}
 	if dst.NativeRecordByte5 != 1 || !dst.HasNativeRecordByte5 || dst.NativeRecordByte6 != 7 || !dst.HasNativeRecordByte6 {
 		t.Fatalf("persistent raw record bytes not preserved: byte5=%#x/%v byte6=%#x/%v", dst.NativeRecordByte5, dst.HasNativeRecordByte5, dst.NativeRecordByte6, dst.HasNativeRecordByte6)
+	}
+	if dst.NativeRecordByte34 != 0x81 || !dst.HasNativeRecordByte34 ||
+		dst.NativeRecordByte35 != 0x22 || !dst.HasNativeRecordByte35 ||
+		dst.NativeRecordByte36 != 0x33 || !dst.HasNativeRecordByte36 {
+		t.Fatalf("persistent raw AI bytes not preserved: %#v", dst)
 	}
 	if dst.NativeRecordWord42 != 0x140 || !dst.HasNativeRecordWord42 {
 		t.Fatalf("persistent raw +0x42 not preserved: word=%#x/%v", dst.NativeRecordWord42, dst.HasNativeRecordWord42)

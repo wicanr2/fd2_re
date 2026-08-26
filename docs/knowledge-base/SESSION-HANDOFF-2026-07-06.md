@@ -7028,3 +7028,17 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   完整回歸通過；此批為 `RUNTIME-E1`，外部存檔 provenance 限制不變。
 - 這一節也取代本交接較早「preparation 仍是 Enter／Esc 直接 Advance placeholder」的
   歷史現況說法；歷史段落只保留發現脈絡，不再代表目前程式。
+
+## 2026-08-26：固定晚期槽第30戰 END／YES／敵軍回合交接
+
+- 沿用 `fd2021.zip`／`fd2last.sav` 固定 SHA-256，重製端由正式標題 LOAD、slot 0、
+  19人整備與 ch29 pre 抵達 `battle_ch30`，再消費共用 END／YES indexed 介面。
+- 測試保留 authored 第30戰敵軍，不預先清空 HP／OnField，也不直接呼叫 `endTurn`；
+  以正式 Update／Draw 生命週期有界驅動行走、攻擊與其他 indexed 演出。
+- 第一輪在至少一名敵軍行動後失敗即關閉：`NativeAIScoringRecords` 回報 unit 0 缺
+  raw provenance。根因是原版 persistent record 已含 `+0x34/+0x35/+0x36`，但
+  `PersistentRecordView→MaterializeNativePersistentPartyRecord→applyPersistentStats`
+  沒有保留三欄。現已直接傳遞原始位元組與存在旗標，不替欄位猜高階名稱。
+- 修正後同一測試完成敵軍回合、回合數增加、回到 `PLAYER PHASE`，29筆持續名冊與
+  固定隊長＋19名部署者保持完整。此批為 `RUNTIME-E1`；第三方來源與停用音訊使其
+  仍不是完整 `PLAYER-E2`。README 玩家交付自評由80調為81／100。

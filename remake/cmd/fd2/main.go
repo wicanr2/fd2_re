@@ -3419,6 +3419,9 @@ func applyPersistentStats(dst, src *battle.Unit) {
 	dst.NativeTransient = src.NativeTransient
 	dst.NativeRecordByte5, dst.HasNativeRecordByte5 = src.NativeRecordByte5, src.HasNativeRecordByte5
 	dst.NativeRecordByte6, dst.HasNativeRecordByte6 = src.NativeRecordByte6, src.HasNativeRecordByte6
+	dst.NativeRecordByte34, dst.HasNativeRecordByte34 = src.NativeRecordByte34, src.HasNativeRecordByte34
+	dst.NativeRecordByte35, dst.HasNativeRecordByte35 = src.NativeRecordByte35, src.HasNativeRecordByte35
+	dst.NativeRecordByte36, dst.HasNativeRecordByte36 = src.NativeRecordByte36, src.HasNativeRecordByte36
 	// +0x42 is a raw persistent word used by ch15_post; preserve it only when
 	// the source carries explicit provenance, never derive it from normalized HP.
 	dst.NativeRecordWord42, dst.HasNativeRecordWord42 = src.NativeRecordWord42, src.HasNativeRecordWord42

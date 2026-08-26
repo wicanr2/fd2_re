@@ -6629,3 +6629,20 @@ JOIN order 從已驗證 `partyRoster` 物化20名玩家，再套用 map29 的20�
 任一缺漏即整批拒絕。一般新遊戲仍用 authored scenario constructor；不得為通過外部
 存檔而在 `ch30.json` 猜造 identity 3／19 的初始能力。進入 battle 時的 scenario order
 也必須投影當次 deployment，不可拿29人永久 JOIN chronology 去重排20人戰場名冊。
+
+### 固定晚期槽的第30戰回合交接驗收
+
+上述正式 LOAD、19人整備與戰前 handler 已達 `RUNTIME-E1` 後，下一個玩家可見門檻
+是由同一個固定雜湊槽抵達的 `battle_ch30`，繼續消費共用空游標操作面板的 END、
+四次收框、YES 回覆、逐字回覆與五次收框，再進敵方回合。測試不得呼叫 `endTurn`、
+直接設定 `aiBusy`、殺死／停用敵軍，或把第30戰替換成合成場景；它必須保留固定隊長
+加19名選取成員，以及 authored 敵方的原始模式、座標與 indexed presentation 來源。
+
+敵方回合以有界正式更新生命週期驅動：行走、攻擊、法術、物品或其他 indexed 演出
+存在時，必須先完成各自的 Draw／step 邊界，才能要求下一筆 `NextAIPlan`。驗收成功
+條件是至少一名原始敵軍完成正式計畫、沒有 `loadErr`，最後 `aiBusy` 清除、回合數
+增加、橫幅回到 `PLAYER PHASE`，且20名我方部署與29筆持續名冊沒有被 LOAD→回合
+交接破壞。若任一原版資產或已證實 owner 缺少，測試應回報實際失敗並維持失敗即
+關閉；不得為了讓回合結束而略過演出或改走正規化後備人工智慧。外部來源仍只把這條
+重製正常路徑提升為 `RUNTIME-E1`；在原版與重製的同一 raw 戰況、輸入及音訊完成
+配對前，不升為完整 `PLAYER-E2`。

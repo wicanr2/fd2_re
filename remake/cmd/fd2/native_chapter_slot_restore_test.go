@@ -7,7 +7,9 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
+	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
@@ -315,5 +317,87 @@ func TestExternalLateSlotUsesProductionTitleAndPreparationInputOwners(t *testing
 	if own != 20 || !hasIdentity3 {
 		t.Fatalf("外部晚期槽最終戰部署 own=%d identity3=%v，未保留固定隊長＋19人",
 			own, hasIdentity3)
+	}
+
+	// 從同一個固定雜湊 LOAD 長鏈繼續走玩家可見 END／YES；不得清空敵軍或
+	// 直接呼叫 endTurn，否則無法驗證真實第30戰人工智慧與演出擁有者。
+	if err := g.composeNativeMapFrame(); err != nil {
+		t.Fatalf("外部晚期槽最終戰穩定畫面：%v", err)
+	}
+	g.nativePreparationUI, err = loadNativePreparationUIAssets()
+	if err != nil {
+		t.Fatalf("外部晚期槽 END 整備資產：%v", err)
+	}
+	g.nativeClassUI, err = loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatalf("外部晚期槽 END 對話資產：%v", err)
+	}
+	g.ring, g.ringSel, g.nativeSystemCursorOverlay = true, 3, true
+	if !g.beginNativeSystemEndTurn() {
+		t.Fatal("外部晚期槽第30戰玩家 END 路徑被拒絕")
+	}
+	for present := 0; present < 4; present++ {
+		g.markActionOverlayDrawn()
+		g.stepActionOverlayLifecycle()
+	}
+	for step := 0; g.nativeClassUIJob != nil && step < 256; step++ {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if g.nativeClassUIJob != nil {
+		t.Fatal("外部晚期槽 END 提示開框超過256步")
+	}
+	g.confirmNativeSystemEndTurn()
+	for step := 0; g.nativeClassUIJob != nil && step < 512; step++ {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if g.nativeClassUIJob != nil {
+		t.Fatal("外部晚期槽 YES 回覆演出超過512步")
+	}
+	for step := 0; g.nativeSystemEndTurnDelay > 0 && step < 256; step++ {
+		g.stepNativeSystemEndTurn()
+	}
+	if g.nativeSystemEndTurnDelay != 0 {
+		t.Fatal("外部晚期槽 YES 延遲超過256步")
+	}
+	for step := 0; g.nativeClassUIJob != nil && step < 256; step++ {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if g.nativeClassUIJob != nil || !g.aiBusy || g.banner != "ENEMY PHASE" {
+		t.Fatalf("外部晚期槽 END→YES 未進敵方回合：job=%v ai=%v banner=%q err=%q",
+			g.nativeClassUIJob != nil, g.aiBusy, g.banner, g.loadErr)
+	}
+
+	beforeTurn := g.st.Turn
+	screen := ebiten.NewImage(logicalW, logicalH)
+	actedEnemy := false
+	for frame := 0; g.aiBusy && g.loadErr == "" && frame < 60000; frame++ {
+		if err := g.Update(); err != nil {
+			t.Fatalf("外部晚期槽敵方回合更新：%v", err)
+		}
+		g.Draw(screen)
+		for _, unit := range g.st.Units {
+			if unit != nil && unit.Camp == battle.Enemy && unit.Acted {
+				actedEnemy = true
+				break
+			}
+		}
+	}
+	if g.loadErr != "" || g.aiBusy || !actedEnemy || g.st.Turn != beforeTurn+1 ||
+		g.banner != "PLAYER PHASE" {
+		t.Fatalf("外部晚期槽敵方回合未交回控制：ai=%v acted=%v turn=%d→%d banner=%q err=%q",
+			g.aiBusy, actedEnemy, beforeTurn, g.st.Turn, g.banner, g.loadErr)
+	}
+	ownAfterTurn := 0
+	for _, unit := range g.st.Units {
+		if unit != nil && unit.Camp == battle.Own {
+			ownAfterTurn++
+		}
+	}
+	if len(g.partyRoster) != 29 || len(g.partyMembers) != 29 || ownAfterTurn != 20 {
+		t.Fatalf("回合交接破壞持續隊伍：roster=%d members=%d own=%d",
+			len(g.partyRoster), len(g.partyMembers), ownAfterTurn)
 	}
 }

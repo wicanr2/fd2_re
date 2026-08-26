@@ -205,6 +205,9 @@ type PersistentRecordView struct {
 	Class              byte
 	Level              byte
 	Transient          [6]byte
+	RawByte34          byte
+	RawByte35          byte
+	RawByte36          byte
 	BaseAP             int16
 	BaseDP             int16
 	Movement           byte
@@ -240,6 +243,9 @@ func (r PersistentRecord) View() PersistentRecordView {
 	view.Class = r.Raw[0x20]
 	view.Level = r.Raw[0x21]
 	copy(view.Transient[:], r.Raw[0x22:0x28])
+	view.RawByte34 = r.Raw[0x34]
+	view.RawByte35 = r.Raw[0x35]
+	view.RawByte36 = r.Raw[0x36]
 	view.BaseAP = persistentRecordI16(r.Raw[:], 0x37)
 	view.BaseDP = persistentRecordI16(r.Raw[:], 0x39)
 	view.Movement = r.Raw[0x3b]
