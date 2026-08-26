@@ -10,6 +10,12 @@ type nativeChurchMenuInput struct {
 	escape bool
 }
 
+type nativeChurchStatusInput struct {
+	delta  int
+	enter  bool
+	escape bool
+}
+
 func (g *Game) handleNativeChurchMenuInput(input nativeChurchMenuInput) bool {
 	if g.churchMode != "menu" || g.nativeChurchUIBlocksInput() {
 		return false
@@ -64,4 +70,63 @@ func (g *Game) handleNativeChurchMenuInput(input nativeChurchMenuInput) bool {
 		openService()
 	}
 	return true
+}
+
+func (g *Game) handleNativeChurchStatusInput(input nativeChurchStatusInput) bool {
+	if g.nativeChurchUIBlocksInput() || g.nativeClassUIBlocksInput() {
+		return false
+	}
+	switch g.churchMode {
+	case "status_roster":
+		listLen := len(g.churchIDs)
+		if input.delta != 0 {
+			g.churchSel = campaign.AdvanceNativeTwoColumnSelection(
+				g.churchSel, listLen, input.delta,
+			)
+		}
+		g.churchRosterStart, _ = campaign.NativeTwoColumnWindow(
+			listLen, g.churchSel, g.churchRosterStart,
+		)
+		if input.escape {
+			if !g.beginNativeChurchRosterClosing(g.returnToNativeChurchMenu) {
+				g.returnToNativeChurchMenu()
+			}
+			return true
+		}
+		if !input.enter {
+			return true
+		}
+		if listLen == 0 || g.churchSel < 0 || g.churchSel >= listLen {
+			return true
+		}
+		id := g.churchIDs[g.churchSel]
+		openStatus := func() {
+			if !g.beginNativeChurchStatus(id) {
+				g.msg = "角色缺少原版 status/command panel provenance"
+				g.returnToNativeStatusRoster()
+			}
+		}
+		if !g.beginNativeChurchRosterClosing(openStatus) {
+			openStatus()
+		}
+		return true
+	case "status_view", "status_commands":
+		if !input.enter && !input.escape {
+			return true
+		}
+		if g.churchMode == "status_view" && len(g.churchCommandPanel) != 0 {
+			if !g.beginNativeChurchStatusCommandTransition() {
+				g.closeNativeChurchStatus(g.churchStatusPanel)
+			}
+			return true
+		}
+		panel := g.churchStatusPanel
+		if g.churchMode == "status_commands" {
+			panel = g.churchCommandPanel
+		}
+		g.closeNativeChurchStatus(panel)
+		return true
+	default:
+		return false
+	}
 }

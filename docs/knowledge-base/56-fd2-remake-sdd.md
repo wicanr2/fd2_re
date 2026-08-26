@@ -5931,6 +5931,14 @@ Enter 必須保存目前 selection，先播放四段關框與 source restore，�
 consumer 逐項證明四個 raw index 抵達各自模式；這只提升正常重製輸入
 `RUNTIME-E1`，不替代教會 caller 的未修改原版同狀態 E2。
 
+raw index 0 的後續也必須共用具型別 consumer：兩欄名冊沿既有
+`AdvanceNativeTwoColumnSelection`／`NativeTwoColumnWindow` 移動；確認後先完成五段
+名冊關框與 source restore，才以所選 persistent ID 預建 `0x17AED` 狀態及指令面板。
+狀態面板的第一次確認若有 command mask，必須走十四段 status→command transition；
+第二次確認才走十二段關框、source restore並返回同一名冊。Escape／Backspace 依
+目前面板採相同關閉規則。任一 panel provenance 缺失時不得發布半成品，必須返回
+名冊並保留明示錯誤。
+
 ## 2026-08-22 空游標系統設定選單 E1 契約
 
 主證據為

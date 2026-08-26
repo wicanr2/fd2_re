@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"testing"
+	"time"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
@@ -81,6 +82,66 @@ func TestNativeChurchStatusUsesPlayerOriginalAssets(t *testing.T) {
 	if g.nativeClassUIJob == nil || len(g.nativeClassUIJob.frames) != 12 ||
 		len(g.nativeClassUIJob.restore) != 320*200 {
 		t.Fatal("native command panel twelve-frame closing did not start")
+	}
+}
+
+func TestNativeChurchStatusTypedInputRoundTrip(t *testing.T) {
+	const base = "../../../org_game/炎龍騎士團/FLAME2/"
+	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "DATO.DAT"} {
+		if _, err := os.Stat(base + name); err != nil {
+			t.Skip("player-provided original archives are absent")
+		}
+	}
+	t.Setenv("FD2_ORIGINAL_FDOTHER", base+"FDOTHER.DAT")
+	t.Setenv("FD2_ORIGINAL_FDTXT", base+"FDTXT.DAT")
+	t.Setenv("FD2_ORIGINAL_DATO", base+"DATO.DAT")
+	assets, err := loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	unit := *nativeItemPanelTestUnit()
+	unit.NativeIdentity, unit.HasNativeIdentity = 9, true
+	unit.MapSelectorKey, unit.HasMapSelectorKey = 9, true
+	unit.NativeCommandMask = [5]byte{1}
+	g := &Game{
+		nativeClassUI: assets, nativeChurchTextIndex: 585,
+		partyRoster: map[int]battle.Unit{9: unit}, partyJoinOrder: []int{9},
+		churchMode: "status_roster", churchIDs: []int{9}, churchStatusID: -1,
+		nativeCommandBook: []battle.NativeCommandRecord{{ID: 0, MPCost: 2}},
+	}
+	drain := func(label string) {
+		for steps := 0; g.nativeClassUIJob != nil; steps++ {
+			if steps >= 64 {
+				t.Fatalf("%s did not settle: mode=%q job=%#v", label, g.churchMode, g.nativeClassUIJob)
+			}
+			g.nativeClassUIJob.drawn = true
+			g.stepNativeClassUILifecycle(time.Time{})
+		}
+	}
+
+	if !g.handleNativeChurchStatusInput(nativeChurchStatusInput{enter: true}) {
+		t.Fatal("status roster confirmation was not consumed")
+	}
+	if g.churchMode != "status_roster" {
+		t.Fatalf("status published before roster closing: %q", g.churchMode)
+	}
+	drain("status opening")
+	if g.churchMode != "status_view" || g.churchStatusID != 9 {
+		t.Fatalf("status mode=%q id=%d", g.churchMode, g.churchStatusID)
+	}
+	if !g.handleNativeChurchStatusInput(nativeChurchStatusInput{enter: true}) {
+		t.Fatal("status-to-command confirmation was not consumed")
+	}
+	drain("status-to-command")
+	if g.churchMode != "status_commands" {
+		t.Fatalf("command mode=%q", g.churchMode)
+	}
+	if !g.handleNativeChurchStatusInput(nativeChurchStatusInput{escape: true}) {
+		t.Fatal("command panel escape was not consumed")
+	}
+	drain("command return")
+	if g.churchMode != "status_roster" || g.churchStatusID != -1 || len(g.churchIDs) != 1 {
+		t.Fatalf("return mode=%q id=%d roster=%v", g.churchMode, g.churchStatusID, g.churchIDs)
 	}
 }
 

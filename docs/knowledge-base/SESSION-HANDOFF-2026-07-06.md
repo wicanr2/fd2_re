@@ -7141,3 +7141,7 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   mode，且既有 `0x17AED` 面板生命週期回歸一併通過。
 - 此批關閉正常重製輸入 `RUNTIME-E1`，不冒稱 church caller 的未修改原版畫面 E2；
   README 85／100 自評不變。
+- 後續同批再把 raw index 0 的名冊與面板輸入抽入 typed consumer；正式路徑現從
+  名冊確認，經十二段狀態開框、十四段 status→command 切換、十二段關框與 source
+  restore，返回同一名冊。聚焦回歸與既有復活／轉職往返全部通過，分級仍為
+  `RUNTIME-E1`。

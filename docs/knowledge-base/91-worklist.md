@@ -25,7 +25,9 @@
 
 > **2026-08-26 教會正式輸入補證：** `0x3072F` 四項服務現由正式鍵盤與回歸
 > 共用 typed consumer；status／transfer／revive／class 均在關框與 source restore
-> 後才發布。menu dispatch 已達 `RUNTIME-E1`，後續只留 church caller 原版同狀態 E2。
+> 後才發布。status 又沿正式 consumer 走完名冊→狀態→指令→同一名冊的完整面板
+> 生命週期。menu dispatch 與 raw index 0 已達 `RUNTIME-E1`，後續只留 church caller
+> 原版同狀態 E2。
 
 > **2026-08-25 最終戰前現況：** `story_ch30` 已由兩句通用後備改接正式
 > `ch29_pre` binding；`0x33F78` 的 `(slot,x,y)` wrapper、`0x12CEA(x,y)` focus、

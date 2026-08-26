@@ -4342,59 +4342,26 @@ func (g *Game) campInput() bool {
 			return true
 		}
 		if g.churchMode == "status_roster" {
-			listLen := len(g.churchIDs)
+			delta := 0
 			if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
-				g.churchSel = campaign.AdvanceNativeTwoColumnSelection(g.churchSel, listLen, -1)
+				delta = -1
+			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+				delta = 1
+			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
+				delta = -2
+			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
+				delta = 2
 			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
-				g.churchSel = campaign.AdvanceNativeTwoColumnSelection(g.churchSel, listLen, 1)
-			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
-				g.churchSel = campaign.AdvanceNativeTwoColumnSelection(g.churchSel, listLen, -2)
-			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
-				g.churchSel = campaign.AdvanceNativeTwoColumnSelection(g.churchSel, listLen, 2)
-			}
-			g.churchRosterStart, _ = campaign.NativeTwoColumnWindow(
-				listLen, g.churchSel, g.churchRosterStart,
-			)
-			if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-				if !g.beginNativeChurchRosterClosing(g.returnToNativeChurchMenu) {
-					g.returnToNativeChurchMenu()
-				}
-				return true
-			}
-			if enter && listLen > 0 && g.churchSel < listLen {
-				id := g.churchIDs[g.churchSel]
-				openStatus := func() {
-					if !g.beginNativeChurchStatus(id) {
-						g.msg = "角色缺少原版 status/command panel provenance"
-						g.returnToNativeStatusRoster()
-					}
-				}
-				if !g.beginNativeChurchRosterClosing(openStatus) {
-					openStatus()
-				}
-			}
+			g.handleNativeChurchStatusInput(nativeChurchStatusInput{
+				delta: delta, enter: enter,
+				escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+			})
 			return true
 		}
 		if g.churchMode == "status_view" || g.churchMode == "status_commands" {
 			ack := enter || inpututil.IsKeyJustPressed(ebiten.KeyEscape) ||
 				inpututil.IsKeyJustPressed(ebiten.KeyBackspace)
-			if !ack {
-				return true
-			}
-			if g.churchMode == "status_view" && len(g.churchCommandPanel) != 0 {
-				if !g.beginNativeChurchStatusCommandTransition() {
-					g.closeNativeChurchStatus(g.churchStatusPanel)
-				}
-				return true
-			}
-			panel := g.churchStatusPanel
-			if g.churchMode == "status_commands" {
-				panel = g.churchCommandPanel
-			}
-			g.closeNativeChurchStatus(panel)
+			g.handleNativeChurchStatusInput(nativeChurchStatusInput{enter: ack})
 			return true
 		}
 		if g.churchMode == "transfer_full" {

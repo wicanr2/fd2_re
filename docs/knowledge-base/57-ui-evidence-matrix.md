@@ -351,7 +351,10 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 > **2026-08-26 UI-10 正式輸入補證：** 教會 `0x3072F` 的 status／transfer／revive／class
 > 四分派現由 Ebiten 鍵盤與決定性回歸共用單一 typed consumer；四項皆在四段關框
 > 與 source restore 後才發布各自 roster／文字／開框 owner。這關閉 menu dispatch
-> 的 `RUNTIME-E1`，不替代 church caller 的未修改原版畫面 E2。
+> 的 `RUNTIME-E1`。raw index 0 又由同一 typed status consumer 走完
+> 名冊→十二段狀態開框→十四段指令面板切換→十二段關框／source restore→同一名冊；
+> persistent ID 與 raw transient panel 全程沿正式 owner。這仍不替代 church caller
+> 的未修改原版畫面 E2。
 
 > **2026-08-22 UI-03 勘誤：** 上表 UI-03 的17–22範圍已擴充為玩家
 > command 17–23及25–27 `RUNTIME-E1`。25–27同樣依`0x1D6C8`播放#80 selector0與
