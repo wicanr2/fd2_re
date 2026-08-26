@@ -7284,3 +7284,18 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - Docker／Xvfb聚焦測試包含最終整備冷讀→第30戰→終局長鏈，通過蒙太奇略過、20段
   尾聲、永久定格、回顧與返回。這關閉重製端正式輸入接線；原版特定scan code與
   精確輸入時序仍為未知，不猜接、不提升一般玩家E2。
+
+## 2026-08-27：最新HEAD兩平台發行候選重建與AppImage實跑
+
+- 依99%玩家可見門檻重新檢查有效佇列後，service2／3、教會與正常AI producer的
+  正式consumer皆已存在；`57`仍稱AI caller／戰後town-shop-save均未解除的舊段已
+  追加勘誤，避免後續工作階段重做。剩餘同狀態E2交由代表性抽驗／人工回報。
+- 以最新`a5bbaf3f`及既有鎖定映像、單一`--rm --network none`容器重建Linux
+  AppImage與Windows ZIP。AppImage為5,306,872 bytes，SHA-256
+  `f085dc58ba021a118114ec33b1972e2500e61c51141b02f35d7cfbb720acadfb`；Windows ZIP
+  為4,895,851 bytes，SHA-256
+  `931397d8b60f85af976c68017d17f238a77ab904d4b00d8081e0267ceb0eb286`。
+- AppImage從空工作目錄、唯讀XDG玩家資產及原版archive唯讀掛載，在Docker／Xvfb
+  frame90正式抵達`town_ch02`並輸出PNG／狀態旁車。Windows ZIP逐名72項；AppImage
+  解包80個檔案；兩者都沒有原版EXE、DAT或存檔。產物與證據均為目前UID/GID。
+- Windows真機與macOS CI仍未驗收；Linux封包成功不能替代它們。工作後無FD2容器殘留。

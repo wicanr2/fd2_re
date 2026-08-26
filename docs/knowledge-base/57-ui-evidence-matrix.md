@@ -187,10 +187,13 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 [`native-continue-current-runtime-remake-e1.json`](../data/ui-traces/native-continue-current-runtime-remake-e1.json)。
 這是重製端 E1 publication／輸入邊界，不是 BIOS 時鐘逐幀或原版畫面 E2。
 
-仍未解除的閘門是：泛用待處理群組公式的更多章節證據、未修改一般玩家同狀態逐幀
-比較、action 選取擁有者與 status/equipment panel、戰後 town／shop／preparation／save
-全路徑，以及敵方 AI 的正式 caller、目標選擇與命令／法術／物品決策。沒有這些證據，
-不可把 CONTINUE 或完整戰役寫成完成。
+**2026-08-27 勘誤：**上段之後的實作已解除其中多項閘門，不能再用這份舊清單重開
+工作。33圖待處理群組現有正式 materializer；正常 producer 的敵方 AI caller、目的格、
+目標陣列及命令／法術／物品交易已達 `RUNTIME-E1`；戰後24節點、town／shop／
+preparation、巢狀SAVE／LOAD、service2／3與最終戰長鏈也都有正式 owner。剩餘是
+其他章節與未修改原版的代表性 E2、精確音訊／動態相位及三平台實機驗收，不是缺少
+重製端 consumer。依使用者接受的99%玩家可見門檻與長程遊玩人工回報政策，這些
+原版 E2 抽樣不得再阻擋引擎收尾或觸發重做已閉合 RE；當前產品阻擋以`91`的發行列為準。
 
 2026-08-10 的音訊邊界：戰鬥節點使用原版 `0x51e63` 章節曲表，城鎮／商店節點使用
 已證實的 `FDMUS_010`；這些是資料回歸，不代表每章一般玩家 E2。`ending` 的三個

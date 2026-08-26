@@ -4,6 +4,17 @@
 (AppImage squashfs)內既讀不到 `assets/`、也寫不了存檔,詳見 `38-editor-design.md` §6.5 的設計討論;
 本篇是那份設計的**實作紀錄 + 驗證證據**。
 
+> **2026-08-27 最新發行候選：**提交`a5bbaf3f`已由現有鎖定映像重新產出兩個
+> 無原版資產封包。Linux AppImage為5,306,872 bytes，SHA-256
+> `f085dc58ba021a118114ec33b1972e2500e61c51141b02f35d7cfbb720acadfb`；從空工作目錄
+> 以唯讀XDG玩家資產實際啟動至`town_ch02`，見
+> [`release-appimage-town-ch02.png`](../figures/release-appimage-town-ch02.png)及
+> [狀態紀錄](../data/ui-traces/release-appimage-town-ch02.json)。Windows ZIP為
+> 4,895,851 bytes，SHA-256
+> `931397d8b60f85af976c68017d17f238a77ab904d4b00d8081e0267ceb0eb286`；內含GUI PE與
+> 受版控scenario／story／spells共72項。兩包均逐名確認未夾帶原版EXE、DAT或存檔。
+> Windows真機與macOS CI仍是外部平台驗收，不由Linux交叉建置冒稱完成。
+
 > **2026-08-25 現況勘誤：**本篇第2節的 AppImage 結果是歷史封包證據，不代表
 > 每個新提交都已重新封裝。提交 `8e7683b1` 已以現行 `fd2-go-test-local` 在
 > Docker／Xvfb 實際建置並啟動 Linux x86_64 執行檔至 `town_ch02`，擷取有效
