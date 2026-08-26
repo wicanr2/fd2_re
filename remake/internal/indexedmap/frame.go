@@ -62,6 +62,8 @@ type FrameInput struct {
 	RangeMode, CursorX, CursorY                      int
 	Units                                            []fdicon.NativeUnitLayerEntry
 	ForegroundUnits                                  []fdicon.NativeForegroundLayerEntry
+	ChapterAux                                       *fdother.NativeChapterAuxSurface
+	ChapterAuxPhase                                  int
 }
 
 // NativeFrameInput is the complete, directly composable steady redraw slice.
@@ -464,7 +466,7 @@ func ComposeNativeTransitionFrame(work, vga []byte, in NativeTransitionFrameInpu
 
 // ComposeFrame performs the recovered steady order:
 //
-//	0x11eee terrain → 0x122dc range → 0x127a9 unit/foreground
+//	0x11eee optional chapter surface + terrain → 0x122dc range → 0x127a9 unit/foreground
 //	→ required 0x1acf3-equivalent HUD callback → 0x11eb0 viewport copy.
 //
 // HUD is mandatory because copying before it would silently alter native draw
@@ -491,6 +493,11 @@ func composeFrame(work, vga []byte, in FrameInput, renderHUD func([]byte) error,
 	frame := append([]byte(nil), work...)
 	cells := append([]fdicon.NativeTerrainCell(nil), in.Cells...)
 	baseX, baseY := workBase%workStride, workBase/workStride
+	if in.ChapterAux != nil {
+		if err := fdother.BlitNativeChapterAuxViewport(frame[workBase:], workStride, in.ChapterAux, in.ChapterAuxPhase); err != nil {
+			return fmt.Errorf("indexedmap: chapter auxiliary surface: %w", err)
+		}
+	}
 	if err := in.TerrainBank.BlitNativeTerrainRegion(frame, workStride, baseX, baseY, in.MapWidth, cells, in.Controls, in.CameraX, in.CameraY, 13, 8, in.Flip, in.TerrainCycle, in.LUT); err != nil {
 		return fmt.Errorf("indexedmap: terrain: %w", err)
 	}

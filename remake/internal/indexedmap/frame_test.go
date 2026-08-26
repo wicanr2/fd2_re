@@ -53,6 +53,47 @@ func bank(n int, v byte) *fdicon.Bank {
 	return b
 }
 
+func transparentBank(n int) *fdicon.Bank {
+	return &fdicon.Bank{Sprites: make([]fdicon.Sprite, n)}
+}
+
+func TestComposeFrameSeedsChapterAuxBeforeTerrainAtomically(t *testing.T) {
+	cache := &fdicon.NativeSelectorCache{}
+	if _, err := cache.SlotFor(0); err != nil {
+		t.Fatal(err)
+	}
+	pixels := make([]byte, 320*200)
+	for y := 0; y < 200; y++ {
+		for x := 0; x < 320; x++ {
+			pixels[y*320+x] = byte(x)
+		}
+	}
+	work, vga := make([]byte, workStride*300), make([]byte, NativeMapVGASize)
+	beforeWork := append([]byte(nil), work...)
+	in := FrameInput{
+		TerrainBank: transparentBank(12), RangeBank: transparentBank(20),
+		UnitBank: transparentBank(12), ForegroundBank: transparentBank(12),
+		SelectorCache: cache, Cells: make([]fdicon.NativeTerrainCell, 13*8),
+		Controls: []byte{0, 0, 0, 0}, LUT: make([]byte, 256), MapWidth: 13,
+		ChapterAux: &fdother.NativeChapterAuxSurface{Pixels: pixels}, ChapterAuxPhase: 15,
+	}
+	err := ComposeFrameObserved(work, vga, in, func([]byte) error { return nil }, func(stage FrameStage, observedWork, _ []byte) error {
+		if stage != FrameStageTerrain {
+			return nil
+		}
+		if got, want := observedWork[workBase], byte(1); got != want {
+			t.Fatalf("auxiliary seeded pixel=%d want %d", got, want)
+		}
+		if got, want := observedWork[workBase+workStride], byte(2); got != want {
+			t.Fatalf("next-row seeded pixel=%d want %d", got, want)
+		}
+		return errors.New("stop after terrain evidence")
+	})
+	if err == nil || !bytes.Equal(work, beforeWork) || !bytes.Equal(vga, make([]byte, len(vga))) {
+		t.Fatal("observer rejection did not preserve compositor atomicity")
+	}
+}
+
 func TestComposeFramePreservesNativeLayerOrder(t *testing.T) {
 	cache := &fdicon.NativeSelectorCache{}
 	if _, err := cache.SlotFor(0); err != nil {

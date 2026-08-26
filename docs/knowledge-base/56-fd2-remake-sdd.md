@@ -3901,6 +3901,33 @@ LOAD／CONTINUE 的正式失敗即關閉閘門。可選的
 checksum-valid 原版快照，依實際順序成功產生索爾、悠妮、亞雷斯、蓋亞；
 原版檔不進版控，缺 fixture 時測試明確略過。
 
+### 2026-08-26 — raw chapter 28／29 輔助地形底面
+
+IDA Pro 9.4 已閉合 `0x10652→0x11EEE→0x4EB90` 的 writer／consumer：
+raw chapter 28／29 載入 `FDOTHER.DAT #55`（320×200 indexed surface），
+`0x4EB90` 再以固定 16-byte 列偏移表建立 320-stride、312×192 的可見底面；
+`0x11EEE` 先把它複製進 456-stride work buffer，才覆蓋 destination-preserving
+terrain tiles。這取代「第30戰只差 terrain LUT／DAC」的舊縮限。
+
+正式契約如下：
+
+1. `nativeMapAssets` 只對 map index 28／29要求固定來源的 #55；payload 必須是
+   little-endian `320,200` 加恰好 64000 indexed pixels，其他尺寸或壓縮猜測拒絕。
+2. 具型別 auxiliary input 保存完整 320×200像素與 raw phase `0..15`；逐列來源
+   X offset 固定為
+   `[2,3,3,4,4,4,3,3,2,1,1,0,0,0,1,1][(phase+row)%16]`，每列只取312像素。
+3. compositor 在私有 work clone 上先 seed `work+0x8088` 的312×192區域，再跑既有
+   terrain→range→units→foreground→HUD→viewport。任一 preflight／後續 pass
+   失敗時，原 work、VGA及 phase state都不得發布。
+4. 一般玩家 production phase 取 battle-local BIOS elapsed tick modulo 16；這與
+   原版從零開始、每個不同 BIOS tick 加一的 latch在正常連續戰鬥中等價。直接
+   組合器測試仍必須傳入明確 phase，不從 terrain LUT phase 猜值。
+5. map index 28／29 缺 #55 時 indexed admission失敗即關閉；其他章節不得因為沒有
+   此 caller-specific 資產而被拒絕。PNG fallback只維持可玩性，不是忠實證據。
+
+直接證據見
+[`fd2_ch29_aux_terrain_surface_ida.txt`](../data/ida/fd2_ch29_aux_terrain_surface_ida.txt)。
+
 ### 2026-07-30 — CONTINUE runtime input preflight
 
 合法 IDA Pro 9.4 與 Capstone 已閉合 `0x10010` 的 selector 重建：
@@ -6423,3 +6450,11 @@ destination-preserving terrain spans開始前的work buffer內容或DAC baseline
 不得先把零值buffer、靜態底圖或任一phase猜接正式runtime。第三方存檔及固定
 title tick仍使本結果維持`RUNTIME-E1`／候選E2，不升格為完整一般玩家E2或
 逐像素一致。
+
+**同日後續閉合：**合法IDA Pro 9.4已證實該初值不是DAC：`0x10652`對raw
+chapter28／29載入`FDOTHER #55`，`0x11EEE`先呼叫`0x4EB90`，依16-byte raw表逐列
+偏移並複製312×192底面，再進terrain tile loop。正式compositor已在私有work clone
+先建立此底面；缺#55、尺寸錯誤或phase越界皆整幀拒絕。同一候選16相位比較中，
+phase10把`AE=16281/64000`降至`AE=3242/64000`，約減少80.1%；剩餘主要是游標與
+角色動畫時點。這是`RE-CLOSED`／`DATA-READY`／`RUNTIME-E1`，第三方存檔及不同
+擷取時點仍不構成完整`PLAYER-E2`。

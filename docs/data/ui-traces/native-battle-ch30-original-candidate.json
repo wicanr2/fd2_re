@@ -46,12 +46,19 @@
       "previous_rejected_image": "../../figures/native-battle-ch30-remake-candidate-e1.png",
       "previous_rejection": "舊擷取未提供FD2_ORIGINAL_FDOTHER，native map assets不可用而靜默走PNG fallback；洋紅雜訊與大地圖構圖不能再當作indexed compositor缺陷證據"
     },
-    "visual_gap": "正式indexed擷取已消除舊PNG fallback的洋紅雜訊，並以33筆runtime records形成19筆active、18筆camera-admitted單位；terrain→range→units→foreground→HUD→viewport六階段均成功。縮回320×200後與原版AE=16281／64000；terrain phase 0..19逐一重組仍全部得到相同AE，直接反證『只差動畫相位』。差異集中於水／冰底圖與動畫物件，下一步須核對destination-preserving terrain spans的初始work buffer或DAC baseline，不宣稱像素配對或完整E2"
+    "aux_surface_diagnostic": {
+      "image": "../../figures/native-battle-ch30-remake-aux-candidate-e1.png",
+      "image_sha256": "193d825761051e20422e96cf52d28b65a5963c0d1cdaf2708182a3a0d21f5330",
+      "raw_phase": 10,
+      "ae_320x200": 3242,
+      "classification": "同一typed狀態的分階段compositor診斷；不是另一次普通鍵盤GUI擷取，也不提升為完整E2"
+    },
+    "visual_gap": "正式indexed擷取已消除舊PNG fallback的洋紅雜訊，並以33筆runtime records形成19筆active、18筆camera-admitted單位；terrain→range→units→foreground→HUD→viewport六階段均成功。合法IDA Pro 9.4其後閉合0x10652→0x11EEE→0x4EB90：raw chapter28／29先以FDOTHER #55與16-byte列偏移表建立312×192底面，再覆蓋destination-preserving terrain tiles。正式runtime接通後，同狀態16個raw phase的最佳phase10由AE=16281降至AE=3242；剩餘差異集中於游標／角色動畫相位。第三方存檔與固定title tick仍使結果停在RUNTIME-E1／候選E2，不宣稱逐像素一致或完整E2"
   },
   "limits": [
     "第三方分享站無法證明存檔從頭到尾完全未修改",
     "本紀錄只證明候選存檔能由固定版原版正常 CONTINUE 進入第30戰",
     "尚未取得第29戰正常玩家錨點或完整終局輸入／音訊 E2",
-    "重製GUI已能由普通鍵盤抵達同一節點與view並使用正式indexed compositor；水／冰底圖初始來源、精確音訊與完整來源仍未關閉"
+    "重製GUI已能由普通鍵盤抵達同一節點與view並使用正式indexed compositor；輔助底面已接通，仍缺動畫時點、精確音訊與完整來源"
   ]
 }

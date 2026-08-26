@@ -67,9 +67,11 @@
 鍵盤由標題`CONTINUE`抵達`battle_ch30`／round12／camera `(16,16)`／cursor
 `(21,20)`，正式indexed六階段輸出19筆active、18筆camera-admitted與8281個
 unit-stage寫入像素，foreground／HUD覆蓋該批像素均為0。這關閉舊PNG fallback與
-unit覆蓋假說，但沒有關閉terrain：320×200比較仍為`AE=16281/64000`，且phase
-0..19逐一重組全部相同，反證只差動畫相位。須續查destination-preserving底圖初值
-或DAC來源；第三方存檔、固定title tick與精確音訊仍只到`RUNTIME-E1`／候選E2；主紀錄見
+unit覆蓋假說。後續合法IDA Pro 9.4閉合`0x10652→0x11EEE→0x4EB90`：raw chapter
+28／29會先以`FDOTHER #55`和16-byte列偏移表建立312×192底面，再覆蓋會保留目的像素
+的terrain tiles。正式runtime已接此typed底面並維持原子失敗；同狀態16相位比較的
+最佳raw phase 10由`AE=16281/64000`降至`AE=3242/64000`，剩餘差異集中在游標／角色
+動畫相位。第三方存檔、固定title tick與精確音訊仍只到`RUNTIME-E1`／候選E2；主紀錄見
 [`native-battle-ch30-original-candidate.json`](../data/ui-traces/native-battle-ch30-original-candidate.json)。
 
 2026-08-24 補證：`0x525AF` 是 command 0..9 的 HP 分段除數表；typed

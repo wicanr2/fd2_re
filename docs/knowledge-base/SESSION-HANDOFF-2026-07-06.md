@@ -6815,3 +6815,24 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 AE完全相同。這證明水／冰差異不能歸因於phase未同步；下一步改查
 destination-preserving spans開始前的work buffer初值或DAC baseline。原始層順序、
 unit admission及foreground／HUD零覆蓋結論仍有效。
+
+## 2026-08-26：第30戰 FDOTHER #55 輔助底面閉合
+
+- 合法IDA Pro 9.4重新沿`[0x53A49]+0x8088`的初值writer追查，閉合
+  `0x10652→0x11EEE→0x4EB90`。raw chapter28／29由`0x10652`載入
+  `FDOTHER #55`與64000-byte staging；`0x11EEE`在terrain tile loop之前呼叫
+  `0x4EB90`並複製312×192到456-stride work buffer。
+- `0x4EB90`保留原始函式名。它把#55的`+4`視為320-stride pixels，每列依
+  `byte_627C8[(phase+row)%16]`水平偏移後複製312 bytes，共192列。raw表為
+  `2,3,3,4,4,4,3,3,2,1,1,0,0,0,1,1`。主證據新增於
+  `docs/data/ida/fd2_ch29_aux_terrain_surface_ida.txt`。
+- `fdother.NativeChapterAuxSurface`只接受原版#55的320×200 raw payload；
+  `indexedmap.ComposeFrame`在私有work clone先seed再畫terrain。map28／29缺資產、
+  payload形狀錯誤或phase越界皆整幀失敗，不發布work／VGA／timing state。
+- 外部候選 staged回歸仍由同一33筆runtime、round12、camera `(16,16)`、cursor
+  `(21,20)`組合六階段。16個raw phase全部可重生；與原版候選的最佳phase10為
+  `AE=3242/64000`，相較修正前`16281`減少13039像素（約80.1%）。新圖
+  `native-battle-ch30-remake-aux-candidate-e1.png`是同狀態分階段診斷，不冒稱另一次
+  普通鍵盤GUI擷取或完整E2；剩餘差異主要是游標／角色動畫時點。
+- README玩家交付自評由75調至76；增加的是已接正式runtime且可見的末關戰場忠實度，
+  不是因新增孤立RE筆記加分。

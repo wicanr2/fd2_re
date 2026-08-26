@@ -10237,8 +10237,16 @@ func (g *Game) composeNativeMapFrameAt(now time.Time) error {
 	if !candidateGame.advanceNativeMapClock(now) {
 		return errors.New("native map frame: timing state unavailable")
 	}
+	rawTick, ok := candidateGame.nativeMapClock.Current()
+	if !ok {
+		return errors.New("native map frame: auxiliary timing unavailable")
+	}
+	auxPhase := rawTick % 16
+	if auxPhase < 0 {
+		auxPhase += 16
+	}
 	in, err := buildNativeMapFrameInput(
-		a, g.m, &candidateState, nativeMapFrameRuntime{HUD: hud},
+		a, g.m, &candidateState, nativeMapFrameRuntime{HUD: hud, ChapterAuxPhase: auxPhase},
 	)
 	if err != nil {
 		return err

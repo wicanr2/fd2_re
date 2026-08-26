@@ -1,0 +1,67 @@
+FD2 第 29 raw chapter 輔助地形底面（IDA Pro 9.4）
+==================================================
+
+輸入與工具
+----------
+
+- 輸入：`FD2.EXE`，357074 bytes
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 第一順位：使用者合法 IDA Pro 9.4／Hex-Rays 9.4.0.260610，
+  `fd2-ida-authorized-local:latest` 一次性、無網路 Docker；以下位址均為
+  DOS LE loader 的 IDA 線性位址。
+- 第二順位：`fd2-cap-local`／Capstone 5.0.3；用於覆核 `0x4EB90` 原始指令。
+- 原始函式名與定位保留為 `sub_10652`、`sub_11EEE`、`sub_4EB90`；本文的
+  「輔助底面」只是分級註記，不取代原始名稱。
+
+已證實的資料流
+--------------
+
+1. `sub_10652` 的 raw chapter 28／29 分支以 `sub_111BA(...,55)` 將
+   `FDOTHER.DAT #55` 放到 `[0x53AFF]`，再配置 64000 bytes 到
+   `[0x53B03]`。這項 loader 舊證據見
+   `docs/data/fd2_chapter_aux_graphics_10652_ida.txt`。
+2. `sub_11EEE` 的 raw chapter `9/24/25/28/29` 分支，在 BIOS tick
+   `[0x046C]` 不等於 `[0x539F8]` 時呼叫
+   `sub_4EB90([0x53AFF],[0x53B03],[0x539FC])`，更新 tick latch，並把
+   `[0x539FC]` 加一、以 16 回繞。
+3. 同一分支隨即以 `sub_11EB0(dst,456,[0x53B03],320,312,192)`，把
+   312×192 區域先複製進 456-stride 工作緩衝區。此後才進入共用地形圖塊
+   迴圈；圖塊透明 span 會保留這個先前目的像素。
+4. `sub_4EB90` 把 `[0x53AFF]+4` 視為 320-stride 像素來源。每列以
+   `byte_627C8[phase]` 作水平來源偏移，複製 312 bytes 到 320-stride
+   `[0x53B03]`；下一列 phase 加一並以 16 回繞，共執行 192 列。
+5. `byte_627C8` 的 16 bytes 為：
+   `02 03 03 04 04 04 03 03 02 01 01 00 00 00 01 01`。
+
+`sub_4EB90` 的原始 bytes（`0x4EB90..0x4EBC9`）起始為：
+
+```
+55 8b ec 56 57 53 8b 75 08 83 c6 04 8b 7d 0c 8b
+55 10 33 db 66 bd c0 00 8d 05 c8 27 06 00 8a 1c
+10 56 03 f3 b9 4e 00 00 00 f3 a5 5e 81 c6 40 01
+00 00 66 42 66 83 fa 10 72 03 66 33 d2 83 c7 08
+66 4d 75 da 5b 5f 5e 5d c3
+```
+
+證據分級與勘誤
+--------------
+
+- **已證實**：資源 #55、兩個緩衝區、16-byte 表、每列 312-byte copy、
+  320-byte source/destination stride、192 列、相位逐列及逐 BIOS tick 推進，
+  以及此底面位於一般地形圖塊之前。
+- **強推論**：「水面／冰面」是玩家可見外觀描述；原始程式沒有提供這個高階
+  名稱，因此正式資料與 API 仍使用 raw chapter auxiliary surface。
+- **勘誤**：2026-08-26 先前把第 30 戰差異縮成 terrain LUT／DAC 或其初值，
+  現由直接 writer→consumer 資料流取代。20 個 terrain LUT phase 完全不改變
+  差異，是因為缺的是圖塊之前的 #55 destination seed，不是 LUT phase。
+
+重製邊界
+--------
+
+- raw chapter 28／29 只有在固定雜湊 `FDOTHER.DAT #55` 可嚴格解析為
+  320×200 indexed surface 時，才可在 terrain pass 前建立 312×192 底面。
+- 相位只允許 `0..15`，列偏移必須直接使用上述表；缺資產、尺寸錯誤或相位
+  越界時整個 indexed frame 失敗即關閉，不得以 PNG、純色或猜測圖樣替代。
+- 本證據閉合靜態資料流及重製 E1 契約；未修改原版同狀態逐幀比較仍須另列
+  `PLAYER-E2`，不能由重製端測試自行提升。

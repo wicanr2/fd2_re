@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"image"
 	"image/png"
 	"os"
@@ -345,6 +346,33 @@ func TestNativeContinueLateBattleIndexedStages(t *testing.T) {
 		},
 	); err != nil {
 		t.Fatal(err)
+	}
+	// The original candidate frame may have been captured at any of
+	// sub_4EB90's sixteen raw phases. Emit every phase from the same typed
+	// state so comparison tooling can select a time-aligned oracle without
+	// changing production state or conflating this cycle with terrain LUTs.
+	for phase := 0; phase < 16; phase++ {
+		phaseInput := in
+		phaseInput.Frame.ChapterAuxPhase = phase
+		phaseWork := make([]byte, indexedmap.NativeUnitPresentWorkSize)
+		phaseVGA := make([]byte, indexedmap.NativeMapVGASize)
+		if err := indexedmap.ComposeNativeFrame(phaseWork, phaseVGA, phaseInput); err != nil {
+			t.Fatalf("auxiliary phase %d: %v", phase, err)
+		}
+		img := image.NewPaletted(image.Rect(0, 0, viewWidth, viewHeight), g.nativeMapAssets.Palette)
+		copy(img.Pix, phaseVGA)
+		file, err := os.Create(filepath.Join(outputDir, fmt.Sprintf("aux-phase-%02d.png", phase)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		encodeErr := png.Encode(file, img)
+		closeErr := file.Close()
+		if encodeErr != nil {
+			t.Fatal(encodeErr)
+		}
+		if closeErr != nil {
+			t.Fatal(closeErr)
+		}
 	}
 	rangeWork, unitsWork := stageWork[indexedmap.FrameStageRange], stageWork[indexedmap.FrameStageUnits]
 	foregroundWork, hudWork := stageWork[indexedmap.FrameStageForeground], stageWork[indexedmap.FrameStageHUD]

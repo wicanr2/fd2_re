@@ -14,7 +14,8 @@ import (
 // one steady 0x11cac frame. It deliberately has no conversion from the
 // remake's 640x400 pixel camera or normalized selection/highlight state.
 type nativeMapFrameRuntime struct {
-	HUD indexedmap.NativeMapHUDInput
+	HUD             indexedmap.NativeMapHUDInput
+	ChapterAuxPhase int
 }
 
 // buildNativeMapFrameInput joins the all-or-nothing original asset bundle,
@@ -64,6 +65,7 @@ func buildNativeMapFrameInput(
 		PixelShift: roster.UnitPixelShift,
 		RangeMode:  state.NativeMapRangeMode, CursorX: view.CursorX, CursorY: view.CursorY,
 		Units: roster.Units, ForegroundUnits: roster.Foreground,
+		ChapterAux: assets.ChapterAux, ChapterAuxPhase: runtime.ChapterAuxPhase,
 	}
 	hud := runtime.HUD
 	hud.DisplayGateA = state.NativeMapHUDState.DisplayGateA != 0

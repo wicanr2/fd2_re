@@ -39,6 +39,7 @@ type nativeMapAssets struct {
 	// 0x22253; neither path may rename the archive itself after one effect.
 	CommandHealDigits []fdother.LMI1Entry
 	FDOTHER6          []fdother.LMI1Entry
+	ChapterAux        *fdother.NativeChapterAuxSurface
 }
 
 func loadNativeMapAssets(mapDir string) (*nativeMapAssets, error) {
@@ -88,6 +89,13 @@ func loadNativeMapAssets(mapDir string) (*nativeMapAssets, error) {
 	spawnIntro, _ := fdother.DecodeNativeSpawnIntroFrames(fdotherPath)
 	commandHealDigits, _ := fdother.DecodeLMI1Resource(fdotherPath, fdother.NativeCommandHealTailDigitResource)
 	fdother6, _ := fdother.DecodeLMI1Resource(fdotherPath, fdother.NativeCommandHealTailEffectResource)
+	var chapterAux *fdother.NativeChapterAuxSurface
+	if mapIndex == 28 || mapIndex == 29 {
+		chapterAux, err = fdother.DecodeNativeChapterAuxSurface(fdotherPath)
+		if err != nil {
+			return nil, err
+		}
+	}
 	return &nativeMapAssets{
 		MapIndex: mapIndex, Frames: frames,
 		Terrain: terrain, Range: rangeBank, Units: units,
@@ -96,6 +104,7 @@ func loadNativeMapAssets(mapDir string) (*nativeMapAssets, error) {
 		SpawnIntro:        spawnIntro,
 		CommandHealDigits: commandHealDigits,
 		FDOTHER6:          fdother6,
+		ChapterAux:        chapterAux,
 	}, nil
 }
 
@@ -109,6 +118,9 @@ func nativeMapAssetsAvailable(a *nativeMapAssets) bool {
 		if len(a.LUTs[i]) != 256 {
 			return false
 		}
+	}
+	if (a.MapIndex == 28 || a.MapIndex == 29) && (a.ChapterAux == nil || len(a.ChapterAux.Pixels) != 320*200) {
+		return false
 	}
 	return true
 }
