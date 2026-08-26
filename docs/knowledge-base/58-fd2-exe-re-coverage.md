@@ -181,6 +181,8 @@ source restore 之後。raw index 0 的名冊、狀態、指令面板與返回�
 typed consumer 完整往返。此項為 `RUNTIME-E1`，church caller 同狀態 E2 仍缺。
 同一教會 input owner 又已覆蓋共用 `0x2F8EA` 的 source／item／destination／full，
 以正式狀態驗證跨角色成功、自我轉移、取消與滿欄零交易。
+raw index 2 復活亦已沿 typed input 覆蓋候選→確認→成功／不足金／取消→empty／menu，
+成功交易才啟動既有 track 21→indexed timeline→track 14 owner。
 
 **2026-08-25 ID32 現況勘誤**：上表長列保留了本批開始時「ID32失敗即關閉」的
 歷史快照文字；現況由[`fd2_command32_transaction_ida.txt`](../data/ida/fd2_command32_transaction_ida.txt)、

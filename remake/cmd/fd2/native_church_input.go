@@ -27,6 +27,12 @@ type nativeChurchTransferInput struct {
 	escape bool
 }
 
+type nativeChurchReviveInput struct {
+	delta  int
+	enter  bool
+	escape bool
+}
+
 func (g *Game) handleNativeChurchMenuInput(input nativeChurchMenuInput) bool {
 	if g.churchMode != "menu" || g.nativeChurchUIBlocksInput() {
 		return false
@@ -266,4 +272,100 @@ func (g *Game) applyNativeChurchTransfer(destinationID int) {
 		g.msg = fmt.Sprintf("物品 %02Xh 已轉移", itemID)
 	}
 	g.returnToNativeTransferSource()
+}
+
+func (g *Game) handleNativeChurchReviveInput(input nativeChurchReviveInput) bool {
+	if g.nativeChurchUIBlocksInput() || g.nativeClassUIBlocksInput() {
+		return false
+	}
+	switch g.churchMode {
+	case "revive":
+		if input.escape {
+			if !g.beginNativeChurchReviveListClosing(g.returnToNativeChurchMenu) {
+				g.returnToNativeChurchMenu()
+			}
+			return true
+		}
+		if input.delta < 0 && g.churchSel > 0 {
+			g.churchSel--
+		} else if input.delta > 0 && g.churchSel+1 < len(g.churchIDs) {
+			g.churchSel++
+		}
+		g.churchVerticalStart, _ = campaign.NativeThreeRowWindow(
+			len(g.churchIDs), g.churchSel, g.churchVerticalStart,
+		)
+		if !input.enter || len(g.churchIDs) == 0 || g.churchSel >= len(g.churchIDs) {
+			return true
+		}
+		id := g.churchIDs[g.churchSel]
+		fee, ok := g.nativeReviveFeeForUnit(g.partyRoster[id])
+		if !ok {
+			g.msg = "缺少原版復活費率資料"
+			return true
+		}
+		openConfirmation := func() {
+			g.churchReviveID, g.churchReviveFee = id, fee
+			g.churchMode, g.churchSel = "revive_confirm", 0
+			g.beginNativeChurchReviveConfirmationOpening()
+		}
+		if !g.beginNativeChurchReviveListClosing(openConfirmation) {
+			openConfirmation()
+		}
+		return true
+	case "revive_confirm":
+		if input.escape {
+			if !g.beginNativeChurchReviveConfirmationClosing(g.returnToNativeReviveList) {
+				g.returnToNativeReviveList()
+			}
+			return true
+		}
+		if input.delta != 0 {
+			g.churchSel = campaign.AdvanceNativeClassConfirmation(g.churchSel, input.delta)
+		}
+		if !input.enter {
+			return true
+		}
+		if g.churchSel != 0 {
+			if !g.beginNativeChurchReviveConfirmationClosing(g.returnToNativeReviveList) {
+				g.returnToNativeReviveList()
+			}
+			return true
+		}
+		apply := func() {
+			if g.gold < g.churchReviveFee {
+				g.churchMode = "revive_insufficient"
+				return
+			}
+			if !g.reviveChurchUnit(g.churchReviveID) {
+				g.returnToNativeReviveList()
+				return
+			}
+			success := campaign.PlanNativeChurchReviveSuccess()
+			g.playBGMCount(fmt.Sprintf("FDMUS_%03d", success.StartMusicTrack), success.MusicLoopCount)
+			after := func() {
+				g.playBGMCount(fmt.Sprintf("FDMUS_%03d", success.ReturnMusicTrack), success.MusicLoopCount)
+				g.returnToNativeReviveList()
+			}
+			if !g.beginNativeChurchReviveSuccess(after) {
+				after()
+			}
+		}
+		if !g.beginNativeChurchReviveChoiceClosing(apply) {
+			apply()
+		}
+		return true
+	case "revive_empty", "revive_insufficient":
+		if input.enter || input.escape {
+			after := g.returnToNativeReviveList
+			if g.churchMode == "revive_empty" {
+				after = g.returnToNativeChurchMenu
+			}
+			if !g.beginNativeChurchReviveMessageClosing(after) {
+				after()
+			}
+		}
+		return true
+	default:
+		return false
+	}
 }

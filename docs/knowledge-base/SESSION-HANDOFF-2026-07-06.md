@@ -7149,3 +7149,8 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   Docker／Xvfb 回歸沿正式關框與 source restore 驗證跨角色成功、目的取消零修改、
   八格滿欄零交易，以及自我 remove→append；未新增金錢 writer 或確認框。此項關閉
   church transfer 的 production-input `RUNTIME-E1`，原版同狀態畫面仍另列 E2。
+- raw index 2 再由 `nativeChurchReviveInput` 接管候選、確認、empty與insufficient。
+  Docker／Xvfb 回歸證實取消／不足金保持金錢與角色零修改；成功才扣21金、復原HP、
+  播放既有 track21→indexed timeline→track14，最後一名完成後經empty feedback返回menu。
+  同時修正深層 `reviveChurchUnit` 拒絕時仍誤播成功演出的風險。此項為
+  production-input `RUNTIME-E1`，無聲Docker不提升精確音訊 E2。

@@ -5947,6 +5947,14 @@ window 使用同一原版 helper；每次子畫面切換都先完成既有關框
 才同時發布雙方 raw inventory 與重算結果。任何 flags、compact projection 或索引失配
 均原子拒絕，不得因抽出輸入 consumer 而降低既有失敗即關閉邊界。
 
+raw index 2 的 `0x30DC3` 復活 caller 必須由單一 typed consumer 擁有候選名冊、
+Yes／No、`revive_empty` 與 `revive_insufficient`。候選只接受 raw byte5 bit0 與已綁定
+class fee row；確認框前先計算費用但不扣款。Yes 必須等 choice 關框後才原子扣款／
+復活，再依既有 `PlanNativeChurchReviveSuccess` 播放 track 21、indexed 成功 timeline、
+track 14 並重建候選名冊；不足金與 No／Escape 均不得改金錢或角色。最後一名成功
+復活後進 empty feedback，再返回教會主選單。音訊只驗證既有 cue／生命週期，不追
+DAC／PIT 硬體時序。
+
 ## 2026-08-22 空游標系統設定選單 E1 契約
 
 主證據為

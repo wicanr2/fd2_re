@@ -4388,65 +4388,22 @@ func (g *Game) campInput() bool {
 			return true
 		}
 		if g.churchMode == "revive_confirm" {
-			if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-				if !g.beginNativeChurchReviveConfirmationClosing(g.returnToNativeReviveList) {
-					g.returnToNativeReviveList()
-				}
-				return true
-			}
+			delta := 0
 			if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
-				g.churchSel = campaign.AdvanceNativeClassConfirmation(g.churchSel, -1)
+				delta = -1
+			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+				delta = 1
 			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
-				g.churchSel = campaign.AdvanceNativeClassConfirmation(g.churchSel, 1)
-			}
-			if enter {
-				if g.churchSel == 0 {
-					apply := func() {
-						if g.gold < g.churchReviveFee {
-							g.churchMode = "revive_insufficient"
-							return
-						}
-						g.reviveChurchUnit(g.churchReviveID)
-						success := campaign.PlanNativeChurchReviveSuccess()
-						g.playBGMCount(
-							fmt.Sprintf("FDMUS_%03d", success.StartMusicTrack),
-							success.MusicLoopCount,
-						)
-						after := func() {
-							g.playBGMCount(
-								fmt.Sprintf("FDMUS_%03d", success.ReturnMusicTrack),
-								success.MusicLoopCount,
-							)
-							g.returnToNativeReviveList()
-						}
-						if !g.beginNativeChurchReviveSuccess(after) {
-							g.playBGMCount(
-								fmt.Sprintf("FDMUS_%03d", success.ReturnMusicTrack),
-								success.MusicLoopCount,
-							)
-							g.returnToNativeReviveList()
-						}
-					}
-					if !g.beginNativeChurchReviveChoiceClosing(apply) {
-						apply()
-					}
-				} else if !g.beginNativeChurchReviveConfirmationClosing(g.returnToNativeReviveList) {
-					g.returnToNativeReviveList()
-				}
-			}
+			g.handleNativeChurchReviveInput(nativeChurchReviveInput{
+				delta: delta, enter: enter,
+				escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+			})
 			return true
 		}
 		if g.churchMode == "revive_empty" || g.churchMode == "revive_insufficient" {
-			if enter || inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-				after := g.returnToNativeReviveList
-				if g.churchMode == "revive_empty" {
-					after = g.returnToNativeChurchMenu
-				}
-				if !g.beginNativeChurchReviveMessageClosing(after) {
-					after()
-				}
-			}
+			g.handleNativeChurchReviveInput(nativeChurchReviveInput{
+				enter: enter, escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+			})
 			return true
 		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
@@ -4458,12 +4415,6 @@ func (g *Game) campInput() bool {
 			}
 			if g.churchMode == "class" {
 				if !g.beginNativeClassListClosing(g.returnToNativeChurchMenu) {
-					g.returnToNativeChurchMenu()
-				}
-				return true
-			}
-			if g.churchMode == "revive" {
-				if !g.beginNativeChurchReviveListClosing(g.returnToNativeChurchMenu) {
 					g.returnToNativeChurchMenu()
 				}
 				return true
@@ -4498,6 +4449,19 @@ func (g *Game) campInput() bool {
 			}
 			return true
 		}
+		if g.churchMode == "revive" {
+			delta := 0
+			if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
+				delta = -1
+			} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
+				delta = 1
+			}
+			g.handleNativeChurchReviveInput(nativeChurchReviveInput{
+				delta: delta, enter: enter,
+				escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+			})
+			return true
+		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.churchSel > 0 {
 			g.churchSel--
 		}
@@ -4505,7 +4469,7 @@ func (g *Game) campInput() bool {
 		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) && g.churchSel+1 < listLen {
 			g.churchSel++
 		}
-		if g.churchMode == "class" || g.churchMode == "revive" {
+		if g.churchMode == "class" {
 			g.churchVerticalStart, _ = campaign.NativeThreeRowWindow(
 				listLen, g.churchSel, g.churchVerticalStart,
 			)
@@ -4513,37 +4477,19 @@ func (g *Game) campInput() bool {
 		if enter && len(g.churchIDs) > 0 {
 			id := g.churchIDs[g.churchSel]
 			u := g.partyRoster[id]
-			if g.churchMode == "revive" {
-				fee, ok := g.nativeReviveFeeForUnit(u)
-				if !ok {
-					g.msg = "缺少原版復活費率資料"
-					return true
-				}
-				openConfirmation := func() {
-					g.churchReviveID = id
-					g.churchReviveFee = fee
-					g.churchMode = "revive_confirm"
-					g.churchSel = 0
-					g.beginNativeChurchReviveConfirmationOpening()
-				}
-				if !g.beginNativeChurchReviveListClosing(openConfirmation) {
-					openConfirmation()
-				}
+			target, ok := campaign.NativeClassChangeTarget(&u, g.classChangeTable)
+			if !ok {
+				g.msg = "缺少原版轉職目標資料"
 			} else {
-				target, ok := campaign.NativeClassChangeTarget(&u, g.classChangeTable)
-				if !ok {
-					g.msg = "缺少原版轉職目標資料"
-				} else {
-					openConfirmation := func() {
-						g.churchClassID = id
-						g.churchBranches = []campaign.ClassChangeBranch{target}
-						g.churchMode = "class_confirm"
-						g.churchSel = 0
-						g.beginNativeClassConfirmationOpening()
-					}
-					if !g.beginNativeClassListClosing(openConfirmation) {
-						openConfirmation()
-					}
+				openConfirmation := func() {
+					g.churchClassID = id
+					g.churchBranches = []campaign.ClassChangeBranch{target}
+					g.churchMode = "class_confirm"
+					g.churchSel = 0
+					g.beginNativeClassConfirmationOpening()
+				}
+				if !g.beginNativeClassListClosing(openConfirmation) {
+					openConfirmation()
 				}
 			}
 		}

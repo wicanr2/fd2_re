@@ -31,6 +31,9 @@
 > raw index 1 的 source／item／destination／full 也已共用正式 consumer；跨角色成功、
 > 自我 remove→append、取消與滿欄零交易均達 `RUNTIME-E1`，不再把 church transfer
 > production input 列為缺口。
+> raw index 2 復活也已覆蓋成功、取消、不足金與最後一名後 empty→menu；深層交易
+> 失敗不再誤播成功演出。此項達 production-input `RUNTIME-E1`，精確音訊與原版畫面
+> 仍留 E2。
 
 > **2026-08-25 最終戰前現況：** `story_ch30` 已由兩句通用後備改接正式
 > `ch29_pre` binding；`0x33F78` 的 `(slot,x,y)` wrapper、`0x12CEA(x,y)` focus、
