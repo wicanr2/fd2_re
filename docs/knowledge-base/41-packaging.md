@@ -22,6 +22,14 @@
 > [`release-windows-wine-smoke.json`](../data/ui-traces/release-windows-wine-smoke.json)及
 > [商店畫面](../figures/release-windows-wine-shop-ch02.png)。X11自動注入的方向對映不作
 > 原版方向忠實度證據；Wine通過也不取代Windows真機。
+>
+> **macOS真實CI：**為避免建立正式發行標籤，以一次性測試分支觸發相同workflow。
+> [run 32997009964](https://github.com/wicanr2/fd2_re/actions/runs/32997009964)於
+> `macos-14`在2026-08-26 17:57:28Z至17:58:43Z完成，job `build`結論為success；
+> arm64／amd64編譯、`lipo` universal、`.app`、DMG／tar.gz與artifact upload均由
+> workflow成功閘門涵蓋。官方API記錄artifact `fd2-macos-universal` ID 9616984049、
+> 19,299,516 bytes、未過期。無憑證下載端點回應401，故本輪不能在本機解包核對；
+> 更不能以CI綠燈冒稱實體Mac啟動、輸入、存檔、音訊或Gatekeeper驗收。
 
 > **2026-08-25 現況勘誤：**本篇第2節的 AppImage 結果是歷史封包證據，不代表
 > 每個新提交都已重新封裝。提交 `8e7683b1` 已以現行 `fd2-go-test-local` 在

@@ -1,4 +1,4 @@
-# build-macos.yml — macOS 桌面版打包草稿(未在真機/CI 跑過,見 docs/knowledge-base/41-packaging.md §4)。
+# build-macos.yml — macOS 桌面版打包；2026-08-27 已在 macos-14 CI 成功產出 universal artifact。
 #
 # 為什麼 macOS 不能像 AppImage/Windows 那樣純 Linux docker 跨編:
 #   Go CGO 需要目標平台的 C 工具鏈與 SDK;macOS 的 Cocoa/OpenGL framework header 只在 macOS SDK 裡,
@@ -95,8 +95,8 @@ jobs:
             remake/packaging/dist/FD2-mac.tar.gz
           if-no-files-found: error
 
-# 未驗證項目(需要真的跑一次這個 workflow 才能確認,見 41-packaging.md §4「已知落差」):
-#   - CGO_CFLAGS="-arch x86_64" 跨架構編譯在 ebiten 的 cgo(purego/oto 音訊)是否真的乾淨過關
-#     (未在 macOS 實機測過,只是沿用 Go 官方文件的已知模式)。
-#   - 未簽署 app 在使用者端會被 Gatekeeper 擋,需要 `xattr -dr com.apple.quarantine FD2.app`
-#     (README 待補這段安裝說明,同 mac-app-cross-pack skill 段 3)。
+# 仍未驗證項目(見 41-packaging.md §4「已知落差」):
+#   - workflow run 32997009964 已證實 arm64／amd64、lipo、.app、DMG／tar.gz 與 artifact
+#     上傳成功；但 artifact 尚未在實體 macOS 上啟動、輸入、存檔或播放音訊。
+#   - 未簽署 app 在使用者端會被 Gatekeeper 擋；README 已記錄測試者的
+#     `xattr -dr com.apple.quarantine FD2.app`步驟，正式發行仍需簽章／公證。

@@ -7313,3 +7313,17 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   `c155402eea3be32105c29314f2b18ec168827ef1a133640d1bd104049f01363e`。
 - 這使發行自評由3／10增至4／10、總分87／100。Wine不是Windows真機；macOS仍需
   真實CI。工作後容器均退出，沒有留下Wine／Xvfb程序。
+
+## 2026-08-27：macOS universal 真實CI首次成功
+
+- 官方API先確認`build-macos.yml`歷史run數為0。為避免製造正式`v*-mac`標籤，在
+  一次性`codex/macos-ci-20260827`分支只增加該分支觸發條件；main的workflow輸出
+  內容與發行觸發規則未改。run
+  [32997009964](https://github.com/wicanr2/fd2_re/actions/runs/32997009964)於真實
+  `macos-14` runner完成，job 98268801171結論success，歷時75秒。
+- workflow的成功閘門包含arm64與amd64 CGO build、`lipo -create/-info`、原生icns、
+  `.app`、DMG、tar.gz及artifact上傳。官方API回報`fd2-macos-universal` artifact
+  ID 9616984049、19,299,516 bytes、未過期。
+- artifact下載API在無憑證下回應401；因此只證明CI建置與上傳，不宣稱本機解包、
+  實體Mac啟動、輸入、存檔、音訊、簽章或Gatekeeper通過。發行自評由4／10增至
+  5／10，總分88／100。
