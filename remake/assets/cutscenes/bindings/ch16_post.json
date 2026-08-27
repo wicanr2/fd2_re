@@ -4,47 +4,731 @@
   "acting_resources": "../acting/ch16_post.json",
   "story_index_map": "../dialogue-index/count-aligned.json",
   "runtime_context": {
-    "slot_counts": [60, 61],
-    "spawn_groups": { "3": 1 },
+    "slot_counts": [
+      60,
+      61
+    ],
+    "spawn_groups": {
+      "3": 1
+    },
     "story_viewport": true
   },
   "dialogue_contexts": {
-    "0x23bbe": { "source_dat": "FDTXT_017", "script": "ch17.json" },
-    "0x23c2b": { "source_dat": "FDTXT_017", "script": "ch17.json" },
-    "0x23c86": { "source_dat": "FDTXT_017", "script": "ch17.json" },
-    "0x23cb7": { "source_dat": "FDTXT_017", "script": "ch17.json" }
+    "0x23bbe": {
+      "source_dat": "FDTXT_017",
+      "script": "ch17.json"
+    },
+    "0x23c2b": {
+      "source_dat": "FDTXT_017",
+      "script": "ch17.json"
+    },
+    "0x23c86": {
+      "source_dat": "FDTXT_017",
+      "script": "ch17.json"
+    },
+    "0x23cb7": {
+      "source_dat": "FDTXT_017",
+      "script": "ch17.json"
+    }
   },
   "overrides": {
-    "0x23bd0": { "pan": { "x": 408, "y": 336, "tile_step": true } },
-    "0x23c4b": { "pan": { "x": 408, "y": 336, "tile_step": true } },
+    "0x23bd0": {
+      "pan": {
+        "x": 408,
+        "y": 336,
+        "tile_step": true
+      }
+    },
+    "0x23c4b": {
+      "pan": {
+        "x": 408,
+        "y": 336,
+        "tile_step": true
+      }
+    },
     "0x23c04": {
       "layout": {
         "units": [
-          { "slot": 0, "x": 23, "y": 18, "pose": 0 },
-          { "slot": 1, "x": 22, "y": 19, "pose": 0 },
-          { "slot": 2, "x": 23, "y": 19, "pose": 0 },
-          { "slot": 3, "x": 24, "y": 19, "pose": 0 },
-          { "slot": 4, "x": 21, "y": 20, "pose": 0 },
-          { "slot": 5, "x": 22, "y": 20, "pose": 0 },
-          { "slot": 6, "x": 23, "y": 20, "pose": 0 },
-          { "slot": 7, "x": 24, "y": 20, "pose": 0 },
-          { "slot": 8, "x": 25, "y": 20, "pose": 0 },
-          { "slot": 9, "x": 20, "y": 21, "pose": 0 },
-          { "slot": 10, "x": 21, "y": 21, "pose": 0 },
-          { "slot": 11, "x": 22, "y": 21, "pose": 0 },
-          { "slot": 12, "x": 23, "y": 21, "pose": 0 },
-          { "slot": 13, "x": 24, "y": 21, "pose": 0 },
-          { "slot": 14, "x": 25, "y": 21, "pose": 0 },
-          { "slot": 15, "x": 26, "y": 21, "pose": 0 },
-          { "slot": 52, "x": 23, "y": 23, "pose": 2 }
+          {
+            "slot": 0,
+            "x": 23,
+            "y": 18,
+            "pose": 0
+          },
+          {
+            "slot": 1,
+            "x": 22,
+            "y": 19,
+            "pose": 0
+          },
+          {
+            "slot": 2,
+            "x": 23,
+            "y": 19,
+            "pose": 0
+          },
+          {
+            "slot": 3,
+            "x": 24,
+            "y": 19,
+            "pose": 0
+          },
+          {
+            "slot": 4,
+            "x": 21,
+            "y": 20,
+            "pose": 0
+          },
+          {
+            "slot": 5,
+            "x": 22,
+            "y": 20,
+            "pose": 0
+          },
+          {
+            "slot": 6,
+            "x": 23,
+            "y": 20,
+            "pose": 0
+          },
+          {
+            "slot": 7,
+            "x": 24,
+            "y": 20,
+            "pose": 0
+          },
+          {
+            "slot": 8,
+            "x": 25,
+            "y": 20,
+            "pose": 0
+          },
+          {
+            "slot": 9,
+            "x": 20,
+            "y": 21,
+            "pose": 0
+          },
+          {
+            "slot": 10,
+            "x": 21,
+            "y": 21,
+            "pose": 0
+          },
+          {
+            "slot": 11,
+            "x": 22,
+            "y": 21,
+            "pose": 0
+          },
+          {
+            "slot": 12,
+            "x": 23,
+            "y": 21,
+            "pose": 0
+          },
+          {
+            "slot": 13,
+            "x": 24,
+            "y": 21,
+            "pose": 0
+          },
+          {
+            "slot": 14,
+            "x": 25,
+            "y": 21,
+            "pose": 0
+          },
+          {
+            "slot": 15,
+            "x": 26,
+            "y": 21,
+            "pose": 0
+          },
+          {
+            "slot": 52,
+            "x": 23,
+            "y": 23,
+            "pose": 2
+          }
         ],
         "cam_x": 408,
         "cam_y": 408
       }
     },
-    "0x23c3f": { "act": { "resource": 50 } },
-    "0x23c5f#51": { "act": { "resource": 51 } },
-    "0x23c5f#52": { "act": { "resource": 52 } },
-    "0x23c90": { "act": { "resource": 53 } }
+    "0x23c3f": {
+      "act": {
+        "resource": 50
+      }
+    },
+    "0x23c5f#51": {
+      "act": {
+        "resource": 51
+      }
+    },
+    "0x23c5f#52": {
+      "act": {
+        "resource": 52
+      }
+    },
+    "0x23c90": {
+      "act": {
+        "resource": 53
+      }
+    }
+  },
+  "dialogue_overrides": {
+    "0x23bbe#5": {
+      "script": "ch17.json",
+      "scene_index": 3,
+      "lines": [
+        {
+          "line": 0,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 5,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 18,
+            "pages": [
+              [
+                "『原來我們打倒的傢伙叫做冰",
+                "　魔神，看來和你們上次救出",
+                "　國王時遇到的地魔神是一夥"
+              ],
+              [
+                "　的。他們真正的目的究竟為",
+                "　何，現在仍然是一個謎，看",
+                "　來我們還有好長一段路要走"
+              ],
+              [
+                "　．．各位可願意和我繼續一",
+                "　起追索這批邪惡之徒？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 5,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『可是．我們原先是要找到賢",
+                "　者約拿，請他醫治悠妮小姐",
+                "　的失憶症的．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 5,
+            "utterance": 2,
+            "control": "FFEF",
+            "operand": 18,
+            "pages": [
+              [
+                "『約拿？他就是這次調查行動",
+                "　的發起人啊！他以各種方法",
+                "　召集了馬拉大陸各地的勇士"
+              ],
+              [
+                "　能人，一起向這個未知的陰",
+                "　謀和其計晝者挑戰，難道你",
+                "　們不知道此事？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 5,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 11,
+            "pages": [
+              [
+                "『約拿確是有請我前往北方的",
+                "　黑森林與他會合，但他並沒",
+                "　有說明原因．．現在我總算"
+              ],
+              [
+                "　明白了！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x23c2b#7": {
+      "script": "ch17.json",
+      "scene_index": 4,
+      "lines": [
+        {
+          "line": 1,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 7,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 18,
+            "pages": [
+              [
+                "『原來我們打倒的傢伙叫做冰",
+                "　魔神，看來和你們上次救出",
+                "　國王時遇到的地魔神是一夥"
+              ],
+              [
+                "　的。他們真正的目的究竟為",
+                "　何，現在仍然是一個謎．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 7,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 15,
+            "pages": [
+              [
+                "『密蒂閣下，那您往後有什麼",
+                "　打算？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 7,
+            "utterance": 2,
+            "control": "FFEF",
+            "operand": 18,
+            "pages": [
+              [
+                "『繼續追查敵人的底細。此行",
+                "　有多麼危險，你們現在應該",
+                "　很清楚了，如果愛惜性命的"
+              ],
+              [
+                "　話，就到此為止比較好。",
+                "　賽可邦德，他們就交給你了",
+                "　時間緊迫，我得先走一步"
+              ],
+              [
+                "　．．』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x23c86#6": {
+      "script": "ch17.json",
+      "scene_index": 4,
+      "lines": [
+        {
+          "line": 0,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 6,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 16,
+            "pages": [
+              [
+                "『小伙子們！是你們一行打敗",
+                "　冰魔神的嗎？』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x23cb7#8": {
+      "script": "ch17.json",
+      "scene_index": 4,
+      "lines": [
+        {
+          "line": 4,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 8,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『這還需要懷疑嗎？對了，你",
+                "　是從哪裡跑出來的？和冰魔",
+                "　神是一夥的嗎？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 5,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 8,
+            "utterance": 1,
+            "control": "FFEF",
+            "operand": 16,
+            "pages": [
+              [
+                "『別誤會，我是龍人族的劍士",
+                "　凱拉斯，奉命前來冰島調查",
+                "　時不小心中了這些雜碎的奸"
+              ],
+              [
+                "　計，一直被關在地下的冰穴",
+                "　中：不久前我才設法掙脫繩",
+                "　結跑出來。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 6,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 8,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『冰魔神和其部下確貫已被我",
+                "　們打倒了，我想你可以放心",
+                "　了。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 7,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 8,
+            "utterance": 3,
+            "control": "FFEF",
+            "operand": 16,
+            "pages": [
+              [
+                "『這樣嗎？能夠打倒冰魔神，",
+                "　真是一件了不起的成就．．",
+                "　不過你們為何要與他們作對"
+              ],
+              [
+                "　呢？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 8,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 8,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『這哪需要理由！那些傢伙在",
+                "　大陸各地胡作非為，我們的",
+                "　目的雖然是尋找賢者約拿，"
+              ],
+              [
+                "　但是看到他們的種種惡行，",
+                "　怎麼可以置之不理？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 9,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 8,
+            "utterance": 5,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『我們一路上與敵人交戰，不",
+                "　但因此交了不少朋友，戰技",
+                "　也大為提昇，而約拿恰巧也"
+              ],
+              [
+                "　在調查此事，我們的方向正",
+                "　好與他不謀而合。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 10,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 8,
+            "utterance": 6,
+            "control": "FFEF",
+            "operand": 16,
+            "pages": [
+              [
+                "『原來如此．我族之王聖寇拉",
+                "　斯也受到約拿之邀出面調查",
+                "　此事，因此他與我分頭前往"
+              ],
+              [
+                "　冰島和西方的沙漠，想查明",
+                "　敵人的底細，結果我沒料到",
+                "　敵人大軍聚集於此，一下子"
+              ],
+              [
+                "　就被抓了．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 11,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 8,
+            "utterance": 7,
+            "control": "FFEE",
+            "operand": 17,
+            "pages": [
+              [
+                "『聖寇拉斯陛下竟然也親自出",
+                "　馬了，看來事態一定非同小",
+                "　可。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 12,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 8,
+            "utterance": 8,
+            "control": "FFEF",
+            "operand": 16,
+            "pages": [
+              [
+                "『是啊！只是我有負陛下使命",
+                "　被關了這麼多天，約定的日",
+                "　期早過了，也不知道接下來"
+              ],
+              [
+                "　該怎麼辦．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 13,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 8,
+            "utterance": 9,
+            "control": "FFEE",
+            "operand": 17,
+            "pages": [
+              [
+                "『那你乾脆加入我們一行好了",
+                "　反正陛下遲早也會和賢者約",
+                "　拿會合，和我們一起去找約"
+              ],
+              [
+                "　拿，不是也一樣可以找到陛",
+                "　下嗎？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 14,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 8,
+            "utterance": 10,
+            "control": "FFEF",
+            "operand": 16,
+            "pages": [
+              [
+                "『你說的有理，不過不知道這",
+                "　些朋友們．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 15,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 8,
+            "utterance": 11,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『龍人戰士是尊貴的武士，既",
+                "　然目的一致，我們當然歡迎",
+                "　你加入！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 16,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 8,
+            "utterance": 12,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『是啊！被抓並不可恥，這筆",
+                "　帳以後再和敵人清算就好了",
+                "　。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 17,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 8,
+            "utterance": 13,
+            "control": "FFEF",
+            "operand": 16,
+            "pages": [
+              [
+                "『多謝各位！劍士凱拉斯，以",
+                "　後請多多指教。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 18,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 8,
+            "utterance": 14,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『好極了，又多了一個新伙伴",
+                "　不過，我可不想繼續待在這",
+                "　個光兌兌的冰島上，索菲亞"
+              ],
+              [
+                "　我們下一步該怎麼走？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 19,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 8,
+            "utterance": 15,
+            "control": "FFEE",
+            "operand": 11,
+            "pages": [
+              [
+                "『應該是再往北經過山道，前",
+                "　往史威特平原．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 20,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 8,
+            "utterance": 16,
+            "control": "FFEE",
+            "operand": 3,
+            "pages": [
+              [
+                "『那是條滿偏僻的山道，知道",
+                "　的人不多，想必往後的旅程",
+                "　應該會比較平靜了。"
+              ],
+              [
+                "　哈哈哈！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 21,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_017",
+            "string_index": 8,
+            "utterance": 17,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『但願如此。我們這就上路吧",
+                "　！』"
+              ]
+            ]
+          }
+        }
+      ]
+    }
   }
 }

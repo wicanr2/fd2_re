@@ -1662,14 +1662,29 @@ func TestChapter13PostNativeDialogueJoins3Town14SaveBoundary(t *testing.T) {
 }
 
 func TestChapter17PostBranchJoin16Town18SaveBoundary(t *testing.T) {
+	const originalBase = "../../../org_game/炎龍騎士團/FLAME2"
+	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.DAT", "FDTXT.DAT", "DATO.DAT"} {
+		if _, err := os.Stat(filepath.Join(originalBase, archive)); err != nil {
+			t.Skipf("player-provided original %s is absent: %v", archive, err)
+		}
+	}
+	t.Setenv("FD2_ORIGINAL_FDFIELD", filepath.Join(originalBase, "FDFIELD.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDSHAP", filepath.Join(originalBase, "FDSHAP.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(originalBase, "FDOTHER.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(originalBase, "FDTXT.DAT"))
+	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(originalBase, "DATO.DAT"))
+	t.Setenv("FD2_MUTE", "1")
 	for _, tc := range []struct {
-		name      string
-		order     []int
-		preSlots  int
-		postSlots int
+		name        string
+		order       []int
+		preSlots    int
+		postSlots   int
+		branchIndex int
+		wantDialog  int
 	}{
-		{name: "roster_has_18", order: []int{0, 4, 9, 30, 1, 8, 2, 10, 13, 12, 5, 6, 11, 14, 17, 18}, preSlots: 60, postSlots: 61},
-		{name: "roster_lacks_18", order: []int{0, 4, 9, 30, 1, 8, 2, 10, 13, 12, 5, 6, 11, 14, 17, 15}, preSlots: 61, postSlots: 62},
+		{name: "roster_has_18", order: []int{0, 4, 9, 30, 1, 8, 2, 10, 13, 12, 5, 6, 11, 14, 17, 18}, preSlots: 60, postSlots: 61, branchIndex: 5, wantDialog: 23},
+		{name: "roster_lacks_18", order: []int{0, 4, 9, 30, 1, 8, 2, 10, 13, 12, 5, 6, 11, 14, 17, 15}, preSlots: 61, postSlots: 62, branchIndex: 7, wantDialog: 22},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			g := &Game{
@@ -1705,6 +1720,14 @@ func TestChapter17PostBranchJoin16Town18SaveBoundary(t *testing.T) {
 			if len(g.st.Units) != tc.preSlots {
 				t.Fatalf("ch17 pre frontier=%d, want %d", len(g.st.Units), tc.preSlots)
 			}
+			g.curX, g.curY = 0, 0
+			if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{}); err != nil ||
+				!g.st.MaterializeNativeMapHUDState(1, 1, 1) || !g.st.MaterializeNativeMapRangeMode(1) {
+				t.Fatalf("chapter17 native view setup err=%v", err)
+			}
+			if err := g.composeNativeMapFrame(); err != nil {
+				t.Fatal(err)
+			}
 			beats, issues, err := campaign.CompileHandlerBinding(assetPath("assets/cutscenes/bindings/ch16_post.json"))
 			if err != nil || len(issues) != 0 {
 				t.Fatalf("ch16_post compile err=%v issues=%#v", err, issues)
@@ -1719,12 +1742,28 @@ func TestChapter17PostBranchJoin16Town18SaveBoundary(t *testing.T) {
 			g.beats, g.beatIdx, g.storyBG = beats, -1, true
 			g.beatAdvance()
 			maxSlots := len(g.st.Units)
-			for frame := 0; frame < 12000 && g.camp.NodeID() != "town_ch18"; frame++ {
+			seen := make(map[int]bool, tc.wantDialog)
+			seenIndices := make(map[int]bool, 3)
+			for frame := 0; frame < 50000 && g.camp.NodeID() != "town_ch18"; frame++ {
 				if len(g.dialog) != 0 {
-					g.dialog = nil
-					g.beatAdvance()
+					current := g.dialog[len(g.dialog)-1]
+					if current.NativeDialogue == nil || current.Upper == nil || current.NativeDialogue.SourceDAT != "FDTXT_017" {
+						t.Fatalf("ch16_post dialog lost indexed lifecycle: %#v", current)
+					}
+					index := current.NativeDialogue.StringIndex
+					if (index != tc.branchIndex && index != 6 && index != 8) ||
+						len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != 5 {
+						t.Fatalf("ch16_post dialog lost indexed lifecycle: %#v", current)
+					}
+					seen[index*100+current.NativeDialogue.Utterance] = true
+					seenIndices[index] = true
+					if g.nativeStoryDialogueAtInputWait() && !g.handleNativeStoryInput(g.camp.Node(), nativeStoryInput{enter: true}) {
+						t.Fatal("ch16_post formal story input was rejected")
+					}
 				}
-				g.tick(1)
+				if err := g.Update(); err != nil {
+					t.Fatal(err)
+				}
 				if g.st != nil && len(g.st.Units) > maxSlots {
 					maxSlots = len(g.st.Units)
 				}
@@ -1732,8 +1771,9 @@ func TestChapter17PostBranchJoin16Town18SaveBoundary(t *testing.T) {
 					t.Fatalf("ch16_post stopped at beat %d/%d: %s", g.beatIdx, len(g.beats), g.loadErr)
 				}
 			}
-			if g.camp.NodeID() != "town_ch18" || g.handlerChapter != 17 || g.st != nil || maxSlots != tc.postSlots {
-				t.Fatalf("ch16_post boundary node=%q chapter=%d state=%v maxSlots=%d, want %d", g.camp.NodeID(), g.handlerChapter, g.st != nil, maxSlots, tc.postSlots)
+			if g.camp.NodeID() != "town_ch18" || g.handlerChapter != 17 || g.st != nil || maxSlots != tc.postSlots ||
+				len(seen) != tc.wantDialog || len(seenIndices) != 3 {
+				t.Fatalf("ch16_post boundary node=%q chapter=%d state=%v maxSlots=%d/%d dialogues=%d/%d indices=%v", g.camp.NodeID(), g.handlerChapter, g.st != nil, maxSlots, tc.postSlots, len(seen), tc.wantDialog, seenIndices)
 			}
 			if !g.partyMembers[16] {
 				t.Fatal("JOIN16 membership missing")

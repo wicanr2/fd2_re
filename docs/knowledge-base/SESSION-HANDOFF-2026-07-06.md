@@ -7578,3 +7578,13 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   通過存讀檔。證據見
   [`ch15-post-native-dialogue-e1.json`](../data/ui-traces/ch15-post-native-dialogue-e1.json)。
 - 未修改DOSBox同狀態、精確音訊與town17原版輸入仍屬E2限制；依99%門檻不阻擋。
+
+## 2026-08-27：第17戰後四個caller／26句原生對話與roster雙分支
+
+- 沿用已閉合的`sub_23B5F`、roster_has(18)、60／61入口、group3與共用renderer。
+  FDTXT_017 index5／7／6／8的4＋3＋1＋18句已通過固定raw equality並重生成
+  typed版面。
+- roster有／無角色18兩路分別以具型別輸入完成23／22句，保持60→61／61→62
+  frontier，依原始順序完成ACTING50–53、JOIN16、`town_ch18`與存讀檔。證據見
+  [`ch16-post-native-dialogue-e1.json`](../data/ui-traces/ch16-post-native-dialogue-e1.json)。
+- 未修改DOSBox同狀態、精確音訊與town18原版輸入仍屬E2限制；依99%門檻不阻擋。

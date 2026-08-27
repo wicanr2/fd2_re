@@ -1,0 +1,18 @@
+{
+  "name": "第17戰後四個caller／26句原生對話與roster雙分支",
+  "date": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "reference": {
+    "FD2.EXE": {"size": 357074, "md5": "b97caf2239a27a896069d03549d96e1e", "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"},
+    "FDTXT_017.bin": {"size": 4434, "md5": "f4fb40584d28ce20d61706b481f3f227", "sha256": "ece28ae2d45373c4265149f03bbbd80c7b9a0c36197712120ffb0990bdf3f2ed"},
+    "canonical_re": "docs/data/fd2_ch16_post_ida.txt",
+    "binding_evidence": "docs/data/ida/fd2_ch16_post_native_dialogue.md"
+  },
+  "native_dialogue": {"handler": "0x23b5f", "callers": ["0x23bbe", "0x23c2b", "0x23c86", "0x23cb7"], "source": "FDTXT_017", "string_indices": [5, 7, 6, 8], "utterance_counts": [4, 3, 1, 18], "total_utterances": 26},
+  "formal_routes": [
+    {"roster_has_18": true, "frontier_before": 60, "frontier_after_group3": 61, "reachable_indices": [5, 6, 8], "reachable_utterances": 23, "join16": true, "destination": "town_ch18"},
+    {"roster_has_18": false, "frontier_before": 61, "frontier_after_group3": 62, "reachable_indices": [7, 6, 8], "reachable_utterances": 22, "join16": true, "destination": "town_ch18"}
+  ],
+  "verification": {"generator": "4 callers / 26 utterances --check", "data_test": "TestCh16PostNativeDialogueLayoutsMatchOriginalControlWords", "integrated_test": "TestChapter17PostBranchJoin16Town18SaveBoundary", "full_packages": "go test ./internal/battle ./internal/campaign ./cmd/fd2 -count=1", "result": "pass", "docker_network": "none", "xvfb": "explicit PID with exit trap"},
+  "limitations": ["60／61入口frontier為canonical evidence標示的強推論E1 bridge，不提升為原版靜態事實。", "未修改DOSBox同狀態、精確音訊與town18原版輸入仍缺，故不提升為PLAYER-E2。"]
+}

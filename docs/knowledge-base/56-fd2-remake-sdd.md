@@ -7195,3 +7195,20 @@ branch provenance或76-slot frontier時，在交易前失敗即關閉。
 [`fd2_ch15_post_native_dialogue.md`](../data/ida/fd2_ch15_post_native_dialogue.md)。
 驗收包含全量raw equality、四條正式輸入、JOIN18正反例、`town_ch17`與存讀檔。
 此項最高為`RUNTIME-E1`，未修改DOSBox同狀態與精確音訊另列E2。
+
+## 玩家第 17 戰戰後 26 句原生對話與 roster 雙分支（2026-08-27）
+
+本切片沿用已閉合的`sub_23B5F`、roster_has(18)、60／61-slot入口、group3與共用
+renderer，不重開反組譯。`0x23BBE`／index5、`0x23C2B`／index7、`0x23C86`／
+index6、`0x23CB7`／index8分別產生4、3、1、18筆`NativeDialogueLayout`。
+
+正式執行期有角色18時保持60→61 frontier並播放index5／6／8共23句；無角色18時
+保持61→62 frontier並播放index7／6／8共22句。兩路都依原始順序完成pan、group3、
+各自ACTING、共同ACTING53，具型別輸入收框後才JOIN16、進chapter17與`town_ch18`，
+並驗證存讀檔。缺原始資產、mapping、native frame、roster／group3 provenance或
+合法frontier時，在交易前失敗即關閉。
+
+原始位址、雜湊、控制碼與分支契約見
+[`fd2_ch16_post_native_dialogue.md`](../data/ida/fd2_ch16_post_native_dialogue.md)。
+驗收包含全量raw equality、兩條正式輸入、60→61／61→62、JOIN16、`town_ch18`與
+存讀檔。此項最高為`RUNTIME-E1`，未修改DOSBox同狀態與精確音訊另列E2。
