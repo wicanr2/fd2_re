@@ -49,7 +49,7 @@
 受版控清冊位於
 [`first-round-remake-samples.json`](data/verification/first-round-remake-samples.json)，
 以`tools/check_remake_samples.py`自動拒絕重複ID、遺失證據檔及手動灌水的資格欄位。
-目前登記42筆證據，其中37筆符合正常輸入與正式重製路徑資格：戰役／戰間4／12、
+目前登記43筆證據，其中38筆符合正常輸入與正式重製路徑資格：戰役／戰間5／12、
 戰鬥／AI 9／18、介面12／12、存檔／持續隊伍10／10、終局／平台2／8。最新一輪把
 既有正常輸入證據按不同驗收不變量補登：戰場HUD、command0調色盤、END接受逐字、
 Windows城鎮存檔寫入與第30戰前冷讀持續隊伍；沒有以同一結果跨層重複計數。介面樣本
@@ -79,6 +79,10 @@ turn1／round1、同一camera與cursor，沒有殘留modal、dialog或turn stagi
 第一列item143確認角色目標後，HP由445發布為619、acted轉為true，面板與目標狀態
 均正常收束。此格只有重製`RUNTIME-E1`；第二列item207未被選到，故不冒稱MP回復，
 也不推論原版消耗規則。
+早期戰間另以合法重製節點存檔為明示起點，從正式標題LOAD普通操作
+`town_ch02→church_ch02→town_ch02`；入口確認教會主選單mode、selection與gold，
+返回確認沒有殘留對話／戰鬥事件／staging。這只列`RUNTIME-E1`，不外推四項服務
+或原版長程來源。
 其餘5筆保留為有用旁證，但因route patch、專用截圖入口、typed test或非互動封包
 檢查而不計入95%門檻。這個數字衡量的是已整理樣本，不是把既有功能降級成未完成。
 

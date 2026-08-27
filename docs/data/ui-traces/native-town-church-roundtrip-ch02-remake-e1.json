@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "scope": "正式標題 LOAD 後以普通鍵盤完成 town_ch02→church_ch02→town_ch02",
+  "save_fixture": {
+    "format": "重製 JSON 槽位0；合法節點邊界測試起點，不是原版 FD2.SAV",
+    "node": "town_ch02",
+    "chapter": 2,
+    "gold": 279,
+    "sha256": "2b684fbdf1a8b7a574420f62e7f8b38ab8b70a85adde26eb94fde1b13994ee36",
+    "creation": "一次性 Docker 內以正式 saveData／writeSaveFile 契約產生；產生測試隨即移除，存檔不加入版控"
+  },
+  "execution": {
+    "environment": "一次性、無網路、UID/GID 1000 的 fd2-go-test-local Docker／Xvfb",
+    "runtime_sha256": "4007fdf026c024e87380272576d034145be528236655e1b4aa7abd92a08d8ed9",
+    "original_assets": "FLAME2 與 remake/assets 唯讀掛載；只有隔離 XDG 與 /tmp 證據目錄可寫",
+    "input_helper": "tools/docker/fd2-xtest-input.c，只送普通 X11 鍵盤事件",
+    "timeline": [
+      "F10等待初始化，Escape略過可略過開場",
+      "Down、Return開啟LOAD，Return確認槽位0並進入town_ch02",
+      "Left×4依正式城鎮selector抵達選項4，Return進入church_ch02",
+      "第二次完整重播相同前綴後，於教會主選單送Escape返回town_ch02"
+    ]
+  },
+  "entry_capture": {
+    "frame": 1300,
+    "campaign_node": "church_ch02",
+    "church_mode": "menu",
+    "church_selection": 0,
+    "gold": 279,
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false,
+    "state": "native-town-church-entry-ch02-remake-e1-state.json",
+    "state_sha256": "65e6eecda7667130984ecb7ffee80fccfee46550bd9e64d89445f3c6a27268c4",
+    "screenshot": "../../figures/native-town-church-entry-ch02-remake-e1.png",
+    "screenshot_sha256": "b27cb35cbd2163e5e290e510bd82566aff6100b634206a364419f1473cd1bf41"
+  },
+  "return_capture": {
+    "frame": 1450,
+    "campaign_node": "town_ch02",
+    "gold": 279,
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false,
+    "state": "native-town-church-return-ch02-remake-e1-state.json",
+    "state_sha256": "15fa635c4150da3be9c172f0d222e05ba3e32232fe9693b976e863ea86fa7f2d",
+    "screenshot": "../../figures/native-town-church-return-ch02-remake-e1.png",
+    "screenshot_sha256": "4ae1960c3c0ed3d47d8904341fe661017e74652a37b40068cab61e53333b5184"
+  },
+  "validated_invariants": [
+    "正式標題 LOAD 發布 town_ch02 後，城鎮原生selector的選項4以普通Return進入church_ch02主選單。",
+    "教會入口保留gold279，主選單mode=menu／selection0，沒有對話、戰鬥事件或回合staging殘留。",
+    "同一普通輸入前綴進入教會後，Escape沿正式leaveChurch邊界回到town_ch02並保留gold279。"
+  ],
+  "limitations": [
+    "起點是明示的合法重製節點存檔，不證明由第1戰勝利長程產生，也不提升為原版 PLAYER-E2。",
+    "入口與返回畫面是兩次相同前綴的決定性重播；返回樣本本身連續執行進教會與Escape，未使用狀態注入。",
+    "本樣本只驗證教會主選單的節點往返，不外推四項服務交易、音訊或逐像素原版一致。"
+  ]
+}

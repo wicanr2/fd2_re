@@ -603,6 +603,28 @@
       ]
     },
     {
+      "id": "campaign-town-church-roundtrip-ch02",
+      "layer": "campaign_intermission",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-town-church-roundtrip-ch02-remake-e1.json",
+        "docs/data/ui-traces/native-town-church-entry-ch02-remake-e1-state.json",
+        "docs/data/ui-traces/native-town-church-return-ch02-remake-e1-state.json",
+        "docs/figures/native-town-church-entry-ch02-remake-e1.png",
+        "docs/figures/native-town-church-return-ch02-remake-e1.png"
+      ],
+      "limitations": [
+        "合法重製節點存檔起點；只驗證正式LOAD後城鎮至教會主選單及Escape返回，不證明長程來源、四項服務或原版E2。"
+      ]
+    },
+    {
       "id": "ui-appimage-rumor-dialogue-lifecycle-ch02",
       "layer": "ui",
       "result": "pass",

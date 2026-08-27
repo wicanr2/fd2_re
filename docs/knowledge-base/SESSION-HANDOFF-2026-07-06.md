@@ -8047,3 +8047,15 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 原定item207 MP回復沒有發生；它雖存在第二個raw slot，本次未被普通輸入選到。
   因此本格只列`RUNTIME-E1`的HP發布與交易收束，不宣稱原版同狀態、精確回復量、
   MP回復或raw slot消耗語意。清冊現為42筆登記、37筆合格；戰鬥／AI 9／18。
+
+## 2026-08-27：早期城鎮至教會普通輸入往返
+
+- 一次性Docker測試只用正式`saveData`／`writeSaveFile`契約產生明示的合法
+  `town_ch02`節點存檔；SHA-256為`2b684fbdf1a8b7a574420f62e7f8b38ab8b70a85adde26eb94fde1b13994ee36`。
+  暫時產生測試已移除，存檔不入版控；這仍是測試起點，不冒稱第1戰長程產物。
+- 正式執行檔由標題LOAD普通鍵盤進town，Left×4選原生選項4、Return進
+  `church_ch02`；frame1300旁車為mode=menu、selection0、gold279且無其他transient。
+  第二次相同前綴連續進教會後送Escape，frame1450返回`town_ch02`並保持gold279、
+  無dialog／battle event／turn staging。
+- 清冊新增一個戰間節點交易樣本，現為43筆登記、38筆合格；戰役／戰間5／12。
+  本格只列`RUNTIME-E1`，不外推四項服務交易、音訊、長程來源或原版PLAYER-E2。

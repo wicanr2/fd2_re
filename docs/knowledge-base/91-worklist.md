@@ -21,7 +21,7 @@
 > 成片在 `dist/promo/`，不含原版音樂且不入Git；規格、重生腳本與雜湊見
 > `docs/promo-opening-ch01-spec.md`、`tools/build_fd2_opening_promo.sh`及影片metadata。
 
-> **抽樣清冊現況**：已登記42筆證據，37筆符合門檻（戰役／戰間4、戰鬥／AI 9、
+> **抽樣清冊現況**：已登記43筆證據，38筆符合門檻（戰役／戰間5、戰鬥／AI 9、
 > 介面12、存檔／持續隊伍10、終局／平台2）。章節0 current-runtime 的空游標命令格、
 > HUD、command0調色盤與END接受逐字，以及Windows城鎮F5存檔和第30戰前冷讀持續隊伍
 > 已按不同驗收不變量登錄；沒有以同一結果跨層重複計數。空游標命令格
@@ -47,6 +47,9 @@
 > 第30戰固定雜湊current-runtime另由普通CONTINUE抵達受傷角色；確認第一列item143
 > 與角色目標後，HP由445發布為619、acted轉為true，交易面板完整收束。此格只列
 > 重製`RUNTIME-E1`；item207未被選到，不誤標為MP回復或原版精確消耗行為。
+> 早期城鎮另由合法節點存檔經正式標題LOAD普通操作完成
+> `town_ch02→church_ch02→town_ch02`；入口與返回旁車固定mode／selection／gold及
+> transient收束。此格不外推四項教會服務、長程來源或原版E2。
 > 下一步優先把已接正式consumer的早／中期戰間及冷讀存檔改由普通輸入重播，形成
 > 玩家路徑，而不是再新增無消費端RE。權威清冊見
 > [`first-round-remake-samples.json`](../data/verification/first-round-remake-samples.json)。
