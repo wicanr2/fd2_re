@@ -467,6 +467,44 @@
       ]
     },
     {
+      "id": "ui-appimage-town-menu-after-title-load-ch02",
+      "layer": "ui",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/release-appimage-title-load-town-ch02-e1.json",
+        "docs/figures/release-appimage-town-ch02.png"
+      ],
+      "limitations": [
+        "與Linux封包LOAD樣本共用程序，但本樣本只驗證早期原生城鎮主畫面發布；受版控圖片為同封包城鎮畫面的先前擷取，當前旁車雜湊另存於trace。"
+      ]
+    },
+    {
+      "id": "ui-late-battle-empty-cursor-overlay-ch30",
+      "layer": "ui",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-battle-ch30-original-candidate.json",
+        "docs/figures/native-battle-ch30-remake-controllable-e1.png"
+      ],
+      "limitations": [
+        "完整標題CONTINUE後普通Return開啟晚期空游標indexed操作面板；第三方存檔來源不完整，且不宣稱精確音訊。"
+      ]
+    },
+    {
       "id": "ui-shop-sell-ch02-route-patched",
       "layer": "ui",
       "result": "pass",
