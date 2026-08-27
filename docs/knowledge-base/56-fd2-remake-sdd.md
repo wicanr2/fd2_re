@@ -286,13 +286,32 @@ repo 提供不含 license／遊戲資料的 `tools/docker/fd2-ida.Dockerfile` �
 只在授權 IDA Docker 匯出原始函式邊界、IDA 分析名稱、旗標與直接 caller；
 `tools/compact_fd2_function_inventory.py` 產生受版控的
 [`fd2_function_inventory.json`](../data/ida/fd2_function_inventory.json)。固定雜湊輸入
-辨識1,305函式；現行語意索引64筆中，58筆標為產品、6筆標為runtime；
-語意索引覆蓋同一FLIRT分類而不重複計數。目前為產品58、runtime175、
-未知1,072；最近新增的是 `0x3EEDA` Miles AIL 背景IRQ狀態分流。語意只從
+辨識1,305函式；現行語意索引67筆中，61筆標為產品、6筆標為runtime；
+語意索引覆蓋同一FLIRT分類而不重複計數。目前為產品61、runtime175、
+未知1,069；最近補登的是已有直接證據與正式消費端的 `0x2189A`、`0x24BDE`、
+`0x24D22`。語意只從
 [`fd2_semantic_index.json`](../data/ida/fd2_semantic_index.json) 合併，雜湊不符、
 註記未落在函式起點或缺推論等級／證據時直接拒絕。handler IR 同步拆成
 `native_call`、`unresolved_native_call`、`unknown`；三者都保留原始定位，前兩者
 另內嵌推論等級與證據，名稱本身不解除正式 runtime gate。
+
+### Handler IR 已分類 native call 的升級契約
+
+`unresolved_native_call` 只能表示 callee 雖有窄語意，但目前 caller-specific ABI、
+必要輸入或正式消費端仍不足以安全編譯。當下列條件全部成立時，匯出器必須把它
+升為 `native_call`，不能讓過時三態數字觸發重複 RE：
+
+1. 固定雜湊原檔的函式邊界、直接 caller 與原始參數順序已保存；
+2. callee 的輸入、寫入時點、可見排程及失敗回復已有 canonical evidence；
+3. 至少一條正式 runtime adapter 會在缺少 caller binding／資產／來源時失敗即關閉；
+4. IR 仍保留 `native_target`、`raw_args`、confidence、evidence 與 call-site address，
+   不把 callee 分類誤寫成每個 caller 都達 `PLAYER-E2`。
+
+`0x22253` 已具五參數 ABI、11＋6＋10 indexed schedule、座標 commit 邊界與正式
+原子 presenter；`0x2BCE5` 已具兩個直接 caller、完整前綴／文字／蒙太奇／尾段
+證據及來源約束的正式 ending adapter。因此兩者在 handler IR 應列已證實的
+`native_call`。仍未知的是 caller 的一般玩家來源、call-time 動態狀態、精確輸入／
+音訊與 E2；這些限制記在 scope，不再把 callee 降回 unresolved。
 
 2026-08-27 再以 `fd2-ida-authorized-local`、IDA Pro 9.4、唯讀固定版執行檔及
 一次性 tmpfs 從零重生完整清冊。IDAPython 9.4 以 ASCII codec 開啟輸入路徑，直接
@@ -312,7 +331,8 @@ repo 提供不含 license／遊戲資料的 `tools/docker/fd2-ida.Dockerfile` �
 逐頁 guard-page probe。三段回填後當時為產品58、runtime174、unknown1,073、
 語意註記63；通用 pattern 與停止線見 `59-watcom-stack-runtime-patterns.md`。
 其後 `0x3EEDA` 由 Miles IRQ 8 timer writer／consumer 閉合為背景中斷巢狀狀態
-runtime；精確 API 名稱仍為強推論。最新語意註記64、runtime175、unknown1,072。
+runtime；精確 API 名稱仍為強推論。其後把三筆已研究但漏登索引的 handler callee
+回填，最新語意註記67、產品61、runtime175、unknown1,069。
 
 ### 未知函式既有足跡的分級回填規格
 

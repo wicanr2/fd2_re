@@ -15,11 +15,11 @@
   "imagebase": "0x0",
   "function_count": 1305,
   "classification_counts": {
-    "unknown": 1072,
-    "product": 58,
+    "unknown": 1069,
+    "product": 61,
     "runtime": 175
   },
-  "semantic_annotation_count": 64,
+  "semantic_annotation_count": 67,
   "classification_note": "product/driver only come from the versioned semantic index; runtime is a mechanical IDA FUNC_LIB classification after the configured FLIRT signatures; every other function remains unknown",
   "detail_note": "每筆保留 IDA 函式邊界、分析名稱、旗標、直接 caller 函式與分級語意；逐 call-site 交叉參照由同一匯出器重生，不在此精簡版重複保存",
   "functions": [
@@ -6091,11 +6091,23 @@
       "direct_code_xref_count": 6,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x2189a",
+          "classification": "product",
+          "semantic": "十輪 LUT／radius／snapshot／object redraw／viewport copy 的索引呈現原語",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_ch22_post_ida.txt",
+            "docs/data/ida/fd2_command10_12_presentation_ida.txt"
+          ],
+          "scope": "三實參 ABI 與十輪資料流；caller 的高階畫面名稱、精確時序與 E2 另證"
+        }
+      ]
     },
     {
       "start": "0x219ad",
@@ -7230,11 +7242,23 @@
       "direct_code_xref_count": 1,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x24bde",
+          "classification": "product",
+          "semantic": "persistent records raw +8 identity exact-match lookup",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_ch22_post_ida.txt",
+            "docs/knowledge-base/56-fd2-remake-sdd.md"
+          ],
+          "scope": "caller-supplied count、0x50 stride、first match與boolean結果；raw +8不得泛化命名為portrait或NPC"
+        }
+      ]
     },
     {
       "start": "0x24c1e",
@@ -7268,11 +7292,23 @@
       "direct_code_xref_count": 4,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x24d22",
+          "classification": "product",
+          "semantic": "raw stage latch setter與312-byte staging列旋轉消費端",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_ch23_post_ida.txt",
+            "docs/data/fd2_chapter_aux_graphics_10652_ida.txt"
+          ],
+          "scope": "非零arg只寫latch、零arg執行copy／rotation；高階畫面名稱與DOS tick parity另證"
+        }
+      ]
     },
     {
       "start": "0x24df2",

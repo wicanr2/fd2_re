@@ -159,8 +159,19 @@ def normalize(beats, chapter=None):
             }
         elif op == "unknown":
             target = beat["target"]
+            evidence = NATIVE_EVIDENCE.get(target)
             unresolved = UNRESOLVED_NATIVE.get(target)
-            if unresolved:
+            if evidence:
+                item = {
+                    "op": "native_call",
+                    "native_target": target,
+                    "native_semantic": NATIVE_SEMANTICS[target],
+                    "native_confidence": "已證實",
+                    "native_evidence": list(evidence),
+                    "raw_args": args,
+                    "source": src,
+                }
+            elif unresolved:
                 item = {
                     "op": "unresolved_native_call",
                     "native_target": target,
@@ -195,11 +206,28 @@ NATIVE_EVIDENCE = {
     "0x1b8e7": ["docs/knowledge-base/91-worklist.md"],
     "0x1c2da": ["docs/knowledge-base/91-worklist.md"],
     "0x1f882": ["docs/data/ida/fd2_ch21_post_ida.txt"],
+    "0x2189a": [
+        "docs/data/ida/fd2_ch22_post_ida.txt",
+        "docs/data/ida/fd2_command10_12_presentation_ida.txt",
+    ],
+    "0x22253": [
+        "docs/data/ida/fd2_ch28_post_ida.txt",
+        "docs/knowledge-base/54-acting-pose-semantics.md",
+    ],
     "0x24618": ["docs/data/ida/fd2_ch21_post_ida.txt"],
     "0x24b14": ["docs/data/ida/fd2_ch22_post_ida.txt"],
     "0x24b4d": ["docs/data/ida/fd2_ch22_post_ida.txt"],
+    "0x24bde": ["docs/data/ida/fd2_ch22_post_ida.txt"],
+    "0x24d22": [
+        "docs/data/ida/fd2_ch23_post_ida.txt",
+        "docs/data/fd2_chapter_aux_graphics_10652_ida.txt",
+    ],
     "0x25052": ["docs/knowledge-base/91-worklist.md"],
     "0x25089": ["docs/knowledge-base/91-worklist.md"],
+    "0x2bce5": [
+        "docs/data/ida/fd2_ch29_terminal_body_ida.txt",
+        "docs/data/ida/fd2_ch29_post_montage_tail_ida.txt",
+    ],
     "0x31860": ["docs/data/ida/fd2_ch22_post_ida.txt"],
     "0x33f78": ["docs/knowledge-base/91-worklist.md"],
     "0x35822": ["docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt"],
@@ -211,23 +239,17 @@ NATIVE_EVIDENCE = {
 }
 
 NATIVE_SEMANTICS = {
+    "0x2189a": "十輪 LUT／radius／snapshot／object redraw／viewport copy 索引呈現",
+    "0x22253": "具五參數 ABI 與座標 commit 邊界的 11＋6＋10 indexed 呈現排程",
     "0x24336": "ch20 天空之鑰固定合成演出序列",
+    "0x24bde": "persistent raw +8 identity exact-match lookup",
+    "0x24d22": "raw stage latch setter 與 312-byte staging 列旋轉",
+    "0x2bce5": "終局前綴、文字、蒙太奇與尾段的來源約束 owner",
 }
 
 # Callee 有窄證據，但仍缺 caller-specific ABI、renderer 或 campaign owner。
 # 這些不能算「完全未知」，也不能當作可執行 native_call。
-UNRESOLVED_NATIVE = {
-    "0x22253": {
-        "semantic": "native_indexed_presentation_schedule",
-        "confidence": "強推論",
-        "evidence": ["docs/data/ida/fd2_ch29_terminal_callers_ida.txt"],
-    },
-    "0x2bce5": {
-        "semantic": "native_terminal_ending_owner",
-        "confidence": "強推論",
-        "evidence": ["docs/data/ida/fd2_ch29_terminal_body_ida.txt"],
-    },
-}
+UNRESOLVED_NATIVE = {}
 
 
 def walk_beats(beats):

@@ -35,8 +35,10 @@ class ClassifyHandlerNativeCallsTest(unittest.TestCase):
         self.assertEqual(document["beats"][0]["native_confidence"], "已證實")
         self.assertTrue(document["beats"][0]["native_evidence"])
         self.assertEqual(document["beats"][0]["raw_args"], [0, 255, 0])
-        self.assertEqual(unresolved["0x22253"], 1)
-        self.assertEqual(document["beats"][1]["op"], "unresolved_native_call")
+        self.assertEqual(unresolved["0x22253"], 0)
+        self.assertEqual(counts["0x22253"], 1)
+        self.assertEqual(document["beats"][1]["op"], "native_call")
+        self.assertEqual(document["beats"][1]["native_confidence"], "已證實")
 
     def test_walks_branches_and_is_idempotent(self):
         document = {
@@ -70,6 +72,18 @@ class ClassifyHandlerNativeCallsTest(unittest.TestCase):
             document["beats"][0]["native_evidence"],
             ["docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"],
         )
+
+    def test_researched_handler_calls_leave_no_unknown_or_unresolved_bucket(self):
+        document = {
+            "beats": [
+                {"op": "unknown", "native_target": target, "source": {}}
+                for target in ("0x2189a", "0x24bde", "0x24d22", "0x22253", "0x2bce5")
+            ],
+        }
+        changed, unknown, counts, unresolved = classify_document(document)
+        self.assertEqual((changed, unknown, sum(counts.values())), (5, 0, 5))
+        self.assertEqual(sum(unresolved.values()), 0)
+        self.assertTrue(all(beat["op"] == "native_call" for beat in document["beats"]))
 
     def test_minimal_renderer_preserves_unrelated_compact_layout(self):
         original = '''{

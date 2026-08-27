@@ -7879,3 +7879,16 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   同步到 `~/my_skill`：後續先做 compiler／linker／extender／middleware／自製工具
   指紋，再以原始名稱、xref、writer／consumer與證據等級建立 runtime pattern；
   不再用 unknown 數量驅動逐函式猜名。
+
+## 2026-08-27：handler 語意索引漏登閉合與實機停止線
+
+- 重新核對第三大項的局部位址後，確認 `0x14237`、`0x14EF0`、`0x15311`、
+  `0x1548E`、`0x22253`、`0x2BCE5` 均已有 caller／consumer 主證據；`0x2C2A6`
+  是 `sub_28A6C` 內的 call site，不是未判讀函式。這些題目不因舊工作文字重開。
+- 60份 handler 的剩餘 raw unknown 實際只命中 `0x2189A`、`0x24BDE`、`0x24D22`；
+  三者早已有 IDA 直接證據與正式 E1 adapter，只是漏登語意索引。本輪補登後，
+  合法 IDA Pro 9.4 重生為產品61、runtime175、unknown1,069、語意67筆；handler
+  匯出為93筆已分類 native call、0 unresolved、0 unknown。
+- 原版實機抽驗若因敵人強度、等級或戰鬥長度無法通關，不得反覆練功或重打。
+  優先使用玩家合法存檔、同狀態短路徑及有界輸入實驗；修改路徑、略過戰鬥、
+  第三方存檔或直接進場必須降低證據等級，不得冒稱完整 `PLAYER-E2`。

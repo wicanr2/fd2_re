@@ -97,12 +97,21 @@ class StructureControlFlowTest(unittest.TestCase):
             "source": {"addr": "0x203", "target": "0x11df2"},
         }])
 
-    def test_unclassified_high_risk_native_target_remains_unknown(self):
+    def test_evidence_closed_native_target_is_classified_without_losing_call_site(self):
         raw_beats = beats.extract_beats([Insn(0x300, "call", "0x22253")])
         self.assertEqual(raw_beats[0]["op"], "unknown")
         authored = handler_scripts.normalize(raw_beats)[0]
-        self.assertEqual(authored["op"], "unresolved_native_call")
-        self.assertEqual(authored["native_confidence"], "強推論")
+        self.assertEqual(authored["op"], "native_call")
+        self.assertEqual(authored["native_confidence"], "已證實")
+        self.assertEqual(authored["native_target"], "0x22253")
+        self.assertEqual(authored["source"], {"addr": "0x300", "target": "0x22253"})
+
+    def test_terminal_owner_is_classified_but_does_not_claim_player_e2(self):
+        raw_beats = beats.extract_beats([Insn(0x400, "call", "0x2bce5")])
+        authored = handler_scripts.normalize(raw_beats)[0]
+        self.assertEqual(authored["op"], "native_call")
+        self.assertEqual(authored["native_confidence"], "已證實")
+        self.assertIn("來源約束", authored["native_semantic"])
 
     def test_single_slot_unit_inactive_diamond_keeps_shared_merge_once(self):
         # Deliberately unrelated synthetic addresses: regression proves that the

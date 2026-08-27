@@ -16,6 +16,11 @@ CLASSIFIED = {
     for address, (semantic, _arity) in dump_chapter_beats.PRIM.items()
     if semantic.startswith("native_")
 }
+CLASSIFIED.update({
+    target: semantic
+    for target, semantic in NATIVE_SEMANTICS.items()
+    if target in NATIVE_EVIDENCE
+})
 
 
 def walk(beats):

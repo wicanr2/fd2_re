@@ -33,7 +33,7 @@ class SemanticIndexTest(unittest.TestCase):
         self.assertEqual(inventory["function_count"], 1305)
         self.assertEqual(
             inventory["classification_counts"],
-            {"product": 58, "runtime": 175, "unknown": 1072},
+            {"product": 61, "runtime": 175, "unknown": 1069},
         )
         self.assertEqual(inventory["semantic_annotation_count"], len(entries))
 
@@ -42,6 +42,8 @@ class SemanticIndexTest(unittest.TestCase):
             self.assertIn(address, functions, hex(address))
             self.assertEqual(functions[address]["semantic_annotations"], annotations, hex(address))
         self.assertEqual(functions[0x3EEDA]["classification"]["value"], "runtime")
+        for address in (0x2189A, 0x24BDE, 0x24D22):
+            self.assertEqual(functions[address]["classification"]["value"], "product")
 
     def test_checked_in_index_is_sorted_by_linear_address(self):
         document = json.loads(INDEX.read_text(encoding="utf-8"))
