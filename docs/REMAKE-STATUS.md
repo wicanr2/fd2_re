@@ -49,8 +49,8 @@
 受版控清冊位於
 [`first-round-remake-samples.json`](data/verification/first-round-remake-samples.json)，
 以`tools/check_remake_samples.py`自動拒絕重複ID、遺失證據檔及手動灌水的資格欄位。
-目前登記52筆證據，其中47筆符合正常輸入與正式重製路徑資格：戰役／戰間12／12、
-戰鬥／AI 11／18、介面12／12、存檔／持續隊伍10／10、終局／平台2／8。最新一輪把
+目前登記59筆證據，其中54筆符合正常輸入與正式重製路徑資格：戰役／戰間12／12、
+戰鬥／AI 18／18、介面12／12、存檔／持續隊伍10／10、終局／平台2／8。最新一輪把
 既有正常輸入證據按不同驗收不變量補登：戰場HUD、command0調色盤、END接受逐字、
 Windows城鎮存檔寫入與第30戰前冷讀持續隊伍；沒有以同一結果跨層重複計數。介面樣本
 再次以目前提交的普通鍵盤路徑確認 `CONTINUE→battle_ch01→命令格`；另兩筆由
@@ -104,6 +104,9 @@ selection與scan均不同，故屬不同風險分層，戰役／戰間層至此�
 戰鬥層再以章節0 current-runtime普通輸入驗證兩個取消交易：悠妮移動selection取消
 會清除選取且不移動／不acted；command0目標modal取消則回到同角色action overlay，
 保留selection且不扣MP、不推進回合。兩格分別驗證移動owner與技能目標owner。
+新增唯讀`battle.units`旁車後，同一章節0正常END→YES明確證明七名場上敵軍實際
+移動、待命敵軍不動、我方不被移動階段改寫、round只加一，且AI完成後普通Return
+取得第二回合操作權。另補action overlay與item panel兩個取消owner；戰鬥層達18／18。
 其餘5筆保留為有用旁證，但因route patch、專用截圖入口、typed test或非互動封包
 檢查而不計入95%門檻。這個數字衡量的是已整理樣本，不是把既有功能降級成未完成。
 

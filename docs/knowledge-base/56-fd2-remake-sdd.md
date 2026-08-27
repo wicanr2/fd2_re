@@ -7447,3 +7447,18 @@ BIOS tick gate與DAC更新，不重開反組譯。`0x24C4C`／index2產生3筆
 旁車不得接受輸入、改寫節點、建立名冊或自動確認；候選／部署數只從目前正式
 陣列與map計數。不存在整備節點時省略整段。它只能證明重製端正常輸入的
 `RUNTIME-E1`階段與收束，不可單獨提升原版E2或長程戰役來源。
+
+## 戰鬥單位普通輸入抽樣旁車契約（2026-08-28）
+
+本項不新增原版單位欄位語意，也不改變敵方人工智慧；只把正式`battle.State.Units`
+已持有的規範化狀態依runtime陣列順序輸出到`FD2_SHOT_STATE.battle.units`。每筆固定
+包含`index`、`camp`、`x`、`y`、`hp`、`max_hp`、`mp`、`max_mp`、`acted`與
+`on_field`。`index`只表示本次runtime陣列位置，不冒稱角色身分、原始slot或
+`FD2.SAV` ABI；需要身分證據時仍回查既有raw record／persistent provenance。
+正式runtime array沿用既有非nil不變量；旁車不得為測試另造稀疏陣列語意。
+
+旁車必須使用新配置的slice複製數值，不可回傳unit指標、接受輸入、推進AI、修改
+acted／HP／座標，或依名稱過濾單位。沒有戰場狀態時省略整段；空戰場輸出空陣列。
+正常玩家輸入樣本只有在比較前後相同`index`、camp及完整欄位後，才能宣稱某單位
+移動、受傷或完成行動。這仍只建立重製端`RUNTIME-E1`可觀測性，不把截圖模式、
+第三方存檔或內部一致性提升為原版E2。

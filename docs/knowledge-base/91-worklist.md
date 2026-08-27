@@ -21,7 +21,7 @@
 > 成片在 `dist/promo/`，不含原版音樂且不入Git；規格、重生腳本與雜湊見
 > `docs/promo-opening-ch01-spec.md`、`tools/build_fd2_opening_promo.sh`及影片metadata。
 
-> **抽樣清冊現況**：已登記52筆證據，47筆符合門檻（戰役／戰間12、戰鬥／AI 11、
+> **抽樣清冊現況**：已登記59筆證據，54筆符合門檻（戰役／戰間12、戰鬥／AI 18、
 > 介面12、存檔／持續隊伍10、終局／平台2）。章節0 current-runtime 的空游標命令格、
 > HUD、command0調色盤與END接受逐字，以及Windows城鎮F5存檔和第30戰前冷讀持續隊伍
 > 已按不同驗收不變量登錄；沒有以同一結果跨層重複計數。空游標命令格
@@ -68,6 +68,9 @@
 > 戰鬥層另由章節0普通CONTINUE驗證移動selection的Escape取消，以及command0目標
 > modal的Escape取消；前者清除角色selection，後者返回同角色action overlay，兩者
 > 都不改acted、HP／MP、turn或round，分屬不同輸入owner。
+> 唯讀`battle.units`旁車再固定同一runtime index的AI前後狀態：七名on-field敵軍
+> 移動、off-field index9不動、我方index0..3不變、round只由1增至2，AI完成後普通
+> Return開啟第二回合操作面板。加上action overlay及item panel取消，戰鬥層達18／18。
 > 下一步優先把已接正式consumer的晚期教會／商店及終局邊界改由普通輸入重播，形成
 > 玩家路徑，而不是再新增無消費端RE。權威清冊見
 > [`first-round-remake-samples.json`](../data/verification/first-round-remake-samples.json)。

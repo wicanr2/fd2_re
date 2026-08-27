@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-28",
+  "evidence_level": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "scope": "章節0 current-runtime：悠妮確認零距離移動後以Escape收合action overlay",
+  "reference": {
+    "fd2_save_sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f",
+    "runtime_sha256": "a92958c7c74fc3ca2e70420ccf9bedb999883dc271ab30569b33cda078edc9d7"
+  },
+  "execution": {
+    "environment": "一次性、無網路、UID/GID 1000 的 fd2-go-test-local Docker／Xvfb",
+    "input": "正式標題CONTINUE→游標(10,15)→Return選悠妮→Return確認零距離移動→Escape",
+    "input_helper": "tools/docker/fd2-xtest-input.c，只送普通X11鍵盤事件"
+  },
+  "observed": {
+    "frame": 1901,
+    "campaign_node": "battle_ch01",
+    "cursor": [10, 15],
+    "has_selection": false,
+    "action_overlay_open": false,
+    "native_command_targeting": false,
+    "turn": 1,
+    "native_round_counter": 1,
+    "camera": [1, 13],
+    "cursor_unit": {"camp": 0, "acted": false, "hp": 28, "max_hp": 28, "mp": 8, "max_mp": 8},
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false
+  },
+  "artifacts": {
+    "state": "native-action-overlay-cancel-ch01-remake-e1-state.json",
+    "state_sha256": "adc0e095d3d6a96bafe96f66c8475936fead121a8cea45a61a172c1066d1cbaa",
+    "screenshot": "../../figures/native-action-overlay-cancel-ch01-remake-e1.png",
+    "screenshot_sha256": "c989e7eea3d8521e37ac47527e8bb6387ef9fcee3fc3dbd922f0e82399e55e33"
+  },
+  "validated_invariants": [
+    "Escape由已開啟的action overlay回到未選取玩家戰場。",
+    "收合不標記acted、不改HP／MP、座標、turn、round或camera。",
+    "沒有selection、command target、dialog、battle event或turn staging殘留。"
+  ],
+  "limitations": [
+    "與移動selection取消的最終畫面相近，但起點owner不同；本格只驗證action overlay收合。",
+    "沒有另取原版同狀態取消畫面，不宣稱PLAYER-E2。"
+  ]
+}

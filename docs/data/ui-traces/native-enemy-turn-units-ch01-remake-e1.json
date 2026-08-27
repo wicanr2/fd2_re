@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-28",
+  "evidence_level": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "scope": "章節0 current-runtime：普通END→YES後正式AI runner的全體單位前後旁車與第二回合玩家操作權",
+  "reference": {
+    "fd2_save_sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f",
+    "runtime_sha256": "a92958c7c74fc3ca2e70420ccf9bedb999883dc271ab30569b33cda078edc9d7",
+    "unit_contract": "battle.units的index只表示同一次runtime array位置，不是角色身分或FD2.SAV slot"
+  },
+  "execution": {
+    "environment": "一次性、無網路、UID/GID 1000 的 fd2-go-test-local Docker／Xvfb",
+    "input": "正式標題CONTINUE→Return開系統格→Down、Return選END→Return選YES→等待正式AI→Return驗證玩家操作權",
+    "input_helper": "tools/docker/fd2-xtest-input.c，只送普通X11鍵盤事件",
+    "capture_mode": "FD2_SHOT_AI=1；明確執行正式AI runner",
+    "discarded_attempts": [
+      "未設FD2_SHOT_AI的截圖模式會依既有契約略過AI；該次只見turn變化，已排除且不記為產品失敗。"
+    ]
+  },
+  "baseline": {
+    "frame": 1200,
+    "turn": 1,
+    "native_round_counter": 1,
+    "unit_count": 12,
+    "active_enemy_indexes": [4, 5, 6, 7, 8, 10, 11],
+    "off_field_enemy_index": 9,
+    "state": "native-enemy-baseline-ch01-remake-e1-state.json",
+    "state_sha256": "e3ba60d5acff79f48d7c018fc9738754808b5505edf18e999ab8c1702fde967a",
+    "screenshot": "../../figures/native-enemy-baseline-ch01-remake-e1.png",
+    "screenshot_sha256": "26f3f7fa0112decae7e0a1685f0e2634ee7e08ba77ed13b86d08c9d5b1f3dca8"
+  },
+  "after_ai": {
+    "frame": 1803,
+    "turn": 2,
+    "native_round_counter": 2,
+    "moved_enemy_indexes": [4, 5, 6, 7, 8, 10, 11],
+    "moves": {
+      "4": [[1, 4], [1, 8]],
+      "5": [[2, 2], [2, 6]],
+      "6": [[4, 2], [4, 6]],
+      "7": [[6, 1], [6, 5]],
+      "8": [[3, 18], [5, 16]],
+      "10": [[2, 18], [4, 16]],
+      "11": [[5, 19], [5, 15]]
+    },
+    "off_field_index9_unchanged": {"from": [4, 23], "to": [4, 23], "on_field": false},
+    "own_indexes_unchanged": [0, 1, 2, 3],
+    "state": "native-enemy-movement-ch01-remake-e1-state.json",
+    "state_sha256": "28fcb92ad89541565ca4329c9f69c8edf3f76a9247ffa156a74212ff1a0d64b9",
+    "screenshot": "../../figures/native-enemy-movement-ch01-remake-e1.png",
+    "screenshot_sha256": "82fb354d498f362a12f07abf12c1cc3365f153c586cc79fad6643b77036ed80f"
+  },
+  "player_return": {
+    "frame": 2700,
+    "turn": 2,
+    "native_round_counter": 2,
+    "cursor": [8, 17],
+    "action_overlay_open": true,
+    "native_continue_cursor_overlay": true,
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false,
+    "state": "native-enemy-return-ch01-remake-e1-state.json",
+    "state_sha256": "e79081fc71d0ac0df844f04b409d68cef03c6bf335e0ba3dba5b0387972a2f3d",
+    "screenshot": "../../figures/native-enemy-return-ch01-remake-e1.png",
+    "screenshot_sha256": "d49b89193e79a1b7326f6dd4531afca69f7498c39036aa27c4fdc384e826197a"
+  },
+  "validated_invariants": [
+    "正式AI runner讓七名on-field敵人依各自runtime index移動，不只是更改turn欄位。",
+    "off-field敵人index9保持原座標且不被AI發布；我方index0..3位置與HP／MP不變。",
+    "一輪只把turn與native round由1推至2；AI完成後普通Return可開啟玩家action overlay。"
+  ],
+  "limitations": [
+    "本次敵人未進攻擊距離，因此只驗證移動、admission、陣營隔離、回合推進與控制權返回。",
+    "同一執行程序承載多個不同風險不變量；清冊分格不代表統計上彼此獨立。",
+    "沒有原版同狀態逐幀或精確音訊，不宣稱PLAYER-E2。"
+  ]
+}

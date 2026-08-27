@@ -73,6 +73,50 @@ func TestWriteShotStateTraceRecordsNativeInteractionState(t *testing.T) {
 	}
 }
 
+func TestWriteShotStateTraceRecordsBattleUnitsInRuntimeOrder(t *testing.T) {
+	units := []*battle.Unit{
+		{Camp: battle.Own, X: 3, Y: 4, HP: 10, MaxHP: 12, MP: 2, MaxMP: 5, OnField: true},
+		{Camp: battle.Enemy, X: 8, Y: 9, HP: 7, MaxHP: 20, MP: 1, MaxMP: 3, Acted: true, OnField: true},
+		{Camp: battle.Ally, X: 1, Y: 2, HP: 0, MaxHP: 9, MP: 0, MaxMP: 4, OnField: false},
+	}
+	g := &Game{st: &battle.State{W: 10, H: 10, Units: units}}
+	path := filepath.Join(t.TempDir(), "battle-units.json")
+	if err := g.writeShotStateTrace(path); err != nil {
+		t.Fatal(err)
+	}
+	var got screenshotStateTrace
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(raw, &got); err != nil {
+		t.Fatal(err)
+	}
+	if got.Battle == nil || len(got.Battle.Units) != 3 {
+		t.Fatalf("battle unit trace=%#v", got.Battle)
+	}
+	wantIndexes := []int{0, 1, 2}
+	for i, want := range wantIndexes {
+		if got.Battle.Units[i].Index != want {
+			t.Fatalf("battle unit %d index=%d, want %d", i, got.Battle.Units[i].Index, want)
+		}
+	}
+	if first := got.Battle.Units[0]; first.Camp != int(battle.Own) || first.X != 3 ||
+		first.Y != 4 || first.HP != 10 || first.MaxHP != 12 || first.MP != 2 ||
+		first.MaxMP != 5 || first.Acted || !first.OnField {
+		t.Fatalf("first battle unit=%#v", first)
+	}
+	if enemy := got.Battle.Units[1]; enemy.Camp != int(battle.Enemy) || enemy.X != 8 ||
+		enemy.Y != 9 || enemy.HP != 7 || enemy.MaxHP != 20 || enemy.MP != 1 ||
+		enemy.MaxMP != 3 || !enemy.Acted || !enemy.OnField {
+		t.Fatalf("enemy battle unit=%#v", enemy)
+	}
+	if ally := got.Battle.Units[2]; ally.Camp != int(battle.Ally) || ally.OnField ||
+		ally.HP != 0 || ally.MaxHP != 9 {
+		t.Fatalf("off-field ally=%#v", ally)
+	}
+}
+
 func TestWriteShotStateTraceRecordsTitleSelections(t *testing.T) {
 	g := &Game{frame: 42, titlePhase: "loadslots", titleSel: 1, titleSlotSel: 3}
 	path := filepath.Join(t.TempDir(), "title-state.json")

@@ -1002,6 +1002,104 @@
       "limitations": [
         "驗證目標modal取消返回action overlay且角色／資源／回合不變；不重複既有command0入口格，也不證明技能確認結果。"
       ]
+    },
+    {
+      "id": "combat-action-overlay-cancel-ch01",
+      "layer": "combat_ai",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": ["docs/data/ui-traces/native-action-overlay-cancel-ch01-remake-e1.json", "docs/data/ui-traces/native-action-overlay-cancel-ch01-remake-e1-state.json", "docs/figures/native-action-overlay-cancel-ch01-remake-e1.png"],
+      "limitations": ["只驗證action overlay本身的Escape收合，不重複移動selection或command target取消。"]
+    },
+    {
+      "id": "combat-ai-active-movement-ch01",
+      "layer": "combat_ai",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": ["docs/data/ui-traces/native-enemy-turn-units-ch01-remake-e1.json", "docs/data/ui-traces/native-enemy-baseline-ch01-remake-e1-state.json", "docs/data/ui-traces/native-enemy-movement-ch01-remake-e1-state.json"],
+      "limitations": ["驗證七名場上敵軍的runtime-index座標轉移；沒有敵軍進入攻擊距離。"]
+    },
+    {
+      "id": "combat-ai-offfield-exclusion-ch01",
+      "layer": "combat_ai",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": ["docs/data/ui-traces/native-enemy-turn-units-ch01-remake-e1.json", "docs/data/ui-traces/native-enemy-baseline-ch01-remake-e1-state.json", "docs/data/ui-traces/native-enemy-movement-ch01-remake-e1-state.json"],
+      "limitations": ["只驗證off-field敵軍index9不被本輪AI發布；不外推章節增援觸發。"]
+    },
+    {
+      "id": "combat-ai-own-camp-isolation-ch01",
+      "layer": "combat_ai",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": ["docs/data/ui-traces/native-enemy-turn-units-ch01-remake-e1.json", "docs/data/ui-traces/native-enemy-baseline-ch01-remake-e1-state.json", "docs/data/ui-traces/native-enemy-movement-ch01-remake-e1-state.json"],
+      "limitations": ["本輪只驗證敵方移動階段不改我方index0..3座標與HP／MP；不證明敵方攻擊傷害。"]
+    },
+    {
+      "id": "combat-ai-player-control-return-ch01",
+      "layer": "combat_ai",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": ["docs/data/ui-traces/native-enemy-turn-units-ch01-remake-e1.json", "docs/data/ui-traces/native-enemy-return-ch01-remake-e1-state.json", "docs/figures/native-enemy-return-ch01-remake-e1.png"],
+      "limitations": ["以AI完成後普通Return開啟系統action overlay證明控制權；不宣稱音訊或原版同幀。"]
+    },
+    {
+      "id": "combat-round-advance-once-ch01",
+      "layer": "combat_ai",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": ["docs/data/ui-traces/native-enemy-turn-units-ch01-remake-e1.json", "docs/data/ui-traces/native-enemy-baseline-ch01-remake-e1-state.json", "docs/data/ui-traces/native-enemy-return-ch01-remake-e1-state.json"],
+      "limitations": ["只驗證章節0一輪END→AI→玩家返回把turn與native round由1推至2，與晚期候選回合樣本分層。"]
+    },
+    {
+      "id": "combat-item-panel-cancel-ch01",
+      "layer": "combat_ai",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": ["docs/data/ui-traces/native-item-panel-cancel-ch01-remake-e1.json", "docs/data/ui-traces/native-item-panel-cancel-ch01-remake-e1-state.json", "docs/figures/native-item-panel-cancel-ch01-remake-e1.png"],
+      "limitations": ["只驗證item panel取消與raw背包不變，不證明物品效果或消耗。"]
     }
   ]
 }

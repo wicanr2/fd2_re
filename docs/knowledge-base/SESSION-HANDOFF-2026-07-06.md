@@ -8147,3 +8147,15 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   selection，目標modal清除且不扣MP、不改HP、不推進回合。
 - 兩格分屬移動selection與技能目標owner，不把同一結果拆格。清冊現為52筆登記、
   47筆合格；戰鬥／AI為11／18。
+
+## 2026-08-28：章節0正式AI單位前後旁車與戰鬥層18／18
+
+- `56`先定義唯讀`battle.units`旁車，再實作依runtime array順序複製index、camp、
+  座標、HP／MP、acted及on-field；聚焦回歸含三陣營、離場單位與順序。第一次測試
+  人工塞nil違反既有State不變量而panic，已撤回稀疏陣列假設後乾淨通過。
+- 同一固定雜湊current-runtime由普通END→YES執行正式AI。未設`FD2_SHOT_AI`的首輪
+  依既有截圖契約略過AI，已排除；啟用後七名on-field敵軍index4/5/6/7/8/10/11
+  均有座標轉移，off-field index9與我方index0..3不變。
+- turn／native round由1精確增至2；等待AI完成後普通Return開啟action overlay，
+  無dialog／event／staging殘留。另補action overlay與item panel的Escape取消交易。
+  清冊現為59筆登記、54筆合格；戰鬥／AI達18／18，剩終局／平台6格。

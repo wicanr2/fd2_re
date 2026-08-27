@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-28",
+  "evidence_level": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "scope": "章節0 current-runtime：索爾由action overlay開物品面板後以Escape返回",
+  "reference": {
+    "fd2_save_sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f",
+    "item_panel_entry_oracle": "native-item-herb-fullhp-original-vs-remake-e1.json",
+    "runtime_sha256": "a92958c7c74fc3ca2e70420ccf9bedb999883dc271ab30569b33cda078edc9d7"
+  },
+  "execution": {
+    "environment": "一次性、無網路、UID/GID 1000 的 fd2-go-test-local Docker／Xvfb",
+    "input": "正式標題CONTINUE→索爾(7,14)→Return×2→Right、Return開物品面板→Escape",
+    "input_helper": "tools/docker/fd2-xtest-input.c，只送普通X11鍵盤事件"
+  },
+  "observed": {
+    "frame": 1900,
+    "campaign_node": "battle_ch01",
+    "cursor": [7, 14],
+    "has_selection": true,
+    "selection": [7, 14],
+    "action_overlay_open": true,
+    "item_open": false,
+    "native_item_targeting": false,
+    "native_item_relocating": false,
+    "turn": 1,
+    "native_round_counter": 1,
+    "cursor_unit": {
+      "camp": 0, "acted": false, "hp": 42, "max_hp": 42, "mp": 0, "max_mp": 0,
+      "inventory_slots": [0, 132, 192, 255, 255, 255, 0, 201],
+      "native_inventory_flags": [64, 64, 0, 128, 128, 128, 128, 128]
+    }
+  },
+  "artifacts": {
+    "state": "native-item-panel-cancel-ch01-remake-e1-state.json",
+    "state_sha256": "7588ad4bfd2e8ae129b467cf4eba854c1ad90dcded0c1f5af7db8f9dc689377d",
+    "screenshot": "../../figures/native-item-panel-cancel-ch01-remake-e1.png",
+    "screenshot_sha256": "18ce0f4602dec06a557ea9f0a92be967922743d9adb2a04629cf37cc020d2e85"
+  },
+  "validated_invariants": [
+    "Escape關閉item panel並返回同一角色action overlay，保留selection。",
+    "索爾未acted，HP／MP、八個raw item slots與flags均不變。",
+    "沒有item target、relocation、dialog、battle event或turn staging殘留。"
+  ],
+  "limitations": [
+    "只驗證物品面板取消，不證明選擇物品、目標、效果、消耗或原版同狀態。"
+  ]
+}

@@ -102,11 +102,27 @@ type screenshotCursorUnitTrace struct {
 }
 
 type screenshotBattleTrace struct {
-	Width              int                        `json:"width"`
-	Height             int                        `json:"height"`
-	Turn               int                        `json:"turn"`
-	NativeRoundCounter int                        `json:"native_round_counter"`
-	NativeMapView      *battle.NativeMapViewState `json:"native_map_view,omitempty"`
+	Width              int                         `json:"width"`
+	Height             int                         `json:"height"`
+	Turn               int                         `json:"turn"`
+	NativeRoundCounter int                         `json:"native_round_counter"`
+	NativeMapView      *battle.NativeMapViewState  `json:"native_map_view,omitempty"`
+	Units              []screenshotBattleUnitTrace `json:"units"`
+}
+
+// screenshotBattleUnitTrace只複製正式runtime array已持有的scalar狀態。
+// Index是本次slice位置，不是角色身分、原版slot或FD2.SAV ABI。
+type screenshotBattleUnitTrace struct {
+	Index   int  `json:"index"`
+	Camp    int  `json:"camp"`
+	X       int  `json:"x"`
+	Y       int  `json:"y"`
+	HP      int  `json:"hp"`
+	MaxHP   int  `json:"max_hp"`
+	MP      int  `json:"mp"`
+	MaxMP   int  `json:"max_mp"`
+	Acted   bool `json:"acted"`
+	OnField bool `json:"on_field"`
 }
 
 // screenshotEndingTrace 保存結局截圖所在的精確 raw 邊界。它刻意只記錄狀態，
@@ -248,6 +264,13 @@ func (g *Game) writeShotStateTrace(path string) error {
 			Height:             g.st.H,
 			Turn:               g.st.Turn,
 			NativeRoundCounter: g.st.NativeRoundCounter,
+		}
+		for index, unit := range g.st.Units {
+			state.Units = append(state.Units, screenshotBattleUnitTrace{
+				Index: index, Camp: int(unit.Camp), X: unit.X, Y: unit.Y,
+				HP: unit.HP, MaxHP: unit.MaxHP, MP: unit.MP, MaxMP: unit.MaxMP,
+				Acted: unit.Acted, OnField: unit.OnField,
+			})
 		}
 		if g.st.HasNativeMapViewState {
 			view := g.st.NativeMapViewState
