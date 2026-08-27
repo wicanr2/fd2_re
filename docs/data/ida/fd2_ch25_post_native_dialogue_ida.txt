@@ -1,0 +1,66 @@
+《炎龍騎士團 2》raw ch25_post：第26戰後七組原生對話控制碼
+================================================================
+
+參考版本與位址空間
+--------------------
+
+- `FD2.EXE`：357074 bytes；MD5
+  `b97caf2239a27a896069d03549d96e1e`；SHA-256
+  `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 第一順位控制流證據：IDA Pro 9.4.0.260610，使用者授權的
+  `fd2-ida-authorized-local` 一次性、無網路 Docker 流程。本文的程式位址均為
+  DOS LE loader 的 IDA 線性位址；保留原始名稱 `sub_24E80` 與原始函式範圍
+  `0x24E80..0x25052`。
+- 既有主證據：[`fd2_post26_28_dispatch_ida.txt`](fd2_post26_28_dispatch_ida.txt)。
+  該檔已以直接指令及跳表證實玩家第26戰戰後 dispatch、兩個 event-state 分支、
+  ACTING 77–80、`0x11506` 同步隊伍與章節遞增。本檔不重做函式分析，只補上
+  其正式對話消費端所需的原始資產證據。
+- 下列語意是附加註記，不取代原始位址、呼叫參數或控制字；除另行標示外均為
+  「已證實」。
+
+原始文字資產來源
+----------------
+
+- 固定版 `FDTXT.DAT`：120502 bytes；MD5
+  `fe5c487ce4313485f1da9d48d35b05f9`；SHA-256
+  `a4555f8a0e61e884b4f504d56a8bdde11672583bbbbc6506281ae10dcdfb1f69`。
+- 35項封存的第26項位於檔案偏移 `0x15100`，長度5004 bytes。Docker 內唯讀
+  重抽後與 `extracted/raw/FDTXT/FDTXT_026.bin` 逐位元組相同；該項 MD5
+  `bab9fb6e372b6a6ccf9734f1707603d5`，SHA-256
+  `4e3cb17e2a9c9cfb469760edf732ef98710fb15d543f39d36884cb6589378c91`。
+- raw項含12個字串、63句。`count-aligned.json` 對 `ch26.json` 的63行為一對一
+  計數映射；這只證實可編輯行的順序，不以翻譯文字反推二進位控制流。
+
+已證實：七個原始呼叫 tuple 與41句控制碼
+------------------------------------------
+
+| 原始呼叫位址 | FDTXT索引 | 句數 | 原始 `control/operand` 順序 |
+|---|---:|---:|---|
+| `0x24F43` | 5 | 4 | `FFEE/29 FFEE/4 FFEE/29 FFEE/9` |
+| `0x24F43` | 6 | 5 | `FFEE/29 FFEE/0 FFEE/4 FFEE/29 FFEE/9` |
+| `0x24F7E` | 7 | 2 | `FFEE/29 FFEE/9` |
+| `0x24FC4` | 8 | 4 | `FFEE/0 FFEE/21 FFEE/0 FFEE/0` |
+| `0x24FC4` | 9 | 18 | `FFEE/0 FFEE/21 FFEF/31 FFEE/21 FFEF/31 FFEE/21 FFEF/31 FFEE/21 FFEF/31 FFEE/24 FFEE/21 FFEE/26 FFEE/0 FFEE/6 FFEE/21 FFEF/31 FFEE/0 FFEE/9` |
+| `0x24FFF` | 10 | 5 | `FFEE/0 FFEE/9 FFEE/0 FFEE/9 FFEE/0` |
+| `0x2503A` | 11 | 3 | `FFEE/24 FFEE/21 FFEE/29` |
+
+- `event_state[12]==0` 的正式資料路徑依序消費索引 `5,7,8,10,11`，共18句。
+- `event_state[12]!=0` 的正式資料路徑依序消費索引 `6,7,9,10,11`，共33句。
+- 41句是兩條互斥分支的可編輯資料總量；單次戰後流程不得同時播放41句。
+- `sub_24E80` 從 runtime count 讀取掃描上界，並沒有把70寫死。重製正常第26戰
+  入口由16名部署角色加 map25 group0的41筆形成57-slot；70是完整可編輯單位檔的
+  資料形狀，不可再冒充唯一正常玩家 frontier。binding 明列57與既有70兩種可
+  驗證形狀；此 runtime 投影屬「強推論」，不改寫原始 handler 的動態count語意。
+- `FFEE` 是下框、`FFEF` 是上框；每句仍必須保存 operand、原始換行、分頁及
+  glyph token。缺任一 tuple、映射不唯一、行數不等或出現未支援控制字時，正式
+  binding 必須失敗即關閉（fail-closed）。
+
+證據分級與停止線
+------------------
+
+- `RE-CLOSED`：七個 `(caller,string_index)`、分支順序、原始控制碼及資產來源已
+  可直接回查；除非雜湊、直接指令或同狀態執行結果反證，不重開 `sub_24E80`。
+- `DATA-READY`：41句可由受版控產生器重生為逐句 `NativeDialogueLayout`；兩條
+  runtime分支的驗收數分別是18與33。
+- 尚未證實：未修改原版同狀態逐幀、精確音訊及鍵盤時序；它們不得由重製端綠色
+  測試提升為 `PLAYER-E2`。

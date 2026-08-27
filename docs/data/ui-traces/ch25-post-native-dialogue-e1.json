@@ -1,0 +1,65 @@
+{
+  "name": "第26戰後七個caller／41句原生故事對話與城鎮冷讀路徑",
+  "date": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "reference": {
+    "FD2.EXE": {
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "FDTXT.DAT": {
+      "size": 120502,
+      "md5": "fe5c487ce4313485f1da9d48d35b05f9",
+      "sha256": "a4555f8a0e61e884b4f504d56a8bdde11672583bbbbc6506281ae10dcdfb1f69"
+    },
+    "FDTXT_026.bin": {
+      "archive_offset": "0x15100",
+      "size": 5004,
+      "md5": "bab9fb6e372b6a6ccf9734f1707603d5",
+      "sha256": "4e3cb17e2a9c9cfb469760edf732ef98710fb15d543f39d36884cb6589378c91"
+    },
+    "canonical_re": "docs/data/ida/fd2_ch25_post_native_dialogue_ida.txt",
+    "design": "docs/knowledge-base/56-fd2-remake-sdd.md#raw-ch25_post第26戰後兩分支41句原生對話2026-08-27"
+  },
+  "native_dialogue": {
+    "handler": "0x24e80",
+    "caller_count": 7,
+    "source": "FDTXT_026",
+    "string_indices": [5, 6, 7, 8, 9, 10, 11],
+    "utterance_counts": [4, 5, 2, 4, 18, 5, 3],
+    "total_editable_utterances": 41
+  },
+  "formal_routes": [
+    {
+      "event_state_12": 0,
+      "string_indices": [5, 7, 8, 10, 11],
+      "utterances": 18
+    },
+    {
+      "event_state_12": 1,
+      "string_indices": [6, 7, 9, 10, 11],
+      "utterances": 33
+    }
+  ],
+  "runtime_contract": {
+    "entry": "battle_ch26 normal win confirmation",
+    "slot_count": 57,
+    "slot_formula": "16 deployed persistent records + 41 map25 group0 records",
+    "acting_callers": ["0x24f57", "0x24f92", "0x24fd8", "0x25013"],
+    "tail": ["sync_party", "chapter=26", "town_ch27", "save slot 1", "cold load new Game"]
+  },
+  "verification": {
+    "generator": "7 callers / 41 utterances --check",
+    "data_test": "TestCh25PostNativeDialogueLayoutsMatchOriginalControlWords",
+    "integrated_test": "TestChapter26BattleResultNativePostbattleBranchesReachTownAndColdSave",
+    "result": "pass",
+    "docker_network": "none",
+    "xvfb": "explicit PID with exit trap"
+  },
+  "correction": "舊binding把70筆完整單位資料當成唯一runtime frontier；正常重製玩家路徑實際為57。原handler讀取動態count，故70不再冒稱唯一正常入口。",
+  "limitations": [
+    "兩條分支由重製正式具型別輸入驗證，未注入作業系統鍵盤事件。",
+    "沒有未修改原版DOSBox同狀態逐幀或精確音訊證據，因此不提升為PLAYER-E2。"
+  ]
+}

@@ -1100,6 +1100,54 @@ func TestCh20PostGroupedNativeDialogueLayoutsMatchOriginalControlWords(t *testin
 	}
 }
 
+func TestCh25PostNativeDialogueLayoutsMatchOriginalControlWords(t *testing.T) {
+	raw, err := os.ReadFile("../../../extracted/raw/FDTXT/FDTXT_026.bin")
+	if err != nil {
+		t.Skip("extracted FDTXT_026 oracle is absent")
+	}
+	stringsTable, err := fdtxt.Parse(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	glyphs := loadNativeDialogueGlyphMap(t)
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch25_post.json")
+	if err != nil || len(issues) != 0 {
+		t.Fatalf("compile ch25_post binding: issues=%v err=%v", issues, err)
+	}
+	got := make(map[int][]*NativeDialogueLayout, 7)
+	var collect func([]Beat)
+	collect = func(items []Beat) {
+		for i := range items {
+			beat := items[i]
+			if beat.Op == "dialog" && beat.NativeDialogue != nil {
+				got[beat.NativeDialogue.StringIndex] = append(got[beat.NativeDialogue.StringIndex], beat.NativeDialogue)
+			}
+			collect(beat.Then)
+			collect(beat.Else)
+		}
+	}
+	collect(beats)
+	total := 0
+	for stringIndex := 5; stringIndex <= 11; stringIndex++ {
+		words, err := stringsTable.Words(stringIndex)
+		if err != nil {
+			t.Fatal(err)
+		}
+		want, err := decodeOriginalNativeDialogueLayouts("FDTXT_026", stringIndex, words, glyphs)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !reflect.DeepEqual(got[stringIndex], want) {
+			t.Fatalf("FDTXT_026 index%d layouts=%d want=%d\ngot  %#v\nwant %#v",
+				stringIndex, len(got[stringIndex]), len(want), got[stringIndex], want)
+		}
+		total += len(want)
+	}
+	if total != 41 {
+		t.Fatalf("ch25_post native dialogue utterances=%d, want 41", total)
+	}
+}
+
 func loadNativeDialogueGlyphMap(t *testing.T) map[uint16]string {
 	t.Helper()
 	raw, err := os.ReadFile("../../../docs/data/glyph_map.json")

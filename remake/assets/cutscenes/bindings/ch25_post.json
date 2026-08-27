@@ -3,21 +3,1380 @@
   "handler_script": "../handlers/ch25_post.json",
   "acting_resources": "../acting/ch25_post.json",
   "story_index_map": "../dialogue-index/count-aligned.json",
-  "runtime_context": { "slot_count": 70, "story_viewport": true },
+  "dialogue_contexts": {
+    "0x24f43": {
+      "source_dat": "FDTXT_026",
+      "script": "ch26.json"
+    },
+    "0x24f7e": {
+      "source_dat": "FDTXT_026",
+      "script": "ch26.json"
+    },
+    "0x24fc4": {
+      "source_dat": "FDTXT_026",
+      "script": "ch26.json"
+    },
+    "0x24fff": {
+      "source_dat": "FDTXT_026",
+      "script": "ch26.json"
+    },
+    "0x2503a": {
+      "source_dat": "FDTXT_026",
+      "script": "ch26.json"
+    }
+  },
+  "runtime_context": {
+    "slot_counts": [
+      57,
+      70
+    ],
+    "story_viewport": true
+  },
   "dialogue_overrides": {
-    "0x24f43#5": { "script": "ch26.json", "scene_index": 2, "lines": [{"line":0},{"line":1},{"line":2},{"line":3}] },
-    "0x24f43#6": { "script": "ch26.json", "scene_index": 2, "lines": [{"line":4},{"line":5},{"line":6},{"line":7},{"line":8}] },
-    "0x24f7e#7": { "script": "ch26.json", "scene_index": 2, "lines": [{"line":9},{"line":10}] },
-    "0x24fc4#8": { "script": "ch26.json", "scene_index": 2, "lines": [{"line":11},{"line":12},{"line":13},{"line":14}] },
-    "0x24fc4#9": { "script": "ch26.json", "scene_index": 3, "lines": [{"line":0},{"line":1},{"line":2},{"line":3},{"line":4},{"line":5},{"line":6},{"line":7},{"line":8},{"line":9},{"line":10},{"line":11},{"line":12},{"line":13},{"line":14},{"line":15},{"line":16},{"line":17}] },
-    "0x24fff#10": { "script": "ch26.json", "scene_index": 4, "lines": [{"line":0},{"line":1},{"line":2},{"line":3},{"line":4}] },
-    "0x2503a#11": { "script": "ch26.json", "scene_index": 4, "lines": [{"line":5},{"line":6},{"line":7}] }
+    "0x24f43#6": {
+      "script": "ch26.json",
+      "scene_index": 2,
+      "lines": [
+        {
+          "line": 4,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 6,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 29,
+            "pages": [
+              [
+                "『好極了，我們迅速擊潰了敵",
+                "　方機甲兵，現在可以馬上前",
+                "　往遺跡．嘿，隊伍裏怎麼有",
+                "　個敵方機甲兵？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 5,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 6,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『那是悠妮幫我們拉進伙的，",
+                "　她和機甲兵一直很有緣。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 6,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 6,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『是啊，她初次和我們相遇",
+                "　時就帶著蓋亞。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 7,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 6,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 29,
+            "pages": [
+              [
+                "『是這樣嗎？．悠妮小姐，我",
+                "　看妳好像知道機甲兵的啟動",
+                "　碼，是吧？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 8,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 6,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『啊？啟動碼．那是什麼東西",
+                "　？我不知道！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x24f43#5": {
+      "script": "ch26.json",
+      "scene_index": 2,
+      "lines": [
+        {
+          "line": 0,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 5,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 29,
+            "pages": [
+              [
+                "『好極了，我們迅速擊潰了敵",
+                "　方機甲兵，現在可以馬上前",
+                "　往遺跡，不過我們還是對敵"
+              ],
+              [
+                "　人的底細一無所知．．悠妮",
+                "　小姐，妳的護衛也是古代人",
+                "　所造的機甲兵吧？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 5,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『是的，她初次和我們相遇時",
+                "　就帶著蓋亞。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 5,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 29,
+            "pages": [
+              [
+                "『是這樣嗎？．悠妮小姐，我",
+                "　看妳一定知道些什麼，有關",
+                "　古代人和這批機甲兵的秘密"
+              ],
+              [
+                "　．．是吧？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 5,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『古代人？機甲兵？．．那是",
+                "　什麼東西？我不知道！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x24f7e#7": {
+      "script": "ch26.json",
+      "scene_index": 2,
+      "lines": [
+        {
+          "line": 9,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 7,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 29,
+            "pages": [
+              [
+                "『是嗎？悠妮小姐，我看妳一",
+                "　定知道！妳到底是從哪裡來",
+                "　的？妳絕不是一般人類！為"
+              ],
+              [
+                "　了我們大家，把話說個清楚",
+                "　吧！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 10,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 7,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『．不．不要再說了！．我什",
+                "　麼都不知道．．』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x24fc4#9": {
+      "script": "ch26.json",
+      "scene_index": 3,
+      "lines": [
+        {
+          "line": 0,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 9,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『亞奇梅吉，夠了！你要是把",
+                "　她弄哭了，我絕不饒你！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 9,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『．算啦，不要逼問她了，問",
+                "　這個機甲兵也是一樣．．喂",
+                "　，那個機甲兵。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 9,
+            "utterance": 2,
+            "control": "FFEF",
+            "operand": 31,
+            "pages": [
+              [
+                "『01279943渥德，命令確認。",
+                "　』"
+              ]
+            ],
+            "glyph_pages": [
+              [
+                [
+                  "『",
+                  "01",
+                  "27",
+                  "99",
+                  "43",
+                  "渥",
+                  "德",
+                  "，",
+                  "命",
+                  "令",
+                  "確",
+                  "認",
+                  "。"
+                ],
+                [
+                  "　",
+                  "』"
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 9,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『你叫渥德嗎？請回答我的問",
+                "　題。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 4,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 9,
+            "utterance": 4,
+            "control": "FFEF",
+            "operand": 31,
+            "pages": [
+              [
+                "『了解，記憶庫連接，資料載",
+                "　入待命。請指示。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 5,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 9,
+            "utterance": 5,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『你們的種族來自何方？領導",
+                "　者又是誰？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 6,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 9,
+            "utterance": 6,
+            "control": "FFEF",
+            "operand": 31,
+            "pages": [
+              [
+                "『記憶庫搜尋，資料#73324：",
+                "　01279943渥德隸屬第六機甲",
+                "　戰鬥團第三戰鬥中隊，全師"
+              ],
+              [
+                "　團由第一空中要塞建造，在",
+                "　執行第七號戰鬥防衛命令時",
+                "　，經由轉送站送到地表。我"
+              ],
+              [
+                "　們的領導者是全能的創造者",
+                "　，他可以任意創造機械和生",
+                "　命，是這個大地的主宰者，"
+              ],
+              [
+                "　我們並不知道領導者的名字",
+                "　，那不在我們的記憶庫領域",
+                "　之內。』"
+              ]
+            ],
+            "glyph_pages": [
+              [
+                [
+                  "『",
+                  "記",
+                  "憶",
+                  "庫",
+                  "搜",
+                  "尋",
+                  "，",
+                  "資",
+                  "料",
+                  "#7",
+                  "33",
+                  "24",
+                  "："
+                ],
+                [
+                  "　",
+                  "01",
+                  "27",
+                  "99",
+                  "43",
+                  "渥",
+                  "德",
+                  "隸",
+                  "屬",
+                  "第",
+                  "六",
+                  "機",
+                  "甲"
+                ],
+                [
+                  "　",
+                  "戰",
+                  "鬥",
+                  "團",
+                  "第",
+                  "三",
+                  "戰",
+                  "鬥",
+                  "中",
+                  "隊",
+                  "，",
+                  "全",
+                  "師"
+                ]
+              ],
+              [
+                [
+                  "　",
+                  "團",
+                  "由",
+                  "第",
+                  "一",
+                  "空",
+                  "中",
+                  "要",
+                  "塞",
+                  "建",
+                  "造",
+                  "，",
+                  "在"
+                ],
+                [
+                  "　",
+                  "執",
+                  "行",
+                  "第",
+                  "七",
+                  "號",
+                  "戰",
+                  "鬥",
+                  "防",
+                  "衛",
+                  "命",
+                  "令",
+                  "時"
+                ],
+                [
+                  "　",
+                  "，",
+                  "經",
+                  "由",
+                  "轉",
+                  "送",
+                  "站",
+                  "送",
+                  "到",
+                  "地",
+                  "表",
+                  "。",
+                  "我"
+                ]
+              ],
+              [
+                [
+                  "　",
+                  "們",
+                  "的",
+                  "領",
+                  "導",
+                  "者",
+                  "是",
+                  "全",
+                  "能",
+                  "的",
+                  "創",
+                  "造",
+                  "者"
+                ],
+                [
+                  "　",
+                  "，",
+                  "他",
+                  "可",
+                  "以",
+                  "任",
+                  "意",
+                  "創",
+                  "造",
+                  "機",
+                  "械",
+                  "和",
+                  "生"
+                ],
+                [
+                  "　",
+                  "命",
+                  "，",
+                  "是",
+                  "這",
+                  "個",
+                  "大",
+                  "地",
+                  "的",
+                  "主",
+                  "宰",
+                  "者",
+                  "，"
+                ]
+              ],
+              [
+                [
+                  "　",
+                  "我",
+                  "們",
+                  "並",
+                  "不",
+                  "知",
+                  "道",
+                  "領",
+                  "導",
+                  "者",
+                  "的",
+                  "名",
+                  "字"
+                ],
+                [
+                  "　",
+                  "，",
+                  "那",
+                  "不",
+                  "在",
+                  "我",
+                  "們",
+                  "的",
+                  "記",
+                  "憶",
+                  "庫",
+                  "領",
+                  "域"
+                ],
+                [
+                  "　",
+                  "之",
+                  "內",
+                  "。",
+                  "』"
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "line": 7,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 9,
+            "utterance": 7,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『．從未聽過這種事．好吧，",
+                "　那你們為何要攻擊這個大陸",
+                "　？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 8,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 9,
+            "utterance": 8,
+            "control": "FFEF",
+            "operand": 31,
+            "pages": [
+              [
+                "『資料庫搜尋，資料#2074213",
+                "　：第六機甲戰鬥團奉命執行",
+                "　第七號戰鬥防衛命令，主要"
+              ],
+              [
+                "　目標：絕滅X-07地區的敵方",
+                "　生命體，防止任何敵方單位",
+                "　進入轉送站：但就最後的記"
+              ],
+              [
+                "　錄，本次作戰已告中止，而",
+                "　01279943渥德在遭受敵方攻",
+                "　擊之後，誤動安全裝置導致"
+              ],
+              [
+                "　能源單位彈出，系統中斷至",
+                "　今，並未再接到過任何更新",
+                "　的作戰命令。』"
+              ]
+            ],
+            "glyph_pages": [
+              [
+                [
+                  "『",
+                  "資",
+                  "料",
+                  "庫",
+                  "搜",
+                  "尋",
+                  "，",
+                  "資",
+                  "料",
+                  "#2",
+                  "07",
+                  "42",
+                  "13"
+                ],
+                [
+                  "　",
+                  "：",
+                  "第",
+                  "六",
+                  "機",
+                  "甲",
+                  "戰",
+                  "鬥",
+                  "團",
+                  "奉",
+                  "命",
+                  "執",
+                  "行"
+                ],
+                [
+                  "　",
+                  "第",
+                  "七",
+                  "號",
+                  "戰",
+                  "鬥",
+                  "防",
+                  "衛",
+                  "命",
+                  "令",
+                  "，",
+                  "主",
+                  "要"
+                ]
+              ],
+              [
+                [
+                  "　",
+                  "目",
+                  "標",
+                  "：",
+                  "絕",
+                  "滅",
+                  "X-",
+                  "07",
+                  "地",
+                  "區",
+                  "的",
+                  "敵",
+                  "方"
+                ],
+                [
+                  "　",
+                  "生",
+                  "命",
+                  "體",
+                  "，",
+                  "防",
+                  "止",
+                  "任",
+                  "何",
+                  "敵",
+                  "方",
+                  "單",
+                  "位"
+                ],
+                [
+                  "　",
+                  "進",
+                  "入",
+                  "轉",
+                  "送",
+                  "站",
+                  "：",
+                  "但",
+                  "就",
+                  "最",
+                  "後",
+                  "的",
+                  "記"
+                ]
+              ],
+              [
+                [
+                  "　",
+                  "錄",
+                  "，",
+                  "本",
+                  "次",
+                  "作",
+                  "戰",
+                  "已",
+                  "告",
+                  "中",
+                  "止",
+                  "，",
+                  "而"
+                ],
+                [
+                  "　",
+                  "01",
+                  "27",
+                  "99",
+                  "43",
+                  "渥",
+                  "德",
+                  "在",
+                  "遭",
+                  "受",
+                  "敵",
+                  "方",
+                  "攻"
+                ],
+                [
+                  "　",
+                  "擊",
+                  "之",
+                  "後",
+                  "，",
+                  "誤",
+                  "動",
+                  "安",
+                  "全",
+                  "裝",
+                  "置",
+                  "導",
+                  "致"
+                ]
+              ],
+              [
+                [
+                  "　",
+                  "能",
+                  "源",
+                  "單",
+                  "位",
+                  "彈",
+                  "出",
+                  "，",
+                  "系",
+                  "統",
+                  "中",
+                  "斷",
+                  "至"
+                ],
+                [
+                  "　",
+                  "今",
+                  "，",
+                  "並",
+                  "未",
+                  "再",
+                  "接",
+                  "到",
+                  "過",
+                  "任",
+                  "何",
+                  "更",
+                  "新"
+                ],
+                [
+                  "　",
+                  "的",
+                  "作",
+                  "戰",
+                  "命",
+                  "令",
+                  "。",
+                  "』"
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "line": 9,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 9,
+            "utterance": 9,
+            "control": "FFEE",
+            "operand": 24,
+            "pages": [
+              [
+                "『這傢伙的話還真是難懂．約",
+                "　拿老頭，你聽懂了多少？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 10,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 9,
+            "utterance": 10,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『我只知道這位渥德老兄好像",
+                "　並未參與這次的攻擊，不過",
+                "　一切麻煩的根源似乎都來自"
+              ],
+              [
+                "　所謂的「第一空中要塞」，",
+                "　它也可能就是「黃金的城堡",
+                "　」，由古代人所建造的．飛"
+              ],
+              [
+                "　行堡疊，兼具建造機甲兵的",
+                "　能力．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 11,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 9,
+            "utterance": 11,
+            "control": "FFEE",
+            "operand": 26,
+            "pages": [
+              [
+                "『古代人不是早在數萬年前的",
+                "　最終戰爭中就死光了嗎？為",
+                "　什麼這個要塞還能發動攻擊"
+              ],
+              [
+                "　？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 12,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 9,
+            "utterance": 12,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『這個「黃金城」會不會是由",
+                "　類似的機甲兵所控制，由於",
+                "　沒有收到所謂的中止作戰指"
+              ],
+              [
+                "　令，所以仍在執行以前的作",
+                "　戰行動？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 13,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 9,
+            "utterance": 13,
+            "control": "FFEE",
+            "operand": 6,
+            "pages": [
+              [
+                "『很有可能，古代人建造這種",
+                "　飛行要塞，主要目的應該就",
+                "　是空中制壓和對地攻擊，但"
+              ],
+              [
+                "　最終戰爭早在數萬年前就已",
+                "　經結束了，為何到現在才又",
+                "　開始行動？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 14,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 9,
+            "utterance": 14,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『看來只有上黃金城一趟，這",
+                "　一切的謎題才能夠解開！渥",
+                "　德，你所說的轉送站在哪裡",
+                "　？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 15,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 9,
+            "utterance": 15,
+            "control": "FFEF",
+            "operand": 31,
+            "pages": [
+              [
+                "『就位在這地下通道的出口處",
+                "　。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 16,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 9,
+            "utterance": 16,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『好，那就一鼓作氣衝過去，",
+                "　我們這就走吧！悠妮，跟著",
+                "　我！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 17,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 9,
+            "utterance": 17,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『．．．』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x24fc4#8": {
+      "script": "ch26.json",
+      "scene_index": 2,
+      "lines": [
+        {
+          "line": 11,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 8,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『亞奇梅吉，夠了！你要是把",
+                "　她弄哭了，我絕不饒你！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 12,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 8,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『．算啦，不要逼問她了，反",
+                "　正上了黃金城，相信一切的",
+                "　謎題自然都會解開的！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 13,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 8,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『好，那就一鼓作氣衝過去，",
+                "　我們這就走吧！悠妮，跟著",
+                "　我！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 14,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 8,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『．．．』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x24fff#10": {
+      "script": "ch26.json",
+      "scene_index": 4,
+      "lines": [
+        {
+          "line": 0,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 10,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『悠妮，怎麼了？是不是．我",
+                "　的口氣太粗魯了？對不起！",
+                "　』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 10,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『不是的，索爾，我好迷惑．",
+                "　．我到底是誰？這一切．到",
+                "　底和我有什麼關連？我真的"
+              ],
+              [
+                "　不知道．我好怕我會給你帶",
+                "　來災禍，也許一開始你就不",
+                "　該救我的．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 10,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『悠妮，我永遠都會相信妳的",
+                "　！只要有妳和我在一起，我",
+                "　什麼也不怕！我們不是都來"
+              ],
+              [
+                "　到這裡了嗎？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 10,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『可是．可是．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 4,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 10,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『剛才的事就當它沒發生過，",
+                "　來，我們一起走過去！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x2503a#11": {
+      "script": "ch26.json",
+      "scene_index": 4,
+      "lines": [
+        {
+          "line": 5,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 11,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 24,
+            "pages": [
+              [
+                "『其貫亞奇梅吉說的也沒錯．",
+                "　這樣子好嗎？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 6,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 11,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『這個年輕人得到神的庇佑，",
+                "　我想我們應該尊重他的決定",
+                "　．不多說了，我們走吧！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 7,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_026",
+            "string_index": 11,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 29,
+            "pages": [
+              [
+                "『也只能這樣了！』"
+              ]
+            ]
+          }
+        }
+      ]
+    }
   },
   "overrides": {
-    "0x24f11": { "layout": { "units": [{"slot":0,"x":14,"y":6,"pose":0},{"slot":1,"x":15,"y":9,"pose":2},{"slot":2,"x":15,"y":6,"pose":0},{"slot":3,"x":14,"y":9,"pose":2},{"slot":4,"x":16,"y":9,"pose":2},{"slot":5,"x":14,"y":10,"pose":2},{"slot":6,"x":15,"y":10,"pose":2},{"slot":7,"x":16,"y":10,"pose":2},{"slot":8,"x":13,"y":11,"pose":2},{"slot":9,"x":14,"y":11,"pose":2},{"slot":10,"x":15,"y":11,"pose":2},{"slot":11,"x":16,"y":11,"pose":2},{"slot":12,"x":17,"y":11,"pose":2},{"slot":13,"x":14,"y":12,"pose":2},{"slot":14,"x":15,"y":12,"pose":2},{"slot":15,"x":16,"y":12,"pose":2}], "cam_x":216,"cam_y":120 } },
-    "0x24f57": { "act": { "resource": 77 } },
-    "0x24f92": { "act": { "resource": 78 } },
-    "0x24fd8": { "act": { "resource": 79 } },
-    "0x25013": { "act": { "resource": 80 } }
+    "0x24f11": {
+      "layout": {
+        "units": [
+          {
+            "slot": 0,
+            "x": 14,
+            "y": 6,
+            "pose": 0
+          },
+          {
+            "slot": 1,
+            "x": 15,
+            "y": 9,
+            "pose": 2
+          },
+          {
+            "slot": 2,
+            "x": 15,
+            "y": 6,
+            "pose": 0
+          },
+          {
+            "slot": 3,
+            "x": 14,
+            "y": 9,
+            "pose": 2
+          },
+          {
+            "slot": 4,
+            "x": 16,
+            "y": 9,
+            "pose": 2
+          },
+          {
+            "slot": 5,
+            "x": 14,
+            "y": 10,
+            "pose": 2
+          },
+          {
+            "slot": 6,
+            "x": 15,
+            "y": 10,
+            "pose": 2
+          },
+          {
+            "slot": 7,
+            "x": 16,
+            "y": 10,
+            "pose": 2
+          },
+          {
+            "slot": 8,
+            "x": 13,
+            "y": 11,
+            "pose": 2
+          },
+          {
+            "slot": 9,
+            "x": 14,
+            "y": 11,
+            "pose": 2
+          },
+          {
+            "slot": 10,
+            "x": 15,
+            "y": 11,
+            "pose": 2
+          },
+          {
+            "slot": 11,
+            "x": 16,
+            "y": 11,
+            "pose": 2
+          },
+          {
+            "slot": 12,
+            "x": 17,
+            "y": 11,
+            "pose": 2
+          },
+          {
+            "slot": 13,
+            "x": 14,
+            "y": 12,
+            "pose": 2
+          },
+          {
+            "slot": 14,
+            "x": 15,
+            "y": 12,
+            "pose": 2
+          },
+          {
+            "slot": 15,
+            "x": 16,
+            "y": 12,
+            "pose": 2
+          }
+        ],
+        "cam_x": 216,
+        "cam_y": 120
+      }
+    },
+    "0x24f57": {
+      "act": {
+        "resource": 77
+      }
+    },
+    "0x24f92": {
+      "act": {
+        "resource": 78
+      }
+    },
+    "0x24fd8": {
+      "act": {
+        "resource": 79
+      }
+    },
+    "0x25013": {
+      "act": {
+        "resource": 80
+      }
+    }
   }
 }

@@ -7658,3 +7658,15 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   由真實配方判定進不足臂；依序播放共同#5十句與#6四句。
 - 全程沒有ACT63／64、`0x24336`或`0x64`獎勵；仍完成JOIN24／23、同步、chapter21、
   `town_ch22`與存讀檔。第21戰兩臂現均達`RUNTIME-E1`，只留未修改原版同狀態E2。
+
+## 2026-08-27：第26戰後七個caller／41句原生對話與57-slot勘誤
+
+- 沿用已閉合的`sub_24E80`與dispatch，不重解handler。固定版`FDTXT.DAT`第26項
+  offset`0x15100`、5,004 bytes已與受版控raw逐位元組相同；七組tuple共41句保存
+  原始control／operand／頁面。
+- 正常`battle_ch26`勝利入口由16部署者＋map25 group0 41筆形成57 slots。正式
+  `event_state[12]==0／!=0`兩路分別以具型別輸入播放18／33句，兩路均依序完成
+  ACTING77–80、sync、chapter26、`town_ch27`與全新`Game`冷讀。
+- 這個一般玩家測試推翻舊「完整單位檔70筆是唯一runtime frontier」斷言；原函式
+  只消費動態count，70僅保留為完整資料形狀相容。聚焦Docker／Xvfb回歸通過，
+  提升為`RUNTIME-E1`；未修改原版同狀態逐幀／音訊仍是E2限制。

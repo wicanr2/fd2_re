@@ -4531,6 +4531,28 @@ E2。當時其餘 blocked postbattle 包含玩家第17、18、22、23、24、29�
 story/cutscene 稽核為 121 節點、9 個獨立 script、49 個 handler binding、
 63 個 fallback。這些是覆蓋統計，不是完成百分比。
 
+## raw ch25_post：第26戰後兩分支41句原生對話（2026-08-27）
+
+本切片只接既有 IDA 已閉合的 `sub_24E80` 正式消費端，不重解戰後 handler。
+原始資產、七個 caller tuple 與控制碼主證據見
+[`fd2_ch25_post_native_dialogue_ida.txt`](../data/ida/fd2_ch25_post_native_dialogue_ida.txt)。
+
+- binding 必須明列七個 `dialogue_contexts`，固定為 `FDTXT_026`／`ch26.json`；
+  產生器依 raw控制碼建立共41份 `NativeDialogueLayout`，不得從編輯後文字推回
+  speaker、上下框或分頁。
+- `event_state[12]==0` 只能播放 `5→7→8→10→11` 共18句；非零只能播放
+  `6→7→9→10→11` 共33句。互斥分支不得在編譯期合併或在單次 runtime 同播。
+- 每條正式路徑都必須依序通過 ACTING 77、78、79、80，再執行 `sync_party`、
+  將 raw chapter推進為26、抵達 `town_ch27`，並完成新 `Game` 冷讀存檔。
+- 正常重製戰鬥 frontier 是16名部署角色加 group0的41筆，共57 slots；原函式只
+  消費動態runtime count，沒有固定70。binding可另接受完整單位資料形狀70，但
+  測試不得注入13筆未部署者來掩蓋正常玩家57-slot入口。
+- 原生對話完整預建後才可發布第一幀；任一字形、資產、control、operand、頁面、
+  句數、story映射或 viewport上下文缺失時整批失敗即關閉，不退回猜測版面。
+- 驗收至少包含兩條 production-typed input 回歸，分別精確消費18與33句，並驗證
+  四段演出順序、隊伍／chapter持續性、城鎮節點及冷讀結果。這可提升為
+  `RUNTIME-E1`，但未修改DOSBox同狀態逐幀、音訊與作業系統鍵盤仍另列E2。
+
 ## 2026-08-09 勘誤：raw ch16 post 接入玩家第17戰（E1，最新）
 
 前兩節的「玩家第17戰仍 blocked」是本輪之前的歷史狀態，已由本節直接驗證
