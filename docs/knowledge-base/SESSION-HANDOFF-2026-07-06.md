@@ -7588,3 +7588,12 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   frontier，依原始順序完成ACTING50–53、JOIN16、`town_ch18`與存讀檔。證據見
   [`ch16-post-native-dialogue-e1.json`](../data/ui-traces/ch16-post-native-dialogue-e1.json)。
 - 未修改DOSBox同狀態、精確音訊與town18原版輸入仍屬E2限制；依99%門檻不阻擋。
+
+## 2026-08-27：第10戰後兩個caller／35句原生對話與DAC／sparse patch
+
+- 沿用已閉合的`sub_235F9`、60／61 frontier、DAC淡出入、sparse patch與共用
+  renderer。FDTXT_010 index4／5的19＋16句已通過固定raw equality並重生成typed版面。
+- 兩個frontier均以具型別輸入完成35句，再依原始順序ACTING37、sync、JOIN11／6、
+  chapter10、`town_ch11`與存讀檔；原先直接清除`g.dialog`的測試捷徑已移除。證據見
+  [`ch09-post-native-dialogue-e1.json`](../data/ui-traces/ch09-post-native-dialogue-e1.json)。
+- 未修改DOSBox同狀態、精確音訊與town11原版輸入仍屬E2限制；依99%門檻不阻擋。

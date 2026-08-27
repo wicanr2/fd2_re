@@ -690,107 +690,149 @@ func TestChapter8PostJoinsLornaPersistsPartyAndEntersTown9(t *testing.T) {
 
 func TestChapter10PostRunsExactPaletteAndDirectPatchBeforeTown11(t *testing.T) {
 	originalBase := "../../../org_game/炎龍騎士團/FLAME2"
-	fdotherPath := filepath.Join(originalBase, "FDOTHER.DAT")
-	if _, err := os.Stat(fdotherPath); err != nil {
-		t.Skip("player-provided FDOTHER.DAT is absent")
+	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.DAT", "FDTXT.DAT", "DATO.DAT"} {
+		if _, err := os.Stat(filepath.Join(originalBase, archive)); err != nil {
+			t.Skipf("player-provided original %s is absent: %v", archive, err)
+		}
 	}
-	t.Setenv("FD2_ORIGINAL_FDOTHER", fdotherPath)
-	order := []int{0, 9, 4, 30, 1, 8, 2, 10, 13, 5}
-	g := &Game{partyMembers: make(map[int]bool, len(order)), partyJoinOrder: append([]int(nil), order...)}
-	for _, id := range order {
-		g.partyMembers[id] = true
-	}
-	if err := g.loadMap("assets/maps/map9"); err != nil {
-		t.Fatal(err)
-	}
-	g.resetBattle("assets/maps/map9/map9_units.json", "assets/scenarios/ch10.json")
-	if g.loadErr != "" || g.st == nil || g.sc == nil || !g.sc.RuntimeAppendGroups || len(g.st.Units) != 52 {
-		t.Fatalf("chapter10 setup err=%q units=%d runtime_append=%v", g.loadErr, len(g.st.Units), g.sc != nil && g.sc.RuntimeAppendGroups)
-	}
-	// Event 32 appends the eight group-1 allies at turn five. This test enters
-	// the already-completed battle boundary, so materialize that proven event
-	// result directly instead of replaying five unrelated combat rounds.
-	g.st.AppendGroup(1)
-	if len(g.st.Units) != 60 {
-		t.Fatalf("chapter10 post frontier=%d, want 60 without Keli", len(g.st.Units))
-	}
-	if err := g.seedPersistentPartyFromLoadCH(order, g.st.Units[:len(order)]); err != nil {
-		t.Fatal(err)
-	}
-	emptyX, emptyY, foundEmpty := 0, 0, false
-	for y := 0; y < 8 && !foundEmpty; y++ {
-		for x := 0; x < 13; x++ {
-			if g.st.UnitAt(x, y) == nil {
-				emptyX, emptyY, foundEmpty = x, y, true
-				break
+	t.Setenv("FD2_ORIGINAL_FDFIELD", filepath.Join(originalBase, "FDFIELD.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDSHAP", filepath.Join(originalBase, "FDSHAP.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(originalBase, "FDOTHER.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(originalBase, "FDTXT.DAT"))
+	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(originalBase, "DATO.DAT"))
+	t.Setenv("FD2_MUTE", "1")
+	for _, tc := range []struct {
+		name  string
+		order []int
+		want  int
+	}{
+		{name: "frontier_60", order: []int{0, 9, 4, 30, 1, 8, 2, 10, 13, 5}, want: 60},
+		{name: "frontier_61", order: []int{0, 9, 4, 30, 1, 8, 2, 10, 13, 12, 5}, want: 61},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			order := tc.order
+			g := &Game{partyMembers: make(map[int]bool, len(order)), partyJoinOrder: append([]int(nil), order...)}
+			for _, id := range order {
+				g.partyMembers[id] = true
 			}
-		}
-	}
-	if !foundEmpty {
-		t.Fatal("chapter10 opening viewport has no empty HUD cursor cell")
-	}
-	g.curX, g.curY = emptyX, emptyY
-	if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{
-		CursorX: emptyX, CursorY: emptyY, VisibleCursorX: emptyX, VisibleCursorY: emptyY,
-	}); err != nil ||
-		!g.st.MaterializeNativeMapHUDState(1, 1, 1) || !g.st.MaterializeNativeMapRangeMode(1) {
-		t.Fatalf("chapter10 native view setup err=%v", err)
-	}
-	if _, ok := g.nativeMapHUDInput(); !ok {
-		t.Fatalf("chapter10 HUD input unavailable assets=%v view=%v hud=%v cycle=%v cache=%v cur=(%d,%d) map=%dx%d",
-			nativeMapAssetsAvailable(g.nativeMapAssets), g.st.HasNativeMapViewState, g.st.HasNativeMapHUDState,
-			g.st.HasNativeMapCycleState, g.st.NativeMapSelectorCache != nil, g.curX, g.curY, g.m.W, g.m.H)
-	}
-	if err := g.composeNativeMapFrame(); err != nil {
-		t.Fatal(err)
-	}
-	beats, issues, err := campaign.CompileHandlerBinding(assetPath("assets/cutscenes/bindings/ch09_post.json"))
-	if err != nil || len(issues) != 0 {
-		t.Fatalf("ch09_post compile err=%v issues=%#v", err, issues)
-	}
-	c := &campaign.Campaign{
-		Start: "postbattle_ch10_persist",
-		Nodes: map[string]*campaign.Node{
-			"postbattle_ch10_persist": {Type: "cutscene", Next: "town_ch11"},
-			"town_ch11":               {Type: "town"},
-		},
-	}
-	g.camp = campaign.NewRunner(c)
-	g.beats, g.beatIdx, g.storyBG = beats, -1, true
-	g.beatAdvance()
-	patchObserved, dacRestoredObserved := false, false
-	for frame := 0; frame < 10000 && g.camp.NodeID() != "town_ch11"; frame++ {
-		if g.nativePaletteRamp != nil {
-			g.nativePaletteRamp.drawn = true
-		}
-		if len(g.dialog) != 0 {
-			g.dialog = nil
+			if err := g.loadMap("assets/maps/map9"); err != nil {
+				t.Fatal(err)
+			}
+			g.resetBattle("assets/maps/map9/map9_units.json", "assets/scenarios/ch10.json")
+			if g.loadErr != "" || g.st == nil || g.sc == nil || !g.sc.RuntimeAppendGroups || len(g.st.Units) != 52 {
+				t.Fatalf("chapter10 setup err=%q units=%d runtime_append=%v", g.loadErr, len(g.st.Units), g.sc != nil && g.sc.RuntimeAppendGroups)
+			}
+			// Event 32 appends the eight group-1 allies at turn five. This test enters
+			// the already-completed battle boundary, so materialize that proven event
+			// result directly instead of replaying five unrelated combat rounds.
+			g.st.AppendGroup(1)
+			if len(g.st.Units) != tc.want {
+				t.Fatalf("chapter10 post frontier=%d, want %d", len(g.st.Units), tc.want)
+			}
+			if err := g.seedPersistentPartyFromLoadCH(order, g.st.Units[:len(order)]); err != nil {
+				t.Fatal(err)
+			}
+			emptyX, emptyY, foundEmpty := 0, 0, false
+			for y := 0; y < 8 && !foundEmpty; y++ {
+				for x := 0; x < 13; x++ {
+					if g.st.UnitAt(x, y) == nil {
+						emptyX, emptyY, foundEmpty = x, y, true
+						break
+					}
+				}
+			}
+			if !foundEmpty {
+				t.Fatal("chapter10 opening viewport has no empty HUD cursor cell")
+			}
+			g.curX, g.curY = emptyX, emptyY
+			if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{
+				CursorX: emptyX, CursorY: emptyY, VisibleCursorX: emptyX, VisibleCursorY: emptyY,
+			}); err != nil ||
+				!g.st.MaterializeNativeMapHUDState(1, 1, 1) || !g.st.MaterializeNativeMapRangeMode(1) {
+				t.Fatalf("chapter10 native view setup err=%v", err)
+			}
+			if _, ok := g.nativeMapHUDInput(); !ok {
+				t.Fatalf("chapter10 HUD input unavailable assets=%v view=%v hud=%v cycle=%v cache=%v cur=(%d,%d) map=%dx%d",
+					nativeMapAssetsAvailable(g.nativeMapAssets), g.st.HasNativeMapViewState, g.st.HasNativeMapHUDState,
+					g.st.HasNativeMapCycleState, g.st.NativeMapSelectorCache != nil, g.curX, g.curY, g.m.W, g.m.H)
+			}
+			if err := g.composeNativeMapFrame(); err != nil {
+				t.Fatal(err)
+			}
+			beats, issues, err := campaign.CompileHandlerBinding(assetPath("assets/cutscenes/bindings/ch09_post.json"))
+			if err != nil || len(issues) != 0 {
+				t.Fatalf("ch09_post compile err=%v issues=%#v", err, issues)
+			}
+			c := &campaign.Campaign{
+				Start: "postbattle_ch10_persist",
+				Nodes: map[string]*campaign.Node{
+					"postbattle_ch10_persist": {Type: "cutscene", Next: "town_ch11"},
+					"town_ch11":               {Type: "town"},
+				},
+			}
+			g.camp = campaign.NewRunner(c)
+			g.beats, g.beatIdx, g.storyBG = beats, -1, true
 			g.beatAdvance()
-		}
-		g.tick(1)
-		if g.st != nil && len(g.st.Units) > 52 && g.st.Units[0].X == 14 && g.st.Units[0].Y == 38 &&
-			g.st.Units[50].NativeTransient[4] == 0 && g.st.Units[51].NativeTransient[4] == 0 &&
-			g.st.Units[52].NativeRecordByte5 == 0 {
-			patchObserved = true
-		}
-		if g.nativeMapAssets != nil && bytes.Equal(g.nativeMapDAC, g.nativeMapAssets.PaletteDAC) && patchObserved {
-			dacRestoredObserved = true
-		}
-		if g.loadErr != "" {
-			t.Fatalf("ch09_post stopped at %d/%d: %s", g.beatIdx, len(g.beats), g.loadErr)
-		}
-	}
-	if g.camp.NodeID() != "town_ch11" || !g.partyMembers[11] || !g.partyMembers[6] || g.handlerChapter != 10 {
-		t.Fatalf("ch09_post node=%q members=%v chapter=%d", g.camp.NodeID(), g.partyMembers, g.handlerChapter)
-	}
-	if !patchObserved || !dacRestoredObserved {
-		t.Fatalf("ch09_post patch/DAC observation patch=%v restored=%v", patchObserved, dacRestoredObserved)
-	}
-	for _, id := range []int{11, 6} {
-		joined, ok := g.partyRoster[id]
-		if !ok || !joined.HasNativeIdentity || joined.NativeIdentity != id || !joined.HasNativeRecordByte8 || int(joined.NativeRecordByte8) != id {
-			t.Fatalf("joined %d persistent record=%#v", id, joined)
-		}
+			patchObserved, dacRestoredObserved := false, false
+			seen := make(map[int]bool, 35)
+			for frame := 0; frame < 60000 && g.camp.NodeID() != "town_ch11"; frame++ {
+				if g.nativePaletteRamp != nil {
+					g.nativePaletteRamp.drawn = true
+				}
+				if len(g.dialog) != 0 {
+					current := g.dialog[len(g.dialog)-1]
+					if current.NativeDialogue == nil || current.Upper == nil || current.NativeDialogue.SourceDAT != "FDTXT_010" ||
+						(current.NativeDialogue.StringIndex != 4 && current.NativeDialogue.StringIndex != 5) ||
+						len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != 5 {
+						t.Fatalf("ch09_post dialog lost indexed lifecycle: %#v", current)
+					}
+					seen[current.NativeDialogue.StringIndex*100+current.NativeDialogue.Utterance] = true
+					if g.nativeStoryDialogueAtInputWait() && !g.handleNativeStoryInput(g.camp.Node(), nativeStoryInput{enter: true}) {
+						t.Fatal("ch09_post formal story input was rejected")
+					}
+				}
+				if err := g.Update(); err != nil {
+					t.Fatal(err)
+				}
+				if g.st != nil && len(g.st.Units) > 52 && g.st.Units[0].X == 14 && g.st.Units[0].Y == 38 &&
+					g.st.Units[50].NativeTransient[4] == 0 && g.st.Units[51].NativeTransient[4] == 0 &&
+					g.st.Units[52].NativeRecordByte5 == 0 {
+					patchObserved = true
+				}
+				if g.nativeMapAssets != nil && bytes.Equal(g.nativeMapDAC, g.nativeMapAssets.PaletteDAC) && patchObserved {
+					dacRestoredObserved = true
+				}
+				if g.loadErr != "" {
+					t.Fatalf("ch09_post stopped at %d/%d: %s", g.beatIdx, len(g.beats), g.loadErr)
+				}
+			}
+			if g.camp.NodeID() != "town_ch11" || !g.partyMembers[11] || !g.partyMembers[6] || g.handlerChapter != 10 || len(seen) != 35 {
+				t.Fatalf("ch09_post node=%q members=%v chapter=%d dialogues=%d", g.camp.NodeID(), g.partyMembers, g.handlerChapter, len(seen))
+			}
+			if !patchObserved || !dacRestoredObserved {
+				t.Fatalf("ch09_post patch/DAC observation patch=%v restored=%v", patchObserved, dacRestoredObserved)
+			}
+			for _, id := range []int{11, 6} {
+				joined, ok := g.partyRoster[id]
+				if !ok || !joined.HasNativeIdentity || joined.NativeIdentity != id || !joined.HasNativeRecordByte8 || int(joined.NativeRecordByte8) != id {
+					t.Fatalf("joined %d persistent record=%#v", id, joined)
+				}
+			}
+			t.Setenv("XDG_DATA_HOME", t.TempDir())
+			userDataDirCached = ""
+			g.saveGameToSlot(1)
+			if g.msg != "已存檔(槽位2：town_ch11)" {
+				t.Fatalf("town11 save message=%q", g.msg)
+			}
+			g.camp.Cur = "postbattle_ch10_persist"
+			g.partyMembers, g.partyJoinOrder = nil, nil
+			g.partyDeploy, g.partyRoster = nil, nil
+			g.loadGameFromSlot(1)
+			if g.camp.NodeID() != "town_ch11" || !g.partyMembers[11] || !g.partyMembers[6] || len(g.partyJoinOrder) != len(order)+2 {
+				t.Fatalf("town11 save/load node=%q members=%v order=%v roster=%v", g.camp.NodeID(), g.partyMembers, g.partyJoinOrder, g.partyRoster)
+			}
+		})
 	}
 }
 

@@ -1,0 +1,18 @@
+{
+  "name": "第10戰後兩個caller／35句原生對話與60／61-slot城鎮路徑",
+  "date": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "reference": {
+    "FD2.EXE": {"size": 357074, "md5": "b97caf2239a27a896069d03549d96e1e", "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"},
+    "FDTXT_010.bin": {"size": 4494, "md5": "57c3da8cddf0496473ac76dfe8b9f1be", "sha256": "17a2838e4abd4b1624953b415a8b1e38e35d2eb26c4a89a339e591dc33dba007"},
+    "canonical_re": "docs/data/ida/fd2_ch09_post_ida.txt",
+    "binding_evidence": "docs/data/ida/fd2_ch09_post_native_dialogue.md"
+  },
+  "native_dialogue": {"handler": "0x235f9", "callers": ["0x23727", "0x23762"], "source": "FDTXT_010", "string_indices": [4, 5], "utterance_counts": [19, 16], "total_utterances": 35},
+  "formal_routes": [
+    {"frontier": 60, "reachable_utterances": 35, "joins": [11, 6], "destination": "town_ch11", "save_load": true},
+    {"frontier": 61, "reachable_utterances": 35, "joins": [11, 6], "destination": "town_ch11", "save_load": true}
+  ],
+  "verification": {"generator": "2 callers / 35 utterances --check", "data_test": "TestCh09PostNativeDialogueLayoutsMatchOriginalControlWords", "integrated_test": "TestChapter10PostRunsExactPaletteAndDirectPatchBeforeTown11", "full_packages": "go test ./internal/battle ./internal/campaign ./cmd/fd2 -count=1", "result": "pass", "docker_network": "none", "xvfb": "explicit PID with exit trap"},
+  "limitations": ["60／61入口frontier為canonical evidence標示的強推論E1 bridge，不提升為原版靜態事實。", "未修改DOSBox同狀態、精確音訊與town11原版輸入仍缺，故不提升為PLAYER-E2。"]
+}

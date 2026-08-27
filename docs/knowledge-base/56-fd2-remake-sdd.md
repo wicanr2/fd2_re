@@ -7212,3 +7212,20 @@ index6、`0x23CB7`／index8分別產生4、3、1、18筆`NativeDialogueLayout`�
 [`fd2_ch16_post_native_dialogue.md`](../data/ida/fd2_ch16_post_native_dialogue.md)。
 驗收包含全量raw equality、兩條正式輸入、60→61／61→62、JOIN16、`town_ch18`與
 存讀檔。此項最高為`RUNTIME-E1`，未修改DOSBox同狀態與精確音訊另列E2。
+
+## 玩家第 10 戰戰後 35 句原生對話與 DAC／sparse patch（2026-08-27）
+
+本切片沿用已閉合的`sub_235F9`、60／61-slot入口、DAC淡出入、sparse patch與共用
+renderer，不重開反組譯。`0x23727`／index4與`0x23762`／index5分別產生19、16筆
+`NativeDialogueLayout`。
+
+正式執行期必須依原始順序完成delta0..63淡出、清`+5 bit7`、明列欄位patch、
+view／HUD、delta64..0淡入，再以具型別輸入播放index4→ACTING37→index5。兩個
+合法E1 frontier 60／61均完成35句後才sync、JOIN11／6、進chapter10與`town_ch11`，
+並驗證存讀檔。缺原始資產、mapping、native frame、DAC baseline、patch provenance
+或合法frontier時，在交易前失敗即關閉。
+
+原始位址、雜湊、控制碼與patch契約見
+[`fd2_ch09_post_native_dialogue.md`](../data/ida/fd2_ch09_post_native_dialogue.md)。
+驗收包含全量raw equality、60／61正式輸入、DAC restore、sparse patch、JOIN11／6、
+`town_ch11`與存讀檔。此項最高為`RUNTIME-E1`，未修改DOSBox同狀態與精確音訊另列E2。

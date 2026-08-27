@@ -4,7 +4,10 @@
   "acting_resources": "../acting/ch09_post.json",
   "story_index_map": "../dialogue-index/count-aligned.json",
   "runtime_context": {
-    "slot_counts": [60, 61],
+    "slot_counts": [
+      60,
+      61
+    ],
     "story_viewport": true
   },
   "dialogue_contexts": {
@@ -18,6 +21,680 @@
     }
   },
   "overrides": {
-    "0x2373b": { "act": { "resource": 37 } }
+    "0x2373b": {
+      "act": {
+        "resource": 37
+      }
+    }
+  },
+  "dialogue_overrides": {
+    "0x23727#4": {
+      "script": "ch10.json",
+      "scene_index": 2,
+      "lines": [
+        {
+          "line": 4,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 8,
+            "pages": [
+              [
+                "『父王，您沒事吧！",
+                "　我好擔心．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 5,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 1,
+            "control": "FFED",
+            "operand": 50,
+            "pages": [
+              [
+                "『乖女兒放心，我平安無事。",
+                "　這可要多謝妳的朋友們，"
+              ],
+              [
+                "　不然這回我真的是難逃劫數",
+                "　了。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 6,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 13,
+            "pages": [
+              [
+                "『國王陛下，令我們納悶的是",
+                "　敵方為何要對您下手？",
+                "　您可知道其中的原因？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 7,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 3,
+            "control": "FFED",
+            "operand": 50,
+            "pages": [
+              [
+                "『簡單來說，他們是為了王家",
+                "　至寶「黃金徽章」。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 8,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『黃金徽章？那是什麼？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 9,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 5,
+            "control": "FFED",
+            "operand": 51,
+            "pages": [
+              [
+                "『這個就讓我來回答吧。",
+                "　黃金徽章是亞克斯王家的祖",
+                "　傳之寶，據說它有著莫大的"
+              ],
+              [
+                "　神秘力量，所以幾代以來都",
+                "　一直小心的收藏著，但是它",
+                "　究竟有什麼功用，也一直都"
+              ],
+              [
+                "　沒有人知道。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 10,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 6,
+            "control": "FFED",
+            "operand": 50,
+            "pages": [
+              [
+                "『他們把我綁到這裡來，",
+                "　就是要逼我交出黃金徽章。",
+                "　後來我被拷問得受不了了，"
+              ],
+              [
+                "　終於告訴他們黃金徽章的所",
+                "　在，還連累了執牢神殿的索",
+                "　菲亞．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 11,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 7,
+            "control": "FFEE",
+            "operand": 13,
+            "pages": [
+              [
+                "『原來如此。約拿果然料得沒",
+                "　錯．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 12,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 8,
+            "control": "FFED",
+            "operand": 51,
+            "pages": [
+              [
+                "『賢者約拿？你認識他嗎？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 13,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 9,
+            "control": "FFEE",
+            "operand": 13,
+            "pages": [
+              [
+                "『我和他算是舊識了，這回就",
+                "　是他要我到王城和他碰面，",
+                "　才會遇上這些事情的。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 14,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 10,
+            "control": "FFED",
+            "operand": 51,
+            "pages": [
+              [
+                "『前幾天他也曾經來找我，他",
+                "　說幾天後會有一個朋友來王",
+                "　城找他，希望我能把黃金徽"
+              ],
+              [
+                "　章借給他，看來他說的就是",
+                "　你了。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 15,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 11,
+            "control": "FFEE",
+            "operand": 13,
+            "pages": [
+              [
+                "『妳果然見過約拿！那麼．",
+                "　黃金徽章的事，",
+                "　妳能夠答應嗎？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 16,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 12,
+            "control": "FFED",
+            "operand": 51,
+            "pages": [
+              [
+                "『這要看陛下的決定．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 17,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 13,
+            "control": "FFED",
+            "operand": 50,
+            "pages": [
+              [
+                "『沒關係，我早已聽說過賢者",
+                "　約拿的大名，他要借用黃金",
+                "　徽章，一定是有重要的用途"
+              ],
+              [
+                "　索菲亞，等我們回城後，",
+                "　便把黃金之徽交給他。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 18,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 14,
+            "control": "FFED",
+            "operand": 51,
+            "pages": [
+              [
+                "『陛下，我有一個請求，",
+                "　希望您也能一併答應．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 19,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 15,
+            "control": "FFED",
+            "operand": 50,
+            "pages": [
+              [
+                "『什麼請求？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 20,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 16,
+            "control": "FFED",
+            "operand": 51,
+            "pages": [
+              [
+                "『據約拿所言，最近有邪惡之",
+                "　徒正在進行一樁陰謀，他自",
+                "　己先動身去調查此事，但希",
+                "　望我也能前去幫忙，貢獻我"
+              ],
+              [
+                "　自己對神的虜誠與神聖的力",
+                "　量，來阻止邪徒的惡行。"
+              ],
+              [
+                "　所以我可能不能再擔任神殿",
+                "　司祭一職，請陛下您答應．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 21,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 17,
+            "control": "FFED",
+            "operand": 50,
+            "pages": [
+              [
+                "『這樣嗎？好吧，我也不",
+                "　能勉強妳．．妳就去吧！",
+                "　要好好保重！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 22,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 4,
+            "utterance": 18,
+            "control": "FFEC",
+            "operand": 51,
+            "pages": [
+              [
+                "『感激不盡！願聖靈與陛",
+                "　下同在！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x23762#5": {
+      "script": "ch10.json",
+      "scene_index": 3,
+      "lines": [
+        {
+          "line": 0,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 5,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 8,
+            "pages": [
+              [
+                "『父王，我也有一個請求．．",
+                "　』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 5,
+            "utterance": 1,
+            "control": "FFED",
+            "operand": 50,
+            "pages": [
+              [
+                "『希莉亞，難道妳也．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 5,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 8,
+            "pages": [
+              [
+                "『父王，這些天來，我都和這",
+                "　些朋友們一起冒險，覺得自",
+                "　己長大了不少。如今邪徒的"
+              ],
+              [
+                "　陰謀已經威脅到我們亞克斯",
+                "　王國，我身為王國第一公主",
+                "　跟著他們去冒險，多少也可"
+              ],
+              [
+                "　以盡一點責任．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 5,
+            "utterance": 3,
+            "control": "FFED",
+            "operand": 50,
+            "pages": [
+              [
+                "『．希莉亞，妳瘦了不少，",
+                "　這些天來吃了不少苦吧？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 4,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 5,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 8,
+            "pages": [
+              [
+                "『不會啊，大家都對我很好，",
+                "　和敵人戰鬥時，索爾和亞雷",
+                "　斯也總是擋在我前面，"
+              ],
+              [
+                "　不讓我受到傷害。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 5,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 5,
+            "utterance": 5,
+            "control": "FFED",
+            "operand": 50,
+            "pages": [
+              [
+                "『這樣嗎？索爾，亞雷斯，",
+                "　多謝你們照顧我的女兒，",
+                "　如果時間充裕的話，"
+              ],
+              [
+                "　希望能有機會好好謝謝你們",
+                "　。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 6,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 5,
+            "utterance": 6,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『多謝陛下，我們不敢當。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 7,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 5,
+            "utterance": 7,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『是呀！想當初我們就沒料到",
+                "　希莉亞會是公主．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 8,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 5,
+            "utterance": 8,
+            "control": "FFED",
+            "operand": 50,
+            "pages": [
+              [
+                "『哈哈哈！希莉亞，妳的保密",
+                "　功夫還真到家。我答應妳的",
+                "　請求，不過為了妳的安全起"
+              ],
+              [
+                "　見，由禁衛隊長萊汀與妳隨",
+                "　行，妳沒有異議吧？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 9,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 5,
+            "utterance": 9,
+            "control": "FFEE",
+            "operand": 8,
+            "pages": [
+              [
+                "『沒有，沒有！謝謝父王！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 10,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 5,
+            "utterance": 10,
+            "control": "FFEE",
+            "operand": 6,
+            "pages": [
+              [
+                "『屬下必以生命保護公主，",
+                "　請陛下放心。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 11,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 5,
+            "utterance": 11,
+            "control": "FFED",
+            "operand": 50,
+            "pages": [
+              [
+                "『好！其他的事，等我們回到",
+                "　城中再說，我們趕快離開這",
+                "　個陰森的洞窟。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 12,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 5,
+            "utterance": 12,
+            "control": "FFEE",
+            "operand": 6,
+            "pages": [
+              [
+                "『屬下這就安排禁衛軍前來迎",
+                "　接。諸位，我們走吧！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 13,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 5,
+            "utterance": 13,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『看來事情越鬧越大了。",
+                "　索爾，這場熱鬧我們還要繼",
+                "　續湊下去嗎？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 14,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 5,
+            "utterance": 14,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『不管怎樣，先找到賢者約拿",
+                "　治好悠妮的失憶症再說。",
+                "　亞雷斯，你會幫我吧！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 15,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_010",
+            "string_index": 5,
+            "utterance": 15,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『那還用說！我們走吧！』"
+              ]
+            ]
+          }
+        }
+      ]
+    }
   }
 }
