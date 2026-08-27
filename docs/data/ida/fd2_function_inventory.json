@@ -15,11 +15,11 @@
   "imagebase": "0x0",
   "function_count": 1305,
   "classification_counts": {
-    "unknown": 1088,
-    "product": 46,
+    "unknown": 1076,
+    "product": 58,
     "runtime": 171
   },
-  "semantic_annotation_count": 48,
+  "semantic_annotation_count": 60,
   "classification_note": "product/driver only come from the versioned semantic index; runtime is a mechanical IDA FUNC_LIB classification after the configured FLIRT signatures; every other function remains unknown",
   "detail_note": "每筆保留 IDA 函式邊界、分析名稱、旗標、直接 caller 函式與分級語意；逐 call-site 交叉參照由同一匯出器重生，不在此精簡版重複保存",
   "functions": [
@@ -203,11 +203,23 @@
       "direct_code_xref_count": 1,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x10c50",
+          "classification": "product",
+          "semantic": "由 FDFIELD source record 建立完整 0x50-byte runtime unit record",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_ch24_post_ida.txt",
+            "docs/knowledge-base/50-cutscene-script-system-design.md"
+          ],
+          "scope": "0x10B4E 的唯一直接 callee 與 raw record writers；欄位高階名稱仍依各 writer／consumer 分別證實"
+        }
+      ]
     },
     {
       "start": "0x11019",
@@ -228,11 +240,23 @@
       "direct_code_xref_count": 8,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x11019",
+          "classification": "product",
+          "semantic": "FDICON raw key 快取查找與十二個圖像指標附加",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_preparation_gray_roster_ida.txt",
+            "docs/knowledge-base/31-map-unit-sprites-fdicon.md"
+          ],
+          "scope": "raw key、cache hit／append 與 unit consumer；不得把 key 泛化成所有場景的角色身分"
+        }
+      ]
     },
     {
       "start": "0x111ba",
@@ -438,11 +462,23 @@
       "direct_code_xref_count": 1,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x117e7",
+          "classification": "product",
+          "semantic": "戰場玩家操作與指令選擇主迴圈",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_117e7_empty_cursor_system_overlay_ida.txt",
+            "docs/knowledge-base/25-battle-event-system.md"
+          ],
+          "scope": "正式戰場 controller 與已列 selector／overlay caller；不宣稱每個指令、音訊或畫面分支均已達 E2"
+        }
+      ]
     },
     {
       "start": "0x11aa8",
@@ -7498,11 +7534,23 @@
       "direct_code_xref_count": 107,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x25a96",
+          "classification": "product",
+          "semantic": "第一組 AIL PCM sample 播放包裝器",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_ai_13fd4_full_ida_20260810.txt",
+            "docs/data/ida/fd2_command7_presentation_ida.txt"
+          ],
+          "scope": "AIL sample API handoff 與 raw tuple；sample index、cue 高階名稱及精確音訊時序由 caller 另證"
+        }
+      ]
     },
     {
       "start": "0x25b45",
@@ -7524,11 +7572,23 @@
       "direct_code_xref_count": 11,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x25b45",
+          "classification": "product",
+          "semantic": "第二組 AIL PCM sample 播放包裝器",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_ai_13fd4_full_ida_20260810.txt",
+            "docs/data/ida/fd2_command7_presentation_ida.txt"
+          ],
+          "scope": "與 0x25A96 同形狀的另一播放邊界；不可依 caller 猜成固定爆炸或事件音效"
+        }
+      ]
     },
     {
       "start": "0x25bf4",
@@ -8240,11 +8300,23 @@
       "direct_code_xref_count": 2,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x2cad7",
+          "classification": "product",
+          "semantic": "戰後戰間 raw gate 與章節路由表消費端",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/knowledge-base/50-cutscene-script-system-design.md",
+            "docs/knowledge-base/56-fd2-remake-sdd.md"
+          ],
+          "scope": "gate、0x526B9 table 與 preparation-first 分支；不等同完整 town／shop／menu 場景 owner"
+        }
+      ]
     },
     {
       "start": "0x2cf71",
@@ -9312,11 +9384,23 @@
       "direct_code_xref_count": 8,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x32975",
+          "classification": "product",
+          "semantic": "將指定 runtime record 的 raw byte +5 整 byte 設為 1",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt",
+            "docs/knowledge-base/27-combat-rules-and-validation-checklist.md"
+          ],
+          "scope": "窄 raw writer；不得泛化命名為 acted、turn-complete 或存活狀態"
+        }
+      ]
     },
     {
       "start": "0x32999",
@@ -9332,11 +9416,23 @@
       "direct_code_xref_count": 4,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x32999",
+          "classification": "product",
+          "semantic": "事件單位 append constructor 與固定十二次 indexed 呈現",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/knowledge-base/50-cutscene-script-system-design.md",
+            "docs/knowledge-base/scene-decode/ch1-throne.md"
+          ],
+          "scope": "constructor body、append 與呈現次數；個別 handler 的角色及劇情含義仍須另證"
+        }
+      ]
     },
     {
       "start": "0x32d18",
@@ -27763,11 +27859,23 @@
       "direct_code_xref_count": 62,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x4e031",
+          "classification": "product",
+          "semantic": "複製 BIOS keyboard-buffer 兩個 raw word 的輸入清理 helper",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_ch29_input_cleanup_ida.txt",
+            "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"
+          ],
+          "scope": "直接 word copy 與 caller；不是完整 BIOS 鍵盤 API，也不是終局專用 consumer"
+        }
+      ]
     },
     {
       "start": "0x4e040",
@@ -28396,11 +28504,23 @@
       "direct_code_xref_count": 39,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x4e893",
+          "classification": "product",
+          "semantic": "程序全域亂數值取得 helper",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_map28_runtime_topology_ida.txt",
+            "docs/data/ida/fd2_ch29_montage_ida.txt"
+          ],
+          "scope": "process-wide RNG consumer 邊界；各 caller 的 modulo、消耗順序與玩法／裝飾性影響仍須另證"
+        }
+      ]
     },
     {
       "start": "0x4e8af",
@@ -28435,11 +28555,23 @@
       "direct_code_xref_count": 36,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x4e8af",
+          "classification": "product",
+          "semantic": "上框 DATO portrait indexed blitter",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_story_dialogue_layout_ida.txt",
+            "docs/knowledge-base/14-text-control-codes.md"
+          ],
+          "scope": "上框資源、目的端與 blit 方向；portrait record bytes 的高階身分語意仍須另證"
+        }
+      ]
     },
     {
       "start": "0x4e8e1",
@@ -28458,11 +28590,23 @@
       "direct_code_xref_count": 5,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x4e8e1",
+          "classification": "product",
+          "semantic": "下框 DATO portrait 由右向左 indexed blitter",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_story_dialogue_layout_ida.txt",
+            "docs/data/ida/fd2_end_turn_confirmation_ui_ida.txt"
+          ],
+          "scope": "下框右端錨點、stride 與寫入方向；portrait record bytes 的高階身分語意仍須另證"
+        }
+      ]
     },
     {
       "start": "0x4e915",

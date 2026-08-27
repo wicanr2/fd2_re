@@ -286,9 +286,9 @@ repo 提供不含 license／遊戲資料的 `tools/docker/fd2-ida.Dockerfile` �
 只在授權 IDA Docker 匯出原始函式邊界、IDA 分析名稱、旗標與直接 caller；
 `tools/compact_fd2_function_inventory.py` 產生受版控的
 [`fd2_function_inventory.json`](../data/ida/fd2_function_inventory.json)。固定雜湊輸入
-辨識1,305函式；現行語意索引48筆中，46筆標為產品、2筆標為runtime；
-語意索引覆蓋同一FLIRT分類而不重複計數。目前為產品46、runtime171、
-未知1,088。語意只從
+辨識1,305函式；現行語意索引60筆中，58筆標為產品、2筆標為runtime；
+語意索引覆蓋同一FLIRT分類而不重複計數。目前為產品58、runtime171、
+未知1,076。語意只從
 [`fd2_semantic_index.json`](../data/ida/fd2_semantic_index.json) 合併，雜湊不符、
 註記未落在函式起點或缺推論等級／證據時直接拒絕。handler IR 同步拆成
 `native_call`、`unresolved_native_call`、`unknown`；三者都保留原始定位，前兩者
@@ -304,6 +304,28 @@ repo 提供不含 license／遊戲資料的 `tools/docker/fd2-ida.Dockerfile` �
 具 caller／consumer／writer 及分級證據的十筆回填索引。第二次從同一固定雜湊
 原檔重生為產品46、runtime171、unknown1,088、語意註記48。這項設計刻意讓
 「曾被提及」與「可分類」分離，避免文件密度或打包成功把未知函式誤升格。
+第二輪依下述分級清冊人工複核第一優先候選，接受十二筆、拒絕只有高 caller／高
+命中但無閉合語意者；再次由 IDA 重生為產品58、runtime171、unknown1,076、語意
+註記60。足跡清冊本身保留全部待審函式及來源種類，不因索引回填而遺失研究線索。
+
+### 未知函式既有足跡的分級回填規格
+
+未知函式不再以命中次數排序後直接改名。可重跑的足跡清冊必須以現行
+`fd2_function_inventory.json` 為唯一函式邊界，逐筆保留原始 IDA 名稱、起訖位址、
+大小、旗標及直接 caller，並把受版控文字命中分成下列證據層：
+
+1. `raw_only`：只命中攤平反組譯、raw JSON、chapter beats 或機械匯出；只證明位址
+   曾出現，不提供語意。
+2. `history_only`：只命中時間序列 handoff／歷史工作記錄；可供找回線索，不得作為
+   現行結論。
+3. `canonical_claim`：現況知識文件提出有分級的窄語意，但仍須回查其直接證據。
+4. `direct_artifact`：命中 IDA／Capstone 或其他直接證據產物；檔案存在仍不代表
+   writer 與 consumer 已閉合，只有人工審查內容通過後才可寫入 semantic index。
+
+產生工具不得由檔名、命中密度、IDA 自訂名稱或散文動詞自動決定 product／runtime／
+driver，也不得自動提升 confidence。每批人工回填必須記錄被接受與被拒絕的候選、
+拒絕原因、固定雜湊及 IDA 版本；更新索引後再由授權 IDA Pro 9.4 從原檔重生清冊。
+這個流程的目標是找回已完成研究，不是追求 unknown 數字歸零。
 
 2026-07-29 起，repo 根目錄 `AGENTS.md` 是跨 session 的操作契約，
 `CLAUDE.md` 只保存專案意圖並指向它。Docker container 必須是有界生命週期：

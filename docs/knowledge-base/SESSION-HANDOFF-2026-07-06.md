@@ -7831,3 +7831,18 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - remake 能打包是因為封包只包含可編輯資料、Go／Ebiten engine 與已接通的玩家
   垂直切片，並由失敗即關閉與抽樣測試驗證；它不執行原版 EXE，也不證明未分類
   helper。封包驗證、`RUNTIME-E1` 與未修改原版 `PLAYER-E2` 仍是三個不同閘門。
+
+## 2026-08-27：研究過但未登錄函式的正式審查入口
+
+- 使用者決定先判讀已有研究足跡，不再把1,088筆 unknown 當成同質工作。新增
+  `tools/audit_fd2_unknown_footprints.py` 與完整 JSON 清冊；工具以現行 IDA 邊界
+  掃描受版控 Markdown／txt／JSON，只建立 exact/range 與來源類型，不自動命名。
+- 前批後的分桶為：337筆同時命中 canonical＋direct artifact、43筆只有直接產物、
+  86筆只有現況斷言、48筆只有歷史／raw 線索、574筆沒有受版控文字足跡。人工
+  審查順序固定先337筆，再依玩家 blocker 決定其他類；不掃574筆追求數字歸零。
+- 第二批接受十二筆窄產品語意：`0x10C50`、`0x11019`、`0x117E7`、`0x25A96`、
+  `0x25B45`、`0x2CAD7`、`0x32975`、`0x32999`、`0x4E031`、`0x4E893`、
+  `0x4E8AF`、`0x4E8E1`。每筆保留原始 IDA 名稱／位址、分級、證據與 scope；
+  `0x36CD7` 雖有541個 direct callers，但現有直接證據明載不足，因此拒絕升級。
+- 授權 IDA Pro 9.4 從固定雜湊原檔再生結果為函式1,305、產品58、runtime171、
+  unknown1,076、語意註記60。重生足跡剩486個 exact、502個 range，第一優先325筆。

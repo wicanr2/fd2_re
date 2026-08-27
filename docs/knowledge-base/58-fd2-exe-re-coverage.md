@@ -27,8 +27,8 @@
 匯出器的 `unknown_ops` 數量代替。原因如下：
 
 1. 現已有 IDA Pro 9.4 重生的 1,305 筆函式清冊；Watcom FLIRT 與受版控
-   runtime 註記合計分出171筆 runtime，受版控語意索引分出46筆產品函式，
-   其餘1,088筆仍未
+   runtime 註記合計分出171筆 runtime，受版控語意索引分出58筆產品函式，
+   其餘1,076筆仍未
    分類；尚未排完 DOS/4GW、Miles AIL 與所有一般函式庫，因此仍沒有可信的
    「重製相關函式」分母。清冊見
    [`fd2_function_inventory.json`](../data/ida/fd2_function_inventory.json)。
@@ -40,7 +40,7 @@
 4. 原版語意已解、可編輯資料已建、正式執行期已消費、未修改一般玩家路徑已驗證，
    是四個不同閘門。過去最常見的誤判，就是把第一個閘門完成寫成整個功能完成。
 
-### 1,088 筆未知函式的交付影響
+### 1,076 筆未知函式的交付影響
 
 2026-08-27 已由授權 IDA Pro 9.4 從固定雜湊原檔重新分析。第一次重生基準為
 `1,305 = 37 product + 170 runtime + 1,098 unknown`、語意註記38筆；同日再將
@@ -56,12 +56,24 @@
 的其餘足跡仍維持 unknown。`1,089` 是舊數字次序誤寫，不是另一版清冊；
 `1,104` 則是更早語意索引尚未重生前的歷史數字。
 
+使用者要求先判讀「研究過但尚未登錄」後，現已加入可重跑的
+[`fd2_unknown_footprints.json`](../data/ida/fd2_unknown_footprints.json)與產生器
+`tools/audit_fd2_unknown_footprints.py`。在前批十筆移出 unknown 後的1,088筆中，
+498筆有精確起點足跡、514筆有 range 足跡；其中337筆同時命中現況知識文件與
+直接證據產物。人工複核第一批337筆後，再接受十二筆窄產品語意：FDFIELD record
+materializer、FDICON cache、玩家戰場 controller、兩個 AIL sample wrappers、
+戰後戰間 gate、兩個 raw/event constructors、輸入清理、程序 RNG 與上下框 portrait
+blitters。授權 IDA 9.4 再次從固定雜湊原檔重生後，現況為
+`1,305 = 58 product + 171 runtime + 1,076 unknown`、語意註記60筆；剩餘足跡為
+486個精確起點、502個 range，第一優先人工審查降為325筆。高命中但直接證據明載
+不足的 `0x36CD7` 仍維持 unknown，證明本流程不以命中密度換取分類數字。
+
 這也說明目前可以打包驗證而不必先命名整支 EXE：封包驗證檢查的是受版控資產、
 可編輯資料、正式 Go／Ebiten 執行期、存讀檔與代表性玩家垂直切片能否形成自洽
 產物；它不會執行原版 EXE，也不會自動證明未分類 helper 的語意。只要某個玩家
 切片所依賴的原版資料、規則、介面與狀態邊界已有證據及失敗即關閉行為，該切片
 便能建置與抽驗。反之，能產生三平台封包只證明交付物完整性，不能提升其餘
-1,088筆 unknown，也不能取代未修改原版同狀態的 `PLAYER-E2`。
+1,076筆 unknown，也不能取代未修改原版同狀態的 `PLAYER-E2`。
 
 `unknown` 只表示目前沒有受版控證據足以分類，不能批次改名成 DOS、PIT、DAC、
 驅動或遊戲邏輯。第一輪重製採下列交付分類，而不是繼續追求命名率：
@@ -394,9 +406,9 @@ command30 producer，也不構成缺少AI executor的交付阻擋。
 
 2026-08-27 以唯讀原版、一次性無網路Docker與合法IDA Pro 9.4重生現有稽核：
 
-- IDA Pro 9.4 對固定雜湊 `FD2.EXE` 辨識1,305個函式；受版控語意索引有48筆，
-  其中46筆屬產品程式、2筆屬 runtime。匯出器讓語意索引覆蓋同一函式分類，
-  因此沒有重複計數；重生清冊為產品46、runtime171、未知1,088。
+- IDA Pro 9.4 對固定雜湊 `FD2.EXE` 辨識1,305個函式；受版控語意索引有60筆，
+  其中58筆屬產品程式、2筆屬 runtime。匯出器讓語意索引覆蓋同一函式分類，
+  因此沒有重複計數；重生清冊為產品58、runtime171、未知1,076。
 - 60份 raw handler script 原有83個 `unknown` call site、23個 target。重生後為
   80個 `native_call`（22個 target）與3個 `unresolved_native_call`
   （`0x22253` 1次、`0x2BCE5` 2次），真正 `unknown` 為0。每筆
@@ -470,7 +482,7 @@ command30 producer，也不構成缺少AI executor的交付阻擋。
 ### 真正需要局部反組譯
 
 - 依玩家可見 blocker 擴充既有 IDA 清冊的產品／runtime／driver 分類；不為了提高
-  百分比替剩餘1,088筆未知函式猜名稱。
+  百分比替剩餘1,076筆未知函式猜名稱。
 - postbattle admission 已無 blocked 節點；只在 E2 實驗出現指令／執行結果矛盾時，
   才重開對應 caller，不因舊 worklist 重讀已閉合 callee。
 - 只有代表性抽樣揭露且會改變玩家結果的 command／spell／item 或高階效果缺口；
