@@ -315,6 +315,11 @@ func TestWriteShotStateTraceRecordsStableChurchMenuState(t *testing.T) {
 }
 
 func TestWriteShotStateTracePreservesSourceBoundEndingGate(t *testing.T) {
+	tailPlayer := &ending.MontageTailPlayer{
+		Phase:   ending.MontageTailPhaseOverlay,
+		Segment: 7,
+		Entries: make([]ending.MontageTailEntry, 20),
+	}
 	g := &Game{nativeEnding: &nativeEndingPreview{
 		campaignSourceBound: true,
 		audioCueConsumed:    true,
@@ -327,6 +332,9 @@ func TestWriteShotStateTracePreservesSourceBoundEndingGate(t *testing.T) {
 			State:   ending.PlaybackBlocked,
 			Blocked: &ending.Segment{Op: "native_finale_montage_opaque", Source: "0x2c548"},
 		},
+		tailStartAttempted: true,
+		tailPlayer:         tailPlayer,
+		reviewCycles:       2,
 	}}
 	path := filepath.Join(t.TempDir(), "shot-state-ending.json")
 	if err := g.writeShotStateTrace(path); err != nil {
@@ -345,7 +353,12 @@ func TestWriteShotStateTracePreservesSourceBoundEndingGate(t *testing.T) {
 		got.NativeEnding.BlockedSource != "0x2c548" || !got.NativeEnding.CampaignSourceBound ||
 		!got.NativeEnding.AudioCueConsumed || got.NativeEnding.MontagePhase != string(ending.MontagePhasePortrait) ||
 		got.NativeEnding.MontagePlanIndex == nil || *got.NativeEnding.MontagePlanIndex != 0 ||
-		got.NativeEnding.MontagePlanCount != 3 {
+		got.NativeEnding.MontagePlanCount != 3 || !got.NativeEnding.TailStartAttempted ||
+		got.NativeEnding.TailPhase != string(ending.MontageTailPhaseOverlay) ||
+		got.NativeEnding.TailSegment == nil || *got.NativeEnding.TailSegment != 7 ||
+		got.NativeEnding.TailSegmentCount != 20 || got.NativeEnding.TailReady ||
+		got.NativeEnding.PresentingTerminal || got.NativeEnding.ReviewActive ||
+		got.NativeEnding.ReviewCycles != 2 {
 		t.Fatalf("ending trace=%#v", got.NativeEnding)
 	}
 }

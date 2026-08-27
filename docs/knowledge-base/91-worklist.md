@@ -21,8 +21,11 @@
 > 成片在 `dist/promo/`，不含原版音樂且不入Git；規格、重生腳本與雜湊見
 > `docs/promo-opening-ch01-spec.md`、`tools/build_fd2_opening_promo.sh`及影片metadata。
 
-> **抽樣清冊現況**：已登記59筆證據，54筆符合門檻（戰役／戰間12、戰鬥／AI 18、
-> 介面12、存檔／持續隊伍10、終局／平台2）。章節0 current-runtime 的空游標命令格、
+> **抽樣清冊現況**：已登記65筆證據，60筆符合門檻（戰役／戰間12、戰鬥／AI 18、
+> 介面12、存檔／持續隊伍10、終局／平台8），2026-08-28 Docker 完整檢查為
+> `first_round_complete=true`、0 integrity errors。終局新增正式標題LOAD、文字
+> 生命週期、`0x2c548` admission／cue、普通Space角色蒙太奇與20筆尾段排程抽樣；
+> 尾段只跑到segment5，不冒稱本次已抵達永久THE END。章節0 current-runtime 的空游標命令格、
 > HUD、command0調色盤與END接受逐字，以及Windows城鎮F5存檔和第30戰前冷讀持續隊伍
 > 已按不同驗收不變量登錄；沒有以同一結果跨層重複計數。空游標命令格
 > 已由原版與重製的普通鍵盤路徑配對；正常標題LOAD另已由普通X11鍵盤走過

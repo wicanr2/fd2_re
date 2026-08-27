@@ -7462,3 +7462,17 @@ acted／HP／座標，或依名稱過濾單位。沒有戰場狀態時省略整�
 正常玩家輸入樣本只有在比較前後相同`index`、camp及完整欄位後，才能宣稱某單位
 移動、受傷或完成行動。這仍只建立重製端`RUNTIME-E1`可觀測性，不把截圖模式、
 第三方存檔或內部一致性提升為原版E2。
+
+## 終局普通輸入抽樣旁車契約（2026-08-28）
+
+本項不新增終局控制流，也不替未證實的 DOS 輸入或音訊時序命名；只把正式
+`nativeEndingPreview` 已持有的來源約束狀態輸出到 `FD2_SHOT_STATE.native_ending`。
+除既有前綴、文字與角色蒙太奇欄位外，尾段固定輸出 admission 是否嘗試、錯誤、
+phase、目前 segment、來源交易總數與 ready；另輸出是否正在呈現永久 terminal、
+是否進入重製限定的隊員回顧，以及回顧循環次數。
+
+所有欄位皆為唯讀 scalar 複製；旁車不得啟動 montage／tail、消費 cue、模擬按鍵、
+改寫 campaign cursor 或把 `presenting_terminal` 解釋成未修改 DOS 的玩家路徑 E2。
+`tail_segment_count` 取自已通過 admission 的 `MontageTailPlayer.Entries`，不是以常數
+補值；tail 尚未建立時相關欄位省略。正常 X11 輸入樣本必須另記錄標題 LOAD、按鍵
+時間線與存檔 provenance，才能把這些欄位用作 `RUNTIME-E1` 終局／平台證據。

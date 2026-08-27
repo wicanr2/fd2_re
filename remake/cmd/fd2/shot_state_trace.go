@@ -138,6 +138,15 @@ type screenshotEndingTrace struct {
 	MontagePlanCount    int    `json:"montage_plan_count,omitempty"`
 	MontageInputPending bool   `json:"montage_input_pending,omitempty"`
 	MontageStartError   string `json:"montage_start_error,omitempty"`
+	TailStartAttempted  bool   `json:"tail_start_attempted"`
+	TailStartError      string `json:"tail_start_error,omitempty"`
+	TailPhase           string `json:"tail_phase,omitempty"`
+	TailSegment         *int   `json:"tail_segment,omitempty"`
+	TailSegmentCount    int    `json:"tail_segment_count,omitempty"`
+	TailReady           bool   `json:"tail_ready"`
+	PresentingTerminal  bool   `json:"presenting_terminal"`
+	ReviewActive        bool   `json:"review_active"`
+	ReviewCycles        int    `json:"review_cycles"`
 	DialoguePhase       string `json:"dialogue_phase,omitempty"`
 	DialogueBlock       *int   `json:"dialogue_block,omitempty"`
 	DialogueBlockCount  int    `json:"dialogue_block_count,omitempty"`
@@ -251,6 +260,18 @@ func (g *Game) writeShotStateTrace(path string) error {
 			endingTrace.DialogueWaiting = p.dialogue.Waiting()
 		}
 		endingTrace.MontageStartError = p.montageStartError
+		endingTrace.TailStartAttempted = p.tailStartAttempted
+		endingTrace.TailStartError = p.tailStartError
+		endingTrace.PresentingTerminal = p.presentingCampaignTerminal()
+		endingTrace.ReviewActive = p.reviewingCampaignPartyOutcomes()
+		endingTrace.ReviewCycles = p.reviewCycles
+		if p.tailPlayer != nil {
+			endingTrace.TailPhase = string(p.tailPlayer.Phase)
+			segment := p.tailPlayer.Segment
+			endingTrace.TailSegment = &segment
+			endingTrace.TailSegmentCount = len(p.tailPlayer.Entries)
+			endingTrace.TailReady = p.tailPlayer.Ready()
+		}
 		trace.NativeEnding = endingTrace
 	}
 	if g.sel != nil {

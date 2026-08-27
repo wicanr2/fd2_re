@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-28",
+  "classification": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "environment": {
+    "image": "fd2-go-test-local:latest",
+    "display": "Docker Xvfb :99",
+    "network": "none",
+    "input": "tools/docker/fd2-xtest-input.c 的普通 X11 鍵盤事件",
+    "original_assets": "玩家原始 archive 唯讀掛載"
+  },
+  "save_fixture": {
+    "format": "重製 JSON 節點存檔，不是 FD2.SAV ABI",
+    "node": "ending",
+    "source": "assets/scenarios/ch29.json 經正式 battle.LoadScenario／PartyUnits loader 物化；四名最小隊伍",
+    "sha256": "c6e7c37971340c7a18f44a0dd6decbca4fe9038e0253429fb03df0d6b681c937"
+  },
+  "input_prefix": [
+    "Escape 完成捲動中斷",
+    "Escape 完成標題揭示",
+    "Down 選 LOAD",
+    "Return 確認 LOAD",
+    "Return 確認槽位 0"
+  ],
+  "checkpoints": [
+    {
+      "id": "source_bound_first_dialogue",
+      "frame": 500,
+      "state_sha256": "033c8a5d92bb38eb6a91a59725983a6237ef904a3e110e9f039d617f3fcbe002",
+      "png_sha256": "7f20f56d1a93d6878e723dc255cf98e84cbf581cb0036587d121dddd87f7358d",
+      "observed": "ending；blocked 0x2be44；campaign_source_bound=true；dialogue block0 utterance0 waiting"
+    },
+    {
+      "id": "ordinary_return_utterance_progress",
+      "frame": 1000,
+      "state_sha256": "f4310133e88c116503a54d7dc47f0c38f21a79d6f0cccf12386a0ceb391beb6c",
+      "png_sha256": "32bdaf37a12afce060e1d1a63c5b0cb64a6a5400f87b77ade7f31dbc2815c4eb",
+      "observed": "同一 0x2be44 owner 由普通 Return 推進至 block0 utterance5 waiting"
+    },
+    {
+      "id": "ordinary_return_multiblock_progress",
+      "frame": 1250,
+      "state_sha256": "16c9bf6e98dc68f9e2715ca6e9ff9f6abb3475dbce0c4b7a4ce51afac4ae7a6d",
+      "png_sha256": "6f172b42e2e6037137df69c30f60e945f98f0fb978fd026dc963dee9e0de1a2d",
+      "observed": "同一來源約束文字生命週期跨至 block3，仍停在完整頁 waiting"
+    }
+  ],
+  "limitations": [
+    "合法終局節點存檔縮短長程戰鬥；不宣稱由未修改第30戰連續通關產生。",
+    "固定截圖時鐘與 Docker Xvfb 只建立重製端 RUNTIME-E1，不是 DOS 精確時序。"
+  ]
+}

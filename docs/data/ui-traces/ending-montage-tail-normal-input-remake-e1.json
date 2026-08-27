@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-28",
+  "classification": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "runtime": {
+    "sha256": "9b1023b73860b3626f17e83d06cbbe274f72172d0f14a2ccde161d0ebdfd9760",
+    "save_sha256": "c6e7c37971340c7a18f44a0dd6decbca4fe9038e0253429fb03df0d6b681c937",
+    "input": "正式標題 LOAD 後以普通 Return 完成兩組文字，再以普通 Space 提供 raw-change"
+  },
+  "checkpoints": [
+    {
+      "id": "montage_admission_audio_gate",
+      "frame": 2400,
+      "state_sha256": "63a3e246b716def1c260f6d234f95723af891064ba3f1b58b3fa16569fc2cf9e",
+      "png": "docs/figures/ending-campaign-montage-remake-e1.png",
+      "png_sha256": "3b1d88e0e041efeb1cc29c08e9bfc53368786cbc0ebde65a65401dd74d61da23",
+      "observed": "blocked 0x2c548；audio_cue_consumed=true；portrait_text plan0/4；無 montage admission error"
+    },
+    {
+      "id": "montage_raw_input_completion",
+      "frame": 3600,
+      "state_sha256": "89971844c5a17ff5eeb181681eeab3028c650abe3a57be1c781be4557009bc64",
+      "png_sha256": "671442bb11a8edba58a0f29f7fc0c3b8d569ff9314e5180bcff751b56d234479",
+      "observed": "普通 Space 只在既有 raw-change owner 生效；montage completed plan4/4"
+    },
+    {
+      "id": "tail_twenty_entry_schedule",
+      "frame": 6000,
+      "state_sha256": "bb8711dcd6babf90ea03fbc570395bbca67e7f87586c5cd52c90dee0c790f59e",
+      "png": "docs/figures/ending-campaign-tail-remake-e1.png",
+      "png_sha256": "76bb72f2906c606da027244f62b50298e0e9dd85c331a2803fc87388333d0ea8",
+      "observed": "tail admission成功；record0_aux；segment5/20；tail_ready=false；未提前宣稱 THE END"
+    }
+  ],
+  "limitations": [
+    "尾段抽樣停在第6筆來源交易，證明20筆排程已正式 admission，但不宣稱本次重播已抵達永久終端。",
+    "音訊只證明已驗證 cue 的 runtime owner 消費；不宣稱 DAC／PIT wall-clock 或人耳 E2。",
+    "隊員回顧是重製延伸，未在本次六格門檻中冒充原版輸入。"
+  ]
+}

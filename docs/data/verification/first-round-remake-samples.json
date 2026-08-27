@@ -782,6 +782,116 @@
       ]
     },
     {
+      "id": "ending-title-load-source-bound",
+      "layer": "ending_platform",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/ending-normal-load-dialogue-remake-e1.json"
+      ],
+      "limitations": [
+        "以合法重製終局節點存檔縮短長程戰鬥；只證明標題LOAD發布來源約束ending，不宣稱第30戰連續通關。"
+      ]
+    },
+    {
+      "id": "ending-dialogue-ordinary-return-progress",
+      "layer": "ending_platform",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/ending-normal-load-dialogue-remake-e1.json"
+      ],
+      "limitations": [
+        "驗證同一0x2be44文字owner由普通Return推進句子；不重複計算標題LOAD不變量。"
+      ]
+    },
+    {
+      "id": "ending-dialogue-multiblock-lifecycle",
+      "layer": "ending_platform",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/ending-normal-load-dialogue-remake-e1.json"
+      ],
+      "limitations": [
+        "驗證跨block收框／開框後仍停在完整頁等待，不宣稱原版逐幀嘴型時鐘。"
+      ]
+    },
+    {
+      "id": "ending-montage-admission-audio-gate",
+      "layer": "ending_platform",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/ending-montage-tail-normal-input-remake-e1.json",
+        "docs/figures/ending-campaign-montage-remake-e1.png"
+      ],
+      "limitations": [
+        "驗證0x2c548來源完整admission與cue owner消費；不宣稱DOS硬體音訊時序。"
+      ]
+    },
+    {
+      "id": "ending-montage-ordinary-input-completion",
+      "layer": "ending_platform",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/ending-montage-tail-normal-input-remake-e1.json"
+      ],
+      "limitations": [
+        "普通Space走既有raw-change owner完成4/4；不把縮短等待解讀成DOS特定scan code。"
+      ]
+    },
+    {
+      "id": "ending-tail-twenty-entry-admission",
+      "layer": "ending_platform",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/ending-montage-tail-normal-input-remake-e1.json",
+        "docs/figures/ending-campaign-tail-remake-e1.png"
+      ],
+      "limitations": [
+        "確認20筆來源排程已admission並自然推進至segment5；本次不宣稱已抵達永久THE END。"
+      ]
+    },
+    {
       "id": "ending-indexed-dialogue-runtime",
       "layer": "ending_platform",
       "result": "pass",
