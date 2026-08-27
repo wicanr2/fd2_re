@@ -8136,3 +8136,14 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   gold13000及已揭露`???`入口。
 - `fd2-xtest-input`的修飾鍵語法擴充為Shift／Ctrl／Alt，共用120ms按住狀態；仍只
   送普通X11事件。清冊現為50筆登記、45筆合格；戰役／戰間12／12，該層關閉。
+
+## 2026-08-28：章節0移動與command0目標取消交易
+
+- 同一固定雜湊`FD2.SAV`由正式標題CONTINUE普通輸入抵達`battle_ch01`；游標從
+  (8,17)移至悠妮(10,15)，Return建立移動selection。第二次相同前綴按Escape後
+  selection清除，悠妮仍未acted、HP28／MP8、turn1／round1與camera(1,13)不變。
+- 另一條相同正式前綴確認零距離移動、開action overlay並選command0；沿用既有
+  command0目標入口oracle後按Escape，frame2001回到action overlay，保留同角色
+  selection，目標modal清除且不扣MP、不改HP、不推進回合。
+- 兩格分屬移動selection與技能目標owner，不把同一結果拆格。清冊現為52筆登記、
+  47筆合格；戰鬥／AI為11／18。

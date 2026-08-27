@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-28",
+  "evidence_level": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "scope": "章節0 current-runtime 由 command 0 目標模式按 Escape 返回同角色 action overlay",
+  "reference": {
+    "fd2_save_sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f",
+    "entry_oracle": "native-command0-target-original-vs-remake-e1.json",
+    "runtime_sha256": "535d7a41f46f8f06b876f594557fb4ac8118dfdfae60106f9ce80b0b092b4191"
+  },
+  "execution": {
+    "environment": "一次性、無網路、UID/GID 1000 的 fd2-go-test-local Docker／Xvfb",
+    "original_assets": "FLAME2 與 FD2.SAV 唯讀掛載",
+    "input_helper": "tools/docker/fd2-xtest-input.c，只送普通 X11 鍵盤事件",
+    "timeline": [
+      "正式標題CONTINUE後移至悠妮(10,15)並Return選取",
+      "Return確認零距離移動並開啟action overlay，Return選擇唯一command 0",
+      "進入已由既有oracle證明的native_command_targeting ID0後按Escape"
+    ]
+  },
+  "observed": {
+    "frame": 2001,
+    "campaign_node": "battle_ch01",
+    "cursor": [10, 15],
+    "has_selection": true,
+    "selection": [10, 15],
+    "action_overlay_open": true,
+    "native_command_open": false,
+    "native_command_targeting": false,
+    "turn": 1,
+    "native_round_counter": 1,
+    "camera": [1, 13],
+    "cursor_unit": {"camp": 0, "acted": false, "hp": 28, "max_hp": 28, "mp": 8, "max_mp": 8},
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false
+  },
+  "artifacts": {
+    "state": "native-command0-cancel-ch01-remake-e1-state.json",
+    "state_sha256": "32bf69ec2c80310fac33d77d2794da95a876b19409a80497b7ed3b28cbf514f6",
+    "screenshot": "../../figures/native-command0-cancel-ch01-remake-e1.png",
+    "screenshot_sha256": "39a97821a84a67f130f9fd58c0e1d7b8653e3489ecd8505d3d3f4637c1775241"
+  },
+  "validated_invariants": [
+    "Escape由command 0目標模式返回同一角色的action overlay，保留selection與游標格。",
+    "取消不扣MP、不改HP、不標記acted，也不推進turn或native round。",
+    "目標modal完整清除，沒有dialog、battle event或turn staging殘留。"
+  ],
+  "limitations": [
+    "入口沿用既有command 0原版E2／重製E1證據；本次只新增重製端取消回程，不冒稱原版取消E2。",
+    "不證明command 0確認、命中、傷害、音訊或其他command family。"
+  ]
+}

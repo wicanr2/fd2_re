@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-28",
+  "evidence_level": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "scope": "章節0 current-runtime 由正式標題 CONTINUE 選取悠妮後取消移動選取",
+  "reference": {
+    "fd2_save_sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f",
+    "runtime_sha256": "535d7a41f46f8f06b876f594557fb4ac8118dfdfae60106f9ce80b0b092b4191"
+  },
+  "execution": {
+    "environment": "一次性、無網路、UID/GID 1000 的 fd2-go-test-local Docker／Xvfb",
+    "original_assets": "FLAME2 與 FD2.SAV 唯讀掛載",
+    "input_helper": "tools/docker/fd2-xtest-input.c，只送普通 X11 鍵盤事件",
+    "timeline": [
+      "F10等待初始化，Escape略過可略過開場",
+      "Down×2、Return進入正式CONTINUE",
+      "Right×2、Up×2把游標由(8,17)移至悠妮(10,15)",
+      "Return建立移動選取；第二次完整重播相同前綴後以Escape取消"
+    ]
+  },
+  "entry_capture": {
+    "frame": 1600,
+    "campaign_node": "battle_ch01",
+    "cursor": [10, 15],
+    "has_selection": true,
+    "selection": [10, 15],
+    "turn": 1,
+    "native_round_counter": 1,
+    "cursor_unit": {"camp": 0, "acted": false, "hp": 28, "max_hp": 28, "mp": 8, "max_mp": 8},
+    "state": "native-move-entry-ch01-remake-e1-state.json",
+    "state_sha256": "9a177480e801a827e9ed1fe84a6746074eaa73f609bddf8ff396437ec8f94f7c",
+    "screenshot": "../../figures/native-move-entry-ch01-remake-e1.png",
+    "screenshot_sha256": "7dba44c8f2f81f8850a483408ff3ebb5031ad1f4acbb5f4b0b3c263ccf1551a3"
+  },
+  "cancel_capture": {
+    "frame": 1750,
+    "campaign_node": "battle_ch01",
+    "cursor": [10, 15],
+    "has_selection": false,
+    "turn": 1,
+    "native_round_counter": 1,
+    "camera": [1, 13],
+    "cursor_unit": {"camp": 0, "acted": false, "hp": 28, "max_hp": 28, "mp": 8, "max_mp": 8},
+    "state": "native-move-cancel-ch01-remake-e1-state.json",
+    "state_sha256": "baf0dcbd286cf4944130f275efd585a080f55a1e41194bafccde000bfe1acdfc",
+    "screenshot": "../../figures/native-move-cancel-ch01-remake-e1.png",
+    "screenshot_sha256": "935b8572cc68cafacde3f4236b5ceb352697b485323014983f083b369b8ae5f6"
+  },
+  "validated_invariants": [
+    "普通輸入可在未行動悠妮格建立正式移動selection。",
+    "Escape取消後清除selection而不移動角色、不標記acted、不改HP／MP、回合或鏡頭。",
+    "取消後沒有action overlay、command target、dialog、battle event或turn staging殘留。"
+  ],
+  "limitations": [
+    "只驗證重製端正常輸入RUNTIME-E1；沒有另取原版同狀態取消畫面。",
+    "不證明實際移動、地形成本、路徑阻擋或移動後指令。"
+  ]
+}

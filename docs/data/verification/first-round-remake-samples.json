@@ -959,6 +959,49 @@
       "limitations": [
         "只驗證第27章酒店選項0＋Ctrl+F6的0x63隱藏入口、秘密商店發布與返回；不外推其他章節條件、商品交易或原版同狀態。"
       ]
+    },
+    {
+      "id": "combat-move-selection-cancel-ch01",
+      "layer": "combat_ai",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-move-cancel-ch01-remake-e1.json",
+        "docs/data/ui-traces/native-move-entry-ch01-remake-e1-state.json",
+        "docs/data/ui-traces/native-move-cancel-ch01-remake-e1-state.json",
+        "docs/figures/native-move-entry-ch01-remake-e1.png",
+        "docs/figures/native-move-cancel-ch01-remake-e1.png"
+      ],
+      "limitations": [
+        "只驗證普通輸入建立並取消移動selection且零狀態洩漏；不證明實際移動、地形成本或原版取消同幀。"
+      ]
+    },
+    {
+      "id": "combat-command0-target-cancel-ch01",
+      "layer": "combat_ai",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-command0-target-cancel-ch01-remake-e1.json",
+        "docs/data/ui-traces/native-command0-target-original-vs-remake-e1.json",
+        "docs/data/ui-traces/native-command0-cancel-ch01-remake-e1-state.json",
+        "docs/figures/native-command0-cancel-ch01-remake-e1.png"
+      ],
+      "limitations": [
+        "驗證目標modal取消返回action overlay且角色／資源／回合不變；不重複既有command0入口格，也不證明技能確認結果。"
+      ]
     }
   ]
 }
