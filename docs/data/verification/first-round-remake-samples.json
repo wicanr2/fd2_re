@@ -431,6 +431,24 @@
       ]
     },
     {
+      "id": "platform-linux-appimage-title-load-town-ch02",
+      "layer": "ending_platform",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/release-appimage-title-load-town-ch02-e1.json"
+      ],
+      "limitations": [
+        "合法重製節點存檔只證明 AppImage 的普通標題 LOAD 可抵達早期城鎮；不外推長程戰役、音訊或非 Debian 實體桌面。"
+      ]
+    },
+    {
       "id": "save-windows-wine-town-write",
       "layer": "save_party",
       "result": "pass",

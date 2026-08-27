@@ -7918,3 +7918,16 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   END接受逐字、Windows城鎮F5原子存檔及第30戰前冷讀持續隊伍五筆。
 - 清冊由19筆登記／14筆合格提升為24／19；分層為戰役2、戰鬥4、介面7、存檔5、
   終局／平台1。第三方晚期存檔、Wine非真機及精確tick限制均原樣保留，不提升E2。
+
+## 2026-08-27：Linux AppImage 普通標題 LOAD 抽樣
+
+- 遵守「卡關即跳過」：第1戰角色短路徑第一次因即時冷建置錯過輸入，第二次落入
+  START 並因缺正式 FDOTHER 入口失敗即關閉；停止該路徑，不重打戰鬥。
+- 現行 5,327,352-byte AppImage（SHA-256 `ea132427…7373`）改由普通 X11 鍵盤走
+  `Escape→Down→Return→Return` 的正式標題 LOAD，從合法重製槽位抵達
+  `town_ch02`。狀態旁車為 frame 900、0 dialog、無 battle event／turn staging；
+  原始資產唯讀，XDG 存檔層獨立可寫，容器無網路且一次性。
+- F5 哨兵重跑因固定 frame 與實際輸入時點漂移而落入 START，哨兵未移除；該次
+  明確作廢，不宣稱 Linux F5 writer。Windows／Wine既有F5證據不受影響。
+- 抽樣清冊成為25筆登記／20筆合格；終局／平台由1提升為2。固定標題時鐘與合法
+  節點存檔限制仍保留為 `RUNTIME-E1`，不提升長程通關或實體桌面。

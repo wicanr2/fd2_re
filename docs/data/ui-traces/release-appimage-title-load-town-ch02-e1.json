@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-27",
+  "classification": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "package": {
+    "path": "remake/packaging/dist/FD2-x86_64.AppImage",
+    "bytes": 5327352,
+    "sha256": "ea132427a657b072b70d6df6683f8322c9390f63cd157f09a1ebe0b2c2737373",
+    "launch": "--appimage-extract-and-run"
+  },
+  "environment": {
+    "container": "fd2-go-test-local:latest",
+    "display": "Docker Xvfb :99",
+    "network": "none",
+    "original_assets": "remake/assets 以唯讀 XDG 玩家資產層掛載",
+    "writable_data": "獨立 /tmp XDG 覆蓋層",
+    "input_helper": "tools/docker/fd2-xtest-input.c",
+    "deterministic_capture_clock": true
+  },
+  "save_fixture": {
+    "format": "重製 JSON 槽位 0；合法節點邊界，不是原版 FD2.SAV",
+    "node": "town_ch02",
+    "chapter": 2,
+    "gold": 279,
+    "sha256": "121c8bf87eb37d3adf09656b510d7d2511ffe76730ee165ba2130ff28e51b457"
+  },
+  "input": {
+    "kind": "普通 X11 鍵盤按下／放開事件",
+    "timeline": [
+      "Escape 跳到穩定標題選單",
+      "Down 選擇 LOAD",
+      "Return 進入四槽 selector",
+      "Return 確認槽位 0"
+    ]
+  },
+  "observed": {
+    "frame": 900,
+    "campaign_node": "town_ch02",
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false,
+    "action_overlay_open": false,
+    "load_error": ""
+  },
+  "capture": {
+    "png_sha256": "1719bf5e044d94ad246340e9637439c4ad8f49308848de96b20be637185da320",
+    "state_sha256": "c2e8dabdfbf857ae63f5b28f7bb4a9e765d9b89c71d3ff3e55a3db328df356f0",
+    "retention": "本輪原始擷取保留於本機暫存；受版控證據保存輸入、狀態、封包與雜湊。"
+  },
+  "limitations": [
+    "固定標題與截圖時鐘使重製側維持 RUNTIME-E1，不宣稱原版 BIOS tick 一致。",
+    "起點是合法重製節點存檔，只證明封包的標題 LOAD 可進早期城鎮，不證明從第1戰勝利連續產生。",
+    "後續哨兵重跑因按鍵時點落入 START 分支而未證明 F5 writer；該嘗試不計入本證據，也不把驗證腳本問題記為產品缺陷。",
+    "本輪不驗證音訊、非 Debian 發行版或實體桌面環境。"
+  ]
+}

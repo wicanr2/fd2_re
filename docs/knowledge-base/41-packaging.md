@@ -16,6 +16,15 @@
 > 這取代下方較早候選作為最新封包證據，但仍不冒稱Windows／macOS實體機的視窗、
 > 輸入、存檔、音訊、簽章或Gatekeeper驗收。
 
+> **2026-08-27 Linux 普通輸入補證：**本機現存 5,327,352-byte AppImage（SHA-256
+> `ea132427…7373`）已由一次性無網路 Docker／Xvfb 從空白程序啟動，以普通 X11
+> `Escape→Down→Return→Return` 走正式標題 LOAD，讀取合法重製槽位並抵達
+> `town_ch02`；狀態旁車確認沒有對話、戰鬥事件或 turn staging 殘留。證據見
+> [`release-appimage-title-load-town-ch02-e1.json`](../data/ui-traces/release-appimage-title-load-town-ch02-e1.json)。
+> 固定標題時鐘與節點存檔來源使它維持 `RUNTIME-E1`，不外推長程戰役、音訊或
+> 非 Debian 實體桌面。後續 F5 哨兵試跑因按鍵時點落入 START 分支而作廢，沒有
+> 把驗證腳本失敗寫成產品缺陷。
+
 > **可攜雜湊契約：**Windows原生工作流程現在把ZIP的SHA-256寫成只含相對檔名的
 > `fd2-windows-x86_64.sha256`，在runner內重新計算比對後，與ZIP一起上傳。
 > macOS原生工作流程同樣產生`FD2-macos-universal.sha256`，逐一記錄DMG與tar.gz，
