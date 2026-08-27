@@ -1,6 +1,6 @@
 # FD2 第一輪重製進度
 
-> 更新日期：2026-08-27。這是面向貢獻者的動態進度頁；原版證據層級仍以
+> 更新日期：2026-08-28。這是面向貢獻者的動態進度頁；原版證據層級仍以
 > [`58-fd2-exe-re-coverage.md`](knowledge-base/58-fd2-exe-re-coverage.md)為準，
 > 有效工作前沿以 [`91-worklist.md`](knowledge-base/91-worklist.md)為準。
 
@@ -49,7 +49,7 @@
 受版控清冊位於
 [`first-round-remake-samples.json`](data/verification/first-round-remake-samples.json)，
 以`tools/check_remake_samples.py`自動拒絕重複ID、遺失證據檔及手動灌水的資格欄位。
-目前登記46筆證據，其中41筆符合正常輸入與正式重製路徑資格：戰役／戰間8／12、
+目前登記47筆證據，其中42筆符合正常輸入與正式重製路徑資格：戰役／戰間9／12、
 戰鬥／AI 9／18、介面12／12、存檔／持續隊伍10／10、終局／平台2／8。最新一輪把
 既有正常輸入證據按不同驗收不變量補登：戰場HUD、command0調色盤、END接受逐字、
 Windows城鎮存檔寫入與第30戰前冷讀持續隊伍；沒有以同一結果跨層重複計數。介面樣本
@@ -92,6 +92,9 @@ turn1／round1、同一camera與cursor，沒有殘留modal、dialog或turn stagi
 為避免樣本偏在早期，同樣以正式LOAD與普通鍵盤抽驗中期native variant1城鎮：
 `town_ch17→preparation_ch17`前置確認可達，limit15且無暫態殘留。取消返回重播
 沒有通過標題起點，已排除，因此本格只宣稱中期入口。
+晚期再以正式LOAD普通輸入完成`town_ch26→preparation_ch26→town_ch26`；入口固定
+town-backed前置確認與limit15，取消後保留gold12000且沒有對話／事件／回合暫態。
+空名冊與合法節點存檔只證明晚期整備往返，不冒稱第25戰長程來源、選人或進戰。
 其餘5筆保留為有用旁證，但因route patch、專用截圖入口、typed test或非互動封包
 檢查而不計入95%門檻。這個數字衡量的是已整理樣本，不是把既有功能降級成未完成。
 

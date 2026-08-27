@@ -872,6 +872,28 @@
       "limitations": [
         "與Windows封包啟動樣本共用程序，但本樣本獨立驗證普通F5寫入可解析原子JSON與town_ch02節點；Wine不取代Windows真機。"
       ]
+    },
+    {
+      "id": "campaign-late-preparation-cancel-ch26",
+      "layer": "campaign_intermission",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-late-preparation-cancel-ch26-remake-e1.json",
+        "docs/data/ui-traces/native-late-preparation-entry-ch26-remake-e1-state.json",
+        "docs/data/ui-traces/native-late-preparation-return-ch26-remake-e1-state.json",
+        "docs/figures/native-late-preparation-entry-ch26-remake-e1.png",
+        "docs/figures/native-late-preparation-return-ch26-remake-e1.png"
+      ],
+      "limitations": [
+        "合法晚期重製節點存檔起點只驗證town_ch26至整備前置確認及取消返回；不證明第25戰長程來源、選人、進戰或原版同狀態。"
+      ]
     }
   ]
 }

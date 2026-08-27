@@ -8094,3 +8094,15 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   town-backed、gold5000且無load error／dialog／battle event／turn staging。
 - 預定取消返回的另一次重播在標題時序誤入START，未抵達測試起點，已排除且不記為
   產品失敗；本格不宣稱往返。清冊現為46筆登記、41筆合格；戰役／戰間8／12。
+
+## 2026-08-28：晚期第26章城鎮整備普通輸入往返
+
+- 一次性Docker以正式`saveData`／`writeSaveFile`產生合法`town_ch26`節點存檔；
+  chapter26、gold12000，SHA-256為`d7811273c9f43061fe1eae6547890507a3fe48c234baf34e6be524fad02f9adf`。
+  空名冊使本格只驗證整備前置確認與取消，不冒稱選人或進戰。
+- 正式標題LOAD後以普通鍵盤Left×2、Return抵達`preparation_ch26`；frame1800旁車
+  固定town-backed、limit15、gold12000且無對話／事件／回合暫態。第二次相同前綴
+  送Escape，frame1950返回`town_ch26`並保留gold12000。
+- 首次返回擷取因輸入工具早於Xvfb socket而沒有送鍵；環境探針又因映像不含
+  `xdpyinfo`而在遊戲前安全退出。改以X11 socket閘門後同一輸入序列一次通過；兩者
+  均未抵達測試起點，不記為產品失敗。清冊現為47筆登記、42筆合格；戰役／戰間9／12。

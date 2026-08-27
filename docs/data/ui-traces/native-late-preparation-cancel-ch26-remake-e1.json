@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-28",
+  "evidence_level": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "scope": "正式標題 LOAD 後以普通鍵盤完成晚期 town_ch26→preparation_ch26 前置確認→取消返回 town_ch26",
+  "save_fixture": {
+    "format": "重製 JSON 槽位0；合法節點邊界測試起點，不是原版 FD2.SAV",
+    "node": "town_ch26",
+    "chapter": 26,
+    "gold": 12000,
+    "party": "空名冊，因此本樣本不驗證選人或出戰確認",
+    "sha256": "d7811273c9f43061fe1eae6547890507a3fe48c234baf34e6be524fad02f9adf",
+    "creation": "一次性 Docker 內以正式 saveData／writeSaveFile 契約產生；存檔不加入版控"
+  },
+  "execution": {
+    "environment": "一次性、無網路、UID/GID 1000 的 fd2-go-test-local Docker／Xvfb",
+    "runtime_sha256": "535d7a41f46f8f06b876f594557fb4ac8118dfdfae60106f9ce80b0b092b4191",
+    "input_helper": "tools/docker/fd2-xtest-input.c，只送普通 X11 鍵盤事件",
+    "timeline": [
+      "F10等待初始化，Escape略過可略過開場",
+      "Down、Return開啟LOAD，Return確認槽位0並進入town_ch26",
+      "等待晚期城鎮穩定，Left×2抵達選項2，Return進入preparation_ch26",
+      "第二次完整重播相同前綴後，以普通Escape取消並返回town_ch26"
+    ],
+    "discarded_attempts": [
+      "第一個返回擷取在Xvfb socket就緒前啟動輸入工具，沒有送出按鍵；它未抵達測試起點，排除且不記為產品失敗。",
+      "補測環境探針因映像不含xdpyinfo而在遊戲啟動前退出；改以X11 socket閘門後，同一遊戲輸入序列一次通過。"
+    ]
+  },
+  "entry_capture": {
+    "frame": 1800,
+    "campaign_node": "preparation_ch26",
+    "gold": 12000,
+    "preparation": {
+      "selecting": false,
+      "confirming": false,
+      "confirm_selection": 0,
+      "selection": 0,
+      "limit": 15,
+      "candidate_count": 0,
+      "deployed_count": 0,
+      "town_backed": true
+    },
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false,
+    "state": "native-late-preparation-entry-ch26-remake-e1-state.json",
+    "state_sha256": "47b58a8d15430c7bb0a72f18e7853f72ff14e10c1376779dfd897367f8dace8a",
+    "screenshot": "../../figures/native-late-preparation-entry-ch26-remake-e1.png",
+    "screenshot_sha256": "4ce30c85b83a3e670977187eabe35a0c676509180781eb22047f066793a86745"
+  },
+  "return_capture": {
+    "frame": 1950,
+    "campaign_node": "town_ch26",
+    "gold": 12000,
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false,
+    "state": "native-late-preparation-return-ch26-remake-e1-state.json",
+    "state_sha256": "bfd44874b1c281c832a3492a087ed928672553d57ef4bf5607b790fe961d7a5e",
+    "screenshot": "../../figures/native-late-preparation-return-ch26-remake-e1.png",
+    "screenshot_sha256": "439d612d1cb1b5077d9aef4c1961a5dd77e6ade82f27635cd6c02c3e1e72a17a"
+  },
+  "validated_invariants": [
+    "正式標題LOAD發布晚期town_ch26後，原生selector選項2以普通Return進入town-backed preparation_ch26。",
+    "入口旁車明確位於前置確認而非選人或最終確認，limit15且沒有其他transient。",
+    "同一普通輸入前綴後送Escape，沿正式cancel邊界返回town_ch26並保留gold12000。"
+  ],
+  "limitations": [
+    "空名冊合法測試起點只驗證前置確認與取消；不證明角色選取、配額填滿、最終確認或進戰。",
+    "不證明第25戰勝利長程來源、原版PLAYER-E2、音訊或逐像素一致。",
+    "本樣本只計為一個晚期戰間往返交易，不把入口與返回畫面拆成兩格。"
+  ]
+}

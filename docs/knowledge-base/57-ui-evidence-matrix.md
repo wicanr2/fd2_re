@@ -434,6 +434,13 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 > [`native-mid-preparation-entry-ch17-remake-e1.json`](../data/ui-traces/native-mid-preparation-entry-ch17-remake-e1.json)。
 > 取消返回重播未通過標題起點而排除，故只列中期入口E1，不外推選人或往返。
 
+> **2026-08-28 UI-11 晚期整備往返補證：** 合法`town_ch26`節點存檔由正式標題
+> LOAD與普通X11鍵盤進晚期城鎮，再以選項2抵達`preparation_ch26`前置確認；第二次
+> 相同前綴送Escape後返回`town_ch26`。入口固定town-backed、limit15，返回保留
+> gold12000且無暫態；證據見
+> [`native-late-preparation-cancel-ch26-remake-e1.json`](../data/ui-traces/native-late-preparation-cancel-ch26-remake-e1.json)。
+> 空名冊與合法節點起點使本格只達重製E1，不證明第25戰長程來源、選人或進戰。
+
 > **2026-08-26 UI-09 service2 正式輸入補證：** 四項商店選單 Right×2、角色名冊、
 > 原版 item scan code、相容／不相容交易、空背包、0→11收合、同角色名冊重開及返回
 > service selection 2 現由正式鍵盤與回歸共用 typed consumer。Down（scan80）才會在
