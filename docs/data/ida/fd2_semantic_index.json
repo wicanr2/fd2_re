@@ -9,6 +9,38 @@
   "address_space": "IDA flat-loader linear address",
   "entries": [
     {
+      "address": "0x10b4e",
+      "classification": "product",
+      "semantic": "依 FDFIELD group 索引追加物化戰場單位",
+      "confidence": "已證實",
+      "evidence": ["docs/knowledge-base/50-cutscene-script-system-design.md", "docs/knowledge-base/56-fd2-remake-sdd.md"],
+      "scope": "group constructor 與 unit-count consumer；個別 caller 的章節語意及後續演出仍須另證"
+    },
+    {
+      "address": "0x112a5",
+      "classification": "product",
+      "semantic": "JOIN persistent record constructor",
+      "confidence": "已證實",
+      "evidence": ["docs/knowledge-base/50-cutscene-script-system-design.md", "docs/knowledge-base/56-fd2-remake-sdd.md"],
+      "scope": "constructor 的 raw record writers；角色劇情身分與各 caller 的入隊條件仍須另證"
+    },
+    {
+      "address": "0x11506",
+      "classification": "product",
+      "semantic": "戰後 runtime record 到 persistent roster 的配對、複製與暫態清理",
+      "confidence": "已證實",
+      "evidence": ["docs/data/fd2_persistent_roster_ida.txt", "docs/knowledge-base/50-cutscene-script-system-design.md"],
+      "scope": "完整 0x50-byte copy 與已列 raw mutation；ID 0 特例及 caller-specific 分支不可外推成通用存檔規則"
+    },
+    {
+      "address": "0x11cac",
+      "classification": "product",
+      "semantic": "原生戰場索引畫面組合與發布排程",
+      "confidence": "已證實",
+      "evidence": ["docs/knowledge-base/50-cutscene-script-system-design.md", "docs/knowledge-base/56-fd2-remake-sdd.md"],
+      "scope": "已證實的 buffer、stride、overlay 與 selector 路徑；各 caller 的畫面狀態及逐幀一致性仍須另證"
+    },
+    {
       "address": "0x11d40",
       "classification": "product",
       "semantic": "基準 DAC 色盤範圍減算與下限夾限",
@@ -33,6 +65,22 @@
       "scope": "callee；caller 的座標來源與玩家可見時序仍須另證"
     },
     {
+      "address": "0x12d7b",
+      "classification": "product",
+      "semantic": "依 runtime unit 座標聚焦並委派地圖捲動",
+      "confidence": "已證實",
+      "evidence": ["docs/knowledge-base/50-cutscene-script-system-design.md", "docs/knowledge-base/56-fd2-remake-sdd.md"],
+      "scope": "runtime unit 到 0x12CEA 的座標橋接與安全條件；caller 的演出意圖仍須另證"
+    },
+    {
+      "address": "0x134e4",
+      "classification": "product",
+      "semantic": "清除移動／演出姿態後觸發戰場重繪",
+      "confidence": "已證實",
+      "evidence": ["docs/knowledge-base/13-battle-menu-system.md", "docs/knowledge-base/50-cutscene-script-system-design.md"],
+      "scope": "callee 的 raw pose reset 與 redraw；不將所有 caller 統稱為同一個高階事件"
+    },
+    {
       "address": "0x13536",
       "classification": "product",
       "semantic": "逐筆清除 materialized runtime record byte+5 bit7",
@@ -47,6 +95,14 @@
       "confidence": "已證實",
       "evidence": ["docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"],
       "scope": "callee 逐格更新與 present；各 caller 目標座標來源仍須另證"
+    },
+    {
+      "address": "0x1366a",
+      "classification": "product",
+      "semantic": "ACTING 資源逐步播放與單位 pose／位置更新迴圈",
+      "confidence": "已證實",
+      "evidence": ["docs/knowledge-base/50-cutscene-script-system-design.md", "docs/knowledge-base/54-acting-pose-semantics.md"],
+      "scope": "已證實的資源、tick、pose writer 與 redraw consumer；個別 ACTING 索引的劇情含義仍須另證"
     },
     {
       "address": "0x13fd4",
@@ -87,6 +143,14 @@
       "confidence": "已證實",
       "evidence": ["docs/data/ida/fd2_ai_mode11_full_ida_20260810.txt"],
       "scope": "兩段順序的一部分；完整演出與 E2 未閉合"
+    },
+    {
+      "address": "0x15f84",
+      "classification": "product",
+      "semantic": "FDTXT 劇情對話版面、控制碼與逐字 glyph renderer",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_story_dialogue_layout_ida.txt", "docs/knowledge-base/09-story-and-dialogue.md"],
+      "scope": "文字控制碼、版面與 glyph 發布；caller 的說話者、背景、嘴型與完整視窗生命週期仍須另證"
     },
     {
       "address": "0x17aa9",
@@ -135,6 +199,14 @@
       "confidence": "已證實",
       "evidence": ["docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"],
       "scope": "通用 callee；resource、delay、skippable 與相鄰畫面由 caller 決定"
+    },
+    {
+      "address": "0x205da",
+      "classification": "product",
+      "semantic": "LOADCH 章節資源與戰場狀態載入入口",
+      "confidence": "已證實",
+      "evidence": ["docs/knowledge-base/50-cutscene-script-system-design.md", "docs/knowledge-base/56-fd2-remake-sdd.md"],
+      "scope": "章節載入、共用尾端與 caller context；不把後續 group constructor、演出或戰役路由併入此函式"
     },
     {
       "address": "0x22253",
@@ -295,6 +367,14 @@
       "confidence": "已證實",
       "evidence": ["docs/data/ida/fd2_ch23_post_ida.txt", "docs/data/ida/fd2_xrefs.json"],
       "scope": "IDA FLIRT 命名與 caller cleanup；不是遊戲 renderer"
+    },
+    {
+      "address": "0x375b2",
+      "classification": "runtime",
+      "semantic": "轉跳至 0x3DCCD 的 busy-wait delay thunk",
+      "confidence": "已證實",
+      "evidence": ["docs/knowledge-base/39-ani-afm-format.md"],
+      "scope": "IDA thunk j___delay 與直接目標；重製採硬體規格近似，不追求 DOS wall-clock 逐週期一致"
     },
     {
       "address": "0x4dbfc",

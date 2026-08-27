@@ -7814,3 +7814,20 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 完整匯出經現行壓縮器處理後與版控清冊逐欄位相同：函式1,305、產品37、
   runtime170、unknown1,098、語意註記38。`1,089` 是數字次序誤寫；本輪沒有新增
   語意分類，也沒有把 unknown 批次提升為硬體、runtime 或產品函式。
+
+## 2026-08-27：未知函式全專案足跡稽核與窄語意回填
+
+- 將上述1,098個 unknown 函式起點／範圍與全專案 Markdown、IDA／Capstone 匯出及
+  受版控 JSON 交叉比對；排除清冊自我命中後，508個函式起點曾被精確提及，524個
+  函式範圍內留有位址足跡。這證實「unknown」多半是尚未進語意索引，不表示歷史
+  工作從未碰過；但 raw 位址、call-site 或散文猜測仍不足以解除 unknown。
+- 只回填十筆已具 caller、consumer、writer／控制流與分級證據的窄語意：產品函式
+  `0x10B4E`、`0x112A5`、`0x11506`、`0x11CAC`、`0x12D7B`、`0x134E4`、
+  `0x1366A`、`0x15F84`、`0x205DA`，以及 runtime delay thunk `0x375B2`。
+  所有註記保留原始 IDA 名稱與線性位址，scope 明示不可外推的 caller-specific 語意。
+- 以相同授權 IDA Pro 9.4 Docker、唯讀固定雜湊 `/input/FD2.EXE` 從零重生；完整
+  JSON 為2,304,747 bytes，現行清冊為函式1,305、產品46、runtime171、unknown1,088、
+  語意註記48。其餘位址足跡沒有批次改名。
+- remake 能打包是因為封包只包含可編輯資料、Go／Ebiten engine 與已接通的玩家
+  垂直切片，並由失敗即關閉與抽樣測試驗證；它不執行原版 EXE，也不證明未分類
+  helper。封包驗證、`RUNTIME-E1` 與未修改原版 `PLAYER-E2` 仍是三個不同閘門。

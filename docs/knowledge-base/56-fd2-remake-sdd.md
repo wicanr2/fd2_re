@@ -286,9 +286,9 @@ repo 提供不含 license／遊戲資料的 `tools/docker/fd2-ida.Dockerfile` �
 只在授權 IDA Docker 匯出原始函式邊界、IDA 分析名稱、旗標與直接 caller；
 `tools/compact_fd2_function_inventory.py` 產生受版控的
 [`fd2_function_inventory.json`](../data/ida/fd2_function_inventory.json)。固定雜湊輸入
-辨識1,305函式；現行語意索引38筆中，37筆標為產品、1筆`0x37416`標為runtime；
-後者覆蓋同一FLIRT runtime分類而不重複計數。目前為產品37、Watcom runtime170、
-未知1,098。語意只從
+辨識1,305函式；現行語意索引48筆中，46筆標為產品、2筆標為runtime；
+語意索引覆蓋同一FLIRT分類而不重複計數。目前為產品46、runtime171、
+未知1,088。語意只從
 [`fd2_semantic_index.json`](../data/ida/fd2_semantic_index.json) 合併，雜湊不符、
 註記未落在函式起點或缺推論等級／證據時直接拒絕。handler IR 同步拆成
 `native_call`、`unresolved_native_call`、`unknown`；三者都保留原始定位，前兩者
@@ -298,9 +298,12 @@ repo 提供不含 license／遊戲資料的 `tools/docker/fd2-ida.Dockerfile` �
 一次性 tmpfs 從零重生完整清冊。IDAPython 9.4 以 ASCII codec 開啟輸入路徑，直接
 使用主機中文目錄會在 `炎龍騎士團` 觸發 `UnicodeEncodeError`；正確流程是把同一
 檔案唯讀綁定為容器內 `/input/FD2.EXE`，仍由匯出器核對 size／MD5／SHA-256。
-本輪完整 JSON 2,299,687 bytes，壓縮結果與受版控清冊逐欄位完全相同：1,305函式、
-產品37、runtime170、unknown1,098、語意註記38。這是工具與清冊重生證據，不提升
-任何 unknown 函式的玩法語意。
+第一次完整 JSON 為2,299,687 bytes，壓縮結果與當時受版控清冊逐欄位完全相同：
+1,305函式、產品37、runtime170、unknown1,098、語意註記38。後續全專案位址足跡
+稽核找到508個精確 unknown 起點與524個 range 命中，但命中本身不提升語意；只有
+具 caller／consumer／writer 及分級證據的十筆回填索引。第二次從同一固定雜湊
+原檔重生為產品46、runtime171、unknown1,088、語意註記48。這項設計刻意讓
+「曾被提及」與「可分類」分離，避免文件密度或打包成功把未知函式誤升格。
 
 2026-07-29 起，repo 根目錄 `AGENTS.md` 是跨 session 的操作契約，
 `CLAUDE.md` 只保存專案意圖並指向它。Docker container 必須是有界生命週期：

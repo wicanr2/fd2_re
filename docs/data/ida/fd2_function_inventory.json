@@ -15,11 +15,11 @@
   "imagebase": "0x0",
   "function_count": 1305,
   "classification_counts": {
-    "unknown": 1098,
-    "product": 37,
-    "runtime": 170
+    "unknown": 1088,
+    "product": 46,
+    "runtime": 171
   },
-  "semantic_annotation_count": 38,
+  "semantic_annotation_count": 48,
   "classification_note": "product/driver only come from the versioned semantic index; runtime is a mechanical IDA FUNC_LIB classification after the configured FLIRT signatures; every other function remains unknown",
   "detail_note": "每筆保留 IDA 函式邊界、分析名稱、旗標、直接 caller 函式與分級語意；逐 call-site 交叉參照由同一匯出器重生，不在此精簡版重複保存",
   "functions": [
@@ -173,11 +173,23 @@
       "direct_code_xref_count": 58,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x10b4e",
+          "classification": "product",
+          "semantic": "依 FDFIELD group 索引追加物化戰場單位",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/knowledge-base/50-cutscene-script-system-design.md",
+            "docs/knowledge-base/56-fd2-remake-sdd.md"
+          ],
+          "scope": "group constructor 與 unit-count consumer；個別 caller 的章節語意及後續演出仍須另證"
+        }
+      ]
     },
     {
       "start": "0x10c50",
@@ -307,11 +319,23 @@
       "direct_code_xref_count": 28,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x112a5",
+          "classification": "product",
+          "semantic": "JOIN persistent record constructor",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/knowledge-base/50-cutscene-script-system-design.md",
+            "docs/knowledge-base/56-fd2-remake-sdd.md"
+          ],
+          "scope": "constructor 的 raw record writers；角色劇情身分與各 caller 的入隊條件仍須另證"
+        }
+      ]
     },
     {
       "start": "0x1145a",
@@ -363,11 +387,23 @@
       "direct_code_xref_count": 24,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x11506",
+          "classification": "product",
+          "semantic": "戰後 runtime record 到 persistent roster 的配對、複製與暫態清理",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/fd2_persistent_roster_ida.txt",
+            "docs/knowledge-base/50-cutscene-script-system-design.md"
+          ],
+          "scope": "完整 0x50-byte copy 與已列 raw mutation；ID 0 特例及 caller-specific 分支不可外推成通用存檔規則"
+        }
+      ]
     },
     {
       "start": "0x115b6",
@@ -577,11 +613,23 @@
       "direct_code_xref_count": 83,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x11cac",
+          "classification": "product",
+          "semantic": "原生戰場索引畫面組合與發布排程",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/knowledge-base/50-cutscene-script-system-design.md",
+            "docs/knowledge-base/56-fd2-remake-sdd.md"
+          ],
+          "scope": "已證實的 buffer、stride、overlay 與 selector 路徑；各 caller 的畫面狀態及逐幀一致性仍須另證"
+        }
+      ]
     },
     {
       "start": "0x11d40",
@@ -1086,11 +1134,23 @@
       "direct_code_xref_count": 28,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x12d7b",
+          "classification": "product",
+          "semantic": "依 runtime unit 座標聚焦並委派地圖捲動",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/knowledge-base/50-cutscene-script-system-design.md",
+            "docs/knowledge-base/56-fd2-remake-sdd.md"
+          ],
+          "scope": "runtime unit 到 0x12CEA 的座標橋接與安全條件；caller 的演出意圖仍須另證"
+        }
+      ]
     },
     {
       "start": "0x12dac",
@@ -1290,11 +1350,23 @@
       "direct_code_xref_count": 25,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x134e4",
+          "classification": "product",
+          "semantic": "清除移動／演出姿態後觸發戰場重繪",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/knowledge-base/13-battle-menu-system.md",
+            "docs/knowledge-base/50-cutscene-script-system-design.md"
+          ],
+          "scope": "callee 的 raw pose reset 與 redraw；不將所有 caller 統稱為同一個高階事件"
+        }
+      ]
     },
     {
       "start": "0x13512",
@@ -1507,11 +1579,23 @@
       "direct_code_xref_count": 110,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x1366a",
+          "classification": "product",
+          "semantic": "ACTING 資源逐步播放與單位 pose／位置更新迴圈",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/knowledge-base/50-cutscene-script-system-design.md",
+            "docs/knowledge-base/54-acting-pose-semantics.md"
+          ],
+          "scope": "已證實的資源、tick、pose writer 與 redraw consumer；個別 ACTING 索引的劇情含義仍須另證"
+        }
+      ]
     },
     {
       "start": "0x1399c",
@@ -2267,11 +2351,23 @@
       "direct_code_xref_count": 296,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x15f84",
+          "classification": "product",
+          "semantic": "FDTXT 劇情對話版面、控制碼與逐字 glyph renderer",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_story_dialogue_layout_ida.txt",
+            "docs/knowledge-base/09-story-and-dialogue.md"
+          ],
+          "scope": "文字控制碼、版面與 glyph 發布；caller 的說話者、背景、嘴型與完整視窗生命週期仍須另證"
+        }
+      ]
     },
     {
       "start": "0x164e8",
@@ -5212,11 +5308,23 @@
       "direct_code_xref_count": 28,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x205da",
+          "classification": "product",
+          "semantic": "LOADCH 章節資源與戰場狀態載入入口",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/knowledge-base/50-cutscene-script-system-design.md",
+            "docs/knowledge-base/56-fd2-remake-sdd.md"
+          ],
+          "scope": "章節載入、共用尾端與 caller context；不把後續 group constructor、演出或戰役路由併入此函式"
+        }
+      ]
     },
     {
       "start": "0x206c5",
@@ -14069,11 +14177,22 @@
       "direct_code_xref_count": 185,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "runtime",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x375b2",
+          "classification": "runtime",
+          "semantic": "轉跳至 0x3DCCD 的 busy-wait delay thunk",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/knowledge-base/39-ani-afm-format.md"
+          ],
+          "scope": "IDA thunk j___delay 與直接目標；重製採硬體規格近似，不追求 DOS wall-clock 逐週期一致"
+        }
+      ]
     },
     {
       "start": "0x375c0",
