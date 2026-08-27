@@ -7283,3 +7283,23 @@ BIOS tick gate與DAC更新，不重開反組譯。`0x24C4C`／index2產生3筆
 [`fd2_ch23_post_native_dialogue.md`](../data/ida/fd2_ch23_post_native_dialogue.md)。
 驗收包含全量raw equality、正式輸入、兩段staging、同步、整備與存讀檔。此項最高為
 `RUNTIME-E1`；未修改DOSBox同狀態、精確BIOS tick與音訊另列E2。
+
+## 玩家第 21 戰戰後 30 句原生對話與天空之鑰長鏈（2026-08-27）
+
+本切片沿用已閉合的`sub_240FA`、26-slot layout、ACT63／64與`0x24336`，不重開
+通用renderer。固定版`FDTXT.DAT`第21項為4,660 bytes；六個
+`(caller,string_index)`呼叫組依序提供#5十句、#7一句、#8三句、#9兩句、
+#10十句與#6四句，共30筆`NativeDialogueLayout`。
+
+可編輯campaign仍以分組`dialog`保存原始劇情結構，`native_dialogues`數量必須
+嚴格等於`count`。進入cutscene時，`ExpandNativeDialogueGroups`才將每組投影成
+一句一拍並依control決定上下框；陣列長度、layout或明示upper不一致即失敗即關閉。
+戰後仍保有battle state時，收框座標由`State.NativeMapViewState`取得；只有非戰場
+故事場景才使用story view，兩者均缺時拒絕播放。
+
+正式成功臂以具型別輸入完成共同#5十句，再依#7→ACT63→#8→ACT64→#9→
+`0x24336`→#10播放，共26句；之後才JOIN24／23、同步隊伍、進`town_ch22`並驗證
+存讀檔。材料不足#6四句已由原始資料等值驗證與展開測試固定，尚未提升為獨立玩家輸入
+長鏈。原始位址、雜湊與控制碼見
+[`fd2_ch20_sky_key_sequence_ida.txt`](../data/ida/fd2_ch20_sky_key_sequence_ida.txt)。
+本項最高為`RUNTIME-E1`；未修改DOSBox同狀態與第一個動態調色盤相位另列E2。

@@ -248,6 +248,9 @@ func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing
 
 	seen := make(map[nativeCh20SkyKeyPhase]bool)
 	seenAct63, seenAct64 := false, false
+	skyPaletteStart := -1
+	type nativeDialogueKey struct{ stringIndex, utterance int }
+	seenNativeDialogue := make(map[nativeDialogueKey]bool, 26)
 	screen := ebiten.NewImage(logicalW, logicalH)
 	evidenceOut := os.Getenv("FD2_SKY_KEY_EVIDENCE_OUT")
 	evidenceTargets := map[nativeCh20SkyKeyPhase]int{
@@ -262,6 +265,9 @@ func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing
 			seenAct64 = seenAct64 || len(job.acting) == 5
 		}
 		if job := g.nativeCh20SkyKey; job != nil {
+			if skyPaletteStart < 0 {
+				skyPaletteStart = g.nativeFDOTHERPalettePhase
+			}
 			seen[job.phase] = true
 			if !g.drawNativeCh20SkyKey(screen) {
 				t.Fatalf("天空之鑰 phase=%d frame=%d 無法呈現", job.phase, job.frame)
@@ -278,10 +284,24 @@ func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing
 			g.stepNativeCh20SkyKey()
 		}
 		if len(g.dialog) != 0 {
-			g.dlgScrollT = 0
-			if g.dlgAdvance() && len(g.dialog) == 0 {
-				g.beatAdvance()
+			current := g.dialog[len(g.dialog)-1]
+			if current.NativeDialogue == nil || current.Upper == nil ||
+				current.NativeDialogue.SourceDAT != "FDTXT_021" ||
+				len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) < 5 {
+				t.Fatalf("第21戰戰後對話遺失原生生命週期: %#v", current)
 			}
+			seenNativeDialogue[nativeDialogueKey{
+				stringIndex: current.NativeDialogue.StringIndex,
+				utterance:   current.NativeDialogue.Utterance,
+			}] = true
+			if g.nativeStoryDialogueAtInputWait() &&
+				!g.handleNativeStoryInput(g.camp.Node(), nativeStoryInput{enter: true}) {
+				t.Fatal("第21戰戰後正式故事輸入遭拒")
+			}
+			if err := g.Update(); err != nil {
+				t.Fatal(err)
+			}
+			continue
 		}
 		g.tick(1)
 		if g.loadErr != "" {
@@ -294,13 +314,16 @@ func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing
 	if !seenAct63 || !seenAct64 {
 		t.Fatalf("天空之鑰相鄰 ACTING 未完整消費: act63=%v act64=%v", seenAct63, seenAct64)
 	}
+	if len(seenNativeDialogue) != 26 {
+		t.Fatalf("第21戰天空之鑰成功臂原生對話=%d，want 26", len(seenNativeDialogue))
+	}
 	for phase := nativeCh20SkyKeyPan; phase <= nativeCh20SkyKeyTailFrames; phase++ {
 		if !seen[phase] {
 			t.Errorf("天空之鑰演出未經過 phase=%d", phase)
 		}
 	}
-	if g.nativeFDOTHERPalettePhase != (5+68)&15 {
-		t.Errorf("0x4DFCC 相對循環=%d，want %d", g.nativeFDOTHERPalettePhase, (5+68)&15)
+	if skyPaletteStart < 0 || g.nativeFDOTHERPalettePhase != (skyPaletteStart+68)&15 {
+		t.Errorf("0x4DFCC 相對循環 start=%d got=%d，want %d", skyPaletteStart, g.nativeFDOTHERPalettePhase, (skyPaletteStart+68)&15)
 	}
 	if !g.partyMembers[24] || !g.partyMembers[23] || len(g.partyJoinOrder) < 2 ||
 		g.partyJoinOrder[len(g.partyJoinOrder)-2] != 24 || g.partyJoinOrder[len(g.partyJoinOrder)-1] != 23 {

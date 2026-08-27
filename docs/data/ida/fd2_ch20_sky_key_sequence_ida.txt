@@ -259,6 +259,52 @@ layout 在擺位前驗證全部 slots；ACT beat 在啟動時驗證其 targets�
 不得只播放對話並略過該段演出。證據等級為
 `RE-CLOSED／DATA-READY`；正式執行期與玩家路徑仍須以下方回歸驗收。
 
+### 5.2 六個分支對話 tuple 與原生版面規格（2026-08-27）
+
+`sub_240FA` 的直接指令固定五個 `0x15F84` callsite，其中 `0x24308` 的
+text index 由成功／不足兩臂在 `0x242E5`／`0x24300` 分別 PUSH 10／6後匯合；
+因此共有六個 `(caller,string_index)` tuple。線性 handler 匯出只保留 index6，
+不能據此遺失成功臂 index10：
+
+| caller | FDTXT_021 index | utterances | editable mapping |
+|---|---:|---:|---|
+| `0x24182` | 5 | 10 | scene1 lines7..16 |
+| `0x2424B` | 7 | 1 | scene3 line0 |
+| `0x24286` | 8 | 3 | scene3 lines1..3 |
+| `0x242C1` | 9 | 2 | scene3 lines4..5 |
+| `0x24308` | 10 | 10 | scene3 lines6..15（crafted） |
+| `0x24308` | 6 | 4 | scene2 lines0..3（insufficient） |
+
+權威來源是固定版 `FDTXT.DAT`（120,502 bytes；MD5
+`fe5c487ce4313485f1da9d48d35b05f9`；SHA-256
+`a4555f8a0e61e884b4f504d56a8bdde11672583bbbbc6506281ae10dcdfb1f69`）的 archive
+第21項，offset `0x10446`、長度4,660 bytes。其內容與
+`extracted/raw/FDTXT/FDTXT_021.bin` 逐 byte 相同；該項 MD5
+`cf808640b1010adc0682578271611279`、SHA-256
+`6bd646e63a07c5ae7fc7fa80295e51fc639cc9a176732784de99e619ba663e78`。
+先前工作階段曾出現沒有來源的3,231-byte紀錄；工作區、Git歷史與原始archive
+均無此資產，已撤回且不得再引用。
+
+raw control／operand 摘要如下；實際 pages與glyph rows由受版控資料保存：
+
+```text
+#5  FFEF/24, FFEE/21, FFEF/24, FFEE/21, FFEF/24,
+    FFEE/21, FFEF/24, FFEE/21, FFEF/24, FFEE/21
+#6  FFEF/24, FFEF/23, FFEE/21, FFEE/0
+#7  FFEE/0
+#8  FFEF/24, FFEE/0, FFEF/24
+#9  FFEF/24, FFEF/24
+#10 FFEE/24, FFEE/21, FFEE/4, FFEE/21, FFEE/0,
+    FFEE/21, FFEE/0, FFEF/24, FFEF/23, FFEE/0
+```
+
+可審查規格：兩臂共用#5十句；crafted臂依#7→ACT63→#8→ACT64→#9→
+`0x24336`→#10，insufficient臂只播放#6。每個既有分組 `dialog` beat必須保存
+逐句 `native_dialogues`，數量嚴格等於 `count`；執行期依行序選擇對應layout，
+不可把同一layout重複套給整組。每句消費原始control、operand、glyph rows、pages、
+上下框與完整opening／mouth／closing生命週期；陣列長度、tuple或資產不一致即
+失敗即關閉。證據等級為`RE-CLOSED／DATA-READY`，尚非原版同狀態E2。
+
 已完成的 E1 垂直切片：
 
 - handler IR 保留 `0x242C9→0x24336`、證據等級與本檔，編譯器只對 exact

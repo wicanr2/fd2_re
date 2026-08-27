@@ -98,12 +98,22 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	if !native.HasMotionTargetY {
 		return errors.New("native story dialogue: closing motion target provenance is unavailable")
 	}
-	if native.MotionTargetY != 0 && !g.hasStoryNativeMapView {
-		return errors.New("native story dialogue: closing cursor/view provenance is unavailable")
+	visibleCursorX, visibleCursorY := 0, 0
+	if native.MotionTargetY != 0 {
+		switch {
+		case g.st != nil && g.st.HasNativeMapViewState:
+			visibleCursorX = g.st.NativeMapViewState.VisibleCursorX
+			visibleCursorY = g.st.NativeMapViewState.VisibleCursorY
+		case g.hasStoryNativeMapView:
+			visibleCursorX = g.storyNativeMapView.VisibleCursorX
+			visibleCursorY = g.storyNativeMapView.VisibleCursorY
+		default:
+			return errors.New("native story dialogue: closing cursor/view provenance is unavailable")
+		}
 	}
 	closing, err := campaign.ComposeNativeStoryDialogueClosingFrames(
 		g.nativeMapVGA, g.nativeClassUI.dialogue, layout, native.MotionTargetY,
-		g.storyNativeMapView.VisibleCursorX, g.storyNativeMapView.VisibleCursorY,
+		visibleCursorX, visibleCursorY,
 	)
 	if err != nil {
 		return err

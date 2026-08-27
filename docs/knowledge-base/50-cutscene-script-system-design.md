@@ -614,8 +614,9 @@ JOIN24/JOIN23、sync_party、set_chapter(21)，最後都回 `town_ch22`，沒有
 `native_ch20_sky_key_sequence`，正式執行期消費 `FDOTHER #34`、`ANI #0`、兩段調色盤
 變換與原始幀順序；證據見
 [`fd2_ch20_sky_key_sequence_ida.txt`](../data/ida/fd2_ch20_sky_key_sequence_ida.txt)。
-這只達重製端 E1：相鄰 `layout_units`、ACT63／64、第一個程序內調色盤相位與未修改原版
-同狀態比較仍未閉合，因此不宣稱整段視覺演出 1:1。六素材的正常取得資料與 runtime
+這只達重製端 E1：相鄰26-slot `layout_units`、ACT63／64與六組對話呼叫的30句
+原生版面均已接通；成功臂以正式輸入消費26句後完成演出、城鎮與存讀檔。尚缺第一個
+程序內調色盤相位與未修改原版同狀態比較，因此不宣稱整段視覺演出 1:1。六素材的正常取得資料與 runtime
 接線見下一節。
 
 ### 3.10 天空之鑰六素材：人物 defaults、寶箱與特殊死亡 reward（2026-07-16）

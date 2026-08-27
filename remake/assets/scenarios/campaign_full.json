@@ -3147,32 +3147,162 @@
      "source": "0x2415b",
      "layout": {
       "units": [
-       {"slot": 0, "x": 15, "y": 14, "pose": 2},
-       {"slot": 1, "x": 14, "y": 14, "pose": 2},
-       {"slot": 2, "x": 16, "y": 13, "pose": 1},
-       {"slot": 3, "x": 16, "y": 14, "pose": 1},
-       {"slot": 4, "x": 13, "y": 14, "pose": 2},
-       {"slot": 5, "x": 13, "y": 15, "pose": 2},
-       {"slot": 6, "x": 13, "y": 16, "pose": 2},
-       {"slot": 7, "x": 13, "y": 17, "pose": 2},
-       {"slot": 8, "x": 12, "y": 14, "pose": 3},
-       {"slot": 9, "x": 14, "y": 15, "pose": 2},
-       {"slot": 10, "x": 14, "y": 16, "pose": 2},
-       {"slot": 11, "x": 14, "y": 17, "pose": 2},
-       {"slot": 12, "x": 12, "y": 13, "pose": 3},
-       {"slot": 13, "x": 15, "y": 15, "pose": 2},
-       {"slot": 14, "x": 15, "y": 16, "pose": 2},
-       {"slot": 15, "x": 15, "y": 17, "pose": 2},
-       {"slot": 16, "x": 15, "y": 11, "pose": 0},
-       {"slot": 17, "x": 13, "y": 11, "pose": 0},
-       {"slot": 18, "x": 12, "y": 11, "pose": 0},
-       {"slot": 19, "x": 16, "y": 11, "pose": 0},
-       {"slot": 20, "x": 11, "y": 12, "pose": 3},
-       {"slot": 21, "x": 11, "y": 13, "pose": 3},
-       {"slot": 22, "x": 11, "y": 14, "pose": 3},
-       {"slot": 23, "x": 17, "y": 12, "pose": 1},
-       {"slot": 24, "x": 17, "y": 13, "pose": 1},
-       {"slot": 25, "x": 23, "y": 14, "pose": 1}
+       {
+        "slot": 0,
+        "x": 15,
+        "y": 14,
+        "pose": 2
+       },
+       {
+        "slot": 1,
+        "x": 14,
+        "y": 14,
+        "pose": 2
+       },
+       {
+        "slot": 2,
+        "x": 16,
+        "y": 13,
+        "pose": 1
+       },
+       {
+        "slot": 3,
+        "x": 16,
+        "y": 14,
+        "pose": 1
+       },
+       {
+        "slot": 4,
+        "x": 13,
+        "y": 14,
+        "pose": 2
+       },
+       {
+        "slot": 5,
+        "x": 13,
+        "y": 15,
+        "pose": 2
+       },
+       {
+        "slot": 6,
+        "x": 13,
+        "y": 16,
+        "pose": 2
+       },
+       {
+        "slot": 7,
+        "x": 13,
+        "y": 17,
+        "pose": 2
+       },
+       {
+        "slot": 8,
+        "x": 12,
+        "y": 14,
+        "pose": 3
+       },
+       {
+        "slot": 9,
+        "x": 14,
+        "y": 15,
+        "pose": 2
+       },
+       {
+        "slot": 10,
+        "x": 14,
+        "y": 16,
+        "pose": 2
+       },
+       {
+        "slot": 11,
+        "x": 14,
+        "y": 17,
+        "pose": 2
+       },
+       {
+        "slot": 12,
+        "x": 12,
+        "y": 13,
+        "pose": 3
+       },
+       {
+        "slot": 13,
+        "x": 15,
+        "y": 15,
+        "pose": 2
+       },
+       {
+        "slot": 14,
+        "x": 15,
+        "y": 16,
+        "pose": 2
+       },
+       {
+        "slot": 15,
+        "x": 15,
+        "y": 17,
+        "pose": 2
+       },
+       {
+        "slot": 16,
+        "x": 15,
+        "y": 11,
+        "pose": 0
+       },
+       {
+        "slot": 17,
+        "x": 13,
+        "y": 11,
+        "pose": 0
+       },
+       {
+        "slot": 18,
+        "x": 12,
+        "y": 11,
+        "pose": 0
+       },
+       {
+        "slot": 19,
+        "x": 16,
+        "y": 11,
+        "pose": 0
+       },
+       {
+        "slot": 20,
+        "x": 11,
+        "y": 12,
+        "pose": 3
+       },
+       {
+        "slot": 21,
+        "x": 11,
+        "y": 13,
+        "pose": 3
+       },
+       {
+        "slot": 22,
+        "x": 11,
+        "y": 14,
+        "pose": 3
+       },
+       {
+        "slot": 23,
+        "x": 17,
+        "y": 12,
+        "pose": 1
+       },
+       {
+        "slot": 24,
+        "x": 17,
+        "y": 13,
+        "pose": 1
+       },
+       {
+        "slot": 25,
+        "x": 23,
+        "y": 14,
+        "pose": 1
+       }
       ],
       "cam_x": 336,
       "cam_y": 240
@@ -3181,7 +3311,183 @@
     {
      "op": "dialog",
      "line": 7,
-     "count": 10
+     "count": 10,
+     "source": "0x24182",
+     "native_dialogues": [
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 5,
+       "utterance": 0,
+       "control": "FFEF",
+       "operand": 24,
+       "pages": [
+        [
+         "『我本來以為這回死定了，還",
+         "　好你們前來支援，我們才能",
+         "　戰勝這個殺手集團，真是非"
+        ],
+        [
+         "　常感激。』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 5,
+       "utterance": 1,
+       "control": "FFEE",
+       "operand": 21,
+       "pages": [
+        [
+         "『幸好我們還趕得及，想必這",
+         "　是神的旨意。聖靈之塔的情",
+         "　形如何？』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 5,
+       "utterance": 2,
+       "control": "FFEF",
+       "operand": 24,
+       "pages": [
+        [
+         "『三天前就已經被敵人攻入了",
+         "　，為了減少無謂的死傷，我",
+         "　就命令所有守軍撤退，所以"
+        ],
+        [
+         "　那裡的情形現在我也不很清",
+         "　楚。』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 5,
+       "utterance": 3,
+       "control": "FFEE",
+       "operand": 21,
+       "pages": [
+        [
+         "『我明白了。此外，我先前請",
+         "　你進行的調查可有結果？』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 5,
+       "utterance": 4,
+       "control": "FFEF",
+       "operand": 24,
+       "pages": [
+        [
+         "『我在王城的大圖書館中花了",
+         "　三個月研究古代典籍，還在",
+         "　各地的遺跡中進行挖掘，結"
+        ],
+        [
+         "　果只得到了這支法杖和一點",
+         "　結論。』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 5,
+       "utterance": 5,
+       "control": "FFEE",
+       "operand": 21,
+       "pages": [
+        [
+         "『嗯，真是支很奇異的法杖．",
+         "　．結論怎麼說呢？』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 5,
+       "utterance": 6,
+       "control": "FFEF",
+       "operand": 24,
+       "pages": [
+        [
+         "『根據古典籍的記載，有關你",
+         "　所說的「天空之鑰」，事貫",
+         "　上是由一個黃金徽章和五顆"
+        ],
+        [
+         "　魔法寶石所構成的，這六樣",
+         "　東西必須經由這法杖的魔力",
+         "　才能結合在一起，從而發出"
+        ],
+        [
+         "　及強大的力量，據說這力量",
+         "　可以克服時間和空間的限制",
+         "　，將使用者移動到遙遠的未"
+        ],
+        [
+         "　知地方去。』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 5,
+       "utterance": 7,
+       "control": "FFEE",
+       "operand": 21,
+       "pages": [
+        [
+         "『很有趣的說法！你的結論呢",
+         "　？』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 5,
+       "utterance": 8,
+       "control": "FFEF",
+       "operand": 24,
+       "pages": [
+        [
+         "『那有什麼結論！這六件東西",
+         "　，早在八百年前就不知道都",
+         "　失落到哪裡去了，而當我開"
+        ],
+        [
+         "　始試圖要尋找它們的蹤跡時",
+         "　，黑暗軍就對亞述森林發動",
+         "　了攻擊，我只好先中斷了這"
+        ],
+        [
+         "　段研究。』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 5,
+       "utterance": 9,
+       "control": "FFEE",
+       "operand": 21,
+       "pages": [
+        [
+         "『我一直相信天空之鑰和這一",
+         "　連串事端有關，既然你暫時",
+         "　無法完成研究，這個揣測也"
+        ],
+        [
+         "　就只好作罷，我們得換一個",
+         "　新的調查方向．．』"
+        ]
+       ]
+      }
+     ]
     }
    ],
    "next": "inventory_recipe_ch21_sky_key"
@@ -3210,38 +3516,217 @@
     {
      "op": "dialog",
      "line": 0,
-     "count": 1
+     "count": 1,
+     "source": "0x2424b",
+     "native_dialogues": [
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 7,
+       "utterance": 0,
+       "control": "FFEE",
+       "operand": 0,
+       "pages": [
+        [
+         "『等等！希爾法大師，你所說",
+         "　的徽章和寶石，是不是這些",
+         "　？．．』"
+        ]
+       ]
+      }
+     ]
     },
     {
      "op": "act",
      "source": "0x2425f",
      "acting_frames": [
-      {"beats": 1, "units": [{"slot": 0, "pose": 2}]},
-      {"beats": 6, "special": true, "units": [{"slot": 0, "pose": 2}]},
-      {"beats": 0, "special": true, "units": [{"slot": 16, "pose": 0}]},
-      {"beats": 4, "special": true, "units": [{"slot": 16, "pose": 0}]}
+      {
+       "beats": 1,
+       "units": [
+        {
+         "slot": 0,
+         "pose": 2
+        }
+       ]
+      },
+      {
+       "beats": 6,
+       "special": true,
+       "units": [
+        {
+         "slot": 0,
+         "pose": 2
+        }
+       ]
+      },
+      {
+       "beats": 0,
+       "special": true,
+       "units": [
+        {
+         "slot": 16,
+         "pose": 0
+        }
+       ]
+      },
+      {
+       "beats": 4,
+       "special": true,
+       "units": [
+        {
+         "slot": 16,
+         "pose": 0
+        }
+       ]
+      }
      ]
     },
     {
      "op": "dialog",
      "line": 1,
-     "count": 3
+     "count": 3,
+     "source": "0x24286",
+     "native_dialogues": [
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 8,
+       "utterance": 0,
+       "control": "FFEF",
+       "operand": 24,
+       "pages": [
+        [
+         "『啊！蘊含光、闇、火焰、冰",
+         "　和星星之力的五顆寶石．．",
+         "　就是這個沒錯！你們怎麼找"
+        ],
+        [
+         "　到這些東西的？』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 8,
+       "utterance": 1,
+       "control": "FFEE",
+       "operand": 0,
+       "pages": [
+        [
+         "『路上逐一得來的，敵人似乎",
+         "　也對它們感興趣，所以其中",
+         "　幾個費了好大勁才到手。』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 8,
+       "utterance": 2,
+       "control": "FFEF",
+       "operand": 24,
+       "pages": [
+        [
+         "『好極了，我現在就試試這支",
+         "　法杖管不管用。大家讓開一",
+         "　些，這可能會有些危險．．"
+        ],
+        [
+         "　』"
+        ]
+       ]
+      }
+     ]
     },
     {
      "op": "act",
      "source": "0x2429a",
      "acting_frames": [
-      {"beats": 1, "units": [{"slot": 0, "pose": 0}]},
-      {"beats": 1, "special": true, "units": [{"slot": 0, "pose": 2}]},
-      {"beats": 1, "units": [{"slot": 16, "pose": 0}]},
-      {"beats": 1, "units": [{"slot": 16, "pose": 1}]},
-      {"beats": 4, "special": true, "units": [{"slot": 16, "pose": 0}]}
+      {
+       "beats": 1,
+       "units": [
+        {
+         "slot": 0,
+         "pose": 0
+        }
+       ]
+      },
+      {
+       "beats": 1,
+       "special": true,
+       "units": [
+        {
+         "slot": 0,
+         "pose": 2
+        }
+       ]
+      },
+      {
+       "beats": 1,
+       "units": [
+        {
+         "slot": 16,
+         "pose": 0
+        }
+       ]
+      },
+      {
+       "beats": 1,
+       "units": [
+        {
+         "slot": 16,
+         "pose": 1
+        }
+       ]
+      },
+      {
+       "beats": 4,
+       "special": true,
+       "units": [
+        {
+         "slot": 16,
+         "pose": 0
+        }
+       ]
+      }
      ]
     },
     {
      "op": "dialog",
      "line": 4,
-     "count": 2
+     "count": 2,
+     "source": "0x242c1",
+     "native_dialogues": [
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 9,
+       "utterance": 0,
+       "control": "FFEF",
+       "operand": 24,
+       "pages": [
+        [
+         "『未知的遠古神祇啊，履行契",
+         "　約的時刻到了，請給予這法",
+         "　杖以失落的力量，讓被遺忘"
+        ],
+        [
+         "　的道路再次開啟．．』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 9,
+       "utterance": 1,
+       "control": "FFEF",
+       "operand": 24,
+       "pages": [
+        [
+         "『馬那德拉、亞布利加、艾米",
+         "　西德拉、伊多卡那瓦！．．",
+         "　』"
+        ]
+       ]
+      }
+     ]
     },
     {
      "op": "native_ch20_sky_key_sequence",
@@ -3273,7 +3758,159 @@
     {
      "op": "dialog",
      "line": 6,
-     "count": 10
+     "count": 10,
+     "source": "0x24308",
+     "native_dialogues": [
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 10,
+       "utterance": 0,
+       "control": "FFEE",
+       "operand": 24,
+       "pages": [
+        [
+         "『瞧，完成了！相信這就是",
+         "　你一直在找的「天空之鑰",
+         "　」！』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 10,
+       "utterance": 1,
+       "control": "FFEE",
+       "operand": 21,
+       "pages": [
+        [
+         "『真令人不敢相信，我花了十",
+         "　幾年尋找的東西，竟然就這",
+         "　樣到手了，這是命運的安排"
+        ],
+        [
+         "　吧．．』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 10,
+       "utterance": 2,
+       "control": "FFEE",
+       "operand": 4,
+       "pages": [
+        [
+         "『約拿先生，這個「天空之鑰",
+         "　」有什麼特別的用途？』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 10,
+       "utterance": 3,
+       "control": "FFEE",
+       "operand": 21,
+       "pages": [
+        [
+         "『我只知道它與古代人的傳說",
+         "　有關，據說它可以打開往天",
+         "　空的道路，至於是用怎樣的"
+        ],
+        [
+         "　方式，就沒有人知道了。』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 10,
+       "utterance": 4,
+       "control": "FFEE",
+       "operand": 0,
+       "pages": [
+        [
+         "『哎，好失望，我還以為這下",
+         "　子可以飛上天空了呢！』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 10,
+       "utterance": 5,
+       "control": "FFEE",
+       "operand": 21,
+       "pages": [
+        [
+         "『索爾，別急，我相信我們真",
+         "　正的敵人必定與這天空之鑰",
+         "　有關，我們遲早可以解開這"
+        ],
+        [
+         "　個秘密．以及悠妮小姐的來",
+         "　歷之謎。』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 10,
+       "utterance": 6,
+       "control": "FFEE",
+       "operand": 0,
+       "pages": [
+        [
+         "『真的嗎？．那我就放心了。",
+         "　』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 10,
+       "utterance": 7,
+       "control": "FFEF",
+       "operand": 24,
+       "pages": [
+        [
+         "『雖然如此，為了避免敵人在",
+         "　塔中玩出什麼花樣，我們還",
+         "　是馬上動身前往巨塔，其他"
+        ],
+        [
+         "　的事以後再說！羅蘭，為了",
+         "　增強戰力起見，妳也和我一",
+         "　起去吧！』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 10,
+       "utterance": 8,
+       "control": "FFEF",
+       "operand": 23,
+       "pages": [
+        [
+         "『是的，長老！善後工作交給",
+         "　其他人就可以了。』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 10,
+       "utterance": 9,
+       "control": "FFEE",
+       "operand": 0,
+       "pages": [
+        [
+         "『好！我們這就出發囉！』"
+        ]
+       ]
+      }
+     ]
     },
     {
      "op": "join",
@@ -3301,7 +3938,69 @@
     {
      "op": "dialog",
      "line": 0,
-     "count": 4
+     "count": 4,
+     "source": "0x24308",
+     "native_dialogues": [
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 6,
+       "utterance": 0,
+       "control": "FFEF",
+       "operand": 24,
+       "pages": [
+        [
+         "『為了避免敵人在塔中玩出什",
+         "　麼花樣，我們還是先消滅掉",
+         "　塔中的敵人再說，以免夜長"
+        ],
+        [
+         "　夢多。羅蘭，為了增強戰力",
+         "　起見，妳也和我一起去吧！",
+         "　』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 6,
+       "utterance": 1,
+       "control": "FFEF",
+       "operand": 23,
+       "pages": [
+        [
+         "『是的，長老！善後工作交給",
+         "　其他人就可以了。』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 6,
+       "utterance": 2,
+       "control": "FFEE",
+       "operand": 21,
+       "pages": [
+        [
+         "『好，那我們即刻前往巨塔！",
+         "　事關緊要，大家稍事休息就",
+         "　馬上出發！』"
+        ]
+       ]
+      },
+      {
+       "source_dat": "FDTXT_021",
+       "string_index": 6,
+       "utterance": 3,
+       "control": "FFEE",
+       "operand": 0,
+       "pages": [
+        [
+         "『沒問題！",
+         "　我們這就上路吧！』"
+        ]
+       ]
+      }
+     ]
     },
     {
      "op": "join",
@@ -4117,7 +4816,11 @@
    "town": "羅德鎮",
    "bgm": "FDMUS_010",
    "native_town_variant": 0,
-   "native_secret_gate": {"selection": 0, "scan_code": 84, "to": "shop_ch02_secret"},
+   "native_secret_gate": {
+    "selection": 0,
+    "scan_code": 84,
+    "to": "shop_ch02_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4151,7 +4854,11 @@
    "town": "往塞拉村途中",
    "bgm": "FDMUS_010",
    "native_town_variant": 2,
-   "native_secret_gate": {"selection": 1, "scan_code": 95, "to": "shop_ch03_secret"},
+   "native_secret_gate": {
+    "selection": 1,
+    "scan_code": 95,
+    "to": "shop_ch03_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4185,7 +4892,11 @@
    "town": "塞拉村前",
    "bgm": "FDMUS_010",
    "native_town_variant": 0,
-   "native_secret_gate": {"selection": 2, "scan_code": 106, "to": "shop_ch04_secret"},
+   "native_secret_gate": {
+    "selection": 2,
+    "scan_code": 106,
+    "to": "shop_ch04_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4219,7 +4930,11 @@
    "town": "塞拉村",
    "bgm": "FDMUS_010",
    "native_town_variant": 0,
-   "native_secret_gate": {"selection": 3, "scan_code": 87, "to": "shop_ch05_secret"},
+   "native_secret_gate": {
+    "selection": 3,
+    "scan_code": 87,
+    "to": "shop_ch05_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4253,7 +4968,11 @@
    "town": "普里茲港",
    "bgm": "FDMUS_010",
    "native_town_variant": 2,
-   "native_secret_gate": {"selection": 4, "scan_code": 98, "to": "shop_ch06_secret"},
+   "native_secret_gate": {
+    "selection": 4,
+    "scan_code": 98,
+    "to": "shop_ch06_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4287,7 +5006,11 @@
    "town": "往王城的途中",
    "bgm": "FDMUS_010",
    "native_town_variant": 2,
-   "native_secret_gate": {"selection": 0, "scan_code": 109, "to": "shop_ch07_secret"},
+   "native_secret_gate": {
+    "selection": 0,
+    "scan_code": 109,
+    "to": "shop_ch07_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4321,7 +5044,11 @@
    "town": "王城前的戰鬥",
    "bgm": "FDMUS_010",
    "native_town_variant": 0,
-   "native_secret_gate": {"selection": 1, "scan_code": 90, "to": "shop_ch08_secret"},
+   "native_secret_gate": {
+    "selection": 1,
+    "scan_code": 90,
+    "to": "shop_ch08_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4355,7 +5082,11 @@
    "town": "騎士的抉擇",
    "bgm": "FDMUS_010",
    "native_town_variant": 0,
-   "native_secret_gate": {"selection": 2, "scan_code": 101, "to": "shop_ch09_secret"},
+   "native_secret_gate": {
+    "selection": 2,
+    "scan_code": 101,
+    "to": "shop_ch09_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4389,7 +5120,11 @@
    "town": "洞窟中的激戰",
    "bgm": "FDMUS_010",
    "native_town_variant": 2,
-   "native_secret_gate": {"selection": 3, "scan_code": 112, "to": "shop_ch10_secret"},
+   "native_secret_gate": {
+    "selection": 3,
+    "scan_code": 112,
+    "to": "shop_ch10_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4423,7 +5158,11 @@
    "town": "幻之森林",
    "bgm": "FDMUS_010",
    "native_town_variant": 2,
-   "native_secret_gate": {"selection": 4, "scan_code": 93, "to": "shop_ch11_secret"},
+   "native_secret_gate": {
+    "selection": 4,
+    "scan_code": 93,
+    "to": "shop_ch11_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4457,7 +5196,11 @@
    "town": "北山道",
    "bgm": "FDMUS_010",
    "native_town_variant": 1,
-   "native_secret_gate": {"selection": 0, "scan_code": 94, "to": "shop_ch12_secret"},
+   "native_secret_gate": {
+    "selection": 0,
+    "scan_code": 94,
+    "to": "shop_ch12_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4491,7 +5234,11 @@
    "town": "哈斯米爾之戰",
    "bgm": "FDMUS_010",
    "native_town_variant": 1,
-   "native_secret_gate": {"selection": 1, "scan_code": 105, "to": "shop_ch13_secret"},
+   "native_secret_gate": {
+    "selection": 1,
+    "scan_code": 105,
+    "to": "shop_ch13_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4525,7 +5272,11 @@
    "town": "平原的會戰",
    "bgm": "FDMUS_010",
    "native_town_variant": 1,
-   "native_secret_gate": {"selection": 2, "scan_code": 86, "to": "shop_ch14_secret"},
+   "native_secret_gate": {
+    "selection": 2,
+    "scan_code": 86,
+    "to": "shop_ch14_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4559,7 +5310,11 @@
    "town": "拉卡湖的激戰",
    "bgm": "FDMUS_010",
    "native_town_variant": 1,
-   "native_secret_gate": {"selection": 3, "scan_code": 97, "to": "shop_ch15_secret"},
+   "native_secret_gate": {
+    "selection": 3,
+    "scan_code": 97,
+    "to": "shop_ch15_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4593,7 +5348,11 @@
    "town": "冰原之戰",
    "bgm": "FDMUS_010",
    "native_town_variant": 1,
-   "native_secret_gate": {"selection": 4, "scan_code": 108, "to": "shop_ch16_secret"},
+   "native_secret_gate": {
+    "selection": 4,
+    "scan_code": 108,
+    "to": "shop_ch16_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4627,7 +5386,11 @@
    "town": "血與冰之刃",
    "bgm": "FDMUS_010",
    "native_town_variant": 1,
-   "native_secret_gate": {"selection": 0, "scan_code": 88, "to": "shop_ch17_secret"},
+   "native_secret_gate": {
+    "selection": 0,
+    "scan_code": 88,
+    "to": "shop_ch17_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4661,7 +5424,11 @@
    "town": "遙遠的彼岸",
    "bgm": "FDMUS_010",
    "native_town_variant": 1,
-   "native_secret_gate": {"selection": 1, "scan_code": 100, "to": "shop_ch18_secret"},
+   "native_secret_gate": {
+    "selection": 1,
+    "scan_code": 100,
+    "to": "shop_ch18_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4695,7 +5462,11 @@
    "town": "黑暗中的狙擊",
    "bgm": "FDMUS_010",
    "native_town_variant": 2,
-   "native_secret_gate": {"selection": 2, "scan_code": 111, "to": "shop_ch19_secret"},
+   "native_secret_gate": {
+    "selection": 2,
+    "scan_code": 111,
+    "to": "shop_ch19_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4729,7 +5500,11 @@
    "town": "死亡般的沈寂",
    "bgm": "FDMUS_010",
    "native_town_variant": 1,
-   "native_secret_gate": {"selection": 3, "scan_code": 92, "to": "shop_ch20_secret"},
+   "native_secret_gate": {
+    "selection": 3,
+    "scan_code": 92,
+    "to": "shop_ch20_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4763,7 +5538,11 @@
    "town": "亞述森林",
    "bgm": "FDMUS_010",
    "native_town_variant": 1,
-   "native_secret_gate": {"selection": 4, "scan_code": 103, "to": "shop_ch21_secret"},
+   "native_secret_gate": {
+    "selection": 4,
+    "scan_code": 103,
+    "to": "shop_ch21_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4797,7 +5576,11 @@
    "town": "遠古呼喚",
    "bgm": "FDMUS_010",
    "native_town_variant": 1,
-   "native_secret_gate": {"selection": 0, "scan_code": 104, "to": "shop_ch22_secret"},
+   "native_secret_gate": {
+    "selection": 0,
+    "scan_code": 104,
+    "to": "shop_ch22_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4831,7 +5614,11 @@
    "town": "未知的迴廊",
    "bgm": "FDMUS_010",
    "native_town_variant": 0,
-   "native_secret_gate": {"selection": 4, "scan_code": 88, "to": "shop_ch26_secret"},
+   "native_secret_gate": {
+    "selection": 4,
+    "scan_code": 88,
+    "to": "shop_ch26_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",
@@ -4865,7 +5652,11 @@
    "town": "命運的交會點",
    "bgm": "FDMUS_010",
    "native_town_variant": 0,
-   "native_secret_gate": {"selection": 0, "scan_code": 99, "to": "shop_ch27_secret"},
+   "native_secret_gate": {
+    "selection": 0,
+    "scan_code": 99,
+    "to": "shop_ch27_secret"
+   },
    "options": [
     {
      "label": "酒店：打聽消息",

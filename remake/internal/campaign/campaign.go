@@ -468,6 +468,9 @@ type Beat struct {
 	// NativeDialogue 保存具 caller 證據的 FFFE／FFFD 頁面；未提供時，既有編輯場景
 	// 繼續使用正規化 renderer。
 	NativeDialogue *NativeDialogueLayout `json:"native_dialogue,omitempty"`
+	// NativeDialogues 對應同一分組 dialog beat 的逐句原生版面。陣列長度必須
+	// 嚴格等於有效 Count，且不可與單句 NativeDialogue 混用。
+	NativeDialogues []*NativeDialogueLayout `json:"native_dialogues,omitempty"`
 
 	Group int `json:"group,omitempty"` // spawn:原版 FDFIELD 群組編號
 	// RawPlacementGate retains the exact per-call [0x53AFA] byte. Handler
@@ -595,6 +598,54 @@ type Campaign struct {
 	Nodes map[string]*Node `json:"nodes"`
 }
 
+// ExpandNativeDialogueGroups 將可編輯的分組對話投影成執行期的一句一拍。
+// 原生 opening／mouth／closing player 只接受單句，故這個展開必須在進入
+// cutscene 時完成；原始 Node.Beats 保持分組形狀，方便審查 FDTXT tuple。
+func ExpandNativeDialogueGroups(beats []Beat) ([]Beat, error) {
+	result := make([]Beat, 0, len(beats))
+	for index := range beats {
+		beat := beats[index]
+		var err error
+		beat.Then, err = ExpandNativeDialogueGroups(beat.Then)
+		if err != nil {
+			return nil, err
+		}
+		beat.Else, err = ExpandNativeDialogueGroups(beat.Else)
+		if err != nil {
+			return nil, err
+		}
+		if beat.Op != "dialog" || len(beat.NativeDialogues) == 0 {
+			result = append(result, beat)
+			continue
+		}
+		count := beat.Count
+		if count <= 0 {
+			count = 1
+		}
+		if beat.NativeDialogue != nil || len(beat.NativeDialogues) != count {
+			return nil, fmt.Errorf("dialog beat %d 的原生版面群組無效", index)
+		}
+		for utterance, layout := range beat.NativeDialogues {
+			if layout == nil {
+				return nil, fmt.Errorf("dialog beat %d 的原生版面 %d 為空", index, utterance)
+			}
+			single := beat
+			single.Line = beat.Line + utterance
+			single.Count = 1
+			single.NativeDialogue = layout
+			single.NativeDialogues = nil
+			upper := layout.Control == "FFED" || layout.Control == "FFEF"
+			if beat.Upper != nil && *beat.Upper != upper {
+				return nil, fmt.Errorf("dialog beat %d 的 upper 與原生版面 %d control=%s 不一致", index, utterance, layout.Control)
+			}
+			single.Upper = new(bool)
+			*single.Upper = upper
+			result = append(result, single)
+		}
+	}
+	return result, nil
+}
+
 // Load 讀 campaign.json 並驗證轉場目標都存在。
 func Load(path string) (*Campaign, error) {
 	raw, err := os.ReadFile(path)
@@ -617,7 +668,45 @@ func Load(path string) (*Campaign, error) {
 		}
 		return nil
 	}
+	var validateBeats func(string, []Beat) error
+	validateBeats = func(nodeID string, beats []Beat) error {
+		for i := range beats {
+			beat := &beats[i]
+			if beat.Op == "dialog" {
+				count := beat.Count
+				if count <= 0 {
+					count = 1
+				}
+				if beat.NativeDialogue != nil && len(beat.NativeDialogues) > 0 {
+					return fmt.Errorf("節點 %q beat %d 不可混用 native_dialogue 與 native_dialogues", nodeID, i)
+				}
+				if len(beat.NativeDialogues) > 0 {
+					if len(beat.NativeDialogues) != count {
+						return fmt.Errorf("節點 %q beat %d 的 native_dialogues=%d，必須等於 count=%d", nodeID, i, len(beat.NativeDialogues), count)
+					}
+					for j, layout := range beat.NativeDialogues {
+						if layout == nil {
+							return fmt.Errorf("節點 %q beat %d 的 native_dialogues[%d] 為空", nodeID, i, j)
+						}
+						if err := layout.Validate(); err != nil {
+							return fmt.Errorf("節點 %q beat %d 的 native_dialogues[%d] 無效：%w", nodeID, i, j, err)
+						}
+					}
+				}
+			}
+			if err := validateBeats(nodeID, beat.Then); err != nil {
+				return err
+			}
+			if err := validateBeats(nodeID, beat.Else); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
 	for id, n := range c.Nodes {
+		if err := validateBeats(id, n.Beats); err != nil {
+			return nil, err
+		}
 		for _, to := range []string{n.Next, n.Cancel, n.OnWin, n.OnLose, n.IfPresent, n.IfMissing, n.IfCrafted, n.IfInsufficient} {
 			if err := check(id, to); err != nil {
 				return nil, err

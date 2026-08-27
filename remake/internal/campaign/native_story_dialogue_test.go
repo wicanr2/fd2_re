@@ -1049,6 +1049,85 @@ func TestCh23PostNativeDialogueLayoutsMatchOriginalControlWords(t *testing.T) {
 	}
 }
 
+func TestCh20PostGroupedNativeDialogueLayoutsMatchOriginalControlWords(t *testing.T) {
+	raw, err := os.ReadFile("../../../extracted/raw/FDTXT/FDTXT_021.bin")
+	if err != nil {
+		t.Skip("extracted FDTXT_021 oracle is absent")
+	}
+	stringsTable, err := fdtxt.Parse(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	glyphs := loadNativeDialogueGlyphMap(t)
+	c, err := Load("../../assets/scenarios/campaign_full.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	targets := []struct {
+		node      string
+		beat      int
+		caller    string
+		textIndex int
+	}{
+		{"story_ch21_post_sky_key_intro", 1, "0x24182", 5},
+		{"story_ch21_post_sky_key_crafted", 0, "0x2424b", 7},
+		{"story_ch21_post_sky_key_crafted", 2, "0x24286", 8},
+		{"story_ch21_post_sky_key_crafted", 4, "0x242c1", 9},
+		{"story_ch21_post_sky_key_crafted", 6, "0x24308", 10},
+		{"story_ch21_post_sky_key_insufficient", 0, "0x24308", 6},
+	}
+	total := 0
+	for _, target := range targets {
+		beat := c.Nodes[target.node].Beats[target.beat]
+		if beat.Op != "dialog" || beat.Source != target.caller || beat.NativeDialogue != nil {
+			t.Fatalf("%s beat%d caller/native shape drifted: %#v", target.node, target.beat, beat)
+		}
+		words, err := stringsTable.Words(target.textIndex)
+		if err != nil {
+			t.Fatal(err)
+		}
+		want, err := decodeOriginalNativeDialogueLayouts("FDTXT_021", target.textIndex, words, glyphs)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !reflect.DeepEqual(beat.NativeDialogues, want) {
+			t.Fatalf("%s beat%d FDTXT_021 index%d 原生版面與raw control不一致", target.node, target.beat, target.textIndex)
+		}
+		total += len(want)
+	}
+	if total != 30 {
+		t.Fatalf("ch20 post native utterances=%d, want 30", total)
+	}
+}
+
+func loadNativeDialogueGlyphMap(t *testing.T) map[uint16]string {
+	t.Helper()
+	raw, err := os.ReadFile("../../../docs/data/glyph_map.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var encoded map[string]json.RawMessage
+	if err := json.Unmarshal(raw, &encoded); err != nil {
+		t.Fatal(err)
+	}
+	glyphs := make(map[uint16]string, len(encoded))
+	for key, value := range encoded {
+		if key == "_comment" {
+			continue
+		}
+		var text string
+		var index int
+		if err := json.Unmarshal(value, &text); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := fmt.Sscanf(key, "%d", &index); err != nil || index < 0 || index > 0xffff {
+			t.Fatalf("invalid glyph map key %q", key)
+		}
+		glyphs[uint16(index)] = text
+	}
+	return glyphs
+}
+
 func TestNativeDialogueLayoutUsesControlSpecificOriginalLineLimits(t *testing.T) {
 	limits := map[string]int{"FFEC": 13, "FFED": 15, "FFEE": 14, "FFEF": 14}
 	for control, limit := range limits {

@@ -7639,3 +7639,15 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   之間依序消費ACT63／64，之後才播放既有`0x24336`、JOIN24／23、同步隊伍並進
   `town_ch22`。Docker／Xvfb聚焦回歸實際通過；一般玩家同狀態E2與第一個程序內
   調色盤相位仍是證據限制，不再把layout／ACT列為實作缺口。
+
+## 2026-08-27：第21戰戰後30句原生對話接線
+
+- 權威`FDTXT.DAT`第21項位於offset`0x10446`、長4,660 bytes，與
+  `extracted/raw/FDTXT/FDTXT_021.bin`逐byte相同；MD5
+  `cf808640b1010adc0682578271611279`。先前無來源的3,231-byte紀錄已撤回。
+- `0x24182/#5`、`0x2424B/#7`、`0x24286/#8`、`0x242C1/#9`與匯合caller
+  `0x24308/#10或#6`共六組呼叫／30句，已保存原始control、operand、pages及編輯行。
+- campaign新增分組`native_dialogues`；正式執行前才展開成逐句beat，並修正戰後
+  native closing使用battle view而非誤要求story view。成功臂以正式輸入走完26句、
+  ACT63／64、`0x24336`、JOIN24／23、`town_ch22`與存讀檔。材料不足四句有raw
+  資料等值與資料展開驗證，獨立正式輸入長鏈仍可補，但不重解呼叫端或renderer。

@@ -1728,6 +1728,14 @@ func (g *Game) beatStart(b campaign.Beat) {
 		if n <= 0 {
 			n = 1
 		}
+		if len(b.NativeDialogues) > 0 && len(b.NativeDialogues) != n {
+			g.loadErr = fmt.Sprintf("beat dialog: native_dialogues=%d want count=%d", len(b.NativeDialogues), n)
+			return
+		}
+		if b.NativeDialogue != nil && len(b.NativeDialogues) > 0 {
+			g.loadErr = "beat dialog: native_dialogue 與 native_dialogues 不可混用"
+			return
+		}
 		end := b.Line + n
 		if end > len(lines) {
 			end = len(lines)
@@ -1736,7 +1744,11 @@ func (g *Game) beatStart(b campaign.Beat) {
 		g.dlgPage = 0                                  // 新對白從第一頁起
 		for i := end - 1; i >= b.Line && i >= 0; i-- { // 反序堆疊(同 enterNode story 分支慣例)
 			ln := lines[i]
-			dialogLine, err := g.resolveCampaignDialogLine(ln, b.Upper, b.NativeDialogue)
+			native := b.NativeDialogue
+			if len(b.NativeDialogues) > 0 {
+				native = b.NativeDialogues[i-b.Line]
+			}
+			dialogLine, err := g.resolveCampaignDialogLine(ln, b.Upper, native)
 			if err != nil {
 				g.dialog = nil
 				g.loadErr = "beat dialog:" + err.Error()
@@ -2966,6 +2978,12 @@ func (g *Game) enterNode() {
 				}
 				g.beats = beats
 			}
+			expanded, err := campaign.ExpandNativeDialogueGroups(g.beats)
+			if err != nil {
+				g.loadErr = fmt.Sprintf("cutscene %q 原生對話群組無效: %v", g.camp.NodeID(), err)
+				return
+			}
+			g.beats = expanded
 			// An unbound postbattle node must never be treated as an empty
 			// interlude: doing so would silently skip persistent sync/rewards and
 			// jump straight to town. Keep the authored graph cursor in place until

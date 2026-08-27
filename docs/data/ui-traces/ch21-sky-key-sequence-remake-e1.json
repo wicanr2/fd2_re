@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "evidence_level": "E1",
-  "scope": "玩家第21戰正式勝利邊界中的 layout→ACT63／64→0x242C9→0x24336→城鎮／存讀檔重製端 E1；三格圖片只呈現固定合成演出的三階段，不是原版擷取、一般玩家 E2 或逐像素對照",
+  "scope": "玩家第21戰正式勝利邊界中的30句原生對話資料、成功臂26句正式輸入、layout→ACT63／64→0x242C9→0x24336→城鎮／存讀檔重製端 E1；三格圖片只呈現固定合成演出的三階段，不是原版擷取、一般玩家 E2 或逐像素對照",
   "generated_on": "2026-08-13",
   "flow_verified_on": "2026-08-27",
   "flow_verification_image_id": "sha256:63ab5d20e3c2a3d2054718883fc7a98158ba2ef0930a3c886e169f2e887ca044",
@@ -29,6 +29,18 @@
       "size": 243169,
       "md5": "ecdb0436d26adfe5d107f2713fa7e9a2",
       "sha256": "b0cf75d94f58603f091c7462c0494f0e83bd6edfb04c1acbf83ed4d938c7a513"
+    },
+    {
+      "file": "FDTXT.DAT",
+      "size": 120502,
+      "md5": "fe5c487ce4313485f1da9d48d35b05f9",
+      "sha256": "a4555f8a0e61e884b4f504d56a8bdde11672583bbbbc6506281ae10dcdfb1f69"
+    },
+    {
+      "file": "DATO.DAT",
+      "size": 1979029,
+      "md5": "f15093e5bff4e5f3334a076ab2a7d130",
+      "sha256": "dff859783606ee95d9811e1e564bcb230ef53c4df9130e8b6d42ad37bc8c27bd"
     }
   ],
   "generator": {
@@ -41,6 +53,7 @@
     "display": "Docker Xvfb :99",
     "environment": {
       "FD2_ORIGINAL_FDOTHER": "/workspace/org_game/炎龍騎士團/FLAME2/FDOTHER.DAT",
+      "FD2_ORIGINAL_DATO": "/workspace/org_game/炎龍騎士團/FLAME2/DATO.DAT",
       "FD2_ANI": "/workspace/org_game/炎龍騎士團/FLAME2/ANI.DAT",
       "FD2_SKY_KEY_EVIDENCE_OUT": "/workspace/docs/figures/ch21-sky-key-sequence-remake-e1.png"
     },
@@ -61,6 +74,8 @@
   },
   "flow_assertions": [
     "從 campaign_full.json 的 battle_ch21 正式勝利確認開始，不直接跳入鑄造節點",
+    "FDTXT.DAT第21項為4,660 bytes；六組分支呼叫共30句的control、operand、pages與編輯行由原始資料等值驗證",
+    "成功臂以正式故事輸入消費共同#5十句與crafted十六句，逐句完成opening、逐字、嘴型及closing",
     "0x2415B 的三張25-byte表與special slot25建立26-slot layout及camera=(336,240)",
     "FDTXT #7／#8之間與#8／#9之間依序完整消費ACTING 63／64的4／5幀typed資料",
     "驗證六素材原版恰好六組配對規則、JOIN24／23、sync_party、chapter21 與 town_ch22",
