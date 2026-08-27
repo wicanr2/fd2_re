@@ -49,8 +49,8 @@
 受版控清冊位於
 [`first-round-remake-samples.json`](data/verification/first-round-remake-samples.json)，
 以`tools/check_remake_samples.py`自動拒絕重複ID、遺失證據檔及手動灌水的資格欄位。
-目前登記37筆證據，其中32筆符合正常輸入與正式重製路徑資格：戰役／戰間4／12、
-戰鬥／AI 5／18、介面12／12、存檔／持續隊伍9／10、終局／平台2／8。最新一輪把
+目前登記38筆證據，其中33筆符合正常輸入與正式重製路徑資格：戰役／戰間4／12、
+戰鬥／AI 5／18、介面12／12、存檔／持續隊伍10／10、終局／平台2／8。最新一輪把
 既有正常輸入證據按不同驗收不變量補登：戰場HUD、command0調色盤、END接受逐字、
 Windows城鎮存檔寫入與第30戰前冷讀持續隊伍；沒有以同一結果跨層重複計數。介面樣本
 再次以目前提交的普通鍵盤路徑確認 `CONTINUE→battle_ch01→命令格`；另兩筆由
@@ -69,6 +69,8 @@ AppImage 亦以普通 X11 鍵盤從正式標題 LOAD 進入合法早期城鎮存
 round／camera／cursor視圖還原；三者均有普通CONTINUE與明確旁車，不把同欄位重複計數。
 另以正式標題LOAD、普通F5／F9及唯讀旁車驗證town_ch02的金錢、HP／MP、AP／DP、
 背包、裝備及原始物品槽一致；這一格不重複前述runtime／roster／map-view不變量。
+故意截斷的JSON槽位再由同一正式標題LOAD普通輸入確認：留在loadslots、拒絕發布
+檔內town_ch02／gold279且維持初始狀態，完成存檔層10／10的失敗即關閉風險抽樣。
 其餘5筆保留為有用旁證，但因route patch、專用截圖入口、typed test或非互動封包
 檢查而不計入95%門檻。這個數字衡量的是已整理樣本，不是把既有功能降級成未完成。
 

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "scope": "正式標題 LOAD 以普通鍵盤確認截斷 JSON 槽位，驗證失敗即關閉且不發布部分存檔狀態",
+  "input": {
+    "fixture": "故意截斷於 party_roster 的 fd2_save.json",
+    "fixture_sha256": "8d5f8d2c571ef7f4c4b37ee77ae274c9f89276849504b41f98ff542b89ee9b5c",
+    "timeline": [
+      "F10 等待正式標題初始化，不改遊戲狀態",
+      "Escape 略過捲動後，Down、Return 選擇 LOAD",
+      "Return 以普通鍵盤確認槽位 0"
+    ]
+  },
+  "observed": {
+    "frame": 800,
+    "title_phase": "loadslots",
+    "title_selection": 1,
+    "title_slot_selection": 0,
+    "message": "空的存檔槽",
+    "campaign_node": "story_ch00_handler",
+    "gold": 1000,
+    "party_join_order": [],
+    "party_roster": {},
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false
+  },
+  "validated_invariants": [
+    "截斷槽位沒有離開 loadslots，也沒有發布檔案內宣稱的 town_ch02 或 gold 279。",
+    "確認後仍保留初始 campaign 節點與 gold 1000，沒有半套 party、dialog、battle event 或 turn staging。",
+    "輸入檔 SHA-256 在驗證後不變，runtime 沒有修補或覆寫被拒絕的槽位。"
+  ],
+  "artifacts": {
+    "state": "save-normal-input-truncated-reject-state.json",
+    "state_sha256": "63bb2e26305d041583dc82f974a46ae1cdcbb26d7e60ba6d4bd12ee674cdf1a5",
+    "screenshot": "../../figures/save-normal-input-truncated-reject.png",
+    "screenshot_sha256": "4292b538c38108e2df2aa213709f60a309b16299d1d84c7c3f161944a388098b"
+  },
+  "limitations": [
+    "介面把無法解析的槽位以『空的存檔槽』拒絕，而不是顯示獨立的損毀文案；本樣本只證明拒絕與零部分發布。",
+    "故意截斷的重製 JSON 不是原版 FD2.SAV；不外推原版 checksum 或四槽 ABI。",
+    "音訊使用 dummy 裝置，本樣本不驗證人耳音訊。"
+  ]
+}

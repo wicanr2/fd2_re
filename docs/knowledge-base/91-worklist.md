@@ -21,8 +21,8 @@
 > 成片在 `dist/promo/`，不含原版音樂且不入Git；規格、重生腳本與雜湊見
 > `docs/promo-opening-ch01-spec.md`、`tools/build_fd2_opening_promo.sh`及影片metadata。
 
-> **抽樣清冊現況**：已登記37筆證據，32筆符合門檻（戰役／戰間4、戰鬥／AI 5、
-> 介面12、存檔／持續隊伍9、終局／平台2）。章節0 current-runtime 的空游標命令格、
+> **抽樣清冊現況**：已登記38筆證據，33筆符合門檻（戰役／戰間4、戰鬥／AI 5、
+> 介面12、存檔／持續隊伍10、終局／平台2）。章節0 current-runtime 的空游標命令格、
 > HUD、command0調色盤與END接受逐字，以及Windows城鎮F5存檔和第30戰前冷讀持續隊伍
 > 已按不同驗收不變量登錄；沒有以同一結果跨層重複計數。空游標命令格
 > 已由原版與重製的普通鍵盤路徑配對；正常標題LOAD另已由普通X11鍵盤走過
@@ -38,7 +38,8 @@
 > 為湊數新增同類UI格，轉向戰鬥／AI、戰役、存檔與終局缺額。
 > 存檔層另把runtime／party名冊與map view分開驗收，補登chapter0、第29戰、第30戰
 > 的round／camera／cursor還原；普通標題LOAD→F5→F9再確認金錢、HP／MP、AP／DP、
-> 背包、裝備與原始物品槽一致。存檔層只剩錯誤／截斷槽位的普通輸入拒絕樣本。
+> 背包、裝備與原始物品槽一致；截斷JSON槽位亦由正式標題普通輸入拒絕且零部分發布。
+> 存檔／持續隊伍層已達10／10，不再新增同類格，後續轉向戰鬥／AI、戰役與終局。
 > 下一步優先把已接正式consumer的早／中期戰間及冷讀存檔改由普通輸入重播，形成
 > 玩家路徑，而不是再新增無消費端RE。權威清冊見
 > [`first-round-remake-samples.json`](../data/verification/first-round-remake-samples.json)。

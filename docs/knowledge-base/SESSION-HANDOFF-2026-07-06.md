@@ -7999,3 +7999,13 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   的嘗試誤入`story_ch00_handler`且已作廢；未把編排競速記為產品缺陷。
 - 清冊成為37筆登記、32筆合格，存檔／持續隊伍9／10。此格驗證writer＋reader
   及角色欄位，不重複先前runtime、roster或map-view；存檔層只剩錯誤槽位普通輸入拒絕。
+
+## 2026-08-27：截斷槽位普通輸入拒絕
+
+- 以同一正式標題鍵序確認故意截斷於`party_roster`的JSON槽位。frame800仍在
+  `loadslots`，訊息為`空的存檔槽`；沒有發布檔內宣稱的town_ch02／gold279，
+  而是保留初始`story_ch00_handler`／gold1000，party、dialog與battle transient皆空。
+- 截斷檔驗證前後SHA-256同為`8d5f8d2c571ef7f4c4b37ee77ae274c9f89276849504b41f98ff542b89ee9b5c`。
+  這證明失敗即關閉與零部分發布；介面尚未區分「空」與「損毀」文案，不外推原版ABI。
+- 清冊成為38筆登記、33筆合格，存檔／持續隊伍達10／10。停止新增同類存檔格，
+  後續缺口為戰役8、戰鬥／AI13、終局／平台6。

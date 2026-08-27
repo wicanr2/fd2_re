@@ -415,6 +415,26 @@
       ]
     },
     {
+      "id": "save-normal-input-truncated-slot-reject",
+      "layer": "save_party",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/save-normal-input-truncated-reject-e1.json",
+        "docs/data/ui-traces/save-normal-input-truncated-reject-state.json",
+        "docs/figures/save-normal-input-truncated-reject.png"
+      ],
+      "limitations": [
+        "故意截斷的重製JSON由正式標題LOAD普通輸入拒絕；本格只驗證失敗即關閉與零部分發布，不宣稱原版FD2.SAV損毀文案或ABI。"
+      ]
+    },
+    {
       "id": "campaign-ch23-post-to-preparation24",
       "layer": "campaign_intermission",
       "result": "pass",
