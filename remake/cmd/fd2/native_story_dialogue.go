@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
 )
@@ -40,6 +41,14 @@ func (g *Game) prepareNativeDialogueFrames() error {
 			return err
 		}
 		g.nativeBattleFont, g.nativeBattleGlyphs = font, glyphs
+	}
+	if g.st != nil && !g.st.HasNativeMapViewState &&
+		g.camp != nil && g.camp.NodeID() == "postbattle_ch28_persist" &&
+		g.dialog[0].NativeDialogue.SourceDAT == "FDTXT_028" &&
+		g.dialog[0].NativeDialogue.StringIndex == 7 {
+		if err := g.materializeInheritedNativeDialogueView(); err != nil {
+			return err
+		}
 	}
 	if g.st == nil && g.storyNativeMapState == nil && g.storyNativeMapSource != nil {
 		if err := g.materializeNativeStoryMapState(g.storyNativeMapSource); err != nil {
@@ -93,13 +102,21 @@ func (g *Game) prepareNativeDialogueFrames() error {
 		g.nativeMapVGA, g.nativeClassUI.dialogue, layout,
 	)
 	if err != nil {
-		return err
+		return fmt.Errorf("native story dialogue: opening frames: %w", err)
 	}
 	if !native.HasMotionTargetY {
 		return errors.New("native story dialogue: closing motion target provenance is unavailable")
 	}
+	motionTargetY := native.MotionTargetY
+	// raw ch27_post 沒有留下五句各自的說話者螢幕座標；沿用玩家游標會把
+	// 下框滑到無關甚至越界的位置。99% 玩家可見模式保留五階段收框與背景
+	// 還原，只省略這段無來源的額外滑動。
+	if g.camp != nil && g.camp.NodeID() == "postbattle_ch28_persist" &&
+		native.SourceDAT == "FDTXT_028" && native.StringIndex == 7 {
+		motionTargetY = 0
+	}
 	visibleCursorX, visibleCursorY := 0, 0
-	if native.MotionTargetY != 0 {
+	if motionTargetY != 0 {
 		switch {
 		case g.st != nil && g.st.HasNativeMapViewState:
 			visibleCursorX = g.st.NativeMapViewState.VisibleCursorX
@@ -112,11 +129,11 @@ func (g *Game) prepareNativeDialogueFrames() error {
 		}
 	}
 	closing, err := campaign.ComposeNativeStoryDialogueClosingFrames(
-		g.nativeMapVGA, g.nativeClassUI.dialogue, layout, native.MotionTargetY,
+		g.nativeMapVGA, g.nativeClassUI.dialogue, layout, motionTargetY,
 		visibleCursorX, visibleCursorY,
 	)
 	if err != nil {
-		return err
+		return fmt.Errorf("native story dialogue: closing frames: %w", err)
 	}
 	frames := make([][]byte, len(layout.Pages))
 	progressive := make([][][]byte, len(layout.Pages))
@@ -127,14 +144,14 @@ func (g *Game) prepareNativeDialogueFrames() error {
 			g.nativeClassUI.font, g.nativeBattleGlyphs, layout, page,
 		)
 		if err != nil {
-			return err
+			return fmt.Errorf("native story dialogue: page %d progressive frames: %w", page, err)
 		}
 		frames[page] = progressive[page][len(progressive[page])-1]
 		mouthOpen[page], err = campaign.ComposeNativeStoryDialogueMouthFrame(
 			frames[page], portraits[3], layout,
 		)
 		if err != nil {
-			return err
+			return fmt.Errorf("native story dialogue: page %d mouth frame: %w", page, err)
 		}
 	}
 	g.nativeDialogueFrames = frames
@@ -142,6 +159,32 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	g.nativeDialogueMouthOpen = mouthOpen
 	g.nativeDialogueOpening = opening
 	g.nativeDialogueClosing = closing
+	return nil
+}
+
+// materializeInheritedNativeDialogueView 保留戰鬥控制器的現行視圖。
+// raw ch27_post 在呼叫對話前沒有另寫鏡頭／游標，因此只有完整圖塊對齊的
+// controller 狀態可以成為 indexed source；這不是章節專用的座標後備值。
+func (g *Game) materializeInheritedNativeDialogueView() error {
+	if g == nil || g.st == nil || g.m == nil || g.m.TileW <= 0 || g.m.TileH <= 0 {
+		return errors.New("native story dialogue: inherited battle view is unavailable")
+	}
+	if g.camX < 0 || g.camY < 0 {
+		return errors.New("native story dialogue: inherited battle camera is negative")
+	}
+	cameraX, cameraY := int(g.camX)/g.m.TileW, int(g.camY)/g.m.TileH
+	if float64(cameraX*g.m.TileW) != g.camX || float64(cameraY*g.m.TileH) != g.camY {
+		return errors.New("native story dialogue: inherited battle camera is not tile-aligned")
+	}
+	view := battle.NativeMapViewState{
+		CameraX: cameraX, CameraY: cameraY,
+		CursorX: g.curX, CursorY: g.curY,
+		VisibleCursorX: g.curX - cameraX,
+		VisibleCursorY: g.curY - cameraY,
+	}
+	if err := g.st.MaterializeNativeMapViewState(view); err != nil {
+		return fmt.Errorf("native story dialogue: inherited battle view: %w", err)
+	}
 	return nil
 }
 

@@ -1,0 +1,51 @@
+《炎龍騎士團 2》raw ch27_post：第28戰後共享尾端五句原生對話
+================================================================
+
+參考版本與控制流主證據
+----------------------
+
+- `FD2.EXE`：357074 bytes；MD5
+  `b97caf2239a27a896069d03549d96e1e`；SHA-256
+  `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- IDA Pro 9.4.0.260610 的既有主證據
+  [`fd2_post26_28_dispatch_ida.txt`](fd2_post26_28_dispatch_ida.txt)已證實：post
+  跳表 index27進入`0x25464`，於`0x25487`直接跳往共享尾端`0x231DF`；
+  `0x231E5`呼叫`sub_15F84`，`0x231ED`呼叫`sub_11506`，`0x231F2`遞增章節。
+- 本文程式位址均為DOS LE loader的IDA線性位址。低位址`0x231E5`是真實共享
+  程式碼，不可為了看似連續而改寫成`0x254xx`假位址。語意是帶分級的附加註記，
+  不取代原始定位。
+
+原始資產與五句控制碼
+--------------------
+
+- 固定版`FDTXT.DAT`：120502 bytes；MD5
+  `fe5c487ce4313485f1da9d48d35b05f9`；SHA-256
+  `a4555f8a0e61e884b4f504d56a8bdde11672583bbbbc6506281ae10dcdfb1f69`。
+- 第28項位於檔案偏移`0x17854`、長1628 bytes；Docker唯讀重抽後與
+  `extracted/raw/FDTXT/FDTXT_028.bin`逐位元組相同。raw項MD5
+  `e7e1ce486676db2aa5ff32d4123bd87f`，SHA-256
+  `e972ff438616de771edf7f80dafacca2585ac3c8b98928abf43be50d50fbcec8`。
+- 該項含8個字串、22句；`0x231E5`唯一消費index7，依序為五句：
+  `FFEE/9 FFEE/21 FFEE/9 FFEE/0 FFEE/9`。`count-aligned.json`唯一對應
+  `ch28.json` scene1 lines11..15。
+- 五句全是下框`FFEE`，但仍必須逐句保存operand、glyph、換行與分頁。缺context、
+  映射不唯一、句數不等或未支援控制字時必須整批失敗即關閉。
+- `0x25464..0x25487`只建立對話參數後跳入共享尾端，至`0x231E5`前沒有固定鏡頭、
+  游標或地圖重載 writer。因此本對話的背景來源是第28戰勝利當下仍存活的戰場
+  視圖，而不是可從handler推得的一組固定座標。這是「已證實」的控制流限制；
+  重製端只能繼承正式戰鬥控制器當下可嚴格換算的整格鏡頭／游標，不能在fixture
+  中硬填章節座標。換算不整齊或超界時仍須失敗即關閉。
+- 正常`story_ch28`前置流程讀入map27完整60筆原生來源；其中groups1..7共44筆於
+  戰場入口物化，group255的16筆仍留在source roster，不能誤算成已上場單位。再加
+  晚期整備的隊長＋19名選擇者，正式戰場frontier為64 slots。這是正式資料形狀的
+  「強推論」驗收邊界；先前把60筆來源全部加到20名部署者而聲稱80 slots，混淆
+  source roster與runtime units，已由正式`runtime_append_groups`邊界反證並撤回。
+
+證據分級
+--------
+
+- `RE-CLOSED`：dispatch、共享尾端、單一caller tuple及五句raw control已證實；
+  除非固定雜湊、直接指令或同狀態執行反證，不重開handler／共享尾端。
+- `DATA-READY`：五句可由受版控產生器重生為逐句`NativeDialogueLayout`。
+- 尚未證實：未修改原版同狀態逐幀、精確音訊與鍵盤時序；重製正式測試只能提升
+  為`RUNTIME-E1`，不可冒稱`PLAYER-E2`。

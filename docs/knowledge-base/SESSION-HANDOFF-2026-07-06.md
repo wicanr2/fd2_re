@@ -7670,3 +7670,15 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 這個一般玩家測試推翻舊「完整單位檔70筆是唯一runtime frontier」斷言；原函式
   只消費動態count，70僅保留為完整資料形狀相容。聚焦Docker／Xvfb回歸通過，
   提升為`RUNTIME-E1`；未修改原版同狀態逐幀／音訊仍是E2限制。
+
+## 2026-08-27：第28戰後五句原生對話與64-slot戰場接縫
+
+- 固定版`FDTXT.DAT`第28項offset`0x17854`、1,628 bytes已核對；`0x231E5#7`
+  的五句`FFEE/9、21、9、0、9`已轉為可編輯原生版面。
+- 修正`ch28.json`漏掉`runtime_append_groups`造成前置handler狀態被舊式重建覆蓋；
+  正式戰況為20名部署者＋map27 groups1..7共44筆＝64 slots。先前80-slot說法把
+  group255的16筆source roster誤算成已上場單位，已同步勘誤。
+- Docker／Xvfb正式回歸由`story_ch28`進第28戰，勝利後以具型別輸入完成五句、
+  隊伍同步、chapter28、`preparation_ch29`及全新`Game`冷讀，達`RUNTIME-E1`。
+  依99%玩家可見門檻保留五階段收框與背景還原；逐句說話者螢幕座標沒有handler
+  來源，故不以玩家游標冒充額外滑動，也不重開已閉合共享尾端。

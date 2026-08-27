@@ -4553,6 +4553,31 @@ story/cutscene 稽核為 121 節點、9 個獨立 script、49 個 handler bindin
   四段演出順序、隊伍／chapter持續性、城鎮節點及冷讀結果。這可提升為
   `RUNTIME-E1`，但未修改DOSBox同狀態逐幀、音訊與作業系統鍵盤仍另列E2。
 
+## raw ch27_post：第28戰後共享尾端五句原生對話（2026-08-27）
+
+主證據見[`fd2_ch27_post_native_dialogue_ida.txt`](../data/ida/fd2_ch27_post_native_dialogue_ida.txt)。
+
+- binding只允許`0x231E5#7→FDTXT_028／ch28.json scene1 lines11..15`；不可把共享
+  尾端來源位址改寫成入口附近假位址，也不可播放index0..6的戰前對話。
+- 五句必須由raw control重生為逐句原生生命週期；完整收框後才執行`sync_party`、
+  chapter28與`preparation_ch29`。
+- handler在對話前沒有鏡頭／游標 writer；背景沿用勝利當下戰場。若戰況尚未具有
+  raw view，runtime只可將正式控制器的`camX/camY/curX/curY`在整格對齊、
+  camera-visible identity及地圖邊界全部成立時物化為繼承視圖。不得把測試座標或
+  某張截圖的固定鏡頭寫進binding；任一條件不成立即失敗即關閉。
+- 五句各自的說話者螢幕座標沒有被本handler保存；依99%玩家可見門檻，本切片保留
+  原版五階段收框與勝利背景還原，但不以當下玩家游標冒充說話者位置播放額外滑動。
+  這項近似不提升為逐幀E2，也不再為它重開已閉合handler。
+- 正式驗收由`story_ch28`前置流程進入`battle_ch28`，再做正常勝利確認；要求
+  64-slot戰況（隊長＋19名晚期整備選擇者＋map27 groups1..7共44筆；group255
+  的16筆保留在source roster而不冒稱已上場）、
+  五句具型別輸入、
+  persistent roster同步、整備節點與全新`Game`冷讀。缺原資產或版面時整批
+  失敗即關閉，不退回現代RGBA對話框。
+- `ch28.json`必須宣告`runtime_append_groups`，使戰鬥接收前置handler已按原始順序
+  建構及分配selector的64筆runtime；若改走舊式scenario重建，會遺失map27單位的
+  原生presentation並使戰後背景失去來源，驗收必須拒絕這種不對稱。
+
 ## 2026-08-09 勘誤：raw ch16 post 接入玩家第17戰（E1，最新）
 
 前兩節的「玩家第17戰仍 blocked」是本輪之前的歷史狀態，已由本節直接驗證

@@ -1,0 +1,53 @@
+{
+  "name": "第28戰後單一caller／五句原生對話與第29戰整備冷讀路徑",
+  "date": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "reference": {
+    "FD2.EXE": {
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "FDTXT.DAT": {
+      "size": 120502,
+      "md5": "fe5c487ce4313485f1da9d48d35b05f9",
+      "sha256": "a4555f8a0e61e884b4f504d56a8bdde11672583bbbbc6506281ae10dcdfb1f69"
+    },
+    "FDTXT_028.bin": {
+      "archive_offset": "0x17854",
+      "size": 1628,
+      "md5": "e7e1ce486676db2aa5ff32d4123bd87f",
+      "sha256": "e972ff438616de771edf7f80dafacca2585ac3c8b98928abf43be50d50fbcec8"
+    },
+    "canonical_re": "docs/data/ida/fd2_ch27_post_native_dialogue_ida.txt"
+  },
+  "native_dialogue": {
+    "handler_entry": "0x25464",
+    "shared_caller": "0x231e5#7",
+    "source": "FDTXT_028",
+    "string_index": 7,
+    "controls": ["FFEE/9", "FFEE/21", "FFEE/9", "FFEE/0", "FFEE/9"],
+    "editable_utterances": 5
+  },
+  "runtime_contract": {
+    "entry": "story_ch28 handler to battle_ch28 normal win confirmation",
+    "source_roster_count": 60,
+    "slot_count": 64,
+    "slot_formula": "20 deployed persistent records + map27 groups 1..7 (44 records)",
+    "deferred_source_records": "group255 (16 records)",
+    "tail": ["sync_party", "chapter=28", "preparation_ch29", "save slot 0", "cold load new Game"]
+  },
+  "verification": {
+    "data_test": "TestCh27PostNativeDialogueLayoutsMatchOriginalControlWords",
+    "integrated_test": "TestChapter28BattleResultNativePostbattleReachesPreparationAndColdSave",
+    "result": "pass",
+    "docker_network": "none",
+    "xvfb": "explicit PID with exit trap"
+  },
+  "correction": "舊80-slot斷言把map27全部60筆source roster誤算為已物化戰場單位；正式runtime_append_groups邊界只物化groups1..7共44筆，另加20名部署者形成64 slots。",
+  "approximation": "依99%玩家可見門檻保留原版五階段收框與背景還原；因handler沒有保存逐句說話者螢幕座標，不以玩家游標冒充該座標播放額外滑動。",
+  "limitations": [
+    "未修改原版DOSBox同狀態逐幀、精確音訊與鍵盤時序尚未驗證。",
+    "本證據不提升為PLAYER-E2。"
+  ]
+}
