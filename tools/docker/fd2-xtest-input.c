@@ -6,7 +6,7 @@
  * by reproducible GUI traces when the test container has no xdotool.
  *
  * Usage:
- *   fd2-xtest-input Escape:1000 Down:1000 Return:1500
+ *   fd2-xtest-input Escape:1000 Down:1000 Shift+F5:1500
  *
  * The number is the delay, in milliseconds, after releasing the key.  A key
  * is pressed and released as two synchronised XTest events so Ebiten can
@@ -128,6 +128,11 @@ int main(int argc, char **argv) {
             delay_ms = atoi(colon + 1);
             if (delay_ms < 0) delay_ms = 0;
         }
+        int shift = 0;
+        if (!strncmp(spec, "Shift+", 6)) {
+            shift = 1;
+            memmove(spec, spec + 6, strlen(spec + 6) + 1);
+        }
         KeySym sym = key_symbol(spec);
         free(spec);
         if (sym == NoSymbol) {
@@ -141,10 +146,26 @@ int main(int argc, char **argv) {
             XCloseDisplay(dpy);
             return 6;
         }
+        KeyCode shift_code = XKeysymToKeycode(dpy, XK_Shift_L);
+        if (shift && !shift_code) {
+            fprintf(stderr, "no keycode for Shift in %s\n", argv[i]);
+            XCloseDisplay(dpy);
+            return 8;
+        }
+        if (shift) {
+            XTestFakeKeyEvent(dpy, shift_code, True, CurrentTime);
+            XSync(dpy, False);
+            /* Match an ordinary chord: let the game observe the held
+             * modifier before the function-key just-pressed edge. */
+            usleep(120000);
+        }
         XTestFakeKeyEvent(dpy, code, True, CurrentTime);
         XSync(dpy, False);
         usleep(60000);
         XTestFakeKeyEvent(dpy, code, False, CurrentTime);
+        if (shift) {
+            XTestFakeKeyEvent(dpy, shift_code, False, CurrentTime);
+        }
         XSync(dpy, False);
         usleep((useconds_t)delay_ms * 1000U);
     }

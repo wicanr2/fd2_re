@@ -915,6 +915,28 @@
       "limitations": [
         "合法晚期重製節點存檔只驗證town_ch27至church_ch27主選單及返回；不證明第26戰長程來源、四項教會服務或原版同狀態。"
       ]
+    },
+    {
+      "id": "campaign-secret-shop-roundtrip-ch26",
+      "layer": "campaign_intermission",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-secret-shop-roundtrip-ch26-remake-e1.json",
+        "docs/data/ui-traces/native-secret-shop-entry-ch26-remake-e1-state.json",
+        "docs/data/ui-traces/native-secret-shop-return-ch26-remake-e1-state.json",
+        "docs/figures/native-secret-shop-entry-ch26-remake-e1.png",
+        "docs/figures/native-secret-shop-return-ch26-remake-e1.png"
+      ],
+      "limitations": [
+        "只驗證第26章選項4＋Shift+F5的0x58隱藏入口、秘密商店發布與返回；不外推其他章節條件、商品交易或原版同狀態。"
+      ]
     }
   ]
 }

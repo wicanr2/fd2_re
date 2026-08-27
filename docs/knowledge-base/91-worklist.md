@@ -21,7 +21,7 @@
 > 成片在 `dist/promo/`，不含原版音樂且不入Git；規格、重生腳本與雜湊見
 > `docs/promo-opening-ch01-spec.md`、`tools/build_fd2_opening_promo.sh`及影片metadata。
 
-> **抽樣清冊現況**：已登記48筆證據，43筆符合門檻（戰役／戰間10、戰鬥／AI 9、
+> **抽樣清冊現況**：已登記49筆證據，44筆符合門檻（戰役／戰間11、戰鬥／AI 9、
 > 介面12、存檔／持續隊伍10、終局／平台2）。章節0 current-runtime 的空游標命令格、
 > HUD、command0調色盤與END接受逐字，以及Windows城鎮F5存檔和第30戰前冷讀持續隊伍
 > 已按不同驗收不變量登錄；沒有以同一結果跨層重複計數。空游標命令格
@@ -61,6 +61,8 @@
 > 存檔不外推第25戰長程來源、選人或進戰。
 > 第27章城鎮另以普通輸入完成`town_ch27→church_ch27→town_ch27`；入口固定menu、
 > selection0與gold13000，返回沒有殘留暫態。這只計教會主選單往返，不外推四項服務。
+> 第26章神秘商店也已由普通Shift+F5完成：選項4＋scan0x58揭露選項5，確認後進
+> `shop_ch26_secret`並以Escape返回；它是章節特定正常入口，不是debug shortcut。
 > 下一步優先把已接正式consumer的晚期教會／商店及終局邊界改由普通輸入重播，形成
 > 玩家路徑，而不是再新增無消費端RE。權威清冊見
 > [`first-round-remake-samples.json`](../data/verification/first-round-remake-samples.json)。

@@ -8116,3 +8116,13 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   返回`town_ch27`並保留gold13000。
 - 返回PNG與前一筆同版variant0城鎮返回畫面逐位元組相同，節點與金錢差異由獨立
   旁車保存，故不重複加入相同圖片。清冊現為48筆登記、43筆合格；戰役／戰間10／12。
+
+## 2026-08-28：第26章神秘商店普通Shift+F5往返
+
+- `tools/docker/fd2-xtest-input.c`新增`Shift+Key`語法，先讓遊戲觀察修飾鍵按住
+  120ms，再送功能鍵just-pressed edge；仍只產生普通X11鍵盤事件，不呼叫runtime API。
+- 正式標題LOAD進`town_ch26`後，Left×4抵達選項4；Shift+F5送出章節表要求的
+  scan0x58並揭露選項5，另按Return於frame2100抵達`shop_ch26_secret`。第二次
+  相同前綴送Escape，frame2300返回`town_ch26`並保留gold12000及已揭露`???`入口。
+- 舊工具把Shift與F5幾乎同時壓下的首輪停在town並排除；加入一般人組合鍵時序後
+  唯一重播一次通過，不是遊戲規則修改。清冊現為49筆登記、44筆合格；戰役／戰間11／12。

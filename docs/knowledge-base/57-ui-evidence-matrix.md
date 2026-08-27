@@ -447,6 +447,13 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 > [`native-late-church-roundtrip-ch27-remake-e1.json`](../data/ui-traces/native-late-church-roundtrip-ch27-remake-e1.json)。
 > 本格只達重製E1，不證明第26戰長程來源、四項服務交易或原版同狀態。
 
+> **2026-08-28 UI-09 第26章神秘商店普通組合鍵補證：** 正式標題LOAD進
+> `town_ch26`後，普通Left×4抵達選項4；Shift+F5建立原版scan0x58並揭露選項5，
+> 另按Return進`shop_ch26_secret`，Escape返回仍顯示`???`入口。證據見
+> [`native-secret-shop-roundtrip-ch26-remake-e1.json`](../data/ui-traces/native-secret-shop-roundtrip-ch26-remake-e1.json)。
+> 這是章節特定正常玩家入口，不是debug shortcut；只達重製E1，不外推其他章節、
+> 商品交易、長程來源或原版同狀態。
+
 > **2026-08-26 UI-09 service2 正式輸入補證：** 四項商店選單 Right×2、角色名冊、
 > 原版 item scan code、相容／不相容交易、空背包、0→11收合、同角色名冊重開及返回
 > service selection 2 現由正式鍵盤與回歸共用 typed consumer。Down（scan80）才會在
