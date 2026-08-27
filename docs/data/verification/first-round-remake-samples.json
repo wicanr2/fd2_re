@@ -230,6 +230,42 @@
       ]
     },
     {
+      "id": "campaign-title-load-to-preparation30",
+      "layer": "campaign_intermission",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-load-ch30-normal-input-remake-e1.json"
+      ],
+      "limitations": [
+        "起點為固定雜湊第三方存檔；驗證正式LOAD保留戰間整備，不證明長程通關來源。"
+      ]
+    },
+    {
+      "id": "campaign-preparation30-to-battle30",
+      "layer": "campaign_intermission",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-load-ch30-normal-input-remake-e1.json"
+      ],
+      "limitations": [
+        "驗證記錄提示NO、19人整備與戰前劇情；音訊使用dummy裝置。"
+      ]
+    },
+    {
       "id": "ui-shop-sell-ch02-route-patched",
       "layer": "ui",
       "result": "pass",

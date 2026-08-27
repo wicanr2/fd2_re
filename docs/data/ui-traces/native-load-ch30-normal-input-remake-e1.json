@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "scope": "重製正式標題 LOAD→slot 0→記錄提示 NO→19人整備→最終戰前劇情→battle_ch30",
+  "input": {
+    "save_source": "https://playerlin.orgfree.com/download/fdsave/fd2/fd2021.zip",
+    "zip_sha256": "6968a02be61fd76a64a7b1142c7752ee3d11ef035d59c1cc9badede16b2a93a5",
+    "save_member": "fd2last.sav",
+    "save_size": 22987,
+    "save_sha256": "f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f",
+    "reference_files": "docs/data/fd2-reference-files.json",
+    "source_mounts": "原版FLAME2與外部存檔均唯讀；只把截圖與旁車寫到/tmp",
+    "campaign": "assets/scenarios/campaign_full.json"
+  },
+  "execution": {
+    "environment": "一次性、無網路、UID/GID 1000 的 fd2-go-test-local Docker／Xvfb",
+    "production_path": true,
+    "normal_input": true,
+    "route_patch": false,
+    "debug_shortcut": false,
+    "input_helper": "tools/docker/fd2-xtest-input.c，只送普通X11鍵盤按下／放開事件",
+    "timeline": [
+      "Escape×8略過可略過的正式開場段落；等待標題穩定",
+      "Down、Return選擇LOAD；等待後在slot 0按Return",
+      "記錄提示按Right、Return選擇NO",
+      "連續Return 19次選滿整備名額，再按Return確認出戰",
+      "以普通Return消費最終戰前21句對話與七次staging",
+      "第9000幀由被動截圖鉤子保存畫面與狀態後退出"
+    ],
+    "shot_contract": "FD2_TITLE=1只抵消截圖模式預設跳過標題，恢復正式玩家預設；FD2_SHOT與FD2_SHOT_STATE只在指定幀唯讀輸出，不改遊戲控制流",
+    "audio": "SDL_AUDIODRIVER=dummy；本樣本不驗證人耳或精確音訊"
+  },
+  "observed_state": {
+    "frame": 9000,
+    "title_selection": 1,
+    "title_slot_selection": 0,
+    "campaign_node": "battle_ch30",
+    "cursor": [23, 18],
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false,
+    "battle": {
+      "width": 45,
+      "height": 40,
+      "turn": 1,
+      "native_round_counter": 1,
+      "camera": [16, 14],
+      "visible_cursor": [7, 4]
+    }
+  },
+  "artifacts": {
+    "screenshot": "../../figures/native-load-ch30-normal-input-remake-e1.png",
+    "screenshot_size": [640, 400],
+    "screenshot_bytes": 24765,
+    "screenshot_sha256": "36cbabf98616faf1fe6a4adfa28b0c96d39b180e2c8203f8ed3e562a89076cc0",
+    "raw_state_sha256": "072a814527d888aeb110d37de55dc865ab957ffa2f1693d7cb861d7c10547336"
+  },
+  "claims": [
+    "普通標題LOAD可把已審查晚期slot 0原子發布為preparation_ch30，而非直接切到戰鬥。",
+    "記錄提示NO、19人整備、出戰確認與最終戰前對話／staging均由正式鍵盤consumer完成。",
+    "同一程序最後抵達可操作battle_ch30，沒有殘留dialog、battle event或turn staging。"
+  ],
+  "limitations": [
+    "起點是第三方保存站固定雜湊存檔，不證明由第1戰未修改長程通關產生。",
+    "音訊使用dummy裝置，不證明原版或三平台人耳音訊一致。",
+    "本紀錄證明重製正常輸入可達與typed狀態，不提升為原版同狀態PLAYER-E2。"
+  ]
+}

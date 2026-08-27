@@ -65,6 +65,25 @@ func TestWriteShotStateTraceRecordsNativeInteractionState(t *testing.T) {
 	}
 }
 
+func TestWriteShotStateTraceRecordsTitleSelections(t *testing.T) {
+	g := &Game{frame: 42, titlePhase: "loadslots", titleSel: 1, titleSlotSel: 3}
+	path := filepath.Join(t.TempDir(), "title-state.json")
+	if err := g.writeShotStateTrace(path); err != nil {
+		t.Fatal(err)
+	}
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got screenshotStateTrace
+	if err := json.Unmarshal(raw, &got); err != nil {
+		t.Fatal(err)
+	}
+	if got.TitlePhase != "loadslots" || got.TitleSelection != 1 || got.TitleSlotSelection != 3 {
+		t.Fatalf("title shot state trace=%#v", got)
+	}
+}
+
 func TestWriteShotStateTraceRecordsNativeItemModal(t *testing.T) {
 	for _, tc := range []struct {
 		name       string

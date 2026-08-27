@@ -14,6 +14,8 @@ import (
 type screenshotStateTrace struct {
 	Frame                  int                      `json:"frame"`
 	TitlePhase             string                   `json:"title_phase,omitempty"`
+	TitleSelection         int                      `json:"title_selection"`
+	TitleSlotSelection     int                      `json:"title_slot_selection"`
 	TitleCut               *screenshotTitleCutTrace `json:"title_cut,omitempty"`
 	CampaignNode           string                   `json:"campaign_node,omitempty"`
 	Result                 string                   `json:"result,omitempty"`
@@ -111,6 +113,8 @@ func (g *Game) writeShotStateTrace(path string) error {
 	trace := screenshotStateTrace{
 		Frame:                        g.frame,
 		TitlePhase:                   g.titlePhase,
+		TitleSelection:               g.titleSel,
+		TitleSlotSelection:           g.titleSlotSel,
 		Result:                       g.result,
 		Cursor:                       [2]int{g.curX, g.curY},
 		ActionOverlayOpen:            g.ring,
