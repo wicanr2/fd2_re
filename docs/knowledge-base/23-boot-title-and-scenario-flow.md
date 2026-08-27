@@ -171,7 +171,8 @@ DOS/4GW entry 0x3c964 ──► Watcom CRT ──► main 0x25bf4
 > 承接 doc39 §10.5/§10.7:title_seq 捲動迴圈內 `esi==0x1c2`(450)與 `esi==0xa`(10)各觸發一次
 > `call 0x1f73f(esi,edi,idxA,idxB)`,是**獨立於 ANI.DAT/AFM VM 的第二套顯示機制**——不播動畫,
 > 是「黑幕 → 全螢幕靜態圖 blit → 調色盤淡入 → 停留 → 復原捲動畫面」的一次性插播。純靜態反組譯
-> (規則 62)逐指令 esp-relative 反推(`push N; call 0x36cd7` 經查證是 Watcom 堆疊 guard-page 探測,
+> （規則 62）逐指令 esp-relative 反推（`push N; call 0x36cd7` 經查證是 Watcom
+> stack limit／overflow check，不是逐頁 guard-page probe；
 > **對 esp 淨效果為 0**,不是配置區域變數——與 doc39 §10 的 esp_rel 校正同一教訓,別假設常見慣例)。
 
 **`0x1f73f` 完整流程**(cdecl,呼叫端 push 順序 `esi,edi,idxA,idxB` 反推出形參序

@@ -7846,3 +7846,18 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   `0x36CD7` 雖有541個 direct callers，但現有直接證據明載不足，因此拒絕升級。
 - 授權 IDA Pro 9.4 從固定雜湊原檔再生結果為函式1,305、產品58、runtime171、
   unknown1,076、語意註記60。重生足跡剩486個 exact、502個 range，第一優先325筆。
+
+## 2026-08-27：`0x36CD7` Watcom stack runtime 勘誤
+
+- 使用者追問高 caller `0x36CD7` 後，以授權 IDA 9.4 一次性資料庫直接匯出
+  `0x36CD7`、`0x36CEA`、`0x36D07` 與代表性 caller `0x28784`。前批「證據不足」
+  是保守暫態，不是最終結論。
+- `0x36CD7` 以參數槽保存EAX並把需求量傳給`0x36CEA`；後者計算
+  `ESP-required_stack_bytes`、比較`[0x52814]` lower limit及`[0x52794]` SS selector；
+  失敗臂`0x36D07`載入`Stack Overflow!\r\n`、code 1並跳到exit consumer。
+- 舊稱「Watcom guard-page probe」不精確：本體沒有0x1000逐頁touch loop，已勘誤為
+  stack limit／overflow check。541個caller是編譯器序言，不是541項遊戲功能；傳入
+  stack demand也不等於後方`sub esp,N`的local frame大小。
+- 三段均回填runtime，清冊為產品58、runtime174、unknown1,073、語意63。版本綁定
+  原始證據置於`fd2_watcom_stack_check_36cd7_ida.txt`；共用辨識方法另寫入專案`59`
+  與`~/.codex/knowledge-base/local/watcom-stack-runtime-patterns.md`並加入知識路由。

@@ -1,0 +1,76 @@
+# FD2 Watcom stack check `0x36CD7`（IDA Pro 9.4）
+
+證據等級：已證實（窄 runtime 語意）
+
+- 輸入：`FD2.EXE`
+- size：357,074 bytes
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- 工具：IDA Pro 9.4／IDAPython，`fd2-ida-authorized-local`
+- 位址空間：IDA flat-loader linear address
+- 方法：唯讀原檔掛載為 `/input/FD2.EXE`，一次性 `.i64`；匯出不改名、不改型別。
+
+## `sub_36CD7`：保留 EAX 的 stack-demand wrapper
+
+函式範圍：`0x36CD7..0x36CE7`，IDA 原名 `sub_36CD7`。
+
+```asm
+0x36CD7  xchg eax, [esp+arg_0]
+0x36CDB  call sub_36CEA
+0x36CE0  mov  eax, [esp+arg_0]
+0x36CE4  retn 4
+```
+
+caller 以 `push required_stack_bytes; call 0x36CD7` 傳值。第一個 `xchg` 讓 EAX
+取得需求量，並把 caller 原 EAX 暫存在參數槽；callee 返回後復原 EAX，`retn 4`
+同時移除參數。因此 wrapper 對 caller 的 EAX 與參數 stack 淨效果為零。
+
+## `sub_36CEA`：stack limit／selector 檢查
+
+函式範圍：`0x36CEA..0x36D07`，唯一直接 caller 是 `0x36CDB`。
+
+```asm
+0x36CEA  cmp eax, esp
+0x36CEC  jnb short 0x36CFB
+0x36CEE  sub eax, esp
+0x36CF0  neg eax                 ; EAX = ESP - required_stack_bytes
+0x36CF2  cmp eax, [0x52814]      ; process stack lower limit
+0x36CF8  jbe short 0x36CFB
+0x36CFA  retn
+0x36CFB  mov eax, ss
+0x36CFD  cmp ax, [0x52794]       ; expected stack selector
+0x36D04  jz short 0x36D07
+0x36D06  retn
+```
+
+`0x36D07..0x36D16` 載入 `"Stack Overflow!\r\n"`、設定 exit code 1，跳至
+`__exit_with_msg_`。直接 consumer 證實這是 stack overflow 防護，不是遊戲邏輯。
+
+## 代表性 caller pattern
+
+`0x28784` 的序言：
+
+```asm
+0x28784  push 54h
+0x28789  call sub_36CD7
+0x2878E  push ebx
+0x2878F  push esi
+0x28790  push edi
+0x28791  push ebp
+0x28792  sub  esp, 24h
+```
+
+`0x54` 是編譯器估算的函式 stack demand 上限，不可直接視為 `sub esp,0x54` 的
+local-frame 大小；它可包含保存暫存器、區域變數與最深 outgoing-call 需求。IDA
+清冊列出541個直接 call sites，分布於啟動、戰役、AI、UI、音訊與 renderer，符合
+編譯器插入的共用 runtime check，而非跨越所有子系統的遊戲事件 helper。
+
+## 結論與勘誤
+
+- 已證實：`0x36CD7` 是保留 EAX 的 Watcom stack-demand／overflow-check wrapper；
+  `0x36CEA` 計算預期 stack pointer 並比較 process stack limit，失敗時輸出
+  `Stack Overflow!` 後退出。
+- 勘誤：舊文件稱它為「guard-page probe」。本體沒有逐頁讀寫或 page-touch loop，
+  因此較精確名稱是 stack limit／overflow check；不可冒稱逐頁 stack probing。
+- remake 影響：無。Go runtime 自行管理 stack；不移植此 helper，只需把它從
+  玩家功能與未知遊戲語意清冊中分類為 runtime。

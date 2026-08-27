@@ -425,6 +425,30 @@
       "scope": "無參數 callee；不等同 generic fade"
     },
     {
+      "address": "0x36cd7",
+      "classification": "runtime",
+      "semantic": "保留 EAX 的 Watcom stack-demand／overflow-check wrapper",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_watcom_stack_check_36cd7_ida.txt", "docs/knowledge-base/59-watcom-stack-runtime-patterns.md"],
+      "scope": "541個 prologue callers 共用的 runtime wrapper；不是遊戲事件 helper，也沒有逐頁 page-touch loop"
+    },
+    {
+      "address": "0x36cea",
+      "classification": "runtime",
+      "semantic": "Watcom prospective ESP、stack lower limit 與 SS selector 檢查",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_watcom_stack_check_36cd7_ida.txt", "docs/knowledge-base/59-watcom-stack-runtime-patterns.md"],
+      "scope": "stack overflow 判定核心；process globals 的初始化 owner 不在此函式"
+    },
+    {
+      "address": "0x36d07",
+      "classification": "runtime",
+      "semantic": "Stack Overflow 訊息與 exit code 1 消費端",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_watcom_stack_check_36cd7_ida.txt", "docs/knowledge-base/59-watcom-stack-runtime-patterns.md"],
+      "scope": "overflow failure arm；不是一般遊戲結束或錯誤對話"
+    },
+    {
       "address": "0x37416",
       "classification": "runtime",
       "semantic": "Watcom runtime free",

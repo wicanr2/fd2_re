@@ -29,7 +29,8 @@
 | 單圖演出 | **0x28784** | 1 個 unit index | 顯示**單一**單位全身圖(施法/單體演出) |
 | 雙 record 演出 | **0x28a6c** | **2 個** runtime record index | 正式戰鬥 caller 已證實用於對打全螢幕演出；其他 caller 仍須各別判讀 |
 
-兩者 prologue 都是 Watcom 風格 `push <frameSize>; call 0x36cd7`(stack-probe):
+兩者 prologue 都是 Watcom 風格 `push <stackDemand>; call 0x36cd7`（stack
+limit／overflow check；不是逐頁 page-touch probe，見 `59-watcom-stack-runtime-patterns.md`）：
 - 0x28784:`push 0x54; call 0x36cd7`(0x28789),func 範圍 0x28784–0x28a6b `ret`。
 - 0x28a6c:`push 0x64; call 0x36cd7`(0x28a71),func 範圍 0x28a6c–0x29116 `ret`。
 

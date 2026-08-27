@@ -286,9 +286,9 @@ repo 提供不含 license／遊戲資料的 `tools/docker/fd2-ida.Dockerfile` �
 只在授權 IDA Docker 匯出原始函式邊界、IDA 分析名稱、旗標與直接 caller；
 `tools/compact_fd2_function_inventory.py` 產生受版控的
 [`fd2_function_inventory.json`](../data/ida/fd2_function_inventory.json)。固定雜湊輸入
-辨識1,305函式；現行語意索引60筆中，58筆標為產品、2筆標為runtime；
-語意索引覆蓋同一FLIRT分類而不重複計數。目前為產品58、runtime171、
-未知1,076。語意只從
+辨識1,305函式；現行語意索引63筆中，58筆標為產品、5筆標為runtime；
+語意索引覆蓋同一FLIRT分類而不重複計數。目前為產品58、runtime174、
+未知1,073。語意只從
 [`fd2_semantic_index.json`](../data/ida/fd2_semantic_index.json) 合併，雜湊不符、
 註記未落在函式起點或缺推論等級／證據時直接拒絕。handler IR 同步拆成
 `native_call`、`unresolved_native_call`、`unknown`；三者都保留原始定位，前兩者
@@ -307,6 +307,10 @@ repo 提供不含 license／遊戲資料的 `tools/docker/fd2-ida.Dockerfile` �
 第二輪依下述分級清冊人工複核第一優先候選，接受十二筆、拒絕只有高 caller／高
 命中但無閉合語意者；再次由 IDA 重生為產品58、runtime171、unknown1,076、語意
 註記60。足跡清冊本身保留全部待審函式及來源種類，不因索引回填而遺失研究線索。
+其後對高 caller `0x36CD7` 做直接 IDA body／失敗臂複核，推翻「證據不足」：
+`0x36CD7→0x36CEA→0x36D07` 是三段 Watcom stack overflow runtime，且不是舊稱的
+逐頁 guard-page probe。三段回填後現況為產品58、runtime174、unknown1,073、
+語意註記63；通用 pattern 與停止線見 `59-watcom-stack-runtime-patterns.md`。
 
 ### 未知函式既有足跡的分級回填規格
 

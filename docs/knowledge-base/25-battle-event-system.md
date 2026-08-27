@@ -34,7 +34,8 @@ hdl:D  a  D  D  D  D  D  D  D  b  D  c  d  D  e  f  g  h  i  j  k  L  m  D  n  o
 
 ## 4. 事件原語(handler 共用的條件 / 動作函式)
 
-把 18 個 handler 呼叫的函式統計出來,扣掉 stack-probe(0x36cd7),得到事件系統的「指令集」——雖是函式呼叫形式:
+把 18 個 handler 呼叫的函式統計出來，扣掉 Watcom stack
+limit／overflow check（`0x36cd7`），得到事件系統的「指令集」——雖是函式呼叫形式：
 
 | 原語 | linear | 次數 | 作用 | 狀態 |
 |---|---|---|---|---|

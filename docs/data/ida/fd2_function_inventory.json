@@ -15,11 +15,11 @@
   "imagebase": "0x0",
   "function_count": 1305,
   "classification_counts": {
-    "unknown": 1076,
+    "unknown": 1073,
     "product": 58,
-    "runtime": 171
+    "runtime": 174
   },
-  "semantic_annotation_count": 60,
+  "semantic_annotation_count": 63,
   "classification_note": "product/driver only come from the versioned semantic index; runtime is a mechanical IDA FUNC_LIB classification after the configured FLIRT signatures; every other function remains unknown",
   "detail_note": "每筆保留 IDA 函式邊界、分析名稱、旗標、直接 caller 函式與分級語意；逐 call-site 交叉參照由同一匯出器重生，不在此精簡版重複保存",
   "functions": [
@@ -13342,11 +13342,23 @@
       "direct_code_xref_count": 541,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "runtime",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x36cd7",
+          "classification": "runtime",
+          "semantic": "保留 EAX 的 Watcom stack-demand／overflow-check wrapper",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_watcom_stack_check_36cd7_ida.txt",
+            "docs/knowledge-base/59-watcom-stack-runtime-patterns.md"
+          ],
+          "scope": "541個 prologue callers 共用的 runtime wrapper；不是遊戲事件 helper，也沒有逐頁 page-touch loop"
+        }
+      ]
     },
     {
       "start": "0x36ce7",
@@ -13378,11 +13390,23 @@
       "direct_code_xref_count": 1,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "runtime",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x36cea",
+          "classification": "runtime",
+          "semantic": "Watcom prospective ESP、stack lower limit 與 SS selector 檢查",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_watcom_stack_check_36cd7_ida.txt",
+            "docs/knowledge-base/59-watcom-stack-runtime-patterns.md"
+          ],
+          "scope": "stack overflow 判定核心；process globals 的初始化 owner 不在此函式"
+        }
+      ]
     },
     {
       "start": "0x36d07",
@@ -13397,11 +13421,23 @@
       "direct_code_xref_count": 2,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "runtime",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x36d07",
+          "classification": "runtime",
+          "semantic": "Stack Overflow 訊息與 exit code 1 消費端",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_watcom_stack_check_36cd7_ida.txt",
+            "docs/knowledge-base/59-watcom-stack-runtime-patterns.md"
+          ],
+          "scope": "overflow failure arm；不是一般遊戲結束或錯誤對話"
+        }
+      ]
     },
     {
       "start": "0x36d16",
