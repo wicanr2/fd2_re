@@ -140,6 +140,25 @@
       ]
     },
     {
+      "id": "ui-current-runtime-command-grid-ch01",
+      "layer": "ui",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-continue-current-command-remake-e1.json"
+      ],
+      "limitations": [
+        "原版與重製均由普通鍵盤抵達同一空游標命令格；重製固定標題tick與截圖時鐘，故不宣稱逐幀或數值區逐像素一致。",
+        "只驗證命令格開啟與四格索引版面，不外推各指令的交易語意。"
+      ]
+    },
+    {
       "id": "ui-preparation-ch30-phase0",
       "layer": "ui",
       "result": "pass",

@@ -91,6 +91,25 @@
     "absolute_error_pixels": 8932,
     "claim": "四格圖塊、游標入口與一般鍵盤流程已被重製端消費；數值顯示尚未達逐像素一致。"
   },
+  "current_revalidation": {
+    "date": "2026-08-27",
+    "commit": "ac6e7cc4842c3dc2826f8f8b4c1b625653ddf1a3",
+    "environment": "一次性無網路 fd2-go-test-local Docker／Xvfb；原版資料唯讀；普通 XTest 鍵盤事件",
+    "timeline": "正式開場分段 Escape→標題 Down、Down、Return（CONTINUE）→戰場 Return",
+    "observed": {
+      "campaign_node": "battle_ch01",
+      "cursor": [8, 17],
+      "turn": 1,
+      "native_round_counter": 1,
+      "action_overlay_open": true,
+      "native_continue_cursor_overlay": true,
+      "dialog_count": 0,
+      "battle_event_active": false
+    },
+    "capture_sha256": "32517782240b3ecf12616eedc2f34c68b2c3e4659196fdeb5616b182f7898a78",
+    "state_sha256": "ce71651d5a5383ede5c04b832ef9ebaf9e3fac5439b5166647432689b0aaf9d9",
+    "result": "目前提交可由普通鍵盤進入第1戰並開啟命令格；這只重驗可玩入口，不提升逐像素或全戰役等級。"
+  },
   "limits": [
     "原版一側是未修改 DOSBox E2；重製端一側因明確 title tick 與 deterministic screenshot clock 仍只屬 E1。",
     "這個 slice 不證明四格的動作名稱、owner、目標選擇、確認效果、status/equipment panel 或其他戰場狀態。",
