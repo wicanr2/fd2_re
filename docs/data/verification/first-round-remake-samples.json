@@ -159,6 +159,60 @@
       ]
     },
     {
+      "id": "ui-battle-hud-current-runtime-ch01",
+      "layer": "ui",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-continue-current-runtime-remake-e2.json"
+      ],
+      "limitations": [
+        "與CONTINUE可達性樣本共用輸入，但本樣本獨立驗證地圖、單位、游標與HUD發布；待機動畫相位未鎖定。"
+      ]
+    },
+    {
+      "id": "ui-command0-target-palette-lifecycle-ch01",
+      "layer": "ui",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-command0-target-original-vs-remake-e1.json"
+      ],
+      "limitations": [
+        "與command0目標 admission 共用路徑，但本樣本只驗證約20相位的索引調色盤生命週期，不宣稱命中或傷害結果。"
+      ]
+    },
+    {
+      "id": "ui-end-response-progressive-accept-ch01",
+      "layer": "ui",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-end-turn-response-progressive-original-vs-remake-e1.json"
+      ],
+      "limitations": [
+        "與敵方回合轉移樣本共用YES分支，但本樣本獨立驗證接受句逐字發布與完整句後才收束；不宣稱精確tick。"
+      ]
+    },
+    {
       "id": "ui-preparation-ch30-phase0",
       "layer": "ui",
       "result": "pass",
@@ -228,6 +282,24 @@
       ],
       "limitations": [
         "正式CONTINUE還原33筆場上單位與31人persistent；第三方存檔來源不完整。"
+      ]
+    },
+    {
+      "id": "save-cold-load-preparation30-party",
+      "layer": "save_party",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-load-ch30-normal-input-remake-e1.json"
+      ],
+      "limitations": [
+        "起點為固定雜湊第三方存檔；本樣本只驗證正式LOAD冷讀後保留19人整備與持續隊伍，不證明從第1戰產生。"
       ]
     },
     {
@@ -356,6 +428,24 @@
       "limitations": [
         "以Wine 9.0／Xvfb接收鍵盤並寫入存檔，不取代Windows實體機公開發行驗收。",
         "自動方向鍵對映不作原版方向忠實度證據。"
+      ]
+    },
+    {
+      "id": "save-windows-wine-town-write",
+      "layer": "save_party",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/release-windows-wine-smoke.json"
+      ],
+      "limitations": [
+        "與Windows封包啟動樣本共用程序，但本樣本獨立驗證普通F5寫入可解析原子JSON與town_ch02節點；Wine不取代Windows真機。"
       ]
     }
   ]
