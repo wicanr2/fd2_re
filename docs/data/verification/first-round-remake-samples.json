@@ -85,6 +85,44 @@
       ]
     },
     {
+      "id": "combat-end-confirmation-open-ch01",
+      "layer": "combat_ai",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-end-turn-confirmation-original-vs-remake-e1.json"
+      ],
+      "limitations": [
+        "與UI格共用畫面但驗收不同：本格只驗證玩家command grid選END後進入YES／NO決策modal，不計版面像素。"
+      ]
+    },
+    {
+      "id": "combat-end-confirmation-cancel-ch01",
+      "layer": "combat_ai",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-end-turn-cancel-remake-e1.json",
+        "docs/data/ui-traces/native-end-turn-cancel-remake-e1-state.json",
+        "docs/figures/native-end-turn-cancel-remake-e1.png"
+      ],
+      "limitations": [
+        "本格只驗證NO取消後回到同一turn1／round1玩家控制且無transient；沒有另取原版NO後同幀畫面。"
+      ]
+    },
+    {
       "id": "combat-command0-target-ch01",
       "layer": "combat_ai",
       "result": "pass",

@@ -8009,3 +8009,15 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   這證明失敗即關閉與零部分發布；介面尚未區分「空」與「損毀」文案，不外推原版ABI。
 - 清冊成為38筆登記、33筆合格，存檔／持續隊伍達10／10。停止新增同類存檔格，
   後續缺口為戰役8、戰鬥／AI13、終局／平台6。
+
+## 2026-08-27：END 問句與 NO 取消交易
+
+- 既有`native-end-turn-confirmation-original-vs-remake-e1.json`同時具備未修改原版E2
+  與重製普通輸入E1；清冊新增的combat格只驗證command grid選END後開啟YES／NO
+  決策modal，不重複既有UI格的版面像素，也不重複YES接受句格。
+- 同一固定雜湊FD2.SAV由正式標題CONTINUE普通鍵盤進場，再送
+  `Return→Down→Return→Right→Return`選NO。frame1201回到battle_ch01，turn1／round1、
+  camera(1,13)、cursor(8,17)與visible(7,4)不變；overlay、selection、dialog、event與
+  turn staging均為空。未另外取得原版NO後同幀，故只列RUNTIME-E1。
+- 清冊成為40筆登記、35筆合格；戰鬥／AI 7／18。後續優先補草藥HP效果、敵方
+  實際移動／目標與一般攻擊結果，不再拆分既有ch29／ch30整體回合循環。

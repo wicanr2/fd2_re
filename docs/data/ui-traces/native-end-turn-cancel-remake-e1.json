@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "scope": "章節0 current-runtime 的 END 問句選擇 NO，回到同一玩家回合",
+  "reference": {
+    "fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "fd2_save_sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f",
+    "original_confirmation_oracle": "native-end-turn-confirmation-original-vs-remake-e1.json"
+  },
+  "execution": {
+    "runtime_sha256": "b7aab050597d9d4aaa622febeecda8825333bc842a5da7c54a3fd53a246c1ecb",
+    "environment": "一次性、無網路、UID/GID 1000 的 fd2-go-test-local Docker／Xvfb",
+    "original_assets": "FLAME2 與 FD2.SAV 唯讀掛載",
+    "input_helper": "tools/docker/fd2-xtest-input.c，只送普通 X11 鍵盤事件",
+    "timeline": [
+      "F10 等待標題初始化，Escape 略過捲動",
+      "Down、Down、Return 選擇 CONTINUE",
+      "Return 開啟空游標 command grid，Down、Return 選擇 END",
+      "Right、Return 選擇 NO，等待回到戰場"
+    ],
+    "audio": "SDL_AUDIODRIVER=dummy；本樣本不驗證人耳音訊"
+  },
+  "observed": {
+    "frame": 1201,
+    "campaign_node": "battle_ch01",
+    "cursor": [8, 17],
+    "has_selection": false,
+    "action_overlay_open": false,
+    "native_command_open": false,
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false,
+    "turn": 1,
+    "native_round_counter": 1,
+    "camera": [1, 13],
+    "visible_cursor": [7, 4]
+  },
+  "validated_invariants": [
+    "NO 關閉 END 問句及 command grid，回到同一 battle_ch01 玩家控制邊界。",
+    "取消前後仍為 turn1／native round1，同一 camera、cursor 與 visible cursor。",
+    "取消不建立 selection、dialog、battle event 或 turn staging。"
+  ],
+  "artifacts": {
+    "state": "native-end-turn-cancel-remake-e1-state.json",
+    "state_sha256": "29f30a5848632c149b2f00cc5e7a0e2ca6228ebf268a5e519c024637d749c3fd",
+    "screenshot": "../../figures/native-end-turn-cancel-remake-e1.png",
+    "screenshot_sha256": "1de0d04eae21a741a38b44552d326ae01123ad2a456ef3d8426cefc9deb43d3c"
+  },
+  "limitations": [
+    "本輪沒有另外擷取原版 NO 後同幀畫面；原版側只沿用同一未修改玩家路徑的 END 問句 oracle。",
+    "決定性截圖時鐘使重製側維持 RUNTIME-E1，不宣稱動畫相位或 DOS tick 一致。",
+    "只驗證取消交易與狀態不變，不涵蓋 YES 接受、敵方選目標或攻擊結果。"
+  ]
+}
