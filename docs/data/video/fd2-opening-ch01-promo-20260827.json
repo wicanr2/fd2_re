@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-27",
+  "spec": "docs/promo-opening-ch01-spec.md",
+  "builder": "tools/build_fd2_opening_promo.sh",
+  "scope": "開場到第一關的原版 DOS／重製比較，以及專案貢獻介紹",
+  "inputs": [
+    {"path": "extracted/title_re/dragonfx_compare/dos_original_intro_20s.mp4", "sha256": "47409bd19856f0aa2ebc2424c05e021b4e92f0a7c0d6203e081407168985cb64", "role": "使用者保存的原版開場錄影，本機素材、不入版控"},
+    {"path": "extracted/title_re/dragonfx_compare/remake_intro_8s.mp4", "sha256": "b12937910d13a6ca0a8e1baa50bdeeaba358fba3ed33c6fa0e6580fb32d0eba3", "role": "重製執行期開場錄影，本機素材、不入版控"},
+    {"path": "docs/figures/title-original-dosbox.png", "sha256": "0367b0eedfa6180e6cecf1c81574825b3724ecb51b0ac75e6f684e4370205fc5"},
+    {"path": "docs/figures/title-remake-runtime.png", "sha256": "17e6fc41cee0ce706aaf1d809e1f1b986053cea670f7065c1bd00c62cbe1afa8"},
+    {"path": "docs/figures/ch01-dialogue-original-dosbox.png", "sha256": "677b2998a9e164bc0dc38375f55b437365c398ed91edab9896eca1e7ca329172"},
+    {"path": "docs/figures/dialogue-remake-runtime.png", "sha256": "6e66e18ed66ac018c69a29d7e2f880444c96d68d4e4ad021626663b4cd914061"},
+    {"path": "docs/figures/battle-field-ch01-scoped-compare-20260810.png", "sha256": "3b3ab913fd0630ce37a80f78476edba0bcacb8e0636cc919dc90e7a09ddd1174"},
+    {"path": "docs/figures/native-continue-current-command-compare-e1.png", "sha256": "eb69c93ac9184534a65ae92d09673c56049950e2aebbda734d745d23e91349cd"}
+  ],
+  "output": {
+    "path": "dist/promo/fd2-opening-ch01-promo-20260827.mp4",
+    "tracked": false,
+    "size": 3287513,
+    "sha256": "289357b5887792d10bb465ba8160d507fdd2bf1895325ff2bf1bcb1940869ae3",
+    "duration_seconds": 66.0,
+    "video": "H.264 1280x720 30fps yuv420p",
+    "audio": "AAC 48kHz stereo；推廣片專用中性合成底音，非原版配樂",
+    "mean_volume_db": -33.4,
+    "max_volume_db": -27.5
+  },
+  "verification": {
+    "contact_sheet": "dist/promo/fd2-opening-ch01-contact-sheet.png",
+    "contact_sheet_sha256": "8f892f6dbd1eed4d5514e79b30f1d328ffd3ec172f135910568dee9596af64f0",
+    "blackdetect_events_over_one_second": 0,
+    "stream_duration_match": true,
+    "human_review": "九個時間點已檢查；標籤、比例、三欄命令格、貢獻字幕與結尾卡均可讀。"
+  },
+  "limitations": [
+    "比較素材包含範圍受限的 E1／E2 候選，不宣稱全30關逐像素一致。",
+    "本片不含原版音樂；公開加入原版音樂前仍需另行處理權利風險。",
+    "影片檔與本機來源片段不加入 Git；Git 只保存規格、建置腳本與 metadata。"
+  ]
+}

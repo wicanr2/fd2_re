@@ -55,4 +55,7 @@ music_mt32/
 *.ogg
 music_ogg/
 video/
+# 只允許影片驗證 metadata；實際影片仍由上列規則排除。
+!docs/data/video/
+!docs/data/video/*.json
 remake/fd2-linux-*
