@@ -204,13 +204,29 @@ SHA-256由同一無網路容器再次驗證。
 結果；本次沒有重跑該兩張舊檔比較，因此只宣稱目前封包能由空工作目錄消費XDG
 覆蓋層並產生有效城鎮畫面，不把舊比較外推成目前提交的逐位元組證據。
 
-### 2.4 已知限制
+### 2.4 AppStream metadata
 
-- 未做簽章/AppStream metadata(`appimagetool` 有警告,不影響執行)。
+AppImage組裝會把受版控的`fd2.appdata.xml`安裝到
+`usr/share/metainfo/`，並在呼叫`linuxdeploy`前用標準XML解析器驗證。component ID
+固定為`tw.wicanr2.fd2re`，`launchable`指向`fd2.desktop`；文字只描述非官方文化
+保存、潔淨室重製及玩家自備合法原版資料，不宣稱官方授權、完整原版素材散布或
+程式碼授權。`metadata_license=CC0-1.0`只適用這份軟體中心描述資料，不替專案程式碼
+指定授權。
+
+2026-08-27以既有`fd2-build-appimage:latest`、一次性無網路Docker重建成功；
+`appimagetool`明確辨識`usr/share/metainfo/fd2.appdata.xml`，不再出現缺少upstream
+metadata警告。產物5,327,352 bytes，SHA-256
+`ea132427a657b072b70d6df6683f8322c9390f63cd157f09a1ebe0b2c2737373`；從空白cwd
+執行`FD2_PACKAGE_SELF_CHECK=1`及相對雜湊複驗均通過。工具映像沒有`appstreamcli`
+所以仍提示無法做該額外lint；XML已由容器內標準解析器檢查，這不冒稱完整商店驗收。
+
+### 2.5 已知限制
+
+- 未做簽章；AppStream metadata已接入並通過最新AppImage重建。
 - `libXau`/`libXdmcp`/`libbsd`/`libmd` 是 X11 認證鏈的傳遞依賴,目標機器理論上都有,但沒有在
   非 Debian 系發行版(如 Arch/Fedora)上實測執行。
 
-### 2.5 Linux 原生持續整合封包契約
+### 2.6 Linux 原生持續整合封包契約
 
 Linux 發行物必須由 `ubuntu-latest` 的正式工作流程重建，不可只引用開發主機上
 既有的 `packaging/dist`。工作流程先從受版控的 `Dockerfile.appimage` 建立鎖定工具

@@ -7714,3 +7714,17 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   （`32e94c9e…98b85`）、tar.gz 9,124,134 bytes（`6e8a3769…8195b`）與159-byte
   manifest皆通過。這關閉manifest路徑／artifact層級風險，不提升實體機
   視窗、輸入、存檔、音訊、簽章或Gatekeeper驗收。
+
+## 2026-08-27：第一輪95%抽樣策略與README責任分離
+
+- 使用者決定後續不再以全量回歸或逐幀DOS等價拖延第一輪收尾；五個風險層合計
+  至少60個正常輸入樣本、零重大失敗且各層達最低配額時，以約5%未發現重大缺陷率
+  的單側近似支持95%信心。這是產品抽樣門檻，不把E1改標E2，也不宣稱完整EXE或
+  全30關逐像素一致。
+- `docs/REMAKE-STATUS.md`成為動態進度、抽樣門檻與發行差距入口；
+  `docs/ENGINEERING.md`承接架構、Docker、實作與驗證入口。README只保留遊戲介紹、
+  引言、開發歷史、歷史考證、致謝、remake里程碑、重要發現與技術創新。
+- AppImage新增`fd2.appdata.xml`。既有無網路Docker重建後，`appimagetool`已辨識
+  AppStream metadata；5,327,352-byte產物SHA-256為
+  `ea132427a657b072b70d6df6683f8322c9390f63cd157f09a1ebe0b2c2737373`，空白cwd封包
+  自我檢查及相對雜湊均通過。`appstreamcli`額外lint未包含在既有映像，保留為工具限制。

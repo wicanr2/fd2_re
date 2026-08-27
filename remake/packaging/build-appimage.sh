@@ -26,6 +26,7 @@ docker run --rm --network none \
       "$dist/FD2-x86_64.AppImage.sha256" "$dist/FD2-x86_64.AppImage.file.txt"
     mkdir -p "$appdir/usr/bin" "$appdir/usr/share/applications" \
       "$appdir/usr/share/icons/hicolor/256x256/apps" \
+      "$appdir/usr/share/metainfo" \
       "$appdir/assets/scenarios" "$appdir/assets/story" /tmp/home /tmp/go-cache /tmp/appimage-work
 
     CGO_ENABLED=1 go build -trimpath -buildvcs=false -ldflags="-s -w" \
@@ -35,6 +36,9 @@ docker run --rm --network none \
     install -m 0644 packaging/fd2.desktop "$appdir/usr/share/applications/fd2.desktop"
     install -m 0644 packaging/fd2.png "$appdir/fd2.png"
     install -m 0644 packaging/fd2.png "$appdir/usr/share/icons/hicolor/256x256/apps/fd2.png"
+    install -m 0644 packaging/fd2.appdata.xml \
+      "$appdir/usr/share/metainfo/fd2.appdata.xml"
+    python3 -c "import xml.etree.ElementTree as ET; ET.parse(\"$appdir/usr/share/metainfo/fd2.appdata.xml\")"
     cp -R assets/scenarios/. "$appdir/assets/scenarios/"
     cp -R assets/story/. "$appdir/assets/story/"
     cp assets/spells.json "$appdir/assets/spells.json"
