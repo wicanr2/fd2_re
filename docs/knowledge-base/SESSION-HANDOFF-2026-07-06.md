@@ -7972,3 +7972,16 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   這是晚期操作UI，不重複HUD或敵方回合循環。第三方存檔與音訊限制保留。
 - 清冊成為33筆登記、28筆合格，介面層達12／12。後續停止新增同類UI格，剩餘
   缺口集中於戰役8、戰鬥／AI13、存檔5、終局／平台6。
+
+## 2026-08-27：三個存檔視圖不變量分格
+
+- 原有chapter0 current-runtime、第29戰party、第30戰party樣本明確收窄為runtime
+  records／persistent roster，不再概括涵蓋視圖欄位。
+- 依各自普通CONTINUE旁車新增三格：chapter0 camera(1,13)／cursor(8,17)／visible
+  (7,4)；第29戰round2、camera(10,56)、cursor(16,63)／visible(6,7)；第30戰round12、
+  camera(16,16)、cursor(21,20)。第三方來源及音訊限制均保留。
+- 清冊成為36筆登記、31筆合格；存檔／持續隊伍8／10。剩餘兩格必須補錯誤拒絕、
+  裝備、金錢、HP／MP等不同風險，不再拆更多camera欄位。
+- 為避免GUI按鍵在視窗建立前送到X11 root，`fd2-xtest-input.c`新增最多30秒的
+  game-sized視窗等待，逾時退出7；實跑已確認選到1280×800 Ebiten視窗。標題LOAD、
+  F9教會試跑仍受modal／排程阻擋，已停止且未登錄。

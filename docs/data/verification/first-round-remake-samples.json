@@ -282,7 +282,25 @@
         "docs/data/ui-traces/native-continue-current-runtime-remake-e2.json"
       ],
       "limitations": [
-        "驗證固定原版FD2.SAV的current-runtime還原；不涵蓋SAVE writer或其他章節。"
+        "本樣本只驗證固定原版FD2.SAV的chapter0／12筆current-runtime發布；map view另列獨立樣本，不涵蓋SAVE writer或其他章節。"
+      ]
+    },
+    {
+      "id": "save-restore-map-view-current-runtime-ch01",
+      "layer": "save_party",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-continue-current-runtime-remake-e2.json"
+      ],
+      "limitations": [
+        "與chapter0 runtime發布共用CONTINUE程序，但本樣本只驗證camera(1,13)、cursor(8,17)、visible cursor(7,4)的存檔視圖還原。"
       ]
     },
     {
@@ -300,7 +318,25 @@
         "docs/data/ui-traces/native-battle-ch29-original-candidate.json"
       ],
       "limitations": [
-        "正式CONTINUE還原76筆runtime與31人persistent；第三方存檔不證明從頭通關。"
+        "本樣本只驗證正式CONTINUE還原76筆runtime與31人persistent；map view另列獨立樣本，第三方存檔不證明從頭通關。"
+      ]
+    },
+    {
+      "id": "save-restore-map-view-ch29-candidate",
+      "layer": "save_party",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-battle-ch29-original-candidate.json"
+      ],
+      "limitations": [
+        "與第29戰party還原共用CONTINUE程序，但本樣本只驗證round2、camera(10,56)、cursor(16,63)、visible cursor(6,7)；第三方來源限制保留。"
       ]
     },
     {
@@ -318,7 +354,26 @@
         "docs/data/ui-traces/native-battle-ch30-original-candidate.json"
       ],
       "limitations": [
-        "正式CONTINUE還原33筆場上單位與31人persistent；第三方存檔來源不完整。"
+        "本樣本只驗證正式CONTINUE還原33筆場上單位與31人persistent；map view另列獨立樣本，第三方存檔來源不完整。"
+      ]
+    },
+    {
+      "id": "save-restore-map-view-ch30-candidate",
+      "layer": "save_party",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-battle-ch30-original-candidate.json",
+        "docs/data/ui-traces/native-battle-ch30-remake-normal-title-e1-state.json"
+      ],
+      "limitations": [
+        "與第30戰party還原共用完整標題CONTINUE程序，但本樣本只驗證round12、camera(16,16)、cursor(21,20)；第三方來源與精確音訊限制保留。"
       ]
     },
     {

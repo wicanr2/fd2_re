@@ -21,8 +21,8 @@
 > 成片在 `dist/promo/`，不含原版音樂且不入Git；規格、重生腳本與雜湊見
 > `docs/promo-opening-ch01-spec.md`、`tools/build_fd2_opening_promo.sh`及影片metadata。
 
-> **抽樣清冊現況**：已登記33筆證據，28筆符合門檻（戰役／戰間4、戰鬥／AI 5、
-> 介面12、存檔／持續隊伍5、終局／平台2）。章節0 current-runtime 的空游標命令格、
+> **抽樣清冊現況**：已登記36筆證據，31筆符合門檻（戰役／戰間4、戰鬥／AI 5、
+> 介面12、存檔／持續隊伍8、終局／平台2）。章節0 current-runtime 的空游標命令格、
 > HUD、command0調色盤與END接受逐字，以及Windows城鎮F5存檔和第30戰前冷讀持續隊伍
 > 已按不同驗收不變量登錄；沒有以同一結果跨層重複計數。空游標命令格
 > 已由原版與重製的普通鍵盤路徑配對；正常標題LOAD另已由普通X11鍵盤走過
@@ -36,6 +36,8 @@
 > 兩者不重複既有第30戰敵方回合循環。
 > 早期 AppImage 城鎮主畫面與第30戰空游標操作面板補足介面層12／12；後續不再
 > 為湊數新增同類UI格，轉向戰鬥／AI、戰役、存檔與終局缺額。
+> 存檔層另把runtime／party名冊與map view分開驗收，補登chapter0、第29戰、第30戰
+> 的round／camera／cursor還原；仍缺錯誤存檔拒絕與裝備／HP／MP類正常輸入樣本。
 > 下一步優先把已接正式consumer的早／中期戰間及冷讀存檔改由普通輸入重播，形成
 > 玩家路徑，而不是再新增無消費端RE。權威清冊見
 > [`first-round-remake-samples.json`](../data/verification/first-round-remake-samples.json)。

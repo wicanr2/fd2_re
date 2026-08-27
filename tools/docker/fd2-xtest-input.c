@@ -10,7 +10,8 @@
  *
  * The number is the delay, in milliseconds, after releasing the key.  A key
  * is pressed and released as two synchronised XTest events so Ebiten can
- * observe a real just-pressed edge.
+ * observe a real just-pressed edge.  The helper waits at most 30 seconds for
+ * a visible game-sized window; it never falls back to sending keys to root.
  */
 
 #include <X11/Xlib.h>
@@ -99,7 +100,18 @@ int main(int argc, char **argv) {
         return 3;
     }
     Window root = DefaultRootWindow(dpy);
-    Window target = choose_window(dpy, root);
+    Window target = root;
+    for (int attempt = 0; attempt < 300 && target == root; ++attempt) {
+        target = choose_window(dpy, root);
+        if (target == root) {
+            usleep(100000);
+        }
+    }
+    if (target == root) {
+        fprintf(stderr, "no visible game-sized window within 30 seconds\n");
+        XCloseDisplay(dpy);
+        return 7;
+    }
     fprintf(stderr, "[fd2-xtest] target=0x%lx\n", (unsigned long)target);
     XMapRaised(dpy, target);
     XSetInputFocus(dpy, target, RevertToParent, CurrentTime);
