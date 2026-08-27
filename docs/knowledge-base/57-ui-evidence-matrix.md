@@ -88,6 +88,12 @@ oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫�
 > [`native-battle-ch29-original-candidate.json`](../data/ui-traces/native-battle-ch29-original-candidate.json)；
 > 第三方來源、停用音訊及尚未完成第29戰勝利→第30戰仍是限制。
 
+> **2026-08-27 產品停止線勘誤：** 依使用者接受的 99% 玩家可見相似門檻，第29戰
+> 正常 `CONTINUE`、戰場物化、`END→YES`、敵方回合與控制權交回，以及重製端
+> 勝利後接往第30戰整備的垂直鏈，已足以列為產品完成。第三方存檔的完整 writer
+> 來源、逐幀／逐音訊 `PLAYER-E2` 仍是證據限制或可選精修，不再列為第29戰重製缺陷，
+> 也不得單獨觸發重新反組譯。
+
 > **同日重製第29戰回合交接：** 同一 `fd2004` 固定雜湊槽由重製正式標題事件
 > `CONTINUE` 進入 `battle_ch29`，再由正式 END／YES 介面驅動完整敵方回合；沒有
 > 清空敵軍、預設 `Acted` 或直接呼叫回合捷徑。至少一名敵軍實際行動，回合數增加並
