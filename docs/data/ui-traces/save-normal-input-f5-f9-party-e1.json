@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "scope": "正式標題 LOAD 後，以普通 F5 寫入槽位 0，再以普通 F9 讀回同一 town_ch02 邊界",
+  "execution": {
+    "runtime_sha256": "b7aab050597d9d4aaa622febeecda8825333bc842a5da7c54a3fd53a246c1ecb",
+    "environment": "一次性、無網路、UID/GID 1000 的 fd2-go-test-local Docker／Xvfb",
+    "input_helper": "tools/docker/fd2-xtest-input.c，只送普通 X11 鍵盤按下／放開事件",
+    "timeline": [
+      "F10 等待正式標題初始化，不改遊戲狀態",
+      "Escape 略過捲動後，Down、Return 選擇 LOAD",
+      "Return 確認槽位 0，抵達 town_ch02",
+      "F5 原子寫入槽位 0，F9 從同一路徑重新發布存檔"
+    ],
+    "original_assets": "原版 FLAME2 唯讀掛載；重製資產與 XDG 可寫存檔分離",
+    "audio": "SDL_AUDIODRIVER=dummy；本樣本不驗證人耳音訊"
+  },
+  "observed": {
+    "frame": 1001,
+    "campaign_node": "town_ch02",
+    "message": "已讀檔(槽位1：town_ch02)",
+    "gold": 279,
+    "party_join_order": [0],
+    "unit_0": {
+      "name": "悠妮",
+      "hp": 37,
+      "max_hp": 44,
+      "mp": 9,
+      "max_mp": 13,
+      "ap": 31,
+      "dp": 22,
+      "inventory": [100, 132],
+      "equipped": [true, false],
+      "inventory_slots": [100, 132, 255, 255, 255, 255, 255, 255],
+      "native_inventory_flags": [228, 132, 255, 255, 255, 255, 255, 255]
+    }
+  },
+  "comparison": {
+    "save_after_f5_sha256": "d2d9be5db3a6fb530b198722b84c5281b8d35a0a355f93f1fc9e4ee3a535e507",
+    "save_json_parse": "pass",
+    "save_to_post_f9_fields": "gold、HP／MaxHP、MP／MaxMP、AP／DP、Inventory、Equipped、InventorySlots 與 NativeInventoryFlags 全部相同"
+  },
+  "artifacts": {
+    "state": "save-normal-input-f5-f9-party-state.json",
+    "state_sha256": "ea2d99e0ffa3b5f589da73298924a2832435148a0741f3bdc59368483da35355",
+    "screenshot": "../../figures/save-normal-input-f5-f9-town-ch02.png",
+    "screenshot_sha256": "439d612d1cb1b5077d9aef4c1961a5dd77e6ade82f27635cd6c02c3e1e72a17"
+  },
+  "limitations": [
+    "起點是人工建構、可由正式 runtime 驗證的重製 JSON 存檔；不證明這組數值由第1戰長程通關產生。",
+    "F5 與 F9 之間沒有刻意修改 runtime；本樣本證明 writer、reader 與欄位一致性，不證明所有存檔拒絕分支。",
+    "唯讀旁車只增加觀測欄位，不改控制流；本證據不提升為原版 FD2.SAV ABI 相容或 PLAYER-E2。"
+  ]
+}

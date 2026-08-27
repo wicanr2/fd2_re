@@ -7985,3 +7985,17 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 為避免GUI按鍵在視窗建立前送到X11 root，`fd2-xtest-input.c`新增最多30秒的
   game-sized視窗等待，逾時退出7；實跑已確認選到1280×800 Ebiten視窗。標題LOAD、
   F9教會試跑仍受modal／排程阻擋，已停止且未登錄。
+
+## 2026-08-27：普通 F5／F9 角色欄位持續性
+
+- `shot_state_trace`新增純觀測的message、gold、party join order與完整party roster；
+  只有明確指定`FD2_SHOT_STATE`才寫出，不修改正式控制流。聚焦測試同時確認輸出
+  HP／MP、裝備與背包後沒有回寫遊戲狀態。
+- 一次性無網路Docker以重製資產及原版FLAME2分離唯讀掛載，從正式標題以普通
+  `F10(wait)→Escape→Down→Return→Return`載入town_ch02，再送普通F5與F9。frame1001
+  停在town_ch02，訊息為`已讀檔(槽位1：town_ch02)`。
+- F5後JSON與F9後旁車的gold279、HP37／44、MP9／13、AP31、DP22、背包
+  `[100,132]`、裝備`[true,false]`、八格source與raw flags逐欄相同。首個無等待鍵
+  的嘗試誤入`story_ch00_handler`且已作廢；未把編排競速記為產品缺陷。
+- 清冊成為37筆登記、32筆合格，存檔／持續隊伍9／10。此格驗證writer＋reader
+  及角色欄位，不重複先前runtime、roster或map-view；存檔層只剩錯誤槽位普通輸入拒絕。

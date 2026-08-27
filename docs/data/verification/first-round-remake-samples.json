@@ -395,6 +395,26 @@
       ]
     },
     {
+      "id": "save-normal-input-f5-f9-party-fields-ch02",
+      "layer": "save_party",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/save-normal-input-f5-f9-party-e1.json",
+        "docs/data/ui-traces/save-normal-input-f5-f9-party-state.json",
+        "docs/figures/save-normal-input-f5-f9-town-ch02.png"
+      ],
+      "limitations": [
+        "與既有LOAD／roster／map-view格不同，本樣本驗證普通F5 writer與F9 reader共同保留金錢、HP／MP、AP／DP、背包、裝備與原始物品槽；起點不是長程通關。"
+      ]
+    },
+    {
       "id": "campaign-ch23-post-to-preparation24",
       "layer": "campaign_intermission",
       "result": "pass",

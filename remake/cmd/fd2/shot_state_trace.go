@@ -19,6 +19,10 @@ type screenshotStateTrace struct {
 	TitleCut               *screenshotTitleCutTrace `json:"title_cut,omitempty"`
 	CampaignNode           string                   `json:"campaign_node,omitempty"`
 	Result                 string                   `json:"result,omitempty"`
+	Message                string                   `json:"message,omitempty"`
+	Gold                   int                      `json:"gold"`
+	PartyJoinOrder         []int                    `json:"party_join_order,omitempty"`
+	PartyRoster            map[int]battle.Unit      `json:"party_roster,omitempty"`
 	Cursor                 [2]int                   `json:"cursor"`
 	HasSelection           bool                     `json:"has_selection"`
 	Selection              *[2]int                  `json:"selection,omitempty"`
@@ -116,6 +120,10 @@ func (g *Game) writeShotStateTrace(path string) error {
 		TitleSelection:               g.titleSel,
 		TitleSlotSelection:           g.titleSlotSel,
 		Result:                       g.result,
+		Message:                      g.msg,
+		Gold:                         g.gold,
+		PartyJoinOrder:               append([]int(nil), g.partyJoinOrder...),
+		PartyRoster:                  g.partyRoster,
 		Cursor:                       [2]int{g.curX, g.curY},
 		ActionOverlayOpen:            g.ring,
 		NativeCommandOpen:            g.nativeCommandOpen,

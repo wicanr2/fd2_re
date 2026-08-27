@@ -84,6 +84,42 @@ func TestWriteShotStateTraceRecordsTitleSelections(t *testing.T) {
 	}
 }
 
+func TestWriteShotStateTraceRecordsPersistentPartyWithoutMutation(t *testing.T) {
+	roster := map[int]battle.Unit{
+		4: {
+			Name: "索爾", HP: 37, MaxHP: 41, MP: 9, MaxMP: 13,
+			Inventory: []int{0, 132}, Equipped: []bool{true, false},
+		},
+	}
+	g := &Game{
+		gold: 279, msg: "已讀檔(槽位1：town_ch02)",
+		partyJoinOrder: []int{4}, partyRoster: roster,
+	}
+	path := filepath.Join(t.TempDir(), "persistent-state.json")
+	if err := g.writeShotStateTrace(path); err != nil {
+		t.Fatal(err)
+	}
+	var got screenshotStateTrace
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(raw, &got); err != nil {
+		t.Fatal(err)
+	}
+	unit, ok := got.PartyRoster[4]
+	if got.Gold != 279 || got.Message != "已讀檔(槽位1：town_ch02)" ||
+		len(got.PartyJoinOrder) != 1 || got.PartyJoinOrder[0] != 4 || !ok ||
+		unit.HP != 37 || unit.MaxHP != 41 || unit.MP != 9 || unit.MaxMP != 13 ||
+		len(unit.Inventory) != 2 || unit.Inventory[0] != 0 || !unit.Equipped[0] {
+		t.Fatalf("persistent shot state trace=%#v", got)
+	}
+	if g.gold != 279 || g.msg != "已讀檔(槽位1：town_ch02)" ||
+		g.partyRoster[4].HP != 37 || !g.partyRoster[4].Equipped[0] {
+		t.Fatalf("shot trace mutated game=%#v", g)
+	}
+}
+
 func TestWriteShotStateTraceRecordsNativeItemModal(t *testing.T) {
 	for _, tc := range []struct {
 		name       string
