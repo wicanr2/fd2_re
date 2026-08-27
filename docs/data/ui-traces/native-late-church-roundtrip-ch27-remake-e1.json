@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-28",
+  "evidence_level": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "scope": "正式標題 LOAD 後以普通鍵盤完成晚期 town_ch27→church_ch27→town_ch27",
+  "save_fixture": {
+    "format": "重製 JSON 槽位0；合法節點邊界測試起點，不是原版 FD2.SAV",
+    "node": "town_ch27",
+    "chapter": 27,
+    "gold": 13000,
+    "party": "空名冊；本樣本只驗證教會主選單與返回",
+    "sha256": "8c5b6d008604ef7cdd3b144d7c63a002e2cc1bc70679a6e0be457dbd67612cd3",
+    "creation": "一次性 Docker 內以正式 saveData／writeSaveFile 契約產生；存檔不加入版控"
+  },
+  "execution": {
+    "environment": "一次性、無網路、UID/GID 1000 的 fd2-go-test-local Docker／Xvfb",
+    "runtime_sha256": "535d7a41f46f8f06b876f594557fb4ac8118dfdfae60106f9ce80b0b092b4191",
+    "input_helper": "tools/docker/fd2-xtest-input.c，只送普通 X11 鍵盤事件",
+    "timeline": [
+      "F10等待初始化，Escape略過可略過開場",
+      "Down、Return開啟LOAD，Return確認槽位0並進入town_ch27",
+      "Left×4依正式selector抵達選項4，Return進入church_ch27",
+      "第二次完整重播相同前綴後，以普通Escape返回town_ch27"
+    ]
+  },
+  "entry_capture": {
+    "frame": 1900,
+    "campaign_node": "church_ch27",
+    "gold": 13000,
+    "church": {
+      "mode": "menu",
+      "selection": 0,
+      "pulse": 1,
+      "gold": 13000,
+      "shot_hold": false
+    },
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false,
+    "state": "native-late-church-entry-ch27-remake-e1-state.json",
+    "state_sha256": "f4cde1cc230016d563cfff44a4422d32dc6e0cb0e1429960bcc8606b29230abf",
+    "screenshot": "../../figures/native-late-church-entry-ch27-remake-e1.png",
+    "screenshot_sha256": "83d8e8c9bef1a982485a185942c474bc5d8403c165ebd3c3c3c967c76c9a0293"
+  },
+  "return_capture": {
+    "frame": 2100,
+    "campaign_node": "town_ch27",
+    "gold": 13000,
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false,
+    "state": "native-late-church-return-ch27-remake-e1-state.json",
+    "state_sha256": "7af1c47be8596c125afece6477d0c21a35455156a2eac78bc077b02dcbae5ed6",
+    "screenshot": "../../figures/native-late-preparation-return-ch26-remake-e1.png",
+    "screenshot_sha256": "439d612d1cb1b5077d9aef4c1961a5dd77e6ade82f27635cd6c02c3e1e72a17a",
+    "artifact_reuse_reason": "本次town_ch27返回畫面與既有同版variant0城鎮返回PNG逐位元組同雜湊；節點與金錢差異由獨立旁車保存，故不重複加入相同圖片"
+  },
+  "validated_invariants": [
+    "正式標題LOAD發布town_ch27後，原生selector選項4以普通Return進入church_ch27。",
+    "教會入口為穩定menu、selection0、gold13000，沒有對話／事件／回合暫態。",
+    "同一普通輸入前綴後送Escape，沿正式返回邊界回到town_ch27並保留gold13000。"
+  ],
+  "limitations": [
+    "合法晚期重製節點存檔起點不證明第26戰勝利長程來源或原版PLAYER-E2。",
+    "只驗證教會主選單入口與返回，不外推status、transfer、revive、class四項交易。",
+    "不證明音訊或逐像素原版一致；相同variant0城鎮畫面不代表節點語意相同。"
+  ]
+}

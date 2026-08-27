@@ -894,6 +894,27 @@
       "limitations": [
         "合法晚期重製節點存檔起點只驗證town_ch26至整備前置確認及取消返回；不證明第25戰長程來源、選人、進戰或原版同狀態。"
       ]
+    },
+    {
+      "id": "campaign-late-church-roundtrip-ch27",
+      "layer": "campaign_intermission",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-late-church-roundtrip-ch27-remake-e1.json",
+        "docs/data/ui-traces/native-late-church-entry-ch27-remake-e1-state.json",
+        "docs/data/ui-traces/native-late-church-return-ch27-remake-e1-state.json",
+        "docs/figures/native-late-church-entry-ch27-remake-e1.png"
+      ],
+      "limitations": [
+        "合法晚期重製節點存檔只驗證town_ch27至church_ch27主選單及返回；不證明第26戰長程來源、四項教會服務或原版同狀態。"
+      ]
     }
   ]
 }

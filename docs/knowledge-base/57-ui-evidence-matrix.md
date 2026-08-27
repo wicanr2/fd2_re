@@ -441,6 +441,12 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 > [`native-late-preparation-cancel-ch26-remake-e1.json`](../data/ui-traces/native-late-preparation-cancel-ch26-remake-e1.json)。
 > 空名冊與合法節點起點使本格只達重製E1，不證明第25戰長程來源、選人或進戰。
 
+> **2026-08-28 UI-10 晚期教會往返補證：** 合法`town_ch27`節點存檔由正式標題
+> LOAD與普通X11鍵盤進城鎮，以選項4抵達`church_ch27`穩定menu，再以Escape返回
+> `town_ch27`；selection0、gold13000及暫態收束見
+> [`native-late-church-roundtrip-ch27-remake-e1.json`](../data/ui-traces/native-late-church-roundtrip-ch27-remake-e1.json)。
+> 本格只達重製E1，不證明第26戰長程來源、四項服務交易或原版同狀態。
+
 > **2026-08-26 UI-09 service2 正式輸入補證：** 四項商店選單 Right×2、角色名冊、
 > 原版 item scan code、相容／不相容交易、空背包、0→11收合、同角色名冊重開及返回
 > service selection 2 現由正式鍵盤與回歸共用 typed consumer。Down（scan80）才會在

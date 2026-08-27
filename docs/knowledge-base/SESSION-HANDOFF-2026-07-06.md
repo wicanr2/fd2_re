@@ -8106,3 +8106,13 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 首次返回擷取因輸入工具早於Xvfb socket而沒有送鍵；環境探針又因映像不含
   `xdpyinfo`而在遊戲前安全退出。改以X11 socket閘門後同一輸入序列一次通過；兩者
   均未抵達測試起點，不記為產品失敗。清冊現為47筆登記、42筆合格；戰役／戰間9／12。
+
+## 2026-08-28：晚期第27章城鎮教會普通輸入往返
+
+- 一次性Docker以正式`saveData`／`writeSaveFile`產生合法`town_ch27`節點存檔；
+  chapter27、gold13000，SHA-256為`8c5b6d008604ef7cdd3b144d7c63a002e2cc1bc70679a6e0be457dbd67612cd3`。
+- 正式標題LOAD後以普通鍵盤Left×4、Return抵達`church_ch27`；frame1900旁車為
+  menu、selection0、gold13000且無其他暫態。第二次相同前綴送Escape，frame2100
+  返回`town_ch27`並保留gold13000。
+- 返回PNG與前一筆同版variant0城鎮返回畫面逐位元組相同，節點與金錢差異由獨立
+  旁車保存，故不重複加入相同圖片。清冊現為48筆登記、43筆合格；戰役／戰間10／12。
