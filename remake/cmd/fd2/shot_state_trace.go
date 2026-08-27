@@ -76,11 +76,17 @@ type screenshotTitleCutTrace struct {
 // screenshotCursorUnitTrace 只輸出目前游標格的互動資格，避免把角色名稱或
 // 推測性語意混進截圖證據。camp 保留 battle.Camp 的原始整數值。
 type screenshotCursorUnitTrace struct {
-	Camp               int  `json:"camp"`
-	OnField            bool `json:"on_field"`
-	Acted              bool `json:"acted"`
-	Paralyzed          bool `json:"paralyzed"`
-	NativeCommandCount int  `json:"native_command_count"`
+	Camp                 int   `json:"camp"`
+	OnField              bool  `json:"on_field"`
+	Acted                bool  `json:"acted"`
+	Paralyzed            bool  `json:"paralyzed"`
+	NativeCommandCount   int   `json:"native_command_count"`
+	HP                   int   `json:"hp"`
+	MaxHP                int   `json:"max_hp"`
+	MP                   int   `json:"mp"`
+	MaxMP                int   `json:"max_mp"`
+	InventorySlots       []int `json:"inventory_slots,omitempty"`
+	NativeInventoryFlags []int `json:"native_inventory_flags,omitempty"`
 }
 
 type screenshotBattleTrace struct {
@@ -225,11 +231,17 @@ func (g *Game) writeShotStateTrace(path string) error {
 		trace.Battle = state
 		if unit := g.st.UnitAt(g.curX, g.curY); unit != nil {
 			trace.CursorUnit = &screenshotCursorUnitTrace{
-				Camp:               int(unit.Camp),
-				OnField:            unit.OnField,
-				Acted:              unit.Acted,
-				Paralyzed:          unit.Paralyzed,
-				NativeCommandCount: len(unit.NativeCommandIDs()),
+				Camp:                 int(unit.Camp),
+				OnField:              unit.OnField,
+				Acted:                unit.Acted,
+				Paralyzed:            unit.Paralyzed,
+				NativeCommandCount:   len(unit.NativeCommandIDs()),
+				HP:                   unit.HP,
+				MaxHP:                unit.MaxHP,
+				MP:                   unit.MP,
+				MaxMP:                unit.MaxMP,
+				InventorySlots:       append([]int(nil), unit.InventorySlots...),
+				NativeInventoryFlags: append([]int(nil), unit.NativeInventoryFlags...),
 			}
 		}
 	}

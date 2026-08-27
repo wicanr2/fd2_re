@@ -8033,3 +8033,17 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   同一面板與物品列。兩側時鐘相位不同，不宣稱逐像素；本格不證明受傷回復量。
 - 清冊成為41筆登記、36筆合格；戰鬥／AI 8／18。下一個物品格必須是受傷HP實際
   回復或MP／狀態等不同交易，不能再拆滿HP面板畫面。
+
+## 2026-08-27：第30戰普通輸入物品回復抽樣
+
+- 新增`remake/cmd/fd2-save-audit`唯讀診斷工具；只使用既有已證實`fdsave`解碼器，
+  輸出存檔SHA-256、current header、persistent／runtime投影與runtime raw座標，不
+  改寫第三方存檔，也不替raw identity、class、item或flags猜語意。
+- Player Lin `fd2002.zip`與`Fd2.sav`雜湊重現既有證據；runtime record 5在操作前為
+  (22,20)、HP445／870、MP173／277，raw slots為`143,207,10,96,96,96,96,96`。
+- 正式重製執行檔由標題CONTINUE與普通X11按鍵抵達該角色；確認零距離移動、物品
+  第一列item143及角色目標後，frame2100為HP619、MP173、acted=true，物品面板與
+  target modal均已收束，turn1／round12保持。畫面、旁車與完整輸入序列已受版控。
+- 原定item207 MP回復沒有發生；它雖存在第二個raw slot，本次未被普通輸入選到。
+  因此本格只列`RUNTIME-E1`的HP發布與交易收束，不宣稱原版同狀態、精確回復量、
+  MP回復或raw slot消耗語意。清冊現為42筆登記、37筆合格；戰鬥／AI 9／18。

@@ -161,6 +161,26 @@
       ]
     },
     {
+      "id": "combat-item-heal-effect-ch30",
+      "layer": "combat_ai",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-item-heal-ch30-remake-e1.json",
+        "docs/data/ui-traces/native-item-heal-ch30-remake-e1-state.json",
+        "docs/figures/native-item-heal-ch30-remake-e1.png"
+      ],
+      "limitations": [
+        "只證明第30戰正式重製執行期以普通輸入發布item143的HP回復與acted收束；缺原版同狀態E2，且不得外推item207或原版消耗規則。"
+      ]
+    },
+    {
       "id": "combat-turn-cycle-ch29-candidate-save",
       "layer": "combat_ai",
       "result": "pass",

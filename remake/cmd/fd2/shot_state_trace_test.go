@@ -12,7 +12,11 @@ import (
 )
 
 func TestWriteShotStateTraceRecordsNativeInteractionState(t *testing.T) {
-	unit := &battle.Unit{X: 8, Y: 17, HP: 10, OnField: true, NativeCommandMask: [5]byte{1}}
+	unit := &battle.Unit{
+		X: 8, Y: 17, HP: 10, MaxHP: 20, MP: 3, MaxMP: 8, OnField: true,
+		NativeCommandMask: [5]byte{1}, InventorySlots: []int{207, 255},
+		NativeInventoryFlags: []int{0, 128},
+	}
 	g := &Game{
 		frame:                        500,
 		curX:                         8,
@@ -60,7 +64,11 @@ func TestWriteShotStateTraceRecordsNativeInteractionState(t *testing.T) {
 		got.Battle.NativeMapView == nil || got.Battle.NativeMapView.CameraY != 13 ||
 		!got.NativeContinueOpeningConfirm || !got.NativeContinueCursorOverlay || got.DialogCount != 0 ||
 		got.BattleEventActive || got.NativeTurnStagingActive || got.CursorUnit == nil ||
-		!got.CursorUnit.OnField || got.CursorUnit.NativeCommandCount != 1 {
+		!got.CursorUnit.OnField || got.CursorUnit.NativeCommandCount != 1 ||
+		got.CursorUnit.HP != 10 || got.CursorUnit.MaxHP != 20 ||
+		got.CursorUnit.MP != 3 || got.CursorUnit.MaxMP != 8 ||
+		len(got.CursorUnit.InventorySlots) != 2 || got.CursorUnit.InventorySlots[0] != 207 ||
+		len(got.CursorUnit.NativeInventoryFlags) != 2 || got.CursorUnit.NativeInventoryFlags[1] != 128 {
 		t.Fatalf("shot state trace=%#v", got)
 	}
 }

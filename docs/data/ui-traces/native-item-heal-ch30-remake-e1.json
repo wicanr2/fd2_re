@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "scope": "第30戰 current-runtime：受傷角色以第一列 item 143 發布回復效果",
+  "input": {
+    "save_source": "https://playerlin.orgfree.com/download/fdsave/fd2/fd2002.zip",
+    "zip_sha256": "1b713af443539913919f37617c92286c634a62020d0c7e534f051f6d5101fcd5",
+    "save_member": "Fd2.sav",
+    "save_sha256": "a0e5519c49b52bbeab9c3bb1cf36957c42f02877a4c218ad54611952f74d6780",
+    "runtime_record_index": 5,
+    "raw_identity": 2,
+    "coordinate": [22, 20],
+    "before": {
+      "hp": 445,
+      "max_hp": 870,
+      "mp": 173,
+      "max_mp": 277,
+      "inventory_slots": [143, 207, 10, 96, 96, 96, 96, 96],
+      "native_inventory_flags": [64, 0, 64, 128, 128, 128, 128, 128]
+    }
+  },
+  "execution": {
+    "environment": "一次性、無網路、UID/GID 1000 的 fd2-go-test-local Docker／Xvfb",
+    "original_assets": "FLAME2 與 Fd2.sav 唯讀掛載",
+    "input_helper": "tools/docker/fd2-xtest-input.c，只送普通 X11 鍵盤事件",
+    "runtime_sha256": "38178a3ff09dc54334786b2bd335b4df5a13b9575800a0798fc0de8230348c4e",
+    "timeline": [
+      "正式標題 CONTINUE 載入 chapter29 current-runtime",
+      "關閉開場操作面板，Right 移到(22,20)，Return 選取角色，再 Return 確認零距離移動",
+      "Right、Return 開啟物品面板；確認第一列 item 143，再以 Return 確認角色目標",
+      "第2100幀由被動截圖鉤子保存畫面與狀態後退出"
+    ]
+  },
+  "observed": {
+    "campaign_node": "battle_ch30",
+    "turn": 1,
+    "native_round_counter": 12,
+    "coordinate": [22, 20],
+    "acted": true,
+    "hp": 619,
+    "max_hp": 870,
+    "mp": 173,
+    "max_mp": 277,
+    "item_open": false,
+    "native_item_targeting": false,
+    "inventory_slots": [143, 207, 10, 96, 96, 96, 96, 96],
+    "native_inventory_flags": [64, 0, 64, 128, 128, 128, 128, 128]
+  },
+  "validated_invariants": [
+    "普通玩家輸入由正式標題 CONTINUE 抵達既有受傷角色，沒有直接進場、座標注入或 route patch。",
+    "確認物品與角色目標後，HP 由445發布為619，MP維持173，角色 acted 由false發布為true。",
+    "交易收束時 item panel 與 target modal 都已關閉，turn1／round12未被錯誤推進。"
+  ],
+  "artifacts": {
+    "state": "native-item-heal-ch30-remake-e1-state.json",
+    "state_sha256": "02b7fab08672a62709475bbd31e891a936512fa4d0449cda1b62f1bd89a53591",
+    "screenshot": "../../figures/native-item-heal-ch30-remake-e1.png",
+    "screenshot_sha256": "57b059ca549366a2eefb556cfc6893d9f656c8479db3d66ba9967fe7a01798ea"
+  },
+  "limitations": [
+    "沒有未修改原版同狀態畫面或數值結果，因此不提升為 PLAYER-E2，也不宣稱原版精確回復量。",
+    "item 207 雖存在第二個 raw slot，本次普通輸入沒有選到它；不可把本樣本描述成 MP 回復。",
+    "效果後 raw slot／flag 未改變；本樣本只證明目前正式執行期的 HP 發布與行動收束，不自行推論原版消耗規則。"
+  ]
+}
