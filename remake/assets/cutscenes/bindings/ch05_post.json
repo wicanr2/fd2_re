@@ -5,7 +5,9 @@
   "story_index_map": "../dialogue-index/count-aligned.json",
   "runtime_context": {
     "slot_count": 40,
-    "spawn_groups": { "3": 1 },
+    "spawn_groups": {
+      "3": 1
+    },
     "story_viewport": true
   },
   "dialogue_contexts": {
@@ -15,7 +17,369 @@
     }
   },
   "overrides": {
-    "0x232b8": { "pan": { "x": 120, "y": 336, "tile_step": true } },
-    "0x232c2": { "act": { "resource": 27 } }
+    "0x232b8": {
+      "pan": {
+        "x": 120,
+        "y": 336,
+        "tile_step": true
+      }
+    },
+    "0x232c2": {
+      "act": {
+        "resource": 27
+      }
+    }
+  },
+  "dialogue_overrides": {
+    "0x231e5#6": {
+      "script": "ch06.json",
+      "scene_index": 6,
+      "lines": [
+        {
+          "line": 0,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 13,
+            "pages": [
+              [
+                "『天啊！你們居然攻擊王國派",
+                "　來的調查隊，還把小隊長給",
+                "　殺了，難道你們不怕被全王"
+              ],
+              [
+                "　國軍通緝嗎？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 8,
+            "pages": [
+              [
+                "『這只是一場誤會，可是他們",
+                "　不肯聽我們解釋．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 2,
+            "control": "FFEF",
+            "operand": 13,
+            "pages": [
+              [
+                "『唉，現在說什麼都沒用啦！",
+                "　你們到底是來幹什麼的？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 10,
+            "pages": [
+              [
+                "『我們來此找賢者約拿．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 4,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 4,
+            "control": "FFEF",
+            "operand": 13,
+            "pages": [
+              [
+                "『你們是來找約拿的？約拿兩",
+                "　天前就已經離開此地了。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 5,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 5,
+            "control": "FFEE",
+            "operand": 10,
+            "pages": [
+              [
+                "『為什麼？聽說他近年來很少",
+                "　離開普里茲港的啊！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 6,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 6,
+            "control": "FFEF",
+            "operand": 13,
+            "pages": [
+              [
+                "『是沒錯。不過這個港城最近",
+                "　夜裡發生不少樁失蹤事件，",
+                "　狀況嚴重到連王國都派守備"
+              ],
+              [
+                "　隊來調查了，想必你們還不",
+                "　知道吧！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 7,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 7,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『怪不得碼頭一帶到處都是士",
+                "　兵。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 8,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 8,
+            "control": "FFEF",
+            "operand": 13,
+            "pages": [
+              [
+                "『我叫做貝克威，和約拿算是",
+                "　滿熟的朋友。前兩天他來找",
+                "　我，說他發現一件大陰謀，"
+              ],
+              [
+                "　和連日來的失蹤事件有關，",
+                "　必須立刻前去調查。他委託",
+                "　我一些事之後就離開了．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 9,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 9,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『真倒楣，那這趟不就又白跑",
+                "　了嗎？還因此和王國軍結了",
+                "　怨．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 10,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 10,
+            "control": "FFEE",
+            "operand": 10,
+            "pages": [
+              [
+                "『你是在指我嗎？",
+                "　這又不全是我的錯！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 11,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 11,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『妳還敢說，要不是因為妳爸",
+                "　爸派給妳的護衛．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 12,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 12,
+            "control": "FFEF",
+            "operand": 13,
+            "pages": [
+              [
+                "『好啦好啦！吵架解決不了事",
+                "　情，這樣吧，約拿約了我兩",
+                "　天後到亞克斯王國的王城去"
+              ],
+              [
+                "　和他碰面，既然你們有事找",
+                "　他，就和我一起去好了。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 13,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 13,
+            "control": "FFEE",
+            "operand": 1,
+            "pages": [
+              [
+                "『嗄？到王城去？那我們不是",
+                "　自投羅網嗎？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 14,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 14,
+            "control": "FFEE",
+            "operand": 8,
+            "pages": [
+              [
+                "『這個你們倒可以不用擔心，",
+                "　我保證一定不會有事的。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 15,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 15,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『希莉亞，妳為什麼敢做這種",
+                "　保證？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 16,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 16,
+            "control": "FFEE",
+            "operand": 8,
+            "pages": [
+              [
+                "『這是秘密，不告訴你！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 17,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 17,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『好，既然如此，我們就準備",
+                "　上路吧！貝克威先生，您怎",
+                "　樣呢？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 18,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_006",
+            "string_index": 6,
+            "utterance": 18,
+            "control": "FFEF",
+            "operand": 13,
+            "pages": [
+              [
+                "『先和我回城裏一趟，等我收",
+                "　拾一下東西，待會兒就可以",
+                "　啟程了。走吧！』"
+              ]
+            ]
+          }
+        }
+      ]
+    }
   }
 }

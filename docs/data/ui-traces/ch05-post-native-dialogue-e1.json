@@ -1,0 +1,15 @@
+{
+  "name": "第6戰後單一caller／19句原生對話與JOIN13城鎮路徑",
+  "date": "2026-08-27",
+  "evidence_level": "RUNTIME-E1",
+  "reference": {
+    "FD2.EXE": {"size": 357074, "md5": "b97caf2239a27a896069d03549d96e1e", "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"},
+    "FDTXT_006.bin": {"size": 3208, "md5": "c55deffd0244e3b48e69711c8b07cfe5", "sha256": "493d9e3f04d582f1a516d22444a0a41fb39cff3dcfc9a7125ef0c414c050a8c3"},
+    "canonical_re": "docs/data/fd2_ch05_post_dispatch_ida.txt",
+    "binding_evidence": "docs/data/ida/fd2_ch05_post_native_dialogue.md"
+  },
+  "native_dialogue": {"handler": "0x23296", "callers": ["0x231e5"], "source": "FDTXT_006", "string_indices": [6], "utterance_counts": [19], "total_utterances": 19},
+  "formal_routes": [{"frontier_before": 40, "frontier_after_group3": 41, "reachable_utterances": 19, "joins": [13], "destination": "town_ch07", "save_load": true}],
+  "verification": {"generator": "1 caller / 19 utterances --check", "data_test": "TestCh05PostNativeDialogueLayoutsMatchOriginalControlWords", "integrated_test": "TestChapter6PostJoins13PersistsPartyAndEntersTown7", "full_packages": "go test ./internal/battle ./internal/campaign ./cmd/fd2 -count=1", "result": "pass", "docker_network": "none", "xvfb": "explicit PID with exit trap"},
+  "limitations": ["未修改DOSBox同狀態、精確音訊與town07原版輸入仍缺，故不提升為PLAYER-E2。"]
+}

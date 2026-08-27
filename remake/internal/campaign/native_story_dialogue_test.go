@@ -868,6 +868,61 @@ func TestCh09PostNativeDialogueLayoutsMatchOriginalControlWords(t *testing.T) {
 	}
 }
 
+func TestCh05PostNativeDialogueLayoutsMatchOriginalControlWords(t *testing.T) {
+	raw, err := os.ReadFile("../../../extracted/raw/FDTXT/FDTXT_006.bin")
+	if err != nil {
+		t.Skip("extracted FDTXT_006 oracle is absent")
+	}
+	stringsTable, err := fdtxt.Parse(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	glyphRaw, err := os.ReadFile("../../../docs/data/glyph_map.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var encoded map[string]json.RawMessage
+	if err := json.Unmarshal(glyphRaw, &encoded); err != nil {
+		t.Fatal(err)
+	}
+	glyphs := make(map[uint16]string, len(encoded))
+	for key, value := range encoded {
+		if key == "_comment" {
+			continue
+		}
+		var text string
+		var index int
+		if err := json.Unmarshal(value, &text); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := fmt.Sscanf(key, "%d", &index); err != nil || index < 0 || index > 0xffff {
+			t.Fatalf("invalid glyph map key %q", key)
+		}
+		glyphs[uint16(index)] = text
+	}
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch05_post.json")
+	if err != nil || len(issues) != 0 {
+		t.Fatalf("compile ch05_post binding: issues=%v err=%v", issues, err)
+	}
+	var got []*NativeDialogueLayout
+	for _, beat := range beats {
+		if beat.Op == "dialog" && beat.NativeDialogue != nil {
+			got = append(got, beat.NativeDialogue)
+		}
+	}
+	words, err := stringsTable.Words(6)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want, err := decodeOriginalNativeDialogueLayouts("FDTXT_006", 6, words, glyphs)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(got) != 19 || !reflect.DeepEqual(got, want) {
+		t.Fatalf("FDTXT_006 index6 layouts=%d want=%d\ngot  %#v\nwant %#v", len(got), len(want), got, want)
+	}
+}
+
 func TestNativeDialogueLayoutUsesControlSpecificOriginalLineLimits(t *testing.T) {
 	limits := map[string]int{"FFEC": 13, "FFED": 15, "FFEE": 14, "FFEF": 14}
 	for control, limit := range limits {

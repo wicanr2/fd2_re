@@ -7229,3 +7229,18 @@ view／HUD、delta64..0淡入，再以具型別輸入播放index4→ACTING37→i
 [`fd2_ch09_post_native_dialogue.md`](../data/ida/fd2_ch09_post_native_dialogue.md)。
 驗收包含全量raw equality、60／61正式輸入、DAC restore、sparse patch、JOIN11／6、
 `town_ch11`與存讀檔。此項最高為`RUNTIME-E1`，未修改DOSBox同狀態與精確音訊另列E2。
+
+## 玩家第 6 戰戰後 19 句原生對話與 JOIN13（2026-08-27）
+
+本切片沿用已閉合的`sub_23296`、40-slot入口、group3與共用renderer，不重開
+反組譯。唯一caller `0x231E5`／index6產生19筆`NativeDialogueLayout`。
+
+正式執行期必須依原始順序先JOIN13、追加group3成41 slots、PAN、ACTING27，再以
+具型別輸入播放19句。完整closing後才`sync_party`、chapter6、`town_ch07`，並驗證
+存讀檔。缺原始資產、mapping、native frame、group3 provenance或40-slot frontier時，
+在交易前失敗即關閉。
+
+原始位址、雜湊、控制碼與共享尾段契約見
+[`fd2_ch05_post_native_dialogue.md`](../data/ida/fd2_ch05_post_native_dialogue.md)。
+驗收包含全量raw equality、正式輸入、40→41 frontier、JOIN13、`town_ch07`與存讀檔。
+此項最高為`RUNTIME-E1`，未修改DOSBox同狀態與精確音訊另列E2。
