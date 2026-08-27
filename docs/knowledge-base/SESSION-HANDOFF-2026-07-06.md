@@ -7698,3 +7698,19 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 這批證明最新HEAD三平台封包可建立且內建資料可解析；Windows／macOS實體機的
   視窗、輸入、存檔、音訊、簽章與Gatekeeper仍是外部驗收，不能由Docker／Wine／CI
   綠燈冒稱完成。
+
+## 2026-08-27：Windows／macOS artifact 可攜雜湊閉合
+
+- `494d4b2e`使Windows原生workflow生成相對檔名
+  `fd2-windows-x86_64.sha256`，在runner重新計算後連ZIP上傳；macOS workflow生成
+  `FD2-macos-universal.sha256`，以`shasum -a 256 -c`驗證DMG／tar.gz後才上傳。
+  macOS `setup-go`也改指向`remake/go.sum`，本次不再出現dependency file缺失警告。
+- 真實Windows [run 33038018401](https://github.com/wicanr2/fd2_re/actions/runs/33038018401)
+  與macOS [run 33038019716](https://github.com/wicanr2/fd2_re/actions/runs/33038019716)
+  均成功。前者完成原生CGO、空白cwd自我檢查、ZIP／manifest與artifact；後者完成
+  雙架構、universal、bundle自我檢查、DMG／tar.gz／manifest與artifact。
+- artifact下載到`/tmp`後以唯讀Docker獨立複驗：Windows ZIP 4,990,917 bytes與
+  88-byte manifest通過（SHA-256 `c1af7b65…30915`）；macOS DMG 10,302,019 bytes
+  （`32e94c9e…98b85`）、tar.gz 9,124,134 bytes（`6e8a3769…8195b`）與159-byte
+  manifest皆通過。這關閉manifest路徑／artifact層級風險，不提升實體機
+  視窗、輸入、存檔、音訊、簽章或Gatekeeper驗收。

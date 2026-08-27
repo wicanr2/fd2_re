@@ -22,6 +22,16 @@
 > 並在上傳前以`shasum -a 256 -c`複驗。兩份manifest不得保存runner或容器的絕對
 > 路徑；下載到同一目錄後即可直接驗證。macOS的`setup-go`亦固定從
 > `remake/go.sum`建立快取，不再因錯誤根目錄產生缺dependency file警告。
+>
+> 真實Windows
+> [run 33038018401](https://github.com/wicanr2/fd2_re/actions/runs/33038018401)
+> 與macOS
+> [run 33038019716](https://github.com/wicanr2/fd2_re/actions/runs/33038019716)
+> 均通過上述manifest gate。下載artifact後再以唯讀Docker獨立複驗：Windows ZIP
+> 4,990,917 bytes（SHA-256 `c1af7b65…30915`）與88-byte manifest通過；macOS DMG
+> 10,302,019 bytes（`32e94c9e…98b85`）、tar.gz 9,124,134 bytes
+> （`6e8a3769…8195b`）與159-byte manifest皆通過。這證明manifest可攜且artifact層級正確，
+> 不只是在runner日誌印出雜湊。
 
 > **2026-08-27 前一版候選：**Linux提交`77017ead`及既有Windows封包均不含原版資產。
 > Linux AppImage為5,306,872 bytes，SHA-256
