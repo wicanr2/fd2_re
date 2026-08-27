@@ -8072,3 +8072,14 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   既有檔案而不重複加入相同PNG／JSON。
 - 起點沒有隊伍名冊，因此不宣稱選人、配額、最終確認或進戰。清冊現為44筆登記、
   39筆合格；戰役／戰間6／12，證據等級仍為`RUNTIME-E1`。
+
+## 2026-08-28：早期城鎮至道具店普通輸入往返
+
+- 沿用合法`town_ch02`節點存檔與正式標題LOAD；較短Left間隔的首輪留在城鎮，
+  判定為按鍵排程漏接並作廢。只重播一次拉長間隔的相同普通鍵序，Left×3、Return
+  於frame1500抵達`shop_ch02_item`，gold279且無load error／dialog／battle event／
+  turn staging。
+- 第二次相同成功前綴進店後送Escape，frame1650返回`town_ch02`並保留gold279。
+  兩次均由正式執行檔與普通X11事件完成，沒有route patch或debug直達。
+- 此格是獨立道具店節點交易，不拆成UI格，也不重複既有Windows武器店；不證明
+  購買／出售、長程來源或原版E2。清冊現為45筆登記、40筆合格；戰役／戰間7／12。

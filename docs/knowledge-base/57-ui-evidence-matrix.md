@@ -422,6 +422,12 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 | UI-11 preparation | `0x2d0d1` 城鎮出發提示使用 FDTXT `0x201`／`(95,119)` 與原 town source；`0x2cc04..0x2cc87` 無城鎮提示先清 VGA、使用 FDTXT `0x19a`／`(100,119)`，肯定才在關框後呼叫存檔。`0x318ad` 清除30旗標；`0x31a7c..0x31b08` 左右±1、上下±10；`0x31e80` 接三區背景、10欄角色格、游標、彩色／灰色角色及 `0x17fc0` 狀態。`0x31ea9..0x31ec6` 第一組數字直接取quota，`0x31edb..0x31efb` 第二組才取quota減已選，舊重製初始`00／19`已修成原版`19／19`。`0x320fc`直接證實record0固定、旗標i對應record i+1；重製已修正為固定1人＋可選15／19人，總上場16／20。`0x1297d` 待機週期與 `0x31d3c` 最終確認的完整 Draw 確認生命週期均已接；原始圖像索引、記錄或資源缺值即退回。同一固定晚期槽的初始狀態與合法相位0現有AE=0/64000成果圖。2026-08-28再由正式標題LOAD普通輸入完成早期`town_ch02→preparation_ch02`前置確認及Escape取消返回；三態旁車與限制見[`native-town-preparation-cancel-ch02-remake-e1.json`](../data/ui-traces/native-town-preparation-cancel-ch02-remake-e1.json)。空名冊起點不提升選人或出戰完成。 | partial（E1） | 依99%忠實度門檻關閉這個固定初始狀態；只抽測其他章節與交互狀態；`0x1f42d` 已更正為戰場進入演出，不屬此選人視窗 |
 | UI-12 save/load | F5/F9 是重製自有快捷路徑，不得外推為原版戰場存檔；save package 自有 schema。原版 `FD2.SAV` 的 `0x59cb` boundary、rolling-XOR/u32 byte-sum checksum、4×logical `0xa28` records at `+0x312b`（metadata `0x28` + roster `0xa00`）已由真實 sandbox decode、`tools/fd2save.py` 與 `internal/fdsave` regression 覆蓋。合法 IDA 9.4 已固定 reader `0x2602c..0x26098` 與 writer `0x30012`：兩者只處理 metadata `+0..+9`；writer 只由 `0x2cad7` 直接整備與酒店呼叫。production 以雜湊綁定的 `0x526b9` gate table 把 raw chapter 1..29 還原到 `town_ch02..27` 或 `preparation_ch23..30`，先完整驗證 persistent record→typed party、節點型別與重複 identity，再原子套用 campaign cursor、gold、party 與 raw metadata 保存值；ch21/ch27 postbattle inventory gate 不會重播。標題 Enter／Space 現只經正式確認 owner：checksum-valid 合成槽完整還原 `town_ch02`、悠妮 typed/raw record、join order、789金幣、chapter1、HUD gate並清除舊 battle state／selection；竄改 envelope 留在 `loadslots`，campaign／party／gold／battle state 零修改且不落入 JSON loader。空槽及修改存檔chapter1有效槽畫面均與DOSBox全幀相同；未修改CONTINUE戰場按F5後存檔雜湊不變，確認一般玩家有效槽必須先從酒店／整備建立 | partial（空槽 E2；有效槽排版與 restore 為修改／合成路徑 E1，不升為一般玩家 E2） | 正常完成戰鬥後由酒店／整備建立槽位，再走標題LOAD的successful native-load E2；metadata `+10..+39` 其他可能 consumer、CONTINUE current-battle owner、delete/overwrite |
 
+> **2026-08-28 UI-09 早期道具店普通輸入補證：** 合法重製節點存檔由正式標題
+> LOAD與普通X11鍵盤進入`town_ch02`，原生selector選項3進`shop_ch02_item`，再以
+> Escape沿正式商店返回邊界回到城鎮；節點、gold與transient旁車見
+> [`native-town-item-shop-roundtrip-ch02-remake-e1.json`](../data/ui-traces/native-town-item-shop-roundtrip-ch02-remake-e1.json)。
+> 此證據只提升重製正常輸入入口／返回E1，不取代購買／出售交易或原版同狀態E2。
+
 > **2026-08-26 UI-09 service2 正式輸入補證：** 四項商店選單 Right×2、角色名冊、
 > 原版 item scan code、相容／不相容交易、空背包、0→11收合、同角色名冊重開及返回
 > service selection 2 現由正式鍵盤與回歸共用 typed consumer。Down（scan80）才會在

@@ -49,7 +49,7 @@
 受版控清冊位於
 [`first-round-remake-samples.json`](data/verification/first-round-remake-samples.json)，
 以`tools/check_remake_samples.py`自動拒絕重複ID、遺失證據檔及手動灌水的資格欄位。
-目前登記44筆證據，其中39筆符合正常輸入與正式重製路徑資格：戰役／戰間6／12、
+目前登記45筆證據，其中40筆符合正常輸入與正式重製路徑資格：戰役／戰間7／12、
 戰鬥／AI 9／18、介面12／12、存檔／持續隊伍10／10、終局／平台2／8。最新一輪把
 既有正常輸入證據按不同驗收不變量補登：戰場HUD、command0調色盤、END接受逐字、
 Windows城鎮存檔寫入與第30戰前冷讀持續隊伍；沒有以同一結果跨層重複計數。介面樣本
@@ -86,6 +86,9 @@ turn1／round1、同一camera與cursor，沒有殘留modal、dialog或turn stagi
 同一起點另以普通輸入進入`preparation_ch02`前置確認，再以`Escape`沿正式cancel
 邊界返回城鎮；旁車明確區分尚未選人／尚未最終確認。因測試存檔是空名冊，本格
 只驗證整備入口與取消，不冒稱選人或出戰完成。
+同一城鎮再由正式LOAD普通輸入進入獨立`shop_ch02_item`並以`Escape`返回；這與
+既有Windows武器店是不同節點交易，但只驗證入口／返回，不把畫面拆成額外UI格，
+也不冒稱購買或出售完成。
 其餘5筆保留為有用旁證，但因route patch、專用截圖入口、typed test或非互動封包
 檢查而不計入95%門檻。這個數字衡量的是已整理樣本，不是把既有功能降級成未完成。
 

@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-28",
+  "evidence_level": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "scope": "正式標題 LOAD 後以普通鍵盤完成 town_ch02→shop_ch02_item→town_ch02",
+  "save_fixture": {
+    "format": "重製 JSON 槽位0；合法節點邊界測試起點，不是原版 FD2.SAV",
+    "node": "town_ch02",
+    "chapter": 2,
+    "gold": 279,
+    "sha256": "2b684fbdf1a8b7a574420f62e7f8b38ab8b70a85adde26eb94fde1b13994ee36"
+  },
+  "execution": {
+    "environment": "一次性、無網路、UID/GID 1000 的 fd2-go-test-local Docker／Xvfb",
+    "runtime_sha256": "e0a3cdf748c6fd58c9852eedb6e0d5ade997dc9dcfb3f80408254ef2fe364091",
+    "input_helper": "tools/docker/fd2-xtest-input.c，只送普通 X11 鍵盤事件",
+    "timeline": [
+      "F10等待初始化，Escape略過可略過開場",
+      "Down、Return開啟LOAD，Return確認槽位0並進入town_ch02",
+      "Left×3依正式城鎮selector抵達選項3，Return進入shop_ch02_item",
+      "第二次完整重播相同前綴後，以普通Escape返回town_ch02"
+    ],
+    "discarded_attempt": "首輪較短Left間隔停在town_ch02；沒有產品錯誤，拉長間隔後以相同鍵序重播成功"
+  },
+  "entry_capture": {
+    "frame": 1500,
+    "campaign_node": "shop_ch02_item",
+    "gold": 279,
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false,
+    "load_error": "",
+    "state": "native-town-item-shop-entry-ch02-remake-e1-state.json",
+    "state_sha256": "c454e0becc86262d60fa8bfa980a8aea8c2e9ba2094a644aec65bef49909be96",
+    "screenshot": "../../figures/native-town-item-shop-entry-ch02-remake-e1.png",
+    "screenshot_sha256": "4f716ea9d463d557495bbf05fc3ae6630ee3341af946579b124d8d671e4e6973"
+  },
+  "return_capture": {
+    "frame": 1650,
+    "campaign_node": "town_ch02",
+    "gold": 279,
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false,
+    "load_error": "",
+    "state": "native-town-item-shop-return-ch02-remake-e1-state.json",
+    "state_sha256": "ab9a651232dd25e271cd3071950f266f08d9aecd9c56793779c50a854fa373a3",
+    "screenshot": "../../figures/native-town-item-shop-return-ch02-remake-e1.png",
+    "screenshot_sha256": "476c7f188ab0f42c367f075ebeb693710ed662fd8f8d4a149b53536fe258ce93"
+  },
+  "validated_invariants": [
+    "正式標題LOAD發布town_ch02後，原生selector選項3以普通Return進入獨立shop_ch02_item節點。",
+    "道具店入口保留gold279，沒有load error、dialog、battle event或turn staging。",
+    "同一普通輸入前綴進入道具店後送Escape，沿正式商店返回邊界回到town_ch02並保留gold279。"
+  ],
+  "limitations": [
+    "只驗證道具店節點入口與返回，不重複既有Windows武器店樣本，也不證明購買／出售交易。",
+    "合法重製節點存檔起點不證明第1戰長程來源、原版PLAYER-E2、音訊或逐像素一致。",
+    "首輪短間隔按鍵漏接已作廢；成功證據只引用較長間隔的完整普通輸入重播。"
+  ]
+}
