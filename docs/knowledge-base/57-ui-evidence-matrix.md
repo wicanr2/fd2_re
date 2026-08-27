@@ -428,6 +428,12 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 > [`native-town-item-shop-roundtrip-ch02-remake-e1.json`](../data/ui-traces/native-town-item-shop-roundtrip-ch02-remake-e1.json)。
 > 此證據只提升重製正常輸入入口／返回E1，不取代購買／出售交易或原版同狀態E2。
 
+> **2026-08-28 UI-11 中期整備入口補證：** 合法`town_ch17`節點存檔由正式標題
+> LOAD與普通X11鍵盤進native variant1城鎮，再以選項2抵達`preparation_ch17`
+> 前置確認；limit15與三態旁車見
+> [`native-mid-preparation-entry-ch17-remake-e1.json`](../data/ui-traces/native-mid-preparation-entry-ch17-remake-e1.json)。
+> 取消返回重播未通過標題起點而排除，故只列中期入口E1，不外推選人或往返。
+
 > **2026-08-26 UI-09 service2 正式輸入補證：** 四項商店選單 Right×2、角色名冊、
 > 原版 item scan code、相容／不相容交易、空背包、0→11收合、同角色名冊重開及返回
 > service selection 2 現由正式鍵盤與回歸共用 typed consumer。Down（scan80）才會在

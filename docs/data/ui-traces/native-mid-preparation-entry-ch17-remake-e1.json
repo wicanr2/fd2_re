@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-28",
+  "evidence_level": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "scope": "正式標題 LOAD 後以普通鍵盤從中期 town_ch17 進入 preparation_ch17 前置確認",
+  "save_fixture": {
+    "format": "重製 JSON 槽位0；合法節點邊界測試起點，不是原版 FD2.SAV",
+    "node": "town_ch17",
+    "chapter": 17,
+    "gold": 5000,
+    "party": "空名冊，因此只驗證前置確認入口",
+    "sha256": "0f56c34b3eb26e02ed1d2360430e336ec48a2e505e5298f335c3fd74a70b9ace",
+    "creation": "一次性 Docker 內以正式 saveData／writeSaveFile 契約產生；存檔不加入版控"
+  },
+  "execution": {
+    "environment": "一次性、無網路、UID/GID 1000 的 fd2-go-test-local Docker／Xvfb",
+    "runtime_sha256": "e0a3cdf748c6fd58c9852eedb6e0d5ade997dc9dcfb3f80408254ef2fe364091",
+    "input_helper": "tools/docker/fd2-xtest-input.c，只送普通 X11 鍵盤事件",
+    "timeline": [
+      "F10等待初始化，Escape略過可略過開場",
+      "Down、Return開啟LOAD，Return確認槽位0並進入town_ch17",
+      "等待variant1城鎮穩定，Left×2抵達選項2，Return進入preparation_ch17",
+      "第1800幀由被動截圖鉤子保存畫面與狀態後退出"
+    ],
+    "discarded_attempts": [
+      "較短城鎮等待的首輪停在town_ch17，未作證據。",
+      "另一次預定取消返回的重播在標題時序誤入START；未抵達本樣本起點，已排除且不記為產品失敗。"
+    ]
+  },
+  "observed": {
+    "frame": 1800,
+    "campaign_node": "preparation_ch17",
+    "message": "已讀檔(槽位1：town_ch17)",
+    "gold": 5000,
+    "preparation": {
+      "selecting": false,
+      "confirming": false,
+      "confirm_selection": 0,
+      "selection": 0,
+      "limit": 15,
+      "candidate_count": 0,
+      "deployed_count": 0,
+      "town_backed": true
+    },
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false,
+    "load_error": ""
+  },
+  "artifacts": {
+    "state": "native-mid-preparation-entry-ch17-remake-e1-state.json",
+    "state_sha256": "8e3a193cc57cc3cfae1d1005234f91fa416c902f436ad1255d30856b04dc48a5",
+    "screenshot": "../../figures/native-mid-preparation-entry-ch17-remake-e1.png",
+    "screenshot_sha256": "67ce05901494f649a9a907aa196a72eac603c974a9d0764aa4bc791c775af1b2"
+  },
+  "validated_invariants": [
+    "正式標題LOAD可發布中期native_town_variant1的town_ch17。",
+    "原生selector選項2以普通Return進入獨立preparation_ch17節點。",
+    "入口位於town-backed前置確認、limit15，且無load error、dialog、battle event或turn staging。"
+  ],
+  "limitations": [
+    "只證明中期整備前置確認入口；取消返回的重播未通過，故不宣稱往返。",
+    "空名冊不證明選人、配額、最終確認或進戰。",
+    "合法重製節點存檔起點不證明前16戰長程來源、原版PLAYER-E2、音訊或逐像素一致。"
+  ]
+}

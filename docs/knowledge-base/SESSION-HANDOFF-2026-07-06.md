@@ -8083,3 +8083,14 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   兩次均由正式執行檔與普通X11事件完成，沒有route patch或debug直達。
 - 此格是獨立道具店節點交易，不拆成UI格，也不重複既有Windows武器店；不證明
   購買／出售、長程來源或原版E2。清冊現為45筆登記、40筆合格；戰役／戰間7／12。
+
+## 2026-08-28：中期 variant1 城鎮至整備入口
+
+- 一次性Docker以正式`saveData`／`writeSaveFile`產生合法`town_ch17`節點存檔；
+  chapter17、gold5000，SHA-256為`0f56c34b3eb26e02ed1d2360430e336ec48a2e505e5298f335c3fd74a70b9ace`。
+  空名冊使本格只驗證入口，不冒稱選人或出戰。
+- 短等待首輪停在town；唯一一次拉長間隔重播由正式標題LOAD進native variant1
+  `town_ch17`，Left×2、Return後frame1800抵達`preparation_ch17`前置確認，limit15、
+  town-backed、gold5000且無load error／dialog／battle event／turn staging。
+- 預定取消返回的另一次重播在標題時序誤入START，未抵達測試起點，已排除且不記為
+  產品失敗；本格不宣稱往返。清冊現為46筆登記、41筆合格；戰役／戰間8／12。

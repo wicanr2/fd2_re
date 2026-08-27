@@ -669,6 +669,26 @@
       ]
     },
     {
+      "id": "campaign-mid-preparation-entry-ch17",
+      "layer": "campaign_intermission",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-mid-preparation-entry-ch17-remake-e1.json",
+        "docs/data/ui-traces/native-mid-preparation-entry-ch17-remake-e1-state.json",
+        "docs/figures/native-mid-preparation-entry-ch17-remake-e1.png"
+      ],
+      "limitations": [
+        "只驗證正式LOAD後中期variant1城鎮至preparation_ch17前置確認；不證明取消返回、選人、長程來源或原版E2。"
+      ]
+    },
+    {
       "id": "ui-appimage-rumor-dialogue-lifecycle-ch02",
       "layer": "ui",
       "result": "pass",
