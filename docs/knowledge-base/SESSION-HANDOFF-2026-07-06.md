@@ -7801,3 +7801,16 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 1,098 筆 unknown 不批次猜成硬體或函式庫。DOS／PIT／DAC／驅動時序與裝飾性
   RNG 採規格近似且不阻擋；命中、傷害、AI 裁決、法術／物品等玩法 RNG 仍會改變
   玩家結果，不能一概略過。其餘 unknown 只有在正常玩家抽樣形成 blocker 時重開。
+
+## 2026-08-27：IDA 函式清冊獨立重生確認
+
+- `fd2-ida-authorized-local` 的 IDA Pro 9.4／IDAPython 能完成全新 LE 分析、Watcom
+  FLIRT 與非破壞性清冊匯出。第一次直接使用中文主機路徑時，IDAPython 以 ASCII
+  開檔而在 `炎龍騎士團` 觸發 `UnicodeEncodeError`；這是工具路徑問題，不是原檔、
+  授權或資料庫失敗。
+- 將同一固定版原檔唯讀綁定為容器內 `/input/FD2.EXE` 後成功輸出 2,299,687-byte
+  完整 JSON；匯出器核對 357,074 bytes、MD5 `b97caf2239a27a896069d03549d96e1e`、
+  SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 完整匯出經現行壓縮器處理後與版控清冊逐欄位相同：函式1,305、產品37、
+  runtime170、unknown1,098、語意註記38。`1,089` 是數字次序誤寫；本輪沒有新增
+  語意分類，也沒有把 unknown 批次提升為硬體、runtime 或產品函式。

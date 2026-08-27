@@ -183,6 +183,11 @@
   直接指令及執行期實驗裁決。
 - IDA Pro 不可直接在主機執行，只可使用維護中的授權 Docker 流程；不得散布
   `/home/anr2/ida_94_official/dist` 的任何檔案。
+- IDA Pro 9.4／IDAPython 的批次腳本可能以 ASCII codec 開啟輸入路徑；若原版位於
+  中文或其他非 ASCII 目錄，不可複製或改名原檔來規避。應把同一原檔唯讀 bind
+  mount 為容器內短 ASCII 路徑（例如 `/input/FD2.EXE`），並由腳本重新核對檔案
+  size、MD5 與 SHA-256。只有實際輸出 JSON 存在、schema 正確且雜湊相符才算成功；
+  IDA exit code、stdout 或建立 `.i64` 本身不足以證明匯出完成。
 - 原版遊戲、IDA 授權檔一律唯讀掛載；資料庫與分析產物只可寫入明確的儲存庫
   產物目錄或 `/tmp`，不得把授權檔、原版二進位或臨時資料庫加入版控。
 - 在容器寫入既有儲存庫檔案前，先檢查目標檔與輸出目錄的 UID/GID；不得等到

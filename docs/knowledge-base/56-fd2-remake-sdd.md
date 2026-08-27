@@ -294,6 +294,14 @@ repo 提供不含 license／遊戲資料的 `tools/docker/fd2-ida.Dockerfile` �
 `native_call`、`unresolved_native_call`、`unknown`；三者都保留原始定位，前兩者
 另內嵌推論等級與證據，名稱本身不解除正式 runtime gate。
 
+2026-08-27 再以 `fd2-ida-authorized-local`、IDA Pro 9.4、唯讀固定版執行檔及
+一次性 tmpfs 從零重生完整清冊。IDAPython 9.4 以 ASCII codec 開啟輸入路徑，直接
+使用主機中文目錄會在 `炎龍騎士團` 觸發 `UnicodeEncodeError`；正確流程是把同一
+檔案唯讀綁定為容器內 `/input/FD2.EXE`，仍由匯出器核對 size／MD5／SHA-256。
+本輪完整 JSON 2,299,687 bytes，壓縮結果與受版控清冊逐欄位完全相同：1,305函式、
+產品37、runtime170、unknown1,098、語意註記38。這是工具與清冊重生證據，不提升
+任何 unknown 函式的玩法語意。
+
 2026-07-29 起，repo 根目錄 `AGENTS.md` 是跨 session 的操作契約，
 `CLAUDE.md` 只保存專案意圖並指向它。Docker container 必須是有界生命週期：
 one-shot 一律 `docker run --rm`，Xvfb 等背景程序須由 trap 收回；每批 RE／測試／

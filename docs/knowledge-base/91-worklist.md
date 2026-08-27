@@ -901,6 +901,12 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   另有七組已被後續精確回歸取代的測試名稱仍用現在式，現已換成目前原始碼存在的
   planner／consumer／postbattle／montage 測試，或明示只屬 Git 歷史。未知函式依
   玩家影響分類；DOS／PIT／DAC與裝飾性 RNG 不阻擋，玩法 RNG 仍須保留契約。
+- [x] **IDA-INVENTORY-EXACT-REBUILD-20260827**：使用授權 IDA Pro 9.4 Docker、
+  唯讀固定雜湊 `FD2.EXE` 與 tmpfs 從零重生清冊。為避開 IDAPython 對中文輸入
+  路徑的 ASCII `UnicodeEncodeError`，把同一檔案唯讀綁定為 `/input/FD2.EXE`；
+  匯出器仍驗證 size／MD5／SHA-256。2,299,687-byte 完整 JSON 壓縮後與版控清冊
+  逐欄位相同：函式1,305、產品37、runtime170、unknown1,098、語意註記38。
+  `1,089` 為數字顛倒，不另建清冊版本；這項重生不替 unknown 猜測語意。
 - [x] 2026-07-27 stale dialogue-operand assertion cleanup：`09`、`01`、`18` 不再把控制碼第二 word 一律稱為固定肖像/DATO ID；依 `0x15f84→0x12c60` 分開 identity lookup、runtime unit `+7` 與 direct-DATO fallback，並將 `FFFA/FFFB` 統一修正為遞迴名稱／數值插入碼，不是特效。
 - [x] 2026-07-27 second-pass dialogue wording audit：`14` §4 的組合說明與 `-17/-18` 讀取步驟仍殘留「直接肖像 ID」舊斷言，已改成 identity lookup／record `+7`／direct-DATO fallback 三路 provenance；未修改任何未證實的 story operand。
 - [x] 2026-07-27 expansion-doc assertion audit：`17-scenario-expansion-evaluation.md` 原稱「原版評分式 AI 已還原、可照搬」已撤回，改以 `11` 的 raw dispatcher/candidate/score slices 與完整 runtime 未閉合為準；`50` 的 persistence 句也限定為 remake 自有 JSON projection，不冒稱 `FD2.SAV` byte identity。
