@@ -66,8 +66,11 @@ cd remake
 ./packaging/build-windows.sh    # Windows exe(已編譯,執行未在真機驗證)
 ```
 
-macOS 走 GitHub Actions(`.github/workflows/build-macos.yml`,草稿未跑過)——Go CGO 跨編 macOS
-需要 Apple SDK,不像 Linux/Windows 能純 docker 跨編,借用 `macos-14` runner 原生編譯。
+macOS 走 GitHub Actions（`.github/workflows/build-macos.yml`）；最新
+[run 33037065272](https://github.com/wicanr2/fd2_re/actions/runs/33037065272)
+已在 `macos-14` 完成 arm64／amd64、`lipo` universal、bundle 自我檢查、DMG／tar.gz
+與 artifact。Go CGO 跨編 macOS 需要 Apple SDK，不像 Linux／Windows 能在純 Linux
+Docker 內完成；實體 Mac 的視窗、輸入、存檔、音訊與 Gatekeeper 仍須另行驗收。
 
 打包內容只含**已入庫的原創資產**(`assets/scenarios/`、`assets/story/`、`assets/spells.json`);
 `maps`/`sprites`/`music`/`portraits` 等 ROM 衍生素材是版權物,不隨散布物打包。玩家需自備原版跑

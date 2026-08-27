@@ -4,7 +4,19 @@
 (AppImage squashfs)內既讀不到 `assets/`、也寫不了存檔,詳見 `38-editor-design.md` §6.5 的設計討論;
 本篇是那份設計的**實作紀錄 + 驗證證據**。
 
-> **2026-08-27 最新發行候選：**Linux提交`77017ead`及既有Windows封包均不含原版資產。
+> **2026-08-27 `3dd0bd20` 最新候選：**既有鎖定映像在一次性無網路Docker中
+> 重建Linux AppImage 5,327,352 bytes（SHA-256
+> `32239daafc48bfda68d1ea0ba945ef51e54f1e74128bac21c1d9ebc2a12091f5`）與Windows
+> ZIP 4,910,912 bytes（SHA-256
+> `c85e466b2b0c11c02c784c1564d8325fec6de44dd210a98093402fdeed98ee11`）。兩包都由
+> 空白工作目錄執行`FD2_PACKAGE_SELF_CHECK=1`成功；Windows經既有Wine 9.0／Xvfb
+> 執行。macOS原生
+> [run 33037065272](https://github.com/wicanr2/fd2_re/actions/runs/33037065272)
+> 亦成功完成arm64／amd64、`lipo` universal、bundle自我檢查、DMG／tar.gz及artifact。
+> 這取代下方較早候選作為最新封包證據，但仍不冒稱Windows／macOS實體機的視窗、
+> 輸入、存檔、音訊、簽章或Gatekeeper驗收。
+
+> **2026-08-27 前一版候選：**Linux提交`77017ead`及既有Windows封包均不含原版資產。
 > Linux AppImage為5,306,872 bytes，SHA-256
 > `9e54d32e1e928c42b62012a30c2e64b77e5de2dcaf42ec56bbda01f88951ca4d`；從空工作目錄
 > 以唯讀XDG玩家資產實際啟動至`town_ch02`，見

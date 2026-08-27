@@ -7682,3 +7682,19 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   隊伍同步、chapter28、`preparation_ch29`及全新`Game`冷讀，達`RUNTIME-E1`。
   依99%玩家可見門檻保留五階段收框與背景還原；逐句說話者螢幕座標沒有handler
   來源，故不以玩家游標冒充額外滑動，也不重開已閉合共享尾端。
+
+## 2026-08-27：`3dd0bd20` 三平台最新發行候選
+
+- 依99%玩家可見門檻，service2的`AE=1389／1433`仍誠實保留為未同步合法待機
+  相位；內容、幾何與交易已一致。沒有原版相位掃描證據，不猜改`SpriteFor`或panel
+  renderer，也不把這項相位取樣列為封包阻擋。
+- 既有鎖定映像以`--rm --network none`、UID/GID 1000、資源限制重建Linux AppImage
+  5,327,352 bytes（SHA-256 `32239daa…091f5`）與Windows ZIP 4,910,912 bytes
+  （`c85e466b…ee11`）。兩者都從空白工作目錄執行正式封包自我檢查成功；Windows
+  使用既有Wine 9.0／Xvfb，沒有在主機安裝相依項目。
+- macOS原生[run 33037065272](https://github.com/wicanr2/fd2_re/actions/runs/33037065272)
+  於`macos-14`完成arm64／amd64、`lipo` universal、bundle自我檢查、DMG／tar.gz與
+  artifact。`remake/README.md`的「草稿未跑過」已訂正。
+- 這批證明最新HEAD三平台封包可建立且內建資料可解析；Windows／macOS實體機的
+  視窗、輸入、存檔、音訊、簽章與Gatekeeper仍是外部驗收，不能由Docker／Wine／CI
+  綠燈冒稱完成。

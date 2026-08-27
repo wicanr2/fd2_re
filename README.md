@@ -82,7 +82,7 @@ records／globals 連續性，因此戰役／隊伍持續項增加1分。測試�
 | 戰鬥規則、玩家指令與敵方 AI | 20 | 19 | 正常產生端的主要交易與 indexed owner 已達 E1；固定晚期槽現於第29、30戰都由正式標題／整備入口，再經 END／YES、原始敵軍陣容與 indexed 演出完成一輪控制權交接。玩家普通攻擊、敵方指令13、指令24及指令29多目標正式呈現回歸亦通過，仍缺原版同狀態逐音訊／逐幀 E2 |
 | 操作介面與原版視覺忠實度 | 15 | 14 | ch02 城鎮／商店與普通攻擊固定fixture已有整幀或內容區AE=0；十九個故事對話切片已由原始控制碼接入原生框、逐字、嘴型及收框。第28戰正式勝利路徑現保留20名部署者＋44筆初始敵軍的64-slot戰況，播放`FDTXT_028`五句後同步隊伍並進`preparation_ch29`冷讀；舊80-slot說法已勘誤為把16筆group255 source誤算成已上場單位。外部末關候選由普通鍵盤CONTINUE抵達並操作第30戰；同一原始狀態與合法相位組合已達320×200整幀AE=0。仍缺故事對話DOSBox同狀態、教會DOSBox呼叫端與其他章節代表性E2 |
 | 結局與音訊 | 10 | 9 | 正式第30戰可經一般戰果接縫進來源約束終局並停在定格；部署成員保留最終戰結果，未部署成員保留冷讀狀態，完整 JOIN 隊伍可進最終回顧。短音效播放器可疊播、保留至自然結束並於退出清理；實際 MT-32 資產亦已在無音效裝置的 Docker 中完成曲目4→停止→曲目18的解碼與切換。仍缺人耳、原版呼叫當下完整動態狀態、原版輸入與三平台精確音訊驗收 |
-| 三平台發行與推廣 | 10 | 7 | [Linux run 33002216602](https://github.com/wicanr2/fd2_re/actions/runs/33002216602)已在真正`ubuntu-latest`重建AppImage，從空白cwd執行具型別封包檢查、複驗可攜SHA-256並上傳artifact；既有AppImage亦在Debian系及Ubuntu 24.04抵達`town_ch02`且畫面AE=0。[Windows run 33000820996](https://github.com/wicanr2/fd2_re/actions/runs/33000820996)與macOS [run 32999934526](https://github.com/wicanr2/fd2_re/actions/runs/32999934526)同樣驗證各自原生封包、全部戰役轉場、36個唯一法術ID及所有劇情引用。這仍不等於Windows／macOS實體玩家桌面的視窗、輸入與音訊驗收；最終版號封包與推廣影片尚待 |
+| 三平台發行與推廣 | 10 | 7 | 最新`3dd0bd20`已在一次性無網路Docker重建5,327,352-byte Linux AppImage（SHA-256 `32239daa…091f5`）與4,910,912-byte Windows ZIP（`c85e466b…ee11`），兩者均從空白工作目錄通過正式封包自我檢查。macOS [run 33037065272](https://github.com/wicanr2/fd2_re/actions/runs/33037065272)亦由原生`macos-14`完成arm64／amd64、`lipo` universal、bundle自我檢查、DMG／tar.gz及artifact。這仍不等於Windows／macOS實體玩家桌面的視窗、輸入、存檔與音訊驗收；最終版號、簽章及推廣影片尚待 |
 | **總計** | **100** | **90** | **尚未達到發行候選版** |
 
 這個估值不是依據已解出的位址數量，而是依據玩家交付門檻。截至本次快照，
