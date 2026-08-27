@@ -63,12 +63,22 @@ jobs:
       - name: 產生 ZIP 與雜湊
         run: |
           $archive = "packaging/dist/fd2-windows-x86_64.zip"
+          $manifest = "packaging/dist/fd2-windows-x86_64.sha256"
           Remove-Item -Force $archive -ErrorAction SilentlyContinue
           Compress-Archive -Path "packaging/dist/windows/*" -DestinationPath $archive
-          Get-FileHash -Algorithm SHA256 $archive | Format-List
+          $hash = (Get-FileHash -Algorithm SHA256 $archive).Hash.ToLowerInvariant()
+          "$hash  fd2-windows-x86_64.zip" | Set-Content -Path $manifest -Encoding ascii -NoNewline
+          $recorded = (Get-Content $manifest -Raw).Split()[0]
+          $actual = (Get-FileHash -Algorithm SHA256 $archive).Hash.ToLowerInvariant()
+          if ($recorded -ne $actual) {
+            throw "Windows ZIP SHA-256 複驗失敗：recorded=$recorded actual=$actual"
+          }
+          Get-Content $manifest
 
       - uses: actions/upload-artifact@v4
         with:
           name: fd2-windows-x86_64
-          path: remake/packaging/dist/fd2-windows-x86_64.zip
+          path: |
+            remake/packaging/dist/fd2-windows-x86_64.zip
+            remake/packaging/dist/fd2-windows-x86_64.sha256
           if-no-files-found: error

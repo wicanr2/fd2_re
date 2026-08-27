@@ -32,6 +32,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: '1.22'
+          cache-dependency-path: remake/go.sum
 
       - name: Build arm64 slice(runner 原生架構)
         run: |
@@ -94,6 +95,8 @@ jobs:
           cd packaging/dist
           hdiutil create -volname "FD2" -srcfolder FD2.app -ov -format UDZO FD2-mac.dmg
           tar czf FD2-mac.tar.gz FD2.app
+          shasum -a 256 FD2-mac.dmg FD2-mac.tar.gz > FD2-macos-universal.sha256
+          shasum -a 256 -c FD2-macos-universal.sha256
 
       - uses: actions/upload-artifact@v4
         with:
@@ -101,6 +104,7 @@ jobs:
           path: |
             remake/packaging/dist/FD2-mac.dmg
             remake/packaging/dist/FD2-mac.tar.gz
+            remake/packaging/dist/FD2-macos-universal.sha256
           if-no-files-found: error
 
 # 仍未驗證項目(見 41-packaging.md §4「已知落差」):

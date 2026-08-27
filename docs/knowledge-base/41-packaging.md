@@ -16,6 +16,13 @@
 > 這取代下方較早候選作為最新封包證據，但仍不冒稱Windows／macOS實體機的視窗、
 > 輸入、存檔、音訊、簽章或Gatekeeper驗收。
 
+> **可攜雜湊契約：**Windows原生工作流程現在把ZIP的SHA-256寫成只含相對檔名的
+> `fd2-windows-x86_64.sha256`，在runner內重新計算比對後，與ZIP一起上傳。
+> macOS原生工作流程同樣產生`FD2-macos-universal.sha256`，逐一記錄DMG與tar.gz，
+> 並在上傳前以`shasum -a 256 -c`複驗。兩份manifest不得保存runner或容器的絕對
+> 路徑；下載到同一目錄後即可直接驗證。macOS的`setup-go`亦固定從
+> `remake/go.sum`建立快取，不再因錯誤根目錄產生缺dependency file警告。
+
 > **2026-08-27 前一版候選：**Linux提交`77017ead`及既有Windows封包均不含原版資產。
 > Linux AppImage為5,306,872 bytes，SHA-256
 > `9e54d32e1e928c42b62012a30c2e64b77e5de2dcaf42ec56bbda01f88951ca4d`；從空工作目錄
