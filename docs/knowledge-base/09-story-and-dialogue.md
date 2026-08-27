@@ -69,15 +69,16 @@ python3 tools/render_story.py --all extracted/raw/FDTXT \
 ## 對中文化 / 重製的意義
 
 - 已能把劇本還原成可讀文字 + 說話者 → 可做劇情校訂、翻譯、語音對照。
-- 下一步:建 **glyph 索引 → Unicode 對照表**(讓劇本可全文檢索 / 程式化重打),
-  並還原控制碼語意(才能安全改寫文字長度與換行)。
+- **glyph索引→Unicode對照表**已完成；後續工作是依caller補齊罕見控制碼語意與
+  人工校訂，不能把自動解碼直接視為逐章呈現E2。
 
 ## 進度
 
 - ✅ 文本 / 字型格式破解;✅ 對話段落結構(說話者 + 控制碼)解出;✅ 全 35 章渲染成可讀 PNG。
 - ✅ **glyph→Unicode 對照表完成(1824/1824,100% 覆蓋)** → `docs/data/glyph_map.json`。
-- ✅ **全 35 章劇情轉錄完成**:`tools/decode_story_text.py --all` 自動解碼成含說話者名的 UTF-8,
-  輸出本機 `extracted/story/full_story_auto.md`(1450 句對白)。序章+第2+第3章另有人工精校版。
+- ✅ **全35章自動轉錄產物完成**：`tools/decode_story_text.py --all`可解碼成含說話者
+  候選的UTF-8，輸出本機`extracted/story/full_story_auto.md`（1450句對白）；這不表示
+  35章caller mapping、人工校訂、控制碼或一般玩家E2均完成。序章＋第2＋第3章另有人工精校版。
 - ⬜ 控制碼語意精確化(換行 / 名稱插入 / 顏色);少數罕用字模可能仍有個別誤判,可隨閱讀校正。
 
 ## 劇情大綱(自動解碼後可讀)

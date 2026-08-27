@@ -76,7 +76,7 @@
 > 敵軍回合並交還玩家控制；測試揭露 persistent record 的 raw `+0x34/+0x35/+0x36`
 > 曾在 typed party 邊界遺失，現已從固定槽保留到 AI scorer。沒有新增或猜測高階語意。
 | 開機、標題、LOAD、CONTINUE、存檔 | 部分 | 部分 | E1 | 原版錨點部分 E2 | 穩定標題選單由目前原始碼重新擷取後，320×200與原版 oracle 達整幀 `AE=0/64000`。`sub_1F894` 的535→0、每列30ms、`450/330/210/110/25/10`插播與返回同一捲動視窗已由 IDA 9.4 canonical 證據 [`fd2_title_scroll_schedule_ida.txt`](../data/ida/fd2_title_scroll_schedule_ida.txt) `RE-CLOSED`，正式 runtime 也已改成同一交錯排程。2026-08-27再由相同canonical caller接入AFM 3前的`FDOTHER #74 + #76`漢堂發行商畫面：8＋103＋8幀近似，runtime第60幀與indexed oracle達640×400 `AE=0/256000`，新增後仍自然抵達AE0選單。舊DOSBox `frame_000`不是發行商標誌，故本幕只到`RUNTIME-E1`。先前誤稱wipe／logo揭示的後段現由IDA直接指令閉合為兩次`sub_286BD`索引色盤內插，正式runtime依半開區間0..254播放紅幕→真實ANI #1→近白標題；相近原版淡入影格MAE為0.077／255，高於99%玩家可見門檻。剩餘標題缺口限於精確音訊與原版runtime E2。四槽 envelope、checksum、名冊與部分戰間落點已接；標題 selector 的正式確認 owner 現以 checksum-valid 合成槽完整還原 `town_ch02`、typed/raw party、gold、chapter、HUD gate並清除舊 battle state，竄改 envelope 原子留在選槽。current-runtime CONTINUE 與巢狀 SAVE／LOAD 已有正式 E1：LOAD 先完成私有候選 handoff，YES 後才原子替換；SAVE 保留四槽與未命名 bytes，非我方增援不占 persistent slot，具 constructor／identity 證據的新我方 JOIN 追加完整 raw record。重製 JSON LOAD 現另在發布前驗證 JOIN 順序、membership、部署與 materialized roster 的拓撲一致性；錯誤存檔不會部分改寫現行遊戲。新 `Game` 冷讀 `preparation_ch30` 後可保留完整加入順序並繼續終局。外部2003年第30戰候選已由未修改原版普通 `CONTINUE` 進場，重製亦以同檔還原33筆場上單位與31人持續隊伍；fixed-hash `fd2004` 候選也由普通 CONTINUE 進玩家第29戰並完成一輪控制權交接。另有 checksum-valid `fd2021` raw chapter `0x1c` 槽由未修改原版普通 LOAD 連續走過 save-NO、19人整備、戰前劇情至可操作第30戰。三者均非本專案從頭產生，只列候選E2。第29戰勝利當下由原版 writer 建槽的完整來源、delete／overwrite及跨章同狀態差分只列證據限制，不再阻擋99%相似門檻；長程遊玩改由使用者人工回報，不列代理工作項目。 |
-| 對話、頭像與過場原語 | 部分偏高 | ch00_pre 97句、ch00_post 13句、ch01_pre 20句、ch05_post 19句、ch06_post 12句、ch07_post 8句、ch09_post 35句、ch12_post 12句、ch15_post 23句、ch16_post 26句、ch17_post 21句、ch19_post 29句、ch20_post 30句、ch21_post 11句、ch22_post 56句、ch23_post 11句與ch24_post 18句原生版面就緒 | 部分 E1 | 部分 | 十七個已接切片均由原始控制碼建成具型別頁面。第21戰後六組分支呼叫保存30句逐句版面；成功臂正式消費26句、ACT63／64、天空之鑰動畫、同步、`town_ch22`與存讀檔。材料不足四句已由原始資料等值驗證固定。第24戰後兩個呼叫端則以正式輸入播放11句並保持86-slot跨場景長鏈。只重開E2或其他呼叫端綁定，不重做已閉合renderer。 |
+| 對話、頭像與過場原語 | 部分偏高 | ch00_pre 97句、ch00_post 13句、ch01_pre 20句、ch05_post 19句、ch06_post 12句、ch07_post 8句、ch09_post 35句、ch12_post 12句、ch15_post 23句、ch16_post 26句、ch17_post 21句、ch19_post 29句、ch20_post 30句、ch21_post 11句、ch22_post 56句、ch23_post 11句、ch24_post 18句、ch25_post 41句與ch27_post 5句原生版面就緒 | 部分 E1 | 部分 | 十九個已接切片均由原始控制碼建成具型別頁面。第21戰後六組分支呼叫保存30句逐句版面；成功臂正式消費26句、ACT63／64、天空之鑰動畫、同步、`town_ch22`與存讀檔。第26戰後兩分支分別消費18／33句並進`town_ch27`；第28戰後五句則進`preparation_ch29`。第24戰後兩個呼叫端以正式輸入播放11句並保持86-slot跨場景長鏈。只重開E2或其他呼叫端綁定，不重做已閉合renderer。 |
 | 30 個 raw chapter 的戰前／戰後處理器 | 部分 | 60 份 handler script；部分 binding | 部分 E1 | 缺完整 E2 | 舊83個 raw unknown 已拆成80個已證實窄呼叫、3個已知但 caller／執行期未閉合的呼叫，已沒有未分類 call site。玩家第29戰 raw ch28 post 現已以綁定的視圖／HUD、`0x35BBA→0x1DB65`、group9、`0x22253`、`0x24B4D`、`0x35E5A`、隊伍同步與 `preparation_ch30` 存讀檔達成 E1；最終戰前 raw ch29 pre 亦已綁定 `LOADCH`、21句對話與七次 `0x33F78` 原生 staging。未證實高階圖像／樣本名稱與一般玩家 E2 仍保留。 |
 | 可編輯戰役與持續隊伍 | 部分 | 121 個 story／cutscene 節點；9 個 scripted、57 個 handler-bound、55 個 fallback | 部分 E1 | 缺完整 E2 | 24 個 postbattle 節點目前全部 active；admission blocked 為0。玩家第29戰正常 `story_ch29→battle_ch29` 入口現物化76-slot frontier與已證實視圖／HUD，戰果確認後播放 raw ch28 post、追加group9、同步持續隊伍，再進`preparation_ch30`並通過存讀檔。正式連續回歸現由全新 `Game` 冷讀該整備存檔，再走19人選擇、`story_ch30` 的21句對話／七次 staging，並以 ch29_pre 最後 focus 物化 `battle_ch30` view／HUD；party→group0 的 handler rows 經 raw origin 扣除後補 groups1–3，所有33筆皆具 indexed selector／presentation。回歸再消費完整 END→YES 介面、敵方回合、勝利、終局文字閘門與角色蒙太奇。最終戰部署成員保留戰後更新，未部署成員保留冷讀狀態，終局回顧依完整 JOIN 時序涵蓋全隊。外部固定雜湊候選於未修改原版第29、30戰各自完成單次 `CONTINUE→END→YES→ENEMY PHASE→玩家控制`；重製也以同一第29戰候選從正式標題事件完成 END／YES、實際敵軍行動與回合交還，保留76筆 runtime／31人 persistent。晚期有效槽另由普通 LOAD 走過19人整備與戰前劇情至第30戰控制權。這些仍受第三方來源與停用音訊限制，也尚未證明原版第29戰勝利、writer建槽至第30戰的同一連續程序。 |
 | 戰鬥資料、移動、公式、勝敗與成長 | 部分偏高 | 部分就緒 | E1 | 部分 | 多項公式與地形資料已有具型別實作；命中／閃避來源、部分經驗交易、回合事件與原版逐狀態驗證仍不完整。需要針對缺欄位補 producer／consumer，不重解已閉合的 AP−DP 等公式。 |
@@ -354,12 +354,11 @@ command30 producer，也不構成缺少AI executor的交付阻擋。
 
 ## 四、目前可重生的數字，以及不能怎麼解讀
 
-2026-08-21 以唯讀 Docker 實跑現有稽核：
+2026-08-27 以唯讀原版、一次性無網路Docker與合法IDA Pro 9.4重生現有稽核：
 
-- IDA Pro 9.4 對固定雜湊 `FD2.EXE` 辨識1,305個函式；受版控語意索引有32筆，
-  其中31筆屬產品程式、另1筆與 FLIRT runtime 分類重疊；去重後清冊仍為
-  產品31、runtime170、未知1,104。`0x37416` 同時由 FLIRT 命名為
-  `free` 並由索引標成 runtime；沒有因此重複計數。
+- IDA Pro 9.4 對固定雜湊 `FD2.EXE` 辨識1,305個函式；受版控語意索引有38筆，
+  其中37筆屬產品程式、另1筆`0x37416`與FLIRT runtime分類重疊。匯出器讓語意索引
+  覆蓋同一函式分類，因此沒有重複計數；重生清冊為產品37、runtime170、未知1,098。
 - 60份 raw handler script 原有83個 `unknown` call site、23個 target。重生後為
   80個 `native_call`（22個 target）與3個 `unresolved_native_call`
   （`0x22253` 1次、`0x2BCE5` 2次），真正 `unknown` 為0。每筆
@@ -420,7 +419,7 @@ command30 producer，也不構成缺少AI executor的交付阻擋。
 | `0x24C1E`／`0x24D22`／`0x11EEE` case 23 | [`fd2_ch23_post_ida.txt`](../data/ida/fd2_ch23_post_ida.txt) | raw ch23／玩家第24戰的 stage 2..14 先寫後畫、`[0x46c] != [0x539f8]` tick gate、312×192 row rotation、#42 staging、零 transient offset、indexed copy ABI 與正式 E1 adapter | 補未修改一般玩家同狀態逐幀／時序 E2；不得重開入口 latch 或把移動中 offset 外推到 handler |
 | `0x24754`／`0x247B4`／`0x1088D`／`0x15F84`／`0x2189A`／`0x219AD`／`0x24B4D`／`0x10652`／`0x4DBFC`（raw ch22 post） | [`fd2_ch22_post_ida.txt`](../data/ida/fd2_ch22_post_ida.txt)、[`fd2_ch22_post_dialogue_binding.txt`](../data/ida/fd2_ch22_post_dialogue_binding.txt) | layout已閉合為table slots0..16＋special slot17、camera(14,14)；LOADCH先16個persistent slots再append map22 records，完整materialized frontier為16＋70＝86，舊70-slot說法撤回。三實參 unit/radius/step、FDOTHER #3 LUT0..9 與 `0x2189A` typed E1；FDFIELD #69、FDSHAP #46/#47 由 `0x11EEE` 直接消費；`0x24B4D` 的13×9 staging→steady draw→兩列交替30×20ms typed E1 已通過30幀與缺第九列零修改回歸；chapter23 `0x10652` 另建 FDOTHER #42／59904-byte staging，三次ACT73經`0x1366A→0x11CAC→0x11EEE`消費；完整四位元組raw grid已在State保存。十個`0x15F84` caller現把FDTXT_023 index8..17正確展開為56句，不再誤用整檔89句；四種raw control各自保存13／15／14／14 glyph上限。正式可達分支以具型別輸入完成35句後才沿原位置同步隊伍，再由記錄提示存檔、全新`Game`冷讀、15人選取、取消重選及最終肯定進`story_ch24`，達連續`RUNTIME-E1` | event52增援時序、高階畫面名稱、互斥分支的未修改原版動態路徑與一般玩家 E2仍另列；不重解已閉合 helper |
 | `0x135DD`、`0x20421`、`0x4DFCC` | 同上及既有 palette／AFM 證據 | `0x24336` 使用的鏡頭移動、全螢幕 AFM 與高色階相位循環窄角色 | 新 caller 另證參數與時序；不可把 `0x20421` 誤稱音訊或把 `0x4DFCC` 推成一般調色盤 API |
-| `0x2BCE5` | [`fd2_ch29_terminal_body_ida.txt`](../data/ida/fd2_ch29_terminal_body_ida.txt)、[`montage tail`](../data/ida/fd2_ch29_post_montage_tail_ida.txt) | 終局前綴與部分尾段 | 正式 owner、完整 handoff、一般玩家 E2 |
+| `0x2BCE5` | [`fd2_ch29_terminal_body_ida.txt`](../data/ida/fd2_ch29_terminal_body_ida.txt)、[`montage tail`](../data/ida/fd2_ch29_post_montage_tail_ida.txt) | `RE-CLOSED`／`DATA-READY`／`RUNTIME-E1`：終局前綴、角色蒙太奇、20段尾段、定格與隊伍回顧已由正式`battle_ch30→ending`消費 | 只補一般玩家原版owner／E2與精確音訊；不重解已閉合前綴、尾段或重製handoff |
 | `0x2C39B`／`0x1956B` | [`fd2_ending_dialogue_owner_ida.txt`](../data/ida/fd2_ending_dialogue_owner_ida.txt) | `RE-CLOSED`／`DATA-READY`／`RUNTIME-E1`：19×5框caller、initial DATO portrait與FDTXT逐句speaker／pages已分層；正式ending逐Draw owner消費19×5 base、`0x1974C`六段opening、四列逐glyph、right-edge DATO mouth overlay與`0x2D31B`五段closing＋source restore，完成後才resume timeline。兩個chapter26文字閘門與chapter29五block原始資產預建均有回歸 | 只補精確時序及一般玩家E2；不得再把block `portrait_id`套給全部台詞，也不得借用ch24三列validator或一般RGBA對話框 |
 | `0x28A6C` | [`35`](35-battle-animation-rendering.md)、[`montage tail`](../data/ida/fd2_ch29_post_montage_tail_ida.txt) | 共用雙 runtime-record renderer；直接 caller 含戰鬥、事件與終局 | 重製端冷讀 persistent raw 到定格／回顧已閉合；只補原版 `0x2C2A6` call-time 完整動態狀態、精確輸出與輸入，不得再稱終局專屬 callee |
 
@@ -436,9 +435,12 @@ command30 producer，也不構成缺少AI executor的交付阻擋。
   百分比替剩餘1,104筆未知函式猜名稱。
 - postbattle admission 已無 blocked 節點；只在 E2 實驗出現指令／執行結果矛盾時，
   才重開對應 caller，不因舊 worklist 重讀已閉合 callee。
-- 未知 command／spell／item transaction 與高階效果 owner。
-- `0x28A6C` 精確 renderer、終端輸入、`0x2BCE5` 正式 owner／handoff。
-- global event table 58..89、event82 producer，以及其他會阻擋一般玩家流程的 handler。
+- 只有代表性抽樣揭露且會改變玩家結果的 command／spell／item 或高階效果缺口；
+  沒有正常 producer 的指令不為提高覆蓋率而重開。
+- `0x28A6C` 只在原版 `0x2C2A6` call-time 動態狀態與重製結果矛盾時重開；
+  `0x2BCE5` 的正式重製 owner／handoff 已接，剩餘是一般玩家原版 E2與精確音訊。
+- global event table 58..89、event82 producer或其他 handler，只有在正常玩家抽樣實際
+  到達並形成 blocker 時才局部重開。
 
 ### 不需要再反組譯，應轉實作或工具修正
 

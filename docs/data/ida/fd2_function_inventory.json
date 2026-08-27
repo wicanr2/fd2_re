@@ -15,11 +15,11 @@
   "imagebase": "0x0",
   "function_count": 1305,
   "classification_counts": {
-    "unknown": 1099,
-    "product": 36,
+    "unknown": 1098,
+    "product": 37,
     "runtime": 170
   },
-  "semantic_annotation_count": 37,
+  "semantic_annotation_count": 38,
   "classification_note": "product/driver only come from the versioned semantic index; runtime is a mechanical IDA FUNC_LIB classification after the configured FLIRT signatures; every other function remains unknown",
   "detail_note": "每筆保留 IDA 函式邊界、分析名稱、旗標、直接 caller 函式與分級語意；逐 call-site 交叉參照由同一匯出器重生，不在此精簡版重複保存",
   "functions": [
@@ -7471,11 +7471,22 @@
       "direct_code_xref_count": 14,
       "direct_data_xref_count": 1,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "product",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x26152",
+          "classification": "product",
+          "semantic": "command 0 的 28 幀、7 元素錯開 FDOTHER indexed compositor entry",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_command0_presentation_ida.txt"
+          ],
+          "scope": "funcs_2AC25[0] entry；mode3/4/5、#18/#20 frame bank 與 #82/sub1 owner 已閉合；正式 Game 已接 0x2A6BD actor/target scene 為 RUNTIME-E1，精確音訊與同狀態 E2 仍缺"
+        }
+      ]
     },
     {
       "start": "0x272b8",

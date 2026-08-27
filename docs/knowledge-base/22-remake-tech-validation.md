@@ -40,7 +40,9 @@ fd2-linux: ELF 64-bit LSB executable, x86-64, dynamically linked,
 10,806,672 bytes
 ```
 
-✅ **本機 Linux 原生執行檔建立成功**。Ebiten 同套碼可交叉編到 Windows(`.exe`)、macOS(`.app`),所以本機三大桌面平台都覆蓋。
+✅ **本機 Linux 原生執行檔建立成功**。這項早期實驗只證明Linux建置；後續
+Windows／macOS封包由各自CI證據驗證，實體桌面的視窗、輸入、存檔與音訊仍須另行
+驗收，不能由本段Linux ELF外推。
 
 ## 驗證二:資產管線(逆向資料 → 引擎)
 

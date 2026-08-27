@@ -11,7 +11,8 @@
 - **可換字型風格**——明體 / 黑體 / 復古點陣 TTF 任選,甚至多語系。
 - **文字資料化**——劇本變成可讀可編輯的 UTF-8,接上 `17` 的資料驅動擴充。
 
-> 註:重製是**乾淨新引擎**(SDL2 / Ebiten),不是 patch 原 EXE,故可直接用 TTF,無須像「patch 原引擎」那樣
+> 註:重製是**乾淨的Go／Ebiten新引擎**；SDL2／C++只屬早期構想，不是第二套
+> 可玩runtime。重製不是patch原EXE，故可直接用TTF，無須像「patch原引擎」那樣
 > 烘點陣 atlas。但仍提供「原版 16×16 點陣」模式供懷舊(見下「雙字型模式」)。
 
 ## 我們已握有的橋樑
@@ -40,7 +41,6 @@ FDTXT.DAT ─(glyph_map)→ 每章 script.json:
 
 | 引擎 | TTF 方案 |
 |---|---|
-| **SDL2 / C++** | `SDL_ttf`(`TTF_RenderUTF8_Blended`);或 `stb_truetype` 自繪到 texture |
 | **Go / Ebiten** | `text/v2` + `opentype`(`golang.org/x/image/font`)直接畫 UTF-8 |
 
 文字繪製流程:讀 script.json → 開對話框(必要時從 DATO 載頭像)→ 逐行 TTF render → `wait` 處等按鍵翻頁。

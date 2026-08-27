@@ -84,7 +84,8 @@ python3 tools/xmi2mid.py --batch FDMUS/  midi_out/       # 全部轉檔
 
 ## 重製對應
 
-XMI 已轉標準 MIDI,C++(SDL2_mixer / 自帶合成)與 Go/Ebiten 皆可用 SoundFont 合成播放;
+XMI已轉標準MIDI；現行Go／Ebiten主線可用SoundFont合成播放。C++／SDL2只屬早期
+技術構想，不代表另有一套可玩runtime；
 亦可重新編曲。原始樂曲著作權屬漢堂,轉出的 MIDI 不隨倉庫散布(僅保留工具與分析)。
 
 ## 待辦(後輪)

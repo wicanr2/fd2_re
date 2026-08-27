@@ -7,7 +7,7 @@
 
 | 環節 | 當年工具 | 證據 | 重製對應 |
 |---|---|---|---|
-| 編譯器 | **Watcom C/C++ 32-bit**(1988–1993 版，約 v9.5/v10) | `WATCOM C/C++32 Run-Time system. (c) Copyright by WATCOM International Corp. 1988-1993` | C++ 重製可直接讀演算法;Go 版重寫 |
+| 編譯器 | **Watcom C/C++ 32-bit**(1988–1993 版，約 v9.5/v10) | `WATCOM C/C++32 Run-Time system. (c) Copyright by WATCOM International Corp. 1988-1993` | 以反組譯作oracle；現行重製只走Go／Ebiten |
 | DOS 擴充器 | **Rational DOS/4GW**(© 1987–1993) | `RATIONAL DOS/4G` / `DOS/4G Copyright (C) Rational Systems, Inc. 1987 - 1993` | 重製不需要;原為跑 32-bit 保護模式 |
 | 音效中介層 | **Miles Design AIL v3**(Audio Interface Library) | `AIL3DIG`(數位)/`AIL3MDI`(MIDI) | 用現代音訊管線取代 |
 | 音樂格式 | **XMIDI**(Miles/AIL 專用) | `FORM…XDIR…CAT …XMID` 於 `FDMUS` 資源 | XMIDI 可轉標準 MIDI 再合成 |
@@ -43,5 +43,6 @@ Watcom 隨附的精簡版 DOS/4G。`DOS4GW.EXE`(1993)負責把 16-bit DOS 切到
 ## 對重製的意義
 
 - **規則/邏輯**:Watcom C → 反組譯可還原戰鬥/移動/AI 演算法(階段 3)。
-- **音樂**:XMIDI 是已知格式 → 可抽出轉 MIDI，C++/Ebiten 兩版皆能用 SoundFont 合成。
+- **音樂**:XMIDI是已知格式，可抽出轉MIDI並由現行Go／Ebiten音訊管線合成；
+  早期C++／SDL2構想不是第二套可玩重製。
 - **美術**:VGA 13h + 調色盤 + 24×24 圖塊 → 解壓後轉 PNG 即可用於現代引擎。

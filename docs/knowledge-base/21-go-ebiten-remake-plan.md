@@ -2,6 +2,8 @@
 
 > 規劃用 **Go + Ebiten** 重製 FD2,目標**一套程式碼跑桌面 / 網頁(WASM)/ 手機(Android·iOS)**。
 > 參考魔法大帝(Master of Magic)Ebiten 重製。可行性見 `20`;腳本系統見 `19`;資產格式見 `01`–`16`。
+> 本文是早期架構目標，不是目前平台支援或里程碑完成表。現行唯一整合主線是
+> Go／Ebiten；已驗證封包與實體平台限制以`REMAKE-STATUS.md`、`41`與`58`為準。
 
 ## 為什麼 Go / Ebiten
 
@@ -59,14 +61,14 @@ game/
 
 | 目標 | 指令(docker golang) | 備註 |
 |---|---|---|
-| **Web(WASM)** | `GOOS=js GOARCH=wasm go build -o fd2.wasm ./cmd/fd2` + `wasm_exec.js` + HTML | 免 CGO;放網頁即玩 |
+| **Web(WASM)** | `GOOS=js GOARCH=wasm go build -o fd2.wasm ./cmd/fd2` + `wasm_exec.js` + HTML | 免CGO；只列建置目標，不代表網站已部署或玩家路徑已驗收 |
 | **桌面** | `CGO_ENABLED=1 go build`(裝 libGL/X11/asound)→ AppImage/.exe | 沿用魔法大帝 docker-scripts |
-| **Android** | `ebitenmobile bind` → `.aar` → Gradle 打 `.apk` | 觸控輸入 |
-| **iOS** | `ebitenmobile bind` → `.framework` | Mac 簽章 |
+| **Android** | `ebitenmobile bind` → `.aar` → Gradle 打 `.apk` | 規劃中的觸控輸入，尚非已驗收平台 |
+| **iOS** | `ebitenmobile bind` → `.framework` | 規劃項目；仍需Mac簽章與實機驗收 |
 
 ## 輸入:鍵盤 + 觸控(手機)
 
-抽象成動作(上下左右/確認/取消/選單),三種輸入映射到同一套動作:
+規劃抽象成動作(上下左右/確認/取消/選單)，三種輸入預計映射到同一套動作：
 - 桌面:方向鍵 + Enter/ESC(對應原版 `13`);滑鼠點格。
 - 手機:**on-screen 控制**(方向鍵盤 + 確認/取消鈕)或直接點格移動;對話點擊推進。
 - (戰棋是回合制、格子操作,對觸控很友善,不像動作遊戲難移植。)

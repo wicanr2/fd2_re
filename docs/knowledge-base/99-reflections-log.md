@@ -128,7 +128,7 @@
 
 **做了什麼**
 - **機制文件 5 篇**:`09` 劇情/對話結構、`10` 敵我/狀態繪製、`11` 戰場 AI、`12` 音樂播放/場景切換、`13` 戰場選單。
-- **AI（歷史假說，已撤回地址）**：舊筆記曾以 `0x15140` 描述 flood-fill／逐落點評分；canonical Docker recheck 已證該地址不是可確認的 AI entry。當時只足以稱 `0x14EF0` 為 candidate boundary；2026-08-09 的 IDA／Capstone 複核已補上其 `0x14ef0..0x15055` raw 尾端契約，但完整 AI 仍未閉合。反組譯覆蓋看 `58`，AI 細節看 `11`，系統與待辦看 `56`／`91`。
+- **AI（歷史假說，已撤回地址）**：舊筆記曾以 `0x15140` 描述 flood-fill／逐落點評分；canonical Docker recheck 已證該地址不是可確認的 AI entry。當時只足以稱 `0x14EF0` 為 candidate boundary；2026-08-09 的 IDA／Capstone 複核已補上其 `0x14ef0..0x15055` raw 尾端契約。這是當時的未閉合狀態；目前正常producer的E1 consumer已接，剩餘限制以`58`與`11`為準，不得由本歷史段落重開AI本體。
 - **選單**:Enter/Space 確認、ESC 取消、方向鍵游標(`[0x3C57]`);`Get_EasyMagic` caller 已定位，但 magic raw/command schema 以 `unit+0x1a..+0x1d` 與 `0x1cff0` 為準，不能把 `+0x22..+0x24` 當 bitfield。
 - **音樂**:`play_bgm`(0x26777),`[0x1A11]`=目前曲、track=−1 停、否則載 `FDMUS[track]`;32 處呼叫得場景→曲號。
 - **LE 重定位 xref 工具**(`tools/le_xref.py`):解析 LE object/fixup 表,解開 DOS4GW 絕對位址重定位。

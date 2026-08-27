@@ -6,6 +6,7 @@
 > 文中以`battle_events`、攻略目標與章節跳表「生成原版30關」的說法只代表
 > authored scaffold工作包；它不證明逐章handler、戰後城鎮／整備、persistent
 > roster/save或視覺E2，不能作為忠實模式的evidence authority。
+> 下文所有`✅`、M0–M6與「下一步」均是當時工作包狀態，不得當成目前里程碑。
 
 > 把里程碑(worklist M0–M6)+ 可擴展事件系統(doc 29)拆成**可指派、可驗收的工作包(WP)**。
 > 每個 WP 標:輸入(依賴哪些 doc/資料)、產出(Go 檔/資料檔)、驗收、可否平行。

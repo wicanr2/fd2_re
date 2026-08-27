@@ -27,7 +27,7 @@
 | 順序 | 工作 | 現況 | 下一個可驗收結果 |
 |---:|---|---|---|
 | 0 | 原始碼註解與 Markdown 現況斷言稽核 | `DATA-READY`：已撤回「合成有效槽 fixture 證明未修改原版四槽 LOAD E2」、「轉職尚未實作」、「所有 `0x13FD4` 消費端均未接入」及把購買success/debit誤讀成sell成功E2等舊說法。2026-08-22 第五輪又修正開場 cutScript「反組譯真值／完整」誇大、天空之鑰 fixture「等價一般玩家路徑」、戰鬥動畫完整、所有繁中字必有字形及 SETSOUND 等註解；同步撤回 `42/56/57/91` 把 service3 五個 partial E2 子面板列為未做。歷史勘誤保留可追溯；這是持續性品質閘門，不是一次掃描即永久完成 | 每個玩家功能關閉時，以程式、測試與 `58` 現況核對完成度、節點、slot、handler、renderer；錯誤現況直接訂正，歷史證據追加勘誤 |
-| 1 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：IDA 9.4 清冊1305函式，現為產品36／runtime170／未知1099；舊83 unknown 已拆為80已分類、3已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253` 只追其他 caller／戰役 gate，`0x2BCE5` 追正式 owner，不重解 callee |
+| 1 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：2026-08-27由合法IDA 9.4重生1,305函式；語意索引38筆中37筆產品、1筆覆蓋同一FLIRT runtime，結果為產品37／runtime170／未知1,098。舊83 unknown call sites已拆為80已分類、3已知但未閉合、0真未知 | 只在新證據或 blocker 出現時更新語意索引；`0x22253`只追其他caller／戰役gate；`0x2BCE5`正式重製owner已接，不重解callee |
 | 2 | 玩家第21戰天空之鑰固定演出 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`：`0x2415B`的三張25-byte表與special slot已接26-slot layout；六組分支呼叫共30句保存原始control／operand／pages。成功臂正式消費26句、ACT63／64與`0x24336`；材料不足臂正式消費14句且不執行演出／授予鑰匙。兩臂均完成JOIN24／23、城鎮與存讀檔。無來源的3,231-byte紀錄已撤回，權威第21項為4,660 bytes | 只補未修改原版同狀態 E2與第一個動態調色盤相位；不重解函式本體、對話呼叫組、layout或ACT resources |
 | 3 | 玩家第29戰 raw ch28 post（產品結案） | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`；`0x1DB65`、group9→`0x25535`、持續隊伍與19人整備存讀檔均已接。全新 `Game` 冷讀後會消費ch29 pre的21句／七次staging；2026-08-26 再修正 ch30 缺最後focus view／HUD及錯誤非runtime constructor，正式 entry 現依 raw origin 去重 LOADCH party＋group0，再補 groups1–3，33筆全具 indexed presentation。相同長鏈已消費完整 END→YES、敵方回合、勝利、終局文字閘門與角色蒙太奇。外部 ch30 候選已由未修改原版同一程序以普通鍵盤完成`CONTINUE→END→YES→ENEMY PHASE`、敵方演出並交回玩家操作權；renderer同狀態合法相位達整幀AE0。fixed-hash `fd2004` 候選也由未修改原版普通 CONTINUE 進第29戰並完成一輪控制權交接；重製正式標題事件現以同檔完成 END／YES、實際敵軍行動及回合交還，並保留76筆 runtime／31人 persistent。checksum-valid `fd2021` raw chapter `0x1c` 槽則由普通 LOAD 連續走過save-NO、19人整備、戰前劇情至可操作第30戰。依玩家可見99%相似門檻，本項不再位於有效工作前沿 | remake 已完成；完整provenance、原版writer建槽、逐幀／精確音訊只列證據限制與可選polish。三份第三方存檔仍只列候選E2；高階圖像與sample 3語意仍為unknown，但均不得重開已閉合RE或阻擋交付 |
 | 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 敵方ID0／4、玩家／敵方ID1／2／3／5／6／7／8／9／10／11／12、玩家／敵方IDs17–22、玩家25–27及敵方26／27均已有caller-specific indexed owner；受限class19玩家ID32–35亦達`RUNTIME-E1`。ID4現使用#22／#23／#85逐Draw發布六段HP；敵方ID0..8也已全部改依raw `+6` selector與選定目的格重建目標陣列，不再錯走玩家confirmed-cursor admission。同時修正ID4／5實檔`EffectMode=1` gate。`0x15055`也已保存並消費`0x1567E` winner的完整raw target list；正常正分item type5／13／20／21／24的數值與caller-specific indexed演出均達`RUNTIME-E1`：分別走`0x211A4`、`0x1CD17`、`0x1CAC7`，具Draw發布與完整回復邊界。玩家正常item38／79也已共用後兩個owner，不再於確認時同步跳過畫面。33圖全量mask稽核再證實，排除mode8後的正常非玩家command producer只有ID0–7、9–18、20–22、26、27，全部已有indexed owner；唯一ID30位於mode8，不進scorer。敵方mode2無候選也已接`0x13C0F→0x13FD4`恢復／零修改共用收尾。2026-08-26末關動態診斷再修正物理helper完整item table、`0x15311`原地effect destination與FIGANI 379／168嚴格按需載入；固定版原版現於同一程序從普通`CONTINUE`走完`END→YES`、敵方演出並交回玩家操作權，撤回「兩次證據不能合併」的舊限制，但第三方存檔與停用音訊仍只列候選E2。共用短音效播放器現保留疊播 voice 至自然結束、逐幀回收並在退出時關閉，既有 raw cue 不再依賴被立即丟棄的 player；這是重製播放可靠性 E1，不提升精確音訊。敵方25缺正常AI producer，維持失敗即關閉；ID4無已證實正常玩家producer；28／30／31沒有已證實正常玩家取得來源。六個raw transient的玩家可見到期文字已由FDTXT#481..486正式消費，不把缺高階enum名稱列為runtime阻擋。 | 正常producer的`RUNTIME-E1`交易已閉合，正式owner不重做；下一步只做精確音訊與代表性同狀態E2 |
@@ -35,6 +35,12 @@
 | 5 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial；故事對話現接十九個切片。`ch27_post`已由第28戰正式64-slot勝利路徑消費`FDTXT_028`五句，再同步隊伍、進`preparation_ch29`並冷讀；舊80-slot斷言已訂正為混淆60筆source與44筆已物化groups1..7。 | 十九個已接故事切片只剩未修改同狀態E2；`ch25_post`與`ch27_post`不再列為未接caller。下一個故事切片只有在canonical caller／consumer證據充分時才開啟；第29戰已結案。 |
 | 6 | 原版終局精確鏈 | `RUNTIME-E1`：第27戰缺天空之鑰現在沿正式typed gate進chapter26 `0x2BCE5`前綴與`FDTXT_027`兩個原版文字閘門，不再只顯示通用結語；chapter29 `sub_2C39B`文字把caller initial portrait與14句FDTXT speaker拆開，正式19×5 indexed owner逐Draw消費六段opening、四列逐glyph、mouth、Enter／Space、五段closing與source restore，收框後才resume，不再使用一般RGBA框。正式`battle_ch30→ending`則消費chapter29來源約束前綴／角色／20段尾段並停在#59，可選隊伍最終狀態循環已接。全新`Game`冷讀最終整備槽後，JOIN順序與persistent raw `+6/+7/+8/+0x20`已連續保存到定格、回顧及返回。三筆具位址音訊cue由typed `runtime_stage`正式消費；玩家自備MT-32 OGG的`FDMUS_004→stop→FDMUS_018`已實際解碼、建立與切換播放器，但無聲Docker不證明人耳輸出。正式成功畫面已移除來源等級／按鍵說明等現代疊圖，僅除錯HUD保留；`Game.Update`與第29戰後冷讀長鏈回歸也已共用raw-change／定格／回顧的單一輸入owner。80個實際FIGANI的header-zero `0x2939D` raw `+4..+7`、base scheduler與兩次配對已接；3%外層預算依賴未初始化區域值，降為非阻擋考古限制；未達E2 | 下一步只補原版 caller `0x2C2A6` 當下完整動態狀態、精確音訊時序／原版終端輸入及第27／30戰E2。不重做重製端連續性、speaker mapping、19×5 owner、兩個文字臂、定格、回顧循環、未初始化堆疊實作殘留或三筆raw cue |
 | 7 | 三平台打包與推廣片 | 最新程式已重建Linux AppImage 5,327,352 bytes（SHA-256 `32239daa…091f5`）與Windows交叉編譯ZIP 4,910,912 bytes（`c85e466b…ee11`），兩者均在一次性無網路Docker由空白工作目錄通過正式封包自我檢查；Windows使用既有Wine 9.0／Xvfb。原生Windows run 33038018401與macOS run 33038019716亦分別完成ZIP及universal DMG／tar.gz；artifact下載後，Windows ZIP與macOS兩包均用內附相對路徑SHA-256 manifest在唯讀Docker複驗成功。封包只含受版控scenario／story／spells，不含原版EXE／DAT／存檔。尚未做實體Windows／Mac操作；全戰役長程遊玩由使用者人工進行 | 補Windows與macOS實體玩家桌面的視窗／輸入／存檔／音訊抽測；處理簽章／Gatekeeper；公開推廣片素材策略待使用者確認。Wine、Docker與CI自我檢查均不取代真機 |
+
+> **2026-08-27 全專案 Markdown 斷言稽核：** 已刪除無可重跑來源的90／100自評，
+> 以合法IDA 9.4重生函式清冊為產品37／runtime170／未知1,098，將故事切片由舊17筆訂正為
+> 19筆，並撤回Linux ELF可外推三平台、C++／SDL2第二runtime、AI／終局舊未接狀態、
+> 「全劇情轉錄即完整接線」及歷史`✅`代表完成等說法。歷史證據保留但加上取代
+> 關係；現況只由`58`、`57`、本檔有效佇列及可執行抽樣清冊裁決。
 
 > **2026-08-27 第26戰後兩分支41句原生故事對話：** 固定版`FDTXT.DAT`
 > 第26項5,004 bytes已與受版控raw逐位元組核對；七個caller的41句保存control、
@@ -1595,7 +1601,8 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 ## ⚠ 歷史快照：全 33 章劇情文本「大部分轉錄完成但尚未接進遊戲」（2026-07-27；已由本文件頂端 2026-08-09 稽核取代）
 
 以下數字與缺口是當時的記錄，只保留用來追溯「轉錄」與「接線」曾被混為一談的原因；
-不要把它們當成目前覆蓋率。現況一律以本文件頂端的 121／9／50／62 稽核為準。
+不要把它們當成目前覆蓋率。現況一律以[`58`](58-fd2-exe-re-coverage.md)的可重生
+數字為準；2026-08-27 的現況是121／9／57／55，postbattle為24 active／0 blocked。
 
 **症狀**:尚未接 script 的 remake story 節點仍會使用短佔位文字；已接的節點則會載入對應劇本。
 **查證**:目前實際 `campaign_full.json` 有 **121 個 story/cutscene 節點：9 個有 direct `script`、33 個有 `handler_binding`**；
@@ -1607,8 +1614,9 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 - **部分節點接 script、其餘仍依 placeholder/default fallback** → 兩者尚未完全連起來 ✗
 **教訓**:子系統各自報「完成」不等於整合完成;跨模組「接線」要獨立驗(truth-in-code,
 配 rulebook/63)。使用者實玩才揭露——沒實玩/沒查,文件會一直顯示「完成」。
-**目前修法狀態**：9個節點有 direct script、44個由 handler binding 供應過場資料；另外30個 retreat、23個 rumor 是刻意的短 authored node，10個 unbound postbattle 與5個 generic story fallback 才是待 mapping/handler 的缺口。24個 postbattle 有 generated binding skeleton（其中14個已由 authored binding 啟用），未經 override/compile gate 仍不算 active handler，不能把同一章 script 盲目灌入其餘節點。
-下一步要依原版 handler／FDTXT scene label 逐節建立 mapping，完成後才可宣稱接通。
+**2026-07-27 當時修法狀態**：9個節點有 direct script、44個由 handler binding 供應
+過場資料；其餘分類與14 active／10未綁定只保留為歷史。後續已達57個
+handler-bound與24 active／0 blocked；不得再用本段重開已接節點。
 - [x] **story-script coverage audit tool**：`tools/audit_story_script_coverage.py` 以唯讀方式列出 story/cutscene、coverage role、script、scene、handler、generated skeleton 與 next。2026-08-02 實測為121個 story/cutscene、9個 direct script、44個 handler-bound、68個 fallback；fallback 再分為30個 retreat、23個 rumor、10個 unbound postbattle與5個 generic。24個 postbattle skeleton 中14個已啟用、10個未綁定；postbattle skeleton 依主迴圈證實的零起算關係定位。數字變動時必須以工具輸出與對應回歸一起更新，不可只改文件。
 - [x] **raw ch03 post binding（玩家第4戰）**：handler `0x231bc` 只有 FDTXT_004 dialog `0x231e5`、persistent sync `0x231ed` 與 `set_chapter4` `0x231f2`，無 unknown 或 runtime layout 需求；由既有 generated mapping 提升為 authored binding，接入 `postbattle_ch04_persist→town_ch05` 並納入全章 owner regression。
 - [x] **raw ch04 post binding（玩家第5戰）**：Docker Capstone 證實 `0x2324c→0x233c6` 的 X/Y/pose 陣列（各 7 bytes）、slots0–6、special slot41 `(12,8,pose0)`、camera raw `(6,4)`；map4 raw roster frontier=50，FDTXT_005 index9 count-aligned 為 scene5 lines0–16 加 scene6 lines0–1。authored binding 現接 `postbattle_ch05_persist→town_ch06`；未宣稱 renderer parity。
@@ -1777,6 +1785,11 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 - [x] **撤回 `0x1f882`=vsync/sync helper**：Docker Capstone 展開 `ebx=0..63`、每次 `0x11d40(0,255,ebx)`＋2ms wait，故是 64-step native palette fade-out。compiler 現保留 exact `native_palette_fade_out(0..63,2ms)` payload；它與 `0x25052/0x11df2` 的 delta ramp 不同，runtime 在 indexed DAC adapter 未完成前有 regression-protected fail-closed。
 - [x] **native palette pulse (`0x35e5a`)**：Docker Capstone 完整 body 固定 `0x11df2(0,255,delta)` 的 inclusive 0→63（8ms/step）、400ms hold、再 62→0（8ms/step）。compiler 以 exact editable `native_palette_pulse` payload 保存不對稱端點，並拒絕帶參數變體；runtime 現以 immutable baseline、127次 draw acknowledgement 與最後 baseline restore 執行 indexed DAC，schedule drift 在發布前拒絕。這是窄 `RUNTIME-E1`，正式 ch28 post binding 與原版 E2仍缺。
 - [x] **ch29 staging wrapper (`0x33f78`)**：2026-08-25 的合法 IDA Pro 9.4 完整 body 與 Docker Capstone 共同推翻舊 `0x12cea(slot,x)` 解讀，固定 raw push-order `[y,x,slot]`→`0x12cea(x,y)`→`0x22253(slot,x,y,x,y)`。compiler 只保存 `NativeStagingPresent{Slot,X,Y}`；`story_ch30` 正式 binding 已接 `LOADCH`、21句對話與七個 caller，focus 前完整預建，story slot 只在 bridge 邊界發布，缺資產／視圖／來源時零可見修改。Docker／Xvfb 已由正式節點擷取 E1 畫面；一般玩家 E2、精確 tick／音訊仍待。
+> **終局歷史段落勘誤（2026-08-27）**：下列 ch29 terminal 條目保存當時分段接線
+> 過程；其中「正式 owner／campaign handoff／終局仍未接」已被本檔有效佇列第3、6項
+> 與`58`終局列取代。正式`battle_ch30→ending`已消費前綴、蒙太奇、20段尾段、
+> 定格與隊伍回顧；剩餘限制是一般玩家原版E2與精確音訊。不得由下列舊現在式句子
+> 重開已閉合RE或把重製終局降回未接。
 - [~] **ch29 post staged mapping**：四組對白已精確接到 ch29/ch30 authored lines；`0x12cea` focus、`0x25089` persistent cleanup、`0x17aa9` tick、dynamic palette loop、terminal `loadch` 與 `0x24618` indexed transition 均已有 runtime adapter/regression。`0x2bce5` 的前綴、party cycle 與 `0x2c194` raw tail 已分別保存；完整 indexed owner、輸入事件與 campaign handoff 仍未閉合，因此整支 terminal handler 仍不接 campaign runtime。
 - [~] **ch29 post focus lowering**：`0x12cea` 已安全 lower 成 tile-step pan(22,23) 並通過 regression；cleanup與`0x24618`已接，仍待完整 ending owner／indexed handoff。
 - [~] **ch29 post persistent cleanup**：`0x25089` 已 lower 為 editable `reset_persistent_roster_state`，並以 runtime/campaign regression 鎖定清 transient、回填 MaxHP/MaxMP；本 handler 的主要剩餘終局 gate 是 `0x2bce5` 的完整 indexed owner／輸入／campaign handoff。

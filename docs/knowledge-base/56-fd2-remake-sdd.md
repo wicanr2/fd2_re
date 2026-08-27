@@ -31,7 +31,11 @@
 
 ### 1.2 現況（2026-08-22 摘要；詳細狀態以 `58` 為準）
 
-目前不是「沒有程式」，而是「有一個可跑的垂直切片，尚未達 remake」：`remake/cmd/fd2/main.go` 仍承擔 scene state、輸入 dispatch、戰鬥 UI、對話、town、shop、church、preparation 與 Draw；`internal/battle`、`internal/campaign`、`internal/ending`、`internal/figani` 已有可測的部分 primitive。這些 primitive 不等於原版 UI 或完整 campaign。
+目前已有多條正式 `RUNTIME-E1` 垂直切片，但第一輪 95% 代表性抽樣尚未完成：
+`remake/cmd/fd2/main.go` 仍承擔 scene state、輸入 dispatch、戰鬥 UI、對話、town、
+shop、church、preparation 與 Draw；`internal/battle`、`internal/campaign`、
+`internal/ending`、`internal/figani` 也各有正式消費端。個別 primitive 或長鏈仍不等於
+全 30 關一般玩家 E2；目前完成判定以 `REMAKE-STATUS.md` 的可重跑抽樣為準。
 
 已存在但尚未全程驗收：story/cutscene BeatRunner、dialog 分頁／捲動、campaign
 node、persistent roster、shop buy/sell/equip、church revive/class-change、
@@ -282,7 +286,9 @@ repo 提供不含 license／遊戲資料的 `tools/docker/fd2-ida.Dockerfile` �
 只在授權 IDA Docker 匯出原始函式邊界、IDA 分析名稱、旗標與直接 caller；
 `tools/compact_fd2_function_inventory.py` 產生受版控的
 [`fd2_function_inventory.json`](../data/ida/fd2_function_inventory.json)。固定雜湊輸入
-辨識1305函式，目前為產品36、Watcom runtime170、未知1099；語意只從
+辨識1,305函式；現行語意索引38筆中，37筆標為產品、1筆`0x37416`標為runtime；
+後者覆蓋同一FLIRT runtime分類而不重複計數。目前為產品37、Watcom runtime170、
+未知1,098。語意只從
 [`fd2_semantic_index.json`](../data/ida/fd2_semantic_index.json) 合併，雜湊不符、
 註記未落在函式起點或缺推論等級／證據時直接拒絕。handler IR 同步拆成
 `native_call`、`unresolved_native_call`、`unknown`；三者都保留原始定位，前兩者
