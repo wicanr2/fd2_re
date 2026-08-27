@@ -33,6 +33,8 @@ type screenshotStateTrace struct {
 	NativeItemTargeting    bool                     `json:"native_item_targeting"`
 	NativeItemTargetID     *int                     `json:"native_item_target_id,omitempty"`
 	NativeItemRelocating   bool                     `json:"native_item_relocating"`
+	ItemOpen               bool                     `json:"item_open"`
+	ItemSelection          int                      `json:"item_selection"`
 	SpellOpen              bool                     `json:"spell_open"`
 	// 這些欄位只描述輸入是否被既有 modal 阻擋；它們讓普通 X11 重播
 	// 能區分「按鍵未到」和「遊戲刻意尚未接受按鍵」。
@@ -130,6 +132,8 @@ func (g *Game) writeShotStateTrace(path string) error {
 		NativeCommandTargeting:       g.nativeCommand0Targeting,
 		NativeItemTargeting:          g.nativeItemTargeting,
 		NativeItemRelocating:         g.nativeItemRelocating,
+		ItemOpen:                     g.itemOpen,
+		ItemSelection:                g.itemSel,
 		SpellOpen:                    g.spellOpen,
 		NativeContinueOpeningConfirm: g.nativeContinueOpeningConfirm,
 		// JSON field name is retained for compatibility with the 2026-08-11

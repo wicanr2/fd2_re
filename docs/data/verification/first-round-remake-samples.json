@@ -141,6 +141,26 @@
       ]
     },
     {
+      "id": "combat-item-herb-fullhp-gate-ch01",
+      "layer": "combat_ai",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-item-herb-fullhp-original-vs-remake-e1.json",
+        "docs/data/ui-traces/native-item-herb-fullhp-remake-e1-state.json",
+        "docs/figures/native-item-herb-fullhp-remake-e1.png"
+      ],
+      "limitations": [
+        "只驗證滿HP草藥不可用gate：保留item panel、HP與物品slot且不進目標modal；不證明受傷回復量。"
+      ]
+    },
+    {
       "id": "combat-turn-cycle-ch29-candidate-save",
       "layer": "combat_ai",
       "result": "pass",

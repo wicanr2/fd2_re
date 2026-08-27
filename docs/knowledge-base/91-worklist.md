@@ -21,7 +21,7 @@
 > 成片在 `dist/promo/`，不含原版音樂且不入Git；規格、重生腳本與雜湊見
 > `docs/promo-opening-ch01-spec.md`、`tools/build_fd2_opening_promo.sh`及影片metadata。
 
-> **抽樣清冊現況**：已登記40筆證據，35筆符合門檻（戰役／戰間4、戰鬥／AI 7、
+> **抽樣清冊現況**：已登記41筆證據，36筆符合門檻（戰役／戰間4、戰鬥／AI 8、
 > 介面12、存檔／持續隊伍10、終局／平台2）。章節0 current-runtime 的空游標命令格、
 > HUD、command0調色盤與END接受逐字，以及Windows城鎮F5存檔和第30戰前冷讀持續隊伍
 > 已按不同驗收不變量登錄；沒有以同一結果跨層重複計數。空游標命令格
@@ -42,6 +42,8 @@
 > 存檔／持續隊伍層已達10／10，不再新增同類格，後續轉向戰鬥／AI、戰役與終局。
 > 戰鬥層已把END問句開啟、YES接受與NO取消列為三種不同交易；NO普通鍵盤回程
 > 維持turn1／round1及同一視圖，沒有殘留modal或turn staging，不以同一結果重複計數。
+> 滿HP草藥亦由原版／重製普通CONTINUE同座標重播：兩側都留在第三列物品面板，
+> 重製HP、草藥raw slot與turn／round不變，且沒有錯誤發布目標modal。
 > 下一步優先把已接正式consumer的早／中期戰間及冷讀存檔改由普通輸入重播，形成
 > 玩家路徑，而不是再新增無消費端RE。權威清冊見
 > [`first-round-remake-samples.json`](../data/verification/first-round-remake-samples.json)。

@@ -8021,3 +8021,15 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   turn staging均為空。未另外取得原版NO後同幀，故只列RUNTIME-E1。
 - 清冊成為40筆登記、35筆合格；戰鬥／AI 7／18。後續優先補草藥HP效果、敵方
   實際移動／目標與一般攻擊結果，不再拆分既有ch29／ch30整體回合循環。
+
+## 2026-08-27：滿 HP 草藥普通輸入 gate
+
+- `shot_state_trace`新增純觀測的`item_open`／`item_selection`，聚焦測試確認只讀輸出
+  不回寫遊戲狀態。這不是新物品規則，也未重開已閉合的type5 target gate。
+- 固定雜湊FD2.SAV由正式CONTINUE進場，普通鍵盤移至索爾(7,14)、確認零距離移動、
+  選物品與第三列草藥。frame1300仍為item panel selection2，沒有target modal；
+  HP42／42、Inventory `[0,132,192]`、第三格192與raw flag0均未消耗，turn1／round1不變。
+- 原版`native-item-herb-fullhp-original-e2.json`同樣證實滿HP時確認後至少4.3秒留在
+  同一面板與物品列。兩側時鐘相位不同，不宣稱逐像素；本格不證明受傷回復量。
+- 清冊成為41筆登記、36筆合格；戰鬥／AI 8／18。下一個物品格必須是受傷HP實際
+  回復或MP／狀態等不同交易，不能再拆滿HP面板畫面。

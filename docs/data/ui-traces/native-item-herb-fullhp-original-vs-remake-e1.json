@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-27",
+  "evidence_level": "原版 PLAYER-E2；重製 RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "scope": "章節0 current-runtime：滿 HP 索爾確認第三列草藥後留在物品面板且不消耗物品",
+  "original": {
+    "artifact": "native-item-herb-fullhp-original-e2.json",
+    "fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "fd2_save_sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f",
+    "actor_identity": 0,
+    "actor_coordinate": [7, 14],
+    "hp": [42, 42],
+    "item_id": 192,
+    "observed": "確認後至少4.3秒仍在同一物品面板及同一物品列，沒有進入地圖目標modal。"
+  },
+  "remake": {
+    "runtime_sha256": "c3f544c170ab49e3ea3a7265fb78eb5c9f1be541abe48860edfe010cd1659e13",
+    "environment": "一次性、無網路、UID/GID 1000 的 fd2-go-test-local Docker／Xvfb",
+    "original_assets": "FLAME2 與 FD2.SAV 唯讀掛載",
+    "input_helper": "tools/docker/fd2-xtest-input.c，只送普通 X11 鍵盤事件",
+    "timeline": [
+      "正式標題 CONTINUE 載入 chapter0 current-runtime",
+      "Left、Up×3 移到(7,14)，Return 選索爾，再 Return 確認零距離移動",
+      "Right、Return 選物品，Down、Down 移到第三列草藥，Return 確認"
+    ],
+    "observed": {
+      "frame": 1300,
+      "campaign_node": "battle_ch01",
+      "cursor": [7, 14],
+      "selection": [7, 14],
+      "item_open": true,
+      "item_selection": 2,
+      "native_item_targeting": false,
+      "turn": 1,
+      "native_round_counter": 1,
+      "actor": {
+        "name": "索爾",
+        "hp": 42,
+        "max_hp": 42,
+        "inventory": [0, 132, 192],
+        "equipped": [true, true, false],
+        "inventory_slots": [0, 132, 192, 255, 255, 255, 0, 201],
+        "native_inventory_flags": [64, 64, 0, 128, 128, 128, 128, 128]
+      }
+    }
+  },
+  "validated_invariants": [
+    "原版與重製都由普通 CONTINUE、同一 actor、同一座標及第三列草藥確認抵達。",
+    "滿 HP gate 保留 item panel／selection2，且不發布 native item target modal。",
+    "重製確認後 HP 仍為42／42，草藥192與其raw slot／flag仍存在，turn／round不變。"
+  ],
+  "artifacts": {
+    "original": "native-item-herb-fullhp-original-e2.json",
+    "remake_state": "native-item-herb-fullhp-remake-e1-state.json",
+    "remake_state_sha256": "5dbd6736bde0263f2f2bcd8994cd224e4ade67eb6a7ccf125bcef95d3f6129e6",
+    "remake_screenshot": "../../figures/native-item-herb-fullhp-remake-e1.png",
+    "remake_screenshot_sha256": "4fe6ee6f66ef560d5f3e393be4e9b6904f3c214d023cfa3d6212c33089e0bf7b",
+    "original_figure": "../../figures/native-item-herb-fullhp-original-e2.png"
+  },
+  "limitations": [
+    "本樣本只證明滿 HP 的不可用 gate，不是受傷角色的 HP 回復量驗證。",
+    "原版與重製截圖時鐘不同，不宣稱逐像素或選取脈動相位一致。",
+    "不外推 MP 回復、狀態清除、傷害、移位或敵方物品決策。"
+  ]
+}

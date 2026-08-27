@@ -160,6 +160,25 @@ func TestWriteShotStateTraceRecordsNativeItemModal(t *testing.T) {
 	}
 }
 
+func TestWriteShotStateTraceRecordsNativeItemPanelSelection(t *testing.T) {
+	g := &Game{itemOpen: true, itemSel: 2}
+	path := filepath.Join(t.TempDir(), "shot-state-item-panel.json")
+	if err := g.writeShotStateTrace(path); err != nil {
+		t.Fatal(err)
+	}
+	var got screenshotStateTrace
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(raw, &got); err != nil {
+		t.Fatal(err)
+	}
+	if !got.ItemOpen || got.ItemSelection != 2 || g.itemSel != 2 || !g.itemOpen {
+		t.Fatalf("item panel shot state trace=%#v game=%#v", got, g)
+	}
+}
+
 func TestWriteShotStateTraceOmitsSelectionWithoutOwner(t *testing.T) {
 	g := &Game{
 		curX: 8, curY: 17, ring: true, nativeSystemCursorOverlay: true,
