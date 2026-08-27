@@ -21,14 +21,15 @@
 > 成片在 `dist/promo/`，不含原版音樂且不入Git；規格、重生腳本與雜湊見
 > `docs/promo-opening-ch01-spec.md`、`tools/build_fd2_opening_promo.sh`及影片metadata。
 
-> **抽樣清冊現況**：已登記25筆證據，20筆符合門檻（戰役／戰間2、戰鬥／AI 4、
-> 介面7、存檔／持續隊伍5、終局／平台2）。章節0 current-runtime 的空游標命令格、
+> **抽樣清冊現況**：已登記27筆證據，22筆符合門檻（戰役／戰間3、戰鬥／AI 4、
+> 介面8、存檔／持續隊伍5、終局／平台2）。章節0 current-runtime 的空游標命令格、
 > HUD、command0調色盤與END接受逐字，以及Windows城鎮F5存檔和第30戰前冷讀持續隊伍
 > 已按不同驗收不變量登錄；沒有以同一結果跨層重複計數。空游標命令格
 > 已由原版與重製的普通鍵盤路徑配對；正常標題LOAD另已由普通X11鍵盤走過
 > slot 0、記錄提示NO、19人整備、戰前劇情並抵達第30戰，關閉戰間層零樣本。
 > 現行 Linux AppImage 另由普通 X11 鍵盤走正式標題 LOAD，從合法重製槽位抵達
-> `town_ch02`；這只提升封包互動 E1，不冒稱長程通關、音訊或實體桌面。
+> `town_ch02`，並完成 `town_ch02→rumor_ch02→town_ch02` 的酒店消息往返；這只
+> 提升封包互動、戰間節點與單句對話 E1，不冒稱長程通關、音訊或實體桌面。
 > 下一步優先把已接正式consumer的早／中期戰間及冷讀存檔改由普通輸入重播，形成
 > 玩家路徑，而不是再新增無消費端RE。權威清冊見
 > [`first-round-remake-samples.json`](../data/verification/first-round-remake-samples.json)。

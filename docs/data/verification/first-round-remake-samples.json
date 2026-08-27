@@ -357,6 +357,42 @@
       ]
     },
     {
+      "id": "campaign-appimage-town-rumor-roundtrip-ch02",
+      "layer": "campaign_intermission",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/release-appimage-town-rumor-roundtrip-e1.json"
+      ],
+      "limitations": [
+        "合法重製節點存檔起步；驗證早期城鎮酒店消息往返，不證明第1戰勝利來源或其他城鎮。"
+      ]
+    },
+    {
+      "id": "ui-appimage-rumor-dialogue-lifecycle-ch02",
+      "layer": "ui",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/release-appimage-town-rumor-roundtrip-e1.json"
+      ],
+      "limitations": [
+        "與城鎮往返樣本共用程序，但只驗證單句對話的發布與確認收束；不宣稱音訊或其他對話分頁。"
+      ]
+    },
+    {
       "id": "ui-shop-sell-ch02-route-patched",
       "layer": "ui",
       "result": "pass",

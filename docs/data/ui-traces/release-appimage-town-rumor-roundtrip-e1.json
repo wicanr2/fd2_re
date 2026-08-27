@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-27",
+  "classification": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "package": {
+    "path": "remake/packaging/dist/FD2-x86_64.AppImage",
+    "bytes": 5327352,
+    "sha256": "ea132427a657b072b70d6df6683f8322c9390f63cd157f09a1ebe0b2c2737373",
+    "launch": "--appimage-extract-and-run"
+  },
+  "environment": {
+    "container": "fd2-go-test-local:latest",
+    "display": "Docker Xvfb :99",
+    "network": "none",
+    "original_assets": "remake/assets 以唯讀 XDG 玩家資產層掛載",
+    "writable_data": "獨立 /tmp XDG 覆蓋層",
+    "input_helper": "tools/docker/fd2-xtest-input.c",
+    "deterministic_capture_clock": true
+  },
+  "save_fixture": {
+    "format": "重製 JSON 槽位 0；合法節點邊界，不是原版 FD2.SAV",
+    "node": "town_ch02",
+    "chapter": 2,
+    "gold": 279,
+    "sha256": "121c8bf87eb37d3adf09656b510d7d2511ffe76730ee165ba2130ff28e51b457"
+  },
+  "input": {
+    "kind": "普通 X11 鍵盤按下／放開事件",
+    "common_prefix": [
+      "Escape 跳到穩定標題選單",
+      "Down、Return 選擇 LOAD",
+      "Return 確認槽位 0 並進入 town_ch02",
+      "Down、Down、Down、Down、Return"
+    ],
+    "return_suffix": [
+      "在 rumor_ch02 單句對話再按 Return"
+    ]
+  },
+  "dialogue_capture": {
+    "frame": 1102,
+    "campaign_node": "rumor_ch02",
+    "dialog_count": 1,
+    "battle_event_active": false,
+    "native_turn_staging_active": false,
+    "png_sha256": "7c64d9d1a2f1b510bc0cde8d8278cbd456ba86107e84380d9729205d96b3ac6f",
+    "state_sha256": "2205535c876f55f8b2ee17ce4c2522e8e42e2049ec22930dd0d736f4f6c873d7"
+  },
+  "return_capture": {
+    "frame": 1250,
+    "campaign_node": "town_ch02",
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false,
+    "png_sha256": "2ff72bb10033c2d54ad58406af6026cef939a0aa35943465169ddc01a9912909",
+    "state_sha256": "4da9867783465d08b93823035c9da6725812e698f88f7465cfa550010f15fde9"
+  },
+  "validated_invariants": [
+    "正式 AppImage 從 town_ch02 進入 rumor_ch02 時發布一筆酒店消息對話。",
+    "普通確認鍵消費單句對話後回到 town_ch02，沒有殘留對話、戰鬥事件或 turn staging。"
+  ],
+  "limitations": [
+    "固定標題與截圖時鐘使重製側維持 RUNTIME-E1。",
+    "四次 Down 的原生方向幾何未在本輪解讀；只記錄實際鍵序與抵達節點，不宣稱線性選單索引。",
+    "後續 Shift+F1 試跑未產生狀態旁車，已作廢且未登錄；本證據不宣稱神秘商店入口通過。",
+    "本輪不驗證原版同狀態、音訊或長程戰役來源。"
+  ]
+}
