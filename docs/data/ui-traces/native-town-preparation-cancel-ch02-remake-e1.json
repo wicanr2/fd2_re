@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-28",
+  "evidence_level": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
+  "scope": "正式標題 LOAD 後以普通鍵盤完成 town_ch02→preparation_ch02前置確認→取消返回town_ch02",
+  "save_fixture": {
+    "format": "重製 JSON 槽位0；合法節點邊界測試起點，不是原版 FD2.SAV",
+    "node": "town_ch02",
+    "chapter": 2,
+    "gold": 279,
+    "party": "空名冊，因此本樣本不驗證選人或出戰確認",
+    "sha256": "2b684fbdf1a8b7a574420f62e7f8b38ab8b70a85adde26eb94fde1b13994ee36"
+  },
+  "execution": {
+    "environment": "一次性、無網路、UID/GID 1000 的 fd2-go-test-local Docker／Xvfb",
+    "runtime_sha256": "e0a3cdf748c6fd58c9852eedb6e0d5ade997dc9dcfb3f80408254ef2fe364091",
+    "input_helper": "tools/docker/fd2-xtest-input.c，只送普通 X11 鍵盤事件",
+    "timeline": [
+      "F10等待初始化，Escape略過可略過開場",
+      "Down、Return開啟LOAD，Return確認槽位0並進入town_ch02",
+      "Left×2依正式城鎮selector抵達選項2，Return進入preparation_ch02前置確認",
+      "第二次完整重播相同前綴後，以普通Escape取消並返回town_ch02"
+    ]
+  },
+  "entry_capture": {
+    "frame": 1300,
+    "campaign_node": "preparation_ch02",
+    "preparation": {
+      "selecting": false,
+      "confirming": false,
+      "confirm_selection": 0,
+      "selection": 0,
+      "limit": 15,
+      "candidate_count": 0,
+      "deployed_count": 0,
+      "town_backed": true
+    },
+    "gold": 279,
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false,
+    "state": "native-town-preparation-entry-ch02-remake-e1-state.json",
+    "state_sha256": "6dc008c509952f94ad7452081c6ef90e50d8f11dc131460f9e385c30cfdd7b40",
+    "screenshot": "../../figures/native-town-preparation-entry-ch02-remake-e1.png",
+    "screenshot_sha256": "19d5845d7312c179c26bcd9ade59567d94c84cccffd25b70b5a1fa87ef667b0b"
+  },
+  "return_capture": {
+    "frame": 1450,
+    "campaign_node": "town_ch02",
+    "gold": 279,
+    "dialog_count": 0,
+    "battle_event_active": false,
+    "native_turn_staging_active": false,
+    "state": "native-town-church-return-ch02-remake-e1-state.json",
+    "state_sha256": "15fa635c4150da3be9c172f0d222e05ba3e32232fe9693b976e863ea86fa7f2d",
+    "screenshot": "../../figures/native-town-church-return-ch02-remake-e1.png",
+    "screenshot_sha256": "4ae1960c3c0ed3d47d8904341fe661017e74652a37b40068cab61e53333b5184",
+    "artifact_reuse_reason": "本次實際輸出與既有同節點、同狀態城鎮返回證據逐位元組同雜湊，故不重複加入相同檔案"
+  },
+  "validated_invariants": [
+    "正式標題LOAD發布town_ch02後，原生selector選項2以普通Return進入town-backed preparation_ch02。",
+    "入口旁車明確位於前置確認而非選人或最終確認，limit15且沒有其他transient。",
+    "同一普通輸入前綴後送Escape，沿正式cancel邊界返回town_ch02並保留gold279。"
+  ],
+  "limitations": [
+    "空名冊合法測試起點只驗證前置確認與取消；不證明角色選取、配額填滿、最終確認或進戰。",
+    "不證明第1戰勝利長程來源、原版PLAYER-E2、音訊或逐像素一致。",
+    "返回證據與教會返回樣本的town_ch02檔案逐位元組相同；清冊只把不同的preparation節點交易計為新樣本。"
+  ]
+}

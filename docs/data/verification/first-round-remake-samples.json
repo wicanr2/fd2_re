@@ -625,6 +625,28 @@
       ]
     },
     {
+      "id": "campaign-town-preparation-cancel-ch02",
+      "layer": "campaign_intermission",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-town-preparation-cancel-ch02-remake-e1.json",
+        "docs/data/ui-traces/native-town-preparation-entry-ch02-remake-e1-state.json",
+        "docs/figures/native-town-preparation-entry-ch02-remake-e1.png",
+        "docs/data/ui-traces/native-town-church-return-ch02-remake-e1-state.json",
+        "docs/figures/native-town-church-return-ch02-remake-e1.png"
+      ],
+      "limitations": [
+        "空名冊合法重製節點存檔起點；只驗證town-backed整備前置確認與Escape取消，不證明選人、出戰、長程來源或原版E2。"
+      ]
+    },
+    {
       "id": "ui-appimage-rumor-dialogue-lifecycle-ch02",
       "layer": "ui",
       "result": "pass",

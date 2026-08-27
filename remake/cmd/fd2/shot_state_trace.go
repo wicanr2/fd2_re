@@ -38,16 +38,17 @@ type screenshotStateTrace struct {
 	SpellOpen              bool                     `json:"spell_open"`
 	// 這些欄位只描述輸入是否被既有 modal 阻擋；它們讓普通 X11 重播
 	// 能區分「按鍵未到」和「遊戲刻意尚未接受按鍵」。
-	NativeContinueOpeningConfirm bool                       `json:"native_continue_opening_confirm"`
-	NativeContinueCursorOverlay  bool                       `json:"native_continue_cursor_overlay"`
-	NativeEnding                 *screenshotEndingTrace     `json:"native_ending,omitempty"`
-	Church                       *screenshotChurchTrace     `json:"church,omitempty"`
-	DialogCount                  int                        `json:"dialog_count"`
-	BattleEventActive            bool                       `json:"battle_event_active"`
-	NativeTurnStagingActive      bool                       `json:"native_turn_staging_active"`
-	CursorUnit                   *screenshotCursorUnitTrace `json:"cursor_unit,omitempty"`
-	LoadError                    string                     `json:"load_error,omitempty"`
-	Battle                       *screenshotBattleTrace     `json:"battle,omitempty"`
+	NativeContinueOpeningConfirm bool                        `json:"native_continue_opening_confirm"`
+	NativeContinueCursorOverlay  bool                        `json:"native_continue_cursor_overlay"`
+	NativeEnding                 *screenshotEndingTrace      `json:"native_ending,omitempty"`
+	Church                       *screenshotChurchTrace      `json:"church,omitempty"`
+	Preparation                  *screenshotPreparationTrace `json:"preparation,omitempty"`
+	DialogCount                  int                         `json:"dialog_count"`
+	BattleEventActive            bool                        `json:"battle_event_active"`
+	NativeTurnStagingActive      bool                        `json:"native_turn_staging_active"`
+	CursorUnit                   *screenshotCursorUnitTrace  `json:"cursor_unit,omitempty"`
+	LoadError                    string                      `json:"load_error,omitempty"`
+	Battle                       *screenshotBattleTrace      `json:"battle,omitempty"`
 }
 
 // screenshotChurchTrace 固定教會主選單可見的原始選擇、脈衝與金幣狀態，
@@ -58,6 +59,17 @@ type screenshotChurchTrace struct {
 	Pulse     int    `json:"pulse"`
 	Gold      int    `json:"gold"`
 	ShotHold  bool   `json:"shot_hold"`
+}
+
+type screenshotPreparationTrace struct {
+	Selecting        bool `json:"selecting"`
+	Confirming       bool `json:"confirming"`
+	ConfirmSelection int  `json:"confirm_selection"`
+	Selection        int  `json:"selection"`
+	Limit            int  `json:"limit"`
+	CandidateCount   int  `json:"candidate_count"`
+	DeployedCount    int  `json:"deployed_count"`
+	TownBacked       bool `json:"town_backed"`
 }
 
 // screenshotTitleCutTrace 讓有界 Xvfb 擷取能證明自己位於哪一個原版排程邊界；
@@ -169,6 +181,19 @@ func (g *Game) writeShotStateTrace(path string) error {
 				Mode: g.churchMode, Selection: g.churchSel,
 				Pulse: g.nativeChurchUIPulse, Gold: g.gold,
 				ShotHold: g.nativeChurchUIShotHold,
+			}
+		} else if node != nil && node.Type == "preparation" {
+			deployed := 0
+			for _, selected := range g.partyDeploy {
+				if selected {
+					deployed++
+				}
+			}
+			trace.Preparation = &screenshotPreparationTrace{
+				Selecting: g.prepSelecting, Confirming: g.prepConfirm,
+				ConfirmSelection: g.prepConfirmSel, Selection: g.prepSel,
+				Limit: g.prepLimit, CandidateCount: len(g.prepIDs),
+				DeployedCount: deployed, TownBacked: node.Cancel != "",
 			}
 		}
 	}

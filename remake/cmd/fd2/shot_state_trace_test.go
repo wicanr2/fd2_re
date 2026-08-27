@@ -187,6 +187,35 @@ func TestWriteShotStateTraceRecordsNativeItemPanelSelection(t *testing.T) {
 	}
 }
 
+func TestWriteShotStateTraceRecordsPreparationStage(t *testing.T) {
+	c := &campaign.Campaign{Start: "preparation_ch02", Nodes: map[string]*campaign.Node{
+		"preparation_ch02": {Type: "preparation", Cancel: "town_ch02"},
+		"town_ch02":        {Type: "town"},
+	}}
+	g := &Game{
+		camp: cRunner(c), prepSelecting: true, prepSel: 2, prepLimit: 15,
+		prepIDs: []int{0, 9, 4}, partyDeploy: map[int]bool{0: true, 9: true},
+	}
+	path := filepath.Join(t.TempDir(), "shot-state-preparation.json")
+	if err := g.writeShotStateTrace(path); err != nil {
+		t.Fatal(err)
+	}
+	var got screenshotStateTrace
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(raw, &got); err != nil {
+		t.Fatal(err)
+	}
+	if got.Preparation == nil || !got.Preparation.Selecting || got.Preparation.Confirming ||
+		got.Preparation.Selection != 2 || got.Preparation.Limit != 15 ||
+		got.Preparation.CandidateCount != 3 || got.Preparation.DeployedCount != 2 ||
+		!got.Preparation.TownBacked {
+		t.Fatalf("preparation trace=%#v", got.Preparation)
+	}
+}
+
 func TestWriteShotStateTraceOmitsSelectionWithoutOwner(t *testing.T) {
 	g := &Game{
 		curX: 8, curY: 17, ring: true, nativeSystemCursorOverlay: true,

@@ -7433,3 +7433,17 @@ BIOS tick gate與DAC更新，不重開反組譯。`0x24C4C`／index2產生3筆
 及存讀檔。原始位址、雜湊與控制碼見
 [`fd2_ch20_sky_key_sequence_ida.txt`](../data/ida/fd2_ch20_sky_key_sequence_ida.txt)。
 本項最高為`RUNTIME-E1`；未修改DOSBox同狀態與第一個動態調色盤相位另列E2。
+
+## 整備普通輸入抽樣旁車契約（2026-08-28）
+
+本項不新增或推論原版整備語意，只把正式`Game`已持有的具型別狀態以唯讀旁車
+輸出，供正常X11鍵盤擷取區分「仍在前置確認、已進選人、已進最終確認」三個
+既有階段。`FD2_SHOT_STATE`在目前campaign node型別為`preparation`時，輸出：
+
+- `selecting`、`confirming`及原始`confirm_selection`；
+- `selection`、`limit`、候選數與目前已部署數；
+- `town_backed`，只表示該可編輯節點明示非空`cancel`邊界。
+
+旁車不得接受輸入、改寫節點、建立名冊或自動確認；候選／部署數只從目前正式
+陣列與map計數。不存在整備節點時省略整段。它只能證明重製端正常輸入的
+`RUNTIME-E1`階段與收束，不可單獨提升原版E2或長程戰役來源。

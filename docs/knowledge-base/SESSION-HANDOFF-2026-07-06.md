@@ -8059,3 +8059,16 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   無dialog／battle event／turn staging。
 - 清冊新增一個戰間節點交易樣本，現為43筆登記、38筆合格；戰役／戰間5／12。
   本格只列`RUNTIME-E1`，不外推四項服務交易、音訊、長程來源或原版PLAYER-E2。
+
+## 2026-08-28：早期城鎮整備前置確認與取消
+
+- `FD2_SHOT_STATE`新增唯讀`preparation`三態旁車：selecting／confirming、原始確認
+  selection、選人游標、limit、候選／部署數及可編輯cancel邊界。它不接受輸入或
+  改寫流程；規格先寫入`56-fd2-remake-sdd.md`後才實作，聚焦回歸通過。
+- 沿用上一批合法`town_ch02`測試起點，正式標題LOAD後以Left×2、Return進
+  `preparation_ch02`。frame1300明列尚在前置確認、limit15、town-backed，沒有
+  dialog／battle event／turn staging。第二次相同前綴送Escape後，frame1450返回
+  `town_ch02`並保留gold279；輸出與既有同狀態城鎮返回檔逐位元組相同，故沿用
+  既有檔案而不重複加入相同PNG／JSON。
+- 起點沒有隊伍名冊，因此不宣稱選人、配額、最終確認或進戰。清冊現為44筆登記、
+  39筆合格；戰役／戰間6／12，證據等級仍為`RUNTIME-E1`。
