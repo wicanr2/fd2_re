@@ -363,8 +363,9 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 > **2026-08-13 勘誤：玩家第21戰天空之鑰鑄造固定演出已達 E1。**
 > `0x242C9→0x24336` 已以真實 `FDOTHER #34`、`ANI #0`、原始幀順序與相對
 > 調色盤相位接入正式 `campaign_full.json`；完整勝利路徑能回到 `town_ch22` 並
-> 存檔／讀檔。這解除的是先前「鑄造動畫未接」的缺口，不包含相鄰
-> `layout_units`、ACT63／64、第一個程序內相位或未修改原版同狀態 E2，故 UI-07
+> 存檔／讀檔。2026-08-27 又依 `0x2415B` 三張25-byte表接入26-slot layout與
+> camera `(336,240)`，並在三段FDTXT之間完整消費ACT63／64。這解除的是先前
+> 「鑄造動畫及相鄰擺位／演出未接」的缺口，不包含第一個程序內相位或未修改原版同狀態 E2，故 UI-07
 > 整列仍為 partial。證據見
 > [`fd2_ch20_sky_key_sequence_ida.txt`](../data/ida/fd2_ch20_sky_key_sequence_ida.txt)。
 

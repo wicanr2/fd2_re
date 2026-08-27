@@ -136,9 +136,10 @@ writer／consumer 時重開。
   原版 FDOTHER 框、DATO 頭像與16×16字模產生 indexed 穩定頁面，不再依角色
   編號或現代字型寬度猜版面；ch24五階段開框、逐字發布、完整頁等待期嘴型與保存畫面收框已接，同狀態原版比較仍待補。
 - 玩家第21戰的天空之鑰成功分支，已由固定雜湊 `FD2.EXE` 的
-  `0x242C9→0x24336` 閉合到正式重製端：六素材配方後依序消費原版
+  `0x2415B` layout、ACT63／64及`0x242C9→0x24336`閉合到正式重製端：
+  26-slot 擺位與兩段角色演出後，六素材配方依序消費原版
   `FDOTHER #34`、`ANI #0` 與調色盤排程，再經 JOIN24／23 回到 `town_ch22`
-  並完成存讀檔。相鄰 ACT63／64與一般玩家 E2 仍待補。
+  並完成存讀檔。只剩第一個程序內調色盤相位與一般玩家同狀態 E2。
 - 敵方人工智慧已有多個原始模式的窄執行期消費，原版一般玩家敵方回合也可重現；
   command 17–23與25–27現已由玩家指令格或物品目的地游標接到正式交易，17–22與26–27的敵方 raw selector 也已接入；
   正確保留 ID17 由 record18 扣 MP 的特殊邊界。玩家路徑另依 `0x1D6C8`
@@ -218,7 +219,7 @@ writer／consumer 時重開。
 
 *這是正式第21戰勝利→城鎮→存讀檔整合回歸中，由索引 framebuffer 與當下 DAC
 輸出的重製端 E1 三階段畫面；不是原版擷取或逐像素 E2。完整資產雜湊、產生命令與
-尚未接入的 ACT63／64限制見[擷取紀錄](docs/data/ui-traces/ch21-sky-key-sequence-remake-e1.json)。*
+同一路徑已接 layout／ACT63／64的狀態斷言及限制見[擷取紀錄](docs/data/ui-traces/ch21-sky-key-sequence-remake-e1.json)。*
 
 ![重製端近似終局尾段：20 組原版資源排程總覽](docs/figures/ending-tail-20-segments-approximate-remake-e1.png)
 

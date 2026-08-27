@@ -3143,6 +3143,42 @@
    "scene": "浴血決戰,團長真身現形——萊汀舊識瑪爾",
    "beats": [
     {
+     "op": "layout_units",
+     "source": "0x2415b",
+     "layout": {
+      "units": [
+       {"slot": 0, "x": 15, "y": 14, "pose": 2},
+       {"slot": 1, "x": 14, "y": 14, "pose": 2},
+       {"slot": 2, "x": 16, "y": 13, "pose": 1},
+       {"slot": 3, "x": 16, "y": 14, "pose": 1},
+       {"slot": 4, "x": 13, "y": 14, "pose": 2},
+       {"slot": 5, "x": 13, "y": 15, "pose": 2},
+       {"slot": 6, "x": 13, "y": 16, "pose": 2},
+       {"slot": 7, "x": 13, "y": 17, "pose": 2},
+       {"slot": 8, "x": 12, "y": 14, "pose": 3},
+       {"slot": 9, "x": 14, "y": 15, "pose": 2},
+       {"slot": 10, "x": 14, "y": 16, "pose": 2},
+       {"slot": 11, "x": 14, "y": 17, "pose": 2},
+       {"slot": 12, "x": 12, "y": 13, "pose": 3},
+       {"slot": 13, "x": 15, "y": 15, "pose": 2},
+       {"slot": 14, "x": 15, "y": 16, "pose": 2},
+       {"slot": 15, "x": 15, "y": 17, "pose": 2},
+       {"slot": 16, "x": 15, "y": 11, "pose": 0},
+       {"slot": 17, "x": 13, "y": 11, "pose": 0},
+       {"slot": 18, "x": 12, "y": 11, "pose": 0},
+       {"slot": 19, "x": 16, "y": 11, "pose": 0},
+       {"slot": 20, "x": 11, "y": 12, "pose": 3},
+       {"slot": 21, "x": 11, "y": 13, "pose": 3},
+       {"slot": 22, "x": 11, "y": 14, "pose": 3},
+       {"slot": 23, "x": 17, "y": 12, "pose": 1},
+       {"slot": 24, "x": 17, "y": 13, "pose": 1},
+       {"slot": 25, "x": 23, "y": 14, "pose": 1}
+      ],
+      "cam_x": 336,
+      "cam_y": 240
+     }
+    },
+    {
      "op": "dialog",
      "line": 7,
      "count": 10
@@ -3177,9 +3213,30 @@
      "count": 1
     },
     {
+     "op": "act",
+     "source": "0x2425f",
+     "acting_frames": [
+      {"beats": 1, "units": [{"slot": 0, "pose": 2}]},
+      {"beats": 6, "special": true, "units": [{"slot": 0, "pose": 2}]},
+      {"beats": 0, "special": true, "units": [{"slot": 16, "pose": 0}]},
+      {"beats": 4, "special": true, "units": [{"slot": 16, "pose": 0}]}
+     ]
+    },
+    {
      "op": "dialog",
      "line": 1,
      "count": 3
+    },
+    {
+     "op": "act",
+     "source": "0x2429a",
+     "acting_frames": [
+      {"beats": 1, "units": [{"slot": 0, "pose": 0}]},
+      {"beats": 1, "special": true, "units": [{"slot": 0, "pose": 2}]},
+      {"beats": 1, "units": [{"slot": 16, "pose": 0}]},
+      {"beats": 1, "units": [{"slot": 16, "pose": 1}]},
+      {"beats": 4, "special": true, "units": [{"slot": 16, "pose": 0}]}
+     ]
     },
     {
      "op": "dialog",

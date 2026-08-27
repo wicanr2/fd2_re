@@ -7630,3 +7630,12 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   [`ch23-post-native-dialogue-e1.json`](../data/ui-traces/ch23-post-native-dialogue-e1.json)。
 - 產生器同時修正無`overrides`欄位時的合法binding，不再觸發`KeyError`；12份可重生
   binding檢查通過。未修改DOSBox同狀態、精確BIOS tick與音訊仍屬E2限制。
+## 2026-08-27：第21戰天空之鑰相鄰 layout／ACT63／64閉合
+
+- 合法IDA Pro 9.4 Docker重讀`sub_240FA`，並以Capstone交叉驗證
+  `0x52228／0x52241／0x5225A`三張25-byte表；`0x2415B→0x233C6`現固定
+  slots0..24、special slot25 `(23,14,1)`與camera raw `(14,10)`。
+- `campaign_full.json`正式勝利路徑先發布26-slot layout，再於FDTXT #7／#8／#9
+  之間依序消費ACT63／64，之後才播放既有`0x24336`、JOIN24／23、同步隊伍並進
+  `town_ch22`。Docker／Xvfb聚焦回歸實際通過；一般玩家同狀態E2與第一個程序內
+  調色盤相位仍是證據限制，不再把layout／ACT列為實作缺口。

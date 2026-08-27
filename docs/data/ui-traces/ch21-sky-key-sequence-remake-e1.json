@@ -1,8 +1,10 @@
 {
   "schema_version": 1,
   "evidence_level": "E1",
-  "scope": "玩家第21戰正式勝利邊界中的 0x242C9→0x24336 重製端三階段索引畫面；不是原版擷取、一般玩家 E2 或逐像素對照",
+  "scope": "玩家第21戰正式勝利邊界中的 layout→ACT63／64→0x242C9→0x24336→城鎮／存讀檔重製端 E1；三格圖片只呈現固定合成演出的三階段，不是原版擷取、一般玩家 E2 或逐像素對照",
   "generated_on": "2026-08-13",
+  "flow_verified_on": "2026-08-27",
+  "flow_verification_image_id": "sha256:63ab5d20e3c2a3d2054718883fc7a98158ba2ef0930a3c886e169f2e887ca044",
   "reference_files": [
     {
       "file": "FD2.EXE",
@@ -59,6 +61,8 @@
   },
   "flow_assertions": [
     "從 campaign_full.json 的 battle_ch21 正式勝利確認開始，不直接跳入鑄造節點",
+    "0x2415B 的三張25-byte表與special slot25建立26-slot layout及camera=(336,240)",
+    "FDTXT #7／#8之間與#8／#9之間依序完整消費ACTING 63／64的4／5幀typed資料",
     "驗證六素材原版恰好六組配對規則、JOIN24／23、sync_party、chapter21 與 town_ch22",
     "只在 town_ch22 節點保存並讀回隊伍、加入順序與天空之鑰",
     "完整演出經過鏡頭平移、FDOTHER 前段、ANI、閃白、恢復與 FDOTHER 尾段六個 phase"
@@ -67,6 +71,6 @@
     "為縮短回歸時間，測試仍經正式 Draw acknowledgement 與 stepper，但把每段等待 tick 設為0；因此不驗證 DOS BIOS 計時或主機60Hz精確時序。",
     "這是重製端索引 framebuffer 與 DAC 的 E1 證據，不是未修改原版一般玩家路徑或同狀態 E2。",
     "0x4DFCC 進入演出時的程序內第一相位仍未由原版動態狀態固定；重製只保存68次相對循環。",
-    "相鄰 layout_units 與 ACT63／64 尚未接入；本圖只證明 0x24336 固定演出本體及其正式戰役消費端。"
+    "圖片仍只展示0x24336三個代表幀；layout與ACT63／64由同一正式路徑的狀態／生命週期斷言證實，尚無未修改原版同狀態逐幀圖。"
   ]
 }

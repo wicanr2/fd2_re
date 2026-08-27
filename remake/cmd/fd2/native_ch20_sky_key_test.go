@@ -239,8 +239,15 @@ func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing
 	if !g.confirmBattleResult() || g.result != "" || g.camp.NodeID() != "story_ch21_post_sky_key_intro" {
 		t.Fatalf("第21戰勝利邊界 node=%q result=%q err=%q", g.camp.NodeID(), g.result, g.loadErr)
 	}
+	if got := g.st.Units[0]; got.X != 15 || got.Y != 14 || got.Dir != 2 || !got.HasNativeMapPresentation || got.NativeMapPresentation.Pose != 2 {
+		t.Fatalf("第21戰戰後 layout slot0=(%d,%d,pose%d)，want (15,14,2)", got.X, got.Y, got.Dir)
+	}
+	if got := g.st.Units[25]; got.X != 23 || got.Y != 14 || got.Dir != 1 || !got.HasNativeMapPresentation || got.NativeMapPresentation.Pose != 1 || g.camX != 336 || g.camY != 240 {
+		t.Fatalf("第21戰戰後 layout slot25=(%d,%d,pose%d) camera=(%.0f,%.0f)", got.X, got.Y, got.Dir, g.camX, g.camY)
+	}
 
 	seen := make(map[nativeCh20SkyKeyPhase]bool)
+	seenAct63, seenAct64 := false, false
 	screen := ebiten.NewImage(logicalW, logicalH)
 	evidenceOut := os.Getenv("FD2_SKY_KEY_EVIDENCE_OUT")
 	evidenceTargets := map[nativeCh20SkyKeyPhase]int{
@@ -250,6 +257,10 @@ func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing
 	}
 	evidenceFrames := make(map[nativeCh20SkyKeyPhase]*image.Paletted, len(evidenceTargets))
 	for frame := 0; frame < 30000 && g.camp.NodeID() != "town_ch22"; frame++ {
+		if job := g.actJob; job != nil {
+			seenAct63 = seenAct63 || len(job.acting) == 4
+			seenAct64 = seenAct64 || len(job.acting) == 5
+		}
 		if job := g.nativeCh20SkyKey; job != nil {
 			seen[job.phase] = true
 			if !g.drawNativeCh20SkyKey(screen) {
@@ -279,6 +290,9 @@ func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing
 	}
 	if g.camp.NodeID() != "town_ch22" || g.st != nil || g.handlerChapter != 21 {
 		t.Fatalf("天空之鑰流程邊界 node=%q battle=%v chapter=%d", g.camp.NodeID(), g.st != nil, g.handlerChapter)
+	}
+	if !seenAct63 || !seenAct64 {
+		t.Fatalf("天空之鑰相鄰 ACTING 未完整消費: act63=%v act64=%v", seenAct63, seenAct64)
 	}
 	for phase := nativeCh20SkyKeyPan; phase <= nativeCh20SkyKeyTailFrames; phase++ {
 		if !seen[phase] {

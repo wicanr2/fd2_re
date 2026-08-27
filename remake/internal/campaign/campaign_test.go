@@ -453,8 +453,11 @@ func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 	recipe21 := c.Nodes["inventory_recipe_ch21_sky_key"]
 	crafted21 := c.Nodes["story_ch21_post_sky_key_crafted"]
 	insufficient21 := c.Nodes["story_ch21_post_sky_key_insufficient"]
-	if battle21 == nil || battle21.OnWin != "story_ch21_post_sky_key_intro" || intro21 == nil || intro21.Script != "assets/story/ch21.json" || intro21.Scene != "浴血決戰,團長真身現形——萊汀舊識瑪爾" || len(intro21.Beats) != 1 || intro21.Beats[0].Line != 7 || intro21.Beats[0].Count != 10 || intro21.Next != "inventory_recipe_ch21_sky_key" {
+	if battle21 == nil || battle21.OnWin != "story_ch21_post_sky_key_intro" || intro21 == nil || intro21.Script != "assets/story/ch21.json" || intro21.Scene != "浴血決戰,團長真身現形——萊汀舊識瑪爾" || len(intro21.Beats) != 2 || intro21.Beats[0].Op != "layout_units" || intro21.Beats[0].Source != "0x2415b" || intro21.Beats[0].Layout == nil || len(intro21.Beats[0].Layout.Units) != 26 || intro21.Beats[0].Layout.CamX != 336 || intro21.Beats[0].Layout.CamY != 240 || intro21.Beats[1].Line != 7 || intro21.Beats[1].Count != 10 || intro21.Next != "inventory_recipe_ch21_sky_key" {
 		t.Fatalf("chapter21 must preserve editable pre-recipe FDTXT #5: battle=%#v intro=%#v", battle21, intro21)
+	}
+	if first, special := intro21.Beats[0].Layout.Units[0], intro21.Beats[0].Layout.Units[25]; first.Slot != 0 || first.X != 15 || first.Y != 14 || first.Pose != 2 || special.Slot != 25 || special.X != 23 || special.Y != 14 || special.Pose != 1 {
+		t.Fatalf("chapter21 recovered layout endpoints drifted: first=%#v special=%#v", first, special)
 	}
 	if recipe21 == nil || recipe21.Type != "inventory_recipe" || !reflect.DeepEqual(recipe21.ItemIDs, []int{0xd1, 0xd2, 0xd3, 0xd4, 0xd5, 0xd6}) || recipe21.SlotCount != 16 || recipe21.RequiredMatches != 6 || recipe21.RewardItemID == nil || *recipe21.RewardItemID != 0x64 || recipe21.IfCrafted != "story_ch21_post_sky_key_crafted" || recipe21.IfInsufficient != "story_ch21_post_sky_key_insufficient" {
 		t.Fatalf("chapter21 sky-key recipe does not match original nested loops: %#v", recipe21)
@@ -462,12 +465,13 @@ func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 	if crafted21 == nil {
 		t.Fatal("chapter21 crafted arm is missing")
 	}
-	if len(crafted21.Beats) != 9 {
-		t.Fatalf("chapter21 crafted arm beats=%d, want 9", len(crafted21.Beats))
+	if len(crafted21.Beats) != 11 {
+		t.Fatalf("chapter21 crafted arm beats=%d, want 11", len(crafted21.Beats))
 	}
 	wantCraftedDialog := []Beat{{Op: "dialog", Line: 0, Count: 1}, {Op: "dialog", Line: 1, Count: 3}, {Op: "dialog", Line: 4, Count: 2}, {Op: "dialog", Line: 6, Count: 10}}
-	gotCraftedDialog := []Beat{crafted21.Beats[0], crafted21.Beats[1], crafted21.Beats[2], crafted21.Beats[4]}
-	if crafted21.Scene != "希爾法鑄成傳說法器「天空之鑰」" || !reflect.DeepEqual(gotCraftedDialog, wantCraftedDialog) || crafted21.Beats[3].Op != "native_ch20_sky_key_sequence" || crafted21.Beats[3].Source != "0x242c9" || !crafted21.Beats[3].NativeCh20SkyKey.IsRecoveredContract() || crafted21.Next != "town_ch22" {
+	gotCraftedDialog := []Beat{crafted21.Beats[0], crafted21.Beats[2], crafted21.Beats[4], crafted21.Beats[6]}
+	act63, act64 := crafted21.Beats[1], crafted21.Beats[3]
+	if crafted21.Scene != "希爾法鑄成傳說法器「天空之鑰」" || !reflect.DeepEqual(gotCraftedDialog, wantCraftedDialog) || act63.Op != "act" || act63.Source != "0x2425f" || len(act63.Acting) != 4 || act64.Op != "act" || act64.Source != "0x2429a" || len(act64.Acting) != 5 || crafted21.Beats[5].Op != "native_ch20_sky_key_sequence" || crafted21.Beats[5].Source != "0x242c9" || !crafted21.Beats[5].NativeCh20SkyKey.IsRecoveredContract() || crafted21.Next != "town_ch22" {
 		t.Fatalf("crafted arm must preserve all editable #7..#10 dialogue and town22: %#v", crafted21)
 	}
 	if insufficient21 == nil || insufficient21.Scene != "決議直赴巨塔(未鑄成天空之鑰)" || len(insufficient21.Beats) != 5 || insufficient21.Beats[0].Op != "dialog" || insufficient21.Beats[0].Line != 0 || insufficient21.Beats[0].Count != 4 || insufficient21.Next != "town_ch22" {

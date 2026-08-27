@@ -225,13 +225,47 @@ frontier 是75；回合2／4／6／8依序 append groups1／2／3／4後為
 
 ## 五、重製消費端與仍未解除的閘門
 
+### 5.1 相鄰 layout／ACT63／64 補證與可審查規格（2026-08-27）
+
+合法 IDA Pro 9.4 重新匯出 `sub_240FA`、`sub_233C6` 與 `sub_1366A`；
+`0x2415B` 的 11 個參數按實際 PUSH 逆序解讀為：三張 slots 0..24 的
+`x／y／pose` 表、start=0、end=24、special slot=25、special
+`(x,y,pose)=(23,14,1)`、camera raw `(14,10)`。三張固定表由
+`0x52228／0x52241／0x5225A` 各讀 25 bytes：
+
+```text
+x    = 15 14 16 16 13 13 13 13 12 14 14 14 12 15 15 15 15 13 12 16 11 11 11 17 17
+y    = 14 14 13 14 14 15 16 17 14 15 16 17 13 15 16 17 11 11 11 11 12 13 14 12 13
+pose = 02 02 01 01 02 02 02 02 03 02 02 02 03 02 02 02 00 00 00 00 03 03 03 01 01
+```
+
+`sub_233C6` 的直接 consumer 證實 slots 0..24 寫 raw record `+0/+1/+3`，
+special slot25 亦寫相同三欄；camera raw 乘既有 24-pixel 格距後是
+`(336,240)`。這裡只把原始參數資料化，不替角色或姿態新增高階名稱。
+
+同一 caller 在 `0x24253／0x2428E` 各先把 `dword_51A83` 歸零，再於
+`0x2425F` 呼叫 ACTING 63、`0x2429A` 呼叫 ACTING 64。既有完整 acting decoder
+的 resource 63／64 分別為 4／5 幀，目標只含 slots 0、16；其 frame beats、
+special bit、slot 與 pose 原樣轉入 typed beat。正式順序規格為：
+
+```text
+layout → FDTXT_021 #5 → recipe branch
+crafted: #7 → ACT63 → #8 → ACT64 → #9 → 0x24336 → #10
+common: JOIN24 → JOIN23 → sync party → chapter21 → town_ch22
+```
+
+layout 在擺位前驗證全部 slots；ACT beat 在啟動時驗證其 targets；`0x24336`
+則在變更鏡頭前預檢原生地圖與全部動畫資產。缺任一階段輸入時失敗即關閉，
+不得只播放對話並略過該段演出。證據等級為
+`RE-CLOSED／DATA-READY`；正式執行期與玩家路徑仍須以下方回歸驗收。
+
 已完成的 E1 垂直切片：
 
 - handler IR 保留 `0x242C9→0x24336`、證據等級與本檔，編譯器只對 exact
   no-argument caller 降成具型別 `native_ch20_sky_key_sequence`。
-- 可編輯 campaign 依序保留對話、配方、101幀 FDOTHER 合成、ANI #0、
-  白閃／還原、JOIN 24／23、sync party、chapter21 與 `town_ch22`。相鄰
-  ACT63／64 尚未接入，不能由本函式的閉合狀態外推。
+- 可編輯 campaign 依序保留 layout、對話、ACT63／64、配方、101幀 FDOTHER
+  合成、ANI #0、白閃／還原、JOIN 24／23、sync party、chapter21 與
+  `town_ch22`。正式接線與回歸狀態以 2026-08-27 的後續勘誤為準。
 - 執行器在變更相機前預檢全部 FDOTHER RLE、ANI 索引幀與 DAC；資產、indexed
   map、payload 或視圖不完整時失敗即關閉。
 - 決定性回歸從正式 `battle_ch21` 勝利確認進入配方成功分支，逐相位呈現後停在
@@ -242,8 +276,8 @@ frontier 是75；回合2／4／6／8依序 append groups1／2／3／4後為
 - 未修改 DOS 一般玩家路徑與重製相同戰場狀態的逐幀／音訊 E2 比較。
 - `0x4DFCC` 在實際 caller 第一次呼叫時的程序全域 phase 與 BIOS tick latch 精確值。
 - DOS BIOS tick 與60Hz主機時鐘逐毫秒一致；重製只保留原始順序及約略等待。
-- `sub_240FA` 開頭 `sub_233C6` layout 與 ACT63／64 的完整 indexed 像素忠實度；
-  本檔關閉的是 `0x24336` 固定演出，不把相鄰原語一併升格。
+- layout／ACT63／64 的 typed 消費端可由本節提升至 E1，但未修改原版同狀態
+  indexed 像素／音訊比較仍未完成；不因資料與重製回歸自動升格為 E2。
 
 ## 六、可重生命令
 
