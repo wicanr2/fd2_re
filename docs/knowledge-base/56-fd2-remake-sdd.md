@@ -7260,3 +7260,20 @@ index5、`0x245A7`／index6分別產生3、1、7筆`NativeDialogueLayout`。
 [`fd2_ch21_post_native_dialogue.md`](../data/ida/fd2_ch21_post_native_dialogue.md)。
 驗收包含全量raw equality、73／79-slot正式輸入、indexed transition、同步、整備與
 存讀檔。此項最高為`RUNTIME-E1`，未修改DOSBox同狀態與精確音訊另列E2。
+
+## 玩家第 24 戰戰後 11 句原生對話與 staging（2026-08-27）
+
+本切片沿用已閉合的`sub_24C1E`、86-slot topology、兩段`native_ch23_loop`、
+BIOS tick gate與DAC更新，不重開反組譯。`0x24C4C`／index2產生3筆
+`NativeDialogueLayout`，依唯一映射跨`ch24.json` scene0 line14與scene1 lines0..1；
+`0x24CAD`／index3產生scene1 lines2..9的8筆版面。
+
+正式戰果確認保存battle view，binding以`runtime_context`只接受86 slots並領回該視圖。
+具型別輸入完成第一段3句後才執行stage2..9，完成第二段8句後才執行stage10..14、
+`sync_party`、chapter24與`preparation_ch25`，並驗證存讀檔。舊fixture誤把已安裝的
+86筆再次傳給append constructor而形成172筆，現改成單次正式建構並加上數量斷言。
+
+原始位址、雜湊、控制碼與契約見
+[`fd2_ch23_post_native_dialogue.md`](../data/ida/fd2_ch23_post_native_dialogue.md)。
+驗收包含全量raw equality、正式輸入、兩段staging、同步、整備與存讀檔。此項最高為
+`RUNTIME-E1`；未修改DOSBox同狀態、精確BIOS tick與音訊另列E2。

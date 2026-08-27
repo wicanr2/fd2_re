@@ -7618,3 +7618,15 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   [`ch21-post-native-dialogue-e1.json`](../data/ui-traces/ch21-post-native-dialogue-e1.json)。
 - 聚焦Docker／Xvfb測試與3／11生成器檢查通過。未修改DOSBox同狀態與精確音訊
   仍屬E2限制；依99%門檻不阻擋，下一個候選是raw `ch23_post`兩caller／11句。
+
+## 2026-08-27：第24戰後兩個caller／11句原生對話與staging
+
+- 沿用已閉合的`sub_24C1E`、86-slot topology、兩段`native_ch23_loop`、BIOS tick
+  gate與DAC更新。FDTXT_024 index2／3的3＋8句已通過raw equality；index2保留
+  scene0 line14→scene1 lines0..1的跨場景有序映射。
+- 正式戰果路徑以具型別輸入完成11句後，才依序執行stage2..14、sync、chapter24、
+  `preparation_ch25`與存讀檔。舊fixture把已安裝的86筆再次append成172筆，現改為
+  單次constructor並由`runtime_context`明確守住86 slots。證據見
+  [`ch23-post-native-dialogue-e1.json`](../data/ui-traces/ch23-post-native-dialogue-e1.json)。
+- 產生器同時修正無`overrides`欄位時的合法binding，不再觸發`KeyError`；12份可重生
+  binding檢查通過。未修改DOSBox同狀態、精確BIOS tick與音訊仍屬E2限制。

@@ -13,11 +13,20 @@ import (
 func newChapter24RuntimeBattle(t *testing.T) (*Game, []int) {
 	t.Helper()
 	base := "../../../org_game/炎龍騎士團/FLAME2"
-	fdotherPath := filepath.Join(base, "FDOTHER.DAT")
-	if _, err := os.Stat(fdotherPath); err != nil {
-		t.Skip("ch24 production boundary regression requires the read-only original asset bundle")
+	for key, name := range map[string]string{
+		"FD2_ORIGINAL_FDFIELD": "FDFIELD.DAT",
+		"FD2_ORIGINAL_FDSHAP":  "FDSHAP.DAT",
+		"FD2_ORIGINAL_FDOTHER": "FDOTHER.DAT",
+		"FD2_ORIGINAL_FDICON":  "FDICON.DAT",
+		"FD2_ORIGINAL_FDTXT":   "FDTXT.DAT",
+		"FD2_ORIGINAL_DATO":    "DATO.DAT",
+	} {
+		path := filepath.Join(base, name)
+		if _, err := os.Stat(path); err != nil {
+			t.Skipf("ch24 production boundary regression requires read-only %s", name)
+		}
+		t.Setenv(key, path)
 	}
-	t.Setenv("FD2_ORIGINAL_FDOTHER", fdotherPath)
 	// Keep the exact LOADCH identity order authored by ch24.json.  This is
 	// deliberately not copied from the adjacent chapter: slots 1 and 2 are
 	// 亞雷斯(4), 悠妮(9) here, and the runtime rejects a reordered fixture.
@@ -47,12 +56,18 @@ func newChapter24RuntimeBattle(t *testing.T) (*Game, []int) {
 	if err := g.seedPersistentPartyFromLoadCH(deployed, g.st.Units[partyStart:]); err != nil {
 		t.Fatal(err)
 	}
-	// A normal player battle has already sent this construction-order roster
-	// through the native selector cache before the victory screen.  Direct test
-	// setup must materialize that renderer provenance explicitly; the postbattle
-	// adapter must not invent it after entry.
-	if err := g.st.AppendNativeMapSelectorBatch(g.st.Units); err != nil {
+	// A normal player battle sends each construction-order record through the
+	// native selector cache exactly once. resetBattle has already assembled the
+	// 86 pointers, so detach that batch before using the append constructor;
+	// passing the installed slice directly would duplicate it into 172 records.
+	constructed := g.st.Units
+	g.st.Units = nil
+	if err := g.st.AppendNativeMapSelectorBatch(constructed); err != nil {
+		g.st.Units = constructed
 		t.Fatal(err)
+	}
+	if len(g.st.Units) != 86 {
+		t.Fatalf("ch24 selector construction duplicated runtime records: %d", len(g.st.Units))
 	}
 	emptyX, emptyY, found := 0, 0, false
 	for y := 0; y < g.st.H && !found; y++ {
@@ -90,10 +105,24 @@ func TestChapter24BattleResultPostbattlePreparationSaveLoadUsesProductionBoundar
 	if !g.confirmBattleResult() || g.result != "" {
 		t.Fatalf("ch24 result confirmation failed: node=%q result=%q err=%q", g.camp.NodeID(), g.result, g.loadErr)
 	}
+	seen := make(map[[2]int]bool, 11)
 	for step := 0; step < 2000 && g.camp.NodeID() != "preparation_ch25"; step++ {
 		if len(g.dialog) != 0 {
-			g.dialog = nil
-			g.beatAdvance()
+			current := g.dialog[len(g.dialog)-1]
+			if current.NativeDialogue == nil || current.Upper == nil ||
+				current.NativeDialogue.SourceDAT != "FDTXT_024" ||
+				current.NativeDialogue.StringIndex < 2 || current.NativeDialogue.StringIndex > 3 ||
+				len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) < 5 {
+				t.Fatalf("ch23_post dialog lost indexed lifecycle: %#v", current)
+			}
+			seen[[2]int{current.NativeDialogue.StringIndex, current.NativeDialogue.Utterance}] = true
+			if g.nativeStoryDialogueAtInputWait() &&
+				!g.handleNativeStoryInput(g.camp.Node(), nativeStoryInput{enter: true}) {
+				t.Fatal("ch23_post formal story input was rejected")
+			}
+			if err := g.Update(); err != nil {
+				t.Fatal(err)
+			}
 			continue
 		}
 		if g.nativeCh23Loop != nil {
@@ -109,6 +138,9 @@ func TestChapter24BattleResultPostbattlePreparationSaveLoadUsesProductionBoundar
 	}
 	if g.camp.NodeID() != "preparation_ch25" || g.handlerChapter != 24 {
 		t.Fatalf("ch24 post boundary node=%q chapter=%d beat=%d/%d", g.camp.NodeID(), g.handlerChapter, g.beatIdx, len(g.beats))
+	}
+	if len(seen) != 11 {
+		t.Fatalf("ch23_post native dialogues=%d, want 11", len(seen))
 	}
 	if g.st != nil || len(g.partyRoster) != len(deployed) {
 		t.Fatalf("preparation_ch25 state=%v roster=%d, want cleared battle and %d records", g.st != nil, len(g.partyRoster), len(deployed))

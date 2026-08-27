@@ -240,7 +240,7 @@ def generate(
         if beat["op"] != "dialog":
             continue
         addr = beat["source"]["addr"]
-        for authored_addr in list(binding["overrides"]):
+        for authored_addr in list(binding.get("overrides", {})):
             if authored_addr.lower() != addr.lower():
                 continue
             binding["overrides"][authored_addr].pop("dialog", None)

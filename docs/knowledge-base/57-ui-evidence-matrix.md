@@ -275,6 +275,12 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 > `preparation_ch23`與存讀檔，列`RUNTIME-E1`。未修改DOSBox同狀態與精確音訊
 > 仍缺，但依99%門檻不阻擋。
 >
+> **2026-08-27 第24戰戰後原生對話補證：** raw ch23 post 的兩個caller現由
+> FDTXT_024 index2／3建立3＋8句原生版面；index2保存scene0→scene1的有序跨場景
+> 映射。86-slot正式戰果路徑以具型別輸入完成11句、stage2..14、同步、
+> `preparation_ch25`與存讀檔，列`RUNTIME-E1`。未修改DOSBox同狀態、精確BIOS tick
+> 與音訊仍缺，但依99%門檻不阻擋。
+>
 > **2026-08-27 第10戰戰後原生對話補證：** raw ch09 post 的兩個caller現由
 > FDTXT_010 index4／5建立19＋16句原生版面。60／61兩個正式輸入路徑都依序完成
 > DAC淡出、sparse patch、淡入、35句、ACTING37、JOIN11／6、`town_ch11`與存讀檔，
