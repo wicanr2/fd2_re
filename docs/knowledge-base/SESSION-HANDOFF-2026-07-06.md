@@ -3816,7 +3816,8 @@ renderer、原版輸入與時序，以及未修改一般玩家終局 E2。較早
   `NextAIPlan`／`aiStep` 寫成「AI 行走+敵攻我演出」已完成，容易被誤讀為原版
   敵方 AI 已接通。該條現明示為 **normalized approximation、非 native parity**；
   現況 AI 段落也明確寫成「尚未接入原版 native AI 的 production planner」。
-- `docs/knowledge-base/11-enemy-ai.md`、`docs/knowledge-base/42-re-vs-remake-gap-audit.md`
+- `docs/knowledge-base/11-enemy-ai.md`、當時的舊落差稽核表（該表已於
+  2026-08-27 因被現行矩陣完全取代而刪除）
   與 `docs/knowledge-base/56-fd2-remake-sdd.md` 原本已保留相同的 fail-closed 限定，
   本勘誤不改變任何位址、候選橋或執行器語意；下一個真正解除閘門的證據仍是固定
   存檔中的 command／目標 trace 及正式回合消費端回歸。
@@ -7761,3 +7762,14 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   ELF不外推實體三平台；C++／SDL2不是第二套runtime；自動劇情轉錄不等於caller
   mapping或E2；歷史`✅`只代表來源可用或當時窄實作。README範圍與文化保存內容
   經核對無需刪減。
+
+## 2026-08-27：無獨有價值的 Markdown 快照移除勘誤
+
+- 第二輪逐檔價值複核後，刪除 `20`、`21`、`22`、`30`、`42`、`90` 六份早期
+  可行性、架構、技術驗證、工作拆解、落差與 RE 計畫快照。它們沒有獨有原始
+  位元組、執行期擷取、文化考證或錯誤形成證據，且所有仍有效內容已由
+  `docs/ENGINEERING.md`、`56`、`57`、`58` 與 `91` 承載；原文保留於 Git 歷史。
+- 這項刪除取代本交接檔較早「為歷史脈絡保留 `30`／`42`／`90`」的判斷；新判斷
+  的理由不是縮短篇幅，而是這些快照會重複或矛盾地描述現況，卻不能提供獨有
+  證據。`README-RESTORE`、`51`、`99`、本交接檔、實測報告、資料證據與文化保存
+  文件仍保留，因為刪除它們會失去無法由現況矩陣取代的來源或錯誤形成脈絡。

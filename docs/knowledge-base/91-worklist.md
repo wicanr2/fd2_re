@@ -878,9 +878,15 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 
 - [x] 根目錄 `README.md` 改為「資產／RE／引擎切片／原版差距」四欄狀態表，加入已驗證成果圖片；不再宣稱全 30 章 parity。
 - [x] `remake/README.md` 改為垂直切片與失敗即關閉差距說明；此處記錄的是當時閱讀順序，目前已改為 README → `58` 覆蓋矩陣 → `56` SDD → `57` 介面矩陣 → 本工作清單。
-- [x] `20`／`22` 的「所有必要能力已完成／只剩工程整合」過強斷言降級為「資料與工具證明可行，runtime integration 尚待」；`90`／`51` 明確標成歷史計畫／試玩快照。
-- [~] 專題 RE 文件仍保留各自證據與歷史修正；不直接合併成單一長文，避免丟失位址層證據。現況衝突依 `58`、`56`、`57` 與本文件頂端有效佇列裁決；`42` 只作歷史快照。
-- [x] 2026-07-27 README/KB review：README 改正「跨平台已完成」「EXE 全部表已閉合」「SDL2 第二條 runtime」等過強敘述，補上原版／重製對話圖與可驗證差距說明；`00-index` 明列 README→56→57→42→91 裁決順序；`08` 修正兩個圖片相對路徑。`90`、`30`、`51`、`SESSION-HANDOFF-*` 不合併，保留 address-level/historical provenance，避免把舊快照當現況。
+- [x] `20`／`22` 的「所有必要能力已完成／只剩工程整合」過強斷言曾先降級；兩份早期可行性／技術驗證快照後於 2026-08-27 因已被現行工程與證據文件完全取代而刪除。
+- [~] 專題 RE 文件仍保留各自證據與歷史修正；不直接合併成單一長文，避免丟失位址層證據。現況衝突依 `58`、`56`、`57` 與本文件頂端有效佇列裁決。沒有獨有原始證據的舊落差表 `42` 已於 2026-08-27 刪除。
+- [x] 2026-07-27 README/KB review：README 改正「跨平台已完成」「EXE 全部表已閉合」「SDL2 第二條 runtime」等過強敘述，補上原版／重製對話圖與可驗證差距說明；當時仍保留 `90`、`30`、`51`、`SESSION-HANDOFF-*`。2026-08-27 再依獨有價值複核，只刪除已被取代的 `90`、`30`，保留具玩家實測與錯誤形成證據的 `51`、`SESSION-HANDOFF-*`。
+- [x] **DOC-NO-VALUE-SNAPSHOT-REMOVAL-20260827**：逐檔複核 87 份受版控
+  Markdown 後，刪除沒有獨有原始位元組、執行期擷取、文化考證或錯誤形成證據，
+  且已由現況文件完全取代的 `20`、`21`、`22`、`30`、`42`、`90`。工程入口改由
+  `docs/ENGINEERING.md` 承載，完成與落差判定只看 `56`／`57`／`58`／`91`；原文
+  仍可從 Git 歷史回查。`README-RESTORE`、`51`、`99`、handoff、實測報告、資料
+  證據與本機 donate 構想均有獨有價值，明確保留。
 - [x] 2026-07-27 stale dialogue-operand assertion cleanup：`09`、`01`、`18` 不再把控制碼第二 word 一律稱為固定肖像/DATO ID；依 `0x15f84→0x12c60` 分開 identity lookup、runtime unit `+7` 與 direct-DATO fallback，並將 `FFFA/FFFB` 統一修正為遞迴名稱／數值插入碼，不是特效。
 - [x] 2026-07-27 second-pass dialogue wording audit：`14` §4 的組合說明與 `-17/-18` 讀取步驟仍殘留「直接肖像 ID」舊斷言，已改成 identity lookup／record `+7`／direct-DATO fallback 三路 provenance；未修改任何未證實的 story operand。
 - [x] 2026-07-27 expansion-doc assertion audit：`17-scenario-expansion-evaluation.md` 原稱「原版評分式 AI 已還原、可照搬」已撤回，改以 `11` 的 raw dispatcher/candidate/score slices 與完整 runtime 未閉合為準；`50` 的 persistence 句也限定為 remake 自有 JSON projection，不冒稱 `FD2.SAV` byte identity。
@@ -1138,10 +1144,11 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 
 # 重製 worklist(Go/Ebiten,本機優先;依序執行)
 
-> **詳細工作拆解(WP/輸入/產出/驗收/衝刺)見 `30-remake-work-breakdown.md`**。本表為里程碑總覽。
+> 現行工程入口見 [`docs/ENGINEERING.md`](../ENGINEERING.md)；有效工作只看本檔檔首，
+> 下列里程碑為歷史工作記錄。
 
-> 策略:**先把本機桌面執行檔做成能完整玩,再回頭處理網頁/手機打包**(`22` 已證三平台都可建)。
-> 每個里程碑 = 一個可執行、可驗收的切片。完成才往下一個。架構見 `21`,可行性見 `20`。
+> 當時策略：**先把本機桌面執行檔做成能完整玩，再回頭處理網頁／手機打包**。
+> 這是歷史里程碑，不是目前跨平台完成宣稱；現行驗收以 `58`、`57` 與 `91` 檔首為準。
 
 ## M0 — 引擎骨架 ✅(已完成)
 - [x] Ebiten 專案 + Docker 建置流程(`remake/`,`go.mod`/`go.sum`)

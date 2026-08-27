@@ -281,6 +281,6 @@ key 或 text caller。`(race,cls)` 繼續專職算數值（HP/AP/DP/MV/暴擊，
 > 相關：`docs/knowledge-base/25-battle-event-system.md`（§7.5.1 staging 反組譯+dosbox 複驗）、
 > `docs/knowledge-base/28-chapter-objectives-and-recruits.md`（青衫30關目標表）、
 > `docs/knowledge-base/31-map-unit-sprites-fdicon.md`（portrait→sprite組對應，職業名根因引用）、
-> `docs/knowledge-base/42-re-vs-remake-gap-audit.md`（機制落差稽核，本篇補的是「內容/資料層」落差，
-> 非機制層）、`extracted/orig_play_notes.md`（今日 dosbox 實機筆記）、
+> [`57-ui-evidence-matrix.md`](57-ui-evidence-matrix.md)（現行介面落差矩陣；本篇補的是
+> 第一章內容／資料層歷史證據）、`extracted/orig_play_notes.md`（今日 dosbox 實機筆記）、
 > `video/fd2-ch1.mp4` + `extracted/story/ref_video/`（使用者提供原版錄影 + 抽幀，本機不入庫）。
