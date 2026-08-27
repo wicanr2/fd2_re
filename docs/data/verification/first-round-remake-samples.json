@@ -937,6 +937,28 @@
       "limitations": [
         "只驗證第26章選項4＋Shift+F5的0x58隱藏入口、秘密商店發布與返回；不外推其他章節條件、商品交易或原版同狀態。"
       ]
+    },
+    {
+      "id": "campaign-secret-shop-roundtrip-ch27",
+      "layer": "campaign_intermission",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-secret-shop-roundtrip-ch27-remake-e1.json",
+        "docs/data/ui-traces/native-secret-shop-entry-ch27-remake-e1-state.json",
+        "docs/data/ui-traces/native-secret-shop-return-ch27-remake-e1-state.json",
+        "docs/figures/native-secret-shop-entry-ch27-remake-e1.png",
+        "docs/figures/native-secret-shop-return-ch27-remake-e1.png"
+      ],
+      "limitations": [
+        "只驗證第27章酒店選項0＋Ctrl+F6的0x63隱藏入口、秘密商店發布與返回；不外推其他章節條件、商品交易或原版同狀態。"
+      ]
     }
   ]
 }

@@ -6,7 +6,7 @@
  * by reproducible GUI traces when the test container has no xdotool.
  *
  * Usage:
- *   fd2-xtest-input Escape:1000 Down:1000 Shift+F5:1500
+ *   fd2-xtest-input Escape:1000 Down:1000 Shift+F5:1500 Ctrl+F6:1500
  *
  * The number is the delay, in milliseconds, after releasing the key.  A key
  * is pressed and released as two synchronised XTest events so Ebiten can
@@ -128,10 +128,20 @@ int main(int argc, char **argv) {
             delay_ms = atoi(colon + 1);
             if (delay_ms < 0) delay_ms = 0;
         }
-        int shift = 0;
+        KeySym modifier_sym = NoSymbol;
+        const char *modifier_name = NULL;
         if (!strncmp(spec, "Shift+", 6)) {
-            shift = 1;
+            modifier_sym = XK_Shift_L;
+            modifier_name = "Shift";
             memmove(spec, spec + 6, strlen(spec + 6) + 1);
+        } else if (!strncmp(spec, "Ctrl+", 5)) {
+            modifier_sym = XK_Control_L;
+            modifier_name = "Ctrl";
+            memmove(spec, spec + 5, strlen(spec + 5) + 1);
+        } else if (!strncmp(spec, "Alt+", 4)) {
+            modifier_sym = XK_Alt_L;
+            modifier_name = "Alt";
+            memmove(spec, spec + 4, strlen(spec + 4) + 1);
         }
         KeySym sym = key_symbol(spec);
         free(spec);
@@ -146,14 +156,15 @@ int main(int argc, char **argv) {
             XCloseDisplay(dpy);
             return 6;
         }
-        KeyCode shift_code = XKeysymToKeycode(dpy, XK_Shift_L);
-        if (shift && !shift_code) {
-            fprintf(stderr, "no keycode for Shift in %s\n", argv[i]);
+        KeyCode modifier_code = modifier_sym == NoSymbol ? 0 :
+                                XKeysymToKeycode(dpy, modifier_sym);
+        if (modifier_sym != NoSymbol && !modifier_code) {
+            fprintf(stderr, "no keycode for %s in %s\n", modifier_name, argv[i]);
             XCloseDisplay(dpy);
             return 8;
         }
-        if (shift) {
-            XTestFakeKeyEvent(dpy, shift_code, True, CurrentTime);
+        if (modifier_code) {
+            XTestFakeKeyEvent(dpy, modifier_code, True, CurrentTime);
             XSync(dpy, False);
             /* Match an ordinary chord: let the game observe the held
              * modifier before the function-key just-pressed edge. */
@@ -163,8 +174,8 @@ int main(int argc, char **argv) {
         XSync(dpy, False);
         usleep(60000);
         XTestFakeKeyEvent(dpy, code, False, CurrentTime);
-        if (shift) {
-            XTestFakeKeyEvent(dpy, shift_code, False, CurrentTime);
+        if (modifier_code) {
+            XTestFakeKeyEvent(dpy, modifier_code, False, CurrentTime);
         }
         XSync(dpy, False);
         usleep((useconds_t)delay_ms * 1000U);

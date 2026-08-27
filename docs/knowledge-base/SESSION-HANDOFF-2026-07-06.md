@@ -8126,3 +8126,13 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   相同前綴送Escape，frame2300返回`town_ch26`並保留gold12000及已揭露`???`入口。
 - 舊工具把Shift與F5幾乎同時壓下的首輪停在town並排除；加入一般人組合鍵時序後
   唯一重播一次通過，不是遊戲規則修改。清冊現為49筆登記、44筆合格；戰役／戰間11／12。
+
+## 2026-08-28：第27章神秘商店普通Ctrl+F6往返
+
+- 權威章節表與`docs/data/shops.json`一致指出`town_ch27`要求酒店選項0、Ctrl+F6；
+  BIOS scan為0x63。這訂正唯讀子代理把它誤寫成Shift+F5的矛盾建議。
+- 正式標題LOAD後保持選項0，普通Ctrl+F6揭露選項5，另按Return於frame1700抵達
+  `shop_ch27_secret`；第二次相同前綴送Escape，frame1900返回`town_ch27`並保留
+  gold13000及已揭露`???`入口。
+- `fd2-xtest-input`的修飾鍵語法擴充為Shift／Ctrl／Alt，共用120ms按住狀態；仍只
+  送普通X11事件。清冊現為50筆登記、45筆合格；戰役／戰間12／12，該層關閉。
