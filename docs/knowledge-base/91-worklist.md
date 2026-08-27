@@ -887,6 +887,12 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   `docs/ENGINEERING.md` 承載，完成與落差判定只看 `56`／`57`／`58`／`91`；原文
   仍可從 Git 歷史回查。`README-RESTORE`、`51`、`99`、handoff、實測報告、資料
   證據與本機 donate 構想均有獨有價值，明確保留。
+- [x] **DOC-SECOND-PASS-LIVE-ASSERTION-AUDIT-20260827**：在刪除舊快照後重新複核
+  81 份受版控 Markdown。修正 `57` 同時把 CONTINUE／service3 寫成已接與未接的
+  內部矛盾，移除 title／戰場局部成果看似整體完成度的百分比，並把商店、教會
+  剩餘工作限定為未修改原版同狀態 `PLAYER-E2`；`58` 與 README 同步區分
+  `RUNTIME-E1`、候選封包及 13／60 抽樣門檻。全專案 920 個本地連結與 175 張
+  圖片引用均存在；沒有殘留的已刪檔引用，也沒有其他符合刪除門檻的受版控文件。
 - [x] 2026-07-27 stale dialogue-operand assertion cleanup：`09`、`01`、`18` 不再把控制碼第二 word 一律稱為固定肖像/DATO ID；依 `0x15f84→0x12c60` 分開 identity lookup、runtime unit `+7` 與 direct-DATO fallback，並將 `FFFA/FFFB` 統一修正為遞迴名稱／數值插入碼，不是特效。
 - [x] 2026-07-27 second-pass dialogue wording audit：`14` §4 的組合說明與 `-17/-18` 讀取步驟仍殘留「直接肖像 ID」舊斷言，已改成 identity lookup／record `+7`／direct-DATO fallback 三路 provenance；未修改任何未證實的 story operand。
 - [x] 2026-07-27 expansion-doc assertion audit：`17-scenario-expansion-evaluation.md` 原稱「原版評分式 AI 已還原、可照搬」已撤回，改以 `11` 的 raw dispatcher/candidate/score slices 與完整 runtime 未閉合為準；`50` 的 persistence 句也限定為 remake 自有 JSON projection，不冒稱 `FD2.SAV` byte identity。
