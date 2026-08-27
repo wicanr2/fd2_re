@@ -49,3 +49,5 @@ IDA 或遊戲相依項目。最短可維護入口見 [`remake/README.md`](../rem
   消耗收尾時間。
 
 目前抽樣完成門檻與尚餘工作見 [`REMAKE-STATUS.md`](REMAKE-STATUS.md)。
+具型別抽樣清冊由[`check_remake_samples.py`](../tools/check_remake_samples.py)驗證；
+不得直接修改`qualifies`把除錯、修改路徑或缺少重製消費端的旁證灌入完成數。

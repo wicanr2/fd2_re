@@ -1,0 +1,307 @@
+{
+  "schema_version": 1,
+  "updated": "2026-08-27",
+  "confidence_target": 0.95,
+  "minimum_total": 60,
+  "layer_minimums": {
+    "campaign_intermission": 12,
+    "combat_ai": 18,
+    "ui": 12,
+    "save_party": 10,
+    "ending_platform": 8
+  },
+  "qualification_contract": "pass、remake_checked、production_path、normal_input、無route_patch、無debug_shortcut，且證據至少為RUNTIME-E1",
+  "samples": [
+    {
+      "id": "ui-current-runtime-continue-ch01",
+      "layer": "ui",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-continue-current-runtime-remake-e2.json"
+      ],
+      "limitations": [
+        "重製擷取使用固定標題計時夾具，因此重製側維持RUNTIME-E1。"
+      ]
+    },
+    {
+      "id": "ui-end-confirmation-ch01",
+      "layer": "ui",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-end-turn-confirmation-original-vs-remake-e1.json"
+      ],
+      "limitations": [
+        "選項脈動與戰場動畫相位未同步，不宣稱整幀逐像素一致。"
+      ]
+    },
+    {
+      "id": "combat-end-response-accept-ch01",
+      "layer": "combat_ai",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-end-turn-response-progressive-original-vs-remake-e1.json"
+      ],
+      "limitations": [
+        "驗證接受句逐字發布及進入敵方回合，不宣稱精確DOS tick或音訊一致。"
+      ]
+    },
+    {
+      "id": "ui-end-response-cancel-ch01",
+      "layer": "ui",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-end-turn-response-progressive-original-vs-remake-e1.json"
+      ],
+      "limitations": [
+        "驗證取消句逐字發布及返回玩家戰場，不宣稱精確DOS tick或音訊一致。"
+      ]
+    },
+    {
+      "id": "combat-command0-target-ch01",
+      "layer": "combat_ai",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-command0-target-original-vs-remake-e1.json"
+      ],
+      "limitations": [
+        "重製與原版動畫時鐘相位未同步；只驗證同座標、同指令與目標模式。"
+      ]
+    },
+    {
+      "id": "combat-turn-cycle-ch29-candidate-save",
+      "layer": "combat_ai",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-battle-ch29-original-candidate.json"
+      ],
+      "limitations": [
+        "起點為固定雜湊第三方存檔，不證明從第1戰連續通關。",
+        "音訊停用，不能驗證精確聲音。"
+      ]
+    },
+    {
+      "id": "combat-turn-cycle-ch30-candidate-save",
+      "layer": "combat_ai",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-battle-ch30-original-candidate.json"
+      ],
+      "limitations": [
+        "起點為第三方末關存檔；正式GUI與回合交接已驗證，但不代表完整來源E2。"
+      ]
+    },
+    {
+      "id": "ui-preparation-ch30-phase0",
+      "layer": "ui",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": false,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": false,
+      "artifacts": [
+        "docs/data/ui-traces/native-load-ch29-preparation-original-remake-e1.json"
+      ],
+      "limitations": [
+        "同狀態相位0可達AE=0，但重製擷取使用專用截圖入口，尚未算正常輸入樣本。"
+      ]
+    },
+    {
+      "id": "save-restore-current-runtime-ch01",
+      "layer": "save_party",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-continue-current-runtime-remake-e2.json"
+      ],
+      "limitations": [
+        "驗證固定原版FD2.SAV的current-runtime還原；不涵蓋SAVE writer或其他章節。"
+      ]
+    },
+    {
+      "id": "save-restore-party-ch29-candidate",
+      "layer": "save_party",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-battle-ch29-original-candidate.json"
+      ],
+      "limitations": [
+        "正式CONTINUE還原76筆runtime與31人persistent；第三方存檔不證明從頭通關。"
+      ]
+    },
+    {
+      "id": "save-restore-party-ch30-candidate",
+      "layer": "save_party",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/native-battle-ch30-original-candidate.json"
+      ],
+      "limitations": [
+        "正式CONTINUE還原33筆場上單位與31人persistent；第三方存檔來源不完整。"
+      ]
+    },
+    {
+      "id": "campaign-ch23-post-to-preparation24",
+      "layer": "campaign_intermission",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": false,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": false,
+      "artifacts": [
+        "docs/data/ui-traces/ch23-post-preparation-ch24-input-e1.json"
+      ],
+      "limitations": [
+        "測試與鍵盤共用具型別consumer，但本紀錄沒有作業系統鍵盤事件。"
+      ]
+    },
+    {
+      "id": "ui-shop-sell-ch02-route-patched",
+      "layer": "ui",
+      "result": "pass",
+      "evidence_level": "E1+E2",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": true,
+      "debug_shortcut": false,
+      "qualifies": false,
+      "artifacts": [
+        "docs/data/ui-traces/shop-sell-success-return-ch02-e2.json"
+      ],
+      "limitations": [
+        "原版使用route-patched LOAD略過手動戰鬥，不能取代未修改一般玩家樣本。"
+      ]
+    },
+    {
+      "id": "ending-indexed-dialogue-runtime",
+      "layer": "ending_platform",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": false,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": false,
+      "artifacts": [
+        "docs/data/ui-traces/ending-dialogue-native-indexed-remake-e1.json"
+      ],
+      "limitations": [
+        "正式indexed owner已驗證，但目前證據不是完整正常玩家輸入至終局。"
+      ]
+    },
+    {
+      "id": "platform-linux-appimage-self-check",
+      "layer": "ending_platform",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": false,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": false,
+      "artifacts": [
+        "docs/data/ui-traces/release-appimage-town-ch02.json",
+        "docs/knowledge-base/41-packaging.md"
+      ],
+      "limitations": [
+        "非互動封包自我檢查不取代玩家視窗、輸入、存檔與音訊抽樣。"
+      ]
+    },
+    {
+      "id": "platform-windows-wine-town-save",
+      "layer": "ending_platform",
+      "result": "pass",
+      "evidence_level": "RUNTIME-E1",
+      "remake_checked": true,
+      "production_path": true,
+      "normal_input": true,
+      "route_patch": false,
+      "debug_shortcut": false,
+      "qualifies": true,
+      "artifacts": [
+        "docs/data/ui-traces/release-windows-wine-smoke.json"
+      ],
+      "limitations": [
+        "以Wine 9.0／Xvfb接收鍵盤並寫入存檔，不取代Windows實體機公開發行驗收。",
+        "自動方向鍵對映不作原版方向忠實度證據。"
+      ]
+    }
+  ]
+}

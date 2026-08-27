@@ -42,6 +42,22 @@
 每個樣本至少保存輸入序列、前後狀態、畫面或數值結果、原版／重製來源、是否使用
 修改路徑，以及 E0／E1／E2 等級。除錯直達或 route patch 不可取代核心正常輸入樣本。
 
+受版控清冊位於
+[`first-round-remake-samples.json`](data/verification/first-round-remake-samples.json)，
+以`tools/check_remake_samples.py`自動拒絕重複ID、遺失證據檔及手動灌水的資格欄位。
+首輪盤點登記16筆既有證據，其中11筆符合正常輸入與正式重製路徑資格：戰鬥／AI
+4／18、介面3／12、存檔／持續隊伍3／10、終局／平台1／8；戰役／戰間0／12。
+其餘5筆保留為有用旁證，但因route patch、專用截圖入口、typed test或非互動封包
+檢查而不計入95%門檻。這個數字衡量的是已整理樣本，不是把既有功能降級成未完成。
+
+完整門檻檢查使用：
+
+```bash
+python tools/check_remake_samples.py --require-complete
+```
+
+命令必須在專案Docker工具鏈內執行；目前未滿60格時應以退出碼2明確表示尚未完成。
+
 ## 第一輪仍缺的最小工作
 
 1. 把現有測試與畫面證據登記到上述 60 格矩陣，避免重跑已具充分證據的切片。

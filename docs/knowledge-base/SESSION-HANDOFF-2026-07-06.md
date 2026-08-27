@@ -7728,3 +7728,14 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   AppStream metadata；5,327,352-byte產物SHA-256為
   `ea132427a657b072b70d6df6683f8322c9390f63cd157f09a1ebe0b2c2737373`，空白cwd封包
   自我檢查及相對雜湊均通過。`appstreamcli`額外lint未包含在既有映像，保留為工具限制。
+
+## 2026-08-27：95%抽樣清冊成為可執行門檻
+
+- 新增`docs/data/verification/first-round-remake-samples.json`與
+  `tools/check_remake_samples.py`，以固定五層配額、證據檔存在性及資格推導防止手動
+  灌水；`--require-complete`在未達60格時應退出2。
+- 首批16筆既有證據中有11筆符合正式重製路徑、正常輸入、無route patch／debug
+  shortcut：戰鬥／AI 4、介面3、存檔／持續隊伍3、終局／平台1。另5筆保留旁證但
+  不計門檻；相同trace只有在輸入分支或驗收不變量不同時才拆成不同樣本。
+- 這次盤點顯示下一個高價值缺口不是再反組譯，而是把既有早／中／晚期戰間與冷讀
+  存檔consumer由普通作業系統輸入重播，補目前為0的兩層樣本。
