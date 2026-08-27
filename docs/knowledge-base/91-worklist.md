@@ -403,8 +403,10 @@ handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不�
   進入下一項 `0x13FD4` owner。缺少 command、target、path、FIGANI 或 raw
   provenance 時停止，不把 route 猜成玩法名稱。Docker focused regression 已
   通過；一般玩家敵方回合 E2 與未知 command／spell presentation 仍另列待辦。
-- [x] **RE-AI-MODE11-GAME-CONSUMER-20260811**：新增
-  `TestAIStepConsumesVerifiedMode11StagesInNativeOrder` 與
+- [x] **RE-AI-MODE11-GAME-CONSUMER-20260811**：當時新增的遊戲層回歸後來拆為
+  現行 `TestNextAIPlanMode11BuildsOrderedDirectStages`、
+  `TestNativeAIMode11StagesPreserveNativeOrder`、
+  `TestAIStepMode11RejectsMissingCommandPresentationWhileStationary` 與
   `TestAIStepStopsMode11WithoutVerifiedProducerTables`。Docker/Xvfb 實際由
   `NextAIPlan` 產生兩段 raw stage，經 `aiStep` 先消費 `0x15311` 指令，再沿
   continuation 消費 `0x1548E` 物理／FIGANI；缺 command book 或 item／movement
@@ -477,10 +479,10 @@ handoff 的舊說法、raw exporter 尚寫 `unknown`、或新工作階段找不�
   預設忠實模式仍失敗即關閉，且新增 `TestApproximatePostbattlePreservesAuthoredIntermissionBoundary`
   驗證 town／preparation 邊界與戰場狀態清除；另以 `campaign_full.json` 的
   `postbattle_ch23/24/25/29` 實際節點通過近似確認與預設失敗即關閉矩陣，確認四個
-  未綁定 handler 都沿 authored `next` 進入準備／城鎮而不跳過戰間段落；新增
-  `TestApproximateCampaignFullResultConfirmationKeepsUnboundIntermissions` 再由四個
-  對應 battle node 的正式 `confirmBattleResult` 進入提示，確認玩家確認前不跨越
-  戰間節點。這是可玩近似切片，不是原版 E2。
+  未綁定 handler 都沿 authored `next` 進入準備／城鎮而不跳過戰間段落。這批
+  unbound campaign 測試在 24 個標準 postbattle binding 全部 active 後移除；目前由
+  `TestCampaignFullPostbattleBindingsUseVerifiedRawOwner` 與逐章 production-boundary
+  回歸取代。這是歷史可玩近似切片，不是目前的原版 E2 證據。
 - [x] **CAMPAIGN-RESULT-CONFIRM-CH01-20260811**：`TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne`
   改由實際 `battle.State.Result`→`checkResult`→`confirmBattleResult` 生產邊界
   確認戰鬥勝利，再沿已編譯戰後節點進入 `town_ch02` 與整備；不再用
@@ -573,10 +575,10 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   依賴未初始化區域值，不接入正式重製。證據見
   [`fd2_ending_audio_ida.txt`](../data/ida/fd2_ending_audio_ida.txt)。
 - [~] **RE-AI-14EF0-RUNTIME-CONSUMER-20260810**：raw producer→`0x14EF0`
-  route→command／item state-only executor 已接上；`TestAIStepConsumesVerified14EF0CommandRoute`
-  以完整 raw command book／mask／resistance／movement provenance 實際消費
-  `0x15311` command route，`TestAIStepConsumesVerified14EF0ItemRoute` 另以資產
-  item 192 的 type-5 raw row 實際消費 `0x15055→0x211A4` HP 交易，均提交數值／回合結果。
+  route→command／item state-only executor 已接上；當時的兩個大型遊戲層測試後來拆為
+  `TestNextAIPlanUses14EF0CommandWinnerAndRetainsRawTarget`、
+  `TestNextAIPlanUses14EF0ItemWinnerAndRetainsRawTarget` 與各自的正式 consumer
+  fail-closed 回歸。原測試名稱只保留於 Git 歷史，不再當目前可執行入口。
   缺 item rows 的負向測試維持失敗即關閉；mode 3／9 raw `+0x08` 查找與 mode 5
   mutable event grid／state tail 也有 Docker regression。
   mode 11 現另有 `SelectNativeAIMode11Transaction` 與 runtime stage owner，
@@ -891,8 +893,14 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   81 份受版控 Markdown。修正 `57` 同時把 CONTINUE／service3 寫成已接與未接的
   內部矛盾，移除 title／戰場局部成果看似整體完成度的百分比，並把商店、教會
   剩餘工作限定為未修改原版同狀態 `PLAYER-E2`；`58` 與 README 同步區分
-  `RUNTIME-E1`、候選封包及 13／60 抽樣門檻。全專案 920 個本地連結與 175 張
+  `RUNTIME-E1`、候選封包及 13／60 抽樣門檻。全專案本地連結檢查為 0 斷鏈，
   圖片引用均存在；沒有殘留的已刪檔引用，也沒有其他符合刪除門檻的受版控文件。
+- [x] **DOC-THIRD-PASS-REPRODUCIBLE-CLAIMS-20260827**：改以機器清冊、現行 Go
+  符號與 Git 歷史交叉稽核，修正 `58` 檔首／後段殘留的產品31、未知1,104舊數字；
+  canonical IDA 9.4 清冊為函式1,305、產品37、runtime170、未知1,098。`56／91`
+  另有七組已被後續精確回歸取代的測試名稱仍用現在式，現已換成目前原始碼存在的
+  planner／consumer／postbattle／montage 測試，或明示只屬 Git 歷史。未知函式依
+  玩家影響分類；DOS／PIT／DAC與裝飾性 RNG 不阻擋，玩法 RNG 仍須保留契約。
 - [x] 2026-07-27 stale dialogue-operand assertion cleanup：`09`、`01`、`18` 不再把控制碼第二 word 一律稱為固定肖像/DATO ID；依 `0x15f84→0x12c60` 分開 identity lookup、runtime unit `+7` 與 direct-DATO fallback，並將 `FFFA/FFFB` 統一修正為遞迴名稱／數值插入碼，不是特效。
 - [x] 2026-07-27 second-pass dialogue wording audit：`14` §4 的組合說明與 `-17/-18` 讀取步驟仍殘留「直接肖像 ID」舊斷言，已改成 identity lookup／record `+7`／direct-DATO fallback 三路 provenance；未修改任何未證實的 story operand。
 - [x] 2026-07-27 expansion-doc assertion audit：`17-scenario-expansion-evaluation.md` 原稱「原版評分式 AI 已還原、可照搬」已撤回，改以 `11` 的 raw dispatcher/candidate/score slices 與完整 runtime 未閉合為準；`50` 的 persistence 句也限定為 remake 自有 JSON projection，不冒稱 `FD2.SAV` byte identity。

@@ -5597,14 +5597,10 @@ mode 5 的完整目標／指令／法術／道具人工智慧語意仍未解除�
   JOIN、獎勵、章節值或原版分支。
 - 未設定旗標時維持忠實證據模式的失敗即關閉；`TestApproximatePostbattlePreservesAuthoredIntermissionBoundary`
   以 town／preparation 兩條邊界驗證同步與戰場狀態清除。
-- `TestApproximateCampaignFullUnboundPostbattleBoundaries` 與
-  `TestCampaignFullUnboundPostbattleDefaultsFailClosed` 再以 `campaign_full.json` 的
-  第 23、24、29 戰實際節點驗證近似確認與預設停止。第25戰已由下游正式
-  `ch24_post` E1 回歸取代此近似測試。
-- `TestApproximateCampaignFullResultConfirmationKeepsUnboundIntermissions` 再從三個
-  對應的 `battle_ch23/24/29` 設定勝利結果，走正式 `confirmBattleResult`，確認
-  先停在近似戰後提示，玩家確認後才沿 authored `next` 進 preparation／town；這補上
-  之前直接把 Runner 游標放在 postbattle 的測試與正式結果消費端之間的邊界。
+- 當時另以三個 `campaign_full.json` 近似模式測試覆蓋第 23、24、29 戰；隨後
+  24 個標準 postbattle 節點全部改為正式 binding，這批「unbound」測試已由目前的
+  `TestCampaignFullPostbattleBindingsUseVerifiedRawOwner` 及各章 production-boundary
+  回歸取代。舊測試名稱只保留於 Git 歷史，不再列成目前可執行證據。
 - 近似模式只代表可玩的戰役銜接，不提升 E1 為 E2，也不改寫既有原版證據與推論
   等級；剩餘節點與證據以 [`91-worklist.md`](91-worklist.md) 最新稽核為準。
 
@@ -5678,7 +5674,7 @@ map-range 狀態。缺少 movement／raw provenance 時，在位置、回合與 
 
 ## 2026-08-11：`0x14EF0` command route 遊戲層消費端 E1
 
-`TestAIStepConsumesVerified14EF0CommandRoute` 已在 Docker／Xvfb 通過。測試以完整
+當時的遊戲層回歸以完整
 raw command book、command mask、selector、runtime record、地形／組成、movement-cost
 與 class resistance provenance 建立三格戰場；`NextAIPlan` 由 `0x14EF0` 選出
 `0x15311` command route，`aiStep` 先沿 raw destination 移動，再呼叫已驗證的
@@ -5686,13 +5682,18 @@ command 0 數值執行器，提交 MP 扣除、目標 HP 變更與回合完成�
 與 numeric state owner，不替 command 0 命名法術或演出，也不把 synthetic fixture
 當作原版一般玩家 E2。
 
+目前原始碼已把這個較大的測試拆成
+`TestNextAIPlanUses14EF0CommandWinnerAndRetainsRawTarget` 與
+`TestAIStep14EF0CommandRejectsMissingPresentationWhileStationary` 等 planner／consumer
+邊界；本段原測試名稱只屬歷史，不可當成目前可執行入口。
+
 `0x15055` 未知 item／relocation、未知 command／spell 的完整效果與 indexed 演出仍
 維持失敗即關閉；缺少 command book、target 或 resistance provenance 不得退回正規化
 AI。已核對的 type-5 item row 窄交易另見下節。
 
 ## 2026-08-11：`0x14EF0` type-5 item route 遊戲層消費端 E1
 
-`TestAIStepConsumesVerified14EF0ItemRoute` 已在 Docker／Xvfb 通過。正向 fixture 使用
+當時的 type-5 正向 fixture 使用
 資產表中 item 192 的原始 23-byte row（row `+0x0d=5`、`+0x0e=40`、選擇／目標欄位
 保持原值），並提供完整 command book、selector、runtime record、地形／組成、
 movement-cost 與 `NativeTileBlitModes` provenance。`NextAIPlan` 實際選出
@@ -5700,6 +5701,10 @@ movement-cost 與 `NativeTileBlitModes` provenance。`NextAIPlan` 實際選出
 `beginNativeTargetItem` 建立 raw 目標，`applyNativeTargetItem` 依 `0x211A4` type-5
 交易回復目標 HP、消耗來源欄位並提交回合。`TestAIStepStops14EF0ItemRouteWithoutItemRows`
 確認缺少 item rows 時在 HP、背包、行動旗標與回合變更前失敗即關閉。
+
+目前可執行回歸已拆成 `TestNextAIPlanUses14EF0ItemWinnerAndRetainsRawTarget`、
+`TestAIStepStops14EF0ItemRouteWithoutIndexedPresentation` 與
+`TestAIStepStops14EF0ItemRouteWithoutItemRows`；原正向測試名稱只保留於 Git 歷史。
 
 這是 2026-08-11 當時只閉合 type-5／`0x211A4` 的窄 E1 紀錄。2026-08-25 的
 IDA Pro 9.4 補證已確認 `0x15055` 重建並消費完整 target list；正式 AI owner 也已改為
@@ -5775,7 +5780,7 @@ mode-7 `+0x35/+0x36` 目的地、地形／組成與 movement-cost provenance 的
 回歸 `TestMontageCycleExecutesBothNativeSideBranchesAndFinalPaletteFade`、
 `TestMontageCycleInputChangeFinishesCurrentPortraitThenJumpsToFinalLoop`、
 `TestNativeEndingMontageRecordsUseOnlyPersistentRawProvenance` 與
-`TestApproximateCampaignMontageStartsFromPersistentLoadCHOrder` 以玩家原始 archive
+`TestSourceBoundCampaignMontageStartsFromPersistentLoadCHOrder` 以玩家原始 archive
 驗證 raw nonzero、輪播跳轉、資料拒絕與戰役 admission。這是重製端 E1 垂直切片，
 不是未修改一般玩家終局路徑；`0x2c194` 尾段、精確 BIOS key code、FDMUS_018／停曲
 owner、raw terminal owner、戰後／城鎮 handoff 與一般玩家 E2 仍失敗即關閉。
@@ -5816,7 +5821,7 @@ palette fade／wait 的精確時序、raw `0x25970→0x2bce5` 一般玩家 campa
 正式戰役完成宣稱。
 
 Docker／Xvfb 回歸 `TestMontageTailAssetsPreservePaletteFramesAndTerminalImage` 與
-`TestApproximateCampaignMontageStartsFromPersistentLoadCHOrder` 的
+`TestSourceBoundCampaignMontageStartsFromPersistentLoadCHOrder` 的
 `optional_party_outcome_review_loops_and_restores_terminal` 子案例，已以玩家原始 archive
 確認資源形狀、終局定格、回顧重新起始與返回定格。新增的
 `TestMontageTailPlayerUsesAllTwentySourceTransactionsThenHoldsFinal` 另以玩家原始
