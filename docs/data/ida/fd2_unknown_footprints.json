@@ -8,15 +8,15 @@
   },
   "address_space": "IDA flat-loader linear address",
   "inventory_function_count": 1305,
-  "unknown_function_count": 1073,
-  "scanned_text_file_count": 373,
-  "exact_start_mentioned_count": 486,
-  "range_mentioned_count": 502,
+  "unknown_function_count": 1072,
+  "scanned_text_file_count": 374,
+  "exact_start_mentioned_count": 488,
+  "range_mentioned_count": 506,
   "review_priority_counts": {
-    "no_versioned_text_footprint": 571,
+    "no_versioned_text_footprint": 566,
     "recover_lead_only": 48,
     "review_canonical_claim": 86,
-    "review_direct_artifact": 43,
+    "review_direct_artifact": 47,
     "review_first": 325
   },
   "policy": "位址命中只代表受版控文字足跡；classification/confidence/semantic 必須由人工回查 caller、consumer、writer、raw bytes 與證據分級後另行加入語意索引",
@@ -59912,11 +59912,27 @@
         "0x25bf4"
       ],
       "direct_code_xref_count": 1,
-      "footprint_source_kinds": [],
-      "review_priority": "no_versioned_text_footprint",
+      "footprint_source_kinds": [
+        "direct_artifact"
+      ],
+      "review_priority": "review_direct_artifact",
       "review_state": "pending_human_evidence_review",
-      "exact_start_hits": [],
-      "range_hits": []
+      "exact_start_hits": [
+        {
+          "path": "docs/data/ida/fd2_ail_background_3eeda_ida.txt",
+          "lines": [
+            26
+          ]
+        }
+      ],
+      "range_hits": [
+        {
+          "path": "docs/data/ida/fd2_ail_background_3eeda_ida.txt",
+          "lines": [
+            26
+          ]
+        }
+      ]
     },
     {
       "start": "0x37c20",
@@ -62284,11 +62300,21 @@
       ],
       "direct_caller_functions": [],
       "direct_code_xref_count": 0,
-      "footprint_source_kinds": [],
-      "review_priority": "no_versioned_text_footprint",
+      "footprint_source_kinds": [
+        "direct_artifact"
+      ],
+      "review_priority": "review_direct_artifact",
       "review_state": "pending_human_evidence_review",
       "exact_start_hits": [],
-      "range_hits": []
+      "range_hits": [
+        {
+          "path": "docs/data/ida/fd2_ail_background_3eeda_ida.txt",
+          "lines": [
+            33,
+            34
+          ]
+        }
+      ]
     },
     {
       "start": "0x3e864",
@@ -62353,11 +62379,20 @@
         "0x3f959"
       ],
       "direct_code_xref_count": 1,
-      "footprint_source_kinds": [],
-      "review_priority": "no_versioned_text_footprint",
+      "footprint_source_kinds": [
+        "direct_artifact"
+      ],
+      "review_priority": "review_direct_artifact",
       "review_state": "pending_human_evidence_review",
       "exact_start_hits": [],
-      "range_hits": []
+      "range_hits": [
+        {
+          "path": "docs/data/ida/fd2_ail_background_3eeda_ida.txt",
+          "lines": [
+            32
+          ]
+        }
+      ]
     },
     {
       "start": "0x3ea1a",
@@ -62532,113 +62567,6 @@
       "range_hits": []
     },
     {
-      "start": "0x3eeda",
-      "end": "0x3eee6",
-      "size": 12,
-      "ida_analysis_name": "sub_3EEDA",
-      "ida_function_flags": [],
-      "direct_caller_functions": [
-        "0x37b88",
-        "0x37c20",
-        "0x37d24",
-        "0x37e0f",
-        "0x37e88",
-        "0x37f12",
-        "0x37f99",
-        "0x380a1",
-        "0x3810e",
-        "0x38113",
-        "0x3846c",
-        "0x38557",
-        "0x3864a",
-        "0x386c0",
-        "0x387ac",
-        "0x38889",
-        "0x38958",
-        "0x38a27",
-        "0x38a94",
-        "0x38af6",
-        "0x38bdb",
-        "0x38cce",
-        "0x38d3b",
-        "0x38e26",
-        "0x38f80",
-        "0x39065",
-        "0x39164",
-        "0x391d1",
-        "0x3923e",
-        "0x39344",
-        "0x393c6",
-        "0x39448",
-        "0x394b5",
-        "0x3958f",
-        "0x395fc",
-        "0x39672",
-        "0x396e8",
-        "0x3975e",
-        "0x397d4",
-        "0x398b9",
-        "0x399aa",
-        "0x39a8f",
-        "0x39b74",
-        "0x39c59",
-        "0x39d52",
-        "0x39e4b",
-        "0x39f30",
-        "0x3a035",
-        "0x3a11a",
-        "0x3a207",
-        "0x3a2f4",
-        "0x3a3e1",
-        "0x3a4ce",
-        "0x3a550",
-        "0x3a63d",
-        "0x3a722",
-        "0x3a7f9",
-        "0x3a953",
-        "0x3aaa5",
-        "0x3ab9e",
-        "0x3ac0b",
-        "0x3ace5",
-        "0x3ad52",
-        "0x3add4",
-        "0x3ae56",
-        "0x3aecc",
-        "0x3afb1",
-        "0x3b096",
-        "0x3b17b",
-        "0x3b260",
-        "0x3b3c6",
-        "0x3b4bf",
-        "0x3b5b8",
-        "0x3b63a",
-        "0x3b6bc",
-        "0x3b7a1",
-        "0x3b89a",
-        "0x3b987",
-        "0x3ba8f",
-        "0x3bb05",
-        "0x3bbf2",
-        "0x3bcdf",
-        "0x3bdcc",
-        "0x3beb9",
-        "0x3bfa6",
-        "0x3c028",
-        "0x3c18b",
-        "0x3c270",
-        "0x3c2e6",
-        "0x3c368",
-        "0x3c455",
-        "0x3c564"
-      ],
-      "direct_code_xref_count": 160,
-      "footprint_source_kinds": [],
-      "review_priority": "no_versioned_text_footprint",
-      "review_state": "pending_human_evidence_review",
-      "exact_start_hits": [],
-      "range_hits": []
-    },
-    {
       "start": "0x3eee6",
       "end": "0x3ef2d",
       "size": 71,
@@ -62651,11 +62579,27 @@
         "0x3846c"
       ],
       "direct_code_xref_count": 2,
-      "footprint_source_kinds": [],
-      "review_priority": "no_versioned_text_footprint",
+      "footprint_source_kinds": [
+        "direct_artifact"
+      ],
+      "review_priority": "review_direct_artifact",
       "review_state": "pending_human_evidence_review",
-      "exact_start_hits": [],
-      "range_hits": []
+      "exact_start_hits": [
+        {
+          "path": "docs/data/ida/fd2_ail_background_3eeda_ida.txt",
+          "lines": [
+            13
+          ]
+        }
+      ],
+      "range_hits": [
+        {
+          "path": "docs/data/ida/fd2_ail_background_3eeda_ida.txt",
+          "lines": [
+            13
+          ]
+        }
+      ]
     },
     {
       "start": "0x3ef2d",

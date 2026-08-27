@@ -286,9 +286,9 @@ repo 提供不含 license／遊戲資料的 `tools/docker/fd2-ida.Dockerfile` �
 只在授權 IDA Docker 匯出原始函式邊界、IDA 分析名稱、旗標與直接 caller；
 `tools/compact_fd2_function_inventory.py` 產生受版控的
 [`fd2_function_inventory.json`](../data/ida/fd2_function_inventory.json)。固定雜湊輸入
-辨識1,305函式；現行語意索引63筆中，58筆標為產品、5筆標為runtime；
-語意索引覆蓋同一FLIRT分類而不重複計數。目前為產品58、runtime174、
-未知1,073。語意只從
+辨識1,305函式；現行語意索引64筆中，58筆標為產品、6筆標為runtime；
+語意索引覆蓋同一FLIRT分類而不重複計數。目前為產品58、runtime175、
+未知1,072；最近新增的是 `0x3EEDA` Miles AIL 背景IRQ狀態分流。語意只從
 [`fd2_semantic_index.json`](../data/ida/fd2_semantic_index.json) 合併，雜湊不符、
 註記未落在函式起點或缺推論等級／證據時直接拒絕。handler IR 同步拆成
 `native_call`、`unresolved_native_call`、`unknown`；三者都保留原始定位，前兩者
@@ -309,8 +309,10 @@ repo 提供不含 license／遊戲資料的 `tools/docker/fd2-ida.Dockerfile` �
 註記60。足跡清冊本身保留全部待審函式及來源種類，不因索引回填而遺失研究線索。
 其後對高 caller `0x36CD7` 做直接 IDA body／失敗臂複核，推翻「證據不足」：
 `0x36CD7→0x36CEA→0x36D07` 是三段 Watcom stack overflow runtime，且不是舊稱的
-逐頁 guard-page probe。三段回填後現況為產品58、runtime174、unknown1,073、
+逐頁 guard-page probe。三段回填後當時為產品58、runtime174、unknown1,073、
 語意註記63；通用 pattern 與停止線見 `59-watcom-stack-runtime-patterns.md`。
+其後 `0x3EEDA` 由 Miles IRQ 8 timer writer／consumer 閉合為背景中斷巢狀狀態
+runtime；精確 API 名稱仍為強推論。最新語意註記64、runtime175、unknown1,072。
 
 ### 未知函式既有足跡的分級回填規格
 

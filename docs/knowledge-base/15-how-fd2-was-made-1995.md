@@ -14,8 +14,8 @@
 
 他們沒有自己寫編譯器或音效卡驅動,而是把當年的商用工具組起來:
 
-- **Watcom C/C++ 32-bit**(1988–1993 版)編譯,產出 **LE(Linear Executable)**。遊戲邏輯是 32-bit C。
-- **Rational DOS/4GW** 當 DOS extender,把程式帶進 32-bit 平坦記憶體(才能定址大量資料)。
+- **Watcom C/C++ 32-bit** 家族編譯，產出 **LE（Linear Executable）**。遊戲邏輯是32-bit C；精確 compiler／linker 版本仍未知，不能由版權年份推定。
+- **Rational DOS/4GW 1.92** 當 DOS extender，把程式帶進32-bit平坦記憶體（才能定址大量資料）。
 - **Miles Design Audio Interface Library (AIL) V3.02** 處理音效——一份音樂資料能在 AdLib/SB/MPU-401/GUS
   等各種音效卡上播放(故隨遊戲附一整套 `.MDI`/`.DIG` 驅動)。
 - **自製動畫工具 AFM(Animation File Manager)v1.00**,作者署名 **Lo Yuan Tsung,1993**——

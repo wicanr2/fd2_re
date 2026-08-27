@@ -15,11 +15,11 @@
   "imagebase": "0x0",
   "function_count": 1305,
   "classification_counts": {
-    "unknown": 1073,
+    "unknown": 1072,
     "product": 58,
-    "runtime": 174
+    "runtime": 175
   },
-  "semantic_annotation_count": 63,
+  "semantic_annotation_count": 64,
   "classification_note": "product/driver only come from the versioned semantic index; runtime is a mechanical IDA FUNC_LIB classification after the configured FLIRT signatures; every other function remains unknown",
   "detail_note": "每筆保留 IDA 函式邊界、分析名稱、旗標、直接 caller 函式與分級語意；逐 call-site 交叉參照由同一匯出器重生，不在此精簡版重複保存",
   "functions": [
@@ -18471,11 +18471,23 @@
       "direct_code_xref_count": 160,
       "direct_data_xref_count": 0,
       "classification": {
-        "value": "unknown",
-        "confidence": "未知",
-        "source": "not yet classified"
+        "value": "runtime",
+        "confidence": "已證實",
+        "source": "versioned semantic index"
       },
-      "semantic_annotations": []
+      "semantic_annotations": [
+        {
+          "address": "0x3eeda",
+          "classification": "runtime",
+          "semantic": "回傳 Miles AIL timer IRQ 背景中斷巢狀計數／狀態",
+          "confidence": "已證實",
+          "evidence": [
+            "docs/data/ida/fd2_ail_background_3eeda_ida.txt",
+            "docs/knowledge-base/04-original-toolchain.md"
+          ],
+          "scope": "窄中介層 runtime 語意；精確 API 名稱 AIL_background 仍為強推論，不是遊戲玩法或音訊 cue helper"
+        }
+      ]
     },
     {
       "start": "0x3eee6",

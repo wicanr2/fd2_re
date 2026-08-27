@@ -7861,3 +7861,21 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 三段均回填runtime，清冊為產品58、runtime174、unknown1,073、語意63。版本綁定
   原始證據置於`fd2_watcom_stack_check_36cd7_ida.txt`；共用辨識方法另寫入專案`59`
   與`~/.codex/knowledge-base/local/watcom-stack-runtime-patterns.md`並加入知識路由。
+
+## 2026-08-27：原始工具鏈指紋與 `0x3EEDA` Miles runtime 分流
+
+- 固定雜湊 `FD2.EXE` 直接證明 Watcom C/C++32 runtime 家族與 MZ＋LE 產物；版權
+  年份及 Watcom 9.x FLIRT 不足以唯一決定 compiler／WLINK 版本，舊「約v9.5/v10」
+  已降為強推論範圍。同版 `DOS4GW.EXE` 直接證明 Rational DOS/4GW 1.92
+  （1993-08-24 build），`DIG.INI`／`MDI.INI`／`SETSOUND.EXE` 直接證明 Miles AIL
+  3.02（1995-01-18）；ANI 資源仍直接證明 AFM 1.00 與 Lo Yuan Tsung 署名。
+- `DOS4GW.EXE`、`SETSOUND.EXE`、`DIG.INI`、`MDI.INI`、`ADRV688.DIG` 的 size／MD5／
+  SHA-256 已加入版本清單，避免日後把其他發行版工具混入同一位址／版本結論。
+- 依新流程審最高 fan-in unknown `sub_3EEDA`：IDA 證實它只回傳
+  `dword_52BE6`；該值由 Miles IRQ 8 timer owner 清零並在中斷進出時加減，160個
+  caller 均位於 AIL 函式區。窄語意已列 runtime；`AIL_background` 精確名稱仍為
+  強推論。清冊重生為產品58、runtime175、unknown1,072、語意64。
+- 通用方法已加入 `~/.codex` 路由與 `reverse-engineer-retro-game-remake` 技能，並
+  同步到 `~/my_skill`：後續先做 compiler／linker／extender／middleware／自製工具
+  指紋，再以原始名稱、xref、writer／consumer與證據等級建立 runtime pattern；
+  不再用 unknown 數量驅動逐函式猜名。

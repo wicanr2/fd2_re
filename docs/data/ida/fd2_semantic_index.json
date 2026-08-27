@@ -465,6 +465,14 @@
       "scope": "IDA thunk j___delay 與直接目標；重製採硬體規格近似，不追求 DOS wall-clock 逐週期一致"
     },
     {
+      "address": "0x3eeda",
+      "classification": "runtime",
+      "semantic": "回傳 Miles AIL timer IRQ 背景中斷巢狀計數／狀態",
+      "confidence": "已證實",
+      "evidence": ["docs/data/ida/fd2_ail_background_3eeda_ida.txt", "docs/knowledge-base/04-original-toolchain.md"],
+      "scope": "窄中介層 runtime 語意；精確 API 名稱 AIL_background 仍為強推論，不是遊戲玩法或音訊 cue helper"
+    },
+    {
       "address": "0x4dbfc",
       "classification": "product",
       "semantic": "raw cell +1/+2 遮罩與 +3=0xff 初始化",

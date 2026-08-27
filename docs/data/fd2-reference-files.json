@@ -1,12 +1,42 @@
 {
   "schema_version": 1,
-  "scope": "FD2 反向工程所使用的執行檔與唯讀遊戲資產；不含可變動的 FD2.SAV、FD2.TMP",
+  "scope": "FD2 反向工程所使用的執行檔、隨附工具鏈與唯讀遊戲資產；不含可變動的 FD2.SAV、FD2.TMP",
   "files": [
     {
       "file": "FD2.EXE",
       "size": 357074,
       "md5": "b97caf2239a27a896069d03549d96e1e",
       "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    {
+      "file": "DOS4GW.EXE",
+      "size": 244716,
+      "md5": "a75fdc120ae2fbb4cb2fd9e7b6a94858",
+      "sha256": "bcba1fc7ea48469fcd97f7d33f2781db8903d90d93cda03505860177259dfaec"
+    },
+    {
+      "file": "SETSOUND.EXE",
+      "size": 320037,
+      "md5": "acd891d19b109a068f05aa03236dbe95",
+      "sha256": "e337ab8b41044f94f26c50eb388d72393833980f032c6d0745704b6a28a2f349"
+    },
+    {
+      "file": "DIG.INI",
+      "size": 216,
+      "md5": "6ea1dd6cfc3c6ef697d890606a2900b9",
+      "sha256": "ff4a599b6970cb02f4e8348b3ee72777a156fd067038c9d72fe5788f7c3224e6"
+    },
+    {
+      "file": "MDI.INI",
+      "size": 218,
+      "md5": "1eb7d3bb2f1f781b306c3a580fe3273d",
+      "sha256": "d42a9f90e09585eee203db863c664d5cae763e00749325c91b028ee3bcac55d1"
+    },
+    {
+      "file": "ADRV688.DIG",
+      "size": 11278,
+      "md5": "feabc78729e3a458ae2f6ab40146f0d9",
+      "sha256": "294a7de77d88a7f38f58b32fc7166ced87a4c44e6c9be760f78b1724744d7161"
     },
     {
       "file": "ANI.DAT",

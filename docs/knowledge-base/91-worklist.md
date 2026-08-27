@@ -27,7 +27,7 @@
 | 順序 | 工作 | 現況 | 下一個可驗收結果 |
 |---:|---|---|---|
 | 0 | 原始碼註解與 Markdown 現況斷言稽核 | `DATA-READY`：已撤回「合成有效槽 fixture 證明未修改原版四槽 LOAD E2」、「轉職尚未實作」、「所有 `0x13FD4` 消費端均未接入」及把購買success/debit誤讀成sell成功E2等舊說法。2026-08-22 第五輪又修正開場 cutScript「反組譯真值／完整」誇大、天空之鑰 fixture「等價一般玩家路徑」、戰鬥動畫完整、所有繁中字必有字形及 SETSOUND 等註解；同步撤回 `42/56/57/91` 把 service3 五個 partial E2 子面板列為未做。歷史勘誤保留可追溯；這是持續性品質閘門，不是一次掃描即永久完成 | 每個玩家功能關閉時，以程式、測試與 `58` 現況核對完成度、節點、slot、handler、renderer；錯誤現況直接訂正，歷史證據追加勘誤 |
-| 1 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：2026-08-27由合法IDA 9.4重生1,305函式；全專案unknown位址足跡已成為可重跑清冊。兩批產品語意與Watcom stack runtime複核後，語意索引現63筆，結果為產品58／runtime174／未知1,073；剩餘486個精確起點、502個range命中，325筆同時有canonical與direct artifact而列第一優先。`0x36CD7`的541個prologue callers現可從產品原語統計排除。舊83 unknown call sites已拆為80已分類、3已知但未閉合、0真未知 | 依 `fd2_unknown_footprints.json` 審完325筆第一優先候選；先套用已證實Watcom runtime pattern排除重複序言，再審產品writer／consumer，不為歸零猜名 |
+| 1 | 維護 handler 三態與 IDA 函式清冊 | `RE-CLOSED`、`DATA-READY`：2026-08-27由合法IDA 9.4重生1,305函式；全專案unknown位址足跡已成為可重跑清冊。兩批產品語意、Watcom stack runtime及Miles背景IRQ狀態複核後，語意索引現64筆，結果為產品58／runtime175／未知1,072；剩餘488個精確起點、506個range命中，325筆同時有canonical與direct artifact而列第一優先。`0x36CD7`的541個prologue callers及`0x3EEDA`的160個AIL callers現可從產品原語統計排除。舊83 unknown call sites已拆為80已分類、3已知但未閉合、0真未知 | 依 `fd2_unknown_footprints.json` 審325筆第一優先候選；先做compiler／linker／extender／middleware指紋與runtime樣板分流，再審會改變玩家結果的writer／consumer，不為歸零猜名 |
 | 2 | 玩家第21戰天空之鑰固定演出 | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`：`0x2415B`的三張25-byte表與special slot已接26-slot layout；六組分支呼叫共30句保存原始control／operand／pages。成功臂正式消費26句、ACT63／64與`0x24336`；材料不足臂正式消費14句且不執行演出／授予鑰匙。兩臂均完成JOIN24／23、城鎮與存讀檔。無來源的3,231-byte紀錄已撤回，權威第21項為4,660 bytes | 只補未修改原版同狀態 E2與第一個動態調色盤相位；不重解函式本體、對話呼叫組、layout或ACT resources |
 | 3 | 玩家第29戰 raw ch28 post（產品結案） | `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`；`0x1DB65`、group9→`0x25535`、持續隊伍與19人整備存讀檔均已接。全新 `Game` 冷讀後會消費ch29 pre的21句／七次staging；2026-08-26 再修正 ch30 缺最後focus view／HUD及錯誤非runtime constructor，正式 entry 現依 raw origin 去重 LOADCH party＋group0，再補 groups1–3，33筆全具 indexed presentation。相同長鏈已消費完整 END→YES、敵方回合、勝利、終局文字閘門與角色蒙太奇。外部 ch30 候選已由未修改原版同一程序以普通鍵盤完成`CONTINUE→END→YES→ENEMY PHASE`、敵方演出並交回玩家操作權；renderer同狀態合法相位達整幀AE0。fixed-hash `fd2004` 候選也由未修改原版普通 CONTINUE 進第29戰並完成一輪控制權交接；重製正式標題事件現以同檔完成 END／YES、實際敵軍行動及回合交還，並保留76筆 runtime／31人 persistent。checksum-valid `fd2021` raw chapter `0x1c` 槽則由普通 LOAD 連續走過save-NO、19人整備、戰前劇情至可操作第30戰。依玩家可見99%相似門檻，本項不再位於有效工作前沿 | remake 已完成；完整provenance、原版writer建槽、逐幀／精確音訊只列證據限制與可選polish。三份第三方存檔仍只列候選E2；高階圖像與sample 3語意仍為unknown，但均不得重開已閉合RE或阻擋交付 |
 | 4 | 玩家指令／法術／物品與敵方 AI 完整交易 | 敵方ID0／4、玩家／敵方ID1／2／3／5／6／7／8／9／10／11／12、玩家／敵方IDs17–22、玩家25–27及敵方26／27均已有caller-specific indexed owner；受限class19玩家ID32–35亦達`RUNTIME-E1`。ID4現使用#22／#23／#85逐Draw發布六段HP；敵方ID0..8也已全部改依raw `+6` selector與選定目的格重建目標陣列，不再錯走玩家confirmed-cursor admission。同時修正ID4／5實檔`EffectMode=1` gate。`0x15055`也已保存並消費`0x1567E` winner的完整raw target list；正常正分item type5／13／20／21／24的數值與caller-specific indexed演出均達`RUNTIME-E1`：分別走`0x211A4`、`0x1CD17`、`0x1CAC7`，具Draw發布與完整回復邊界。玩家正常item38／79也已共用後兩個owner，不再於確認時同步跳過畫面。33圖全量mask稽核再證實，排除mode8後的正常非玩家command producer只有ID0–7、9–18、20–22、26、27，全部已有indexed owner；唯一ID30位於mode8，不進scorer。敵方mode2無候選也已接`0x13C0F→0x13FD4`恢復／零修改共用收尾。2026-08-26末關動態診斷再修正物理helper完整item table、`0x15311`原地effect destination與FIGANI 379／168嚴格按需載入；固定版原版現於同一程序從普通`CONTINUE`走完`END→YES`、敵方演出並交回玩家操作權，撤回「兩次證據不能合併」的舊限制，但第三方存檔與停用音訊仍只列候選E2。共用短音效播放器現保留疊播 voice 至自然結束、逐幀回收並在退出時關閉，既有 raw cue 不再依賴被立即丟棄的 player；這是重製播放可靠性 E1，不提升精確音訊。敵方25缺正常AI producer，維持失敗即關閉；ID4無已證實正常玩家producer；28／30／31沒有已證實正常玩家取得來源。六個raw transient的玩家可見到期文字已由FDTXT#481..486正式消費，不把缺高階enum名稱列為runtime阻擋。 | 正常producer的`RUNTIME-E1`交易已閉合，正式owner不重做；下一步只做精確音訊與代表性同狀態E2 |
@@ -37,7 +37,7 @@
 | 7 | 三平台打包與推廣片 | 最新程式已重建Linux AppImage 5,327,352 bytes（SHA-256 `32239daa…091f5`）與Windows交叉編譯ZIP 4,910,912 bytes（`c85e466b…ee11`），兩者均在一次性無網路Docker由空白工作目錄通過正式封包自我檢查；Windows使用既有Wine 9.0／Xvfb。原生Windows run 33038018401與macOS run 33038019716亦分別完成ZIP及universal DMG／tar.gz；artifact下載後，Windows ZIP與macOS兩包均用內附相對路徑SHA-256 manifest在唯讀Docker複驗成功。封包只含受版控scenario／story／spells，不含原版EXE／DAT／存檔。尚未做實體Windows／Mac操作；全戰役長程遊玩由使用者人工進行 | 補Windows與macOS實體玩家桌面的視窗／輸入／存檔／音訊抽測；處理簽章／Gatekeeper；公開推廣片素材策略待使用者確認。Wine、Docker與CI自我檢查均不取代真機 |
 
 > **2026-08-27 全專案 Markdown 斷言稽核：** 已刪除無可重跑來源的90／100自評，
-> 以合法IDA 9.4重生並完成兩批足跡及Watcom runtime回填後，函式清冊為產品58／runtime174／未知1,073，將故事切片由舊17筆訂正為
+> 以合法IDA 9.4重生並完成兩批足跡、Watcom與Miles runtime回填後，函式清冊為產品58／runtime175／未知1,072，將故事切片由舊17筆訂正為
 > 19筆，並撤回Linux ELF可外推三平台、C++／SDL2第二runtime、AI／終局舊未接狀態、
 > 「全劇情轉錄即完整接線」及歷史`✅`代表完成等說法。歷史證據保留但加上取代
 > 關係；現況只由`58`、`57`、本檔有效佇列及可執行抽樣清冊裁決。
@@ -928,6 +928,12 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   guard-page probe。三段均歸runtime，541個prologue callers可由產品原語統計排除；
   清冊成為產品58／runtime174／unknown1,073／語意63。專案與`~/.codex`均新增可重用
   pattern、判讀步驟及停止線。
+- [x] **RE-TOOLCHAIN-FINGERPRINT-AND-AIL-BACKGROUND-20260827**：固定雜湊證實
+  Watcom C/C++32家族與LE產物，但精確compiler／WLINK版本仍未知；同版隨附檔則
+  直接證實DOS/4GW 1.92、Miles AIL 3.02及AFM 1.00。依此分流160-call-site的
+  `0x3EEDA`，以IRQ 8 timer writer、初始化owner與AIL consumer閉合為背景中斷
+  巢狀狀態runtime；精確`AIL_background`名稱仍為強推論。IDA重生為產品58／
+  runtime175／unknown1,072／語意64。通用方法已同步`~/.codex`與`~/my_skill`。
 - [x] 2026-07-27 stale dialogue-operand assertion cleanup：`09`、`01`、`18` 不再把控制碼第二 word 一律稱為固定肖像/DATO ID；依 `0x15f84→0x12c60` 分開 identity lookup、runtime unit `+7` 與 direct-DATO fallback，並將 `FFFA/FFFB` 統一修正為遞迴名稱／數值插入碼，不是特效。
 - [x] 2026-07-27 second-pass dialogue wording audit：`14` §4 的組合說明與 `-17/-18` 讀取步驟仍殘留「直接肖像 ID」舊斷言，已改成 identity lookup／record `+7`／direct-DATO fallback 三路 provenance；未修改任何未證實的 story operand。
 - [x] 2026-07-27 expansion-doc assertion audit：`17-scenario-expansion-evaluation.md` 原稱「原版評分式 AI 已還原、可照搬」已撤回，改以 `11` 的 raw dispatcher/candidate/score slices 與完整 runtime 未閉合為準；`50` 的 persistence 句也限定為 remake 自有 JSON projection，不冒稱 `FD2.SAV` byte identity。

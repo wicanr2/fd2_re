@@ -1,0 +1,49 @@
+# FD2 Miles AIL 背景中斷狀態 `0x3EEDA`（IDA Pro 9.4）
+
+證據等級：已證實（窄中介層語意）；`AIL_background` 名稱僅為強推論。
+
+- 輸入：`FD2.EXE`，357,074 bytes。
+- MD5：`b97caf2239a27a896069d03549d96e1e`。
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 工具：IDA Pro 9.4／IDAPython，`fd2-ida-authorized-local` 一次性無網路 Docker。
+- 位址空間：IDA flat-loader linear address；保留原始 `sub_...` 名稱。
+
+## 已證實資料流
+
+`sub_3EEDA` 範圍為 `0x3EEDA..0x3EEE6`：
+
+```asm
+0x3EEDA  push ebx
+0x3EEDB  push esi
+0x3EEDC  push esi
+0x3EEDD  mov  eax, dword_52BE6
+0x3EEE2  pop  esi
+0x3EEE3  pop  esi
+0x3EEE4  pop  ebx
+0x3EEE5  retn
+```
+
+IDA 列出160個直接 code xrefs，全部位於 `0x37B88..0x3C666` 的 Miles AIL
+函式區。代表性 `sub_37B88` 在輸出 `AIL_shutdown()` 診斷訊息及關閉 log 前呼叫
+它；回傳非零時略過非中斷安全的診斷／檔案操作。
+
+`dword_52BE6` 的全部直接 data xrefs 只有：
+
+- `sub_3E92C` 初始化 IRQ 8 timer handler 時於 `0x3E948` 清零；
+- `sub_3E73E` timer interrupt handler 於 `0x3E766` 進入時加一，於
+  `0x3E80D`／`0x3E841` 返回前減一；巢狀進入時只送 8259 EOI 後 `iret`；
+- `sub_3EEDA` 於 `0x3EEDD` 讀取並回傳。
+
+因此已證實的窄語意是「回傳 Miles AIL timer IRQ 背景中斷巢狀計數／狀態」。
+它是音訊中介層 runtime，不是遊戲玩法函式，重製不需移植。它很可能對應 Miles
+公開 API `AIL_background()`，但未取得同版本 library symbol 或 release-specific
+signature 前，精確 API 名稱維持**強推論**。
+
+## 樣板價值與停止線
+
+- 高 fan-in 且 caller 集中於一段中介層函式，應先追 writer／consumer，不可先
+  當成跨子系統遊戲 helper。
+- 單純回傳全域也不能只靠函式形狀命名；本案是由 IRQ 8 writer、初始化 owner、
+  shutdown consumer 與 AIL 字串共同閉合。
+- remake 只保留玩家可見 cue／完成閘門；IRQ、8259 與 DOS timer 交由現代引擎，
+  不繼續追逐週期硬體一致。

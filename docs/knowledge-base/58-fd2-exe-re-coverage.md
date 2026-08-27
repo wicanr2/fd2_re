@@ -27,8 +27,8 @@
 匯出器的 `unknown_ops` 數量代替。原因如下：
 
 1. 現已有 IDA Pro 9.4 重生的 1,305 筆函式清冊；Watcom FLIRT 與受版控
-   runtime 註記合計分出174筆 runtime，受版控語意索引分出58筆產品函式，
-   其餘1,073筆仍未
+   runtime 註記合計分出175筆 runtime，受版控語意索引分出58筆產品函式，
+   其餘1,072筆仍未
    分類；尚未排完 DOS/4GW、Miles AIL 與所有一般函式庫，因此仍沒有可信的
    「重製相關函式」分母。清冊見
    [`fd2_function_inventory.json`](../data/ida/fd2_function_inventory.json)。
@@ -72,7 +72,7 @@ blitters。授權 IDA 9.4 再次從固定雜湊原檔重生後，現況為
 `0x36CD7→0x36CEA→0x36D07` 是 Watcom stack-demand／overflow-check runtime：
 比較 prospective ESP、process stack lower limit 與 SS selector，失敗時輸出
 `Stack Overflow!` 並以1退出。它不是舊文件所稱的逐頁 guard-page probe，也沒有
-遊戲 side effect。三段回填後現況為
+遊戲 side effect。三段回填後當時為
 `1,305 = 58 product + 174 runtime + 1,073 unknown`、語意註記63筆；541個
 prologue call sites 可從產品原語統計排除，但 caller 後續真正 frame 與產品 calls
 仍須分析。通用 pattern 見[`59-watcom-stack-runtime-patterns.md`](59-watcom-stack-runtime-patterns.md)。
@@ -82,7 +82,17 @@ prologue call sites 可從產品原語統計排除，但 caller 後續真正 fra
 產物；它不會執行原版 EXE，也不會自動證明未分類 helper 的語意。只要某個玩家
 切片所依賴的原版資料、規則、介面與狀態邊界已有證據及失敗即關閉行為，該切片
 便能建置與抽驗。反之，能產生三平台封包只證明交付物完整性，不能提升其餘
-1,073筆 unknown，也不能取代未修改原版同狀態的 `PLAYER-E2`。
+1,072筆 unknown，也不能取代未修改原版同狀態的 `PLAYER-E2`。
+
+同日再依工具鏈指紋分流最高 fan-in 候選：`sub_3EEDA` 雖有160個直接 code xrefs，
+本體只回傳 `dword_52BE6`；該全域由 Miles IRQ 8 timer 初始化 owner 清零，於中斷
+handler 進入／離開時加減，AIL shutdown 等 caller 以非零結果避開背景中斷內的
+診斷／檔案操作。故窄語意「回傳 Miles AIL timer IRQ 背景中斷巢狀狀態」已閉合，
+精確 API 名稱 `AIL_background` 仍只列強推論。現況為
+`1,305 = 58 product + 175 runtime + 1,072 unknown`、語意註記64筆；證據見
+[`fd2_ail_background_3eeda_ida.txt`](../data/ida/fd2_ail_background_3eeda_ida.txt)。
+這個案例建立後續固定順序：先考證 compiler／linker／extender／middleware，再以
+writer／consumer 分類高 fan-in helper，不用 unknown 總數驅動無限 RE。
 
 `unknown` 只表示目前沒有受版控證據足以分類，不能批次改名成 DOS、PIT、DAC、
 驅動或遊戲邏輯。第一輪重製採下列交付分類，而不是繼續追求命名率：
@@ -415,9 +425,9 @@ command30 producer，也不構成缺少AI executor的交付阻擋。
 
 2026-08-27 以唯讀原版、一次性無網路Docker與合法IDA Pro 9.4重生現有稽核：
 
-- IDA Pro 9.4 對固定雜湊 `FD2.EXE` 辨識1,305個函式；受版控語意索引有63筆，
-  其中58筆屬產品程式、5筆屬 runtime。匯出器讓語意索引覆蓋同一函式分類，
-  因此沒有重複計數；重生清冊為產品58、runtime174、未知1,073。
+- IDA Pro 9.4 對固定雜湊 `FD2.EXE` 辨識1,305個函式；受版控語意索引有64筆，
+  其中58筆屬產品程式、6筆屬 runtime。匯出器讓語意索引覆蓋同一函式分類，
+  因此沒有重複計數；重生清冊為產品58、runtime175、未知1,072。
 - 60份 raw handler script 原有83個 `unknown` call site、23個 target。重生後為
   80個 `native_call`（22個 target）與3個 `unresolved_native_call`
   （`0x22253` 1次、`0x2BCE5` 2次），真正 `unknown` 為0。每筆
