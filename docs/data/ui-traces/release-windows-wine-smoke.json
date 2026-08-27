@@ -1,6 +1,13 @@
 {
   "date": "2026-08-27",
   "classification": "Ubuntu 24.04／Wine 9.0 煙霧測試；不是 Windows 真機驗收",
+  "evidence_level": "RUNTIME-E1",
+  "result": "pass",
+  "remake_checked": true,
+  "production_path": true,
+  "normal_input": true,
+  "route_patch": false,
+  "debug_shortcut": false,
   "build_commit": "a5bbaf3fe603fa088fdb7c508ef413bf2ddb8070",
   "package": "remake/packaging/dist/fd2-windows-x86_64.zip",
   "package_sha256": "931397d8b60f85af976c68017d17f238a77ab904d4b00d8081e0267ceb0eb286",
@@ -18,7 +25,7 @@
     "frame": 300,
     "screenshot": "docs/figures/release-windows-wine-shop-ch02.png",
     "screenshot_sha256": "50b658719d1c79cc60e04fb8771aad5383c27755a02bb6a977387e8d2276ff29",
-    "caveat": "證明封包接收X11／Wine鍵盤並離開城鎮；自動注入方向對映不作原版方向忠實度證據"
+    "caveat": "證明封包接收普通X11／Wine鍵盤並離開城鎮；自動注入方向對映不作原版方向忠實度證據"
   },
   "save_input": {
     "start_node": "town_ch02",

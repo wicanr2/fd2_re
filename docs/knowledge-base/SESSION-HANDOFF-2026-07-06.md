@@ -7943,3 +7943,23 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   已作廢並撤回工具改動，不宣稱神秘商店入口通過。
 - 清冊新增兩個不同不變量：戰間節點往返與單句對話發布／收束，成為27筆登記、
   22筆合格；分層為戰役3、戰鬥4、介面8、存檔5、終局／平台2。
+
+## 2026-08-27：Windows／Wine 武器店既有證據標準化
+
+- `release-windows-wine-smoke.json` 補齊清冊資格欄位；原始程序已由普通 X11
+  `Left→Return` 經 Wine 9.0 從 `town_ch02` 進 `shop_ch02_weapon`，並保存正式
+  武器店截圖。沒有 route patch 或 debug shortcut。
+- 同一程序分成兩個不同不變量：戰間節點轉移與商店畫面發布；不重複既有的
+  Windows平台啟動或F5原子存檔結果。清冊成為29筆登記、24筆合格；戰役4、介面9。
+- Wine仍不是Windows真機；自動方向對映不作原版方向忠實度證據。教會普通輸入
+  本輪因AppImage 127退出及目前程式資產／標題時序未閉合而停止，沒有登錄失敗試跑。
+
+## 2026-08-27：第30戰初始控制權與HUD既有證據補登
+
+- `native-load-ch30-normal-input-remake-e1.json` 補齊清冊資格欄位；其普通鍵盤長鏈
+  由標題 LOAD 經記錄提示NO、19人整備、21句戰前對話與七次staging，最終抵達
+  `battle_ch30` turn1、45×40地圖、camera(16,14)、cursor(23,18)，且無殘留modal。
+- 新增兩個不同不變量：戰前鏈收束後的玩家控制權，以及正式戰場HUD／視圖發布。
+  它們不重複既有 `combat-turn-cycle-ch30-candidate-save` 的敵方回合交接。
+- 清冊成為31筆登記、26筆合格；戰鬥／AI 5、介面10。第三方存檔來源、dummy
+  音訊與非原版同幀限制均保留，不升 `PLAYER-E2`。
