@@ -388,3 +388,131 @@ func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing
 		t.Fatalf("town_ch22 存讀檔 node=%q chapter=%d order=%v members=%v roster=%d err=%q", g.camp.NodeID(), g.handlerChapter, g.partyJoinOrder, g.partyMembers, len(g.partyRoster), g.loadErr)
 	}
 }
+
+func TestChapterTwentyOneSkyKeyInsufficientBranchUsesNativeDialogueAndTownSave(t *testing.T) {
+	fdPath, datoPath := nativeFDOTHERPath(), nativeDATOPath()
+	if fdPath == "" || datoPath == "" {
+		t.Skip("第21戰材料不足原生對話需要玩家提供 FDOTHER.DAT 與 DATO.DAT")
+	}
+	if _, err := os.Stat(fdPath); err != nil {
+		t.Skipf("FDOTHER.DAT unavailable: %v", err)
+	}
+	if _, err := os.Stat(datoPath); err != nil {
+		t.Skipf("DATO.DAT unavailable: %v", err)
+	}
+
+	scenario, err := battle.LoadScenario(assetPath("assets/scenarios/ch21.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(scenario.Party) < 16 {
+		t.Fatalf("第21戰永久名冊=%d，無法建立16名出戰前沿", len(scenario.Party))
+	}
+	order := make([]int, len(scenario.Party))
+	members := make(map[int]bool, len(order))
+	for index, unit := range scenario.Party {
+		order[index] = unit.Fig
+		members[unit.Fig] = true
+	}
+	g := &Game{
+		partyMembers:   members,
+		partyJoinOrder: append([]int(nil), order...),
+		partyDeploy:    make(map[int]bool, 15),
+	}
+	for _, id := range order[1:16] {
+		g.partyDeploy[id] = true
+	}
+	if err := g.seedPersistentPartyFromLoadCH(order, scenario.PartyUnits(nil)); err != nil {
+		t.Fatal(err)
+	}
+	if err := g.loadMap("assets/maps/map20"); err != nil {
+		t.Fatal(err)
+	}
+	g.resetBattle("assets/maps/map20/map20_units.json", "assets/scenarios/ch21.json")
+	if g.loadErr != "" || g.st == nil || len(g.st.Units) != 75 {
+		t.Fatalf("第21戰材料不足入口 err=%q state=%v slots=%d", g.loadErr, g.st != nil, g.handlerUnitCount())
+	}
+	// 清除所有六素材，證明這條路徑由正式配方判定進入不足臂，而不是直接節點測試。
+	for _, unit := range g.st.Units[:16] {
+		for index := len(unit.Inventory) - 1; index >= 0; index-- {
+			if unit.Inventory[index] >= 0xd1 && unit.Inventory[index] <= 0xd6 {
+				unit.RemoveInventoryIndex(index)
+			}
+		}
+	}
+	g.curX, g.curY = 0, 0
+	if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{}); err != nil ||
+		!g.st.MaterializeNativeMapHUDState(1, 1, 1) || !g.st.MaterializeNativeMapRangeMode(1) {
+		t.Fatalf("第21戰材料不足原生視圖初始化失敗: %v", err)
+	}
+	if err := g.composeNativeMapFrame(); err != nil {
+		t.Fatal(err)
+	}
+	full, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	full.Start = "battle_ch21"
+	g.camp = campaign.NewRunner(full)
+	g.result = "win"
+	if !g.confirmBattleResult() || g.camp.NodeID() != "story_ch21_post_sky_key_intro" {
+		t.Fatalf("第21戰材料不足勝利邊界 node=%q err=%q", g.camp.NodeID(), g.loadErr)
+	}
+
+	type nativeDialogueKey struct{ stringIndex, utterance int }
+	seen := make(map[nativeDialogueKey]bool, 14)
+	seenAct, seenSkyKey := false, false
+	for frame := 0; frame < 20000 && g.camp.NodeID() != "town_ch22"; frame++ {
+		seenAct = seenAct || g.actJob != nil
+		seenSkyKey = seenSkyKey || g.nativeCh20SkyKey != nil
+		if len(g.dialog) != 0 {
+			current := g.dialog[len(g.dialog)-1]
+			if current.NativeDialogue == nil || current.Upper == nil ||
+				current.NativeDialogue.SourceDAT != "FDTXT_021" ||
+				(current.NativeDialogue.StringIndex != 5 && current.NativeDialogue.StringIndex != 6) ||
+				len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) < 5 {
+				t.Fatalf("第21戰材料不足對話生命週期漂移: %#v", current)
+			}
+			seen[nativeDialogueKey{current.NativeDialogue.StringIndex, current.NativeDialogue.Utterance}] = true
+			if g.nativeStoryDialogueAtInputWait() &&
+				!g.handleNativeStoryInput(g.camp.Node(), nativeStoryInput{enter: true}) {
+				t.Fatal("第21戰材料不足正式故事輸入遭拒")
+			}
+			if err := g.Update(); err != nil {
+				t.Fatal(err)
+			}
+			continue
+		}
+		g.tick(1)
+		if g.loadErr != "" {
+			t.Fatalf("第21戰材料不足流程 node=%q beat=%d/%d: %s", g.camp.NodeID(), g.beatIdx, len(g.beats), g.loadErr)
+		}
+	}
+	if g.camp.NodeID() != "town_ch22" || g.st != nil || g.handlerChapter != 21 {
+		t.Fatalf("第21戰材料不足邊界 node=%q battle=%v chapter=%d", g.camp.NodeID(), g.st != nil, g.handlerChapter)
+	}
+	if len(seen) != 14 || seenAct || seenSkyKey {
+		t.Fatalf("第21戰材料不足對話=%d act=%v sky-key=%v，want 14/false/false", len(seen), seenAct, seenSkyKey)
+	}
+	if rosterHasItem(g.partyRoster, 0x64) {
+		t.Fatal("材料不足分支錯誤授予天空之鑰")
+	}
+	if !g.partyMembers[24] || !g.partyMembers[23] ||
+		g.partyJoinOrder[len(g.partyJoinOrder)-2] != 24 || g.partyJoinOrder[len(g.partyJoinOrder)-1] != 23 {
+		t.Fatalf("材料不足分支遺失共同JOIN24／23: %v", g.partyJoinOrder)
+	}
+
+	oldCache := userDataDirCached
+	userDataDirCached = ""
+	t.Setenv("XDG_DATA_HOME", t.TempDir())
+	t.Cleanup(func() { userDataDirCached = oldCache })
+	g.saveGameToSlot(0)
+	wantOrder := append([]int(nil), g.partyJoinOrder...)
+	g.partyMembers, g.partyJoinOrder, g.partyRoster = nil, nil, nil
+	g.handlerChapter = 0
+	g.loadGameFromSlot(0)
+	if g.loadErr != "" || g.camp.NodeID() != "town_ch22" || g.handlerChapter != 21 ||
+		!reflect.DeepEqual(g.partyJoinOrder, wantOrder) || rosterHasItem(g.partyRoster, 0x64) {
+		t.Fatalf("材料不足town_ch22存讀檔 node=%q chapter=%d order=%v err=%q", g.camp.NodeID(), g.handlerChapter, g.partyJoinOrder, g.loadErr)
+	}
+}

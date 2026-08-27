@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "evidence_level": "E1",
-  "scope": "玩家第21戰正式勝利邊界中的30句原生對話資料、成功臂26句正式輸入、layout→ACT63／64→0x242C9→0x24336→城鎮／存讀檔重製端 E1；三格圖片只呈現固定合成演出的三階段，不是原版擷取、一般玩家 E2 或逐像素對照",
+  "scope": "玩家第21戰正式勝利邊界中的30句原生對話資料、成功臂26句與材料不足臂14句正式輸入、兩臂城鎮／存讀檔重製端 E1；三格圖片只呈現成功臂固定合成演出的三階段，不是原版擷取、一般玩家 E2 或逐像素對照",
   "generated_on": "2026-08-13",
   "flow_verified_on": "2026-08-27",
   "flow_verification_image_id": "sha256:63ab5d20e3c2a3d2054718883fc7a98158ba2ef0930a3c886e169f2e887ca044",
@@ -76,6 +76,7 @@
     "從 campaign_full.json 的 battle_ch21 正式勝利確認開始，不直接跳入鑄造節點",
     "FDTXT.DAT第21項為4,660 bytes；六組分支呼叫共30句的control、operand、pages與編輯行由原始資料等值驗證",
     "成功臂以正式故事輸入消費共同#5十句與crafted十六句，逐句完成opening、逐字、嘴型及closing",
+    "材料不足臂由同一正式勝利邊界消費共同#5十句與#6四句，不執行ACT63／64、0x24336或授予天空之鑰",
     "0x2415B 的三張25-byte表與special slot25建立26-slot layout及camera=(336,240)",
     "FDTXT #7／#8之間與#8／#9之間依序完整消費ACTING 63／64的4／5幀typed資料",
     "驗證六素材原版恰好六組配對規則、JOIN24／23、sync_party、chapter21 與 town_ch22",
