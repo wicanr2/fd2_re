@@ -4,44 +4,161 @@
   "acting_resources": "../acting/ch21_post.json",
   "story_index_map": "../dialogue-index/count-aligned.json",
   "dialogue_contexts": {
-    "0x24539": { "source_dat": "FDTXT_022", "script": "ch22.json" },
-    "0x2456a": { "source_dat": "FDTXT_022", "script": "ch22.json" },
-    "0x245a7": { "source_dat": "FDTXT_022", "script": "ch22.json" }
+    "0x24539": {
+      "source_dat": "FDTXT_022",
+      "script": "ch22.json"
+    },
+    "0x2456a": {
+      "source_dat": "FDTXT_022",
+      "script": "ch22.json"
+    },
+    "0x245a7": {
+      "source_dat": "FDTXT_022",
+      "script": "ch22.json"
+    }
   },
   "runtime_context": {
-    "slot_counts": [73, 79],
+    "slot_counts": [
+      73,
+      79
+    ],
     "story_viewport": true
   },
   "overrides": {
     "0x24512": {
       "layout": {
         "units": [
-          { "slot": 0, "x": 16, "y": 16, "pose": 2 },
-          { "slot": 1, "x": 16, "y": 14, "pose": 0 },
-          { "slot": 2, "x": 15, "y": 16, "pose": 2 },
-          { "slot": 3, "x": 17, "y": 16, "pose": 2 },
-          { "slot": 4, "x": 14, "y": 17, "pose": 2 },
-          { "slot": 5, "x": 15, "y": 17, "pose": 2 },
-          { "slot": 6, "x": 16, "y": 17, "pose": 2 },
-          { "slot": 7, "x": 17, "y": 17, "pose": 2 },
-          { "slot": 8, "x": 18, "y": 17, "pose": 2 },
-          { "slot": 9, "x": 14, "y": 18, "pose": 2 },
-          { "slot": 10, "x": 15, "y": 18, "pose": 2 },
-          { "slot": 11, "x": 16, "y": 18, "pose": 2 },
-          { "slot": 12, "x": 17, "y": 18, "pose": 2 },
-          { "slot": 13, "x": 18, "y": 18, "pose": 2 },
-          { "slot": 14, "x": 15, "y": 19, "pose": 2 },
-          { "slot": 15, "x": 17, "y": 19, "pose": 2 },
-          { "slot": 72, "x": 22, "y": 25, "pose": 2 }
+          {
+            "slot": 0,
+            "x": 16,
+            "y": 16,
+            "pose": 2
+          },
+          {
+            "slot": 1,
+            "x": 16,
+            "y": 14,
+            "pose": 0
+          },
+          {
+            "slot": 2,
+            "x": 15,
+            "y": 16,
+            "pose": 2
+          },
+          {
+            "slot": 3,
+            "x": 17,
+            "y": 16,
+            "pose": 2
+          },
+          {
+            "slot": 4,
+            "x": 14,
+            "y": 17,
+            "pose": 2
+          },
+          {
+            "slot": 5,
+            "x": 15,
+            "y": 17,
+            "pose": 2
+          },
+          {
+            "slot": 6,
+            "x": 16,
+            "y": 17,
+            "pose": 2
+          },
+          {
+            "slot": 7,
+            "x": 17,
+            "y": 17,
+            "pose": 2
+          },
+          {
+            "slot": 8,
+            "x": 18,
+            "y": 17,
+            "pose": 2
+          },
+          {
+            "slot": 9,
+            "x": 14,
+            "y": 18,
+            "pose": 2
+          },
+          {
+            "slot": 10,
+            "x": 15,
+            "y": 18,
+            "pose": 2
+          },
+          {
+            "slot": 11,
+            "x": 16,
+            "y": 18,
+            "pose": 2
+          },
+          {
+            "slot": 12,
+            "x": 17,
+            "y": 18,
+            "pose": 2
+          },
+          {
+            "slot": 13,
+            "x": 18,
+            "y": 18,
+            "pose": 2
+          },
+          {
+            "slot": 14,
+            "x": 15,
+            "y": 19,
+            "pose": 2
+          },
+          {
+            "slot": 15,
+            "x": 17,
+            "y": 19,
+            "pose": 2
+          },
+          {
+            "slot": 72,
+            "x": 22,
+            "y": 25,
+            "pose": 2
+          }
         ],
         "cam_x": 384,
         "cam_y": 432
       }
     },
-    "0x24543": { "act": { "resource": 65 } },
-    "0x24580": { "act": { "resource": 66 } },
-    "0x24576": { "pan": { "x": 384, "y": 384, "tile_step": true } },
-    "0x245b3": { "pan": { "x": 384, "y": 336, "tile_step": true } },
+    "0x24543": {
+      "act": {
+        "resource": 65
+      }
+    },
+    "0x24580": {
+      "act": {
+        "resource": 66
+      }
+    },
+    "0x24576": {
+      "pan": {
+        "x": 384,
+        "y": 384,
+        "tile_step": true
+      }
+    },
+    "0x245b3": {
+      "pan": {
+        "x": 384,
+        "y": 336,
+        "tile_step": true
+      }
+    },
     "0x245ce": {
       "indexed_transition": {
         "tile_x": 0,
@@ -64,6 +181,236 @@
         "palette_delta_step": 2,
         "palette_delay_ms": 4
       }
+    }
+  },
+  "dialogue_overrides": {
+    "0x24539#4": {
+      "script": "ch22.json",
+      "scene_index": 2,
+      "lines": [
+        {
+          "line": 2,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_022",
+            "string_index": 4,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『希爾法，這種單程傳送很可",
+                "　能一去不回，你不覺得太冒",
+                "　險了嗎？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_022",
+            "string_index": 4,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 24,
+            "pages": [
+              [
+                "『沒辦法，眼看著敵人就要大",
+                "　舉進攻了，只有前往他們的",
+                "　根據地做個徹底解決，才有"
+              ],
+              [
+                "　可能阻止他們。為了保護精",
+                "　靈族和整個馬拉大陸，我已",
+                "　有犧牲的決心。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 4,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_022",
+            "string_index": 4,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『這樣嗎．．』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x2456a#5": {
+      "script": "ch22.json",
+      "scene_index": 2,
+      "lines": [
+        {
+          "line": 5,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_022",
+            "string_index": 5,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 24,
+            "pages": [
+              [
+                "『等一下我就啟動傳送場，想",
+                "　去的就自行走進這魔法陣中",
+                "　，我絕不強迫。』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x245a7#6": {
+      "script": "ch22.json",
+      "scene_index": 2,
+      "lines": [
+        {
+          "line": 6,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_022",
+            "string_index": 6,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 24,
+            "pages": [
+              [
+                "『你．你們．．』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 7,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_022",
+            "string_index": 6,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『希爾法，如果就這樣讓你一",
+                "　個人去，我約拿的名字會被",
+                "　今後的世人所恥笑。"
+              ],
+              [
+                "　我可不是個貪生怕死的人，",
+                "　更不會在危難時拋棄朋友！",
+                "　』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 8,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_022",
+            "string_index": 6,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『既然都到了這裡，那還有什",
+                "　麼好怕的！我們相信，幾位",
+                "　前輩的智慧和知識，一定能"
+              ],
+              [
+                "　帶領我們度過難關的。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 9,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_022",
+            "string_index": 6,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『就是說啊！馬拉大陸上的強",
+                "　者在此濟濟一堂，要擊潰敵",
+                "　人根據地有什麼問題！希爾"
+              ],
+              [
+                "　法大師，你要對我們自己有",
+                "　信心才對！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 10,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_022",
+            "string_index": 6,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 24,
+            "pages": [
+              [
+                "『謝謝．謝謝大家這麼相信我",
+                "　！既然如此，我這就啟動傳",
+                "　送魔法！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 11,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_022",
+            "string_index": 6,
+            "utterance": 5,
+            "control": "FFEE",
+            "operand": 8,
+            "pages": [
+              [
+                "『哎，我等不及想看看我們會",
+                "　去的是個怎麼樣的地方！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 12,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_022",
+            "string_index": 6,
+            "utterance": 6,
+            "control": "FFEE",
+            "operand": 24,
+            "pages": [
+              [
+                "『馬那德拉、亞布利加、艾米",
+                "　西德拉、伊多卡那瓦！．．",
+                "　』"
+              ]
+            ]
+          }
+        }
+      ]
     }
   }
 }

@@ -1,0 +1,29 @@
+{
+  "date": "2026-08-27",
+  "scope": "玩家第22戰戰後原生對話、73／79-slot handler、整備與存讀檔",
+  "classification": "RUNTIME-E1",
+  "original": {
+    "executable_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "fdtxt_022_sha256": "be1f18e7b69ecfd899707cc37ff82767deaf7f5c30502bcc3ee1786e500f622c",
+    "callers": ["0x24539", "0x2456a", "0x245a7"],
+    "string_indices": [4, 5, 6],
+    "utterances": 11
+  },
+  "runtime": {
+    "frontiers": [73, 79],
+    "destination": "preparation_ch23",
+    "formal_story_input": true,
+    "direct_dialogue_clear": false,
+    "save_load": true
+  },
+  "verification": {
+    "generator_check": "3 callers / 11 utterances",
+    "tests": [
+      "TestCh21PostNativeDialogueLayoutsMatchOriginalControlWords",
+      "TestChapter22PostbattleBindingReachesPreparation23ForMaterializedFrontiers",
+      "TestChapter22BattleResultPreparationSaveLoadUsesProductionBoundaries"
+    ],
+    "result": "pass"
+  },
+  "limits": ["未修改DOSBox同狀態PLAYER-E2", "精確音訊時序"]
+}

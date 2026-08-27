@@ -57,6 +57,25 @@ func appendChapter22Groups(t *testing.T, g *Game, groups ...int) {
 	}
 }
 
+func advanceChapter22NativeDialogue(t *testing.T, g *Game, seen map[[2]int]bool) {
+	t.Helper()
+	if len(g.dialog) == 0 {
+		return
+	}
+	current := g.dialog[len(g.dialog)-1]
+	if current.NativeDialogue == nil || current.Upper == nil ||
+		current.NativeDialogue.SourceDAT != "FDTXT_022" ||
+		current.NativeDialogue.StringIndex < 4 || current.NativeDialogue.StringIndex > 6 ||
+		len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) < 5 {
+		t.Fatalf("ch21_post dialog lost indexed lifecycle: %#v", current)
+	}
+	seen[[2]int{current.NativeDialogue.StringIndex, current.NativeDialogue.Utterance}] = true
+	if g.nativeStoryDialogueAtInputWait() &&
+		!g.handleNativeStoryInput(g.camp.Node(), nativeStoryInput{enter: true}) {
+		t.Fatal("ch21_post formal story input was rejected")
+	}
+}
+
 func TestChapter22RuntimeAppendGroupsBuildsProvenFrontiers(t *testing.T) {
 	g, _ := newChapter22RuntimeBattle(t)
 	if got := len(g.st.PendingGroups); got != 3 || !g.st.PendingGroups[1] || !g.st.PendingGroups[2] || !g.st.PendingGroups[3] {
@@ -120,21 +139,24 @@ func TestChapter22PostbattleBindingReachesPreparation23ForMaterializedFrontiers(
 			}
 			full.Start = "postbattle_ch22_persist"
 			g.camp = campaign.NewRunner(full)
-			g.beats, g.beatIdx, g.storyBG = beats, -1, true
-			g.beatAdvance()
+			// 由正式節點入口保存 battle.State 的原生視圖，再讓
+			// runtime_context 領回；直接掛 beats 會跳過產品路徑的視圖交接。
+			g.enterNode()
+			if g.loadErr != "" || len(g.beats) != len(beats) {
+				t.Fatalf("ch21_post formal entry err=%q beats=%d want=%d", g.loadErr, len(g.beats), len(beats))
+			}
+			seen := make(map[[2]int]bool, 11)
 			for frame := 0; frame < 30000 && g.camp.NodeID() != "preparation_ch23"; frame++ {
 				if g.nativePaletteRamp != nil {
 					g.nativePaletteRamp.drawn = true
 				}
 				if g.indexedTransition != nil {
 					g.indexedTransition.drawn = true
-					g.stepNativeIndexedTransition()
 				}
-				if len(g.dialog) != 0 {
-					g.dialog = nil
-					g.beatAdvance()
+				advanceChapter22NativeDialogue(t, g, seen)
+				if err := g.Update(); err != nil {
+					t.Fatal(err)
 				}
-				g.tick(1)
 				if g.loadErr != "" {
 					t.Fatalf("ch21_post stopped at beat %d/%d: %s", g.beatIdx, len(g.beats), g.loadErr)
 				}
@@ -148,6 +170,9 @@ func TestChapter22PostbattleBindingReachesPreparation23ForMaterializedFrontiers(
 			}
 			if len(g.partyRoster) != len(deployed) {
 				t.Fatalf("ch21_post synced roster=%d, want %d", len(g.partyRoster), len(deployed))
+			}
+			if len(seen) != 11 {
+				t.Fatalf("ch21_post native dialogues=%d, want 11", len(seen))
 			}
 		})
 	}
@@ -208,25 +233,27 @@ func TestChapter22BattleResultPreparationSaveLoadUsesProductionBoundaries(t *tes
 	if !g.confirmBattleResult() || g.result != "" {
 		t.Fatalf("production battle-result confirmation failed: node=%q result=%q err=%q", g.camp.NodeID(), g.result, g.loadErr)
 	}
+	seen := make(map[[2]int]bool, 11)
 	for frame := 0; frame < 30000 && g.camp.NodeID() != "preparation_ch23"; frame++ {
 		if g.nativePaletteRamp != nil {
 			g.nativePaletteRamp.drawn = true
 		}
 		if g.indexedTransition != nil {
 			g.indexedTransition.drawn = true
-			g.stepNativeIndexedTransition()
 		}
-		if len(g.dialog) != 0 {
-			g.dialog = nil
-			g.beatAdvance()
+		advanceChapter22NativeDialogue(t, g, seen)
+		if err := g.Update(); err != nil {
+			t.Fatal(err)
 		}
-		g.tick(1)
 		if g.loadErr != "" {
 			t.Fatalf("production ch22 result flow stopped at beat %d/%d node=%q: %s", g.beatIdx, len(g.beats), g.camp.NodeID(), g.loadErr)
 		}
 	}
 	if g.camp.NodeID() != "preparation_ch23" || g.handlerChapter != 22 {
 		t.Fatalf("production ch22 result boundary node=%q chapter=%d beat=%d/%d", g.camp.NodeID(), g.handlerChapter, g.beatIdx, len(g.beats))
+	}
+	if len(seen) != 11 {
+		t.Fatalf("production ch21_post native dialogues=%d, want 11", len(seen))
 	}
 	if g.st != nil || len(g.partyRoster) != len(deployed) {
 		t.Fatalf("preparation boundary state=%v roster=%d, want cleared battle and %d persistent records", g.st != nil, len(g.partyRoster), len(deployed))

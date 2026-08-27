@@ -4589,9 +4589,9 @@ frontier」作保守閘門，對此候選明確失敗即關閉並不產生 `runt
 的 record 內容、原版 runtime trace 與 indexed 畫面狀態仍未閉合。`0x24618` 所消費的 raw 相對游標 globals
 （`0x53ab9/0x53abd`）與第 21 戰呼叫點 `0x245ce` 的 Y+3 變換已由 IDA 固定；
 重製端以呼叫位址核對這個來源專屬橋接（source-specific bridge），未證實來源或偏移會失敗即
-關閉。仍未建立正式 binding。`postbattle_ch22_persist` 仍不得由 layout 表或
-generated binding 猜接 `town_ch23`；缺證據時維持失敗即關閉。本節不宣稱
-renderer parity 或一般玩家 E2。
+關閉。此段是2026-08-09的歷史候選狀態；「仍未建立正式 binding」已由下方
+2026-08-11正式E1切片及2026-08-27原生對話補證取代。現行路徑只接受73／79槽，
+進入`preparation_ch23`而非`town_ch23`；renderer parity與一般玩家E2仍未宣稱。
 
 ## 2026-08-09 raw ch22 pre 靜態候選（玩家第23戰戰前；尚未接入）
 
@@ -7244,3 +7244,19 @@ view／HUD、delta64..0淡入，再以具型別輸入播放index4→ACTING37→i
 [`fd2_ch05_post_native_dialogue.md`](../data/ida/fd2_ch05_post_native_dialogue.md)。
 驗收包含全量raw equality、正式輸入、40→41 frontier、JOIN13、`town_ch07`與存讀檔。
 此項最高為`RUNTIME-E1`，未修改DOSBox同狀態與精確音訊另列E2。
+
+## 玩家第 22 戰戰後 11 句原生對話與整備邊界（2026-08-27）
+
+本切片沿用已閉合的`sub_244B6`、73／79-slot入口、layout、ACTING65／66、PAN、
+indexed transition與調色盤淡出，不重開反組譯。`0x24539`／index4、`0x2456A`／
+index5、`0x245A7`／index6分別產生3、1、7筆`NativeDialogueLayout`。
+
+正式執行期由節點入口保存battle view，再由`runtime_context`領回；兩個合法frontier
+都以具型別輸入完成11句opening、逐字、嘴型與closing，之後才執行剩餘演出、
+`sync_party`、chapter22與`preparation_ch23`，並驗證持續隊伍存讀檔。直接掛beats
+而跳過視圖交接會正確失敗即關閉，不得以固定座標繞過。
+
+原始位址、雜湊、控制碼與執行契約見
+[`fd2_ch21_post_native_dialogue.md`](../data/ida/fd2_ch21_post_native_dialogue.md)。
+驗收包含全量raw equality、73／79-slot正式輸入、indexed transition、同步、整備與
+存讀檔。此項最高為`RUNTIME-E1`，未修改DOSBox同狀態與精確音訊另列E2。

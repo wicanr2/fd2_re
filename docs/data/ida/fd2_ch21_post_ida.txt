@@ -172,6 +172,11 @@ X/Y/pose 輸入。呼叫端另帶 raw special/focus scalar；其數值為
 
 ## 現況判定
 
+> **2026-08-27 勘誤：** 本節下方「沒有正式 binding」只描述2026-08-09狀態，
+> 已由73／79-slot正式 binding、節點視圖交接、三caller／11句原生對話及
+> `preparation_ch23`存讀檔回歸取代。原始位址、指令與推論等級不變；目前證據見
+> [`fd2_ch21_post_native_dialogue.md`](fd2_ch21_post_native_dialogue.md)。
+
 - 推論等級：上述位址、指令、表位元組與文字索引為**已證實**。
 - `remake/assets/cutscenes/handlers/ch21_post.json` 保留上述 raw beats；目前
   沒有正式 binding，故 `postbattle_ch22_persist` 仍**失敗即關閉**。

@@ -7606,3 +7606,15 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   完成40→41 slots、chapter6、`town_ch07`與存讀檔。證據見
   [`ch05-post-native-dialogue-e1.json`](../data/ui-traces/ch05-post-native-dialogue-e1.json)。
 - 未修改DOSBox同狀態、精確音訊與town07原版輸入仍屬E2限制；依99%門檻不阻擋。
+
+## 2026-08-27：第22戰後三個caller／11句原生對話與整備
+
+- 沿用已閉合的`sub_244B6`、73／79-slot topology、layout、ACTING65／66、PAN、
+  indexed transition與調色盤淡出，不重開反組譯。FDTXT_022 index4／5／6的
+  3＋1＋7句已通過固定raw equality並重生成typed版面。
+- 兩個frontier都由正式節點入口保存battle view，再以具型別輸入完成11句；之後
+  才執行剩餘演出、sync、chapter22、`preparation_ch23`與存讀檔。原先直接清除
+  `g.dialog`的兩條測試捷徑已移除。證據見
+  [`ch21-post-native-dialogue-e1.json`](../data/ui-traces/ch21-post-native-dialogue-e1.json)。
+- 聚焦Docker／Xvfb測試與3／11生成器檢查通過。未修改DOSBox同狀態與精確音訊
+  仍屬E2限制；依99%門檻不阻擋，下一個候選是raw `ch23_post`兩caller／11句。
