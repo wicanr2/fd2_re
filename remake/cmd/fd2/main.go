@@ -344,59 +344,60 @@ type Game struct {
 	bgm                       *audio.Player                      // BGM(doc12 play_bgm 語意:同曲不重播)
 	bgmCur                    string
 	nativeSystemBGMTrack      string
-	bgmSource                 string                // 音源設定 "fm"/"mt32"(settings.go;F2 切換)
-	debug                     bool                  // F3:開發除錯 HUD(座標/陣營原文等)
-	approximateMode           bool                  // FD2_APPROXIMATE=1:可玩近似模式；不宣稱原版 handler 等價
-	approximatePostbattle     bool                  // 未綁定戰後節點的近似整理提示，等待玩家確認後才進城鎮／整備
-	unitLabels                bool                  // FD2_UNIT_LABELS=1:cutscene sprite 左上標 [idx]fig+名+座標(協助回報/對映原版 slot)
-	cutsceneLog               bool                  // FD2_CUTSCENE_LOG=1:過場 node/beat/走位逐步 log 到 stderr(協助對原版資料比對)
-	banner                    string                // 回合橫幅文字(PLAYER/ENEMY PHASE)
-	bannerT                   int                   // 橫幅剩餘 tick
-	sfx                       map[int][]byte        // SFX PCM(doc36 FDOTHER#31 14樣本)
-	sfxVoices                 []sfxVoice            // 保留疊播播放器至自然結束，避免 Play 後立即失去生命週期
-	sfxSwing                  []byte                // 戰鬥揮擊音(doc36 戰鬥池 #48-64 sub0,七池共用)
-	sfxImpact                 []byte                // 命中音(近似:最短最尖池;attack_id→sfx 對照表 doc36 未 RE)
-	sfxDeath                  []byte                // 陣亡/重擊音(近似:最長池)
-	sfxTransition             []byte                // FDOTHER #88 sub1: ch24 transition SFX
-	sfxCommandModifier        []byte                // FDOTHER #80 selector0: 0x1D6C8 command palette owner
-	sfxCommand24Actor         []byte                // FDOTHER #53 sub3: selector32 resource98 actor marker
-	sfxCommand24Target        []byte                // FDOTHER #53 sub2: selector32 resource98 target marker
-	sfxCommand0Actor          []byte                // FDOTHER #82 sub0: 0x2B659 actor raw +4 marker
-	sfxCommand0Target         []byte                // FDOTHER #82 sub1: 0x26152 seven target markers
-	sfxCommand2Actor          []byte                // FDOTHER #83 sub0: common 0x2B659 actor marker
-	sfxCommand2Mode2          []byte                // FDOTHER #83 sub1: 0x26528 mode2/8 marker
-	sfxCommand2Mode5          []byte                // FDOTHER #83 sub2: 0x26528 mode5 marker
-	sfxCommand2Mode6          []byte                // FDOTHER #83 sub3: 0x26528 mode6 marker
-	sfxCommand3Actor          []byte                // FDOTHER #84 sub0: common actor marker
-	sfxCommand3Sub1           []byte                // FDOTHER #84 sub1: 0x26795 post-counter3／zero frame-base marker
-	sfxCommand3Sub2           []byte                // FDOTHER #84 sub2: 0x26795 pre-counter0／nonzero frame-base marker
-	sfxCommand5Actor          []byte                // FDOTHER #86 sub0: common actor marker
-	sfxCommand5Target         []byte                // FDOTHER #86 sub1: channel0／3 handler markers
-	sfxCommand4Actor          []byte                // FDOTHER #85 sub0: common actor marker
-	sfxCommand4Target         []byte                // FDOTHER #85 sub1: 0x269D3 six-slot markers
-	sfxCommand6Actor          []byte                // FDOTHER #87 sub0: common 0x2B659 actor marker
-	sfxCommand6Target         []byte                // FDOTHER #87 sub1: command6 mode5 counter markers
-	sfxCommand6Front          []byte                // FDOTHER #87 sub2: command6 mode0 before seven front frames
-	sfxCommand6Tail           []byte                // FDOTHER #87 sub3: command6 mode6 before seven tail frames
-	sfxCommand7Actor          []byte                // FDOTHER #88 sub0: common actor marker
-	sfxCommand7Target         []byte                // FDOTHER #88 sub1: 0x272B8 channel0／1 playback handles
-	sfxCommand8Actor          []byte                // FDOTHER #90 sub0: common actor marker
-	sfxCommand8Sub1           []byte                // FDOTHER #90 sub1: 0x274B0 pre-counter0 marker
-	sfxCommand8Sub2           []byte                // FDOTHER #90 sub2: 0x274B0 pre-counter4 marker
-	sfxCommand9PlayerPalette  []byte                // FDOTHER #80 selector0: 0x1D6C8 palette marker
-	sfxCommand9PlayerInitial  []byte                // FDOTHER #80 selector14: 0x1C4CC frame0
-	sfxCommand9PlayerRepeat   []byte                // FDOTHER #80 selector15: 0x1C4CC frame15／19
-	sfxCommand1012Prelude     []byte                // FDOTHER #80 selector2: command11／12 0x2189A prelude
-	sfxCommand1012Main        []byte                // FDOTHER #80 selector13: 0x21548 frame markers
-	sfxSpawnIntro             []byte                // FDOTHER #95 sub0: 0x32999 pass1 raw sample（11025Hz 為既有工具鏈推論）
-	handlerResource           int                   // currently loaded handler resource-table id
-	prevCurX, prevCurY        int                   // 游標移動音偵測
-	aiBusy                    bool                  // AI 回合進行中(逐單位行走動畫)
-	deathRewarded             map[*battle.Unit]bool // 每個死亡 transition 的 reward 只執行一次
-	rng                       *rand.Rand            // 施法擲骰(FD2_SEED 可固定,headless 重現)
-	gold                      int                   // 金幣(商店)
-	items                     []string              // 隊伍道具(名稱;道具效果待實裝)
-	shopSel                   int                   // 商店游標
+	bgmSource                 string                 // 音源設定 "fm"/"mt32"(settings.go;F2 切換)
+	debug                     bool                   // F3:開發除錯 HUD(座標/陣營原文等)
+	approximateMode           bool                   // FD2_APPROXIMATE=1:可玩近似模式；不宣稱原版 handler 等價
+	approximatePostbattle     bool                   // 未綁定戰後節點的近似整理提示，等待玩家確認後才進城鎮／整備
+	unitLabels                bool                   // FD2_UNIT_LABELS=1:cutscene sprite 左上標 [idx]fig+名+座標(協助回報/對映原版 slot)
+	cutsceneLog               bool                   // FD2_CUTSCENE_LOG=1:過場 node/beat/走位逐步 log 到 stderr(協助對原版資料比對)
+	banner                    string                 // 回合橫幅文字(PLAYER/ENEMY PHASE)
+	bannerT                   int                    // 橫幅剩餘 tick
+	sfx                       map[int][]byte         // SFX PCM(doc36 FDOTHER#31 14樣本)
+	sfxVoices                 []sfxVoice             // 保留疊播播放器至自然結束，避免 Play 後立即失去生命週期
+	separatedCommandSFX       map[int]map[int][]byte // 第一批 FDOTHER #82..90 指令音效；只讀分離 OGG
+	sfxSwing                  []byte                 // 戰鬥揮擊音(doc36 戰鬥池 #48-64 sub0,七池共用)
+	sfxImpact                 []byte                 // 命中音(近似:最短最尖池;attack_id→sfx 對照表 doc36 未 RE)
+	sfxDeath                  []byte                 // 陣亡/重擊音(近似:最長池)
+	sfxTransition             []byte                 // FDOTHER #88 sub1: ch24 transition SFX
+	sfxCommandModifier        []byte                 // FDOTHER #80 selector0: 0x1D6C8 command palette owner
+	sfxCommand24Actor         []byte                 // FDOTHER #53 sub3: selector32 resource98 actor marker
+	sfxCommand24Target        []byte                 // FDOTHER #53 sub2: selector32 resource98 target marker
+	sfxCommand0Actor          []byte                 // FDOTHER #82 sub0: 0x2B659 actor raw +4 marker
+	sfxCommand0Target         []byte                 // FDOTHER #82 sub1: 0x26152 seven target markers
+	sfxCommand2Actor          []byte                 // FDOTHER #83 sub0: common 0x2B659 actor marker
+	sfxCommand2Mode2          []byte                 // FDOTHER #83 sub1: 0x26528 mode2/8 marker
+	sfxCommand2Mode5          []byte                 // FDOTHER #83 sub2: 0x26528 mode5 marker
+	sfxCommand2Mode6          []byte                 // FDOTHER #83 sub3: 0x26528 mode6 marker
+	sfxCommand3Actor          []byte                 // FDOTHER #84 sub0: common actor marker
+	sfxCommand3Sub1           []byte                 // FDOTHER #84 sub1: 0x26795 post-counter3／zero frame-base marker
+	sfxCommand3Sub2           []byte                 // FDOTHER #84 sub2: 0x26795 pre-counter0／nonzero frame-base marker
+	sfxCommand5Actor          []byte                 // FDOTHER #86 sub0: common actor marker
+	sfxCommand5Target         []byte                 // FDOTHER #86 sub1: channel0／3 handler markers
+	sfxCommand4Actor          []byte                 // FDOTHER #85 sub0: common actor marker
+	sfxCommand4Target         []byte                 // FDOTHER #85 sub1: 0x269D3 six-slot markers
+	sfxCommand6Actor          []byte                 // FDOTHER #87 sub0: common 0x2B659 actor marker
+	sfxCommand6Target         []byte                 // FDOTHER #87 sub1: command6 mode5 counter markers
+	sfxCommand6Front          []byte                 // FDOTHER #87 sub2: command6 mode0 before seven front frames
+	sfxCommand6Tail           []byte                 // FDOTHER #87 sub3: command6 mode6 before seven tail frames
+	sfxCommand7Actor          []byte                 // FDOTHER #88 sub0: common actor marker
+	sfxCommand7Target         []byte                 // FDOTHER #88 sub1: 0x272B8 channel0／1 playback handles
+	sfxCommand8Actor          []byte                 // FDOTHER #90 sub0: common actor marker
+	sfxCommand8Sub1           []byte                 // FDOTHER #90 sub1: 0x274B0 pre-counter0 marker
+	sfxCommand8Sub2           []byte                 // FDOTHER #90 sub2: 0x274B0 pre-counter4 marker
+	sfxCommand9PlayerPalette  []byte                 // FDOTHER #80 selector0: 0x1D6C8 palette marker
+	sfxCommand9PlayerInitial  []byte                 // FDOTHER #80 selector14: 0x1C4CC frame0
+	sfxCommand9PlayerRepeat   []byte                 // FDOTHER #80 selector15: 0x1C4CC frame15／19
+	sfxCommand1012Prelude     []byte                 // FDOTHER #80 selector2: command11／12 0x2189A prelude
+	sfxCommand1012Main        []byte                 // FDOTHER #80 selector13: 0x21548 frame markers
+	sfxSpawnIntro             []byte                 // FDOTHER #95 sub0: 0x32999 pass1 raw sample（11025Hz 為既有工具鏈推論）
+	handlerResource           int                    // currently loaded handler resource-table id
+	prevCurX, prevCurY        int                    // 游標移動音偵測
+	aiBusy                    bool                   // AI 回合進行中(逐單位行走動畫)
+	deathRewarded             map[*battle.Unit]bool  // 每個死亡 transition 的 reward 只執行一次
+	rng                       *rand.Rand             // 施法擲骰(FD2_SEED 可固定,headless 重現)
+	gold                      int                    // 金幣(商店)
+	items                     []string               // 隊伍道具(名稱;道具效果待實裝)
+	shopSel                   int                    // 商店游標
 	shopRecipientSel          int
 	shopRecipients            []int
 	shopPicking               bool
@@ -9687,36 +9688,19 @@ func loadGame() *Game {
 	}
 	g.rng = rand.New(rand.NewSource(seed))
 	g.sfx = loadSFX()
+	if banks, e := loadSeparatedCommandSoundBanks(); e != nil {
+		if g.loadErr == "" {
+			g.loadErr = "separated command sounds: " + e.Error()
+		}
+	} else {
+		g.installSeparatedCommandSounds(banks)
+	}
 	// 戰鬥音效:揮擊/命中/陣亡三段(真素材;attack_id→池 精確對照 doc36 未 RE,故命中/陣亡池為近似選擇)
 	g.sfxSwing = loadWav("assets/sfx/battle_48_00.wav")                 // 揮擊(池 sub0,七池共用)
 	g.sfxImpact = loadWav("assets/sfx/battle_64_00.wav")                // 命中(最短最尖池)
-	g.sfxDeath = loadWav("assets/sfx/battle_88_00.wav")                 // 陣亡/重擊(最長池)
-	g.sfxTransition = loadWav("assets/sfx/battle_88_01.wav")            // ch24 FDOTHER #88 sub1
 	g.sfxCommandModifier = loadWav("assets/sfx/battle_80_00.wav")       // 0x1D6C8 FDOTHER #80 selector0
 	g.sfxCommand24Actor = loadWav("assets/sfx/battle_53_03.wav")        // 0x276EC selector32 actor raw+5
 	g.sfxCommand24Target = loadWav("assets/sfx/battle_53_02.wav")       // 0x276EC selector32 target raw+5
-	g.sfxCommand0Actor = loadWav("assets/sfx/battle_82_00.wav")         // 0x2B659 command0 actor marker
-	g.sfxCommand0Target = loadWav("assets/sfx/battle_82_01.wav")        // 0x26152 seven target markers
-	g.sfxCommand2Actor = loadWav("assets/sfx/battle_83_00.wav")         // common 0x2B659 actor marker
-	g.sfxCommand2Mode2 = loadWav("assets/sfx/battle_83_01.wav")         // 0x26528 mode2/8
-	g.sfxCommand2Mode5 = loadWav("assets/sfx/battle_83_02.wav")         // 0x26528 mode5
-	g.sfxCommand2Mode6 = loadWav("assets/sfx/battle_83_03.wav")         // 0x26528 mode6
-	g.sfxCommand3Actor = loadWav("assets/sfx/battle_84_00.wav")         // common 0x2B659 actor marker
-	g.sfxCommand3Sub1 = loadWav("assets/sfx/battle_84_01.wav")          // 0x26795 post-counter3／zero frame-base
-	g.sfxCommand3Sub2 = loadWav("assets/sfx/battle_84_02.wav")          // 0x26795 pre-counter0／nonzero frame-base
-	g.sfxCommand5Actor = loadWav("assets/sfx/battle_86_00.wav")         // common 0x2B659 actor marker
-	g.sfxCommand5Target = loadWav("assets/sfx/battle_86_01.wav")        // 0x26BFD channel0／3 sample index1
-	g.sfxCommand4Actor = loadWav("assets/sfx/battle_85_00.wav")         // common 0x2B659 actor marker
-	g.sfxCommand4Target = loadWav("assets/sfx/battle_85_01.wav")        // 0x269D3 six-slot sample index1
-	g.sfxCommand6Actor = loadWav("assets/sfx/battle_87_00.wav")         // common 0x2B659 actor marker
-	g.sfxCommand6Target = loadWav("assets/sfx/battle_87_01.wav")        // 0x26E39 mode5 markers
-	g.sfxCommand6Front = loadWav("assets/sfx/battle_87_02.wav")         // 0x26E39 mode0
-	g.sfxCommand6Tail = loadWav("assets/sfx/battle_87_03.wav")          // 0x26E39 mode6
-	g.sfxCommand7Actor = loadWav("assets/sfx/battle_88_00.wav")         // common 0x2B659 actor marker
-	g.sfxCommand7Target = loadWav("assets/sfx/battle_88_01.wav")        // 0x272B8 channel0／1 sample index1
-	g.sfxCommand8Actor = loadWav("assets/sfx/battle_90_00.wav")         // common 0x2B659 actor marker
-	g.sfxCommand8Sub1 = loadWav("assets/sfx/battle_90_01.wav")          // 0x274B0 pre-counter0
-	g.sfxCommand8Sub2 = loadWav("assets/sfx/battle_90_02.wav")          // 0x274B0 pre-counter4
 	g.sfxCommand9PlayerPalette = loadWav("assets/sfx/battle_80_00.wav") // 0x1D6C8 selector0
 	g.sfxCommand9PlayerInitial = loadWav("assets/sfx/battle_80_14.wav") // 0x1C4CC frame0
 	g.sfxCommand9PlayerRepeat = loadWav("assets/sfx/battle_80_15.wav")  // 0x1C4CC frame15／19

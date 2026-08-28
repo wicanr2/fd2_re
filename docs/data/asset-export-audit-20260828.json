@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "captured_at": "2026-08-28",
+  "captured_at": "2026-08-29",
   "source_reference": "docs/data/fd2-reference-files.json",
-  "tool": "tools/extract_all.py + remake/cmd/fd2-asset-import",
-  "container_image": "fd2-assets-local:20260828",
+  "tool": "tools/extract_all.py + remake/cmd/fd2-asset-import + tools/export_sfx.py",
+  "container_image": "fd2-assets-local:20260829-sfx",
   "output_policy": "local_generated_untracked",
-  "command_contract": "python3 tools/extract_all.py <verified-original-dir> <pack>; go run ./cmd/fd2-asset-import -fdother <FDOTHER.DAT> -bg <BG.DAT> -tai <TAI.DAT> -fdtxt <FDTXT.DAT> -glyph-map docs/data/glyph_map.json -fdicon <FDICON.B24> -fdshap <FDSHAP.DAT> -fdfield <FDFIELD.DAT> -ani <ANI.DAT> -out <pack>",
+  "command_contract": "python3 tools/extract_all.py <verified-original-dir> <pack>; go run ./cmd/fd2-asset-import -fdother <FDOTHER.DAT> -bg <BG.DAT> -tai <TAI.DAT> -fdtxt <FDTXT.DAT> -glyph-map docs/data/glyph_map.json -fdicon <FDICON.B24> -fdshap <FDSHAP.DAT> -fdfield <FDFIELD.DAT> -ani <ANI.DAT> -out <pack>; python3 tools/export_sfx.py --separated-pack <temporary-pack> --source <FDOTHER.DAT>",
   "archive_resources": {
     "ANI.DAT": 10,
     "BG.DAT": 57,
@@ -89,13 +89,16 @@
     "decoded_ani_palette_json": 289,
     "decoded_ani_metadata_json": 9,
     "ani_empty_tail_resources": 1,
-    "music_midi": 15
+    "music_midi": 15,
+    "battle_sfx_banks": 8,
+    "battle_sfx_ogg": 22,
+    "battle_sfx_metadata_json": 8
   },
   "manifest_validation": {
     "tool": "tools/generate_separated_asset_manifest.py",
     "validator": "tools/validate_separated_asset_pack.py",
-    "total_entries": 38679,
-    "exported": 37655,
+    "total_entries": 38709,
+    "exported": 37685,
     "blocked": 19,
     "intentionally_raw": 1005,
     "source_hashes_verified": true,
@@ -235,6 +238,19 @@
     "runtime_archive_fallback": false,
     "archive_unreadable_test": "pass (shared palette loader consumes separated pack only)",
     "remaining_direct_resource_zero_callers": 0,
+    "evidence_level": "RUNTIME-E1"
+  }, {
+    "family": "battle_command_sfx_fdother_082_090",
+    "source_resources": ["FDOTHER.DAT#82", "FDOTHER.DAT#83", "FDOTHER.DAT#84", "FDOTHER.DAT#85", "FDOTHER.DAT#86", "FDOTHER.DAT#87", "FDOTHER.DAT#88", "FDOTHER.DAT#90"],
+    "separated_outputs": 30,
+    "decoded_samples": 22,
+    "runtime_consumers": ["commands 0..8", "enemy command 9", "chapter 24 transition alias", "legacy death alias"],
+    "raw_pcm_provenance": "pass (byte count and SHA-256 for all 22 samples)",
+    "ogg_probe": "pass (mono, 11025 Hz, duration, non-silence; hardware-spec approximation)",
+    "deterministic_export": "pass (two complete exports are byte-identical)",
+    "runtime_archive_fallback": false,
+    "archive_unreadable_test": "pass (player command 0, command 6 and enemy command 9 consume separated OGG with missing FDOTHER.DAT)",
+    "remaining_direct_nested_resource_callers": 0,
     "evidence_level": "RUNTIME-E1"
   }, {
     "family": "story_dialogue_portraits",

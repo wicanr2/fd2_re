@@ -154,10 +154,8 @@ func (g *Game) startNativeCommand7Presentation(actor, confirmed *battle.Unit, th
 	if err != nil {
 		return err
 	}
-	for sample := 0; sample <= 1; sample++ {
-		if raw, readErr := fdother.ReadNestedResource(fdotherPath, schedule.SoundResource, sample); readErr != nil || len(raw) == 0 {
-			return fmt.Errorf("native command7 FDOTHER #88 sub%d unavailable", sample)
-		}
+	if err := g.requireSeparatedCommandSounds(schedule.SoundResource, 0, 1); err != nil {
+		return fmt.Errorf("native command7 sounds: %w", err)
 	}
 	if !osMuteOrShot(g) && (len(g.sfxCommand7Actor) == 0 || len(g.sfxCommand7Target) == 0) {
 		return errors.New("native command7 converted #88 samples unavailable")

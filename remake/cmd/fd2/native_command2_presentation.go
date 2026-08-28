@@ -193,10 +193,8 @@ func (g *Game) startNativeCommand2Presentation(actor, confirmed *battle.Unit, th
 	if err != nil {
 		return err
 	}
-	for sample := 0; sample <= 3; sample++ {
-		if raw, readErr := fdother.ReadNestedResource(fdotherPath, figani.NativeCommand2SoundResource, sample); readErr != nil || len(raw) == 0 {
-			return fmt.Errorf("native command2 FDOTHER #83 sub%d unavailable", sample)
-		}
+	if err := g.requireSeparatedCommandSounds(figani.NativeCommand2SoundResource, 0, 1, 2, 3); err != nil {
+		return fmt.Errorf("native command2 sounds: %w", err)
 	}
 	if !osMuteOrShot(g) && (len(g.sfxCommand2Actor) == 0 || len(g.sfxCommand2Mode2) == 0 || len(g.sfxCommand2Mode5) == 0 || len(g.sfxCommand2Mode6) == 0) {
 		return errors.New("native command2 converted #83 samples unavailable")

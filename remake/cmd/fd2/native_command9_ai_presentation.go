@@ -137,10 +137,8 @@ func (g *Game) startNativeCommand9AIPresentation(actor, confirmed *battle.Unit, 
 	if err != nil {
 		return err
 	}
-	for sample := 0; sample <= 2; sample++ {
-		if raw, readErr := fdother.ReadNestedResource(fdotherPath, schedule.SoundResource, sample); readErr != nil || len(raw) == 0 {
-			return fmt.Errorf("native command9 AI FDOTHER #90 sub%d unavailable", sample)
-		}
+	if err := g.requireSeparatedCommandSounds(schedule.SoundResource, 0, 1, 2); err != nil {
+		return fmt.Errorf("native command9 AI sounds: %w", err)
 	}
 	if !osMuteOrShot(g) && (len(g.sfxCommand8Actor) == 0 || len(g.sfxCommand8Sub1) == 0 || len(g.sfxCommand8Sub2) == 0) {
 		return errors.New("native command9 AI converted #90 samples unavailable")

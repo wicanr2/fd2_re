@@ -178,10 +178,8 @@ func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, c
 	if err != nil {
 		return err
 	}
-	for sample := 0; sample <= 1; sample++ {
-		if raw, readErr := fdother.ReadNestedResource(fdotherPath, schedule.SoundResource, sample); readErr != nil || len(raw) == 0 {
-			return fmt.Errorf("native command%d FDOTHER #%d sub%d unavailable", commandID, schedule.SoundResource, sample)
-		}
+	if err := g.requireSeparatedCommandSounds(schedule.SoundResource, 0, 1); err != nil {
+		return fmt.Errorf("native command%d sounds: %w", commandID, err)
 	}
 	actorSFX, targetSFX := g.sfxCommand5Actor, g.sfxCommand5Target
 	if commandID == 4 {

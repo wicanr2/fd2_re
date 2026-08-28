@@ -152,6 +152,38 @@ uint32 表 + `ADLIB-`/樂器名字串),且遊戲程式碼中未找到任何對 `
 | 雙 handle(`[0x53ee4]`/`[0x53ee8]`) | 兩個 SDL_mixer channel(允許疊播) |
 | 戰鬥音效動態 index(`+0x21`) | 待逐招對照後,做 `attack_id → sfx_index` 對照表 |
 
+## 2026-08-29：分離素材遷移用的窄音效清冊
+
+> 證據等級：容器、raw PCM bytes、resource／subresource選擇與caller順序為**已證實**；
+> 11025 Hz播放率為**hardware-spec approximation**，不是原版逐週期或實機時鐘證據。
+
+固定來源仍是`FDOTHER.DAT`（3,382,481 bytes；MD5
+`22f56e5027edc7c766ad34ca4e5aca93`；SHA-256
+`a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`）。既有直接指令、
+typed schedule及raw oracle已共同固定第一批正式戰鬥consumer：
+
+| 正式consumer | outer resource | 可達非空subresource |
+|---|---:|---|
+| command 0／1 | 82 | 0、1 |
+| command 2 | 83 | 0、1、2、3 |
+| command 3 | 84 | 0、1、2 |
+| command 4 | 85 | 0、1 |
+| command 5 | 86 | 0、1 |
+| command 6 | 87 | 0、1、2、3 |
+| command 7 | 88 | 0、1 |
+| command 8與敵方command 9 | 90 | 0、1、2 |
+
+每個outer resource的最後一筆directory entry皆為0-byte尾項，不可輸出假音效。上述22筆
+非空raw sample的SHA-256與長度可由`ReadNestedResource`及固定archive重生；高階聽覺名稱
+除caller已證實的actor／target時序角色外仍不得猜測。正式runtime目前雖播放事先轉出的WAV，
+卻仍於每次presentation回讀相同archive subresource作admission gate；因此「已能發聲」不等於
+「只消費分離素材」。
+
+FD2 game code沒有設定sample type／playback rate，剩餘差異落在Miles AIL與`.DIG` driver預設，
+已達專案PCM／DAC／PIT停止線。重製採11025 Hz、8-bit unsigned mono作可重現近似，保留
+`source_pcm_sha256`、`sample_count`及推論等級；不再為取樣時鐘深入driver或ISR，也不得把OGG
+解碼後波形冒稱與DOS逐sample一致。
+
 ## 待辦(後輪)
 
 - [x] `FDOTHER.DAT` #31 的 14 個子樣本導出成 WAV(見下方「導出 WAV」)。

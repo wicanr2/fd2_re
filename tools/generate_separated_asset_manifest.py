@@ -136,7 +136,11 @@ def classify(path: Path) -> str | None:
     if top == "music":
         return "music" if suffix == ".ogg" else "music" if suffix in {".mid", ".xmi"} else None
     if top in {"audio", "sfx"}:
-        return "sfx" if suffix == ".ogg" else "blocked" if suffix not in {".json"} else None
+        if suffix == ".ogg":
+            return "sfx"
+        if top == "sfx" and path.name.lower() == "resource.json":
+            return "metadata"
+        return "blocked" if suffix != ".json" else None
     if top in {"text", "dialogue"} and suffix == ".json":
         return "text"
     return None
@@ -224,6 +228,14 @@ def infer_provenance(path: Path) -> tuple[str | None, int | None, int | None]:
     if len(path.parts) == 3 and path.parts[0].lower() == "fonts" and path.parts[1].lower() == "fdother_004":
         if path.name.lower() in {"atlas.png", "font.json"}:
             return "FDOTHER.DAT", 4, None
+    if len(path.parts) == 3 and path.parts[0].lower() == "sfx":
+        match = re.fullmatch(r"FDOTHER_(\d+)", path.parts[1], re.I)
+        if match:
+            frame = None
+            sample_match = re.fullmatch(r"sample_(\d+)\.ogg", path.name, re.I)
+            if sample_match:
+                frame = int(sample_match.group(1))
+            return "FDOTHER.DAT", int(match.group(1)), frame
     if len(path.parts) == 2 and path.parts[0].lower() == "palette":
         match = re.fullmatch(r"fdother_(\d+)\.json", path.name, re.I)
         if match:

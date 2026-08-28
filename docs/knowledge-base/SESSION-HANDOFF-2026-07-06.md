@@ -8355,3 +8355,23 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   不完整而失敗；這項舊測試債不歸因本遷移，也不以較窄測試冒稱完整複合命令E2。
 - 本切片只關閉共用DAC owner；同一command尚需FDOTHER內嵌動畫、nested sound、panel或LUT
   者仍保留archive依賴。下一個高價值切片是nested sound catalog。
+
+## 2026-08-29 第一批戰鬥巢狀音效分離與正式消費端遷移
+
+- 先在`36-sfx-audio-data.md`固定FDOTHER #82／#83／#84／#85／#86／#87／#88／#90的
+  container形狀、22筆非空raw PCM、空尾項與command caller，再於`60`建立READY契約；
+  11025 Hz明列hardware-spec approximation，不再深入Miles driver、DAC或PIT時序。
+- `tools/export_sfx.py --separated-pack`現驗證固定FDOTHER大小、MD5、SHA-256與104筆outer
+  directory，以`vorbis-tools 1.4.3`輸出8份metadata＋22筆OGG；每筆由`ogginfo`／`oggdec`
+  驗證mono、11025 Hz、時長與非靜音。真實原版連續匯出兩次的完整目錄逐byte一致。
+- `fdother.LoadSeparatedSoundBank`嚴格驗證source identity、resource count、空尾、PCM hash
+  格式、安全路徑與OGG header；Ebiten adapter再解碼所有OGG。command 0..8與敵方9正式
+  admission／playback統一使用分離bank，`ReadNestedResource`及舊#82..#90 WAV正式引用歸零。
+  #88既有death與ch24 transition別名也指向同一分離bank，不維持雙來源。
+- 缺原始FDOTHER條件下，玩家command 0、command 6、敵方command 9及command 1..8代表
+  presentation均通過；缺bank／sample、不支援resource與壞OGG失敗即關閉。完整`cmd/fd2`
+  回歸另揭露既有command24測試仍要求原始TAI archive，已依先前完成的TAI分離遷移改為
+  驗證缺原始TAI時仍消費分離素材，沒有把過期fixture保留成假產品缺陷。
+- 本機不入版控pack的manifest重生與來源驗證通過，現為38,709筆：37,685 exported、
+  1,005 intentionally raw、19 blocked。下一批依A2／A3處理UI #31、一般物理攻擊動態
+  bank、FDOTHER #80／#91..95或其他玩家價值較高的archive consumer。

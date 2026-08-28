@@ -220,6 +220,58 @@ command 9、native map、class／church代表路徑皆通過。command 34既有e
 在進入本切片helper前即因HUD drawable selector狀態不足失敗，故不拿它冒充本切片失敗；
 複合命令正式碼已編譯並共用同一精確helper，但完整舊fixture仍是獨立測試債。
 
+#### 第一批戰鬥巢狀音效分離契約
+
+> 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）
+
+本切片只使用[`36`](36-sfx-audio-data.md)已證實的FDOTHER outer／subresource及caller時序，
+涵蓋resource 82／83／84／85／86／87／88／90的22筆非空sample。每個resource輸出：
+
+```text
+sfx/FDOTHER_NNN/
+  resource.json
+  sample_MMM.ogg
+```
+
+`resource.json`固定保存`schema_version=1`、`kind=fd2_pcm_sound_bank`、穩定`asset_id`、
+固定FDOTHER來源identity、outer resource、原始container count、zero-length tail index、
+`sample_rate=11025`、`channels=1`、`sample_format=unsigned_u8`、
+`timing_evidence=hardware-spec_approximation`，以及每筆sample的subresource、raw byte count、
+`source_pcm_sha256`、OGG相對路徑與cue evidence。cue evidence只允許raw caller／typed schedule
+證實的角色，不可把人耳猜測名稱升格成資料identity。
+
+離線匯入器先驗證固定FDOTHER大小與雜湊，再驗證兩層`LLLLLL`directory、所有offset、非空
+sample數及空尾項；以可重現、鎖版Docker內編碼器將raw unsigned-8 PCM轉成mono OGG。OGG是
+runtime格式，raw PCM只作容器內oracle，不寫入正式pack。因Vorbis有損，驗收分兩層：raw
+provenance以原始bytes的長度／SHA-256閉合；OGG則驗證可解碼、mono、宣告取樣率、非靜音、
+duration與`sample_count/11025`在一個output sample內一致，不聲稱逐sample parity。
+
+嚴格runtime loader只能由`FD2_ASSET_PACK/sfx`依`asset_id`載入metadata與OGG；拒絕錯來源、
+錯resource／subresource、重複或缺sample、非空尾項、路徑逃逸、錯channels／rate、損壞OGG
+及metadata漂移，不回退`FDOTHER.DAT`或`remake/assets/sfx/*.wav`。command 0／1／2／3／4／
+5／6／7／8及敵方9的admission gate與播放bytes須改用同一已預檢bank，避免「archive只負責
+存在性、舊WAV負責播放」的雙來源。
+
+驗收至少包含：八個bank的22筆raw hash重生；OGG全數probe；缺archive時command 0玩家路徑、
+command 6多目標及敵方command 9仍可建立presentation；缺pack或任一必需sample時在MP／HP／
+狀態交易前失敗即關閉。這只關閉第一批command sound banks，不外推UI #31、一般物理攻擊
+動態bank、resource 80／91..95或完整音訊E2。
+
+實作結果：`tools/export_sfx.py --separated-pack`現先驗證固定FDOTHER identity及104筆outer
+directory，再嚴格驗證八個巢狀bank、22筆非空sample與各自空尾項；Docker內固定使用
+`vorbis-tools 1.4.3`的`oggenc`產生OGG，並由`ogginfo`／`oggdec`逐筆驗證。相同輸入連續
+兩次輸出的30筆檔案逐byte一致。`internal/fdother.LoadSeparatedSoundBank`再驗證metadata、
+來源雜湊、resource形狀、PCM hash格式、安全相對路徑及OGG magic；正式Ebiten adapter
+必須成功解碼全部八個bank後才發布。
+
+command 0／1／2／3／4／5／6／7／8及敵方command 9已移除所有
+`ReadNestedResource`入場檢查，播放bytes與admission gate統一來自分離OGG。舊
+`battle_82/83/84/85/86/87/88/90_*.wav`正式引用歸零，#88的既有death／ch24 transition
+別名也改指同一已解碼bank。原始FDOTHER路徑刻意不存在時，玩家command 0、command 6、
+敵方command 9及其餘command 1..8代表演出測試均通過；缺bank／sample及不支援resource
+則失敗即關閉。清冊因此增加22筆OGG與8筆metadata，現為38,709筆：37,685 exported、
+1,005 intentionally raw、19 blocked。
+
 ### 2026-08-28 第一輪全量匯出實測
 
 固定版本原版已在 `fd2-assets-local:20260828` 一次性容器內完成全量試跑，實際輸出
@@ -235,7 +287,7 @@ archive subresources、125張一般 PNG、264組 FIGANI／2,118張動畫 frame�
 皆已轉成正式 PNG／OGG。
 
 同一實際輸出樹再經來源 hash gate 與逐檔 manifest generator 驗證；2026-08-28完成
-ANI遷移後，現行清冊為38,679筆：37,655筆為已匯出、1,005筆raw完整列為
+ANI遷移後，當時清冊為38,679筆：37,655筆為已匯出、1,005筆raw完整列為
 `intentionally_raw`，19筆明確列為`blocked`（包含15首等待 OGG 的 MIDI）。清冊驗證器
 拒絕重複 ID、斷裂引用、路徑逃逸、來源／輸出
 hash 不符；`blocked` 項目不必偽造不存在的輸出 hash。

@@ -190,21 +190,12 @@ func TestNativeCommand24PresentationRejectsMissingPanelRawNameWithoutMutation(t 
 	}
 }
 
-func TestNativeCommand24PresentationRequiresActorTAIForNonzeroRawSide(t *testing.T) {
-	working, workingActor, workingTarget := newNativeCommand24PresentationTestGame(t)
-	workingActor.NativeRecordByte6 = 1
-	if err := working.startNativeCommand24Presentation(workingActor, workingTarget, nil); err != nil {
-		t.Fatalf("player-provided actor TAI was rejected: %v", err)
-	}
-
+func TestNativeCommand24PresentationUsesSeparatedActorTAIForNonzeroRawSide(t *testing.T) {
 	g, actor, target := newNativeCommand24PresentationTestGame(t)
 	actor.NativeRecordByte6 = 1
 	t.Setenv("FD2_ORIGINAL_TAI", filepath.Join(t.TempDir(), "missing-TAI.DAT"))
-	if err := g.startNativeCommand24Presentation(actor, target, nil); err == nil {
-		t.Fatal("nonzero raw-side actor accepted a missing TAI source")
-	}
-	if actor.MP != 30 || actor.Acted || target.HP != 200 || g.nativeCmd24Presentation != nil {
-		t.Fatalf("failed TAI preflight mutated state actor=%#v target=%#v", actor, target)
+	if err := g.startNativeCommand24Presentation(actor, target, nil); err != nil {
+		t.Fatalf("separated actor TAI was rejected when original archive was absent: %v", err)
 	}
 }
 

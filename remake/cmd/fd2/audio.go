@@ -11,6 +11,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/hajimehoshi/ebiten/v2/audio/vorbis"
 	"github.com/hajimehoshi/ebiten/v2/audio/wav"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
 var audioCtx *audio.Context
@@ -148,6 +149,71 @@ func loadWav(path string) []byte {
 		return nil
 	}
 	return b
+}
+
+// loadSeparatedCommandSoundBanks 載入第一批已閉合的戰鬥指令音效庫。
+// 它只消費分離素材包；任一音效庫缺漏或 OGG 解碼失敗時整批拒絕。
+func loadSeparatedCommandSoundBanks() (map[int]map[int][]byte, error) {
+	resources := []int{82, 83, 84, 85, 86, 87, 88, 90}
+	out := make(map[int]map[int][]byte, len(resources))
+	for _, resource := range resources {
+		bank, err := fdother.LoadSeparatedSoundBank(separatedAssetPath("sfx"), resource)
+		if err != nil {
+			return nil, err
+		}
+		decoded := make(map[int][]byte, len(bank.Encoded))
+		for subresource, encoded := range bank.Encoded {
+			stream, decodeErr := vorbis.DecodeWithSampleRate(44100, bytes.NewReader(encoded))
+			if decodeErr != nil {
+				return nil, fmt.Errorf("sound bank %d subresource %d: %w", resource, subresource, decodeErr)
+			}
+			pcm, readErr := io.ReadAll(stream)
+			if readErr != nil || len(pcm) == 0 {
+				return nil, fmt.Errorf("sound bank %d subresource %d decoded empty: %w", resource, subresource, readErr)
+			}
+			decoded[subresource] = pcm
+		}
+		out[resource] = decoded
+	}
+	return out, nil
+}
+
+func (g *Game) installSeparatedCommandSounds(banks map[int]map[int][]byte) {
+	g.separatedCommandSFX = banks
+	g.sfxCommand0Actor, g.sfxCommand0Target = banks[82][0], banks[82][1]
+	g.sfxCommand2Actor, g.sfxCommand2Mode2 = banks[83][0], banks[83][1]
+	g.sfxCommand2Mode5, g.sfxCommand2Mode6 = banks[83][2], banks[83][3]
+	g.sfxCommand3Actor, g.sfxCommand3Sub1, g.sfxCommand3Sub2 = banks[84][0], banks[84][1], banks[84][2]
+	g.sfxCommand4Actor, g.sfxCommand4Target = banks[85][0], banks[85][1]
+	g.sfxCommand5Actor, g.sfxCommand5Target = banks[86][0], banks[86][1]
+	g.sfxCommand6Actor, g.sfxCommand6Target = banks[87][0], banks[87][1]
+	g.sfxCommand6Front, g.sfxCommand6Tail = banks[87][2], banks[87][3]
+	g.sfxCommand7Actor, g.sfxCommand7Target = banks[88][0], banks[88][1]
+	g.sfxDeath, g.sfxTransition = banks[88][0], banks[88][1]
+	g.sfxCommand8Actor, g.sfxCommand8Sub1, g.sfxCommand8Sub2 = banks[90][0], banks[90][1], banks[90][2]
+}
+
+func (g *Game) requireSeparatedCommandSounds(resource int, samples ...int) error {
+	if g == nil {
+		return fmt.Errorf("separated FDOTHER #%d sound owner unavailable", resource)
+	}
+	if g.separatedCommandSFX == nil {
+		banks, err := loadSeparatedCommandSoundBanks()
+		if err != nil {
+			return err
+		}
+		g.installSeparatedCommandSounds(banks)
+	}
+	bank := g.separatedCommandSFX[resource]
+	if bank == nil {
+		return fmt.Errorf("separated FDOTHER #%d sound bank unavailable", resource)
+	}
+	for _, sample := range samples {
+		if len(bank[sample]) == 0 {
+			return fmt.Errorf("separated FDOTHER #%d sub%d unavailable", resource, sample)
+		}
+	}
+	return nil
 }
 
 // playRaw 直接播 PCM bytes(nil 安全)。
