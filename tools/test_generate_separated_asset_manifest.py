@@ -45,6 +45,9 @@ class GenerateManifestTest(unittest.TestCase):
         (pack / "fonts" / "fdother_004").mkdir(parents=True)
         (pack / "fonts" / "fdother_004" / "atlas.png").write_bytes(b"font-atlas")
         (pack / "fonts" / "fdother_004" / "font.json").write_text("{}", encoding="utf-8")
+        (pack / "sprites" / "fdicon" / "sprite_0000").mkdir(parents=True)
+        (pack / "sprites" / "fdicon" / "sprite_0000" / "frame.png").write_bytes(b"sprite")
+        (pack / "sprites" / "fdicon" / "bank.json").write_text("{}", encoding="utf-8")
         original = root / "original"
         original.mkdir()
         source = original / "FIGANI.DAT"
@@ -57,12 +60,15 @@ class GenerateManifestTest(unittest.TestCase):
         bg_source.write_bytes(b"bg-original")
         text_source = original / "FDTXT.DAT"
         text_source.write_bytes(b"text-original")
+        fdicon_source = original / "FDICON.B24"
+        fdicon_source.write_bytes(b"fdicon-original")
         ref = root / "reference.json"
         data = source.read_bytes()
         music_data = music_source.read_bytes()
         ui_data = ui_source.read_bytes()
         bg_data = bg_source.read_bytes()
         text_data = text_source.read_bytes()
+        fdicon_data = fdicon_source.read_bytes()
         ref.write_text(json.dumps({"files": [{
             "file": "FIGANI.DAT", "size": len(data),
             "md5": hashlib.md5(data).hexdigest(),
@@ -83,6 +89,10 @@ class GenerateManifestTest(unittest.TestCase):
             "file": "FDTXT.DAT", "size": len(text_data),
             "md5": hashlib.md5(text_data).hexdigest(),
             "sha256": hashlib.sha256(text_data).hexdigest(),
+        }, {
+            "file": "FDICON.B24", "size": len(fdicon_data),
+            "md5": hashlib.md5(fdicon_data).hexdigest(),
+            "sha256": hashlib.sha256(fdicon_data).hexdigest(),
         }]}), encoding="utf-8")
         return pack, ref, original
 
@@ -121,6 +131,8 @@ class GenerateManifestTest(unittest.TestCase):
             self.assertEqual((text["kind"], text["source_file"], text["source_resource"], text["status"]), ("text", "FDTXT.DAT", 0, "exported"))
             font = next(item for item in manifest["assets"] if item["path"] == "fonts/fdother_004/font.json")
             self.assertEqual((font["kind"], font["source_file"], font["source_resource"]), ("font", "FDOTHER.DAT", 4))
+            sprite = next(item for item in manifest["assets"] if item["path"] == "sprites/fdicon/sprite_0000/frame.png")
+            self.assertEqual((sprite["kind"], sprite["source_file"], sprite["source_frame"]), ("map_sprite", "FDICON.B24", 0))
 
     def test_source_hash_mismatch_fails_closed(self):
         with tempfile.TemporaryDirectory() as temp:

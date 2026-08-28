@@ -7,6 +7,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"image"
@@ -16,6 +17,7 @@ import (
 	"path/filepath"
 	"strconv"
 
+	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
 )
@@ -117,6 +119,25 @@ type itemPanelDocument struct {
 	Entries       []itemPanelEntryDocument `json:"entries"`
 }
 
+type fdiconSpriteDocument struct {
+	Index     int    `json:"index"`
+	Width     int    `json:"width"`
+	Height    int    `json:"height"`
+	Frame     string `json:"frame"`
+	Mask      string `json:"mask"`
+	RemapMask string `json:"remap_mask"`
+}
+
+type fdiconBankDocument struct {
+	SchemaVersion int                    `json:"schema_version"`
+	Kind          string                 `json:"kind"`
+	AssetID       string                 `json:"asset_id"`
+	Status        string                 `json:"status"`
+	Evidence      string                 `json:"evidence"`
+	Source        sourceID               `json:"source"`
+	Sprites       []fdiconSpriteDocument `json:"sprites"`
+}
+
 type archiveIdentity struct {
 	file, prefix string
 	size         int
@@ -132,6 +153,12 @@ var fdtxtArchive = archiveIdentity{
 	file: "FDTXT.DAT", prefix: "FDTXT", size: 120502,
 	md5:    "fe5c487ce4313485f1da9d48d35b05f9",
 	sha256: "a4555f8a0e61e884b4f504d56a8bdde11672583bbbbc6506281ae10dcdfb1f69",
+}
+
+var fdiconArchive = archiveIdentity{
+	file: "FDICON.B24", prefix: "FDICON", size: 624010,
+	md5:    "46f793540209a063ea73a5373ca14bf4",
+	sha256: "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
 }
 
 func verifyFDOTHER(path string) error {
@@ -529,16 +556,86 @@ func writeIndexedPNG(path string, width, height int, pixels []byte) error {
 	return closeErr
 }
 
+func exportFDICON(path, outputRoot string) error {
+	if err := verifyArchive(path, fdiconArchive); err != nil {
+		return err
+	}
+	bank, err := fdicon.DecodeFile(path)
+	if err != nil {
+		return err
+	}
+	if len(bank.Sprites) != fdicon.SeparatedSpriteCount {
+		return fmt.Errorf("FDICON.B24 sprite count=%d, want %d", len(bank.Sprites), fdicon.SeparatedSpriteCount)
+	}
+	directory := filepath.Join(outputRoot, "sprites", "fdicon")
+	document := fdiconBankDocument{
+		SchemaVersion: 1, Kind: "fdicon_sprite_bank", AssetID: "sprites/fdicon",
+		Status: "decoded", Evidence: "confirmed",
+		Source:  sourceID{File: fdiconArchive.file, Size: fdiconArchive.size, MD5: fdiconArchive.md5, SHA256: fdiconArchive.sha256, RawSize: fdiconArchive.size},
+		Sprites: make([]fdiconSpriteDocument, 0, len(bank.Sprites)),
+	}
+	for index, sprite := range bank.Sprites {
+		if len(sprite.Pixels) != fdicon.NativeSize*fdicon.NativeSize ||
+			len(sprite.Mask) != len(sprite.Pixels) || len(sprite.RemapMask) != len(sprite.Pixels) {
+			return fmt.Errorf("FDICON.B24 sprite %d has incomplete decoded layers", index)
+		}
+		prefix := fmt.Sprintf("sprite_%04d", index)
+		if err := writeIndexedPNG(filepath.Join(directory, prefix, "frame.png"), fdicon.NativeSize, fdicon.NativeSize, sprite.Pixels); err != nil {
+			return err
+		}
+		if err := writeBinaryMaskPNG(filepath.Join(directory, prefix, "mask.png"), fdicon.NativeSize, fdicon.NativeSize, sprite.Mask); err != nil {
+			return err
+		}
+		if err := writeBinaryMaskPNG(filepath.Join(directory, prefix, "remap_mask.png"), fdicon.NativeSize, fdicon.NativeSize, sprite.RemapMask); err != nil {
+			return err
+		}
+		document.Sprites = append(document.Sprites, fdiconSpriteDocument{
+			Index: index, Width: fdicon.NativeSize, Height: fdicon.NativeSize,
+			Frame: prefix + "/frame.png", Mask: prefix + "/mask.png", RemapMask: prefix + "/remap_mask.png",
+		})
+	}
+	return writeJSON(filepath.Join(directory, "bank.json"), document)
+}
+
+func writeBinaryMaskPNG(path string, width, height int, mask []byte) error {
+	if width <= 0 || height <= 0 || len(mask) != width*height {
+		return errors.New("binary mask PNG geometry mismatch")
+	}
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		return err
+	}
+	output := image.NewGray(image.Rect(0, 0, width, height))
+	for index, value := range mask {
+		if value != 0 && value != 1 {
+			return errors.New("binary mask contains a non-binary value")
+		}
+		if value != 0 {
+			output.Pix[index] = 0xff
+		}
+	}
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	encodeErr := png.Encode(file, output)
+	closeErr := file.Close()
+	if encodeErr != nil {
+		return encodeErr
+	}
+	return closeErr
+}
+
 func main() {
 	fdotherPath := flag.String("fdother", "", "固定版本 FDOTHER.DAT 路徑")
 	bgPath := flag.String("bg", "", "固定版本 BG.DAT 路徑")
 	taiPath := flag.String("tai", "", "固定版本 TAI.DAT 路徑")
 	fdtxtPath := flag.String("fdtxt", "", "固定版本 FDTXT.DAT 路徑")
+	fdiconPath := flag.String("fdicon", "", "固定版本 FDICON.B24 路徑")
 	glyphMapPath := flag.String("glyph-map", "", "受版控 glyph_map.json 路徑")
 	outputRoot := flag.String("out", "", "分離素材包根目錄")
 	flag.Parse()
-	if *outputRoot == "" || (*fdotherPath == "" && *bgPath == "" && *taiPath == "" && *fdtxtPath == "") || (*fdtxtPath != "" && *glyphMapPath == "") {
-		fmt.Fprintln(os.Stderr, "用法：fd2-asset-import [-fdother FDOTHER.DAT] [-bg BG.DAT] [-tai TAI.DAT] [-fdtxt FDTXT.DAT -glyph-map glyph_map.json] -out ASSET_PACK")
+	if *outputRoot == "" || (*fdotherPath == "" && *bgPath == "" && *taiPath == "" && *fdtxtPath == "" && *fdiconPath == "") || (*fdtxtPath != "" && *glyphMapPath == "") {
+		fmt.Fprintln(os.Stderr, "用法：fd2-asset-import [-fdother FDOTHER.DAT] [-bg BG.DAT] [-tai TAI.DAT] [-fdtxt FDTXT.DAT -glyph-map glyph_map.json] [-fdicon FDICON.B24] -out ASSET_PACK")
 		os.Exit(2)
 	}
 	if *fdotherPath != "" {
@@ -569,5 +666,12 @@ func main() {
 			os.Exit(1)
 		}
 		fmt.Printf("已匯出 FDTXT.DAT：decoded=%d blocked=%d\n", decoded, blocked)
+	}
+	if *fdiconPath != "" {
+		if err := exportFDICON(*fdiconPath, *outputRoot); err != nil {
+			fmt.Fprintln(os.Stderr, "匯入失敗：", err)
+			os.Exit(1)
+		}
+		fmt.Printf("已匯出 FDICON.B24：%d 張 indexed frame＋mask＋remap mask\n", fdicon.SeparatedSpriteCount)
 	}
 }

@@ -8189,3 +8189,13 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   時完成12幀生命週期；教會、商店、整備及指令consumer均共用此loader。
 - manifest現為8,007筆：6,983 exported、1,005 intentionally_raw、19 blocked；FDTXT正式
   玩家archive consumer歸零，source-oracle adapter仍保留。
+
+## 2026-08-28：FDICON.B24 全銀行分離與戰場接線
+
+- 固定hash header為24×24、1,680張；每張輸出indexed frame、source mask與remap mask，
+  加bank metadata共5,041檔，逐張三層與archive decoder一致。
+- `loadNativeMapAssets`只讀分離bank；測試沙箱同目錄只有FDOTHER／FDSHAP、沒有FDICON.B24
+  時仍載入完整戰場人物銀行。
+- manifest現為13,048筆：12,024 exported、1,005 intentionally_raw、19 blocked。
+- 整備、職業／教會、城鎮與終局tail仍有FDICON archive consumer；下一批先接同一loader，
+  不重做selector RE。

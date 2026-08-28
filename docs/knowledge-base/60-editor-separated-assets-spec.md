@@ -437,6 +437,51 @@ geometry、indexed pixel及mask比對一致；缺完整pack會失敗即關閉。
 其中 `ui/fdother_005_item_panel/` 有92份PNG與1份metadata。此切片達
 `RUNTIME-E1`，不外推未修改原版逐像素E2。
 
+### FDICON.B24 戰場人物銀行契約（CONFORMED）
+
+#### 證據與範圍
+
+固定版本 `FDICON.B24` 為624,010 bytes，MD5
+`46f793540209a063ea73a5373ca14bf4`、SHA-256
+`7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44`。Docker內
+直接讀取header為 `{width=24,height=24,count=1680}`。IDA Pro 9.4證據
+[`fd2_fdicon_selector_constructor_ida.txt`](../data/ida/fd2_fdicon_selector_constructor_ida.txt)
+已證實 `0x11019`按raw key建立每組12張的快取，`0x127e0`再以
+`group*12+pose*3+cycle`消費；既有typed decoder逐張保留four-mode RLE的indexed
+pixel、source-write mask與mode-3 destination-remap mask。本切片不重新命名raw key、
+pose、cycle或圖像身份，也不把同值推成角色身份。
+
+#### 標準輸出與loader
+
+標準輸出根為 `sprites/fdicon/`：`bank.json`逐筆列出穩定sprite index、24×24幾何、
+`frame.png`、`mask.png`及`remap_mask.png`。frame必須是256色indexed PNG；兩張mask
+必須是8-bit grayscale PNG且只含0／255。三層不可合併成單一RGBA：mode-3不寫source
+pixel，而是在特定consumer中映射既有目的地，普通alpha無法表示。
+
+正式loader必須一次驗證來源檔名、大小、雜湊、1680筆完整且不重複的連續index、固定
+24×24幾何、PNG mode與binary mask，再發布一個完整`fdicon.Bank`。缺檔、多檔、錯誤
+index、非indexed frame、非binary mask或任何幾何不符均整批失敗，不得回退
+`FDICON.B24`。
+
+#### 驗收與邊界
+
+真實固定版本的1680張sprite須逐張比較pixels／mask／remap mask；正式戰場載入在
+`FD2_ORIGINAL_FDICON`及相鄰archive路徑不可讀時仍須取得同一bank。此切片只關閉
+FDICON人物銀行，不宣稱FDFIELD、FDSHAP、FDOTHER HUD／LUT／palette或完整戰場素材組合
+已分離；也不把重製端等價比對提升成原版畫面E2。
+
+#### 2026-08-28 實作與驗收
+
+固定版本已輸出1,680張indexed frame、1,680張source mask、1,680張remap mask及
+`bank.json`，合計5,041個標準檔。strict loader逐張重建後，全部pixels／mask／remap
+mask與原始four-mode decoder一致；空bank及不完整pack會失敗即關閉。正式
+`loadNativeMapAssets`改讀此bank，測試沙箱只在相鄰目錄提供FDOTHER／FDSHAP、不提供
+FDICON.B24，仍能載入完整1,680張戰場人物素材。
+
+完整manifest現為13,048筆：12,024 exported、1,005 intentionally_raw、19 blocked。
+本切片達`DATA-READY`與戰場bundle的`RUNTIME-E1`；整備、職業／教會、城鎮及終局tail
+仍有各自FDICON archive consumer，故FDICON全runtime仍是`RUNTIME-E1-PARTIAL`。
+
 ## 七、完成定義
 
 只有同時成立才可宣稱「素材已完全分離、JSON 足以建立編輯器」：

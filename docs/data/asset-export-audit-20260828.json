@@ -5,7 +5,7 @@
   "tool": "tools/extract_all.py + remake/cmd/fd2-asset-import",
   "container_image": "fd2-assets-local:20260828",
   "output_policy": "local_generated_untracked",
-  "command_contract": "python3 tools/extract_all.py <verified-original-dir> <pack>; go run ./cmd/fd2-asset-import -fdother <FDOTHER.DAT> -bg <BG.DAT> -tai <TAI.DAT> -fdtxt <FDTXT.DAT> -glyph-map docs/data/glyph_map.json -out <pack>",
+  "command_contract": "python3 tools/extract_all.py <verified-original-dir> <pack>; go run ./cmd/fd2-asset-import -fdother <FDOTHER.DAT> -bg <BG.DAT> -tai <TAI.DAT> -fdtxt <FDTXT.DAT> -glyph-map docs/data/glyph_map.json -fdicon <FDICON.B24> -out <pack>",
   "archive_resources": {
     "ANI.DAT": 10,
     "BG.DAT": 57,
@@ -51,13 +51,17 @@
     "fdother_005_item_panel_indexed_png": 58,
     "fdother_005_item_panel_masks_png": 34,
     "fdother_005_item_panel_metadata_json": 1,
+    "fdicon_indexed_frames_png": 1680,
+    "fdicon_source_masks_png": 1680,
+    "fdicon_remap_masks_png": 1680,
+    "fdicon_metadata_json": 1,
     "music_midi": 15
   },
   "manifest_validation": {
     "tool": "tools/generate_separated_asset_manifest.py",
     "validator": "tools/validate_separated_asset_pack.py",
-    "total_entries": 8007,
-    "exported": 6983,
+    "total_entries": 13048,
+    "exported": 12024,
     "blocked": 19,
     "intentionally_raw": 1005,
     "source_hashes_verified": true,
@@ -95,6 +99,16 @@
     "runtime_archive_fallback": false,
     "archive_unreadable_test": "pass (FDTXT.DAT missing; shared item panel player lifecycle)",
     "evidence_level": "RUNTIME-E1"
+  }, {
+    "family": "fdicon_map_sprites",
+    "source_resources": ["FDICON.B24 (24x24, 1680 sprites)"],
+    "separated_outputs": 5041,
+    "archive_png_indexed_mask_match": "pass (all 1680 sprites; pixels, source mask, remap mask)",
+    "runtime_consumers": ["native tactical map bundle"],
+    "runtime_archive_fallback": false,
+    "archive_unreadable_test": "pass (FDOTHER/FDSHAP available beside no FDICON.B24)",
+    "remaining_direct_archive_consumers": ["native preparation", "native class/church", "native town", "ending montage tail"],
+    "evidence_level": "RUNTIME-E1-PARTIAL"
   }, {
     "family": "battle_action_grid",
     "source_resources": ["FDOTHER.DAT#0", "FDOTHER.DAT#2"],

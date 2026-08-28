@@ -106,6 +106,8 @@ def classify(path: Path) -> str | None:
         return None
     if top == "portraits" and suffix == ".png":
         return "portrait"
+    if top == "sprites" and len(parts) >= 2 and parts[1].lower() == "fdicon":
+        return "map_sprite" if suffix == ".png" else "metadata" if path.name.lower() == "bank.json" else None
     if top == "maps":
         return "map" if suffix == ".json" else "tileset" if suffix == ".png" else None
     if top == "fonts":
@@ -156,6 +158,14 @@ def infer_provenance(path: Path) -> tuple[str | None, int | None, int | None]:
         match = re.search(r"DATO[_-](\d+)", stem, re.I)
         if match:
             return "DATO.DAT", int(match.group(1)), frame
+    if len(path.parts) >= 2 and path.parts[0].lower() == "sprites" and path.parts[1].lower() == "fdicon":
+        frame = None
+        for part in path.parts[2:]:
+            match = re.fullmatch(r"sprite_(\d+)", part, re.I)
+            if match:
+                frame = int(match.group(1))
+                break
+        return "FDICON.B24", None, frame
     if len(path.parts) >= 3 and path.parts[0].lower() == "surfaces":
         match = re.fullmatch(r"(BG|TAI)_(\d+)", path.parts[1], re.I)
         if match:

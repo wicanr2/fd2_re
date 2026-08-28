@@ -60,7 +60,7 @@ func loadNativeMapAssets(mapDir string) (*nativeMapAssets, error) {
 	if err != nil {
 		return nil, err
 	}
-	units, err := fdicon.DecodeFile(filepath.Join(base, "FDICON.B24"))
+	units, err := fdicon.LoadSeparatedBank(separatedAssetPath("sprites/fdicon"))
 	if err != nil {
 		return nil, err
 	}
