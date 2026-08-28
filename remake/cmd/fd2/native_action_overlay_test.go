@@ -516,16 +516,21 @@ func TestNativeCommandTargetFieldMaterializeAndReset(t *testing.T) {
 func TestPlayerNativeCommand0RunsIndexedPresentationThroughCursorConfirm(t *testing.T) {
 	assets, field, state := completeNativeMapFrameFixture(t)
 	base := filepath.Clean("../../../org_game/炎龍騎士團/FLAME2")
-	for _, name := range []string{"FIGANI.DAT", "FDOTHER.DAT", "BG.DAT", "FDTXT.DAT", "TAI.DAT"} {
+	pack := filepath.Clean("../../generated-assets/fd2-original-b97caf22")
+	if !fileExists(filepath.Join(pack, "surfaces", "BG_000", "resource.json")) {
+		t.Skip("separated command0 asset pack unavailable")
+	}
+	t.Setenv("FD2_ASSET_PACK", pack)
+	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT"} {
 		if !fileExists(filepath.Join(base, name)) {
 			t.Skip("player-provided command0 archives unavailable")
 		}
 	}
 	t.Setenv("FD2_ORIGINAL_FIGANI", filepath.Join(t.TempDir(), "missing-FIGANI.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
-	t.Setenv("FD2_ORIGINAL_BG", filepath.Join(base, "BG.DAT"))
+	t.Setenv("FD2_ORIGINAL_BG", filepath.Join(t.TempDir(), "missing-BG.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(base, "FDTXT.DAT"))
-	t.Setenv("FD2_ORIGINAL_TAI", filepath.Join(base, "TAI.DAT"))
+	t.Setenv("FD2_ORIGINAL_TAI", filepath.Join(t.TempDir(), "missing-TAI.DAT"))
 	t.Setenv("FD2_MUTE", "1")
 	book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
 	for id := range book {

@@ -99,13 +99,13 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 	if len(plan.Results) == 0 {
 		return errors.New("native command29 final target list is empty")
 	}
-	bgArchive, fdotherArchive, fdtxtArchive := nativeBGPath(), nativeFDOTHERPath(), nativeFDTXTPath()
-	if bgArchive == "" || fdotherArchive == "" || fdtxtArchive == "" {
-		return errors.New("native command29 player-provided BG/FDOTHER/FDTXT unavailable")
+	fdotherArchive, fdtxtArchive := nativeFDOTHERPath(), nativeFDTXTPath()
+	if fdotherArchive == "" || fdtxtArchive == "" {
+		return errors.New("native command29 player-provided FDOTHER/FDTXT unavailable")
 	}
 	var bgLayers [3]fdother.Frame
 	for i := range bgLayers {
-		bgLayers[i], err = fdother.DecodeArchiveSingleFrame(bgArchive, i)
+		bgLayers[i], err = fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", i)
 		if err != nil {
 			return err
 		}
@@ -122,7 +122,7 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 	if err != nil {
 		return err
 	}
-	actorBG, err := fdother.DecodeArchiveSingleFrame(bgArchive, actorSelector)
+	actorBG, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", actorSelector)
 	if err != nil {
 		return err
 	}
@@ -142,11 +142,7 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 	}
 	var platform *fdother.Frame
 	if actor.NativeRecordByte6 != 0 {
-		taiArchive := nativeTAIPath()
-		if taiArchive == "" {
-			return errors.New("native command29 player-provided TAI.DAT unavailable")
-		}
-		frame, decodeErr := fdother.DecodeArchiveSingleFrame(taiArchive, actorSelector)
+		frame, decodeErr := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "TAI.DAT", actorSelector)
 		if decodeErr != nil {
 			return decodeErr
 		}
@@ -208,7 +204,7 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 		if selectorErr != nil {
 			return selectorErr
 		}
-		background, decodeErr := fdother.DecodeArchiveSingleFrame(bgArchive, selector)
+		background, decodeErr := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", selector)
 		if decodeErr != nil {
 			return decodeErr
 		}

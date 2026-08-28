@@ -2,10 +2,10 @@
   "schema_version": 1,
   "captured_at": "2026-08-28",
   "source_reference": "docs/data/fd2-reference-files.json",
-  "tool": "tools/extract_all.py",
+  "tool": "tools/extract_all.py + remake/cmd/fd2-asset-import",
   "container_image": "fd2-assets-local:20260828",
   "output_policy": "local_generated_untracked",
-  "command_contract": "python3 tools/extract_all.py <verified-original-dir> remake/generated-assets/fd2-original-b97caf22",
+  "command_contract": "python3 tools/extract_all.py <verified-original-dir> <pack>; go run ./cmd/fd2-asset-import -fdother <FDOTHER.DAT> -bg <BG.DAT> -tai <TAI.DAT> -out <pack>",
   "archive_resources": {
     "ANI.DAT": 10,
     "BG.DAT": 57,
@@ -32,6 +32,14 @@
     "decoded_fdother_animation_masks_png": 408,
     "decoded_fdother_animation_metadata_json": 23,
     "fdother_animation_resource_status_json": 23,
+    "decoded_bg_surface_resources": 56,
+    "decoded_bg_surface_frames_png": 56,
+    "decoded_bg_surface_masks_png": 56,
+    "bg_surface_resource_status_json": 57,
+    "decoded_tai_surface_resources": 56,
+    "decoded_tai_surface_frames_png": 56,
+    "decoded_tai_surface_masks_png": 56,
+    "tai_surface_resource_status_json": 57,
     "decoded_portrait_resources": 136,
     "decoded_portrait_frames_png": 544,
     "rendered_maps_png": 33,
@@ -41,9 +49,9 @@
   "manifest_validation": {
     "tool": "tools/generate_separated_asset_manifest.py",
     "validator": "tools/validate_separated_asset_pack.py",
-    "total_entries": 7539,
-    "exported": 6519,
-    "blocked": 15,
+    "total_entries": 7877,
+    "exported": 6854,
+    "blocked": 18,
     "intentionally_raw": 1005,
     "source_hashes_verified": true,
     "result": "pass"
@@ -114,11 +122,27 @@
     "archive_png_indexed_mask_metadata_match": "pass (resource 18, all sixteen frames)",
     "remaining_direct_archive_callers": 0,
     "evidence_level": "RUNTIME-E1"
+  }, {
+    "family": "bg_tai_indexed_surfaces",
+    "source_resources": ["BG.DAT#0..56", "TAI.DAT#0..56"],
+    "decoded_resources": {"BG.DAT": 56, "TAI.DAT": 56},
+    "blocked_resources": ["BG.DAT#56 (0 bytes)", "TAI.DAT#56 (0 bytes)"],
+    "separated_outputs": 338,
+    "runtime_consumers": [
+      "native commands 0/1/2/3/5/6/7/8/9",
+      "native commands 24/29/32/33/34/35"
+    ],
+    "runtime_archive_fallback": false,
+    "archive_png_indexed_mask_match": "pass (all 112 decoded resources and final blits)",
+    "archive_unreadable_test": "pass (normal player command0)",
+    "remaining_battle_presentation_archive_callers": 0,
+    "remaining_ending_archive_callers": 2,
+    "evidence_level": "RUNTIME-E1"
   }],
   "not_yet_complete": [
     "FIGANI #408 是 0-byte blocked resource；不得當成合法 zero-header fallback",
     "目前音樂輸出為 MIDI；正式 runtime pack 要以既有音源管線輸出 OGG 並記錄 loop/stop metadata",
-    "音效、AFM/ANI、DATO/TAI/BG/UI 的用途與 asset_id 尚未全量登記",
+    "音效、AFM/ANI、FDTXT/FDFIELD/FDICON與其餘FDOTHER UI的用途與 asset_id 尚未全量登記",
     "現行 extract_all.py 仍需由獨立 manifest generator 補上逐檔清冊；尚未整合成單一安裝命令",
     "production runtime 仍有原始 archive callers"
   ]

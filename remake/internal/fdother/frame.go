@@ -20,6 +20,26 @@ type Frame struct {
 	X, Y          int
 	Width, Height int
 	Pixels        []byte
+	// Indexed 與 Mask 是分離素材 loader 使用的已解碼表示。Mask 只接受
+	// 0（保留 destination）或 255（寫入 Indexed）；原始 archive parser
+	// 仍只填 Pixels，兩種表示不可同時存在。
+	Indexed, Mask []byte
+}
+
+// ArchiveResourceCount 回傳 LLLLLL archive directory 的 resource 數量。
+func ArchiveResourceCount(datPath string) (int, error) {
+	data, err := os.ReadFile(datPath)
+	if err != nil {
+		return 0, err
+	}
+	if len(data) < 10 || string(data[:6]) != "LLLLLL" {
+		return 0, errors.New("fdother: missing LLLLLL archive magic")
+	}
+	first := int(binary.LittleEndian.Uint32(data[6:]))
+	if first < 10 || first > len(data) || (first-6)%4 != 0 {
+		return 0, errors.New("fdother: invalid archive directory")
+	}
+	return (first - 6) / 4, nil
 }
 
 // DecodeResource opens a player-provided LLLLLL .DAT archive and parses one
@@ -178,6 +198,24 @@ func (f Frame) BlitAt(dst []byte, stride, base, transparent int) error {
 	if base < 0 || base > len(dst) || f.Y > (len(dst)-base-f.X)/stride || f.Height > (len(dst)-base)/stride-f.Y {
 		return errors.New("fdother: destination is too small")
 	}
+	if len(f.Indexed) != 0 || len(f.Mask) != 0 {
+		if len(f.Pixels) != 0 || len(f.Indexed) != f.Width*f.Height || len(f.Mask) != len(f.Indexed) {
+			return errors.New("fdother: invalid separated indexed frame")
+		}
+		for y := 0; y < f.Height; y++ {
+			for x := 0; x < f.Width; x++ {
+				i := y*f.Width + x
+				switch f.Mask[i] {
+				case 0:
+				case 255:
+					dst[base+(f.Y+y)*stride+f.X+x] = f.Indexed[i]
+				default:
+					return errors.New("fdother: separated mask is not binary")
+				}
+			}
+		}
+		return nil
+	}
 	pos := 4 // 0x4e63d consumes Width/Height from the payload before RLE.
 	for y := 0; y < f.Height; y++ {
 		row, written := base+(f.Y+y)*stride+f.X, 0
@@ -229,6 +267,41 @@ func (f Frame) BlitAt(dst []byte, stride, base, transparent int) error {
 	return nil
 }
 
+// IndexedLayers 將已驗證的 0x4E63D stream 轉成不遺失透明語意的索引色與遮罩。
+// 兩個不同 sentinel 可區分 destination-preserving 位置與不透明 palette 254/255。
+func (f Frame) IndexedLayers() ([]byte, []byte, error) {
+	if len(f.Indexed) != 0 || len(f.Mask) != 0 {
+		if len(f.Pixels) != 0 || len(f.Indexed) != f.Width*f.Height || len(f.Mask) != len(f.Indexed) {
+			return nil, nil, errors.New("fdother: invalid separated indexed frame")
+		}
+		return append([]byte(nil), f.Indexed...), append([]byte(nil), f.Mask...), nil
+	}
+	a := make([]byte, f.Width*f.Height)
+	b := make([]byte, f.Width*f.Height)
+	for i := range a {
+		a[i], b[i] = 0xff, 0xfe
+	}
+	flat := f
+	flat.X, flat.Y = 0, 0
+	if err := flat.Blit(a, f.Width, -1); err != nil {
+		return nil, nil, err
+	}
+	if err := flat.Blit(b, f.Width, -1); err != nil {
+		return nil, nil, err
+	}
+	indexed, mask := make([]byte, len(a)), make([]byte, len(a))
+	for i := range a {
+		if a[i] == 0xff && b[i] == 0xfe {
+			continue
+		}
+		if a[i] != b[i] {
+			return nil, nil, errors.New("fdother: inconsistent decoded indexed pixel")
+		}
+		indexed[i], mask[i] = a[i], 0xff
+	}
+	return indexed, mask, nil
+}
+
 // BlitLUTAt reproduces 0x4e583: it decodes the same four-mode stream as
 // 0x4e63d, but maps every written palette index through a complete 256-byte
 // lookup table. Transparent skips still preserve the destination and dither
@@ -242,6 +315,24 @@ func (f Frame) BlitLUTAt(dst []byte, stride, base int, lut []byte) error {
 	}
 	if base < 0 || base > len(dst) || f.Y > (len(dst)-base-f.X)/stride || f.Height > (len(dst)-base)/stride-f.Y {
 		return errors.New("fdother: LUT destination is too small")
+	}
+	if len(f.Indexed) != 0 || len(f.Mask) != 0 {
+		if len(f.Pixels) != 0 || len(f.Indexed) != f.Width*f.Height || len(f.Mask) != len(f.Indexed) {
+			return errors.New("fdother: invalid separated indexed frame")
+		}
+		for y := 0; y < f.Height; y++ {
+			for x := 0; x < f.Width; x++ {
+				i := y*f.Width + x
+				switch f.Mask[i] {
+				case 0:
+				case 255:
+					dst[base+(f.Y+y)*stride+f.X+x] = lut[f.Indexed[i]]
+				default:
+					return errors.New("fdother: separated mask is not binary")
+				}
+			}
+		}
+		return nil
 	}
 	pos := 4
 	for y := 0; y < f.Height; y++ {

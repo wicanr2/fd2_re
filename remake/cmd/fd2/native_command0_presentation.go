@@ -254,15 +254,15 @@ func (g *Game) startNativeCommand0Presentation(actor, target *battle.Unit, then 
 	if actor.NativeRecordByte6 == 0 {
 		bgSelector, taiSelector = actorSelector, targetSelector
 	}
-	bgPath, taiPath, fdotherPath, fdtxtPath := nativeBGPath(), nativeTAIPath(), nativeFDOTHERPath(), nativeFDTXTPath()
-	if bgPath == "" || taiPath == "" || fdotherPath == "" || fdtxtPath == "" {
+	fdotherPath, fdtxtPath := nativeFDOTHERPath(), nativeFDTXTPath()
+	if fdotherPath == "" || fdtxtPath == "" {
 		return errors.New("native command0 player-provided archives unavailable")
 	}
-	background, err := fdother.DecodeArchiveSingleFrame(bgPath, int(bgSelector))
+	background, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", int(bgSelector))
 	if err != nil {
 		return err
 	}
-	platform, err := fdother.DecodeArchiveSingleFrame(taiPath, int(taiSelector))
+	platform, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "TAI.DAT", int(taiSelector))
 	if err != nil {
 		return err
 	}

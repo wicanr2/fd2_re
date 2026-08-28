@@ -100,6 +100,10 @@ def classify(path: Path) -> str | None:
         if path.name.lower() in {"animation.json", "resource.json"}:
             return "metadata"
         return None
+    if top == "surfaces" and len(parts) >= 3:
+        if path.name.lower() in {"frame.png", "mask.png", "resource.json"}:
+            return "background" if parts[1].upper().startswith("BG_") else "ui"
+        return None
     if top == "portraits" and suffix == ".png":
         return "portrait"
     if top == "maps":
@@ -145,6 +149,10 @@ def infer_provenance(path: Path) -> tuple[str | None, int | None, int | None]:
         match = re.search(r"DATO[_-](\d+)", stem, re.I)
         if match:
             return "DATO.DAT", int(match.group(1)), frame
+    if len(path.parts) >= 3 and path.parts[0].lower() == "surfaces":
+        match = re.fullmatch(r"(BG|TAI)_(\d+)", path.parts[1], re.I)
+        if match:
+            return SOURCE_BY_CONTAINER[match.group(1).upper()], int(match.group(2)), None
     if path.as_posix().lower() == "palette/fdother_000.json":
         return "FDOTHER.DAT", 0, None
     if len(path.parts) == 3 and path.parts[0].lower() == "ui" and path.parts[1].lower() == "action_cells":
@@ -181,13 +189,21 @@ def build_manifest(pack_root: Path, reference: Path, original_dir: Path | None =
             # 沒有可回查來源的輸出不能進入正式清冊；避免 null provenance 被
             # 後續工具誤認為已證實。這類檔案由呼叫端另行診斷即可。
             continue
+        status = "blocked" if path.suffix.lower() in {".mid", ".xmi"} else "exported"
+        if path.name.lower() == "resource.json":
+            try:
+                resource_status = json.loads(path.read_text(encoding="utf-8")).get("status")
+            except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+                resource_status = None
+            if resource_status == "blocked":
+                status = "blocked"
         item = {
             "asset_id": stable_asset_id(kind, relative),
             "kind": kind,
             "path": relative,
             "sha256": sha256(path),
             "source_file": source_file,
-            "status": "blocked" if path.suffix.lower() in {".mid", ".xmi"} else "exported",
+            "status": status,
             "evidence": "confirmed",
         }
         if resource is not None:

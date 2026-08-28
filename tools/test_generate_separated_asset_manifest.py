@@ -33,6 +33,9 @@ class GenerateManifestTest(unittest.TestCase):
         (pack / "palette" / "fdother_000.json").write_text("{}")
         (pack / "ui" / "action_cells").mkdir(parents=True)
         (pack / "ui" / "action_cells" / "cell_000.png").write_bytes(b"cell")
+        (pack / "surfaces" / "BG_056").mkdir(parents=True)
+        (pack / "surfaces" / "BG_056" / "resource.json").write_text(
+            json.dumps({"status": "blocked"}), encoding="utf-8")
         original = root / "original"
         original.mkdir()
         source = original / "FIGANI.DAT"
@@ -41,10 +44,13 @@ class GenerateManifestTest(unittest.TestCase):
         music_source.write_bytes(b"music-original")
         ui_source = original / "FDOTHER.DAT"
         ui_source.write_bytes(b"ui-original")
+        bg_source = original / "BG.DAT"
+        bg_source.write_bytes(b"bg-original")
         ref = root / "reference.json"
         data = source.read_bytes()
         music_data = music_source.read_bytes()
         ui_data = ui_source.read_bytes()
+        bg_data = bg_source.read_bytes()
         ref.write_text(json.dumps({"files": [{
             "file": "FIGANI.DAT", "size": len(data),
             "md5": hashlib.md5(data).hexdigest(),
@@ -57,6 +63,10 @@ class GenerateManifestTest(unittest.TestCase):
             "file": "FDOTHER.DAT", "size": len(ui_data),
             "md5": hashlib.md5(ui_data).hexdigest(),
             "sha256": hashlib.sha256(ui_data).hexdigest(),
+        }, {
+            "file": "BG.DAT", "size": len(bg_data),
+            "md5": hashlib.md5(bg_data).hexdigest(),
+            "sha256": hashlib.sha256(bg_data).hexdigest(),
         }]}), encoding="utf-8")
         return pack, ref, original
 
@@ -87,6 +97,8 @@ class GenerateManifestTest(unittest.TestCase):
             self.assertEqual((palette["source_file"], palette["source_resource"]), ("FDOTHER.DAT", 0))
             cell = next(item for item in manifest["assets"] if item["path"].startswith("ui/action_cells/"))
             self.assertEqual((cell["source_file"], cell["source_resource"], cell["source_frame"]), ("FDOTHER.DAT", 2, 0))
+            blocked_surface = next(item for item in manifest["assets"] if item["path"] == "surfaces/BG_056/resource.json")
+            self.assertEqual((blocked_surface["source_file"], blocked_surface["source_resource"], blocked_surface["status"]), ("BG.DAT", 56, "blocked"))
 
     def test_source_hash_mismatch_fails_closed(self):
         with tempfile.TemporaryDirectory() as temp:

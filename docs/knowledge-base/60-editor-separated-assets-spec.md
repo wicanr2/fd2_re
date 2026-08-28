@@ -230,6 +230,69 @@ LMI1、字型、調色盤、音效或未知格式處理。通用 loader 必須�
 production `figani.DecodeResource` caller 歸零。本子家族達 `RUNTIME-E1`；其餘
 FDOTHER palette、音效、LMI1及介面 consumer仍是不同待辦，不因動畫遷移自動閉合。
 
+### 第四個 runtime 遷移切片：BG／TAI 索引單幀素材
+
+> 規格狀態：**CONFORMED**
+> 證據邊界：固定雜湊 `BG.DAT`／`TAI.DAT` 的 `LLLLLL` resource，以及已由
+> `fdother.ParseSingleFrame`／`Frame.BlitAt` 閉合的 `0x4E63D` 四模式 RLE。這個切片
+> 只搬移像素、透明位置及原始 resource selector，不替 selector 命名地形、角色或
+> 法術等尚未證實的高階語意。
+
+戰鬥指令0／1／2／3／5／6／7／8／9／24／29／32–35目前以動態 raw selector
+成對載入 `BG.DAT` 與 `TAI.DAT`。既有 `images/BG_NNN.png`／`images/TAI_NNN.png`
+是研究用 RGB 輸出：它們已遺失 palette index，也無法區分透明 skip 與不透明 index
+0，因此不得接到正式 indexed compositor。
+
+正式分離契約固定為：
+
+- 根目錄：`surfaces/BG_NNN/` 或 `surfaces/TAI_NNN/`；`NNN` 是三位十進位原始
+  resource number，不能由顯示名稱取代。
+- `frame.png`：P-mode PNG，尺寸必須與 raw frame 的 little-endian width／height
+  完全一致；每個不透明像素保存原始 palette index。
+- `mask.png`：L-mode PNG，同尺寸；`255` 表示原版 RLE 會寫入 destination，`0`
+  表示 mode 3 skip 或 mode 1 dither 中保留 destination 的位置。mask 不能由
+  `frame.png` 的 index 0 反推。
+- `resource.json`：`schema_version=1`、`kind=indexed_surface`、穩定 `asset_id`、
+  `status=decoded | blocked`、`codec=fd2_4e63d_single_frame`、width／height、
+  `source.file`、`source.resource`、來源 size／MD5／SHA-256、raw resource size、
+  `frame=frame.png`、`mask=mask.png`、`evidence=confirmed`。blocked 項目不可附
+  假 frame；必須保存 reason code 與 raw size。
+- 匯入器必須先驗證 `BG.DAT`／`TAI.DAT` 的固定 size、MD5 與 SHA-256，再遍歷
+  archive directory 的實際 resource count。每筆都必須有 `resource.json`；不能只
+  匯出目前測試碰到的 selector。
+- runtime loader 必須同時驗證目錄 prefix、`source.file`、resource number、尺寸、
+  PNG 色彩模型、mask 值域與 metadata。任一不一致即失敗，不回退 `.DAT`，也不
+  發布半套 surface。
+- loader 回傳的 typed frame 保留 `Width`／`Height`、indexed pixels 與逐像素 mask；
+  runtime 合成必須由 mask 決定 destination-preserving 位置，不能把透明處改寫成0。
+- source archives、raw resource 與轉製 PNG 均屬玩家自備原版衍生素材，不受引擎的
+  PolyForm Noncommercial 1.0.0 授權；不得加入公開儲存庫或發行包。
+
+驗收條件：固定版本所有 BG／TAI resource 均有 decoded／blocked 狀態；至少抽樣一個
+含不透明 index 0、mode 1 dither及mode 3 skip 的 resource，以原 archive decoder 與
+分離 loader 比較全部 indexed pixels、mask及最終 blit；至少一條正常戰鬥指令在
+`BG.DAT`／`TAI.DAT` 路徑不可讀時仍從 `FD2_ASSET_PACK` 完成呈現。缺檔、錯來源、
+錯 resource、RGB frame、非二值 mask及尺寸不符測試均須失敗即關閉。
+
+#### 2026-08-28 BG／TAI 遷移結果
+
+固定版本 `BG.DAT`／`TAI.DAT` 各有57筆 resource；兩者#0..55皆以既有四模式 RLE
+成功輸出，#56皆為0-byte並列為blocked，不猜測補圖。112筆 decoded resource 共輸出
+112張P-mode frame、112張L-mode二值mask與114份狀態文件；包含BG的46個透明skip、
+TAI的2,598個透明skip與29個dither run。archive decoder與分離loader已逐 resource
+比較尺寸、全部indexed pixels、全部mask及以固定destination完成的最終blit，112筆
+全數相同。
+
+戰鬥指令0／1／2／3／5／6／7／8／9／24／29／32–35已全改讀
+`FD2_ASSET_PACK/surfaces`；正常玩家指令0測試會刻意令原始 `BG.DAT`／`TAI.DAT`
+不可讀。production戰鬥呈現已無BG／TAI archive decoder caller；終局tail仍有兩處
+原始archive consumer，須以同一契約另行遷移，不誤列為本切片完成。
+
+完整manifest現為7,877筆：6,854 exported、1,005 intentionally_raw、18 blocked。
+18筆blocked包含15首尚未轉OGG的MIDI、`FIGANI.DAT#408`及兩個零長度BG／TAI#56；
+manifest generator現會讀取`resource.json`的blocked狀態，不再把狀態文件本身誤列
+為可用素材。本切片達 `RUNTIME-E1`。
+
 ### 第二個 runtime 遷移切片：故事對話 DATO 頭像
 
 - `decode_dato.py --batch` 必須輸出保留原始 palette index 的 PNG，不得先轉 RGB；

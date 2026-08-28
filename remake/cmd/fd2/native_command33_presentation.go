@@ -78,8 +78,8 @@ func (g *Game) startNativeCommand33Presentation(actor, confirmed *battle.Unit, t
 	}
 
 	fdotherArchive := nativeFDOTHERPath()
-	bgArchive, fdtxtArchive := nativeBGPath(), nativeFDTXTPath()
-	if fdotherArchive == "" || bgArchive == "" || fdtxtArchive == "" {
+	fdtxtArchive := nativeFDTXTPath()
+	if fdotherArchive == "" || fdtxtArchive == "" {
 		return errors.New("native command33 player-provided archives unavailable")
 	}
 	actorIdle, err := figani.LoadSeparatedResource(separatedAssetPath("animations"), actor.BattleFig*3)
@@ -128,7 +128,7 @@ func (g *Game) startNativeCommand33Presentation(actor, confirmed *battle.Unit, t
 	if err != nil {
 		return err
 	}
-	background, err := fdother.DecodeArchiveSingleFrame(bgArchive, actorSelector)
+	background, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", actorSelector)
 	if err != nil {
 		return err
 	}
@@ -146,11 +146,7 @@ func (g *Game) startNativeCommand33Presentation(actor, confirmed *battle.Unit, t
 	}
 	var platform *fdother.Frame
 	if actor.NativeRecordByte6 != 0 {
-		taiArchive := nativeTAIPath()
-		if taiArchive == "" {
-			return errors.New("native command33 TAI.DAT unavailable")
-		}
-		frame, decodeErr := fdother.DecodeArchiveSingleFrame(taiArchive, actorSelector)
+		frame, decodeErr := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "TAI.DAT", actorSelector)
 		if decodeErr != nil {
 			return decodeErr
 		}

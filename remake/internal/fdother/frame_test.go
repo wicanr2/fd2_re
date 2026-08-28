@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -47,6 +48,29 @@ func TestFrameBlitPreservesTransparentDestination(t *testing.T) {
 		if got := dst[12+i]; got != v {
 			t.Fatalf("pixel %d = %d, want %d", i, got, v)
 		}
+	}
+}
+
+func TestFrameIndexedLayersPreserveOpaqueZeroAndDestinationMask(t *testing.T) {
+	// opaque zero, dither-preserve/opaque 8, skip => indexed [0,0,8,0], mask [255,0,255,0].
+	frame, err := ParseSingleFrame([]byte{4, 0, 1, 0, 0, 0, 0x40, 8, 0xc0})
+	if err != nil {
+		t.Fatal(err)
+	}
+	indexed, mask, err := frame.IndexedLayers()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(indexed, []byte{0, 0, 8, 0}) || !bytes.Equal(mask, []byte{255, 0, 255, 0}) {
+		t.Fatalf("indexed=%v mask=%v", indexed, mask)
+	}
+	dst := []byte{7, 7, 7, 7}
+	separated := Frame{Width: 4, Height: 1, Indexed: indexed, Mask: mask}
+	if err := separated.Blit(dst, 4, -1); err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(dst, []byte{0, 7, 8, 7}) {
+		t.Fatalf("separated blit=%v", dst)
 	}
 }
 
@@ -194,6 +218,48 @@ func TestBGArchiveSingleFramesUse4ModePayload(t *testing.T) {
 		if err := frame.Blit(make([]byte, 320*100), 320, -1); err != nil {
 			t.Fatalf("BG entry %d 0x4e63d decode: %v", index, err)
 		}
+	}
+}
+
+func TestSeparatedBGAndTAISurfacesMatchArchiveDecoder(t *testing.T) {
+	const root = "../../generated-assets/fd2-original-b97caf22/surfaces"
+	for _, source := range []string{"BG.DAT", "TAI.DAT"} {
+		archive := filepath.Join("../../../org_game/炎龍騎士團/FLAME2", source)
+		if _, err := os.Stat(archive); err != nil {
+			t.Skipf("player-provided %s is absent", source)
+		}
+		for resource := 0; resource < 56; resource++ {
+			want, err := DecodeArchiveSingleFrame(archive, resource)
+			if err != nil {
+				t.Fatalf("%s#%d archive: %v", source, resource, err)
+			}
+			wantIndexed, wantMask, err := want.IndexedLayers()
+			if err != nil {
+				t.Fatalf("%s#%d layers: %v", source, resource, err)
+			}
+			got, err := LoadSeparatedSingleFrame(root, source, resource)
+			if err != nil {
+				t.Fatalf("%s#%d separated: %v", source, resource, err)
+			}
+			if got.Width != want.Width || got.Height != want.Height ||
+				!bytes.Equal(got.Indexed, wantIndexed) || !bytes.Equal(got.Mask, wantMask) {
+				t.Fatalf("%s#%d differs from archive decoder", source, resource)
+			}
+			originalDst := bytes.Repeat([]byte{0x71}, want.Width*want.Height)
+			separatedDst := append([]byte(nil), originalDst...)
+			if err := want.Blit(originalDst, want.Width, -1); err != nil {
+				t.Fatal(err)
+			}
+			if err := got.Blit(separatedDst, got.Width, -1); err != nil {
+				t.Fatal(err)
+			}
+			if !bytes.Equal(separatedDst, originalDst) {
+				t.Fatalf("%s#%d final blit differs", source, resource)
+			}
+		}
+	}
+	if _, err := LoadSeparatedSingleFrame(root, "BG.DAT", 56); err == nil {
+		t.Fatal("blocked BG.DAT#56 was accepted")
 	}
 }
 

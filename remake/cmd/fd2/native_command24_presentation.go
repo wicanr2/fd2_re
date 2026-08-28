@@ -250,10 +250,6 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if len(plan.Results) != 1 || plan.Results[0].Target != target {
 		return errors.New("native command24 normal player path is not a single target")
 	}
-	bgArchive := nativeBGPath()
-	if bgArchive == "" {
-		return errors.New("native command24 player-provided BG.DAT unavailable")
-	}
 	actorBGSelector, err := nativeCommand24BGSelector(g.m, actor)
 	if err != nil {
 		return err
@@ -264,16 +260,16 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	}
 	var bgLayers [3]fdother.Frame
 	for i := range bgLayers {
-		bgLayers[i], err = fdother.DecodeArchiveSingleFrame(bgArchive, i)
+		bgLayers[i], err = fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", i)
 		if err != nil {
 			return err
 		}
 	}
-	actorBG, err := fdother.DecodeArchiveSingleFrame(bgArchive, actorBGSelector)
+	actorBG, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", actorBGSelector)
 	if err != nil {
 		return err
 	}
-	targetBG, err := fdother.DecodeArchiveSingleFrame(bgArchive, targetBGSelector)
+	targetBG, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", targetBGSelector)
 	if err != nil {
 		return err
 	}
@@ -319,11 +315,7 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	}
 	var actorPlatform *fdother.Frame
 	if actor.NativeRecordByte6 != 0 {
-		taiArchive := nativeTAIPath()
-		if taiArchive == "" {
-			return errors.New("native command24 player-provided TAI.DAT unavailable")
-		}
-		frame, err := fdother.DecodeArchiveSingleFrame(taiArchive, actorBGSelector)
+		frame, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "TAI.DAT", actorBGSelector)
 		if err != nil {
 			return err
 		}
