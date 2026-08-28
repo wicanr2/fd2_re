@@ -219,8 +219,9 @@ AppImage組裝會把受版控的`fd2.appdata.xml`安裝到
 `usr/share/metainfo/`，並在呼叫`linuxdeploy`前用標準XML解析器驗證。component ID
 固定為`tw.wicanr2.fd2re`，`launchable`指向`fd2.desktop`；文字只描述非官方文化
 保存、潔淨室重製及玩家自備合法原版資料，不宣稱官方授權、完整原版素材散布或
-程式碼授權。`metadata_license=CC0-1.0`只適用這份軟體中心描述資料，不替專案程式碼
-指定授權。
+原版權利人的背書。專案原創程式碼與文件採 PolyForm Noncommercial 1.0.0；商業
+用途必須另向儲存庫擁有者取得書面授權。`metadata_license=CC0-1.0` 只適用這份
+軟體中心描述資料，不取代專案程式碼與文件的授權，也不涵蓋原版資產。
 
 2026-08-27以既有`fd2-build-appimage:latest`、一次性無網路Docker重建成功；
 `appimagetool`明確辨識`usr/share/metainfo/fd2.appdata.xml`，不再出現缺少upstream
