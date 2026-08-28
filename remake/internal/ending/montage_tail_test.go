@@ -3,12 +3,14 @@ package ending
 import (
 	"bytes"
 	"encoding/binary"
+	"fmt"
 	"os"
 	"path/filepath"
 	"reflect"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
 
@@ -271,9 +273,9 @@ func TestBuildMontageTailLoaderBaselineFailsClosedBeforeAdmittingTailRenderer(t 
 }
 
 func TestMontageTailAssetsPreservePaletteFramesAndTerminalImage(t *testing.T) {
-	const datPath = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
-	if _, err := os.Stat(datPath); os.IsNotExist(err) {
-		t.Skip("player-provided FDOTHER.DAT is absent")
+	paths := MontageTailAssetPaths{SurfaceRoot: "../../generated-assets/fd2-original-b97caf22/surfaces", PaletteRoot: "../../generated-assets/fd2-original-b97caf22/palette", AnimationRoot: "../../generated-assets/fd2-original-b97caf22/animations"}
+	if _, err := os.Stat(filepath.Join(paths.AnimationRoot, "FDOTHER_058", "animation.json")); os.IsNotExist(err) {
+		t.Skip("separated ending FDOTHER assets are absent")
 	} else if err != nil {
 		t.Fatal(err)
 	}
@@ -281,7 +283,7 @@ func TestMontageTailAssetsPreservePaletteFramesAndTerminalImage(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	assets, err := LoadMontageTailAssets(*tail, datPath)
+	assets, err := LoadMontageTailAssets(*tail, paths)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -310,10 +312,20 @@ func TestMontageTailAssetsPreservePaletteFramesAndTerminalImage(t *testing.T) {
 	}
 }
 
+func TestMontageTailSeparatedAssetsFailClosedBeforePartialPlayback(t *testing.T) {
+	tail, err := LoadMontageTail(filepath.Join("..", "..", "assets", "endings", "native_2c194_tail.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if assets, err := LoadMontageTailAssets(*tail, MontageTailAssetPaths{}); err == nil || len(assets.LoopFrames) != 0 {
+		t.Fatalf("missing separated ending assets returned frames=%d err=%v", len(assets.LoopFrames), err)
+	}
+}
+
 func TestMontageTailAssetsKeepNativeFrameTableGeometry(t *testing.T) {
-	const datPath = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
-	if _, err := os.Stat(datPath); os.IsNotExist(err) {
-		t.Skip("player-provided FDOTHER.DAT is absent")
+	paths := MontageTailAssetPaths{SurfaceRoot: "../../generated-assets/fd2-original-b97caf22/surfaces", PaletteRoot: "../../generated-assets/fd2-original-b97caf22/palette", AnimationRoot: "../../generated-assets/fd2-original-b97caf22/animations"}
+	if _, err := os.Stat(filepath.Join(paths.AnimationRoot, "FDOTHER_058", "animation.json")); os.IsNotExist(err) {
+		t.Skip("separated ending FDOTHER assets are absent")
 	} else if err != nil {
 		t.Fatal(err)
 	}
@@ -321,7 +333,7 @@ func TestMontageTailAssetsKeepNativeFrameTableGeometry(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	assets, err := LoadMontageTailAssets(*tail, datPath)
+	assets, err := LoadMontageTailAssets(*tail, paths)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -340,5 +352,51 @@ func TestMontageTailAssetsKeepNativeFrameTableGeometry(t *testing.T) {
 		if got != want[i] {
 			t.Fatalf("native frame %d geometry = %v, want %v", i, got, want[i])
 		}
+	}
+}
+
+func TestSeparatedMontageTailAssetsMatchFixedArchiveBlits(t *testing.T) {
+	const archive = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
+	if _, err := os.Stat(archive); os.IsNotExist(err) {
+		t.Skip("player-provided FDOTHER.DAT is absent")
+	} else if err != nil {
+		t.Fatal(err)
+	}
+	tail, err := LoadMontageTail(filepath.Join("..", "..", "assets", "endings", "native_2c194_tail.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	paths := MontageTailAssetPaths{SurfaceRoot: "../../generated-assets/fd2-original-b97caf22/surfaces", PaletteRoot: "../../generated-assets/fd2-original-b97caf22/palette", AnimationRoot: "../../generated-assets/fd2-original-b97caf22/animations"}
+	separated, err := LoadMontageTailAssets(*tail, paths)
+	if err != nil {
+		t.Fatal(err)
+	}
+	original, err := LoadMontageTailAssetsArchive(*tail, archive)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(separated.LoopPalette, original.LoopPalette) || len(separated.LoopFrames) != len(original.LoopFrames) {
+		t.Fatal("separated ending palette or frame count differs from fixed archive")
+	}
+	compareBlit := func(label string, left, right fdother.Frame) {
+		t.Helper()
+		leftDst, rightDst := make([]byte, Bytes), make([]byte, Bytes)
+		for index := range leftDst {
+			leftDst[index], rightDst[index] = byte(index*37+11), byte(index*37+11)
+		}
+		if err := left.Blit(leftDst, Width, -1); err != nil {
+			t.Fatal(err)
+		}
+		if err := right.Blit(rightDst, Width, -1); err != nil {
+			t.Fatal(err)
+		}
+		if left.X != right.X || left.Y != right.Y || left.Width != right.Width || left.Height != right.Height || !bytes.Equal(leftDst, rightDst) {
+			t.Fatalf("%s differs from fixed archive", label)
+		}
+	}
+	compareBlit("FDOTHER#60", separated.Intro, original.Intro)
+	compareBlit("FDOTHER#59", separated.Final, original.Final)
+	for index := range separated.LoopFrames {
+		compareBlit(fmt.Sprintf("FDOTHER#58 frame %d", index), separated.LoopFrames[index], original.LoopFrames[index])
 	}
 }

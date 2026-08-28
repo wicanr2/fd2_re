@@ -210,6 +210,11 @@ var fdshapArchive = archiveIdentity{
 	sha256: "901b70ea82d5d977192759fad510921ffe16a0ab6af6ab7c32757de03e30aa3c",
 }
 
+var fdotherArchive = archiveIdentity{
+	file: "FDOTHER.DAT", prefix: "FDOTHER", size: fdotherSize,
+	md5: fdotherMD5, sha256: fdotherSHA256,
+}
+
 var fdfieldArchive = archiveIdentity{
 	file: "FDFIELD.DAT", prefix: "FDFIELD", size: 243169,
 	md5:    "ecdb0436d26adfe5d107f2713fa7e9a2",
@@ -217,7 +222,7 @@ var fdfieldArchive = archiveIdentity{
 }
 
 func verifyFDOTHER(path string) error {
-	return verifyArchive(path, archiveIdentity{file: "FDOTHER.DAT", size: fdotherSize, md5: fdotherMD5, sha256: fdotherSHA256})
+	return verifyArchive(path, fdotherArchive)
 }
 
 func verifyArchive(path string, identity archiveIdentity) error {
@@ -275,6 +280,32 @@ func exportSingleFrameArchive(path, outputRoot string, identity archiveIdentity)
 		}
 	}
 	return decoded, blocked, nil
+}
+
+func exportSelectedSingleFrame(path, outputRoot string, identity archiveIdentity, resource int) error {
+	raw, err := fdother.ReadResource(path, resource)
+	if err != nil {
+		return err
+	}
+	frame, err := fdother.ParseSingleFrame(raw)
+	if err != nil {
+		return err
+	}
+	indexed, mask, err := frame.IndexedLayers()
+	if err != nil {
+		return err
+	}
+	directory := filepath.Join(outputRoot, "surfaces", fmt.Sprintf("%s_%03d", identity.prefix, resource))
+	document := surfaceDocument{
+		SchemaVersion: 1, Kind: "indexed_surface", AssetID: fmt.Sprintf("surface/%s_%03d", identity.prefix, resource),
+		Status: "decoded", Codec: "fd2_4e63d_single_frame", Width: frame.Width, Height: frame.Height,
+		Frame: "frame.png", Mask: "mask.png", Evidence: "confirmed",
+		Source: sourceID{File: identity.file, Resource: resource, Size: identity.size, MD5: identity.md5, SHA256: identity.sha256, RawSize: len(raw)},
+	}
+	if err := writeSurfacePNGs(directory, frame.Width, frame.Height, indexed, mask); err != nil {
+		return err
+	}
+	return writeJSON(filepath.Join(directory, "resource.json"), document)
 }
 
 func writeSurfacePNGs(directory string, width, height int, indexed, mask []byte) error {
@@ -463,7 +494,32 @@ func exportCommandGrid(fdotherPath, outputRoot string) error {
 	if err := exportFont(fdotherPath, outputRoot); err != nil {
 		return err
 	}
-	return exportItemPanel(fdotherPath, outputRoot)
+	if err := exportItemPanel(fdotherPath, outputRoot); err != nil {
+		return err
+	}
+	return exportEndingFDOTHER(fdotherPath, outputRoot)
+}
+
+func exportEndingFDOTHER(fdotherPath, outputRoot string) error {
+	for _, resource := range []int{56, 59, 60} {
+		if err := exportSelectedSingleFrame(fdotherPath, outputRoot, fdotherArchive, resource); err != nil {
+			return fmt.Errorf("FDOTHER #%d ending surface: %w", resource, err)
+		}
+	}
+	dac, err := fdother.ReadResource(fdotherPath, 57)
+	if err != nil {
+		return err
+	}
+	if _, err := fdother.ParseVGAPalette(dac); err != nil {
+		return fmt.Errorf("FDOTHER #57 ending palette: %w", err)
+	}
+	return writeJSON(filepath.Join(outputRoot, "palette", "fdother_057.json"), paletteDocument{
+		SchemaVersion: 1,
+		AssetID:       "palette/fdother_057",
+		Source: sourceID{File: fdotherArchive.file, Resource: 57, Size: fdotherArchive.size,
+			MD5: fdotherArchive.md5, SHA256: fdotherArchive.sha256, RawSize: len(dac)},
+		Components: bytesToInts(dac),
+	})
 }
 
 func exportFont(fdotherPath, outputRoot string) error {
@@ -546,7 +602,12 @@ func exportItemPanel(fdotherPath, outputRoot string) error {
 		}
 		document.Entries = append(document.Entries, metadata)
 	}
-	for _, index := range []int{23, 24, 25, 26, 27, 28, 29, 30, 53, 54, 55, 56, 57, 59, 60, 61, 62, 63, 64, 65, 66, 67, 92} {
+	rawIndexes := make([]int, 0, 40)
+	for index := 1; index <= 17; index++ {
+		rawIndexes = append(rawIndexes, index)
+	}
+	rawIndexes = append(rawIndexes, 23, 24, 25, 26, 27, 28, 29, 30, 53, 54, 55, 56, 57, 59, 60, 61, 62, 63, 64, 65, 66, 67, 92)
+	for _, index := range rawIndexes {
 		entry, err := fdother.ParseLMI1RawEntry(raw, index)
 		if err != nil {
 			return err

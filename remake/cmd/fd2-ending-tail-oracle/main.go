@@ -27,7 +27,7 @@ func main() {
 	if err != nil {
 		fatalf("load tail schedule: %v", err)
 	}
-	assets, err := ending.LoadMontageTailAssets(*tail, filepath.Join(*gameRoot, "FDOTHER.DAT"))
+	assets, err := ending.LoadMontageTailAssetsArchive(*tail, filepath.Join(*gameRoot, "FDOTHER.DAT"))
 	if err != nil {
 		fatalf("load tail FDOTHER assets: %v", err)
 	}

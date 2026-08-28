@@ -58,3 +58,31 @@ func RenderDialogueFrameGridResource(m Montage, datPath string, dst []byte) erro
 	}
 	return RenderDialogueFrameGrid(m, cells, dst)
 }
+
+// RenderDialogueFrameGridSeparated loads the exact FDOTHER#5 raw cells from
+// the separated item-panel contract. It never falls back to FDOTHER.DAT.
+func RenderDialogueFrameGridSeparated(m Montage, itemPanelRoot string, dst []byte) error {
+	placements, err := m.PlanDialogueFrameGrid()
+	if err != nil {
+		return err
+	}
+	entries, err := fdother.LoadSeparatedItemPanelEntries(itemPanelRoot)
+	if err != nil {
+		return err
+	}
+	maxIndex := 0
+	for _, placement := range placements {
+		if placement.ResourceIndex > maxIndex {
+			maxIndex = placement.ResourceIndex
+		}
+	}
+	cells := make([]fdother.RawCell, maxIndex+1)
+	for _, placement := range placements {
+		cell, ok := entries.Raw[placement.ResourceIndex]
+		if !ok {
+			return fmt.Errorf("ending: separated FDOTHER#5 raw cell %d is unavailable", placement.ResourceIndex)
+		}
+		cells[placement.ResourceIndex] = cell
+	}
+	return RenderDialogueFrameGrid(m, cells, dst)
+}

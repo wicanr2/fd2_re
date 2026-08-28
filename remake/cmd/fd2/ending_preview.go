@@ -283,13 +283,13 @@ func nativeEndingMontageRecords(order []int, roster map[int]battle.Unit) ([][]by
 }
 
 func (p *nativeEndingPreview) montageArchivePaths() (ending.MontageArchivePaths, error) {
-	if p == nil || p.fdotherPath == "" {
-		return ending.MontageArchivePaths{}, fmt.Errorf("ending: prefix archive provenance is unavailable")
+	if p == nil {
+		return ending.MontageArchivePaths{}, fmt.Errorf("ending: montage preview is unavailable")
 	}
 	paths := ending.MontageArchivePaths{
-		FDOTHER:       p.fdotherPath,
 		TextRoot:      separatedAssetPath("text"),
 		SurfaceRoot:   separatedAssetPath("surfaces"),
+		ItemPanelRoot: separatedAssetPath("ui"),
 		AnimationRoot: separatedAssetPath("animations"),
 		PortraitRoot:  separatedAssetPath("portraits"),
 		FontRoot:      separatedAssetPath("fonts"),
@@ -376,7 +376,10 @@ func (g *Game) startCampaignNativeTail() error {
 		p.tailStartError = err.Error()
 		return err
 	}
-	assets, err := ending.LoadMontageTailAssets(*tail, p.fdotherPath)
+	assets, err := ending.LoadMontageTailAssets(*tail, ending.MontageTailAssetPaths{
+		SurfaceRoot: separatedAssetPath("surfaces"), PaletteRoot: separatedAssetPath("palette"),
+		AnimationRoot: separatedAssetPath("animations"),
+	})
 	if err != nil {
 		p.tailStartError = err.Error()
 		return err

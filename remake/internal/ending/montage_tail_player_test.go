@@ -25,7 +25,7 @@ func loadOriginalMontageTailPlayer(t *testing.T) (*MontageTailPlayer, MontageTai
 	if err != nil {
 		t.Fatal(err)
 	}
-	assets, err := LoadMontageTailAssets(*tail, filepath.Join(gameRoot, "FDOTHER.DAT"))
+	assets, err := LoadMontageTailAssetsArchive(*tail, filepath.Join(gameRoot, "FDOTHER.DAT"))
 	if err != nil {
 		t.Fatal(err)
 	}

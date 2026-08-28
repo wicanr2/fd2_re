@@ -120,6 +120,14 @@ type MontageTailVisualPaths struct {
 	AnimationRoot string
 }
 
+// MontageTailAssetPaths identifies the separated FDOTHER resources consumed
+// by 0x2c194's typed tail preflight. No archive fallback is permitted.
+type MontageTailAssetPaths struct {
+	SurfaceRoot   string
+	PaletteRoot   string
+	AnimationRoot string
+}
+
 // MontageTailLoaderBaseline is the exact raw-runtime shape constructed by the
 // 0x1088d(0x1e) party-slot loop: 31 deployment records, with the active
 // persistent prefix copied at stride 0x50 and the remainder marked inactive.
@@ -388,10 +396,9 @@ func validateMontageTailVisualFrame(frame fdother.Frame) error {
 	return nil
 }
 
-// LoadMontageTailAssets verifies the native resource shapes before the
-// presentation adapter can use them.  It intentionally does not invent a
-// meaning for the three per-entry raw bytes or the 0x28a6c rendering owner.
-func LoadMontageTailAssets(tail MontageTail, fdotherPath string) (MontageTailAssets, error) {
+// LoadMontageTailAssetsArchive is retained for source-oracle tools and exact
+// archive-equivalence tests. Production callers use LoadMontageTailAssets.
+func LoadMontageTailAssetsArchive(tail MontageTail, fdotherPath string) (MontageTailAssets, error) {
 	if fdotherPath == "" {
 		return MontageTailAssets{}, fmt.Errorf("ending: montage tail FDOTHER path is unavailable")
 	}
@@ -447,6 +454,66 @@ func LoadMontageTailAssets(tail MontageTail, fdotherPath string) (MontageTailAss
 		LoopFrames:  append([]fdother.Frame(nil), loopFrames...),
 		Final:       final,
 	}, nil
+}
+
+// LoadMontageTailAssets verifies the separated native resource shapes before
+// the presentation adapter can use them. It intentionally does not invent a
+// meaning for the three per-entry raw bytes or the 0x28a6c rendering owner.
+func LoadMontageTailAssets(tail MontageTail, paths MontageTailAssetPaths) (MontageTailAssets, error) {
+	if paths.SurfaceRoot == "" || paths.PaletteRoot == "" || paths.AnimationRoot == "" {
+		return MontageTailAssets{}, fmt.Errorf("ending: montage tail separated asset roots are unavailable")
+	}
+	if _, err := tail.Plan(); err != nil {
+		return MontageTailAssets{}, err
+	}
+	palette, _, err := fdother.LoadSeparatedFDOTHERPalette(paths.PaletteRoot, 57)
+	if err != nil {
+		return MontageTailAssets{}, fmt.Errorf("ending: montage tail separated FDOTHER#57: %w", err)
+	}
+	animation, err := figani.LoadSeparatedArchiveResource(paths.AnimationRoot, "FDOTHER.DAT", 58)
+	if err != nil {
+		return MontageTailAssets{}, fmt.Errorf("ending: montage tail separated FDOTHER#58: %w", err)
+	}
+	if len(animation.Frames) != tail.Loop.Count {
+		return MontageTailAssets{}, fmt.Errorf("ending: montage tail separated FDOTHER#58 frames = %d, want %d", len(animation.Frames), tail.Loop.Count)
+	}
+	loopFrames := make([]fdother.Frame, len(animation.Frames))
+	for index, source := range animation.Frames {
+		mask := make([]byte, len(source.Mask))
+		for offset, value := range source.Mask {
+			if value != 0 {
+				mask[offset] = 0xff
+			}
+		}
+		frame := fdother.Frame{X: source.X, Y: source.Y, Width: source.Width, Height: source.Height,
+			Indexed: append([]byte(nil), source.Pixels...), Mask: mask}
+		if err := frame.Blit(make([]byte, Bytes), Width, -1); err != nil {
+			return MontageTailAssets{}, fmt.Errorf("ending: montage tail separated FDOTHER#58 frame %d: %w", index, err)
+		}
+		loopFrames[index] = frame
+	}
+	loadSingle := func(index int) (fdother.Frame, error) {
+		frame, err := fdother.LoadSeparatedSingleFrame(paths.SurfaceRoot, "FDOTHER.DAT", index)
+		if err != nil {
+			return fdother.Frame{}, err
+		}
+		if frame.Width != Width || frame.Height != Height {
+			return fdother.Frame{}, fmt.Errorf("geometry %dx%d, want %dx%d", frame.Width, frame.Height, Width, Height)
+		}
+		if err := frame.Blit(make([]byte, Bytes), Width, -1); err != nil {
+			return fdother.Frame{}, err
+		}
+		return frame, nil
+	}
+	intro, err := loadSingle(60)
+	if err != nil {
+		return MontageTailAssets{}, fmt.Errorf("ending: montage tail separated FDOTHER#60: %w", err)
+	}
+	final, err := loadSingle(59)
+	if err != nil {
+		return MontageTailAssets{}, fmt.Errorf("ending: montage tail separated FDOTHER#59: %w", err)
+	}
+	return MontageTailAssets{LoopPalette: palette, Intro: intro, LoopFrames: loopFrames, Final: final}, nil
 }
 
 // PresentFinal renders the final native frame and restores the immutable

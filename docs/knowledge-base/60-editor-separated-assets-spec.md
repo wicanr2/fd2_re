@@ -155,6 +155,45 @@ blocked、1,005 intentionally_raw。正式 `loadNativeUIPalette`／
 超過63時整批拒絕。本切片達 `RUNTIME-E1`，不外推其他仍讀 `FDOTHER.DAT` 的 UI、
 戰鬥演出或終局 consumer。
 
+### 終局 FDOTHER #56..#60 索引素材契約
+
+> 規格狀態：**CONFORMED**
+> 證據邊界：固定雜湊 `FDOTHER.DAT` 與既有 `0x2c194..0x2c39a`、`0x2c405..0x2c548`
+> caller／consumer；不重新推論 `0x28a6c` 的完整 renderer 語意。
+
+已閉合的原始選擇器為：#56 party cycle 的 320×200 backdrop、#57 的 768-byte VGA DAC、
+#58 的 20-entry 四模式 RLE frame table、#59 的最終 320×200 單影格，以及 #60 的前置
+320×200 單影格。規格證據見 `56` 的終局段落及既有 `MontageCycleAssets`／
+`MontageTailAssets` shape tests；不得把 #57 誤列為 frame source，也不得把 #58 誤列為
+palette。
+
+匯入器必須先驗證完整 `FDOTHER.DAT` 大小、MD5 與 SHA-256，再輸出：
+`surfaces/FDOTHER_056|059|060/` 各保存 P-mode indexed `frame.png`、L-mode
+binary `mask.png` 與 metadata；#57 保存 768 個 `0..63` DAC component 的 JSON；#58
+保存於 `animations/FDOTHER_058/` 的 animation metadata、20 張 indexed frame 及20張
+binary mask。metadata 必須保留
+source resource、frame index、geometry、placement／delay raw 欄位與來源雜湊。一般
+RGBA 預覽不得取代 indexed frame＋mask。
+
+共用 strict loader 必須一次預檢 caller 所需的完整集合，驗證來源、resource、frame
+連續性、PNG mode、二值 mask、幾何與 #57 DAC 值域；任一缺件時不得發布半套結局資產，
+也不得回退讀取 `FDOTHER.DAT`。`LoadMontageCycleAssets` 改接 #56，
+`LoadMontageTailAssets` 改接 #57..#60；既有 FDOTHER#5 對話框格另由已分離 item-panel
+契約處理，不混入本切片。
+
+驗收須逐 indexed pixel、mask、placement、delay 與最終 blit 對照固定原檔；在
+`FDOTHER.DAT` 不可讀時，party cycle 與20段 tail 仍可完成同一 typed preflight，並保留
+#59 最終畫面。破損 #57、缺任一 #58 frame 或錯誤 #59／#60 幾何皆須失敗即關閉。
+達成後只提升終局素材 `DATA-READY`／`RUNTIME-E1`，不冒稱終局一般玩家 E2。
+
+2026-08-28 實作已完成上述輸出，並把 FDOTHER#5 對話框格的 caller-proven raw entries
+由23筆擴為40筆（新增 #1..17），使 party cycle 也不再讀 archive。固定原檔逐 indexed
+pixel、mask、placement、delay 與非零 destination blit 對照均一致；#57 的768 bytes逐 byte
+一致。正式 `ending_preview` 在只指定 `FD2_ASSET_PACK`、沒有提供 `FDOTHER.DAT` 給 tail
+loader 的 Xvfb 抽測通過，缺完整 separated roots 會在建立 player 前失敗即關閉。完整
+manifest 現為37,919筆：36,895 exported、1,005 intentionally raw、19 blocked。本切片達
+`DATA-READY`／`RUNTIME-E1`；`LoadMontageTailAssetsArchive` 只保留給 source oracle。
+
 ### 第三個 runtime 遷移切片：FIGANI 索引動畫
 
 264個可由現行已證實 codec 接受的 FIGANI resources，現各自輸出 `animation.json`、

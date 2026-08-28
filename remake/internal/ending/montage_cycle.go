@@ -28,8 +28,8 @@ type MontageCycleAssets struct {
 // MontageArchivePaths identifies the remaining player-provided archives and
 // separated asset roots used by the native cycle. Originals remain read-only.
 type MontageArchivePaths struct {
-	FDOTHER       string
 	SurfaceRoot   string
+	ItemPanelRoot string
 	AnimationRoot string
 	PortraitRoot  string
 	TextRoot      string
@@ -41,7 +41,7 @@ type MontageArchivePaths struct {
 // +7, FDTXT_031/FDTXT_000 and the FDOTHER#4 font.  It deliberately takes the
 // raw unit records from the caller so no identity or slot meaning is guessed.
 func LoadMontageCycleAssets(montage Montage, paths MontageArchivePaths, units [][]byte) (MontageCycleAssets, error) {
-	if paths.FDOTHER == "" || paths.SurfaceRoot == "" || paths.AnimationRoot == "" || paths.PortraitRoot == "" || paths.TextRoot == "" || paths.FontRoot == "" || len(units) < 2 {
+	if paths.SurfaceRoot == "" || paths.ItemPanelRoot == "" || paths.AnimationRoot == "" || paths.PortraitRoot == "" || paths.TextRoot == "" || paths.FontRoot == "" || len(units) < 2 {
 		return MontageCycleAssets{}, errors.New("ending: incomplete montage archive paths or party")
 	}
 	for i, unit := range units {
@@ -49,7 +49,7 @@ func LoadMontageCycleAssets(montage Montage, paths MontageArchivePaths, units []
 			return MontageCycleAssets{}, fmt.Errorf("ending: unit %d is shorter than native stride", i)
 		}
 	}
-	backdrop, err := fdother.DecodeArchiveSingleFrame(paths.FDOTHER, 56)
+	backdrop, err := fdother.LoadSeparatedSingleFrame(paths.SurfaceRoot, "FDOTHER.DAT", 56)
 	if err != nil {
 		return MontageCycleAssets{}, fmt.Errorf("ending: FDOTHER#56: %w", err)
 	}
@@ -61,7 +61,7 @@ func LoadMontageCycleAssets(montage Montage, paths MontageArchivePaths, units []
 		return MontageCycleAssets{}, errors.New("ending: separated TAI#3 is not the proven transparent resource")
 	}
 	grid := make([]byte, Bytes)
-	if err := RenderDialogueFrameGridResource(montage, paths.FDOTHER, grid); err != nil {
+	if err := RenderDialogueFrameGridSeparated(montage, paths.ItemPanelRoot, grid); err != nil {
 		return MontageCycleAssets{}, fmt.Errorf("ending: FDOTHER#5 dialogue grid: %w", err)
 	}
 	current, err := fdtxt.LoadSeparatedResource(paths.TextRoot, 31)

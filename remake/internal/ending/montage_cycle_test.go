@@ -1,19 +1,53 @@
 package ending
 
 import (
+	"bytes"
 	"os"
+	"path/filepath"
 	"testing"
+
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
 func montageCyclePlayerPaths() MontageArchivePaths {
-	const base = "../../../org_game/炎龍騎士團/FLAME2/"
 	return MontageArchivePaths{
-		FDOTHER:       base + "FDOTHER.DAT",
 		SurfaceRoot:   "../../generated-assets/fd2-original-b97caf22/surfaces",
+		ItemPanelRoot: "../../generated-assets/fd2-original-b97caf22/ui",
 		AnimationRoot: "../../generated-assets/fd2-original-b97caf22/animations",
 		PortraitRoot:  "../../generated-assets/fd2-original-b97caf22/portraits",
 		TextRoot:      "../../generated-assets/fd2-original-b97caf22/text",
 		FontRoot:      "../../generated-assets/fd2-original-b97caf22/fonts",
+	}
+}
+
+func TestSeparatedMontageCycleBackdropMatchesFixedArchive(t *testing.T) {
+	const gameRoot = "../../../org_game/炎龍騎士團/FLAME2"
+	archive := filepath.Join(gameRoot, "FDOTHER.DAT")
+	if _, err := os.Stat(archive); os.IsNotExist(err) {
+		t.Skip("player-provided FDOTHER.DAT is absent")
+	} else if err != nil {
+		t.Fatal(err)
+	}
+	separated, err := fdother.LoadSeparatedSingleFrame(montageCyclePlayerPaths().SurfaceRoot, "FDOTHER.DAT", 56)
+	if err != nil {
+		t.Fatal(err)
+	}
+	original, err := fdother.DecodeArchiveSingleFrame(archive, 56)
+	if err != nil {
+		t.Fatal(err)
+	}
+	left, right := make([]byte, Bytes), make([]byte, Bytes)
+	for index := range left {
+		left[index], right[index] = byte(index*29+7), byte(index*29+7)
+	}
+	if err := separated.Blit(left, Width, -1); err != nil {
+		t.Fatal(err)
+	}
+	if err := original.Blit(right, Width, -1); err != nil {
+		t.Fatal(err)
+	}
+	if separated.Width != original.Width || separated.Height != original.Height || !bytes.Equal(left, right) {
+		t.Fatal("separated FDOTHER#56 backdrop differs from fixed archive")
 	}
 }
 
@@ -41,7 +75,7 @@ func montageCycleThreeUnits() [][]byte {
 
 func TestLoadMontageCycleAssetsUsesOnlyProvenanceBoundPlayerResources(t *testing.T) {
 	paths := montageCyclePlayerPaths()
-	for _, path := range []string{paths.FDOTHER, paths.SurfaceRoot + "/TAI_003/resource.json", paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.TextRoot + "/FDTXT_031/resource.json"} {
+	for _, path := range []string{paths.SurfaceRoot + "/FDOTHER_056/resource.json", paths.SurfaceRoot + "/TAI_003/resource.json", paths.ItemPanelRoot + "/fdother_005_item_panel/resource.json", paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.TextRoot + "/FDTXT_031/resource.json"} {
 		if _, err := os.Stat(path); err != nil {
 			t.Skip("player-provided original archives are absent")
 		}
@@ -64,7 +98,7 @@ func TestLoadMontageCycleAssetsUsesOnlyProvenanceBoundPlayerResources(t *testing
 
 func TestMontageCycleExecutesBothNativeSideBranchesAndFinalPaletteFade(t *testing.T) {
 	paths := montageCyclePlayerPaths()
-	for _, path := range []string{paths.FDOTHER, paths.SurfaceRoot + "/TAI_003/resource.json", paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.TextRoot + "/FDTXT_031/resource.json"} {
+	for _, path := range []string{paths.SurfaceRoot + "/FDOTHER_056/resource.json", paths.SurfaceRoot + "/TAI_003/resource.json", paths.ItemPanelRoot + "/fdother_005_item_panel/resource.json", paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.TextRoot + "/FDTXT_031/resource.json"} {
 		if _, err := os.Stat(path); err != nil {
 			t.Skip("player-provided original archives are absent")
 		}
@@ -103,7 +137,7 @@ func TestMontageCycleExecutesBothNativeSideBranchesAndFinalPaletteFade(t *testin
 
 func TestMontageCycleInputChangeFinishesCurrentPortraitThenJumpsToFinalLoop(t *testing.T) {
 	paths := montageCyclePlayerPaths()
-	for _, path := range []string{paths.FDOTHER, paths.SurfaceRoot + "/TAI_003/resource.json", paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.TextRoot + "/FDTXT_031/resource.json"} {
+	for _, path := range []string{paths.SurfaceRoot + "/FDOTHER_056/resource.json", paths.SurfaceRoot + "/TAI_003/resource.json", paths.ItemPanelRoot + "/fdother_005_item_panel/resource.json", paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.TextRoot + "/FDTXT_031/resource.json"} {
 		if _, err := os.Stat(path); err != nil {
 			t.Skip("player-provided original archives are unavailable")
 		}

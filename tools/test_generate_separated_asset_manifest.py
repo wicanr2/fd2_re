@@ -39,6 +39,11 @@ class GenerateManifestTest(unittest.TestCase):
         (pack / "surfaces" / "BG_056").mkdir(parents=True)
         (pack / "surfaces" / "BG_056" / "resource.json").write_text(
             json.dumps({"status": "blocked"}), encoding="utf-8")
+        (pack / "surfaces" / "FDOTHER_056").mkdir(parents=True)
+        (pack / "surfaces" / "FDOTHER_056" / "resource.json").write_text(
+            json.dumps({"status": "decoded"}), encoding="utf-8")
+        (pack / "surfaces" / "FDOTHER_056" / "frame.png").write_bytes(b"ending-surface")
+        (pack / "palette" / "fdother_057.json").write_text("{}", encoding="utf-8")
         (pack / "text" / "FDTXT_000").mkdir(parents=True)
         (pack / "text" / "FDTXT_000" / "resource.json").write_text(
             json.dumps({"status": "decoded"}), encoding="utf-8")
@@ -146,6 +151,10 @@ class GenerateManifestTest(unittest.TestCase):
             self.assertEqual((panel["source_file"], panel["source_resource"], panel["source_frame"]), ("FDOTHER.DAT", 5, 22))
             blocked_surface = next(item for item in manifest["assets"] if item["path"] == "surfaces/BG_056/resource.json")
             self.assertEqual((blocked_surface["source_file"], blocked_surface["source_resource"], blocked_surface["status"]), ("BG.DAT", 56, "blocked"))
+            ending_surface = next(item for item in manifest["assets"] if item["path"] == "surfaces/FDOTHER_056/frame.png")
+            self.assertEqual((ending_surface["source_file"], ending_surface["source_resource"]), ("FDOTHER.DAT", 56))
+            ending_palette = next(item for item in manifest["assets"] if item["path"] == "palette/fdother_057.json")
+            self.assertEqual((ending_palette["source_file"], ending_palette["source_resource"]), ("FDOTHER.DAT", 57))
             text = next(item for item in manifest["assets"] if item["path"] == "text/FDTXT_000/resource.json")
             self.assertEqual((text["kind"], text["source_file"], text["source_resource"], text["status"]), ("text", "FDTXT.DAT", 0, "exported"))
             font = next(item for item in manifest["assets"] if item["path"] == "fonts/fdother_004/font.json")

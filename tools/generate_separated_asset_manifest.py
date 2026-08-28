@@ -184,7 +184,7 @@ def infer_provenance(path: Path) -> tuple[str | None, int | None, int | None]:
     if path.as_posix().lower() == "fields/fdfield/selector_30/field.json":
         return "FDFIELD.DAT", 90, None
     if len(path.parts) >= 3 and path.parts[0].lower() == "surfaces":
-        match = re.fullmatch(r"(BG|TAI)_(\d+)", path.parts[1], re.I)
+        match = re.fullmatch(r"(BG|TAI|FDOTHER)_(\d+)", path.parts[1], re.I)
         if match:
             return SOURCE_BY_CONTAINER[match.group(1).upper()], int(match.group(2)), None
     if len(path.parts) == 3 and path.parts[0].lower() == "text" and path.name.lower() == "resource.json":
@@ -194,8 +194,10 @@ def infer_provenance(path: Path) -> tuple[str | None, int | None, int | None]:
     if len(path.parts) == 3 and path.parts[0].lower() == "fonts" and path.parts[1].lower() == "fdother_004":
         if path.name.lower() in {"atlas.png", "font.json"}:
             return "FDOTHER.DAT", 4, None
-    if path.as_posix().lower() == "palette/fdother_000.json":
-        return "FDOTHER.DAT", 0, None
+    if len(path.parts) == 2 and path.parts[0].lower() == "palette":
+        match = re.fullmatch(r"fdother_(\d+)\.json", path.name, re.I)
+        if match:
+            return "FDOTHER.DAT", int(match.group(1)), None
     if len(path.parts) == 3 and path.parts[0].lower() == "ui" and path.parts[1].lower() == "action_cells":
         match = re.fullmatch(r"cell_(\d+)\.png", path.name, re.I)
         if match:

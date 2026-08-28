@@ -27,11 +27,11 @@
     "decoded_figani_masks_png": 2118,
     "decoded_figani_metadata_json": 264,
     "figani_resource_status_json": 409,
-    "decoded_fdother_animation_resources": 23,
-    "decoded_fdother_animation_frames_png": 408,
-    "decoded_fdother_animation_masks_png": 408,
-    "decoded_fdother_animation_metadata_json": 23,
-    "fdother_animation_resource_status_json": 23,
+    "decoded_fdother_animation_resources": 24,
+    "decoded_fdother_animation_frames_png": 428,
+    "decoded_fdother_animation_masks_png": 428,
+    "decoded_fdother_animation_metadata_json": 24,
+    "fdother_animation_resource_status_json": 24,
     "decoded_bg_surface_resources": 56,
     "decoded_bg_surface_frames_png": 56,
     "decoded_bg_surface_masks_png": 56,
@@ -48,7 +48,7 @@
     "rendered_maps_png": 33,
     "font_atlases_png": 2,
     "runtime_font_metadata_json": 1,
-    "fdother_005_item_panel_indexed_png": 58,
+    "fdother_005_item_panel_indexed_png": 75,
     "fdother_005_item_panel_masks_png": 34,
     "fdother_005_item_panel_metadata_json": 1,
     "fdicon_indexed_frames_png": 1680,
@@ -61,19 +61,33 @@
     "fdshap_remap_masks_png": 8256,
     "fdshap_metadata_json": 33,
     "fdfield_selector_30_json": 1,
+    "ending_fdother_single_frame_resources": 3,
+    "ending_fdother_single_frame_png": 3,
+    "ending_fdother_single_frame_masks_png": 3,
+    "ending_fdother_palette_json": 1,
     "music_midi": 15
   },
   "manifest_validation": {
     "tool": "tools/generate_separated_asset_manifest.py",
     "validator": "tools/validate_separated_asset_pack.py",
-    "total_entries": 37850,
-    "exported": 36826,
+    "total_entries": 37919,
+    "exported": 36895,
     "blocked": 19,
     "intentionally_raw": 1005,
     "source_hashes_verified": true,
     "result": "pass"
   },
   "runtime_migrations": [{
+    "family": "ending_fdother_056_060",
+    "source_resources": ["FDOTHER.DAT#56..60"],
+    "separated_outputs": 52,
+    "runtime_consumers": ["ending party cycle", "ending 20-segment tail", "terminal frame hold"],
+    "archive_indexed_mask_blit_match": "pass (#56, #58 all 20 frames, #59, #60; #57 DAC byte match)",
+    "runtime_archive_fallback": false,
+    "archive_unreadable_test": "pass (production ending preview consumes separated roots)",
+    "remaining_direct_archive_consumers": [],
+    "evidence_level": "RUNTIME-E1"
+  }, {
     "family": "fdfield_selector_30",
     "source_resources": ["FDFIELD.DAT#90..92"],
     "separated_outputs": 1,
@@ -104,16 +118,16 @@
     "evidence_level": "RUNTIME-E1"
   }, {
     "family": "fdother_005_item_panel",
-    "source_resources": ["FDOTHER.DAT#5 (58 caller-proven entries)"],
-    "separated_outputs": 93,
+    "source_resources": ["FDOTHER.DAT#5 (75 caller-proven entries)"],
+    "separated_outputs": 110,
     "codec_sets": {
       "opaque_high_run": 1,
-      "raw_indexed_opaque": 23,
+      "raw_indexed_opaque": 40,
       "four_mode_frame": 34
     },
-    "archive_png_indexed_mask_match": "pass (all 58 admitted entries)",
+    "archive_png_indexed_mask_match": "pass (all 75 admitted entries)",
     "runtime_archive_fallback": false,
-    "archive_unreadable_test": "pass (FDTXT.DAT missing; shared item panel player lifecycle)",
+    "archive_unreadable_test": "pass (shared item panel and ending dialogue grid player lifecycle)",
     "evidence_level": "RUNTIME-E1"
   }, {
     "family": "fdicon_map_sprites",

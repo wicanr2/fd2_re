@@ -20,8 +20,8 @@
 | 順序 | 工作 | 現況 | 下一個可驗收結果 |
 |---:|---|---|---|
 | A1 | 編輯器 canonical schema 與穩定身份層 | `SPEC-READY`：campaign／scenario／story／animation 四份 machine-readable Schema 與跨檔 validator 已建立；穩定 ID、戰役轉場、mouth animation、素材 `asset_id`、重複 ID 及受控 extensions 有11項 Docker 測試。現有資料仍是 legacy 單向 loader，尚未轉入 canonical 格式 | 加入 legacy import 診斷、canonical writer 與 load→write→reload 測試；再建立 character identity 文件，分離連結 portrait／map sprite／battle animation，達 `DATA-READY` 後才接編輯器 UI |
-| A2 | 原版素材全量分離與清冊 | `DATA-PARTIAL`：現行完整manifest為37,849筆：36,825 exported、1,005 intentionally_raw、19 blocked。FDICON完整分離1,680張三層sprite；FDSHAP全33銀行另分離8,256張indexed frame／source mask／remap mask及controls，均與原版逐層一致。raw零遺漏，但其餘UI／AFM用途與OGG仍未全量閉合 | 將15首MIDI轉成具cue／loop metadata的OGG；其餘raw逐家族判定已由標準輸出涵蓋、需新typed輸出或blocked，補齊用途關聯，輸出包不入Git |
-| A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型、共用道具panel、FDICON與FDSHAP正式玩家consumer已遷移；戰場、整備、職業／教會、城鎮與終局tail baseline均讀分離bank。第23戰重載由`map23/map.json`逐byte重建FDFIELD#69；終局selector30亦由具型別JSON逐byte重建FDFIELD#90..92，兩者都沒有archive fallback。title、FDOTHER sound／其他UI仍未全數遷移 | 下一批處理FDOTHER palette／sound／其餘UI家族；保留archive不可讀與缺分離資產失敗即關閉測試 |
+| A2 | 原版素材全量分離與清冊 | `DATA-PARTIAL`：現行完整manifest為37,919筆：36,895 exported、1,005 intentionally_raw、19 blocked。FDICON完整分離1,680張三層sprite；FDSHAP全33銀行另分離8,256張indexed frame／source mask／remap mask及controls，均與原版逐層一致。raw零遺漏，但其餘UI／AFM用途與OGG仍未全量閉合 | 將15首MIDI轉成具cue／loop metadata的OGG；其餘raw逐家族判定已由標準輸出涵蓋、需新typed輸出或blocked，補齊用途關聯，輸出包不入Git |
+| A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型、共用道具panel、FDICON與FDSHAP正式玩家consumer已遷移；第23戰FDFIELD#69與終局#90..92均可逐byte重建。終局FDOTHER#56..#60及FDOTHER#5對話格已分離，party cycle／20段tail不再回讀archive。title、城鎮／商店、FDOTHER sound／其他UI仍未全數遷移 | 下一批優先處理戰後城鎮／商店資源12／29／63，再處理title、palette／sound與其餘UI家族；保留archive不可讀與缺分離資產失敗即關閉測試 |
 | A4 | 現代美術主題 | `PENDING-A1/A2`：尚未選定正式風格，不以猜測覆蓋原版 | 先輸出頭像＋戰場 sprite／tile＋介面框的可丟棄忠實／現代對照，再由使用者選定 theme 方向 |
 
 > **策略更新**：第一輪 remake 改以[`REMAKE-STATUS.md`](../REMAKE-STATUS.md)的

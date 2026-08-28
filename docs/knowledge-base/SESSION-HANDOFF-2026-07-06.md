@@ -8244,4 +8244,17 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   `FDFIELD.DAT` 的情況仍建立 31 筆 record，首兩筆座標維持 `(17,18)`、`(1,43)`。
 - 此成果只關閉 `0x1088d(0x1e)` 的 loader baseline 資料來源，不提升 `0x2c548` 後續狀態、
   `0x28a6c` 精確 renderer 或終局一般玩家 E2。
+
+### 2026-08-28：終局 FDOTHER #56..#60 分離
+
+- `fd2-asset-import -fdother` 現另輸出 #56／#59／#60 的 indexed frame＋binary mask＋
+  provenance metadata，以及 #57 的 768-byte DAC JSON；`extract_all.py` 的 caller-proven
+  FDOTHER animation 集合新增 #58，輸出20幀 indexed PNG、mask與完整 descriptor metadata。
+- FDOTHER#5 separated item-panel raw entry 集合新增 #1..17，故 `0x2c548` 對話格也不再
+  需要原始 archive。`MontageCycleAssets` 改接 #56與該raw-cell set；正式
+  `LoadMontageTailAssets` 改接 #57..#60，舊 archive loader更名為明確 source oracle。
+- 固定原檔逐 indexed pixel、mask、placement／delay及非零 destination blit全部一致；
+  #57逐byte一致。正式Xvfb ending preview抽測只指定分離素材包仍通過。
+- 清冊更新為37,919筆（36,895 exported、1,005 intentionally raw、19 blocked）。本成果
+  達`DATA-READY`／`RUNTIME-E1`，不提升`0x28a6c`精確畫面或終局一般玩家E2。
   manifest現為37,849筆：36,825 exported、1,005 intentionally raw、19 blocked。

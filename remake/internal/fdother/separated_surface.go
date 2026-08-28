@@ -42,11 +42,12 @@ type separatedSurfaceIdentity struct {
 }
 
 var separatedSurfaceIdentities = map[string]separatedSurfaceIdentity{
-	"BG.DAT":  {prefix: "BG", size: 624564, md5: "4b5414c92b40ef25ba0ee10c80f9e149", sha256: "b9fc21d019d6256a4bb7e6da1cefcb0bfe331d8ff74a52a8201570afc98b56de"},
-	"TAI.DAT": {prefix: "TAI", size: 94917, md5: "7cfe4b9ad2cbff44b2ebd7ab2f94e4aa", sha256: "d56fea9c43f8bb59aad89ad76698885d7e07f380d12a4547888a0b60ea5e0410"},
+	"BG.DAT":      {prefix: "BG", size: 624564, md5: "4b5414c92b40ef25ba0ee10c80f9e149", sha256: "b9fc21d019d6256a4bb7e6da1cefcb0bfe331d8ff74a52a8201570afc98b56de"},
+	"TAI.DAT":     {prefix: "TAI", size: 94917, md5: "7cfe4b9ad2cbff44b2ebd7ab2f94e4aa", sha256: "d56fea9c43f8bb59aad89ad76698885d7e07f380d12a4547888a0b60ea5e0410"},
+	"FDOTHER.DAT": {prefix: "FDOTHER", size: 3382481, md5: "22f56e5027edc7c766ad34ca4e5aca93", sha256: "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"},
 }
 
-// LoadSeparatedSingleFrame 載入由固定版本 BG.DAT／TAI.DAT 匯出的索引單幀。
+// LoadSeparatedSingleFrame 載入由固定版本 BG.DAT／TAI.DAT／FDOTHER.DAT 匯出的索引單幀。
 // 它不讀取或回退原始 archive。
 func LoadSeparatedSingleFrame(surfaceRoot, sourceFile string, resource int) (Frame, error) {
 	identity, ok := separatedSurfaceIdentities[sourceFile]
