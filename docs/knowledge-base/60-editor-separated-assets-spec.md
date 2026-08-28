@@ -216,6 +216,26 @@ schema inventory與prototype，不把任一建議寫進正式玩家預設。
 缺包拒絕及 LOAD 畫面聚焦回歸均通過。production 的存檔欄位底框不再讀
 `FDOTHER.DAT`。
 
+### FDOTHER #14 教會／轉職固定資產
+
+> 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）；主證據見
+> [`fd2_church_ui_assets_ida.txt`](../data/fd2_church_ui_assets_ida.txt)。
+
+`ui/fdother_014_church/resource.json` 固定保存教會／轉職正式玩家路徑已證實的
+21筆 mixed-codec entry：four-mode frames 0與23..31、opaque entries 1／3..10／16，
+以及 raw entry15。每筆保留原始 index、codec、幾何與標準 indexed PNG；four-mode
+frame另需 binary mask。metadata 綁定固定 `FDOTHER.DAT` hash、resource14及
+51,157-byte raw size。loader 必須要求完整且無重複的精確集合，不接受未證實 entry，
+也不得回退 archive。
+
+此切片只關閉 resource14。`native_class_ui` 同時使用的 FDOTHER #5 dialogue／digits
+與 #2 choices 仍是後續獨立契約；在它們遷移前，不宣稱整個 loader 已與 archive
+斷開。
+
+現行 importer 與 `fdother.LoadSeparatedChurchUIAssets` 已符合契約；21筆原始／
+分離 pixels／masks、缺包拒絕、底層 compositor，以及正式轉職與四項教會服務
+聚焦回歸均通過。production 的 `native_class_ui` 已無 resource14 archive caller。
+
 - 舊 JSON 只作 legacy import。匯入時產生穩定 ID 與 provenance，並輸出診斷；不在
   原檔上就地猜改。
 - 編輯器 canonical JSON 必須通過：decode → validate → encode → decode → validate，

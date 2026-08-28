@@ -676,6 +676,9 @@ func exportCommandGrid(fdotherPath, outputRoot string) error {
 	if err := exportLoadSlots(fdotherPath, outputRoot); err != nil {
 		return err
 	}
+	if err := exportChurchUI(fdotherPath, outputRoot); err != nil {
+		return err
+	}
 	if err := exportNativeShops(fdotherPath, outputRoot); err != nil {
 		return err
 	}
@@ -1077,6 +1080,79 @@ func exportLoadSlots(fdotherPath, outputRoot string) error {
 		entry.Width, entry.Height, entry.Pixels,
 	); err != nil {
 		return err
+	}
+	return writeJSON(filepath.Join(directory, "resource.json"), document)
+}
+
+func exportChurchUI(fdotherPath, outputRoot string) error {
+	raw, err := fdother.ReadResource(fdotherPath, 14)
+	if err != nil {
+		return err
+	}
+	if len(raw) != 51157 {
+		return fmt.Errorf("FDOTHER #14 raw size=%d, want 51157", len(raw))
+	}
+	directory := filepath.Join(outputRoot, "ui", "fdother_014_church")
+	document := itemPanelDocument{
+		SchemaVersion: 1,
+		Kind:          "fdother_lmi1_church_ui",
+		AssetID:       "ui/FDOTHER_014/church",
+		Status:        "decoded",
+		Evidence:      "confirmed",
+		Source: sourceID{
+			File: "FDOTHER.DAT", Resource: 14, Size: fdotherSize,
+			MD5: fdotherMD5, SHA256: fdotherSHA256, RawSize: len(raw),
+		},
+	}
+	for _, index := range []int{1, 3, 4, 5, 6, 7, 8, 9, 10, 16} {
+		entry, err := fdother.ParseLMI1OpaqueEntry(raw, index)
+		if err != nil {
+			return err
+		}
+		metadata := itemPanelEntryDocument{
+			Index: index, Codec: "opaque_high_run", Width: entry.Width,
+			Height: entry.Height, Frame: fmt.Sprintf("entry_%03d/frame.png", index),
+		}
+		if err := writeIndexedPNG(
+			filepath.Join(directory, metadata.Frame), entry.Width, entry.Height, entry.Pixels,
+		); err != nil {
+			return err
+		}
+		document.Entries = append(document.Entries, metadata)
+	}
+	priceCell, err := fdother.ParseLMI1RawEntry(raw, 15)
+	if err != nil {
+		return err
+	}
+	priceMetadata := itemPanelEntryDocument{
+		Index: 15, Codec: "raw_indexed_opaque", Width: priceCell.Width,
+		Height: priceCell.Height, Frame: "entry_015/frame.png",
+	}
+	if err := writeIndexedPNG(
+		filepath.Join(directory, priceMetadata.Frame),
+		priceCell.Width, priceCell.Height, priceCell.Pixels,
+	); err != nil {
+		return err
+	}
+	document.Entries = append(document.Entries, priceMetadata)
+	for _, index := range []int{0, 23, 24, 25, 26, 27, 28, 29, 30, 31} {
+		entry, err := fdother.ParseLMI1FrameEntry(raw, index)
+		if err != nil {
+			return err
+		}
+		indexed, mask, err := entry.IndexedLayers()
+		if err != nil {
+			return err
+		}
+		entryDirectory := filepath.Join(directory, fmt.Sprintf("entry_%03d", index))
+		if err := writeSurfacePNGs(entryDirectory, entry.Width, entry.Height, indexed, mask); err != nil {
+			return err
+		}
+		document.Entries = append(document.Entries, itemPanelEntryDocument{
+			Index: index, Codec: "four_mode_frame", Width: entry.Width, Height: entry.Height,
+			Frame: fmt.Sprintf("entry_%03d/frame.png", index),
+			Mask:  fmt.Sprintf("entry_%03d/mask.png", index),
+		})
 	}
 	return writeJSON(filepath.Join(directory, "resource.json"), document)
 }

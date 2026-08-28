@@ -31,42 +31,13 @@ type nativeClassUIAssets struct {
 }
 
 func loadNativeClassUIAssets() (*nativeClassUIAssets, error) {
-	fdotherPath := nativeFDOTHERPath()
-	if fdotherPath == "" {
-		return nil, errors.New("native class UI: FDOTHER.DAT unavailable")
-	}
-	resource14, err := fdother.ReadResource(fdotherPath, 14)
+	churchAssets, err := fdother.LoadSeparatedChurchUIAssets(separatedAssetPath("ui"))
 	if err != nil {
 		return nil, err
-	}
-	entries, err := fdother.ParseLMI1(resource14)
-	if err != nil || len(entries) <= 16 {
-		if err != nil {
-			return nil, err
-		}
-		return nil, errors.New("native class UI: FDOTHER#14 lacks entry 16")
-	}
-	backgroundFrame, err := fdother.ParseLMI1FrameEntry(resource14, 0)
-	if err != nil || backgroundFrame.Width != 320 || backgroundFrame.Height != 200 {
-		if err != nil {
-			return nil, err
-		}
-		return nil, errors.New("native class UI: FDOTHER#14 entry 0 is not 320x200")
 	}
 	background := make([]byte, 320*200)
-	if err := backgroundFrame.BlitAt(background, 320, 0, -1); err != nil {
+	if err := churchAssets.Background.BlitAt(background, 320, 0, -1); err != nil {
 		return nil, err
-	}
-	priceCell, err := fdother.ParseLMI1RawEntry(resource14, 15)
-	if err != nil {
-		return nil, err
-	}
-	reviveFX := make([]fdother.Frame, 9)
-	for i := range reviveFX {
-		reviveFX[i], err = fdother.ParseLMI1FrameEntry(resource14, 23+i)
-		if err != nil {
-			return nil, err
-		}
 	}
 	strings, err := fdtxt.LoadSeparatedResource(separatedAssetPath("text"), 0)
 	if err != nil {
@@ -75,6 +46,10 @@ func loadNativeClassUIAssets() (*nativeClassUIAssets, error) {
 	font, err := fdtxt.LoadSeparatedFont(separatedAssetPath("fonts"))
 	if err != nil {
 		return nil, err
+	}
+	fdotherPath := nativeFDOTHERPath()
+	if fdotherPath == "" {
+		return nil, errors.New("native class UI: remaining FDOTHER #5/#2 assets unavailable")
 	}
 	resource5, err := fdother.ReadResource(fdotherPath, 5)
 	if err != nil {
@@ -115,10 +90,11 @@ func loadNativeClassUIAssets() (*nativeClassUIAssets, error) {
 	}
 	palette[0] = color.NRGBA{A: 0xff}
 	return &nativeClassUIAssets{
-		background: background, entries: entries, panel: entries[16], priceCell: priceCell, units: units,
+		background: background, entries: churchAssets.Entries,
+		panel: churchAssets.Entries[16], priceCell: churchAssets.PriceCell, units: units,
 		choices: choices, dialogue: dialogue, digits: digits, portrait: portraits[0],
 		strings: strings, font: font, palette: palette,
-		paletteDAC: append([]byte(nil), paletteRaw...), reviveFX: reviveFX,
+		paletteDAC: append([]byte(nil), paletteRaw...), reviveFX: churchAssets.ReviveFX,
 	}, nil
 }
 
