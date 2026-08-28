@@ -5,7 +5,7 @@
   "tool": "tools/extract_all.py + remake/cmd/fd2-asset-import",
   "container_image": "fd2-assets-local:20260828",
   "output_policy": "local_generated_untracked",
-  "command_contract": "python3 tools/extract_all.py <verified-original-dir> <pack>; go run ./cmd/fd2-asset-import -fdother <FDOTHER.DAT> -bg <BG.DAT> -tai <TAI.DAT> -fdtxt <FDTXT.DAT> -glyph-map docs/data/glyph_map.json -fdicon <FDICON.B24> -fdshap <FDSHAP.DAT> -out <pack>",
+  "command_contract": "python3 tools/extract_all.py <verified-original-dir> <pack>; go run ./cmd/fd2-asset-import -fdother <FDOTHER.DAT> -bg <BG.DAT> -tai <TAI.DAT> -fdtxt <FDTXT.DAT> -glyph-map docs/data/glyph_map.json -fdicon <FDICON.B24> -fdshap <FDSHAP.DAT> -fdfield <FDFIELD.DAT> -out <pack>",
   "archive_resources": {
     "ANI.DAT": 10,
     "BG.DAT": 57,
@@ -60,19 +60,30 @@
     "fdshap_source_masks_png": 8256,
     "fdshap_remap_masks_png": 8256,
     "fdshap_metadata_json": 33,
+    "fdfield_selector_30_json": 1,
     "music_midi": 15
   },
   "manifest_validation": {
     "tool": "tools/generate_separated_asset_manifest.py",
     "validator": "tools/validate_separated_asset_pack.py",
-    "total_entries": 37849,
-    "exported": 36825,
+    "total_entries": 37850,
+    "exported": 36826,
     "blocked": 19,
     "intentionally_raw": 1005,
     "source_hashes_verified": true,
     "result": "pass"
   },
   "runtime_migrations": [{
+    "family": "fdfield_selector_30",
+    "source_resources": ["FDFIELD.DAT#90..92"],
+    "separated_outputs": 1,
+    "runtime_consumers": ["ending montage tail loader baseline"],
+    "archive_byte_match": "pass (map, control, positions)",
+    "runtime_archive_fallback": false,
+    "archive_unreadable_test": "pass (baseline consumes separated selector document)",
+    "remaining_direct_archive_consumers": [],
+    "evidence_level": "RUNTIME-E1"
+  }, {
     "family": "fdtxt_and_fdother_font",
     "source_resources": ["FDTXT.DAT#0..34", "FDOTHER.DAT#4"],
     "resource_statuses": {
@@ -214,7 +225,7 @@
   "not_yet_complete": [
     "FIGANI #408 是 0-byte blocked resource；不得當成合法 zero-header fallback",
     "目前音樂輸出為 MIDI；正式 runtime pack 要以既有音源管線輸出 OGG 並記錄 loop/stop metadata",
-    "音效、AFM/ANI、FDTXT/FDFIELD/FDICON與其餘FDOTHER UI的用途與 asset_id 尚未全量登記",
+    "音效、AFM/ANI、FDFIELD其餘 selector 與其餘FDOTHER UI的用途及 asset_id 尚未全量登記",
     "現行 extract_all.py 仍需由獨立 manifest generator 補上逐檔清冊；尚未整合成單一安裝命令",
     "production runtime 仍有原始 archive callers"
   ]

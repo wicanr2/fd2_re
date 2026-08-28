@@ -112,6 +112,8 @@ def classify(path: Path) -> str | None:
         return "tileset" if suffix == ".png" else "metadata" if path.name.lower() == "bank.json" else None
     if top == "maps":
         return "map" if suffix == ".json" else "tileset" if suffix == ".png" else None
+    if top == "fields" and suffix == ".json":
+        return "map"
     if top == "fonts":
         return "font" if suffix in {".png", ".json"} else None
     if top == "ui":
@@ -179,6 +181,8 @@ def infer_provenance(path: Path) -> tuple[str | None, int | None, int | None]:
                     frame = int(tile_match.group(1))
                     break
             return "FDSHAP.DAT", map_index * 2, frame
+    if path.as_posix().lower() == "fields/fdfield/selector_30/field.json":
+        return "FDFIELD.DAT", 90, None
     if len(path.parts) >= 3 and path.parts[0].lower() == "surfaces":
         match = re.fullmatch(r"(BG|TAI)_(\d+)", path.parts[1], re.I)
         if match:

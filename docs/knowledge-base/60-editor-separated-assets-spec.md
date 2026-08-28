@@ -557,6 +557,42 @@ mask 與 8,256 張 remap mask，共 24,801 個標準檔。全 33 張銀行及 co
 匯入器與名稱明確的 source oracle adapter 保留原檔 reader。本切片達 `DATA-READY` 與
 `RUNTIME-E1`；37,849 筆素材清冊中 36,825 exported、1,005 intentionally raw、19 blocked。
 
+### 終局 selector `0x1e` 的 FDFIELD 部署契約
+
+> 狀態：**CONFORMED**
+> 範圍：`0x1088d(0x1e)` 建立 31 筆終局部署 record 所消費的 `FDFIELD.DAT`
+> 資源 90／91／92；不包含 `0x2c548` 後續狀態變化、`0x28a6c` 精確 renderer admission
+> 或一般玩家路徑 E2。
+
+固定來源 `FDFIELD.DAT` 大小為 243,169 bytes，MD5 為
+`ecdb0436d26adfe5d107f2713fa7e9a2`，SHA-256 為
+`b0cf75d94f58603f091c7462c0494f0e83bd6edfb04c1acbf83ed4d938c7a513`。原版
+`FD2.EXE` 固定雜湊、IDA Pro 9.4 線性位址、caller／consumer 與直接指令證據見
+[`fd2_ch29_post_montage_tail_ida.txt`](../data/ida/fd2_ch29_post_montage_tail_ida.txt)：
+`0x2c435` 將 selector `0x1e` 傳入 `0x1088d`；後者消費資源 90／91／92、建立
+31 筆 `0x50` bytes runtime record。證據等級為**已證實**。
+
+正式分離資料是素材包內的 `fields/fdfield/selector_30/field.json`。它以 `tiles[]`、
+`event_bytes[]` 與 `blit_modes[]` 重建資源 90：little-endian `uint16` 寬高後，每格依序為
+tile、event byte、blit mode，固定幾何為 35×45，完整長度為 6,304 bytes。同一文件以
+`control_bytes[]` 保存資源 91 的完整控制 bytes，並以 32 筆具型別的 `x_word`、`y_word`、
+`raw_key` 保存資源 92。文件含 schema、document ID、固定來源雜湊、資源索引、各資源
+SHA-256；位置第 0 列保留 control row，其後 31 列保留部署座標及 raw key，不以未證實
+的角色或結局語意重新命名。
+
+strict loader 必須先完整解碼並驗證兩份文件，再一次發布三個重建資源。資源 91 header
+必須為 `(30,31,1)`、長度 157 bytes、唯一 unit row 的 group byte 必須為 255；資源 92
+必須為 little-endian count 32 加 32×6 bytes，第 0 列 key 為 30，其後 31 列 raw key
+皆為 0。缺檔、未知 schema、來源雜湊或 resource index 不符、欄位溢位、列數或幾何
+錯誤均失敗即關閉，不得回退讀取 `FDFIELD.DAT`。
+
+2026-08-28 實作與驗收已完成：匯入器新增 `-fdfield`，三個重建資源與固定原檔逐 byte
+相同；正式 montage baseline 在原版資料目錄
+沒有 `FDFIELD.DAT` 時仍建立相同 31 筆 record，並保留首兩筆座標 `(17,18)`、`(1,43)`；
+破損分離文件會在任何 runtime record 發布前被拒絕。清冊現為 37,850 筆，其中
+36,826 exported、1,005 intentionally raw、19 blocked。本切片達 `DATA-READY` 與窄
+`RUNTIME-E1`，但不得據此宣稱終局畫面或 campaign E2。
+
 ## 七、完成定義
 
 只有同時成立才可宣稱「素材已完全分離、JSON 足以建立編輯器」：

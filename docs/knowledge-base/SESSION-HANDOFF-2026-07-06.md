@@ -8232,4 +8232,16 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 全 33 銀行的 pixels／source mask／remap mask／controls 與 archive decoder 逐層一致。
   map0、map23、map32正式consumer與ch22 reload在旁側沒有`FDSHAP.DAT`時通過。
 - 正式產品程式的FDSHAP archive caller歸零；只保留離線匯入器與source oracle adapter。
+
+### 2026-08-28：終局 FDFIELD selector 30 分離
+
+- `fd2-asset-import -fdfield` 會先驗證固定 `FDFIELD.DAT` 雜湊，再輸出
+  `fields/fdfield/selector_30/field.json`；文件以具型別陣列無損保存資源 90 的
+  35×45 組合格、資源 91 的 157 bytes 控制列與資源 92 的 32 筆位置列。
+- strict loader 核對 schema、document ID、來源大小／MD5／SHA-256、三個 resource index
+  與各自內容 SHA-256，再一次發布重建結果；破損內容失敗即關閉，不回退原始 archive。
+- 三個重建資源已與固定原檔逐 byte 一致；終局 montage tail loader baseline 在不讀
+  `FDFIELD.DAT` 的情況仍建立 31 筆 record，首兩筆座標維持 `(17,18)`、`(1,43)`。
+- 此成果只關閉 `0x1088d(0x1e)` 的 loader baseline 資料來源，不提升 `0x2c548` 後續狀態、
+  `0x28a6c` 精確 renderer 或終局一般玩家 E2。
   manifest現為37,849筆：36,825 exported、1,005 intentionally raw、19 blocked。

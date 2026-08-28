@@ -5,6 +5,7 @@ package main
 import (
 	"crypto/md5"
 	"crypto/sha256"
+	"encoding/binary"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
@@ -152,6 +153,34 @@ type fdshapBankDocument struct {
 	Sprites         []fdiconSpriteDocument `json:"sprites"`
 }
 
+type fdfieldPositionDocument struct {
+	XWord  int `json:"x_word"`
+	YWord  int `json:"y_word"`
+	RawKey int `json:"raw_key"`
+}
+
+type fdfieldSelectorDocument struct {
+	SchemaVersion     int                       `json:"schema_version"`
+	Kind              string                    `json:"kind"`
+	DocumentID        string                    `json:"document_id"`
+	Status            string                    `json:"status"`
+	Evidence          string                    `json:"evidence"`
+	Source            sourceID                  `json:"source"`
+	MapResource       int                       `json:"map_resource"`
+	ControlResource   int                       `json:"control_resource"`
+	PositionsResource int                       `json:"positions_resource"`
+	MapSHA256         string                    `json:"map_sha256"`
+	ControlSHA256     string                    `json:"control_sha256"`
+	PositionsSHA256   string                    `json:"positions_sha256"`
+	Width             int                       `json:"width"`
+	Height            int                       `json:"height"`
+	Tiles             []int                     `json:"tiles"`
+	EventBytes        []int                     `json:"event_bytes"`
+	BlitModes         []int                     `json:"blit_modes"`
+	ControlBytes      []int                     `json:"control_bytes"`
+	Positions         []fdfieldPositionDocument `json:"positions"`
+}
+
 type archiveIdentity struct {
 	file, prefix string
 	size         int
@@ -179,6 +208,12 @@ var fdshapArchive = archiveIdentity{
 	file: "FDSHAP.DAT", prefix: "FDSHAP", size: 3557794,
 	md5:    "9b0d356074f57cc27aebf3bb89aae247",
 	sha256: "901b70ea82d5d977192759fad510921ffe16a0ab6af6ab7c32757de03e30aa3c",
+}
+
+var fdfieldArchive = archiveIdentity{
+	file: "FDFIELD.DAT", prefix: "FDFIELD", size: 243169,
+	md5:    "ecdb0436d26adfe5d107f2713fa7e9a2",
+	sha256: "b0cf75d94f58603f091c7462c0494f0e83bd6edfb04c1acbf83ed4d938c7a513",
 }
 
 func verifyFDOTHER(path string) error {
@@ -662,6 +697,63 @@ func exportFDSHAP(path, outputRoot string) error {
 	return nil
 }
 
+func bytesToInts(raw []byte) []int {
+	values := make([]int, len(raw))
+	for index, value := range raw {
+		values[index] = int(value)
+	}
+	return values
+}
+
+func exportFDFIELDSelector30(path, outputRoot string) error {
+	if err := verifyArchive(path, fdfieldArchive); err != nil {
+		return err
+	}
+	resources := make([][]byte, 3)
+	for offset := range resources {
+		resource, err := fdother.ReadResource(path, 90+offset)
+		if err != nil {
+			return fmt.Errorf("FDFIELD #%d: %w", 90+offset, err)
+		}
+		resources[offset] = resource
+	}
+	field, control, positions := resources[0], resources[1], resources[2]
+	if len(field) < 4 {
+		return errors.New("FDFIELD #90 is too short")
+	}
+	width, height := int(binary.LittleEndian.Uint16(field)), int(binary.LittleEndian.Uint16(field[2:]))
+	if width != 35 || height != 45 || len(field) != 4+width*height*4 {
+		return fmt.Errorf("FDFIELD #90 geometry=%dx%d size=%d", width, height, len(field))
+	}
+	doc := fdfieldSelectorDocument{
+		SchemaVersion: 1, Kind: "fdfield_selector", DocumentID: "field/fdfield/selector_30",
+		Status: "decoded", Evidence: "confirmed",
+		Source:      sourceID{File: fdfieldArchive.file, Resource: 90, Size: fdfieldArchive.size, MD5: fdfieldArchive.md5, SHA256: fdfieldArchive.sha256, RawSize: len(field)},
+		MapResource: 90, ControlResource: 91, PositionsResource: 92,
+		Width: width, Height: height, Tiles: make([]int, width*height), EventBytes: make([]int, width*height), BlitModes: make([]int, width*height),
+		ControlBytes: bytesToInts(control),
+	}
+	for index := range doc.Tiles {
+		offset := 4 + index*4
+		doc.Tiles[index] = int(binary.LittleEndian.Uint16(field[offset:]))
+		doc.EventBytes[index] = int(field[offset+2])
+		doc.BlitModes[index] = int(field[offset+3])
+	}
+	if len(positions) < 2 || len(positions) != 2+int(binary.LittleEndian.Uint16(positions))*6 {
+		return fmt.Errorf("FDFIELD #92 position size=%d", len(positions))
+	}
+	for offset := 2; offset < len(positions); offset += 6 {
+		doc.Positions = append(doc.Positions, fdfieldPositionDocument{
+			XWord:  int(binary.LittleEndian.Uint16(positions[offset:])),
+			YWord:  int(binary.LittleEndian.Uint16(positions[offset+2:])),
+			RawKey: int(binary.LittleEndian.Uint16(positions[offset+4:])),
+		})
+	}
+	mapHash, controlHash, positionsHash := sha256.Sum256(field), sha256.Sum256(control), sha256.Sum256(positions)
+	doc.MapSHA256, doc.ControlSHA256, doc.PositionsSHA256 = hex.EncodeToString(mapHash[:]), hex.EncodeToString(controlHash[:]), hex.EncodeToString(positionsHash[:])
+	return writeJSON(filepath.Join(outputRoot, "fields", "fdfield", "selector_30", "field.json"), doc)
+}
+
 func writeBinaryMaskPNG(path string, width, height int, mask []byte) error {
 	if width <= 0 || height <= 0 || len(mask) != width*height {
 		return errors.New("binary mask PNG geometry mismatch")
@@ -697,11 +789,12 @@ func main() {
 	fdtxtPath := flag.String("fdtxt", "", "固定版本 FDTXT.DAT 路徑")
 	fdiconPath := flag.String("fdicon", "", "固定版本 FDICON.B24 路徑")
 	fdshapPath := flag.String("fdshap", "", "固定版本 FDSHAP.DAT 路徑")
+	fdfieldPath := flag.String("fdfield", "", "固定版本 FDFIELD.DAT 路徑")
 	glyphMapPath := flag.String("glyph-map", "", "受版控 glyph_map.json 路徑")
 	outputRoot := flag.String("out", "", "分離素材包根目錄")
 	flag.Parse()
-	if *outputRoot == "" || (*fdotherPath == "" && *bgPath == "" && *taiPath == "" && *fdtxtPath == "" && *fdiconPath == "" && *fdshapPath == "") || (*fdtxtPath != "" && *glyphMapPath == "") {
-		fmt.Fprintln(os.Stderr, "用法：fd2-asset-import [-fdother FDOTHER.DAT] [-bg BG.DAT] [-tai TAI.DAT] [-fdtxt FDTXT.DAT -glyph-map glyph_map.json] [-fdicon FDICON.B24] [-fdshap FDSHAP.DAT] -out ASSET_PACK")
+	if *outputRoot == "" || (*fdotherPath == "" && *bgPath == "" && *taiPath == "" && *fdtxtPath == "" && *fdiconPath == "" && *fdshapPath == "" && *fdfieldPath == "") || (*fdtxtPath != "" && *glyphMapPath == "") {
+		fmt.Fprintln(os.Stderr, "用法：fd2-asset-import [-fdother FDOTHER.DAT] [-bg BG.DAT] [-tai TAI.DAT] [-fdtxt FDTXT.DAT -glyph-map glyph_map.json] [-fdicon FDICON.B24] [-fdshap FDSHAP.DAT] [-fdfield FDFIELD.DAT] -out ASSET_PACK")
 		os.Exit(2)
 	}
 	if *fdotherPath != "" {
@@ -746,5 +839,12 @@ func main() {
 			os.Exit(1)
 		}
 		fmt.Printf("已匯出 FDSHAP.DAT：%d 張地圖的 indexed tile＋mask＋remap mask＋control\n", fdicon.SeparatedFDSHAPMapCount)
+	}
+	if *fdfieldPath != "" {
+		if err := exportFDFIELDSelector30(*fdfieldPath, *outputRoot); err != nil {
+			fmt.Fprintln(os.Stderr, "匯入失敗：", err)
+			os.Exit(1)
+		}
+		fmt.Println("已匯出 FDFIELD.DAT selector 30：地圖、控制列與 32 筆位置列")
 	}
 }

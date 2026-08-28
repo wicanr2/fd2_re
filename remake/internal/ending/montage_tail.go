@@ -105,11 +105,11 @@ const (
 	nativeMontageTailControlGroupOffset = 21
 )
 
-// MontageTailLoaderPaths identifies the source FDFIELD archive and separated
-// FDICON bank consumed by the record-construction portion of 0x1088d(0x1e).
+// MontageTailLoaderPaths identifies the separated FDFIELD selector document
+// and FDICON bank consumed by the record-construction portion of 0x1088d(0x1e).
 type MontageTailLoaderPaths struct {
-	FDFIELD    string
-	FDICONRoot string
+	FDFIELDRoot string
+	FDICONRoot  string
 }
 
 // MontageTailVisualPaths identifies the separated visual roots needed by the
@@ -182,21 +182,13 @@ func BuildMontageTailLoaderBaseline(
 			len(persistent), nativeMontageTailDeployRecordCount,
 		)
 	}
-	if paths.FDFIELD == "" || paths.FDICONRoot == "" {
+	if paths.FDFIELDRoot == "" || paths.FDICONRoot == "" {
 		return MontageTailLoaderBaseline{}, fmt.Errorf("ending: montage tail loader source input is unavailable")
 	}
 
-	fieldMap, err := fdother.ReadResource(paths.FDFIELD, nativeMontageTailFieldMapResource)
+	fieldMap, control, positions, err := loadSeparatedFDFIELDSelector30(paths.FDFIELDRoot)
 	if err != nil {
-		return MontageTailLoaderBaseline{}, fmt.Errorf("ending: montage tail FDFIELD#%d: %w", nativeMontageTailFieldMapResource, err)
-	}
-	control, err := fdother.ReadResource(paths.FDFIELD, nativeMontageTailControlResource)
-	if err != nil {
-		return MontageTailLoaderBaseline{}, fmt.Errorf("ending: montage tail FDFIELD#%d: %w", nativeMontageTailControlResource, err)
-	}
-	positions, err := fdother.ReadResource(paths.FDFIELD, nativeMontageTailPositionsResource)
-	if err != nil {
-		return MontageTailLoaderBaseline{}, fmt.Errorf("ending: montage tail FDFIELD#%d: %w", nativeMontageTailPositionsResource, err)
+		return MontageTailLoaderBaseline{}, fmt.Errorf("ending: montage tail separated FDFIELD selector 30: %w", err)
 	}
 	unitRows, err := validateMontageTailLoaderField(fieldMap, control, positions)
 	if err != nil {
