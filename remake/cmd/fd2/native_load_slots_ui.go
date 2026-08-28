@@ -29,20 +29,11 @@ func parseNativeLoadSlotShotState(value string) (int, bool) {
 }
 
 func loadNativeLoadSlotsUIAssets() (*nativeLoadSlotsUIAssets, error) {
-	fdotherPath := nativeFDOTHERPath()
-	if fdotherPath == "" {
-		return nil, errors.New("native load slots UI: FDOTHER.DAT unavailable")
-	}
-	resource13, err := fdother.ReadResource(fdotherPath, 13)
+	dialogueBox, err := fdother.LoadSeparatedLoadSlotsFrame(
+		separatedAssetPath("ui"),
+	)
 	if err != nil {
 		return nil, err
-	}
-	entries, err := fdother.ParseLMI1(resource13)
-	if err != nil || len(entries) <= 16 ||
-		entries[16].Width != 310 || entries[16].Height != 86 {
-		return nil, errors.New(
-			"native load slots UI: FDOTHER#13 entry16 is unavailable",
-		)
 	}
 	strings, err := fdtxt.LoadSeparatedResource(separatedAssetPath("text"), 0)
 	if err != nil {
@@ -58,7 +49,7 @@ func loadNativeLoadSlotsUIAssets() (*nativeLoadSlotsUIAssets, error) {
 	}
 	palette[0] = color.NRGBA{A: 0xff}
 	return &nativeLoadSlotsUIAssets{
-		dialogueBox: entries[16],
+		dialogueBox: dialogueBox,
 		strings:     strings,
 		font:        font,
 		palette:     palette,

@@ -75,3 +75,31 @@ Enter／Space 確認、Escape 取消。
 
 有效 native FD2.SAV 的成功 restore、剩餘 metadata、roster ABI、刪除與覆寫
 仍未閉合；空槽 E2 不可外推到這些行為。
+
+## 分離資產契約（DATA-READY／RUNTIME-E1，2026-08-29）
+
+本節只把上述已證實的固定圖像來源轉成正式執行期可讀的標準資產，不提升
+存檔 restore 的證據等級。
+
+- 解包資源：`FDOTHER_013.bin`，53,210 bytes，SHA-256
+  `c73fc9be62ded2ae2b74862fb9c43dcb0533570bd6a725d6a566843a85e6db4d`。
+- 標準目錄：`ui/fdother_013_load_slots/`。
+- `resource.json` 固定 `kind=fdother_lmi1_load_slots`、
+  `asset_id=ui/FDOTHER_013/load_slots`，並保留 `FDOTHER.DAT` 的大小、MD5、
+  SHA-256、resource 13 與 raw size。
+- 唯一允許的 entry 是 index 16，codec `opaque_high_run`、310×86，輸出
+  `entry_016/frame.png`。PNG 必須保持 8-bit indexed pixels；不得轉成 RGBA
+  後再用顏色近似還原 palette index。
+- 正式 `loadNativeLoadSlotsUIAssets` 只讀上述分離目錄；不得再以
+  `nativeFDOTHERPath()` 或 archive reader 作 fallback。metadata、entry、codec、
+  幾何、來源雜湊或 PNG mode 任一不符即失敗即關閉。
+- 驗收：分離 entry 與原始 `ParseLMI1OpaqueEntry(raw,16)` 的 width、height、
+  pixels 逐位元組相同；缺檔或不完整 pack 必須拒絕；既有空槽與有效槽像素
+  oracle 的 compositor 行為不變。
+
+正式 `fd2-asset-import` 已輸出上述 metadata 與 indexed PNG；
+`fdother.LoadSeparatedLoadSlotsFrame` 嚴格驗證來源、entry、codec、幾何與 PNG mode，
+`loadNativeLoadSlotsUIAssets` 已移除 `nativeFDOTHERPath()`／`ReadResource`。Docker
+回歸證實分離 pixels 與原始 entry16 逐位元組相同，缺 pack 會拒絕，且既有
+LOAD metadata／compositor 聚焦測試通過。故固定圖像資產達 `RUNTIME-E1`；原版
+一般玩家成功 restore、刪除與覆寫仍保持原來的證據限制。

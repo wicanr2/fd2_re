@@ -673,6 +673,9 @@ func exportCommandGrid(fdotherPath, outputRoot string) error {
 	if err := exportItemPanel(fdotherPath, outputRoot); err != nil {
 		return err
 	}
+	if err := exportLoadSlots(fdotherPath, outputRoot); err != nil {
+		return err
+	}
 	if err := exportNativeShops(fdotherPath, outputRoot); err != nil {
 		return err
 	}
@@ -1034,6 +1037,46 @@ func exportItemPanel(fdotherPath, outputRoot string) error {
 			Index: index, Codec: "four_mode_frame", Width: entry.Width, Height: entry.Height,
 			Frame: fmt.Sprintf("entry_%03d/frame.png", index), Mask: fmt.Sprintf("entry_%03d/mask.png", index),
 		})
+	}
+	return writeJSON(filepath.Join(directory, "resource.json"), document)
+}
+
+func exportLoadSlots(fdotherPath, outputRoot string) error {
+	raw, err := fdother.ReadResource(fdotherPath, 13)
+	if err != nil {
+		return err
+	}
+	if len(raw) != 53210 {
+		return fmt.Errorf("FDOTHER #13 raw size=%d, want 53210", len(raw))
+	}
+	entry, err := fdother.ParseLMI1OpaqueEntry(raw, 16)
+	if err != nil {
+		return err
+	}
+	if entry.Width != 310 || entry.Height != 86 {
+		return fmt.Errorf("FDOTHER #13 entry16=%dx%d, want 310x86", entry.Width, entry.Height)
+	}
+	directory := filepath.Join(outputRoot, "ui", "fdother_013_load_slots")
+	document := itemPanelDocument{
+		SchemaVersion: 1,
+		Kind:          "fdother_lmi1_load_slots",
+		AssetID:       "ui/FDOTHER_013/load_slots",
+		Status:        "decoded",
+		Evidence:      "confirmed",
+		Source: sourceID{
+			File: "FDOTHER.DAT", Resource: 13, Size: fdotherSize,
+			MD5: fdotherMD5, SHA256: fdotherSHA256, RawSize: len(raw),
+		},
+		Entries: []itemPanelEntryDocument{{
+			Index: 16, Codec: "opaque_high_run", Width: entry.Width,
+			Height: entry.Height, Frame: "entry_016/frame.png",
+		}},
+	}
+	if err := writeIndexedPNG(
+		filepath.Join(directory, document.Entries[0].Frame),
+		entry.Width, entry.Height, entry.Pixels,
+	); err != nil {
+		return err
 	}
 	return writeJSON(filepath.Join(directory, "resource.json"), document)
 }

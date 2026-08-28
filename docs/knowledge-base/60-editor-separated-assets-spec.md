@@ -199,6 +199,23 @@ schema inventory與prototype，不把任一建議寫進正式玩家預設。
 
 ## 五、往返與相容性
 
+### FDOTHER #13 讀檔欄位固定資產
+
+> 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）；主證據見
+> [`fd2_load_slots_ui_ida.txt`](../data/fd2_load_slots_ui_ida.txt)。
+
+`ui/fdother_013_load_slots/resource.json` 是讀檔四槽底框的 canonical 資產文件。
+它只包含已證實由 `0x30437` 消費的 entry 16：`opaque_high_run`、310×86、
+`entry_016/frame.png`。文件必須綁定 `FDOTHER.DAT` 的固定雜湊及 resource 13 的
+53,210-byte raw size；loader 只接受單一 entry、正確 codec／幾何與 indexed PNG。
+正式遊戲不得回退到 `.DAT`，任何不完整或不一致均失敗即關閉。這項契約只關閉
+圖像來源，不把 native save restore、刪除或覆寫提升為完成。
+
+現行 `fd2-asset-import`、`fdother.LoadSeparatedLoadSlotsFrame` 與正式
+`loadNativeLoadSlotsUIAssets` 已符合此契約；原始 entry16／分離 PNG 逐位元組測試、
+缺包拒絕及 LOAD 畫面聚焦回歸均通過。production 的存檔欄位底框不再讀
+`FDOTHER.DAT`。
+
 - 舊 JSON 只作 legacy import。匯入時產生穩定 ID 與 provenance，並輸出診斷；不在
   原檔上就地猜改。
 - 編輯器 canonical JSON 必須通過：decode → validate → encode → decode → validate，
