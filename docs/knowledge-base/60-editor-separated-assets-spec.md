@@ -191,7 +191,7 @@ RGBA 預覽不得取代 indexed frame＋mask。
 pixel、mask、placement、delay 與非零 destination blit 對照均一致；#57 的768 bytes逐 byte
 一致。正式 `ending_preview` 在只指定 `FD2_ASSET_PACK`、沒有提供 `FDOTHER.DAT` 給 tail
 loader 的 Xvfb 抽測通過，缺完整 separated roots 會在建立 player 前失敗即關閉。完整
-manifest 現為38,032筆：37,008 exported、1,005 intentionally raw、19 blocked。本切片達
+manifest 現為38,043筆：37,019 exported、1,005 intentionally raw、19 blocked。本切片達
 `DATA-READY`／`RUNTIME-E1`；`LoadMontageTailAssetsArchive` 只保留給 source oracle。
 
 ### 商店 FDOTHER #12／#29／#63 索引素材契約
@@ -234,10 +234,38 @@ archive source oracle，正式`loadNativeShopUIAssets`只接受分離包。
 標準素材。三個resource的背景、格件與5／1／7張success frames均與固定原檔逐indexed
 pixel及mask一致；正式`loadNativeShopUIAssets`一次預檢三種variant，已不呼叫archive
 decoder。建立尚未遷移的共用設施bundle後，把`FD2_ORIGINAL_FDOTHER`改指向不存在檔案，
-三種商店專屬資源仍能載入；正式選單與購買流程Xvfb抽測通過。完整manifest現為38,032筆：37,008
+三種商店專屬資源仍能載入；正式選單與購買流程Xvfb抽測通過。完整manifest現為38,043筆：37,019
 exported、1,005 intentionally raw、19 blocked。本切片達`DATA-READY`／`RUNTIME-E1`；
 `DecodeNativeShopAssets`只保留作來源oracle；共用設施bundle的其他FDOTHER consumer仍是
 獨立缺口，正常城鎮進出商店也不外推為原版E2。
+
+### 城鎮 FDOTHER #10／#11／#61／#62 索引素材契約
+
+> 規格狀態：**CONFORMED**
+> 證據邊界：`0x2cd46..0x2d05a`、現有三variant整幀E2及
+> `DecodeNativeTownAssetsArchive`；不重新推論設施高階語意。
+
+固定原檔的#11／#61／#62是三張320×200 caller-selected背景；#10是由opaque high-run
+codec解出的62×26目前選項標籤。FDICON sprites 0／1／2及其`0,1,2,1` pulse已由既有
+分離bank閉合，不重複輸出。本切片只新增三個`surfaces/FDOTHER_NNN/`標準P-mode背景
+與各自L-mode mask，以及`ui/fdother_010_town_label/`的P-mode opaque label和metadata。
+
+匯入器須先驗證完整FDOTHER身份，metadata保留resource、raw size、codec、geometry與
+已證實證據等級；manifest保存逐檔雜湊。strict loader必須一次預檢三背景、label與既有
+FDICON bank，驗證來源身份、PNG mode、二值mask及固定geometry；任一缺件整批失敗，
+不得回退archive。正式`loadNativeTownUIAssets`只接受分離pack；archive decoder只供oracle。
+
+驗收須逐indexed pixel／mask對照固定原檔，並在`FDOTHER.DAT`不可讀時抽測三variant、
+selection pulse及城鎮進設施再返回的正式路徑。完成只提升本素材`DATA-READY`／
+`RUNTIME-E1`；既有route-patched視覺E2證據維持原範圍，不外推未修改長程玩家E2。
+
+2026-08-28 已輸出三背景的3張indexed PNG、3張二值mask、3份surface metadata，及
+#10 opaque label的1張indexed PNG與1份metadata，共11筆。固定原檔逐indexed pixel／
+mask、三variant×六selection×四pulse共216組完整composite均一致；正式town loader在
+`FD2_ORIGINAL_FDOTHER`指向不存在檔案時仍可預檢。manifest現為38,043筆：37,019
+exported、1,005 intentionally raw、19 blocked。本切片達`DATA-READY`／`RUNTIME-E1`。
+variant2既有contact sheet另重新裁切驗證五組raw RGB AE=0，舊不明語意MD5保留為legacy
+欄位，新的逐像素MD5／SHA-256已寫回證據JSON。
 
 ### 第三個 runtime 遷移切片：FIGANI 索引動畫
 
@@ -639,7 +667,7 @@ mask 與 8,256 張 remap mask，共 24,801 個標準檔。全 33 張銀行及 co
 原檔逐層一致；map0／map23／map32 的正式戰場 consumer、以及第 23 戰重載均在測試
 目錄沒有 `FDSHAP.DAT` 時通過。正式產品程式的 FDSHAP archive caller 歸零，僅離線
 匯入器與名稱明確的 source oracle adapter 保留原檔 reader。本切片達 `DATA-READY` 與
-`RUNTIME-E1`；現行38,032筆素材清冊中37,008 exported、1,005 intentionally raw、19 blocked。
+`RUNTIME-E1`；現行38,043筆素材清冊中37,019 exported、1,005 intentionally raw、19 blocked。
 
 ### 終局 selector `0x1e` 的 FDFIELD 部署契約
 

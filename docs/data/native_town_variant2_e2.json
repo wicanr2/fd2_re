@@ -36,40 +36,67 @@
     "hook": "FD2_SHOT_TOWN_STATE=selection,pulse",
     "raw_frame": "640x400 Ebiten/Xvfb screenshot"
   },
+  "pixel_reverification": {
+    "date": "2026-08-28",
+    "source_figure": "../figures/town-variant2-five-selections-original-vs-remake.png",
+    "layout": "1600x400；五欄各320x400，上半320x200為原版、下半320x200為重製",
+    "method": "Pillow RGB crop；逐byte absolute error、MD5與SHA-256",
+    "result": "五欄上下raw RGB逐byte相同；舊original_md5/remake_md5語意不明，保留為legacy欄位但不作像素證據"
+  },
   "selections": [
     {
       "selection": 0,
       "pulse": 0,
-      "original_md5": "f3e63a76362b09e528f3d7ff48fe8444",
-      "remake_md5": "c3b8ddaa8fa21f67f4aaf31cdfee94ac",
+      "legacy_original_md5": "f3e63a76362b09e528f3d7ff48fe8444",
+      "legacy_remake_md5": "c3b8ddaa8fa21f67f4aaf31cdfee94ac",
+      "original_raw_rgb_md5": "954d650b5d6795f929098dc3a18c394c",
+      "remake_raw_rgb_md5": "954d650b5d6795f929098dc3a18c394c",
+      "original_raw_rgb_sha256": "2bab41a63d8eca39379b31f32df476b05535dc168198f4595372730d8d9b39f6",
+      "remake_raw_rgb_sha256": "2bab41a63d8eca39379b31f32df476b05535dc168198f4595372730d8d9b39f6",
       "absolute_error": 0
     },
     {
       "selection": 1,
       "pulse": 1,
-      "original_md5": "039d0cecee6e553b1dd51c885c699efe",
-      "remake_md5": "57c1e0f2245823d6da897391683ec815",
+      "legacy_original_md5": "039d0cecee6e553b1dd51c885c699efe",
+      "legacy_remake_md5": "57c1e0f2245823d6da897391683ec815",
+      "original_raw_rgb_md5": "50f5362498d144792aa7ff344d67e9c5",
+      "remake_raw_rgb_md5": "50f5362498d144792aa7ff344d67e9c5",
+      "original_raw_rgb_sha256": "8aecbe2f1c1fc17a6986545e1b38b68aef6618afd2f5c7536a61e269e7aa7d26",
+      "remake_raw_rgb_sha256": "8aecbe2f1c1fc17a6986545e1b38b68aef6618afd2f5c7536a61e269e7aa7d26",
       "absolute_error": 0
     },
     {
       "selection": 2,
       "pulse": 2,
-      "original_md5": "4629eb862d7e289c29039703ad5582f0",
-      "remake_md5": "4b1ada2eaa242f04bc45ec829648665d",
+      "legacy_original_md5": "4629eb862d7e289c29039703ad5582f0",
+      "legacy_remake_md5": "4b1ada2eaa242f04bc45ec829648665d",
+      "original_raw_rgb_md5": "73580be70a9ddae3806b86d65c265b39",
+      "remake_raw_rgb_md5": "73580be70a9ddae3806b86d65c265b39",
+      "original_raw_rgb_sha256": "2aaecd2f5d1bf1c0f07bcb82d3d098155fae413c24c583836a50ac5f283ef7d8",
+      "remake_raw_rgb_sha256": "2aaecd2f5d1bf1c0f07bcb82d3d098155fae413c24c583836a50ac5f283ef7d8",
       "absolute_error": 0
     },
     {
       "selection": 3,
       "pulse": 1,
-      "original_md5": "f0c3a06672511f4bfd65b65dacc9cde5",
-      "remake_md5": "1d130e84e43ea3cf4cf0050c7139f511",
+      "legacy_original_md5": "f0c3a06672511f4bfd65b65dacc9cde5",
+      "legacy_remake_md5": "1d130e84e43ea3cf4cf0050c7139f511",
+      "original_raw_rgb_md5": "9b83e9f8f038925c4d88456ae5e55251",
+      "remake_raw_rgb_md5": "9b83e9f8f038925c4d88456ae5e55251",
+      "original_raw_rgb_sha256": "6203b7a9e7619ded49703a85feaa1dd558d6f1a80ff50bf22e093a6ee50910d4",
+      "remake_raw_rgb_sha256": "6203b7a9e7619ded49703a85feaa1dd558d6f1a80ff50bf22e093a6ee50910d4",
       "absolute_error": 0
     },
     {
       "selection": 4,
       "pulse": 0,
-      "original_md5": "680604fcb32690733c06e76ee2c95ec2",
-      "remake_md5": "c96e3250bd2051a45e62a50dde2b2a41",
+      "legacy_original_md5": "680604fcb32690733c06e76ee2c95ec2",
+      "legacy_remake_md5": "c96e3250bd2051a45e62a50dde2b2a41",
+      "original_raw_rgb_md5": "7cb8780a83c28bda06abf8252bba552e",
+      "remake_raw_rgb_md5": "7cb8780a83c28bda06abf8252bba552e",
+      "original_raw_rgb_sha256": "f044b6f3ec062e987e7ce999200152faf2d0b4700a43f1c021746eafe27ec9df",
+      "remake_raw_rgb_sha256": "f044b6f3ec062e987e7ce999200152faf2d0b4700a43f1c021746eafe27ec9df",
       "absolute_error": 0
     }
   ],

@@ -1,7 +1,10 @@
 package campaign
 
 import (
+	"encoding/json"
 	"errors"
+	"fmt"
+	"os"
 	"path/filepath"
 
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
@@ -59,17 +62,73 @@ func DecodeNativeTownAssetsArchive(
 	return decodeNativeTownAssets(fdotherPath, bank)
 }
 
-// LoadNativeTownAssets uses the separated FDICON bank. The archive adapter
-// above remains available only to source-oracle tools and equivalence tests.
-func LoadNativeTownAssets(fdotherPath, fdiconRoot string) (*NativeTownAssets, error) {
-	if fdotherPath == "" || fdiconRoot == "" {
+type separatedTownLabelDocument struct {
+	SchemaVersion int    `json:"schema_version"`
+	Kind          string `json:"kind"`
+	AssetID       string `json:"asset_id"`
+	Status        string `json:"status"`
+	Evidence      string `json:"evidence"`
+	Codec         string `json:"codec"`
+	Width         int    `json:"width"`
+	Height        int    `json:"height"`
+	Frame         string `json:"frame"`
+	Source        struct {
+		File     string `json:"file"`
+		Resource int    `json:"resource"`
+		Size     int    `json:"size"`
+		MD5      string `json:"md5"`
+		SHA256   string `json:"sha256"`
+		RawSize  int    `json:"raw_size"`
+	} `json:"source"`
+}
+
+// LoadNativeTownAssets uses only separated FDOTHER surfaces/label and the
+// separated FDICON bank. The archive adapter above remains source-oracle only.
+func LoadNativeTownAssets(packRoot string) (*NativeTownAssets, error) {
+	if packRoot == "" {
 		return nil, errors.New("campaign: native town asset path is empty")
 	}
-	bank, err := fdicon.LoadSeparatedBank(fdiconRoot)
+	bank, err := fdicon.LoadSeparatedBank(filepath.Join(packRoot, "sprites", "fdicon"))
 	if err != nil {
 		return nil, err
 	}
-	return decodeNativeTownAssets(fdotherPath, bank)
+	out := &NativeTownAssets{}
+	for variant, resource := range nativeTownBackgroundResources {
+		frame, err := fdother.LoadSeparatedSingleFrame(filepath.Join(packRoot, "surfaces"), "FDOTHER.DAT", resource)
+		if err != nil {
+			return nil, fmt.Errorf("campaign: separated town background %d: %w", resource, err)
+		}
+		if frame.Width != NativeTownWidth || frame.Height != NativeTownHeight {
+			return nil, fmt.Errorf("campaign: separated town background %d is not 320x200", resource)
+		}
+		background := make([]byte, NativeTownWidth*NativeTownHeight)
+		if err := frame.Blit(background, NativeTownWidth, -1); err != nil {
+			return nil, err
+		}
+		out.Backgrounds[variant] = background
+	}
+	dir := filepath.Join(packRoot, "ui", "fdother_010_town_label")
+	raw, err := os.ReadFile(filepath.Join(dir, "resource.json"))
+	if err != nil {
+		return nil, err
+	}
+	var doc separatedTownLabelDocument
+	if err := json.Unmarshal(raw, &doc); err != nil {
+		return nil, err
+	}
+	if doc.SchemaVersion != 1 || doc.Kind != "native_town_label" || doc.AssetID != "ui/FDOTHER_010/town_label" || doc.Status != "decoded" || doc.Evidence != "confirmed" || doc.Codec != "opaque_high_run" || doc.Width != 62 || doc.Height != 26 || doc.Frame != "frame.png" || doc.Source.File != "FDOTHER.DAT" || doc.Source.Resource != 10 || doc.Source.Size != separatedFDOTHERSize || doc.Source.MD5 != separatedFDOTHERMD5 || doc.Source.SHA256 != separatedFDOTHERSHA256 || doc.Source.RawSize <= 4 {
+		return nil, errors.New("campaign: separated town label contract mismatch")
+	}
+	pixels, err := readSeparatedIndexed(filepath.Join(dir, doc.Frame), doc.Width, doc.Height)
+	if err != nil {
+		return nil, err
+	}
+	out.Label = fdother.LMI1Entry{Width: doc.Width, Height: doc.Height, Pixels: pixels}
+	if bank == nil || len(bank.Sprites) != fdicon.SeparatedSpriteCount {
+		return nil, errors.New("campaign: native town FDICON pulse is incomplete")
+	}
+	copy(out.Pulse[:], bank.Sprites[:len(out.Pulse)])
+	return out, nil
 }
 
 func decodeNativeTownAssets(fdotherPath string, bank *fdicon.Bank) (*NativeTownAssets, error) {

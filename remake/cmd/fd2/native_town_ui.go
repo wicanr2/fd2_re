@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"strconv"
 	"strings"
 
@@ -88,13 +87,7 @@ func (g *Game) revealNativeTownSecret(scanCode int) bool {
 }
 
 func loadNativeTownUIAssets() (*nativeTownUIAssets, error) {
-	fdotherPath := nativeFDOTHERPath()
-	if fdotherPath == "" {
-		return nil, errors.New("native town UI: FDOTHER.DAT unavailable")
-	}
-	scene, err := campaign.LoadNativeTownAssets(
-		fdotherPath, separatedAssetPath("sprites/fdicon"),
-	)
+	scene, err := campaign.LoadNativeTownAssets(separatedAssetPath(""))
 	if err != nil {
 		return nil, err
 	}

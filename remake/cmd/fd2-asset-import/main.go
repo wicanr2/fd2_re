@@ -154,6 +154,19 @@ type shopResourceDocument struct {
 	Success       shopSuccessDocument `json:"success"`
 }
 
+type townLabelDocument struct {
+	SchemaVersion int      `json:"schema_version"`
+	Kind          string   `json:"kind"`
+	AssetID       string   `json:"asset_id"`
+	Status        string   `json:"status"`
+	Evidence      string   `json:"evidence"`
+	Codec         string   `json:"codec"`
+	Width         int      `json:"width"`
+	Height        int      `json:"height"`
+	Frame         string   `json:"frame"`
+	Source        sourceID `json:"source"`
+}
+
 type fdiconSpriteDocument struct {
 	Index     int    `json:"index"`
 	Width     int    `json:"width"`
@@ -534,7 +547,37 @@ func exportCommandGrid(fdotherPath, outputRoot string) error {
 	if err := exportNativeShops(fdotherPath, outputRoot); err != nil {
 		return err
 	}
+	if err := exportNativeTown(fdotherPath, outputRoot); err != nil {
+		return err
+	}
 	return exportEndingFDOTHER(fdotherPath, outputRoot)
+}
+
+func exportNativeTown(fdotherPath, outputRoot string) error {
+	for _, resource := range []int{11, 61, 62} {
+		if err := exportSelectedSingleFrame(fdotherPath, outputRoot, fdotherArchive, resource); err != nil {
+			return fmt.Errorf("FDOTHER #%d town background: %w", resource, err)
+		}
+	}
+	raw, err := fdother.ReadResource(fdotherPath, 10)
+	if err != nil {
+		return err
+	}
+	label, err := fdother.ParseOpaqueRunCell(raw)
+	if err != nil || label.Width != 62 || label.Height != 26 {
+		return errors.New("FDOTHER #10 town label is not 62x26 opaque cell")
+	}
+	directory := filepath.Join(outputRoot, "ui", "fdother_010_town_label")
+	if err := writeIndexedPNG(filepath.Join(directory, "frame.png"), label.Width, label.Height, label.Pixels); err != nil {
+		return err
+	}
+	return writeJSON(filepath.Join(directory, "resource.json"), townLabelDocument{
+		SchemaVersion: 1, Kind: "native_town_label", AssetID: "ui/FDOTHER_010/town_label",
+		Status: "decoded", Evidence: "confirmed", Codec: "opaque_high_run",
+		Width: label.Width, Height: label.Height, Frame: "frame.png",
+		Source: sourceID{File: fdotherArchive.file, Resource: 10, Size: fdotherArchive.size,
+			MD5: fdotherArchive.md5, SHA256: fdotherArchive.sha256, RawSize: len(raw)},
+	})
 }
 
 func exportNativeShops(fdotherPath, outputRoot string) error {

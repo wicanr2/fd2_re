@@ -13,9 +13,9 @@ import (
 )
 
 const (
-	shopSourceSize   = 3382481
-	shopSourceMD5    = "22f56e5027edc7c766ad34ca4e5aca93"
-	shopSourceSHA256 = "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
+	separatedFDOTHERSize   = 3382481
+	separatedFDOTHERMD5    = "22f56e5027edc7c766ad34ca4e5aca93"
+	separatedFDOTHERSHA256 = "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
 )
 
 type separatedShopEntry struct {
@@ -58,7 +58,7 @@ type separatedShopDocument struct {
 	Success separatedShopSuccess `json:"success"`
 }
 
-func readShopIndexed(path string, width, height int) ([]byte, error) {
+func readSeparatedIndexed(path string, width, height int) ([]byte, error) {
 	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
@@ -75,7 +75,7 @@ func readShopIndexed(path string, width, height int) ([]byte, error) {
 	return append([]byte(nil), p.Pix...), nil
 }
 
-func readShopMask(path string, width, height int) ([]byte, error) {
+func readSeparatedBinaryMask(path string, width, height int) ([]byte, error) {
 	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
@@ -116,7 +116,7 @@ func LoadSeparatedNativeShopAssets(packRoot string, resource int) (*NativeShopAs
 	}
 	wantRawCount := map[int]int{12: 28, 29: 24, 63: 30}[resource]
 	wantTypedCount := map[int]int{12: 23, 29: 19, 63: 25}[resource]
-	if doc.SchemaVersion != 1 || doc.Kind != "native_shop_indexed_assets" || doc.AssetID != fmt.Sprintf("shop/FDOTHER_%03d", resource) || doc.Status != "decoded" || doc.Evidence != "confirmed" || doc.ContainerKind != wantContainer || doc.EntryCount != wantRawCount || len(doc.Entries) != wantTypedCount || doc.Source.File != "FDOTHER.DAT" || doc.Source.Resource != resource || doc.Source.Size != shopSourceSize || doc.Source.MD5 != shopSourceMD5 || doc.Source.SHA256 != shopSourceSHA256 || doc.Source.RawSize <= 0 {
+	if doc.SchemaVersion != 1 || doc.Kind != "native_shop_indexed_assets" || doc.AssetID != fmt.Sprintf("shop/FDOTHER_%03d", resource) || doc.Status != "decoded" || doc.Evidence != "confirmed" || doc.ContainerKind != wantContainer || doc.EntryCount != wantRawCount || len(doc.Entries) != wantTypedCount || doc.Source.File != "FDOTHER.DAT" || doc.Source.Resource != resource || doc.Source.Size != separatedFDOTHERSize || doc.Source.MD5 != separatedFDOTHERMD5 || doc.Source.SHA256 != separatedFDOTHERSHA256 || doc.Source.RawSize <= 0 {
 		return nil, errors.New("campaign: separated shop metadata contract mismatch")
 	}
 	entries := make(map[int]separatedShopEntry, len(doc.Entries))
@@ -132,7 +132,7 @@ func LoadSeparatedNativeShopAssets(packRoot string, resource int) (*NativeShopAs
 		if !ok || e.Role != role || e.Codec != codec || e.Width <= 0 || e.Height <= 0 || e.Frame != wantFrame {
 			return nil, e, errors.New("campaign: separated shop entry contract mismatch")
 		}
-		pixels, err := readShopIndexed(filepath.Join(dir, e.Frame), e.Width, e.Height)
+		pixels, err := readSeparatedIndexed(filepath.Join(dir, e.Frame), e.Width, e.Height)
 		if err != nil {
 			return nil, e, err
 		}
@@ -140,7 +140,7 @@ func LoadSeparatedNativeShopAssets(packRoot string, resource int) (*NativeShopAs
 			if e.Mask != filepath.ToSlash(filepath.Join(fmt.Sprintf("entry_%03d", index), "mask.png")) {
 				return nil, e, errors.New("campaign: separated shop mask path mismatch")
 			}
-			m, err := readShopMask(filepath.Join(dir, e.Mask), e.Width, e.Height)
+			m, err := readSeparatedBinaryMask(filepath.Join(dir, e.Mask), e.Width, e.Height)
 			if err != nil {
 				return nil, e, err
 			}
@@ -213,11 +213,11 @@ func LoadSeparatedNativeShopAssets(packRoot string, resource int) (*NativeShopAs
 		if !ok || e != se || e.Role != "success_frame" || e.Codec != "fd2_4e63d_single_frame" || e.Width <= 0 || e.Height <= 0 || e.Frame != wantFrame || e.Mask != wantMask {
 			return nil, errors.New("campaign: separated shop success entry mismatch")
 		}
-		p, err := readShopIndexed(filepath.Join(dir, e.Frame), e.Width, e.Height)
+		p, err := readSeparatedIndexed(filepath.Join(dir, e.Frame), e.Width, e.Height)
 		if err != nil {
 			return nil, err
 		}
-		m, err := readShopMask(filepath.Join(dir, e.Mask), e.Width, e.Height)
+		m, err := readSeparatedBinaryMask(filepath.Join(dir, e.Mask), e.Width, e.Height)
 		if err != nil {
 			return nil, err
 		}

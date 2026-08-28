@@ -8274,3 +8274,19 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   商店專屬資源`DATA-READY`／`RUNTIME-E1`，不宣稱整個設施UI已移除FDOTHER或原版E2。
 - 完整manifest為38,032筆：37,008 exported、1,005 intentionally raw、19 blocked；
   validator與Markdown連結仍須在提交前整批重跑。下一個玩家價值切片是城鎮背景／標籤。
+
+## 2026-08-28 城鎮 FDOTHER #10／#11／#61／#62 分離素材閉合
+
+- #11／#61／#62三張320×200背景已輸出indexed PNG＋binary mask＋surface metadata；
+  #10的62×26 opaque high-run label另輸出indexed PNG＋metadata，保留index 0覆蓋目的像素，
+  不誤套透明blit。FDICON pulse仍沿用既有分離bank，未重複輸出。
+- `LoadNativeTownAssets(packRoot)`一次預檢三背景、label與FDICON；正式
+  `loadNativeTownUIAssets`不再取得`nativeFDOTHERPath()`。固定原檔與分離loader的三背景、
+  label，以及三variant×六selection×四pulse共216組完整composite逐indexed pixel一致；
+  缺FDOTHER archive時正式town asset preflight仍通過。
+- `native_town_variant2_e2.json`舊`original_md5/remake_md5`語意不明且彼此不同，但保留的
+  1600×400 contact sheet可重驗。按五欄各320×400裁切，上半原版／下半重製的五組raw RGB
+  AE均為0，MD5與SHA-256逐組相同；舊值保留為legacy欄位，新raw RGB雜湊與重驗方法已寫回，
+  因此不降級既有modified-LOAD E2，也不外推未修改長程玩家路徑。
+- manifest現為38,043筆：37,019 exported、1,005 intentionally raw、19 blocked。本切片達
+  `DATA-READY`／`RUNTIME-E1`；下一個正式archive consumer優先處理title。
