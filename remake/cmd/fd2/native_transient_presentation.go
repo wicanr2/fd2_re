@@ -2,11 +2,9 @@ package main
 
 import (
 	"errors"
-	"path/filepath"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
-	"github.com/wicanr2/fd2_re/remake/internal/dato"
 )
 
 // beginNativeTransientPhases preflights every indexed expiry frame before it
@@ -30,10 +28,6 @@ func (g *Game) beginNativeTransientPhases(selectors []byte, then func()) error {
 	if g.nativeClassUI == nil || len(g.nativeMapVGA) != 320*200 {
 		return errors.New("native transient presentation: indexed source assets are unavailable")
 	}
-	datoPath := nativeDATOPath()
-	if datoPath == "" {
-		return errors.New("native transient presentation: DATO.DAT is unavailable")
-	}
 	source := append([]byte(nil), g.nativeMapVGA...)
 	frames := make([][]byte, 0, len(expired)*11)
 	for _, event := range expired {
@@ -41,7 +35,7 @@ func (g *Game) beginNativeTransientPhases(selectors []byte, then func()) error {
 		if err != nil {
 			return err
 		}
-		portraits, err := dato.DecodeResource(filepath.Clean(datoPath), unit.BattleFig)
+		portraits, err := loadNativeSeparatedPortrait(unit.BattleFig)
 		if err != nil || len(portraits) == 0 {
 			return errors.New("native transient presentation: DATO portrait is unavailable")
 		}

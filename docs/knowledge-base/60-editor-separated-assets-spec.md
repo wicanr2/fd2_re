@@ -171,9 +171,10 @@ blocked、1,005 intentionally_raw。正式 `loadNativeUIPalette`／
 136組／544張 DATO PNG 已全數重生為 P-mode indexed PNG。resource 26的四幀經
 archive decoder 與 PNG loader 比較，幾何及全部6,400個 indexed pixels／幀一致；
 story consumer 在 `FD2_ORIGINAL_DATO` 指向不存在檔案時仍可載入，分離 pack 缺失
-時則拒絕，不回退原版 archive。此項只關閉正式故事對話 consumer；教會、整備、
-商店、暫態狀態、group march與終局仍有各自 DATO caller，後續必須逐一改接同一
-loader，不可由共用素材已存在就冒稱 runtime 全部完成。
+時則拒絕，不回退原版 archive。同一 loader 已再接入暫態狀態提示、group march、
+整備、教會轉職主介面與商店，並以真實 pack 跑過相關既有 consumer 測試。production
+直接 `dato.DecodeResource` 已由10處降至4處；物品面板、終局 preview與 montage仍待
+遷移，不可由共用素材已存在就冒稱 runtime 全部完成。
 
 ## 七、完成定義
 

@@ -104,7 +104,7 @@ func loadNativeClassUIAssets() (*nativeClassUIAssets, error) {
 			return nil, err
 		}
 	}
-	portraits, err := dato.DecodeResource(filepath.Join(base, "DATO.DAT"), 131)
+	portraits, err := loadNativeSeparatedPortrait(131)
 	if err != nil || len(portraits) == 0 {
 		if err != nil {
 			return nil, err

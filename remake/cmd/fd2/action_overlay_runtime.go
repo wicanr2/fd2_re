@@ -1,12 +1,9 @@
 package main
 
 import (
-	"path/filepath"
-
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
-	"github.com/wicanr2/fd2_re/remake/internal/dato"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
@@ -457,9 +454,7 @@ func (g *Game) beginNativeSystemGroupMarch() bool {
 	if fdotherPath == "" {
 		return false
 	}
-	portraits, err := dato.DecodeResource(
-		filepath.Join(filepath.Dir(fdotherPath), "DATO.DAT"), g.st.Units[0].BattleFig,
-	)
+	portraits, err := loadNativeSeparatedPortrait(g.st.Units[0].BattleFig)
 	if err != nil || len(portraits) == 0 {
 		return false
 	}

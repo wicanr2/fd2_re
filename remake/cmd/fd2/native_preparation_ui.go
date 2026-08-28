@@ -79,7 +79,7 @@ func loadNativePreparationUIAssets() (*nativePreparationUIAssets, error) {
 			return nil, err
 		}
 	}
-	portraits, err := dato.DecodeResource(filepath.Join(filepath.Dir(fdotherPath), "DATO.DAT"), 0x4b)
+	portraits, err := loadNativeSeparatedPortrait(0x4b)
 	if err != nil || len(portraits) == 0 {
 		if err != nil {
 			return nil, err

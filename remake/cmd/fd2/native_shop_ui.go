@@ -1063,9 +1063,7 @@ func loadNativeShopUIAssets(
 		out.shops[variant] = assets
 	}
 	for variant, portraitID := range map[int]int{1: 0x80, 3: 0x82, 5: 0x84} {
-		frames, err := dato.DecodeResource(
-			filepath.Join(base, "DATO.DAT"), portraitID,
-		)
+		frames, err := loadNativeSeparatedPortrait(portraitID)
 		if err != nil || len(frames) == 0 {
 			if err != nil {
 				return nil, err

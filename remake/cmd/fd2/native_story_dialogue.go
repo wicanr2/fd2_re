@@ -67,7 +67,7 @@ func (g *Game) prepareNativeDialogueFrames() error {
 		return errors.New("native story dialogue: indexed map/font/frame assets are unavailable")
 	}
 	dl := g.dialog[0]
-	portraits, err := loadNativeStoryPortrait(dl.Speaker)
+	portraits, err := loadNativeSeparatedPortrait(dl.Speaker)
 	if err != nil || len(portraits) < 4 {
 		return fmt.Errorf("native story dialogue: speaker portrait %d is unavailable (frames=%d): %v", dl.Speaker, len(portraits), err)
 	}
@@ -157,7 +157,7 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	return nil
 }
 
-func loadNativeStoryPortrait(speaker int) ([]dato.Frame, error) {
+func loadNativeSeparatedPortrait(speaker int) ([]dato.Frame, error) {
 	return dato.LoadSeparatedResource(separatedAssetPath("portraits"), speaker)
 }
 

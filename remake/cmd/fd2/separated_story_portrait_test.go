@@ -13,7 +13,7 @@ func TestNativeStoryPortraitLoadsWithoutOriginalArchive(t *testing.T) {
 	}
 	t.Setenv("FD2_ASSET_PACK", pack)
 	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(t.TempDir(), "must-not-be-read.dat"))
-	frames, err := loadNativeStoryPortrait(26)
+	frames, err := loadNativeSeparatedPortrait(26)
 	if err != nil || len(frames) != 4 {
 		t.Fatalf("frames=%d err=%v", len(frames), err)
 	}
@@ -27,7 +27,7 @@ func TestNativeStoryPortraitLoadsWithoutOriginalArchive(t *testing.T) {
 func TestNativeStoryPortraitFailsClosedWithoutSeparatedPack(t *testing.T) {
 	t.Setenv("FD2_ASSET_PACK", t.TempDir())
 	t.Setenv("FD2_ORIGINAL_DATO", filepath.Clean("../../../org_game/炎龍騎士團/FLAME2/DATO.DAT"))
-	if _, err := loadNativeStoryPortrait(26); err == nil {
+	if _, err := loadNativeSeparatedPortrait(26); err == nil {
 		t.Fatal("story portrait fell back to original DATO.DAT")
 	}
 }
