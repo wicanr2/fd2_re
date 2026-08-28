@@ -296,6 +296,24 @@ dialogue raw entries0／18／19；如此同一 separated loader 能提供教會�
 位元組比較、缺包拒絕與正式指令格／轉職／教會／商店聚焦回歸均通過。
 `native_class_ui` 不再取得 FDOTHER archive path。
 
+#### 整備 #1 range overlay 與 #5 panel 補全契約
+
+> 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）；主證據見
+> [`fd2_preparation_assets_evidence.txt`](../data/fd2_preparation_assets_evidence.txt)。
+
+`sprites/fdother_001_range_overlay/bank.json` 保存 FDOTHER #1 的20個24×24 descriptors，
+每筆使用 indexed frame、binary source mask與binary remap mask；穩定 identity是
+`sprites/FDOTHER_001/range_overlay`，同時供整備游標與戰場 range overlay使用。
+既有 `ui/FDOTHER_005/item_panel` 則加入 opaque entries20／21與 four-mode entry137，
+並直接共用已分離的兩組數字31..40／42..51。正式整備 loader 只接受這兩包與完整
+FDICON separated bank，任一不完整即失敗即關閉，不得回退 archive。
+
+實作結果：importer 已輸出20筆 range overlay 的 indexed frame／source
+mask／remap mask 與固定 provenance；`ui/FDOTHER_005/item_panel` 亦補齊
+entries20／21／137。正式 `loadNativePreparationUIAssets` 現在只讀取 separated
+pack，不再取得 `FDOTHER.DAT` 路徑。逐 indexed pixel／mask 原版對照、
+缺包拒絕、`internal/fdother` 回歸及有界 Xvfb 整備界面聚焦測試均通過。
+
 #### 戰鬥共用 FDOTHER #0 DAC owner 遷移契約
 
 > 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）

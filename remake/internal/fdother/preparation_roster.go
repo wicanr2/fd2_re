@@ -32,14 +32,50 @@ type NativePreparationAssets struct {
 	Cursor, Units     *fdicon.Bank
 }
 
-// LoadNativePreparationAssets loads the FDICON bank from the separated pack;
-// FDOTHER entries remain caller-proven archive inputs in this migration step.
-func LoadNativePreparationAssets(fdotherPath, fdiconRoot string) (*NativePreparationAssets, error) {
-	units, err := fdicon.LoadSeparatedBank(fdiconRoot)
+// LoadNativePreparationAssets loads every runtime asset from the separated
+// pack. Archive decoding remains confined to the source-oracle adapter below.
+func LoadNativePreparationAssets(assetRoot string) (*NativePreparationAssets, error) {
+	units, err := fdicon.LoadSeparatedBank(filepath.Join(assetRoot, "sprites", "fdicon"))
 	if err != nil {
 		return nil, err
 	}
-	return decodeNativePreparationAssets(fdotherPath, units)
+	shared, err := LoadSeparatedItemPanelEntries(filepath.Join(assetRoot, "ui"))
+	if err != nil {
+		return nil, err
+	}
+	cursor, err := LoadSeparatedRangeOverlayBank(
+		filepath.Join(assetRoot, "sprites", "fdother_001_range_overlay"),
+	)
+	if err != nil {
+		return nil, err
+	}
+	upperRight, ok20 := shared.Opaque[20]
+	lower, ok21 := shared.Opaque[21]
+	upperLeft, ok137 := shared.Frames[137]
+	if !ok20 || !ok21 || !ok137 {
+		return nil, errors.New("fdother: separated preparation panels are incomplete")
+	}
+	assets := &NativePreparationAssets{
+		UpperRight: upperRight, Lower: lower, UpperLeft: upperLeft,
+		Cursor: cursor, Units: units,
+	}
+	for digit := 0; digit < 10; digit++ {
+		var ok bool
+		assets.QuotaDigits[digit], ok = shared.Frames[31+digit]
+		if !ok {
+			return nil, errors.New("fdother: separated preparation quota digits are incomplete")
+		}
+		assets.RemainingDigits[digit], ok = shared.Frames[42+digit]
+		if !ok {
+			return nil, errors.New("fdother: separated preparation remaining digits are incomplete")
+		}
+	}
+	if assets.UpperRight.Width != 223 || assets.UpperRight.Height != 86 ||
+		assets.Lower.Width != 310 || assets.Lower.Height != 99 ||
+		assets.UpperLeft.Width != 86 || assets.UpperLeft.Height != 86 {
+		return nil, errors.New("fdother: separated preparation geometry differs from native entries")
+	}
+	return assets, nil
 }
 
 // DecodeNativePreparationAssetsArchive is retained for source-oracle tools and

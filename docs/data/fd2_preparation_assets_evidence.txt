@@ -1,0 +1,51 @@
+# 整備名冊 FDOTHER #1／#5 固定資產：canonical 證據與分離契約
+
+## 固定來源與工具
+
+- `FD2.EXE`：357,074 bytes；MD5
+  `b97caf2239a27a896069d03549d96e1e`；SHA-256
+  `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- `FDOTHER.DAT`：3,382,481 bytes；MD5
+  `22f56e5027edc7c766ad34ca4e5aca93`；SHA-256
+  `a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`。
+- `FDOTHER_001.bin`：2,235 bytes；SHA-256
+  `0ba9a169a41cadf32020b26e216ded6d8dfaebd4b22f65b2addda8b9679e34ff`。
+- `FDOTHER_005.bin`：44,181 bytes；SHA-256
+  `561eb8ca579b13a6f2bc1f36436ad3af7d8d0bf77eab25a4ab6411142a7eb118`。
+- 原始控制流由合法 IDA Pro 9.4 Docker 證據閉合；地址是 IDA linear address。
+  主控制流與 fixed-record 證據見 `ida/fd2_preparation_fixed_record_ida.txt`；
+  `0x318AD`／`0x31E80` 的畫面與名冊消費端已由現行原始資產 regression 交叉驗證。
+
+## 已證實 consumer
+
+- **已證實**：`0x318AD` 使用 FDOTHER #5 opaque entries20／21，分別為223×86與
+  310×99；four-mode entry137為86×86。兩組數字是31..40與42..51。
+- **已證實**：`0x31E80..0x32002` 使用 FDICON unit bank與 FDOTHER #1 descriptor0
+  畫24×24游標；#1 完整 ABI 是24×24、20 descriptors 的 FDICON-like sprite bank。
+- **已證實**：同一 #1 bank 也是 `0x122DC→0x126F7` modes1..5 的戰場 range overlay
+  descriptor來源；因此只能有一個穩定資產身份，不能另複製 preparation cursor。
+- **已證實**：整備確認對話使用共用 FDOTHER #2 action cells及 #5 raw dialogue1..19；
+  兩者已由 `fd2_shared_ui_banks_evidence.txt` 分離，不再需要新檔案。
+- 未被上述 consumer 使用的 #5 entries不因本切片獲得新語意。
+
+## 分離契約（DATA-READY，2026-08-29）
+
+### FDOTHER #1 range overlay bank
+
+- 目錄：`sprites/fdother_001_range_overlay/`；metadata：`bank.json`。
+- 固定 `kind=fdother_sprite_bank`、`asset_id=sprites/FDOTHER_001/range_overlay`、
+  resource1、2,235-byte raw size、24×24與20 sprites。
+- 每個 sprite輸出 indexed `frame.png`、binary source mask與binary remap mask；index
+  固定0..19。metadata、完整集合、幾何、路徑、PNG mode或來源不符即拒絕。
+
+### FDOTHER #5 共用 UI bank 擴充
+
+- 沿用 `ui/FDOTHER_005/item_panel` 的穩定 identity；opaque集合加入20／21，
+  four-mode集合加入137。既有 entries31..40與42..51直接共用，不輸出副本。
+- `LoadNativePreparationAssets` 只接受上述兩個 separated bank與完整 FDICON bank；
+  不得取得 archive path或回退 `.DAT`。
+
+驗收：#1全部20個 sprites 的 pixels／mask／remap mask，及 #5新增三筆與所需數字，
+皆和固定 raw parser逐位元組相同；缺任一 pack會拒絕；整備名冊、確認與 status panel
+聚焦回歸不變。`native_preparation_ui` 完成後不得再出現 `nativeFDOTHERPath()`、
+`ReadResource`或`DecodeRawCellResource`。

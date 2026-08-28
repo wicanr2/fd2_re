@@ -697,6 +697,9 @@ func exportCommandGrid(fdotherPath, outputRoot string) error {
 	if err := exportChurchUI(fdotherPath, outputRoot); err != nil {
 		return err
 	}
+	if err := exportRangeOverlay(fdotherPath, outputRoot); err != nil {
+		return err
+	}
 	if err := exportNativeShops(fdotherPath, outputRoot); err != nil {
 		return err
 	}
@@ -1006,7 +1009,7 @@ func exportItemPanel(fdotherPath, outputRoot string) error {
 		Source: sourceID{File: "FDOTHER.DAT", Resource: 5, Size: fdotherSize,
 			MD5: fdotherMD5, SHA256: fdotherSHA256, RawSize: len(raw)},
 	}
-	for _, index := range []int{22} {
+	for _, index := range []int{20, 21, 22} {
 		entry, err := fdother.ParseLMI1OpaqueEntry(raw, index)
 		if err != nil {
 			return err
@@ -1041,6 +1044,7 @@ func exportItemPanel(fdotherPath, outputRoot string) error {
 	for index := 119; index <= 129; index++ {
 		frameIndexes = append(frameIndexes, index)
 	}
+	frameIndexes = append(frameIndexes, 137)
 	for _, index := range frameIndexes {
 		entry, err := fdother.ParseLMI1FrameEntry(raw, index)
 		if err != nil {
@@ -1060,6 +1064,61 @@ func exportItemPanel(fdotherPath, outputRoot string) error {
 		})
 	}
 	return writeJSON(filepath.Join(directory, "resource.json"), document)
+}
+
+func exportRangeOverlay(fdotherPath, outputRoot string) error {
+	bank, err := fdother.DecodeNativeRangeOverlayBank(fdotherPath)
+	if err != nil {
+		return err
+	}
+	if len(bank.Sprites) != 20 {
+		return fmt.Errorf("FDOTHER #1 sprite count=%d, want 20", len(bank.Sprites))
+	}
+	directory := filepath.Join(outputRoot, "sprites", "fdother_001_range_overlay")
+	document := fdiconBankDocument{
+		SchemaVersion: 1,
+		Kind:          "fdother_sprite_bank",
+		AssetID:       "sprites/FDOTHER_001/range_overlay",
+		Status:        "decoded",
+		Evidence:      "confirmed",
+		Source: sourceID{
+			File: "FDOTHER.DAT", Resource: 1, Size: fdotherSize,
+			MD5: fdotherMD5, SHA256: fdotherSHA256, RawSize: 2235,
+		},
+		Sprites: make([]fdiconSpriteDocument, 0, len(bank.Sprites)),
+	}
+	for index, sprite := range bank.Sprites {
+		if len(sprite.Pixels) != fdicon.NativeSize*fdicon.NativeSize ||
+			len(sprite.Mask) != len(sprite.Pixels) ||
+			len(sprite.RemapMask) != len(sprite.Pixels) {
+			return fmt.Errorf("FDOTHER #1 sprite %d has incomplete layers", index)
+		}
+		prefix := fmt.Sprintf("sprite_%04d", index)
+		if err := writeIndexedPNG(
+			filepath.Join(directory, prefix, "frame.png"),
+			fdicon.NativeSize, fdicon.NativeSize, sprite.Pixels,
+		); err != nil {
+			return err
+		}
+		if err := writeBinaryMaskPNG(
+			filepath.Join(directory, prefix, "mask.png"),
+			fdicon.NativeSize, fdicon.NativeSize, sprite.Mask,
+		); err != nil {
+			return err
+		}
+		if err := writeBinaryMaskPNG(
+			filepath.Join(directory, prefix, "remap_mask.png"),
+			fdicon.NativeSize, fdicon.NativeSize, sprite.RemapMask,
+		); err != nil {
+			return err
+		}
+		document.Sprites = append(document.Sprites, fdiconSpriteDocument{
+			Index: index, Width: fdicon.NativeSize, Height: fdicon.NativeSize,
+			Frame: prefix + "/frame.png", Mask: prefix + "/mask.png",
+			RemapMask: prefix + "/remap_mask.png",
+		})
+	}
+	return writeJSON(filepath.Join(directory, "bank.json"), document)
 }
 
 func exportLoadSlots(fdotherPath, outputRoot string) error {

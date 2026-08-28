@@ -46,13 +46,7 @@ func (g *Game) stepNativePreparationUILifecycle(now time.Time) {
 }
 
 func loadNativePreparationUIAssets() (*nativePreparationUIAssets, error) {
-	fdotherPath := nativeFDOTHERPath()
-	if fdotherPath == "" {
-		return nil, errors.New("native preparation UI: FDOTHER.DAT unavailable")
-	}
-	roster, err := fdother.LoadNativePreparationAssets(
-		fdotherPath, separatedAssetPath("sprites/fdicon"),
-	)
+	roster, err := fdother.LoadNativePreparationAssets(separatedAssetPath(""))
 	if err != nil {
 		return nil, err
 	}
@@ -60,19 +54,20 @@ func loadNativePreparationUIAssets() (*nativePreparationUIAssets, error) {
 	if err != nil {
 		return nil, err
 	}
-	choices, err := fdother.DecodeRawCellResource(fdotherPath, 2)
+	choices, err := fdother.LoadSeparatedActionCells(separatedAssetPath("ui"))
 	if err != nil {
 		return nil, err
 	}
-	resource5, err := fdother.ReadResource(fdotherPath, 5)
+	sharedUI, err := fdother.LoadSeparatedItemPanelEntries(separatedAssetPath("ui"))
 	if err != nil {
 		return nil, err
 	}
 	dialogue := make([]fdother.RawCell, 20)
 	for index := 1; index <= 19; index++ {
-		dialogue[index], err = fdother.ParseLMI1RawEntry(resource5, index)
-		if err != nil {
-			return nil, err
+		var ok bool
+		dialogue[index], ok = sharedUI.Raw[index]
+		if !ok {
+			return nil, errors.New("native preparation UI: separated dialogue is incomplete")
 		}
 	}
 	portraits, err := loadNativeSeparatedPortrait(0x4b)
