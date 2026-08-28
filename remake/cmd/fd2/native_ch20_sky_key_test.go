@@ -7,6 +7,7 @@ import (
 	"image/draw"
 	"image/png"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -32,22 +33,23 @@ func recoveredCh20SkyKeySpec(t *testing.T) campaign.NativeCh20SkyKeySequence {
 }
 
 func TestNativeCh20SkyKeyPlayerAssetsMatchRecoveredContract(t *testing.T) {
-	fdPath, aniPath := nativeFDOTHERPath(), nativeANIPath()
-	if fdPath == "" || aniPath == "" {
-		t.Skip("player-provided FDOTHER.DAT or ANI.DAT is absent")
+	const base = "../../../org_game/炎龍騎士團/FLAME2"
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+	t.Setenv("FD2_ASSET_PACK", filepath.Clean("../../generated-assets/fd2-original-b97caf22"))
+	t.Setenv("FD2_ANI", filepath.Join(t.TempDir(), "missing-ANI.DAT"))
+	fdPath := nativeFDOTHERPath()
+	if fdPath == "" {
+		t.Skip("player-provided FDOTHER.DAT is absent")
 	}
 	if _, err := os.Stat(fdPath); err != nil {
 		t.Skipf("FDOTHER.DAT unavailable: %v", err)
-	}
-	if _, err := os.Stat(aniPath); err != nil {
-		t.Skipf("ANI.DAT unavailable: %v", err)
 	}
 	spec := recoveredCh20SkyKeySpec(t)
 	frames, err := fdother.DecodeResource(fdPath, spec.FDOTHERResource)
 	if err != nil {
 		t.Fatal(err)
 	}
-	clip, err := afm.DecodeResource(aniPath, spec.ANIResource)
+	clip, err := loadNativeCh20SkyKeyANI(spec)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -141,16 +143,21 @@ func rosterHasItem(roster map[int]battle.Unit, itemID int) bool {
 }
 
 func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing.T) {
-	fdPath, aniPath := nativeFDOTHERPath(), nativeANIPath()
-	if fdPath == "" || aniPath == "" {
-		t.Skip("第21戰完整流程需要玩家提供 FDOTHER.DAT 與 ANI.DAT")
+	const base = "../../../org_game/炎龍騎士團/FLAME2"
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+	fdPath := nativeFDOTHERPath()
+	pack := filepath.Clean("../../generated-assets/fd2-original-b97caf22")
+	if fdPath == "" {
+		t.Skip("第21戰完整流程需要玩家提供 FDOTHER.DAT")
 	}
 	if _, err := os.Stat(fdPath); err != nil {
 		t.Skipf("FDOTHER.DAT unavailable: %v", err)
 	}
-	if _, err := os.Stat(aniPath); err != nil {
-		t.Skipf("ANI.DAT unavailable: %v", err)
+	if _, err := os.Stat(filepath.Join(pack, "animations", "ANI_000", "animation.json")); err != nil {
+		t.Skipf("分離 ANI #0 unavailable: %v", err)
 	}
+	t.Setenv("FD2_ASSET_PACK", pack)
+	t.Setenv("FD2_ANI", filepath.Join(t.TempDir(), "missing-ANI.DAT"))
 
 	// 使用本關可編輯 scenario 的實際出戰順序建立測試用持續隊伍投影。
 	// 這只提供既有 JOIN／部署的資料形狀，不證明上一個整備節點或一般玩家

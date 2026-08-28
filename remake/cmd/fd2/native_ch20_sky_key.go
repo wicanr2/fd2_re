@@ -48,10 +48,6 @@ type nativeCh20SkyKeyJob struct {
 	rollback func()
 }
 
-func nativeANIPath() string {
-	return playerAssetPath("FD2_ANI", aniCandidates)
-}
-
 func validateNativeCh20SkyKeyAssets(spec campaign.NativeCh20SkyKeySequence, frames []fdother.Frame, clip *afm.Clip) error {
 	if !spec.IsRecoveredContract() {
 		return errors.New("native 0x24336 payload differs from recovered contract")
@@ -81,6 +77,10 @@ func validateNativeCh20SkyKeyAssets(spec campaign.NativeCh20SkyKeySequence, fram
 	return nil
 }
 
+func loadNativeCh20SkyKeyANI(spec campaign.NativeCh20SkyKeySequence) (*afm.Clip, error) {
+	return afm.LoadSeparatedResource(separatedAssetPath("animations"), spec.ANIResource)
+}
+
 func (g *Game) startNativeCh20SkyKeySequence(spec campaign.NativeCh20SkyKeySequence, then func()) error {
 	if g == nil || g.nativeCh20SkyKey != nil {
 		return errors.New("native 0x24336 sequence is already active")
@@ -90,15 +90,14 @@ func (g *Game) startNativeCh20SkyKeySequence(spec campaign.NativeCh20SkyKeySeque
 		return errors.New("native 0x24336 indexed map state is unavailable")
 	}
 	fdPath := nativeFDOTHERPath()
-	aniPath := nativeANIPath()
-	if fdPath == "" || aniPath == "" {
-		return errors.New("native 0x24336 requires player-provided FDOTHER.DAT and ANI.DAT")
+	if fdPath == "" {
+		return errors.New("native 0x24336 requires player-provided FDOTHER.DAT")
 	}
 	frames, err := fdother.DecodeResource(fdPath, spec.FDOTHERResource)
 	if err != nil {
 		return fmt.Errorf("FDOTHER #%d: %w", spec.FDOTHERResource, err)
 	}
-	clip, err := afm.DecodeResource(aniPath, spec.ANIResource)
+	clip, err := loadNativeCh20SkyKeyANI(spec)
 	if err != nil {
 		return fmt.Errorf("ANI #%d: %w", spec.ANIResource, err)
 	}

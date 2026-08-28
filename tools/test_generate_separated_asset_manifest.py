@@ -25,6 +25,10 @@ class GenerateManifestTest(unittest.TestCase):
         (pack / "animations" / "FDOTHER_018" / "frame_000.png").write_bytes(b"fdother-frame")
         (pack / "animations" / "FDOTHER_018" / "animation.json").write_text("{}", encoding="utf-8")
         (pack / "animations" / "FDOTHER_018" / "resource.json").write_text("{}", encoding="utf-8")
+        (pack / "animations" / "ANI_002").mkdir(parents=True)
+        (pack / "animations" / "ANI_002" / "frame_000.png").write_bytes(b"ani-frame")
+        (pack / "animations" / "ANI_002" / "palette_000.json").write_text("{}", encoding="utf-8")
+        (pack / "animations" / "ANI_002" / "animation.json").write_text("{}", encoding="utf-8")
         (pack / "raw" / "FIGANI" / "FIGANI_003.bin").write_bytes(b"raw")
         (pack / "raw" / "FDMUS" / "FDMUS_000.bin").write_bytes(b"music-raw")
         (pack / "music").mkdir()
@@ -90,6 +94,8 @@ class GenerateManifestTest(unittest.TestCase):
         fdshap_source.write_bytes(b"fdshap-original")
         fdfield_source = original / "FDFIELD.DAT"
         fdfield_source.write_bytes(b"fdfield-original")
+        ani_source = original / "ANI.DAT"
+        ani_source.write_bytes(b"ani-original")
         ref = root / "reference.json"
         data = source.read_bytes()
         music_data = music_source.read_bytes()
@@ -99,6 +105,7 @@ class GenerateManifestTest(unittest.TestCase):
         fdicon_data = fdicon_source.read_bytes()
         fdshap_data = fdshap_source.read_bytes()
         fdfield_data = fdfield_source.read_bytes()
+        ani_data = ani_source.read_bytes()
         ref.write_text(json.dumps({"files": [{
             "file": "FIGANI.DAT", "size": len(data),
             "md5": hashlib.md5(data).hexdigest(),
@@ -131,6 +138,10 @@ class GenerateManifestTest(unittest.TestCase):
             "file": "FDFIELD.DAT", "size": len(fdfield_data),
             "md5": hashlib.md5(fdfield_data).hexdigest(),
             "sha256": hashlib.sha256(fdfield_data).hexdigest(),
+        }, {
+            "file": "ANI.DAT", "size": len(ani_data),
+            "md5": hashlib.md5(ani_data).hexdigest(),
+            "sha256": hashlib.sha256(ani_data).hexdigest(),
         }]}), encoding="utf-8")
         return pack, ref, original
 
@@ -145,6 +156,9 @@ class GenerateManifestTest(unittest.TestCase):
             self.assertIn("battle_animation/animations/figani_003/frame_000.png", ids)
             self.assertIn("metadata/animations/figani_003/animation.json", ids)
             self.assertIn("metadata/animations/figani_003/resource.json", ids)
+            self.assertIn("cutscene_animation/animations/ani_002/frame_000.png", ids)
+            ani_palette = next(asset for asset in manifest["assets"] if asset["path"] == "animations/ANI_002/palette_000.json")
+            self.assertEqual((ani_palette["kind"], ani_palette["source_file"], ani_palette["source_resource"], ani_palette["source_frame"]), ("metadata", "ANI.DAT", 2, 0))
             embedded = next(asset for asset in manifest["assets"] if asset["path"] == "animations/FDOTHER_018/animation.json")
             self.assertEqual((embedded["source_file"], embedded["source_resource"]), ("FDOTHER.DAT", 18))
             figani = next(asset for asset in manifest["assets"] if asset["path"] == "animations/FIGANI_003/animation.json")

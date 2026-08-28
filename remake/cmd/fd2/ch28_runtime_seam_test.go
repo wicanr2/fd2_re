@@ -241,7 +241,8 @@ func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testi
 	// 地圖 renderer 與 ending loader 歷史上使用不同環境鍵；兩者都指向
 	// 同一個玩家唯讀 archive，避免測試環境碰巧預設其中一個鍵才通過。
 	t.Setenv("FD2_FDOTHER", fdotherPath)
-	t.Setenv("FD2_ANI", filepath.Join(filepath.Dir(fdotherPath), "ANI.DAT"))
+	t.Setenv("FD2_ASSET_PACK", filepath.Clean("../../generated-assets/fd2-original-b97caf22"))
+	t.Setenv("FD2_ANI", filepath.Join(t.TempDir(), "missing-ANI.DAT"))
 	t.Setenv("FD2_MUTE", "1")
 	oldCache := userDataDirCached
 	userDataDirCached = ""

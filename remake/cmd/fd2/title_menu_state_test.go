@@ -360,12 +360,16 @@ func TestTitleMenuShotOracleRequiresExplicitOutput(t *testing.T) {
 func TestTitleMenuShotOracleEntersBoundedMenuState(t *testing.T) {
 	t.Setenv("FD2_TITLE", "1")
 	t.Setenv("FD2_ASSET_PACK", filepath.Join("..", "..", "generated-assets", "fd2-original-b97caf22"))
+	t.Setenv("FD2_ANI", filepath.Join(t.TempDir(), "missing-ANI.DAT"))
 	t.Setenv("FD2_SHOT_TITLE_MENU", "1")
 	t.Setenv("FD2_SHOT", t.TempDir()+"/title.png")
 	t.Setenv("FD2_MUTE", "1")
 	g := loadGame()
 	if g.loadErr != "" || g.titleAssets == nil || g.titlePhase != "menu" || g.titleSel != 0 || g.titleFlash != 0 {
 		t.Fatalf("title menu shot state phase=%q sel=%d flash=%d assets=%v err=%q", g.titlePhase, g.titleSel, g.titleFlash, g.titleAssets != nil, g.loadErr)
+	}
+	if g.titleAssets.aniClips != nil {
+		t.Fatal("進入主選單後仍保留一次性 ANI snapshots")
 	}
 }
 

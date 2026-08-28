@@ -29,7 +29,7 @@ SOURCE_BY_CONTAINER = {
     "FIGANI": "FIGANI.DAT", "TAI": "TAI.DAT", "TITLE": "TITLE.DAT",
 }
 CONTAINER_RE = re.compile(r"^(ANI|BG|DATO|FDFIELD|FDMUS|FDOTHER|FDSHAP|FDTXT|FIGANI|TAI|TITLE)_(\d+)\.bin$", re.I)
-FRAME_RE = re.compile(r"^frame[_-]?(\d+)", re.I)
+FRAME_RE = re.compile(r"^(?:frame|palette)[_-]?(\d+)", re.I)
 HEX = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -96,8 +96,8 @@ def classify(path: Path) -> str | None:
         return "metadata"
     if top == "animations":
         if suffix == ".png":
-            return "battle_animation"
-        if path.name.lower() in {"animation.json", "resource.json"}:
+            return "cutscene_animation" if len(parts) > 1 and parts[1].upper().startswith("ANI_") else "battle_animation"
+        if suffix == ".json":
             return "metadata"
         return None
     if top == "shop" and len(parts) >= 2:
@@ -161,7 +161,7 @@ def infer_provenance(path: Path) -> tuple[str | None, int | None, int | None]:
     if container:
         return SOURCE_BY_CONTAINER.get(container), resource, frame
     if path.parts and path.parts[0].lower() == "animations":
-        match = re.match(r"(FIGANI|FDOTHER)[_-](\d+)", path.parts[1], re.I) if len(path.parts) > 1 else None
+        match = re.match(r"(ANI|FIGANI|FDOTHER)[_-](\d+)", path.parts[1], re.I) if len(path.parts) > 1 else None
         if match:
             return SOURCE_BY_CONTAINER[match.group(1).upper()], int(match.group(2)), frame
     if len(path.parts) >= 2 and path.parts[0].lower() == "shop":

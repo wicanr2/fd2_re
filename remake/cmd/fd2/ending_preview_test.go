@@ -12,6 +12,12 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/ending"
 )
 
+func useEndingSeparatedANI(t *testing.T) {
+	t.Helper()
+	t.Setenv("FD2_ASSET_PACK", filepath.Clean("../../generated-assets/fd2-original-b97caf22"))
+	t.Setenv("FD2_ANI", filepath.Join(t.TempDir(), "missing-ANI.DAT"))
+}
+
 func TestNativeEndingEvidenceOverlayIsDebugOnly(t *testing.T) {
 	preview := &nativeEndingPreview{
 		campaignSourceBound: true,
@@ -43,7 +49,7 @@ func TestNativeEndingPreviewReachesRecoveredPhase0MontageGate(t *testing.T) {
 	}
 	t.Setenv("FD2_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
 	t.Setenv("FD2_FDTXT", filepath.Join(base, "FDTXT.DAT"))
-	t.Setenv("FD2_ANI", filepath.Join(base, "ANI.DAT"))
+	useEndingSeparatedANI(t)
 	t.Setenv("FD2_ENDING_CHAPTER", "29")
 	preview, err := newNativeEndingPreview()
 	if err != nil {
@@ -82,7 +88,7 @@ func TestSourceBoundCampaignTailHoldsRecoveredTerminalFrame(t *testing.T) {
 	}
 	t.Setenv("FD2_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
 	t.Setenv("FD2_FDTXT", filepath.Join(base, "FDTXT.DAT"))
-	t.Setenv("FD2_ANI", filepath.Join(base, "ANI.DAT"))
+	useEndingSeparatedANI(t)
 	t.Setenv("FD2_ENDING_CHAPTER", "29")
 	t.Setenv("FD2_MUTE", "1")
 	preview, err := newNativeEndingPreview()
@@ -141,7 +147,7 @@ func TestFinalEndingFirstTextGatePrebuildsAllNativeSpeakerFrames(t *testing.T) {
 	}
 	t.Setenv("FD2_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
 	t.Setenv("FD2_FDTXT", filepath.Join(base, "FDTXT.DAT"))
-	t.Setenv("FD2_ANI", filepath.Join(base, "ANI.DAT"))
+	useEndingSeparatedANI(t)
 	preview, err := newNativeEndingPreviewForTimeline(nativeEndingTimelinePath, 29)
 	if err != nil {
 		t.Fatal(err)
@@ -299,7 +305,7 @@ func TestSourceBoundCampaignMontageStartsFromPersistentLoadCHOrder(t *testing.T)
 	}
 	t.Setenv("FD2_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
 	t.Setenv("FD2_FDTXT", filepath.Join(base, "FDTXT.DAT"))
-	t.Setenv("FD2_ANI", filepath.Join(base, "ANI.DAT"))
+	useEndingSeparatedANI(t)
 	t.Setenv("FD2_TAI", filepath.Join(t.TempDir(), "missing-TAI.DAT"))
 	t.Setenv("FD2_ASSET_PACK", pack)
 	t.Setenv("FD2_MUTE", "1")
@@ -443,7 +449,7 @@ func TestFinalBattleWinFeedsSynchronizedPartyToEndingMontage(t *testing.T) {
 	}
 	t.Setenv("FD2_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
 	t.Setenv("FD2_FDTXT", filepath.Join(base, "FDTXT.DAT"))
-	t.Setenv("FD2_ANI", filepath.Join(base, "ANI.DAT"))
+	useEndingSeparatedANI(t)
 	t.Setenv("FD2_MUTE", "1")
 
 	campaignData, err := campaign.Load("../../assets/scenarios/campaign_full.json")
@@ -527,7 +533,7 @@ func TestMissingSkyKeyEndingStartsChapter26NativeBranch(t *testing.T) {
 	}
 	t.Setenv("FD2_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
 	t.Setenv("FD2_FDTXT", filepath.Join(base, "FDTXT.DAT"))
-	t.Setenv("FD2_ANI", filepath.Join(base, "ANI.DAT"))
+	useEndingSeparatedANI(t)
 	t.Setenv("FD2_MUTE", "1")
 
 	campaignData, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
@@ -619,7 +625,7 @@ func TestSourceBoundCampaignFinalNodeConsumesRecoveredPrefixThenStops(t *testing
 	}
 	t.Setenv("FD2_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
 	t.Setenv("FD2_FDTXT", filepath.Join(base, "FDTXT.DAT"))
-	t.Setenv("FD2_ANI", filepath.Join(base, "ANI.DAT"))
+	useEndingSeparatedANI(t)
 	t.Setenv("FD2_MUTE", "1")
 	c, err := campaign.Load("../../assets/scenarios/campaign_full.json")
 	if err != nil {

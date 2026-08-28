@@ -8319,3 +8319,23 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   decoder。缺分離pack會在發布任何標題狀態前回傳明確錯誤，不再靜默跳過開場。
 - manifest現為38,092筆：37,068 exported、1,005 intentionally raw、19 blocked。本切片
   達`DATA-READY`／`RUNTIME-E1`；ANI.DAT 0／1／3..8仍是獨立待遷移archive consumer。
+
+## 2026-08-29 ANI.DAT／AFM 全資源分離與正式消費端遷移
+
+- 固定`ANI.DAT`（2,437,547 bytes；MD5 `81315bcbb78764361c5137ab0f714f7e`；
+  SHA-256 `be909c71d0f1121b6632ae931d978e990f6d54c830f4e0509cd6862187c4d963`）含10個
+  `LLLLLL`項目；#0..#8有效，#9為零長度尾項。有效幀數依序為96／51／26／28／12／
+  35／12／17／12，合計289幀；所有標頭幾何均為320×200。
+- `60-editor-separated-assets-spec.md`先建立READY契約，再由匯入器輸出9份
+  `afm_indexed_animation` metadata、289張保留64,000-byte framebuffer index的PNG及
+  289份完整768-byte VGA六位元DAC JSON。#9不輸出假animation。
+- archive decoder改為嚴格驗證幀記錄、script邊界、VM opcode、標頭幀數、320×200幾何
+  及完整資源消費；不再於中途錯誤時靜默交付部分clip。正式`LoadSeparatedResource`
+  另驗證固定來源identity、raw size、container count、empty tail、PNG mode／geometry、
+  frame identity及每個DAC component範圍，任一錯誤皆失敗即關閉。
+- 九個資源的289組indexed framebuffer與六位元palette已逐幀對照固定archive oracle，
+  全數相同。標題#0／#1／#3..#8、第20戰天空鑰匙#0與結局#2均改讀同一分離animation
+  root；production不再引用`afm.DecodeResource`、`FD2_ANI`、`aniCandidates`或ANI archive
+  path。聚焦Docker／Xvfb測試涵蓋標題成功／缺pack、天空鑰匙與結局預覽。
+- manifest現為38,679筆：37,655 exported、1,005 intentionally raw、19 blocked。本切片
+  達`DATA-READY`／`RUNTIME-E1`；沒有把資料owner遷移外推成完整原版啟動或逐幕E2。

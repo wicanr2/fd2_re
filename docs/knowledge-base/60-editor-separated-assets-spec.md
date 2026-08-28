@@ -18,7 +18,7 @@
    保持未知欄位、原始來源與語意。
 4. `portrait`、`fig`、`map_selector_key`、`battle_fig` 與 persistent identity 是不同
    概念；目前缺少面向創作者的角色身份關聯表。
-5. FIGANI、AFM、DATO、TAI、BG、介面格、音效與音樂雖已有個別匯出器，尚未形成
+5. FIGANI、DATO、TAI、BG、介面格、音效與音樂雖已有個別匯出器，尚未形成
    一份可驗證、可定位來源、供 runtime 與編輯器共同使用的完整素材清冊。
 6. 正式 runtime 仍有多條玩家路徑即時讀取 `FDOTHER.DAT`、`FDTXT.DAT`、
    `FIGANI.DAT`、`BG.DAT`、`TAI.DAT` 與 `FDFIELD.DAT`。因此目前不能宣稱遊戲只
@@ -131,18 +131,19 @@ PNG／OGG 是 runtime 消費格式；raw `.bin` 只可留在研究中間目錄�
 固定版本原版已在 `fd2-assets-local:20260828` 一次性容器內完成全量試跑，實際輸出
 寫入被版控忽略的 `remake/generated-assets/fd2-original-b97caf22/`。結果為1,005個
 archive subresources、125張一般 PNG、264組 FIGANI／2,118張動畫 frame、136組
-頭像／544張嘴型 frame、33張地圖、1張字型 atlas 與15首 MIDI。完整機器清冊見
+頭像／544張嘴型 frame、33張地圖、2張字型 atlas 與15首 MIDI；後續再由嚴格匯入器
+加入 ANI 等具型別素材。完整機器清冊見
 [`asset-export-audit-20260828.json`](../data/asset-export-audit-20260828.json)。
 
 這次結果同時證實現有 `extract_all.py` **不是完成版素材包產生器**：409個 FIGANI
-中只有264個被接受，音樂仍是 MIDI，尚未把音效、AFM／ANI 與所有 UI 資源建立
+中只有264個被接受，音樂仍是 MIDI，尚未把音效與所有 UI 資源建立
 逐檔 `asset_id`／hash／用途。這些缺口已明列，不以「全量試跑成功」冒稱所有素材
 皆已轉成正式 PNG／OGG。
 
-同一實際輸出樹再經來源 hash gate 與逐檔 manifest generator 驗證；最初清冊為3,807筆，
-後續指令格與 FIGANI 正確分層輸出完成後，現為6,268筆：5,248筆為已匯出、1,005筆
-raw 完整列為 `intentionally_raw`，15首 MIDI 明確列為
-`blocked`，等待 OGG 輸出。清冊驗證器拒絕重複 ID、斷裂引用、路徑逃逸、來源／輸出
+同一實際輸出樹再經來源 hash gate 與逐檔 manifest generator 驗證；2026-08-28完成
+ANI遷移後，現行清冊為38,679筆：37,655筆為已匯出、1,005筆raw完整列為
+`intentionally_raw`，19筆明確列為`blocked`（包含15首等待 OGG 的 MIDI）。清冊驗證器
+拒絕重複 ID、斷裂引用、路徑逃逸、來源／輸出
 hash 不符；`blocked` 項目不必偽造不存在的輸出 hash。
 
 #### 2026-08-28 指令格遷移結果
@@ -336,6 +337,72 @@ indexed PNG、binary mask與metadata，共45筆。#7 directory count=8及sub7零
 靜態幕只從分離pack建立。缺pack會在`loadGame`發布任何標題狀態前留下明確錯誤，不再跳過
 標題或回退舊PNG／archive。manifest現為38,092筆：37,068 exported、1,005 intentionally raw、
 19 blocked。本切片達`DATA-READY`／`RUNTIME-E1`。
+
+### ANI.DAT／AFM 全螢幕增量動畫素材契約
+
+> 狀態：**CONFORMED**（2026-08-29）
+> 固定來源：`ANI.DAT`，2,437,547 bytes，MD5
+> `81315bcbb78764361c5137ab0f714f7e`，SHA-256
+> `be909c71d0f1121b6632ae931d978e990f6d54c830f4e0509cd6862187c4d963`。
+> 原版程式證據：播放器 `0x020421`、VM 派發 `0x036c9e`、10-entry opcode 跳表
+> `0x05276a`；位址皆為固定版本 `FD2.EXE` 物件 2 的線性位址。完整格式證據見
+> [`39-ani-afm-format.md`](39-ani-afm-format.md)。
+
+`ANI.DAT` 是含10個目錄項的 `LLLLLL` 容器；#0..#8為有效 AFM v1.00 資源，#9是
+零長度尾項，不可匯出成假動畫。AFM 是延續前一幀 framebuffer／palette 的10-opcode
+增量繪圖 VM，不是可獨立解碼每一筆 script 的圖片集合。固定實檔標頭如下：
+
+| 資源 | raw bytes | 幀數 | 已知正式 owner |
+|---:|---:|---:|---|
+| #0 | 1,002,800 | 96 | 標題過場；第20戰天空鑰匙演出亦共用 |
+| #1 | 635,952 | 51 | 標題過場 |
+| #2 | 97,726 | 26 | 原版結局預覽／合成器 |
+| #3 | 35,566 | 28 | 標題過場 |
+| #4 | 36,113 | 12 | 標題過場 |
+| #5 | 411,039 | 35 | 標題過場 |
+| #6 | 43,553 | 12 | 標題過場 |
+| #7 | 137,859 | 17 | 標題過場 |
+| #8 | 36,893 | 12 | 標題過場 |
+| #9 | 0 | 0 | 容器空尾項；不建立 asset |
+
+每個有效資源固定輸出到 `animations/ANI_NNN/`：
+
+- `animation.json`：`schema_version`、`kind=afm_indexed_animation`、穩定 `asset_id`、
+  `status`、`evidence`、固定來源 identity、resource index／raw size、AFM title、
+  `codec=fd2_afm_vm_v1`、`width=320`、`height=200`、header frame count及有序
+  `frames[]`。
+- 每幀 `frame_NNN.png`：320×200、PNG palette mode，像素值必須逐 byte 等於 AFM VM
+  執行後的64,000-byte framebuffer snapshot；不可只保存轉成 RGBA 後的結果。
+- 每幀 `palette_NNN.json`：恰有768個 `dac_6bit_components`，逐 byte保存該幀 VM
+  執行後的 VGA 六位元 palette snapshot。PNG 內的八位元顯示 palette只是預覽，
+  runtime 的忠實輸入仍以這份六位元資料為準。
+- `frames[]` 每筆使用穩定 `frame_id` 並引用對應 indexed PNG及 DAC JSON；不得把
+  呼叫端的 delay 或可略過旗標冒充 AFM 檔案欄位。
+
+呼叫端播放契約仍由具名場景資料保存。現行標題 #3/#4/#5/#6/#7/#8/#0/#1 的
+tick-per-frame依序為5/5/3/5/3/5/1/1，只有 #3及#1可略過；第20戰及結局各自保留
+既有 owner 的時序與合成規則。這些數值只證實原版呼叫選擇／目前 owner，不代表
+逐週期 DOS wall-clock parity。
+
+離線匯出器必須先驗證整個 `ANI.DAT` identity、目錄項數10、#9零長度、每個有效
+資源標頭幾何320×200、宣告幀數及完整 script 邊界。任一 VM opcode、script、frame
+record、幀數或 palette／frame長度不一致時整批拒絕，不可沿用舊 decoder「保留前面
+成功影格」的寬鬆行為。正式 loader 同樣一次驗證完整 animation 後才發布 `Clip`，且
+不得在缺檔或 metadata 錯誤後回退讀取 `ANI.DAT`。
+
+驗收至少包含：九個有效資源共289幀的 indexed framebuffer及六位元 palette逐幀與
+archive oracle一致；#9沒有輸出；缺 frame／palette、錯誤 PNG mode／geometry、錯誤
+frame count／source identity全部失敗即關閉；標題、第20戰與結局在原始 `ANI.DAT`
+不可讀時仍從分離pack工作。完成同狀態原版畫面比較前，本切片最高只可標
+`RUNTIME-E1`，不可冒稱`PLAYER-E2`。
+
+2026-08-29 已依本契約輸出9份animation metadata、289張indexed PNG及289份六位元
+DAC JSON，共587筆；#9空尾項沒有輸出。嚴格 loader 與固定archive oracle已逐一比較
+九個資源的289組64,000-byte framebuffer及768-byte palette，全數相同。標題、第20戰
+天空鑰匙與結局預覽均改讀`animations/ANI_NNN`；production對`afm.DecodeResource`、
+`FD2_ANI`及ANI archive path的引用歸零。缺pack會在發布標題狀態前失敗；第20戰與結局
+聚焦回歸亦已從分離pack建立AFM clip。這些是`DATA-READY`／`RUNTIME-E1`，沒有提升
+原版完整啟動或逐幕時序為`PLAYER-E2`。
 
 ### 第三個 runtime 遷移切片：FIGANI 索引動畫
 

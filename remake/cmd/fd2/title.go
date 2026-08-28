@@ -17,7 +17,6 @@ import (
 	"image/color"
 	"os"
 	"path/filepath"
-	"strings"
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -34,7 +33,7 @@ type titleAssets struct {
 	titleFadeFrame [20]*ebiten.Image   // sub_286BD phase 0→40，FDOTHER #7/#8
 	items          [3][2]*ebiten.Image // START/LOAD/CONTINUE ×(未選/選中)
 	cutStatic      [2]*ebiten.Image    // 靜態幕:0=守護者(FDOTHER#100)、1=浮空城(#75)
-	aniPath        string              // 玩家自備 ANI.DAT 路徑(""=無,退回捲動 fallback)
+	aniClips       map[int]*afm.Clip   // 離線分離後的 ANI indexed frame／DAC snapshots
 }
 
 const (
@@ -145,15 +144,8 @@ func titleLogoTransitionIndex() int {
 	return len(cutScript)
 }
 
-// aniCandidates 找玩家自備 ANI.DAT(未夾帶版權素材,執行期解碼)。
-var aniCandidates = []string{
-	"assets/ANI.DAT",
-	"../org_game/炎龍騎士團/FLAME2/ANI.DAT",
-	"org_game/炎龍騎士團/FLAME2/ANI.DAT",
-}
-
 func loadTitleAssets() (*titleAssets, error) {
-	t := &titleAssets{}
+	t := &titleAssets{aniClips: make(map[int]*afm.Clip)}
 	packRoot := separatedAssetPath("")
 	publisher, err := loadSeparatedTitlePublisher(packRoot)
 	if err != nil {
@@ -163,23 +155,12 @@ func loadTitleAssets() (*titleAssets, error) {
 	if err := loadSeparatedTitleFDOTHER(packRoot, t); err != nil {
 		return nil, err
 	}
-	if p := os.Getenv("FD2_ANI"); p != "" {
-		aniCandidates = append([]string{p}, aniCandidates...)
-	}
-	for _, p := range aniCandidates {
-		rp := p
-		if strings.HasPrefix(p, "assets/") { // ANI.DAT 是玩家自備版權檔,走四層查找(含 exeDir)
-			rp = assetPath(p)
-		} else if _, err := os.Stat(rp); err != nil && exeDir() != "" {
-			// 開發時的 "../org_game/..." 是 cwd 相對路徑;cwd 不是 remake/ 時額外試執行檔目錄。
-			if _, err2 := os.Stat(filepath.Join(exeDir(), p)); err2 == nil {
-				rp = filepath.Join(exeDir(), p)
-			}
+	for _, resource := range []int{0, 1, 3, 4, 5, 6, 7, 8} {
+		clip, err := afm.LoadSeparatedResource(filepath.Join(packRoot, "animations"), resource)
+		if err != nil {
+			return nil, fmt.Errorf("標題 ANI #%d 分離素材：%w", resource, err)
 		}
-		if _, err := os.Stat(rp); err == nil {
-			t.aniPath = rp
-			break
-		}
+		t.aniClips[resource] = clip
 	}
 	return t, nil
 }
@@ -483,13 +464,13 @@ func titlePaletteBlend(op *ebiten.DrawImageOptions, factor float64, base color.R
 	)
 }
 
-// loadCutClip 執行期解碼指定 ANI.DAT 資源號為 ebiten 影格。失敗回 nil。
+// loadCutClip 將已完整預檢的分離 ANI 資源建立成 Ebiten 影格。
 func (g *Game) loadCutClip(res int) []*ebiten.Image {
-	if g.titleAssets.aniPath == "" {
+	if g.titleAssets == nil {
 		return nil
 	}
-	clip, err := afm.DecodeResource(g.titleAssets.aniPath, res)
-	if err != nil {
+	clip := g.titleAssets.aniClips[res]
+	if clip == nil {
 		return nil
 	}
 	out := make([]*ebiten.Image, len(clip.Frames))
@@ -499,14 +480,23 @@ func (g *Game) loadCutClip(res int) []*ebiten.Image {
 	return out
 }
 
+func (g *Game) enterTitleMenu() {
+	g.titlePhase = "menu"
+	g.titleSel = 0
+	if g.titleAssets != nil {
+		// AFM snapshots只供一次性開場；進選單後釋放約80 MiB的CPU影格，
+		// 保留主選單仍需的FDOTHER畫面。
+		g.titleAssets.aniClips = nil
+	}
+}
+
 // cutAdvance 前進到下一步驟(重置該步狀態);全部播完 → 進選單。
 func (g *Game) cutAdvance() {
 	g.cutIdx++
 	g.cutCur = nil
 	g.cutFrame, g.cutTick = 0, 0
 	if g.cutIdx >= len(cutScript) {
-		g.titlePhase = "menu"
-		g.titleSel = 0
+		g.enterTitleMenu()
 		return
 	}
 	if next := cutScript[g.cutIdx]; next.kind == "scroll" {
@@ -543,8 +533,7 @@ func (g *Game) titleUpdate() bool {
 	switch g.titlePhase {
 	case "cutscene":
 		if g.cutIdx >= len(cutScript) {
-			g.titlePhase = "menu"
-			g.titleSel = 0
+			g.enterTitleMenu()
 			return true
 		}
 		step := cutScript[g.cutIdx]
@@ -640,8 +629,7 @@ func (g *Game) titleUpdate() bool {
 	case "logozoom":
 		g.titleTick++
 		if g.titleTick > 50 || len(inpututil.AppendJustPressedKeys(nil)) > 0 { // 紅閃12+縮放30+白閃8
-			g.titlePhase = "menu"
-			g.titleSel = 0
+			g.enterTitleMenu()
 		}
 		return true
 	case "menu":

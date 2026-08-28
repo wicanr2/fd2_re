@@ -9731,10 +9731,10 @@ func loadGame() *Game {
 			return g
 		}
 		g.titleAssets = ta
-		if ta.aniPath != "" && os.Getenv("FD2_NOCUT") == "" {
-			g.titlePhase = "cutscene" // 有 ANI.DAT：播放目前接入的 AFM／靜態幕；完整原版排程仍非 E2
+		if os.Getenv("FD2_NOCUT") == "" {
+			g.titlePhase = "cutscene" // 分離 ANI 已在 loadTitleAssets 一次預檢；完整原版排程仍非 E2
 		} else {
-			g.titlePhase = "scroll" // 無 ANI.DAT:退回 FDOTHER 立繪捲動+logozoom
+			g.titlePhase = "scroll" // 明確測試／除錯旗標略過 AFM 過場
 			g.scrollY = 535
 		}
 	}
@@ -9744,8 +9744,8 @@ func loadGame() *Game {
 			return g
 		}
 		// 有界畫面 oracle：只跳過開場排程，不改正式玩家預設流程。
-		g.titlePhase = "menu"
-		g.titleSel, g.titleFlash = 0, 0
+		g.enterTitleMenu()
+		g.titleFlash = 0
 	}
 	if shotState := os.Getenv("FD2_SHOT_LOAD_STATE"); shotState != "" {
 		selection, ok := parseNativeLoadSlotShotState(shotState)

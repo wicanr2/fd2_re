@@ -1,10 +1,10 @@
-// Package afm 執行期解碼 ANI.DAT 的 AFM 動畫(開場過場)。
+// Package afm 解碼 ANI.DAT 的 AFM 動畫，並載入離線匯出的分離動畫。
 //
 // AFM(Animation File Manager v1.00,Lo Yuan Tsung 1993)不是逐幀點陣圖,而是
 // 10-opcode 的增量繪圖 VM(反組譯 doc39):每幀是一段 script,對「上一幀遺留的
 // framebuffer/palette」疊加(填色/RLE/局部貼圖/局部調色盤),不清空重畫。
-// 本套件把 tools/decode_ani.py 的 VM 忠實移植成 Go,直接解玩家自備的 ANI.DAT,
-// 不夾帶任何預解版權幀(素材本機保留紀律)。
+// 本套件把 tools/decode_ani.py 的 VM 忠實移植成 Go。DecodeResource 只供離線匯入器
+// 與 archive oracle 測試使用；正式遊戲必須使用 LoadSeparatedResource。
 //
 // 反組譯位址(FD2.EXE linear):播放器 0x020421、VM 派發 0x36c9e、跳表 0x5276a、
 // framebuffer=VGA 0xA0000(無雙緩衝)。VGA 6-bit palette 以 (v<<2)|(v>>4) 還原 8-bit。
@@ -19,17 +19,46 @@ import (
 )
 
 const (
-	scrW       = 320
-	scrH       = 200
+	Width      = 320
+	Height     = 200
+	scrW       = Width
+	scrH       = Height
 	frameBytes = scrW * scrH // 64000
 )
 
 // Clip 是一個 AFM 資源解出的完整影格序列(已套 palette 的 RGBA)。
 type Clip struct {
 	Title         string
+	HeaderFrames  int
 	Frames        []*image.RGBA
 	IndexedFrames [][]byte // 320x200 palette indices, one immutable snapshot/frame
 	Palettes      [][]byte // matching 768-byte VGA 6-bit palette snapshots
+}
+
+// ArchiveResourceCount 回傳 ANI.DAT 的 LLLLLL 目錄項數；只供離線匯入與證據測試。
+func ArchiveResourceCount(datPath string) (int, error) {
+	raw, err := os.ReadFile(datPath)
+	if err != nil {
+		return 0, err
+	}
+	entries, err := containerEntries(raw)
+	return len(entries), err
+}
+
+// ReadArchiveResource 讀取單一原始資源；只供離線匯入與證據測試。
+func ReadArchiveResource(datPath string, res int) ([]byte, error) {
+	raw, err := os.ReadFile(datPath)
+	if err != nil {
+		return nil, err
+	}
+	entries, err := containerEntries(raw)
+	if err != nil {
+		return nil, err
+	}
+	if res < 0 || res >= len(entries) {
+		return nil, errors.New("afm: 資源 index 越界")
+	}
+	return append([]byte(nil), entries[res]...), nil
 }
 
 // LoadANI 開啟一個 .DAT 容器(LLLLLL magic + uint32 offset 目錄),回傳其資源數。
@@ -83,31 +112,39 @@ func decodeAFM(d []byte) (*Clip, error) {
 		title = string(d[0x51:0xA1])
 	}
 	frameCount := int(binary.LittleEndian.Uint16(d[0xA5:]))
-	clip := &Clip{Title: title}
+	width := int(binary.LittleEndian.Uint16(d[0xA7:]))
+	height := int(binary.LittleEndian.Uint16(d[0xA9:]))
+	if width != scrW || height != scrH {
+		return nil, errors.New("afm: 畫面幾何不是 320x200")
+	}
+	clip := &Clip{Title: title, HeaderFrames: frameCount}
 	pal := make([]byte, 768)
 	fb := make([]byte, frameBytes)
 	pos := 0xAD
 	for i := 0; i < frameCount; i++ {
 		if pos+8 > len(d) {
-			break
+			return nil, errors.New("afm: 幀記錄截斷")
 		}
 		compSize := int(binary.LittleEndian.Uint16(d[pos:]))
 		cmdCount := int(binary.LittleEndian.Uint16(d[pos+2:]))
 		pos += 8
 		if pos+compSize > len(d) {
-			break
+			return nil, errors.New("afm: 幀 script 截斷")
 		}
 		script := d[pos : pos+compSize]
 		pos += compSize
 		if err := runVM(script, cmdCount, pal, fb); err != nil {
-			break // 解碼中斷:保留前面已成功的幀(同 python 解碼器行為)
+			return nil, err
 		}
 		clip.IndexedFrames = append(clip.IndexedFrames, append([]byte(nil), fb...))
 		clip.Palettes = append(clip.Palettes, append([]byte(nil), pal...))
 		clip.Frames = append(clip.Frames, toRGBA(fb, pal))
 	}
-	if len(clip.Frames) == 0 {
+	if frameCount == 0 || len(clip.Frames) != frameCount {
 		return nil, errors.New("afm: 零幀")
+	}
+	if pos != len(d) {
+		return nil, errors.New("afm: 幀資料未恰好消費完整資源")
 	}
 	return clip, nil
 }

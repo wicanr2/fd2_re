@@ -91,15 +91,11 @@ func newNativeEndingPreviewForTimeline(timelinePath string, chapter int) (*nativ
 	if fdotherPath == "" {
 		return nil, fmt.Errorf("ending: player-provided FDOTHER.DAT is unavailable")
 	}
-	aniPath := playerAssetPath("FD2_ANI", aniCandidates)
-	if aniPath == "" {
-		return nil, fmt.Errorf("ending: player-provided ANI.DAT is unavailable")
-	}
 	frames, err := fdother.DecodeResource(fdotherPath, timeline.Resource.Index)
 	if err != nil {
 		return nil, err
 	}
-	clip, err := afm.DecodeResource(aniPath, 2)
+	clip, err := afm.LoadSeparatedResource(separatedAssetPath("animations"), 2)
 	if err != nil {
 		return nil, err
 	}

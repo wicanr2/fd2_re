@@ -24,7 +24,13 @@ func aniPath() string {
 var wantFrames = map[int]int{
 	0: 96, // 金鎖(橢圓→正圓)
 	1: 51, // FLAME DRAGON 標題「2」logo 成形
+	2: 26, // 結局合成器
+	3: 28,
+	4: 12,
 	5: 35, // 拔劍屠龍
+	6: 12,
+	7: 17,
+	8: 12,
 }
 
 func TestDecodeANI(t *testing.T) {
@@ -53,6 +59,20 @@ func TestDecodeANI(t *testing.T) {
 func TestContainerReject(t *testing.T) {
 	if _, err := containerEntries([]byte("not a container")); err == nil {
 		t.Error("非容器資料應被拒絕")
+	}
+}
+
+func TestDecodeANIRejectsTruncatedFinalFrame(t *testing.T) {
+	p := aniPath()
+	if p == "" {
+		t.Skip("ANI.DAT 不存在")
+	}
+	raw, err := ReadArchiveResource(p, 8)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := decodeAFM(raw[:len(raw)-1]); err == nil {
+		t.Fatal("截斷的最後一幀不可被當成部分成功 clip")
 	}
 }
 

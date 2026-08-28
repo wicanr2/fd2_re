@@ -17,7 +17,9 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 
+	"github.com/wicanr2/fd2_re/remake/internal/afm"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
@@ -36,6 +38,45 @@ type paletteDocument struct {
 	AssetID       string   `json:"asset_id"`
 	Source        sourceID `json:"source"`
 	Components    []int    `json:"dac_6bit_components"`
+}
+
+type afmFrameDocument struct {
+	FrameID     string `json:"frame_id"`
+	Frame       string `json:"frame"`
+	Palette     string `json:"palette"`
+	SourceFrame int    `json:"source_frame"`
+}
+
+type afmAnimationDocument struct {
+	SchemaVersion int                `json:"schema_version"`
+	Kind          string             `json:"kind"`
+	AssetID       string             `json:"asset_id"`
+	Status        string             `json:"status"`
+	Evidence      string             `json:"evidence"`
+	Codec         string             `json:"codec"`
+	Title         string             `json:"title"`
+	Width         int                `json:"width"`
+	Height        int                `json:"height"`
+	FrameCount    int                `json:"frame_count"`
+	Source        afmSourceDocument  `json:"source"`
+	Frames        []afmFrameDocument `json:"frames"`
+}
+
+type afmSourceDocument struct {
+	File                string `json:"file"`
+	Resource            int    `json:"resource"`
+	Size                int    `json:"size"`
+	MD5                 string `json:"md5"`
+	SHA256              string `json:"sha256"`
+	RawSize             int    `json:"raw_size"`
+	ContainerEntryCount int    `json:"container_entry_count"`
+	EmptyTailIndex      int    `json:"empty_tail_index"`
+}
+
+type afmPaletteDocument struct {
+	SchemaVersion int    `json:"schema_version"`
+	Kind          string `json:"kind"`
+	Components    []int  `json:"dac_6bit_components"`
 }
 
 type sourceID struct {
@@ -271,6 +312,11 @@ var fdfieldArchive = archiveIdentity{
 	sha256: "b0cf75d94f58603f091c7462c0494f0e83bd6edfb04c1acbf83ed4d938c7a513",
 }
 
+var aniArchive = archiveIdentity{
+	file: "ANI.DAT", prefix: "ANI", size: afm.ANIFileSize,
+	md5: afm.ANIMD5, sha256: afm.ANISHA256,
+}
+
 func verifyFDOTHER(path string) error {
 	return verifyArchive(path, fdotherArchive)
 }
@@ -397,6 +443,86 @@ func writeJSON(path string, value any) error {
 	}
 	raw = append(raw, '\n')
 	return os.WriteFile(path, raw, 0o644)
+}
+
+func exportANI(path, outputRoot string) (int, error) {
+	if err := verifyArchive(path, aniArchive); err != nil {
+		return 0, err
+	}
+	count, err := afm.ArchiveResourceCount(path)
+	if err != nil || count != 10 {
+		return 0, fmt.Errorf("ANI.DAT resource count=%d err=%v, want 10", count, err)
+	}
+	tail, err := afm.ReadArchiveResource(path, 9)
+	if err != nil || len(tail) != 0 {
+		return 0, fmt.Errorf("ANI.DAT empty tail bytes=%d err=%v, want 0", len(tail), err)
+	}
+	totalFrames := 0
+	for resource := 0; resource < 9; resource++ {
+		raw, err := afm.ReadArchiveResource(path, resource)
+		if err != nil {
+			return totalFrames, err
+		}
+		clip, err := afm.DecodeResource(path, resource)
+		if err != nil {
+			return totalFrames, fmt.Errorf("ANI #%d: %w", resource, err)
+		}
+		directory := filepath.Join(outputRoot, "animations", fmt.Sprintf("ANI_%03d", resource))
+		document := afmAnimationDocument{
+			SchemaVersion: 1, Kind: "afm_indexed_animation", AssetID: fmt.Sprintf("animation/ANI_%03d", resource),
+			Status: "decoded", Evidence: "confirmed", Codec: "fd2_afm_vm_v1",
+			Title: strings.TrimRight(clip.Title, "\x00 "), Width: afm.Width, Height: afm.Height,
+			FrameCount: clip.HeaderFrames,
+			Source: afmSourceDocument{File: aniArchive.file, Resource: resource, Size: aniArchive.size,
+				MD5: aniArchive.md5, SHA256: aniArchive.sha256, RawSize: len(raw), ContainerEntryCount: 10, EmptyTailIndex: 9},
+			Frames: make([]afmFrameDocument, clip.HeaderFrames),
+		}
+		for frame := 0; frame < clip.HeaderFrames; frame++ {
+			frameName := fmt.Sprintf("frame_%03d.png", frame)
+			paletteName := fmt.Sprintf("palette_%03d.json", frame)
+			if err := writeAFMIndexedPNG(filepath.Join(directory, frameName), clip.IndexedFrames[frame], clip.Palettes[frame]); err != nil {
+				return totalFrames, fmt.Errorf("ANI #%d frame %d: %w", resource, frame, err)
+			}
+			if err := writeJSON(filepath.Join(directory, paletteName), afmPaletteDocument{
+				SchemaVersion: 1, Kind: "vga_dac_6bit_snapshot", Components: bytesToInts(clip.Palettes[frame]),
+			}); err != nil {
+				return totalFrames, err
+			}
+			document.Frames[frame] = afmFrameDocument{FrameID: fmt.Sprintf("frame/%03d", frame),
+				Frame: frameName, Palette: paletteName, SourceFrame: frame}
+		}
+		if err := writeJSON(filepath.Join(directory, "animation.json"), document); err != nil {
+			return totalFrames, err
+		}
+		totalFrames += clip.HeaderFrames
+	}
+	return totalFrames, nil
+}
+
+func writeAFMIndexedPNG(path string, indexed, dac []byte) error {
+	if len(indexed) != afm.Width*afm.Height || len(dac) != 768 {
+		return errors.New("AFM frame or palette length mismatch")
+	}
+	palette := make(color.Palette, 256)
+	for index := range palette {
+		r, g, b := dac[index*3], dac[index*3+1], dac[index*3+2]
+		palette[index] = color.RGBA{R: (r << 2) | (r >> 4), G: (g << 2) | (g >> 4), B: (b << 2) | (b >> 4), A: 0xff}
+	}
+	output := image.NewPaletted(image.Rect(0, 0, afm.Width, afm.Height), palette)
+	copy(output.Pix, indexed)
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		return err
+	}
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	encodeErr := png.Encode(file, output)
+	closeErr := file.Close()
+	if encodeErr != nil {
+		return encodeErr
+	}
+	return closeErr
 }
 
 func loadGlyphMap(path string) (map[int]string, error) {
@@ -1116,11 +1242,12 @@ func main() {
 	fdiconPath := flag.String("fdicon", "", "固定版本 FDICON.B24 路徑")
 	fdshapPath := flag.String("fdshap", "", "固定版本 FDSHAP.DAT 路徑")
 	fdfieldPath := flag.String("fdfield", "", "固定版本 FDFIELD.DAT 路徑")
+	aniPath := flag.String("ani", "", "固定版本 ANI.DAT 路徑")
 	glyphMapPath := flag.String("glyph-map", "", "受版控 glyph_map.json 路徑")
 	outputRoot := flag.String("out", "", "分離素材包根目錄")
 	flag.Parse()
-	if *outputRoot == "" || (*fdotherPath == "" && *bgPath == "" && *taiPath == "" && *fdtxtPath == "" && *fdiconPath == "" && *fdshapPath == "" && *fdfieldPath == "") || (*fdtxtPath != "" && *glyphMapPath == "") {
-		fmt.Fprintln(os.Stderr, "用法：fd2-asset-import [-fdother FDOTHER.DAT] [-bg BG.DAT] [-tai TAI.DAT] [-fdtxt FDTXT.DAT -glyph-map glyph_map.json] [-fdicon FDICON.B24] [-fdshap FDSHAP.DAT] [-fdfield FDFIELD.DAT] -out ASSET_PACK")
+	if *outputRoot == "" || (*fdotherPath == "" && *bgPath == "" && *taiPath == "" && *fdtxtPath == "" && *fdiconPath == "" && *fdshapPath == "" && *fdfieldPath == "" && *aniPath == "") || (*fdtxtPath != "" && *glyphMapPath == "") {
+		fmt.Fprintln(os.Stderr, "用法：fd2-asset-import [-fdother FDOTHER.DAT] [-bg BG.DAT] [-tai TAI.DAT] [-fdtxt FDTXT.DAT -glyph-map glyph_map.json] [-fdicon FDICON.B24] [-fdshap FDSHAP.DAT] [-fdfield FDFIELD.DAT] [-ani ANI.DAT] -out ASSET_PACK")
 		os.Exit(2)
 	}
 	if *fdotherPath != "" {
@@ -1172,5 +1299,13 @@ func main() {
 			os.Exit(1)
 		}
 		fmt.Println("已匯出 FDFIELD.DAT selector 30：地圖、控制列與 32 筆位置列")
+	}
+	if *aniPath != "" {
+		frames, err := exportANI(*aniPath, *outputRoot)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "匯入失敗：", err)
+			os.Exit(1)
+		}
+		fmt.Printf("已匯出 ANI.DAT：9 組動畫、%d 幀 indexed PNG＋六位元 DAC\n", frames)
 	}
 }
