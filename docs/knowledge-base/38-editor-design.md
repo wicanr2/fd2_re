@@ -1,5 +1,14 @@
 # 38 — 戰場編輯器 + 劇情編輯器設計
 
+> **現況勘誤（2026-08-28）**：本頁是早期介面構想，不是現行資料契約。
+> 原先「編輯器產物等於既有 JSON，零引擎改動即可玩」的說法已被實檔稽核推翻：
+> 現行資料缺少跨檔穩定識別碼、統一 `schema_version`、嚴格未知欄位策略及
+> 可驗證的往返保存；人物身份、頭像、地圖精靈與戰鬥動畫也不能再以單一數字混用。
+> 正式契約與遷移門檻改由
+> [`60-editor-separated-assets-spec.md`](60-editor-separated-assets-spec.md) 承載。
+> 本頁後續章節只保留為編輯器操作與版面設計參考，其中任何「目前已支援」斷言
+> 都必須重新對照 `60` 與實際能力清冊。
+
 > 目標:讓玩家/創作者不用碰 Go 原始碼,就能拓展自創戰場與劇情,擺脫原版固定 30 關(呼應 `17` 擴充可行性評估的結論)。
 > 本篇只做設計規劃,不動任何程式碼或資產。承接:`19`(campaign 節點圖)、`29`(事件 DSL)、`21`(引擎架構)、`17`(擴充可行性)。
 > 依據:`remake/internal/campaign/campaign.go`(Node schema)、`remake/internal/battle/event.go`(Scenario/Event schema)、
@@ -7,9 +16,10 @@
 
 ## 1. 設計原則
 
-1. **編輯器產物 = 引擎現有 JSON 格式,零引擎改動即可玩**。編輯器不定義新 schema,只是「填 `campaign.go`/`event.go`/
-   `model.go` 既有欄位」的圖形介面。存檔就是 `map.json` / `mapN_units.json` / `campaign.json` / `chNN.json`(scenario)/
-   `story/chNN.json`,跟 `gen_campaign.py` 產出的檔案一模一樣,`ScenarioRunner` 分不出是生成的還是手畫的。
+1. **編輯器輸出必須經版本化契約轉入引擎**。既有 `map.json`、`mapN_units.json`、
+   `campaign.json`、scenario 與 story JSON 是可匯入的舊格式，不是足以安全重排的
+   完整編輯模型。編輯器需以穩定識別碼保存關聯，經嚴格驗證及編譯步驟產生目前
+   runtime 所需的陣列／索引；不可直接重排 legacy 陣列後假設語意不變。
 2. **原版 30 關資料可當模板複製改作**。`remake/assets/scenarios/ch01.json`~`ch30.json`、`assets/maps/map0`~`map32` 都是
    合法起點——編輯器提供「複製現有章節另存新 id」而非要求從空白畫布開始,降低創作門檻。
 3. **deep-module 思維:編輯器的複雜度不外漏到引擎**。引擎(`internal/battle`、`internal/campaign`)只認得穩定的 JSON

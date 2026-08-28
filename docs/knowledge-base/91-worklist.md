@@ -9,7 +9,20 @@
 > 新工作必須使用 `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`、`PLAYER-E2` 或
 > `BLOCKED` 明列關閉哪一層，不再新增沒有層級的 `[x]`。
 
-## 有效佇列（2026-08-27）
+## 有效佇列（2026-08-28）
+
+> **新工作前沿**：第一輪代表性可玩抽樣已閉合後，下一個產品目標改為
+> 「可安全編輯的資料契約＋原版素材完全分離」。實檔稽核已確認現有 JSON 缺穩定
+> ID／統一版本／往返契約，且 production runtime 仍直接讀多個 `.DAT`；正式規格見
+> [`60-editor-separated-assets-spec.md`](60-editor-separated-assets-spec.md)。現代美術
+> 只在分離 catalog 上建立獨立 theme，不覆蓋忠實原版主題。
+
+| 順序 | 工作 | 現況 | 下一個可驗收結果 |
+|---:|---|---|---|
+| A1 | 編輯器 canonical schema 與穩定身份層 | `SPEC-READY`：已完成實檔能力稽核；確認 campaign／scenario／map／story／animation 只有單向 loader，缺跨檔 stable ID、嚴格未知欄位與 round-trip | 加入 machine-readable schema、legacy import 診斷、跨檔 validator 與往返測試；角色 identity 分離連結 portrait／map sprite／battle animation |
+| A2 | 原版素材全量分離與清冊 | `PARTIAL`：maps、story、portraits、sprites、FIGANI、music、sfx 已有大量輸出；DATO／TAI／BG／UI／AFM 全量用途清冊不完整 | 每個 archive resource 登記 exported／intentionally-raw／blocked；標準 PNG／OGG／JSON 逐檔 hash，輸出包不入 Git |
+| A3 | runtime 移除 `.DAT` 即時讀取 | `BLOCKED-BY-A2`：title、UI、story、town／shop／church、battle presentation、ending 等仍直接讀原始 archive | 分家族改讀 typed asset catalog；加入 archives 不可讀仍通過及缺分離資產 fail-closed 測試，最後 production decoder caller 歸零 |
+| A4 | 現代美術主題 | `PENDING-A1/A2`：尚未選定正式風格，不以猜測覆蓋原版 | 先輸出頭像＋戰場 sprite／tile＋介面框的可丟棄忠實／現代對照，再由使用者選定 theme 方向 |
 
 > **策略更新**：第一輪 remake 改以[`REMAKE-STATUS.md`](../REMAKE-STATUS.md)的
 > 60格分層代表性抽樣建立95%信心。下表既有E2與精確音訊項目先登記到抽樣矩陣；

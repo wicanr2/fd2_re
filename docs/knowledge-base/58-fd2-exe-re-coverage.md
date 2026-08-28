@@ -136,7 +136,7 @@ writer／consumer 分類高 fan-in helper，不用 unknown 總數驅動無限 RE
 
 | 子系統 | 原版證據 | 可編輯資料 | 正式執行期 | 玩家驗證 | 目前裁決與下一步 |
 |---|---|---|---|---|---|
-| 檔案版本、容器與主要資產格式 | 閉合 | 就緒 | E1 | 部分 | `.DAT`、圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與多張 EXE 表已有雜湊與重生工具。剩餘多是消費端、音訊時序或個別執行期改寫，不應重解容器格式。 |
+| 檔案版本、容器與主要資產格式 | 閉合 | 部分 | 部分 E1 | 部分 | `.DAT`、圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與多張 EXE 表已有雜湊與重生工具，不應重解容器格式。2026-08-28 全量匯出實測得到1,005個raw subresources、125張一般PNG、264／409組FIGANI、136組頭像與33張地圖；但production runtime仍直接讀多個`.DAT`，且音效、AFM／ANI、UI用途與逐檔manifest未全量閉合，故舊「可編輯資料就緒／runtime E1」已下修。契約與實測清冊見[`60`](60-editor-separated-assets-spec.md)及[`asset-export-audit-20260828.json`](../data/asset-export-audit-20260828.json)。 |
 
 > **2026-08-26 晚期四槽 LOAD 勘誤：** 同一固定雜湊 `fd2last.sav` 現已由重製
 > 正式 selector 還原 slot 0 的29人、60金幣與 raw metadata，並進

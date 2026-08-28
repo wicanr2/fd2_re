@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-28",
+  "source_reference": "docs/data/fd2-reference-files.json",
+  "tool": "tools/extract_all.py",
+  "container_image": "fd2-assets-local:20260828",
+  "output_policy": "local_generated_untracked",
+  "command_contract": "python3 tools/extract_all.py <verified-original-dir> remake/generated-assets/fd2-original-b97caf22",
+  "archive_resources": {
+    "ANI.DAT": 10,
+    "BG.DAT": 57,
+    "DATO.DAT": 137,
+    "FDFIELD.DAT": 100,
+    "FDMUS.DAT": 21,
+    "FDOTHER.DAT": 104,
+    "FDSHAP.DAT": 67,
+    "FDTXT.DAT": 35,
+    "FIGANI.DAT": 409,
+    "TAI.DAT": 57,
+    "TITLE.DAT": 8
+  },
+  "outputs": {
+    "raw_subresources": 1005,
+    "decoded_full_images_png": 125,
+    "decoded_figani_resources": 264,
+    "decoded_figani_frames_png": 2118,
+    "decoded_portrait_resources": 136,
+    "decoded_portrait_frames_png": 544,
+    "rendered_maps_png": 33,
+    "font_atlases_png": 1,
+    "music_midi": 15
+  },
+  "not_yet_complete": [
+    "145 個 FIGANI resources 未被現行 decoder 接受，必須逐筆列為非動畫、intentionally_raw 或 blocked",
+    "目前音樂輸出為 MIDI；正式 runtime pack 要以既有音源管線輸出 OGG 並記錄 loop/stop metadata",
+    "音效、AFM/ANI、DATO/TAI/BG/UI 的用途與 asset_id 尚未全量登記",
+    "現行 extract_all.py 尚未產生符合 fd2-separated-asset-pack schema 的逐檔 manifest",
+    "production runtime 仍有原始 archive callers"
+  ]
+}
