@@ -1054,7 +1054,7 @@ func exportItemPanel(fdotherPath, outputRoot string) error {
 		Source: sourceID{File: "FDOTHER.DAT", Resource: 5, Size: fdotherSize,
 			MD5: fdotherMD5, SHA256: fdotherSHA256, RawSize: len(raw)},
 	}
-	for _, index := range []int{20, 21, 22} {
+	for _, index := range []int{20, 21, 22, 133, 134, 135, 136} {
 		entry, err := fdother.ParseLMI1OpaqueEntry(raw, index)
 		if err != nil {
 			return err

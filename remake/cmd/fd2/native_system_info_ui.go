@@ -4,7 +4,6 @@ import (
 	"errors"
 	"image/color"
 	"os"
-	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -24,30 +23,20 @@ type nativeSystemInfoUIState struct {
 }
 
 func loadNativeSystemInfoAssets() (*campaign.NativeSystemInfoAssets, error) {
-	fdotherPath := nativeFDOTHERPath()
-	if fdotherPath == "" {
-		return nil, errors.New("native system info: FDOTHER.DAT unavailable")
-	}
-	panels, err := fdother.DecodeLMI1Resource(fdotherPath, 5)
-	if err != nil || len(panels) <= 0x88 {
-		return nil, errors.New("native system info: FDOTHER#5 panels 0x85..0x88 unavailable")
+	panels, err := fdother.LoadSeparatedSystemInfoPanels(separatedAssetPath("ui"))
+	if err != nil {
+		return nil, err
 	}
 	numbers, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
 	if err != nil {
 		return nil, err
 	}
-	assets := &campaign.NativeSystemInfoAssets{Numbers: numbers, Font: numbers.Font}
-	copy(assets.Panels[:], panels[0x85:0x89])
+	assets := &campaign.NativeSystemInfoAssets{Panels: panels, Numbers: numbers, Font: numbers.Font}
 	return assets, nil
 }
 
 func nativeCurrentRuntimeSaveExists() bool {
-	path := os.Getenv("FD2_NATIVE_SAVE")
-	if path == "" {
-		if fdotherPath := nativeFDOTHERPath(); fdotherPath != "" {
-			path = filepath.Join(filepath.Dir(fdotherPath), "FD2.SAV")
-		}
-	}
+	path := nativeCurrentSavePath()
 	if path == "" {
 		return false
 	}

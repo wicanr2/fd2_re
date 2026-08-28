@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/binary"
+	"os"
 	"path/filepath"
 	"testing"
 
@@ -11,6 +12,27 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
 )
+
+func TestLoadNativeSystemInfoAssetsUsesSeparatedPackWithoutArchive(t *testing.T) {
+	assetPack := filepath.Join("..", "..", "generated-assets", "fd2-original-b97caf22")
+	if _, err := os.Stat(filepath.Join(assetPack, "ui", "fdother_005_item_panel", "resource.json")); os.IsNotExist(err) {
+		t.Skip("separated FDOTHER #5 bank is absent")
+	} else if err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("FD2_ASSET_PACK", assetPack)
+	t.Setenv("FD2_ORIGINAL_FDOTHER", "")
+	assets, err := loadNativeSystemInfoAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantGeometry := [4][2]int{{102, 17}, {170, 117}, {170, 16}, {63, 15}}
+	for index, panel := range assets.Panels {
+		if panel.Width != wantGeometry[index][0] || panel.Height != wantGeometry[index][1] {
+			t.Fatalf("system info panel %d geometry=%dx%d", index, panel.Width, panel.Height)
+		}
+	}
+}
 
 func nativeSystemInfoRuntimeTestAssets(t *testing.T) *campaign.NativeSystemInfoAssets {
 	t.Helper()

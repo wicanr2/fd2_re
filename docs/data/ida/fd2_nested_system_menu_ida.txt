@@ -106,6 +106,26 @@ renderer contract已證實，但玩家語意標籤只列為強推論，不可寫
   CONTINUE adapter只有在完整 typed handoff成立時才可使用。
 - selector3 的上層目的地未補證前，不可猜成回標題、回城鎮或退出程式。
 
+## FDOTHER #5 分離素材追加契約（2026-08-29，DATA-READY）
+
+固定版 `FDOTHER.DAT` 身分沿用
+[`fd2-reference-files.json`](../fd2-reference-files.json)：3,382,481 bytes，
+MD5 `22f56e5027edc7c766ad34ca4e5aca93`，SHA-256
+`a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`。
+resource #5 固定為 44,181 bytes；本節不新增任何高階美術名稱。
+
+`0x1B41D` 的直接 consumer 已足以把 entries `0x85..0x88` 納入既有
+`ui/FDOTHER_005/item_panel` mixed-codec bank：四筆必須保留原始 index，使用
+與 `DecodeLMI1Resource(..., 5)` 相同的 LMI1 高位 run 解碼結果，並固定為上表
+`102x17`、`170x117`、`170x16`、`63x15`。分離 loader 必須一次驗證四筆皆存在、
+幾何與 indexed pixels 完整；缺一筆即拒絕整個資訊畫面，不回退原始 archive。
+
+驗收 oracle 是同一固定 archive 的 `DecodeLMI1Resource` entries `0x85..0x88`
+與分離 PNG 逐 indexed pixel 相等。正式 `loadNativeSystemInfoAssets` 必須只消費
+分離 bank、已分離數字／FDTXT／字型；`nativeFDOTHERPath()` 不得再成為資訊畫面
+的可用性 gate。這只提升素材與正式 consumer 到 `RUNTIME-E1`，不改變 BIOS
+input、DAC pulse、十二段展開／收合或一般玩家 `PLAYER-E2` 的既有證據等級。
+
 ## 重開條件
 
 只有輸入雜湊不同、原始指令／table直接反證、同狀態執行矛盾，或主證據缺少

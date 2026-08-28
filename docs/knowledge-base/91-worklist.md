@@ -35,6 +35,11 @@
 > ch23 post 與 ch22 auxiliary reload 兩個production owner只消費分離資產，
 > 缺包在發布前原子拒絕。不重做已閉合的ch23 loop／BIOS／DAC證據。
 
+> **2026-08-29 A2／A3 第三批追加：** 戰場資訊 FDOTHER #5 entries
+> `0x85..0x88` 已達 `DATA-READY／RUNTIME-E1`；四筆分離 indexed PNG 對固定原版
+> 逐像素一致，正式 `sub_1B1E7` adapter 不再需要原始 `FDOTHER.DAT`。下一批仍由
+> 真正 production archive caller 清冊選擇，不把 archive oracle 誤列為產品缺口。
+
 > **策略更新**：第一輪 remake 改以[`REMAKE-STATUS.md`](../REMAKE-STATUS.md)的
 > 60格分層代表性抽樣建立95%信心。下表既有E2與精確音訊項目先登記到抽樣矩陣；
 > 只有抽樣揭露的重大玩家缺陷才回到實作佇列。全戰役長程遊玩、逐週期DOS硬體、

@@ -148,6 +148,11 @@ writer／consumer 分類高 fan-in helper，不用 unknown 總數驅動無限 RE
 > ch22 auxiliary reload均改用strict separated loader，對應archive caller歸零。
 > loop／DAC／BIOS tick與一般玩家E2的原有證據等級不變。
 
+> **2026-08-29 戰場資訊素材追加：** `sub_1B1E7` 消費的 FDOTHER #5 entries
+> `0x85..0x88` 已加入共用 mixed-codec bank，四筆幾何與 indexed pixels 對固定
+> 原版一致；正式資訊畫面 loader 不再讀取或檢查 `FDOTHER.DAT`。十二段展開／收合
+> 與巢狀選單聚焦回歸通過；BIOS input、DAC pulse及 `PLAYER-E2` 等級不變。
+
 > **2026-08-26 晚期四槽 LOAD 勘誤：** 同一固定雜湊 `fd2last.sav` 現已由重製
 > 正式 selector 還原 slot 0 的29人、60金幣與 raw metadata，並進
 > `preparation_ch30`。聚焦回歸先證明舊 `raw+1` 映射會誤進
