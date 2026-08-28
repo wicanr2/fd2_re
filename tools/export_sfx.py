@@ -21,7 +21,7 @@ FDOTHER.DAT 資源 #31 是巢狀 `LLLLLL` 容器(見 docs/knowledge-base/36-sfx-
     python3 tools/export_sfx.py --battle        # 戰鬥音效匯出集合 → battle_NN_MM.wav
     python3 tools/export_sfx.py --res <idx>      # 導出任意 FDOTHER.DAT 資源號(需為巢狀容器)
     python3 tools/export_sfx.py --separated-pack OUT --source FDOTHER.DAT
-                                                # 第一批戰鬥音效→分離 OGG pack
+                                                # 正式UI／戰鬥音效→分離 OGG pack
 """
 import argparse
 import hashlib
@@ -45,16 +45,17 @@ SRC = os.path.join(os.path.dirname(__file__), "..", "extracted", "FDOTHER", "FDO
 OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "remake", "assets", "sfx")
 SAMPLE_RATE = 11025  # 推定值,見 docs/knowledge-base/36-sfx-audio-data.md 待辦
 
-# 第一批戰鬥巢狀音效的固定來源與容器形狀。這些值不是由輸出目錄推導，
+# 正式UI／第一批戰鬥巢狀音效的固定來源與容器形狀。這些值不是由輸出目錄推導，
 # 而是匯入前的 provenance gate；換版本的 FDOTHER.DAT 必須先建立新契約。
 SEPARATED_SOURCE_NAME = "FDOTHER.DAT"
 SEPARATED_SOURCE_SIZE = 3382481
 SEPARATED_SOURCE_MD5 = "22f56e5027edc7c766ad34ca4e5aca93"
 SEPARATED_SOURCE_SHA256 = "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
 SEPARATED_TOP_RESOURCE_COUNT = 104
-SEPARATED_RESOURCES = (82, 83, 84, 85, 86, 87, 88, 90)
+SEPARATED_RESOURCES = (31, 82, 83, 84, 85, 86, 87, 88, 90)
 # 值為巢狀 container 的非空 sample 數；directory 另有一筆 0-byte 尾哨兵。
 SEPARATED_SAMPLE_COUNTS = {
+    31: 13,
     82: 2,
     83: 4,
     84: 3,
@@ -127,7 +128,7 @@ def _read_and_verify_separated_source(source: Path) -> tuple[bytes, dict[str, ob
 
 
 def _read_separated_resources(data: bytes) -> dict[int, list[bytes]]:
-    """Validate both archive directory levels and return the 22 raw PCM samples."""
+    """Validate both archive directory levels and return the canonical raw PCM samples."""
 
     outer_entries = _parse_directory_strict(data, SEPARATED_SOURCE_NAME)
     if len(outer_entries) != SEPARATED_TOP_RESOURCE_COUNT:
@@ -156,8 +157,8 @@ def _read_separated_resources(data: bytes) -> dict[int, list[bytes]]:
                 raise ValueError(f"FDOTHER.DAT #{resource}: tail entry {index} is not empty")
         result[resource] = [nested_data[offset : offset + length] for offset, length in entries[:expected_samples]]
 
-    if sum(len(samples) for samples in result.values()) != 22:
-        raise ValueError("第一批戰鬥音效非空 sample 總數不是 22")
+    if sum(len(samples) for samples in result.values()) != 35:
+        raise ValueError("正式分離音效非空 sample 總數不是 35")
     return result
 
 
@@ -265,7 +266,7 @@ def _write_json(path: Path, document: dict[str, object]) -> None:
 
 
 def export_separated_pack(source: Path, output: Path) -> list[Path]:
-    """Atomically export the first eight battle sound banks into ``output``."""
+    """Atomically export the canonical UI and battle sound banks into ``output``."""
 
     data, identity = _read_and_verify_separated_source(source)
     banks = _read_separated_resources(data)

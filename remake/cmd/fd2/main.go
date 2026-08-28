@@ -352,7 +352,7 @@ type Game struct {
 	cutsceneLog               bool                   // FD2_CUTSCENE_LOG=1:過場 node/beat/走位逐步 log 到 stderr(協助對原版資料比對)
 	banner                    string                 // 回合橫幅文字(PLAYER/ENEMY PHASE)
 	bannerT                   int                    // 橫幅剩餘 tick
-	sfx                       map[int][]byte         // SFX PCM(doc36 FDOTHER#31 14樣本)
+	sfx                       map[int][]byte         // SFX PCM（doc36 FDOTHER#31：14個目錄項目／13個非空樣本）
 	sfxVoices                 []sfxVoice             // 保留疊播播放器至自然結束，避免 Play 後立即失去生命週期
 	separatedCommandSFX       map[int]map[int][]byte // 第一批 FDOTHER #82..90 指令音效；只讀分離 OGG
 	sfxSwing                  []byte                 // 戰鬥揮擊音(doc36 戰鬥池 #48-64 sub0,七池共用)
@@ -9687,7 +9687,13 @@ func loadGame() *Game {
 		seed = v
 	}
 	g.rng = rand.New(rand.NewSource(seed))
-	g.sfx = loadSFX()
+	if bank, e := loadSFX(); e != nil {
+		if g.loadErr == "" {
+			g.loadErr = "separated UI sounds: " + e.Error()
+		}
+	} else {
+		g.sfx = bank
+	}
 	if banks, e := loadSeparatedCommandSoundBanks(); e != nil {
 		if g.loadErr == "" {
 			g.loadErr = "separated command sounds: " + e.Error()

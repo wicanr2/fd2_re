@@ -29,3 +29,31 @@ func TestSeparatedCommandSoundBanksDecodeWithoutOriginalArchive(t *testing.T) {
 		}
 	}
 }
+
+func TestSeparatedUISoundBankDecodesWithoutOriginalArchive(t *testing.T) {
+	pack := filepath.Clean("../../generated-assets/fd2-original-b97caf22")
+	if _, err := os.Stat(filepath.Join(pack, "sfx", "FDOTHER_031", "resource.json")); err != nil {
+		t.Skipf("separated UI sound pack is absent: %v", err)
+	}
+	t.Setenv("FD2_ASSET_PACK", pack)
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(t.TempDir(), "missing-FDOTHER.DAT"))
+	bank, err := loadSFX()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(bank) != 13 {
+		t.Fatalf("UI sound samples=%d want=13", len(bank))
+	}
+	for subresource := 0; subresource < 13; subresource++ {
+		if len(bank[subresource]) == 0 {
+			t.Fatalf("UI sound subresource %d decoded empty", subresource)
+		}
+	}
+}
+
+func TestSeparatedUISoundBankFailsClosedWithoutPack(t *testing.T) {
+	t.Setenv("FD2_ASSET_PACK", t.TempDir())
+	if _, err := loadSFX(); err == nil {
+		t.Fatal("missing separated UI sound bank was accepted")
+	}
+}

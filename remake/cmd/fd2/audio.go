@@ -105,30 +105,11 @@ func (g *Game) muteNativeSystemBGM() {
 	g.bgmCur = ""
 }
 
-// ── SFX(doc36:FDOTHER#31 的 14 個 PCM 樣本,tools/export_sfx.py 導出 WAV)──
+// ── SFX(doc36:FDOTHER#31 的13個非空PCM樣本與一個空尾項)──
 
-// loadSFX 載入 assets/sfx/sfx_NN.wav 為 PCM bytes(解碼一次,播放時 NewPlayerFromBytes)。
-func loadSFX() map[int][]byte {
-	out := map[int][]byte{}
-	for i := 0; i < 14; i++ {
-		raw, err := os.ReadFile(assetPath(fmt.Sprintf("assets/sfx/sfx_%02d.wav", i)))
-		if err != nil {
-			continue
-		}
-		if audioCtx == nil {
-			audioCtx = audio.NewContext(44100)
-		}
-		s, err := wav.DecodeWithSampleRate(44100, bytes.NewReader(raw))
-		if err != nil {
-			continue
-		}
-		b, err := io.ReadAll(s)
-		if err != nil {
-			continue
-		}
-		out[i] = b
-	}
-	return out
+// loadSFX 只由分離素材包載入完整FDOTHER#31 OGG bank。
+func loadSFX() (map[int][]byte, error) {
+	return decodeSeparatedSoundBank(31)
 }
 
 // loadWav 載單一 WAV 為 PCM bytes(戰鬥池等零散樣本用)。失敗回 nil。
@@ -157,25 +138,36 @@ func loadSeparatedCommandSoundBanks() (map[int]map[int][]byte, error) {
 	resources := []int{82, 83, 84, 85, 86, 87, 88, 90}
 	out := make(map[int]map[int][]byte, len(resources))
 	for _, resource := range resources {
-		bank, err := fdother.LoadSeparatedSoundBank(separatedAssetPath("sfx"), resource)
+		decoded, err := decodeSeparatedSoundBank(resource)
 		if err != nil {
 			return nil, err
-		}
-		decoded := make(map[int][]byte, len(bank.Encoded))
-		for subresource, encoded := range bank.Encoded {
-			stream, decodeErr := vorbis.DecodeWithSampleRate(44100, bytes.NewReader(encoded))
-			if decodeErr != nil {
-				return nil, fmt.Errorf("sound bank %d subresource %d: %w", resource, subresource, decodeErr)
-			}
-			pcm, readErr := io.ReadAll(stream)
-			if readErr != nil || len(pcm) == 0 {
-				return nil, fmt.Errorf("sound bank %d subresource %d decoded empty: %w", resource, subresource, readErr)
-			}
-			decoded[subresource] = pcm
 		}
 		out[resource] = decoded
 	}
 	return out, nil
+}
+
+func decodeSeparatedSoundBank(resource int) (map[int][]byte, error) {
+	bank, err := fdother.LoadSeparatedSoundBank(separatedAssetPath("sfx"), resource)
+	if err != nil {
+		return nil, err
+	}
+	if audioCtx == nil {
+		audioCtx = audio.NewContext(44100)
+	}
+	decoded := make(map[int][]byte, len(bank.Encoded))
+	for subresource, encoded := range bank.Encoded {
+		stream, decodeErr := vorbis.DecodeWithSampleRate(44100, bytes.NewReader(encoded))
+		if decodeErr != nil {
+			return nil, fmt.Errorf("sound bank %d subresource %d: %w", resource, subresource, decodeErr)
+		}
+		pcm, readErr := io.ReadAll(stream)
+		if readErr != nil || len(pcm) == 0 {
+			return nil, fmt.Errorf("sound bank %d subresource %d decoded empty: %w", resource, subresource, readErr)
+		}
+		decoded[subresource] = pcm
+	}
+	return decoded, nil
 }
 
 func (g *Game) installSeparatedCommandSounds(banks map[int]map[int][]byte) {

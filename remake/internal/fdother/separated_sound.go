@@ -16,6 +16,7 @@ const (
 )
 
 var separatedSoundCounts = map[int]int{
+	31: 13,
 	82: 2,
 	83: 4,
 	84: 3,
@@ -64,7 +65,7 @@ type SeparatedSoundBank struct {
 	Encoded  map[int][]byte
 }
 
-// LoadSeparatedSoundBank 嚴格驗證一個第一批戰鬥音效庫及其所有 OGG 檔。
+// LoadSeparatedSoundBank 嚴格驗證一個已納入契約的FDOTHER音效庫及其所有OGG檔。
 func LoadSeparatedSoundBank(sfxRoot string, resource int) (SeparatedSoundBank, error) {
 	wantCount, supported := separatedSoundCounts[resource]
 	if sfxRoot == "" || !supported {

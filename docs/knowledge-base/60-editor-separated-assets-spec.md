@@ -254,7 +254,7 @@ duration與`sample_count/11025`在一個output sample內一致，不聲稱逐sam
 
 驗收至少包含：八個bank的22筆raw hash重生；OGG全數probe；缺archive時command 0玩家路徑、
 command 6多目標及敵方command 9仍可建立presentation；缺pack或任一必需sample時在MP／HP／
-狀態交易前失敗即關閉。這只關閉第一批command sound banks，不外推UI #31、一般物理攻擊
+狀態交易前失敗即關閉。這批當時只關閉第一批command sound banks，尚未外推UI #31、一般物理攻擊
 動態bank、resource 80／91..95或完整音訊E2。
 
 實作結果：`tools/export_sfx.py --separated-pack`現先驗證固定FDOTHER identity及104筆outer
@@ -269,8 +269,34 @@ command 0／1／2／3／4／5／6／7／8及敵方command 9已移除所有
 `battle_82/83/84/85/86/87/88/90_*.wav`正式引用歸零，#88的既有death／ch24 transition
 別名也改指同一已解碼bank。原始FDOTHER路徑刻意不存在時，玩家command 0、command 6、
 敵方command 9及其餘command 1..8代表演出測試均通過；缺bank／sample及不支援resource
-則失敗即關閉。清冊因此增加22筆OGG與8筆metadata，現為38,709筆：37,685 exported、
+則失敗即關閉。清冊當時因此增加22筆OGG與8筆metadata，為38,709筆：37,685 exported、
 1,005 intentionally raw、19 blocked。
+
+#### UI 共用 FDOTHER #31 音效分離契約
+
+> 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）
+
+本切片沿用前節相同`fd2_pcm_sound_bank`契約，新增`asset_id=sfx/FDOTHER_031`。固定
+resource大小31,771 bytes、container count 14、zero-length tail index 13；只輸出#0..#12
+共13筆OGG。每筆metadata保存[`36`](36-sfx-audio-data.md)列出的raw長度與SHA-256，取樣格式
+仍為unsigned-u8 mono／11025 Hz hardware-spec approximation。匯出器必須和第一批command
+bank共用相同來源雜湊、原子輸出、可重現serial與OGG probe，不可另留較寬鬆的legacy模式
+作正式pack來源。
+
+正式`loadSFX`改由`FD2_ASSET_PACK/sfx/FDOTHER_031`一次嚴格載入並解碼#0..#12；缺metadata、
+缺任一sample、壞OGG或來源漂移時整批拒絕，不回退`remake/assets/sfx/sfx_*.wav`。既有
+`playSFX(index)`及所有typed schedule可繼續消費同一map，但正式碼不得再讀舊WAV。驗收至少
+涵蓋：13筆raw hash重生、兩次OGG輸出一致、全部OGG probe、原始FDOTHER及舊WAV不可讀時
+標題cursor／confirm、AI idle recovery、AI mode 5與command heal代表路徑仍能預檢；缺
+index 4／11／12時在對應狀態或交易之前失敗即關閉。這不外推物理攻擊動態bank、#80、
+#91..95或完整人耳E2。
+
+實作結果：canonical匯出現在一次產生#31及既有八個command bank，共9份metadata／35筆
+OGG；兩次完整輸出逐byte一致，#31的13筆OGG均通過probe。`loadSFX`已改為嚴格載入並解碼
+`FDOTHER_031`，舊`assets/sfx/sfx_*.wav`正式碼與測試引用歸零；OGG loader明確建立播放
+context，沒有遺失舊WAV loader原本隱含的初始化責任。缺原始FDOTHER時，真實播放器、標題
+游標／確認、ch28 post及AI mode 5代表路徑通過；缺pack則整個#31 bank拒絕。清冊增加13筆
+OGG與1份metadata，現為38,723筆：37,699 exported、1,005 intentionally raw、19 blocked。
 
 ### 2026-08-28 第一輪全量匯出實測
 

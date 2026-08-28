@@ -105,7 +105,8 @@ $ python3 tools/unpack_dat.py --list FDOTHER.DAT | grep '^    31'
 ```
 
 抽出這段 bytes,開頭即 `LLLLLL` magic → 資源 #31 本身**又是一個 `LLLLLL` 容器**(嵌套,與 doc23
-記錄的資源 #7 巢狀容器同一手法),內含 **14 個子樣本**:
+記錄的資源 #7 巢狀容器同一手法),內含 **14 個目錄項目**；其中 #0..#12 是
+13 個非空樣本，#13 是 0-byte 尾哨兵：
 
 | sub# | 長度(bytes) | 特徵 |
 |---|---|---|
@@ -147,7 +148,7 @@ uint32 表 + `ADLIB-`/樂器名字串),且遊戲程式碼中未找到任何對 `
 
 | 原版 | 現代 |
 |---|---|
-| `FDOTHER.DAT` #31(巢狀容器,14 個 8-bit unsigned PCM) | 逐個解出轉 WAV(補標準 44-byte RIFF 檔頭,8-bit unsigned mono),或轉 OGG |
+| `FDOTHER.DAT` #31（巢狀容器，14 個目錄項目／13 個非空 8-bit unsigned PCM） | 逐個解出轉 WAV（歷史流程）或正式分離 OGG |
 | `AIL_init_sample` → `set_sample_address` → `set_sample_loop_count` → `start_sample` | SDL_mixer `Mix_LoadWAV` + `Mix_PlayChannel` |
 | 雙 handle(`[0x53ee4]`/`[0x53ee8]`) | 兩個 SDL_mixer channel(允許疊播) |
 | 戰鬥音效動態 index(`+0x21`) | 待逐招對照後,做 `attack_id → sfx_index` 對照表 |
@@ -184,9 +185,40 @@ FD2 game code沒有設定sample type／playback rate，剩餘差異落在Miles A
 `source_pcm_sha256`、`sample_count`及推論等級；不再為取樣時鐘深入driver或ISR，也不得把OGG
 解碼後波形冒稱與DOS逐sample一致。
 
+### UI 共用音效庫 #31 的分離證據
+
+> 證據等級：container、raw bytes、13筆非空sample與尾項為**已證實**；sample的高階人耳名稱
+> 除下列直接consumer外仍不命名。11025 Hz同樣只屬hardware-spec approximation。
+
+固定archive的resource #31大小為31,771 bytes，nested directory共14筆：#0..#12非空，#13
+為0-byte尾項。各非空sample的`長度／SHA-256`依序為：
+
+| sub | bytes | SHA-256 |
+|---:|---:|---|
+| 0 | 160 | `53f6ff0fe8c19d44269582c4c1a72078a134aa16e1f554b7f61dda5962823324` |
+| 1 | 3,322 | `0b07f6fa7273a11b178d8f3fc8ac1f5213e20ff4bac4ccf6c087d6a0b4986adf` |
+| 2 | 667 | `a4b65e64d64b19a4bc86457ffc7c443bb4db73e9a7c5e08b82254098000902aa` |
+| 3 | 6,324 | `3fb22e7485b75c2e7367093f8da210868641644f737c156abdb6f0c23a98095c` |
+| 4 | 3,438 | `aca7d57bc6cb4563557de8dbf337674af9a5bc59f547e46cdfbbd24b76646288` |
+| 5 | 3,058 | `98a1b0573cbc6498f6ab6d6a9f5e7d5c28cc5b93f5f2d0f51f20ea6c19cb07c9` |
+| 6 | 3,058 | `4f50cf4aca1b036b212ee533f13306a08c5c85872ec3b0f8189118d4d565369f` |
+| 7 | 160 | `66283ced00a6da8d22e1f127b7ee39400cb73738ed091edfad7f8e421ed35ee2` |
+| 8 | 2,652 | `b96497f9c7cef388aad35670abdf2d800f82db3587c5e4fddb9898540d840bed` |
+| 9 | 390 | `53582ddd843a706bd166bad50352ac736a257b2f8ca5c3bd733678f5fa4d51ab` |
+| 10 | 3,304 | `d0c8b928df069bdd7156a7139f851c50ea2e63456379c33d30aba77c7d155146` |
+| 11 | 2,442 | `d20c28002ba873c9bb053b4bc77ddbe67f4494c1311eac7353d4db09cf215ab8` |
+| 12 | 2,734 | `774bfe724f56afc94045452f32190a641e25262c9627bd87c76eb67e7bb0eca2` |
+
+正式重製端已證實消費包含：標題／選單游標index 0、確認index 12、AI idle recovery
+index 4、AI mode 5 index 12、command heal前導index 11／效果12／mask 1，以及多個typed
+presentation中的ch28 post index 3。正式runtime目前只直接消費0／1／3／4／11／12；其餘
+sample仍因完整原版#31 bank契約輸出，但不猜用途。動態sample選擇仍由既有typed schedule
+決定，不把單一用途名稱寫成sample identity。
+
 ## 待辦(後輪)
 
-- [x] `FDOTHER.DAT` #31 的 14 個子樣本導出成 WAV(見下方「導出 WAV」)。
+- [x] `FDOTHER.DAT` #31 的 13 個非空樣本曾導出成 WAV（歷史流程，見下方
+  「導出 WAV」）；正式執行期現已改讀分離 OGG。
 - [x] `[0x53eec]` UI 表 index 0 對照確認(見下方「事件→樣本對照」);其餘 index 已列出呼叫端證據,
   精確語意(哪個選單/哪個動作)待後輪配合畫面實測確認。
 - [x] 戰鬥動態 index 表載入點已定位到真實位址(`0x028110`–`0x028156`,取代第 8 輪誤記的 `0x28f24`/
@@ -204,7 +236,7 @@ FD2 game code沒有設定sample type／playback rate，剩餘差異落在Miles A
 - [x] `FDOTHER.DAT` #1（同一次 init 載入至 `[0x53a4d]`）是 `0x122dc/0x126f7` range overlay 的 20-entry
   24×24 four-mode RLE descriptor bank，#0..18 由 modes 1..5 使用；#2 是 action overlay raw cell bank。
 
-## 導出 WAV(第 9 輪)
+## 導出 WAV（第 9 輪歷史流程；正式執行期已由分離 OGG 取代）
 
 `tools/export_sfx.py` 解開 `FDOTHER.DAT` 資源 #31 的巢狀容器,逐個子樣本補 44-byte RIFF/WAV 檔頭
 (8-bit unsigned mono,取樣率沿用 11025Hz 推定值),輸出到 `remake/assets/sfx/sfx_00.wav` ~ `sfx_12.wav`
@@ -266,9 +298,10 @@ call 0x25a96         ; (或 0x25b45 = handle B,允許與 handle A 疊播)
 ```
 
 全 EXE 掃描(遞迴找 `call 0x25a96`/`call 0x25b45` 的相對呼叫端,而非線性 sweep,避免誤判):
-`play_sfx_a` **107 處**、`play_sfx_b` **11 處**。table_ptr 除了 `[0x53eec]`(UI 池,本篇 14 個樣本)外,
+`play_sfx_a` **107 處**、`play_sfx_b` **11 處**。table_ptr 除了 `[0x53eec]`（UI 池，
+本篇 14 個目錄項目／13 個非空樣本）外，
 還有 `[0x53b13]`、`[0x54117]`、`[0x5411f]`(= 第 8 輪記錄的 `[0x5411f]`,戰鬥動態表,前綴 `0x54` 打字誤
-差 1 位)三個**不同的資源**,不是同一批 14 個 UI 樣本——**戰鬥音效與本篇 UI 音效是兩個獨立池**,對照
+差 1 位)三個**不同的資源**，不是同一批 13 個非空 UI 樣本——**戰鬥音效與本篇 UI 音效是兩個獨立池**，對照
 時不要混用。
 
 ### `[0x53eec]`(UI 音效池,對應本篇 WAV)index 語意
@@ -299,7 +332,8 @@ mode 5 的 index `0xc` 已另由合法 IDA／Capstone 固定為 raw 音訊邊界
 `[0x5411f]` 在 `0x28f24`/`0x28f49`(第 8 輪位址,未受本輪位址勘誤影響——已抽查落在合理範圍)呼叫
 `0x11fba`(通用容器資源載入)**動態載入 FDOTHER.DAT 的另一個子資源**,把回傳指標存進 `[0x5411f]`,
 再拿它當 `table_ptr` 呼叫 `play_sfx_a`(index 常數 1/2/3/-1,見 `0x2621f`/`0x2671d`/`0x265b9`/`0x2855a`
-等)。即戰鬥音效走的是**攻擊資料決定的另一個容器**,不是本篇解開的資源 #31 這 14 個樣本——第 8 輪
+等)。即戰鬥音效走的是**攻擊資料決定的另一個容器**，不是本篇解開的資源 #31 這
+13 個非空樣本——第 8 輪
 待辦「戰鬥音效逐招對照」須先確認 `0x11fba` 在戰鬥路徑載入的是哪個資源 index,才能導出對應 WAV,
 與本篇 UI 池分開處理。`[0x53b13]`(另一獨立表,見 `0x1c309`/`0x1d50a` 等,`index=-1` 疑為「靜音/取消
 播放」旗標)用途待查,同樣不是資源 #31。

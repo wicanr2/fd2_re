@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -57,9 +58,18 @@ func TestCloseAudioPlayersClosesRemainingSFXVoices(t *testing.T) {
 
 func TestPlayRawRetainsRealAudioPlayer(t *testing.T) {
 	t.Setenv("FD2_MUTE", "")
-	pcm := loadWav("assets/sfx/sfx_04.wav")
+	pack := filepath.Clean("../../generated-assets/fd2-original-b97caf22")
+	if _, err := os.Stat(filepath.Join(pack, "sfx", "FDOTHER_031", "resource.json")); err != nil {
+		t.Skipf("separated UI sound pack is absent: %v", err)
+	}
+	t.Setenv("FD2_ASSET_PACK", pack)
+	bank, err := loadSFX()
+	if err != nil {
+		t.Fatal(err)
+	}
+	pcm := bank[4]
 	if len(pcm) == 0 || audioCtx == nil {
-		t.Fatal("versioned SFX fixture did not decode into an audio context")
+		t.Fatal("separated SFX fixture did not decode into an audio context")
 	}
 	g := &Game{}
 	g.playRaw(pcm)

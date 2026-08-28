@@ -8375,3 +8375,21 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 本機不入版控pack的manifest重生與來源驗證通過，現為38,709筆：37,685 exported、
   1,005 intentionally raw、19 blocked。下一批依A2／A3處理UI #31、一般物理攻擊動態
   bank、FDOTHER #80／#91..95或其他玩家價值較高的archive consumer。
+
+## 2026-08-29 UI 共用 FDOTHER #31 音效分離與正式消費端遷移
+
+- 固定resource #31為31,771 bytes、14-entry巢狀container；#0..#12共13筆非空PCM，#13
+  為0-byte尾項。`36`已登記每筆長度與SHA-256；正式consumer只直接使用0／1／3／4／
+  11／12，其餘仍依完整bank輸出但不猜高階用途。正確原版播放器位址仍以`36`後段勘誤
+  為準，不沿用文件早期的舊位址。
+- `60`先建立READY契約，再將canonical匯出擴成#31＋既有八個command bank：9份metadata、
+  35筆OGG。真實FDOTHER連續兩次完整輸出逐byte一致，全部OGG通過mono／11025 Hz／時長／
+  非靜音probe；11025 Hz仍只屬hardware-spec approximation。
+- 正式`loadSFX`改由`FD2_ASSET_PACK/sfx/FDOTHER_031`嚴格載入並解碼完整bank；舊
+  `assets/sfx/sfx_*.wav`的正式碼與測試引用歸零。初次抽測揭露舊WAV loader兼任Ebiten
+  audio context初始化，新loader已保留此責任後重跑通過，沒有以靜默不播放掩蓋差異。
+- 原始FDOTHER刻意缺失時，真實短音播放器、標題游標／確認、ch28 post與AI mode 5代表
+  consumer通過；缺pack整批拒絕。manifest重生／來源驗證通過，現為38,723筆：37,699
+  exported、1,005 intentionally raw、19 blocked。
+- 下一個archive音效缺口是一般物理攻擊動態bank及FDOTHER #80／#91..95；不可把它們
+  猜成#31，也不可由尚未閉合的`battle_sfx_map.json index2`建立固定對照。

@@ -20,8 +20,8 @@
 | 順序 | 工作 | 現況 | 下一個可驗收結果 |
 |---:|---|---|---|
 | A1 | 編輯器 canonical schema 與穩定身份層 | `SPEC-READY`：campaign／scenario／story／animation 四份 machine-readable Schema 與跨檔 validator 已建立；穩定 ID、戰役轉場、mouth animation、素材 `asset_id`、重複 ID 及受控 extensions 有11項 Docker 測試。現有資料仍是 legacy 單向 loader，尚未轉入 canonical 格式 | 加入 legacy import 診斷、canonical writer 與 load→write→reload 測試；再建立 character identity 文件，分離連結 portrait／map sprite／battle animation，達 `DATA-READY` 後才接編輯器 UI |
-| A2 | 原版素材全量分離與清冊 | `DATA-PARTIAL`：現行完整manifest為38,709筆：37,685 exported、1,005 intentionally_raw、19 blocked。FDICON完整分離1,680張三層sprite；FDSHAP全33銀行另分離8,256張indexed frame／source mask／remap mask及controls，均與原版逐層一致。標題FDOTHER完成49筆標準輸出；ANI#0..#8完成289張indexed frame、289份六位元DAC與9份metadata；第一批戰鬥音效另完成8個bank、22筆OGG及raw PCM provenance，空尾項不輸出。raw零遺漏，但其餘UI與OGG仍未全量閉合 | 將15首MIDI轉成具cue／loop metadata的OGG；再處理UI #31、物理攻擊動態bank、FDOTHER #80／#91..95及其餘raw家族，補齊用途關聯，輸出包不入Git |
-| A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型、共用道具panel、FDICON、FDSHAP與ANI正式玩家consumer已遷移；第23戰FDFIELD#69與終局#90..92均可逐byte重建。終局、商店、城鎮及標題FDOTHER正式consumer均已改用分離pack；標題不再讀舊`assets/title/*.png`，標題／第20戰／結局也不再讀`ANI.DAT`。2026-08-29將18條FDOTHER#0 palette owner統一改讀分離JSON，並將command 0..8／敵方9的八個巢狀音效bank改讀分離OGG；正式`ReadResource(...,0)`及`ReadNestedResource`均歸零，舊#82..#90 WAV引用歸零 | 下一批處理UI #31、一般物理攻擊動態bank、resource #80／#91..95及其餘UI家族；保留archive不可讀與缺分離資產失敗即關閉測試 |
+| A2 | 原版素材全量分離與清冊 | `DATA-PARTIAL`：現行完整manifest為38,723筆：37,699 exported、1,005 intentionally_raw、19 blocked。FDICON完整分離1,680張三層sprite；FDSHAP全33銀行另分離8,256張indexed frame／source mask／remap mask及controls，均與原版逐層一致。標題FDOTHER完成49筆標準輸出；ANI#0..#8完成289張indexed frame、289份六位元DAC與9份metadata；UI #31及第一批戰鬥音效共完成9個bank、35筆OGG及raw PCM provenance，空尾項不輸出。raw零遺漏，但其餘UI與OGG仍未全量閉合 | 將15首MIDI轉成具cue／loop metadata的OGG；再處理物理攻擊動態bank、FDOTHER #80／#91..95及其餘raw家族，補齊用途關聯，輸出包不入Git |
+| A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型、共用道具panel、FDICON、FDSHAP與ANI正式玩家consumer已遷移；第23戰FDFIELD#69與終局#90..92均可逐byte重建。終局、商店、城鎮及標題FDOTHER正式consumer均已改用分離pack；標題不再讀舊`assets/title/*.png`，標題／第20戰／結局也不再讀`ANI.DAT`。2026-08-29將18條FDOTHER#0 palette owner統一改讀分離JSON，並將UI #31與command 0..8／敵方9共九個巢狀音效bank改讀分離OGG；正式`ReadResource(...,0)`及`ReadNestedResource`均歸零，舊`sfx_*.wav`與#82..#90 WAV引用歸零 | 下一批處理一般物理攻擊動態bank、resource #80／#91..95及其餘UI家族；保留archive不可讀與缺分離資產失敗即關閉測試 |
 | A4 | 現代美術主題 | `PENDING-A1/A2`：尚未選定正式風格，不以猜測覆蓋原版 | 先輸出頭像＋戰場 sprite／tile＋介面框的可丟棄忠實／現代對照，再由使用者選定 theme 方向 |
 | A5 | 繁中／簡中／日文／英文與可調文字顯示 | `DRAFT-DECISION`：已盤點UTF-8 story、原版FDTXT token、16×16 native bitmap font、現代TTF renderer與固定320×200排版界線；共通資料不變量與四個待決分支已寫入`60` | 使用者先確認官方內建／外部語言包根分支；再建立locale／layout schema、完整key validator與最長字串prototype，之後才接runtime切換 |
 
@@ -1171,13 +1171,14 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   [`fd2_ai_mode11_full_ida_20260810.txt`](../data/ida/fd2_ai_mode11_full_ida_20260810.txt)。
   重製端仍只保留 E0 路由選擇，transaction owner、演出與一般玩家 E2 尚未完成。
 - [x] **RE-AI-MODE0/1-BRANCHES**：同一份 `0x13A9F` 原始控制流已資料化為 `PlanNativeUnitMode0`／`PlanNativeUnitMode1`；mode 0 保留 `0x14EF0→0x14121→0x13E9C` 巢狀備援，`0x13E9C` 零回傳才到 `0x13FD4`；mode 1 只保留 `0x14EF0→0x14121→0x13FD4`。原 helper 仍只保存 E0 位址順序與 caller-supplied 回傳旗標；2026-08-10 的 `NextAIPlan` bridge 另以 raw provenance 接上 mode 0／1，缺來源仍失敗即關閉。
-- [x] **RE-AI-MODE3-10-BRANCHES**：同一份 `0x13A9F` raw CFG 已資料化為 `PlanNativeUnitMode3/4/5/7/9/10`；保留 `0x12C60` 的 `-1`／索引分支、`0x12D7B→0x14B78→0x13FD4`、`0x51A83` 清零、mode 5 的 `+0x31/+0x32`／`0x53AD5`／`+0x34=7` writes 與 mode 7 的 `0x32975`。原 helper 的 caller-supplied 邊界仍保留；2026-08-10 `NextAIPlan` bridge 已接 mode 3／4／5／7／9／10 的 raw destination／event state，mode 5 raw AIL sample tuple 也已接到 `sfx_12.wav` 並在缺樣本時失敗即關閉，測試已通過。
+- [x] **RE-AI-MODE3-10-BRANCHES**：同一份 `0x13A9F` raw CFG 已資料化為 `PlanNativeUnitMode3/4/5/7/9/10`；保留 `0x12C60` 的 `-1`／索引分支、`0x12D7B→0x14B78→0x13FD4`、`0x51A83` 清零、mode 5 的 `+0x31/+0x32`／`0x53AD5`／`+0x34=7` writes 與 mode 7 的 `0x32975`。原 helper 的 caller-supplied 邊界仍保留；2026-08-10 `NextAIPlan` bridge 已接 mode 3／4／5／7／9／10 的 raw destination／event state，mode 5 raw AIL sample tuple 當時接到舊 `sfx_12.wav` 並在缺樣本時失敗即關閉；2026-08-29 已由 `FDOTHER_031/sample_012.ogg` 取代。
 - [x] **RE-AI-MODE5-FULL-IDA-20260810**：重新固定 mode 5 的 `0x13C19..0x13D24`
   分支、`0x15DF3` 的 return `0=命中／-1=無命中`、`0x12263` 整圖 state tail，
   並以 IDA helper 字串證實 `0x25B45([0x53EE8],12,1)` 是 AIL sample
   stop/init/address/loop/start，不是 indexed renderer。`0x17AA9` 不是 mode 5
   direct caller；`0x25B45` raw sample tuple 已接同一 FDOTHER #31 導出的
-  `sfx_12.wav`，缺樣本時維持失敗即關閉，未知 sample 名稱不命名。完整證據見
+  當時的 `sfx_12.wav`；2026-08-29 已由 `FDOTHER_031/sample_012.ogg` 取代，缺樣本時
+  維持失敗即關閉，未知 sample 名稱不命名。完整證據見
   [`fd2_ai_mode5_full_ida_20260810.txt`](../data/ida/fd2_ai_mode5_full_ida_20260810.txt)。
 - [x] **RE-AI-IDLE-RECOVERY-13FD4**：`0x13FD4` 只在 currentHP≠maxHP 且 raw `+0x25/+0x26==0` 時回復 `floor(maxHP/5)` 並封頂；新增 state-only adapter，玩家休息正式路徑同步刪除錯誤的最少回復 1 並接 raw transient gates。
 - [x] **RE-AI-13FD4-FULL-IDA-20260810**：重新以合法 IDA Pro 9.4／Docker Capstone
@@ -1509,7 +1510,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
       不存在獨立 spell-id→FIGANI 特效索引（doc37）；僅已證實施法者自身 FIGANI 組動畫，其他 spell runtime 保持 partial
 - [x] **音樂** ✅(e09c68c):audio.go(ebiten/audio+vorbis;忠實 play_bgm 0x26777:同曲不重播/換曲釋放/
       無限迴圈);campaign 節點 bgm 驅動;FD2_MUTE 靜默。待:非 campaign 模式場景→曲號自動對映(doc12 表)
-- [x] **音效 SFX** ✅(第8-11輪完成,cmd/fd2/audio.go;commit e09c68c 音樂+SFX 收線)。資料位置 RE(doc36):`FDOTHER.DAT` 資源 #31(巢狀 `LLLLLL` 容器,14 個 8-bit
+- [x] **音效 SFX** ✅(第8-11輪完成,cmd/fd2/audio.go;commit e09c68c 音樂+SFX 收線)。資料位置 RE(doc36):`FDOTHER.DAT` 資源 #31(巢狀 `LLLLLL` 容器，14 個目錄項目／13 個非空 8-bit
       unsigned mono raw PCM 子樣本)+ 戰鬥音效動態 index(同檔案,依攻擊資料決定 index);播放走
       `AIL_init/set_sample_address/set_sample_loop_count/start_sample`(0x26896/0x26945)。
       待:14 子樣本→UI事件對照、戰鬥動態 index 表還原、remake 端接入(SDL_mixer/ebiten audio)
@@ -1579,7 +1580,7 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 ## 第 9 輪 ✅(3-subagent 成本分工;haiku=資料/sonnet=RE·套件/旗艦=架構·驗收)
 > 策略(rulebook/45):簡單工作派便宜模型,旗艦只做架構與把關;每件交付先抽驗再 commit。
 - [x] **商店品項表**(haiku): `docs/data/shops.json`保存攻略來源的69家／23祕密商店品項與進入提示，campaign已資料化；這是外部攻略／editable authored資料，不是EXE gate真值。原版modifier/key→selection5仍列E0缺口。
-- [x] **SFX 破案**(sonnet):FDOTHER#31=14×8bit PCM+AIL 鏈 → doc36;WAV 導出(export_sfx.py,11025Hz 負向證據);
+- [x] **SFX 破案**(sonnet):FDOTHER#31=14個目錄項目／13個非空8-bit PCM＋AIL 鏈 → doc36；歷史WAV導出(export_sfx.py,11025Hz 負向證據);
       **index0=游標音確認**(5處方向鍵分支);戰鬥音效=另一獨立池([0x5411f])待導出
 - [~] **法術 FIGANI 手勢邊界**：`0x28784` 不讀 spell id，沒有另一段 FIGANI 由 spell id 選擇（火花在角色幀）→ doc37；
       但 `0x2a6bd` command-specific presentation／SFX／命中分支未閉合，remake 角色動畫不可稱完整原版施法演出，
