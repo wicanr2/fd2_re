@@ -16,7 +16,7 @@ type nativeAttackResource struct {
 }
 
 // ensureNativeAttackPresentation supplements the checked-in export subset
-// from the player's exact FIGANI archive. All resources are decoded and
+// from the player's separated FIGANI pack. All resources are decoded and
 // scheduled before any Game map is changed, so a malformed pair cannot leave
 // a half-published presentation.
 func (g *Game) ensureNativeAttackPresentation(atkGroup, defGroup int) error {
@@ -26,10 +26,7 @@ func (g *Game) ensureNativeAttackPresentation(atkGroup, defGroup int) error {
 	if g == nil || len(g.nativeUIPalette) < 256 {
 		return errors.New("native FIGANI palette unavailable")
 	}
-	archive := nativeFIGANIPath()
-	if archive == "" {
-		return errors.New("native FIGANI archive unavailable")
-	}
+	animationRoot := separatedAssetPath("animations")
 
 	ids := []int{figaniIndex(atkGroup) + 1, figaniIndex(defGroup)}
 	resources := make([]nativeAttackResource, 0, len(ids))
@@ -39,7 +36,7 @@ func (g *Game) ensureNativeAttackPresentation(atkGroup, defGroup int) error {
 			continue
 		}
 		seen[id] = true
-		animation, err := figani.DecodeResource(archive, id)
+		animation, err := figani.LoadSeparatedResource(animationRoot, id)
 		if err != nil {
 			return fmt.Errorf("native FIGANI resource %d: %w", id, err)
 		}

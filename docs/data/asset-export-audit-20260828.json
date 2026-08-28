@@ -76,11 +76,21 @@
     "separated_outputs": 4500,
     "runtime_consumers": [
       "native ending party montage",
-      "native ending 20-segment tail"
+      "native ending 20-segment tail",
+      "native attack actor and target",
+      "native commands 0/1/2/3/5/6/7/8/9 actor and target idle animations",
+      "native commands 24/29 actor, effect, and target animations",
+      "native commands 32/33/34/35 actor, effect, and target animations"
     ],
     "runtime_archive_fallback": false,
     "archive_png_indexed_mask_metadata_match": "pass (resource 4, all seven frames)",
-    "remaining_direct_archive_caller_files": 16,
+    "archive_unreadable_tests": "pass (native attack, commands 24/29/32)",
+    "remaining_direct_figani_archive_helpers": [
+      "nativeCommand0ActorEffect",
+      "nativeCommand6ActorEffect"
+    ],
+    "remaining_direct_figani_archive_helper_reason": "selector*3+2 zero-header fallback cannot distinguish an intentionally empty source resource from absent separated metadata until the importer catalogs rejected/empty resources",
+    "remaining_fdother_embedded_animation_caller_files": 16,
     "evidence_level": "RUNTIME-E1-PARTIAL"
   }],
   "not_yet_complete": [

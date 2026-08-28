@@ -166,7 +166,7 @@ func (g *Game) startNativeCommand2Presentation(actor, confirmed *battle.Unit, th
 	if err != nil {
 		return err
 	}
-	actorIdle, err := figani.DecodeResource(figaniPath, actor.BattleFig*3)
+	actorIdle, err := figani.LoadSeparatedResource(separatedAssetPath("animations"), actor.BattleFig*3)
 	if err != nil {
 		return err
 	}
@@ -176,7 +176,7 @@ func (g *Game) startNativeCommand2Presentation(actor, confirmed *battle.Unit, th
 	}
 	targetIdle := make([]*figani.Animation, len(plan.Results))
 	for index, result := range plan.Results {
-		targetIdle[index], err = figani.DecodeResource(figaniPath, result.Target.BattleFig*3)
+		targetIdle[index], err = figani.LoadSeparatedResource(separatedAssetPath("animations"), result.Target.BattleFig*3)
 		if err != nil {
 			return err
 		}

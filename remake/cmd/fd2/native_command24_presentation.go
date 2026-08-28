@@ -220,11 +220,8 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if len(g.nativeUIPalette) < 256 {
 		return errors.New("native command24 palette unavailable")
 	}
-	archive := nativeFIGANIPath()
-	if archive == "" {
-		return errors.New("native command24 player-provided FIGANI.DAT unavailable")
-	}
-	effect, err := figani.DecodeResource(archive, actor.BattleFig*3+2)
+	animationRoot := separatedAssetPath("animations")
+	effect, err := figani.LoadSeparatedResource(animationRoot, actor.BattleFig*3+2)
 	if err != nil {
 		return err
 	}
@@ -232,14 +229,14 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if err != nil {
 		return err
 	}
-	actorIdle, err := figani.DecodeResource(archive, actor.BattleFig*3)
+	actorIdle, err := figani.LoadSeparatedResource(animationRoot, actor.BattleFig*3)
 	if err != nil {
 		return err
 	}
 	if len(actorIdle.Frames) == 0 {
 		return errors.New("native command24 actor idle FIGANI is empty")
 	}
-	targetIdle, err := figani.DecodeResource(archive, target.BattleFig*3)
+	targetIdle, err := figani.LoadSeparatedResource(animationRoot, target.BattleFig*3)
 	if err != nil {
 		return err
 	}

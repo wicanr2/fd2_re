@@ -75,11 +75,8 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 	if !actor.HasBattleFig || actor.BattleFig != 34 || len(g.nativeUIPalette) < 256 {
 		return errors.New("native command29 requires proven selector34 actor and indexed palette")
 	}
-	archive := nativeFIGANIPath()
-	if archive == "" {
-		return errors.New("native command29 player-provided FIGANI.DAT unavailable")
-	}
-	effect, err := figani.DecodeResource(archive, actor.BattleFig*3+2)
+	animationRoot := separatedAssetPath("animations")
+	effect, err := figani.LoadSeparatedResource(animationRoot, actor.BattleFig*3+2)
 	if err != nil {
 		return err
 	}
@@ -91,7 +88,7 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 		schedule.TargetSample != 4 || schedule.PreludeMode != 1 || !schedule.UsesBGTransition || schedule.UsesTargetBase {
 		return errors.New("native command29 resource104 presentation signature mismatch")
 	}
-	actorIdle, err := figani.DecodeResource(archive, actor.BattleFig*3)
+	actorIdle, err := figani.LoadSeparatedResource(animationRoot, actor.BattleFig*3)
 	if err != nil || len(actorIdle.Frames) == 0 {
 		return errors.New("native command29 actor idle FIGANI unavailable")
 	}
@@ -196,7 +193,7 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 		if target == nil || !target.HasBattleFig {
 			return fmt.Errorf("native command29 target %d BattleFig unavailable", resultIndex)
 		}
-		idle, decodeErr := figani.DecodeResource(archive, target.BattleFig*3)
+		idle, decodeErr := figani.LoadSeparatedResource(animationRoot, target.BattleFig*3)
 		if decodeErr != nil || len(idle.Frames) == 0 {
 			return fmt.Errorf("native command29 target %d idle FIGANI unavailable", resultIndex)
 		}

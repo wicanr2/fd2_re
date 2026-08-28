@@ -24,7 +24,6 @@ func nativeCommand32PresentationPlan(t *testing.T) (*battle.NativeCompoundComman
 func TestStartNativeCommand32PresentationUsesOriginalAssetsEndToEnd(t *testing.T) {
 	base := filepath.Clean("../../../org_game/炎龍騎士團/FLAME2")
 	paths := map[string]string{
-		"FD2_ORIGINAL_FIGANI":  filepath.Join(base, "FIGANI.DAT"),
 		"FD2_ORIGINAL_FDOTHER": filepath.Join(base, "FDOTHER.DAT"),
 		"FD2_ORIGINAL_FDTXT":   filepath.Join(base, "FDTXT.DAT"),
 		"FD2_ORIGINAL_BG":      filepath.Join(base, "BG.DAT"),
@@ -36,6 +35,7 @@ func TestStartNativeCommand32PresentationUsesOriginalAssetsEndToEnd(t *testing.T
 		}
 		t.Setenv(key, path)
 	}
+	t.Setenv("FD2_ORIGINAL_FIGANI", filepath.Join(t.TempDir(), "missing.dat"))
 	g := &Game{rng: rand.New(rand.NewSource(32)), nativeUIPalette: loadNativeUIPalette()}
 	if err := g.loadMap("assets/maps/map0"); err != nil {
 		t.Fatal(err)

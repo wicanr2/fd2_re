@@ -79,16 +79,16 @@ func (g *Game) startNativeCommand34Presentation(actor, confirmed *battle.Unit, t
 		return errors.New("native command34 final target array unavailable")
 	}
 
-	figaniArchive, fdotherArchive := nativeFIGANIPath(), nativeFDOTHERPath()
+	fdotherArchive := nativeFDOTHERPath()
 	bgArchive, fdtxtArchive := nativeBGPath(), nativeFDTXTPath()
-	if figaniArchive == "" || fdotherArchive == "" || bgArchive == "" || fdtxtArchive == "" {
+	if fdotherArchive == "" || bgArchive == "" || fdtxtArchive == "" {
 		return errors.New("native command34 player-provided archives unavailable")
 	}
-	actorIdle, err := figani.DecodeResource(figaniArchive, actor.BattleFig*3)
+	actorIdle, err := figani.LoadSeparatedResource(separatedAssetPath("animations"), actor.BattleFig*3)
 	if err != nil || len(actorIdle.Frames) == 0 {
 		return errors.New("native command34 actor idle FIGANI unavailable")
 	}
-	actorEffect, err := figani.DecodeResource(figaniArchive, actor.BattleFig*3+1)
+	actorEffect, err := figani.LoadSeparatedResource(separatedAssetPath("animations"), actor.BattleFig*3+1)
 	if err != nil {
 		return err
 	}
@@ -96,7 +96,7 @@ func (g *Game) startNativeCommand34Presentation(actor, confirmed *battle.Unit, t
 	if firstTarget == nil || !firstTarget.HasBattleFig {
 		return errors.New("native command34 first target BattleFig unavailable")
 	}
-	targetIdle, err := figani.DecodeResource(figaniArchive, firstTarget.BattleFig*3)
+	targetIdle, err := figani.LoadSeparatedResource(separatedAssetPath("animations"), firstTarget.BattleFig*3)
 	if err != nil || len(targetIdle.Frames) == 0 {
 		return errors.New("native command34 target idle FIGANI unavailable")
 	}

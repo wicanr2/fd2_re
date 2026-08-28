@@ -165,9 +165,18 @@ blocked、1,005 intentionally_raw。正式 `loadNativeUIPalette`／
 
 `figani.LoadSeparatedResource` 只接受上述完整組合；resource 4的7幀已與 archive decoder
 逐欄位、逐 indexed pixel、逐 mask 比較一致。終局 party montage 與20段 tail 已改接
-分離 loader，缺 metadata／frame／mask 即失敗，不回退 `FIGANI.DAT`。目前仍有16個
-production 檔案直接解碼 FIGANI／FDOTHER 形式的動畫，主要是戰鬥指令演出，故本家族
-仍是 `RUNTIME-E1-PARTIAL`。
+分離 loader，缺 metadata／frame／mask 即失敗，不回退 `FIGANI.DAT`。戰鬥通用攻擊、
+指令0／1／2／3／5／6／7／8／9的角色與目標待機動畫、指令24／29及32–35的角色、
+效果與目標動畫也已改接同一 loader；指令24／29／32的回歸會刻意令原始
+`FIGANI.DAT` 不可讀。
+
+尚未遷移的 FIGANI 邊界只剩 `nativeCommand0ActorEffect` 與
+`nativeCommand6ActorEffect`：原版會先檢查 `selector*3+2` 的首個 word，為零才退到
+前一資源。現行 exporter 未替145個不被 decoder 接受的資源登記「空資源」狀態；在
+缺 metadata 時直接套用退回規則會把「未匯出」誤當「原版首 word 為零」，因此維持
+失敗即關閉。另有16個 production 檔案仍解碼封裝在 `FDOTHER.DAT` 的戰鬥特效；它們
+不是 `FIGANI.DAT` 直接讀取端，須先輸出相同 animation metadata 契約後再遷移。本家族
+因此仍是 `RUNTIME-E1-PARTIAL`。
 
 ### 第二個 runtime 遷移切片：故事對話 DATO 頭像
 

@@ -17,7 +17,13 @@ func newNativeCommand29PresentationTestGame(t *testing.T) (*Game, *battle.Unit, 
 	if !fileExists(figaniPath) || !fileExists(fdotherPath) || !fileExists(bgPath) || !fileExists(fdtxtPath) || !fileExists(taiPath) {
 		t.Skip("player-provided FIGANI.DAT/FDOTHER.DAT/BG.DAT/FDTXT.DAT/TAI.DAT unavailable")
 	}
-	t.Setenv("FD2_ORIGINAL_FIGANI", figaniPath)
+	for _, resource := range []string{"FIGANI_000", "FIGANI_009", "FIGANI_102", "FIGANI_104"} {
+		if !fileExists(filepath.Join(separatedAssetPath("animations"), resource, "animation.json")) {
+			t.Skip("player-generated separated FIGANI pack is absent")
+		}
+	}
+	// Command 29's FIGANI inputs must come from the separated asset pack.
+	t.Setenv("FD2_ORIGINAL_FIGANI", filepath.Join(t.TempDir(), "missing-FIGANI.DAT"))
 	t.Setenv("FD2_ORIGINAL_BG", bgPath)
 	t.Setenv("FD2_ORIGINAL_FDOTHER", fdotherPath)
 	t.Setenv("FD2_ORIGINAL_FDTXT", fdtxtPath)
