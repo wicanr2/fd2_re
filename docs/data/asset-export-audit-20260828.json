@@ -27,6 +27,11 @@
     "decoded_figani_masks_png": 2118,
     "decoded_figani_metadata_json": 264,
     "figani_resource_status_json": 409,
+    "decoded_fdother_animation_resources": 23,
+    "decoded_fdother_animation_frames_png": 408,
+    "decoded_fdother_animation_masks_png": 408,
+    "decoded_fdother_animation_metadata_json": 23,
+    "fdother_animation_resource_status_json": 23,
     "decoded_portrait_resources": 136,
     "decoded_portrait_frames_png": 544,
     "rendered_maps_png": 33,
@@ -36,8 +41,8 @@
   "manifest_validation": {
     "tool": "tools/generate_separated_asset_manifest.py",
     "validator": "tools/validate_separated_asset_pack.py",
-    "total_entries": 6677,
-    "exported": 5657,
+    "total_entries": 7539,
+    "exported": 6519,
     "blocked": 15,
     "intentionally_raw": 1005,
     "source_hashes_verified": true,
@@ -93,8 +98,22 @@
     "archive_unreadable_tests": "pass (native attack, commands 0/24/29/32)",
     "zero_header_fallback_intersection": "119 selector*3+2 resources; all confirmed empty_header_zero",
     "remaining_direct_figani_archive_helpers": [],
-    "remaining_fdother_embedded_animation_caller_files": 16,
+    "remaining_fdother_embedded_animation_caller_files": 0,
     "evidence_level": "RUNTIME-E1-PARTIAL"
+  }, {
+    "family": "fdother_embedded_battle_animations",
+    "source_resources": ["FDOTHER.DAT#18..68 (23 proven resources)"],
+    "decoded_resources": 23,
+    "decoded_frames": 408,
+    "separated_outputs": 862,
+    "runtime_consumers": [
+      "native commands 0/1/2/3/5/6/7/8/9 effects",
+      "native commands 32/33/34/35 common effects"
+    ],
+    "runtime_archive_fallback": false,
+    "archive_png_indexed_mask_metadata_match": "pass (resource 18, all sixteen frames)",
+    "remaining_direct_archive_callers": 0,
+    "evidence_level": "RUNTIME-E1"
   }],
   "not_yet_complete": [
     "FIGANI #408 是 0-byte blocked resource；不得當成合法 zero-header fallback",

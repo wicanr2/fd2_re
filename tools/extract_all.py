@@ -92,6 +92,24 @@ def main(argv):
         nframe += len(frames)
     log.append(f"animations/ : {nanim} 個動畫,共 {nframe} 幀(PNG 序列 + GIF)")
 
+    # 3b. 已由 production caller 證實為 FIGANI 格式的 FDOTHER 內嵌動畫。
+    nfdother_anim = nfdother_frame = 0
+    for resource in decode_figani.FDOTHER_ANIMATION_RESOURCES:
+        f = os.path.join(raw, "FDOTHER", f"FDOTHER_{resource:03d}.bin")
+        if not os.path.isfile(f):
+            continue
+        base = os.path.splitext(os.path.basename(f))[0]
+        output = os.path.join(animdir, base)
+        status = decode_figani.cmd_resource_status(f, output)
+        if status["status"] != "decoded":
+            continue
+        frames = decode_figani.parse_anim(open(f, "rb").read())
+        decode_figani.cmd_frames(f, palp, output)
+        decode_figani.cmd_gif(f, palp, os.path.join(animdir, base + ".gif"))
+        nfdother_anim += 1
+        nfdother_frame += len(frames)
+    log.append(f"animations/FDOTHER : {nfdother_anim} 個內嵌動畫,共 {nfdother_frame} 幀")
+
     # 4. 音樂 XMIDI → MIDI
     musdir = os.path.join(OUT, "music")
     os.makedirs(musdir, exist_ok=True)

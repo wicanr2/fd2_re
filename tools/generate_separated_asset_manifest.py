@@ -138,9 +138,9 @@ def infer_provenance(path: Path) -> tuple[str | None, int | None, int | None]:
     if container:
         return SOURCE_BY_CONTAINER.get(container), resource, frame
     if path.parts and path.parts[0].lower() == "animations":
-        match = re.match(r"FIGANI[_-](\d+)", path.parts[1], re.I) if len(path.parts) > 1 else None
+        match = re.match(r"(FIGANI|FDOTHER)[_-](\d+)", path.parts[1], re.I) if len(path.parts) > 1 else None
         if match:
-            return "FIGANI.DAT", int(match.group(1)), frame
+            return SOURCE_BY_CONTAINER[match.group(1).upper()], int(match.group(2)), frame
     if path.parts and path.parts[0].lower() == "portraits":
         match = re.search(r"DATO[_-](\d+)", stem, re.I)
         if match:

@@ -130,7 +130,7 @@ func (g *Game) startNativeCommand9AIPresentation(actor, confirmed *battle.Unit, 
 	if err != nil {
 		return err
 	}
-	effect, err := figani.DecodeResource(fdotherPath, figani.NativeCommand9AIEffectResource)
+	effect, err := figani.LoadSeparatedArchiveResource(separatedAssetPath("animations"), "FDOTHER.DAT", figani.NativeCommand9AIEffectResource)
 	if err != nil {
 		return err
 	}

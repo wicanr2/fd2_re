@@ -20,6 +20,9 @@ class DecodeFiganiTest(unittest.TestCase):
         self.assertEqual(empty["status"], "blocked")
         self.assertEqual(empty["reason_code"], "empty_resource")
         self.assertNotIn("header_word_le", empty)
+        fdother = decode_figani.resource_status_document(bytes.fromhex("00000a"), 18, "FDOTHER.DAT")
+        self.assertEqual(fdother["source"], {"file": "FDOTHER.DAT", "resource": 18})
+        self.assertEqual(fdother["resource_id"], "animation-resource/fdother_018")
 
     def test_mask_distinguishes_opaque_palette_zero_from_transparent_skip(self):
         pixels, mask = decode_figani.decode_rle_layers(

@@ -282,7 +282,7 @@ func (g *Game) startNativeCommand0Presentation(actor, target *battle.Unit, then 
 	if actor.NativeRecordByte6 == 0 {
 		effectResource = 20
 	}
-	effect, err := figani.DecodeResource(fdotherPath, effectResource)
+	effect, err := figani.LoadSeparatedArchiveResource(separatedAssetPath("animations"), "FDOTHER.DAT", effectResource)
 	if err != nil {
 		return err
 	}

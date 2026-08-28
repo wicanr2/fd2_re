@@ -56,6 +56,30 @@ func TestSeparatedZeroHeaderFallbackMatchesOriginalPreviousResource(t *testing.T
 	}
 }
 
+func TestSeparatedFDOTHERAnimationMatchesOriginalResource(t *testing.T) {
+	const (
+		archive = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
+		root    = "../../generated-assets/fd2-original-b97caf22/animations"
+	)
+	if _, err := os.Stat(archive); err != nil {
+		t.Skip("player-provided FDOTHER.DAT is absent")
+	}
+	if _, err := os.Stat(root + "/FDOTHER_018/animation.json"); err != nil {
+		t.Skip("separated FDOTHER animation pack is absent")
+	}
+	want, err := DecodeResource(archive, 18)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := LoadSeparatedArchiveResource(root, "FDOTHER.DAT", 18)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Fatal("separated FDOTHER#18 differs from archive decoder")
+	}
+}
+
 func TestSeparatedResourceFailsClosed(t *testing.T) {
 	if _, err := LoadSeparatedResource(t.TempDir(), 4); err == nil {
 		t.Fatal("missing separated animation was accepted")

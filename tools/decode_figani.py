@@ -43,6 +43,12 @@ import struct
 import json
 
 
+FDOTHER_ANIMATION_RESOURCES = (
+    18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 30, 32, 33,
+    37, 38, 39, 43, 44, 65, 66, 67, 68,
+)
+
+
 def inspect_anim(d):
     """回傳不猜高階語意的 resource 級診斷。"""
     document = {
@@ -83,14 +89,15 @@ def inspect_anim(d):
     return document
 
 
-def resource_status_document(d, resource):
+def resource_status_document(d, resource, source_file="FIGANI.DAT"):
+    prefix = source_file.removesuffix(".DAT").lower()
     document = inspect_anim(d)
     document.update({
         "schema_version": 1,
-        "document_id": f"animation-resource/figani_{resource:03d}",
+        "document_id": f"animation-resource/{prefix}_{resource:03d}",
         "kind": "animation_resource_status",
-        "resource_id": f"animation-resource/figani_{resource:03d}",
-        "source": {"file": "FIGANI.DAT", "resource": resource},
+        "resource_id": f"animation-resource/{prefix}_{resource:03d}",
+        "source": {"file": source_file, "resource": resource},
         "extensions": {},
     })
     return document
@@ -100,9 +107,11 @@ def cmd_resource_status(src, outdir):
     with open(src, "rb") as stream:
         data = stream.read()
     base = os.path.splitext(os.path.basename(src))[0]
+    prefix = base.rsplit("_", 1)[0].upper()
+    source_file = f"{prefix}.DAT"
     resource = int(base.rsplit("_", 1)[-1])
     os.makedirs(outdir, exist_ok=True)
-    document = resource_status_document(data, resource)
+    document = resource_status_document(data, resource, source_file)
     with open(os.path.join(outdir, "resource.json"), "w", encoding="utf-8") as stream:
         json.dump(document, stream, ensure_ascii=False, indent=2)
         stream.write("\n")
@@ -195,6 +204,7 @@ def cmd_frames(src, palp, outdir):
     pal = load_palette(palp)
     os.makedirs(outdir, exist_ok=True)
     base = os.path.splitext(os.path.basename(src))[0]
+    source_file = f"{base.rsplit('_', 1)[0].upper()}.DAT"
     status = cmd_resource_status(src, outdir)
     if status["status"] != "decoded":
         raise ValueError(f"{base}: resource 狀態不是 decoded")
@@ -203,7 +213,7 @@ def cmd_frames(src, palp, outdir):
         "schema_version": 1,
         "document_id": f"animation/{base.lower()}",
         "kind": "animation",
-        "source": {"file": "FIGANI.DAT", "resource": int(base.rsplit("_", 1)[-1])},
+        "source": {"file": source_file, "resource": int(base.rsplit("_", 1)[-1])},
         "animation_id": f"animation/{base.lower()}",
         "native_header": {"byte_1": d[1], "byte_2": d[2], "byte_4": d[4]},
         "frames": [],

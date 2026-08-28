@@ -174,7 +174,7 @@ blocked、1,005 intentionally_raw。正式 `loadNativeUIPalette`／
 `nativeCommand6ActorEffect`：原版會先檢查 `selector*3+2` 的首個 word，為零才退到
 前一資源。現行 exporter 未替145個不被 decoder 接受的資源登記「空資源」狀態；在
 缺 metadata 時直接套用退回規則會把「未匯出」誤當「原版首 word 為零」，因此維持
-失敗即關閉。另有16個 production 檔案仍解碼封裝在 `FDOTHER.DAT` 的戰鬥特效；它們
+失敗即關閉。另有13個 production 檔案仍解碼封裝在 `FDOTHER.DAT` 的戰鬥特效；它們
 不是 `FIGANI.DAT` 直接讀取端，須先輸出相同 animation metadata 契約後再遷移。本家族
 因此仍是 `RUNTIME-E1-PARTIAL`。
 
@@ -205,8 +205,30 @@ blocked、1,005 intentionally_raw。正式 `loadNativeUIPalette`／
 `nativeCommand0ActorEffect`／`nativeCommand6ActorEffect` 已改用
 `LoadSeparatedResourceWithZeroHeaderFallback`，指令0正常游標確認測試會刻意令
 `FIGANI.DAT` 不可讀；resource2→1另與原 archive decoder 逐欄位相同。正式
-`FIGANI.DAT` decoder caller 因此歸零。仍待遷移的是16檔 `FDOTHER.DAT` 內嵌動畫，
+`FIGANI.DAT` decoder caller 因此歸零。仍待遷移的是13檔 `FDOTHER.DAT` 內嵌動畫，
 不可把它們誤列為 FIGANI archive caller。
+
+#### FDOTHER 內嵌戰鬥動畫
+
+production caller 全量掃描固定為13檔、23個唯一 resource：
+`18,19,20,21,22,23,24,25,26,27,28,30,32,33,37,38,39,43,44,65,66,67,68`。
+每一筆均由 `fdother.ReadResource` 取得 raw 後直接交給 `figani.Parse`；這證實可以共用
+相同 frame／mask／metadata 契約，但來源必須保留為 `FDOTHER.DAT`，目錄與穩定 ID
+使用 `FDOTHER_NNN`／`animation/fdother_NNN`，不得標成 FIGANI。
+
+匯出器只對上述已知消費集合產生完整動畫輸出；其他 FDOTHER resource 仍依各自的
+LMI1、字型、調色盤、音效或未知格式處理。通用 loader 必須驗證 metadata 的
+`source.file` 與目錄 prefix 一致，缺 frame／mask／來源矛盾時失敗即關閉，且不可
+回退 `FDOTHER.DAT`。
+
+實際匯出23組共408幀，每幀各有 indexed PNG 與mask，另有23份animation metadata與
+23份resource status，共新增862筆標準輸出；manifest 因此由6,677增為7,539筆
+（6,519 exported、1,005 intentionally_raw、15 MIDI blocked）。
+`LoadSeparatedArchiveResource` 明確驗證 `FDOTHER.DAT`／`FDOTHER_NNN`／
+`animation/fdother_NNN` 三者一致；resource18的16幀已與原 archive decoder逐欄位、
+逐pixel、逐mask相同。指令0／1／2／3／5／6／7／8／9與32／33／34／35均已改接，
+production `figani.DecodeResource` caller 歸零。本子家族達 `RUNTIME-E1`；其餘
+FDOTHER palette、音效、LMI1及介面 consumer仍是不同待辦，不因動畫遷移自動閉合。
 
 ### 第二個 runtime 遷移切片：故事對話 DATO 頭像
 

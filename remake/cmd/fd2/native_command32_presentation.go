@@ -140,7 +140,7 @@ func (g *Game) startNativeCommand32Presentation(actor, confirmed *battle.Unit, t
 	if err != nil || len(targetIdle.Frames) == 0 {
 		return errors.New("native command32 target idle FIGANI unavailable")
 	}
-	commonEffect, err := figani.DecodeResource(fdotherArchive, 65)
+	commonEffect, err := figani.LoadSeparatedArchiveResource(separatedAssetPath("animations"), "FDOTHER.DAT", 65)
 	if err != nil {
 		return err
 	}

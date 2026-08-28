@@ -65,10 +65,25 @@ func loadPNG(path string) (image.Image, error) {
 // LoadSeparatedResource 重建 FIGANI 的原始 indexed pixels、透明 mask 與
 // descriptor metadata。正式 runtime 不可在此失敗後回退讀 FIGANI.DAT。
 func LoadSeparatedResource(animationRoot string, resource int) (*Animation, error) {
+	return LoadSeparatedArchiveResource(animationRoot, "FIGANI.DAT", resource)
+}
+
+// LoadSeparatedArchiveResource 載入已證實使用 FIGANI frame 契約的 archive
+// resource，同時保留原始來源家族，不把 FDOTHER 內嵌動畫冒充 FIGANI.DAT。
+func LoadSeparatedArchiveResource(animationRoot, sourceFile string, resource int) (*Animation, error) {
 	if animationRoot == "" || resource < 0 || resource > 999 {
 		return nil, fmt.Errorf("figani: invalid separated animation request")
 	}
-	directory := filepath.Join(animationRoot, fmt.Sprintf("FIGANI_%03d", resource))
+	prefix, idPrefix := "", ""
+	switch sourceFile {
+	case "FIGANI.DAT":
+		prefix, idPrefix = "FIGANI", "figani"
+	case "FDOTHER.DAT":
+		prefix, idPrefix = "FDOTHER", "fdother"
+	default:
+		return nil, fmt.Errorf("figani: unsupported separated animation source %q", sourceFile)
+	}
+	directory := filepath.Join(animationRoot, fmt.Sprintf("%s_%03d", prefix, resource))
 	raw, err := os.ReadFile(filepath.Join(directory, "animation.json"))
 	if err != nil {
 		return nil, fmt.Errorf("figani: separated metadata %d: %w", resource, err)
@@ -77,9 +92,9 @@ func LoadSeparatedResource(animationRoot string, resource int) (*Animation, erro
 	if err := json.Unmarshal(raw, &document); err != nil {
 		return nil, fmt.Errorf("figani: separated metadata %d: %w", resource, err)
 	}
-	wantID := fmt.Sprintf("animation/figani_%03d", resource)
+	wantID := fmt.Sprintf("animation/%s_%03d", idPrefix, resource)
 	if document.SchemaVersion != 1 || document.Kind != "animation" || document.AnimationID != wantID ||
-		document.Source.File != "FIGANI.DAT" || document.Source.Resource != resource || len(document.Frames) == 0 {
+		document.Source.File != sourceFile || document.Source.Resource != resource || len(document.Frames) == 0 {
 		return nil, fmt.Errorf("figani: separated metadata %d violates the animation contract", resource)
 	}
 	animation := &Animation{
