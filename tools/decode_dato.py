@@ -74,7 +74,9 @@ def save(path, palp, outdir):
     for k, (w, h, px) in enumerate(frames(path)):
         im = Image.frombytes("P", (w, h), px)
         im.putpalette(pal)
-        im.convert("RGB").save(os.path.join(outdir, f"{base}_m{k}.png"))
+        # 保留 P-mode palette index。Native dialogue／town compositor 消費的是
+        # 原始 indexed pixels；先轉 RGB 會在 palette 有重複顏色時失去可逆性。
+        im.save(os.path.join(outdir, f"{base}_m{k}.png"))
 
 
 def main(argv):

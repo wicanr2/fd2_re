@@ -154,6 +154,27 @@ blocked、1,005 intentionally_raw。正式 `loadNativeUIPalette`／
 超過63時整批拒絕。本切片達 `RUNTIME-E1`，不外推其他仍讀 `FDOTHER.DAT` 的 UI、
 戰鬥演出或終局 consumer。
 
+### 第二個 runtime 遷移切片：故事對話 DATO 頭像
+
+- `decode_dato.py --batch` 必須輸出保留原始 palette index 的 PNG，不得先轉 RGB；
+  否則重複 RGB palette entry 可能讓 indexed compositor 無法無損反推原值。
+- 每個 `portrait_id` 固定包含 `DATO_NNN_m0..m3.png` 四張；四幀必須都是 paletted
+  PNG、幾何合法且完整。缺一幀時整組拒絕。
+- story dialogue 正式 consumer 由 `FD2_ASSET_PACK/portraits` 讀取四幀 indexed
+  pixels，不得呼叫 `DATO.DAT` decoder。原始 resource number 仍由 typed dialogue
+  speaker／raw selector 提供，不把角色 identity 與 portrait ID 混為一談。
+- 聚焦驗收以同一 `DATO` resource 比較 archive decoder 與四張 PNG 的 width、height
+  及全部 indexed pixels，並在 archive 不可讀時完成 story portrait 載入。
+
+#### 2026-08-28 故事頭像遷移結果
+
+136組／544張 DATO PNG 已全數重生為 P-mode indexed PNG。resource 26的四幀經
+archive decoder 與 PNG loader 比較，幾何及全部6,400個 indexed pixels／幀一致；
+story consumer 在 `FD2_ORIGINAL_DATO` 指向不存在檔案時仍可載入，分離 pack 缺失
+時則拒絕，不回退原版 archive。此項只關閉正式故事對話 consumer；教會、整備、
+商店、暫態狀態、group march與終局仍有各自 DATO caller，後續必須逐一改接同一
+loader，不可由共用素材已存在就冒稱 runtime 全部完成。
+
 ## 七、完成定義
 
 只有同時成立才可宣稱「素材已完全分離、JSON 足以建立編輯器」：

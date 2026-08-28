@@ -47,6 +47,15 @@
     "runtime_archive_fallback": false,
     "archive_unreadable_test": "pass",
     "evidence_level": "RUNTIME-E1"
+  }, {
+    "family": "story_dialogue_portraits",
+    "source_resources": ["DATO.DAT#0..136"],
+    "separated_outputs": 544,
+    "runtime_consumer": "native story dialogue",
+    "runtime_archive_fallback": false,
+    "archive_unreadable_test": "pass",
+    "archive_png_indexed_pixel_match": "pass (resource 26, all four frames)",
+    "evidence_level": "RUNTIME-E1"
   }],
   "not_yet_complete": [
     "145 個 FIGANI resources 未被現行 decoder 接受，必須逐筆列為非動畫、intentionally_raw 或 blocked",

@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
-	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -67,12 +66,8 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	if len(g.nativeMapVGA) != 320*200 {
 		return errors.New("native story dialogue: indexed map/font/frame assets are unavailable")
 	}
-	datoPath := nativeDATOPath()
-	if datoPath == "" {
-		return errors.New("native story dialogue: DATO.DAT is unavailable")
-	}
 	dl := g.dialog[0]
-	portraits, err := dato.DecodeResource(filepath.Clean(datoPath), dl.Speaker)
+	portraits, err := loadNativeStoryPortrait(dl.Speaker)
 	if err != nil || len(portraits) < 4 {
 		return fmt.Errorf("native story dialogue: speaker portrait %d is unavailable (frames=%d): %v", dl.Speaker, len(portraits), err)
 	}
@@ -160,6 +155,10 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	g.nativeDialogueOpening = opening
 	g.nativeDialogueClosing = closing
 	return nil
+}
+
+func loadNativeStoryPortrait(speaker int) ([]dato.Frame, error) {
+	return dato.LoadSeparatedResource(separatedAssetPath("portraits"), speaker)
 }
 
 // materializeInheritedNativeDialogueView 保留戰鬥控制器的現行視圖。
