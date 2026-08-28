@@ -6,7 +6,6 @@ import (
 	"image"
 	"image/color"
 	"os"
-	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -55,36 +54,6 @@ func nativeFIGANIPath() string {
 	path := assetPath("assets/original/FIGANI.DAT")
 	if fileExists(path) {
 		return path
-	}
-	return ""
-}
-
-func nativeBGPath() string {
-	for _, key := range []string{"FD2_ORIGINAL_BG", "FD2_BG"} {
-		if path := os.Getenv(key); path != "" {
-			return path
-		}
-	}
-	if figaniPath := nativeFIGANIPath(); figaniPath != "" {
-		path := filepath.Join(filepath.Dir(figaniPath), "BG.DAT")
-		if fileExists(path) {
-			return path
-		}
-	}
-	return ""
-}
-
-func nativeTAIPath() string {
-	for _, key := range []string{"FD2_ORIGINAL_TAI", "FD2_TAI"} {
-		if path := os.Getenv(key); path != "" {
-			return path
-		}
-	}
-	if figaniPath := nativeFIGANIPath(); figaniPath != "" {
-		path := filepath.Join(filepath.Dir(figaniPath), "TAI.DAT")
-		if fileExists(path) {
-			return path
-		}
 	}
 	return ""
 }

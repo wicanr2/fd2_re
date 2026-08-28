@@ -784,7 +784,7 @@ the normalized acted projection, closes the panel and exits the action.
 Missing AP/DP equipment-base provenance fails atomically. RNG effects and
 non-self target presentations remain outside this completed slice.
 
-`RenderMirrorFigureFadePass` now implements only the proven `0x292ad` indexed primitive: it requires a caller-preseeded 640-stride work surface, presents `work+0x140`, blits primary at `+0x140-stage*10`, conditionally blits secondary for `arg4==0`, and presents the same right viewport again. It validates TAI#3's transparent bytes but does not claim to render the unresolved DATO/portrait or complete montage.
+`RenderMirrorFigureFadePass` implements only the proven `0x292ad` indexed primitive: it requires a caller-preseeded 640-stride work surface, presents `work+0x140`, blits primary at `+0x140-stage*10`, conditionally blits secondary for `arg4==0`, and presents the same right viewport again. It validates the source-bound separated TAI#3 frame as a 10×3 fully transparent no-op; it does not reinterpret it as a visible platform.
 
 Generic scheduler closure：`funcs_2ac25` 是 command-indexed function bank（ID0 entry `0x26152`）。`0x2a6bd` 先以 mode 0 呼該 entry 取得前段 step count；每一步先從 baseline 複製 320×200 至 640-stride work buffer，呼 mode 1，組合 actor FIGANI，再呼 mode 2，最後才複製至 VGA 並 `0x17aa9(1)` tick。每個 final target 另以 mode 3 取得 target-loop count，逐幀依序呼 mode 4、組合 target FIGANI、呼 mode 5後 present／tick；全目標完成後才是 mode 6 與逐幀 mode 7／8 尾段。`0x2b9a1` 並非未知 effect，它以 descriptor `frameIndex*4+8` 指向 frame的 byte+6 delay，遞增 `0x540fc`／`0x540fd` subframe counters並在上界 reset。這固定了 phase/order，仍不替每個 command entry 的視覺語意命名。
 

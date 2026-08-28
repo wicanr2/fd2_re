@@ -1,7 +1,6 @@
 package ending
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
 
@@ -16,7 +15,7 @@ import (
 // replacement; missing or malformed source assets reject the cycle.
 type MontageCycleAssets struct {
 	Backdrop  fdother.Frame
-	TAI003    []byte
+	TAI003    fdother.Frame
 	Primary   map[int]*figani.Animation
 	Secondary map[int]*figani.Animation
 	Grid      []byte
@@ -26,11 +25,11 @@ type MontageCycleAssets struct {
 	Font      *fdtxt.Font
 }
 
-// MontageArchivePaths identifies the player-provided archives used by the
-// native cycle.  The originals are read-only; this helper never writes them.
+// MontageArchivePaths identifies the remaining player-provided archives and
+// separated asset roots used by the native cycle. Originals remain read-only.
 type MontageArchivePaths struct {
 	FDOTHER       string
-	TAI           string
+	SurfaceRoot   string
 	AnimationRoot string
 	PortraitRoot  string
 	FDTXT         string
@@ -41,7 +40,7 @@ type MontageArchivePaths struct {
 // +7, FDTXT_031/FDTXT_000 and the FDOTHER#4 font.  It deliberately takes the
 // raw unit records from the caller so no identity or slot meaning is guessed.
 func LoadMontageCycleAssets(montage Montage, paths MontageArchivePaths, units [][]byte) (MontageCycleAssets, error) {
-	if paths.FDOTHER == "" || paths.TAI == "" || paths.AnimationRoot == "" || paths.PortraitRoot == "" || paths.FDTXT == "" || len(units) < 2 {
+	if paths.FDOTHER == "" || paths.SurfaceRoot == "" || paths.AnimationRoot == "" || paths.PortraitRoot == "" || paths.FDTXT == "" || len(units) < 2 {
 		return MontageCycleAssets{}, errors.New("ending: incomplete montage archive paths or party")
 	}
 	for i, unit := range units {
@@ -53,12 +52,12 @@ func LoadMontageCycleAssets(montage Montage, paths MontageArchivePaths, units []
 	if err != nil {
 		return MontageCycleAssets{}, fmt.Errorf("ending: FDOTHER#56: %w", err)
 	}
-	tai003, err := fdother.ReadResource(paths.TAI, 3)
+	tai003, err := fdother.LoadSeparatedSingleFrame(paths.SurfaceRoot, "TAI.DAT", 3)
 	if err != nil {
 		return MontageCycleAssets{}, fmt.Errorf("ending: TAI#3: %w", err)
 	}
-	if !bytes.Equal(tai003, tai003Transparent) {
-		return MontageCycleAssets{}, errors.New("ending: TAI#3 is not the proven transparent resource")
+	if !isTransparentTAI003(tai003) {
+		return MontageCycleAssets{}, errors.New("ending: separated TAI#3 is not the proven transparent resource")
 	}
 	grid := make([]byte, Bytes)
 	if err := RenderDialogueFrameGridResource(montage, paths.FDOTHER, grid); err != nil {
@@ -165,7 +164,7 @@ type MontageCycle struct {
 // baseline captured from a native indexed presentation; an all-zero default
 // is not accepted as a substitute.
 func NewMontageCycle(m Montage, assets MontageCycleAssets, units [][]byte, groups []byte, compositor *IndexedCompositor) (*MontageCycle, error) {
-	if m.Status != "mapped_first_party_cycle_fail_closed" || compositor == nil || !compositor.BaselineKnown() || len(units) < 2 || len(units) != len(groups) || len(assets.Grid) != Bytes || !bytes.Equal(assets.TAI003, tai003Transparent) {
+	if m.Status != "mapped_first_party_cycle_fail_closed" || compositor == nil || !compositor.BaselineKnown() || len(units) < 2 || len(units) != len(groups) || len(assets.Grid) != Bytes || !isTransparentTAI003(assets.TAI003) {
 		return nil, errors.New("ending: montage source provenance is incomplete")
 	}
 	if assets.Backdrop.Width != Width || assets.Backdrop.Height != Height || assets.Current == nil || assets.Permanent == nil || assets.Font == nil {

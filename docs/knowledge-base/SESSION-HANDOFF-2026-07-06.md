@@ -8159,3 +8159,13 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - turn／native round由1精確增至2；等待AI完成後普通Return開啟action overlay，
   無dialog／event／staging殘留。另補action overlay與item panel的Escape取消交易。
   清冊現為59筆登記、54筆合格；戰鬥／AI達18／18，剩終局／平台6格。
+
+## 2026-08-28：TAI#3 分離素材勘誤
+
+- 早期紀錄要求runtime直接比對`0a 00 03 00 c9 c9 c9`七個raw bytes；這在當時用來
+  阻止把TAI#3誤當FIGANI或可見平台，原始證據仍有效。
+- 現行runtime已改讀固定雜湊來源匯出的`surfaces/TAI_003`，typed admission驗證
+  `source.file=TAI.DAT`、resource 3、raw size 7、10×3幾何與30個全透明mask；不執行
+  blit，也不回退`TAI.DAT`。正式campaign montage在`FD2_TAI`不可讀時通過。
+- 因此舊段落的「exact raw bytes」只描述原版證據與當時gate，不再代表現行runtime
+  必須即時讀archive。`56`、`58`、`60`與`91`已同步現況。

@@ -295,24 +295,15 @@ func (p *nativeEndingPreview) montageArchivePaths() (ending.MontageArchivePaths,
 	if p == nil || p.fdotherPath == "" || p.fdtxtPath == "" {
 		return ending.MontageArchivePaths{}, fmt.Errorf("ending: prefix archive provenance is unavailable")
 	}
-	base := filepath.Dir(p.fdotherPath)
-	resolve := func(environment, name string) string {
-		return playerAssetPath(environment, []string{
-			filepath.Join(base, name),
-			"assets/" + name,
-			"../org_game/炎龍騎士團/FLAME2/" + name,
-			"org_game/炎龍騎士團/FLAME2/" + name,
-		})
-	}
 	paths := ending.MontageArchivePaths{
 		FDOTHER:       p.fdotherPath,
 		FDTXT:         p.fdtxtPath,
-		TAI:           resolve("FD2_TAI", "TAI.DAT"),
+		SurfaceRoot:   separatedAssetPath("surfaces"),
 		AnimationRoot: separatedAssetPath("animations"),
 		PortraitRoot:  separatedAssetPath("portraits"),
 	}
-	if paths.TAI == "" {
-		return ending.MontageArchivePaths{}, fmt.Errorf("ending: player-provided montage archives are unavailable")
+	if paths.SurfaceRoot == "" {
+		return ending.MontageArchivePaths{}, fmt.Errorf("ending: separated montage surface root is unavailable")
 	}
 	return paths, nil
 }

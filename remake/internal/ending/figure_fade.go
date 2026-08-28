@@ -1,21 +1,31 @@
 package ending
 
 import (
-	"bytes"
 	"fmt"
 
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
 )
 
-var tai003Transparent = []byte{0x0a, 0, 0x03, 0, 0xc9, 0xc9, 0xc9}
+func isTransparentTAI003(frame fdother.Frame) bool {
+	if frame.Width != 10 || frame.Height != 3 || len(frame.Indexed) != 30 || len(frame.Mask) != 30 || len(frame.Pixels) != 0 {
+		return false
+	}
+	for _, value := range frame.Mask {
+		if value != 0 {
+			return false
+		}
+	}
+	return true
+}
 
 // RenderFigureFadePass executes one direct 0x29164 non-mirrored pass. The
 // caller must obtain restore from the native FDOTHER#56 backdrop path; it is
 // copied to the left 320-pixel viewport of the 640-stride work surface before
-// the secondary FIGANI frame is placed at stage*10. TAI#3 is validated as the
-// native transparent no-op rather than substituted with a visible platform.
-func RenderFigureFadePass(c *IndexedCompositor, work, restore, tai003 []byte, secondary figani.Frame, pass FigureFadePass) error {
-	if c == nil || len(work) != Width*Height*2 || len(restore) != Bytes || !bytes.Equal(tai003, tai003Transparent) || pass.Stage < 0 || pass.Stage > 8 || pass.SourceOffset != pass.Stage*10 || pass.PaletteDelta != pass.Stage*6 {
+// the secondary FIGANI frame is placed at stage*10. The separated TAI#3 frame
+// is validated as the native transparent no-op, not a visible platform.
+func RenderFigureFadePass(c *IndexedCompositor, work, restore []byte, tai003 fdother.Frame, secondary figani.Frame, pass FigureFadePass) error {
+	if c == nil || len(work) != Width*Height*2 || len(restore) != Bytes || !isTransparentTAI003(tai003) || pass.Stage < 0 || pass.Stage > 8 || pass.SourceOffset != pass.Stage*10 || pass.PaletteDelta != pass.Stage*6 {
 		return fmt.Errorf("ending: invalid native figure fade pass")
 	}
 	if err := CopyRect(work, Width*2, restore, Width, Width, Height, 0); err != nil {
@@ -35,12 +45,12 @@ func RenderFigureFadePass(c *IndexedCompositor, work, restore, tai003 []byte, se
 // 640-stride work surface to already contain the backdrop at +0x140; it
 // renders the primary frame at +0x140-stage*10 and optionally renders the
 // secondary frame at +0x140 when arg4==0. TAI#3 is only validated here: the
-// native caller has already staged its transparent bytes before this callee.
-func RenderMirrorFigureFadePass(c *IndexedCompositor, work, tai003 []byte, primary, secondary figani.Frame, pass MirrorFigureFadePass) error {
+// native caller has already staged its transparent no-op before this callee.
+func RenderMirrorFigureFadePass(c *IndexedCompositor, work []byte, tai003 fdother.Frame, primary, secondary figani.Frame, pass MirrorFigureFadePass) error {
 	if c == nil || len(work) != Width*Height*2 || pass.Stage < 0 || pass.Stage > 8 || pass.PrimarySourceOffset != 0x140-pass.Stage*10 || pass.PaletteDelta != pass.Stage*6 {
 		return fmt.Errorf("ending: invalid native mirror figure fade pass")
 	}
-	if pass.DrawPlatform && !bytes.Equal(tai003, tai003Transparent) {
+	if pass.DrawPlatform && !isTransparentTAI003(tai003) {
 		return fmt.Errorf("ending: invalid native mirror TAI#3")
 	}
 	// 0x292ad first presents the right 320-pixel viewport, then mutates that

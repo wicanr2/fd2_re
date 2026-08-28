@@ -32,7 +32,7 @@ func main() {
 		fatalf("load tail FDOTHER assets: %v", err)
 	}
 	sets, err := ending.LoadMontageTailVisualSets(*tail, ending.MontageTailVisualPaths{
-		TAI: filepath.Join(*gameRoot, "TAI.DAT"), BG: filepath.Join(*gameRoot, "BG.DAT"),
+		SurfaceRoot:   filepath.Join(*assetPack, "surfaces"),
 		AnimationRoot: filepath.Join(*assetPack, "animations"),
 	})
 	if err != nil {

@@ -291,6 +291,29 @@ production已無BG／TAI single-frame archive decoder caller；party montage仍�
 `TAI.DAT#3`的原始透明placeholder bytes，屬另一個raw resource contract，不能因本次
 surface遷移而誤列為已移除。
 
+##### Party montage `TAI.DAT#3` typed adapter
+
+> 規格狀態：**CONFORMED**
+
+原版固定resource恰為7 bytes：`0a 00 03 00 c9 c9 c9`。既有證據只證實它在
+`0x29164`／`0x292AD` 路徑擔任10×3 destination-preserving透明no-op；它不是可見
+台座，也不可當成FIGANI frame-table。正式runtime可以由已綁定固定來源雜湊、
+`source.file=TAI.DAT`、`source.resource=3`與`raw_size=7`的分離surface loader取得
+typed frame，但 admission 必須再驗證 width=10、height=3、30個mask值全為0。
+renderer只保存這個已證實的no-op gate，不執行blit、不依indexed pixel猜語意。
+
+缺metadata、來源／resource／raw size不符、幾何不符或任一mask為不透明時，party
+montage必須在建立player前整批拒絕；不得回退讀取`TAI.DAT`。驗收以正常campaign
+montage consumer在`TAI.DAT`不可讀時完成至少一輪figure fade，以及相鄰的非透明
+mask fixture被拒絕。這個adapter只移除#3的raw archive依賴，不外推FDOTHER、FDTXT
+或其他TAI用途。
+
+實作後 `MontageCycleAssets.TAI003` 改為typed `fdother.Frame`；non-mirror與mirror兩條
+fade renderer只驗證全透明no-op，不把它畫入surface。內部loader、雙分支cycle與
+非透明相鄰fixture測試通過；正式campaign montage測試另將`FD2_TAI`指向不存在檔案，
+仍由分離pack依persistent LOADCH順序進入figure fade、portrait與可選隊伍結果回顧。
+本adapter達 `RUNTIME-E1`，production `TAI.DAT` direct reader歸零。
+
 完整manifest現為7,877筆：6,854 exported、1,005 intentionally_raw、18 blocked。
 18筆blocked包含15首尚未轉OGG的MIDI、`FIGANI.DAT#408`及兩個零長度BG／TAI#56；
 manifest generator現會讀取`resource.json`的blocked狀態，不再把狀態文件本身誤列

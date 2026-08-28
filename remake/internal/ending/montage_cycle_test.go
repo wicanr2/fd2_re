@@ -9,7 +9,7 @@ func montageCyclePlayerPaths() MontageArchivePaths {
 	const base = "../../../org_game/炎龍騎士團/FLAME2/"
 	return MontageArchivePaths{
 		FDOTHER:       base + "FDOTHER.DAT",
-		TAI:           base + "TAI.DAT",
+		SurfaceRoot:   "../../generated-assets/fd2-original-b97caf22/surfaces",
 		AnimationRoot: "../../generated-assets/fd2-original-b97caf22/animations",
 		PortraitRoot:  "../../generated-assets/fd2-original-b97caf22/portraits",
 		FDTXT:         base + "FDTXT.DAT",
@@ -40,7 +40,7 @@ func montageCycleThreeUnits() [][]byte {
 
 func TestLoadMontageCycleAssetsUsesOnlyProvenanceBoundPlayerResources(t *testing.T) {
 	paths := montageCyclePlayerPaths()
-	for _, path := range []string{paths.FDOTHER, paths.TAI, paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.FDTXT} {
+	for _, path := range []string{paths.FDOTHER, paths.SurfaceRoot + "/TAI_003/resource.json", paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.FDTXT} {
 		if _, err := os.Stat(path); err != nil {
 			t.Skip("player-provided original archives are absent")
 		}
@@ -53,8 +53,8 @@ func TestLoadMontageCycleAssetsUsesOnlyProvenanceBoundPlayerResources(t *testing
 	if err != nil {
 		t.Fatal(err)
 	}
-	if assets.Backdrop.Width != Width || assets.Backdrop.Height != Height || len(assets.Grid) != Bytes || len(assets.TAI003) == 0 {
-		t.Fatalf("assets geometry=%dx%d grid=%d tai=%d", assets.Backdrop.Width, assets.Backdrop.Height, len(assets.Grid), len(assets.TAI003))
+	if assets.Backdrop.Width != Width || assets.Backdrop.Height != Height || len(assets.Grid) != Bytes || !isTransparentTAI003(assets.TAI003) {
+		t.Fatalf("assets geometry=%dx%d grid=%d tai=%dx%d", assets.Backdrop.Width, assets.Backdrop.Height, len(assets.Grid), assets.TAI003.Width, assets.TAI003.Height)
 	}
 	if assets.Primary[13] == nil || assets.Secondary[12] == nil || len(assets.Portraits[4]) != 4 {
 		t.Fatalf("missing group 4 FIGANI/DATO assets: primary=%v secondary=%v portraits=%d", assets.Primary[13] != nil, assets.Secondary[12] != nil, len(assets.Portraits[4]))
@@ -63,7 +63,7 @@ func TestLoadMontageCycleAssetsUsesOnlyProvenanceBoundPlayerResources(t *testing
 
 func TestMontageCycleExecutesBothNativeSideBranchesAndFinalPaletteFade(t *testing.T) {
 	paths := montageCyclePlayerPaths()
-	for _, path := range []string{paths.FDOTHER, paths.TAI, paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.FDTXT} {
+	for _, path := range []string{paths.FDOTHER, paths.SurfaceRoot + "/TAI_003/resource.json", paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.FDTXT} {
 		if _, err := os.Stat(path); err != nil {
 			t.Skip("player-provided original archives are absent")
 		}
@@ -102,7 +102,7 @@ func TestMontageCycleExecutesBothNativeSideBranchesAndFinalPaletteFade(t *testin
 
 func TestMontageCycleInputChangeFinishesCurrentPortraitThenJumpsToFinalLoop(t *testing.T) {
 	paths := montageCyclePlayerPaths()
-	for _, path := range []string{paths.FDOTHER, paths.TAI, paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.FDTXT} {
+	for _, path := range []string{paths.FDOTHER, paths.SurfaceRoot + "/TAI_003/resource.json", paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.FDTXT} {
 		if _, err := os.Stat(path); err != nil {
 			t.Skip("player-provided original archives are unavailable")
 		}

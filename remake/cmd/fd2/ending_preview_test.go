@@ -288,14 +288,20 @@ func TestNativeEndingMontageRecordsUseOnlyPersistentRawProvenance(t *testing.T) 
 
 func TestSourceBoundCampaignMontageStartsFromPersistentLoadCHOrder(t *testing.T) {
 	const base = "../../../org_game/炎龍騎士團/FLAME2"
-	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "ANI.DAT", "TAI.DAT", "FIGANI.DAT", "DATO.DAT"} {
+	pack := filepath.Clean("../../generated-assets/fd2-original-b97caf22")
+	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "ANI.DAT"} {
 		if _, err := os.Stat(filepath.Join(base, name)); err != nil {
 			t.Skip("player-provided ending resources are unavailable")
 		}
 	}
+	if _, err := os.Stat(filepath.Join(pack, "surfaces", "TAI_003", "resource.json")); err != nil {
+		t.Skip("separated ending resources are unavailable")
+	}
 	t.Setenv("FD2_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
 	t.Setenv("FD2_FDTXT", filepath.Join(base, "FDTXT.DAT"))
 	t.Setenv("FD2_ANI", filepath.Join(base, "ANI.DAT"))
+	t.Setenv("FD2_TAI", filepath.Join(t.TempDir(), "missing-TAI.DAT"))
+	t.Setenv("FD2_ASSET_PACK", pack)
 	t.Setenv("FD2_MUTE", "1")
 	preview, err := newNativeEndingPreview()
 	if err != nil {

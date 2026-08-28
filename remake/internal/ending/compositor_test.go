@@ -481,7 +481,7 @@ func TestRenderFigureFadePassRestoresBackdropThenShiftsSecondaryFrame(t *testing
 		restore[i] = 1
 	}
 	f := figani.Frame{X: 2, Y: 3, Width: 1, Height: 1, Pixels: []byte{9}, Mask: []byte{1}}
-	if err := RenderFigureFadePass(c, work, restore, []byte{0x0a, 0, 0x03, 0, 0xc9, 0xc9, 0xc9}, f, FigureFadePass{Stage: 8, SourceOffset: 80, PaletteDelta: 48}); err != nil {
+	if err := RenderFigureFadePass(c, work, restore, transparentTAI003Fixture(), f, FigureFadePass{Stage: 8, SourceOffset: 80, PaletteDelta: 48}); err != nil {
 		t.Fatal(err)
 	}
 	if c.VGA[0] != 1 || c.VGA[3*Width+82] != 9 || c.Palette[0] != 2 {
@@ -498,14 +498,24 @@ func TestRenderMirrorFigureFadePassUsesRightViewportAndArg4Gate(t *testing.T) {
 	primary := figani.Frame{X: 100, Y: 3, Width: 1, Height: 1, Pixels: []byte{9}, Mask: []byte{1}}
 	secondary := figani.Frame{X: 120, Y: 5, Width: 1, Height: 1, Pixels: []byte{7}, Mask: []byte{1}}
 	pass := MirrorFigureFadePass{Stage: 8, PrimarySourceOffset: 0xf0, PaletteDelta: 48, DrawSecondary: true, DrawPlatform: true}
-	if err := RenderMirrorFigureFadePass(c, work, tai003Transparent, primary, secondary, pass); err != nil {
+	if err := RenderMirrorFigureFadePass(c, work, transparentTAI003Fixture(), primary, secondary, pass); err != nil {
 		t.Fatal(err)
 	}
 	if c.VGA[0] != 1 || c.VGA[3*Width+20] != 9 || c.VGA[5*Width+120] != 7 || c.Palette[0] != 0 {
 		t.Fatalf("vga/palette=%d/%d/%d/%d", c.VGA[0], c.VGA[3*Width+20], c.VGA[5*Width+120], c.Palette[0])
 	}
 	pass.DrawSecondary, pass.DrawPlatform = false, false
-	if err := RenderMirrorFigureFadePass(c, work, []byte{1}, primary, secondary, pass); err != nil {
+	if err := RenderMirrorFigureFadePass(c, work, fdother.Frame{}, primary, secondary, pass); err != nil {
 		t.Fatal(err)
 	}
+	pass.DrawPlatform = true
+	badTAI := transparentTAI003Fixture()
+	badTAI.Mask[0] = 255
+	if err := RenderMirrorFigureFadePass(c, work, badTAI, primary, secondary, pass); err == nil {
+		t.Fatal("mirror platform accepted non-transparent TAI#3")
+	}
+}
+
+func transparentTAI003Fixture() fdother.Frame {
+	return fdother.Frame{Width: 10, Height: 3, Indexed: make([]byte, 30), Mask: make([]byte, 30)}
 }
