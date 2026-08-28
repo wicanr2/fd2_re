@@ -52,11 +52,7 @@ func loadNativeLoadSlotsUIAssets() (*nativeLoadSlotsUIAssets, error) {
 	if err != nil {
 		return nil, err
 	}
-	paletteRaw, err := fdother.ReadResource(fdotherPath, 0)
-	if err != nil {
-		return nil, err
-	}
-	palette, err := fdother.ParseVGAPalette(paletteRaw)
+	_, palette, err := loadNativeBattlePalette()
 	if err != nil {
 		return nil, err
 	}

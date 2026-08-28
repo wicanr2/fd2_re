@@ -8339,3 +8339,19 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   path。聚焦Docker／Xvfb測試涵蓋標題成功／缺pack、天空鑰匙與結局預覽。
 - manifest現為38,679筆：37,655 exported、1,005 intentionally raw、19 blocked。本切片
   達`DATA-READY`／`RUNTIME-E1`；沒有把資料owner遷移外推成完整原版啟動或逐幕E2。
+
+## 2026-08-29 FDOTHER #0 共用 DAC 正式 owner 遷移
+
+- 先在`60-editor-separated-assets-spec.md`建立READY契約，再盤點出command 0／1／2／3／
+  5／6／7／8／9／24／29／32／33／34／35、native map、LOAD slots及class／church共18條
+  production caller仍各自讀取`FDOTHER.DAT #0`。
+- 所有呼叫端現統一經`loadNativeBattlePalette`使用既有
+  `palette/fdother_000.json`；底層嚴格loader核對固定FDOTHER大小與雜湊、resource 0、
+  raw size 768、asset identity及每個六位元DAC component。舊UI loader的重複寬鬆JSON
+  parser已刪除，正式碼`ReadResource(...,0)`歸零且不回退archive。
+- 分離DAC與固定archive #0逐byte相同，256色RGBA亦逐項相同；無archive、缺件與非法DAC
+  採失敗即關閉。玩家command 0、AI command 9、native map及class／church抽測通過。
+- command 34既有end-to-end測試在呼叫新palette helper之前即因HUD drawable selector fixture
+  不完整而失敗；這項舊測試債不歸因本遷移，也不以較窄測試冒稱完整複合命令E2。
+- 本切片只關閉共用DAC owner；同一command尚需FDOTHER內嵌動畫、nested sound、panel或LUT
+  者仍保留archive依賴。下一個高價值切片是nested sound catalog。

@@ -149,7 +149,7 @@ func (g *Game) startNativeCommand9AIPresentation(actor, confirmed *battle.Unit, 
 	if err != nil {
 		return err
 	}
-	dac, err := fdother.ReadResource(fdotherPath, 0)
+	dac, _, err := loadNativeBattlePalette()
 	if err != nil {
 		return err
 	}

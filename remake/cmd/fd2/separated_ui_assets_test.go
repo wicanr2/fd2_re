@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"image"
 	"image/color"
@@ -8,7 +9,25 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
+
+type testSeparatedPaletteSource struct {
+	File     string `json:"file"`
+	Resource int    `json:"resource"`
+	Size     int    `json:"size"`
+	MD5      string `json:"md5"`
+	SHA256   string `json:"sha256"`
+	RawSize  int    `json:"raw_size"`
+}
+
+type testSeparatedPaletteDocument struct {
+	SchemaVersion int                        `json:"schema_version"`
+	AssetID       string                     `json:"asset_id"`
+	Source        testSeparatedPaletteSource `json:"source"`
+	Components    []int                      `json:"dac_6bit_components"`
+}
 
 func writeSeparatedCommandGridFixture(t *testing.T, root string, count int) {
 	t.Helper()
@@ -16,10 +35,16 @@ func writeSeparatedCommandGridFixture(t *testing.T, root string, count int) {
 	for index := range components {
 		components[index] = index % 64
 	}
-	document := separatedPaletteDocument{
+	document := testSeparatedPaletteDocument{
 		SchemaVersion: 1,
 		AssetID:       "palette/fdother_000",
-		Components:    components,
+		Source: testSeparatedPaletteSource{
+			File: "FDOTHER.DAT", Resource: 0, Size: 3382481,
+			MD5:     "22f56e5027edc7c766ad34ca4e5aca93",
+			SHA256:  "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce",
+			RawSize: 768,
+		},
+		Components: components,
 	}
 	raw, err := json.Marshal(document)
 	if err != nil {
@@ -73,6 +98,41 @@ func TestSeparatedCommandGridLoadsWithoutOriginalArchive(t *testing.T) {
 	}
 }
 
+func TestNativeBattlePaletteMatchesFixedArchiveResourceZero(t *testing.T) {
+	archive := filepath.Join("..", "..", "..", "org_game", "炎龍騎士團", "FLAME2", "FDOTHER.DAT")
+	if _, err := os.Stat(archive); err != nil {
+		t.Skipf("fixed FDOTHER oracle unavailable: %v", err)
+	}
+	pack := filepath.Join("..", "..", "generated-assets", "fd2-original-b97caf22")
+	if _, err := os.Stat(filepath.Join(pack, "palette", "fdother_000.json")); err != nil {
+		t.Skipf("generated separated palette unavailable: %v", err)
+	}
+	t.Setenv("FD2_ASSET_PACK", pack)
+	dac, palette, err := loadNativeBattlePalette()
+	if err != nil {
+		t.Fatal(err)
+	}
+	want, err := fdother.ReadResource(archive, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(dac, want) {
+		t.Fatal("separated FDOTHER #0 DAC differs from fixed archive oracle")
+	}
+	wantPalette, err := fdother.ParseVGAPalette(want)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(palette) != len(wantPalette) {
+		t.Fatalf("palette=%d colors, want %d", len(palette), len(wantPalette))
+	}
+	for index := range palette {
+		if palette[index] != wantPalette[index] {
+			t.Fatalf("palette color %d differs from fixed archive oracle", index)
+		}
+	}
+}
+
 func TestSeparatedCommandGridFailsClosedOnMissingCell(t *testing.T) {
 	root := t.TempDir()
 	writeSeparatedCommandGridFixture(t, root, nativeActionOverlayCellCount-1)
@@ -86,7 +146,7 @@ func TestSeparatedPaletteRejectsOutOfRangeDAC(t *testing.T) {
 	root := t.TempDir()
 	writeSeparatedCommandGridFixture(t, root, nativeActionOverlayCellCount)
 	path := filepath.Join(root, "palette", "fdother_000.json")
-	var document separatedPaletteDocument
+	var document testSeparatedPaletteDocument
 	raw, _ := os.ReadFile(path)
 	if err := json.Unmarshal(raw, &document); err != nil {
 		t.Fatal(err)

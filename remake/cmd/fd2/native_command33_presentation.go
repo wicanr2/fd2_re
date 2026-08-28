@@ -114,13 +114,9 @@ func (g *Game) startNativeCommand33Presentation(actor, confirmed *battle.Unit, t
 		len(a.CommandHealDigits) <= tailSchedule.DigitBias+9 {
 		return errors.New("native command33 tail FDOTHER #5/#6 descriptors unavailable")
 	}
-	paletteDAC, err := fdother.ReadResource(fdotherArchive, 0)
+	paletteDAC, battlePalette, err := loadNativeBattlePalette()
 	if err != nil || len(paletteDAC) != 256*3 {
 		return errors.New("native command33 battle DAC unavailable")
-	}
-	battlePalette, err := fdother.VGAPaletteFromDAC(paletteDAC)
-	if err != nil {
-		return err
 	}
 
 	actorSelector, err := nativeCommand24BGSelector(g.m, actor)

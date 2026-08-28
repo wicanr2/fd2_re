@@ -73,11 +73,7 @@ func loadNativeMapAssets(mapDir string) (*nativeMapAssets, error) {
 		}
 		return nil, errors.New("native map assets: FDOTHER#3 LUT bank lacks transition entries 1..9")
 	}
-	paletteRaw, err := fdother.ReadResource(fdotherPath, 0)
-	if err != nil {
-		return nil, err
-	}
-	palette, err := fdother.ParseVGAPalette(paletteRaw)
+	paletteRaw, palette, err := loadNativeBattlePalette()
 	if err != nil {
 		return nil, err
 	}

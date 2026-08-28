@@ -109,11 +109,7 @@ func loadNativeClassUIAssets() (*nativeClassUIAssets, error) {
 	if err != nil {
 		return nil, err
 	}
-	paletteRaw, err := fdother.ReadResource(fdotherPath, 0)
-	if err != nil {
-		return nil, err
-	}
-	palette, err := fdother.ParseVGAPalette(paletteRaw)
+	paletteRaw, palette, err := loadNativeBattlePalette()
 	if err != nil {
 		return nil, err
 	}

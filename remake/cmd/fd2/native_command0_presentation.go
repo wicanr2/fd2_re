@@ -303,7 +303,7 @@ func (g *Game) startNativeCommand0Presentation(actor, target *battle.Unit, then 
 	if err != nil {
 		return err
 	}
-	dac, err := fdother.ReadResource(fdotherPath, 0)
+	dac, _, err := loadNativeBattlePalette()
 	if err != nil {
 		return err
 	}

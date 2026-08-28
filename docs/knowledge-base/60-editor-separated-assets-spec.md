@@ -86,6 +86,71 @@ PNG／OGG 是 runtime 消費格式；raw `.bin` 只可留在研究中間目錄�
 映射。未知 `kind`、未知 action、重複 ID、斷裂引用、陣列尺寸不符及不合法欄位組合
 必須拒絕；不能由 Go 的零值靜默吸收。
 
+### 四之一、多語文字、字型與排版規劃
+
+> 狀態：**DRAFT／待產品決策**（2026-08-29）
+
+目標語系固定使用BCP 47識別碼：原版繁體中文`zh-Hant`、簡體中文`zh-Hans`、日文
+`ja`、英文`en`。以下是四種發行方式都共用的資料不變量，不預先決定是否允許社群
+外掛語言包：
+
+- 遊戲規則、`character_id`、`node_id`、`scene_id`、`line_id`、event／action及存檔
+  狀態永遠不使用翻譯後文字作identity。切換語言不得改變戰役進度、隊伍或亂數狀態。
+- 原版`FDTXT_NNN`的glyph token、control word、source index及繁中投影保持唯讀
+  provenance；簡中／日文／英文不得倒灌成原版glyph index，也不得覆寫原版證據。
+- canonical內容只保存一份演出／控制流程；翻譯以穩定`string_id`連結，不能複製四份
+  scene後讓handler、portrait、mouth animation或分頁時序分岔。
+- 所有玩家可見字串角色都要可翻譯：章名、地點、角色顯示名、台詞、選項、商店商品、
+  系統訊息、戰鬥命令、狀態／道具／法術名稱及錯誤訊息。只翻`Line.Text`不算四語完成。
+- 語言與文字顯示偏好屬`fd2_settings.json`，不寫入戰役save；同一存檔可在載入前後切換
+  語言。若日後選擇「每槽固定語言」，必須另立產品決策，不可悄悄改變save schema。
+
+建議的共通語言包形狀如下；這是後續machine-readable schema的輸入草案，不是已完成
+實作：
+
+```text
+locales/<locale>/
+  locale.json          # identity、版本、fallback、字型與layout profile
+  strings.json         # string_id → UTF-8文字／受控變數
+  fonts/               # 具授權紀錄的TTF／OTF或bitmap atlas
+  layout-overrides.json# 只保存確有需要的畫面／文字角色覆寫
+```
+
+`locale.json`至少需要`schema_version`、`locale_id`、`display_name`、`content_version`、
+`base_locale`、`font_stack[]`及`layout_profile`；所有路徑必須是包內安全相對路徑。
+`strings.json`每筆至少需要`string_id`與`text`，可選受控`variables[]`及譯者註記，但
+不可嵌入任意程式碼或自行新增handler control。正式內建語系必須通過完整key集合；
+開發環境可顯示缺字／缺翻譯診斷，發行模式不可靜默顯示空字串。
+
+文字尺寸分成兩層：
+
+1. 每個`layout_profile`提供語系預設`font_size`、`line_height`、`letter_spacing`、
+   CJK／Latin換行規則、標點避頭尾及對話框最大行數。
+2. 使用者另有全域`text_scale`偏好；runtime先套語系預設，再套有界倍率。倍率上限、
+   是否提供離散「小／標準／大」或連續滑桿，須經640×400與手機prototype決定，不能
+   只放大glyph卻忽略panel、游標、portrait與分頁容量。
+
+現行有兩條不能混為一談的renderer：現代UTF-8 UI已有TTF／OTF與wrap能力；原版忠實
+畫面則固定320×200、16×16二值glyph、310×86對話框及多處16-pixel行距。`zh-Hant`
+忠實主題可保留原版indexed呈現；其他語系若要覆蓋native畫面，必須在下列產品分支中
+擇一後才能實作：使用現代字型overlay、為每語系製作對應bitmap atlas，或只保證現代
+主題完整翻譯。不可把TTF文字直接塞進原版固定格後仍宣稱pixel parity。
+
+尚待使用者依序決定的根層分支：
+
+1. 四語只作官方內建資料，或同一契約亦允許外部社群語言包；目前建議「官方四語內建
+   ＋可選外部包」。
+2. 非繁中語系是否要求原版忠實320×200介面也全面翻譯，或只要求現代主題完整翻譯。
+3. 缺翻譯時是整包拒絕、回退`zh-Hant`，或僅外部包允許回退；官方包建議完整key後才
+   發行，避免遊玩途中混語。
+4. 文字縮放採離散三段或連續倍率；須先製作繁中／英文／日文最長台詞與戰鬥HUD的
+   可丟棄prototype，再決定界線。
+
+後續垂直切片固定為：language／layout JSON Schema → key extractor與完整度validator →
+`fd2_settings.json`向後相容欄位 → UTF-8 renderer切換 → 對話、商店、戰鬥HUD三種最長
+字串prototype → 四語切換／缺字／換行／存檔不變測試。產品分支未確認前，只能完成
+schema inventory與prototype，不把任一建議寫進正式玩家預設。
+
 ## 五、往返與相容性
 
 - 舊 JSON 只作 legacy import。匯入時產生穩定 ID 與 provenance，並輸出診斷；不在
@@ -125,6 +190,35 @@ PNG／OGG 是 runtime 消費格式；raw `.bin` 只可留在研究中間目錄�
   只可留給匯入／來源驗證命令，不再是這兩個 renderer input 的 fallback。
 - 驗收必須在 archive 路徑不存在時載入完整256色 palette與78 cells；缺任一 cell、
   JSON 格式錯誤或幾何不合法時整批拒絕，不發布半套指令格。
+
+本段最初只關閉`loadNativeUIPalette`與78格command grid owner，**不代表當時所有戰鬥
+演出都已停止回讀FDOTHER #0**。2026-08-29 production caller稽核曾找到command 0／1／
+2／3／5／6／7／8／9／24／29／32／33／34／35、native map bundle、LOAD slots與
+class／church共18條直接`ReadResource(..., 0)`；下列同日遷移已取代該歷史現況。
+
+#### 戰鬥共用 FDOTHER #0 DAC owner 遷移契約
+
+> 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）
+
+這18條正式路徑不得各自取得archive path再讀同一768-byte資源；統一經
+`loadNativeBattlePalette`載入既有`palette/fdother_000.json`，同時回傳原始六位元DAC
+與256色顯示palette。loader沿用已閉合的固定FDOTHER identity、resource 0、raw size 768、
+component範圍0..63及`asset_id=palette/fdother_000`驗證；任一條件不符即失敗，不回退
+`FDOTHER.DAT`。
+
+本切片只遷移palette owner，不刪除同一command因FDOTHER內嵌動畫、巢狀音效、HUD／panel
+或LUT仍需的archive path。驗收為：上述production檔案對`ReadResource(*,0)`歸零；共用
+helper與固定archive #0逐byte／逐RGBA一致；至少抽測一條玩家command、一條AI command、
+compound command及native map bundle；令`FD2_ORIGINAL_FDOTHER`指向缺檔時，只能證明
+palette helper本身仍工作，不能冒稱整條尚有其他archive資源的演出已完全分離。
+
+實作已移除`separated_ui_assets.go`內原本只驗`schema_version`／`asset_id`／長度的重複
+寬鬆JSON解析，所有owner改共用`fdother.LoadSeparatedFDOTHERPalette`。正式
+`remake/cmd/fd2`對`ReadResource(..., 0)`的呼叫現為0；分離DAC與固定archive #0的768
+bytes及256色RGBA逐項相同。無archive測試、損壞DAC拒絕，以及玩家command 0、AI
+command 9、native map、class／church代表路徑皆通過。command 34既有end-to-end fixture
+在進入本切片helper前即因HUD drawable selector狀態不足失敗，故不拿它冒充本切片失敗；
+複合命令正式碼已編譯並共用同一精確helper，但完整舊fixture仍是獨立測試債。
 
 ### 2026-08-28 第一輪全量匯出實測
 

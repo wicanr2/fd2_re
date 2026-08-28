@@ -250,7 +250,7 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if err != nil {
 		return err
 	}
-	paletteDAC, err := fdother.ReadResource(fdotherArchive, 0)
+	paletteDAC, _, err := loadNativeBattlePalette()
 	if err != nil {
 		return err
 	}

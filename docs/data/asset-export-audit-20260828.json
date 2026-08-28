@@ -230,8 +230,11 @@
     "family": "battle_action_grid",
     "source_resources": ["FDOTHER.DAT#0", "FDOTHER.DAT#2"],
     "separated_outputs": 79,
+    "runtime_consumers": ["battle action grid", "commands 0/1/2/3/5/6/7/8/9/24/29/32/33/34/35", "native map bundle", "LOAD slots", "class/church UI"],
+    "archive_palette_match": "pass (768-byte DAC and all 256 RGBA colors)",
     "runtime_archive_fallback": false,
-    "archive_unreadable_test": "pass",
+    "archive_unreadable_test": "pass (shared palette loader consumes separated pack only)",
+    "remaining_direct_resource_zero_callers": 0,
     "evidence_level": "RUNTIME-E1"
   }, {
     "family": "story_dialogue_portraits",
