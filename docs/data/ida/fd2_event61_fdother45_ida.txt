@@ -1,0 +1,127 @@
+FD2 event61 FDOTHER #45 presentation bank — IDA Pro 9.4 canonical evidence
+============================================================================
+
+狀態：RE-CLOSED／DATA-READY／RUNTIME-E1（2026-08-29）
+
+輸入與工具
+------------
+
+- `org_game/炎龍騎士團/FLAME2/FD2.EXE`
+  - size：357074 bytes
+  - MD5：`b97caf2239a27a896069d03549d96e1e`
+  - SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- `FDOTHER.DAT`
+  - size：3382481 bytes
+  - MD5：`22f56e5027edc7c766ad34ca4e5aca93`
+  - SHA-256：`a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`
+- FDOTHER resource 45 raw entry
+  - size：2073 bytes
+  - MD5：`f26b4bc4ce9c8e9c9d12ec2e2f00f5b8`
+  - SHA-256：`d7a0e73d7dec5403441c33cd84392a7683de329f7b0914a1bf23c47ccc56513a`
+- IDA Pro：9.4.0.260610，Docker image
+  `ida-pro-9.4-idapython:locked-v1`，image ID
+  `sha256:6f6d59af49d0008c4109a5295b5f374bdc007e2d1ab28cb9de08779584de2780`。
+- IDA 位址空間：FD2 LE linear address，不是檔案偏移。
+- exporter：`tools/ida_probe_functions.py`；一次性、無網路、非 root
+  Docker，`.i64` 只寫入 `/tmp/fd2-event61-ida`，原版檔唯讀。
+
+可重生 IDA 查詢
+----------------
+
+```text
+FD2_IDA_ADDRESSES='0x356b7'
+FD2_IDA_OUTPUT=/work/fd2-event61-functions.txt
+/opt/ida-pro-9.4/idat -A -c -o/work/FD2.EXE.i64
+-S/workspace/tools/ida_probe_functions.py /input/FD2.EXE
+```
+
+直接指令與 consumer
+-----------------
+
+`sub_356B7` 邊界是 `0x356B7..0x35822`。函式存在八個經跳表的
+code xref：`0x1199C`、`0x1712D`、`0x19511`、`0x1A85A`、
+`0x1AC1A`、`0x1D890`、`0x1D95C`、`0x1D9EC`。這些 xref 只證明
+generic dispatcher 可達；map25 selector1→event61 的關卡綁定另見
+`native_field_event_rules.json`與`91-worklist.md`，不由本素材契約重解。
+
+成功臂的原始指令：
+
+```asm
+0x35790  push 2Dh
+0x35792  push 0
+0x35794  push offset aFdotherDat       ; "FDOTHER.DAT"
+0x35799  call sub_111BA
+0x357A1  mov esi,eax
+0x357A3  xor ebx,ebx
+0x357A7  push 0FFFFFFFFh               ; transparent=-1
+0x357A9  push 140h                     ; stride=320
+0x357AE  push 0ABCE4h                  ; destination base
+0x357B3  push ebx                      ; frame index
+0x357B4  push esi                      ; decoded resource
+0x357B5  call sub_2935B
+0x357BD  push 2                        ; delay ticks
+0x357BF  call sub_17AA9
+0x357C7  inc ebx
+0x357C8  cmp ebx,3Bh                   ; 59 frames
+0x357CB  jl  0x357A7
+```
+
+已證實結論
+------------
+
+1. `0x35790` 的 selector 是 decimal 45，且資源來自 `FDOTHER.DAT`。
+2. consumer 依原始順序使用 frame index 0..58，共59幀；每幀後呼叫
+   `sub_17AA9(2)`。
+3. `sub_2935B` 呼叫參數已直接固定為 destination base `0xABCE4`、
+   stride 320、transparent `-1`。
+4. raw entry 的 frame table 計數為59；59筆 descriptor 皆為
+   `x=0,y=0,width=8,height=2`，每筆 raw descriptor／payload 長度31 bytes。
+5. 這是逐幀累積寫入同一 destination 的 indexed／transparent 演出。
+   PNG 輸出必須分離 indexed pixels 與 binary source mask，不可把透明
+   skip 轉成 palette index 0。
+
+證據等級
+--------
+
+- selector、幀數、幀順序、destination、stride、transparent mode、delay：
+  **已證實**（IDA 直接指令）。
+- raw entry 身分、大小、雜湊、descriptor 幾何：**已證實**
+  （固定 archive 及受測 `ParseFrames` 契約）。
+- 畫面對象的故事名稱與美術語意：**未知／不納入素材 ABI**。
+- 未修改 DOSBox 同狀態逐幀視覚比較：**未達 PLAYER-E2**。
+
+分離資產 READY 契約
+----------------------
+
+- 路徑：`animations/fdother_045_event61/bank.json`
+- 穩定 `asset_id`：`animation/FDOTHER_045/event61`
+- `kind`：`fdother_frame_bank`；`codec`：`fd2_2935b_frame_table`
+- source 必須固定上述 FDOTHER 身分、resource 45、raw size與raw SHA-256。
+- metadata 必須保存59筆的 index、x、y、width、height、indexed PNG、
+  binary mask；index 必須是完整0..58，不允許缺格或重複。
+- runtime 只接受分離 bank，缺檔、身分、雜湊、幾何、索引或遮罩
+  不符即失敗即關閉；不回退 `FDOTHER.DAT`。
+- 驗收：分離 loader 與原版 `DecodeResource(...,45)` 的59幀逐幀比較
+  X／Y／尺寸／indexed pixels／mask；兩個正式 consumer 均不再取得
+  archive path，且缺包 preflight 與 presentation 都拒絕。
+
+停止線
+------
+
+本切片只遷移已閉合的59幀素材與原有 consumer，不重解 event61
+道具、JOIN、對話、觸發座標或 dispatcher 高階語意，也不因重製端
+逐像素 oracle 而宣稱未修改原版 E2。
+
+實作與驗證
+----------
+
+- `fd2-asset-import` 已輸出59組 indexed PNG／binary mask 與 strict
+  `bank.json`。
+- `LoadSeparatedEvent61Frames` 固定檢查 archive／raw identity、完整索引、
+  幾何、路徑、indexed PNG 與 binary mask；缺包會拒絕。
+- `beginNativeFieldEvent61Presentation` 與
+  `preflightNativeSystemGroupMarchEvents` 現共用這個 loader；`cmd/fd2`
+  已無 resource45 的 `DecodeResource`／`ReadResource` production caller。
+- Docker 驗證：`go test ./internal/fdother ./cmd/fd2-asset-import -count=1`；
+  另以有界 Xvfb 執行 `go test ./cmd/fd2 -run
+  "NativeEvent61|GroupMarch.*Event61|Event61.*GroupMarch" -count=1`。兩批均通過。

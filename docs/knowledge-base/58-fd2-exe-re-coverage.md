@@ -138,6 +138,11 @@ writer／consumer 分類高 fan-in helper，不用 unknown 總數驅動無限 RE
 |---|---|---|---|---|---|
 | 檔案版本、容器與主要資產格式 | 閉合 | 部分 | 部分 E1 | 部分 | `.DAT`、圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與多張 EXE 表已有雜湊與重生工具，不應重解容器格式。2026-08-29 清冊現為38,767筆（37,743 exported、1,005 intentionally raw、19 blocked）。除既有FIGANI、FDOTHER動畫、BG／TAI、FDTXT／字型、頭像與33張地圖外，FDICON已分離1,680張三層sprite；FDSHAP全33銀行另分離8,256張indexed frame、8,256張source mask、8,256張remap mask及33份controls metadata，全部與固定原檔逐層一致。ANI#0..#8亦完整分離為289張indexed frame、289份六位元DAC snapshot及9份metadata，#9空尾項不輸出假動畫；標題、第20戰與結局的production ANI archive caller已歸零。正式FDTXT、FDICON、FDSHAP、`figani.DecodeResource`與TAI direct archive production caller亦歸零；戰場與第23戰重載在沒有FDSHAP archive時通過。FDFIELD#69可由`map23/map.json`逐byte重建，終局selector30的FDFIELD#90..92亦由單一具型別JSON逐byte重建。終局FDOTHER#56..#60及其FDOTHER#5對話格、商店FDOTHER#12／#29／#63的113筆素材、城鎮FDOTHER#10／#11／#61／#62的11筆素材、標題發行商FDOTHER#74／#76的4筆素材、標題捲動／主選單／靜態幕的45筆素材、LOAD四槽FDOTHER#13 entry16、教會／轉職FDOTHER#14的21筆mixed-codec素材、整備FDOTHER#1的20張range overlay，以及完整#2 action-cell bank／補齊的#5 dialogue grid／panel均已分離；相應正式consumer不再回讀這些archive資源。production runtime仍直接讀其他`.DAT`；音效、其他FDFIELD selector與UI用途未全量閉合，故整體仍是部分。契約與完整數字見[`60`](60-editor-separated-assets-spec.md)及[`asset-export-audit-20260828.json`](../data/asset-export-audit-20260828.json)。 |
 
+> **2026-08-29 event61 資產追加：** FDOTHER #45 的59幀累積演出已輸出
+> indexed PNG／binary mask 與 strict metadata；event61 演出 owner 及全軍移動
+> preflight 均改用 separated loader，resource45 的 production archive caller 歸零。
+> 本批不改上表「整體仍是部分」的裁決。
+
 > **2026-08-26 晚期四槽 LOAD 勘誤：** 同一固定雜湊 `fd2last.sav` 現已由重製
 > 正式 selector 還原 slot 0 的29人、60金幣與 raw metadata，並進
 > `preparation_ch30`。聚焦回歸先證明舊 `raw+1` 映射會誤進

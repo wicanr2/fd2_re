@@ -230,6 +230,38 @@ type fdiconBankDocument struct {
 	Sprites       []fdiconSpriteDocument `json:"sprites"`
 }
 
+type frameBankSourceDocument struct {
+	File      string `json:"file"`
+	Resource  int    `json:"resource"`
+	Size      int    `json:"size"`
+	MD5       string `json:"md5"`
+	SHA256    string `json:"sha256"`
+	RawSize   int    `json:"raw_size"`
+	RawMD5    string `json:"raw_md5"`
+	RawSHA256 string `json:"raw_sha256"`
+}
+
+type frameBankEntryDocument struct {
+	Index  int    `json:"index"`
+	X      int    `json:"x"`
+	Y      int    `json:"y"`
+	Width  int    `json:"width"`
+	Height int    `json:"height"`
+	Frame  string `json:"frame"`
+	Mask   string `json:"mask"`
+}
+
+type frameBankDocument struct {
+	SchemaVersion int                      `json:"schema_version"`
+	Kind          string                   `json:"kind"`
+	AssetID       string                   `json:"asset_id"`
+	Status        string                   `json:"status"`
+	Evidence      string                   `json:"evidence"`
+	Codec         string                   `json:"codec"`
+	Source        frameBankSourceDocument  `json:"source"`
+	Frames        []frameBankEntryDocument `json:"frames"`
+}
+
 type fdshapBankDocument struct {
 	SchemaVersion   int                    `json:"schema_version"`
 	Kind            string                 `json:"kind"`
@@ -700,6 +732,9 @@ func exportCommandGrid(fdotherPath, outputRoot string) error {
 	if err := exportRangeOverlay(fdotherPath, outputRoot); err != nil {
 		return err
 	}
+	if err := exportEvent61Frames(fdotherPath, outputRoot); err != nil {
+		return err
+	}
 	if err := exportNativeShops(fdotherPath, outputRoot); err != nil {
 		return err
 	}
@@ -1116,6 +1151,59 @@ func exportRangeOverlay(fdotherPath, outputRoot string) error {
 			Index: index, Width: fdicon.NativeSize, Height: fdicon.NativeSize,
 			Frame: prefix + "/frame.png", Mask: prefix + "/mask.png",
 			RemapMask: prefix + "/remap_mask.png",
+		})
+	}
+	return writeJSON(filepath.Join(directory, "bank.json"), document)
+}
+
+func exportEvent61Frames(fdotherPath, outputRoot string) error {
+	raw, err := fdother.ReadResource(fdotherPath, 45)
+	if err != nil {
+		return err
+	}
+	if len(raw) != 2073 {
+		return fmt.Errorf("FDOTHER #45 raw size=%d, want 2073", len(raw))
+	}
+	rawMD5, rawSHA256 := md5.Sum(raw), sha256.Sum256(raw)
+	if hex.EncodeToString(rawMD5[:]) != "f26b4bc4ce9c8e9c9d12ec2e2f00f5b8" ||
+		hex.EncodeToString(rawSHA256[:]) != "d7a0e73d7dec5403441c33cd84392a7683de329f7b0914a1bf23c47ccc56513a" {
+		return errors.New("FDOTHER #45 raw identity mismatch")
+	}
+	frames, err := fdother.ParseFrames(raw)
+	if err != nil {
+		return err
+	}
+	if len(frames) != 59 {
+		return fmt.Errorf("FDOTHER #45 frame count=%d, want 59", len(frames))
+	}
+	directory := filepath.Join(outputRoot, "animations", "fdother_045_event61")
+	document := frameBankDocument{
+		SchemaVersion: 1, Kind: "fdother_frame_bank",
+		AssetID: "animation/FDOTHER_045/event61", Status: "decoded",
+		Evidence: "confirmed", Codec: "fd2_2935b_frame_table",
+		Source: frameBankSourceDocument{
+			File: "FDOTHER.DAT", Resource: 45, Size: fdotherSize,
+			MD5: fdotherMD5, SHA256: fdotherSHA256, RawSize: len(raw),
+			RawMD5: hex.EncodeToString(rawMD5[:]), RawSHA256: hex.EncodeToString(rawSHA256[:]),
+		},
+		Frames: make([]frameBankEntryDocument, 0, len(frames)),
+	}
+	for index, frame := range frames {
+		if frame.X != 0 || frame.Y != 0 || frame.Width != 8 || frame.Height != 2 {
+			return fmt.Errorf("FDOTHER #45 frame %d geometry=(%d,%d %dx%d)",
+				index, frame.X, frame.Y, frame.Width, frame.Height)
+		}
+		indexed, mask, err := frame.IndexedLayers()
+		if err != nil {
+			return fmt.Errorf("FDOTHER #45 frame %d: %w", index, err)
+		}
+		name := fmt.Sprintf("frame_%03d", index)
+		if err := writeSurfacePNGs(filepath.Join(directory, name), frame.Width, frame.Height, indexed, mask); err != nil {
+			return err
+		}
+		document.Frames = append(document.Frames, frameBankEntryDocument{
+			Index: index, X: frame.X, Y: frame.Y, Width: frame.Width, Height: frame.Height,
+			Frame: name + "/frame.png", Mask: name + "/mask.png",
 		})
 	}
 	return writeJSON(filepath.Join(directory, "bank.json"), document)

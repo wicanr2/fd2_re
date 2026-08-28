@@ -314,6 +314,30 @@ entries20／21／137。正式 `loadNativePreparationUIAssets` 現在只讀取 se
 pack，不再取得 `FDOTHER.DAT` 路徑。逐 indexed pixel／mask 原版對照、
 缺包拒絕、`internal/fdother` 回歸及有界 Xvfb 整備界面聚焦測試均通過。
 
+#### Event61 FDOTHER #45 幀表演出契約
+
+> 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）；canonical IDA 證據見
+> [`fd2_event61_fdother45_ida.txt`](../data/ida/fd2_event61_fdother45_ida.txt)。
+
+`animations/fdother_045_event61/bank.json` 使用穩定 identity
+`animation/FDOTHER_045/event61`，將原版 resource45 的59筆 frame-table descriptor
+輸出為逐幀 indexed PNG 與 binary source mask。metadata 保留原始 index、
+X／Y、width／height，並固定 FDOTHER 版本、resource45、raw size 2073與
+raw SHA-256。正式 event61 presentation 與全軍移動 preflight 必須共用
+同一 strict loader；缺檔、缺幀、重複索引、非 indexed PNG、非 binary mask、
+幾何或 provenance 不符即失敗即關閉，不回退 `FDOTHER.DAT`。
+
+驗收必須將 separated loader 與固定原版 `DecodeResource(...,45)` 進行
+59幀逐筆 X／Y／尺寸／indexed pixels／mask 對照，並證明兩個 production
+consumer 的 source 不再取得 archive path。本契約不改 event61 的觸發、
+道具、JOIN、文字與時序語意，也不自動提升 PLAYER-E2。
+
+實作結果：importer 已輸出59組 indexed PNG／binary mask與 strict
+metadata；`LoadSeparatedEvent61Frames` 與固定 archive 的59幀逐筆對照一致。
+event61 演出 owner 與全軍移動 preflight 現只消費分離 bank，resource45
+的 production archive caller 歸零；缺包拒絕、`internal/fdother` 回歸與
+有界 Xvfb 正式 event61／group-march 聚焦測試均通過。
+
 #### 戰鬥共用 FDOTHER #0 DAC owner 遷移契約
 
 > 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）

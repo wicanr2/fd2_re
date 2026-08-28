@@ -530,9 +530,10 @@ func (g *Game) preflightNativeSystemGroupMarchEvents(plan battle.NativeSystemGro
 					if _, ok := event61DialogueActions(1, 0, 10); !ok {
 						return false
 					}
-					path := nativeFDOTHERPath()
-					frames, err := fdother.DecodeResource(path, 45)
-					if path == "" || err != nil || len(frames) != 59 {
+					frames, err := fdother.LoadSeparatedEvent61Frames(
+						separatedAssetPath("animations/fdother_045_event61"),
+					)
+					if err != nil || len(frames) != 59 {
 						return false
 					}
 				}

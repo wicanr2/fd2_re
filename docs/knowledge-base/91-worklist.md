@@ -25,6 +25,11 @@
 | A4 | 現代美術主題 | `PENDING-A1/A2`：尚未選定正式風格，不以猜測覆蓋原版 | 先輸出頭像＋戰場 sprite／tile＋介面框的可丟棄忠實／現代對照，再由使用者選定 theme 方向 |
 | A5 | 繁中／簡中／日文／英文與可調文字顯示 | `DRAFT-DECISION`：已完成story／battle／ending單字串、`command_labels.json`、現代UI硬編碼繁中、主機字型fallback、原版FDTXT token、16×16 native bitmap font與固定320×200排版界線的實檔盤點；共通資料不變量、六階段遷移與四個待決分支已寫入`60` | 使用者先確認官方內建／外部語言包根分支；再建立字串extractor、locale／layout schema、完整key／變數／字形validator與最長字串prototype，之後才接runtime切換 |
 
+> **2026-08-29 A2／A3 追加：** event61 FDOTHER #45 的59幀演出已達
+> `DATA-READY／RUNTIME-E1`；59組 indexed PNG／mask 逐幀對照原版通過，
+> 正式演出與全軍移動 preflight 均只消費分離 bank。下一個 A2／A3
+> 切片仍依 production caller 盤點選擇，不重做 event61 handler 語意。
+
 > **策略更新**：第一輪 remake 改以[`REMAKE-STATUS.md`](../REMAKE-STATUS.md)的
 > 60格分層代表性抽樣建立95%信心。下表既有E2與精確音訊項目先登記到抽樣矩陣；
 > 只有抽樣揭露的重大玩家缺陷才回到實作佇列。全戰役長程遊玩、逐週期DOS硬體、

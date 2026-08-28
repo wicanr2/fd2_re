@@ -20,9 +20,20 @@ func nativeEvent61PlayerGame(t *testing.T, items ...int) (*Game, *battle.Unit) {
 	if _, err := os.Stat(fdotherPath); err != nil {
 		t.Skip("player-provided FDOTHER.DAT unavailable")
 	}
+	assetPack, err := filepath.Abs("../../generated-assets/fd2-original-b97caf22")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Stat(filepath.Join(assetPack, "animations", "fdother_045_event61", "bank.json")); err != nil {
+		t.Skip("separated event61 pack unavailable")
+	}
 	t.Setenv("FD2_MUTE", "1")
+	t.Setenv("FD2_ASSET_PACK", assetPack)
 	t.Setenv("FD2_CAMPAIGN", "assets/scenarios/campaign_full.json")
 	t.Setenv("FD2_CAMP_NODE", "battle_ch26")
+	// Other native-map families are migrated separately and still need the
+	// player archive in this broad battle fixture. The event61 owners themselves
+	// are required to load only the separated pack.
 	t.Setenv("FD2_ORIGINAL_FDOTHER", fdotherPath)
 	g := loadGame()
 	if g.loadErr != "" {
@@ -257,5 +268,32 @@ func TestNativeSystemGroupMarchPausesForEvent61PresentationAndResumes(t *testing
 	if g.walk != nil || g.nativeSystemGroupMarch != nil || !trigger.Acted ||
 		trigger.NativeRecordByte5&0x80 == 0 {
 		t.Fatalf("group march did not finish after event61: walk=%#v plan=%#v trigger=%+v", g.walk, g.nativeSystemGroupMarch, trigger)
+	}
+}
+
+func TestNativeEvent61ProductionOwnersRejectMissingSeparatedBank(t *testing.T) {
+	g, trigger := nativeEvent61PlayerGame(t, 0xD0, 0x20)
+	t.Setenv("FD2_ASSET_PACK", t.TempDir())
+	step := battle.NativeSystemGroupMarchStep{
+		UnitIndex: 0,
+		Events: []battle.NativeSystemGroupMarchEvent{{
+			PathIndex: 0, EventID: 61, TextIndex: 3, Presentation: true,
+		}},
+	}
+	if g.preflightNativeSystemGroupMarchEvents(battle.NativeSystemGroupMarchPlan{
+		Steps: []battle.NativeSystemGroupMarchStep{step},
+	}) {
+		t.Fatal("group-march preflight accepted a missing event61 separated bank")
+	}
+	plan, err := battle.PlanNativeFieldEvent61(g.st, trigger, trigger.X, trigger.Y)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := g.beginNativeFieldEvent61Presentation(plan, nil); err == nil {
+		t.Fatal("event61 presentation accepted a missing separated bank")
+	}
+	if g.nativeFieldEvent61 != nil || g.st.NativeEventState[12] != 0 ||
+		!reflect.DeepEqual(trigger.Inventory, []int{0xD0, 0x20}) {
+		t.Fatal("missing event61 bank partially published the presentation or mutation")
 	}
 }

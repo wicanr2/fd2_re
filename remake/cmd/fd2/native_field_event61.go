@@ -114,15 +114,14 @@ func (g *Game) beginNativeFieldEvent61Presentation(
 	if err := g.composeNativeMapFrame(); err != nil {
 		return fmt.Errorf("event61: native source frame: %w", err)
 	}
-	path := nativeFDOTHERPath()
-	if path == "" {
-		return fmt.Errorf("event61: player FDOTHER.DAT is unavailable")
+	if plan.Presentation.Resource != 45 {
+		return fmt.Errorf("event61: unsupported presentation resource %d", plan.Presentation.Resource)
 	}
-	decoded, err := fdother.DecodeResource(
-		path, plan.Presentation.Resource,
+	decoded, err := fdother.LoadSeparatedEvent61Frames(
+		separatedAssetPath("animations/fdother_045_event61"),
 	)
 	if err != nil {
-		return fmt.Errorf("event61: FDOTHER resource: %w", err)
+		return fmt.Errorf("event61: separated FDOTHER resource: %w", err)
 	}
 	if len(decoded) != plan.Presentation.Frames {
 		return fmt.Errorf(
