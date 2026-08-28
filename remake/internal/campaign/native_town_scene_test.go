@@ -41,7 +41,7 @@ func TestDecodeAndComposeNativeTownUsesOriginalResources(t *testing.T) {
 	if _, err := os.Stat(fdotherPath); err != nil {
 		t.Skip("player-provided original resources are absent")
 	}
-	assets, err := DecodeNativeTownAssets(
+	assets, err := DecodeNativeTownAssetsArchive(
 		fdotherPath, filepath.Join(base, "FDICON.B24"),
 	)
 	if err != nil {

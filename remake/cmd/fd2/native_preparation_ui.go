@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"path/filepath"
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -51,9 +50,8 @@ func loadNativePreparationUIAssets() (*nativePreparationUIAssets, error) {
 	if fdotherPath == "" {
 		return nil, errors.New("native preparation UI: FDOTHER.DAT unavailable")
 	}
-	roster, err := fdother.DecodeNativePreparationAssets(
-		fdotherPath,
-		filepath.Join(filepath.Dir(fdotherPath), "FDICON.B24"),
+	roster, err := fdother.LoadNativePreparationAssets(
+		fdotherPath, separatedAssetPath("sprites/fdicon"),
 	)
 	if err != nil {
 		return nil, err

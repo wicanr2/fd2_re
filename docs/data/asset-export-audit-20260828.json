@@ -104,11 +104,11 @@
     "source_resources": ["FDICON.B24 (24x24, 1680 sprites)"],
     "separated_outputs": 5041,
     "archive_png_indexed_mask_match": "pass (all 1680 sprites; pixels, source mask, remap mask)",
-    "runtime_consumers": ["native tactical map bundle"],
+    "runtime_consumers": ["native tactical map bundle", "native preparation", "native class/church", "native town", "ending montage tail loader baseline"],
     "runtime_archive_fallback": false,
     "archive_unreadable_test": "pass (FDOTHER/FDSHAP available beside no FDICON.B24)",
-    "remaining_direct_archive_consumers": ["native preparation", "native class/church", "native town", "ending montage tail"],
-    "evidence_level": "RUNTIME-E1-PARTIAL"
+    "remaining_direct_archive_consumers": [],
+    "evidence_level": "RUNTIME-E1"
   }, {
     "family": "battle_action_grid",
     "source_resources": ["FDOTHER.DAT#0", "FDOTHER.DAT#2"],

@@ -479,8 +479,9 @@ mask與原始four-mode decoder一致；空bank及不完整pack會失敗即關閉
 FDICON.B24，仍能載入完整1,680張戰場人物素材。
 
 完整manifest現為13,048筆：12,024 exported、1,005 intentionally_raw、19 blocked。
-本切片達`DATA-READY`與戰場bundle的`RUNTIME-E1`；整備、職業／教會、城鎮及終局tail
-仍有各自FDICON archive consumer，故FDICON全runtime仍是`RUNTIME-E1-PARTIAL`。
+本切片達`DATA-READY`與`RUNTIME-E1`。戰場bundle、整備、職業／教會、城鎮及終局tail
+loader baseline均改接同一strict bank；正式產品程式的FDICON archive caller歸零。
+`fd2-asset-import`及名稱明確的source-oracle adapter仍可讀原檔，不屬runtime fallback。
 
 ## 七、完成定義
 

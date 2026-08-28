@@ -8199,3 +8199,11 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - manifest現為13,048筆：12,024 exported、1,005 intentionally_raw、19 blocked。
 - 整備、職業／教會、城鎮與終局tail仍有FDICON archive consumer；下一批先接同一loader，
   不重做selector RE。
+
+### 同日後續勘誤：FDICON production caller歸零
+
+- 整備、職業／教會與城鎮已改接同一strict bank；測試沙箱只提供FDOTHER.DAT、不提供
+  FDICON.B24，三條consumer同時載入成功。
+- 終局tail loader baseline亦改以分離bank驗selector capacity，既有FDFIELD部署測試通過。
+- 因此正式產品程式的FDICON archive caller歸零，前一段「仍有四個consumer」已失效；
+  importer與source-oracle adapter繼續保留。

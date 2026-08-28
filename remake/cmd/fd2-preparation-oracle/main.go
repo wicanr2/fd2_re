@@ -31,7 +31,7 @@ func main() {
 		os.Exit(2)
 	}
 	fdotherPath := filepath.Join(*base, "FDOTHER.DAT")
-	assets, err := fdother.DecodeNativePreparationAssets(
+	assets, err := fdother.DecodeNativePreparationAssetsArchive(
 		fdotherPath, filepath.Join(*base, "FDICON.B24"),
 	)
 	if err != nil {
@@ -116,7 +116,7 @@ func main() {
 			os.Exit(1)
 		}
 		if *prompt == "departure-ch02" {
-			townAssets, err := campaign.DecodeNativeTownAssets(
+			townAssets, err := campaign.DecodeNativeTownAssetsArchive(
 				fdotherPath, filepath.Join(*base, "FDICON.B24"),
 			)
 			if err != nil {

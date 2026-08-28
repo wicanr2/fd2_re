@@ -46,12 +46,33 @@ type NativeTownAssets struct {
 	Pulse       [3]fdicon.Sprite
 }
 
-func DecodeNativeTownAssets(
+func DecodeNativeTownAssetsArchive(
 	fdotherPath, fdiconPath string,
 ) (*NativeTownAssets, error) {
 	if fdotherPath == "" || fdiconPath == "" {
 		return nil, errors.New("campaign: native town asset path is empty")
 	}
+	bank, err := fdicon.DecodeFile(filepath.Clean(fdiconPath))
+	if err != nil {
+		return nil, err
+	}
+	return decodeNativeTownAssets(fdotherPath, bank)
+}
+
+// LoadNativeTownAssets uses the separated FDICON bank. The archive adapter
+// above remains available only to source-oracle tools and equivalence tests.
+func LoadNativeTownAssets(fdotherPath, fdiconRoot string) (*NativeTownAssets, error) {
+	if fdotherPath == "" || fdiconRoot == "" {
+		return nil, errors.New("campaign: native town asset path is empty")
+	}
+	bank, err := fdicon.LoadSeparatedBank(fdiconRoot)
+	if err != nil {
+		return nil, err
+	}
+	return decodeNativeTownAssets(fdotherPath, bank)
+}
+
+func decodeNativeTownAssets(fdotherPath string, bank *fdicon.Bank) (*NativeTownAssets, error) {
 	out := &NativeTownAssets{}
 	for variant, resourceID := range nativeTownBackgroundResources {
 		raw, err := fdother.ReadResource(fdotherPath, resourceID)
@@ -81,8 +102,7 @@ func DecodeNativeTownAssets(
 			"campaign: native town label panel is not 62x26",
 		)
 	}
-	bank, err := fdicon.DecodeFile(filepath.Clean(fdiconPath))
-	if err != nil || len(bank.Sprites) < len(out.Pulse) {
+	if bank == nil || len(bank.Sprites) != fdicon.SeparatedSpriteCount {
 		return nil, errors.New("campaign: native town FDICON pulse is incomplete")
 	}
 	copy(out.Pulse[:], bank.Sprites[:len(out.Pulse)])

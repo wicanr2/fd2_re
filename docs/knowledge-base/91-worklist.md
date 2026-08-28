@@ -21,7 +21,7 @@
 |---:|---|---|---|
 | A1 | 編輯器 canonical schema 與穩定身份層 | `SPEC-READY`：campaign／scenario／story／animation 四份 machine-readable Schema 與跨檔 validator 已建立；穩定 ID、戰役轉場、mouth animation、素材 `asset_id`、重複 ID 及受控 extensions 有11項 Docker 測試。現有資料仍是 legacy 單向 loader，尚未轉入 canonical 格式 | 加入 legacy import 診斷、canonical writer 與 load→write→reload 測試；再建立 character identity 文件，分離連結 portrait／map sprite／battle animation，達 `DATA-READY` 後才接編輯器 UI |
 | A2 | 原版素材全量分離與清冊 | `DATA-PARTIAL`：現行完整manifest為13,048筆：12,024 exported、1,005 intentionally_raw、19 blocked。FDICON.B24另完整分離1,680張indexed frame、1,680張source mask、1,680張remap mask與metadata，逐張三層一致。raw零遺漏，但其餘UI／AFM用途與OGG仍未全量閉合 | 將15首MIDI轉成具cue／loop metadata的OGG；其餘raw逐家族判定已由標準輸出涵蓋、需新typed輸出或blocked，補齊用途關聯，輸出包不入Git |
-| A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型與共用道具panel正式玩家consumer已遷移；戰場`loadNativeMapAssets`亦只讀完整分離FDICON bank，旁側沒有FDICON.B24的正常載入測試通過。整備、職業／教會、城鎮、終局tail仍有FDICON archive consumer；FDFIELD、FDSHAP、title、FDOTHER sound／其他UI亦未全數遷移 | 先將其餘四個FDICON consumer改接同一strict loader，使FDICON production caller歸零；再處理FDFIELD／FDSHAP與FDOTHER palette／sound／其餘UI家族 |
+| A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型、共用道具panel與FDICON正式玩家consumer已遷移；戰場、整備、職業／教會、城鎮與終局tail baseline均讀完整分離FDICON bank，FDICON production caller歸零。FDFIELD、FDSHAP、title、FDOTHER sound／其他UI仍未全數遷移 | 下一批處理FDFIELD／FDSHAP戰場資料與圖塊，再處理FDOTHER palette／sound／其餘UI家族；保留archive不可讀與缺分離資產失敗即關閉測試 |
 | A4 | 現代美術主題 | `PENDING-A1/A2`：尚未選定正式風格，不以猜測覆蓋原版 | 先輸出頭像＋戰場 sprite／tile＋介面框的可丟棄忠實／現代對照，再由使用者選定 theme 方向 |
 
 > **策略更新**：第一輪 remake 改以[`REMAKE-STATUS.md`](../REMAKE-STATUS.md)的

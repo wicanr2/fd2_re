@@ -4,7 +4,6 @@ import (
 	"errors"
 	"image"
 	"image/color"
-	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
@@ -36,7 +35,6 @@ func loadNativeClassUIAssets() (*nativeClassUIAssets, error) {
 	if fdotherPath == "" {
 		return nil, errors.New("native class UI: FDOTHER.DAT unavailable")
 	}
-	base := filepath.Dir(fdotherPath)
 	resource14, err := fdother.ReadResource(fdotherPath, 14)
 	if err != nil {
 		return nil, err
@@ -103,7 +101,7 @@ func loadNativeClassUIAssets() (*nativeClassUIAssets, error) {
 		}
 		return nil, errors.New("native church UI: DATO#131 has no frames")
 	}
-	units, err := fdicon.DecodeFile(filepath.Join(base, "FDICON.B24"))
+	units, err := fdicon.LoadSeparatedBank(separatedAssetPath("sprites/fdicon"))
 	if err != nil {
 		return nil, err
 	}

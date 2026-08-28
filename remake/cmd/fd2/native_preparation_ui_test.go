@@ -13,7 +13,7 @@ import (
 
 func TestComposeNativePreparationFrameUsesRawRosterSelectors(t *testing.T) {
 	base := "../../org_game/炎龍騎士團/FLAME2"
-	assets, err := fdother.DecodeNativePreparationAssets(
+	assets, err := fdother.DecodeNativePreparationAssetsArchive(
 		filepath.Join(base, "FDOTHER.DAT"),
 		filepath.Join(base, "FDICON.B24"),
 	)

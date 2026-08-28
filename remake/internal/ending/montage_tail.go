@@ -105,12 +105,11 @@ const (
 	nativeMontageTailControlGroupOffset = 21
 )
 
-// MontageTailLoaderPaths identifies the player-provided archives consumed by
-// the record-construction portion of 0x1088d(0x1e).  The original archives
-// remain read-only; this type never embeds their bytes in the remake.
+// MontageTailLoaderPaths identifies the source FDFIELD archive and separated
+// FDICON bank consumed by the record-construction portion of 0x1088d(0x1e).
 type MontageTailLoaderPaths struct {
-	FDFIELD string
-	FDICON  string
+	FDFIELD    string
+	FDICONRoot string
 }
 
 // MontageTailVisualPaths identifies the separated visual roots needed by the
@@ -183,8 +182,8 @@ func BuildMontageTailLoaderBaseline(
 			len(persistent), nativeMontageTailDeployRecordCount,
 		)
 	}
-	if paths.FDFIELD == "" || paths.FDICON == "" {
-		return MontageTailLoaderBaseline{}, fmt.Errorf("ending: montage tail loader archive path is unavailable")
+	if paths.FDFIELD == "" || paths.FDICONRoot == "" {
+		return MontageTailLoaderBaseline{}, fmt.Errorf("ending: montage tail loader source input is unavailable")
 	}
 
 	fieldMap, err := fdother.ReadResource(paths.FDFIELD, nativeMontageTailFieldMapResource)
@@ -204,7 +203,7 @@ func BuildMontageTailLoaderBaseline(
 		return MontageTailLoaderBaseline{}, err
 	}
 
-	bank, err := fdicon.DecodeFile(paths.FDICON)
+	bank, err := fdicon.LoadSeparatedBank(paths.FDICONRoot)
 	if err != nil || bank == nil || len(bank.Sprites) == 0 || len(bank.Sprites)%12 != 0 {
 		if err != nil {
 			return MontageTailLoaderBaseline{}, fmt.Errorf("ending: montage tail FDICON: %w", err)

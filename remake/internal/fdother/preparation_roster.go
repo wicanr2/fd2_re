@@ -32,8 +32,30 @@ type NativePreparationAssets struct {
 	Cursor, Units     *fdicon.Bank
 }
 
-// DecodeNativePreparationAssets loads only player-provided original assets.
-func DecodeNativePreparationAssets(fdotherPath, fdiconPath string) (*NativePreparationAssets, error) {
+// LoadNativePreparationAssets loads the FDICON bank from the separated pack;
+// FDOTHER entries remain caller-proven archive inputs in this migration step.
+func LoadNativePreparationAssets(fdotherPath, fdiconRoot string) (*NativePreparationAssets, error) {
+	units, err := fdicon.LoadSeparatedBank(fdiconRoot)
+	if err != nil {
+		return nil, err
+	}
+	return decodeNativePreparationAssets(fdotherPath, units)
+}
+
+// DecodeNativePreparationAssetsArchive is retained for source-oracle tools and
+// archive-equivalence tests only.
+func DecodeNativePreparationAssetsArchive(fdotherPath, fdiconPath string) (*NativePreparationAssets, error) {
+	if fdiconPath == "" {
+		fdiconPath = filepath.Join(filepath.Dir(fdotherPath), "FDICON.B24")
+	}
+	units, err := fdicon.DecodeFile(fdiconPath)
+	if err != nil {
+		return nil, err
+	}
+	return decodeNativePreparationAssets(fdotherPath, units)
+}
+
+func decodeNativePreparationAssets(fdotherPath string, units *fdicon.Bank) (*NativePreparationAssets, error) {
 	resource5, err := ReadResource(fdotherPath, 5)
 	if err != nil {
 		return nil, err
@@ -64,12 +86,8 @@ func DecodeNativePreparationAssets(fdotherPath, fdiconPath string) (*NativePrepa
 	if err != nil {
 		return nil, err
 	}
-	if fdiconPath == "" {
-		fdiconPath = filepath.Join(filepath.Dir(fdotherPath), "FDICON.B24")
-	}
-	units, err := fdicon.DecodeFile(fdiconPath)
-	if err != nil {
-		return nil, err
+	if units == nil || len(units.Sprites) != fdicon.SeparatedSpriteCount {
+		return nil, errors.New("fdother: preparation FDICON bank is incomplete")
 	}
 	assets := &NativePreparationAssets{
 		UpperRight: entries[20], Lower: entries[21], UpperLeft: upperLeft,

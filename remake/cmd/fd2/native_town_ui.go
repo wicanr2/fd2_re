@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -93,8 +92,8 @@ func loadNativeTownUIAssets() (*nativeTownUIAssets, error) {
 	if fdotherPath == "" {
 		return nil, errors.New("native town UI: FDOTHER.DAT unavailable")
 	}
-	scene, err := campaign.DecodeNativeTownAssets(
-		fdotherPath, filepath.Join(filepath.Dir(fdotherPath), "FDICON.B24"),
+	scene, err := campaign.LoadNativeTownAssets(
+		fdotherPath, separatedAssetPath("sprites/fdicon"),
 	)
 	if err != nil {
 		return nil, err

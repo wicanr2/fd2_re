@@ -170,16 +170,16 @@ func TestLoadMontageTailVisualSetsFailsClosedBeforePartialPlayback(t *testing.T)
 func TestBuildMontageTailLoaderBaselineUsesExactSelector1EDeployment(t *testing.T) {
 	const gameRoot = "../../../org_game/炎龍騎士團/FLAME2"
 	paths := MontageTailLoaderPaths{
-		FDFIELD: filepath.Join(gameRoot, "FDFIELD.DAT"),
-		FDICON:  filepath.Join(gameRoot, "FDICON.B24"),
+		FDFIELD:    filepath.Join(gameRoot, "FDFIELD.DAT"),
+		FDICONRoot: filepath.Join("..", "..", "generated-assets", "fd2-original-b97caf22", "sprites", "fdicon"),
 	}
 	if _, err := os.Stat(paths.FDFIELD); os.IsNotExist(err) {
 		t.Skip("player-provided FDFIELD.DAT is absent")
 	} else if err != nil {
 		t.Fatal(err)
 	}
-	if _, err := os.Stat(paths.FDICON); os.IsNotExist(err) {
-		t.Skip("player-provided FDICON.B24 is absent")
+	if _, err := os.Stat(filepath.Join(paths.FDICONRoot, "bank.json")); os.IsNotExist(err) {
+		t.Skip("separated FDICON bank is absent")
 	} else if err != nil {
 		t.Fatal(err)
 	}

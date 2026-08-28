@@ -131,7 +131,7 @@ func TestDecodeAndComposeNativePreparationAssetsFromPlayerArchive(t *testing.T) 
 	if _, err := os.Stat(fdotherPath); err != nil {
 		t.Skip("player-provided original assets are absent")
 	}
-	assets, err := DecodeNativePreparationAssets(fdotherPath, fdiconPath)
+	assets, err := DecodeNativePreparationAssetsArchive(fdotherPath, fdiconPath)
 	if err != nil {
 		t.Fatal(err)
 	}
