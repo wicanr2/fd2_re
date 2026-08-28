@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fd2-remake.invalid/schema/fd2-scenario-v1.json",
+  "title": "FD2 編輯器戰場劇本文件",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "document_id", "kind", "source", "scenario_id", "map_id", "units", "events", "extensions"],
+  "properties": {
+    "schema_version": {"const": 1}, "document_id": {"$ref": "#/$defs/id"}, "kind": {"const": "scenario"},
+    "source": {"type": "object", "additionalProperties": true}, "scenario_id": {"$ref": "#/$defs/id"},
+    "map_id": {"$ref": "#/$defs/id"}, "units": {"type": "array", "items": {"$ref": "#/$defs/unit"}},
+    "events": {"type": "array", "items": {"$ref": "#/$defs/event"}},
+    "asset_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}}, "extensions": {"type": "object", "additionalProperties": true}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._/-]+$"},
+    "unit": {"type": "object", "additionalProperties": false, "required": ["unit_id", "character_id", "extensions"], "properties": {
+      "unit_id": {"$ref": "#/$defs/id"}, "character_id": {"$ref": "#/$defs/id"}, "camp": {"type": "string"},
+      "x": {"type": "integer"}, "y": {"type": "integer"}, "asset_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}}, "extensions": {"type": "object", "additionalProperties": true}
+    }},
+    "event": {"type": "object", "additionalProperties": false, "required": ["event_id", "trigger", "actions", "extensions"], "properties": {
+      "event_id": {"$ref": "#/$defs/id"}, "trigger": {"type": "string"}, "when": {"type": "object", "additionalProperties": true},
+      "actions": {"type": "array", "items": {"$ref": "#/$defs/action"}}, "extensions": {"type": "object", "additionalProperties": true}
+    }},
+    "action": {"type": "object", "additionalProperties": false, "required": ["action_id", "type", "extensions"], "properties": {
+      "action_id": {"$ref": "#/$defs/id"}, "type": {"type": "string"}, "asset_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+      "extensions": {"type": "object", "additionalProperties": true}
+    }}
+  }
+}

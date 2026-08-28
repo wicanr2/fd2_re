@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fd2-remake.invalid/schema/fd2-story-v1.json",
+  "title": "FD2 編輯器劇情與對話文件",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "document_id", "kind", "source", "scenes", "extensions"],
+  "properties": {
+    "schema_version": {"const": 1}, "document_id": {"$ref": "#/$defs/id"}, "kind": {"const": "story"},
+    "source": {"type": "object", "additionalProperties": true}, "scenes": {"type": "array", "items": {"$ref": "#/$defs/scene"}},
+    "asset_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}}, "extensions": {"type": "object", "additionalProperties": true}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._/-]+$"},
+    "scene": {"type": "object", "additionalProperties": false, "required": ["scene_id", "lines", "beats", "extensions"], "properties": {
+      "scene_id": {"$ref": "#/$defs/id"}, "lines": {"type": "array", "items": {"$ref": "#/$defs/line"}},
+      "beats": {"type": "array", "items": {"$ref": "#/$defs/id"}}, "background_asset_id": {"$ref": "#/$defs/id"}, "extensions": {"type": "object", "additionalProperties": true}
+    }},
+    "line": {"type": "object", "additionalProperties": false, "required": ["line_id", "speaker", "text", "extensions"], "properties": {
+      "line_id": {"$ref": "#/$defs/id"}, "speaker": {"$ref": "#/$defs/id"}, "text": {"type": "string"},
+      "portrait_asset_id": {"$ref": "#/$defs/id"}, "mouth_animation_id": {"$ref": "#/$defs/id"}, "audio_cue_id": {"$ref": "#/$defs/id"},
+      "upper": {"type": "boolean"}, "extensions": {"type": "object", "additionalProperties": true}
+    }}
+  }
+}

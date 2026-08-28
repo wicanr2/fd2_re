@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fd2-remake.invalid/schema/fd2-animation-v1.json",
+  "title": "FD2 編輯器動畫文件",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "document_id", "kind", "source", "animation_id", "frames", "extensions"],
+  "properties": {
+    "schema_version": {"const": 1}, "document_id": {"$ref": "#/$defs/id"}, "kind": {"const": "animation"},
+    "source": {"type": "object", "additionalProperties": true}, "animation_id": {"$ref": "#/$defs/id"},
+    "character_id": {"$ref": "#/$defs/id"}, "asset_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+    "frames": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/frame"}}, "extensions": {"type": "object", "additionalProperties": true}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._/-]+$"},
+    "frame": {"type": "object", "additionalProperties": false, "required": ["frame_id", "asset_id", "delay_ms", "x", "y", "extensions"], "properties": {
+      "frame_id": {"$ref": "#/$defs/id"}, "asset_id": {"$ref": "#/$defs/id"}, "delay_ms": {"type": "integer", "minimum": 0},
+      "x": {"type": "integer"}, "y": {"type": "integer"}, "anchor": {"type": "string"}, "palette": {"type": "string"},
+      "extensions": {"type": "object", "additionalProperties": true}
+    }}
+  }
+}

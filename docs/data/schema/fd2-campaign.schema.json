@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fd2-remake.invalid/schema/fd2-campaign-v1.json",
+  "title": "FD2 編輯器戰役文件",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "document_id", "kind", "source", "nodes", "extensions"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "document_id": {"$ref": "#/$defs/id"},
+    "kind": {"const": "campaign"},
+    "source": {"type": "object", "additionalProperties": true},
+    "nodes": {"type": "array", "items": {"$ref": "#/$defs/node"}},
+    "extensions": {"type": "object", "additionalProperties": true}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._/-]+$"},
+    "node": {
+      "type": "object", "additionalProperties": false,
+      "required": ["node_id", "type", "extensions"],
+      "properties": {
+        "node_id": {"$ref": "#/$defs/id"},
+        "type": {"enum": ["story", "cutscene", "battle", "town", "shop", "preparation", "church", "choice", "event", "ending"]},
+        "map_id": {"$ref": "#/$defs/id"}, "scenario_id": {"$ref": "#/$defs/id"},
+        "story_id": {"$ref": "#/$defs/id"}, "next": {"$ref": "#/$defs/id"},
+        "on_win": {"$ref": "#/$defs/id"}, "on_lose": {"$ref": "#/$defs/id"},
+        "asset_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "extensions": {"type": "object", "additionalProperties": true}
+      }
+    }
+  }
+}

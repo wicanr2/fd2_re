@@ -187,3 +187,16 @@ runtime 已完全只讀分離素材。
 - 沒有 `.DAT` 可讀權限時，既有代表性玩家抽樣仍能由分離素材包通過。
 - canonical editor 文件通過 schema、跨檔引用與往返測試。
 - 編輯器最小垂直切片能改變正式畫面／流程，存檔後重開仍保持結果。
+
+### 2026-08-28 canonical 編輯契約第一批
+
+新增 campaign、scenario、story 與 animation 四份 Draft 2020-12 JSON Schema，要求
+`schema_version`、`document_id`、各層穩定 ID、`source` 與受控 `extensions`。另以
+`validate_editor_documents.py` 檢查文件 ID 唯一性、戰役轉場、事件／動作／台詞／動畫
+frame 重複 ID、對話 mouth animation 及素材 manifest 的 `asset_id` 引用。11項 Schema、
+清冊與跨檔 fixture 測試已在素材 Docker 映像通過。
+
+這批是新 canonical 格式的契約基礎，尚未把現有 campaign／scenario／story／FIGANI
+資料自動轉入，也尚無未知欄位 round-trip writer；因此狀態是 `SPEC-READY`，不是完整
+編輯器或既有 JSON 已全部相容。下一批須提供 legacy importer 診斷、canonical writer
+與 load→write→reload 測試，才可提升為 `DATA-READY`。
