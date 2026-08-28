@@ -124,6 +124,11 @@ archive subresources、125張一般 PNG、264組 FIGANI／2,118張動畫 frame�
 逐檔 `asset_id`／hash／用途。這些缺口已明列，不以「全量試跑成功」冒稱所有素材
 皆已轉成正式 PNG／OGG。
 
+同一實際輸出樹再經來源 hash gate 與逐檔 manifest generator 驗證：3,807筆清冊中
+2,787筆為已匯出、1,005筆 raw 完整列為 `intentionally_raw`，15首 MIDI 明確列為
+`blocked`，等待 OGG 輸出。清冊驗證器拒絕重複 ID、斷裂引用、路徑逃逸、來源／輸出
+hash 不符；`blocked` 項目不必偽造不存在的輸出 hash。
+
 ## 七、完成定義
 
 只有同時成立才可宣稱「素材已完全分離、JSON 足以建立編輯器」：

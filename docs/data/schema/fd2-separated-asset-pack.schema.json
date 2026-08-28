@@ -47,7 +47,7 @@
     "asset": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["asset_id", "kind", "path", "sha256", "source_file", "status", "evidence"],
+      "required": ["asset_id", "kind", "path", "source_file", "status", "evidence"],
       "properties": {
         "asset_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._/-]+$"},
         "kind": {"enum": ["map", "tileset", "map_sprite", "portrait", "battle_animation", "cutscene_animation", "background", "ui", "text", "sfx", "music", "font", "metadata"]},
@@ -61,7 +61,11 @@
         "duration_ms": {"type": "integer", "minimum": 0},
         "status": {"enum": ["exported", "intentionally_raw", "blocked"]},
         "evidence": {"enum": ["confirmed", "strong_inference", "hypothesis", "unknown"]}
-      }
+      },
+      "allOf": [{
+        "if": {"properties": {"status": {"const": "exported"}}, "required": ["status"]},
+        "then": {"required": ["sha256"]}
+      }]
     },
     "relationship": {
       "type": "object",

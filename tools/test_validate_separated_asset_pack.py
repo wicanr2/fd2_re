@@ -69,6 +69,16 @@ class SeparatedAssetPackTest(unittest.TestCase):
             manifest.write_text(json.dumps(doc), encoding="utf-8")
             self.assertTrue(any("安全相對路徑" in error for error in validate(manifest)))
 
+    def test_blocked_asset_does_not_invent_output_hash(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            manifest = self.make_pack(root)
+            doc = json.loads(manifest.read_text())
+            doc["assets"][0].update({"status": "blocked", "path": "blocked/ui-frame"})
+            doc["assets"][0].pop("sha256")
+            manifest.write_text(json.dumps(doc), encoding="utf-8")
+            self.assertEqual(validate(manifest), [])
+
 
 if __name__ == "__main__":
     unittest.main()

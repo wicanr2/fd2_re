@@ -30,11 +30,21 @@
     "font_atlases_png": 1,
     "music_midi": 15
   },
+  "manifest_validation": {
+    "tool": "tools/generate_separated_asset_manifest.py",
+    "validator": "tools/validate_separated_asset_pack.py",
+    "total_entries": 3807,
+    "exported": 2787,
+    "blocked": 15,
+    "intentionally_raw": 1005,
+    "source_hashes_verified": true,
+    "result": "pass"
+  },
   "not_yet_complete": [
     "145 個 FIGANI resources 未被現行 decoder 接受，必須逐筆列為非動畫、intentionally_raw 或 blocked",
     "目前音樂輸出為 MIDI；正式 runtime pack 要以既有音源管線輸出 OGG 並記錄 loop/stop metadata",
     "音效、AFM/ANI、DATO/TAI/BG/UI 的用途與 asset_id 尚未全量登記",
-    "現行 extract_all.py 尚未產生符合 fd2-separated-asset-pack schema 的逐檔 manifest",
+    "現行 extract_all.py 仍需由獨立 manifest generator 補上逐檔清冊；尚未整合成單一安裝命令",
     "production runtime 仍有原始 archive callers"
   ]
 }
