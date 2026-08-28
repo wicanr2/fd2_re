@@ -11,6 +11,16 @@ import decode_figani
 
 
 class DecodeFiganiTest(unittest.TestCase):
+    def test_resource_status_distinguishes_zero_header_and_empty_resource(self):
+        zero = decode_figani.resource_status_document(bytes.fromhex("00000a"), 2)
+        self.assertEqual(zero["status"], "empty_header_zero")
+        self.assertEqual(zero["header_word_le"], 0)
+        self.assertEqual(zero["reason_code"], "zero_header_word")
+        empty = decode_figani.resource_status_document(b"", 408)
+        self.assertEqual(empty["status"], "blocked")
+        self.assertEqual(empty["reason_code"], "empty_resource")
+        self.assertNotIn("header_word_le", empty)
+
     def test_mask_distinguishes_opaque_palette_zero_from_transparent_skip(self):
         pixels, mask = decode_figani.decode_rle_layers(
             bytes([0x80, 0x00, 0xC0, 0x40, 0x00]), 4, 1
@@ -60,6 +70,9 @@ class DecodeFiganiTest(unittest.TestCase):
             decode_figani.cmd_frames(str(source), str(palette), str(output))
 
             document = json.loads((output / "animation.json").read_text(encoding="utf-8"))
+            status = json.loads((output / "resource.json").read_text(encoding="utf-8"))
+            self.assertEqual(status["status"], "decoded")
+            self.assertEqual(status["frame_count"], 1)
             self.assertEqual(document["native_header"], {"byte_1": 0, "byte_2": 1, "byte_4": 7})
             self.assertEqual(document["frames"][0]["delay_native"], 6)
             self.assertEqual(document["frames"][0]["raw_byte_5"], 2)

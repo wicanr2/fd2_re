@@ -127,9 +127,9 @@ func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, c
 	if actor.NativeRecordByte6 == 0 {
 		bgSelector, taiSelector = actorSelector, targetSelector
 	}
-	figaniPath, bgPath, taiPath := nativeFIGANIPath(), nativeBGPath(), nativeTAIPath()
+	bgPath, taiPath := nativeBGPath(), nativeTAIPath()
 	fdotherPath, fdtxtPath := nativeFDOTHERPath(), nativeFDTXTPath()
-	if figaniPath == "" || bgPath == "" || taiPath == "" || fdotherPath == "" || fdtxtPath == "" {
+	if bgPath == "" || taiPath == "" || fdotherPath == "" || fdtxtPath == "" {
 		return errors.New("native command5 player-provided archives unavailable")
 	}
 	background, err := fdother.DecodeArchiveSingleFrame(bgPath, int(bgSelector))
@@ -144,7 +144,7 @@ func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, c
 	if err != nil {
 		return err
 	}
-	actorEffect, err := nativeCommand6ActorEffect(figaniPath, actor.BattleFig)
+	actorEffect, err := nativeCommand6ActorEffect(separatedAssetPath("animations"), actor.BattleFig)
 	if err != nil {
 		return err
 	}

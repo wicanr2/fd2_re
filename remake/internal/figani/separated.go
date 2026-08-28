@@ -9,6 +9,21 @@ import (
 	"path/filepath"
 )
 
+type separatedResourceStatusDocument struct {
+	SchemaVersion int    `json:"schema_version"`
+	Kind          string `json:"kind"`
+	ResourceID    string `json:"resource_id"`
+	Source        struct {
+		File     string `json:"file"`
+		Resource int    `json:"resource"`
+	} `json:"source"`
+	RawSize      int    `json:"raw_size"`
+	HeaderWordLE *int   `json:"header_word_le"`
+	Status       string `json:"status"`
+	ReasonCode   string `json:"reason_code"`
+	Evidence     string `json:"evidence"`
+}
+
 type separatedAnimationDocument struct {
 	SchemaVersion int    `json:"schema_version"`
 	Kind          string `json:"kind"`
@@ -107,4 +122,45 @@ func LoadSeparatedResource(animationRoot string, resource int) (*Animation, erro
 		}
 	}
 	return animation, nil
+}
+
+func separatedResourceHasZeroHeader(animationRoot string, resource int) (bool, error) {
+	if animationRoot == "" || resource < 0 || resource > 999 {
+		return false, fmt.Errorf("figani: invalid separated resource status request")
+	}
+	directory := filepath.Join(animationRoot, fmt.Sprintf("FIGANI_%03d", resource))
+	raw, err := os.ReadFile(filepath.Join(directory, "resource.json"))
+	if err != nil {
+		return false, fmt.Errorf("figani: separated resource status %d: %w", resource, err)
+	}
+	var document separatedResourceStatusDocument
+	if err := json.Unmarshal(raw, &document); err != nil {
+		return false, fmt.Errorf("figani: separated resource status %d: %w", resource, err)
+	}
+	wantID := fmt.Sprintf("animation-resource/figani_%03d", resource)
+	if document.SchemaVersion != 1 || document.Kind != "animation_resource_status" ||
+		document.ResourceID != wantID || document.Source.File != "FIGANI.DAT" ||
+		document.Source.Resource != resource || document.RawSize < 2 {
+		return false, fmt.Errorf("figani: separated resource status %d violates the contract", resource)
+	}
+	return document.Status == "empty_header_zero" && document.ReasonCode == "zero_header_word" &&
+		document.Evidence == "confirmed" && document.HeaderWordLE != nil && *document.HeaderWordLE == 0, nil
+}
+
+// LoadSeparatedResourceWithZeroHeaderFallback 保存原版 caller 已證實的
+// selector*3+2 首 word 為零時退到前一資源規則。缺少或矛盾的狀態文件不可
+// 被誤當成零標頭，亦不可回退讀 FIGANI.DAT。
+func LoadSeparatedResourceWithZeroHeaderFallback(animationRoot string, resource int) (*Animation, error) {
+	animation, primaryErr := LoadSeparatedResource(animationRoot, resource)
+	if primaryErr == nil {
+		return animation, nil
+	}
+	zero, statusErr := separatedResourceHasZeroHeader(animationRoot, resource)
+	if statusErr != nil {
+		return nil, fmt.Errorf("figani: resource %d unavailable (%v); status: %w", resource, primaryErr, statusErr)
+	}
+	if !zero || resource == 0 {
+		return nil, primaryErr
+	}
+	return LoadSeparatedResource(animationRoot, resource-1)
 }

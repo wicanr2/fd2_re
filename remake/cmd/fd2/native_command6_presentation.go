@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/binary"
 	"errors"
 	"fmt"
 
@@ -47,26 +46,11 @@ type nativeCommand6PresentationJob struct {
 	then                   func([]battle.NativeCommandDamageResult)
 }
 
-func nativeCommand6ActorEffect(path string, selector int) (*figani.Animation, error) {
+func nativeCommand6ActorEffect(animationRoot string, selector int) (*figani.Animation, error) {
 	if selector < 0 || selector > 0xff {
 		return nil, errors.New("native command6 actor FIGANI selector unavailable")
 	}
-	resource := selector*3 + 2
-	raw, err := fdother.ReadResource(path, resource)
-	if err != nil {
-		return nil, err
-	}
-	if len(raw) < 2 {
-		return nil, errors.New("native command6 actor effect header unavailable")
-	}
-	if binary.LittleEndian.Uint16(raw[:2]) == 0 {
-		resource--
-		raw, err = fdother.ReadResource(path, resource)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return figani.Parse(raw)
+	return figani.LoadSeparatedResourceWithZeroHeaderFallback(animationRoot, selector*3+2)
 }
 
 func (g *Game) startNativeCommand6Presentation(actor, confirmed *battle.Unit, then func([]battle.NativeCommandDamageResult)) error {
@@ -135,8 +119,8 @@ func (g *Game) startNativeCommand6Presentation(actor, confirmed *battle.Unit, th
 	if actor.NativeRecordByte6 == 0 {
 		bgSelector, taiSelector = actorSelector, targetSelector
 	}
-	figaniPath, bgPath, taiPath, fdotherPath, fdtxtPath := nativeFIGANIPath(), nativeBGPath(), nativeTAIPath(), nativeFDOTHERPath(), nativeFDTXTPath()
-	if figaniPath == "" || bgPath == "" || taiPath == "" || fdotherPath == "" || fdtxtPath == "" {
+	bgPath, taiPath, fdotherPath, fdtxtPath := nativeBGPath(), nativeTAIPath(), nativeFDOTHERPath(), nativeFDTXTPath()
+	if bgPath == "" || taiPath == "" || fdotherPath == "" || fdtxtPath == "" {
 		return errors.New("native command6 player-provided archives unavailable")
 	}
 	background, err := fdother.DecodeArchiveSingleFrame(bgPath, int(bgSelector))
@@ -151,7 +135,7 @@ func (g *Game) startNativeCommand6Presentation(actor, confirmed *battle.Unit, th
 	if err != nil {
 		return err
 	}
-	actorEffect, err := nativeCommand6ActorEffect(figaniPath, actor.BattleFig)
+	actorEffect, err := nativeCommand6ActorEffect(separatedAssetPath("animations"), actor.BattleFig)
 	if err != nil {
 		return err
 	}

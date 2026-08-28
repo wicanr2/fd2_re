@@ -521,7 +521,7 @@ func TestPlayerNativeCommand0RunsIndexedPresentationThroughCursorConfirm(t *test
 			t.Skip("player-provided command0 archives unavailable")
 		}
 	}
-	t.Setenv("FD2_ORIGINAL_FIGANI", filepath.Join(base, "FIGANI.DAT"))
+	t.Setenv("FD2_ORIGINAL_FIGANI", filepath.Join(t.TempDir(), "missing-FIGANI.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
 	t.Setenv("FD2_ORIGINAL_BG", filepath.Join(base, "BG.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(base, "FDTXT.DAT"))

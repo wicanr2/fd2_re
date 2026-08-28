@@ -35,11 +35,78 @@ LLLLLL 容器(見 unpack_dat.py)→ 每個資源 = 一段動畫。
     python3 decode_figani.py frames <FIGANI_NNN.bin> <palette.bin> <out目錄>
     python3 decode_figani.py gif    <FIGANI_NNN.bin> <palette.bin> <out.gif>
     python3 decode_figani.py info   <FIGANI_NNN.bin>
+    python3 decode_figani.py status <FIGANI_NNN.bin> <out目錄>
 """
 import sys
 import os
 import struct
 import json
+
+
+def inspect_anim(d):
+    """回傳不猜高階語意的 resource 級診斷。"""
+    document = {
+        "raw_size": len(d),
+        "raw_prefix_hex": d[:16].hex(),
+        "status": "blocked",
+        "reason_code": "unsupported_shape",
+        "evidence": "confirmed",
+    }
+    if len(d) >= 2:
+        document["header_word_le"] = struct.unpack_from("<H", d, 0)[0]
+        if document["header_word_le"] == 0:
+            document["status"] = "empty_header_zero"
+            document["reason_code"] = "zero_header_word"
+            return document
+    elif len(d) == 0:
+        document["reason_code"] = "empty_resource"
+        return document
+    if len(d) < 12:
+        return document
+    frame_count = d[0]
+    document["frame_count"] = frame_count
+    if frame_count == 0 or 8 + 4 * frame_count > len(d):
+        return document
+    offsets = [struct.unpack_from("<I", d, 8 + 4 * i)[0] for i in range(frame_count)]
+    for index, offset in enumerate(offsets):
+        end = offsets[index + 1] if index + 1 < frame_count else len(d)
+        if offset + 13 > len(d) or end < offset + 13 or end > len(d):
+            return document
+        width = struct.unpack_from("<H", d, offset + 9)[0]
+        height = struct.unpack_from("<H", d, offset + 11)[0]
+        if not (0 < width <= 1024 and 0 < height <= 1024):
+            return document
+    if len(parse_anim(d)) != frame_count:
+        return document
+    document["status"] = "decoded"
+    document["reason_code"] = "decoded"
+    return document
+
+
+def resource_status_document(d, resource):
+    document = inspect_anim(d)
+    document.update({
+        "schema_version": 1,
+        "document_id": f"animation-resource/figani_{resource:03d}",
+        "kind": "animation_resource_status",
+        "resource_id": f"animation-resource/figani_{resource:03d}",
+        "source": {"file": "FIGANI.DAT", "resource": resource},
+        "extensions": {},
+    })
+    return document
+
+
+def cmd_resource_status(src, outdir):
+    with open(src, "rb") as stream:
+        data = stream.read()
+    base = os.path.splitext(os.path.basename(src))[0]
+    resource = int(base.rsplit("_", 1)[-1])
+    os.makedirs(outdir, exist_ok=True)
+    document = resource_status_document(data, resource)
+    with open(os.path.join(outdir, "resource.json"), "w", encoding="utf-8") as stream:
+        json.dump(document, stream, ensure_ascii=False, indent=2)
+        stream.write("\n")
+    return document
 
 
 def load_palette(path):
@@ -128,6 +195,9 @@ def cmd_frames(src, palp, outdir):
     pal = load_palette(palp)
     os.makedirs(outdir, exist_ok=True)
     base = os.path.splitext(os.path.basename(src))[0]
+    status = cmd_resource_status(src, outdir)
+    if status["status"] != "decoded":
+        raise ValueError(f"{base}: resource 狀態不是 decoded")
     frames = parse_anim(d)
     document = {
         "schema_version": 1,
@@ -210,6 +280,9 @@ def main(argv):
         cmd_gif(argv[2], argv[3], argv[4])
     elif cmd == "info":
         cmd_info(argv[2])
+    elif cmd == "status":
+        document = cmd_resource_status(argv[2], argv[3])
+        print(json.dumps(document, ensure_ascii=False))
     else:
         print(__doc__); return 1
     return 0

@@ -80,16 +80,13 @@ def main(argv):
         figani = figani[:anim_limit]
     for f in figani:
         d = open(f, "rb").read()
-        if len(d) < 12:
-            continue
-        try:
-            frames = decode_figani.parse_anim(d)
-        except Exception:
-            continue
-        if not frames:
-            continue
         base = os.path.splitext(os.path.basename(f))[0]
-        decode_figani.cmd_frames(f, palp, os.path.join(animdir, base))
+        output = os.path.join(animdir, base)
+        status = decode_figani.cmd_resource_status(f, output)
+        if status["status"] != "decoded":
+            continue
+        frames = decode_figani.parse_anim(d)
+        decode_figani.cmd_frames(f, palp, output)
         decode_figani.cmd_gif(f, palp, os.path.join(animdir, base + ".gif"))
         nanim += 1
         nframe += len(frames)

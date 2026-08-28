@@ -97,7 +97,7 @@ def classify(path: Path) -> str | None:
     if top == "animations":
         if suffix == ".png":
             return "battle_animation"
-        if path.name.lower() == "animation.json":
+        if path.name.lower() in {"animation.json", "resource.json"}:
             return "metadata"
         return None
     if top == "portraits" and suffix == ".png":

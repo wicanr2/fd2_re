@@ -26,6 +26,7 @@
     "decoded_figani_frames_png": 2118,
     "decoded_figani_masks_png": 2118,
     "decoded_figani_metadata_json": 264,
+    "figani_resource_status_json": 409,
     "decoded_portrait_resources": 136,
     "decoded_portrait_frames_png": 544,
     "rendered_maps_png": 33,
@@ -35,8 +36,8 @@
   "manifest_validation": {
     "tool": "tools/generate_separated_asset_manifest.py",
     "validator": "tools/validate_separated_asset_pack.py",
-    "total_entries": 6268,
-    "exported": 5248,
+    "total_entries": 6677,
+    "exported": 5657,
     "blocked": 15,
     "intentionally_raw": 1005,
     "source_hashes_verified": true,
@@ -73,7 +74,12 @@
     "family": "figani_battle_animations",
     "source_resources": ["FIGANI.DAT#0..408"],
     "decoded_resources": 264,
-    "separated_outputs": 4500,
+    "separated_outputs": 4909,
+    "resource_statuses": {
+      "decoded": 264,
+      "empty_header_zero": 144,
+      "blocked_empty_resource": 1
+    },
     "runtime_consumers": [
       "native ending party montage",
       "native ending 20-segment tail",
@@ -84,17 +90,14 @@
     ],
     "runtime_archive_fallback": false,
     "archive_png_indexed_mask_metadata_match": "pass (resource 4, all seven frames)",
-    "archive_unreadable_tests": "pass (native attack, commands 24/29/32)",
-    "remaining_direct_figani_archive_helpers": [
-      "nativeCommand0ActorEffect",
-      "nativeCommand6ActorEffect"
-    ],
-    "remaining_direct_figani_archive_helper_reason": "selector*3+2 zero-header fallback cannot distinguish an intentionally empty source resource from absent separated metadata until the importer catalogs rejected/empty resources",
+    "archive_unreadable_tests": "pass (native attack, commands 0/24/29/32)",
+    "zero_header_fallback_intersection": "119 selector*3+2 resources; all confirmed empty_header_zero",
+    "remaining_direct_figani_archive_helpers": [],
     "remaining_fdother_embedded_animation_caller_files": 16,
     "evidence_level": "RUNTIME-E1-PARTIAL"
   }],
   "not_yet_complete": [
-    "145 個 FIGANI resources 未被現行 decoder 接受，必須逐筆列為非動畫、intentionally_raw 或 blocked",
+    "FIGANI #408 是 0-byte blocked resource；不得當成合法 zero-header fallback",
     "目前音樂輸出為 MIDI；正式 runtime pack 要以既有音源管線輸出 OGG 並記錄 loop/stop metadata",
     "音效、AFM/ANI、DATO/TAI/BG/UI 的用途與 asset_id 尚未全量登記",
     "現行 extract_all.py 仍需由獨立 manifest generator 補上逐檔清冊；尚未整合成單一安裝命令",

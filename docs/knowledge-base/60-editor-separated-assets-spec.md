@@ -178,6 +178,36 @@ blocked、1,005 intentionally_raw。正式 `loadNativeUIPalette`／
 不是 `FIGANI.DAT` 直接讀取端，須先輸出相同 animation metadata 契約後再遷移。本家族
 因此仍是 `RUNTIME-E1-PARTIAL`。
 
+#### FIGANI resource 狀態文件
+
+2026-08-28 以固定雜湊來源唯讀盤點全部409筆：264筆已有完整 `animation.json`；其餘
+145筆中，144筆恰為3 bytes `00 00 0a`，首個 little-endian word 已證實為零；#408則是
+0-byte resource。落在 `selector*3+2` 的119筆未解碼資源全部屬前述零標頭形狀。這只
+證實原版 helper 的機械退回條件，不替空資源命名高階語意。
+
+匯出器現已替每個 `FIGANI_000..408` 產生
+`animations/FIGANI_NNN/resource.json`，固定包含：
+
+- `schema_version=1`、`kind=animation_resource_status`、穩定 `resource_id`；
+- `source.file=FIGANI.DAT`、`source.resource`、raw size、最多16 bytes的十六進位前綴；
+- `status=decoded | empty_header_zero | blocked`；
+- `header_word_le`：只有至少2 bytes時存在；
+- `reason_code=decoded | zero_header_word | empty_resource | unsupported_shape`；
+- `evidence=confirmed`。
+
+`animation.json` 仍只存在於完整可解碼且幀數與 header count 一致的資源。runtime 只有
+在 `resource.json` 完整符合來源、ID、`empty_header_zero`、`header_word_le=0`、
+`zero_header_word` 與 `confirmed` 時，才可依既有 caller 契約退到前一資源；缺文件、
+欄位矛盾、#408空檔或其他 blocked 狀態一律失敗即關閉，不得把「缺匯出」當成零標頭。
+
+實際重生後409份狀態為264 `decoded`、144 `empty_header_zero`、1 `blocked`；manifest
+由6,268增為6,677筆（5,657 exported、1,005 intentionally_raw、15 blocked）。
+`nativeCommand0ActorEffect`／`nativeCommand6ActorEffect` 已改用
+`LoadSeparatedResourceWithZeroHeaderFallback`，指令0正常游標確認測試會刻意令
+`FIGANI.DAT` 不可讀；resource2→1另與原 archive decoder 逐欄位相同。正式
+`FIGANI.DAT` decoder caller 因此歸零。仍待遷移的是16檔 `FDOTHER.DAT` 內嵌動畫，
+不可把它們誤列為 FIGANI archive caller。
+
 ### 第二個 runtime 遷移切片：故事對話 DATO 頭像
 
 - `decode_dato.py --batch` 必須輸出保留原始 palette index 的 PNG，不得先轉 RGB；
