@@ -30,7 +30,7 @@ func loadOriginalMontageTailPlayer(t *testing.T) (*MontageTailPlayer, MontageTai
 		t.Fatal(err)
 	}
 	sets, err := LoadMontageTailVisualSets(*tail, MontageTailVisualPaths{
-		TAI: filepath.Join(gameRoot, "TAI.DAT"), BG: filepath.Join(gameRoot, "BG.DAT"),
+		SurfaceRoot:   "../../generated-assets/fd2-original-b97caf22/surfaces",
 		AnimationRoot: "../../generated-assets/fd2-original-b97caf22/animations",
 	})
 	if err != nil {

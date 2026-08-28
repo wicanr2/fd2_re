@@ -113,12 +113,11 @@ type MontageTailLoaderPaths struct {
 	FDICON  string
 }
 
-// MontageTailVisualPaths identifies the player-provided archives needed by
-// the source-bound visual bridge. The bridge validates every native selector
-// before playback and never writes these archives.
+// MontageTailVisualPaths identifies the separated visual roots needed by the
+// source-bound bridge. It validates every selector and never falls back to
+// player archives.
 type MontageTailVisualPaths struct {
-	TAI           string
-	BG            string
+	SurfaceRoot   string
 	AnimationRoot string
 }
 
@@ -324,8 +323,8 @@ type MontageTailVisualSet struct {
 // validates the actual header branch before admitting 0x2939d composition;
 // archive availability alone still does not prove DOS timing or sound parity.
 func LoadMontageTailVisualSets(tail MontageTail, paths MontageTailVisualPaths) ([]MontageTailVisualSet, error) {
-	if paths.TAI == "" || paths.BG == "" || paths.AnimationRoot == "" {
-		return nil, fmt.Errorf("ending: montage tail visual archive path is unavailable")
+	if paths.SurfaceRoot == "" || paths.AnimationRoot == "" {
+		return nil, fmt.Errorf("ending: montage tail separated visual root is unavailable")
 	}
 	plans, err := tail.PlanVisualResources()
 	if err != nil {
@@ -333,7 +332,7 @@ func LoadMontageTailVisualSets(tail MontageTail, paths MontageTailVisualPaths) (
 	}
 	sets := make([]MontageTailVisualSet, len(plans))
 	for index, plan := range plans {
-		tai, err := fdother.DecodeArchiveSingleFrame(paths.TAI, plan.TAI)
+		tai, err := fdother.LoadSeparatedSingleFrame(paths.SurfaceRoot, "TAI.DAT", plan.TAI)
 		if err != nil {
 			return nil, fmt.Errorf("ending: montage tail entry %d TAI#%d: %w", index, plan.TAI, err)
 		}
@@ -342,7 +341,7 @@ func LoadMontageTailVisualSets(tail MontageTail, paths MontageTailVisualPaths) (
 		if err := validateMontageTailVisualFrame(taiAt); err != nil {
 			return nil, fmt.Errorf("ending: montage tail entry %d TAI#%d: %w", index, plan.TAI, err)
 		}
-		bg, err := fdother.DecodeArchiveSingleFrame(paths.BG, plan.BG)
+		bg, err := fdother.LoadSeparatedSingleFrame(paths.SurfaceRoot, "BG.DAT", plan.BG)
 		if err != nil {
 			return nil, fmt.Errorf("ending: montage tail entry %d BG#%d: %w", index, plan.BG, err)
 		}

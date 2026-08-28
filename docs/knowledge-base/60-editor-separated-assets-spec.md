@@ -285,8 +285,11 @@ TAI的2,598個透明skip與29個dither run。archive decoder與分離loader已�
 
 戰鬥指令0／1／2／3／5／6／7／8／9／24／29／32–35已全改讀
 `FD2_ASSET_PACK/surfaces`；正常玩家指令0測試會刻意令原始 `BG.DAT`／`TAI.DAT`
-不可讀。production戰鬥呈現已無BG／TAI archive decoder caller；終局tail仍有兩處
-原始archive consumer，須以同一契約另行遷移，不誤列為本切片完成。
+不可讀。終局20段tail的BG／TAI transaction也已改接同一loader，四項tail player
+測試覆蓋20筆全 preflight、決定性重播、最終定格與部分播放前失敗即關閉。
+production已無BG／TAI single-frame archive decoder caller；party montage仍直接核對
+`TAI.DAT#3`的原始透明placeholder bytes，屬另一個raw resource contract，不能因本次
+surface遷移而誤列為已移除。
 
 完整manifest現為7,877筆：6,854 exported、1,005 intentionally_raw、18 blocked。
 18筆blocked包含15首尚未轉OGG的MIDI、`FIGANI.DAT#408`及兩個零長度BG／TAI#56；

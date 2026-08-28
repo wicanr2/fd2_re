@@ -119,12 +119,11 @@ func TestMontageTailVisualResourcePlanKeepsNonzeroBranchArithmeticRaw(t *testing
 }
 
 func TestLoadMontageTailVisualSetsPreflightsAllTwentyOriginalTransactions(t *testing.T) {
-	const gameRoot = "../../../org_game/炎龍騎士團/FLAME2"
 	paths := MontageTailVisualPaths{
-		TAI: filepath.Join(gameRoot, "TAI.DAT"), BG: filepath.Join(gameRoot, "BG.DAT"),
+		SurfaceRoot:   "../../generated-assets/fd2-original-b97caf22/surfaces",
 		AnimationRoot: "../../generated-assets/fd2-original-b97caf22/animations",
 	}
-	for _, path := range []string{paths.TAI, paths.BG, paths.AnimationRoot + "/FIGANI_309/animation.json"} {
+	for _, path := range []string{paths.SurfaceRoot + "/BG_000/resource.json", paths.SurfaceRoot + "/TAI_000/resource.json", paths.AnimationRoot + "/FIGANI_309/animation.json"} {
 		if _, err := os.Stat(path); os.IsNotExist(err) {
 			t.Skip("player-provided tail visual archive is absent")
 		} else if err != nil {

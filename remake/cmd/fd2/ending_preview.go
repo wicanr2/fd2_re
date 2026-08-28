@@ -403,14 +403,8 @@ func (g *Game) startCampaignNativeTail() error {
 		p.tailStartError = err.Error()
 		return err
 	}
-	bgPath := playerAssetPath("FD2_BG", []string{
-		filepath.Join(filepath.Dir(p.fdotherPath), "BG.DAT"),
-		"assets/BG.DAT",
-		"../org_game/炎龍騎士團/FLAME2/BG.DAT",
-		"org_game/炎龍騎士團/FLAME2/BG.DAT",
-	})
 	sets, err := ending.LoadMontageTailVisualSets(*tail, ending.MontageTailVisualPaths{
-		TAI: paths.TAI, BG: bgPath, AnimationRoot: paths.AnimationRoot,
+		SurfaceRoot: separatedAssetPath("surfaces"), AnimationRoot: paths.AnimationRoot,
 	})
 	if err != nil {
 		p.tailStartError = err.Error()
