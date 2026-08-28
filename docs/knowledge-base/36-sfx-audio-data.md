@@ -596,3 +596,23 @@ marker使用selector3、target marker使用selector2。#53本身為19,394 bytes�
 
 四筆均保留原selector輸出OGG；0／1只保存素材且標`strong_inference`，不得拿尚未
 閉合的物理攻擊`index2`猜接。11025Hz仍是hardware-spec approximation。
+
+## FDOTHER #50／command29 固定音效契約（2026-08-29）
+
+> 狀態：**RE-CLOSED／DATA-READY**。主證據為
+> [`fd2_command28_29_31_presentation_ida.txt`](../data/ida/fd2_command28_29_31_presentation_ida.txt)
+> 及固定FIGANI resource104 raw marker；來源identity同上。
+
+一般學招鏈已證實selector34→FIGANI resource104；其typed schedule由header byte4=3
+得FDOTHER #50，actor marker selector1、target marker selector4。#50為31,429 bytes，
+六筆巢狀目錄，子項5為空尾：
+
+| 子項 | bytes | SHA-256 | 消費與證據等級 |
+|---:|---:|---|---|
+| 0 | 4,182 | `028b09edd80fce0e941c29e022dc2551c21a6ece048027e01704f29394b81e4c` | PCM形狀／bank成員為強推論；本切片無已證實caller |
+| 1 | 2,695 | `dee2c9d971eacfa721a6eba11d6810344189280867779fd2cdc16406cbde8a46` | command29 actor marker，已證實 |
+| 2 | 1,476 | `a841dea73208f43b23284bad8251184dffcdf34402b81abe4ce0da964733470e` | PCM形狀／bank成員為強推論；本切片無已證實caller |
+| 3 | 12,024 | `38c854e440b3c4beaca06e2e7bd6d241f7c0b2d991e7ff6d61210cda9477584b` | PCM形狀／bank成員為強推論；本切片無已證實caller |
+| 4 | 11,022 | `7726527c17338d6b5d2af0b7d73b13b887a433ba5d4f8067442d1483097d3e87` | command29 target marker，已證實 |
+
+五筆均保留原selector輸出OGG；0／2／3只保存、不接播放，也不外推物理攻擊`index2`。

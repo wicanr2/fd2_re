@@ -416,6 +416,26 @@ command24在建立交易plan前依typed schedule預檢；`battle_53_02.wav`／`_
 增加4筆OGG與1份metadata，現為38,761筆：37,737 exported、1,005 intentionally raw、
 19 blocked。
 
+#### command29 固定 FDOTHER #50 音效分離契約
+
+> 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）
+
+本切片只接已證實的一般學招selector34→FIGANI resource104→FDOTHER #50、actor sample1
+與target sample4。#50五筆非空PCM全部保留原selector轉OGG，空尾5不輸出；0／2／3明標
+`strong_inference`且不接播放。
+
+正式整批loader新增#50；command29由typed schedule在建立交易plan前預檢1／4，播放
+資料只取分離bank。缺件時MP／HP／acted保持不變，不回退動態`battle_50_*.wav`。驗收
+包含兩次完整匯出一致、五筆OGG probe、原始PCM hash、無archive載入、command29聚焦
+回歸及正式`fmt.Sprintf("battle_%02d_%02d.wav")`引用歸零。本切片不猜0／2／3用途或
+一般物理攻擊`index2`。
+
+實作結果：canonical匯出現為17份metadata／71筆OGG；兩次完整輸出逐檔一致。#50五筆
+OGG通過probe與清冊驗證，0／2／3維持強推論且未接播放。command29正式owner依typed
+schedule預檢並消費1／4，動態舊WAV路徑已移除。9項Python、`internal/fdother`及
+command29／分離bank聚焦Go回歸通過。清冊增加5筆OGG及1份metadata，現為38,767筆：
+37,743 exported、1,005 intentionally raw、19 blocked。
+
 ### 2026-08-28 第一輪全量匯出實測
 
 固定版本原版已在 `fd2-assets-local:20260828` 一次性容器內完成全量試跑，實際輸出

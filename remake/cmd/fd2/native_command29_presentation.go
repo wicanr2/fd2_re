@@ -88,6 +88,9 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 		schedule.TargetSample != 4 || schedule.PreludeMode != 1 || !schedule.UsesBGTransition || schedule.UsesTargetBase {
 		return errors.New("native command29 resource104 presentation signature mismatch")
 	}
+	if err := g.requireSeparatedCommandSounds(schedule.AudioResource, schedule.ActorSample, schedule.TargetSample); err != nil {
+		return err
+	}
 	actorIdle, err := figani.LoadSeparatedResource(animationRoot, actor.BattleFig*3)
 	if err != nil || len(actorIdle.Frames) == 0 {
 		return errors.New("native command29 actor idle FIGANI unavailable")
@@ -265,8 +268,8 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 			return err
 		}
 	}
-	sfxActor := loadWav(assetPath(fmt.Sprintf("assets/sfx/battle_%02d_%02d.wav", schedule.AudioResource, schedule.ActorSample)))
-	sfxTarget := loadWav(assetPath(fmt.Sprintf("assets/sfx/battle_%02d_%02d.wav", schedule.AudioResource, schedule.TargetSample)))
+	sfxActor := g.separatedCommandSound(schedule.AudioResource, schedule.ActorSample)
+	sfxTarget := g.separatedCommandSound(schedule.AudioResource, schedule.TargetSample)
 	if !osMuteOrShot(g) && (len(sfxActor) == 0 || len(sfxTarget) == 0) {
 		return errors.New("native command29 FDOTHER #50 samples1/4 unavailable")
 	}

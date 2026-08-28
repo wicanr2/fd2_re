@@ -8440,3 +8440,16 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 9項Python契約／清冊測試、`internal/fdother` loader及`cmd/fd2` command24／分離bank
   聚焦回歸均在有界Xvfb Docker通過。本切片達`DATA-READY`／`RUNTIME-E1`；下一步仍是
   一般物理攻擊動態bank，但`index2` producer未閉合前不得建立猜測對照。
+
+## 2026-08-29 FDOTHER #50／command29 固定音效分離
+
+- 一般學招selector34→FIGANI resource104、header byte4=3→FDOTHER #50及actor1／target4
+  已由既有合法IDA證據與typed schedule閉合。#50五筆非空PCM與空尾5的長度／SHA-256
+  已登記於`36`；0／2／3只有PCM形狀與bank歸屬，明標強推論且不接播放。
+- `60`先建立READY契約，再將canonical匯出擴成17份metadata／71筆OGG；兩次完整輸出
+  逐檔一致。更新後清冊驗證通過，現為38,767筆：37,743 exported、1,005 intentionally
+  raw、19 blocked。
+- command29正式owner改由分離bank預檢並消費1／4，原先動態組合
+  `battle_50_01.wav`／`battle_50_04.wav`的路徑移除；缺件時在plan前拒絕，不回退WAV。
+- 9項Python、`internal/fdother`及command29／分離bank聚焦Go回歸均在有界Xvfb Docker
+  通過。本切片達`DATA-READY`／`RUNTIME-E1`，仍不建立物理攻擊`index2`對照。
