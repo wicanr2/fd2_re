@@ -2,13 +2,46 @@ package main
 
 import (
 	"encoding/binary"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
+
+func loadSeparatedFDFIELDComposition(dir string) (*MapData, []byte, error) {
+	rawJSON, err := os.ReadFile(assetPath(dir) + "/map.json")
+	if err != nil {
+		return nil, nil, err
+	}
+	var field MapData
+	if err := json.Unmarshal(rawJSON, &field); err != nil {
+		return nil, nil, err
+	}
+	if field.W <= 0 || field.H <= 0 || field.W > 0xffff || field.H > 0xffff {
+		return nil, nil, fmt.Errorf("separated FDFIELD shape=%dx%d", field.W, field.H)
+	}
+	cells := field.W * field.H
+	if len(field.Tiles) != cells || len(field.NativeCompositionEventBytes) != cells || len(field.NativeTileBlitModes) != cells {
+		return nil, nil, fmt.Errorf("separated FDFIELD shape=%dx%d tiles=%d events=%d modes=%d", field.W, field.H, len(field.Tiles), len(field.NativeCompositionEventBytes), len(field.NativeTileBlitModes))
+	}
+	raw := make([]byte, 4+4*cells)
+	binary.LittleEndian.PutUint16(raw[0:2], uint16(field.W))
+	binary.LittleEndian.PutUint16(raw[2:4], uint16(field.H))
+	for index, tile := range field.Tiles {
+		if tile < 0 || tile > 0xffff {
+			return nil, nil, fmt.Errorf("separated FDFIELD cell %d tile=%d", index, tile)
+		}
+		offset := 4 + 4*index
+		binary.LittleEndian.PutUint16(raw[offset:offset+2], uint16(tile))
+		raw[offset+2] = field.NativeCompositionEventBytes[index]
+		raw[offset+3] = field.NativeTileBlitModes[index]
+	}
+	return &field, raw, nil
+}
 
 type nativeCh22ReloadState struct {
 	phase  int
@@ -19,22 +52,15 @@ type nativeCh22ReloadState struct {
 }
 
 func decodeNativeCh22Reload(g *Game) (*nativeCh22ReloadState, error) {
-	fieldPath := nativeOriginalArchivePath("FD2_ORIGINAL_FDFIELD", "FDFIELD.DAT")
 	shapePath := nativeOriginalArchivePath("FD2_ORIGINAL_FDSHAP", "FDSHAP.DAT")
-	if g == nil || g.st == nil || g.m == nil || g.nativeMapAssets == nil || fieldPath == "" || shapePath == "" {
-		return nil, errors.New("ch22 reload requires current indexed state and player-provided FDFIELD/FDSHAP")
+	if g == nil || g.st == nil || g.m == nil || g.nativeMapAssets == nil || shapePath == "" {
+		return nil, errors.New("ch22 reload requires current indexed state, separated map23 and player-provided FDSHAP")
 	}
-	raw, err := fdother.ReadResource(fieldPath, 69)
+	fieldSource, raw, err := loadSeparatedFDFIELDComposition("assets/maps/map23")
 	if err != nil {
-		return nil, fmt.Errorf("FDFIELD #69: %w", err)
+		return nil, fmt.Errorf("separated FDFIELD #69: %w", err)
 	}
-	if len(raw) < 4 {
-		return nil, errors.New("FDFIELD #69 header is truncated")
-	}
-	w, h := int(raw[0]), int(raw[2])
-	if w <= 0 || h <= 0 || len(raw) != 4+4*w*h {
-		return nil, fmt.Errorf("FDFIELD #69 shape=%dx%d bytes=%d", w, h, len(raw))
-	}
+	w, h := fieldSource.W, fieldSource.H
 	bank, controls, err := fdother.DecodeMapTerrainResources(shapePath, 23)
 	if err != nil {
 		return nil, fmt.Errorf("FDSHAP #46/#47: %w", err)
@@ -50,8 +76,8 @@ func decodeNativeCh22Reload(g *Game) (*nativeCh22ReloadState, error) {
 		tiles[index] = tile
 		modes[index] = raw[offset+3]
 	}
-	field := *g.m
-	field.W, field.H = w, h
+	field := *fieldSource
+	field.TileW, field.TileH, field.Cols = g.m.TileW, g.m.TileH, g.m.Cols
 	field.Tiles = tiles
 	field.NativeTileBlitModes = modes
 	field.NativeTerrainControl = append([]byte(nil), controls...)

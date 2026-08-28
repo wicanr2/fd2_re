@@ -2,6 +2,8 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
+	"os"
 	"path/filepath"
 	"testing"
 
@@ -79,5 +81,57 @@ func TestNativeCh22ReloadRejectsWrongArchiveOwnerWithoutMutation(t *testing.T) {
 	}
 	if g.nativeCh22Reload != nil || g.m != beforeMap || !bytes.Equal(g.st.NativeMapEventGrid, beforeGrid) {
 		t.Fatal("failed resource binding changed live state")
+	}
+}
+
+func TestSeparatedMap23CompositionMatchesFDFIELDResource69(t *testing.T) {
+	base := nativeCh22OriginalPaths(t)
+	_, got, err := loadSeparatedFDFIELDComposition("assets/maps/map23")
+	if err != nil {
+		t.Fatal(err)
+	}
+	want, err := fdother.ReadResource(filepath.Join(base, "FDFIELD.DAT"), 69)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(got, want) {
+		t.Fatalf("separated map23 composition differs: got=%d want=%d", len(got), len(want))
+	}
+}
+
+func TestNativeCh22ReloadDoesNotReadFDFIELDArchive(t *testing.T) {
+	nativeCh22OriginalPaths(t)
+	g := completeNative2189AGame(t)
+	t.Setenv("FD2_ORIGINAL_FDFIELD", filepath.Join(t.TempDir(), "missing-FDFIELD.DAT"))
+	beat := ch22ResourceBeat("0x24a4b", "FDFIELD.DAT", "0x53a51", 69)
+	if err := g.stageNativeCh22Resource(beat); err != nil {
+		t.Fatal(err)
+	}
+	if g.nativeCh22Reload == nil || g.nativeCh22Reload.field.W != 41 || g.nativeCh22Reload.field.H != 37 {
+		t.Fatal("separated map23 candidate was not staged")
+	}
+}
+
+func TestSeparatedFDFIELDCompositionRejectsIncompleteOrOutOfRangeData(t *testing.T) {
+	for _, test := range []struct {
+		name  string
+		field MapData
+	}{
+		{"missing event byte", MapData{W: 1, H: 1, Tiles: []int{0}, NativeTileBlitModes: []byte{0}}},
+		{"tile outside uint16", MapData{W: 1, H: 1, Tiles: []int{0x10000}, NativeCompositionEventBytes: []byte{0}, NativeTileBlitModes: []byte{0}}},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			dir := t.TempDir()
+			raw, err := json.Marshal(test.field)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := os.WriteFile(filepath.Join(dir, "map.json"), raw, 0o600); err != nil {
+				t.Fatal(err)
+			}
+			if _, _, err := loadSeparatedFDFIELDComposition(dir); err == nil {
+				t.Fatal("malformed separated composition was accepted")
+			}
+		})
 	}
 }

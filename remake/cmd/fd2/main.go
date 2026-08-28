@@ -65,9 +65,10 @@ type MapData struct {
 	Tiles []int `json:"tiles"`
 	// Native fields are optional: legacy PNG-only maps must not be treated as
 	// verified indexed input. They mirror export_engine_assets.py's raw FDFIELD
-	// event-high bytes and FDSHAP four-byte control table.
-	NativeTileBlitModes  []byte `json:"native_tile_blit_modes,omitempty"`
-	NativeTerrainControl []byte `json:"native_terrain_control,omitempty"`
+	// composition bytes and FDSHAP four-byte control table.
+	NativeCompositionEventBytes []byte `json:"native_composition_event_bytes,omitempty"`
+	NativeTileBlitModes         []byte `json:"native_tile_blit_modes,omitempty"`
+	NativeTerrainControl        []byte `json:"native_terrain_control,omitempty"`
 }
 
 type Game struct {

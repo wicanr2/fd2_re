@@ -483,6 +483,39 @@ FDICON.B24，仍能載入完整1,680張戰場人物素材。
 loader baseline均改接同一strict bank；正式產品程式的FDICON archive caller歸零。
 `fd2-asset-import`及名稱明確的source-oracle adapter仍可讀原檔，不屬runtime fallback。
 
+### 第 23 戰重載的 FDFIELD #69 組合格契約
+
+> 狀態：**CONFORMED**
+> 範圍：`ch22_post` 尾端切換至 map23 時的 `FDFIELD.DAT` 資源 69；不包含
+> `FDSHAP.DAT` 資源 46／47、終局蒙太奇使用的 FDFIELD 資源 90／91／92，亦不
+> 宣稱一般玩家路徑 E2。
+
+固定來源 `FDFIELD.DAT` 大小為 243,169 bytes，MD5 為
+`ecdb0436d26adfe5d107f2713fa7e9a2`，SHA-256 為
+`b0cf75d94f58603f091c7462c0494f0e83bd6edfb04c1acbf83ed4d938c7a513`。
+原版 `FD2.EXE`、IDA Pro 9.4 線性位址、caller／consumer 與直接指令證據見
+[`fd2_ch22_post_ida.txt`](../data/ida/fd2_ch22_post_ida.txt)：
+`0x24A3E..0x24A53` 載入資源 69，`0x24A58..0x24A87` 接續載入 FDSHAP
+資源 46／47，`0x24A8C` 再把組合格交給 `0x4DBFC`；證據等級為**已證實**。
+
+正式分離來源是 [`map23/map.json`](../../remake/assets/maps/map23/map.json)。每格
+四 bytes 必須依序重建為：`tiles[]` 的 little-endian `uint16`、
+`native_composition_event_bytes[]`、`native_tile_blit_modes[]`；檔頭是 little-endian
+`uint16 width` 與 `uint16 height`。loader 必須在發布候選狀態前驗證正尺寸、三個陣列
+皆恰為 `width*height`、tile 落在 `0..65535`，並重建完整 `4+4*w*h` bytes。
+任何缺欄、長度、範圍或 JSON 錯誤均失敗即關閉，不得回退讀 `FDFIELD.DAT`，也不得
+只保留顯示用的十位元 tile 而遺失原始高位元。
+
+驗收條件是以固定原檔逐 byte 比較重建結果與 FDFIELD 資源 69，並在正式重載測試的
+原版資料目錄刻意不提供 `FDFIELD.DAT` 時，仍完成候選建立、`0x4DBFC` reset 與原子
+提交；`FDSHAP.DAT` 和 `FDOTHER.DAT` 在本切片仍由玩家原版唯讀提供。
+
+2026-08-28 實作已讓 `MapData` 正式接收三個組合格陣列，strict loader 會重建完整
+6,072 bytes。固定原檔逐 byte oracle、缺 `FDFIELD.DAT` 的正式 staging，以及缺欄／
+超出 `uint16` tile 的失敗即關閉回歸均在 Docker／Xvfb 通過。本切片因此達
+`DATA-READY` 與窄 `RUNTIME-E1`；原始 beat 上的 `FDFIELD.DAT`／69 名稱仍保留作
+原版 provenance，不代表執行期回讀封存檔。
+
 ## 七、完成定義
 
 只有同時成立才可宣稱「素材已完全分離、JSON 足以建立編輯器」：

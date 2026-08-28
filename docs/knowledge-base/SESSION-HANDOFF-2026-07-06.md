@@ -8207,3 +8207,16 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 終局tail loader baseline亦改以分離bank驗selector capacity，既有FDFIELD部署測試通過。
 - 因此正式產品程式的FDICON archive caller歸零，前一段「仍有四個consumer」已失效；
   importer與source-oracle adapter繼續保留。
+
+## 2026-08-28：第 23 戰重載移除 FDFIELD#69 即時讀取
+
+- `fd2_ch22_post_ida.txt` 已閉合的 `0x24A3E..0x24A8C` 證據不重做；新規格只把
+  FDFIELD#69 的消費來源由原封存檔換成版本化 `map23/map.json`。
+- `MapData` 現保留 tile word、composition event byte 與 blit mode，strict loader
+  以 little-endian 重建 41×37、6,072-byte 完整組合格。固定雜湊原檔逐 byte 比較
+  零差異；缺欄與超界 tile 均拒絕。
+- 正式 ch22 reload 在 `FD2_ORIGINAL_FDFIELD` 指向不存在檔案時仍可建立候選，並
+  保留三個原始 load beat、`0x4DBFC` reset 與最後 auxiliary preflight 才原子提交的
+  順序。FDSHAP#46/#47及FDOTHER#42仍由玩家原版唯讀提供。
+- 本切片達 `DATA-READY`／窄 `RUNTIME-E1`；終局 FDFIELD#90..92 與所有 FDSHAP
+  consumer 尚未分離，不得宣稱 FDFIELD 或戰場 archive caller 全部歸零。
