@@ -21,7 +21,7 @@
 |---:|---|---|---|
 | A1 | 編輯器 canonical schema 與穩定身份層 | `SPEC-READY`：已完成實檔能力稽核；確認 campaign／scenario／map／story／animation 只有單向 loader，缺跨檔 stable ID、嚴格未知欄位與 round-trip | 加入 machine-readable schema、legacy import 診斷、跨檔 validator 與往返測試；角色 identity 分離連結 portrait／map sprite／battle animation |
 | A2 | 原版素材全量分離與清冊 | `DATA-PARTIAL`：固定原版已實際產生4,106檔本機輸出；3,807筆manifest通過來源／輸出hash驗證，其中2,787 exported、1,005 intentionally_raw、15 MIDI blocked。raw零遺漏，但DATO／TAI／BG／UI／AFM用途與OGG仍未全量閉合 | 將15首MIDI轉成具cue／loop metadata的OGG；為1,005 raw逐家族判定已由PNG涵蓋或仍blocked，補齊標準輸出與用途關聯，輸出包不入Git |
-| A3 | runtime 移除 `.DAT` 即時讀取 | `BLOCKED-BY-A2`：title、UI、story、town／shop／church、battle presentation、ending 等仍直接讀原始 archive | 分家族改讀 typed asset catalog；加入 archives 不可讀仍通過及缺分離資產 fail-closed 測試，最後 production decoder caller 歸零 |
+| A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：第一個`FDOTHER #0/#2`垂直切片已由離線匯入命令輸出palette JSON＋78 action-cell PNG；正式loader只讀`FD2_ASSET_PACK`，archive不可讀仍通過，缺格／壞DAC失敗即關閉。title、story、town／shop／church、battle presentation、ending等仍直接讀原始archive | 依玩家價值逐家族改讀typed asset catalog；每批保留archives不可讀與缺分離資產fail-closed測試，最後production decoder caller歸零 |
 | A4 | 現代美術主題 | `PENDING-A1/A2`：尚未選定正式風格，不以猜測覆蓋原版 | 先輸出頭像＋戰場 sprite／tile＋介面框的可丟棄忠實／現代對照，再由使用者選定 theme 方向 |
 
 > **策略更新**：第一輪 remake 改以[`REMAKE-STATUS.md`](../REMAKE-STATUS.md)的

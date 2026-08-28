@@ -72,11 +72,12 @@ func TestSharedBattleEmptyCursorRejectsIncompleteNativeOverlay(t *testing.T) {
 }
 
 func TestLoadNativeActionCellsKeepsFullReferenceBank(t *testing.T) {
-	path := filepath.Join("../../../org_game/炎龍騎士團/FLAME2", "FDOTHER.DAT")
-	if _, err := os.Stat(path); err != nil {
-		t.Skipf("player-provided FDOTHER.DAT is absent: %v", err)
+	pack := filepath.Clean("../../generated-assets/fd2-original-b97caf22")
+	if _, err := os.Stat(filepath.Join(pack, "ui", "action_cells", "cell_077.png")); err != nil {
+		t.Skipf("player-generated separated asset pack is absent: %v", err)
 	}
-	t.Setenv("FD2_ORIGINAL_FDOTHER", path)
+	t.Setenv("FD2_ASSET_PACK", pack)
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(t.TempDir(), "must-not-be-read.dat"))
 	palette := loadNativeUIPalette()
 	cells := loadNativeActionCells(palette)
 	if len(cells) != nativeActionOverlayCellCount {

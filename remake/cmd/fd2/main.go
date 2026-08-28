@@ -9403,43 +9403,7 @@ func nativeFDOTHERPath() string {
 	return ""
 }
 
-func loadNativeUIPalette() color.Palette {
-	datPath := nativeFDOTHERPath()
-	if datPath == "" {
-		return nil
-	}
-	raw, err := fdother.ReadResource(datPath, 0)
-	if err != nil {
-		return nil
-	}
-	palette, err := fdother.ParseVGAPalette(raw)
-	if err != nil {
-		return nil
-	}
-	return palette
-}
-
 const nativeActionOverlayCellCount = 78
-
-func loadNativeActionCells(palette color.Palette) []*ebiten.Image {
-	datPath := nativeFDOTHERPath()
-	if datPath == "" || len(palette) < 256 {
-		return nil
-	}
-	cells, err := fdother.DecodeRawCellResource(datPath, 2)
-	if err != nil || len(cells) != nativeActionOverlayCellCount {
-		return nil
-	}
-	out := make([]*ebiten.Image, len(cells))
-	for i := range cells {
-		im, err := cells[i].Paletted(palette)
-		if err != nil {
-			return nil
-		}
-		out[i] = ebiten.NewImageFromImage(im)
-	}
-	return out
-}
 
 // loadNativeCommandLabels reads the editable export of FDTXT_000 command
 // labels. It is optional because the export is player-provided original text;

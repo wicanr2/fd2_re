@@ -111,6 +111,21 @@ PNG／OGG 是 runtime 消費格式；raw `.bin` 只可留在研究中間目錄�
 5. **現代美術原型**：從已分離且具 `asset_id` 的一組頭像、戰場人物、圖塊與介面框
    各做忠實版／現代版對照；經使用者選定風格後才建立正式 theme pack。
 
+### 第一個 runtime 遷移切片：戰場指令格
+
+本切片只搬移已由現行 renderer 正式消費、格式已閉合的 `FDOTHER.DAT #0/#2`：
+
+- 離線匯入命令先驗證 `FDOTHER.DAT` 的固定大小、MD5 與 SHA-256。
+- `#0` 的768-byte六位元 DAC 轉成 `palette/fdother_000.json`，保留原始 component，
+  runtime 再用既有 `ParseVGAPalette` 建立256色 palette。
+- `#2` 的78個 raw cells 各自轉成透明 PNG，檔名固定為
+  `ui/action_cells/cell_000.png` 至 `cell_077.png`；index 0 依已證實的 `0x4E9E4`
+  destination-preserving 契約轉為透明。
+- 正式 `Game` 只能由分離素材根目錄載入上述 JSON／PNG。`FD2_ORIGINAL_FDOTHER`
+  只可留給匯入／來源驗證命令，不再是這兩個 renderer input 的 fallback。
+- 驗收必須在 archive 路徑不存在時載入完整256色 palette與78 cells；缺任一 cell、
+  JSON 格式錯誤或幾何不合法時整批拒絕，不發布半套指令格。
+
 ### 2026-08-28 第一輪全量匯出實測
 
 固定版本原版已在 `fd2-assets-local:20260828` 一次性容器內完成全量試跑，實際輸出
@@ -128,6 +143,16 @@ archive subresources、125張一般 PNG、264組 FIGANI／2,118張動畫 frame�
 2,787筆為已匯出、1,005筆 raw 完整列為 `intentionally_raw`，15首 MIDI 明確列為
 `blocked`，等待 OGG 輸出。清冊驗證器拒絕重複 ID、斷裂引用、路徑逃逸、來源／輸出
 hash 不符；`blocked` 項目不必偽造不存在的輸出 hash。
+
+#### 2026-08-28 指令格遷移結果
+
+`fd2-asset-import` 已以固定 hash `FDOTHER.DAT` 實際輸出1份 palette JSON及78張
+action-cell PNG；重新產生的完整 manifest 為3,886筆，其中2,866 exported、15
+blocked、1,005 intentionally_raw。正式 `loadNativeUIPalette`／
+`loadNativeActionCells` 已不再讀 archive；測試把 `FD2_ORIGINAL_FDOTHER` 指向
+不存在檔案，仍從 `FD2_ASSET_PACK` 載入256色與78格。缺第78格或 DAC component
+超過63時整批拒絕。本切片達 `RUNTIME-E1`，不外推其他仍讀 `FDOTHER.DAT` 的 UI、
+戰鬥演出或終局 consumer。
 
 ## 七、完成定義
 

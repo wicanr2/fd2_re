@@ -33,13 +33,21 @@
   "manifest_validation": {
     "tool": "tools/generate_separated_asset_manifest.py",
     "validator": "tools/validate_separated_asset_pack.py",
-    "total_entries": 3807,
-    "exported": 2787,
+    "total_entries": 3886,
+    "exported": 2866,
     "blocked": 15,
     "intentionally_raw": 1005,
     "source_hashes_verified": true,
     "result": "pass"
   },
+  "runtime_migrations": [{
+    "family": "battle_action_grid",
+    "source_resources": ["FDOTHER.DAT#0", "FDOTHER.DAT#2"],
+    "separated_outputs": 79,
+    "runtime_archive_fallback": false,
+    "archive_unreadable_test": "pass",
+    "evidence_level": "RUNTIME-E1"
+  }],
   "not_yet_complete": [
     "145 個 FIGANI resources 未被現行 decoder 接受，必須逐筆列為非動畫、intentionally_raw 或 blocked",
     "目前音樂輸出為 MIDI；正式 runtime pack 要以既有音源管線輸出 OGG 並記錄 loop/stop metadata",
