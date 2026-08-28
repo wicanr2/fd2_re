@@ -24,6 +24,8 @@
     "decoded_full_images_png": 125,
     "decoded_figani_resources": 264,
     "decoded_figani_frames_png": 2118,
+    "decoded_figani_masks_png": 2118,
+    "decoded_figani_metadata_json": 264,
     "decoded_portrait_resources": 136,
     "decoded_portrait_frames_png": 544,
     "rendered_maps_png": 33,
@@ -33,8 +35,8 @@
   "manifest_validation": {
     "tool": "tools/generate_separated_asset_manifest.py",
     "validator": "tools/validate_separated_asset_pack.py",
-    "total_entries": 3886,
-    "exported": 2866,
+    "total_entries": 6268,
+    "exported": 5248,
     "blocked": 15,
     "intentionally_raw": 1005,
     "source_hashes_verified": true,
@@ -67,6 +69,19 @@
     "archive_png_indexed_pixel_match": "pass (resource 26, all four frames)",
     "remaining_direct_archive_callers": 0,
     "evidence_level": "RUNTIME-E1"
+  }, {
+    "family": "figani_battle_animations",
+    "source_resources": ["FIGANI.DAT#0..408"],
+    "decoded_resources": 264,
+    "separated_outputs": 4500,
+    "runtime_consumers": [
+      "native ending party montage",
+      "native ending 20-segment tail"
+    ],
+    "runtime_archive_fallback": false,
+    "archive_png_indexed_mask_metadata_match": "pass (resource 4, all seven frames)",
+    "remaining_direct_archive_caller_files": 16,
+    "evidence_level": "RUNTIME-E1-PARTIAL"
   }],
   "not_yet_complete": [
     "145 個 FIGANI resources 未被現行 decoder 接受，必須逐筆列為非動畫、intentionally_raw 或 blocked",

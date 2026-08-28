@@ -139,8 +139,9 @@ archive subresources、125張一般 PNG、264組 FIGANI／2,118張動畫 frame�
 逐檔 `asset_id`／hash／用途。這些缺口已明列，不以「全量試跑成功」冒稱所有素材
 皆已轉成正式 PNG／OGG。
 
-同一實際輸出樹再經來源 hash gate 與逐檔 manifest generator 驗證：3,807筆清冊中
-2,787筆為已匯出、1,005筆 raw 完整列為 `intentionally_raw`，15首 MIDI 明確列為
+同一實際輸出樹再經來源 hash gate 與逐檔 manifest generator 驗證；最初清冊為3,807筆，
+後續指令格與 FIGANI 正確分層輸出完成後，現為6,268筆：5,248筆為已匯出、1,005筆
+raw 完整列為 `intentionally_raw`，15首 MIDI 明確列為
 `blocked`，等待 OGG 輸出。清冊驗證器拒絕重複 ID、斷裂引用、路徑逃逸、來源／輸出
 hash 不符；`blocked` 項目不必偽造不存在的輸出 hash。
 
@@ -153,6 +154,20 @@ blocked、1,005 intentionally_raw。正式 `loadNativeUIPalette`／
 不存在檔案，仍從 `FD2_ASSET_PACK` 載入256色與78格。缺第78格或 DAC component
 超過63時整批拒絕。本切片達 `RUNTIME-E1`，不外推其他仍讀 `FDOTHER.DAT` 的 UI、
 戰鬥演出或終局 consumer。
+
+### 第三個 runtime 遷移切片：FIGANI 索引動畫
+
+264個可由現行已證實 codec 接受的 FIGANI resources，現各自輸出 `animation.json`、
+2,118張保留 palette index 的 frame PNG，以及2,118張獨立8-bit mask PNG。frame metadata
+保存 x/y、width/height、native delay、raw bytes 4/5/7 與動畫 header bytes 1/2/4；不再
+把透明 skip 與不透明 palette index 0 混成同一 alpha。manifest 因此新增264份 metadata
+與2,118張 mask，全部幀均含 `source_resource`／`source_frame`。
+
+`figani.LoadSeparatedResource` 只接受上述完整組合；resource 4的7幀已與 archive decoder
+逐欄位、逐 indexed pixel、逐 mask 比較一致。終局 party montage 與20段 tail 已改接
+分離 loader，缺 metadata／frame／mask 即失敗，不回退 `FIGANI.DAT`。目前仍有16個
+production 檔案直接解碼 FIGANI／FDOTHER 形式的動畫，主要是戰鬥指令演出，故本家族
+仍是 `RUNTIME-E1-PARTIAL`。
 
 ### 第二個 runtime 遷移切片：故事對話 DATO 頭像
 

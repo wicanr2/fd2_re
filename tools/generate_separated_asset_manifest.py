@@ -95,7 +95,11 @@ def classify(path: Path) -> str | None:
             return "tileset"
         return "metadata"
     if top == "animations":
-        return "battle_animation" if suffix == ".png" else None
+        if suffix == ".png":
+            return "battle_animation"
+        if path.name.lower() == "animation.json":
+            return "metadata"
+        return None
     if top == "portraits" and suffix == ".png":
         return "portrait"
     if top == "maps":
@@ -127,6 +131,10 @@ def infer_provenance(path: Path) -> tuple[str | None, int | None, int | None]:
         if frame_match:
             frame = int(frame_match.group(1))
             break
+    if frame is None:
+        frame_match = re.search(r"_f(\d+)(?:_mask)?$", stem, re.I)
+        if frame_match:
+            frame = int(frame_match.group(1))
     if container:
         return SOURCE_BY_CONTAINER.get(container), resource, frame
     if path.parts and path.parts[0].lower() == "animations":

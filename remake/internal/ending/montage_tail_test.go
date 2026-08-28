@@ -122,9 +122,9 @@ func TestLoadMontageTailVisualSetsPreflightsAllTwentyOriginalTransactions(t *tes
 	const gameRoot = "../../../org_game/炎龍騎士團/FLAME2"
 	paths := MontageTailVisualPaths{
 		TAI: filepath.Join(gameRoot, "TAI.DAT"), BG: filepath.Join(gameRoot, "BG.DAT"),
-		FIGANI: filepath.Join(gameRoot, "FIGANI.DAT"),
+		AnimationRoot: "../../generated-assets/fd2-original-b97caf22/animations",
 	}
-	for _, path := range []string{paths.TAI, paths.BG, paths.FIGANI} {
+	for _, path := range []string{paths.TAI, paths.BG, paths.AnimationRoot + "/FIGANI_309/animation.json"} {
 		if _, err := os.Stat(path); os.IsNotExist(err) {
 			t.Skip("player-provided tail visual archive is absent")
 		} else if err != nil {

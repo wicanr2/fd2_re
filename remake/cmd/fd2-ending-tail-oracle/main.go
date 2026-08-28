@@ -15,12 +15,13 @@ import (
 
 func main() {
 	gameRoot := flag.String("game-root", "", "player-provided original game directory")
+	assetPack := flag.String("asset-pack", "", "separated asset pack root")
 	output := flag.String("out", "", "output PNG path")
 	segment := flag.Int("segment", 9, "approximate tail segment 0..19")
 	contactSheet := flag.Bool("contact-sheet", false, "write all 20 approximate overlays as a 5x4 sheet")
 	flag.Parse()
-	if *gameRoot == "" || *output == "" || *segment < 0 || *segment >= 20 {
-		fatalf("usage: fd2-ending-tail-oracle -game-root DIR -out FILE [-segment 0..19]")
+	if *gameRoot == "" || *assetPack == "" || *output == "" || *segment < 0 || *segment >= 20 {
+		fatalf("usage: fd2-ending-tail-oracle -game-root DIR -asset-pack DIR -out FILE [-segment 0..19]")
 	}
 	tail, err := ending.LoadMontageTail(filepath.Join("assets", "endings", "native_2c194_tail.json"))
 	if err != nil {
@@ -32,7 +33,7 @@ func main() {
 	}
 	sets, err := ending.LoadMontageTailVisualSets(*tail, ending.MontageTailVisualPaths{
 		TAI: filepath.Join(*gameRoot, "TAI.DAT"), BG: filepath.Join(*gameRoot, "BG.DAT"),
-		FIGANI: filepath.Join(*gameRoot, "FIGANI.DAT"),
+		AnimationRoot: filepath.Join(*assetPack, "animations"),
 	})
 	if err != nil {
 		fatalf("load tail visual assets: %v", err)

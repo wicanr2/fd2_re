@@ -117,9 +117,9 @@ type MontageTailLoaderPaths struct {
 // the source-bound visual bridge. The bridge validates every native selector
 // before playback and never writes these archives.
 type MontageTailVisualPaths struct {
-	TAI    string
-	BG     string
-	FIGANI string
+	TAI           string
+	BG            string
+	AnimationRoot string
 }
 
 // MontageTailLoaderBaseline is the exact raw-runtime shape constructed by the
@@ -324,7 +324,7 @@ type MontageTailVisualSet struct {
 // validates the actual header branch before admitting 0x2939d composition;
 // archive availability alone still does not prove DOS timing or sound parity.
 func LoadMontageTailVisualSets(tail MontageTail, paths MontageTailVisualPaths) ([]MontageTailVisualSet, error) {
-	if paths.TAI == "" || paths.BG == "" || paths.FIGANI == "" {
+	if paths.TAI == "" || paths.BG == "" || paths.AnimationRoot == "" {
 		return nil, fmt.Errorf("ending: montage tail visual archive path is unavailable")
 	}
 	plans, err := tail.PlanVisualResources()
@@ -352,7 +352,7 @@ func LoadMontageTailVisualSets(tail MontageTail, paths MontageTailVisualPaths) (
 			return nil, fmt.Errorf("ending: montage tail entry %d BG#%d: %w", index, plan.BG, err)
 		}
 		loadAnimation := func(resource int) (*figani.Animation, error) {
-			animation, err := figani.DecodeResource(paths.FIGANI, resource)
+			animation, err := figani.LoadSeparatedResource(paths.AnimationRoot, resource)
 			if err != nil {
 				return nil, err
 			}

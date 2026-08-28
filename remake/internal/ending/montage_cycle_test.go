@@ -8,11 +8,11 @@ import (
 func montageCyclePlayerPaths() MontageArchivePaths {
 	const base = "../../../org_game/炎龍騎士團/FLAME2/"
 	return MontageArchivePaths{
-		FDOTHER:      base + "FDOTHER.DAT",
-		TAI:          base + "TAI.DAT",
-		FIGANI:       base + "FIGANI.DAT",
-		PortraitRoot: "../../generated-assets/fd2-original-b97caf22/portraits",
-		FDTXT:        base + "FDTXT.DAT",
+		FDOTHER:       base + "FDOTHER.DAT",
+		TAI:           base + "TAI.DAT",
+		AnimationRoot: "../../generated-assets/fd2-original-b97caf22/animations",
+		PortraitRoot:  "../../generated-assets/fd2-original-b97caf22/portraits",
+		FDTXT:         base + "FDTXT.DAT",
 	}
 }
 
@@ -40,7 +40,7 @@ func montageCycleThreeUnits() [][]byte {
 
 func TestLoadMontageCycleAssetsUsesOnlyProvenanceBoundPlayerResources(t *testing.T) {
 	paths := montageCyclePlayerPaths()
-	for _, path := range []string{paths.FDOTHER, paths.TAI, paths.FIGANI, paths.PortraitRoot + "/DATO_004_m0.png", paths.FDTXT} {
+	for _, path := range []string{paths.FDOTHER, paths.TAI, paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.FDTXT} {
 		if _, err := os.Stat(path); err != nil {
 			t.Skip("player-provided original archives are absent")
 		}
@@ -63,7 +63,7 @@ func TestLoadMontageCycleAssetsUsesOnlyProvenanceBoundPlayerResources(t *testing
 
 func TestMontageCycleExecutesBothNativeSideBranchesAndFinalPaletteFade(t *testing.T) {
 	paths := montageCyclePlayerPaths()
-	for _, path := range []string{paths.FDOTHER, paths.TAI, paths.FIGANI, paths.PortraitRoot + "/DATO_004_m0.png", paths.FDTXT} {
+	for _, path := range []string{paths.FDOTHER, paths.TAI, paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.FDTXT} {
 		if _, err := os.Stat(path); err != nil {
 			t.Skip("player-provided original archives are absent")
 		}
@@ -102,7 +102,7 @@ func TestMontageCycleExecutesBothNativeSideBranchesAndFinalPaletteFade(t *testin
 
 func TestMontageCycleInputChangeFinishesCurrentPortraitThenJumpsToFinalLoop(t *testing.T) {
 	paths := montageCyclePlayerPaths()
-	for _, path := range []string{paths.FDOTHER, paths.TAI, paths.FIGANI, paths.PortraitRoot + "/DATO_004_m0.png", paths.FDTXT} {
+	for _, path := range []string{paths.FDOTHER, paths.TAI, paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.FDTXT} {
 		if _, err := os.Stat(path); err != nil {
 			t.Skip("player-provided original archives are unavailable")
 		}

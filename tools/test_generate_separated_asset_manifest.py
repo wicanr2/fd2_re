@@ -19,6 +19,7 @@ class GenerateManifestTest(unittest.TestCase):
         (pack / "images" / "FIGANI_FIGANI_003.png").write_bytes(b"png")
         (pack / "animations" / "FIGANI_003").mkdir(parents=True)
         (pack / "animations" / "FIGANI_003" / "frame_000.png").write_bytes(b"frame")
+        (pack / "animations" / "FIGANI_003" / "animation.json").write_text("{}", encoding="utf-8")
         (pack / "raw" / "FIGANI" / "FIGANI_003.bin").write_bytes(b"raw")
         (pack / "raw" / "FDMUS" / "FDMUS_000.bin").write_bytes(b"music-raw")
         (pack / "music").mkdir()
@@ -63,6 +64,7 @@ class GenerateManifestTest(unittest.TestCase):
             self.assertEqual(validate(manifest_path, original), [])
             ids = {asset["asset_id"] for asset in manifest["assets"]}
             self.assertIn("battle_animation/animations/figani_003/frame_000.png", ids)
+            self.assertIn("metadata/animations/figani_003/animation.json", ids)
             self.assertEqual(manifest["assets"][0]["source_file"], "FIGANI.DAT")
             raw = [asset for asset in manifest["assets"] if asset["path"].startswith("raw/")]
             self.assertEqual(len(raw), 2)

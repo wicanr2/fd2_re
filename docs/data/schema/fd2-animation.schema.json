@@ -8,13 +8,22 @@
     "schema_version": {"const": 1}, "document_id": {"$ref": "#/$defs/id"}, "kind": {"const": "animation"},
     "source": {"type": "object", "additionalProperties": true}, "animation_id": {"$ref": "#/$defs/id"},
     "character_id": {"$ref": "#/$defs/id"}, "asset_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+    "native_header": {"type": "object", "additionalProperties": false, "required": ["byte_1", "byte_2", "byte_4"], "properties": {
+      "byte_1": {"type": "integer", "minimum": 0, "maximum": 255}, "byte_2": {"type": "integer", "minimum": 0, "maximum": 255},
+      "byte_4": {"type": "integer", "minimum": 0, "maximum": 255}
+    }},
     "frames": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/frame"}}, "extensions": {"type": "object", "additionalProperties": true}
   },
   "$defs": {
     "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._/-]+$"},
-    "frame": {"type": "object", "additionalProperties": false, "required": ["frame_id", "asset_id", "delay_ms", "x", "y", "extensions"], "properties": {
+    "frame": {"type": "object", "additionalProperties": false, "required": ["frame_id", "asset_id", "x", "y", "extensions"],
+      "anyOf": [{"required": ["delay_ms"]}, {"required": ["delay_native"]}], "properties": {
       "frame_id": {"$ref": "#/$defs/id"}, "asset_id": {"$ref": "#/$defs/id"}, "delay_ms": {"type": "integer", "minimum": 0},
-      "x": {"type": "integer"}, "y": {"type": "integer"}, "anchor": {"type": "string"}, "palette": {"type": "string"},
+      "delay_native": {"type": "integer", "minimum": 0, "maximum": 255}, "x": {"type": "integer"}, "y": {"type": "integer"},
+      "width": {"type": "integer", "minimum": 1}, "height": {"type": "integer", "minimum": 1}, "path": {"type": "string"},
+      "mask_asset_id": {"$ref": "#/$defs/id"}, "mask_path": {"type": "string"},
+      "raw_byte_4": {"type": "integer", "minimum": 0, "maximum": 255}, "raw_byte_5": {"type": "integer", "minimum": 0, "maximum": 255},
+      "raw_byte_7": {"type": "integer", "minimum": 0, "maximum": 255}, "anchor": {"type": "string"}, "palette": {"type": "string"},
       "extensions": {"type": "object", "additionalProperties": true}
     }}
   }

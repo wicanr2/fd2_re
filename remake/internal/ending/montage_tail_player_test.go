@@ -14,7 +14,7 @@ import (
 func loadOriginalMontageTailPlayer(t *testing.T) (*MontageTailPlayer, MontageTailAssets) {
 	t.Helper()
 	const gameRoot = "../../../org_game/炎龍騎士團/FLAME2"
-	for _, name := range []string{"FDOTHER.DAT", "TAI.DAT", "BG.DAT", "FIGANI.DAT"} {
+	for _, name := range []string{"FDOTHER.DAT", "TAI.DAT", "BG.DAT"} {
 		if _, err := os.Stat(filepath.Join(gameRoot, name)); os.IsNotExist(err) {
 			t.Skip("player-provided ending resources are unavailable")
 		} else if err != nil {
@@ -31,7 +31,7 @@ func loadOriginalMontageTailPlayer(t *testing.T) (*MontageTailPlayer, MontageTai
 	}
 	sets, err := LoadMontageTailVisualSets(*tail, MontageTailVisualPaths{
 		TAI: filepath.Join(gameRoot, "TAI.DAT"), BG: filepath.Join(gameRoot, "BG.DAT"),
-		FIGANI: filepath.Join(gameRoot, "FIGANI.DAT"),
+		AnimationRoot: "../../generated-assets/fd2-original-b97caf22/animations",
 	})
 	if err != nil {
 		t.Fatal(err)

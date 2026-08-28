@@ -39,10 +39,12 @@ LLLLLL 容器(見 unpack_dat.py)→ 每個資源 = 一段動畫。
 import sys
 import os
 import struct
+import json
 
 
 def load_palette(path):
-    raw = open(path, "rb").read()[:768]
+    with open(path, "rb") as stream:
+        raw = stream.read(768)
     pal = []
     for i in range(256):
         r, g, b = raw[i*3], raw[i*3+1], raw[i*3+2]
@@ -50,9 +52,10 @@ def load_palette(path):
     return pal
 
 
-def decode_rle(body, w, h, trans=0):
+def decode_rle_layers(body, w, h, trans=0):
     total = w * h
     out = bytearray()
+    mask = bytearray()
     i = 0
     n = len(body)
     while len(out) < total and i < n:
@@ -62,14 +65,26 @@ def decode_rle(body, w, h, trans=0):
         if mode == 0:                       # 色彩 run
             v = body[i]; i += 1
             out += bytes([v]) * cnt
+            mask += b"\xff" * cnt
         elif mode == 1:                     # dither / 陰影
             v = body[i]; i += 1
             out += bytes([trans, v]) * cnt
+            mask += bytes([0, 255]) * cnt
         elif mode == 2:                     # literal
             out += body[i:i + cnt]; i += cnt
+            mask += b"\xff" * cnt
         else:                               # 透明 skip
             out += bytes([trans]) * cnt
-    return bytes(out[:total]).ljust(total, bytes([trans]))
+            mask += b"\x00" * cnt
+    return (
+        bytes(out[:total]).ljust(total, bytes([trans])),
+        bytes(mask[:total]).ljust(total, b"\x00"),
+    )
+
+
+def decode_rle(body, w, h, trans=0):
+    """相容舊呼叫端；正式匯出另以 mask 保留透明與不透明索引零。"""
+    return decode_rle_layers(body, w, h, trans)[0]
 
 
 def parse_anim(d):
@@ -99,29 +114,67 @@ def parse_anim(d):
 def render_frame(w, h, body, pal, trans=0):
     from PIL import Image
 
-    px = decode_rle(body, w, h, trans)
-    im = Image.frombytes("P", (w, h), px)
-    im.putpalette(pal)
-    im.info["transparency"] = trans  # index trans(預設0)為透明,convert RGBA 時轉 alpha=0
-    return im
+    px, mask = decode_rle_layers(body, w, h, trans)
+    rgba = bytearray(w * h * 4)
+    for index, palette_index in enumerate(px):
+        rgba[index * 4:index * 4 + 3] = bytes(pal[palette_index * 3:palette_index * 3 + 3])
+        rgba[index * 4 + 3] = mask[index]
+    return Image.frombytes("RGBA", (w, h), bytes(rgba))
 
 
 def cmd_frames(src, palp, outdir):
-    d = open(src, "rb").read()
+    with open(src, "rb") as stream:
+        d = stream.read()
     pal = load_palette(palp)
     os.makedirs(outdir, exist_ok=True)
     base = os.path.splitext(os.path.basename(src))[0]
     frames = parse_anim(d)
-    for fi, (_, _, w, h, _, _, _, _, body) in enumerate(frames):
-        im = render_frame(w, h, body, pal)
-        im.convert("RGBA").save(os.path.join(outdir, f"{base}_f{fi:02d}.png"))  # 保留透明背景
+    document = {
+        "schema_version": 1,
+        "document_id": f"animation/{base.lower()}",
+        "kind": "animation",
+        "source": {"file": "FIGANI.DAT", "resource": int(base.rsplit("_", 1)[-1])},
+        "animation_id": f"animation/{base.lower()}",
+        "native_header": {"byte_1": d[1], "byte_2": d[2], "byte_4": d[4]},
+        "frames": [],
+        "extensions": {},
+    }
+    for fi, (x, y, w, h, raw4, raw5, delay, raw7, body) in enumerate(frames):
+        from PIL import Image
+        pixels, mask = decode_rle_layers(body, w, h)
+        filename = f"{base}_f{fi:02d}.png"
+        mask_filename = f"{base}_f{fi:02d}_mask.png"
+        indexed = Image.frombytes("P", (w, h), pixels)
+        indexed.putpalette(pal)
+        indexed.save(os.path.join(outdir, filename))
+        Image.frombytes("L", (w, h), mask).save(os.path.join(outdir, mask_filename))
+        document["frames"].append({
+            "frame_id": f"frame/{fi:03d}",
+            "asset_id": f"battle_animation/animations/{base.lower()}/frame_{fi:03d}.png",
+            "path": filename,
+            "mask_asset_id": f"battle_animation/animations/{base.lower()}/frame_{fi:03d}_mask.png",
+            "mask_path": mask_filename,
+            "delay_native": delay,
+            "x": x,
+            "y": y,
+            "width": w,
+            "height": h,
+            "raw_byte_4": raw4,
+            "raw_byte_5": raw5,
+            "raw_byte_7": raw7,
+            "extensions": {},
+        })
+    with open(os.path.join(outdir, "animation.json"), "w", encoding="utf-8") as stream:
+        json.dump(document, stream, ensure_ascii=False, indent=2)
+        stream.write("\n")
     print(f"{base}: {len(frames)} 幀 -> {outdir}")
 
 
 def cmd_gif(src, palp, out):
     from PIL import Image
 
-    d = open(src, "rb").read()
+    with open(src, "rb") as stream:
+        d = stream.read()
     pal = load_palette(palp)
     frames = parse_anim(d)
     if not frames:
@@ -139,7 +192,8 @@ def cmd_gif(src, palp, out):
 
 
 def cmd_info(src):
-    d = open(src, "rb").read()
+    with open(src, "rb") as stream:
+        d = stream.read()
     frames = parse_anim(d)
     print(f"{os.path.basename(src)}: {len(frames)} 幀")
     for fi, (x, y, w, h, raw4, raw5, delay, raw7, body) in enumerate(frames):

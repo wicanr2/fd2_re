@@ -305,13 +305,13 @@ func (p *nativeEndingPreview) montageArchivePaths() (ending.MontageArchivePaths,
 		})
 	}
 	paths := ending.MontageArchivePaths{
-		FDOTHER:      p.fdotherPath,
-		FDTXT:        p.fdtxtPath,
-		TAI:          resolve("FD2_TAI", "TAI.DAT"),
-		FIGANI:       resolve("FD2_FIGANI", "FIGANI.DAT"),
-		PortraitRoot: separatedAssetPath("portraits"),
+		FDOTHER:       p.fdotherPath,
+		FDTXT:         p.fdtxtPath,
+		TAI:           resolve("FD2_TAI", "TAI.DAT"),
+		AnimationRoot: separatedAssetPath("animations"),
+		PortraitRoot:  separatedAssetPath("portraits"),
 	}
-	if paths.TAI == "" || paths.FIGANI == "" {
+	if paths.TAI == "" {
 		return ending.MontageArchivePaths{}, fmt.Errorf("ending: player-provided montage archives are unavailable")
 	}
 	return paths, nil
@@ -410,7 +410,7 @@ func (g *Game) startCampaignNativeTail() error {
 		"org_game/炎龍騎士團/FLAME2/BG.DAT",
 	})
 	sets, err := ending.LoadMontageTailVisualSets(*tail, ending.MontageTailVisualPaths{
-		TAI: paths.TAI, BG: bgPath, FIGANI: paths.FIGANI,
+		TAI: paths.TAI, BG: bgPath, AnimationRoot: paths.AnimationRoot,
 	})
 	if err != nil {
 		p.tailStartError = err.Error()
