@@ -29,6 +29,24 @@ type testSeparatedPaletteDocument struct {
 	Components    []int                      `json:"dac_6bit_components"`
 }
 
+type testActionCellEntry struct {
+	Index  int    `json:"index"`
+	Codec  string `json:"codec"`
+	Width  int    `json:"width"`
+	Height int    `json:"height"`
+	Frame  string `json:"frame"`
+}
+
+type testActionCellDocument struct {
+	SchemaVersion int                        `json:"schema_version"`
+	Kind          string                     `json:"kind"`
+	AssetID       string                     `json:"asset_id"`
+	Status        string                     `json:"status"`
+	Evidence      string                     `json:"evidence"`
+	Source        testSeparatedPaletteSource `json:"source"`
+	Entries       []testActionCellEntry      `json:"entries"`
+}
+
 func writeSeparatedCommandGridFixture(t *testing.T, root string, count int) {
 	t.Helper()
 	components := make([]int, 256*3)
@@ -61,13 +79,32 @@ func writeSeparatedCommandGridFixture(t *testing.T, root string, count int) {
 	if err := os.MkdirAll(directory, 0o755); err != nil {
 		t.Fatal(err)
 	}
+	actionDocument := testActionCellDocument{
+		SchemaVersion: 1,
+		Kind:          "fdother_raw_cell_bank",
+		AssetID:       "ui/FDOTHER_002/action_cells",
+		Status:        "decoded",
+		Evidence:      "confirmed",
+		Source: testSeparatedPaletteSource{
+			File: "FDOTHER.DAT", Resource: 2, Size: 3382481,
+			MD5:     "22f56e5027edc7c766ad34ca4e5aca93",
+			SHA256:  "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce",
+			RawSize: 37680,
+		},
+	}
+	indexedPalette := make(color.Palette, 256)
+	for index := range indexedPalette {
+		indexedPalette[index] = color.NRGBA{
+			R: uint8(index), G: uint8(index), B: uint8(index), A: 0xff,
+		}
+	}
 	for index := 0; index < count; index++ {
 		file, err := os.Create(filepath.Join(directory, "cell_"+fmtThreeDigits(index)+".png"))
 		if err != nil {
 			t.Fatal(err)
 		}
-		im := image.NewNRGBA(image.Rect(0, 0, 2, 2))
-		im.SetNRGBA(0, 0, color.NRGBA{R: byte(index), A: 0xff})
+		im := image.NewPaletted(image.Rect(0, 0, 2, 2), indexedPalette)
+		im.Pix[0] = uint8(index)
 		if err := png.Encode(file, im); err != nil {
 			file.Close()
 			t.Fatal(err)
@@ -75,6 +112,17 @@ func writeSeparatedCommandGridFixture(t *testing.T, root string, count int) {
 		if err := file.Close(); err != nil {
 			t.Fatal(err)
 		}
+		actionDocument.Entries = append(actionDocument.Entries, testActionCellEntry{
+			Index: index, Codec: "raw_indexed_transparent", Width: 2, Height: 2,
+			Frame: "cell_" + fmtThreeDigits(index) + ".png",
+		})
+	}
+	actionRaw, err := json.Marshal(actionDocument)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(directory, "resource.json"), actionRaw, 0o644); err != nil {
+		t.Fatal(err)
 	}
 }
 

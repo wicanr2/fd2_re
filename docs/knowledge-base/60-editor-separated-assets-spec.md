@@ -279,6 +279,23 @@ frame另需 binary mask。metadata 綁定固定 `FDOTHER.DAT` hash、resource14�
 2／3／5／6／7／8／9／24／29／32／33／34／35、native map bundle、LOAD slots與
 class／church共18條直接`ReadResource(..., 0)`；下列同日遷移已取代該歷史現況。
 
+#### 共用 #2 action cells 與 #5 dialogue 補全契約
+
+> 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）；主證據見
+> [`fd2_shared_ui_banks_evidence.txt`](../data/fd2_shared_ui_banks_evidence.txt)。
+
+既有 `ui/action_cells/cell_000.png` 至 `cell_077.png` 必須新增
+`ui/action_cells/resource.json`，以固定 provenance、完整0..77集合、每格幾何及
+`raw_indexed_transparent` codec 使 raw-cell runtime 可嚴格載入。既有
+`ui/FDOTHER_005/item_panel` 則在不更換穩定 identity、不複製 PNG 的前提下，補入
+dialogue raw entries0／18／19；如此同一 separated loader 能提供教會／商店所需的
+0..19 dialogue與31..40 digits。兩包任一 metadata、indexed PNG、幾何或完整集合錯誤
+均失敗即關閉，不回退 archive。
+
+現行 importer 已輸出 #2 metadata 並補齊 #5 entries；兩個 strict loader、原始逐
+位元組比較、缺包拒絕與正式指令格／轉職／教會／商店聚焦回歸均通過。
+`native_class_ui` 不再取得 FDOTHER archive path。
+
 #### 戰鬥共用 FDOTHER #0 DAC owner 遷移契約
 
 > 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）

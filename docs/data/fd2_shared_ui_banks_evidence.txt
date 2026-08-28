@@ -1,0 +1,60 @@
+# FDOTHER #2／#5 共用介面資產：canonical 證據與分離契約
+
+## 固定來源
+
+- `FDOTHER.DAT`：3,382,481 bytes；MD5
+  `22f56e5027edc7c766ad34ca4e5aca93`；SHA-256
+  `a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`。
+- `FDOTHER_002.bin`：37,680 bytes；SHA-256
+  `97cadfcb4e2632c931b940401e9dc5cb505e176676881a9d186de027d5ae24e0`。
+- `FDOTHER_005.bin`：44,181 bytes；SHA-256
+  `561eb8ca579b13a6f2bc1f36436ad3af7d8d0bf77eab25a4ab6411142a7eb118`。
+- 原始 caller／consumer 由合法 IDA Pro 9.4 Docker 證據閉合；地址為 IDA linear
+  address。#2 指令格主證據見 `ida/fd2_continue_action_overlay_ida.txt`、
+  `ida/fd2_system_overlay_options_ida.txt` 與
+  `ida/fd2_end_turn_confirmation_ui_ida.txt`。#5 對話格／數字的教會、商店、
+  物品面板與終局 consumer 已登記於 `56-fd2-remake-sdd.md` 與既有原始資產
+  regression；本切片不重做已閉合 renderer。
+
+## 已證實資料形狀
+
+- **已證實**：FDOTHER #2 是78筆 untagged raw-cell bank；每筆為
+  `u16 width,u16 height,width*height indexed pixels`。`0x4E9E4` 將 index0 視為
+  destination-preserving；entry index 是原版 selector identity，不可依檔名排序重編。
+- **已證實**：`native_class_ui`、END／Yes-No、系統選項及指令格均消費同一78格；
+  正式 runtime 必須共用同一分離 bank，不能另複製教會專用格。
+- **已證實**：FDOTHER #5 是 mixed-codec LMI1。教會／商店共用 dialogue grid
+  需要 raw entries0..19；數字需要 four-mode entries31..40。既有
+  `ui/FDOTHER_005/item_panel` 已保存 entries1..17及31..40，但漏掉0／18／19，
+  使 `native_class_ui` 仍回讀 archive。
+- `ui/FDOTHER_005/item_panel` 是已發布的穩定 asset identity；雖歷史名稱較窄，
+  本切片只擴充同一原始資源已證實的共用 entries，不另造重複 PNG 或更換 ID。
+
+## 分離契約（DATA-READY／RUNTIME-E1，2026-08-29）
+
+### FDOTHER #2
+
+- `ui/action_cells/resource.json` 固定 `kind=fdother_raw_cell_bank`、
+  `asset_id=ui/FDOTHER_002/action_cells`、resource2及37,680-byte raw size。
+- entries 必須恰為0..77、無缺漏或重複；每筆 codec
+  `raw_indexed_transparent`，路徑 `cell_NNN.png`，並保存正值 width／height。
+- loader 只接受 indexed PNG，直接取 palette index pixels；不得以 RGBA 顏色反推
+  index。缺 metadata、cell、錯誤幾何或來源即整批失敗即關閉。
+
+### FDOTHER #5
+
+- 既有 `ui/fdother_005_item_panel/resource.json` 的 raw entry 集合加入0／18／19；
+  其他已驗證 opaque／raw／four-mode集合、codec與 asset identity 不變。
+- `native_class_ui` 由同一 separated loader 組成 dialogue0..19與digits31..40；
+  不得再 `ReadResource(...,5)`。
+
+驗收為：#2全部78格、#5新增三格及既有 entries 均與固定 raw parser 逐位元組一致；
+兩個 pack 缺檔皆拒絕；`loadNativeActionCells`、轉職、教會、商店與END overlay的聚焦
+回歸不變。完成後 `native_class_ui` 不得再取得 `nativeFDOTHERPath()`。
+
+正式 importer 現已為 #2 輸出完整 metadata，並在既有 #5 pack 補入0／18／19；
+`LoadSeparatedActionCells` 與 `LoadSeparatedItemPanelEntries` 嚴格載入兩包。Docker
+回歸證實 #2全部78格、#5完整既有集合與新增三格均逐位元組相同，缺包會拒絕；
+正式指令格、轉職、四項教會服務與商店資產測試通過。`native_class_ui` 已移除
+`nativeFDOTHERPath()`、resource5及resource2 archive reader，故此共用切片達
+`RUNTIME-E1`；其他 FDOTHER resource consumer 與 DOSBox E2 不由本結果提升。

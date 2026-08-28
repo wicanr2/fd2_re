@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"image"
 	"image/color"
 	"os"
 	"path/filepath"
@@ -34,16 +32,14 @@ func loadNativeActionCells(palette color.Palette) []*ebiten.Image {
 	if len(palette) != 256 {
 		return nil
 	}
-	images := make([]*ebiten.Image, nativeActionOverlayCellCount)
-	for index := range images {
-		path := separatedAssetPath(filepath.ToSlash(filepath.Join("ui", "action_cells", fmt.Sprintf("cell_%03d.png", index))))
-		file, err := os.Open(path)
+	cells, err := fdother.LoadSeparatedActionCells(separatedAssetPath("ui"))
+	if err != nil || len(cells) != nativeActionOverlayCellCount {
+		return nil
+	}
+	images := make([]*ebiten.Image, len(cells))
+	for index, cell := range cells {
+		decoded, err := cell.Paletted(palette)
 		if err != nil {
-			return nil
-		}
-		decoded, _, decodeErr := image.Decode(file)
-		closeErr := file.Close()
-		if decodeErr != nil || closeErr != nil || decoded.Bounds().Dx() <= 0 || decoded.Bounds().Dy() <= 0 {
 			return nil
 		}
 		images[index] = ebiten.NewImageFromImage(decoded)

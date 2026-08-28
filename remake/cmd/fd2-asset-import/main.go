@@ -648,6 +648,17 @@ func exportCommandGrid(fdotherPath, outputRoot string) error {
 	if err := os.MkdirAll(directory, 0o755); err != nil {
 		return err
 	}
+	actionDocument := itemPanelDocument{
+		SchemaVersion: 1,
+		Kind:          "fdother_raw_cell_bank",
+		AssetID:       "ui/FDOTHER_002/action_cells",
+		Status:        "decoded",
+		Evidence:      "confirmed",
+		Source: sourceID{
+			File: "FDOTHER.DAT", Resource: 2, Size: fdotherSize,
+			MD5: fdotherMD5, SHA256: fdotherSHA256, RawSize: 37680,
+		},
+	}
 	for index, cell := range cells {
 		image, err := cell.Paletted(palette)
 		if err != nil {
@@ -666,6 +677,13 @@ func exportCommandGrid(fdotherPath, outputRoot string) error {
 		if closeErr != nil {
 			return closeErr
 		}
+		actionDocument.Entries = append(actionDocument.Entries, itemPanelEntryDocument{
+			Index: index, Codec: "raw_indexed_transparent", Width: cell.Width,
+			Height: cell.Height, Frame: fmt.Sprintf("cell_%03d.png", index),
+		})
+	}
+	if err := writeJSON(filepath.Join(directory, "resource.json"), actionDocument); err != nil {
+		return err
 	}
 	if err := exportFont(fdotherPath, outputRoot); err != nil {
 		return err
@@ -999,8 +1017,8 @@ func exportItemPanel(fdotherPath, outputRoot string) error {
 		}
 		document.Entries = append(document.Entries, metadata)
 	}
-	rawIndexes := make([]int, 0, 40)
-	for index := 1; index <= 17; index++ {
+	rawIndexes := make([]int, 0, 43)
+	for index := 0; index <= 19; index++ {
 		rawIndexes = append(rawIndexes, index)
 	}
 	rawIndexes = append(rawIndexes, 23, 24, 25, 26, 27, 28, 29, 30, 53, 54, 55, 56, 57, 59, 60, 61, 62, 63, 64, 65, 66, 67, 92)

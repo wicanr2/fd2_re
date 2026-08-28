@@ -47,26 +47,24 @@ func loadNativeClassUIAssets() (*nativeClassUIAssets, error) {
 	if err != nil {
 		return nil, err
 	}
-	fdotherPath := nativeFDOTHERPath()
-	if fdotherPath == "" {
-		return nil, errors.New("native class UI: remaining FDOTHER #5/#2 assets unavailable")
-	}
-	resource5, err := fdother.ReadResource(fdotherPath, 5)
+	sharedUI, err := fdother.LoadSeparatedItemPanelEntries(separatedAssetPath("ui"))
 	if err != nil {
 		return nil, err
 	}
 	dialogue := make([]fdother.RawCell, 20)
 	for index := 0; index <= 19; index++ {
-		dialogue[index], err = fdother.ParseLMI1RawEntry(resource5, index)
-		if err != nil {
-			return nil, err
+		var ok bool
+		dialogue[index], ok = sharedUI.Raw[index]
+		if !ok {
+			return nil, errors.New("native class UI: separated FDOTHER #5 dialogue is incomplete")
 		}
 	}
 	digits := make([]fdother.Frame, 10)
 	for digit := 0; digit < 10; digit++ {
-		digits[digit], err = fdother.ParseLMI1FrameEntry(resource5, 31+digit)
-		if err != nil {
-			return nil, err
+		var ok bool
+		digits[digit], ok = sharedUI.Frames[31+digit]
+		if !ok {
+			return nil, errors.New("native class UI: separated FDOTHER #5 digits are incomplete")
 		}
 	}
 	portraits, err := loadNativeSeparatedPortrait(131)
@@ -80,7 +78,7 @@ func loadNativeClassUIAssets() (*nativeClassUIAssets, error) {
 	if err != nil {
 		return nil, err
 	}
-	choices, err := fdother.DecodeRawCellResource(fdotherPath, 2)
+	choices, err := fdother.LoadSeparatedActionCells(separatedAssetPath("ui"))
 	if err != nil {
 		return nil, err
 	}
