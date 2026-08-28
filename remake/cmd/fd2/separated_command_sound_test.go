@@ -17,7 +17,10 @@ func TestSeparatedCommandSoundBanksDecodeWithoutOriginalArchive(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := map[int]int{80: 16, 82: 2, 83: 4, 84: 3, 85: 2, 86: 2, 87: 4, 88: 2, 90: 3}
+	want := map[int]int{
+		80: 16, 82: 2, 83: 4, 84: 3, 85: 2, 86: 2, 87: 4, 88: 2, 90: 3,
+		91: 3, 92: 2, 93: 2, 94: 3, 95: 1,
+	}
 	for resource, count := range want {
 		if len(banks[resource]) != count {
 			t.Fatalf("resource %d samples=%d want=%d", resource, len(banks[resource]), count)

@@ -8409,3 +8409,21 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - `internal/fdother`與`cmd/fd2`完整相關回歸通過；manifest來源雜湊驗證通過，現為
   38,740筆：37,716 exported、1,005 intentionally raw、19 blocked。本切片達
   `DATA-READY`／`RUNTIME-E1`；#91..95與物理攻擊動態`index2`仍是獨立切片。
+
+## 2026-08-29 FDOTHER #91..95 指令與增援音效分離
+
+- `36`先綁定固定FDOTHER identity、#91..95的container形狀、11筆非空子項、空尾及
+  commands32–35／`0x32999` caller。#91..94的selector0只有PCM形狀與sound-bank歸屬，
+  沒有已證實播放caller，故標`strong_inference`並禁止正式runtime自行播放。
+- `60`在實作前建立READY契約。canonical匯出擴成15份metadata／62筆OGG；新增11筆
+  OGG與5份metadata，保留原selector。兩次完整輸出逐檔一致，更新後素材清冊通過來源
+  hash與逐檔驗證，現為38,756筆：37,732 exported、1,005 intentionally raw、19 blocked。
+- commands32–35正式owner在建立交易前分別預檢並消費#91/1、/2；#92/1；#93/1；
+  #94/1、/2。增援`0x32999`的`g.sfxSpawnIntro`改由#95/0分離bank安裝；所有
+  `battle_91..95_*.wav`正式引用歸零，不回退archive或舊WAV。
+- 9項Python匯出／清冊測試、完整`internal/fdother`及`cmd/fd2`分離bank成功／缺包聚焦
+  回歸通過；一次錯用空白Go module cache造成無網路依賴解析失敗，另一次完整套件因
+  Xvfb wrapper超過180秒而只完成`internal/fdother`，均未冒充產品失敗或完整回歸通過。
+  最終改用FD2專用映像內鎖版module＋Xvfb，聚焦正式載入測試以3.694秒乾淨通過。
+  本切片達`DATA-READY`／`RUNTIME-E1`；下一個音效缺口只剩一般物理攻擊動態bank及
+  尚未閉合的`index2` producer，不可猜映射。

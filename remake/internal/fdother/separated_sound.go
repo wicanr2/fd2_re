@@ -26,6 +26,11 @@ var separatedSoundCounts = map[int]int{
 	87: 4,
 	88: 2,
 	90: 3,
+	91: 3,
+	92: 2,
+	93: 2,
+	94: 3,
+	95: 1,
 }
 
 type separatedSoundSource struct {
@@ -36,11 +41,12 @@ type separatedSoundSource struct {
 }
 
 type separatedSoundSample struct {
-	Subresource     int    `json:"subresource"`
-	SourceByteCount int    `json:"source_byte_count"`
-	SourcePCMSHA256 string `json:"source_pcm_sha256"`
-	Path            string `json:"path"`
-	CueEvidence     string `json:"cue_evidence"`
+	Subresource            int    `json:"subresource"`
+	SourceByteCount        int    `json:"source_byte_count"`
+	SourcePCMSHA256        string `json:"source_pcm_sha256"`
+	Path                   string `json:"path"`
+	CueEvidence            string `json:"cue_evidence"`
+	ClassificationEvidence string `json:"classification_evidence"`
 }
 
 type separatedSoundDocument struct {
@@ -81,7 +87,7 @@ func LoadSeparatedSoundBank(sfxRoot string, resource int) (SeparatedSoundBank, e
 	if err := json.Unmarshal(raw, &doc); err != nil {
 		return SeparatedSoundBank{}, fmt.Errorf("fdother: separated sound metadata %d: %w", resource, err)
 	}
-	if doc.SchemaVersion != 1 || doc.Kind != "fd2_pcm_sound_bank" ||
+	if doc.SchemaVersion != 2 || doc.Kind != "fd2_pcm_sound_bank" ||
 		doc.AssetID != fmt.Sprintf("sfx/FDOTHER_%03d", resource) || doc.Status != "converted" ||
 		doc.Source.Name != "FDOTHER.DAT" || doc.Source.Size != separatedFDOTHERSize ||
 		doc.Source.MD5 != separatedFDOTHERMD5 || doc.Source.SHA256 != separatedFDOTHERSHA256 ||
@@ -95,7 +101,8 @@ func LoadSeparatedSoundBank(sfxRoot string, resource int) (SeparatedSoundBank, e
 	for _, sample := range doc.Samples {
 		digest, digestErr := hex.DecodeString(sample.SourcePCMSHA256)
 		if sample.Subresource < 0 || sample.Subresource >= wantCount || sample.SourceByteCount <= 0 ||
-			digestErr != nil || len(digest) != 32 || sample.CueEvidence == "" {
+			digestErr != nil || len(digest) != 32 || sample.CueEvidence == "" ||
+			(sample.ClassificationEvidence != "confirmed" && sample.ClassificationEvidence != "strong_inference") {
 			return SeparatedSoundBank{}, fmt.Errorf("fdother: separated sound %d invalid sample metadata", resource)
 		}
 		if _, duplicate := bank.Encoded[sample.Subresource]; duplicate {

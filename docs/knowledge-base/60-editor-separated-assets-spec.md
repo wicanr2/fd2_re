@@ -151,6 +151,52 @@ locales/<locale>/
 字串prototype → 四語切換／缺字／換行／存檔不變測試。產品分支未確認前，只能完成
 schema inventory與prototype，不把任一建議寫進正式玩家預設。
 
+#### 現行程式盤點與遷移邊界
+
+2026-08-29 實檔盤點確認，多語系不能只修改故事 JSON：
+
+- `campaign.Line.Text`、`battle.Action.Text`、`battle.DialogLine.Text`與結局節點目前均為
+  單一字串；`command_labels.json`及角色、職業、法術、物品的顯示名稱也尚未共用
+  `string_id`。
+- 現代介面的標題、法術、物品、商店、整備、教會、戰鬥提示與結局仍有大量繁中
+  字串直接寫在`remake/cmd/fd2/main.go`及`title.go`。第一階段必須由可重跑extractor
+  產生清冊，逐筆搬到受schema約束的字串catalog；不可用人工搜尋一次後宣稱完整。
+- 現代`Font`可繪製UTF-8及依寬度換行，但基準大小固定、行高固定，且仍會尋找主機
+  字型。正式四語包必須改用包內鎖定版本與雜湊的字型，不得讓平台安裝字型改變
+  字寬、分頁或截圖。
+- 原生`native_dialogue`的`pages`／`glyph_pages`與FDOTHER #4字模是原版繁中證據。
+  它們不得被翻譯覆寫；其他語系使用獨立UTF-8 layout projection，除非日後另有經
+  驗證的語系點陣字模主題。
+
+為避免破壞現有內容，遷移期保留舊`text`／`label`作`zh-Hant`來源投影，另加
+`string_id`；編譯器負責證明兩者一致。正式canonical資料不得在每個scene內嵌四份
+翻譯，也不採`map[locale]text`散落各檔，統一由語言包catalog提供翻譯，避免事件與
+演出資料因翻譯而分叉。
+
+#### 可實作契約與驗收順序
+
+1. **字串清冊**：掃描JSON schema、資料檔及Go玩家介面，輸出`string_id`、文字角色、
+   來源位置、變數簽章與目前繁中值；同一ID的變數集合不同即拒絕。
+2. **語言包schema**：建立`locale.json`、`strings.json`及`layout-overrides.json`的
+   machine-readable schema；路徑逃逸、重複ID、未知變數、缺正式key與錯誤BCP 47
+   識別碼均失敗即關閉。
+3. **字型與排版profile**：每個語系固定包內字型資產、SHA-256、基準字級、字距、
+   行距、斷行規則與缺字政策；每種文字角色另定`text_safe_rect`、最大行數及溢位
+   政策。使用者的`text_scale`只在profile允許範圍內套用。
+4. **相容載入與設定**：舊資料的`text`／`label`仍可匯入為`zh-Hant`，但writer只輸出
+   canonical ID。`fd2_settings.json`保存`locale_id`、`text_scale`與主題；戰役save
+   不保存語言，切換語言不得改變遊戲狀態。
+5. **渲染切片**：依序接對話、商店、戰鬥HUD，再擴到標題、城鎮、整備、教會、
+   道具／法術及結局。每條正式路徑不得殘留直接硬編碼的玩家文字。
+6. **原型與抽樣**：以最長實際繁中／簡中／日文／英文內容，製作對話、商店與
+   戰鬥HUD在640×400及手機縮放下的截圖；檢查字形覆蓋、標點禁則、英文長詞、
+   分頁、游標與頭像避讓。這些只證明排版，不宣稱非繁中語系原版逐像素一致。
+
+第一階段完成門檻是：四個官方語系的正式key集合完整；每個字型實際覆蓋所有使用
+字元；切換語言及字級後，標題、對話、商店、戰鬥HUD與結局均無裁切；存檔內容逐欄
+不變；移除主機字型後仍可重現相同量測。外部社群包若獲採用，另允許宣告base locale
+作開發期fallback，但正式官方包仍不得靠fallback掩蓋缺譯。
+
 ## 五、往返與相容性
 
 - 舊 JSON 只作 legacy import。匯入時產生穩定 ID 與 provenance，並輸出診斷；不在
@@ -233,7 +279,7 @@ sfx/FDOTHER_NNN/
   sample_MMM.ogg
 ```
 
-`resource.json`固定保存`schema_version=1`、`kind=fd2_pcm_sound_bank`、穩定`asset_id`、
+`resource.json`固定保存`schema_version=2`、`kind=fd2_pcm_sound_bank`、穩定`asset_id`、
 固定FDOTHER來源identity、outer resource、原始container count、zero-length tail index、
 `sample_rate=11025`、`channels=1`、`sample_format=unsigned_u8`、
 `timing_evidence=hardware-spec_approximation`，以及每筆sample的subresource、raw byte count、
@@ -322,6 +368,32 @@ selector 0／2／13／14／15具名欄位及供AI item、modifier、commands 32�
 缺pack測試維持失敗即關閉，且刻意移除selector的原子性測試不會被演出途中重載補回。
 清冊增加16筆OGG與1份metadata，現為38,740筆：37,716 exported、1,005 intentionally raw、
 19 blocked。
+
+#### 指令 32–35 與增援 FDOTHER #91..95 音效分離契約
+
+> 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）
+
+本切片沿用`fd2_pcm_sound_bank`並保留原始selector，不重新編號。#91/#94各有三筆
+非空PCM與空尾3，#92/#93各有兩筆非空PCM與空尾2，#95有一筆非空PCM與空尾1。
+command32正式消費#91/1、/2；command33消費#92/1；command34消費#93/1；command35
+消費#94/1、/2；`0x32999` pass1消費#95/0。#91..94的selector0雖具PCM位元分布且位於
+sound resource，但尚無已證實caller；仍輸出標準OGG以完成素材分離，metadata必須標
+`strong_inference`及`no_confirmed_consumer`，正式runtime不得自行播放。
+因本批新增每筆必填`classification_evidence`，sound-bank metadata由版本1升為版本2；
+同次重生全部15個bank，舊版本1 pack明確拒絕，不以同一版本號靜默改變契約。
+
+正式loader一次完整驗證並解碼五個bank；四條command owner須在建立交易plan前預檢
+各自必需selector，增援owner由同一分離bank安裝#95/0。缺件、壞OGG、來源漂移或原始
+selector不符時失敗即關閉，不回退`battle_91..95_*.wav`或原版archive。驗收包含兩次
+完整匯出逐檔一致、11筆OGG解碼／聲道／取樣率／時長、原始PCM hash、無archive正式
+載入、四條command及增援代表回歸，以及舊WAV引用歸零。
+
+實作結果：canonical匯出現為15份metadata／62筆OGG；兩次完整輸出逐檔一致。
+#91..95的11筆OGG均通過解碼與完整素材清冊驗證；四筆無caller的selector0保留
+`strong_inference`，沒有接入播放。commands32–35改由分離bank取得#91..94已證實
+selector，`sfxSpawnIntro`改由#95/0安裝；所有`battle_91..95_*.wav`正式引用歸零。
+Python契約／清冊測試、完整`internal/fdother`及`cmd/fd2`分離bank聚焦回歸通過。清冊增加11筆OGG及
+5份metadata，現為38,756筆：37,732 exported、1,005 intentionally raw、19 blocked。
 
 ### 2026-08-28 第一輪全量匯出實測
 

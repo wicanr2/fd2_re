@@ -547,3 +547,33 @@ sub0 開頭 `40 01 c8 00` = `0x140,0xc8`=320×200 VGA 解析度標頭、std≈80
 11025Hz 仍是工具鏈推定值，#95 的玩家可聽語意也仍未知；不能因 runtime 已接線
 就提升成已證實的音效名稱。
 `--res <idx>` 可導出任意單一 FDOTHER.DAT 資源號(供後續驗證其他候選用)。
+
+## FDOTHER #91..95 分離音效契約（2026-08-29）
+
+> 狀態：**RE-CLOSED／DATA-READY**。輸入為固定版`FDOTHER.DAT` 3,382,481 bytes，
+> MD5 `22f56e5027edc7c766ad34ca4e5aca93`，SHA-256
+> `a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`；外層104筆。
+> 目錄與雜湊由`fd2-assets-local:20260829-sfx`內的專案parser重生。caller證據為
+> [`fd2_command32_35_presentation_ida.txt`](../data/ida/fd2_command32_35_presentation_ida.txt)
+> 與[`fd2_spawn_intro_32999_ida.md`](../data/fd2_spawn_intro_32999_ida.md)。
+
+| 資源／子項 | bytes | SHA-256 | 消費與證據等級 |
+|---|---:|---|---|
+| #91/0 | 6,561 | `53ec8a770e5201cd41ce63b71350c8319efea4a2326a9a5efaa42cadae23fdf9` | PCM形狀及sound bank成員為強推論；無已證實caller |
+| #91/1 | 13,330 | `4cde405cc40f15e639105b7cb3ea400859a5316f43b17ab8f78a2c37eb500576` | command32交替尾段，已證實 |
+| #91/2 | 13,668 | `9c8c194709ef55ba6aa5029adec6176edcbcd089c5e3a8f77e37995de279d6ee` | command32主段，已證實 |
+| #92/0 | 6,561 | 同#91/0 | PCM形狀及sound bank成員為強推論；無已證實caller |
+| #92/1 | 13,668 | 同#91/2 | command33共用段，已證實 |
+| #93/0 | 6,561 | 同#91/0 | PCM形狀及sound bank成員為強推論；無已證實caller |
+| #93/1 | 13,668 | 同#91/2 | command34共用段，已證實 |
+| #94/0 | 6,561 | 同#91/0 | PCM形狀及sound bank成員為強推論；無已證實caller |
+| #94/1 | 13,330 | 同#91/1 | command35交替尾段，已證實 |
+| #94/2 | 13,668 | 同#91/2 | command35主段，已證實 |
+| #95/0 | 10,444 | `b543e4619860a0f466d12131aad366002a92f0f4038eafc0655912f476cf7960` | `0x32999` pass1直接selector0，已證實 |
+
+#91/#94各有空子項3，#92/#93各有空子項2，#95有空子項1；其SHA-256均為空資料的
+`e3b0c442…b855`。所有非空項保留原selector輸出OGG，沒有caller的四筆selector0亦保存，
+但metadata標`classification_evidence=strong_inference`與
+`cue_evidence=sound_resource_no_confirmed_consumer`，正式runtime不得自行播放。
+已證實者標`confirmed`／`typed_schedule`。11025Hz仍是硬體規格近似，不提升為原版
+逐週期或逐波形一致。

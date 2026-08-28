@@ -52,7 +52,7 @@ SEPARATED_SOURCE_SIZE = 3382481
 SEPARATED_SOURCE_MD5 = "22f56e5027edc7c766ad34ca4e5aca93"
 SEPARATED_SOURCE_SHA256 = "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
 SEPARATED_TOP_RESOURCE_COUNT = 104
-SEPARATED_RESOURCES = (31, 80, 82, 83, 84, 85, 86, 87, 88, 90)
+SEPARATED_RESOURCES = (31, 80, 82, 83, 84, 85, 86, 87, 88, 90, 91, 92, 93, 94, 95)
 # 值為巢狀 container 的非空 sample 數；directory 另有一筆 0-byte 尾哨兵。
 SEPARATED_SAMPLE_COUNTS = {
     31: 13,
@@ -65,6 +65,11 @@ SEPARATED_SAMPLE_COUNTS = {
     87: 4,
     88: 2,
     90: 3,
+    91: 3,
+    92: 2,
+    93: 2,
+    94: 3,
+    95: 1,
 }
 SEPARATED_OGG_QUALITY = 3
 SEPARATED_TIMING_EVIDENCE = "hardware-spec_approximation"
@@ -158,8 +163,8 @@ def _read_separated_resources(data: bytes) -> dict[int, list[bytes]]:
                 raise ValueError(f"FDOTHER.DAT #{resource}: tail entry {index} is not empty")
         result[resource] = [nested_data[offset : offset + length] for offset, length in entries[:expected_samples]]
 
-    if sum(len(samples) for samples in result.values()) != 51:
-        raise ValueError("正式分離音效非空 sample 總數不是 51")
+    if sum(len(samples) for samples in result.values()) != 62:
+        raise ValueError("正式分離音效非空 sample 總數不是 62")
     return result
 
 
@@ -299,13 +304,22 @@ def export_separated_pack(source: Path, output: Path) -> list[Path]:
                         "source_byte_count": len(pcm),
                         "source_pcm_sha256": hashlib.sha256(pcm).hexdigest(),
                         "path": sample_name,
-                        "cue_evidence": "typed_schedule",
+                        "cue_evidence": (
+                            "sound_resource_no_confirmed_consumer"
+                            if resource in (91, 92, 93, 94) and subresource == 0
+                            else "typed_schedule"
+                        ),
+                        "classification_evidence": (
+                            "strong_inference"
+                            if resource in (91, 92, 93, 94) and subresource == 0
+                            else "confirmed"
+                        ),
                     }
                 )
                 written.append(output / "sfx" / f"FDOTHER_{resource:03d}" / sample_name)
 
             document = {
-                "schema_version": 1,
+                "schema_version": 2,
                 "kind": "fd2_pcm_sound_bank",
                 "asset_id": f"sfx/FDOTHER_{resource:03d}",
                 "status": "converted",

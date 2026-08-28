@@ -58,6 +58,9 @@ func (g *Game) startNativeCommand35Presentation(actor, confirmed *battle.Unit, t
 	if !g.nativeFullPresentationEnabled() || g == nil || g.st == nil || actor == nil || confirmed == nil {
 		return errors.New("native command35 presentation context unavailable")
 	}
+	if err := g.requireSeparatedCommandSounds(94, 1, 2); err != nil {
+		return err
+	}
 	if g.nativeCmd35Presentation != nil || g.nativeCmd34Presentation != nil || g.nativeCmd33Presentation != nil || g.nativeCmd32Presentation != nil || g.nativeHealPresentation != nil ||
 		g.nativeModifierPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil ||
 		g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil ||
@@ -325,12 +328,12 @@ func (g *Game) startNativeCommand35Presentation(actor, confirmed *battle.Unit, t
 	if frames, err = appendNativeCompoundFrames(frames, mainImages, commonSchedule.MainDelayTicks); err != nil {
 		return err
 	}
-	frames[mainStart].sound = loadWav(assetPath("assets/sfx/battle_94_02.wav"))
+	frames[mainStart].sound = g.separatedCommandSound(94, 2)
 	tailStart := len(frames)
 	if frames, err = appendNativeCompoundFrames(frames, commonTailImages, commonSchedule.MainDelayTicks); err != nil {
 		return err
 	}
-	commonSample1 := loadWav(assetPath("assets/sfx/battle_94_01.wav"))
+	commonSample1 := g.separatedCommandSound(94, 1)
 	for index := 0; index < len(commonTailImages); index += 2 {
 		frames[tailStart+index].sound = commonSample1
 	}

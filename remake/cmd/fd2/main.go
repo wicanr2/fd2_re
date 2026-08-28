@@ -9706,7 +9706,6 @@ func loadGame() *Game {
 	g.sfxImpact = loadWav("assets/sfx/battle_64_00.wav")          // 命中(最短最尖池)
 	g.sfxCommand24Actor = loadWav("assets/sfx/battle_53_03.wav")  // 0x276EC selector32 actor raw+5
 	g.sfxCommand24Target = loadWav("assets/sfx/battle_53_02.wav") // 0x276EC selector32 target raw+5
-	g.sfxSpawnIntro = loadWav("assets/sfx/battle_95_00.wav")      // 0x32999 pass1 FDOTHER #95 sub0
 	// 戰場 BGM:doc12 推定 track18=戰鬥被使用者實聽推翻(18=商店音樂);戰鬥曲號待聽辨,先不播錯曲
 	if os.Getenv("FD2_TITLE") == "1" || (g.shotPath == "" && os.Getenv("FD2_TITLE") != "0") { // 開頭動畫+主選單(headless 截圖預設跳過)
 		ta, err := loadTitleAssets()

@@ -135,7 +135,7 @@ func loadWav(path string) []byte {
 // loadSeparatedCommandSoundBanks 載入第一批已閉合的戰鬥指令音效庫。
 // 它只消費分離素材包；任一音效庫缺漏或 OGG 解碼失敗時整批拒絕。
 func loadSeparatedCommandSoundBanks() (map[int]map[int][]byte, error) {
-	resources := []int{80, 82, 83, 84, 85, 86, 87, 88, 90}
+	resources := []int{80, 82, 83, 84, 85, 86, 87, 88, 90, 91, 92, 93, 94, 95}
 	out := make(map[int]map[int][]byte, len(resources))
 	for _, resource := range resources {
 		decoded, err := decodeSeparatedSoundBank(resource)
@@ -189,6 +189,7 @@ func (g *Game) installSeparatedCommandSounds(banks map[int]map[int][]byte) {
 	g.sfxCommand7Actor, g.sfxCommand7Target = banks[88][0], banks[88][1]
 	g.sfxDeath, g.sfxTransition = banks[88][0], banks[88][1]
 	g.sfxCommand8Actor, g.sfxCommand8Sub1, g.sfxCommand8Sub2 = banks[90][0], banks[90][1], banks[90][2]
+	g.sfxSpawnIntro = banks[95][0]
 }
 
 func (g *Game) separatedCommandSound(resource, selector int) []byte {

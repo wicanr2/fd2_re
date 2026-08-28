@@ -16,7 +16,7 @@ func writeSeparatedSoundFixture(t *testing.T, resource int) string {
 		t.Fatal(err)
 	}
 	doc := separatedSoundDocument{
-		SchemaVersion: 1,
+		SchemaVersion: 2,
 		Kind:          "fd2_pcm_sound_bank",
 		AssetID:       "sfx/FDOTHER_082",
 		Status:        "converted",
@@ -32,7 +32,7 @@ func writeSeparatedSoundFixture(t *testing.T, resource int) string {
 		path := "sample_00" + string(rune('0'+index)) + ".ogg"
 		doc.Samples = append(doc.Samples, separatedSoundSample{
 			Subresource: index, SourceByteCount: 4, SourcePCMSHA256: "0000000000000000000000000000000000000000000000000000000000000000",
-			Path: path, CueEvidence: "typed_schedule",
+			Path: path, CueEvidence: "typed_schedule", ClassificationEvidence: "confirmed",
 		})
 		if err := os.WriteFile(filepath.Join(bankRoot, path), []byte("OggSfixture"), 0o644); err != nil {
 			t.Fatal(err)
