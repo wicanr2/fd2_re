@@ -13,6 +13,11 @@ import (
 
 func TestExecuteNativeAICommand10UsesOriginalIndexedOwner(t *testing.T) {
 	base := filepath.Clean("../../../org_game/炎龍騎士團/FLAME2")
+	pack := filepath.Clean("../../generated-assets/fd2-original-b97caf22")
+	if !fileExists(filepath.Join(pack, "sfx", "FDOTHER_080", "resource.json")) {
+		t.Skip("separated FDOTHER #80 sound bank unavailable")
+	}
+	t.Setenv("FD2_ASSET_PACK", pack)
 	paths := map[string]string{
 		"FD2_ORIGINAL_FIGANI":  filepath.Join(base, "FIGANI.DAT"),
 		"FD2_ORIGINAL_FDOTHER": filepath.Join(base, "FDOTHER.DAT"),
@@ -27,8 +32,9 @@ func TestExecuteNativeAICommand10UsesOriginalIndexedOwner(t *testing.T) {
 		t.Setenv(key, path)
 	}
 	g := &Game{rng: rand.New(rand.NewSource(10)), nativeUIPalette: loadNativeUIPalette()}
-	g.sfxCommand1012Prelude = loadWav("assets/sfx/battle_80_02.wav")
-	g.sfxCommand1012Main = loadWav("assets/sfx/battle_80_13.wav")
+	if err := g.requireSeparatedCommandSounds(80, 2, 13); err != nil {
+		t.Fatal(err)
+	}
 	if err := g.loadMap("assets/maps/map0"); err != nil {
 		t.Fatal(err)
 	}

@@ -310,12 +310,12 @@ func (g *Game) startNativeCommand33Presentation(actor, confirmed *battle.Unit, t
 	if frames, err = appendNativeCompoundFrames(frames, tailEffectImages, tailSchedule.EffectFrameDelayTicks); err != nil {
 		return err
 	}
-	frames[effectStart].sound = loadWav(assetPath("assets/sfx/battle_80_12.wav"))
+	frames[effectStart].sound = g.separatedCommandSound(80, 12)
 	maskStart := len(frames)
 	for index := 0; index < tailSchedule.MaskPairs*2+1; index++ {
 		frames = append(frames, nativeCompoundPresentedFrame{image: maskImages[index%2], delay: 1})
 	}
-	frames[maskStart].sound = loadWav(assetPath("assets/sfx/battle_80_01.wav"))
+	frames[maskStart].sound = g.separatedCommandSound(80, 1)
 	publishAt := len(frames)
 	if frames, err = appendNativeCompoundFrames(frames, digitImages, 1); err != nil {
 		return err

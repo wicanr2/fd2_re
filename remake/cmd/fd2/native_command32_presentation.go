@@ -336,7 +336,7 @@ func (g *Game) startNativeCommand32Presentation(actor, confirmed *battle.Unit, t
 	if frames, err = appendNativeCompoundFrames(frames, tailEffectImages, tailSchedule.EffectDelayTicks); err != nil {
 		return err
 	}
-	frames[effectStart].sound = loadWav(assetPath("assets/sfx/battle_80_09.wav"))
+	frames[effectStart].sound = g.separatedCommandSound(80, 9)
 	if frames, err = appendNativeCompoundFrames(frames, toggleImages, nativeDelayTicks(tailSchedule.ToggleDelayMS)); err != nil {
 		return err
 	}

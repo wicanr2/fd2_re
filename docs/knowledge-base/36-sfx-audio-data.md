@@ -215,6 +215,46 @@ presentation中的ch28 post index 3。正式runtime目前只直接消費0／1／
 sample仍因完整原版#31 bank契約輸出，但不猜用途。動態sample選擇仍由既有typed schedule
 決定，不把單一用途名稱寫成sample identity。
 
+### 指令共用音效庫 #80 的分離證據
+
+> 證據等級：container、raw bytes、16筆非空sample、空尾項及下列selector consumer為
+> **已證實**；聽覺名稱仍未知。來源仍是本文件固定雜湊的`FDOTHER.DAT`，播放率只屬
+> hardware-spec approximation。
+
+合法IDA Pro 9.4主證據已分別固定`0x1D4CB→0x1D6C8`的selector 0、玩家command 9的
+selector 0／14／15、commands 10–12的selector 2／13，以及commands 32–35與AI item／
+modifier typed schedule所消費的selector。主證據為
+[`fd2_command_sound_handle_53b13_ida.txt`](../data/ida/fd2_command_sound_handle_53b13_ida.txt)、
+[`fd2_command_modifier_palette_ida.txt`](../data/ida/fd2_command_modifier_palette_ida.txt)、
+[`fd2_command9_player_ai_presentation_ida.txt`](../data/ida/fd2_command9_player_ai_presentation_ida.txt)
+與[`fd2_command10_12_presentation_ida.txt`](../data/ida/fd2_command10_12_presentation_ida.txt)。
+本節只遷移已固定的raw selector，不重解或改名既有renderer。
+
+固定resource #80大小116,165 bytes，nested directory共17筆：#0..#15非空，#16為
+0-byte尾項。各非空sample的`長度／SHA-256`為：
+
+| sub | bytes | SHA-256 |
+|---:|---:|---|
+| 0 | 6,561 | `53ec8a770e5201cd41ce63b71350c8319efea4a2326a9a5efaa42cadae23fdf9` |
+| 1 | 4,452 | `ceb6fa2acef0db195ed7909b9f341473b701f5161d6ccc20bb11b3b0904ab0b2` |
+| 2 | 8,211 | `b6611238e4ec7d27860811022baec4346bd0877ef94fff15aa95ca32c0b29bde` |
+| 3 | 8,851 | `025226ab73873b08149ea1a21b056273ce8b24e9904b31c226741c2afc17633e` |
+| 4 | 8,851 | `025226ab73873b08149ea1a21b056273ce8b24e9904b31c226741c2afc17633e` |
+| 5 | 7,138 | `2de9e8ccfe7155e636f44fea1467492d3964ddb8d69e314c62c91043c034ceea` |
+| 6 | 5,530 | `1f9fac7eaa225c0ff88759d3377f371d5889e9d50bf73db80f859b469e940c3f` |
+| 7 | 3,438 | `aca7d57bc6cb4563557de8dbf337674af9a5bc59f547e46cdfbbd24b76646288` |
+| 8 | 1,812 | `dfa002fb73c5057ce751032abcaf2ac97e99d6b38f19094c0b0c32b23dc6f150` |
+| 9 | 10,603 | `5865e15098a6fd97b2453b52bd5b9a01cd7edddfdbd3113fb017dc3ab5bb3b96` |
+| 10 | 6,435 | `d8467da6bb709bfaf0891bb2820f559744e94633dcec023f8349051b22b48ece` |
+| 11 | 11,022 | `2172aecbd42e33174e25aad78c187a88c07876c950197ef14ed4bc32a7b59951` |
+| 12 | 4,550 | `2be6da719d01c12c2a3ca2a3a2547155acac07e4cd8d8a474ad5c801a077c14b` |
+| 13 | 15,725 | `451eb10bf21766b12af07377bf55905b9da682394db2519deff1cf595e187d5b` |
+| 14 | 10,099 | `30911d5642b14cfec6cb9f6e396f81ba3170f3d64389113b382b95e8008f2d26` |
+| 15 | 2,813 | `c7686c22c33ec4bc948b17ca64948a5e421ca28062a34f442b1d793ba6a7f025` |
+
+sub3與sub4原始bytes完全相同；標準素材仍須保留兩個不同selector identity，不可因雜湊
+相同而合併。一般物理攻擊動態bank的`index2` producer仍未閉合，與本固定#80切片分開。
+
 ## 待辦(後輪)
 
 - [x] `FDOTHER.DAT` #31 的 13 個非空樣本曾導出成 WAV（歷史流程，見下方

@@ -36,10 +36,10 @@ class SeparatedSFXFormatTests(unittest.TestCase):
                 payloads.append(b"x")
         return make_container(payloads)
 
-    def test_canonical_banks_have_35_samples_and_exact_tail(self):
+    def test_canonical_banks_have_51_samples_and_exact_tail(self):
         banks = export_sfx._read_separated_resources(self.make_outer())
         self.assertEqual(tuple(banks), export_sfx.SEPARATED_RESOURCES)
-        self.assertEqual(sum(map(len, banks.values())), 35)
+        self.assertEqual(sum(map(len, banks.values())), 51)
         for resource, samples in banks.items():
             self.assertEqual(len(samples), export_sfx.SEPARATED_SAMPLE_COUNTS[resource])
 

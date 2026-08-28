@@ -354,7 +354,7 @@ type Game struct {
 	bannerT                   int                    // 橫幅剩餘 tick
 	sfx                       map[int][]byte         // SFX PCM（doc36 FDOTHER#31：14個目錄項目／13個非空樣本）
 	sfxVoices                 []sfxVoice             // 保留疊播播放器至自然結束，避免 Play 後立即失去生命週期
-	separatedCommandSFX       map[int]map[int][]byte // 第一批 FDOTHER #82..90 指令音效；只讀分離 OGG
+	separatedCommandSFX       map[int]map[int][]byte // 已納入契約的 FDOTHER 指令音效；只讀分離 OGG
 	sfxSwing                  []byte                 // 戰鬥揮擊音(doc36 戰鬥池 #48-64 sub0,七池共用)
 	sfxImpact                 []byte                 // 命中音(近似:最短最尖池;attack_id→sfx 對照表 doc36 未 RE)
 	sfxDeath                  []byte                 // 陣亡/重擊音(近似:最長池)
@@ -9702,17 +9702,11 @@ func loadGame() *Game {
 		g.installSeparatedCommandSounds(banks)
 	}
 	// 戰鬥音效:揮擊/命中/陣亡三段(真素材;attack_id→池 精確對照 doc36 未 RE,故命中/陣亡池為近似選擇)
-	g.sfxSwing = loadWav("assets/sfx/battle_48_00.wav")                 // 揮擊(池 sub0,七池共用)
-	g.sfxImpact = loadWav("assets/sfx/battle_64_00.wav")                // 命中(最短最尖池)
-	g.sfxCommandModifier = loadWav("assets/sfx/battle_80_00.wav")       // 0x1D6C8 FDOTHER #80 selector0
-	g.sfxCommand24Actor = loadWav("assets/sfx/battle_53_03.wav")        // 0x276EC selector32 actor raw+5
-	g.sfxCommand24Target = loadWav("assets/sfx/battle_53_02.wav")       // 0x276EC selector32 target raw+5
-	g.sfxCommand9PlayerPalette = loadWav("assets/sfx/battle_80_00.wav") // 0x1D6C8 selector0
-	g.sfxCommand9PlayerInitial = loadWav("assets/sfx/battle_80_14.wav") // 0x1C4CC frame0
-	g.sfxCommand9PlayerRepeat = loadWav("assets/sfx/battle_80_15.wav")  // 0x1C4CC frame15／19
-	g.sfxCommand1012Prelude = loadWav("assets/sfx/battle_80_02.wav")    // command11／12 prelude
-	g.sfxCommand1012Main = loadWav("assets/sfx/battle_80_13.wav")       // 0x21548 markers
-	g.sfxSpawnIntro = loadWav("assets/sfx/battle_95_00.wav")            // 0x32999 pass1 FDOTHER #95 sub0
+	g.sfxSwing = loadWav("assets/sfx/battle_48_00.wav")           // 揮擊(池 sub0,七池共用)
+	g.sfxImpact = loadWav("assets/sfx/battle_64_00.wav")          // 命中(最短最尖池)
+	g.sfxCommand24Actor = loadWav("assets/sfx/battle_53_03.wav")  // 0x276EC selector32 actor raw+5
+	g.sfxCommand24Target = loadWav("assets/sfx/battle_53_02.wav") // 0x276EC selector32 target raw+5
+	g.sfxSpawnIntro = loadWav("assets/sfx/battle_95_00.wav")      // 0x32999 pass1 FDOTHER #95 sub0
 	// 戰場 BGM:doc12 推定 track18=戰鬥被使用者實聽推翻(18=商店音樂);戰鬥曲號待聽辨,先不播錯曲
 	if os.Getenv("FD2_TITLE") == "1" || (g.shotPath == "" && os.Getenv("FD2_TITLE") != "0") { // 開頭動畫+主選單(headless 截圖預設跳過)
 		ta, err := loadTitleAssets()

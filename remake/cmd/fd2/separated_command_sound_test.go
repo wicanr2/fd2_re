@@ -8,7 +8,7 @@ import (
 
 func TestSeparatedCommandSoundBanksDecodeWithoutOriginalArchive(t *testing.T) {
 	pack := filepath.Clean("../../generated-assets/fd2-original-b97caf22")
-	if _, err := os.Stat(filepath.Join(pack, "sfx", "FDOTHER_082", "resource.json")); err != nil {
+	if _, err := os.Stat(filepath.Join(pack, "sfx", "FDOTHER_080", "resource.json")); err != nil {
 		t.Skipf("separated sound pack is absent: %v", err)
 	}
 	t.Setenv("FD2_ASSET_PACK", pack)
@@ -17,7 +17,7 @@ func TestSeparatedCommandSoundBanksDecodeWithoutOriginalArchive(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := map[int]int{82: 2, 83: 4, 84: 3, 85: 2, 86: 2, 87: 4, 88: 2, 90: 3}
+	want := map[int]int{80: 16, 82: 2, 83: 4, 84: 3, 85: 2, 86: 2, 87: 4, 88: 2, 90: 3}
 	for resource, count := range want {
 		if len(banks[resource]) != count {
 			t.Fatalf("resource %d samples=%d want=%d", resource, len(banks[resource]), count)
@@ -27,6 +27,13 @@ func TestSeparatedCommandSoundBanksDecodeWithoutOriginalArchive(t *testing.T) {
 				t.Fatalf("resource %d subresource %d decoded empty", resource, subresource)
 			}
 		}
+	}
+}
+
+func TestSeparatedCommandSoundBanksFailClosedWithoutPack(t *testing.T) {
+	t.Setenv("FD2_ASSET_PACK", t.TempDir())
+	if _, err := loadSeparatedCommandSoundBanks(); err == nil {
+		t.Fatal("missing separated command sound banks were accepted")
 	}
 }
 

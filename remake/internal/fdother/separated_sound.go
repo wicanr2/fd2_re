@@ -17,6 +17,7 @@ const (
 
 var separatedSoundCounts = map[int]int{
 	31: 13,
+	80: 16,
 	82: 2,
 	83: 4,
 	84: 3,

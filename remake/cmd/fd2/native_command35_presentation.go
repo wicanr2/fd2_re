@@ -344,13 +344,13 @@ func (g *Game) startNativeCommand35Presentation(actor, confirmed *battle.Unit, t
 		if frames, err = appendNativeCompoundFrames(frames, tailEffectImages[stageIndex], 1); err != nil {
 			return err
 		}
-		sample := loadWav(assetPath(fmt.Sprintf("assets/sfx/battle_80_%02d.wav", schedule.EffectSample)))
+		sample := g.separatedCommandSound(80, schedule.EffectSample)
 		frames[effectStart].sound = sample
 		for _, rawFrame := range schedule.ExtraSampleFrameIndices {
 			if rawFrame <= 0 || rawFrame >= schedule.EffectFrames {
 				return errors.New("native command35 extra sample frame unavailable")
 			}
-			extraSample := loadWav(assetPath(fmt.Sprintf("assets/sfx/battle_80_%02d.wav", schedule.ExtraSample)))
+			extraSample := g.separatedCommandSound(80, schedule.ExtraSample)
 			frames[effectStart+rawFrame].sound = extraSample
 			required = append(required, extraSample)
 		}
@@ -358,7 +358,7 @@ func (g *Game) startNativeCommand35Presentation(actor, confirmed *battle.Unit, t
 		for index := 0; index < schedule.MaskPairs*2+1; index++ {
 			frames = append(frames, nativeCompoundPresentedFrame{image: maskImages[stageIndex][index%2], delay: 1})
 		}
-		frames[maskStart].sound = loadWav(assetPath("assets/sfx/battle_80_01.wav"))
+		frames[maskStart].sound = g.separatedCommandSound(80, 1)
 		publishAt[stageIndex] = len(frames)
 		if frames, err = appendNativeCompoundFrames(frames, digitImages[stageIndex], 1); err != nil {
 			return err

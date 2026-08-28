@@ -8389,7 +8389,23 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   `assets/sfx/sfx_*.wav`的正式碼與測試引用歸零。初次抽測揭露舊WAV loader兼任Ebiten
   audio context初始化，新loader已保留此責任後重跑通過，沒有以靜默不播放掩蓋差異。
 - 原始FDOTHER刻意缺失時，真實短音播放器、標題游標／確認、ch28 post與AI mode 5代表
-  consumer通過；缺pack整批拒絕。manifest重生／來源驗證通過，現為38,723筆：37,699
+  consumer通過；缺pack整批拒絕。manifest重生／來源驗證通過，當時為38,723筆：37,699
   exported、1,005 intentionally raw、19 blocked。
 - 下一個archive音效缺口是一般物理攻擊動態bank及FDOTHER #80／#91..95；不可把它們
   猜成#31，也不可由尚未閉合的`battle_sfx_map.json index2`建立固定對照。
+
+## 2026-08-29 FDOTHER #80 指令共用音效分離與正式消費端遷移
+
+- 既有合法IDA主證據固定`0x1D4CB→0x1D6C8`、玩家command 9、commands 10–12、
+  AI item／modifier及commands 32–35的raw selector consumer；本批未重解renderer或猜
+  聽覺名稱。固定#80為116,165 bytes、17-entry container，#0..#15非空、#16為空尾；
+  `36`已逐筆保存長度與SHA-256。
+- canonical匯出擴為10份metadata／51筆OGG；#80新增16筆OGG與1份metadata。相同原版
+  連續兩次完整輸出逐byte一致，全部音訊通過mono／11025 Hz／時長／非靜音probe；播放率
+  仍只屬hardware-spec approximation。
+- 正式loader一次完整驗證並解碼#80；既有具名欄位與AI item／modifier／commands 32–35
+  raw selector均改用同一分離map，所有`battle_80_*.wav`正式碼與測試引用歸零。演出途中
+  不會把刻意缺少的selector自動補回，交易前原子失敗仍由回歸固定。
+- `internal/fdother`與`cmd/fd2`完整相關回歸通過；manifest來源雜湊驗證通過，現為
+  38,740筆：37,716 exported、1,005 intentionally raw、19 blocked。本切片達
+  `DATA-READY`／`RUNTIME-E1`；#91..95與物理攻擊動態`index2`仍是獨立切片。

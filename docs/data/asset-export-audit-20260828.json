@@ -90,15 +90,15 @@
     "decoded_ani_metadata_json": 9,
     "ani_empty_tail_resources": 1,
     "music_midi": 15,
-    "ui_and_battle_sfx_banks": 9,
-    "ui_and_battle_sfx_ogg": 35,
-    "ui_and_battle_sfx_metadata_json": 9
+    "ui_and_battle_sfx_banks": 10,
+    "ui_and_battle_sfx_ogg": 51,
+    "ui_and_battle_sfx_metadata_json": 10
   },
   "manifest_validation": {
     "tool": "tools/generate_separated_asset_manifest.py",
     "validator": "tools/validate_separated_asset_pack.py",
-    "total_entries": 38723,
-    "exported": 37699,
+    "total_entries": 38740,
+    "exported": 37716,
     "blocked": 19,
     "intentionally_raw": 1005,
     "source_hashes_verified": true,
@@ -238,6 +238,19 @@
     "runtime_archive_fallback": false,
     "archive_unreadable_test": "pass (shared palette loader consumes separated pack only)",
     "remaining_direct_resource_zero_callers": 0,
+    "evidence_level": "RUNTIME-E1"
+  }, {
+    "family": "command_shared_sfx_fdother_080",
+    "source_resources": ["FDOTHER.DAT#80"],
+    "separated_outputs": 17,
+    "decoded_samples": 16,
+    "runtime_consumers": ["command 9 player", "commands 10-12", "commands 17-23 and 25-27", "AI item", "commands 32-35"],
+    "raw_pcm_provenance": "pass (byte count and SHA-256 for all 16 nonempty samples; subresource 16 is the zero-length tail)",
+    "ogg_probe": "pass (mono, 11025 Hz, duration, non-silence; hardware-spec approximation)",
+    "deterministic_export": "pass (two complete ten-bank exports are byte-identical)",
+    "runtime_archive_fallback": false,
+    "legacy_wav_fallback": false,
+    "archive_unreadable_test": "pass (full relevant Go regression consumes separated bank with fixed pack)",
     "evidence_level": "RUNTIME-E1"
   }, {
     "family": "ui_sfx_fdother_031",

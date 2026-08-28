@@ -296,7 +296,32 @@ OGG；兩次完整輸出逐byte一致，#31的13筆OGG均通過probe。`loadSFX`
 `FDOTHER_031`，舊`assets/sfx/sfx_*.wav`正式碼與測試引用歸零；OGG loader明確建立播放
 context，沒有遺失舊WAV loader原本隱含的初始化責任。缺原始FDOTHER時，真實播放器、標題
 游標／確認、ch28 post及AI mode 5代表路徑通過；缺pack則整個#31 bank拒絕。清冊增加13筆
-OGG與1份metadata，現為38,723筆：37,699 exported、1,005 intentionally raw、19 blocked。
+OGG與1份metadata，當時為38,723筆：37,699 exported、1,005 intentionally raw、19 blocked。
+
+#### 指令共用 FDOTHER #80 音效分離契約
+
+> 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）
+
+本切片沿用`fd2_pcm_sound_bank`，新增`asset_id=sfx/FDOTHER_080`。固定resource大小
+116,165 bytes、container count 17、zero-length tail index 16；只輸出#0..#15共16筆
+OGG。每筆metadata必須保存[`36`](36-sfx-audio-data.md)的raw長度與SHA-256，sub3／sub4
+即使bytes相同也保留各自selector。高階名稱保持未知，11025 Hz仍是hardware-spec
+approximation。
+
+正式runtime須在入場時一次完整載入#80 bank，所有`battle_80_*.wav` consumer改由同一
+嚴格map取得selector；缺metadata、缺任一sample、壞OGG、來源漂移或selector越界時整批
+拒絕，不回退舊WAV或原版archive。驗收至少涵蓋command 9、commands 10–12、AI item、
+玩家／敵方modifier與commands 32–35代表演出，並在原版`FDOTHER.DAT`不可讀時通過；缺
+pack必須在任何MP／HP／狀態交易前失敗即關閉。本切片不包含#91..95，也不猜一般物理
+攻擊動態bank的`index2`對照。
+
+實作結果：canonical匯出現為10份metadata／51筆OGG；兩次完整輸出逐byte一致，#80的
+16筆OGG全數通過probe。正式整批loader在`loadGame`入場時驗證並解碼完整#80，再安裝
+selector 0／2／13／14／15具名欄位及供AI item、modifier、commands 32–35使用的raw map；
+所有`battle_80_*.wav`正式碼與測試引用歸零。完整`internal/fdother`／`cmd/fd2`回歸通過，
+缺pack測試維持失敗即關閉，且刻意移除selector的原子性測試不會被演出途中重載補回。
+清冊增加16筆OGG與1份metadata，現為38,740筆：37,716 exported、1,005 intentionally raw、
+19 blocked。
 
 ### 2026-08-28 第一輪全量匯出實測
 

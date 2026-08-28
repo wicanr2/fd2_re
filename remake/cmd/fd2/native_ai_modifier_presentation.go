@@ -250,7 +250,7 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 	if frames, err = appendNativeCompoundFrames(frames, effectImages, 1); err != nil {
 		return err
 	}
-	effectSample := loadWav(assetPath(fmt.Sprintf("assets/sfx/battle_80_%02d.wav", schedule.EffectSample)))
+	effectSample := g.separatedCommandSound(80, schedule.EffectSample)
 	effectStart := len(frames) - len(effectImages)
 	frames[effectStart].sound = effectSample
 	for _, rawFrame := range schedule.ExtraSampleFrameIndices {
@@ -263,7 +263,7 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 	for index := 0; index < schedule.MaskPairs*2+1; index++ {
 		frames = append(frames, nativeCompoundPresentedFrame{image: maskImages[index%2], delay: 1})
 	}
-	frames[maskStart].sound = loadWav(assetPath("assets/sfx/battle_80_01.wav"))
+	frames[maskStart].sound = g.separatedCommandSound(80, 1)
 	publishAt := len(frames)
 	if len(digitImages) > 0 {
 		if frames, err = appendNativeCompoundFrames(frames, digitImages, 1); err != nil {
@@ -407,7 +407,7 @@ func (g *Game) startNativeAICommandModifierPresentation(actor *battle.Unit, comm
 	if frames, err = appendNativeCompoundFrames(frames, effectImages, 1); err != nil {
 		return err
 	}
-	effectSample := loadWav(assetPath(fmt.Sprintf("assets/sfx/battle_80_%02d.wav", schedule.EffectSample)))
+	effectSample := g.separatedCommandSound(80, schedule.EffectSample)
 	frames[0].sound = effectSample
 	for _, rawFrame := range schedule.ExtraSampleFrameIndices {
 		if rawFrame <= 0 || rawFrame >= schedule.EffectFrames {
@@ -419,7 +419,7 @@ func (g *Game) startNativeAICommandModifierPresentation(actor *battle.Unit, comm
 	for index := 0; index < schedule.MaskPairs*2+1; index++ {
 		frames = append(frames, nativeCompoundPresentedFrame{image: maskImages[index%2], delay: 1})
 	}
-	frames[maskStart].sound = loadWav(assetPath("assets/sfx/battle_80_01.wav"))
+	frames[maskStart].sound = g.separatedCommandSound(80, 1)
 	publishAt := len(frames)
 	if frames, err = appendNativeCompoundFrames(frames, digitImages, 1); err != nil {
 		return err

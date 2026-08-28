@@ -189,12 +189,12 @@ func (g *Game) startNativeTargetItemPresentation(plan *battle.AIPlan, then func(
 	if frames, err = appendNativeCompoundFrames(frames, effectImages, schedule.EffectFrameDelayTicks); err != nil {
 		return false, err
 	}
-	frames[0].sound = loadWav(assetPath("assets/sfx/battle_80_12.wav"))
+	frames[0].sound = g.separatedCommandSound(80, 12)
 	maskStart := len(frames)
 	for index := 0; index < schedule.MaskPairs*2+1; index++ {
 		frames = append(frames, nativeCompoundPresentedFrame{image: maskImages[index%2], delay: 1})
 	}
-	frames[maskStart].sound = loadWav(assetPath("assets/sfx/battle_80_01.wav"))
+	frames[maskStart].sound = g.separatedCommandSound(80, 1)
 	publishAt := len(frames)
 	if frames, err = appendNativeCompoundFrames(frames, digitImages, 1); err != nil {
 		return false, err
@@ -302,7 +302,7 @@ func (g *Game) startNativeAIItemType21Presentation(tx *nativeAIItemTransaction, 
 	if frames, err = appendNativeCompoundFrames(frames, effectImages, schedule.EffectDelayTicks); err != nil {
 		return false, err
 	}
-	frames[0].sound = loadWav(assetPath(fmt.Sprintf("assets/sfx/battle_80_%02d.wav", schedule.EffectSample)))
+	frames[0].sound = g.separatedCommandSound(80, schedule.EffectSample)
 	if frames, err = appendNativeCompoundFrames(frames, toggleImages, nativeDelayTicks(schedule.ToggleDelayMS)); err != nil {
 		return false, err
 	}
@@ -457,7 +457,7 @@ func (g *Game) startNativeAIItemDamagePresentation(tx *nativeAIItemTransaction, 
 	if frames, err = appendNativeCompoundFrames(frames, effectImages, schedule.EffectFrameDelayTicks); err != nil {
 		return false, err
 	}
-	frames[0].sound = loadWav(assetPath("assets/sfx/battle_80_06.wav"))
+	frames[0].sound = g.separatedCommandSound(80, 6)
 	if frames, err = appendNativeCompoundFrames(frames, blendImages, schedule.BlendDelayTicks); err != nil {
 		return false, err
 	}
