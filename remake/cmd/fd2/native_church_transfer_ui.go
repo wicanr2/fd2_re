@@ -38,9 +38,7 @@ func (g *Game) composeNativeChurchTransferItemFrame() ([]byte, bool) {
 	if err := a.panel.BlitOpaqueAt(frame, 320, 5, 112, false); err != nil {
 		return nil, false
 	}
-	assets, err := battle.LoadNativeItemPanelDataAssets(
-		nativeFDOTHERPath(), nativeFDTXTPath(),
-	)
+	assets, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
 	if err != nil {
 		return nil, false
 	}

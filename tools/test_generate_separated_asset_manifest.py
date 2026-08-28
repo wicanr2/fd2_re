@@ -33,6 +33,9 @@ class GenerateManifestTest(unittest.TestCase):
         (pack / "palette" / "fdother_000.json").write_text("{}")
         (pack / "ui" / "action_cells").mkdir(parents=True)
         (pack / "ui" / "action_cells" / "cell_000.png").write_bytes(b"cell")
+        (pack / "ui" / "fdother_005_item_panel" / "entry_022").mkdir(parents=True)
+        (pack / "ui" / "fdother_005_item_panel" / "entry_022" / "frame.png").write_bytes(b"panel")
+        (pack / "ui" / "fdother_005_item_panel" / "resource.json").write_text("{}", encoding="utf-8")
         (pack / "surfaces" / "BG_056").mkdir(parents=True)
         (pack / "surfaces" / "BG_056" / "resource.json").write_text(
             json.dumps({"status": "blocked"}), encoding="utf-8")
@@ -110,6 +113,8 @@ class GenerateManifestTest(unittest.TestCase):
             self.assertEqual((palette["source_file"], palette["source_resource"]), ("FDOTHER.DAT", 0))
             cell = next(item for item in manifest["assets"] if item["path"].startswith("ui/action_cells/"))
             self.assertEqual((cell["source_file"], cell["source_resource"], cell["source_frame"]), ("FDOTHER.DAT", 2, 0))
+            panel = next(item for item in manifest["assets"] if item["path"] == "ui/fdother_005_item_panel/entry_022/frame.png")
+            self.assertEqual((panel["source_file"], panel["source_resource"], panel["source_frame"]), ("FDOTHER.DAT", 5, 22))
             blocked_surface = next(item for item in manifest["assets"] if item["path"] == "surfaces/BG_056/resource.json")
             self.assertEqual((blocked_surface["source_file"], blocked_surface["source_resource"], blocked_surface["status"]), ("BG.DAT", 56, "blocked"))
             text = next(item for item in manifest["assets"] if item["path"] == "text/FDTXT_000/resource.json")

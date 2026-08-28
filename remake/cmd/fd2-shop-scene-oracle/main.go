@@ -57,7 +57,7 @@ func main() {
 	palette[0] = color.NRGBA{A: 0xff}
 	writePNG(outputPath, frame, palette)
 	if len(os.Args) >= 6 {
-		itemAssets, err := battle.LoadNativeItemPanelDataAssets(fdotherPath, fdtxtPath)
+		itemAssets, err := battle.LoadNativeItemPanelDataAssetsArchive(fdotherPath, fdtxtPath)
 		check(err)
 		effectRows, err := battle.LoadNativeItemEffectRowPrefix(
 			"assets/data/native_item_effect_rows.json",
@@ -137,7 +137,7 @@ func main() {
 				writePNG(os.Args[10], full, palette)
 			}
 			if len(os.Args) >= 12 {
-				itemAssets, err := battle.LoadNativeItemPanelDataAssets(
+				itemAssets, err := battle.LoadNativeItemPanelDataAssetsArchive(
 					fdotherPath, fdtxtPath,
 				)
 				check(err)

@@ -393,6 +393,50 @@ FDTXT#0/#31與字型，不回退這兩項archive resource。道具／轉移面�
 另為2筆exported。舊 `images/FDTXT_FDTXT_015.png` 只保留為研究圖像輸出，kind不是
 `text`，不可作為runtime文字契約。
 
+### FDOTHER#5 共用道具／狀態面板契約（CONFORMED）
+
+固定 `FDOTHER.DAT#5` 是44,181-byte、138-entry的 `LMI1` directory；directory只提供
+entry邊界，不能把相鄰 entry 猜成同一 codec。本切片只輸出已有 caller／consumer
+證據的面板集合：
+
+- `entry22`：`0x4E8AF` opaque high-run，149×42；zero pixel覆寫目的地；
+- `entries23..30,53..57,59..67,92`：raw width×height bytes，由既有
+  `BlitOpaqueAtOffset`消費，zero同樣是實際像素；
+- `entries31..52,93,119..129`：`0x4E63D` four-mode frame，必須保存indexed pixels
+  與destination-preserving mask。
+
+標準輸出根為 `ui/fdother_005_item_panel/`，包含 `resource.json` 及每個已准入entry的
+`entry_NNN/frame.png`；four-mode entry另有 `mask.png`。metadata逐筆保存entry index、
+codec、geometry、檔名及來源hash。未列入本集合的其餘entry仍維持未遷移，不因同在
+LMI1 directory就自動分類或輸出錯誤codec。
+
+正式loader必須一次驗證完整entry集合、來源 `FDOTHER.DAT#5`、raw size、PNG mode／
+geometry、binary mask與無重複索引，再組回既有 `LMI1Entry`／`RawCell`／`Frame`。
+缺任一entry、codec不符、opaque entry帶mask、four-mode缺mask或metadata多出未准入
+entry時整批拒絕，不發布半套panel。`FDTXT#0`及`FDOTHER#4`則分別由前節typed text／
+font loader取得；原始archive不可作fallback。
+
+本切片的驗收是共用道具panel在 `FDTXT.DAT` 與 `FDOTHER#4/#5` 即時reader不可用時，
+仍由分離pack完成相同record的indexed輸出；並逐pixel／mask比較所有58筆准入entry。
+這只關閉道具／狀態／轉移共用資料，不外推FDOTHER#5其餘80筆entry或所有UI家族。
+
+#### 2026-08-28 實作與驗收
+
+真實固定版本已輸出58筆准入entry：1個opaque、23個raw opaque及34個four-mode frame；
+合計58張indexed PNG、34張binary mask與1份metadata。全部entry已依各自原始codec逐
+geometry、indexed pixel及mask比對一致；缺完整pack會失敗即關閉。
+
+`LoadNativeItemPanelDataAssets`現在只接受素材包根目錄，並一次載入上述FDOTHER#5、
+分離FDTXT#0及分離FDOTHER#4字型。source-oracle另有明確命名的archive adapter，正式
+玩家runtime不呼叫它。玩家道具面板在`FD2_ORIGINAL_FDTXT`指向不存在檔案時完成開啟、
+12幀生命週期與關閉；教會status／transfer／revive、整備、商店及指令0–3／5–9／24／
+29／32–35均改接同一loader。FDTXT正式玩家consumer因此歸零；FDOTHER#5其餘entry與
+其他直接consumer仍待各自typed切片。
+
+完整manifest更新為8,007筆：6,983 exported、1,005 intentionally_raw、19 blocked；
+其中 `ui/fdother_005_item_panel/` 有92份PNG與1份metadata。此切片達
+`RUNTIME-E1`，不外推未修改原版逐像素E2。
+
 ## 七、完成定義
 
 只有同時成立才可宣稱「素材已完全分離、JSON 足以建立編輯器」：

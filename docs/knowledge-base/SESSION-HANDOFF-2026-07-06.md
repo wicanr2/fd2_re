@@ -8179,3 +8179,13 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   #0/#31及字型；道具／轉移面板仍是下一批archive consumer，因此只標
   `RUNTIME-E1-PARTIAL`。
 - manifest更新為7,914筆：6,890 exported、1,005 intentionally_raw、19 blocked。
+
+## 2026-08-28：FDOTHER#5 共用panel分離
+
+- 只准入已有caller證據的58筆：1 opaque high-run、23 raw opaque、34 four-mode frame；
+  其餘80筆不因同在LMI1 directory而猜codec。
+- 真實匯出58張indexed PNG、34張mask及resource metadata，全部逐pixel／mask一致。
+- 共用loader同時讀分離FDTXT#0與FDOTHER#4，正式玩家道具panel在FDTXT archive不可讀
+  時完成12幀生命週期；教會、商店、整備及指令consumer均共用此loader。
+- manifest現為8,007筆：6,983 exported、1,005 intentionally_raw、19 blocked；FDTXT正式
+  玩家archive consumer歸零，source-oracle adapter仍保留。

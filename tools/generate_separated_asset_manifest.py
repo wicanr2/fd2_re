@@ -110,8 +110,15 @@ def classify(path: Path) -> str | None:
         return "map" if suffix == ".json" else "tileset" if suffix == ".png" else None
     if top == "fonts":
         return "font" if suffix in {".png", ".json"} else None
-    if top == "ui" and suffix == ".png":
-        return "ui"
+    if top == "ui":
+        if suffix == ".png":
+            return "ui"
+        if len(parts) >= 3 and parts[1].lower() == "fdother_005_item_panel" and path.name.lower() == "resource.json":
+            return "metadata"
+        return None
+        if len(parts) >= 3 and parts[1].lower() == "fdother_005_item_panel" and path.name.lower() == "resource.json":
+            return "metadata"
+        return None
     if top == "palette" and suffix == ".json":
         return "metadata"
     if top == "music":
@@ -166,6 +173,14 @@ def infer_provenance(path: Path) -> tuple[str | None, int | None, int | None]:
         match = re.fullmatch(r"cell_(\d+)\.png", path.name, re.I)
         if match:
             return "FDOTHER.DAT", 2, int(match.group(1))
+    if len(path.parts) >= 3 and path.parts[0].lower() == "ui" and path.parts[1].lower() == "fdother_005_item_panel":
+        frame = None
+        for part in path.parts[2:]:
+            match = re.fullmatch(r"entry_(\d+)", part, re.I)
+            if match:
+                frame = int(match.group(1))
+                break
+        return "FDOTHER.DAT", 5, frame
     return None, resource, frame
 
 

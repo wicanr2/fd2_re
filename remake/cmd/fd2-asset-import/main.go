@@ -98,6 +98,25 @@ type fontDocument struct {
 	Source        sourceID `json:"source"`
 }
 
+type itemPanelEntryDocument struct {
+	Index  int    `json:"index"`
+	Codec  string `json:"codec"`
+	Width  int    `json:"width"`
+	Height int    `json:"height"`
+	Frame  string `json:"frame"`
+	Mask   string `json:"mask,omitempty"`
+}
+
+type itemPanelDocument struct {
+	SchemaVersion int                      `json:"schema_version"`
+	Kind          string                   `json:"kind"`
+	AssetID       string                   `json:"asset_id"`
+	Status        string                   `json:"status"`
+	Evidence      string                   `json:"evidence"`
+	Source        sourceID                 `json:"source"`
+	Entries       []itemPanelEntryDocument `json:"entries"`
+}
+
 type archiveIdentity struct {
 	file, prefix string
 	size         int
@@ -359,7 +378,10 @@ func exportCommandGrid(fdotherPath, outputRoot string) error {
 			return closeErr
 		}
 	}
-	return exportFont(fdotherPath, outputRoot)
+	if err := exportFont(fdotherPath, outputRoot); err != nil {
+		return err
+	}
+	return exportItemPanel(fdotherPath, outputRoot)
 }
 
 func exportFont(fdotherPath, outputRoot string) error {
@@ -414,6 +436,97 @@ func exportFont(fdotherPath, outputRoot string) error {
 			MD5: fdotherMD5, SHA256: fdotherSHA256, RawSize: len(raw)},
 	}
 	return writeJSON(filepath.Join(directory, "font.json"), document)
+}
+
+func exportItemPanel(fdotherPath, outputRoot string) error {
+	raw, err := fdother.ReadResource(fdotherPath, 5)
+	if err != nil {
+		return err
+	}
+	if len(raw) != 44181 {
+		return fmt.Errorf("FDOTHER #5 raw size=%d, want 44181", len(raw))
+	}
+	directory := filepath.Join(outputRoot, "ui", "fdother_005_item_panel")
+	document := itemPanelDocument{
+		SchemaVersion: 1, Kind: "fdother_lmi1_item_panel", AssetID: "ui/FDOTHER_005/item_panel",
+		Status: "decoded", Evidence: "confirmed",
+		Source: sourceID{File: "FDOTHER.DAT", Resource: 5, Size: fdotherSize,
+			MD5: fdotherMD5, SHA256: fdotherSHA256, RawSize: len(raw)},
+	}
+	for _, index := range []int{22} {
+		entry, err := fdother.ParseLMI1OpaqueEntry(raw, index)
+		if err != nil {
+			return err
+		}
+		metadata := itemPanelEntryDocument{Index: index, Codec: "opaque_high_run", Width: entry.Width, Height: entry.Height, Frame: fmt.Sprintf("entry_%03d/frame.png", index)}
+		if err := writeIndexedPNG(filepath.Join(directory, metadata.Frame), entry.Width, entry.Height, entry.Pixels); err != nil {
+			return err
+		}
+		document.Entries = append(document.Entries, metadata)
+	}
+	for _, index := range []int{23, 24, 25, 26, 27, 28, 29, 30, 53, 54, 55, 56, 57, 59, 60, 61, 62, 63, 64, 65, 66, 67, 92} {
+		entry, err := fdother.ParseLMI1RawEntry(raw, index)
+		if err != nil {
+			return err
+		}
+		metadata := itemPanelEntryDocument{Index: index, Codec: "raw_indexed_opaque", Width: entry.Width, Height: entry.Height, Frame: fmt.Sprintf("entry_%03d/frame.png", index)}
+		if err := writeIndexedPNG(filepath.Join(directory, metadata.Frame), entry.Width, entry.Height, entry.Pixels); err != nil {
+			return err
+		}
+		document.Entries = append(document.Entries, metadata)
+	}
+	frameIndexes := make([]int, 0, 34)
+	for index := 31; index <= 52; index++ {
+		frameIndexes = append(frameIndexes, index)
+	}
+	frameIndexes = append(frameIndexes, 93)
+	for index := 119; index <= 129; index++ {
+		frameIndexes = append(frameIndexes, index)
+	}
+	for _, index := range frameIndexes {
+		entry, err := fdother.ParseLMI1FrameEntry(raw, index)
+		if err != nil {
+			return err
+		}
+		indexed, mask, err := entry.IndexedLayers()
+		if err != nil {
+			return err
+		}
+		entryDirectory := filepath.Join(directory, fmt.Sprintf("entry_%03d", index))
+		if err := writeSurfacePNGs(entryDirectory, entry.Width, entry.Height, indexed, mask); err != nil {
+			return err
+		}
+		document.Entries = append(document.Entries, itemPanelEntryDocument{
+			Index: index, Codec: "four_mode_frame", Width: entry.Width, Height: entry.Height,
+			Frame: fmt.Sprintf("entry_%03d/frame.png", index), Mask: fmt.Sprintf("entry_%03d/mask.png", index),
+		})
+	}
+	return writeJSON(filepath.Join(directory, "resource.json"), document)
+}
+
+func writeIndexedPNG(path string, width, height int, pixels []byte) error {
+	if width <= 0 || height <= 0 || len(pixels) != width*height {
+		return fmt.Errorf("indexed PNG geometry mismatch")
+	}
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		return err
+	}
+	palette := make(color.Palette, 256)
+	for index := range palette {
+		palette[index] = color.RGBA{uint8(index), uint8(index), uint8(index), 0xff}
+	}
+	output := image.NewPaletted(image.Rect(0, 0, width, height), palette)
+	copy(output.Pix, pixels)
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	encodeErr := png.Encode(file, output)
+	closeErr := file.Close()
+	if encodeErr != nil {
+		return encodeErr
+	}
+	return closeErr
 }
 
 func main() {

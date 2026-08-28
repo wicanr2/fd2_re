@@ -58,9 +58,7 @@ func loadNativePreparationUIAssets() (*nativePreparationUIAssets, error) {
 	if err != nil {
 		return nil, err
 	}
-	status, err := battle.LoadNativeItemPanelDataAssets(
-		fdotherPath, filepath.Join(filepath.Dir(fdotherPath), "FDTXT.DAT"),
-	)
+	status, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
 	if err != nil {
 		return nil, err
 	}

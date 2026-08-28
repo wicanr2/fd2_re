@@ -24,10 +24,6 @@ func nativeOriginalArchivePath(environment, name string) string {
 	return ""
 }
 
-func nativeFDTXTPath() string {
-	return nativeOriginalArchivePath("FD2_ORIGINAL_FDTXT", "FDTXT.DAT")
-}
-
 func nativeDATOPath() string {
 	return nativeOriginalArchivePath("FD2_ORIGINAL_DATO", "DATO.DAT")
 }
@@ -51,9 +47,10 @@ func (g *Game) prepareNativeItemPanel(unit *battle.Unit) bool {
 
 func (g *Game) prepareNativeItemPanelMode(unit *battle.Unit, allowEmpty bool) bool {
 	g.clearNativeItemPanel()
-	fdotherPath, fdtxtPath := nativeFDOTHERPath(), nativeFDTXTPath()
+	fdotherPath := nativeFDOTHERPath()
+	assetPackRoot := separatedAssetPath("")
 	portraitRoot := separatedAssetPath("portraits")
-	if fdotherPath == "" || fdtxtPath == "" || len(g.nativeUIPalette) < 256 {
+	if fdotherPath == "" || assetPackRoot == "" || len(g.nativeUIPalette) < 256 {
 		return false
 	}
 	record, err := battle.NativeItemPanelRecordForUnit(unit)
@@ -61,10 +58,10 @@ func (g *Game) prepareNativeItemPanelMode(unit *battle.Unit, allowEmpty bool) bo
 		return false
 	}
 	pixels := make([]byte, 320*200)
-	if err := battle.RenderNativeItemPanelResources(fdotherPath, fdtxtPath, portraitRoot, record, pixels); err != nil {
+	if err := battle.RenderNativeItemPanelResources(fdotherPath, assetPackRoot, portraitRoot, record, pixels); err != nil {
 		return false
 	}
-	assets, err := battle.LoadNativeItemPanelDataAssets(fdotherPath, fdtxtPath)
+	assets, err := battle.LoadNativeItemPanelDataAssets(assetPackRoot)
 	if err != nil {
 		return false
 	}
@@ -134,9 +131,10 @@ func (g *Game) setNativeItemPanelPixels(pixels []byte) bool {
 // standalone equip: rebuild the status/item buffers in place without replaying
 // the 12-frame opening.
 func (g *Game) rebuildNativeItemPanelContents(unit *battle.Unit, allowEmpty bool) bool {
-	fdotherPath, fdtxtPath := nativeFDOTHERPath(), nativeFDTXTPath()
+	fdotherPath := nativeFDOTHERPath()
+	assetPackRoot := separatedAssetPath("")
 	portraitRoot := separatedAssetPath("portraits")
-	if fdotherPath == "" || fdtxtPath == "" {
+	if fdotherPath == "" || assetPackRoot == "" {
 		return false
 	}
 	record, err := battle.NativeItemPanelRecordForUnit(unit)
@@ -145,7 +143,7 @@ func (g *Game) rebuildNativeItemPanelContents(unit *battle.Unit, allowEmpty bool
 	}
 	pixels := make([]byte, 320*200)
 	if err := battle.RenderNativeItemPanelResources(
-		fdotherPath, fdtxtPath, portraitRoot, record, pixels,
+		fdotherPath, assetPackRoot, portraitRoot, record, pixels,
 	); err != nil {
 		return false
 	}

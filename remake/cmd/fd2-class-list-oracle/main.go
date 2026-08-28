@@ -147,7 +147,7 @@ func main() {
 	if err := entries[16].BlitOpaqueAt(transfer, 320, 5, 112, false); err != nil {
 		fail(err)
 	}
-	itemAssets, err := battle.LoadNativeItemPanelDataAssets(fdotherPath, fdtxtPath)
+	itemAssets, err := battle.LoadNativeItemPanelDataAssetsArchive(fdotherPath, fdtxtPath)
 	if err != nil {
 		fail(err)
 	}

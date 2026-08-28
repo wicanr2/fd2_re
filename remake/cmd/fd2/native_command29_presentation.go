@@ -99,9 +99,9 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 	if len(plan.Results) == 0 {
 		return errors.New("native command29 final target list is empty")
 	}
-	fdotherArchive, fdtxtArchive := nativeFDOTHERPath(), nativeFDTXTPath()
-	if fdotherArchive == "" || fdtxtArchive == "" {
-		return errors.New("native command29 player-provided FDOTHER/FDTXT unavailable")
+	fdotherArchive := nativeFDOTHERPath()
+	if fdotherArchive == "" {
+		return errors.New("native command29 player-provided FDOTHER unavailable")
 	}
 	var bgLayers [3]fdother.Frame
 	for i := range bgLayers {
@@ -110,7 +110,7 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 			return err
 		}
 	}
-	panelAssets, err := battle.LoadNativeItemPanelDataAssets(fdotherArchive, fdtxtArchive)
+	panelAssets, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
 	if err != nil {
 		return err
 	}

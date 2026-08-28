@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -1050,7 +1049,6 @@ func loadNativeShopUIAssets(
 	if fdotherPath == "" {
 		return nil, errors.New("native shop UI: FDOTHER.DAT unavailable")
 	}
-	base := filepath.Dir(fdotherPath)
 	out := &nativeShopUIAssets{
 		shops:     make(map[int]*campaign.NativeShopAssets, 3),
 		portraits: make(map[int]dato.Frame, 3),
@@ -1073,9 +1071,7 @@ func loadNativeShopUIAssets(
 		out.portraits[variant] = frames[0]
 	}
 	var err error
-	out.itemAssets, err = battle.LoadNativeItemPanelDataAssets(
-		fdotherPath, filepath.Join(base, "FDTXT.DAT"),
-	)
+	out.itemAssets, err = battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
 	if err != nil {
 		return nil, err
 	}

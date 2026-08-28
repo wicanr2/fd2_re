@@ -178,10 +178,11 @@ func TestNativeItemPanelBaseAndDataWithPlayerAssets(t *testing.T) {
 	binary.LittleEndian.PutUint16(record[66:], 100)
 	binary.LittleEndian.PutUint16(record[68:], 20)
 	binary.LittleEndian.PutUint16(record[70:], 40)
-	if err := RenderNativeItemPanelResources(fdotherPath, fdtxtPath, portraitRoot, record, dst); err != nil {
+	const assetPackRoot = "../../generated-assets/fd2-original-b97caf22"
+	if err := RenderNativeItemPanelResources(fdotherPath, assetPackRoot, portraitRoot, record, dst); err != nil {
 		t.Fatal(err)
 	}
-	assets, err := LoadNativeItemPanelDataAssets(fdotherPath, fdtxtPath)
+	assets, err := LoadNativeItemPanelDataAssets(assetPackRoot)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -47,11 +47,11 @@ func main() {
 	binary.LittleEndian.PutUint16(record[78:], 54)
 
 	base := make([]byte, 320*200)
-	if err := battle.RenderNativeItemPanelResources(fdotherPath, fdtxtPath, portraitRoot, record, base); err != nil {
+	if err := battle.RenderNativeItemPanelResourcesArchive(fdotherPath, fdtxtPath, portraitRoot, record, base); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
-	assets, err := battle.LoadNativeItemPanelDataAssets(fdotherPath, fdtxtPath)
+	assets, err := battle.LoadNativeItemPanelDataAssetsArchive(fdotherPath, fdtxtPath)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

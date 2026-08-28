@@ -33,15 +33,16 @@ func TestNativeItemRawSlotsCompactsDisplayWithoutMovingRecords(t *testing.T) {
 	}
 }
 
-func TestPrepareNativeItemPanelAndTwelveFramePlayerWithOriginalAssets(t *testing.T) {
+func TestPrepareNativeItemPanelUsesSeparatedTextFontAndLMI1Entries(t *testing.T) {
 	const base = "../../../org_game/炎龍騎士團/FLAME2/"
-	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "DATO.DAT"} {
+	for _, name := range []string{"FDOTHER.DAT", "DATO.DAT"} {
 		if _, err := os.Stat(base + name); err != nil {
 			t.Skip("player-provided original archives are absent")
 		}
 	}
 	t.Setenv("FD2_ORIGINAL_FDOTHER", base+"FDOTHER.DAT")
-	t.Setenv("FD2_ORIGINAL_FDTXT", base+"FDTXT.DAT")
+	t.Setenv("FD2_ORIGINAL_FDTXT", t.TempDir()+"/missing-FDTXT.DAT")
+	t.Setenv("FD2_ASSET_PACK", "../../generated-assets/fd2-original-b97caf22")
 	t.Setenv("FD2_ORIGINAL_DATO", base+"DATO.DAT")
 	g := &Game{sel: nativeItemPanelTestUnit(), itemOpen: true}
 	g.nativeUIPalette = loadNativeUIPalette()
@@ -79,7 +80,7 @@ func TestPrepareNativeItemPanelAndTwelveFramePlayerWithOriginalAssets(t *testing
 
 func TestCampaignChapterOnePartyPreparesNativeItemPanel(t *testing.T) {
 	const base = "../../../org_game/炎龍騎士團/FLAME2/"
-	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "DATO.DAT"} {
+	for _, name := range []string{"FDOTHER.DAT", "DATO.DAT"} {
 		if _, err := os.Stat(base + name); err != nil {
 			t.Skip("player-provided original archives are absent")
 		}
@@ -97,7 +98,8 @@ func TestCampaignChapterOnePartyPreparesNativeItemPanel(t *testing.T) {
 		t.Fatalf("normal campaign party lacks native item-panel provenance: %v", err)
 	}
 	t.Setenv("FD2_ORIGINAL_FDOTHER", base+"FDOTHER.DAT")
-	t.Setenv("FD2_ORIGINAL_FDTXT", base+"FDTXT.DAT")
+	t.Setenv("FD2_ORIGINAL_FDTXT", t.TempDir()+"/missing-FDTXT.DAT")
+	t.Setenv("FD2_ASSET_PACK", "../../generated-assets/fd2-original-b97caf22")
 	t.Setenv("FD2_ORIGINAL_DATO", base+"DATO.DAT")
 	g := &Game{sel: unit, itemOpen: true, nativeUIPalette: loadNativeUIPalette()}
 	if !g.prepareNativeItemPanel(unit) || g.nativeItemPanel == nil {

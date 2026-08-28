@@ -78,8 +78,7 @@ func (g *Game) startNativeCommand33Presentation(actor, confirmed *battle.Unit, t
 	}
 
 	fdotherArchive := nativeFDOTHERPath()
-	fdtxtArchive := nativeFDTXTPath()
-	if fdotherArchive == "" || fdtxtArchive == "" {
+	if fdotherArchive == "" {
 		return errors.New("native command33 player-provided archives unavailable")
 	}
 	actorIdle, err := figani.LoadSeparatedResource(separatedAssetPath("animations"), actor.BattleFig*3)
@@ -132,7 +131,7 @@ func (g *Game) startNativeCommand33Presentation(actor, confirmed *battle.Unit, t
 	if err != nil {
 		return err
 	}
-	panelAssets, err := battle.LoadNativeItemPanelDataAssets(fdotherArchive, fdtxtArchive)
+	panelAssets, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
 	if err != nil {
 		return err
 	}

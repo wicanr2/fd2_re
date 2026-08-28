@@ -52,7 +52,7 @@ func main() {
 		os.Exit(1)
 	}
 	if *scenario != "" {
-		dataAssets, err := battle.LoadNativeItemPanelDataAssets(
+		dataAssets, err := battle.LoadNativeItemPanelDataAssetsArchive(
 			fdotherPath, filepath.Join(*base, "FDTXT.DAT"),
 		)
 		if err != nil {

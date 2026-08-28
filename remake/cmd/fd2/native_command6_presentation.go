@@ -119,8 +119,8 @@ func (g *Game) startNativeCommand6Presentation(actor, confirmed *battle.Unit, th
 	if actor.NativeRecordByte6 == 0 {
 		bgSelector, taiSelector = actorSelector, targetSelector
 	}
-	fdotherPath, fdtxtPath := nativeFDOTHERPath(), nativeFDTXTPath()
-	if fdotherPath == "" || fdtxtPath == "" {
+	fdotherPath := nativeFDOTHERPath()
+	if fdotherPath == "" {
 		return errors.New("native command6 player-provided archives unavailable")
 	}
 	background, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", int(bgSelector))
@@ -166,7 +166,7 @@ func (g *Game) startNativeCommand6Presentation(actor, confirmed *battle.Unit, th
 	if !osMuteOrShot(g) && (len(g.sfxCommand6Actor) == 0 || len(g.sfxCommand6Target) == 0 || len(g.sfxCommand6Front) == 0 || len(g.sfxCommand6Tail) == 0) {
 		return errors.New("native command6 converted #87 samples unavailable")
 	}
-	panelAssets, err := battle.LoadNativeItemPanelDataAssets(fdotherPath, fdtxtPath)
+	panelAssets, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
 	if err != nil {
 		return err
 	}

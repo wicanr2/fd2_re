@@ -133,7 +133,7 @@ func TestComposeNativeShopSceneUsesOriginalStableResources(t *testing.T) {
 	if string(frame) != string(stableBefore) {
 		t.Fatal("service compositors mutated the caller-owned stable frame")
 	}
-	itemAssets, err := battle.LoadNativeItemPanelDataAssets(
+	itemAssets, err := battle.LoadNativeItemPanelDataAssetsArchive(
 		fdotherPath, filepath.Join(base, "FDTXT.DAT"),
 	)
 	if err != nil {

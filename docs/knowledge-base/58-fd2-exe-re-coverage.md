@@ -633,3 +633,12 @@ LOAD、職業／教會共用資產、戰場姓名、party montage與終局phase0
 FDTXT#0/#31及字型，達`DATA-READY`／局部`RUNTIME-E1`。共用道具／轉移面板仍直接消費archive，
 所以不得宣稱FDTXT production caller歸零；下一步只遷移這些已知consumer，不重做
 文字格式RE。
+
+### 2026-08-28 共用道具／狀態panel接線勘誤
+
+上一段的共用道具／轉移缺口已由後續同日切片關閉。`FDOTHER#5`只准入具caller證據的
+58筆entry，按opaque high-run、raw opaque與four-mode frame三種codec分離輸出；全部
+逐pixel／mask一致。共用loader同時取得分離FDTXT#0與FDOTHER#4，已接玩家／敵方指令、
+教會、商店、整備及道具panel。正式玩家路徑不再呼叫FDTXT archive reader；保留的raw
+adapter只供source oracle。此項達`RUNTIME-E1`，其餘80筆FDOTHER#5 entry仍須按consumer
+另立切片，不可泛化。

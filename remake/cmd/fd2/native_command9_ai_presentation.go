@@ -105,8 +105,8 @@ func (g *Game) startNativeCommand9AIPresentation(actor, confirmed *battle.Unit, 
 	targetSelector := fdicon.NativeCommandBackgroundSelector(initial, []fdicon.NativeCommandBackgroundTarget{{Gate: targetGate, Control: targetControl}})
 	bgSelector, taiSelector := targetSelector, actorSelector
 
-	fdotherPath, fdtxtPath := nativeFDOTHERPath(), nativeFDTXTPath()
-	if fdotherPath == "" || fdtxtPath == "" {
+	fdotherPath := nativeFDOTHERPath()
+	if fdotherPath == "" {
 		return errors.New("native command9 AI player-provided archives unavailable")
 	}
 	background, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", int(bgSelector))
@@ -145,7 +145,7 @@ func (g *Game) startNativeCommand9AIPresentation(actor, confirmed *battle.Unit, 
 	if !osMuteOrShot(g) && (len(g.sfxCommand8Actor) == 0 || len(g.sfxCommand8Sub1) == 0 || len(g.sfxCommand8Sub2) == 0) {
 		return errors.New("native command9 AI converted #90 samples unavailable")
 	}
-	panelAssets, err := battle.LoadNativeItemPanelDataAssets(fdotherPath, fdtxtPath)
+	panelAssets, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
 	if err != nil {
 		return err
 	}

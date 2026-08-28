@@ -20,10 +20,7 @@ func TestComposeNativePreparationFrameUsesRawRosterSelectors(t *testing.T) {
 	if err != nil {
 		t.Skipf("player-provided original assets are absent: %v", err)
 	}
-	status, err := battle.LoadNativeItemPanelDataAssets(
-		filepath.Join(base, "FDOTHER.DAT"),
-		filepath.Join(base, "FDTXT.DAT"),
-	)
+	status, err := battle.LoadNativeItemPanelDataAssets("../../generated-assets/fd2-original-b97caf22")
 	if err != nil {
 		t.Fatal(err)
 	}

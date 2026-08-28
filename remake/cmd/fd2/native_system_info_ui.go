@@ -32,9 +32,7 @@ func loadNativeSystemInfoAssets() (*campaign.NativeSystemInfoAssets, error) {
 	if err != nil || len(panels) <= 0x88 {
 		return nil, errors.New("native system info: FDOTHER#5 panels 0x85..0x88 unavailable")
 	}
-	numbers, err := battle.LoadNativeItemPanelDataAssets(
-		fdotherPath, filepath.Join(filepath.Dir(fdotherPath), "FDTXT.DAT"),
-	)
+	numbers, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
 	if err != nil {
 		return nil, err
 	}

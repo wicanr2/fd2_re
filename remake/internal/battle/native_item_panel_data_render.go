@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"path/filepath"
 
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
@@ -56,7 +57,7 @@ func LoadNativeBattlePanelValueAssets(fdotherPath string) (NativeItemPanelDataAs
 // transaction. The separated portrait selector is read from the native unit
 // record at +7; no normalized portrait or class field is substituted.
 func RenderNativeItemPanelResources(
-	fdotherPath, fdtxtPath, portraitRoot string,
+	fdotherPath, assetPackRoot, portraitRoot string,
 	record, dst []byte,
 ) error {
 	if len(record) < nativeRecordSize {
@@ -71,7 +72,31 @@ func RenderNativeItemPanelResources(
 	); err != nil {
 		return err
 	}
-	assets, err := LoadNativeItemPanelDataAssets(fdotherPath, fdtxtPath)
+	assets, err := LoadNativeItemPanelDataAssets(assetPackRoot)
+	if err != nil {
+		return err
+	}
+	if err := RenderNativeItemPanelData(assets, record, staged); err != nil {
+		return err
+	}
+	copy(dst, staged)
+	return nil
+}
+
+// RenderNativeItemPanelResourcesArchive is the source-oracle equivalent of
+// RenderNativeItemPanelResources. It is intentionally not used by production.
+func RenderNativeItemPanelResourcesArchive(
+	fdotherPath, fdtxtPath, portraitRoot string,
+	record, dst []byte,
+) error {
+	if len(record) < nativeRecordSize || len(dst) != nativeItemPanelBytes {
+		return errors.New("battle: invalid archive item panel request")
+	}
+	staged := append([]byte(nil), dst...)
+	if err := RenderNativeItemPanelBaseResources(fdotherPath, portraitRoot, int(record[7]), staged); err != nil {
+		return err
+	}
+	assets, err := LoadNativeItemPanelDataAssetsArchive(fdotherPath, fdtxtPath)
 	if err != nil {
 		return err
 	}
@@ -346,9 +371,37 @@ func blitNativeItemPanelIcon(
 	)
 }
 
-// LoadNativeItemPanelDataAssets decodes only the FDOTHER/FDTXT resources and
-// mixed-codec LMI1 entries proven by 0x17fc0.
-func LoadNativeItemPanelDataAssets(fdotherPath, fdtxtPath string) (NativeItemPanelDataAssets, error) {
+// LoadNativeItemPanelDataAssets loads the complete separated mixed-codec set
+// proven by 0x17fc0. It never falls back to FDOTHER#5, FDTXT#0 or FDOTHER#4.
+func LoadNativeItemPanelDataAssets(assetPackRoot string) (NativeItemPanelDataAssets, error) {
+	entries, err := fdother.LoadSeparatedItemPanelEntries(filepath.Join(assetPackRoot, "ui"))
+	if err != nil {
+		return NativeItemPanelDataAssets{}, err
+	}
+	assets := NativeItemPanelDataAssets{
+		RawCells: entries.Raw,
+		Frames:   entries.Frames,
+	}
+	var ok bool
+	assets.BattlePanel, ok = entries.Opaque[22]
+	if !ok {
+		return NativeItemPanelDataAssets{}, fmt.Errorf("battle: separated native battle panel cell 22 is unavailable")
+	}
+	assets.Strings, err = fdtxt.LoadSeparatedResource(filepath.Join(assetPackRoot, "text"), 0)
+	if err != nil {
+		return NativeItemPanelDataAssets{}, err
+	}
+	assets.Font, err = fdtxt.LoadSeparatedFont(filepath.Join(assetPackRoot, "fonts"))
+	if err != nil {
+		return NativeItemPanelDataAssets{}, err
+	}
+	return assets, nil
+}
+
+// LoadNativeItemPanelDataAssetsArchive is retained for source-oracle tools
+// and archive-equivalence tests only. Production callers use the separated
+// loader above.
+func LoadNativeItemPanelDataAssetsArchive(fdotherPath, fdtxtPath string) (NativeItemPanelDataAssets, error) {
 	raw, err := fdother.ReadResource(fdotherPath, 5)
 	if err != nil {
 		return NativeItemPanelDataAssets{}, fmt.Errorf("battle: native item panel FDOTHER#5: %w", err)
