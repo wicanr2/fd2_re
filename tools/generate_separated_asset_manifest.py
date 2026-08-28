@@ -100,6 +100,15 @@ def classify(path: Path) -> str | None:
         if path.name.lower() in {"animation.json", "resource.json"}:
             return "metadata"
         return None
+    if top == "shop" and len(parts) >= 2:
+        # Shop resources follow the same resource/frame split as surfaces and
+        # animations.  Keep the manifest at the asset level; resource.json is
+        # the authoritative place for the detailed entry contract.
+        if suffix == ".png":
+            return "ui"
+        if path.name.lower() in {"animation.json", "resource.json"}:
+            return "metadata"
+        return None
     if top == "surfaces" and len(parts) >= 3:
         if path.name.lower() in {"frame.png", "mask.png", "resource.json"}:
             return "background" if parts[1].upper().startswith("BG_") else "ui"
@@ -158,6 +167,21 @@ def infer_provenance(path: Path) -> tuple[str | None, int | None, int | None]:
         match = re.match(r"(FIGANI|FDOTHER)[_-](\d+)", path.parts[1], re.I) if len(path.parts) > 1 else None
         if match:
             return SOURCE_BY_CONTAINER[match.group(1).upper()], int(match.group(2)), frame
+    if len(path.parts) >= 2 and path.parts[0].lower() == "shop":
+        match = re.fullmatch(r"FDOTHER[_-](\d+)", path.parts[1], re.I)
+        if match:
+            resource = int(match.group(1))
+            if frame is None:
+                for part in path.parts[2:]:
+                    entry_match = re.fullmatch(r"entry[_-](\d+)", part, re.I)
+                    if entry_match:
+                        frame = int(entry_match.group(1))
+                        break
+                    success_match = re.fullmatch(r"success[_-](\d+)", part, re.I)
+                    if success_match:
+                        frame = 23 + int(success_match.group(1))
+                        break
+            return "FDOTHER.DAT", resource, frame
     if path.parts and path.parts[0].lower() == "portraits":
         match = re.search(r"DATO[_-](\d+)", stem, re.I)
         if match:

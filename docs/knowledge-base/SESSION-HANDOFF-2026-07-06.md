@@ -8257,4 +8257,20 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   #57逐byte一致。正式Xvfb ending preview抽測只指定分離素材包仍通過。
 - 清冊更新為37,919筆（36,895 exported、1,005 intentionally raw、19 blocked）。本成果
   達`DATA-READY`／`RUNTIME-E1`，不提升`0x28a6c`精確畫面或終局一般玩家E2。
-  manifest現為37,849筆：36,825 exported、1,005 intentionally raw、19 blocked。
+
+## 2026-08-28 商店 FDOTHER #12／#29／#63 分離素材閉合
+
+- 固定 `FDOTHER.DAT`（3,382,481 bytes；MD5
+  `22f56e5027edc7c766ad34ca4e5aca93`；SHA-256
+  `a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`）的
+  resource 12／29／63，已依 `0x2e341` 及 caller-proven entry contract輸出到
+  `shop/FDOTHER_NNN/`。共67張indexed PNG、43張二值mask、3份metadata；未被caller
+  證實的entry不建立猜測性高階名稱。
+- `campaign.LoadSeparatedNativeShopAssets`嚴格驗證來源身份、container kind、entry
+  index／codec／geometry、PNG mode、mask及5／1／7張success計畫。三資源與archive
+  oracle逐indexed pixel及mask相同；缺件與不完整metadata失敗即關閉。
+- 正式`loadNativeShopUIAssets`不再呼叫`DecodeNativeShopAssets`；後者只供離線匯入器、
+  oracle命令與測試。共用設施bundle仍有另行追蹤的FDOTHER consumer，因此本批只宣稱
+  商店專屬資源`DATA-READY`／`RUNTIME-E1`，不宣稱整個設施UI已移除FDOTHER或原版E2。
+- 完整manifest為38,032筆：37,008 exported、1,005 intentionally raw、19 blocked；
+  validator與Markdown連結仍須在提交前整批重跑。下一個玩家價值切片是城鎮背景／標籤。

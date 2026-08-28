@@ -65,19 +65,32 @@
     "ending_fdother_single_frame_png": 3,
     "ending_fdother_single_frame_masks_png": 3,
     "ending_fdother_palette_json": 1,
+    "native_shop_indexed_frames_png": 67,
+    "native_shop_binary_masks_png": 43,
+    "native_shop_metadata_json": 3,
     "music_midi": 15
   },
   "manifest_validation": {
     "tool": "tools/generate_separated_asset_manifest.py",
     "validator": "tools/validate_separated_asset_pack.py",
-    "total_entries": 37919,
-    "exported": 36895,
+    "total_entries": 38032,
+    "exported": 37008,
     "blocked": 19,
     "intentionally_raw": 1005,
     "source_hashes_verified": true,
     "result": "pass"
   },
   "runtime_migrations": [{
+    "family": "native_shop_fdother_012_029_063",
+    "source_resources": ["FDOTHER.DAT#12", "FDOTHER.DAT#29", "FDOTHER.DAT#63"],
+    "separated_outputs": 113,
+    "runtime_consumers": ["native shop stable scene", "service menu", "price/comparison panels", "purchase success timeline"],
+    "archive_png_indexed_mask_match": "pass (all 67 caller-proven frames/cells and 43 masks)",
+    "runtime_archive_fallback": false,
+    "archive_unreadable_test": "pass (after shared facility preflight, all three shop-specific variants load with missing FDOTHER.DAT)",
+    "remaining_direct_archive_consumers": [],
+    "evidence_level": "RUNTIME-E1"
+  }, {
     "family": "ending_fdother_056_060",
     "source_resources": ["FDOTHER.DAT#56..60"],
     "separated_outputs": 52,

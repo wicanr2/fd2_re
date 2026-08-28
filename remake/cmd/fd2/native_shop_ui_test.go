@@ -693,6 +693,40 @@ func TestNativeShopProductionOwnerDrawsOriginalMenuAndPurchaseList(t *testing.T)
 	}
 }
 
+func TestNativeShopAssetsDoNotRequireFDOTHERArchive(t *testing.T) {
+	const archive = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
+	if _, err := os.Stat(archive); err != nil {
+		t.Skip("player-provided FDOTHER.DAT is absent")
+	}
+	pack, err := filepath.Abs("../../generated-assets/fd2-original-b97caf22")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Stat(filepath.Join(pack, "shop", "FDOTHER_012", "resource.json")); err != nil {
+		t.Skip("generated separated shop pack is absent")
+	}
+	t.Setenv("FD2_ASSET_PACK", pack)
+	t.Setenv("FD2_ORIGINAL_FDOTHER", archive)
+	t.Setenv("XDG_DATA_HOME", t.TempDir())
+	userDataDirCached = ""
+	shared, err := loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	// 共用設施 bundle 仍有另行追蹤的 FDOTHER consumer；建立完成後，商店
+	// 專屬 loader 不得重新開啟 archive。
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(t.TempDir(), "missing-FDOTHER.DAT"))
+	shops, err := loadNativeShopUIAssets(shared)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, variant := range []int{1, 3, 5} {
+		if shops.shops[variant] == nil {
+			t.Fatalf("variant %d was not preflighted", variant)
+		}
+	}
+}
+
 // assertNativeShopTransactionTownRoundTrip 從正式交易完成點穿越離店、城鎮與
 // 重製 JSON 冷讀檔。重新進店只為讓同一原始資產 fixture 繼續驗證下一種交易；
 // 它不算在持久化證據內。

@@ -18,6 +18,7 @@ import (
 	"path/filepath"
 	"strconv"
 
+	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
@@ -118,6 +119,39 @@ type itemPanelDocument struct {
 	Evidence      string                   `json:"evidence"`
 	Source        sourceID                 `json:"source"`
 	Entries       []itemPanelEntryDocument `json:"entries"`
+}
+
+type shopEntryDocument struct {
+	Index  int    `json:"index"`
+	Role   string `json:"role"`
+	Codec  string `json:"codec"`
+	Width  int    `json:"width"`
+	Height int    `json:"height"`
+	Frame  string `json:"frame"`
+	Mask   string `json:"mask,omitempty"`
+}
+
+type shopSuccessDocument struct {
+	X               int                 `json:"x"`
+	Y               int                 `json:"y"`
+	PreTicks        int                 `json:"pre_ticks"`
+	TicksPerFrame   int                 `json:"ticks_per_frame"`
+	PostTicks       int                 `json:"post_ticks"`
+	RestorePortrait bool                `json:"restore_portrait"`
+	Frames          []shopEntryDocument `json:"frames"`
+}
+
+type shopResourceDocument struct {
+	SchemaVersion int                 `json:"schema_version"`
+	Kind          string              `json:"kind"`
+	AssetID       string              `json:"asset_id"`
+	Status        string              `json:"status"`
+	Evidence      string              `json:"evidence"`
+	ContainerKind string              `json:"container_kind"`
+	EntryCount    int                 `json:"entry_count"`
+	Source        sourceID            `json:"source"`
+	Entries       []shopEntryDocument `json:"entries"`
+	Success       shopSuccessDocument `json:"success"`
 }
 
 type fdiconSpriteDocument struct {
@@ -497,7 +531,99 @@ func exportCommandGrid(fdotherPath, outputRoot string) error {
 	if err := exportItemPanel(fdotherPath, outputRoot); err != nil {
 		return err
 	}
+	if err := exportNativeShops(fdotherPath, outputRoot); err != nil {
+		return err
+	}
 	return exportEndingFDOTHER(fdotherPath, outputRoot)
+}
+
+func exportNativeShops(fdotherPath, outputRoot string) error {
+	for _, resource := range []int{12, 29, 63} {
+		assets, err := campaign.DecodeNativeShopAssets(fdotherPath, resource)
+		if err != nil {
+			return fmt.Errorf("FDOTHER #%d shop: %w", resource, err)
+		}
+		raw, err := fdother.ReadResource(fdotherPath, resource)
+		if err != nil {
+			return err
+		}
+		directory := filepath.Join(outputRoot, "shop", fmt.Sprintf("FDOTHER_%03d", resource))
+		doc := shopResourceDocument{SchemaVersion: 1, Kind: "native_shop_indexed_assets",
+			AssetID: fmt.Sprintf("shop/FDOTHER_%03d", resource), Status: "decoded", Evidence: "confirmed",
+			ContainerKind: map[bool]string{true: "scene_lmi1", false: "llllll"}[resource == 29],
+			EntryCount:    len(assets.RawEntries), Source: sourceID{File: fdotherArchive.file, Resource: resource,
+				Size: fdotherArchive.size, MD5: fdotherArchive.md5, SHA256: fdotherArchive.sha256, RawSize: len(raw)}}
+		add := func(index int, role, codec string, width, height int, pixels []byte, transparent bool) error {
+			name := fmt.Sprintf("entry_%03d", index)
+			entry := shopEntryDocument{Index: index, Role: role, Codec: codec, Width: width, Height: height,
+				Frame: filepath.ToSlash(filepath.Join(name, "frame.png"))}
+			if transparent {
+				entry.Mask = filepath.ToSlash(filepath.Join(name, "mask.png"))
+				mask := make([]byte, len(pixels))
+				for i, value := range pixels {
+					if value != 0 {
+						mask[i] = 255
+					}
+				}
+				if err := writeSurfacePNGs(filepath.Join(directory, name), width, height, pixels, mask); err != nil {
+					return err
+				}
+			} else if err := writeIndexedPNG(filepath.Join(directory, entry.Frame), width, height, pixels); err != nil {
+				return err
+			}
+			doc.Entries = append(doc.Entries, entry)
+			return nil
+		}
+		if err := add(0, "background", "fd2_4e63d_single_frame", campaign.NativeShopWidth, campaign.NativeShopHeight, assets.Background, false); err != nil {
+			return err
+		}
+		if err := add(1, "decoration", "opaque_high_run", assets.Decoration.Width, assets.Decoration.Height, assets.Decoration.Pixels, false); err != nil {
+			return err
+		}
+		if err := add(2, "gold_roll_strip", "raw_indexed_transparent", assets.GoldRollStrip.Width, assets.GoldRollStrip.Height, assets.GoldRollStrip.Pixels, true); err != nil {
+			return err
+		}
+		for option := range assets.ServiceCells {
+			for variant := range assets.ServiceCells[option] {
+				cell := assets.ServiceCells[option][variant]
+				index := 3 + option*2 + variant
+				if err := add(index, "service_cell", "raw_indexed_transparent", cell.Width, cell.Height, cell.Pixels, true); err != nil {
+					return err
+				}
+			}
+		}
+		if err := add(15, "price_cell", "raw_indexed_transparent", assets.PriceCell.Width, assets.PriceCell.Height, assets.PriceCell.Pixels, true); err != nil {
+			return err
+		}
+		if err := add(16, "panel", "opaque_high_run", assets.Panel.Width, assets.Panel.Height, assets.Panel.Pixels, false); err != nil {
+			return err
+		}
+		for i, cell := range assets.CompareCells {
+			if err := add(18+i, "compare_cell", "opaque_high_run", cell.Width, cell.Height, cell.Pixels, false); err != nil {
+				return err
+			}
+		}
+		plan := map[int]shopSuccessDocument{12: {X: 169, Y: 45, TicksPerFrame: 2, RestorePortrait: true}, 29: {X: 148, Y: 39, PreTicks: 1, PostTicks: 8, RestorePortrait: true}, 63: {X: 131, Y: 28, TicksPerFrame: 2}}[resource]
+		for i, frame := range assets.SuccessFrames {
+			indexed, mask, err := frame.IndexedLayers()
+			if err != nil {
+				return err
+			}
+			index := 23 + i
+			name := fmt.Sprintf("success_%03d", i)
+			if err := writeSurfacePNGs(filepath.Join(directory, name), frame.Width, frame.Height, indexed, mask); err != nil {
+				return err
+			}
+			entry := shopEntryDocument{Index: index, Role: "success_frame", Codec: "fd2_4e63d_single_frame", Width: frame.Width, Height: frame.Height, Frame: name + "/frame.png", Mask: name + "/mask.png"}
+			plan.Frames = append(plan.Frames, entry)
+			doc.Entries = append(doc.Entries, entry)
+		}
+		doc.Success = plan
+		if err := writeJSON(filepath.Join(directory, "resource.json"), doc); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func exportEndingFDOTHER(fdotherPath, outputRoot string) error {

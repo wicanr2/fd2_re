@@ -1045,16 +1045,13 @@ func loadNativeShopUIAssets(
 		len(shared.digits) != 10 {
 		return nil, errors.New("native shop UI: shared facility assets unavailable")
 	}
-	fdotherPath := nativeFDOTHERPath()
-	if fdotherPath == "" {
-		return nil, errors.New("native shop UI: FDOTHER.DAT unavailable")
-	}
+	packRoot := separatedAssetPath("")
 	out := &nativeShopUIAssets{
 		shops:     make(map[int]*campaign.NativeShopAssets, 3),
 		portraits: make(map[int]dato.Frame, 3),
 	}
 	for variant, resourceID := range map[int]int{1: 12, 3: 29, 5: 63} {
-		assets, err := campaign.DecodeNativeShopAssets(fdotherPath, resourceID)
+		assets, err := campaign.LoadSeparatedNativeShopAssets(packRoot, resourceID)
 		if err != nil {
 			return nil, err
 		}

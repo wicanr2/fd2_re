@@ -52,10 +52,12 @@ type NativeShopAssets struct {
 	SuccessFrames []fdother.Frame
 }
 
-// DecodeNativeShopAssets accepts exactly the three resources selected by the
-// native hub variants. Resources 12/63 use an outer LLLLLL directory while
-// resource 29 uses a scene-flavoured LMI1 directory. Per-entry codecs are
-// selected only from recovered call sites and are not inferred by container.
+// DecodeNativeShopAssets is the offline/source-oracle decoder for exactly the
+// three resources selected by the native hub variants. Production loads the
+// exported contract through LoadSeparatedNativeShopAssets and never falls
+// back here. Resources 12/63 use an outer LLLLLL directory while resource 29
+// uses a scene-flavoured LMI1 directory. Per-entry codecs are selected only
+// from recovered call sites and are not inferred by container.
 func DecodeNativeShopAssets(datPath string, resourceID int) (*NativeShopAssets, error) {
 	if resourceID != 12 && resourceID != 29 && resourceID != 63 {
 		return nil, errors.New("campaign: unsupported native shop resource")
@@ -226,7 +228,7 @@ func ComposeNativeShopScene(
 ) ([]byte, error) {
 	if assets == nil || len(assets.Background) != NativeShopWidth*NativeShopHeight ||
 		len(dialogueCells) <= 17 ||
-		len(assets.RawEntries) <= 1 || len(digitFrames) != 10 ||
+		len(digitFrames) != 10 ||
 		strings == nil || font == nil || gold < 0 || gold > 99_999_999 {
 		return nil, errors.New("campaign: native shop stable assets/state are invalid")
 	}

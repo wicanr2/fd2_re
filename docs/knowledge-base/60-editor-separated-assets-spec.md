@@ -191,8 +191,53 @@ RGBA 預覽不得取代 indexed frame＋mask。
 pixel、mask、placement、delay 與非零 destination blit 對照均一致；#57 的768 bytes逐 byte
 一致。正式 `ending_preview` 在只指定 `FD2_ASSET_PACK`、沒有提供 `FDOTHER.DAT` 給 tail
 loader 的 Xvfb 抽測通過，缺完整 separated roots 會在建立 player 前失敗即關閉。完整
-manifest 現為37,919筆：36,895 exported、1,005 intentionally raw、19 blocked。本切片達
+manifest 現為38,032筆：37,008 exported、1,005 intentionally raw、19 blocked。本切片達
 `DATA-READY`／`RUNTIME-E1`；`LoadMontageTailAssetsArchive` 只保留給 source oracle。
+
+### 商店 FDOTHER #12／#29／#63 索引素材契約
+
+> 規格狀態：**CONFORMED**
+> 證據邊界：固定雜湊 `FDOTHER.DAT`、`0x2e341` 的 raw hub variant 分派，及
+> `DecodeNativeShopAssets` 已有 caller-proven entry contract；不替未被 caller
+> 消費的 entry 猜測用途。
+
+固定原檔大小為3,382,481 bytes，MD5為
+`22f56e5027edc7c766ad34ca4e5aca93`，SHA-256為
+`a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`。
+`0x2e341` 的 raw hub variant 1／3／5分別選 resource 12／29／63；12與63是
+`LLLLLL` 外層目錄，29是含 terminal boundary 的場景型 `LMI1`。三者共同的
+caller-proven entry為：#0 320×200背景、#1 63×15 opaque decoration、#2 6×99
+gold-roll strip、#3..#10八個 service cells、#15 price cell、#16 panel、#18..#22
+五個 compare cells。#23起的success frame數依序為5／1／7；其已證實呈現計畫
+分別是`(169,45)`每幀2 ticks並restore portrait、`(148,39)`前1後8 ticks並restore，
+以及`(131,28)`每幀2 ticks且不restore。
+
+匯入器須為每個resource輸出獨立 `shop/FDOTHER_NNN/resource.json`，保存來源檔
+身份、resource、container kind、entry count，以及每項標準輸出的原始entry index、
+codec與geometry；完整pack manifest另保存每個輸出檔的內容雜湊。背景、各格與success frame均保存P-mode indexed PNG；
+codec具有透明語意者另存L-mode二值mask。success另有 `animation.json`，保存嚴格
+幀數、destination、ticks及portrait restore raw契約。一般RGBA預覽不能取代indexed
+frame＋mask；未被caller證實的entry只保留在來源oracle，不升格成正式typed用途。
+
+正式loader必須一次預檢12／29／63完整集合，驗證schema、固定來源身份、resource、
+container kind、entry index、P／L mode、二值mask、geometry、內容雜湊及success計畫；
+任一缺件即整批失敗，不回退讀取`FDOTHER.DAT`。`DecodeNativeShopAssets`改為明示的
+archive source oracle，正式`loadNativeShopUIAssets`只接受分離包。
+
+驗收至少包含：三資源與固定原檔逐indexed pixel／mask／geometry／success timeline
+比較；破壞來源身份、entry index、6×99或320×200幾何、PNG mode、mask及success幀數
+皆須失敗即關閉；在`FDOTHER.DAT`不可讀且只指定`FD2_ASSET_PACK`時，正常城鎮進商店、
+服務選單、一次購買成功／扣款及返回原城鎮仍可完成。達成後只提升商店素材
+`DATA-READY`與正式路徑`RUNTIME-E1`，不冒稱未修改原版`PLAYER-E2`。
+
+2026-08-28 已依本契約輸出67張indexed PNG、43張二值mask與3份metadata，共113筆
+標準素材。三個resource的背景、格件與5／1／7張success frames均與固定原檔逐indexed
+pixel及mask一致；正式`loadNativeShopUIAssets`一次預檢三種variant，已不呼叫archive
+decoder。建立尚未遷移的共用設施bundle後，把`FD2_ORIGINAL_FDOTHER`改指向不存在檔案，
+三種商店專屬資源仍能載入；正式選單與購買流程Xvfb抽測通過。完整manifest現為38,032筆：37,008
+exported、1,005 intentionally raw、19 blocked。本切片達`DATA-READY`／`RUNTIME-E1`；
+`DecodeNativeShopAssets`只保留作來源oracle；共用設施bundle的其他FDOTHER consumer仍是
+獨立缺口，正常城鎮進出商店也不外推為原版E2。
 
 ### 第三個 runtime 遷移切片：FIGANI 索引動畫
 
@@ -594,7 +639,7 @@ mask 與 8,256 張 remap mask，共 24,801 個標準檔。全 33 張銀行及 co
 原檔逐層一致；map0／map23／map32 的正式戰場 consumer、以及第 23 戰重載均在測試
 目錄沒有 `FDSHAP.DAT` 時通過。正式產品程式的 FDSHAP archive caller 歸零，僅離線
 匯入器與名稱明確的 source oracle adapter 保留原檔 reader。本切片達 `DATA-READY` 與
-`RUNTIME-E1`；37,849 筆素材清冊中 36,825 exported、1,005 intentionally raw、19 blocked。
+`RUNTIME-E1`；現行38,032筆素材清冊中37,008 exported、1,005 intentionally raw、19 blocked。
 
 ### 終局 selector `0x1e` 的 FDFIELD 部署契約
 

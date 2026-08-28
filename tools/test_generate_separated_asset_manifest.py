@@ -43,6 +43,17 @@ class GenerateManifestTest(unittest.TestCase):
         (pack / "surfaces" / "FDOTHER_056" / "resource.json").write_text(
             json.dumps({"status": "decoded"}), encoding="utf-8")
         (pack / "surfaces" / "FDOTHER_056" / "frame.png").write_bytes(b"ending-surface")
+        for resource in (12, 29, 63):
+            shop = pack / "shop" / f"FDOTHER_{resource:03d}"
+            (shop / "entry_000").mkdir(parents=True)
+            (shop / "entry_000" / "frame.png").write_bytes(f"shop-bg-{resource}".encode())
+            (shop / "resource.json").write_text(
+                json.dumps({"status": "decoded", "resource": resource}), encoding="utf-8")
+            (shop / "entry_007").mkdir(parents=True)
+            (shop / "entry_007" / "frame.png").write_bytes(
+                f"shop-cell-{resource}".encode())
+            (shop / "success_000").mkdir(parents=True)
+            (shop / "success_000" / "frame.png").write_bytes(f"shop-success-{resource}".encode())
         (pack / "palette" / "fdother_057.json").write_text("{}", encoding="utf-8")
         (pack / "text" / "FDTXT_000").mkdir(parents=True)
         (pack / "text" / "FDTXT_000" / "resource.json").write_text(
@@ -153,6 +164,30 @@ class GenerateManifestTest(unittest.TestCase):
             self.assertEqual((blocked_surface["source_file"], blocked_surface["source_resource"], blocked_surface["status"]), ("BG.DAT", 56, "blocked"))
             ending_surface = next(item for item in manifest["assets"] if item["path"] == "surfaces/FDOTHER_056/frame.png")
             self.assertEqual((ending_surface["source_file"], ending_surface["source_resource"]), ("FDOTHER.DAT", 56))
+            shop_assets = [item for item in manifest["assets"] if item["path"].startswith("shop/")]
+            self.assertEqual(len(shop_assets), 12)
+            for resource in (12, 29, 63):
+                prefix = f"shop/FDOTHER_{resource:03d}/"
+                shop_resource = next(item for item in shop_assets if item["path"] == prefix + "resource.json")
+                self.assertEqual(
+                    (shop_resource["kind"], shop_resource["source_file"], shop_resource["source_resource"]),
+                    ("metadata", "FDOTHER.DAT", resource),
+                )
+                background = next(item for item in shop_assets if item["path"] == prefix + "entry_000/frame.png")
+                self.assertEqual(
+                    (background["kind"], background["source_file"], background["source_resource"], background["source_frame"]),
+                    ("ui", "FDOTHER.DAT", resource, 0),
+                )
+                cell = next(item for item in shop_assets if item["path"] == prefix + "entry_007/frame.png")
+                self.assertEqual(
+                    (cell["source_file"], cell["source_resource"], cell["source_frame"]),
+                    ("FDOTHER.DAT", resource, 7),
+                )
+                success = next(item for item in shop_assets if item["path"] == prefix + "success_000/frame.png")
+                self.assertEqual(
+                    (success["source_file"], success["source_resource"], success["source_frame"]),
+                    ("FDOTHER.DAT", resource, 23),
+                )
             ending_palette = next(item for item in manifest["assets"] if item["path"] == "palette/fdother_057.json")
             self.assertEqual((ending_palette["source_file"], ending_palette["source_resource"]), ("FDOTHER.DAT", 57))
             text = next(item for item in manifest["assets"] if item["path"] == "text/FDTXT_000/resource.json")
