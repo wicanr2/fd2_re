@@ -577,3 +577,22 @@ sub0 開頭 `40 01 c8 00` = `0x140,0xc8`=320×200 VGA 解析度標頭、std≈80
 `cue_evidence=sound_resource_no_confirmed_consumer`，正式runtime不得自行播放。
 已證實者標`confirmed`／`typed_schedule`。11025Hz仍是硬體規格近似，不提升為原版
 逐週期或逐波形一致。
+
+## FDOTHER #53／command24 固定音效契約（2026-08-29）
+
+> 狀態：**RE-CLOSED／DATA-READY**。來源identity同上；主證據為
+> [`fd2_command24_presentation_ida.txt`](../data/ida/fd2_command24_presentation_ida.txt)。
+
+FIGANI resource98的已證實header byte4=6選擇FDOTHER #53；typed schedule固定actor
+marker使用selector3、target marker使用selector2。#53本身為19,394 bytes、五筆巢狀
+目錄，子項4為空尾：
+
+| 子項 | bytes | SHA-256 | 消費與證據等級 |
+|---:|---:|---|---|
+| 0 | 4,182 | `028b09edd80fce0e941c29e022dc2551c21a6ece048027e01704f29394b81e4c` | PCM形狀／bank成員為強推論；本切片無已證實caller |
+| 1 | 2,339 | `23dd3c0f9f9eacdba9e8307a2323eb3e175fed81fb00a215fec95ae07fb2c317` | PCM形狀／bank成員為強推論；本切片無已證實caller |
+| 2 | 6,235 | `00abcd4aa20cf36c3a21df51aefdd70180beb2d3285779895cc8c8e6adb17e02` | command24 target marker，已證實 |
+| 3 | 6,612 | `2241ade84d76253c7e9ce6c9ae5965560f1fc61ef0f905551fb8399a47193a21` | command24 actor marker，已證實 |
+
+四筆均保留原selector輸出OGG；0／1只保存素材且標`strong_inference`，不得拿尚未
+閉合的物理攻擊`index2`猜接。11025Hz仍是hardware-spec approximation。

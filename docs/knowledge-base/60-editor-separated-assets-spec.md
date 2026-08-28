@@ -395,6 +395,27 @@ selector，`sfxSpawnIntro`改由#95/0安裝；所有`battle_91..95_*.wav`正式�
 Python契約／清冊測試、完整`internal/fdother`及`cmd/fd2`分離bank聚焦回歸通過。清冊增加11筆OGG及
 5份metadata，現為38,756筆：37,732 exported、1,005 intentionally raw、19 blocked。
 
+#### command24 固定 FDOTHER #53 音效分離契約
+
+> 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）
+
+本切片只接[`36`](36-sfx-audio-data.md)已證實的FIGANI resource98 header6→FDOTHER #53
+與actor selector3／target selector2。#53的四筆非空PCM全部保留原selector轉OGG，空尾4
+不輸出；selector0／1只有PCM形狀與bank歸屬，標`strong_inference`且不接入播放。
+
+正式整批loader新增#53，`sfxCommand24Actor`／`sfxCommand24Target`只由分離bank安裝；
+command24在建立交易plan前預檢2／3。缺bank、缺selector、壞OGG或來源漂移時零MP／HP
+交易，不回退`battle_53_02.wav`／`battle_53_03.wav`。驗收為兩次完整匯出一致、四筆
+OGG probe、原始PCM hash、無archive載入、command24 marker聚焦回歸與兩筆舊WAV引用歸零。
+本切片不建立物理攻擊`index2`對照，也不宣稱selector0／1高階語意。
+
+實作結果：canonical匯出現為16份metadata／66筆OGG；兩次完整輸出逐檔一致。#53
+四筆OGG通過probe與素材清冊驗證，0／1保留強推論且未接播放。正式loader安裝3／2，
+command24在建立交易plan前依typed schedule預檢；`battle_53_02.wav`／`_03.wav`正式引用
+歸零。9項Python測試、`internal/fdother`及command24／分離bank聚焦Go回歸通過。清冊
+增加4筆OGG與1份metadata，現為38,761筆：37,737 exported、1,005 intentionally raw、
+19 blocked。
+
 ### 2026-08-28 第一輪全量匯出實測
 
 固定版本原版已在 `fd2-assets-local:20260828` 一次性容器內完成全量試跑，實際輸出

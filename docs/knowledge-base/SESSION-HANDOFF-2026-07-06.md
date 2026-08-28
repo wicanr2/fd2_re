@@ -8427,3 +8427,16 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   最終改用FD2專用映像內鎖版module＋Xvfb，聚焦正式載入測試以3.694秒乾淨通過。
   本切片達`DATA-READY`／`RUNTIME-E1`；下一個音效缺口只剩一般物理攻擊動態bank及
   尚未閉合的`index2` producer，不可猜映射。
+
+## 2026-08-29 FDOTHER #53／command24 固定音效分離
+
+- `36`先綁定固定FDOTHER identity、#53四筆非空PCM、空尾4、原始selector雜湊及
+  FIGANI resource98 header6→#53／actor3／target2的既有IDA caller；0／1只有PCM形狀與
+  bank歸屬，標強推論且不接播放。`60`在runtime修改前建立READY契約。
+- canonical匯出擴成16份metadata／66筆OGG；兩次完整輸出逐檔一致。更新後清冊通過
+  來源與逐檔驗證，現為38,761筆：37,737 exported、1,005 intentionally raw、19 blocked。
+- 正式整批loader安裝#53/3與/2；command24由typed schedule在建立交易plan前預檢，
+  `battle_53_02.wav`／`battle_53_03.wav`正式引用歸零，缺件不回退舊WAV或archive。
+- 9項Python契約／清冊測試、`internal/fdother` loader及`cmd/fd2` command24／分離bank
+  聚焦回歸均在有界Xvfb Docker通過。本切片達`DATA-READY`／`RUNTIME-E1`；下一步仍是
+  一般物理攻擊動態bank，但`index2` producer未閉合前不得建立猜測對照。

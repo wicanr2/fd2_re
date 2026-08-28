@@ -198,6 +198,9 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if err != nil {
 		return err
 	}
+	if err := g.requireSeparatedCommandSounds(schedule.AudioResource, schedule.ActorSample, schedule.TargetSample); err != nil {
+		return err
+	}
 	actorIdle, err := figani.LoadSeparatedResource(animationRoot, actor.BattleFig*3)
 	if err != nil {
 		return err
