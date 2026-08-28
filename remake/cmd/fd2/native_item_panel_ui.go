@@ -51,8 +51,9 @@ func (g *Game) prepareNativeItemPanel(unit *battle.Unit) bool {
 
 func (g *Game) prepareNativeItemPanelMode(unit *battle.Unit, allowEmpty bool) bool {
 	g.clearNativeItemPanel()
-	fdotherPath, fdtxtPath, datoPath := nativeFDOTHERPath(), nativeFDTXTPath(), nativeDATOPath()
-	if fdotherPath == "" || fdtxtPath == "" || datoPath == "" || len(g.nativeUIPalette) < 256 {
+	fdotherPath, fdtxtPath := nativeFDOTHERPath(), nativeFDTXTPath()
+	portraitRoot := separatedAssetPath("portraits")
+	if fdotherPath == "" || fdtxtPath == "" || len(g.nativeUIPalette) < 256 {
 		return false
 	}
 	record, err := battle.NativeItemPanelRecordForUnit(unit)
@@ -60,7 +61,7 @@ func (g *Game) prepareNativeItemPanelMode(unit *battle.Unit, allowEmpty bool) bo
 		return false
 	}
 	pixels := make([]byte, 320*200)
-	if err := battle.RenderNativeItemPanelResources(fdotherPath, fdtxtPath, datoPath, record, pixels); err != nil {
+	if err := battle.RenderNativeItemPanelResources(fdotherPath, fdtxtPath, portraitRoot, record, pixels); err != nil {
 		return false
 	}
 	assets, err := battle.LoadNativeItemPanelDataAssets(fdotherPath, fdtxtPath)
@@ -133,8 +134,9 @@ func (g *Game) setNativeItemPanelPixels(pixels []byte) bool {
 // standalone equip: rebuild the status/item buffers in place without replaying
 // the 12-frame opening.
 func (g *Game) rebuildNativeItemPanelContents(unit *battle.Unit, allowEmpty bool) bool {
-	fdotherPath, fdtxtPath, datoPath := nativeFDOTHERPath(), nativeFDTXTPath(), nativeDATOPath()
-	if fdotherPath == "" || fdtxtPath == "" || datoPath == "" {
+	fdotherPath, fdtxtPath := nativeFDOTHERPath(), nativeFDTXTPath()
+	portraitRoot := separatedAssetPath("portraits")
+	if fdotherPath == "" || fdtxtPath == "" {
 		return false
 	}
 	record, err := battle.NativeItemPanelRecordForUnit(unit)
@@ -143,7 +145,7 @@ func (g *Game) rebuildNativeItemPanelContents(unit *battle.Unit, allowEmpty bool
 	}
 	pixels := make([]byte, 320*200)
 	if err := battle.RenderNativeItemPanelResources(
-		fdotherPath, fdtxtPath, datoPath, record, pixels,
+		fdotherPath, fdtxtPath, portraitRoot, record, pixels,
 	); err != nil {
 		return false
 	}

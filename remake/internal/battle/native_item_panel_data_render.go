@@ -53,10 +53,10 @@ func LoadNativeBattlePanelValueAssets(fdotherPath string) (NativeItemPanelDataAs
 }
 
 // RenderNativeItemPanelResources composes 0x17eef and 0x17fc0 as one
-// transaction. The DATO resource selector is read from the native unit record
-// at +7; no normalized portrait or class field is substituted.
+// transaction. The separated portrait selector is read from the native unit
+// record at +7; no normalized portrait or class field is substituted.
 func RenderNativeItemPanelResources(
-	fdotherPath, fdtxtPath, datoPath string,
+	fdotherPath, fdtxtPath, portraitRoot string,
 	record, dst []byte,
 ) error {
 	if len(record) < nativeRecordSize {
@@ -67,7 +67,7 @@ func RenderNativeItemPanelResources(
 	}
 	staged := append([]byte(nil), dst...)
 	if err := RenderNativeItemPanelBaseResources(
-		fdotherPath, datoPath, int(record[7]), staged,
+		fdotherPath, portraitRoot, int(record[7]), staged,
 	); err != nil {
 		return err
 	}

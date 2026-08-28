@@ -1,5 +1,6 @@
 // Command fd2-item-panel-oracle renders the recovered 0x17eef+0x17fc0
-// indexed item panel from player-provided original archives.
+// indexed item panel from player-provided original archives and the separated
+// portrait pack.
 package main
 
 import (
@@ -16,10 +17,10 @@ import (
 
 func main() {
 	if len(os.Args) != 8 {
-		fmt.Fprintln(os.Stderr, "usage: fd2-item-panel-oracle FDOTHER.DAT FDTXT.DAT DATO.DAT native_item_effect_rows.json spells.json item.png command.png")
+		fmt.Fprintln(os.Stderr, "usage: fd2-item-panel-oracle FDOTHER.DAT FDTXT.DAT PORTRAIT_ROOT native_item_effect_rows.json spells.json item.png command.png")
 		os.Exit(2)
 	}
-	fdotherPath, fdtxtPath, datoPath := os.Args[1], os.Args[2], os.Args[3]
+	fdotherPath, fdtxtPath, portraitRoot := os.Args[1], os.Args[2], os.Args[3]
 	itemRowsPath, spellsPath := os.Args[4], os.Args[5]
 	itemOutputPath, commandOutputPath := os.Args[6], os.Args[7]
 
@@ -46,7 +47,7 @@ func main() {
 	binary.LittleEndian.PutUint16(record[78:], 54)
 
 	base := make([]byte, 320*200)
-	if err := battle.RenderNativeItemPanelResources(fdotherPath, fdtxtPath, datoPath, record, base); err != nil {
+	if err := battle.RenderNativeItemPanelResources(fdotherPath, fdtxtPath, portraitRoot, record, base); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}

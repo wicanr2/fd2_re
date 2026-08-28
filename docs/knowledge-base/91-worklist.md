@@ -21,7 +21,7 @@
 |---:|---|---|---|
 | A1 | 編輯器 canonical schema 與穩定身份層 | `SPEC-READY`：已完成實檔能力稽核；確認 campaign／scenario／map／story／animation 只有單向 loader，缺跨檔 stable ID、嚴格未知欄位與 round-trip | 加入 machine-readable schema、legacy import 診斷、跨檔 validator 與往返測試；角色 identity 分離連結 portrait／map sprite／battle animation |
 | A2 | 原版素材全量分離與清冊 | `DATA-PARTIAL`：固定原版已實際產生4,106檔本機輸出；3,807筆manifest通過來源／輸出hash驗證，其中2,787 exported、1,005 intentionally_raw、15 MIDI blocked。raw零遺漏，但DATO／TAI／BG／UI／AFM用途與OGG仍未全量閉合 | 將15首MIDI轉成具cue／loop metadata的OGG；為1,005 raw逐家族判定已由PNG涵蓋或仍blocked，補齊標準輸出與用途關聯，輸出包不入Git |
-| A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：`FDOTHER #0/#2`已改接分離loader；136組DATO／544張頭像已重生為indexed PNG，story、暫態、group march、整備、教會轉職主介面與商店均改接並通過真實pack測試。production直接DATO decoder由10處降至4處；物品面板與終局、title及battle presentation等其他archive家族仍未移除 | 先把剩餘4個DATO production callers全部改接同一loader，再依玩家價值逐家族遷移；每批保留archive不可讀與缺分離資產fail-closed測試，最後production decoder caller歸零 |
+| A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：`FDOTHER #0/#2`已改接分離loader；136組DATO／544張頭像已重生為indexed PNG，story、暫態、group march、整備、教會轉職主介面、商店、物品／狀態面板與終局均改接並通過真實pack測試。production直接DATO decoder由10處降至0處；title及battle presentation等其他archive家族仍未移除 | 依玩家價值逐家族遷移 FDTXT、FDOTHER、FIGANI、BG、TAI、FDFIELD 與音訊；每批保留archive不可讀與缺分離資產fail-closed測試，最後production archive decoder caller歸零 |
 | A4 | 現代美術主題 | `PENDING-A1/A2`：尚未選定正式風格，不以猜測覆蓋原版 | 先輸出頭像＋戰場 sprite／tile＋介面框的可丟棄忠實／現代對照，再由使用者選定 theme 方向 |
 
 > **策略更新**：第一輪 remake 改以[`REMAKE-STATUS.md`](../REMAKE-STATUS.md)的

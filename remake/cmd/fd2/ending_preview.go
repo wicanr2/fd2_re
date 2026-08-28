@@ -305,13 +305,13 @@ func (p *nativeEndingPreview) montageArchivePaths() (ending.MontageArchivePaths,
 		})
 	}
 	paths := ending.MontageArchivePaths{
-		FDOTHER: p.fdotherPath,
-		FDTXT:   p.fdtxtPath,
-		TAI:     resolve("FD2_TAI", "TAI.DAT"),
-		FIGANI:  resolve("FD2_FIGANI", "FIGANI.DAT"),
-		DATO:    resolve("FD2_DATO", "DATO.DAT"),
+		FDOTHER:      p.fdotherPath,
+		FDTXT:        p.fdtxtPath,
+		TAI:          resolve("FD2_TAI", "TAI.DAT"),
+		FIGANI:       resolve("FD2_FIGANI", "FIGANI.DAT"),
+		PortraitRoot: separatedAssetPath("portraits"),
 	}
-	if paths.TAI == "" || paths.FIGANI == "" || paths.DATO == "" {
+	if paths.TAI == "" || paths.FIGANI == "" {
 		return ending.MontageArchivePaths{}, fmt.Errorf("ending: player-provided montage archives are unavailable")
 	}
 	return paths, nil
@@ -546,17 +546,13 @@ func (g *Game) prepareNativeEndingDialogue(blocks []ending.DialogueBlock) (*endi
 			return nil, err
 		}
 	}
-	datoPath := filepath.Join(filepath.Dir(g.nativeEnding.fdotherPath), "DATO.DAT")
-	if _, err := os.Stat(datoPath); err != nil {
-		return nil, fmt.Errorf("ending: DATO.DAT is unavailable: %w", err)
-	}
 	background := append([]byte(nil), g.nativeEnding.player.Compositor.VGA...)
 	prepared := make([]ending.NativeDialogueBlockFrames, 0, len(blocks))
 	for blockIndex, block := range blocks {
 		if block.PortraitID >= 0x80 && block.PortraitID <= 0x84 {
 			return nil, fmt.Errorf("ending: block %d portrait %d requires an unimplemented special anchor", blockIndex, block.PortraitID)
 		}
-		initial, err := dato.DecodeResource(filepath.Clean(datoPath), block.PortraitID)
+		initial, err := loadNativeSeparatedPortrait(block.PortraitID)
 		if err != nil || len(initial) < 4 {
 			return nil, fmt.Errorf("ending: block %d initial portrait %d is unavailable", blockIndex, block.PortraitID)
 		}
@@ -577,7 +573,7 @@ func (g *Game) prepareNativeEndingDialogue(blocks []ending.DialogueBlock) (*endi
 			if native.Operand >= 0x80 && native.Operand <= 0x84 {
 				return nil, fmt.Errorf("ending: block %d utterance %d portrait %d requires an unimplemented special anchor", blockIndex, utteranceIndex, native.Operand)
 			}
-			portraits, err := dato.DecodeResource(filepath.Clean(datoPath), native.Operand)
+			portraits, err := loadNativeSeparatedPortrait(native.Operand)
 			if err != nil || len(portraits) < 4 {
 				return nil, fmt.Errorf("ending: block %d utterance %d portrait %d is unavailable", blockIndex, utteranceIndex, native.Operand)
 			}

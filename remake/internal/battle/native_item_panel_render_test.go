@@ -57,17 +57,17 @@ func TestRenderNativeItemPanelBaseIsAtomicOnInvalidSource(t *testing.T) {
 
 func TestRenderNativeItemPanelBaseWithPlayerAssets(t *testing.T) {
 	const (
-		fdotherPath = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
-		datoPath    = "../../../org_game/炎龍騎士團/FLAME2/DATO.DAT"
+		fdotherPath  = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
+		portraitRoot = "../../generated-assets/fd2-original-b97caf22/portraits"
 	)
 	if _, err := os.Stat(fdotherPath); err != nil {
 		t.Skip("player-provided FDOTHER.DAT is absent")
 	}
-	if _, err := os.Stat(datoPath); err != nil {
-		t.Skip("player-provided DATO.DAT is absent")
+	if _, err := os.Stat(portraitRoot + "/DATO_000_m0.png"); err != nil {
+		t.Skip("separated portrait pack is absent")
 	}
 	dst := make([]byte, nativeItemPanelBytes)
-	if err := RenderNativeItemPanelBaseResources(fdotherPath, datoPath, 0, dst); err != nil {
+	if err := RenderNativeItemPanelBaseResources(fdotherPath, portraitRoot, 0, dst); err != nil {
 		t.Fatal(err)
 	}
 	nonzero := 0

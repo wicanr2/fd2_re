@@ -20,7 +20,7 @@
    概念；目前缺少面向創作者的角色身份關聯表。
 5. FIGANI、AFM、DATO、TAI、BG、介面格、音效與音樂雖已有個別匯出器，尚未形成
    一份可驗證、可定位來源、供 runtime 與編輯器共同使用的完整素材清冊。
-6. 正式 runtime 仍有多條玩家路徑即時讀取 `FDOTHER.DAT`、`FDTXT.DAT`、`DATO.DAT`、
+6. 正式 runtime 仍有多條玩家路徑即時讀取 `FDOTHER.DAT`、`FDTXT.DAT`、
    `FIGANI.DAT`、`BG.DAT`、`TAI.DAT` 與 `FDFIELD.DAT`。因此目前不能宣稱遊戲只
    消費分離素材。
 
@@ -173,8 +173,10 @@ archive decoder 與 PNG loader 比較，幾何及全部6,400個 indexed pixels�
 story consumer 在 `FD2_ORIGINAL_DATO` 指向不存在檔案時仍可載入，分離 pack 缺失
 時則拒絕，不回退原版 archive。同一 loader 已再接入暫態狀態提示、group march、
 整備、教會轉職主介面與商店，並以真實 pack 跑過相關既有 consumer 測試。production
-直接 `dato.DecodeResource` 已由10處降至4處；物品面板、終局 preview與 montage仍待
-遷移，不可由共用素材已存在就冒稱 runtime 全部完成。
+直接 `dato.DecodeResource` 已由10處降至0處；物品／狀態面板、終局 preview與
+montage 均改讀同一分離 loader，相關 battle／ending／正式 `cmd/fd2` 測試已使用真實
+素材包通過。這只關閉 DATO 家族，其他 archive consumer 仍未全數移除，不可冒稱
+runtime 已完全只讀分離素材。
 
 ## 七、完成定義
 

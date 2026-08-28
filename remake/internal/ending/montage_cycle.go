@@ -29,11 +29,11 @@ type MontageCycleAssets struct {
 // MontageArchivePaths identifies the player-provided archives used by the
 // native cycle.  The originals are read-only; this helper never writes them.
 type MontageArchivePaths struct {
-	FDOTHER string
-	TAI     string
-	FIGANI  string
-	DATO    string
-	FDTXT   string
+	FDOTHER      string
+	TAI          string
+	FIGANI       string
+	PortraitRoot string
+	FDTXT        string
 }
 
 // LoadMontageCycleAssets decodes the exact resources named by the native
@@ -41,7 +41,7 @@ type MontageArchivePaths struct {
 // +7, FDTXT_031/FDTXT_000 and the FDOTHER#4 font.  It deliberately takes the
 // raw unit records from the caller so no identity or slot meaning is guessed.
 func LoadMontageCycleAssets(montage Montage, paths MontageArchivePaths, units [][]byte) (MontageCycleAssets, error) {
-	if paths.FDOTHER == "" || paths.TAI == "" || paths.FIGANI == "" || paths.DATO == "" || paths.FDTXT == "" || len(units) < 2 {
+	if paths.FDOTHER == "" || paths.TAI == "" || paths.FIGANI == "" || paths.PortraitRoot == "" || paths.FDTXT == "" || len(units) < 2 {
 		return MontageCycleAssets{}, errors.New("ending: incomplete montage archive paths or party")
 	}
 	for i, unit := range units {
@@ -107,9 +107,9 @@ func LoadMontageCycleAssets(montage Montage, paths MontageArchivePaths, units []
 			assets.Primary[resource] = animation
 		}
 		if _, ok := assets.Portraits[group]; !ok {
-			frames, err := dato.DecodeResource(paths.DATO, group)
+			frames, err := dato.LoadSeparatedResource(paths.PortraitRoot, group)
 			if err != nil {
-				return MontageCycleAssets{}, fmt.Errorf("ending: DATO#%d: %w", group, err)
+				return MontageCycleAssets{}, fmt.Errorf("ending: separated portrait %d: %w", group, err)
 			}
 			assets.Portraits[group] = frames
 		}

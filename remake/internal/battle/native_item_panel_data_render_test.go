@@ -159,11 +159,11 @@ func TestRenderNativeItemPanelRowsMatches184C0GeometryAndSelection(t *testing.T)
 
 func TestNativeItemPanelBaseAndDataWithPlayerAssets(t *testing.T) {
 	const (
-		fdotherPath = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
-		fdtxtPath   = "../../../org_game/炎龍騎士團/FLAME2/FDTXT.DAT"
-		datoPath    = "../../../org_game/炎龍騎士團/FLAME2/DATO.DAT"
+		fdotherPath  = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
+		fdtxtPath    = "../../../org_game/炎龍騎士團/FLAME2/FDTXT.DAT"
+		portraitRoot = "../../generated-assets/fd2-original-b97caf22/portraits"
 	)
-	for _, path := range []string{fdotherPath, fdtxtPath, datoPath} {
+	for _, path := range []string{fdotherPath, fdtxtPath, portraitRoot + "/DATO_000_m0.png"} {
 		if _, err := os.Stat(path); err != nil {
 			t.Skip("player-provided original archives are absent")
 		}
@@ -178,7 +178,7 @@ func TestNativeItemPanelBaseAndDataWithPlayerAssets(t *testing.T) {
 	binary.LittleEndian.PutUint16(record[66:], 100)
 	binary.LittleEndian.PutUint16(record[68:], 20)
 	binary.LittleEndian.PutUint16(record[70:], 40)
-	if err := RenderNativeItemPanelResources(fdotherPath, fdtxtPath, datoPath, record, dst); err != nil {
+	if err := RenderNativeItemPanelResources(fdotherPath, fdtxtPath, portraitRoot, record, dst); err != nil {
 		t.Fatal(err)
 	}
 	assets, err := LoadNativeItemPanelDataAssets(fdotherPath, fdtxtPath)

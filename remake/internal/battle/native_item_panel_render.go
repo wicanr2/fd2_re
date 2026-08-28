@@ -67,11 +67,12 @@ func RenderNativeItemPanelBase(
 	return nil
 }
 
-// RenderNativeItemPanelBaseResources loads only the player-provided archives
-// proven by 0x17eef. The portrait resource is the caller's unit-record byte
-// +7; frame zero is the exact pointer selected by native's first DATO offset.
+// RenderNativeItemPanelBaseResources loads the player-provided FDOTHER archive
+// and the already separated portrait pack proven by 0x17eef. The portrait
+// resource is the caller's unit-record byte +7; frame zero is the exact pointer
+// selected by native's first DATO offset.
 func RenderNativeItemPanelBaseResources(
-	fdotherPath, datoPath string,
+	fdotherPath, portraitRoot string,
 	portraitResource int,
 	dst []byte,
 ) error {
@@ -94,9 +95,9 @@ func RenderNativeItemPanelBaseResources(
 	if layout.UpperDirectoryEntry >= len(entries) || layout.BottomDirectoryEntry >= len(entries) {
 		return errors.New("battle: native item panel large entries are unavailable")
 	}
-	portraits, err := dato.DecodeResource(datoPath, portraitResource)
+	portraits, err := dato.LoadSeparatedResource(portraitRoot, portraitResource)
 	if err != nil {
-		return fmt.Errorf("battle: native item panel DATO resource %d: %w", portraitResource, err)
+		return fmt.Errorf("battle: native item panel separated portrait %d: %w", portraitResource, err)
 	}
 	if len(portraits) == 0 {
 		return errors.New("battle: native item panel DATO frame zero is unavailable")
