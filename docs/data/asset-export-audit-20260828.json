@@ -5,7 +5,7 @@
   "tool": "tools/extract_all.py + remake/cmd/fd2-asset-import",
   "container_image": "fd2-assets-local:20260828",
   "output_policy": "local_generated_untracked",
-  "command_contract": "python3 tools/extract_all.py <verified-original-dir> <pack>; go run ./cmd/fd2-asset-import -fdother <FDOTHER.DAT> -bg <BG.DAT> -tai <TAI.DAT> -fdtxt <FDTXT.DAT> -glyph-map docs/data/glyph_map.json -fdicon <FDICON.B24> -out <pack>",
+  "command_contract": "python3 tools/extract_all.py <verified-original-dir> <pack>; go run ./cmd/fd2-asset-import -fdother <FDOTHER.DAT> -bg <BG.DAT> -tai <TAI.DAT> -fdtxt <FDTXT.DAT> -glyph-map docs/data/glyph_map.json -fdicon <FDICON.B24> -fdshap <FDSHAP.DAT> -out <pack>",
   "archive_resources": {
     "ANI.DAT": 10,
     "BG.DAT": 57,
@@ -55,13 +55,18 @@
     "fdicon_source_masks_png": 1680,
     "fdicon_remap_masks_png": 1680,
     "fdicon_metadata_json": 1,
+    "fdshap_terrain_banks": 33,
+    "fdshap_indexed_frames_png": 8256,
+    "fdshap_source_masks_png": 8256,
+    "fdshap_remap_masks_png": 8256,
+    "fdshap_metadata_json": 33,
     "music_midi": 15
   },
   "manifest_validation": {
     "tool": "tools/generate_separated_asset_manifest.py",
     "validator": "tools/validate_separated_asset_pack.py",
-    "total_entries": 13048,
-    "exported": 12024,
+    "total_entries": 37849,
+    "exported": 36825,
     "blocked": 19,
     "intentionally_raw": 1005,
     "source_hashes_verified": true,
@@ -106,7 +111,18 @@
     "archive_png_indexed_mask_match": "pass (all 1680 sprites; pixels, source mask, remap mask)",
     "runtime_consumers": ["native tactical map bundle", "native preparation", "native class/church", "native town", "ending montage tail loader baseline"],
     "runtime_archive_fallback": false,
-    "archive_unreadable_test": "pass (FDOTHER/FDSHAP available beside no FDICON.B24)",
+    "archive_unreadable_test": "pass (FDOTHER available beside no FDICON.B24 or FDSHAP.DAT)",
+    "remaining_direct_archive_consumers": [],
+    "evidence_level": "RUNTIME-E1"
+  }, {
+    "family": "fdshap_terrain_banks",
+    "source_resources": ["FDSHAP.DAT#0..65 (33 image/control pairs)"],
+    "separated_outputs": 24801,
+    "decoded_tiles": 8256,
+    "archive_png_indexed_mask_match": "pass (all 33 banks; pixels, source mask, remap mask, controls)",
+    "runtime_consumers": ["native tactical map bundle", "chapter 22 post map23 reload"],
+    "runtime_archive_fallback": false,
+    "archive_unreadable_test": "pass (map0/map23/map32 and chapter 22 reload without FDSHAP.DAT)",
     "remaining_direct_archive_consumers": [],
     "evidence_level": "RUNTIME-E1"
   }, {

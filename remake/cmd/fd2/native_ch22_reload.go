@@ -9,6 +9,7 @@ import (
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
@@ -52,16 +53,15 @@ type nativeCh22ReloadState struct {
 }
 
 func decodeNativeCh22Reload(g *Game) (*nativeCh22ReloadState, error) {
-	shapePath := nativeOriginalArchivePath("FD2_ORIGINAL_FDSHAP", "FDSHAP.DAT")
-	if g == nil || g.st == nil || g.m == nil || g.nativeMapAssets == nil || shapePath == "" {
-		return nil, errors.New("ch22 reload requires current indexed state, separated map23 and player-provided FDSHAP")
+	if g == nil || g.st == nil || g.m == nil || g.nativeMapAssets == nil {
+		return nil, errors.New("ch22 reload requires current indexed state and separated map23 assets")
 	}
 	fieldSource, raw, err := loadSeparatedFDFIELDComposition("assets/maps/map23")
 	if err != nil {
 		return nil, fmt.Errorf("separated FDFIELD #69: %w", err)
 	}
 	w, h := fieldSource.W, fieldSource.H
-	bank, controls, err := fdother.DecodeMapTerrainResources(shapePath, 23)
+	bank, controls, err := fdicon.LoadSeparatedFDSHAPBank(separatedAssetPath("tilesets/fdshap"), 23)
 	if err != nil {
 		return nil, fmt.Errorf("FDSHAP #46/#47: %w", err)
 	}

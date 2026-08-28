@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"image/color"
-	"path/filepath"
 
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
@@ -51,12 +50,11 @@ func loadNativeMapAssets(mapDir string) (*nativeMapAssets, error) {
 	if fdotherPath == "" {
 		return nil, errors.New("native map assets: FDOTHER.DAT unavailable")
 	}
-	base := filepath.Dir(fdotherPath)
 	frames, err := indexedmap.DecodeNativeMapHUDFrames(fdotherPath)
 	if err != nil {
 		return nil, err
 	}
-	terrain, controls, err := fdother.DecodeMapTerrainResources(filepath.Join(base, "FDSHAP.DAT"), mapIndex)
+	terrain, controls, err := fdicon.LoadSeparatedFDSHAPBank(separatedAssetPath("tilesets/fdshap"), mapIndex)
 	if err != nil {
 		return nil, err
 	}

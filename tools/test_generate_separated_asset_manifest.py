@@ -48,6 +48,9 @@ class GenerateManifestTest(unittest.TestCase):
         (pack / "sprites" / "fdicon" / "sprite_0000").mkdir(parents=True)
         (pack / "sprites" / "fdicon" / "sprite_0000" / "frame.png").write_bytes(b"sprite")
         (pack / "sprites" / "fdicon" / "bank.json").write_text("{}", encoding="utf-8")
+        (pack / "tilesets" / "fdshap" / "map_23" / "tile_0000").mkdir(parents=True)
+        (pack / "tilesets" / "fdshap" / "map_23" / "tile_0000" / "frame.png").write_bytes(b"tile")
+        (pack / "tilesets" / "fdshap" / "map_23" / "bank.json").write_text("{}", encoding="utf-8")
         original = root / "original"
         original.mkdir()
         source = original / "FIGANI.DAT"
@@ -62,6 +65,8 @@ class GenerateManifestTest(unittest.TestCase):
         text_source.write_bytes(b"text-original")
         fdicon_source = original / "FDICON.B24"
         fdicon_source.write_bytes(b"fdicon-original")
+        fdshap_source = original / "FDSHAP.DAT"
+        fdshap_source.write_bytes(b"fdshap-original")
         ref = root / "reference.json"
         data = source.read_bytes()
         music_data = music_source.read_bytes()
@@ -69,6 +74,7 @@ class GenerateManifestTest(unittest.TestCase):
         bg_data = bg_source.read_bytes()
         text_data = text_source.read_bytes()
         fdicon_data = fdicon_source.read_bytes()
+        fdshap_data = fdshap_source.read_bytes()
         ref.write_text(json.dumps({"files": [{
             "file": "FIGANI.DAT", "size": len(data),
             "md5": hashlib.md5(data).hexdigest(),
@@ -93,6 +99,10 @@ class GenerateManifestTest(unittest.TestCase):
             "file": "FDICON.B24", "size": len(fdicon_data),
             "md5": hashlib.md5(fdicon_data).hexdigest(),
             "sha256": hashlib.sha256(fdicon_data).hexdigest(),
+        }, {
+            "file": "FDSHAP.DAT", "size": len(fdshap_data),
+            "md5": hashlib.md5(fdshap_data).hexdigest(),
+            "sha256": hashlib.sha256(fdshap_data).hexdigest(),
         }]}), encoding="utf-8")
         return pack, ref, original
 
@@ -133,6 +143,8 @@ class GenerateManifestTest(unittest.TestCase):
             self.assertEqual((font["kind"], font["source_file"], font["source_resource"]), ("font", "FDOTHER.DAT", 4))
             sprite = next(item for item in manifest["assets"] if item["path"] == "sprites/fdicon/sprite_0000/frame.png")
             self.assertEqual((sprite["kind"], sprite["source_file"], sprite["source_frame"]), ("map_sprite", "FDICON.B24", 0))
+            tile = next(item for item in manifest["assets"] if item["path"] == "tilesets/fdshap/map_23/tile_0000/frame.png")
+            self.assertEqual((tile["kind"], tile["source_file"], tile["source_resource"], tile["source_frame"]), ("tileset", "FDSHAP.DAT", 46, 0))
 
     def test_source_hash_mismatch_fails_closed(self):
         with tempfile.TemporaryDirectory() as temp:

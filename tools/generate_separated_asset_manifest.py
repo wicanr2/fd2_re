@@ -108,6 +108,8 @@ def classify(path: Path) -> str | None:
         return "portrait"
     if top == "sprites" and len(parts) >= 2 and parts[1].lower() == "fdicon":
         return "map_sprite" if suffix == ".png" else "metadata" if path.name.lower() == "bank.json" else None
+    if top == "tilesets" and len(parts) >= 2 and parts[1].lower() == "fdshap":
+        return "tileset" if suffix == ".png" else "metadata" if path.name.lower() == "bank.json" else None
     if top == "maps":
         return "map" if suffix == ".json" else "tileset" if suffix == ".png" else None
     if top == "fonts":
@@ -166,6 +168,17 @@ def infer_provenance(path: Path) -> tuple[str | None, int | None, int | None]:
                 frame = int(match.group(1))
                 break
         return "FDICON.B24", None, frame
+    if len(path.parts) >= 3 and path.parts[0].lower() == "tilesets" and path.parts[1].lower() == "fdshap":
+        map_match = re.fullmatch(r"map_(\d+)", path.parts[2], re.I)
+        if map_match:
+            map_index = int(map_match.group(1))
+            frame = None
+            for part in path.parts[3:]:
+                tile_match = re.fullmatch(r"tile_(\d+)", part, re.I)
+                if tile_match:
+                    frame = int(tile_match.group(1))
+                    break
+            return "FDSHAP.DAT", map_index * 2, frame
     if len(path.parts) >= 3 and path.parts[0].lower() == "surfaces":
         match = re.fullmatch(r"(BG|TAI)_(\d+)", path.parts[1], re.I)
         if match:

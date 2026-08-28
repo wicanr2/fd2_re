@@ -8220,3 +8220,16 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   順序。FDSHAP#46/#47及FDOTHER#42仍由玩家原版唯讀提供。
 - 本切片達 `DATA-READY`／窄 `RUNTIME-E1`；終局 FDFIELD#90..92 與所有 FDSHAP
   consumer 尚未分離，不得宣稱 FDFIELD 或戰場 archive caller 全部歸零。
+
+## 2026-08-28：全 33 張 FDSHAP 圖塊銀行分離
+
+- 固定雜湊 FDSHAP 的 33 組 image／control resources 已輸出 8,256 張 indexed frame、
+  8,256 張 source mask、8,256 張 remap mask 與 33 份 metadata，共 24,801 檔。
+- 首輪全量匯出在 map17 揭露舊 `sprite_count<=control_count` 假設錯誤；實檔為
+  384 sprites／330 control records，map24亦為192／180，但兩者實際base tile最大值
+  325／120。已撤回該 gate，保留 composition base tile 與 renderer derived frame 的
+  分層界限；沒有把 trailing frame 當壞檔略過。
+- 全 33 銀行的 pixels／source mask／remap mask／controls 與 archive decoder 逐層一致。
+  map0、map23、map32正式consumer與ch22 reload在旁側沒有`FDSHAP.DAT`時通過。
+- 正式產品程式的FDSHAP archive caller歸零；只保留離線匯入器與source oracle adapter。
+  manifest現為37,849筆：36,825 exported、1,005 intentionally raw、19 blocked。

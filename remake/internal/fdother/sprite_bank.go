@@ -35,7 +35,11 @@ func DecodeMapTerrainResources(datPath string, mapIndex int) (*fdicon.Bank, []by
 	if err != nil {
 		return nil, nil, err
 	}
-	if len(controls) == 0 || len(controls)%4 != 0 || len(bank.Sprites) > len(controls)/4 {
+	// Some banks carry renderer-selected trailing animation frames beyond the
+	// base control records (map17 is 384 sprites / 330 records). The map
+	// composition validates base tile indices; the renderer validates any
+	// derived frame index separately.
+	if len(controls) == 0 || len(controls)%4 != 0 {
 		return nil, nil, errors.New("fdother: FDSHAP image/control resource pair is inconsistent")
 	}
 	return bank, controls, nil

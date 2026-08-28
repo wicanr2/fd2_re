@@ -22,6 +22,7 @@ func nativeCh22OriginalPaths(t *testing.T) string {
 	t.Setenv("FD2_ORIGINAL_FDFIELD", filepath.Join(base, "FDFIELD.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDSHAP", filepath.Join(base, "FDSHAP.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
+	t.Setenv("FD2_ASSET_PACK", "../../generated-assets/fd2-original-b97caf22")
 	return base
 }
 
@@ -99,10 +100,11 @@ func TestSeparatedMap23CompositionMatchesFDFIELDResource69(t *testing.T) {
 	}
 }
 
-func TestNativeCh22ReloadDoesNotReadFDFIELDArchive(t *testing.T) {
+func TestNativeCh22ReloadDoesNotReadFDFIELDOrFDSHAPArchives(t *testing.T) {
 	nativeCh22OriginalPaths(t)
 	g := completeNative2189AGame(t)
 	t.Setenv("FD2_ORIGINAL_FDFIELD", filepath.Join(t.TempDir(), "missing-FDFIELD.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDSHAP", filepath.Join(t.TempDir(), "missing-FDSHAP.DAT"))
 	beat := ch22ResourceBeat("0x24a4b", "FDFIELD.DAT", "0x53a51", 69)
 	if err := g.stageNativeCh22Resource(beat); err != nil {
 		t.Fatal(err)

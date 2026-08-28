@@ -516,6 +516,47 @@ loader baseline均改接同一strict bank；正式產品程式的FDICON archive 
 `DATA-READY` 與窄 `RUNTIME-E1`；原始 beat 上的 `FDFIELD.DAT`／69 名稱仍保留作
 原版 provenance，不代表執行期回讀封存檔。
 
+### 全 33 張戰場的 FDSHAP 圖塊與控制銀行
+
+> 狀態：**CONFORMED**
+
+固定來源 `FDSHAP.DAT` 大小為 3,557,794 bytes，MD5 為
+`9b0d356074f57cc27aebf3bb89aae247`，SHA-256 為
+`901b70ea82d5d977192759fad510921ffe16a0ab6af6ab7c32757de03e30aa3c`。
+已證實的配對契約是 map N 使用圖塊銀行資源 `2*N` 與四位元組控制表資源
+`2*N+1`；`0x11EEE` 的正式 renderer consumer、`0x4DEDA` raw blit 與
+`0x4DCC6` LUT／目的地重映射分支見 `56` 的 native terrain-frame contract，
+第 23 戰 `#46/#47` 的直接 loader／consumer 另見
+[`fd2_ch22_post_ida.txt`](../data/ida/fd2_ch22_post_ida.txt)。證據等級為**已證實**；
+本切片不重新命名四個控制 bytes 的高階地形語意。
+
+現有 `tileset.png` 是一般 RGBA 預覽，會把 four-mode RLE 的 mode-3 span 當透明，
+無法保存 `0x4DCC6` 對既有目的地像素套 LUT 的語意。因此正式標準輸出另建
+`tilesets/fdshap/map_NN/`，每張圖塊分別保存 24×24 indexed `frame.png`、binary
+`mask.png` 與 binary `remap_mask.png`；`bank.json` 同時保存 map index、原始 image／
+control resource、完整四位元組 `controls[]`、來源檔雜湊及每張圖塊的穩定 index。
+RGBA `tileset.png` 保留給一般編輯預覽，但不得作 native compositor 的唯一來源。
+
+strict loader 必須驗證 schema、固定來源雜湊、map `0..32`、resource `2*N`／`2*N+1`、
+24×24 幾何、連續且不重複的 sprite index、三層 PNG mode、binary mask、controls 非空且
+長度為四的倍數。圖塊數與 control record 數不是同一個上限：全量實檔中 map17 為
+384／330、map24 為192／180，但兩張地圖實際 base tile 最大值分別為325／120；圖塊銀行
+包含 renderer 可選的追加 frame。故 loader 不得要求 `sprite_count<=control_count`，而應由
+map composition 驗證每個 base tile 可索引 control，再由 frame selector 個別驗證最終圖塊
+index。任一 map 缺檔或不一致時整個該 map 銀行失敗，不得回退 `FDSHAP.DAT`。
+
+驗收分三層：全 33 張銀行逐圖塊比較 pixels／source mask／remap mask，controls 逐 byte
+比較相鄰原始資源；正式 `loadNativeMapAssets` 與第 23 戰 reload 在相鄰目錄沒有
+`FDSHAP.DAT` 時仍取得相同 typed bank；至少保留 map0、map23、map32 三個早／中／晚
+consumer 抽樣。本切片不宣稱 FDOTHER HUD／range／palette 已分離，也不提升戰場畫面 E2。
+
+2026-08-28 實作輸出 33 份 bank metadata、8,256 張 indexed frame、8,256 張 source
+mask 與 8,256 張 remap mask，共 24,801 個標準檔。全 33 張銀行及 controls 已與固定
+原檔逐層一致；map0／map23／map32 的正式戰場 consumer、以及第 23 戰重載均在測試
+目錄沒有 `FDSHAP.DAT` 時通過。正式產品程式的 FDSHAP archive caller 歸零，僅離線
+匯入器與名稱明確的 source oracle adapter 保留原檔 reader。本切片達 `DATA-READY` 與
+`RUNTIME-E1`；37,849 筆素材清冊中 36,825 exported、1,005 intentionally raw、19 blocked。
+
 ## 七、完成定義
 
 只有同時成立才可宣稱「素材已完全分離、JSON 足以建立編輯器」：

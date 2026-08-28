@@ -138,6 +138,20 @@ type fdiconBankDocument struct {
 	Sprites       []fdiconSpriteDocument `json:"sprites"`
 }
 
+type fdshapBankDocument struct {
+	SchemaVersion   int                    `json:"schema_version"`
+	Kind            string                 `json:"kind"`
+	AssetID         string                 `json:"asset_id"`
+	Status          string                 `json:"status"`
+	Evidence        string                 `json:"evidence"`
+	Source          sourceID               `json:"source"`
+	MapIndex        int                    `json:"map_index"`
+	ImageResource   int                    `json:"image_resource"`
+	ControlResource int                    `json:"control_resource"`
+	Controls        []int                  `json:"controls"`
+	Sprites         []fdiconSpriteDocument `json:"sprites"`
+}
+
 type archiveIdentity struct {
 	file, prefix string
 	size         int
@@ -159,6 +173,12 @@ var fdiconArchive = archiveIdentity{
 	file: "FDICON.B24", prefix: "FDICON", size: 624010,
 	md5:    "46f793540209a063ea73a5373ca14bf4",
 	sha256: "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+}
+
+var fdshapArchive = archiveIdentity{
+	file: "FDSHAP.DAT", prefix: "FDSHAP", size: 3557794,
+	md5:    "9b0d356074f57cc27aebf3bb89aae247",
+	sha256: "901b70ea82d5d977192759fad510921ffe16a0ab6af6ab7c32757de03e30aa3c",
 }
 
 func verifyFDOTHER(path string) error {
@@ -597,6 +617,51 @@ func exportFDICON(path, outputRoot string) error {
 	return writeJSON(filepath.Join(directory, "bank.json"), document)
 }
 
+func exportFDSHAP(path, outputRoot string) error {
+	if err := verifyArchive(path, fdshapArchive); err != nil {
+		return err
+	}
+	for mapIndex := 0; mapIndex < fdicon.SeparatedFDSHAPMapCount; mapIndex++ {
+		bank, controls, err := fdother.DecodeMapTerrainResources(path, mapIndex)
+		if err != nil {
+			return fmt.Errorf("FDSHAP map %d: %w", mapIndex, err)
+		}
+		directory := filepath.Join(outputRoot, "tilesets", "fdshap", fmt.Sprintf("map_%02d", mapIndex))
+		controlValues := make([]int, len(controls))
+		for index, value := range controls {
+			controlValues[index] = int(value)
+		}
+		document := fdshapBankDocument{
+			SchemaVersion: 1, Kind: "fdshap_terrain_bank",
+			AssetID: fmt.Sprintf("tilesets/fdshap/map_%02d", mapIndex),
+			Status:  "decoded", Evidence: "confirmed",
+			Source:   sourceID{File: fdshapArchive.file, Size: fdshapArchive.size, MD5: fdshapArchive.md5, SHA256: fdshapArchive.sha256, RawSize: fdshapArchive.size},
+			MapIndex: mapIndex, ImageResource: mapIndex * 2, ControlResource: mapIndex*2 + 1,
+			Controls: controlValues, Sprites: make([]fdiconSpriteDocument, 0, len(bank.Sprites)),
+		}
+		for index, sprite := range bank.Sprites {
+			if len(sprite.Pixels) != fdicon.NativeSize*fdicon.NativeSize || len(sprite.Mask) != len(sprite.Pixels) || len(sprite.RemapMask) != len(sprite.Pixels) {
+				return fmt.Errorf("FDSHAP map %d tile %d has incomplete layers", mapIndex, index)
+			}
+			prefix := fmt.Sprintf("tile_%04d", index)
+			if err := writeIndexedPNG(filepath.Join(directory, prefix, "frame.png"), fdicon.NativeSize, fdicon.NativeSize, sprite.Pixels); err != nil {
+				return err
+			}
+			if err := writeBinaryMaskPNG(filepath.Join(directory, prefix, "mask.png"), fdicon.NativeSize, fdicon.NativeSize, sprite.Mask); err != nil {
+				return err
+			}
+			if err := writeBinaryMaskPNG(filepath.Join(directory, prefix, "remap_mask.png"), fdicon.NativeSize, fdicon.NativeSize, sprite.RemapMask); err != nil {
+				return err
+			}
+			document.Sprites = append(document.Sprites, fdiconSpriteDocument{Index: index, Width: fdicon.NativeSize, Height: fdicon.NativeSize, Frame: prefix + "/frame.png", Mask: prefix + "/mask.png", RemapMask: prefix + "/remap_mask.png"})
+		}
+		if err := writeJSON(filepath.Join(directory, "bank.json"), document); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func writeBinaryMaskPNG(path string, width, height int, mask []byte) error {
 	if width <= 0 || height <= 0 || len(mask) != width*height {
 		return errors.New("binary mask PNG geometry mismatch")
@@ -631,11 +696,12 @@ func main() {
 	taiPath := flag.String("tai", "", "固定版本 TAI.DAT 路徑")
 	fdtxtPath := flag.String("fdtxt", "", "固定版本 FDTXT.DAT 路徑")
 	fdiconPath := flag.String("fdicon", "", "固定版本 FDICON.B24 路徑")
+	fdshapPath := flag.String("fdshap", "", "固定版本 FDSHAP.DAT 路徑")
 	glyphMapPath := flag.String("glyph-map", "", "受版控 glyph_map.json 路徑")
 	outputRoot := flag.String("out", "", "分離素材包根目錄")
 	flag.Parse()
-	if *outputRoot == "" || (*fdotherPath == "" && *bgPath == "" && *taiPath == "" && *fdtxtPath == "" && *fdiconPath == "") || (*fdtxtPath != "" && *glyphMapPath == "") {
-		fmt.Fprintln(os.Stderr, "用法：fd2-asset-import [-fdother FDOTHER.DAT] [-bg BG.DAT] [-tai TAI.DAT] [-fdtxt FDTXT.DAT -glyph-map glyph_map.json] [-fdicon FDICON.B24] -out ASSET_PACK")
+	if *outputRoot == "" || (*fdotherPath == "" && *bgPath == "" && *taiPath == "" && *fdtxtPath == "" && *fdiconPath == "" && *fdshapPath == "") || (*fdtxtPath != "" && *glyphMapPath == "") {
+		fmt.Fprintln(os.Stderr, "用法：fd2-asset-import [-fdother FDOTHER.DAT] [-bg BG.DAT] [-tai TAI.DAT] [-fdtxt FDTXT.DAT -glyph-map glyph_map.json] [-fdicon FDICON.B24] [-fdshap FDSHAP.DAT] -out ASSET_PACK")
 		os.Exit(2)
 	}
 	if *fdotherPath != "" {
@@ -673,5 +739,12 @@ func main() {
 			os.Exit(1)
 		}
 		fmt.Printf("已匯出 FDICON.B24：%d 張 indexed frame＋mask＋remap mask\n", fdicon.SeparatedSpriteCount)
+	}
+	if *fdshapPath != "" {
+		if err := exportFDSHAP(*fdshapPath, *outputRoot); err != nil {
+			fmt.Fprintln(os.Stderr, "匯入失敗：", err)
+			os.Exit(1)
+		}
+		fmt.Printf("已匯出 FDSHAP.DAT：%d 張地圖的 indexed tile＋mask＋remap mask＋control\n", fdicon.SeparatedFDSHAPMapCount)
 	}
 }
