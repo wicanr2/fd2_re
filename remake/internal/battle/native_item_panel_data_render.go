@@ -18,46 +18,75 @@ type NativeItemPanelDataAssets struct {
 	Font        *fdtxt.Font
 }
 
-// LoadNativeBattlePanelValueAssets只解碼0x18C6D框、bar與digit consumer需要的
-// FDOTHER#5資料；姓名由另一個具FDTXT／FDOTHER#4 provenance的caller處理時，
-// 不應因此強迫載入不會消費的文字資產。
-func LoadNativeBattlePanelValueAssets(fdotherPath string) (NativeItemPanelDataAssets, error) {
-	raw, err := fdother.ReadResource(fdotherPath, 5)
+// LoadNativeBattlePanelValueAssets只載入0x18C6D框、bar與digit consumer需要的
+// 分離FDOTHER#5資料；姓名由另一個具FDTXT／FDOTHER#4 provenance的caller處理時，
+// 不應因此強迫載入不會消費的文字資產或原始archive。
+func LoadNativeBattlePanelValueAssets(assetPackRoot string) (NativeItemPanelDataAssets, error) {
+	entries, err := fdother.LoadSeparatedItemPanelEntries(filepath.Join(assetPackRoot, "ui"))
 	if err != nil {
-		return NativeItemPanelDataAssets{}, fmt.Errorf("battle: native battle panel FDOTHER#5: %w", err)
+		return NativeItemPanelDataAssets{}, fmt.Errorf("battle: separated native battle panel FDOTHER#5: %w", err)
 	}
 	assets := NativeItemPanelDataAssets{
 		RawCells: make(map[int]fdother.RawCell),
 		Frames:   make(map[int]fdother.Frame),
 	}
+	var ok bool
+	assets.BattlePanel, ok = entries.Opaque[22]
+	if !ok {
+		return NativeItemPanelDataAssets{}, errors.New("battle: separated native battle panel cell 22 is unavailable")
+	}
+	for index := 23; index <= 30; index++ {
+		assets.RawCells[index], ok = entries.Raw[index]
+		if !ok {
+			return NativeItemPanelDataAssets{}, fmt.Errorf("battle: separated native battle panel raw cell %d is unavailable", index)
+		}
+	}
+	for index := 31; index <= 52; index++ {
+		assets.Frames[index], ok = entries.Frames[index]
+		if !ok {
+			return NativeItemPanelDataAssets{}, fmt.Errorf("battle: separated native battle panel frame %d is unavailable", index)
+		}
+	}
+	assets.Frames[93], ok = entries.Frames[93]
+	if !ok {
+		return NativeItemPanelDataAssets{}, errors.New("battle: separated native battle panel frame 93 is unavailable")
+	}
+	return assets, nil
+}
+
+// LoadNativeBattlePanelValueAssetsArchive is retained for fixed-source oracle
+// comparisons. Production callers use LoadNativeBattlePanelValueAssets.
+func LoadNativeBattlePanelValueAssetsArchive(fdotherPath string) (NativeItemPanelDataAssets, error) {
+	raw, err := fdother.ReadResource(fdotherPath, 5)
+	if err != nil {
+		return NativeItemPanelDataAssets{}, fmt.Errorf("battle: native battle panel FDOTHER#5: %w", err)
+	}
+	assets := NativeItemPanelDataAssets{RawCells: make(map[int]fdother.RawCell), Frames: make(map[int]fdother.Frame)}
 	assets.BattlePanel, err = fdother.ParseLMI1OpaqueEntry(raw, 22)
 	if err != nil {
-		return NativeItemPanelDataAssets{}, fmt.Errorf("battle: native battle panel cell 22: %w", err)
+		return NativeItemPanelDataAssets{}, err
 	}
 	for index := 23; index <= 30; index++ {
 		assets.RawCells[index], err = fdother.ParseLMI1RawEntry(raw, index)
 		if err != nil {
-			return NativeItemPanelDataAssets{}, fmt.Errorf("battle: native battle panel raw cell %d: %w", index, err)
+			return NativeItemPanelDataAssets{}, err
 		}
 	}
 	for index := 31; index <= 52; index++ {
 		assets.Frames[index], err = fdother.ParseLMI1FrameEntry(raw, index)
 		if err != nil {
-			return NativeItemPanelDataAssets{}, fmt.Errorf("battle: native battle panel frame %d: %w", index, err)
+			return NativeItemPanelDataAssets{}, err
 		}
 	}
 	assets.Frames[93], err = fdother.ParseLMI1FrameEntry(raw, 93)
-	if err != nil {
-		return NativeItemPanelDataAssets{}, fmt.Errorf("battle: native battle panel frame 93: %w", err)
-	}
-	return assets, nil
+	return assets, err
 }
 
 // RenderNativeItemPanelResources composes 0x17eef and 0x17fc0 as one
 // transaction. The separated portrait selector is read from the native unit
 // record at +7; no normalized portrait or class field is substituted.
 func RenderNativeItemPanelResources(
-	fdotherPath, assetPackRoot, portraitRoot string,
+	assetPackRoot, portraitRoot string,
 	record, dst []byte,
 ) error {
 	if len(record) < nativeRecordSize {
@@ -68,7 +97,7 @@ func RenderNativeItemPanelResources(
 	}
 	staged := append([]byte(nil), dst...)
 	if err := RenderNativeItemPanelBaseResources(
-		fdotherPath, portraitRoot, int(record[7]), staged,
+		assetPackRoot, portraitRoot, int(record[7]), staged,
 	); err != nil {
 		return err
 	}
@@ -93,7 +122,7 @@ func RenderNativeItemPanelResourcesArchive(
 		return errors.New("battle: invalid archive item panel request")
 	}
 	staged := append([]byte(nil), dst...)
-	if err := RenderNativeItemPanelBaseResources(fdotherPath, portraitRoot, int(record[7]), staged); err != nil {
+	if err := RenderNativeItemPanelBaseResourcesArchive(fdotherPath, portraitRoot, int(record[7]), staged); err != nil {
 		return err
 	}
 	assets, err := LoadNativeItemPanelDataAssetsArchive(fdotherPath, fdtxtPath)

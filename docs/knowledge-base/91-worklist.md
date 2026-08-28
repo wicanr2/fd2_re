@@ -40,6 +40,11 @@
 > 逐像素一致，正式 `sub_1B1E7` adapter 不再需要原始 `FDOTHER.DAT`。下一批仍由
 > 真正 production archive caller 清冊選擇，不把 archive oracle 誤列為產品缺口。
 
+> **2026-08-29 A2／A3 第四批追加：** 共用物品／教會／戰場短狀態面板已達
+> `DATA-READY／RUNTIME-E1`；`0x17EEF／0x17FC0` 的完整 base＋data與`0x18C6D`
+> value panel均只讀分離 #5 bank及portrait／text／font，四個production caller的
+> FDOTHER archive path歸零。Archive adapter只留固定原版逐像素 oracle。
+
 > **策略更新**：第一輪 remake 改以[`REMAKE-STATUS.md`](../REMAKE-STATUS.md)的
 > 60格分層代表性抽樣建立95%信心。下表既有E2與精確音訊項目先登記到抽樣矩陣；
 > 只有抽樣揭露的重大玩家缺陷才回到實作佇列。全戰役長程遊玩、逐週期DOS硬體、

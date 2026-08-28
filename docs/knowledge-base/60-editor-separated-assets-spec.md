@@ -383,6 +383,33 @@ surface；缺包原子拒絕與兩條有界 Xvfb 聚焦回歸均通過。
 在清空 `FD2_ORIGINAL_FDOTHER` 時仍通過 loader、12 段展開／收合及巢狀選單
 聚焦回歸；缺包仍由共用 strict loader 拒絕。
 
+#### 共用物品／教會／戰場短狀態面板 FDOTHER #5 契約
+
+> 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）；主證據見
+> [`fd2_battle_status_panel_ida.txt`](../data/ida/fd2_battle_status_panel_ida.txt)
+> 與
+> [`fd2_status_panel_transient_indicators_ida.txt`](../data/ida/fd2_status_panel_transient_indicators_ida.txt)。
+
+既有 `ui/FDOTHER_005/item_panel` 已包含 `0x17EEF／0x17FC0` 所需的 raw、
+opaque與four-mode entries。正式 `RenderNativeItemPanelBaseResources` 必須從
+strict separated bank取得 raw `1..17`與opaque `20/21`，並從分離 portrait pack
+取得 raw record `+7`所選 DATO frame0；`RenderNativeItemPanelResources` 不再接受
+archive path。物品初次開啟、成功交易後重建及教會狀態三個 caller必須共用此路徑。
+
+`LoadNativeBattlePanelValueAssets` 同樣改從分離 bank取得opaque `22`、raw
+`23..30`及four-mode `31..52/93`，不得為了只畫數值而回讀整個 resource #5。
+兩個 archive adapter保留明確 `Archive` 後綴，只供固定原版逐像素 oracle。
+缺 bank／entry／portrait／codec／幾何時，在私人320×200 buffer發布前拒絕；
+驗收須證明分離與原版完整 base／data panel逐 indexed pixel相等，且四個正式
+caller不再出現 `nativeFDOTHERPath()`或 archive loader。
+
+實作結果：`RenderNativeItemPanelBaseResources` 與
+`LoadNativeBattlePanelValueAssets` 現只消費共用 strict #5 bank；原始版本分別
+保留 `Archive` 後綴供 oracle。物品初次開啟、成功交易後重建、教會狀態與
+戰場短狀態欄四個 production caller均移除 `nativeFDOTHERPath()`。完整 base＋data
+panel與短狀態欄的分離／固定原版逐 indexed pixel對照通過；缺包原子拒絕、
+chapter1正常物品面板及教會狀態生命週期在清空三個原版 archive環境變數時通過。
+
 #### 戰鬥共用 FDOTHER #0 DAC owner 遷移契約
 
 > 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）

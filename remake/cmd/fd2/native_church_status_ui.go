@@ -12,10 +12,9 @@ func (g *Game) prepareNativeChurchStatus(id int) ([]byte, []byte, bool) {
 	if !ok {
 		return nil, nil, false
 	}
-	fdotherPath := nativeFDOTHERPath()
 	assetPackRoot := separatedAssetPath("")
 	portraitRoot := separatedAssetPath("portraits")
-	if fdotherPath == "" || assetPackRoot == "" {
+	if assetPackRoot == "" {
 		return nil, nil, false
 	}
 	record, err := battle.NativeItemPanelRecordForUnit(&unit)
@@ -24,7 +23,7 @@ func (g *Game) prepareNativeChurchStatus(id int) ([]byte, []byte, bool) {
 	}
 	base := make([]byte, 320*200)
 	if err := battle.RenderNativeItemPanelResources(
-		fdotherPath, assetPackRoot, portraitRoot, record, base,
+		assetPackRoot, portraitRoot, record, base,
 	); err != nil {
 		return nil, nil, false
 	}

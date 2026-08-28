@@ -47,10 +47,9 @@ func (g *Game) prepareNativeItemPanel(unit *battle.Unit) bool {
 
 func (g *Game) prepareNativeItemPanelMode(unit *battle.Unit, allowEmpty bool) bool {
 	g.clearNativeItemPanel()
-	fdotherPath := nativeFDOTHERPath()
 	assetPackRoot := separatedAssetPath("")
 	portraitRoot := separatedAssetPath("portraits")
-	if fdotherPath == "" || assetPackRoot == "" || len(g.nativeUIPalette) < 256 {
+	if assetPackRoot == "" || len(g.nativeUIPalette) < 256 {
 		return false
 	}
 	record, err := battle.NativeItemPanelRecordForUnit(unit)
@@ -58,7 +57,7 @@ func (g *Game) prepareNativeItemPanelMode(unit *battle.Unit, allowEmpty bool) bo
 		return false
 	}
 	pixels := make([]byte, 320*200)
-	if err := battle.RenderNativeItemPanelResources(fdotherPath, assetPackRoot, portraitRoot, record, pixels); err != nil {
+	if err := battle.RenderNativeItemPanelResources(assetPackRoot, portraitRoot, record, pixels); err != nil {
 		return false
 	}
 	assets, err := battle.LoadNativeItemPanelDataAssets(assetPackRoot)
@@ -131,10 +130,9 @@ func (g *Game) setNativeItemPanelPixels(pixels []byte) bool {
 // standalone equip: rebuild the status/item buffers in place without replaying
 // the 12-frame opening.
 func (g *Game) rebuildNativeItemPanelContents(unit *battle.Unit, allowEmpty bool) bool {
-	fdotherPath := nativeFDOTHERPath()
 	assetPackRoot := separatedAssetPath("")
 	portraitRoot := separatedAssetPath("portraits")
-	if fdotherPath == "" || assetPackRoot == "" {
+	if assetPackRoot == "" {
 		return false
 	}
 	record, err := battle.NativeItemPanelRecordForUnit(unit)
@@ -143,7 +141,7 @@ func (g *Game) rebuildNativeItemPanelContents(unit *battle.Unit, allowEmpty bool
 	}
 	pixels := make([]byte, 320*200)
 	if err := battle.RenderNativeItemPanelResources(
-		fdotherPath, assetPackRoot, portraitRoot, record, pixels,
+		assetPackRoot, portraitRoot, record, pixels,
 	); err != nil {
 		return false
 	}

@@ -153,6 +153,12 @@ writer／consumer 分類高 fan-in helper，不用 unknown 總數驅動無限 RE
 > 原版一致；正式資訊畫面 loader 不再讀取或檢查 `FDOTHER.DAT`。十二段展開／收合
 > 與巢狀選單聚焦回歸通過；BIOS input、DAC pulse及 `PLAYER-E2` 等級不變。
 
+> **2026-08-29 共用物品／狀態面板追加：** `0x17EEF／0x17FC0` 所需的
+> FDOTHER #5 raw `1..17`、opaque `20..22`、bar／digit／icon entries已由同一
+> strict bank供應；物品初次開啟、成功後重建、教會狀態與戰場短狀態欄四個
+> production caller均移除 `nativeFDOTHERPath()`。完整面板與短狀態欄對固定原版
+> 逐 indexed pixel一致，三個原版 archive環境變數清空時正式回歸通過。
+
 > **2026-08-26 晚期四槽 LOAD 勘誤：** 同一固定雜湊 `fd2last.sav` 現已由重製
 > 正式 selector 還原 slot 0 的29人、60金幣與 raw metadata，並進
 > `preparation_ch30`。聚焦回歸先證明舊 `raw+1` 映射會誤進

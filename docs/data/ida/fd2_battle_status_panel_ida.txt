@@ -65,3 +65,29 @@ FDTXT resource0；控制碼不屬本窄caller的合法輸入。
   已把`sub_2B659` frame0..8、扣MP後來源快照、條件式TAI與目標待機重設接成
   正式重製端E1；目前仍須分開驗證的是`sub_29164`九段figure prelude與一般
   玩家E2，不可用本檔較早的切片邊界重新開啟已閉合的來源畫面。
+
+FDOTHER #5 共用面板分離追加（2026-08-29，DATA-READY）
+--------------------------------------------------------
+
+同一固定版 `FDOTHER.DAT` 為 3,382,481 bytes，MD5
+`22f56e5027edc7c766ad34ca4e5aca93`，SHA-256
+`a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`；
+resource #5 固定為 44,181 bytes。`sub_17EEF` 的既有 IDA 9.4 證據另固定：
+
+- `0x168B6(dst,320,5,7,5,5)` 消費 raw entries `1..17` 建 5×5 grid；
+- runtime record `+7` 選 DATO portrait frame 0，目的地 `(8,10)`；
+- `[0x53A81]+86/+90` 是 FDOTHER #5 directory entries `20/21`，目的地
+  `(92,7)`／`(5,94)`，走 opaque `0x4E8AF`；
+- 隨後 `sub_17FC0` 消費 entries `22..67`、`92/93`、`119..129`、FDTXT
+  resource0與 FDOTHER #4 字型。其直接 caller含正式物品面板與教會狀態面板。
+
+上述資源已全部存在於 `ui/FDOTHER_005/item_panel` mixed-codec bank。分離
+runtime 必須從該 bank 一次取得 raw entries `1..17`、opaque entries `20/21`
+與戰場短狀態欄所需的 `22..52/93`；任一 entry、codec、PNG、mask或幾何不符
+即失敗即關閉，不回退 archive。DATO仍由分離 portrait pack 依 raw `+7` 選取。
+
+驗收 oracle 為固定原版 `RenderNativeItemPanelBaseResourcesArchive`／
+`LoadNativeBattlePanelValueAssetsArchive` 與分離結果逐 indexed pixel 相等。
+正式物品面板、重建面板、教會狀態面板及戰場短狀態欄不得再接收
+`nativeFDOTHERPath()`；archive adapter只可供離線 oracle／測試使用。這不改變
+`0x17EEF／0x17FC0` 已閉合語意、十二段面板時序或 `PLAYER-E2` 等級。

@@ -1,6 +1,7 @@
 package battle
 
 import (
+	"bytes"
 	"os"
 	"testing"
 
@@ -57,8 +58,9 @@ func TestRenderNativeItemPanelBaseIsAtomicOnInvalidSource(t *testing.T) {
 
 func TestRenderNativeItemPanelBaseWithPlayerAssets(t *testing.T) {
 	const (
-		fdotherPath  = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
-		portraitRoot = "../../generated-assets/fd2-original-b97caf22/portraits"
+		fdotherPath   = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
+		assetPackRoot = "../../generated-assets/fd2-original-b97caf22"
+		portraitRoot  = "../../generated-assets/fd2-original-b97caf22/portraits"
 	)
 	if _, err := os.Stat(fdotherPath); err != nil {
 		t.Skip("player-provided FDOTHER.DAT is absent")
@@ -67,8 +69,15 @@ func TestRenderNativeItemPanelBaseWithPlayerAssets(t *testing.T) {
 		t.Skip("separated portrait pack is absent")
 	}
 	dst := make([]byte, nativeItemPanelBytes)
-	if err := RenderNativeItemPanelBaseResources(fdotherPath, portraitRoot, 0, dst); err != nil {
+	if err := RenderNativeItemPanelBaseResources(assetPackRoot, portraitRoot, 0, dst); err != nil {
 		t.Fatal(err)
+	}
+	oracle := make([]byte, nativeItemPanelBytes)
+	if err := RenderNativeItemPanelBaseResourcesArchive(fdotherPath, portraitRoot, 0, oracle); err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(dst, oracle) {
+		t.Fatal("separated native item panel base differs from fixed archive")
 	}
 	nonzero := 0
 	for _, pixel := range dst {
@@ -78,5 +87,16 @@ func TestRenderNativeItemPanelBaseWithPlayerAssets(t *testing.T) {
 	}
 	if nonzero < 1000 {
 		t.Fatalf("player item panel nonzero pixels=%d", nonzero)
+	}
+}
+
+func TestRenderNativeItemPanelBaseResourcesFailsClosedWithoutSeparatedPack(t *testing.T) {
+	dst := make([]byte, nativeItemPanelBytes)
+	before := append([]byte(nil), dst...)
+	if err := RenderNativeItemPanelBaseResources(t.TempDir(), t.TempDir(), 0, dst); err == nil {
+		t.Fatal("missing separated item panel base was accepted")
+	}
+	if !bytes.Equal(dst, before) {
+		t.Fatal("missing separated item panel base mutated destination")
 	}
 }

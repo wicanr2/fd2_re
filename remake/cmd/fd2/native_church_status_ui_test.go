@@ -1,7 +1,6 @@
 package main
 
 import (
-	"os"
 	"testing"
 	"time"
 
@@ -36,16 +35,11 @@ func TestNativeChurchPanelLifecycleMatches17AEDSchedules(t *testing.T) {
 	}
 }
 
-func TestNativeChurchStatusUsesPlayerOriginalAssets(t *testing.T) {
-	const base = "../../../org_game/炎龍騎士團/FLAME2/"
-	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "DATO.DAT"} {
-		if _, err := os.Stat(base + name); err != nil {
-			t.Skip("player-provided original archives are absent")
-		}
-	}
-	t.Setenv("FD2_ORIGINAL_FDOTHER", base+"FDOTHER.DAT")
-	t.Setenv("FD2_ORIGINAL_FDTXT", base+"FDTXT.DAT")
-	t.Setenv("FD2_ORIGINAL_DATO", base+"DATO.DAT")
+func TestNativeChurchStatusUsesSeparatedAssetsWithoutOriginalArchives(t *testing.T) {
+	t.Setenv("FD2_ASSET_PACK", "../../generated-assets/fd2-original-b97caf22")
+	t.Setenv("FD2_ORIGINAL_FDOTHER", "")
+	t.Setenv("FD2_ORIGINAL_FDTXT", "")
+	t.Setenv("FD2_ORIGINAL_DATO", "")
 	assets, err := loadNativeClassUIAssets()
 	if err != nil {
 		t.Fatal(err)
@@ -86,15 +80,10 @@ func TestNativeChurchStatusUsesPlayerOriginalAssets(t *testing.T) {
 }
 
 func TestNativeChurchStatusTypedInputRoundTrip(t *testing.T) {
-	const base = "../../../org_game/炎龍騎士團/FLAME2/"
-	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "DATO.DAT"} {
-		if _, err := os.Stat(base + name); err != nil {
-			t.Skip("player-provided original archives are absent")
-		}
-	}
-	t.Setenv("FD2_ORIGINAL_FDOTHER", base+"FDOTHER.DAT")
-	t.Setenv("FD2_ORIGINAL_FDTXT", base+"FDTXT.DAT")
-	t.Setenv("FD2_ORIGINAL_DATO", base+"DATO.DAT")
+	t.Setenv("FD2_ASSET_PACK", "../../generated-assets/fd2-original-b97caf22")
+	t.Setenv("FD2_ORIGINAL_FDOTHER", "")
+	t.Setenv("FD2_ORIGINAL_FDTXT", "")
+	t.Setenv("FD2_ORIGINAL_DATO", "")
 	assets, err := loadNativeClassUIAssets()
 	if err != nil {
 		t.Fatal(err)
@@ -146,15 +135,10 @@ func TestNativeChurchStatusTypedInputRoundTrip(t *testing.T) {
 }
 
 func TestNativeChurchStatusPublishesRawTransientIndicators(t *testing.T) {
-	const base = "../../../org_game/炎龍騎士團/FLAME2/"
-	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "DATO.DAT"} {
-		if _, err := os.Stat(base + name); err != nil {
-			t.Skip("player-provided original archives are absent")
-		}
-	}
-	t.Setenv("FD2_ORIGINAL_FDOTHER", base+"FDOTHER.DAT")
-	t.Setenv("FD2_ORIGINAL_FDTXT", base+"FDTXT.DAT")
-	t.Setenv("FD2_ORIGINAL_DATO", base+"DATO.DAT")
+	t.Setenv("FD2_ASSET_PACK", "../../generated-assets/fd2-original-b97caf22")
+	t.Setenv("FD2_ORIGINAL_FDOTHER", "")
+	t.Setenv("FD2_ORIGINAL_FDTXT", "")
+	t.Setenv("FD2_ORIGINAL_DATO", "")
 	assets, err := loadNativeClassUIAssets()
 	if err != nil {
 		t.Fatal(err)

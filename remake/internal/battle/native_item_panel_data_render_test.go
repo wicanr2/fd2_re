@@ -1,6 +1,7 @@
 package battle
 
 import (
+	"bytes"
 	"encoding/binary"
 	"os"
 	"testing"
@@ -179,8 +180,35 @@ func TestNativeItemPanelBaseAndDataWithPlayerAssets(t *testing.T) {
 	binary.LittleEndian.PutUint16(record[68:], 20)
 	binary.LittleEndian.PutUint16(record[70:], 40)
 	const assetPackRoot = "../../generated-assets/fd2-original-b97caf22"
-	if err := RenderNativeItemPanelResources(fdotherPath, assetPackRoot, portraitRoot, record, dst); err != nil {
+	if err := RenderNativeItemPanelResources(assetPackRoot, portraitRoot, record, dst); err != nil {
 		t.Fatal(err)
+	}
+	oracle := make([]byte, nativeItemPanelBytes)
+	if err := RenderNativeItemPanelResourcesArchive(fdotherPath, fdtxtPath, portraitRoot, record, oracle); err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(dst, oracle) {
+		t.Fatal("separated native item panel differs from fixed archive")
+	}
+	separatedValues, err := LoadNativeBattlePanelValueAssets(assetPackRoot)
+	if err != nil {
+		t.Fatal(err)
+	}
+	archiveValues, err := LoadNativeBattlePanelValueAssetsArchive(fdotherPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	separatedPanel := make([]byte, nativeItemPanelBytes)
+	archivePanel := make([]byte, nativeItemPanelBytes)
+	values := NativeBattlePanelValues{Level: 12, HP: 80, MaxHP: 100, MP: 20, MaxMP: 40}
+	if err := RenderNativeBattlePanelValuesAt(separatedValues, separatedPanel, 0, 154, values); err != nil {
+		t.Fatal(err)
+	}
+	if err := RenderNativeBattlePanelValuesAt(archiveValues, archivePanel, 0, 154, values); err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(separatedPanel, archivePanel) {
+		t.Fatal("separated native battle panel value render differs from fixed archive")
 	}
 	assets, err := LoadNativeItemPanelDataAssets(assetPackRoot)
 	if err != nil {

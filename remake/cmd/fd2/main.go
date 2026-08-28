@@ -9518,7 +9518,7 @@ func loadGame() *Game {
 		g.nativeBattleFont = nativeFont
 		g.nativeBattleGlyphs = nativeGlyphs
 	}
-	if panelAssets, err := battle.LoadNativeBattlePanelValueAssets(nativeFDOTHERPath()); err == nil {
+	if panelAssets, err := battle.LoadNativeBattlePanelValueAssets(separatedAssetPath("")); err == nil {
 		g.nativeBattlePanel = &panelAssets
 		g.nativeBattleValues = make(map[nativeBattlePanelValueKey]*ebiten.Image)
 	}

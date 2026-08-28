@@ -3,6 +3,7 @@ package battle
 import (
 	"errors"
 	"fmt"
+	"path/filepath"
 
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
@@ -67,11 +68,50 @@ func RenderNativeItemPanelBase(
 	return nil
 }
 
-// RenderNativeItemPanelBaseResources loads the player-provided FDOTHER archive
-// and the already separated portrait pack proven by 0x17eef. The portrait
-// resource is the caller's unit-record byte +7; frame zero is the exact pointer
-// selected by native's first DATO offset.
+// RenderNativeItemPanelBaseResources loads the separated FDOTHER #5 UI bank
+// and portrait pack proven by 0x17eef. The portrait resource is the caller's
+// unit-record byte +7; frame zero is the exact pointer selected by native's
+// first DATO offset. It never falls back to the original archives.
 func RenderNativeItemPanelBaseResources(
+	assetPackRoot, portraitRoot string,
+	portraitResource int,
+	dst []byte,
+) error {
+	layout := NativeItemPanelBaseLayoutFor()
+	entries, err := fdother.LoadSeparatedItemPanelEntries(filepath.Join(assetPackRoot, "ui"))
+	if err != nil {
+		return fmt.Errorf("battle: separated native item panel base: %w", err)
+	}
+	cells := make([]fdother.RawCell, 18)
+	for index := 1; index <= 17; index++ {
+		var ok bool
+		cells[index], ok = entries.Raw[index]
+		if !ok {
+			return fmt.Errorf("battle: separated native item panel raw cell %d is unavailable", index)
+		}
+	}
+	upper, upperOK := entries.Opaque[layout.UpperDirectoryEntry]
+	bottom, bottomOK := entries.Opaque[layout.BottomDirectoryEntry]
+	if !upperOK || !bottomOK {
+		return errors.New("battle: separated native item panel large entries are unavailable")
+	}
+	portraits, err := dato.LoadSeparatedResource(portraitRoot, portraitResource)
+	if err != nil {
+		return fmt.Errorf("battle: native item panel separated portrait %d: %w", portraitResource, err)
+	}
+	if len(portraits) == 0 {
+		return errors.New("battle: native item panel DATO frame zero is unavailable")
+	}
+	return RenderNativeItemPanelBase(
+		cells, portraits[0],
+		upper, bottom,
+		dst,
+	)
+}
+
+// RenderNativeItemPanelBaseResourcesArchive is retained only for fixed-source
+// oracle comparisons. Production callers use RenderNativeItemPanelBaseResources.
+func RenderNativeItemPanelBaseResourcesArchive(
 	fdotherPath, portraitRoot string,
 	portraitResource int,
 	dst []byte,
@@ -102,10 +142,5 @@ func RenderNativeItemPanelBaseResources(
 	if len(portraits) == 0 {
 		return errors.New("battle: native item panel DATO frame zero is unavailable")
 	}
-	return RenderNativeItemPanelBase(
-		cells, portraits[0],
-		entries[layout.UpperDirectoryEntry],
-		entries[layout.BottomDirectoryEntry],
-		dst,
-	)
+	return RenderNativeItemPanelBase(cells, portraits[0], entries[layout.UpperDirectoryEntry], entries[layout.BottomDirectoryEntry], dst)
 }
