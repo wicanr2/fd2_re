@@ -11,13 +11,15 @@ import (
 )
 
 type separatedSurfaceSource struct {
-	File     string `json:"file"`
-	Resource int    `json:"resource"`
-	Nested   *int   `json:"nested,omitempty"`
-	Size     int    `json:"size"`
-	MD5      string `json:"md5"`
-	SHA256   string `json:"sha256"`
-	RawSize  int    `json:"raw_size"`
+	File      string `json:"file"`
+	Resource  int    `json:"resource"`
+	Nested    *int   `json:"nested,omitempty"`
+	Size      int    `json:"size"`
+	MD5       string `json:"md5"`
+	SHA256    string `json:"sha256"`
+	RawSize   int    `json:"raw_size"`
+	RawMD5    string `json:"raw_md5,omitempty"`
+	RawSHA256 string `json:"raw_sha256,omitempty"`
 }
 
 type separatedSurfaceDocument struct {

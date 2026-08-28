@@ -142,11 +142,9 @@ func (g *Game) prepareNativeCh22Aux() error {
 	if state == nil || state.phase != 4 || g.handlerChapter != 23 {
 		return errors.New("ch22 chapter23 auxiliary reload is out of order")
 	}
-	path := nativeFDOTHERPath()
-	if path == "" {
-		return errors.New("ch22 chapter23 auxiliary reload requires player-provided FDOTHER.DAT")
-	}
-	frame, err := fdother.DecodeNativeCh23Stage(path)
+	frame, err := fdother.LoadSeparatedNativeCh23Stage(
+		separatedAssetPath("surfaces"),
+	)
 	if err != nil {
 		return fmt.Errorf("FDOTHER #42: %w", err)
 	}

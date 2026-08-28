@@ -1,0 +1,89 @@
+FD2 chapter-23 staging FDOTHER #42 separated-asset evidence
+==========================================================
+
+狀態：RE-CLOSED／DATA-READY／RUNTIME-E1（2026-08-29）
+
+固定輸入
+--------
+
+- `FD2.EXE`
+  - size：357074 bytes
+  - MD5：`b97caf2239a27a896069d03549d96e1e`
+  - SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- `FDOTHER.DAT`
+  - size：3382481 bytes
+  - MD5：`22f56e5027edc7c766ad34ca4e5aca93`
+  - SHA-256：`a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`
+- FDOTHER resource 42 raw entry
+  - size：59412 bytes
+  - MD5：`b9cd7793d8eec9c80bad5a364029a7a8`
+  - SHA-256：`4bef756aaf78b95cf97949785c71b4c3e04822a497741f468e6863d61da38d2d`
+
+原版證據與位址空間
+--------------------
+
+主證據為
+[`ida/fd2_ch23_post_ida.txt`](ida/fd2_ch23_post_ida.txt)。工具為使用者授權的
+IDA Pro 9.4 Docker，並以 Capstone 5 Docker 交叉驗證；位址均是
+FD2 LE linear address，不是檔案偏移。
+
+- `sub_10652` 邊界：`0x10652..0x1088D`。
+- raw chapter `0x17` 分支於 `0x107EF..0x10804` 將 selector `0x2A`
+  （decimal 42）交給 `sub_111BA`，資源來自 `FDOTHER.DAT`。
+- `0x107DD..0x107EA` 配置 `0xEA00` bytes，即 `312*192`。
+- `0x10809..0x10820` 以 transparent `-1`、stride `0x138`（312）與
+  staging owner 呼叫 `sub_4E63D`。
+- `0x1083B..0x10842` 在 loader 完成後呼叫 `sub_24D22(0)`。
+- raw entry 開頭是 little-endian width 312、height 192，其後是已驗證
+  `0x4E63D` four-mode stream。
+
+已證實與未知
+--------------
+
+- resource selector、archive owner、raw geometry、stride、surface size、transparent mode、
+  cleanup 邊界：**已證實**。
+- `native_ch23_loop` 與 chapter-23 auxiliary reload 共用這份 staging source：
+  **已證實**（同一 typed decoder 與正式 consumer）。
+- 這張圖的高階美術名稱、故事對象或可重用 UI 語意：**未知**。
+- 未修改 DOSBox 的同狀態逐幀比較：**未達 PLAYER-E2**。
+
+分離資產 READY 契約
+----------------------
+
+- 使用現有標準單幀路徑：`surfaces/FDOTHER_042/`。
+- `resource.json`：
+  - `kind=indexed_surface`
+  - `asset_id=surface/FDOTHER_042`
+  - `codec=fd2_4e63d_single_frame`
+  - `status=decoded`、`evidence=confirmed`
+  - source 固定為上述 FDOTHER identity、resource 42、raw size 59412。
+- `frame.png` 必須是312×192、256色 indexed PNG；`mask.png` 必須是
+  同尺寸 binary grayscale mask。透明 skip 不可轉成 palette index 0。
+- `LoadSeparatedNativeCh23Stage` 固定檢查身分、resource、raw size、
+  codec、幾何、indexed frame 與 binary mask；不讀取或回退 archive。
+- `startNativeCh23Loop` 與 `prepareNativeCh22Aux` 必須共用這個 strict
+  loader；缺包時在 staging 或 campaign mutation 前失敗即關閉。
+- 驗收必須將 separated frame 與固定原版 `DecodeNativeCh23Stage`
+  的 geometry／indexed pixels／mask 逐項比較，並執行兩個正式 owner
+  的聚焦回歸與缺包拒絕。
+
+停止線
+------
+
+本切片只遷移已閉合的 resource42 source frame，不重解 `0x24C1E`
+的 loop、BIOS tick、DAC、campaign handoff 或未修改原版 E2。標準 DOS
+時脈亦不是這個素材分離契約的阻擋。
+
+實作與驗證
+----------
+
+- `fd2-asset-import` 已輸出 `surfaces/FDOTHER_042/resource.json`、
+  `frame.png`與`mask.png`；metadata 保存raw size／MD5／SHA-256。
+- `LoadSeparatedNativeCh23Stage` 在generic `indexed_surface` 契約外再固定
+  resource42 raw identity與312×192幾何；缺包會拒絕。
+- `startNativeCh23Loop` 與 `prepareNativeCh22Aux` 均已改用分離 loader，
+  對應 production 檔案已無 `nativeFDOTHERPath`／`DecodeNativeCh23Stage`。
+- Docker 驗證：`go test ./internal/fdother ./cmd/fd2-asset-import -count=1`；
+  另以有界 Xvfb 執行 `go test ./cmd/fd2 -run
+  "NativeCh23|NativeCh22Reload|Ch22Reload" -count=1`。兩批均通過，且缺包在
+  loop／reload 發布前原子拒絕。

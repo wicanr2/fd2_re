@@ -30,6 +30,11 @@
 > 正式演出與全軍移動 preflight 均只消費分離 bank。下一個 A2／A3
 > 切片仍依 production caller 盤點選擇，不重做 event61 handler 語意。
 
+> **2026-08-29 A2／A3 第二批追加：** FDOTHER #42 chapter-23 staging 已達
+> `DATA-READY／RUNTIME-E1`；312×192 indexed surface／mask與原版逐像素一致，
+> ch23 post 與 ch22 auxiliary reload 兩個production owner只消費分離資產，
+> 缺包在發布前原子拒絕。不重做已閉合的ch23 loop／BIOS／DAC證據。
+
 > **策略更新**：第一輪 remake 改以[`REMAKE-STATUS.md`](../REMAKE-STATUS.md)的
 > 60格分層代表性抽樣建立95%信心。下表既有E2與精確音訊項目先登記到抽樣矩陣；
 > 只有抽樣揭露的重大玩家缺陷才回到實作佇列。全戰役長程遊玩、逐週期DOS硬體、

@@ -1,8 +1,11 @@
 package fdother
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
+	"path/filepath"
 )
 
 const (
@@ -33,6 +36,34 @@ func DecodeNativeCh23Stage(datPath string) (Frame, error) {
 	}
 	if frame.X != 0 || frame.Y != 0 || frame.Width != NativeCh23StageWidth || frame.Height != NativeCh23StageHeight {
 		return Frame{}, fmt.Errorf("fdother: ch23 resource #%d geometry is %dx%d at (%d,%d), want %dx%d at (0,0)", NativeCh23StageResource, frame.Width, frame.Height, frame.X, frame.Y, NativeCh23StageWidth, NativeCh23StageHeight)
+	}
+	return frame, nil
+}
+
+// LoadSeparatedNativeCh23Stage loads the standard indexed surface exported
+// from FDOTHER #42. It validates the chapter-specific raw identity in addition
+// to the generic surface contract and never falls back to the archive.
+func LoadSeparatedNativeCh23Stage(surfaceRoot string) (Frame, error) {
+	metadataPath := filepath.Join(surfaceRoot, "FDOTHER_042", "resource.json")
+	raw, err := os.ReadFile(metadataPath)
+	if err != nil {
+		return Frame{}, fmt.Errorf("fdother: separated ch23 metadata: %w", err)
+	}
+	var document separatedSurfaceDocument
+	if err := json.Unmarshal(raw, &document); err != nil {
+		return Frame{}, fmt.Errorf("fdother: separated ch23 metadata: %w", err)
+	}
+	if document.Source.RawSize != 59412 ||
+		document.Source.RawMD5 != "b9cd7793d8eec9c80bad5a364029a7a8" ||
+		document.Source.RawSHA256 != "4bef756aaf78b95cf97949785c71b4c3e04822a497741f468e6863d61da38d2d" {
+		return Frame{}, errors.New("fdother: separated ch23 raw identity mismatch")
+	}
+	frame, err := LoadSeparatedSingleFrame(surfaceRoot, "FDOTHER.DAT", NativeCh23StageResource)
+	if err != nil {
+		return Frame{}, err
+	}
+	if frame.X != 0 || frame.Y != 0 || frame.Width != NativeCh23StageWidth || frame.Height != NativeCh23StageHeight {
+		return Frame{}, errors.New("fdother: invalid separated ch23 stage geometry")
 	}
 	return frame, nil
 }

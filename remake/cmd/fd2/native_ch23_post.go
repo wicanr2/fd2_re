@@ -100,11 +100,9 @@ func (g *Game) startNativeCh23Loop(loop campaign.NativeCh23Loop, then func()) er
 		if g.nativeCh23State != nil {
 			return errors.New("native ch23 initial loop state already exists")
 		}
-		path := nativeFDOTHERPath()
-		if path == "" {
-			return errors.New("native ch23 requires player-provided FDOTHER.DAT")
-		}
-		frame, err := fdother.DecodeNativeCh23Stage(path)
+		frame, err := fdother.LoadSeparatedNativeCh23Stage(
+			separatedAssetPath("surfaces"),
+		)
 		if err != nil {
 			return fmt.Errorf("FDOTHER #42: %w", err)
 		}

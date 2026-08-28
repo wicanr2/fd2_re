@@ -21,6 +21,28 @@ func TestDecodeAndBlitNativeCh23StageFromPlayerArchive(t *testing.T) {
 	if err := BlitNativeCh23Stage(frame, staging); err != nil {
 		t.Fatal(err)
 	}
+	separated, err := LoadSeparatedNativeCh23Stage(
+		"../../generated-assets/fd2-original-b97caf22/surfaces",
+	)
+	if err != nil {
+		t.Skipf("separated ch23 stage is absent: %v", err)
+	}
+	wantIndexed, wantMask, err := frame.IndexedLayers()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if separated.X != frame.X || separated.Y != frame.Y ||
+		separated.Width != frame.Width || separated.Height != frame.Height ||
+		!bytes.Equal(separated.Indexed, wantIndexed) ||
+		!bytes.Equal(separated.Mask, wantMask) {
+		t.Fatal("separated ch23 stage differs from the original archive")
+	}
+}
+
+func TestSeparatedNativeCh23StageFailsClosedWithoutPack(t *testing.T) {
+	if _, err := LoadSeparatedNativeCh23Stage(t.TempDir()); err == nil {
+		t.Fatal("missing separated ch23 stage was accepted")
+	}
 }
 
 func TestBlitNativeCh23StageRejectsWrongSurfaceWithoutMutation(t *testing.T) {

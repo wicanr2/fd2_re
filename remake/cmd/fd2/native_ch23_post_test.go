@@ -33,6 +33,11 @@ func completeNativeCh23Game(t *testing.T) (*Game, time.Time) {
 	if _, err := os.Stat(fdotherPath); err != nil {
 		t.Skip("player-provided FDOTHER.DAT is unavailable")
 	}
+	assetPack := filepath.Clean("../../generated-assets/fd2-original-b97caf22")
+	if _, err := os.Stat(filepath.Join(assetPack, "surfaces", "FDOTHER_042", "resource.json")); err != nil {
+		t.Skip("separated FDOTHER #42 is unavailable")
+	}
+	t.Setenv("FD2_ASSET_PACK", assetPack)
 	t.Setenv("FD2_ORIGINAL_FDOTHER", fdotherPath)
 	assets, field, state := completeNativeMapFrameFixture(t)
 	assets.LUTs = make([][]byte, 32)
@@ -150,5 +155,16 @@ func TestNativeCh23RejectsMissingRawFrameBeforeMutation(t *testing.T) {
 	}
 	if g.nativeCh23Loop != nil || g.nativeCh23State != nil || !bytes.Equal(g.nativeMapWork, before) {
 		t.Fatal("rejected ch23 start partially mutated runtime")
+	}
+}
+
+func TestNativeCh23RejectsMissingSeparatedStageBeforeMutation(t *testing.T) {
+	g, _ := completeNativeCh23Game(t)
+	t.Setenv("FD2_ASSET_PACK", t.TempDir())
+	if err := g.startNativeCh23Loop(nativeCh23LoopForTest("initial"), nil); err == nil {
+		t.Fatal("missing separated FDOTHER #42 was accepted")
+	}
+	if g.nativeCh23State != nil || g.nativeCh23Loop != nil {
+		t.Fatal("missing separated FDOTHER #42 partially published loop state")
 	}
 }

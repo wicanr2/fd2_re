@@ -72,6 +72,33 @@ func TestNativeCh22ReloadCommitsOnlyAfterGridResetAndAuxStage(t *testing.T) {
 	}
 }
 
+func TestNativeCh22ReloadRejectsMissingSeparatedAuxBeforeCommit(t *testing.T) {
+	nativeCh22OriginalPaths(t)
+	g := completeNative2189AGame(t)
+	g.handlerChapter = 23
+	beforeMap, beforeGrid := g.m, append([]byte(nil), g.st.NativeMapEventGrid...)
+	for _, beat := range []campaign.Beat{
+		ch22ResourceBeat("0x24a4b", "FDFIELD.DAT", "0x53a51", 69),
+		ch22ResourceBeat("0x24a65", "FDSHAP.DAT", "0x53a5d", 46),
+		ch22ResourceBeat("0x24a7f", "FDSHAP.DAT", "0x53a69", 47),
+	} {
+		if err := g.stageNativeCh22Resource(beat); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := g.resetNativeCh22ReloadGrid(); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("FD2_ASSET_PACK", t.TempDir())
+	if err := g.prepareNativeCh22Aux(); err == nil {
+		t.Fatal("missing separated FDOTHER #42 auxiliary stage was accepted")
+	}
+	if g.nativeCh22Reload == nil || g.m != beforeMap ||
+		!bytes.Equal(g.st.NativeMapEventGrid, beforeGrid) || g.nativeCh23State != nil {
+		t.Fatal("missing separated FDOTHER #42 partially committed the reload")
+	}
+}
+
 func TestNativeCh22ReloadRejectsWrongArchiveOwnerWithoutMutation(t *testing.T) {
 	nativeCh22OriginalPaths(t)
 	g := completeNative2189AGame(t)

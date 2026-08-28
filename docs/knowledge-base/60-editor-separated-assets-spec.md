@@ -338,6 +338,28 @@ event61 演出 owner 與全軍移動 preflight 現只消費分離 bank，resourc
 的 production archive caller 歸零；缺包拒絕、`internal/fdother` 回歸與
 有界 Xvfb 正式 event61／group-march 聚焦測試均通過。
 
+#### Chapter-23 staging FDOTHER #42 單幀契約
+
+> 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）；主證據見
+> [`fd2_ch23_stage_assets_evidence.txt`](../data/fd2_ch23_stage_assets_evidence.txt)。
+
+`surfaces/FDOTHER_042/resource.json` 沿用標準 `indexed_surface` 契約與
+`surface/FDOTHER_042` 穩定 identity；`frame.png`與`mask.png`固定為
+312×192 indexed pixels／binary source mask。source 必須綁定固定 FDOTHER
+版本、resource42與raw size 59412。`LoadSeparatedNativeCh23Stage` 只接受
+這份完整契約；任一 metadata、codec、幾何、PNG類型或mask值不符
+即失敗即關閉，不回退 `FDOTHER.DAT`。
+
+正式 `startNativeCh23Loop` 與 `prepareNativeCh22Aux` 必須共用該 loader。
+驗收包含原版／分離 geometry／indexed pixels／mask 對照、缺包原子
+拒絕，以及 ch23 post／ch22 auxiliary reload 兩條正式路徑聚焦回歸。
+這不重解 loop／DAC／BIOS tick，也不自動提升 PLAYER-E2。
+
+實作結果：importer 已輸出312×192 indexed PNG／binary mask與帶raw
+entry 雜湊的metadata；strict loader 與固定原版的geometry／indexed
+pixels／mask對照一致。ch23 post 與 ch22 auxiliary reload 現只消費此分離
+surface；缺包原子拒絕與兩條有界 Xvfb 聚焦回歸均通過。
+
 #### 戰鬥共用 FDOTHER #0 DAC owner 遷移契約
 
 > 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）

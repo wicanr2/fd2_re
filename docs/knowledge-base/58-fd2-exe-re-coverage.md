@@ -143,6 +143,11 @@ writer／consumer 分類高 fan-in helper，不用 unknown 總數驅動無限 RE
 > preflight 均改用 separated loader，resource45 的 production archive caller 歸零。
 > 本批不改上表「整體仍是部分」的裁決。
 
+> **2026-08-29 chapter-23 staging 資產追加：** FDOTHER #42 已輸出為
+> 312×192 `indexed_surface`、binary mask與raw-entry identity；ch23 post loop與
+> ch22 auxiliary reload均改用strict separated loader，對應archive caller歸零。
+> loop／DAC／BIOS tick與一般玩家E2的原有證據等級不變。
+
 > **2026-08-26 晚期四槽 LOAD 勘誤：** 同一固定雜湊 `fd2last.sav` 現已由重製
 > 正式 selector 還原 slot 0 的29人、60金幣與 raw metadata，並進
 > `preparation_ch30`。聚焦回歸先證明舊 `raw+1` 映射會誤進

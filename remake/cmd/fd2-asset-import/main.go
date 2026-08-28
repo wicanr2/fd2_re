@@ -80,13 +80,15 @@ type afmPaletteDocument struct {
 }
 
 type sourceID struct {
-	File     string `json:"file"`
-	Resource int    `json:"resource"`
-	Nested   *int   `json:"nested,omitempty"`
-	Size     int    `json:"size"`
-	MD5      string `json:"md5"`
-	SHA256   string `json:"sha256"`
-	RawSize  int    `json:"raw_size"`
+	File      string `json:"file"`
+	Resource  int    `json:"resource"`
+	Nested    *int   `json:"nested,omitempty"`
+	Size      int    `json:"size"`
+	MD5       string `json:"md5"`
+	SHA256    string `json:"sha256"`
+	RawSize   int    `json:"raw_size"`
+	RawMD5    string `json:"raw_md5,omitempty"`
+	RawSHA256 string `json:"raw_sha256,omitempty"`
 }
 
 type surfaceDocument struct {
@@ -424,11 +426,16 @@ func exportSelectedSingleFrame(path, outputRoot string, identity archiveIdentity
 		return err
 	}
 	directory := filepath.Join(outputRoot, "surfaces", fmt.Sprintf("%s_%03d", identity.prefix, resource))
+	rawMD5, rawSHA256 := md5.Sum(raw), sha256.Sum256(raw)
 	document := surfaceDocument{
 		SchemaVersion: 1, Kind: "indexed_surface", AssetID: fmt.Sprintf("surface/%s_%03d", identity.prefix, resource),
 		Status: "decoded", Codec: "fd2_4e63d_single_frame", Width: frame.Width, Height: frame.Height,
 		Frame: "frame.png", Mask: "mask.png", Evidence: "confirmed",
-		Source: sourceID{File: identity.file, Resource: resource, Size: identity.size, MD5: identity.md5, SHA256: identity.sha256, RawSize: len(raw)},
+		Source: sourceID{
+			File: identity.file, Resource: resource, Size: identity.size,
+			MD5: identity.md5, SHA256: identity.sha256, RawSize: len(raw),
+			RawMD5: hex.EncodeToString(rawMD5[:]), RawSHA256: hex.EncodeToString(rawSHA256[:]),
+		},
 	}
 	if err := writeSurfacePNGs(directory, frame.Width, frame.Height, indexed, mask); err != nil {
 		return err
@@ -734,6 +741,9 @@ func exportCommandGrid(fdotherPath, outputRoot string) error {
 	}
 	if err := exportEvent61Frames(fdotherPath, outputRoot); err != nil {
 		return err
+	}
+	if err := exportSelectedSingleFrame(fdotherPath, outputRoot, fdotherArchive, 42); err != nil {
+		return fmt.Errorf("FDOTHER #42 chapter-23 staging surface: %w", err)
 	}
 	if err := exportNativeShops(fdotherPath, outputRoot); err != nil {
 		return err
