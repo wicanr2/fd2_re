@@ -130,24 +130,18 @@ func TestPhase0AssetsRequireExplicitBaseline(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	text, err := os.ReadFile("../../../extracted/raw/FDTXT/FDTXT_031.bin")
-	if os.IsNotExist(err) {
-		t.Skip("player-provided finale text is absent")
-	}
+	strings, err := fdtxt.LoadSeparatedResource("../../generated-assets/fd2-original-b97caf22/text", 31)
 	if err != nil {
-		t.Fatal(err)
+		t.Skipf("separated finale text is absent: %v", err)
 	}
-	font, err := os.ReadFile("../../../extracted/raw/FDOTHER/FDOTHER_004.bin")
-	if os.IsNotExist(err) {
-		t.Skip("player-provided native font is absent")
-	}
+	font, err := fdtxt.LoadSeparatedFont("../../generated-assets/fd2-original-b97caf22/fonts")
 	if err != nil {
-		t.Fatal(err)
+		t.Skipf("separated native font is absent: %v", err)
 	}
 	var baseline [768]byte
 	baseline[0] = 50
 	c := NewIndexedCompositor()
-	p, err := NewPhase0PlayerFromAssets(*phase, Phase0Assets{TextResource: text, FontResource: font, Baseline: baseline}, c)
+	p, err := NewPhase0PlayerFromAssets(*phase, Phase0Assets{Strings: strings, Font: font, Baseline: baseline}, c)
 	if err != nil {
 		t.Fatal(err)
 	}

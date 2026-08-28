@@ -83,11 +83,20 @@ func (p FinalePhase) ComposePhase0Text(staging, textResource, fontResource []byt
 	if err != nil {
 		return 0, err
 	}
-	words, err := strings.Words(p.Phase.StringIndex)
+	font, err := fdtxt.ParseFont(fontResource)
 	if err != nil {
 		return 0, err
 	}
-	font, err := fdtxt.ParseFont(fontResource)
+	return p.ComposePhase0TextTyped(staging, strings, font)
+}
+
+// ComposePhase0TextTyped consumes the separated FDTXT/font contract. The raw
+// wrapper above remains only for source-oracle tests.
+func (p FinalePhase) ComposePhase0TextTyped(staging []byte, strings *fdtxt.Strings, font *fdtxt.Font) (int, error) {
+	if p.Ready() || len(staging) != p.Phase.StagingBytes || strings == nil || font == nil {
+		return 0, fmt.Errorf("ending: invalid phase-0 typed text assets")
+	}
+	words, err := strings.Words(p.Phase.StringIndex)
 	if err != nil {
 		return 0, err
 	}
@@ -129,6 +138,8 @@ type Phase0Player struct {
 type Phase0Assets struct {
 	TextResource []byte
 	FontResource []byte
+	Strings      *fdtxt.Strings
+	Font         *fdtxt.Font
 	Baseline     [768]byte
 }
 
@@ -137,7 +148,19 @@ func NewPhase0PlayerFromAssets(phase FinalePhase, assets Phase0Assets, composito
 		return nil, fmt.Errorf("ending: nil phase-0 compositor")
 	}
 	staging := make([]byte, phase.Phase.StagingBytes)
-	if _, err := phase.ComposePhase0Text(staging, assets.TextResource, assets.FontResource); err != nil {
+	strings, font := assets.Strings, assets.Font
+	if strings == nil || font == nil {
+		var err error
+		strings, err = fdtxt.Parse(assets.TextResource)
+		if err != nil {
+			return nil, err
+		}
+		font, err = fdtxt.ParseFont(assets.FontResource)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if _, err := phase.ComposePhase0TextTyped(staging, strings, font); err != nil {
 		return nil, err
 	}
 	copy(compositor.Baseline[:], assets.Baseline[:])

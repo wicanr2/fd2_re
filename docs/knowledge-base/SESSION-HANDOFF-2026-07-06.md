@@ -8175,6 +8175,7 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
 - 固定hash `FDTXT.DAT` 已匯出34份lossless typed JSON；零長度#34明列blocked。
   UTF-8投影與glyph/control token不一致時loader拒絕，不重新猜FFxx語意。
 - `FDOTHER#4`已輸出1,824 glyph的512×912二值atlas及metadata，逐bit與原始bank一致。
-- 正式LOAD、職業／教會共用資產與party montage改讀分離#0/#31及字型；道具／轉移
-  面板與終局phase0仍是下一批archive consumer，因此本次只標`RUNTIME-E1-PARTIAL`。
+- 正式LOAD、職業／教會共用資產、戰場姓名、party montage與終局phase0改讀分離
+  #0/#31及字型；道具／轉移面板仍是下一批archive consumer，因此只標
+  `RUNTIME-E1-PARTIAL`。
 - manifest更新為7,914筆：6,890 exported、1,005 intentionally_raw、19 blocked。

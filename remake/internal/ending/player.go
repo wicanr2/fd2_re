@@ -31,8 +31,8 @@ type Player struct {
 	State        PlaybackState
 }
 
-// EnableRecoveredPhase0 supplies the two archive resources that 0x2c405
-// reads after the already-recovered 0x2bce5 prefix.  It does not make the
+// EnableRecoveredPhase0 supplies the separated text/font assets that 0x2c405
+// consumes after the already-recovered 0x2bce5 prefix. It does not make the
 // ending generally playable: it only permits the exact 0x2c172 hand-off and
 // will block again at the verified 0x2c548 montage boundary.
 //
@@ -43,7 +43,8 @@ type Player struct {
 func (p *Player) EnableRecoveredPhase0(phase FinalePhase, assets Phase0Assets) error {
 	if p == nil || p.State != PlaybackRunning || phase.Ready() ||
 		phase.NativeHandler != "0x2c405" || phase.Gate.Source != "0x2c548" ||
-		len(assets.TextResource) == 0 || len(assets.FontResource) == 0 {
+		((assets.Strings == nil || assets.Font == nil) &&
+			(len(assets.TextResource) == 0 || len(assets.FontResource) == 0)) {
 		return errors.New("ending: invalid recovered phase-0 inputs")
 	}
 	p.phase0Spec = &phase

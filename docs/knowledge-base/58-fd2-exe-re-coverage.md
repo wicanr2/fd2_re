@@ -629,7 +629,7 @@ caller-specific indexed owner；ID8／19雖無固定初始bit，仍保留已閉�
 亦由PNG atlas逐bit重建一致。UTF-8只是可編輯投影，runtime以lossless tokens為準並拒絕
 兩者不一致，故不把未證實FFxx高階名稱寫入資料契約。
 
-LOAD、職業／教會共用資產與party montage已改讀分離FDTXT#0/#31及字型，達
-`DATA-READY`／局部`RUNTIME-E1`。共用道具／轉移面板與終局phase0仍直接消費archive，
+LOAD、職業／教會共用資產、戰場姓名、party montage與終局phase0已改讀分離
+FDTXT#0/#31及字型，達`DATA-READY`／局部`RUNTIME-E1`。共用道具／轉移面板仍直接消費archive，
 所以不得宣稱FDTXT production caller歸零；下一步只遷移這些已知consumer，不重做
 文字格式RE。

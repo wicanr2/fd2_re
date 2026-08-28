@@ -384,8 +384,8 @@ UTF-8投影與token不一致的文件。
 
 `FDOTHER.DAT#4`已輸出512×912二值atlas及metadata；1,824個16×16 glyph逐bit與
 58,368-byte原始bank一致，灰階中間值、錯誤geometry及來源hash均失敗即關閉。正式
-LOAD、職業／教會共用資產及party montage已改讀分離FDTXT#0/#31與字型，不回退這兩項
-archive resource。道具／轉移面板與終局phase0仍有FDTXT archive consumer，故本家族
+LOAD、職業／教會共用資產、戰場姓名、party montage及終局phase0已改讀分離
+FDTXT#0/#31與字型，不回退這兩項archive resource。道具／轉移面板仍有FDTXT archive consumer，故本家族
 狀態是 `DATA-READY`／`RUNTIME-E1-PARTIAL`，不是完成。
 
 重生後完整manifest為7,914筆：6,890 exported、1,005 intentionally_raw、19 blocked；

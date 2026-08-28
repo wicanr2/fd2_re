@@ -17,6 +17,7 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
 	"github.com/wicanr2/fd2_re/remake/internal/ending"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
 )
 
 // nativeEndingPreview preserves the recovered 0x2bce5 prefix and also owns
@@ -33,7 +34,6 @@ type nativeEndingPreview struct {
 	campaignSourceBound   bool
 	audioCueConsumed      bool
 	fdotherPath           string
-	fdtxtPath             string
 	montage               *ending.MontageCycle
 	montageWait           time.Duration
 	montageInputPending   bool
@@ -111,32 +111,23 @@ func newNativeEndingPreviewForTimeline(timelinePath string, chapter int) (*nativ
 	if err != nil {
 		return nil, err
 	}
-	fdtxtPath := playerAssetPath("FD2_FDTXT", []string{
-		filepath.Join(filepath.Dir(fdotherPath), "FDTXT.DAT"),
-		"assets/FDTXT.DAT",
-		"../org_game/炎龍騎士團/FLAME2/FDTXT.DAT",
-		"org_game/炎龍騎士團/FLAME2/FDTXT.DAT",
-	})
-	if fdtxtPath == "" {
-		return nil, fmt.Errorf("ending: player-provided FDTXT.DAT is unavailable")
-	}
-	textResource, err := fdother.ReadResource(fdtxtPath, 31)
+	strings, err := fdtxt.LoadSeparatedResource(separatedAssetPath("text"), 31)
 	if err != nil {
 		return nil, err
 	}
-	fontResource, err := fdother.ReadResource(fdotherPath, 4)
+	font, err := fdtxt.LoadSeparatedFont(separatedAssetPath("fonts"))
 	if err != nil {
 		return nil, err
 	}
 	if err := player.EnableRecoveredPhase0(*phase0, ending.Phase0Assets{
-		TextResource: textResource,
-		FontResource: fontResource,
+		Strings: strings,
+		Font:    font,
 	}); err != nil {
 		return nil, err
 	}
 	return &nativeEndingPreview{
 		player: player, view: ebiten.NewImage(ending.Width, ending.Height), chapter: chapter,
-		fdotherPath: fdotherPath, fdtxtPath: fdtxtPath,
+		fdotherPath: fdotherPath,
 	}, nil
 }
 
@@ -292,7 +283,7 @@ func nativeEndingMontageRecords(order []int, roster map[int]battle.Unit) ([][]by
 }
 
 func (p *nativeEndingPreview) montageArchivePaths() (ending.MontageArchivePaths, error) {
-	if p == nil || p.fdotherPath == "" || p.fdtxtPath == "" {
+	if p == nil || p.fdotherPath == "" {
 		return ending.MontageArchivePaths{}, fmt.Errorf("ending: prefix archive provenance is unavailable")
 	}
 	paths := ending.MontageArchivePaths{
