@@ -41,6 +41,7 @@ type paletteDocument struct {
 type sourceID struct {
 	File     string `json:"file"`
 	Resource int    `json:"resource"`
+	Nested   *int   `json:"nested,omitempty"`
 	Size     int    `json:"size"`
 	MD5      string `json:"md5"`
 	SHA256   string `json:"sha256"`
@@ -48,18 +49,20 @@ type sourceID struct {
 }
 
 type surfaceDocument struct {
-	SchemaVersion int      `json:"schema_version"`
-	Kind          string   `json:"kind"`
-	AssetID       string   `json:"asset_id"`
-	Status        string   `json:"status"`
-	Codec         string   `json:"codec,omitempty"`
-	Width         int      `json:"width,omitempty"`
-	Height        int      `json:"height,omitempty"`
-	Frame         string   `json:"frame,omitempty"`
-	Mask          string   `json:"mask,omitempty"`
-	Evidence      string   `json:"evidence"`
-	ReasonCode    string   `json:"reason_code,omitempty"`
-	Source        sourceID `json:"source"`
+	SchemaVersion  int      `json:"schema_version"`
+	Kind           string   `json:"kind"`
+	AssetID        string   `json:"asset_id"`
+	Status         string   `json:"status"`
+	Codec          string   `json:"codec,omitempty"`
+	Width          int      `json:"width,omitempty"`
+	Height         int      `json:"height,omitempty"`
+	Frame          string   `json:"frame,omitempty"`
+	Mask           string   `json:"mask,omitempty"`
+	Evidence       string   `json:"evidence"`
+	ReasonCode     string   `json:"reason_code,omitempty"`
+	ContainerCount int      `json:"container_entry_count,omitempty"`
+	EmptyTailIndex *int     `json:"empty_tail_index,omitempty"`
+	Source         sourceID `json:"source"`
 }
 
 type textToken struct {
@@ -553,6 +556,9 @@ func exportCommandGrid(fdotherPath, outputRoot string) error {
 	if err := exportTitlePublisher(fdotherPath, outputRoot); err != nil {
 		return err
 	}
+	if err := exportTitleFDOTHER(fdotherPath, outputRoot); err != nil {
+		return err
+	}
 	return exportEndingFDOTHER(fdotherPath, outputRoot)
 }
 
@@ -572,6 +578,75 @@ func exportTitlePublisher(fdotherPath, outputRoot string) error {
 		Source:     sourceID{File: fdotherArchive.file, Resource: 76, Size: fdotherArchive.size, MD5: fdotherArchive.md5, SHA256: fdotherArchive.sha256, RawSize: len(dac)},
 		Components: bytesToInts(dac),
 	})
+}
+
+func exportTitleFDOTHER(fdotherPath, outputRoot string) error {
+	for _, resource := range []int{69, 70, 71, 72, 73, 75, 100} {
+		if err := exportSelectedSingleFrame(fdotherPath, outputRoot, fdotherArchive, resource); err != nil {
+			return fmt.Errorf("FDOTHER #%d title surface: %w", resource, err)
+		}
+	}
+	for _, resource := range []int{8, 99, 101} {
+		dac, err := fdother.ReadResource(fdotherPath, resource)
+		if err != nil {
+			return err
+		}
+		if _, err := fdother.ParseVGAPalette(dac); err != nil {
+			return fmt.Errorf("FDOTHER #%d title palette: %w", resource, err)
+		}
+		if err := writeJSON(filepath.Join(outputRoot, "palette", fmt.Sprintf("fdother_%03d.json", resource)), paletteDocument{
+			SchemaVersion: 1,
+			AssetID:       fmt.Sprintf("palette/fdother_%03d", resource),
+			Source:        sourceID{File: fdotherArchive.file, Resource: resource, Size: fdotherArchive.size, MD5: fdotherArchive.md5, SHA256: fdotherArchive.sha256, RawSize: len(dac)},
+			Components:    bytesToInts(dac),
+		}); err != nil {
+			return err
+		}
+	}
+	return exportTitleNestedSurfaces(fdotherPath, outputRoot)
+}
+
+func exportTitleNestedSurfaces(fdotherPath, outputRoot string) error {
+	outer, err := fdother.ReadResource(fdotherPath, 7)
+	if err != nil {
+		return err
+	}
+	if count, err := fdother.ArchiveDataResourceCount(outer); err != nil || count != 8 {
+		return fmt.Errorf("FDOTHER #7 nested count=%d err=%v, want 8", count, err)
+	}
+	tail, err := fdother.ArchiveEntry(outer, 7)
+	if err != nil || len(tail) != 0 {
+		return fmt.Errorf("FDOTHER #7 nested tail bytes=%d err=%v, want 0", len(tail), err)
+	}
+	for nested := 0; nested < 7; nested++ {
+		raw, err := fdother.ArchiveEntry(outer, nested)
+		if err != nil {
+			return err
+		}
+		frame, err := fdother.ParseSingleFrame(raw)
+		if err != nil {
+			return fmt.Errorf("FDOTHER #7/%d title surface: %w", nested, err)
+		}
+		indexed, mask, err := frame.IndexedLayers()
+		if err != nil {
+			return err
+		}
+		directory := filepath.Join(outputRoot, "surfaces", "FDOTHER_007", fmt.Sprintf("entry_%03d", nested))
+		entryIndex, emptyTail := nested, 7
+		document := surfaceDocument{
+			SchemaVersion: 1, Kind: "indexed_surface", AssetID: fmt.Sprintf("surface/FDOTHER_007/entry_%03d", nested),
+			Status: "decoded", Codec: "fd2_4e63d_single_frame", Width: frame.Width, Height: frame.Height,
+			Frame: "frame.png", Mask: "mask.png", Evidence: "confirmed", ContainerCount: 8, EmptyTailIndex: &emptyTail,
+			Source: sourceID{File: fdotherArchive.file, Resource: 7, Nested: &entryIndex, Size: fdotherArchive.size, MD5: fdotherArchive.md5, SHA256: fdotherArchive.sha256, RawSize: len(raw)},
+		}
+		if err := writeSurfacePNGs(directory, frame.Width, frame.Height, indexed, mask); err != nil {
+			return err
+		}
+		if err := writeJSON(filepath.Join(directory, "resource.json"), document); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func exportNativeTown(fdotherPath, outputRoot string) error {

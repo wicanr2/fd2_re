@@ -8303,3 +8303,19 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   exported、1,005 intentionally raw、19 blocked。
 - 本切片達 `DATA-READY`／`RUNTIME-E1`。尚未遷移的標題資料是 FDOTHER #69..#73、#101、
   #7／#8及 ANI clips；它們必須另依 RE 證據與可審查規格處理。
+
+## 2026-08-28 標題 FDOTHER 捲動／主選單／靜態幕分離素材閉合
+
+- 既有 IDA 9.4 `sub_1F894`／`sub_1F73F`／`sub_286BD` 證據直接固定 #69..#73／
+  #101、#100／#99、#75／#76及#7／#8的consumer；本批沒有重解排程或猜測renderer。
+- #7實檔為8-entry巢狀`LLLLLL`：sub0為320×200，sub1..6依序為61×7、61×7、
+  62×7、62×7、62×8、62×8，sub7為零長度尾項。匯入器只輸出七個有效影格，但
+  metadata與嚴格loader同時驗證directory count=8及empty tail=7。
+- 共輸出7張root與7張nested indexed PNG、各自binary mask與metadata，加上#8／#99／
+  #101三份DAC JSON，共45筆。14張影格逐indexed pixel／mask與固定archive oracle一致；
+  三份DAC逐byte一致。
+- 正式`loadTitleAssets`已移除`assets/title/scroll_big.png`、`title.png`、`menu_1..6.png`、
+  `cut_guardian.png`及`cut_castle.png`的production讀取，也不再呼叫FDOTHER transition
+  decoder。缺分離pack會在發布任何標題狀態前回傳明確錯誤，不再靜默跳過開場。
+- manifest現為38,092筆：37,068 exported、1,005 intentionally raw、19 blocked。本切片
+  達`DATA-READY`／`RUNTIME-E1`；ANI.DAT 0／1／3..8仍是獨立待遷移archive consumer。

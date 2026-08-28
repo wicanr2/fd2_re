@@ -8,6 +8,8 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
 func TestTitleCutScriptMatchesNativeInterleavedSchedule(t *testing.T) {
@@ -205,6 +207,107 @@ func TestSeparatedTitlePublisherFailsClosedWithoutPack(t *testing.T) {
 	}
 }
 
+func TestSeparatedTitleFDOTHERMatchesFixedArchive(t *testing.T) {
+	archive := filepath.Join("../../../org_game/炎龍騎士團/FLAME2", "FDOTHER.DAT")
+	pack := filepath.Join("..", "..", "generated-assets", "fd2-original-b97caf22")
+	if _, err := os.Stat(archive); err != nil {
+		t.Skip("player-provided FDOTHER.DAT is absent")
+	}
+	for _, resource := range []int{69, 70, 71, 72, 73, 75, 100} {
+		raw, err := fdother.ReadResource(archive, resource)
+		if err != nil {
+			t.Fatal(err)
+		}
+		want, err := fdother.ParseSingleFrame(raw)
+		if err != nil {
+			t.Fatal(err)
+		}
+		wantIndexed, wantMask, err := want.IndexedLayers()
+		if err != nil {
+			t.Fatal(err)
+		}
+		got, err := fdother.LoadSeparatedSingleFrame(filepath.Join(pack, "surfaces"), "FDOTHER.DAT", resource)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got.Width != want.Width || got.Height != want.Height || !bytes.Equal(got.Indexed, wantIndexed) || !bytes.Equal(got.Mask, wantMask) {
+			t.Fatalf("separated title root FDOTHER #%d differs", resource)
+		}
+	}
+	for _, resource := range []int{8, 99, 101} {
+		want, err := fdother.ReadResource(archive, resource)
+		if err != nil {
+			t.Fatal(err)
+		}
+		got, _, err := fdother.LoadSeparatedFDOTHERPalette(filepath.Join(pack, "palette"), resource)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !bytes.Equal(got, want) {
+			t.Fatalf("separated title palette FDOTHER #%d differs", resource)
+		}
+	}
+	outer, err := fdother.ReadResource(archive, 7)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if count, err := fdother.ArchiveDataResourceCount(outer); err != nil || count != 8 {
+		t.Fatalf("FDOTHER #7 nested count=%d err=%v", count, err)
+	}
+	if tail, err := fdother.ArchiveEntry(outer, 7); err != nil || len(tail) != 0 {
+		t.Fatalf("FDOTHER #7 empty tail bytes=%d err=%v", len(tail), err)
+	}
+	for nested := 0; nested < 7; nested++ {
+		raw, err := fdother.ArchiveEntry(outer, nested)
+		if err != nil {
+			t.Fatal(err)
+		}
+		want, err := fdother.ParseSingleFrame(raw)
+		if err != nil {
+			t.Fatal(err)
+		}
+		wantIndexed, wantMask, err := want.IndexedLayers()
+		if err != nil {
+			t.Fatal(err)
+		}
+		got, err := fdother.LoadSeparatedNestedSingleFrame(filepath.Join(pack, "surfaces"), 7, nested)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got.Width != want.Width || got.Height != want.Height || !bytes.Equal(got.Indexed, wantIndexed) || !bytes.Equal(got.Mask, wantMask) {
+			t.Fatalf("separated title nested FDOTHER #7/%d differs", nested)
+		}
+	}
+	var assets titleAssets
+	if err := loadSeparatedTitleFDOTHER(pack, &assets); err != nil {
+		t.Fatal(err)
+	}
+	if assets.scroll == nil || assets.title == nil || assets.cutStatic[0] == nil || assets.cutStatic[1] == nil {
+		t.Fatal("separated title bundle omitted a required full-screen surface")
+	}
+	for item := range assets.items {
+		if assets.items[item][0] == nil || assets.items[item][1] == nil {
+			t.Fatalf("separated title bundle omitted menu item %d", item)
+		}
+	}
+}
+
+func TestSeparatedTitleFDOTHERFailsClosedWithoutPack(t *testing.T) {
+	if err := loadSeparatedTitleFDOTHER(t.TempDir(), &titleAssets{}); err == nil {
+		t.Fatal("missing separated title bundle was accepted")
+	}
+}
+
+func TestTitleInitializationFailsClosedBeforePublishingState(t *testing.T) {
+	t.Setenv("FD2_TITLE", "1")
+	t.Setenv("FD2_ASSET_PACK", t.TempDir())
+	t.Setenv("FD2_MUTE", "1")
+	g := loadGame()
+	if g.loadErr == "" || g.titleAssets != nil || g.titlePhase != "" {
+		t.Fatalf("missing title pack published state: assets=%v phase=%q err=%q", g.titleAssets != nil, g.titlePhase, g.loadErr)
+	}
+}
+
 func TestTitleMenuRowsMatchStableDOSBoxOracle(t *testing.T) {
 	want := [...]int{164, 173, 182}
 	for item, y := range want {
@@ -256,6 +359,7 @@ func TestTitleMenuShotOracleRequiresExplicitOutput(t *testing.T) {
 
 func TestTitleMenuShotOracleEntersBoundedMenuState(t *testing.T) {
 	t.Setenv("FD2_TITLE", "1")
+	t.Setenv("FD2_ASSET_PACK", filepath.Join("..", "..", "generated-assets", "fd2-original-b97caf22"))
 	t.Setenv("FD2_SHOT_TITLE_MENU", "1")
 	t.Setenv("FD2_SHOT", t.TempDir()+"/title.png")
 	t.Setenv("FD2_MUTE", "1")

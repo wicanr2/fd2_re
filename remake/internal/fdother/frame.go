@@ -32,6 +32,12 @@ func ArchiveResourceCount(datPath string) (int, error) {
 	if err != nil {
 		return 0, err
 	}
+	return ArchiveDataResourceCount(data)
+}
+
+// ArchiveDataResourceCount 驗證一份已載入的 LLLLLL container 並回傳 directory count。
+// 巢狀 FDOTHER resources 使用這個邊界，避免為了計數把原始 archive 寫到暫存檔。
+func ArchiveDataResourceCount(data []byte) (int, error) {
 	if len(data) < 10 || string(data[:6]) != "LLLLLL" {
 		return 0, errors.New("fdother: missing LLLLLL archive magic")
 	}

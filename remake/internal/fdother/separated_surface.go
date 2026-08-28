@@ -13,6 +13,7 @@ import (
 type separatedSurfaceSource struct {
 	File     string `json:"file"`
 	Resource int    `json:"resource"`
+	Nested   *int   `json:"nested,omitempty"`
 	Size     int    `json:"size"`
 	MD5      string `json:"md5"`
 	SHA256   string `json:"sha256"`
@@ -20,18 +21,20 @@ type separatedSurfaceSource struct {
 }
 
 type separatedSurfaceDocument struct {
-	SchemaVersion int                    `json:"schema_version"`
-	Kind          string                 `json:"kind"`
-	AssetID       string                 `json:"asset_id"`
-	Status        string                 `json:"status"`
-	Codec         string                 `json:"codec"`
-	Width         int                    `json:"width"`
-	Height        int                    `json:"height"`
-	Frame         string                 `json:"frame"`
-	Mask          string                 `json:"mask"`
-	Evidence      string                 `json:"evidence"`
-	ReasonCode    string                 `json:"reason_code,omitempty"`
-	Source        separatedSurfaceSource `json:"source"`
+	SchemaVersion  int                    `json:"schema_version"`
+	Kind           string                 `json:"kind"`
+	AssetID        string                 `json:"asset_id"`
+	Status         string                 `json:"status"`
+	Codec          string                 `json:"codec"`
+	Width          int                    `json:"width"`
+	Height         int                    `json:"height"`
+	Frame          string                 `json:"frame"`
+	Mask           string                 `json:"mask"`
+	Evidence       string                 `json:"evidence"`
+	ReasonCode     string                 `json:"reason_code,omitempty"`
+	ContainerCount int                    `json:"container_entry_count,omitempty"`
+	EmptyTailIndex *int                   `json:"empty_tail_index,omitempty"`
+	Source         separatedSurfaceSource `json:"source"`
 }
 
 type separatedSurfaceIdentity struct {
@@ -69,8 +72,47 @@ func LoadSeparatedSingleFrame(surfaceRoot, sourceFile string, resource int) (Fra
 		doc.Status != "decoded" || doc.Codec != "fd2_4e63d_single_frame" || doc.Evidence != "confirmed" ||
 		doc.Width <= 0 || doc.Height <= 0 || doc.Frame != "frame.png" || doc.Mask != "mask.png" ||
 		doc.Source.File != sourceFile || doc.Source.Resource != resource || doc.Source.Size != identity.size ||
+		doc.Source.Nested != nil || doc.ContainerCount != 0 || doc.EmptyTailIndex != nil ||
 		doc.Source.MD5 != identity.md5 || doc.Source.SHA256 != identity.sha256 || doc.Source.RawSize < 4 {
 		return Frame{}, errors.New("fdother: separated surface metadata contract mismatch")
+	}
+	indexed, err := readPalettedSurface(filepath.Join(directory, doc.Frame), doc.Width, doc.Height)
+	if err != nil {
+		return Frame{}, err
+	}
+	mask, err := readBinaryMask(filepath.Join(directory, doc.Mask), doc.Width, doc.Height)
+	if err != nil {
+		return Frame{}, err
+	}
+	return Frame{Width: doc.Width, Height: doc.Height, Indexed: indexed, Mask: mask}, nil
+}
+
+// LoadSeparatedNestedSingleFrame 載入固定 FDOTHER resource 內的巢狀 LLLLLL 單影格。
+// 現行已證實契約只開放標題 FDOTHER #7 的 entry 0..6；entry 7 是空尾項。
+func LoadSeparatedNestedSingleFrame(surfaceRoot string, resource, nested int) (Frame, error) {
+	if surfaceRoot == "" || resource != 7 || nested < 0 || nested > 6 {
+		return Frame{}, errors.New("fdother: unsupported separated nested surface request")
+	}
+	directory := filepath.Join(surfaceRoot, fmt.Sprintf("FDOTHER_%03d", resource), fmt.Sprintf("entry_%03d", nested))
+	raw, err := os.ReadFile(filepath.Join(directory, "resource.json"))
+	if err != nil {
+		return Frame{}, fmt.Errorf("fdother: separated nested surface metadata: %w", err)
+	}
+	var doc separatedSurfaceDocument
+	if err := json.Unmarshal(raw, &doc); err != nil {
+		return Frame{}, fmt.Errorf("fdother: separated nested surface metadata: %w", err)
+	}
+	wantAssetID := fmt.Sprintf("surface/FDOTHER_%03d/entry_%03d", resource, nested)
+	if doc.SchemaVersion != 1 || doc.Kind != "indexed_surface" || doc.AssetID != wantAssetID ||
+		doc.Status != "decoded" || doc.Codec != "fd2_4e63d_single_frame" || doc.Evidence != "confirmed" ||
+		doc.Width <= 0 || doc.Height <= 0 || doc.Frame != "frame.png" || doc.Mask != "mask.png" ||
+		doc.ContainerCount != 8 || doc.EmptyTailIndex == nil || *doc.EmptyTailIndex != 7 ||
+		doc.Source.File != "FDOTHER.DAT" || doc.Source.Resource != resource || doc.Source.Nested == nil ||
+		*doc.Source.Nested != nested || doc.Source.Size != 3382481 ||
+		doc.Source.MD5 != "22f56e5027edc7c766ad34ca4e5aca93" ||
+		doc.Source.SHA256 != "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce" ||
+		doc.Source.RawSize < 4 {
+		return Frame{}, errors.New("fdother: separated nested surface metadata contract mismatch")
 	}
 	indexed, err := readPalettedSurface(filepath.Join(directory, doc.Frame), doc.Width, doc.Height)
 	if err != nil {

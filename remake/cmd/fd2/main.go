@@ -9725,14 +9725,17 @@ func loadGame() *Game {
 	g.sfxSpawnIntro = loadWav("assets/sfx/battle_95_00.wav")            // 0x32999 pass1 FDOTHER #95 sub0
 	// 戰場 BGM:doc12 推定 track18=戰鬥被使用者實聽推翻(18=商店音樂);戰鬥曲號待聽辨,先不播錯曲
 	if os.Getenv("FD2_TITLE") == "1" || (g.shotPath == "" && os.Getenv("FD2_TITLE") != "0") { // 開頭動畫+主選單(headless 截圖預設跳過)
-		if ta := loadTitleAssets(); ta != nil {
-			g.titleAssets = ta
-			if ta.aniPath != "" && os.Getenv("FD2_NOCUT") == "" {
-				g.titlePhase = "cutscene" // 有 ANI.DAT：播放目前接入的 AFM／靜態幕；完整原版排程仍非 E2
-			} else {
-				g.titlePhase = "scroll" // 無 ANI.DAT:退回 FDOTHER 立繪捲動+logozoom
-				g.scrollY = 535
-			}
+		ta, err := loadTitleAssets()
+		if err != nil {
+			g.loadErr = err.Error()
+			return g
+		}
+		g.titleAssets = ta
+		if ta.aniPath != "" && os.Getenv("FD2_NOCUT") == "" {
+			g.titlePhase = "cutscene" // 有 ANI.DAT：播放目前接入的 AFM／靜態幕；完整原版排程仍非 E2
+		} else {
+			g.titlePhase = "scroll" // 無 ANI.DAT:退回 FDOTHER 立繪捲動+logozoom
+			g.scrollY = 535
 		}
 	}
 	if os.Getenv("FD2_SHOT_TITLE_MENU") == "1" {

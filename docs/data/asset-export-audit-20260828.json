@@ -77,19 +77,36 @@
     "title_publisher_surface_mask_png": 1,
     "title_publisher_surface_metadata_json": 1,
     "title_publisher_palette_json": 1,
+    "title_scroll_static_surface_png": 7,
+    "title_scroll_static_surface_masks_png": 7,
+    "title_scroll_static_surface_metadata_json": 7,
+    "title_nested_surface_png": 7,
+    "title_nested_surface_masks_png": 7,
+    "title_nested_surface_metadata_json": 7,
+    "title_transition_palette_json": 3,
     "music_midi": 15
   },
   "manifest_validation": {
     "tool": "tools/generate_separated_asset_manifest.py",
     "validator": "tools/validate_separated_asset_pack.py",
-    "total_entries": 38047,
-    "exported": 37023,
+    "total_entries": 38092,
+    "exported": 37068,
     "blocked": 19,
     "intentionally_raw": 1005,
     "source_hashes_verified": true,
     "result": "pass"
   },
   "runtime_migrations": [{
+    "family": "title_fdother_007_008_069_073_075_099_101",
+    "source_resources": ["FDOTHER.DAT#7/#8", "FDOTHER.DAT#69..73/#101", "FDOTHER.DAT#75/#76", "FDOTHER.DAT#100/#99"],
+    "separated_outputs": 45,
+    "runtime_consumers": ["title scroll", "palette transitions", "title base", "three menu items", "two interleaved static scenes"],
+    "archive_png_indexed_mask_match": "pass (seven root frames, seven nested frames and three new 768-byte DAC resources)",
+    "runtime_archive_fallback": false,
+    "archive_unreadable_test": "pass (title bundle loader consumes separated pack only and fails closed on missing pack)",
+    "remaining_direct_archive_consumers": ["ANI.DAT title clips 0/1/3..8"],
+    "evidence_level": "RUNTIME-E1"
+  }, {
     "family": "title_publisher_fdother_074_076",
     "source_resources": ["FDOTHER.DAT#74", "FDOTHER.DAT#76"],
     "separated_outputs": 4,

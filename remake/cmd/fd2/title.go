@@ -12,7 +12,6 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"image"
 	"image/color"
@@ -153,41 +152,16 @@ var aniCandidates = []string{
 	"org_game/炎龍騎士團/FLAME2/ANI.DAT",
 }
 
-func loadTitleAssets() *titleAssets {
-	ld := func(p string) *ebiten.Image {
-		raw, err := os.ReadFile(assetPath(p))
-		if err != nil {
-			return nil
-		}
-		im, _, err := image.Decode(bytes.NewReader(raw))
-		if err != nil {
-			return nil
-		}
-		return ebiten.NewImageFromImage(im)
+func loadTitleAssets() (*titleAssets, error) {
+	t := &titleAssets{}
+	packRoot := separatedAssetPath("")
+	publisher, err := loadSeparatedTitlePublisher(packRoot)
+	if err != nil {
+		return nil, fmt.Errorf("標題發行商分離素材：%w", err)
 	}
-	t := &titleAssets{scroll: ld("assets/title/scroll_big.png"), title: ld("assets/title/title.png")}
-	for i := 0; i < 3; i++ {
-		t.items[i][0] = ld(fmt.Sprintf("assets/title/menu_%d.png", i*2+1))
-		t.items[i][1] = ld(fmt.Sprintf("assets/title/menu_%d.png", i*2+2))
-	}
-	t.cutStatic[0] = ld("assets/title/cut_guardian.png") // 缺→該靜態幕自動跳過
-	t.cutStatic[1] = ld("assets/title/cut_castle.png")
-	if publisher, err := loadSeparatedTitlePublisher(separatedAssetPath("")); err == nil {
-		t.publisher = ebiten.NewImageFromImage(publisher)
-	}
-	if red, title, err := decodeNativeTitlePaletteTransitions(nativeFDOTHERPath()); err == nil {
-		for i := range red {
-			t.redFadeFrames[i] = ebiten.NewImageFromImage(red[i])
-			t.titleFadeFrame[i] = ebiten.NewImageFromImage(title[i])
-		}
-	}
-	if t.scroll == nil || t.title == nil {
-		// 素材缺(玩家未自備,或 cwd 不是 remake/ 導致相對路徑解不到)→ 跳過開頭直接進遊戲。
-		// playfix #2:silent 失敗很難查,留診斷訊息(不影響行為,只在 stderr 印一行)。
-		cwd, _ := os.Getwd()
-		fmt.Fprintf(os.Stderr, "fd2: 開場素材缺失(scroll=%v title=%v,cwd=%s,exeDir=%s)→ 跳過開頭動畫\n",
-			t.scroll != nil, t.title != nil, cwd, exeDir())
-		return nil
+	t.publisher = ebiten.NewImageFromImage(publisher)
+	if err := loadSeparatedTitleFDOTHER(packRoot, t); err != nil {
+		return nil, err
 	}
 	if p := os.Getenv("FD2_ANI"); p != "" {
 		aniCandidates = append([]string{p}, aniCandidates...)
@@ -207,7 +181,113 @@ func loadTitleAssets() *titleAssets {
 			break
 		}
 	}
-	return t
+	return t, nil
+}
+
+func loadSeparatedTitleFDOTHER(packRoot string, target *titleAssets) error {
+	if target == nil {
+		return fmt.Errorf("標題素材 target 不可為 nil")
+	}
+	surfaceRoot, paletteRoot := filepath.Join(packRoot, "surfaces"), filepath.Join(packRoot, "palette")
+	scrollDAC, scrollPalette, err := fdother.LoadSeparatedFDOTHERPalette(paletteRoot, 101)
+	if err != nil {
+		return fmt.Errorf("標題捲動調色盤：%w", err)
+	}
+	scrollPixels := make([]byte, 320*735)
+	for index, resource := range []int{69, 70, 71, 72, 73} {
+		frame, err := fdother.LoadSeparatedSingleFrame(surfaceRoot, "FDOTHER.DAT", resource)
+		if err != nil {
+			return fmt.Errorf("標題捲動 FDOTHER #%d：%w", resource, err)
+		}
+		if frame.Width != 320 || frame.Height != 147 {
+			return fmt.Errorf("標題捲動 FDOTHER #%d 幾何=%dx%d", resource, frame.Width, frame.Height)
+		}
+		frame.Y = index * 147
+		if err := frame.Blit(scrollPixels, 320, -1); err != nil {
+			return err
+		}
+	}
+	scrollImage := image.NewPaletted(image.Rect(0, 0, 320, 735), scrollPalette)
+	copy(scrollImage.Pix, scrollPixels)
+	target.scroll = ebiten.NewImageFromImage(scrollImage)
+
+	titleDAC, titlePalette, err := fdother.LoadSeparatedFDOTHERPalette(paletteRoot, 8)
+	if err != nil {
+		return fmt.Errorf("標題主畫面調色盤：%w", err)
+	}
+	titleFrame, err := fdother.LoadSeparatedNestedSingleFrame(surfaceRoot, 7, 0)
+	if err != nil {
+		return fmt.Errorf("標題主畫面：%w", err)
+	}
+	if titleFrame.Width != 320 || titleFrame.Height != 200 {
+		return fmt.Errorf("標題主畫面幾何=%dx%d", titleFrame.Width, titleFrame.Height)
+	}
+	titlePixels := make([]byte, 320*200)
+	if err := titleFrame.Blit(titlePixels, 320, -1); err != nil {
+		return err
+	}
+	titleImage := image.NewPaletted(image.Rect(0, 0, 320, 200), titlePalette)
+	copy(titleImage.Pix, titlePixels)
+	target.title = ebiten.NewImageFromImage(titleImage)
+
+	wantMenuGeometry := [6]image.Point{{61, 7}, {61, 7}, {62, 7}, {62, 7}, {62, 8}, {62, 8}}
+	for nested := 1; nested <= 6; nested++ {
+		frame, err := fdother.LoadSeparatedNestedSingleFrame(surfaceRoot, 7, nested)
+		if err != nil {
+			return fmt.Errorf("標題選單 FDOTHER #7/%d：%w", nested, err)
+		}
+		want := wantMenuGeometry[nested-1]
+		if frame.Width != want.X || frame.Height != want.Y {
+			return fmt.Errorf("標題選單 FDOTHER #7/%d 幾何=%dx%d", nested, frame.Width, frame.Height)
+		}
+		target.items[(nested-1)/2][(nested-1)%2] = ebiten.NewImageFromImage(maskedRGBA(frame, titlePalette))
+	}
+
+	for slot, pair := range []struct{ resource, palette int }{{100, 99}, {75, 76}} {
+		frame, err := fdother.LoadSeparatedSingleFrame(surfaceRoot, "FDOTHER.DAT", pair.resource)
+		if err != nil {
+			return fmt.Errorf("標題靜態幕 FDOTHER #%d：%w", pair.resource, err)
+		}
+		if frame.Width != 320 || frame.Height != 200 {
+			return fmt.Errorf("標題靜態幕 FDOTHER #%d 幾何=%dx%d", pair.resource, frame.Width, frame.Height)
+		}
+		_, palette, err := fdother.LoadSeparatedFDOTHERPalette(paletteRoot, pair.palette)
+		if err != nil {
+			return err
+		}
+		pixels := make([]byte, 320*200)
+		if err := frame.Blit(pixels, 320, -1); err != nil {
+			return err
+		}
+		indexed := image.NewPaletted(image.Rect(0, 0, 320, 200), palette)
+		copy(indexed.Pix, pixels)
+		target.cutStatic[slot] = ebiten.NewImageFromImage(indexed)
+	}
+
+	red, title, err := buildTitlePaletteTransitions(scrollPixels[:320*200], scrollDAC, titlePixels, titleDAC)
+	if err != nil {
+		return err
+	}
+	for index := range red {
+		target.redFadeFrames[index] = ebiten.NewImageFromImage(red[index])
+		target.titleFadeFrame[index] = ebiten.NewImageFromImage(title[index])
+	}
+	return nil
+}
+
+func maskedRGBA(frame fdother.Frame, palette color.Palette) *image.NRGBA {
+	result := image.NewNRGBA(image.Rect(0, 0, frame.Width, frame.Height))
+	for index, mask := range frame.Mask {
+		if mask == 0 {
+			continue
+		}
+		r, g, b, a := palette[frame.Indexed[index]].RGBA()
+		result.Pix[index*4+0] = byte(r >> 8)
+		result.Pix[index*4+1] = byte(g >> 8)
+		result.Pix[index*4+2] = byte(b >> 8)
+		result.Pix[index*4+3] = byte(a >> 8)
+	}
+	return result
 }
 
 // decodeNativeTitlePublisher 僅消費玩家自備 FDOTHER.DAT。#74 的四模式 RLE、
@@ -334,6 +414,14 @@ func decodeNativeTitlePaletteTransitions(path string) ([20]*image.Paletted, [20]
 		return redFrames, titleFrames, err
 	}
 
+	return buildTitlePaletteTransitions(scroll[:320*200], scrollDAC, titlePixels, titleDAC)
+}
+
+func buildTitlePaletteTransitions(scrollPixels, scrollDAC, titlePixels, titleDAC []byte) ([20]*image.Paletted, [20]*image.Paletted, error) {
+	var redFrames, titleFrames [20]*image.Paletted
+	if len(scrollPixels) != 320*200 || len(titlePixels) != 320*200 {
+		return redFrames, titleFrames, fmt.Errorf("title transition source geometry mismatch")
+	}
 	for tick := 0; tick < 20; tick++ {
 		phase := titlePalettePhase(tick)
 		redDAC, interpolateErr := fdother.InterpolateNativeCompoundDAC(
@@ -342,7 +430,8 @@ func decodeNativeTitlePaletteTransitions(path string) ([20]*image.Paletted, [20]
 		if interpolateErr != nil {
 			return redFrames, titleFrames, interpolateErr
 		}
-		redFrames[tick], err = nativeTitlePaletted(scroll[:320*200], redDAC)
+		var err error
+		redFrames[tick], err = nativeTitlePaletted(scrollPixels, redDAC)
 		if err != nil {
 			return redFrames, titleFrames, err
 		}

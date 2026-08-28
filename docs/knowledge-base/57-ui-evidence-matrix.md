@@ -19,6 +19,14 @@ codec、RE 函式數或可編譯測試數混算。分數是依 repo 內 DOSBox�
 oracle、目前 source rebuild 截圖、indexed fixture，以及外部原版畫面逐項
 審查後的工程估計；它不是 pixel-diff 百分比，也不是遊戲總完成度。
 
+> **2026-08-28 標題素材來源重驗：** 正式標題已改由分離pack消費#69..#73、#101、
+> #7／#8、#100／#99及#75／#76，不再讀舊title PNG或FDOTHER archive。由目前原始碼
+> Docker／Xvfb重擷取的640×400 PNG與既有`title-remake-runtime.png`檔案SHA-256同為
+> `17e6fc41cee0ce706aaf1d809e1f1b986053cea670f7065c1bd00c62cbe1afa8`；最近鄰縮回
+> 320×200後仍與DOSBox oracle達`AE=0/64000`、raw RGB SHA-256
+> `eb5957077536a840050e2ee52f4a3001156f6c95814c0c2d0dd6977e5929a342`。此重驗保留
+> 原有畫面E2錨點，不外推完整開場或ANI archive遷移。
+
 | 畫面／流程 | 視覺還原估計 | 直接證據與主要差距 |
 |---|---:|---|
 | title/main menu | 選單狀態與指定畫面已驗證；完整開場 E1 | 2026-08-26 由目前原始碼重新建置並以 Docker／Xvfb 擷取 [`title-remake-runtime.png`](../figures/title-remake-runtime.png)，最近鄰縮回320×200後與 DOSBox oracle [`title-original-dosbox.png`](../figures/title-original-dosbox.png) 達整幀 `AE=0/64000`；三列原生座標為164／173／182。`sub_1F894` 的535列捲動、六個插播點與 AFM 3→4→5→6→7→8→0→1 已依 canonical IDA 證據接入。2026-08-27再把AFM 3前的`FDOTHER #74 + #76`漢堂發行商畫面接入119幀60Hz近似；正式runtime第60幀與解碼oracle達640×400 `AE=0/256000`，見 [`title-publisher-remake-e1.json`](../data/ui-traces/title-publisher-remake-e1.json)。舊DOSBox `frame_000`實為AFM 3龍紋過渡、不是發行商標誌。後段兩次`sub_286BD`亦已依IDA直接指令修正為半開區間0..254的索引色盤內插，正式播放紅幕→真實ANI #1→近白標題；[淡入影格](../figures/title-transition-remake-e1.png)與原版frame193的MAE為0.077／255，達99%玩家可見門檻。非原版 F2 常駐提示已移除，逐幕按鍵契約保留。只剩精確音訊與原版完整啟動E2，故不升完整E2。LOAD／CONTINUE 的來源限制另依 `58` 記錄 |
