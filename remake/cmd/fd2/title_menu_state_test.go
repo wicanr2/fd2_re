@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"fmt"
 	"image"
@@ -169,6 +170,38 @@ func TestNativeTitlePublisherUsesFixedFDOTHERResources(t *testing.T) {
 	const want = "9ffe75b509e191db498528a584e63f4b048075257c0ab4e2ffe6a0140182f7bf"
 	if got != want {
 		t.Fatalf("publisher indexed sha256=%s, want %s", got, want)
+	}
+}
+
+func TestSeparatedTitlePublisherMatchesFixedArchive(t *testing.T) {
+	archive := filepath.Join("../../../org_game/炎龍騎士團/FLAME2", "FDOTHER.DAT")
+	pack := filepath.Join("..", "..", "generated-assets", "fd2-original-b97caf22")
+	if _, err := os.Stat(archive); err != nil {
+		t.Skip("player-provided FDOTHER.DAT is absent")
+	}
+	want, err := decodeNativeTitlePublisher(archive)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := loadSeparatedTitlePublisher(pack)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(got.Pix, want.Pix) {
+		t.Fatal("separated publisher indexed pixels differ")
+	}
+	for i := 0; i < 256; i++ {
+		wr, wg, wb, wa := want.Palette[i].RGBA()
+		gr, gg, gb, ga := got.Palette[i].RGBA()
+		if wr != gr || wg != gg || wb != gb || wa != ga {
+			t.Fatalf("publisher palette index %d differs", i)
+		}
+	}
+}
+
+func TestSeparatedTitlePublisherFailsClosedWithoutPack(t *testing.T) {
+	if _, err := loadSeparatedTitlePublisher(t.TempDir()); err == nil {
+		t.Fatal("missing publisher pack was accepted")
 	}
 }
 

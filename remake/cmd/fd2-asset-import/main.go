@@ -550,7 +550,28 @@ func exportCommandGrid(fdotherPath, outputRoot string) error {
 	if err := exportNativeTown(fdotherPath, outputRoot); err != nil {
 		return err
 	}
+	if err := exportTitlePublisher(fdotherPath, outputRoot); err != nil {
+		return err
+	}
 	return exportEndingFDOTHER(fdotherPath, outputRoot)
+}
+
+func exportTitlePublisher(fdotherPath, outputRoot string) error {
+	if err := exportSelectedSingleFrame(fdotherPath, outputRoot, fdotherArchive, 74); err != nil {
+		return fmt.Errorf("FDOTHER #74 title publisher: %w", err)
+	}
+	dac, err := fdother.ReadResource(fdotherPath, 76)
+	if err != nil {
+		return err
+	}
+	if _, err := fdother.ParseVGAPalette(dac); err != nil {
+		return fmt.Errorf("FDOTHER #76 publisher palette: %w", err)
+	}
+	return writeJSON(filepath.Join(outputRoot, "palette", "fdother_076.json"), paletteDocument{
+		SchemaVersion: 1, AssetID: "palette/fdother_076",
+		Source:     sourceID{File: fdotherArchive.file, Resource: 76, Size: fdotherArchive.size, MD5: fdotherArchive.md5, SHA256: fdotherArchive.sha256, RawSize: len(dac)},
+		Components: bytesToInts(dac),
+	})
 }
 
 func exportNativeTown(fdotherPath, outputRoot string) error {

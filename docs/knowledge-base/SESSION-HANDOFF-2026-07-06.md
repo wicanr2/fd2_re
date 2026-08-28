@@ -8290,3 +8290,16 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   因此不降級既有modified-LOAD E2，也不外推未修改長程玩家路徑。
 - manifest現為38,043筆：37,019 exported、1,005 intentionally raw、19 blocked。本切片達
   `DATA-READY`／`RUNTIME-E1`；下一個正式archive consumer優先處理title。
+
+## 2026-08-28 標題發行商 FDOTHER #74／#76 分離素材閉合
+
+- canonical IDA 9.4 證據 `fd2_title_scroll_schedule_ida.txt` 已閉合 #74 畫面與 #76
+  VGA DAC 的直接 consumer；本批不重解既有控制流程，只遷移其資料來源。
+- 匯入器輸出 #74 的 320×200 indexed PNG、二值 mask、surface metadata，以及 #76
+  的 768-byte DAC JSON，共4筆。嚴格 loader 驗證來源身份、尺寸與 palette 契約；缺件
+  時失敗即關閉，不回退 `FDOTHER.DAT`。
+- 固定雜湊 archive oracle 與分離 loader 的64,000個 index及256筆RGBA palette逐項一致；
+  正式 `loadTitleAssets` 的發行商畫面不再讀 archive。manifest現為38,047筆：37,023
+  exported、1,005 intentionally raw、19 blocked。
+- 本切片達 `DATA-READY`／`RUNTIME-E1`。尚未遷移的標題資料是 FDOTHER #69..#73、#101、
+  #7／#8及 ANI clips；它們必須另依 RE 證據與可審查規格處理。

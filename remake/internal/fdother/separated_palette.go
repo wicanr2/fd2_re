@@ -27,7 +27,7 @@ type separatedPaletteDocument struct {
 // LoadSeparatedFDOTHERPalette 載入固定版本 FDOTHER.DAT 的具名 VGA DAC。
 // 它不讀取或回退原始 archive。
 func LoadSeparatedFDOTHERPalette(paletteRoot string, resource int) ([]byte, color.Palette, error) {
-	if paletteRoot == "" || (resource != 0 && resource != 57) {
+	if paletteRoot == "" || (resource != 0 && resource != 57 && resource != 76) {
 		return nil, nil, fmt.Errorf("fdother: unsupported separated palette request %d", resource)
 	}
 	path := filepath.Join(paletteRoot, fmt.Sprintf("fdother_%03d.json", resource))

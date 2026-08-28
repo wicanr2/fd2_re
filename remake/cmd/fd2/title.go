@@ -172,7 +172,7 @@ func loadTitleAssets() *titleAssets {
 	}
 	t.cutStatic[0] = ld("assets/title/cut_guardian.png") // 缺→該靜態幕自動跳過
 	t.cutStatic[1] = ld("assets/title/cut_castle.png")
-	if publisher, err := decodeNativeTitlePublisher(nativeFDOTHERPath()); err == nil {
+	if publisher, err := loadSeparatedTitlePublisher(separatedAssetPath("")); err == nil {
 		t.publisher = ebiten.NewImageFromImage(publisher)
 	}
 	if red, title, err := decodeNativeTitlePaletteTransitions(nativeFDOTHERPath()); err == nil {
@@ -236,6 +236,29 @@ func decodeNativeTitlePublisher(path string) (*image.Paletted, error) {
 		return nil, err
 	}
 	palette, err := fdother.ParseVGAPalette(paletteRaw)
+	if err != nil {
+		return nil, err
+	}
+	indexed := image.NewPaletted(image.Rect(0, 0, 320, 200), palette)
+	copy(indexed.Pix, pixels)
+	return indexed, nil
+}
+
+// loadSeparatedTitlePublisher 是正式 runtime owner；只消費分離 surface與DAC，
+// 不在失敗後回退 FDOTHER.DAT。
+func loadSeparatedTitlePublisher(packRoot string) (*image.Paletted, error) {
+	frame, err := fdother.LoadSeparatedSingleFrame(filepath.Join(packRoot, "surfaces"), "FDOTHER.DAT", 74)
+	if err != nil {
+		return nil, err
+	}
+	if frame.Width != 320 || frame.Height != 200 {
+		return nil, fmt.Errorf("title publisher geometry=%dx%d, want 320x200", frame.Width, frame.Height)
+	}
+	pixels := make([]byte, 320*200)
+	if err := frame.Blit(pixels, 320, -1); err != nil {
+		return nil, err
+	}
+	_, palette, err := fdother.LoadSeparatedFDOTHERPalette(filepath.Join(packRoot, "palette"), 76)
 	if err != nil {
 		return nil, err
 	}

@@ -73,19 +73,33 @@
     "native_town_background_masks_png": 3,
     "native_town_label_png": 1,
     "native_town_label_metadata_json": 1,
+    "title_publisher_surface_png": 1,
+    "title_publisher_surface_mask_png": 1,
+    "title_publisher_surface_metadata_json": 1,
+    "title_publisher_palette_json": 1,
     "music_midi": 15
   },
   "manifest_validation": {
     "tool": "tools/generate_separated_asset_manifest.py",
     "validator": "tools/validate_separated_asset_pack.py",
-    "total_entries": 38043,
-    "exported": 37019,
+    "total_entries": 38047,
+    "exported": 37023,
     "blocked": 19,
     "intentionally_raw": 1005,
     "source_hashes_verified": true,
     "result": "pass"
   },
   "runtime_migrations": [{
+    "family": "title_publisher_fdother_074_076",
+    "source_resources": ["FDOTHER.DAT#74", "FDOTHER.DAT#76"],
+    "separated_outputs": 4,
+    "runtime_consumers": ["title publisher prelude"],
+    "archive_png_indexed_mask_match": "pass (320x200 indexed surface, binary mask, 768-byte DAC and final palette)",
+    "runtime_archive_fallback": false,
+    "archive_unreadable_test": "pass (separated publisher loader consumes pack only)",
+    "remaining_direct_archive_consumers": [],
+    "evidence_level": "RUNTIME-E1"
+  }, {
     "family": "native_town_fdother_010_011_061_062",
     "source_resources": ["FDOTHER.DAT#10", "FDOTHER.DAT#11", "FDOTHER.DAT#61", "FDOTHER.DAT#62"],
     "separated_outputs": 11,
