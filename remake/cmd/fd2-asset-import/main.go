@@ -14,8 +14,10 @@ import (
 	"image/png"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
 )
 
 const (
@@ -56,6 +58,46 @@ type surfaceDocument struct {
 	Source        sourceID `json:"source"`
 }
 
+type textToken struct {
+	Kind       string `json:"kind"`
+	GlyphIndex *int   `json:"glyph_index,omitempty"`
+	Control    string `json:"control,omitempty"`
+	Text       string `json:"text,omitempty"`
+}
+
+type textString struct {
+	StringID    string      `json:"string_id"`
+	SourceIndex int         `json:"source_index"`
+	Text        string      `json:"text"`
+	Tokens      []textToken `json:"tokens"`
+}
+
+type textDocument struct {
+	SchemaVersion int          `json:"schema_version"`
+	Kind          string       `json:"kind"`
+	AssetID       string       `json:"asset_id"`
+	Status        string       `json:"status"`
+	Evidence      string       `json:"evidence"`
+	ReasonCode    string       `json:"reason_code,omitempty"`
+	Source        sourceID     `json:"source"`
+	Strings       []textString `json:"strings,omitempty"`
+}
+
+type fontDocument struct {
+	SchemaVersion int      `json:"schema_version"`
+	Kind          string   `json:"kind"`
+	AssetID       string   `json:"asset_id"`
+	Status        string   `json:"status"`
+	Evidence      string   `json:"evidence"`
+	GlyphCount    int      `json:"glyph_count"`
+	CellWidth     int      `json:"cell_width"`
+	CellHeight    int      `json:"cell_height"`
+	Columns       int      `json:"columns"`
+	Rows          int      `json:"rows"`
+	Atlas         string   `json:"atlas"`
+	Source        sourceID `json:"source"`
+}
+
 type archiveIdentity struct {
 	file, prefix string
 	size         int
@@ -65,6 +107,12 @@ type archiveIdentity struct {
 var surfaceArchives = []archiveIdentity{
 	{file: "BG.DAT", prefix: "BG", size: 624564, md5: "4b5414c92b40ef25ba0ee10c80f9e149", sha256: "b9fc21d019d6256a4bb7e6da1cefcb0bfe331d8ff74a52a8201570afc98b56de"},
 	{file: "TAI.DAT", prefix: "TAI", size: 94917, md5: "7cfe4b9ad2cbff44b2ebd7ab2f94e4aa", sha256: "d56fea9c43f8bb59aad89ad76698885d7e07f380d12a4547888a0b60ea5e0410"},
+}
+
+var fdtxtArchive = archiveIdentity{
+	file: "FDTXT.DAT", prefix: "FDTXT", size: 120502,
+	md5:    "fe5c487ce4313485f1da9d48d35b05f9",
+	sha256: "a4555f8a0e61e884b4f504d56a8bdde11672583bbbbc6506281ae10dcdfb1f69",
 }
 
 func verifyFDOTHER(path string) error {
@@ -169,6 +217,89 @@ func writeJSON(path string, value any) error {
 	return os.WriteFile(path, raw, 0o644)
 }
 
+func loadGlyphMap(path string) (map[int]string, error) {
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	var encoded map[string]string
+	if err := json.Unmarshal(raw, &encoded); err != nil {
+		return nil, err
+	}
+	result := make(map[int]string, len(encoded))
+	for key, value := range encoded {
+		if key == "_comment" {
+			continue
+		}
+		index, err := strconv.Atoi(key)
+		if err != nil || index < 0 || index >= fdtxt.ControlMin || value == "" {
+			return nil, fmt.Errorf("glyph map key/value invalid: %q", key)
+		}
+		result[index] = value
+	}
+	return result, nil
+}
+
+func exportFDTXT(path, glyphMapPath, outputRoot string) (int, int, error) {
+	if err := verifyArchive(path, fdtxtArchive); err != nil {
+		return 0, 0, err
+	}
+	glyphs, err := loadGlyphMap(glyphMapPath)
+	if err != nil {
+		return 0, 0, fmt.Errorf("glyph map: %w", err)
+	}
+	count, err := fdother.ArchiveResourceCount(path)
+	if err != nil {
+		return 0, 0, err
+	}
+	decoded, blocked := 0, 0
+	for resource := 0; resource < count; resource++ {
+		raw, readErr := fdother.ReadResource(path, resource)
+		document := textDocument{
+			SchemaVersion: 1, Kind: "fdtxt_word_table",
+			AssetID: fmt.Sprintf("text/FDTXT_%03d", resource), Status: "blocked",
+			Evidence: "confirmed", ReasonCode: "decode_failed",
+			Source: sourceID{File: fdtxtArchive.file, Resource: resource, Size: fdtxtArchive.size,
+				MD5: fdtxtArchive.md5, SHA256: fdtxtArchive.sha256, RawSize: len(raw)},
+		}
+		if readErr == nil && len(raw) == 0 {
+			document.ReasonCode = "empty_resource"
+			blocked++
+		} else if readErr != nil {
+			blocked++
+		} else if stringsTable, parseErr := fdtxt.Parse(raw); parseErr != nil {
+			blocked++
+		} else {
+			document.Status, document.ReasonCode = "decoded", ""
+			document.Strings = make([]textString, stringsTable.Count())
+			for index := range document.Strings {
+				words, _ := stringsTable.Words(index)
+				entry := textString{StringID: fmt.Sprintf("FDTXT_%03d/string_%04d", resource, index), SourceIndex: index, Tokens: make([]textToken, 0, len(words))}
+				for _, word := range words {
+					if word >= fdtxt.ControlMin {
+						entry.Tokens = append(entry.Tokens, textToken{Kind: "control", Control: fmt.Sprintf("%04X", word)})
+						continue
+					}
+					glyphIndex := int(word)
+					text := glyphs[glyphIndex]
+					if text == "" {
+						text = fmt.Sprintf("〈glyph:%d〉", glyphIndex)
+					}
+					entry.Text += text
+					entry.Tokens = append(entry.Tokens, textToken{Kind: "glyph", GlyphIndex: &glyphIndex, Text: text})
+				}
+				document.Strings[index] = entry
+			}
+			decoded++
+		}
+		directory := filepath.Join(outputRoot, "text", fmt.Sprintf("FDTXT_%03d", resource))
+		if err := writeJSON(filepath.Join(directory, "resource.json"), document); err != nil {
+			return decoded, blocked, err
+		}
+	}
+	return decoded, blocked, nil
+}
+
 func exportCommandGrid(fdotherPath, outputRoot string) error {
 	if err := verifyFDOTHER(fdotherPath); err != nil {
 		return err
@@ -228,17 +359,73 @@ func exportCommandGrid(fdotherPath, outputRoot string) error {
 			return closeErr
 		}
 	}
-	return nil
+	return exportFont(fdotherPath, outputRoot)
+}
+
+func exportFont(fdotherPath, outputRoot string) error {
+	raw, err := fdother.ReadResource(fdotherPath, 4)
+	if err != nil {
+		return err
+	}
+	font, err := fdtxt.ParseFont(raw)
+	if err != nil {
+		return err
+	}
+	const columns = 32
+	rows := (font.GlyphCount() + columns - 1) / columns
+	atlas := image.NewGray(image.Rect(0, 0, columns*fdtxt.GlyphWidth, rows*fdtxt.GlyphHeight))
+	for glyph := 0; glyph < font.GlyphCount(); glyph++ {
+		baseX := (glyph % columns) * fdtxt.GlyphWidth
+		baseY := (glyph / columns) * fdtxt.GlyphHeight
+		for y := 0; y < fdtxt.GlyphHeight; y++ {
+			for x := 0; x < fdtxt.GlyphWidth; x++ {
+				set, err := font.GlyphBit(glyph, x, y)
+				if err != nil {
+					return err
+				}
+				if set {
+					atlas.SetGray(baseX+x, baseY+y, color.Gray{Y: 0xff})
+				}
+			}
+		}
+	}
+	directory := filepath.Join(outputRoot, "fonts", "fdother_004")
+	if err := os.MkdirAll(directory, 0o755); err != nil {
+		return err
+	}
+	file, err := os.Create(filepath.Join(directory, "atlas.png"))
+	if err != nil {
+		return err
+	}
+	encodeErr := png.Encode(file, atlas)
+	closeErr := file.Close()
+	if encodeErr != nil {
+		return encodeErr
+	}
+	if closeErr != nil {
+		return closeErr
+	}
+	document := fontDocument{
+		SchemaVersion: 1, Kind: "bitmap_font", AssetID: "font/FDOTHER_004",
+		Status: "decoded", Evidence: "confirmed", GlyphCount: font.GlyphCount(),
+		CellWidth: fdtxt.GlyphWidth, CellHeight: fdtxt.GlyphHeight,
+		Columns: columns, Rows: rows, Atlas: "atlas.png",
+		Source: sourceID{File: "FDOTHER.DAT", Resource: 4, Size: fdotherSize,
+			MD5: fdotherMD5, SHA256: fdotherSHA256, RawSize: len(raw)},
+	}
+	return writeJSON(filepath.Join(directory, "font.json"), document)
 }
 
 func main() {
 	fdotherPath := flag.String("fdother", "", "固定版本 FDOTHER.DAT 路徑")
 	bgPath := flag.String("bg", "", "固定版本 BG.DAT 路徑")
 	taiPath := flag.String("tai", "", "固定版本 TAI.DAT 路徑")
+	fdtxtPath := flag.String("fdtxt", "", "固定版本 FDTXT.DAT 路徑")
+	glyphMapPath := flag.String("glyph-map", "", "受版控 glyph_map.json 路徑")
 	outputRoot := flag.String("out", "", "分離素材包根目錄")
 	flag.Parse()
-	if *outputRoot == "" || (*fdotherPath == "" && *bgPath == "" && *taiPath == "") {
-		fmt.Fprintln(os.Stderr, "用法：fd2-asset-import [-fdother FDOTHER.DAT] [-bg BG.DAT] [-tai TAI.DAT] -out ASSET_PACK")
+	if *outputRoot == "" || (*fdotherPath == "" && *bgPath == "" && *taiPath == "" && *fdtxtPath == "") || (*fdtxtPath != "" && *glyphMapPath == "") {
+		fmt.Fprintln(os.Stderr, "用法：fd2-asset-import [-fdother FDOTHER.DAT] [-bg BG.DAT] [-tai TAI.DAT] [-fdtxt FDTXT.DAT -glyph-map glyph_map.json] -out ASSET_PACK")
 		os.Exit(2)
 	}
 	if *fdotherPath != "" {
@@ -261,5 +448,13 @@ func main() {
 			os.Exit(1)
 		}
 		fmt.Printf("已匯出 %s：decoded=%d blocked=%d\n", request.identity.file, decoded, blocked)
+	}
+	if *fdtxtPath != "" {
+		decoded, blocked, err := exportFDTXT(*fdtxtPath, *glyphMapPath, *outputRoot)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "匯入失敗：", err)
+			os.Exit(1)
+		}
+		fmt.Printf("已匯出 FDTXT.DAT：decoded=%d blocked=%d\n", decoded, blocked)
 	}
 }

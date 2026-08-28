@@ -2,11 +2,146 @@ package fdtxt
 
 import (
 	"bytes"
+	"encoding/json"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
+
+func TestLoadSeparatedResourceRebuildsLosslessWords(t *testing.T) {
+	root := t.TempDir()
+	glyph := 557
+	document := separatedResource{
+		SchemaVersion: 1, Kind: "fdtxt_word_table", AssetID: "text/FDTXT_031",
+		Status: "decoded", Evidence: "confirmed",
+		Source: separatedSource{File: "FDTXT.DAT", Resource: 31, Size: fdtxtSourceSize,
+			MD5: fdtxtSourceMD5, SHA256: fdtxtSourceSHA256, RawSize: 8},
+		Strings: []separatedString{{
+			StringID: "FDTXT_031/string_0000", SourceIndex: 0, Text: "『",
+			Tokens: []separatedToken{
+				{Kind: "control", Control: "FFEF"},
+				{Kind: "glyph", GlyphIndex: &glyph, Text: "『"},
+			},
+		}},
+	}
+	directory := filepath.Join(root, "FDTXT_031")
+	if err := os.MkdirAll(directory, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	raw, err := json.Marshal(document)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(directory, "resource.json"), raw, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	strings, err := LoadSeparatedResource(root, 31)
+	if err != nil {
+		t.Fatal(err)
+	}
+	words, err := strings.Words(0)
+	if err != nil || !bytes.Equal(wordsToBytes(words), []byte{0xef, 0xff, 0x2d, 0x02}) {
+		t.Fatalf("words=%#v err=%v", words, err)
+	}
+}
+
+func TestLoadSeparatedResourceRejectsStaleUTF8Projection(t *testing.T) {
+	root := t.TempDir()
+	glyph := 557
+	document := separatedResource{
+		SchemaVersion: 1, Kind: "fdtxt_word_table", AssetID: "text/FDTXT_000",
+		Status: "decoded", Evidence: "confirmed",
+		Source: separatedSource{File: "FDTXT.DAT", Resource: 0, Size: fdtxtSourceSize,
+			MD5: fdtxtSourceMD5, SHA256: fdtxtSourceSHA256, RawSize: 4},
+		Strings: []separatedString{{
+			StringID: "FDTXT_000/string_0000", SourceIndex: 0, Text: "過期",
+			Tokens: []separatedToken{{Kind: "glyph", GlyphIndex: &glyph, Text: "『"}},
+		}},
+	}
+	directory := filepath.Join(root, "FDTXT_000")
+	if err := os.MkdirAll(directory, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	raw, _ := json.Marshal(document)
+	if err := os.WriteFile(filepath.Join(directory, "resource.json"), raw, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := LoadSeparatedResource(root, 0); err == nil {
+		t.Fatal("stale UTF-8 projection was accepted")
+	}
+}
+
+func TestSeparatedResource31MatchesOriginalWords(t *testing.T) {
+	const (
+		rawPath  = "../../../extracted/raw/FDTXT/FDTXT_031.bin"
+		textRoot = "../../generated-assets/fd2-original-b97caf22/text"
+	)
+	raw, err := os.ReadFile(rawPath)
+	if err != nil {
+		t.Skip("player-provided FDTXT_031 is absent")
+	}
+	original, err := Parse(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	separated, err := LoadSeparatedResource(textRoot, 31)
+	if err != nil {
+		t.Skipf("separated FDTXT_031 is absent: %v", err)
+	}
+	if separated.Count() != original.Count() {
+		t.Fatalf("string count=%d, want %d", separated.Count(), original.Count())
+	}
+	for index := 0; index < original.Count(); index++ {
+		want, _ := original.Words(index)
+		got, _ := separated.Words(index)
+		if !bytes.Equal(wordsToBytes(got), wordsToBytes(want)) {
+			t.Fatalf("string %d words differ", index)
+		}
+	}
+}
+
+func TestSeparatedFontMatchesOriginalBits(t *testing.T) {
+	const (
+		rawPath  = "../../../extracted/raw/FDOTHER/FDOTHER_004.bin"
+		fontRoot = "../../generated-assets/fd2-original-b97caf22/fonts"
+	)
+	raw, err := os.ReadFile(rawPath)
+	if err != nil {
+		t.Skip("player-provided FDOTHER_004 is absent")
+	}
+	original, err := ParseFont(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	separated, err := LoadSeparatedFont(fontRoot)
+	if err != nil {
+		t.Skipf("separated FDOTHER_004 font is absent: %v", err)
+	}
+	if separated.GlyphCount() != original.GlyphCount() {
+		t.Fatalf("glyph count=%d, want %d", separated.GlyphCount(), original.GlyphCount())
+	}
+	for glyph := 0; glyph < original.GlyphCount(); glyph++ {
+		for y := 0; y < GlyphHeight; y++ {
+			for x := 0; x < GlyphWidth; x++ {
+				want, _ := original.GlyphBit(glyph, x, y)
+				got, err := separated.GlyphBit(glyph, x, y)
+				if err != nil || got != want {
+					t.Fatalf("glyph=%d x=%d y=%d got=%v want=%v err=%v", glyph, x, y, got, want, err)
+				}
+			}
+		}
+	}
+}
+
+func wordsToBytes(words []uint16) []byte {
+	out := make([]byte, 0, len(words)*2)
+	for _, word := range words {
+		out = append(out, byte(word), byte(word>>8))
+	}
+	return out
+}
 
 func TestParseRetainsControlWordsAndStopsAtTerminator(t *testing.T) {
 	// Two strings: offsets 4 and 10. The first ends before its span does.

@@ -314,7 +314,8 @@ fade renderer只驗證全透明no-op，不把它畫入surface。內部loader、�
 仍由分離pack依persistent LOADCH順序進入figure fade、portrait與可選隊伍結果回顧。
 本adapter達 `RUNTIME-E1`，production `TAI.DAT` direct reader歸零。
 
-完整manifest現為7,877筆：6,854 exported、1,005 intentionally_raw、18 blocked。
+該TAI批次完成時manifest為7,877筆：6,854 exported、1,005 intentionally_raw、18 blocked；
+目前總數已由後文FDTXT／字型批次取代。
 18筆blocked包含15首尚未轉OGG的MIDI、`FIGANI.DAT#408`及兩個零長度BG／TAI#56；
 manifest generator現會讀取`resource.json`的blocked狀態，不再把狀態文件本身誤列
 為可用素材。本切片達 `RUNTIME-E1`。
@@ -342,6 +343,55 @@ story consumer 在 `FD2_ORIGINAL_DATO` 指向不存在檔案時仍可載入，�
 montage 均改讀同一分離 loader，相關 battle／ending／正式 `cmd/fd2` 測試已使用真實
 素材包通過。這只關閉 DATO 家族，其他 archive consumer 仍未全數移除，不可冒稱
 runtime 已完全只讀分離素材。
+
+### FDTXT 文字與 FDOTHER#4 字型契約（READY）
+
+本切片沿用已閉合的 offset-table 與 16-bit word parser，不重新猜測控制碼語意。
+固定來源是 `FDTXT.DAT`（120,502 bytes，MD5
+`fe5c487ce4313485f1da9d48d35b05f9`，SHA-256
+`a4555f8a0e61e884b4f504d56a8bdde11672583bbbbc6506281ae10dcdfb1f69`）及
+`FDOTHER.DAT#4` 字型。FDTXT 共35筆 resource；`#0..#33` 可由既有 parser 接受，
+`#34` 是0-byte resource，必須輸出 `blocked/empty_resource` 狀態，不可猜補文字。
+
+每筆 `text/FDTXT_NNN/resource.json` 固定包含來源檔、resource、archive hash、raw size、
+`status`、`reason_code` 與證據等級。`decoded` resource 另含 `strings[]`；每筆字串至少有：
+
+- 穩定 `string_id=FDTXT_NNN/string_NNNN` 及不受排序影響的原始 `source_index`；
+- 有型別 `tokens[]`：普通 word 是 `glyph` 並保留 `glyph_index`，`0xFF00..0xFFFE`
+  是 `control` 並保留四位十六進位值；終止字 `0xFFFF` 由容器契約表示，不冒充文字；
+- `text` 是依受版控 `glyph_map.json` 產生的 UTF-8 投影。無映射字形須以明確占位 token
+  保留索引，不能遺失或替換；
+- loader 必須由 tokens 重建既有 `fdtxt.Strings`。若 `text` 與 glyph token 的可重生投影
+  不一致、token 種類未知、控制碼範圍錯誤、ID／來源 index 重複或缺號，整筆拒絕。
+
+這份雙層契約讓編輯器顯示與修改 Unicode，同時保留原版逐 word 控制流。編譯器只有在
+Unicode 能唯一或依明載策略映射回 glyph 時才可更新 tokens；不能把 UTF-8 顯示字串直接
+交給原版 renderer，也不能讓 stale tokens 靜默蓋掉使用者文字。
+
+`fonts/fdother_004/{atlas.png,font.json}` 是獨立契約：atlas 為固定 16×16 cells 的1-bit
+遮罩投影，metadata 保存 `glyph_count`、cell geometry、source bank／hash 與 glyph-to-cell
+索引。FDTXT resource 不內嵌字型像素；theme 可以替換 atlas，但不可改變忠實資料包的
+glyph identity。正式 LOAD、職業／教會／道具面板與終局消費端，必須在原始
+`FDTXT.DAT` 不可讀時仍由這兩組分離素材完成；任一 JSON、token、atlas 或來源證明缺失
+時採失敗即關閉，不得回退 archive。
+
+#### 2026-08-28 FDTXT／字型第一批遷移結果
+
+固定版本真實匯出得到34筆 `decoded` word table 與1筆 `blocked/empty_resource`
+（`FDTXT_034`）。`FDTXT_000` 的661條及 `FDTXT_031` 的46條字串均具穩定ID、UTF-8
+投影與lossless typed tokens；#31已逐word與原始resource相同。loader測試另證實會拒絕
+UTF-8投影與token不一致的文件。
+
+`FDOTHER.DAT#4`已輸出512×912二值atlas及metadata；1,824個16×16 glyph逐bit與
+58,368-byte原始bank一致，灰階中間值、錯誤geometry及來源hash均失敗即關閉。正式
+LOAD、職業／教會共用資產及party montage已改讀分離FDTXT#0/#31與字型，不回退這兩項
+archive resource。道具／轉移面板與終局phase0仍有FDTXT archive consumer，故本家族
+狀態是 `DATA-READY`／`RUNTIME-E1-PARTIAL`，不是完成。
+
+重生後完整manifest為7,914筆：6,890 exported、1,005 intentionally_raw、19 blocked；
+其中35份 `text/FDTXT_NNN/resource.json` 為34 exported＋1 blocked，字型atlas／metadata
+另為2筆exported。舊 `images/FDTXT_FDTXT_015.png` 只保留為研究圖像輸出，kind不是
+`text`，不可作為runtime文字契約。
 
 ## 七、完成定義
 

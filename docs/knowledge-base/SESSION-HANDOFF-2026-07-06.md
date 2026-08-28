@@ -8169,3 +8169,12 @@ unit admission及foreground／HUD零覆蓋結論仍有效。
   blit，也不回退`TAI.DAT`。正式campaign montage在`FD2_TAI`不可讀時通過。
 - 因此舊段落的「exact raw bytes」只描述原版證據與當時gate，不再代表現行runtime
   必須即時讀archive。`56`、`58`、`60`與`91`已同步現況。
+
+## 2026-08-28：FDTXT／FDOTHER#4 分離素材第一批
+
+- 固定hash `FDTXT.DAT` 已匯出34份lossless typed JSON；零長度#34明列blocked。
+  UTF-8投影與glyph/control token不一致時loader拒絕，不重新猜FFxx語意。
+- `FDOTHER#4`已輸出1,824 glyph的512×912二值atlas及metadata，逐bit與原始bank一致。
+- 正式LOAD、職業／教會共用資產與party montage改讀分離#0/#31及字型；道具／轉移
+  面板與終局phase0仍是下一批archive consumer，因此本次只標`RUNTIME-E1-PARTIAL`。
+- manifest更新為7,914筆：6,890 exported、1,005 intentionally_raw、19 blocked。

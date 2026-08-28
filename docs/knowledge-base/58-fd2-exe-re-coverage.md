@@ -136,7 +136,7 @@ writer／consumer 分類高 fan-in helper，不用 unknown 總數驅動無限 RE
 
 | 子系統 | 原版證據 | 可編輯資料 | 正式執行期 | 玩家驗證 | 目前裁決與下一步 |
 |---|---|---|---|---|---|
-| 檔案版本、容器與主要資產格式 | 閉合 | 部分 | 部分 E1 | 部分 | `.DAT`、圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與多張 EXE 表已有雜湊與重生工具，不應重解容器格式。2026-08-28 全量匯出實測得到1,005個raw subresources、125張一般PNG、264／409組FIGANI、136組頭像與33張地圖。FIGANI有2,118張indexed frame、2,118張mask、264份animation metadata及409份resource status；另將23筆已證實的FDOTHER內嵌動畫輸出408張frame、408張mask、23份metadata與23份status。BG／TAI各57筆均已建立狀態文件，#0..55共112張indexed frame與112張mask，兩個0-byte #56維持blocked；逐檔manifest現為7,877筆（6,854 exported、1,005 intentionally_raw、18 blocked）。112筆surface已逐pixel／mask／final blit與archive decoder一致，戰鬥指令0–3／5–9／24／29／32–35、party montage的TAI#3透明gate及終局20段tail均只讀分離surface；正常指令0與正式campaign montage在TAI archive不可讀時通過，tail四項測試覆蓋20筆transaction。`FDOTHER #0/#2`指令格、全DATO consumer、終局FIGANI montage／tail、通用攻擊及前述指令的FIGANI與FDOTHER動畫也均由分離pack載入；正式`figani.DecodeResource`與TAI direct archive production caller歸零，達窄`RUNTIME-E1`。production runtime仍直接讀其他`.DAT`；音效、AFM／ANI、FDTXT／FDFIELD與其他UI用途未全量閉合，故整體仍是部分。契約與實測清冊見[`60`](60-editor-separated-assets-spec.md)及[`asset-export-audit-20260828.json`](../data/asset-export-audit-20260828.json)。 |
+| 檔案版本、容器與主要資產格式 | 閉合 | 部分 | 部分 E1 | 部分 | `.DAT`、圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與多張 EXE 表已有雜湊與重生工具，不應重解容器格式。2026-08-28 全量匯出實測得到1,005個raw subresources、125張一般PNG、264／409組FIGANI、136組頭像與33張地圖。FIGANI有2,118張indexed frame、2,118張mask、264份animation metadata及409份resource status；另將23筆已證實的FDOTHER內嵌動畫輸出408張frame、408張mask、23份metadata與23份status。BG／TAI各57筆均已建立狀態文件，#0..55共112張indexed frame與112張mask，兩個0-byte #56維持blocked。FDTXT另有34份lossless token JSON＋1份zero-byte blocked，FDOTHER#4輸出1,824 glyph atlas／metadata；逐檔manifest現為7,914筆（6,890 exported、1,005 intentionally_raw、19 blocked）。112筆surface已逐pixel／mask／final blit與archive decoder一致；FDTXT#31逐word、字型逐bit一致。戰鬥指令0–3／5–9／24／29／32–35、party montage的TAI#3透明gate及終局20段tail均只讀分離surface；LOAD、職業／教會共用資產與party montage亦只讀分離FDTXT#0/#31及字型。正式`figani.DecodeResource`與TAI direct archive production caller歸零，達窄`RUNTIME-E1`。production runtime仍直接讀其他`.DAT`；音效、AFM／ANI、FDTXT其餘consumer、FDFIELD與其他UI用途未全量閉合，故整體仍是部分。契約與實測清冊見[`60`](60-editor-separated-assets-spec.md)及[`asset-export-audit-20260828.json`](../data/asset-export-audit-20260828.json)。 |
 
 > **2026-08-26 晚期四槽 LOAD 勘誤：** 同一固定雜湊 `fd2last.sav` 現已由重製
 > 正式 selector 還原 slot 0 的29人、60金幣與 raw metadata，並進
@@ -620,3 +620,16 @@ caller-specific indexed owner；ID8／19雖無固定初始bit，仍保留已閉�
 同步改HP的捷徑；資產全量覆蓋與拒絕零mutation回歸均通過，達`RUNTIME-E1`。
 這關閉「仍有正常敵方command producer缺owner」的舊待辦；剩餘戰鬥阻擋是狀態
 高階名稱與代表性同狀態`PLAYER-E2`，不是再猜接靜態mask中不存在的ID。
+
+## 十四、2026-08-28：FDTXT lossless token 與 FDOTHER#4 字型分離
+
+本項不重開已閉合的offset table、`0x15F84`或控制碼語意。固定hash的35筆FDTXT已由
+既有parser機械匯出：#0..#33為typed glyph/control JSON，#34零長度保持blocked；
+`FDTXT_031`的46條逐word與原始resource相同。`FDOTHER#4`的1,824個16×16 1-bit glyph
+亦由PNG atlas逐bit重建一致。UTF-8只是可編輯投影，runtime以lossless tokens為準並拒絕
+兩者不一致，故不把未證實FFxx高階名稱寫入資料契約。
+
+LOAD、職業／教會共用資產與party montage已改讀分離FDTXT#0/#31及字型，達
+`DATA-READY`／局部`RUNTIME-E1`。共用道具／轉移面板與終局phase0仍直接消費archive，
+所以不得宣稱FDTXT production caller歸零；下一步只遷移這些已知consumer，不重做
+文字格式RE。

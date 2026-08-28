@@ -32,7 +32,8 @@ type MontageArchivePaths struct {
 	SurfaceRoot   string
 	AnimationRoot string
 	PortraitRoot  string
-	FDTXT         string
+	TextRoot      string
+	FontRoot      string
 }
 
 // LoadMontageCycleAssets decodes the exact resources named by the native
@@ -40,7 +41,7 @@ type MontageArchivePaths struct {
 // +7, FDTXT_031/FDTXT_000 and the FDOTHER#4 font.  It deliberately takes the
 // raw unit records from the caller so no identity or slot meaning is guessed.
 func LoadMontageCycleAssets(montage Montage, paths MontageArchivePaths, units [][]byte) (MontageCycleAssets, error) {
-	if paths.FDOTHER == "" || paths.SurfaceRoot == "" || paths.AnimationRoot == "" || paths.PortraitRoot == "" || paths.FDTXT == "" || len(units) < 2 {
+	if paths.FDOTHER == "" || paths.SurfaceRoot == "" || paths.AnimationRoot == "" || paths.PortraitRoot == "" || paths.TextRoot == "" || paths.FontRoot == "" || len(units) < 2 {
 		return MontageCycleAssets{}, errors.New("ending: incomplete montage archive paths or party")
 	}
 	for i, unit := range units {
@@ -63,29 +64,17 @@ func LoadMontageCycleAssets(montage Montage, paths MontageArchivePaths, units []
 	if err := RenderDialogueFrameGridResource(montage, paths.FDOTHER, grid); err != nil {
 		return MontageCycleAssets{}, fmt.Errorf("ending: FDOTHER#5 dialogue grid: %w", err)
 	}
-	currentRaw, err := fdother.ReadResource(paths.FDTXT, 31)
+	current, err := fdtxt.LoadSeparatedResource(paths.TextRoot, 31)
 	if err != nil {
-		return MontageCycleAssets{}, fmt.Errorf("ending: FDTXT_031: %w", err)
+		return MontageCycleAssets{}, fmt.Errorf("ending: separated FDTXT_031: %w", err)
 	}
-	current, err := fdtxt.Parse(currentRaw)
+	permanent, err := fdtxt.LoadSeparatedResource(paths.TextRoot, 0)
 	if err != nil {
-		return MontageCycleAssets{}, fmt.Errorf("ending: FDTXT_031 parse: %w", err)
+		return MontageCycleAssets{}, fmt.Errorf("ending: separated FDTXT_000: %w", err)
 	}
-	permanentRaw, err := fdother.ReadResource(paths.FDTXT, 0)
+	font, err := fdtxt.LoadSeparatedFont(paths.FontRoot)
 	if err != nil {
-		return MontageCycleAssets{}, fmt.Errorf("ending: FDTXT_000: %w", err)
-	}
-	permanent, err := fdtxt.Parse(permanentRaw)
-	if err != nil {
-		return MontageCycleAssets{}, fmt.Errorf("ending: FDTXT_000 parse: %w", err)
-	}
-	fontRaw, err := fdother.ReadResource(paths.FDOTHER, 4)
-	if err != nil {
-		return MontageCycleAssets{}, fmt.Errorf("ending: FDOTHER#4 font: %w", err)
-	}
-	font, err := fdtxt.ParseFont(fontRaw)
-	if err != nil {
-		return MontageCycleAssets{}, fmt.Errorf("ending: FDOTHER#4 font parse: %w", err)
+		return MontageCycleAssets{}, fmt.Errorf("ending: separated FDOTHER#4 font: %w", err)
 	}
 	assets := MontageCycleAssets{
 		Backdrop: backdrop, TAI003: tai003, Primary: make(map[int]*figani.Animation),

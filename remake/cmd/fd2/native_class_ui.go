@@ -70,19 +70,11 @@ func loadNativeClassUIAssets() (*nativeClassUIAssets, error) {
 			return nil, err
 		}
 	}
-	textRaw, err := fdother.ReadResource(filepath.Join(base, "FDTXT.DAT"), 0)
+	strings, err := fdtxt.LoadSeparatedResource(separatedAssetPath("text"), 0)
 	if err != nil {
 		return nil, err
 	}
-	strings, err := fdtxt.Parse(textRaw)
-	if err != nil {
-		return nil, err
-	}
-	fontRaw, err := fdother.ReadResource(fdotherPath, 4)
-	if err != nil {
-		return nil, err
-	}
-	font, err := fdtxt.ParseFont(fontRaw)
+	font, err := fdtxt.LoadSeparatedFont(separatedAssetPath("fonts"))
 	if err != nil {
 		return nil, err
 	}

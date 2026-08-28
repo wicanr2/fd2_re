@@ -5,7 +5,7 @@
   "tool": "tools/extract_all.py + remake/cmd/fd2-asset-import",
   "container_image": "fd2-assets-local:20260828",
   "output_policy": "local_generated_untracked",
-  "command_contract": "python3 tools/extract_all.py <verified-original-dir> <pack>; go run ./cmd/fd2-asset-import -fdother <FDOTHER.DAT> -bg <BG.DAT> -tai <TAI.DAT> -out <pack>",
+  "command_contract": "python3 tools/extract_all.py <verified-original-dir> <pack>; go run ./cmd/fd2-asset-import -fdother <FDOTHER.DAT> -bg <BG.DAT> -tai <TAI.DAT> -fdtxt <FDTXT.DAT> -glyph-map docs/data/glyph_map.json -out <pack>",
   "archive_resources": {
     "ANI.DAT": 10,
     "BG.DAT": 57,
@@ -40,23 +40,44 @@
     "decoded_tai_surface_frames_png": 56,
     "decoded_tai_surface_masks_png": 56,
     "tai_surface_resource_status_json": 57,
+    "decoded_fdtxt_resources": 34,
+    "blocked_fdtxt_resources": 1,
+    "fdtxt_resource_json": 35,
     "decoded_portrait_resources": 136,
     "decoded_portrait_frames_png": 544,
     "rendered_maps_png": 33,
-    "font_atlases_png": 1,
+    "font_atlases_png": 2,
+    "runtime_font_metadata_json": 1,
     "music_midi": 15
   },
   "manifest_validation": {
     "tool": "tools/generate_separated_asset_manifest.py",
     "validator": "tools/validate_separated_asset_pack.py",
-    "total_entries": 7877,
-    "exported": 6854,
-    "blocked": 18,
+    "total_entries": 7914,
+    "exported": 6890,
+    "blocked": 19,
     "intentionally_raw": 1005,
     "source_hashes_verified": true,
     "result": "pass"
   },
   "runtime_migrations": [{
+    "family": "fdtxt_and_fdother_font",
+    "source_resources": ["FDTXT.DAT#0..34", "FDOTHER.DAT#4"],
+    "resource_statuses": {
+      "decoded": 34,
+      "blocked_empty_resource": 1
+    },
+    "runtime_consumers": [
+      "native load slots UI",
+      "native class/church shared assets",
+      "native ending party montage"
+    ],
+    "fdtxt_031_word_match": "pass (46 strings)",
+    "font_bit_match": "pass (1824 glyphs, 16x16)",
+    "runtime_archive_fallback": false,
+    "remaining_archive_consumers": ["native item/transfer panel", "native ending phase0"],
+    "evidence_level": "RUNTIME-E1-PARTIAL"
+  }, {
     "family": "battle_action_grid",
     "source_resources": ["FDOTHER.DAT#0", "FDOTHER.DAT#2"],
     "separated_outputs": 79,

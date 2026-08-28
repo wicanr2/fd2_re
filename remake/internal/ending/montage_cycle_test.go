@@ -12,7 +12,8 @@ func montageCyclePlayerPaths() MontageArchivePaths {
 		SurfaceRoot:   "../../generated-assets/fd2-original-b97caf22/surfaces",
 		AnimationRoot: "../../generated-assets/fd2-original-b97caf22/animations",
 		PortraitRoot:  "../../generated-assets/fd2-original-b97caf22/portraits",
-		FDTXT:         base + "FDTXT.DAT",
+		TextRoot:      "../../generated-assets/fd2-original-b97caf22/text",
+		FontRoot:      "../../generated-assets/fd2-original-b97caf22/fonts",
 	}
 }
 
@@ -40,7 +41,7 @@ func montageCycleThreeUnits() [][]byte {
 
 func TestLoadMontageCycleAssetsUsesOnlyProvenanceBoundPlayerResources(t *testing.T) {
 	paths := montageCyclePlayerPaths()
-	for _, path := range []string{paths.FDOTHER, paths.SurfaceRoot + "/TAI_003/resource.json", paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.FDTXT} {
+	for _, path := range []string{paths.FDOTHER, paths.SurfaceRoot + "/TAI_003/resource.json", paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.TextRoot + "/FDTXT_031/resource.json"} {
 		if _, err := os.Stat(path); err != nil {
 			t.Skip("player-provided original archives are absent")
 		}
@@ -63,7 +64,7 @@ func TestLoadMontageCycleAssetsUsesOnlyProvenanceBoundPlayerResources(t *testing
 
 func TestMontageCycleExecutesBothNativeSideBranchesAndFinalPaletteFade(t *testing.T) {
 	paths := montageCyclePlayerPaths()
-	for _, path := range []string{paths.FDOTHER, paths.SurfaceRoot + "/TAI_003/resource.json", paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.FDTXT} {
+	for _, path := range []string{paths.FDOTHER, paths.SurfaceRoot + "/TAI_003/resource.json", paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.TextRoot + "/FDTXT_031/resource.json"} {
 		if _, err := os.Stat(path); err != nil {
 			t.Skip("player-provided original archives are absent")
 		}
@@ -102,7 +103,7 @@ func TestMontageCycleExecutesBothNativeSideBranchesAndFinalPaletteFade(t *testin
 
 func TestMontageCycleInputChangeFinishesCurrentPortraitThenJumpsToFinalLoop(t *testing.T) {
 	paths := montageCyclePlayerPaths()
-	for _, path := range []string{paths.FDOTHER, paths.SurfaceRoot + "/TAI_003/resource.json", paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.FDTXT} {
+	for _, path := range []string{paths.FDOTHER, paths.SurfaceRoot + "/TAI_003/resource.json", paths.AnimationRoot + "/FIGANI_012/animation.json", paths.PortraitRoot + "/DATO_004_m0.png", paths.TextRoot + "/FDTXT_031/resource.json"} {
 		if _, err := os.Stat(path); err != nil {
 			t.Skip("player-provided original archives are unavailable")
 		}

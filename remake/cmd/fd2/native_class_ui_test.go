@@ -198,3 +198,21 @@ func TestDrawNativeClassListUsesPlayerOriginalAssets(t *testing.T) {
 		t.Fatal("native no-candidate five-frame dialogue closing unexpectedly fell back")
 	}
 }
+
+func TestLoadNativeClassUIUsesSeparatedFDTXT(t *testing.T) {
+	const base = "../../../org_game/炎龍騎士團/FLAME2"
+	fdotherPath := filepath.Join(base, "FDOTHER.DAT")
+	if _, err := os.Stat(fdotherPath); err != nil {
+		t.Skip("player-provided FDOTHER.DAT is absent")
+	}
+	t.Setenv("FD2_ORIGINAL_FDOTHER", fdotherPath)
+	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(t.TempDir(), "missing-FDTXT.DAT"))
+	t.Setenv("FD2_ASSET_PACK", "../../generated-assets/fd2-original-b97caf22")
+	assets, err := loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if assets.strings == nil || assets.strings.Count() != 661 {
+		t.Fatalf("separated FDTXT_000 strings=%v", assets.strings)
+	}
+}

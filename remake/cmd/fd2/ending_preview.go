@@ -297,10 +297,11 @@ func (p *nativeEndingPreview) montageArchivePaths() (ending.MontageArchivePaths,
 	}
 	paths := ending.MontageArchivePaths{
 		FDOTHER:       p.fdotherPath,
-		FDTXT:         p.fdtxtPath,
+		TextRoot:      separatedAssetPath("text"),
 		SurfaceRoot:   separatedAssetPath("surfaces"),
 		AnimationRoot: separatedAssetPath("animations"),
 		PortraitRoot:  separatedAssetPath("portraits"),
+		FontRoot:      separatedAssetPath("fonts"),
 	}
 	if paths.SurfaceRoot == "" {
 		return ending.MontageArchivePaths{}, fmt.Errorf("ending: separated montage surface root is unavailable")

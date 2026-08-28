@@ -36,6 +36,12 @@ class GenerateManifestTest(unittest.TestCase):
         (pack / "surfaces" / "BG_056").mkdir(parents=True)
         (pack / "surfaces" / "BG_056" / "resource.json").write_text(
             json.dumps({"status": "blocked"}), encoding="utf-8")
+        (pack / "text" / "FDTXT_000").mkdir(parents=True)
+        (pack / "text" / "FDTXT_000" / "resource.json").write_text(
+            json.dumps({"status": "decoded"}), encoding="utf-8")
+        (pack / "fonts" / "fdother_004").mkdir(parents=True)
+        (pack / "fonts" / "fdother_004" / "atlas.png").write_bytes(b"font-atlas")
+        (pack / "fonts" / "fdother_004" / "font.json").write_text("{}", encoding="utf-8")
         original = root / "original"
         original.mkdir()
         source = original / "FIGANI.DAT"
@@ -46,11 +52,14 @@ class GenerateManifestTest(unittest.TestCase):
         ui_source.write_bytes(b"ui-original")
         bg_source = original / "BG.DAT"
         bg_source.write_bytes(b"bg-original")
+        text_source = original / "FDTXT.DAT"
+        text_source.write_bytes(b"text-original")
         ref = root / "reference.json"
         data = source.read_bytes()
         music_data = music_source.read_bytes()
         ui_data = ui_source.read_bytes()
         bg_data = bg_source.read_bytes()
+        text_data = text_source.read_bytes()
         ref.write_text(json.dumps({"files": [{
             "file": "FIGANI.DAT", "size": len(data),
             "md5": hashlib.md5(data).hexdigest(),
@@ -67,6 +76,10 @@ class GenerateManifestTest(unittest.TestCase):
             "file": "BG.DAT", "size": len(bg_data),
             "md5": hashlib.md5(bg_data).hexdigest(),
             "sha256": hashlib.sha256(bg_data).hexdigest(),
+        }, {
+            "file": "FDTXT.DAT", "size": len(text_data),
+            "md5": hashlib.md5(text_data).hexdigest(),
+            "sha256": hashlib.sha256(text_data).hexdigest(),
         }]}), encoding="utf-8")
         return pack, ref, original
 
@@ -99,6 +112,10 @@ class GenerateManifestTest(unittest.TestCase):
             self.assertEqual((cell["source_file"], cell["source_resource"], cell["source_frame"]), ("FDOTHER.DAT", 2, 0))
             blocked_surface = next(item for item in manifest["assets"] if item["path"] == "surfaces/BG_056/resource.json")
             self.assertEqual((blocked_surface["source_file"], blocked_surface["source_resource"], blocked_surface["status"]), ("BG.DAT", 56, "blocked"))
+            text = next(item for item in manifest["assets"] if item["path"] == "text/FDTXT_000/resource.json")
+            self.assertEqual((text["kind"], text["source_file"], text["source_resource"], text["status"]), ("text", "FDTXT.DAT", 0, "exported"))
+            font = next(item for item in manifest["assets"] if item["path"] == "fonts/fdother_004/font.json")
+            self.assertEqual((font["kind"], font["source_file"], font["source_resource"]), ("font", "FDOTHER.DAT", 4))
 
     def test_source_hash_mismatch_fails_closed(self):
         with tempfile.TemporaryDirectory() as temp:
