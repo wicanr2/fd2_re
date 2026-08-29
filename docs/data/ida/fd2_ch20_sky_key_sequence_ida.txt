@@ -37,6 +37,28 @@
 `docs/data/fd2-reference-files.json` 約束。雜湊不同時，本頁位址及資源編號
 不得直接沿用。
 
+### FDOTHER #34 分離素材契約（2026-08-29，DATA-READY→RUNTIME-E1）
+
+本契約只分離本頁已證實由`0x24336`消費的完整101-frame table，不重新解讀演出
+或DAC硬體時序。標準輸出為`animations/fdother_034_ch20_sky_key/bank.json`及每格
+paletted indexed PNG／binary mask PNG；穩定`asset_id`為
+`animation/FDOTHER_034/ch20_sky_key`。metadata必須保存固定`FDOTHER.DAT`與本頁
+resource #34 raw的大小、MD5、SHA-256，以及每格原始index、x/y/width/height。
+
+嚴格loader必須驗證完整101格、連續且唯一索引、固定相對路徑、來源identity、
+320×200界內幾何、indexed frame與二值mask；另固定本頁四個幾何錨點。任一不符
+即失敗，不得回退讀取`FDOTHER.DAT`。驗收oracle逐格比較geometry、placement、
+indexed pixels與mask；正式`startNativeCh20SkyKeySequence`接入並通過缺原檔測試後，
+才可提升為`RUNTIME-E1`。
+
+2026-08-29 已依契約輸出並驗證101格；固定原檔oracle逐格比較placement、geometry、
+indexed pixels與mask一致。正式`startNativeCh20SkyKeySequence`改用strict separated
+loader並移除`nativeFDOTHERPath`／`DecodeResource`；ANI #0原本已走分離loader。
+完整第21戰勝利→戰後對話→ACT63／64→`0x24336`→JOIN24／23→`town_ch22`→存檔
+長鏈，在戰場初始化後、演出啟動前刻意令FDOTHER archive不可讀仍通過。戰場初始化
+本身尚有另一批共用archive資產，故本測試只提升#34 consumer為`RUNTIME-E1`，不外推
+整個map loader已分離或原版一般玩家E2。
+
 ## 二、caller、函式邊界與唯一直接呼叫
 
 IDA 函式清冊：

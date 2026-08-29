@@ -33,19 +33,19 @@ func recoveredCh20SkyKeySpec(t *testing.T) campaign.NativeCh20SkyKeySequence {
 }
 
 func TestNativeCh20SkyKeyPlayerAssetsMatchRecoveredContract(t *testing.T) {
-	const base = "../../../org_game/炎龍騎士團/FLAME2"
-	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
-	t.Setenv("FD2_ASSET_PACK", filepath.Clean("../../generated-assets/fd2-original-b97caf22"))
+	pack := filepath.Clean("../../generated-assets/fd2-original-b97caf22")
+	t.Setenv("FD2_ASSET_PACK", pack)
 	t.Setenv("FD2_ANI", filepath.Join(t.TempDir(), "missing-ANI.DAT"))
-	fdPath := nativeFDOTHERPath()
-	if fdPath == "" {
-		t.Skip("player-provided FDOTHER.DAT is absent")
-	}
-	if _, err := os.Stat(fdPath); err != nil {
-		t.Skipf("FDOTHER.DAT unavailable: %v", err)
+	missing := t.TempDir()
+	t.Setenv("FD2_FDOTHER", filepath.Join(missing, "FDOTHER.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(missing, "original-FDOTHER.DAT"))
+	if _, err := os.Stat(filepath.Join(pack, "animations", "fdother_034_ch20_sky_key", "bank.json")); err != nil {
+		t.Skipf("separated FDOTHER #34 unavailable: %v", err)
 	}
 	spec := recoveredCh20SkyKeySpec(t)
-	frames, err := fdother.DecodeResource(fdPath, spec.FDOTHERResource)
+	frames, err := fdother.LoadSeparatedCh20SkyKeyFrames(
+		filepath.Join(pack, "animations", "fdother_034_ch20_sky_key"),
+	)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -144,20 +144,20 @@ func rosterHasItem(roster map[int]battle.Unit, itemID int) bool {
 
 func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing.T) {
 	const base = "../../../org_game/炎龍騎士團/FLAME2"
-	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
-	fdPath := nativeFDOTHERPath()
+	t.Setenv("FD2_MUTE", "1")
 	pack := filepath.Clean("../../generated-assets/fd2-original-b97caf22")
-	if fdPath == "" {
-		t.Skip("第21戰完整流程需要玩家提供 FDOTHER.DAT")
-	}
-	if _, err := os.Stat(fdPath); err != nil {
-		t.Skipf("FDOTHER.DAT unavailable: %v", err)
-	}
 	if _, err := os.Stat(filepath.Join(pack, "animations", "ANI_000", "animation.json")); err != nil {
 		t.Skipf("分離 ANI #0 unavailable: %v", err)
 	}
+	if _, err := os.Stat(filepath.Join(pack, "animations", "fdother_034_ch20_sky_key", "bank.json")); err != nil {
+		t.Skipf("分離 FDOTHER #34 unavailable: %v", err)
+	}
 	t.Setenv("FD2_ASSET_PACK", pack)
-	t.Setenv("FD2_ANI", filepath.Join(t.TempDir(), "missing-ANI.DAT"))
+	missing := t.TempDir()
+	t.Setenv("FD2_ANI", filepath.Join(missing, "missing-ANI.DAT"))
+	// 戰場共用 map-assets 仍是另一個待分離切片；先讓既有 map20 初始化完成，
+	// 再於 0x24336 正式 owner 啟動前撤掉 archive，避免把其依賴誤算給 #34。
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
 
 	// 使用本關可編輯 scenario 的實際出戰順序建立測試用持續隊伍投影。
 	// 這只提供既有 JOIN／部署的資料形狀，不證明上一個整備節點或一般玩家
@@ -234,6 +234,8 @@ func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing
 	if err := g.composeNativeMapFrame(); err != nil {
 		t.Fatal(err)
 	}
+	t.Setenv("FD2_FDOTHER", filepath.Join(missing, "FDOTHER.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(missing, "original-FDOTHER.DAT"))
 
 	full, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
 	if err != nil {

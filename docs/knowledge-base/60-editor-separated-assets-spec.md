@@ -703,6 +703,36 @@ oracle逐格一致。正式`ending_preview`及其對話準備已移除`fdotherPa
 通過。重生後完整manifest共39,157筆：38,133 exported、1,005 intentionally raw、
 19 blocked，並通過來源／輸出hash驗證。本切片達`DATA-READY`／`RUNTIME-E1`。
 
+### 第21戰戰後 FDOTHER #34 天空之鑰動畫契約
+
+> 規格狀態：**CONFORMED**
+> 主證據：`docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt`；既有`0x24336`
+> caller／排程為`RE-CLOSED`，本切片不得重新推論DAC首相位或DOS時鐘。
+
+匯入器必須由固定雜湊`FDOTHER.DAT` resource34輸出完整101格
+`fd2_2935b_frame_table`，保存每格原始placement／geometry、paletted indexed PNG
+與binary mask PNG。metadata固定raw size 102,345、MD5
+`84dca404546a3a407d72f139cb934a40`、SHA-256
+`53f120fa4b1fab74c6b3998ec3ef8a9a2363461980ad38a7ffef2400e79b0c4d`；穩定目錄
+為`animations/fdother_034_ch20_sky_key/`，`asset_id`為
+`animation/FDOTHER_034/ch20_sky_key`。
+
+嚴格loader須拒絕錯schema、來源、resource、raw identity、格數、重複／缺漏索引、
+界外幾何、路徑、PNG mode或mask；並固定frame0 `(148,94,24,24)`、frame68／69
+`(146,95,32,23)`與frame100 `(148,94,24,36)`。正式
+`startNativeCh20SkyKeySequence`只由此bank與已分離ANI #0建立job，不保留
+`nativeFDOTHERPath`或archive fallback。驗收包含101格固定原檔oracle，以及在
+`FD2_FDOTHER`／`FD2_ORIGINAL_FDOTHER`不可讀時從正常ch20 post owner完成資產預檢；
+缺bank時不得先移動鏡頭、修改campaign state或發布半套演出。
+
+2026-08-29 實作已完成：101張indexed frame、101張binary mask及`bank.json`皆由
+固定原檔重生，逐格oracle一致。正式`startNativeCh20SkyKeySequence`已無archive
+path／decoder；第21戰完整成功臂測試在map20初始化後、`0x24336`啟動前撤掉原版
+FDOTHER，仍完成演出、JOIN、城鎮與存檔邊界。重生後manifest共39,360筆：38,336
+exported、1,005 intentionally raw、19 blocked，並通過來源／輸出hash驗證。本切片
+達`DATA-READY`／`RUNTIME-E1`；map初始化的#1／#3／#5／#6／#9／#55依賴仍是下一個
+獨立切片，不能被本結果概括為已完成。
+
 ### 商店 FDOTHER #12／#29／#63 索引素材契約
 
 > 規格狀態：**CONFORMED**

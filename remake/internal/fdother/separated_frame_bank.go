@@ -42,6 +42,7 @@ type separatedFrameBankDocument struct {
 
 const nativeEvent61FrameCount = 59
 const nativeEndingPrefixFrameCount = 111
+const nativeCh20SkyKeyFrameCount = 101
 
 type separatedFrameBankContract struct {
 	label      string
@@ -78,6 +79,38 @@ func LoadSeparatedEndingPrefixFrames(root string) ([]Frame, error) {
 		frameCount: nativeEndingPrefixFrameCount,
 		geometry:   validEndingPrefixGeometry,
 	})
+}
+
+// LoadSeparatedCh20SkyKeyFrames loads the complete FDOTHER #34 frame table
+// consumed by sub_24336. It never opens or falls back to the original archive.
+func LoadSeparatedCh20SkyKeyFrames(root string) ([]Frame, error) {
+	return loadSeparatedFrameBank(root, separatedFrameBankContract{
+		label: "ch20 sky key", assetID: "animation/FDOTHER_034/ch20_sky_key", resource: 34,
+		rawSize: 102345, rawMD5: "84dca404546a3a407d72f139cb934a40",
+		rawSHA256:  "53f120fa4b1fab74c6b3998ec3ef8a9a2363461980ad38a7ffef2400e79b0c4d",
+		frameCount: nativeCh20SkyKeyFrameCount,
+		geometry:   validCh20SkyKeyGeometry,
+	})
+}
+
+func validCh20SkyKeyGeometry(entry separatedFrameBankEntry) bool {
+	if entry.X < 0 || entry.Y < 0 || entry.Width <= 0 || entry.Height <= 0 ||
+		entry.X+entry.Width > 320 || entry.Y+entry.Height > 200 {
+		return false
+	}
+	var geometry [4]int
+	switch entry.Index {
+	case 0:
+		geometry = [4]int{148, 94, 24, 24}
+	case 68, 69:
+		geometry = [4]int{146, 95, 32, 23}
+	case 100:
+		geometry = [4]int{148, 94, 24, 36}
+	default:
+		return true
+	}
+	return entry.X == geometry[0] && entry.Y == geometry[1] &&
+		entry.Width == geometry[2] && entry.Height == geometry[3]
 }
 
 func validEndingPrefixGeometry(entry separatedFrameBankEntry) bool {

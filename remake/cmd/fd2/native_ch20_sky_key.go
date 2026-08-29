@@ -89,11 +89,12 @@ func (g *Game) startNativeCh20SkyKeySequence(spec campaign.NativeCh20SkyKeySeque
 		g.m == nil || g.st == nil || !g.st.HasNativeMapViewState {
 		return errors.New("native 0x24336 indexed map state is unavailable")
 	}
-	fdPath := nativeFDOTHERPath()
-	if fdPath == "" {
-		return errors.New("native 0x24336 requires player-provided FDOTHER.DAT")
+	if spec.FDOTHERResource != 34 {
+		return errors.New("native 0x24336 requires the recovered FDOTHER #34 contract")
 	}
-	frames, err := fdother.DecodeResource(fdPath, spec.FDOTHERResource)
+	frames, err := fdother.LoadSeparatedCh20SkyKeyFrames(
+		separatedAssetPath("animations/fdother_034_ch20_sky_key"),
+	)
 	if err != nil {
 		return fmt.Errorf("FDOTHER #%d: %w", spec.FDOTHERResource, err)
 	}
