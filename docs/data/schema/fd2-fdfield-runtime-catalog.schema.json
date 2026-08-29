@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fd2-remake.invalid/schema/fd2-fdfield-runtime-catalog-v1.json",
+  "title": "FD2 FDFIELD runtime 資源 catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "kind", "source", "resources"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "kind": {"const": "fd2_fdfield_runtime_catalog"},
+    "source": {"$ref": "#/$defs/source"},
+    "resources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/resource"}
+    }
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file", "size", "md5", "sha256"],
+      "properties": {
+        "file": {"const": "FDFIELD.DAT"},
+        "size": {"const": 243169},
+        "md5": {"const": "ecdb0436d26adfe5d107f2713fa7e9a2"},
+        "sha256": {"const": "b0cf75d94f58603f091c7462c0494f0e83bd6edfb04c1acbf83ed4d938c7a513"}
+      }
+    },
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["resource_index", "map_id", "path", "file_bytes", "file_sha256", "raw_bytes", "raw_sha256", "evidence_level", "evidence"],
+      "properties": {
+        "resource_index": {"type": "integer", "minimum": 0},
+        "map_id": {"type": "string", "pattern": "^map[0-9]+$"},
+        "path": {"type": "string", "pattern": "^maps/map[0-9]+/map\\.json$"},
+        "file_bytes": {"type": "integer", "minimum": 1},
+        "file_sha256": {"$ref": "#/$defs/digest"},
+        "raw_bytes": {"type": "integer", "minimum": 4},
+        "raw_sha256": {"$ref": "#/$defs/digest"},
+        "evidence_level": {"const": "confirmed"},
+        "evidence": {"type": "string", "pattern": "^docs/data/ida/.+\\.txt$"}
+      }
+    }
+  }
+}

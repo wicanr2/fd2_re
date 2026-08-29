@@ -120,9 +120,9 @@ schema 的診斷，不是 142 個 decoder 缺口：至少包含 FDSHAP 34 筆 co
 
 manifest schema version 2、generator version 3 與 validator 已實作上述契約。真實
 固定來源重生後仍有 39,520 筆 asset，其中 38,496 exported、1,005
-intentionally raw、19 blocked；新增的 1,005 筆 source-resource ledger 分為：894
-`standardized`、11 `confirmed_empty`、0 `blocked`、100 `unknown`。11 筆空項均由
-raw 長度零直接證明；100 筆 unknown 精確分布為 FDFIELD 80、FDMUS 5、FDOTHER 15，
+intentionally raw、19 blocked；新增的 1,005 筆 source-resource ledger 分為：895
+`standardized`、11 `confirmed_empty`、0 `blocked`、99 `unknown`。11 筆空項均由
+raw 長度零直接證明；99 筆 unknown 精確分布為 FDFIELD 79、FDMUS 5、FDOTHER 15，
 不得再引用舊的 161／142 診斷數字。
 
 可版控摘要見
@@ -130,13 +130,48 @@ raw 長度零直接證明；100 筆 unknown 精確分布為 FDFIELD 80、FDMUS 5
 它綁定完整 ignored manifest 的 SHA-256，逐來源保留空項、blocked 與 unknown resource
 index。validator 會重算完整 ledger 與摘要；漏列 raw、重複 resource、把 raw 冒充
 standard output、偽造複合 metadata 關聯、不存在的音樂 catalog track 或摘要漂移皆
-拒絕。13 項 generator／validator／music bridge 測試與真實 39,520 筆 manifest 驗證
-已在一次性無網路 Docker 容器通過。
+拒絕。加入 FDFIELD runtime bridge 後，28 項相關 generator／validator／catalog／schema
+測試與真實 39,520 筆 manifest 驗證已在一次性無網路 Docker 容器通過。
 
-這項成果達 `DATA-READY` 的「覆蓋清冊」層，但不把 100 筆 unknown 自動解讀成
-100 個玩家功能缺口。下一批須先用 production consumer 清冊交叉比對；例如既有
-`map23/map.json` 雖已可逐 byte 重建 FDFIELD #69，尚未以受控 runtime catalog reference
-回連本 manifest，因此目前仍誠實留在 unknown，而不是重做已閉合 decoder。
+這項成果達 `DATA-READY` 的「覆蓋清冊」層，但不把 99 筆 unknown 自動解讀成
+99 個玩家功能缺口。下一批須先用 production consumer 清冊交叉比對；FDFIELD #69
+已由受控 runtime catalog 回連，不再列入 unknown，也不重做已閉合 decoder。
+
+### 三之二、FDFIELD runtime catalog bridge
+
+> 狀態：**CONFORMED／DATA-READY**（2026-08-29）
+
+目前唯一可直接證明「正式 runtime map JSON 完整等同單一 FDFIELD resource」的是
+`assets/maps/map23/map.json` 對 FDFIELD #69。直接 loader／consumer、逐 byte oracle 與
+archive 不可讀測試已在本文件「第 23 戰重載的 FDFIELD #69 組合格契約」閉合；本節
+只補 manifest provenance，不重做 decoder 或 `ch22_post` handler。
+
+`assets/maps/fdfield_catalog.json` 必須是獨立且可擴充的 runtime catalog，固定包含
+FDFIELD 原檔大小／MD5／SHA-256，以及每筆完整資源的：`resource_index`、穩定
+`map_id`、包內安全 `path`、JSON 檔大小／SHA-256、重建 raw 大小／SHA-256、
+`evidence_level` 與受版控證據路徑。首批只准入 #69；不得由 map index 乘三批次捏造
+其他 mapping。
+
+catalog validator 必須重新讀取 `map23/map.json`，以 catalog 的穩定 `map_id` 與受控路徑
+識別既有未重複保存 map id 的 JSON；若文件另含 `map` 則必須等於 23。並驗證正整數寬高、
+`tiles[]`／`native_composition_event_bytes[]`／`native_tile_blit_modes[]` 都恰為
+`width*height`、tile 可表示為 little-endian `uint16`，再依 `u16le width,height` 與
+每格 `u16le tile,event,mode` 重建完整 6,072 bytes。檔案或重建 raw 的大小／SHA-256
+任一不符即失敗，不得回讀 `.DAT`。
+
+manifest 的 `runtime_catalogs.fdfield` 保存 catalog 路徑、大小、SHA-256、來源檔與
+resource 數；source-resource ledger 以 `fdfield/FDFIELD_069` 受控引用把 #69 從
+`unknown` 提升為 `standardized`。validator 必須同時證明引用存在，且 catalog 的
+raw identity 與 manifest 中 #69 的 raw asset 完全相同。現有
+`native_turn_event_controls.json` 只保存各 control resource 的局部投影，不能把 #1、
+#4、#7 等完整 raw resource 標成 standardized；未來只有能重建完整 raw 或另有明確
+typed 完整契約時才可加入本 catalog。
+
+2026-08-29 實作已建立 catalog、machine-readable schema、獨立嚴格 validator，並同時
+接入 manifest generator 與 pack validator。正式 `map23/map.json` 重建 6,072 bytes，
+SHA-256 為 `7f5ac77c56e468a50911373284084e376b574f57b3911a9d4eb870603dd21bf8`，與
+manifest 的 FDFIELD #69 raw identity 完全相同。缺 catalog、map 漂移、陣列長度、raw
+雜湊、偽造 ledger reference 均失敗即關閉；不需要也不會讀取原始 `FDFIELD.DAT`。
 
 ## 四、編輯模型契約
 

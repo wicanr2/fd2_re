@@ -9,7 +9,7 @@ SHA-256；核對失敗即停止，不產生看似可信的清冊。
 
 用法：
     python3 tools/generate_separated_asset_manifest.py PACK ROOT-REF.json \
-        [--original-dir FLAME2] [--music-assets-root ASSETS] [--output manifest.json]
+        [--original-dir FLAME2] [--runtime-assets-root ASSETS] [--output manifest.json]
 """
 
 from __future__ import annotations
@@ -21,6 +21,7 @@ import re
 import sys
 from pathlib import Path
 
+from fdfield_catalog_contract import validate_fdfield_assets
 from music_catalog_contract import validate_music_assets
 
 
@@ -313,10 +314,17 @@ def music_resource_refs(music_assets_root: Path | None) -> dict[tuple[str, int],
     return result
 
 
+def fdfield_resource_refs(resources: dict[int, dict]) -> dict[tuple[str, int], set[str]]:
+    return {
+        ("FDFIELD.DAT", resource): {f"fdfield/FDFIELD_{resource:03d}"}
+        for resource in resources
+    }
+
+
 def build_source_resource_ledger(
     pack_root: Path,
     assets: list[dict],
-    music_assets_root: Path | None,
+    runtime_refs: dict[tuple[str, int], set[str]] | None = None,
 ) -> list[dict]:
     outputs: dict[tuple[str, int], set[str]] = {}
     blocked: dict[tuple[str, int], set[str]] = {}
@@ -328,7 +336,7 @@ def build_source_resource_ledger(
         target.setdefault((item["source_file"], resource), set()).add(item["asset_id"])
     for key, asset_ids in composite_resource_refs(pack_root, assets).items():
         outputs.setdefault(key, set()).update(asset_ids)
-    runtime_refs = music_resource_refs(music_assets_root)
+    runtime_refs = runtime_refs or {}
 
     ledger: list[dict] = []
     for raw in sorted(
@@ -429,7 +437,11 @@ def build_manifest(
     reference: Path,
     original_dir: Path | None = None,
     music_assets_root: Path | None = None,
+    runtime_assets_root: Path | None = None,
 ) -> dict:
+    if music_assets_root is not None and runtime_assets_root is not None:
+        raise ValueError("music_assets_root 與 runtime_assets_root 不可同時指定")
+    runtime_root = runtime_assets_root or music_assets_root
     sources, source_errors = source_entries(reference, original_dir)
     if source_errors:
         raise ValueError("；".join(source_errors))
@@ -497,27 +509,57 @@ def build_manifest(
             assets.append(entry)
 
     pack_id = pack_root.name
+    runtime_catalogs: dict[str, dict] = {}
+    runtime_refs: dict[tuple[str, int], set[str]] = {}
+    if runtime_root is not None and (runtime_root / "music_catalog.json").is_file():
+        source = next((item for item in sources if item["file"] == "FDMUS.DAT"), None)
+        if source is None:
+            raise ValueError("reference manifest 缺少 FDMUS.DAT")
+        bridge, music_errors = validate_music_assets(runtime_root, source)
+        if music_errors:
+            raise ValueError("；".join(music_errors))
+        runtime_catalogs["music"] = bridge
+        runtime_refs.update(music_resource_refs(runtime_root))
+    if runtime_root is not None and (runtime_root / "maps" / "fdfield_catalog.json").is_file():
+        source = next((item for item in sources if item["file"] == "FDFIELD.DAT"), None)
+        if source is None:
+            raise ValueError("reference manifest 缺少 FDFIELD.DAT")
+        bridge, resources, fdfield_errors = validate_fdfield_assets(runtime_root, source)
+        if fdfield_errors:
+            raise ValueError("；".join(fdfield_errors))
+        raw_by_resource = {
+            item["source_resource"]: item
+            for item in assets
+            if item["status"] == "intentionally_raw"
+            and item["source_file"] == "FDFIELD.DAT"
+        }
+        for resource, entry in resources.items():
+            raw = raw_by_resource.get(resource)
+            if raw is None:
+                raise ValueError(f"FDFIELD runtime catalog 找不到 raw resource #{resource}")
+            raw_path = pack_root / raw["path"]
+            if (
+                raw_path.stat().st_size != entry["raw_bytes"]
+                or raw["sha256"] != entry["raw_sha256"]
+            ):
+                raise ValueError(f"FDFIELD runtime catalog raw identity 不符：#{resource}")
+        runtime_catalogs["fdfield"] = bridge
+        runtime_refs.update(fdfield_resource_refs(resources))
+
     manifest = {
         "schema_version": 2,
         "pack_id": pack_id,
         "source_set": sources,
         "assets": assets,
-        "source_resources": build_source_resource_ledger(pack_root, assets, music_assets_root),
+        "source_resources": build_source_resource_ledger(pack_root, assets, runtime_refs),
         "relationships": [],
         "generated_by": {
             "tool": "generate_separated_asset_manifest.py",
             "version": "3",
         },
     }
-    if music_assets_root is not None:
-        source = next((item for item in sources if item["file"] == "FDMUS.DAT"), None)
-        if source is None:
-            raise ValueError("reference manifest 缺少 FDMUS.DAT")
-        bridge, music_errors = validate_music_assets(music_assets_root, source)
-        if music_errors:
-            raise ValueError("；".join(music_errors))
-        manifest["runtime_catalogs"] = {"music": bridge}
-        manifest["generated_by"]["version"] = "3"
+    if runtime_catalogs:
+        manifest["runtime_catalogs"] = runtime_catalogs
     return manifest
 
 
@@ -526,14 +568,18 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("pack_root", type=Path)
     parser.add_argument("reference", type=Path)
     parser.add_argument("--original-dir", type=Path)
-    parser.add_argument("--music-assets-root", type=Path)
+    parser.add_argument(
+        "--runtime-assets-root", "--music-assets-root",
+        dest="runtime_assets_root", type=Path,
+    )
     parser.add_argument("--output", type=Path)
     parser.add_argument("--coverage-summary", type=Path)
     args = parser.parse_args(argv)
     output = args.output or args.pack_root / "manifest.json"
     try:
         manifest = build_manifest(
-            args.pack_root, args.reference, args.original_dir, args.music_assets_root,
+            args.pack_root, args.reference, args.original_dir,
+            runtime_assets_root=args.runtime_assets_root,
         )
         output.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         if args.coverage_summary is not None:

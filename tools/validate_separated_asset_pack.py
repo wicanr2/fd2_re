@@ -14,6 +14,7 @@ from pathlib import Path, PurePosixPath
 import re
 import sys
 
+from fdfield_catalog_contract import validate_fdfield_assets
 from music_catalog_contract import validate_music_assets
 from generate_separated_asset_manifest import build_coverage_summary
 
@@ -175,10 +176,16 @@ def validate(
                 errors.append(f"relationships[{index}].{endpoint} 引用不存在：{value!r}")
     runtime_catalogs = doc.get("runtime_catalogs")
     music_resource_refs: set[str] = set()
+    fdfield_resource_refs: dict[str, dict] = {}
     if runtime_catalogs is not None:
-        if not isinstance(runtime_catalogs, dict) or set(runtime_catalogs) != {"music"}:
-            errors.append("runtime_catalogs 只接受 music")
-        else:
+        allowed_catalogs = {"music", "fdfield"}
+        if (
+            not isinstance(runtime_catalogs, dict)
+            or not runtime_catalogs
+            or not set(runtime_catalogs).issubset(allowed_catalogs)
+        ):
+            errors.append("runtime_catalogs 只接受非空的 music／fdfield 集合")
+        elif "music" in runtime_catalogs:
             bridge = runtime_catalogs["music"]
             required = {
                 "kind", "asset_root", "catalog_path", "catalog_bytes", "catalog_sha256",
@@ -218,6 +225,38 @@ def validate(
                     track_id = track.get("track_id")
                     if isinstance(index, int) and isinstance(track_id, str):
                         music_resource_refs.add(f"music/{track_id}")
+        if isinstance(runtime_catalogs, dict) and "fdfield" in runtime_catalogs:
+            bridge = runtime_catalogs["fdfield"]
+            required = {
+                "kind", "asset_root", "catalog_path", "catalog_bytes", "catalog_sha256",
+                "schema_version", "source_file", "resources",
+            }
+            if not isinstance(bridge, dict) or set(bridge) != required:
+                errors.append("runtime_catalogs.fdfield bridge 欄位不符")
+            elif (
+                bridge.get("kind") != "fd2_fdfield_runtime_catalog"
+                or bridge.get("asset_root") != "runtime_assets"
+                or bridge.get("catalog_path") != "maps/fdfield_catalog.json"
+                or not safe_relative(bridge.get("catalog_path"))
+                or bridge.get("schema_version") != 1
+                or bridge.get("source_file") != "FDFIELD.DAT"
+                or not isinstance(bridge.get("resources"), int)
+                or bridge["resources"] < 1
+            ):
+                errors.append("runtime_catalogs.fdfield 固定契約不符")
+            elif runtime_assets is None:
+                errors.append("runtime_catalogs.fdfield 需要明確 runtime assets root")
+            else:
+                source = next((item for item in sources if item.get("file") == "FDFIELD.DAT"), None)
+                expected_hash = bridge.get("catalog_sha256")
+                actual, resources, fdfield_errors = validate_fdfield_assets(
+                    runtime_assets, source, expected_hash,
+                )
+                errors.extend(fdfield_errors)
+                if actual is not None and actual != bridge:
+                    errors.append("runtime_catalogs.fdfield bridge metadata 不符")
+                for resource, entry in resources.items():
+                    fdfield_resource_refs[f"fdfield/FDFIELD_{resource:03d}"] = entry
 
     source_resources = doc.get("source_resources")
     if not isinstance(source_resources, list):
@@ -288,7 +327,18 @@ def validate(
             if asset_id not in allowed_outputs:
                 errors.append(f"{prefix}.output_asset_ids 無法證明關聯：{asset_id!r}")
         for ref in catalog_refs:
-            if key[0] != "FDMUS.DAT" or ref not in music_resource_refs:
+            if key[0] == "FDMUS.DAT" and ref in music_resource_refs:
+                continue
+            if key[0] == "FDFIELD.DAT" and ref in fdfield_resource_refs:
+                resource_entry = fdfield_resource_refs[ref]
+                if (
+                    resource_entry.get("resource_index") != key[1]
+                    or resource_entry.get("raw_bytes") != entry.get("raw_bytes")
+                    or resource_entry.get("raw_sha256") != entry.get("raw_sha256")
+                ):
+                    errors.append(f"{prefix}.runtime_catalog_refs raw identity 不符：{ref!r}")
+                continue
+            else:
                 errors.append(f"{prefix}.runtime_catalog_refs 不存在：{ref!r}")
         exported = any(assets_by_id.get(asset_id, {}).get("status") == "exported" for asset_id in output_ids)
         blocked_output = any(assets_by_id.get(asset_id, {}).get("status") == "blocked" for asset_id in output_ids)

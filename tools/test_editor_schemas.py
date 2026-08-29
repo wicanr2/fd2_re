@@ -46,6 +46,10 @@ def check_asset_refs(doc, asset_ids):
 class EditorSchemaTest(unittest.TestCase):
     def test_source_resource_coverage_summary(self):
         manifest_schema = load("fd2-separated-asset-pack.schema.json")
+        fdfield_schema = load("fd2-fdfield-runtime-catalog.schema.json")
+        fdfield_catalog = json.loads((
+            ROOT / "remake" / "assets" / "maps" / "fdfield_catalog.json"
+        ).read_text(encoding="utf-8"))
         schema = load("fd2-source-resource-coverage-summary.schema.json")
         summary = json.loads((
             ROOT / "docs" / "data" / "fd2-source-resource-coverage-summary.json"
@@ -53,6 +57,9 @@ class EditorSchemaTest(unittest.TestCase):
         self.assertEqual(schema["properties"]["kind"]["const"], summary["kind"])
         self.assertEqual(manifest_schema["properties"]["schema_version"]["const"], 2)
         self.assertIn("runtime_catalogs", manifest_schema["properties"])
+        self.assertIn("fdfield", manifest_schema["$defs"]["runtime_catalogs"]["properties"])
+        self.assertEqual(fdfield_schema["properties"]["kind"]["const"], fdfield_catalog["kind"])
+        self.assertEqual(fdfield_catalog["resources"][0]["resource_index"], 69)
         self.assertIn("source_resources", manifest_schema["required"])
         self.assertEqual(summary["manifest_schema_version"], 2)
         self.assertRegex(summary["manifest_sha256"], r"^[0-9a-f]{64}$")

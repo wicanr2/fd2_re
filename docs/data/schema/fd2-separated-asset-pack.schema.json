@@ -109,9 +109,10 @@
     "runtime_catalogs": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["music"],
+      "minProperties": 1,
       "properties": {
-        "music": {"$ref": "#/$defs/music_catalog_bridge"}
+        "music": {"$ref": "#/$defs/music_catalog_bridge"},
+        "fdfield": {"$ref": "#/$defs/fdfield_catalog_bridge"}
       }
     },
     "music_catalog_bridge": {
@@ -129,6 +130,21 @@
         "profiles": {"const": 2},
         "tracks": {"const": 15},
         "renders": {"const": 30}
+      }
+    },
+    "fdfield_catalog_bridge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "asset_root", "catalog_path", "catalog_bytes", "catalog_sha256", "schema_version", "source_file", "resources"],
+      "properties": {
+        "kind": {"const": "fd2_fdfield_runtime_catalog"},
+        "asset_root": {"const": "runtime_assets"},
+        "catalog_path": {"const": "maps/fdfield_catalog.json"},
+        "catalog_bytes": {"type": "integer", "minimum": 1},
+        "catalog_sha256": {"allOf": [{"$ref": "#/$defs/digest"}, {"minLength": 64, "maxLength": 64}]},
+        "schema_version": {"const": 1},
+        "source_file": {"const": "FDFIELD.DAT"},
+        "resources": {"type": "integer", "minimum": 1}
       }
     }
   }
