@@ -1,0 +1,55 @@
+# FD2 一般物理攻擊分離 FIGANI provider 證據與實作邊界（2026-08-29）
+
+## 輸入、工具與證據分級
+
+- 原版：`FD2.EXE`，357,074 bytes；MD5
+  `b97caf2239a27a896069d03549d96e1e`；SHA-256
+  `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 第一工具：既有合法 IDA Pro 9.4.0.260610 線性位址證據；本輪不重做已閉合
+  函式。主證據為 `fd2_ai_mode11_full_ida_20260810.txt`、
+  `fd2_battle_impact_displacement_ida.txt`及`60-editor-separated-assets-spec.md`。
+- 位址皆為 IDA DOS LE loader 線性位址，不是檔案偏移。原始名稱與位址保持不變。
+- 已證實：原版 FIGANI selector trio、descriptor delay、玩家／敵方物理 owner 所需的
+  attack＋defender idle 輸入，以及分離 FIGANI 每幀可逐欄位重建。
+- 強推論：現代引擎以同一 `BattleFig` 投影餵入所有一般玩家來源；只有具原始
+  `unit+7` provenance的記錄才可稱 selector parity。
+- 未知：`sub_29F72`高階輸出名稱、完整命中分支、精確 DAC 與逐幀／逐音訊 E2。
+
+## 已閉合的原版資料契約
+
+`0x287B5..0x2884C`以 runtime record `unit+7`選擇 FIGANI trio；一般物理演出需要：
+
+- 攻方 attack resource：`selector*3+1`；
+- 守方 idle resource：`selector*3`；
+- 每幀 x／y、indexed pixels、mask及 descriptor `+6` delay；
+- 兩個 resource 必須在交易前同時可用，不能以固定幀數或猜測 delay 補洞。
+
+`0x1548E`的 mode 11 物理 owner及一般 `0x14EF0`路由皆需要同一對資產。既有
+`figani.LoadSeparatedResource`已逐欄位驗證`animations/FIGANI_NNN`，正式 runtime
+不需要也不得回退讀`FIGANI.DAT`。
+
+## 2026-08-29 runtime caller 稽核與重開原因
+
+原版 RE 不需重開；重開的是重製 provider 接線。實檔確認：
+
+- `ensureNativeAttackPresentation`可從`FD2_ASSET_PACK/animations`原子載入任意
+  attack／idle pair，但只由敵方一般與mode 11路徑在結算前呼叫。
+- 玩家普通攻擊直接以`newAtkAnim`查詢啟動時載入的22-resource legacy PNG cache；
+  cache miss時，傷害與亂數已先提交，再只記錄 presentation unavailable。
+- 因此「FIGANI archive production caller歸零」為真，但「所有一般物理攻擊均只依
+  完整分離pack」尚不成立；兩者不可混為同一句完成宣稱。
+
+## 可審查實作規格
+
+1. 玩家與敵方在消耗亂數、HP、EXP、死亡獎勵或 acted之前，共用
+   `ensureNativeAttackPresentation(atkSelector, defSelector)`。
+2. provider先完整載入兩個resource的frame／mask／位置／delay並驗證排程，再一次
+   發布到cache；任一缺失時不發布半套內容，也不改戰鬥狀態或面向。
+3. `newAtkAnim`只消費已預檢cache；它不讀原始archive、不猜固定delay，也不把
+   legacy PNG cache當唯一正式來源。
+4. 玩家普通攻擊缺分離資產時維持目標選擇狀態並回報錯誤；不得先結算再略過畫面。
+5. 驗收須覆蓋：原始`FIGANI.DAT`不可讀但完整分離pair可建立普通玩家動畫；缺pack
+   時HP／EXP／acted／面向及注入RNG均不變；既有敵方mode 11仍使用相同provider。
+
+這只關閉一般物理攻擊的分離資產 provider；法術、特殊劇情攻擊、精確DAC與E2不因
+共用`newAtkAnim`而自動提升。

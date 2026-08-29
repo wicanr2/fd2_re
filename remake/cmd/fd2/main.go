@@ -6681,6 +6681,14 @@ func (g *Game) confirm() {
 	// 攻擊階段:游標在攻擊範圍內的敵 → 攻擊;在自己格 → 待命
 	if tgt := g.st.UnitAt(g.curX, g.curY); tgt != nil && tgt != g.sel &&
 		tgt.Camp != battle.Own && g.st.InAttackRange(g.sel, g.curX, g.curY) {
+		// The original transaction requires both attack and defender-idle FIGANI
+		// inputs. Preflight the complete separated pair before direction, RNG, HP,
+		// EXP or acted state changes; a missing presentation must not become a
+		// successful invisible attack.
+		if err := g.ensureNativeAttackPresentation(g.sel.BattleFig, tgt.BattleFig); err != nil {
+			g.loadErr = fmt.Sprintf("FIGANI attack presentation unavailable: %d -> %d: %v", g.sel.BattleFig, tgt.BattleFig, err)
+			return
+		}
 		// 攻擊者面向目標(FDICON 方向幀)
 		g.sel.SetMapPose(dirToward(g.sel.X, g.sel.Y, g.curX, g.curY))
 		nm := tgt.Name
@@ -6709,10 +6717,11 @@ func (g *Game) confirm() {
 				g.finishSuccessfulUnitAction(actor, nil)
 			}
 		} else {
-			// Damage was already resolved by the typed battle rule; record the
-			// missing presentation without fabricating a frame sequence.
-			g.loadErr = fmt.Sprintf("FIGANI attack presentation unavailable: %d -> %d", actor.BattleFig, tgt.BattleFig)
-			g.finishSuccessfulUnitAction(actor, nil)
+			// The complete pair was preflighted above. Reaching this branch means
+			// the cache contract changed between settlement and player creation;
+			// stop rather than pretending the invisible presentation succeeded.
+			g.loadErr = fmt.Sprintf("FIGANI attack presentation disappeared after preflight: %d -> %d", actor.BattleFig, tgt.BattleFig)
+			return
 		}
 		g.sel, g.reach, g.moved = nil, nil, false
 		g.checkResult()
@@ -10332,7 +10341,6 @@ func (g *Game) aiStep() {
 		}
 		if plan.Target != nil && plan.Target.Alive() {
 			tgt := plan.Target
-			u.SetMapPose(dirToward(u.X, u.Y, tgt.X, tgt.Y))
 			nm, anm := tgt.Name, u.Name
 			if nm == "" {
 				nm = tgt.ClsName
@@ -10345,6 +10353,7 @@ func (g *Game) aiStep() {
 				g.aiBusy = false
 				return
 			}
+			u.SetMapPose(dirToward(u.X, u.Y, tgt.X, tgt.Y))
 			hp0 := tgt.HP
 			attackResult, err := g.resolvePhysicalAttack(u, tgt)
 			if err != nil {

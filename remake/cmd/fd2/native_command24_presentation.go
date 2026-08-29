@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	"os"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -43,19 +42,6 @@ type nativeCommand24PresentationJob struct {
 	targetHPBefore       int
 	targetRawByte5Before byte
 	then                 func([]battle.NativeCommand24Damage)
-}
-
-func nativeFIGANIPath() string {
-	for _, key := range []string{"FD2_ORIGINAL_FIGANI", "FD2_FIGANI"} {
-		if path := os.Getenv(key); path != "" {
-			return path
-		}
-	}
-	path := assetPath("assets/original/FIGANI.DAT")
-	if fileExists(path) {
-		return path
-	}
-	return ""
 }
 
 func nativeCommand24BGSelector(m *MapData, unit *battle.Unit) (int, error) {

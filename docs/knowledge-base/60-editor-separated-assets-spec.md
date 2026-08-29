@@ -1146,6 +1146,30 @@ DAC JSON，共587筆；#9空尾項沒有輸出。嚴格 loader 與固定archive 
 `FIGANI.DAT` decoder caller 因此歸零。仍待遷移的是13檔 `FDOTHER.DAT` 內嵌動畫，
 不可把它們誤列為 FIGANI archive caller。
 
+#### 一般物理攻擊動態 pair 的 consumer 規格
+
+> 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）；主證據見
+> [`fd2_physical_attack_separated_provider_20260829.txt`](../data/ida/fd2_physical_attack_separated_provider_20260829.txt)。
+
+上述archive caller歸零只證明沒有直接讀`FIGANI.DAT`，不代表普通玩家攻擊已完整
+消費分離pack。本批開始時，敵方一般／mode 11會在結算前以
+`ensureNativeAttackPresentation`載入`selector*3+1`攻擊與`selector*3`守方待機；玩家
+普通攻擊卻只查啟動時的22-resource legacy cache，cache miss仍先提交傷害。這是正式
+consumer缺口，不是需要重做FIGANI格式或selector RE。
+
+本切片固定要求玩家與敵方在方向、亂數、HP、EXP、死亡獎勵及acted改變前共用同一
+分離provider。provider必須完整驗證兩個resource的frame／mask／位置／delay及排程後
+一次發布；缺任一輸入即零遊戲狀態修改並保留玩家目標選擇，不回退archive或固定delay。
+`newAtkAnim`只消費通過預檢的cache。原始archive不可讀的普通玩家攻擊、缺pack原子
+拒絕與mode 11既有回歸是最低驗收；法術與特殊劇情攻擊另立切片。
+
+實作現已在玩家普通攻擊的方向、亂數與結算之前呼叫同一provider；缺pair會保留玩家
+選取狀態，且HP、acted、面向與注入RNG均不變。敵方一般路徑也把面向改到provider
+成功之後。以啟動cache為空、原始`FIGANI.DAT`指向不存在路徑的測試，已從完整分離包
+動態載入玩家selector4→resource13與守方selector96→resource288，建立演出後才提交
+傷害；mode 2既有聚焦回歸同批通過。一般物理攻擊動態pair至此達`RUNTIME-E1`，不再
+列為A2／A3下一批；法術及截圖專用直接入口沒有因此提升。
+
 #### FDOTHER 內嵌戰鬥動畫
 
 production caller 全量掃描固定為13檔、23個唯一 resource：
