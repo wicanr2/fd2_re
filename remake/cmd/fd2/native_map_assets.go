@@ -28,8 +28,8 @@ type nativeMapAssets struct {
 	// presentation-only and must not be used as the effect state.
 	PaletteDAC []byte
 	// SpawnIntro is FDOTHER #9's exact twelve-entry LMI1 bank consumed by
-	// sub_32999. It is validated independently because steady map rendering
-	// does not require this caller-specific transition.
+	// sub_32999. Map initialization preflights it with the shared battle bundle
+	// so an otherwise valid map cannot fail halfway through a roster event.
 	SpawnIntro []fdother.LMI1Entry
 	// CommandHealDigits is the complete FDOTHER #5 LMI1 bank. The historical
 	// field name is retained for existing command-tail callers; ch28 post also
@@ -46,11 +46,7 @@ func loadNativeMapAssets(mapDir string) (*nativeMapAssets, error) {
 	if err != nil {
 		return nil, err
 	}
-	fdotherPath := nativeFDOTHERPath()
-	if fdotherPath == "" {
-		return nil, errors.New("native map assets: FDOTHER.DAT unavailable")
-	}
-	frames, err := indexedmap.DecodeNativeMapHUDFrames(fdotherPath)
+	frames, err := indexedmap.LoadSeparatedNativeMapHUDFrames(separatedAssetPath("ui"))
 	if err != nil {
 		return nil, err
 	}
@@ -62,11 +58,11 @@ func loadNativeMapAssets(mapDir string) (*nativeMapAssets, error) {
 	if err != nil {
 		return nil, err
 	}
-	rangeBank, err := fdother.DecodeNativeRangeOverlayBank(fdotherPath)
+	rangeBank, err := fdother.LoadSeparatedRangeOverlayBank(separatedAssetPath("sprites/fdother_001_range_overlay"))
 	if err != nil {
 		return nil, err
 	}
-	luts, err := fdother.DecodeLUTResource(fdotherPath, 3)
+	luts, err := fdother.LoadSeparatedLUTBank(separatedAssetPath("palette"))
 	if err != nil || len(luts) <= 9 {
 		if err != nil {
 			return nil, err
@@ -77,15 +73,30 @@ func loadNativeMapAssets(mapDir string) (*nativeMapAssets, error) {
 	if err != nil {
 		return nil, err
 	}
-	// #9 is caller-specific.  Keep steady map rendering available when that
-	// bank is absent or malformed; the formal spawn-intro path validates it
-	// separately and fails closed before changing the roster.
-	spawnIntro, _ := fdother.DecodeNativeSpawnIntroFrames(fdotherPath)
-	commandHealDigits, _ := fdother.DecodeLMI1Resource(fdotherPath, fdother.NativeCommandHealTailDigitResource)
-	fdother6, _ := fdother.DecodeLMI1Resource(fdotherPath, fdother.NativeCommandHealTailEffectResource)
+	spawnIntro, err := fdother.LoadSeparatedLMI1Bank(
+		separatedAssetPath("animations/fdother_009_spawn_intro"),
+		fdother.NativeSpawnIntroFrameResource,
+	)
+	if err != nil {
+		return nil, err
+	}
+	commandHealDigits, err := fdother.LoadSeparatedLMI1Bank(
+		separatedAssetPath("ui/fdother_005_lmi1_opaque"),
+		fdother.NativeCommandHealTailDigitResource,
+	)
+	if err != nil {
+		return nil, err
+	}
+	fdother6, err := fdother.LoadSeparatedLMI1Bank(
+		separatedAssetPath("effects/fdother_006_lmi1_opaque"),
+		fdother.NativeCommandHealTailEffectResource,
+	)
+	if err != nil {
+		return nil, err
+	}
 	var chapterAux *fdother.NativeChapterAuxSurface
 	if mapIndex == 28 || mapIndex == 29 {
-		chapterAux, err = fdother.DecodeNativeChapterAuxSurface(fdotherPath)
+		chapterAux, err = fdother.LoadSeparatedChapterAuxSurface(separatedAssetPath("surfaces"))
 		if err != nil {
 			return nil, err
 		}

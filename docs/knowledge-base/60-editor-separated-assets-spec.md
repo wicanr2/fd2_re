@@ -730,8 +730,54 @@ oracle逐格一致。正式`ending_preview`及其對話準備已移除`fdotherPa
 path／decoder；第21戰完整成功臂測試在map20初始化後、`0x24336`啟動前撤掉原版
 FDOTHER，仍完成演出、JOIN、城鎮與存檔邊界。重生後manifest共39,360筆：38,336
 exported、1,005 intentionally raw、19 blocked，並通過來源／輸出hash驗證。本切片
-達`DATA-READY`／`RUNTIME-E1`；map初始化的#1／#3／#5／#6／#9／#55依賴仍是下一個
-獨立切片，不能被本結果概括為已完成。
+達`DATA-READY`／`RUNTIME-E1`。這一批當時尚未處理的map初始化
+#1／#3／#5／#6／#9／#55依賴，已由下一節的後續切片取代；不得再以本段的歷史
+狀態重開工作。
+
+### 戰場初始化 FDOTHER #1／#3／#5／#6／#9／#55 契約
+
+> 規格狀態：**CONFORMED**
+> 主證據：`docs/data/ida/fd2_map_runtime_assets_separation_evidence.txt`；本節只把
+> 已閉合 archive/resource ABI 轉為分離素材契約，不新增 renderer 語意。
+
+正式 `loadNativeMapAssets` 必須只消費分離素材。一般戰場原子預檢包含既有
+FDSHAP、FDICON、FDOTHER #1 range-overlay、#3 完整23×256 LUT、#5 map HUD
+mixed-codec entries、#5完整138-entry LMI1與#6完整230-entry LMI1；#9完整12-entry
+spawn-intro bank也必須在資產 bundle 建立前驗證，避免增援／入隊事件走到一半才
+發現缺件。map 28／29另要求#55的320×200 opaque indexed surface。任一必要 pack
+缺失或 metadata／PNG／entry topology 不符時，初始化須失敗即關閉，且不得讀取
+`FDOTHER.DAT` 作 fallback。
+
+穩定輸出如下：
+
+| resource | 穩定目錄／檔案 | 固定拓撲 |
+|---|---|---|
+| #1 | `sprites/fdother_001_range_overlay/bank.json` | 20個24×24 indexed frame／mask／remap mask |
+| #3 | `palette/fdother_003_luts.json` | 23項，每項256個0..255元件 |
+| #5 HUD | `ui/fdother_005_item_panel/resource.json` | caller-proven mixed-codec entries，含#130..#132與#31..#52 |
+| #5完整bank | `ui/fdother_005_lmi1_opaque/bank.json` | 138項 `opaque_high_run` indexed PNG |
+| #6 | `effects/fdother_006_lmi1_opaque/bank.json` | 230項 `opaque_high_run` indexed PNG |
+| #9 | `animations/fdother_009_spawn_intro/bank.json` | 12項 `opaque_high_run` indexed PNG及固定幾何 |
+| #55 | `surfaces/FDOTHER_055/resource.json` | 320×200 `raw_indexed_opaque` PNG |
+
+每份metadata固定`schema_version=1`、穩定`asset_id`、原始archive及resource raw
+identity、codec、幾何、entry index與相對路徑。完整LMI1 bank的逐項PNG必須能由
+固定原檔oracle還原成相同width／height／indexed pixels；#3須逐byte相同；#5 HUD
+另需對照mixed-codec frame與mask；#55須逐pixel相同。驗收還必須在
+`FD2_FDOTHER`／`FD2_ORIGINAL_FDOTHER`均不可讀時，抽測一般地圖與map 28／29的
+正式初始化。缺任一必要分離檔時，不能發布半套`nativeMapAssets`。
+
+2026-08-29實作已完成：匯入器固定raw identity並輸出#3的23組LUT、#5的
+138-entry ordinary LMI1、#6的230-entry ordinary LMI1、#9的12-entry LMI1、
+#55的320×200 indexed surface，且#5 mixed-codec bank補齊HUD #130..#132。
+所有新增loader均拒絕錯schema、來源、hash、索引、codec、幾何與PNG；逐項
+oracle對固定原檔的width／height／indexed pixels（HUD另含mask）一致。正式
+`loadNativeMapAssets`只讀分離#1／#3／#5／#6／#9／#55，command 0..8、敵方9、
+24、29、32..35及action overlay的過期`nativeFDOTHERPath()`存在檢查亦已移除。
+一般map 0／23／32及map 28／29在兩個FDOTHER環境路徑都指向不存在檔案時仍完成
+初始化；缺分離pack則維持失敗即關閉。重生後manifest共39,520筆：38,496
+exported、1,005 intentionally raw、19 blocked，來源與輸出hash驗證通過。本切片
+達`DATA-READY`／`RUNTIME-E1`，不提升一般玩家`PLAYER-E2`或未命名entry語意。
 
 ### 商店 FDOTHER #12／#29／#63 索引素材契約
 

@@ -127,6 +127,47 @@ func DecodeNativeMapHUDFrames(datPath string) (NativeMapHUDFrames, error) {
 	return frames, nil
 }
 
+// LoadSeparatedNativeMapHUDFrames loads the exact mixed-codec FDOTHER #5
+// entries used by 0x1acf3/0x1aeb1. It never opens the original archive.
+func LoadSeparatedNativeMapHUDFrames(uiRoot string) (NativeMapHUDFrames, error) {
+	entries, err := fdother.LoadSeparatedItemPanelEntries(uiRoot)
+	if err != nil {
+		return NativeMapHUDFrames{}, err
+	}
+	get := func(index int) (fdother.Frame, error) {
+		frame, ok := entries.Frames[index]
+		if !ok || frame.Width <= 0 || frame.Height <= 0 || len(frame.Indexed) != frame.Width*frame.Height || len(frame.Mask) != frame.Width*frame.Height {
+			return fdother.Frame{}, errors.New("indexedmap: separated native map HUD frame is unavailable")
+		}
+		return frame, nil
+	}
+	frames := NativeMapHUDFrames{}
+	if frames.Panel, err = get(nativeMapHUDPanelEntry); err != nil {
+		return NativeMapHUDFrames{}, err
+	}
+	if frames.PositiveSign, err = get(nativeMapHUDPositiveSignEntry); err != nil {
+		return NativeMapHUDFrames{}, err
+	}
+	if frames.NegativeSign, err = get(nativeMapHUDNegativeSignEntry); err != nil {
+		return NativeMapHUDFrames{}, err
+	}
+	for digit := range frames.Digits {
+		if frames.Digits[digit], err = get(0x1f + digit); err != nil {
+			return NativeMapHUDFrames{}, err
+		}
+		if frames.HPMismatchDigits[digit], err = get(0x2a + digit); err != nil {
+			return NativeMapHUDFrames{}, err
+		}
+	}
+	if frames.HPEqualOverflow, err = get(0x29); err != nil {
+		return NativeMapHUDFrames{}, err
+	}
+	if frames.HPMismatchOverflow, err = get(0x34); err != nil {
+		return NativeMapHUDFrames{}, err
+	}
+	return frames, nil
+}
+
 // BlitNativeMapHUDPanel performs the proven first draw of 0x1acf3: both raw
 // display gates must be nonzero, then FDOTHER #5 LMI1 entry #130 (69x34) is
 // transparently blitted at the recovered 456-stride panel origin.  Terrain

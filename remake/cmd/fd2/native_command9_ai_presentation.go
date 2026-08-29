@@ -105,10 +105,6 @@ func (g *Game) startNativeCommand9AIPresentation(actor, confirmed *battle.Unit, 
 	targetSelector := fdicon.NativeCommandBackgroundSelector(initial, []fdicon.NativeCommandBackgroundTarget{{Gate: targetGate, Control: targetControl}})
 	bgSelector, taiSelector := targetSelector, actorSelector
 
-	fdotherPath := nativeFDOTHERPath()
-	if fdotherPath == "" {
-		return errors.New("native command9 AI player-provided archives unavailable")
-	}
 	background, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", int(bgSelector))
 	if err != nil {
 		return err

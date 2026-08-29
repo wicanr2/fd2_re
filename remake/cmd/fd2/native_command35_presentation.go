@@ -82,10 +82,6 @@ func (g *Game) startNativeCommand35Presentation(actor, confirmed *battle.Unit, t
 		return errors.New("native command35 final target array unavailable")
 	}
 
-	fdotherArchive := nativeFDOTHERPath()
-	if fdotherArchive == "" {
-		return errors.New("native command35 player-provided archives unavailable")
-	}
 	actorIdle, err := figani.LoadSeparatedResource(separatedAssetPath("animations"), actor.BattleFig*3)
 	if err != nil || len(actorIdle.Frames) == 0 {
 		return errors.New("native command35 actor idle FIGANI unavailable")

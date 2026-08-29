@@ -97,21 +97,8 @@ func DecodeNativeSpawnIntroFrames(datPath string) ([]LMI1Entry, error) {
 	if err != nil {
 		return nil, err
 	}
-	want := [NativeSpawnIntroPassCount][2]int{
-		{42, 24}, {44, 24}, {45, 24}, {46, 24}, {46, 24}, {66, 24},
-		{69, 24}, {70, 24}, {69, 24}, {63, 24}, {65, 24}, {66, 24},
-	}
-	if len(entries) != len(want) {
-		return nil, fmt.Errorf("fdother: spawn-intro resource has %d entries, want %d", len(entries), len(want))
-	}
-	for i, entry := range entries {
-		if entry.Width != want[i][0] || entry.Height != want[i][1] ||
-			len(entry.Pixels) != entry.Width*entry.Height {
-			return nil, fmt.Errorf(
-				"fdother: spawn-intro entry %d is %dx%d/%d pixels, want %dx%d",
-				i, entry.Width, entry.Height, len(entry.Pixels), want[i][0], want[i][1],
-			)
-		}
+	if err := validateNativeSpawnIntroFrames(entries); err != nil {
+		return nil, err
 	}
 	return entries, nil
 }

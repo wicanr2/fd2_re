@@ -167,6 +167,21 @@ type itemPanelDocument struct {
 	Entries       []itemPanelEntryDocument `json:"entries"`
 }
 
+type lutEntryDocument struct {
+	Index      int   `json:"index"`
+	Components []int `json:"components"`
+}
+
+type lutBankDocument struct {
+	SchemaVersion int                `json:"schema_version"`
+	Kind          string             `json:"kind"`
+	AssetID       string             `json:"asset_id"`
+	Status        string             `json:"status"`
+	Evidence      string             `json:"evidence"`
+	Source        sourceID           `json:"source"`
+	LUTs          []lutEntryDocument `json:"luts"`
+}
+
 type shopEntryDocument struct {
 	Index  int    `json:"index"`
 	Role   string `json:"role"`
@@ -730,6 +745,9 @@ func exportCommandGrid(fdotherPath, outputRoot string) error {
 	if err := exportItemPanel(fdotherPath, outputRoot); err != nil {
 		return err
 	}
+	if err := exportMapRuntimeBanks(fdotherPath, outputRoot); err != nil {
+		return err
+	}
 	if err := exportLoadSlots(fdotherPath, outputRoot); err != nil {
 		return err
 	}
@@ -1095,6 +1113,7 @@ func exportItemPanel(fdotherPath, outputRoot string) error {
 	for index := 119; index <= 129; index++ {
 		frameIndexes = append(frameIndexes, index)
 	}
+	frameIndexes = append(frameIndexes, 130, 131, 132)
 	frameIndexes = append(frameIndexes, 137)
 	for _, index := range frameIndexes {
 		entry, err := fdother.ParseLMI1FrameEntry(raw, index)
@@ -1115,6 +1134,124 @@ func exportItemPanel(fdotherPath, outputRoot string) error {
 		})
 	}
 	return writeJSON(filepath.Join(directory, "resource.json"), document)
+}
+
+type completeLMI1ExportContract struct {
+	resource   int
+	entryCount int
+	assetID    string
+	directory  string
+	rawSize    int
+	rawMD5     string
+	rawSHA256  string
+}
+
+func exportMapRuntimeBanks(fdotherPath, outputRoot string) error {
+	for _, contract := range []completeLMI1ExportContract{
+		{resource: 5, entryCount: 138, assetID: "ui/FDOTHER_005/lmi1_opaque", directory: "ui/fdother_005_lmi1_opaque", rawSize: 44181, rawMD5: "646bfc938f3f459ed54a8af34909ee47", rawSHA256: "561eb8ca579b13a6f2bc1f36436ad3af7d8d0bf77eab25a4ab6411142a7eb118"},
+		{resource: 6, entryCount: 230, assetID: "effects/FDOTHER_006/lmi1_opaque", directory: "effects/fdother_006_lmi1_opaque", rawSize: 33415, rawMD5: "19e0e00500eb0ce41739f17615238cc3", rawSHA256: "47cc4f7136b553879f960e9902d223c9f7e4462d726fb7ea3124bf51c912f71c"},
+		{resource: 9, entryCount: 12, assetID: "animation/FDOTHER_009/spawn_intro", directory: "animations/fdother_009_spawn_intro", rawSize: 3999, rawMD5: "a20e79010a333abaab060f9199eb6d7c", rawSHA256: "0eeaeb88320287e0c60c530c9d3a2592fea54378ebe5d5ac6a321e4fb1de7f0b"},
+	} {
+		if err := exportCompleteLMI1Bank(fdotherPath, outputRoot, contract); err != nil {
+			return err
+		}
+	}
+	if err := exportMapLUTBank(fdotherPath, outputRoot); err != nil {
+		return err
+	}
+	return exportChapterAuxSurface(fdotherPath, outputRoot)
+}
+
+func exportCompleteLMI1Bank(fdotherPath, outputRoot string, contract completeLMI1ExportContract) error {
+	raw, err := fdother.ReadResource(fdotherPath, contract.resource)
+	if err != nil {
+		return err
+	}
+	md5sum, sha := md5.Sum(raw), sha256.Sum256(raw)
+	if len(raw) != contract.rawSize || hex.EncodeToString(md5sum[:]) != contract.rawMD5 || hex.EncodeToString(sha[:]) != contract.rawSHA256 {
+		return fmt.Errorf("FDOTHER #%d raw identity mismatch", contract.resource)
+	}
+	entries, err := fdother.ParseLMI1(raw)
+	if err != nil {
+		return err
+	}
+	if len(entries) != contract.entryCount {
+		return fmt.Errorf("FDOTHER #%d entries=%d, want %d", contract.resource, len(entries), contract.entryCount)
+	}
+	directory := filepath.Join(outputRoot, filepath.FromSlash(contract.directory))
+	document := itemPanelDocument{
+		SchemaVersion: 1, Kind: "fdother_lmi1_bank", AssetID: contract.assetID,
+		Status: "decoded", Evidence: "confirmed",
+		Source: sourceID{File: "FDOTHER.DAT", Resource: contract.resource, Size: fdotherSize,
+			MD5: fdotherMD5, SHA256: fdotherSHA256, RawSize: len(raw),
+			RawMD5: contract.rawMD5, RawSHA256: contract.rawSHA256},
+		Entries: make([]itemPanelEntryDocument, len(entries)),
+	}
+	for index, entry := range entries {
+		frame := fmt.Sprintf("entry_%03d/frame.png", index)
+		if err := writeIndexedPNG(filepath.Join(directory, filepath.FromSlash(frame)), entry.Width, entry.Height, entry.Pixels); err != nil {
+			return fmt.Errorf("FDOTHER #%d entry %d: %w", contract.resource, index, err)
+		}
+		document.Entries[index] = itemPanelEntryDocument{
+			Index: index, Codec: "opaque_high_run", Width: entry.Width, Height: entry.Height, Frame: frame,
+		}
+	}
+	return writeJSON(filepath.Join(directory, "bank.json"), document)
+}
+
+func exportMapLUTBank(fdotherPath, outputRoot string) error {
+	raw, err := fdother.ReadResource(fdotherPath, 3)
+	if err != nil {
+		return err
+	}
+	md5sum, sha := md5.Sum(raw), sha256.Sum256(raw)
+	if len(raw) != 5990 || hex.EncodeToString(md5sum[:]) != "f37194b6d933187d86711c6701732b5f" || hex.EncodeToString(sha[:]) != "fddfdbd91b048081ea621b5a4be7d29fb24234a62e19e2b21837df52cbb02ccc" {
+		return errors.New("FDOTHER #3 raw identity mismatch")
+	}
+	luts, err := fdother.ParseLUTBank(raw)
+	if err != nil {
+		return err
+	}
+	if len(luts) != 23 {
+		return fmt.Errorf("FDOTHER #3 LUTs=%d, want 23", len(luts))
+	}
+	document := lutBankDocument{
+		SchemaVersion: 1, Kind: "fdother_lut_bank", AssetID: "lut/FDOTHER_003",
+		Status: "decoded", Evidence: "confirmed",
+		Source: sourceID{File: "FDOTHER.DAT", Resource: 3, Size: fdotherSize,
+			MD5: fdotherMD5, SHA256: fdotherSHA256, RawSize: len(raw),
+			RawMD5: hex.EncodeToString(md5sum[:]), RawSHA256: hex.EncodeToString(sha[:])},
+		LUTs: make([]lutEntryDocument, len(luts)),
+	}
+	for index, lut := range luts {
+		document.LUTs[index] = lutEntryDocument{Index: index, Components: bytesToInts(lut)}
+	}
+	return writeJSON(filepath.Join(outputRoot, "palette", "fdother_003_luts.json"), document)
+}
+
+func exportChapterAuxSurface(fdotherPath, outputRoot string) error {
+	raw, err := fdother.ReadResource(fdotherPath, fdother.NativeChapterAuxSurfaceResource)
+	if err != nil {
+		return err
+	}
+	md5sum, sha := md5.Sum(raw), sha256.Sum256(raw)
+	if len(raw) != 64004 || binary.LittleEndian.Uint16(raw) != 320 || binary.LittleEndian.Uint16(raw[2:]) != 200 ||
+		hex.EncodeToString(md5sum[:]) != "710ce98d109298ff0110b1a4fb8fec53" ||
+		hex.EncodeToString(sha[:]) != "a1999b7547bc4eabfb79049ae7cd7d08b12fd4402132e9e6e67b1fb56c981e65" {
+		return errors.New("FDOTHER #55 raw identity mismatch")
+	}
+	directory := filepath.Join(outputRoot, "surfaces", "FDOTHER_055")
+	if err := writeIndexedPNG(filepath.Join(directory, "frame.png"), 320, 200, raw[4:]); err != nil {
+		return err
+	}
+	return writeJSON(filepath.Join(directory, "resource.json"), surfaceDocument{
+		SchemaVersion: 1, Kind: "indexed_surface", AssetID: "surface/FDOTHER_055",
+		Status: "decoded", Evidence: "confirmed", Codec: "raw_indexed_opaque",
+		Width: 320, Height: 200, Frame: "frame.png",
+		Source: sourceID{File: "FDOTHER.DAT", Resource: fdother.NativeChapterAuxSurfaceResource, Size: fdotherSize,
+			MD5: fdotherMD5, SHA256: fdotherSHA256, RawSize: len(raw),
+			RawMD5: hex.EncodeToString(md5sum[:]), RawSHA256: hex.EncodeToString(sha[:])},
+	})
 }
 
 func exportRangeOverlay(fdotherPath, outputRoot string) error {

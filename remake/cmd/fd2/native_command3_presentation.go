@@ -115,10 +115,6 @@ func (g *Game) startNativeCommand3Presentation(actor, confirmed *battle.Unit, th
 	if actor.NativeRecordByte6 == 0 {
 		bgSelector, taiSelector = actorSelector, targetSelector
 	}
-	fdotherPath := nativeFDOTHERPath()
-	if fdotherPath == "" {
-		return errors.New("native command3 player-provided archives unavailable")
-	}
 	background, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", int(bgSelector))
 	if err != nil {
 		return err

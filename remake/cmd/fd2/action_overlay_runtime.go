@@ -450,10 +450,6 @@ func (g *Game) beginNativeSystemGroupMarch() bool {
 	if !g.preflightNativeSystemGroupMarchEvents(plan) {
 		return false
 	}
-	fdotherPath := nativeFDOTHERPath()
-	if fdotherPath == "" {
-		return false
-	}
 	portraits, err := loadNativeSeparatedPortrait(g.st.Units[0].BattleFig)
 	if err != nil || len(portraits) == 0 {
 		return false

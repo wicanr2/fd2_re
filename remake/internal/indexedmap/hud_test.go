@@ -1,14 +1,51 @@
 package indexedmap
 
 import (
+	"bytes"
 	"encoding/binary"
 	"errors"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
+
+func TestSeparatedNativeMapHUDFramesMatchFixedArchive(t *testing.T) {
+	archive := filepath.Join("..", "..", "..", "org_game", "炎龍騎士團", "FLAME2", "FDOTHER.DAT")
+	if _, err := os.Stat(archive); err != nil {
+		t.Skip("player-provided FDOTHER.DAT is absent")
+	}
+	want, err := DecodeNativeMapHUDFrames(archive)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := LoadSeparatedNativeMapHUDFrames(filepath.Join("..", "..", "generated-assets", "fd2-original-b97caf22", "ui"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	compare := func(label string, got, want fdother.Frame) {
+		if got.Width != want.Width || got.Height != want.Height || !bytes.Equal(got.Indexed, want.Indexed) || !bytes.Equal(got.Mask, want.Mask) {
+			t.Fatalf("%s differs", label)
+		}
+	}
+	compare("panel", got.Panel, want.Panel)
+	compare("positive", got.PositiveSign, want.PositiveSign)
+	compare("negative", got.NegativeSign, want.NegativeSign)
+	compare("equal overflow", got.HPEqualOverflow, want.HPEqualOverflow)
+	compare("mismatch overflow", got.HPMismatchOverflow, want.HPMismatchOverflow)
+	for index := range got.Digits {
+		compare("digit", got.Digits[index], want.Digits[index])
+		compare("mismatch digit", got.HPMismatchDigits[index], want.HPMismatchDigits[index])
+	}
+}
+
+func TestSeparatedNativeMapHUDFramesFailClosed(t *testing.T) {
+	if _, err := LoadSeparatedNativeMapHUDFrames(t.TempDir()); err == nil {
+		t.Fatal("missing separated map HUD bank was accepted")
+	}
+}
 
 func frame(width, height int, pixel byte) fdother.Frame {
 	raw := make([]byte, 4)

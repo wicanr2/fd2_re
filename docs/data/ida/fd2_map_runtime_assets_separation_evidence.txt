@@ -1,0 +1,69 @@
+FD2 戰場初始化素材分離：既有反組譯證據彙整
+================================================
+
+證據性質
+--------
+
+本檔是分離素材切片的彙整索引，不是新的反組譯結論。函式、位址與消費方式
+沿用下列已閉合主證據；原始名稱及線性位址均保留，不以本檔的結構性名稱取代：
+
+* docs/data/ida/fd2_map_hud_geometry_ida.txt
+* docs/data/ida/fd2_command13_21eb1_presentation_ida.txt
+* docs/data/ida/fd2_command_numeric_tail_ida.txt
+* docs/data/ida/fd2_transient_expiry_presentation_ida.txt
+* docs/data/ida/fd2_map28_runtime_topology_ida.txt
+* docs/knowledge-base/58-fd2-exe-re-coverage.md 的 map 初始化、0x32999 與
+  chapter 28/29 consumer 索引
+
+輸入與工具基準
+--------------
+
+* FD2.EXE：357,074 bytes
+  * MD5：b97caf2239a27a896069d03549d96e1e
+  * SHA-256：222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f
+* FDOTHER.DAT：3,382,481 bytes
+  * MD5：22f56e5027edc7c766ad34ca4e5aca93
+  * SHA-256：a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce
+* 第一順位工具：IDA Pro 9.4.0.260610／Hex-Rays，授權 Docker
+  `fd2-ida-authorized-local:latest`。
+* 第二順位工具：Capstone 5.0.3，Docker `fd2-cap-local:latest`。
+* 所引 FD2.EXE 位址均為 Linear Executable loader 的 IDA 線性位址，不是
+  檔案偏移；FDOTHER resource 編號則是 archive directory index。
+
+固定資源身分與可證實邊界
+--------------------------
+
+| resource | raw identity | 已證實的結構／消費邊界 | 證據等級 |
+|---|---|---|---|
+| #1 | 2,235 bytes | 20 個 24×24 range-overlay descriptors；正式 map 初始化與 range overlay consumer | 已證實 |
+| #3 | 5,990 bytes；MD5 `f37194b6d933187d86711c6701732b5f`；SHA-256 `fddfdbd91b048081ea621b5a4be7d29fb24234a62e19e2b21837df52cbb02ccc` | 23 組、每組 256 bytes 的 indexed remap LUT；`0x21EB1→sub_22046` 等 consumer | 已證實 |
+| #5 | 44,181 bytes；MD5 `646bfc938f3f459ed54a8af34909ee47`；SHA-256 `561eb8ca579b13a6f2bc1f36436ad3af7d8d0bf77eab25a4ab6411142a7eb118` | 138-entry LMI1；map HUD 消費 #130/#131/#132 與 #31..#52；其他已閉合 command／UI consumer 保留原索引 | 已證實 |
+| #6 | 33,415 bytes；MD5 `19e0e00500eb0ce41739f17615238cc3`；SHA-256 `47cc4f7136b553879f960e9902d223c9f7e4462d726fb7ea3124bf51c912f71c` | 230-entry LMI1；command 13–16、numeric tail 及既有 map owner 以原索引消費 | 已證實 |
+| #9 | 3,999 bytes；MD5 `a20e79010a333abaab060f9199eb6d7c`；SHA-256 `0eeaeb88320287e0c60c530c9d3a2592fea54378ebe5d5ac6a321e4fb1de7f0b` | `sub_32999` 消費的 12-entry LMI1；幾何依序為 42/44/45/46/46/66/69/70/69/63/65/66 × 24 | 已證實 |
+| #55 | 64,004 bytes；MD5 `710ce98d109298ff0110b1a4fb8fec53`；SHA-256 `a1999b7547bc4eabfb79049ae7cd7d08b12fd4402132e9e6e67b1fb56c981e65` | 4-byte 320×200 header 加 64,000-byte opaque indexed surface；map 28/29 owner 需要此 surface | 已證實（結構與 owner）；高階畫面命名未知 |
+
+#5 的完整 LMI1 解碼與 map HUD 的 mixed-codec entry 解碼是兩份不同輸出契約：
+前者保存原版普通 LMI1 的全部138項，後者只為已有 caller 證據的 raw／opaque／
+four-mode entries保存對應透明層。兩者不得互相冒充，也不得由一種 codec 猜測
+另一種 codec。
+
+分離素材契約（DATA-READY）
+---------------------------
+
+* #1：`sprites/fdother_001_range_overlay/bank.json`（既有契約）。
+* #3：`palette/fdother_003_luts.json`，完整23×256整數元件。
+* #5：
+  * `ui/fdother_005_item_panel/resource.json`，包含 map HUD 的 #130..#132；
+  * `ui/fdother_005_lmi1_opaque/bank.json`，完整138-entry ordinary LMI1。
+* #6：`effects/fdother_006_lmi1_opaque/bank.json`，完整230-entry ordinary LMI1。
+* #9：`animations/fdother_009_spawn_intro/bank.json`，完整12-entry ordinary LMI1。
+* #55：`surfaces/FDOTHER_055/resource.json` 與 `frame.png`。
+
+所有 metadata 必須同時固定 archive identity、resource index、raw size、raw MD5、
+raw SHA-256、codec、entry index、幾何與相對路徑。任何缺漏、重複索引、錯誤
+identity、非 paletted indexed PNG、錯誤幾何或未知 codec 都必須原子拒絕；正式
+runtime 不得回退開啟 FDOTHER.DAT。固定原檔 decoder 只保留給 importer 與 oracle。
+
+本切片不證明 #55 的玩家可見圖像名稱、不重新命名 #3 LUT 視覺效果，也不把
+#5/#6 的每一個未命名 entry 升格為具體法術或道具語意。這些高階語意仍依各自
+caller／consumer 證據分級。

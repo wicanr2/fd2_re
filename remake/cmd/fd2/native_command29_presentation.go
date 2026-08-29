@@ -102,10 +102,6 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 	if len(plan.Results) == 0 {
 		return errors.New("native command29 final target list is empty")
 	}
-	fdotherArchive := nativeFDOTHERPath()
-	if fdotherArchive == "" {
-		return errors.New("native command29 player-provided FDOTHER unavailable")
-	}
 	var bgLayers [3]fdother.Frame
 	for i := range bgLayers {
 		bgLayers[i], err = fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", i)

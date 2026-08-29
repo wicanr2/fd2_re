@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"image/color"
-	"os"
 	"path/filepath"
 	"testing"
 
@@ -11,24 +10,10 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
-func TestLoadNativeMapAssetsUsesSeparatedFDSHAPAndFDICONBanks(t *testing.T) {
-	const original = "../../../org_game/炎龍騎士團/FLAME2"
-	for _, name := range []string{"FDOTHER.DAT"} {
-		if _, err := os.Stat(filepath.Join(original, name)); err != nil {
-			t.Skip("player-provided original archives are absent")
-		}
-	}
+func TestLoadNativeMapAssetsUsesOnlySeparatedBanks(t *testing.T) {
 	root := t.TempDir()
-	for _, name := range []string{"FDOTHER.DAT"} {
-		source, err := filepath.Abs(filepath.Join(original, name))
-		if err != nil {
-			t.Fatal(err)
-		}
-		if err := os.Symlink(source, filepath.Join(root, name)); err != nil {
-			t.Fatal(err)
-		}
-	}
-	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(root, "FDOTHER.DAT"))
+	t.Setenv("FD2_FDOTHER", filepath.Join(root, "missing-FDOTHER.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(root, "also-missing-FDOTHER.DAT"))
 	t.Setenv("FD2_ASSET_PACK", "../../generated-assets/fd2-original-b97caf22")
 	for _, sample := range []struct {
 		index, sprites, controls int
@@ -44,11 +29,14 @@ func TestLoadNativeMapAssetsUsesSeparatedFDSHAPAndFDICONBanks(t *testing.T) {
 			t.Fatalf("map%d separated FDSHAP sprites=%d controls=%d", sample.index, len(assets.Terrain.Sprites), len(assets.Controls))
 		}
 	}
-	if _, err := os.Stat(filepath.Join(root, "FDICON.B24")); !os.IsNotExist(err) {
-		t.Fatal("test oracle unexpectedly provided FDICON.B24 beside runtime archives")
-	}
-	if _, err := os.Stat(filepath.Join(root, "FDSHAP.DAT")); !os.IsNotExist(err) {
-		t.Fatal("test oracle unexpectedly provided FDSHAP.DAT beside runtime archives")
+	for _, index := range []int{28, 29} {
+		assets, err := loadNativeMapAssets(assetPath(fmt.Sprintf("assets/maps/map%d", index)))
+		if err != nil {
+			t.Fatalf("map%d: %v", index, err)
+		}
+		if assets.ChapterAux == nil || len(assets.ChapterAux.Pixels) != 320*200 {
+			t.Fatalf("map%d separated chapter auxiliary surface unavailable", index)
+		}
 	}
 }
 

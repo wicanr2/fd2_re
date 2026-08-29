@@ -245,10 +245,6 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if err != nil {
 		return err
 	}
-	fdotherArchive := nativeFDOTHERPath()
-	if fdotherArchive == "" {
-		return errors.New("native command24 player-provided FDOTHER.DAT unavailable")
-	}
 	panelAssets, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
 	if err != nil {
 		return err
