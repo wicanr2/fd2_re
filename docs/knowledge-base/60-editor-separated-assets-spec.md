@@ -852,6 +852,13 @@ archive subresources、125張一般 PNG、264組 FIGANI／2,118張動畫 frame�
 - 本機完整版只供庫擁有者或另有合法授權的交付情境使用；私人庫不能被 README、公開
   發行工作流或匿名下載 URL 當成公開素材來源。
 
+實作：`remake/packaging/assemble-local-full.sh` 接受平台 payload、私人 pack 根及安全
+輸出名，在一次性無網路 Docker 內先驗證 manifest／外部 runtime catalog，再合併
+`remake/assets`與私人 pack。輸出同時包含 Linux／AppImage、Windows啟動器、
+`FD2-LOCAL-FULL.json`及逐檔`SHA256SUMS`。2026-08-29以私人提交`21c9d775`及假 Linux
+payload實跑，產生42,253個檔案；全部雜湊、pack結構與啟動器均通過。此收據證明組裝
+契約，不替代三平台真實 binary／安裝生命週期驗收。
+
 同一實際輸出樹再經來源 hash gate 與逐檔 manifest generator 驗證；2026-08-28完成
 ANI遷移後，當時清冊為38,679筆：37,655筆為已匯出、1,005筆raw完整列為
 `intentionally_raw`，19筆明確列為`blocked`（包含15首等待 OGG 的 MIDI）。清冊驗證器
