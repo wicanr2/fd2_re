@@ -637,6 +637,34 @@ identity與Vorbis geometry；任一漂移即整批失敗。正式`playBGMCount`�
 此狀態只關閉「既有render的可編輯catalog與正式consumer」，不提升其不完整render
 provenance、無縫loop或人耳／三平台音訊為E2。
 
+### 完整分離清冊的外部音樂根橋接契約
+
+> 規格狀態：**CONFORMED**
+> 前置證據：generated pack內15份MIDI仍按既有規則列為`blocked`；正式runtime的
+> `music_catalog.json`與30份OGG位於另一個assets root，且已由上一節閉合。
+
+完整manifest不複製大型OGG，也不保存`../../assets`等會穿越pack root的實體路徑。
+頂層可選`runtime_catalogs.music`只保存：固定kind `fd2_music_catalog`、邏輯根
+`runtime_assets`、安全catalog檔名`music_catalog.json`、catalog bytes／SHA-256、
+schema version、`FDMUS.DAT`來源、2個profile、15個track及30個render計數。產生器只有
+在呼叫者明確提供`--music-assets-root`時才建立bridge，並先完整驗證catalog與30份OGG；
+驗證器看到bridge後則必須取得明確`--runtime-assets`，不能從manifest相對猜路徑。
+
+bridge admission必須重新核對catalog identity、固定track／profile集合、每份render的
+安全固定相對路徑、bytes／SHA-256與Ogg Vorbis geometry。缺外部root、缺catalog、錯
+catalog hash、缺OGG或render漂移時整份manifest驗證失敗。15份MIDI保持`blocked`，因為
+它們仍不是runtime格式；統計另列一份catalog、2個profile、15個track、30個已驗證外部
+render，不得把兩種狀態相加冒充pack內OGG。乾淨clone沒有render時音樂失敗即關閉，
+不得回退MIDI、legacy `assets/music/`或原始archive。
+
+實作結果：`music_catalog_contract.py`成為manifest產生器與驗證器共用的外部音樂契約；
+產生器新增明確`--music-assets-root`，驗證器新增`--runtime-assets`。五項bridge測試涵蓋
+無複製成功路徑、缺外部root、render漂移、catalog hash漂移及路徑穿越，並與原有九項manifest／
+catalog測試共同通過。現行實檔manifest已重生並完整驗證：pack本身仍是39,520筆
+（38,496 exported、1,005 intentionally raw、19 blocked），另有一份已驗證外部bridge：
+2個profile、15個track、30個render；catalog為12,719 bytes、SHA-256
+`8f2d2835971861e5fa97c8f33536022b53209b42d53bdd9fbfa062de9b880311`。
+
 ### 2026-08-28 第一輪全量匯出實測
 
 固定版本原版已在 `fd2-assets-local:20260828` 一次性容器內完成全量試跑，實際輸出

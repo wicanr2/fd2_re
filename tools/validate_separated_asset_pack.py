@@ -14,6 +14,8 @@ from pathlib import Path, PurePosixPath
 import re
 import sys
 
+from music_catalog_contract import validate_music_assets
+
 HEX = re.compile(r"^[0-9a-f]+$")
 KINDS = {
     "map", "tileset", "map_sprite", "portrait", "battle_animation",
@@ -39,7 +41,11 @@ def safe_relative(value: object) -> bool:
     return not path.is_absolute() and ".." not in path.parts
 
 
-def validate(manifest_path: Path, original_dir: Path | None = None) -> list[str]:
+def validate(
+    manifest_path: Path,
+    original_dir: Path | None = None,
+    runtime_assets: Path | None = None,
+) -> list[str]:
     errors: list[str] = []
     try:
         doc = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -139,6 +145,39 @@ def validate(manifest_path: Path, original_dir: Path | None = None) -> list[str]
             value = relation.get(endpoint)
             if value not in ids:
                 errors.append(f"relationships[{index}].{endpoint} 引用不存在：{value!r}")
+    runtime_catalogs = doc.get("runtime_catalogs")
+    if runtime_catalogs is not None:
+        if not isinstance(runtime_catalogs, dict) or set(runtime_catalogs) != {"music"}:
+            errors.append("runtime_catalogs 只接受 music")
+        else:
+            bridge = runtime_catalogs["music"]
+            required = {
+                "kind", "asset_root", "catalog_path", "catalog_bytes", "catalog_sha256",
+                "schema_version", "source_file", "profiles", "tracks", "renders",
+            }
+            if not isinstance(bridge, dict) or set(bridge) != required:
+                errors.append("runtime_catalogs.music bridge 欄位不符")
+            elif (
+                bridge.get("kind") != "fd2_music_catalog"
+                or bridge.get("asset_root") != "runtime_assets"
+                or bridge.get("catalog_path") != "music_catalog.json"
+                or not safe_relative(bridge.get("catalog_path"))
+                or bridge.get("schema_version") != 1
+                or bridge.get("source_file") != "FDMUS.DAT"
+                or bridge.get("profiles") != 2
+                or bridge.get("tracks") != 15
+                or bridge.get("renders") != 30
+            ):
+                errors.append("runtime_catalogs.music 固定契約不符")
+            elif runtime_assets is None:
+                errors.append("runtime_catalogs.music 需要明確 runtime assets root")
+            else:
+                source = next((item for item in sources if item.get("file") == "FDMUS.DAT"), None)
+                expected_hash = bridge.get("catalog_sha256")
+                actual, music_errors = validate_music_assets(runtime_assets, source, expected_hash)
+                errors.extend(music_errors)
+                if actual is not None and actual != bridge:
+                    errors.append("runtime_catalogs.music bridge metadata 不符")
     return errors
 
 
@@ -146,8 +185,9 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("manifest", type=Path)
     parser.add_argument("--original-dir", type=Path)
+    parser.add_argument("--runtime-assets", type=Path)
     args = parser.parse_args()
-    errors = validate(args.manifest, args.original_dir)
+    errors = validate(args.manifest, args.original_dir, args.runtime_assets)
     if errors:
         for error in errors:
             print(f"錯誤：{error}", file=sys.stderr)

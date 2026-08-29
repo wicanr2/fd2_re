@@ -9,7 +9,7 @@ SHA-256；核對失敗即停止，不產生看似可信的清冊。
 
 用法：
     python3 tools/generate_separated_asset_manifest.py PACK ROOT-REF.json \
-        [--original-dir FLAME2] [--output manifest.json]
+        [--original-dir FLAME2] [--music-assets-root ASSETS] [--output manifest.json]
 """
 
 from __future__ import annotations
@@ -20,6 +20,8 @@ import json
 import re
 import sys
 from pathlib import Path
+
+from music_catalog_contract import validate_music_assets
 
 
 SOURCE_BY_CONTAINER = {
@@ -262,7 +264,12 @@ def stable_asset_id(kind: str, relative: str) -> str:
     return f"{kind}/{safe}"
 
 
-def build_manifest(pack_root: Path, reference: Path, original_dir: Path | None = None) -> dict:
+def build_manifest(
+    pack_root: Path,
+    reference: Path,
+    original_dir: Path | None = None,
+    music_assets_root: Path | None = None,
+) -> dict:
     sources, source_errors = source_entries(reference, original_dir)
     if source_errors:
         raise ValueError("；".join(source_errors))
@@ -330,7 +337,7 @@ def build_manifest(pack_root: Path, reference: Path, original_dir: Path | None =
             assets.append(entry)
 
     pack_id = pack_root.name
-    return {
+    manifest = {
         "schema_version": 1,
         "pack_id": pack_id,
         "source_set": sources,
@@ -341,6 +348,16 @@ def build_manifest(pack_root: Path, reference: Path, original_dir: Path | None =
             "version": "1",
         },
     }
+    if music_assets_root is not None:
+        source = next((item for item in sources if item["file"] == "FDMUS.DAT"), None)
+        if source is None:
+            raise ValueError("reference manifest 缺少 FDMUS.DAT")
+        bridge, music_errors = validate_music_assets(music_assets_root, source)
+        if music_errors:
+            raise ValueError("；".join(music_errors))
+        manifest["runtime_catalogs"] = {"music": bridge}
+        manifest["generated_by"]["version"] = "2"
+    return manifest
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -348,11 +365,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("pack_root", type=Path)
     parser.add_argument("reference", type=Path)
     parser.add_argument("--original-dir", type=Path)
+    parser.add_argument("--music-assets-root", type=Path)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
     output = args.output or args.pack_root / "manifest.json"
     try:
-        manifest = build_manifest(args.pack_root, args.reference, args.original_dir)
+        manifest = build_manifest(
+            args.pack_root, args.reference, args.original_dir, args.music_assets_root,
+        )
         output.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         print(f"錯誤：無法建立分離素材清冊：{exc}", file=sys.stderr)

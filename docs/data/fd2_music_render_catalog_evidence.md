@@ -55,3 +55,9 @@ catalog 內已有且 hash／Vorbis geometry 相符的選定 profile，不再靜�
 `assets/music/`。缺 catalog、track、profile或檔案時保持不播放，不改變 campaign state。
 
 本資料契約不為15首曲目命名，也不把場景中常見的 track consumer外推成唯一用途。
+
+完整generated pack不內含或複製這30份OGG。它的manifest以
+`runtime_catalogs.music`保存catalog bytes／SHA-256與2 profile／15 track／30 render
+計數，資產位置只記邏輯根`runtime_assets`；產生及驗證時由呼叫者明確注入實體root。
+因此manifest不保存`../`穿越路徑，也不會把15份中間MIDI誤改成已匯出的OGG。看到bridge
+但缺外部root、catalog或任一render時，完整pack驗證失敗即關閉。
