@@ -42,6 +42,7 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
+	"github.com/wicanr2/fd2_re/remake/internal/musiccatalog"
 )
 
 const (
@@ -345,6 +346,7 @@ type Game struct {
 	bgmCur                    string
 	nativeSystemBGMTrack      string
 	bgmSource                 string                 // 音源設定 "fm"/"mt32"(settings.go;F2 切換)
+	musicCatalog              *musiccatalog.Catalog  // 30份分離OGG完整驗證後的唯一BGM路徑來源
 	debug                     bool                   // F3:開發除錯 HUD(座標/陣營原文等)
 	approximateMode           bool                   // FD2_APPROXIMATE=1:可玩近似模式；不宣稱原版 handler 等價
 	approximatePostbattle     bool                   // 未綁定戰後節點的近似整理提示，等待玩家確認後才進城鎮／整備
@@ -9702,9 +9704,9 @@ func loadGame() *Game {
 		g.installSeparatedCommandSounds(banks)
 	}
 	// 戰鬥音效:揮擊/命中/陣亡三段(真素材;attack_id→池 精確對照 doc36 未 RE,故命中/陣亡池為近似選擇)
-	g.sfxSwing = loadWav("assets/sfx/battle_48_00.wav")           // 揮擊(池 sub0,七池共用)
-	g.sfxImpact = loadWav("assets/sfx/battle_64_00.wav")          // 命中(最短最尖池)
-	// 戰場 BGM:doc12 推定 track18=戰鬥被使用者實聽推翻(18=商店音樂);戰鬥曲號待聽辨,先不播錯曲
+	g.sfxSwing = loadWav("assets/sfx/battle_48_00.wav")  // 揮擊(池 sub0,七池共用)
+	g.sfxImpact = loadWav("assets/sfx/battle_64_00.wav") // 命中(最短最尖池)
+	// FDMUS_018 的已閉合用途是 boot／標題，不在此猜測戰場或商店曲目。
 	if os.Getenv("FD2_TITLE") == "1" || (g.shotPath == "" && os.Getenv("FD2_TITLE") != "0") { // 開頭動畫+主選單(headless 截圖預設跳過)
 		ta, err := loadTitleAssets()
 		if err != nil {

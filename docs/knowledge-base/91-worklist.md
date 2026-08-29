@@ -20,8 +20,8 @@
 | 順序 | 工作 | 現況 | 下一個可驗收結果 |
 |---:|---|---|---|
 | A1 | 編輯器 canonical schema 與穩定身份層 | `SPEC-READY`：campaign／scenario／story／animation 四份 machine-readable Schema 與跨檔 validator 已建立；穩定 ID、戰役轉場、mouth animation、素材 `asset_id`、重複 ID 及受控 extensions 有11項 Docker 測試。現有資料仍是 legacy 單向 loader，尚未轉入 canonical 格式 | 加入 legacy import 診斷、canonical writer 與 load→write→reload 測試；再建立 character identity 文件，分離連結 portrait／map sprite／battle animation，達 `DATA-READY` 後才接編輯器 UI |
-| A2 | 原版素材全量分離與清冊 | `DATA-PARTIAL`：現行完整manifest為39,520筆：38,496 exported、1,005 intentionally_raw、19 blocked。FDICON、FDSHAP、ANI#0..#8、標題、共用UI、商店／城鎮／教會、戰場初始化#1／#3／#5／#6／#9／#55及第一批戰鬥音效已有標準輸出與固定原檔oracle；raw零遺漏。其餘UI與OGG仍未全量閉合 | 將15首MIDI轉成具cue／loop metadata的OGG；再處理一般物理攻擊動態bank及其餘raw家族，補齊用途關聯，輸出包不入Git |
-| A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型、共用道具panel、FDICON、FDSHAP、ANI、FDFIELD#69／#90..92、天空之鑰、終局、商店／城鎮／標題／LOAD／整備／教會及戰場初始化正式玩家consumer已遷移。map初始化#1 range、#3 LUT、#5 HUD與完整bank、#6完整bank、#9增援與map28／29 #55只讀分離pack；一般與晚期地圖在原版FDOTHER不可讀時通過。18條palette owner與17個巢狀音效bank亦已分離；相關direct archive reader與過期原檔存在gate歸零 | 下一批處理一般物理攻擊動態bank，再依production caller清冊遷移剩餘`.DAT`；保留archive不可讀與缺分離資產失敗即關閉測試 |
+| A2 | 原版素材全量分離與清冊 | `DATA-PARTIAL`：現行generated-pack manifest為39,520筆：38,496 exported、1,005 intentionally_raw、19 blocked。FDICON、FDSHAP、ANI#0..#8、標題、共用UI、商店／城鎮／教會、戰場初始化#1／#3／#5／#6／#9／#55及第一批戰鬥音效已有標準輸出與固定原檔oracle；raw零遺漏。另有正式`music_catalog.json`綁定15首×FM／MT-32共30份OGG；舊manifest仍把15份中間MIDI列blocked，尚未合併這個runtime bundle狀態 | 讓完整分離清冊引用音樂catalog／OGG而不複製大型render；再處理一般物理攻擊動態bank及其餘raw家族，補齊用途關聯，輸出包不入Git |
+| A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型、共用道具panel、FDICON、FDSHAP、ANI、FDFIELD#69／#90..92、天空之鑰、終局、商店／城鎮／標題／LOAD／整備／教會及戰場初始化正式玩家consumer已遷移。map初始化#1 range、#3 LUT、#5 HUD與完整bank、#6完整bank、#9增援與map28／29 #55只讀分離pack；一般與晚期地圖在原版FDOTHER不可讀時通過。18條palette owner、17個巢狀音效bank與FM／MT-32 BGM亦已分離；BGM只從完整驗證的30份OGG catalog解析，不再靜默fallback。相關direct archive reader與過期原檔存在gate歸零 | 下一批處理一般物理攻擊動態bank，再依production caller清冊遷移剩餘`.DAT`；保留archive不可讀與缺分離資產失敗即關閉測試 |
 | A4 | 現代美術主題 | `PENDING-A1/A2`：尚未選定正式風格，不以猜測覆蓋原版 | 先輸出頭像＋戰場 sprite／tile＋介面框的可丟棄忠實／現代對照，再由使用者選定 theme 方向 |
 | A5 | 繁中／簡中／日文／英文與可調文字顯示 | `DRAFT-DECISION`：已完成story／battle／ending單字串、`command_labels.json`、現代UI硬編碼繁中、主機字型fallback、原版FDTXT token、16×16 native bitmap font與固定320×200排版界線的實檔盤點；共通資料不變量、六階段遷移與四個待決分支已寫入`60` | 使用者先確認官方內建／外部語言包根分支；再建立字串extractor、locale／layout schema、完整key／變數／字形validator與最長字串prototype，之後才接runtime切換 |
 
@@ -1528,8 +1528,9 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
 - [x] internal/battle 測試失敗已修 ✅(e09c68c):部署格斷言=舊設計殘留,對齊現行(部署格屬 spawn_party)
 - [~] **魔法系統** (第7-8輪完成資料與部分 runtime,commit 3c618c4/74366fa:暫定四向 action UI+法術+MP+青衫公式;code: ringInput/castSp/spells.json)——`0x18d8c` 已證實方向 result order，但 `0x1cff0` command table、完整 native 演出仍待；
       不存在獨立 spell-id→FIGANI 特效索引（doc37）；僅已證實施法者自身 FIGANI 組動畫，其他 spell runtime 保持 partial
-- [x] **音樂** ✅(e09c68c):audio.go(ebiten/audio+vorbis;忠實 play_bgm 0x26777:同曲不重播/換曲釋放/
-      無限迴圈);campaign 節點 bgm 驅動;FD2_MUTE 靜默。待:非 campaign 模式場景→曲號自動對映(doc12 表)
+- [x] **音樂** ✅(e09c68c；2026-08-29 catalog收線):audio.go(ebiten/audio+vorbis；`play_bgm`
+      正確位址`0x25977`：同曲不重播／換曲釋放／loop count 0整檔循環)；campaign節點BGM驅動；
+      FM／MT-32 30份OGG由嚴格catalog驗證，舊fallback已移除。待：非campaign模式場景→曲號自動對映(doc12表)
 - [x] **音效 SFX** ✅(第8-11輪完成,cmd/fd2/audio.go;commit e09c68c 音樂+SFX 收線)。資料位置 RE(doc36):`FDOTHER.DAT` 資源 #31(巢狀 `LLLLLL` 容器，14 個目錄項目／13 個非空 8-bit
       unsigned mono raw PCM 子樣本)+ 戰鬥音效動態 index(同檔案,依攻擊資料決定 index);播放走
       `AIL_init/set_sample_address/set_sample_loop_count/start_sample`(0x26896/0x26945)。
@@ -1631,7 +1632,8 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
       揮擊音,md5 抽驗 ✓);[0x5411f] 載入點 0x028110(index=招式id→byte陣列動態);
       **位址勘誤:doc36 全篇 0x11fba→0x111ba**(對齊 doc35)
 - [x] **全域文字銳利化**(旗艦):font.go per-尺寸 face 快取,所有 Draw 呼叫自動銳利(糊字根因=非整數縮放)
-- [x] **BGM 修正(使用者實聽 oracle)**:FDMUS_018=商店(推翻 doc12「戰鬥」推定);戰鬥曲撤下待聽辨
+- [x] **BGM 舊聽辨勘誤**：曾以單獨實聽把`FDMUS_018`判成商店；後續原始boot caller
+      `0x25db5`已證實它是boot／標題消費曲，商店／城鎮固定曲為`FDMUS_010`。戰鬥曲仍待逐曲實聽。
 - [x] **派工 SOP 入 rule**:rulebook/45 新節(haiku=資料/sonnet=RE·套件/旗艦=架構·把關;prompt 要素;把關不可省)
 - [ ] **每章 scenario stub**(ch2-30「能玩」關鍵):party 延續+deploy_cells+initial_groups 全開
       (gen_campaign 擴充,回合增援事件之後疊)← 下輪首位

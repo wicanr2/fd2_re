@@ -1,0 +1,423 @@
+{
+  "schema": "fd2_music_catalog",
+  "schema_version": 1,
+  "source": {
+    "file": "FDMUS.DAT",
+    "size": 80367,
+    "md5": "4dfa214125edcc4658acbba2e1201a28",
+    "sha256": "4105ebde543fe1c497e852728f6bc333bda80edeb7fb3671e487504bee74e998"
+  },
+  "loop": {
+    "mode": "whole_file_runtime_repeat",
+    "accepted_counts": [
+      0,
+      1
+    ],
+    "seam_evidence": "unknown",
+    "evidence_level": "strong_inference_e1"
+  },
+  "profiles": {
+    "fm": {
+      "render_pipeline": "FDMUS.DAT/XMI -> MIDI -> SAMPLE.AD/OPL -> libADLMIDI -> Vorbis OGG",
+      "provenance_status": "incomplete_legacy_render",
+      "rights_note": "原版衍生音訊；僅記錄既有 render，不主張逐樣本或硬體時序一致。"
+    },
+    "mt32": {
+      "render_pipeline": "FDMUS.DAT/XMI -> MIDI -> munt + user-owned Roland ROM -> Vorbis OGG",
+      "provenance_status": "incomplete_legacy_render",
+      "rights_note": "不得散布、嵌入或在 catalog 記錄 Roland ROM；僅記錄既有 render。"
+    }
+  },
+  "tracks": [
+    {
+      "track_id": "FDMUS_001",
+      "resource_index": 1,
+      "renders": {
+        "fm": {
+          "path": "music_fm/FDMUS_001.ogg",
+          "bytes": 778833,
+          "sha256": "a9cf1fd2a71090ad6f8f4fd3736b5698b93e95985dc56e6f0fe7539502526b36",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 6318750,
+          "duration_ms": 32910
+        },
+        "mt32": {
+          "path": "music_mt32/FDMUS_001.ogg",
+          "bytes": 718640,
+          "sha256": "8f96e5e9d07b301763ca38a94df23c6c8775b96a8fd5366e7f659c53dfef938d",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 7104000,
+          "duration_ms": 37000
+        }
+      }
+    },
+    {
+      "track_id": "FDMUS_003",
+      "resource_index": 3,
+      "renders": {
+        "fm": {
+          "path": "music_fm/FDMUS_003.ogg",
+          "bytes": 957729,
+          "sha256": "89cad2995ea13757484afdc647a1f7f069493c400480c82d8c5c109e71dc930b",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 6931200,
+          "duration_ms": 36100
+        },
+        "mt32": {
+          "path": "music_mt32/FDMUS_003.ogg",
+          "bytes": 854668,
+          "sha256": "3ab980714de3b7a0d5f27514a0b21139bfbdc582099347b4da25f96e087035b0",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 7776000,
+          "duration_ms": 40500
+        }
+      }
+    },
+    {
+      "track_id": "FDMUS_004",
+      "resource_index": 4,
+      "renders": {
+        "fm": {
+          "path": "music_fm/FDMUS_004.ogg",
+          "bytes": 1561304,
+          "sha256": "0dd089c3f386da46231b4a21087280992801daeb7a514d422dd9f32ee7d05140",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 11520000,
+          "duration_ms": 60000
+        },
+        "mt32": {
+          "path": "music_mt32/FDMUS_004.ogg",
+          "bytes": 1416563,
+          "sha256": "88c89f19318f93a4d0f0237d703887fd757c3985f8543f446db4c762a9e11a91",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 12307200,
+          "duration_ms": 64100
+        }
+      }
+    },
+    {
+      "track_id": "FDMUS_006",
+      "resource_index": 6,
+      "renders": {
+        "fm": {
+          "path": "music_fm/FDMUS_006.ogg",
+          "bytes": 1117355,
+          "sha256": "0b2c934eeb0c0eaf47c51e6ac3ad3aea67ed973911303d7e672aa0227d7df5ba",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 6816000,
+          "duration_ms": 35500
+        },
+        "mt32": {
+          "path": "music_mt32/FDMUS_006.ogg",
+          "bytes": 804671,
+          "sha256": "d5c38900f549f8ecf90e5df1f07eec56e7fa7faf54ae2794eefdeb63a8a06649",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 7660800,
+          "duration_ms": 39900
+        }
+      }
+    },
+    {
+      "track_id": "FDMUS_008",
+      "resource_index": 8,
+      "renders": {
+        "fm": {
+          "path": "music_fm/FDMUS_008.ogg",
+          "bytes": 3756704,
+          "sha256": "49e7b5a2a620a620fbe57ed9665f9e8778cb1cce966bdcab311b68746d401f41",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 28953600,
+          "duration_ms": 150800
+        },
+        "mt32": {
+          "path": "music_mt32/FDMUS_008.ogg",
+          "bytes": 3313747,
+          "sha256": "87650fc5a8409ad7ca18a3db05aa73ebf9344f531460a4781f97fbbdc4b96b4d",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 29798400,
+          "duration_ms": 155200
+        }
+      }
+    },
+    {
+      "track_id": "FDMUS_010",
+      "resource_index": 10,
+      "renders": {
+        "fm": {
+          "path": "music_fm/FDMUS_010.ogg",
+          "bytes": 1089206,
+          "sha256": "c5a017825faf05658845c0a676b170de87335ef7254f931c6fd4e99695b8d0e0",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 9408000,
+          "duration_ms": 49000
+        },
+        "mt32": {
+          "path": "music_mt32/FDMUS_010.ogg",
+          "bytes": 1053407,
+          "sha256": "c12b5c4c4ab2c6c4e42c8565945bce91eb3f58bf731af40d90cbbe80541f3779",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 10195200,
+          "duration_ms": 53100
+        }
+      }
+    },
+    {
+      "track_id": "FDMUS_011",
+      "resource_index": 11,
+      "renders": {
+        "fm": {
+          "path": "music_fm/FDMUS_011.ogg",
+          "bytes": 4508034,
+          "sha256": "c97b469d9f8db9b3860bb8412eea0c4d9ceef6e7334344d36dd73aebbd2be9ef",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 44006400,
+          "duration_ms": 229200
+        },
+        "mt32": {
+          "path": "music_mt32/FDMUS_011.ogg",
+          "bytes": 4589671,
+          "sha256": "b25da6702722845a2f8e6b386f91be3bcb456fa5f2bf2f3590897f02e49b5408",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 43987200,
+          "duration_ms": 229100
+        }
+      }
+    },
+    {
+      "track_id": "FDMUS_012",
+      "resource_index": 12,
+      "renders": {
+        "fm": {
+          "path": "music_fm/FDMUS_012.ogg",
+          "bytes": 226442,
+          "sha256": "3b72dc81df6824eeb9350aefa843c97bb58eaf5f577603e09484d62a617ed770",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 1920000,
+          "duration_ms": 10000
+        },
+        "mt32": {
+          "path": "music_mt32/FDMUS_012.ogg",
+          "bytes": 279502,
+          "sha256": "dd02d7d25f3d3e4db68b126e320f85594a146998676fe7a47e0c55a520488297",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 2745600,
+          "duration_ms": 14300
+        }
+      }
+    },
+    {
+      "track_id": "FDMUS_013",
+      "resource_index": 13,
+      "renders": {
+        "fm": {
+          "path": "music_fm/FDMUS_013.ogg",
+          "bytes": 1728576,
+          "sha256": "ab03a0cb995d40d91289d3e8a21a2f8e35bcb044d4a6820e74a759017ecc80bf",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 12480000,
+          "duration_ms": 65000
+        },
+        "mt32": {
+          "path": "music_mt32/FDMUS_013.ogg",
+          "bytes": 1527291,
+          "sha256": "8c9f17ab025b8ecec8daed17027626a8ee8bfbae5441cb3344b96096cada5c63",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 13209600,
+          "duration_ms": 68800
+        }
+      }
+    },
+    {
+      "track_id": "FDMUS_014",
+      "resource_index": 14,
+      "renders": {
+        "fm": {
+          "path": "music_fm/FDMUS_014.ogg",
+          "bytes": 1095080,
+          "sha256": "9a3e197c6fd06800205d5e72ab59f3df5bc082d9aa70b7b3cec9ebb6bf46ac30",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 9043200,
+          "duration_ms": 47100
+        },
+        "mt32": {
+          "path": "music_mt32/FDMUS_014.ogg",
+          "bytes": 196897,
+          "sha256": "49ec3382b4b62d41fd03f3ef7e4fe0e08c8f09f981636fe0cd47effbbdc62a63",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 1804800,
+          "duration_ms": 9400
+        }
+      }
+    },
+    {
+      "track_id": "FDMUS_015",
+      "resource_index": 15,
+      "renders": {
+        "fm": {
+          "path": "music_fm/FDMUS_015.ogg",
+          "bytes": 1021484,
+          "sha256": "236e580422e91da7e9972d7b68faa71fbc6db413b2ece3a7380f48130f9c4379",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 7814400,
+          "duration_ms": 40700
+        },
+        "mt32": {
+          "path": "music_mt32/FDMUS_015.ogg",
+          "bytes": 951554,
+          "sha256": "fc4b1eec5783e0e6525619ba91ab2e8656c0d708d160c334d23e3515cd38509b",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 8640000,
+          "duration_ms": 45000
+        }
+      }
+    },
+    {
+      "track_id": "FDMUS_016",
+      "resource_index": 16,
+      "renders": {
+        "fm": {
+          "path": "music_fm/FDMUS_016.ogg",
+          "bytes": 91820,
+          "sha256": "4403d34e9f339dc0746835a6c0d9d1f5c3a20a52ec18663d74dcad06565472e4",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 691200,
+          "duration_ms": 3600
+        },
+        "mt32": {
+          "path": "music_mt32/FDMUS_016.ogg",
+          "bytes": 153478,
+          "sha256": "6a21e3b35f7ad33013f2559a592635c6b05bbd98b549c285bdef0ebb89563f5a",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 1497600,
+          "duration_ms": 7800
+        }
+      }
+    },
+    {
+      "track_id": "FDMUS_017",
+      "resource_index": 17,
+      "renders": {
+        "fm": {
+          "path": "music_fm/FDMUS_017.ogg",
+          "bytes": 195927,
+          "sha256": "9fb9b062ccb80798adc14cd9bf9e41a96eecc9aa5ebe5d227f92d082a37b0842",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 1939200,
+          "duration_ms": 10100
+        },
+        "mt32": {
+          "path": "music_mt32/FDMUS_017.ogg",
+          "bytes": 223033,
+          "sha256": "7b20b2ab3c2b633b5f5f26f8e64252fe4294f44e9b4ca42e5d0e49b54d94dfc7",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 2284800,
+          "duration_ms": 11900
+        }
+      }
+    },
+    {
+      "track_id": "FDMUS_018",
+      "resource_index": 18,
+      "renders": {
+        "fm": {
+          "path": "music_fm/FDMUS_018.ogg",
+          "bytes": 1742605,
+          "sha256": "3bb0e09bc45e67f1fcaa142495cc730bf3d0115e5313c4fd7ed21436b6a8c67e",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 14304000,
+          "duration_ms": 74500
+        },
+        "mt32": {
+          "path": "music_mt32/FDMUS_018.ogg",
+          "bytes": 1613592,
+          "sha256": "e16655fbf6232c5f5c00d24d090c2e67d18aeb3e3f5080c4ec7e04825ae92bb8",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 15187200,
+          "duration_ms": 79100
+        }
+      }
+    },
+    {
+      "track_id": "FDMUS_019",
+      "resource_index": 19,
+      "renders": {
+        "fm": {
+          "path": "music_fm/FDMUS_019.ogg",
+          "bytes": 430476,
+          "sha256": "0b3e0a1e5da47e1bffdeeddcbe9cb3c76cbcaacea2c93d9661d7e5097c38098d",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 3763200,
+          "duration_ms": 19600
+        },
+        "mt32": {
+          "path": "music_mt32/FDMUS_019.ogg",
+          "bytes": 470532,
+          "sha256": "7be6aace234856603056f2a7e75170a5d697a2a7b110d183ecde67f7f2080516",
+          "codec": "vorbis",
+          "channels": 2,
+          "sample_rate": 192000,
+          "pcm_samples": 4569600,
+          "duration_ms": 23800
+        }
+      }
+    }
+  ]
+}

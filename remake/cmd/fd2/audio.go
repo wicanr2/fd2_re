@@ -1,4 +1,4 @@
-// audio.go — BGM 播放(doc 12):OGG(MT-32 預錄,assets/music/FDMUS_NNN.ogg,玩家自備原版轉出)。
+// audio.go — BGM 播放(doc 12):只消費 music_catalog.json 驗證過的分離 OGG。
 // 忠實 play_bgm(0x25977)語意:同曲不重播;換曲=釋放舊曲再依 Miles loop count 播放。
 package main
 
@@ -12,6 +12,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/audio/vorbis"
 	"github.com/hajimehoshi/ebiten/v2/audio/wav"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+	"github.com/wicanr2/fd2_re/remake/internal/musiccatalog"
 )
 
 var audioCtx *audio.Context
@@ -21,16 +22,20 @@ type sfxVoice interface {
 	Close() error
 }
 
-// musicPath 依音源設定回傳曲檔路徑:assets/music_<source>/,缺檔則 fallback 到 assets/music/
-// (單資料夾佈局的舊行為/玩家只備一套時)。
-func musicPath(source, track string) string {
-	if source != "" {
-		p := assetPath("assets/music_" + source + "/" + track + ".ogg")
-		if _, err := os.Stat(p); err == nil {
-			return p
-		}
+// musicRenderPath 只從通過完整 catalog 驗證的 FM／MT-32 bundle 解析路徑。
+// 缺 catalog、錯 hash、少任一 render 或未知 track 時整批失敗即關閉。
+func (g *Game) musicRenderPath(track string) (string, error) {
+	if g == nil {
+		return "", fmt.Errorf("music owner unavailable")
 	}
-	return assetPath("assets/music/" + track + ".ogg")
+	if g.musicCatalog == nil {
+		catalog, err := musiccatalog.Load(assetPath("assets"))
+		if err != nil {
+			return "", err
+		}
+		g.musicCatalog = catalog
+	}
+	return g.musicCatalog.Resolve(g.bgmSource, track)
 }
 
 // playBGM 播指定曲(如 "FDMUS_008");同曲不重播;檔案缺失/解碼失敗靜默略過。
@@ -55,7 +60,11 @@ func (g *Game) playBGMCount(track string, loopCount int) {
 	if loopCount < 0 || loopCount > 1 {
 		return
 	}
-	raw, err := os.ReadFile(musicPath(g.bgmSource, track))
+	path, err := g.musicRenderPath(track)
+	if err != nil {
+		return
+	}
+	raw, err := os.ReadFile(path)
 	if err != nil {
 		return
 	}

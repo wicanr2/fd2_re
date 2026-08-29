@@ -80,26 +80,36 @@ func TestPlayRawRetainsRealAudioPlayer(t *testing.T) {
 	}
 }
 
-func TestEndingMT32TracksDecodeAndSwitchAtRuntime(t *testing.T) {
+func TestFMAndMT32TracksDecodeAndSwitchAtRuntime(t *testing.T) {
 	t.Setenv("FD2_MUTE", "")
-	for _, track := range []string{"FDMUS_004", "FDMUS_018"} {
-		if _, err := os.Stat(musicPath("mt32", track)); err != nil {
-			t.Skipf("玩家自備 MT-32 OGG 不存在：%v", err)
+	if _, err := os.Stat(assetPath("assets/music_fm/FDMUS_001.ogg")); err != nil {
+		t.Skipf("分離音樂 render 未安裝：%v", err)
+	}
+	for _, profile := range []string{"fm", "mt32"} {
+		g := &Game{bgmSource: profile}
+		for _, track := range []string{"FDMUS_004", "FDMUS_018"} {
+			path, err := g.musicRenderPath(track)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if _, err := os.Stat(path); err != nil {
+				t.Fatal(err)
+			}
+			g.playBGMCount(track, 0)
+			if g.bgm == nil || g.bgmCur != track {
+				t.Fatalf("%s track player=%p current=%q, want %s", profile, g.bgm, g.bgmCur, track)
+			}
+			g.stopBGM()
 		}
+		g.closeAudioPlayers()
 	}
-	g := &Game{bgmSource: "mt32"}
-	defer g.closeAudioPlayers()
+}
 
-	g.playBGMCount("FDMUS_004", 0)
-	if g.bgm == nil || g.bgmCur != "FDMUS_004" {
-		t.Fatalf("party-cycle track player=%p current=%q", g.bgm, g.bgmCur)
-	}
-	g.stopBGM()
-	if g.bgm != nil || g.bgmCur != "" {
-		t.Fatalf("ending stop left player=%p current=%q", g.bgm, g.bgmCur)
-	}
-	g.playBGMCount("FDMUS_018", 0)
-	if g.bgm == nil || g.bgmCur != "FDMUS_018" {
-		t.Fatalf("tail track player=%p current=%q", g.bgm, g.bgmCur)
+func TestUnknownCatalogTrackDoesNotMutateCurrentBGM(t *testing.T) {
+	t.Setenv("FD2_MUTE", "")
+	g := &Game{bgmSource: "fm", bgmCur: "FDMUS_004"}
+	g.playBGMCount("FDMUS_999", 0)
+	if g.bgm != nil || g.bgmCur != "FDMUS_004" {
+		t.Fatalf("failed track changed player=%p current=%q", g.bgm, g.bgmCur)
 	}
 }

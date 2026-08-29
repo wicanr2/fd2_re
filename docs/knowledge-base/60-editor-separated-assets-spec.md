@@ -604,6 +604,39 @@ schedule預檢並消費1／4，動態舊WAV路徑已移除。9項Python、`inter
 command29／分離bank聚焦Go回歸通過。清冊增加5筆OGG及1份metadata，現為38,767筆：
 37,743 exported、1,005 intentionally raw、19 blocked。
 
+### FDMUS FM／MT-32 OGG 與音源 catalog 契約
+
+> 規格狀態：**CONFORMED**
+> 主證據：[`fd2_music_render_catalog_evidence.md`](../data/fd2_music_render_catalog_evidence.md)。
+
+編輯器與 runtime 的穩定入口為 `assets/music_catalog.json`。schema version 1 固定
+`fd2_music_catalog`、原版 `FDMUS.DAT` identity、15個 track及 `fm`／`mt32` 兩個
+正式 profile。每個 track 保留原始resource index，不新增曲名；每個 render必須
+保存相對路徑、bytes、SHA-256、雙聲道、sample rate、PCM sample count與duration。
+profile另保存render pipeline、provenance完整度及權利備註，但不得包含或散布MT-32 ROM。
+
+loop契約只接受`whole_file_runtime_repeat`：原版`loop_count=0`時循環完整decoded
+stream，`1`時只播一次；catalog明列`seam_evidence=unknown`。這是E1音訊近似，不宣稱
+無縫波形、Miles timer或真實硬體parity。正式loader須拒絕錯schema、FDMUS identity、
+track集合、profile集合、重複track、非固定相對路徑、錯hash、非Vorbis、非雙聲道、
+sample rate／sample count漂移。runtime不得再把未分級`assets/music/`當靜默fallback；
+缺選定render時只保持不播放，不修改`bgmCur`或campaign state。
+
+驗收包含catalog可重生、30份OGG逐檔identity／Vorbis geometry、FM與MT-32各至少兩首
+正常播放抽測、錯hash與缺track失敗即關閉、`loop_count=0/1` consumer回歸，以及搜尋
+確認正式`musicPath`不再拼接未驗證路徑。現有render provenance不完整，故本切片只把
+既有bytes納入嚴格catalog；未來重render須建立新版profile或更新完整工具／ROM私有
+hash紀錄，不可沿用舊hash冒充相同產物。
+
+實作結果：`tools/generate_music_catalog.py`可由兩套既有render重生catalog，並拒絕
+非Ogg/Vorbis、非雙聲道及未審查loop tag。`internal/musiccatalog`只接受固定schema、
+FDMUS identity、兩個profile、15個排序track及固定相對路徑，載入時逐一核對30份檔案
+identity與Vorbis geometry；任一漂移即整批失敗。正式`playBGMCount`只由該catalog
+解析路徑，舊`assets/music/`fallback已移除。Python測試、完整30份loader測試、錯來源／
+錯render hash、未知profile／track，以及FM／MT-32各兩首runtime解碼／切換均已通過。
+此狀態只關閉「既有render的可編輯catalog與正式consumer」，不提升其不完整render
+provenance、無縫loop或人耳／三平台音訊為E2。
+
 ### 2026-08-28 第一輪全量匯出實測
 
 固定版本原版已在 `fd2-assets-local:20260828` 一次性容器內完成全量試跑，實際輸出
