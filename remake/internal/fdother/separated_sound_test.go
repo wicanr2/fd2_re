@@ -2,6 +2,7 @@ package fdother
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -11,14 +12,14 @@ func writeSeparatedSoundFixture(t *testing.T, resource int) string {
 	t.Helper()
 	count := separatedSoundCounts[resource]
 	root := t.TempDir()
-	bankRoot := filepath.Join(root, "FDOTHER_082")
+	bankRoot := filepath.Join(root, fmt.Sprintf("FDOTHER_%03d", resource))
 	if err := os.MkdirAll(bankRoot, 0o755); err != nil {
 		t.Fatal(err)
 	}
 	doc := separatedSoundDocument{
 		SchemaVersion: 2,
 		Kind:          "fd2_pcm_sound_bank",
-		AssetID:       "sfx/FDOTHER_082",
+		AssetID:       fmt.Sprintf("sfx/FDOTHER_%03d", resource),
 		Status:        "converted",
 		Source: separatedSoundSource{
 			Name: "FDOTHER.DAT", Size: separatedFDOTHERSize,
@@ -55,6 +56,17 @@ func TestLoadSeparatedSoundBank(t *testing.T) {
 		t.Fatal(err)
 	}
 	if bank.Resource != 82 || len(bank.Encoded) != 2 || string(bank.Encoded[1][:4]) != "OggS" {
+		t.Fatalf("bank=%+v", bank)
+	}
+}
+
+func TestLoadSeparatedTitleSoundBankContract(t *testing.T) {
+	root := writeSeparatedSoundFixture(t, 77)
+	bank, err := LoadSeparatedSoundBank(root, 77)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if bank.Resource != 77 || len(bank.Encoded) != 4 || string(bank.Encoded[2][:4]) != "OggS" {
 		t.Fatalf("bank=%+v", bank)
 	}
 }

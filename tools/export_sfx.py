@@ -52,12 +52,13 @@ SEPARATED_SOURCE_SIZE = 3382481
 SEPARATED_SOURCE_MD5 = "22f56e5027edc7c766ad34ca4e5aca93"
 SEPARATED_SOURCE_SHA256 = "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
 SEPARATED_TOP_RESOURCE_COUNT = 104
-SEPARATED_RESOURCES = (31, 50, 53, 80, 82, 83, 84, 85, 86, 87, 88, 90, 91, 92, 93, 94, 95)
+SEPARATED_RESOURCES = (31, 50, 53, 77, 80, 82, 83, 84, 85, 86, 87, 88, 90, 91, 92, 93, 94, 95)
 # 值為巢狀 container 的非空 sample 數；directory 另有一筆 0-byte 尾哨兵。
 SEPARATED_SAMPLE_COUNTS = {
     31: 13,
     50: 5,
     53: 4,
+    77: 4,
     80: 16,
     82: 2,
     83: 4,
@@ -165,8 +166,9 @@ def _read_separated_resources(data: bytes) -> dict[int, list[bytes]]:
                 raise ValueError(f"FDOTHER.DAT #{resource}: tail entry {index} is not empty")
         result[resource] = [nested_data[offset : offset + length] for offset, length in entries[:expected_samples]]
 
-    if sum(len(samples) for samples in result.values()) != 71:
-        raise ValueError("正式分離音效非空 sample 總數不是 71")
+    expected_total = sum(SEPARATED_SAMPLE_COUNTS.values())
+    if sum(len(samples) for samples in result.values()) != expected_total:
+        raise ValueError(f"正式分離音效非空 sample 總數不是 {expected_total}")
     return result
 
 
@@ -307,14 +309,18 @@ def export_separated_pack(source: Path, output: Path) -> list[Path]:
                         "source_pcm_sha256": hashlib.sha256(pcm).hexdigest(),
                         "path": sample_name,
                         "cue_evidence": (
-                            "sound_resource_no_confirmed_consumer"
+                            "title_sub_1f894_selector"
+                            if resource == 77
+                            else "sound_resource_no_confirmed_consumer"
                             if (resource == 50 and subresource not in (1, 4))
                             or (resource == 53 and subresource in (0, 1))
                             or (resource in (91, 92, 93, 94) and subresource == 0)
                             else "typed_schedule"
                         ),
                         "classification_evidence": (
-                            "strong_inference"
+                            "confirmed"
+                            if resource == 77
+                            else "strong_inference"
                             if (resource == 50 and subresource not in (1, 4))
                             or (resource == 53 and subresource in (0, 1))
                             or (resource in (91, 92, 93, 94) and subresource == 0)

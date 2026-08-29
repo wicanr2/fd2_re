@@ -18,7 +18,7 @@ func TestSeparatedCommandSoundBanksDecodeWithoutOriginalArchive(t *testing.T) {
 		t.Fatal(err)
 	}
 	want := map[int]int{
-		50: 5, 53: 4, 80: 16, 82: 2, 83: 4, 84: 3, 85: 2, 86: 2, 87: 4, 88: 2, 90: 3,
+		50: 5, 53: 4, 77: 4, 80: 16, 82: 2, 83: 4, 84: 3, 85: 2, 86: 2, 87: 4, 88: 2, 90: 3,
 		91: 3, 92: 2, 93: 2, 94: 3, 95: 1,
 	}
 	for resource, count := range want {
@@ -30,6 +30,15 @@ func TestSeparatedCommandSoundBanksDecodeWithoutOriginalArchive(t *testing.T) {
 				t.Fatalf("resource %d subresource %d decoded empty", resource, subresource)
 			}
 		}
+	}
+}
+
+func TestInstallSeparatedCommandSoundsUsesTitleBankSelectors(t *testing.T) {
+	banks := map[int]map[int][]byte{77: {1: []byte("confirm"), 2: []byte("move")}}
+	g := &Game{}
+	g.installSeparatedCommandSounds(banks)
+	if string(g.sfxTitleMove) != "move" || string(g.sfxTitleConfirm) != "confirm" {
+		t.Fatalf("title sounds move=%q confirm=%q", g.sfxTitleMove, g.sfxTitleConfirm)
 	}
 }
 

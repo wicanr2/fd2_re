@@ -136,7 +136,7 @@ writer／consumer 分類高 fan-in helper，不用 unknown 總數驅動無限 RE
 
 | 子系統 | 原版證據 | 可編輯資料 | 正式執行期 | 玩家驗證 | 目前裁決與下一步 |
 |---|---|---|---|---|---|
-| 檔案版本、容器與主要資產格式 | 閉合 | 部分 | 部分 E1 | 部分 | `.DAT`、圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與多張 EXE 表已有雜湊與重生工具，不應重解容器格式。2026-08-29 清冊現為39,812筆（38,788 exported、1,005 intentionally raw、19 blocked）；manifest v2另把1,005個raw resource分為897 standardized、11 confirmed-empty、0 blocked、97 unknown，摘要見[`fd2-source-resource-coverage-summary.json`](../data/fd2-source-resource-coverage-summary.json)。unknown只是尚缺標準輸出關聯，不自動等於decoder或玩家功能缺口。除既有FIGANI、FDOTHER動畫、BG／TAI、FDTXT／字型、頭像與33張地圖外，FDICON已分離1,680張三層sprite；FDSHAP全33銀行另分離8,256張indexed frame、8,256張source mask、8,256張remap mask及33份controls metadata，全部與固定原檔逐層一致。ANI#0..#8亦完整分離為289張indexed frame、289份六位元DAC snapshot及9份metadata，#9空尾項不輸出假動畫；標題、第20戰與結局的production ANI archive caller已歸零。正式FDTXT、FDICON、FDSHAP、`figani.DecodeResource`與TAI direct archive production caller亦歸零；這只證明不再直接讀archive。普通玩家與敵方物理攻擊現已在任何方向、RNG、HP、EXP或acted狀態修改前，由同一分離FIGANI provider原子補載完整attack／idle pair；缺pair零狀態修改，主證據見[`fd2_physical_attack_separated_provider_20260829.txt`](../data/ida/fd2_physical_attack_separated_provider_20260829.txt)。戰場與第23戰重載在沒有FDSHAP archive時通過。FDFIELD#69現由受控runtime catalog回連`map23/map.json`並逐byte重建；終局selector30的FDFIELD#90..92亦由單一具型別JSON逐byte重建。天空之鑰FDOTHER#34完整101格、終局前綴FDOTHER#54完整111格、FDOTHER#56..#60及其FDOTHER#5對話格、商店FDOTHER#12／#29／#63的113筆素材、城鎮FDOTHER#10／#11／#61／#62的11筆素材、標題發行商FDOTHER#74／#76的4筆素材、標題捲動／主選單／靜態幕的45筆素材、LOAD四槽FDOTHER#13 entry16、教會／轉職FDOTHER#14的21筆mixed-codec素材、整備FDOTHER#1的20張range overlay，以及完整#2 action-cell bank／補齊的#5 dialogue grid／panel均已分離。戰場初始化另已將#1 range overlay、#3完整23×256 LUT、#5 HUD與138-entry LMI1、#6完整230-entry LMI1、#9完整12-entry增援演出及map 28／29的#55表面改成嚴格分離loader；一般地圖與map 28／29在原版FDOTHER不可讀時通過。#1與#6的292份既有標準檔現亦由manifest精確記錄。相應正式consumer不再回讀這些archive資源。production runtime仍有其他`.DAT`、其他FDFIELD selector與UI用途未全量閉合，故整體仍是部分。契約與完整數字見[`60`](60-editor-separated-assets-spec.md)。 |
+| 檔案版本、容器與主要資產格式 | 閉合 | 部分 | 部分 E1 | 部分 | `.DAT`、圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與多張 EXE 表已有雜湊與重生工具，不應重解容器格式。2026-08-29 清冊現為39,817筆（38,793 exported、1,005 intentionally raw、19 blocked）；manifest v2另把1,005個raw resource分為898 standardized、11 confirmed-empty、0 blocked、96 unknown，摘要見[`fd2-source-resource-coverage-summary.json`](../data/fd2-source-resource-coverage-summary.json)。unknown只是尚缺標準輸出關聯，不自動等於decoder或玩家功能缺口。除既有FIGANI、FDOTHER動畫、BG／TAI、FDTXT／字型、頭像與33張地圖外，FDICON已分離1,680張三層sprite；FDSHAP全33銀行另分離8,256張indexed frame、8,256張source mask、8,256張remap mask及33份controls metadata，全部與固定原檔逐層一致。ANI#0..#8亦完整分離為289張indexed frame、289份六位元DAC snapshot及9份metadata，#9空尾項不輸出假動畫；標題、第20戰與結局的production ANI archive caller已歸零。正式FDTXT、FDICON、FDSHAP、`figani.DecodeResource`與TAI direct archive production caller亦歸零；這只證明不再直接讀archive。普通玩家與敵方物理攻擊現已在任何方向、RNG、HP、EXP或acted狀態修改前，由同一分離FIGANI provider原子補載完整attack／idle pair；缺pair零狀態修改，主證據見[`fd2_physical_attack_separated_provider_20260829.txt`](../data/ida/fd2_physical_attack_separated_provider_20260829.txt)。戰場與第23戰重載在沒有FDSHAP archive時通過。FDFIELD#69現由受控runtime catalog回連`map23/map.json`並逐byte重建；終局selector30的FDFIELD#90..92亦由單一具型別JSON逐byte重建。天空之鑰FDOTHER#34完整101格、終局前綴FDOTHER#54完整111格、FDOTHER#56..#60及其FDOTHER#5對話格、商店FDOTHER#12／#29／#63的113筆素材、城鎮FDOTHER#10／#11／#61／#62的11筆素材、標題發行商FDOTHER#74／#76的4筆素材、標題捲動／主選單／靜態幕的45筆素材、LOAD四槽FDOTHER#13 entry16、教會／轉職FDOTHER#14的21筆mixed-codec素材、整備FDOTHER#1的20張range overlay，以及完整#2 action-cell bank／補齊的#5 dialogue grid／panel均已分離。戰場初始化另已將#1 range overlay、#3完整23×256 LUT、#5 HUD與138-entry LMI1、#6完整230-entry LMI1、#9完整12-entry增援演出及map 28／29的#55表面改成嚴格分離loader；一般地圖與map 28／29在原版FDOTHER不可讀時通過。#1與#6的292份既有標準檔現亦由manifest精確記錄；標題FDOTHER#77四筆音效亦由正式選單消費。相應正式consumer不再回讀這些archive資源。production runtime仍有其他`.DAT`、其他FDFIELD selector與UI用途未全量閉合，故整體仍是部分。契約與完整數字見[`60`](60-editor-separated-assets-spec.md)。 |
 
 > **2026-08-29 一般物理攻擊 consumer 勘誤：** 上表保留了本批開始時發現的缺口；
 > 現況已依[`fd2_physical_attack_separated_provider_20260829.txt`](../data/ida/fd2_physical_attack_separated_provider_20260829.txt)
@@ -708,3 +708,16 @@ adapter只供source oracle。此項達`RUNTIME-E1`，其餘80筆FDOTHER#5 entry�
 archive刻意缺FDICON.B24仍載入成功；整備、職業／教會、城鎮與終局tail baseline亦改接
 同一strict bank，正式產品程式的FDICON archive caller歸零，達`RUNTIME-E1`。匯入器與
 名稱明確的source-oracle adapter仍保留。不以本項宣稱FDFIELD／FDSHAP或整張戰場畫面E2。
+
+## 十五、2026-08-29：標題 FDOTHER #77 音效庫（RE-CLOSED）
+
+[`fd2_title_fdother77_sound_bank_ida.txt`](../data/ida/fd2_title_fdother77_sound_bank_ida.txt)
+以合法 IDA Pro 9.4 固定 `sub_1F894` 的 #77 載入、六個 selector／停止 callsite，
+以及 `sub_25A96`／`sub_25B45` 對巢狀 offset table 的消費。重要勘誤是載入 call
+起點為 `0x1F8DE`，不是舊筆記的 `0x1F8DB`；resource 也確有四筆非空 sample 加
+一筆零長度尾哨兵，不需要無尾容器特例。selector 2 由 H／P 移動分支直接消費，
+selector 1 由確認分支消費；0／3 的 caller 已證實但高階演出名稱仍未知。
+本項已完成完整分離與標題選單窄 runtime 接線，達 `DATA-READY／RUNTIME-E1`；
+不授權猜接 selector 0／3，也不宣稱完整開場音訊 E2。清冊現為 39,817 筆 asset：
+38,793 exported、1,005 intentionally raw、19 blocked；resource ledger 為 898 standardized、
+11 confirmed-empty、0 blocked、96 unknown，其中 FDOTHER unknown 為 12。

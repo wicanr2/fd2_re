@@ -119,10 +119,10 @@ schema 的診斷，不是 142 個 decoder 缺口：至少包含 FDSHAP 34 筆 co
 #### 2026-08-29 實作與驗收
 
 manifest schema version 2、generator version 3 與 validator 已實作上述契約。真實
-固定來源重生後現有 39,812 筆 asset，其中 38,788 exported、1,005
-intentionally raw、19 blocked；新增的 1,005 筆 source-resource ledger 分為：897
-`standardized`、11 `confirmed_empty`、0 `blocked`、97 `unknown`。11 筆空項均由
-raw 長度零直接證明；97 筆 unknown 精確分布為 FDFIELD 79、FDMUS 5、FDOTHER 13，
+固定來源重生後現有 39,817 筆 asset，其中 38,793 exported、1,005
+intentionally raw、19 blocked；新增的 1,005 筆 source-resource ledger 分為：898
+`standardized`、11 `confirmed_empty`、0 `blocked`、96 `unknown`。11 筆空項均由
+raw 長度零直接證明；96 筆 unknown 精確分布為 FDFIELD 79、FDMUS 5、FDOTHER 12，
 不得再引用舊的 161／142 診斷數字。
 
 可版控摘要見
@@ -131,10 +131,10 @@ raw 長度零直接證明；97 筆 unknown 精確分布為 FDFIELD 79、FDMUS 5�
 index。validator 會重算完整 ledger 與摘要；漏列 raw、重複 resource、把 raw 冒充
 standard output、偽造複合 metadata 關聯、不存在的音樂 catalog track 或摘要漂移皆
 拒絕。加入 FDFIELD runtime bridge 後，28 項相關 generator／validator／catalog／schema
-測試與真實 39,812 筆 manifest 驗證已在一次性無網路 Docker 容器通過。
+測試與真實 39,817 筆 manifest 驗證已在一次性無網路 Docker 容器通過。
 
-這項成果達 `DATA-READY` 的「覆蓋清冊」層，但不把 97 筆 unknown 自動解讀成
-97 個玩家功能缺口。下一批須先用 production consumer 清冊交叉比對；FDFIELD #69
+這項成果達 `DATA-READY` 的「覆蓋清冊」層，但不把 96 筆 unknown 自動解讀成
+96 個玩家功能缺口。下一批須先用 production consumer 清冊交叉比對；FDFIELD #69
 已由受控 runtime catalog 回連，不再列入 unknown，也不重做已閉合 decoder。
 
 ### 三之二、FDFIELD runtime catalog bridge
@@ -813,8 +813,8 @@ render，不得把兩種狀態相加冒充pack內OGG。乾淨clone沒有render�
 實作結果：`music_catalog_contract.py`成為manifest產生器與驗證器共用的外部音樂契約；
 產生器新增明確`--music-assets-root`，驗證器新增`--runtime-assets`。五項bridge測試涵蓋
 無複製成功路徑、缺外部root、render漂移、catalog hash漂移及路徑穿越，並與原有九項manifest／
-catalog測試共同通過。現行實檔manifest已重生並完整驗證：pack本身現為39,812筆
-（38,788 exported、1,005 intentionally raw、19 blocked），另有一份已驗證外部bridge：
+catalog測試共同通過。現行實檔manifest已重生並完整驗證：pack本身現為39,817筆
+（38,793 exported、1,005 intentionally raw、19 blocked），另有一份已驗證外部bridge：
 2個profile、15個track、30個render；catalog為12,719 bytes、SHA-256
 `8f2d2835971861e5fa97c8f33536022b53209b42d53bdd9fbfa062de9b880311`。
 
@@ -1012,7 +1012,8 @@ unknown 提升為 standardized；既有嚴格 loader、raw oracle 與正式 cons
 
 實作已精確納入 #1 的61份 metadata／PNG 與 #6 的231份 metadata／PNG；相似但未經
 證實的 `effects/fdother_007*` 路徑不會被分類。合成測試與真實重生共同證明兩筆 ledger
-轉為 standardized，manifest 增至39,812筆，unknown 降至97筆；pack validator 仍會
+轉為 standardized，當時 manifest 增至39,812筆，unknown 降至97筆；後續 #77
+音效切片已再更新現況數字，pack validator 仍會
 逐檔驗證相對路徑、來源關聯與 SHA-256。
 達`DATA-READY`／`RUNTIME-E1`，不提升一般玩家`PLAYER-E2`或未命名entry語意。
 
@@ -1686,6 +1687,33 @@ strict loader 必須先完整解碼並驗證兩份文件，再一次發布三個
 破損分離文件會在任何 runtime record 發布前被拒絕。清冊現為 37,850 筆，其中
 36,826 exported、1,005 intentionally raw、19 blocked。本切片達 `DATA-READY` 與窄
 `RUNTIME-E1`，但不得據此宣稱終局畫面或 campaign E2。
+
+### 標題 FDOTHER #77 音效分離契約
+
+> 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）。RE 主證據為
+> [`fd2_title_fdother77_sound_bank_ida.txt`](../data/ida/fd2_title_fdother77_sound_bank_ida.txt)。
+
+本切片沿用既有 `fd2_pcm_sound_bank`，新增 `asset_id=sfx/FDOTHER_077`。固定
+resource 大小 52,031 bytes、container count 5、zero-length tail index 4；只輸出
+selector 0..3 四筆 OGG。每筆 metadata 保存 raw byte count／SHA-256、固定來源 identity、
+`sample_rate=11025`、`channels=1`、`sample_format=unsigned_u8` 與
+`timing_evidence=hardware-spec_approximation`。selector 0／3 雖有 caller，但高階
+演出名稱與精確重製排程仍未知，因此只保存，不接播放。
+
+正式 runtime 在既有分離音效整批 admission 中載入 #77；任一 metadata／OGG 缺漏、
+來源漂移、selector 越界或 OGG 解碼失敗時整批拒絕，不回退 #31 或原始 archive。
+標題主選單及 LOAD 槽位選擇的上／下移動消費 #77/2，確認消費 #77/1；其他 UI
+仍維持各自已證實的 #31 owner。驗收至少包含：固定 raw hash 重生、四筆 OGG probe、
+無原始 `FDOTHER.DAT` 時 #77 完整解碼、主選單／槽位 typed event 使用專用 bytes，
+以及缺 pack 的失敗即關閉。這不宣稱 selector 0／3 已接、完整開場音訊或人耳 E2。
+
+實作結果：canonical 匯出現為 18 份 metadata／75 筆 OGG；#77 四筆 OGG 均由
+固定 raw bytes 重生並通過解碼 probe。嚴格 loader 接受且只接受
+`container_count=5`、`zero_length_tail_index=4` 與四筆連續 selector；正式整批
+loader 安裝 #77/2、#77/1 到標題專用欄位，主選單與 LOAD 槽位不再借用 #31。
+匯出器／清冊 14 項測試、完整 pack validator、`internal/fdother` 及標題／分離音訊
+有界 Go 回歸均通過。整個 `cmd/fd2` 套件另有三個既有 fixture 因直接尋找未掛入
+`remake/assets` 的字型／發行商／教會分離資產而失敗，未列為本切片通過證據。
 
 ## 七、完成定義
 

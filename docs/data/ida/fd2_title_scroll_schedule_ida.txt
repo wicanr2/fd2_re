@@ -26,7 +26,7 @@
 
 ```text
 0x1F8D6  push 4Dh                         ; FDOTHER #77
-0x1F8DB  call sub_111BA
+0x1F8DE  call sub_111BA                   ; 2026-08-29 raw bytes 勘誤
 0x1F8FD  push 4Ch                         ; FDOTHER #76，768-byte VGA palette
 0x1F902  call sub_111BA
 0x1F927  push 4Ah                         ; FDOTHER #74，320x200 0x4E63D frame

@@ -1,0 +1,114 @@
+# FDOTHER #77：標題流程巢狀音效庫與 selector consumer
+
+狀態：RE-CLOSED（2026-08-29）
+
+## 輸入與工具
+
+- `FD2.EXE`：357,074 bytes
+  - MD5：`b97caf2239a27a896069d03549d96e1e`
+  - SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- `FDOTHER.DAT`：3,382,481 bytes
+  - MD5：`22f56e5027edc7c766ad34ca4e5aca93`
+  - SHA-256：`a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`
+- 工具：IDA Pro 9.4，`fd2-ida-authorized-local:latest`
+- 位址空間：IDA LE 線性位址
+- 註記政策：唯讀匯出；保留 `sub_1F894`、`sub_111BA`、`sub_25A96`、
+  `sub_25B45` 原始名稱，未改名、未改型別、未修改資料庫。
+
+## 載入與生命週期（已證實）
+
+`sub_1F894 (0x1F894..0x1FF79)` 直接載入 `FDOTHER.DAT` resource `0x4D`：
+
+```text
+0x1F8D6  6A 4D              push 4Dh
+0x1F8D8  55                 push ebp              ; 此時 ebp=0
+0x1F8D9  68 4D 1A 05 00     push offset aFdotherDat
+0x1F8DE  E8 D7 18 FF FF     call sub_111BA
+0x1F8E3  83 C4 0C           add esp,0Ch
+0x1F8E6  89 44 24 54        mov [esp+6Ch+var_18],eax
+...
+0x1FF66  FF 74 24 54        push [esp+arg_50]
+0x1FF6A  E8 A7 74 01 00     call free
+```
+
+較早的 `fd2_title_scroll_schedule_ida.txt` 把 `call sub_111BA` 寫成 `0x1F8DB`；
+重新由 IDA 9.4 匯出的原始 bytes 證明 call 起點是 `0x1F8DE`。舊位址保留作勘誤
+追溯，不再作直接指令定位。
+
+## 巢狀容器（已證實）
+
+固定版 resource #77 為 52,031 bytes；MD5
+`3c0a8e570be878a9eea436c7d79375aa`，SHA-256
+`4276bfc6bf4b9f7ae0815f4f15a8f74aff33c5c29d4a2b5d2a5a6ec30540ce13`。
+`LLLLLL` directory 的第一 offset 為 26，因此共有五筆 directory entry；
+offset 為 `26, 41359, 45636, 45796, 52031`。前四筆是非空 PCM，最後一筆
+offset 等於檔案長度，是零長度尾哨兵：
+
+| selector | bytes | raw PCM SHA-256 | 證據 |
+|---:|---:|---|---|
+| 0 | 41,333 | `9b3f321c846c5068a3b5bc8e206409b7b3606300b005d3ae2d524b314cd139ce` | caller 已證實；精確捲動事件名稱未知 |
+| 1 | 4,277 | `b1ae2591bea8b841600b92f7e975566de2fc0b676da7b7d6d4a9fa4b42664f19` | 標題選單確認分支已證實 |
+| 2 | 160 | `66283ced00a6da8d22e1f127b7ee39400cb73738ed091edfad7f8e421ed35ee2` | 標題選單 H／P 移動分支已證實 |
+| 3 | 6,235 | `00abcd4aa20cf36c3a21df51aefdd70180beb2d3285779895cc8c8e6adb17e02` | ANI #1 返回後的第二播放 handle 已證實；高階名稱未知 |
+| 4 | 0 | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` | directory 尾哨兵，不得輸出為音效 |
+
+先前把 offset 數量誤讀為「四筆且無空尾」的工作記憶已由正式 directory 規則
+推翻；可編輯資料契約沿用既有 `N` 筆非空樣本加一筆空尾，不新增 `-1` 特例。
+
+## selector 與 consumer（已證實）
+
+`sub_25A96 (0x25A96..0x25B45)` 與 `sub_25B45 (0x25B45..0x25BF4)`
+分別操作 `dword_53EE4`／`dword_53EE8`。兩者以 `index*4` 讀取
+`[entry+6]` 與 `[entry+0xA]`，計算 `start=base+offset`、
+`length=end-start`，再依序呼叫 `sub_391D1`、`sub_39344`、
+`sub_3975E`、`sub_39448`。因此 #77 是可由 selector 選取的 raw sample bank，
+不是未被使用的前導 blob。
+
+```text
+0x1FBC9  push 1
+0x1FBCB  push 0
+0x1FBCD  push #77 pointer
+0x1FBD1  call sub_25A96
+
+0x1FD1C  push 1
+0x1FD1E  push 3
+0x1FD20  push #77 pointer
+0x1FD24  call sub_25B45
+
+0x1FE6F  cmp eax,48h                ; H
+0x1FE74  push 1
+0x1FE76  push 2
+0x1FE78  push #77 pointer
+0x1FE7C  call sub_25A96
+
+0x1FE8F  cmp eax,50h                ; P
+0x1FE94  push 1
+0x1FE96  push 2
+0x1FE98  push #77 pointer
+0x1FE9C  call sub_25A96
+
+0x1FEB9  cmp ebx,0Dh                ; Enter
+0x1FEBE  cmp ebx,20h                ; Space
+0x1FEC3  cmp eax,0E0h
+0x1FECA  cmp eax,52h                 ; R
+0x1FED3  push 1
+0x1FED5  push 1
+0x1FED7  push #77 pointer
+0x1FEDB  call sub_25A96
+
+0x1FF56  push 1
+0x1FF58  push -1
+0x1FF5A  push #77 pointer
+0x1FF5E  call sub_25A96
+```
+
+## 重製映射與停止線
+
+- `selector 2` 可接標題主選單的上／下移動，`selector 1` 可接確認；這兩項由
+  同一輸入分支直接證實。
+- `selector 0` 與 `selector 3` 先完整分離，但在各自精確 runtime 時點未形成
+  可審查排程前不猜接。尤其不以人耳印象命名 sample identity。
+- 取樣資料形狀為 unsigned 8-bit mono；11025 Hz 依專案硬體規格停止線記為
+  `hardware-spec_approximation`，不再追 PIT／DAC／`.DIG` driver 逐週期時序。
+- 本證據可授權 `DATA-READY` 與標題選單的窄 `RUNTIME-E1`；不宣稱完整開場音訊
+  或一般玩家原版／重製人耳配對已達 `PLAYER-E2`。

@@ -616,3 +616,31 @@ marker使用selector3、target marker使用selector2。#53本身為19,394 bytes�
 | 4 | 11,022 | `7726527c17338d6b5d2af0b7d73b13b887a433ba5d4f8067442d1483097d3e87` | command29 target marker，已證實 |
 
 五筆均保留原selector輸出OGG；0／2／3只保存、不接播放，也不外推物理攻擊`index2`。
+
+## FDOTHER #77／標題選單固定音效契約（2026-08-29）
+
+> 狀態：**RE-CLOSED／DATA-READY／RUNTIME-E1**。主證據為
+> [`fd2_title_fdother77_sound_bank_ida.txt`](../data/ida/fd2_title_fdother77_sound_bank_ida.txt)；
+> 來源 identity 同本頁其他分離音效。
+
+`sub_1F894` 在 `0x1F8D6..0x1F8DE` 載入 resource #77。重新依第一 offset
+`26` 計算 directory count 後，固定 resource 52,031 bytes 共有五筆 entry，
+不是「四筆且無尾哨兵」：selector 0..3 非空，selector 4 是 offset 等於檔案長度的
+零長度尾項。四筆 raw PCM 的長度／SHA-256 為：
+
+| selector | bytes | SHA-256 | 已證實 consumer |
+|---:|---:|---|---|
+| 0 | 41,333 | `9b3f321c846c5068a3b5bc8e206409b7b3606300b005d3ae2d524b314cd139ce` | `0x1FBCD→sub_25A96`；精確捲動事件名稱未知 |
+| 1 | 4,277 | `b1ae2591bea8b841600b92f7e975566de2fc0b676da7b7d6d4a9fa4b42664f19` | Enter／Space／`0xE0`／R 確認分支 |
+| 2 | 160 | `66283ced00a6da8d22e1f127b7ee39400cb73738ed091edfad7f8e421ed35ee2` | H／P 選單移動分支 |
+| 3 | 6,235 | `00abcd4aa20cf36c3a21df51aefdd70180beb2d3285779895cc8c8e6adb17e02` | ANI #1 返回後的第二播放 handle；高階名稱未知 |
+
+正式分離素材沿用 `fd2_pcm_sound_bank`：`container_count=5`、
+`zero_length_tail_index=4`，只輸出四筆 OGG。標題主選單與 LOAD 槽位選擇可消費
+selector 2／1；selector 0／3 在精確演出時點另行閉合前只保存，不猜接。
+11025 Hz 仍是硬體規格近似，不冒稱原版逐 sample 一致。
+
+實作已將 #77 納入同一原子 OGG 匯出與嚴格 loader；固定原檔重生為四筆 OGG
+與一份 metadata，全部通過 mono／11025 Hz／duration／非靜音 probe。正式標題
+主選單及 LOAD 槽位 typed event 改用 #77/2 與 #77/1；#31 的其他 UI consumer
+保持不變。缺任一納入契約的 bank 時整批失敗即關閉，不回退原始 archive。

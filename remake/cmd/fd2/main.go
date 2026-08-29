@@ -357,6 +357,8 @@ type Game struct {
 	sfx                       map[int][]byte         // SFX PCM（doc36 FDOTHER#31：14個目錄項目／13個非空樣本）
 	sfxVoices                 []sfxVoice             // 保留疊播播放器至自然結束，避免 Play 後立即失去生命週期
 	separatedCommandSFX       map[int]map[int][]byte // 已納入契約的 FDOTHER 指令音效；只讀分離 OGG
+	sfxTitleMove              []byte                 // FDOTHER #77 sub2: sub_1F894 H／P 標題選單移動分支
+	sfxTitleConfirm           []byte                 // FDOTHER #77 sub1: sub_1F894 標題選單確認分支
 	sfxSwing                  []byte                 // 戰鬥揮擊音(doc36 戰鬥池 #48-64 sub0,七池共用)
 	sfxImpact                 []byte                 // 命中音(近似:最短最尖池;attack_id→sfx 對照表 doc36 未 RE)
 	sfxDeath                  []byte                 // 陣亡/重擊音(近似:最長池)

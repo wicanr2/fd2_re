@@ -53,9 +53,9 @@ func (g *Game) applyTitleMenuEvent(event TitleMenuEvent) bool {
 	}
 	menu := TitleMenuState{Selection: g.titleSel, FlashTicks: g.titleFlash}
 	if event == TitleMenuUp || event == TitleMenuDown {
-		g.playSFX(sfxCursor)
+		g.playRaw(g.sfxTitleMove)
 	} else if event == TitleMenuConfirm {
-		g.playSFX(sfxConfirm)
+		g.playRaw(g.sfxTitleConfirm)
 	}
 	action := menu.Step(event)
 	g.titleSel, g.titleFlash = menu.Selection, menu.FlashTicks
@@ -83,7 +83,7 @@ func (g *Game) applyTitleSlotEvent(event TitleSlotEvent) bool {
 	}
 	slots := TitleSlotState{Selection: g.titleSlotSel}
 	if event == TitleSlotUp || event == TitleSlotDown {
-		g.playSFX(sfxCursor)
+		g.playRaw(g.sfxTitleMove)
 	}
 	selected, confirm, cancel := slots.Step(event)
 	g.titleSlotSel = slots.Selection
@@ -92,7 +92,7 @@ func (g *Game) applyTitleSlotEvent(event TitleSlotEvent) bool {
 		return true
 	}
 	if confirm {
-		g.playSFX(sfxConfirm)
+		g.playRaw(g.sfxTitleConfirm)
 		return g.confirmTitleLoadSlot(selected)
 	}
 	return true
