@@ -12,7 +12,16 @@
 > bytes，SHA-256 為
 > `7d202d0196a0ae3f5712e244c5c46e2355a7cbd184c9a60c5fd709a8edff48a4`，已逐名
 > 驗證四包存在；本輪未取得 Wine／Windows 原生執行收據。macOS workflow 已同步
-> 複製 locales，但必須待推送後由原生 runner 驗證，不能由 Linux 宣稱完成。
+> 複製 locales。推送後的 Windows 原生
+> [run 33256784182](https://github.com/wicanr2/fd2_re/actions/runs/33256784182)與 macOS
+> [run 33256785580](https://github.com/wicanr2/fd2_re/actions/runs/33256785580)均成功；兩者
+> 都從空白 cwd 通過正式封包自我檢查並上傳 artifact。下載後再以唯讀 Docker
+> 獨立複驗：Windows ZIP 5,055,987 bytes（SHA-256
+> `1d50218d272705d010b72210be48fa9e2b0f4390983af2e4a80385fa26be9909`）；macOS
+> tar.gz 9,251,765 bytes（`efd14afce56dfb41552d22ec77a7e9e1cfd8deba7967cbfd939cf7ea8651ea8b`）及
+> DMG 10,445,388 bytes（`96b065c7f53f50c37a702377a58149012c1d28b987491199e2b8d47fd037ff9c`）。
+> Windows ZIP 與 macOS app bundle 均逐名確認四語包存在，可攜 SHA-256 manifest
+> 也全部通過；這仍不取代實體玩家桌面的視窗、輸入、存檔與音訊驗收。
 
 > **2026-08-27 `3dd0bd20` 最新候選：**既有鎖定映像在一次性無網路Docker中
 > 重建Linux AppImage 5,327,352 bytes（SHA-256

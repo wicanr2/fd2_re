@@ -159,7 +159,7 @@ python tools/check_remake_samples.py --require-complete
 | 平台 | 已驗證 | 尚缺 |
 |---|---|---|
 | Linux x86_64 | AppImage 空白工作目錄自我檢查、相對 SHA-256、AppStream metadata | 非 Debian 發行版抽測與簽章 |
-| Windows x86_64 | 原生 CI ZIP／manifest；交叉封包以 Wine 自我檢查 | 實體 Windows 視窗、輸入、存檔、音訊 |
-| macOS universal | 原生 CI universal binary、DMG／tar.gz／manifest | 實體機操作、簽章與公證 |
+| Windows x86_64 | 原生 CI ZIP／manifest；2026-08-29四語候選從空白cwd自我檢查及下載後manifest複驗通過 | 實體 Windows 視窗、輸入、存檔、音訊 |
+| macOS universal | 原生 CI universal binary、DMG／tar.gz／manifest；2026-08-29四語候選下載後確認bundle四語與manifest | 實體機操作、簽章與公證 |
 
 完整封包雜湊與流程見 [`41-packaging.md`](knowledge-base/41-packaging.md)。
