@@ -9,7 +9,7 @@
 > 新工作必須使用 `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`、`PLAYER-E2` 或
 > `BLOCKED` 明列關閉哪一層，不再新增沒有層級的 `[x]`。
 
-## 有效佇列（2026-08-29）
+## 有效佇列（2026-08-30）
 
 > **新工作前沿**：第一輪代表性可玩抽樣已閉合後，下一個產品目標改為
 > 「可安全編輯的資料契約＋原版素材完全分離」。實檔稽核已確認現有 JSON 缺穩定
@@ -25,6 +25,14 @@
 | A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型、FDICON、FDSHAP、ANI、FDFIELD主要玩家路徑，以及城鎮、商店、標題、LOAD、整備、教會與戰場初始化均已遷移。19個巢狀音效bank已分離；標題#77選單音與ANI #1的#78 companion均由正式runtime消費。2026-08-29 caller稽核未發現正式`Game`仍直接讀原版archive，`FD2_ORIGINAL_FDOTHER`／`DATO` locator亦已移到測試專用檔，正式binary字串檢查通過；archive adapter只留source-oracle。BGM只從完整驗證的30份OGG catalog解析，物理攻擊亦由分離FIGANI provider原子預檢 | 以version 2 ledger的93筆unknown交叉核對是否有尚未登記的玩家consumer；已具標準資料但缺manifest bridge者只補provenance。沒有正式caller的oracle helper不再列為runtime缺口；只有新證據證明正式consumer存在才重開RE→spec→runtime切片 |
 | A4 | 現代美術主題 | `NOT-STARTED／TRACKED`：截至2026-08-29尚未產生可驗收的新頭像、戰場sprite／tile或介面框；目前只有原版分離素材與既有重製畫面，不得冒稱現代美術已開工 | 第一批只做可丟棄原版／現代對照prototype：同一角色頭像、同一戰場單位＋地形、同一對話／戰鬥HUD介面框各一組；保存來源asset ID、風格prompt、輸出雜湊與實機合成截圖，由使用者選定方向後才建立theme catalog並批量生產 |
 | A5 | 繁中／簡中／日文／英文與可調文字顯示 | `RUNTIME-E1（4-key切片）`：四語官方內建與外部社群包決策不變；語言包schema、BCP47／安全路徑／受控字型／semantic key／變數簽章validator及正式Go loader已建立。玩家、一般敵方與mode11物理攻擊訊息共用四語catalog；F4採完整預檢後原子切換，`fd2_settings.json`保存locale但戰役save不保存，封包自檢要求四官方包。完整候選仍為5,233筆來源／2,497個互異繁中字串，不能把4筆切片冒稱完整翻譯 | 將候選合併為character／entity／line穩定ID並完成四語catalog；驗證日文字形與所有包內字型覆蓋，擴到對話／商店／戰鬥HUD並以最長字串prototype裁決非繁中忠實主題與文字縮放界線 |
+
+> **2026-08-30 v0.1.0 發行批次：**目前 AppImage 已由正式標題以一般鍵盤進入
+> 第一關，並實際錄得 F4 依序顯示簡中、日文、英文與繁中橫幅。71.5秒推廣片
+> 使用目前 runtime、原版保存短片與已分級比較圖，不含原版音樂；H.264／AAC、
+> 1280×720／30fps、雙聲道48kHz、長黑與長靜音檢查均通過。公開 Release 只含
+> 不帶原版素材的三平台封包、雜湊與影片；本機 local-full 不得上傳。規格與收據見
+> [`promo-v0.1.0-spec.md`](../../docs/promo-v0.1.0-spec.md)及
+> [`fd2-v0.1.0-promo-20260830.json`](../data/video/fd2-v0.1.0-promo-20260830.json)。
 
 > **2026-08-29 A2／A3 追加：** event61 FDOTHER #45 的59幀演出已達
 > `DATA-READY／RUNTIME-E1`；59組 indexed PNG／mask 逐幀對照原版通過，
@@ -123,7 +131,7 @@
 | 4a | 玩家／敵方指令 `28／29／31` 原版演出 | `RE-CLOSED`（caller分歧與取得路徑窄稽核）／`RUNTIME-E1`：29玩家正式confirm已接多目標indexed owner與整批回復。28／31的固定learn table與32筆player defaults均無command bit，已知mask OR writer又只有level-up direct caller；因此「無已證實一般玩家取得來源」為強推論，不再把尋找selector列成交付阻擋，也不宣稱死碼。現有章節原始遮罩亦未找到ID29敵方producer，不猜接敵方owner | 下一個可驗收結果是command29未修改玩家同狀態逐幀／音訊E2。28／31只在動態原版出現command bit、找到新mask writer或同actor raw `+7` provenance時重開；敵方29只在出現正常producer時重開 |
 | 5 | 戰場與戰間 UI 收尾 | UI-03、UI-07～12 仍 partial；故事對話現接十九個切片。`ch27_post`已由第28戰正式64-slot勝利路徑消費`FDTXT_028`五句，再同步隊伍、進`preparation_ch29`並冷讀；舊80-slot斷言已訂正為混淆60筆source與44筆已物化groups1..7。 | 十九個已接故事切片只剩未修改同狀態E2；`ch25_post`與`ch27_post`不再列為未接caller。下一個故事切片只有在canonical caller／consumer證據充分時才開啟；第29戰已結案。 |
 | 6 | 原版終局精確鏈 | `RUNTIME-E1`：第27戰缺天空之鑰現在沿正式typed gate進chapter26 `0x2BCE5`前綴與`FDTXT_027`兩個原版文字閘門，不再只顯示通用結語；chapter29 `sub_2C39B`文字把caller initial portrait與14句FDTXT speaker拆開，正式19×5 indexed owner逐Draw消費六段opening、四列逐glyph、mouth、Enter／Space、五段closing與source restore，收框後才resume，不再使用一般RGBA框。正式`battle_ch30→ending`則消費chapter29來源約束前綴／角色／20段尾段並停在#59，可選隊伍最終狀態循環已接。全新`Game`冷讀最終整備槽後，JOIN順序與persistent raw `+6/+7/+8/+0x20`已連續保存到定格、回顧及返回。三筆具位址音訊cue由typed `runtime_stage`正式消費；玩家自備MT-32 OGG的`FDMUS_004→stop→FDMUS_018`已實際解碼、建立與切換播放器，但無聲Docker不證明人耳輸出。正式成功畫面已移除來源等級／按鍵說明等現代疊圖，僅除錯HUD保留；`Game.Update`與第29戰後冷讀長鏈回歸也已共用raw-change／定格／回顧的單一輸入owner。80個實際FIGANI的header-zero `0x2939D` raw `+4..+7`、base scheduler與兩次配對已接；3%外層預算依賴未初始化區域值，降為非阻擋考古限制；未達E2 | 下一步只補原版 caller `0x2C2A6` 當下完整動態狀態、精確音訊時序／原版終端輸入及第27／30戰E2。不重做重製端連續性、speaker mapping、19×5 owner、兩個文字臂、定格、回顧循環、未初始化堆疊實作殘留或三筆raw cue |
-| 7 | 三平台打包與推廣片 | 最新程式已重建Linux AppImage 5,327,352 bytes（SHA-256 `32239daa…091f5`）與Windows交叉編譯ZIP 4,910,912 bytes（`c85e466b…ee11`），兩者均在一次性無網路Docker由空白工作目錄通過正式封包自我檢查；Windows使用既有Wine 9.0／Xvfb。原生Windows run 33038018401與macOS run 33038019716亦分別完成ZIP及universal DMG／tar.gz；artifact下載後，Windows ZIP與macOS兩包均用內附相對路徑SHA-256 manifest在唯讀Docker複驗成功。封包只含受版控scenario／story／spells，不含原版EXE／DAT／存檔。尚未做實體Windows／Mac操作；全戰役長程遊玩由使用者人工進行 | 補Windows與macOS實體玩家桌面的視窗／輸入／存檔／音訊抽測；處理簽章／Gatekeeper；公開推廣片素材策略待使用者確認。Wine、Docker與CI自我檢查均不取代真機 |
+| 7 | 三平台打包與推廣片 | `RELEASE-v0.1.0`：Linux AppImage、Windows ZIP、macOS universal DMG／tar.gz 均已由原生工作流程建立、通過封包自我檢查與可攜雜湊；71.5秒推廣片重新錄製目前 AppImage 的正式標題、第一關及四語切換，影音與逐幕目視驗收通過。公開發行物不含原版EXE／DAT／存檔或本機完整素材 | 補Windows與macOS實體玩家桌面的視窗／輸入／存檔／音訊抽測；處理簽章／Gatekeeper。Wine、Docker與CI自我檢查均不取代真機 |
 
 > **2026-08-27 全專案 Markdown 斷言稽核：** 已刪除無可重跑來源的90／100自評，
 > 以合法IDA 9.4重生並完成足跡、Watcom、Miles與三筆既有handler產品語意回填後，函式清冊為產品61／runtime175／未知1,069，將故事切片由舊17筆訂正為

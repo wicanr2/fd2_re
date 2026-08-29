@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-08-30",
+  "engine_commit": "a98e7cec736b482af4f438b222a8b5f13bb6ff84",
+  "evidence_level": "RUNTIME-E1",
+  "runtime_input": {
+    "path": "remake/packaging/dist/local-full/fd2-linux-x86_64-local-full/FD2-x86_64.AppImage",
+    "sha256": "7cd1604195029c5009c0dd3a6d652521db5c08eef103f3c3071da0b50f67488a",
+    "asset_policy": "local-full read-only; not distributed",
+    "entry": "FD2_TITLE=1 FD2_NOCUT=1; normal keyboard input; no direct campaign node"
+  },
+  "capture": {
+    "script": "tools/capture_fd2_v010_gameplay.sh",
+    "container": "game-video:latest",
+    "display": "Xvfb 1280x800x24",
+    "video": "H.264 1280x800 30fps",
+    "input_sequence": [
+      "Space", "Space", "Enter", "Enter x24", "F4 x4",
+      "Right", "Down", "Enter"
+    ],
+    "output": "dist/promo/fd2-v0.1.0-live-gameplay.mp4",
+    "sha256": "6e4a4562f6edf83fe7caf8ff58d9fcc56a3cec928c2c61c28d27a8f64d6c2561"
+  },
+  "composition": {
+    "script": "tools/build_fd2_v010_promo.sh",
+    "original_dos_clip_sha256": "47409bd19856f0aa2ebc2424c05e021b4e92f0a7c0d6203e081407168985cb64",
+    "comparison_image_sha256": "3b3ab913fd0630ce37a80f78476edba0bcacb8e0636cc919dc90e7a09ddd1174",
+    "music": "non-original neutral synthesized two-tone bed",
+    "output": "dist/promo/fd2-v0.1.0-promo.mp4",
+    "sha256": "7e1186daca3ecd71642c0e3ad9b4f10cbb8d31aca6e2df55f63d203b4cb7becb"
+  },
+  "verification": {
+    "duration_seconds": 71.5,
+    "video": "H.264 1280x720 30fps",
+    "audio": "AAC stereo 48000Hz",
+    "mean_volume_db": -34.4,
+    "max_volume_db": -28.6,
+    "long_black_segments": 0,
+    "long_silence_segments": 0,
+    "visual_receipts": [
+      "dist/promo/fd2-v0.1.0-contact-sheet.png",
+      "dist/promo/fd2-v0.1.0-locales-contact.png",
+      "dist/promo/fd2-v0.1.0-locale-tail.png"
+    ],
+    "locale_banners_seen": ["简体中文", "日本語", "English", "繁體中文"]
+  },
+  "limits": [
+    "The promo demonstrates a normal title-to-ch01 runtime path, not a full campaign playthrough.",
+    "Four official packs currently cover the connected localization slice, not every legacy line.",
+    "Static cards intentionally trigger freeze detection and are not runtime stalls."
+  ]
+}
