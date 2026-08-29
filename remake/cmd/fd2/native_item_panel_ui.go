@@ -6,27 +6,11 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	"os"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
-
-func nativeOriginalArchivePath(environment, name string) string {
-	if path := os.Getenv(environment); path != "" {
-		return path
-	}
-	path := assetPath("assets/original/" + name)
-	if fileExists(path) {
-		return path
-	}
-	return ""
-}
-
-func nativeDATOPath() string {
-	return nativeOriginalArchivePath("FD2_ORIGINAL_DATO", "DATO.DAT")
-}
 
 func nativeItemRawSlots(unit *battle.Unit) []int {
 	if unit == nil || len(unit.InventorySlots) != 8 || len(unit.NativeInventoryFlags) != 8 {

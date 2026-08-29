@@ -9406,20 +9406,6 @@ func (g *Game) Layout(outsideW, outsideH int) (int, int) {
 	return logicalW, logicalH
 }
 
-// nativeFDOTHERPath opts into original UI data without distributing it. A
-// player may point FD2_ORIGINAL_FDOTHER at their own FLAME2/FDOTHER.DAT, or
-// install it as the user-overridable assets/original/FDOTHER.DAT.
-func nativeFDOTHERPath() string {
-	if path := os.Getenv("FD2_ORIGINAL_FDOTHER"); path != "" {
-		return path
-	}
-	path := assetPath("assets/original/FDOTHER.DAT")
-	if fileExists(path) {
-		return path
-	}
-	return ""
-}
-
 const nativeActionOverlayCellCount = 78
 
 // loadNativeCommandLabels reads the editable export of FDTXT_000 command

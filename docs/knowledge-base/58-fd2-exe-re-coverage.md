@@ -754,3 +754,15 @@ standardized、11 confirmed-empty、0 blocked、93 unknown，其中FDOTHER unkno
 
 正式Game尚未消費raw pending code，因此本切片不提升為`RUNTIME-E1`，也不把#79命名為
 世界地圖、中場或增援畫面。只有一般玩家pending-code producer／consumer接縫閉合後才可接線。
+
+## 十九、2026-08-29：正式 binary 的原版 archive locator 邊界（RUNTIME-E1）
+
+全量 caller 稽核確認 `remake/cmd/fd2` 正式 `Game` 路徑使用分離 loader；仍直接呼叫
+`ReadResource`／`DecodeResource` 的 town、preparation、item panel、title 與 ending helper
+均只由 source-oracle、匯入器或等價測試消費。`nativeFDOTHERPath`、`nativeDATOPath`及
+`FD2_ORIGINAL_FDOTHER`／`FD2_ORIGINAL_DATO` locator 已移入 `_test.go`，正式 binary 不再
+編入 `assets/original/*.DAT` 回退入口。
+
+Docker 內重跑第21、26、28章三條會使用原版 oracle 的戰後／對話測試均通過；另建置正式
+`cmd/fd2` binary並確認不含上述兩個環境變數字串。這只關閉正式 binary 的 locator 邊界；
+source-oracle仍保留原版 archive adapter作獨立比較，不把它們誤列為 runtime缺口。

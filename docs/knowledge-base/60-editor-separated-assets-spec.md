@@ -859,6 +859,11 @@ archive subresources、125張一般 PNG、264組 FIGANI／2,118張動畫 frame�
 payload實跑，產生42,253個檔案；全部雜湊、pack結構與啟動器均通過。此收據證明組裝
 契約，不替代三平台真實 binary／安裝生命週期驗收。
 
+正式執行期邊界另於2026-08-29收緊：`nativeFDOTHERPath`／`nativeDATOPath`與
+`FD2_ORIGINAL_FDOTHER`／`FD2_ORIGINAL_DATO`只存在於 `_test.go` source-oracle adapter，
+不再編入正式遊戲。正式 binary 建置後已檢查不含這兩個 locator；原版 archive decoder
+仍可留在匯入器與 oracle工具中，但不得由`Game` caller呼叫。
+
 同一實際輸出樹再經來源 hash gate 與逐檔 manifest generator 驗證；2026-08-28完成
 ANI遷移後，當時清冊為38,679筆：37,655筆為已匯出、1,005筆raw完整列為
 `intentionally_raw`，19筆明確列為`blocked`（包含15首等待 OGG 的 MIDI）。清冊驗證器
