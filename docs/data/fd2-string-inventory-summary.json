@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_string_inventory_summary",
+  "locale": "zh-Hant",
+  "status": "diagnostic",
+  "generated_by": {
+    "tool": "fd2-string-inventory",
+    "version": "1"
+  },
+  "inventory_sha256": "c89d7929197ed7b544c4965e1b7ea33ae25dddf7faf6604cd42f2cf952b201ca",
+  "entry_count": 5233,
+  "unique_text_count": 2497,
+  "variable_entry_count": 150,
+  "by_id_status": {
+    "provisional_legacy_path": 4708,
+    "provisional_source_location": 525
+  },
+  "by_role": {
+    "chapter_title": 37,
+    "character_name": 1564,
+    "command_or_ui": 38,
+    "dialogue": 1564,
+    "dialogue_or_system": 155,
+    "entity_name": 989,
+    "go_review": 80,
+    "location_name": 58,
+    "option_or_ui": 140,
+    "prompt": 30,
+    "runtime_ui": 443,
+    "scene_label": 135
+  },
+  "by_role_unique_text": {
+    "chapter_title": 37,
+    "character_name": 114,
+    "command_or_ui": 38,
+    "dialogue": 1477,
+    "dialogue_or_system": 96,
+    "entity_name": 211,
+    "go_review": 75,
+    "location_name": 58,
+    "option_or_ui": 8,
+    "prompt": 3,
+    "runtime_ui": 331,
+    "scene_label": 131
+  },
+  "by_confidence": {
+    "direct_ui_context": 443,
+    "field_rule": 4708,
+    "function_context": 2,
+    "non_ascii_production_literal": 80
+  }
+}

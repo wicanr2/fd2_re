@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_string_review",
+  "inventory_sha256": "c89d7929197ed7b544c4965e1b7ea33ae25dddf7faf6604cd42f2cf952b201ca",
+  "reviewed_role": "go_review",
+  "dispositions": {
+    "player_visible": {
+      "rationale": "會由正式視窗、戰鬥訊息、結局提示或玩家錯誤回饋消費。",
+      "string_ids": [
+        "legacy.go.remake.cmd.fd2.action_overlay_runtime.l385-c15",
+        "legacy.go.remake.cmd.fd2.action_overlay_runtime.l585-c17",
+        "legacy.go.remake.cmd.fd2.ai_spell_execute.l80-c22",
+        "legacy.go.remake.cmd.fd2.ai_spell_execute.l82-c10",
+        "legacy.go.remake.cmd.fd2.ai_spell_execute.l84-c10",
+        "legacy.go.remake.cmd.fd2.ending_preview.l231-c12",
+        "legacy.go.remake.cmd.fd2.ending_preview.l233-c12",
+        "legacy.go.remake.cmd.fd2.ending_preview.l784-c10",
+        "legacy.go.remake.cmd.fd2.ending_preview.l787-c10",
+        "legacy.go.remake.cmd.fd2.main.l10281-c17",
+        "legacy.go.remake.cmd.fd2.main.l10394-c24",
+        "legacy.go.remake.cmd.fd2.main.l1425-c10",
+        "legacy.go.remake.cmd.fd2.main.l1427-c10",
+        "legacy.go.remake.cmd.fd2.main.l1429-c10",
+        "legacy.go.remake.cmd.fd2.main.l1431-c10",
+        "legacy.go.remake.cmd.fd2.main.l1433-c10",
+        "legacy.go.remake.cmd.fd2.main.l1435-c10",
+        "legacy.go.remake.cmd.fd2.main.l1437-c10",
+        "legacy.go.remake.cmd.fd2.main.l5957-c27",
+        "legacy.go.remake.cmd.fd2.main.l5957-c37",
+        "legacy.go.remake.cmd.fd2.main.l5973-c22",
+        "legacy.go.remake.cmd.fd2.main.l5975-c25",
+        "legacy.go.remake.cmd.fd2.main.l5977-c14",
+        "legacy.go.remake.cmd.fd2.main.l5980-c26",
+        "legacy.go.remake.cmd.fd2.main.l6066-c11",
+        "legacy.go.remake.cmd.fd2.main.l6068-c11",
+        "legacy.go.remake.cmd.fd2.main.l6729-c13",
+        "legacy.go.remake.cmd.fd2.main.l7189-c35",
+        "legacy.go.remake.cmd.fd2.main.l7189-c48",
+        "legacy.go.remake.cmd.fd2.main.l9760-c30",
+        "legacy.go.remake.cmd.fd2.main.l9760-c49"
+      ]
+    },
+    "internal_diagnostic": {
+      "rationale": "只供 loadErr、資料契約拒絕或內部一致性診斷，不進正式語言包。",
+      "string_ids": [
+        "legacy.go.remake.cmd.fd2.main.l10106-c34",
+        "legacy.go.remake.cmd.fd2.main.l10125-c34",
+        "legacy.go.remake.cmd.fd2.main.l1461-c16",
+        "legacy.go.remake.cmd.fd2.main.l1490-c16",
+        "legacy.go.remake.cmd.fd2.main.l1493-c15",
+        "legacy.go.remake.cmd.fd2.main.l1497-c16",
+        "legacy.go.remake.cmd.fd2.main.l1507-c16",
+        "legacy.go.remake.cmd.fd2.main.l1516-c16",
+        "legacy.go.remake.cmd.fd2.main.l1525-c16",
+        "legacy.go.remake.cmd.fd2.main.l1534-c16",
+        "legacy.go.remake.cmd.fd2.main.l1543-c16",
+        "legacy.go.remake.cmd.fd2.main.l1553-c16",
+        "legacy.go.remake.cmd.fd2.main.l1564-c16",
+        "legacy.go.remake.cmd.fd2.main.l1584-c16",
+        "legacy.go.remake.cmd.fd2.main.l1593-c16",
+        "legacy.go.remake.cmd.fd2.main.l1602-c16",
+        "legacy.go.remake.cmd.fd2.main.l1611-c16",
+        "legacy.go.remake.cmd.fd2.main.l1629-c16",
+        "legacy.go.remake.cmd.fd2.main.l1651-c16",
+        "legacy.go.remake.cmd.fd2.main.l1668-c28",
+        "legacy.go.remake.cmd.fd2.main.l1726-c29",
+        "legacy.go.remake.cmd.fd2.main.l1740-c16",
+        "legacy.go.remake.cmd.fd2.main.l1764-c28",
+        "legacy.go.remake.cmd.fd2.main.l1872-c16",
+        "legacy.go.remake.cmd.fd2.main.l1925-c28",
+        "legacy.go.remake.cmd.fd2.main.l1939-c30",
+        "legacy.go.remake.cmd.fd2.main.l1953-c30",
+        "legacy.go.remake.cmd.fd2.main.l1966-c31",
+        "legacy.go.remake.cmd.fd2.main.l2005-c16",
+        "legacy.go.remake.cmd.fd2.main.l2023-c16",
+        "legacy.go.remake.cmd.fd2.main.l2030-c16",
+        "legacy.go.remake.cmd.fd2.main.l2034-c16",
+        "legacy.go.remake.cmd.fd2.main.l2053-c16",
+        "legacy.go.remake.cmd.fd2.main.l2061-c16",
+        "legacy.go.remake.cmd.fd2.main.l2090-c28",
+        "legacy.go.remake.cmd.fd2.main.l2136-c15",
+        "legacy.go.remake.cmd.fd2.main.l2987-c29",
+        "legacy.go.remake.cmd.fd2.main.l3747-c28",
+        "legacy.go.remake.cmd.fd2.main.l3766-c30",
+        "legacy.go.remake.cmd.fd2.main.l3775-c29",
+        "legacy.go.remake.cmd.fd2.main.l3785-c28",
+        "legacy.go.remake.cmd.fd2.main.l4582-c16"
+      ]
+    },
+    "development": {
+      "rationale": "只供除錯、自我檢查或截圖追蹤，不進正式語言包。",
+      "string_ids": [
+        "legacy.go.remake.cmd.fd2.main.l10376-c15",
+        "legacy.go.remake.cmd.fd2.main.l10390-c15",
+        "legacy.go.remake.cmd.fd2.main.l8275-c16"
+      ]
+    },
+    "unknown": {
+      "rationale": "消費端或正式文字角色尚未證實，維持失敗即關閉且不建立正式翻譯鍵。",
+      "string_ids": [
+        "legacy.go.remake.cmd.fd2.action_overlay_runtime.l625-c19",
+        "legacy.go.remake.cmd.fd2.main.l2753-c16",
+        "legacy.go.remake.cmd.fd2.main.l2753-c47",
+        "legacy.go.remake.cmd.fd2.main.l6641-c26"
+      ]
+    }
+  }
+}

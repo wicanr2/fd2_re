@@ -23,7 +23,7 @@
 | A2 | 原版素材全量分離與清冊 | `DATA-PARTIAL`：現行generated-pack manifest為39,520筆：38,496 exported、1,005 intentionally_raw、19 blocked。FDICON、FDSHAP、ANI#0..#8、標題、共用UI、商店／城鎮／教會、戰場初始化#1／#3／#5／#6／#9／#55及第一批戰鬥音效已有標準輸出與固定原檔oracle；raw零遺漏。正式`music_catalog.json`綁定15首×FM／MT-32共30份OGG；manifest現以邏輯`runtime_assets` bridge完整驗證catalog與30份render而不複製大檔，15份中間MIDI仍誠實列blocked | 處理一般物理攻擊動態bank及其餘raw家族，補齊用途關聯；另讓發布／編輯器入口共同顯示pack與external catalog統計，輸出包不入Git |
 | A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型、共用道具panel、FDICON、FDSHAP、ANI、FDFIELD#69／#90..92、天空之鑰、終局、商店／城鎮／標題／LOAD／整備／教會及戰場初始化正式玩家consumer已遷移。map初始化#1 range、#3 LUT、#5 HUD與完整bank、#6完整bank、#9增援與map28／29 #55只讀分離pack；一般與晚期地圖在原版FDOTHER不可讀時通過。18條palette owner、17個巢狀音效bank與FM／MT-32 BGM亦已分離；BGM只從完整驗證的30份OGG catalog解析，不再靜默fallback。相關direct archive reader與過期原檔存在gate歸零 | 下一批處理一般物理攻擊動態bank，再依production caller清冊遷移剩餘`.DAT`；保留archive不可讀與缺分離資產失敗即關閉測試 |
 | A4 | 現代美術主題 | `PENDING-A1/A2`：尚未選定正式風格，不以猜測覆蓋原版 | 先輸出頭像＋戰場 sprite／tile＋介面框的可丟棄忠實／現代對照，再由使用者選定 theme 方向 |
-| A5 | 繁中／簡中／日文／英文與可調文字顯示 | `DRAFT-DECISION`：已完成story／battle／ending單字串、`command_labels.json`、現代UI硬編碼繁中、主機字型fallback、原版FDTXT token、16×16 native bitmap font與固定320×200排版界線的實檔盤點；共通資料不變量、六階段遷移與四個待決分支已寫入`60` | 使用者先確認官方內建／外部語言包根分支；再建立字串extractor、locale／layout schema、完整key／變數／字形validator與最長字串prototype，之後才接runtime切換 |
+| A5 | 繁中／簡中／日文／英文與可調文字顯示 | `DIAGNOSTIC／DRAFT-DECISION`：可重跑清冊現有5,233筆來源候選／2,497個互異繁中字串／150筆含變數；80筆Go待審常值已由同一SHA綁定為31玩家可見、42內部診斷、3開發、4未知，測試會拒絕過期分類。完整清冊不入Git，所有ID仍為來源位置型暫定ID。原版FDTXT token與320×200點陣呈現保持獨立唯讀證據 | 使用者先確認官方內建／外部語言包根分支；再把候選合併為character／entity／line穩定ID，建立locale／layout schema、完整key／變數／字形validator與最長字串prototype，之後才接runtime切換 |
 
 > **2026-08-29 A2／A3 追加：** event61 FDOTHER #45 的59幀演出已達
 > `DATA-READY／RUNTIME-E1`；59組 indexed PNG／mask 逐幀對照原版通過，

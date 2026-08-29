@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/wicanr2/fd2_re/docs/data/schema/fd2-string-review.schema.json",
+  "title": "FD2 manually reviewed string candidates",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "kind", "inventory_sha256", "reviewed_role", "dispositions"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "kind": {"const": "fd2_string_review"},
+    "inventory_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "reviewed_role": {"const": "go_review"},
+    "dispositions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["player_visible", "internal_diagnostic", "development", "unknown"],
+      "properties": {
+        "player_visible": {"$ref": "#/$defs/group"},
+        "internal_diagnostic": {"$ref": "#/$defs/group"},
+        "development": {"$ref": "#/$defs/group"},
+        "unknown": {"$ref": "#/$defs/group"}
+      }
+    }
+  },
+  "$defs": {
+    "group": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rationale", "string_ids"],
+      "properties": {
+        "rationale": {"type": "string", "minLength": 1},
+        "string_ids": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._/-]*$"}
+        }
+      }
+    }
+  }
+}

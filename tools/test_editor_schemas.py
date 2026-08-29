@@ -44,6 +44,32 @@ def check_asset_refs(doc, asset_ids):
 
 
 class EditorSchemaTest(unittest.TestCase):
+    def test_diagnostic_string_inventory_summary(self):
+        full_schema = load("fd2-string-inventory.schema.json")
+        summary_schema = load("fd2-string-inventory-summary.schema.json")
+        summary = json.loads(
+            (ROOT / "docs" / "data" / "fd2-string-inventory-summary.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(full_schema["properties"]["kind"]["const"], "fd2_string_inventory")
+        self.assertEqual(summary_schema["properties"]["kind"]["const"], summary["kind"])
+        self.assertEqual(summary["locale"], "zh-Hant")
+        self.assertEqual(summary["status"], "diagnostic")
+        self.assertRegex(summary["inventory_sha256"], r"^[0-9a-f]{64}$")
+        self.assertLessEqual(summary["unique_text_count"], summary["entry_count"])
+        self.assertLessEqual(summary["variable_entry_count"], summary["entry_count"])
+        for dimension in ("by_id_status", "by_role", "by_confidence"):
+            self.assertEqual(sum(summary[dimension].values()), summary["entry_count"])
+        self.assertEqual(set(summary["by_role_unique_text"]), set(summary["by_role"]))
+
+        review_schema = load("fd2-string-review.schema.json")
+        review = json.loads((ROOT / "docs" / "data" / "fd2-string-review.json").read_text(encoding="utf-8"))
+        self.assertEqual(review_schema["properties"]["kind"]["const"], review["kind"])
+        self.assertEqual(review["inventory_sha256"], summary["inventory_sha256"])
+        counts = {name: len(group["string_ids"]) for name, group in review["dispositions"].items()}
+        self.assertEqual(counts, {"player_visible": 31, "internal_diagnostic": 42, "development": 3, "unknown": 4})
+        all_ids = [item for group in review["dispositions"].values() for item in group["string_ids"]]
+        self.assertEqual(len(all_ids), len(set(all_ids)))
+
     def test_four_schema_documents_and_extensions(self):
         docs = [
             ("fd2-campaign.schema.json", {"kind": "campaign", "nodes": []}),

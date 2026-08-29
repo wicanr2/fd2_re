@@ -197,6 +197,50 @@ schema inventory與prototype，不把任一建議寫進正式玩家預設。
 不變；移除主機字型後仍可重現相同量測。外部社群包若獲採用，另允許宣告base locale
 作開發期fallback，但正式官方包仍不得靠fallback掩蓋缺譯。
 
+#### 字串候選清冊（2026-08-29）
+
+> 狀態：**DIAGNOSTIC／可重跑；尚非正式翻譯鍵集合**
+
+`remake/cmd/fd2-string-inventory`已把第一階段盤點變成可重跑工具。它只掃描
+`remake/assets/story`、`scenarios`、`data`的受控文字欄位，以及正式
+`remake/cmd/fd2`中的直接繪製／提示脈絡；測試檔、研究註記、raw證據欄位與純內部
+錯誤不列入。完整輸出刻意不入版控，精簡結果見
+[`fd2-string-inventory-summary.json`](../data/fd2-string-inventory-summary.json)，重生命令為：
+
+```sh
+cd remake
+go run ./cmd/fd2-string-inventory -repo .. -output ../docs/data/fd2-string-inventory.json
+go run ./cmd/fd2-string-inventory -repo .. -summary -output ../docs/data/fd2-string-inventory-summary.json
+```
+
+目前固定結果為5,233筆候選：4,708筆來自JSON欄位、443筆屬直接介面脈絡、2筆由
+明確名稱函式辨識，另有80筆只因正式Go來源含非ASCII而列入人工審查。角色名與台詞
+等重複值仍逐來源保存，所以這不是5,233個互異譯文；所有ID也仍是來源位置型暫定ID，
+不能直接承諾給翻譯者。
+完整清冊的SHA-256由摘要綁定，兩次重生必須逐位元相同。
+
+去除完全相同文字後共有2,497個互異繁中字串，150筆候選含格式變數；這仍不能直接
+當成翻譯工作量，因為同一文字在不同角色可能需要不同語境，而角色名等實體文字則應
+合併到穩定catalog。80筆`go_review`已另以
+[`fd2-string-review.json`](../data/fd2-string-review.json)綁定同一清冊SHA-256：31筆確認
+玩家可見、42筆為內部診斷、3筆只供開發、4筆維持未知。Go測試要求四類不重複且完整
+覆蓋當前80筆；任何來源行移動或內容改變都會讓雜湊失配，禁止沿用過期人工判讀。
+
+已知限制與下一個收斂步驟：
+
+- JSON目前以目錄＋欄位白名單分類，仍須對各文件schema與JSON pointer再做路徑約束；
+  `field_rule`表示「符合欄位規則」，不是已證實玩家可見。
+- Go直接介面掃描會納入繪圖／渲染函式內的間接ASCII文字，但跨非繪圖函式再送往
+  UI的值仍可能漏列；本輪已人工分流80筆，後續新候選仍須重新審查，不能自動升格。
+- 同一物件有多個文字欄位時，不會把一個既有`string_id`錯套給全部欄位。正式遷移
+  必須分開例如speaker display name與line text的穩定鍵，並把相同實體名稱合併到
+  character／entity catalog，而不是依來源位置永久複製。
+- `%d`、`%s`、`%w`等格式變數已保存簽章；正式語言包validator仍須比較每個語系的
+  變數集合與型別，禁止譯文遺失或新增變數。
+
+因此本切片只關閉「來源候選可重跑盤點」，未把語言包schema、四語翻譯、字型覆蓋、
+排版或執行期切換提升為完成。
+
 ## 五、往返與相容性
 
 ### FDOTHER #13 讀檔欄位固定資產

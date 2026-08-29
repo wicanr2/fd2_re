@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/wicanr2/fd2_re/docs/data/schema/fd2-string-inventory-summary.schema.json",
+  "title": "FD2 diagnostic string inventory summary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "locale",
+    "status",
+    "generated_by",
+    "inventory_sha256",
+    "entry_count",
+    "unique_text_count",
+    "variable_entry_count",
+    "by_id_status",
+    "by_role",
+    "by_role_unique_text",
+    "by_confidence"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "kind": {"const": "fd2_string_inventory_summary"},
+    "locale": {"const": "zh-Hant"},
+    "status": {"const": "diagnostic"},
+    "generated_by": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool", "version"],
+      "properties": {
+        "tool": {"const": "fd2-string-inventory"},
+        "version": {"const": "1"}
+      }
+    },
+    "inventory_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "entry_count": {"type": "integer", "minimum": 0},
+    "unique_text_count": {"type": "integer", "minimum": 0},
+    "variable_entry_count": {"type": "integer", "minimum": 0},
+    "by_id_status": {"$ref": "#/$defs/counts"},
+    "by_role": {"$ref": "#/$defs/counts"},
+    "by_role_unique_text": {"$ref": "#/$defs/counts"},
+    "by_confidence": {"$ref": "#/$defs/counts"}
+  },
+  "$defs": {
+    "counts": {
+      "type": "object",
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    }
+  }
+}
