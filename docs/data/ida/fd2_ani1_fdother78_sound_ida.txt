@@ -1,0 +1,61 @@
+FD2 ANI #1／FDOTHER #78 companion sound（IDA Pro 9.4）
+=======================================================
+
+狀態：RE-CLOSED（已證實）
+日期：2026-08-29
+
+輸入與工具
+----------
+- FD2.EXE：357074 bytes
+  - MD5：b97caf2239a27a896069d03549d96e1e
+  - SHA-256：222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f
+- FDOTHER.DAT：3382481 bytes
+  - MD5：22f56e5027edc7c766ad34ca4e5aca93
+  - SHA-256：a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce
+- 工具：IDA Pro 9.4、專案授權 Docker image `fd2-ida-authorized-local:latest`
+- 位址空間：IDA linear address；原始名稱保持 `sub_20421`／`sub_25A96`
+- 原始遊戲與授權目錄均唯讀掛載；本檔只附加語意，不取代原始定位。
+
+caller 與資源載入
+-----------------
+- `sub_20421`：`0x20421..0x205B4`，ANI 播放器。
+- `0x2043F cmp [arg_0],1`；只有 ANI index 1 進入 `0x20446..0x20457`：
+  `push 0x4E`、`push 0`、`push "FDOTHER.DAT"`、`call sub_111BA`，回傳指標存入局部變數。
+- 此直接立即數證實 companion 是 FDOTHER resource 78；其他 ANI index 不載入它。
+
+原始 bytes（IDA linear address）
+--------------------------------
+```text
+0x2043F: 83 7c 24 28 01 75 15 6a 4e 6a 00 68 4d 1a 05 00
+         e8 66 0d ff ff 83 c4 0c 89 44 24 0c
+0x2053B: 83 7c 24 28 01 75 13 85 f6 75 0f 6a 01 56 ff 74
+         24 14 e8 44 55 00 00 83 c4 0c
+0x20586: 83 7c 24 0c 00 74 1c 6a 01 6a ff ff 74 24 14 e8
+         fc 54 00 00 83 c4 0c ff 74 24 0c e8 70 6e 01 00 83 c4 04
+0x25AC7: ff 35 e4 3e 05 00 e8 e3 39 01 00 83 c4 04 83 7c
+         24 14 ff 74 64 8b 44 24 14 c1 e0 02 03 44 24 10
+         8b 54 24 10 03 50 06 89 54 24 04 8b 50 06 8b 40 0a 29 d0 89 04
+```
+
+consumer 與生命週期
+-------------------
+- 每幀解碼後，`0x2053B cmp [arg_0],1` 且 `0x20542 test esi,esi`；只有 ANI #1
+  的第一幀（`esi == 0`）執行：
+  `push 1`、`push esi`、`push resource_ptr`、`call sub_25A96`。
+  因此播放 selector 固定為 0。
+- 動畫自然播完或可略過輸入離開後共用 `0x20586..0x205A6`：若資源指標非零，
+  以 selector `-1` 呼叫 `sub_25A96`，再 `free(resource_ptr)`。
+- `sub_25A96`：`0x25A96..0x25B45`。selector 非 `-1` 時，以巢狀目錄欄位
+  `[entry+6]` 作 sample 起點、`[entry+0xA]-[entry+6]` 作長度，交給音訊後端；
+  selector `-1` 只走停止既有 handle 的路徑。
+
+語意與限制
+----------
+- 已證實：FDOTHER #78 是 ANI #1 專用的 selector 型 PCM 音效庫；selector 0 在第一幀
+  啟動，動畫結束或略過時停止。
+- 已證實：#78 的畫面責任不存在；舊文件把它與白色泛光連結是錯誤斷言。
+- 已證實：資源是兩筆目錄項（一筆非空 sample、一筆 0-byte 尾哨兵）。
+- 未知：音效的自然語言名稱。正式資料只記 `ani1_frame0_companion`，不可猜成爆炸、
+  閃光或 logo 音。
+- hardware-spec approximation：分離 OGG 使用 unsigned 8-bit mono／11025 Hz 的既有
+  音訊契約；不宣稱 DOS DAC／PIT 逐週期一致。

@@ -9,7 +9,8 @@ FDOTHER.DAT 資源 #31 是巢狀 `LLLLLL` 容器(見 docs/knowledge-base/36-sfx-
 (見 docs/knowledge-base/36 待辦),沿用文件既有推定值 11025Hz ── 1995 年 AIL 遊戲常見預設值。
 
 第 10 輪新增 `--battle` 模式:戰鬥音效走另一批 FDOTHER.DAT 子資源；其中
-`#48/#49/#50/#51/#52/#53/#64/#78` 是動態候選池，`#82`與`#84..#88`及`#90`
+`#48/#49/#50/#51/#52/#53/#64` 是動態候選池，`#78` 是 ANI #1 第一幀固定 companion，
+`#82`與`#84..#88`及`#90`
 分別包含 command 0、3..8
 由 `0x2A6BD→0x26152/0x26795/0x274B0` 證實的 actor／handler 音效資源，`#95` 是 0x32999
 第 1 次呈現直接使用的固定資源；`#91..#94` 是 commands32..35 的
@@ -52,13 +53,14 @@ SEPARATED_SOURCE_SIZE = 3382481
 SEPARATED_SOURCE_MD5 = "22f56e5027edc7c766ad34ca4e5aca93"
 SEPARATED_SOURCE_SHA256 = "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
 SEPARATED_TOP_RESOURCE_COUNT = 104
-SEPARATED_RESOURCES = (31, 50, 53, 77, 80, 82, 83, 84, 85, 86, 87, 88, 90, 91, 92, 93, 94, 95)
+SEPARATED_RESOURCES = (31, 50, 53, 77, 78, 80, 82, 83, 84, 85, 86, 87, 88, 90, 91, 92, 93, 94, 95)
 # 值為巢狀 container 的非空 sample 數；directory 另有一筆 0-byte 尾哨兵。
 SEPARATED_SAMPLE_COUNTS = {
     31: 13,
     50: 5,
     53: 4,
     77: 4,
+    78: 1,
     80: 16,
     82: 2,
     83: 4,
@@ -311,6 +313,8 @@ def export_separated_pack(source: Path, output: Path) -> list[Path]:
                         "cue_evidence": (
                             "title_sub_1f894_selector"
                             if resource == 77
+                            else "ani1_frame0_companion"
+                            if resource == 78
                             else "sound_resource_no_confirmed_consumer"
                             if (resource == 50 and subresource not in (1, 4))
                             or (resource == 53 and subresource in (0, 1))
@@ -319,7 +323,7 @@ def export_separated_pack(source: Path, output: Path) -> list[Path]:
                         ),
                         "classification_evidence": (
                             "confirmed"
-                            if resource == 77
+                            if resource in (77, 78)
                             else "strong_inference"
                             if (resource == 50 and subresource not in (1, 4))
                             or (resource == 53 and subresource in (0, 1))

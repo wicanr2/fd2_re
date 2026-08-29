@@ -144,7 +144,7 @@ func loadWav(path string) []byte {
 // loadSeparatedCommandSoundBanks 載入已閉合的標題與戰鬥指令音效庫。
 // 它只消費分離素材包；任一音效庫缺漏或 OGG 解碼失敗時整批拒絕。
 func loadSeparatedCommandSoundBanks() (map[int]map[int][]byte, error) {
-	resources := []int{50, 53, 77, 80, 82, 83, 84, 85, 86, 87, 88, 90, 91, 92, 93, 94, 95}
+	resources := []int{50, 53, 77, 78, 80, 82, 83, 84, 85, 86, 87, 88, 90, 91, 92, 93, 94, 95}
 	out := make(map[int]map[int][]byte, len(resources))
 	for _, resource := range resources {
 		decoded, err := decodeSeparatedSoundBank(resource)
@@ -183,6 +183,7 @@ func (g *Game) installSeparatedCommandSounds(banks map[int]map[int][]byte) {
 	g.separatedCommandSFX = banks
 	g.sfxTitleMove = banks[77][2]
 	g.sfxTitleConfirm = banks[77][1]
+	g.sfxTitleANI1 = banks[78][0]
 	g.sfxCommand24Actor = banks[53][3]
 	g.sfxCommand24Target = banks[53][2]
 	g.sfxCommandModifier = banks[80][0]
@@ -264,6 +265,26 @@ func (g *Game) playPCMVoice(b []byte) {
 	player.Play()
 }
 
+// startTitleANI1Sound 建立 ANI #1 專用 voice；原版不把 #78 放入一般疊播池，
+// 而是在第一幀啟動並於動畫自然結束或略過時明確停止。
+func (g *Game) startTitleANI1Sound() {
+	g.stopTitleANI1Sound()
+	if g == nil || len(g.sfxTitleANI1) == 0 || audioCtx == nil ||
+		!g.currentNativeSystemOptions().SFXEnabled() || os.Getenv("FD2_MUTE") != "" || g.shotPath != "" {
+		return
+	}
+	player := audio.NewPlayerFromBytes(audioCtx, g.sfxTitleANI1)
+	g.titleANI1Voice = player
+	player.Play()
+}
+
+func (g *Game) stopTitleANI1Sound() {
+	if g != nil && g.titleANI1Voice != nil {
+		_ = g.titleANI1Voice.Close()
+		g.titleANI1Voice = nil
+	}
+}
+
 // stepSFXVoices 每幀回收已自然結束的短音效；仍在播放者保持獨立 voice，
 // 讓原版不同 handle 的疊播不會被後一個 sample 截斷。
 func (g *Game) stepSFXVoices() {
@@ -295,6 +316,7 @@ func (g *Game) closeAudioPlayers() {
 		_ = g.bgm.Close()
 		g.bgm = nil
 	}
+	g.stopTitleANI1Sound()
 	for _, voice := range g.sfxVoices {
 		if voice != nil {
 			_ = voice.Close()

@@ -229,8 +229,10 @@ loop: mov ah,0x2c; int 0x21; dec esi; jne loop   ; INT21h AH=2Ch(取系統時間
 
 - **`0x020421` 內建(P1==1 才觸發)**:載入 FDOTHER.DAT `#0x4e`(78)→ frame0 呼叫 `0x25a96`
   (SFX/音效觸發,doc23 §3 同一函式用於選單游標音)→ 播放結束後停止(`0x25a96(...,-1,...)`)並釋放。
-  **只有 index==1(即 logo「2」那段)符合此條件**——呼應 doc23 §2.4①觀察到的
-  「2縮放進場伴隨白色泛光 bloom」:很可能就是這個 FDOTHER #78 companion 資源驅動的閃光/音效。
+  **只有 index==1(即 logo「2」那段)符合此條件**。2026-08-29 由 IDA 直接資料流勘誤：
+  #78 是一筆非空 sample 的 PCM 音效庫，沒有畫面 consumer；先前把它與白色泛光連結的說法錯誤，
+  已撤回。泛光屬 ANI／外層 indexed palette 畫面路徑，不能由 #78 推導。主證據見
+  [`fd2_ani1_fdother78_sound_ida.txt`](../data/ida/fd2_ani1_fdother78_sound_ida.txt)。
 - **wrapper `0x1f81e` 另一套(獨立於上面)**:第 3 參數 C(≠-1 時)當 FDOTHER.DAT 索引直接
   `load(filename,oldbuf,index=C)` 進快取 `[0x53a65]`,與 P1/P2/P3 轉送給 `0x020421` 無關。
   title_seq 用它在特定 esi 觸發點換底圖/道具貼圖(見 §10.5)。

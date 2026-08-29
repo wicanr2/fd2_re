@@ -20,6 +20,7 @@ var separatedSoundCounts = map[int]int{
 	50: 5,
 	53: 4,
 	77: 4,
+	78: 1,
 	80: 16,
 	82: 2,
 	83: 4,

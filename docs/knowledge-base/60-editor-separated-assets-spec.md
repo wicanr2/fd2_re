@@ -1,7 +1,7 @@
 # 60 — 編輯器資料契約與分離素材包規格
 
 > 狀態：**READY（第一階段）**  
-> 日期：2026-08-28  
+> 日期：2026-08-29
 > 範圍：先建立可驗證契約、來源驗證、素材清冊及逐家族遷移；不在本規格中猜測
 > 尚未證實的 handler／renderer 語意，也不授權散布原版或轉製素材。
 
@@ -119,10 +119,10 @@ schema 的診斷，不是 142 個 decoder 缺口：至少包含 FDSHAP 34 筆 co
 #### 2026-08-29 實作與驗收
 
 manifest schema version 2、generator version 3 與 validator 已實作上述契約。真實
-固定來源重生後現有 39,818 筆 asset，其中 38,794 exported、1,005
-intentionally raw、19 blocked；新增的 1,005 筆 source-resource ledger 分為：899
-`standardized`、11 `confirmed_empty`、0 `blocked`、95 `unknown`。11 筆空項均由
-raw 長度零直接證明；95 筆 unknown 精確分布為 FDFIELD 79、FDMUS 5、FDOTHER 11，
+固定來源重生後現有 39,820 筆 asset，其中 38,796 exported、1,005
+intentionally raw、19 blocked；新增的 1,005 筆 source-resource ledger 分為：900
+`standardized`、11 `confirmed_empty`、0 `blocked`、94 `unknown`。11 筆空項均由
+raw 長度零直接證明；94 筆 unknown 精確分布為 FDFIELD 79、FDMUS 5、FDOTHER 10，
 不得再引用舊的 161／142 診斷數字。
 
 可版控摘要見
@@ -131,10 +131,10 @@ raw 長度零直接證明；95 筆 unknown 精確分布為 FDFIELD 79、FDMUS 5�
 index。validator 會重算完整 ledger 與摘要；漏列 raw、重複 resource、把 raw 冒充
 standard output、偽造複合 metadata 關聯、不存在的音樂 catalog track 或摘要漂移皆
 拒絕。加入 FDFIELD runtime bridge 後，28 項相關 generator／validator／catalog／schema
-測試與真實 39,818 筆 manifest 驗證已在一次性無網路 Docker 容器通過。
+測試與真實 39,820 筆 manifest 驗證已在一次性無網路 Docker 容器通過。
 
-這項成果達 `DATA-READY` 的「覆蓋清冊」層，但不把 95 筆 unknown 自動解讀成
-95 個玩家功能缺口。下一批須先用 production consumer 清冊交叉比對；FDFIELD #69
+這項成果達 `DATA-READY` 的「覆蓋清冊」層，但不把 94 筆 unknown 自動解讀成
+94 個玩家功能缺口。下一批須先用 production consumer 清冊交叉比對；FDFIELD #69
 已由受控 runtime catalog 回連，不再列入 unknown，也不重做已閉合 decoder。
 
 ### 三之二、FDFIELD runtime catalog bridge
@@ -813,8 +813,8 @@ render，不得把兩種狀態相加冒充pack內OGG。乾淨clone沒有render�
 實作結果：`music_catalog_contract.py`成為manifest產生器與驗證器共用的外部音樂契約；
 產生器新增明確`--music-assets-root`，驗證器新增`--runtime-assets`。五項bridge測試涵蓋
 無複製成功路徑、缺外部root、render漂移、catalog hash漂移及路徑穿越，並與原有九項manifest／
-catalog測試共同通過。現行實檔manifest已重生並完整驗證：pack本身現為39,818筆
-（38,794 exported、1,005 intentionally raw、19 blocked），另有一份已驗證外部bridge：
+catalog測試共同通過。現行實檔manifest已重生並完整驗證：pack本身現為39,820筆
+（38,796 exported、1,005 intentionally raw、19 blocked），另有一份已驗證外部bridge：
 2個profile、15個track、30個render；catalog為12,719 bytes、SHA-256
 `8f2d2835971861e5fa97c8f33536022b53209b42d53bdd9fbfa062de9b880311`。
 
@@ -1757,3 +1757,17 @@ frame 重複 ID、對話 mouth animation 及素材 manifest 的 `asset_id` 引�
 資料自動轉入，也尚無未知欄位 round-trip writer；因此狀態是 `SPEC-READY`，不是完整
 編輯器或既有 JSON 已全部相容。下一批須提供 legacy importer 診斷、canonical writer
 與 load→write→reload 測試，才可提升為 `DATA-READY`。
+
+### FDOTHER #78：ANI #1 companion 音效（READY）
+
+- 原版證據：[`fd2_ani1_fdother78_sound_ida.txt`](../data/ida/fd2_ani1_fdother78_sound_ida.txt)。
+- typed data：`sfx/FDOTHER_078/resource.json` 必須是 schema 2、兩筆目錄項、恰好一筆
+  非空 `sample_000.ogg` 與 index 1 的 0-byte 尾哨兵；來源雜湊固定為參考版 FDOTHER.DAT。
+- cue：只允許 `ani1_frame0_companion`。ANI #1 第一幀啟動 selector 0；自然結束或略過
+  ANI #1 時停止專用 voice。不得把它分類成畫面泛光或一般戰鬥音效。
+- runtime：標題素材預檢時整庫解碼；缺 metadata、OGG、來源契約或 sample 時失敗即關閉，
+  不回退原始 archive。音效設定關閉及截圖模式維持靜音。
+- 時序：11025 Hz 只標記硬體規格近似（hardware-spec approximation），不追 DOS DAC／PIT
+  逐週期一致。
+- 驗收：exporter 形狀測試、嚴格 loader 測試、標題排程觸發／停止測試，以及正式分離包
+  無原始 archive 解碼抽測。

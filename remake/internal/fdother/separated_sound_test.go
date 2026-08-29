@@ -71,6 +71,17 @@ func TestLoadSeparatedTitleSoundBankContract(t *testing.T) {
 	}
 }
 
+func TestLoadSeparatedANI1CompanionSoundContract(t *testing.T) {
+	root := writeSeparatedSoundFixture(t, 78)
+	bank, err := LoadSeparatedSoundBank(root, 78)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if bank.Resource != 78 || len(bank.Encoded) != 1 || string(bank.Encoded[0][:4]) != "OggS" {
+		t.Fatalf("bank=%+v", bank)
+	}
+}
+
 func TestLoadSeparatedSoundBankFailsClosed(t *testing.T) {
 	root := writeSeparatedSoundFixture(t, 82)
 	if err := os.Remove(filepath.Join(root, "FDOTHER_082", "sample_001.ogg")); err != nil {

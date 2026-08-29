@@ -88,6 +88,25 @@ func TestTitleCutAdvanceRestoresNativeScrollBoundary(t *testing.T) {
 	}
 }
 
+func TestTitleCutAdvanceStopsANI1CompanionVoice(t *testing.T) {
+	index := -1
+	for i, step := range cutScript {
+		if step.kind == "afm" && step.res == 1 {
+			index = i
+			break
+		}
+	}
+	if index < 0 {
+		t.Fatal("ANI #1 cut step missing")
+	}
+	voice := &fakeSFXVoice{playing: true}
+	g := &Game{titlePhase: "cutscene", cutIdx: index, titleANI1Voice: voice}
+	g.cutAdvance()
+	if !voice.closed || g.titleANI1Voice != nil || g.cutIdx != index+1 {
+		t.Fatalf("ANI #1 advance closed=%v voice=%v idx=%d", voice.closed, g.titleANI1Voice, g.cutIdx)
+	}
+}
+
 func TestTitleScrollPalettePulseMatchesNativeRowWindows(t *testing.T) {
 	wantRows := make(map[int]bool)
 	for _, trigger := range nativeTitlePalettePulseRows {

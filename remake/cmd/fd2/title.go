@@ -515,6 +515,12 @@ func (g *Game) enterTitleMenu() {
 
 // cutAdvance 前進到下一步驟(重置該步狀態);全部播完 → 進選單。
 func (g *Game) cutAdvance() {
+	if g.cutIdx >= 0 && g.cutIdx < len(cutScript) {
+		step := cutScript[g.cutIdx]
+		if step.kind == "afm" && step.res == 1 {
+			g.stopTitleANI1Sound()
+		}
+	}
 	g.cutIdx++
 	g.cutCur = nil
 	g.cutFrame, g.cutTick = 0, 0
@@ -627,6 +633,9 @@ func (g *Game) titleUpdate() bool {
 			if g.cutCur == nil { // 解碼失敗 → 跳過此幕(不整段中止)
 				g.cutAdvance()
 				return true
+			}
+			if step.res == 1 {
+				g.startTitleANI1Sound()
 			}
 		}
 		g.cutTick++

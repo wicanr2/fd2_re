@@ -48,6 +48,11 @@ class SeparatedSFXFormatTests(unittest.TestCase):
         self.assertEqual(len(banks[77]), 4)
         self.assertEqual(banks[77][2], bytes([77, 2, 0x80]))
 
+    def test_ani1_companion_has_one_sample_and_empty_tail(self):
+        banks = export_sfx._read_separated_resources(self.make_outer())
+        self.assertEqual(len(banks[78]), 1)
+        self.assertEqual(banks[78][0], bytes([78, 0, 0x80]))
+
     def test_nonempty_tail_is_rejected(self):
         resource = 82
         count = export_sfx.SEPARATED_SAMPLE_COUNTS[resource]
