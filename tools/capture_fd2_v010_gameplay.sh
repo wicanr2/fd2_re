@@ -44,7 +44,7 @@ for attempt in $(seq 1 50); do
 done
 
 ffmpeg -hide_banner -loglevel error -y \
-  -f x11grab -framerate 30 -video_size 1280x800 -i :95 -t 40 \
+  -f x11grab -framerate 30 -video_size 1280x800 -i :95 -t 55 \
   -c:v libx264 -preset medium -crf 18 -pix_fmt yuv420p "/out/$1" &
 record_pid=$!
 

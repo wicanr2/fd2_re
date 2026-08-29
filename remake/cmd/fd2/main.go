@@ -4137,10 +4137,8 @@ func reorderScenarioParty(sc *battle.Scenario, joinOrder []int) error {
 
 // focusOnParty 開局/戰鬥重開後把游標(=鏡頭中心)移到我方主角隊部署格的重心。
 // 原鏡頭預設停在 (0,0),不對準的話玩家開局完全看不到主角隊(playfix #3)。
-// 主角隊為直接定位(doc 25 §7.5.1,無進場動畫,見 event.go spawn_party 註解),此函式純粹是
-// 「鏡頭對準部隊」的合理預設,不是重現原版鏡頭運鏡（原版 0x3231b 以 0x13185/0x135dd
-// 平移攝影機，再由 0x32999 對新增群組做索引轉場；兩者都不是單位行走，且未對主角隊做；
-// DOSBox 複驗全序章無任何單位行走動畫）。
+// 現有影片證據支持第一關開場含多幀人物走位，但確切起點、路徑與時序尚未閉合；
+// 本函式只負責戰鬥控制權交接時把鏡頭對準已物化的我方隊伍，不宣稱重現該段演出。
 func (g *Game) focusOnParty() {
 	if g.st == nil {
 		return
@@ -8391,11 +8389,12 @@ func (g *Game) actionOverlayAnchor(u *battle.Unit) (x, y, scale float64) {
 		return (float64(cursor.CursorX*g.m.TileW) - g.camX) * scale,
 			(float64(cursor.CursorY*g.m.TileH) - g.camY) * scale, scale
 	}
-	if u == nil {
-		return 0, 0, scale
+	anchorX, anchorY := g.curX, g.curY
+	if u != nil && !g.nativeSystemCursorOverlay {
+		anchorX, anchorY = u.X, u.Y
 	}
-	return (float64(u.X*g.m.TileW) - g.camX) * scale,
-		(float64(u.Y*g.m.TileH) - g.camY) * scale, scale
+	return (float64(anchorX*g.m.TileW) - g.camX) * scale,
+		(float64(anchorY*g.m.TileH) - g.camY) * scale, scale
 }
 
 func (g *Game) actionOverlayAvailability() [4]int {

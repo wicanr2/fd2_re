@@ -876,3 +876,17 @@ native anchor `(336,144)`，但不替尚未閉合的 icon availability／command
 
 完整輸入、雜湊、限制與 helper 來源見
 [`native-continue-current-runtime-remake-e2.json`](../data/ui-traces/native-continue-current-runtime-remake-e2.json)。
+
+### 2026-08-30：第一關推廣片選單錨點勘誤（RUNTIME-E1）
+
+舊 v0.1.0 實機錄影揭露非原生畫面、空游標開啟系統選單時，
+`actionOverlayAnchor(nil)` 會退回 `(0,0)`，使四格選單固定出現在左上角。依既有
+`0x1741c` 游標來源契約，後備畫面現改用目前 `g.curX/g.curY`；選取單位路徑仍用
+單位格，原生畫面仍由 `NativeMapViewState` 消費。Docker 回歸與重新錄影確認選單
+出現在目前游標附近。證據、規格與限制見
+[`ch01-promo-menu-correction-20260830.json`](../data/ui-traces/ch01-promo-menu-correction-20260830.json)
+及 [`promo-ch01-dosbox-compare-spec.md`](../../docs/promo-ch01-dosbox-compare-spec.md)。
+
+同批推廣片加入 DOSBox 原版與重製版第一關動態並排；兩側不是同一動畫 tick，故
+明確標成「相近狀態比較」，不提升為逐幀或逐像素 E2。現有影片模板仍支持第一關
+四名角色欄序 `7,8,10,11`，因此本批沒有因舊錄影觀感猜測性改寫部署格。

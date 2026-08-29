@@ -766,3 +766,13 @@ standardized、11 confirmed-empty、0 blocked、93 unknown，其中FDOTHER unkno
 Docker 內重跑第21、26、28章三條會使用原版 oracle 的戰後／對話測試均通過；另建置正式
 `cmd/fd2` binary並確認不含上述兩個環境變數字串。這只關閉正式 binary 的 locator 邊界；
 source-oracle仍保留原版 archive adapter作獨立比較，不把它們誤列為 runtime缺口。
+
+## 二十、2026-08-30：第一關空游標選單錨點（RUNTIME-E1）
+
+本切片沒有重開已閉合的 `0x1741c`／FDOTHER #2 反組譯；既有已證實契約已足以
+裁決重製端缺陷。非原生畫面路徑在 `u=nil` 時曾回傳 `(0,0)`，與游標來源契約
+直接矛盾；正式 runtime 現改以目前游標格計算後備錨點，並保留原生畫面與選取
+單位兩條既有路徑。證據與 READY 規格見
+[`ch01-promo-menu-correction-20260830.json`](../data/ui-traces/ch01-promo-menu-correction-20260830.json)
+及 [`promo-ch01-dosbox-compare-spec.md`](../../docs/promo-ch01-dosbox-compare-spec.md)。
+此項只提升重製 `RUNTIME-E1`，不改第一關部署資料，也不把相近狀態影片提升為 E2。

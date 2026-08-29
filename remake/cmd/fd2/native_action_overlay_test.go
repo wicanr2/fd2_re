@@ -143,6 +143,21 @@ func TestNativeActionOverlayAnchorUsesPresentationScale(t *testing.T) {
 	}
 }
 
+func TestSystemActionOverlayFallbackAnchorsToActiveCursor(t *testing.T) {
+	g := &Game{
+		m:                         &MapData{TileW: 24, TileH: 24},
+		curX:                      9,
+		curY:                      7,
+		camX:                      48,
+		camY:                      72,
+		nativeSystemCursorOverlay: true,
+	}
+	x, y, scale := g.actionOverlayAnchor(nil)
+	if scale != 1 || x != 168 || y != 96 {
+		t.Fatalf("system cursor fallback anchor=(%.0f,%.0f) scale=%.0f, want (168,96) scale=1", x, y, scale)
+	}
+}
+
 func TestActionOverlayLifecyclePresentsAllOpeningAndClosingFrames(t *testing.T) {
 	g := &Game{}
 	g.beginActionOverlayOpen(2)

@@ -1,11 +1,12 @@
 {
   "schema_version": 1,
   "recorded_at": "2026-08-30",
-  "engine_commit": "a98e7cec736b482af4f438b222a8b5f13bb6ff84",
+  "engine_base_commit": "bb8b0be919ec5d0dd85df46cef655e85f99dda70",
+  "runtime_correction": "本收據同批包含空游標系統選單錨點修正；最終提交由版本歷史追蹤。",
   "evidence_level": "RUNTIME-E1",
   "runtime_input": {
     "path": "remake/packaging/dist/local-full/fd2-linux-x86_64-local-full/FD2-x86_64.AppImage",
-    "sha256": "7cd1604195029c5009c0dd3a6d652521db5c08eef103f3c3071da0b50f67488a",
+    "sha256": "6c91b61e9dead0e7bc99dea5692366bf21d5f0e802aca03891a8ed34203909bf",
     "asset_policy": "local-full read-only; not distributed",
     "entry": "FD2_TITLE=1 FD2_NOCUT=1; normal keyboard input; no direct campaign node"
   },
@@ -19,34 +20,40 @@
       "Right", "Down", "Enter"
     ],
     "output": "dist/promo/fd2-v0.1.0-live-gameplay.mp4",
-    "sha256": "6e4a4562f6edf83fe7caf8ff58d9fcc56a3cec928c2c61c28d27a8f64d6c2561"
+    "sha256": "c3fb3c0c07ebb8f05613bae712eefe9a37227452b4da2f0a62d674430b832d10"
   },
   "composition": {
     "script": "tools/build_fd2_v010_promo.sh",
     "original_dos_clip_sha256": "47409bd19856f0aa2ebc2424c05e021b4e92f0a7c0d6203e081407168985cb64",
     "comparison_image_sha256": "3b3ab913fd0630ce37a80f78476edba0bcacb8e0636cc919dc90e7a09ddd1174",
+    "dynamic_comparison": {
+      "source": "video/fd2-ch1.mp4",
+      "source_sha256": "93e02bc89205a68a49221931462927c9e447bfdc1e2903e37ceaad76f82f5972",
+      "label": "第一關動態對拍（相近狀態比較）",
+      "output": "dist/promo/fd2-v0.1.0-ch01-dosbox-vs-remake.mp4",
+      "sha256": "a5e9b98b167d135a7167def90a07aa1450a700db18e158f7180f65f432f96e3c"
+    },
     "music": "non-original neutral synthesized two-tone bed",
     "output": "dist/promo/fd2-v0.1.0-promo.mp4",
-    "sha256": "7e1186daca3ecd71642c0e3ad9b4f10cbb8d31aca6e2df55f63d203b4cb7becb"
+    "sha256": "3a0510f43b69f9077e17e9fab5651e0f437bcc792df82ad5120b2a528ddebf69"
   },
   "verification": {
-    "duration_seconds": 71.5,
+    "duration_seconds": 80.5,
     "video": "H.264 1280x720 30fps",
     "audio": "AAC stereo 48000Hz",
-    "mean_volume_db": -34.4,
+    "mean_volume_db": -34.3,
     "max_volume_db": -28.6,
     "long_black_segments": 0,
     "long_silence_segments": 0,
     "visual_receipts": [
-      "dist/promo/fd2-v0.1.0-contact-sheet.png",
-      "dist/promo/fd2-v0.1.0-locales-contact.png",
-      "dist/promo/fd2-v0.1.0-locale-tail.png"
+      "dist/promo/fd2-v0.1.0-contact-sheet-corrected.png"
     ],
     "locale_banners_seen": ["简体中文", "日本語", "English", "繁體中文"]
   },
   "limits": [
-    "The promo demonstrates a normal title-to-ch01 runtime path, not a full campaign playthrough.",
-    "Four official packs currently cover the connected localization slice, not every legacy line.",
-    "Static cards intentionally trigger freeze detection and are not runtime stalls."
+    "推廣片展示正常標題到第一關的執行期路徑，不代表完整戰役通關。",
+    "四個官方語言包目前只涵蓋已接通的在地化切片，不代表所有原版文字均已翻譯。",
+    "DOSBox 與重製版的動態對拍是相近狀態比較，不宣稱逐幀或逐像素一致。",
+    "靜態資訊卡是刻意設計，不是執行期停滯。"
   ]
 }

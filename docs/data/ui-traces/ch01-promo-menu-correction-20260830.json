@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "status": "CONFORMED",
+  "scope": "第一關推廣片的隊形與空游標系統選單錨點修正",
+  "evidence": {
+    "original_executable": {
+      "path": "org_game/炎龍騎士團/FLAME2/FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "menu_origin": {
+      "level": "已證實",
+      "source": "57-ui-evidence-matrix.md UI-03；FD2.EXE 線性位址 0x1741c；FDOTHER #2",
+      "claim": "四格選單以可見地圖游標為中心；原生與後備畫面都不得在空游標路徑退回畫面左上角。"
+    },
+    "party_columns": {
+      "level": "已證實",
+      "source": "46-ch1-opening-timeline.md 影片模板匹配與 ch01.json",
+      "claim": "索爾、亞雷斯、悠妮、蓋亞的部署欄依序為 7、8、10、11。"
+    },
+    "party_rows": {
+      "level": "強推論",
+      "source": "46-ch1-opening-timeline.md；現行 ch01.json",
+      "claim": "目前列座標與相對隊形可保留，但尚不足以宣稱完整開場走位逐幀一致。"
+    }
+  },
+  "runtime_gap": {
+    "confirmed": "actionOverlayAnchor 在非原生畫面、u=nil 的空游標系統選單路徑回傳 (0,0)。",
+    "non_gap": "原生畫面互動游標由 MoveNativeMapCursor 同步 NativeMapViewState、g.curX/g.curY 與相機。"
+  },
+  "acceptance": [
+    "空游標系統選單在原生及後備畫面都錨定目前游標格。",
+    "選取單位的後備選單仍錨定該單位，不改變既有原生畫面契約。",
+    "推廣片停止使用無界連按 Enter 造成的不受控第一關狀態。",
+    "推廣片包含標示清楚的 DOSBox 原版與重製版動態對拍。"
+  ],
+  "limits": [
+    "本切片不改 ch01.json 部署格。",
+    "動態對拍若無法鎖定同一幀，必須標示為相近狀態，不可宣稱逐像素一致。"
+  ]
+}
