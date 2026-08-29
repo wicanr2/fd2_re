@@ -60,6 +60,8 @@ jobs:
           cp -r assets/story/.    "$APP/Contents/Resources/assets/story/"
           cp -r assets/locales/.  "$APP/Contents/Resources/assets/locales/"
           cp assets/spells.json   "$APP/Contents/Resources/assets/spells.json"
+          cp ../LICENSE           "$APP/Contents/Resources/LICENSE"
+          test -f "$APP/Contents/Resources/LICENSE"
           ICONSET=packaging/dist/fd2.iconset
           mkdir -p "$ICONSET"
           for size in 16 32 128 256 512; do
@@ -98,6 +100,7 @@ jobs:
           tar czf FD2-mac.tar.gz FD2.app
           shasum -a 256 FD2-mac.dmg FD2-mac.tar.gz > FD2-macos-universal.sha256
           shasum -a 256 -c FD2-macos-universal.sha256
+          tar tzf FD2-mac.tar.gz | grep -q 'FD2.app/Contents/Resources/LICENSE'
 
       - uses: actions/upload-artifact@v4
         with:

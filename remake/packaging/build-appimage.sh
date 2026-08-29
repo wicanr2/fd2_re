@@ -18,7 +18,7 @@ docker run --rm --network none \
   --memory 3g --cpus 2 --pids-limit 384 \
   --user "$(id -u):$(id -g)" \
   -e HOME=/tmp/home -e GOCACHE=/tmp/go-cache -e ARCH=x86_64 \
-  -v "$REMAKE_ROOT":/src -w /src \
+  -v "$REMAKE_ROOT":/src -v "$REMAKE_ROOT/..":/repo:ro -w /src \
   fd2-build-appimage:latest bash -euo pipefail -c '
     dist=/src/packaging/dist
     appdir="$dist/AppDir"
@@ -38,6 +38,7 @@ docker run --rm --network none \
     install -m 0644 packaging/fd2.png "$appdir/usr/share/icons/hicolor/256x256/apps/fd2.png"
     install -m 0644 packaging/fd2.appdata.xml \
       "$appdir/usr/share/metainfo/fd2.appdata.xml"
+    install -m 0644 /repo/LICENSE "$appdir/LICENSE"
     python3 -c "import xml.etree.ElementTree as ET; ET.parse(\"$appdir/usr/share/metainfo/fd2.appdata.xml\")"
     cp -R assets/scenarios/. "$appdir/assets/scenarios/"
     cp -R assets/story/. "$appdir/assets/story/"
@@ -51,6 +52,7 @@ docker run --rm --network none \
     /opt/appimage-tools/appimagetool.AppImage --appimage-extract-and-run \
       --runtime-file /opt/appimage-tools/runtime-x86_64 \
       "$appdir" "$dist/FD2-x86_64.AppImage"
+    test -f "$appdir/LICENSE"
     file "$dist/FD2-x86_64.AppImage" | tee "$dist/FD2-x86_64.AppImage.file.txt"
     cd "$dist"
     sha256sum FD2-x86_64.AppImage | tee FD2-x86_64.AppImage.sha256

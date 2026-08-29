@@ -36,6 +36,8 @@ jobs:
           Copy-Item -Recurse -Force "assets/story/*" "$dist/assets/story/"
           Copy-Item -Recurse -Force "assets/locales/*" "$dist/assets/locales/"
           Copy-Item -Force "assets/spells.json" "$dist/assets/spells.json"
+          Copy-Item -Force "../LICENSE" "$dist/LICENSE"
+          if (-not (Test-Path "$dist/LICENSE")) { throw "Windows 封包缺少 LICENSE" }
 
       - name: 從空白工作目錄執行具型別封包檢查
         run: |
@@ -73,6 +75,15 @@ jobs:
           $actual = (Get-FileHash -Algorithm SHA256 $archive).Hash.ToLowerInvariant()
           if ($recorded -ne $actual) {
             throw "Windows ZIP SHA-256 複驗失敗：recorded=$recorded actual=$actual"
+          }
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $zip = [System.IO.Compression.ZipFile]::OpenRead((Resolve-Path $archive))
+          try {
+            if (-not ($zip.Entries | Where-Object { $_.FullName -eq "LICENSE" })) {
+              throw "Windows ZIP 內缺少 LICENSE"
+            }
+          } finally {
+            $zip.Dispose()
           }
           Get-Content $manifest
 

@@ -1,5 +1,11 @@
 # 41 — 三平台打包(AppImage / Windows / macOS)
 
+> **2026-08-30 v0.1.0 發行前授權勘誤：**獨立解包驗證發現前三套候選雖由
+> 儲存庫採 PolyForm Noncommercial 1.0.0，封包本身卻漏帶 `LICENSE`，因此全部
+> 作廢且未發布。AppImage、Windows ZIP 與 macOS app bundle 現在分別安裝授權
+> 正文，原生工作流程也會在上傳前從實際 AppImage／ZIP／tar.gz 反查；缺件即
+> 失敗。只有重建後通過這道閘門的附件可進 GitHub Release。
+
 對應 `remake/`(Go/Ebiten)的散布版本。前置是「資產路徑解析層」——沒有這層,唯讀掛載
 (AppImage squashfs)內既讀不到 `assets/`、也寫不了存檔,詳見 `38-editor-design.md` §6.5 的設計討論;
 本篇是那份設計的**實作紀錄 + 驗證證據**。

@@ -43,7 +43,14 @@ jobs:
 
       - name: 驗證雜湊
         working-directory: remake/packaging/dist
-        run: sha256sum -c FD2-x86_64.AppImage.sha256
+        run: |
+          sha256sum -c FD2-x86_64.AppImage.sha256
+          empty="$(mktemp -d)"
+          trap 'rm -rf "$empty"' EXIT
+          cd "$empty"
+          "$GITHUB_WORKSPACE/remake/packaging/dist/FD2-x86_64.AppImage" \
+            --appimage-extract >/dev/null
+          test -f squashfs-root/LICENSE
 
       - uses: actions/upload-artifact@v4
         with:

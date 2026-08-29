@@ -14,7 +14,7 @@ docker run --rm --network none \
   --memory 3g --cpus 2 --pids-limit 384 \
   --user "$(id -u):$(id -g)" \
   -e HOME=/tmp/home -e GOCACHE=/tmp/go-cache \
-  -v "$REMAKE_ROOT":/src -w /src \
+  -v "$REMAKE_ROOT":/src -v "$REMAKE_ROOT/..":/repo:ro -w /src \
   fd2-build-mingw:latest bash -euo pipefail -c '
     dist=packaging/dist/windows
     archive=packaging/dist/fd2-windows-x86_64.zip
@@ -30,6 +30,8 @@ docker run --rm --network none \
     cp -R assets/story/. "$dist/assets/story/"
     cp -R assets/locales/. "$dist/assets/locales/"
     cp assets/spells.json "$dist/assets/spells.json"
+    install -m 0644 /repo/LICENSE "$dist/LICENSE"
+    test -f "$dist/LICENSE"
     file "$dist/fd2.exe" | tee packaging/dist/fd2-windows-x86_64.file.txt
     (cd "$dist" && zip -qr "../fd2-windows-x86_64.zip" .)
     sha256sum "$archive" | tee packaging/dist/fd2-windows-x86_64.sha256
