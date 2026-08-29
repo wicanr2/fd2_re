@@ -43,6 +43,7 @@ type separatedFrameBankDocument struct {
 const nativeEvent61FrameCount = 59
 const nativeEndingPrefixFrameCount = 111
 const nativeCh20SkyKeyFrameCount = 101
+const nativePendingCode1FrameCount = 2
 
 type separatedFrameBankContract struct {
 	label      string
@@ -90,6 +91,26 @@ func LoadSeparatedCh20SkyKeyFrames(root string) ([]Frame, error) {
 		rawSHA256:  "53f120fa4b1fab74c6b3998ec3ef8a9a2363461980ad38a7ffef2400e79b0c4d",
 		frameCount: nativeCh20SkyKeyFrameCount,
 		geometry:   validCh20SkyKeyGeometry,
+	})
+}
+
+// LoadSeparatedPendingCode1Frames loads the fixed FDOTHER #79 frame table
+// consumed by sub_22E5C. High-level scene naming remains intentionally absent.
+func LoadSeparatedPendingCode1Frames(root string) ([]Frame, error) {
+	return loadSeparatedFrameBank(root, separatedFrameBankContract{
+		label: "pending code 1", assetID: "animation/FDOTHER_079/pending_code1", resource: 79,
+		rawSize: 6801, rawMD5: "5f7eeeeff593ad7a067af167ef92670e",
+		rawSHA256:  "34bb99917cdfd6b268674d7c1cf201cc3749cf3a58c574161dc5d37a36781373",
+		frameCount: nativePendingCode1FrameCount,
+		geometry: func(entry separatedFrameBankEntry) bool {
+			want := [][4]int{{69, 61, 181, 75}, {130, 141, 55, 8}}
+			if entry.Index < 0 || entry.Index >= len(want) {
+				return false
+			}
+			geometry := want[entry.Index]
+			return entry.X == geometry[0] && entry.Y == geometry[1] &&
+				entry.Width == geometry[2] && entry.Height == geometry[3]
+		},
 	})
 }
 

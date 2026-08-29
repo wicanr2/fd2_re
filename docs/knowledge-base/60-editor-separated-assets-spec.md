@@ -119,10 +119,10 @@ schema 的診斷，不是 142 個 decoder 缺口：至少包含 FDSHAP 34 筆 co
 #### 2026-08-29 實作與驗收
 
 manifest schema version 2、generator version 3 與 validator 已實作上述契約。真實
-固定來源重生後現有 39,820 筆 asset，其中 38,796 exported、1,005
-intentionally raw、19 blocked；新增的 1,005 筆 source-resource ledger 分為：900
-`standardized`、11 `confirmed_empty`、0 `blocked`、94 `unknown`。11 筆空項均由
-raw 長度零直接證明；94 筆 unknown 精確分布為 FDFIELD 79、FDMUS 5、FDOTHER 10，
+固定來源重生後現有 39,825 筆 asset，其中 38,801 exported、1,005
+intentionally raw、19 blocked；新增的 1,005 筆 source-resource ledger 分為：901
+`standardized`、11 `confirmed_empty`、0 `blocked`、93 `unknown`。11 筆空項均由
+raw 長度零直接證明；93 筆 unknown 精確分布為 FDFIELD 79、FDMUS 5、FDOTHER 9，
 不得再引用舊的 161／142 診斷數字。
 
 可版控摘要見
@@ -131,10 +131,10 @@ raw 長度零直接證明；94 筆 unknown 精確分布為 FDFIELD 79、FDMUS 5�
 index。validator 會重算完整 ledger 與摘要；漏列 raw、重複 resource、把 raw 冒充
 standard output、偽造複合 metadata 關聯、不存在的音樂 catalog track 或摘要漂移皆
 拒絕。加入 FDFIELD runtime bridge 後，28 項相關 generator／validator／catalog／schema
-測試與真實 39,820 筆 manifest 驗證已在一次性無網路 Docker 容器通過。
+測試與真實 39,825 筆 manifest 驗證已在一次性無網路 Docker 容器通過。
 
-這項成果達 `DATA-READY` 的「覆蓋清冊」層，但不把 94 筆 unknown 自動解讀成
-94 個玩家功能缺口。下一批須先用 production consumer 清冊交叉比對；FDFIELD #69
+這項成果達 `DATA-READY` 的「覆蓋清冊」層，但不把 93 筆 unknown 自動解讀成
+93 個玩家功能缺口。下一批須先用 production consumer 清冊交叉比對；FDFIELD #69
 已由受控 runtime catalog 回連，不再列入 unknown，也不重做已閉合 decoder。
 
 ### 三之二、FDFIELD runtime catalog bridge
@@ -813,8 +813,8 @@ render，不得把兩種狀態相加冒充pack內OGG。乾淨clone沒有render�
 實作結果：`music_catalog_contract.py`成為manifest產生器與驗證器共用的外部音樂契約；
 產生器新增明確`--music-assets-root`，驗證器新增`--runtime-assets`。五項bridge測試涵蓋
 無複製成功路徑、缺外部root、render漂移、catalog hash漂移及路徑穿越，並與原有九項manifest／
-catalog測試共同通過。現行實檔manifest已重生並完整驗證：pack本身現為39,820筆
-（38,796 exported、1,005 intentionally raw、19 blocked），另有一份已驗證外部bridge：
+catalog測試共同通過。現行實檔manifest已重生並完整驗證：pack本身現為39,825筆
+（38,801 exported、1,005 intentionally raw、19 blocked），另有一份已驗證外部bridge：
 2個profile、15個track、30個render；catalog為12,719 bytes、SHA-256
 `8f2d2835971861e5fa97c8f33536022b53209b42d53bdd9fbfa062de9b880311`。
 
@@ -1771,3 +1771,19 @@ frame 重複 ID、對話 mouth animation 及素材 manifest 的 `asset_id` 引�
   逐週期一致。
 - 驗收：exporter 形狀測試、嚴格 loader 測試、標題排程觸發／停止測試，以及正式分離包
   無原始 archive 解碼抽測。
+
+### FDOTHER #79：raw pending code 1 固定兩幀呈現（READY／runtime blocked）
+
+- 原版證據：[`fd2_pending_code1_fdother79_ida.txt`](../data/ida/fd2_pending_code1_fdother79_ida.txt)。
+- typed data：`animations/fdother_079_pending_code1/bank.json` 使用既有
+  `fdother_frame_bank` schema，固定來源 #79、6801 bytes、兩幀及完整 raw MD5／SHA-256；
+  frame 0 固定 `(69,61,181,75)`，frame 1 固定 `(130,141,55,8)`。
+- 每幀輸出 indexed PNG 與 binary mask；loader 必須驗證來源、count、index、座標、
+  幾何、安全相對路徑及完整 PNG／mask。缺任一項即失敗即關閉，不回退原始 archive。
+- typed schedule 固定為：停止 BGM → palette 前置 → 清 320×200 → frame0 → 65 phase
+  palette 淡入（2ms／phase）→ 等待9 tick → frame1 → 等待36 tick → 釋放。
+- 高階名稱、逐章觸發原因與當下 palette source 均保持 unknown。正式 Game 接線維持
+  blocked，直到 raw pending-code producer／consumer 能從一般玩家路徑交付此 schedule；
+  direct-entry 或測試注入不得提升為 `RUNTIME-E1`。
+- 驗收：固定原檔逐幀 indexed／mask oracle、malformed／missing pack 拒絕、schedule
+  順序測試與 manifest provenance。這一階段只達 `DATA-READY`。

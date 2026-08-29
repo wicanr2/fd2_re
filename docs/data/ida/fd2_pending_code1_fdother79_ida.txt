@@ -1,0 +1,77 @@
+FD2 pending code 1／FDOTHER #79 固定呈現（IDA Pro 9.4）
+=======================================================
+
+狀態：RE-CLOSED（已證實）
+日期：2026-08-29
+
+輸入、工具與位址空間
+--------------------
+- `FD2.EXE`：357074 bytes；MD5 `b97caf2239a27a896069d03549d96e1e`；
+  SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- `FDOTHER.DAT`：3382481 bytes；MD5 `22f56e5027edc7c766ad34ca4e5aca93`；
+  SHA-256 `a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`。
+- 第一工具：合法 IDA Pro 9.4，`fd2-ida-authorized-local:latest`，一次性無網路
+  Docker；原版資料唯讀。
+- 位址均為 IDA DOS Linear Executable 線性位址；保留原始名稱 `sub_22E5C`、
+  `sub_2935B`、`sub_1F525`、`sub_1F882`。
+
+caller 與固定路由（已證實）
+---------------------------
+- `sub_22E5C` 邊界 `0x22E5C..0x22EF6`；唯一直接 caller 是主迴圈
+  `0x25DE5`。外層只在 raw `[0x53ECC] == 1` 時呼叫，之後清 pending code。
+- 函式不讀章節索引、FDFIELD 或 turn-event table。因此「世界地圖」、
+  「第 1 章中場」或「增援 consumer」均不是可沿用語意。
+
+直接順序與參數（已證實）
+-------------------------
+1. `0x22E67..0x22E6B` 呼叫 `sub_25977(-1,1)`：沿用已閉合 BGM ABI，停止目前配樂。
+2. `sub_17AA9(1)`，再呼叫 `sub_1F882` palette 前置。
+3. `0x22E82` 以常數 `0x4F` 經 `sub_111BA` 載入 FDOTHER #79。
+4. `memset(0xA0000,0,0xFA00)` 清 320×200 indexed framebuffer。
+5. `sub_2935B(resource,0,0xA0000,320,-1)` 呈現 frame 0；`sub_1F525` 執行
+   65 個 phase（64→0）、每 phase 2ms 的 palette 淡入。
+6. `sub_17AA9(9)` 後，以相同 framebuffer／stride／透明 sentinel 呈現 frame 1。
+7. `sub_17AA9(36)`，再把 resource pointer 交給既有釋放尾端 `0x15E94`。
+
+`sub_2935B`（`0x2935B..0x2939D`）以 selector×4 讀 `[resource+8]` offset，
+從 frame descriptor 的 `+0/+2` 取得 X／Y，把 `descriptor+9`、X、Y、destination、
+stride、transparent 傳給 `sub_4E63D`。這與受版控 `ParseFrames`／四模式 RLE 契約一致。
+
+原始 bytes（IDA linear address）
+--------------------------------
+```text
+0x22E5C:
+68 1c 00 00 00 e8 71 3e 01 00 53 6a 01 6a ff e8 07 2b 00 00
+83 c4 08 6a 01 e8 2f 4c ff ff 83 c4 04 e8 00 ca ff ff 6a 4f
+6a 00 68 4d 1a 05 00 e8 2a e3 fe ff 89 c3 83 c4 0c 68 00 fa
+00 00 6a 00 68 00 00 0a 00 e8 1a 47 01 00 83 c4 0c 6a ff
+68 40 01 00 00 68 00 00 0a 00 6a 00 53 e8 9e 64 00 00 83
+c4 14 e8 60 c6 ff ff 6a 09 e8 dd 4b ff ff 83 c4 04 6a ff
+68 40 01 00 00 68 00 00 0a 00 6a 01 53 e8 78 64 00 00 83
+c4 14 6a 24 e8 bc 4b ff ff 83 c4 04 53 e9 9e 2f ff ff
+
+0x2935B:
+68 20 00 00 00 e8 72 d9 00 00 53 8b 44 24 0c c1 e0 02 03
+44 24 08 8b 54 24 08 03 50 08 89 d0 0f b7 12 0f b7 58 02
+ff 74 24 18 ff 74 24 18 ff 74 24 18 53 52 83 c0 09 50 e8
+a5 52 02 00 83 c4 18 5b c3
+```
+
+資源形狀（已證實）
+------------------
+- FDOTHER #79：6801 bytes；MD5 `5f7eeeeff593ad7a067af167ef92670e`；
+  SHA-256 `34bb99917cdfd6b268674d7c1cf201cc3749cf3a58c574161dc5d37a36781373`。
+- frame-table count 2；offsets `0x10`、`0x18D7`。
+- frame 0：`X=69, Y=61, 181×75`。
+- frame 1：`X=130, Y=141, 55×8`。
+- 兩幀都使用 caller 當下的 palette；#79 沒有獨立 palette resource。
+
+證據分級與停止線
+----------------
+- 已證實：raw pending code 1 的固定呈現順序、兩個 selector、座標、framebuffer、
+  stride、透明模式、淡入與等待值。
+- 未知：兩幀的玩家可見高階名稱、哪些逐章 writer 在何種玩法條件產生 code 1，
+  以及原版當下 palette 的所有來源分支。
+- 因此可建立無高階命名的 separated frame bank 與 typed schedule；只有正式
+  pending-code producer／consumer 接縫閉合後才能接入 Game。不可用測試注入或
+  章節猜測冒充一般玩家路徑。

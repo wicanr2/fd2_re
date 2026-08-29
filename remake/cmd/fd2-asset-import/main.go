@@ -763,6 +763,9 @@ func exportCommandGrid(fdotherPath, outputRoot string) error {
 	if err := exportEvent61Frames(fdotherPath, outputRoot); err != nil {
 		return err
 	}
+	if err := exportPendingCode1Frames(fdotherPath, outputRoot); err != nil {
+		return err
+	}
 	if err := exportEndingPrefixFrames(fdotherPath, outputRoot); err != nil {
 		return err
 	}
@@ -1349,6 +1352,62 @@ func exportEvent61Frames(fdotherPath, outputRoot string) error {
 		indexed, mask, err := frame.IndexedLayers()
 		if err != nil {
 			return fmt.Errorf("FDOTHER #45 frame %d: %w", index, err)
+		}
+		name := fmt.Sprintf("frame_%03d", index)
+		if err := writeSurfacePNGs(filepath.Join(directory, name), frame.Width, frame.Height, indexed, mask); err != nil {
+			return err
+		}
+		document.Frames = append(document.Frames, frameBankEntryDocument{
+			Index: index, X: frame.X, Y: frame.Y, Width: frame.Width, Height: frame.Height,
+			Frame: name + "/frame.png", Mask: name + "/mask.png",
+		})
+	}
+	return writeJSON(filepath.Join(directory, "bank.json"), document)
+}
+
+func exportPendingCode1Frames(fdotherPath, outputRoot string) error {
+	raw, err := fdother.ReadResource(fdotherPath, 79)
+	if err != nil {
+		return err
+	}
+	if len(raw) != 6801 {
+		return fmt.Errorf("FDOTHER #79 raw size=%d, want 6801", len(raw))
+	}
+	rawMD5, rawSHA256 := md5.Sum(raw), sha256.Sum256(raw)
+	if hex.EncodeToString(rawMD5[:]) != "5f7eeeeff593ad7a067af167ef92670e" ||
+		hex.EncodeToString(rawSHA256[:]) != "34bb99917cdfd6b268674d7c1cf201cc3749cf3a58c574161dc5d37a36781373" {
+		return errors.New("FDOTHER #79 raw identity mismatch")
+	}
+	frames, err := fdother.ParseFrames(raw)
+	if err != nil {
+		return err
+	}
+	want := [][4]int{{69, 61, 181, 75}, {130, 141, 55, 8}}
+	if len(frames) != len(want) {
+		return fmt.Errorf("FDOTHER #79 frame count=%d, want %d", len(frames), len(want))
+	}
+	directory := filepath.Join(outputRoot, "animations", "fdother_079_pending_code1")
+	document := frameBankDocument{
+		SchemaVersion: 1, Kind: "fdother_frame_bank",
+		AssetID: "animation/FDOTHER_079/pending_code1", Status: "decoded",
+		Evidence: "confirmed", Codec: "fd2_2935b_frame_table",
+		Source: frameBankSourceDocument{
+			File: "FDOTHER.DAT", Resource: 79, Size: fdotherSize,
+			MD5: fdotherMD5, SHA256: fdotherSHA256, RawSize: len(raw),
+			RawMD5: hex.EncodeToString(rawMD5[:]), RawSHA256: hex.EncodeToString(rawSHA256[:]),
+		},
+		Frames: make([]frameBankEntryDocument, 0, len(frames)),
+	}
+	for index, frame := range frames {
+		geometry := want[index]
+		if frame.X != geometry[0] || frame.Y != geometry[1] ||
+			frame.Width != geometry[2] || frame.Height != geometry[3] {
+			return fmt.Errorf("FDOTHER #79 frame %d geometry=(%d,%d %dx%d)",
+				index, frame.X, frame.Y, frame.Width, frame.Height)
+		}
+		indexed, mask, err := frame.IndexedLayers()
+		if err != nil {
+			return fmt.Errorf("FDOTHER #79 frame %d: %w", index, err)
 		}
 		name := fmt.Sprintf("frame_%03d", index)
 		if err := writeSurfacePNGs(filepath.Join(directory, name), frame.Width, frame.Height, indexed, mask); err != nil {

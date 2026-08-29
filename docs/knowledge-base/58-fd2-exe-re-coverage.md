@@ -136,7 +136,7 @@ writer／consumer 分類高 fan-in helper，不用 unknown 總數驅動無限 RE
 
 | 子系統 | 原版證據 | 可編輯資料 | 正式執行期 | 玩家驗證 | 目前裁決與下一步 |
 |---|---|---|---|---|---|
-| 檔案版本、容器與主要資產格式 | 閉合 | 部分 | 部分 E1 | 部分 | `.DAT`、圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與多張 EXE 表已有雜湊與重生工具，不應重解容器格式。2026-08-29 清冊現為39,820筆（38,796 exported、1,005 intentionally raw、19 blocked）；manifest v2另把1,005個raw resource分為900 standardized、11 confirmed-empty、0 blocked、94 unknown，摘要見[`fd2-source-resource-coverage-summary.json`](../data/fd2-source-resource-coverage-summary.json)。unknown只是尚缺標準輸出關聯，不自動等於decoder或玩家功能缺口。除既有FIGANI、FDOTHER動畫、BG／TAI、FDTXT／字型、頭像與33張地圖外，FDICON已分離1,680張三層sprite；FDSHAP全33銀行另分離8,256張indexed frame、8,256張source mask、8,256張remap mask及33份controls metadata，全部與固定原檔逐層一致。ANI#0..#8亦完整分離為289張indexed frame、289份六位元DAC snapshot及9份metadata，#9空尾項不輸出假動畫；標題、第20戰與結局的production ANI archive caller已歸零。正式FDTXT、FDICON、FDSHAP、`figani.DecodeResource`與TAI direct archive production caller亦歸零；這只證明不再直接讀archive。普通玩家與敵方物理攻擊現已在任何方向、RNG、HP、EXP或acted狀態修改前，由同一分離FIGANI provider原子補載完整attack／idle pair；缺pair零狀態修改，主證據見[`fd2_physical_attack_separated_provider_20260829.txt`](../data/ida/fd2_physical_attack_separated_provider_20260829.txt)。戰場與第23戰重載在沒有FDSHAP archive時通過。FDFIELD#69現由受控runtime catalog回連`map23/map.json`並逐byte重建；終局selector30的FDFIELD#90..92亦由單一具型別JSON逐byte重建。天空之鑰FDOTHER#34完整101格、終局前綴FDOTHER#54完整111格、FDOTHER#56..#60及其FDOTHER#5對話格、商店FDOTHER#12／#29／#63的113筆素材、城鎮FDOTHER#10／#11／#61／#62的11筆素材、標題發行商FDOTHER#74／#76的4筆素材、標題捲動／主選單／靜態幕的46筆素材、LOAD四槽FDOTHER#13 entry16、教會／轉職FDOTHER#14的21筆mixed-codec素材、整備FDOTHER#1的20張range overlay，以及完整#2 action-cell bank／補齊的#5 dialogue grid／panel均已分離。戰場初始化另已將#1 range overlay、#3完整23×256 LUT、#5 HUD與138-entry LMI1、#6完整230-entry LMI1、#9完整12-entry增援演出及map 28／29的#55表面改成嚴格分離loader；一般地圖與map 28／29在原版FDOTHER不可讀時通過。#1與#6的292份既有標準檔現亦由manifest精確記錄；標題FDOTHER#77四筆選單音效、#78一筆ANI #1 companion音效與FDOTHER#102短暫調色盤均由正式標題路徑消費。相應正式consumer不再回讀這些archive資源。production runtime仍有其他`.DAT`、其他FDFIELD selector與UI用途未全量閉合，故整體仍是部分。契約與完整數字見[`60`](60-editor-separated-assets-spec.md)。 |
+| 檔案版本、容器與主要資產格式 | 閉合 | 部分 | 部分 E1 | 部分 | `.DAT`、圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與多張 EXE 表已有雜湊與重生工具，不應重解容器格式。2026-08-29 清冊現為39,825筆（38,801 exported、1,005 intentionally raw、19 blocked）；manifest v2另把1,005個raw resource分為901 standardized、11 confirmed-empty、0 blocked、93 unknown，摘要見[`fd2-source-resource-coverage-summary.json`](../data/fd2-source-resource-coverage-summary.json)。unknown只是尚缺標準輸出關聯，不自動等於decoder或玩家功能缺口。除既有FIGANI、FDOTHER動畫、BG／TAI、FDTXT／字型、頭像與33張地圖外，FDICON已分離1,680張三層sprite；FDSHAP全33銀行另分離8,256張indexed frame、8,256張source mask、8,256張remap mask及33份controls metadata，全部與固定原檔逐層一致。ANI#0..#8亦完整分離為289張indexed frame、289份六位元DAC snapshot及9份metadata，#9空尾項不輸出假動畫；標題、第20戰與結局的production ANI archive caller已歸零。正式FDTXT、FDICON、FDSHAP、`figani.DecodeResource`與TAI direct archive production caller亦歸零；這只證明不再直接讀archive。普通玩家與敵方物理攻擊現已在任何方向、RNG、HP、EXP或acted狀態修改前，由同一分離FIGANI provider原子補載完整attack／idle pair；缺pair零狀態修改，主證據見[`fd2_physical_attack_separated_provider_20260829.txt`](../data/ida/fd2_physical_attack_separated_provider_20260829.txt)。戰場與第23戰重載在沒有FDSHAP archive時通過。FDFIELD#69現由受控runtime catalog回連`map23/map.json`並逐byte重建；終局selector30的FDFIELD#90..92亦由單一具型別JSON逐byte重建。天空之鑰FDOTHER#34完整101格、終局前綴FDOTHER#54完整111格、FDOTHER#56..#60及其FDOTHER#5對話格、商店FDOTHER#12／#29／#63的113筆素材、城鎮FDOTHER#10／#11／#61／#62的11筆素材、標題發行商FDOTHER#74／#76的4筆素材、標題捲動／主選單／靜態幕的46筆素材、LOAD四槽FDOTHER#13 entry16、教會／轉職FDOTHER#14的21筆mixed-codec素材、整備FDOTHER#1的20張range overlay，以及完整#2 action-cell bank／補齊的#5 dialogue grid／panel均已分離。戰場初始化另已將#1 range overlay、#3完整23×256 LUT、#5 HUD與138-entry LMI1、#6完整230-entry LMI1、#9完整12-entry增援演出及map 28／29的#55表面改成嚴格分離loader；一般地圖與map 28／29在原版FDOTHER不可讀時通過。#1與#6的292份既有標準檔現亦由manifest精確記錄；標題FDOTHER#77四筆選單音效、#78一筆ANI #1 companion音效與FDOTHER#102短暫調色盤均由正式標題路徑消費。#79兩幀raw pending-code呈現只達`DATA-READY`，尚未接入正式`Game`；前三者的正式consumer不再回讀archive資源。production runtime仍有其他`.DAT`、其他FDFIELD selector與UI用途未全量閉合，故整體仍是部分。契約與完整數字見[`60`](60-editor-separated-assets-spec.md)。 |
 
 > **2026-08-29 一般物理攻擊 consumer 勘誤：** 上表保留了本批開始時發現的缺口；
 > 現況已依[`fd2_physical_attack_separated_provider_20260829.txt`](../data/ida/fd2_physical_attack_separated_provider_20260829.txt)
@@ -738,7 +738,19 @@ runtime現用同一indexed捲動面切換兩份palette。固定原檔逐byte ora
 selector 0 呼叫 `sub_25A96`，自然結束與略過共用 selector `-1` 停止及釋放。#78 是
 一筆非空 PCM 加 0-byte 尾哨兵的音效庫，不是白色泛光來源；舊文件已勘誤。正式
 分離 OGG、嚴格 loader、第一幀啟動與結束／略過專用 voice 已接，達
-`DATA-READY／RUNTIME-E1`。清冊現為39,820筆（38,796 exported、1,005 intentionally
-raw、19 blocked）；resource ledger為900 standardized、11 confirmed-empty、0 blocked、
-94 unknown，其中FDOTHER unknown為10。音效高階名稱、11025 Hz以外的DOS硬體時序與
+`DATA-READY／RUNTIME-E1`。該時點清冊為39,820筆；後續 #79 切片已由第十八節
+取代此統計。音效高階名稱、11025 Hz以外的DOS硬體時序與
 人耳E2仍不猜測。
+
+## 十八、2026-08-29：raw pending code 1／FDOTHER #79（RE-CLOSED／DATA-READY）
+
+[`fd2_pending_code1_fdother79_ida.txt`](../data/ida/fd2_pending_code1_fdother79_ida.txt)
+以合法 IDA Pro 9.4 固定 `0x25DE5→sub_22E5C` 的唯一 caller、停止BGM、palette前置、
+320×200清除、#79 selectors 0／1、`sub_2935B`座標、65×2ms淡入、9／36 tick與釋放順序。
+#79已分離為兩組indexed PNG／binary mask，嚴格loader及typed raw schedule已建立；
+固定原檔逐幀oracle與缺包拒絕通過，達`DATA-READY`。清冊現為39,825筆
+（38,801 exported、1,005 intentionally raw、19 blocked）；resource ledger為901
+standardized、11 confirmed-empty、0 blocked、93 unknown，其中FDOTHER unknown為9。
+
+正式Game尚未消費raw pending code，因此本切片不提升為`RUNTIME-E1`，也不把#79命名為
+世界地圖、中場或增援畫面。只有一般玩家pending-code producer／consumer接縫閉合後才可接線。
