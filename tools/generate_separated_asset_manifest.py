@@ -118,8 +118,13 @@ def classify(path: Path) -> str | None:
         return None
     if top == "portraits" and suffix == ".png":
         return "portrait"
-    if top == "sprites" and len(parts) >= 2 and parts[1].lower() == "fdicon":
-        return "map_sprite" if suffix == ".png" else "metadata" if path.name.lower() == "bank.json" else None
+    if top == "sprites" and len(parts) >= 2:
+        if parts[1].lower() == "fdicon":
+            return "map_sprite" if suffix == ".png" else "metadata" if path.name.lower() == "bank.json" else None
+        if parts[1].lower() == "fdother_001_range_overlay":
+            return "map_sprite" if suffix == ".png" else "metadata" if path.name.lower() == "bank.json" else None
+    if top == "effects" and len(parts) >= 2 and parts[1].lower() == "fdother_006_lmi1_opaque":
+        return "battle_animation" if suffix == ".png" else "metadata" if path.name.lower() == "bank.json" else None
     if top == "tilesets" and len(parts) >= 2 and parts[1].lower() == "fdshap":
         return "tileset" if suffix == ".png" else "metadata" if path.name.lower() == "bank.json" else None
     if top == "maps":
@@ -207,6 +212,22 @@ def infer_provenance(path: Path) -> tuple[str | None, int | None, int | None]:
                 frame = int(match.group(1))
                 break
         return "FDICON.B24", None, frame
+    if len(path.parts) >= 2 and path.parts[0].lower() == "sprites" and path.parts[1].lower() == "fdother_001_range_overlay":
+        frame = None
+        for part in path.parts[2:]:
+            match = re.fullmatch(r"sprite_(\d+)", part, re.I)
+            if match:
+                frame = int(match.group(1))
+                break
+        return "FDOTHER.DAT", 1, frame
+    if len(path.parts) >= 2 and path.parts[0].lower() == "effects" and path.parts[1].lower() == "fdother_006_lmi1_opaque":
+        frame = None
+        for part in path.parts[2:]:
+            match = re.fullmatch(r"entry_(\d+)", part, re.I)
+            if match:
+                frame = int(match.group(1))
+                break
+        return "FDOTHER.DAT", 6, frame
     if len(path.parts) >= 3 and path.parts[0].lower() == "tilesets" and path.parts[1].lower() == "fdshap":
         map_match = re.fullmatch(r"map_(\d+)", path.parts[2], re.I)
         if map_match:

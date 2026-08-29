@@ -110,7 +110,7 @@ source_resource)`、raw ID／大小／雜湊與 `assets[]` 一致、所有 outpu
 關聯可由直接 provenance 或上述複合 metadata 證明、所有 runtime catalog reference
 存在。清冊不得引用 raw asset 作標準輸出，也不得以不存在的 output 把 unknown 歸零。
 
-2026-08-29 實檔初步診斷：現行 39,520 筆 manifest 含 1,005 筆 raw；若只比較
+2026-08-29 實檔初步診斷（#1／#6 納入勘誤前）：當時 39,520 筆 manifest 含 1,005 筆 raw；若只比較
 `assets[].source_resource`，有 142 組 raw pair 沒有非 raw 關聯。這個數字只是舊
 schema 的診斷，不是 142 個 decoder 缺口：至少包含 FDSHAP 34 筆 control resource
 與 FDFIELD selector 30 的 #91／#92 關聯漏記。schema version 2 重生後才以
@@ -119,10 +119,10 @@ schema 的診斷，不是 142 個 decoder 缺口：至少包含 FDSHAP 34 筆 co
 #### 2026-08-29 實作與驗收
 
 manifest schema version 2、generator version 3 與 validator 已實作上述契約。真實
-固定來源重生後仍有 39,520 筆 asset，其中 38,496 exported、1,005
-intentionally raw、19 blocked；新增的 1,005 筆 source-resource ledger 分為：895
-`standardized`、11 `confirmed_empty`、0 `blocked`、99 `unknown`。11 筆空項均由
-raw 長度零直接證明；99 筆 unknown 精確分布為 FDFIELD 79、FDMUS 5、FDOTHER 15，
+固定來源重生後現有 39,812 筆 asset，其中 38,788 exported、1,005
+intentionally raw、19 blocked；新增的 1,005 筆 source-resource ledger 分為：897
+`standardized`、11 `confirmed_empty`、0 `blocked`、97 `unknown`。11 筆空項均由
+raw 長度零直接證明；97 筆 unknown 精確分布為 FDFIELD 79、FDMUS 5、FDOTHER 13，
 不得再引用舊的 161／142 診斷數字。
 
 可版控摘要見
@@ -131,10 +131,10 @@ raw 長度零直接證明；99 筆 unknown 精確分布為 FDFIELD 79、FDMUS 5�
 index。validator 會重算完整 ledger 與摘要；漏列 raw、重複 resource、把 raw 冒充
 standard output、偽造複合 metadata 關聯、不存在的音樂 catalog track 或摘要漂移皆
 拒絕。加入 FDFIELD runtime bridge 後，28 項相關 generator／validator／catalog／schema
-測試與真實 39,520 筆 manifest 驗證已在一次性無網路 Docker 容器通過。
+測試與真實 39,812 筆 manifest 驗證已在一次性無網路 Docker 容器通過。
 
-這項成果達 `DATA-READY` 的「覆蓋清冊」層，但不把 99 筆 unknown 自動解讀成
-99 個玩家功能缺口。下一批須先用 production consumer 清冊交叉比對；FDFIELD #69
+這項成果達 `DATA-READY` 的「覆蓋清冊」層，但不把 97 筆 unknown 自動解讀成
+97 個玩家功能缺口。下一批須先用 production consumer 清冊交叉比對；FDFIELD #69
 已由受控 runtime catalog 回連，不再列入 unknown，也不重做已閉合 decoder。
 
 ### 三之二、FDFIELD runtime catalog bridge
@@ -194,11 +194,14 @@ manifest 的 FDFIELD #69 raw identity 完全相同。缺 catalog、map 漂移、
 
 ### 四之一、多語文字、字型與排版規劃
 
-> 狀態：**DRAFT／待產品決策**（2026-08-29）
+> 狀態：**DECISION-CONFIRMED／SPEC-READY**（2026-08-29）
+>
+> 產品決策：使用者已確認繁體中文 `zh-Hant`、簡體中文 `zh-Hans`、日文 `ja`、
+> 英文 `en` 四語全部隨正式版內建，並以同一受控契約允許外部社群語言包。
 
 目標語系固定使用BCP 47識別碼：原版繁體中文`zh-Hant`、簡體中文`zh-Hans`、日文
-`ja`、英文`en`。以下是四種發行方式都共用的資料不變量，不預先決定是否允許社群
-外掛語言包：
+`ja`、英文`en`。四語官方包必須完整隨發行版提供；相同 schema 另允許安裝其他
+BCP 47語系的外部社群包。以下資料不變量同時適用兩者：
 
 - 遊戲規則、`character_id`、`node_id`、`scene_id`、`line_id`、event／action及存檔
   狀態永遠不使用翻譯後文字作identity。切換語言不得改變戰役進度、隊伍或亂數狀態。
@@ -242,10 +245,10 @@ locales/<locale>/
 擇一後才能實作：使用現代字型overlay、為每語系製作對應bitmap atlas，或只保證現代
 主題完整翻譯。不可把TTF文字直接塞進原版固定格後仍宣稱pixel parity。
 
-尚待使用者依序決定的根層分支：
+已確認與仍待 prototype 裁決的分支：
 
-1. 四語只作官方內建資料，或同一契約亦允許外部社群語言包；目前建議「官方四語內建
-   ＋可選外部包」。
+1. **已確認**：官方四語內建＋可選外部社群語言包。外部包不得修改戰役、規則、
+   handler或存檔，只能提供翻譯、受控字型與layout override。
 2. 非繁中語系是否要求原版忠實320×200介面也全面翻譯，或只要求現代主題完整翻譯。
 3. 缺翻譯時是整包拒絕、回退`zh-Hant`，或僅外部包允許回退；官方包建議完整key後才
    發行，避免遊玩途中混語。
@@ -254,8 +257,8 @@ locales/<locale>/
 
 後續垂直切片固定為：language／layout JSON Schema → key extractor與完整度validator →
 `fd2_settings.json`向後相容欄位 → UTF-8 renderer切換 → 對話、商店、戰鬥HUD三種最長
-字串prototype → 四語切換／缺字／換行／存檔不變測試。產品分支未確認前，只能完成
-schema inventory與prototype，不把任一建議寫進正式玩家預設。
+字串prototype → 四語切換／缺字／換行／存檔不變測試。忠實主題翻譯範圍與文字縮放
+界線尚未由 prototype 裁決，不得先把建議值寫進正式玩家預設。
 
 #### 現行程式盤點與遷移邊界
 
@@ -300,8 +303,8 @@ schema inventory與prototype，不把任一建議寫進正式玩家預設。
 
 第一階段完成門檻是：四個官方語系的正式key集合完整；每個字型實際覆蓋所有使用
 字元；切換語言及字級後，標題、對話、商店、戰鬥HUD與結局均無裁切；存檔內容逐欄
-不變；移除主機字型後仍可重現相同量測。外部社群包若獲採用，另允許宣告base locale
-作開發期fallback，但正式官方包仍不得靠fallback掩蓋缺譯。
+不變；移除主機字型後仍可重現相同量測。外部社群包允許宣告base locale作開發期
+fallback，但正式官方包仍不得靠fallback掩蓋缺譯。
 
 #### 字串候選清冊（2026-08-29）
 
@@ -810,8 +813,8 @@ render，不得把兩種狀態相加冒充pack內OGG。乾淨clone沒有render�
 實作結果：`music_catalog_contract.py`成為manifest產生器與驗證器共用的外部音樂契約；
 產生器新增明確`--music-assets-root`，驗證器新增`--runtime-assets`。五項bridge測試涵蓋
 無複製成功路徑、缺外部root、render漂移、catalog hash漂移及路徑穿越，並與原有九項manifest／
-catalog測試共同通過。現行實檔manifest已重生並完整驗證：pack本身仍是39,520筆
-（38,496 exported、1,005 intentionally raw、19 blocked），另有一份已驗證外部bridge：
+catalog測試共同通過。現行實檔manifest已重生並完整驗證：pack本身現為39,812筆
+（38,788 exported、1,005 intentionally raw、19 blocked），另有一份已驗證外部bridge：
 2個profile、15個track、30個render；catalog為12,719 bytes、SHA-256
 `8f2d2835971861e5fa97c8f33536022b53209b42d53bdd9fbfa062de9b880311`。
 
@@ -988,6 +991,29 @@ oracle對固定原檔的width／height／indexed pixels（HUD另含mask）一致
 一般map 0／23／32及map 28／29在兩個FDOTHER環境路徑都指向不存在檔案時仍完成
 初始化；缺分離pack則維持失敗即關閉。重生後manifest共39,520筆：38,496
 exported、1,005 intentionally raw、19 blocked，來源與輸出hash驗證通過。本切片
+
+#### #1／#6 manifest 納入勘誤
+
+> 狀態：**CONFORMED／LEDGER-DATA-READY**（2026-08-29）
+
+上述 runtime 與逐項 oracle 已證明 #1、#6 是完整標準 bank，但 manifest classifier
+只識別 `sprites/fdicon` 與既有 `ui` 路徑，漏列
+`sprites/fdother_001_range_overlay` 的 `bank.json`／20組 frame、mask、remap mask，以及
+`effects/fdother_006_lmi1_opaque` 的 `bank.json`／230張 frame。這是清冊 provenance
+缺口，不是 decoder、runtime 或原版語意缺口。
+
+generator 必須只對這兩個已閉合穩定路徑新增精確納入規則：#1 文件分類為 metadata、
+PNG 分類為 map sprite；#6 文件分類為 battle animation、`bank.json` 分類為 metadata。
+每筆皆固定 `source_file=FDOTHER.DAT`、resource 1 或 6，並由目錄中的
+`sprite_NNNN`／`entry_NNN` 記錄 `source_frame`。不得泛化成任意 `effects/` 或
+`sprites/fdother_*` 都已證實。重生後 ledger 應以實際輸出 asset IDs 將 #1／#6 從
+unknown 提升為 standardized；既有嚴格 loader、raw oracle 與正式 consumer 證據繼續
+作為完整性依據，不新增重複 catalog。
+
+實作已精確納入 #1 的61份 metadata／PNG 與 #6 的231份 metadata／PNG；相似但未經
+證實的 `effects/fdother_007*` 路徑不會被分類。合成測試與真實重生共同證明兩筆 ledger
+轉為 standardized，manifest 增至39,812筆，unknown 降至97筆；pack validator 仍會
+逐檔驗證相對路徑、來源關聯與 SHA-256。
 達`DATA-READY`／`RUNTIME-E1`，不提升一般玩家`PLAYER-E2`或未命名entry語意。
 
 ### 商店 FDOTHER #12／#29／#63 索引素材契約
