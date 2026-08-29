@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_source_resource_coverage_summary",
+  "pack_id": "fd2-original-b97caf22",
+  "manifest_schema_version": 2,
+  "manifest_sha256": "59c917169991cc503fe11e00da0e0ce142a98bc45fac0622085c2cbe75e5b838",
+  "total_resources": 1005,
+  "dispositions": {
+    "standardized": 894,
+    "confirmed_empty": 11,
+    "blocked": 0,
+    "unknown": 100
+  },
+  "sources": [
+    {
+      "source_file": "ANI.DAT",
+      "total": 10,
+      "dispositions": {
+        "standardized": 9,
+        "confirmed_empty": 1,
+        "blocked": 0,
+        "unknown": 0
+      },
+      "confirmed_empty_resources": [
+        9
+      ],
+      "blocked_resources": [],
+      "unknown_resources": []
+    },
+    {
+      "source_file": "BG.DAT",
+      "total": 57,
+      "dispositions": {
+        "standardized": 56,
+        "confirmed_empty": 1,
+        "blocked": 0,
+        "unknown": 0
+      },
+      "confirmed_empty_resources": [
+        56
+      ],
+      "blocked_resources": [],
+      "unknown_resources": []
+    },
+    {
+      "source_file": "DATO.DAT",
+      "total": 137,
+      "dispositions": {
+        "standardized": 136,
+        "confirmed_empty": 1,
+        "blocked": 0,
+        "unknown": 0
+      },
+      "confirmed_empty_resources": [
+        136
+      ],
+      "blocked_resources": [],
+      "unknown_resources": []
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "total": 100,
+      "dispositions": {
+        "standardized": 19,
+        "confirmed_empty": 1,
+        "blocked": 0,
+        "unknown": 80
+      },
+      "confirmed_empty_resources": [
+        99
+      ],
+      "blocked_resources": [],
+      "unknown_resources": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        10,
+        11,
+        13,
+        14,
+        15,
+        16,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        31,
+        34,
+        35,
+        36,
+        37,
+        38,
+        40,
+        41,
+        42,
+        43,
+        44,
+        46,
+        47,
+        49,
+        50,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        85,
+        88,
+        89,
+        94,
+        95,
+        96,
+        97,
+        98
+      ]
+    },
+    {
+      "source_file": "FDMUS.DAT",
+      "total": 21,
+      "dispositions": {
+        "standardized": 15,
+        "confirmed_empty": 1,
+        "blocked": 0,
+        "unknown": 5
+      },
+      "confirmed_empty_resources": [
+        20
+      ],
+      "blocked_resources": [],
+      "unknown_resources": [
+        0,
+        2,
+        5,
+        7,
+        9
+      ]
+    },
+    {
+      "source_file": "FDOTHER.DAT",
+      "total": 104,
+      "dispositions": {
+        "standardized": 88,
+        "confirmed_empty": 1,
+        "blocked": 0,
+        "unknown": 15
+      },
+      "confirmed_empty_resources": [
+        103
+      ],
+      "blocked_resources": [],
+      "unknown_resources": [
+        1,
+        6,
+        47,
+        48,
+        49,
+        51,
+        52,
+        64,
+        77,
+        78,
+        79,
+        81,
+        89,
+        96,
+        102
+      ]
+    },
+    {
+      "source_file": "FDSHAP.DAT",
+      "total": 67,
+      "dispositions": {
+        "standardized": 66,
+        "confirmed_empty": 1,
+        "blocked": 0,
+        "unknown": 0
+      },
+      "confirmed_empty_resources": [
+        66
+      ],
+      "blocked_resources": [],
+      "unknown_resources": []
+    },
+    {
+      "source_file": "FDTXT.DAT",
+      "total": 35,
+      "dispositions": {
+        "standardized": 34,
+        "confirmed_empty": 1,
+        "blocked": 0,
+        "unknown": 0
+      },
+      "confirmed_empty_resources": [
+        34
+      ],
+      "blocked_resources": [],
+      "unknown_resources": []
+    },
+    {
+      "source_file": "FIGANI.DAT",
+      "total": 409,
+      "dispositions": {
+        "standardized": 408,
+        "confirmed_empty": 1,
+        "blocked": 0,
+        "unknown": 0
+      },
+      "confirmed_empty_resources": [
+        408
+      ],
+      "blocked_resources": [],
+      "unknown_resources": []
+    },
+    {
+      "source_file": "TAI.DAT",
+      "total": 57,
+      "dispositions": {
+        "standardized": 56,
+        "confirmed_empty": 1,
+        "blocked": 0,
+        "unknown": 0
+      },
+      "confirmed_empty_resources": [
+        56
+      ],
+      "blocked_resources": [],
+      "unknown_resources": []
+    },
+    {
+      "source_file": "TITLE.DAT",
+      "total": 8,
+      "dispositions": {
+        "standardized": 7,
+        "confirmed_empty": 1,
+        "blocked": 0,
+        "unknown": 0
+      },
+      "confirmed_empty_resources": [
+        7
+      ],
+      "blocked_resources": [],
+      "unknown_resources": []
+    }
+  ],
+  "generated_by": {
+    "tool": "generate_separated_asset_manifest.py",
+    "version": "3"
+  }
+}

@@ -9,7 +9,7 @@
 > 新工作必須使用 `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`、`PLAYER-E2` 或
 > `BLOCKED` 明列關閉哪一層，不再新增沒有層級的 `[x]`。
 
-## 有效佇列（2026-08-28）
+## 有效佇列（2026-08-29）
 
 > **新工作前沿**：第一輪代表性可玩抽樣已閉合後，下一個產品目標改為
 > 「可安全編輯的資料契約＋原版素材完全分離」。實檔稽核已確認現有 JSON 缺穩定
@@ -20,8 +20,8 @@
 | 順序 | 工作 | 現況 | 下一個可驗收結果 |
 |---:|---|---|---|
 | A1 | 編輯器 canonical schema 與穩定身份層 | `SPEC-READY`：campaign／scenario／story／animation 四份 machine-readable Schema 與跨檔 validator 已建立；穩定 ID、戰役轉場、mouth animation、素材 `asset_id`、重複 ID 及受控 extensions 有11項 Docker 測試。現有資料仍是 legacy 單向 loader，尚未轉入 canonical 格式 | 加入 legacy import 診斷、canonical writer 與 load→write→reload 測試；再建立 character identity 文件，分離連結 portrait／map sprite／battle animation，達 `DATA-READY` 後才接編輯器 UI |
-| A2 | 原版素材全量分離與清冊 | `DATA-PARTIAL`：現行generated-pack manifest為39,520筆：38,496 exported、1,005 intentionally_raw、19 blocked。FDICON、FDSHAP、ANI#0..#8、標題、共用UI、商店／城鎮／教會、戰場初始化#1／#3／#5／#6／#9／#55及第一批戰鬥音效已有標準輸出與固定原檔oracle；raw零遺漏。正式`music_catalog.json`綁定15首×FM／MT-32共30份OGG；manifest現以邏輯`runtime_assets` bridge完整驗證catalog與30份render而不複製大檔，15份中間MIDI仍誠實列blocked。一般物理攻擊動態FIGANI pair已關閉 | 建立source-resource覆蓋表，把每筆raw resource連到標準輸出、已證實空項、blocked理由或仍未知用途；先修現行manifest中161個沒有exported關聯的source pair，區分「映射漏記」與真正未解碼，再讓發布／編輯器入口共同顯示統計 |
-| A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型、共用道具panel、FDICON、FDSHAP、ANI、FDFIELD#69／#90..92、天空之鑰、終局、商店／城鎮／標題／LOAD／整備／教會及戰場初始化正式玩家consumer已遷移。map初始化#1 range、#3 LUT、#5 HUD與完整bank、#6完整bank、#9增援與map28／29 #55只讀分離pack；一般與晚期地圖在原版FDOTHER不可讀時通過。18條palette owner、17個巢狀音效bank與FM／MT-32 BGM亦已分離；BGM只從完整驗證的30份OGG catalog解析，不再靜默fallback。普通玩家與敵方物理攻擊現在均在交易前由同一分離FIGANI provider原子載入attack／idle pair；缺pair零狀態修改。相關direct archive reader與過期原檔存在gate歸零 | 依source-resource覆蓋表選下一個仍有production consumer但沒有標準輸出的`.DAT`用途；保留archive不可讀、完整pair與缺分離資產失敗即關閉測試，不再重做一般物理攻擊bank |
+| A2 | 原版素材全量分離與清冊 | `DATA-PARTIAL／LEDGER-DATA-READY`：manifest v2現有39,520筆asset與1,005筆source-resource ledger；894 standardized、11個零長度confirmed-empty、0 blocked、100 unknown。FDSHAP control、終局FDFIELD #91/#92及15首音樂已由複合metadata／runtime catalog建立可驗證關聯；可版控摘要綁定完整manifest SHA-256。100筆unknown分布為FDFIELD 80、FDMUS 5、FDOTHER 15，不等同100個decoder缺口 | 將100筆unknown與production consumer及既有runtime標準資料交叉比對；先為已閉合的`map23/map.json`／FDFIELD #69建立受控runtime catalog關聯，再從真正仍被玩家路徑消費且無標準輸出的FDOTHER用途選下一個垂直切片 |
+| A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型、共用道具panel、FDICON、FDSHAP、ANI、FDFIELD#69／#90..92、天空之鑰、終局、商店／城鎮／標題／LOAD／整備／教會及戰場初始化正式玩家consumer已遷移。map初始化#1 range、#3 LUT、#5 HUD與完整bank、#6完整bank、#9增援與map28／29 #55只讀分離pack；一般與晚期地圖在原版FDOTHER不可讀時通過。18條palette owner、17個巢狀音效bank與FM／MT-32 BGM亦已分離；BGM只從完整驗證的30份OGG catalog解析，不再靜默fallback。普通玩家與敵方物理攻擊現在均在交易前由同一分離FIGANI provider原子載入attack／idle pair；缺pair零狀態修改。相關direct archive reader與過期原檔存在gate歸零 | 以version 2 ledger的100筆unknown交叉核對production caller；已具runtime標準資料但缺manifest bridge者先補provenance，不重做decoder。只有確定仍有正式archive consumer且沒有標準輸出，才開新RE→spec→runtime切片 |
 | A4 | 現代美術主題 | `PENDING-A1/A2`：尚未選定正式風格，不以猜測覆蓋原版 | 先輸出頭像＋戰場 sprite／tile＋介面框的可丟棄忠實／現代對照，再由使用者選定 theme 方向 |
 | A5 | 繁中／簡中／日文／英文與可調文字顯示 | `DIAGNOSTIC／DRAFT-DECISION`：可重跑清冊現有5,233筆來源候選／2,497個互異繁中字串／150筆含變數；80筆Go待審常值已由同一SHA綁定為31玩家可見、42內部診斷、3開發、4未知，測試會拒絕過期分類。完整清冊不入Git，所有ID仍為來源位置型暫定ID。原版FDTXT token與320×200點陣呈現保持獨立唯讀證據 | 使用者先確認官方內建／外部語言包根分支；再把候選合併為character／entity／line穩定ID，建立locale／layout schema、完整key／變數／字形validator與最長字串prototype，之後才接runtime切換 |
 

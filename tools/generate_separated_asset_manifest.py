@@ -264,6 +264,166 @@ def stable_asset_id(kind: str, relative: str) -> str:
     return f"{kind}/{safe}"
 
 
+def composite_resource_refs(pack_root: Path, assets: list[dict]) -> dict[tuple[str, int], set[str]]:
+    """從已版本化的複合 metadata 建立一份 output 對多個 raw resource 的關聯。"""
+    by_path = {item["path"]: item["asset_id"] for item in assets}
+    result: dict[tuple[str, int], set[str]] = {}
+
+    def admit(relative: str, source_file: str, fields: tuple[str, ...]) -> None:
+        asset_id = by_path.get(relative)
+        if asset_id is None:
+            return
+        try:
+            document = json.loads((pack_root / relative).read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+            return
+        for field in fields:
+            resource = document.get(field)
+            if isinstance(resource, int) and resource >= 0:
+                result.setdefault((source_file, resource), set()).add(asset_id)
+
+    for path in sorted((pack_root / "tilesets" / "fdshap").glob("map_*/bank.json")):
+        admit(
+            path.relative_to(pack_root).as_posix(), "FDSHAP.DAT",
+            ("image_resource", "control_resource"),
+        )
+    field = "fields/fdfield/selector_30/field.json"
+    admit(
+        field, "FDFIELD.DAT",
+        ("map_resource", "control_resource", "positions_resource"),
+    )
+    return result
+
+
+def music_resource_refs(music_assets_root: Path | None) -> dict[tuple[str, int], set[str]]:
+    if music_assets_root is None:
+        return {}
+    try:
+        catalog = json.loads((music_assets_root / "music_catalog.json").read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        return {}
+    result: dict[tuple[str, int], set[str]] = {}
+    for track in catalog.get("tracks", []):
+        if not isinstance(track, dict):
+            continue
+        resource = track.get("resource_index")
+        track_id = track.get("track_id")
+        if isinstance(resource, int) and resource >= 0 and isinstance(track_id, str):
+            result.setdefault(("FDMUS.DAT", resource), set()).add(f"music/{track_id}")
+    return result
+
+
+def build_source_resource_ledger(
+    pack_root: Path,
+    assets: list[dict],
+    music_assets_root: Path | None,
+) -> list[dict]:
+    outputs: dict[tuple[str, int], set[str]] = {}
+    blocked: dict[tuple[str, int], set[str]] = {}
+    for item in assets:
+        resource = item.get("source_resource")
+        if not isinstance(resource, int) or item["status"] == "intentionally_raw":
+            continue
+        target = blocked if item["status"] == "blocked" else outputs
+        target.setdefault((item["source_file"], resource), set()).add(item["asset_id"])
+    for key, asset_ids in composite_resource_refs(pack_root, assets).items():
+        outputs.setdefault(key, set()).update(asset_ids)
+    runtime_refs = music_resource_refs(music_assets_root)
+
+    ledger: list[dict] = []
+    for raw in sorted(
+        (item for item in assets if item["status"] == "intentionally_raw"),
+        key=lambda item: (item["source_file"], item["source_resource"]),
+    ):
+        key = (raw["source_file"], raw["source_resource"])
+        output_ids = sorted(outputs.get(key, set()))
+        catalog_refs = sorted(runtime_refs.get(key, set()))
+        blocked_ids = sorted(blocked.get(key, set()))
+        raw_bytes = (pack_root / raw["path"]).stat().st_size
+        if output_ids or catalog_refs:
+            disposition = "standardized"
+            if output_ids and catalog_refs:
+                reason = "standard_output_and_runtime_catalog"
+            elif catalog_refs:
+                reason = "runtime_catalog_output"
+            else:
+                reason = "standard_output_assets"
+        elif raw_bytes == 0:
+            disposition = "confirmed_empty"
+            reason = "zero_length_raw_resource"
+        elif blocked_ids:
+            disposition = "blocked"
+            reason = "decoder_blocked"
+        else:
+            disposition = "unknown"
+            reason = "no_standard_output"
+        ledger.append({
+            "source_file": key[0],
+            "source_resource": key[1],
+            "raw_asset_id": raw["asset_id"],
+            "raw_bytes": raw_bytes,
+            "raw_sha256": raw["sha256"],
+            "disposition": disposition,
+            "output_asset_ids": (
+                output_ids if disposition == "standardized"
+                else blocked_ids if disposition == "blocked"
+                else []
+            ),
+            "runtime_catalog_refs": catalog_refs,
+            "reason_code": reason,
+        })
+    return ledger
+
+
+def build_coverage_summary(manifest: dict, manifest_sha256: str) -> dict:
+    dispositions = ("standardized", "confirmed_empty", "blocked", "unknown")
+    by_source: dict[str, list[dict]] = {}
+    for entry in manifest["source_resources"]:
+        by_source.setdefault(entry["source_file"], []).append(entry)
+    source_rows = []
+    for source_file, entries in sorted(by_source.items()):
+        row = {
+            "source_file": source_file,
+            "total": len(entries),
+            "dispositions": {
+                name: sum(entry["disposition"] == name for entry in entries)
+                for name in dispositions
+            },
+            "confirmed_empty_resources": sorted(
+                entry["source_resource"] for entry in entries
+                if entry["disposition"] == "confirmed_empty"
+            ),
+            "blocked_resources": sorted(
+                entry["source_resource"] for entry in entries
+                if entry["disposition"] == "blocked"
+            ),
+            "unknown_resources": sorted(
+                entry["source_resource"] for entry in entries
+                if entry["disposition"] == "unknown"
+            ),
+        }
+        source_rows.append(row)
+    return {
+        "schema_version": 1,
+        "kind": "fd2_source_resource_coverage_summary",
+        "pack_id": manifest["pack_id"],
+        "manifest_schema_version": manifest["schema_version"],
+        "manifest_sha256": manifest_sha256,
+        "total_resources": len(manifest["source_resources"]),
+        "dispositions": {
+            name: sum(
+                entry["disposition"] == name for entry in manifest["source_resources"]
+            )
+            for name in dispositions
+        },
+        "sources": source_rows,
+        "generated_by": {
+            "tool": "generate_separated_asset_manifest.py",
+            "version": "3",
+        },
+    }
+
+
 def build_manifest(
     pack_root: Path,
     reference: Path,
@@ -338,14 +498,15 @@ def build_manifest(
 
     pack_id = pack_root.name
     manifest = {
-        "schema_version": 1,
+        "schema_version": 2,
         "pack_id": pack_id,
         "source_set": sources,
         "assets": assets,
+        "source_resources": build_source_resource_ledger(pack_root, assets, music_assets_root),
         "relationships": [],
         "generated_by": {
             "tool": "generate_separated_asset_manifest.py",
-            "version": "1",
+            "version": "3",
         },
     }
     if music_assets_root is not None:
@@ -356,7 +517,7 @@ def build_manifest(
         if music_errors:
             raise ValueError("；".join(music_errors))
         manifest["runtime_catalogs"] = {"music": bridge}
-        manifest["generated_by"]["version"] = "2"
+        manifest["generated_by"]["version"] = "3"
     return manifest
 
 
@@ -367,6 +528,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--original-dir", type=Path)
     parser.add_argument("--music-assets-root", type=Path)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--coverage-summary", type=Path)
     args = parser.parse_args(argv)
     output = args.output or args.pack_root / "manifest.json"
     try:
@@ -374,11 +536,23 @@ def main(argv: list[str] | None = None) -> int:
             args.pack_root, args.reference, args.original_dir, args.music_assets_root,
         )
         output.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        if args.coverage_summary is not None:
+            summary = build_coverage_summary(manifest, sha256(output))
+            args.coverage_summary.write_text(
+                json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8",
+            )
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         print(f"錯誤：無法建立分離素材清冊：{exc}", file=sys.stderr)
         return 1
     raw_count = sum(item["status"] == "intentionally_raw" for item in manifest["assets"])
-    print(f"分離素材清冊已建立：{output}（輸出素材 {len(manifest['assets']) - raw_count} 筆，raw 清冊 {raw_count} 筆）")
+    dispositions = {
+        name: sum(item["disposition"] == name for item in manifest["source_resources"])
+        for name in ("standardized", "confirmed_empty", "blocked", "unknown")
+    }
+    print(
+        f"分離素材清冊已建立：{output}（輸出素材 {len(manifest['assets']) - raw_count} 筆，"
+        f"raw 清冊 {raw_count} 筆，resource 覆蓋 {dispositions}）"
+    )
     return 0
 
 

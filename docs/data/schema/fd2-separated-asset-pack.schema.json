@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://fd2-remake.invalid/schema/fd2-separated-asset-pack-v1.json",
+  "$id": "https://fd2-remake.invalid/schema/fd2-separated-asset-pack-v2.json",
   "title": "FD2 分離素材包清冊",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "pack_id", "source_set", "assets", "relationships", "generated_by"],
+  "required": ["schema_version", "pack_id", "source_set", "assets", "source_resources", "relationships", "generated_by"],
   "properties": {
-    "schema_version": {"const": 1},
+    "schema_version": {"const": 2},
     "pack_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
     "source_set": {
       "type": "array",
@@ -17,6 +17,11 @@
       "type": "array",
       "items": {"$ref": "#/$defs/asset"}
     },
+    "source_resources": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/source_resource"}
+    },
+    "runtime_catalogs": {"$ref": "#/$defs/runtime_catalogs"},
     "relationships": {
       "type": "array",
       "items": {"$ref": "#/$defs/relationship"}
@@ -75,6 +80,55 @@
         "from": {"type": "string", "minLength": 1},
         "type": {"type": "string", "minLength": 1},
         "to": {"type": "string", "minLength": 1}
+      }
+    },
+    "source_resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_file", "source_resource", "raw_asset_id", "raw_bytes", "raw_sha256", "disposition", "output_asset_ids", "runtime_catalog_refs", "reason_code"],
+      "properties": {
+        "source_file": {"type": "string", "pattern": "^[^/\\\\]+$"},
+        "source_resource": {"type": "integer", "minimum": 0},
+        "raw_asset_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._/-]+$"},
+        "raw_bytes": {"type": "integer", "minimum": 0},
+        "raw_sha256": {"allOf": [{"$ref": "#/$defs/digest"}, {"minLength": 64, "maxLength": 64}]},
+        "disposition": {"enum": ["standardized", "confirmed_empty", "blocked", "unknown"]},
+        "output_asset_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "runtime_catalog_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^[a-z0-9][A-Za-z0-9._/-]+$"}
+        },
+        "reason_code": {"enum": ["standard_output_assets", "runtime_catalog_output", "standard_output_and_runtime_catalog", "zero_length_raw_resource", "decoder_blocked", "no_standard_output"]}
+      }
+    },
+    "runtime_catalogs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["music"],
+      "properties": {
+        "music": {"$ref": "#/$defs/music_catalog_bridge"}
+      }
+    },
+    "music_catalog_bridge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "asset_root", "catalog_path", "catalog_bytes", "catalog_sha256", "schema_version", "source_file", "profiles", "tracks", "renders"],
+      "properties": {
+        "kind": {"const": "fd2_music_catalog"},
+        "asset_root": {"const": "runtime_assets"},
+        "catalog_path": {"const": "music_catalog.json"},
+        "catalog_bytes": {"type": "integer", "minimum": 1},
+        "catalog_sha256": {"allOf": [{"$ref": "#/$defs/digest"}, {"minLength": 64, "maxLength": 64}]},
+        "schema_version": {"const": 1},
+        "source_file": {"const": "FDMUS.DAT"},
+        "profiles": {"const": 2},
+        "tracks": {"const": 15},
+        "renders": {"const": 30}
       }
     }
   }

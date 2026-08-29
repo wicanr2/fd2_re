@@ -33,6 +33,8 @@ class MusicManifestBridgeTest(unittest.TestCase):
         pack = root / "pack"
         (pack / "music").mkdir(parents=True)
         (pack / "music" / "FDMUS_001.mid").write_bytes(b"midi")
+        (pack / "raw" / "FDMUS").mkdir(parents=True)
+        (pack / "raw" / "FDMUS" / "FDMUS_001.bin").write_bytes(b"xmi")
         source_data = b"synthetic-fdmus"
         source = {
             "file": "FDMUS.DAT",
@@ -98,6 +100,9 @@ class MusicManifestBridgeTest(unittest.TestCase):
             self.assertFalse(any(path.suffix == ".ogg" for path in pack.rglob("*")))
             midi = next(item for item in manifest["assets"] if item["path"].endswith(".mid"))
             self.assertEqual(midi["status"], "blocked")
+            resource = next(item for item in manifest["source_resources"] if item["source_resource"] == 1)
+            self.assertEqual(resource["disposition"], "standardized")
+            self.assertEqual(resource["runtime_catalog_refs"], ["music/FDMUS_001"])
 
     def test_bridge_requires_explicit_runtime_root(self):
         with tempfile.TemporaryDirectory() as temp:

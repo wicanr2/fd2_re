@@ -15,6 +15,7 @@ import re
 import sys
 
 from music_catalog_contract import validate_music_assets
+from generate_separated_asset_manifest import build_coverage_summary
 
 HEX = re.compile(r"^[0-9a-f]+$")
 KINDS = {
@@ -24,6 +25,7 @@ KINDS = {
 }
 STATUSES = {"exported", "intentionally_raw", "blocked"}
 EVIDENCE = {"confirmed", "strong_inference", "hypothesis", "unknown"}
+DISPOSITIONS = {"standardized", "confirmed_empty", "blocked", "unknown"}
 
 
 def digest(path: Path, algorithm: str) -> str:
@@ -45,6 +47,7 @@ def validate(
     manifest_path: Path,
     original_dir: Path | None = None,
     runtime_assets: Path | None = None,
+    coverage_summary: Path | None = None,
 ) -> list[str]:
     errors: list[str] = []
     try:
@@ -52,8 +55,8 @@ def validate(
     except (OSError, ValueError) as exc:
         return [f"無法讀取 manifest：{exc}"]
 
-    if doc.get("schema_version") != 1:
-        errors.append("schema_version 必須為 1")
+    if doc.get("schema_version") != 2:
+        errors.append("schema_version 必須為 2")
     if not isinstance(doc.get("pack_id"), str) or not doc["pack_id"]:
         errors.append("pack_id 不可為空")
 
@@ -97,6 +100,7 @@ def validate(
         errors.append("assets 必須是陣列")
         assets = []
     ids: set[str] = set()
+    assets_by_id: dict[str, dict] = {}
     pack_root = manifest_path.parent
     for index, asset in enumerate(assets):
         prefix = f"assets[{index}]"
@@ -110,6 +114,7 @@ def validate(
             errors.append(f"重複 asset_id：{asset_id}")
         else:
             ids.add(asset_id)
+            assets_by_id[asset_id] = asset
         if asset.get("kind") not in KINDS:
             errors.append(f"{prefix}.kind 未知：{asset.get('kind')!r}")
         if asset.get("status") not in STATUSES:
@@ -133,6 +138,29 @@ def validate(
                 elif digest(output, "sha256") != expected:
                     errors.append(f"輸出 SHA-256 不符：{relative}")
 
+    # 複合 metadata 可讓同一標準輸出對應多個 raw resource；這些關聯
+    # 必須由文件中明列的 resource 欄位證明，不能只由檔名推測。
+    composite: dict[tuple[str, int], set[str]] = {}
+    composite_fields = {
+        "FDSHAP.DAT": ("image_resource", "control_resource"),
+        "FDFIELD.DAT": ("map_resource", "control_resource", "positions_resource"),
+    }
+    for asset_id, asset in assets_by_id.items():
+        source_file = asset.get("source_file")
+        if source_file not in composite_fields or asset.get("status") != "exported":
+            continue
+        relative = asset.get("path")
+        if not safe_relative(relative) or not str(relative).endswith(".json"):
+            continue
+        try:
+            metadata = json.loads((pack_root / relative).read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+            continue
+        for field in composite_fields[source_file]:
+            resource = metadata.get(field)
+            if isinstance(resource, int) and resource >= 0:
+                composite.setdefault((source_file, resource), set()).add(asset_id)
+
     relationships = doc.get("relationships")
     if not isinstance(relationships, list):
         errors.append("relationships 必須是陣列")
@@ -146,6 +174,7 @@ def validate(
             if value not in ids:
                 errors.append(f"relationships[{index}].{endpoint} 引用不存在：{value!r}")
     runtime_catalogs = doc.get("runtime_catalogs")
+    music_resource_refs: set[str] = set()
     if runtime_catalogs is not None:
         if not isinstance(runtime_catalogs, dict) or set(runtime_catalogs) != {"music"}:
             errors.append("runtime_catalogs 只接受 music")
@@ -178,6 +207,114 @@ def validate(
                 errors.extend(music_errors)
                 if actual is not None and actual != bridge:
                     errors.append("runtime_catalogs.music bridge metadata 不符")
+                try:
+                    catalog = json.loads((runtime_assets / "music_catalog.json").read_text(encoding="utf-8"))
+                except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+                    catalog = {}
+                for track in catalog.get("tracks", []):
+                    if not isinstance(track, dict):
+                        continue
+                    index = track.get("resource_index")
+                    track_id = track.get("track_id")
+                    if isinstance(index, int) and isinstance(track_id, str):
+                        music_resource_refs.add(f"music/{track_id}")
+
+    source_resources = doc.get("source_resources")
+    if not isinstance(source_resources, list):
+        errors.append("source_resources 必須是陣列")
+        source_resources = []
+    raw_assets: dict[tuple[str, int], dict] = {}
+    for item in assets:
+        if not isinstance(item, dict) or item.get("status") != "intentionally_raw":
+            continue
+        raw_key = (item.get("source_file"), item.get("source_resource"))
+        if raw_key in raw_assets:
+            errors.append(f"重複 raw source resource：{raw_key[0]}#{raw_key[1]}")
+        raw_assets[raw_key] = item
+    seen_resources: set[tuple[str, int]] = set()
+    for index, entry in enumerate(source_resources):
+        prefix = f"source_resources[{index}]"
+        if not isinstance(entry, dict):
+            errors.append(f"{prefix} 必須是物件")
+            continue
+        required = {
+            "source_file", "source_resource", "raw_asset_id", "raw_bytes", "raw_sha256",
+            "disposition", "output_asset_ids", "runtime_catalog_refs", "reason_code",
+        }
+        if set(entry) != required:
+            errors.append(f"{prefix} 欄位集合不符")
+            continue
+        key = (entry.get("source_file"), entry.get("source_resource"))
+        if not isinstance(key[0], str) or not isinstance(key[1], int) or key[1] < 0:
+            errors.append(f"{prefix} 原始定位無效")
+            continue
+        if key in seen_resources:
+            errors.append(f"重複 source resource：{key[0]}#{key[1]}")
+        seen_resources.add(key)
+        raw = raw_assets.get(key)
+        if raw is None:
+            errors.append(f"{prefix} 找不到對應 raw asset")
+            continue
+        raw_path = pack_root / raw["path"]
+        if (
+            entry.get("raw_asset_id") != raw.get("asset_id")
+            or entry.get("raw_sha256") != raw.get("sha256")
+            or not isinstance(entry.get("raw_bytes"), int)
+            or entry["raw_bytes"] < 0
+            or not raw_path.is_file()
+            or (raw_path.is_file() and raw_path.stat().st_size != entry["raw_bytes"])
+            or (raw_path.is_file() and digest(raw_path, "sha256") != entry.get("raw_sha256"))
+        ):
+            errors.append(f"{prefix} raw identity／大小／雜湊不符")
+        disposition = entry.get("disposition")
+        if disposition not in DISPOSITIONS:
+            errors.append(f"{prefix}.disposition 未知：{disposition!r}")
+            continue
+        output_ids = entry.get("output_asset_ids")
+        catalog_refs = entry.get("runtime_catalog_refs")
+        if not isinstance(output_ids, list) or len(output_ids) != len(set(output_ids)):
+            errors.append(f"{prefix}.output_asset_ids 必須是不重複陣列")
+            output_ids = []
+        if not isinstance(catalog_refs, list) or len(catalog_refs) != len(set(catalog_refs)):
+            errors.append(f"{prefix}.runtime_catalog_refs 必須是不重複陣列")
+            catalog_refs = []
+        direct = {
+            asset_id for asset_id, asset in assets_by_id.items()
+            if asset.get("source_file") == key[0] and asset.get("source_resource") == key[1]
+            and asset.get("status") != "intentionally_raw"
+        }
+        allowed_outputs = direct | composite.get(key, set())
+        for asset_id in output_ids:
+            if asset_id not in allowed_outputs:
+                errors.append(f"{prefix}.output_asset_ids 無法證明關聯：{asset_id!r}")
+        for ref in catalog_refs:
+            if key[0] != "FDMUS.DAT" or ref not in music_resource_refs:
+                errors.append(f"{prefix}.runtime_catalog_refs 不存在：{ref!r}")
+        exported = any(assets_by_id.get(asset_id, {}).get("status") == "exported" for asset_id in output_ids)
+        blocked_output = any(assets_by_id.get(asset_id, {}).get("status") == "blocked" for asset_id in output_ids)
+        if disposition == "standardized" and not (exported or catalog_refs):
+            errors.append(f"{prefix} standardized 缺少正式輸出")
+        elif disposition == "confirmed_empty" and (entry.get("raw_bytes") != 0 or output_ids or catalog_refs):
+            errors.append(f"{prefix} confirmed_empty 契約不符")
+        elif disposition == "blocked" and (not blocked_output or exported or catalog_refs):
+            errors.append(f"{prefix} blocked 契約不符")
+        elif disposition == "unknown" and (output_ids or catalog_refs or entry.get("raw_bytes") == 0):
+            errors.append(f"{prefix} unknown 契約不符")
+    missing_ledger = set(raw_assets) - seen_resources
+    extra_ledger = seen_resources - set(raw_assets)
+    if missing_ledger:
+        errors.append(f"source_resources 缺少 {len(missing_ledger)} 筆 raw resource")
+    if extra_ledger:
+        errors.append(f"source_resources 多出 {len(extra_ledger)} 筆不存在 resource")
+    if coverage_summary is not None:
+        try:
+            summary = json.loads(coverage_summary.read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"無法讀取 source-resource 覆蓋摘要：{exc}")
+        else:
+            expected_summary = build_coverage_summary(doc, digest(manifest_path, "sha256"))
+            if summary != expected_summary:
+                errors.append("source-resource 覆蓋摘要與 manifest 不符")
     return errors
 
 
@@ -186,8 +323,11 @@ def main() -> int:
     parser.add_argument("manifest", type=Path)
     parser.add_argument("--original-dir", type=Path)
     parser.add_argument("--runtime-assets", type=Path)
+    parser.add_argument("--coverage-summary", type=Path)
     args = parser.parse_args()
-    errors = validate(args.manifest, args.original_dir, args.runtime_assets)
+    errors = validate(
+        args.manifest, args.original_dir, args.runtime_assets, args.coverage_summary,
+    )
     if errors:
         for error in errors:
             print(f"錯誤：{error}", file=sys.stderr)

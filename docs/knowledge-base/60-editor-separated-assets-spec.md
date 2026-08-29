@@ -67,6 +67,77 @@ PNG／OGG 是 runtime 消費格式；raw `.bin` 只可留在研究中間目錄�
 素材。若某資源尚無足夠證據轉成上述格式，manifest 必須列為 `blocked`，不可省略後
 仍宣稱全量完成。
 
+### 三之一、原始資源覆蓋清冊
+
+> 狀態：**READY**（2026-08-29）
+> 證據範圍：固定雜湊原始容器、目前可重生的 raw resource、分離素材 metadata 與
+> 音樂 catalog；本節不新增或猜測任何 `FD2.EXE` handler／renderer 語意。
+
+`assets[]` 的 `intentionally_raw` 只表示研究用 raw 已保存，不能回答同一 resource
+是否另有可供 runtime／編輯器使用的標準輸出。manifest schema version 2 因此必須
+新增 `source_resources[]`，以每一筆可重生 raw resource 為一列，固定包含：
+
+- `source_file`、`source_resource`：與 `source_set` 及 raw 檔名一致的原始定位；
+- `raw_asset_id`、`raw_bytes`、`raw_sha256`：可直接回查的 raw 清冊、大小與雜湊；
+- `disposition`：只能是 `standardized`、`confirmed_empty`、`blocked` 或 `unknown`；
+- `output_asset_ids[]`：同一 manifest 內真正代表該 resource 的標準輸出；
+- `runtime_catalog_refs[]`：素材位於經驗證的外部 runtime catalog 時的受控引用；
+- `reason_code`：非 `standardized` 狀態的機械式原因，不以散文猜測用途。
+
+分類優先序固定如下：
+
+1. 只要有 `exported` output asset，或有已驗證的 runtime catalog reference，即為
+   `standardized`。保留 raw 不會把它降級。
+2. 沒有標準輸出且 raw 長度為零，才可標 `confirmed_empty`；僅因 decoder 沒產圖、
+   檔案很短或 resource index 位於尾端，不能推成空項。
+3. 沒有標準輸出，但有同 resource 的 `blocked` metadata，標 `blocked` 並保存該
+   metadata 的 asset ID；不得把 blocked 當作已完成輸出。
+4. 其餘一律為 `unknown`。`unknown` 表示目前清冊尚不能證明標準化，不自動等於
+   玩家路徑仍需要它，也不自動觸發新的 executable 反組譯。
+
+複合資產必須由自身已版本化 metadata 建立多對一關聯，不能只靠檔名推測：
+
+- `tilesets/fdshap/map_NN/bank.json` 同時覆蓋其已明列的 `image_resource` 與
+  `control_resource`；其中圖塊 PNG 仍只屬 image resource。
+- `fields/fdfield/selector_30/field.json` 同時覆蓋其已明列的 `map_resource`、
+  `control_resource` 與 `positions_resource`。
+- `runtime_catalogs.music` 只覆蓋 catalog `tracks[].resource_index` 明列的
+  FDMUS resource；三 bytes header、尾端零長度或未列入 track 的 resource 不得
+  因同屬 FDMUS 而自動標準化。
+
+validator 必須證明：每個 raw asset 恰有一列、不重複 `(source_file,
+source_resource)`、raw ID／大小／雜湊與 `assets[]` 一致、所有 output ID 存在且來源
+關聯可由直接 provenance 或上述複合 metadata 證明、所有 runtime catalog reference
+存在。清冊不得引用 raw asset 作標準輸出，也不得以不存在的 output 把 unknown 歸零。
+
+2026-08-29 實檔初步診斷：現行 39,520 筆 manifest 含 1,005 筆 raw；若只比較
+`assets[].source_resource`，有 142 組 raw pair 沒有非 raw 關聯。這個數字只是舊
+schema 的診斷，不是 142 個 decoder 缺口：至少包含 FDSHAP 34 筆 control resource
+與 FDFIELD selector 30 的 #91／#92 關聯漏記。schema version 2 重生後才以
+`source_resources[].disposition` 作正式統計，舊的 161 筆工作清單數字應同步作廢。
+
+#### 2026-08-29 實作與驗收
+
+manifest schema version 2、generator version 3 與 validator 已實作上述契約。真實
+固定來源重生後仍有 39,520 筆 asset，其中 38,496 exported、1,005
+intentionally raw、19 blocked；新增的 1,005 筆 source-resource ledger 分為：894
+`standardized`、11 `confirmed_empty`、0 `blocked`、100 `unknown`。11 筆空項均由
+raw 長度零直接證明；100 筆 unknown 精確分布為 FDFIELD 80、FDMUS 5、FDOTHER 15，
+不得再引用舊的 161／142 診斷數字。
+
+可版控摘要見
+[`fd2-source-resource-coverage-summary.json`](../data/fd2-source-resource-coverage-summary.json)，
+它綁定完整 ignored manifest 的 SHA-256，逐來源保留空項、blocked 與 unknown resource
+index。validator 會重算完整 ledger 與摘要；漏列 raw、重複 resource、把 raw 冒充
+standard output、偽造複合 metadata 關聯、不存在的音樂 catalog track 或摘要漂移皆
+拒絕。13 項 generator／validator／music bridge 測試與真實 39,520 筆 manifest 驗證
+已在一次性無網路 Docker 容器通過。
+
+這項成果達 `DATA-READY` 的「覆蓋清冊」層，但不把 100 筆 unknown 自動解讀成
+100 個玩家功能缺口。下一批須先用 production consumer 清冊交叉比對；例如既有
+`map23/map.json` 雖已可逐 byte 重建 FDFIELD #69，尚未以受控 runtime catalog reference
+回連本 manifest，因此目前仍誠實留在 unknown，而不是重做已閉合 decoder。
+
 ## 四、編輯模型契約
 
 所有可編輯文件都必須有 `schema_version`、`document_id`、`kind` 與 `source`。

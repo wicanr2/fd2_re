@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fd2-remake.invalid/schema/fd2-source-resource-coverage-summary-v1.json",
+  "title": "FD2 原始資源覆蓋摘要",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "kind", "pack_id", "manifest_schema_version", "manifest_sha256", "total_resources", "dispositions", "sources", "generated_by"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "kind": {"const": "fd2_source_resource_coverage_summary"},
+    "pack_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
+    "manifest_schema_version": {"const": 2},
+    "manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "total_resources": {"type": "integer", "minimum": 0},
+    "dispositions": {"$ref": "#/$defs/counts"},
+    "sources": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/source"}
+    },
+    "generated_by": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool", "version"],
+      "properties": {
+        "tool": {"const": "generate_separated_asset_manifest.py"},
+        "version": {"const": "3"}
+      }
+    }
+  },
+  "$defs": {
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["standardized", "confirmed_empty", "blocked", "unknown"],
+      "properties": {
+        "standardized": {"type": "integer", "minimum": 0},
+        "confirmed_empty": {"type": "integer", "minimum": 0},
+        "blocked": {"type": "integer", "minimum": 0},
+        "unknown": {"type": "integer", "minimum": 0}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_file", "total", "dispositions", "confirmed_empty_resources", "blocked_resources", "unknown_resources"],
+      "properties": {
+        "source_file": {"type": "string", "pattern": "^[^/\\]+$"},
+        "total": {"type": "integer", "minimum": 0},
+        "dispositions": {"$ref": "#/$defs/counts"},
+        "confirmed_empty_resources": {"$ref": "#/$defs/resources"},
+        "blocked_resources": {"$ref": "#/$defs/resources"},
+        "unknown_resources": {"$ref": "#/$defs/resources"}
+      }
+    },
+    "resources": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "integer", "minimum": 0}
+    }
+  }
+}

@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from generate_separated_asset_manifest import build_manifest
+from generate_separated_asset_manifest import build_coverage_summary, build_manifest
 from validate_separated_asset_pack import validate
 
 
@@ -16,6 +16,9 @@ class GenerateManifestTest(unittest.TestCase):
         (pack / "images").mkdir(parents=True)
         (pack / "raw" / "FIGANI").mkdir(parents=True)
         (pack / "raw" / "FDMUS").mkdir(parents=True)
+        (pack / "raw" / "FDSHAP").mkdir(parents=True)
+        (pack / "raw" / "FDFIELD").mkdir(parents=True)
+        (pack / "raw" / "ANI").mkdir(parents=True)
         (pack / "images" / "FIGANI_FIGANI_003.png").write_bytes(b"png")
         (pack / "animations" / "FIGANI_003").mkdir(parents=True)
         (pack / "animations" / "FIGANI_003" / "frame_000.png").write_bytes(b"frame")
@@ -31,6 +34,10 @@ class GenerateManifestTest(unittest.TestCase):
         (pack / "animations" / "ANI_002" / "animation.json").write_text("{}", encoding="utf-8")
         (pack / "raw" / "FIGANI" / "FIGANI_003.bin").write_bytes(b"raw")
         (pack / "raw" / "FDMUS" / "FDMUS_000.bin").write_bytes(b"music-raw")
+        (pack / "raw" / "FDSHAP" / "FDSHAP_047.bin").write_bytes(b"controls")
+        (pack / "raw" / "FDFIELD" / "FDFIELD_091.bin").write_bytes(b"field-controls")
+        (pack / "raw" / "FDFIELD" / "FDFIELD_092.bin").write_bytes(b"field-positions")
+        (pack / "raw" / "ANI" / "ANI_009.bin").write_bytes(b"")
         (pack / "music").mkdir()
         (pack / "music" / "FDMUS_000.mid").write_bytes(b"midi")
         (pack / "palette").mkdir()
@@ -76,9 +83,13 @@ class GenerateManifestTest(unittest.TestCase):
         (pack / "sprites" / "fdicon" / "bank.json").write_text("{}", encoding="utf-8")
         (pack / "tilesets" / "fdshap" / "map_23" / "tile_0000").mkdir(parents=True)
         (pack / "tilesets" / "fdshap" / "map_23" / "tile_0000" / "frame.png").write_bytes(b"tile")
-        (pack / "tilesets" / "fdshap" / "map_23" / "bank.json").write_text("{}", encoding="utf-8")
+        (pack / "tilesets" / "fdshap" / "map_23" / "bank.json").write_text(
+            json.dumps({"image_resource": 46, "control_resource": 47}), encoding="utf-8")
         (pack / "fields" / "fdfield" / "selector_30").mkdir(parents=True)
-        (pack / "fields" / "fdfield" / "selector_30" / "field.json").write_text("{}", encoding="utf-8")
+        (pack / "fields" / "fdfield" / "selector_30" / "field.json").write_text(
+            json.dumps({"map_resource": 90, "control_resource": 91, "positions_resource": 92}),
+            encoding="utf-8",
+        )
         original = root / "original"
         original.mkdir()
         source = original / "FIGANI.DAT"
@@ -167,7 +178,7 @@ class GenerateManifestTest(unittest.TestCase):
             figani = next(asset for asset in manifest["assets"] if asset["path"] == "animations/FIGANI_003/animation.json")
             self.assertEqual((figani["source_file"], figani["source_resource"]), ("FIGANI.DAT", 3))
             raw = [asset for asset in manifest["assets"] if asset["path"].startswith("raw/")]
-            self.assertEqual(len(raw), 2)
+            self.assertEqual(len(raw), 6)
             self.assertTrue(all(item["status"] == "intentionally_raw" for item in raw))
             self.assertTrue(all(item["kind"] == "metadata" for item in raw))
             midi = next(item for item in manifest["assets"] if item["path"].endswith(".mid"))
@@ -227,6 +238,31 @@ class GenerateManifestTest(unittest.TestCase):
             field = next(item for item in manifest["assets"] if item["path"] == "fields/fdfield/selector_30/field.json")
             self.assertEqual((field["kind"], field["source_file"], field["source_resource"]), ("map", "FDFIELD.DAT", 90))
             self.assertEqual((tile["kind"], tile["source_file"], tile["source_resource"], tile["source_frame"]), ("tileset", "FDSHAP.DAT", 46, 0))
+            ledger = {
+                (item["source_file"], item["source_resource"]): item
+                for item in manifest["source_resources"]
+            }
+            self.assertEqual(ledger[("FIGANI.DAT", 3)]["disposition"], "standardized")
+            self.assertEqual(ledger[("FDMUS.DAT", 0)]["disposition"], "blocked")
+            self.assertEqual(ledger[("ANI.DAT", 9)]["disposition"], "confirmed_empty")
+            self.assertEqual(ledger[("FDSHAP.DAT", 47)]["disposition"], "standardized")
+            self.assertIn(
+                "metadata/tilesets/fdshap/map_23/bank.json",
+                ledger[("FDSHAP.DAT", 47)]["output_asset_ids"],
+            )
+            for resource in (91, 92):
+                self.assertEqual(ledger[("FDFIELD.DAT", resource)]["disposition"], "standardized")
+                self.assertIn(
+                    "map/fields/fdfield/selector_30/field.json",
+                    ledger[("FDFIELD.DAT", resource)]["output_asset_ids"],
+                )
+            summary = build_coverage_summary(manifest, "0" * 64)
+            self.assertEqual(summary["manifest_schema_version"], 2)
+            self.assertEqual(summary["total_resources"], 6)
+            self.assertEqual(
+                summary["dispositions"],
+                {"standardized": 4, "confirmed_empty": 1, "blocked": 1, "unknown": 0},
+            )
 
     def test_source_hash_mismatch_fails_closed(self):
         with tempfile.TemporaryDirectory() as temp:

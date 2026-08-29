@@ -44,6 +44,26 @@ def check_asset_refs(doc, asset_ids):
 
 
 class EditorSchemaTest(unittest.TestCase):
+    def test_source_resource_coverage_summary(self):
+        manifest_schema = load("fd2-separated-asset-pack.schema.json")
+        schema = load("fd2-source-resource-coverage-summary.schema.json")
+        summary = json.loads((
+            ROOT / "docs" / "data" / "fd2-source-resource-coverage-summary.json"
+        ).read_text(encoding="utf-8"))
+        self.assertEqual(schema["properties"]["kind"]["const"], summary["kind"])
+        self.assertEqual(manifest_schema["properties"]["schema_version"]["const"], 2)
+        self.assertIn("runtime_catalogs", manifest_schema["properties"])
+        self.assertIn("source_resources", manifest_schema["required"])
+        self.assertEqual(summary["manifest_schema_version"], 2)
+        self.assertRegex(summary["manifest_sha256"], r"^[0-9a-f]{64}$")
+        self.assertEqual(sum(summary["dispositions"].values()), summary["total_resources"])
+        self.assertEqual(sum(row["total"] for row in summary["sources"]), summary["total_resources"])
+        for row in summary["sources"]:
+            self.assertEqual(sum(row["dispositions"].values()), row["total"])
+            self.assertEqual(len(row["confirmed_empty_resources"]), row["dispositions"]["confirmed_empty"])
+            self.assertEqual(len(row["blocked_resources"]), row["dispositions"]["blocked"])
+            self.assertEqual(len(row["unknown_resources"]), row["dispositions"]["unknown"])
+
     def test_diagnostic_string_inventory_summary(self):
         full_schema = load("fd2-string-inventory.schema.json")
         summary_schema = load("fd2-string-inventory-summary.schema.json")
