@@ -93,3 +93,38 @@ IDA 函式範圍為 `0x2c405..0x2c9ec`，caller 只有 `0x2c18f`。開頭直接�
   播放前綴、角色蒙太奇、20段尾段並停在 FDOTHER #59；任一必要資產
   或 raw roster provenance 不足時，整批拒絕並回到可編輯結語，不部分呈現。
   此 E1 不把 `0x25757` 命名成 campaign owner，也不把近似視覺／時鐘提升為 E2。
+
+## FDOTHER #54 分離素材契約（2026-08-29，DATA-READY→RUNTIME-E1）
+
+本節只把上文已證實由 `sub_2BCE5` 消費的 FDOTHER resource `0x36`（十進位54）
+轉成可重生素材契約，不重新開啟 renderer 語意，也不把 raw frame 編號命名成未證實
+的場景動作。
+
+- 原始封裝：`FDOTHER.DAT`，3,382,481 bytes；MD5
+  `22f56e5027edc7c766ad34ca4e5aca93`；SHA-256
+  `a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`。
+- resource #54 raw：263,655 bytes；MD5
+  `4a3853ed5570a319e3a7e6024fb8e84e`；SHA-256
+  `1e6cb912150102df4404a741846305033fe32f55db7d3a694ccb7fcc63496a46`。
+- codec：`0x2935b` 使用的 frame table；固定111格。現有 fixed-file oracle 已證實
+  frame0 `(0,23,320,132)`、frame9及frame108 `(116,39,86,81)`、frame110
+  `(0,0,320,200)`，其餘格仍保留各自的原始 x/y/width/height。
+- 已證實 consumer：`0x2bce5..0x2c172`；已知直接使用 frame0、frame9、
+  frame `0x0c..0x6c` 與後續合成所需格。為避免編輯器與執行期各自裁切不同子集，
+  分離契約保存完整111格。
+- 標準輸出：`animations/fdother_054_ending_prefix/bank.json` 與每格的 paletted
+  indexed PNG、binary mask PNG。metadata 必須保存上述 archive／raw identity、
+  resource、frame index、原始 placement 與 geometry。
+- 正式 loader 必須一次驗證完整111格、連續索引、固定路徑、來源雜湊、畫面界內
+  幾何、indexed PNG 與二值 mask；任一不符時失敗即關閉，不回退讀取
+  `FDOTHER.DAT`。
+- 驗收 oracle 必須對固定原檔逐格比較 placement、geometry、indexed pixels 與
+  mask。這只足以提升素材為 `DATA-READY`；接入 `ending_preview` 並通過缺原檔
+  測試後才可標 `RUNTIME-E1`，仍不代表終局一般玩家 E2。
+
+2026-08-29 已依本契約輸出並驗證完整111格；固定原檔 oracle 逐格比較 placement、
+geometry、indexed pixels與mask皆一致。正式`ending_preview`改由strict separated
+loader載入#54，`prepareNativeEndingDialogue`亦改讀已分離#5 entry0..19；結構中的
+archive path已移除。Docker／Xvfb測試刻意令`FDOTHER.DAT`、`FDTXT.DAT`與`DATO.DAT`
+不可讀，仍可建立前綴並預建第一段所有說話者畫面；缺完整pack則不發布半套狀態。
+本切片因此達`RUNTIME-E1`，未提升一般玩家E2。

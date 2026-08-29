@@ -42,3 +42,40 @@ func TestSeparatedEvent61FramesFailClosedWithoutPack(t *testing.T) {
 		t.Fatal("incomplete event61 pack was accepted")
 	}
 }
+
+func TestSeparatedEndingPrefixFramesMatchOriginal(t *testing.T) {
+	const root = "../../generated-assets/fd2-original-b97caf22/animations/fdother_054_ending_prefix"
+	const archive = "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
+	if _, err := os.Stat(archive); err != nil {
+		t.Skip("player-provided FDOTHER.DAT is absent")
+	}
+	want, err := DecodeResource(archive, 54)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := LoadSeparatedEndingPrefixFrames(root)
+	if err != nil {
+		t.Skipf("separated ending prefix pack is absent: %v", err)
+	}
+	if len(got) != len(want) || len(got) != nativeEndingPrefixFrameCount {
+		t.Fatalf("frame count=%d want=%d", len(got), len(want))
+	}
+	for index := range want {
+		wantIndexed, wantMask, err := want[index].IndexedLayers()
+		if err != nil {
+			t.Fatalf("original frame %d: %v", index, err)
+		}
+		if got[index].X != want[index].X || got[index].Y != want[index].Y ||
+			got[index].Width != want[index].Width || got[index].Height != want[index].Height ||
+			!bytes.Equal(got[index].Indexed, wantIndexed) ||
+			!bytes.Equal(got[index].Mask, wantMask) {
+			t.Fatalf("ending prefix frame %d differs", index)
+		}
+	}
+}
+
+func TestSeparatedEndingPrefixFramesFailClosedWithoutPack(t *testing.T) {
+	if _, err := LoadSeparatedEndingPrefixFrames(t.TempDir()); err == nil {
+		t.Fatal("incomplete ending prefix pack was accepted")
+	}
+}

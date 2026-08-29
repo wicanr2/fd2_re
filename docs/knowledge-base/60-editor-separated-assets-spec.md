@@ -666,12 +666,42 @@ RGBA 預覽不得取代 indexed frame＋mask。
 達成後只提升終局素材 `DATA-READY`／`RUNTIME-E1`，不冒稱終局一般玩家 E2。
 
 2026-08-28 實作已完成上述輸出，並把 FDOTHER#5 對話框格的 caller-proven raw entries
-由23筆擴為40筆（新增 #1..17），使 party cycle 也不再讀 archive。固定原檔逐 indexed
+由23筆擴為40筆（新增 #1..17），使 party cycle loader 不再讀 archive。固定原檔逐 indexed
 pixel、mask、placement、delay 與非零 destination blit 對照均一致；#57 的768 bytes逐 byte
-一致。正式 `ending_preview` 在只指定 `FD2_ASSET_PACK`、沒有提供 `FDOTHER.DAT` 給 tail
-loader 的 Xvfb 抽測通過，缺完整 separated roots 會在建立 player 前失敗即關閉。完整
+一致。當時的 Xvfb 抽測只證明 tail loader 在不提供 `FDOTHER.DAT` 時可由
+`FD2_ASSET_PACK` 完成；它沒有涵蓋 `ending_preview` 建構器仍直接解碼的 #54，也沒有
+涵蓋 `prepareNativeEndingDialogue` 仍直接讀取的 #5。先前把該結果概括成整個正式
+`ending_preview` 不需 archive 是錯誤斷言；本勘誤保留其形成原因，且不得用該測試替
+#54／#5 正式 caller 的缺原檔驗收背書。完整
 manifest 現為38,092筆：37,068 exported、1,005 intentionally raw、19 blocked。本切片達
 `DATA-READY`／`RUNTIME-E1`；`LoadMontageTailAssetsArchive` 只保留給 source oracle。
+
+### 終局 FDOTHER #54 前綴動畫契約
+
+> 規格狀態：**CONFORMED**
+> 主證據：`docs/data/ida/fd2_ch29_terminal_body_ida.txt` 的
+> 「FDOTHER #54 分離素材契約（2026-08-29）」；不重新推論 renderer 語意。
+
+匯入器必須由固定雜湊 `FDOTHER.DAT` 的 resource54 輸出完整111格
+`fd2_2935b_frame_table`，保存每格原始 placement／geometry、paletted indexed PNG
+與 binary mask PNG，並在 `bank.json` 綁定 archive 與 raw resource 的大小、MD5、
+SHA-256。穩定目錄為 `animations/fdother_054_ending_prefix/`，穩定 `asset_id` 為
+`animation/FDOTHER_054/ending_prefix`。
+
+嚴格 loader 必須拒絕錯 schema、來源、resource、raw identity、格數、重複／缺漏索引、
+越出320×200的幾何、非固定相對路徑、非 indexed frame 或非二值 mask；不得回退讀取
+archive。`ending_preview` 建構器改為只消費此 frame bank；對話準備則改用已分離
+FDOTHER #5 entry0..19，不再保留 `fdotherPath`。固定原檔只留在 importer 與 oracle
+測試。驗收包含111格逐 indexed pixel／mask／placement 對照，以及在
+`FD2_FDOTHER`／`FD2_ORIGINAL_FDOTHER` 都不可讀時仍能由完整 `FD2_ASSET_PACK` 建立
+前綴並準備對話；缺 #54 或 #5 任一必要資料時，必須在發布半套 player 前失敗即關閉。
+
+2026-08-29 實作已完成：匯入器輸出111張indexed frame、111張binary mask及一份
+`bank.json`；嚴格loader固定archive／raw identity、格數、路徑及幾何，且固定原檔
+oracle逐格一致。正式`ending_preview`及其對話準備已移除`fdotherPath`與
+`DecodeResource`／`ReadResource`，缺原版FDOTHER／FDTXT／DATO的Docker／Xvfb抽測
+通過。重生後完整manifest共39,157筆：38,133 exported、1,005 intentionally raw、
+19 blocked，並通過來源／輸出hash驗證。本切片達`DATA-READY`／`RUNTIME-E1`。
 
 ### 商店 FDOTHER #12／#29／#63 索引素材契約
 

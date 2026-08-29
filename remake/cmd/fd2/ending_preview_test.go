@@ -139,15 +139,12 @@ func TestSourceBoundCampaignTailHoldsRecoveredTerminalFrame(t *testing.T) {
 }
 
 func TestFinalEndingFirstTextGatePrebuildsAllNativeSpeakerFrames(t *testing.T) {
-	const base = "../../../org_game/炎龍騎士團/FLAME2"
-	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "ANI.DAT", "DATO.DAT"} {
-		if _, err := os.Stat(filepath.Join(base, name)); err != nil {
-			t.Skip("player-provided ending resources are unavailable")
-		}
-	}
-	t.Setenv("FD2_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
-	t.Setenv("FD2_FDTXT", filepath.Join(base, "FDTXT.DAT"))
 	useEndingSeparatedANI(t)
+	missing := t.TempDir()
+	t.Setenv("FD2_FDOTHER", filepath.Join(missing, "FDOTHER.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(missing, "original-FDOTHER.DAT"))
+	t.Setenv("FD2_FDTXT", filepath.Join(missing, "FDTXT.DAT"))
+	t.Setenv("FD2_DATO", filepath.Join(missing, "DATO.DAT"))
 	preview, err := newNativeEndingPreviewForTimeline(nativeEndingTimelinePath, 29)
 	if err != nil {
 		t.Fatal(err)
@@ -177,8 +174,7 @@ func TestNativeEndingDialoguePrebuildFailurePublishesNothing(t *testing.T) {
 	compositor := ending.NewIndexedCompositor()
 	compositor.VGA[0] = 0x5a
 	p := &nativeEndingPreview{
-		chapter:     29,
-		fdotherPath: "/missing/FDOTHER.DAT",
+		chapter: 29,
 		player: &ending.Player{
 			Compositor: compositor,
 			State:      ending.PlaybackBlocked,
@@ -188,12 +184,30 @@ func TestNativeEndingDialoguePrebuildFailurePublishesNothing(t *testing.T) {
 			}}},
 		},
 	}
+	t.Setenv("FD2_ASSET_PACK", t.TempDir())
 	g := &Game{nativeEnding: p}
 	if err := g.queueNativeEndingDialogue(); err == nil {
 		t.Fatal("missing original dialogue assets were accepted")
 	}
 	if p.queued || p.dialogue != nil || p.dialogueView != nil || compositor.VGA[0] != 0x5a {
 		t.Fatalf("failed prebuild published partial state: queued=%v dialogue=%#v view=%#v vga0=%#x", p.queued, p.dialogue, p.dialogueView, compositor.VGA[0])
+	}
+}
+
+func TestNativeEndingPreviewUsesSeparatedPrefixWithoutOriginalFDOTHER(t *testing.T) {
+	pack := filepath.Clean("../../generated-assets/fd2-original-b97caf22")
+	if _, err := os.Stat(filepath.Join(pack, "animations", "fdother_054_ending_prefix", "bank.json")); err != nil {
+		t.Skip("separated ending prefix pack is unavailable")
+	}
+	t.Setenv("FD2_ASSET_PACK", pack)
+	t.Setenv("FD2_FDOTHER", filepath.Join(t.TempDir(), "missing-FDOTHER.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(t.TempDir(), "missing-original-FDOTHER.DAT"))
+	preview, err := newNativeEndingPreviewForTimeline(nativeEndingTimelinePath, 29)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if preview == nil || preview.player == nil || len(preview.player.Frames) != 111 {
+		t.Fatalf("separated ending preview=%#v", preview)
 	}
 }
 

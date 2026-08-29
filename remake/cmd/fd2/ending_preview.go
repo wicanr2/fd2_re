@@ -33,7 +33,6 @@ type nativeEndingPreview struct {
 	queued                bool
 	campaignSourceBound   bool
 	audioCueConsumed      bool
-	fdotherPath           string
 	montage               *ending.MontageCycle
 	montageWait           time.Duration
 	montageInputPending   bool
@@ -83,15 +82,12 @@ func newNativeEndingPreviewForTimeline(timelinePath string, chapter int) (*nativ
 	if err != nil {
 		return nil, err
 	}
-	fdotherPath := playerAssetPath("FD2_FDOTHER", []string{
-		"assets/FDOTHER.DAT",
-		"../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT",
-		"org_game/炎龍騎士團/FLAME2/FDOTHER.DAT",
-	})
-	if fdotherPath == "" {
-		return nil, fmt.Errorf("ending: player-provided FDOTHER.DAT is unavailable")
+	if timeline.Resource.Archive != "FDOTHER.DAT" || timeline.Resource.Index != 54 {
+		return nil, fmt.Errorf("ending: timeline frame source is not the recovered FDOTHER #54 contract")
 	}
-	frames, err := fdother.DecodeResource(fdotherPath, timeline.Resource.Index)
+	frames, err := fdother.LoadSeparatedEndingPrefixFrames(
+		separatedAssetPath("animations/fdother_054_ending_prefix"),
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -123,7 +119,6 @@ func newNativeEndingPreviewForTimeline(timelinePath string, chapter int) (*nativ
 	}
 	return &nativeEndingPreview{
 		player: player, view: ebiten.NewImage(ending.Width, ending.Height), chapter: chapter,
-		fdotherPath: fdotherPath,
 	}, nil
 }
 
@@ -511,16 +506,17 @@ func (g *Game) prepareNativeEndingDialogue(blocks []ending.DialogueBlock) (*endi
 	if err != nil {
 		return nil, err
 	}
-	resource5, err := fdother.ReadResource(g.nativeEnding.fdotherPath, 5)
+	entries, err := fdother.LoadSeparatedItemPanelEntries(separatedAssetPath("ui"))
 	if err != nil {
 		return nil, err
 	}
 	dialogueCells := make([]fdother.RawCell, 20)
 	for index := range dialogueCells {
-		dialogueCells[index], err = fdother.ParseLMI1RawEntry(resource5, index)
-		if err != nil {
-			return nil, err
+		cell, ok := entries.Raw[index]
+		if !ok {
+			return nil, fmt.Errorf("ending: separated FDOTHER #5 dialogue cell %d is unavailable", index)
 		}
+		dialogueCells[index] = cell
 	}
 	background := append([]byte(nil), g.nativeEnding.player.Compositor.VGA...)
 	prepared := make([]ending.NativeDialogueBlockFrames, 0, len(blocks))
