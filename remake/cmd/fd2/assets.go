@@ -167,6 +167,11 @@ func assetGlob(pattern string) []string {
 // packageSelfCheck 驗證正式封包必帶的可散布資料，也同時驗證 assetPath
 // 能從封包結構解析所有劇情引用。它刻意不要求玩家自行提供的原版衍生資產。
 func packageSelfCheck() error {
+	for _, localeID := range localeIDs {
+		if _, err := loadOfficialLocale(localeID); err != nil {
+			return fmt.Errorf("載入官方語系 %s: %w", localeID, err)
+		}
+	}
 	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
 	if err != nil {
 		return fmt.Errorf("載入完整戰役: %w", err)

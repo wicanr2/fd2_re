@@ -104,7 +104,13 @@ func (g *Game) executeNativeAIMode11Physical(plan *battle.AIPlan, after func()) 
 		return
 	}
 	g.awardDeathReward(target, actor)
-	g.msg = playerPhysicalAttackMessage(actor, target, attackResult)
+	message, messageErr := playerPhysicalAttackMessage(g.localeCatalog, actor, target, attackResult)
+	if messageErr != nil {
+		g.loadErr = "native AI mode 11 locale: " + messageErr.Error()
+		g.aiBusy = false
+		return
+	}
+	g.msg = message
 	attackerName, defenderName := actor.Name, target.Name
 	if attackerName == "" {
 		attackerName = actor.ClsName

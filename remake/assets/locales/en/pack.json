@@ -6,9 +6,9 @@
   "layout_profile": "dos-8x8-latin",
   "font": {"profile": "fd2-latin-8x8", "path": "fonts/atlas.png"},
   "entries": {
-    "legacy.go.remake.cmd.fd2.main.l5973-c22": {"text": "%s attacks %s, but misses", "variables": ["%s", "%s"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l5973-c22"},
-    "legacy.go.remake.cmd.fd2.main.l5975-c25": {"text": "%s attacks %s, dealing %d damage", "variables": ["%s", "%s", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l5975-c25"},
-    "legacy.go.remake.cmd.fd2.main.l5977-c14": {"text": ", critical hit", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l5977-c14"},
-    "legacy.go.remake.cmd.fd2.main.l5980-c26": {"text": ", EXP +%.0f", "variables": ["%.0f"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l5980-c26"}
+    "battle.attack.miss": {"text": "%s attacks %s, but misses", "variables": ["%s", "%s"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l5973-c22"},
+    "battle.attack.hit": {"text": "%s attacks %s, dealing %d damage", "variables": ["%s", "%s", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l5975-c25"},
+    "battle.attack.critical_suffix": {"text": ", critical hit", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l5977-c14"},
+    "battle.attack.exp_suffix": {"text": ", EXP +%.0f", "variables": ["%.0f"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l5980-c26"}
   }
 }

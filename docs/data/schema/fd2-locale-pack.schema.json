@@ -21,7 +21,7 @@
     },
     "entries": {
       "type": "object", "minProperties": 1,
-      "patternProperties": {"^legacy\\.go\\.remake\\.cmd\\.fd2\\.[a-z0-9_]+\\.l[0-9]+-c[0-9]+$": {"$ref": "#/$defs/entry"}},
+      "patternProperties": {"^[a-z][a-z0-9]*(?:\\.[a-z0-9_]+)+$": {"$ref": "#/$defs/entry"}},
       "additionalProperties": false
     }
   },

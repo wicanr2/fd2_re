@@ -2,7 +2,7 @@
 # build-windows.sh — CGO 跨編 Windows fd2.exe(mingw-w64,docker fd2-build-mingw image)。
 # Ebiten desktop 後端在 Windows 走 win32/DirectX,CGO_ENABLED=1 是硬需求(cgo glfw binding)。
 #
-# 產物只有 binary + 已入庫資產(scenarios/story/spells.json);其餘版權資產由玩家自跑
+# 產物只有 binary + 已入庫資產(scenarios/story/locales/spells.json);其餘版權資產由玩家自跑
 # tools/export_engine_assets.py 產生後,放到 exe 旁的 assets/ 資料夾(Windows 無 XDG 概念,
 # 桌面版走「cwd 相對 assets/」這條既有 fallback,見 cmd/fd2/assets.go assetPath 第 3 層)。
 set -euo pipefail
@@ -19,7 +19,7 @@ docker run --rm --network none \
     dist=packaging/dist/windows
     archive=packaging/dist/fd2-windows-x86_64.zip
     rm -rf "$dist" "$archive"
-    mkdir -p "$dist/assets/scenarios" "$dist/assets/story" /tmp/home /tmp/go-cache
+    mkdir -p "$dist/assets/scenarios" "$dist/assets/story" "$dist/assets/locales" /tmp/home /tmp/go-cache
 
     CGO_ENABLED=1 GOOS=windows GOARCH=amd64 \
       CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ \
@@ -28,6 +28,7 @@ docker run --rm --network none \
 
     cp -R assets/scenarios/. "$dist/assets/scenarios/"
     cp -R assets/story/. "$dist/assets/story/"
+    cp -R assets/locales/. "$dist/assets/locales/"
     cp assets/spells.json "$dist/assets/spells.json"
     file "$dist/fd2.exe" | tee packaging/dist/fd2-windows-x86_64.file.txt
     (cd "$dist" && zip -qr "../fd2-windows-x86_64.zip" .)

@@ -49,16 +49,42 @@ func TestResolvePlayerPhysicalAttackFailsClosedWithoutRNG(t *testing.T) {
 }
 
 func TestPlayerPhysicalAttackMessagePreservesSettlementResult(t *testing.T) {
+	catalog, err := loadOfficialLocale("zh-Hant")
+	if err != nil {
+		t.Fatal(err)
+	}
 	actor := &battle.Unit{Name: "亞雷斯"}
 	target := &battle.Unit{Name: "盜賊"}
-	miss := playerPhysicalAttackMessage(actor, target, battle.AttackResult{Missed: true})
+	miss, err := playerPhysicalAttackMessage(catalog, actor, target, battle.AttackResult{Missed: true})
+	if err != nil {
+		t.Fatal(err)
+	}
 	if !strings.Contains(miss, "未命中") {
 		t.Fatalf("miss message=%q", miss)
 	}
-	hit := playerPhysicalAttackMessage(actor, target, battle.AttackResult{Amount: 12, Crit: true, ExpGained: 8})
+	hit, err := playerPhysicalAttackMessage(catalog, actor, target, battle.AttackResult{Amount: 12, Crit: true, ExpGained: 8})
+	if err != nil {
+		t.Fatal(err)
+	}
 	for _, want := range []string{"造成 12 傷害", "暴擊", "經驗 +8"} {
 		if !strings.Contains(hit, want) {
 			t.Fatalf("hit message=%q missing %q", hit, want)
+		}
+	}
+}
+
+func TestPlayerPhysicalAttackMessageUsesAllOfficialLocales(t *testing.T) {
+	actor := &battle.Unit{Name: "Sol"}
+	target := &battle.Unit{Name: "Bandit"}
+	wants := map[string]string{"zh-Hant": "未命中", "zh-Hans": "未命中", "ja": "外れた", "en": "misses"}
+	for localeID, want := range wants {
+		catalog, err := loadOfficialLocale(localeID)
+		if err != nil {
+			t.Fatalf("%s: %v", localeID, err)
+		}
+		message, err := playerPhysicalAttackMessage(catalog, actor, target, battle.AttackResult{Missed: true})
+		if err != nil || !strings.Contains(message, want) {
+			t.Fatalf("%s message=%q err=%v, want %q", localeID, message, err, want)
 		}
 	}
 }

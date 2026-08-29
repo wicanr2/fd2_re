@@ -350,8 +350,11 @@ go run ./cmd/fd2-string-inventory -repo .. -summary -output ../docs/data/fd2-str
 2026-08-29 已新增受控語言包 schema、validator 與四語共同的 4-key 戰鬥訊息
 垂直切片。官方包必須具有相同 key 集與變數簽章，社群包只能覆寫既有 key 並明列
 官方 base locale；不安全路徑、未知頂層欄位與缺官方 key 均失敗即關閉。這只把
-契約與四筆真實翻譯提升為 `DATA-READY`，**未**把其餘約 2,493 個互異來源字串、
-日文字形覆蓋、排版 prototype、設定檔或執行期切換冒稱完成。
+契約與四筆真實翻譯提升為 `RUNTIME-E1`：正式 Go loader 與 Python validator 交叉
+驗證同一契約，玩家與敵方三條物理攻擊路徑均由 semantic key 格式化；F4 先驗證
+完整下一包再原子切換，`fd2_settings.json`保存 BCP 47 `locale_id`，戰役存檔不含
+語系。`packageSelfCheck`亦要求四個官方包可載入。這仍**未**把其餘約 2,493 個互異
+來源字串、日文字形覆蓋或排版 prototype 冒稱完成。
 
 ### 四之二、legacy 匯入與 canonical 往返
 

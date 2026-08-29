@@ -21,18 +21,31 @@ var bgmSourceName = map[string]string{
 	"mt32": "Roland MT-32",
 }
 
+var localeIDs = []string{"zh-Hant", "zh-Hans", "ja", "en"}
+
+var localeDisplayName = map[string]string{
+	"zh-Hant": "繁體中文",
+	"zh-Hans": "简体中文",
+	"ja":      "日本語",
+	"en":      "English",
+}
+
 type settings struct {
 	BGMSource string `json:"bgm_source"` // "fm"(預設)或 "mt32"
+	LocaleID  string `json:"locale_id"`  // BCP 47；不屬於戰役存檔
 }
 
 // loadSettings 讀 fd2_settings.json；無檔或不合法時回重製端預設 FM。
 func loadSettings() settings {
-	s := settings{BGMSource: "fm"}
+	s := settings{BGMSource: "fm", LocaleID: "zh-Hant"}
 	if raw, err := os.ReadFile(settingsPath()); err == nil {
 		json.Unmarshal(raw, &s)
 	}
 	if bgmSourceName[s.BGMSource] == "" {
 		s.BGMSource = "fm"
+	}
+	if localeDisplayName[s.LocaleID] == "" {
+		s.LocaleID = "zh-Hant"
 	}
 	return s
 }
@@ -53,11 +66,34 @@ func (g *Game) cycleBGMSource() {
 		}
 	}
 	g.bgmSource = bgmSources[(i+1)%len(bgmSources)]
-	saveSettings(settings{BGMSource: g.bgmSource})
+	saveSettings(settings{BGMSource: g.bgmSource, LocaleID: g.localeID})
 	g.msg = "音源:" + bgmSourceName[g.bgmSource]
 	// 強制重播目前曲(繞過同曲不重播:清 bgmCur)
 	if cur := g.bgmCur; cur != "" {
 		g.bgmCur = ""
 		g.playBGM(cur)
 	}
+}
+
+// cycleLocale 先完整驗證下一個官方包，再原子切換並保存；載入失敗時維持舊語系。
+func (g *Game) cycleLocale() {
+	if g == nil {
+		return
+	}
+	i := 0
+	for k, id := range localeIDs {
+		if id == g.localeID {
+			i = k
+			break
+		}
+	}
+	next := localeIDs[(i+1)%len(localeIDs)]
+	catalog, err := loadOfficialLocale(next)
+	if err != nil {
+		g.loadErr = "locale setting: " + err.Error()
+		return
+	}
+	g.localeID, g.localeCatalog = next, catalog
+	saveSettings(settings{BGMSource: g.bgmSource, LocaleID: g.localeID})
+	g.msg = "語言：" + localeDisplayName[next]
 }

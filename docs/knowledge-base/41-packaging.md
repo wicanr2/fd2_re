@@ -4,6 +4,16 @@
 (AppImage squashfs)內既讀不到 `assets/`、也寫不了存檔,詳見 `38-editor-design.md` §6.5 的設計討論;
 本篇是那份設計的**實作紀錄 + 驗證證據**。
 
+> **2026-08-29 四語封包候選：**Linux AppImage 與 Windows ZIP 已由更新後的
+> 一次性無網路 Docker 流程重建，兩包均包含 `zh-Hant`、`zh-Hans`、`ja`、`en`
+> 四份官方 `pack.json`。AppImage 為 5,384,696 bytes，SHA-256
+> `7cd1604195029c5009c0dd3a6d652521db5c08eef103f3c3071da0b50f67488a`，並從空白
+> cwd 在有界 Xvfb 下通過 `FD2_PACKAGE_SELF_CHECK=1`。Windows ZIP 為 4,977,102
+> bytes，SHA-256 為
+> `7d202d0196a0ae3f5712e244c5c46e2355a7cbd184c9a60c5fd709a8edff48a4`，已逐名
+> 驗證四包存在；本輪未取得 Wine／Windows 原生執行收據。macOS workflow 已同步
+> 複製 locales，但必須待推送後由原生 runner 驗證，不能由 Linux 宣稱完成。
+
 > **2026-08-27 `3dd0bd20` 最新候選：**既有鎖定映像在一次性無網路Docker中
 > 重建Linux AppImage 5,327,352 bytes（SHA-256
 > `32239daafc48bfda68d1ea0ba945ef51e54f1e74128bac21c1d9ebc2a12091f5`）與Windows
@@ -267,7 +277,7 @@ job `98286706193`已在`ubuntu-latest`成功完成鎖定Docker映像建置、無
 
 Linux／MinGW容器仍是可重現的正式交叉封包來源，但Wine只能提供相容層煙霧測試。
 GitHub Actions的`windows-latest`流程必須另以原生Go／MinGW工具鏈建置同一GUI程式，
-只封入`assets/scenarios`、`assets/story`與`assets/spells.json`。組裝後須切換到空白工作目錄，
+只封入`assets/scenarios`、`assets/story`、`assets/locales`與`assets/spells.json`。組裝後須切換到空白工作目錄，
 直接執行ZIP目錄內的`fd2.exe`並設定`FD2_PACKAGE_SELF_CHECK=1`；其驗收條件與macOS相同：
 完整campaign轉場、36個唯一法術ID與全部story引用均通過。任何資料缺漏、程式非零退出、
 封包失敗或artifact缺失都必須讓workflow失敗。此項只證明Windows原生程序與公開資料封包，
@@ -278,7 +288,7 @@ image(`fd2-build-mingw`),並預抓 Go modules、內建`file`／`zip`；正式封
 `CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc`。
 `-ldflags="-H=windowsgui"` 讓正式版雙擊不彈 cmd 黑窗。
 
-產物 `fd2-windows-x86_64.zip`:`fd2.exe` + 已入庫資產(scenarios/story/spells.json)。Windows 沒有
+產物 `fd2-windows-x86_64.zip`:`fd2.exe` + 已入庫資產(scenarios/story/locales/spells.json)。Windows 沒有
 XDG 慣例,桌面版走 `assetPath()` 三層查找的**第 3 層(cwd 相對)**——玩家自備原版產出的資產放在
 `fd2.exe` 旁的 `assets/` 資料夾即可,不強制走 `%USERPROFILE%\.local\share`(該路徑仍是存檔/設定
 的落點,兩者不衝突)。

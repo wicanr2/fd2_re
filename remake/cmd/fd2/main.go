@@ -42,6 +42,7 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
+	"github.com/wicanr2/fd2_re/remake/internal/localization"
 	"github.com/wicanr2/fd2_re/remake/internal/musiccatalog"
 )
 
@@ -478,6 +479,8 @@ type Game struct {
 	dim                *ebiten.Image                               // 全螢幕暗化/底板共用(回合橫幅、單位面板)
 	figMeta            map[int][][2]int                            // FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(doc06;動畫走位全靠它)
 	font               *Font                                       // 原版點陣中文字型(doc 08)
+	localeID           string                                      // 全域語系設定；不寫入戰役存檔
+	localeCatalog      *localization.Catalog                       // 已完整驗證的官方語言包
 
 	nativeChapterRestore *campaign.NativeChapterSlotRestorePlan // 四槽 LOAD 的已驗證戰間狀態；未知 raw bytes 僅保存、不猜接
 
@@ -5957,7 +5960,7 @@ func (g *Game) resolvePlayerPhysicalAttack(actor, target *battle.Unit) (battle.A
 	return g.resolvePhysicalAttack(actor, target)
 }
 
-func playerPhysicalAttackMessage(actor, target *battle.Unit, result battle.AttackResult) string {
+func playerPhysicalAttackMessage(catalog *localization.Catalog, actor, target *battle.Unit, result battle.AttackResult) (string, error) {
 	actorName, targetName := "攻方", "目標"
 	if actor != nil {
 		if actor.Name != "" {
@@ -5974,16 +5977,27 @@ func playerPhysicalAttackMessage(actor, target *battle.Unit, result battle.Attac
 		}
 	}
 	if result.Missed {
-		return fmt.Sprintf("%s 攻擊 %s，未命中", actorName, targetName)
+		return catalog.Format("battle.attack.miss", actorName, targetName)
 	}
-	message := fmt.Sprintf("%s 攻擊 %s，造成 %d 傷害", actorName, targetName, result.Amount)
+	message, err := catalog.Format("battle.attack.hit", actorName, targetName, result.Amount)
+	if err != nil {
+		return "", err
+	}
 	if result.Crit {
-		message += "，暴擊"
+		suffix, err := catalog.Format("battle.attack.critical_suffix")
+		if err != nil {
+			return "", err
+		}
+		message += suffix
 	}
 	if result.ExpGained > 0 {
-		message += fmt.Sprintf("，經驗 +%.0f", result.ExpGained)
+		suffix, err := catalog.Format("battle.attack.exp_suffix", result.ExpGained)
+		if err != nil {
+			return "", err
+		}
+		message += suffix
 	}
-	return message
+	return message, nil
 }
 
 // dirToward 從 (ax,ay) 朝 (tx,ty) 的方向:0下 1左 2上 3右(FDICON 方向幀)。
@@ -6710,7 +6724,12 @@ func (g *Game) confirm() {
 			return
 		}
 		g.awardDeathReward(tgt, g.sel)
-		g.msg = playerPhysicalAttackMessage(g.sel, tgt, attackResult)
+		message, messageErr := playerPhysicalAttackMessage(g.localeCatalog, g.sel, tgt, attackResult)
+		if messageErr != nil {
+			g.loadErr = "physical attack locale: " + messageErr.Error()
+			return
+		}
+		g.msg = message
 		actor := g.sel
 		g.atk = g.newAtkAnim(actor.BattleFig, tgt.BattleFig, anm, nm,
 			actor.HP, actor.MaxHP, actor.Lv, actor.MP, actor.MaxMP,
@@ -6788,6 +6807,9 @@ func (g *Game) Update() error {
 	g.stepNativePreparationUILifecycle(time.Now())
 	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF2) { // 全域:切換音源(MT-32 / Sound Blaster)
 		g.cycleBGMSource()
+	}
+	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF4) { // 全域：切換官方語系
+		g.cycleLocale()
 	}
 	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF3) { // 全域:開發除錯 HUD 開關
 		g.debug = !g.debug
@@ -9440,7 +9462,22 @@ func loadGame() *Game {
 		shotFrame:              20,
 		nativeMapHUDPersistent: battle.InitialNativeMapHUDPersistentState(),
 	}
-	g.bgmSource = loadSettings().BGMSource // 音源設定(預設 fm=Sound Blaster)
+	configured := loadSettings()
+	g.bgmSource = configured.BGMSource // 音源設定(預設 fm=Sound Blaster)
+	g.localeID = configured.LocaleID
+	if v := os.Getenv("FD2_LOCALE"); v != "" {
+		if localeDisplayName[v] == "" {
+			g.loadErr = "locale setting: unsupported locale " + v
+			return g
+		}
+		g.localeID = v
+	}
+	var localeErr error
+	g.localeCatalog, localeErr = loadOfficialLocale(g.localeID)
+	if localeErr != nil {
+		g.loadErr = "locale setting: " + localeErr.Error()
+		return g
+	}
 	if v := os.Getenv("FD2_BGM_SOURCE"); v != "" && bgmSourceName[v] != "" {
 		g.bgmSource = v // 覆寫(截圖/測試用)
 	}
@@ -10354,7 +10391,13 @@ func (g *Game) aiStep() {
 				return
 			}
 			g.awardDeathReward(tgt, u)
-			g.msg = playerPhysicalAttackMessage(u, tgt, attackResult)
+			message, messageErr := playerPhysicalAttackMessage(g.localeCatalog, u, tgt, attackResult)
+			if messageErr != nil {
+				g.loadErr = "AI physical attack locale: " + messageErr.Error()
+				g.aiBusy = false
+				return
+			}
+			g.msg = message
 			g.atk = g.newAtkAnim(u.BattleFig, tgt.BattleFig, anm, nm,
 				u.HP, u.MaxHP, u.Lv, u.MP, u.MaxMP,
 				tgt.Lv, tgt.MP, tgt.MaxMP,

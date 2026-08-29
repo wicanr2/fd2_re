@@ -10,12 +10,13 @@ from pathlib import Path
 OFFICIAL = {"zh-Hant", "zh-Hans", "ja", "en"}
 LOCALE_RE = re.compile(r"^[a-z]{2,3}(?:-[A-Z][a-z]{3})?(?:-[A-Z]{2}|-[0-9]{3})?$")
 PACK_ID_RE = re.compile(r"^[a-z0-9][a-z0-9._-]+$")
-KEY_RE = re.compile(r"^legacy\.go\.remake\.cmd\.fd2\.[a-z0-9_]+\.l[0-9]+-c[0-9]+$")
+KEY_RE = re.compile(r"^[a-z][a-z0-9]*(?:\.[a-z0-9_]+)+$")
 VAR_RE = re.compile(r"^%(?:%|[-+0-9.#]*[a-zA-Z])$")
-ALLOWED_SOURCE = {
-    "legacy.go.remake.cmd.fd2.main.l5957-c27", "legacy.go.remake.cmd.fd2.main.l5957-c37",
-    "legacy.go.remake.cmd.fd2.main.l5973-c22", "legacy.go.remake.cmd.fd2.main.l5975-c25",
-    "legacy.go.remake.cmd.fd2.main.l5977-c14", "legacy.go.remake.cmd.fd2.main.l5980-c26",
+APPROVED_SOURCE = {
+    "battle.attack.miss": "legacy.go.remake.cmd.fd2.main.l5973-c22",
+    "battle.attack.hit": "legacy.go.remake.cmd.fd2.main.l5975-c25",
+    "battle.attack.critical_suffix": "legacy.go.remake.cmd.fd2.main.l5977-c14",
+    "battle.attack.exp_suffix": "legacy.go.remake.cmd.fd2.main.l5980-c26",
 }
 
 def fail(message: str) -> None:
@@ -60,7 +61,7 @@ def validate_one(path: Path) -> dict:
         if not isinstance(entry["text"], str) or not entry["text"]: fail(f"{path}: empty text for {key}")
         variables = entry["variables"]
         if not isinstance(variables, list) or any(not isinstance(v, str) or not VAR_RE.fullmatch(v) for v in variables): fail(f"{path}: invalid variables for {key}")
-        if entry["source_string_id"] != key or entry["source_string_id"] not in ALLOWED_SOURCE: fail(f"{path}: source is not an approved player-visible ID for {key}")
+        if entry["source_string_id"] != APPROVED_SOURCE.get(key): fail(f"{path}: source is not an approved player-visible ID for {key}")
     return data
 
 def validate(paths: list[Path]) -> list[dict]:

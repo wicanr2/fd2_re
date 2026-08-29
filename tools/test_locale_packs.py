@@ -45,7 +45,7 @@ class LocalePackTests(unittest.TestCase):
 
     def test_variable_signature_mismatch_fails_closed(self):
         payload = json.loads(OFFICIAL[2].read_text(encoding="utf-8"))
-        key = "legacy.go.remake.cmd.fd2.main.l5975-c25"
+        key = "battle.attack.hit"
         payload["entries"][key]["variables"] = ["%s", "%d", "%d"]
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "broken.json"

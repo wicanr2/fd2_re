@@ -9,7 +9,7 @@
 # 從源碼編一堆 .dylib 再用 dylibbundler 打包(見 mac-app-cross-pack skill)——go build 出來的
 # binary 幾乎不依賴第三方動態庫,.app 打包大幅簡化。
 #
-# 版權資產一樣不 ship:.app 裡只放 assets/scenarios、assets/story、assets/spells.json
+# 版權資產一樣不 ship:.app 裡只放 assets/scenarios、assets/story、assets/locales、assets/spells.json
 # (跟 AppImage/Windows 同一份"已入庫內容"清單)。玩家自備原版跑 tools/export_engine_assets.py,
 # 產出放 $XDG_DATA_HOME/fd2_re/assets/(macOS 沒有 XDG 慣例目錄,但 cmd/fd2/assets.go 的
 # userDataDir() 在 XDG_DATA_HOME 未設時 fallback 到 $HOME/.local/share/,Go 標準庫在 macOS 上
@@ -55,9 +55,10 @@ jobs:
       - name: 組 .app bundle(Info.plist + 已入庫資產 + 原生圖示)
         run: |
           APP=packaging/dist/FD2.app
-          mkdir -p "$APP/Contents/Resources/assets/scenarios" "$APP/Contents/Resources/assets/story"
+          mkdir -p "$APP/Contents/Resources/assets/scenarios" "$APP/Contents/Resources/assets/story" "$APP/Contents/Resources/assets/locales"
           cp -r assets/scenarios/. "$APP/Contents/Resources/assets/scenarios/"
           cp -r assets/story/.    "$APP/Contents/Resources/assets/story/"
+          cp -r assets/locales/.  "$APP/Contents/Resources/assets/locales/"
           cp assets/spells.json   "$APP/Contents/Resources/assets/spells.json"
           ICONSET=packaging/dist/fd2.iconset
           mkdir -p "$ICONSET"
