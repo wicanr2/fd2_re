@@ -13,17 +13,18 @@
 
 > **新工作前沿**：第一輪代表性可玩抽樣已閉合後，下一個產品目標改為
 > 「可安全編輯的資料契約＋原版素材完全分離」。實檔稽核已確認現有 JSON 缺穩定
-> ID／統一版本／往返契約，且 production runtime 仍直接讀多個 `.DAT`；正式規格見
+> ID／統一版本／往返契約；正式 runtime 的最新 caller 稽核則已排除直接 `.DAT`
+> consumer，不能再沿用較早的相反斷言。正式規格見
 > [`60-editor-separated-assets-spec.md`](60-editor-separated-assets-spec.md)。現代美術
 > 只在分離 catalog 上建立獨立 theme，不覆蓋忠實原版主題。
 
 | 順序 | 工作 | 現況 | 下一個可驗收結果 |
 |---:|---|---|---|
-| A1 | 編輯器 canonical schema 與穩定身份層 | `SPEC-READY`：campaign／scenario／story／animation 四份 machine-readable Schema 與跨檔 validator 已建立；穩定 ID、戰役轉場、mouth animation、素材 `asset_id`、重複 ID 及受控 extensions 有11項 Docker 測試。現有資料仍是 legacy 單向 loader，尚未轉入 canonical 格式 | 加入 legacy import 診斷、canonical writer 與 load→write→reload 測試；再建立 character identity 文件，分離連結 portrait／map sprite／battle animation，達 `DATA-READY` 後才接編輯器 UI |
-| A2 | 原版素材全量分離與清冊 | `DATA-PARTIAL／LEDGER-DATA-READY`：manifest v2現有39,825筆asset與1,005筆source-resource ledger；901 standardized、11個零長度confirmed-empty、0 blocked、93 unknown。完整本機包有40,127個實體檔案、約104 MB，已於2026-08-29以私人庫保存；公開庫只留工具、摘要與經審查總攬圖。本機完整版組裝器已實跑42,253個檔案並逐檔驗證，可直接以`FD2_ASSET_PACK`消費合併素材。FDSHAP control、終局FDFIELD #91/#92、map23 FDFIELD #69、FDOTHER #1／#6完整bank、標題FDOTHER #77／#78音效、#79兩幀raw pending-code呈現、#102短暫調色盤及15首音樂已建立可驗證關聯；可版控摘要綁定完整manifest SHA-256。93筆unknown分布為FDFIELD 79、FDMUS 5、FDOTHER 9，不等同93個decoder缺口 | 將93筆unknown與production consumer及既有runtime標準資料交叉比對；以真實Linux／Windows／macOS payload各組裝一包並做平台驗收；FDOTHER #47／#49維持unknown，不為減數量猜接 |
+| A1 | 編輯器 canonical schema 與穩定身份層 | `DATA-READY（第一個實檔切片）`：四份 schema、跨檔 validator、legacy campaign／scenario／story／animation importer、可機讀診斷與 deterministic writer 已建立；實際 `campaign_full`、ch01 scenario／story及AFM metadata通過load→write→reload，未知欄位保存在受控extensions，native角色身份不再依顯示文字或台詞位置 | 批次產生並驗證全戰役 canonical 文件；建立character identity文件，分離連結portrait／map sprite／battle animation，再讓runtime與編輯器UI正式消費canonical資料 |
+| A2 | 原版素材全量分離與清冊 | `RELEASE-DATA-READY／RESEARCH-PARTIAL`：manifest v2現有39,825筆asset與1,005筆source-resource ledger；901 standardized、11個零長度confirmed-empty、0 blocked、93 unknown。完整本機包有40,127個實體檔案、約104 MB，已於2026-08-29以私人庫保存；公開庫只留工具、摘要與經審查總攬圖。本機完整版組裝器已實跑42,253個檔案並逐檔驗證，可直接以`FD2_ASSET_PACK`消費合併素材。正式`Game` caller交叉稽核未發現93筆unknown有直接archive consumer，因此它們保留為研究清冊，不阻擋第一版；這不把unknown冒稱已解碼 | 以真實Linux／Windows／macOS payload各組裝一包並做平台驗收；只有新證據找到正式consumer才重開對應unknown。FDOTHER #47／#49維持unknown，不為減數量猜接 |
 | A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型、FDICON、FDSHAP、ANI、FDFIELD主要玩家路徑，以及城鎮、商店、標題、LOAD、整備、教會與戰場初始化均已遷移。19個巢狀音效bank已分離；標題#77選單音與ANI #1的#78 companion均由正式runtime消費。2026-08-29 caller稽核未發現正式`Game`仍直接讀原版archive，`FD2_ORIGINAL_FDOTHER`／`DATO` locator亦已移到測試專用檔，正式binary字串檢查通過；archive adapter只留source-oracle。BGM只從完整驗證的30份OGG catalog解析，物理攻擊亦由分離FIGANI provider原子預檢 | 以version 2 ledger的93筆unknown交叉核對是否有尚未登記的玩家consumer；已具標準資料但缺manifest bridge者只補provenance。沒有正式caller的oracle helper不再列為runtime缺口；只有新證據證明正式consumer存在才重開RE→spec→runtime切片 |
 | A4 | 現代美術主題 | `NOT-STARTED／TRACKED`：截至2026-08-29尚未產生可驗收的新頭像、戰場sprite／tile或介面框；目前只有原版分離素材與既有重製畫面，不得冒稱現代美術已開工 | 第一批只做可丟棄原版／現代對照prototype：同一角色頭像、同一戰場單位＋地形、同一對話／戰鬥HUD介面框各一組；保存來源asset ID、風格prompt、輸出雜湊與實機合成截圖，由使用者選定方向後才建立theme catalog並批量生產 |
-| A5 | 繁中／簡中／日文／英文與可調文字顯示 | `DECISION-CONFIRMED／SPEC-READY`：使用者已確認繁中`zh-Hant`、簡中`zh-Hans`、日文`ja`、英文`en`四語官方內建，並允許同一受控契約的外部社群語言包。可重跑清冊現有5,233筆來源候選／2,497個互異繁中字串／150筆含變數；80筆Go待審常值已由同一SHA綁定為31玩家可見、42內部診斷、3開發、4未知。原版FDTXT證據保持唯讀，語言與字級只存`fd2_settings.json`，不進戰役save | 把候選合併為character／entity／line穩定ID，建立locale／layout／community-pack schema、完整key／變數／字形／安全路徑validator與最長字串prototype；再接runtime四語切換。非繁中忠實主題範圍與文字縮放界線仍由prototype決定 |
+| A5 | 繁中／簡中／日文／英文與可調文字顯示 | `DATA-READY（4-key切片）`：四語官方內建與外部社群包決策不變；語言包schema、BCP47／安全路徑／受控字型／共同key／變數簽章validator已建立，四語各含同一組4筆真實戰鬥訊息，官方缺key與社群包越權均拒絕。完整候選仍為5,233筆來源／2,497個互異繁中字串，不能把4筆切片冒稱完整翻譯 | 將候選合併為character／entity／line穩定ID並完成四語catalog；驗證日文字形與所有包內字型覆蓋，接`fd2_settings.json`與runtime切換，再以對話／商店／戰鬥HUD最長字串prototype裁決非繁中忠實主題與文字縮放界線 |
 
 > **2026-08-29 A2／A3 追加：** event61 FDOTHER #45 的59幀演出已達
 > `DATA-READY／RUNTIME-E1`；59組 indexed PNG／mask 逐幀對照原版通過，

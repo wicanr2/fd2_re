@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fd2-remake.invalid/schema/fd2-locale-pack-v1.json",
+  "title": "FD2 語系資料包",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "pack_id", "locale", "kind", "layout_profile", "font", "entries"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "pack_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
+    "locale": {"type": "string", "pattern": "^(?:[a-z]{2,3})(?:-[A-Z][a-z]{3})?(?:-[A-Z]{2}|-[0-9]{3})?$"},
+    "kind": {"enum": ["official", "community"]},
+    "base_locale": {"type": "string", "pattern": "^[a-z]{2,3}(?:-[A-Z][a-z]{3})?(?:-[A-Z]{2}|-[0-9]{3})?$"},
+    "layout_profile": {"enum": ["dos-8x8-latin", "pc98-16x16-cjk"]},
+    "font": {
+      "type": "object", "additionalProperties": false, "required": ["profile", "path"],
+      "properties": {
+        "profile": {"enum": ["fd2-latin-8x8", "fd2-cjk-16x16"]},
+        "path": {"type": "string", "pattern": "^(?:fonts/[a-z0-9][a-z0-9._/-]*\\.(?:png|bin|json))$"}
+      }
+    },
+    "entries": {
+      "type": "object", "minProperties": 1,
+      "patternProperties": {"^legacy\\.go\\.remake\\.cmd\\.fd2\\.[a-z0-9_]+\\.l[0-9]+-c[0-9]+$": {"$ref": "#/$defs/entry"}},
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object", "additionalProperties": false,
+      "required": ["text", "variables", "source_string_id"],
+      "properties": {
+        "text": {"type": "string", "minLength": 1, "maxLength": 240},
+        "variables": {"type": "array", "items": {"type": "string", "pattern": "^%(?:%|[-+0-9.#]*[a-zA-Z])$"}},
+        "source_string_id": {"type": "string", "pattern": "^legacy\\.go\\.remake\\.cmd\\.fd2\\.[a-z0-9_]+\\.l[0-9]+-c[0-9]+$"}
+      }
+    }
+  },
+  "allOf": [
+    {"if": {"properties": {"kind": {"const": "official"}}, "required": ["kind"]}, "then": {"not": {"required": ["base_locale"]}}},
+    {"if": {"properties": {"kind": {"const": "community"}}, "required": ["kind"]}, "then": {"required": ["base_locale"]}}
+  ]
+}

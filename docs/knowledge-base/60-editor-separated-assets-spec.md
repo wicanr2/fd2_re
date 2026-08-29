@@ -20,9 +20,9 @@
    概念；目前缺少面向創作者的角色身份關聯表。
 5. FIGANI、DATO、TAI、BG、介面格、音效與音樂雖已有個別匯出器，尚未形成
    一份可驗證、可定位來源、供 runtime 與編輯器共同使用的完整素材清冊。
-6. 正式 runtime 仍有多條玩家路徑即時讀取 `FDOTHER.DAT`、`FDTXT.DAT`、
-   `FIGANI.DAT`、`BG.DAT`、`TAI.DAT` 與 `FDFIELD.DAT`。因此目前不能宣稱遊戲只
-   消費分離素材。
+6. 2026-08-29 的正式 `Game` caller 稽核未再發現直接讀取上述 `.DAT` 的路徑；
+   archive adapter 只留在來源 oracle 與測試工具。這不把 93 筆清冊 `unknown`
+   自動升格為標準素材，也不代表三平台完整版已完成實機驗收。
 
 ## 二、權利與執行邊界
 
@@ -347,8 +347,28 @@ go run ./cmd/fd2-string-inventory -repo .. -summary -output ../docs/data/fd2-str
 - `%d`、`%s`、`%w`等格式變數已保存簽章；正式語言包validator仍須比較每個語系的
   變數集合與型別，禁止譯文遺失或新增變數。
 
-因此本切片只關閉「來源候選可重跑盤點」，未把語言包schema、四語翻譯、字型覆蓋、
-排版或執行期切換提升為完成。
+2026-08-29 已新增受控語言包 schema、validator 與四語共同的 4-key 戰鬥訊息
+垂直切片。官方包必須具有相同 key 集與變數簽章，社群包只能覆寫既有 key 並明列
+官方 base locale；不安全路徑、未知頂層欄位與缺官方 key 均失敗即關閉。這只把
+契約與四筆真實翻譯提升為 `DATA-READY`，**未**把其餘約 2,493 個互異來源字串、
+日文字形覆蓋、排版 prototype、設定檔或執行期切換冒稱完成。
+
+### 四之二、legacy 匯入與 canonical 往返
+
+> 狀態：**DATA-READY（第一個實檔切片）**（2026-08-29）
+
+`tools/import_editor_legacy.py` 現可將 legacy campaign、scenario、story 與既有動畫
+metadata 投影成四份 canonical 文件。穩定 ID 只由來源路徑、legacy key、原始數值與
+索引建立，不依賴顯示文字；未映射欄位完整保存在 `extensions.legacy`，並產生可機讀
+診斷。scenario 的 legacy `do[]` 已明確轉成 canonical `actions[]`；具非負
+`native_identity` 的隊員與台詞 speaker 共用 `character/native-N`，避免同一角色因
+台詞位置不同而被拆成多個身份。
+
+writer 採固定 UTF-8、排序 key 與縮排，load→write→reload 不改動來源、擴充欄位、
+穩定 ID 或戰役轉場。實際 `campaign_full.json`、ch01 scenario、ch01 story 與 AFM
+metadata 均已進 Docker 往返測試，並與既有跨文件 validator 一起通過。這一層仍是
+匯入／寫回基礎，不等於完整角色 identity catalog、全 35 章 canonical 產物、編輯器
+圖形介面或 runtime 已改讀 canonical 文件。
 
 ## 五、往返與相容性
 
