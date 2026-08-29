@@ -832,6 +832,26 @@ archive subresources、125張一般 PNG、264組 FIGANI／2,118張動畫 frame�
 逐檔 `asset_id`／hash／用途。這些缺口已明列，不以「全量試跑成功」冒稱所有素材
 皆已轉成正式 PNG／OGG。
 
+### 私人素材保存庫與本機完整版契約
+
+> 決策狀態：**CONFIRMED（2026-08-29）**
+
+- 完整分離包已由私人儲存庫提交 `21c9d775a6aa0b7035147313b2080610906cfa07` 保存；
+  pack manifest SHA-256 為
+  `94d90aee84f316dd7cbfcce21416a5aaf327a42a75342f9e531299ee35e06c38`。公開 `fd2_re`
+  只保留解碼器、schema、雜湊清冊摘要、
+  驗證工具與經審查的執行期比較圖，不提交可重組原作的完整逐檔素材。
+- 私人包固定根為 `packs/fd2-original-b97caf22/`，必須保留 `manifest.json` 的原始相對
+  路徑。`raw/` 只供研究追溯與重新驗證，正式 `Game` 不得讀取。
+- 開發端以 `FD2_ASSET_PACK` 指向私人包根；正式 consumer 只可讀分離 PNG、OGG、JSON、
+  mask、palette 與具型別資料。必要素材缺失或 provenance 不符時失敗即關閉，不回退
+  原版 `.DAT` 即時解碼。
+- 公開引擎包不含私人素材。本機完整版組裝時，先驗證私人包 manifest、固定來源身份與
+  `remake/assets` 外部 runtime catalog，再把兩者放入同一交付根；封包仍須保留來源
+  HEAD、manifest SHA-256、內容清單與最終封包 SHA-256。
+- 本機完整版只供庫擁有者或另有合法授權的交付情境使用；私人庫不能被 README、公開
+  發行工作流或匿名下載 URL 當成公開素材來源。
+
 同一實際輸出樹再經來源 hash gate 與逐檔 manifest generator 驗證；2026-08-28完成
 ANI遷移後，當時清冊為38,679筆：37,655筆為已匯出、1,005筆raw完整列為
 `intentionally_raw`，19筆明確列為`blocked`（包含15首等待 OGG 的 MIDI）。清冊驗證器

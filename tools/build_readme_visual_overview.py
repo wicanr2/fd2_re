@@ -45,7 +45,7 @@ def main() -> None:
         FIGURES / "battle-field-ch01-scoped-compare-20260810.png"
     ).convert("RGB")
 
-    canvas = Image.new("RGB", (1360, 790), "#11151d")
+    canvas = Image.new("RGB", (1360, 832), "#11151d")
     draw = ImageDraw.Draw(canvas)
     title_font = font(25)
     label_font = font(20)
@@ -68,6 +68,13 @@ def main() -> None:
     centered(draw, (0, 528, 1360, 566), "BATTLEFIELD ICONS / SAME-STATE SAMPLE",
              title_font, "#f3e2ad")
     canvas.paste(battle, ((1360 - battle.width) // 2, 572))
+    centered(
+        draw,
+        (0, 796, 1360, 828),
+        "40,127 / 104 MB / SHA-256",
+        label_font,
+        "#f3e2ad",
+    )
     canvas.save(OUTPUT, optimize=True)
 
 
