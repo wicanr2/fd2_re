@@ -1,0 +1,96 @@
+# FDOTHER #102：標題捲動的短暫調色盤切換
+
+狀態：RE-CLOSED（2026-08-29）
+
+## 輸入、工具與位址空間
+
+- `FD2.EXE`：357,074 bytes
+  - MD5：`b97caf2239a27a896069d03549d96e1e`
+  - SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- `FDOTHER.DAT`：3,382,481 bytes
+  - MD5：`22f56e5027edc7c766ad34ca4e5aca93`
+  - SHA-256：`a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`
+- 第一工具：合法 IDA Pro 9.4／Hex-Rays `9.4.0.260610`，
+  `fd2-ida-authorized-local:latest`，一次性無網路 Docker，2026-08-29。
+- 位址空間：IDA 的 DOS Linear Executable 線性位址。
+- 原始檔唯讀；一次性 `.i64` 與中間輸出只存在 `/tmp`。保留原始名稱
+  `sub_1F894`、`sub_111BA`、`sub_11D40`、`sub_25A96` 與所有原始運算元。
+
+## 事件表與 caller（已證實）
+
+`sub_1F894` 於 `0x1F8C8..0x1F8D4` 從 `unk_5204E` 複製 15 個 dword。
+IDA 匯出的 `0x5204E:0x3C` 原始 bytes 解為：
+
+```text
+520, 430, 410, 340, 310, 300, 240, 180, 150, 130, 110, 87, 64, 22, 1000
+```
+
+前 14 筆是遞減的 `esi` 捲動列，`1000` 是不會在 `535→0` 命中的尾哨兵。
+每次 `esi == table[index]` 時，caller 的直接指令為：
+
+```text
+0x1FBB7  movzx eax,[esp+arg_54]
+0x1FBBC  cmp   esi,[esp+eax*4]
+0x1FBBF  jnz   0x1FC08
+0x1FBC1  mov   [esp+arg_48],0
+0x1FBC9  push  1
+0x1FBCB  push  0
+0x1FBCD  push  [esp+8+arg_50]       ; FDOTHER #77 pointer
+0x1FBD1  call  sub_25A96            ; selector 0
+0x1FBD9  push  66h                  ; FDOTHER #102
+0x1FBDB  push  dword_53A65
+0x1FBE1  push  offset aFdotherDat
+0x1FBE6  call  sub_111BA
+0x1FBEE  mov   dword_53A65,eax
+0x1FBF3  push  0
+0x1FBF5  push  0FFh
+0x1FBFA  push  0
+0x1FBFC  call  sub_11D40
+0x1FC04  inc   [esp+arg_54]
+```
+
+所以 selector #77/0 與 #102 調色盤由同一個事件觸發；本證據只提升其排程，
+不以聽感替音效命名。
+
+## consumer 與恢復條件（已證實）
+
+`sub_11D40 (0x11D40..0x11DF2)` 對閉區間 `[arg0,arg4]` 逐色：先向
+VGA DAC index port `0x3C8` 寫 index，再從 `dword_53A65[index*3+0..2]`
+讀三個 component、各自減去 `arg8` 並飽和到零，寫到 `0x3C9`。
+caller 傳 `(0,255,0)`，因此完整照寫 #102 的 256×RGB 六位元 DAC。
+
+主迴圈在每列尾端遞增 `arg_48`。當下一輪看到 `arg_48 == 11` 時直接恢復：
+
+```text
+0x1FC08  cmp   [esp+arg_48],0Bh
+0x1FC0D  jnz   0x1FC3A
+0x1FC0F  push  65h                  ; FDOTHER #101
+0x1FC11  push  dword_53A65
+0x1FC17  push  offset aFdotherDat
+0x1FC1C  call  sub_111BA
+0x1FC24  mov   dword_53A65,eax
+0x1FC29  push  0
+0x1FC2B  push  0FFh
+0x1FC30  push  0
+0x1FC32  call  sub_11D40
+```
+
+這形成「命中觸發列後使用 #102，經 11 個遞減列迴圈後恢復 #101」的固定
+短暫調色盤切換。它只改 DAC；320×735 indexed 捲動 framebuffer 不重建。
+
+## 資源形狀與差異（已證實）
+
+- FDOTHER #102：768 bytes，MD5 `dff5d41a55a53e707db86088a8ac8454`，
+  SHA-256 `99592bba4e708d848f24cf7db7579d1e54b729de32327232a5137ced2a41b0d7`。
+- 所有 component 都在 `0..63`，符合 256×RGB 六位元 DAC。
+- 相對 #101，50 個 component、18 個色號不同；變更色號是
+  `72..79`、`88..95`、`206..207`，其餘 238 色完全相同。
+
+## 重製邊界
+
+- 可安全實作：分離 #102、上述 14 個觸發列、11 個原版列迴圈的有效區間，
+  以及回復 #101。60 Hz runtime 依目前已閉合的 30ms／列投影此區間。
+- 不安全外推：把這些色號命名成未由畫面／索引 consumer 證實的角色或特效，
+  或宣稱逐 DOS DAC 寫入時間一致。
+- #77/0 的 caller 時點已證實，但其人耳內容與精確播放時序不是本調色盤切片
+  的驗收條件。

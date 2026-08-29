@@ -119,10 +119,10 @@ schema 的診斷，不是 142 個 decoder 缺口：至少包含 FDSHAP 34 筆 co
 #### 2026-08-29 實作與驗收
 
 manifest schema version 2、generator version 3 與 validator 已實作上述契約。真實
-固定來源重生後現有 39,817 筆 asset，其中 38,793 exported、1,005
-intentionally raw、19 blocked；新增的 1,005 筆 source-resource ledger 分為：898
-`standardized`、11 `confirmed_empty`、0 `blocked`、96 `unknown`。11 筆空項均由
-raw 長度零直接證明；96 筆 unknown 精確分布為 FDFIELD 79、FDMUS 5、FDOTHER 12，
+固定來源重生後現有 39,818 筆 asset，其中 38,794 exported、1,005
+intentionally raw、19 blocked；新增的 1,005 筆 source-resource ledger 分為：899
+`standardized`、11 `confirmed_empty`、0 `blocked`、95 `unknown`。11 筆空項均由
+raw 長度零直接證明；95 筆 unknown 精確分布為 FDFIELD 79、FDMUS 5、FDOTHER 11，
 不得再引用舊的 161／142 診斷數字。
 
 可版控摘要見
@@ -131,10 +131,10 @@ raw 長度零直接證明；96 筆 unknown 精確分布為 FDFIELD 79、FDMUS 5�
 index。validator 會重算完整 ledger 與摘要；漏列 raw、重複 resource、把 raw 冒充
 standard output、偽造複合 metadata 關聯、不存在的音樂 catalog track 或摘要漂移皆
 拒絕。加入 FDFIELD runtime bridge 後，28 項相關 generator／validator／catalog／schema
-測試與真實 39,817 筆 manifest 驗證已在一次性無網路 Docker 容器通過。
+測試與真實 39,818 筆 manifest 驗證已在一次性無網路 Docker 容器通過。
 
-這項成果達 `DATA-READY` 的「覆蓋清冊」層，但不把 96 筆 unknown 自動解讀成
-96 個玩家功能缺口。下一批須先用 production consumer 清冊交叉比對；FDFIELD #69
+這項成果達 `DATA-READY` 的「覆蓋清冊」層，但不把 95 筆 unknown 自動解讀成
+95 個玩家功能缺口。下一批須先用 production consumer 清冊交叉比對；FDFIELD #69
 已由受控 runtime catalog 回連，不再列入 unknown，也不重做已閉合 decoder。
 
 ### 三之二、FDFIELD runtime catalog bridge
@@ -813,8 +813,8 @@ render，不得把兩種狀態相加冒充pack內OGG。乾淨clone沒有render�
 實作結果：`music_catalog_contract.py`成為manifest產生器與驗證器共用的外部音樂契約；
 產生器新增明確`--music-assets-root`，驗證器新增`--runtime-assets`。五項bridge測試涵蓋
 無複製成功路徑、缺外部root、render漂移、catalog hash漂移及路徑穿越，並與原有九項manifest／
-catalog測試共同通過。現行實檔manifest已重生並完整驗證：pack本身現為39,817筆
-（38,793 exported、1,005 intentionally raw、19 blocked），另有一份已驗證外部bridge：
+catalog測試共同通過。現行實檔manifest已重生並完整驗證：pack本身現為39,818筆
+（38,794 exported、1,005 intentionally raw、19 blocked），另有一份已驗證外部bridge：
 2個profile、15個track、30個render；catalog為12,719 bytes、SHA-256
 `8f2d2835971861e5fa97c8f33536022b53209b42d53bdd9fbfa062de9b880311`。
 
@@ -1159,6 +1159,26 @@ indexed PNG、binary mask與metadata，共45筆。#7 directory count=8及sub7零
 靜態幕只從分離pack建立。缺pack會在`loadGame`發布任何標題狀態前留下明確錯誤，不再跳過
 標題或回退舊PNG／archive。manifest現為38,092筆：37,068 exported、1,005 intentionally raw、
 19 blocked。本切片達`DATA-READY`／`RUNTIME-E1`。
+
+#### FDOTHER #102 捲動列調色盤切換
+
+> 規格狀態：**CONFORMED**（2026-08-29）
+> 主證據：[`fd2_title_fdother102_palette_pulse_ida.txt`](../data/ida/fd2_title_fdother102_palette_pulse_ida.txt)
+
+匯入器須另輸出 `palette/fdother_102.json`，沿用 palette schema v1 並嚴格驗證
+固定 `FDOTHER.DAT` 身份、resource 102、raw size 768 與全部 component `0..63`。
+正式 loader 應把 #101 與 #102 同時預檢；任一缺少或不合契約即不發布標題資產。
+
+runtime 保留同一份320×735 indexed pixels，只切換 palette。觸發列固定為
+`520,430,410,340,310,300,240,180,150,130,110,87,64,22`；命中列由 #101
+切至 #102，11 個原版30ms列迴圈後回復 #101。60 Hz 可以依現有連續 `scrollY`
+投影，但必須測試每個觸發邊界、觸發前後與區間外皆選到正確 palette。不得把
+未證實高階色號用途寫入 typed contract。
+
+實作後匯入器輸出第四份標題捲動DAC，正式loader原子預檢#101／#102，runtime依
+上述14筆列值切換同一indexed surface。固定archive逐byte oracle、缺包失敗即關閉、
+完整0..535列與浮點邊界測試均通過；resource ledger把FDOTHER #102由unknown提升為
+standardized。本切片達`DATA-READY／RUNTIME-E1`，不提升逐硬體時間或人耳音效E2。
 
 ### ANI.DAT／AFM 全螢幕增量動畫素材契約
 

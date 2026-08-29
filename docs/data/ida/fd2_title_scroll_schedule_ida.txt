@@ -194,6 +194,9 @@ indexed framebuffer 保持不變；現有原版frame186仍因可見像素不使�
 - 兩段 palette 插值與 ANI #1 的 caller 排程已閉合；60Hz 重製可依328ms映射為
   每段20幀，這是玩家可見近似，不是41個 DOS DAC 相位逐一 present。沒有相同時間戳
   原版畫面前仍不能外推逐像素／逐音訊 E2。
+- 2026-08-29 補證的14筆捲動列 #102→#101 短暫 DAC 切換另見
+  [`fd2_title_fdother102_palette_pulse_ida.txt`](fd2_title_fdother102_palette_pulse_ida.txt)；
+  該檔補足本排程原先未列出的 palette event，不重解上述 AFM／靜態幕位置。
 - 原版影片從開場到屠龍閃光約14.7秒，整段至標題約32.3秒，僅作動態交叉驗證；
   位址、caller 與直接指令才是本排程主證據。
 

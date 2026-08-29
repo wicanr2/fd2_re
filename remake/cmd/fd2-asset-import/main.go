@@ -808,7 +808,7 @@ func exportTitleFDOTHER(fdotherPath, outputRoot string) error {
 			return fmt.Errorf("FDOTHER #%d title surface: %w", resource, err)
 		}
 	}
-	for _, resource := range []int{8, 99, 101} {
+	for _, resource := range []int{8, 99, 101, 102} {
 		dac, err := fdother.ReadResource(fdotherPath, resource)
 		if err != nil {
 			return err

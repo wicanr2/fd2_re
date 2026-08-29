@@ -88,6 +88,25 @@ func TestTitleCutAdvanceRestoresNativeScrollBoundary(t *testing.T) {
 	}
 }
 
+func TestTitleScrollPalettePulseMatchesNativeRowWindows(t *testing.T) {
+	wantRows := make(map[int]bool)
+	for _, trigger := range nativeTitlePalettePulseRows {
+		for row := trigger; row > trigger-11; row-- {
+			wantRows[row] = true
+		}
+	}
+	for row := 535; row >= 0; row-- {
+		if got, want := titleScrollUsesPulsePalette(float64(row)), wantRows[row]; got != want {
+			t.Fatalf("scroll row %d pulse=%v, want %v", row, got, want)
+		}
+	}
+	for y, want := range map[float64]bool{520.001: false, 520: true, 509.001: true, 509: false} {
+		if got := titleScrollUsesPulsePalette(y); got != want {
+			t.Fatalf("fractional scrollY=%v pulse=%v, want %v", y, got, want)
+		}
+	}
+}
+
 func TestTitlePublisherScheduleAndBrightness(t *testing.T) {
 	if got := cutScript[0]; got.kind != "publisher" || got.tick != 119 || got.skip {
 		t.Fatalf("publisher step=%+v", got)
@@ -234,7 +253,7 @@ func TestSeparatedTitleFDOTHERMatchesFixedArchive(t *testing.T) {
 			t.Fatalf("separated title root FDOTHER #%d differs", resource)
 		}
 	}
-	for _, resource := range []int{8, 99, 101} {
+	for _, resource := range []int{8, 99, 101, 102} {
 		want, err := fdother.ReadResource(archive, resource)
 		if err != nil {
 			t.Fatal(err)
@@ -282,7 +301,7 @@ func TestSeparatedTitleFDOTHERMatchesFixedArchive(t *testing.T) {
 	if err := loadSeparatedTitleFDOTHER(pack, &assets); err != nil {
 		t.Fatal(err)
 	}
-	if assets.scroll == nil || assets.title == nil || assets.cutStatic[0] == nil || assets.cutStatic[1] == nil {
+	if assets.scroll == nil || assets.scrollPulse == nil || assets.title == nil || assets.cutStatic[0] == nil || assets.cutStatic[1] == nil {
 		t.Fatal("separated title bundle omitted a required full-screen surface")
 	}
 	for item := range assets.items {

@@ -27,6 +27,7 @@ import (
 
 type titleAssets struct {
 	scroll         *ebiten.Image       // 320×735 立繪
+	scrollPulse    *ebiten.Image       // 同 indexed pixels，FDOTHER #102 短暫 DAC
 	title          *ebiten.Image       // 320×200 標題畫面
 	publisher      *ebiten.Image       // FDOTHER #74 + palette #76 漢堂發行商畫面
 	redFadeFrames  [20]*ebiten.Image   // sub_286BD phase 40→0，FDOTHER #69..73/#101
@@ -191,6 +192,13 @@ func loadSeparatedTitleFDOTHER(packRoot string, target *titleAssets) error {
 	scrollImage := image.NewPaletted(image.Rect(0, 0, 320, 735), scrollPalette)
 	copy(scrollImage.Pix, scrollPixels)
 	target.scroll = ebiten.NewImageFromImage(scrollImage)
+	_, pulsePalette, err := fdother.LoadSeparatedFDOTHERPalette(paletteRoot, 102)
+	if err != nil {
+		return fmt.Errorf("標題捲動短暫調色盤：%w", err)
+	}
+	pulseImage := image.NewPaletted(image.Rect(0, 0, 320, 735), pulsePalette)
+	copy(pulseImage.Pix, scrollPixels)
+	target.scrollPulse = ebiten.NewImageFromImage(pulseImage)
 
 	titleDAC, titlePalette, err := fdother.LoadSeparatedFDOTHERPalette(paletteRoot, 8)
 	if err != nil {
@@ -454,6 +462,21 @@ func titlePalettePhase(tick int) int {
 	return (tick*40 + 9) / 19
 }
 
+var nativeTitlePalettePulseRows = [...]int{
+	520, 430, 410, 340, 310, 300, 240, 180, 150, 130, 110, 87, 64, 22,
+}
+
+// titleScrollUsesPulsePalette 投影 sub_1F894 的 FDOTHER #102→#101 DAC owner。
+// 原版在命中列後安裝 #102，11 個30ms列迴圈後、下一列 delay 前恢復 #101。
+func titleScrollUsesPulsePalette(scrollY float64) bool {
+	for _, trigger := range nativeTitlePalettePulseRows {
+		if scrollY <= float64(trigger) && scrollY > float64(trigger-11) {
+			return true
+		}
+	}
+	return false
+}
+
 func titlePaletteBlend(op *ebiten.DrawImageOptions, factor float64, base color.RGBA) {
 	op.ColorM.Scale(factor, factor, factor, 1)
 	op.ColorM.Translate(
@@ -688,8 +711,12 @@ func (g *Game) drawTitle(screen *ebiten.Image) {
 			}
 		case step.kind == "scroll":
 			if ta.scroll != nil {
+				scroll := ta.scroll
+				if titleScrollUsesPulsePalette(g.scrollY) && ta.scrollPulse != nil {
+					scroll = ta.scrollPulse
+				}
 				op.GeoM.Translate(0, -g.scrollY*2) // 視窗=大圖 y=scrollY 起 200 列
-				screen.DrawImage(ta.scroll, op)
+				screen.DrawImage(scroll, op)
 			}
 		case step.kind == "hold":
 			if ta.scroll != nil {
