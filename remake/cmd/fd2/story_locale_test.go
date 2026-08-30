@@ -86,7 +86,7 @@ func TestChapterOneStoryUsesAllOfficialContentCatalogs(t *testing.T) {
 	}
 }
 
-func TestStoryLocaleFailsClosedForMissingIdentityAndUnconformedNativeLayout(t *testing.T) {
+func TestStoryLocaleFailsClosedForMissingIdentity(t *testing.T) {
 	content, err := loadOfficialLocaleContent("en")
 	if err != nil {
 		t.Fatal(err)
@@ -94,10 +94,6 @@ func TestStoryLocaleFailsClosedForMissingIdentityAndUnconformedNativeLayout(t *t
 	g := &Game{localeID: "en", localeContent: content}
 	if _, err := g.resolveCampaignDialogLine(campaign.Line{Speaker: 0, Text: "來源"}, nil, nil); err == nil {
 		t.Fatal("story line without canonical identity was accepted")
-	}
-	line := campaign.Line{LineID: "legacy/line/7ecb566a60db/scenes/0/lines/0", Speaker: 0, Text: "來源"}
-	if _, err := g.resolveCampaignDialogLine(line, nil, &campaign.NativeDialogueLayout{}); err == nil {
-		t.Fatal("unconformed translated native dialogue layout was accepted")
 	}
 }
 

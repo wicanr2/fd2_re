@@ -34,7 +34,7 @@ func (g *Game) prepareNativeDialogueFrames() error {
 		}
 		g.nativeClassUI = assets
 	}
-	if g.nativeBattleFont == nil || g.nativeBattleGlyphs == nil {
+	if g.localeID == "zh-Hant" && (g.nativeBattleFont == nil || g.nativeBattleGlyphs == nil) {
 		font, glyphs, err := loadNativeBattleNameAssets()
 		if err != nil {
 			return err
@@ -134,19 +134,30 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	progressive := make([][][]byte, len(layout.Pages))
 	mouthOpen := make([][]byte, len(layout.Pages))
 	for page := range layout.Pages {
-		progressive[page], err = campaign.ComposeNativeStoryDialogueProgressiveFrames(
-			g.nativeMapVGA, g.nativeClassUI.dialogue, portraits[0],
-			g.nativeClassUI.font, g.nativeBattleGlyphs, layout, page,
-		)
+		if g.localeID == "zh-Hant" {
+			progressive[page], err = campaign.ComposeNativeStoryDialogueProgressiveFrames(
+				g.nativeMapVGA, g.nativeClassUI.dialogue, portraits[0],
+				g.nativeClassUI.font, g.nativeBattleGlyphs, layout, page,
+			)
+		} else {
+			progressive[page], err = composeLocalizedNativeDialogueProgressiveFrames(
+				g.nativeMapVGA, g.nativeClassUI.dialogue, portraits[0], g.font, layout, page,
+			)
+		}
 		if err != nil {
 			return fmt.Errorf("native story dialogue: page %d progressive frames: %w", page, err)
 		}
 		frames[page] = progressive[page][len(progressive[page])-1]
-		mouthOpen[page], err = campaign.ComposeNativeStoryDialogueMouthFrame(
-			frames[page], portraits[3], layout,
-		)
-		if err != nil {
-			return fmt.Errorf("native story dialogue: page %d mouth frame: %w", page, err)
+		if g.localeID == "zh-Hant" {
+			mouthOpen[page], err = campaign.ComposeNativeStoryDialogueMouthFrame(
+				frames[page], portraits[3], layout,
+			)
+			if err != nil {
+				return fmt.Errorf("native story dialogue: page %d mouth frame: %w", page, err)
+			}
+		} else {
+			// 使用者裁決：非繁中不要求嘴型；固定閉嘴 stable page。
+			mouthOpen[page] = append([]byte(nil), frames[page]...)
 		}
 	}
 	g.nativeDialogueFrames = frames

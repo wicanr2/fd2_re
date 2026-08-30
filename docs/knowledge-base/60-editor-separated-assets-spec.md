@@ -432,6 +432,19 @@ canonical 的 legacy speaker 全部一致時把兩者合併；任一不一致即
 鏡頭時序；完整即時重排須另經文字安全矩形、字型與分頁規格後才可開啟。原生對話仍保留
 原有頁面與動畫載體，不能因翻譯而換成一般 renderer；未完成各語重排前維持失敗即關閉。
 
+2026-08-31 使用者裁決：非繁中原生對話不要求嘴型動畫。繁中仍保留既有原版嘴型收據；
+簡中、日文與英文使用閉嘴頭像完成整段 progressive frame，不能因此省略開框、收框、鏡頭、
+對話框、頭像或逐字發布。多語分頁固定使用原生 control 的13／14／15 glyph 列寬、三列文字
+安全窗口與目前官方字型的實際像素寬度雙重約束；超出三列即建立下一頁，不依賴 painter clipping，
+也不把長句截斷。缺字、空頁或任何列超界都停止該對話，不回退原始繁中頁面。
+
+2026-08-31 `RUNTIME-E1` 收據：localized compositor 以官方 TTF 直接產生 palette index
+`0xCD` 前景與 `0x4C` 陰影，並共用原生 fully-opened frame、閉嘴頭像、opening／closing
+與鏡頭資料。所有目前可由正式 handler binding 編譯的 native utterance 均對簡中、日文與
+英文執行完整分頁、字形存在及安全矩形檢查；合成測試也確認 frame0 到最後逐字幀確實改變。
+這仍是 renderer E1，不是正常玩家路徑截圖 E2；無法編譯的 handler 本來就由正式入口拒絕，
+不納入此語系收據。
+
 事件61／75／76雖由 battle action runner 呈現，文字來源仍是同一批 canonical story line；
 它們必須先以 `line_id` 解析當前官方內容，再建立 action。trigger speaker、事件狀態寫入、
 palette pulse 與提交時序仍由既有 typed event plan 擁有，語系層只替換文字；解析失敗時不得

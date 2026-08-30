@@ -2171,9 +2171,6 @@ func (g *Game) resolveCampaignDialogLine(line campaign.Line, upperOverride *bool
 	if err != nil {
 		return battle.DialogLine{}, err
 	}
-	if nativeOverride != nil && g.localeID != "zh-Hant" {
-		return battle.DialogLine{}, errors.New("translated native story dialogue layout is not yet conformed")
-	}
 	speaker := line.Speaker
 	if line.SpeakerSlot != nil {
 		slot := *line.SpeakerSlot
@@ -2197,6 +2194,13 @@ func (g *Game) resolveCampaignDialogLine(line campaign.Line, upperOverride *bool
 	}
 	var native *battle.NativeDialogueLayout
 	layout := nativeOverride
+	if layout != nil && g.localeID != "zh-Hant" {
+		localized, err := localizedNativeDialogueLayout(text, layout, g.font)
+		if err != nil {
+			return battle.DialogLine{}, err
+		}
+		layout = localized
+	}
 	if layout != nil {
 		resolvedSpeaker, err := g.resolveNativeStoryDialogueSpeaker(layout)
 		if err != nil {

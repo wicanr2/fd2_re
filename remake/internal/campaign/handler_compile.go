@@ -76,6 +76,12 @@ func nativeDialogueLineGlyphLimit(control string) (int, bool) {
 	}
 }
 
+// NativeDialogueLineGlyphLimit 提供已證實的 control 列寬，避免多語索引 renderer
+// 複製另一份 FDTXT 常數。
+func NativeDialogueLineGlyphLimit(control string) (int, bool) {
+	return nativeDialogueLineGlyphLimit(control)
+}
+
 func (layout *NativeDialogueLayout) Validate() error {
 	if layout == nil || layout.SourceDAT == "" || layout.StringIndex < 0 || layout.Utterance < 0 || layout.Operand < 0 || layout.Operand > 0xffff {
 		return fmt.Errorf("native dialogue layout lacks source provenance")

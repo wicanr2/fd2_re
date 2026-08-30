@@ -22,6 +22,21 @@ const (
 	nativeStoryScrollFrames  = 10
 )
 
+// NativeStoryDialogueTextGeometry 回傳原版索引畫面的文字起點與安全窗口。
+// 多語 renderer 可以替換字形像素，但不可更動 control 所決定的畫面座標。
+func NativeStoryDialogueTextGeometry(control string) (x, y, width, lineStep, visibleRows int, err error) {
+	limit, ok := nativeDialogueLineGlyphLimit(control)
+	if !ok {
+		return 0, 0, 0, 0, 0, fmt.Errorf("campaign: native story dialogue control %q is unsupported", control)
+	}
+	offset := nativeStoryLowerText
+	if control == "FFEF" || control == "FFED" {
+		offset = nativeStoryUpperText
+	}
+	return offset % 320, offset / 320, limit * nativeStoryGlyphStep,
+		nativeStoryLineStep, nativeStoryVisibleRows, nil
+}
+
 var nativeStoryOpeningGridSizes = [...][2]int{{4, 2}, {8, 3}, {12, 4}, {16, 5}, {19, 5}}
 var nativeStoryClosingGridSizes = [...][2]int{{16, 5}, {12, 4}, {8, 3}, {4, 2}}
 
@@ -189,23 +204,13 @@ func ComposeNativeStoryDialogueProgressiveFrames(
 	if !ok {
 		return nil, fmt.Errorf("campaign: native story dialogue control %q is unsupported", layout.Control)
 	}
-	upper := layout.Control == "FFEF" || layout.Control == "FFED"
-	frameY, portraitOffset, textOffset := nativeStoryLowerFrameY, nativeStoryLowerPortrait, nativeStoryLowerText
-	if upper {
-		frameY, portraitOffset, textOffset = nativeStoryUpperFrameY, nativeStoryUpperPortrait, nativeStoryUpperText
-	}
-	frame := append([]byte(nil), background...)
-	placements, err := fdother.PlanNativeDialogueFrameGrid(320, 5, frameY, 19, 5)
+	frame, err := ComposeNativeStoryDialogueBaseFrame(background, dialogueCells, portrait, layout)
 	if err != nil {
 		return nil, err
 	}
-	for _, placement := range placements {
-		if err := dialogueCells[placement.ResourceIndex].BlitOpaqueAtOffset(frame, 320, placement.DestinationByte); err != nil {
-			return nil, err
-		}
-	}
-	if err := blitNativeDialoguePortraitAt(frame, portrait, portraitOffset); err != nil {
-		return nil, err
+	textOffset := nativeStoryLowerText
+	if layout.Control == "FFEF" || layout.Control == "FFED" {
+		textOffset = nativeStoryUpperText
 	}
 	frames := make([][]byte, 0, 1+lineGlyphLimit*len(layout.Pages[page])+nativeStoryScrollFrames)
 	frames = append(frames, append([]byte(nil), frame...))
@@ -260,4 +265,38 @@ func ComposeNativeStoryDialogueProgressiveFrames(
 		}
 	}
 	return frames, nil
+}
+
+// ComposeNativeStoryDialogueBaseFrame 建立完全展開且含閉嘴頭像的索引畫面，
+// 但不寫入文字；原版 FDTXT 與多語 TTF 逐字 renderer 共用此底圖。
+func ComposeNativeStoryDialogueBaseFrame(
+	background []byte,
+	dialogueCells []fdother.RawCell,
+	portrait dato.Frame,
+	layout *NativeDialogueLayout,
+) ([]byte, error) {
+	if len(background) != 320*200 || len(dialogueCells) <= 17 {
+		return nil, errors.New("campaign: native story dialogue base assets are invalid")
+	}
+	if err := layout.Validate(); err != nil {
+		return nil, fmt.Errorf("campaign: %w", err)
+	}
+	frameY, portraitOffset := nativeStoryLowerFrameY, nativeStoryLowerPortrait
+	if layout.Control == "FFEF" || layout.Control == "FFED" {
+		frameY, portraitOffset = nativeStoryUpperFrameY, nativeStoryUpperPortrait
+	}
+	frame := append([]byte(nil), background...)
+	placements, err := fdother.PlanNativeDialogueFrameGrid(320, 5, frameY, 19, 5)
+	if err != nil {
+		return nil, err
+	}
+	for _, placement := range placements {
+		if err := dialogueCells[placement.ResourceIndex].BlitOpaqueAtOffset(frame, 320, placement.DestinationByte); err != nil {
+			return nil, err
+		}
+	}
+	if err := blitNativeDialoguePortraitAt(frame, portrait, portraitOffset); err != nil {
+		return nil, err
+	}
+	return frame, nil
 }
