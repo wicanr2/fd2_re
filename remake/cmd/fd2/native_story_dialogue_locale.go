@@ -133,10 +133,22 @@ func composeLocalizedNativeDialogueProgressiveFrames(
 }
 
 func drawIndexedLocalizedLine(dst []byte, displayFont *Font, text string, x, y, maxWidth, height int) error {
+	return drawIndexedLocalizedText(dst, displayFont, text, x, y, maxWidth, height,
+		localizedNativeDialogueFontScale, 0xcd, 0x4c)
+}
+
+func drawIndexedLocalizedText(
+	dst []byte,
+	displayFont *Font,
+	text string,
+	x, y, maxWidth, height int,
+	scale float64,
+	foreground, shadow byte,
+) error {
 	if len(dst) != 320*200 || displayFont == nil || text == "" || x < 0 || y < 0 || x+maxWidth > 320 || y+height > 200 {
 		return errors.New("localized native dialogue draw bounds are invalid")
 	}
-	if displayFont.Width(text, localizedNativeDialogueFontScale) > float64(maxWidth) {
+	if scale <= 0 || displayFont.Width(text, scale) > float64(maxWidth) {
 		return fmt.Errorf("localized native dialogue line %q exceeds safe width", text)
 	}
 	var buffer sfnt.Buffer
@@ -146,7 +158,7 @@ func drawIndexedLocalizedLine(dst []byte, displayFont *Font, text string, x, y, 
 			return fmt.Errorf("localized native dialogue font lacks %q", r)
 		}
 	}
-	px := int(displayFont.base*localizedNativeDialogueFontScale + 0.5)
+	px := int(displayFont.base*scale + 0.5)
 	face, ascent := displayFont.faceFor(px)
 	if face == nil {
 		return errors.New("localized native dialogue font face is unavailable")
@@ -160,14 +172,14 @@ func drawIndexedLocalizedLine(dst []byte, displayFont *Font, text string, x, y, 
 				continue
 			}
 			if px+1 < maxWidth && py+1 < height {
-				dst[(y+py+1)*320+x+px+1] = 0x4c
+				dst[(y+py+1)*320+x+px+1] = shadow
 			}
 		}
 	}
 	for py := 0; py < height; py++ {
 		for px := 0; px < maxWidth; px++ {
 			if mask.AlphaAt(px, py).A >= 32 {
-				dst[(y+py)*320+x+px] = 0xcd
+				dst[(y+py)*320+x+px] = foreground
 			}
 		}
 	}

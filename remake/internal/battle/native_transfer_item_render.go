@@ -83,6 +83,37 @@ func RenderNativeFacilityItemRows(
 	priceMode NativeFacilityPriceMode,
 	dst []byte,
 ) error {
+	return renderNativeFacilityItemRows(
+		assets, facilityCell, itemIDs, start, selected, effectRows, priceMode, dst, true,
+	)
+}
+
+// RenderNativeFacilityItemRowsWithoutNames 保留原版圖示、數值、價格與選取色，
+// 但將名稱安全矩形留白，供已驗證的多語 renderer 寫入。
+func RenderNativeFacilityItemRowsWithoutNames(
+	assets NativeItemPanelDataAssets,
+	facilityCell fdother.RawCell,
+	itemIDs []int,
+	start, selected int,
+	effectRows []byte,
+	priceMode NativeFacilityPriceMode,
+	dst []byte,
+) error {
+	return renderNativeFacilityItemRows(
+		assets, facilityCell, itemIDs, start, selected, effectRows, priceMode, dst, false,
+	)
+}
+
+func renderNativeFacilityItemRows(
+	assets NativeItemPanelDataAssets,
+	facilityCell fdother.RawCell,
+	itemIDs []int,
+	start, selected int,
+	effectRows []byte,
+	priceMode NativeFacilityPriceMode,
+	dst []byte,
+	renderNames bool,
+) error {
 	if len(dst) != nativeItemPanelBytes || len(itemIDs) == 0 ||
 		start < 0 || start%2 != 0 || selected < start ||
 		selected >= len(itemIDs) || selected >= start+NativeTransferVisible ||
@@ -123,12 +154,14 @@ func RenderNativeFacilityItemRows(
 		if start+i == selected {
 			foreground = 201
 		}
-		if err := blitNativeItemPanelText(
-			assets.Strings, assets.Font, staged,
-			NativeItemPanelPoint{X: x + 28, Y: y + 3},
-			itemID+181, foreground,
-		); err != nil {
-			return err
+		if renderNames {
+			if err := blitNativeItemPanelText(
+				assets.Strings, assets.Font, staged,
+				NativeItemPanelPoint{X: x + 28, Y: y + 3},
+				itemID+181, foreground,
+			); err != nil {
+				return err
+			}
 		}
 		statIcon, statValue, hasValue := nativeTransferItemStat(row)
 		if statIcon == 41 {

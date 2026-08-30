@@ -100,7 +100,12 @@ func (g *Game) cycleLocale() {
 		g.loadErr = "locale content: " + err.Error()
 		return
 	}
-	g.localeID, g.localeCatalog, g.localeContent = next, catalog, content
+	entities, err := loadOfficialLocaleEntities(next)
+	if err != nil {
+		g.loadErr = "locale entities: " + err.Error()
+		return
+	}
+	g.localeID, g.localeCatalog, g.localeContent, g.localeEntities = next, catalog, content, entities
 	saveSettings(settings{BGMSource: g.bgmSource, LocaleID: g.localeID})
 	if message, ok := g.localeMessage("system.locale.changed", localeDisplayName[next]); ok {
 		g.msg = message

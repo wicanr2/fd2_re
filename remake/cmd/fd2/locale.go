@@ -65,6 +65,10 @@ func loadOfficialLocaleContent(localeID string) (*localization.ContentCatalog, e
 	return localization.LoadOfficialContent(assetPath("assets/locales"), localeID)
 }
 
+func loadOfficialLocaleEntities(localeID string) (*localization.EntityCatalog, error) {
+	return localization.LoadOfficialEntities(assetPath("assets/locales"), localeID)
+}
+
 func (g *Game) localizedStoryText(line campaign.Line) (string, error) {
 	if line.LineID == "" {
 		if g != nil && g.localeID == "zh-Hant" && line.Text != "" {

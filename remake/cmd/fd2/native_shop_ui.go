@@ -1180,11 +1180,19 @@ func (g *Game) composeNativeShopPurchaseList() ([]byte, bool) {
 	for i, good := range goods {
 		itemIDs[i] = good.ID
 	}
-	frame, err := campaign.ComposeNativeShopItemListFrame(
-		stable, assets, g.nativeShopUI.itemAssets,
-		itemIDs, start, g.shopSel, g.nativeShopUI.effectRows,
-		battle.NativeFacilityFullPrice,
-	)
+	var frame []byte
+	var err error
+	if g.localeID == "" || g.localeID == "zh-Hant" {
+		frame, err = campaign.ComposeNativeShopItemListFrame(
+			stable, assets, g.nativeShopUI.itemAssets,
+			itemIDs, start, g.shopSel, g.nativeShopUI.effectRows,
+			battle.NativeFacilityFullPrice,
+		)
+	} else {
+		frame, err = g.composeLocalizedNativeShopPurchaseList(
+			stable, assets, goods, itemIDs, start,
+		)
+	}
 	return frame, err == nil
 }
 

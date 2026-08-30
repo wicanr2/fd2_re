@@ -78,6 +78,31 @@ func TestRenderNativeFacilityItemRowsModeZeroUsesFullPrice(t *testing.T) {
 	}
 }
 
+func TestRenderNativeFacilityItemRowsWithoutNamesLeavesSafeRectangleBlank(t *testing.T) {
+	assets := nativeItemPanelTestAssets(t, 0)
+	rows := make([]byte, NativeItemEffectRowSize)
+	rows[0] = 1
+	binary.LittleEndian.PutUint16(rows[19:21], 1000)
+	facility := fdother.RawCell{Width: 1, Height: 1, Pixels: []byte{88}}
+	dst := make([]byte, nativeItemPanelBytes)
+	if err := RenderNativeFacilityItemRowsWithoutNames(
+		assets, facility, []int{0}, 0, 0, rows,
+		NativeFacilityFullPrice, dst,
+	); err != nil {
+		t.Fatal(err)
+	}
+	for y := 122; y < 138; y++ {
+		for x := 38; x < 105; x++ {
+			if dst[y*320+x] != 0 {
+				t.Fatalf("name rectangle changed at %d,%d: %d", x, y, dst[y*320+x])
+			}
+		}
+	}
+	if dst[119*320+10] != 59 || dst[131*320+114] != 119 {
+		t.Fatal("suppressing names also removed category or price")
+	}
+}
+
 func TestNativeFacilityItemListPriceMatchesRendererModes(t *testing.T) {
 	rows := make([]byte, NativeItemEffectRowSize)
 	binary.LittleEndian.PutUint16(rows[19:], 101)

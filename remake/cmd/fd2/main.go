@@ -483,6 +483,7 @@ type Game struct {
 	localeID           string                                      // 全域語系設定；不寫入戰役存檔
 	localeCatalog      *localization.Catalog                       // 已完整驗證的官方語言包
 	localeContent      *localization.ContentCatalog                // 已完整驗證的全量玩家內容目錄
+	localeEntities     *localization.EntityCatalog                 // 已按遊戲 ID 正規化的實體名稱
 
 	nativeChapterRestore *campaign.NativeChapterSlotRestorePlan // 四槽 LOAD 的已驗證戰間狀態；未知 raw bytes 僅保存、不猜接
 
@@ -9571,6 +9572,11 @@ func loadGame() *Game {
 	g.localeContent, localeErr = loadOfficialLocaleContent(g.localeID)
 	if localeErr != nil {
 		g.loadErr = "locale content: " + localeErr.Error()
+		return g
+	}
+	g.localeEntities, localeErr = loadOfficialLocaleEntities(g.localeID)
+	if localeErr != nil {
+		g.loadErr = "locale entities: " + localeErr.Error()
 		return g
 	}
 	if v := os.Getenv("FD2_BGM_SOURCE"); v != "" && bgmSourceName[v] != "" {
