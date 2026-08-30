@@ -9,6 +9,14 @@
     "battle.attack.miss": {"text": "%s は %s を攻撃したが、外れた", "variables": ["%s", "%s"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l5973-c22"},
     "battle.attack.hit": {"text": "%s は %s を攻撃し、%d のダメージ", "variables": ["%s", "%s", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l5975-c25"},
     "battle.attack.critical_suffix": {"text": "、クリティカル", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l5977-c14"},
-    "battle.attack.exp_suffix": {"text": "、経験値 +%.0f", "variables": ["%.0f"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l5980-c26"}
+    "battle.attack.exp_suffix": {"text": "、経験値 +%.0f", "variables": ["%.0f"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l5980-c26"},
+    "system.locale.changed": {"text": "言語：%s", "variables": ["%s"], "source_string_id": "runtime.settings.locale.changed"},
+    "system.audio.changed": {"text": "音源：%s", "variables": ["%s"], "source_string_id": "runtime.settings.audio.changed"},
+    "save.unsupported": {"text": "セーブはキャンペーンモードのみ対応しています", "variables": [], "source_string_id": "runtime.save.unsupported"},
+    "save.postbattle_blocked": {"text": "戦後演出中です。次の場面でセーブしてください", "variables": [], "source_string_id": "runtime.save.postbattle_blocked"},
+    "save.saved": {"text": "スロット %d にセーブしました：%s", "variables": ["%d", "%s"], "source_string_id": "runtime.save.saved"},
+    "save.none": {"text": "セーブデータがありません", "variables": [], "source_string_id": "runtime.save.none"},
+    "save.node_missing": {"text": "セーブ地点が見つかりません：%s", "variables": ["%s"], "source_string_id": "runtime.save.node_missing"},
+    "save.loaded": {"text": "スロット %d をロードしました：%s", "variables": ["%d", "%s"], "source_string_id": "runtime.save.loaded"}
   }
 }

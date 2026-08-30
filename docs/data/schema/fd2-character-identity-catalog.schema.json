@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fd2-remake.invalid/schema/fd2-character-identity-catalog-v1.json",
+  "title": "FD2 編輯器角色身份候選清冊",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "kind", "source", "characters", "diagnostics"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "kind": {"const": "character_identity_catalog"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["root", "evidence"],
+      "properties": {
+        "root": {"const": "repository-relative"},
+        "evidence": {"const": "direct legacy fields"}
+      }
+    },
+    "characters": {"type": "array", "items": {"$ref": "#/$defs/character"}},
+    "diagnostics": {"type": "array", "items": {"$ref": "#/$defs/diagnostic"}}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._/-]+$"},
+    "index": {"oneOf": [{"type": "integer", "minimum": 0}, {"type": "array", "items": {"type": "integer", "minimum": 0}, "minItems": 2, "maxItems": 2}]},
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "source", "field", "index", "evidence"],
+      "properties": {
+        "value": {"oneOf": [{"type": "string", "minLength": 1}, {"type": "integer"}]},
+        "source": {"type": "string", "pattern": "^(?!/)(?![A-Za-z]:)[^\\0]+$"},
+        "field": {"type": "string", "minLength": 1},
+        "index": {"type": "integer", "minimum": 0},
+        "evidence": {"const": "direct legacy field"}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "field", "index"],
+      "properties": {
+        "path": {"type": "string", "pattern": "^(?!/)(?![A-Za-z]:)[^\\0]+$"},
+        "field": {"type": "string", "minLength": 1},
+        "index": {"$ref": "#/$defs/index"}
+      }
+    },
+    "character": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["character_id", "native_identity", "display_name_candidates", "portrait_selector_candidates", "map_sprite_selector_candidates", "battle_animation_selector_candidates", "sources"],
+      "properties": {
+        "character_id": {"$ref": "#/$defs/id"},
+        "native_identity": {"type": "integer", "minimum": 0},
+        "display_name_candidates": {"type": "array", "items": {"$ref": "#/$defs/candidate"}},
+        "portrait_selector_candidates": {"type": "array", "items": {"$ref": "#/$defs/candidate"}},
+        "map_sprite_selector_candidates": {"type": "array", "items": {"$ref": "#/$defs/candidate"}},
+        "battle_animation_selector_candidates": {"type": "array", "items": {"$ref": "#/$defs/candidate"}},
+        "sources": {"type": "array", "items": {"$ref": "#/$defs/source"}}
+      }
+    },
+    "diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "character_id", "field", "values", "severity", "message"],
+      "properties": {
+        "code": {"const": "conflicting_identity_candidates"},
+        "character_id": {"$ref": "#/$defs/id"},
+        "field": {"type": "string", "minLength": 1},
+        "values": {"type": "array", "items": {"type": "string"}, "minItems": 2},
+        "severity": {"const": "error"},
+        "message": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

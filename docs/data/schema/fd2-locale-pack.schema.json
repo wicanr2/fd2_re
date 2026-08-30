@@ -32,7 +32,7 @@
       "properties": {
         "text": {"type": "string", "minLength": 1, "maxLength": 240},
         "variables": {"type": "array", "items": {"type": "string", "pattern": "^%(?:%|[-+0-9.#]*[a-zA-Z])$"}},
-        "source_string_id": {"type": "string", "pattern": "^legacy\\.go\\.remake\\.cmd\\.fd2\\.[a-z0-9_]+\\.l[0-9]+-c[0-9]+$"}
+        "source_string_id": {"type": "string", "pattern": "^(?:legacy\\.go\\.remake\\.cmd\\.fd2\\.[a-z0-9_]+\\.l[0-9]+-c[0-9]+|runtime\\.[a-z0-9_]+(?:\\.[a-z0-9_]+)+)$"}
       }
     }
   },

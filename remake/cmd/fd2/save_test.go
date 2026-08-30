@@ -57,7 +57,11 @@ func TestSaveRejectsPostBattleHandlerWithoutSerializableRuntimeContext(t *testin
 		"post":   {Type: "cutscene", HandlerBinding: "assets/cutscenes/bindings/ch01_post.json", Next: "choice"},
 		"choice": {Type: "choice"},
 	}}
-	g := &Game{camp: campaign.NewRunner(c), st: &battle.State{Units: []*battle.Unit{{Fig: 0}}}}
+	catalog, err := loadOfficialLocale("zh-Hant")
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{camp: campaign.NewRunner(c), st: &battle.State{Units: []*battle.Unit{{Fig: 0}}}, localeCatalog: catalog}
 	g.saveGame()
 	if g.msg != "戰後演出進行中，請在下一個節點存檔" {
 		t.Fatalf("unsafe postbattle save was not rejected: %q", g.msg)
@@ -69,7 +73,11 @@ func TestSaveRejectsUnboundPostbattleBoundary(t *testing.T) {
 		"postbattle_ch04_persist": {Type: "cutscene", Next: "town_ch05"},
 		"town_ch05":               {Type: "town"},
 	}}
-	g := &Game{camp: campaign.NewRunner(c)}
+	catalog, err := loadOfficialLocale("zh-Hant")
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{camp: campaign.NewRunner(c), localeCatalog: catalog}
 	g.saveGame()
 	if g.msg != "戰後演出進行中，請在下一個節點存檔" {
 		t.Fatalf("unbound postbattle save was not rejected: %q", g.msg)

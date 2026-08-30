@@ -67,7 +67,9 @@ func (g *Game) cycleBGMSource() {
 	}
 	g.bgmSource = bgmSources[(i+1)%len(bgmSources)]
 	saveSettings(settings{BGMSource: g.bgmSource, LocaleID: g.localeID})
-	g.msg = "音源:" + bgmSourceName[g.bgmSource]
+	if message, ok := g.localeMessage("system.audio.changed", bgmSourceName[g.bgmSource]); ok {
+		g.msg = message
+	}
 	// 強制重播目前曲(繞過同曲不重播:清 bgmCur)
 	if cur := g.bgmCur; cur != "" {
 		g.bgmCur = ""
@@ -95,5 +97,7 @@ func (g *Game) cycleLocale() {
 	}
 	g.localeID, g.localeCatalog = next, catalog
 	saveSettings(settings{BGMSource: g.bgmSource, LocaleID: g.localeID})
-	g.msg = "語言：" + localeDisplayName[next]
+	if message, ok := g.localeMessage("system.locale.changed", localeDisplayName[next]); ok {
+		g.msg = message
+	}
 }

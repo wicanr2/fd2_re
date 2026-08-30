@@ -1,0 +1,715 @@
+{
+  "document_id": "legacy/scenario/de12aba72aaa/ch08",
+  "events": [
+    {
+      "actions": [
+        {
+          "action_id": "legacy/action/de12aba72aaa/events/0/0",
+          "extensions": {},
+          "type": "spawn_party"
+        }
+      ],
+      "event_id": "legacy/event/de12aba72aaa/events/0",
+      "extensions": {
+        "legacy": {
+          "id": "opening",
+          "once": true
+        }
+      },
+      "trigger": "on_battle_start"
+    },
+    {
+      "actions": [
+        {
+          "action_id": "legacy/action/de12aba72aaa/events/1/0",
+          "extensions": {
+            "legacy": {
+              "camp": "enemy",
+              "groups": [
+                2
+              ],
+              "native_event_id": 27,
+              "native_spawns": [
+                {
+                  "group": 2,
+                  "raw_placement_gate": 0,
+                  "source": "0x349ff",
+                  "via": "spawn_group"
+                }
+              ]
+            }
+          },
+          "type": "spawn_group"
+        }
+      ],
+      "event_id": "legacy/event/de12aba72aaa/events/1",
+      "extensions": {
+        "legacy": {
+          "id": "reinforce_ch08_e27_t2",
+          "once": true
+        }
+      },
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 2
+      }
+    },
+    {
+      "actions": [
+        {
+          "action_id": "legacy/action/de12aba72aaa/events/2/0",
+          "extensions": {
+            "legacy": {
+              "camp": "enemy",
+              "groups": [
+                3
+              ],
+              "native_event_id": 27,
+              "native_spawns": [
+                {
+                  "group": 3,
+                  "raw_placement_gate": 0,
+                  "source": "0x349ff",
+                  "via": "spawn_group"
+                }
+              ]
+            }
+          },
+          "type": "spawn_group"
+        }
+      ],
+      "event_id": "legacy/event/de12aba72aaa/events/2",
+      "extensions": {
+        "legacy": {
+          "id": "reinforce_ch08_e27_t3",
+          "once": true
+        }
+      },
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 3
+      }
+    },
+    {
+      "actions": [
+        {
+          "action_id": "legacy/action/de12aba72aaa/events/3/0",
+          "extensions": {
+            "legacy": {
+              "camp": "enemy",
+              "groups": [
+                4
+              ],
+              "native_event_id": 27,
+              "native_spawns": [
+                {
+                  "group": 4,
+                  "raw_placement_gate": 0,
+                  "source": "0x349ff",
+                  "via": "spawn_group"
+                }
+              ]
+            }
+          },
+          "type": "spawn_group"
+        }
+      ],
+      "event_id": "legacy/event/de12aba72aaa/events/3",
+      "extensions": {
+        "legacy": {
+          "id": "reinforce_ch08_e27_t4",
+          "once": true
+        }
+      },
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 4
+      }
+    },
+    {
+      "actions": [
+        {
+          "action_id": "legacy/action/de12aba72aaa/events/4/0",
+          "extensions": {
+            "legacy": {
+              "camp": "enemy",
+              "groups": [
+                5
+              ],
+              "native_event_id": 27,
+              "native_spawns": [
+                {
+                  "group": 5,
+                  "raw_placement_gate": 0,
+                  "source": "0x349ff",
+                  "via": "spawn_group"
+                }
+              ]
+            }
+          },
+          "type": "spawn_group"
+        }
+      ],
+      "event_id": "legacy/event/de12aba72aaa/events/4",
+      "extensions": {
+        "legacy": {
+          "id": "reinforce_ch08_e27_t5",
+          "once": true
+        }
+      },
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 5
+      }
+    },
+    {
+      "actions": [
+        {
+          "action_id": "legacy/action/de12aba72aaa/events/5/0",
+          "extensions": {
+            "legacy": {
+              "camp": "enemy",
+              "groups": [
+                6
+              ],
+              "native_event_id": 27,
+              "native_spawns": [
+                {
+                  "group": 6,
+                  "raw_placement_gate": 0,
+                  "source": "0x349ff",
+                  "via": "spawn_group"
+                }
+              ]
+            }
+          },
+          "type": "spawn_group"
+        }
+      ],
+      "event_id": "legacy/event/de12aba72aaa/events/5",
+      "extensions": {
+        "legacy": {
+          "id": "reinforce_ch08_e27_t6",
+          "once": true
+        }
+      },
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 6
+      }
+    },
+    {
+      "actions": [
+        {
+          "action_id": "legacy/action/de12aba72aaa/events/6/0",
+          "extensions": {
+            "legacy": {
+              "camp": "enemy",
+              "groups": [
+                7
+              ],
+              "native_event_id": 27,
+              "native_spawns": [
+                {
+                  "group": 7,
+                  "raw_placement_gate": 0,
+                  "source": "0x349ff",
+                  "via": "spawn_group"
+                }
+              ]
+            }
+          },
+          "type": "spawn_group"
+        }
+      ],
+      "event_id": "legacy/event/de12aba72aaa/events/6",
+      "extensions": {
+        "legacy": {
+          "id": "reinforce_ch08_e27_t7",
+          "once": true
+        }
+      },
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 7
+      }
+    }
+  ],
+  "extensions": {
+    "legacy": {
+      "deploy_cells": [
+        [
+          14,
+          42
+        ],
+        [
+          13,
+          43
+        ],
+        [
+          15,
+          43
+        ],
+        [
+          12,
+          44
+        ],
+        [
+          14,
+          44
+        ],
+        [
+          15,
+          41
+        ],
+        [
+          16,
+          42
+        ],
+        [
+          12,
+          42
+        ],
+        [
+          13,
+          41
+        ],
+        [
+          16,
+          44
+        ]
+      ],
+      "initial_groups": [
+        0
+      ],
+      "name": "王城前的戰鬥",
+      "runtime_append_groups": true
+    }
+  },
+  "kind": "scenario",
+  "map_id": "map/7",
+  "scenario_id": "scenario/ch08",
+  "schema_version": 1,
+  "source": {
+    "importer_version": "fd2-editor-legacy-importer/1.0",
+    "path": "remake/assets/scenarios/ch08.json"
+  },
+  "units": [
+    {
+      "character_id": "character/native-0",
+      "extensions": {
+        "legacy": {
+          "ap": 41,
+          "cls": "劍士",
+          "dp": 27,
+          "fig": 0,
+          "hp": 72,
+          "initial_command_mask": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "inventory": [
+            0,
+            132,
+            192
+          ],
+          "inventory_slots": [
+            0,
+            132,
+            192,
+            255,
+            255,
+            255,
+            255,
+            255
+          ],
+          "lv": 4,
+          "mp": 0,
+          "mv": 6,
+          "name": "索爾",
+          "native_identity": 0,
+          "native_record_class": 1,
+          "native_record_race": 1,
+          "portrait": 0
+        }
+      },
+      "unit_id": "legacy/unit/de12aba72aaa/party/0"
+    },
+    {
+      "character_id": "character/native-4",
+      "extensions": {
+        "legacy": {
+          "ap": 44,
+          "cls": "騎士",
+          "dp": 28,
+          "fig": 4,
+          "hp": 76,
+          "initial_command_mask": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "inventory": [
+            20,
+            128
+          ],
+          "inventory_slots": [
+            20,
+            128,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255
+          ],
+          "lv": 4,
+          "mp": 0,
+          "mv": 7,
+          "name": "亞雷斯",
+          "native_identity": 4,
+          "native_record_class": 3,
+          "native_record_race": 1,
+          "portrait": 4
+        }
+      },
+      "unit_id": "legacy/unit/de12aba72aaa/party/1"
+    },
+    {
+      "character_id": "character/native-9",
+      "extensions": {
+        "legacy": {
+          "ap": 24,
+          "cls": "法師",
+          "dp": 18,
+          "fig": 9,
+          "hp": 49,
+          "initial_command_mask": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "inventory": [
+            52,
+            164
+          ],
+          "inventory_slots": [
+            52,
+            164,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255
+          ],
+          "lv": 4,
+          "mp": 34,
+          "mv": 5,
+          "name": "悠妮",
+          "native_identity": 9,
+          "native_record_class": 5,
+          "native_record_race": 1,
+          "portrait": 9,
+          "spells": [
+            0,
+            4,
+            13
+          ]
+        }
+      },
+      "unit_id": "legacy/unit/de12aba72aaa/party/2"
+    },
+    {
+      "character_id": "character/native-30",
+      "extensions": {
+        "legacy": {
+          "ap": 58,
+          "cls": "機兵",
+          "dp": 42,
+          "fig": 30,
+          "hp": 84,
+          "initial_command_mask": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "inventory": [
+            72,
+            178
+          ],
+          "inventory_slots": [
+            72,
+            178,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255
+          ],
+          "lv": 4,
+          "mp": 0,
+          "mv": 6,
+          "name": "蓋亞",
+          "native_identity": 30,
+          "native_record_class": 25,
+          "native_record_race": 6,
+          "portrait": 30
+        }
+      },
+      "unit_id": "legacy/unit/de12aba72aaa/party/3"
+    },
+    {
+      "character_id": "character/native-1",
+      "extensions": {
+        "legacy": {
+          "ap": 23,
+          "cls": "戰士",
+          "dp": 14,
+          "fig": 1,
+          "hp": 48,
+          "initial_command_mask": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "inventory": [
+            0,
+            128
+          ],
+          "inventory_slots": [
+            0,
+            128,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255
+          ],
+          "lv": 4,
+          "mp": 0,
+          "mv": 6,
+          "name": "哈諾",
+          "native_identity": 1,
+          "native_record_class": 2,
+          "native_record_race": 1,
+          "portrait": 1
+        }
+      },
+      "unit_id": "legacy/unit/de12aba72aaa/party/4"
+    },
+    {
+      "character_id": "character/native-8",
+      "extensions": {
+        "legacy": {
+          "ap": 19,
+          "cls": "弓兵",
+          "dp": 11,
+          "fig": 8,
+          "hp": 40,
+          "initial_command_mask": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "inventory": [
+            44,
+            129
+          ],
+          "inventory_slots": [
+            44,
+            129,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255
+          ],
+          "lv": 4,
+          "mp": 0,
+          "mv": 6,
+          "name": "希莉亞",
+          "native_identity": 8,
+          "native_record_class": 4,
+          "native_record_race": 1,
+          "portrait": 8
+        }
+      },
+      "unit_id": "legacy/unit/de12aba72aaa/party/5"
+    },
+    {
+      "character_id": "character/native-2",
+      "extensions": {
+        "legacy": {
+          "ap": 19,
+          "cls": "劍士",
+          "dp": 11,
+          "fig": 2,
+          "hp": 40,
+          "initial_command_mask": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "inventory": [
+            0,
+            128
+          ],
+          "inventory_slots": [
+            0,
+            128,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255
+          ],
+          "lv": 4,
+          "mp": 0,
+          "mv": 6,
+          "name": "鐵諾",
+          "native_identity": 2,
+          "native_record_class": 1,
+          "native_record_race": 1,
+          "portrait": 2
+        }
+      },
+      "unit_id": "legacy/unit/de12aba72aaa/party/6"
+    },
+    {
+      "character_id": "character/native-10",
+      "extensions": {
+        "legacy": {
+          "ap": 14,
+          "cls": "僧侶",
+          "dp": 11,
+          "fig": 10,
+          "hp": 38,
+          "initial_command_mask": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "inventory": [
+            0,
+            129
+          ],
+          "inventory_slots": [
+            0,
+            129,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255
+          ],
+          "lv": 8,
+          "mp": 21,
+          "mv": 5,
+          "name": "瑪琳",
+          "native_identity": 10,
+          "native_record_class": 6,
+          "native_record_race": 1,
+          "portrait": 10
+        }
+      },
+      "unit_id": "legacy/unit/de12aba72aaa/party/7"
+    },
+    {
+      "character_id": "character/native-13",
+      "extensions": {
+        "legacy": {
+          "ap": 19,
+          "cls": "弓兵",
+          "dp": 11,
+          "fig": 13,
+          "hp": 40,
+          "initial_command_mask": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "inventory": [
+            0,
+            129
+          ],
+          "inventory_slots": [
+            0,
+            129,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255
+          ],
+          "lv": 8,
+          "mp": 0,
+          "mv": 6,
+          "name": "貝克威",
+          "native_identity": 13,
+          "native_record_class": 4,
+          "native_record_race": 2,
+          "portrait": 13
+        }
+      },
+      "unit_id": "legacy/unit/de12aba72aaa/party/8"
+    },
+    {
+      "character_id": "character/native-12",
+      "extensions": {
+        "legacy": {
+          "ap": 25,
+          "cls": "武者",
+          "dp": 15,
+          "fig": 12,
+          "hp": 52,
+          "initial_command_mask": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "inventory": [
+            62,
+            172
+          ],
+          "inventory_slots": [
+            62,
+            172,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255
+          ],
+          "lv": 10,
+          "mp": 0,
+          "mv": 6,
+          "name": "凱麗",
+          "native_identity": 12,
+          "native_record_class": 8,
+          "native_record_race": 1,
+          "portrait": 12
+        }
+      },
+      "unit_id": "legacy/unit/de12aba72aaa/party/9"
+    }
+  ]
+}

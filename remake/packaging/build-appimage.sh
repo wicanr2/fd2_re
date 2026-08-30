@@ -5,7 +5,8 @@
 # 階段下載並驗證固定 SHA-256，正式封包容器關閉網路且不需要 host FUSE。
 #
 # 打包內容(見 docs/knowledge-base/41-packaging.md「版權資產分離」):
-#   AppDir/assets/ 只放已入庫的原創內容 —— scenarios/、story/、locales/、spells.json(remake/.gitignore 例外清單)。
+#   AppDir/assets/ 只放已入庫的可公開內容 —— scenarios/、story/、locales/、
+#   editor-canonical/、spells.json（remake/.gitignore 例外清單）。
 #   maps/sprites/music/portraits/tileset 等 ROM 衍生素材是版權物,不打包進散布物;
 #   玩家自備原版跑 tools/export_engine_assets.py 等,把產出解到 ~/.local/share/fd2_re/assets/
 #   (assetPath 三層查找的 XDG 覆蓋層,見 cmd/fd2/assets.go)。
@@ -27,7 +28,7 @@ docker run --rm --network none \
     mkdir -p "$appdir/usr/bin" "$appdir/usr/share/applications" \
       "$appdir/usr/share/icons/hicolor/256x256/apps" \
       "$appdir/usr/share/metainfo" \
-      "$appdir/assets/scenarios" "$appdir/assets/story" "$appdir/assets/locales" /tmp/home /tmp/go-cache /tmp/appimage-work
+      "$appdir/assets/scenarios" "$appdir/assets/story" "$appdir/assets/locales" "$appdir/assets/editor-canonical" /tmp/home /tmp/go-cache /tmp/appimage-work
 
     CGO_ENABLED=1 go build -trimpath -buildvcs=false -ldflags="-s -w" \
       -o "$appdir/usr/bin/fd2" ./cmd/fd2
@@ -43,6 +44,7 @@ docker run --rm --network none \
     cp -R assets/scenarios/. "$appdir/assets/scenarios/"
     cp -R assets/story/. "$appdir/assets/story/"
     cp -R assets/locales/. "$appdir/assets/locales/"
+    cp -R assets/editor-canonical/. "$appdir/assets/editor-canonical/"
     cp assets/spells.json "$appdir/assets/spells.json"
 
     cd /tmp/appimage-work

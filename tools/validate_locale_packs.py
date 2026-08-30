@@ -17,6 +17,14 @@ APPROVED_SOURCE = {
     "battle.attack.hit": "legacy.go.remake.cmd.fd2.main.l5975-c25",
     "battle.attack.critical_suffix": "legacy.go.remake.cmd.fd2.main.l5977-c14",
     "battle.attack.exp_suffix": "legacy.go.remake.cmd.fd2.main.l5980-c26",
+    "system.locale.changed": "runtime.settings.locale.changed",
+    "system.audio.changed": "runtime.settings.audio.changed",
+    "save.unsupported": "runtime.save.unsupported",
+    "save.postbattle_blocked": "runtime.save.postbattle_blocked",
+    "save.saved": "runtime.save.saved",
+    "save.none": "runtime.save.none",
+    "save.node_missing": "runtime.save.node_missing",
+    "save.loaded": "runtime.save.loaded",
 }
 
 def fail(message: str) -> None:

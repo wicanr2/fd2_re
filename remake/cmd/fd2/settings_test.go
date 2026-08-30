@@ -4,8 +4,38 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
+
+func TestOfficialLocalesCoverSystemAndSaveMessages(t *testing.T) {
+	wants := map[string][]string{
+		"zh-Hant": {"語言：日本語", "已存檔（槽位 2：town_ch02）"},
+		"zh-Hans": {"语言：日本語", "已存档（槽位 2：town_ch02）"},
+		"ja":      {"言語：日本語", "スロット 2 にセーブしました：town_ch02"},
+		"en":      {"Language: 日本語", "Saved to slot 2: town_ch02"},
+	}
+	for localeID, want := range wants {
+		catalog, err := loadOfficialLocale(localeID)
+		if err != nil {
+			t.Fatalf("%s: %v", localeID, err)
+		}
+		changed, err := catalog.Format("system.locale.changed", "日本語")
+		if err != nil || changed != want[0] {
+			t.Fatalf("%s locale message=%q err=%v", localeID, changed, err)
+		}
+		saved, err := catalog.Format("save.saved", 2, "town_ch02")
+		if err != nil || saved != want[1] {
+			t.Fatalf("%s save message=%q err=%v", localeID, saved, err)
+		}
+		for _, key := range []string{"system.audio.changed", "save.unsupported", "save.postbattle_blocked", "save.none", "save.node_missing", "save.loaded"} {
+			entry, ok := catalog.Entries[key]
+			if !ok || strings.TrimSpace(entry.Text) == "" {
+				t.Fatalf("%s missing %s", localeID, key)
+			}
+		}
+	}
+}
 
 func TestSettingsRoundTripKeepsAudioAndLocaleOutsideSave(t *testing.T) {
 	oldXDG, hadXDG := os.LookupEnv("XDG_DATA_HOME")

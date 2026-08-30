@@ -10,6 +10,11 @@ assets/figani/*
 !assets/scenarios/
 # 例外:劇情對白文本(使用者確認 FD2 版權已過期,SRPG 對白允許公開;2026-07-03)
 !assets/story/
+# 例外：編輯器 canonical 文件只含可編輯結構、穩定身份、來源與原始索引；
+# 不含 PNG／OGG／原始封存 bytes。二進位素材仍由下方全域規則與產生目錄排除。
+!assets/editor-canonical/
+!assets/editor-canonical/**/
+!assets/editor-canonical/**/*.json
 # 例外：官方／社群語言包契約與文字可版控；字型與圖像仍由下方全域資產規則忽略。
 !assets/locales/
 assets/locales/*/*

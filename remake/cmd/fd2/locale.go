@@ -12,11 +12,19 @@ type localeEntryContract struct {
 	sourceID  string
 }
 
-var physicalAttackLocaleContract = map[string]localeEntryContract{
+var officialLocaleContract = map[string]localeEntryContract{
 	"battle.attack.miss":            {[]string{"%s", "%s"}, "legacy.go.remake.cmd.fd2.main.l5973-c22"},
 	"battle.attack.hit":             {[]string{"%s", "%s", "%d"}, "legacy.go.remake.cmd.fd2.main.l5975-c25"},
 	"battle.attack.critical_suffix": {[]string{}, "legacy.go.remake.cmd.fd2.main.l5977-c14"},
 	"battle.attack.exp_suffix":      {[]string{"%.0f"}, "legacy.go.remake.cmd.fd2.main.l5980-c26"},
+	"system.locale.changed":         {[]string{"%s"}, "runtime.settings.locale.changed"},
+	"system.audio.changed":          {[]string{"%s"}, "runtime.settings.audio.changed"},
+	"save.unsupported":              {[]string{}, "runtime.save.unsupported"},
+	"save.postbattle_blocked":       {[]string{}, "runtime.save.postbattle_blocked"},
+	"save.saved":                    {[]string{"%d", "%s"}, "runtime.save.saved"},
+	"save.none":                     {[]string{}, "runtime.save.none"},
+	"save.node_missing":             {[]string{"%s"}, "runtime.save.node_missing"},
+	"save.loaded":                   {[]string{"%d", "%s"}, "runtime.save.loaded"},
 }
 
 func loadOfficialLocale(localeID string) (*localization.Catalog, error) {
@@ -25,7 +33,10 @@ func loadOfficialLocale(localeID string) (*localization.Catalog, error) {
 	if err != nil {
 		return nil, err
 	}
-	for key, contract := range physicalAttackLocaleContract {
+	if len(catalog.Entries) != len(officialLocaleContract) {
+		return nil, fmt.Errorf("official locale %s has %d keys, want exact %d", localeID, len(catalog.Entries), len(officialLocaleContract))
+	}
+	for key, contract := range officialLocaleContract {
 		entry, ok := catalog.Entries[key]
 		if !ok {
 			return nil, fmt.Errorf("official locale %s is missing %s", localeID, key)
@@ -46,4 +57,22 @@ func loadOfficialLocale(localeID string) (*localization.Catalog, error) {
 		return nil, fmt.Errorf("official locale %s has a non-canonical font path", localeID)
 	}
 	return catalog, nil
+}
+
+// localeMessage formats a required official key. Callers must stop their
+// current UI transaction when ok is false; silently falling back to embedded
+// Traditional Chinese would create a mixed-language official pack.
+func (g *Game) localeMessage(key string, args ...any) (message string, ok bool) {
+	if g == nil || g.localeCatalog == nil {
+		if g != nil {
+			g.loadErr = "locale message: official catalog is unavailable"
+		}
+		return "", false
+	}
+	message, err := g.localeCatalog.Format(key, args...)
+	if err != nil {
+		g.loadErr = "locale message: " + err.Error()
+		return "", false
+	}
+	return message, true
 }

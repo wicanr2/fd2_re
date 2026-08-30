@@ -1,0 +1,830 @@
+{
+  "document_id": "legacy/story/ce23f725c2f5/ch27",
+  "extensions": {
+    "legacy": {
+      "chapter": 27,
+      "location": "眾人循渥德指引抵達地下通道出口的古代轉送站,遭遇轉送站的控制中樞 ASR-07。ASR-07 為對抗入侵者強制連接悠妮的記憶部位,反而衝擊出悠妮塵封已久的完整記憶——悠妮痛哭坦承自己並非人類,是為了保護所愛之人才留在索爾一行身邊。眾人擊敗 ASR-07 的防衛機兵後,悠妮以「天空之鑰」啟動轉送裝置,一行人被傳送至第一空中要塞,即傳說中的黃金城。",
+      "notes": "本章代碼「索」「爾」為轉送站控制中樞 ASR-07 的雙聲道系統播報(疑為 ASR 唸法的字型代換巧合),與同名主角索爾無關,已依原始單字代號直書並標記 -1。章末(FDTXT_027 檔案結尾)出現一段悠妮向索爾道別、隨黃金城一同永遠消失的完整場景,惟該段落全數無肖像代碼、且內容與 FDTXT_030(全劇真結局)幾乎逐句重複——研判為劇本檔案尾端的重疊片段或分支結局預覽(靜態反組譯無法確認實際觸發順序,無 DOSBox debugger 可驗證),已照原樣單獨列為附錄場景,並於對應台詞標註 [?]。悠妮身世(古代人系統)伏筆於此章首度明確揭露。",
+      "source_dat": "FDTXT_027",
+      "title": "第二十七章 — 轉送站中樞 ASR-07,悠妮記憶甦醒"
+    }
+  },
+  "kind": "story",
+  "scenes": [
+    {
+      "beats": [],
+      "extensions": {
+        "legacy": {
+          "label": "轉送站中樞 ASR-07 迎戰"
+        }
+      },
+      "lines": [
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/0",
+          "speaker": "character/native-0",
+          "text": "這裡就是遺跡了嗎?果然是個很詭異的地方!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 4,
+              "speaker_name": "亞雷斯"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/1",
+          "speaker": "character/native-4",
+          "text": "此地不僅詭異,還有大批敵人呢!準備迎敵吧!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": -1,
+              "speaker_name": "弓"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/2",
+          "speaker": "legacy/speaker/ce23f725c2f5/scenes/0/lines/2",
+          "text": "嗶!緊急狀況,請求支援!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": -1,
+              "speaker_name": "弓"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/3",
+          "speaker": "legacy/speaker/ce23f725c2f5/scenes/0/lines/3",
+          "text": "..警告,任務中止..ASR-07出現異常現象,原因無法解析...."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/4",
+          "speaker": "character/native-0",
+          "text": "中央的平台似乎就是傳送的地點,就看「天空之鑰」能否發生作用了!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": -1,
+              "speaker_name": "索"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/5",
+          "speaker": "legacy/speaker/ce23f725c2f5/scenes/0/lines/5",
+          "text": "嗶!敵人及目標出現,準備進行第6號戰鬥指令。"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": -1,
+              "speaker_name": "爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/6",
+          "speaker": "legacy/speaker/ce23f725c2f5/scenes/0/lines/6",
+          "text": "命令確認。目標位置標定,系統作用功率全開。2秒後動作開始。"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/7",
+          "speaker": "character/native-9",
+          "text": "呀-----"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/8",
+          "speaker": "character/native-0",
+          "text": "悠妮!可惡..竟敢對她下手!我饒不了你們!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": -1,
+              "speaker_name": "索"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/9",
+          "speaker": "legacy/speaker/ce23f725c2f5/scenes/0/lines/9",
+          "text": "制御及管理中樞ASR-07,完成記憶庫連接。進行控制程式更新及損壞資料排除。"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/10",
+          "speaker": "character/native-9",
+          "text": "啊!我的頭!..我的頭好像要炸開來了...."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/11",
+          "speaker": "character/native-0",
+          "text": "悠妮!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": -1,
+              "speaker_name": "索"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/12",
+          "speaker": "legacy/speaker/ce23f725c2f5/scenes/0/lines/12",
+          "text": "故障排除完成,初步檢查對應:各系統完好無損。ASR-07,繼續執行你的任務。完畢。"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/13",
+          "speaker": "character/native-9",
+          "text": "我..我..為什麼...."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/14",
+          "speaker": "character/native-0",
+          "text": "悠妮!悠妮!妳還好吧!...咦,妳..妳為什麼哭了?"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/15",
+          "speaker": "character/native-9",
+          "text": "索爾,別管我,..不管怎樣,先打倒這些傢伙,別的以後再說...."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": -1,
+              "speaker_name": "索"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/16",
+          "speaker": "legacy/speaker/ce23f725c2f5/scenes/0/lines/16",
+          "text": "ASR-07,你有敵對反應!你是我們的中樞之一,不該對我們有敵對意志!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": -1,
+              "speaker_name": "爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/17",
+          "speaker": "legacy/speaker/ce23f725c2f5/scenes/0/lines/17",
+          "text": "緊急狀況,ASR-07出現預期外現象,快通知最高控制中樞...."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/18",
+          "speaker": "character/native-9",
+          "text": "敵人就在眼前了,趕快發動攻擊啊!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/19",
+          "speaker": "character/native-0",
+          "text": "對啊!我在發什麼呆,大家上!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 4,
+              "speaker_name": "亞雷斯"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/0/lines/20",
+          "speaker": "character/native-4",
+          "text": "一切的謎底就在眼前了!"
+        }
+      ],
+      "scene_id": "legacy/scene/ce23f725c2f5/scenes/0"
+    },
+    {
+      "beats": [],
+      "extensions": {
+        "legacy": {
+          "label": "悠妮記憶甦醒,坦承身世"
+        }
+      },
+      "lines": [
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/0",
+          "speaker": "character/native-9",
+          "text": "就是這個了,轉送站..好久沒看到這種東西了...."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/1",
+          "speaker": "character/native-0",
+          "text": "悠妮?妳還好吧?"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/2",
+          "speaker": "character/native-9",
+          "text": "索爾,所有過去的事,我都想起來了。請原諒我騙了你,可是那時我真的不知道...."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/3",
+          "speaker": "character/native-0",
+          "text": "悠妮,不管是為了什麼事,我都不會怪妳。我只是想送妳回家..就這樣而已,相信我吧!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/4",
+          "speaker": "character/native-9",
+          "text": "好,那麼..我的家就在這上面,你願意..送我回家嗎?"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/5",
+          "speaker": "character/native-0",
+          "text": "當然!這不是我們的約定嗎?"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 24,
+              "speaker_name": "希爾法"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/6",
+          "speaker": "character/native-24",
+          "text": "索爾,你要小心!這女孩變得很奇怪,說不定她原本是敵方的人...."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/7",
+          "speaker": "character/native-9",
+          "text": "約拿先生,希爾法大師,你們所謂的敵人就在這轉送站之後,被你們稱為「黃金城」的第一空中要塞上....如果你們想打倒他,就跟著我來,不然的話,就我和索爾上去也可以....你們意下如何呢?"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 21,
+              "speaker_name": "約拿"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/8",
+          "speaker": "character/native-21",
+          "text": "....悠妮小姐,妳的記憶全部甦醒了嗎?"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/9",
+          "speaker": "character/native-9",
+          "text": "是的。我在受到剛才那個機兵的傳導衝擊之後,受損的記憶部份強制還原了,它們認為我會回到它們那一方,可惜的是,我這段日子以來的記憶並沒有因此消失....我已經不是以前的我了。"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 21,
+              "speaker_name": "約拿"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/10",
+          "speaker": "character/native-21",
+          "text": "為什麼?..我知道妳並不是這個世界的人,但為何妳會為了我們...."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/11",
+          "speaker": "character/native-9",
+          "text": "..自私一點來說,我並不是為了你們,我是為了一個一直保護我、照顧我的人....像我這樣的人是很悲哀的,我們擁有人的一切,卻不能做任何平凡人所能做的事情,所以,我很珍惜這次的經歷....我不容許那個無視這一切的傢伙傷害他和他所愛的這個世界。"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 21,
+              "speaker_name": "約拿"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/12",
+          "speaker": "character/native-21",
+          "text": "..我明白了。悠妮小姐,我很高興妳自始至終都會是我們的伙伴..要對付那個傢伙,光妳和索爾是不行的,就讓我們大家一起來吧!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/13",
+          "speaker": "character/native-9",
+          "text": "約拿先生,謝謝你...."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/14",
+          "speaker": "character/native-0",
+          "text": "悠妮,你們在說些什麼啊!我怎麼聽不太懂.."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/15",
+          "speaker": "character/native-9",
+          "text": "..索爾,等到上了黃金之城,我會讓你知道所有你想知道的,在此之前就不要再問起這些事情了..答應我好嗎?"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/16",
+          "speaker": "character/native-0",
+          "text": "當..當然!我也只是隨口問問而已,就當我沒說好啦!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 21,
+              "speaker_name": "約拿"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/17",
+          "speaker": "character/native-21",
+          "text": "好啦!大家可以整裝待發了,準備迎向最後的敵人!悠妮小姐,請妳啟動轉送裝置吧!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/18",
+          "speaker": "character/native-9",
+          "text": "好的,請大家在這平台上站好,索爾,請把「天空之鑰」給我。"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/19",
+          "speaker": "character/native-0",
+          "text": "是這個吧!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/20",
+          "speaker": "character/native-9",
+          "text": "謝謝。大家站好了.."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/21",
+          "speaker": "character/native-9",
+          "text": "..01327--344621073。識別碼辨識完成..第一空中要塞,請解除出入區防護障壁,預定五秒後啟動轉送程序。"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/1/lines/22",
+          "speaker": "character/native-0",
+          "text": "唔哇啊啊啊!...."
+        }
+      ],
+      "scene_id": "legacy/scene/ce23f725c2f5/scenes/1"
+    },
+    {
+      "beats": [],
+      "extensions": {
+        "legacy": {
+          "label": "缺少天空之鑰的離別(分支)"
+        }
+      },
+      "lines": [
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/2/lines/0",
+          "speaker": "character/native-9",
+          "text": "索爾,所有過去的事,我都想起來了。請原諒我騙了你,可是那時我真的不知道...."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/2/lines/1",
+          "speaker": "character/native-0",
+          "text": "悠妮,不管是為了什麼事,我都不會怪妳,我只是想送妳回家..相信我吧!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/2/lines/2",
+          "speaker": "character/native-9",
+          "text": "..索爾,謝謝你..一路從羅特帝亞到這裡,你一直都那麼照顧我、保護我.."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/2/lines/3",
+          "speaker": "character/native-0",
+          "text": "這是我該做的,你知道..我一直對妳..對妳.."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/2/lines/4",
+          "speaker": "character/native-9",
+          "text": "我明白。索爾,但現在是我們分離的時刻了,如果我現在不走,就會太遲了.."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/2/lines/5",
+          "speaker": "character/native-0",
+          "text": "為什麼?不是約好要我送你回家的嗎?"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/2/lines/6",
+          "speaker": "character/native-9",
+          "text": "沒有天空之鑰,只有我能直接從此地前往黃金城。索爾,請忘了我吧,我並不是一般的人類,既不能也沒有資格接受你的感情,這是命運的安排吧.."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/2/lines/7",
+          "speaker": "character/native-9",
+          "text": "系統權限強制插入,A1型分解傳送啟動待命,座標1-1-72。"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/2/lines/8",
+          "speaker": "character/native-0",
+          "text": "悠妮!不要做傻事!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/2/lines/9",
+          "speaker": "character/native-9",
+          "text": "索爾,不要過來!為了你,也為了這個世界..讓我為你做這最後的一件事吧!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 21,
+              "speaker_name": "約拿"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/2/lines/10",
+          "speaker": "character/native-21",
+          "text": "悠妮小姐!有關這一切事件的來龍去脈,我們還需要向妳請教.."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/2/lines/11",
+          "speaker": "character/native-9",
+          "text": "沒有必要了,我會帶走這代表災厄的黃金之城,就像很久很久以前一般,讓它沈睡在一個誰也找不到的地方。時間的洪流會把它的痕跡從人們的記憶中抹去,我想,這會是最好的結果吧.."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 21,
+              "speaker_name": "約拿"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/2/lines/12",
+          "speaker": "character/native-21",
+          "text": "這樣嗎?也許妳的決定是對的,但沒有其他方法了嗎?"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/2/lines/13",
+          "speaker": "character/native-9",
+          "text": "沒有,我必須自己去面對最後的一戰。各位,再見了,和大家這段日子的相處,讓我永難忘懷.."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/2/lines/14",
+          "speaker": "character/native-0",
+          "text": "悠妮!不要!不要走!讓我幫妳.."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 9,
+              "speaker_name": "悠妮"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/2/lines/15",
+          "speaker": "character/native-9",
+          "text": "索爾,永別了,我永遠永遠也不會忘記你的,希望你以後幸福快樂.."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/2/lines/16",
+          "speaker": "character/native-0",
+          "text": "悠妮!悠妮!.."
+        }
+      ],
+      "scene_id": "legacy/scene/ce23f725c2f5/scenes/2"
+    },
+    {
+      "beats": [],
+      "extensions": {
+        "legacy": {
+          "label": "附錄:黃金城消失的道別片段(疑為分支結局預覽,詳見 ch30)"
+        }
+      },
+      "lines": [
+        {
+          "extensions": {
+            "legacy": {
+              "speaker": 0,
+              "speaker_name": "索爾"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/3/lines/0",
+          "speaker": "character/native-0",
+          "text": "悠妮!悠妮!......"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "note": "[?] 無肖像代碼,與 FDTXT_030 真結局場景近乎逐句重複,存疑",
+              "speaker": -1,
+              "speaker_name": "?"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/3/lines/1",
+          "speaker": "legacy/speaker/ce23f725c2f5/scenes/3/lines/1",
+          "text": "看!是..是黃金城!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "note": "[?] 同上,存疑段落",
+              "speaker": -1,
+              "speaker_name": "?"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/3/lines/2",
+          "speaker": "legacy/speaker/ce23f725c2f5/scenes/3/lines/2",
+          "text": "啊!又..又消失了!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "note": "[?] 同上,存疑段落",
+              "speaker": -1,
+              "speaker_name": "?"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/3/lines/3",
+          "speaker": "legacy/speaker/ce23f725c2f5/scenes/3/lines/3",
+          "text": "這次..是永遠的消失了吧!"
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "note": "[?] 同上,存疑段落",
+              "speaker": -1,
+              "speaker_name": "?"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/3/lines/4",
+          "speaker": "legacy/speaker/ce23f725c2f5/scenes/3/lines/4",
+          "text": "是的!就像她所承諾的,到一個沒有人找得到的地方去了.."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "note": "[?] 同上,存疑段落",
+              "speaker": -1,
+              "speaker_name": "?"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/3/lines/5",
+          "speaker": "legacy/speaker/ce23f725c2f5/scenes/3/lines/5",
+          "text": "黃金城傳說..看來永遠都會是個解不開的謎了...."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "note": "[?] 無肖像代碼,疑為他人呼喚索爾",
+              "speaker": -1,
+              "speaker_name": "?"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/3/lines/6",
+          "speaker": "legacy/speaker/ce23f725c2f5/scenes/3/lines/6",
+          "text": "索爾...."
+        },
+        {
+          "extensions": {
+            "legacy": {
+              "note": "[?] 同上,存疑段落,內容與 ch30 索爾道別台詞近乎相同",
+              "speaker": -1,
+              "speaker_name": "?"
+            }
+          },
+          "line_id": "legacy/line/ce23f725c2f5/scenes/3/lines/7",
+          "speaker": "legacy/speaker/ce23f725c2f5/scenes/3/lines/7",
+          "text": "..再見了,悠妮!雖然妳的離去只留下了更多的謎題,但在未來的歲月中,我仍會永遠記得妳..和這段非凡的冒險...."
+        }
+      ],
+      "scene_id": "legacy/scene/ce23f725c2f5/scenes/3"
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "importer_version": "fd2-editor-legacy-importer/1.0",
+    "path": "remake/assets/story/ch27.json"
+  }
+}

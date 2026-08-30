@@ -116,7 +116,9 @@ func (g *Game) saveGame() { g.saveGameToSlot(0) }
 
 func (g *Game) saveGameToSlot(slot int) {
 	if g.camp == nil {
-		g.msg = "存檔:僅 campaign 模式支援(FD2_CAMPAIGN=1)"
+		if message, ok := g.localeMessage("save.unsupported"); ok {
+			g.msg = message
+		}
 		return
 	}
 	if n := g.camp.Node(); n != nil && n.Type == "cutscene" && ((n.HandlerBinding != "" && g.st != nil) || strings.HasPrefix(g.camp.NodeID(), "postbattle_")) {
@@ -126,7 +128,9 @@ func (g *Game) saveGameToSlot(slot int) {
 		// saving this node would reload into a guaranteed fail-closed context. This
 		// applies equally to an unbound node: it must not create a fake save that
 		// appears to have crossed the persistence boundary.
-		g.msg = "戰後演出進行中，請在下一個節點存檔"
+		if message, ok := g.localeMessage("save.postbattle_blocked"); ok {
+			g.msg = message
+		}
 		return
 	}
 	g.captureNativeMapHUDPersistence()
@@ -151,7 +155,9 @@ func (g *Game) saveGameToSlot(slot int) {
 		return
 	}
 	if writeSaveFile(saveSlotPath(slot), raw) == nil {
-		g.msg = fmt.Sprintf("已存檔(槽位%d：%s)", slot+1, g.camp.Cur)
+		if message, ok := g.localeMessage("save.saved", slot+1, g.camp.Cur); ok {
+			g.msg = message
+		}
 	}
 }
 
@@ -163,7 +169,9 @@ func (g *Game) loadGameFromSlot(slot int) {
 	}
 	raw, err := os.ReadFile(saveSlotPath(slot))
 	if err != nil {
-		g.msg = "無存檔"
+		if message, ok := g.localeMessage("save.none"); ok {
+			g.msg = message
+		}
 		return
 	}
 	var d saveData
@@ -171,7 +179,9 @@ func (g *Game) loadGameFromSlot(slot int) {
 		return
 	}
 	if _, ok := g.camp.C.Nodes[d.Node]; !ok {
-		g.msg = "存檔節點不存在:" + d.Node
+		if message, formatted := g.localeMessage("save.node_missing", d.Node); formatted {
+			g.msg = message
+		}
 		return
 	}
 	if err := validateSavePartyTopology(d); err != nil {
@@ -226,7 +236,9 @@ func (g *Game) loadGameFromSlot(slot int) {
 	g.clearChurchTransientStateForLoad()
 	g.clearShopTransientStateForLoad()
 	g.enterNode()
-	g.msg = fmt.Sprintf("已讀檔(槽位%d：%s)", slot+1, d.Node)
+	if message, ok := g.localeMessage("save.loaded", slot+1, d.Node); ok {
+		g.msg = message
+	}
 }
 
 func (g *Game) clearShopTransientStateForLoad() {

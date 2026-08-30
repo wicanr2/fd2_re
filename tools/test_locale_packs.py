@@ -18,7 +18,7 @@ class LocalePackTests(unittest.TestCase):
     def test_official_packs_have_one_complete_consistent_slice(self):
         packs = validator.validate(OFFICIAL)
         self.assertEqual({p["locale"] for p in packs}, validator.OFFICIAL)
-        self.assertEqual(len(packs[0]["entries"]), 4)
+        self.assertEqual(len(packs[0]["entries"]), 12)
         self.assertTrue(all(all(entry["text"] for entry in p["entries"].values()) for p in packs))
 
     def test_community_pack_may_fallback_and_only_override_known_keys(self):

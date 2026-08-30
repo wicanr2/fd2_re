@@ -356,9 +356,25 @@ go run ./cmd/fd2-string-inventory -repo .. -summary -output ../docs/data/fd2-str
 語系。`packageSelfCheck`亦要求四個官方包可載入。這仍**未**把其餘約 2,493 個互異
 來源字串、日文字形覆蓋或排版 prototype 冒稱完成。
 
+2026-08-30 下一個正式切片固定先收斂跨場景都會遇到的系統訊息：語系／音源切換、
+SAVE／LOAD成功、無存檔、無效節點、戰後禁止存檔與非戰役模式禁止存檔。這些 key
+使用穩定的 `runtime.<subsystem>.<role>` provenance，不再綁定會因程式編輯漂移的 Go
+行號；既有四筆原版攻擊訊息仍保留原來的 `legacy.go...` 回查來源。Go loader 與
+Python validator 必須共享同一 key／變數／provenance 契約，四個官方包缺任一筆即
+整包拒絕。正式訊息只能經 catalog 格式化；切換失敗時保留舊 catalog 與遊戲狀態。
+這個切片關閉「跨存檔系統訊息會隨 F4 切換」，不外推成完整劇情翻譯。
+
 ### 四之二、legacy 匯入與 canonical 往返
 
 > 狀態：**DATA-READY（第一個實檔切片）**（2026-08-29）
+
+2026-08-30 的全戰役批次契約使用 `tools/export_editor_canonical.py`，固定以
+`campaign_full.json`、30 份 scenario 與 35 份 story 建立獨立 canonical bundle，
+不得覆寫 legacy 目錄。若本機存在已驗證的私人動畫 metadata，可另顯式加入 297 份
+animation 文件；乾淨 clone 的受版控測試不得把被 `.gitignore` 排除的私人產物當成
+必要輸入。每份輸出與 bundle summary 都採 deterministic writer，並保存來源、診斷、
+document ID 與 SHA-256；兩次獨立輸出必須逐位元相同。這先關閉全戰役資料化與往返，
+跨文件 identity validator 及正式 runtime consumer 仍是下一個 gate。
 
 `tools/import_editor_legacy.py` 現可將 legacy campaign、scenario、story 與既有動畫
 metadata 投影成四份 canonical 文件。穩定 ID 只由來源路徑、legacy key、原始數值與
