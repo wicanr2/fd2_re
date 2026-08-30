@@ -482,6 +482,7 @@ type Game struct {
 	font               *Font                                       // 原版點陣中文字型(doc 08)
 	localeID           string                                      // 全域語系設定；不寫入戰役存檔
 	localeCatalog      *localization.Catalog                       // 已完整驗證的官方語言包
+	localeContent      *localization.ContentCatalog                // 已完整驗證的全量玩家內容目錄
 
 	nativeChapterRestore *campaign.NativeChapterSlotRestorePlan // 四槽 LOAD 的已驗證戰間狀態；未知 raw bytes 僅保存、不猜接
 
@@ -1747,9 +1748,10 @@ func (g *Game) beatStart(b campaign.Beat) {
 			// A compiled handler carries an explicit editable-story context.  Do
 			// not fall back to the enclosing Node's lines here: that could play a
 			// valid index from the wrong FDTXT/loadch segment.
-			lines = loadStoryScriptAt(handlerStoryPath(b.Script), b.Scene, b.SceneIndex)
-			if lines == nil {
-				g.loadErr = fmt.Sprintf("beat dialog:無法載入 script=%q scene=%q scene_index=%v", b.Script, b.Scene, b.SceneIndex)
+			var err error
+			lines, err = loadStoryScriptWithIdentityAt(handlerStoryPath(b.Script), b.Scene, b.SceneIndex)
+			if err != nil {
+				g.loadErr = fmt.Sprintf("beat dialog:無法載入 script=%q scene=%q scene_index=%v: %v", b.Script, b.Scene, b.SceneIndex, err)
 				g.beatAdvance()
 				return
 			}
@@ -2165,6 +2167,13 @@ func (g *Game) beatStart(b campaign.Beat) {
 }
 
 func (g *Game) resolveCampaignDialogLine(line campaign.Line, upperOverride *bool, nativeOverride *campaign.NativeDialogueLayout) (battle.DialogLine, error) {
+	text, err := g.localizedStoryText(line)
+	if err != nil {
+		return battle.DialogLine{}, err
+	}
+	if nativeOverride != nil && g.localeID != "zh-Hant" {
+		return battle.DialogLine{}, errors.New("translated native story dialogue layout is not yet conformed")
+	}
 	speaker := line.Speaker
 	if line.SpeakerSlot != nil {
 		slot := *line.SpeakerSlot
@@ -2217,7 +2226,7 @@ func (g *Game) resolveCampaignDialogLine(line campaign.Line, upperOverride *bool
 			}
 		}
 	}
-	return battle.DialogLine{Speaker: speaker, Text: line.Text, Upper: upper, NativeDialogue: native}, nil
+	return battle.DialogLine{Speaker: speaker, Text: text, Upper: upper, NativeDialogue: native}, nil
 }
 
 // resolveNativeStoryDialogueSpeaker 重播 sub_15F84 的 DATO selector owner。
@@ -2615,9 +2624,9 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 	if len(roster.Units) != state.SlotCount {
 		return fmt.Errorf("roster %q has %d slots, binding declares %d", state.Roster, len(roster.Units), state.SlotCount)
 	}
-	lines := loadStoryScriptAt(state.Script, "", nil)
-	if lines == nil {
-		return fmt.Errorf("story script %q", state.Script)
+	lines, err := loadStoryScriptWithIdentityAt(state.Script, "", nil)
+	if err != nil {
+		return fmt.Errorf("story script %q: %w", state.Script, err)
 	}
 	if err := g.loadMap(state.Map); err != nil {
 		return fmt.Errorf("map %q: %w", state.Map, err)
@@ -2952,15 +2961,24 @@ func (g *Game) enterNode() {
 		if script == "" && n.Type == "story" {
 			script = defaultChapterStoryScript(g.camp.NodeID())
 		}
-		if script != "" { // 本機劇情文本檔(assets/story/chNN.json,人工精校;無檔 fallback 內嵌 lines)
-			if ls := loadStoryScript(script, n.Scene); len(ls) > 0 {
-				lines = ls
+		if script != "" { // 正式劇情必須與 editor canonical line_id 完整對齊
+			ls, err := loadStoryScriptWithIdentityAt(script, n.Scene, nil)
+			if err != nil {
+				g.loadErr = "story script: " + err.Error()
+				return
 			}
+			lines = ls
 		}
 		g.campLines = lines // cutscene dialog beat 依 Line/Count 取子段;story 節點也存一份備用
 		if n.Type == "story" {
 			for i := len(lines) - 1; i >= 0; i-- { // 反序堆疊:顯示取末端,Enter 逐句 pop
-				g.dialog = append(g.dialog, battle.DialogLine{Speaker: lines[i].Speaker, Text: lines[i].Text})
+				text, err := g.localizedStoryText(lines[i])
+				if err != nil {
+					g.dialog = nil
+					g.loadErr = "story locale: " + err.Error()
+					return
+				}
+				g.dialog = append(g.dialog, battle.DialogLine{Speaker: lines[i].Speaker, Text: text})
 			}
 		}
 		if n.Map != "" { // 場景背景圖(doc23 §4:序幕王城/草地= FDFIELD map32 複合場景,非戰場地圖疊對白)
@@ -5860,9 +5878,21 @@ func defaultChapterStoryScript(nodeID string) string {
 // intentionally contain an unlabeled scene or repeat a label; in that mode
 // the index is authoritative and an invalid index fails closed.
 func loadStoryScriptAt(path, scene string, sceneIndex *int) []campaign.Line {
-	raw, err := os.ReadFile(assetPath(path))
+	lines, err := loadStoryScriptWithIdentityAt(path, scene, sceneIndex)
 	if err != nil {
 		return nil
+	}
+	return lines
+}
+
+// loadStoryScriptWithIdentityAt joins the legacy runtime script (numeric
+// speaker/control provenance) with the editor-canonical story (stable line_id).
+// Array positions are accepted only after every line's source text and legacy
+// speaker agree, so a reordered or stale document fails closed.
+func loadStoryScriptWithIdentityAt(path, scene string, sceneIndex *int) ([]campaign.Line, error) {
+	raw, err := os.ReadFile(assetPath(path))
+	if err != nil {
+		return nil, err
 	}
 	var f struct {
 		Scenes []struct {
@@ -5870,28 +5900,66 @@ func loadStoryScriptAt(path, scene string, sceneIndex *int) []campaign.Line {
 			Lines []campaign.Line `json:"lines"`
 		} `json:"scenes"`
 	}
-	if json.Unmarshal(raw, &f) != nil {
-		return nil
+	if err := json.Unmarshal(raw, &f); err != nil {
+		return nil, err
+	}
+	canonicalPath := filepath.Join("assets", "editor-canonical", "story", filepath.Base(path))
+	canonicalRaw, err := os.ReadFile(assetPath(canonicalPath))
+	if err != nil {
+		return nil, fmt.Errorf("canonical story %q: %w", canonicalPath, err)
+	}
+	var canonical struct {
+		Scenes []struct {
+			Lines []struct {
+				LineID     string `json:"line_id"`
+				Text       string `json:"text"`
+				Extensions struct {
+					Legacy struct {
+						Speaker *int `json:"speaker"`
+					} `json:"legacy"`
+				} `json:"extensions"`
+			} `json:"lines"`
+		} `json:"scenes"`
+	}
+	if err := json.Unmarshal(canonicalRaw, &canonical); err != nil {
+		return nil, fmt.Errorf("canonical story %q: %w", canonicalPath, err)
+	}
+	if len(f.Scenes) != len(canonical.Scenes) {
+		return nil, fmt.Errorf("story %q scene count %d != canonical %d", path, len(f.Scenes), len(canonical.Scenes))
+	}
+	for sceneNumber := range f.Scenes {
+		legacyLines := f.Scenes[sceneNumber].Lines
+		canonicalLines := canonical.Scenes[sceneNumber].Lines
+		if len(legacyLines) != len(canonicalLines) {
+			return nil, fmt.Errorf("story %q scene %d line count %d != canonical %d", path, sceneNumber, len(legacyLines), len(canonicalLines))
+		}
+		for lineNumber := range legacyLines {
+			identity := canonicalLines[lineNumber]
+			if identity.LineID == "" || identity.Text != legacyLines[lineNumber].Text || identity.Extensions.Legacy.Speaker == nil || *identity.Extensions.Legacy.Speaker != legacyLines[lineNumber].Speaker {
+				return nil, fmt.Errorf("story %q scene %d line %d canonical identity mismatch", path, sceneNumber, lineNumber)
+			}
+			legacyLines[lineNumber].LineID = identity.LineID
+		}
 	}
 	if sceneIndex != nil {
 		if *sceneIndex < 0 || *sceneIndex >= len(f.Scenes) {
-			return nil
+			return nil, fmt.Errorf("story %q scene index %d out of range", path, *sceneIndex)
 		}
-		return f.Scenes[*sceneIndex].Lines
+		return f.Scenes[*sceneIndex].Lines, nil
 	}
 	if scene == "" {
 		var out []campaign.Line
 		for _, sc := range f.Scenes {
 			out = append(out, sc.Lines...)
 		}
-		return out
+		return out, nil
 	}
 	for _, sc := range f.Scenes {
 		if sc.Label == scene {
-			return sc.Lines
+			return sc.Lines, nil
 		}
 	}
-	return nil
+	return nil, fmt.Errorf("story %q scene %q not found", path, scene)
 }
 
 // handlerStoryPath converts a StoryIndexMap script path (relative to
@@ -9494,6 +9562,11 @@ func loadGame() *Game {
 	g.localeCatalog, localeErr = loadOfficialLocale(g.localeID)
 	if localeErr != nil {
 		g.loadErr = "locale setting: " + localeErr.Error()
+		return g
+	}
+	g.localeContent, localeErr = loadOfficialLocaleContent(g.localeID)
+	if localeErr != nil {
+		g.loadErr = "locale content: " + localeErr.Error()
 		return g
 	}
 	if v := os.Getenv("FD2_BGM_SOURCE"); v != "" && bgmSourceName[v] != "" {

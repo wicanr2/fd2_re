@@ -1,9 +1,11 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"path/filepath"
 
+	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/localization"
 )
 
@@ -57,6 +59,23 @@ func loadOfficialLocale(localeID string) (*localization.Catalog, error) {
 		return nil, fmt.Errorf("official locale %s has a non-canonical font path", localeID)
 	}
 	return catalog, nil
+}
+
+func loadOfficialLocaleContent(localeID string) (*localization.ContentCatalog, error) {
+	return localization.LoadOfficialContent(assetPath("assets/locales"), localeID)
+}
+
+func (g *Game) localizedStoryText(line campaign.Line) (string, error) {
+	if line.LineID == "" {
+		if g != nil && g.localeID == "zh-Hant" && line.Text != "" {
+			return line.Text, nil
+		}
+		return "", errors.New("story line lacks canonical line_id")
+	}
+	if g == nil || g.localeContent == nil {
+		return "", errors.New("official locale content is unavailable")
+	}
+	return g.localeContent.StoryText(line.LineID)
 }
 
 // localeMessage formats a required official key. Callers must stop their

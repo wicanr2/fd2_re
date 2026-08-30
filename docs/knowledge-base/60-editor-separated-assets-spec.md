@@ -409,6 +409,29 @@ CC BY-NC 4.0，只用於本非商業專案的本地候選譯文產生；模型�
 語氣、專名與短感嘆句仍需人工校譯。這是全量候選譯文 `DATA-READY`，不是「已完成官方人工翻譯」，
 也不是 runtime 已消費所有 5,176 鍵。
 
+##### Canonical 劇情執行期切片
+
+> 狀態：**SPEC-READY／RUNTIME-E1-PARTIAL**（2026-08-30）；正式 story 與 handler dialog
+> 已接通，只授權劇情台詞，不外推到戰場內嵌事件、商店、戰鬥 HUD 或實體名稱。
+
+editor canonical 劇情 JSON 是正式 `line_id` 身分來源；既有 `assets/story` 劇本繼續保存原版
+數值 speaker 與執行 metadata。載入器只能在檔名、scene index、line index、繁中 `text` 與
+canonical 的 legacy speaker 全部一致時把兩者合併；任一不一致即停止整批，不用陣列位置
+猜接。`text` 繼續保存原始繁中來源，`line_id` 才是語系查詢身分；翻譯鍵固定為
+`<line_id>/text`。如此不在兩份檔案複製同一永久身分，也不因 legacy 格式仍供原版 handler
+使用而放棄 canonical 契約。
+
+執行期啟動及 F4 切換時，必須先完整載入同語系的 `pack.json` 與 `content.json`，兩者都成功
+才可原子替換目前語系。故事載入後，每句具 `line_id` 的正式劇情一律從內容目錄取得
+`role=dialogue` 的文字；缺鍵、`blocked`、非 canonical 身分、角色不符或空文字都要停止該
+對話交易，不可靜默回退內嵌繁中。沒有 `line_id` 的節點內嵌 fallback 仍只屬既有繁中相容
+路徑，不得對外計入四語劇情覆蓋。
+
+本切片先保證語言切換後「下一句／下一個節拍」使用新語言。已經 materialize 的目前對話頁
+及原生 indexed progressive frames 不在 F4 當幀重建，避免破壞逐字進度、嘴型、開收框與
+鏡頭時序；完整即時重排須另經文字安全矩形、字型與分頁規格後才可開啟。原生對話仍保留
+原有頁面與動畫載體，不能因翻譯而換成一般 renderer；未完成各語重排前維持失敗即關閉。
+
 ### 四之二、legacy 匯入與 canonical 往返
 
 > 狀態：**DATA-READY（第一個實檔切片）**（2026-08-29）

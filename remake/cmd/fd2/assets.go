@@ -175,6 +175,9 @@ func packageSelfCheck() error {
 		if _, err := loadOfficialLocale(localeID); err != nil {
 			return fmt.Errorf("載入官方語系 %s: %w", localeID, err)
 		}
+		if _, err := loadOfficialLocaleContent(localeID); err != nil {
+			return fmt.Errorf("載入官方全量內容 %s: %w", localeID, err)
+		}
 	}
 	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
 	if err != nil {

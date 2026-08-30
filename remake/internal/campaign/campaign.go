@@ -13,6 +13,7 @@ import (
 // SpeakerSlot 保存原版 FFED/FFEC 的 runtime unit direct index，執行時必須
 // 從該 unit 的 Portrait 解析，不能把 slot 數字誤當全域角色 id。
 type Line struct {
+	LineID      string `json:"line_id,omitempty"`
 	Speaker     int    `json:"speaker"`
 	SpeakerSlot *int   `json:"speaker_slot,omitempty"`
 	Upper       *bool  `json:"upper,omitempty"`
