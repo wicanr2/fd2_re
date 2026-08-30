@@ -14,21 +14,25 @@ import (
 type entityNameEntry struct {
 	Name            string   `json:"name"`
 	SourceStringIDs []string `json:"source_string_ids"`
+	Status          string   `json:"status,omitempty"`
 }
 
 type entityPack struct {
-	SchemaVersion int                        `json:"schema_version"`
-	Kind          string                     `json:"kind"`
-	Locale        string                     `json:"locale"`
-	SourceLocale  string                     `json:"source_locale"`
-	ItemCount     int                        `json:"item_count"`
-	Items         map[string]entityNameEntry `json:"items"`
+	SchemaVersion  int                        `json:"schema_version"`
+	Kind           string                     `json:"kind"`
+	Locale         string                     `json:"locale"`
+	SourceLocale   string                     `json:"source_locale"`
+	ItemCount      int                        `json:"item_count"`
+	Items          map[string]entityNameEntry `json:"items"`
+	CharacterCount int                        `json:"character_count"`
+	Characters     map[string]entityNameEntry `json:"characters"`
 }
 
 // EntityCatalog 是以遊戲實體 ID 為鍵的不可變官方名稱目錄。
 type EntityCatalog struct {
-	Locale string
-	items  map[int]string
+	Locale     string
+	items      map[int]string
+	characters map[int]string
 }
 
 // LoadOfficialEntities 驗證 <root>/<locale>/entities.json。
@@ -55,7 +59,8 @@ func LoadOfficialEntities(root, locale string) (*EntityCatalog, error) {
 	}
 	if pack.SchemaVersion != SchemaVersion || pack.Kind != "fd2_locale_entities" ||
 		pack.Locale != locale || pack.SourceLocale != "zh-Hant" ||
-		pack.ItemCount != len(pack.Items) || pack.ItemCount == 0 {
+		pack.ItemCount != len(pack.Items) || pack.ItemCount == 0 ||
+		pack.CharacterCount != len(pack.Characters) || pack.CharacterCount != 32 {
 		return nil, fmt.Errorf("validate locale entities %q: identity or count mismatch", path)
 	}
 	items := make(map[int]string, len(pack.Items))
@@ -71,7 +76,30 @@ func LoadOfficialEntities(root, locale string) (*EntityCatalog, error) {
 		}
 		items[id] = entry.Name
 	}
-	return &EntityCatalog{Locale: locale, items: items}, nil
+	characters := make(map[int]string, len(pack.Characters))
+	for rawID, entry := range pack.Characters {
+		id, err := strconv.Atoi(rawID)
+		if err != nil || id < 0 || id >= 32 || entry.Name == "" || len(entry.SourceStringIDs) != 2 {
+			return nil, fmt.Errorf("validate locale entities %q: invalid character %q", path, rawID)
+		}
+		if entry.Status != "original_confirmed" && entry.Status != "deterministic_script_conversion" &&
+			entry.Status != "curated_remake_transliteration" {
+			return nil, fmt.Errorf("validate locale entities %q: invalid character status %q", path, entry.Status)
+		}
+		characters[id] = entry.Name
+	}
+	return &EntityCatalog{Locale: locale, items: items, characters: characters}, nil
+}
+
+func (c *EntityCatalog) CharacterName(nativeIdentity int) (string, error) {
+	if c == nil {
+		return "", errors.New("nil locale entity catalog")
+	}
+	name, ok := c.characters[nativeIdentity]
+	if !ok {
+		return "", fmt.Errorf("missing localized character %d", nativeIdentity)
+	}
+	return name, nil
 }
 
 func (c *EntityCatalog) ItemName(id int) (string, error) {

@@ -27,7 +27,7 @@ def write_json(path: Path, value) -> None:
     )
 
 
-def build(campaign_path: Path, content_path: Path, overrides_path: Path) -> dict:
+def build(campaign_path: Path, content_path: Path, overrides_path: Path, characters_path: Path) -> dict:
     campaign = read_json(campaign_path)
     content = read_json(content_path)
     names: dict[int, set[str]] = defaultdict(set)
@@ -65,6 +65,30 @@ def build(campaign_path: Path, content_path: Path, overrides_path: Path) -> dict
         }
         for item_id in sorted(names)
     }
+    character_source = read_json(characters_path)
+    if character_source["kind"] != "fd2_party_character_names":
+        raise ValueError("角色名稱來源格式錯誤")
+    character_rows = character_source["characters"]
+    identities = [row["native_identity"] for row in character_rows]
+    if identities != list(range(32)):
+        raise ValueError("角色 native_identity 必須完整且依序涵蓋 0..31")
+    locale = content["locale"]
+    status = character_source["name_status"].get(locale)
+    if status not in {"original_confirmed", "deterministic_script_conversion", "curated_remake_transliteration"}:
+        raise ValueError(f"角色名稱狀態不可用：{locale}")
+    characters = {
+        str(row["native_identity"]): {
+            "name": row[locale],
+            "source_string_ids": [
+                f"FDTXT_000/string_{row['native_identity'] + 1:04d}",
+                f"native_identity/{row['native_identity']}",
+            ],
+            "status": status,
+        }
+        for row in character_rows
+    }
+    if any(not entry["name"] for entry in characters.values()):
+        raise ValueError(f"角色名稱不可為空：{locale}")
     return {
         "schema_version": 1,
         "kind": "fd2_locale_entities",
@@ -72,6 +96,8 @@ def build(campaign_path: Path, content_path: Path, overrides_path: Path) -> dict
         "source_locale": "zh-Hant",
         "item_count": len(items),
         "items": items,
+        "character_count": len(characters),
+        "characters": characters,
     }
 
 
@@ -80,9 +106,10 @@ def main() -> None:
     parser.add_argument("--campaign", type=Path, required=True)
     parser.add_argument("--content", type=Path, required=True)
     parser.add_argument("--overrides", type=Path, required=True)
+    parser.add_argument("--characters", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    result = build(args.campaign, args.content, args.overrides)
+    result = build(args.campaign, args.content, args.overrides, args.characters)
     write_json(args.output, result)
     print(f"{result['locale']}: wrote {result['item_count']} item names to {args.output}")
 

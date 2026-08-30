@@ -237,6 +237,19 @@ func (g *Game) composeNativeShopRecipientFull() ([]byte, bool) {
 	if !stableOK || !stateOK {
 		return nil, false
 	}
+	if g.localeID != "" && g.localeID != "zh-Hant" {
+		if !unit.HasNativeIdentity {
+			return nil, false
+		}
+		name, err := g.localeEntities.CharacterName(unit.NativeIdentity)
+		if err != nil {
+			return nil, false
+		}
+		frame, err := g.composeLocalizedNativeShopPlainMessage(
+			stable, portrait, portraitID, "shop.recipient.full", name,
+		)
+		return frame, err == nil
+	}
 	frame, err := campaign.ComposeNativeShopPurchaseRecipientFull(
 		stable, g.nativeClassUI.dialogue, portrait, portraitID,
 		g.nativeClassUI.strings, g.nativeClassUI.font,

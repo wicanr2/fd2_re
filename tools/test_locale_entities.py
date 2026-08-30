@@ -21,6 +21,7 @@ class LocaleEntitiesTest(unittest.TestCase):
                         "--campaign", str(ROOT / "remake/assets/scenarios/campaign_full.json"),
                         "--content", str(ROOT / f"remake/assets/locales/{locale}/content.json"),
                         "--overrides", str(ROOT / "remake/assets/locales/entity-overrides.json"),
+                        "--characters", str(ROOT / "docs/data/localization/party-character-names.json"),
                         "--output", str(output),
                     ],
                     check=True,

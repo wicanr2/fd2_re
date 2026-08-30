@@ -85,6 +85,21 @@ func TestOfficialShopMessagesFitNativeDialogueRectangle(t *testing.T) {
 				t.Errorf("%s %s %q: %v", localeID, key, message, err)
 			}
 		}
+		for characterID := 0; characterID < 32; characterID++ {
+			name, err := entities.CharacterName(characterID)
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, key := range []string{"shop.recipient.full", "shop.transfer.empty_source"} {
+				message, ok := g.localeMessage(key, name)
+				if !ok {
+					t.Fatal(g.loadErr)
+				}
+				if _, err := g.drawLocalizedShopMessage(make([]byte, 320*200), message, 119, 3); err != nil {
+					t.Errorf("%s character %d %s %q: %v", localeID, characterID, key, message, err)
+				}
+			}
+		}
 		for _, node := range graph.Nodes {
 			if node.Type != "shop" {
 				continue

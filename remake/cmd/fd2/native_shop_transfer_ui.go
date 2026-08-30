@@ -92,6 +92,16 @@ func (g *Game) composeNativeShopTransferMessage() ([]byte, bool) {
 		if !ok || !unit.HasNativeIdentity {
 			return nil, false
 		}
+		if g.localeID != "" && g.localeID != "zh-Hant" {
+			name, err := g.localeEntities.CharacterName(unit.NativeIdentity)
+			if err != nil {
+				return nil, false
+			}
+			frame, err := g.composeLocalizedNativeShopPlainMessage(
+				stable, portrait, portraitID, "shop.transfer.empty_source", name,
+			)
+			return frame, err == nil
+		}
 		frame, err := campaign.ComposeNativeShopTransferMessage(
 			stable, g.nativeClassUI.dialogue, portrait, portraitID,
 			g.nativeClassUI.strings, g.nativeClassUI.font,
@@ -103,6 +113,16 @@ func (g *Game) composeNativeShopTransferMessage() ([]byte, bool) {
 		unit, ok := g.partyRoster[g.nativeShopTransferDest]
 		if !ok || !unit.HasNativeIdentity {
 			return nil, false
+		}
+		if g.localeID != "" && g.localeID != "zh-Hant" {
+			name, err := g.localeEntities.CharacterName(unit.NativeIdentity)
+			if err != nil {
+				return nil, false
+			}
+			frame, err := g.composeLocalizedNativeShopPlainMessage(
+				stable, portrait, portraitID, "shop.recipient.full", name,
+			)
+			return frame, err == nil
 		}
 		frame, err := campaign.ComposeNativeShopPurchaseRecipientFull(
 			stable, g.nativeClassUI.dialogue, portrait, portraitID,

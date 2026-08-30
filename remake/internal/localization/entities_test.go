@@ -18,6 +18,12 @@ func TestOfficialEntityCatalogsShareItemIdentity(t *testing.T) {
 		if len(catalog.items) != 120 {
 			t.Fatalf("%s items=%d, want 120", locale, len(catalog.items))
 		}
+		if len(catalog.characters) != 32 {
+			t.Fatalf("%s characters=%d, want 32", locale, len(catalog.characters))
+		}
+		if name, err := catalog.CharacterName(9); err != nil || (locale == "zh-Hant" && name != "悠妮") {
+			t.Fatalf("%s character 9=%q, err=%v", locale, name, err)
+		}
 		if reference == nil {
 			reference = make(map[int]struct{}, len(catalog.items))
 			for id := range catalog.items {
@@ -30,6 +36,16 @@ func TestOfficialEntityCatalogsShareItemIdentity(t *testing.T) {
 				t.Fatalf("%s misses item %d", locale, id)
 			}
 		}
+	}
+}
+
+func TestEntityCatalogCharacterLookupFailsClosed(t *testing.T) {
+	catalog, err := LoadOfficialEntities(filepath.Join("..", "..", "assets", "locales"), "en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := catalog.CharacterName(32); err == nil {
+		t.Fatal("missing character name was accepted")
 	}
 }
 
