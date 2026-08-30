@@ -291,6 +291,15 @@ func (g *Game) composeNativeShopNoEligibleRecipient() ([]byte, bool) {
 	if !goodOK || !stableOK || !stateOK {
 		return nil, false
 	}
+	if g.localeID != "" && g.localeID != "zh-Hant" {
+		key := g.localizedShopKey(
+			"shop.purchase.no_recipient.weapon", "shop.purchase.no_recipient.item",
+		)
+		frame, err := g.composeLocalizedNativeShopPlainMessage(
+			stable, portrait, portraitID, key,
+		)
+		return frame, err == nil
+	}
 	frame, err := campaign.ComposeNativeShopPurchaseMessage(
 		stable, g.nativeClassUI.dialogue, portrait, portraitID,
 		g.nativeClassUI.strings, g.nativeClassUI.font,

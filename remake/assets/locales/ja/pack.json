@@ -17,6 +17,19 @@
     "save.saved": {"text": "スロット %d にセーブしました：%s", "variables": ["%d", "%s"], "source_string_id": "runtime.save.saved"},
     "save.none": {"text": "セーブデータがありません", "variables": [], "source_string_id": "runtime.save.none"},
     "save.node_missing": {"text": "セーブ地点が見つかりません：%s", "variables": ["%s"], "source_string_id": "runtime.save.node_missing"},
-    "save.loaded": {"text": "スロット %d をロードしました：%s", "variables": ["%d", "%s"], "source_string_id": "runtime.save.loaded"}
+    "save.loaded": {"text": "スロット %d をロードしました：%s", "variables": ["%d", "%s"], "source_string_id": "runtime.save.loaded"},
+    "shop.greeting.weapon": {"text": "いらっしゃい。何が必要ですか？", "variables": [], "source_string_id": "FDTXT_000/string_0440"},
+    "shop.greeting.item": {"text": "おや、買い物か？", "variables": [], "source_string_id": "FDTXT_000/string_0501"},
+    "shop.purchase.question.weapon": {"text": "%sは%dゴールドです。よろしいですか？", "variables": ["%s", "%d"], "source_string_id": "FDTXT_000/string_0439"},
+    "shop.purchase.question.item": {"text": "この%sは\n%dゴールドだ。買うか？", "variables": ["%s", "%d"], "source_string_id": "FDTXT_000/string_0502"},
+    "shop.purchase.insufficient.weapon": {"text": "お金が足りません！", "variables": [], "source_string_id": "FDTXT_000/string_0438"},
+    "shop.purchase.insufficient.item": {"text": "金が足りない！", "variables": [], "source_string_id": "FDTXT_000/string_0504"},
+    "shop.purchase.no_recipient.weapon": {"text": "今の仲間には装備できる者がいません！", "variables": [], "source_string_id": "FDTXT_000/string_0437"},
+    "shop.purchase.no_recipient.item": {"text": "装備できる者がいない！", "variables": [], "source_string_id": "FDTXT_000/string_0505"},
+    "shop.purchase.equip_question": {"text": "装備しますか？", "variables": [], "source_string_id": "FDTXT_000/string_0507"},
+    "shop.recipient.full": {"text": "%sはもう持てません！", "variables": ["%s"], "source_string_id": "FDTXT_000/string_0506"},
+    "shop.transfer.destination_prompt": {"text": "誰に渡しますか？", "variables": [], "source_string_id": "FDTXT_000/string_0510"},
+    "shop.transfer.empty_source": {"text": "%sは何も持っていません！", "variables": ["%s"], "source_string_id": "FDTXT_000/string_0511"},
+    "shop.transfer.source_prompt": {"text": "誰の持ち物ですか？", "variables": [], "source_string_id": "FDTXT_000/string_0512"}
   }
 }

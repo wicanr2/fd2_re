@@ -17,6 +17,19 @@
     "save.saved": {"text": "Saved to slot %d: %s", "variables": ["%d", "%s"], "source_string_id": "runtime.save.saved"},
     "save.none": {"text": "No saved game", "variables": [], "source_string_id": "runtime.save.none"},
     "save.node_missing": {"text": "Save node not found: %s", "variables": ["%s"], "source_string_id": "runtime.save.node_missing"},
-    "save.loaded": {"text": "Loaded slot %d: %s", "variables": ["%d", "%s"], "source_string_id": "runtime.save.loaded"}
+    "save.loaded": {"text": "Loaded slot %d: %s", "variables": ["%d", "%s"], "source_string_id": "runtime.save.loaded"},
+    "shop.greeting.weapon": {"text": "Welcome. What do you need?", "variables": [], "source_string_id": "FDTXT_000/string_0440"},
+    "shop.greeting.item": {"text": "Oh, buying something?", "variables": [], "source_string_id": "FDTXT_000/string_0501"},
+    "shop.purchase.question.weapon": {"text": "%s costs %d gold. Is that okay?", "variables": ["%s", "%d"], "source_string_id": "FDTXT_000/string_0439"},
+    "shop.purchase.question.item": {"text": "This %s costs\n%d gold. Buy it?", "variables": ["%s", "%d"], "source_string_id": "FDTXT_000/string_0502"},
+    "shop.purchase.insufficient.weapon": {"text": "You don't have enough gold!", "variables": [], "source_string_id": "FDTXT_000/string_0438"},
+    "shop.purchase.insufficient.item": {"text": "Not enough gold!", "variables": [], "source_string_id": "FDTXT_000/string_0504"},
+    "shop.purchase.no_recipient.weapon": {"text": "No one in the current party can equip it!", "variables": [], "source_string_id": "FDTXT_000/string_0437"},
+    "shop.purchase.no_recipient.item": {"text": "No one can equip it!", "variables": [], "source_string_id": "FDTXT_000/string_0505"},
+    "shop.purchase.equip_question": {"text": "Equip it?", "variables": [], "source_string_id": "FDTXT_000/string_0507"},
+    "shop.recipient.full": {"text": "%s cannot carry any more!", "variables": ["%s"], "source_string_id": "FDTXT_000/string_0506"},
+    "shop.transfer.destination_prompt": {"text": "Who should receive it?", "variables": [], "source_string_id": "FDTXT_000/string_0510"},
+    "shop.transfer.empty_source": {"text": "%s has no items!", "variables": ["%s"], "source_string_id": "FDTXT_000/string_0511"},
+    "shop.transfer.source_prompt": {"text": "Whose items?", "variables": [], "source_string_id": "FDTXT_000/string_0512"}
   }
 }

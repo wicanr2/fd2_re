@@ -25,6 +25,19 @@ APPROVED_SOURCE = {
     "save.none": "runtime.save.none",
     "save.node_missing": "runtime.save.node_missing",
     "save.loaded": "runtime.save.loaded",
+    "shop.greeting.weapon": "FDTXT_000/string_0440",
+    "shop.greeting.item": "FDTXT_000/string_0501",
+    "shop.purchase.question.weapon": "FDTXT_000/string_0439",
+    "shop.purchase.question.item": "FDTXT_000/string_0502",
+    "shop.purchase.insufficient.weapon": "FDTXT_000/string_0438",
+    "shop.purchase.insufficient.item": "FDTXT_000/string_0504",
+    "shop.purchase.no_recipient.weapon": "FDTXT_000/string_0437",
+    "shop.purchase.no_recipient.item": "FDTXT_000/string_0505",
+    "shop.purchase.equip_question": "FDTXT_000/string_0507",
+    "shop.recipient.full": "FDTXT_000/string_0506",
+    "shop.transfer.destination_prompt": "FDTXT_000/string_0510",
+    "shop.transfer.empty_source": "FDTXT_000/string_0511",
+    "shop.transfer.source_prompt": "FDTXT_000/string_0512",
 }
 
 def fail(message: str) -> None:

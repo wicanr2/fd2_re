@@ -34,6 +34,12 @@ func nativeFacilityPortraitOffset(portraitID int) int {
 	return nativeLowerPortraitRightEdge
 }
 
+// NativeFacilityPortraitOffset 提供已證實的店員頭像目的位址，供多語文字層
+// 重建同一對話框時共用；未知頭像仍沿用原版下框預設位置。
+func NativeFacilityPortraitOffset(portraitID int) int {
+	return nativeFacilityPortraitOffset(portraitID)
+}
+
 // NativeShopAssets preserves the mixed-codec FDOTHER resource selected by
 // 0x2e341. Entry zero is the 0x16886 four-mode 320x200 background and entry
 // one is the 0x4e8af opaque decoration. Entries 3..10 are decoded separately
@@ -226,10 +232,34 @@ func ComposeNativeShopScene(
 	font *fdtxt.Font,
 	gold, textIndex int,
 ) ([]byte, error) {
+	frame, err := ComposeNativeShopSceneWithoutText(
+		assets, dialogueCells, digitFrames, portrait, portraitID, gold,
+	)
+	if err != nil {
+		return nil, err
+	}
+	if strings == nil || font == nil {
+		return nil, errors.New("campaign: native shop text assets are invalid")
+	}
+	return ComposeNativeChurchTextAt(
+		frame, strings, font, textIndex, NativeShopTextOffset,
+	)
+}
+
+// ComposeNativeShopSceneWithoutText 建立原版商店穩定畫面、店員與金額，
+// 但保留空白對話文字區，供已驗證的多語 renderer 使用。
+func ComposeNativeShopSceneWithoutText(
+	assets *NativeShopAssets,
+	dialogueCells []fdother.RawCell,
+	digitFrames []fdother.Frame,
+	portrait dato.Frame,
+	portraitID int,
+	gold int,
+) ([]byte, error) {
 	if assets == nil || len(assets.Background) != NativeShopWidth*NativeShopHeight ||
 		len(dialogueCells) <= 17 ||
 		len(digitFrames) != 10 ||
-		strings == nil || font == nil || gold < 0 || gold > 99_999_999 {
+		gold < 0 || gold > 99_999_999 {
 		return nil, errors.New("campaign: native shop stable assets/state are invalid")
 	}
 	frame, err := ComposeNativeChurchDialogueOverlayAt(
@@ -256,9 +286,7 @@ func ComposeNativeShopScene(
 			return nil, err
 		}
 	}
-	return ComposeNativeChurchTextAt(
-		frame, strings, font, textIndex, NativeShopTextOffset,
-	)
+	return frame, nil
 }
 
 // ComposeNativeShopBareScene is the caller-owned framebuffer restored after

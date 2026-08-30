@@ -62,6 +62,12 @@ func (g *Game) composeNativeShopTransferMessage() ([]byte, bool) {
 	}
 	switch g.nativeShopMode {
 	case "transfer_intro":
+		if g.localeID != "" && g.localeID != "zh-Hant" {
+			frame, err := g.composeLocalizedNativeShopPlainMessage(
+				stable, portrait, portraitID, "shop.transfer.source_prompt",
+			)
+			return frame, err == nil
+		}
 		frame, err := campaign.ComposeNativeShopTransferMessage(
 			stable, g.nativeClassUI.dialogue, portrait, portraitID,
 			g.nativeClassUI.strings, g.nativeClassUI.font,
@@ -69,6 +75,12 @@ func (g *Game) composeNativeShopTransferMessage() ([]byte, bool) {
 		)
 		return frame, err == nil
 	case "transfer_dest_prompt":
+		if g.localeID != "" && g.localeID != "zh-Hant" {
+			frame, err := g.composeLocalizedNativeShopPlainMessage(
+				stable, portrait, portraitID, "shop.transfer.destination_prompt",
+			)
+			return frame, err == nil
+		}
 		frame, err := campaign.ComposeNativeShopTransferMessage(
 			stable, g.nativeClassUI.dialogue, portrait, portraitID,
 			g.nativeClassUI.strings, g.nativeClassUI.font,

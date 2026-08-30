@@ -29,6 +29,12 @@ func (g *Game) composeNativeShopEquipQuestion() ([]byte, bool) {
 	if !goodOK || !stateOK || !stableOK {
 		return nil, false
 	}
+	if g.localeID != "" && g.localeID != "zh-Hant" {
+		frame, err := g.composeLocalizedNativeShopPlainMessage(
+			stable, portrait, portraitID, "shop.purchase.equip_question",
+		)
+		return frame, err == nil
+	}
 	frame, err := campaign.ComposeNativeShopPurchaseMessage(
 		stable, g.nativeClassUI.dialogue, portrait, portraitID,
 		g.nativeClassUI.strings, g.nativeClassUI.font,

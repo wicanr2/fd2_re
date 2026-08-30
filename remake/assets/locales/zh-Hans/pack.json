@@ -17,6 +17,19 @@
     "save.saved": {"text": "已存档（槽位 %d：%s）", "variables": ["%d", "%s"], "source_string_id": "runtime.save.saved"},
     "save.none": {"text": "无存档", "variables": [], "source_string_id": "runtime.save.none"},
     "save.node_missing": {"text": "存档节点不存在：%s", "variables": ["%s"], "source_string_id": "runtime.save.node_missing"},
-    "save.loaded": {"text": "已读档（槽位 %d：%s）", "variables": ["%d", "%s"], "source_string_id": "runtime.save.loaded"}
+    "save.loaded": {"text": "已读档（槽位 %d：%s）", "variables": ["%d", "%s"], "source_string_id": "runtime.save.loaded"},
+    "shop.greeting.weapon": {"text": "欢迎光临，需要什么吗？", "variables": [], "source_string_id": "FDTXT_000/string_0440"},
+    "shop.greeting.item": {"text": "呃，买东西吗？", "variables": [], "source_string_id": "FDTXT_000/string_0501"},
+    "shop.purchase.question.weapon": {"text": "%s要%d元，好吗？", "variables": ["%s", "%d"], "source_string_id": "FDTXT_000/string_0439"},
+    "shop.purchase.question.item": {"text": "这个%s，\n%d元，要不要啊？", "variables": ["%s", "%d"], "source_string_id": "FDTXT_000/string_0502"},
+    "shop.purchase.insufficient.weapon": {"text": "您的钱不够喔！", "variables": [], "source_string_id": "FDTXT_000/string_0438"},
+    "shop.purchase.insufficient.item": {"text": "钱不够！", "variables": [], "source_string_id": "FDTXT_000/string_0504"},
+    "shop.purchase.no_recipient.weapon": {"text": "现在的队伍之中，似乎没有人可以装备喔！", "variables": [], "source_string_id": "FDTXT_000/string_0437"},
+    "shop.purchase.no_recipient.item": {"text": "没有人可以装备！", "variables": [], "source_string_id": "FDTXT_000/string_0505"},
+    "shop.purchase.equip_question": {"text": "要装备上去吗？", "variables": [], "source_string_id": "FDTXT_000/string_0507"},
+    "shop.recipient.full": {"text": "%s带不动了！", "variables": ["%s"], "source_string_id": "FDTXT_000/string_0506"},
+    "shop.transfer.destination_prompt": {"text": "要给谁呢？", "variables": [], "source_string_id": "FDTXT_000/string_0510"},
+    "shop.transfer.empty_source": {"text": "%s没东西了！", "variables": ["%s"], "source_string_id": "FDTXT_000/string_0511"},
+    "shop.transfer.source_prompt": {"text": "谁的东西呢？", "variables": [], "source_string_id": "FDTXT_000/string_0512"}
   }
 }

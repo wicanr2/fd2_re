@@ -1127,6 +1127,10 @@ func (g *Game) composeNativeShopStable() ([]byte, bool) {
 		textIndex = 501
 	}
 	shared := g.nativeClassUI
+	if g.localeID != "" && g.localeID != "zh-Hant" {
+		frame, err := g.composeLocalizedNativeShopStable(assets, portrait, portraitID)
+		return frame, err == nil
+	}
 	frame, err := campaign.ComposeNativeShopScene(
 		assets, shared.dialogue, shared.digits, portrait, portraitID,
 		shared.strings, shared.font, g.gold, textIndex,
@@ -1215,6 +1219,12 @@ func (g *Game) composeNativeShopPurchaseQuestion() ([]byte, bool) {
 		return nil, false
 	}
 	shared := g.nativeClassUI
+	if g.localeID != "" && g.localeID != "zh-Hant" {
+		frame, err := g.composeLocalizedNativeShopPurchaseQuestion(
+			stable, portrait, portraitID, good,
+		)
+		return frame, err == nil
+	}
 	frame, err := campaign.ComposeNativeShopPurchaseMessage(
 		stable, shared.dialogue, portrait, portraitID,
 		shared.strings, shared.font, campaign.NativeShopPurchaseQuestion,
@@ -1262,6 +1272,25 @@ func (g *Game) composeNativeShopInsufficientGold() ([]byte, bool) {
 	postChoiceClose, ok := g.nativeShopPostChoiceCloseFrame()
 	if !ok {
 		return nil, false
+	}
+	if g.localeID != "" && g.localeID != "zh-Hant" {
+		key := g.localizedShopKey(
+			"shop.purchase.insufficient.weapon", "shop.purchase.insufficient.item",
+		)
+		message, messageOK := g.localeMessage(key)
+		if !messageOK {
+			return nil, false
+		}
+		frame, err := g.drawLocalizedShopMessage(postChoiceClose, message, 157, 1)
+		if err != nil || len(g.nativeClassUI.dialogue) <= 18 {
+			return nil, false
+		}
+		if err := g.nativeClassUI.dialogue[18].BlitOpaqueAtOffset(
+			frame, 320, 181*320+143,
+		); err != nil {
+			return nil, false
+		}
+		return frame, true
 	}
 	frame, err := campaign.ComposeNativeShopPurchaseInsufficientGold(
 		postChoiceClose, g.nativeClassUI.strings, g.nativeClassUI.font,
