@@ -164,8 +164,10 @@ DOS 本身不會替遊戲顯示中文。原版自帶點陣字型，文本也不�
 
 ## Remake 里程碑
 
-**v0.1.0 第一個公開版本**提供 Linux、Windows 與 macOS 引擎封包及重新錄製的
-[推廣片](https://github.com/wicanr2/fd2_re/releases/tag/v0.1.0)。公開封包不含原版
+**v0.1.1 操作與呈現修正版**提供 Linux、Windows 與 macOS 引擎封包，修正第一關
+隊伍進場時基與全戰役共用的戰場功能選單錨點；完整變更見
+[`v0.1.1 發行說明`](docs/releases/v0.1.1.md)。v0.1.0 的
+[推廣片](https://github.com/wicanr2/fd2_re/releases/tag/v0.1.0)仍保留第一關與四語切換紀錄。公開封包不含原版
 素材；玩家必須自備合法的《炎龍騎士團 2》資料。推廣片實際走正式標題、第一關與
 F4 四語切換，錄製契約與驗收收據見
 [`v0.1.0 推廣片規格`](docs/promo-v0.1.0-spec.md)。

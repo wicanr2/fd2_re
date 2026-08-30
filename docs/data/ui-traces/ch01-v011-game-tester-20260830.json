@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-30",
+  "engine_head": "be9a2a77b3a619a3a8750ea66a8e2a445ad405eb",
+  "scope": "chapter_01_original_remake_similarity",
+  "classification": {
+    "static_battlefield": "exact-state",
+    "march_video": "nearby-state",
+    "fresh_dosbox_capture": "startup-only"
+  },
+  "static_oracle": {
+    "receipt": "docs/data/ui-traces/battle-visual-gap-ch01.json",
+    "comparison": "docs/figures/battle-field-ch01-scoped-compare-20260810.png",
+    "original": {
+      "path": "docs/figures/native-map-ch01-original-fd2sav.png",
+      "logical_size": "320x200",
+      "sha256": "30de89fc2dc4e2cf804ed7e4985a68253b35c6625b687fe8ade1e8820af5e73e"
+    },
+    "remake": {
+      "path": "docs/figures/native-map-ch01-remake-handler.png",
+      "logical_size": "640x400",
+      "sha256": "10cd82b22aa3637fa230f1fcd12146ecae1b8d93fe4055cdefaae85c05bcaeb4"
+    },
+    "absolute_error_pixels": 22,
+    "normalized_rmse": 0.000629287,
+    "finding": "固定戰場狀態的地形、單位、游標與 HUD 對齊；差異集中於左下畫布邊界。"
+  },
+  "deterministic_tests": {
+    "environment": "fd2-go-test-local:latest / Docker / Xvfb / network none",
+    "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+    "passed": [
+      "TestCh00ActingZeroMarchesWholePartySixCellsTowardHouse",
+      "TestActingSourceTicksAreNotCollapsedIntoSixtyHzUpdates",
+      "TestBattleWalkPreservesNativeSevenTickRecordLifecycle",
+      "TestActionOverlayAnchorIsChapterIndependent/early-map0",
+      "TestActionOverlayAnchorIsChapterIndependent/middle-map25",
+      "TestActionOverlayAnchorIsChapterIndependent/late-map28",
+      "TestActionOverlayLifecyclePresentsAllOpeningAndClosingFrames",
+      "TestActionOverlayLifecycleCannotSkipAnUndrawnFrame"
+    ],
+    "result": "PASS"
+  },
+  "dynamic_evidence": [
+    "docs/data/ui-traces/action-overlay-and-ch01-march-20260830.json",
+    "docs/data/ui-traces/ch01-promo-menu-correction-20260830.json"
+  ],
+  "fresh_dosbox_capture": {
+    "path": "/tmp/fd2-ch01-dosbox/title.png",
+    "sha256": "d43012caa1e359015a2b41e5ad33379258b0444295bcc819b6c7a77b95bf50af",
+    "admitted_as_chapter_01_evidence": false,
+    "reason": "只等待十二秒並擷取標題；沒有 START、序章移動、戰場、游標或選單。"
+  },
+  "conclusion": "第一關固定戰場狀態支持約 99% 視覺近似；隊伍移動與通用選單契約有決定性重製端測試。不得外推為整關動態逐幀一致。"
+}
