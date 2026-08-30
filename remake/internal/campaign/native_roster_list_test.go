@@ -97,3 +97,31 @@ func TestComposeNativeRosterFrameUsesEntry16Panel(t *testing.T) {
 		t.Fatalf("panel origin=%d want 33", got)
 	}
 }
+
+func TestComposeNativeRosterFrameWithoutNamesKeepsSpriteAndNameRectangleBlank(t *testing.T) {
+	panel := fdother.LMI1Entry{
+		Width: nativeClassPanelW, Height: nativeClassPanelH,
+		Pixels: make([]byte, nativeClassPanelW*nativeClassPanelH),
+	}
+	for i := range panel.Pixels {
+		panel.Pixels[i] = 33
+	}
+	sprite := fdicon.Sprite{
+		Pixels: make([]byte, fdicon.NativeSize*fdicon.NativeSize),
+		Mask:   make([]byte, fdicon.NativeSize*fdicon.NativeSize),
+	}
+	sprite.Pixels[0], sprite.Mask[0] = 99, 1
+	frame, err := ComposeNativeRosterFrameWithoutNames(
+		make([]byte, 320*200), panel,
+		[]NativeRosterRow{{Sprite: sprite, NameTextIndex: 1}}, 0,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := frame[117*320+14]; got != 99 {
+		t.Fatalf("sprite origin=%d want 99", got)
+	}
+	if got := frame[121*320+40]; got != 33 {
+		t.Fatalf("blank name rectangle=%d want panel 33", got)
+	}
+}

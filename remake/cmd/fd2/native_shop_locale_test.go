@@ -38,6 +38,36 @@ func TestOfficialShopItemNamesFitNativeSafeRectangle(t *testing.T) {
 	}
 }
 
+func TestOfficialCharacterNamesFitNativeRosterRectangle(t *testing.T) {
+	displayFont := loadFont()
+	if displayFont == nil {
+		t.Fatal("official CJK font unavailable")
+	}
+	for _, localeID := range []string{"zh-Hans", "ja", "en"} {
+		catalog, err := loadOfficialLocaleEntities(localeID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for identity := 0; identity < 32; identity++ {
+			name, err := catalog.CharacterName(identity)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if displayFont.Width(name, localizedRosterNameScale) > localizedRosterNameWidth {
+				t.Errorf("%s character %d name %q exceeds roster rectangle", localeID, identity, name)
+				continue
+			}
+			if err := drawIndexedLocalizedText(
+				make([]byte, 320*200), displayFont, name, 40, 121,
+				localizedRosterNameWidth, localizedRosterNameHeight,
+				localizedRosterNameScale, 0xcd, 0x4c,
+			); err != nil {
+				t.Errorf("%s character %d name %q: %v", localeID, identity, name, err)
+			}
+		}
+	}
+}
+
 func TestOfficialShopMessagesFitNativeDialogueRectangle(t *testing.T) {
 	displayFont := loadFont()
 	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))

@@ -60,6 +60,7 @@ func (g *Game) composeNativeShopSellRoster() ([]byte, bool) {
 	}
 	g.nativeShopSellRosterTop = start
 	rows := make([]campaign.NativeRosterRow, 0, visible)
+	identities := make([]int, 0, visible)
 	for i := 0; i < visible; i++ {
 		unit, ok := g.partyRoster[g.partyJoinOrder[start+i]]
 		if !ok || !unit.HasNativeIdentity || !unit.HasMapSelectorKey {
@@ -74,16 +75,25 @@ func (g *Game) composeNativeShopSellRoster() ([]byte, bool) {
 		rows = append(rows, campaign.NativeRosterRow{
 			Sprite: sprite, NameTextIndex: unit.NativeIdentity + 1,
 		})
+		identities = append(identities, unit.NativeIdentity)
 	}
 	stable, stableOK := g.composeNativeShopStable()
 	assets, _, _, stateOK := g.nativeShopState()
 	if !stableOK || !stateOK {
 		return nil, false
 	}
-	frame, err := campaign.ComposeNativeRosterFrame(
-		stable, assets.Panel, rows, g.shopSellUnitSel-start,
-		g.nativeClassUI.strings, g.nativeClassUI.font,
-	)
+	var frame []byte
+	var err error
+	if g.localeID != "" && g.localeID != "zh-Hant" {
+		frame, err = g.composeLocalizedNativeRoster(
+			stable, assets.Panel, rows, identities, g.shopSellUnitSel-start,
+		)
+	} else {
+		frame, err = campaign.ComposeNativeRosterFrame(
+			stable, assets.Panel, rows, g.shopSellUnitSel-start,
+			g.nativeClassUI.strings, g.nativeClassUI.font,
+		)
+	}
 	return frame, err == nil
 }
 

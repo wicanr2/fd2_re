@@ -7,6 +7,7 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
 const (
@@ -17,6 +18,50 @@ const (
 	localizedShopMessageRows     = 3
 	localizedShopMessageScale    = 0.78
 )
+
+const (
+	localizedRosterNameWidth  = 100
+	localizedRosterNameHeight = 16
+	localizedRosterNameScale  = 0.65
+)
+
+func (g *Game) composeLocalizedNativeRoster(
+	stable []byte,
+	panel fdother.LMI1Entry,
+	rows []campaign.NativeRosterRow,
+	nativeIdentities []int,
+	selected int,
+) ([]byte, error) {
+	if len(rows) != len(nativeIdentities) || g.localeEntities == nil || g.font == nil {
+		return nil, errors.New("localized roster state is invalid")
+	}
+	frame, err := campaign.ComposeNativeRosterFrameWithoutNames(stable, panel, rows, selected)
+	if err != nil {
+		return nil, err
+	}
+	for index, identity := range nativeIdentities {
+		name, err := g.localeEntities.CharacterName(identity)
+		if err != nil {
+			return nil, err
+		}
+		column, line := index%2, index/2
+		foreground := byte(0xcd)
+		if index == selected {
+			foreground = 0xc9
+		}
+		if g.font.Width(name, localizedRosterNameScale) > localizedRosterNameWidth {
+			return nil, fmt.Errorf("localized character %d name %q exceeds roster rectangle", identity, name)
+		}
+		if err := drawIndexedLocalizedText(
+			frame, g.font, name, 40+132*column, 121+26*line,
+			localizedRosterNameWidth, localizedRosterNameHeight,
+			localizedRosterNameScale, foreground, 0x4c,
+		); err != nil {
+			return nil, err
+		}
+	}
+	return frame, nil
+}
 
 func (g *Game) localizedShopKey(weaponKey, otherKey string) string {
 	if g.nativeShopVariant == 1 {

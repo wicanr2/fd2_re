@@ -26,6 +26,7 @@ func (g *Game) composeNativeChurchRosterFrame() ([]byte, bool) {
 		return nil, false
 	}
 	rows := make([]campaign.NativeRosterRow, 0, visible)
+	identities := make([]int, 0, visible)
 	for i := 0; i < visible; i++ {
 		unit, ok := g.partyRoster[g.churchIDs[start+i]]
 		if !ok || !unit.HasNativeIdentity || !unit.HasMapSelectorKey {
@@ -38,10 +39,19 @@ func (g *Game) composeNativeChurchRosterFrame() ([]byte, bool) {
 		rows = append(rows, campaign.NativeRosterRow{
 			Sprite: sprite, NameTextIndex: unit.NativeIdentity + 1,
 		})
+		identities = append(identities, unit.NativeIdentity)
 	}
-	frame, err := campaign.ComposeNativeRosterFrame(
-		source, a.panel, rows, g.churchSel-start, a.strings, a.font,
-	)
+	var frame []byte
+	var err error
+	if g.localeID != "" && g.localeID != "zh-Hant" {
+		frame, err = g.composeLocalizedNativeRoster(
+			source, a.panel, rows, identities, g.churchSel-start,
+		)
+	} else {
+		frame, err = campaign.ComposeNativeRosterFrame(
+			source, a.panel, rows, g.churchSel-start, a.strings, a.font,
+		)
+	}
 	return frame, err == nil
 }
 

@@ -58,6 +58,27 @@ func RenderNativeRosterRows(
 	strings *fdtxt.Strings,
 	font *fdtxt.Font,
 ) error {
+	return renderNativeRosterRows(dst, rows, selected, strings, font, true)
+}
+
+// RenderNativeRosterRowsWithoutNames 保留 0x2ea90 的人物圖示與選取狀態，
+// 將名稱矩形留給多語 renderer；它不改變名冊身分、順序或 viewport。
+func RenderNativeRosterRowsWithoutNames(
+	dst []byte,
+	rows []NativeRosterRow,
+	selected int,
+) error {
+	return renderNativeRosterRows(dst, rows, selected, nil, nil, false)
+}
+
+func renderNativeRosterRows(
+	dst []byte,
+	rows []NativeRosterRow,
+	selected int,
+	strings *fdtxt.Strings,
+	font *fdtxt.Font,
+	renderNames bool,
+) error {
 	if len(dst) != NativeClassListStride*NativeClassListHeight {
 		return errors.New("campaign: native roster requires a 320x200 indexed frame")
 	}
@@ -65,7 +86,7 @@ func RenderNativeRosterRows(
 		selected < 0 || selected >= len(rows) {
 		return errors.New("campaign: invalid native roster rows or selection")
 	}
-	if strings == nil || font == nil {
+	if renderNames && (strings == nil || font == nil) {
 		return errors.New("campaign: native roster text assets are unavailable")
 	}
 	staged := append([]byte(nil), dst...)
@@ -80,11 +101,13 @@ func RenderNativeRosterRows(
 		if i == selected {
 			foreground = 201
 		}
-		if err := blitNativeClassListText(
-			staged, strings, font,
-			40+132*column, 121+26*line, row.NameTextIndex, foreground,
-		); err != nil {
-			return fmt.Errorf("campaign: native roster row %d name: %w", i, err)
+		if renderNames {
+			if err := blitNativeClassListText(
+				staged, strings, font,
+				40+132*column, 121+26*line, row.NameTextIndex, foreground,
+			); err != nil {
+				return fmt.Errorf("campaign: native roster row %d name: %w", i, err)
+			}
 		}
 	}
 	copy(dst, staged)
@@ -113,6 +136,28 @@ func ComposeNativeRosterFrame(
 		return nil, fmt.Errorf("campaign: native roster panel: %w", err)
 	}
 	if err := RenderNativeRosterRows(frame, rows, selected, strings, font); err != nil {
+		return nil, err
+	}
+	return frame, nil
+}
+
+func ComposeNativeRosterFrameWithoutNames(
+	background []byte,
+	panel fdother.LMI1Entry,
+	rows []NativeRosterRow,
+	selected int,
+) ([]byte, error) {
+	if len(background) != NativeClassListStride*NativeClassListHeight {
+		return nil, errors.New("campaign: native roster background requires a 320x200 indexed frame")
+	}
+	if panel.Width != nativeClassPanelW || panel.Height != nativeClassPanelH {
+		return nil, fmt.Errorf("campaign: native roster panel is %dx%d, want 310x86", panel.Width, panel.Height)
+	}
+	frame := append([]byte(nil), background...)
+	if err := panel.BlitOpaqueAt(frame, NativeClassListStride, nativeClassPanelX, nativeClassPanelY, false); err != nil {
+		return nil, fmt.Errorf("campaign: native roster panel: %w", err)
+	}
+	if err := RenderNativeRosterRowsWithoutNames(frame, rows, selected); err != nil {
 		return nil, err
 	}
 	return frame, nil
