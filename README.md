@@ -164,7 +164,7 @@ DOS 本身不會替遊戲顯示中文。原版自帶點陣字型，文本也不�
 
 ## Remake 里程碑
 
-**v0.1.1 操作與呈現修正版**提供 Linux、Windows 與 macOS 引擎封包，修正第一關
+**[v0.1.1 操作與呈現修正版](https://github.com/wicanr2/fd2_re/releases/tag/v0.1.1)**提供 Linux、Windows 與 macOS 引擎封包，修正第一關
 隊伍進場時基與全戰役共用的戰場功能選單錨點；完整變更見
 [`v0.1.1 發行說明`](docs/releases/v0.1.1.md)。v0.1.0 的
 [推廣片](https://github.com/wicanr2/fd2_re/releases/tag/v0.1.0)仍保留第一關與四語切換紀錄。公開封包不含原版
