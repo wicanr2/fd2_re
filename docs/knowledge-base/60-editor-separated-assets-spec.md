@@ -322,25 +322,25 @@ go run ./cmd/fd2-string-inventory -repo .. -output ../docs/data/fd2-string-inven
 go run ./cmd/fd2-string-inventory -repo .. -summary -output ../docs/data/fd2-string-inventory-summary.json
 ```
 
-目前固定結果為5,233筆候選：4,708筆來自JSON欄位、443筆屬直接介面脈絡、2筆由
-明確名稱函式辨識，另有80筆只因正式Go來源含非ASCII而列入人工審查。角色名與台詞
-等重複值仍逐來源保存，所以這不是5,233個互異譯文；所有ID也仍是來源位置型暫定ID，
+目前固定結果為5,225筆候選：4,708筆來自JSON欄位、436筆屬直接介面脈絡、2筆由
+明確名稱函式辨識，另有79筆只因正式Go來源含非ASCII而列入人工審查。角色名與台詞
+等重複值仍逐來源保存，所以這不是5,225個互異譯文；所有ID也仍是來源位置型暫定ID，
 不能直接承諾給翻譯者。
 完整清冊的SHA-256由摘要綁定，兩次重生必須逐位元相同。
 
-去除完全相同文字後共有2,497個互異繁中字串，150筆候選含格式變數；這仍不能直接
+去除完全相同文字後共有2,489個互異繁中字串，145筆候選含格式變數；這仍不能直接
 當成翻譯工作量，因為同一文字在不同角色可能需要不同語境，而角色名等實體文字則應
-合併到穩定catalog。80筆`go_review`已另以
-[`fd2-string-review.json`](../data/fd2-string-review.json)綁定同一清冊SHA-256：31筆確認
+合併到穩定catalog。79筆`go_review`已另以
+[`fd2-string-review.json`](../data/fd2-string-review.json)綁定同一清冊SHA-256：30筆確認
 玩家可見、42筆為內部診斷、3筆只供開發、4筆維持未知。Go測試要求四類不重複且完整
-覆蓋當前80筆；任何來源行移動或內容改變都會讓雜湊失配，禁止沿用過期人工判讀。
+覆蓋當前79筆；任何來源行移動或內容改變都會讓雜湊失配，禁止沿用過期人工判讀。
 
 已知限制與下一個收斂步驟：
 
 - JSON目前以目錄＋欄位白名單分類，仍須對各文件schema與JSON pointer再做路徑約束；
   `field_rule`表示「符合欄位規則」，不是已證實玩家可見。
 - Go直接介面掃描會納入繪圖／渲染函式內的間接ASCII文字，但跨非繪圖函式再送往
-  UI的值仍可能漏列；本輪已人工分流80筆，後續新候選仍須重新審查，不能自動升格。
+  UI的值仍可能漏列；本輪已人工分流79筆，後續新候選仍須重新審查，不能自動升格。
 - 同一物件有多個文字欄位時，不會把一個既有`string_id`錯套給全部欄位。正式遷移
   必須分開例如speaker display name與line text的穩定鍵，並把相同實體名稱合併到
   character／entity catalog，而不是依來源位置永久複製。
@@ -363,6 +363,51 @@ SAVE／LOAD成功、無存檔、無效節點、戰後禁止存檔與非戰役模
 Python validator 必須共享同一 key／變數／provenance 契約，四個官方包缺任一筆即
 整包拒絕。正式訊息只能經 catalog 格式化；切換失敗時保留舊 catalog 與遊戲狀態。
 這個切片關閉「跨存檔系統訊息會隨 F4 切換」，不外推成完整劇情翻譯。
+
+#### 全量四語內容契約（2026-08-30）
+
+> 狀態：**SPEC-READY**；本節規定全量翻譯的身分、產生、審查與執行期邊界。
+
+全量翻譯不得把目前診斷清冊的來源行號直接當成永久鍵。劇情台詞以
+canonical story 的 `line_id` 為身分；場景標籤、章名與地點以 `document_id` 加受控欄位為
+身分；角色、物品、法術與固定介面文字以各自的 entity／semantic ID 為身分。舊 JSON
+pointer 與 Go 來源位置只保留為 provenance，不得因重排一行程式就使翻譯鍵全部漂移。
+
+四個語系各有一份受版控目錄；每筆至少包含：`string_id`、`id_status`、`role`、
+該目錄語言的 `text`、`variables[]`、`source` 與 `status`。原始繁中可由相同
+`string_id` 在 `zh-Hant/content.json` 回查，不在每一筆重複保存另一份 `source_text`。
+`status` 只能是 `source`、`machine_draft`、`reviewed` 或 `blocked`。離線模型產生的英文與日文只能標成
+`machine_draft`；簡繁規則轉換也不自動升為人工審定。契約可以證明「每筆都有完整候選譯文」，
+但只有 `reviewed` 才可對外宣稱經人工校譯。
+
+產生器必須在翻譯前保護 printf 變數、控制碼與術語表中的專名，並在後處理復原；
+任一 token 遺失、多出、順序或類型改變都必須失敗。繁體中文是唯一來源文本；簡體中文可以
+使用 OpenCC 的可重現初稿，英文使用固定版本的離線繁中→英文模型，日文初稿可使用英文→日文模型。
+模型名稱、版本、授權、輸入目錄雜湊與術語表雜湊必須記錄在產物。
+
+四個官方包必須具有完全相同的鍵集、變數簽章與來源身分。官方包不允許回退；
+任一筆 `blocked`、空文字、未復原 token、英文包殘留 CJK 劇情、或日文包整筆等於英文，
+都不得通過內容完整度閥門。執行期只能以 `string_id` 取得文字；在 canonical 內容完成
+鍵化前，全量譯文只是 DATA-READY，不得因語言包有文字就提升為 RUNTIME-E1。
+
+2026-08-30 已以目前版本重生 5,225 筆候選清冊，排除 42 筆內部診斷、3 筆開發文字與
+4 筆未知後，四語內容目錄各有 5,176 筆玩家內容出現位置。其中 3,333 筆劇情欄位
+已以 canonical `document_id`／`scene_id`／`line_id` 作穩定身分；其餘尚無 entity ID 的
+項目繼續標成暫定來源身分，不冒充已完成編輯器契約。
+
+簡體中文由 OpenCC 0.1.7 `t2s` 產生初稿，英文由 Argos
+`translate-zt_en-1_9` 產生初稿。舊 Argos `en_ja 1.1` 實測會將擇號誤譯成
+「お問い合わせ」並大量保留英文，已拒絕為不合格輸出。日文改用固定 revision
+`facebook/nllb-200-distilled-600M@f8d333a098d19b4fd9a8b18f94170487ad3f821d`
+直接由 `zho_Hant`→`jpn_Jpan`；執行使用 CTranslate2 4.8.1 INT8，以 beam 2、
+repetition penalty 1.2、no-repeat trigram 與 128-token 上限防止長句退化。NLLB 模型授權為
+CC BY-NC 4.0，只用於本非商業專案的本地候選譯文產生；模型權重不進入儲存庫或發行包。
+
+`validate_full_locale_content.py` 現在會比對四包的 key／role／variables／source、輸入雜湊、
+英文 CJK 殘留、日文 Argos 污染詞、異常膨脹及敘事文字整句英文殘留。當前 20,704 筆
+四語出現位置通過這些結構與退化閥門，但英文與日文仍全數是 `machine_draft`；抽樣可見
+語氣、專名與短感嘆句仍需人工校譯。這是全量候選譯文 `DATA-READY`，不是「已完成官方人工翻譯」，
+也不是 runtime 已消費所有 5,176 鍵。
 
 ### 四之二、legacy 匯入與 canonical 往返
 

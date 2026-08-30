@@ -93,7 +93,7 @@ class EditorSchemaTest(unittest.TestCase):
         self.assertEqual(review_schema["properties"]["kind"]["const"], review["kind"])
         self.assertEqual(review["inventory_sha256"], summary["inventory_sha256"])
         counts = {name: len(group["string_ids"]) for name, group in review["dispositions"].items()}
-        self.assertEqual(counts, {"player_visible": 31, "internal_diagnostic": 42, "development": 3, "unknown": 4})
+        self.assertEqual(counts, {"player_visible": 30, "internal_diagnostic": 42, "development": 3, "unknown": 4})
         all_ids = [item for group in review["dispositions"].values() for item in group["string_ids"]]
         self.assertEqual(len(all_ids), len(set(all_ids)))
 
