@@ -9,6 +9,11 @@
 > 新工作必須使用 `RE-CLOSED`、`DATA-READY`、`RUNTIME-E1`、`PLAYER-E2` 或
 > `BLOCKED` 明列關閉哪一層，不再新增沒有層級的 `[x]`。
 
+> **2026-08-30 發行核實：** GitHub `v0.1.1` 已是正式、非草稿、非預發行版本，
+> Linux AppImage、Windows ZIP、macOS DMG／tar.gz 與 `SHA256SUMS` 五個附件均已上傳。
+> 原版音樂對拍片依使用者決定只留本機，不加入 Git 或公開 Release。後續發行工作
+> 是 Windows／macOS 實機、簽章／公證與完整四語內容，不是重複建立 v0.1.1。
+
 ## 有效佇列（2026-08-30）
 
 > **新工作前沿**：第一輪代表性可玩抽樣已閉合後，下一個產品目標改為

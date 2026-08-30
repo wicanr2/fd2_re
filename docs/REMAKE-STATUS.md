@@ -1,6 +1,6 @@
 # FD2 第一輪重製進度
 
-> 更新日期：2026-08-29。這是面向貢獻者的動態進度頁；原版證據層級仍以
+> 更新日期：2026-08-30。這是面向貢獻者的動態進度頁；原版證據層級仍以
 > [`58-fd2-exe-re-coverage.md`](knowledge-base/58-fd2-exe-re-coverage.md)為準，
 > 有效工作前沿以 [`91-worklist.md`](knowledge-base/91-worklist.md)為準。
 
@@ -136,11 +136,30 @@ python tools/check_remake_samples.py --require-complete
 實體 Windows／macOS 操作、簽章／公證、公開推廣片素材策略屬「公開發行就緒」，
 不再混入第一輪 remake 的 95% 核心完成判定。
 
-## 發行候選證據
+## 公開發行現況
 
-### 2026-08-29 第一版評估
+### 2026-08-30 v0.1.1
 
-目前適合標示為「內部預覽候選」，**尚不適合發布承諾四語與本機完整版的第一版**。
+[`v0.1.1`](https://github.com/wicanr2/fd2_re/releases/tag/v0.1.1) 已正式發布，
+包含 Linux x86_64 AppImage、Windows x86_64 ZIP、macOS universal DMG／tar.gz
+與 `SHA256SUMS`。2026-08-30 再以 GitHub Release API 核對，五個附件皆為
+`uploaded`，不是草稿或預發行版。公開附件只含引擎與可公開資料，不含原版遊戲、
+分離原版素材或使用原版音樂的本機對拍影片。
+
+本版是可下載的第一輪重製預覽，不宣稱四語文本已全量翻譯，也不宣稱 Windows／
+macOS 已完成實體桌面長時間驗收。三平台附件雜湊與本版限制見
+[`v0.1.1 發行說明`](releases/v0.1.1.md)。
+
+| 平台 | 已驗證 | 尚缺 |
+|---|---|---|
+| Linux x86_64 | AppImage 空白工作目錄自我檢查、相對 SHA-256、AppStream metadata | 非 Debian 發行版抽測與簽章 |
+| Windows x86_64 | 原生 CI ZIP／manifest及下載附件雜湊 | 實體 Windows 視窗、輸入、存檔、音訊 |
+| macOS universal | 原生 CI universal binary、DMG／tar.gz／manifest及下載附件雜湊 | 實體機操作、簽章與公證 |
+
+### 2026-08-29 第一版評估（已由 v0.1.0／v0.1.1 發行取代）
+
+以下是發行前的歷史閘門，不再代表目前尚未發布。當時只適合標示為「內部預覽
+候選」，不適合承諾四語與本機完整版的第一版。
 遊戲核心的 60／60 抽樣門檻已過，三平台引擎候選也都能建立；阻擋點不是重新通關，
 而是本輪新增的四語契約目前只含 4 筆共用戰鬥訊息；它們已接正式 runtime、設定檔
 與 F4 原子切換，但其餘玩家文字尚未遷移；Windows／macOS 的本機完整版也尚未以
@@ -154,12 +173,7 @@ python tools/check_remake_samples.py --require-complete
 3. Linux／Windows／macOS 各用真實 payload 組裝 local-full，逐檔雜湊通過；
 4. Windows／macOS 實體機至少完成啟動、輸入、存讀檔與音訊抽測。
 
-在以上閘門前，可以提供不承諾完整翻譯的開發預覽包，但不能命名為正式第一版。
-
-| 平台 | 已驗證 | 尚缺 |
-|---|---|---|
-| Linux x86_64 | AppImage 空白工作目錄自我檢查、相對 SHA-256、AppStream metadata | 非 Debian 發行版抽測與簽章 |
-| Windows x86_64 | 原生 CI ZIP／manifest；2026-08-29四語候選從空白cwd自我檢查及下載後manifest複驗通過 | 實體 Windows 視窗、輸入、存檔、音訊 |
-| macOS universal | 原生 CI universal binary、DMG／tar.gz／manifest；2026-08-29四語候選下載後確認bundle四語與manifest | 實體機操作、簽章與公證 |
+這些條件後來拆成「公開預覽可發布」與「完整四語／實體平台驗收」兩層；v0.1.1
+已完成前者，後者仍是後續工作。不可再引用本段宣稱專案尚未發布。
 
 完整封包雜湊與流程見 [`41-packaging.md`](knowledge-base/41-packaging.md)。
