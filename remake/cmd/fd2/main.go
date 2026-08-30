@@ -162,6 +162,7 @@ type Game struct {
 	camPan                     *camPanJob      // beat「pan」進行中(doc50 §1);storyBG 專用,與 followWalk 互斥
 	focusJob                   *focusUnitJob   // beat「focus_unit」：依原版 0x12cea 先 X 後 Y 逐格移動游標／鏡頭
 	actJob                     *actPoseJob     // beat「act」進行中(近似姿態循環,見 actPoseJob 註解)
+	actTickAccumulator         float64         // 60Hz Update 到原版約18.2065Hz來源拍的投影餘數
 	beats                      []campaign.Beat // 目前 cutscene 節點的過場原語序列(doc50 §2)
 	beatIdx                    int             // 目前執行到第幾拍(-1=尚未開始)
 	beatDelay                  int             // beat「delay」剩餘幀數(0=非等待中)
@@ -610,6 +611,11 @@ type actPoseJob struct {
 	tick   int
 	then   func()
 }
+
+// 原版 acting 的格線動作以 BIOS 約 18.2065 Hz 的來源拍等待；Ebiten 預設
+// 60 Hz Update 只負責跨平台投影，不可把一次 Update 當成一次原版來源拍。
+// 這是硬體規格近似，不宣稱 DOS PIT wall-clock 逐週期一致。
+const actingSourceTicksPerUpdate = (1193182.0 / 65536.0) / 60.0
 
 // startFadeTransition 淡出 storyFadeFrames 幀 → 執行 action(通常是 Advance+enterNode 或
 // 換擺位)→ 淡入 storyFadeFrames 幀。
@@ -1226,6 +1232,19 @@ func (g *Game) stepActJob() {
 			g.finishActJob(j)
 		}
 	}
+}
+
+func (g *Game) stepActJobAtUpdateRate() {
+	if g.actJob == nil {
+		g.actTickAccumulator = 0
+		return
+	}
+	g.actTickAccumulator += actingSourceTicksPerUpdate
+	if g.actTickAccumulator < 1 {
+		return
+	}
+	g.actTickAccumulator--
+	g.stepActJob()
 }
 
 // ── BeatRunner(doc50):cutscene 節點的過場原語序列引擎 ──────────────
@@ -7251,10 +7270,10 @@ func (g *Game) Update() error {
 	if g.m == nil {
 		return nil
 	}
-	g.stepStoryWalks() // 場景走位動畫(doc46 §5.3);storyWalks 為空時內部直接返回
-	g.stepActJob()     // beat「act」姿態循環(doc50);actJob 為空時內部直接返回
-	g.stepFocusUnit()  // beat「focus_unit」依原版安全帶逐格移動游標／鏡頭
-	g.stepDlgAnim()    // 對話框換人縮/展動畫(使用者回饋 #3)
+	g.stepStoryWalks()         // 場景走位動畫(doc46 §5.3);storyWalks 為空時內部直接返回
+	g.stepActJobAtUpdateRate() // beat「act」以約18.2065Hz來源拍投影到60Hz更新
+	g.stepFocusUnit()          // beat「focus_unit」依原版安全帶逐格移動游標／鏡頭
+	g.stepDlgAnim()            // 對話框換人縮/展動畫(使用者回饋 #3)
 	if g.dlgScrollT > 0 {
 		g.dlgScrollT--
 	}

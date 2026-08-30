@@ -80,8 +80,9 @@ remake pure ABI 是 `indexedmap.AdvanceNativeMapSpriteCycles`。實際 Ebiten ad
 
 - [x] `[0x46c]` 是 low 16-bit BIOS timer tick；`0x17aa9` 以 0x10000
       wrap correction 作 tick busy-wait，`0x16d00` 也以兩 ticks gate文字更新。
-- [ ] 以 monotonic clock materialize 約 18.2 Hz 的 BIOS tick，並保留每個
-      native compositor call 都會推進 moving selector 的 call-count語意。
+- [x] 以約 18.2065 Hz 的硬體規格近似驅動 acting 的七拍格線動作；60 Hz
+      Ebiten 更新不可直接視為原版來源拍。此項只約束玩家可見移動時長，與
+      native compositor 每次呼叫推進 moving selector 的 call-count 語意分離。
 - [ ] 建立單一 battle-local raw presentation state，讓玩家移動、AI、acting與事件
       placement全部走同一 writer API，避免 normalized `Dir` 和 raw `+3` 漂移。
 - [ ] 接上 steady／acting／`0x22253` 三條 indexed scheduler 後做原版逐幀截圖比對。

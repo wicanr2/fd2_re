@@ -1645,6 +1645,75 @@ func TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne(t *testin
 	}
 }
 
+func TestCh00ActingZeroMarchesWholePartySixCellsTowardHouse(t *testing.T) {
+	resources, err := campaign.LoadActingResourceSet(assetPath("assets/cutscenes/acting/map32.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	acting, ok := resources[0]
+	if !ok {
+		t.Fatal("missing ch00 ACTING(0)")
+	}
+	starts := [][2]int{{7, 20}, {10, 21}, {8, 22}, {11, 23}}
+	units := make([]*battle.Unit, len(starts))
+	for i, cell := range starts {
+		units[i] = &battle.Unit{X: cell[0], Y: cell[1], OnField: true}
+	}
+	g := &Game{
+		m:  &MapData{W: 24, H: 24, TileW: 24, TileH: 24},
+		st: &battle.State{W: 24, H: 24, Units: units},
+	}
+	completed := false
+	g.actJob = &actPoseJob{acting: acting, then: func() { completed = true }}
+	g.beginActingFrame(g.actJob)
+	for step := 1; step <= 6; step++ {
+		for tick := 0; tick < 7; tick++ {
+			g.stepActJob()
+		}
+		for slot, unit := range units {
+			if unit.X != starts[slot][0] || unit.Y != starts[slot][1]-step {
+				t.Fatalf("step%d slot%d=(%d,%d), want (%d,%d)", step, slot, unit.X, unit.Y, starts[slot][0], starts[slot][1]-step)
+			}
+		}
+	}
+	if g.actJob == nil || completed {
+		t.Fatal("ACTING(0) must continue through its source-bound pose holds after the six-cell march")
+	}
+	for ticks := 0; g.actJob != nil && ticks < 100; ticks++ {
+		g.stepActJob()
+	}
+	if g.actJob != nil || !completed {
+		t.Fatal("ACTING(0) did not complete after the verified march and pose holds")
+	}
+}
+
+func TestActingSourceTicksAreNotCollapsedIntoSixtyHzUpdates(t *testing.T) {
+	slot := 0
+	g := &Game{
+		m:  &MapData{W: 24, H: 24, TileW: 24, TileH: 24},
+		st: &battle.State{W: 24, H: 24, Units: []*battle.Unit{{X: 7, Y: 20, OnField: true}}},
+	}
+	completed := false
+	g.actJob = &actPoseJob{acting: []campaign.ActingFrame{{
+		Beats: 6,
+		Units: []campaign.ActingUnit{{Slot: &slot, Pose: 2}},
+	}}, then: func() { completed = true }}
+	g.beginActingFrame(g.actJob)
+
+	// 42 source ticks at 18.2065 Hz require 139 updates at 60 Hz. The old
+	// update-bound scheduler completed after only 42 updates (0.7 seconds).
+	for update := 0; update < 138; update++ {
+		g.stepActJobAtUpdateRate()
+	}
+	if completed || g.st.Units[0].Y == 14 {
+		t.Fatalf("six-cell march completed early after 138 updates: y=%d complete=%v", g.st.Units[0].Y, completed)
+	}
+	g.stepActJobAtUpdateRate()
+	if !completed || g.st.Units[0].Y != 14 {
+		t.Fatalf("six-cell march after 139 updates: y=%d complete=%v, want y=14 complete", g.st.Units[0].Y, completed)
+	}
+}
+
 func TestChapter1PreLoadCHUsesFiveMemberJoinOrderAndSpawnFrontiers(t *testing.T) {
 	beats, issues, err := campaign.CompileHandlerBinding(assetPath("assets/cutscenes/bindings/ch01_pre.json"))
 	if err != nil || len(issues) != 0 || len(beats) == 0 || beats[0].LoadCH == nil {

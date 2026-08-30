@@ -158,6 +158,37 @@ func TestSystemActionOverlayFallbackAnchorsToActiveCursor(t *testing.T) {
 	}
 }
 
+func TestActionOverlayAnchorIsChapterIndependent(t *testing.T) {
+	for _, tc := range []struct {
+		name             string
+		cursorX, cursorY int
+		cameraX, cameraY int
+		wantX, wantY     float64
+	}{
+		{name: "early-map0", cursorX: 8, cursorY: 17, cameraX: 1, cameraY: 13, wantX: 336, wantY: 192},
+		{name: "middle-map25", cursorX: 14, cursorY: 54, cameraX: 9, cameraY: 49, wantX: 240, wantY: 240},
+		{name: "late-map28", cursorX: 21, cursorY: 20, cameraX: 16, cameraY: 16, wantX: 240, wantY: 192},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			g := &Game{
+				m:               &MapData{W: 80, H: 80, TileW: 24, TileH: 24},
+				camX:            float64(tc.cameraX * 24),
+				camY:            float64(tc.cameraY * 24),
+				nativeMapAssets: &nativeMapAssets{},
+				st: &battle.State{W: 80, H: 80, HasNativeMapViewState: true, NativeMapViewState: battle.NativeMapViewState{
+					CameraX: tc.cameraX, CameraY: tc.cameraY, CursorX: tc.cursorX, CursorY: tc.cursorY,
+					VisibleCursorX: tc.cursorX - tc.cameraX, VisibleCursorY: tc.cursorY - tc.cameraY,
+				}},
+				ring: true, nativeSystemCursorOverlay: true,
+			}
+			x, y, scale := g.actionOverlayAnchor(nil)
+			if scale != 2 || x != tc.wantX || y != tc.wantY {
+				t.Fatalf("anchor=(%.0f,%.0f) scale=%.0f, want (%.0f,%.0f) scale=2", x, y, scale, tc.wantX, tc.wantY)
+			}
+		})
+	}
+}
+
 func TestActionOverlayLifecyclePresentsAllOpeningAndClosingFrames(t *testing.T) {
 	g := &Game{}
 	g.beginActionOverlayOpen(2)

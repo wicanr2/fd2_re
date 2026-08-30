@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "status": "READY",
+  "scope": "全戰役共用四格選單錨點與第一關隊伍向哈瓦特小屋移動",
+  "input": {
+    "executable": {
+      "path": "org_game/炎龍騎士團/FLAME2/FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "original_video": {
+      "path": "video/fd2-ch1.mp4",
+      "sha256": "93e02bc89205a68a49221931462927c9e447bfdc1e2903e37ceaad76f82f5972",
+      "relevant_seconds": [332, 338]
+    }
+  },
+  "evidence": {
+    "shared_menu_anchor": {
+      "level": "已證實",
+      "source": "FD2.EXE 0x1741c、FDOTHER #2、57-ui-evidence-matrix UI-03",
+      "claim": "四格選單的原點來自目前可見游標；章節不參與錨點計算。"
+    },
+    "chapter_zero_march": {
+      "level": "已證實",
+      "source": "ch00_pre 0x3281d LOADCH→0x32830 PAN→0x3283a ACTING(0)；map32.json resource 0；原版影片 332–338 秒",
+      "claim": "ACTING(0) 第一幀令 slots 0..3 同時採 pose2，每名角色連續向上移動六格。"
+    },
+    "typed_positions": {
+      "level": "已證實",
+      "source": "ch01 deploy cells、ch00_pre party_order [0,9,4,30]、ACTING(0) 六格位移",
+      "start": [[7,20],[10,21],[8,22],[11,23]],
+      "end": [[7,14],[10,15],[8,16],[11,17]],
+      "slots": [0,9,4,30]
+    }
+  },
+  "spec": {
+    "menu": "任何戰場、任何相機與任何章節均使用目前游標格；原生畫面套用2倍呈現，後備畫面套用1倍呈現。",
+    "march": "四名隊員每七個原版來源拍完成一格，六格同步向上；重製以公開 BIOS 約 18.2065 Hz 契約映射到 60 Hz 更新，演出完成後才進入下一個 delay／dialog beat。",
+    "failure": "缺少完整 acting resource、slot 或地圖載體時失敗即關閉，不以猜測路徑替代。"
+  },
+  "acceptance": [
+    "至少以早期、中期、晚期三組不同地圖／相機／游標資料驗證共用選單錨點。",
+    "逐格驗證四名隊員由起點同步移至終點，並保留原始 slot 順序。",
+    "在 60 Hz 更新下，六格移動不得把 42 個原版來源拍壓縮成 42 個畫面更新；需以約 18.2065 Hz 的硬體規格近似驅動。",
+    "原版與重製版影片並排包含 332–338 秒對應的移動段落，標示比較等級。",
+    "一般玩家第一關錄影不得用直接章節入口或改寫座標。"
+  ],
+  "verification": {
+    "runtime": "CONFORMED",
+    "tests": [
+      "TestActionOverlayAnchorIsChapterIndependent",
+      "TestSystemActionOverlayFallbackAnchorsToActiveCursor",
+      "TestCh00ActingZeroMarchesWholePartySixCellsTowardHouse",
+      "TestActingSourceTicksAreNotCollapsedIntoSixtyHzUpdates",
+      "TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne"
+    ],
+    "result": "Docker、唯讀完整分離素材、exit 0；早中晚三組錨點與 ch00 正常 handler 均通過。",
+    "dynamic_comparison": "READY：原版 332–338 秒已定位；重製正常路徑錄影已證明可由標題 START 進入 handler，但自動按鍵可靠性不足，尚未產出可宣稱同段的並排母片。"
+  },
+  "limits": [
+    "哈瓦特小屋是玩家可見地標稱呼；位元組證據只證明 map0 座標、移動方向與六格距離。",
+    "影片未鎖定同一 DOS tick 時只標示相近狀態，不宣稱逐幀一致。"
+  ]
+}

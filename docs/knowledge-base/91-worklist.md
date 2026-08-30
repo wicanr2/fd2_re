@@ -36,6 +36,13 @@
 > [`promo-v0.1.0-spec.md`](../../docs/promo-v0.1.0-spec.md)及
 > [`fd2-v0.1.0-promo-20260830.json`](../data/video/fd2-v0.1.0-promo-20260830.json)。
 
+> **2026-08-30 第一關操作勘誤：**四格選單錨點已以 map0／25／28 證明為全戰役
+> 共用契約，不再固定左上角。`ch00_pre` 的四人隊伍由正式 `ACTING(0)` 同步向上
+> 六格，且七拍來源時基已由 60 Hz 誤用修成約 18.2065 Hz 硬體規格近似；正常
+> handler、逐格座標與時基回歸均通過，列 `RUNTIME-E1`。原版 332–338 秒已定位，
+> 可靠的同段重製動態對拍仍列 READY，不把自動輸入失敗的影片當完成證據。收據見
+> [`action-overlay-and-ch01-march-20260830.json`](../data/ui-traces/action-overlay-and-ch01-march-20260830.json)。
+
 > **2026-08-29 A2／A3 追加：** event61 FDOTHER #45 的59幀演出已達
 > `DATA-READY／RUNTIME-E1`；59組 indexed PNG／mask 逐幀對照原版通過，
 > 正式演出與全軍移動 preflight 均只消費分離 bank。下一個 A2／A3

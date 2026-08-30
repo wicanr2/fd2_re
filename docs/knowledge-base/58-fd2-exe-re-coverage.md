@@ -776,3 +776,13 @@ source-oracle仍保留原版 archive adapter作獨立比較，不把它們誤列
 [`ch01-promo-menu-correction-20260830.json`](../data/ui-traces/ch01-promo-menu-correction-20260830.json)
 及 [`promo-ch01-dosbox-compare-spec.md`](../../docs/promo-ch01-dosbox-compare-spec.md)。
 此項只提升重製 `RUNTIME-E1`，不改第一關部署資料，也不把相近狀態影片提升為 E2。
+
+## 二十一、2026-08-30：共用錨點與 ch00 ACTING(0) 消費（RUNTIME-E1）
+
+本項沒有重開 `0x1741C` 或 `0x1366A`；既有證據已足以建立正式消費端。共用
+action overlay 以早／中／晚三組地圖視圖鎖定章節無關的游標錨點。`ch00_pre`
+則逐拍消費 resource 0，四個 runtime slot 同步向上六格，並以約 18.2065 Hz 的
+硬體規格近似驅動七拍格線動作。Docker 唯讀掛載完整分離素材後，錨點、逐格
+移動、139-update 時基與完整 ch00 handler 五項測試均通過。動態同段影片仍只列
+READY，不能由 runtime 測試提升為原版 E2。權威收據見
+[`action-overlay-and-ch01-march-20260830.json`](../data/ui-traces/action-overlay-and-ch01-march-20260830.json)。
