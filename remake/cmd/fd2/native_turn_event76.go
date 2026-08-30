@@ -8,7 +8,7 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
 
-func event76DialogueActions(textIndex int) ([]battle.Action, bool) {
+func event76DialogueActions(g *Game, textIndex int) ([]battle.Action, bool) {
 	sceneIndex, line, count := 0, 0, 0
 	switch textIndex {
 	case 2:
@@ -33,9 +33,12 @@ func event76DialogueActions(textIndex int) ([]battle.Action, bool) {
 		if source.SpeakerSlot != nil {
 			return nil, false
 		}
-		actions = append(actions, battle.Action{
-			Type: "dialogue", Speaker: source.Speaker, Text: source.Text,
-		})
+		text, err := g.localizedStoryText(source)
+		if err != nil {
+			g.loadErr = "event76 locale: " + err.Error()
+			return nil, false
+		}
+		actions = append(actions, battle.Action{Type: "dialogue", Speaker: source.Speaker, Text: text})
 	}
 	return actions, true
 }
@@ -137,7 +140,7 @@ func (g *Game) startNativeRawCamp2TurnEvents(then func()) (bool, error) {
 	if _, _, err := g.preflightNativeEvent76Final(event); err != nil {
 		return false, err
 	}
-	actions, ok := event76DialogueActions(event.Progression.FinalTextIndex)
+	actions, ok := event76DialogueActions(g, event.Progression.FinalTextIndex)
 	if !ok {
 		return false, fmt.Errorf("event76 FDTXT_029 index2 unavailable")
 	}
@@ -172,7 +175,7 @@ func (g *Game) runNativeEvent76Presentation(event battle.NativeTurnEvent, pulse 
 			g.startBattleEvent([]battle.Action{{Type: "delay", Ms: p.ExtraDelayMS}}, next)
 			return
 		}
-		actions, ok := event76DialogueActions(p.TailTextIndices[pulse-2])
+		actions, ok := event76DialogueActions(g, p.TailTextIndices[pulse-2])
 		if !ok {
 			g.loadErr = fmt.Sprintf("event76 tail dialogue %d unavailable", pulse-2)
 			return

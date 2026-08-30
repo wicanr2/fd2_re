@@ -1292,6 +1292,7 @@ func TestNativeSystemGroupMarchPausesForEvent75AndResumesAfterDialogue(t *testin
 		st: state, sc: sc, m: &MapData{W: state.W, H: state.H, TileW: 24, TileH: 24},
 		nativeSystemGroupMarch: &plan,
 	}
+	attachOfficialTestLocale(t, g, "zh-Hant")
 	g.startNextNativeSystemGroupMarchStep()
 	for tick := 0; tick < 7; tick++ {
 		g.stepBattleWalk()

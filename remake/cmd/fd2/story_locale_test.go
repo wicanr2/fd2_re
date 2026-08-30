@@ -3,8 +3,22 @@ package main
 import (
 	"testing"
 
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
+
+func attachOfficialTestLocale(t *testing.T, g *Game, localeID string) {
+	t.Helper()
+	catalog, err := loadOfficialLocale(localeID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	content, err := loadOfficialLocaleContent(localeID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.localeID, g.localeCatalog, g.localeContent = localeID, catalog, content
+}
 
 func TestAllRuntimeStoriesMatchCanonicalLineIdentities(t *testing.T) {
 	paths := assetGlob("assets/story/ch*.json")
@@ -84,5 +98,37 @@ func TestStoryLocaleFailsClosedForMissingIdentityAndUnconformedNativeLayout(t *t
 	line := campaign.Line{LineID: "legacy/line/7ecb566a60db/scenes/0/lines/0", Speaker: 0, Text: "來源"}
 	if _, err := g.resolveCampaignDialogLine(line, nil, &campaign.NativeDialogueLayout{}); err == nil {
 		t.Fatal("unconformed translated native dialogue layout was accepted")
+	}
+}
+
+func TestBattleEmbeddedEventsUseOfficialStoryContent(t *testing.T) {
+	seen := make(map[string][3]string)
+	for _, localeID := range localeIDs {
+		content, err := loadOfficialLocaleContent(localeID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		g := &Game{localeID: localeID, localeContent: content}
+		event61, ok := event61DialogueActions(g, 0, 10, 1)
+		if !ok || len(event61) != 1 {
+			t.Fatalf("%s event61 actions=%d err=%q", localeID, len(event61), g.loadErr)
+		}
+		event75, ok := event75DialogueActions(g, 0, &battle.Unit{BattleFig: 4, HasBattleFig: true})
+		if !ok || len(event75) != 1 || event75[0].Speaker != 4 {
+			t.Fatalf("%s event75 actions=%#v err=%q", localeID, event75, g.loadErr)
+		}
+		event76, ok := event76DialogueActions(g, 2)
+		if !ok || len(event76) != 3 {
+			t.Fatalf("%s event76 actions=%d err=%q", localeID, len(event76), g.loadErr)
+		}
+		for _, action := range append(append(event61, event75...), event76...) {
+			if action.Text == "" {
+				t.Fatalf("%s embedded event produced empty dialogue", localeID)
+			}
+		}
+		seen[localeID] = [3]string{event61[0].Text, event75[0].Text, event76[0].Text}
+	}
+	if seen["zh-Hant"] == seen["en"] || seen["zh-Hant"] == seen["ja"] {
+		t.Fatalf("embedded event dialogue did not use translated catalogs: %#v", seen)
 	}
 }

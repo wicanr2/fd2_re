@@ -519,11 +519,11 @@ func (g *Game) preflightNativeSystemGroupMarchEvents(plan battle.NativeSystemGro
 		for _, event := range step.Events {
 			switch event.EventID {
 			case 61:
-				if _, ok := event61DialogueActions(0, 10, 2); !ok {
+				if _, ok := event61DialogueActions(g, 0, 10, 2); !ok {
 					return false
 				}
 				if event.Presentation {
-					if _, ok := event61DialogueActions(1, 0, 10); !ok {
+					if _, ok := event61DialogueActions(g, 1, 0, 10); !ok {
 						return false
 					}
 					frames, err := fdother.LoadSeparatedEvent61Frames(
@@ -535,7 +535,7 @@ func (g *Game) preflightNativeSystemGroupMarchEvents(plan battle.NativeSystemGro
 				}
 			case 75:
 				probe := &battle.Unit{BattleFig: 0, HasBattleFig: true}
-				if _, ok := event75DialogueActions(event.TextIndex, probe); !ok {
+				if _, ok := event75DialogueActions(g, event.TextIndex, probe); !ok {
 					return false
 				}
 			default:

@@ -411,8 +411,8 @@ CC BY-NC 4.0，只用於本非商業專案的本地候選譯文產生；模型�
 
 ##### Canonical 劇情執行期切片
 
-> 狀態：**SPEC-READY／RUNTIME-E1-PARTIAL**（2026-08-30）；正式 story 與 handler dialog
-> 已接通，只授權劇情台詞，不外推到戰場內嵌事件、商店、戰鬥 HUD 或實體名稱。
+> 狀態：**SPEC-READY／RUNTIME-E1-PARTIAL**（2026-08-30）；正式 story、handler dialog
+> 與戰場內嵌事件61／75／76已接通，只授權劇情台詞，不外推到商店、戰鬥 HUD 或實體名稱。
 
 editor canonical 劇情 JSON 是正式 `line_id` 身分來源；既有 `assets/story` 劇本繼續保存原版
 數值 speaker 與執行 metadata。載入器只能在檔名、scene index、line index、繁中 `text` 與
@@ -431,6 +431,11 @@ canonical 的 legacy speaker 全部一致時把兩者合併；任一不一致即
 及原生 indexed progressive frames 不在 F4 當幀重建，避免破壞逐字進度、嘴型、開收框與
 鏡頭時序；完整即時重排須另經文字安全矩形、字型與分頁規格後才可開啟。原生對話仍保留
 原有頁面與動畫載體，不能因翻譯而換成一般 renderer；未完成各語重排前維持失敗即關閉。
+
+事件61／75／76雖由 battle action runner 呈現，文字來源仍是同一批 canonical story line；
+它們必須先以 `line_id` 解析當前官方內容，再建立 action。trigger speaker、事件狀態寫入、
+palette pulse 與提交時序仍由既有 typed event plan 擁有，語系層只替換文字；解析失敗時不得
+先提交事件 mutation。四語測試須各抽一條事件文字，並保留原有事件延遲提交回歸。
 
 ### 四之二、legacy 匯入與 canonical 往返
 

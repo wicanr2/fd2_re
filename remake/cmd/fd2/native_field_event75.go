@@ -4,7 +4,7 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
 
-func event75DialogueActions(textIndex int, trigger *battle.Unit) ([]battle.Action, bool) {
+func event75DialogueActions(g *Game, textIndex int, trigger *battle.Unit) ([]battle.Action, bool) {
 	line, count := 0, 0
 	switch textIndex {
 	case 0:
@@ -24,9 +24,12 @@ func event75DialogueActions(textIndex int, trigger *battle.Unit) ([]battle.Actio
 		if source.SpeakerSlot != nil {
 			return nil, false
 		}
-		actions = append(actions, battle.Action{
-			Type: "dialogue", Speaker: source.Speaker, Text: source.Text,
-		})
+		text, err := g.localizedStoryText(source)
+		if err != nil {
+			g.loadErr = "event75 locale: " + err.Error()
+			return nil, false
+		}
+		actions = append(actions, battle.Action{Type: "dialogue", Speaker: source.Speaker, Text: text})
 	}
 	if textIndex == 0 {
 		// sub_35C79 在 FDTXT_029 index0 前，先把觸發 runtime record 的 raw +7
@@ -65,7 +68,7 @@ func (g *Game) beginNativeFieldEvent75(actor *battle.Unit, after func()) bool {
 		}
 		return true
 	}
-	actions, ok := event75DialogueActions(plan.TextIndex, actor)
+	actions, ok := event75DialogueActions(g, plan.TextIndex, actor)
 	if !ok {
 		g.loadErr = "event75: FDTXT_029 editable dialogue unavailable"
 		if after != nil {

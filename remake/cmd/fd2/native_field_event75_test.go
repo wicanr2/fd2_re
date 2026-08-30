@@ -25,6 +25,7 @@ func TestEvent75SuccessfulActionCommitsOnlyAfterEditableDialogue(t *testing.T) {
 		HasNativeRecordByte8: true, NativeRecordByte8: 9,
 	}
 	g := &Game{st: st, sc: sc}
+	attachOfficialTestLocale(t, g, "zh-Hant")
 	g.finishSuccessfulUnitAction(actor, nil)
 	if g.battleEvent == nil || len(g.dialog) != 1 || actor.Acted ||
 		st.NativeEventState[16] != 0 || st.NativeTurnEventControls[0].Turn != 0xff {
@@ -60,6 +61,7 @@ func TestEvent75MismatchUsesTriggerRawByte7AndDoesNotActivate(t *testing.T) {
 		HasNativeRecordByte8: true, NativeRecordByte8: 8,
 	}
 	g := &Game{st: st, sc: sc}
+	attachOfficialTestLocale(t, g, "zh-Hant")
 	g.finishSuccessfulUnitAction(actor, nil)
 	if len(g.dialog) != 1 || g.dialog[0].Speaker != 23 || actor.Acted {
 		t.Fatalf("event75 mismatch dialogue=%#v acted=%v", g.dialog, actor.Acted)

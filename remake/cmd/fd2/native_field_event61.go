@@ -20,7 +20,7 @@ type nativeFieldEvent61Job struct {
 	after    func()
 }
 
-func event61DialogueActions(sceneIndex, line, count int) ([]battle.Action, bool) {
+func event61DialogueActions(g *Game, sceneIndex, line, count int) ([]battle.Action, bool) {
 	lines := loadStoryScriptAt(
 		"assets/story/ch26.json", "", &sceneIndex,
 	)
@@ -33,9 +33,12 @@ func event61DialogueActions(sceneIndex, line, count int) ([]battle.Action, bool)
 		if source.SpeakerSlot != nil {
 			return nil, false
 		}
-		actions = append(actions, battle.Action{
-			Type: "dialogue", Speaker: speaker, Text: source.Text,
-		})
+		text, err := g.localizedStoryText(source)
+		if err != nil {
+			g.loadErr = "event61 locale: " + err.Error()
+			return nil, false
+		}
+		actions = append(actions, battle.Action{Type: "dialogue", Speaker: speaker, Text: text})
 	}
 	return actions, true
 }
@@ -62,7 +65,7 @@ func (g *Game) beginNativeFieldEvent61(actor *battle.Unit, after func()) bool {
 		return true
 	}
 	if plan.MissingItem {
-		actions, ok := event61DialogueActions(0, 10, 1)
+		actions, ok := event61DialogueActions(g, 0, 10, 1)
 		if !ok {
 			g.loadErr = "event61: FDTXT2 editable dialogue unavailable"
 			if after != nil {
@@ -73,7 +76,7 @@ func (g *Game) beginNativeFieldEvent61(actor *battle.Unit, after func()) bool {
 		g.startBattleEvent(actions, after)
 		return true
 	}
-	actions, ok := event61DialogueActions(0, 11, 1)
+	actions, ok := event61DialogueActions(g, 0, 11, 1)
 	if !ok {
 		g.loadErr = "event61: FDTXT3 editable dialogue unavailable"
 		if after != nil {
@@ -185,7 +188,7 @@ func (g *Game) stepNativeFieldEvent61Tick(rawTick int) {
 		}
 		return
 	}
-	actions, ok := event61DialogueActions(1, 0, 10)
+	actions, ok := event61DialogueActions(g, 1, 0, 10)
 	if !ok {
 		g.loadErr = "event61: FDTXT4 editable dialogue unavailable"
 		if after != nil {

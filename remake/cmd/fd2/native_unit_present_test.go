@@ -45,6 +45,7 @@ func completeNativeUnitPresentGame(t *testing.T) *Game {
 		nativeMapAssets: assets, m: field, st: state,
 		camX: 4 * 24, camY: 3 * 24,
 	}
+	attachOfficialTestLocale(t, g, "zh-Hant")
 	if err := g.composeNativeMapFrame(); err != nil {
 		t.Fatal(err)
 	}
