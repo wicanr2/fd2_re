@@ -183,6 +183,12 @@ func TestReviewedChapterTwoCampaignTranslationsAndItemEntities(t *testing.T) {
 			"legacy/line/5bf145f103fe/scenes/2/lines/21/text":                                       "問題ないよ！ さあ行こう、私が案内するから。こっち！",
 			"legacy/line/5bf145f103fe/scenes/2/lines/22/speaker-name":                               "ソール",
 			"legacy/line/5bf145f103fe/scenes/2/lines/22/text":                                       "まったく、仕方ないな……。",
+			"legacy/line/cac6c4f06aba/scenes/0/lines/0/speaker-name":                                "シリア",
+			"legacy/line/cac6c4f06aba/scenes/0/lines/0/text":                                        "この橋を渡れば、医術で名高いセラ村まであと少しです。あの村の司祭の治療魔法はとても神秘的で、ユニの記憶喪失も治せるはずです。",
+			"legacy/line/cac6c4f06aba/scenes/0/lines/1/speaker-name":                                "ソール",
+			"legacy/line/cac6c4f06aba/scenes/0/lines/1/text":                                        "そうだといいな……えっ……",
+			"legacy/line/cac6c4f06aba/scenes/0/lines/2/speaker-name":                                "ティエノ",
+			"legacy/line/cac6c4f06aba/scenes/0/lines/2/text":                                        "……ふう、今回はもう追いつけそうにない……",
 		},
 		"en": {
 			"legacy.json.remake.assets.scenarios.campaign_full.nodes.preparation_ch02.prompt":       "Enter the battlefield?",
@@ -304,6 +310,12 @@ func TestReviewedChapterTwoCampaignTranslationsAndItemEntities(t *testing.T) {
 			"legacy/line/5bf145f103fe/scenes/2/lines/21/text":                                       "No problem! Come on, let's go. I'll lead the way—this way!",
 			"legacy/line/5bf145f103fe/scenes/2/lines/22/speaker-name":                               "Sol",
 			"legacy/line/5bf145f103fe/scenes/2/lines/22/text":                                       "Honestly, what a handful...",
+			"legacy/line/cac6c4f06aba/scenes/0/lines/0/speaker-name":                                "Celia",
+			"legacy/line/cac6c4f06aba/scenes/0/lines/0/text":                                        "After we cross this bridge, we'll soon reach Sela Village, famous for its healing arts. The priests' healing magic there is truly remarkable; it should be able to cure Yuni's amnesia.",
+			"legacy/line/cac6c4f06aba/scenes/0/lines/1/speaker-name":                                "Sol",
+			"legacy/line/cac6c4f06aba/scenes/0/lines/1/text":                                        "I hope so... Huh...",
+			"legacy/line/cac6c4f06aba/scenes/0/lines/2/speaker-name":                                "Tino",
+			"legacy/line/cac6c4f06aba/scenes/0/lines/2/text":                                        "...Whew, I don't think I'll catch up this time...",
 		},
 		"zh-Hans": {
 			"legacy.json.remake.assets.scenarios.campaign_full.nodes.preparation_ch02.prompt":       "要进入战场吗？",
@@ -425,6 +437,12 @@ func TestReviewedChapterTwoCampaignTranslationsAndItemEntities(t *testing.T) {
 			"legacy/line/5bf145f103fe/scenes/2/lines/21/text":                                       "没问题！走吧走吧，我来带路！往这边！",
 			"legacy/line/5bf145f103fe/scenes/2/lines/22/speaker-name":                               "索尔",
 			"legacy/line/5bf145f103fe/scenes/2/lines/22/text":                                       "真是没办法，唉！",
+			"legacy/line/cac6c4f06aba/scenes/0/lines/0/speaker-name":                                "希莉亚",
+			"legacy/line/cac6c4f06aba/scenes/0/lines/0/text":                                        "过了这座桥，就快到以医术闻名的赛拉村了。这个村子的祭司医疗法术非常神奇，应该能治好悠妮的失忆症。",
+			"legacy/line/cac6c4f06aba/scenes/0/lines/1/speaker-name":                                "索尔",
+			"legacy/line/cac6c4f06aba/scenes/0/lines/1/text":                                        "希望如此……咦……",
+			"legacy/line/cac6c4f06aba/scenes/0/lines/2/speaker-name":                                "铁诺",
+			"legacy/line/cac6c4f06aba/scenes/0/lines/2/text":                                        "……呼，这次大概是追不上了……",
 		},
 	}
 	itemWants := map[string]map[int]string{
