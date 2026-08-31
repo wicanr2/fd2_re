@@ -29,6 +29,7 @@ func TestReviewedOpeningTranslationsUseCanonicalLineIDs(t *testing.T) {
 			"legacy/line/7ecb566a60db/scenes/3/lines/4":  "That must be the pirate leader! At last, a worthy opponent has appeared. Leave this one to me!",
 			"legacy/line/7ecb566a60db/scenes/7/lines/8":  "My name is... Hano. I hope we can get along.",
 			"legacy/line/7ecb566a60db/scenes/1/lines/13": "Then show them no mercy! Attack!",
+			"legacy/line/7ecb566a60db/scenes/3/lines/10": "I can't stand this guy. Sol, let's stop arguing and take him down together!",
 		},
 		"zh-Hans": {
 			"legacy/line/15b3c967fb2b/scenes/1/lines/13": "悠妮?好名字。悠妮小姐,你怎么会记不得怎么来到这里的?",
