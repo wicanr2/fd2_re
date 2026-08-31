@@ -5111,7 +5111,9 @@ func (g *Game) ringInput() bool {
 					return true
 				}
 				if g.sel.MP < record.MPCost {
-					g.msg = "MP 不足!"
+					if message, ok := g.localeMessage("battle.mp.insufficient"); ok {
+						g.msg = message
+					}
 					return true
 				}
 				if _, err := g.nativeCommandTargetUnitsFor(id); err == nil {
@@ -5156,7 +5158,9 @@ func (g *Game) ringInput() bool {
 			for i := range g.spells {
 				if g.spells[i].ID == id {
 					if g.sel.MP < g.spells[i].MP {
-						g.msg = "MP 不足!"
+						if message, ok := g.localeMessage("battle.mp.insufficient"); ok {
+							g.msg = message
+						}
 						return true
 					}
 					g.castSp = &g.spells[i]
@@ -5207,13 +5211,17 @@ func (g *Game) ringInput() bool {
 		// enforcing the same input gate would let the remake execute an action
 		// the native chooser rejects.
 		if !nativeActionSelectable(g.actionOverlayAvailability(), g.ringSel) {
-			g.msg = "此指令目前不可用"
+			if message, ok := g.localeMessage("battle.command.unavailable"); ok {
+				g.msg = message
+			}
 			return true
 		}
 		switch g.ringSel {
 		case 0: // 攻擊 → 關環,進選目標(游標移到攻擊範圍內的敵人;範圍依武器射程,doc32)
 			g.beginActionOverlayClose(func() {
-				g.msg = "攻擊:選擇目標"
+				if message, ok := g.localeMessage("battle.attack.choose_target"); ok {
+					g.msg = message
+				}
 			})
 		case 1: // 法術(原版 0x1cff0；有法術者才可用)
 			if ids := g.sel.NativeCommandIDs(); len(ids) > 0 && g.localeEntities != nil && len(g.nativeUIPalette) >= 0xce {
@@ -5221,7 +5229,9 @@ func (g *Game) ringInput() bool {
 				// is nonzero.  NativeTransient[5] preserves exactly that byte;
 				// legacy Sealed is a separate normalized compatibility status.
 				if nativeCommandActionBlocked(g.sel) {
-					g.msg = "原始指令目前不可用"
+					if message, ok := g.localeMessage("battle.command.native_unavailable"); ok {
+						g.msg = message
+					}
 					return true
 				}
 				g.beginActionOverlayClose(func() {
@@ -5231,21 +5241,27 @@ func (g *Game) ringInput() bool {
 			}
 			if len(g.sel.Spells) > 0 {
 				if g.sel.Sealed {
-					g.msg = "被封咒,無法施法!"
+					if message, ok := g.localeMessage("battle.spell.sealed"); ok {
+						g.msg = message
+					}
 				} else {
 					g.beginActionOverlayClose(func() {
 						g.spellOpen, g.spellSel = true, 0
 					})
 				}
 			} else {
-				g.msg = "沒有可用法術"
+				if message, ok := g.localeMessage("battle.spell.none"); ok {
+					g.msg = message
+				}
 			}
 		case 2: // 物品(原版 0x1bbdc；完整 item action 仍 fail-closed)
 			g.beginActionOverlayClose(func() {
 				g.itemOpen, g.itemSel = true, 0
 				g.itemAnimStep, g.itemClosing = 0, false
 				g.prepareNativeItemPanel(g.sel)
-				g.msg = "物品：選擇欄位"
+				if message, ok := g.localeMessage("battle.item.choose_slot"); ok {
+					g.msg = message
+				}
 			})
 		case 3: // 休息回復／格子互動(原版 0x13fd4→0x190ac)
 			g.beginActionOverlayClose(g.finishSelectedWait)
@@ -7326,7 +7342,9 @@ func (g *Game) Update() error {
 				g.confirm() // 選取游標上的單位
 				g.confirm() // 原地(游標未動)→ 開指令環(moved=true, ring=true, ringSel=1)
 				g.resetActionOverlayLifecycle()
-				g.msg = "攻擊:選擇目標"
+				if message, ok := g.localeMessage("battle.attack.choose_target"); ok {
+					g.msg = message
+				}
 				if v := os.Getenv("FD2_SHOT_CUR2"); v != "" { // 進攻擊階段後把游標挪開(驗證高亮不被HUD面板擋住)
 					fmt.Sscanf(v, "%d,%d", &g.curX, &g.curY)
 				}

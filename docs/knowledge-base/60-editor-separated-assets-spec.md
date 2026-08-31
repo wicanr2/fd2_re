@@ -572,6 +572,16 @@ raw `+6`上下定位及chapter24 unit17例外，再於 `(panel.x+5,panel.y+4,120
 實際包內字型量測。ID31、缺譯或小於0.6倍率仍失敗即關閉。這不改 command availability、
 MP gate、target/effect或演出 owner，也不把舊直列 `drawSpellMenu` 提升為原版玩家路徑。
 
+2026-08-31 服務按鈕勘誤：三種商店資源的entries3–10均為24×20成對 raster圖示，實際畫面
+使用購買／出售／裝備／離開圖像，沒有需翻譯的嵌入文字，故不再列為四語缺項。教會同尺寸
+entries3–10在目前 indexed 畫面呈現橙藍亂碼紋理；這是原版 raster codec／palette或素材
+消費端的介面缺陷，不能用猜測文字遮罩冒充翻譯。修正前須先取得原版同狀態畫面或直接
+codec反證，再依RE→規格→實作處理。
+
+同批另將七個高頻戰鬥提示加入官方語意 pack：MP不足、指令不可用、攻擊選擇目標、原始
+指令不可用、封咒、無法術及物品欄位選擇。四語 pack均以穩定key、原始string inventory
+provenance及零變數簽章驗證；正式玩家輸入的九個寫入點已改查目錄，缺鍵時不回退繁中。
+
 完整原版物品名稱區固定為 FDTXT_000 `string_0181..0395`，對應 raw item ID 0–214。
 雜湊綁定匯出確認其中 200 筆有名稱，108–122 共15筆為原版空字串；空洞必須標成
 `confirmed_empty_item_ids`，不可翻譯或造名，也不可在正常背包中顯示。正式背包目錄的

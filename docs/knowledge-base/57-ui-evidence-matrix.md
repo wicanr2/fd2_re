@@ -660,7 +660,9 @@ background 或全部原版 input state。
 - `unit_present` 與 `indexed_transition` 尚未有 native indexed adapter；RGBA／色塊 fallback 僅供診斷。
 - church 四項服務都已有正式具型別輸入 consumer；raw index 0／1 不再顯示
   「尚待原版 callee 完整接線」。仍缺的是未修改原版 church caller 的同狀態
-  DOSBox 畫面與精確音訊，不是重製端 menu／callee 接線。
+  DOSBox 畫面與精確音訊，不是重製端 menu／callee 接線。2026-08-31畫面稽核另發現
+  教會24×20服務格目前呈現亂碼紋理；它是renderer／codec視覺缺陷，不能因輸入callee已接
+  就列為介面完成，也不能用四語文字猜蓋。
 - battle `Tab` 可結束回合是現有配置，不代表已證實原版是 Tab 或可見選單；需 E0/E2。
 
 ## 可重跑盤點命令

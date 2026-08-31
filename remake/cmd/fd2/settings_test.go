@@ -28,7 +28,11 @@ func TestOfficialLocalesCoverSystemAndSaveMessages(t *testing.T) {
 		if err != nil || saved != want[1] {
 			t.Fatalf("%s save message=%q err=%v", localeID, saved, err)
 		}
-		for _, key := range []string{"system.audio.changed", "save.unsupported", "save.postbattle_blocked", "save.none", "save.node_missing", "save.loaded"} {
+		for _, key := range []string{
+			"system.audio.changed", "save.unsupported", "save.postbattle_blocked", "save.none", "save.node_missing", "save.loaded",
+			"battle.mp.insufficient", "battle.command.unavailable", "battle.attack.choose_target",
+			"battle.command.native_unavailable", "battle.spell.sealed", "battle.spell.none", "battle.item.choose_slot",
+		} {
 			entry, ok := catalog.Entries[key]
 			if !ok || strings.TrimSpace(entry.Text) == "" {
 				t.Fatalf("%s missing %s", localeID, key)
