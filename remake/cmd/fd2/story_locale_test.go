@@ -248,6 +248,32 @@ func TestReviewedChapterThreeSceneOneLinesElevenToFifteen(t *testing.T) {
 	}
 }
 
+func TestReviewedChapterThreeSceneOneFinalEvidenceBackedFields(t *testing.T) {
+	wants := map[string]map[string]string{
+		"en": {
+			"legacy/line/cac6c4f06aba/scenes/1/lines/16/speaker-name": "Sol",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/16/text":         "W-what the heck is that?!",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/17/speaker-name": "Raiden",
+		},
+		"ja": {
+			"legacy/line/cac6c4f06aba/scenes/1/lines/16/speaker-name": "ソール",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/16/text":         "な……なんだ、あれは！",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/17/speaker-name": "レイティン",
+		},
+		"zh-Hans": {
+			"legacy/line/cac6c4f06aba/scenes/1/lines/16/speaker-name": "索尔",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/16/text":         "这……这是什么鬼东西！",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/17/speaker-name": "莱汀",
+		},
+	}
+	for localeID, entries := range wants {
+		if _, err := loadOfficialLocaleContent(localeID); err != nil {
+			t.Fatal(err)
+		}
+		assertReviewedContentEntryIDs(t, localeID, entries)
+	}
+}
+
 func TestReviewedChapterTwoCampaignTranslationsAndItemEntities(t *testing.T) {
 	wants := map[string]map[string]string{
 		"ja": {
