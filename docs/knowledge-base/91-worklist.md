@@ -36,8 +36,8 @@
 | A1 | 編輯器 canonical schema 與穩定身份層 | `DATA-READY（全戰役 legacy projection）／RUNTIME-E1（封包 admission）`：版本化 bundle 現含1份campaign、30份scenario、35份story與38筆角色身份候選；deterministic exporter、跨文件節點／speaker validator、角色身份schema、逐檔SHA-256與完整package self-check已接。Linux AppImage與Windows ZIP重建後均帶入bundle，Linux空白cwd自檢通過。4筆名稱衝突保留直接來源並拒絕猜選 | 解決或明確拆分`native-0/1/7/96`身份歧義；建立canonical→runtime compiler，使正式戰役規則直接消費編輯後文件；再補編輯器UI修改→驗證→執行→存讀檔往返。私人297份animation metadata可顯式匯入，但不作乾淨clone必要輸入 |
 | A2 | 原版素材全量分離與清冊 | `RELEASE-DATA-READY／RESEARCH-PARTIAL`：manifest v2現有39,825筆asset與1,005筆source-resource ledger；901 standardized、11個零長度confirmed-empty、0 blocked、93 unknown。完整本機包有40,127個實體檔案、約104 MB，已於私人庫保存。2026-08-30 `v0.1.1` Linux／Windows本機完整版均為42,258個檔案，macOS為42,332個檔案；三者均綁定engine head `be9a2a77`、通過manifest驗證並標示不可公開。三平台原生公開候選與雜湊也由GitHub Actions重建成功。公開README新增33張完整戰場低解析索引、96組sprite與96組portrait代表幀，不公開可重組逐檔素材。正式`Game` caller未發現93筆unknown有直接archive consumer，因此它們不阻擋第一版 | Windows／macOS實機抽測。只有新證據找到正式consumer才重開unknown，FDOTHER #47／#49不猜接 |
 | A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型、FDICON、FDSHAP、ANI、FDFIELD主要玩家路徑，以及城鎮、商店、標題、LOAD、整備、教會與戰場初始化均已遷移。19個巢狀音效bank已分離；標題#77選單音與ANI #1的#78 companion均由正式runtime消費。2026-08-29 caller稽核未發現正式`Game`仍直接讀原版archive，`FD2_ORIGINAL_FDOTHER`／`DATO` locator亦已移到測試專用檔，正式binary字串檢查通過；archive adapter只留source-oracle。BGM只從完整驗證的30份OGG catalog解析，物理攻擊亦由分離FIGANI provider原子預檢 | 以version 2 ledger的93筆unknown交叉核對是否有尚未登記的玩家consumer；已具標準資料但缺manifest bridge者只補provenance。沒有正式caller的oracle helper不再列為runtime缺口；只有新證據證明正式consumer存在才重開RE→spec→runtime切片 |
-| A4 | 現代美術主題 | `PROTOTYPE-SET／DATA-CONTRACT-READY／RUNTIME-E1-PARTIAL`：索爾、哈諾、鐵諾、哈瓦特、亞雷斯、洛娜與萊汀的獨立閉嘴頭像母稿／80×80候選、第一關戰場與戰鬥HUD三張style A本機私有稿均已產生；受版控`themes/modern/catalog.json`保存穩定asset ID、來源、尺寸與SHA-256。七位speaker已接入顯式`FD2_THEME`正式對話consumer；身分／speaker／雜湊／尺寸／不透明契約任一不符即原子拒絕。2026-08-31 身分勘誤：`DATO_001 / speaker 1` 是哈諾，不是亞雷斯；亞雷斯是 `DATO_004 / speaker 4`。錯誤檔名與清冊已修正且未改哈諾像素，並已另產生正確亞雷斯候選。本輪另勘誤`0x9017`為下框右緣錨點，實際左上角是`(8,115)`。FDICON selector 0與68現各有12張`24×24`二值alpha候選與逐格雜湊；索爾基礎selector是0，68則不是固定角色身分，晚期悠妮資料曾使用`0x44`。兩組都用中性的`modern.fdicon.group_NNN.style_a`命名，正式 loader 會原子預檢24檔、雜湊、尺寸、alpha與週期後取代正規化`g.sprites[0]`／`[68]`。selector 0母稿依原版12格生成並確定性裁切；selector 68的雙劍稿已拒收，第11格改為可重現像素合成。原生indexed compositor尚未接真彩覆蓋；直接疊最終畫面會錯蓋foreground，同色寫入也不能靠diff推回mask，因此維持失敗即關閉。規格見`61-modern-theme-runtime-spec.md`。戰場與HUD仍是concept | 擴充native foreground write-mask契約；同時抽測七位現代頭像的正常故事上／下框，再依穩定speaker身分繼續逐角色產生候選。map0 tile ID與FDOTHER HUD cells仍須各自建立基準，不能從合成概念圖反切 |
-| A5 | 繁中／簡中／日文／英文與可調文字顯示 | `DATA-READY（5,176筆／語）＋RUNTIME-E1-PARTIAL`：實檔 `entry_count` 四語均為5,176；先前5,205為過期斷言，已依目前完整內容包修正。35份劇本共1,564句具穩定 `line_id`；正式 story、handler dialog及事件61／75／76均查詢四語內容。非繁中原生 indexed 對話已重建安全分頁並依裁決固定閉嘴。FDTXT清冊現涵蓋200個可顯示物品與15個confirmed-empty ID；32名角色、94筆戰鬥raw姓名、35筆非空指令與29筆職業均有四語實體目錄，職業26／27／28保留原版占位。轉職成功與後備確認介面會在mutation前預取四語角色／職業／句型。玩家／敵方共用指令與戰鬥姓名已由共用owner重畫；高頻戰鬥提示、法術結算、寶物／擊破獎勵、教會轉交／復活，以及戰場物品欄、可用性、選擇目標／目的地、回復／傷害／移位演出狀態均已接官方pack。物理攻擊結算若缺角色名與職業名會失敗即關閉，不再顯示硬編碼「攻方／目標」；`figName()` 僅供除錯日誌，不是玩家語系缺口。商店、旅館／出戰整備、勝敗／戰後整備、標題LOAD、教會服務，以及結局素材不足／可編輯結語提示均已移除硬編碼繁中；舊式戰場物品 fallback 的標題與空欄標記也會先原子取得語系文字再繪製。官方介面契約目前每語114鍵；F4會原子同步正式grid與SpellBook相容顯示。2026-09-01 人工審校現況為日文142句、英文133句、簡中110句；第二章已閉合首批商店、城鎮選項、關卡名稱、隊伍姓名、位置摘要、標題及開場連續六句，日英實體清冊另以人工 override 固定9個高頻品項，其餘內容仍維持機器初稿標記，尚無正常玩家截圖 E2 | 接續第二章故事人工審校，再做四語正常玩家畫面。商店服務格已證實是純圖示，不列翻譯缺口；教會亂碼紋理屬UI codec／palette缺陷。4筆劇情身份歧義不與0–31隊伍顯示目錄合併；raw戰鬥姓名也不以`native_identity`替代 |
+| A4 | 現代美術主題 | `PROTOTYPE-SET／DATA-CONTRACT-READY／RUNTIME-E1-PARTIAL`：26 位身分已確認角色已有獨立閉嘴頭像母稿／80×80候選，第一關戰場與戰鬥HUD三張style A本機私有稿亦已產生；受版控`themes/modern/catalog.json`保存穩定asset ID、來源、尺寸與SHA-256。26 位speaker候選已由通用`FD2_THEME`正式對話consumer載入；身分／speaker／雜湊／尺寸／不透明契約任一不符即原子拒絕。2026-08-31 身分勘誤：`DATO_001 / speaker 1` 是哈諾，不是亞雷斯；亞雷斯是 `DATO_004 / speaker 4`。錯誤檔名與清冊已修正且未改哈諾像素，並已另產生正確亞雷斯候選。本輪另勘誤`0x9017`為下框右緣錨點，實際左上角是`(8,115)`。FDICON selector 0與68現各有12張`24×24`二值alpha候選與逐格雜湊；索爾基礎selector是0，68則不是固定角色身分，晚期悠妮資料曾使用`0x44`。兩組都用中性的`modern.fdicon.group_NNN.style_a`命名，正式 loader 會原子預檢24檔、雜湊、尺寸、alpha與週期後取代正規化`g.sprites[0]`／`[68]`。selector 0母稿依原版12格生成並確定性裁切；selector 68的雙劍稿已拒收，第11格改為可重現像素合成。原生indexed compositor尚未接真彩覆蓋；直接疊最終畫面會錯蓋foreground，同色寫入也不能靠diff推回mask，因此維持失敗即關閉。規格見`61-modern-theme-runtime-spec.md`。戰場與HUD仍是concept | 擴充native foreground write-mask契約；同時抽測已登錄現代頭像的正常故事上／下框，再依穩定speaker身分繼續逐角色產生候選。map0 tile ID與FDOTHER HUD cells仍須各自建立基準，不能從合成概念圖反切 |
+| A5 | 繁中／簡中／日文／英文與可調文字顯示 | `DATA-READY（5,176筆／語）＋RUNTIME-E1-PARTIAL`：實檔 `entry_count` 四語均為5,176；先前5,205為過期斷言，已依目前完整內容包修正。35份劇本共1,564句具穩定 `line_id`；正式 story、handler dialog及事件61／75／76均查詢四語內容。非繁中原生 indexed 對話已重建安全分頁並依裁決固定閉嘴。FDTXT清冊現涵蓋200個可顯示物品與15個confirmed-empty ID；32名角色、94筆戰鬥raw姓名、35筆非空指令與29筆職業均有四語實體目錄，職業26／27／28保留原版占位。轉職成功與後備確認介面會在mutation前預取四語角色／職業／句型。玩家／敵方共用指令與戰鬥姓名已由共用owner重畫；高頻戰鬥提示、法術結算、寶物／擊破獎勵、教會轉交／復活，以及戰場物品欄、可用性、選擇目標／目的地、回復／傷害／移位演出狀態均已接官方pack。物理攻擊結算若缺角色名與職業名會失敗即關閉，不再顯示硬編碼「攻方／目標」；`figName()` 僅供除錯日誌，不是玩家語系缺口。商店、旅館／出戰整備、勝敗／戰後整備、標題LOAD、教會服務，以及結局素材不足／可編輯結語提示均已移除硬編碼繁中；舊式戰場物品 fallback 的標題與空欄標記也會先原子取得語系文字再繪製。官方介面契約目前每語114鍵；F4會原子同步正式grid與SpellBook相容顯示。2026-09-01 人工審校現況為日文154句、英文145句、簡中122句；第二章已閉合首批商店、城鎮選項、關卡名稱、隊伍姓名、位置摘要、標題及開場連續十二句，日英實體清冊另以人工 override 固定9個高頻品項，其餘內容仍維持機器初稿標記，尚無正常玩家截圖 E2 | 接續第二章故事人工審校，再做四語正常玩家畫面。商店服務格已證實是純圖示，不列翻譯缺口；教會亂碼紋理屬UI codec／palette缺陷。4筆劇情身份歧義不與0–31隊伍顯示目錄合併；raw戰鬥姓名也不以`native_identity`替代 |
 
 > **2026-08-31 A5 商店四語追加：**除購買／出售結果四條交易路徑外，
 > **2026-08-31 A5 審校筆數勘誤：**上表的日文 24 句是上一批快照；本批再完成
@@ -161,6 +161,13 @@
 > `7756d79e` 已保存母稿與執行期 PNG；私人 manifest 現為 77 個 catalog
 > allow-list 檔案，逐檔大小與 SHA-256 驗證通過。
 >
+> **2026-09-01 A4 巴拿羅西亞追加：**`DATO_027`、角色資料表的龍人／龍劍士
+> 欄位與四語隊伍姓名清冊共同確認巴拿羅西亞；原版頭像呈現向左的橄欖綠龍首、
+> 狹長黃眼、頭頂與頸後淡色尖角、分層鱗片及外露尖牙。識別字依英文清冊採
+> `Banalosia`；現代主題現有 26 位私有頭像候選。`fd2-assets-private` 提交
+> `68608462` 已保存母稿與執行期 PNG；私人 manifest 現為 79 個 catalog
+> allow-list 檔案，逐檔大小與 SHA-256 驗證通過。
+>
 > **2026-08-31 A5 第一章英文停止線：**第一章故事與事件只剩
 > `奈野啊捏?` 一句未審校；`Nano`、`Naino` 與日文 `ナイノ・フィニックス`
 > 均只有機器草稿，且沒有角色／實體清冊可定案。此句維持 `machine_draft`，
@@ -170,6 +177,11 @@
 > 名稱已完成日文、英文與簡中人工審校，共新增每語 12 筆 `reviewed`。英文人名
 > 依既定實體清冊固定為 `Sol`，不沿用機器初稿 `Sole`；簡中仍使用「悠妮」。
 > 三語其餘機器初稿不得因本批局部完成而升格。
+>
+> **2026-09-01 A5 第二章故事第二批：**同一場景第 6–11 句及其說話者名稱已
+> 完成日文、英文與簡中人工審校，再新增每語 12 筆 `reviewed`。本批修正日文
+> 長段語意顛倒、英文遺漏「或許能幫忙」及複數村民誤名；亞雷斯、蓋亞與強盜 B
+> 均沿用既定身分。其餘機器初稿仍不升格。
 >
 > **2026-08-31 A5 商店四語追加：**除購買／出售結果四條交易路徑外，
 > 正規化商店的購買／出售標題、裝備標記、收件角色欄位與操作提示另有

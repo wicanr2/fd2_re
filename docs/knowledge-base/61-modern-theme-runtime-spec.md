@@ -213,6 +213,14 @@
   金色眼、後掠長角、頰部與頸部棘刺、外露尖牙及藍色護甲。故事資料中的
   `speaker=26` 尚存在跨場景身分混用，不能把其總筆數當成聖寇拉斯對話證據；
   正式載入仍依 catalog 的明確 `speaker_id` 契約失敗即關閉。
+- `modern.banalosia.portrait.style_a.frame0`
+- 執行期檔：`banalosia-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `ed12d32c99a2e1058f9cf2c20865a8bd4d0fc079d62b9ee7c2b8a13100b18167`
+- 母稿：`banalosia-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_027_m0`、角色資料表的龍人／龍劍士欄位，以及四語隊伍姓名清冊共同確認
+  為巴拿羅西亞（`Banalosia`）。人工影像檢視保留原版向左的橄欖綠龍首、狹長
+  黃眼、頭頂與頸後淡色尖角、分層鱗片及外露尖牙；不從職業名稱臆造盔甲或飾品。
+  身分標籤統計與展開後故事台詞筆數屬不同量尺，不得混稱。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`
