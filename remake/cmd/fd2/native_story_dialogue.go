@@ -21,6 +21,7 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	g.nativeDialogueClosingT = 0
 	g.nativeDialogueClosingLive = false
 	g.resetNativeStoryDialogueMouth()
+	g.nativeDialogueModernPortrait = nil
 	if len(g.dialog) == 0 || g.dialog[len(g.dialog)-1].NativeDialogue == nil {
 		return nil
 	}
@@ -67,6 +68,13 @@ func (g *Game) prepareNativeDialogueFrames() error {
 		return errors.New("native story dialogue: indexed map/font/frame assets are unavailable")
 	}
 	dl := g.dialog[0]
+	if g.modernStoryPortraits != nil {
+		portrait, ok := g.modernStoryPortraits.portraits[dl.Speaker]
+		if !ok {
+			return fmt.Errorf("native story dialogue: modern portrait for speaker %d is unavailable", dl.Speaker)
+		}
+		g.nativeDialogueModernPortrait = portrait
+	}
 	portraits, err := loadNativeSeparatedPortrait(dl.Speaker)
 	if err != nil || len(portraits) < 4 {
 		return fmt.Errorf("native story dialogue: speaker portrait %d is unavailable (frames=%d): %v", dl.Speaker, len(portraits), err)
@@ -365,6 +373,20 @@ func (g *Game) drawNativeStoryDialogue(screen *ebiten.Image) bool {
 	if g.mouthOpen && progress == len(frames)-1 && g.dlgPage < len(g.nativeDialogueMouthOpen) {
 		frame = g.nativeDialogueMouthOpen[g.dlgPage]
 	}
-	g.presentNativeClassFrame(screen, frame)
+	if g.nativeDialogueModernPortrait != nil {
+		rect, err := campaign.NativeStoryDialoguePortraitRect(
+			g.dialog[len(g.dialog)-1].NativeDialogue.Control,
+		)
+		if err != nil {
+			return true
+		}
+		if err := g.presentNativeClassFrameWithOverlay(
+			screen, frame, g.nativeDialogueModernPortrait.image, rect,
+		); err != nil {
+			return true
+		}
+	} else {
+		g.presentNativeClassFrame(screen, frame)
+	}
 	return true
 }

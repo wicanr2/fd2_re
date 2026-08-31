@@ -63,6 +63,15 @@
     "shop.purchase.success": {"text": "Bought %s (-%d G)", "variables": ["%s", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l4468-c17"},
     "shop.sell.success": {"text": "Sold item %02Xh (+%d G)", "variables": ["%02X", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l4506-c15"},
     "shop.purchase.equip_prompt": {"text": "Equip it? Enter=Yes, ESC=No", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l4555-c15"},
-    "shop.recipient.none": {"text": "No one can carry this item!", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l4576-c13"}
+    "shop.recipient.none": {"text": "No one can carry this item!", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l4576-c13"},
+    "shop.purchase.equip_prompt.title": {"text": "%s: Equip it?", "variables": ["%s"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8864-c24"},
+    "shop.purchase.equip_prompt.controls": {"text": "Enter Yes  ESC No (keep in inventory)", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8865-c24"},
+    "shop.sell.item_title": {"text": "Sell: %s (Tab Buy)", "variables": ["%s"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8874-c24"},
+    "shop.item.equipped_label": {"text": " [Equipped]", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8883-c14"},
+    "shop.sell.roster_title": {"text": "Sell: Choose character (Tab Buy)", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8891-c23"},
+    "shop.sell.inventory_count": {"text": "%s (%d items)", "variables": ["%s", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8898-c24"},
+    "shop.purchase.recipient_title": {"text": "Recipient: %s", "variables": ["%s"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8905-c23"},
+    "shop.purchase.recipient_inventory": {"text": "%s  (slots %d/8)", "variables": ["%s", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8912-c24"},
+    "shop.panel.title_controls": {"text": "Shop %d G (Enter Buy/Tab Sell/ESC Exit)", "variables": ["%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8919-c22"}
   }
 }

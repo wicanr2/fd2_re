@@ -71,6 +71,15 @@ APPROVED_SOURCE = {
     "shop.sell.success": "legacy.go.remake.cmd.fd2.main.l4506-c15",
     "shop.purchase.equip_prompt": "legacy.go.remake.cmd.fd2.main.l4555-c15",
     "shop.recipient.none": "legacy.go.remake.cmd.fd2.main.l4576-c13",
+    "shop.purchase.equip_prompt.title": "legacy.go.remake.cmd.fd2.main.l8864-c24",
+    "shop.purchase.equip_prompt.controls": "legacy.go.remake.cmd.fd2.main.l8865-c24",
+    "shop.sell.item_title": "legacy.go.remake.cmd.fd2.main.l8874-c24",
+    "shop.item.equipped_label": "legacy.go.remake.cmd.fd2.main.l8883-c14",
+    "shop.sell.roster_title": "legacy.go.remake.cmd.fd2.main.l8891-c23",
+    "shop.sell.inventory_count": "legacy.go.remake.cmd.fd2.main.l8898-c24",
+    "shop.purchase.recipient_title": "legacy.go.remake.cmd.fd2.main.l8905-c23",
+    "shop.purchase.recipient_inventory": "legacy.go.remake.cmd.fd2.main.l8912-c24",
+    "shop.panel.title_controls": "legacy.go.remake.cmd.fd2.main.l8919-c22",
 }
 
 def fail(message: str) -> None:

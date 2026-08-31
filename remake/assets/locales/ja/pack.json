@@ -63,6 +63,15 @@
     "shop.purchase.success": {"text": "%sを購入(-%d G)", "variables": ["%s", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l4468-c17"},
     "shop.sell.success": {"text": "アイテム%02Xhを売却(+%d G)", "variables": ["%02X", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l4506-c15"},
     "shop.purchase.equip_prompt": {"text": "装備しますか？ Enter=はい、ESC=いいえ", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l4555-c15"},
-    "shop.recipient.none": {"text": "このアイテムを受け取れる仲間がいません！", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l4576-c13"}
+    "shop.recipient.none": {"text": "このアイテムを受け取れる仲間がいません！", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l4576-c13"},
+    "shop.purchase.equip_prompt.title": {"text": "%s：装備しますか？", "variables": ["%s"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8864-c24"},
+    "shop.purchase.equip_prompt.controls": {"text": "Enter はい　ESC いいえ（所持品に保持）", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8865-c24"},
+    "shop.sell.item_title": {"text": "売却：%s（Tab 購入へ）", "variables": ["%s"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8874-c24"},
+    "shop.item.equipped_label": {"text": " [装備中]", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8883-c14"},
+    "shop.sell.roster_title": {"text": "売却：キャラクター選択（Tab 購入へ）", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8891-c23"},
+    "shop.sell.inventory_count": {"text": "%s（%d個）", "variables": ["%s", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8898-c24"},
+    "shop.purchase.recipient_title": {"text": "渡す相手：%s", "variables": ["%s"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8905-c23"},
+    "shop.purchase.recipient_inventory": {"text": "%s  (所持%d/8)", "variables": ["%s", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8912-c24"},
+    "shop.panel.title_controls": {"text": "店 %d G (Enter購入/Tab売却/ESC退出)", "variables": ["%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8919-c22"}
   }
 }

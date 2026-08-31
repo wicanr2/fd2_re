@@ -44,7 +44,7 @@ def validate(verify_private: bool) -> dict:
     roles: set[str] = set()
     for entry in assets:
         required = {"asset_id", "role", "status", "file", "width", "height", "sha256", "source_refs"}
-        candidate = {"master_file", "consumer_contract", "frame", "mouth_state"}
+        candidate = {"master_file", "consumer_contract", "speaker_id", "frame", "mouth_state"}
         if not isinstance(entry, dict):
             raise ValueError("asset entry must be an object")
         expected = required | candidate if entry.get("role") == "story_portrait_frame" else required
@@ -65,6 +65,8 @@ def validate(verify_private: bool) -> dict:
                 raise ValueError(f"unsafe private master file: {entry['master_file']!r}")
             if entry["consumer_contract"] != "native_story_dialogue_rgba_overlay_v1":
                 raise ValueError(f"invalid consumer contract: {asset_id}")
+            if not isinstance(entry["speaker_id"], int) or entry["speaker_id"] < 0:
+                raise ValueError(f"invalid speaker identity: {asset_id}")
             if entry["frame"] not in range(4) or entry["mouth_state"] not in {"closed", "open"}:
                 raise ValueError(f"invalid portrait frame identity: {asset_id}")
         file_path = Path(entry["file"])

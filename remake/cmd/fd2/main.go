@@ -461,29 +461,31 @@ type Game struct {
 	result             string // 勝負:""/win/lose
 	msg                string // 短訊息(攻擊傷害等)
 	// 地圖單位 sprite(FDICON 待機分鏡):fig index → 幀序列
-	sprites            map[int][]*ebiten.Image
-	figani             map[int][]*ebiten.Image                     // 攻擊全身動畫(FIGANI):fig → 幀序列
-	figaniDelays       map[int][]int                               // 原始 FIGANI descriptor +6 delay，與 PNG 幀數一一對齊
-	atk                *atkAnim                                    // 進行中的攻擊演出
-	bg                 *ebiten.Image                               // 戰鬥背景(BG.DAT,by 戰場;map0=BG_004 森林)
-	tai                *ebiten.Image                               // 我方腳下台座(TAI.DAT;0x29164 載 0x28c46,doc35 §3.3)
-	panel              *ebiten.Image                               // 狀態欄框素材(FDOTHER#5 LMI1 #22,149×42;含bevel+HP/MP標籤+槽,doc35 §4)
-	dlgBox             *ebiten.Image                               // 對話框框素材(FDOTHER#5 LMI1 #21,310×99;orig 下框(5,112)@320)
-	dlgGrad            *ebiten.Image                               // 對話框內部漸層(比對頭像底色 40,69,138→56,85,154 消接縫色差;lazy 建)
-	fontNm             *Font                                       // 狀態欄名字(整數尺寸 face,scale1 銳利)
-	nativeBattleFont   *fdtxt.Font                                 // 全螢幕戰鬥狀態欄 FDOTHER#4 16×16 字模
-	nativeBattleGlyphs map[string]int                              // Unicode→原版 glyph 索引（未知字元失敗即關閉）
-	nativeBattlePanel  *battle.NativeItemPanelDataAssets           // 0x18C6D框／bar／digit indexed素材
-	nativeBattleValues map[nativeBattlePanelValueKey]*ebiten.Image // 可見值panel快取
-	digits             [10]*ebiten.Image                           // 狀態欄數字 0-9(LMI1 #31-40 原版 digit cell,白/藍影)
-	redSil             map[*ebiten.Image]*ebiten.Image             // E1 紅色剪影近似快取；不是 raw DAC 脈衝本身
-	dim                *ebiten.Image                               // 全螢幕暗化/底板共用(回合橫幅、單位面板)
-	figMeta            map[int][][2]int                            // FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(doc06;動畫走位全靠它)
-	font               *Font                                       // 原版點陣中文字型(doc 08)
-	localeID           string                                      // 全域語系設定；不寫入戰役存檔
-	localeCatalog      *localization.Catalog                       // 已完整驗證的官方語言包
-	localeContent      *localization.ContentCatalog                // 已完整驗證的全量玩家內容目錄
-	localeEntities     *localization.EntityCatalog                 // 已按遊戲 ID 正規化的實體名稱
+	sprites                      map[int][]*ebiten.Image
+	figani                       map[int][]*ebiten.Image                     // 攻擊全身動畫(FIGANI):fig → 幀序列
+	figaniDelays                 map[int][]int                               // 原始 FIGANI descriptor +6 delay，與 PNG 幀數一一對齊
+	atk                          *atkAnim                                    // 進行中的攻擊演出
+	bg                           *ebiten.Image                               // 戰鬥背景(BG.DAT,by 戰場;map0=BG_004 森林)
+	tai                          *ebiten.Image                               // 我方腳下台座(TAI.DAT;0x29164 載 0x28c46,doc35 §3.3)
+	panel                        *ebiten.Image                               // 狀態欄框素材(FDOTHER#5 LMI1 #22,149×42;含bevel+HP/MP標籤+槽,doc35 §4)
+	dlgBox                       *ebiten.Image                               // 對話框框素材(FDOTHER#5 LMI1 #21,310×99;orig 下框(5,112)@320)
+	dlgGrad                      *ebiten.Image                               // 對話框內部漸層(比對頭像底色 40,69,138→56,85,154 消接縫色差;lazy 建)
+	fontNm                       *Font                                       // 狀態欄名字(整數尺寸 face,scale1 銳利)
+	nativeBattleFont             *fdtxt.Font                                 // 全螢幕戰鬥狀態欄 FDOTHER#4 16×16 字模
+	nativeBattleGlyphs           map[string]int                              // Unicode→原版 glyph 索引（未知字元失敗即關閉）
+	nativeBattlePanel            *battle.NativeItemPanelDataAssets           // 0x18C6D框／bar／digit indexed素材
+	nativeBattleValues           map[nativeBattlePanelValueKey]*ebiten.Image // 可見值panel快取
+	digits                       [10]*ebiten.Image                           // 狀態欄數字 0-9(LMI1 #31-40 原版 digit cell,白/藍影)
+	redSil                       map[*ebiten.Image]*ebiten.Image             // E1 紅色剪影近似快取；不是 raw DAC 脈衝本身
+	dim                          *ebiten.Image                               // 全螢幕暗化/底板共用(回合橫幅、單位面板)
+	figMeta                      map[int][][2]int                            // FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(doc06;動畫走位全靠它)
+	font                         *Font                                       // 原版點陣中文字型(doc 08)
+	localeID                     string                                      // 全域語系設定；不寫入戰役存檔
+	localeCatalog                *localization.Catalog                       // 已完整驗證的官方語言包
+	localeContent                *localization.ContentCatalog                // 已完整驗證的全量玩家內容目錄
+	localeEntities               *localization.EntityCatalog                 // 已按遊戲 ID 正規化的實體名稱
+	modernStoryPortraits         *modernStoryPortraitSet                     // 顯式 FD2_THEME 候選；缺 speaker 時整頁拒絕
+	nativeDialogueModernPortrait *modernStoryPortraitFrame                   // 目前對話拍的靜態閉嘴真彩色層
 
 	nativeChapterRestore *campaign.NativeChapterSlotRestorePlan // 四槽 LOAD 的已驗證戰間狀態；未知 raw bytes 僅保存、不猜接
 
@@ -8351,11 +8353,21 @@ func (g *Game) Draw(screen *ebiten.Image) {
 					tx = 32
 					ty = by + 46
 				}
-				if fr := g.portraits[dl.Speaker]; len(fr) > 0 {
+				var portrait *ebiten.Image
+				if g.modernStoryPortraits != nil {
+					modern, ok := g.modernStoryPortraits.portraits[dl.Speaker]
+					if !ok || modern == nil || modern.image == nil {
+						return // 整句失敗即關閉；不混用原版頭像
+					}
+					portrait = ebiten.NewImageFromImage(modern.image)
+				} else if fr := g.portraits[dl.Speaker]; len(fr) > 0 {
 					mi := 0
 					if g.mouthOpen && len(fr) > 3 {
 						mi = 3
 					}
+					portrait = fr[mi]
+				}
+				if portrait != nil {
 					// 原生 DATO 面朝右;要臉朝文字:下框(頭像在左)朝右=鏡像、上框(頭像在右)朝左=不鏡像。
 					po := &ebiten.DrawImageOptions{}
 					if upper { // 上框:頭像在右,臉朝左文字 → 原生朝右不鏡像
@@ -8365,7 +8377,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 						po.GeoM.Scale(-ps, ps)
 						po.GeoM.Translate(hx+80*ps, hy)
 					}
-					screen.DrawImage(fr[mi], po)
+					screen.DrawImage(portrait, po)
 				} else {
 					tx = 32
 				}
@@ -8861,8 +8873,10 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 		if g.shopEquipPrompt {
 			fillBox(150, 150, 340, 120)
 			u := g.partyRoster[g.shopEquipUnit]
-			g.font.Draw(screen, fmt.Sprintf("%s：要裝備上去嗎？", u.Name), 170, 170, 1.1, color.RGBA{0xff, 0xe0, 0x90, 0xff})
-			g.font.Draw(screen, "Enter 是　ESC 否（保留在物品欄）", 170, 210, 1.0, color.RGBA{0xff, 0xff, 0xff, 0xff})
+			title, _ := g.localeMessage("shop.purchase.equip_prompt.title", u.Name)
+			controls, _ := g.localeMessage("shop.purchase.equip_prompt.controls")
+			g.font.Draw(screen, title, 170, 170, 1.1, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+			g.font.Draw(screen, controls, 170, 210, 1.0, color.RGBA{0xff, 0xff, 0xff, 0xff})
 			break
 		}
 		if g.shopMode == "sell" {
@@ -8871,7 +8885,8 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 				u := g.partyRoster[ids[g.shopSellUnitSel]]
 				h := 76 + float64(len(u.Inventory))*28
 				fillBox(140, 60, 360, h)
-				g.font.Draw(screen, fmt.Sprintf("賣出：%s（Tab 返回購買）", u.Name), 156, 70, 1.0, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+				title, _ := g.localeMessage("shop.sell.item_title", u.Name)
+				g.font.Draw(screen, title, 156, 70, 1.0, color.RGBA{0xff, 0xe0, 0x90, 0xff})
 				for i, id := range u.Inventory {
 					pre, c := "　", color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
 					if i == g.shopSellSlotSel {
@@ -8880,7 +8895,7 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 					price := g.shopItemPrices[id]
 					flag := ""
 					if i < len(u.Equipped) && u.Equipped[i] {
-						flag = " [裝備]"
+						flag, _ = g.localeMessage("shop.item.equipped_label")
 					}
 					g.font.Draw(screen, fmt.Sprintf("%s%02Xh%s  +%d G", pre, id, flag, price*3/4), 156, 100+float64(i)*28, 1.0, c)
 				}
@@ -8888,35 +8903,40 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 			}
 			h := 76 + float64(len(ids))*30
 			fillBox(140, 60, 360, h)
-			g.font.Draw(screen, "賣出：選擇角色（Tab 返回購買）", 156, 70, 1.0, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+			title, _ := g.localeMessage("shop.sell.roster_title")
+			g.font.Draw(screen, title, 156, 70, 1.0, color.RGBA{0xff, 0xe0, 0x90, 0xff})
 			for i, id := range ids {
 				u := g.partyRoster[id]
 				pre, c := "　", color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
 				if i == g.shopSellUnitSel {
 					pre, c = "▶", color.RGBA{0xff, 0xff, 0xff, 0xff}
 				}
-				g.font.Draw(screen, fmt.Sprintf("%s%s（%d 件）", pre, u.Name, len(u.Inventory)), 156, 100+float64(i)*30, 1.0, c)
+				row, _ := g.localeMessage("shop.sell.inventory_count", u.Name, len(u.Inventory))
+				g.font.Draw(screen, pre+row, 156, 100+float64(i)*30, 1.0, c)
 			}
 			break
 		}
 		if g.shopPicking {
 			h := 76 + float64(len(g.shopRecipients))*30
 			fillBox(140, 60, 360, h)
-			g.font.Draw(screen, fmt.Sprintf("選擇收件者：%s", g.shopPending.Name), 156, 70, 1.0, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+			title, _ := g.localeMessage("shop.purchase.recipient_title", g.shopPending.Name)
+			g.font.Draw(screen, title, 156, 70, 1.0, color.RGBA{0xff, 0xe0, 0x90, 0xff})
 			for i, id := range g.shopRecipients {
 				u := g.partyRoster[id]
 				pre, c := "　", color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
 				if i == g.shopRecipientSel {
 					pre, c = "▶", color.RGBA{0xff, 0xff, 0xff, 0xff}
 				}
-				g.font.Draw(screen, fmt.Sprintf("%s%s  (欄位%d/8)", pre, u.Name, len(u.Inventory)), 156, 100+float64(i)*30, 1.0, c)
+				row, _ := g.localeMessage("shop.purchase.recipient_inventory", u.Name, len(u.Inventory))
+				g.font.Draw(screen, pre+row, 156, 100+float64(i)*30, 1.0, c)
 			}
 			break
 		}
 		goods := g.camp.ShopGoods()
 		h := 76 + float64(len(goods))*30
 		fillBox(140, 60, 360, h)
-		g.font.Draw(screen, fmt.Sprintf("商店　持有 %d G(Enter 購買/Tab 賣出/ESC 離開)", g.gold), 156, 70, 1.0,
+		panelTitle, _ := g.localeMessage("shop.panel.title_controls", g.gold)
+		g.font.Draw(screen, panelTitle, 156, 70, 1.0,
 			color.RGBA{0xff, 0xe0, 0x90, 0xff})
 		for i, gd := range goods {
 			c := color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
@@ -9661,6 +9681,23 @@ func loadGame() *Game {
 	if localeErr != nil {
 		g.loadErr = "locale entities: " + localeErr.Error()
 		return g
+	}
+	if themeID := os.Getenv("FD2_THEME"); themeID != "" {
+		if themeID != modernHandpaintedThemeID {
+			g.loadErr = "modern theme: unsupported theme " + themeID
+			return g
+		}
+		packRoot := os.Getenv("FD2_MODERN_THEME_PACK")
+		if packRoot == "" {
+			packRoot = assetPath("assets/themes/modern")
+		}
+		g.modernStoryPortraits, localeErr = loadModernStoryPortraitSet(
+			assetPath("assets/themes/modern/catalog.json"), packRoot,
+		)
+		if localeErr != nil {
+			g.loadErr = "modern theme: " + localeErr.Error()
+			return g
+		}
 	}
 	if v := os.Getenv("FD2_BGM_SOURCE"); v != "" && bgmSourceName[v] != "" {
 		g.bgmSource = v // 覆寫(截圖/測試用)

@@ -1,0 +1,43 @@
+{
+  "name": "ch00 正規化故事路徑現代索爾頭像",
+  "date": "2026-08-31",
+  "evidence_level": "RUNTIME-E1",
+  "engine_commit": "19554dba9af6c7380e1c0351d5382a357ae7e2d9-plus-working-tree",
+  "theme": "modern-handpainted-a",
+  "catalog_asset_id": "modern.sol.portrait.style_a.frame0",
+  "route": {
+    "entry": "FD2_CAMP_NODE=story_ch00_handler",
+    "title": "FD2_TITLE=0",
+    "frame": 90,
+    "clock": "FD2_SHOT_DETERMINISTIC=1",
+    "consumer": "normalized story dialogue renderer",
+    "state_relation": "current-remake deterministic direct-entry; not PLAYER-E2"
+  },
+  "private_inputs": {
+    "separated_original_pack": "remake/generated-assets/fd2-original-b97caf22 (read-only)",
+    "modern_theme_pack": "remake/generated-assets/modern-theme-prototypes (read-only)",
+    "rights": "local-only; neither input nor screenshot is committed"
+  },
+  "screenshot": {
+    "local_file": "/tmp/fd2-modern-sol-ch00-v2.png",
+    "width": 640,
+    "height": 400,
+    "mode": "RGB",
+    "sha256": "22f81d9fa365236591bca41ee3a9880361c73e1b824487cc635d3c77452871d3"
+  },
+  "observed": [
+    "Style A 索爾頭像取代同一拍原版 DATO_000 畫面",
+    "下框頭像保持左側、面向右方文字並完整收在框內",
+    "現代閉嘴 frame 0 不混用原版嘴型幀",
+    "公開收據不包含可還原的私人圖像"
+  ],
+  "failed_predecessor": {
+    "local_file": "/tmp/fd2-modern-sol-ch00.png",
+    "finding": "native-only overlay did not cover the normalized player path; not accepted as evidence"
+  },
+  "limitations": [
+    "本張只驗證正規化下框，原生 indexed 上／下框尚需分別抽測",
+    "現代主題目前只有 speaker 0，其他 speaker 必須失敗即關閉",
+    "沒有原版 DOSBox 同狀態對拍，不宣稱原版忠實度或 PLAYER-E2"
+  ]
+}

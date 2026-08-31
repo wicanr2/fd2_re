@@ -3,11 +3,27 @@ package campaign
 import (
 	"errors"
 	"fmt"
+	"image"
 
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
 )
+
+// NativeStoryDialoguePortraitRect 回傳原版故事對話頭像實際覆蓋矩形。
+// 下框 0x9017 是 0x4E8E1 的右緣錨點，不能直接當成左上角。
+func NativeStoryDialoguePortraitRect(control string) (image.Rectangle, error) {
+	switch control {
+	case "FFEF", "FFED":
+		return image.Rect(nativeStoryUpperPortrait%320, nativeStoryUpperPortrait/320,
+			nativeStoryUpperPortrait%320+80, nativeStoryUpperPortrait/320+80), nil
+	case "FFEE", "FFEC":
+		right, y := nativeStoryLowerPortrait%320, nativeStoryLowerPortrait/320
+		return image.Rect(right-79, y, right+1, y+80), nil
+	default:
+		return image.Rectangle{}, fmt.Errorf("campaign: native story dialogue control %q is unsupported", control)
+	}
+}
 
 const (
 	nativeStoryUpperFrameY   = 2

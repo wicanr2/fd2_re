@@ -219,3 +219,24 @@ func (g *Game) presentNativeClassFrameWithPalette(
 	op.GeoM.Scale(2, 2)
 	screen.DrawImage(native, op)
 }
+
+// presentNativeClassFrameWithOverlay 先呈現原生 indexed 畫面，再以相同
+// 320×200 邏輯座標疊上已預檢的真彩色頭像。overlay 必須完整
+// 不透明且等於 rect，才不會漏出底下的原版嘴型幀。
+func (g *Game) presentNativeClassFrameWithOverlay(
+	screen *ebiten.Image,
+	frame []byte,
+	overlay image.Image,
+	rect image.Rectangle,
+) error {
+	if overlay == nil || overlay.Bounds().Dx() != rect.Dx() || overlay.Bounds().Dy() != rect.Dy() {
+		return errors.New("native RGBA overlay geometry is invalid")
+	}
+	g.presentNativeClassFrame(screen, frame)
+	portrait := ebiten.NewImageFromImage(overlay)
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Scale(2, 2)
+	op.GeoM.Translate(float64(rect.Min.X*2), float64(rect.Min.Y*2))
+	screen.DrawImage(portrait, op)
+	return nil
+}
