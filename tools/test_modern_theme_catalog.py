@@ -31,6 +31,12 @@ class ModernThemeCatalogTests(unittest.TestCase):
             ),
             (1, 12, "binary", "fdicon-001-style-a-v1-master.png"),
         )
+        sprite_groups = {
+            asset["source_group"]
+            for asset in catalog["assets"]
+            if asset.get("role") == "map_sprite_set"
+        }
+        self.assertEqual(sprite_groups, {0, 1, 2, 68})
 
 
 if __name__ == "__main__":

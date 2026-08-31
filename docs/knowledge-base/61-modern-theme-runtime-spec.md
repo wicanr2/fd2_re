@@ -286,7 +286,7 @@
 5. 原生 indexed bank 與正規化 RGBA loader 是兩條不同 consumer；接線時兩條
    路徑必須共同抽測，且現代主題缺任一格即整組失敗即關閉。
 
-### selector 0、1 與 68 候選
+### selector 0、1、2 與 68 候選
 
 - `modern.fdicon.group_000.style_a`：以原版 `fig_000_f00..f11` 為動作基準生成
   3×4 母稿，再以確定性背景分割、逐格裁切及二值 alpha 轉成 12 張 `24×24`
@@ -297,9 +297,13 @@
   生成 3×4 母稿後，以連通背景分割、最大人物元件保留、最近鄰縮放及二值
   alpha 輸出 12 張 `24×24` PNG。這是現代美術候選，不冒稱原版逐像素重繪；
   catalog 仍按 selector 命名，避免未來 writer 改寫 selector 時把角色身分硬編進 loader。
+- `modern.fdicon.group_002.style_a`：角色資料表 `index=2` 已證實鐵諾的基礎
+  `sprite_group=2`。現代母稿依原版巨盾、直劍、灰綠兜帽與四方向遮擋關係生成，
+  再由通用確定性工具完成背景分割、最大人物元件保留、最近鄰縮放與二值 alpha
+  輸出；12 幀均保持獨立雜湊。
 - `modern.fdicon.group_068.style_a`：沿用第 68 組原版輪廓的現代候選。它不綁
   固定角色身分；第 11 格是第 9 格上半身與第 10 格下半身的現代近似。
-- 三組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+- 四組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
 
@@ -309,7 +313,7 @@
   0..95、12 個安全檔名、逐格 SHA-256、`24×24`、二值 alpha、互異雜湊及三週期
   policy，任何一項不符即拒絕整個現代主題。
 - `loadGame` 在完整預檢後，才以各組 12 張真彩色圖原子取代正規化
-  `g.sprites[0]`／`g.sprites[1]`／`g.sprites[68]`；其他 group 不變，忠實主題
+  `g.sprites[0]`／`g.sprites[1]`／`g.sprites[2]`／`g.sprites[68]`；其他 group 不變，忠實主題
   預設路徑也不變。
 - 原生 indexed 戰場 compositor 仍直接消費 `NativeMapSelectorCache`，尚未加入
   真彩色覆蓋層。此路徑保持原版 sprite，不偷偷量化或混搭；因此地圖人物目前

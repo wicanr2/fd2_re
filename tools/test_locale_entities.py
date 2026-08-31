@@ -34,10 +34,14 @@ class LocaleEntitiesTest(unittest.TestCase):
                     ],
                     check=True,
                 )
-                self.assertEqual(
-                    json.loads(output.read_text(encoding="utf-8")),
-                    json.loads((ROOT / f"remake/assets/locales/{locale}/entities.json").read_text(encoding="utf-8")),
+                generated = json.loads(output.read_text(encoding="utf-8"))
+                checked_in = json.loads(
+                    (ROOT / f"remake/assets/locales/{locale}/entities.json").read_text(encoding="utf-8")
                 )
+                self.assertEqual(generated, checked_in)
+                if locale == "en":
+                    self.assertEqual(checked_in["characters"]["0"]["name"], "Sol")
+                    self.assertEqual(checked_in["characters"]["8"]["name"], "Celia")
 
 
 if __name__ == "__main__":
