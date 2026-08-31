@@ -12,10 +12,11 @@ import (
 func TestReviewedOpeningTranslationsUseCanonicalLineIDs(t *testing.T) {
 	wants := map[string]map[string]string{
 		"ja": {
-			"legacy/line/15b3c967fb2b/scenes/0/lines/0": "アレス、もう一度勝負しよう！昨日負けたのが悔しくてたまらない！",
-			"legacy/line/15b3c967fb2b/scenes/2/lines/7": "ユニさん、まずは僕と一緒に戻ろう。数日後にはマラ大陸へ出発するよ。心配しないで、必ず無事に家へ送り届けるから。",
-			"legacy/line/ae86adb52dac/scenes/0/lines/0": "父上、ソールです。謁見に参りました。",
-			"legacy/line/7ecb566a60db/scenes/1/lines/5": "ただの強盗じゃない。こいつらはマラ大陸の沿岸を荒らし、人殺しも略奪も何でもする海賊だって聞いている。",
+			"legacy/line/15b3c967fb2b/scenes/0/lines/0":  "アレス、もう一度勝負しよう！昨日負けたのが悔しくてたまらない！",
+			"legacy/line/15b3c967fb2b/scenes/2/lines/7":  "ユニさん、まずは僕と一緒に戻ろう。数日後にはマラ大陸へ出発するよ。心配しないで、必ず無事に家へ送り届けるから。",
+			"legacy/line/ae86adb52dac/scenes/0/lines/0":  "父上、ソールです。謁見に参りました。",
+			"legacy/line/ae86adb52dac/scenes/1/lines/17": "それじゃ仕方ないな。もう引き受けるしかないのか？",
+			"legacy/line/7ecb566a60db/scenes/1/lines/5":  "ただの強盗じゃない。こいつらはマラ大陸の沿岸を荒らし、人殺しも略奪も何でもする海賊だって聞いている。",
 		},
 		"en": {
 			"legacy/line/15b3c967fb2b/scenes/0/lines/0": "Ares, let's have another match! Losing to you yesterday still bothers me!",
