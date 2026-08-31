@@ -204,6 +204,15 @@
   最近鄰放大後確認為深藍灰毛鼠人忍者，保留大型圓鼠耳、向右三分之二側面、
   細長鼠吻、黑鼻、長鬍鬚、警覺淺色眼、外露門牙及深色忍者高領；凱拉斯
   現代母稿只作非人類材質完成度參考，不帶入龍角、鱗片或龍吻。
+- `modern.saint-colas.portrait.style_a.frame0`
+- 執行期檔：`saint-colas-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `4c1de0e53513751b81bf6ccf3dd632be04ac01ab5d86ebbf1e89dc6d073266ad`
+- 母稿：`saint-colas-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_026_m0`、角色資料表的龍人／龍劍士欄位，以及四語隊伍姓名清冊共同確認
+  為聖寇拉斯（`Saint Colas`）。人工影像檢視保留原版向左的深鋼藍龍首、狹長
+  金色眼、後掠長角、頰部與頸部棘刺、外露尖牙及藍色護甲。故事資料中的
+  `speaker=26` 尚存在跨場景身分混用，不能把其總筆數當成聖寇拉斯對話證據；
+  正式載入仍依 catalog 的明確 `speaker_id` 契約失敗即關閉。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`
