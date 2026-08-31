@@ -4,7 +4,7 @@
 
 ## 範圍
 
-本規格分別定義現代故事頭像，以及 FDICON selector 0–10、68 的十二組 12 格候選。
+本規格分別定義現代故事頭像，以及 FDICON selector 0–11、68 的十三組 12 格候選。
 selector 是圖像索引，不等於故事說話者或頭像身分；兩者不得混用。
 它不授權從合成概念稿反切地圖圖塊或 HUD，也不改變忠實原版主題。
 
@@ -290,7 +290,7 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
 5. 原生 indexed bank 與正規化 RGBA loader 是兩條不同 consumer；接線時兩條
    路徑必須共同抽測，且現代主題缺任一格即整組失敗即關閉。
 
-### selector 0–10 與 68 候選
+### selector 0–11 與 68 候選
 
 - `modern.fdicon.group_000.style_a`：以原版 `fig_000_f00..f11` 為動作基準生成
   3×4 母稿，再以確定性背景分割、逐格裁切及二值 alpha 轉成 12 張 `24×24`
@@ -342,9 +342,13 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   四語隊伍姓名、多章地圖資料與 `DATO_010 / speaker=10` 一致確認瑪琳。母稿
   依原版粉紫短髮、金色額飾、紅色僧侶上衣與深色下身生成，不加入原版地圖
   小圖未顯示的武器；四方向各保留三個不同步態。
+- `modern.fdicon.group_011.style_a`：角色表 `index=11 / sprite_group=11`、
+  四語隊伍姓名、多章地圖資料與 `DATO_011 / speaker=11` 一致確認索菲亞。母稿
+  依原版灰綠短髮與長鬢髮、紅色頭飾、深色上衣、紫色袖套、紅色腰飾與短金色
+  法杖生成；法杖依方向與步態自然遮擋，不從頭像或戰鬥動畫補入其他裝備。
 - `modern.fdicon.group_068.style_a`：沿用第 68 組原版輪廓的現代候選。它不綁
   固定角色身分；第 11 格是第 9 格上半身與第 10 格下半身的現代近似。
-- 十二組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+- 十三組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
 
@@ -354,7 +358,7 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   0..95、12 個安全檔名、逐格 SHA-256、`24×24`、二值 alpha、互異雜湊及三週期
   policy，任何一項不符即拒絕整個現代主題。
 - `loadGame` 在完整預檢後，才以各組 12 張真彩色圖原子取代正規化
-  `g.sprites[0]`／`g.sprites[1]`／`g.sprites[2]`／`g.sprites[3]`／`g.sprites[4]`／`g.sprites[5]`／`g.sprites[6]`／`g.sprites[7]`／`g.sprites[8]`／`g.sprites[9]`／`g.sprites[10]`／`g.sprites[68]`；其他 group 不變，忠實主題
+  `g.sprites[0]`／`g.sprites[1]`／`g.sprites[2]`／`g.sprites[3]`／`g.sprites[4]`／`g.sprites[5]`／`g.sprites[6]`／`g.sprites[7]`／`g.sprites[8]`／`g.sprites[9]`／`g.sprites[10]`／`g.sprites[11]`／`g.sprites[68]`；其他 group 不變，忠實主題
   預設路徑也不變。
 - 原生 indexed 戰場 compositor 仍直接消費 `NativeMapSelectorCache`，尚未加入
   真彩色覆蓋層。此路徑保持原版 sprite，不偷偷量化或混搭；因此地圖人物目前
