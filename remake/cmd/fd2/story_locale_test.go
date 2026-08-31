@@ -14,12 +14,17 @@ func TestReviewedOpeningTranslationsUseCanonicalLineIDs(t *testing.T) {
 		"ja": {
 			"legacy/line/15b3c967fb2b/scenes/0/lines/0": "アレス、もう一度勝負しよう！昨日負けたのが悔しくてたまらない！",
 			"legacy/line/15b3c967fb2b/scenes/2/lines/7": "ユニさん、まずは僕と一緒に戻ろう。数日後にはマラ大陸へ出発するよ。心配しないで、必ず無事に家へ送り届けるから。",
+			"legacy/line/ae86adb52dac/scenes/0/lines/0": "父上、ソールです。謁見に参りました。",
+			"legacy/line/7ecb566a60db/scenes/1/lines/5": "ただの強盗じゃない。こいつらはマラ大陸の沿岸を荒らし、人殺しも略奪も何でもする海賊だって聞いている。",
 		},
 		"en": {
 			"legacy/line/15b3c967fb2b/scenes/0/lines/0": "Ares, let's have another match! Losing to you yesterday still bothers me!",
+			"legacy/line/ae86adb52dac/scenes/0/lines/0": "I am Sol. I have come to pay my respects, Father.",
+			"legacy/line/7ecb566a60db/scenes/3/lines/4": "That must be the pirate leader! At last, a worthy opponent has appeared. Leave this one to me!",
 		},
 		"zh-Hans": {
 			"legacy/line/15b3c967fb2b/scenes/1/lines/13": "悠妮?好名字。悠妮小姐,你怎么会记不得怎么来到这里的?",
+			"legacy/line/7ecb566a60db/scenes/0/lines/2":  "太好了。悠妮，你……嗯，坐了这么久的船，有点累吧？",
 		},
 	}
 	for localeID, entries := range wants {
