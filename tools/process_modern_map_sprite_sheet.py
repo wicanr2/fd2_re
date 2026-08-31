@@ -10,6 +10,16 @@ from PIL import Image
 
 def transparent_background(cell: Image.Image) -> Image.Image:
     """只移除與格子邊界連通的高亮中性背景，保留人物內部白色區域。"""
+    if "A" in cell.getbands() and cell.getchannel("A").getextrema()[0] == 0:
+        rgba = cell.convert("RGBA")
+        output = Image.new("RGBA", rgba.size)
+        source = rgba.load()
+        target = output.load()
+        for y in range(rgba.height):
+            for x in range(rgba.width):
+                red, green, blue, alpha = source[x, y]
+                target[x, y] = (red, green, blue, 255) if alpha else (0, 0, 0, 0)
+        return output
     cell = cell.convert("RGB")
     width, height = cell.size
     pixels = cell.load()
@@ -101,7 +111,8 @@ def main() -> None:
     args = parser.parse_args()
     if not 0 <= args.group < 96:
         raise SystemExit("group must be in range 0..95")
-    source = Image.open(args.source).convert("RGB")
+    source = Image.open(args.source)
+    source = source.convert("RGBA") if "A" in source.getbands() else source.convert("RGB")
     args.public.mkdir(parents=True, exist_ok=True)
     args.private.mkdir(parents=True, exist_ok=True)
     master_name = f"fdicon-{args.group:03d}-style-a-v1-master.png"

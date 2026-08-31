@@ -345,8 +345,7 @@
       "height": 80,
       "sha256": "10af8b1838d7fca129e56eaff29e6f469001b8ef7657af03ab7a2e3af282a885",
       "source_refs": [
-        "asset:DATO_021_m0",
-        "asset:modern.rodman.portrait.style_a.frame0"
+        "asset:DATO_021_m0"
       ],
       "consumer_contract": "native_story_dialogue_rgba_overlay_v1",
       "speaker_id": 21,
@@ -679,6 +678,52 @@
       "source_refs": [
         "asset:FDICON.B24.group_002",
         "remake/assets/sprites/fig_002_f00.png",
+        "docs/data/exe_tables/characters.json"
+      ]
+    },
+    {
+      "asset_id": "modern.fdicon.group_003.style_a",
+      "role": "map_sprite_set",
+      "status": "runtime_candidate",
+      "master_file": "fdicon-003-style-a-v1-master.png",
+      "files": [
+        "fdicon-003-style-a-f00.png",
+        "fdicon-003-style-a-f01.png",
+        "fdicon-003-style-a-f02.png",
+        "fdicon-003-style-a-f03.png",
+        "fdicon-003-style-a-f04.png",
+        "fdicon-003-style-a-f05.png",
+        "fdicon-003-style-a-f06.png",
+        "fdicon-003-style-a-f07.png",
+        "fdicon-003-style-a-f08.png",
+        "fdicon-003-style-a-f09.png",
+        "fdicon-003-style-a-f10.png",
+        "fdicon-003-style-a-f11.png"
+      ],
+      "width": 24,
+      "height": 24,
+      "frame_count": 12,
+      "frame_sha256": [
+        "9a53f76894863131bb29efe0e7d33f765980ad11e88367567d4d54bdbe95937e",
+        "e72df44457eb0db6b59c1f64866ce4fa4f1c41dac8c72c8d3b2a49bc96566b5c",
+        "4972cdc11ea6e137c42eeca5a248606be38d009a2898d615c5709d0b79a7c6ff",
+        "120a395871c0b65687979d36a3a179a49486a6e5d2903b49c89493edc61453c5",
+        "b40b09dd8d1acc05399843f4a1d827b1a1593d93a44610ea8ea8ea97a370a650",
+        "12170bd7a3f8370acc331141f2ffbad0db8d0f5fd07bf471746bce82a02a0e1f",
+        "614c40de0ffff25448e1215172bf851fb7a163d57eda26b3678c7c4bbbe5fd10",
+        "865083ffe4f732b80151d65af591c46f5fa6fe488a60be77759e581cb0649496",
+        "ae790a47fda21111eb14a3e5e5abee8b2574e0fab3f95da02dcabb6c714f2433",
+        "b3ce5b5071725503a1ccb75dbfa537b0541fdd3be899f5ea7154d8315ae511a6",
+        "8f4692ea4c1e7be93c68f28f2d235b55abcb8b6ca64736df60ae83d4f6c8628f",
+        "626f200d94efb844dcc7a7ff7bc3df82d4ca36fc3969e24f3fe32726ce08fdf9"
+      ],
+      "source_group": 3,
+      "consumer_contract": "fdicon_map_sprite_12x24_v1",
+      "alpha_contract": "binary",
+      "cycle_policy": "three_distinct_cycles",
+      "source_refs": [
+        "asset:FDICON.B24.group_003",
+        "remake/assets/sprites/fig_003_f00.png",
         "docs/data/exe_tables/characters.json"
       ]
     },
