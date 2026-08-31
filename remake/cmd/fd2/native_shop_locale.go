@@ -20,6 +20,42 @@ const (
 )
 
 const (
+	localizedEquipmentRecipientNameWidth = 80
+	localizedEquipmentRecipientNameScale = 0.55
+)
+
+func (g *Game) drawLocalizedEquipmentRecipientNames(
+	frame []byte, identities []int, selected int,
+) ([]byte, error) {
+	if len(frame) != 320*200 || len(identities) == 0 || len(identities) > 3 ||
+		selected < 0 || selected >= len(identities) || g.localeEntities == nil || g.font == nil {
+		return nil, errors.New("localized equipment recipient names are invalid")
+	}
+	result := append([]byte(nil), frame...)
+	for row, identity := range identities {
+		name, err := g.localeEntities.CharacterName(identity)
+		if err != nil {
+			return nil, err
+		}
+		if g.font.Width(name, localizedEquipmentRecipientNameScale) > localizedEquipmentRecipientNameWidth {
+			return nil, fmt.Errorf("localized character %d name %q exceeds equipment rectangle", identity, name)
+		}
+		foreground := byte(0xcd)
+		if row == selected {
+			foreground = 0xc9
+		}
+		if err := drawIndexedLocalizedText(
+			result, g.font, name, 40, 121+26*row,
+			localizedEquipmentRecipientNameWidth, localizedRosterNameHeight,
+			localizedEquipmentRecipientNameScale, foreground, 0x4c,
+		); err != nil {
+			return nil, err
+		}
+	}
+	return result, nil
+}
+
+const (
 	localizedRosterNameWidth  = 100
 	localizedRosterNameHeight = 16
 	localizedRosterNameScale  = 0.65

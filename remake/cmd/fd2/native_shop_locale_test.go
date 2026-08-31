@@ -57,6 +57,9 @@ func TestOfficialCharacterNamesFitNativeRosterRectangle(t *testing.T) {
 				t.Errorf("%s character %d name %q exceeds roster rectangle", localeID, identity, name)
 				continue
 			}
+			if displayFont.Width(name, localizedEquipmentRecipientNameScale) > localizedEquipmentRecipientNameWidth {
+				t.Errorf("%s character %d name %q exceeds equipment rectangle", localeID, identity, name)
+			}
 			if err := drawIndexedLocalizedText(
 				make([]byte, 320*200), displayFont, name, 40, 121,
 				localizedRosterNameWidth, localizedRosterNameHeight,

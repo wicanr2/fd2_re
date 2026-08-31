@@ -128,6 +128,7 @@ func (g *Game) composeNativeShopEquipmentRecipient() ([]byte, bool) {
 	}
 	g.nativeShopRecipientStart = start
 	rows := make([]campaign.NativeShopEquipmentRecipientRow, 0, visible)
+	identities := make([]int, 0, visible)
 	for i := 0; i < visible; i++ {
 		unit, ok := g.partyRoster[ids[start+i]]
 		if !ok || !unit.HasNativeIdentity || !unit.HasMapSelectorKey {
@@ -159,16 +160,30 @@ func (g *Game) composeNativeShopEquipmentRecipient() ([]byte, bool) {
 			Current:       current,
 			Candidate:     candidate,
 		})
+		identities = append(identities, unit.NativeIdentity)
 	}
 	stable, stableOK := g.composeNativeShopStable()
 	assets, _, _, stateOK := g.nativeShopState()
 	if !stableOK || !stateOK {
 		return nil, false
 	}
-	frame, err := campaign.ComposeNativeShopEquipmentRecipientFrame(
-		stable, assets, g.nativeShopUI.itemAssets,
-		rows, g.shopRecipientSel-start,
-	)
+	var frame []byte
+	var err error
+	if g.localeID != "" && g.localeID != "zh-Hant" {
+		frame, err = campaign.ComposeNativeShopEquipmentRecipientFrameWithoutNames(
+			stable, assets, g.nativeShopUI.itemAssets, rows, g.shopRecipientSel-start,
+		)
+		if err == nil {
+			frame, err = g.drawLocalizedEquipmentRecipientNames(
+				frame, identities, g.shopRecipientSel-start,
+			)
+		}
+	} else {
+		frame, err = campaign.ComposeNativeShopEquipmentRecipientFrame(
+			stable, assets, g.nativeShopUI.itemAssets,
+			rows, g.shopRecipientSel-start,
+		)
+	}
 	return frame, err == nil
 }
 

@@ -108,10 +108,31 @@ func ComposeNativeShopEquipmentRecipientFrame(
 	rows []NativeShopEquipmentRecipientRow,
 	selected int,
 ) ([]byte, error) {
+	return composeNativeShopEquipmentRecipientFrame(stable, shop, itemAssets, rows, selected, true)
+}
+
+func ComposeNativeShopEquipmentRecipientFrameWithoutNames(
+	stable []byte,
+	shop *NativeShopAssets,
+	itemAssets battle.NativeItemPanelDataAssets,
+	rows []NativeShopEquipmentRecipientRow,
+	selected int,
+) ([]byte, error) {
+	return composeNativeShopEquipmentRecipientFrame(stable, shop, itemAssets, rows, selected, false)
+}
+
+func composeNativeShopEquipmentRecipientFrame(
+	stable []byte,
+	shop *NativeShopAssets,
+	itemAssets battle.NativeItemPanelDataAssets,
+	rows []NativeShopEquipmentRecipientRow,
+	selected int,
+	renderNames bool,
+) ([]byte, error) {
 	if len(stable) != NativeShopWidth*NativeShopHeight || shop == nil ||
 		len(rows) == 0 || len(rows) > NativeShopEquipmentRecipientVisible ||
 		selected < 0 || selected >= len(rows) ||
-		itemAssets.Strings == nil || itemAssets.Font == nil {
+		(renderNames && (itemAssets.Strings == nil || itemAssets.Font == nil)) {
 		return nil, errors.New(
 			"campaign: native shop equipment recipient state is invalid",
 		)
@@ -129,11 +150,13 @@ func ComposeNativeShopEquipmentRecipientFrame(
 		if i == selected {
 			foreground = 201
 		}
-		if err := blitNativeClassListText(
-			frame, itemAssets.Strings, itemAssets.Font,
-			40, y+4, row.NameTextIndex, foreground,
-		); err != nil {
-			return nil, fmt.Errorf("campaign: equipment recipient row %d name: %w", i, err)
+		if renderNames {
+			if err := blitNativeClassListText(
+				frame, itemAssets.Strings, itemAssets.Font,
+				40, y+4, row.NameTextIndex, foreground,
+			); err != nil {
+				return nil, fmt.Errorf("campaign: equipment recipient row %d name: %w", i, err)
+			}
 		}
 		positions := [4]struct {
 			cell                                     int
