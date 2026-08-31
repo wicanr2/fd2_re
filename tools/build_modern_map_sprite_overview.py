@@ -22,6 +22,7 @@ GROUPS = (
     (10, "Marlin base selector"),
     (11, "Sophia base selector"),
     (12, "Kelly base selector"),
+    (13, "Beckway base selector"),
     (68, "late selector sample"),
 )
 
@@ -44,7 +45,7 @@ def load_strip(group: int, modern: bool) -> Image.Image:
 
 
 def main() -> None:
-    width, height = 1040, 2456
+    width, height = 1040, 2624
     canvas = Image.new("RGB", (width, height), "#08152b")
     draw = ImageDraw.Draw(canvas)
     font = ImageFont.load_default()
