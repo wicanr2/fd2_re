@@ -20,23 +20,30 @@ type modernStoryPortraitFrame struct {
 }
 
 type modernStoryPortraitSet struct {
-	portraits map[int]*modernStoryPortraitFrame
+	portraits  map[int]*modernStoryPortraitFrame
+	mapSprites map[int][]image.Image
 }
 
 type modernThemeCatalog struct {
 	SchemaVersion int    `json:"schema_version"`
 	ThemeID       string `json:"theme_id"`
 	Assets        []struct {
-		Role             string `json:"role"`
-		Status           string `json:"status"`
-		File             string `json:"file"`
-		Width            int    `json:"width"`
-		Height           int    `json:"height"`
-		SHA256           string `json:"sha256"`
-		ConsumerContract string `json:"consumer_contract"`
-		SpeakerID        int    `json:"speaker_id"`
-		Frame            int    `json:"frame"`
-		MouthState       string `json:"mouth_state"`
+		Role             string   `json:"role"`
+		Status           string   `json:"status"`
+		File             string   `json:"file"`
+		Width            int      `json:"width"`
+		Height           int      `json:"height"`
+		SHA256           string   `json:"sha256"`
+		ConsumerContract string   `json:"consumer_contract"`
+		SpeakerID        int      `json:"speaker_id"`
+		Frame            int      `json:"frame"`
+		MouthState       string   `json:"mouth_state"`
+		Files            []string `json:"files"`
+		FrameSHA256      []string `json:"frame_sha256"`
+		FrameCount       int      `json:"frame_count"`
+		SourceGroup      int      `json:"source_group"`
+		AlphaContract    string   `json:"alpha_contract"`
+		CyclePolicy      string   `json:"cycle_policy"`
 	} `json:"assets"`
 }
 
@@ -54,8 +61,61 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	if catalog.SchemaVersion != 1 || catalog.ThemeID != modernHandpaintedThemeID {
 		return nil, errors.New("modern theme catalog: unsupported identity")
 	}
-	set := &modernStoryPortraitSet{portraits: make(map[int]*modernStoryPortraitFrame)}
+	set := &modernStoryPortraitSet{
+		portraits:  make(map[int]*modernStoryPortraitFrame),
+		mapSprites: make(map[int][]image.Image),
+	}
 	for _, asset := range catalog.Assets {
+		if asset.Role == "map_sprite_set" {
+			if asset.Status != "runtime_candidate" && asset.Status != "runtime_ready" {
+				return nil, fmt.Errorf("modern theme map sprite %d has unsupported status %q", asset.SourceGroup, asset.Status)
+			}
+			if asset.ConsumerContract != "fdicon_map_sprite_12x24_v1" || asset.Width != 24 ||
+				asset.Height != 24 || asset.FrameCount != 12 || len(asset.Files) != 12 ||
+				len(asset.FrameSHA256) != 12 || asset.SourceGroup != 68 ||
+				asset.AlphaContract != "binary" || asset.CyclePolicy != "three_distinct_cycles" {
+				return nil, fmt.Errorf("modern theme map sprite %d violates the frame contract", asset.SourceGroup)
+			}
+			if _, duplicate := set.mapSprites[asset.SourceGroup]; duplicate {
+				return nil, fmt.Errorf("modern theme map sprite %d is duplicated", asset.SourceGroup)
+			}
+			frames := make([]image.Image, 0, 12)
+			seenDigest := make(map[string]struct{}, 12)
+			for frame, file := range asset.Files {
+				name := filepath.Base(file)
+				if name != file || filepath.Ext(name) != ".png" {
+					return nil, fmt.Errorf("modern theme map sprite %d frame %d has an unsafe path", asset.SourceGroup, frame)
+				}
+				pngRaw, err := os.ReadFile(filepath.Join(packRoot, name))
+				if err != nil {
+					return nil, fmt.Errorf("modern theme map sprite %d frame %d: %w", asset.SourceGroup, frame, err)
+				}
+				digest := sha256.Sum256(pngRaw)
+				digestText := hex.EncodeToString(digest[:])
+				if digestText != asset.FrameSHA256[frame] {
+					return nil, fmt.Errorf("modern theme map sprite %d frame %d has a sha256 mismatch", asset.SourceGroup, frame)
+				}
+				if _, duplicate := seenDigest[digestText]; duplicate {
+					return nil, fmt.Errorf("modern theme map sprite %d repeats frame %d", asset.SourceGroup, frame)
+				}
+				seenDigest[digestText] = struct{}{}
+				decoded, _, err := image.Decode(bytes.NewReader(pngRaw))
+				if err != nil || decoded.Bounds().Dx() != 24 || decoded.Bounds().Dy() != 24 {
+					return nil, fmt.Errorf("modern theme map sprite %d frame %d has invalid PNG geometry", asset.SourceGroup, frame)
+				}
+				for y := decoded.Bounds().Min.Y; y < decoded.Bounds().Max.Y; y++ {
+					for x := decoded.Bounds().Min.X; x < decoded.Bounds().Max.X; x++ {
+						_, _, _, alpha := decoded.At(x, y).RGBA()
+						if alpha != 0 && alpha != 0xffff {
+							return nil, fmt.Errorf("modern theme map sprite %d frame %d has non-binary alpha", asset.SourceGroup, frame)
+						}
+					}
+				}
+				frames = append(frames, decoded)
+			}
+			set.mapSprites[asset.SourceGroup] = frames
+			continue
+		}
 		if asset.Role != "story_portrait_frame" {
 			continue
 		}

@@ -98,6 +98,8 @@ def validate(verify_private: bool) -> dict:
                 isinstance(value, str) and SHA_RE.fullmatch(value) for value in hashes
             ):
                 raise ValueError(f"invalid map sprite hashes: {asset_id}")
+            if entry["cycle_policy"] == "three_distinct_cycles" and len(set(hashes)) != 12:
+                raise ValueError(f"map sprite cycles are not distinct: {asset_id}")
             file_paths = [Path(value) for value in files]
         else:
             file_paths = [Path(entry["file"])]

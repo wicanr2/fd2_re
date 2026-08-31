@@ -63,7 +63,7 @@
     {
       "asset_id": "modern.sol.map_sprite.style_a",
       "role": "map_sprite_set",
-      "status": "prototype",
+      "status": "runtime_candidate",
       "files": [
         "sol-battle-sprite-style-a-f00.png",
         "sol-battle-sprite-style-a-f01.png",
@@ -93,12 +93,12 @@
         "92b042bd89da74160662ff37871529cfc9bbed7f8525f2c67fd6607f38dd0712",
         "66ef8ee85f25544125cf9540ecae63ec530b0c923ec75ef4a4ae6c348b11909b",
         "4c70b15fd375d5c1676db346e5abba4c2cdfbbaac385e7d0ea5c3e4d7b2e588b",
-        "66ef8ee85f25544125cf9540ecae63ec530b0c923ec75ef4a4ae6c348b11909b"
+        "09ce46fd936137d5d86e965b8a05b15d0d8dfa1d1ae0d2bc34b658704e46007d"
       ],
       "source_group": 68,
       "consumer_contract": "fdicon_map_sprite_12x24_v1",
       "alpha_contract": "binary",
-      "cycle_policy": "cycle_2_reuses_cycle_0_prototype",
+      "cycle_policy": "three_distinct_cycles",
       "source_refs": [
         "asset:FDICON.B24.group_068",
         "remake/assets/sprites/fig_068_f00.png"

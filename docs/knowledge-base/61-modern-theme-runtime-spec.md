@@ -69,14 +69,25 @@
 1. `modern.sol.map_sprite.style_a` 必須一次提供 12 張獨立 `24×24` PNG，保留
    frame 0..11、pose 0..3 與 cycle 0..2 的穩定映射。
 2. 每張 alpha 只能是 0 或 255；catalog validator 在私人素材驗證模式逐像素檢查。
-3. 目前第 11 格為了避免生成稿出現雙劍與比例漂移，明確重用第 9 格。catalog
-   以 `cycle_2_reuses_cycle_0_prototype` 記錄這項**現代近似**；因此整組維持
-   `prototype`，不得接入正式 runtime 或標為 `runtime_ready`。
-4. 後續只有在第 11 格保持相同人物尺度、裝備側別、方向與 24×24 邊界，並以
-   獨立第三步態取代重複格後，才可把 cycle policy 升為
-   `three_distinct_cycles`，再開啟 renderer 接線與正常玩家擷圖。
+3. 生成的第 11 格曾因雙劍與比例漂移被拒收，後續暫以第 9 格佔位。現行候選
+   以第 9 格的上半身及第 10 格的下半身做確定性像素合成，保持人物尺度、裝備
+   側別、方向與 `24×24` 邊界，形成獨立第三步態。這是**現代近似**，不是原版
+   第 11 格的逐像素重繪。
+4. catalog 現以 `three_distinct_cycles` 登記，整組升為 `runtime_candidate`；
+   renderer 尚未接線、正常玩家尚未擷圖，所以不可標為 `runtime_ready`。
 5. 原生 indexed bank 與正規化 RGBA loader 是兩條不同 consumer；接線時兩條
    路徑必須共同抽測，且現代主題缺任一格即整組失敗即關閉。
+
+### 地圖人物 consumer 現況
+
+- `loadModernStoryPortraitSet` 現會同時預檢 catalog 中的地圖人物組：固定 group
+  68、12 個安全檔名、逐格 SHA-256、`24×24`、二值 alpha、互異雜湊及三週期
+  policy，任何一項不符即拒絕整個現代主題。
+- `loadGame` 在完整預檢後，才以 12 張真彩色圖原子取代正規化
+  `g.sprites[68]`；其他 group 不變，忠實主題預設路徑也不變。
+- 原生 indexed 戰場 compositor 仍直接消費 `NativeMapSelectorCache`，尚未加入
+  真彩色覆蓋層。此路徑保持原版 sprite，不偷偷量化或混搭；因此地圖人物目前
+  是 `RUNTIME-E1-PARTIAL`，待原生與正規化同狀態抽測後才能升級。
 
 ## 正式 consumer 現況
 
@@ -93,8 +104,8 @@
 ## 驗收與停止線
 
 - catalog validator 必須驗證候選檔尺寸與 SHA-256。
-- 地圖人物候選另須驗證 12 個穩定檔名、逐格 SHA-256、`24×24` 與二值 alpha；
-  重複第三步態仍是已登記的原型限制，不算正式動畫完成。
+- 地圖人物候選另須驗證 12 個穩定檔名、逐格 SHA-256、`24×24`、二值 alpha
+  與三個不同週期；現代第三步態的像素合成 provenance 必須保留。
 - renderer 單元測試已固定上／下框矩形；loader 已驗證身分、尺寸、
   雜湊與不透明契約。缺檔與未知 speaker 仍由正式預取路徑原子拒絕。
 - 正規化故事下框已於 ch00 frame 90 實際擷圖，確認新頭像位於左側、
@@ -103,3 +114,5 @@
   仍需各抽一張。
 - 現行 consumer 已達 `RUNTIME-E1-PARTIAL`，但正常故事上／下框擷圖與其他
   speaker 素材尚未完成，catalog 仍維持 `runtime_candidate`，不可冒稱完整主題。
+- 地圖人物 loader 的完整／柔邊拒絕測試已通過；正規化 consumer 已接，原生
+  indexed consumer 與第一關四方向正常玩家擷圖仍待完成。

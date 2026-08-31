@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"image"
 	"image/color"
 	"image/png"
@@ -104,5 +105,77 @@ func TestLoadModernStoryPortraitSetRejectsDigestMismatch(t *testing.T) {
 	}
 	if _, err := loadModernStoryPortraitSet(catalogPath, root); err == nil {
 		t.Fatal("modern portrait digest mismatch accepted")
+	}
+}
+
+func writeModernMapSpriteFixture(t *testing.T, alpha uint8) (catalogPath, root string) {
+	t.Helper()
+	catalogPath, root = writeModernPortraitFixture(t, true)
+	raw, err := os.ReadFile(catalogPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var document map[string]any
+	if err := json.Unmarshal(raw, &document); err != nil {
+		t.Fatal(err)
+	}
+	files := make([]string, 12)
+	hashes := make([]string, 12)
+	for frame := range files {
+		files[frame] = fmt.Sprintf("sol-map-%02d.png", frame)
+		img := image.NewNRGBA(image.Rect(0, 0, 24, 24))
+		img.SetNRGBA(frame%24, frame/24, color.NRGBA{R: uint8(frame + 1), G: 40, B: 90, A: alpha})
+		path := filepath.Join(root, files[frame])
+		f, err := os.Create(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := png.Encode(f, img); err != nil {
+			f.Close()
+			t.Fatal(err)
+		}
+		if err := f.Close(); err != nil {
+			t.Fatal(err)
+		}
+		pngRaw, err := os.ReadFile(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		digest := sha256.Sum256(pngRaw)
+		hashes[frame] = hex.EncodeToString(digest[:])
+	}
+	assets := document["assets"].([]any)
+	document["assets"] = append(assets, map[string]any{
+		"role": "map_sprite_set", "status": "runtime_candidate",
+		"files": files, "width": 24, "height": 24, "frame_count": 12,
+		"frame_sha256": hashes, "source_group": 68,
+		"consumer_contract": "fdicon_map_sprite_12x24_v1",
+		"alpha_contract":    "binary", "cycle_policy": "three_distinct_cycles",
+	})
+	raw, err = json.Marshal(document)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(catalogPath, raw, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	return catalogPath, root
+}
+
+func TestLoadModernStoryPortraitSetAdmitsCompleteMapSpriteSet(t *testing.T) {
+	catalogPath, root := writeModernMapSpriteFixture(t, 0xff)
+	set, err := loadModernStoryPortraitSet(catalogPath, root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if frames := set.mapSprites[68]; len(frames) != 12 || frames[11].Bounds().Dx() != 24 {
+		t.Fatalf("map sprite frames=%d", len(frames))
+	}
+}
+
+func TestLoadModernStoryPortraitSetRejectsMapSpriteSoftAlpha(t *testing.T) {
+	catalogPath, root := writeModernMapSpriteFixture(t, 0x80)
+	if _, err := loadModernStoryPortraitSet(catalogPath, root); err == nil {
+		t.Fatal("modern map sprite with soft alpha accepted")
 	}
 }

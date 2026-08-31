@@ -9804,6 +9804,15 @@ func loadGame() *Game {
 		}
 	}
 	g.sprites = loadSprites()
+	if g.modernStoryPortraits != nil {
+		for group, sourceFrames := range g.modernStoryPortraits.mapSprites {
+			frames := make([]*ebiten.Image, len(sourceFrames))
+			for i, source := range sourceFrames {
+				frames[i] = ebiten.NewImageFromImage(source)
+			}
+			g.sprites[group] = frames
+		}
+	}
 	g.portraits = loadPortraits()
 	g.figani = loadFIGANI()
 	if delays, e := loadFIGANIDelays(); e == nil {
