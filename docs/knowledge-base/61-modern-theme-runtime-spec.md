@@ -104,6 +104,13 @@
   `DATO_011_m0`、19 筆 `speaker=11 / speaker_name=索菲亞` 與繁中實體清冊
   三方一致確認。人工影像檢視保留灰綠短髮、兩側長鬢髮、紅唇、黑色細頸圈
   與藍灰肩甲；瑪琳現代母稿只作畫風參考。
+- `modern.kelly.portrait.style_a.frame0`
+- 執行期檔：`kelly-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `b92b5118a7b17b455854e8eca92f19fd8a78af614e876af902d7880d5333a393`
+- 母稿：`kelly-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_012_m0`、16 筆 `speaker=12 / speaker_name=凱麗` 與繁中實體清冊
+  三方一致確認，識別字採英文實體目錄的 `Kelly`。人工影像檢視保留微向右側、
+  金色短捲髮、垂眼、紅唇、金色耳飾與深藍高領。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`
