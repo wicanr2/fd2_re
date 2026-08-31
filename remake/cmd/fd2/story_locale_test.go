@@ -21,6 +21,7 @@ func TestReviewedOpeningTranslationsUseCanonicalLineIDs(t *testing.T) {
 			"legacy/line/7ecb566a60db/scenes/1/lines/13": "ならば容赦するな！　行け！",
 			"legacy/line/7ecb566a60db/scenes/2/lines/10": "若者たちは元気だな！　お前たち、行くぞ！",
 			"legacy/line/7ecb566a60db/scenes/3/lines/12": "くそっ！　あの小僧二人、俺を完全に無視しやがって！　殺せ！　一人も逃がすな！",
+			"legacy/line/7ecb566a60db/scenes/4/lines/4":  "ソール、これから人の縄張りに入るんだから、せめて礼儀正しくしなよ！",
 		},
 		"en": {
 			"legacy/line/15b3c967fb2b/scenes/0/lines/0":  "Ares, let's have another match! Losing to you yesterday still bothers me!",
