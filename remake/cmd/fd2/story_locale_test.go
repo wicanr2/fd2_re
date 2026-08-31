@@ -201,6 +201,53 @@ func TestReviewedChapterThreeSceneOneLinesSixToTen(t *testing.T) {
 	}
 }
 
+func TestReviewedChapterThreeSceneOneLinesElevenToFifteen(t *testing.T) {
+	wants := map[string]map[string]string{
+		"en": {
+			"legacy/line/cac6c4f06aba/scenes/1/lines/11/speaker-name": "Celia",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/11/text":         "What are you talking about? I’m bringing you a powerful new companion!",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/12/speaker-name": "Sol",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/12/text":         "We don’t need one!",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/13/speaker-name": "Tino",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/13/text":         "I’ve made up my mind. If you’ll have me, I look forward to working with you.",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/14/speaker-name": "Ares",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/14/text":         "Welcome! But let’s leave this place quickly. We’ll discuss the rest later!",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/15/speaker-name": "Hano",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/15/text":         "That’s right. Let’s get moving!",
+		},
+		"ja": {
+			"legacy/line/cac6c4f06aba/scenes/1/lines/11/speaker-name": "シリア",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/11/text":         "何を言ってるの？あなたたちに頼もしい仲間を増やしてあげるのよ！",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/12/speaker-name": "ソール",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/12/text":         "そんなのいらない！",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/13/speaker-name": "ティエノ",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/13/text":         "もう決心した。皆さんが嫌でなければ、これからよろしく頼む。",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/14/speaker-name": "アレス",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/14/text":         "ようこそ！だが、まずは早くここを離れよう。残りの話は後でだ！",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/15/speaker-name": "ハノ",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/15/text":         "その通りだ。さあ、出発しよう！",
+		},
+		"zh-Hans": {
+			"legacy/line/cac6c4f06aba/scenes/1/lines/11/speaker-name": "希莉亚",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/11/text":         "你说什么？我可是给你们增加了一位得力的伙伴！",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/12/speaker-name": "索尔",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/12/text":         "我们才不稀罕！",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/13/speaker-name": "铁诺",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/13/text":         "我已经决定了。如果各位不嫌弃我的话，以后请多多关照。",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/14/speaker-name": "亚雷斯",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/14/text":         "欢迎！不过，我们还是赶快离开这里，剩下的事以后再说！",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/15/speaker-name": "哈诺",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/15/text":         "说得对，我们上路吧！",
+		},
+	}
+	for localeID, entries := range wants {
+		if _, err := loadOfficialLocaleContent(localeID); err != nil {
+			t.Fatal(err)
+		}
+		assertReviewedContentEntryIDs(t, localeID, entries)
+	}
+}
+
 func TestReviewedChapterTwoCampaignTranslationsAndItemEntities(t *testing.T) {
 	wants := map[string]map[string]string{
 		"ja": {

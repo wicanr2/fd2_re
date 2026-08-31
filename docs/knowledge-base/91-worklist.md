@@ -36,8 +36,8 @@
 | A1 | 編輯器 canonical schema 與穩定身份層 | `DATA-READY（全戰役 legacy projection）／RUNTIME-E1（封包 admission）`：版本化 bundle 現含1份campaign、30份scenario、35份story與38筆角色身份候選；deterministic exporter、跨文件節點／speaker validator、角色身份schema、逐檔SHA-256與完整package self-check已接。Linux AppImage與Windows ZIP重建後均帶入bundle，Linux空白cwd自檢通過。4筆名稱衝突保留直接來源並拒絕猜選 | 解決或明確拆分`native-0/1/7/96`身份歧義；建立canonical→runtime compiler，使正式戰役規則直接消費編輯後文件；再補編輯器UI修改→驗證→執行→存讀檔往返。私人297份animation metadata可顯式匯入，但不作乾淨clone必要輸入 |
 | A2 | 原版素材全量分離與清冊 | `RELEASE-DATA-READY／RESEARCH-PARTIAL`：manifest v2現有39,825筆asset與1,005筆source-resource ledger；901 standardized、11個零長度confirmed-empty、0 blocked、93 unknown。完整本機包有40,127個實體檔案、約104 MB，已於私人庫保存。2026-08-30 `v0.1.1` Linux／Windows本機完整版均為42,258個檔案，macOS為42,332個檔案；三者均綁定engine head `be9a2a77`、通過manifest驗證並標示不可公開。三平台原生公開候選與雜湊也由GitHub Actions重建成功。公開README新增33張完整戰場低解析索引、96組sprite與96組portrait代表幀，不公開可重組逐檔素材。正式`Game` caller未發現93筆unknown有直接archive consumer，因此它們不阻擋第一版 | Windows／macOS實機抽測。只有新證據找到正式consumer才重開unknown，FDOTHER #47／#49不猜接 |
 | A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型、FDICON、FDSHAP、ANI、FDFIELD主要玩家路徑，以及城鎮、商店、標題、LOAD、整備、教會與戰場初始化均已遷移。19個巢狀音效bank已分離；標題#77選單音與ANI #1的#78 companion均由正式runtime消費。2026-08-29 caller稽核未發現正式`Game`仍直接讀原版archive，`FD2_ORIGINAL_FDOTHER`／`DATO` locator亦已移到測試專用檔，正式binary字串檢查通過；archive adapter只留source-oracle。BGM只從完整驗證的30份OGG catalog解析，物理攻擊亦由分離FIGANI provider原子預檢 | 以version 2 ledger的93筆unknown交叉核對是否有尚未登記的玩家consumer；已具標準資料但缺manifest bridge者只補provenance。沒有正式caller的oracle helper不再列為runtime缺口；只有新證據證明正式consumer存在才重開RE→spec→runtime切片 |
-| A4 | 現代美術主題 | `PROTOTYPE-SET／DATA-CONTRACT-READY／RUNTIME-E1-PARTIAL`：28 位身分已確認角色已有獨立閉嘴頭像母稿／80×80候選，第一關戰場與戰鬥HUD三張style A本機私有稿亦已產生；受版控`themes/modern/catalog.json`保存穩定asset ID、來源、尺寸與SHA-256。28 位speaker候選已由通用`FD2_THEME`正式對話consumer載入；身分／speaker／雜湊／尺寸／不透明契約任一不符即原子拒絕。約拿已依`DATO_021_m0`與聖者職業資料撤換錯誤尖帽巫師稿。FDICON selector 0–14與68現各有12張`24×24`二值alpha候選與逐格雜湊；0–14只按角色表記為基礎地圖投影，68不綁固定角色。十六組均以中性`modern.fdicon.group_NNN.style_a`命名，正式 loader 原子預檢192檔、雜湊、尺寸、alpha與週期後才取代正規化sprite。圖組7只支持蘭斯洛特地圖投影，不消除`story speaker=7`頭像衝突；圖組8至14的希莉亞、悠妮、瑪琳、索菲亞、凱麗、貝克威與珊則各具一致身分證據。悠妮的12幀只代表正常地圖行走，初遇倒地昏迷仍由場景演出負責。原生indexed compositor尚未接真彩覆蓋；直接疊最終畫面會錯蓋foreground，同色寫入也不能靠diff推回mask，因此維持失敗即關閉。規格見`61-modern-theme-runtime-spec.md`。戰場與HUD仍是concept | 擴充native foreground write-mask契約；同時抽測已登錄現代頭像的正常故事上／下框，再依穩定speaker身分繼續逐角色產生候選。map0 tile ID與FDOTHER HUD cells仍須各自建立基準，不能從合成概念圖反切 |
-| A5 | 繁中／簡中／日文／英文與可調文字顯示 | `DATA-READY（5,176筆／語）＋RUNTIME-E1-PARTIAL`：實檔 `entry_count` 四語均為5,176；35份劇本共1,564句具穩定 `line_id`，正式 story、handler dialog及事件61／75／76均查詢四語內容。FDTXT清冊涵蓋200個可顯示物品與15個confirmed-empty ID；32名角色、94筆戰鬥raw姓名、35筆非空指令與29筆職業均有四語實體目錄。戰鬥、商店、旅館、整備、教會、標題LOAD與結局主要介面已接官方pack，F4會原子同步正式grid與SpellBook顯示。2026-09-01 人工審校現況為日文289筆、英文280筆、簡中257筆；第二章已閉合三個故事場景與主要戰間文字。第三章第一場景已審定所有證據明確欄位，保留`native-7`、切句與卡蘿／卡蘿娜專名未決處；第二場景第1–7、9、10句已完整審定，第8句只審定說話者、本文因繁中原文截斷維持機器初稿，第0句則因「約」身分衝突維持機器初稿。第二章第二場景第9句「奈野啊捏？」亦維持機器初稿。其餘內容不得以機器稿冒稱正式翻譯，尚無正常玩家截圖 E2 | 接續第三章故事人工審校，再做四語正常玩家畫面。4筆劇情身份歧義不與0–31隊伍顯示目錄合併；教會亂碼紋理屬UI codec／palette缺陷 |
+| A4 | 現代美術主題 | `PROTOTYPE-SET／DATA-CONTRACT-READY／RUNTIME-E1-PARTIAL`：28 位身分已確認角色已有獨立閉嘴頭像母稿／80×80候選，第一關戰場與戰鬥HUD三張style A本機私有稿亦已產生；受版控`themes/modern/catalog.json`保存穩定asset ID、來源、尺寸與SHA-256。28 位speaker候選已由通用`FD2_THEME`正式對話consumer載入；身分／speaker／雜湊／尺寸／不透明契約任一不符即原子拒絕。約拿已依`DATO_021_m0`與聖者職業資料撤換錯誤尖帽巫師稿。FDICON selector 0–15與68現各有12張`24×24`二值alpha候選與逐格雜湊；0–14按角色表記為基礎地圖投影，15只記為姓名待校訂的角色表投影，68不綁固定角色。十七組均以中性`modern.fdicon.group_NNN.style_a`命名，正式 loader 原子預檢204檔、雜湊、尺寸、alpha與週期後才取代正規化sprite。圖組7只支持蘭斯洛特地圖投影，不消除`story speaker=7`頭像衝突；圖組8至14的希莉亞、悠妮、瑪琳、索菲亞、凱麗、貝克威與珊則各具一致身分證據；圖組15不解除賽／塞可邦勒字形與`story speaker=15`頭像衝突。悠妮的12幀只代表正常地圖行走，初遇倒地昏迷仍由場景演出負責。原生indexed compositor尚未接真彩覆蓋；直接疊最終畫面會錯蓋foreground，同色寫入也不能靠diff推回mask，因此維持失敗即關閉。規格見`61-modern-theme-runtime-spec.md`。戰場與HUD仍是concept | 擴充native foreground write-mask契約；同時抽測已登錄現代頭像的正常故事上／下框，再依穩定speaker身分繼續逐角色產生候選。map0 tile ID與FDOTHER HUD cells仍須各自建立基準，不能從合成概念圖反切 |
+| A5 | 繁中／簡中／日文／英文與可調文字顯示 | `DATA-READY（5,176筆／語）＋RUNTIME-E1-PARTIAL`：實檔 `entry_count` 四語均為5,176；35份劇本共1,564句具穩定 `line_id`，正式 story、handler dialog及事件61／75／76均查詢四語內容。FDTXT清冊涵蓋200個可顯示物品與15個confirmed-empty ID；32名角色、94筆戰鬥raw姓名、35筆非空指令與29筆職業均有四語實體目錄。戰鬥、商店、旅館、整備、教會、標題LOAD與結局主要介面已接官方pack，F4會原子同步正式grid與SpellBook顯示。2026-09-01 人工審校現況為日文299筆、英文290筆、簡中267筆；第二章已閉合三個故事場景與主要戰間文字。第三章第一場景已審定所有證據明確欄位，保留`native-7`、切句與卡蘿／卡蘿娜專名未決處；第二場景第1–7、9–15句已完整審定，第8句只審定說話者、本文因繁中原文截斷維持機器初稿，第0句則因「約」身分衝突維持機器初稿。第二章第二場景第9句「奈野啊捏？」亦維持機器初稿。其餘內容不得以機器稿冒稱正式翻譯，尚無正常玩家截圖 E2 | 接續第三章故事人工審校，再做四語正常玩家畫面。4筆劇情身份歧義不與0–31隊伍顯示目錄合併；教會亂碼紋理屬UI codec／palette缺陷 |
 
 > **2026-09-01 A4 哈諾戰場人物追加：**角色表 `index=1` 已證實哈諾的基礎
 > `sprite_group=1`；依原版 `fig_001_f00..f11` 四方向／三步態生成現代稿，經
@@ -122,6 +122,13 @@
 > 私人素材清冊現為 265 檔，提交 `86ffb779` 已推送並逐檔核對 manifest。
 > 原表種族仍是「精靈？」；小圖看不出尖耳或武器，因此兩者均未加入現代稿。
 
+> **2026-09-01 A4 selector 15 戰場人物追加：**角色表 `index=15 /
+> sprite_group=15` 與多章 roster 支持同一地圖投影；現代母稿只依原版 12 幀
+> 可證實的封閉式深藍頭盔甲胄、狹窄黃色眼縫、紅色腰腳點綴及無可見武器生成。
+> 私人素材清冊現為 278 檔，提交 `8d979395` 已推送並逐檔核對 manifest。
+> 「賽可邦勒／塞可邦勒」字形與 `speaker=15` 頭像衝突仍未解除；本組採中性
+> selector 身分，不補臉、種族、髮型或武器，也不宣稱 canonical 人名已定案。
+
 > **2026-09-01 A5 第三章第二場景首批審校：**scene1 第1–5句的說話者與本文
 > 已完成日文、英文、簡中人工審校；人工審校總數現為日文280句、英文271句、
 > 簡中248句。第0句仍由身分衝突的「約」發言，因此說話者與本文都維持
@@ -131,6 +138,10 @@
 > 說話者與本文，以及第 8 句說話者，已完成日文、英文、簡中人工審校；人工
 > 審校總數現為日文 289 筆、英文 280 筆、簡中 257 筆。第 8 句繁中原文以
 > 「我..」截斷，三語本文仍維持 `machine_draft`，不把不完整來源升格為定稿。
+
+> **2026-09-01 A5 第三章第二場景第 11–15 句審校：**五句繁中來源完整，
+> 說話者與本文均完成日文、英文、簡中人工審校；人工審校總數現為日文 299 筆、
+> 英文 290 筆、簡中 267 筆。本批沒有截斷、亂碼或身分衝突欄位。
 
 > **2026-09-01 A4 萊汀戰場人物追加：**角色表 `index=6` 與多章角色身分資料
 > 已證實萊汀的基礎 `sprite_group=6`。現代母稿依原版深棕束髮、深色頭帶、

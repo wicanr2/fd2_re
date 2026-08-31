@@ -4,7 +4,7 @@
 
 ## 範圍
 
-本規格分別定義現代故事頭像，以及 FDICON selector 0–14、68 的十六組 12 格候選。
+本規格分別定義現代故事頭像，以及 FDICON selector 0–15、68 的十七組 12 格候選。
 selector 是圖像索引，不等於故事說話者或頭像身分；兩者不得混用。
 它不授權從合成概念稿反切地圖圖塊或 HUD，也不改變忠實原版主題。
 
@@ -290,7 +290,7 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
 5. 原生 indexed bank 與正規化 RGBA loader 是兩條不同 consumer；接線時兩條
    路徑必須共同抽測，且現代主題缺任一格即整組失敗即關閉。
 
-### selector 0–14 與 68 候選
+### selector 0–15 與 68 候選
 
 - `modern.fdicon.group_000.style_a`：以原版 `fig_000_f00..f11` 為動作基準生成
   3×4 母稿，再以確定性背景分割、逐格裁切及二值 alpha 轉成 12 張 `24×24`
@@ -359,9 +359,15 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   依原版巨大深藍不對稱長髮、綠色額帶與額側飾物、深藍法師袍、棕橙肩領及
   紫紅腰胸飾生成；小圖沒有可證實武器，也看不出尖耳。原表種族仍標
   「精靈？」，因此不把問號或精靈特徵寫成定論。
+- `modern.fdicon.group_015.style_a`：角色表 `index=15 / sprite_group=15` 與
+  多章 roster 支持同一地圖投影；原版 12 幀只能證實封閉式深藍頭盔與甲胄、
+  狹窄黃色眼縫、紅色腰腳點綴及無可見武器。角色表／故事使用「賽可邦勒」，
+  四語隊伍目錄繁中則是「塞可邦勒」，且 `speaker=15` 頭像仍在既有衝突停止線，
+  因此本組只採中性 selector 身分，不用頭像補臉、種族、髮型或武器，也不宣稱
+  canonical 人名已定案。
 - `modern.fdicon.group_068.style_a`：沿用第 68 組原版輪廓的現代候選。它不綁
   固定角色身分；第 11 格是第 9 格上半身與第 10 格下半身的現代近似。
-- 十六組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+- 十七組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
 
@@ -371,7 +377,7 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   0..95、12 個安全檔名、逐格 SHA-256、`24×24`、二值 alpha、互異雜湊及三週期
   policy，任何一項不符即拒絕整個現代主題。
 - `loadGame` 在完整預檢後，才以各組 12 張真彩色圖原子取代正規化
-  `g.sprites[0]`／`g.sprites[1]`／`g.sprites[2]`／`g.sprites[3]`／`g.sprites[4]`／`g.sprites[5]`／`g.sprites[6]`／`g.sprites[7]`／`g.sprites[8]`／`g.sprites[9]`／`g.sprites[10]`／`g.sprites[11]`／`g.sprites[12]`／`g.sprites[13]`／`g.sprites[14]`／`g.sprites[68]`；其他 group 不變，忠實主題
+  `g.sprites[0]`／`g.sprites[1]`／`g.sprites[2]`／`g.sprites[3]`／`g.sprites[4]`／`g.sprites[5]`／`g.sprites[6]`／`g.sprites[7]`／`g.sprites[8]`／`g.sprites[9]`／`g.sprites[10]`／`g.sprites[11]`／`g.sprites[12]`／`g.sprites[13]`／`g.sprites[14]`／`g.sprites[15]`／`g.sprites[68]`；其他 group 不變，忠實主題
   預設路徑也不變。
 - 原生 indexed 戰場 compositor 仍直接消費 `NativeMapSelectorCache`，尚未加入
   真彩色覆蓋層。此路徑保持原版 sprite，不偷偷量化或混搭；因此地圖人物目前
