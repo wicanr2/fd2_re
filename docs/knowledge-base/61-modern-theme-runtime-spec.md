@@ -48,7 +48,13 @@
 - 執行期檔：`sol-portrait-style-a-v2-80.png`，`80×80`，SHA-256
   `6ecc692c30973c62900dc9983ea878df29394d30bfe28d7bf6931dd223131e82`
 - 母稿：`sol-portrait-style-a-v2-master.png`，`1254×1254`。
-- 兩檔皆留在忽略版控的私人素材目錄；公開儲存庫只保存契約與雜湊。
+- `modern.ares.portrait.style_a.frame0`
+- 執行期檔：`ares-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `89d108d4ccea833ab0f2167aa5c220b9cea2694976347fff241cf016ec48203d`
+- 母稿：`ares-portrait-style-a-v1-master.png`，`1254×1254`；依
+  `DATO_001_m0` 保留棕紅長髮、深色頭帶與右向側面，索爾現代母稿只作畫風
+  一致性參考，不作角色身分來源。
+- 上述母稿與執行期檔皆留在忽略版控的私人素材目錄；公開儲存庫只保存契約與雜湊。
 
 ## FDICON 地圖人物 12 格契約
 

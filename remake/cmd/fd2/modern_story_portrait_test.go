@@ -108,6 +108,40 @@ func TestLoadModernStoryPortraitSetRejectsDigestMismatch(t *testing.T) {
 	}
 }
 
+func TestLoadModernStoryPortraitSetAdmitsMultipleSpeakersAtomically(t *testing.T) {
+	catalogPath, root := writeModernPortraitFixture(t, true)
+	raw, err := os.ReadFile(catalogPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var document map[string]any
+	if err := json.Unmarshal(raw, &document); err != nil {
+		t.Fatal(err)
+	}
+	first := document["assets"].([]any)[0].(map[string]any)
+	second := make(map[string]any, len(first))
+	for key, value := range first {
+		second[key] = value
+	}
+	second["asset_id"] = "modern.ares.portrait.style_a.frame0"
+	second["speaker_id"] = float64(1)
+	document["assets"] = append(document["assets"].([]any), second)
+	raw, err = json.Marshal(document)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(catalogPath, raw, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	set, err := loadModernStoryPortraitSet(catalogPath, root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(set.portraits) != 2 || set.portraits[0] == nil || set.portraits[1] == nil {
+		t.Fatalf("portraits=%v", set.portraits)
+	}
+}
+
 func writeModernMapSpriteFixture(t *testing.T, alpha uint8) (catalogPath, root string) {
 	t.Helper()
 	catalogPath, root = writeModernPortraitFixture(t, true)

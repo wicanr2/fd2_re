@@ -48,6 +48,24 @@
       ]
     },
     {
+      "asset_id": "modern.ares.portrait.style_a.frame0",
+      "role": "story_portrait_frame",
+      "status": "runtime_candidate",
+      "file": "ares-portrait-style-a-v1-80.png",
+      "master_file": "ares-portrait-style-a-v1-master.png",
+      "width": 80,
+      "height": 80,
+      "sha256": "89d108d4ccea833ab0f2167aa5c220b9cea2694976347fff241cf016ec48203d",
+      "source_refs": [
+        "asset:DATO_001_m0",
+        "asset:modern.sol.portrait.style_a.frame0"
+      ],
+      "consumer_contract": "native_story_dialogue_rgba_overlay_v1",
+      "speaker_id": 1,
+      "frame": 0,
+      "mouth_state": "closed"
+    },
+    {
       "asset_id": "modern.battle.hud.style_a",
       "role": "battle_hud_concept",
       "status": "concept",
