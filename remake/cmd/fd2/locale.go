@@ -26,6 +26,19 @@ var officialLocaleContract = map[string]localeEntryContract{
 	"battle.spell.sealed":               {[]string{}, "legacy.go.remake.cmd.fd2.main.l5211-c14"},
 	"battle.spell.none":                 {[]string{}, "legacy.go.remake.cmd.fd2.main.l5218-c13"},
 	"battle.item.choose_slot":           {[]string{}, "legacy.go.remake.cmd.fd2.main.l5225-c13"},
+	"battle.spell.target_prompt":        {[]string{"%s", "%d"}, "legacy.go.remake.cmd.fd2.main.l5168-c14"},
+	"battle.spell.blocked":              {[]string{}, "legacy.go.remake.cmd.fd2.main.l6170-c12"},
+	"battle.unit.paralyzed":             {[]string{}, "legacy.go.remake.cmd.fd2.main.l6145-c12"},
+	"battle.spell.result_damage":        {[]string{"%s", "%s", "%d", "%d"}, "legacy.go.remake.cmd.fd2.main.l6194-c10"},
+	"battle.spell.result_heal":          {[]string{"%s", "%s", "%d", "%d"}, "legacy.go.remake.cmd.fd2.main.l6194-c10"},
+	"battle.spell.miss_suffix":          {[]string{"%d"}, "legacy.go.remake.cmd.fd2.main.l6196-c13"},
+	"battle.treasure.gold":              {[]string{"%d"}, "legacy.go.remake.cmd.fd2.main.l5396-c13"},
+	"battle.treasure.item":              {[]string{"%02X"}, "legacy.go.remake.cmd.fd2.main.l5398-c13"},
+	"battle.treasure.inventory_full":    {[]string{}, "legacy.go.remake.cmd.fd2.main.l5402-c12"},
+	"battle.reward.item":                {[]string{"%02X"}, "legacy.go.remake.cmd.fd2.main.l5457-c12"},
+	"battle.reward.item_full":           {[]string{"%02X"}, "legacy.go.remake.cmd.fd2.main.l5459-c12"},
+	"battle.reward.gold":                {[]string{"%d"}, "legacy.go.remake.cmd.fd2.main.l5463-c11"},
+	"battle.spell.menu_title":           {[]string{"%d"}, "legacy.go.remake.cmd.fd2.main.l8687-c22"},
 	"system.locale.changed":             {[]string{"%s"}, "runtime.settings.locale.changed"},
 	"system.audio.changed":              {[]string{"%s"}, "runtime.settings.audio.changed"},
 	"save.unsupported":                  {[]string{}, "runtime.save.unsupported"},
@@ -118,4 +131,23 @@ func (g *Game) localeMessage(key string, args ...any) (message string, ok bool) 
 		return "", false
 	}
 	return message, true
+}
+
+func (g *Game) localizedSpellResult(actor, spell string, hitN, total int, healing bool, missN int) (string, bool) {
+	key := "battle.spell.result_damage"
+	if healing {
+		key = "battle.spell.result_heal"
+	}
+	message, ok := g.localeMessage(key, actor, spell, hitN, total)
+	if !ok {
+		return "", false
+	}
+	if missN == 0 {
+		return message, true
+	}
+	suffix, ok := g.localeMessage("battle.spell.miss_suffix", missN)
+	if !ok {
+		return "", false
+	}
+	return message + suffix, true
 }

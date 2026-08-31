@@ -5165,7 +5165,9 @@ func (g *Game) ringInput() bool {
 					}
 					g.castSp = &g.spells[i]
 					g.spellOpen = false
-					g.msg = fmt.Sprintf("%s:選擇目標(射程 %d)", g.spells[i].Name, g.spells[i].Dist)
+					if message, ok := g.localeMessage("battle.spell.target_prompt", g.spells[i].Name, g.spells[i].Dist); ok {
+						g.msg = message
+					}
 					break
 				}
 			}
@@ -5393,13 +5395,19 @@ func (g *Game) finishSelectedWait() {
 		if got, ok := g.st.ClaimTreasure(u, u.X, u.Y); ok {
 			if got.Kind == "gold" {
 				g.gold += got.Value
-				g.msg = fmt.Sprintf("取得 %d 金幣", got.Value)
+				if message, ok := g.localeMessage("battle.treasure.gold", got.Value); ok {
+					g.msg = message
+				}
 			} else {
-				g.msg = fmt.Sprintf("取得物品 %02Xh", got.Value)
+				if message, ok := g.localeMessage("battle.treasure.item", got.Value); ok {
+					g.msg = message
+				}
 			}
 		} else if (before.Kind == "item" || before.Kind == "event") &&
 			len(u.Inventory) >= 8 {
-			g.msg = "物品欄已滿，寶物仍留在原處"
+			if message, ok := g.localeMessage("battle.treasure.inventory_full"); ok {
+				g.msg = message
+			}
 		}
 	}
 	g.finishSuccessfulUnitAction(u, func() {
@@ -5454,13 +5462,19 @@ func (g *Game) awardDeathReward(dead, killer *battle.Unit) {
 			awarded = g.grantItemToParty(r.Value)
 		}
 		if awarded {
-			g.msg = fmt.Sprintf("擊破敵人，取得物品 %02Xh", r.Value)
+			if message, ok := g.localeMessage("battle.reward.item", r.Value); ok {
+				g.msg = message
+			}
 		} else {
-			g.msg = fmt.Sprintf("物品欄已滿，未能取得 %02Xh", r.Value)
+			if message, ok := g.localeMessage("battle.reward.item_full", r.Value); ok {
+				g.msg = message
+			}
 		}
 	case 1:
 		g.gold += r.Value
-		g.msg = fmt.Sprintf("擊破敵人，取得 %d 金幣", r.Value)
+		if message, ok := g.localeMessage("battle.reward.gold", r.Value); ok {
+			g.msg = message
+		}
 	}
 }
 
@@ -6142,7 +6156,9 @@ func (g *Game) confirm() {
 			return
 		}
 		if u != nil && u.Camp == battle.Own && u.Paralyzed {
-			g.msg = "麻痺中,無法行動!"
+			if message, ok := g.localeMessage("battle.unit.paralyzed"); ok {
+				g.msg = message
+			}
 			return
 		}
 		if u != nil && u.Camp == battle.Own && !u.Acted {
@@ -6167,7 +6183,9 @@ func (g *Game) confirm() {
 		}
 		results := g.st.CastArea(g.sel, g.curX, g.curY, sp, g.rng)
 		if results == nil {
-			g.msg = "MP 不足或被封咒!"
+			if message, ok := g.localeMessage("battle.spell.blocked"); ok {
+				g.msg = message
+			}
 			return
 		}
 		// 訊息彙總 + 單體攻擊接全螢幕演出
@@ -6187,13 +6205,8 @@ func (g *Game) confirm() {
 		for i := range results {
 			g.awardDeathReward(results[i].Target, g.sel)
 		}
-		verb := "造成"
-		if sp.Target == 1 {
-			verb = "回復"
-		}
-		g.msg = fmt.Sprintf("%s 施放 %s:命中 %d(%s %d)", g.sel.Name, sp.Name, hitN, verb, total)
-		if missN > 0 {
-			g.msg += fmt.Sprintf("、Miss %d", missN)
+		if message, ok := g.localizedSpellResult(g.sel.Name, sp.Name, hitN, total, sp.Target == 1, missN); ok {
+			g.msg = message
 		}
 		if sp.Target == 0 && first != nil && first.Amount > 0 { // 攻擊法術演出(首目標)
 			tgt := first.Target
@@ -8684,7 +8697,9 @@ func (g *Game) drawSpellMenu(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(20, 60)
 	screen.DrawImage(box, op)
-	g.font.Draw(screen, fmt.Sprintf("法術  MP %d", g.sel.MP), 34, 68, 1.0, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+	if title, ok := g.localeMessage("battle.spell.menu_title", g.sel.MP); ok {
+		g.font.Draw(screen, title, 34, 68, 1.0, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+	}
 	for i, id := range g.sel.Spells {
 		var sp *battle.Spell
 		for k := range g.spells {

@@ -7,13 +7,17 @@ import (
 )
 
 func TestFinishSelectedWaitRestsThenClaimsTreasure(t *testing.T) {
+	catalog, err := loadOfficialLocale("zh-Hant")
+	if err != nil {
+		t.Fatal(err)
+	}
 	u := &battle.Unit{Camp: battle.Own, HP: 40, MaxHP: 100, OnField: true, X: 18, Y: 37}
 	g := &Game{
 		st: &battle.State{
 			Treasures:      map[battle.Cell]battle.Treasure{{X: 18, Y: 37}: {Slot: 0, Kind: "item", Value: 0xd2}},
 			OpenedTreasure: map[int]bool{},
 		},
-		sel: u, selOrigX: 18, selOrigY: 37, moved: true, ring: true,
+		sel: u, selOrigX: 18, selOrigY: 37, moved: true, ring: true, localeCatalog: catalog,
 	}
 	g.finishSelectedWait()
 	if u.HP != 60 || len(u.Inventory) != 1 || u.Inventory[0] != 0xd2 || !u.Acted || !g.st.OpenedTreasure[0] {
@@ -40,6 +44,10 @@ func TestFinishSelectedWaitAfterMoveDoesNotHealAndGoldUsesCampaignBank(t *testin
 }
 
 func TestFinishSelectedWaitExecutesEditableNativeTreasureEvent(t *testing.T) {
+	catalog, err := loadOfficialLocale("zh-Hant")
+	if err != nil {
+		t.Fatal(err)
+	}
 	u := &battle.Unit{Camp: battle.Own, HP: 10, MaxHP: 10, OnField: true, X: 2, Y: 3}
 	g := &Game{
 		st: &battle.State{
@@ -51,7 +59,7 @@ func TestFinishSelectedWaitExecutesEditableNativeTreasureEvent(t *testing.T) {
 				58: {EventID: 58, ItemBySlot: []int{0x1D}, OpenSlots: []int{0}},
 			},
 		},
-		sel: u, selOrigX: 2, selOrigY: 3,
+		sel: u, selOrigX: 2, selOrigY: 3, localeCatalog: catalog,
 	}
 	g.finishSelectedWait()
 	if len(u.Inventory) != 1 || u.Inventory[0] != 0x1D ||

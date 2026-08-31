@@ -10,10 +10,10 @@ import (
 
 func TestOfficialLocalesCoverSystemAndSaveMessages(t *testing.T) {
 	wants := map[string][]string{
-		"zh-Hant": {"語言：日本語", "已存檔（槽位 2：town_ch02）"},
-		"zh-Hans": {"语言：日本語", "已存档（槽位 2：town_ch02）"},
-		"ja":      {"言語：日本語", "スロット 2 にセーブしました：town_ch02"},
-		"en":      {"Language: 日本語", "Saved to slot 2: town_ch02"},
+		"zh-Hant": {"語言：日本語", "已存檔（槽位 2：town_ch02）", "索爾 施放 火球：命中 2（造成 18）、未命中 1"},
+		"zh-Hans": {"语言：日本語", "已存档（槽位 2：town_ch02）", "索尔 施放 火球：命中 2（造成 18）、未命中 1"},
+		"ja":      {"言語：日本語", "スロット 2 にセーブしました：town_ch02", "ソルはファイアを唱えた：2体に命中（18ダメージ）、1体にミス"},
+		"en":      {"Language: 日本語", "Saved to slot 2: town_ch02", "Sol casts Fire: 2 hit (18 damage), 1 missed"},
 	}
 	for localeID, want := range wants {
 		catalog, err := loadOfficialLocale(localeID)
@@ -28,10 +28,28 @@ func TestOfficialLocalesCoverSystemAndSaveMessages(t *testing.T) {
 		if err != nil || saved != want[1] {
 			t.Fatalf("%s save message=%q err=%v", localeID, saved, err)
 		}
+		names := []string{"索爾", "火球"}
+		if localeID == "zh-Hans" {
+			names = []string{"索尔", "火球"}
+		} else if localeID == "ja" {
+			names = []string{"ソル", "ファイア"}
+		} else if localeID == "en" {
+			names = []string{"Sol", "Fire"}
+		}
+		game := &Game{localeCatalog: catalog}
+		result, ok := game.localizedSpellResult(names[0], names[1], 2, 18, false, 1)
+		if !ok || result != want[2] {
+			t.Fatalf("%s spell result=%q ok=%v", localeID, result, ok)
+		}
 		for _, key := range []string{
 			"system.audio.changed", "save.unsupported", "save.postbattle_blocked", "save.none", "save.node_missing", "save.loaded",
 			"battle.mp.insufficient", "battle.command.unavailable", "battle.attack.choose_target",
 			"battle.command.native_unavailable", "battle.spell.sealed", "battle.spell.none", "battle.item.choose_slot",
+			"battle.spell.target_prompt", "battle.spell.blocked", "battle.unit.paralyzed",
+			"battle.spell.result_damage", "battle.spell.result_heal", "battle.spell.miss_suffix",
+			"battle.treasure.gold", "battle.treasure.item", "battle.treasure.inventory_full",
+			"battle.reward.item", "battle.reward.item_full", "battle.reward.gold",
+			"battle.spell.menu_title",
 		} {
 			entry, ok := catalog.Entries[key]
 			if !ok || strings.TrimSpace(entry.Text) == "" {

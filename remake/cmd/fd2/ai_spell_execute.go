@@ -79,13 +79,8 @@ func (g *Game) executeAISpell(plan *battle.AIPlan) error {
 	if name == "" {
 		name = fmt.Sprintf("法術 %d", spell.ID)
 	}
-	verb := "造成"
-	if spell.Target == 1 {
-		verb = "回復"
-	}
-	g.msg = fmt.Sprintf("%s 施放 %s：命中 %d（%s %d）", actorDisplayName(actor), name, hitN, verb, total)
-	if missN > 0 {
-		g.msg += fmt.Sprintf("、未命中 %d", missN)
+	if message, ok := g.localizedSpellResult(actorDisplayName(actor), name, hitN, total, spell.Target == 1, missN); ok {
+		g.msg = message
 	}
 	actor.SetMapPose(dirToward(actor.X, actor.Y, target.X, target.Y))
 
