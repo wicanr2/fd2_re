@@ -96,6 +96,19 @@ APPROVED_SOURCE = {
     "title.load.slot": "legacy.go.remake.cmd.fd2.title.l834-c13",
     "save.slot.empty": "legacy.go.remake.cmd.fd2.title.l836-c14",
     "save.slot.present": "legacy.go.remake.cmd.fd2.title.l838-c14",
+    "church.service.status": "legacy.go.remake.cmd.fd2.main.l9129-c21-i0",
+    "church.service.transfer": "legacy.go.remake.cmd.fd2.main.l9129-c21-i1",
+    "church.service.revive": "legacy.go.remake.cmd.fd2.main.l9129-c21-i2",
+    "church.service.class_change": "legacy.go.remake.cmd.fd2.main.l9129-c21-i3",
+    "church.controls": "legacy.go.remake.cmd.fd2.main.l9137-c22",
+    "church.transfer.source": "legacy.go.remake.cmd.fd2.main.l9140-c13",
+    "church.transfer.unequipped_item": "legacy.go.remake.cmd.fd2.main.l9142-c13",
+    "church.transfer.destination": "legacy.go.remake.cmd.fd2.main.l9144-c13",
+    "church.empty_selection": "legacy.go.remake.cmd.fd2.main.l9152-c24",
+    "church.transfer.item_label": "legacy.go.remake.cmd.fd2.main.l9161-c14",
+    "church.selection_controls": "legacy.go.remake.cmd.fd2.main.l9174-c22",
+    "church.execute_controls": "legacy.go.remake.cmd.fd2.main.l9237-c22",
+    "ending.title": "legacy.go.remake.cmd.fd2.main.l9248-c22",
 }
 
 def fail(message: str) -> None:

@@ -9126,7 +9126,17 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 		if g.churchMode == "menu" {
 			fillBox(150, 110, 340, 180)
 			g.font.Draw(screen, n.Text, 182, 126, 1.2, color.RGBA{0xff, 0xe0, 0x90, 0xff})
-			labels := []string{"角色資訊", "物品轉交", "復活", "轉職"}
+			labels := make([]string, 4)
+			for i, key := range []string{
+				"church.service.status", "church.service.transfer",
+				"church.service.revive", "church.service.class_change",
+			} {
+				var ok bool
+				labels[i], ok = g.localeMessage(key)
+				if !ok {
+					return
+				}
+			}
 			for i, label := range labels {
 				pre, c := "　", color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
 				if i == g.churchSel {
@@ -9134,14 +9144,22 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 				}
 				g.font.Draw(screen, pre+label, 188, 158+float64(i)*24, 1.0, c)
 			}
-			g.font.Draw(screen, "←/→ 切換／Enter 選擇／ESC 返回城鎮", 188, 266, 0.9, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
+			controls, ok := g.localeMessage("church.controls")
+			if !ok {
+				return
+			}
+			g.font.Draw(screen, controls, 188, 266, 0.9, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
 		} else if g.churchMode == "transfer_source" || g.churchMode == "transfer_item" || g.churchMode == "transfer_dest" {
 			fillBox(120, 90, 400, 260)
-			title := "選擇來源角色"
+			titleKey := "church.transfer.source"
 			if g.churchMode == "transfer_item" {
-				title = "選擇未裝備物品"
+				titleKey = "church.transfer.unequipped_item"
 			} else if g.churchMode == "transfer_dest" {
-				title = "選擇目的角色"
+				titleKey = "church.transfer.destination"
+			}
+			title, ok := g.localeMessage(titleKey)
+			if !ok {
+				return
 			}
 			g.font.Draw(screen, title, 150, 108, 1.2, color.RGBA{0xff, 0xe0, 0x90, 0xff})
 			listLen := len(g.churchIDs)
@@ -9149,7 +9167,11 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 				listLen = len(g.churchTransferItems)
 			}
 			if listLen == 0 {
-				g.font.Draw(screen, "目前沒有可選項目", 150, 150, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
+				empty, ok := g.localeMessage("church.empty_selection")
+				if !ok {
+					return
+				}
+				g.font.Draw(screen, empty, 150, 150, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
 			}
 			for i := 0; i < listLen; i++ {
 				pre, c := "　", color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
@@ -9158,10 +9180,17 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 				}
 				label := ""
 				if g.churchMode == "transfer_item" {
-					label = fmt.Sprintf("物品 %02Xh", g.partyRoster[g.churchTransferSource].Inventory[g.churchTransferItems[i]])
+					var ok bool
+					label, ok = g.localeMessage("church.transfer.item_label", g.partyRoster[g.churchTransferSource].Inventory[g.churchTransferItems[i]])
+					if !ok {
+						return
+					}
 				} else {
 					id := g.churchIDs[i]
-					name := fmt.Sprintf("角色%d", id)
+					name, ok := g.localeMessage("preparation.unknown_character", id)
+					if !ok {
+						return
+					}
 					if u, ok := g.partyRoster[id]; ok && u.Name != "" {
 						name = u.Name
 					}
@@ -9171,7 +9200,11 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 				y := 150.0 + float64(i/2)*26
 				g.font.Draw(screen, fmt.Sprintf("%s%s", pre, label), x, y, 1.0, c)
 			}
-			g.font.Draw(screen, "←→±1／↑↓±2／Enter 確認／ESC 返回", 150, 330, 0.9, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
+			selectionControls, ok := g.localeMessage("church.selection_controls")
+			if !ok {
+				return
+			}
+			g.font.Draw(screen, selectionControls, 150, 330, 0.9, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
 		} else {
 			listLen := len(g.churchIDs)
 			if g.churchMode == "class_confirm" {
@@ -9183,35 +9216,57 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 			}
 			h := 120 + float64(visibleLen)*26
 			fillBox(120, 90, 400, h)
-			title := "復活"
+			title, ok := g.localeMessage("church.service.revive")
+			if !ok {
+				return
+			}
 			if g.churchMode == "class" {
-				title = "轉職"
+				title, ok = g.localeMessage("church.service.class_change")
+				if !ok {
+					return
+				}
 			} else if g.churchMode == "class_confirm" {
-				if message, ok := g.localeMessage("church.class_change.confirm_title"); ok {
-					title = message
+				title, ok = g.localeMessage("church.class_change.confirm_title")
+				if !ok {
+					return
 				}
 			}
 			g.font.Draw(screen, title, 150, 108, 1.2, color.RGBA{0xff, 0xe0, 0x90, 0xff})
 			if listLen == 0 {
-				if message, ok := g.localeMessage("church.class_change.empty"); ok {
-					g.font.Draw(screen, message, 150, 150, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
+				emptyKey := "church.empty_selection"
+				if g.churchMode == "class" {
+					emptyKey = "church.class_change.empty"
 				}
+				message, ok := g.localeMessage(emptyKey)
+				if !ok {
+					return
+				}
+				g.font.Draw(screen, message, 150, 150, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
 			} else if g.churchMode == "class_confirm" {
 				target := campaign.ClassChangeBranch{}
 				if len(g.churchBranches) == 1 {
 					target = g.churchBranches[0]
 				}
-				className, classErr := g.localeEntities.ClassName(target.ClassID)
-				targetLabel, targetOK := g.localeMessage("church.class_change.target", className)
-				if classErr == nil && targetOK {
-					g.font.Draw(screen, targetLabel, 150, 150, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
+				if g.localeEntities == nil {
+					g.loadErr = "church class confirmation: locale entities unavailable"
+					return
 				}
+				className, classErr := g.localeEntities.ClassName(target.ClassID)
+				if classErr != nil {
+					g.loadErr = "church class confirmation: " + classErr.Error()
+					return
+				}
+				targetLabel, targetOK := g.localeMessage("church.class_change.target", className)
+				if !targetOK {
+					return
+				}
+				g.font.Draw(screen, targetLabel, 150, 150, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
 				yes, yesOK := g.localeMessage("common.yes")
 				no, noOK := g.localeMessage("common.no")
+				if !yesOK || !noOK {
+					return
+				}
 				for i, label := range []string{yes, no} {
-					if !yesOK || !noOK {
-						break
-					}
 					pre, c := "　", color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
 					if i == g.churchSel {
 						pre, c = "▶", color.RGBA{0xff, 0xff, 0xff, 0xff}
@@ -9234,7 +9289,11 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 					g.font.Draw(screen, fmt.Sprintf("%s%s Lv%d", pre, u.Name, u.Lv), 150, 150+float64(row)*26, 1.0, c)
 				}
 			}
-			g.font.Draw(screen, "Enter 執行／ESC 返回服務選單", 150, 108+h-24, 0.9, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
+			executeControls, ok := g.localeMessage("church.execute_controls")
+			if !ok {
+				return
+			}
+			g.font.Draw(screen, executeControls, 150, 108+h-24, 0.9, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
 		}
 	case n.Type == "ending":
 		// Ending 是獨立頁，不可讓上一張 battle map／HUD 從半透明框後露出。
@@ -9245,7 +9304,11 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 		panelH := 70 + lineH*float64(len(lines))
 		panelY := (float64(logicalH) - panelH) / 2
 		fillBox(24, panelY, float64(logicalW)-48, panelH)
-		g.font.Draw(screen, "結局", float64(logicalW)/2-g.font.Width("結局", 1.35)/2, panelY+18, 1.35,
+		endingTitle, ok := g.localeMessage("ending.title")
+		if !ok {
+			return
+		}
+		g.font.Draw(screen, endingTitle, float64(logicalW)/2-g.font.Width(endingTitle, 1.35)/2, panelY+18, 1.35,
 			color.RGBA{0xff, 0xff, 0xff, 0xff})
 		for i, line := range lines {
 			x := float64(logicalW)/2 - g.font.Width(line, scale)/2

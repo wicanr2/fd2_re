@@ -65,6 +65,11 @@ func TestOfficialLocalesCoverSystemAndSaveMessages(t *testing.T) {
 			"battle.result.win", "battle.result.lose", "battle.result.continue",
 			"postbattle.preparation.title",
 			"title.load.controls", "title.load.slot", "save.slot.empty", "save.slot.present",
+			"church.service.status", "church.service.transfer", "church.service.revive",
+			"church.service.class_change", "church.controls", "church.transfer.source",
+			"church.transfer.unequipped_item", "church.transfer.destination",
+			"church.empty_selection", "church.transfer.item_label",
+			"church.selection_controls", "church.execute_controls", "ending.title",
 			"common.yes", "common.no",
 		} {
 			entry, ok := catalog.Entries[key]

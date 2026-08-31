@@ -37,7 +37,7 @@
 | A2 | 原版素材全量分離與清冊 | `RELEASE-DATA-READY／RESEARCH-PARTIAL`：manifest v2現有39,825筆asset與1,005筆source-resource ledger；901 standardized、11個零長度confirmed-empty、0 blocked、93 unknown。完整本機包有40,127個實體檔案、約104 MB，已於私人庫保存。2026-08-30 `v0.1.1` Linux／Windows本機完整版均為42,258個檔案，macOS為42,332個檔案；三者均綁定engine head `be9a2a77`、通過manifest驗證並標示不可公開。三平台原生公開候選與雜湊也由GitHub Actions重建成功。公開README新增33張完整戰場低解析索引、96組sprite與96組portrait代表幀，不公開可重組逐檔素材。正式`Game` caller未發現93筆unknown有直接archive consumer，因此它們不阻擋第一版 | Windows／macOS實機抽測。只有新證據找到正式consumer才重開unknown，FDOTHER #47／#49不猜接 |
 | A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型、FDICON、FDSHAP、ANI、FDFIELD主要玩家路徑，以及城鎮、商店、標題、LOAD、整備、教會與戰場初始化均已遷移。19個巢狀音效bank已分離；標題#77選單音與ANI #1的#78 companion均由正式runtime消費。2026-08-29 caller稽核未發現正式`Game`仍直接讀原版archive，`FD2_ORIGINAL_FDOTHER`／`DATO` locator亦已移到測試專用檔，正式binary字串檢查通過；archive adapter只留source-oracle。BGM只從完整驗證的30份OGG catalog解析，物理攻擊亦由分離FIGANI provider原子預檢 | 以version 2 ledger的93筆unknown交叉核對是否有尚未登記的玩家consumer；已具標準資料但缺manifest bridge者只補provenance。沒有正式caller的oracle helper不再列為runtime缺口；只有新證據證明正式consumer存在才重開RE→spec→runtime切片 |
 | A4 | 現代美術主題 | `PROTOTYPE-SET／DATA-CONTRACT-READY／RUNTIME-E1-PARTIAL`：索爾頭像、第一關戰場與戰鬥HUD三張style A本機私有稿均已產生；受版控`themes/modern/catalog.json`保存穩定asset ID、來源、尺寸與SHA-256。索爾獨立閉嘴頭像母稿及80×80候選已接入顯式`FD2_THEME`正式對話consumer；身分／speaker／雜湊／尺寸／不透明契約任一不符即原子拒絕。本輪勘誤`0x9017`為下框右緣錨點，實際左上角是`(8,115)`。FDICON selector 0與68現各有12張`24×24`二值alpha候選與逐格雜湊；索爾基礎selector是0，68則不是固定角色身分，晚期悠妮資料曾使用`0x44`。兩組都用中性的`modern.fdicon.group_NNN.style_a`命名，正式 loader 會原子預檢24檔、雜湊、尺寸、alpha與週期後取代正規化`g.sprites[0]`／`[68]`。selector 0母稿依原版12格生成並確定性裁切；selector 68的雙劍稿已拒收，第11格改為可重現像素合成。原生indexed compositor尚未接真彩覆蓋。規格見`61-modern-theme-runtime-spec.md`。戰場與HUD仍是concept | 以相同契約接native indexed真彩覆蓋，並與normalized路徑抽測第一關索爾四向移動。同時抽測索爾上／下框正常故事路徑，再以穩定speaker ID逐角色產生獨立頭像。map0 tile ID與FDOTHER HUD cells仍須各自建立基準，不能從合成概念圖反切 |
-| A5 | 繁中／簡中／日文／英文與可調文字顯示 | `DATA-READY（5,192筆／語）＋RUNTIME-E1-PARTIAL`：35份劇本共1,564句具穩定 `line_id`；正式 story、handler dialog及事件61／75／76均查詢四語內容。非繁中原生 indexed 對話已重建安全分頁並依裁決固定閉嘴。FDTXT清冊現涵蓋200個可顯示物品與15個confirmed-empty ID；32名角色、94筆戰鬥raw姓名、35筆非空指令與29筆職業均有四語實體目錄，職業26／27／28保留原版占位。轉職成功與後備確認介面會在mutation前預取四語角色／職業／句型。玩家／敵方共用指令與戰鬥姓名已由共用owner重畫；高頻戰鬥提示、法術結算、寶物／擊破獎勵及教會轉交／復活也已接官方pack。商店、旅館／出戰整備、勝敗／戰後整備，以及標題LOAD的操作、四槽標籤與空／有檔狀態均已移除硬編碼繁中。F4會原子同步正式grid與SpellBook相容顯示。英文／日文其餘內容仍是機器初稿，尚無正常玩家截圖 E2 | 商店服務格已證實是純圖示，不列翻譯缺口；教會服務格的亂碼紋理改列UI codec／palette缺陷，須先補原版同狀態證據。接著做教會服務、標題LOAD四語正常玩家畫面與人工語文審校。4筆劇情身份歧義不與0–31隊伍顯示目錄合併；raw戰鬥姓名也不以`native_identity`替代 |
+| A5 | 繁中／簡中／日文／英文與可調文字顯示 | `DATA-READY（5,205筆／語）＋RUNTIME-E1-PARTIAL`：35份劇本共1,564句具穩定 `line_id`；正式 story、handler dialog及事件61／75／76均查詢四語內容。非繁中原生 indexed 對話已重建安全分頁並依裁決固定閉嘴。FDTXT清冊現涵蓋200個可顯示物品與15個confirmed-empty ID；32名角色、94筆戰鬥raw姓名、35筆非空指令與29筆職業均有四語實體目錄，職業26／27／28保留原版占位。轉職成功與後備確認介面會在mutation前預取四語角色／職業／句型。玩家／敵方共用指令與戰鬥姓名已由共用owner重畫；高頻戰鬥提示、法術結算、寶物／擊破獎勵及教會轉交／復活也已接官方pack。商店、旅館／出戰整備、勝敗／戰後整備、標題LOAD，以及教會服務、物品轉交、空清單、操作提示與結局標題均已移除硬編碼繁中。F4會原子同步正式grid與SpellBook相容顯示。英文／日文其餘內容仍是機器初稿，尚無正常玩家截圖 E2 | 商店服務格已證實是純圖示，不列翻譯缺口；教會服務格的亂碼紋理改列UI codec／palette缺陷，須先補原版同狀態證據。接著做四語正常玩家畫面、剩餘fallback名稱契約與人工語文審校。4筆劇情身份歧義不與0–31隊伍顯示目錄合併；raw戰鬥姓名也不以`native_identity`替代 |
 
 > **2026-08-31 A5 商店四語追加：**除購買／出售結果四條交易路徑外，
 > 正規化商店的購買／出售標題、裝備標記、收件角色欄位與操作提示另有
@@ -57,6 +57,11 @@
 > **2026-08-31 A5 標題 LOAD 四語追加：**正規化 LOAD fallback 的操作提示、
 > 槽位編號、空槽與已有存檔四個 renderer 鍵已接官方 pack；原生 indexed LOAD
 > 素材不被文字 fallback 覆蓋。Go 與 Python 契約現同時固定 83 鍵。
+
+> **2026-08-31 A5 教會與結局四語追加：**正規化教會 fallback 的四項服務、
+> 主選單操作、轉交來源／物品／目的、空清單、物品標籤、選擇與執行提示，以及
+> 結局標題共 13 個 renderer 鍵已接官方 pack。缺 key 時停止整個畫面發布，不
+> 混回繁中。Go 與 Python 契約現同時固定 96 鍵。
 
 > **2026-08-30 v0.1.0 發行批次：**目前 AppImage 已由正式標題以一般鍵盤進入
 > 第一關，並實際錄得 F4 依序顯示簡中、日文、英文與繁中橫幅。2026-08-30

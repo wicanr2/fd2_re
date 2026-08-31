@@ -98,6 +98,19 @@ var officialLocaleContract = map[string]localeEntryContract{
 	"title.load.slot":                     {[]string{"%d"}, "legacy.go.remake.cmd.fd2.title.l834-c13"},
 	"save.slot.empty":                     {[]string{}, "legacy.go.remake.cmd.fd2.title.l836-c14"},
 	"save.slot.present":                   {[]string{}, "legacy.go.remake.cmd.fd2.title.l838-c14"},
+	"church.service.status":               {[]string{}, "legacy.go.remake.cmd.fd2.main.l9129-c21-i0"},
+	"church.service.transfer":             {[]string{}, "legacy.go.remake.cmd.fd2.main.l9129-c21-i1"},
+	"church.service.revive":               {[]string{}, "legacy.go.remake.cmd.fd2.main.l9129-c21-i2"},
+	"church.service.class_change":         {[]string{}, "legacy.go.remake.cmd.fd2.main.l9129-c21-i3"},
+	"church.controls":                     {[]string{}, "legacy.go.remake.cmd.fd2.main.l9137-c22"},
+	"church.transfer.source":              {[]string{}, "legacy.go.remake.cmd.fd2.main.l9140-c13"},
+	"church.transfer.unequipped_item":     {[]string{}, "legacy.go.remake.cmd.fd2.main.l9142-c13"},
+	"church.transfer.destination":         {[]string{}, "legacy.go.remake.cmd.fd2.main.l9144-c13"},
+	"church.empty_selection":              {[]string{}, "legacy.go.remake.cmd.fd2.main.l9152-c24"},
+	"church.transfer.item_label":          {[]string{"%02X"}, "legacy.go.remake.cmd.fd2.main.l9161-c14"},
+	"church.selection_controls":           {[]string{}, "legacy.go.remake.cmd.fd2.main.l9174-c22"},
+	"church.execute_controls":             {[]string{}, "legacy.go.remake.cmd.fd2.main.l9237-c22"},
+	"ending.title":                        {[]string{}, "legacy.go.remake.cmd.fd2.main.l9248-c22"},
 }
 
 func loadOfficialLocale(localeID string) (*localization.Catalog, error) {
