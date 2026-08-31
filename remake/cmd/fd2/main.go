@@ -6135,20 +6135,19 @@ func (g *Game) resolvePlayerPhysicalAttack(actor, target *battle.Unit) (battle.A
 }
 
 func playerPhysicalAttackMessage(catalog *localization.Catalog, actor, target *battle.Unit, result battle.AttackResult) (string, error) {
-	actorName, targetName := "攻方", "目標"
-	if actor != nil {
-		if actor.Name != "" {
-			actorName = actor.Name
-		} else if actor.ClsName != "" {
-			actorName = actor.ClsName
-		}
+	if catalog == nil || actor == nil || target == nil {
+		return "", errors.New("physical attack message context unavailable")
 	}
-	if target != nil {
-		if target.Name != "" {
-			targetName = target.Name
-		} else if target.ClsName != "" {
-			targetName = target.ClsName
-		}
+	actorName := actor.Name
+	if actorName == "" {
+		actorName = actor.ClsName
+	}
+	targetName := target.Name
+	if targetName == "" {
+		targetName = target.ClsName
+	}
+	if actorName == "" || targetName == "" {
+		return "", errors.New("physical attack message name unavailable")
 	}
 	if result.Missed {
 		return catalog.Format("battle.attack.miss", actorName, targetName)

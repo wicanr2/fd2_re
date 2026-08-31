@@ -54,6 +54,13 @@
 - 母稿：`ares-portrait-style-a-v1-master.png`，`1254×1254`；依
   `DATO_001_m0` 保留棕紅長髮、深色頭帶與右向側面，索爾現代母稿只作畫風
   一致性參考，不作角色身分來源。
+- `modern.tino.portrait.style_a.frame0`
+- 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`
+- 母稿：`tino-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_002_m0`、`ch03.json` 的 `speaker=2 / speaker_name=鐵諾` 與繁中實體
+  清冊三方一致確認。保留淺灰綠兜帽、深色長髮、額帶、右向側面及深藍灰護甲；
+  亞雷斯現代母稿只作畫風參考。
 - 上述母稿與執行期檔皆留在忽略版控的私人素材目錄；公開儲存庫只保存契約與雜湊。
 
 ## FDICON 地圖人物 12 格契約

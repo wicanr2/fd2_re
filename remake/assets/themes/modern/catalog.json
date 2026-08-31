@@ -66,6 +66,24 @@
       "mouth_state": "closed"
     },
     {
+      "asset_id": "modern.tino.portrait.style_a.frame0",
+      "role": "story_portrait_frame",
+      "status": "runtime_candidate",
+      "file": "tino-portrait-style-a-v1-80.png",
+      "master_file": "tino-portrait-style-a-v1-master.png",
+      "width": 80,
+      "height": 80,
+      "sha256": "f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d",
+      "source_refs": [
+        "asset:DATO_002_m0",
+        "asset:modern.ares.portrait.style_a.frame0"
+      ],
+      "consumer_contract": "native_story_dialogue_rgba_overlay_v1",
+      "speaker_id": 2,
+      "frame": 0,
+      "mouth_state": "closed"
+    },
+    {
       "asset_id": "modern.battle.hud.style_a",
       "role": "battle_hud_concept",
       "status": "concept",

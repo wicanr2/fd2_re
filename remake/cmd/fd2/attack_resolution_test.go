@@ -88,3 +88,26 @@ func TestPlayerPhysicalAttackMessageUsesAllOfficialLocales(t *testing.T) {
 		}
 	}
 }
+
+func TestPlayerPhysicalAttackMessageFailsClosedWithoutNames(t *testing.T) {
+	catalog, err := loadOfficialLocale("zh-Hant")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, test := range []struct {
+		name   string
+		actor  *battle.Unit
+		target *battle.Unit
+	}{
+		{name: "nil actor", target: &battle.Unit{Name: "盜賊"}},
+		{name: "nil target", actor: &battle.Unit{Name: "索爾"}},
+		{name: "empty actor", actor: &battle.Unit{}, target: &battle.Unit{Name: "盜賊"}},
+		{name: "empty target", actor: &battle.Unit{Name: "索爾"}, target: &battle.Unit{}},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			if message, err := playerPhysicalAttackMessage(catalog, test.actor, test.target, battle.AttackResult{Missed: true}); err == nil || message != "" {
+				t.Fatalf("message=%q err=%v", message, err)
+			}
+		})
+	}
+}
