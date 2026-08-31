@@ -8817,16 +8817,21 @@ func (g *Game) drawItemMenu(screen *ebiten.Image) {
 	if g.drawNativeItemPanel(screen) {
 		return
 	}
+	title, titleOK := g.localeMessage("battle.item.title", g.sel.Name)
+	emptyLabel, emptyOK := g.localeMessage("battle.item.empty_label")
+	if !titleOK || !emptyOK {
+		return
+	}
 	box := ebiten.NewImage(250, 270)
 	box.Fill(color.RGBA{0x10, 0x1c, 0x40, 0xee})
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(18, 42)
 	screen.DrawImage(box, op)
-	g.font.Draw(screen, fmt.Sprintf("物品　%s", g.sel.Name), 32, 52, 1.0, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+	g.font.Draw(screen, title, 32, 52, 1.0, color.RGBA{0xff, 0xe0, 0x90, 0xff})
 	for slot := 0; slot < 8; slot++ {
 		occupied, itemID := g.nativeItemMenuSlot(g.sel, slot)
 		c := color.RGBA{0x80, 0x88, 0x98, 0xff}
-		label := "空"
+		label := emptyLabel
 		if occupied {
 			c = color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
 			label = fmt.Sprintf("%02Xh", itemID)

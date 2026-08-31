@@ -45,6 +45,10 @@ func TestOfficialLocalesCoverSystemAndSaveMessages(t *testing.T) {
 		if err != nil || itemResult != want[3] {
 			t.Fatalf("%s item result=%q err=%v", localeID, itemResult, err)
 		}
+		itemTitle, err := catalog.Format("battle.item.title", names[0])
+		if err != nil || itemTitle == "" {
+			t.Fatalf("%s item title=%q err=%v", localeID, itemTitle, err)
+		}
 		for _, key := range []string{
 			"system.audio.changed", "save.unsupported", "save.postbattle_blocked", "save.none", "save.node_missing", "save.loaded",
 			"battle.mp.insufficient", "battle.command.unavailable", "battle.attack.choose_target",
@@ -53,6 +57,7 @@ func TestOfficialLocalesCoverSystemAndSaveMessages(t *testing.T) {
 			"battle.item.effect_complete", "battle.item.choose_target", "battle.item.effect_unverified",
 			"battle.item.choose_destination", "battle.item.damage_presenting", "battle.item.recovery_complete",
 			"battle.item.relocation_presenting", "battle.item.relocation_complete",
+			"battle.item.title", "battle.item.empty_label",
 			"battle.spell.target_prompt", "battle.spell.blocked", "battle.unit.paralyzed",
 			"battle.spell.result_damage", "battle.spell.result_heal", "battle.spell.miss_suffix",
 			"battle.treasure.gold", "battle.treasure.item", "battle.treasure.inventory_full",
@@ -71,6 +76,9 @@ func TestOfficialLocalesCoverSystemAndSaveMessages(t *testing.T) {
 			"preparation.unknown_character", "preparation.enter_confirm",
 			"preparation.save_hint",
 			"battle.result.win", "battle.result.lose", "battle.result.continue",
+			"ending.assets_missing", "ending.assets_missing_montage",
+			"ending.continue_editable", "ending.terminal_missing",
+			"ending.montage_requirements",
 			"postbattle.preparation.title",
 			"title.load.controls", "title.load.slot", "save.slot.empty", "save.slot.present",
 			"church.service.status", "church.service.transfer", "church.service.revive",

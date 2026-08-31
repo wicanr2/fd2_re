@@ -28,6 +28,8 @@
     "battle.item.recovery_complete": {"text": "Item %02Xh: recovery complete", "variables": ["%02X"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l6285-c14"},
     "battle.item.relocation_presenting": {"text": "Item %02Xh: relocation presentation in progress", "variables": ["%02X"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l6297-c14"},
     "battle.item.relocation_complete": {"text": "Item %02Xh: relocation complete", "variables": ["%02X"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l6299-c14"},
+    "battle.item.title": {"text": "Items  %s", "variables": ["%s"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8825-c22"},
+    "battle.item.empty_label": {"text": "Empty", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8830-c13"},
     "battle.spell.target_prompt": {"text": "%s: choose a target (range %d)", "variables": ["%s", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l5168-c14"},
     "battle.spell.blocked": {"text": "Not enough MP or magic is sealed!", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l6170-c12"},
     "battle.unit.paralyzed": {"text": "Paralyzed—cannot act!", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l6145-c12"},
@@ -112,6 +114,11 @@
     "church.transfer.item_label": {"text": "Item %02Xh", "variables": ["%02X"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9161-c14"},
     "church.selection_controls": {"text": "Left/Right ±1 / Up/Down ±2 / Enter / ESC", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9174-c22"},
     "church.execute_controls": {"text": "Enter Execute / ESC Services", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9237-c22"},
-    "ending.title": {"text": "ENDING", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9248-c22"}
+    "ending.title": {"text": "ENDING", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9248-c22"},
+    "ending.assets_missing": {"text": "Ending assets are incomplete; showing the editable epilogue.", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.ending_preview.l231-c20"},
+    "ending.assets_missing_montage": {"text": "The verified opening and party montage played, but the final still is missing; showing the editable epilogue.", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.ending_preview.l233-c20"},
+    "ending.continue_editable": {"text": "The verified ending opening has played; press Enter to show the editable epilogue.", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.ending_preview.l815-c26"},
+    "ending.terminal_missing": {"text": "The final screen could not be loaded after the party montage; press Enter to show the editable epilogue.", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.ending_preview.l817-c26"},
+    "ending.montage_requirements": {"text": "The party montage needs the complete original party record and assets; press Enter to show the editable epilogue.", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.ending_preview.l819-c26"}
   }
 }

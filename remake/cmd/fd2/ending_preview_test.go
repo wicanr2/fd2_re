@@ -252,6 +252,10 @@ func TestNativeEndingDialogueResumeAllowsSecondNativeTextGate(t *testing.T) {
 }
 
 func TestSourceBoundCampaignEndingConsumesOnlyVerifiedGateCueThenReturnsToEditableEpilogue(t *testing.T) {
+	catalog, err := loadOfficialLocale("zh-Hant")
+	if err != nil {
+		t.Fatal(err)
+	}
 	p := &ending.Player{
 		Timeline: ending.Timeline{AudioCues: []ending.AudioCue{{
 			Source: "0x2c5cf", Track: 4, DriverArg: 0, AfterGate: "0x2c548", Trigger: "verified gate",
@@ -259,7 +263,7 @@ func TestSourceBoundCampaignEndingConsumesOnlyVerifiedGateCueThenReturnsToEditab
 		State:   ending.PlaybackBlocked,
 		Blocked: &ending.Segment{Op: "native_finale_montage_opaque", Source: "0x2c548"},
 	}
-	g := &Game{nativeEnding: &nativeEndingPreview{
+	g := &Game{localeCatalog: catalog, nativeEnding: &nativeEndingPreview{
 		player: p, campaignSourceBound: true, montageStartAttempted: true,
 		montageStartError: "test admission failure",
 	}}
@@ -270,6 +274,21 @@ func TestSourceBoundCampaignEndingConsumesOnlyVerifiedGateCueThenReturnsToEditab
 	}
 	if !g.finishCampaignNativeEndingFallback() || g.nativeEnding != nil || g.endingNotice == "" {
 		t.Fatalf("campaign fallback = preview=%#v notice=%q", g.nativeEnding, g.endingNotice)
+	}
+}
+
+func TestSourceBoundCampaignEndingFallbackFailsClosedWithoutLocale(t *testing.T) {
+	g := &Game{nativeEnding: &nativeEndingPreview{
+		campaignSourceBound:   true,
+		montageStartAttempted: true,
+		montageStartError:     "test admission failure",
+		player: &ending.Player{
+			State:   ending.PlaybackBlocked,
+			Blocked: &ending.Segment{Op: "native_finale_montage_opaque", Source: "0x2c548"},
+		},
+	}}
+	if g.finishCampaignNativeEndingFallback() || g.nativeEnding == nil || g.endingNotice != "" {
+		t.Fatalf("missing locale crossed ending fallback: preview=%#v notice=%q", g.nativeEnding, g.endingNotice)
 	}
 }
 
@@ -629,6 +648,10 @@ func TestCampaignEndingRejectsProgrammaticUnprovenPrefix(t *testing.T) {
 }
 
 func TestSourceBoundCampaignFinalNodeConsumesRecoveredPrefixThenStops(t *testing.T) {
+	catalog, err := loadOfficialLocale("zh-Hant")
+	if err != nil {
+		t.Fatal(err)
+	}
 	const base = "../../../org_game/炎龍騎士團/FLAME2"
 	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "ANI.DAT"} {
 		if _, err := os.Stat(filepath.Join(base, name)); os.IsNotExist(err) {
@@ -647,7 +670,7 @@ func TestSourceBoundCampaignFinalNodeConsumesRecoveredPrefixThenStops(t *testing
 	}
 	runner := campaign.NewRunner(c)
 	runner.Cur = "ending"
-	g := &Game{camp: runner}
+	g := &Game{camp: runner, localeCatalog: catalog}
 	g.enterNode()
 	if g.nativeEnding == nil || !g.nativeEnding.campaignSourceBound {
 		t.Fatalf("source-bound final node did not admit recovered prefix: %#v", g.nativeEnding)

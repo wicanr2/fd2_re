@@ -28,6 +28,8 @@
     "battle.item.recovery_complete": {"text": "物品 %02Xh：原始回復效果完成", "variables": ["%02X"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l6285-c14"},
     "battle.item.relocation_presenting": {"text": "物品 %02Xh：原始移位演出進行中", "variables": ["%02X"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l6297-c14"},
     "battle.item.relocation_complete": {"text": "物品 %02Xh：原始移位效果完成", "variables": ["%02X"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l6299-c14"},
+    "battle.item.title": {"text": "物品　%s", "variables": ["%s"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8825-c22"},
+    "battle.item.empty_label": {"text": "空", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8830-c13"},
     "battle.spell.target_prompt": {"text": "%s：選擇目標（射程 %d）", "variables": ["%s", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l5168-c14"},
     "battle.spell.blocked": {"text": "MP 不足或被封咒！", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l6170-c12"},
     "battle.unit.paralyzed": {"text": "麻痺中，無法行動！", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l6145-c12"},
@@ -112,6 +114,11 @@
     "church.transfer.item_label": {"text": "物品 %02Xh", "variables": ["%02X"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9161-c14"},
     "church.selection_controls": {"text": "←→±1／↑↓±2／Enter 確認／ESC 返回", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9174-c22"},
     "church.execute_controls": {"text": "Enter 執行／ESC 返回服務選單", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9237-c22"},
-    "ending.title": {"text": "結局", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9248-c22"}
+    "ending.title": {"text": "結局", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9248-c22"},
+    "ending.assets_missing": {"text": "原始結局素材不足，以下顯示可編輯結語。", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.ending_preview.l231-c20"},
+    "ending.assets_missing_montage": {"text": "已播放可驗證的結局前段與角色蒙太奇，但終局靜態畫面素材不足；以下顯示可編輯結語。", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.ending_preview.l233-c20"},
+    "ending.continue_editable": {"text": "已播放可驗證的結局前段；按 Enter 顯示可編輯結語。", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.ending_preview.l815-c26"},
+    "ending.terminal_missing": {"text": "角色蒙太奇後無法載入終局畫面；按 Enter 顯示可編輯結語。", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.ending_preview.l817-c26"},
+    "ending.montage_requirements": {"text": "角色蒙太奇需要完整的原始隊伍記錄與素材；按 Enter 顯示可編輯結語。", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.ending_preview.l819-c26"}
   }
 }

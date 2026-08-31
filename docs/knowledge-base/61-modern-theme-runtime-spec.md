@@ -61,6 +61,13 @@
   `DATO_002_m0`、`ch03.json` 的 `speaker=2 / speaker_name=鐵諾` 與繁中實體
   清冊三方一致確認。保留淺灰綠兜帽、深色長髮、額帶、右向側面及深藍灰護甲；
   亞雷斯現代母稿只作畫風參考。
+- `modern.harvat.portrait.style_a.frame0`
+- 執行期檔：`harvat-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `709f889fa71c36644c279af2aefd889fd46098545c345dd0223d7a748ffd8109`
+- 母稿：`harvat-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_003_m0`、多章劇本的 `speaker=3 / speaker_name=哈瓦特` 與繁中實體
+  清冊三方一致確認。保留原版左向、巨大圓鼻、紅棕濃鬍與緊湊臉部特寫；鐵諾
+  現代母稿只作像素密度、光影及背景參考。
 - 上述母稿與執行期檔皆留在忽略版控的私人素材目錄；公開儲存庫只保存契約與雜湊。
 
 ## FDICON 地圖人物 12 格契約

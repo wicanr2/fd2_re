@@ -28,6 +28,8 @@
     "battle.item.recovery_complete": {"text": "アイテム %02Xh：回復効果が完了しました", "variables": ["%02X"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l6285-c14"},
     "battle.item.relocation_presenting": {"text": "アイテム %02Xh：移動演出中", "variables": ["%02X"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l6297-c14"},
     "battle.item.relocation_complete": {"text": "アイテム %02Xh：移動効果が完了しました", "variables": ["%02X"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l6299-c14"},
+    "battle.item.title": {"text": "アイテム　%s", "variables": ["%s"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8825-c22"},
+    "battle.item.empty_label": {"text": "空き", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8830-c13"},
     "battle.spell.target_prompt": {"text": "%s：対象を選択（射程 %d）", "variables": ["%s", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l5168-c14"},
     "battle.spell.blocked": {"text": "MP不足または封印中です！", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l6170-c12"},
     "battle.unit.paralyzed": {"text": "麻痺していて行動できません！", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l6145-c12"},
@@ -112,6 +114,11 @@
     "church.transfer.item_label": {"text": "アイテム %02Xh", "variables": ["%02X"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9161-c14"},
     "church.selection_controls": {"text": "←→±1／↑↓±2／Enter決定／ESC戻る", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9174-c22"},
     "church.execute_controls": {"text": "Enter実行／ESCサービスへ", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9237-c22"},
-    "ending.title": {"text": "エンディング", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9248-c22"}
+    "ending.title": {"text": "エンディング", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9248-c22"},
+    "ending.assets_missing": {"text": "エンディング素材が不足しているため、編集可能な結語を表示します。", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.ending_preview.l231-c20"},
+    "ending.assets_missing_montage": {"text": "確認済みの冒頭と仲間のモンタージュを再生しましたが、終幕画面の素材が不足しています。編集可能な結語を表示します。", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.ending_preview.l233-c20"},
+    "ending.continue_editable": {"text": "確認済みのエンディング冒頭を再生しました。Enterで編集可能な結語を表示します。", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.ending_preview.l815-c26"},
+    "ending.terminal_missing": {"text": "仲間のモンタージュ後に終幕画面を読み込めません。Enterで編集可能な結語を表示します。", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.ending_preview.l817-c26"},
+    "ending.montage_requirements": {"text": "仲間のモンタージュには完全な原作パーティ記録と素材が必要です。Enterで編集可能な結語を表示します。", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.ending_preview.l819-c26"}
   }
 }

@@ -228,9 +228,13 @@ func (g *Game) finishCampaignNativeEndingFallback() bool {
 	if g == nil || g.nativeEnding == nil || !g.nativeEnding.awaitingCampaignFallback() {
 		return false
 	}
-	notice := "原始結局素材不足，以下顯示可編輯結語。"
+	messageKey := "ending.assets_missing"
 	if g.nativeEnding.montage != nil && g.nativeEnding.montage.Ready() {
-		notice = "已播放可驗證的結局前段與角色蒙太奇，但終局靜態畫面素材不足；以下顯示可編輯結語。"
+		messageKey = "ending.assets_missing_montage"
+	}
+	notice, ok := g.localeMessage(messageKey)
+	if !ok {
+		return false
 	}
 	g.stopBGM()
 	g.nativeEnding = nil
@@ -807,17 +811,21 @@ func (g *Game) drawNativeEndingPreview(screen *ebiten.Image) {
 		g.font.Draw(screen, message, x, logicalH-44, 0.78,
 			color.RGBA{0xff, 0xe0, 0x90, 0xff})
 	} else if g.nativeEnding.awaitingCampaignFallback() && g.font != nil {
+		messageKey := "ending.continue_editable"
+		if g.nativeEnding.montage != nil && g.nativeEnding.montage.Ready() {
+			messageKey = "ending.terminal_missing"
+		} else if g.nativeEnding.montageStartError != "" {
+			messageKey = "ending.montage_requirements"
+		}
+		message, ok := g.localeMessage(messageKey)
+		if !ok {
+			return
+		}
 		panel := ebiten.NewImage(logicalW-32, 42)
 		panel.Fill(color.RGBA{0x10, 0x1c, 0x40, 0xe8})
 		pop := &ebiten.DrawImageOptions{}
 		pop.GeoM.Translate(16, logicalH-56)
 		screen.DrawImage(panel, pop)
-		message := "已播放可驗證的結局前段；按 Enter 顯示可編輯結語。"
-		if g.nativeEnding.montage != nil && g.nativeEnding.montage.Ready() {
-			message = "角色蒙太奇後無法載入終局畫面；按 Enter 顯示可編輯結語。"
-		} else if g.nativeEnding.montageStartError != "" {
-			message = "角色蒙太奇需要完整的原始隊伍記錄與素材；按 Enter 顯示可編輯結語。"
-		}
 		g.font.Draw(screen, message, 30, logicalH-44, 0.82,
 			color.RGBA{0xff, 0xe0, 0x90, 0xff})
 	}

@@ -37,6 +37,8 @@ var officialLocaleContract = map[string]localeEntryContract{
 	"battle.item.recovery_complete":       {[]string{"%02X"}, "legacy.go.remake.cmd.fd2.main.l6285-c14"},
 	"battle.item.relocation_presenting":   {[]string{"%02X"}, "legacy.go.remake.cmd.fd2.main.l6297-c14"},
 	"battle.item.relocation_complete":     {[]string{"%02X"}, "legacy.go.remake.cmd.fd2.main.l6299-c14"},
+	"battle.item.title":                   {[]string{"%s"}, "legacy.go.remake.cmd.fd2.main.l8825-c22"},
+	"battle.item.empty_label":             {[]string{}, "legacy.go.remake.cmd.fd2.main.l8830-c13"},
 	"battle.spell.target_prompt":          {[]string{"%s", "%d"}, "legacy.go.remake.cmd.fd2.main.l5168-c14"},
 	"battle.spell.blocked":                {[]string{}, "legacy.go.remake.cmd.fd2.main.l6170-c12"},
 	"battle.unit.paralyzed":               {[]string{}, "legacy.go.remake.cmd.fd2.main.l6145-c12"},
@@ -122,6 +124,11 @@ var officialLocaleContract = map[string]localeEntryContract{
 	"church.selection_controls":           {[]string{}, "legacy.go.remake.cmd.fd2.main.l9174-c22"},
 	"church.execute_controls":             {[]string{}, "legacy.go.remake.cmd.fd2.main.l9237-c22"},
 	"ending.title":                        {[]string{}, "legacy.go.remake.cmd.fd2.main.l9248-c22"},
+	"ending.assets_missing":               {[]string{}, "legacy.go.remake.cmd.fd2.ending_preview.l231-c20"},
+	"ending.assets_missing_montage":       {[]string{}, "legacy.go.remake.cmd.fd2.ending_preview.l233-c20"},
+	"ending.continue_editable":            {[]string{}, "legacy.go.remake.cmd.fd2.ending_preview.l815-c26"},
+	"ending.terminal_missing":             {[]string{}, "legacy.go.remake.cmd.fd2.ending_preview.l817-c26"},
+	"ending.montage_requirements":         {[]string{}, "legacy.go.remake.cmd.fd2.ending_preview.l819-c26"},
 }
 
 func loadOfficialLocale(localeID string) (*localization.Catalog, error) {
