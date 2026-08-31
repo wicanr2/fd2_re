@@ -118,6 +118,13 @@
   `DATO_013_m0`、60 筆 `speaker=13 / speaker_name=貝克威` 與繁中實體清冊
   三方一致確認，識別字採重製英文實體目錄的 `Beckway`。人工影像檢視保留
   正面金色長直髮、寬深藍頭帶、微瞇眼、淡笑及深藍頸圈。
+- `modern.shan.portrait.style_a.frame0`
+- 執行期檔：`shan-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `9123e7894502efab46b062c4c10138ee9d7849ac06a06cc13c7ddb9e0946f970`
+- 母稿：`shan-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_014_m0`、23 筆 `speaker=14 / speaker_name=珊` 與繁中實體清冊
+  三方一致確認，識別字採重製英文實體目錄的 `Shan`。人工影像檢視保留
+  微向左側、深藍長髮、橙金細額飾與紅寶石、狹長眼、紅唇及藍色高領。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`
