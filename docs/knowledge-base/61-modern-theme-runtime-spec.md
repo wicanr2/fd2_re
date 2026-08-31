@@ -132,6 +132,13 @@
   `DATO_016_m0`、30 筆 `speaker=16 / speaker_name=凱拉斯` 與繁中實體清冊
   三方一致確認，識別字採重製英文實體目錄的 `Kylas`。原版影像確認它是向左
   的棕黑龍首，具長吻、尖牙、綠眼、後掠角與深色頸部，不得套用人類頭像模板。
+- `modern.miasdord.portrait.style_a.frame0`
+- 執行期檔：`miasdord-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `9487e75795103c8a5c98bfd79a3e264dc6780fec8fccfb2b6634989aa250404c`
+- 母稿：`miasdord-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_017_m0`、22 筆 `speaker=17 / speaker_name=米亞斯多德` 與繁中實體
+  清冊三方一致確認，識別字採 `Miasdord`。原版影像確認它是正面暗紅龍／魔獸首，
+  具亮紅眼、多根尖角、尖長側耳、黑色鬚棘與灰藍肩部，不得套用人類頭像模板。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`
