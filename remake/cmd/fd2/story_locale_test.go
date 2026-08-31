@@ -1,11 +1,74 @@
 package main
 
 import (
+	"encoding/json"
+	"os"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
+
+func TestReviewedOpeningTranslationsUseCanonicalLineIDs(t *testing.T) {
+	wants := map[string]map[string]string{
+		"ja": {
+			"legacy/line/15b3c967fb2b/scenes/0/lines/0": "アレス、もう一度勝負しよう！昨日負けたのが悔しくてたまらない！",
+			"legacy/line/15b3c967fb2b/scenes/2/lines/7": "ユニさん、まずは僕と一緒に戻ろう。数日後にはマラ大陸へ出発するよ。心配しないで、必ず無事に家へ送り届けるから。",
+		},
+		"en": {
+			"legacy/line/15b3c967fb2b/scenes/0/lines/0": "Ares, let's have another match! Losing to you yesterday still bothers me!",
+		},
+		"zh-Hans": {
+			"legacy/line/15b3c967fb2b/scenes/1/lines/13": "悠妮?好名字。悠妮小姐,你怎么会记不得怎么来到这里的?",
+		},
+	}
+	for localeID, entries := range wants {
+		content, err := loadOfficialLocaleContent(localeID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for lineID, want := range entries {
+			got, err := content.StoryText(lineID)
+			if err != nil || got != want {
+				t.Fatalf("%s %s=%q err=%v, want %q", localeID, lineID, got, err, want)
+			}
+		}
+		assertReviewedContentEntries(t, localeID, entries)
+	}
+}
+
+func assertReviewedContentEntries(t *testing.T, localeID string, wants map[string]string) {
+	t.Helper()
+	raw, err := os.ReadFile(assetPath("assets/locales/" + localeID + "/content.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var document struct {
+		Entries []struct {
+			StringID string `json:"string_id"`
+			Status   string `json:"status"`
+		} `json:"entries"`
+	}
+	if err := json.Unmarshal(raw, &document); err != nil {
+		t.Fatal(err)
+	}
+	remaining := make(map[string]bool, len(wants))
+	for lineID := range wants {
+		remaining[lineID+"/text"] = true
+	}
+	for _, entry := range document.Entries {
+		if !remaining[entry.StringID] {
+			continue
+		}
+		if entry.Status != "reviewed" {
+			t.Fatalf("%s %s status=%q", localeID, entry.StringID, entry.Status)
+		}
+		delete(remaining, entry.StringID)
+	}
+	if len(remaining) != 0 {
+		t.Fatalf("%s reviewed entries missing: %v", localeID, remaining)
+	}
+}
 
 func attachOfficialTestLocale(t *testing.T, g *Game, localeID string) {
 	t.Helper()

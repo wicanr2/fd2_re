@@ -62,6 +62,20 @@
   `DATO_004_m0`、多章 `speaker=4 / speaker_name=亞雷斯` 與繁中實體清冊
   三方一致確認。保留原版左向、深藍包頭帽、綠額帶、紅棕短髮及肩後長柄武器；
   哈諾現代母稿只作畫風參考。
+- `modern.lorna.portrait.style_a.frame0`
+- 執行期檔：`lorna-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `46d339af0f1aa08c95f5fb1e47a5b434590f961b119640b045fda70c8dfa6ffc`
+- 母稿：`lorna-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_005_m0`、第 8／11／16／24／31 章的 `speaker=5 / speaker_name=洛娜`
+  與繁中實體清冊三方一致確認。保留正面構圖、灰綠長髮、銳利眉眼、紅唇與
+  深色高領；亞雷斯現代母稿只作畫風參考。
+- `modern.leidin.portrait.style_a.frame0`
+- 執行期檔：`leidin-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `f26171b353719930c905b534c6bd8b69db82a3d15c958c1530538a5ddca58bb1`
+- 母稿：`leidin-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_006_m0`、多章 `speaker=6 / speaker_name=萊汀` 與繁中實體清冊三方
+  一致確認。保留左向側面、深棕束髮、窄深色頭帶、狹長眼及左下淺色尖角；
+  亞雷斯現代母稿只作畫風參考，不能把藍帽／綠額帶帶入萊汀。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`
