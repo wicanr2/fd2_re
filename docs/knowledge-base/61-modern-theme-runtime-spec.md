@@ -163,6 +163,14 @@
   三方一致確認，識別字採重製英文實體目錄的 `Sarah`。人工影像檢視保留
   正面精靈尖耳、灰綠長直髮、細紅色頭帶、纖細眉眼、紅唇與深色高領；
   蜜蒂現代母稿只作平滑手繪完成度與背景參考。
+- `modern.jonah.portrait.style_a.frame0`
+- 執行期檔：`jonah-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `00a20de20355b0dc48f438c2651f9db6b6293125778889e680e99bc7d885c065`
+- 母稿：`jonah-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_021_m0`、84 筆 `speaker=21 / speaker_name=約拿` 與繁中實體清冊
+  三方一致確認，識別字採重製英文實體目錄的 `Jonah`。人工影像檢視保留
+  向左狼族側面、長犬科口鼻、尖耳、冰藍白色厚毛、堅毅眼神與少量棕金護甲；
+  凱拉斯現代母稿只作非人類側面構圖與完成度參考。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`
