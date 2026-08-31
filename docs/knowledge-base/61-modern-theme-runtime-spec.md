@@ -171,6 +171,14 @@
   三方一致確認，識別字採重製英文實體目錄的 `Jonah`。人工影像檢視保留
   向左狼族側面、長犬科口鼻、尖耳、冰藍白色厚毛、堅毅眼神與少量棕金護甲；
   凱拉斯現代母稿只作非人類側面構圖與完成度參考。
+- `modern.carlos.portrait.style_a.frame0`
+- 執行期檔：`carlos-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `8ebbb556ed3462f0efe824344702fc59fd5219359d5fc29c42d9185861d71ebe`
+- 母稿：`carlos-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_022_m0`、16 筆 `speaker=22 / speaker_name=卡里斯` 與繁中實體清冊
+  三方一致確認，識別字採重製英文實體目錄的 `Carlos`。人工影像檢視保留
+  正面略向左、深藍黑高馬尾、兩側長鬢髮、冷峻微瞇眼、黑色高領與暗紅肩部；
+  莎拉現代母稿只作平滑手繪完成度與背景參考。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`

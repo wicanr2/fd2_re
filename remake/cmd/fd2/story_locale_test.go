@@ -42,6 +42,7 @@ func TestReviewedOpeningTranslationsUseCanonicalLineIDs(t *testing.T) {
 			"legacy/line/7ecb566a60db/scenes/1/lines/13": "那就杀无赦！上啊！",
 			"legacy/line/7ecb566a60db/scenes/2/lines/2":  "什么？待我看看……啊哈，这不是海盗在打劫旅客吗？居然敢在我们门前抢人，胆子不小啊！",
 			"legacy/line/7ecb566a60db/scenes/3/lines/12": "可恶啊！这两个小子全不把我放在眼里！给我杀！一个都别放过！",
+			"legacy/line/7ecb566a60db/scenes/7/lines/1":  "哪里！我和这小子住在岛上，除了偶尔外出游历，平时也没什么事。帮你们打几个海盗，不算什么啦！对了，说到这个，我这老头子倒有个请求。",
 		},
 	}
 	for localeID, entries := range wants {
