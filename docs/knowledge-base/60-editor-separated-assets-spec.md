@@ -588,6 +588,10 @@ provenance及零變數簽章驗證；正式玩家輸入的九個寫入點已改�
 分支。此批只證明正式consumer與四語資料契約的RUNTIME-E1，不等於四語戰場畫面已取得
 正常玩家E2。
 
+教會正式輸入另接通「無物品可轉交」、物品轉交成功與復活成功三個四語鍵。轉交與復活
+都在 mutation 前預先格式化必要訊息；官方目錄缺失時不先修改背包、金幣或角色狀態。
+轉職成功訊息仍待職業名稱目錄四語化，不以只翻句型的方式製造混語結果。
+
 完整原版物品名稱區固定為 FDTXT_000 `string_0181..0395`，對應 raw item ID 0–214。
 雜湊綁定匯出確認其中 200 筆有名稱，108–122 共15筆為原版空字串；空洞必須標成
 `confirmed_empty_item_ids`，不可翻譯或造名，也不可在正常背包中顯示。正式背包目錄的
@@ -692,6 +696,21 @@ frame另需 binary mask。metadata 綁定固定 `FDOTHER.DAT` hash、resource14�
    一個 portrait 與一段 animation，編譯後由正式 runtime 顯示並可存讀。
 5. **現代美術原型**：從已分離且具 `asset_id` 的一組頭像、戰場人物、圖塊與介面框
    各做忠實版／現代版對照；經使用者選定風格後才建立正式 theme pack。
+
+### 12.1 現代美術主題目錄（2026-08-31）
+
+現代美術原尺寸稿保留於本機私有 `remake/generated-assets/modern-theme-prototypes/`，
+公開儲存庫只保存 `remake/assets/themes/modern/catalog.json` 的可追溯目錄。每筆必須有
+穩定 `asset_id`、用途 `role`、成熟度 `status`、原版／重製參考 `source_refs`、
+私有相對路徑、寬高與 SHA-256。目錄不得把概念合成圖冒充可直接替換的 portrait、sprite
+sheet、tileset 或 HUD 九宮格；只有完成切片、透明邊界、縮放與 runtime 合成驗收後，狀態
+才能由 `concept` 提升為 `runtime_ready`。
+
+`tools/validate_modern_theme_catalog.py` 有兩種閘門：公開庫模式驗證 schema、角色集合、
+路徑限制、雜湊格式，以及受版控來源檔或 `asset:` 穩定來源識別；本機完整版加
+`--verify-private`，逐檔核對私有 PNG
+尺寸與 SHA-256。私有檔缺失不得影響忠實主題啟動，但現代主題必須失敗即關閉，不得悄悄
+混用原版素材並宣稱現代主題完整。
 
 ### 第一個 runtime 遷移切片：戰場指令格
 

@@ -23,6 +23,10 @@ func newNativeChurchTransferPathGame(t *testing.T) *Game {
 	if err != nil {
 		t.Fatal(err)
 	}
+	catalog, err := loadOfficialLocale("zh-Hant")
+	if err != nil {
+		t.Fatal(err)
+	}
 	source := setNativeTransferInventory(*nativeItemPanelTestUnit(), 0, 1)
 	source.NativeIdentity, source.HasNativeIdentity = 0, true
 	source.MapSelectorKey, source.HasMapSelectorKey = 0, true
@@ -35,6 +39,7 @@ func newNativeChurchTransferPathGame(t *testing.T) *Game {
 		churchTransferSource: -1, churchTransferItem: -1, churchTransferDest: -1,
 		partyJoinOrder: []int{0, 9},
 		partyRoster:    map[int]battle.Unit{0: source, 9: destination},
+		localeCatalog:  catalog,
 	}
 	return g
 }

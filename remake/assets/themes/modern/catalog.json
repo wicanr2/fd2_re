@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "theme_id": "modern-handpainted-a",
+  "status": "prototype",
+  "private_root": "remake/generated-assets/modern-theme-prototypes",
+  "assets": [
+    {
+      "asset_id": "modern.sol.portrait.style_a",
+      "role": "portrait_concept",
+      "status": "concept",
+      "file": "sol-portrait-style-a.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "729548836927dfc4dd0fcb6d52dee89d09e1abb11f664d8147f1f90106f8e51e",
+      "source_refs": ["asset:DATO_000_m0"]
+    },
+    {
+      "asset_id": "modern.ch01.battlefield.style_a",
+      "role": "battlefield_concept",
+      "status": "concept",
+      "file": "ch01-battlefield-style-a.png",
+      "width": 1586,
+      "height": 992,
+      "sha256": "d845b028f5603a8d0141f452e3dedf493a8d23946d711ace80188837815fa3ad",
+      "source_refs": [
+        "remake/assets/maps/map0/map.json",
+        "asset:map0.tileset",
+        "remake/assets/maps/map0/map0_units.json",
+        "docs/figures/native-battle-ch01-remake-e1.png"
+      ]
+    },
+    {
+      "asset_id": "modern.battle.hud.style_a",
+      "role": "battle_hud_concept",
+      "status": "concept",
+      "file": "battle-hud-style-a.png",
+      "width": 1586,
+      "height": 992,
+      "sha256": "9736f7a70da4f487ce7d3a39cc8c09d2d90e2fa878adb3544e7c54ddc3a98ba4",
+      "source_refs": [
+        "docs/figures/native-battle-ch29-original-action-ring-candidate.png",
+        "asset:DATO_000_m0"
+      ]
+    }
+  ]
+}

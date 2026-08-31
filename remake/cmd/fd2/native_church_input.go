@@ -206,7 +206,9 @@ func (g *Game) handleNativeChurchTransferInput(input nativeChurchTransferInput) 
 		sourceID := g.churchIDs[g.churchSel]
 		items := g.churchTransferItemSlots(sourceID)
 		if len(items) == 0 {
-			g.msg = "沒東西了！"
+			if message, ok := g.localeMessage("church.transfer.empty"); ok {
+				g.msg = message
+			}
 			return true
 		}
 		openItems := func() {
@@ -247,6 +249,11 @@ func (g *Game) applyNativeChurchTransfer(destinationID int) {
 		return
 	}
 	itemID := source.Inventory[g.churchTransferItem]
+	successMessage, ok := g.localeMessage("church.transfer.success", itemID)
+	if !ok {
+		g.returnToNativeTransferSource()
+		return
+	}
 	destination := g.partyRoster[destinationID]
 	count, err := battle.NativeInventoryAvailableCount(destination.NativeInventoryFlags)
 	if err != nil {
@@ -268,14 +275,14 @@ func (g *Game) applyNativeChurchTransfer(destinationID int) {
 		} else {
 			campaign.RecomputeEquipment(&source, g.shopItemStats)
 			g.partyRoster[g.churchTransferSource] = source
-			g.msg = fmt.Sprintf("物品 %02Xh 已轉移", itemID)
+			g.msg = successMessage
 		}
 	} else if err := battle.TransferNativeInventoryItem(&source, g.churchTransferItem, &destination); err != nil {
 		g.msg = err.Error()
 	} else {
 		campaign.RecomputeEquipment(&source, g.shopItemStats)
 		g.partyRoster[g.churchTransferSource], g.partyRoster[destinationID] = source, destination
-		g.msg = fmt.Sprintf("物品 %02Xh 已轉移", itemID)
+		g.msg = successMessage
 	}
 	g.returnToNativeTransferSource()
 }

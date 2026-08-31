@@ -4700,6 +4700,15 @@ func (g *Game) reviveChurchUnit(id int) bool {
 		g.msg = fmt.Sprintf("復活費率缺少 raw class=%d", u.NativeRecordClass)
 		return false
 	}
+	expectedCost, ok := g.nativeReviveFeeForUnit(u)
+	if !ok {
+		g.msg = fmt.Sprintf("復活費率缺少 raw class=%d", u.NativeRecordClass)
+		return false
+	}
+	successMessage, ok := g.localeMessage("church.revive.success", u.Name, expectedCost)
+	if !ok {
+		return false
+	}
 	gold, cost, err := campaign.ReviveUnit(
 		g.gold, &u, g.reviveFeeRates[int(u.NativeRecordClass)],
 	)
@@ -4708,7 +4717,7 @@ func (g *Game) reviveChurchUnit(id int) bool {
 		return false
 	}
 	g.gold, g.partyRoster[id] = gold, u
-	g.msg = fmt.Sprintf("%s 已復活（-%d G）", u.Name, cost)
+	g.msg = successMessage
 	g.churchIDs = g.churchCandidates("revive")
 	if g.churchSel >= len(g.churchIDs) {
 		g.churchSel = 0

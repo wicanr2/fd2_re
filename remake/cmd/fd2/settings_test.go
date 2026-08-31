@@ -50,6 +50,7 @@ func TestOfficialLocalesCoverSystemAndSaveMessages(t *testing.T) {
 			"battle.treasure.gold", "battle.treasure.item", "battle.treasure.inventory_full",
 			"battle.reward.item", "battle.reward.item_full", "battle.reward.gold",
 			"battle.spell.menu_title",
+			"church.transfer.empty", "church.transfer.success", "church.revive.success",
 		} {
 			entry, ok := catalog.Entries[key]
 			if !ok || strings.TrimSpace(entry.Text) == "" {

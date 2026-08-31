@@ -21,6 +21,10 @@ assets/locales/*/*
 !assets/locales/*/pack.json
 !assets/locales/*/content.json
 !assets/locales/*/entities.json
+# 例外：現代美術主題只版控來源、雜湊與成熟度目錄；原尺寸稿留在 generated-assets。
+!assets/themes/
+assets/themes/*/*
+!assets/themes/modern/catalog.json
 # 例外:法術表(EXE dump 數值,已在 docs/data 公開)
 !assets/spells.json
 # 例外:地圖的 RE 資料 JSON(units.json 單位數值/座標、map.json tile 索引/佈局)——

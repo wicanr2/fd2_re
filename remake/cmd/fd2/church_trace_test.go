@@ -8,6 +8,10 @@ import (
 )
 
 func TestCampaignTownChurchReviveReturnTrace(t *testing.T) {
+	catalog, err := loadOfficialLocale("zh-Hant")
+	if err != nil {
+		t.Fatal(err)
+	}
 	c := &campaign.Campaign{
 		Start: "town_ch02",
 		Flags: map[string]bool{},
@@ -39,6 +43,7 @@ func TestCampaignTownChurchReviveReturnTrace(t *testing.T) {
 		partyRoster:    map[int]battle.Unit{0: dead},
 		partyMembers:   map[int]bool{0: true},
 		partyJoinOrder: []int{0},
+		localeCatalog:  catalog,
 	}
 	// town options: down→church, enter→opt1.
 	g.stepCampaignMenu(campaign.MenuDown)
@@ -56,5 +61,24 @@ func TestCampaignTownChurchReviveReturnTrace(t *testing.T) {
 	g.leaveChurch()
 	if got := g.camp.NodeID(); got != "town_ch02" {
 		t.Fatalf("church return node=%q, want town_ch02", got)
+	}
+}
+
+func TestReviveFailsClosedBeforeMutationWithoutLocaleCatalog(t *testing.T) {
+	dead := battle.Unit{
+		Name: "亞雷斯", Lv: 3, HP: 0, MaxHP: 24, OnField: false,
+		NativeRecordClass: 1, HasNativeRecordClass: true,
+		NativeRecordByte5: 1, HasNativeRecordByte5: true,
+	}
+	g := &Game{
+		gold: 100, reviveFeeRates: []int{0, 7},
+		partyRoster: map[int]battle.Unit{0: dead},
+	}
+	if g.reviveChurchUnit(0) {
+		t.Fatal("revive succeeded without official locale catalog")
+	}
+	got := g.partyRoster[0]
+	if g.gold != 100 || got.HP != 0 || got.OnField {
+		t.Fatalf("failed locale gate leaked revive mutation: gold=%d unit=%#v", g.gold, got)
 	}
 }
