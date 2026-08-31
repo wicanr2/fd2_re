@@ -10,10 +10,10 @@ import (
 
 func TestOfficialLocalesCoverSystemAndSaveMessages(t *testing.T) {
 	wants := map[string][]string{
-		"zh-Hant": {"語言：日本語", "已存檔（槽位 2：town_ch02）", "索爾 施放 火球：命中 2（造成 18）、未命中 1"},
-		"zh-Hans": {"语言：日本語", "已存档（槽位 2：town_ch02）", "索尔 施放 火球：命中 2（造成 18）、未命中 1"},
-		"ja":      {"言語：日本語", "スロット 2 にセーブしました：town_ch02", "ソルはファイアを唱えた：2体に命中（18ダメージ）、1体にミス"},
-		"en":      {"Language: 日本語", "Saved to slot 2: town_ch02", "Sol casts Fire: 2 hit (18 damage), 1 missed"},
+		"zh-Hant": {"語言：日本語", "已存檔（槽位 2：town_ch02）", "索爾 施放 火球：命中 2（造成 18）、未命中 1", "物品 2Ah：原始移位效果完成"},
+		"zh-Hans": {"语言：日本語", "已存档（槽位 2：town_ch02）", "索尔 施放 火球：命中 2（造成 18）、未命中 1", "物品 2Ah：原始移位效果完成"},
+		"ja":      {"言語：日本語", "スロット 2 にセーブしました：town_ch02", "ソルはファイアを唱えた：2体に命中（18ダメージ）、1体にミス", "アイテム 2Ah：移動効果が完了しました"},
+		"en":      {"Language: 日本語", "Saved to slot 2: town_ch02", "Sol casts Fire: 2 hit (18 damage), 1 missed", "Item 2Ah: relocation complete"},
 	}
 	for localeID, want := range wants {
 		catalog, err := loadOfficialLocale(localeID)
@@ -41,10 +41,18 @@ func TestOfficialLocalesCoverSystemAndSaveMessages(t *testing.T) {
 		if !ok || result != want[2] {
 			t.Fatalf("%s spell result=%q ok=%v", localeID, result, ok)
 		}
+		itemResult, err := catalog.Format("battle.item.relocation_complete", 0x2a)
+		if err != nil || itemResult != want[3] {
+			t.Fatalf("%s item result=%q err=%v", localeID, itemResult, err)
+		}
 		for _, key := range []string{
 			"system.audio.changed", "save.unsupported", "save.postbattle_blocked", "save.none", "save.node_missing", "save.loaded",
 			"battle.mp.insufficient", "battle.command.unavailable", "battle.attack.choose_target",
 			"battle.command.native_unavailable", "battle.spell.sealed", "battle.spell.none", "battle.item.choose_slot",
+			"battle.item.empty_slot", "battle.item.data_incomplete", "battle.item.unusable",
+			"battle.item.effect_complete", "battle.item.choose_target", "battle.item.effect_unverified",
+			"battle.item.choose_destination", "battle.item.damage_presenting", "battle.item.recovery_complete",
+			"battle.item.relocation_presenting", "battle.item.relocation_complete",
 			"battle.spell.target_prompt", "battle.spell.blocked", "battle.unit.paralyzed",
 			"battle.spell.result_damage", "battle.spell.result_heal", "battle.spell.miss_suffix",
 			"battle.treasure.gold", "battle.treasure.item", "battle.treasure.inventory_full",

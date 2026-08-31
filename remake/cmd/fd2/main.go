@@ -5064,12 +5064,16 @@ func (g *Game) ringInput() bool {
 				rawSlot := rawSlots[g.itemSel]
 				occupied, itemID := g.nativeItemMenuSlot(g.sel, rawSlot)
 				if !occupied {
-					g.msg = "空物品欄"
+					if message, ok := g.localeMessage("battle.item.empty_slot"); ok {
+						g.msg = message
+					}
 					return true
 				}
 				row := itemID * battle.NativeItemEffectRowSize
 				if row < 0 || row+battle.NativeItemEffectRowSize > len(g.nativeItemEffectRows) {
-					g.msg = "物品資料不完整"
+					if message, ok := g.localeMessage("battle.item.data_incomplete"); ok {
+						g.msg = message
+					}
 					return true
 				}
 				_, result, err := battle.AdvanceNativeItemSelector(
@@ -5077,24 +5081,32 @@ func (g *Game) ringInput() bool {
 					g.nativeItemEffectRows[row+0x0d],
 				)
 				if err != nil || result != battle.NativeItemSelectorConfirm {
-					g.msg = "此物品不能在戰場使用"
+					if message, ok := g.localeMessage("battle.item.unusable"); ok {
+						g.msg = message
+					}
 					return true
 				}
 				if applied, applyErr := g.applyNativeImmediateItem(rawSlot, itemID); applyErr != nil {
 					g.msg = fmt.Sprintf("物品 %02Xh：%v", itemID, applyErr)
 					return true
 				} else if applied {
-					g.msg = fmt.Sprintf("物品 %02Xh：原始效果完成", itemID)
+					if message, ok := g.localeMessage("battle.item.effect_complete", itemID); ok {
+						g.msg = message
+					}
 					return true
 				}
 				if targeting, targetErr := g.beginNativeTargetItem(rawSlot, itemID); targetErr != nil {
 					g.msg = fmt.Sprintf("物品 %02Xh：%v", itemID, targetErr)
 					return true
 				} else if targeting {
-					g.msg = fmt.Sprintf("物品 %02Xh：選擇目標", itemID)
+					if message, ok := g.localeMessage("battle.item.choose_target", itemID); ok {
+						g.msg = message
+					}
 					return true
 				}
-				g.msg = fmt.Sprintf("物品 %02Xh：使用效果尚未驗證", itemID)
+				if message, ok := g.localeMessage("battle.item.effect_unverified", itemID); ok {
+					g.msg = message
+				}
 			}
 			return true
 		}
@@ -5107,12 +5119,16 @@ func (g *Game) ringInput() bool {
 		if enter {
 			occupied, itemID := g.nativeItemMenuSlot(g.sel, g.itemSel)
 			if !occupied {
-				g.msg = "空物品欄"
+				if message, ok := g.localeMessage("battle.item.empty_slot"); ok {
+					g.msg = message
+				}
 				return true
 			}
 			// 0x1bbdc case 0 delegates to 0x20c6f.  Its effect/target table
 			// is not yet closed, so selection is visible but never mutates state.
-			g.msg = fmt.Sprintf("物品 %02Xh：使用效果尚未驗證", itemID)
+			if message, ok := g.localeMessage("battle.item.effect_unverified", itemID); ok {
+				g.msg = message
+			}
 			return true
 		}
 		return true
@@ -6277,14 +6293,20 @@ func (g *Game) confirm() {
 		}
 		if !applied {
 			if g.nativeItemRelocating {
-				g.msg = fmt.Sprintf("物品 %02Xh：選擇目的地", g.nativeItemTargetID)
+				if message, ok := g.localeMessage("battle.item.choose_destination", g.nativeItemTargetID); ok {
+					g.msg = message
+				}
 			}
 			return
 		}
 		if g.nativeAIItemPresentation != nil {
-			g.msg = fmt.Sprintf("物品 %02Xh：原始傷害演出進行中", g.nativeItemTargetID)
+			if message, ok := g.localeMessage("battle.item.damage_presenting", g.nativeItemTargetID); ok {
+				g.msg = message
+			}
 		} else {
-			g.msg = fmt.Sprintf("物品 %02Xh：原始回復效果完成", g.nativeItemTargetID)
+			if message, ok := g.localeMessage("battle.item.recovery_complete", g.nativeItemTargetID); ok {
+				g.msg = message
+			}
 		}
 		return
 	}
@@ -6296,9 +6318,13 @@ func (g *Game) confirm() {
 		}
 		if applied {
 			if g.nativeModifierPresentation != nil || g.nativeUnitPresent != nil {
-				g.msg = fmt.Sprintf("物品 %02Xh：原始移位演出進行中", g.nativeItemTargetID)
+				if message, ok := g.localeMessage("battle.item.relocation_presenting", g.nativeItemTargetID); ok {
+					g.msg = message
+				}
 			} else {
-				g.msg = fmt.Sprintf("物品 %02Xh：原始移位效果完成", g.nativeItemTargetID)
+				if message, ok := g.localeMessage("battle.item.relocation_complete", g.nativeItemTargetID); ok {
+					g.msg = message
+				}
 			}
 		}
 		return
