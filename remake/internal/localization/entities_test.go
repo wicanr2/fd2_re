@@ -15,8 +15,8 @@ func TestOfficialEntityCatalogsShareItemIdentity(t *testing.T) {
 		if err != nil {
 			t.Fatalf("%s: %v", locale, err)
 		}
-		if len(catalog.items) != 120 {
-			t.Fatalf("%s items=%d, want 120", locale, len(catalog.items))
+		if len(catalog.items) != 200 {
+			t.Fatalf("%s items=%d, want 200", locale, len(catalog.items))
 		}
 		if len(catalog.characters) != 32 {
 			t.Fatalf("%s characters=%d, want 32", locale, len(catalog.characters))
@@ -46,6 +46,18 @@ func TestEntityCatalogCharacterLookupFailsClosed(t *testing.T) {
 	}
 	if _, err := catalog.CharacterName(32); err == nil {
 		t.Fatal("missing character name was accepted")
+	}
+}
+
+func TestEntityCatalogRejectsConfirmedEmptyItemIDs(t *testing.T) {
+	catalog, err := LoadOfficialEntities(filepath.Join("..", "..", "assets", "locales"), "zh-Hant")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for id := 108; id <= 122; id++ {
+		if _, err := catalog.ItemName(id); err == nil {
+			t.Fatalf("confirmed-empty item %d was accepted", id)
+		}
 	}
 }
 

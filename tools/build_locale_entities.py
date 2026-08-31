@@ -15,6 +15,12 @@ ITEM_ID = re.compile(
     r"([^.]+)\.(goods|secret)\.(\d+)\.name$"
 )
 
+KNOWN_ZH_HANT_FDTXT_CORRECTIONS = {
+    93: ("白金勳章", "白金徽章"),
+    94: ("生命之實", "生命之貫"),
+    139: ("神秘裝", "神祕裝"),
+}
+
 
 def read_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
@@ -27,7 +33,8 @@ def write_json(path: Path, value) -> None:
     )
 
 
-def build(campaign_path: Path, content_path: Path, overrides_path: Path, characters_path: Path) -> dict:
+def build(campaign_path: Path, content_path: Path, overrides_path: Path, characters_path: Path,
+          item_source_path: Path, item_supplements_path: Path) -> dict:
     campaign = read_json(campaign_path)
     content = read_json(content_path)
     names: dict[int, set[str]] = defaultdict(set)
@@ -58,13 +65,53 @@ def build(campaign_path: Path, content_path: Path, overrides_path: Path, charact
     unknown = set(locale_overrides) - {str(item_id) for item_id in names}
     if unknown:
         raise ValueError(f"override 指向不存在的商品 ID：{sorted(unknown)}")
+    item_source = read_json(item_source_path)
+    if item_source["kind"] != "fd2_original_item_names" or item_source["displayable_item_count"] != 200:
+        raise ValueError("完整原版物品名稱清冊格式錯誤")
+    source_items = item_source["items"]
+    if set(map(str, names)) - set(source_items):
+        raise ValueError("商店商品 ID 不在完整原版物品清冊")
+    if content["locale"] == "zh-Hant":
+        for item_id, values in names.items():
+            actual = next(iter(values))
+            source_name = source_items[str(item_id)]["name"]
+            if actual != source_name and KNOWN_ZH_HANT_FDTXT_CORRECTIONS.get(item_id) != (actual, source_name):
+                raise ValueError(f"商品 {item_id} 名稱與 FDTXT 原文不符")
+    supplements = read_json(item_supplements_path)
+    if supplements["kind"] != "fd2_item_name_supplements":
+        raise ValueError("物品翻譯補充表格式錯誤")
+    missing = set(source_items) - {str(item_id) for item_id in names}
+    if set(supplements["items"]) != missing:
+        raise ValueError("物品翻譯補充表必須恰好涵蓋商店目錄缺項")
+    locale = content["locale"]
+    default_status = {
+        "zh-Hant": "original_confirmed",
+        "zh-Hans": "deterministic_script_conversion",
+        "ja": "machine_draft",
+        "en": "machine_draft",
+    }[locale]
     items = {
         str(item_id): {
             "name": locale_overrides.get(str(item_id), next(iter(names[item_id]))),
-            "source_string_ids": sorted(sources[item_id]),
+            "source_string_ids": [source_items[str(item_id)]["source_string_id"], *sorted(sources[item_id])],
+            "status": default_status,
         }
         for item_id in sorted(names)
     }
+    for raw_id in sorted(missing, key=int):
+        if locale == "zh-Hant":
+            name = source_items[raw_id]["name"]
+            status = "original_confirmed"
+        else:
+            name = supplements["items"][raw_id][locale]
+            status = supplements["status"][locale]
+        if not name:
+            raise ValueError(f"物品 {raw_id} 的 {locale} 名稱為空")
+        items[raw_id] = {
+            "name": name,
+            "source_string_ids": [source_items[raw_id]["source_string_id"]],
+            "status": status,
+        }
     character_source = read_json(characters_path)
     if character_source["kind"] != "fd2_party_character_names":
         raise ValueError("角色名稱來源格式錯誤")
@@ -107,9 +154,12 @@ def main() -> None:
     parser.add_argument("--content", type=Path, required=True)
     parser.add_argument("--overrides", type=Path, required=True)
     parser.add_argument("--characters", type=Path, required=True)
+    parser.add_argument("--item-source", type=Path, required=True)
+    parser.add_argument("--item-supplements", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    result = build(args.campaign, args.content, args.overrides, args.characters)
+    result = build(args.campaign, args.content, args.overrides, args.characters,
+                   args.item_source, args.item_supplements)
     write_json(args.output, result)
     print(f"{result['locale']}: wrote {result['item_count']} item names to {args.output}")
 

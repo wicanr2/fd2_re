@@ -342,12 +342,21 @@ func (g *Game) composeNativeShopTransferItems() ([]byte, bool) {
 	if !stableOK || !stateOK {
 		return nil, false
 	}
-	frame, err := campaign.ComposeNativeShopItemListFrame(
-		stable, assets, g.nativeShopUI.itemAssets,
-		itemIDs, start, g.nativeShopTransferSel,
-		g.nativeShopUI.effectRows,
-		battle.NativeFacilityThreeQuarterPrice,
-	)
+	var frame []byte
+	var err error
+	if g.localeID != "" && g.localeID != "zh-Hant" {
+		frame, err = g.composeLocalizedNativeShopItemIDs(
+			stable, assets, itemIDs, start, g.nativeShopTransferSel,
+			battle.NativeFacilityThreeQuarterPrice,
+		)
+	} else {
+		frame, err = campaign.ComposeNativeShopItemListFrame(
+			stable, assets, g.nativeShopUI.itemAssets,
+			itemIDs, start, g.nativeShopTransferSel,
+			g.nativeShopUI.effectRows,
+			battle.NativeFacilityThreeQuarterPrice,
+		)
+	}
 	return frame, err == nil
 }
 

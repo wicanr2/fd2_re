@@ -74,6 +74,10 @@ func LoadOfficialEntities(root, locale string) (*EntityCatalog, error) {
 				return nil, fmt.Errorf("validate locale entities %q: item %d has empty provenance", path, id)
 			}
 		}
+		if entry.Status != "original_confirmed" && entry.Status != "deterministic_script_conversion" &&
+			entry.Status != "machine_draft" && entry.Status != "curated_remake_translation" {
+			return nil, fmt.Errorf("validate locale entities %q: item %d has invalid status %q", path, id, entry.Status)
+		}
 		items[id] = entry.Name
 	}
 	characters := make(map[int]string, len(pack.Characters))

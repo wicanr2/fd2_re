@@ -63,6 +63,53 @@ func (g *Game) composeLocalizedNativeRoster(
 	return frame, nil
 }
 
+func (g *Game) composeLocalizedNativeShopItemIDs(
+	stable []byte,
+	assets *campaign.NativeShopAssets,
+	itemIDs []int,
+	start, selected int,
+	priceMode battle.NativeFacilityPriceMode,
+) ([]byte, error) {
+	if g.localeEntities == nil || g.font == nil {
+		return nil, errors.New("localized shop item catalog or font is unavailable")
+	}
+	frame, err := campaign.ComposeNativeShopItemListFrameWithoutNames(
+		stable, assets, g.nativeShopUI.itemAssets, itemIDs, start, selected,
+		g.nativeShopUI.effectRows, priceMode,
+	)
+	if err != nil {
+		return nil, err
+	}
+	visible := len(itemIDs) - start
+	if visible > 6 {
+		visible = 6
+	}
+	for index := 0; index < visible; index++ {
+		itemID := itemIDs[start+index]
+		name, err := g.localeEntities.ItemName(itemID)
+		if err != nil {
+			return nil, err
+		}
+		column, line := index%2, index/2
+		foreground := byte(0xcd)
+		if start+index == selected {
+			foreground = 0xc9
+		}
+		scale, ok := localizedShopItemScale(g.font, name)
+		if !ok {
+			return nil, fmt.Errorf("localized shop item %d name %q exceeds safe rectangle", itemID, name)
+		}
+		if err := drawIndexedLocalizedText(
+			frame, g.font, name, 38+148*column, 122+26*line,
+			localizedShopItemNameWidth, localizedShopItemNameHeight,
+			scale, foreground, 0x4c,
+		); err != nil {
+			return nil, err
+		}
+	}
+	return frame, nil
+}
+
 func (g *Game) localizedShopKey(weaponKey, otherKey string) string {
 	if g.nativeShopVariant == 1 {
 		return weaponKey
