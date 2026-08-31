@@ -15,8 +15,8 @@ ID_RE = re.compile(r"^[a-z0-9]+(?:[._-][a-z0-9]+)+$")
 SHA_RE = re.compile(r"^[0-9a-f]{64}$")
 SOURCE_ASSET_RE = re.compile(r"^asset:[A-Za-z0-9][A-Za-z0-9._-]+$")
 PROTOTYPE_ROLES = {"portrait_concept", "battlefield_concept", "battle_hud_concept"}
-ROLES = PROTOTYPE_ROLES | {"story_portrait_frame"}
-STATUSES = {"concept", "approved", "runtime_candidate", "runtime_ready"}
+ROLES = PROTOTYPE_ROLES | {"story_portrait_frame", "map_sprite_set"}
+STATUSES = {"prototype", "concept", "approved", "runtime_candidate", "runtime_ready"}
 
 
 def png_size(path: Path) -> tuple[int, int]:
@@ -45,9 +45,19 @@ def validate(verify_private: bool) -> dict:
     for entry in assets:
         required = {"asset_id", "role", "status", "file", "width", "height", "sha256", "source_refs"}
         candidate = {"master_file", "consumer_contract", "speaker_id", "frame", "mouth_state"}
+        sprite_set = {
+            "asset_id", "role", "status", "files", "width", "height", "frame_count",
+            "frame_sha256", "source_group", "consumer_contract", "alpha_contract",
+            "cycle_policy", "source_refs",
+        }
         if not isinstance(entry, dict):
             raise ValueError("asset entry must be an object")
-        expected = required | candidate if entry.get("role") == "story_portrait_frame" else required
+        if entry.get("role") == "story_portrait_frame":
+            expected = required | candidate
+        elif entry.get("role") == "map_sprite_set":
+            expected = sprite_set
+        else:
+            expected = required
         if set(entry) != expected:
             raise ValueError("asset fields mismatch")
         asset_id = entry["asset_id"]
@@ -59,6 +69,8 @@ def validate(verify_private: bool) -> dict:
         roles.add(entry["role"])
         if entry["status"] not in STATUSES:
             raise ValueError(f"invalid status: {entry['status']!r}")
+        if entry["status"] == "prototype" and entry["role"] != "map_sprite_set":
+            raise ValueError(f"prototype status is restricted to sprite sets: {asset_id}")
         if entry["role"] == "story_portrait_frame":
             master = Path(entry["master_file"])
             if master.is_absolute() or len(master.parts) != 1 or master.suffix.lower() != ".png":
@@ -69,14 +81,36 @@ def validate(verify_private: bool) -> dict:
                 raise ValueError(f"invalid speaker identity: {asset_id}")
             if entry["frame"] not in range(4) or entry["mouth_state"] not in {"closed", "open"}:
                 raise ValueError(f"invalid portrait frame identity: {asset_id}")
-        file_path = Path(entry["file"])
-        if file_path.is_absolute() or len(file_path.parts) != 1 or file_path.suffix.lower() != ".png":
-            raise ValueError(f"unsafe private file: {entry['file']!r}")
+        if entry["role"] == "map_sprite_set":
+            if entry["frame_count"] != 12 or entry["source_group"] < 0:
+                raise ValueError(f"invalid map sprite identity: {asset_id}")
+            if entry["consumer_contract"] != "fdicon_map_sprite_12x24_v1":
+                raise ValueError(f"invalid map sprite contract: {asset_id}")
+            if entry["alpha_contract"] != "binary":
+                raise ValueError(f"invalid alpha contract: {asset_id}")
+            if entry["cycle_policy"] not in {"three_distinct_cycles", "cycle_2_reuses_cycle_0_prototype"}:
+                raise ValueError(f"invalid cycle policy: {asset_id}")
+            files = entry["files"]
+            hashes = entry["frame_sha256"]
+            if not isinstance(files, list) or len(files) != 12 or len(set(files)) != 12:
+                raise ValueError(f"invalid map sprite file set: {asset_id}")
+            if not isinstance(hashes, list) or len(hashes) != 12 or not all(
+                isinstance(value, str) and SHA_RE.fullmatch(value) for value in hashes
+            ):
+                raise ValueError(f"invalid map sprite hashes: {asset_id}")
+            file_paths = [Path(value) for value in files]
+        else:
+            file_paths = [Path(entry["file"])]
+        for file_path in file_paths:
+            if file_path.is_absolute() or len(file_path.parts) != 1 or file_path.suffix.lower() != ".png":
+                raise ValueError(f"unsafe private file: {str(file_path)!r}")
         if not isinstance(entry["width"], int) or entry["width"] <= 0:
             raise ValueError(f"invalid width: {asset_id}")
         if not isinstance(entry["height"], int) or entry["height"] <= 0:
             raise ValueError(f"invalid height: {asset_id}")
-        if not isinstance(entry["sha256"], str) or not SHA_RE.fullmatch(entry["sha256"]):
+        if entry["role"] != "map_sprite_set" and (
+            not isinstance(entry["sha256"], str) or not SHA_RE.fullmatch(entry["sha256"])
+        ):
             raise ValueError(f"invalid sha256: {asset_id}")
         refs = entry["source_refs"]
         if not isinstance(refs, list) or not refs:
@@ -90,14 +124,21 @@ def validate(verify_private: bool) -> dict:
             if ref_path.is_absolute() or ".." in ref_path.parts or not (ROOT / ref_path).is_file():
                 raise ValueError(f"invalid source_ref for {asset_id}: {ref!r}")
         if verify_private:
-            private_path = ROOT / private_root / file_path
-            if not private_path.is_file():
-                raise ValueError(f"private asset missing: {private_path}")
-            if png_size(private_path) != (entry["width"], entry["height"]):
-                raise ValueError(f"dimension mismatch: {asset_id}")
-            digest = hashlib.sha256(private_path.read_bytes()).hexdigest()
-            if digest != entry["sha256"]:
-                raise ValueError(f"sha256 mismatch: {asset_id}")
+            expected_hashes = entry["frame_sha256"] if entry["role"] == "map_sprite_set" else [entry["sha256"]]
+            for file_path, expected_hash in zip(file_paths, expected_hashes):
+                private_path = ROOT / private_root / file_path
+                if not private_path.is_file():
+                    raise ValueError(f"private asset missing: {private_path}")
+                if png_size(private_path) != (entry["width"], entry["height"]):
+                    raise ValueError(f"dimension mismatch: {asset_id}/{file_path.name}")
+                digest = hashlib.sha256(private_path.read_bytes()).hexdigest()
+                if digest != expected_hash:
+                    raise ValueError(f"sha256 mismatch: {asset_id}/{file_path.name}")
+                if entry["role"] == "map_sprite_set":
+                    from PIL import Image
+                    alpha = Image.open(private_path).convert("RGBA").getchannel("A")
+                    if not set(alpha.getdata()).issubset({0, 255}):
+                        raise ValueError(f"non-binary alpha: {asset_id}/{file_path.name}")
     if not PROTOTYPE_ROLES.issubset(roles):
         raise ValueError(f"required prototype roles missing: {sorted(PROTOTYPE_ROLES - roles)}")
     return data

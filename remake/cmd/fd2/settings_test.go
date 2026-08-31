@@ -58,6 +58,10 @@ func TestOfficialLocalesCoverSystemAndSaveMessages(t *testing.T) {
 			"shop.sell.item_title", "shop.item.equipped_label", "shop.sell.roster_title",
 			"shop.sell.inventory_count", "shop.purchase.recipient_title",
 			"shop.purchase.recipient_inventory", "shop.panel.title_controls",
+			"hotel.title.fallback", "hotel.controls", "preparation.title",
+			"preparation.save_prompt", "preparation.deploy.controls",
+			"preparation.unknown_character", "preparation.enter_confirm",
+			"preparation.save_hint",
 			"common.yes", "common.no",
 		} {
 			entry, ok := catalog.Entries[key]

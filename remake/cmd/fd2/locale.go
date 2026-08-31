@@ -82,6 +82,14 @@ var officialLocaleContract = map[string]localeEntryContract{
 	"shop.purchase.recipient_title":       {[]string{"%s"}, "legacy.go.remake.cmd.fd2.main.l8905-c23"},
 	"shop.purchase.recipient_inventory":   {[]string{"%s", "%d"}, "legacy.go.remake.cmd.fd2.main.l8912-c24"},
 	"shop.panel.title_controls":           {[]string{"%d"}, "legacy.go.remake.cmd.fd2.main.l8919-c22"},
+	"hotel.title.fallback":                {[]string{}, "legacy.go.remake.cmd.fd2.main.l8957-c12"},
+	"hotel.controls":                      {[]string{}, "legacy.go.remake.cmd.fd2.main.l8971-c23"},
+	"preparation.title":                   {[]string{}, "legacy.go.remake.cmd.fd2.main.l8981-c23"},
+	"preparation.save_prompt":             {[]string{}, "legacy.go.remake.cmd.fd2.main.l8985-c14"},
+	"preparation.deploy.controls":         {[]string{"%d", "%d"}, "legacy.go.remake.cmd.fd2.main.l9006-c23"},
+	"preparation.unknown_character":       {[]string{"%d"}, "legacy.go.remake.cmd.fd2.main.l9020-c13"},
+	"preparation.enter_confirm":           {[]string{}, "legacy.go.remake.cmd.fd2.main.l9032-c23"},
+	"preparation.save_hint":               {[]string{}, "legacy.go.remake.cmd.fd2.main.l9053-c22"},
 }
 
 func loadOfficialLocale(localeID string) (*localization.Catalog, error) {

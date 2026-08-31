@@ -72,6 +72,14 @@
     "shop.sell.inventory_count": {"text": "%s (%d items)", "variables": ["%s", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8898-c24"},
     "shop.purchase.recipient_title": {"text": "Recipient: %s", "variables": ["%s"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8905-c23"},
     "shop.purchase.recipient_inventory": {"text": "%s  (slots %d/8)", "variables": ["%s", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8912-c24"},
-    "shop.panel.title_controls": {"text": "Shop %d G (Enter Buy/Tab Sell/ESC Exit)", "variables": ["%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8919-c22"}
+    "shop.panel.title_controls": {"text": "Shop %d G (Enter Buy/Tab Sell/ESC Exit)", "variables": ["%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8919-c22"},
+    "hotel.title.fallback": {"text": "Inn / Preparation (raw route)", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8957-c12"},
+    "hotel.controls": {"text": "Up/Down Select / Enter Record / ESC Back", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8971-c23"},
+    "preparation.title": {"text": "Battle Preparation", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8981-c23"},
+    "preparation.save_prompt": {"text": "Save the current battle status?", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l8985-c14"},
+    "preparation.deploy.controls": {"text": "Deploy %d/%d (Up/Down Move, Enter Select)", "variables": ["%d", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9006-c23"},
+    "preparation.unknown_character": {"text": "Unit %d", "variables": ["%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9020-c13"},
+    "preparation.enter_confirm": {"text": "Enter the battlefield?", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9032-c23"},
+    "preparation.save_hint": {"text": "F5 Save Status", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l9053-c22"}
   }
 }

@@ -8954,7 +8954,11 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 		fillBox(140, 105, 360, 210)
 		title := n.Text
 		if title == "" {
-			title = "旅館／整備（raw route）"
+			var ok bool
+			title, ok = g.localeMessage("hotel.title.fallback")
+			if !ok {
+				return
+			}
 		}
 		g.font.Draw(screen, title, 166, 122, 1.1, color.RGBA{0xff, 0xe0, 0x90, 0xff})
 		for i := 0; i < 4; i++ {
@@ -8968,7 +8972,11 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 			}
 			g.font.Draw(screen, pre+label, 176, 154+float64(i)*28, 1.0, c)
 		}
-		g.font.Draw(screen, "↑↓ 選擇／Enter 記錄 raw route／ESC 返回", 176, 286, 0.85, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
+		controls, ok := g.localeMessage("hotel.controls")
+		if !ok {
+			return
+		}
+		g.font.Draw(screen, controls, 176, 286, 0.85, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
 	case n.Type == "preparation":
 		if g.drawNativePreparation(screen) {
 			return
@@ -8978,11 +8986,18 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 			h = 170
 		}
 		fillBox(64, 42, 512, h)
-		g.font.Draw(screen, "出戰整備", 84, 56, 1.2, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+		prepTitle, ok := g.localeMessage("preparation.title")
+		if !ok {
+			return
+		}
+		g.font.Draw(screen, prepTitle, 84, 56, 1.2, color.RGBA{0xff, 0xe0, 0x90, 0xff})
 		if !g.prepSelecting && !g.prepConfirm {
 			prompt := n.Prompt
 			if prompt == "" {
-				prompt = "要記錄戰況嗎？"
+				prompt, ok = g.localeMessage("preparation.save_prompt")
+				if !ok {
+					return
+				}
 			}
 			g.font.Draw(screen, prompt, 184, 120, 1.0, color.RGBA{0xff, 0xe0, 0x90, 0xff})
 			yesColor := color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
@@ -8992,10 +9007,19 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 			} else {
 				noColor = color.RGBA{0xff, 0xff, 0xff, 0xff}
 			}
-			g.font.Draw(screen, "是", 240, 158, 0.95, yesColor)
-			g.font.Draw(screen, "否", 370, 158, 0.95, noColor)
+			yes, yesOK := g.localeMessage("common.yes")
+			no, noOK := g.localeMessage("common.no")
+			if !yesOK || !noOK {
+				return
+			}
+			g.font.Draw(screen, yes, 240, 158, 0.95, yesColor)
+			g.font.Draw(screen, no, 370, 158, 0.95, noColor)
 		} else {
-			g.font.Draw(screen, fmt.Sprintf("出擊 %d/%d（↑↓移動，Enter 選擇）", g.preparationSelected(), g.prepLimit), 84, 82, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
+			deployControls, ok := g.localeMessage("preparation.deploy.controls", g.preparationSelected(), g.prepLimit)
+			if !ok {
+				return
+			}
+			g.font.Draw(screen, deployControls, 84, 82, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
 			for i, id := range g.prepIDs {
 				x := 88.0
 				if i%2 == 1 {
@@ -9011,7 +9035,10 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 				if g.partyDeploy[id] {
 					mark = "■"
 				}
-				name := fmt.Sprintf("角色%d", id)
+				name, ok := g.localeMessage("preparation.unknown_character", id)
+				if !ok {
+					return
+				}
 				if u, ok := g.partyRoster[id]; ok && u.Name != "" {
 					name = u.Name
 				}
@@ -9020,7 +9047,11 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 		}
 		if g.prepConfirm {
 			fillBox(154, 174, 332, 92)
-			g.font.Draw(screen, "確定要進入戰場嗎？", 184, 190, 1.0, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+			confirm, ok := g.localeMessage("preparation.enter_confirm")
+			if !ok {
+				return
+			}
+			g.font.Draw(screen, confirm, 184, 190, 1.0, color.RGBA{0xff, 0xe0, 0x90, 0xff})
 			yesColor := color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
 			noColor := color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
 			if g.prepConfirmSel == 0 {
@@ -9028,10 +9059,19 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 			} else {
 				noColor = color.RGBA{0xff, 0xff, 0xff, 0xff}
 			}
-			g.font.Draw(screen, "是", 240, 222, 0.95, yesColor)
-			g.font.Draw(screen, "否", 370, 222, 0.95, noColor)
+			yes, yesOK := g.localeMessage("common.yes")
+			no, noOK := g.localeMessage("common.no")
+			if !yesOK || !noOK {
+				return
+			}
+			g.font.Draw(screen, yes, 240, 222, 0.95, yesColor)
+			g.font.Draw(screen, no, 370, 222, 0.95, noColor)
 		}
-		g.font.Draw(screen, "F5 保存戰況", 84, 88+h-24, 0.9, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
+		saveHint, ok := g.localeMessage("preparation.save_hint")
+		if !ok {
+			return
+		}
+		g.font.Draw(screen, saveHint, 84, 88+h-24, 0.9, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
 	case n.Type == "church":
 		if g.drawNativeChurchUIJob(screen) {
 			return

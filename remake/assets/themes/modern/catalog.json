@@ -59,6 +59,50 @@
         "docs/figures/native-battle-ch29-original-action-ring-candidate.png",
         "asset:DATO_000_m0"
       ]
+    },
+    {
+      "asset_id": "modern.sol.map_sprite.style_a",
+      "role": "map_sprite_set",
+      "status": "prototype",
+      "files": [
+        "sol-battle-sprite-style-a-f00.png",
+        "sol-battle-sprite-style-a-f01.png",
+        "sol-battle-sprite-style-a-f02.png",
+        "sol-battle-sprite-style-a-f03.png",
+        "sol-battle-sprite-style-a-f04.png",
+        "sol-battle-sprite-style-a-f05.png",
+        "sol-battle-sprite-style-a-f06.png",
+        "sol-battle-sprite-style-a-f07.png",
+        "sol-battle-sprite-style-a-f08.png",
+        "sol-battle-sprite-style-a-f09.png",
+        "sol-battle-sprite-style-a-f10.png",
+        "sol-battle-sprite-style-a-f11.png"
+      ],
+      "width": 24,
+      "height": 24,
+      "frame_count": 12,
+      "frame_sha256": [
+        "8937f5fb29d44e4ff6b8f49bf9d939e6bd52cfa9b4b7023be3262921eea684bf",
+        "4949b33c6684adb94be4e0250a49456e63badbaaffa30addca54f979eda03708",
+        "c0664d72a252cda0fb11619b87742d4f34225f6a4c3f20f8859735c3cd90b603",
+        "ca1e1dfd6896e6f86f6ebfebc727c2144f993580add14878bf26ff81cb0ad16a",
+        "cffb58ea3e73062876925ee81f9d688475cd1234e12b60aabae2fc735bc05708",
+        "4fc013c40674200f320f76f2ea67a30435f5a27a37eefdf5f468b0950e6188c3",
+        "410630bcb3de10b5177d41a8e0acd3d139fa2e2b4f13f6b13d94dc613b44421e",
+        "a84738e0be0684c7ca1bedacd8c877ce91ece074e204ed2d69dd804dddb766ad",
+        "92b042bd89da74160662ff37871529cfc9bbed7f8525f2c67fd6607f38dd0712",
+        "66ef8ee85f25544125cf9540ecae63ec530b0c923ec75ef4a4ae6c348b11909b",
+        "4c70b15fd375d5c1676db346e5abba4c2cdfbbaac385e7d0ea5c3e4d7b2e588b",
+        "66ef8ee85f25544125cf9540ecae63ec530b0c923ec75ef4a4ae6c348b11909b"
+      ],
+      "source_group": 68,
+      "consumer_contract": "fdicon_map_sprite_12x24_v1",
+      "alpha_contract": "binary",
+      "cycle_policy": "cycle_2_reuses_cycle_0_prototype",
+      "source_refs": [
+        "asset:FDICON.B24.group_068",
+        "remake/assets/sprites/fig_068_f00.png"
+      ]
     }
   ]
 }

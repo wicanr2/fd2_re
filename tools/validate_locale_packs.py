@@ -80,6 +80,14 @@ APPROVED_SOURCE = {
     "shop.purchase.recipient_title": "legacy.go.remake.cmd.fd2.main.l8905-c23",
     "shop.purchase.recipient_inventory": "legacy.go.remake.cmd.fd2.main.l8912-c24",
     "shop.panel.title_controls": "legacy.go.remake.cmd.fd2.main.l8919-c22",
+    "hotel.title.fallback": "legacy.go.remake.cmd.fd2.main.l8957-c12",
+    "hotel.controls": "legacy.go.remake.cmd.fd2.main.l8971-c23",
+    "preparation.title": "legacy.go.remake.cmd.fd2.main.l8981-c23",
+    "preparation.save_prompt": "legacy.go.remake.cmd.fd2.main.l8985-c14",
+    "preparation.deploy.controls": "legacy.go.remake.cmd.fd2.main.l9006-c23",
+    "preparation.unknown_character": "legacy.go.remake.cmd.fd2.main.l9020-c13",
+    "preparation.enter_confirm": "legacy.go.remake.cmd.fd2.main.l9032-c23",
+    "preparation.save_hint": "legacy.go.remake.cmd.fd2.main.l9053-c22",
 }
 
 def fail(message: str) -> None:
