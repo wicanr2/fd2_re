@@ -165,16 +165,39 @@ func TestReviewedChapterThreeSceneOneLinesOneToFive(t *testing.T) {
 		},
 	}
 	for localeID, entries := range wants {
-		content, err := loadOfficialLocaleContent(localeID)
-		if err != nil {
+		if _, err := loadOfficialLocaleContent(localeID); err != nil {
 			t.Fatal(err)
 		}
-		for lineID, want := range entries {
-			if got, err := content.StoryText(lineID); err != nil || got != want {
-				t.Fatalf("%s %s=%q err=%v, want %q", localeID, lineID, got, err, want)
-			}
+		assertReviewedContentEntryIDs(t, localeID, entries)
+	}
+}
+
+func TestReviewedChapterThreeSceneOneLinesSixToTen(t *testing.T) {
+	wants := map[string]map[string]string{
+		"en": {
+			"legacy/line/cac6c4f06aba/scenes/1/lines/6/text":         "Thank you all for your help. Without you, I couldn’t have escaped this pursuit. But Grey won’t give up. I still can’t find anywhere on this land where I can live in peace…",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/8/speaker-name": "Tino",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/9/text":         "That’s a secret! Anyway, you’re joining us.",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/10/text":        "Hmph! What a mischievous, mysterious girl.",
+		},
+		"ja": {
+			"legacy/line/cac6c4f06aba/scenes/1/lines/6/text":         "皆さん、助けてくれてありがとう。おかげで追っ手から逃げられた。だが、グレイはこれで諦めるはずがない。この土地では、まだ安心して暮らせる場所が見つからない……",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/8/speaker-name": "ティエノ",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/9/text":         "それは秘密よ！とにかく、あなたは私たちの仲間になるの。",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/10/text":        "ふん！いかにも謎めいていて、まったく食えない娘だな。",
+		},
+		"zh-Hans": {
+			"legacy/line/cac6c4f06aba/scenes/1/lines/6/text":         "多谢各位的帮助，我才能逃过这次追杀。不过葛雷是不会就此罢手的，我在这片土地上还是找不到安居之所……",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/8/speaker-name": "铁诺",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/9/text":         "秘密！反正你加入我们就是了。",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/10/text":        "哼！一副故作神秘的样子，真是个古灵精怪的丫头。",
+		},
+	}
+	for localeID, entries := range wants {
+		if _, err := loadOfficialLocaleContent(localeID); err != nil {
+			t.Fatal(err)
 		}
-		assertReviewedContentEntries(t, localeID, entries)
+		assertReviewedContentEntryIDs(t, localeID, entries)
 	}
 }
 
