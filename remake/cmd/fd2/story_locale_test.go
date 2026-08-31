@@ -61,6 +61,88 @@ func TestReviewedOpeningTranslationsUseCanonicalLineIDs(t *testing.T) {
 	}
 }
 
+func TestReviewedChapterTwoCampaignTranslationsAndItemEntities(t *testing.T) {
+	wants := map[string]map[string]string{
+		"ja": {
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.preparation_ch02.prompt":       "戦場に入りますか？",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.retreat_ch02.lines.0.text":     "撤退！まず態勢を立て直し、反撃の機会を探そう……",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.rumor_ch02.lines.0.text":       "ここには店頭に並べない良い物があるらしい……（酒場の前でShift+F1キー）",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.shop_ch02_secret.goods.0.name": "ブロードソード",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.shop_ch02_secret.goods.1.name": "ハルバード",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.shop_ch02_secret.goods.2.name": "ウォーハンマー",
+		},
+		"en": {
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.preparation_ch02.prompt":       "Enter the battlefield?",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.retreat_ch02.lines.0.text":     "Fall back! Let's regroup and look for a chance to counterattack...",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.rumor_ch02.lines.0.text":       "I hear there are good things here that aren't put on display... (Press Shift+F1 in front of the tavern.)",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.shop_ch02_secret.goods.0.name": "Broadsword",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.shop_ch02_secret.goods.1.name": "Halberd",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.shop_ch02_secret.goods.2.name": "War Hammer",
+		},
+		"zh-Hans": {
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.preparation_ch02.prompt":       "要进入战场吗？",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.retreat_ch02.lines.0.text":     "撤退！先回头整顿，再找机会反攻……",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.rumor_ch02.lines.0.text":       "听说这里有不摆在台面上的好东西……（酒馆前按 Shift+F1 键）",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.shop_ch02_secret.goods.0.name": "阔剑",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.shop_ch02_secret.goods.1.name": "长戟",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.shop_ch02_secret.goods.2.name": "钉头锤",
+		},
+	}
+	itemWants := map[string]map[int]string{
+		"ja":      {1: "ブロードソード", 22: "ハルバード", 53: "ウォーハンマー", 128: "布の服", 132: "レザーアーマー", 192: "薬草", 193: "回復薬"},
+		"en":      {1: "Broadsword", 22: "Halberd", 53: "War Hammer", 128: "Cloth Garb", 132: "Leather Armor", 192: "Herb", 193: "Recovery Potion"},
+		"zh-Hans": {1: "阔剑", 22: "长戟", 53: "钉头锤", 128: "布衣", 132: "皮甲", 192: "药草", 193: "回复剂"},
+	}
+	for localeID, entries := range wants {
+		assertReviewedContentEntryIDs(t, localeID, entries)
+		catalog, err := loadOfficialLocaleEntities(localeID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for itemID, want := range itemWants[localeID] {
+			got, err := catalog.ItemName(itemID)
+			if err != nil || got != want {
+				t.Fatalf("%s item %d=%q err=%v, want %q", localeID, itemID, got, err, want)
+			}
+		}
+	}
+}
+
+func assertReviewedContentEntryIDs(t *testing.T, localeID string, wants map[string]string) {
+	t.Helper()
+	raw, err := os.ReadFile(assetPath("assets/locales/" + localeID + "/content.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var document struct {
+		Entries []struct {
+			StringID string `json:"string_id"`
+			Status   string `json:"status"`
+			Text     string `json:"text"`
+		} `json:"entries"`
+	}
+	if err := json.Unmarshal(raw, &document); err != nil {
+		t.Fatal(err)
+	}
+	remaining := make(map[string]string, len(wants))
+	for id, text := range wants {
+		remaining[id] = text
+	}
+	for _, entry := range document.Entries {
+		want, ok := remaining[entry.StringID]
+		if !ok {
+			continue
+		}
+		if entry.Status != "reviewed" || entry.Text != want {
+			t.Fatalf("%s %s status=%q text=%q, want reviewed %q", localeID, entry.StringID, entry.Status, entry.Text, want)
+		}
+		delete(remaining, entry.StringID)
+	}
+	if len(remaining) != 0 {
+		t.Fatalf("%s reviewed entries missing: %v", localeID, remaining)
+	}
+}
+
 func assertReviewedContentEntries(t *testing.T, localeID string, wants map[string]string) {
 	t.Helper()
 	raw, err := os.ReadFile(assetPath("assets/locales/" + localeID + "/content.json"))

@@ -60,14 +60,20 @@ def build(campaign_path: Path, content_path: Path, overrides_path: Path, charact
         sources[item_id].append(entry["string_id"])
     if not names:
         raise ValueError("內容目錄沒有 campaign_full 商品名稱")
-    conflicts = {item_id: values for item_id, values in names.items() if len(values) != 1}
-    if conflicts:
-        raise ValueError(f"同一商品 ID 有多種譯名：{conflicts}")
     overrides = read_json(overrides_path)
     locale_overrides = overrides["locales"].get(content["locale"], {})
+    reviewed_items = set(overrides.get("reviewed_items", {}).get(content["locale"], []))
+    if not reviewed_items <= {int(item_id) for item_id in locale_overrides}:
+        raise ValueError("人工審校商品必須同時具有語系 override")
     unknown = set(locale_overrides) - {str(item_id) for item_id in names}
     if unknown:
         raise ValueError(f"override 指向不存在的商品 ID：{sorted(unknown)}")
+    conflicts = {
+        item_id: values for item_id, values in names.items()
+        if len(values) != 1 and str(item_id) not in locale_overrides
+    }
+    if conflicts:
+        raise ValueError(f"同一商品 ID 有多種譯名且沒有人工 override：{conflicts}")
     item_source = read_json(item_source_path)
     if item_source["kind"] != "fd2_original_item_names" or item_source["displayable_item_count"] != 200:
         raise ValueError("完整原版物品名稱清冊格式錯誤")
@@ -97,7 +103,7 @@ def build(campaign_path: Path, content_path: Path, overrides_path: Path, charact
         str(item_id): {
             "name": locale_overrides.get(str(item_id), next(iter(names[item_id]))),
             "source_string_ids": [source_items[str(item_id)]["source_string_id"], *sorted(sources[item_id])],
-            "status": default_status,
+            "status": "curated_remake_translation" if item_id in reviewed_items else default_status,
         }
         for item_id in sorted(names)
     }

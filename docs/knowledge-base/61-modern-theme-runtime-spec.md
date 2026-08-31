@@ -187,6 +187,14 @@
   三方一致確認，識別字採重製英文實體目錄的 `Roland`。人工影像檢視保留
   正面略向左、灰棕長捲髮、寬深藍頭帶、狹長眼、淡紅唇色與小型金色耳飾；
   希莉亞現代母稿只作平滑手繪完成度與背景參考。
+- `modern.sylpha.portrait.style_a.frame0`
+- 執行期檔：`sylpha-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `ecd5b1f299bb9f0e1b1dc233a31b9fe5652d9bcac20eacad2935839fba424ccb`
+- 母稿：`sylpha-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_024_m0`、10 份故事檔共 41 筆 `speaker=24 / speaker_name=希爾法` 與繁中實體清冊
+  三方一致確認，識別字採重製英文實體目錄的 `Sylpha`。人工影像檢視保留
+  完全禿頭、高額頭、兩側長尖耳、瘦削嚴肅面孔、細黑八字鬍、中央尖山羊鬍
+  與金橙高聖職衣領；約拿現代母稿只作完成度與背景參考，不帶入白鬍或頭巾。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`

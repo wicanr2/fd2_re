@@ -51,9 +51,11 @@ def load(path: Path) -> dict:
             fail(f"{path}: {key} 空文字")
         if VAR_RE.findall(entry["text"]) != entry["variables"]:
             fail(f"{path}: {key} 變數簽章不符")
-        want_status = "source" if data["locale"] == "zh-Hant" else "machine_draft"
-        if entry["status"] != want_status:
-            fail(f"{path}: {key} 審查狀態不符")
+        if data["locale"] == "zh-Hant":
+            if entry["status"] != "source":
+                fail(f"{path}: {key} 繁中來源狀態不符")
+        elif entry["status"] not in {"machine_draft", "reviewed", "blocked"}:
+            fail(f"{path}: {key} 翻譯審查狀態不符")
         if data["locale"] == "en" and CJK_RE.search(entry["text"]):
             fail(f"{path}: {key} 英文包殘留 CJK 字形")
     return data
