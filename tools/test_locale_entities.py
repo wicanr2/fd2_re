@@ -28,6 +28,8 @@ class LocaleEntitiesTest(unittest.TestCase):
                         "--battle-supplements", str(ROOT / "docs/data/localization/battle-name-supplements.json"),
                         "--command-source", str(ROOT / "docs/data/command_labels.json"),
                         "--command-supplements", str(ROOT / "docs/data/localization/command-name-supplements.json"),
+                        "--class-source", str(ROOT / "docs/data/exe_tables/class_equip_types.json"),
+                        "--class-supplements", str(ROOT / "docs/data/localization/class-name-supplements.json"),
                         "--output", str(output),
                     ],
                     check=True,

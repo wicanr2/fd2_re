@@ -4664,14 +4664,31 @@ func (g *Game) applyChurchClassChange(branchIndex int) bool {
 		g.msg = fmt.Sprintf("缺少轉職成長列 portrait=%02Xh", branch.Portrait)
 		return false
 	}
+	className, err := g.localeEntities.ClassName(branch.ClassID)
+	if err != nil {
+		g.loadErr = "class change: " + err.Error()
+		return false
+	}
+	displayName := u.Name
+	if u.HasNativeIdentity {
+		displayName, err = g.localeEntities.CharacterName(u.NativeIdentity)
+		if err != nil {
+			g.loadErr = "class change: " + err.Error()
+			return false
+		}
+	}
+	successMessage, ok := g.localeMessage("church.class_change.success", displayName, className)
+	if !ok {
+		return false
+	}
 	if err := campaign.ApplyClassChange(&u, branch.Portrait, branch.ClassID, branch.MobilityIncrement, row, g.rng, branch.InventoryIndex); err != nil {
 		g.msg = err.Error()
 		return false
 	}
-	u.ClsName = campaign.ClassName(branch.ClassID)
+	u.ClsName = className
 	campaign.RecomputeAfterClassChange(&u, g.shopItemStats)
 	g.partyRoster[id] = u
-	g.msg = fmt.Sprintf("%s 已轉職為%s", u.Name, u.ClsName)
+	g.msg = successMessage
 	g.churchMode, g.churchBranches, g.churchIDs = "class", nil, g.churchCandidates("class")
 	g.churchSel = 0
 	g.churchVerticalStart = 0
@@ -9086,18 +9103,31 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 			if g.churchMode == "class" {
 				title = "轉職"
 			} else if g.churchMode == "class_confirm" {
-				title = "確定要轉職嗎？"
+				if message, ok := g.localeMessage("church.class_change.confirm_title"); ok {
+					title = message
+				}
 			}
 			g.font.Draw(screen, title, 150, 108, 1.2, color.RGBA{0xff, 0xe0, 0x90, 0xff})
 			if listLen == 0 {
-				g.font.Draw(screen, "目前沒有符合條件的角色", 150, 150, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
+				if message, ok := g.localeMessage("church.class_change.empty"); ok {
+					g.font.Draw(screen, message, 150, 150, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
+				}
 			} else if g.churchMode == "class_confirm" {
 				target := campaign.ClassChangeBranch{}
 				if len(g.churchBranches) == 1 {
 					target = g.churchBranches[0]
 				}
-				g.font.Draw(screen, fmt.Sprintf("目標：%s", campaign.ClassName(target.ClassID)), 150, 150, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
-				for i, label := range []string{"是", "否"} {
+				className, classErr := g.localeEntities.ClassName(target.ClassID)
+				targetLabel, targetOK := g.localeMessage("church.class_change.target", className)
+				if classErr == nil && targetOK {
+					g.font.Draw(screen, targetLabel, 150, 150, 1.0, color.RGBA{0xd0, 0xd8, 0xe8, 0xff})
+				}
+				yes, yesOK := g.localeMessage("common.yes")
+				no, noOK := g.localeMessage("common.no")
+				for i, label := range []string{yes, no} {
+					if !yesOK || !noOK {
+						break
+					}
 					pre, c := "　", color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
 					if i == g.churchSel {
 						pre, c = "▶", color.RGBA{0xff, 0xff, 0xff, 0xff}

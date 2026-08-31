@@ -27,6 +27,9 @@ func TestOfficialEntityCatalogsShareItemIdentity(t *testing.T) {
 		if len(catalog.commandNames) != 35 {
 			t.Fatalf("%s command names=%d, want 35", locale, len(catalog.commandNames))
 		}
+		if len(catalog.classNames) != 29 {
+			t.Fatalf("%s class names=%d, want 29", locale, len(catalog.classNames))
+		}
 		if name, err := catalog.CharacterName(9); err != nil || (locale == "zh-Hant" && name != "悠妮") {
 			t.Fatalf("%s character 9=%q, err=%v", locale, name, err)
 		}
@@ -41,6 +44,26 @@ func TestOfficialEntityCatalogsShareItemIdentity(t *testing.T) {
 			if _, ok := catalog.items[id]; !ok {
 				t.Fatalf("%s misses item %d", locale, id)
 			}
+		}
+	}
+}
+
+func TestEntityCatalogClassLookupPreservesPlaceholdersAndFailsClosed(t *testing.T) {
+	catalog, err := LoadOfficialEntities(filepath.Join("..", "..", "assets", "locales"), "en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, err := catalog.ClassName(15); err != nil || got != "Dragonblade" {
+		t.Fatalf("class 15=%q err=%v", got, err)
+	}
+	for _, id := range []int{26, 27, 28} {
+		if _, err := catalog.ClassName(id); err != nil {
+			t.Fatalf("original placeholder class %d was lost: %v", id, err)
+		}
+	}
+	for _, id := range []int{-1, 29} {
+		if _, err := catalog.ClassName(id); err == nil {
+			t.Fatalf("unknown class %d was accepted", id)
 		}
 	}
 }

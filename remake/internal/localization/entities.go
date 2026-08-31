@@ -30,6 +30,8 @@ type entityPack struct {
 	BattleNames      map[string]entityNameEntry `json:"battle_names"`
 	CommandNameCount int                        `json:"command_name_count"`
 	CommandNames     map[string]entityNameEntry `json:"command_names"`
+	ClassNameCount   int                        `json:"class_name_count"`
+	ClassNames       map[string]entityNameEntry `json:"class_names"`
 }
 
 // EntityCatalog 是以遊戲實體 ID 為鍵的不可變官方名稱目錄。
@@ -39,6 +41,7 @@ type EntityCatalog struct {
 	characters   map[int]string
 	battleNames  map[int]string
 	commandNames map[int]string
+	classNames   map[int]string
 }
 
 // LoadOfficialEntities 驗證 <root>/<locale>/entities.json。
@@ -74,6 +77,9 @@ func LoadOfficialEntities(root, locale string) (*EntityCatalog, error) {
 	}
 	if pack.CommandNameCount != len(pack.CommandNames) || pack.CommandNameCount != 35 {
 		return nil, fmt.Errorf("validate locale entities %q: command name count mismatch", path)
+	}
+	if pack.ClassNameCount != len(pack.ClassNames) || pack.ClassNameCount != 29 {
+		return nil, fmt.Errorf("validate locale entities %q: class name count mismatch", path)
 	}
 	items := make(map[int]string, len(pack.Items))
 	for rawID, entry := range pack.Items {
@@ -128,7 +134,27 @@ func LoadOfficialEntities(root, locale string) (*EntityCatalog, error) {
 		}
 		commandNames[id] = entry.Name
 	}
-	return &EntityCatalog{Locale: locale, items: items, characters: characters, battleNames: battleNames, commandNames: commandNames}, nil
+	classNames := make(map[int]string, len(pack.ClassNames))
+	for rawID, entry := range pack.ClassNames {
+		id, err := strconv.Atoi(rawID)
+		if err != nil || id < 0 || id >= 29 || entry.Name == "" || len(entry.SourceStringIDs) != 1 {
+			return nil, fmt.Errorf("validate locale entities %q: invalid class name %q", path, rawID)
+		}
+		placeholder := id == 26 || id == 27 || id == 28
+		if placeholder && entry.Status != "original_placeholder" {
+			return nil, fmt.Errorf("validate locale entities %q: class %d lost placeholder status", path, id)
+		}
+		if !placeholder && entry.Status != "original_confirmed" &&
+			entry.Status != "deterministic_script_conversion" &&
+			entry.Status != "curated_remake_translation" {
+			return nil, fmt.Errorf("validate locale entities %q: invalid class status %q", path, entry.Status)
+		}
+		classNames[id] = entry.Name
+	}
+	return &EntityCatalog{
+		Locale: locale, items: items, characters: characters,
+		battleNames: battleNames, commandNames: commandNames, classNames: classNames,
+	}, nil
 }
 
 func (c *EntityCatalog) CharacterName(nativeIdentity int) (string, error) {
@@ -174,6 +200,18 @@ func (c *EntityCatalog) CommandName(rawID int) (string, error) {
 	name, ok := c.commandNames[rawID]
 	if !ok {
 		return "", fmt.Errorf("missing localized command name %d", rawID)
+	}
+	return name, nil
+}
+
+// ClassName 以原版ClassID查詢職業名稱；26／27／28保留原版占位語意。
+func (c *EntityCatalog) ClassName(classID int) (string, error) {
+	if c == nil {
+		return "", errors.New("nil locale entity catalog")
+	}
+	name, ok := c.classNames[classID]
+	if !ok {
+		return "", fmt.Errorf("missing localized class %d", classID)
 	}
 	return name, nil
 }

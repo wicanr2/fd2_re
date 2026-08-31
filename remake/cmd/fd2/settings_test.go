@@ -51,6 +51,9 @@ func TestOfficialLocalesCoverSystemAndSaveMessages(t *testing.T) {
 			"battle.reward.item", "battle.reward.item_full", "battle.reward.gold",
 			"battle.spell.menu_title",
 			"church.transfer.empty", "church.transfer.success", "church.revive.success",
+			"church.class_change.success",
+			"church.class_change.confirm_title", "church.class_change.empty", "church.class_change.target",
+			"common.yes", "common.no",
 		} {
 			entry, ok := catalog.Entries[key]
 			if !ok || strings.TrimSpace(entry.Text) == "" {

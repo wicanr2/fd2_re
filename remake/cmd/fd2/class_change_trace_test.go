@@ -11,6 +11,14 @@ import (
 func TestCampaignTownChurchClassChangeReturnTrace(t *testing.T) {
 	t.Setenv("XDG_DATA_HOME", t.TempDir())
 	userDataDirCached = ""
+	localeCatalog, err := loadOfficialLocale("zh-Hant")
+	if err != nil {
+		t.Fatal(err)
+	}
+	localeEntities, err := loadOfficialLocaleEntities("zh-Hant")
+	if err != nil {
+		t.Fatal(err)
+	}
 	c := &campaign.Campaign{
 		Start: "town_ch02",
 		Flags: map[string]bool{},
@@ -55,7 +63,8 @@ func TestCampaignTownChurchClassChangeReturnTrace(t *testing.T) {
 		shopItemStats: map[int]campaign.ItemStats{
 			0x64: {AP: 3, DP: 2, HIT: 1, EV: 2, MV: 1},
 		},
-		rng: rand.New(rand.NewSource(1)),
+		rng:           rand.New(rand.NewSource(1)),
+		localeCatalog: localeCatalog, localeEntities: localeEntities,
 	}
 	g.stepCampaignMenu(campaign.MenuDown)
 	selected, confirm := g.stepCampaignMenu(campaign.MenuConfirm)
@@ -84,7 +93,7 @@ func TestCampaignTownChurchClassChangeReturnTrace(t *testing.T) {
 	g.partyDeploy = map[int]bool{9: true}
 	g.gold, g.items, g.handlerChapter = 279, []string{"sky-key"}, 2
 	g.saveGameToSlot(2)
-	if g.msg != "已存檔(槽位3：town_ch02)" {
+	if g.msg != "已存檔（槽位 3：town_ch02）" {
 		t.Fatalf("class-change save boundary=%q", g.msg)
 	}
 
@@ -128,5 +137,27 @@ func TestCampaignTownChurchClassChangeReturnTrace(t *testing.T) {
 		t.Fatalf("class-change transient state leaked: st=%v mode=%q sel=%d class=%d branches=%#v text=%d class_job=%v church_job=%v",
 			g.st, g.churchMode, g.churchSel, g.churchClassID, g.churchBranches,
 			g.nativeChurchTextIndex, g.nativeClassUIJob, g.nativeChurchUIJob)
+	}
+}
+
+func TestClassChangeFailsClosedBeforeMutationWithoutLocaleEntities(t *testing.T) {
+	u := battle.Unit{
+		Name: "悠妮", ClassID: 5, Portrait: 9, Lv: 20, Exp: 31,
+		HP: 22, MaxHP: 30, MP: 7, MaxMP: 10, AP: 20, DP: 18, DX: 12, MV: 5,
+	}
+	g := &Game{
+		partyRoster: map[int]battle.Unit{9: u}, churchClassID: 9,
+		churchBranches: []campaign.ClassChangeBranch{{Portrait: 0x34, ClassID: 21}},
+		classChangeGrowth: map[int]campaign.ClassChangeGrowth{
+			0x34: {AP: [2]int{10, 11}, DP: [2]int{20, 21}, DX: [2]int{30, 31}, HP: [2]int{40, 41}, MP: [2]int{50, 51}},
+		},
+		rng: rand.New(rand.NewSource(1)),
+	}
+	if g.applyChurchClassChange(0) {
+		t.Fatal("class change succeeded without localized entity catalog")
+	}
+	if got := g.partyRoster[9]; got.ClassID != u.ClassID || got.Portrait != u.Portrait ||
+		got.AP != u.AP || got.Exp != u.Exp {
+		t.Fatalf("failed locale gate leaked class mutation: before=%#v after=%#v", u, got)
 	}
 }

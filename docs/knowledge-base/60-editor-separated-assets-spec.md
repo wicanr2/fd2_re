@@ -590,7 +590,10 @@ provenance及零變數簽章驗證；正式玩家輸入的九個寫入點已改�
 
 教會正式輸入另接通「無物品可轉交」、物品轉交成功與復活成功三個四語鍵。轉交與復活
 都在 mutation 前預先格式化必要訊息；官方目錄缺失時不先修改背包、金幣或角色狀態。
-轉職成功訊息仍待職業名稱目錄四語化，不以只翻句型的方式製造混語結果。
+29筆ClassID職業名稱已加入官方實體目錄；26／27／28以`original_placeholder`保留原版
+問號／全形空白，不升格成正常職業。轉職成功、確認標題、空名冊、目標與是／否後備介面
+均查四語目錄；正式轉職在 mutation 前預取角色名、職業名與成功訊息，缺任一資料不修改
+成長值、裝備或持續隊伍。
 
 完整原版物品名稱區固定為 FDTXT_000 `string_0181..0395`，對應 raw item ID 0–214。
 雜湊綁定匯出確認其中 200 筆有名稱，108–122 共15筆為原版空字串；空洞必須標成
@@ -703,7 +706,9 @@ frame另需 binary mask。metadata 綁定固定 `FDOTHER.DAT` hash、resource14�
 公開儲存庫只保存 `remake/assets/themes/modern/catalog.json` 的可追溯目錄。每筆必須有
 穩定 `asset_id`、用途 `role`、成熟度 `status`、原版／重製參考 `source_refs`、
 私有相對路徑、寬高與 SHA-256。目錄不得把概念合成圖冒充可直接替換的 portrait、sprite
-sheet、tileset 或 HUD 九宮格；只有完成切片、透明邊界、縮放與 runtime 合成驗收後，狀態
+sheet、tileset 或 HUD 九宮格，也不得宣稱能從合成圖可靠反切原始 frame／tile／cell。
+正式新素材必須逐一對照原始獨立資產的ID、方向、遮罩與幾何重繪；只有完成透明邊界、
+縮放與 runtime 合成驗收後，狀態
 才能由 `concept` 提升為 `runtime_ready`。
 
 `tools/validate_modern_theme_catalog.py` 有兩種閘門：公開庫模式驗證 schema、角色集合、

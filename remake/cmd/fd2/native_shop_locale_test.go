@@ -138,6 +138,28 @@ func TestOfficialCommandNamesFitNativeGridCell(t *testing.T) {
 	}
 }
 
+func TestOfficialClassNamesFitClassChangeTargetRectangle(t *testing.T) {
+	displayFont := loadFont()
+	if displayFont == nil {
+		t.Fatal("official CJK font unavailable")
+	}
+	for _, localeID := range []string{"zh-Hant", "zh-Hans", "ja", "en"} {
+		catalog, err := loadOfficialLocaleEntities(localeID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for classID := 0; classID < 29; classID++ {
+			name, err := catalog.ClassName(classID)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if displayFont.Width(name, 1.0) > 160 {
+				t.Errorf("%s class %d name %q exceeds class target rectangle", localeID, classID, name)
+			}
+		}
+	}
+}
+
 func TestOfficialShopMessagesFitNativeDialogueRectangle(t *testing.T) {
 	displayFont := loadFont()
 	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))

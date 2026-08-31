@@ -36,7 +36,8 @@ def write_json(path: Path, value) -> None:
 def build(campaign_path: Path, content_path: Path, overrides_path: Path, characters_path: Path,
           item_source_path: Path, item_supplements_path: Path, battle_source_path: Path,
           battle_supplements_path: Path, command_source_path: Path,
-          command_supplements_path: Path) -> dict:
+          command_supplements_path: Path, class_source_path: Path,
+          class_supplements_path: Path) -> dict:
     campaign = read_json(campaign_path)
     content = read_json(content_path)
     names: dict[int, set[str]] = defaultdict(set)
@@ -199,6 +200,34 @@ def build(campaign_path: Path, content_path: Path, overrides_path: Path, charact
             "source_string_ids": [f"FDTXT_000/string_{source_entry['string_index']:04d}"],
             "status": status,
         }
+    class_source = read_json(class_source_path)
+    if not isinstance(class_source, list) or len(class_source) != 29:
+        raise ValueError("原版職業名稱清冊必須恰好包含29筆")
+    if [row.get("cls") for row in class_source] != list(range(29)):
+        raise ValueError("原版職業名稱清冊必須依序涵蓋ClassID 0..28")
+    class_supplements = read_json(class_supplements_path)
+    if class_supplements.get("kind") != "fd2_class_name_supplements" or \
+            class_supplements.get("source") != "docs/data/exe_tables/class_equip_types.json":
+        raise ValueError("職業名稱補充表格式錯誤")
+    if set(class_supplements.get("names", {})) != {str(i) for i in range(29)} or \
+            class_supplements.get("placeholder_ids") != [26, 27, 28]:
+        raise ValueError("職業名稱補充表必須完整涵蓋ClassID 0..28及原版占位")
+    class_status = class_supplements["status"][locale]
+    class_names = {}
+    for row in class_source:
+        raw_id = str(row["cls"])
+        translations = class_supplements["names"][raw_id]
+        name = translations[locale]
+        if not name:
+            raise ValueError(f"職業名稱 {raw_id} 的 {locale} 名稱為空")
+        if locale == "zh-Hant" and name != row["name"]:
+            raise ValueError(f"職業名稱 {raw_id} 與原版清冊不符")
+        status = "original_placeholder" if row["cls"] in {26, 27, 28} else class_status
+        class_names[raw_id] = {
+            "name": name,
+            "source_string_ids": [f"EXE/class_name/{raw_id}"],
+            "status": status,
+        }
     return {
         "schema_version": 1,
         "kind": "fd2_locale_entities",
@@ -212,6 +241,8 @@ def build(campaign_path: Path, content_path: Path, overrides_path: Path, charact
         "battle_names": battle_names,
         "command_name_count": len(command_names),
         "command_names": command_names,
+        "class_name_count": len(class_names),
+        "class_names": class_names,
     }
 
 
@@ -227,11 +258,14 @@ def main() -> None:
     parser.add_argument("--battle-supplements", type=Path, required=True)
     parser.add_argument("--command-source", type=Path, required=True)
     parser.add_argument("--command-supplements", type=Path, required=True)
+    parser.add_argument("--class-source", type=Path, required=True)
+    parser.add_argument("--class-supplements", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     result = build(args.campaign, args.content, args.overrides, args.characters,
                    args.item_source, args.item_supplements, args.battle_source,
-                   args.battle_supplements, args.command_source, args.command_supplements)
+                   args.battle_supplements, args.command_source, args.command_supplements,
+                   args.class_source, args.class_supplements)
     write_json(args.output, result)
     print(f"{result['locale']}: wrote {result['item_count']} item names to {args.output}")
 
