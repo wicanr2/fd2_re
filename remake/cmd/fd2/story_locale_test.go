@@ -34,6 +34,7 @@ func TestReviewedOpeningTranslationsUseCanonicalLineIDs(t *testing.T) {
 			"legacy/line/7ecb566a60db/scenes/3/lines/10": "I can't stand this guy. Sol, let's stop arguing and take him down together!",
 			"legacy/line/7ecb566a60db/scenes/3/lines/12": "Damn it! Those two brats don't respect me at all! Kill them! Don't let a single one escape!",
 			"legacy/line/7ecb566a60db/scenes/7/lines/5":  "Of course, sir! There’s no problem with that at all! Isn’t that right, Yuni?",
+			"legacy/line/7ecb566a60db/scenes/8/lines/1":  "Dad! Dad!",
 		},
 		"zh-Hans": {
 			"legacy/line/15b3c967fb2b/scenes/1/lines/13": "悠妮?好名字。悠妮小姐,你怎么会记不得怎么来到这里的?",

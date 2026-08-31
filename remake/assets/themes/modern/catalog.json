@@ -343,10 +343,10 @@
       "master_file": "jonah-portrait-style-a-v1-master.png",
       "width": 80,
       "height": 80,
-      "sha256": "00a20de20355b0dc48f438c2651f9db6b6293125778889e680e99bc7d885c065",
+      "sha256": "10af8b1838d7fca129e56eaff29e6f469001b8ef7657af03ab7a2e3af282a885",
       "source_refs": [
         "asset:DATO_021_m0",
-        "asset:modern.kylas.portrait.style_a.frame0"
+        "asset:modern.rodman.portrait.style_a.frame0"
       ],
       "consumer_contract": "native_story_dialogue_rgba_overlay_v1",
       "speaker_id": 21,
@@ -368,6 +368,24 @@
       ],
       "consumer_contract": "native_story_dialogue_rgba_overlay_v1",
       "speaker_id": 22,
+      "frame": 0,
+      "mouth_state": "closed"
+    },
+    {
+      "asset_id": "modern.roland.portrait.style_a.frame0",
+      "role": "story_portrait_frame",
+      "status": "runtime_candidate",
+      "file": "roland-portrait-style-a-v1-80.png",
+      "master_file": "roland-portrait-style-a-v1-master.png",
+      "width": 80,
+      "height": 80,
+      "sha256": "eecbc0dc0688e7bc46233f0a6e40c50a1d54d12e4bbb292f9ec19cc0888554c9",
+      "source_refs": [
+        "asset:DATO_023_m0",
+        "asset:modern.celia.portrait.style_a.frame0"
+      ],
+      "consumer_contract": "native_story_dialogue_rgba_overlay_v1",
+      "speaker_id": 23,
       "frame": 0,
       "mouth_state": "closed"
     },

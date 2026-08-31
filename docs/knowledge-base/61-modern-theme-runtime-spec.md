@@ -165,12 +165,12 @@
   蜜蒂現代母稿只作平滑手繪完成度與背景參考。
 - `modern.jonah.portrait.style_a.frame0`
 - 執行期檔：`jonah-portrait-style-a-v1-80.png`，`80×80`，SHA-256
-  `00a20de20355b0dc48f438c2651f9db6b6293125778889e680e99bc7d885c065`
+  `10af8b1838d7fca129e56eaff29e6f469001b8ef7657af03ab7a2e3af282a885`
 - 母稿：`jonah-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
   `DATO_021_m0`、84 筆 `speaker=21 / speaker_name=約拿` 與繁中實體清冊
   三方一致確認，識別字採重製英文實體目錄的 `Jonah`。人工影像檢視保留
-  向左狼族側面、長犬科口鼻、尖耳、冰藍白色厚毛、堅毅眼神與少量棕金護甲；
-  凱拉斯現代母稿只作非人類側面構圖與完成度參考。
+  老年人類聖者、深藍尖頂頭巾、巨大白色鬍鬚與鬍髭、飽經風霜的面孔、堅毅
+  眼神及少量棕金聖職服飾；羅德曼現代母稿只作老年男性面部完成度參考。
 - `modern.carlos.portrait.style_a.frame0`
 - 執行期檔：`carlos-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `8ebbb556ed3462f0efe824344702fc59fd5219359d5fc29c42d9185861d71ebe`
@@ -179,6 +179,14 @@
   三方一致確認，識別字採重製英文實體目錄的 `Carlos`。人工影像檢視保留
   正面略向左、深藍黑高馬尾、兩側長鬢髮、冷峻微瞇眼、黑色高領與暗紅肩部；
   莎拉現代母稿只作平滑手繪完成度與背景參考。
+- `modern.roland.portrait.style_a.frame0`
+- 執行期檔：`roland-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `eecbc0dc0688e7bc46233f0a6e40c50a1d54d12e4bbb292f9ec19cc0888554c9`
+- 母稿：`roland-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_023_m0`、3 筆 `speaker=23 / speaker_name=羅蘭` 與繁中實體清冊
+  三方一致確認，識別字採重製英文實體目錄的 `Roland`。人工影像檢視保留
+  正面略向左、灰棕長捲髮、寬深藍頭帶、狹長眼、淡紅唇色與小型金色耳飾；
+  希莉亞現代母稿只作平滑手繪完成度與背景參考。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`
