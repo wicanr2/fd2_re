@@ -17,12 +17,14 @@ func TestReviewedOpeningTranslationsUseCanonicalLineIDs(t *testing.T) {
 			"legacy/line/ae86adb52dac/scenes/0/lines/0":  "父上、ソールです。謁見に参りました。",
 			"legacy/line/ae86adb52dac/scenes/1/lines/17": "それじゃ仕方ないな。もう引き受けるしかないのか？",
 			"legacy/line/7ecb566a60db/scenes/1/lines/5":  "ただの強盗じゃない。こいつらはマラ大陸の沿岸を荒らし、人殺しも略奪も何でもする海賊だって聞いている。",
+			"legacy/line/7ecb566a60db/scenes/7/lines/8":  "ぼ、僕はハノです。これから、よろしくお願いします。",
 		},
 		"en": {
 			"legacy/line/15b3c967fb2b/scenes/0/lines/0":  "Ares, let's have another match! Losing to you yesterday still bothers me!",
 			"legacy/line/ae86adb52dac/scenes/0/lines/0":  "I am Sol. I have come to pay my respects, Father.",
 			"legacy/line/ae86adb52dac/scenes/1/lines/16": "Ever since I was a child, I wanted to go abroad and have grand adventures—not sit on a throne for the rest of my life. I am only Father's adopted son and have no royal blood, so I always thought Dean would inherit the throne and I would be free. But now...",
 			"legacy/line/7ecb566a60db/scenes/3/lines/4":  "That must be the pirate leader! At last, a worthy opponent has appeared. Leave this one to me!",
+			"legacy/line/7ecb566a60db/scenes/7/lines/8":  "My name is... Hano. I hope we can get along.",
 		},
 		"zh-Hans": {
 			"legacy/line/15b3c967fb2b/scenes/1/lines/13": "悠妮?好名字。悠妮小姐,你怎么会记不得怎么来到这里的?",

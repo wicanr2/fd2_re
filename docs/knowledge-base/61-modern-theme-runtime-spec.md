@@ -83,6 +83,13 @@
   `DATO_008_m0`、86 筆 `speaker=8 / speaker_name=希莉亞` 與繁中實體清冊
   三方一致確認。人工影像檢視保留正面構圖、棕色波浪長髮、藍色額飾與中央
   紅寶石、紅唇及灰藍高領；洛娜現代母稿只作畫風參考。
+- `modern.yuni.portrait.style_a.frame0`
+- 執行期檔：`yuni-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `f8d28f8ed44f6a4063dd4375aafe965c7b688a92fd33a18963adc7f0efd535b0`
+- 母稿：`yuni-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_009_m0`、107 筆 `speaker=9 / speaker_name=悠妮` 與繁中實體清冊
+  三方一致確認。人工影像檢視保留正面構圖、深紅長髮與頭帶、中央藍寶石、
+  狹長眼及暗紅高領。初遇倒地昏迷屬場景演出，不混入正常對話頭像。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`
