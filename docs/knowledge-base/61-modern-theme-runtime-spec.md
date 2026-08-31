@@ -155,6 +155,14 @@
   三方一致確認，識別字採重製英文實體目錄的 `Rodman`。人工影像檢視保留
   向左三分之二側面、棕色後梳長髮、濃密八字鬍與下巴鬍鬚、銳利眼神及
   灰藍肩甲；蜜蒂現代母稿只作平滑手繪完成度與背景參考。
+- `modern.sarah.portrait.style_a.frame0`
+- 執行期檔：`sarah-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `4e738256880aa93af830e45354f80cf2b199463fb43d03bc320a306823ed57e7`
+- 母稿：`sarah-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_020_m0`、6 筆 `speaker=20 / speaker_name=莎拉` 與繁中實體清冊
+  三方一致確認，識別字採重製英文實體目錄的 `Sarah`。人工影像檢視保留
+  正面精靈尖耳、灰綠長直髮、細紅色頭帶、纖細眉眼、紅唇與深色高領；
+  蜜蒂現代母稿只作平滑手繪完成度與背景參考。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`
