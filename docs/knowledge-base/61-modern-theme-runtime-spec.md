@@ -90,6 +90,13 @@
   `DATO_009_m0`、107 筆 `speaker=9 / speaker_name=悠妮` 與繁中實體清冊
   三方一致確認。人工影像檢視保留正面構圖、深紅長髮與頭帶、中央藍寶石、
   狹長眼及暗紅高領。初遇倒地昏迷屬場景演出，不混入正常對話頭像。
+- `modern.marin.portrait.style_a.frame0`
+- 執行期檔：`marin-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `75701dc5fa307e09aa393d46f863465b3a06bbb64e1c97d34073d39c7d96d4e1`
+- 母稿：`marin-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_010_m0`、18 筆 `speaker=10 / speaker_name=瑪琳` 與繁中實體清冊
+  三方一致確認。人工影像檢視保留正面構圖、紫紅齊肩短髮、中央金色髮飾、
+  狹長眼、紅唇與金紅華麗高領；悠妮現代母稿只作畫風參考。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`
