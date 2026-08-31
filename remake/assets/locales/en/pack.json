@@ -59,6 +59,10 @@
     "shop.recipient.full": {"text": "%s cannot carry any more!", "variables": ["%s"], "source_string_id": "FDTXT_000/string_0506"},
     "shop.transfer.destination_prompt": {"text": "Who should receive it?", "variables": [], "source_string_id": "FDTXT_000/string_0510"},
     "shop.transfer.empty_source": {"text": "%s has no items!", "variables": ["%s"], "source_string_id": "FDTXT_000/string_0511"},
-    "shop.transfer.source_prompt": {"text": "Whose items?", "variables": [], "source_string_id": "FDTXT_000/string_0512"}
+    "shop.transfer.source_prompt": {"text": "Whose items?", "variables": [], "source_string_id": "FDTXT_000/string_0512"},
+    "shop.purchase.success": {"text": "Bought %s (-%d G)", "variables": ["%s", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l4468-c17"},
+    "shop.sell.success": {"text": "Sold item %02Xh (+%d G)", "variables": ["%02X", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l4506-c15"},
+    "shop.purchase.equip_prompt": {"text": "Equip it? Enter=Yes, ESC=No", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l4555-c15"},
+    "shop.recipient.none": {"text": "No one can carry this item!", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l4576-c13"}
   }
 }

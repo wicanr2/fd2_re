@@ -4465,7 +4465,9 @@ func (g *Game) campInput() bool {
 				g.gold = campaign.FinalizeGood(g.gold, g.shopPending)
 				g.partyRoster[g.shopEquipUnit] = u
 				g.shopEquipPrompt = false
-				g.msg = fmt.Sprintf("買下 %s(-%d G)", g.shopPending.Name, g.shopPending.Price)
+				if message, ok := g.localeMessage("shop.purchase.success", g.shopPending.Name, g.shopPending.Price); ok {
+					g.msg = message
+				}
 			}
 			return true
 		}
@@ -4503,7 +4505,9 @@ func (g *Game) campInput() bool {
 					} else {
 						campaign.RecomputeEquipment(&u, g.shopItemStats)
 						g.gold, g.partyRoster[ids[g.shopSellUnitSel]] = gold, u
-						g.msg = fmt.Sprintf("賣出物品 %02Xh(+%d G)", itemID, price*3/4)
+						if message, ok := g.localeMessage("shop.sell.success", itemID, price*3/4); ok {
+							g.msg = message
+						}
 						if len(u.Inventory) == 0 {
 							g.shopSellPicking = false
 						}
@@ -4552,10 +4556,14 @@ func (g *Game) campInput() bool {
 					g.shopPicking = false
 					if g.shopItemTypes[g.shopPending.ID] < 0x20 {
 						g.shopEquipPrompt, g.shopEquipUnit, g.shopEquipSlot = true, id, slot
-						g.msg = "要裝備上去嗎？ Enter=是，ESC=否"
+						if message, ok := g.localeMessage("shop.purchase.equip_prompt"); ok {
+							g.msg = message
+						}
 					} else {
 						g.gold = campaign.FinalizeGood(g.gold, g.shopPending)
-						g.msg = fmt.Sprintf("買下 %s(-%d G)", g.shopPending.Name, g.shopPending.Price)
+						if message, ok := g.localeMessage("shop.purchase.success", g.shopPending.Name, g.shopPending.Price); ok {
+							g.msg = message
+						}
 					}
 				}
 			}
@@ -4573,7 +4581,9 @@ func (g *Game) campInput() bool {
 			g.shopRecipients = g.shopReceiverIDs(gd)
 			g.shopRecipientSel = 0
 			if len(g.shopRecipients) == 0 {
-				g.msg = "沒有人可以收下這件物品!"
+				if message, ok := g.localeMessage("shop.recipient.none"); ok {
+					g.msg = message
+				}
 			} else {
 				g.shopPicking = true
 			}

@@ -59,6 +59,10 @@
     "shop.recipient.full": {"text": "%s帶不動了！", "variables": ["%s"], "source_string_id": "FDTXT_000/string_0506"},
     "shop.transfer.destination_prompt": {"text": "要給誰呢？", "variables": [], "source_string_id": "FDTXT_000/string_0510"},
     "shop.transfer.empty_source": {"text": "%s沒東西了！", "variables": ["%s"], "source_string_id": "FDTXT_000/string_0511"},
-    "shop.transfer.source_prompt": {"text": "誰的東西呢？", "variables": [], "source_string_id": "FDTXT_000/string_0512"}
+    "shop.transfer.source_prompt": {"text": "誰的東西呢？", "variables": [], "source_string_id": "FDTXT_000/string_0512"},
+    "shop.purchase.success": {"text": "買下 %s(-%d G)", "variables": ["%s", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l4468-c17"},
+    "shop.sell.success": {"text": "賣出物品 %02Xh(+%d G)", "variables": ["%02X", "%d"], "source_string_id": "legacy.go.remake.cmd.fd2.main.l4506-c15"},
+    "shop.purchase.equip_prompt": {"text": "要裝備上去嗎？ Enter=是，ESC=否", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l4555-c15"},
+    "shop.recipient.none": {"text": "沒有人可以收下這件物品!", "variables": [], "source_string_id": "legacy.go.remake.cmd.fd2.main.l4576-c13"}
   }
 }

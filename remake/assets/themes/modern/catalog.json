@@ -15,6 +15,23 @@
       "source_refs": ["asset:DATO_000_m0"]
     },
     {
+      "asset_id": "modern.sol.portrait.style_a.frame0",
+      "role": "story_portrait_frame",
+      "status": "runtime_candidate",
+      "file": "sol-portrait-style-a-v2-80.png",
+      "master_file": "sol-portrait-style-a-v2-master.png",
+      "width": 80,
+      "height": 80,
+      "sha256": "6ecc692c30973c62900dc9983ea878df29394d30bfe28d7bf6931dd223131e82",
+      "source_refs": [
+        "asset:DATO_000_m0",
+        "asset:modern.sol.portrait.style_a"
+      ],
+      "consumer_contract": "native_story_dialogue_rgba_overlay_v1",
+      "frame": 0,
+      "mouth_state": "closed"
+    },
+    {
       "asset_id": "modern.ch01.battlefield.style_a",
       "role": "battlefield_concept",
       "status": "concept",

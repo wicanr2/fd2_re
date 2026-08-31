@@ -14,8 +14,9 @@ CATALOG = ROOT / "remake/assets/themes/modern/catalog.json"
 ID_RE = re.compile(r"^[a-z0-9]+(?:[._-][a-z0-9]+)+$")
 SHA_RE = re.compile(r"^[0-9a-f]{64}$")
 SOURCE_ASSET_RE = re.compile(r"^asset:[A-Za-z0-9][A-Za-z0-9._-]+$")
-ROLES = {"portrait_concept", "battlefield_concept", "battle_hud_concept"}
-STATUSES = {"concept", "approved", "runtime_ready"}
+PROTOTYPE_ROLES = {"portrait_concept", "battlefield_concept", "battle_hud_concept"}
+ROLES = PROTOTYPE_ROLES | {"story_portrait_frame"}
+STATUSES = {"concept", "approved", "runtime_candidate", "runtime_ready"}
 
 
 def png_size(path: Path) -> tuple[int, int]:
@@ -43,17 +44,29 @@ def validate(verify_private: bool) -> dict:
     roles: set[str] = set()
     for entry in assets:
         required = {"asset_id", "role", "status", "file", "width", "height", "sha256", "source_refs"}
-        if not isinstance(entry, dict) or set(entry) != required:
+        candidate = {"master_file", "consumer_contract", "frame", "mouth_state"}
+        if not isinstance(entry, dict):
+            raise ValueError("asset entry must be an object")
+        expected = required | candidate if entry.get("role") == "story_portrait_frame" else required
+        if set(entry) != expected:
             raise ValueError("asset fields mismatch")
         asset_id = entry["asset_id"]
         if not isinstance(asset_id, str) or not ID_RE.fullmatch(asset_id) or asset_id in ids:
             raise ValueError(f"invalid or duplicate asset_id: {asset_id!r}")
         ids.add(asset_id)
-        if entry["role"] not in ROLES or entry["role"] in roles:
+        if entry["role"] not in ROLES or (entry["role"] in PROTOTYPE_ROLES and entry["role"] in roles):
             raise ValueError(f"invalid or duplicate role: {entry['role']!r}")
         roles.add(entry["role"])
         if entry["status"] not in STATUSES:
             raise ValueError(f"invalid status: {entry['status']!r}")
+        if entry["role"] == "story_portrait_frame":
+            master = Path(entry["master_file"])
+            if master.is_absolute() or len(master.parts) != 1 or master.suffix.lower() != ".png":
+                raise ValueError(f"unsafe private master file: {entry['master_file']!r}")
+            if entry["consumer_contract"] != "native_story_dialogue_rgba_overlay_v1":
+                raise ValueError(f"invalid consumer contract: {asset_id}")
+            if entry["frame"] not in range(4) or entry["mouth_state"] not in {"closed", "open"}:
+                raise ValueError(f"invalid portrait frame identity: {asset_id}")
         file_path = Path(entry["file"])
         if file_path.is_absolute() or len(file_path.parts) != 1 or file_path.suffix.lower() != ".png":
             raise ValueError(f"unsafe private file: {entry['file']!r}")
@@ -83,8 +96,8 @@ def validate(verify_private: bool) -> dict:
             digest = hashlib.sha256(private_path.read_bytes()).hexdigest()
             if digest != entry["sha256"]:
                 raise ValueError(f"sha256 mismatch: {asset_id}")
-    if roles != ROLES:
-        raise ValueError(f"required prototype roles missing: {sorted(ROLES - roles)}")
+    if not PROTOTYPE_ROLES.issubset(roles):
+        raise ValueError(f"required prototype roles missing: {sorted(PROTOTYPE_ROLES - roles)}")
     return data
 
 

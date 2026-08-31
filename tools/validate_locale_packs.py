@@ -67,6 +67,10 @@ APPROVED_SOURCE = {
     "shop.transfer.destination_prompt": "FDTXT_000/string_0510",
     "shop.transfer.empty_source": "FDTXT_000/string_0511",
     "shop.transfer.source_prompt": "FDTXT_000/string_0512",
+    "shop.purchase.success": "legacy.go.remake.cmd.fd2.main.l4468-c17",
+    "shop.sell.success": "legacy.go.remake.cmd.fd2.main.l4506-c15",
+    "shop.purchase.equip_prompt": "legacy.go.remake.cmd.fd2.main.l4555-c15",
+    "shop.recipient.none": "legacy.go.remake.cmd.fd2.main.l4576-c13",
 }
 
 def fail(message: str) -> None:
