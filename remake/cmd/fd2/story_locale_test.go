@@ -39,6 +39,7 @@ func TestReviewedOpeningTranslationsUseCanonicalLineIDs(t *testing.T) {
 			"legacy/line/7ecb566a60db/scenes/4/lines/2":  "我们是亚克斯王国的海岸巡防队，消灭肆虐沿海的海盗本是我们的职责，这些海盗就交给我们来处理，请各位放心！",
 			"legacy/line/7ecb566a60db/scenes/1/lines/13": "那就杀无赦！上啊！",
 			"legacy/line/7ecb566a60db/scenes/2/lines/2":  "什么？待我看看……啊哈，这不是海盗在打劫旅客吗？居然敢在我们门前抢人，胆子不小啊！",
+			"legacy/line/7ecb566a60db/scenes/3/lines/12": "可恶啊！这两个小子全不把我放在眼里！给我杀！一个都别放过！",
 		},
 	}
 	for localeID, entries := range wants {

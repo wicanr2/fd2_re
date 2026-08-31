@@ -147,6 +147,14 @@
   三方一致確認，識別字採重製英文實體目錄的 `Mitty`。人工影像檢視保留
   正面構圖、蓬鬆金色長捲髮、深色眉毛、紅唇與沉著表情；蘇菲亞現代母稿
   只作畫風與完成度參考。
+- `modern.rodman.portrait.style_a.frame0`
+- 執行期檔：`rodman-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `4abe00cc62692a6a122bf26334cfc54d9e66056153021a6c0ae4634817db105e`
+- 母稿：`rodman-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_019_m0`、12 筆 `speaker=19 / speaker_name=羅德曼` 與繁中實體清冊
+  三方一致確認，識別字採重製英文實體目錄的 `Rodman`。人工影像檢視保留
+  向左三分之二側面、棕色後梳長髮、濃密八字鬍與下巴鬍鬚、銳利眼神及
+  灰藍肩甲；蜜蒂現代母稿只作平滑手繪完成度與背景參考。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`
