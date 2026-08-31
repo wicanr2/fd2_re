@@ -169,6 +169,20 @@
 
 ## 工具鏈與主機衛生
 
+### 私人素材保存庫
+
+- `https://github.com/wicanr2/fd2-assets-private.git` 是本專案原版分離素材與現代
+  重繪素材的唯一私人保存庫，必須永遠維持 private。原版固定包保存於
+  `packs/fd2-original-b97caf22/`；已登錄的現代重繪主題保存於
+  `packs/fd2-modern-handpainted-a/`。
+- `fd2_re` 公開庫只保存引擎、規格、來源／輸出雜湊、可重跑同步工具，以及使用者
+  明確允許公開的總攬圖；不得把可重組的完整原版素材包加入公開庫。
+- 現代重繪素材通過清冊與執行期驗證後，必須同步到上述私人庫，不得只留在
+  `remake/generated-assets/` 或 Codex 生成目錄。同步必須以受版控 catalog 為
+  allow-list，不得把拒收草稿、未登錄候選或原版擷取檔混入現代主題包。
+- 私人庫與公開庫是兩個獨立提交；各自提交前都要檢查差異、雜湊、擁有權與
+  Docker 清理狀態，並分別驗證遠端 HEAD。
+
 - 原始遊戲檔保持不可變；DOSBox 實驗與存檔修改只能使用複本沙箱或可寫覆蓋層。
 - Capstone 只可透過 `tools/docker/fd2-cap.Dockerfile` 與 `fd2-cap-local`
   在 Docker 中使用。禁止安裝到主機 Python、全域環境或主機虛擬環境；

@@ -702,8 +702,12 @@ frame另需 binary mask。metadata 綁定固定 `FDOTHER.DAT` hash、resource14�
 
 ### 12.1 現代美術主題目錄（2026-08-31）
 
-現代美術原尺寸稿保留於本機私有 `remake/generated-assets/modern-theme-prototypes/`，
-公開儲存庫只保存 `remake/assets/themes/modern/catalog.json` 的可追溯目錄。每筆必須有
+現代美術的本機工作稿位於被版控忽略的
+`remake/generated-assets/modern-theme-prototypes/`；通過清冊與執行期驗證後，正式
+私人保存位置是 `https://github.com/wicanr2/fd2-assets-private.git` 的
+`packs/fd2-modern-handpainted-a/`。公開儲存庫保存
+`remake/assets/themes/modern/catalog.json` 的可追溯目錄，以及使用者允許公開的
+總攬圖。每筆必須有
 穩定 `asset_id`、用途 `role`、成熟度 `status`、原版／重製參考 `source_refs`、
 私有相對路徑、寬高與 SHA-256。目錄不得把概念合成圖冒充可直接替換的 portrait、sprite
 sheet、tileset 或 HUD 九宮格，也不得宣稱能從合成圖可靠反切原始 frame／tile／cell。
@@ -1146,6 +1150,9 @@ archive subresources、125張一般 PNG、264組 FIGANI／2,118張動畫 frame�
   `94d90aee84f316dd7cbfcce21416a5aaf327a42a75342f9e531299ee35e06c38`。公開 `fd2_re`
   只保留解碼器、schema、雜湊清冊摘要、
   驗證工具與經審查的執行期比較圖，不提交可重組原作的完整逐檔素材。
+- 私人儲存庫固定為 `https://github.com/wicanr2/fd2-assets-private.git`。原版分離包與
+  現代重繪包分別置於 `packs/fd2-original-b97caf22/` 與
+  `packs/fd2-modern-handpainted-a/`，不可混用來源、manifest 或權利聲明。
 - 私人包固定根為 `packs/fd2-original-b97caf22/`，必須保留 `manifest.json` 的原始相對
   路徑。`raw/` 只供研究追溯與重新驗證，正式 `Game` 不得讀取。
 - 開發端以 `FD2_ASSET_PACK` 指向私人包根；正式 consumer 只可讀分離 PNG、OGG、JSON、
