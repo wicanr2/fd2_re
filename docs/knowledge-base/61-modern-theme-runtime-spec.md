@@ -4,7 +4,7 @@
 
 ## 範圍
 
-本規格分別定義現代故事頭像，以及 FDICON selector 0–8、68 的十組 12 格候選。
+本規格分別定義現代故事頭像，以及 FDICON selector 0–9、68 的十一組 12 格候選。
 selector 是圖像索引，不等於故事說話者或頭像身分；兩者不得混用。
 它不授權從合成概念稿反切地圖圖塊或 HUD，也不改變忠實原版主題。
 
@@ -197,7 +197,8 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   `DATO_024_m0`、10 份故事檔共 41 筆 `speaker=24 / speaker_name=希爾法` 與繁中實體清冊
   三方一致確認，識別字採重製英文實體目錄的 `Sylpha`。人工影像檢視保留
   完全禿頭、高額頭、兩側長尖耳、瘦削嚴肅面孔、細黑八字鬍、中央尖山羊鬍
-  與金橙高聖職衣領；約拿現代母稿只作完成度與背景參考，不帶入白鬍或頭巾。
+  與金橙高聖職衣領；約拿現代母稿只作完成度與背景參考，希爾法不得帶入約拿的
+  巨大白鬍鬚或貼頭白色頭巾。
 - `modern.seymour.portrait.style_a.frame0`
 - 執行期檔：`seymour-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `729e23f30f3a3664d90bbd7500f55a054cbd5d1d3c7b54ca2f8248a6bb798787`
@@ -289,7 +290,7 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
 5. 原生 indexed bank 與正規化 RGBA loader 是兩條不同 consumer；接線時兩條
    路徑必須共同抽測，且現代主題缺任一格即整組失敗即關閉。
 
-### selector 0–8 與 68 候選
+### selector 0–9 與 68 候選
 
 - `modern.fdicon.group_000.style_a`：以原版 `fig_000_f00..f11` 為動作基準生成
   3×4 母稿，再以確定性背景分割、逐格裁切及二值 alpha 轉成 12 張 `24×24`
@@ -332,9 +333,14 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   依原版大片棕色波浪髮、藍色弓兵服裝、側／背面可見的樸素木弓與少量箭袋
   輪廓生成，不帶入 FIGANI 或對話頭像未在地圖小圖顯示的細節；通用工具輸出
   四方向各三步態。這只支持 group 8 的地圖投影，不能泛化成所有角色欄位全域等價。
+- `modern.fdicon.group_009.style_a`：角色表 `index=9 / sprite_group=9`、四語
+  隊伍姓名、多章地圖資料與 `DATO_009 / speaker=9` 一致確認悠妮。母稿依原版
+  深紅長髮與窄頭帶、深藍上衣、紅色下身及纖細法師輪廓生成，不加入原版小圖
+  未顯示的武器。這 12 幀只代表正常行走；初遇倒地昏迷仍由獨立場景 acting
+  與專用演出素材負責，不能以本組宣稱已完成倒地演出。
 - `modern.fdicon.group_068.style_a`：沿用第 68 組原版輪廓的現代候選。它不綁
   固定角色身分；第 11 格是第 9 格上半身與第 10 格下半身的現代近似。
-- 十組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+- 十一組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
 
@@ -344,7 +350,7 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   0..95、12 個安全檔名、逐格 SHA-256、`24×24`、二值 alpha、互異雜湊及三週期
   policy，任何一項不符即拒絕整個現代主題。
 - `loadGame` 在完整預檢後，才以各組 12 張真彩色圖原子取代正規化
-  `g.sprites[0]`／`g.sprites[1]`／`g.sprites[2]`／`g.sprites[3]`／`g.sprites[4]`／`g.sprites[5]`／`g.sprites[6]`／`g.sprites[7]`／`g.sprites[8]`／`g.sprites[68]`；其他 group 不變，忠實主題
+  `g.sprites[0]`／`g.sprites[1]`／`g.sprites[2]`／`g.sprites[3]`／`g.sprites[4]`／`g.sprites[5]`／`g.sprites[6]`／`g.sprites[7]`／`g.sprites[8]`／`g.sprites[9]`／`g.sprites[68]`；其他 group 不變，忠實主題
   預設路徑也不變。
 - 原生 indexed 戰場 compositor 仍直接消費 `NativeMapSelectorCache`，尚未加入
   真彩色覆蓋層。此路徑保持原版 sprite，不偷偷量化或混搭；因此地圖人物目前

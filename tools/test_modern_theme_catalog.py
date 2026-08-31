@@ -36,7 +36,7 @@ class ModernThemeCatalogTests(unittest.TestCase):
             for asset in catalog["assets"]
             if asset.get("role") == "map_sprite_set"
         }
-        self.assertEqual(sprite_groups, {0, 1, 2, 3, 4, 5, 6, 7, 8, 68})
+        self.assertEqual(sprite_groups, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 68})
 
 
 if __name__ == "__main__":

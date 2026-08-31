@@ -18,6 +18,7 @@ GROUPS = (
     (6, "Raiden base selector"),
     (7, "Lancelot map projection"),
     (8, "Celia base selector"),
+    (9, "Yuni base selector"),
     (68, "late selector sample"),
 )
 
@@ -40,7 +41,7 @@ def load_strip(group: int, modern: bool) -> Image.Image:
 
 
 def main() -> None:
-    width, height = 1040, 1784
+    width, height = 1040, 1952
     canvas = Image.new("RGB", (width, height), "#08152b")
     draw = ImageDraw.Draw(canvas)
     font = ImageFont.load_default()
