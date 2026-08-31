@@ -97,6 +97,13 @@
   `DATO_010_m0`、18 筆 `speaker=10 / speaker_name=瑪琳` 與繁中實體清冊
   三方一致確認。人工影像檢視保留正面構圖、紫紅齊肩短髮、中央金色髮飾、
   狹長眼、紅唇與金紅華麗高領；悠妮現代母稿只作畫風參考。
+- `modern.sophia.portrait.style_a.frame0`
+- 執行期檔：`sophia-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `39da886f78193f0ff6082f10aa7d65c1f201771ad5ea4193ceed664cd640c2ff`
+- 母稿：`sophia-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_011_m0`、19 筆 `speaker=11 / speaker_name=索菲亞` 與繁中實體清冊
+  三方一致確認。人工影像檢視保留灰綠短髮、兩側長鬢髮、紅唇、黑色細頸圈
+  與藍灰肩甲；瑪琳現代母稿只作畫風參考。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`
