@@ -136,6 +136,48 @@ func TestReviewedOpeningTranslationsUseCanonicalLineIDs(t *testing.T) {
 	}
 }
 
+func TestReviewedChapterThreeSceneOneLinesOneToFive(t *testing.T) {
+	wants := map[string]map[string]string{
+		"en": {
+			"legacy/line/cac6c4f06aba/scenes/1/lines/1/speaker-name": "Sol",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/1/text":         "What a shame. We did everything we could, but we still couldn’t save him…",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/2/speaker-name": "Celia",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/2/text":         "Perhaps it’s for the best. He can go underground and be reunited with his beloved, without having to keep fleeing those who are hunting him…",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/3/text":         "Celia, what is your true identity?",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/4/speaker-name": "Celia",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/4/text":         "That’s a secret! Anyway, let’s leave as soon as we’ve buried him. Otherwise, there may be more trouble ahead…",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/5/speaker-name": "Sol",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/5/text":         "Let’s do that.",
+		},
+		"ja": {
+			"legacy/line/cac6c4f06aba/scenes/1/lines/1/text":         "残念だ。俺たちも力を尽くしたが、結局彼を助けられなかった……",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/2/speaker-name": "シリア",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/2/text":         "これでよかったのよ。地下で愛する人と再会できるし、もう追っ手から逃げ回らなくてもいい……",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/4/text":         "それは秘密よ！とにかく、彼を埋葬したらすぐにここを離れましょう。そうしないと、まだ面倒なことが待っているかもしれないわ……",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/5/text":         "そうしよう。",
+		},
+		"zh-Hans": {
+			"legacy/line/cac6c4f06aba/scenes/1/lines/1/text": "真遗憾，我们已经尽力了，结果还是帮不了他……",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/2/text": "也好，让他到地下和爱人相聚，也不用再四处躲避别人的追杀……",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/3/text": "希莉亚，你的真实身份究竟是什么？",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/4/text": "秘密！总之，我们安葬他之后就赶快离开这里吧，否则麻烦可能还在后头呢！",
+			"legacy/line/cac6c4f06aba/scenes/1/lines/5/text": "就这么办吧！",
+		},
+	}
+	for localeID, entries := range wants {
+		content, err := loadOfficialLocaleContent(localeID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for lineID, want := range entries {
+			if got, err := content.StoryText(lineID); err != nil || got != want {
+				t.Fatalf("%s %s=%q err=%v, want %q", localeID, lineID, got, err, want)
+			}
+		}
+		assertReviewedContentEntries(t, localeID, entries)
+	}
+}
+
 func TestReviewedChapterTwoCampaignTranslationsAndItemEntities(t *testing.T) {
 	wants := map[string]map[string]string{
 		"ja": {
