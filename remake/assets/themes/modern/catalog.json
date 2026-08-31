@@ -48,11 +48,11 @@
       ]
     },
     {
-      "asset_id": "modern.ares.portrait.style_a.frame0",
+      "asset_id": "modern.hano.portrait.style_a.frame0",
       "role": "story_portrait_frame",
       "status": "runtime_candidate",
-      "file": "ares-portrait-style-a-v1-80.png",
-      "master_file": "ares-portrait-style-a-v1-master.png",
+      "file": "hano-portrait-style-a-v1-80.png",
+      "master_file": "hano-portrait-style-a-v1-master.png",
       "width": 80,
       "height": 80,
       "sha256": "89d108d4ccea833ab0f2167aa5c220b9cea2694976347fff241cf016ec48203d",
@@ -62,6 +62,24 @@
       ],
       "consumer_contract": "native_story_dialogue_rgba_overlay_v1",
       "speaker_id": 1,
+      "frame": 0,
+      "mouth_state": "closed"
+    },
+    {
+      "asset_id": "modern.ares.portrait.style_a.frame0",
+      "role": "story_portrait_frame",
+      "status": "runtime_candidate",
+      "file": "ares-portrait-style-a-v2-80.png",
+      "master_file": "ares-portrait-style-a-v2-master.png",
+      "width": 80,
+      "height": 80,
+      "sha256": "23e12ae24d8f67bde815c32c82544d99cd2f8af1b844bc691422a3d7ed7cfa39",
+      "source_refs": [
+        "asset:DATO_004_m0",
+        "asset:modern.hano.portrait.style_a.frame0"
+      ],
+      "consumer_contract": "native_story_dialogue_rgba_overlay_v1",
+      "speaker_id": 4,
       "frame": 0,
       "mouth_state": "closed"
     },
@@ -76,7 +94,7 @@
       "sha256": "f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d",
       "source_refs": [
         "asset:DATO_002_m0",
-        "asset:modern.ares.portrait.style_a.frame0"
+        "asset:modern.hano.portrait.style_a.frame0"
       ],
       "consumer_contract": "native_story_dialogue_rgba_overlay_v1",
       "speaker_id": 2,

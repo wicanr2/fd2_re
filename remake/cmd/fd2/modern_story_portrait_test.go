@@ -123,7 +123,7 @@ func TestLoadModernStoryPortraitSetAdmitsMultipleSpeakersAtomically(t *testing.T
 	for key, value := range first {
 		second[key] = value
 	}
-	second["asset_id"] = "modern.ares.portrait.style_a.frame0"
+	second["asset_id"] = "modern.hano.portrait.style_a.frame0"
 	second["speaker_id"] = float64(1)
 	document["assets"] = append(document["assets"].([]any), second)
 	raw, err = json.Marshal(document)

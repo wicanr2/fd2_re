@@ -48,19 +48,27 @@
 - 執行期檔：`sol-portrait-style-a-v2-80.png`，`80×80`，SHA-256
   `6ecc692c30973c62900dc9983ea878df29394d30bfe28d7bf6931dd223131e82`
 - 母稿：`sol-portrait-style-a-v2-master.png`，`1254×1254`。
-- `modern.ares.portrait.style_a.frame0`
-- 執行期檔：`ares-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+- `modern.hano.portrait.style_a.frame0`
+- 執行期檔：`hano-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `89d108d4ccea833ab0f2167aa5c220b9cea2694976347fff241cf016ec48203d`
-- 母稿：`ares-portrait-style-a-v1-master.png`，`1254×1254`；依
-  `DATO_001_m0` 保留棕紅長髮、深色頭帶與右向側面，索爾現代母稿只作畫風
-  一致性參考，不作角色身分來源。
+- 母稿：`hano-portrait-style-a-v1-master.png`，`1254×1254`。2026-08-31
+  勘誤：`DATO_001_m0`、多章 `speaker=1` 與繁中實體清冊三方皆指向哈諾，
+  不是亞雷斯；原先 `modern.ares...` 名稱及私有檔名已更正，像素內容與雜湊
+  未改。保留棕紅長髮、深色頭帶與右向側面，索爾現代母稿只作畫風參考。
+- `modern.ares.portrait.style_a.frame0`
+- 執行期檔：`ares-portrait-style-a-v2-80.png`，`80×80`，SHA-256
+  `23e12ae24d8f67bde815c32c82544d99cd2f8af1b844bc691422a3d7ed7cfa39`
+- 母稿：`ares-portrait-style-a-v2-master.png`，`1254×1254`；角色身分由
+  `DATO_004_m0`、多章 `speaker=4 / speaker_name=亞雷斯` 與繁中實體清冊
+  三方一致確認。保留原版左向、深藍包頭帽、綠額帶、紅棕短髮及肩後長柄武器；
+  哈諾現代母稿只作畫風參考。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`
 - 母稿：`tino-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
   `DATO_002_m0`、`ch03.json` 的 `speaker=2 / speaker_name=鐵諾` 與繁中實體
   清冊三方一致確認。保留淺灰綠兜帽、深色長髮、額帶、右向側面及深藍灰護甲；
-  亞雷斯現代母稿只作畫風參考。
+  哈諾現代母稿只作畫風參考。
 - `modern.harvat.portrait.style_a.frame0`
 - 執行期檔：`harvat-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `709f889fa71c36644c279af2aefd889fd46098545c345dd0223d7a748ffd8109`
