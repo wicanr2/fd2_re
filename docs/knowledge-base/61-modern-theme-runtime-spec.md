@@ -139,6 +139,14 @@
   `DATO_017_m0`、22 筆 `speaker=17 / speaker_name=米亞斯多德` 與繁中實體
   清冊三方一致確認，識別字採 `Miasdord`。原版影像確認它是正面暗紅龍／魔獸首，
   具亮紅眼、多根尖角、尖長側耳、黑色鬚棘與灰藍肩部，不得套用人類頭像模板。
+- `modern.mitty.portrait.style_a.frame0`
+- 執行期檔：`mitty-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `4230f203f3fefb576edcfa46dc5e768898d9784073e584187e687eea09fb64a1`
+- 母稿：`mitty-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_018_m0`、29 筆 `speaker=18 / speaker_name=蜜蒂` 與繁中實體清冊
+  三方一致確認，識別字採重製英文實體目錄的 `Mitty`。人工影像檢視保留
+  正面構圖、蓬鬆金色長捲髮、深色眉毛、紅唇與沉著表情；蘇菲亞現代母稿
+  只作畫風與完成度參考。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`
