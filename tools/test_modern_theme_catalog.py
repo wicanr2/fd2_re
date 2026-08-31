@@ -17,6 +17,20 @@ class ModernThemeCatalogTests(unittest.TestCase):
             (candidate["width"], candidate["height"], candidate["speaker_id"], candidate["frame"]),
             (80, 80, 0, 0),
         )
+        hano = next(
+            asset
+            for asset in catalog["assets"]
+            if asset.get("asset_id") == "modern.fdicon.group_001.style_a"
+        )
+        self.assertEqual(
+            (
+                hano["source_group"],
+                hano["frame_count"],
+                hano["alpha_contract"],
+                hano["master_file"],
+            ),
+            (1, 12, "binary", "fdicon-001-style-a-v1-master.png"),
+        )
 
 
 if __name__ == "__main__":

@@ -130,6 +130,13 @@ DOS 本身不會替遊戲顯示中文。原版自帶點陣字型，文本也不�
 素材庫 `fd2-assets-private`，公開庫只放這張壓平總攬與可追溯 catalog。
 `speaker／identity 7、15、28、29` 仍因原始名稱證據衝突而失敗即關閉，不以猜測補圖。*
 
+![原版與現代地圖人物十二幀總攬](docs/figures/modern-map-sprites-overview.png)
+
+*地圖人物 12 幀比較：selector 0、1、68 各保留四方向×三步態。新增的 selector 1
+由角色表證實是哈諾的基礎圖組；三組現代候選均為獨立 `24×24` PNG，具逐幀雜湊與
+二值透明度契約。此圖是公開壓平總攬；母稿與逐幀素材只保存於私人素材庫。原生
+indexed 戰場尚未接真彩覆蓋層，因此不把這張總攬宣稱為正常玩家畫面。*
+
 | 33 張原版戰場低解析索引 |
 |---|
 | ![原版 33 張戰場低解析總覽](docs/figures/original-battlefields-atlas-public.png) |

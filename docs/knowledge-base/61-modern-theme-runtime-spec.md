@@ -274,7 +274,7 @@
 
 ### 現代候選契約
 
-1. `modern.fdicon.group_068.style_a` 必須一次提供 12 張獨立 `24×24` PNG，保留
+1. 每個 `modern.fdicon.group_NNN.style_a` 必須一次提供 12 張獨立 `24×24` PNG，保留
    frame 0..11、pose 0..3 與 cycle 0..2 的穩定映射。
 2. 每張 alpha 只能是 0 或 255；catalog validator 在私人素材驗證模式逐像素檢查。
 3. 生成的第 11 格曾因雙劍與比例漂移被拒收，後續暫以第 9 格佔位。現行候選
@@ -286,15 +286,20 @@
 5. 原生 indexed bank 與正規化 RGBA loader 是兩條不同 consumer；接線時兩條
    路徑必須共同抽測，且現代主題缺任一格即整組失敗即關閉。
 
-### selector 0 與 68 候選
+### selector 0、1 與 68 候選
 
 - `modern.fdicon.group_000.style_a`：以原版 `fig_000_f00..f11` 為動作基準生成
   3×4 母稿，再以確定性背景分割、逐格裁切及二值 alpha 轉成 12 張 `24×24`
   PNG。索爾的基礎建構資料使用 selector 0，因此這組可驗證第一關索爾；但
   catalog 仍以原始 selector 命名，不宣稱 group 0 永遠只供索爾使用。
+- `modern.fdicon.group_001.style_a`：角色資料表 `index=1` 已證實哈諾的基礎
+  `sprite_group=1`；以原版 `fig_001_f00..f11` 的四方向與三步態作姿勢基準，
+  生成 3×4 母稿後，以連通背景分割、最大人物元件保留、最近鄰縮放及二值
+  alpha 輸出 12 張 `24×24` PNG。這是現代美術候選，不冒稱原版逐像素重繪；
+  catalog 仍按 selector 命名，避免未來 writer 改寫 selector 時把角色身分硬編進 loader。
 - `modern.fdicon.group_068.style_a`：沿用第 68 組原版輪廓的現代候選。它不綁
   固定角色身分；第 11 格是第 9 格上半身與第 10 格下半身的現代近似。
-- 兩組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+- 三組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
 
@@ -304,7 +309,8 @@
   0..95、12 個安全檔名、逐格 SHA-256、`24×24`、二值 alpha、互異雜湊及三週期
   policy，任何一項不符即拒絕整個現代主題。
 - `loadGame` 在完整預檢後，才以各組 12 張真彩色圖原子取代正規化
-  `g.sprites[0]`／`g.sprites[68]`；其他 group 不變，忠實主題預設路徑也不變。
+  `g.sprites[0]`／`g.sprites[1]`／`g.sprites[68]`；其他 group 不變，忠實主題
+  預設路徑也不變。
 - 原生 indexed 戰場 compositor 仍直接消費 `NativeMapSelectorCache`，尚未加入
   真彩色覆蓋層。此路徑保持原版 sprite，不偷偷量化或混搭；因此地圖人物目前
   是 `RUNTIME-E1-PARTIAL`，待原生與正規化同狀態抽測後才能升級。

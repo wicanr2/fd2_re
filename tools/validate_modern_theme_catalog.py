@@ -55,7 +55,7 @@ def validate(verify_private: bool) -> dict:
         if entry.get("role") == "story_portrait_frame":
             expected = required | candidate
         elif entry.get("role") == "map_sprite_set":
-            expected = sprite_set
+            expected = sprite_set | ({"master_file"} if "master_file" in entry else set())
         else:
             expected = required
         if set(entry) != expected:
@@ -71,10 +71,13 @@ def validate(verify_private: bool) -> dict:
             raise ValueError(f"invalid status: {entry['status']!r}")
         if entry["status"] == "prototype" and entry["role"] != "map_sprite_set":
             raise ValueError(f"prototype status is restricted to sprite sets: {asset_id}")
-        if entry["role"] == "story_portrait_frame":
+        if "master_file" in entry:
             master = Path(entry["master_file"])
             if master.is_absolute() or len(master.parts) != 1 or master.suffix.lower() != ".png":
                 raise ValueError(f"unsafe private master file: {entry['master_file']!r}")
+            if verify_private and not (ROOT / private_root / master).is_file():
+                raise ValueError(f"private master asset missing: {ROOT / private_root / master}")
+        if entry["role"] == "story_portrait_frame":
             if entry["consumer_contract"] != "native_story_dialogue_rgba_overlay_v1":
                 raise ValueError(f"invalid consumer contract: {asset_id}")
             if not isinstance(entry["speaker_id"], int) or entry["speaker_id"] < 0:
