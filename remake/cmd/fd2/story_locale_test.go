@@ -70,6 +70,10 @@ func TestReviewedChapterTwoCampaignTranslationsAndItemEntities(t *testing.T) {
 			"legacy.json.remake.assets.scenarios.campaign_full.nodes.shop_ch02_secret.goods.0.name": "ブロードソード",
 			"legacy.json.remake.assets.scenarios.campaign_full.nodes.shop_ch02_secret.goods.1.name": "ハルバード",
 			"legacy.json.remake.assets.scenarios.campaign_full.nodes.shop_ch02_secret.goods.2.name": "ウォーハンマー",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch02.options.0.label":     "酒場：情報を聞く",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch02.options.2.label":     "出口：出撃準備",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch02.town":                "ロード",
+			"legacy/story/5bf145f103fe/ch02/title":                                                  "第2章 ― ロードの盗賊団",
 		},
 		"en": {
 			"legacy.json.remake.assets.scenarios.campaign_full.nodes.preparation_ch02.prompt":       "Enter the battlefield?",
@@ -78,6 +82,10 @@ func TestReviewedChapterTwoCampaignTranslationsAndItemEntities(t *testing.T) {
 			"legacy.json.remake.assets.scenarios.campaign_full.nodes.shop_ch02_secret.goods.0.name": "Broadsword",
 			"legacy.json.remake.assets.scenarios.campaign_full.nodes.shop_ch02_secret.goods.1.name": "Halberd",
 			"legacy.json.remake.assets.scenarios.campaign_full.nodes.shop_ch02_secret.goods.2.name": "War Hammer",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch02.options.0.label":     "Tavern: Ask Around",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch02.options.2.label":     "Exit: Battle Preparations",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch02.town":                "Rhodes",
+			"legacy/story/5bf145f103fe/ch02/title":                                                  "Chapter II — The Bandits of Rhodes",
 		},
 		"zh-Hans": {
 			"legacy.json.remake.assets.scenarios.campaign_full.nodes.preparation_ch02.prompt":       "要进入战场吗？",
@@ -86,12 +94,16 @@ func TestReviewedChapterTwoCampaignTranslationsAndItemEntities(t *testing.T) {
 			"legacy.json.remake.assets.scenarios.campaign_full.nodes.shop_ch02_secret.goods.0.name": "阔剑",
 			"legacy.json.remake.assets.scenarios.campaign_full.nodes.shop_ch02_secret.goods.1.name": "长戟",
 			"legacy.json.remake.assets.scenarios.campaign_full.nodes.shop_ch02_secret.goods.2.name": "钉头锤",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch02.options.0.label":     "酒馆：打听消息",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch02.options.2.label":     "出口：出战整备",
+			"legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch02.town":                "罗德镇",
+			"legacy/story/5bf145f103fe/ch02/title":                                                  "第二章——罗德镇的强盗团",
 		},
 	}
 	itemWants := map[string]map[int]string{
-		"ja":      {1: "ブロードソード", 22: "ハルバード", 53: "ウォーハンマー", 128: "布の服", 132: "レザーアーマー", 192: "薬草", 193: "回復薬"},
-		"en":      {1: "Broadsword", 22: "Halberd", 53: "War Hammer", 128: "Cloth Garb", 132: "Leather Armor", 192: "Herb", 193: "Recovery Potion"},
-		"zh-Hans": {1: "阔剑", 22: "长戟", 53: "钉头锤", 128: "布衣", 132: "皮甲", 192: "药草", 193: "回复剂"},
+		"ja":      {1: "ブロードソード", 22: "ハルバード", 53: "ウォーハンマー", 128: "布の服", 129: "旅装", 132: "レザーアーマー", 165: "魔術師のローブ", 192: "薬草", 193: "回復薬"},
+		"en":      {1: "Broadsword", 22: "Halberd", 53: "War Hammer", 128: "Cloth Garb", 129: "Travel Garb", 132: "Leather Armor", 165: "Mage Robe", 192: "Herb", 193: "Recovery Potion"},
+		"zh-Hans": {1: "阔剑", 22: "长戟", 53: "钉头锤", 128: "布衣", 129: "旅行装", 132: "皮甲", 165: "法师袍", 192: "药草", 193: "回复剂"},
 	}
 	for localeID, entries := range wants {
 		assertReviewedContentEntryIDs(t, localeID, entries)

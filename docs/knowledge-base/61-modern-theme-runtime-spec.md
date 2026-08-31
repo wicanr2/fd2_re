@@ -195,6 +195,15 @@
   三方一致確認，識別字採重製英文實體目錄的 `Sylpha`。人工影像檢視保留
   完全禿頭、高額頭、兩側長尖耳、瘦削嚴肅面孔、細黑八字鬍、中央尖山羊鬍
   與金橙高聖職衣領；約拿現代母稿只作完成度與背景參考，不帶入白鬍或頭巾。
+- `modern.seymour.portrait.style_a.frame0`
+- 執行期檔：`seymour-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `729e23f30f3a3664d90bbd7500f55a054cbd5d1d3c7b54ca2f8248a6bb798787`
+- 母稿：`seymour-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_025_m0`、2 份故事檔共 5 筆 `speaker=25 / speaker_name=謝多` 與繁中
+  實體清冊三方一致確認，識別字採重製英文實體目錄的 `Seymour`。原版頭像經
+  最近鄰放大後確認為深藍灰毛鼠人忍者，保留大型圓鼠耳、向右三分之二側面、
+  細長鼠吻、黑鼻、長鬍鬚、警覺淺色眼、外露門牙及深色忍者高領；凱拉斯
+  現代母稿只作非人類材質完成度參考，不帶入龍角、鱗片或龍吻。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`
