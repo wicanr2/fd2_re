@@ -8,6 +8,8 @@ package main
 import (
 	"encoding/json"
 	"os"
+
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
 
 // settingsPath 設定檔位置:$XDG_DATA_HOME/fd2_re/fd2_settings.json(理由同 savePath,見 assets.go)。
@@ -105,7 +107,21 @@ func (g *Game) cycleLocale() {
 		g.loadErr = "locale entities: " + err.Error()
 		return
 	}
+	var spells []battle.Spell
+	if len(g.spells) > 0 {
+		spells, err = localizedSpellBook(entities, g.spells)
+		if err != nil {
+			g.loadErr = "locale spell book: " + err.Error()
+			return
+		}
+	}
 	g.localeID, g.localeCatalog, g.localeContent, g.localeEntities = next, catalog, content, entities
+	if spells != nil {
+		g.spells = spells
+	}
+	if g.st != nil && spells != nil {
+		g.st.SpellBook = append([]battle.Spell(nil), spells...)
+	}
 	saveSettings(settings{BGMSource: g.bgmSource, LocaleID: g.localeID})
 	if message, ok := g.localeMessage("system.locale.changed", localeDisplayName[next]); ok {
 		g.msg = message

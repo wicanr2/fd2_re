@@ -264,9 +264,9 @@ locales/<locale>/
 
 2026-08-29 實檔盤點確認，多語系不能只修改故事 JSON：
 
-- `campaign.Line.Text`、`battle.Action.Text`、`battle.DialogLine.Text`與結局節點目前均為
-  單一字串；`command_labels.json`及角色、職業、法術、物品的顯示名稱也尚未共用
-  `string_id`。
+- `campaign.Line.Text`、`battle.Action.Text`、`battle.DialogLine.Text`與結局節點原先均為
+  單一字串。角色、物品、戰鬥raw姓名及原生指令名稱現已各自具穩定 ID 語系契約；職業名稱
+  與其餘現代介面字串仍待搬移，不可把已完成的實體目錄外推成全介面完成。
 - 現代介面的標題、法術、物品、商店、整備、教會、戰鬥提示與結局仍有大量繁中
   字串直接寫在`remake/cmd/fd2/main.go`及`title.go`。第一階段必須由可重跑extractor
   產生清冊，逐筆搬到受schema約束的字串catalog；不可用人工搜尋一次後宣稱完整。
@@ -559,6 +559,18 @@ raw selector。四語目錄必須恰含94筆，空字串 selector、缺譯、缺
 raw `+6`上下定位及chapter24 unit17例外，再於 `(panel.x+5,panel.y+4,120,16)` 重畫姓名；
 繁中仍走原版 FDTXT compositor。三個翻譯語系全部94筆均通過實際字形及安全矩形測試。
 一般玩家四語戰鬥截圖仍列 E2，不以本批單元測試取代。
+
+原生法術／戰技選單採 raw command ID 0–35，不採舊 `Spell.Name` 作名稱身分。原版
+`0x1ceed→0x15f84` 以 `FDTXT_000 string_(441+commandID)` 畫標籤；ID31是已證實空槽，
+因此官方語系目錄必須恰有35筆且查詢31失敗。來源解碼的ID21「社麻術」與ID27「麻庫術」
+仍原樣保存在 `command_labels.json`；正式繁中顯示依已接效果與既有術名作受控字形校正為
+「祛麻術／麻痺術」，標為 `curated_source_glyph_correction`，不可回寫或隱藏原始證據。
+
+2026-08-31 `DATA-READY／RUNTIME-E1` 收據：四語 `CommandName(raw_command_id)` 已接一般玩家
+四列原生指令格、`SpellBook`相容顯示及F4原子切換。標籤沿用原版每欄100像素、MP數字起點
+`x+0x49`的幾何，在140個邏輯像素內以0.02級距縮放且保留2像素餘量；35筆四語名稱均通過
+實際包內字型量測。ID31、缺譯或小於0.6倍率仍失敗即關閉。這不改 command availability、
+MP gate、target/effect或演出 owner，也不把舊直列 `drawSpellMenu` 提升為原版玩家路徑。
 
 完整原版物品名稱區固定為 FDTXT_000 `string_0181..0395`，對應 raw item ID 0–214。
 雜湊綁定匯出確認其中 200 筆有名稱，108–122 共15筆為原版空字串；空洞必須標成

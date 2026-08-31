@@ -35,7 +35,8 @@ def write_json(path: Path, value) -> None:
 
 def build(campaign_path: Path, content_path: Path, overrides_path: Path, characters_path: Path,
           item_source_path: Path, item_supplements_path: Path, battle_source_path: Path,
-          battle_supplements_path: Path) -> dict:
+          battle_supplements_path: Path, command_source_path: Path,
+          command_supplements_path: Path) -> dict:
     campaign = read_json(campaign_path)
     content = read_json(content_path)
     names: dict[int, set[str]] = defaultdict(set)
@@ -167,6 +168,37 @@ def build(campaign_path: Path, content_path: Path, overrides_path: Path, charact
             "source_string_ids": [source_entry["source_string_id"]],
             "status": status,
         }
+    command_source = read_json(command_source_path)
+    if command_source["schema"] != "fd2.native_command_labels.v1":
+        raise ValueError("原版指令名稱清冊格式錯誤")
+    source_commands = {
+        str(entry["command_id"]): entry
+        for entry in command_source["entries"]
+        if 0 <= entry["command_id"] <= 35 and entry["label"]
+    }
+    command_supplements = read_json(command_supplements_path)
+    if command_supplements["kind"] != "fd2_command_name_supplements" or \
+            set(command_supplements["names"]) != set(source_commands) or len(source_commands) != 35:
+        raise ValueError("指令名稱補充表必須恰好涵蓋35個原版非空名稱")
+    command_names = {}
+    corrections = command_supplements["source_glyph_corrections"]
+    for raw_id, source_entry in source_commands.items():
+        name = command_supplements["names"][raw_id][locale]
+        if not name:
+            raise ValueError(f"指令名稱 {raw_id} 的 {locale} 名稱為空")
+        if locale == "zh-Hant" and name != source_entry["label"]:
+            correction = corrections.get(raw_id)
+            if correction is None or correction["decoded_source"] != source_entry["label"] or \
+                    correction["display"] != name:
+                raise ValueError(f"指令名稱 {raw_id} 與來源不符且無受控勘誤")
+        status = "original_confirmed"
+        if locale != "zh-Hant" or raw_id in corrections:
+            status = command_supplements["status"][locale]
+        command_names[raw_id] = {
+            "name": name,
+            "source_string_ids": [f"FDTXT_000/string_{source_entry['string_index']:04d}"],
+            "status": status,
+        }
     return {
         "schema_version": 1,
         "kind": "fd2_locale_entities",
@@ -178,6 +210,8 @@ def build(campaign_path: Path, content_path: Path, overrides_path: Path, charact
         "characters": characters,
         "battle_name_count": len(battle_names),
         "battle_names": battle_names,
+        "command_name_count": len(command_names),
+        "command_names": command_names,
     }
 
 
@@ -191,11 +225,13 @@ def main() -> None:
     parser.add_argument("--item-supplements", type=Path, required=True)
     parser.add_argument("--battle-source", type=Path, required=True)
     parser.add_argument("--battle-supplements", type=Path, required=True)
+    parser.add_argument("--command-source", type=Path, required=True)
+    parser.add_argument("--command-supplements", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     result = build(args.campaign, args.content, args.overrides, args.characters,
                    args.item_source, args.item_supplements, args.battle_source,
-                   args.battle_supplements)
+                   args.battle_supplements, args.command_source, args.command_supplements)
     write_json(args.output, result)
     print(f"{result['locale']}: wrote {result['item_count']} item names to {args.output}")
 

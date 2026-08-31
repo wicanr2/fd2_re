@@ -106,6 +106,38 @@ func TestOfficialBattleNamesFitNativePanelRectangle(t *testing.T) {
 	}
 }
 
+func TestOfficialCommandNamesFitNativeGridCell(t *testing.T) {
+	displayFont := loadFont()
+	if displayFont == nil {
+		t.Fatal("official CJK font unavailable")
+	}
+	for _, localeID := range []string{"zh-Hant", "zh-Hans", "ja", "en"} {
+		catalog, err := loadOfficialLocaleEntities(localeID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		g := &Game{localeID: localeID, localeEntities: catalog, font: displayFont}
+		count := 0
+		for commandID := 0; commandID <= 35; commandID++ {
+			if commandID == 31 {
+				continue
+			}
+			name, scale, err := g.localizedNativeCommandLabel(commandID)
+			if err != nil {
+				t.Errorf("%s command %d: %v", localeID, commandID, err)
+				continue
+			}
+			count++
+			if displayFont.Width(name, scale) > localizedNativeCommandNameWidth || scale < localizedNativeCommandMinScale {
+				t.Errorf("%s command %d %q does not fit at scale %.3f", localeID, commandID, name, scale)
+			}
+		}
+		if count != 35 {
+			t.Errorf("%s command count=%d, want 35", localeID, count)
+		}
+	}
+}
+
 func TestOfficialShopMessagesFitNativeDialogueRectangle(t *testing.T) {
 	displayFont := loadFont()
 	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))

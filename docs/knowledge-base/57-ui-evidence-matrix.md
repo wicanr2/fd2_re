@@ -629,6 +629,12 @@ label 直接採原始 `0xc9/0xcd` palette entries，↑↓／←→採 recovered
 two-stage target/effect，**不再**因 ID 剛好有 EXE spell row 就送入 legacy `CastArea`；缺任一 asset 則退回 legacy
 spell UI。這是可視 layout/input slice，不是所有 command effect 或 native frame/background renderer 的完成宣告。
 
+2026-08-31 四語勘誤：正式四列 grid 已不再以玩家另供 `command_labels.json` 作語系 admission；
+官方四語 `CommandName(raw command ID)` 目錄恰含35個非空slot，ID31維持原版空槽。一般玩家
+raw mask、有分離 palette及語系目錄時直接進原生 grid；35筆均通過同一欄 MP 起點前的字型寬度
+測試。`command_labels.json`仍是繁中原始證據與相容載入來源，不再是多語 runtime 的唯一名稱層。
+這提升四語名稱到 `RUNTIME-E1`，不提升 command effect或一般玩家截圖到E2。
+
 2026-08-11 補充：上述玩家（player）命令格確認（command-grid confirm）的限制不延伸到
 敵方／友軍 NPC 的可編輯法術後備（fallback）。後者僅在原始 AI 路徑未處理且無錯誤時，
 於無玩家 UI 的 `NextAIPlan→aiStep→CastArea` 路徑消費；它不是 `0x1ceed` 的命令確認、

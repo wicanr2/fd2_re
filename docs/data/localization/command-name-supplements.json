@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_command_name_supplements",
+  "confirmed_empty_command_ids": [31],
+  "status": {
+    "zh-Hant": "curated_source_glyph_correction",
+    "zh-Hans": "deterministic_script_conversion",
+    "ja": "curated_remake_translation",
+    "en": "curated_remake_translation"
+  },
+  "names": {
+    "0": {"zh-Hant":"火炎術","zh-Hans":"火炎术","ja":"ファイア","en":"Fire"},
+    "1": {"zh-Hant":"烈炎術","zh-Hans":"烈炎术","ja":"ブレイズ","en":"Blaze"},
+    "2": {"zh-Hant":"炎龍術","zh-Hans":"炎龙术","ja":"フレイムドラゴン","en":"Flame Dragon"},
+    "3": {"zh-Hant":"天火術","zh-Hans":"天火术","ja":"ヘルファイア","en":"Hellfire"},
+    "4": {"zh-Hant":"電擊術","zh-Hans":"电击术","ja":"ショック","en":"Shock"},
+    "5": {"zh-Hant":"落雷術","zh-Hans":"落雷术","ja":"ライトニング","en":"Lightning"},
+    "6": {"zh-Hant":"轟雷術","zh-Hans":"轰雷术","ja":"サンダー","en":"Thunder"},
+    "7": {"zh-Hant":"神雷術","zh-Hans":"神雷术","ja":"ゴッドサンダー","en":"Divine Thunder"},
+    "8": {"zh-Hant":"聖光彈","zh-Hans":"圣光弹","ja":"ホーリーボルト","en":"Holy Bolt"},
+    "9": {"zh-Hant":"咒殺術","zh-Hans":"咒杀术","ja":"デスカース","en":"Death Curse"},
+    "10":{"zh-Hant":"碎岩術","zh-Hans":"碎岩术","ja":"ロックブレイク","en":"Rock Break"},
+    "11":{"zh-Hant":"地震術","zh-Hans":"地震术","ja":"アースクエイク","en":"Earthquake"},
+    "12":{"zh-Hant":"裂地術","zh-Hans":"裂地术","ja":"アースリフト","en":"Earthsplitter"},
+    "13":{"zh-Hant":"治療術","zh-Hans":"治疗术","ja":"ヒール","en":"Heal"},
+    "14":{"zh-Hant":"回復術","zh-Hans":"回复术","ja":"リカバー","en":"Restore"},
+    "15":{"zh-Hant":"再生術","zh-Hans":"再生术","ja":"リジェネ","en":"Regenerate"},
+    "16":{"zh-Hant":"神恩術","zh-Hans":"神恩术","ja":"ディバインヒール","en":"Divine Grace"},
+    "17":{"zh-Hant":"魔刃術","zh-Hans":"魔刃术","ja":"マジックブレード","en":"Magic Blade"},
+    "18":{"zh-Hant":"魔鎧術","zh-Hans":"魔铠术","ja":"マジックアーマー","en":"Magic Armor"},
+    "19":{"zh-Hant":"風行術","zh-Hans":"风行术","ja":"ウィンドステップ","en":"Windwalk"},
+    "20":{"zh-Hant":"解毒術","zh-Hans":"解毒术","ja":"アンチドート","en":"Antidote"},
+    "21":{"zh-Hant":"祛麻術","zh-Hans":"祛麻术","ja":"パラライズキュア","en":"Cure Paralysis"},
+    "22":{"zh-Hant":"封咒術","zh-Hans":"封咒术","ja":"スペルシール","en":"Spell Seal"},
+    "23":{"zh-Hant":"傳送術","zh-Hans":"传送术","ja":"テレポート","en":"Teleport"},
+    "24":{"zh-Hant":"破龍擊","zh-Hans":"破龙击","ja":"ドラゴンスレイヤー","en":"Dragon Strike"},
+    "25":{"zh-Hant":"行動術","zh-Hans":"行动术","ja":"クイック","en":"Quick Action"},
+    "26":{"zh-Hant":"毒擊術","zh-Hans":"毒击术","ja":"ポイズン","en":"Poison Strike"},
+    "27":{"zh-Hant":"麻痺術","zh-Hans":"麻痹术","ja":"パラライズ","en":"Paralysis"},
+    "28":{"zh-Hant":"淒煌斬","zh-Hans":"凄煌斩","ja":"凄煌斬","en":"Radiant Slash"},
+    "29":{"zh-Hant":"熾炎刀","zh-Hans":"炽炎刀","ja":"フレイムブレード","en":"Flame Blade"},
+    "30":{"zh-Hant":"音速刃","zh-Hans":"音速刃","ja":"ソニックブレード","en":"Sonic Blade"},
+    "32":{"zh-Hant":"熾天使","zh-Hans":"炽天使","ja":"セラフィム","en":"Seraph"},
+    "33":{"zh-Hant":"風妖精","zh-Hans":"风妖精","ja":"シルフ","en":"Sylph"},
+    "34":{"zh-Hant":"破壞神","zh-Hans":"破坏神","ja":"破壊神","en":"Destroyer"},
+    "35":{"zh-Hant":"暗邪鬼","zh-Hans":"暗邪鬼","ja":"ダークデーモン","en":"Dark Demon"}
+  },
+  "source_glyph_corrections": {
+    "21": {"decoded_source":"社麻術","display":"祛麻術","evidence":"command effect and established spell terminology"},
+    "27": {"decoded_source":"麻庫術","display":"麻痺術","evidence":"command effect and established spell terminology"}
+  }
+}

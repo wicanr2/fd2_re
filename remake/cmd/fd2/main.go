@@ -5216,7 +5216,7 @@ func (g *Game) ringInput() bool {
 				g.msg = "攻擊:選擇目標"
 			})
 		case 1: // 法術(原版 0x1cff0；有法術者才可用)
-			if ids := g.sel.NativeCommandIDs(); len(ids) > 0 && len(g.nativeCommandLabels) > 0 && len(g.nativeUIPalette) >= 0xce {
+			if ids := g.sel.NativeCommandIDs(); len(ids) > 0 && g.localeEntities != nil && len(g.nativeUIPalette) >= 0xce {
 				// Native 0x18d8c disables its command action when raw unit+0x27
 				// is nonzero.  NativeTransient[5] preserves exactly that byte;
 				// legacy Sealed is a separate normalized compatibility status.
@@ -8731,9 +8731,10 @@ func (g *Game) drawNativeCommandGrid(screen *ebiten.Image) {
 		return
 	}
 	for _, cell := range battle.NativeCommandGrid(g.sel.NativeCommandIDs(), g.nativeCommandSel) {
-		label := g.nativeCommandLabels[cell.CommandID]
-		if label == "" {
-			continue
+		label, scale, err := g.localizedNativeCommandLabel(cell.CommandID)
+		if err != nil {
+			g.loadErr = "native command locale: " + err.Error()
+			return
 		}
 		index := 0xcd
 		if cell.Selected {
@@ -8741,7 +8742,7 @@ func (g *Game) drawNativeCommandGrid(screen *ebiten.Image) {
 		}
 		r, green, b, a := g.nativeUIPalette[index].RGBA()
 		c := color.RGBA{R: uint8(r >> 8), G: uint8(green >> 8), B: uint8(b >> 8), A: uint8(a >> 8)}
-		g.font.Draw(screen, label, float64(cell.X*2), float64(cell.Y*2), 1.0, c)
+		g.font.Draw(screen, label, float64(cell.X*2), float64(cell.Y*2), scale, c)
 	}
 }
 
@@ -9713,10 +9714,10 @@ func loadGame() *Game {
 	if sp, e := battle.LoadSpells(assetPath("assets/spells.json")); e == nil { // 法術表(EXE dump)
 		labels := loadNativeCommandLabels()
 		g.nativeCommandLabels = labels
-		for i := range sp {
-			if label := labels[sp[i].ID]; label != "" {
-				sp[i].Name = label
-			}
+		sp, e = localizedSpellBook(g.localeEntities, sp)
+		if e != nil {
+			g.loadErr = "localized spell book: " + e.Error()
+			return g
 		}
 		g.spells = sp
 		if g.st != nil {

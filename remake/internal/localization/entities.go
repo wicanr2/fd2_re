@@ -18,24 +18,27 @@ type entityNameEntry struct {
 }
 
 type entityPack struct {
-	SchemaVersion   int                        `json:"schema_version"`
-	Kind            string                     `json:"kind"`
-	Locale          string                     `json:"locale"`
-	SourceLocale    string                     `json:"source_locale"`
-	ItemCount       int                        `json:"item_count"`
-	Items           map[string]entityNameEntry `json:"items"`
-	CharacterCount  int                        `json:"character_count"`
-	Characters      map[string]entityNameEntry `json:"characters"`
-	BattleNameCount int                        `json:"battle_name_count"`
-	BattleNames     map[string]entityNameEntry `json:"battle_names"`
+	SchemaVersion    int                        `json:"schema_version"`
+	Kind             string                     `json:"kind"`
+	Locale           string                     `json:"locale"`
+	SourceLocale     string                     `json:"source_locale"`
+	ItemCount        int                        `json:"item_count"`
+	Items            map[string]entityNameEntry `json:"items"`
+	CharacterCount   int                        `json:"character_count"`
+	Characters       map[string]entityNameEntry `json:"characters"`
+	BattleNameCount  int                        `json:"battle_name_count"`
+	BattleNames      map[string]entityNameEntry `json:"battle_names"`
+	CommandNameCount int                        `json:"command_name_count"`
+	CommandNames     map[string]entityNameEntry `json:"command_names"`
 }
 
 // EntityCatalog 是以遊戲實體 ID 為鍵的不可變官方名稱目錄。
 type EntityCatalog struct {
-	Locale      string
-	items       map[int]string
-	characters  map[int]string
-	battleNames map[int]string
+	Locale       string
+	items        map[int]string
+	characters   map[int]string
+	battleNames  map[int]string
+	commandNames map[int]string
 }
 
 // LoadOfficialEntities 驗證 <root>/<locale>/entities.json。
@@ -68,6 +71,9 @@ func LoadOfficialEntities(root, locale string) (*EntityCatalog, error) {
 	}
 	if pack.BattleNameCount != len(pack.BattleNames) || pack.BattleNameCount != 94 {
 		return nil, fmt.Errorf("validate locale entities %q: battle name count mismatch", path)
+	}
+	if pack.CommandNameCount != len(pack.CommandNames) || pack.CommandNameCount != 35 {
+		return nil, fmt.Errorf("validate locale entities %q: command name count mismatch", path)
 	}
 	items := make(map[int]string, len(pack.Items))
 	for rawID, entry := range pack.Items {
@@ -110,7 +116,19 @@ func LoadOfficialEntities(root, locale string) (*EntityCatalog, error) {
 		}
 		battleNames[id] = entry.Name
 	}
-	return &EntityCatalog{Locale: locale, items: items, characters: characters, battleNames: battleNames}, nil
+	commandNames := make(map[int]string, len(pack.CommandNames))
+	for rawID, entry := range pack.CommandNames {
+		id, err := strconv.Atoi(rawID)
+		if err != nil || id < 0 || id > 35 || id == 31 || entry.Name == "" || len(entry.SourceStringIDs) != 1 {
+			return nil, fmt.Errorf("validate locale entities %q: invalid command name %q", path, rawID)
+		}
+		if entry.Status != "original_confirmed" && entry.Status != "deterministic_script_conversion" &&
+			entry.Status != "curated_remake_translation" && entry.Status != "curated_source_glyph_correction" {
+			return nil, fmt.Errorf("validate locale entities %q: invalid command name status %q", path, entry.Status)
+		}
+		commandNames[id] = entry.Name
+	}
+	return &EntityCatalog{Locale: locale, items: items, characters: characters, battleNames: battleNames, commandNames: commandNames}, nil
 }
 
 func (c *EntityCatalog) CharacterName(nativeIdentity int) (string, error) {
@@ -144,6 +162,18 @@ func (c *EntityCatalog) BattleName(rawID int) (string, error) {
 	name, ok := c.battleNames[rawID]
 	if !ok {
 		return "", fmt.Errorf("missing localized battle name %d", rawID)
+	}
+	return name, nil
+}
+
+// CommandName 以原版指令 ID 查詢玩家指令格名稱；ID31 是已證實空槽。
+func (c *EntityCatalog) CommandName(rawID int) (string, error) {
+	if c == nil {
+		return "", errors.New("nil locale entity catalog")
+	}
+	name, ok := c.commandNames[rawID]
+	if !ok {
+		return "", fmt.Errorf("missing localized command name %d", rawID)
 	}
 	return name, nil
 }
