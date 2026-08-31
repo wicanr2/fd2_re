@@ -94,6 +94,10 @@ var officialLocaleContract = map[string]localeEntryContract{
 	"battle.result.lose":                  {[]string{}, "legacy.go.remake.cmd.fd2.main.l8413-c9"},
 	"battle.result.continue":              {[]string{}, "legacy.go.remake.cmd.fd2.main.l8418-c24"},
 	"postbattle.preparation.title":        {[]string{"%s"}, "legacy.go.remake.cmd.fd2.main.l8857-c12"},
+	"title.load.controls":                 {[]string{}, "legacy.go.remake.cmd.fd2.title.l826-c22"},
+	"title.load.slot":                     {[]string{"%d"}, "legacy.go.remake.cmd.fd2.title.l834-c13"},
+	"save.slot.empty":                     {[]string{}, "legacy.go.remake.cmd.fd2.title.l836-c14"},
+	"save.slot.present":                   {[]string{}, "legacy.go.remake.cmd.fd2.title.l838-c14"},
 }
 
 func loadOfficialLocale(localeID string) (*localization.Catalog, error) {

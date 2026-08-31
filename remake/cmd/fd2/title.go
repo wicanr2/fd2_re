@@ -823,7 +823,11 @@ func (g *Game) drawTitle(screen *ebiten.Image) {
 		bop := &ebiten.DrawImageOptions{}
 		bop.GeoM.Translate(140, 70)
 		screen.DrawImage(box, bop)
-		g.font.Draw(screen, "讀取存檔（↑↓選擇，Enter 確認，Esc 返回）", 158, 86, 0.9, color.RGBA{0xff, 0xe0, 0x90, 0xff})
+		controls, ok := g.localeMessage("title.load.controls")
+		if !ok {
+			return
+		}
+		g.font.Draw(screen, controls, 158, 86, 0.9, color.RGBA{0xff, 0xe0, 0x90, 0xff})
 		for slot := 0; slot < 4; slot++ {
 			c := color.RGBA{0xd0, 0xd8, 0xe8, 0xff}
 			prefix := "　"
@@ -831,11 +835,23 @@ func (g *Game) drawTitle(screen *ebiten.Image) {
 				prefix = "▶"
 				c = color.RGBA{0xff, 0xff, 0xff, 0xff}
 			}
-			label := fmt.Sprintf("%s槽位 %d", prefix, slot+1)
+			label, ok := g.localeMessage("title.load.slot", slot+1)
+			if !ok {
+				return
+			}
+			label = prefix + label
 			if _, err := os.Stat(saveSlotPath(slot)); err != nil {
-				label += "　（空）"
+				empty, ok := g.localeMessage("save.slot.empty")
+				if !ok {
+					return
+				}
+				label += "　" + empty
 			} else {
-				label += "　（已有存檔）"
+				present, ok := g.localeMessage("save.slot.present")
+				if !ok {
+					return
+				}
+				label += "　" + present
 			}
 			g.font.Draw(screen, label, 176, 124+float64(slot)*34, 1.0, c)
 		}

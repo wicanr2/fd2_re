@@ -92,6 +92,10 @@ APPROVED_SOURCE = {
     "battle.result.lose": "legacy.go.remake.cmd.fd2.main.l8413-c9",
     "battle.result.continue": "legacy.go.remake.cmd.fd2.main.l8418-c24",
     "postbattle.preparation.title": "legacy.go.remake.cmd.fd2.main.l8857-c12",
+    "title.load.controls": "legacy.go.remake.cmd.fd2.title.l826-c22",
+    "title.load.slot": "legacy.go.remake.cmd.fd2.title.l834-c13",
+    "save.slot.empty": "legacy.go.remake.cmd.fd2.title.l836-c14",
+    "save.slot.present": "legacy.go.remake.cmd.fd2.title.l838-c14",
 }
 
 def fail(message: str) -> None:
