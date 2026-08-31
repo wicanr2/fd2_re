@@ -274,6 +274,47 @@ func TestReviewedChapterThreeSceneOneFinalEvidenceBackedFields(t *testing.T) {
 	}
 }
 
+func TestReviewedChapterFourOpeningScene(t *testing.T) {
+	wants := map[string]map[string]string{
+		"en": {
+			"legacy/line/750623f119b8/scenes/0/lines/0/speaker-name": "Celia",
+			"legacy/line/750623f119b8/scenes/0/lines/0/text":         "We’re almost to Sela Village! We’ll get there quickly if we take this shortcut. What do you say? Wouldn’t it be better to take me with you?",
+			"legacy/line/750623f119b8/scenes/0/lines/1/speaker-name": "Sol",
+			"legacy/line/750623f119b8/scenes/0/lines/1/text":         "Taking shortcuts like this all the time could land us in trouble with bandits!",
+			"legacy/line/750623f119b8/scenes/0/lines/2/speaker-name": "Celia",
+			"legacy/line/750623f119b8/scenes/0/lines/2/text":         "Says who? This road is well hidden. I’m the only one who knows about it…",
+			"legacy/line/750623f119b8/scenes/0/lines/3/speaker-name": "Hano",
+			"legacy/line/750623f119b8/scenes/0/lines/3/text":         "Look, there seems to be someone up ahead!",
+		},
+		"ja": {
+			"legacy/line/750623f119b8/scenes/0/lines/0/speaker-name": "シリア",
+			"legacy/line/750623f119b8/scenes/0/lines/0/text":         "セラ村まであと少しよ！この近道を通ればすぐに着くわ。どう？やっぱり私も連れて行ったほうがいいでしょう？",
+			"legacy/line/750623f119b8/scenes/0/lines/1/speaker-name": "ソール",
+			"legacy/line/750623f119b8/scenes/0/lines/1/text":         "いつもこんな細い道を通っていたら、山賊に出くわすかもしれないぞ！",
+			"legacy/line/750623f119b8/scenes/0/lines/2/speaker-name": "シリア",
+			"legacy/line/750623f119b8/scenes/0/lines/2/text":         "誰がそんなことを言ったの？この道はとても人目につかないし、知っているのは私だけよ……",
+			"legacy/line/750623f119b8/scenes/0/lines/3/speaker-name": "ハノ",
+			"legacy/line/750623f119b8/scenes/0/lines/3/text":         "見て、前に誰かいるみたいだ！",
+		},
+		"zh-Hans": {
+			"legacy/line/750623f119b8/scenes/0/lines/0/speaker-name": "希莉亚",
+			"legacy/line/750623f119b8/scenes/0/lines/0/text":         "快到赛拉村啦！抄这条近路很快就到了。怎么样？还是带着我比较好吧？",
+			"legacy/line/750623f119b8/scenes/0/lines/1/speaker-name": "索尔",
+			"legacy/line/750623f119b8/scenes/0/lines/1/text":         "老是走这种小道，说不定会碰上强盗哦！",
+			"legacy/line/750623f119b8/scenes/0/lines/2/speaker-name": "希莉亚",
+			"legacy/line/750623f119b8/scenes/0/lines/2/text":         "谁说的？这条路隐秘得很，只有我才知道……",
+			"legacy/line/750623f119b8/scenes/0/lines/3/speaker-name": "哈诺",
+			"legacy/line/750623f119b8/scenes/0/lines/3/text":         "看，前面好像有人呢！",
+		},
+	}
+	for localeID, entries := range wants {
+		if _, err := loadOfficialLocaleContent(localeID); err != nil {
+			t.Fatal(err)
+		}
+		assertReviewedContentEntryIDs(t, localeID, entries)
+	}
+}
+
 func TestReviewedChapterTwoCampaignTranslationsAndItemEntities(t *testing.T) {
 	wants := map[string]map[string]string{
 		"ja": {
