@@ -54,6 +54,27 @@ func TestRenderNativeBattlePanelMatches18C6DBottomGeometry(t *testing.T) {
 	}
 }
 
+func TestRenderNativeBattlePanelWithoutNameKeepsNativeGeometry(t *testing.T) {
+	assets := nativeBattlePanelTestAssets(t)
+	assets.Strings = nil
+	assets.Font = nil
+	dst := make([]byte, 320*200)
+	record := nativeBattlePanelTestRecord(t, 0)
+	if err := RenderNativeBattlePanelWithoutName(assets, record, dst, 3, 7); err != nil {
+		t.Fatal(err)
+	}
+	x, y, err := NativeBattlePanelOrigin(record, 3, 7)
+	if err != nil || x != 0 || y != 154 {
+		t.Fatalf("origin=(%d,%d), err=%v", x, y, err)
+	}
+	if dst[154*320] != 9 || dst[(154+22)*320+21] != 23 {
+		t.Fatal("name-free panel lost native base or HP geometry")
+	}
+	if dst[(154+4)*320+5] == 205 {
+		t.Fatal("name-free panel unexpectedly rendered FDTXT text")
+	}
+}
+
 func TestRenderNativeBattlePanelValuesAtReuses18C6DBarAndDigitCore(t *testing.T) {
 	dst := make([]byte, 320*200)
 	err := RenderNativeBattlePanelValuesAt(nativeBattlePanelTestAssets(t), dst, 0, 154,

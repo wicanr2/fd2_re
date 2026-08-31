@@ -1,4 +1,665 @@
 {
+  "battle_name_count": 94,
+  "battle_names": {
+    "0": {
+      "name": "索尔",
+      "source_string_ids": [
+        "FDTXT_000/string_0001"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "1": {
+      "name": "哈诺",
+      "source_string_ids": [
+        "FDTXT_000/string_0002"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "10": {
+      "name": "玛琳",
+      "source_string_ids": [
+        "FDTXT_000/string_0011"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "100": {
+      "name": "武术家",
+      "source_string_ids": [
+        "FDTXT_000/string_0101"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "101": {
+      "name": "黑暗斗士",
+      "source_string_ids": [
+        "FDTXT_000/string_0102"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "102": {
+      "name": "兽人",
+      "source_string_ids": [
+        "FDTXT_000/string_0103"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "103": {
+      "name": "兽人队长",
+      "source_string_ids": [
+        "FDTXT_000/string_0104"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "104": {
+      "name": "火龙",
+      "source_string_ids": [
+        "FDTXT_000/string_0105"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "105": {
+      "name": "雷龙",
+      "source_string_ids": [
+        "FDTXT_000/string_0106"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "106": {
+      "name": "龙人战士",
+      "source_string_ids": [
+        "FDTXT_000/string_0107"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "107": {
+      "name": "龙人法师",
+      "source_string_ids": [
+        "FDTXT_000/string_0108"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "108": {
+      "name": "魔鬼",
+      "source_string_ids": [
+        "FDTXT_000/string_0109"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "109": {
+      "name": "恶魔",
+      "source_string_ids": [
+        "FDTXT_000/string_0110"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "11": {
+      "name": "索菲亚",
+      "source_string_ids": [
+        "FDTXT_000/string_0012"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "110": {
+      "name": "大恶魔",
+      "source_string_ids": [
+        "FDTXT_000/string_0111"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "111": {
+      "name": "机甲兵",
+      "source_string_ids": [
+        "FDTXT_000/string_0112"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "112": {
+      "name": "机甲突击兵",
+      "source_string_ids": [
+        "FDTXT_000/string_0113"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "113": {
+      "name": "光束炮座",
+      "source_string_ids": [
+        "FDTXT_000/string_0114"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "114": {
+      "name": "机甲射手",
+      "source_string_ids": [
+        "FDTXT_000/string_0115"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "115": {
+      "name": "机甲守卫",
+      "source_string_ids": [
+        "FDTXT_000/string_0116"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "116": {
+      "name": "机甲队长",
+      "source_string_ids": [
+        "FDTXT_000/string_0117"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "117": {
+      "name": "卡特那",
+      "source_string_ids": [
+        "FDTXT_000/string_0118"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "118": {
+      "name": "莱汀",
+      "source_string_ids": [
+        "FDTXT_000/string_0119"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "119": {
+      "name": "萨卡",
+      "source_string_ids": [
+        "FDTXT_000/string_0120"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "12": {
+      "name": "凯丽",
+      "source_string_ids": [
+        "FDTXT_000/string_0013"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "120": {
+      "name": "玛尔",
+      "source_string_ids": [
+        "FDTXT_000/string_0121"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "121": {
+      "name": "沼泽怪物",
+      "source_string_ids": [
+        "FDTXT_000/string_0122"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "122": {
+      "name": "地魔神",
+      "source_string_ids": [
+        "FDTXT_000/string_0123"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "123": {
+      "name": "水魔神",
+      "source_string_ids": [
+        "FDTXT_000/string_0124"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "124": {
+      "name": "风魔神",
+      "source_string_ids": [
+        "FDTXT_000/string_0125"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "125": {
+      "name": "火魔神",
+      "source_string_ids": [
+        "FDTXT_000/string_0126"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "126": {
+      "name": "空魔神",
+      "source_string_ids": [
+        "FDTXT_000/string_0127"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "127": {
+      "name": "暗黑龙",
+      "source_string_ids": [
+        "FDTXT_000/string_0128"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "13": {
+      "name": "贝克威",
+      "source_string_ids": [
+        "FDTXT_000/string_0014"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "133": {
+      "name": "女村民",
+      "source_string_ids": [
+        "FDTXT_000/string_0134"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "134": {
+      "name": "男村民",
+      "source_string_ids": [
+        "FDTXT_000/string_0135"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "135": {
+      "name": "卡纳恩三世",
+      "source_string_ids": [
+        "FDTXT_000/string_0136"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "14": {
+      "name": "珊",
+      "source_string_ids": [
+        "FDTXT_000/string_0015"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "15": {
+      "name": "塞可邦勒",
+      "source_string_ids": [
+        "FDTXT_000/string_0016"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "16": {
+      "name": "凯拉斯",
+      "source_string_ids": [
+        "FDTXT_000/string_0017"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "17": {
+      "name": "米亚斯多德",
+      "source_string_ids": [
+        "FDTXT_000/string_0018"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "18": {
+      "name": "蜜蒂",
+      "source_string_ids": [
+        "FDTXT_000/string_0019"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "19": {
+      "name": "罗德曼",
+      "source_string_ids": [
+        "FDTXT_000/string_0020"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "2": {
+      "name": "铁诺",
+      "source_string_ids": [
+        "FDTXT_000/string_0003"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "20": {
+      "name": "莎拉",
+      "source_string_ids": [
+        "FDTXT_000/string_0021"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "21": {
+      "name": "约拿",
+      "source_string_ids": [
+        "FDTXT_000/string_0022"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "22": {
+      "name": "卡里斯",
+      "source_string_ids": [
+        "FDTXT_000/string_0023"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "23": {
+      "name": "罗兰",
+      "source_string_ids": [
+        "FDTXT_000/string_0024"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "24": {
+      "name": "希尔法",
+      "source_string_ids": [
+        "FDTXT_000/string_0025"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "25": {
+      "name": "谢多",
+      "source_string_ids": [
+        "FDTXT_000/string_0026"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "26": {
+      "name": "圣寇拉斯",
+      "source_string_ids": [
+        "FDTXT_000/string_0027"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "27": {
+      "name": "巴拿罗西亚",
+      "source_string_ids": [
+        "FDTXT_000/string_0028"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "28": {
+      "name": "达克塞",
+      "source_string_ids": [
+        "FDTXT_000/string_0029"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "29": {
+      "name": "亚齐梅吉",
+      "source_string_ids": [
+        "FDTXT_000/string_0030"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "3": {
+      "name": "哈瓦特",
+      "source_string_ids": [
+        "FDTXT_000/string_0004"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "30": {
+      "name": "盖亚",
+      "source_string_ids": [
+        "FDTXT_000/string_0031"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "31": {
+      "name": "渥德",
+      "source_string_ids": [
+        "FDTXT_000/string_0032"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "4": {
+      "name": "亚雷斯",
+      "source_string_ids": [
+        "FDTXT_000/string_0005"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "5": {
+      "name": "洛娜",
+      "source_string_ids": [
+        "FDTXT_000/string_0006"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "6": {
+      "name": "莱汀",
+      "source_string_ids": [
+        "FDTXT_000/string_0007"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "68": {
+      "name": "士兵",
+      "source_string_ids": [
+        "FDTXT_000/string_0069"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "69": {
+      "name": "骑兵",
+      "source_string_ids": [
+        "FDTXT_000/string_0070"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "7": {
+      "name": "兰斯洛特",
+      "source_string_ids": [
+        "FDTXT_000/string_0008"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "70": {
+      "name": "佣兵",
+      "source_string_ids": [
+        "FDTXT_000/string_0071"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "71": {
+      "name": "豹人",
+      "source_string_ids": [
+        "FDTXT_000/string_0072"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "72": {
+      "name": "精灵",
+      "source_string_ids": [
+        "FDTXT_000/string_0073"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "73": {
+      "name": "龙人",
+      "source_string_ids": [
+        "FDTXT_000/string_0074"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "74": {
+      "name": "恶魔",
+      "source_string_ids": [
+        "FDTXT_000/string_0075"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "76": {
+      "name": "士兵",
+      "source_string_ids": [
+        "FDTXT_000/string_0077"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "77": {
+      "name": "精英战士",
+      "source_string_ids": [
+        "FDTXT_000/string_0078"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "78": {
+      "name": "铠甲武士",
+      "source_string_ids": [
+        "FDTXT_000/string_0079"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "79": {
+      "name": "佣兵",
+      "source_string_ids": [
+        "FDTXT_000/string_0080"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "8": {
+      "name": "希莉亚",
+      "source_string_ids": [
+        "FDTXT_000/string_0009"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "80": {
+      "name": "黑暗战士",
+      "source_string_ids": [
+        "FDTXT_000/string_0081"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "81": {
+      "name": "狂战士",
+      "source_string_ids": [
+        "FDTXT_000/string_0082"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "82": {
+      "name": "骑兵",
+      "source_string_ids": [
+        "FDTXT_000/string_0083"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "83": {
+      "name": "突击骑兵",
+      "source_string_ids": [
+        "FDTXT_000/string_0084"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "84": {
+      "name": "地狱骑士",
+      "source_string_ids": [
+        "FDTXT_000/string_0085"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "85": {
+      "name": "黑暗骑士",
+      "source_string_ids": [
+        "FDTXT_000/string_0086"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "86": {
+      "name": "龙骑士",
+      "source_string_ids": [
+        "FDTXT_000/string_0087"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "87": {
+      "name": "弓箭手",
+      "source_string_ids": [
+        "FDTXT_000/string_0088"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "88": {
+      "name": "黑暗射手",
+      "source_string_ids": [
+        "FDTXT_000/string_0089"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "89": {
+      "name": "狙击手",
+      "source_string_ids": [
+        "FDTXT_000/string_0090"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "9": {
+      "name": "悠妮",
+      "source_string_ids": [
+        "FDTXT_000/string_0010"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "90": {
+      "name": "魔法师",
+      "source_string_ids": [
+        "FDTXT_000/string_0091"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "91": {
+      "name": "黑暗法师",
+      "source_string_ids": [
+        "FDTXT_000/string_0092"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "92": {
+      "name": "巫师",
+      "source_string_ids": [
+        "FDTXT_000/string_0093"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "93": {
+      "name": "僧侣",
+      "source_string_ids": [
+        "FDTXT_000/string_0094"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "94": {
+      "name": "黑暗僧侣",
+      "source_string_ids": [
+        "FDTXT_000/string_0095"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "95": {
+      "name": "大祭师",
+      "source_string_ids": [
+        "FDTXT_000/string_0096"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "96": {
+      "name": "盗贼",
+      "source_string_ids": [
+        "FDTXT_000/string_0097"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "97": {
+      "name": "盗贼头目",
+      "source_string_ids": [
+        "FDTXT_000/string_0098"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "98": {
+      "name": "影之忍者",
+      "source_string_ids": [
+        "FDTXT_000/string_0099"
+      ],
+      "status": "deterministic_script_conversion"
+    },
+    "99": {
+      "name": "黑暗杀手",
+      "source_string_ids": [
+        "FDTXT_000/string_0100"
+      ],
+      "status": "deterministic_script_conversion"
+    }
+  },
   "character_count": 32,
   "characters": {
     "0": {
@@ -58,7 +719,7 @@
       "status": "deterministic_script_conversion"
     },
     "15": {
-      "name": "赛可邦勒",
+      "name": "塞可邦勒",
       "source_string_ids": [
         "FDTXT_000/string_0016",
         "native_identity/15"
@@ -170,7 +831,7 @@
       "status": "deterministic_script_conversion"
     },
     "28": {
-      "name": "达克赛",
+      "name": "达克塞",
       "source_string_ids": [
         "FDTXT_000/string_0029",
         "native_identity/28"
@@ -178,7 +839,7 @@
       "status": "deterministic_script_conversion"
     },
     "29": {
-      "name": "亚奇梅吉",
+      "name": "亚齐梅吉",
       "source_string_ids": [
         "FDTXT_000/string_0030",
         "native_identity/29"

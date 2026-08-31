@@ -147,15 +147,15 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 		}
 		platform = &frame
 	}
-	actorBaseBefore, err := nativeCommand24BackgroundBase(actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter, platform)
+	actorBaseBefore, err := g.localizedNativeCommand24BackgroundBase(actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter, platform)
 	if err != nil {
 		return err
 	}
-	actorBaseAfter, err := nativeCommand24BackgroundBase(actorBG, panelAssets, actorRecordAfter, actorIndex, g.handlerChapter, platform)
+	actorBaseAfter, err := g.localizedNativeCommand24BackgroundBase(actorBG, panelAssets, actorRecordAfter, actorIndex, g.handlerChapter, platform)
 	if err != nil {
 		return err
 	}
-	preludeBase, err := nativeCommand24BackgroundBase(actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter, nil)
+	preludeBase, err := g.localizedNativeCommand24BackgroundBase(actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter, nil)
 	if err != nil {
 		return err
 	}
@@ -221,11 +221,11 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 		if recordErr != nil {
 			return recordErr
 		}
-		baseBefore, baseErr := nativeCommand24BackgroundBase(background, panelAssets, recordBefore, unitIndex, g.handlerChapter, nil)
+		baseBefore, baseErr := g.localizedNativeCommand24BackgroundBase(background, panelAssets, recordBefore, unitIndex, g.handlerChapter, nil)
 		if baseErr != nil {
 			return baseErr
 		}
-		baseAfter, baseErr := nativeCommand24BackgroundBase(background, panelAssets, recordAfter, unitIndex, g.handlerChapter, nil)
+		baseAfter, baseErr := g.localizedNativeCommand24BackgroundBase(background, panelAssets, recordAfter, unitIndex, g.handlerChapter, nil)
 		if baseErr != nil {
 			return baseErr
 		}

@@ -18,21 +18,24 @@ type entityNameEntry struct {
 }
 
 type entityPack struct {
-	SchemaVersion  int                        `json:"schema_version"`
-	Kind           string                     `json:"kind"`
-	Locale         string                     `json:"locale"`
-	SourceLocale   string                     `json:"source_locale"`
-	ItemCount      int                        `json:"item_count"`
-	Items          map[string]entityNameEntry `json:"items"`
-	CharacterCount int                        `json:"character_count"`
-	Characters     map[string]entityNameEntry `json:"characters"`
+	SchemaVersion   int                        `json:"schema_version"`
+	Kind            string                     `json:"kind"`
+	Locale          string                     `json:"locale"`
+	SourceLocale    string                     `json:"source_locale"`
+	ItemCount       int                        `json:"item_count"`
+	Items           map[string]entityNameEntry `json:"items"`
+	CharacterCount  int                        `json:"character_count"`
+	Characters      map[string]entityNameEntry `json:"characters"`
+	BattleNameCount int                        `json:"battle_name_count"`
+	BattleNames     map[string]entityNameEntry `json:"battle_names"`
 }
 
 // EntityCatalog 是以遊戲實體 ID 為鍵的不可變官方名稱目錄。
 type EntityCatalog struct {
-	Locale     string
-	items      map[int]string
-	characters map[int]string
+	Locale      string
+	items       map[int]string
+	characters  map[int]string
+	battleNames map[int]string
 }
 
 // LoadOfficialEntities 驗證 <root>/<locale>/entities.json。
@@ -63,6 +66,9 @@ func LoadOfficialEntities(root, locale string) (*EntityCatalog, error) {
 		pack.CharacterCount != len(pack.Characters) || pack.CharacterCount != 32 {
 		return nil, fmt.Errorf("validate locale entities %q: identity or count mismatch", path)
 	}
+	if pack.BattleNameCount != len(pack.BattleNames) || pack.BattleNameCount != 94 {
+		return nil, fmt.Errorf("validate locale entities %q: battle name count mismatch", path)
+	}
 	items := make(map[int]string, len(pack.Items))
 	for rawID, entry := range pack.Items {
 		id, err := strconv.Atoi(rawID)
@@ -92,7 +98,19 @@ func LoadOfficialEntities(root, locale string) (*EntityCatalog, error) {
 		}
 		characters[id] = entry.Name
 	}
-	return &EntityCatalog{Locale: locale, items: items, characters: characters}, nil
+	battleNames := make(map[int]string, len(pack.BattleNames))
+	for rawID, entry := range pack.BattleNames {
+		id, err := strconv.Atoi(rawID)
+		if err != nil || id < 0 || id > 138 || entry.Name == "" || len(entry.SourceStringIDs) != 1 {
+			return nil, fmt.Errorf("validate locale entities %q: invalid battle name %q", path, rawID)
+		}
+		if entry.Status != "original_confirmed" && entry.Status != "deterministic_script_conversion" &&
+			entry.Status != "curated_remake_transliteration" && entry.Status != "curated_remake_translation" {
+			return nil, fmt.Errorf("validate locale entities %q: invalid battle name status %q", path, entry.Status)
+		}
+		battleNames[id] = entry.Name
+	}
+	return &EntityCatalog{Locale: locale, items: items, characters: characters, battleNames: battleNames}, nil
 }
 
 func (c *EntityCatalog) CharacterName(nativeIdentity int) (string, error) {
@@ -113,6 +131,19 @@ func (c *EntityCatalog) ItemName(id int) (string, error) {
 	name, ok := c.items[id]
 	if !ok {
 		return "", fmt.Errorf("missing localized item %d", id)
+	}
+	return name, nil
+}
+
+// BattleName 以原版戰鬥 record +8 的 raw selector 查詢面板名稱。
+// 它與隊伍 native_identity 是兩個不同契約，不能互相替代。
+func (c *EntityCatalog) BattleName(rawID int) (string, error) {
+	if c == nil {
+		return "", errors.New("nil locale entity catalog")
+	}
+	name, ok := c.battleNames[rawID]
+	if !ok {
+		return "", fmt.Errorf("missing localized battle name %d", rawID)
 	}
 	return name, nil
 }

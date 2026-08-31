@@ -34,7 +34,8 @@ def write_json(path: Path, value) -> None:
 
 
 def build(campaign_path: Path, content_path: Path, overrides_path: Path, characters_path: Path,
-          item_source_path: Path, item_supplements_path: Path) -> dict:
+          item_source_path: Path, item_supplements_path: Path, battle_source_path: Path,
+          battle_supplements_path: Path) -> dict:
     campaign = read_json(campaign_path)
     content = read_json(content_path)
     names: dict[int, set[str]] = defaultdict(set)
@@ -136,6 +137,36 @@ def build(campaign_path: Path, content_path: Path, overrides_path: Path, charact
     }
     if any(not entry["name"] for entry in characters.values()):
         raise ValueError(f"角色名稱不可為空：{locale}")
+    battle_source = read_json(battle_source_path)
+    if battle_source["kind"] != "fd2_original_battle_names" or battle_source["displayable_name_count"] != 94:
+        raise ValueError("完整原版戰鬥姓名清冊格式錯誤")
+    battle_source_names = battle_source["names"]
+    supplements = read_json(battle_supplements_path)
+    if supplements["kind"] != "fd2_battle_name_supplements":
+        raise ValueError("戰鬥姓名翻譯補充表格式錯誤")
+    party_ids = {str(row["native_identity"]) for row in character_rows}
+    if set(supplements["names"]) != set(battle_source_names) - party_ids:
+        raise ValueError("戰鬥姓名翻譯補充表必須恰好涵蓋非隊伍名稱")
+    battle_names = {}
+    for raw_id, source_entry in battle_source_names.items():
+        if raw_id in party_ids:
+            name = characters[raw_id]["name"]
+            status = characters[raw_id]["status"]
+            if locale == "zh-Hant" and name != source_entry["name"]:
+                raise ValueError(f"戰鬥姓名 {raw_id} 與 FDTXT 原文不符")
+        elif locale == "zh-Hant":
+            name = source_entry["name"]
+            status = "original_confirmed"
+        else:
+            name = supplements["names"][raw_id][locale]
+            status = supplements["status"][locale]
+        if not name:
+            raise ValueError(f"戰鬥姓名 {raw_id} 的 {locale} 名稱為空")
+        battle_names[raw_id] = {
+            "name": name,
+            "source_string_ids": [source_entry["source_string_id"]],
+            "status": status,
+        }
     return {
         "schema_version": 1,
         "kind": "fd2_locale_entities",
@@ -145,6 +176,8 @@ def build(campaign_path: Path, content_path: Path, overrides_path: Path, charact
         "items": items,
         "character_count": len(characters),
         "characters": characters,
+        "battle_name_count": len(battle_names),
+        "battle_names": battle_names,
     }
 
 
@@ -156,10 +189,13 @@ def main() -> None:
     parser.add_argument("--characters", type=Path, required=True)
     parser.add_argument("--item-source", type=Path, required=True)
     parser.add_argument("--item-supplements", type=Path, required=True)
+    parser.add_argument("--battle-source", type=Path, required=True)
+    parser.add_argument("--battle-supplements", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     result = build(args.campaign, args.content, args.overrides, args.characters,
-                   args.item_source, args.item_supplements)
+                   args.item_source, args.item_supplements, args.battle_source,
+                   args.battle_supplements)
     write_json(args.output, result)
     print(f"{result['locale']}: wrote {result['item_count']} item names to {args.output}")
 

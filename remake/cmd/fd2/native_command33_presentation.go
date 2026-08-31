@@ -146,11 +146,11 @@ func (g *Game) startNativeCommand33Presentation(actor, confirmed *battle.Unit, t
 		}
 		platform = &frame
 	}
-	actorBase, err := nativeCommand24BackgroundBase(background, panelAssets, actorRecord, actorIndex, g.handlerChapter, platform)
+	actorBase, err := g.localizedNativeCommand24BackgroundBase(background, panelAssets, actorRecord, actorIndex, g.handlerChapter, platform)
 	if err != nil {
 		return err
 	}
-	preludeBase, err := nativeCommand24BackgroundBase(background, panelAssets, actorRecord, actorIndex, g.handlerChapter, nil)
+	preludeBase, err := g.localizedNativeCommand24BackgroundBase(background, panelAssets, actorRecord, actorIndex, g.handlerChapter, nil)
 	if err != nil {
 		return err
 	}

@@ -231,7 +231,7 @@ func (g *Game) startNativeCommand2Presentation(actor, confirmed *battle.Unit, th
 			if err != nil {
 				return err
 			}
-			targetBases[targetIndex][stage], err = nativeCommand0Base(background, panelAssets, actorAfterRecord, record, actorIndex, runtimeIndex, g.handlerChapter, &platform)
+			targetBases[targetIndex][stage], err = g.localizedNativeCommand0Base(background, panelAssets, actorAfterRecord, record, actorIndex, runtimeIndex, g.handlerChapter, &platform)
 			if err != nil {
 				return err
 			}
@@ -245,11 +245,11 @@ func (g *Game) startNativeCommand2Presentation(actor, confirmed *battle.Unit, th
 	if err != nil {
 		return err
 	}
-	preludeBase, err := nativeCommand0Base(background, panelAssets, actorRecord, firstTargetRecord, actorIndex, firstTargetIndex, g.handlerChapter, nil)
+	preludeBase, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, firstTargetRecord, actorIndex, firstTargetIndex, g.handlerChapter, nil)
 	if err != nil {
 		return err
 	}
-	actorBase, err := nativeCommand0Base(background, panelAssets, actorRecord, firstTargetRecord, actorIndex, firstTargetIndex, g.handlerChapter, &platform)
+	actorBase, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, firstTargetRecord, actorIndex, firstTargetIndex, g.handlerChapter, &platform)
 	if err != nil {
 		return err
 	}

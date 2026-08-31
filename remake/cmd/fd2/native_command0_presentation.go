@@ -67,34 +67,6 @@ func nativeCommand0ActorEffect(animationRoot string, selector int) (*figani.Anim
 	return figani.LoadSeparatedResourceWithZeroHeaderFallback(animationRoot, selector*3+2)
 }
 
-func nativeCommand0Base(
-	background fdother.Frame,
-	panelAssets battle.NativeItemPanelDataAssets,
-	actorRecord, targetRecord []byte,
-	actorIndex, targetIndex, chapter int,
-	platform *fdother.Frame,
-) ([]byte, error) {
-	base := make([]byte, 320*200)
-	if err := battle.RenderNativeBattlePanel(panelAssets, actorRecord, base, actorIndex, chapter); err != nil {
-		return nil, err
-	}
-	if err := battle.RenderNativeBattlePanel(panelAssets, targetRecord, base, targetIndex, chapter); err != nil {
-		return nil, err
-	}
-	background.X, background.Y = 0, 50
-	if err := background.Blit(base, 320, -1); err != nil {
-		return nil, err
-	}
-	if platform != nil {
-		frame := *platform
-		frame.X, frame.Y = 164, 157
-		if err := frame.Blit(base, 320, -1); err != nil {
-			return nil, err
-		}
-	}
-	return base, nil
-}
-
 func nativeCommand0Image(pixels []byte, palette color.Palette) (*ebiten.Image, error) {
 	if len(pixels) != 320*200 || len(palette) != 256 {
 		return nil, errors.New("native command0 indexed image unavailable")
@@ -327,16 +299,16 @@ func (g *Game) startNativeCommand0Presentation(actor, target *battle.Unit, then 
 		if err != nil {
 			return err
 		}
-		bases[stage], err = nativeCommand0Base(background, panelAssets, actorAfterRecord, targetRecords[stage], actorIndex, targetIndex, g.handlerChapter, &platform)
+		bases[stage], err = g.localizedNativeCommand0Base(background, panelAssets, actorAfterRecord, targetRecords[stage], actorIndex, targetIndex, g.handlerChapter, &platform)
 		if err != nil {
 			return err
 		}
 	}
-	preludeBase, err := nativeCommand0Base(background, panelAssets, actorRecord, targetRecords[0], actorIndex, targetIndex, g.handlerChapter, nil)
+	preludeBase, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, targetRecords[0], actorIndex, targetIndex, g.handlerChapter, nil)
 	if err != nil {
 		return err
 	}
-	actorBaseBefore, err := nativeCommand0Base(background, panelAssets, actorRecord, targetRecords[0], actorIndex, targetIndex, g.handlerChapter, &platform)
+	actorBaseBefore, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, targetRecords[0], actorIndex, targetIndex, g.handlerChapter, &platform)
 	if err != nil {
 		return err
 	}

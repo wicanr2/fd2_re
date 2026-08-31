@@ -57,37 +57,6 @@ func nativeCommand24BGSelector(m *MapData, unit *battle.Unit) (int, error) {
 	return int(m.NativeTerrainControl[tile*4+2]), nil
 }
 
-func nativeCommand24BackgroundBase(
-	background fdother.Frame,
-	panelAssets battle.NativeItemPanelDataAssets,
-	panelRecord []byte,
-	unitIndex, rawChapter int,
-	platform *fdother.Frame,
-	overlays ...figani.Frame,
-) ([]byte, error) {
-	base := make([]byte, 320*200)
-	background.X, background.Y = 0, 50
-	if err := background.Blit(base, 320, -1); err != nil {
-		return nil, err
-	}
-	if err := battle.RenderNativeBattlePanel(panelAssets, panelRecord, base, unitIndex, rawChapter); err != nil {
-		return nil, err
-	}
-	if platform != nil {
-		frame := *platform
-		frame.X, frame.Y = 164, 157
-		if err := frame.Blit(base, 320, -1); err != nil {
-			return nil, err
-		}
-	}
-	for _, overlay := range overlays {
-		if err := overlay.BlitAt(base, 320); err != nil {
-			return nil, err
-		}
-	}
-	return base, nil
-}
-
 func nativeCommand24RuntimeUnitIndex(st *battle.State, unit *battle.Unit) (int, error) {
 	if st == nil || unit == nil {
 		return 0, errors.New("native command24 runtime unit unavailable")
@@ -275,14 +244,14 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 		}
 		actorPlatform = &frame
 	}
-	actorBaseBefore, err := nativeCommand24BackgroundBase(
+	actorBaseBefore, err := g.localizedNativeCommand24BackgroundBase(
 		actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter,
 		actorPlatform,
 	)
 	if err != nil {
 		return err
 	}
-	actorPreludeBase, err := nativeCommand24BackgroundBase(
+	actorPreludeBase, err := g.localizedNativeCommand24BackgroundBase(
 		actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter,
 		nil,
 	)
@@ -300,7 +269,7 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if err != nil {
 		return err
 	}
-	actorBaseAfter, err := nativeCommand24BackgroundBase(
+	actorBaseAfter, err := g.localizedNativeCommand24BackgroundBase(
 		actorBG, panelAssets, actorRecordAfter, actorIndex, g.handlerChapter,
 		actorPlatform,
 	)
@@ -311,14 +280,14 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if err := effect.Frames[schedule.TargetStart-1].BlitAt(sourceBase, 320); err != nil {
 		return err
 	}
-	targetBaseBefore, err := nativeCommand24BackgroundBase(
+	targetBaseBefore, err := g.localizedNativeCommand24BackgroundBase(
 		targetBG, panelAssets, targetRecordBefore, targetIndex, g.handlerChapter,
 		nil,
 	)
 	if err != nil {
 		return err
 	}
-	targetBaseAfter, err := nativeCommand24BackgroundBase(
+	targetBaseAfter, err := g.localizedNativeCommand24BackgroundBase(
 		targetBG, panelAssets, targetRecordAfter, targetIndex, g.handlerChapter,
 		nil,
 	)

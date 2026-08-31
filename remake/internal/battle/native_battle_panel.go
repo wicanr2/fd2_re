@@ -128,18 +128,49 @@ func RenderNativeBattlePanel(
 	record, dst []byte,
 	unitIndex, rawChapter int,
 ) error {
+	return renderNativeBattlePanel(assets, record, dst, unitIndex, rawChapter, true)
+}
+
+// RenderNativeBattlePanelWithoutName 保留原版面板、數值及定位，只省略姓名。
+// 多語 owner 必須以同一 raw +8 selector 查詢語系目錄後，在原姓名矩形重繪。
+func RenderNativeBattlePanelWithoutName(
+	assets NativeItemPanelDataAssets,
+	record, dst []byte,
+	unitIndex, rawChapter int,
+) error {
+	return renderNativeBattlePanel(assets, record, dst, unitIndex, rawChapter, false)
+}
+
+// NativeBattlePanelOrigin 回傳 0x2A289→0x18C6D 的原版面板原點。
+func NativeBattlePanelOrigin(record []byte, unitIndex, rawChapter int) (int, int, error) {
+	if len(record) < nativeRecordSize || unitIndex < 0 || rawChapter < 0 || rawChapter > 0xff {
+		return 0, 0, errors.New("battle: native battle panel selectors are invalid")
+	}
+	x, y := 171, 4
+	if record[6] == 0 || rawChapter == 24 && unitIndex == 17 {
+		x, y = 0, 154
+	}
+	return x, y, nil
+}
+
+func renderNativeBattlePanel(
+	assets NativeItemPanelDataAssets,
+	record, dst []byte,
+	unitIndex, rawChapter int,
+	renderName bool,
+) error {
 	if len(record) < nativeRecordSize || len(dst) != nativeItemPanelBytes {
 		return errors.New("battle: native battle panel inputs are invalid")
 	}
 	if unitIndex < 0 || rawChapter < 0 || rawChapter > 0xff ||
 		assets.BattlePanel.Width != nativeBattlePanelWidth ||
 		assets.BattlePanel.Height != nativeBattlePanelHeight ||
-		assets.RawCells == nil || assets.Frames == nil || assets.Strings == nil || assets.Font == nil {
+		assets.RawCells == nil || assets.Frames == nil || renderName && (assets.Strings == nil || assets.Font == nil) {
 		return errors.New("battle: native battle panel assets or selectors are invalid")
 	}
-	x, y := 171, 4
-	if record[6] == 0 || rawChapter == 24 && unitIndex == 17 {
-		x, y = 0, 154
+	x, y, err := NativeBattlePanelOrigin(record, unitIndex, rawChapter)
+	if err != nil {
+		return err
 	}
 	staged := append([]byte(nil), dst...)
 	hp := int(int16(binary.LittleEndian.Uint16(record[0x40:])))
@@ -151,9 +182,11 @@ func RenderNativeBattlePanel(
 	}); err != nil {
 		return err
 	}
-	if err := blitNativeItemPanelText(assets.Strings, assets.Font, staged,
-		NativeItemPanelPoint{x + 5, y + 4}, int(record[8])+1, 205); err != nil {
-		return err
+	if renderName {
+		if err := blitNativeItemPanelText(assets.Strings, assets.Font, staged,
+			NativeItemPanelPoint{x + 5, y + 4}, int(record[8])+1, 205); err != nil {
+			return err
+		}
 	}
 	copy(dst, staged)
 	return nil

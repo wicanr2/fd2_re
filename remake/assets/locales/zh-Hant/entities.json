@@ -1,4 +1,665 @@
 {
+  "battle_name_count": 94,
+  "battle_names": {
+    "0": {
+      "name": "索爾",
+      "source_string_ids": [
+        "FDTXT_000/string_0001"
+      ],
+      "status": "original_confirmed"
+    },
+    "1": {
+      "name": "哈諾",
+      "source_string_ids": [
+        "FDTXT_000/string_0002"
+      ],
+      "status": "original_confirmed"
+    },
+    "10": {
+      "name": "瑪琳",
+      "source_string_ids": [
+        "FDTXT_000/string_0011"
+      ],
+      "status": "original_confirmed"
+    },
+    "100": {
+      "name": "武術家",
+      "source_string_ids": [
+        "FDTXT_000/string_0101"
+      ],
+      "status": "original_confirmed"
+    },
+    "101": {
+      "name": "黑暗鬥士",
+      "source_string_ids": [
+        "FDTXT_000/string_0102"
+      ],
+      "status": "original_confirmed"
+    },
+    "102": {
+      "name": "獸人",
+      "source_string_ids": [
+        "FDTXT_000/string_0103"
+      ],
+      "status": "original_confirmed"
+    },
+    "103": {
+      "name": "獸人隊長",
+      "source_string_ids": [
+        "FDTXT_000/string_0104"
+      ],
+      "status": "original_confirmed"
+    },
+    "104": {
+      "name": "火龍",
+      "source_string_ids": [
+        "FDTXT_000/string_0105"
+      ],
+      "status": "original_confirmed"
+    },
+    "105": {
+      "name": "雷龍",
+      "source_string_ids": [
+        "FDTXT_000/string_0106"
+      ],
+      "status": "original_confirmed"
+    },
+    "106": {
+      "name": "龍人戰士",
+      "source_string_ids": [
+        "FDTXT_000/string_0107"
+      ],
+      "status": "original_confirmed"
+    },
+    "107": {
+      "name": "龍人法師",
+      "source_string_ids": [
+        "FDTXT_000/string_0108"
+      ],
+      "status": "original_confirmed"
+    },
+    "108": {
+      "name": "魔鬼",
+      "source_string_ids": [
+        "FDTXT_000/string_0109"
+      ],
+      "status": "original_confirmed"
+    },
+    "109": {
+      "name": "惡魔",
+      "source_string_ids": [
+        "FDTXT_000/string_0110"
+      ],
+      "status": "original_confirmed"
+    },
+    "11": {
+      "name": "索菲亞",
+      "source_string_ids": [
+        "FDTXT_000/string_0012"
+      ],
+      "status": "original_confirmed"
+    },
+    "110": {
+      "name": "大惡魔",
+      "source_string_ids": [
+        "FDTXT_000/string_0111"
+      ],
+      "status": "original_confirmed"
+    },
+    "111": {
+      "name": "機甲兵",
+      "source_string_ids": [
+        "FDTXT_000/string_0112"
+      ],
+      "status": "original_confirmed"
+    },
+    "112": {
+      "name": "機甲突擊兵",
+      "source_string_ids": [
+        "FDTXT_000/string_0113"
+      ],
+      "status": "original_confirmed"
+    },
+    "113": {
+      "name": "光束砲座",
+      "source_string_ids": [
+        "FDTXT_000/string_0114"
+      ],
+      "status": "original_confirmed"
+    },
+    "114": {
+      "name": "機甲射手",
+      "source_string_ids": [
+        "FDTXT_000/string_0115"
+      ],
+      "status": "original_confirmed"
+    },
+    "115": {
+      "name": "機甲守衛",
+      "source_string_ids": [
+        "FDTXT_000/string_0116"
+      ],
+      "status": "original_confirmed"
+    },
+    "116": {
+      "name": "機甲隊長",
+      "source_string_ids": [
+        "FDTXT_000/string_0117"
+      ],
+      "status": "original_confirmed"
+    },
+    "117": {
+      "name": "卡特那",
+      "source_string_ids": [
+        "FDTXT_000/string_0118"
+      ],
+      "status": "original_confirmed"
+    },
+    "118": {
+      "name": "萊汀",
+      "source_string_ids": [
+        "FDTXT_000/string_0119"
+      ],
+      "status": "original_confirmed"
+    },
+    "119": {
+      "name": "薩卡",
+      "source_string_ids": [
+        "FDTXT_000/string_0120"
+      ],
+      "status": "original_confirmed"
+    },
+    "12": {
+      "name": "凱麗",
+      "source_string_ids": [
+        "FDTXT_000/string_0013"
+      ],
+      "status": "original_confirmed"
+    },
+    "120": {
+      "name": "瑪爾",
+      "source_string_ids": [
+        "FDTXT_000/string_0121"
+      ],
+      "status": "original_confirmed"
+    },
+    "121": {
+      "name": "沼澤怪物",
+      "source_string_ids": [
+        "FDTXT_000/string_0122"
+      ],
+      "status": "original_confirmed"
+    },
+    "122": {
+      "name": "地魔神",
+      "source_string_ids": [
+        "FDTXT_000/string_0123"
+      ],
+      "status": "original_confirmed"
+    },
+    "123": {
+      "name": "水魔神",
+      "source_string_ids": [
+        "FDTXT_000/string_0124"
+      ],
+      "status": "original_confirmed"
+    },
+    "124": {
+      "name": "風魔神",
+      "source_string_ids": [
+        "FDTXT_000/string_0125"
+      ],
+      "status": "original_confirmed"
+    },
+    "125": {
+      "name": "火魔神",
+      "source_string_ids": [
+        "FDTXT_000/string_0126"
+      ],
+      "status": "original_confirmed"
+    },
+    "126": {
+      "name": "空魔神",
+      "source_string_ids": [
+        "FDTXT_000/string_0127"
+      ],
+      "status": "original_confirmed"
+    },
+    "127": {
+      "name": "暗黑龍",
+      "source_string_ids": [
+        "FDTXT_000/string_0128"
+      ],
+      "status": "original_confirmed"
+    },
+    "13": {
+      "name": "貝克威",
+      "source_string_ids": [
+        "FDTXT_000/string_0014"
+      ],
+      "status": "original_confirmed"
+    },
+    "133": {
+      "name": "女村民",
+      "source_string_ids": [
+        "FDTXT_000/string_0134"
+      ],
+      "status": "original_confirmed"
+    },
+    "134": {
+      "name": "男村民",
+      "source_string_ids": [
+        "FDTXT_000/string_0135"
+      ],
+      "status": "original_confirmed"
+    },
+    "135": {
+      "name": "卡納恩三世",
+      "source_string_ids": [
+        "FDTXT_000/string_0136"
+      ],
+      "status": "original_confirmed"
+    },
+    "14": {
+      "name": "珊",
+      "source_string_ids": [
+        "FDTXT_000/string_0015"
+      ],
+      "status": "original_confirmed"
+    },
+    "15": {
+      "name": "塞可邦勒",
+      "source_string_ids": [
+        "FDTXT_000/string_0016"
+      ],
+      "status": "original_confirmed"
+    },
+    "16": {
+      "name": "凱拉斯",
+      "source_string_ids": [
+        "FDTXT_000/string_0017"
+      ],
+      "status": "original_confirmed"
+    },
+    "17": {
+      "name": "米亞斯多德",
+      "source_string_ids": [
+        "FDTXT_000/string_0018"
+      ],
+      "status": "original_confirmed"
+    },
+    "18": {
+      "name": "蜜蒂",
+      "source_string_ids": [
+        "FDTXT_000/string_0019"
+      ],
+      "status": "original_confirmed"
+    },
+    "19": {
+      "name": "羅德曼",
+      "source_string_ids": [
+        "FDTXT_000/string_0020"
+      ],
+      "status": "original_confirmed"
+    },
+    "2": {
+      "name": "鐵諾",
+      "source_string_ids": [
+        "FDTXT_000/string_0003"
+      ],
+      "status": "original_confirmed"
+    },
+    "20": {
+      "name": "莎拉",
+      "source_string_ids": [
+        "FDTXT_000/string_0021"
+      ],
+      "status": "original_confirmed"
+    },
+    "21": {
+      "name": "約拿",
+      "source_string_ids": [
+        "FDTXT_000/string_0022"
+      ],
+      "status": "original_confirmed"
+    },
+    "22": {
+      "name": "卡里斯",
+      "source_string_ids": [
+        "FDTXT_000/string_0023"
+      ],
+      "status": "original_confirmed"
+    },
+    "23": {
+      "name": "羅蘭",
+      "source_string_ids": [
+        "FDTXT_000/string_0024"
+      ],
+      "status": "original_confirmed"
+    },
+    "24": {
+      "name": "希爾法",
+      "source_string_ids": [
+        "FDTXT_000/string_0025"
+      ],
+      "status": "original_confirmed"
+    },
+    "25": {
+      "name": "謝多",
+      "source_string_ids": [
+        "FDTXT_000/string_0026"
+      ],
+      "status": "original_confirmed"
+    },
+    "26": {
+      "name": "聖寇拉斯",
+      "source_string_ids": [
+        "FDTXT_000/string_0027"
+      ],
+      "status": "original_confirmed"
+    },
+    "27": {
+      "name": "巴拿羅西亞",
+      "source_string_ids": [
+        "FDTXT_000/string_0028"
+      ],
+      "status": "original_confirmed"
+    },
+    "28": {
+      "name": "達克塞",
+      "source_string_ids": [
+        "FDTXT_000/string_0029"
+      ],
+      "status": "original_confirmed"
+    },
+    "29": {
+      "name": "亞齊梅吉",
+      "source_string_ids": [
+        "FDTXT_000/string_0030"
+      ],
+      "status": "original_confirmed"
+    },
+    "3": {
+      "name": "哈瓦特",
+      "source_string_ids": [
+        "FDTXT_000/string_0004"
+      ],
+      "status": "original_confirmed"
+    },
+    "30": {
+      "name": "蓋亞",
+      "source_string_ids": [
+        "FDTXT_000/string_0031"
+      ],
+      "status": "original_confirmed"
+    },
+    "31": {
+      "name": "渥德",
+      "source_string_ids": [
+        "FDTXT_000/string_0032"
+      ],
+      "status": "original_confirmed"
+    },
+    "4": {
+      "name": "亞雷斯",
+      "source_string_ids": [
+        "FDTXT_000/string_0005"
+      ],
+      "status": "original_confirmed"
+    },
+    "5": {
+      "name": "洛娜",
+      "source_string_ids": [
+        "FDTXT_000/string_0006"
+      ],
+      "status": "original_confirmed"
+    },
+    "6": {
+      "name": "萊汀",
+      "source_string_ids": [
+        "FDTXT_000/string_0007"
+      ],
+      "status": "original_confirmed"
+    },
+    "68": {
+      "name": "士兵",
+      "source_string_ids": [
+        "FDTXT_000/string_0069"
+      ],
+      "status": "original_confirmed"
+    },
+    "69": {
+      "name": "騎兵",
+      "source_string_ids": [
+        "FDTXT_000/string_0070"
+      ],
+      "status": "original_confirmed"
+    },
+    "7": {
+      "name": "蘭斯洛特",
+      "source_string_ids": [
+        "FDTXT_000/string_0008"
+      ],
+      "status": "original_confirmed"
+    },
+    "70": {
+      "name": "傭兵",
+      "source_string_ids": [
+        "FDTXT_000/string_0071"
+      ],
+      "status": "original_confirmed"
+    },
+    "71": {
+      "name": "豹人",
+      "source_string_ids": [
+        "FDTXT_000/string_0072"
+      ],
+      "status": "original_confirmed"
+    },
+    "72": {
+      "name": "精靈",
+      "source_string_ids": [
+        "FDTXT_000/string_0073"
+      ],
+      "status": "original_confirmed"
+    },
+    "73": {
+      "name": "龍人",
+      "source_string_ids": [
+        "FDTXT_000/string_0074"
+      ],
+      "status": "original_confirmed"
+    },
+    "74": {
+      "name": "惡魔",
+      "source_string_ids": [
+        "FDTXT_000/string_0075"
+      ],
+      "status": "original_confirmed"
+    },
+    "76": {
+      "name": "士兵",
+      "source_string_ids": [
+        "FDTXT_000/string_0077"
+      ],
+      "status": "original_confirmed"
+    },
+    "77": {
+      "name": "精英戰士",
+      "source_string_ids": [
+        "FDTXT_000/string_0078"
+      ],
+      "status": "original_confirmed"
+    },
+    "78": {
+      "name": "鎧甲武士",
+      "source_string_ids": [
+        "FDTXT_000/string_0079"
+      ],
+      "status": "original_confirmed"
+    },
+    "79": {
+      "name": "傭兵",
+      "source_string_ids": [
+        "FDTXT_000/string_0080"
+      ],
+      "status": "original_confirmed"
+    },
+    "8": {
+      "name": "希莉亞",
+      "source_string_ids": [
+        "FDTXT_000/string_0009"
+      ],
+      "status": "original_confirmed"
+    },
+    "80": {
+      "name": "黑暗戰士",
+      "source_string_ids": [
+        "FDTXT_000/string_0081"
+      ],
+      "status": "original_confirmed"
+    },
+    "81": {
+      "name": "狂戰士",
+      "source_string_ids": [
+        "FDTXT_000/string_0082"
+      ],
+      "status": "original_confirmed"
+    },
+    "82": {
+      "name": "騎兵",
+      "source_string_ids": [
+        "FDTXT_000/string_0083"
+      ],
+      "status": "original_confirmed"
+    },
+    "83": {
+      "name": "突擊騎兵",
+      "source_string_ids": [
+        "FDTXT_000/string_0084"
+      ],
+      "status": "original_confirmed"
+    },
+    "84": {
+      "name": "地獄騎士",
+      "source_string_ids": [
+        "FDTXT_000/string_0085"
+      ],
+      "status": "original_confirmed"
+    },
+    "85": {
+      "name": "黑暗騎士",
+      "source_string_ids": [
+        "FDTXT_000/string_0086"
+      ],
+      "status": "original_confirmed"
+    },
+    "86": {
+      "name": "龍騎士",
+      "source_string_ids": [
+        "FDTXT_000/string_0087"
+      ],
+      "status": "original_confirmed"
+    },
+    "87": {
+      "name": "弓箭手",
+      "source_string_ids": [
+        "FDTXT_000/string_0088"
+      ],
+      "status": "original_confirmed"
+    },
+    "88": {
+      "name": "黑暗射手",
+      "source_string_ids": [
+        "FDTXT_000/string_0089"
+      ],
+      "status": "original_confirmed"
+    },
+    "89": {
+      "name": "狙擊手",
+      "source_string_ids": [
+        "FDTXT_000/string_0090"
+      ],
+      "status": "original_confirmed"
+    },
+    "9": {
+      "name": "悠妮",
+      "source_string_ids": [
+        "FDTXT_000/string_0010"
+      ],
+      "status": "original_confirmed"
+    },
+    "90": {
+      "name": "魔法師",
+      "source_string_ids": [
+        "FDTXT_000/string_0091"
+      ],
+      "status": "original_confirmed"
+    },
+    "91": {
+      "name": "黑暗法師",
+      "source_string_ids": [
+        "FDTXT_000/string_0092"
+      ],
+      "status": "original_confirmed"
+    },
+    "92": {
+      "name": "巫師",
+      "source_string_ids": [
+        "FDTXT_000/string_0093"
+      ],
+      "status": "original_confirmed"
+    },
+    "93": {
+      "name": "僧侶",
+      "source_string_ids": [
+        "FDTXT_000/string_0094"
+      ],
+      "status": "original_confirmed"
+    },
+    "94": {
+      "name": "黑暗僧侶",
+      "source_string_ids": [
+        "FDTXT_000/string_0095"
+      ],
+      "status": "original_confirmed"
+    },
+    "95": {
+      "name": "大祭師",
+      "source_string_ids": [
+        "FDTXT_000/string_0096"
+      ],
+      "status": "original_confirmed"
+    },
+    "96": {
+      "name": "盜賊",
+      "source_string_ids": [
+        "FDTXT_000/string_0097"
+      ],
+      "status": "original_confirmed"
+    },
+    "97": {
+      "name": "盜賊頭目",
+      "source_string_ids": [
+        "FDTXT_000/string_0098"
+      ],
+      "status": "original_confirmed"
+    },
+    "98": {
+      "name": "影之忍者",
+      "source_string_ids": [
+        "FDTXT_000/string_0099"
+      ],
+      "status": "original_confirmed"
+    },
+    "99": {
+      "name": "黑暗殺手",
+      "source_string_ids": [
+        "FDTXT_000/string_0100"
+      ],
+      "status": "original_confirmed"
+    }
+  },
   "character_count": 32,
   "characters": {
     "0": {
@@ -58,7 +719,7 @@
       "status": "original_confirmed"
     },
     "15": {
-      "name": "賽可邦勒",
+      "name": "塞可邦勒",
       "source_string_ids": [
         "FDTXT_000/string_0016",
         "native_identity/15"
@@ -170,7 +831,7 @@
       "status": "original_confirmed"
     },
     "28": {
-      "name": "達克賽",
+      "name": "達克塞",
       "source_string_ids": [
         "FDTXT_000/string_0029",
         "native_identity/28"
@@ -178,7 +839,7 @@
       "status": "original_confirmed"
     },
     "29": {
-      "name": "亞奇梅吉",
+      "name": "亞齊梅吉",
       "source_string_ids": [
         "FDTXT_000/string_0030",
         "native_identity/29"

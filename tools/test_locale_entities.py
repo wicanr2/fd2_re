@@ -24,6 +24,8 @@ class LocaleEntitiesTest(unittest.TestCase):
                         "--characters", str(ROOT / "docs/data/localization/party-character-names.json"),
                         "--item-source", str(ROOT / "docs/data/localization/item-names-zh-Hant.json"),
                         "--item-supplements", str(ROOT / "docs/data/localization/item-name-supplements.json"),
+                        "--battle-source", str(ROOT / "docs/data/localization/battle-names-zh-Hant.json"),
+                        "--battle-supplements", str(ROOT / "docs/data/localization/battle-name-supplements.json"),
                         "--output", str(output),
                     ],
                     check=True,

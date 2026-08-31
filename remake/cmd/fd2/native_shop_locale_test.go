@@ -71,6 +71,41 @@ func TestOfficialCharacterNamesFitNativeRosterRectangle(t *testing.T) {
 	}
 }
 
+func TestOfficialBattleNamesFitNativePanelRectangle(t *testing.T) {
+	displayFont := loadFont()
+	if displayFont == nil {
+		t.Fatal("official CJK font unavailable")
+	}
+	for _, localeID := range []string{"zh-Hans", "ja", "en"} {
+		catalog, err := loadOfficialLocaleEntities(localeID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		count := 0
+		for rawID := 0; rawID <= 138; rawID++ {
+			name, err := catalog.BattleName(rawID)
+			if err != nil {
+				continue
+			}
+			count++
+			if displayFont.Width(name, localizedBattlePanelNameScale) > localizedBattlePanelNameWidth {
+				t.Errorf("%s battle name %d %q exceeds panel rectangle", localeID, rawID, name)
+				continue
+			}
+			if err := drawIndexedLocalizedText(
+				make([]byte, 320*200), displayFont, name, 5, 4,
+				localizedBattlePanelNameWidth, localizedBattlePanelNameHeight,
+				localizedBattlePanelNameScale, 0xcd, 0x4c,
+			); err != nil {
+				t.Errorf("%s battle name %d %q: %v", localeID, rawID, name, err)
+			}
+		}
+		if count != 94 {
+			t.Errorf("%s battle name count=%d, want 94", localeID, count)
+		}
+	}
+}
+
 func TestOfficialShopMessagesFitNativeDialogueRectangle(t *testing.T) {
 	displayFont := loadFont()
 	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))

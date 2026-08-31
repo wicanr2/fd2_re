@@ -1,4 +1,665 @@
 {
+  "battle_name_count": 94,
+  "battle_names": {
+    "0": {
+      "name": "Thor",
+      "source_string_ids": [
+        "FDTXT_000/string_0001"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "1": {
+      "name": "Hano",
+      "source_string_ids": [
+        "FDTXT_000/string_0002"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "10": {
+      "name": "Marlin",
+      "source_string_ids": [
+        "FDTXT_000/string_0011"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "100": {
+      "name": "Martial Artist",
+      "source_string_ids": [
+        "FDTXT_000/string_0101"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "101": {
+      "name": "Dark Fighter",
+      "source_string_ids": [
+        "FDTXT_000/string_0102"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "102": {
+      "name": "Orc",
+      "source_string_ids": [
+        "FDTXT_000/string_0103"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "103": {
+      "name": "Orc Captain",
+      "source_string_ids": [
+        "FDTXT_000/string_0104"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "104": {
+      "name": "Fire Dragon",
+      "source_string_ids": [
+        "FDTXT_000/string_0105"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "105": {
+      "name": "Thunder Dragon",
+      "source_string_ids": [
+        "FDTXT_000/string_0106"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "106": {
+      "name": "Dragon Warrior",
+      "source_string_ids": [
+        "FDTXT_000/string_0107"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "107": {
+      "name": "Dragon Mage",
+      "source_string_ids": [
+        "FDTXT_000/string_0108"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "108": {
+      "name": "Devil",
+      "source_string_ids": [
+        "FDTXT_000/string_0109"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "109": {
+      "name": "Demon",
+      "source_string_ids": [
+        "FDTXT_000/string_0110"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "11": {
+      "name": "Sophia",
+      "source_string_ids": [
+        "FDTXT_000/string_0012"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "110": {
+      "name": "Archdemon",
+      "source_string_ids": [
+        "FDTXT_000/string_0111"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "111": {
+      "name": "Mech Trooper",
+      "source_string_ids": [
+        "FDTXT_000/string_0112"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "112": {
+      "name": "Mech Assault",
+      "source_string_ids": [
+        "FDTXT_000/string_0113"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "113": {
+      "name": "Beam Turret",
+      "source_string_ids": [
+        "FDTXT_000/string_0114"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "114": {
+      "name": "Mech Gunner",
+      "source_string_ids": [
+        "FDTXT_000/string_0115"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "115": {
+      "name": "Mech Guard",
+      "source_string_ids": [
+        "FDTXT_000/string_0116"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "116": {
+      "name": "Mech Captain",
+      "source_string_ids": [
+        "FDTXT_000/string_0117"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "117": {
+      "name": "Katena",
+      "source_string_ids": [
+        "FDTXT_000/string_0118"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "118": {
+      "name": "Raiden",
+      "source_string_ids": [
+        "FDTXT_000/string_0119"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "119": {
+      "name": "Zaka",
+      "source_string_ids": [
+        "FDTXT_000/string_0120"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "12": {
+      "name": "Kelly",
+      "source_string_ids": [
+        "FDTXT_000/string_0013"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "120": {
+      "name": "Mar",
+      "source_string_ids": [
+        "FDTXT_000/string_0121"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "121": {
+      "name": "Swamp Monster",
+      "source_string_ids": [
+        "FDTXT_000/string_0122"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "122": {
+      "name": "Earth Fiend",
+      "source_string_ids": [
+        "FDTXT_000/string_0123"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "123": {
+      "name": "Water Fiend",
+      "source_string_ids": [
+        "FDTXT_000/string_0124"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "124": {
+      "name": "Wind Fiend",
+      "source_string_ids": [
+        "FDTXT_000/string_0125"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "125": {
+      "name": "Fire Fiend",
+      "source_string_ids": [
+        "FDTXT_000/string_0126"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "126": {
+      "name": "Sky Fiend",
+      "source_string_ids": [
+        "FDTXT_000/string_0127"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "127": {
+      "name": "Dark Dragon",
+      "source_string_ids": [
+        "FDTXT_000/string_0128"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "13": {
+      "name": "Beckway",
+      "source_string_ids": [
+        "FDTXT_000/string_0014"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "133": {
+      "name": "Village Woman",
+      "source_string_ids": [
+        "FDTXT_000/string_0134"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "134": {
+      "name": "Village Man",
+      "source_string_ids": [
+        "FDTXT_000/string_0135"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "135": {
+      "name": "Canaan III",
+      "source_string_ids": [
+        "FDTXT_000/string_0136"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "14": {
+      "name": "Shan",
+      "source_string_ids": [
+        "FDTXT_000/string_0015"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "15": {
+      "name": "Saikobunler",
+      "source_string_ids": [
+        "FDTXT_000/string_0016"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "16": {
+      "name": "Kylas",
+      "source_string_ids": [
+        "FDTXT_000/string_0017"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "17": {
+      "name": "Miasdord",
+      "source_string_ids": [
+        "FDTXT_000/string_0018"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "18": {
+      "name": "Mitty",
+      "source_string_ids": [
+        "FDTXT_000/string_0019"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "19": {
+      "name": "Rodman",
+      "source_string_ids": [
+        "FDTXT_000/string_0020"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "2": {
+      "name": "Tino",
+      "source_string_ids": [
+        "FDTXT_000/string_0003"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "20": {
+      "name": "Sarah",
+      "source_string_ids": [
+        "FDTXT_000/string_0021"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "21": {
+      "name": "Jonah",
+      "source_string_ids": [
+        "FDTXT_000/string_0022"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "22": {
+      "name": "Carlos",
+      "source_string_ids": [
+        "FDTXT_000/string_0023"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "23": {
+      "name": "Roland",
+      "source_string_ids": [
+        "FDTXT_000/string_0024"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "24": {
+      "name": "Sylpha",
+      "source_string_ids": [
+        "FDTXT_000/string_0025"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "25": {
+      "name": "Seymour",
+      "source_string_ids": [
+        "FDTXT_000/string_0026"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "26": {
+      "name": "Saint Colas",
+      "source_string_ids": [
+        "FDTXT_000/string_0027"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "27": {
+      "name": "Banalosia",
+      "source_string_ids": [
+        "FDTXT_000/string_0028"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "28": {
+      "name": "Dirksen",
+      "source_string_ids": [
+        "FDTXT_000/string_0029"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "29": {
+      "name": "Achimeji",
+      "source_string_ids": [
+        "FDTXT_000/string_0030"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "3": {
+      "name": "Howard",
+      "source_string_ids": [
+        "FDTXT_000/string_0004"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "30": {
+      "name": "Gaia",
+      "source_string_ids": [
+        "FDTXT_000/string_0031"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "31": {
+      "name": "Wood",
+      "source_string_ids": [
+        "FDTXT_000/string_0032"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "4": {
+      "name": "Ares",
+      "source_string_ids": [
+        "FDTXT_000/string_0005"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "5": {
+      "name": "Lorna",
+      "source_string_ids": [
+        "FDTXT_000/string_0006"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "6": {
+      "name": "Raiden",
+      "source_string_ids": [
+        "FDTXT_000/string_0007"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "68": {
+      "name": "Soldier",
+      "source_string_ids": [
+        "FDTXT_000/string_0069"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "69": {
+      "name": "Cavalry",
+      "source_string_ids": [
+        "FDTXT_000/string_0070"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "7": {
+      "name": "Lancelot",
+      "source_string_ids": [
+        "FDTXT_000/string_0008"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "70": {
+      "name": "Mercenary",
+      "source_string_ids": [
+        "FDTXT_000/string_0071"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "71": {
+      "name": "Pantherman",
+      "source_string_ids": [
+        "FDTXT_000/string_0072"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "72": {
+      "name": "Elf",
+      "source_string_ids": [
+        "FDTXT_000/string_0073"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "73": {
+      "name": "Dragonkin",
+      "source_string_ids": [
+        "FDTXT_000/string_0074"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "74": {
+      "name": "Demon",
+      "source_string_ids": [
+        "FDTXT_000/string_0075"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "76": {
+      "name": "Soldier",
+      "source_string_ids": [
+        "FDTXT_000/string_0077"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "77": {
+      "name": "Elite Warrior",
+      "source_string_ids": [
+        "FDTXT_000/string_0078"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "78": {
+      "name": "Armored Warrior",
+      "source_string_ids": [
+        "FDTXT_000/string_0079"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "79": {
+      "name": "Mercenary",
+      "source_string_ids": [
+        "FDTXT_000/string_0080"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "8": {
+      "name": "Shelia",
+      "source_string_ids": [
+        "FDTXT_000/string_0009"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "80": {
+      "name": "Dark Warrior",
+      "source_string_ids": [
+        "FDTXT_000/string_0081"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "81": {
+      "name": "Berserker",
+      "source_string_ids": [
+        "FDTXT_000/string_0082"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "82": {
+      "name": "Cavalry",
+      "source_string_ids": [
+        "FDTXT_000/string_0083"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "83": {
+      "name": "Assault Cavalry",
+      "source_string_ids": [
+        "FDTXT_000/string_0084"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "84": {
+      "name": "Hell Knight",
+      "source_string_ids": [
+        "FDTXT_000/string_0085"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "85": {
+      "name": "Dark Knight",
+      "source_string_ids": [
+        "FDTXT_000/string_0086"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "86": {
+      "name": "Dragon Knight",
+      "source_string_ids": [
+        "FDTXT_000/string_0087"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "87": {
+      "name": "Archer",
+      "source_string_ids": [
+        "FDTXT_000/string_0088"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "88": {
+      "name": "Dark Archer",
+      "source_string_ids": [
+        "FDTXT_000/string_0089"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "89": {
+      "name": "Sniper",
+      "source_string_ids": [
+        "FDTXT_000/string_0090"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "9": {
+      "name": "Yuni",
+      "source_string_ids": [
+        "FDTXT_000/string_0010"
+      ],
+      "status": "curated_remake_transliteration"
+    },
+    "90": {
+      "name": "Mage",
+      "source_string_ids": [
+        "FDTXT_000/string_0091"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "91": {
+      "name": "Dark Mage",
+      "source_string_ids": [
+        "FDTXT_000/string_0092"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "92": {
+      "name": "Wizard",
+      "source_string_ids": [
+        "FDTXT_000/string_0093"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "93": {
+      "name": "Monk",
+      "source_string_ids": [
+        "FDTXT_000/string_0094"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "94": {
+      "name": "Dark Monk",
+      "source_string_ids": [
+        "FDTXT_000/string_0095"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "95": {
+      "name": "High Priest",
+      "source_string_ids": [
+        "FDTXT_000/string_0096"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "96": {
+      "name": "Thief",
+      "source_string_ids": [
+        "FDTXT_000/string_0097"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "97": {
+      "name": "Thief Chief",
+      "source_string_ids": [
+        "FDTXT_000/string_0098"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "98": {
+      "name": "Shadow Ninja",
+      "source_string_ids": [
+        "FDTXT_000/string_0099"
+      ],
+      "status": "curated_remake_translation"
+    },
+    "99": {
+      "name": "Dark Assassin",
+      "source_string_ids": [
+        "FDTXT_000/string_0100"
+      ],
+      "status": "curated_remake_translation"
+    }
+  },
   "character_count": 32,
   "characters": {
     "0": {
