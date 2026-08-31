@@ -228,6 +228,13 @@
   `DATO_030_m0`、角色資料表的機兵職業、四語隊伍姓名清冊及故事中的機能／導航
   敘述共同確認為蓋亞（`Gaia`）。人工影像檢視保留原版向右的非人機械頭、白灰
   分段裝甲、深色水平視窗及藍色關節／線路；種族欄位仍未解碼，不另加種族斷言。
+- `modern.wood.portrait.style_a.frame0`
+- 執行期檔：`wood-portrait-style-a-v1-80.png`，`80×80`，SHA-256
+  `225455dd1e6f3678b1376889f546c110d41a46c48415476cf58425e07cf50805`
+- 母稿：`wood-portrait-style-a-v1-master.png`，`1254×1254`；角色身分由
+  `DATO_031_m0`、機兵職業、四語姓名及故事的系統／記憶庫／機甲戰鬥團敘述共同
+  確認為渥德（`Wood`）。人工影像檢視保留原版向左的仿人機械臉、古銅色人造
+  表皮、黑色硬質頭冠、藍黑側板、紅橙眼與強壯下顎；不把它改畫成蓋亞式全罩頭。
 - `modern.tino.portrait.style_a.frame0`
 - 執行期檔：`tino-portrait-style-a-v1-80.png`，`80×80`，SHA-256
   `f0d350e52c9d67250b1f63e8775e7eb9a99e030eb815bca4b37ae6f2f887b64d`
