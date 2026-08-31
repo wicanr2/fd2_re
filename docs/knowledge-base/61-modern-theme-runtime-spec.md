@@ -4,7 +4,8 @@
 
 ## 範圍
 
-本規格定義索爾故事對話的獨立現代頭像，以及索爾地圖人物的 12 格候選圖組。
+本規格分別定義索爾故事對話的獨立現代頭像，以及 FDICON selector 0、68 的
+兩組 12 格候選。selector 是圖像索引，不等於角色身分；兩者不得混用。
 它不授權從合成概念稿反切地圖圖塊或 HUD，也不改變忠實原版主題。
 
 ## 原始證據與既有消費端
@@ -49,12 +50,16 @@
 - 母稿：`sol-portrait-style-a-v2-master.png`，`1254×1254`。
 - 兩檔皆留在忽略版控的私人素材目錄；公開儲存庫只保存契約與雜湊。
 
-## 索爾地圖人物 12 格契約
+## FDICON 地圖人物 12 格契約
 
 ### 原始證據
 
 - 原始來源是 `FDICON.B24` 第 68 組，不是 `FIGANI_068`；後者已由清冊證實為
   `empty_header_zero`，不可混作戰鬥動畫來源。
+- 角色建構資料把索爾基礎 selector 設為 0；轉職等 writer 可另行改寫 selector，
+  且既有晚期悠妮資料曾使用 `0x44`。因此第 68 組只能稱為原始 selector 圖組，
+  不能永久命名為索爾或悠妮。這項勘誤直接取代 2026-08-31 初稿的「索爾
+  fig_068」錯誤斷言。
 - 固定版 `FDICON.B24`：624,010 bytes，MD5
   `46f793540209a063ea73a5373ca14bf4`；完整 SHA-256 與版本身分仍以
   `docs/data/fd2-reference-files.json` 為準。
@@ -66,7 +71,7 @@
 
 ### 現代候選契約
 
-1. `modern.sol.map_sprite.style_a` 必須一次提供 12 張獨立 `24×24` PNG，保留
+1. `modern.fdicon.group_068.style_a` 必須一次提供 12 張獨立 `24×24` PNG，保留
    frame 0..11、pose 0..3 與 cycle 0..2 的穩定映射。
 2. 每張 alpha 只能是 0 或 255；catalog validator 在私人素材驗證模式逐像素檢查。
 3. 生成的第 11 格曾因雙劍與比例漂移被拒收，後續暫以第 9 格佔位。現行候選
@@ -78,13 +83,25 @@
 5. 原生 indexed bank 與正規化 RGBA loader 是兩條不同 consumer；接線時兩條
    路徑必須共同抽測，且現代主題缺任一格即整組失敗即關閉。
 
+### selector 0 與 68 候選
+
+- `modern.fdicon.group_000.style_a`：以原版 `fig_000_f00..f11` 為動作基準生成
+  3×4 母稿，再以確定性背景分割、逐格裁切及二值 alpha 轉成 12 張 `24×24`
+  PNG。索爾的基礎建構資料使用 selector 0，因此這組可驗證第一關索爾；但
+  catalog 仍以原始 selector 命名，不宣稱 group 0 永遠只供索爾使用。
+- `modern.fdicon.group_068.style_a`：沿用第 68 組原版輪廓的現代候選。它不綁
+  固定角色身分；第 11 格是第 9 格上半身與第 10 格下半身的現代近似。
+- 兩組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+  `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
+  可重現契約與雜湊。
+
 ### 地圖人物 consumer 現況
 
-- `loadModernStoryPortraitSet` 現會同時預檢 catalog 中的地圖人物組：固定 group
-  68、12 個安全檔名、逐格 SHA-256、`24×24`、二值 alpha、互異雜湊及三週期
+- `loadModernStoryPortraitSet` 現會同時預檢 catalog 中的地圖人物組：group
+  0..95、12 個安全檔名、逐格 SHA-256、`24×24`、二值 alpha、互異雜湊及三週期
   policy，任何一項不符即拒絕整個現代主題。
-- `loadGame` 在完整預檢後，才以 12 張真彩色圖原子取代正規化
-  `g.sprites[68]`；其他 group 不變，忠實主題預設路徑也不變。
+- `loadGame` 在完整預檢後，才以各組 12 張真彩色圖原子取代正規化
+  `g.sprites[0]`／`g.sprites[68]`；其他 group 不變，忠實主題預設路徑也不變。
 - 原生 indexed 戰場 compositor 仍直接消費 `NativeMapSelectorCache`，尚未加入
   真彩色覆蓋層。此路徑保持原版 sprite，不偷偷量化或混搭；因此地圖人物目前
   是 `RUNTIME-E1-PARTIAL`，待原生與正規化同狀態抽測後才能升級。

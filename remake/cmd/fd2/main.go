@@ -8408,15 +8408,25 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			g.font.Draw(screen, g.msg, 8, float64(logicalH)-30, 1.2, color.RGBA{0xff, 0xf0, 0xb4, 0xff})
 		}
 		if g.result != "" { // 勝負(中央大字)
-			t := "勝　利"
+			t, ok := g.localeMessage("battle.result.win")
+			if !ok {
+				return
+			}
 			c := color.RGBA{0xff, 0xdc, 0x50, 0xff}
 			if g.result == "lose" {
-				t = "敗　北"
+				t, ok = g.localeMessage("battle.result.lose")
+				if !ok {
+					return
+				}
 				c = color.RGBA{0xff, 0x70, 0x70, 0xff}
 			}
 			g.font.Draw(screen, t, float64(logicalW)/2-78, float64(logicalH)/2-30, 3.0, c)
 			if g.camp != nil {
-				g.font.Draw(screen, "按 Enter 繼續", float64(logicalW)/2-70, float64(logicalH)/2+36, 1.0,
+				continueText, ok := g.localeMessage("battle.result.continue")
+				if !ok {
+					return
+				}
+				g.font.Draw(screen, continueText, float64(logicalW)/2-70, float64(logicalH)/2+36, 1.0,
 					color.RGBA{0xe0, 0xe0, 0xe0, 0xff})
 			}
 		}
@@ -8854,7 +8864,11 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 		fillBox(160, 120, 320, h)
 		title := n.Prompt
 		if n.Type == "town" && n.Town != "" {
-			title = n.Town + "　戰後整備"
+			var ok bool
+			title, ok = g.localeMessage("postbattle.preparation.title", n.Town)
+			if !ok {
+				return
+			}
 		}
 		g.font.Draw(screen, title, 176, 130, 1.1, color.RGBA{0xff, 0xe0, 0x90, 0xff})
 		for i, o := range vis {

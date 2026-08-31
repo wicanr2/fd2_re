@@ -88,6 +88,10 @@ APPROVED_SOURCE = {
     "preparation.unknown_character": "legacy.go.remake.cmd.fd2.main.l9020-c13",
     "preparation.enter_confirm": "legacy.go.remake.cmd.fd2.main.l9032-c23",
     "preparation.save_hint": "legacy.go.remake.cmd.fd2.main.l9053-c22",
+    "battle.result.win": "legacy.go.remake.cmd.fd2.main.l8410-c9",
+    "battle.result.lose": "legacy.go.remake.cmd.fd2.main.l8413-c9",
+    "battle.result.continue": "legacy.go.remake.cmd.fd2.main.l8418-c24",
+    "postbattle.preparation.title": "legacy.go.remake.cmd.fd2.main.l8857-c12",
 }
 
 def fail(message: str) -> None:

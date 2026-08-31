@@ -62,6 +62,8 @@ func TestOfficialLocalesCoverSystemAndSaveMessages(t *testing.T) {
 			"preparation.save_prompt", "preparation.deploy.controls",
 			"preparation.unknown_character", "preparation.enter_confirm",
 			"preparation.save_hint",
+			"battle.result.win", "battle.result.lose", "battle.result.continue",
+			"postbattle.preparation.title",
 			"common.yes", "common.no",
 		} {
 			entry, ok := catalog.Entries[key]

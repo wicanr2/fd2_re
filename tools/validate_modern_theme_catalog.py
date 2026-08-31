@@ -82,7 +82,7 @@ def validate(verify_private: bool) -> dict:
             if entry["frame"] not in range(4) or entry["mouth_state"] not in {"closed", "open"}:
                 raise ValueError(f"invalid portrait frame identity: {asset_id}")
         if entry["role"] == "map_sprite_set":
-            if entry["frame_count"] != 12 or entry["source_group"] < 0:
+            if entry["frame_count"] != 12 or entry["source_group"] not in range(96):
                 raise ValueError(f"invalid map sprite identity: {asset_id}")
             if entry["consumer_contract"] != "fdicon_map_sprite_12x24_v1":
                 raise ValueError(f"invalid map sprite contract: {asset_id}")

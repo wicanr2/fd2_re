@@ -72,7 +72,7 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 			}
 			if asset.ConsumerContract != "fdicon_map_sprite_12x24_v1" || asset.Width != 24 ||
 				asset.Height != 24 || asset.FrameCount != 12 || len(asset.Files) != 12 ||
-				len(asset.FrameSHA256) != 12 || asset.SourceGroup != 68 ||
+				len(asset.FrameSHA256) != 12 || asset.SourceGroup < 0 || asset.SourceGroup >= 96 ||
 				asset.AlphaContract != "binary" || asset.CyclePolicy != "three_distinct_cycles" {
 				return nil, fmt.Errorf("modern theme map sprite %d violates the frame contract", asset.SourceGroup)
 			}
