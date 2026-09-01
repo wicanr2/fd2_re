@@ -362,6 +362,47 @@ func TestReviewedChapterFourSecondScene(t *testing.T) {
 	}
 }
 
+func TestReviewedChapterFourPostBattleScene(t *testing.T) {
+	wants := map[string]map[string]string{
+		"en": {
+			"legacy/line/750623f119b8/scenes/3/lines/0/speaker-name": "Sol",
+			"legacy/line/750623f119b8/scenes/3/lines/0/text":         "Strange. We keep running into bandits everywhere on this continent!",
+			"legacy/line/750623f119b8/scenes/3/lines/1/speaker-name": "Celia",
+			"legacy/line/750623f119b8/scenes/3/lines/1/text":         "No, something may have happened in Sela Village! Let's hurry over and see!",
+			"legacy/line/750623f119b8/scenes/3/lines/2/speaker-name": "Hano",
+			"legacy/line/750623f119b8/scenes/3/lines/2/text":         "We just fought a major battle. Aren't we going to rest first?",
+			"legacy/line/750623f119b8/scenes/3/lines/3/speaker-name": "Celia",
+			"legacy/line/750623f119b8/scenes/3/lines/3/text":         "Don't worry. There's a small village along the way where we can rest for a while. Let's go!",
+		},
+		"ja": {
+			"legacy/line/750623f119b8/scenes/3/lines/0/speaker-name": "ソール",
+			"legacy/line/750623f119b8/scenes/3/lines/0/text":         "おかしいな。この大陸では、どこへ行っても盗賊に出くわす！",
+			"legacy/line/750623f119b8/scenes/3/lines/1/speaker-name": "セリア",
+			"legacy/line/750623f119b8/scenes/3/lines/1/text":         "違うわ、セラ村で何か起きたのかもしれない！急いで様子を見に行きましょう！",
+			"legacy/line/750623f119b8/scenes/3/lines/2/speaker-name": "ハノー",
+			"legacy/line/750623f119b8/scenes/3/lines/2/text":         "大きな戦いを終えたばかりなのに、少し休まないのか？",
+			"legacy/line/750623f119b8/scenes/3/lines/3/speaker-name": "セリア",
+			"legacy/line/750623f119b8/scenes/3/lines/3/text":         "心配しないで。途中に少し休める小さな村があるわ。行きましょう！",
+		},
+		"zh-Hans": {
+			"legacy/line/750623f119b8/scenes/3/lines/0/speaker-name": "索尔",
+			"legacy/line/750623f119b8/scenes/3/lines/0/text":         "奇怪了，在这片大陆上到处都遇得上强盗！",
+			"legacy/line/750623f119b8/scenes/3/lines/1/speaker-name": "希莉亚",
+			"legacy/line/750623f119b8/scenes/3/lines/1/text":         "不对，赛拉村可能出事了！我们赶快过去看看！",
+			"legacy/line/750623f119b8/scenes/3/lines/2/speaker-name": "哈诺",
+			"legacy/line/750623f119b8/scenes/3/lines/2/text":         "刚打完一场大战，不休息一下吗？",
+			"legacy/line/750623f119b8/scenes/3/lines/3/speaker-name": "希莉亚",
+			"legacy/line/750623f119b8/scenes/3/lines/3/text":         "放心，途中有个小村落可以稍作休息。走吧！",
+		},
+	}
+	for localeID, entries := range wants {
+		if _, err := loadOfficialLocaleContent(localeID); err != nil {
+			t.Fatal(err)
+		}
+		assertReviewedContentEntryIDs(t, localeID, entries)
+	}
+}
+
 func TestReviewedChapterTwoCampaignTranslationsAndItemEntities(t *testing.T) {
 	wants := map[string]map[string]string{
 		"ja": {
