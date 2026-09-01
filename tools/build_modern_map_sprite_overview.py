@@ -28,6 +28,7 @@ GROUPS = (
     (16, "Kylas base selector"),
     (17, "Miasdord base selector"),
     (18, "Mitty base selector"),
+    (19, "Rodman base selector"),
     (68, "late selector sample"),
 )
 
