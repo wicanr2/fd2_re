@@ -1517,6 +1517,51 @@
         "asset:FDICON.B24.group_068",
         "remake/assets/sprites/fig_068_f00.png"
       ]
+    },
+    {
+      "asset_id": "modern.fdicon.group_076.style_a",
+      "role": "map_sprite_set",
+      "status": "runtime_candidate",
+      "master_file": "fdicon-076-style-a-v1-master.png",
+      "files": [
+        "fdicon-076-style-a-f00.png",
+        "fdicon-076-style-a-f01.png",
+        "fdicon-076-style-a-f02.png",
+        "fdicon-076-style-a-f03.png",
+        "fdicon-076-style-a-f04.png",
+        "fdicon-076-style-a-f05.png",
+        "fdicon-076-style-a-f06.png",
+        "fdicon-076-style-a-f07.png",
+        "fdicon-076-style-a-f08.png",
+        "fdicon-076-style-a-f09.png",
+        "fdicon-076-style-a-f10.png",
+        "fdicon-076-style-a-f11.png"
+      ],
+      "width": 24,
+      "height": 24,
+      "frame_count": 12,
+      "frame_sha256": [
+        "8371562885ee2a9797550364c2f040e6cd3a45cf6bfbf2e2f23202bfb0c3ef0d",
+        "5ce27e953731e8b515aa37c947363dee0345c86b1ec35a30cf09405bf33945e2",
+        "275e320fdd887cc5344ab8726ea4c42b9155bb02dc3a7b0d8623142d53b33482",
+        "fdb8de549c7662a6bcecabd9251e76f03e21f59015c4b6eba96f4ee95e68aafa",
+        "b5b6d4ac86f67ad018c4d50387344e00c2e34e9c04efb6362c5b28d87e00117e",
+        "782eaff6ebb3bd534a2ea40b308510c0a6c6ee57db3ba0ded5a1c44951b2de3b",
+        "2ca51edacac74988a1024fbe04a1c2c32849c06605bd355de1967f4bc1e28e00",
+        "5f85990c5a43cd04d86c071b2ecba8a8bc1bc79fdf4fd8a26cc7cee67a73291c",
+        "6890873ee1a33b57df04f75c3a816254b9235215d4aaef31cab0b76239678254",
+        "2706f53cb7a93b4fc093d0078306e831fe7a57131edb354984bd08e03d557ed9",
+        "d3f865bf3cb56818b89d97111fc15c71c777f72d5180928ff32d8423743a9191",
+        "67700098060ce264496199fe37be0b3662071d0f708ac2ba55208da75f7c33c6"
+      ],
+      "source_group": 76,
+      "consumer_contract": "fdicon_map_sprite_12x24_v1",
+      "alpha_contract": "binary",
+      "cycle_policy": "three_distinct_cycles",
+      "source_refs": [
+        "remake/assets/sprites/fig_076_f00.png",
+        "remake/assets/scenarios/ch03.json"
+      ]
     }
   ]
 }

@@ -33,7 +33,7 @@
 
 | 順序 | 工作 | 現況 | 下一個可驗收結果 |
 |---:|---|---|---|
-| 即時勘誤 | A4／A5 數字 | 2026-09-01 現代地圖人物為 selector 0–21、68，共 23 組／276 幀。四語對話本輪改採角色欄位分層統計，不再以所有 5,176 筆內容的單一 `reviewed` 總數冒充對話完成度 | 後續數字直接由 catalog 與語系檔重算，不手抄舊快照 |
+| 即時勘誤 | A4／A5 數字 | 2026-09-01 現代地圖人物為 selector 0–21、68、76，共 24 組／288 幀；76 是第三章普通追兵的頭盔士兵候選。四語對話本輪改採角色欄位分層統計，不再以所有 5,176 筆內容的單一 `reviewed` 總數冒充對話完成度 | 後續數字直接由 catalog 與語系檔重算，不手抄舊快照 |
 | A1 | 編輯器 canonical schema 與穩定身份層 | `DATA-READY（全戰役 legacy projection）／RUNTIME-E1（封包 admission）`：版本化 bundle 現含1份campaign、30份scenario、35份story與38筆角色身份候選；deterministic exporter、跨文件節點／speaker validator、角色身份schema、逐檔SHA-256與完整package self-check已接。Linux AppImage與Windows ZIP重建後均帶入bundle，Linux空白cwd自檢通過。4筆名稱衝突保留直接來源並拒絕猜選 | 解決或明確拆分`native-0/1/7/96`身份歧義；建立canonical→runtime compiler，使正式戰役規則直接消費編輯後文件；再補編輯器UI修改→驗證→執行→存讀檔往返。私人297份animation metadata可顯式匯入，但不作乾淨clone必要輸入 |
 | A2 | 原版素材全量分離與清冊 | `RELEASE-DATA-READY／RESEARCH-PARTIAL`：manifest v2現有39,825筆asset與1,005筆source-resource ledger；901 standardized、11個零長度confirmed-empty、0 blocked、93 unknown。完整本機包有40,127個實體檔案、約104 MB，已於私人庫保存。2026-08-30 `v0.1.1` Linux／Windows本機完整版均為42,258個檔案，macOS為42,332個檔案；三者均綁定engine head `be9a2a77`、通過manifest驗證並標示不可公開。三平台原生公開候選與雜湊也由GitHub Actions重建成功。公開README新增33張完整戰場低解析索引、96組sprite與96組portrait代表幀，不公開可重組逐檔素材。正式`Game` caller未發現93筆unknown有直接archive consumer，因此它們不阻擋第一版 | Windows／macOS實機抽測。只有新證據找到正式consumer才重開unknown，FDOTHER #47／#49不猜接 |
 | A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型、FDICON、FDSHAP、ANI、FDFIELD主要玩家路徑，以及城鎮、商店、標題、LOAD、整備、教會與戰場初始化均已遷移。19個巢狀音效bank已分離；標題#77選單音與ANI #1的#78 companion均由正式runtime消費。2026-08-29 caller稽核未發現正式`Game`仍直接讀原版archive，`FD2_ORIGINAL_FDOTHER`／`DATO` locator亦已移到測試專用檔，正式binary字串檢查通過；archive adapter只留source-oracle。BGM只從完整驗證的30份OGG catalog解析，物理攻擊亦由分離FIGANI provider原子預檢 | 以version 2 ledger的93筆unknown交叉核對是否有尚未登記的玩家consumer；已具標準資料但缺manifest bridge者只補provenance。沒有正式caller的oracle helper不再列為runtime缺口；只有新證據證明正式consumer存在才重開RE→spec→runtime切片 |
@@ -245,6 +245,11 @@
 > **2026-08-31 A4 speaker 7 停止線：**`DATO_007`、角色清冊與四語實體目錄
 > 指向蘭斯洛特，但 `ch03` 的 `speaker=7` 標為「約」，`ch18` 才標為蘭斯洛特；
 > 現況是 `conflicting_identity_candidates`，不得先產生或接通現代頭像。
+>
+> **2026-09-01 第三章追兵視覺分流：**原版戰場普通追兵使用 `fig／selector 76`，
+> 敵方隊長使用 77；兩者都不是角色表的蘭斯洛特 `group 7`，也不是第十八章才登場的
+> 約拿 `speaker 21`。現代主題新增 76 的十二幀候選，依使用者決定保留封閉式深鋼盔、
+> 護頰、盾牌與制式軍裝，使其一眼可辨識為普通士兵；77 仍待獨立證據與素材，不共用 76。
 >
 > **2026-08-31 A4 希莉亞追加：**`DATO_008`、86 筆故事 `speaker=8` 與繁中
 > 實體目錄三方一致確認希莉亞；原版影像的正面棕色波浪長髮、藍色額飾、中央

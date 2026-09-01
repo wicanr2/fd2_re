@@ -292,7 +292,7 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
 5. 原生 indexed bank 與正規化 RGBA loader 是兩條不同 consumer；接線時兩條
    路徑必須共同抽測，且現代主題缺任一格即整組失敗即關閉。
 
-### selector 0–21 與 68 候選
+### selector 0–21、68 與 76 候選
 
 - `modern.fdicon.group_000.style_a`：以原版 `fig_000_f00..f11` 為動作基準生成
   3×4 母稿，再以確定性背景分割、逐格裁切及二值 alpha 轉成 12 張 `24×24`
@@ -397,7 +397,13 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   帶入已撤銷的狼族、年輕法師或尖帽造型，也不追加法杖、劍或盾。
 - `modern.fdicon.group_068.style_a`：沿用第 68 組原版輪廓的現代候選。它不綁
   固定角色身分；第 11 格是第 9 格上半身與第 10 格下半身的現代近似。
-- 二十三組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+- `modern.fdicon.group_076.style_a`：第三章實際敵軍資料的普通追兵使用
+  `fig／map_selector_key／battle_fig=76`；隊長則為 77，兩者均不是角色表的
+  蘭斯洛特 group 7，也不是第十八章才登場的約拿 speaker 21。現代母稿依原版
+  `fig_076_f00..f11` 保留封閉式深鋼盔、低額甲、護頰、頸部防護、小盾、短劍與
+  制式軍裝。依使用者確認，臉部不是視覺焦點，不加入裸頭、英雄披風或華麗裝甲；
+  這是士兵職能的現代近似，不冒稱原版逐像素重繪。
+- 二十四組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
 
@@ -407,7 +413,7 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   0..95、12 個安全檔名、逐格 SHA-256、`24×24`、二值 alpha、互異雜湊及三週期
   policy，任何一項不符即拒絕整個現代主題。
 - `loadGame` 在完整預檢後，才以各組 12 張真彩色圖原子取代正規化
-  `g.sprites[0]`／`g.sprites[1]`／`g.sprites[2]`／`g.sprites[3]`／`g.sprites[4]`／`g.sprites[5]`／`g.sprites[6]`／`g.sprites[7]`／`g.sprites[8]`／`g.sprites[9]`／`g.sprites[10]`／`g.sprites[11]`／`g.sprites[12]`／`g.sprites[13]`／`g.sprites[14]`／`g.sprites[15]`／`g.sprites[16]`／`g.sprites[17]`／`g.sprites[18]`／`g.sprites[19]`／`g.sprites[20]`／`g.sprites[21]`／`g.sprites[68]`；其他 group 不變，忠實主題
+  `g.sprites[0]`／`g.sprites[1]`／`g.sprites[2]`／`g.sprites[3]`／`g.sprites[4]`／`g.sprites[5]`／`g.sprites[6]`／`g.sprites[7]`／`g.sprites[8]`／`g.sprites[9]`／`g.sprites[10]`／`g.sprites[11]`／`g.sprites[12]`／`g.sprites[13]`／`g.sprites[14]`／`g.sprites[15]`／`g.sprites[16]`／`g.sprites[17]`／`g.sprites[18]`／`g.sprites[19]`／`g.sprites[20]`／`g.sprites[21]`／`g.sprites[68]`／`g.sprites[76]`；其他 group 不變，忠實主題
   預設路徑也不變。
 - 原生 indexed 戰場 compositor 仍直接消費 `NativeMapSelectorCache`，尚未加入
   真彩色覆蓋層。此路徑保持原版 sprite，不偷偷量化或混搭；因此地圖人物目前

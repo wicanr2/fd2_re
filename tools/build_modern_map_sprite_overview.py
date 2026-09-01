@@ -32,6 +32,7 @@ GROUPS = (
     (20, "Sarah base selector"),
     (21, "Jonah base selector"),
     (68, "late selector sample"),
+    (76, "chapter 3 helmeted soldier"),
 )
 
 
