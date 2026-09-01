@@ -1446,6 +1446,35 @@
       ]
     },
     {
+      "asset_id": "modern.fdicon.group_021.style_a",
+      "role": "map_sprite_set", "status": "runtime_candidate",
+      "master_file": "fdicon-021-style-a-v1-master.png",
+      "files": [
+        "fdicon-021-style-a-f00.png", "fdicon-021-style-a-f01.png", "fdicon-021-style-a-f02.png",
+        "fdicon-021-style-a-f03.png", "fdicon-021-style-a-f04.png", "fdicon-021-style-a-f05.png",
+        "fdicon-021-style-a-f06.png", "fdicon-021-style-a-f07.png", "fdicon-021-style-a-f08.png",
+        "fdicon-021-style-a-f09.png", "fdicon-021-style-a-f10.png", "fdicon-021-style-a-f11.png"
+      ],
+      "width": 24, "height": 24, "frame_count": 12,
+      "frame_sha256": [
+        "4d65d482a0a04174cd7356262a17104f5bca5ae510fe63820e139f0fcc532b1d",
+        "8e1711fedf6324a58fa0fac37bfae26b60881ddd38dff369cd027c99a1a74f7f",
+        "d41797b514c73cc86065069344c4476a19a316d8d863862a3e1b2e90bcc76dac",
+        "43f3bbb83b64123eedd44f7a0a4469463842252822ed05b93b393f046c0d349f",
+        "4f44313f155560ab6f34a9e602b263cf0f9412bd8a167a1eed2c0278cc78274b",
+        "f0a5abd2c1d98c3497621ab5cc28fd151c9682682e78c6eb8c1e8952a41702d1",
+        "9e3be6ff4d44aa0111816b0152ad10c170dcb2ec3082c7273a2782e6b5ed547e",
+        "9fdf9ff7b98c38328419d11398ee250a0a6c38701bc8d3af338173498081b456",
+        "09c3ee8b97e3649280781007fb8c883062c96ac7b62f61659038b672185f4af8",
+        "b4df9b68b43c2e9b5d2c552c49ebf0616e2c6d4b8c9d84b4cd7e0a42491f9509",
+        "559d3906321cfeedf30258f4bc8b6b23f43dc64ae0f97ad7129cbcf4b01fe431",
+        "9b53fd945de7d8879f138f36617ca315a3335a76c96b2d91aae0ef679701452e"
+      ],
+      "source_group": 21, "consumer_contract": "fdicon_map_sprite_12x24_v1",
+      "alpha_contract": "binary", "cycle_policy": "three_distinct_cycles",
+      "source_refs": ["asset:FDICON.B24.group_021", "remake/assets/sprites/fig_021_f00.png", "docs/data/exe_tables/characters.json"]
+    },
+    {
       "asset_id": "modern.fdicon.group_068.style_a",
       "role": "map_sprite_set",
       "status": "runtime_candidate",
