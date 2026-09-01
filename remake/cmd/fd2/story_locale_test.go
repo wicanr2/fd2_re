@@ -315,6 +315,53 @@ func TestReviewedChapterFourOpeningScene(t *testing.T) {
 	}
 }
 
+func TestReviewedChapterFourSecondScene(t *testing.T) {
+	wants := map[string]map[string]string{
+		"en": {
+			"legacy/line/750623f119b8/scenes/1/lines/0/speaker-name": "Panther",
+			"legacy/line/750623f119b8/scenes/1/lines/0/text":         "Are you heading to Sela Village? What are you doing here?",
+			"legacy/line/750623f119b8/scenes/1/lines/1/speaker-name": "Sol",
+			"legacy/line/750623f119b8/scenes/1/lines/1/text":         "None of your business! Get out of the way!",
+			"legacy/line/750623f119b8/scenes/1/lines/2/speaker-name": "Panther",
+			"legacy/line/750623f119b8/scenes/1/lines/2/text":         "The leader was right. Someone really did take the shortcut to launch a surprise attack!",
+			"legacy/line/750623f119b8/scenes/1/lines/3/speaker-name": "Ares",
+			"legacy/line/750623f119b8/scenes/1/lines/3/text":         "What surprise attack? Explain yourself!",
+			"legacy/line/750623f119b8/scenes/1/lines/4/speaker-name": "Panther",
+			"legacy/line/750623f119b8/scenes/1/lines/4/text":         "Stop pretending! Die!",
+		},
+		"ja": {
+			"legacy/line/750623f119b8/scenes/1/lines/0/speaker-name": "パンサー",
+			"legacy/line/750623f119b8/scenes/1/lines/0/text":         "お前たちはセラ村へ向かっているのか？ここへ何をしに来た？",
+			"legacy/line/750623f119b8/scenes/1/lines/1/speaker-name": "ソール",
+			"legacy/line/750623f119b8/scenes/1/lines/1/text":         "お前には関係ない！道をあけろ！",
+			"legacy/line/750623f119b8/scenes/1/lines/2/speaker-name": "パンサー",
+			"legacy/line/750623f119b8/scenes/1/lines/2/text":         "頭領の言ったとおりだ。やはり近道を通って奇襲してきた奴がいる！",
+			"legacy/line/750623f119b8/scenes/1/lines/3/speaker-name": "アレス",
+			"legacy/line/750623f119b8/scenes/1/lines/3/text":         "何が奇襲だ？はっきり説明しろ！",
+			"legacy/line/750623f119b8/scenes/1/lines/4/speaker-name": "パンサー",
+			"legacy/line/750623f119b8/scenes/1/lines/4/text":         "とぼけるな！死ね！",
+		},
+		"zh-Hans": {
+			"legacy/line/750623f119b8/scenes/1/lines/0/speaker-name": "豹",
+			"legacy/line/750623f119b8/scenes/1/lines/0/text":         "你们是要去赛拉村吗？你们来这里干什么？",
+			"legacy/line/750623f119b8/scenes/1/lines/1/speaker-name": "索尔",
+			"legacy/line/750623f119b8/scenes/1/lines/1/text":         "干你屁事！别挡路！",
+			"legacy/line/750623f119b8/scenes/1/lines/2/speaker-name": "豹",
+			"legacy/line/750623f119b8/scenes/1/lines/2/text":         "首领说得没错，果然有人抄小路来偷袭了！",
+			"legacy/line/750623f119b8/scenes/1/lines/3/speaker-name": "亚雷斯",
+			"legacy/line/750623f119b8/scenes/1/lines/3/text":         "什么偷袭？把话讲清楚！",
+			"legacy/line/750623f119b8/scenes/1/lines/4/speaker-name": "豹",
+			"legacy/line/750623f119b8/scenes/1/lines/4/text":         "少装了！死吧！",
+		},
+	}
+	for localeID, entries := range wants {
+		if _, err := loadOfficialLocaleContent(localeID); err != nil {
+			t.Fatal(err)
+		}
+		assertReviewedContentEntryIDs(t, localeID, entries)
+	}
+}
+
 func TestReviewedChapterTwoCampaignTranslationsAndItemEntities(t *testing.T) {
 	wants := map[string]map[string]string{
 		"ja": {
