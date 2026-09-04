@@ -582,7 +582,11 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   current portrait 9 → default target 41；特殊道具分支另會覆寫成 target 52，故本組
   只代表預設轉職。原版 9／41 保留鮮紅高馬尾與藍寶石額帶；target 41 將藍紅布裝
   升級為炭黑／深灰甲與銀灰肩臂護甲。現代稿只沿用這些可見差異，不混入特殊分支造型。
-- 五十三組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+- `modern.fdicon.group_042.style_a`：角色表證實 selector 10 是馬琳，轉職表證實
+  current portrait 10 → default target 42。原版 10／42 保留粉紫齊頸短髮與金色額飾；
+  target 42 將紅金長衣改成深藍綠／炭黑衣甲，肩臂加入淡青綠／銀灰金屬輪廓。原版
+  小圖不足以證明該輪廓是法杖，現代稿不增加未證實武器。
+- 五十四組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
 
