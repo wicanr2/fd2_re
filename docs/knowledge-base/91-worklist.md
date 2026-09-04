@@ -33,7 +33,7 @@
 
 | 順序 | 工作 | 現況 | 下一個可驗收結果 |
 |---:|---|---|---|
-| 即時勘誤 | A4／A5 數字 | 2026-09-04 現代地圖人物為 selector 0–21、68、76、77、78、80、82、83、85、86、88、90、91，共 34 組／408 幀；76 是第三章普通追兵，77 是同章未知姓名的重裝隊長，80／91 是職業欄混合的中性敵方單位，78／82／83／85／86／88／90 是具不同原版輪廓的敵方劍士。四語內容各有 5,176 筆；繁中全為來源，簡中尚有 5 筆、日文 2,017 筆、英文 1,033 筆 `machine_draft`，不可只以劇情本文審校數冒充全包完成度 | 後續數字直接由 catalog 與語系檔重算，不手抄舊快照 |
+| 即時勘誤 | A4／A5 數字 | 2026-09-04 現代地圖人物為 selector 0–21、68、76、77、78、80、82、83、85、86、88、90、91，共 34 組／408 幀；76 是第三章普通追兵，77 是同章未知姓名的重裝隊長，80／91 是職業欄混合的中性敵方單位，78／82／83／85／86／88／90 是具不同原版輪廓的敵方劍士。四語內容各有 5,176 筆；繁中全為來源，簡中尚有 5 筆、日文 560 筆、英文 557 筆 `machine_draft`。兩語各有 170 筆源自單字或 `?` 的破碎說話者名稱，屬來源身分阻擋而非未翻譯；不可為追求全綠而猜測定稿 | 後續數字直接由 catalog 與語系檔重算，不手抄舊快照 |
 | A1 | 編輯器 canonical schema 與穩定身份層 | `DATA-READY（全戰役 legacy projection）／RUNTIME-E1（封包 admission）`：版本化 bundle 現含1份campaign、30份scenario、35份story與38筆角色身份候選；deterministic exporter、跨文件節點／speaker validator、角色身份schema、逐檔SHA-256與完整package self-check已接。Linux AppImage與Windows ZIP重建後均帶入bundle，Linux空白cwd自檢通過。4筆名稱衝突保留直接來源並拒絕猜選 | 解決或明確拆分`native-0/1/7/96`身份歧義；建立canonical→runtime compiler，使正式戰役規則直接消費編輯後文件；再補編輯器UI修改→驗證→執行→存讀檔往返。私人297份animation metadata可顯式匯入，但不作乾淨clone必要輸入 |
 | A2 | 原版素材全量分離與清冊 | `RELEASE-DATA-READY／RESEARCH-PARTIAL`：manifest v2現有39,825筆asset與1,005筆source-resource ledger；901 standardized、11個零長度confirmed-empty、0 blocked、93 unknown。完整本機包有40,127個實體檔案、約104 MB，已於私人庫保存。2026-08-30 `v0.1.1` Linux／Windows本機完整版均為42,258個檔案，macOS為42,332個檔案；三者均綁定engine head `be9a2a77`、通過manifest驗證並標示不可公開。三平台原生公開候選與雜湊也由GitHub Actions重建成功。公開README新增33張完整戰場低解析索引、96組sprite與96組portrait代表幀，不公開可重組逐檔素材。正式`Game` caller未發現93筆unknown有直接archive consumer，因此它們不阻擋第一版 | Windows／macOS實機抽測。只有新證據找到正式consumer才重開unknown，FDOTHER #47／#49不猜接 |
 | A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型、FDICON、FDSHAP、ANI、FDFIELD主要玩家路徑，以及城鎮、商店、標題、LOAD、整備、教會與戰場初始化均已遷移。19個巢狀音效bank已分離；標題#77選單音與ANI #1的#78 companion均由正式runtime消費。2026-08-29 caller稽核未發現正式`Game`仍直接讀原版archive，`FD2_ORIGINAL_FDOTHER`／`DATO` locator亦已移到測試專用檔，正式binary字串檢查通過；archive adapter只留source-oracle。BGM只從完整驗證的30份OGG catalog解析，物理攻擊亦由分離FIGANI provider原子預檢 | 以version 2 ledger的93筆unknown交叉核對是否有尚未登記的玩家consumer；已具標準資料但缺manifest bridge者只補provenance。沒有正式caller的oracle helper不再列為runtime缺口；只有新證據證明正式consumer存在才重開RE→spec→runtime切片 |
@@ -79,6 +79,13 @@
 > 1 筆進城補給提示及 131 筆正式介面字串，涵蓋城鎮、商店、教會、裝備、轉職、
 > 復活、物品轉移、勝敗與讀檔。格式符號與變數簽章維持不變；未審校的診斷訊息
 > 仍保持 `machine_draft`。完成後日文尚有 2,017 筆、英文尚有 1,033 筆草稿。
+
+> **2026-09-04 A5 正式詞彙表與完整名稱定稿：**由主代理逐項核對繁中、日文、
+> 英文 `entities.json` 的相同拓撲與既有審校狀態，再把來源文字只有唯一正式譯名的
+> 角色、職業、物品、戰鬥名稱與地名回填內容包；另人工修正完整但未被詞彙表涵蓋的
+> 姓名與關卡名稱。日文關閉 1,457 筆、英文關閉 476 筆，四語資料與 12 項回歸通過。
+> 目前日文尚有 560 筆、英文 557 筆草稿；兩語各 170 筆是來源本身只有單字、`X／Y`
+> 或 `?` 的破碎說話者名稱，必須先解決來源身分，不能用翻譯猜補。
 
 > **2026-09-04 A5 既有審校詞彙精確復用：**以完整相同的繁中來源為鍵，僅在
 > 日文與英文各自都存在唯一已審校譯法時，將該譯法回填到仍為 `machine_draft`
