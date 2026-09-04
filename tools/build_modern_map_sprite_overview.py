@@ -39,6 +39,7 @@ LABELS = dict((
     (42, "Marlin default promoted selector"),
     (43, "Sophia default promoted selector"),
     (44, "Kelly promoted selector; original art duplicates selector 12"),
+    (45, "Beckway default promoted selector"),
     (68, "late selector sample"),
     (76, "chapter 3 helmeted soldier"),
     (77, "chapter 3 armored captain"),

@@ -595,7 +595,11 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   12 幀逐像素相同，逐幀 `frame.png`、`mask.png`、`remap_mask.png` 也全部位元組相同。
   因此現代 group 44 明確複用 group 12 的已核准母稿與十二幀；不憑轉職索引硬造原版
   不存在的外觀差異。
-- 五十六組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+- `modern.fdicon.group_045.style_a`：角色表證實 selector 13 是貝克威，轉職表證實
+  current portrait 13 → default target 45。原版兩組的 mask／remap 逐位元相同，12 張
+  frame 則全部不同；套色後輪廓、長金髮、額帶、弓與箭袋相同，主要差異是深墨綠衣甲
+  改成明亮黃綠／草綠。因此現代稿只更新有證據的配色，不改變角色與裝備。
+- 五十七組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
 
