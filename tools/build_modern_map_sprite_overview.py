@@ -49,6 +49,7 @@ LABELS = dict((
     (53, "Hawate optional promotion; item 93"),
     (54, "Ares optional promotion; item 205"),
     (55, "identity unresolved; optional promotion; item 205"),
+    (56, "identity unresolved; optional promotion; item 205"),
     (68, "late selector sample"),
     (76, "chapter 3 helmeted soldier"),
     (77, "chapter 3 armored captain"),

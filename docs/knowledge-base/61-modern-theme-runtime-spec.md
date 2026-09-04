@@ -641,7 +641,12 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   的 optional target 55；target class 19、移動力增加 2，但角色姓名仍未閉合。原版
   12 幀皆為獨立圖像。現代稿按正式色盤保留大型灰綠兜帽／髮罩形構件、鈷藍與
   鋼藍甲衣、灰藍圓形肩背甲與方向性窄銀直刃，不將未證實身分寫入素材名稱。
-- 六十六組都具有 12 個 `24×24`、二值 alpha 槽位；除 selector 52 依原版證據保留
+- `modern.fdicon.group_056.style_a`：轉職表證實 current portrait 6 使用 item 205
+  的 optional target 56；target class 19、移動力增加 2，但角色姓名仍未閉合。原版
+  12 幀皆有實際像素，且未與 selector 0–55 任一完整圖組逐位元相同。現代稿按
+  FDOTHER #0 正式 DAC 色盤保留深紅褐大型束髮、鈷藍／鋼藍甲衣、金色小扣件與
+  方向性窄銀直刃，不將未證實身分或職業寫入素材名稱。
+- 六十七組都具有 12 個 `24×24`、二值 alpha 槽位；除 selector 52 依原版證據保留
   一組相同雜湊外，其餘組維持 12 個不同 SHA-256，全部列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
