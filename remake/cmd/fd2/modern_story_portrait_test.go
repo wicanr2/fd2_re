@@ -398,3 +398,77 @@ func TestLoadModernStoryPortraitSetRejectsTransparentBattleHUDPanel(t *testing.T
 		t.Fatal("transparent modern battle HUD panel accepted")
 	}
 }
+
+func addModernActionIconFixture(t *testing.T, catalogPath, root string, alpha uint8) {
+	t.Helper()
+	files := make([]string, 4)
+	hashes := make([]string, 4)
+	for index, semantic := range []string{"attack", "spell", "item", "wait"} {
+		files[index] = semantic + ".png"
+		img := image.NewNRGBA(image.Rect(0, 0, 28, 26))
+		for y := 0; y < 26; y++ {
+			for x := 0; x < 28; x++ {
+				img.SetNRGBA(x, y, color.NRGBA{R: uint8(20 + index), G: 30, B: 80, A: alpha})
+			}
+		}
+		path := filepath.Join(root, files[index])
+		f, err := os.Create(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := png.Encode(f, img); err != nil {
+			f.Close()
+			t.Fatal(err)
+		}
+		if err := f.Close(); err != nil {
+			t.Fatal(err)
+		}
+		raw, err := os.ReadFile(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		digest := sha256.Sum256(raw)
+		hashes[index] = hex.EncodeToString(digest[:])
+	}
+	raw, err := os.ReadFile(catalogPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var document map[string]any
+	if err := json.Unmarshal(raw, &document); err != nil {
+		t.Fatal(err)
+	}
+	document["assets"] = append(document["assets"].([]any), map[string]any{
+		"role": "battle_action_icon_set", "status": "runtime_candidate",
+		"files": files, "width": 28, "height": 26, "frame_count": 4,
+		"frame_sha256": hashes, "semantics": []string{"attack", "spell", "item", "wait"},
+		"consumer_contract": "battle_action_icons_4x28x26_v1",
+	})
+	raw, err = json.Marshal(document)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(catalogPath, raw, 0o600); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestLoadModernStoryPortraitSetAdmitsActionIcons(t *testing.T) {
+	catalogPath, root := writeModernPortraitFixture(t, true)
+	addModernActionIconFixture(t, catalogPath, root, 0xff)
+	set, err := loadModernStoryPortraitSet(catalogPath, root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(set.battleActionIcons) != 4 {
+		t.Fatalf("modern action icons=%d, want 4", len(set.battleActionIcons))
+	}
+}
+
+func TestLoadModernStoryPortraitSetRejectsTransparentActionIcon(t *testing.T) {
+	catalogPath, root := writeModernPortraitFixture(t, true)
+	addModernActionIconFixture(t, catalogPath, root, 0x80)
+	if _, err := loadModernStoryPortraitSet(catalogPath, root); err == nil {
+		t.Fatal("transparent modern action icon accepted")
+	}
+}

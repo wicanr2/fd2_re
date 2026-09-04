@@ -20,10 +20,11 @@ type modernStoryPortraitFrame struct {
 }
 
 type modernStoryPortraitSet struct {
-	portraits      map[int]*modernStoryPortraitFrame
-	mapSprites     map[int][]image.Image
-	mapTilesets    map[int]image.Image
-	battleHUDPanel image.Image
+	portraits         map[int]*modernStoryPortraitFrame
+	mapSprites        map[int][]image.Image
+	mapTilesets       map[int]image.Image
+	battleHUDPanel    image.Image
+	battleActionIcons []image.Image
 }
 
 type modernThemeCatalog struct {
@@ -51,6 +52,7 @@ type modernThemeCatalog struct {
 		TileHeight       int      `json:"tile_height"`
 		Columns          int      `json:"columns"`
 		TileCount        int      `json:"tile_count"`
+		Semantics        []string `json:"semantics"`
 	} `json:"assets"`
 }
 
@@ -74,6 +76,55 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 		mapTilesets: make(map[int]image.Image),
 	}
 	for _, asset := range catalog.Assets {
+		if asset.Role == "battle_action_icon_set" {
+			wantSemantics := []string{"attack", "spell", "item", "wait"}
+			if asset.Status != "runtime_candidate" && asset.Status != "runtime_ready" {
+				return nil, fmt.Errorf("modern action icons have unsupported status %q", asset.Status)
+			}
+			if asset.ConsumerContract != "battle_action_icons_4x28x26_v1" ||
+				asset.Width != 28 || asset.Height != 26 || asset.FrameCount != 4 ||
+				len(asset.Files) != 4 || len(asset.FrameSHA256) != 4 || len(asset.Semantics) != 4 {
+				return nil, errors.New("modern action icons violate the set contract")
+			}
+			for index, semantic := range wantSemantics {
+				if asset.Semantics[index] != semantic {
+					return nil, errors.New("modern action icons have an invalid semantic order")
+				}
+			}
+			if set.battleActionIcons != nil {
+				return nil, errors.New("modern action icons are duplicated")
+			}
+			icons := make([]image.Image, 0, 4)
+			for index, file := range asset.Files {
+				name := filepath.Base(file)
+				if name != file || filepath.Ext(name) != ".png" {
+					return nil, fmt.Errorf("modern action icon %d has an unsafe path", index)
+				}
+				pngRaw, err := os.ReadFile(filepath.Join(packRoot, name))
+				if err != nil {
+					return nil, fmt.Errorf("modern action icon %d: %w", index, err)
+				}
+				digest := sha256.Sum256(pngRaw)
+				if hex.EncodeToString(digest[:]) != asset.FrameSHA256[index] {
+					return nil, fmt.Errorf("modern action icon %d has a sha256 mismatch", index)
+				}
+				decoded, _, err := image.Decode(bytes.NewReader(pngRaw))
+				if err != nil || decoded.Bounds().Dx() != 28 || decoded.Bounds().Dy() != 26 {
+					return nil, fmt.Errorf("modern action icon %d has invalid PNG geometry", index)
+				}
+				for y := decoded.Bounds().Min.Y; y < decoded.Bounds().Max.Y; y++ {
+					for x := decoded.Bounds().Min.X; x < decoded.Bounds().Max.X; x++ {
+						_, _, _, alpha := decoded.At(x, y).RGBA()
+						if alpha != 0xffff {
+							return nil, fmt.Errorf("modern action icon %d is not fully opaque", index)
+						}
+					}
+				}
+				icons = append(icons, decoded)
+			}
+			set.battleActionIcons = icons
+			continue
+		}
 		if asset.Role == "battle_hud_panel" {
 			if asset.Status != "runtime_candidate" && asset.Status != "runtime_ready" {
 				return nil, fmt.Errorf("modern battle HUD has unsupported status %q", asset.Status)

@@ -17,7 +17,7 @@ SOURCE_ASSET_RE = re.compile(r"^asset:[A-Za-z0-9][A-Za-z0-9._-]+$")
 PROTOTYPE_ROLES = {"portrait_concept", "battlefield_concept", "battle_hud_concept"}
 ROLES = PROTOTYPE_ROLES | {
     "story_portrait_frame", "map_sprite_set", "map_tileset_set",
-    "battlefield_tileset_concept", "battle_hud_panel",
+    "battlefield_tileset_concept", "battle_hud_panel", "battle_action_icon_set",
 }
 STATUSES = {"prototype", "concept", "approved", "runtime_candidate", "runtime_ready"}
 
@@ -57,6 +57,10 @@ def validate(verify_private: bool) -> dict:
             "consumer_contract", "map_id", "tile_width", "tile_height", "columns", "tile_count"
         }
         hud_panel = required | {"master_file", "consumer_contract"}
+        action_icons = {
+            "asset_id", "role", "status", "master_file", "files", "width", "height",
+            "frame_count", "frame_sha256", "semantics", "source_refs", "consumer_contract",
+        }
         if not isinstance(entry, dict):
             raise ValueError("asset entry must be an object")
         if entry.get("role") == "story_portrait_frame":
@@ -67,6 +71,8 @@ def validate(verify_private: bool) -> dict:
             expected = map_tileset
         elif entry.get("role") == "battle_hud_panel":
             expected = hud_panel
+        elif entry.get("role") == "battle_action_icon_set":
+            expected = action_icons
         else:
             expected = required
         if set(entry) != expected:
@@ -99,24 +105,35 @@ def validate(verify_private: bool) -> dict:
             if entry["consumer_contract"] != "battle_status_panel_149x42_v1" or (
                     entry["width"], entry["height"]) != (149, 42):
                 raise ValueError(f"invalid battle HUD panel contract: {asset_id}")
-        if entry["role"] == "map_sprite_set":
-            if entry["frame_count"] != 12 or entry["source_group"] not in range(96):
+        if entry["role"] == "battle_action_icon_set":
+            if entry["consumer_contract"] != "battle_action_icons_4x28x26_v1" or (
+                    entry["width"], entry["height"], entry["frame_count"]) != (28, 26, 4):
+                raise ValueError(f"invalid battle action icon contract: {asset_id}")
+            if entry["semantics"] != ["attack", "spell", "item", "wait"]:
+                raise ValueError(f"invalid battle action icon semantics: {asset_id}")
+            if len(entry["files"]) != 4 or len(set(entry["files"])) != 4 or (
+                    len(entry["frame_sha256"]) != 4):
+                raise ValueError(f"invalid battle action icon files: {asset_id}")
+        if entry["role"] in {"map_sprite_set", "battle_action_icon_set"}:
+            if entry["role"] == "map_sprite_set" and (
+                    entry["frame_count"] != 12 or entry["source_group"] not in range(96)):
                 raise ValueError(f"invalid map sprite identity: {asset_id}")
-            if entry["consumer_contract"] != "fdicon_map_sprite_12x24_v1":
+            if entry["role"] == "map_sprite_set" and entry["consumer_contract"] != "fdicon_map_sprite_12x24_v1":
                 raise ValueError(f"invalid map sprite contract: {asset_id}")
-            if entry["alpha_contract"] != "binary":
+            if entry["role"] == "map_sprite_set" and entry["alpha_contract"] != "binary":
                 raise ValueError(f"invalid alpha contract: {asset_id}")
-            if entry["cycle_policy"] not in {"three_distinct_cycles", "cycle_2_reuses_cycle_0_prototype"}:
+            if entry["role"] == "map_sprite_set" and entry["cycle_policy"] not in {"three_distinct_cycles", "cycle_2_reuses_cycle_0_prototype"}:
                 raise ValueError(f"invalid cycle policy: {asset_id}")
             files = entry["files"]
             hashes = entry["frame_sha256"]
-            if not isinstance(files, list) or len(files) != 12 or len(set(files)) != 12:
+            want_count = 12 if entry["role"] == "map_sprite_set" else 4
+            if not isinstance(files, list) or len(files) != want_count or len(set(files)) != want_count:
                 raise ValueError(f"invalid map sprite file set: {asset_id}")
-            if not isinstance(hashes, list) or len(hashes) != 12 or not all(
+            if not isinstance(hashes, list) or len(hashes) != want_count or not all(
                 isinstance(value, str) and SHA_RE.fullmatch(value) for value in hashes
             ):
                 raise ValueError(f"invalid map sprite hashes: {asset_id}")
-            if entry["cycle_policy"] == "three_distinct_cycles" and len(set(hashes)) != 12:
+            if entry["role"] == "map_sprite_set" and entry["cycle_policy"] == "three_distinct_cycles" and len(set(hashes)) != 12:
                 raise ValueError(f"map sprite cycles are not distinct: {asset_id}")
             file_paths = [Path(value) for value in files]
         elif entry["role"] == "map_tileset_set":
@@ -139,7 +156,7 @@ def validate(verify_private: bool) -> dict:
             raise ValueError(f"invalid width: {asset_id}")
         if not isinstance(entry["height"], int) or entry["height"] <= 0:
             raise ValueError(f"invalid height: {asset_id}")
-        if entry["role"] != "map_sprite_set" and (
+        if entry["role"] not in {"map_sprite_set", "battle_action_icon_set"} and (
             not isinstance(entry["sha256"], str) or not SHA_RE.fullmatch(entry["sha256"])
         ):
             raise ValueError(f"invalid sha256: {asset_id}")
@@ -155,7 +172,7 @@ def validate(verify_private: bool) -> dict:
             if ref_path.is_absolute() or ".." in ref_path.parts or not (ROOT / ref_path).is_file():
                 raise ValueError(f"invalid source_ref for {asset_id}: {ref!r}")
         if verify_private:
-            expected_hashes = entry["frame_sha256"] if entry["role"] == "map_sprite_set" else [entry["sha256"]]
+            expected_hashes = entry["frame_sha256"] if entry["role"] in {"map_sprite_set", "battle_action_icon_set"} else [entry["sha256"]]
             for file_path, expected_hash in zip(file_paths, expected_hashes):
                 private_path = ROOT / private_root / file_path
                 if not private_path.is_file():
@@ -170,6 +187,11 @@ def validate(verify_private: bool) -> dict:
                     alpha = Image.open(private_path).convert("RGBA").getchannel("A")
                     if not set(alpha.getdata()).issubset({0, 255}):
                         raise ValueError(f"non-binary alpha: {asset_id}/{file_path.name}")
+                elif entry["role"] == "battle_action_icon_set":
+                    from PIL import Image
+                    alpha = Image.open(private_path).convert("RGBA").getchannel("A")
+                    if set(alpha.getdata()) != {255}:
+                        raise ValueError(f"non-opaque action icon: {asset_id}/{file_path.name}")
     if not PROTOTYPE_ROLES.issubset(roles):
         raise ValueError(f"required prototype roles missing: {sorted(PROTOTYPE_ROLES - roles)}")
     return data

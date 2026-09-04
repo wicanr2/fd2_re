@@ -46,6 +46,19 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
 - 面板檔名、SHA-256、尺寸與完全不透明契約任一不符，即拒絕整個現代主題。
   忠實原版主題仍使用已證實的 FDOTHER／indexed HUD，不受此素材影響。
 
+## 現代四向行動選單契約（READY）
+
+- 原版已證實的結果順序維持 `attack／spell／item／wait`，畫面位置維持
+  上／左／右／下，錨點仍由目前選取單位或游標方塊換算；不得固定到左上角。
+- `modern.battle.action-icons.style_a` 依 `battle_action_icons_4x28x26_v1`
+  登錄四張 `28×26` RGBA PNG，語意順序固定為攻擊、法術、物品、待機。
+  圖像分別使用銀劍、魔法杖與星芒、藥水與布袋、沙漏；不再以未證實的
+  `status` fallback 圖示冒充法術。
+- 四個檔名、逐檔 SHA-256、尺寸、完全不透明、語意順序任一不符，即拒絕整個
+  現代主題。選單開合四幀、可用性、鍵盤輸入及命令結果仍由既有 runtime 控制。
+- 忠實原版主題繼續使用 FDOTHER action cells；現代圖示只替換正規化 renderer
+  的 fallback 圖層，不改變原版命令語意或位置證據。
+
 ## 原始證據與既有消費端
 
 - 原版分離資產：`assets/portraits/DATO_000_m0.png`；`DATO` resource 0、frame 0。

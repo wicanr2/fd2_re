@@ -10018,6 +10018,11 @@ func loadGame() *Game {
 			}
 		}
 	}
+	if g.modernStoryPortraits != nil && len(g.modernStoryPortraits.battleActionIcons) == 4 {
+		for i, icon := range g.modernStoryPortraits.battleActionIcons {
+			g.ringIcons[i] = ebiten.NewImageFromImage(icon)
+		}
+	}
 	if sp, e := battle.LoadSpells(assetPath("assets/spells.json")); e == nil { // 法術表(EXE dump)
 		labels := loadNativeCommandLabels()
 		g.nativeCommandLabels = labels

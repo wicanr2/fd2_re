@@ -1233,6 +1233,38 @@
       "consumer_contract": "battle_status_panel_149x42_v1"
     },
     {
+      "asset_id": "modern.battle.action-icons.style_a",
+      "role": "battle_action_icon_set",
+      "status": "runtime_candidate",
+      "master_file": "battle-action-icons-style-a-master.png",
+      "files": [
+        "battle-action-attack-style-a-28x26.png",
+        "battle-action-spell-style-a-28x26.png",
+        "battle-action-item-style-a-28x26.png",
+        "battle-action-wait-style-a-28x26.png"
+      ],
+      "width": 28,
+      "height": 26,
+      "frame_count": 4,
+      "frame_sha256": [
+        "06c9eefd2883a7dd123143abb909586169a89820552521753b2801f5411522d6",
+        "a02e505bcf5b60ed2262468506818a8e7909988dcd796e163d2bcc3b2c4c61d1",
+        "35db4f150f7dbec612ee510c3ba1e13db2f139849bc26126e824804316586a5f",
+        "997ff0515474e3cf318fc44be17d95f8fb3d9ae38a4fcf24afdb798c4ca9b69d"
+      ],
+      "semantics": [
+        "attack",
+        "spell",
+        "item",
+        "wait"
+      ],
+      "source_refs": [
+        "asset:modern.battle.hud.style_a",
+        "remake/cmd/fd2/native_action_overlay_test.go"
+      ],
+      "consumer_contract": "battle_action_icons_4x28x26_v1"
+    },
+    {
       "asset_id": "modern.fdicon.group_000.style_a",
       "role": "map_sprite_set",
       "status": "runtime_candidate",
