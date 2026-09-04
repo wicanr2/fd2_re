@@ -108,6 +108,13 @@ def main() -> None:
     parser.add_argument("--group", type=int, required=True)
     parser.add_argument("--public", type=Path, required=True)
     parser.add_argument("--private", type=Path, required=True)
+    parser.add_argument(
+        "--repeat-frame",
+        action="append",
+        default=[],
+        metavar="DEST:SOURCE",
+        help="原版明確重複幀時，將 SOURCE 的輸出位元組複製到 DEST",
+    )
     args = parser.parse_args()
     if not 0 <= args.group < 96:
         raise SystemExit("group must be in range 0..95")
@@ -148,6 +155,20 @@ def main() -> None:
             frame_image.save(args.public / name, optimize=False)
             frame_image.save(args.private / name, optimize=False)
             print(frame, box, size, name)
+
+    for repeat in args.repeat_frame:
+        try:
+            destination_text, source_text = repeat.split(":", 1)
+            destination, source_frame = int(destination_text), int(source_text)
+        except ValueError as exc:
+            raise SystemExit(f"invalid --repeat-frame {repeat!r}; want DEST:SOURCE") from exc
+        if destination == source_frame or destination not in range(12) or source_frame not in range(12):
+            raise SystemExit(f"invalid --repeat-frame {repeat!r}; frames must be distinct and in 0..11")
+        source_name = f"fdicon-{args.group:03d}-style-a-f{source_frame:02d}.png"
+        destination_name = f"fdicon-{args.group:03d}-style-a-f{destination:02d}.png"
+        for root in (args.public, args.private):
+            (root / destination_name).write_bytes((root / source_name).read_bytes())
+        print(f"repeat {destination:02d} <- {source_frame:02d}")
 
 
 if __name__ == "__main__":

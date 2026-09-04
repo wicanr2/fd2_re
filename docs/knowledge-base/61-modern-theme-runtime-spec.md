@@ -331,14 +331,17 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
 
 ### 現代候選契約
 
-1. 每個 `modern.fdicon.group_NNN.style_a` 必須一次提供 12 張獨立 `24×24` PNG，保留
-   frame 0..11、pose 0..3 與 cycle 0..2 的穩定映射。
+1. 每個 `modern.fdicon.group_NNN.style_a` 必須一次提供 12 個完整 `24×24` PNG 槽位，
+   保留 frame 0..11、pose 0..3 與 cycle 0..2 的穩定映射。原版若明確重複某幀，
+   現代素材也必須保留該重複時序，不得為追求雜湊不同而虛構新姿勢。
 2. 每張 alpha 只能是 0 或 255；catalog validator 在私人素材驗證模式逐像素檢查。
 3. 生成的第 11 格曾因雙劍與比例漂移被拒收，後續暫以第 9 格佔位。現行候選
    以第 9 格的上半身及第 10 格的下半身做確定性像素合成，保持人物尺度、裝備
    側別、方向與 `24×24` 邊界，形成獨立第三步態。這是**現代近似**，不是原版
    第 11 格的逐像素重繪。
-4. catalog 現以 `three_distinct_cycles` 登記，整組升為 `runtime_candidate`；
+4. catalog 的 `cycle_policy` 預設為 `three_distinct_cycles`，要求 12 個幀雜湊皆不同；
+   只有原版逐位元證據明確出現重複幀時，才可使用 `source_exact_repeats`，且清冊中
+   至少要有一組相同雜湊並附原版 source ref。兩種政策都可列為 `runtime_candidate`；
    renderer 尚未接線、正常玩家尚未擷圖，所以不可標為 `runtime_ready`。
 5. 原生 indexed bank 與正規化 RGBA loader 是兩條不同 consumer；接線時兩條
    路徑必須共同抽測，且現代主題缺任一格即整組失敗即關閉。
@@ -621,7 +624,13 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   不變，職業名稱仍不猜。原版只有 f06–f08 分別與 sprite 402–404 逐位元相同，其餘
   九幀獨立，故不可整組複用。現代稿依正式色盤保留栗紅短髮、深綠灰斗篷式裝甲與
   原版方向性持物遮蔽：f03–f05 不露短刃，正面與反向側面才保留冰藍短刃輪廓。
-- 六十二組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+- `modern.fdicon.group_052.style_a`：角色表與轉職表共同證實這是悠妮 current
+  portrait 9 使用 item 90 的特殊 target 52；target class 21、移動力增加 2。原版
+  f06 與 f08 逐位元相同，故使用 `source_exact_repeats` 並讓現代兩槽保留相同 PNG
+  位元組；其餘十槽獨立。現代稿按正式色盤保留朱紅兜帽／披風、紫灰領口、金扣與
+  側面少量深藍髮束，不與 default selector 41 混用。
+- 六十三組都具有 12 個 `24×24`、二值 alpha 槽位；除 selector 52 依原版證據保留
+  一組相同雜湊外，其餘組維持 12 個不同 SHA-256，全部列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
 

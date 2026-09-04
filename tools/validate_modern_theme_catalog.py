@@ -122,7 +122,7 @@ def validate(verify_private: bool) -> dict:
                 raise ValueError(f"invalid map sprite contract: {asset_id}")
             if entry["role"] == "map_sprite_set" and entry["alpha_contract"] != "binary":
                 raise ValueError(f"invalid alpha contract: {asset_id}")
-            if entry["role"] == "map_sprite_set" and entry["cycle_policy"] not in {"three_distinct_cycles", "cycle_2_reuses_cycle_0_prototype"}:
+            if entry["role"] == "map_sprite_set" and entry["cycle_policy"] not in {"three_distinct_cycles", "cycle_2_reuses_cycle_0_prototype", "source_exact_repeats"}:
                 raise ValueError(f"invalid cycle policy: {asset_id}")
             files = entry["files"]
             hashes = entry["frame_sha256"]
@@ -135,6 +135,8 @@ def validate(verify_private: bool) -> dict:
                 raise ValueError(f"invalid map sprite hashes: {asset_id}")
             if entry["role"] == "map_sprite_set" and entry["cycle_policy"] == "three_distinct_cycles" and len(set(hashes)) != 12:
                 raise ValueError(f"map sprite cycles are not distinct: {asset_id}")
+            if entry["role"] == "map_sprite_set" and entry["cycle_policy"] == "source_exact_repeats" and len(set(hashes)) == 12:
+                raise ValueError(f"map sprite declares source repeats but has none: {asset_id}")
             file_paths = [Path(value) for value in files]
         elif entry["role"] == "map_tileset_set":
             if entry["consumer_contract"] != "map_tileset_indexed_geometry_v1":

@@ -207,6 +207,45 @@ func TestLoadModernStoryPortraitSetAdmitsCompleteMapSpriteSet(t *testing.T) {
 	}
 }
 
+func TestLoadModernStoryPortraitSetAdmitsDeclaredSourceFrameRepeat(t *testing.T) {
+	catalogPath, root := writeModernMapSpriteFixture(t, 0xff)
+	raw, err := os.ReadFile(catalogPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var document map[string]any
+	if err := json.Unmarshal(raw, &document); err != nil {
+		t.Fatal(err)
+	}
+	assets := document["assets"].([]any)
+	sprite := assets[len(assets)-1].(map[string]any)
+	files := sprite["files"].([]any)
+	hashes := sprite["frame_sha256"].([]any)
+	frame6, err := os.ReadFile(filepath.Join(root, files[6].(string)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(root, files[8].(string)), frame6, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	hashes[8] = hashes[6]
+	sprite["cycle_policy"] = "source_exact_repeats"
+	raw, err = json.Marshal(document)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(catalogPath, raw, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	set, err := loadModernStoryPortraitSet(catalogPath, root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(set.mapSprites[68]) != 12 {
+		t.Fatalf("map sprite frames=%d, want 12", len(set.mapSprites[68]))
+	}
+}
+
 func TestLoadModernStoryPortraitSetRejectsMapSpriteSoftAlpha(t *testing.T) {
 	catalogPath, root := writeModernMapSpriteFixture(t, 0x80)
 	if _, err := loadModernStoryPortraitSet(catalogPath, root); err == nil {

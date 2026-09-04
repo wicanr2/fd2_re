@@ -202,7 +202,8 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 			if asset.ConsumerContract != "fdicon_map_sprite_12x24_v1" || asset.Width != 24 ||
 				asset.Height != 24 || asset.FrameCount != 12 || len(asset.Files) != 12 ||
 				len(asset.FrameSHA256) != 12 || asset.SourceGroup < 0 || asset.SourceGroup >= 96 ||
-				asset.AlphaContract != "binary" || asset.CyclePolicy != "three_distinct_cycles" {
+				asset.AlphaContract != "binary" ||
+				(asset.CyclePolicy != "three_distinct_cycles" && asset.CyclePolicy != "source_exact_repeats") {
 				return nil, fmt.Errorf("modern theme map sprite %d violates the frame contract", asset.SourceGroup)
 			}
 			if _, duplicate := set.mapSprites[asset.SourceGroup]; duplicate {
@@ -210,6 +211,7 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 			}
 			frames := make([]image.Image, 0, 12)
 			seenDigest := make(map[string]struct{}, 12)
+			repeatedFrame := false
 			for frame, file := range asset.Files {
 				name := filepath.Base(file)
 				if name != file || filepath.Ext(name) != ".png" {
@@ -224,8 +226,10 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 				if digestText != asset.FrameSHA256[frame] {
 					return nil, fmt.Errorf("modern theme map sprite %d frame %d has a sha256 mismatch", asset.SourceGroup, frame)
 				}
-				if _, duplicate := seenDigest[digestText]; duplicate {
+				if _, duplicate := seenDigest[digestText]; duplicate && asset.CyclePolicy != "source_exact_repeats" {
 					return nil, fmt.Errorf("modern theme map sprite %d repeats frame %d", asset.SourceGroup, frame)
+				} else if duplicate {
+					repeatedFrame = true
 				}
 				seenDigest[digestText] = struct{}{}
 				decoded, _, err := image.Decode(bytes.NewReader(pngRaw))
@@ -241,6 +245,9 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 					}
 				}
 				frames = append(frames, decoded)
+			}
+			if asset.CyclePolicy == "source_exact_repeats" && !repeatedFrame {
+				return nil, fmt.Errorf("modern theme map sprite %d declares source repeats but has none", asset.SourceGroup)
 			}
 			set.mapSprites[asset.SourceGroup] = frames
 			continue
