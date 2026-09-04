@@ -414,6 +414,10 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   `fig／portrait／map_selector_key／battle_fig=78`。現代母稿只依原版十二幀保留
   低矮封閉深藍頭盔、面罩內紅眼、極寬圓厚雙肩甲、敦實重甲與少量棕色下擺；
   原版小圖沒有足以可靠辨認的武器或盾，故不額外添加，也不推測姓名或軍階。
+- `modern.fdicon.group_090.style_a`：`map3` 至 `map8` 共 26 筆敵方劍士均一致使用
+  `fig／portrait／map_selector_key／battle_fig=90`。現代母稿只依原版十二幀保留
+  低垂紅褐兜帽、完全藏在陰影中的面孔、黃綠眼光、寬大深藍肩衣與敦實輪廓；
+  原圖沒有可靠可見的武器或盾牌，故不額外添加，也不推測姓名或軍階。
 - `modern.fdicon.group_080.style_a`：`map9／16／21／31` 共 38 筆敵方記錄使用
   `fig／portrait／map_selector_key／battle_fig=80`，但職業欄有「劍士」與原始
   `r0c1` 兩種值，故只登錄為中性重甲單位。現代母稿依正規化原版十二幀保留

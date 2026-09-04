@@ -36,7 +36,7 @@ class ModernThemeCatalogTests(unittest.TestCase):
             for asset in catalog["assets"]
             if asset.get("role") == "map_sprite_set"
         }
-        self.assertEqual(sprite_groups, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 68, 76, 77, 78, 80, 82, 83, 85, 88, 91})
+        self.assertEqual(sprite_groups, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 68, 76, 77, 78, 80, 82, 83, 85, 88, 90, 91})
         soldier = next(
             asset
             for asset in catalog["assets"]
@@ -100,6 +100,14 @@ class ModernThemeCatalogTests(unittest.TestCase):
         )
         self.assertEqual(broad_shouldered_soldier["source_group"], 78)
         self.assertIn("remake/assets/maps/map17/map17_units.json", broad_shouldered_soldier["source_refs"])
+        rust_hooded_soldier = next(
+            asset
+            for asset in catalog["assets"]
+            if asset.get("asset_id") == "modern.fdicon.group_090.style_a"
+        )
+        self.assertEqual(rust_hooded_soldier["source_group"], 90)
+        self.assertIn("remake/assets/maps/map3/map3_units.json", rust_hooded_soldier["source_refs"])
+        self.assertIn("remake/assets/maps/map8/map8_units.json", rust_hooded_soldier["source_refs"])
 
 
 if __name__ == "__main__":

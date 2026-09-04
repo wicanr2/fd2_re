@@ -1943,6 +1943,50 @@
       "remake/assets/maps/map8/map8_units.json",
       "remake/assets/maps/map17/map17_units.json"
     ]
+  },
+  {
+    "asset_id": "modern.fdicon.group_090.style_a",
+    "role": "map_sprite_set",
+    "status": "runtime_candidate",
+    "master_file": "fdicon-090-style-a-v1-master.png",
+    "files": [
+      "fdicon-090-style-a-f00.png", "fdicon-090-style-a-f01.png",
+      "fdicon-090-style-a-f02.png", "fdicon-090-style-a-f03.png",
+      "fdicon-090-style-a-f04.png", "fdicon-090-style-a-f05.png",
+      "fdicon-090-style-a-f06.png", "fdicon-090-style-a-f07.png",
+      "fdicon-090-style-a-f08.png", "fdicon-090-style-a-f09.png",
+      "fdicon-090-style-a-f10.png", "fdicon-090-style-a-f11.png"
+    ],
+    "width": 24,
+    "height": 24,
+    "frame_count": 12,
+    "frame_sha256": [
+      "b31317903c670484924d0e4be62fa97956151e4d691e4cbef31b19c9258cb1cc",
+      "89b46b3a2a9b09069681ff2006094e7eb65c2e2bcc176a0f05cc8b0681985aef",
+      "0ce642b2a02b336b3823d9d5949c6191e521349c51135171d5ad1a320fc0d4e9",
+      "289ac95885cb04642ae59f33455bd7fc2d02c3fb6e30b8da4a4c3555cb8cbabe",
+      "e4cfb36333e8a10a30726a7c98e904c549617c11facdde321d0e71cc4fda558e",
+      "bec69bfa813b485d671e74c6916ebd015c5030bb74b8e79f02ca2257d69499bf",
+      "50a4aed40c1e1b9bc1df059644ef7695b455fa238320e4b2c7848eacd9a2b7bb",
+      "6b28a1615168606ef3b963b283344318f0d060e55c774ecefb8262af7e390fb0",
+      "c86095279dccadc9240ebc11ff1e01edc535603659d1506eb8ed9aee6cac899f",
+      "5535aee3f8ab546cbb6f0dc608c58a630400a09995dc04ada49d7e6679b9d959",
+      "64d2f33debbe94468d84360cc4cf57e534df97b74511bf63f73eb503d64296f3",
+      "d982b70abf9d0493e9c269e5c04ab8576649b2401693027399a8ddff7e856eb3"
+    ],
+    "source_group": 90,
+    "consumer_contract": "fdicon_map_sprite_12x24_v1",
+    "alpha_contract": "binary",
+    "cycle_policy": "three_distinct_cycles",
+    "source_refs": [
+      "remake/assets/sprites/fig_090_f00.png",
+      "remake/assets/maps/map3/map3_units.json",
+      "remake/assets/maps/map4/map4_units.json",
+      "remake/assets/maps/map5/map5_units.json",
+      "remake/assets/maps/map6/map6_units.json",
+      "remake/assets/maps/map7/map7_units.json",
+      "remake/assets/maps/map8/map8_units.json"
+    ]
   }
  ]
 }
