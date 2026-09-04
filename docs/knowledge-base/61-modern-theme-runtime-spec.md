@@ -599,7 +599,11 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   current portrait 13 → default target 45。原版兩組的 mask／remap 逐位元相同，12 張
   frame 則全部不同；套色後輪廓、長金髮、額帶、弓與箭袋相同，主要差異是深墨綠衣甲
   改成明亮黃綠／草綠。因此現代稿只更新有證據的配色，不改變角色與裝備。
-- 五十七組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+- `modern.fdicon.group_046.style_a`：角色表證實 selector 14 是珊，轉職表證實
+  current portrait 14 → default target 46。原版兩組的 frame／mask／remap 十二幀皆
+  不同；target 46 保留鮮藍高馬尾與綠寶石額帶，將深藍金邊長袍改成深綠內衣甲、
+  紅褐外袍／披肩與金色邊飾。現代稿依四方向獨立輪廓重建，不作單純換色複用。
+- 五十八組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
 
