@@ -15,7 +15,9 @@ ID_RE = re.compile(r"^[a-z0-9]+(?:[._-][a-z0-9]+)+$")
 SHA_RE = re.compile(r"^[0-9a-f]{64}$")
 SOURCE_ASSET_RE = re.compile(r"^asset:[A-Za-z0-9][A-Za-z0-9._-]+$")
 PROTOTYPE_ROLES = {"portrait_concept", "battlefield_concept", "battle_hud_concept"}
-ROLES = PROTOTYPE_ROLES | {"story_portrait_frame", "map_sprite_set", "map_tileset_set"}
+ROLES = PROTOTYPE_ROLES | {
+    "story_portrait_frame", "map_sprite_set", "map_tileset_set", "battlefield_tileset_concept"
+}
 STATUSES = {"prototype", "concept", "approved", "runtime_candidate", "runtime_ready"}
 
 

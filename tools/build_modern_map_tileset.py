@@ -66,6 +66,11 @@ def repaint(source: Image.Image, concept: Image.Image, tile_width: int, tile_hei
                 if original[3] == 0:
                     pixels.append((0, 0, 0, 0))
                     continue
+                # 原版用純黑作洞窟／畫布外區域；概念稿的中性色不可把這些空區
+                # 提亮成灰色，否則吊橋與空中要塞會出現大片假地板。
+                if max(original[:3]) <= 12:
+                    pixels.append((0, 0, 0, original[3]))
+                    continue
                 base = nearest_by_lightness(original[:3], groups[family(original[:3])])
                 # 保留原圖明暗與概念稿色相；少量平滑色避免退化成單純換色。
                 luminance = max(0.55, min(1.35, (sum(smooth[:3]) + 1) / (sum(original[:3]) + 1)))

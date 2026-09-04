@@ -312,3 +312,22 @@ func TestLoadModernStoryPortraitSetAdmitsVariableMapGeometry(t *testing.T) {
 		t.Fatalf("map17 tileset=%v", tileset)
 	}
 }
+
+func TestModernThemePrivateCatalogAdmitsAllMaps(t *testing.T) {
+	pack := os.Getenv("FD2_TEST_MODERN_PACK")
+	if pack == "" {
+		t.Skip("set FD2_TEST_MODERN_PACK to verify the private full theme")
+	}
+	set, err := loadModernStoryPortraitSet(assetPath("assets/themes/modern/catalog.json"), pack)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(set.mapTilesets) != 33 {
+		t.Fatalf("modern map tilesets=%d, want 33", len(set.mapTilesets))
+	}
+	for mapID := 0; mapID < 33; mapID++ {
+		if set.mapTilesets[mapID] == nil {
+			t.Fatalf("modern map%d tileset missing", mapID)
+		}
+	}
+}

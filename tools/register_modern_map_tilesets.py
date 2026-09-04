@@ -52,7 +52,7 @@ def main() -> None:
             "source_refs": [
                 f"remake/assets/maps/map{map_id}/map.json",
                 f"remake/assets/maps/map{map_id}/tileset.png",
-                "asset:modern.ch01.battlefield.style_a",
+                "asset:modern.battlefield.tileset.style_a.reference",
             ],
             "consumer_contract": "map_tileset_indexed_geometry_v1",
             "map_id": map_id,
