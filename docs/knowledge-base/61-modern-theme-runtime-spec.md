@@ -658,7 +658,11 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   的 optional target 60，class 22、移動力增加 1。原版 sprite 720–731 與
   sprite 504–515（selector 42）的圖像、透明遮罩及換色遮罩全數逐位元相同；
   因此現代清冊保留獨立索引並精確重用 selector 42，不另造原版不存在的外觀差異。
-- 七十組都具有 12 個 `24×24`、二值 alpha 槽位；除 selector 52 依原版證據保留
+- `modern.fdicon.group_061.style_a`：轉職目標表證實 target 61 為 class 22、移動力
+  增加 1。原版 sprite 732–743 與 sprite 516–527（selector 43）的圖像、透明遮罩
+  及換色遮罩全數逐位元相同；現代清冊保留獨立索引並精確重用 selector 43。
+  目前沒有足夠證據把它綁定特定姓名或劇情身分，故不猜測命名。
+- 七十一組都具有 12 個 `24×24`、二值 alpha 槽位；除 selector 52 依原版證據保留
   一組相同雜湊外，其餘組維持 12 個不同 SHA-256，全部列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
