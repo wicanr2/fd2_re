@@ -48,6 +48,26 @@
       ]
     },
     {
+      "asset_id": "modern.map0.tileset.style_a",
+      "role": "map_tileset_set",
+      "status": "runtime_candidate",
+      "file": "map0-tileset-style-a.png",
+      "width": 384,
+      "height": 432,
+      "sha256": "ddf034270a332a8e033aecf86d1a432fa796dde2b959b826f378d511c03807f4",
+      "source_refs": [
+        "remake/assets/maps/map0/map.json",
+        "remake/assets/maps/map0/tileset.png",
+        "asset:modern.ch01.battlefield.style_a"
+      ],
+      "consumer_contract": "map_tileset_indexed_geometry_v1",
+      "map_id": 0,
+      "tile_width": 24,
+      "tile_height": 24,
+      "columns": 16,
+      "tile_count": 288
+    },
+    {
       "asset_id": "modern.hano.portrait.style_a.frame0",
       "role": "story_portrait_frame",
       "status": "runtime_candidate",

@@ -20,8 +20,9 @@ type modernStoryPortraitFrame struct {
 }
 
 type modernStoryPortraitSet struct {
-	portraits  map[int]*modernStoryPortraitFrame
-	mapSprites map[int][]image.Image
+	portraits   map[int]*modernStoryPortraitFrame
+	mapSprites  map[int][]image.Image
+	mapTilesets map[int]image.Image
 }
 
 type modernThemeCatalog struct {
@@ -44,6 +45,11 @@ type modernThemeCatalog struct {
 		SourceGroup      int      `json:"source_group"`
 		AlphaContract    string   `json:"alpha_contract"`
 		CyclePolicy      string   `json:"cycle_policy"`
+		MapID            int      `json:"map_id"`
+		TileWidth        int      `json:"tile_width"`
+		TileHeight       int      `json:"tile_height"`
+		Columns          int      `json:"columns"`
+		TileCount        int      `json:"tile_count"`
 	} `json:"assets"`
 }
 
@@ -62,10 +68,42 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 		return nil, errors.New("modern theme catalog: unsupported identity")
 	}
 	set := &modernStoryPortraitSet{
-		portraits:  make(map[int]*modernStoryPortraitFrame),
-		mapSprites: make(map[int][]image.Image),
+		portraits:   make(map[int]*modernStoryPortraitFrame),
+		mapSprites:  make(map[int][]image.Image),
+		mapTilesets: make(map[int]image.Image),
 	}
 	for _, asset := range catalog.Assets {
+		if asset.Role == "map_tileset_set" {
+			if asset.Status != "runtime_candidate" && asset.Status != "runtime_ready" {
+				return nil, fmt.Errorf("modern theme map %d has unsupported status %q", asset.MapID, asset.Status)
+			}
+			if asset.ConsumerContract != "map_tileset_indexed_geometry_v1" ||
+				asset.MapID < 0 || asset.TileWidth != 24 || asset.TileHeight != 24 ||
+				asset.Columns != 16 || asset.TileCount != 288 || asset.Width != 384 || asset.Height != 432 {
+				return nil, fmt.Errorf("modern theme map %d violates the tileset contract", asset.MapID)
+			}
+			if _, duplicate := set.mapTilesets[asset.MapID]; duplicate {
+				return nil, fmt.Errorf("modern theme map %d is duplicated", asset.MapID)
+			}
+			name := filepath.Base(asset.File)
+			if name != asset.File || filepath.Ext(name) != ".png" {
+				return nil, fmt.Errorf("modern theme map %d has an unsafe path", asset.MapID)
+			}
+			pngRaw, err := os.ReadFile(filepath.Join(packRoot, name))
+			if err != nil {
+				return nil, fmt.Errorf("modern theme map %d: %w", asset.MapID, err)
+			}
+			digest := sha256.Sum256(pngRaw)
+			if hex.EncodeToString(digest[:]) != asset.SHA256 {
+				return nil, fmt.Errorf("modern theme map %d has a sha256 mismatch", asset.MapID)
+			}
+			decoded, _, err := image.Decode(bytes.NewReader(pngRaw))
+			if err != nil || decoded.Bounds().Dx() != asset.Width || decoded.Bounds().Dy() != asset.Height {
+				return nil, fmt.Errorf("modern theme map %d has invalid PNG geometry", asset.MapID)
+			}
+			set.mapTilesets[asset.MapID] = decoded
+			continue
+		}
 		if asset.Role == "map_sprite_set" {
 			if asset.Status != "runtime_candidate" && asset.Status != "runtime_ready" {
 				return nil, fmt.Errorf("modern theme map sprite %d has unsupported status %q", asset.SourceGroup, asset.Status)

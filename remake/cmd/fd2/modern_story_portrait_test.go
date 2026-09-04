@@ -213,3 +213,111 @@ func TestLoadModernStoryPortraitSetRejectsMapSpriteSoftAlpha(t *testing.T) {
 		t.Fatal("modern map sprite with soft alpha accepted")
 	}
 }
+
+func addModernMapTilesetFixture(t *testing.T, catalogPath, root string) {
+	t.Helper()
+	img := image.NewNRGBA(image.Rect(0, 0, 384, 432))
+	for y := 0; y < 432; y++ {
+		for x := 0; x < 384; x++ {
+			img.SetNRGBA(x, y, color.NRGBA{R: uint8(x % 251), G: uint8(y % 251), B: 70, A: 0xff})
+		}
+	}
+	path := filepath.Join(root, "map0.png")
+	f, err := os.Create(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := png.Encode(f, img); err != nil {
+		f.Close()
+		t.Fatal(err)
+	}
+	if err := f.Close(); err != nil {
+		t.Fatal(err)
+	}
+	pngRaw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	digest := sha256.Sum256(pngRaw)
+	raw, err := os.ReadFile(catalogPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var document map[string]any
+	if err := json.Unmarshal(raw, &document); err != nil {
+		t.Fatal(err)
+	}
+	document["assets"] = append(document["assets"].([]any), map[string]any{
+		"role": "map_tileset_set", "status": "runtime_candidate",
+		"file": "map0.png", "width": 384, "height": 432,
+		"sha256": hex.EncodeToString(digest[:]), "consumer_contract": "map_tileset_indexed_geometry_v1",
+		"map_id": 0, "tile_width": 24, "tile_height": 24, "columns": 16, "tile_count": 288,
+	})
+	raw, err = json.Marshal(document)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(catalogPath, raw, 0o600); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestLoadModernStoryPortraitSetAdmitsMap0Tileset(t *testing.T) {
+	catalogPath, root := writeModernPortraitFixture(t, true)
+	addModernMapTilesetFixture(t, catalogPath, root)
+	set, err := loadModernStoryPortraitSet(catalogPath, root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tileset := set.mapTilesets[0]; tileset == nil || tileset.Bounds().Dx() != 384 || tileset.Bounds().Dy() != 432 {
+		t.Fatalf("map0 tileset=%v", tileset)
+	}
+}
+
+func TestModernThemeRejectsNativeFullFrameCover(t *testing.T) {
+	g := &Game{modernStoryPortraits: &modernStoryPortraitSet{}}
+	if g.nativeMapFrameAdmission(false, true) {
+		t.Fatal("modern theme admitted an original indexed full frame")
+	}
+}
+
+func TestModernThemeMap0UsesCatalogTileset(t *testing.T) {
+	catalogPath, root := writeModernPortraitFixture(t, true)
+	addModernMapTilesetFixture(t, catalogPath, root)
+	set, err := loadModernStoryPortraitSet(catalogPath, root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{modernStoryPortraits: set}
+	if err := g.loadMap(assetPath("assets/maps/map0")); err != nil {
+		t.Fatal(err)
+	}
+	if got, want := color.NRGBAModel.Convert(g.tileset.At(17, 29)), color.NRGBAModel.Convert(set.mapTilesets[0].At(17, 29)); got != want {
+		t.Fatalf("modern map0 pixel=%v, want %v", got, want)
+	}
+	if len(g.tiles) != 288 {
+		t.Fatalf("map0 tile count=%d, want 288", len(g.tiles))
+	}
+}
+
+func TestModernThemePrivatePackSmoke(t *testing.T) {
+	pack := os.Getenv("FD2_TEST_MODERN_PACK")
+	if pack == "" {
+		t.Skip("set FD2_TEST_MODERN_PACK to verify the private full theme")
+	}
+	t.Setenv("FD2_THEME", modernHandpaintedThemeID)
+	t.Setenv("FD2_MODERN_THEME_PACK", pack)
+	t.Setenv("FD2_MUTE", "1")
+	t.Setenv("FD2_TITLE", "0")
+	g := loadGame()
+	defer g.closeAudioPlayers()
+	if g.loadErr != "" {
+		t.Fatal(g.loadErr)
+	}
+	if g.modernStoryPortraits == nil || g.modernStoryPortraits.mapTilesets[0] == nil {
+		t.Fatal("private modern theme did not admit map0 tileset")
+	}
+	if len(g.tiles) != 288 {
+		t.Fatalf("map0 tile count=%d, want 288", len(g.tiles))
+	}
+}

@@ -5674,6 +5674,14 @@ func (g *Game) loadMap(dir string) error {
 	if err != nil {
 		return err
 	}
+	if g.modernStoryPortraits != nil {
+		base := filepath.Base(filepath.Clean(dir))
+		if base == "assets" || base == "map0" {
+			if modern, ok := g.modernStoryPortraits.mapTilesets[0]; ok {
+				img = modern
+			}
+		}
+	}
 	g.tileset = ebiten.NewImageFromImage(img)
 	g.tiles = nil
 	tsW := g.tileset.Bounds().Dx()
@@ -7739,6 +7747,11 @@ func clamp(v *float64, lo, hi float64) {
 
 func (g *Game) nativeMapFrameAdmission(legacyViewport, campaignBattleView bool) bool {
 	if g == nil || legacyViewport || !campaignBattleView {
+		return false
+	}
+	// 現代主題由正規化 renderer 疊加真彩圖集與人物；原版完整索引幀會把它們
+	// 全部蓋掉，因此兩種呈現管線必須互斥。
+	if g.modernStoryPortraits != nil {
 		return false
 	}
 	if g.spellOpen || g.itemOpen || g.castSp != nil {

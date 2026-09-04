@@ -15,7 +15,7 @@ ID_RE = re.compile(r"^[a-z0-9]+(?:[._-][a-z0-9]+)+$")
 SHA_RE = re.compile(r"^[0-9a-f]{64}$")
 SOURCE_ASSET_RE = re.compile(r"^asset:[A-Za-z0-9][A-Za-z0-9._-]+$")
 PROTOTYPE_ROLES = {"portrait_concept", "battlefield_concept", "battle_hud_concept"}
-ROLES = PROTOTYPE_ROLES | {"story_portrait_frame", "map_sprite_set"}
+ROLES = PROTOTYPE_ROLES | {"story_portrait_frame", "map_sprite_set", "map_tileset_set"}
 STATUSES = {"prototype", "concept", "approved", "runtime_candidate", "runtime_ready"}
 
 
@@ -50,12 +50,17 @@ def validate(verify_private: bool) -> dict:
             "frame_sha256", "source_group", "consumer_contract", "alpha_contract",
             "cycle_policy", "source_refs",
         }
+        map_tileset = required | {
+            "consumer_contract", "map_id", "tile_width", "tile_height", "columns", "tile_count"
+        }
         if not isinstance(entry, dict):
             raise ValueError("asset entry must be an object")
         if entry.get("role") == "story_portrait_frame":
             expected = required | candidate
         elif entry.get("role") == "map_sprite_set":
             expected = sprite_set | ({"master_file"} if "master_file" in entry else set())
+        elif entry.get("role") == "map_tileset_set":
+            expected = map_tileset
         else:
             expected = required
         if set(entry) != expected:
@@ -104,6 +109,14 @@ def validate(verify_private: bool) -> dict:
             if entry["cycle_policy"] == "three_distinct_cycles" and len(set(hashes)) != 12:
                 raise ValueError(f"map sprite cycles are not distinct: {asset_id}")
             file_paths = [Path(value) for value in files]
+        elif entry["role"] == "map_tileset_set":
+            if entry["consumer_contract"] != "map_tileset_indexed_geometry_v1":
+                raise ValueError(f"invalid map tileset contract: {asset_id}")
+            if (entry["map_id"], entry["tile_width"], entry["tile_height"],
+                    entry["columns"], entry["tile_count"], entry["width"], entry["height"]) != (
+                    0, 24, 24, 16, 288, 384, 432):
+                raise ValueError(f"invalid map tileset geometry: {asset_id}")
+            file_paths = [Path(entry["file"])]
         else:
             file_paths = [Path(entry["file"])]
         for file_path in file_paths:
