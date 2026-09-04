@@ -34,6 +34,7 @@ LABELS = dict((
     (20, "Sarah base selector"),
     (21, "Jonah base selector"),
     (22, "identity unresolved; selector-only projection"),
+    (40, "Celia promoted selector"),
     (68, "late selector sample"),
     (76, "chapter 3 helmeted soldier"),
     (77, "chapter 3 armored captain"),

@@ -574,11 +574,33 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   current portrait 6 → default target 38。原版 6／38 彩色幀保留相同深紅褐束髮、
   黑額帶與銀白槍刃；target 38 把灰綠甲改為深鈷藍重甲並加入金色腰胸飾。現代稿依此
   延續萊汀基礎造型。一次誤用 selector 36 母稿產生的未登錄檔已在清冊前刪除。
-- 五十一組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+- `modern.fdicon.group_040.style_a`：角色表證實 selector 8 是希莉亞，轉職表證實
+  current portrait 8 → default target 40。原版 8／40 彩色幀保留相同棕色長髮、
+  紅額帶、木弓與箭袋；target 40 將深藍衣甲改成深酒紅／黑褐色，背向三幀新增可見的
+  淺青灰色斜向箭袋帶。現代稿延續 selector 8 的人物比例，不新增披風、盾牌或魔法效果。
+- 五十二組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
 
 ### 地圖人物 consumer 現況
+
+#### 可繪圖組與純目的地重映射圖組
+
+- 2026-09-05 以私人原版固定包 `FDICON.B24`（大小 `624010`、MD5
+  `46f793540209a063ea73a5373ca14bf4`、SHA-256
+  `7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44`）逐幀檢查
+  96 組、每組 12 幀的 `mask.png` 與 `remap_mask.png`。只有 selector 39
+  （原始幀 468..479）及 selector 57（原始幀 684..695）在全部 12 幀皆為
+  `source-write=0`、`destination-remap=576`。
+- 因此 FDICON 的 96 組應分成 94 組可繪地圖人物，以及 2 組純目的地色彩重映射
+  操作。後兩組沒有可供現代重繪的角色輪廓，不得輸出全透明 RGBA 圖後冒稱完成，
+  也不得因轉職資料中的 `target portrait=39/57` 猜造人物。原版轉職只改寫人物記錄
+  `+0x20` 類別欄位；正式戰場圖組仍由建構時的 `unit+2` selector cache 決定，
+  portrait 編號不是 FDICON selector 的全域等價關係。
+- 現代主題目前只承諾替換 94 組具來源像素的可繪圖組。selector 39／57 維持原版
+  indexed 合成語意；若日後要讓正規化現代 renderer 消費它們，必須另立具型別的
+  destination-remap 契約與正常玩家消費端證據，不得塞入目前只接受二值 alpha RGBA
+  的 `fdicon_map_sprite_12x24_v1`。
 
 - `loadModernStoryPortraitSet` 現會同時預檢 catalog 中的地圖人物組：group
   0..95、12 個安全檔名、逐格 SHA-256、`24×24`、二值 alpha、互異雜湊及三週期
