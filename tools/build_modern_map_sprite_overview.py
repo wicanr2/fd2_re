@@ -34,6 +34,7 @@ GROUPS = (
     (68, "late selector sample"),
     (76, "chapter 3 helmeted soldier"),
     (77, "chapter 3 armored captain"),
+    (78, "chapters 8, 9, 18 broad-shouldered enemy swordsman"),
     (80, "anonymous enemy heavy-armored unit"),
     (82, "chapters 7-9 enemy swordsman"),
     (83, "chapters 6-9, 18-19 horned enemy swordsman"),
