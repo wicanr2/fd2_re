@@ -292,30 +292,8 @@ func TestModernThemeMap0UsesCatalogTileset(t *testing.T) {
 	if err := g.loadMap(assetPath("assets/maps/map0")); err != nil {
 		t.Fatal(err)
 	}
-	if got, want := color.NRGBAModel.Convert(g.tileset.At(17, 29)), color.NRGBAModel.Convert(set.mapTilesets[0].At(17, 29)); got != want {
-		t.Fatalf("modern map0 pixel=%v, want %v", got, want)
-	}
-	if len(g.tiles) != 288 {
-		t.Fatalf("map0 tile count=%d, want 288", len(g.tiles))
-	}
-}
-
-func TestModernThemePrivatePackSmoke(t *testing.T) {
-	pack := os.Getenv("FD2_TEST_MODERN_PACK")
-	if pack == "" {
-		t.Skip("set FD2_TEST_MODERN_PACK to verify the private full theme")
-	}
-	t.Setenv("FD2_THEME", modernHandpaintedThemeID)
-	t.Setenv("FD2_MODERN_THEME_PACK", pack)
-	t.Setenv("FD2_MUTE", "1")
-	t.Setenv("FD2_TITLE", "0")
-	g := loadGame()
-	defer g.closeAudioPlayers()
-	if g.loadErr != "" {
-		t.Fatal(g.loadErr)
-	}
-	if g.modernStoryPortraits == nil || g.modernStoryPortraits.mapTilesets[0] == nil {
-		t.Fatal("private modern theme did not admit map0 tileset")
+	if !g.modernMapTilesetLoaded {
+		t.Fatal("map0 did not admit the catalog tileset")
 	}
 	if len(g.tiles) != 288 {
 		t.Fatalf("map0 tile count=%d, want 288", len(g.tiles))

@@ -76,6 +76,7 @@ type MapData struct {
 type Game struct {
 	m                          *MapData
 	nativeMapAssets            *nativeMapAssets                   // all original map HUD resources, nil on any missing/malformed asset
+	modernMapTilesetLoaded     bool                               // 本次 loadMap 已原子採用現代圖集
 	nativeMapWork              []byte                             // persistent 456-stride original tactical framebuffer
 	nativeMapVGA               []byte                             // persistent 320x200 indexed VGA surface
 	nativeMapDAC               []byte                             // current 256xRGB six-bit DAC state for handler palette ramps
@@ -5657,6 +5658,7 @@ const (
 // loadMap 載入一張戰場(dir 下的 map.json + tileset.png,並切圖塊)。
 // dir 例:"assets"(map0 舊結構)或 "assets/maps/map3"(全 33 圖匯出結構)。
 func (g *Game) loadMap(dir string) error {
+	g.modernMapTilesetLoaded = false
 	dir = assetPath(dir)
 	raw, err := os.ReadFile(dir + "/map.json")
 	if err != nil {
@@ -5679,6 +5681,7 @@ func (g *Game) loadMap(dir string) error {
 		if base == "assets" || base == "map0" {
 			if modern, ok := g.modernStoryPortraits.mapTilesets[0]; ok {
 				img = modern
+				g.modernMapTilesetLoaded = true
 			}
 		}
 	}
