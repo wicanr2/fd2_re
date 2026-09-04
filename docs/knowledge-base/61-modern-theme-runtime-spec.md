@@ -603,7 +603,11 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   current portrait 14 → default target 46。原版兩組的 frame／mask／remap 十二幀皆
   不同；target 46 保留鮮藍高馬尾與綠寶石額帶，將深藍金邊長袍改成深綠內衣甲、
   紅褐外袍／披肩與金色邊飾。現代稿依四方向獨立輪廓重建，不作單純換色複用。
-- 五十八組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+- `modern.fdicon.group_047.style_a`：轉職表證實 current portrait 15 → default
+  target 47，但角色姓名仍未閉合。原版 15／47 的 12 張 frame 全部不同；mask 與
+  remap 只有最後一幀不同。兩組都呈現深藍全罩重甲、窄眼縫與黃眼，target 47 將紅色
+  腰腿點綴改成冷藍紫。現代稿不賦予未證實身分，只保留可見轉職差異。
+- 五十九組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
 
