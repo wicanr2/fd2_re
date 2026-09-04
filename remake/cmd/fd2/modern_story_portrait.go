@@ -20,9 +20,10 @@ type modernStoryPortraitFrame struct {
 }
 
 type modernStoryPortraitSet struct {
-	portraits   map[int]*modernStoryPortraitFrame
-	mapSprites  map[int][]image.Image
-	mapTilesets map[int]image.Image
+	portraits      map[int]*modernStoryPortraitFrame
+	mapSprites     map[int][]image.Image
+	mapTilesets    map[int]image.Image
+	battleHUDPanel image.Image
 }
 
 type modernThemeCatalog struct {
@@ -73,6 +74,43 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 		mapTilesets: make(map[int]image.Image),
 	}
 	for _, asset := range catalog.Assets {
+		if asset.Role == "battle_hud_panel" {
+			if asset.Status != "runtime_candidate" && asset.Status != "runtime_ready" {
+				return nil, fmt.Errorf("modern battle HUD has unsupported status %q", asset.Status)
+			}
+			if asset.ConsumerContract != "battle_status_panel_149x42_v1" || asset.Width != 149 || asset.Height != 42 {
+				return nil, errors.New("modern battle HUD violates the panel contract")
+			}
+			if set.battleHUDPanel != nil {
+				return nil, errors.New("modern battle HUD is duplicated")
+			}
+			name := filepath.Base(asset.File)
+			if name != asset.File || filepath.Ext(name) != ".png" {
+				return nil, errors.New("modern battle HUD has an unsafe path")
+			}
+			pngRaw, err := os.ReadFile(filepath.Join(packRoot, name))
+			if err != nil {
+				return nil, fmt.Errorf("modern battle HUD: %w", err)
+			}
+			digest := sha256.Sum256(pngRaw)
+			if hex.EncodeToString(digest[:]) != asset.SHA256 {
+				return nil, errors.New("modern battle HUD has a sha256 mismatch")
+			}
+			decoded, _, err := image.Decode(bytes.NewReader(pngRaw))
+			if err != nil || decoded.Bounds().Dx() != 149 || decoded.Bounds().Dy() != 42 {
+				return nil, errors.New("modern battle HUD has invalid PNG geometry")
+			}
+			for y := decoded.Bounds().Min.Y; y < decoded.Bounds().Max.Y; y++ {
+				for x := decoded.Bounds().Min.X; x < decoded.Bounds().Max.X; x++ {
+					_, _, _, alpha := decoded.At(x, y).RGBA()
+					if alpha != 0xffff {
+						return nil, errors.New("modern battle HUD is not fully opaque")
+					}
+				}
+			}
+			set.battleHUDPanel = decoded
+			continue
+		}
 		if asset.Role == "map_tileset_set" {
 			if asset.Status != "runtime_candidate" && asset.Status != "runtime_ready" {
 				return nil, fmt.Errorf("modern theme map %d has unsupported status %q", asset.MapID, asset.Status)

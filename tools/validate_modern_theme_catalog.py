@@ -16,7 +16,8 @@ SHA_RE = re.compile(r"^[0-9a-f]{64}$")
 SOURCE_ASSET_RE = re.compile(r"^asset:[A-Za-z0-9][A-Za-z0-9._-]+$")
 PROTOTYPE_ROLES = {"portrait_concept", "battlefield_concept", "battle_hud_concept"}
 ROLES = PROTOTYPE_ROLES | {
-    "story_portrait_frame", "map_sprite_set", "map_tileset_set", "battlefield_tileset_concept"
+    "story_portrait_frame", "map_sprite_set", "map_tileset_set",
+    "battlefield_tileset_concept", "battle_hud_panel",
 }
 STATUSES = {"prototype", "concept", "approved", "runtime_candidate", "runtime_ready"}
 
@@ -55,6 +56,7 @@ def validate(verify_private: bool) -> dict:
         map_tileset = required | {
             "consumer_contract", "map_id", "tile_width", "tile_height", "columns", "tile_count"
         }
+        hud_panel = required | {"master_file", "consumer_contract"}
         if not isinstance(entry, dict):
             raise ValueError("asset entry must be an object")
         if entry.get("role") == "story_portrait_frame":
@@ -63,6 +65,8 @@ def validate(verify_private: bool) -> dict:
             expected = sprite_set | ({"master_file"} if "master_file" in entry else set())
         elif entry.get("role") == "map_tileset_set":
             expected = map_tileset
+        elif entry.get("role") == "battle_hud_panel":
+            expected = hud_panel
         else:
             expected = required
         if set(entry) != expected:
@@ -91,6 +95,10 @@ def validate(verify_private: bool) -> dict:
                 raise ValueError(f"invalid speaker identity: {asset_id}")
             if entry["frame"] not in range(4) or entry["mouth_state"] not in {"closed", "open"}:
                 raise ValueError(f"invalid portrait frame identity: {asset_id}")
+        if entry["role"] == "battle_hud_panel":
+            if entry["consumer_contract"] != "battle_status_panel_149x42_v1" or (
+                    entry["width"], entry["height"]) != (149, 42):
+                raise ValueError(f"invalid battle HUD panel contract: {asset_id}")
         if entry["role"] == "map_sprite_set":
             if entry["frame_count"] != 12 or entry["source_group"] not in range(96):
                 raise ValueError(f"invalid map sprite identity: {asset_id}")

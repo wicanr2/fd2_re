@@ -9605,6 +9605,11 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 // 框內槽 native:HP y22-26、MP y31-35、x26-145(量測)。
 func (g *Game) drawBattlePanel(screen *ebiten.Image, x, y float64, name string, lv, hp, mx, mp, maxMP int) {
 	panel := g.panel
+	modernPanel := false
+	if g.modernStoryPortraits != nil && g.modernStoryPortraits.battleHUDPanel != nil {
+		panel = ebiten.NewImageFromImage(g.modernStoryPortraits.battleHUDPanel)
+		modernPanel = true
+	}
 	// orig 是 149×42 原生尺寸 blit(非拉伸滿半屏;網格比對 v37 抓到的差異)→ 固定 ×2
 	const sc = 2.0
 	fillRect := func(bx, by, bw, bh float64, c color.RGBA) {
@@ -9617,9 +9622,12 @@ func (g *Game) drawBattlePanel(screen *ebiten.Image, x, y float64, name string, 
 		o.GeoM.Translate(bx, by)
 		screen.DrawImage(im, o)
 	}
-	nativeValuesDrawn := g.drawNativeBattlePanelValues(screen, x, y, battle.NativeBattlePanelValues{
-		Level: lv, HP: hp, MaxHP: mx, MP: mp, MaxMP: maxMP,
-	})
+	nativeValuesDrawn := false
+	if !modernPanel {
+		nativeValuesDrawn = g.drawNativeBattlePanelValues(screen, x, y, battle.NativeBattlePanelValues{
+			Level: lv, HP: hp, MaxHP: mx, MP: mp, MaxMP: maxMP,
+		})
+	}
 	if !nativeValuesDrawn && panel != nil { // 框素材(bevel + HP/MP標籤 + LV‧ + 槽 全來自原版;palette 已 6→8bit 校正)
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)

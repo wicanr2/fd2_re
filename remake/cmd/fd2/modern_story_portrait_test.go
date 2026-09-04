@@ -331,3 +331,70 @@ func TestModernThemePrivateCatalogAdmitsAllMaps(t *testing.T) {
 		}
 	}
 }
+
+func addModernBattleHUDPanelFixture(t *testing.T, catalogPath, root string, alpha uint8) {
+	t.Helper()
+	img := image.NewNRGBA(image.Rect(0, 0, 149, 42))
+	for y := 0; y < 42; y++ {
+		for x := 0; x < 149; x++ {
+			img.SetNRGBA(x, y, color.NRGBA{R: 8, G: 24, B: 58, A: alpha})
+		}
+	}
+	path := filepath.Join(root, "hud.png")
+	f, err := os.Create(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := png.Encode(f, img); err != nil {
+		f.Close()
+		t.Fatal(err)
+	}
+	if err := f.Close(); err != nil {
+		t.Fatal(err)
+	}
+	pngRaw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	digest := sha256.Sum256(pngRaw)
+	raw, err := os.ReadFile(catalogPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var document map[string]any
+	if err := json.Unmarshal(raw, &document); err != nil {
+		t.Fatal(err)
+	}
+	document["assets"] = append(document["assets"].([]any), map[string]any{
+		"role": "battle_hud_panel", "status": "runtime_candidate",
+		"file": "hud.png", "width": 149, "height": 42,
+		"sha256": hex.EncodeToString(digest[:]), "consumer_contract": "battle_status_panel_149x42_v1",
+	})
+	raw, err = json.Marshal(document)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(catalogPath, raw, 0o600); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestLoadModernStoryPortraitSetAdmitsBattleHUDPanel(t *testing.T) {
+	catalogPath, root := writeModernPortraitFixture(t, true)
+	addModernBattleHUDPanelFixture(t, catalogPath, root, 0xff)
+	set, err := loadModernStoryPortraitSet(catalogPath, root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if set.battleHUDPanel == nil || set.battleHUDPanel.Bounds().Dx() != 149 {
+		t.Fatal("modern battle HUD panel was not admitted")
+	}
+}
+
+func TestLoadModernStoryPortraitSetRejectsTransparentBattleHUDPanel(t *testing.T) {
+	catalogPath, root := writeModernPortraitFixture(t, true)
+	addModernBattleHUDPanelFixture(t, catalogPath, root, 0x80)
+	if _, err := loadModernStoryPortraitSet(catalogPath, root); err == nil {
+		t.Fatal("transparent modern battle HUD panel accepted")
+	}
+}

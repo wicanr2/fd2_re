@@ -34,6 +34,18 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
 - 現代主題使用正規化地圖 renderer 疊加現代人物；原版完整 indexed frame 不得再
   覆蓋它。忠實原版主題的 indexed compositor 行為維持不變。
 
+## 現代戰場狀態面板契約（READY）
+
+- `modern.battle.hud.style_a` 只作整體構圖參考；正式 runtime 不得把概念稿中的
+  地圖、人物、選單或文字裁入 HUD。
+- `modern.battle.hud.panel.style_a` 是獨立 `149×42` RGBA 背景，依
+  `battle_status_panel_149x42_v1` 登錄。母稿只含深藍底板、金色雙框與角飾，
+  不含頭像、文字、數值、圖示或填滿的 HP／MP 條。
+- 現代主題沿用既有 `×2` 邏輯尺寸與左下方錨點；角色名、LV、HP、MP、AP、DP、MV
+  仍由 runtime 依目前單位狀態繪製，不可烘焙進圖片。
+- 面板檔名、SHA-256、尺寸與完全不透明契約任一不符，即拒絕整個現代主題。
+  忠實原版主題仍使用已證實的 FDOTHER／indexed HUD，不受此素材影響。
+
 ## 原始證據與既有消費端
 
 - 原版分離資產：`assets/portraits/DATO_000_m0.png`；`DATO` resource 0、frame 0。
@@ -470,7 +482,7 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   原版十二幀也沒有可見武器。現代母稿只依輪廓近似為深藍尖垂兜帽、黑色面孔、
   紅眼與對稱暗紅外緣；「兜帽」屬強視覺推論，正式身分仍是中性敵方單位，不猜
   職業、種族、服裝結構或姓名。
-- 三十二組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+- 三十四組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
 
@@ -482,9 +494,9 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
 - `loadGame` 在完整預檢後，才以各組 12 張真彩色圖原子取代正規化
   `g.sprites[0]`／`g.sprites[1]`／`g.sprites[2]`／`g.sprites[3]`／`g.sprites[4]`／`g.sprites[5]`／`g.sprites[6]`／`g.sprites[7]`／`g.sprites[8]`／`g.sprites[9]`／`g.sprites[10]`／`g.sprites[11]`／`g.sprites[12]`／`g.sprites[13]`／`g.sprites[14]`／`g.sprites[15]`／`g.sprites[16]`／`g.sprites[17]`／`g.sprites[18]`／`g.sprites[19]`／`g.sprites[20]`／`g.sprites[21]`／`g.sprites[68]`／`g.sprites[76]`／`g.sprites[77]`／`g.sprites[78]`／`g.sprites[80]`／`g.sprites[82]`／`g.sprites[83]`／`g.sprites[85]`／`g.sprites[88]`／`g.sprites[91]`；其他 group 不變，忠實主題
   預設路徑也不變。
-- 原生 indexed 戰場 compositor 仍直接消費 `NativeMapSelectorCache`，尚未加入
-  真彩色覆蓋層。此路徑保持原版 sprite，不偷偷量化或混搭；因此地圖人物目前
-  是 `RUNTIME-E1-PARTIAL`，待原生與正規化同狀態抽測後才能升級。
+- 現代主題改用正規化 renderer 疊加真彩圖集與人物，並拒絕原生 indexed 完整幀
+  覆蓋；忠實原版主題仍直接消費 `NativeMapSelectorCache`。兩條呈現路徑互斥，
+  不量化或混搭；地圖人物目前是 `RUNTIME-E1-PARTIAL`，待正常玩家抽測後再升級。
 
 ## 正式 consumer 現況
 
