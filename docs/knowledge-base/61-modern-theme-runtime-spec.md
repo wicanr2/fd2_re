@@ -586,7 +586,11 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   current portrait 10 → default target 42。原版 10／42 保留粉紫齊頸短髮與金色額飾；
   target 42 將紅金長衣改成深藍綠／炭黑衣甲，肩臂加入淡青綠／銀灰金屬輪廓。原版
   小圖不足以證明該輪廓是法杖，現代稿不增加未證實武器。
-- 五十四組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+- `modern.fdicon.group_043.style_a`：角色表證實 selector 11 是索菲亞，轉職表證實
+  current portrait 11 → default target 43。原版 11／43 保留灰金齊頸短髮、頭頂紅色
+  髮飾與短杖；target 43 將深藍／紅衣裝改成棕紅、赭橙、深褐與少量深綠金邊長衣。
+  現代稿維持短杖比例，不放大成未證實的長槍。
+- 五十五組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
 
