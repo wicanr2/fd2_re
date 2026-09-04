@@ -854,9 +854,9 @@
         "function": "ringInput",
         "line": 5006
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5006-c14",
-      "text": "空き物欄",
+      "text": "空のアイテム欄",
       "variables": []
     },
     {
@@ -868,9 +868,9 @@
         "function": "ringInput",
         "line": 5011
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5011-c14",
-      "text": "商品は不完全です",
+      "text": "アイテムデータが不完全です",
       "variables": []
     },
     {
@@ -882,9 +882,9 @@
         "function": "ringInput",
         "line": 5019
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5019-c14",
-      "text": "この物事は戦場で使用できない",
+      "text": "このアイテムは戦場で使えません",
       "variables": []
     },
     {
@@ -896,9 +896,9 @@
         "function": "ringInput",
         "line": 5023
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5023-c26",
-      "text": "商品について%02Xh海外の反応%v",
+      "text": "アイテム %02Xh：%v",
       "variables": [
         "%02X",
         "%v"
@@ -913,9 +913,9 @@
         "function": "ringInput",
         "line": 5026
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5026-c26",
-      "text": "商品について%02Xh原作:完成",
+      "text": "アイテム %02Xh：原作効果が完了しました",
       "variables": [
         "%02X"
       ]
@@ -929,9 +929,9 @@
         "function": "ringInput",
         "line": 5030
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5030-c26",
-      "text": "商品について%02Xh海外の反応%v",
+      "text": "アイテム %02Xh：%v",
       "variables": [
         "%02X",
         "%v"
@@ -946,9 +946,9 @@
         "function": "ringInput",
         "line": 5033
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5033-c26",
-      "text": "商品について%02Xh目標:",
+      "text": "アイテム %02Xh：対象を選択",
       "variables": [
         "%02X"
       ]
@@ -962,9 +962,9 @@
         "function": "ringInput",
         "line": 5036
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5036-c25",
-      "text": "商品について%02Xh効果は確認されていません",
+      "text": "アイテム %02Xh：効果未確認",
       "variables": [
         "%02X"
       ]
@@ -978,9 +978,9 @@
         "function": "ringInput",
         "line": 5049
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5049-c13",
-      "text": "空き物欄",
+      "text": "空のアイテム欄",
       "variables": []
     },
     {
@@ -992,9 +992,9 @@
         "function": "ringInput",
         "line": 5054
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5054-c24",
-      "text": "商品について%02Xh効果は確認されていません",
+      "text": "アイテム %02Xh：効果未確認",
       "variables": [
         "%02X"
       ]
@@ -1022,9 +1022,9 @@
         "function": "ringInput",
         "line": 5091
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5091-c14",
-      "text": "MP足らない!",
+      "text": "MP不足！",
       "variables": []
     },
     {
@@ -1052,9 +1052,9 @@
         "function": "ringInput",
         "line": 5101
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5101-c26",
-      "text": "初めの指示は%d目標:",
+      "text": "原作コマンド %d：対象を選択",
       "variables": [
         "%d"
       ]
@@ -1068,9 +1068,9 @@
         "function": "ringInput",
         "line": 5112
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5112-c24",
-      "text": "初めの指示は%d目標/効果は未確認",
+      "text": "原作コマンド %d：対象／効果未確認",
       "variables": [
         "%d"
       ]
@@ -1084,9 +1084,9 @@
         "function": "ringInput",
         "line": 5136
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5136-c15",
-      "text": "MP足らない!",
+      "text": "MP不足！",
       "variables": []
     },
     {
@@ -1098,9 +1098,9 @@
         "function": "ringInput",
         "line": 5141
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5141-c26",
-      "text": "%s目標:距離を選択する%d海外の反応",
+      "text": "%s：対象を選択（射程 %d）",
       "variables": [
         "%s",
         "%d"
@@ -1115,9 +1115,9 @@
         "function": "ringInput",
         "line": 5187
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5187-c12",
-      "text": "この指示は現在使用できません",
+      "text": "このコマンドは現在使用できません",
       "variables": []
     },
     {
@@ -1129,9 +1129,9 @@
         "function": "ringInput",
         "line": 5193
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5193-c13",
-      "text": "攻撃:目標を選択",
+      "text": "攻撃：対象を選択",
       "variables": []
     },
     {
@@ -1143,9 +1143,9 @@
         "function": "ringInput",
         "line": 5201
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5201-c14",
-      "text": "原始命令は現在使用できません",
+      "text": "原作コマンドは現在使用できません",
       "variables": []
     },
     {
@@ -1157,9 +1157,9 @@
         "function": "ringInput",
         "line": 5211
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5211-c14",
-      "text": "法律は禁止されています!",
+      "text": "呪いで魔法を使えません！",
       "variables": []
     },
     {
@@ -1171,9 +1171,9 @@
         "function": "ringInput",
         "line": 5218
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5218-c13",
-      "text": "魔法は使わない",
+      "text": "使用できる魔法がありません",
       "variables": []
     },
     {
@@ -1185,9 +1185,9 @@
         "function": "ringInput",
         "line": 5225
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5225-c13",
-      "text": "商品:欄を選択する",
+      "text": "アイテム：スロットを選択",
       "variables": []
     },
     {
@@ -1199,9 +1199,9 @@
         "function": "finishSelectedWait",
         "line": 5357
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5357-c25",
-      "text": "取得しました.%d金貨",
+      "text": "%dゴールドを獲得",
       "variables": [
         "%d"
       ]
@@ -1215,9 +1215,9 @@
         "function": "finishSelectedWait",
         "line": 5359
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5359-c25",
-      "text": "商品の取得%02Xh",
+      "text": "アイテム %02Xh を獲得",
       "variables": [
         "%02X"
       ]
@@ -1231,9 +1231,9 @@
         "function": "finishSelectedWait",
         "line": 5363
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5363-c12",
-      "text": "商品の箱は満載で,宝物は残っています",
+      "text": "アイテム欄が満杯のため、宝物はその場に残っています",
       "variables": []
     },
     {
@@ -1245,9 +1245,9 @@
         "function": "awardDeathReward",
         "line": 5418
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5418-c24",
-      "text": "敵を倒し,物品を得るために%02Xh",
+      "text": "敵を倒し、アイテム %02Xh を獲得",
       "variables": [
         "%02X"
       ]
@@ -1261,9 +1261,9 @@
         "function": "awardDeathReward",
         "line": 5420
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5420-c24",
-      "text": "商品欄が満載で取得できません%02Xh",
+      "text": "アイテム欄が満杯のため、%02Xh を獲得できません",
       "variables": [
         "%02X"
       ]
@@ -1277,9 +1277,9 @@
         "function": "awardDeathReward",
         "line": 5424
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5424-c23",
-      "text": "敵を倒し,取得する%d金貨",
+      "text": "敵を倒し、%dゴールドを獲得",
       "variables": [
         "%d"
       ]
@@ -1321,9 +1321,9 @@
         "function": "confirm",
         "line": 6056
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6056-c12",
-      "text": "麻痺して動けない!",
+      "text": "麻痺して動けません！",
       "variables": []
     },
     {
@@ -1335,9 +1335,9 @@
         "function": "confirm",
         "line": 6081
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6081-c12",
-      "text": "MP怒鳴り声が聞こえなかった",
+      "text": "MP不足または呪いのため使用できません！",
       "variables": []
     },
     {
@@ -1377,9 +1377,9 @@
         "function": "confirm",
         "line": 6105
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6105-c23",
-      "text": "%s放出%s撃たれた%d海外の反応%s %d海外の反応",
+      "text": "%sは%sを唱えた：%d体に命中（%s %d）",
       "variables": [
         "%s",
         "%s",
@@ -1397,9 +1397,9 @@
         "function": "confirm",
         "line": 6107
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6107-c25",
-      "text": "田は,Miss %d",
+      "text": "、%d体にミス",
       "variables": [
         "%d"
       ]
@@ -1413,9 +1413,9 @@
         "function": "confirm",
         "line": 6135
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6135-c24",
-      "text": "商品について%02Xh海外の反応%v",
+      "text": "アイテム %02Xh：%v",
       "variables": [
         "%02X",
         "%v"
@@ -1430,9 +1430,9 @@
         "function": "confirm",
         "line": 6140
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6140-c25",
-      "text": "商品について%02Xh目的地を選択",
+      "text": "アイテム %02Xh：移動先を選択",
       "variables": [
         "%02X"
       ]
@@ -1446,9 +1446,9 @@
         "function": "confirm",
         "line": 6145
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6145-c24",
-      "text": "商品について%02Xh傷害の原演が進行中",
+      "text": "アイテム %02Xh：原作ダメージ演出中",
       "variables": [
         "%02X"
       ]
@@ -1462,9 +1462,9 @@
         "function": "confirm",
         "line": 6147
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6147-c24",
-      "text": "商品について%02Xh原発回復が完了",
+      "text": "アイテム %02Xh：原作回復効果が完了しました",
       "variables": [
         "%02X"
       ]
@@ -1478,9 +1478,9 @@
         "function": "confirm",
         "line": 6154
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6154-c24",
-      "text": "商品について%02Xh海外の反応%v",
+      "text": "アイテム %02Xh：%v",
       "variables": [
         "%02X",
         "%v"
@@ -1495,9 +1495,9 @@
         "function": "confirm",
         "line": 6159
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6159-c25",
-      "text": "商品について%02Xh原発移転演出が進行中",
+      "text": "アイテム %02Xh：原作移動演出中",
       "variables": [
         "%02X"
       ]
@@ -1511,9 +1511,9 @@
         "function": "confirm",
         "line": 6161
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6161-c25",
-      "text": "商品について%02Xh原発移転効果が完了",
+      "text": "アイテム %02Xh：原作移動効果が完了しました",
       "variables": [
         "%02X"
       ]
@@ -2466,9 +2466,9 @@
         "function": "confirm",
         "line": 6740
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6740-c12",
-      "text": "攻撃は:",
+      "text": "攻撃：",
       "variables": []
     },
     {
@@ -2522,9 +2522,9 @@
         "function": "Update",
         "line": 7256
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7256-c13",
-      "text": "攻撃:目標を選択",
+      "text": "攻撃：対象を選択",
       "variables": []
     },
     {

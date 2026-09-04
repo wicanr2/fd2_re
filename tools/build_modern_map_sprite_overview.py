@@ -34,6 +34,7 @@ GROUPS = (
     (68, "late selector sample"),
     (76, "chapter 3 helmeted soldier"),
     (77, "chapter 3 armored captain"),
+    (82, "chapters 7-9 enemy swordsman"),
 )
 
 

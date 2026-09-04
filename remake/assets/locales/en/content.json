@@ -854,9 +854,9 @@
         "function": "ringInput",
         "line": 5006
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5006-c14",
-      "text": "Empty Items Column",
+      "text": "Empty item slot",
       "variables": []
     },
     {
@@ -868,9 +868,9 @@
         "function": "ringInput",
         "line": 5011
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5011-c14",
-      "text": "Incomplete data on items",
+      "text": "Item data is incomplete",
       "variables": []
     },
     {
@@ -882,9 +882,9 @@
         "function": "ringInput",
         "line": 5019
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5019-c14",
-      "text": "This item cannot be used in the field.",
+      "text": "This item cannot be used in battle",
       "variables": []
     },
     {
@@ -896,9 +896,9 @@
         "function": "ringInput",
         "line": 5023
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5023-c26",
-      "text": "Items%02Xh:%v",
+      "text": "Item %02Xh: %v",
       "variables": [
         "%02X",
         "%v"
@@ -913,9 +913,9 @@
         "function": "ringInput",
         "line": 5026
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5026-c26",
-      "text": "Items%02Xh: Original effect complete",
+      "text": "Item %02Xh: original effect complete",
       "variables": [
         "%02X"
       ]
@@ -929,9 +929,9 @@
         "function": "ringInput",
         "line": 5030
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5030-c26",
-      "text": "Items%02Xh:%v",
+      "text": "Item %02Xh: %v",
       "variables": [
         "%02X",
         "%v"
@@ -946,9 +946,9 @@
         "function": "ringInput",
         "line": 5033
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5033-c26",
-      "text": "Items%02Xh: Select the target",
+      "text": "Item %02Xh: choose a target",
       "variables": [
         "%02X"
       ]
@@ -962,9 +962,9 @@
         "function": "ringInput",
         "line": 5036
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5036-c25",
-      "text": "Items%02Xh_Other Organiser",
+      "text": "Item %02Xh: effect not verified",
       "variables": [
         "%02X"
       ]
@@ -978,9 +978,9 @@
         "function": "ringInput",
         "line": 5049
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5049-c13",
-      "text": "Empty Items Column",
+      "text": "Empty item slot",
       "variables": []
     },
     {
@@ -992,9 +992,9 @@
         "function": "ringInput",
         "line": 5054
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5054-c24",
-      "text": "Items%02Xh_Other Organiser",
+      "text": "Item %02Xh: effect not verified",
       "variables": [
         "%02X"
       ]
@@ -1022,9 +1022,9 @@
         "function": "ringInput",
         "line": 5091
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5091-c14",
-      "text": "MPNot enough!",
+      "text": "Not enough MP!",
       "variables": []
     },
     {
@@ -1052,9 +1052,9 @@
         "function": "ringInput",
         "line": 5101
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5101-c26",
-      "text": "Original Command%d: Select the target",
+      "text": "Original command %d: choose a target",
       "variables": [
         "%d"
       ]
@@ -1068,9 +1068,9 @@
         "function": "ringInput",
         "line": 5112
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5112-c24",
-      "text": "Original Command%dTarget/effect not verified",
+      "text": "Original command %d: target/effect not verified",
       "variables": [
         "%d"
       ]
@@ -1084,9 +1084,9 @@
         "function": "ringInput",
         "line": 5136
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5136-c15",
-      "text": "MPNot enough!",
+      "text": "Not enough MP!",
       "variables": []
     },
     {
@@ -1098,9 +1098,9 @@
         "function": "ringInput",
         "line": 5141
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5141-c26",
-      "text": "%s: Select the target (range)%dI'm not sure.",
+      "text": "%s: choose a target (range %d)",
       "variables": [
         "%s",
         "%d"
@@ -1115,9 +1115,9 @@
         "function": "ringInput",
         "line": 5187
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5187-c12",
-      "text": "This command is currently not available",
+      "text": "This command is currently unavailable",
       "variables": []
     },
     {
@@ -1129,9 +1129,9 @@
         "function": "ringInput",
         "line": 5193
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5193-c13",
-      "text": "Attack: Target selected.",
+      "text": "Attack: choose a target",
       "variables": []
     },
     {
@@ -1143,9 +1143,9 @@
         "function": "ringInput",
         "line": 5201
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5201-c14",
-      "text": "Original command is not currently available",
+      "text": "The original command is currently unavailable",
       "variables": []
     },
     {
@@ -1157,9 +1157,9 @@
         "function": "ringInput",
         "line": 5211
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5211-c14",
-      "text": "It's cursed. It can't be done!",
+      "text": "Magic cannot be used while cursed!",
       "variables": []
     },
     {
@@ -1171,9 +1171,9 @@
         "function": "ringInput",
         "line": 5218
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5218-c13",
-      "text": "No magic available",
+      "text": "No magic is available",
       "variables": []
     },
     {
@@ -1185,9 +1185,9 @@
         "function": "ringInput",
         "line": 5225
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5225-c13",
-      "text": "Items: Select Columns",
+      "text": "Item: choose a slot",
       "variables": []
     },
     {
@@ -1199,9 +1199,9 @@
         "function": "finishSelectedWait",
         "line": 5357
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5357-c25",
-      "text": "Access%dGold",
+      "text": "Obtained %d gold",
       "variables": [
         "%d"
       ]
@@ -1215,9 +1215,9 @@
         "function": "finishSelectedWait",
         "line": 5359
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5359-c25",
-      "text": "Access to goods%02Xh",
+      "text": "Obtained item %02Xh",
       "variables": [
         "%02X"
       ]
@@ -1231,9 +1231,9 @@
         "function": "finishSelectedWait",
         "line": 5363
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5363-c12",
-      "text": "The columns are full and the treasure remains.",
+      "text": "Your item slots are full; the treasure remains where it is",
       "variables": []
     },
     {
@@ -1245,9 +1245,9 @@
         "function": "awardDeathReward",
         "line": 5418
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5418-c24",
-      "text": "Break the enemy and get the goods.%02Xh",
+      "text": "Enemy defeated; obtained item %02Xh",
       "variables": [
         "%02X"
       ]
@@ -1261,9 +1261,9 @@
         "function": "awardDeathReward",
         "line": 5420
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5420-c24",
-      "text": "Item columns are full, not available%02Xh",
+      "text": "Item slots are full; could not obtain %02Xh",
       "variables": [
         "%02X"
       ]
@@ -1277,9 +1277,9 @@
         "function": "awardDeathReward",
         "line": 5424
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5424-c23",
-      "text": "Break the enemy and get it.%dGold",
+      "text": "Enemy defeated; obtained %d gold",
       "variables": [
         "%d"
       ]
@@ -1321,9 +1321,9 @@
         "function": "confirm",
         "line": 6056
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6056-c12",
-      "text": "I can't move!",
+      "text": "Paralyzed and unable to act!",
       "variables": []
     },
     {
@@ -1335,9 +1335,9 @@
         "function": "confirm",
         "line": 6081
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6081-c12",
-      "text": "MPNot enough or cursed!",
+      "text": "Not enough MP or the unit is cursed!",
       "variables": []
     },
     {
@@ -1377,9 +1377,9 @@
         "function": "confirm",
         "line": 6105
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6105-c23",
-      "text": "%sRelease%s: Hit%dI'm sorry.%s %dI'm not sure.",
+      "text": "%s casts %s: %d hit (%s %d)",
       "variables": [
         "%s",
         "%s",
@@ -1397,9 +1397,9 @@
         "function": "confirm",
         "line": 6107
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6107-c25",
-      "text": "I don't know.Miss %d",
+      "text": ", %d missed",
       "variables": [
         "%d"
       ]
@@ -1413,9 +1413,9 @@
         "function": "confirm",
         "line": 6135
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6135-c24",
-      "text": "Items%02Xh:%v",
+      "text": "Item %02Xh: %v",
       "variables": [
         "%02X",
         "%v"
@@ -1430,9 +1430,9 @@
         "function": "confirm",
         "line": 6140
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6140-c25",
-      "text": "Items%02Xh: Select destination",
+      "text": "Item %02Xh: choose a destination",
       "variables": [
         "%02X"
       ]
@@ -1446,9 +1446,9 @@
         "function": "confirm",
         "line": 6145
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6145-c24",
-      "text": "Items%02Xh: Original injury performance in progress",
+      "text": "Item %02Xh: original damage presentation in progress",
       "variables": [
         "%02X"
       ]
@@ -1462,9 +1462,9 @@
         "function": "confirm",
         "line": 6147
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6147-c24",
-      "text": "Items%02Xh_Other Organiser",
+      "text": "Item %02Xh: original recovery effect complete",
       "variables": [
         "%02X"
       ]
@@ -1478,9 +1478,9 @@
         "function": "confirm",
         "line": 6154
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6154-c24",
-      "text": "Items%02Xh:%v",
+      "text": "Item %02Xh: %v",
       "variables": [
         "%02X",
         "%v"
@@ -1495,9 +1495,9 @@
         "function": "confirm",
         "line": 6159
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6159-c25",
-      "text": "Items%02Xh_Other Organiser",
+      "text": "Item %02Xh: original relocation presentation in progress",
       "variables": [
         "%02X"
       ]
@@ -1511,9 +1511,9 @@
         "function": "confirm",
         "line": 6161
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6161-c25",
-      "text": "Items%02Xh: Original migration complete",
+      "text": "Item %02Xh: original relocation effect complete",
       "variables": [
         "%02X"
       ]
@@ -2466,7 +2466,7 @@
         "function": "confirm",
         "line": 6740
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6740-c12",
       "text": "Attack:",
       "variables": []
@@ -2522,9 +2522,9 @@
         "function": "Update",
         "line": 7256
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7256-c13",
-      "text": "Attack: Target selected.",
+      "text": "Attack: choose a target",
       "variables": []
     },
     {
