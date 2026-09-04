@@ -578,7 +578,11 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   current portrait 8 → default target 40。原版 8／40 彩色幀保留相同棕色長髮、
   紅額帶、木弓與箭袋；target 40 將深藍衣甲改成深酒紅／黑褐色，背向三幀新增可見的
   淺青灰色斜向箭袋帶。現代稿延續 selector 8 的人物比例，不新增披風、盾牌或魔法效果。
-- 五十二組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+- `modern.fdicon.group_041.style_a`：角色表證實 selector 9 是悠妮，轉職表證實
+  current portrait 9 → default target 41；特殊道具分支另會覆寫成 target 52，故本組
+  只代表預設轉職。原版 9／41 保留鮮紅高馬尾與藍寶石額帶；target 41 將藍紅布裝
+  升級為炭黑／深灰甲與銀灰肩臂護甲。現代稿只沿用這些可見差異，不混入特殊分支造型。
+- 五十三組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
 
