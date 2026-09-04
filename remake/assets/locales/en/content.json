@@ -1363,9 +1363,9 @@
         "function": "confirm",
         "line": 6103
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6103-c11",
-      "text": "Restore",
+      "text": "Heal",
       "variables": []
     },
     {
@@ -3431,9 +3431,9 @@
         "function": "Draw",
         "line": 8267
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8267-c25",
-      "text": "PressEnterGo on.",
+      "text": "Press Enter to continue",
       "variables": []
     },
     {
@@ -3445,9 +3445,9 @@
         "function": "drawSpellMenu",
         "line": 8596
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8596-c34",
-      "text": "Magic.MP %d",
+      "text": "Magic MP %d",
       "variables": [
         "%d"
       ]
@@ -3507,9 +3507,9 @@
         "function": "drawItemMenu",
         "line": 8636
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8636-c34",
-      "text": "Items%s",
+      "text": "Item %s",
       "variables": [
         "%s"
       ]
@@ -3523,7 +3523,7 @@
         "function": "drawItemMenu",
         "line": 8640
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8640-c12",
       "text": "Empty",
       "variables": []
@@ -3669,9 +3669,9 @@
         "function": "drawCampaignUI",
         "line": 8702
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8702-c21",
-      "text": "Stand by.",
+      "text": "Post-battle preparations",
       "variables": []
     },
     {
@@ -3725,9 +3725,9 @@
         "function": "drawCampaignUI",
         "line": 8721
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8721-c36",
-      "text": "%s: Should we be equipped?",
+      "text": "Equip %s?",
       "variables": [
         "%s"
       ]
@@ -3741,9 +3741,9 @@
         "function": "drawCampaignUI",
         "line": 8722
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8722-c24",
-      "text": "EnterYes.ESCNo (retain in column)",
+      "text": "Enter Yes / ESC No (keep in inventory)",
       "variables": []
     },
     {
@@ -3769,9 +3769,9 @@
         "function": "drawCampaignUI",
         "line": 8731
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8731-c37",
-      "text": "Sold:%sI'm sorry.TabBack to shopping)",
+      "text": "Sell: %s (Tab to return to buying)",
       "variables": [
         "%s"
       ]
@@ -3813,9 +3813,9 @@
         "function": "drawCampaignUI",
         "line": 8740
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8740-c14",
-      "text": "[Equipping]",
+      "text": "[Equipped]",
       "variables": []
     },
     {
@@ -3846,9 +3846,9 @@
         "function": "drawCampaignUI",
         "line": 8748
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8748-c24",
-      "text": "Sold: Selected role(s)TabBack to shopping)",
+      "text": "Sell: Select character (Tab to return to buying)",
       "variables": []
     },
     {
@@ -3906,9 +3906,9 @@
         "function": "drawCampaignUI",
         "line": 8762
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8762-c36",
-      "text": "_Other Organiser%s",
+      "text": "Select recipient: %s",
       "variables": [
         "%s"
       ]
@@ -3968,9 +3968,9 @@
         "function": "drawCampaignUI",
         "line": 8776
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8776-c35",
-      "text": "Store held%d GI'm sorry.EnterBuy/TabSold/ESCLeave)",
+      "text": "Shop — %d G (Enter Buy / Tab Sell / ESC Leave)",
       "variables": [
         "%d"
       ]
@@ -4147,9 +4147,9 @@
         "function": "drawCampaignUI",
         "line": 8818
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8818-c23",
-      "text": "Get ready to fight.",
+      "text": "Battle preparation",
       "variables": []
     },
     {
@@ -4161,9 +4161,9 @@
         "function": "drawCampaignUI",
         "line": 8822
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8822-c14",
-      "text": "You want to record the war?",
+      "text": "Record the battle?",
       "variables": []
     },
     {
@@ -4203,9 +4203,9 @@
         "function": "drawCampaignUI",
         "line": 8835
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8835-c36",
-      "text": "Attack!%dI'm sorry.%d(Crowd moving,EnterSelection",
+      "text": "Deploy %d/%d (↑↓ Move, Enter Select)",
       "variables": [
         "%d",
         "%d"
@@ -4276,9 +4276,9 @@
         "function": "drawCampaignUI",
         "line": 8851
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8851-c25",
-      "text": "Role%d",
+      "text": "Character %d",
       "variables": [
         "%d"
       ]
@@ -4310,9 +4310,9 @@
         "function": "drawCampaignUI",
         "line": 8860
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8860-c24",
-      "text": "Are you sure you want to go to war?",
+      "text": "Enter the battlefield?",
       "variables": []
     },
     {
@@ -4352,9 +4352,9 @@
         "function": "drawCampaignUI",
         "line": 8871
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8871-c23",
-      "text": "F5Save Battle",
+      "text": "F5 Save battle",
       "variables": []
     },
     {
@@ -4394,9 +4394,9 @@
         "function": "drawCampaignUI",
         "line": 8912
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8912-c23",
-      "text": "Role Information",
+      "text": "Character information",
       "variables": []
     },
     {
@@ -4408,9 +4408,9 @@
         "function": "drawCampaignUI",
         "line": 8912
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8912-c39",
-      "text": "Transfer of items",
+      "text": "Transfer items",
       "variables": []
     },
     {
@@ -4478,9 +4478,9 @@
         "function": "drawCampaignUI",
         "line": 8920
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8920-c24",
-      "text": "←/ → Switch/EnterSelect/ESCBack to town.",
+      "text": "←/→ Switch / Enter Select / ESC Return to town",
       "variables": []
     },
     {
@@ -4562,9 +4562,9 @@
         "function": "drawCampaignUI",
         "line": 8925
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8925-c13",
-      "text": "Select Unequipped Items",
+      "text": "Select unequipped item",
       "variables": []
     },
     {
@@ -4590,9 +4590,9 @@
         "function": "drawCampaignUI",
         "line": 8927
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8927-c13",
-      "text": "Organisation",
+      "text": "Select target character",
       "variables": []
     },
     {
@@ -4674,9 +4674,9 @@
         "function": "drawCampaignUI",
         "line": 8944
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8944-c26",
-      "text": "Items%02Xh",
+      "text": "Item %02Xh",
       "variables": [
         "%02X"
       ]
@@ -4723,9 +4723,9 @@
         "function": "drawCampaignUI",
         "line": 8957
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8957-c24",
-      "text": "←→± 1/↑↓±2/EnterConfirm/ESCBack",
+      "text": "←→±1 / ↑↓±2 / Enter Confirm / ESC Back",
       "variables": []
     },
     {
@@ -4835,9 +4835,9 @@
         "function": "drawCampaignUI",
         "line": 8977
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8977-c25",
-      "text": "There is currently no conditioned character",
+      "text": "No characters meet the requirements",
       "variables": []
     },
     {
@@ -4995,9 +4995,9 @@
         "function": "drawCampaignUI",
         "line": 9007
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l9007-c24",
-      "text": "EnterRun/ESCReturn service menu",
+      "text": "Enter Execute / ESC Return to service menu",
       "variables": []
     },
     {
@@ -5817,9 +5817,9 @@
         "function": "confirmTitleLoadSlot",
         "line": 131
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_load_slots_ui.l131-c12",
-      "text": "Empty Slot",
+      "text": "Empty save slot",
       "variables": []
     },
     {
@@ -6826,9 +6826,9 @@
         "function": "drawTitle",
         "line": 826
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l826-c23",
-      "text": "Read the access file.EnterThis post is part of our special coverage Syria Protests 2011.EscBack)",
+      "text": "Load save (↑↓ Select, Enter Confirm, Esc Back)",
       "variables": []
     },
     {
@@ -6885,9 +6885,9 @@
         "function": "drawTitle",
         "line": 836
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l836-c14",
-      "text": "(empty)",
+      "text": "(Empty)",
       "variables": []
     },
     {
@@ -6899,9 +6899,9 @@
         "function": "drawTitle",
         "line": 838
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l838-c14",
-      "text": "(existing file)",
+      "text": "(Saved data)",
       "variables": []
     },
     {

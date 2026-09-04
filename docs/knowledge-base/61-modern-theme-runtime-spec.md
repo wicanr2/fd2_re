@@ -412,7 +412,10 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
 - `modern.fdicon.group_082.style_a`：第 7–9 戰的單位資料共有 49 筆敵方劍士使用
   `fig／portrait／map_selector_key／battle_fig=82`。現代母稿只依原版十二幀可見的
   矩形全罩盔、窄眼縫、灰盾、直劍、暗灰甲與紅色下擺重繪，不推測姓名或故事身分。
-- 二十六組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+- `modern.fdicon.group_088.style_a`：第 10、12–16、22 戰的單位資料共有 48 筆
+  敵方劍士使用 `fig／portrait／map_selector_key／battle_fig=88`。現代母稿保留原版
+  深藍護甲、紅褐頭巾、遮面眼部與橫持直劍，不推測姓名或陣營內職級。
+- 二十七組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
 
@@ -422,7 +425,7 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   0..95、12 個安全檔名、逐格 SHA-256、`24×24`、二值 alpha、互異雜湊及三週期
   policy，任何一項不符即拒絕整個現代主題。
 - `loadGame` 在完整預檢後，才以各組 12 張真彩色圖原子取代正規化
-  `g.sprites[0]`／`g.sprites[1]`／`g.sprites[2]`／`g.sprites[3]`／`g.sprites[4]`／`g.sprites[5]`／`g.sprites[6]`／`g.sprites[7]`／`g.sprites[8]`／`g.sprites[9]`／`g.sprites[10]`／`g.sprites[11]`／`g.sprites[12]`／`g.sprites[13]`／`g.sprites[14]`／`g.sprites[15]`／`g.sprites[16]`／`g.sprites[17]`／`g.sprites[18]`／`g.sprites[19]`／`g.sprites[20]`／`g.sprites[21]`／`g.sprites[68]`／`g.sprites[76]`／`g.sprites[77]`／`g.sprites[82]`；其他 group 不變，忠實主題
+  `g.sprites[0]`／`g.sprites[1]`／`g.sprites[2]`／`g.sprites[3]`／`g.sprites[4]`／`g.sprites[5]`／`g.sprites[6]`／`g.sprites[7]`／`g.sprites[8]`／`g.sprites[9]`／`g.sprites[10]`／`g.sprites[11]`／`g.sprites[12]`／`g.sprites[13]`／`g.sprites[14]`／`g.sprites[15]`／`g.sprites[16]`／`g.sprites[17]`／`g.sprites[18]`／`g.sprites[19]`／`g.sprites[20]`／`g.sprites[21]`／`g.sprites[68]`／`g.sprites[76]`／`g.sprites[77]`／`g.sprites[82]`／`g.sprites[88]`；其他 group 不變，忠實主題
   預設路徑也不變。
 - 原生 indexed 戰場 compositor 仍直接消費 `NativeMapSelectorCache`，尚未加入
   真彩色覆蓋層。此路徑保持原版 sprite，不偷偷量化或混搭；因此地圖人物目前
