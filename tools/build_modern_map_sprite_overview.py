@@ -35,6 +35,7 @@ GROUPS = (
     (76, "chapter 3 helmeted soldier"),
     (77, "chapter 3 armored captain"),
     (82, "chapters 7-9 enemy swordsman"),
+    (83, "chapters 6-9, 18-19 horned enemy swordsman"),
     (88, "chapters 10, 12-16, 22 enemy swordsman"),
 )
 
