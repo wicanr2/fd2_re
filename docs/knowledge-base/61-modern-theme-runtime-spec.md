@@ -590,7 +590,12 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   current portrait 11 → default target 43。原版 11／43 保留灰金齊頸短髮、頭頂紅色
   髮飾與短杖；target 43 將深藍／紅衣裝改成棕紅、赭橙、深褐與少量深綠金邊長衣。
   現代稿維持短杖比例，不放大成未證實的長槍。
-- 五十五組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+- `modern.fdicon.group_044.style_a`：角色表證實 selector 12 是凱麗，轉職表證實
+  current portrait 12 → default target 44。固定雜湊原版的 selector 12／44 不只套色後
+  12 幀逐像素相同，逐幀 `frame.png`、`mask.png`、`remap_mask.png` 也全部位元組相同。
+  因此現代 group 44 明確複用 group 12 的已核准母稿與十二幀；不憑轉職索引硬造原版
+  不存在的外觀差異。
+- 五十六組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
 

@@ -3170,6 +3170,46 @@
       ]
     },
     {
+      "asset_id": "modern.fdicon.group_044.style_a",
+      "role": "map_sprite_set",
+      "status": "runtime_candidate",
+      "master_file": "fdicon-044-style-a-v1-master.png",
+      "files": [
+        "fdicon-044-style-a-f00.png", "fdicon-044-style-a-f01.png", "fdicon-044-style-a-f02.png",
+        "fdicon-044-style-a-f03.png", "fdicon-044-style-a-f04.png", "fdicon-044-style-a-f05.png",
+        "fdicon-044-style-a-f06.png", "fdicon-044-style-a-f07.png", "fdicon-044-style-a-f08.png",
+        "fdicon-044-style-a-f09.png", "fdicon-044-style-a-f10.png", "fdicon-044-style-a-f11.png"
+      ],
+      "width": 24,
+      "height": 24,
+      "frame_count": 12,
+      "frame_sha256": [
+        "781173d7856d0978478b758f21facdf81b80b0552d99e65ecfe565309d581c2a",
+        "707923cec1a1d24b98b4be4a74dac3e2a14f4ec244199276eb6b01667a8aa5fc",
+        "9dde1839880f5dc9853360a3c58ab33e82f3a5934a7f8b8b7a21cf1627de3f72",
+        "c7845258ab8f92afb0bf0ba39a88ba28775f1d658b630f7de4ae342bbb607ca0",
+        "9133270e7686a83f261e56128db92e5c903c98c539556d9069d7b0a443d0fdf5",
+        "cb3dfd3f0cf41dcfb76ada8bf2a4505078208334b0b1baa6a509406f363226c9",
+        "88388d5bc5d45d5b8ff6d40d4c5513656d03d992f7e0b10c0014e99655ddba9e",
+        "a3daf64b2ee6765c72f5ba5f178a4db8f07a8b6e91f993d09f97c691ddf90130",
+        "eaa09bb517aae46fb94e3fc1021fd16f99965bc6b3cb69c77b827af9ac6f55db",
+        "024c3fdd023f44a7fba815e77912833f763d67b2b5284bfb2f89e032a164310a",
+        "c233d3de298ccf69838ec53ad372872434c503be339ef5f18daac5df82c6f4e8",
+        "9591897a9e321e2e79cdb830be53ead0ebd19c56d8c9139de7308df3b86103f2"
+      ],
+      "source_group": 44,
+      "consumer_contract": "fdicon_map_sprite_12x24_v1",
+      "alpha_contract": "binary",
+      "cycle_policy": "three_distinct_cycles",
+      "source_refs": [
+        "asset:FDICON.B24.group_012",
+        "asset:FDICON.B24.group_044",
+        "remake/assets/data/class_change_targets.json",
+        "docs/knowledge-base/49-character-id-name-table.md",
+        "remake/assets/sprites/fig_044_f00.png"
+      ]
+    },
+    {
       "asset_id": "modern.fdicon.group_068.style_a",
       "role": "map_sprite_set",
       "status": "runtime_candidate",
