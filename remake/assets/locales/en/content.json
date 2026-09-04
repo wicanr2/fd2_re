@@ -9,9 +9,9 @@
         "function": "beginNativeNestedCurrentLoad",
         "line": 385
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l385-c15",
-      "text": "Original current status file: The current battle clock is not materialized",
+      "text": "Original battle-state load: the current battlefield clock has not been materialized",
       "variables": []
     },
     {
@@ -23,9 +23,9 @@
         "function": "activateNativeSystemDirectionOne",
         "line": 504
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l504-c12",
-      "text": "Current status file source or asset incomplete, not written to file",
+      "text": "Original battle-state save source or assets are incomplete; no file was written",
       "variables": []
     },
     {
@@ -37,9 +37,9 @@
         "function": "activateNativeSystemDirectionOne",
         "line": 509
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l509-c11",
-      "text": "Original whole military movement source or event incomplete, not executed",
+      "text": "Original full-party movement source or event is incomplete; action not executed",
       "variables": []
     },
     {
@@ -51,9 +51,9 @@
         "function": "finishNativeSystemEndTurnChoice",
         "line": 585
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l585-c17",
-      "text": "Current status file: After writingbaselineDecoding failed:",
+      "text": "Original battle-state save: failed to decode the baseline after writing:",
       "variables": []
     },
     {
@@ -93,9 +93,9 @@
         "function": "executeAISpell",
         "line": 80
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ai_spell_execute.l80-c22",
-      "text": "Magic.%d",
+      "text": "Spell %d",
       "variables": [
         "%d"
       ]
@@ -109,9 +109,9 @@
         "function": "executeAISpell",
         "line": 82
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ai_spell_execute.l82-c10",
-      "text": "Result",
+      "text": "deals",
       "variables": []
     },
     {
@@ -123,9 +123,9 @@
         "function": "executeAISpell",
         "line": 84
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ai_spell_execute.l84-c10",
-      "text": "Restore",
+      "text": "restores",
       "variables": []
     },
     {
@@ -137,9 +137,9 @@
         "function": "executeAISpell",
         "line": 86
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ai_spell_execute.l86-c22",
-      "text": "%sRelease%s: Hit%dI'm sorry.%s %dI'm not sure.",
+      "text": "%s casts %s: %d hit(s) (%s %d)",
       "variables": [
         "%s",
         "%s",
@@ -157,9 +157,9 @@
         "function": "executeAISpell",
         "line": 88
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ai_spell_execute.l88-c24",
-      "text": "It's a hit.%d",
+      "text": ", %d miss(es)",
       "variables": [
         "%d"
       ]
@@ -173,9 +173,9 @@
         "function": "musicRenderPath",
         "line": 29
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.audio.l29-c25",
-      "text": "music owner unavailable",
+      "text": "Music playback owner unavailable",
       "variables": []
     },
     {
@@ -187,9 +187,9 @@
         "function": "musicRenderPath",
         "line": 32
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.audio.l32-c47",
-      "text": "assets",
+      "text": "Assets",
       "variables": []
     },
     {
@@ -201,9 +201,9 @@
         "function": "finishCampaignNativeEndingFallback",
         "line": 231
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ending_preview.l231-c12",
-      "text": "The original ending material is not sufficient. The editable ending is shown below.",
+      "text": "Original ending assets are incomplete. Showing the editable epilogue below.",
       "variables": []
     },
     {
@@ -215,9 +215,9 @@
         "function": "finishCampaignNativeEndingFallback",
         "line": 233
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ending_preview.l233-c12",
-      "text": "Verifiable pre-terms and characters have been played, but the static graphics are not enough; the following can be edited.",
+      "text": "The verifiable opening of the ending and character montage have played, but the final still-screen assets are incomplete. Showing the editable epilogue below.",
       "variables": []
     },
     {
@@ -229,9 +229,9 @@
         "function": "nativeEndingEvidenceOverlay",
         "line": 784
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ending_preview.l784-c10",
-      "text": "Role Montage.E1: Any button will skip the middle after this round.",
+      "text": "Character montage (source-constrained E1): press any key to skip intermediate characters after the current segment.",
       "variables": []
     },
     {
@@ -243,9 +243,9 @@
         "function": "nativeEndingEvidenceOverlay",
         "line": 787
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ending_preview.l787-c10",
-      "text": "Final Montage.E1: will stop after completionTHE ENDI don't know.",
+      "text": "Final montage (original assets, source-constrained E1): the game will remain on THE END when complete.",
       "variables": []
     },
     {
@@ -257,9 +257,9 @@
         "function": "drawNativeEndingPreview",
         "line": 815
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ending_preview.l815-c14",
-      "text": "Precedented endpoint played; pressEnterDisplays a editable conclusion.",
+      "text": "The verifiable opening of the ending has played. Press Enter to show the editable epilogue.",
       "variables": []
     },
     {
@@ -271,9 +271,9 @@
         "function": "drawNativeEndingPreview",
         "line": 817
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ending_preview.l817-c14",
-      "text": "The character cannot be loaded into the terminal screen after Montagnard; pressEnterDisplays a editable conclusion.",
+      "text": "Unable to load the final screen after the character montage. Press Enter to show the editable epilogue.",
       "variables": []
     },
     {
@@ -285,9 +285,9 @@
         "function": "drawNativeEndingPreview",
         "line": 819
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ending_preview.l819-c14",
-      "text": "The character Montage needs complete original team records and materials; pressEnterDisplays a editable conclusion.",
+      "text": "The character montage requires the complete original party record and assets. Press Enter to show the editable epilogue.",
       "variables": []
     },
     {
@@ -299,9 +299,9 @@
         "function": "aiStep",
         "line": 10335
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l10335-c17",
-      "text": "EnemyAIMagic:",
+      "text": "Enemy AI spell:",
       "variables": []
     },
     {
@@ -313,9 +313,9 @@
         "function": "main",
         "line": 10454
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l10454-c24",
-      "text": "The Dragon Knights 2 Recreatefd2_reI'm not sure.",
+      "text": "Flame Dragon 2 Remake (fd2_re)",
       "variables": []
     },
     {
@@ -327,9 +327,9 @@
         "function": "figName",
         "line": 1451
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l1451-c10",
-      "text": "Sole",
+      "text": "Sol",
       "variables": []
     },
     {
@@ -341,7 +341,7 @@
         "function": "figName",
         "line": 1453
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l1453-c10",
       "text": "Ares",
       "variables": []
@@ -355,7 +355,7 @@
         "function": "figName",
         "line": 1455
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l1455-c10",
       "text": "Yuni",
       "variables": []
@@ -369,7 +369,7 @@
         "function": "figName",
         "line": 1457
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l1457-c10",
       "text": "Gaia",
       "variables": []
@@ -383,9 +383,9 @@
         "function": "figName",
         "line": 1459
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l1459-c10",
-      "text": "King.",
+      "text": "King",
       "variables": []
     },
     {
@@ -397,9 +397,9 @@
         "function": "figName",
         "line": 1461
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l1461-c10",
-      "text": "Queen.",
+      "text": "Queen",
       "variables": []
     },
     {
@@ -411,9 +411,9 @@
         "function": "figName",
         "line": 1463
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l1463-c10",
-      "text": "Guard!",
+      "text": "Guard",
       "variables": []
     },
     {
@@ -425,9 +425,9 @@
         "function": "enterNode",
         "line": 3033
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l3033-c14",
-      "text": "Post-war collation (approximate pattern; original version)handler_Other OrganiserEnterGo on.",
+      "text": "Post-battle processing (approximation; original handler unverified). Press Enter to continue",
       "variables": []
     },
     {
@@ -439,9 +439,9 @@
         "function": "enterNode",
         "line": 3037
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l3037-c13",
-      "text": "After the warhandlerNot connected, process stopped",
+      "text": "Post-battle handler is not connected; progression stopped",
       "variables": []
     },
     {
@@ -453,9 +453,9 @@
         "function": "enterNode",
         "line": 3132
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l3132-c22",
-      "text": "The original ending material is insufficient to show the editable conclusion:",
+      "text": "Original ending assets are incomplete. Showing the editable epilogue:",
       "variables": []
     },
     {
@@ -467,9 +467,9 @@
         "function": "campInput",
         "line": 4445
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4445-c25",
-      "text": "Buy it.%sI don't know.%d GI'm not sure.",
+      "text": "Buy %s (-%d G)",
       "variables": [
         "%s",
         "%d"
@@ -484,9 +484,9 @@
         "function": "campInput",
         "line": 4477
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4477-c27",
-      "text": "Items%02XhNo price data",
+      "text": "No price data for item %02Xh",
       "variables": [
         "%02X"
       ]
@@ -500,9 +500,9 @@
         "function": "campInput",
         "line": 4483
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4483-c27",
-      "text": "Selling items%02Xh(+)%d GI'm not sure.",
+      "text": "Sell item %02Xh (+%d G)",
       "variables": [
         "%02X",
         "%d"
@@ -517,9 +517,9 @@
         "function": "campInput",
         "line": 4532
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4532-c15",
-      "text": "You want to get your gear up?Enter=Yes,ESC= No",
+      "text": "Equip it? Enter=Yes, ESC=No",
       "variables": []
     },
     {
@@ -531,9 +531,9 @@
         "function": "campInput",
         "line": 4535
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4535-c27",
-      "text": "Buy it.%sI don't know.%d GI'm not sure.",
+      "text": "Buy %s (-%d G)",
       "variables": [
         "%s",
         "%d"
@@ -548,9 +548,9 @@
         "function": "campInput",
         "line": 4553
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4553-c13",
-      "text": "No one can take this!",
+      "text": "No one can carry this item!",
       "variables": []
     },
     {
@@ -562,9 +562,9 @@
         "function": "confirmBattleResult",
         "line": 4607
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4607-c12",
-      "text": "The final battle has not been saved and the process has stopped.",
+      "text": "Final-battle result has not been saved; progression stopped",
       "variables": []
     },
     {
@@ -576,9 +576,9 @@
         "function": "applyChurchClassChange",
         "line": 4629
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4629-c11",
-      "text": "Lack of targets for effective reassignment",
+      "text": "No valid promotion target",
       "variables": []
     },
     {
@@ -590,9 +590,9 @@
         "function": "applyChurchClassChange",
         "line": 4635
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4635-c23",
-      "text": "There's no transfer.id=%d",
+      "text": "Character to promote does not exist: id=%d",
       "variables": [
         "%d"
       ]
@@ -606,9 +606,9 @@
         "function": "applyChurchClassChange",
         "line": 4641
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4641-c23",
-      "text": "There's a lack of transfer.portrait=%02Xh",
+      "text": "Missing promotion growth row: portrait=%02Xh",
       "variables": [
         "%02X"
       ]
@@ -8339,9 +8339,9 @@
         "file": "remake/assets/data/native_character_catalog.json",
         "json_pointer": "/identities/3/name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.data.native_character_catalog.identities.3.name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -16619,9 +16619,9 @@
         "file": "remake/assets/scenarios/ch01.json",
         "json_pointer": "/name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.ch01.name",
-      "text": "First tester.",
+      "text": "First Trial",
       "variables": []
     },
     {
@@ -16631,9 +16631,9 @@
         "file": "remake/assets/scenarios/ch01.json",
         "json_pointer": "/party/0/name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.ch01.party.0.name",
-      "text": "Sole",
+      "text": "Sol",
       "variables": []
     },
     {
@@ -16643,7 +16643,7 @@
         "file": "remake/assets/scenarios/ch01.json",
         "json_pointer": "/party/1/name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.ch01.party.1.name",
       "text": "Ares",
       "variables": []
@@ -16655,7 +16655,7 @@
         "file": "remake/assets/scenarios/ch01.json",
         "json_pointer": "/party/2/name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.ch01.party.2.name",
       "text": "Yuni",
       "variables": []
@@ -16667,7 +16667,7 @@
         "file": "remake/assets/scenarios/ch01.json",
         "json_pointer": "/party/3/name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.ch01.party.3.name",
       "text": "Gaia",
       "variables": []
@@ -25463,9 +25463,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/7ecb566a60db/ch01/location",
-      "text": "Mara ContinentOuter islands.SoleOn their way by boat, a group of people rested on the island and encountered pirates.",
+      "text": "A small island off the coast of the Mara Continent. Sol and his companions stop there during their voyage and encounter pirates.",
       "variables": []
     },
     {
@@ -25571,9 +25571,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/0/lines/4/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/0/lines/4/speaker-name",
-      "text": "Far",
+      "text": "From Afar",
       "variables": []
     },
     {
@@ -25595,9 +25595,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/7ecb566a60db/scenes/1/label",
-      "text": "Pirates appear.",
+      "text": "Pirates Appear",
       "variables": []
     },
     {
@@ -25943,9 +25943,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/7ecb566a60db/scenes/2/label",
-      "text": "In the house,HowardandHano",
+      "text": "Inside the House: Hawat and Hano",
       "variables": []
     },
     {
@@ -25957,7 +25957,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/2/lines/0/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -26005,7 +26005,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/2/lines/10/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -26053,7 +26053,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/2/lines/2/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -26101,7 +26101,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/2/lines/4/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -26149,7 +26149,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/2/lines/6/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -26243,9 +26243,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/7ecb566a60db/scenes/3/label",
-      "text": "Pirate reinforcements.",
+      "text": "Pirate Reinforcements",
       "variables": []
     },
     {
@@ -26567,9 +26567,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/7ecb566a60db/scenes/4/label",
-      "text": "The Royal Coast Guard is here.",
+      "text": "The Kingdom Coast Guard Appears",
       "variables": []
     },
     {
@@ -26581,7 +26581,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/4/lines/0/speaker-name",
-      "text": "Coast Guard",
+      "text": "Kingdom Coast Guard",
       "variables": []
     },
     {
@@ -26723,9 +26723,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/5/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/7ecb566a60db/scenes/5/label",
-      "text": "HanoWounded.",
+      "text": "Hano Is Wounded",
       "variables": []
     },
     {
@@ -26761,7 +26761,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/5/lines/1/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -26809,7 +26809,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/5/lines/3/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -26831,9 +26831,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/6/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/7ecb566a60db/scenes/6/label",
-      "text": "The pirate head is dead.",
+      "text": "The Pirate Captain Falls",
       "variables": []
     },
     {
@@ -26867,9 +26867,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/7/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/7ecb566a60db/scenes/7/label",
-      "text": "After the war",
+      "text": "After the Battle",
       "variables": []
     },
     {
@@ -26905,7 +26905,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/7/lines/1/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -26953,7 +26953,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/7/lines/11/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -27025,7 +27025,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/7/lines/3/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -27121,7 +27121,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/7/lines/7/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -27191,9 +27191,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/8/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/7ecb566a60db/scenes/8/label",
-      "text": "Other short sentences",
+      "text": "Other Short Lines",
       "variables": []
     },
     {
@@ -27251,9 +27251,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/7ecb566a60db/ch01/title",
-      "text": "Preface — arrivalMara Continent♪ On the eve ♪",
+      "text": "Prologue — On the Eve of Reaching the Mara Continent",
       "variables": []
     },
     {
@@ -38413,7 +38413,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/2931e1ff899c/scenes/1/lines/0/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -38461,7 +38461,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/2931e1ff899c/scenes/1/lines/2/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -38509,7 +38509,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/2931e1ff899c/scenes/1/lines/4/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -38581,7 +38581,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/2931e1ff899c/scenes/1/lines/7/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -39025,7 +39025,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/2931e1ff899c/scenes/4/lines/4/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -39457,7 +39457,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/f95eacdc314e/scenes/0/lines/2/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -40213,7 +40213,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/f90f51692adf/scenes/1/lines/1/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -41689,7 +41689,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/a24ca0f9187e/scenes/0/lines/2/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -42529,7 +42529,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/bafc75c19a8d/scenes/0/lines/1/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -43489,7 +43489,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/bafc75c19a8d/scenes/4/lines/20/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -43837,7 +43837,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/e21a32c956d7/scenes/0/lines/3/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -44161,7 +44161,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/e21a32c956d7/scenes/1/lines/3/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -44209,7 +44209,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/e21a32c956d7/scenes/1/lines/5/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -45145,7 +45145,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/4dd4fa178fb1/scenes/0/lines/3/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -45961,7 +45961,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/81dd5ef66a56/scenes/0/lines/3/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -47353,7 +47353,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/9bd82ef4e817/scenes/0/lines/3/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -49921,7 +49921,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/1eb900572487/scenes/1/lines/5/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -51913,7 +51913,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/24442d1ead94/scenes/0/lines/4/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -52549,7 +52549,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/89c3da909b32/scenes/1/lines/1/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -57853,7 +57853,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/bc7266a893a1/scenes/1/lines/2/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -58849,7 +58849,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/bc7266a893a1/scenes/4/lines/6/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {
@@ -60397,7 +60397,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy/line/d0716167f600/scenes/0/lines/0/speaker-name",
-      "text": "Howard",
+      "text": "Hawat",
       "variables": []
     },
     {

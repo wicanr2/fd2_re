@@ -9,9 +9,9 @@
         "function": "beginNativeNestedCurrentLoad",
         "line": 385
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l385-c15",
-      "text": "戦闘現場の時計は物体化されていない",
+      "text": "原版戦況ロード：現在の戦場時計はまだ実体化されていません",
       "variables": []
     },
     {
@@ -23,9 +23,9 @@
         "function": "activateNativeSystemDirectionOne",
         "line": 504
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l504-c12",
-      "text": "原版は,現在の状況の記録源や資産が不完全であり,ファイルに記載されていない.",
+      "text": "原版戦況セーブのソースまたは素材が不完全なため、ファイルを書き込みませんでした",
       "variables": []
     },
     {
@@ -37,9 +37,9 @@
         "function": "activateNativeSystemDirectionOne",
         "line": 509
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l509-c11",
-      "text": "原版の全軍移動源や事件が未完全で実行されていない",
+      "text": "原版の全軍移動に必要なソースまたはイベントが不完全なため、実行しませんでした",
       "variables": []
     },
     {
@@ -51,9 +51,9 @@
         "function": "finishNativeSystemEndTurnChoice",
         "line": 585
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l585-c17",
-      "text": "原稿は,現在の戦争記録: 書き込み後baseline解読失敗:",
+      "text": "原版戦況セーブ：書き込み後のベースライン解読に失敗：",
       "variables": []
     },
     {
@@ -93,9 +93,9 @@
         "function": "executeAISpell",
         "line": 80
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ai_spell_execute.l80-c22",
-      "text": "法律学%d",
+      "text": "魔法 %d",
       "variables": [
         "%d"
       ]
@@ -109,9 +109,9 @@
         "function": "executeAISpell",
         "line": 82
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ai_spell_execute.l82-c10",
-      "text": "原因は",
+      "text": "ダメージ",
       "variables": []
     },
     {
@@ -123,9 +123,9 @@
         "function": "executeAISpell",
         "line": 84
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ai_spell_execute.l84-c10",
-      "text": "回復する",
+      "text": "回復",
       "variables": []
     },
     {
@@ -137,9 +137,9 @@
         "function": "executeAISpell",
         "line": 86
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ai_spell_execute.l86-c22",
-      "text": "%s放出%s撃たれた%d海外の反応%s %d海外の反応",
+      "text": "%sが%sを発動：命中%d（%s %d）",
       "variables": [
         "%s",
         "%s",
@@ -157,9 +157,9 @@
         "function": "executeAISpell",
         "line": 88
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ai_spell_execute.l88-c24",
-      "text": "銃撃は未遂%d",
+      "text": "、未命中%d",
       "variables": [
         "%d"
       ]
@@ -173,9 +173,9 @@
         "function": "musicRenderPath",
         "line": 29
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.audio.l29-c25",
-      "text": "music owner unavailable",
+      "text": "音楽再生担当を利用できません",
       "variables": []
     },
     {
@@ -187,9 +187,9 @@
         "function": "musicRenderPath",
         "line": 32
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.audio.l32-c47",
-      "text": "assets",
+      "text": "素材",
       "variables": []
     },
     {
@@ -201,9 +201,9 @@
         "function": "finishCampaignNativeEndingFallback",
         "line": 231
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ending_preview.l231-c12",
-      "text": "文章は,本文の内容が不足しているので,編集可能な文字を表示します.",
+      "text": "原版のエンディング素材が不足しています。以下に編集可能な結びの文を表示します。",
       "variables": []
     },
     {
@@ -215,9 +215,9 @@
         "function": "finishCampaignNativeEndingFallback",
         "line": 233
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ending_preview.l233-c12",
-      "text": "テスト可能な最終回は,前段とキャラクターに組み込まれていますが,終了の静止画面素材は不足しています.",
+      "text": "検証可能なエンディング前半とキャラクターモンタージュを再生しましたが、終局の静止画素材が不足しています。以下に編集可能な結びの文を表示します。",
       "variables": []
     },
     {
@@ -229,9 +229,9 @@
         "function": "nativeEndingEvidenceOverlay",
         "line": 784
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ending_preview.l784-c10",
-      "text": "モンタギューの登場人物はE1試合終了後,任意のキーで中文字幕を短縮します.",
+      "text": "キャラクターモンタージュ（出典に基づくE1）：任意のキーを押すと、現在の区切りが終わった後に途中のキャラクターを省略します。",
       "variables": []
     },
     {
@@ -243,9 +243,9 @@
         "function": "nativeEndingEvidenceOverlay",
         "line": 787
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ending_preview.l787-c10",
-      "text": "モンタギューの原始情報源と約束E1完成後,残留するTHE END田さん:",
+      "text": "終局モンタージュ（原版素材、出典に基づくE1）：完了後は「THE END」で停止します。",
       "variables": []
     },
     {
@@ -257,9 +257,9 @@
         "function": "drawNativeEndingPreview",
         "line": 815
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ending_preview.l815-c14",
-      "text": "ビデオの最終段落が公開された.Enter編集可能な文字を表示します.",
+      "text": "検証可能なエンディング前半を再生しました。Enterキーで編集可能な結びの文を表示します。",
       "variables": []
     },
     {
@@ -271,9 +271,9 @@
         "function": "drawNativeEndingPreview",
         "line": 817
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ending_preview.l817-c14",
-      "text": "モンタギューの登場人物が最終シーンに載せられず,Enter編集可能な文字を表示します.",
+      "text": "キャラクターモンタージュ後の終局画面を読み込めません。Enterキーで編集可能な結びの文を表示します。",
       "variables": []
     },
     {
@@ -285,9 +285,9 @@
         "function": "drawNativeEndingPreview",
         "line": 819
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.ending_preview.l819-c14",
-      "text": "モンタギーは原作の記録と素材を完全なチームに必要とする.Enter編集可能な文字を表示します.",
+      "text": "キャラクターモンタージュには原版の部隊記録と素材一式が必要です。Enterキーで編集可能な結びの文を表示します。",
       "variables": []
     },
     {
@@ -299,9 +299,9 @@
         "function": "aiStep",
         "line": 10335
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l10335-c17",
-      "text": "敵はAI法律法:",
+      "text": "敵AIの魔法：",
       "variables": []
     },
     {
@@ -313,9 +313,9 @@
         "function": "main",
         "line": 10454
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l10454-c24",
-      "text": "炎の竜騎士団2が再建されたfd2_re海外の反応",
+      "text": "炎龍騎士団2 リメイク (fd2_re)",
       "variables": []
     },
     {
@@ -327,7 +327,7 @@
         "function": "figName",
         "line": 1451
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l1451-c10",
       "text": "ソール",
       "variables": []
@@ -341,7 +341,7 @@
         "function": "figName",
         "line": 1453
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l1453-c10",
       "text": "アレス",
       "variables": []
@@ -355,7 +355,7 @@
         "function": "figName",
         "line": 1455
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l1455-c10",
       "text": "ユニ",
       "variables": []
@@ -369,7 +369,7 @@
         "function": "figName",
         "line": 1457
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l1457-c10",
       "text": "ガイア",
       "variables": []
@@ -383,9 +383,9 @@
         "function": "figName",
         "line": 1459
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l1459-c10",
-      "text": "キングス",
+      "text": "国王",
       "variables": []
     },
     {
@@ -397,7 +397,7 @@
         "function": "figName",
         "line": 1461
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l1461-c10",
       "text": "王妃",
       "variables": []
@@ -411,9 +411,9 @@
         "function": "figName",
         "line": 1463
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l1463-c10",
-      "text": "守護者",
+      "text": "衛兵",
       "variables": []
     },
     {
@@ -425,9 +425,9 @@
         "function": "enterNode",
         "line": 3033
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l3033-c14",
-      "text": "旧版は,戦後編成された近似モデルです.handler海外の反応はEnter続きを読む",
+      "text": "戦後処理（近似モード：原版handler未確認）Enterキーで続行",
       "variables": []
     },
     {
@@ -439,9 +439,9 @@
         "function": "enterNode",
         "line": 3037
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l3037-c13",
-      "text": "戦争後handler通信は停止しました",
+      "text": "戦後handler未接続のため、進行を停止しました",
       "variables": []
     },
     {
@@ -453,9 +453,9 @@
         "function": "enterNode",
         "line": 3132
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l3132-c22",
-      "text": "文字は,編集可能で文献が不足している.",
+      "text": "原版のエンディング素材が不足しています。編集可能な結びの文を表示します：",
       "variables": []
     },
     {
@@ -467,9 +467,9 @@
         "function": "campInput",
         "line": 4445
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4445-c25",
-      "text": "購入する%s(笑)%d G海外の反応",
+      "text": "%sを購入（-%d G）",
       "variables": [
         "%s",
         "%d"
@@ -484,9 +484,9 @@
         "function": "campInput",
         "line": 4477
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4477-c27",
-      "text": "商品について%02Xh価格情報はありません",
+      "text": "アイテム %02Xh の価格データがありません",
       "variables": [
         "%02X"
       ]
@@ -500,9 +500,9 @@
         "function": "campInput",
         "line": 4483
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4483-c27",
-      "text": "商品を販売%02Xhビデオ:%d G海外の反応",
+      "text": "アイテム %02Xh を売却（+%d G）",
       "variables": [
         "%02X",
         "%d"
@@ -517,9 +517,9 @@
         "function": "campInput",
         "line": 4532
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4532-c15",
-      "text": "準備はいいですか?Enter (笑)ESC> 違う",
+      "text": "装備しますか？ Enter=はい、ESC=いいえ",
       "variables": []
     },
     {
@@ -531,9 +531,9 @@
         "function": "campInput",
         "line": 4535
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4535-c27",
-      "text": "購入する%s(笑)%d G海外の反応",
+      "text": "%sを購入（-%d G）",
       "variables": [
         "%s",
         "%d"
@@ -548,9 +548,9 @@
         "function": "campInput",
         "line": 4553
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4553-c13",
-      "text": "この物事は,誰も取り上げられない!",
+      "text": "このアイテムを受け取れる者がいません！",
       "variables": []
     },
     {
@@ -562,9 +562,9 @@
         "function": "confirmBattleResult",
         "line": 4607
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4607-c12",
-      "text": "最終的な戦いの結果は保存されていません.",
+      "text": "最終戦の結果が保存されていないため、進行を停止しました",
       "variables": []
     },
     {
@@ -576,9 +576,9 @@
         "function": "applyChurchClassChange",
         "line": 4629
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4629-c11",
-      "text": "職場への移行の目標がないこと",
+      "text": "有効な転職先がありません",
       "variables": []
     },
     {
@@ -590,9 +590,9 @@
         "function": "applyChurchClassChange",
         "line": 4635
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4635-c23",
-      "text": "転職の役割は存在しない.id>%d",
+      "text": "転職するキャラクターが存在しません：id=%d",
       "variables": [
         "%d"
       ]
@@ -606,9 +606,9 @@
         "function": "applyChurchClassChange",
         "line": 4641
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4641-c23",
-      "text": "雇用の成長率は低いportrait>%02Xh",
+      "text": "転職成長データがありません：portrait=%02Xh",
       "variables": [
         "%02X"
       ]
@@ -8339,9 +8339,9 @@
         "file": "remake/assets/data/native_character_catalog.json",
         "json_pointer": "/identities/3/name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.data.native_character_catalog.identities.3.name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -16619,9 +16619,9 @@
         "file": "remake/assets/scenarios/ch01.json",
         "json_pointer": "/name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.ch01.name",
-      "text": "試行錯誤",
+      "text": "初陣",
       "variables": []
     },
     {
@@ -16631,7 +16631,7 @@
         "file": "remake/assets/scenarios/ch01.json",
         "json_pointer": "/party/0/name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.ch01.party.0.name",
       "text": "ソール",
       "variables": []
@@ -16643,7 +16643,7 @@
         "file": "remake/assets/scenarios/ch01.json",
         "json_pointer": "/party/1/name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.ch01.party.1.name",
       "text": "アレス",
       "variables": []
@@ -16655,7 +16655,7 @@
         "file": "remake/assets/scenarios/ch01.json",
         "json_pointer": "/party/2/name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.ch01.party.2.name",
       "text": "ユニ",
       "variables": []
@@ -16667,7 +16667,7 @@
         "file": "remake/assets/scenarios/ch01.json",
         "json_pointer": "/party/3/name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.ch01.party.3.name",
       "text": "ガイア",
       "variables": []
@@ -25463,9 +25463,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/7ecb566a60db/ch01/location",
-      "text": "マラ大陸海外の小さな島ソール島で休憩している乗客は海賊に遭遇しました.",
+      "text": "マラ大陸沖の小島。ソール一行は船旅の途中で島に立ち寄り、海賊に遭遇した。",
       "variables": []
     },
     {
@@ -25475,7 +25475,7 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/0/lines/0/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/0/lines/0/speaker-name",
       "text": "ソール",
       "variables": []
@@ -25499,7 +25499,7 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/0/lines/1/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/0/lines/1/speaker-name",
       "text": "アレス",
       "variables": []
@@ -25547,7 +25547,7 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/0/lines/3/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/0/lines/3/speaker-name",
       "text": "ユニ",
       "variables": []
@@ -25571,7 +25571,7 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/0/lines/4/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/0/lines/4/speaker-name",
       "text": "遠くから",
       "variables": []
@@ -25595,7 +25595,7 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/7ecb566a60db/scenes/1/label",
       "text": "海賊が現れた",
       "variables": []
@@ -25607,9 +25607,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/1/lines/0/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/1/lines/0/speaker-name",
-      "text": "海賊戦甲",
+      "text": "海賊A",
       "variables": []
     },
     {
@@ -25631,7 +25631,7 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/1/lines/1/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/1/lines/1/speaker-name",
       "text": "海賊B",
       "variables": []
@@ -25943,9 +25943,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/7ecb566a60db/scenes/2/label",
-      "text": "家庭内ではハワード海外の反応ハノ",
+      "text": "屋内、ハワットとハノ",
       "variables": []
     },
     {
@@ -25955,9 +25955,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/2/lines/0/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/2/lines/0/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -25979,7 +25979,7 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/2/lines/1/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/2/lines/1/speaker-name",
       "text": "ハノ",
       "variables": []
@@ -26003,9 +26003,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/2/lines/10/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/2/lines/10/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -26051,9 +26051,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/2/lines/2/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/2/lines/2/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -26099,9 +26099,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/2/lines/4/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/2/lines/4/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -26147,9 +26147,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/2/lines/6/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/2/lines/6/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -26243,9 +26243,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/7ecb566a60db/scenes/3/label",
-      "text": "海賊隊",
+      "text": "海賊の援軍",
       "variables": []
     },
     {
@@ -26255,9 +26255,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/3/lines/0/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/3/lines/0/speaker-name",
-      "text": "海賊隊",
+      "text": "海賊C",
       "variables": []
     },
     {
@@ -26279,9 +26279,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/3/lines/1/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/3/lines/1/speaker-name",
-      "text": "盗賊",
+      "text": "海賊D",
       "variables": []
     },
     {
@@ -26351,9 +26351,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/3/lines/12/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/3/lines/12/speaker-name",
-      "text": "海賊の頭",
+      "text": "海賊の頭目",
       "variables": []
     },
     {
@@ -26567,9 +26567,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/7ecb566a60db/scenes/4/label",
-      "text": "キングダム海兵隊が登場",
+      "text": "王国海防隊が登場",
       "variables": []
     },
     {
@@ -26579,9 +26579,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/4/lines/0/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/4/lines/0/speaker-name",
-      "text": "海上警備員",
+      "text": "王国海防隊員",
       "variables": []
     },
     {
@@ -26723,9 +26723,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/5/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/7ecb566a60db/scenes/5/label",
-      "text": "ハノ負傷者",
+      "text": "ハノが負傷",
       "variables": []
     },
     {
@@ -26759,9 +26759,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/5/lines/1/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/5/lines/1/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -26807,9 +26807,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/5/lines/3/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/5/lines/3/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -26831,9 +26831,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/6/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/7ecb566a60db/scenes/6/label",
-      "text": "海賊首が倒れた",
+      "text": "海賊の頭目が倒れた",
       "variables": []
     },
     {
@@ -26867,9 +26867,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/7/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/7ecb566a60db/scenes/7/label",
-      "text": "戦争後",
+      "text": "戦後",
       "variables": []
     },
     {
@@ -26903,9 +26903,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/7/lines/1/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/7/lines/1/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -26951,9 +26951,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/7/lines/11/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/7/lines/11/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -27023,9 +27023,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/7/lines/3/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/7/lines/3/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -27119,9 +27119,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/7/lines/7/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/7ecb566a60db/scenes/7/lines/7/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -27191,9 +27191,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/scenes/8/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/7ecb566a60db/scenes/8/label",
-      "text": "記事へのトラックバック一覧",
+      "text": "その他の短い台詞",
       "variables": []
     },
     {
@@ -27251,9 +27251,9 @@
         "file": "remake/assets/story/ch01.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/7ecb566a60db/ch01/title",
-      "text": "が到着マラ大陸夕方",
+      "text": "序章 — マラ大陸到着前夜",
       "variables": []
     },
     {
@@ -38411,9 +38411,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/scenes/1/lines/0/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/2931e1ff899c/scenes/1/lines/0/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -38459,9 +38459,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/scenes/1/lines/2/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/2931e1ff899c/scenes/1/lines/2/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -38507,9 +38507,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/scenes/1/lines/4/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/2931e1ff899c/scenes/1/lines/4/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -38579,9 +38579,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/scenes/1/lines/7/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/2931e1ff899c/scenes/1/lines/7/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -39023,9 +39023,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/scenes/4/lines/4/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/2931e1ff899c/scenes/4/lines/4/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -39455,9 +39455,9 @@
         "file": "remake/assets/story/ch14.json",
         "json_pointer": "/scenes/0/lines/2/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/f95eacdc314e/scenes/0/lines/2/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -40211,9 +40211,9 @@
         "file": "remake/assets/story/ch15.json",
         "json_pointer": "/scenes/1/lines/1/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/f90f51692adf/scenes/1/lines/1/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -41687,9 +41687,9 @@
         "file": "remake/assets/story/ch16.json",
         "json_pointer": "/scenes/0/lines/2/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/a24ca0f9187e/scenes/0/lines/2/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -42527,9 +42527,9 @@
         "file": "remake/assets/story/ch17.json",
         "json_pointer": "/scenes/0/lines/1/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/bafc75c19a8d/scenes/0/lines/1/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -43487,9 +43487,9 @@
         "file": "remake/assets/story/ch17.json",
         "json_pointer": "/scenes/4/lines/20/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/bafc75c19a8d/scenes/4/lines/20/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -43835,9 +43835,9 @@
         "file": "remake/assets/story/ch18.json",
         "json_pointer": "/scenes/0/lines/3/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/e21a32c956d7/scenes/0/lines/3/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -44159,9 +44159,9 @@
         "file": "remake/assets/story/ch18.json",
         "json_pointer": "/scenes/1/lines/3/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/e21a32c956d7/scenes/1/lines/3/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -44207,9 +44207,9 @@
         "file": "remake/assets/story/ch18.json",
         "json_pointer": "/scenes/1/lines/5/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/e21a32c956d7/scenes/1/lines/5/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -45143,9 +45143,9 @@
         "file": "remake/assets/story/ch19.json",
         "json_pointer": "/scenes/0/lines/3/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/4dd4fa178fb1/scenes/0/lines/3/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -45959,9 +45959,9 @@
         "file": "remake/assets/story/ch20.json",
         "json_pointer": "/scenes/0/lines/3/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/81dd5ef66a56/scenes/0/lines/3/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -47351,9 +47351,9 @@
         "file": "remake/assets/story/ch21.json",
         "json_pointer": "/scenes/0/lines/3/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/9bd82ef4e817/scenes/0/lines/3/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -49919,9 +49919,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/1/lines/5/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/1eb900572487/scenes/1/lines/5/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -51911,9 +51911,9 @@
         "file": "remake/assets/story/ch24.json",
         "json_pointer": "/scenes/0/lines/4/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/24442d1ead94/scenes/0/lines/4/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -52547,9 +52547,9 @@
         "file": "remake/assets/story/ch25.json",
         "json_pointer": "/scenes/1/lines/1/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/89c3da909b32/scenes/1/lines/1/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -57851,9 +57851,9 @@
         "file": "remake/assets/story/ch29.json",
         "json_pointer": "/scenes/1/lines/2/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/bc7266a893a1/scenes/1/lines/2/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -58847,9 +58847,9 @@
         "file": "remake/assets/story/ch29.json",
         "json_pointer": "/scenes/4/lines/6/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/bc7266a893a1/scenes/4/lines/6/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
@@ -60395,9 +60395,9 @@
         "file": "remake/assets/story/ch31.json",
         "json_pointer": "/scenes/0/lines/0/speaker_name"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/line/d0716167f600/scenes/0/lines/0/speaker-name",
-      "text": "ハワード",
+      "text": "ハワット",
       "variables": []
     },
     {
