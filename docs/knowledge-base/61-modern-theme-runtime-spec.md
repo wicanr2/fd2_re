@@ -543,7 +543,13 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   原版十二幀也沒有可見武器。現代母稿只依輪廓近似為深藍尖垂兜帽、黑色面孔、
   紅眼與對稱暗紅外緣；「兜帽」屬強視覺推論，正式身分仍是中性敵方單位，不猜
   職業、種族、服裝結構或姓名。
-- 三十四組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
+- `modern.fdicon.group_032.style_a`：原版 `FDICON.B24` 的 384..395 幀具有
+  方正圓角巨型頭盔、黑色窄面罩、正面雙眼光、厚肩甲與短腿；沒有可靠可見的武器。
+  原版 `remap_mask` 是 `0x4dcc6` 對既有目的像素套 LUT 的 mode-3 區域，不是角色本體
+  的陣營換色層；現代 RGBA 候選因此保留固定的深石板藍灰、冷灰高光與淡青眼光，
+  不憑灰階匯出圖猜測原版實際色盤，也不添加劍盾或披風。身分未閉合，只以
+  selector 32 登錄。
+- 四十五組都具有 12 個不同 SHA-256、`24×24`、二值 alpha 與三個不同週期，列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
 
@@ -552,8 +558,8 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
 - `loadModernStoryPortraitSet` 現會同時預檢 catalog 中的地圖人物組：group
   0..95、12 個安全檔名、逐格 SHA-256、`24×24`、二值 alpha、互異雜湊及三週期
   policy，任何一項不符即拒絕整個現代主題。
-- `loadGame` 在完整預檢後，才以各組 12 張真彩色圖原子取代正規化
-  `g.sprites[0]`／`g.sprites[1]`／`g.sprites[2]`／`g.sprites[3]`／`g.sprites[4]`／`g.sprites[5]`／`g.sprites[6]`／`g.sprites[7]`／`g.sprites[8]`／`g.sprites[9]`／`g.sprites[10]`／`g.sprites[11]`／`g.sprites[12]`／`g.sprites[13]`／`g.sprites[14]`／`g.sprites[15]`／`g.sprites[16]`／`g.sprites[17]`／`g.sprites[18]`／`g.sprites[19]`／`g.sprites[20]`／`g.sprites[21]`／`g.sprites[68]`／`g.sprites[76]`／`g.sprites[77]`／`g.sprites[78]`／`g.sprites[80]`／`g.sprites[82]`／`g.sprites[83]`／`g.sprites[85]`／`g.sprites[88]`／`g.sprites[91]`；其他 group 不變，忠實主題
+- `loadGame` 在完整預檢後，才依 catalog 的 `source_group` 逐組以 12 張真彩色圖原子
+  取代對應的正規化 `g.sprites[group]`；未登錄 group 不變，忠實主題
   預設路徑也不變。
 - 現代主題改用正規化 renderer 疊加真彩圖集與人物，並拒絕原生 indexed 完整幀
   覆蓋；忠實原版主題仍直接消費 `NativeMapSelectorCache`。兩條呈現路徑互斥，
