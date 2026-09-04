@@ -637,7 +637,11 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   portrait 4 使用 item 205 的 optional target 54；target class 19、移動力增加 2。
   原版 12 幀皆為獨立圖像。現代稿不猜職業名稱，只按正式色盤保留大型鈷藍矩形
   盔帽／護面輪廓、深藍甲衣、灰藍圓形肩背甲，以及各方向可見的窄銀色直刃。
-- 六十五組都具有 12 個 `24×24`、二值 alpha 槽位；除 selector 52 依原版證據保留
+- `modern.fdicon.group_055.style_a`：轉職表證實 current portrait 5 使用 item 205
+  的 optional target 55；target class 19、移動力增加 2，但角色姓名仍未閉合。原版
+  12 幀皆為獨立圖像。現代稿按正式色盤保留大型灰綠兜帽／髮罩形構件、鈷藍與
+  鋼藍甲衣、灰藍圓形肩背甲與方向性窄銀直刃，不將未證實身分寫入素材名稱。
+- 六十六組都具有 12 個 `24×24`、二值 alpha 槽位；除 selector 52 依原版證據保留
   一組相同雜湊外，其餘組維持 12 個不同 SHA-256，全部列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。

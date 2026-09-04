@@ -3563,6 +3563,45 @@
       ]
     },
     {
+      "asset_id": "modern.fdicon.group_055.style_a",
+      "role": "map_sprite_set",
+      "status": "runtime_candidate",
+      "master_file": "fdicon-055-style-a-v1-master.png",
+      "files": [
+        "fdicon-055-style-a-f00.png", "fdicon-055-style-a-f01.png", "fdicon-055-style-a-f02.png",
+        "fdicon-055-style-a-f03.png", "fdicon-055-style-a-f04.png", "fdicon-055-style-a-f05.png",
+        "fdicon-055-style-a-f06.png", "fdicon-055-style-a-f07.png", "fdicon-055-style-a-f08.png",
+        "fdicon-055-style-a-f09.png", "fdicon-055-style-a-f10.png", "fdicon-055-style-a-f11.png"
+      ],
+      "width": 24,
+      "height": 24,
+      "frame_count": 12,
+      "frame_sha256": [
+        "7d41a5dcd0501c70acd5efcbf9f2ee425724a917e14a63a7604ae3080db6e7bc",
+        "684d48a8562254eeac63974351750ac60ecb6da4ff9d4843ec399dedc0747430",
+        "5e55bbd0c92232ab5a3726f123c62167b5e3c17b850b76f3c1766db39fc1068d",
+        "c2244785e65d75e3670c8dacd3b981108d2fe397b7020a4281f8bf16ae68d9a0",
+        "8c0fbee7bd8f2d3d80e94d9b7a49f3c441cc50f031a623189e283f6ec4f3ea28",
+        "e658a7c7b474f75bee10ff796468c5387b1e41dfc3fe67066f6b57bbf8c43a95",
+        "e86764865799b833047e1bad31e6be9541896f653339f243ae1868551c969e09",
+        "8305499afe2d005779104d33d7f1eade371b8a97af55d5dfb91674c3a8491a3b",
+        "bc34d82363f96e40480323db00dfcbf31ccd12ad160013707fb660ef0116868b",
+        "acdc0b04987cc5378f996e9e167c034a7e7e4de83639cd1a70cc41afb4dcb351",
+        "f75774278716e8f1aef4d8f225063714290d4b001e35dda251546137186ee0e6",
+        "d3d58d3ea164541acca59840511ec1b3c7f7afb74825ba677b1ba83fd69cce74"
+      ],
+      "source_group": 55,
+      "consumer_contract": "fdicon_map_sprite_12x24_v1",
+      "alpha_contract": "binary",
+      "cycle_policy": "three_distinct_cycles",
+      "source_refs": [
+        "asset:FDICON.B24.group_055",
+        "asset:FDOTHER.DAT.resource_000.palette",
+        "remake/assets/data/class_change_targets.json",
+        "remake/assets/sprites/fig_055_f00.png"
+      ]
+    },
+    {
       "asset_id": "modern.fdicon.group_068.style_a",
       "role": "map_sprite_set",
       "status": "runtime_candidate",
