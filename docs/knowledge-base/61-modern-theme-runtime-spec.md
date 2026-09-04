@@ -629,7 +629,11 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   f06 與 f08 逐位元相同，故使用 `source_exact_repeats` 並讓現代兩槽保留相同 PNG
   位元組；其餘十槽獨立。現代稿按正式色盤保留朱紅兜帽／披風、紫灰領口、金扣與
   側面少量深藍髮束，不與 default selector 41 混用。
-- 六十三組都具有 12 個 `24×24`、二值 alpha 槽位；除 selector 52 依原版證據保留
+- `modern.fdicon.group_053.style_a`：角色表與轉職表共同證實這是哈瓦特 current
+  portrait 3 使用 item 93 的 optional target 53；target class 18、移動力不變。
+  原版只有 f06–f08 分別與 selector 35 對應幀相同，其餘九幀獨立，故不可整組複用。
+  現代稿按正式色盤保留栗紅長髮／鬍鬚、灰綠大盾與銀灰短柄斧，四方向固定盾斧側別。
+- 六十四組都具有 12 個 `24×24`、二值 alpha 槽位；除 selector 52 依原版證據保留
   一組相同雜湊外，其餘組維持 12 個不同 SHA-256，全部列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
