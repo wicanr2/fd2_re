@@ -671,7 +671,15 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   可見圖皆為獨立圖像，只有透明遮罩及換色遮罩逐幀沿用 selector 13，故不可複製
   selector 13 的金髮可見外觀。現代稿依原版巨大圓頂深色罩體、正面黑色面罩與
   雙亮眼、銀灰側構件及四方向三步態另製十二幀；姓名與正式職業仍不猜。
-- 七十三組都具有 12 個 `24×24`、二值 alpha 槽位；除 selector 52 依原版證據保留
+- `modern.fdicon.group_064.style_a`：轉職資料證實 current portrait 14 使用 item 88
+  的 optional target 64，class 22、移動力增加 1。原版 sprite 768–779 與
+  selector 46 的圖像、透明遮罩及換色遮罩全數逐位元相同；現代清冊保留獨立
+  selector 64 索引並精確重用 selector 46，不另造不存在的轉職外觀差異。
+- `modern.fdicon.group_065.style_a`：轉職資料證實 current portrait 15 使用 item 91
+  的 optional target 65；target 表直接記錄 class 24、移動力增加 1。原版
+  sprite 780–791 與 selector 47 的圖像、透明遮罩及換色遮罩全數逐位元相同；
+  現代清冊保留獨立 selector 65 索引並精確重用 selector 47，不另造外觀差異。
+- 七十五組都具有 12 個 `24×24`、二值 alpha 槽位；除 selector 52 依原版證據保留
   一組相同雜湊外，其餘組維持 12 個不同 SHA-256，全部列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。
