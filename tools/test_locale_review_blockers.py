@@ -27,9 +27,9 @@ class LocaleReviewBlockerTests(unittest.TestCase):
         cls.translations = {locale: load_entries(locale) for locale in LOCALES}
         cls.allowed = {row["string_id"] for row in cls.manifest["blockers"]}
 
-    def test_manifest_has_exactly_eleven_unique_entries(self):
-        self.assertEqual(len(self.manifest["blockers"]), 11)
-        self.assertEqual(len(self.allowed), 11)
+    def test_manifest_has_exactly_five_unique_entries(self):
+        self.assertEqual(len(self.manifest["blockers"]), 5)
+        self.assertEqual(len(self.allowed), 5)
 
     def test_blockers_exist_and_match_traditional_source(self):
         for row in self.manifest["blockers"]:

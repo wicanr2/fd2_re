@@ -14,6 +14,31 @@
 欄位——**這正是 story agent 看到「同一碼在不同章節對到不同人」的真正原因:不是碼表本身變了,
 是「當前場景載入哪些單位」變了,查表用的碼是身分標籤或陣列位置,不是全域固定的頭像編號。**
 
+## 2026-09-04 勘誤：第三章的「約」不是約拿
+
+`FDTXT_003/string_0004` 在 `0xFFEF` 後的原始 operand 是十進位 `77`。研究用
+字模投影曾把這個二進位 operand 當作 glyph 77 繪出，而 glyph 77 恰好是「約」；
+它不是原版保存的人名。第三章稍早的十進位 `7` 也走場景相依的 speaker 定址，
+不能套用後期隊伍清冊而解成蘭斯洛特。
+
+第三章文本本身只證明兩種場景角色：operand `7` 的說話者自稱等待隊長，故顯示層
+可標「刺客」；operand `77` 的說話者親自抵達、下令攻擊並於戰敗時呼喊葛雷，故
+可標「刺客隊長」。這些是場景角色描述，不是原版姓名。賢者約拿的固定身分是
+`native_identity=21`、`DATO_021`，第十八章才有明確本人登場證據；不得因單字「約」
+把第三章台詞或素材連到約拿。
+
+證據：
+
+- `remake/generated-assets/fd2-original-b97caf22/text/FDTXT_003/resource.json`：
+  `string_0002` 保存 `0xFFED + 7`，`string_0004` 保存 `0xFFEF + 77`；
+- `remake/assets/story/ch03.json`：operand `7` 的台詞稱「我們隊長」，operand `77`
+  的台詞包含「要我親自來看看」與「給我殺」；
+- `remake/assets/editor-canonical/character-identity.json`：`native-21` 的正式名稱候選為
+  約拿，而 `7`／`77` 在第三章與其他章的候選互相衝突，不能作全域身分合併。
+
+結論等級：原始 operand 與字模誤投影原因為**已證實**；「刺客／刺客隊長」為
+依台詞用途建立的**已證實場景角色描述**，不是已證實姓名。
+
 ## 修正 `docs/knowledge-base/14-text-control-codes.md` 的一處錯誤
 
 `14` 原表(下表左欄)寫 `-17/-18` 的肖像來源是「DATO.DAT,ID=下個 word」(直接用,無查表)。
@@ -169,13 +194,13 @@ ch10 的 50/51/69、ch13 的 72/103、聖寇拉斯所在陣營 39)一樣是合�
 speaker id 編碼規則的性質;`W` 之後不需要任何特殊 fallback,現行「大於 31 找不到就標 -1,
 用可讀名字」的做法已經是正確處理方式。
 
-## 「字母碼」的真正來源:自製 PNG 渲染工具的 bug(不是原版遊戲行為)
+## 「字母碼」的真正來源:自製 PNG 渲染工具的歷史 bug(不是原版遊戲行為)
 
 story agent 看到的 B/H/X/Y/單漢字,不是原版遊戲畫面上會出現的東西。真正的 `0x15F84` 渲染器
 讀到控制碼後,把肖像 id/idx **當純二進位參數消耗掉**,從不把它丟進畫字迴圈——這點 `docs/
 knowledge-base/14` 早已反組譯確認(`sign-extend cmp` 分派,取 word 純粹當參數)。
 
-問題出在我們自己寫的 `tools/render_story.py`(把 FDTXT 轉可讀 PNG 給 agent 看的工具):
+問題曾出在我們自己寫的 `tools/render_story.py`(把 FDTXT 轉可讀 PNG 給 agent 看的工具):
 
 ```python
 # tools/render_story.py lay_out()
@@ -186,7 +211,7 @@ for c in s:
         line.append(c)     # 下一個 word(其實是肖像 id/idx)被當成普通字模畫進 PNG
 ```
 
-`lay_out()` 只認得「控制碼本身要換行」,**完全沒有 -17..-20 之後還跟著一個 operand word 要跳過**
+歷史版 `lay_out()` 只認得「控制碼本身要換行」,**完全沒有 -17..-20 之後還跟著一個 operand word 要跳過**
 的邏輯。於是那個 operand word 原樣落進下一輪迴圈的 `else` 分支,被當一般字模用
 `render_glyph(font, c)` 畫出來——而這個 c 剛好是 0-9/A-Z/CJK 字型表裡的值,於是它就以一個
 無意義的字元「洩漏」進 PNG,緊貼在對白的開引號『前面。agent 逐頁看 PNG 轉錄劇本時,
@@ -222,6 +247,10 @@ operand word,PNG 才不會洩漏假字母/假漢字,未來章節重新渲染核�
    另存native opcode、scene/unit index與resource provenance；ch09第11格來源仍是必要
    evidence工作，而非可選考據。
 
+2026-09-04 實檔複核：`render_story.py` 現已在 `0xFFEC..0xFFEF` 後跳過一個
+operand；上述程式片段只保留為錯誤形成原因。`decode_story_text.py` 的靜態名稱
+fallback 仍須同步採場景相依標記，不可把未知 operand 再送入字模表。
+
 ## 待辦
 
 - [ ] ch09 對應地圖 FDFIELD 單位表第 11 格 `byte[+7]` 反解(取得萊汀入隊前的真實肖像 id)。
@@ -229,6 +258,6 @@ operand word,PNG 才不會洩漏假字母/假漢字,未來章節重新渲染核�
 - [ ] `tag==0x27` sentinel 語意未窮舉驗證(疑「畫外音/無對應在場單位」旗標)。
 - [ ] `[0x53BF7]`(場景演員表)與 `[0x53A45]`(戰場單位表)的欄位差異未逐一比對(目前只確認
       stride 相同、`byte[+7]/+8` 語意相同)。
-- [ ] `tools/render_story.py` `lay_out()` operand-skip 修正(避免未來渲染再洩漏假字母)。
+- [x] `tools/render_story.py` `lay_out()` 已跳過 operand，避免未來渲染再洩漏假字母。
 - [ ] `docs/knowledge-base/14-text-control-codes.md` 的 `-17/-18` 肖像來源描述需回頭更正
       (見本文件開頭「修正」一節)。

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""用 glyph_map.json 把 FDTXT 章節解成 UTF-8 文字(含說話者)。
+"""用 glyph_map.json 把 FDTXT 章節解成 UTF-8 文字(含場景相依說話者定位)。
 
 對話結構:[控制碼 0xFFxx][說話者肖像ID][『=557][對白…][』=560],0xFFFF 結束。
-說話者肖像 ID → 角色名(memory.md);>0x1F 的 NPC/敵以字模顯示。
+說話者 operand 不是全域角色 ID。0xFFEF/0xFFEE 後是身分標籤，
+0xFFED/0xFFEC 後是目前場景單位 index；靜態工具無場景單位表，不猜人名。
 段內控制碼視為換行(同一說話者續行)。
 
 用法:
@@ -15,12 +16,12 @@ import json
 import glob
 
 OPEN, CLOSE, END = 557, 560, 0xFFFF
-PORT = {0: "索爾", 1: "哈諾", 2: "鐵諾", 3: "哈瓦特", 4: "亞雷斯", 5: "洛娜",
-        6: "萊汀", 7: "蘭斯洛特", 8: "希莉亞", 9: "悠妮", 0xA: "瑪琳", 0xB: "索菲亞",
-        0xC: "凱麗", 0xD: "貝克威", 0xE: "珊", 0xF: "賽可邦勒", 0x10: "凱拉斯",
-        0x11: "米亞斯多德", 0x12: "蜜蒂", 0x13: "羅德曼", 0x14: "莎拉", 0x15: "約拿",
-        0x16: "卡里斯", 0x17: "羅蘭", 0x18: "希爾法", 0x19: "謝多", 0x1A: "聖寇拉斯",
-        0x1B: "巴拿羅西亞", 0x1C: "達克賽", 0x1D: "亞奇梅吉", 0x1E: "蓋亞", 0x1F: "渥德"}
+SPEAKER_CONTROL = {
+    0xFFEF: "身分標籤",
+    0xFFEE: "身分標籤",
+    0xFFED: "單位索引",
+    0xFFEC: "單位索引",
+}
 
 sys.path.insert(0, os.path.dirname(__file__))
 from decode_text import parse_strings
@@ -30,7 +31,8 @@ def gm():
     global _GM
     if _GM is None:
         d = os.path.join(os.path.dirname(__file__), "..", "docs", "data", "glyph_map.json")
-        m = json.load(open(d, encoding="utf-8"))
+        with open(d, encoding="utf-8") as handle:
+            m = json.load(handle)
         _GM = {int(k): v for k, v in m.items() if k != "_comment"}
     return _GM
 
@@ -44,25 +46,28 @@ def decode_string(codes):
     """回傳 list of (speaker_or_None, text)。"""
     if END in codes:
         codes = codes[:codes.index(END)]
-    segs = []
-    cur = []
-    for c in codes:
-        if 0xFF00 <= c <= 0xFFFE:
-            segs.append(cur); cur = []
-        else:
-            cur.append(c)
-    segs.append(cur)
     out = []
-    for seg in segs:
-        if not seg:
+    i = 0
+    while i < len(codes):
+        control = codes[i] if codes[i] in SPEAKER_CONTROL else None
+        if control is not None and i + 2 < len(codes) and codes[i + 2] == OPEN:
+            operand = codes[i + 1]
+            i += 3
+            body = []
+            while i < len(codes) and not (0xFF00 <= codes[i] <= 0xFFFE):
+                if codes[i] not in (OPEN, CLOSE):
+                    body.append(codes[i])
+                i += 1
+            out.append((f"{SPEAKER_CONTROL[control]} {operand}", g2s(body)))
             continue
-        if len(seg) >= 2 and seg[1] == OPEN:
-            spk = seg[0]
-            name = PORT.get(spk, g2s([spk]))
-            body = [c for c in seg[2:] if c not in (OPEN, CLOSE)]
-            out.append((name, g2s(body)))
-        else:
-            body = [c for c in seg if c not in (OPEN, CLOSE)]
+
+        i += 1
+        body = []
+        while i < len(codes) and not (0xFF00 <= codes[i] <= 0xFFFE):
+            if codes[i] not in (OPEN, CLOSE):
+                body.append(codes[i])
+            i += 1
+        if body:
             out.append((None, g2s(body)))
     return out
 

@@ -1800,8 +1800,8 @@
         "remake/assets/maps/map31/map31_units.json"
       ]
     },
-    {
-      "asset_id": "modern.fdicon.group_091.style_a",
+  {
+    "asset_id": "modern.fdicon.group_091.style_a",
       "role": "map_sprite_set",
       "status": "runtime_candidate",
       "master_file": "fdicon-091-style-a-v1-master.png",
@@ -1845,8 +1845,57 @@
         "remake/assets/maps/map9/map9_units.json",
         "remake/assets/maps/map16/map16_units.json",
         "remake/assets/maps/map21/map21_units.json",
-        "remake/assets/maps/map31/map31_units.json"
-      ]
-    }
-  ]
+      "remake/assets/maps/map31/map31_units.json"
+    ]
+  },
+  {
+    "asset_id": "modern.fdicon.group_085.style_a",
+    "role": "map_sprite_set",
+    "status": "runtime_candidate",
+    "master_file": "fdicon-085-style-a-v1-master.png",
+    "files": [
+      "fdicon-085-style-a-f00.png",
+      "fdicon-085-style-a-f01.png",
+      "fdicon-085-style-a-f02.png",
+      "fdicon-085-style-a-f03.png",
+      "fdicon-085-style-a-f04.png",
+      "fdicon-085-style-a-f05.png",
+      "fdicon-085-style-a-f06.png",
+      "fdicon-085-style-a-f07.png",
+      "fdicon-085-style-a-f08.png",
+      "fdicon-085-style-a-f09.png",
+      "fdicon-085-style-a-f10.png",
+      "fdicon-085-style-a-f11.png"
+    ],
+    "width": 24,
+    "height": 24,
+    "frame_count": 12,
+    "frame_sha256": [
+      "1e9efe67a996e96f77f5d5121005d18ebe3915b91b0c60c62b0e5a39f7c83e46",
+      "37f3545bb65e342b6c14d9a783c71facc81f10a49ae92a92c0dc95bd66bb320e",
+      "a52413904446f90e9cad7c211461c19370458d22b2f1a56badaf5364b25a20e9",
+      "72f86d36616a2cdb78443b26ccbdd0c36f77bfd6b9e3d27bb96d118997de540f",
+      "17bb5ff024d86e45b0f4a20be608e299c5299706151b70d4d172526f801583b0",
+      "f8364cda556adab63f294b7d1a8bd0f6002a41523ae91642bcac736b7fbe3f09",
+      "c8dc3b9b4bb6e949b16ff2d144a87fc40b9faa595bb113caec908910a10fd0e2",
+      "00596d58884c9a0c8f44a1acc15c66f532176fc94feab10beb6b0a4e5741cf18",
+      "f942b5d6aefcbf0e96f968d1221c8a2db56ab1627ddb86e80c93f029e0033867",
+      "3b3e8be8bef4305b835bc69e002d72a49ee3661e718634b5950681bbbd727346",
+      "d21e870defa7aba122640b9700f358e05e59a00bfbfad35db6473ac4e090df9a",
+      "e352d736ebaaee6fc87a650b221a420c40297eb16220164a168537c7989533ba"
+    ],
+    "source_group": 85,
+    "consumer_contract": "fdicon_map_sprite_12x24_v1",
+    "alpha_contract": "binary",
+    "cycle_policy": "three_distinct_cycles",
+    "source_refs": [
+      "remake/assets/sprites/fig_085_f00.png",
+      "remake/assets/maps/map16/map16_units.json",
+      "remake/assets/maps/map17/map17_units.json",
+      "remake/assets/maps/map19/map19_units.json",
+      "remake/assets/maps/map20/map20_units.json",
+      "remake/assets/maps/map21/map21_units.json"
+    ]
+  }
+ ]
 }
