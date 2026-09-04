@@ -112,9 +112,12 @@ def validate(verify_private: bool) -> dict:
         elif entry["role"] == "map_tileset_set":
             if entry["consumer_contract"] != "map_tileset_indexed_geometry_v1":
                 raise ValueError(f"invalid map tileset contract: {asset_id}")
-            if (entry["map_id"], entry["tile_width"], entry["tile_height"],
-                    entry["columns"], entry["tile_count"], entry["width"], entry["height"]) != (
-                    0, 24, 24, 16, 288, 384, 432):
+            if entry["map_id"] not in range(33) or (
+                    entry["tile_width"], entry["tile_height"], entry["columns"], entry["width"]
+                    ) != (24, 24, 16, 384):
+                raise ValueError(f"invalid map tileset geometry: {asset_id}")
+            if entry["height"] <= 0 or entry["height"] % entry["tile_height"] or (
+                    entry["tile_count"] != entry["height"] // entry["tile_height"] * entry["columns"]):
                 raise ValueError(f"invalid map tileset geometry: {asset_id}")
             file_paths = [Path(entry["file"])]
         else:

@@ -78,8 +78,10 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 				return nil, fmt.Errorf("modern theme map %d has unsupported status %q", asset.MapID, asset.Status)
 			}
 			if asset.ConsumerContract != "map_tileset_indexed_geometry_v1" ||
-				asset.MapID < 0 || asset.TileWidth != 24 || asset.TileHeight != 24 ||
-				asset.Columns != 16 || asset.TileCount != 288 || asset.Width != 384 || asset.Height != 432 {
+				asset.MapID < 0 || asset.MapID >= 33 || asset.TileWidth != 24 || asset.TileHeight != 24 ||
+				asset.Columns != 16 || asset.Width != asset.Columns*asset.TileWidth ||
+				asset.Height <= 0 || asset.Height%asset.TileHeight != 0 ||
+				asset.TileCount != (asset.Height/asset.TileHeight)*asset.Columns {
 				return nil, fmt.Errorf("modern theme map %d violates the tileset contract", asset.MapID)
 			}
 			if _, duplicate := set.mapTilesets[asset.MapID]; duplicate {

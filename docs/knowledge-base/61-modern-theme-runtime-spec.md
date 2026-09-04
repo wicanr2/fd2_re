@@ -9,19 +9,22 @@
 selector 是圖像索引，不等於故事說話者或頭像身分；兩者不得混用。
 它不授權從合成概念稿反切地圖圖塊或 HUD，也不改變忠實原版主題。
 
-## 第一關現代戰場圖集契約（READY）
+## 全戰役現代戰場圖集契約（READY）
 
 - `map0/map.json` 已固定邏輯圖塊為 `24×24`、每列 16 格；原版分離圖集為
   `384×432`，共 288 格。地圖資料中的 tile ID、通行規則、事件座標與人物座標
   均不因主題改變。
 - `ch01-battlefield-style-a.png` 只提供地貌色彩、材質與光影方向。它包含烘焙人物，
   因此不得直接作背景，也不得由合成畫面反切碰撞或前景遮罩。
-- 正式候選 `modern.map0.tileset.style_a` 必須是單一 `384×432` RGBA PNG，依
-  `map_tileset_indexed_geometry_v1` 登錄 `map_id=0`、`tile_width=24`、
-  `tile_height=24`、`columns=16`、`tile_count=288` 與 SHA-256。
+- 正式候選 `modern.map0.tileset.style_a` 至 `modern.map32.tileset.style_a` 各為
+  單一 RGBA PNG，依 `map_tileset_indexed_geometry_v1` 登錄 `map_id`、
+  `tile_width=24`、`tile_height=24`、`columns=16`、實際 `tile_count` 與 SHA-256。
+  寬度均為 384；高度依原圖集為 144／288／432／576，格數相應為
+  96／192／288／384，不可硬套第一關尺寸。
 - 產生器逐格處理原版分離圖集，只從概念稿取得色彩與平滑繪法；不得重排格子、
   增刪圖塊或混入人物。這是經使用者核准的現代呈現，不是原版視覺 parity 證據。
-- 載入時須先驗證清冊身分、雜湊、PNG 尺寸與圖塊幾何，再原子替換 `map0` 圖集。
+- 載入時須先驗證清冊身分、雜湊、PNG 尺寸與圖塊幾何，再依地圖目錄原子替換
+  `map0` 至 `map32` 圖集。
   任一條件不符即拒絕整個現代主題，不得混搭半套現代圖塊。
 - 現代主題使用正規化地圖 renderer 疊加現代人物；原版完整 indexed frame 不得再
   覆蓋它。忠實原版主題的 indexed compositor 行為維持不變。

@@ -5678,8 +5678,16 @@ func (g *Game) loadMap(dir string) error {
 	}
 	if g.modernStoryPortraits != nil {
 		base := filepath.Base(filepath.Clean(dir))
-		if base == "assets" || base == "map0" {
-			if modern, ok := g.modernStoryPortraits.mapTilesets[0]; ok {
+		mapID := -1
+		if base == "assets" {
+			mapID = 0
+		} else if strings.HasPrefix(base, "map") {
+			if parsed, parseErr := strconv.Atoi(strings.TrimPrefix(base, "map")); parseErr == nil {
+				mapID = parsed
+			}
+		}
+		if mapID >= 0 {
+			if modern, ok := g.modernStoryPortraits.mapTilesets[mapID]; ok {
 				img = modern
 				g.modernMapTilesetLoaded = true
 			}

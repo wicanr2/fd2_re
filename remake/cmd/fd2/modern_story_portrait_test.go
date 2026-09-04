@@ -214,15 +214,16 @@ func TestLoadModernStoryPortraitSetRejectsMapSpriteSoftAlpha(t *testing.T) {
 	}
 }
 
-func addModernMapTilesetFixture(t *testing.T, catalogPath, root string) {
+func addModernMapTilesetFixture(t *testing.T, catalogPath, root string, mapID, height int) {
 	t.Helper()
-	img := image.NewNRGBA(image.Rect(0, 0, 384, 432))
-	for y := 0; y < 432; y++ {
+	img := image.NewNRGBA(image.Rect(0, 0, 384, height))
+	for y := 0; y < height; y++ {
 		for x := 0; x < 384; x++ {
 			img.SetNRGBA(x, y, color.NRGBA{R: uint8(x % 251), G: uint8(y % 251), B: 70, A: 0xff})
 		}
 	}
-	path := filepath.Join(root, "map0.png")
+	filename := fmt.Sprintf("map%d.png", mapID)
+	path := filepath.Join(root, filename)
 	f, err := os.Create(path)
 	if err != nil {
 		t.Fatal(err)
@@ -249,9 +250,9 @@ func addModernMapTilesetFixture(t *testing.T, catalogPath, root string) {
 	}
 	document["assets"] = append(document["assets"].([]any), map[string]any{
 		"role": "map_tileset_set", "status": "runtime_candidate",
-		"file": "map0.png", "width": 384, "height": 432,
+		"file": filename, "width": 384, "height": height,
 		"sha256": hex.EncodeToString(digest[:]), "consumer_contract": "map_tileset_indexed_geometry_v1",
-		"map_id": 0, "tile_width": 24, "tile_height": 24, "columns": 16, "tile_count": 288,
+		"map_id": mapID, "tile_width": 24, "tile_height": 24, "columns": 16, "tile_count": height / 24 * 16,
 	})
 	raw, err = json.Marshal(document)
 	if err != nil {
@@ -264,7 +265,7 @@ func addModernMapTilesetFixture(t *testing.T, catalogPath, root string) {
 
 func TestLoadModernStoryPortraitSetAdmitsMap0Tileset(t *testing.T) {
 	catalogPath, root := writeModernPortraitFixture(t, true)
-	addModernMapTilesetFixture(t, catalogPath, root)
+	addModernMapTilesetFixture(t, catalogPath, root, 0, 432)
 	set, err := loadModernStoryPortraitSet(catalogPath, root)
 	if err != nil {
 		t.Fatal(err)
@@ -283,7 +284,7 @@ func TestModernThemeRejectsNativeFullFrameCover(t *testing.T) {
 
 func TestModernThemeMap0UsesCatalogTileset(t *testing.T) {
 	catalogPath, root := writeModernPortraitFixture(t, true)
-	addModernMapTilesetFixture(t, catalogPath, root)
+	addModernMapTilesetFixture(t, catalogPath, root, 0, 432)
 	set, err := loadModernStoryPortraitSet(catalogPath, root)
 	if err != nil {
 		t.Fatal(err)
@@ -297,5 +298,17 @@ func TestModernThemeMap0UsesCatalogTileset(t *testing.T) {
 	}
 	if len(g.tiles) != 288 {
 		t.Fatalf("map0 tile count=%d, want 288", len(g.tiles))
+	}
+}
+
+func TestLoadModernStoryPortraitSetAdmitsVariableMapGeometry(t *testing.T) {
+	catalogPath, root := writeModernPortraitFixture(t, true)
+	addModernMapTilesetFixture(t, catalogPath, root, 17, 576)
+	set, err := loadModernStoryPortraitSet(catalogPath, root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tileset := set.mapTilesets[17]; tileset == nil || tileset.Bounds().Dy() != 576 {
+		t.Fatalf("map17 tileset=%v", tileset)
 	}
 }
