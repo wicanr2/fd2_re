@@ -622,9 +622,9 @@
         "function": "applyChurchClassChange",
         "line": 4651
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4651-c22",
-      "text": "%sTransferred as%s",
+      "text": "%s changed class to %s",
       "variables": [
         "%s",
         "%s"
@@ -671,9 +671,9 @@
         "function": "reviveChurchUnit",
         "line": 4684
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4684-c23",
-      "text": "Recovery costs%d G:%v",
+      "text": "Revival costs %d G: %v",
       "variables": [
         "%d",
         "%v"
@@ -688,9 +688,9 @@
         "function": "reviveChurchUnit",
         "line": 4688
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4688-c22",
-      "text": "%sRestored (-)%d GI'm not sure.",
+      "text": "%s was revived (-%d G)",
       "variables": [
         "%s",
         "%d"
@@ -1951,9 +1951,9 @@
         "function": "confirm",
         "line": 6397
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6397-c75",
-      "text": "I'm not sure.",
+      "text": ")",
       "variables": []
     },
     {
@@ -1996,9 +1996,9 @@
         "function": "confirm",
         "line": 6426
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6426-c74",
-      "text": "I'm not sure.",
+      "text": ")",
       "variables": []
     },
     {
@@ -2041,9 +2041,9 @@
         "function": "confirm",
         "line": 6450
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6450-c74",
-      "text": "I'm not sure.",
+      "text": ")",
       "variables": []
     },
     {
@@ -2086,9 +2086,9 @@
         "function": "confirm",
         "line": 6474
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6474-c74",
-      "text": "I'm not sure.",
+      "text": ")",
       "variables": []
     },
     {
@@ -2131,9 +2131,9 @@
         "function": "confirm",
         "line": 6498
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6498-c74",
-      "text": "I'm not sure.",
+      "text": ")",
       "variables": []
     },
     {
@@ -2176,9 +2176,9 @@
         "function": "confirm",
         "line": 6522
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6522-c74",
-      "text": "I'm not sure.",
+      "text": ")",
       "variables": []
     },
     {
@@ -2221,9 +2221,9 @@
         "function": "confirm",
         "line": 6546
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6546-c74",
-      "text": "I'm not sure.",
+      "text": ")",
       "variables": []
     },
     {
@@ -2266,9 +2266,9 @@
         "function": "confirm",
         "line": 6570
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6570-c74",
-      "text": "I'm not sure.",
+      "text": ")",
       "variables": []
     },
     {
@@ -2311,9 +2311,9 @@
         "function": "confirm",
         "line": 6594
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6594-c74",
-      "text": "I'm not sure.",
+      "text": ")",
       "variables": []
     },
     {
@@ -2391,9 +2391,9 @@
         "function": "confirm",
         "line": 6642
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6642-c74",
-      "text": "I'm not sure.",
+      "text": ")",
       "variables": []
     },
     {
@@ -2435,9 +2435,9 @@
         "function": "confirm",
         "line": 6665
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6665-c75",
-      "text": "I'm not sure.",
+      "text": ")",
       "variables": []
     },
     {
@@ -3354,9 +3354,9 @@
         "function": "Draw",
         "line": 8102
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8102-c88",
-      "text": "battle",
+      "text": "Battle",
       "variables": []
     },
     {
@@ -3389,9 +3389,9 @@
         "function": "Draw",
         "line": 8259
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8259-c9",
-      "text": "Victory",
+      "text": "V I C T O R Y",
       "variables": []
     },
     {
@@ -3403,9 +3403,9 @@
         "function": "Draw",
         "line": 8261
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8261-c19",
-      "text": "lose",
+      "text": "Defeat",
       "variables": []
     },
     {
@@ -3417,9 +3417,9 @@
         "function": "Draw",
         "line": 8262
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8262-c9",
-      "text": "Loser!",
+      "text": "D E F E A T",
       "variables": []
     },
     {
@@ -3461,7 +3461,7 @@
         "function": "drawSpellMenu",
         "line": 8609
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8609-c10",
       "text": "　",
       "variables": []
@@ -3475,9 +3475,9 @@
         "function": "drawSpellMenu",
         "line": 8612
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8612-c10",
-      "text": "Zenium",
+      "text": "▶",
       "variables": []
     },
     {
@@ -3489,7 +3489,7 @@
         "function": "drawSpellMenu",
         "line": 8617
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8617-c35",
       "text": "%s%s  MP%d",
       "variables": [
@@ -3537,7 +3537,7 @@
         "function": "drawItemMenu",
         "line": 8643
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8643-c24",
       "text": "%02Xh",
       "variables": [
@@ -3553,7 +3553,7 @@
         "function": "drawItemMenu",
         "line": 8645
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8645-c10",
       "text": "　",
       "variables": []
@@ -3567,9 +3567,9 @@
         "function": "drawItemMenu",
         "line": 8647
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8647-c10",
-      "text": "Zenium",
+      "text": "▶",
       "variables": []
     },
     {
@@ -3581,9 +3581,9 @@
         "function": "drawItemMenu",
         "line": 8650
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8650-c35",
-      "text": "%s[ Chuckles ]%d_%s",
+      "text": "%s[%d] %s",
       "variables": [
         "%s",
         "%d",
@@ -3599,7 +3599,7 @@
         "function": "drawCampaignUI",
         "line": 8691
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8691-c23",
       "text": "GAME OVER",
       "variables": []
@@ -3613,9 +3613,9 @@
         "function": "drawCampaignUI",
         "line": 8693
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8693-c17",
-      "text": "choice",
+      "text": "Choice",
       "variables": []
     },
     {
@@ -3627,9 +3627,9 @@
         "function": "drawCampaignUI",
         "line": 8693
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8693-c39",
-      "text": "town",
+      "text": "Town",
       "variables": []
     },
     {
@@ -3641,9 +3641,9 @@
         "function": "drawCampaignUI",
         "line": 8694
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8694-c16",
-      "text": "town",
+      "text": "Town",
       "variables": []
     },
     {
@@ -3655,9 +3655,9 @@
         "function": "drawCampaignUI",
         "line": 8701
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8701-c16",
-      "text": "town",
+      "text": "Town",
       "variables": []
     },
     {
@@ -3683,7 +3683,7 @@
         "function": "drawCampaignUI",
         "line": 8707
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8707-c11",
       "text": "　",
       "variables": []
@@ -3697,9 +3697,9 @@
         "function": "drawCampaignUI",
         "line": 8710
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8710-c11",
-      "text": "Zenium",
+      "text": "▶",
       "variables": []
     },
     {
@@ -3711,9 +3711,9 @@
         "function": "drawCampaignUI",
         "line": 8714
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8714-c17",
-      "text": "shop",
+      "text": "Shop",
       "variables": []
     },
     {
@@ -3755,9 +3755,9 @@
         "function": "drawCampaignUI",
         "line": 8725
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8725-c20",
-      "text": "sell",
+      "text": "Sell",
       "variables": []
     },
     {
@@ -3785,7 +3785,7 @@
         "function": "drawCampaignUI",
         "line": 8733
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8733-c16",
       "text": "　",
       "variables": []
@@ -3799,9 +3799,9 @@
         "function": "drawCampaignUI",
         "line": 8735
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8735-c16",
-      "text": "Zenium",
+      "text": "▶",
       "variables": []
     },
     {
@@ -3827,9 +3827,9 @@
         "function": "drawCampaignUI",
         "line": 8742
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8742-c38",
-      "text": "%s%02Xh%s+%d G",
+      "text": "%s%02Xh%s  +%d G",
       "variables": [
         "%s",
         "%02X",
@@ -3860,7 +3860,7 @@
         "function": "drawCampaignUI",
         "line": 8751
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8751-c15",
       "text": "　",
       "variables": []
@@ -3874,9 +3874,9 @@
         "function": "drawCampaignUI",
         "line": 8753
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8753-c15",
-      "text": "Zenium",
+      "text": "▶",
       "variables": []
     },
     {
@@ -3888,9 +3888,9 @@
         "function": "drawCampaignUI",
         "line": 8755
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8755-c37",
-      "text": "%s%sI'm sorry.%dAnnex I",
+      "text": "%s%s (%d)",
       "variables": [
         "%s",
         "%s",
@@ -3922,7 +3922,7 @@
         "function": "drawCampaignUI",
         "line": 8765
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8765-c15",
       "text": "　",
       "variables": []
@@ -3936,9 +3936,9 @@
         "function": "drawCampaignUI",
         "line": 8767
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8767-c15",
-      "text": "Zenium",
+      "text": "▶",
       "variables": []
     },
     {
@@ -3950,9 +3950,9 @@
         "function": "drawCampaignUI",
         "line": 8769
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8769-c37",
-      "text": "%s%s(column)%d8)",
+      "text": "%s%s (slot %d/8)",
       "variables": [
         "%s",
         "%s",
@@ -3984,7 +3984,7 @@
         "function": "drawCampaignUI",
         "line": 8780
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8780-c11",
       "text": "　",
       "variables": []
@@ -3998,9 +3998,9 @@
         "function": "drawCampaignUI",
         "line": 8783
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8783-c11",
-      "text": "Zenium",
+      "text": "▶",
       "variables": []
     },
     {
@@ -4012,7 +4012,7 @@
         "function": "drawCampaignUI",
         "line": 8788
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8788-c36",
       "text": "%s%s  %d G",
       "variables": [
@@ -4030,9 +4030,9 @@
         "function": "drawCampaignUI",
         "line": 8790
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8790-c17",
-      "text": "hotel",
+      "text": "Inn",
       "variables": []
     },
     {
@@ -4044,9 +4044,9 @@
         "function": "drawCampaignUI",
         "line": 8794
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8794-c12",
-      "text": "Hotels/entitiesraw routeI'm not sure.",
+      "text": "Inn / Preparation (Raw Route)",
       "variables": []
     },
     {
@@ -4058,7 +4058,7 @@
         "function": "drawCampaignUI",
         "line": 8798
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8798-c14",
       "text": "　",
       "variables": []
@@ -4072,9 +4072,9 @@
         "function": "drawCampaignUI",
         "line": 8800
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8800-c14",
-      "text": "Zenium",
+      "text": "▶",
       "variables": []
     },
     {
@@ -4119,9 +4119,9 @@
         "function": "drawCampaignUI",
         "line": 8808
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8808-c23",
-      "text": "• Selection/EnterRecordsraw routeI'm sorry.ESCBack",
+      "text": "↑↓ Select / Enter: Record Raw Route / Esc: Back",
       "variables": []
     },
     {
@@ -4133,9 +4133,9 @@
         "function": "drawCampaignUI",
         "line": 8809
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8809-c17",
-      "text": "preparation",
+      "text": "Preparation",
       "variables": []
     },
     {
@@ -4220,7 +4220,7 @@
         "function": "drawCampaignUI",
         "line": 8842
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8842-c15",
       "text": "　",
       "variables": []
@@ -4234,9 +4234,9 @@
         "function": "drawCampaignUI",
         "line": 8845
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8845-c18",
-      "text": "Zenium",
+      "text": "▶",
       "variables": []
     },
     {
@@ -4248,9 +4248,9 @@
         "function": "drawCampaignUI",
         "line": 8847
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8847-c13",
-      "text": "## I don't know",
+      "text": "□",
       "variables": []
     },
     {
@@ -4262,9 +4262,9 @@
         "function": "drawCampaignUI",
         "line": 8849
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8849-c13",
-      "text": "* I'm sorry.",
+      "text": "■",
       "variables": []
     },
     {
@@ -4292,7 +4292,7 @@
         "function": "drawCampaignUI",
         "line": 8855
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8855-c37",
       "text": "%s%s %s",
       "variables": [
@@ -4366,9 +4366,9 @@
         "function": "drawCampaignUI",
         "line": 8872
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8872-c17",
-      "text": "church",
+      "text": "Church",
       "variables": []
     },
     {
@@ -4380,9 +4380,9 @@
         "function": "drawCampaignUI",
         "line": 8909
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8909-c22",
-      "text": "menu",
+      "text": "Menu",
       "variables": []
     },
     {
@@ -4422,9 +4422,9 @@
         "function": "drawCampaignUI",
         "line": 8912
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8912-c55",
-      "text": "Come back.",
+      "text": "Revive",
       "variables": []
     },
     {
@@ -4436,9 +4436,9 @@
         "function": "drawCampaignUI",
         "line": 8912
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8912-c65",
-      "text": "Transferred.",
+      "text": "Class Change",
       "variables": []
     },
     {
@@ -4450,7 +4450,7 @@
         "function": "drawCampaignUI",
         "line": 8914
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8914-c15",
       "text": "　",
       "variables": []
@@ -4464,9 +4464,9 @@
         "function": "drawCampaignUI",
         "line": 8916
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8916-c15",
-      "text": "Zenium",
+      "text": "▶",
       "variables": []
     },
     {
@@ -4492,9 +4492,9 @@
         "function": "drawCampaignUI",
         "line": 8921
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8921-c101",
-      "text": "transfer_dest",
+      "text": "Recipient",
       "variables": []
     },
     {
@@ -4506,9 +4506,9 @@
         "function": "drawCampaignUI",
         "line": 8921
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8921-c29",
-      "text": "transfer_source",
+      "text": "Owner",
       "variables": []
     },
     {
@@ -4520,9 +4520,9 @@
         "function": "drawCampaignUI",
         "line": 8921
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8921-c66",
-      "text": "transfer_item",
+      "text": "Item to Transfer",
       "variables": []
     },
     {
@@ -4548,9 +4548,9 @@
         "function": "drawCampaignUI",
         "line": 8924
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8924-c23",
-      "text": "transfer_item",
+      "text": "Item to Transfer",
       "variables": []
     },
     {
@@ -4576,9 +4576,9 @@
         "function": "drawCampaignUI",
         "line": 8926
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8926-c30",
-      "text": "transfer_dest",
+      "text": "Recipient",
       "variables": []
     },
     {
@@ -4604,9 +4604,9 @@
         "function": "drawCampaignUI",
         "line": 8931
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8931-c23",
-      "text": "transfer_item",
+      "text": "Item to Transfer",
       "variables": []
     },
     {
@@ -4632,7 +4632,7 @@
         "function": "drawCampaignUI",
         "line": 8938
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8938-c15",
       "text": "　",
       "variables": []
@@ -4646,9 +4646,9 @@
         "function": "drawCampaignUI",
         "line": 8940
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8940-c15",
-      "text": "Zenium",
+      "text": "▶",
       "variables": []
     },
     {
@@ -4660,9 +4660,9 @@
         "function": "drawCampaignUI",
         "line": 8943
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8943-c24",
-      "text": "transfer_item",
+      "text": "Item to Transfer",
       "variables": []
     },
     {
@@ -4706,7 +4706,7 @@
         "function": "drawCampaignUI",
         "line": 8955
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8955-c37",
       "text": "%s%s",
       "variables": [
@@ -4737,9 +4737,9 @@
         "function": "drawCampaignUI",
         "line": 8960
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8960-c23",
-      "text": "class_confirm",
+      "text": "Confirm Class Change",
       "variables": []
     },
     {
@@ -4751,9 +4751,9 @@
         "function": "drawCampaignUI",
         "line": 8964
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8964-c23",
-      "text": "class",
+      "text": "Class",
       "variables": []
     },
     {
@@ -4765,9 +4765,9 @@
         "function": "drawCampaignUI",
         "line": 8969
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8969-c13",
-      "text": "Come back.",
+      "text": "Revive",
       "variables": []
     },
     {
@@ -4779,9 +4779,9 @@
         "function": "drawCampaignUI",
         "line": 8970
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8970-c23",
-      "text": "class",
+      "text": "Class",
       "variables": []
     },
     {
@@ -4793,9 +4793,9 @@
         "function": "drawCampaignUI",
         "line": 8971
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8971-c13",
-      "text": "Transferred.",
+      "text": "Class Change",
       "variables": []
     },
     {
@@ -4807,9 +4807,9 @@
         "function": "drawCampaignUI",
         "line": 8972
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8972-c30",
-      "text": "class_confirm",
+      "text": "Confirm Class Change",
       "variables": []
     },
     {
@@ -4849,9 +4849,9 @@
         "function": "drawCampaignUI",
         "line": 8978
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8978-c30",
-      "text": "class_confirm",
+      "text": "Confirm Class Change",
       "variables": []
     },
     {
@@ -4863,9 +4863,9 @@
         "function": "drawCampaignUI",
         "line": 8983
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8983-c37",
-      "text": "Objectives:%s",
+      "text": "Target: %s",
       "variables": [
         "%s"
       ]
@@ -4907,7 +4907,7 @@
         "function": "drawCampaignUI",
         "line": 8985
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8985-c16",
       "text": "　",
       "variables": []
@@ -4921,9 +4921,9 @@
         "function": "drawCampaignUI",
         "line": 8987
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8987-c16",
-      "text": "Zenium",
+      "text": "▶",
       "variables": []
     },
     {
@@ -4935,9 +4935,9 @@
         "function": "drawCampaignUI",
         "line": 8993
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8993-c24",
-      "text": "class",
+      "text": "Class",
       "variables": []
     },
     {
@@ -4949,7 +4949,7 @@
         "function": "drawCampaignUI",
         "line": 8999
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8999-c16",
       "text": "　",
       "variables": []
@@ -4963,9 +4963,9 @@
         "function": "drawCampaignUI",
         "line": 9001
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l9001-c16",
-      "text": "Zenium",
+      "text": "▶",
       "variables": []
     },
     {
@@ -4977,7 +4977,7 @@
         "function": "drawCampaignUI",
         "line": 9004
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l9004-c38",
       "text": "%s%s Lv%d",
       "variables": [
@@ -5009,9 +5009,9 @@
         "function": "drawCampaignUI",
         "line": 9009
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l9009-c17",
-      "text": "ending",
+      "text": "Ending",
       "variables": []
     },
     {
@@ -5023,9 +5023,9 @@
         "function": "drawCampaignUI",
         "line": 9018
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l9018-c23",
-      "text": "End of story",
+      "text": "Ending",
       "variables": []
     },
     {
@@ -5037,9 +5037,9 @@
         "function": "drawCampaignUI",
         "line": 9018
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l9018-c66",
-      "text": "End of story",
+      "text": "Ending",
       "variables": []
     },
     {
@@ -5068,7 +5068,7 @@
         "function": "drawBattlePanel",
         "line": 9342
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l9342-c23",
       "text": "%02d",
       "variables": [
@@ -5084,7 +5084,7 @@
         "function": "drawBattlePanel",
         "line": 9344
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l9344-c22",
       "text": "%03d",
       "variables": [
@@ -5100,7 +5100,7 @@
         "function": "drawBattlePanel",
         "line": 9345
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l9345-c22",
       "text": "%03d",
       "variables": [
@@ -5144,7 +5144,7 @@
         "function": "drawUnitHUD",
         "line": 9921
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l9921-c34",
       "text": "AP %d  DP %d  MV %d",
       "variables": [
@@ -5613,9 +5613,9 @@
         "function": "applyNativeChurchTransfer",
         "line": 271
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_church_input.l271-c24",
-      "text": "Items%02XhMoved",
+      "text": "Item %02Xh transferred",
       "variables": [
         "%02X"
       ]
@@ -5629,9 +5629,9 @@
         "function": "applyNativeChurchTransfer",
         "line": 278
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_church_input.l278-c23",
-      "text": "Items%02XhMoved",
+      "text": "Item %02Xh transferred",
       "variables": [
         "%02X"
       ]
@@ -5673,9 +5673,9 @@
         "function": "drawNativeChurchReviveConfirmation",
         "line": 152
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_church_revive_ui.l152-c21",
-      "text": "revive_confirm",
+      "text": "Confirm Revival",
       "variables": []
     },
     {
@@ -5687,9 +5687,9 @@
         "function": "drawNativeChurchStatus",
         "line": 135
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_church_status_ui.l135-c7",
-      "text": "status_view",
+      "text": "Status",
       "variables": []
     },
     {
@@ -5701,9 +5701,9 @@
         "function": "drawNativeChurchStatus",
         "line": 137
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_church_status_ui.l137-c7",
-      "text": "status_commands",
+      "text": "Commands",
       "variables": []
     },
     {
@@ -5715,9 +5715,9 @@
         "function": "drawNativeChurchMenu",
         "line": 213
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_church_ui.l213-c21",
-      "text": "menu",
+      "text": "Menu",
       "variables": []
     },
     {
@@ -5803,9 +5803,9 @@
         "function": "confirmTitleLoadSlot",
         "line": 129
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_load_slots_ui.l129-c12",
-      "text": "Could not read original file slot",
+      "text": "Unable to read the original save slot",
       "variables": []
     },
     {
@@ -5831,9 +5831,9 @@
         "function": "loadNativeGameFromSlot",
         "line": 225
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_load_slots_ui.l225-c3",
-      "text": "Read original slot%d(No.)%dChapter:%sI'm not sure.",
+      "text": "Loaded original slot %d (Chapter %d: %s)",
       "variables": [
         "%d",
         "%d",
@@ -5947,9 +5947,9 @@
         "function": "drawNativeShop",
         "line": 1503
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1503-c7",
-      "text": "menu",
+      "text": "Menu",
       "variables": []
     },
     {
@@ -5961,9 +5961,9 @@
         "function": "drawNativeShop",
         "line": 1505
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1505-c7",
-      "text": "purchase",
+      "text": "Buy",
       "variables": []
     },
     {
@@ -5975,9 +5975,9 @@
         "function": "drawNativeShop",
         "line": 1507
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1507-c7",
-      "text": "confirm",
+      "text": "Confirm",
       "variables": []
     },
     {
@@ -5989,9 +5989,9 @@
         "function": "drawNativeShop",
         "line": 1509
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1509-c7",
-      "text": "insufficient",
+      "text": "Not Enough Gold",
       "variables": []
     },
     {
@@ -6003,9 +6003,9 @@
         "function": "drawNativeShop",
         "line": 1511
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1511-c31",
-      "text": "recipient_equipment",
+      "text": "Choose Wearer",
       "variables": []
     },
     {
@@ -6017,9 +6017,9 @@
         "function": "drawNativeShop",
         "line": 1511
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1511-c7",
-      "text": "recipient_consumable",
+      "text": "Choose User",
       "variables": []
     },
     {
@@ -6031,9 +6031,9 @@
         "function": "drawNativeShop",
         "line": 1513
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1513-c7",
-      "text": "recipient_full",
+      "text": "Recipient's Inventory Is Full",
       "variables": []
     },
     {
@@ -6045,9 +6045,9 @@
         "function": "drawNativeShop",
         "line": 1515
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1515-c7",
-      "text": "no_recipient",
+      "text": "No Eligible Recipient",
       "variables": []
     },
     {
@@ -6059,9 +6059,9 @@
         "function": "drawNativeShop",
         "line": 1517
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1517-c7",
-      "text": "equip_confirm",
+      "text": "Confirm Equipment",
       "variables": []
     },
     {
@@ -6073,9 +6073,9 @@
         "function": "drawNativeShop",
         "line": 1519
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1519-c7",
-      "text": "sell_roster",
+      "text": "Choose Seller",
       "variables": []
     },
     {
@@ -6087,9 +6087,9 @@
         "function": "drawNativeShop",
         "line": 1521
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1521-c7",
-      "text": "sell_items",
+      "text": "Items to Sell",
       "variables": []
     },
     {
@@ -6101,9 +6101,9 @@
         "function": "drawNativeShop",
         "line": 1523
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1523-c7",
-      "text": "sell_empty",
+      "text": "Nothing to Sell",
       "variables": []
     },
     {
@@ -6115,9 +6115,9 @@
         "function": "drawNativeShop",
         "line": 1525
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1525-c7",
-      "text": "sell_confirm",
+      "text": "Confirm Sale",
       "variables": []
     },
     {
@@ -6129,9 +6129,9 @@
         "function": "drawNativeShop",
         "line": 1527
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1527-c7",
-      "text": "equip_roster",
+      "text": "Choose Character",
       "variables": []
     },
     {
@@ -6143,9 +6143,9 @@
         "function": "drawNativeShop",
         "line": 1529
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1529-c7",
-      "text": "equip_panel",
+      "text": "Equipment",
       "variables": []
     },
     {
@@ -6157,9 +6157,9 @@
         "function": "drawNativeShop",
         "line": 1531
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1531-c25",
-      "text": "transfer_empty",
+      "text": "Nothing to Transfer",
       "variables": []
     },
     {
@@ -6171,9 +6171,9 @@
         "function": "drawNativeShop",
         "line": 1531
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1531-c43",
-      "text": "transfer_dest_prompt",
+      "text": "Choose a Recipient",
       "variables": []
     },
     {
@@ -6185,9 +6185,9 @@
         "function": "drawNativeShop",
         "line": 1531
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1531-c67",
-      "text": "transfer_full",
+      "text": "Recipient's Inventory Is Full",
       "variables": []
     },
     {
@@ -6199,9 +6199,9 @@
         "function": "drawNativeShop",
         "line": 1531
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1531-c7",
-      "text": "transfer_intro",
+      "text": "Transfer an Item",
       "variables": []
     },
     {
@@ -6213,9 +6213,9 @@
         "function": "drawNativeShop",
         "line": 1533
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1533-c26",
-      "text": "transfer_dest",
+      "text": "Recipient",
       "variables": []
     },
     {
@@ -6227,9 +6227,9 @@
         "function": "drawNativeShop",
         "line": 1533
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1533-c7",
-      "text": "transfer_source",
+      "text": "Owner",
       "variables": []
     },
     {
@@ -6241,9 +6241,9 @@
         "function": "drawNativeShop",
         "line": 1535
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1535-c7",
-      "text": "transfer_items",
+      "text": "Items",
       "variables": []
     },
     {
@@ -6255,9 +6255,9 @@
         "function": "drawNativeShop",
         "line": 1542
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1542-c25",
-      "text": "equip_panel",
+      "text": "Equipment",
       "variables": []
     },
     {
@@ -6714,9 +6714,9 @@
         "function": "drawTitle",
         "line": 730
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l730-c21",
-      "text": "hold",
+      "text": "Hold",
       "variables": []
     },
     {
@@ -6798,9 +6798,9 @@
         "function": "drawTitle",
         "line": 790
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l790-c7",
-      "text": "menu",
+      "text": "Menu",
       "variables": []
     },
     {
@@ -6812,9 +6812,9 @@
         "function": "drawTitle",
         "line": 811
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l811-c7",
-      "text": "loadslots",
+      "text": "Load Slots",
       "variables": []
     },
     {
@@ -6840,7 +6840,7 @@
         "function": "drawTitle",
         "line": 829
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l829-c14",
       "text": "　",
       "variables": []
@@ -6854,9 +6854,9 @@
         "function": "drawTitle",
         "line": 831
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l831-c14",
-      "text": "Zenium",
+      "text": "▶",
       "variables": []
     },
     {
@@ -6868,9 +6868,9 @@
         "function": "drawTitle",
         "line": 834
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l834-c25",
-      "text": "%sSlot%d",
+      "text": "%s Slot %d",
       "variables": [
         "%s",
         "%d"
@@ -8471,9 +8471,9 @@
         "file": "remake/assets/scenarios/campaign.json",
         "json_pointer": "/nodes/choice_town/prompt"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign.nodes.choice_town.prompt",
-      "text": "What do you want to do before you get into town?",
+      "text": "What will you do before entering town to resupply?",
       "variables": []
     },
     {
@@ -8699,9 +8699,9 @@
         "file": "remake/assets/scenarios/campaign.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign.title",
-      "text": "Dragon Knights 2 — Chapter 1campaignNode Chart)",
+      "text": "Flame Dragon Knights 2 — Chapter 1 Campaign Node Map",
       "variables": []
     },
     {
@@ -16547,9 +16547,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.title",
-      "text": "Dragon Knights 2 - All 30 Chapterscampaign\"In the aftermath of the war, the towns and the whole cities\"",
+      "text": "Flame Dragon Knights 2 — Complete 30-Chapter Campaign (Including Towns and Preparation)",
       "variables": []
     },
     {
@@ -24419,9 +24419,9 @@
         "file": "remake/assets/story/ch00_meadow.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/15b3c967fb2b/ch00_meadow/title",
-      "text": "Sequence - Small grassYuniI don't know.GaiaAdd",
+      "text": "Prologue — A Rest in the Meadow; Yuni and Gaia Join",
       "variables": []
     },
     {
@@ -25451,9 +25451,9 @@
         "file": "remake/assets/story/ch00_palace.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/ae86adb52dac/ch00_palace/title",
-      "text": "Preface.",
+      "text": "Prologue — A Farewell Between Father and Son at the Royal Castle",
       "variables": []
     },
     {
@@ -29747,9 +29747,9 @@
         "file": "remake/assets/story/ch03.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/cac6c4f06aba/ch03/title",
-      "text": "Chapter III - The secret between Tenor and Grey on the way to Sela.",
+      "text": "Chapter 3 — On the Road to Sela Village; Tino and Grey's Secret",
       "variables": []
     },
     {
@@ -30287,9 +30287,9 @@
         "file": "remake/assets/story/ch04.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/750623f119b8/ch04/title",
-      "text": "Chapter four. Nearway attack. Dragons watching.",
+      "text": "Chapter 4 — Ambushed on the Shortcut; the Dragonkin Watch",
       "variables": []
     },
     {
@@ -31523,9 +31523,9 @@
         "file": "remake/assets/story/ch05.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/ba1dd3abcf8e/ch05/title",
-      "text": "Chapter 5 - The War on Sela Village.",
+      "text": "Chapter 5 — The Battle of Sela Village; Meeting Marlin",
       "variables": []
     },
     {
@@ -32855,9 +32855,9 @@
         "file": "remake/assets/story/ch06.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/84d776017867/ch06/title",
-      "text": "Chapter VI - Prizport Wave.",
+      "text": "Chapter 6 — Trouble at Priz Port; Meeting Beckway",
       "variables": []
     },
     {
@@ -33683,9 +33683,9 @@
         "file": "remake/assets/story/ch07.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/e82bb0feed5c/ch07/title",
-      "text": "Chapter 7 - On Wang City Road, Kelly joins.",
+      "text": "Chapter 7 — On the Road to the Royal Castle; Kelly Joins",
       "variables": []
     },
     {
@@ -34367,9 +34367,9 @@
         "file": "remake/assets/story/ch08.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/33476e2c304d/ch08/title",
-      "text": "Chapter eight: Downtown confrontation. Princess's identity.",
+      "text": "Chapter 8 — Confrontation Below the Castle; the Princess's Identity",
       "variables": []
     },
     {
@@ -35231,9 +35231,9 @@
         "file": "remake/assets/story/ch09.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/725efc540ee1/ch09/title",
-      "text": "Chapter 9 - The Death of Grey in an attack",
+      "text": "Chapter 9 — The Royal Castle Attacked; Grey's Death",
       "variables": []
     },
     {
@@ -36647,9 +36647,9 @@
         "file": "remake/assets/story/ch10.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/29aac3e465f0/ch10/title",
-      "text": "Chapter 10 - Waterfall Cave, Golden Emblem.",
+      "text": "Chapter 10 — The Waterfall Cavern; Mystery of the Golden Emblem",
       "variables": []
     },
     {
@@ -37607,9 +37607,9 @@
         "file": "remake/assets/story/ch11.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/74e73fb07ccb/ch11/title",
-      "text": "Chapter 11 - Mist Forest, Elf Sun.",
+      "text": "Chapter 11 — The Misty Forest; Shan Joins",
       "variables": []
     },
     {
@@ -38219,9 +38219,9 @@
         "file": "remake/assets/story/ch12.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/3b87cf227f66/ch12/title",
-      "text": "Chapter 12 - The Secrets of Miastod, the Orcs are attacking the City of Elf.",
+      "text": "Chapter 12 — Miasdord's Secret; Orcs Attack the Elven City",
       "variables": []
     },
     {
@@ -39179,9 +39179,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/2931e1ff899c/ch13/title",
-      "text": "Chapter XIII -HowardDad went to war, Randy Plains.",
+      "text": "Chapter 13 — Harvat Joins the Battle; Foreshadowing at Randy Plain",
       "variables": []
     },
     {
@@ -39827,9 +39827,9 @@
         "file": "remake/assets/story/ch14.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/f95eacdc314e/ch14/title",
-      "text": "Chapter XIV - Night Veterinary Attack and Interrogation of Saqa.",
+      "text": "Chapter 14 — Night Raid on the Orc Army; Questioning Saka's Men",
       "variables": []
     },
     {
@@ -41459,9 +41459,9 @@
         "file": "remake/assets/story/ch15.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/f90f51692adf/ch15/title",
-      "text": "Chapter 15 - Lachal Lake Support, Kaylie's reunion.",
+      "text": "Chapter 15 — Relief at Lake Laka; Kelly Reunites with Her Senior",
       "variables": []
     },
     {
@@ -42467,9 +42467,9 @@
         "file": "remake/assets/story/ch16.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/a24ca0f9187e/ch16/title",
-      "text": "Chapter XVI - The North Meets Sword and Sword",
+      "text": "Chapter 16 — Reunion with Sword Saint Mitty in the North",
       "variables": []
     },
     {
@@ -43703,9 +43703,9 @@
         "file": "remake/assets/story/ch17.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/bafc75c19a8d/ch17/title",
-      "text": "Chapter 17 - Iceland Blood Fight, Kairas is free.",
+      "text": "Chapter 17 — Blood on the Ice Isle; Kylas Regains His Freedom",
       "variables": []
     },
     {
@@ -45035,9 +45035,9 @@
         "file": "remake/assets/story/ch18.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/e21a32c956d7/ch18/title",
-      "text": "Chapter 18 - Hangbridge Blood. Jonah shows up.",
+      "text": "Chapter 18 — Bloodshed on the Suspension Bridge; Jonah Appears",
       "variables": []
     },
     {
@@ -45659,9 +45659,9 @@
         "file": "remake/assets/story/ch19.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/4dd4fa178fb1/ch19/title",
-      "text": "Chapter 19 - Black Forest is a rival.",
+      "text": "Chapter 19 — Enemies in the Black Forest; Meeting Banarossia",
       "variables": []
     },
     {
@@ -47075,9 +47075,9 @@
         "file": "remake/assets/story/ch20.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/81dd5ef66a56/ch20/title",
-      "text": "Chapter 20 - The Battle of the Swamp of Death, the Martyr of the Assyrian Spirit",
+      "text": "Chapter 20 — Battle in the Swamp of Death; the Nine Elves Fall",
       "variables": []
     },
     {
@@ -48443,9 +48443,9 @@
         "file": "remake/assets/story/ch21.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/9bd82ef4e817/ch21/title",
-      "text": "Chapter 21 - The Tower of the Holy Spirit fell, and the Death Gang became a mystery.",
+      "text": "Chapter 21 — The Tower of Spirits Falls; Mystery of the Death's Skull Commander",
       "variables": []
     },
     {
@@ -49391,9 +49391,9 @@
         "file": "remake/assets/story/ch22.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/8299dbce3ca6/ch22/title",
-      "text": "Chapter XXII - The Tower's final battle.",
+      "text": "Chapter 22 — Battle Atop the Tower; Activating the Teleportation Spell",
       "variables": []
     },
     {
@@ -51659,9 +51659,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/1eb900572487/ch23/title",
-      "text": "Chapter 23 - Re-emergence of desert ruins, flight of rocks",
+      "text": "Chapter 23 — Reunion in the Desert Ruins; the Flying Rock Takes Off",
       "variables": []
     },
     {
@@ -52307,9 +52307,9 @@
         "file": "remake/assets/story/ch24.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/24442d1ead94/ch24/title",
-      "text": "Chapter XXIV - Flying rocks near the Mountain of the Devil, descending.",
+      "text": "Chapter 24 — The Flying Rock Nears Demon Mountain; a Sudden Descent",
       "variables": []
     },
     {
@@ -53495,9 +53495,9 @@
         "file": "remake/assets/story/ch25.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/89c3da909b32/ch25/title",
-      "text": "Chapter XXV - The Battle of the Lavading Hole.",
+      "text": "Chapter 25 — Battle in the Lava Cavern; Meeting Dragon King Saint Colas",
       "variables": []
     },
     {
@@ -55091,9 +55091,9 @@
         "file": "remake/assets/story/ch26.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/a6c95c58ac65/ch26/title",
-      "text": "Chapter XXVI - Ancient Passage,YuniAnd Armored Ward.",
+      "text": "Chapter 26 — The Ancient Passage; Yuni and the Armored Soldier Ward",
       "variables": []
     },
     {
@@ -56819,9 +56819,9 @@
         "file": "remake/assets/story/ch27.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/ce23f725c2f5/ch27/title",
-      "text": "Chapter XXVII - Transfer siteASR-07I don't know.YuniMemory wakes up.",
+      "text": "Chapter 27 — Transfer Hub ASR-07; Yuni's Memories Awaken",
       "variables": []
     },
     {
@@ -57395,9 +57395,9 @@
         "file": "remake/assets/story/ch28.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/8355a97601cc/ch28/title",
-      "text": "Chapter 28 - Step into the Golden City and break through the Fortress Guard.",
+      "text": "Chapter 28 — Into the Golden City; Breaking Through the Fortress Guard",
       "variables": []
     },
     {
@@ -58943,9 +58943,9 @@
         "file": "remake/assets/story/ch29.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/bc7266a893a1/ch29/title",
-      "text": "Chapter 29 - Three Dragons in the Core Zone.ASR-06",
+      "text": "Chapter 29 — Three Dragons in the Core; the Mastermind ASR-06",
       "variables": []
     },
     {
@@ -60359,9 +60359,9 @@
         "file": "remake/assets/story/ch30.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/b83b3b6f5814/ch30/title",
-      "text": "Chapter 30 — A duelASR-06I don't know.YuniIt's all public.",
+      "text": "Chapter 30 — The Final Battle with ASR-06; Yuni's True Identity",
       "variables": []
     },
     {
@@ -61715,9 +61715,9 @@
         "file": "remake/assets/story/ch31.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/d0716167f600/ch31/title",
-      "text": "Chapter XXXI - Final chapter: Return to victory, last farewell to Golden City",
+      "text": "Chapter 31 — Finale: Triumph and a Last Farewell to the Golden City",
       "variables": []
     },
     {
@@ -62891,9 +62891,9 @@
         "file": "remake/assets/story/ch32.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/8cbcda4a2315/ch32/title",
-      "text": "Chapter 32 - End and end:SoleandYuniThe first time I met you.",
+      "text": "Chapter 32 — Epilogue and Side Story: How Sol Met Yuni",
       "variables": []
     },
     {
@@ -63395,9 +63395,9 @@
         "file": "remake/assets/story/ch33.json",
         "json_pointer": "/title"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/73c4f2f23b11/ch33/title",
-      "text": "Chapter 33 - Beyond: Secret of the throne,Sole♪ The world ♪",
+      "text": "Chapter 33 — Side Story: Secret of the Throne and Sol's Origins",
       "variables": []
     }
   ],

@@ -39,6 +39,7 @@ GROUPS = (
     (82, "chapters 7-9 enemy swordsman"),
     (83, "chapters 6-9, 18-19 horned enemy swordsman"),
     (85, "chapters 17-22 bucket-helmet enemy swordsman"),
+    (86, "chapters 24-26, 32 helmeted fortress guard"),
     (88, "chapters 10, 12-16, 22 enemy swordsman"),
     (90, "chapters 4-9 hooded enemy swordsman"),
     (91, "anonymous hooded enemy unit"),

@@ -432,6 +432,10 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   使用 `fig／portrait／map_selector_key／battle_fig=85`。現代母稿依原版十二幀
   保留低垂大型深藍桶盔、完全藏在陰影中的臉與紅眼、方盾、簡單直劍及暗紅腰布；
   不加入裸臉、羽飾、皇冠或英雄式裝甲，讓量產士兵身分保持清楚。
+- `modern.fdicon.group_086.style_a`：`map23／24／25／31` 共 24 筆敵方劍士一致使用
+  `fig／portrait／map_selector_key／battle_fig=86`。現代母稿依原版十二幀保留
+  淡灰綠圓頂全罩盔、水平眼縫、層疊頸甲、深藍肩甲、帶深藍十字記號的大盾及
+  背側直立長兵器輪廓；臉部保持完全遮蔽，不添加羽飾、披風或英雄式比例。
 - `modern.fdicon.group_088.style_a`：第 10、12–16、22 戰的單位資料共有 48 筆
   敵方劍士使用 `fig／portrait／map_selector_key／battle_fig=88`。現代母稿保留原版
   深藍護甲、紅褐頭巾、遮面眼部與橫持直劍，不推測姓名或陣營內職級。
