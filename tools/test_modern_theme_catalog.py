@@ -36,7 +36,7 @@ class ModernThemeCatalogTests(unittest.TestCase):
             for asset in catalog["assets"]
             if asset.get("role") == "map_sprite_set"
         }
-        self.assertEqual(sprite_groups, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 40, 41, 42, 43, 44, 45, 46, 47, 49, 50, 51, 52, 53, 54, 55, 56, 58, 59, 60, 61, 68, 76, 77, 78, 80, 82, 83, 85, 86, 88, 90, 91})
+        self.assertEqual(sprite_groups, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 40, 41, 42, 43, 44, 45, 46, 47, 49, 50, 51, 52, 53, 54, 55, 56, 58, 59, 60, 61, 62, 63, 68, 76, 77, 78, 80, 82, 83, 85, 86, 88, 90, 91})
         yuni = next(asset for asset in catalog["assets"] if asset.get("source_group") == 52)
         self.assertEqual(yuni["cycle_policy"], "source_exact_repeats")
         self.assertEqual(yuni["frame_sha256"][6], yuni["frame_sha256"][8])
@@ -52,6 +52,9 @@ class ModernThemeCatalogTests(unittest.TestCase):
         selector43 = next(asset for asset in catalog["assets"] if asset.get("source_group") == 43)
         selector61 = next(asset for asset in catalog["assets"] if asset.get("source_group") == 61)
         self.assertEqual(selector61["frame_sha256"], selector43["frame_sha256"])
+        selector44 = next(asset for asset in catalog["assets"] if asset.get("source_group") == 44)
+        selector62 = next(asset for asset in catalog["assets"] if asset.get("source_group") == 62)
+        self.assertEqual(selector62["frame_sha256"], selector44["frame_sha256"])
         self.assertEqual(len(set(yuni["frame_sha256"])), 11)
         soldier = next(
             asset
