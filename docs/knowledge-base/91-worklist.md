@@ -33,11 +33,11 @@
 
 | 順序 | 工作 | 現況 | 下一個可驗收結果 |
 |---:|---|---|---|
-| 即時勘誤 | A4／A5 數字 | 2026-09-01 現代地圖人物為 selector 0–21、68、76，共 24 組／288 幀；76 是第三章普通追兵的頭盔士兵候選。四語對話本輪改採角色欄位分層統計，不再以所有 5,176 筆內容的單一 `reviewed` 總數冒充對話完成度 | 後續數字直接由 catalog 與語系檔重算，不手抄舊快照 |
+| 即時勘誤 | A4／A5 數字 | 2026-09-04 現代地圖人物為 selector 0–21、68、76、77，共 25 組／300 幀；76 是第三章普通追兵，77 是同章未知姓名的重裝隊長。四語內容各有 5,176 筆；繁中全為來源，簡中尚有 11 筆、日文 3,332 筆、英文 2,119 筆 `machine_draft`，不可只以劇情本文審校數冒充全包完成度 | 後續數字直接由 catalog 與語系檔重算，不手抄舊快照 |
 | A1 | 編輯器 canonical schema 與穩定身份層 | `DATA-READY（全戰役 legacy projection）／RUNTIME-E1（封包 admission）`：版本化 bundle 現含1份campaign、30份scenario、35份story與38筆角色身份候選；deterministic exporter、跨文件節點／speaker validator、角色身份schema、逐檔SHA-256與完整package self-check已接。Linux AppImage與Windows ZIP重建後均帶入bundle，Linux空白cwd自檢通過。4筆名稱衝突保留直接來源並拒絕猜選 | 解決或明確拆分`native-0/1/7/96`身份歧義；建立canonical→runtime compiler，使正式戰役規則直接消費編輯後文件；再補編輯器UI修改→驗證→執行→存讀檔往返。私人297份animation metadata可顯式匯入，但不作乾淨clone必要輸入 |
 | A2 | 原版素材全量分離與清冊 | `RELEASE-DATA-READY／RESEARCH-PARTIAL`：manifest v2現有39,825筆asset與1,005筆source-resource ledger；901 standardized、11個零長度confirmed-empty、0 blocked、93 unknown。完整本機包有40,127個實體檔案、約104 MB，已於私人庫保存。2026-08-30 `v0.1.1` Linux／Windows本機完整版均為42,258個檔案，macOS為42,332個檔案；三者均綁定engine head `be9a2a77`、通過manifest驗證並標示不可公開。三平台原生公開候選與雜湊也由GitHub Actions重建成功。公開README新增33張完整戰場低解析索引、96組sprite與96組portrait代表幀，不公開可重組逐檔素材。正式`Game` caller未發現93筆unknown有直接archive consumer，因此它們不阻擋第一版 | Windows／macOS實機抽測。只有新證據找到正式consumer才重開unknown，FDOTHER #47／#49不猜接 |
 | A3 | runtime 移除 `.DAT` 即時讀取 | `RUNTIME-E1-PARTIAL`：FDTXT、字型、FDICON、FDSHAP、ANI、FDFIELD主要玩家路徑，以及城鎮、商店、標題、LOAD、整備、教會與戰場初始化均已遷移。19個巢狀音效bank已分離；標題#77選單音與ANI #1的#78 companion均由正式runtime消費。2026-08-29 caller稽核未發現正式`Game`仍直接讀原版archive，`FD2_ORIGINAL_FDOTHER`／`DATO` locator亦已移到測試專用檔，正式binary字串檢查通過；archive adapter只留source-oracle。BGM只從完整驗證的30份OGG catalog解析，物理攻擊亦由分離FIGANI provider原子預檢 | 以version 2 ledger的93筆unknown交叉核對是否有尚未登記的玩家consumer；已具標準資料但缺manifest bridge者只補provenance。沒有正式caller的oracle helper不再列為runtime缺口；只有新證據證明正式consumer存在才重開RE→spec→runtime切片 |
-| A4 | 現代美術主題 | `PROTOTYPE-SET／DATA-CONTRACT-READY／RUNTIME-E1-PARTIAL`：28 位身分已確認角色已有獨立閉嘴頭像母稿／80×80候選，第一關戰場與戰鬥HUD三張style A本機私有稿亦已產生；受版控`themes/modern/catalog.json`保存穩定asset ID、來源、尺寸與SHA-256。28 位speaker候選已由通用`FD2_THEME`正式對話consumer載入；身分／speaker／雜湊／尺寸／不透明契約任一不符即原子拒絕。約拿已依`DATO_021_m0`與聖者職業資料撤換錯誤尖帽巫師稿。FDICON selector 0–20與68現各有12張`24×24`二值alpha候選與逐格雜湊；0–14、16–20按角色表記為基礎地圖投影，15只記為姓名待校訂的角色表投影，68不綁固定角色。二十二組均以中性`modern.fdicon.group_NNN.style_a`命名，正式 loader 原子預檢264幀、雜湊、尺寸、alpha與週期後才取代正規化sprite。圖組7只支持蘭斯洛特地圖投影，不消除`story speaker=7`頭像衝突；圖組8至14及16–20各具一致身分證據；圖組15不解除賽／塞可邦勒字形與`story speaker=15`頭像衝突。悠妮的12幀只代表正常地圖行走，初遇倒地昏迷仍由場景演出負責。原生indexed compositor尚未接真彩覆蓋；直接疊最終畫面會錯蓋foreground，同色寫入也不能靠diff推回mask，因此維持失敗即關閉。規格見`61-modern-theme-runtime-spec.md`。戰場與HUD仍是concept | 擴充native foreground write-mask契約；同時抽測已登錄現代頭像的正常故事上／下框，再依穩定speaker身分繼續逐角色產生候選。map0 tile ID與FDOTHER HUD cells仍須各自建立基準，不能從合成概念圖反切 |
+| A4 | 現代美術主題 | `PROTOTYPE-SET／DATA-CONTRACT-READY／RUNTIME-E1-PARTIAL`：28 位身分已確認角色已有獨立閉嘴頭像母稿／80×80候選，第一關戰場與戰鬥HUD三張style A本機私有稿亦已產生；受版控`themes/modern/catalog.json`保存穩定asset ID、來源、尺寸與SHA-256。28 位speaker候選已由通用`FD2_THEME`正式對話consumer載入；身分／speaker／雜湊／尺寸／不透明契約任一不符即原子拒絕。約拿已依`DATO_021_m0`與聖者職業資料撤換錯誤尖帽巫師稿。FDICON selector 0–21、68、76、77現各有12張`24×24`二值alpha候選與逐格雜湊；0–14、16–21按角色表記為基礎地圖投影，15只記為姓名待校訂的角色表投影，68不綁固定角色，76／77分別是第三章普通追兵／未知姓名重裝隊長。二十五組均以中性`modern.fdicon.group_NNN.style_a`命名，正式 loader 原子預檢300幀、雜湊、尺寸、alpha與週期後才取代正規化sprite。圖組7只支持蘭斯洛特地圖投影，不消除`story speaker=7`頭像衝突；圖組15不解除賽／塞可邦勒字形與`story speaker=15`頭像衝突；77也不因原始單字「約」而命名。悠妮的12幀只代表正常地圖行走，初遇倒地昏迷仍由場景演出負責。原生indexed compositor尚未接真彩覆蓋；直接疊最終畫面會錯蓋foreground，同色寫入也不能靠diff推回mask，因此維持失敗即關閉。規格見`61-modern-theme-runtime-spec.md`。戰場與HUD仍是concept | 擴充native foreground write-mask契約；同時抽測已登錄現代頭像的正常故事上／下框，再依穩定selector證據繼續逐圖組產生候選。map0 tile ID與FDOTHER HUD cells仍須各自建立基準，不能從合成概念圖反切 |
 | A5 | 繁中／簡中／日文／英文與可調文字顯示 | `DATA-READY（5,176筆／語）＋DIALOGUE-REVIEWED＋RUNTIME-E1-PARTIAL`：四包共用穩定 key、變數簽章與來源；正式 story、handler dialog及事件61／75／76均查詢四語內容。2026-09-01 三個翻譯包各有1,559筆`dialogue`與155筆`dialogue_or_system`完成審校；只有三筆「奈野啊捏?」、截斷「我..」及卡蘿娜專名衝突等5筆本文維持`machine_draft`。另有6筆`約`說話者身分衝突，合計11筆登錄於受測阻擋清冊。戰鬥、商店、旅館、整備、教會、標題LOAD與結局主要介面已接官方pack，F4會原子同步正式grid與SpellBook顯示 | 抽測四語正常玩家長句、分頁與字形邊界；其餘非對話介面、實體名稱及破碎說話者來源仍按角色欄位個別審校，不得由對話完成度推論為全包完成 |
 
 > **2026-09-01 A4 哈諾戰場人物追加：**角色表 `index=1` 已證實哈諾的基礎
@@ -246,10 +246,12 @@
 > 指向蘭斯洛特，但 `ch03` 的 `speaker=7` 標為「約」，`ch18` 才標為蘭斯洛特；
 > 現況是 `conflicting_identity_candidates`，不得先產生或接通現代頭像。
 >
-> **2026-09-01 第三章追兵視覺分流：**原版戰場普通追兵使用 `fig／selector 76`，
+> **2026-09-04 第三章追兵視覺分流：**原版戰場普通追兵使用 `fig／selector 76`，
 > 敵方隊長使用 77；兩者都不是角色表的蘭斯洛特 `group 7`，也不是第十八章才登場的
 > 約拿 `speaker 21`。現代主題新增 76 的十二幀候選，依使用者決定保留封閉式深鋼盔、
-> 護頰、盾牌與制式軍裝，使其一眼可辨識為普通士兵；77 仍待獨立證據與素材，不共用 76。
+> 護頰、盾牌與制式軍裝，使其一眼可辨識為普通士兵。隊長 77 已另依原版十二幀
+> 建立全罩盔、厚板甲、大盾、直劍與暗紅腰帶候選；其姓名仍未知，故只採中性 selector
+> 身分，不與 76、蘭斯洛特 group 7 或約拿 speaker 21 共用。
 >
 > **2026-08-31 A4 希莉亞追加：**`DATO_008`、86 筆故事 `speaker=8` 與繁中
 > 實體目錄三方一致確認希莉亞；原版影像的正面棕色波浪長髮、藍色額飾、中央
