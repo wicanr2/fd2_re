@@ -650,7 +650,15 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   sprite 480–491（selector 40）十二幀逐位元相同，透明遮罩與換色遮罩亦完整。
   因此現代清冊保留獨立 selector 58 索引，但十二個輸出位元組精確重用 selector 40；
   不另畫一套原版不存在的差異，也不由索引猜測角色姓名、職業或劇情身分。
-- 六十八組都具有 12 個 `24×24`、二值 alpha 槽位；除 selector 52 依原版證據保留
+- `modern.fdicon.group_059.style_a`：原版 `FDICON.B24` 的 sprite 708–719 與
+  sprite 492–503（selector 41）十二幀、透明遮罩及換色遮罩皆逐位元相同。
+  現代清冊保留獨立 selector 59 索引，但十二個輸出位元組精確重用 selector 41；
+  不另創不同造型，也不由索引猜測角色姓名、職業或劇情身分。
+- `modern.fdicon.group_060.style_a`：轉職資料證實 current portrait 10 使用 item 88
+  的 optional target 60，class 22、移動力增加 1。原版 sprite 720–731 與
+  sprite 504–515（selector 42）的圖像、透明遮罩及換色遮罩全數逐位元相同；
+  因此現代清冊保留獨立索引並精確重用 selector 42，不另造原版不存在的外觀差異。
+- 七十組都具有 12 個 `24×24`、二值 alpha 槽位；除 selector 52 依原版證據保留
   一組相同雜湊外，其餘組維持 12 個不同 SHA-256，全部列為
   `runtime_candidate`。私人母稿與逐格 PNG 不進公開 Git，公開 catalog 只保留
   可重現契約與雜湊。

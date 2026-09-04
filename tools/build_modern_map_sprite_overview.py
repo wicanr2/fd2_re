@@ -51,6 +51,8 @@ LABELS = dict((
     (55, "identity unresolved; optional promotion; item 205"),
     (56, "identity unresolved; optional promotion; item 205"),
     (58, "identity unresolved; exact visual reuse of selector 40"),
+    (59, "identity unresolved; exact visual reuse of selector 41"),
+    (60, "optional promotion; item 88; exact visual reuse of selector 42"),
     (68, "late selector sample"),
     (76, "chapter 3 helmeted soldier"),
     (77, "chapter 3 armored captain"),
