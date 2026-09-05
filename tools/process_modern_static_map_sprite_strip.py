@@ -6,7 +6,11 @@ from pathlib import Path
 
 from PIL import Image
 
-from process_modern_map_sprite_sheet import keep_largest_component, transparent_background
+from process_modern_map_sprite_sheet import (
+    keep_largest_component,
+    parse_chroma_key,
+    transparent_background,
+)
 
 
 def main() -> None:
@@ -15,22 +19,35 @@ def main() -> None:
     parser.add_argument("--group", type=int, required=True)
     parser.add_argument("--public", type=Path, required=True)
     parser.add_argument("--private", type=Path, required=True)
+    parser.add_argument("--chroma-key", metavar="#RRGGBB")
+    parser.add_argument("--chroma-tolerance", type=int, default=0)
     args = parser.parse_args()
     if args.group not in {48, 66, 67, 74, 75}:
         raise SystemExit("static three-phase contract is proven only for groups 48, 66, 67, 74, and 75")
+    if not 0 <= args.chroma_tolerance <= 441:
+        raise SystemExit("--chroma-tolerance must be in range 0..441")
+    if args.chroma_tolerance and not args.chroma_key:
+        raise SystemExit("--chroma-tolerance requires --chroma-key")
+    try:
+        chroma_key = parse_chroma_key(args.chroma_key)
+    except ValueError as exc:
+        raise SystemExit(str(exc)) from exc
 
     source = Image.open(args.source)
     source = source.convert("RGBA") if "A" in source.getbands() else source.convert("RGB")
     args.public.mkdir(parents=True, exist_ok=True)
     args.private.mkdir(parents=True, exist_ok=True)
     master_name = f"fdicon-{args.group:03d}-style-a-v1-master.png"
-    source.save(args.public / master_name, optimize=False)
-    source.save(args.private / master_name, optimize=False)
+    master = transparent_background(source, chroma_key, args.chroma_tolerance)
+    master.save(args.public / master_name, optimize=False)
+    master.save(args.private / master_name, optimize=False)
 
     boundaries = [round(index * source.width / 3) for index in range(4)]
     for frame in range(3):
         cell = source.crop((boundaries[frame], 0, boundaries[frame + 1], source.height))
-        sprite = keep_largest_component(transparent_background(cell))
+        sprite = keep_largest_component(
+            transparent_background(cell, chroma_key, args.chroma_tolerance)
+        )
         box = sprite.getbbox()
         if box is None:
             raise SystemExit(f"frame {frame}: empty sprite")
