@@ -16,8 +16,8 @@ def main() -> None:
     parser.add_argument("--public", type=Path, required=True)
     parser.add_argument("--private", type=Path, required=True)
     args = parser.parse_args()
-    if args.group not in {48, 66, 67}:
-        raise SystemExit("static three-phase contract is proven only for groups 48, 66, and 67")
+    if args.group not in {48, 66, 67, 74}:
+        raise SystemExit("static three-phase contract is proven only for groups 48, 66, 67, and 74")
 
     source = Image.open(args.source)
     source = source.convert("RGBA") if "A" in source.getbands() else source.convert("RGB")
