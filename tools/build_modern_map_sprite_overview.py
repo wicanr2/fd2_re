@@ -86,6 +86,13 @@ LABELS = dict((
     (91, "anonymous hooded enemy unit"),
 ))
 
+# selector 74 的原版三相圖只以 FDICON 單色像素與 FDOTHER 場景調色盤
+# 留存，尚無可直接公開並與其他 fig_* 同契約比較的彩色 24×24 匯出。
+# 總攬圖必須明示證據缺口，不可拿灰階 frame 或透明格冒充原版彩色圖。
+ORIGINAL_FRAME_UNAVAILABLE = {
+    74: "original colour frames unavailable; palette-bound source retained",
+}
+
 
 def catalog_groups() -> list[tuple[int, str, int]]:
     data = json.loads(CATALOG.read_text(encoding="utf-8"))
@@ -112,6 +119,8 @@ def load_strip(group: int, modern: bool, frame_count: int, original_root: Path) 
         else:
             path = original_root / f"fig_{group:03d}_f{frame:02d}.png"
         if not path.is_file():
+            if not modern and group in ORIGINAL_FRAME_UNAVAILABLE:
+                continue
             raise SystemExit(f"missing sprite frame: {path}")
         image = Image.open(path).convert("RGBA")
         if image.size != (24, 24):
@@ -142,6 +151,8 @@ def main() -> None:
         draw.text((24, y + 28), label, fill="#7f93b4", font=font)
         original = load_strip(group, False, frame_count, args.original_root)
         canvas.paste(original, (152, y), original)
+        if group in ORIGINAL_FRAME_UNAVAILABLE:
+            draw.text((168, y + 28), ORIGINAL_FRAME_UNAVAILABLE[group], fill="#c89b68", font=font)
         y += 80
         draw.text((24, y + 6), f"{group:03d} modern", fill="#d9e2f2", font=font)
         modern = load_strip(group, True, frame_count, args.original_root)
