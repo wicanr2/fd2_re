@@ -537,6 +537,10 @@ func TestBeatScrollStepSlot2MatchesCh00ACT99Followup(t *testing.T) {
 	g.storyActors = make([]battle.Unit, 3)
 	g.storyActors[2] = battle.Unit{Fig: 0, X: 8, Y: 36, OnField: true}
 	g.camY = 34 * 24
+	g.hasStoryNativeMapView = true
+	g.storyNativeMapView = battle.NativeMapViewState{
+		CameraY: 34, CursorY: 34, VisibleCursorY: 0,
+	}
 	g.beatAdvance()
 	if len(g.storyWalks) != 1 || g.followWalk {
 		t.Fatalf("scroll_step should use its original safe-band follow rather than centering, walks=%d follow=%v", len(g.storyWalks), g.followWalk)
@@ -551,6 +555,9 @@ func TestBeatScrollStepSlot2MatchesCh00ACT99Followup(t *testing.T) {
 	}
 	if g.camY != 20*24 {
 		t.Fatalf("0x13185 safe-band camera=%v, want original cam row 20", g.camY)
+	}
+	if g.storyNativeMapView.CameraY != 20 || g.storyNativeMapView.CursorY != 20 {
+		t.Fatalf("0x13185 published native story view=%+v, want camera/cursor row 20", g.storyNativeMapView)
 	}
 }
 

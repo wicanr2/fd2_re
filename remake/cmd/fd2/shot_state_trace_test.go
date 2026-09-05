@@ -117,6 +117,52 @@ func TestWriteShotStateTraceRecordsBattleUnitsInRuntimeOrder(t *testing.T) {
 	}
 }
 
+func TestWriteShotStateTraceRecordsStoryGeometryAndDialogueIdentity(t *testing.T) {
+	upper := false
+	g := &Game{
+		camp: campaign.NewRunner(&campaign.Campaign{
+			Start: "story_ch00_handler",
+			Nodes: map[string]*campaign.Node{"story_ch00_handler": {Type: "cutscene"}},
+		}),
+		m:    &MapData{W: 20, H: 60, TileW: 24, TileH: 24},
+		camX: 72, camY: 480, beatIdx: 4,
+		beats: []campaign.Beat{{}, {}, {}, {}, {Op: "dialog", Source: "0x32382"}},
+		storyActors: []battle.Unit{
+			{Fig: 48, X: 7, Y: 5, Dir: 0, OnField: true},
+			{Fig: 0, X: 8, Y: 21, OffY: -3.5, Dir: 2, OnField: true},
+		},
+		dialog: []battle.DialogLine{{
+			Speaker: 0, Upper: &upper,
+			NativeDialogue: &battle.NativeDialogueLayout{
+				SourceDAT: "FDTXT_033", StringIndex: 0, Utterance: 0,
+			},
+		}},
+	}
+	path := filepath.Join(t.TempDir(), "story.json")
+	if err := g.writeShotStateTrace(path); err != nil {
+		t.Fatal(err)
+	}
+	var got screenshotStateTrace
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(raw, &got); err != nil {
+		t.Fatal(err)
+	}
+	if got.Story == nil || got.Story.CameraPixels != [2]int{72, 480} ||
+		got.Story.CameraGrid != [2]int{3, 20} || got.Story.TileSize != [2]int{24, 24} ||
+		got.Story.BeatIndex != 4 || got.Story.BeatOp != "dialog" || got.Story.BeatSource != "0x32382" ||
+		len(got.Story.Actors) != 2 || got.Story.Actors[1].Slot != 1 || got.Story.Actors[1].Y != 21 ||
+		got.Story.Actors[1].OffsetY != -3.5 {
+		t.Fatalf("story trace=%#v", got.Story)
+	}
+	if got.Dialogue == nil || got.Dialogue.Speaker != 0 || got.Dialogue.Upper == nil || *got.Dialogue.Upper || !got.Dialogue.Native ||
+		got.Dialogue.SourceDAT != "FDTXT_033" || got.Dialogue.StringIndex != 0 || got.Dialogue.Utterance != 0 {
+		t.Fatalf("dialogue trace=%#v", got.Dialogue)
+	}
+}
+
 func TestWriteShotStateTraceRecordsTitleSelections(t *testing.T) {
 	g := &Game{frame: 42, titlePhase: "loadslots", titleSel: 1, titleSlotSel: 3}
 	path := filepath.Join(t.TempDir(), "title-state.json")

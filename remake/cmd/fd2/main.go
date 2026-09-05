@@ -743,6 +743,13 @@ func (g *Game) stepStoryWalks() {
 		}
 		if w.t >= w.frames {
 			u.OffX, u.OffY = 0, 0
+			// 0x13185 與後續 0x15F84 共用同一組相機全域。scroll_step
+			// 完成後必須先發布最後一格 view，再讓 dialog 預建 indexed
+			// 背景；否則畫面會錯用 STEP 前的 LOADCH/PAN snapshot。
+			if w.scrollFollow && !g.syncStoryNativeMapPanView() {
+				g.storyWalks = nil
+				return
+			}
 			if w.finalDir >= 0 { // 走完面向目標(如 Ares 走到索爾旁面向他),不停在走位末段的短軸方向
 				u.SetMapPose(w.finalDir)
 			}

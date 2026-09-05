@@ -43,12 +43,46 @@ type screenshotStateTrace struct {
 	NativeEnding                 *screenshotEndingTrace      `json:"native_ending,omitempty"`
 	Church                       *screenshotChurchTrace      `json:"church,omitempty"`
 	Preparation                  *screenshotPreparationTrace `json:"preparation,omitempty"`
+	Story                        *screenshotStoryTrace       `json:"story,omitempty"`
+	Dialogue                     *screenshotDialogueTrace    `json:"dialogue,omitempty"`
 	DialogCount                  int                         `json:"dialog_count"`
 	BattleEventActive            bool                        `json:"battle_event_active"`
 	NativeTurnStagingActive      bool                        `json:"native_turn_staging_active"`
 	CursorUnit                   *screenshotCursorUnitTrace  `json:"cursor_unit,omitempty"`
 	LoadError                    string                      `json:"load_error,omitempty"`
 	Battle                       *screenshotBattleTrace      `json:"battle,omitempty"`
+}
+
+// screenshotStoryTrace 只旁車輸出目前故事場景已持有的幾何與拍點。
+// slot 是 runtime slice 索引，不冒稱角色身分或原版永久 ABI。
+type screenshotStoryTrace struct {
+	CameraPixels [2]int                      `json:"camera_pixels"`
+	CameraGrid   [2]int                      `json:"camera_grid"`
+	TileSize     [2]int                      `json:"tile_size"`
+	BeatIndex    int                         `json:"beat_index"`
+	BeatOp       string                      `json:"beat_op,omitempty"`
+	BeatSource   string                      `json:"beat_source,omitempty"`
+	Actors       []screenshotStoryActorTrace `json:"actors"`
+}
+
+type screenshotStoryActorTrace struct {
+	Slot    int     `json:"slot"`
+	Fig     int     `json:"fig"`
+	X       int     `json:"x"`
+	Y       int     `json:"y"`
+	OffsetX float64 `json:"offset_x"`
+	OffsetY float64 `json:"offset_y"`
+	Dir     int     `json:"dir"`
+	OnField bool    `json:"on_field"`
+}
+
+type screenshotDialogueTrace struct {
+	Speaker     int    `json:"speaker"`
+	Upper       *bool  `json:"upper,omitempty"`
+	Native      bool   `json:"native"`
+	SourceDAT   string `json:"source_dat,omitempty"`
+	StringIndex int    `json:"string_index"`
+	Utterance   int    `json:"utterance"`
 }
 
 // screenshotChurchTrace 固定教會主選單可見的原始選擇、脈衝與金幣狀態，
@@ -201,6 +235,39 @@ func (g *Game) writeShotStateTrace(path string) error {
 		}
 	}
 	if g.camp != nil {
+		if node := g.camp.Node(); node != nil && (node.Type == "story" || node.Type == "cutscene") && g.m != nil {
+			story := &screenshotStoryTrace{
+				CameraPixels: [2]int{int(g.camX), int(g.camY)},
+				TileSize:     [2]int{g.m.TileW, g.m.TileH},
+				BeatIndex:    g.beatIdx,
+				Actors:       make([]screenshotStoryActorTrace, 0, len(g.storyActors)),
+			}
+			if g.m.TileW > 0 && g.m.TileH > 0 {
+				story.CameraGrid = [2]int{int(g.camX) / g.m.TileW, int(g.camY) / g.m.TileH}
+			}
+			if g.beatIdx >= 0 && g.beatIdx < len(g.beats) {
+				story.BeatOp = g.beats[g.beatIdx].Op
+				story.BeatSource = g.beats[g.beatIdx].Source
+			}
+			for slot, actor := range g.storyActors {
+				story.Actors = append(story.Actors, screenshotStoryActorTrace{
+					Slot: slot, Fig: actor.Fig, X: actor.X, Y: actor.Y,
+					OffsetX: actor.OffX, OffsetY: actor.OffY, Dir: actor.Dir, OnField: actor.OnField,
+				})
+			}
+			trace.Story = story
+		}
+		if len(g.dialog) > 0 {
+			line := g.dialog[len(g.dialog)-1]
+			dialogue := &screenshotDialogueTrace{Speaker: line.Speaker, Upper: line.Upper}
+			if line.NativeDialogue != nil {
+				dialogue.Native = true
+				dialogue.SourceDAT = line.NativeDialogue.SourceDAT
+				dialogue.StringIndex = line.NativeDialogue.StringIndex
+				dialogue.Utterance = line.NativeDialogue.Utterance
+			}
+			trace.Dialogue = dialogue
+		}
 		if node := g.camp.Node(); node != nil && node.Type == "church" {
 			trace.Church = &screenshotChurchTrace{
 				Mode: g.churchMode, Selection: g.churchSel,

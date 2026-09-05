@@ -1670,6 +1670,13 @@ state-only」的現況敘述；那些段落保留作時間序列證據，不再�
   這是 E1 消費端證據；縮放至原版 320×200 後與
   [`ch01-dialogue-original-dosbox.png`](../figures/ch01-dialogue-original-dosbox.png)
   的 AE=60414，未解除上／右肖像位置、控制碼、排版與一般玩家 E2 缺口。
+- [x] **UI-05 王座廳第一句近狀態對拍**：獨立 dosgolem 複本以宣告式輸入取得
+  原版第一句，重製端旁車同時固定 `story_ch00_handler`、相機 `(3,20)`、索爾
+  `(8,21)`、`0x32382` 與 `FDTXT_033#0`。對拍抓出並修正 `scroll_step` 完成後仍把
+  STEP 前 snapshot 交給對話 compositor 的錯誤；修正後320×200為33223／64000
+  相同像素、RGB平均絕對誤差25.055。因動畫相位與 DAC 時序未鎖定，維持
+  `RUNTIME-E1 near-state`，不將剩餘色差猜成 renderer 規則。證據見
+  [`story-ch00-audience-near-state-e1.json`](../data/ui-traces/story-ch00-audience-near-state-e1.json)。
 - [ ] **E2 與完整戰役**：取得未修改一般玩家路徑的 DOSBox 同狀態逐幀證據，
   並完成剩餘 UI、戰鬥 AI、對話資料化與 30 章無除錯破關鏈；目前仍不可宣稱
   《炎龍騎士團 2》重製完成。

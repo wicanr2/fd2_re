@@ -7465,6 +7465,29 @@ acted／HP／座標，或依名稱過濾單位。沒有戰場狀態時省略整�
 移動、受傷或完成行動。這仍只建立重製端`RUNTIME-E1`可觀測性，不把截圖模式、
 第三方存檔或內部一致性提升為原版E2。
 
+## 故事場景同狀態旁車契約（2026-09-05）
+
+本項依序章 `0x32330 LOADCH → 0x32339 PAN → 0x32343 ACT99 →
+0x32351 STEP×15 → 0x32382 DIALOG` 的既有已證實鏈，補足 dosgolem 畫面比較所需的
+唯讀狀態身分；不新增、修正或推論任何原版演出語意。當目前節點為 `story` 或
+`cutscene` 且地圖已物化時，`FD2_SHOT_STATE.story` 固定輸出相機像素／格座標、
+tile 尺寸、目前 beat 索引／原始 `source`、以及 runtime story actor 的
+slot、fig、格座標、像素 offset、方向與 on-field。slot 僅是本次 runtime slice
+索引，不冒稱永久角色身分或存檔 ABI。
+
+若畫面正顯示對白，`FD2_SHOT_STATE.dialogue` 另輸出目前正式 consumer 已持有的
+speaker、upper、是否具原生身分，以及 `NativeDialogue` 的 source DAT、string index 與 utterance；
+沒有原生對白身分時只保留確實存在的欄位，不以文字內容反推來源。旁車不得推進
+beat、移動相機或角色、產生按鍵、變更對白頁面，也不得讓相近狀態自動升格成
+同狀態。原版與重製比較只有在節點、來源位址、對白身分、相機、角色格座標與動畫
+相位均相符時才可標為 same-state；否則維持 near-state 或 layout-only。
+
+同一證據鏈亦要求 `0x32351` 的最後一個 STEP 在呼叫 `0x32382` 前，將完成後的
+相機格同步到原生故事 map view；`0x13185` 與 `0x15F84` 在原版共用相機全域，故
+重製端不可讓 indexed 對話背景沿用 STEP 前的 LOADCH／PAN snapshot。同步只能在
+完整格步完成、相機重新落在 tile 邊界後發布；中途小數像素不得偽造為格座標。
+同步失敗時停止該拍並保留 `loadErr`，不得以正規化背景掩蓋失敗。
+
 ## 終局普通輸入抽樣旁車契約（2026-08-28）
 
 本項不新增終局控制流，也不替未證實的 DOS 輸入或音訊時序命名；只把正式

@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "captured_at": "2026-09-05",
+  "status": "RUNTIME-E1_NEAR_STATE",
+  "scene": "story_ch00_handler 第一個王座廳對白",
+  "original": {
+    "tool": "dosgolem feat/fd2-parity@8d1f671",
+    "scenario": "audience-first-dialogue",
+    "capture_sha256": "d586bfa80484e2a70c7e8953b561933c719dd6735f7d42b499701134f48f1871",
+    "fd2_exe": {
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    }
+  },
+  "remake": {
+    "capture_frame": 362,
+    "capture_sha256": "7e913cfec62a7034da6ce49935c80bf8971d7dd391a91a4787ff35f55a47301f",
+    "campaign_node": "story_ch00_handler",
+    "camera_grid": [3, 20],
+    "beat_index": 4,
+    "beat_op": "dialog",
+    "beat_source": "0x32382",
+    "sol": {"slot": 2, "fig": 0, "x": 8, "y": 21},
+    "dialogue": {
+      "speaker": 0,
+      "upper": false,
+      "source_dat": "FDTXT_033",
+      "string_index": 0,
+      "utterance": 0
+    }
+  },
+  "comparison": {
+    "dimensions": [320, 200],
+    "equal_pixels": 33223,
+    "total_pixels": 64000,
+    "equal_ratio": 0.519109375,
+    "mean_abs_rgb": 25.055421875,
+    "diff_box": {"min_x": 4, "min_y": 4, "max_x": 315, "max_y": 195}
+  },
+  "conclusion": "scroll_step 完成後發布最後相機格，修正對白背景仍停在先前 LOADCH/PAN 視圖的錯誤。原版擷取與重製端擷取尚未共用動畫相位與完整 DAC 時序，因此只列 near-state；可見色差仍未閉合，不得宣稱逐像素一致。"
+}
