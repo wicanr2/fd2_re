@@ -42,6 +42,7 @@ LABELS = dict((
     (45, "Beckway default promoted selector"),
     (46, "Shan default promoted selector"),
     (47, "identity unresolved; promoted selector 15 projection"),
+    (48, "three-phase static royal figure; no fabricated walk frames"),
     (49, "identity unresolved; promoted selector 17 exact art reuse"),
     (50, "Sol optional promotion; item 89"),
     (51, "Hano optional promotion; item 93"),
@@ -58,6 +59,8 @@ LABELS = dict((
     (63, "optional promotion; item 88; identity unresolved"),
     (64, "optional promotion; item 88; exact visual reuse of selector 46"),
     (65, "optional promotion; item 91; exact visual reuse of selector 47"),
+    (66, "three-phase static figure; identity unresolved"),
+    (67, "three-phase static figure; identity unresolved"),
     (68, "late selector sample"),
     (76, "chapter 3 helmeted soldier"),
     (77, "chapter 3 armored captain"),
@@ -73,21 +76,25 @@ LABELS = dict((
 ))
 
 
-def catalog_groups() -> list[tuple[int, str]]:
+def catalog_groups() -> list[tuple[int, str, int]]:
     data = json.loads(CATALOG.read_text(encoding="utf-8"))
-    groups = sorted(
-        asset["source_group"]
+    assets = sorted(
+        (asset["source_group"], asset["frame_count"])
         for asset in data["assets"]
         if asset.get("role") == "map_sprite_set"
     )
+    groups = [group for group, _ in assets]
     if len(groups) != len(set(groups)):
         raise SystemExit("duplicate map sprite source_group in modern catalog")
-    return [(group, LABELS.get(group, "selector-only projection")) for group in groups]
+    return [(group, LABELS.get(group, "selector-only projection"), frame_count)
+            for group, frame_count in assets]
 
 
-def load_strip(group: int, modern: bool) -> Image.Image:
+def load_strip(group: int, modern: bool, frame_count: int) -> Image.Image:
     strip = Image.new("RGBA", (12 * 72, 72), (0, 0, 0, 0))
     for frame in range(12):
+        if frame >= frame_count:
+            continue
         if modern:
             name = f"fdicon-{group:03d}-style-a-f{frame:02d}.png"
             path = MODERN / name
@@ -109,16 +116,16 @@ def main() -> None:
     draw = ImageDraw.Draw(canvas)
     font = ImageFont.load_default()
     draw.text((24, 18), "FD2 MAP SPRITES / ORIGINAL AND MODERN RUNTIME CANDIDATES", fill="#ffe5a0", font=font)
-    draw.text((24, 38), "12 frames per selector: 4 directions x 3 walk cycles", fill="#aab8d0", font=font)
+    draw.text((24, 38), "12-frame walkers and evidence-backed 3-phase static selectors", fill="#aab8d0", font=font)
     y = 72
-    for group, label in groups:
+    for group, label, frame_count in groups:
         draw.text((24, y + 6), f"{group:03d} original", fill="#d9e2f2", font=font)
         draw.text((24, y + 28), label, fill="#7f93b4", font=font)
-        original = load_strip(group, False)
+        original = load_strip(group, False, frame_count)
         canvas.paste(original, (152, y), original)
         y += 80
         draw.text((24, y + 6), f"{group:03d} modern", fill="#d9e2f2", font=font)
-        modern = load_strip(group, True)
+        modern = load_strip(group, True, frame_count)
         canvas.paste(modern, (152, y), modern)
         y += 88
     draw.text((24, height - 24), "Flattened overview only; private masters and individual runtime PNG files are not embedded.", fill="#7f93b4", font=font)

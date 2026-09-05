@@ -199,18 +199,21 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 			if asset.Status != "runtime_candidate" && asset.Status != "runtime_ready" {
 				return nil, fmt.Errorf("modern theme map sprite %d has unsupported status %q", asset.SourceGroup, asset.Status)
 			}
-			if asset.ConsumerContract != "fdicon_map_sprite_12x24_v1" || asset.Width != 24 ||
-				asset.Height != 24 || asset.FrameCount != 12 || len(asset.Files) != 12 ||
-				len(asset.FrameSHA256) != 12 || asset.SourceGroup < 0 || asset.SourceGroup >= 96 ||
-				asset.AlphaContract != "binary" ||
-				(asset.CyclePolicy != "three_distinct_cycles" && asset.CyclePolicy != "source_exact_repeats") {
+			walkContract := asset.ConsumerContract == "fdicon_map_sprite_12x24_v1" &&
+				asset.FrameCount == 12 && len(asset.Files) == 12 && len(asset.FrameSHA256) == 12 &&
+				(asset.CyclePolicy == "three_distinct_cycles" || asset.CyclePolicy == "source_exact_repeats")
+			staticContract := asset.ConsumerContract == "fdicon_static_sprite_3x24_v1" &&
+				asset.FrameCount == 3 && len(asset.Files) == 3 && len(asset.FrameSHA256) == 3 &&
+				asset.CyclePolicy == "static_three_phase"
+			if (!walkContract && !staticContract) || asset.Width != 24 || asset.Height != 24 ||
+				asset.SourceGroup < 0 || asset.SourceGroup >= 96 || asset.AlphaContract != "binary" {
 				return nil, fmt.Errorf("modern theme map sprite %d violates the frame contract", asset.SourceGroup)
 			}
 			if _, duplicate := set.mapSprites[asset.SourceGroup]; duplicate {
 				return nil, fmt.Errorf("modern theme map sprite %d is duplicated", asset.SourceGroup)
 			}
-			frames := make([]image.Image, 0, 12)
-			seenDigest := make(map[string]struct{}, 12)
+			frames := make([]image.Image, 0, asset.FrameCount)
+			seenDigest := make(map[string]struct{}, asset.FrameCount)
 			repeatedFrame := false
 			for frame, file := range asset.Files {
 				name := filepath.Base(file)
@@ -248,6 +251,9 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 			}
 			if asset.CyclePolicy == "source_exact_repeats" && !repeatedFrame {
 				return nil, fmt.Errorf("modern theme map sprite %d declares source repeats but has none", asset.SourceGroup)
+			}
+			if staticContract && len(seenDigest) != 3 {
+				return nil, fmt.Errorf("modern theme static map sprite %d does not have three distinct phases", asset.SourceGroup)
 			}
 			set.mapSprites[asset.SourceGroup] = frames
 			continue

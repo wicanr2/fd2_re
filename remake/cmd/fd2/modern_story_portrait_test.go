@@ -207,6 +207,39 @@ func TestLoadModernStoryPortraitSetAdmitsCompleteMapSpriteSet(t *testing.T) {
 	}
 }
 
+func TestLoadModernStoryPortraitSetAdmitsStaticThreePhaseMapSpriteSet(t *testing.T) {
+	catalogPath, root := writeModernMapSpriteFixture(t, 0xff)
+	raw, err := os.ReadFile(catalogPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var document map[string]any
+	if err := json.Unmarshal(raw, &document); err != nil {
+		t.Fatal(err)
+	}
+	assets := document["assets"].([]any)
+	sprite := assets[len(assets)-1].(map[string]any)
+	sprite["files"] = sprite["files"].([]any)[:3]
+	sprite["frame_sha256"] = sprite["frame_sha256"].([]any)[:3]
+	sprite["frame_count"] = float64(3)
+	sprite["consumer_contract"] = "fdicon_static_sprite_3x24_v1"
+	sprite["cycle_policy"] = "static_three_phase"
+	raw, err = json.Marshal(document)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(catalogPath, raw, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	set, err := loadModernStoryPortraitSet(catalogPath, root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if frames := set.mapSprites[68]; len(frames) != 3 || frames[2].Bounds().Dx() != 24 {
+		t.Fatalf("static map sprite frames=%d, want 3", len(frames))
+	}
+}
+
 func TestLoadModernStoryPortraitSetAdmitsDeclaredSourceFrameRepeat(t *testing.T) {
 	catalogPath, root := writeModernMapSpriteFixture(t, 0xff)
 	raw, err := os.ReadFile(catalogPath)

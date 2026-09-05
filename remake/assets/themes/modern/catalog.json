@@ -3329,6 +3329,32 @@
       ]
     },
     {
+      "asset_id": "modern.fdicon.group_048.style_a",
+      "role": "map_sprite_set",
+      "status": "runtime_candidate",
+      "master_file": "fdicon-048-style-a-v1-master.png",
+      "files": [
+        "fdicon-048-style-a-f00.png", "fdicon-048-style-a-f01.png", "fdicon-048-style-a-f02.png"
+      ],
+      "width": 24,
+      "height": 24,
+      "frame_count": 3,
+      "frame_sha256": [
+        "cc0d4c4a198ed617aef6348cd0b2bee446bf8c8dd1af1a153b657cea9bf90825",
+        "b70bed9af6cd68ceb12273adf34f3a73bd4ed7ef1cf0ae5b104188a233affd91",
+        "6719ca5539068876626d4e03491cc4ce6bdcd4db15622d5df6b2f11325ec5713"
+      ],
+      "source_group": 48,
+      "consumer_contract": "fdicon_static_sprite_3x24_v1",
+      "alpha_contract": "binary",
+      "cycle_policy": "static_three_phase",
+      "source_refs": [
+        "asset:FDICON.B24.group_048",
+        "asset:FDOTHER.DAT.resource_000.palette",
+        "remake/assets/sprites/fig_048_f00.png"
+      ]
+    },
+    {
       "asset_id": "modern.fdicon.group_049.style_a",
       "role": "map_sprite_set",
       "status": "runtime_candidate",
@@ -3950,6 +3976,58 @@
         "asset:FDICON.B24.group_065",
         "remake/assets/data/class_change_targets.json",
         "remake/assets/sprites/fig_065_f00.png"
+      ]
+    },
+    {
+      "asset_id": "modern.fdicon.group_066.style_a",
+      "role": "map_sprite_set",
+      "status": "runtime_candidate",
+      "master_file": "fdicon-066-style-a-v1-master.png",
+      "files": [
+        "fdicon-066-style-a-f00.png", "fdicon-066-style-a-f01.png", "fdicon-066-style-a-f02.png"
+      ],
+      "width": 24,
+      "height": 24,
+      "frame_count": 3,
+      "frame_sha256": [
+        "c5509587d8f97856cf44690533aa88572d917a334bf787f6e3add7953a9289d0",
+        "a6323a5036fe201da43cc5995c026b836fe28e5febe0c559ab79a101de28ffc9",
+        "a774a40e5b9782c448499640e7f692cb5eaa9eb2df5623d45ba27b14cff3b375"
+      ],
+      "source_group": 66,
+      "consumer_contract": "fdicon_static_sprite_3x24_v1",
+      "alpha_contract": "binary",
+      "cycle_policy": "static_three_phase",
+      "source_refs": [
+        "asset:FDICON.B24.group_066",
+        "asset:FDOTHER.DAT.resource_000.palette",
+        "remake/assets/sprites/fig_066_f00.png"
+      ]
+    },
+    {
+      "asset_id": "modern.fdicon.group_067.style_a",
+      "role": "map_sprite_set",
+      "status": "runtime_candidate",
+      "master_file": "fdicon-067-style-a-v1-master.png",
+      "files": [
+        "fdicon-067-style-a-f00.png", "fdicon-067-style-a-f01.png", "fdicon-067-style-a-f02.png"
+      ],
+      "width": 24,
+      "height": 24,
+      "frame_count": 3,
+      "frame_sha256": [
+        "5a58f3122703c4a4a35903c1d7b4c55a37aa3902b69a02601cbb57f0a5eaae6a",
+        "2fdc3feedcd48f6daf465c041711d892a8849cf3cdcf3374632b6642b831d277",
+        "453d112489abb5144b203c9ba85138daafa4eb5815e043bef8523cbf7bc56dad"
+      ],
+      "source_group": 67,
+      "consumer_contract": "fdicon_static_sprite_3x24_v1",
+      "alpha_contract": "binary",
+      "cycle_policy": "static_three_phase",
+      "source_refs": [
+        "asset:FDICON.B24.group_067",
+        "asset:FDOTHER.DAT.resource_000.palette",
+        "remake/assets/sprites/fig_067_f00.png"
       ]
     },
     {

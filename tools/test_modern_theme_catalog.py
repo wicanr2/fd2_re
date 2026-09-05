@@ -36,7 +36,14 @@ class ModernThemeCatalogTests(unittest.TestCase):
             for asset in catalog["assets"]
             if asset.get("role") == "map_sprite_set"
         }
-        self.assertEqual(sprite_groups, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 40, 41, 42, 43, 44, 45, 46, 47, 49, 50, 51, 52, 53, 54, 55, 56, 58, 59, 60, 61, 62, 63, 64, 65, 68, 76, 77, 78, 80, 82, 83, 85, 86, 88, 90, 91})
+        self.assertEqual(sprite_groups, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 76, 77, 78, 80, 82, 83, 85, 86, 88, 90, 91})
+        for group in (48, 66, 67):
+            static = next(asset for asset in catalog["assets"] if asset.get("source_group") == group)
+            self.assertEqual(
+                (static["consumer_contract"], static["frame_count"], static["cycle_policy"]),
+                ("fdicon_static_sprite_3x24_v1", 3, "static_three_phase"),
+            )
+            self.assertEqual(len(set(static["frame_sha256"])), 3)
         yuni = next(asset for asset in catalog["assets"] if asset.get("source_group") == 52)
         self.assertEqual(yuni["cycle_policy"], "source_exact_repeats")
         self.assertEqual(yuni["frame_sha256"][6], yuni["frame_sha256"][8])

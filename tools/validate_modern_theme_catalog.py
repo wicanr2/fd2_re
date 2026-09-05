@@ -115,18 +115,24 @@ def validate(verify_private: bool) -> dict:
                     len(entry["frame_sha256"]) != 4):
                 raise ValueError(f"invalid battle action icon files: {asset_id}")
         if entry["role"] in {"map_sprite_set", "battle_action_icon_set"}:
-            if entry["role"] == "map_sprite_set" and (
-                    entry["frame_count"] != 12 or entry["source_group"] not in range(96)):
+            if entry["role"] == "map_sprite_set" and entry["source_group"] not in range(96):
                 raise ValueError(f"invalid map sprite identity: {asset_id}")
-            if entry["role"] == "map_sprite_set" and entry["consumer_contract"] != "fdicon_map_sprite_12x24_v1":
+            walk_contract = entry["role"] == "map_sprite_set" and (
+                entry["consumer_contract"] == "fdicon_map_sprite_12x24_v1" and
+                entry["frame_count"] == 12 and
+                entry["cycle_policy"] in {"three_distinct_cycles", "source_exact_repeats"}
+            )
+            static_contract = entry["role"] == "map_sprite_set" and (
+                entry["consumer_contract"] == "fdicon_static_sprite_3x24_v1" and
+                entry["frame_count"] == 3 and entry["cycle_policy"] == "static_three_phase"
+            )
+            if entry["role"] == "map_sprite_set" and not (walk_contract or static_contract):
                 raise ValueError(f"invalid map sprite contract: {asset_id}")
             if entry["role"] == "map_sprite_set" and entry["alpha_contract"] != "binary":
                 raise ValueError(f"invalid alpha contract: {asset_id}")
-            if entry["role"] == "map_sprite_set" and entry["cycle_policy"] not in {"three_distinct_cycles", "cycle_2_reuses_cycle_0_prototype", "source_exact_repeats"}:
-                raise ValueError(f"invalid cycle policy: {asset_id}")
             files = entry["files"]
             hashes = entry["frame_sha256"]
-            want_count = 12 if entry["role"] == "map_sprite_set" else 4
+            want_count = entry["frame_count"] if entry["role"] == "map_sprite_set" else 4
             if not isinstance(files, list) or len(files) != want_count or len(set(files)) != want_count:
                 raise ValueError(f"invalid map sprite file set: {asset_id}")
             if not isinstance(hashes, list) or len(hashes) != want_count or not all(
@@ -137,6 +143,8 @@ def validate(verify_private: bool) -> dict:
                 raise ValueError(f"map sprite cycles are not distinct: {asset_id}")
             if entry["role"] == "map_sprite_set" and entry["cycle_policy"] == "source_exact_repeats" and len(set(hashes)) == 12:
                 raise ValueError(f"map sprite declares source repeats but has none: {asset_id}")
+            if entry["role"] == "map_sprite_set" and entry["cycle_policy"] == "static_three_phase" and len(set(hashes)) != 3:
+                raise ValueError(f"static map sprite phases are not distinct: {asset_id}")
             file_paths = [Path(value) for value in files]
         elif entry["role"] == "map_tileset_set":
             if entry["consumer_contract"] != "map_tileset_indexed_geometry_v1":
