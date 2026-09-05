@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """建立可公開的原版／現代地圖人物壓平總攬。"""
 
+import argparse
 import json
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
@@ -63,6 +64,7 @@ LABELS = dict((
     (67, "three-phase static figure; identity unresolved"),
     (68, "late selector sample"),
     (69, "identity unresolved; cross-shield heavy armor"),
+    (70, "identity unresolved; masked blue-cap swordsman"),
     (76, "chapter 3 helmeted soldier"),
     (77, "chapter 3 armored captain"),
     (78, "chapters 8, 9, 18 broad-shouldered enemy swordsman"),
@@ -91,7 +93,7 @@ def catalog_groups() -> list[tuple[int, str, int]]:
             for group, frame_count in assets]
 
 
-def load_strip(group: int, modern: bool, frame_count: int) -> Image.Image:
+def load_strip(group: int, modern: bool, frame_count: int, original_root: Path) -> Image.Image:
     strip = Image.new("RGBA", (12 * 72, 72), (0, 0, 0, 0))
     for frame in range(12):
         if frame >= frame_count:
@@ -100,7 +102,7 @@ def load_strip(group: int, modern: bool, frame_count: int) -> Image.Image:
             name = f"fdicon-{group:03d}-style-a-f{frame:02d}.png"
             path = MODERN / name
         else:
-            path = ORIGINAL / f"fig_{group:03d}_f{frame:02d}.png"
+            path = original_root / f"fig_{group:03d}_f{frame:02d}.png"
         if not path.is_file():
             raise SystemExit(f"missing sprite frame: {path}")
         image = Image.open(path).convert("RGBA")
@@ -111,6 +113,14 @@ def load_strip(group: int, modern: bool, frame_count: int) -> Image.Image:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--original-root",
+        type=Path,
+        default=ORIGINAL,
+        help="原版逐幀參考根目錄；可指向不進 Git 的暫存輸出",
+    )
+    args = parser.parse_args()
     groups = catalog_groups()
     width, height = 1040, 72 + len(groups) * 168 + 32
     canvas = Image.new("RGB", (width, height), "#08152b")
@@ -122,11 +132,11 @@ def main() -> None:
     for group, label, frame_count in groups:
         draw.text((24, y + 6), f"{group:03d} original", fill="#d9e2f2", font=font)
         draw.text((24, y + 28), label, fill="#7f93b4", font=font)
-        original = load_strip(group, False, frame_count)
+        original = load_strip(group, False, frame_count, args.original_root)
         canvas.paste(original, (152, y), original)
         y += 80
         draw.text((24, y + 6), f"{group:03d} modern", fill="#d9e2f2", font=font)
-        modern = load_strip(group, True, frame_count)
+        modern = load_strip(group, True, frame_count, args.original_root)
         canvas.paste(modern, (152, y), modern)
         y += 88
     draw.text((24, height - 24), "Flattened overview only; private masters and individual runtime PNG files are not embedded.", fill="#7f93b4", font=font)
