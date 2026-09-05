@@ -7,7 +7,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
-ORIGINAL = ROOT / "remake/assets/sprites"
+ORIGINAL = ROOT / "remake/generated-assets/fd2-original-b97caf22/sprites/fdicon"
 MODERN = ROOT / "remake/generated-assets/modern-theme-prototypes"
 OUTPUT = ROOT / "docs/figures/modern-map-sprites-overview.png"
 CATALOG = ROOT / "remake/assets/themes/modern/catalog.json"
@@ -86,14 +86,6 @@ LABELS = dict((
     (91, "anonymous hooded enemy unit"),
 ))
 
-# selector 74 的原版三相圖只以 FDICON 單色像素與 FDOTHER 場景調色盤
-# 留存，尚無可直接公開並與其他 fig_* 同契約比較的彩色 24×24 匯出。
-# 總攬圖必須明示證據缺口，不可拿灰階 frame 或透明格冒充原版彩色圖。
-ORIGINAL_FRAME_UNAVAILABLE = {
-    74: "original colour frames unavailable; palette-bound source retained",
-}
-
-
 def catalog_groups() -> list[tuple[int, str, int]]:
     data = json.loads(CATALOG.read_text(encoding="utf-8"))
     assets = sorted(
@@ -117,12 +109,16 @@ def load_strip(group: int, modern: bool, frame_count: int, original_root: Path) 
             name = f"fdicon-{group:03d}-style-a-f{frame:02d}.png"
             path = MODERN / name
         else:
-            path = original_root / f"fig_{group:03d}_f{frame:02d}.png"
+            frame_root = original_root / f"sprite_{group * 12 + frame:04d}"
+            path = frame_root / "frame.png"
         if not path.is_file():
-            if not modern and group in ORIGINAL_FRAME_UNAVAILABLE:
-                continue
             raise SystemExit(f"missing sprite frame: {path}")
         image = Image.open(path).convert("RGBA")
+        if not modern:
+            mask_path = frame_root / "mask.png"
+            if not mask_path.is_file():
+                raise SystemExit(f"missing sprite mask: {mask_path}")
+            image.putalpha(Image.open(mask_path).convert("L"))
         if image.size != (24, 24):
             raise SystemExit(f"unexpected frame geometry: {path}: {image.size}")
         strip.alpha_composite(image.resize((72, 72), Image.Resampling.NEAREST), (frame * 72, 0))
@@ -144,15 +140,13 @@ def main() -> None:
     draw = ImageDraw.Draw(canvas)
     font = ImageFont.load_default()
     draw.text((24, 18), "FD2 MAP SPRITES / ORIGINAL AND MODERN RUNTIME CANDIDATES", fill="#ffe5a0", font=font)
-    draw.text((24, 38), "12-frame walkers and evidence-backed 3-phase static selectors", fill="#aab8d0", font=font)
+    draw.text((24, 38), "palette-bound original indexed shapes / modern runtime candidates", fill="#aab8d0", font=font)
     y = 72
     for group, label, frame_count in groups:
         draw.text((24, y + 6), f"{group:03d} original", fill="#d9e2f2", font=font)
         draw.text((24, y + 28), label, fill="#7f93b4", font=font)
         original = load_strip(group, False, frame_count, args.original_root)
         canvas.paste(original, (152, y), original)
-        if group in ORIGINAL_FRAME_UNAVAILABLE:
-            draw.text((168, y + 28), ORIGINAL_FRAME_UNAVAILABLE[group], fill="#c89b68", font=font)
         y += 80
         draw.text((24, y + 6), f"{group:03d} modern", fill="#d9e2f2", font=font)
         modern = load_strip(group, True, frame_count, args.original_root)
