@@ -4288,6 +4288,33 @@
       ]
     },
     {
+      "asset_id": "modern.fdicon.group_075.style_a",
+      "role": "map_sprite_set",
+      "status": "runtime_candidate",
+      "master_file": "fdicon-075-style-a-v1-master.png",
+      "files": [
+        "fdicon-075-style-a-f00.png",
+        "fdicon-075-style-a-f01.png",
+        "fdicon-075-style-a-f02.png"
+      ],
+      "width": 24,
+      "height": 24,
+      "frame_count": 3,
+      "frame_sha256": [
+        "3fb40f7d6e102fb5d20b60a31d484432bf3f66575ea774b19b7dc424bedbf399",
+        "8e16bb8c1a9bcbd071b35e2b08d63b285937b3c716e49bd6add679a1920fb70d",
+        "201a1d853d88d994ebc07965ea64088b1eb8c9784d421785ccd692f0c8ba82c8"
+      ],
+      "source_group": 75,
+      "consumer_contract": "fdicon_static_sprite_3x24_v1",
+      "alpha_contract": "binary",
+      "cycle_policy": "static_three_phase",
+      "source_refs": [
+        "asset:FDICON.B24.group_075",
+        "asset:FDOTHER.DAT.resource_000.palette"
+      ]
+    },
+    {
       "asset_id": "modern.fdicon.group_076.style_a",
       "role": "map_sprite_set",
       "status": "runtime_candidate",

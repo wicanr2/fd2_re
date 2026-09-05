@@ -69,6 +69,7 @@ LABELS = dict((
     (72, "identity unresolved; blue-haired backpack traveler"),
     (73, "identity unresolved; horse-form spear and shield unit"),
     (74, "three-phase static purple-hat spellcaster; identity unresolved"),
+    (75, "three-phase static red-haired low-profile figure; identity unresolved"),
     (76, "chapter 3 helmeted soldier"),
     (77, "chapter 3 armored captain"),
     (78, "chapters 8, 9, 18 broad-shouldered enemy swordsman"),
