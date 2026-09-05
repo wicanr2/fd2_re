@@ -65,6 +65,7 @@ LABELS = dict((
     (68, "late selector sample"),
     (69, "identity unresolved; cross-shield heavy armor"),
     (70, "identity unresolved; masked blue-cap swordsman"),
+    (71, "identity unresolved; horned blue-gray heavy armor"),
     (76, "chapter 3 helmeted soldier"),
     (77, "chapter 3 armored captain"),
     (78, "chapters 8, 9, 18 broad-shouldered enemy swordsman"),

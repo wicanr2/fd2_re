@@ -4150,6 +4150,43 @@
       ]
     },
     {
+      "asset_id": "modern.fdicon.group_071.style_a",
+      "role": "map_sprite_set",
+      "status": "runtime_candidate",
+      "master_file": "fdicon-071-style-a-v1-master.png",
+      "files": [
+        "fdicon-071-style-a-f00.png", "fdicon-071-style-a-f01.png", "fdicon-071-style-a-f02.png",
+        "fdicon-071-style-a-f03.png", "fdicon-071-style-a-f04.png", "fdicon-071-style-a-f05.png",
+        "fdicon-071-style-a-f06.png", "fdicon-071-style-a-f07.png", "fdicon-071-style-a-f08.png",
+        "fdicon-071-style-a-f09.png", "fdicon-071-style-a-f10.png", "fdicon-071-style-a-f11.png"
+      ],
+      "width": 24,
+      "height": 24,
+      "frame_count": 12,
+      "frame_sha256": [
+        "c82f38c27da5cfa88fa0a85f14d2b64e60f2f1da523fb9ce5c51a6312144efac",
+        "d1bcf28430e362dac80f381e238c78e6b25677fab085715b6203c297779a06d4",
+        "af2b3f1b6be47b9c5229bf4fdc747a506d53f6430b67b032c3d66d4e5d3630e3",
+        "627d99ccafecdca134b81fef865bf68c392bc2b825243f4d5d751e9a00e06992",
+        "94287f82ef467fe162ff1f883e83baa3ebec3f03eaeddd65892659f21bca307d",
+        "7c48a6dddf2e55275d0512bd9b329278941e59184d8ded0526a4e8d8ec456948",
+        "53e4f2edc76932e9fa6a5d2641c11a8c636b3a4d26700313533e5c81af4a931e",
+        "c999e9973ddd8c03a95b68bc412a7278f0c75e9e93852829b3789470ebc9df03",
+        "22a7c99bf8cde356eb102fc74b29129cd3da16eeaf10dcadddce8c63337b48e5",
+        "bb28c89ccfe8d7e3f018e6f44149ab2c0fb735f748b98d0245f6c51204b59b4c",
+        "327a1e440074f1d161ccd92bcf50139671b05546a221aef1d02cc043a1033711",
+        "6ab18a9be8a96393a52a29b7f55411b80f191d7e1bfa4ad2e9561a0d53a648ec"
+      ],
+      "source_group": 71,
+      "consumer_contract": "fdicon_map_sprite_12x24_v1",
+      "alpha_contract": "binary",
+      "cycle_policy": "three_distinct_cycles",
+      "source_refs": [
+        "asset:FDICON.B24.group_071",
+        "asset:FDOTHER.DAT.resource_000.palette"
+      ]
+    },
+    {
       "asset_id": "modern.fdicon.group_076.style_a",
       "role": "map_sprite_set",
       "status": "runtime_candidate",
