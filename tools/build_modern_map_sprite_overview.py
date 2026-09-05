@@ -62,6 +62,7 @@ LABELS = dict((
     (66, "three-phase static figure; identity unresolved"),
     (67, "three-phase static figure; identity unresolved"),
     (68, "late selector sample"),
+    (69, "identity unresolved; cross-shield heavy armor"),
     (76, "chapter 3 helmeted soldier"),
     (77, "chapter 3 armored captain"),
     (78, "chapters 8, 9, 18 broad-shouldered enemy swordsman"),
