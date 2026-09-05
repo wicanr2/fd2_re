@@ -78,6 +78,7 @@ LABELS = dict((
     (81, "identity unresolved; horned deep-blue heavy armor"),
     (82, "chapters 7-9 enemy swordsman"),
     (83, "chapters 6-9, 18-19 horned enemy swordsman"),
+    (84, "identity unresolved; vivid-red shield heavy armor"),
     (85, "chapters 17-22 bucket-helmet enemy swordsman"),
     (86, "chapters 24-26, 32 helmeted fortress guard"),
     (88, "chapters 10, 12-16, 22 enemy swordsman"),
