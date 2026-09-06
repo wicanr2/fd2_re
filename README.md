@@ -223,6 +223,8 @@ macOS universal ZIP。公開封包只含重製引擎與可散布資料；玩家�
 `dist-all/v.1.0.3-20260907/full/`，不加入 Git 或公開 Release。正式附件、雜湊、
 已知限制與權利邊界見
 [`v.1.0.3-20260907 發行說明`](docs/releases/v.1.0.3-20260907.md)。
+[GitHub 正式下載頁](https://github.com/wicanr2/fd2_re/releases/tag/v.1.0.3-20260907)
+提供三平台公開封包、推廣片與 SHA-256 清冊。
 
 玩家可隨時按 `F1` 查看操作說明；安裝現代素材包後，`F2` 可切換忠實原版／現代
 手繪主題；`F3` 切換

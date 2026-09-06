@@ -42,3 +42,16 @@ Linux AppImage、Windows ZIP 與 macOS universal ZIP。這些封包只供本機�
 - 原版音樂對拍影片只留本機，不列入公開附件。
 
 即時技術狀態見 [`docs/REMAKE-STATUS.md`](../REMAKE-STATUS.md)。
+
+## 發布收據
+
+- GitHub Release：<https://github.com/wicanr2/fd2_re/releases/tag/v.1.0.3-20260907>
+- 標籤提交：`3dd8ee1a1e87c114d324a67e6804a759a4fb3379`
+- Linux Actions：`34052073433`，成功
+- Windows Actions：`34052073455`，成功
+- macOS Actions：`34052073434`，成功
+- 六個公開附件已回讀為 `uploaded`；三平台封包、47 秒 H.264／AAC 推廣片、
+  `SHA256SUMS` 與 `MANIFEST.json` 均已存在。
+- 本機 `dist-all/v.1.0.3-20260907/full/` 另有三個不公開完整版；Linux AppImage
+  經啟動與解包檢查，Windows／macOS ZIP 經逐項清冊檢查，皆含原版 manifest、
+  `FD2-LOCAL-FULL.json` 與現代 action icon。
