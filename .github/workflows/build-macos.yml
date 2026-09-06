@@ -55,12 +55,16 @@ jobs:
       - name: 組 .app bundle(Info.plist + 已入庫資產 + 原生圖示)
         run: |
           APP=packaging/dist/FD2.app
-          mkdir -p "$APP/Contents/Resources/assets/scenarios" "$APP/Contents/Resources/assets/story" "$APP/Contents/Resources/assets/locales" "$APP/Contents/Resources/assets/editor-canonical"
+          mkdir -p "$APP/Contents/Resources/assets/scenarios" "$APP/Contents/Resources/assets/story" "$APP/Contents/Resources/assets/locales" "$APP/Contents/Resources/assets/editor-canonical" "$APP/Contents/Resources/assets/themes/modern"
           cp -r assets/scenarios/. "$APP/Contents/Resources/assets/scenarios/"
           cp -r assets/story/.    "$APP/Contents/Resources/assets/story/"
           cp -r assets/locales/.  "$APP/Contents/Resources/assets/locales/"
           cp -r assets/editor-canonical/. "$APP/Contents/Resources/assets/editor-canonical/"
           cp assets/spells.json   "$APP/Contents/Resources/assets/spells.json"
+          python3 ../tools/sync_modern_theme_private.py --runtime-only \
+            --catalog assets/themes/modern/catalog.json \
+            --source generated-assets/modern-theme-prototypes \
+            --destination "$APP/Contents/Resources/assets/themes/modern"
           cp ../LICENSE           "$APP/Contents/Resources/LICENSE"
           test -f "$APP/Contents/Resources/LICENSE"
           ICONSET=packaging/dist/fd2.iconset

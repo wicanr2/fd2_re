@@ -1,5 +1,5 @@
 // settings.go — 全域系統設定(跨存檔,獨立於 fd2_save.json)。
-// 目前提供重製端 F2 設定與兩套預錄 OGG，在操作意圖上近似原版
+// 目前提供重製端 F3 設定與兩套預錄 OGG，在操作意圖上近似原版
 // SETSOUND.EXE 的音源選擇；它不執行原版程式、驅動或即時合成。
 // 兩套 OGG 以 Sound Blaster（FM）與 Roland MT-32 身分並存；重製端預設選 FM。
 // 這個預設與音色描述不是原版 SETSOUND 的動態證據，也不代表即時合成 parity。

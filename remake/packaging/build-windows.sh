@@ -20,7 +20,7 @@ docker run --rm --network none \
     dist=packaging/dist/windows
     archive=packaging/dist/fd2-windows-x86_64.zip
     rm -rf "$dist" "$archive"
-    mkdir -p "$dist/assets/scenarios" "$dist/assets/story" "$dist/assets/locales" "$dist/assets/editor-canonical" /tmp/home /tmp/go-cache
+    mkdir -p "$dist/assets/scenarios" "$dist/assets/story" "$dist/assets/locales" "$dist/assets/editor-canonical" "$dist/assets/themes/modern" /tmp/home /tmp/go-cache
 
     CGO_ENABLED=1 GOOS=windows GOARCH=amd64 \
       CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ \
@@ -33,6 +33,10 @@ docker run --rm --network none \
     cp -R assets/locales/. "$dist/assets/locales/"
     cp -R assets/editor-canonical/. "$dist/assets/editor-canonical/"
     cp assets/spells.json "$dist/assets/spells.json"
+    python3 /repo/tools/sync_modern_theme_private.py --runtime-only \
+      --catalog /src/assets/themes/modern/catalog.json \
+      --source /src/generated-assets/modern-theme-prototypes \
+      --destination "$dist/assets/themes/modern"
     install -m 0644 /repo/LICENSE "$dist/LICENSE"
     test -f "$dist/LICENSE"
     file "$dist/fd2.exe" | tee packaging/dist/fd2-windows-x86_64.file.txt

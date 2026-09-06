@@ -80,6 +80,8 @@ type Game struct {
 	m                          *MapData
 	nativeMapAssets            *nativeMapAssets                   // all original map HUD resources, nil on any missing/malformed asset
 	modernMapTilesetLoaded     bool                               // 本次 loadMap 已原子採用現代圖集
+	baseMapTileset             image.Image                        // 目前地圖的忠實原版 PNG；F2 只重建圖層，不改戰況
+	currentMapID               int                                // 目前地圖 selector；-1 表示尚未載入
 	nativeMapWork              []byte                             // persistent 456-stride original tactical framebuffer
 	nativeMapVGA               []byte                             // persistent 320x200 indexed VGA surface
 	nativeMapDAC               []byte                             // current 256xRGB six-bit DAC state for handler palette ramps
@@ -242,6 +244,7 @@ type Game struct {
 	actionOverlayDrawn       bool
 	actionOverlayShotHold    bool
 	ringIcons                [4]*ebiten.Image // fallback only: 0上=攻擊 1左=法術 2右=物品 3下=待機
+	helpVisible              bool             // F1 玩家操作說明；顯示時暫停遊戲輸入
 	nativeActionCells        []*ebiten.Image  // FDOTHER#2 的完整 78 格；只取自使用者提供的原始資料
 	nativeUIPalette          color.Palette
 	nativeClassUI            *nativeClassUIAssets
@@ -5686,6 +5689,8 @@ func (g *Game) loadMap(dir string) error {
 	if err != nil {
 		return err
 	}
+	g.baseMapTileset = img
+	g.currentMapID = -1
 	if g.modernStoryPortraits != nil {
 		base := filepath.Base(filepath.Clean(dir))
 		mapID := -1
@@ -5697,10 +5702,18 @@ func (g *Game) loadMap(dir string) error {
 			}
 		}
 		if mapID >= 0 {
+			g.currentMapID = mapID
 			if modern, ok := g.modernStoryPortraits.mapTilesets[mapID]; ok {
 				img = modern
 				g.modernMapTilesetLoaded = true
 			}
+		}
+	} else {
+		base := filepath.Base(filepath.Clean(dir))
+		if base == "assets" {
+			g.currentMapID = 0
+		} else if strings.HasPrefix(base, "map") {
+			g.currentMapID, _ = strconv.Atoi(strings.TrimPrefix(base, "map"))
 		}
 	}
 	g.tileset = ebiten.NewImageFromImage(img)
@@ -7006,6 +7019,15 @@ func (g *Game) Update() error {
 	g.stepNativeSystemInfoUI()
 	g.stepNativeSystemEndTurn()
 	g.stepNativeClassUILifecycle(time.Now())
+	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF1) {
+		g.helpVisible = !g.helpVisible
+	}
+	if g.helpVisible {
+		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+			g.helpVisible = false
+		}
+		return nil
+	}
 	if g.transientUI {
 		return nil
 	}
@@ -7016,13 +7038,25 @@ func (g *Game) Update() error {
 	g.stepNativeShopUILifecycle(time.Now())
 	g.stepNativeTownUILifecycle(g.nativeTownUIClock.Sample(time.Now()))
 	g.stepNativePreparationUILifecycle(time.Now())
-	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF2) { // 全域:切換音源(MT-32 / Sound Blaster)
+	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF2) { // 全域：忠實／現代主題
+		g.cycleTheme()
+	}
+	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF3) { // 全域：切換音源
 		g.cycleBGMSource()
 	}
 	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF4) { // 全域：切換官方語系
 		g.cycleLocale()
 	}
-	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF3) { // 全域:開發除錯 HUD 開關
+	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF6) { // 全域：音樂開關
+		if g.toggleNativeSystemOption(0) {
+			if g.currentNativeSystemOptions().MusicEnabled() {
+				g.msg = "音樂：開啟"
+			} else {
+				g.msg = "音樂：關閉"
+			}
+		}
+	}
+	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF12) { // 全域：開發除錯 HUD 開關
 		g.debug = !g.debug
 	}
 	if g.bannerT > 0 {
@@ -7800,6 +7834,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		if g.nativeTurnStaging != nil && !g.nativeTurnStaging.indexed &&
 			g.nativeTurnStaging.phase == nativeTurnStagingFlash {
 			g.nativeTurnStaging.drawn = true
+		}
+		if g.helpVisible {
+			g.drawPlayerHelp(screen)
 		}
 	}()
 	if g.titlePhase != "" {

@@ -21,6 +21,11 @@ def main() -> None:
     parser.add_argument("--catalog", type=Path, required=True)
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--destination", type=Path, required=True)
+    parser.add_argument(
+        "--runtime-only",
+        action="store_true",
+        help="只複製 runtime_candidate 的 file/files，不帶 concept 與高解析 master",
+    )
     args = parser.parse_args()
 
     catalog = json.loads(args.catalog.read_text(encoding="utf-8"))
@@ -30,10 +35,12 @@ def main() -> None:
     names: set[str] = set()
     runtime_hashes: dict[str, str] = {}
     for asset in catalog.get("assets", []):
+        if args.runtime_only and asset.get("status") != "runtime_candidate":
+            continue
         if "file" in asset:
             names.add(asset["file"])
             runtime_hashes[asset["file"]] = asset["sha256"]
-        if "master_file" in asset:
+        if "master_file" in asset and not args.runtime_only:
             names.add(asset["master_file"])
         for name, sha256 in zip(asset.get("files", []), asset.get("frame_sha256", [])):
             names.add(name)
@@ -61,6 +68,7 @@ def main() -> None:
         "theme_id": catalog["theme_id"],
         "source_catalog": "fd2_re/remake/assets/themes/modern/catalog.json",
         "file_count": len(records),
+        "runtime_only": args.runtime_only,
         "files": records,
     }
     (args.destination / "private-manifest.json").write_text(

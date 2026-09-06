@@ -29,7 +29,7 @@ docker run --rm --network none \
     mkdir -p "$appdir/usr/bin" "$appdir/usr/share/applications" \
       "$appdir/usr/share/icons/hicolor/256x256/apps" \
       "$appdir/usr/share/metainfo" \
-      "$appdir/assets/scenarios" "$appdir/assets/story" "$appdir/assets/locales" "$appdir/assets/editor-canonical" /tmp/home /tmp/go-cache /tmp/appimage-work
+      "$appdir/assets/scenarios" "$appdir/assets/story" "$appdir/assets/locales" "$appdir/assets/editor-canonical" "$appdir/assets/themes/modern" /tmp/home /tmp/go-cache /tmp/appimage-work
 
     CGO_ENABLED=1 go build -trimpath -buildvcs=false \
       -ldflags="-s -w -X main.buildVersion=$FD2_VERSION" \
@@ -48,6 +48,10 @@ docker run --rm --network none \
     cp -R assets/locales/. "$appdir/assets/locales/"
     cp -R assets/editor-canonical/. "$appdir/assets/editor-canonical/"
     cp assets/spells.json "$appdir/assets/spells.json"
+    python3 /repo/tools/sync_modern_theme_private.py --runtime-only \
+      --catalog /src/assets/themes/modern/catalog.json \
+      --source /src/generated-assets/modern-theme-prototypes \
+      --destination "$appdir/assets/themes/modern"
 
     cd /tmp/appimage-work
     /opt/appimage-tools/linuxdeploy.AppImage --appimage-extract-and-run \
