@@ -1,76 +1,327 @@
-Required Notice: Copyright (c) 2026 wicanr2.
-Required Notice: Commercial use requires a separate license from the repository owner: https://github.com/wicanr2
+復古重製 source-available 授權條款 1.0（RRSAL-1.0）
+Retro Remake Source-Available License, version 1.0 (RRSAL-1.0)
+SPDX-License-Identifier: LicenseRef-RRSAL-1.0
 
-# PolyForm Noncommercial License 1.0.0
+適用作品：《炎龍騎士團 2》反向工程與重製（Flame Dragon 2 Reverse Engineering and Remake）
+Copyright (c) 2026 Wang Chun-Yu (wicanr2) <wicanr2@gmail.com>
 
-<https://polyformproject.org/licenses/noncommercial/1.0.0>
+繁體中文為準，英文譯本僅供參考（The Traditional Chinese text governs;
+the English translation below is provided for convenience only）。
 
-## Acceptance
+────────────────────────────────────────────────────────────
 
-In order to get any license under these terms, you must agree to them as both strict obligations and conditions to all your licenses.
+前言
 
-## Copyright License
+本作品是對《炎龍騎士團 2：黃金城傳說》的非官方潔淨室重製與技術保存專案，
+目的是文化資產保存。著作權人希望它被廣泛使用、討論與展示，同時保留本作品的
+商業權利。本條款據此設計：非商業用途免費且寬鬆，商業用途保留給著作權人另行洽談。
 
-The licensor grants you a copyright license for the software to do everything you might do with the software that would otherwise infringe the licensor's copyright in it for any permitted purpose.  However, you may only distribute the software according to [Distribution License](#distribution-license) and make changes or new works based on the software according to [Changes and New Works License](#changes-and-new-works-license).
+第 1 條　定義
 
-## Distribution License
+  (a) 「本作品」指本儲存庫中由著作權人創作的一切內容，包括但不限於：程式碼、
+      建置與打包腳本、工具、文件、規格、反組譯筆記、資料格式分析、譯文、
+      譯名對照與校訂紀錄、由著作權人製作的字型烘製結果與主題素材、依第 7 條
+      納入的貢獻，以及上述內容的編譯或封裝產物。從原版素材抽取或轉檔而成的
+      主題素材不是本作品，屬於原版素材。
+  (b) 「原版素材」指原版遊戲的執行檔、資料檔、美術、地圖、圖塊、臉譜、音樂、
+      音效、點陣字型、遊戲文字，以及任何其他平台版本的對應物。原版素材屬於
+      原版遊戲各自的權利人或其他各自的權利人。
+  (c) 「修改版」指以本作品為基礎，經修改、翻譯、移植、擴充或與其他作品結合
+      而成的作品。
+  (d) 「商業性使用」指以直接或間接取得金錢或其他對價為目的之使用，包括但不
+      限於：販售本作品或修改版；以付費、訂閱或會員形式提供；隨商品、硬體或
+      服務一併散布；在本作品或修改版中加入廣告、內購或贊助置入；在營利事業
+      的營運、產品或服務中使用；以及用於商業性的展覽、活動或行銷。
+  (e) 「貢獻」指任何人有意提交給著作權人以納入本作品的內容，包括程式碼、
+      文件、譯文、素材與其修改建議。
 
-The licensor grants you an additional copyright license to distribute copies of the software.  Your license to distribute covers distributing the software with changes and new works permitted by [Changes and New Works License](#changes-and-new-works-license).
+第 2 條　涵蓋範圍與排除事項
 
-## Notices
+  (a) 本條款只適用於本作品。
+  (b) 本條款不適用於原版素材。本作品不散布原版素材；使用本作品的人必須自備
+      合法取得的原版副本。著作權人對原版素材不主張任何權利，也無權授權它們。
+  (c) 本儲存庫為了文件、研究與展示的目的，收錄了少量含有原版素材的片段，
+      包括：原版／重製比較截圖、素材總攬圖、字型與格式研究用的小型擷取圖。這些片段中屬於
+      原版素材的部分不在本條款的授權範圍內；其收錄依據是研究與評論之目的。
+      著作權人創作的譯文與量測所得的資料表屬於本作品，在著作權人享有權利的
+      範圍內依本條款授權；譯文是原版文字的衍生著作，使用譯文重現遊戲仍以
+      自備原版為前提。
+  (d) 本儲存庫或發行包中含有的第三方元件（例如 Go 模組、Ebiten 與 AppImage 執行期元件）依各自的授權條款提供，不受本條款拘束；其授權聲明
+      隨同散布。
 
-You must ensure that anyone who gets a copy of any part of the software from you also gets a copy of these terms or the URL for them above, as well as copies of any plain-text lines beginning with `Required Notice:` that the licensor provided with the software.  For example:
+第 3 條　非商業授權
 
-> Required Notice: Copyright Yoyodyne, Inc. (http://example.com)
+在遵守第 5 條的前提下，任何人都可以免費、不必事先取得同意：
 
-## Changes and New Works License
+  (a) 為個人、教育、研究、保存、評論或其他非商業目的，使用、執行、重製與
+      散布本作品；
+  (b) 製作修改版，並在同樣的非商業前提下依本條款散布修改版；散布修改版的人
+      就其修改的部分，同意以與本條款相同的條件授權他人；
+  (c) 製作其他語言的譯文或語言包，並在同樣的非商業前提下依本條款散布。
 
-The licensor grants you an additional copyright license to make changes and new works based on the software for any permitted purpose.
+第 4 條　明示允許的展示與傳播
 
-## Patent License
+下列行為即使伴隨收入，也不視為第 1 條 (d) 的商業性使用，著作權人明示允許：
 
-The licensor grants you a patent license for the software that covers patent claims the licensor can license, or becomes able to license, that you would infringe by using the software.
+  (a) 以本作品或修改版進行遊戲實況、錄影、直播、評論、教學或報導，包括在
+      YouTube、Twitch、Bilibili 等平台上依該平台一般規則取得廣告分潤、
+      觀眾贊助或會員收入；
+  (b) 在文章、書籍、學術論文、演講、展覽或課程中引用、展示或討論本作品，
+      包括其截圖、程式碼片段與文件；
+  (c) 在保存、學術、非營利或社群性質的活動中展示或提供本作品。
 
-## Noncommercial Purposes
+前述行為應依第 5 條 (b) 標示出處。下列行為不在本條範圍內，仍是商業性使用：
+以本作品或修改版作為主要販售標的；將其封裝為付費產品或服務；以其作為
+其他商品、硬體或服務的行銷工具或展示內容。
 
-Any noncommercial purpose is a permitted purpose.
+第 5 條　條件
 
-## Personal Uses
+  (a) 散布本作品或修改版時，要保留本授權條款全文與著作權聲明。
+  (b) 公開散布、展示或傳播本作品或修改版時，要以合理且明顯的方式標示：
+      本作品名稱、著作權人姓名（Wang Chun-Yu／wicanr2），以及原始出處
+      https://github.com/wicanr2/fd2_re 。
+  (c) 散布修改版時，要明確標示這是修改版、改動了什麼、由誰修改。不得讓人
+      誤以為修改版出自著作權人或經其認可，也不得以會造成混淆的方式使用
+      著作權人的姓名或本作品的名稱。
+  (d) 不得為取得或使用本作品或修改版本身收取費用（實體媒介與運送的實際成本
+      除外），不得以本作品或修改版換取其他對價。第 4 條允許的收入不受本款
+      限制。
+  (e) 不得散布原版素材，也不得把原版素材與本作品打包在一起散布。
+  (f) 不得移除、遮蔽或改動本作品中的著作權聲明、授權聲明與出處標示。
+  (g) 不得規避本條款。以自動轉換、重新排版、改寫、翻譯成其他程式語言等方式
+      製作的作品，仍是修改版，受本條款拘束。
 
-Personal use for research, experiment, and testing for the benefit of public knowledge, personal study, private entertainment, hobby projects, amateur pursuits, or religious observance, without any anticipated commercial application, is use for a permitted purpose.
+第 6 條　保留權利與商業授權
 
-## Noncommercial Organizations
+  (a) 本條款未明示授與的一切權利，均由著作權人保留。商業性使用需要事先取得
+      著作權人的書面授權。
+  (b) 著作權人得以本條款以外的條件，向任何人另行授權本作品（包括商業授權與
+      專屬授權）。另行授權不影響他人依本條款已取得的非商業權利。
+  (c) 商業洽談請寄 wicanr2@gmail.com。歡迎來談——本條的用意是保留商業條件的
+      決定權，不是拒絕合作。
 
-Use by any charitable organization, educational institution, public research organization, public safety or health organization, environmental protection organization, or government institution is use for a permitted purpose regardless of the source of funding or obligations resulting from the funding.
+第 7 條　貢獻
 
-## Fair Use
+  (a) 任何人向本作品提交貢獻，即表示同意：授與著作權人一項永久、不可撤銷、
+      全球性、免權利金、可再授權的授權，得以任何方式使用、重製、修改、散布
+      該貢獻，並得將其納入本作品後以本條款或任何其他條件（包括商業條件）
+      授權他人。
+  (b) 貢獻者保證自己有權作出前項授權，且貢獻不含未經授權的原版素材或第三方
+      內容。
+  (c) 貢獻者保留自己對該貢獻的著作權；著作權人會在合理範圍內於專案紀錄中
+      標示貢獻者。
+  (d) 不接受本條的人，請勿提交貢獻。
 
-You may have "fair use" rights for the software under the law. These terms do not limit them.
+第 8 條　名稱
 
-## No Other Rights
+「《炎龍騎士團 2》反向工程與重製」、「Flame Dragon 2 Reverse Engineering and Remake」及本儲存庫名稱是本作品的
+識別名稱。修改版可以說明自己「基於」本作品，但不得使用相同或近似的名稱作為
+修改版自己的名稱，除非取得著作權人書面同意。
 
-These terms do not allow you to sublicense or transfer any of your licenses to anyone else, or prevent the licensor from granting licenses to anyone else.  These terms do not imply any other licenses.
+第 9 條　無擔保與責任限制
 
-## Patent Defense
+本作品以「現狀」提供，不附任何明示或默示的擔保，包括但不限於適售性、特定
+目的適用性與未侵權的擔保。在法律允許的最大範圍內，著作權人不就因本作品或其
+使用而產生的任何請求、損害或其他責任負責，也不就使用者取得或使用原版素材
+的合法性負責。
 
-If you make any written claim that the software infringes or contributes to infringement of any patent, your patent license for the software granted under these terms ends immediately. If your company makes such a claim, your patent license ends immediately for work on behalf of your company.
+第 10 條　終止與回復
 
-## Violations
+  (a) 違反本條款時，本條款授與違反者的權利自動終止。
+  (b) 若違反者在知悉違反後三十日內改正並通知著作權人，授權自改正之日起回復。
+  (c) 對散布原版素材（第 5 條 (e)）或未經授權的商業性使用（第 6 條 (a)），
+      著作權人得拒絕回復。
+  (d) 終止不影響他人依本條款自違反者處善意取得本作品副本的權利，只要他們
+      自己遵守本條款。
 
-The first time you are notified in writing that you have violated any of these terms, or done anything with the software not covered by your licenses, your licenses can nonetheless continue if you come into full compliance with these terms, and take practical steps to correct past violations, within 32 days of receiving notice.  Otherwise, all your licenses end immediately.
+第 11 條　準據法與管轄
 
-## No Liability
+本條款以中華民國（台灣）法律為準據法。因本條款所生的爭議，以臺灣臺北地方
+法院為第一審管轄法院。本條款以繁體中文版本為準；譯本與繁體中文版本有出入時，
+以繁體中文版本為準。
 
-***As far as the law allows, the software comes as is, without any warranty or condition, and the licensor will not be liable to you for any damages arising out of these terms or the use or nature of the software, under any kind of legal claim.***
+第 12 條　與原版權利人的關係
 
-## Definitions
+本作品與原版遊戲各自的權利人沒有隸屬、合作、贊助或授權關係，是獨立的
+第三方保存與研究專案。若原版權利人提出合法的權利主張，著作權人保留調整本
+作品內容的權利。
 
-The **licensor** is the individual or entity offering these terms, and the **software** is the software the licensor makes available under these terms.
+第 13 條　版本
 
-**You** refers to the individual or entity agreeing to these terms.
+著作權人得發布 RRSAL 的新版本（以版號識別，本版為 1.0）。已依某一版本取得的授權，依該版本的條件繼續
+有效；新版本適用於其發布後散布的本作品副本。
 
-**Your company** is any legal entity, sole proprietorship, or other kind of organization that you work for, plus all organizations that have control over, are under the control of, or are under common control with that organization.  **Control** means ownership of substantially all the assets of an entity, or the power to direct its management and policies by vote, contract, or otherwise.  Control can be direct or indirect.
+────────────────────────────────────────────────────────────
+English translation (for convenience; the Chinese text governs)
 
-**Your licenses** are all the licenses granted to you for the software under these terms.
+PREAMBLE. This work is a unofficial clean-room remake and technical-preservation project of Flame Dragon 2: Legend of Golden Castle, made for cultural
+preservation. The copyright holder wants it widely used, discussed and shown,
+while keeping its commercial rights. This license is built accordingly:
+non-commercial use is free and permissive; commercial use is reserved for a
+separate agreement with the copyright holder.
 
-**Use** means anything you do with the software requiring one of your licenses.
+1. DEFINITIONS.
+   (a) "Work" means everything in this repository authored by the copyright
+       holder, including source code, build and packaging scripts, tools,
+       documentation, specifications, disassembly notes, file-format analyses,
+       translations, name tables and revision records, font renderings and
+       theme assets made by the copyright holder, Contributions incorporated
+       under Section 7, and compiled or packaged forms of any of these. Theme
+       assets extracted or converted from Original Assets are not part of the
+       Work; they are Original Assets.
+   (b) "Original Assets" means the original game's executables, data files,
+       artwork, maps, tiles, portraits, music, sound effects, bitmap fonts and
+       game text, and their counterparts in any other platform version.
+       Original Assets belong to the original game's respective rights holders or their respective rights holders.
+   (c) "Modified Version" means any work based on the Work through
+       modification, translation, porting, extension or combination.
+   (d) "Commercial Use" means use aimed at obtaining money or other
+       consideration, directly or indirectly, including without limitation:
+       selling the Work or a Modified Version; offering it for a fee, by
+       subscription or membership; bundling it with goods, hardware or
+       services; adding advertising, in-app purchases or sponsorship
+       placements; using it in the operations, products or services of a
+       for-profit entity; and using it in commercial exhibitions, events or
+       marketing.
+   (e) "Contribution" means anything intentionally submitted to the copyright
+       holder for inclusion in the Work: code, documentation, translations,
+       assets and proposed changes.
+
+2. SCOPE AND EXCLUSIONS.
+   (a) This license applies only to the Work.
+   (b) This license does not apply to Original Assets. The Work does not
+       distribute them; users must supply their own lawfully obtained copy of
+       the original game. The copyright holder claims no rights in Original
+       Assets and cannot license them.
+   (c) For documentation, research and demonstration this repository contains
+       small excerpts that include Original Assets: original-versus-remake comparison screenshots, asset contact sheets, and small font or file-format research extracts. The Original-Asset portions of
+       these excerpts are outside this license and are included for research
+       and commentary. Translations and measured tables authored by the
+       copyright holder are part of the Work and are licensed under these
+       terms to the extent of the copyright holder's rights in them; the
+       translations are derivative of the original text, and using them to
+       run the game still requires the user's own original copy.
+   (d) Third-party components in this repository or its packages (for example
+       Go modules, Ebiten and AppImage runtime components)
+       are provided under their own licenses, which are distributed with them,
+       and are not governed by this license.
+
+3. NON-COMMERCIAL GRANT. Subject to Section 5, anyone may, free of charge and
+   without prior permission:
+   (a) use, run, reproduce and distribute the Work for personal, educational,
+       research, preservation, commentary or other non-commercial purposes;
+   (b) make Modified Versions and distribute them under this license on the
+       same non-commercial condition; whoever distributes a Modified Version
+       agrees to license their own changes to others on the same terms as
+       this license;
+   (c) make translations or language packs and distribute them under this
+       license on the same non-commercial condition.
+
+4. EXPRESSLY PERMITTED SHOWCASE AND COVERAGE. The following are not
+   Commercial Use under Section 1(d) even if they generate income, and are
+   expressly permitted:
+   (a) streaming, recording, broadcasting, reviewing, teaching or reporting
+       on the Work or a Modified Version, including earning advertising
+       revenue, viewer donations or membership income under the ordinary
+       rules of platforms such as YouTube, Twitch or Bilibili;
+   (b) quoting, showing or discussing the Work — including screenshots, code
+       excerpts and documentation — in articles, books, academic papers,
+       talks, exhibitions or courses;
+   (c) showing or providing the Work at preservation, academic, non-profit or
+       community events.
+   Attribution under Section 5(b) applies. The following remain Commercial
+   Use and are not covered by this Section: selling the Work or a Modified
+   Version as the main object of sale; packaging it as a paid product or
+   service; and using it as a marketing tool or demonstration content for
+   other goods, hardware or services.
+
+5. CONDITIONS.
+   (a) Keep this license and the copyright notice in every distribution of
+       the Work or a Modified Version.
+   (b) When publicly distributing, showing or transmitting the Work or a
+       Modified Version, give reasonable and visible credit: the name of the
+       Work, the copyright holder (Wang Chun-Yu / wicanr2), and the original
+       source at https://github.com/wicanr2/fd2_re .
+   (c) When distributing a Modified Version, state clearly that it is
+       modified, what was changed and by whom. Do not imply that it comes
+       from or is endorsed by the copyright holder, and do not use the
+       copyright holder's name or the Work's name in a confusing way.
+   (d) Do not charge for obtaining or using the Work or a Modified Version
+       itself (actual cost of physical media and shipping excepted), and do
+       not exchange them for other consideration. Income permitted by
+       Section 4 is not restricted by this paragraph.
+   (e) Do not distribute Original Assets, and do not bundle them with the
+       Work.
+   (f) Do not remove, obscure or alter copyright, license or attribution
+       notices in the Work.
+   (g) Do not circumvent this license. Works produced by automated
+       conversion, reformatting, rewriting or translation into another
+       programming language remain Modified Versions bound by this license.
+
+6. RESERVED RIGHTS AND COMMERCIAL LICENSING.
+   (a) All rights not expressly granted are reserved. Commercial Use requires
+       prior written permission from the copyright holder.
+   (b) The copyright holder may license the Work to anyone on terms other
+       than this license, including commercial and exclusive terms. Such
+       licenses do not affect non-commercial rights others have already
+       obtained under this license.
+   (c) Commercial enquiries: wicanr2@gmail.com. Enquiries are welcome — this
+       Section exists to keep commercial terms negotiable, not to refuse
+       cooperation.
+
+7. CONTRIBUTIONS.
+   (a) By submitting a Contribution, the contributor grants the copyright
+       holder a perpetual, irrevocable, worldwide, royalty-free,
+       sublicensable license to use, reproduce, modify and distribute the
+       Contribution in any way, and to license it as part of the Work under
+       this license or any other terms, including commercial terms.
+   (b) The contributor warrants that they are entitled to grant that license
+       and that the Contribution contains no unlicensed Original Assets or
+       third-party material.
+   (c) Contributors keep copyright in their Contributions; the copyright
+       holder will credit contributors in the project records where
+       reasonable.
+   (d) Do not submit a Contribution if you do not accept this Section.
+
+8. NAMES. "《炎龍騎士團 2》反向工程與重製", "Flame Dragon 2 Reverse Engineering and Remake" and this
+   repository's name identify the Work. A Modified Version may state that it
+   is based on the Work, but may not use the same or a confusingly similar
+   name as its own name without the copyright holder's written consent.
+
+9. NO WARRANTY; LIMITATION OF LIABILITY. THE WORK IS PROVIDED "AS IS",
+   WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+   TO MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+   TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE COPYRIGHT HOLDER IS NOT LIABLE
+   FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM THE WORK OR ITS USE,
+   NOR FOR THE LAWFULNESS OF THE USER'S ACQUISITION OR USE OF ORIGINAL ASSETS.
+
+10. TERMINATION AND REINSTATEMENT.
+   (a) Rights under this license terminate automatically for anyone who
+       breaches it.
+   (b) If the breach is cured within thirty days of becoming aware of it and
+       the copyright holder is notified, the license is reinstated as of the
+       date of cure.
+   (c) The copyright holder may refuse reinstatement for distributing
+       Original Assets (Section 5(e)) or for unauthorised Commercial Use
+       (Section 6(a)).
+   (d) Termination does not affect the rights of others who received copies
+       of the Work from the breaching party in good faith, as long as they
+       themselves comply with this license.
+
+11. GOVERNING LAW AND VENUE. This license is governed by the laws of the
+   Republic of China (Taiwan). The Taiwan Taipei District Court is the court
+   of first instance for disputes arising from it. The Traditional Chinese
+   text governs; in case of discrepancy, the Traditional Chinese text
+   prevails over any translation.
+
+12. RELATIONSHIP TO THE ORIGINAL RIGHTS HOLDER. The Work is not affiliated
+   with, endorsed, sponsored or licensed by the original game's respective rights holders; it is an independent
+   third-party preservation and research project. The copyright holder
+   reserves the right to adjust the Work's contents in response to a lawful
+   claim by the original rights holder.
+
+13. VERSIONS. The copyright holder may publish new versions of RRSAL
+   (identified by version number; this is version 1.0).
+   Rights obtained under a given version remain governed by that version; a
+   new version applies to copies of the Work distributed after its
+   publication.

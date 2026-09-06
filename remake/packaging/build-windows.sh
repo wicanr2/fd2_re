@@ -7,13 +7,14 @@
 # 桌面版走「cwd 相對 assets/」這條既有 fallback,見 cmd/fd2/assets.go assetPath 第 3 層)。
 set -euo pipefail
 REMAKE_ROOT="$(cd "$(dirname "$0")/.." && pwd -P)"
+VERSION="$(tr -d '\r\n' < "$REMAKE_ROOT/../VERSION")"
 
 # 主機只負責啟動 Docker；清理、編譯、資產組裝、格式檢查與壓縮全部在一次性容器內。
 # packaging/dist 是唯一可寫輸出，原始碼與資產在同一掛載內維持不變。
 docker run --rm --network none \
   --memory 3g --cpus 2 --pids-limit 384 \
   --user "$(id -u):$(id -g)" \
-  -e HOME=/tmp/home -e GOCACHE=/tmp/go-cache \
+  -e HOME=/tmp/home -e GOCACHE=/tmp/go-cache -e FD2_VERSION="$VERSION" \
   -v "$REMAKE_ROOT":/src -v "$REMAKE_ROOT/..":/repo:ro -w /src \
   fd2-build-mingw:latest bash -euo pipefail -c '
     dist=packaging/dist/windows
@@ -23,7 +24,8 @@ docker run --rm --network none \
 
     CGO_ENABLED=1 GOOS=windows GOARCH=amd64 \
       CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ \
-      go build -trimpath -buildvcs=false -ldflags="-s -w -H=windowsgui" \
+      go build -trimpath -buildvcs=false \
+      -ldflags="-s -w -H=windowsgui -X main.buildVersion=$FD2_VERSION" \
       -o "$dist/fd2.exe" ./cmd/fd2
 
     cp -R assets/scenarios/. "$dist/assets/scenarios/"

@@ -1,0 +1,37 @@
+# v.1.0.0-20260907 發行說明
+
+這是《炎龍騎士團 2》潔淨室重製的第一個穩定里程碑。版本字串、Git tag、
+GitHub Release、程式建置資訊、封包檔名與 `dist-all/` 目錄一律使用
+`v.1.0.0-20260907`。
+
+## 可公開附件
+
+- `FD2-v.1.0.0-20260907-linux-x86_64.AppImage`
+- `FD2-v.1.0.0-20260907-windows-x86_64.zip`
+- `FD2-v.1.0.0-20260907-macos-universal.zip`
+- `FD2-v.1.0.0-20260907-promo.mp4`
+- `SHA256SUMS`
+- `MANIFEST.json`
+
+公開附件只包含重製引擎、RRSAL-1.0 授權內容及可公開資料，不包含原版執行檔、
+資料檔、美術、文字、音樂或音效。玩家必須自備合法取得的原版遊戲，依專案工具
+匯入所需資產。
+
+## 本機完整版
+
+`dist-all/v.1.0.0-20260907/full/` 另保存含完整遊戲資料的 Linux AppImage、
+Windows ZIP 與 macOS ZIP。這些封包只供本機／已授權私下使用，manifest 會標示
+`public_distribution: false`，不得加入 Git、GitHub Release 或公開雲端。
+
+## 證據範圍與限制
+
+- 第一輪 60／60 個分層代表性抽樣已達最低門檻，屬 95% 信心的第一輪重製里程碑。
+- 這不代表 DOS 逐像素、逐音訊、逐週期一比一，也不代表從第一戰到終局的未修改
+  長程 `PLAYER-E2` 已逐關重跑。
+- Linux 封包會在隔離顯示環境執行具型別封包自我檢查；Windows 與 macOS 由各自
+  原生 GitHub Actions runner 建置及自我檢查。Windows／macOS 實體操作仍列為
+  發行後抽測項目。
+- 原版音樂對拍影片只留本機，不列入公開附件。
+
+即時技術狀態與分層證據見 [`docs/REMAKE-STATUS.md`](../REMAKE-STATUS.md)；歷史
+版本仍保留在同目錄，不以本頁回寫舊版當時的限制。

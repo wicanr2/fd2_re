@@ -12,13 +12,14 @@
 #   (assetPath 三層查找的 XDG 覆蓋層,見 cmd/fd2/assets.go)。
 set -euo pipefail
 REMAKE_ROOT="$(cd "$(dirname "$0")/.." && pwd -P)"
+VERSION="$(tr -d '\r\n' < "$REMAKE_ROOT/../VERSION")"
 
 # 主機只負責啟動 Docker；檔案清理、編譯、AppDir 組裝、依賴收集、封裝與雜湊
 # 全部在一次性容器內完成。packaging/dist 是唯一可寫輸出。
 docker run --rm --network none \
   --memory 3g --cpus 2 --pids-limit 384 \
   --user "$(id -u):$(id -g)" \
-  -e HOME=/tmp/home -e GOCACHE=/tmp/go-cache -e ARCH=x86_64 \
+  -e HOME=/tmp/home -e GOCACHE=/tmp/go-cache -e ARCH=x86_64 -e FD2_VERSION="$VERSION" \
   -v "$REMAKE_ROOT":/src -v "$REMAKE_ROOT/..":/repo:ro -w /src \
   fd2-build-appimage:latest bash -euo pipefail -c '
     dist=/src/packaging/dist
@@ -30,7 +31,8 @@ docker run --rm --network none \
       "$appdir/usr/share/metainfo" \
       "$appdir/assets/scenarios" "$appdir/assets/story" "$appdir/assets/locales" "$appdir/assets/editor-canonical" /tmp/home /tmp/go-cache /tmp/appimage-work
 
-    CGO_ENABLED=1 go build -trimpath -buildvcs=false -ldflags="-s -w" \
+    CGO_ENABLED=1 go build -trimpath -buildvcs=false \
+      -ldflags="-s -w -X main.buildVersion=$FD2_VERSION" \
       -o "$appdir/usr/bin/fd2" ./cmd/fd2
     install -m 0755 packaging/AppRun "$appdir/AppRun"
     install -m 0644 packaging/fd2.desktop "$appdir/fd2.desktop"

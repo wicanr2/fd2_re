@@ -216,13 +216,16 @@ LV、HP、MP、AP、DP、MV；下方依序為攻擊、法術、物品、待機�
 
 ## Remake 里程碑
 
-**[v0.1.1 操作與呈現修正版](https://github.com/wicanr2/fd2_re/releases/tag/v0.1.1)**提供 Linux、Windows 與 macOS 引擎封包，修正第一關
-隊伍進場時基與全戰役共用的戰場功能選單錨點；完整變更見
-[`v0.1.1 發行說明`](docs/releases/v0.1.1.md)。v0.1.0 的
-[推廣片](https://github.com/wicanr2/fd2_re/releases/tag/v0.1.0)仍保留第一關與四語切換紀錄。公開封包不含原版
-素材；玩家必須自備合法的《炎龍騎士團 2》資料。推廣片實際走正式標題、第一關與
-F4 四語切換，錄製契約與驗收收據見
-[`v0.1.0 推廣片規格`](docs/promo-v0.1.0-spec.md)。
+**v.1.0.0-20260907 第一個穩定里程碑**提供 Linux AppImage、Windows ZIP 與
+macOS universal ZIP。公開封包只含重製引擎與可散布資料；玩家必須自備合法的
+《炎龍騎士團 2》資料。含完整原版遊戲的三平台完整版只保存在本機
+`dist-all/v.1.0.0-20260907/full/`，不加入 Git 或公開 Release。正式附件、雜湊、
+已知限制與權利邊界見
+[`v.1.0.0-20260907 發行說明`](docs/releases/v.1.0.0-20260907.md)。
+
+先前的 [v0.1.1](https://github.com/wicanr2/fd2_re/releases/tag/v0.1.1) 與
+[v0.1.0](https://github.com/wicanr2/fd2_re/releases/tag/v0.1.0)保留為歷史快照；
+舊版推廣片規格見 [`docs/promo-v0.1.0-spec.md`](docs/promo-v0.1.0-spec.md)。
 
 第一輪重製的 60／60 個分層代表性抽樣已符合正式路徑資格；這是 95% 信心的
 第一輪里程碑，不代表 DOS 逐像素、逐音訊或逐週期一比一。詳細分級與限制以進度頁為準。
@@ -232,8 +235,8 @@ F4 四語切換，錄製契約與驗收收據見
   整備、存讀檔與多個戰後節點已接入正式 runtime（多數為 `RUNTIME-E1`）。
 - **戰役後段**：第29／30戰、最終整備、終局文字、角色蒙太奇、20段尾段、定格與
   隊伍回顧已有連續重製端路徑；一般玩家同狀態 `PLAYER-E2` 尚未全部抽驗。
-- **跨平台候選**：Linux AppImage、Windows ZIP、macOS universal DMG／tar.gz 已能
-  建立並通過封包自我檢查，並隨 v0.1.0 公開；Windows／macOS 實體操作仍待驗收。
+- **跨平台交付**：Linux AppImage、Windows ZIP、macOS universal ZIP 以同一完整版號
+  重建並執行封包自我檢查；Windows／macOS 實體操作仍待驗收。
 - **第一輪完成**：戰役／戰間、戰鬥／AI、介面、存檔／持續隊伍、終局／平台五層
   共60格已達最低配額且零完整性錯誤；後續以玩家回報與發行驗收為主。
 
@@ -264,9 +267,10 @@ F4 四語切換，錄製契約與驗收收據見
 ## 授權與商業使用
 
 本倉庫中由專案貢獻者創作的程式碼與文件，依
-[PolyForm Noncommercial 1.0.0](LICENSE) 授權：可在授權條款允許的非商業目的下
-使用、修改及散布。任何商業用途均不在這份非商業授權範圍內，必須事先與
-[儲存庫擁有者](https://github.com/wicanr2)另行取得書面商業授權。
+[復古重製 source-available 授權條款 1.0（RRSAL-1.0）](LICENSE) 授權：非商業
+使用、修改及散布免費；遊戲實況、錄影、評論、教學與平台一般分潤明示允許。
+商業使用須事先與 [儲存庫擁有者](https://github.com/wicanr2)另行取得書面授權，
+貢獻條件與署名要求以完整條款為準。
 
 此授權不涵蓋、也不重新授權原版《炎龍騎士團 2》的名稱、程式、美術、文字、
 音樂、音效或其他資產；這些內容不隨本倉庫散布，權利仍屬其各自權利人。

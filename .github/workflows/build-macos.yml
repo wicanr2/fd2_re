@@ -18,7 +18,7 @@ name: Build macOS Universal
 on:
   workflow_dispatch:
   push:
-    tags: ['v*-mac']
+    tags: ['v.*']
 
 jobs:
   build:
@@ -36,14 +36,14 @@ jobs:
 
       - name: Build arm64 slice(runner 原生架構)
         run: |
-          CGO_ENABLED=1 GOARCH=arm64 go build -trimpath -ldflags="-s -w" \
+          CGO_ENABLED=1 GOARCH=arm64 go build -trimpath -ldflags="-s -w -X main.buildVersion=${{ github.ref_name }}" \
             -o dist_arm64/fd2 ./cmd/fd2
 
       - name: Build amd64 slice(系統 clang 內建 universal 工具鏈,-arch x86_64 跨架構編譯)
         run: |
           CGO_ENABLED=1 GOARCH=amd64 \
           CGO_CFLAGS="-arch x86_64" CGO_LDFLAGS="-arch x86_64" \
-            go build -trimpath -ldflags="-s -w" -o dist_amd64/fd2 ./cmd/fd2
+            go build -trimpath -ldflags="-s -w -X main.buildVersion=${{ github.ref_name }}" -o dist_amd64/fd2 ./cmd/fd2
 
       - name: lipo 合併成 universal binary
         run: |
@@ -79,7 +79,7 @@ jobs:
             <key>CFBundleIdentifier</key><string>tw.wicanr2.fd2re</string>
             <key>CFBundleName</key><string>炎龍騎士團2 重製</string>
             <key>CFBundlePackageType</key><string>APPL</string>
-            <key>CFBundleShortVersionString</key><string>0.1</string>
+            <key>CFBundleShortVersionString</key><string>1.0.0</string>
             <key>CFBundleIconFile</key><string>fd2.icns</string>
             <key>NSHighResolutionCapable</key><true/>
           </dict></plist>
@@ -94,21 +94,24 @@ jobs:
           FD2_PACKAGE_SELF_CHECK=1 \
             "$GITHUB_WORKSPACE/remake/packaging/dist/FD2.app/Contents/MacOS/fd2"
 
-      - name: 產 .dmg(APFS,CI 上直接 hdiutil)+ .tar.gz(雙保險,見 mac-app-cross-pack skill §1.6)
+      - name: 產 .dmg、.tar.gz 與使用者要求的 .zip
         run: |
           cd packaging/dist
           hdiutil create -volname "FD2" -srcfolder FD2.app -ov -format UDZO FD2-mac.dmg
           tar czf FD2-mac.tar.gz FD2.app
-          shasum -a 256 FD2-mac.dmg FD2-mac.tar.gz > FD2-macos-universal.sha256
+          ditto -c -k --sequesterRsrc --keepParent FD2.app FD2-mac.zip
+          shasum -a 256 FD2-mac.dmg FD2-mac.tar.gz FD2-mac.zip > FD2-macos-universal.sha256
           shasum -a 256 -c FD2-macos-universal.sha256
           tar tzf FD2-mac.tar.gz | grep -q 'FD2.app/Contents/Resources/LICENSE'
+          unzip -l FD2-mac.zip | grep -q 'FD2.app/Contents/Resources/LICENSE'
 
       - uses: actions/upload-artifact@v4
         with:
-          name: fd2-macos-universal
+          name: FD2-${{ github.ref_name }}-macos-universal
           path: |
             remake/packaging/dist/FD2-mac.dmg
             remake/packaging/dist/FD2-mac.tar.gz
+            remake/packaging/dist/FD2-mac.zip
             remake/packaging/dist/FD2-macos-universal.sha256
           if-no-files-found: error
 

@@ -4,7 +4,7 @@ name: Build Linux x86_64 AppImage
 on:
   workflow_dispatch:
   push:
-    tags: ['v*-linux']
+    tags: ['v.*']
 
 jobs:
   build:
@@ -54,7 +54,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: fd2-linux-x86_64-appimage
+          name: FD2-${{ github.ref_name }}-linux-x86_64
           path: |
             remake/packaging/dist/FD2-x86_64.AppImage
             remake/packaging/dist/FD2-x86_64.AppImage.sha256

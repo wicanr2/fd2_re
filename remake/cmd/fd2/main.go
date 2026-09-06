@@ -57,6 +57,9 @@ const (
 	storyZoom = 2
 )
 
+// buildVersion 由正式封裝流程以 -ldflags 注入；開發建置維持 dev。
+var buildVersion = "dev"
+
 // MapData 對應 assets/map.json(由 tools/export_engine_assets.py 產生)。
 type MapData struct {
 	W     int   `json:"w"`
@@ -10850,11 +10853,11 @@ func main() {
 		if err := packageSelfCheck(); err != nil {
 			log.Fatal("封裝自我檢查失敗: ", err)
 		}
-		fmt.Println("FD2 封裝自我檢查通過")
+		fmt.Printf("FD2 %s 封裝自我檢查通過\n", buildVersion)
 		return
 	}
 	ebiten.SetWindowSize(logicalW*2, logicalH*2)
-	ebiten.SetWindowTitle("炎龍騎士團2 重製 (fd2_re)")
+	ebiten.SetWindowTitle(fmt.Sprintf("炎龍騎士團2 重製 (fd2_re %s)", buildVersion))
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 	g := loadGame()
 	defer g.closeAudioPlayers()
