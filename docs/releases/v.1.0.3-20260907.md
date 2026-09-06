@@ -1,16 +1,16 @@
-# v.1.0.2-20260907 發行前替代標籤紀錄
+# v.1.0.3-20260907 發行說明
 
-此標籤修正跨平台供應鏈與換行問題，但在建立 GitHub Release 前發現：本機完整版
-同時具有原版 FDOTHER 與現代 action icon 時，renderer 仍會優先顯示原版 overlay。
-標籤保留且不移動；玩家可見修正版是
-[`v.1.0.3-20260907`](v.1.0.3-20260907.md)。以下內容只保存當時規劃。
+這是《炎龍騎士團 2》潔淨室重製的第一個穩定里程碑。它延續前三個保留但未建立
+GitHub Release 的不可移動標籤，修正私人素材邊界、跨平台供應鏈、Windows 換行，
+以及完整原版素材遮蔽現代戰場圖示的問題。版本字串、Git tag、GitHub Release、
+程式建置資訊、封包檔名與 `dist-all/` 目錄一律使用 `v.1.0.3-20260907`。
 
 ## 可公開附件
 
-- `FD2-v.1.0.2-20260907-linux-x86_64.AppImage`
-- `FD2-v.1.0.2-20260907-windows-x86_64.zip`
-- `FD2-v.1.0.2-20260907-macos-universal.zip`
-- `FD2-v.1.0.2-20260907-promo.mp4`
+- `FD2-v.1.0.3-20260907-linux-x86_64.AppImage`
+- `FD2-v.1.0.3-20260907-windows-x86_64.zip`
+- `FD2-v.1.0.3-20260907-macos-universal.zip`
+- `FD2-v.1.0.3-20260907-promo.mp4`
 - `SHA256SUMS`
 - `MANIFEST.json`
 
@@ -20,7 +20,7 @@
 
 ## 本機完整版
 
-`dist-all/v.1.0.2-20260907/full/` 保存真正含完整遊戲資料與現代 runtime 素材的
+`dist-all/v.1.0.3-20260907/full/` 保存真正含完整遊戲資料與現代 runtime 素材的
 Linux AppImage、Windows ZIP 與 macOS universal ZIP。這些封包只供本機／已授權
 私下使用，標示 `public_distribution: false`，不得加入公開 Release。
 
@@ -31,7 +31,7 @@ Linux AppImage、Windows ZIP 與 macOS universal ZIP。這些封包只供本機�
 - `F3`：Sound Blaster／MT-32；`F4`：四種官方語言。
 - `F5`：快速存檔；`F6`：音樂開關；`F9`：快速讀檔；`F12`：除錯資訊。
 - 戰場系統選單仍提供音樂、音效、速度與狀態欄按鈕；現代 HUD 與攻擊／法術／
-  物品／待機圖示須通過 catalog 尺寸及 SHA-256 驗證。
+  物品／待機圖示須通過 catalog 尺寸及 SHA-256 驗證，並在現代主題擁有呈現權。
 
 ## 證據範圍與限制
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"image"
 	"math/rand"
 	"os"
 	"path/filepath"
@@ -13,6 +14,27 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
+
+func TestModernThemeOwnsBattleActionIconPresentation(t *testing.T) {
+	var faithful Game
+	if faithful.usesModernBattleActionIcons() {
+		t.Fatal("faithful theme unexpectedly selected modern action icons")
+	}
+
+	modern := Game{modernStoryPortraits: &modernStoryPortraitSet{
+		battleActionIcons: make([]image.Image, 4),
+	}}
+	if !modern.usesModernBattleActionIcons() {
+		t.Fatal("complete modern action icon set did not own presentation")
+	}
+
+	incomplete := Game{modernStoryPortraits: &modernStoryPortraitSet{
+		battleActionIcons: make([]image.Image, 3),
+	}}
+	if incomplete.usesModernBattleActionIcons() {
+		t.Fatal("incomplete modern action icon set bypassed native overlay")
+	}
+}
 
 func TestNativeActionOffsetXYMatchesFinalOpenFrame(t *testing.T) {
 	offsets, err := fdother.ActionOverlayFrameOffsets(3, false)

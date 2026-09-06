@@ -8590,15 +8590,16 @@ func (g *Game) captureShot(screen *ebiten.Image) {
 	saveShot(screen, g.shotPath)
 }
 
-// drawRing shows the native FDOTHER #2 action overlay when the player has
-// supplied FDOTHER.DAT. The historical PNG ring remains a fail-closed fallback.
+// drawRing shows the native FDOTHER #2 action overlay in the faithful theme.
+// A fully admitted modern theme deliberately bypasses that original overlay so
+// its catalog-verified action icons remain visible in local complete packages.
 func (g *Game) drawRing(screen *ebiten.Image) {
 	if !g.ring || g.m == nil || (g.sel == nil && !g.nativeSystemCursorOverlay) {
 		return
 	}
 	tw, th := g.m.TileW, g.m.TileH
 	ux, uy, _ := g.actionOverlayAnchor(g.sel)
-	if g.drawNativeActionOverlay(screen, ux, uy) {
+	if !g.usesModernBattleActionIcons() && g.drawNativeActionOverlay(screen, ux, uy) {
 		g.markActionOverlayDrawn()
 		return
 	}
@@ -8647,6 +8648,11 @@ func (g *Game) drawRing(screen *ebiten.Image) {
 		screen.DrawImage(ic, op)
 	}
 	g.markActionOverlayDrawn()
+}
+
+func (g *Game) usesModernBattleActionIcons() bool {
+	return g != nil && g.modernStoryPortraits != nil &&
+		len(g.modernStoryPortraits.battleActionIcons) == 4
 }
 
 // actionOverlayAnchor converts the native visible map cursor (or the selected
