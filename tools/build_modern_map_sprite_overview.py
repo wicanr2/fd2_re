@@ -8,6 +8,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
 ORIGINAL = ROOT / "remake/generated-assets/fd2-original-b97caf22/sprites/fdicon"
+ORIGINAL_PALETTE = ROOT / "remake/generated-assets/fd2-original-b97caf22/palette/fdother_000.json"
 MODERN = ROOT / "remake/generated-assets/modern-theme-prototypes"
 OUTPUT = ROOT / "docs/figures/modern-map-sprites-overview.png"
 CATALOG = ROOT / "remake/assets/themes/modern/catalog.json"
@@ -100,7 +101,28 @@ def catalog_groups() -> list[tuple[int, str, int]]:
             for group, frame_count in assets]
 
 
-def load_strip(group: int, modern: bool, frame_count: int, original_root: Path) -> Image.Image:
+def load_original_palette(path: Path) -> list[int]:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    source = data.get("source", {})
+    components = data.get("dac_6bit_components")
+    if data.get("asset_id") != "palette/fdother_000":
+        raise SystemExit(f"unexpected original palette asset: {path}")
+    if source.get("file") != "FDOTHER.DAT" or source.get("resource") != 0:
+        raise SystemExit(f"unexpected original palette source: {path}")
+    if not isinstance(components, list) or len(components) != 768:
+        raise SystemExit(f"unexpected original palette length: {path}")
+    if any(not isinstance(value, int) or value < 0 or value > 63 for value in components):
+        raise SystemExit(f"invalid VGA DAC component: {path}")
+    return [(value << 2) | (value >> 4) for value in components]
+
+
+def load_strip(
+    group: int,
+    modern: bool,
+    frame_count: int,
+    original_root: Path,
+    original_palette: list[int],
+) -> Image.Image:
     strip = Image.new("RGBA", (12 * 72, 72), (0, 0, 0, 0))
     for frame in range(12):
         if frame >= frame_count:
@@ -113,12 +135,18 @@ def load_strip(group: int, modern: bool, frame_count: int, original_root: Path) 
             path = frame_root / "frame.png"
         if not path.is_file():
             raise SystemExit(f"missing sprite frame: {path}")
-        image = Image.open(path).convert("RGBA")
         if not modern:
+            indexed = Image.open(path)
+            if indexed.mode != "P":
+                raise SystemExit(f"original sprite is not indexed: {path}: {indexed.mode}")
+            indexed.putpalette(original_palette)
+            image = indexed.convert("RGBA")
             mask_path = frame_root / "mask.png"
             if not mask_path.is_file():
                 raise SystemExit(f"missing sprite mask: {mask_path}")
             image.putalpha(Image.open(mask_path).convert("L"))
+        else:
+            image = Image.open(path).convert("RGBA")
         if image.size != (24, 24):
             raise SystemExit(f"unexpected frame geometry: {path}: {image.size}")
         strip.alpha_composite(image.resize((72, 72), Image.Resampling.NEAREST), (frame * 72, 0))
@@ -133,23 +161,30 @@ def main() -> None:
         default=ORIGINAL,
         help="原版逐幀參考根目錄；可指向不進 Git 的暫存輸出",
     )
+    parser.add_argument(
+        "--original-palette",
+        type=Path,
+        default=ORIGINAL_PALETTE,
+        help="雜湊固定 FDOTHER #0 的六位元 VGA DAC JSON",
+    )
     args = parser.parse_args()
+    original_palette = load_original_palette(args.original_palette)
     groups = catalog_groups()
     width, height = 1040, 72 + len(groups) * 168 + 32
     canvas = Image.new("RGB", (width, height), "#08152b")
     draw = ImageDraw.Draw(canvas)
     font = ImageFont.load_default()
     draw.text((24, 18), "FD2 MAP SPRITES / ORIGINAL AND MODERN RUNTIME CANDIDATES", fill="#ffe5a0", font=font)
-    draw.text((24, 38), "palette-bound original indexed shapes / modern runtime candidates", fill="#aab8d0", font=font)
+    draw.text((24, 38), "original sprites with FDOTHER #0 representative palette / modern runtime candidates", fill="#aab8d0", font=font)
     y = 72
     for group, label, frame_count in groups:
         draw.text((24, y + 6), f"{group:03d} original", fill="#d9e2f2", font=font)
         draw.text((24, y + 28), label, fill="#7f93b4", font=font)
-        original = load_strip(group, False, frame_count, args.original_root)
+        original = load_strip(group, False, frame_count, args.original_root, original_palette)
         canvas.paste(original, (152, y), original)
         y += 80
         draw.text((24, y + 6), f"{group:03d} modern", fill="#d9e2f2", font=font)
-        modern = load_strip(group, True, frame_count, args.original_root)
+        modern = load_strip(group, True, frame_count, args.original_root, original_palette)
         canvas.paste(modern, (152, y), modern)
         y += 88
     draw.text((24, height - 24), "Flattened overview only; private masters and individual runtime PNG files are not embedded.", fill="#7f93b4", font=font)
