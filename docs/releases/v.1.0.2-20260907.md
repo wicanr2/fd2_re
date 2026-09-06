@@ -1,16 +1,15 @@
-# v.1.0.1-20260907 失敗建置標籤紀錄
+# v.1.0.2-20260907 發行說明
 
-此標籤修正私人素材邊界後，Linux 因上游 `continuous` 工具位元組更新而被鎖定
-雜湊拒絕，Windows 則因 checkout 換行讓 canonical JSON 雜湊失配，未建立 GitHub
-Release。標籤保留且不移動；正式修正版是
-[`v.1.0.2-20260907`](v.1.0.2-20260907.md)。以下內容只保存當時規劃。
+這是《炎龍騎士團 2》潔淨室重製的第一個穩定里程碑，也是 `v.1.0.0-20260907` 私人素材 CI 邊界與 `v.1.0.1-20260907`
+跨平台供應鏈／換行問題修正後的正式發行。版本字串、Git tag、GitHub Release、程式建置
+資訊、封包檔名與 `dist-all/` 目錄一律使用 `v.1.0.2-20260907`。
 
 ## 可公開附件
 
-- `FD2-v.1.0.1-20260907-linux-x86_64.AppImage`
-- `FD2-v.1.0.1-20260907-windows-x86_64.zip`
-- `FD2-v.1.0.1-20260907-macos-universal.zip`
-- `FD2-v.1.0.1-20260907-promo.mp4`
+- `FD2-v.1.0.2-20260907-linux-x86_64.AppImage`
+- `FD2-v.1.0.2-20260907-windows-x86_64.zip`
+- `FD2-v.1.0.2-20260907-macos-universal.zip`
+- `FD2-v.1.0.2-20260907-promo.mp4`
 - `SHA256SUMS`
 - `MANIFEST.json`
 
@@ -20,7 +19,7 @@ Release。標籤保留且不移動；正式修正版是
 
 ## 本機完整版
 
-`dist-all/v.1.0.1-20260907/full/` 保存真正含完整遊戲資料與現代 runtime 素材的
+`dist-all/v.1.0.2-20260907/full/` 保存真正含完整遊戲資料與現代 runtime 素材的
 Linux AppImage、Windows ZIP 與 macOS universal ZIP。這些封包只供本機／已授權
 私下使用，標示 `public_distribution: false`，不得加入公開 Release。
 
@@ -42,3 +41,4 @@ Linux AppImage、Windows ZIP 與 macOS universal ZIP。這些封包只供本機�
 - 原版音樂對拍影片只留本機，不列入公開附件。
 
 即時技術狀態見 [`docs/REMAKE-STATUS.md`](../REMAKE-STATUS.md)。
+
