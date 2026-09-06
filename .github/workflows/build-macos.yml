@@ -61,10 +61,13 @@ jobs:
           cp -r assets/locales/.  "$APP/Contents/Resources/assets/locales/"
           cp -r assets/editor-canonical/. "$APP/Contents/Resources/assets/editor-canonical/"
           cp assets/spells.json   "$APP/Contents/Resources/assets/spells.json"
-          python3 ../tools/sync_modern_theme_private.py --runtime-only \
-            --catalog assets/themes/modern/catalog.json \
-            --source generated-assets/modern-theme-prototypes \
-            --destination "$APP/Contents/Resources/assets/themes/modern"
+          cp assets/themes/modern/catalog.json "$APP/Contents/Resources/assets/themes/modern/catalog.json"
+          if test -d generated-assets/modern-theme-prototypes; then
+            python3 ../tools/sync_modern_theme_private.py --runtime-only \
+              --catalog assets/themes/modern/catalog.json \
+              --source generated-assets/modern-theme-prototypes \
+              --destination "$APP/Contents/Resources/assets/themes/modern"
+          fi
           cp ../LICENSE           "$APP/Contents/Resources/LICENSE"
           test -f "$APP/Contents/Resources/LICENSE"
           ICONSET=packaging/dist/fd2.iconset

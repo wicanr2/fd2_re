@@ -33,10 +33,13 @@ docker run --rm --network none \
     cp -R assets/locales/. "$dist/assets/locales/"
     cp -R assets/editor-canonical/. "$dist/assets/editor-canonical/"
     cp assets/spells.json "$dist/assets/spells.json"
-    python3 /repo/tools/sync_modern_theme_private.py --runtime-only \
-      --catalog /src/assets/themes/modern/catalog.json \
-      --source /src/generated-assets/modern-theme-prototypes \
-      --destination "$dist/assets/themes/modern"
+    cp /src/assets/themes/modern/catalog.json "$dist/assets/themes/modern/catalog.json"
+    if [ -d /src/generated-assets/modern-theme-prototypes ]; then
+      python3 /repo/tools/sync_modern_theme_private.py --runtime-only \
+        --catalog /src/assets/themes/modern/catalog.json \
+        --source /src/generated-assets/modern-theme-prototypes \
+        --destination "$dist/assets/themes/modern"
+    fi
     install -m 0644 /repo/LICENSE "$dist/LICENSE"
     test -f "$dist/LICENSE"
     file "$dist/fd2.exe" | tee packaging/dist/fd2-windows-x86_64.file.txt

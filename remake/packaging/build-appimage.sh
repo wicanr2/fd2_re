@@ -48,10 +48,13 @@ docker run --rm --network none \
     cp -R assets/locales/. "$appdir/assets/locales/"
     cp -R assets/editor-canonical/. "$appdir/assets/editor-canonical/"
     cp assets/spells.json "$appdir/assets/spells.json"
-    python3 /repo/tools/sync_modern_theme_private.py --runtime-only \
-      --catalog /src/assets/themes/modern/catalog.json \
-      --source /src/generated-assets/modern-theme-prototypes \
-      --destination "$appdir/assets/themes/modern"
+    cp /src/assets/themes/modern/catalog.json "$appdir/assets/themes/modern/catalog.json"
+    if [ -d /src/generated-assets/modern-theme-prototypes ]; then
+      python3 /repo/tools/sync_modern_theme_private.py --runtime-only \
+        --catalog /src/assets/themes/modern/catalog.json \
+        --source /src/generated-assets/modern-theme-prototypes \
+        --destination "$appdir/assets/themes/modern"
+    fi
 
     cd /tmp/appimage-work
     /opt/appimage-tools/linuxdeploy.AppImage --appimage-extract-and-run \
