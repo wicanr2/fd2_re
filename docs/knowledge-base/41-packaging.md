@@ -303,7 +303,7 @@ image(`fd2-build-mingw`),並預抓 Go modules、內建`file`／`zip`；正式封
 `CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc`。
 `-ldflags="-H=windowsgui"` 讓正式版雙擊不彈 cmd 黑窗。
 
-產物 `fd2-windows-x86_64.zip`:`fd2.exe` + 已入庫資產(scenarios/story/locales/spells.json)。Windows 沒有
+產物 `fd2-windows-x86_64.zip`：`fd2.exe` + Git 追蹤的 `remake/assets/`。Windows 沒有
 XDG 慣例,桌面版走 `assetPath()` 三層查找的**第 3 層(cwd 相對)**——玩家自備原版產出的資產放在
 `fd2.exe` 旁的 `assets/` 資料夾即可,不強制走 `%USERPROFILE%\.local\share`(該路徑仍是存檔/設定
 的落點,兩者不衝突)。
@@ -344,7 +344,7 @@ build)直接原生編譯。草稿見 `.github/workflows/build-macos.yml`:
 - 因為 Ebiten macOS 後端只吃系統 framework、不依賴第三方 `.dylib`,不需要 SDL2/C++ 老遊戲那套
   `dylibbundler` 打包工序(對照 `mac-app-cross-pack` skill 的 SDL 案例複雜度低很多)。
 - 產 `.dmg`(`hdiutil`,CI 上就是真 macOS,不必走「WSL mkisofs -hfs 土砲」那條路)+ `.tar.gz` 雙保險。
-- 版權資產一樣不 ship,`.app` 內只放 `assets/scenarios`、`assets/story`、`assets/spells.json`;
+- 版權資產一樣不 ship，`.app` 內只精確複製 Git 追蹤的 `remake/assets/`；
   玩家資產一樣走 XDG fallback(見 §1.2)。
 
 ### 4.3 已驗證與仍未驗證項目
@@ -382,3 +382,27 @@ remake/packaging/
   dist/                         建置產物(gitignore,可重跑腳本重建)
 .github/workflows/build-macos.yml   macOS universal binary、bundle自我檢查與封包流程
 ```
+
+## 7. 正式啟動契約（READY，2026-09-07）
+
+`v.1.0.3-20260907` 的實際封包揭露兩個阻斷問題：未設定 `FD2_CAMPAIGN` 時只留下
+預載戰場；標題原版分離素材缺失時，載入錯誤又會讓該戰場直接顯示。這不能視為
+第一關可玩或正常降級。正式啟動必須遵守下列契約：
+
+1. 玩家未提供 `FD2_CAMPAIGN` 時，程式預設載入
+   `assets/scenarios/campaign_full.json`；明確的空值或自訂值仍保留給測試與工具。
+2. 正常順序是原版開頭排程 → 標題選單 → `START` →
+   `story_ch00_handler` → 第 0 章完整對話／演出 → `battle_ch01`。
+3. 標題所需的合法匯入素材缺失或格式錯誤時，正式程式必須顯示阻擋訊息並停止
+   遊戲輸入；不得落入預載戰場，也不得把此狀態宣稱為可玩封包。
+4. 公開封包精確收錄 Git 追蹤的 `remake/assets/`；不得再以手寫子目錄清單遺漏
+   `cutscenes/`、`maps/`、`endings/` 等可散布資料。原版衍生影像與音樂仍由合法
+   原版匯入，不得公開散布。
+5. 本機完整版必須合併可公開資料、執行期分離原版素材及已核准的現代主題；至少
+   驗證標題 `surfaces/`、`palette/`、`animations/`、第 0 章 handler binding、
+   `music_catalog.json` 與標題／第 0 章曲目實檔。
+
+驗收門檻是從三平台封包結構執行資料自我檢查，以及 Linux 本機完整版在未設定
+戰役捷徑的情況下，以正常輸入依序擷取開頭、選單、第 0 章和第一關；音樂須另外
+驗證清冊解析及非靜音播放啟動。原版開場對拍只能使用 dosgolem 的同狀態實際擷取，
+舊 DOSBox 歡迎畫面不得充當原版開場證據。

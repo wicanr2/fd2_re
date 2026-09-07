@@ -74,7 +74,7 @@ func TestPackageSelfCheckUsesMacBundleAndFailsClosed(t *testing.T) {
 	macOS := filepath.Join(bundle, "FD2.app", "Contents", "MacOS")
 	useFakeExecutableDir(t, macOS)
 	resources := filepath.Join(bundle, "FD2.app", "Contents", "Resources")
-	campaignJSON := `{"start":"s","nodes":{"s":{"type":"story","script":"assets/story/ch01.json"}}}`
+	campaignJSON := `{"start":"story_ch00_handler","nodes":{"story_ch00_handler":{"type":"story","script":"assets/story/ch01.json"}}}`
 	writeTestAsset(t, filepath.Join(resources, "assets/scenarios/campaign_full.json"), campaignJSON)
 	spells := make([]map[string]int, 36)
 	for id := range spells {
@@ -96,7 +96,7 @@ func TestPackageSelfCheckUsesMacBundleAndFailsClosed(t *testing.T) {
 	}
 	writeTestAsset(t, filepath.Join(resources, "assets/story/ch01.json"), "{}")
 	writeTestAsset(t, filepath.Join(resources, "assets/scenarios/campaign_full.json"),
-		`{"start":"s","nodes":{"s":{"type":"story","script":"assets/story/missing.json"}}}`)
+		`{"start":"story_ch00_handler","nodes":{"story_ch00_handler":{"type":"story","script":"assets/story/missing.json"}}}`)
 	if err := packageSelfCheck(); err == nil {
 		t.Fatal("packageSelfCheck accepted a missing campaign script")
 	}

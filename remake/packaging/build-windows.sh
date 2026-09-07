@@ -2,7 +2,7 @@
 # build-windows.sh — CGO 跨編 Windows fd2.exe(mingw-w64,docker fd2-build-mingw image)。
 # Ebiten desktop 後端在 Windows 走 win32/DirectX,CGO_ENABLED=1 是硬需求(cgo glfw binding)。
 #
-# 產物只有 binary + 已入庫資產(scenarios/story/locales/editor-canonical/spells.json);其餘版權資產由玩家自跑
+# 產物只有 binary + Git 追蹤的 remake/assets；其餘版權資產由玩家自跑
 # tools/export_engine_assets.py 產生後,放到 exe 旁的 assets/ 資料夾(Windows 無 XDG 概念,
 # 桌面版走「cwd 相對 assets/」這條既有 fallback,見 cmd/fd2/assets.go assetPath 第 3 層)。
 set -euo pipefail
@@ -28,12 +28,7 @@ docker run --rm --network none \
       -ldflags="-s -w -H=windowsgui -X main.buildVersion=$FD2_VERSION" \
       -o "$dist/fd2.exe" ./cmd/fd2
 
-    cp -R assets/scenarios/. "$dist/assets/scenarios/"
-    cp -R assets/story/. "$dist/assets/story/"
-    cp -R assets/locales/. "$dist/assets/locales/"
-    cp -R assets/editor-canonical/. "$dist/assets/editor-canonical/"
-    cp assets/spells.json "$dist/assets/spells.json"
-    cp /src/assets/themes/modern/catalog.json "$dist/assets/themes/modern/catalog.json"
+    python3 /repo/tools/copy_tracked_remake_assets.py --repo /repo --destination "$dist/assets"
     if [ -d /src/generated-assets/modern-theme-prototypes ]; then
       python3 /repo/tools/sync_modern_theme_private.py --runtime-only \
         --catalog /src/assets/themes/modern/catalog.json \

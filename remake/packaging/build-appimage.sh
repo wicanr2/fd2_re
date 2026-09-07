@@ -5,8 +5,7 @@
 # 階段下載並驗證固定 SHA-256，正式封包容器關閉網路且不需要 host FUSE。
 #
 # 打包內容(見 docs/knowledge-base/41-packaging.md「版權資產分離」):
-#   AppDir/assets/ 只放已入庫的可公開內容 —— scenarios/、story/、locales/、
-#   editor-canonical/、spells.json（remake/.gitignore 例外清單）。
+#   AppDir/assets/ 精確複製 Git 追蹤的 remake/assets，不以手寫目錄清單猜測。
 #   maps/sprites/music/portraits/tileset 等 ROM 衍生素材是版權物,不打包進散布物;
 #   玩家自備原版跑 tools/export_engine_assets.py 等,把產出解到 ~/.local/share/fd2_re/assets/
 #   (assetPath 三層查找的 XDG 覆蓋層,見 cmd/fd2/assets.go)。
@@ -43,12 +42,7 @@ docker run --rm --network none \
       "$appdir/usr/share/metainfo/fd2.appdata.xml"
     install -m 0644 /repo/LICENSE "$appdir/LICENSE"
     python3 -c "import xml.etree.ElementTree as ET; ET.parse(\"$appdir/usr/share/metainfo/fd2.appdata.xml\")"
-    cp -R assets/scenarios/. "$appdir/assets/scenarios/"
-    cp -R assets/story/. "$appdir/assets/story/"
-    cp -R assets/locales/. "$appdir/assets/locales/"
-    cp -R assets/editor-canonical/. "$appdir/assets/editor-canonical/"
-    cp assets/spells.json "$appdir/assets/spells.json"
-    cp /src/assets/themes/modern/catalog.json "$appdir/assets/themes/modern/catalog.json"
+    python3 /repo/tools/copy_tracked_remake_assets.py --repo /repo --destination "$appdir/assets"
     if [ -d /src/generated-assets/modern-theme-prototypes ]; then
       python3 /repo/tools/sync_modern_theme_private.py --runtime-only \
         --catalog /src/assets/themes/modern/catalog.json \

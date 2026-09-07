@@ -186,6 +186,9 @@ func packageSelfCheck() error {
 	if err != nil {
 		return fmt.Errorf("載入完整戰役: %w", err)
 	}
+	if graph.Start != "story_ch00_handler" {
+		return fmt.Errorf("完整戰役起點為 %q，應為 story_ch00_handler", graph.Start)
+	}
 	spells, err := battle.LoadSpells(assetPath("assets/spells.json"))
 	if err != nil {
 		return fmt.Errorf("載入法術表: %w", err)
@@ -205,6 +208,9 @@ func packageSelfCheck() error {
 	for _, node := range graph.Nodes {
 		if node.Script != "" {
 			scriptSet[node.Script] = struct{}{}
+		}
+		if node.HandlerBinding != "" {
+			scriptSet[node.HandlerBinding] = struct{}{}
 		}
 	}
 	scripts := make([]string, 0, len(scriptSet))

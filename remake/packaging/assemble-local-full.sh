@@ -23,6 +23,12 @@ if [ ! -d "$payload" ] || [ ! -d "$pack" ] || [ ! -f "$pack/manifest.json" ]; th
   echo "payload、素材包或 manifest.json 不存在" >&2
   exit 2
 fi
+for required in surfaces palette animations; do
+  if [ ! -d "$pack/$required" ]; then
+    echo "素材包缺少執行期目錄 $required；拒絕使用僅供封存的素材包" >&2
+    exit 2
+  fi
+done
 
 head=$(git -C "$root" rev-parse HEAD)
 
@@ -44,6 +50,14 @@ docker run --rm --network none \
     cp -a /payload/. "$target/"
     cp -a /repo/remake/assets/. "$target/assets/"
     cp -a /pack/. "$target/assets/"
+
+    test -f "$target/assets/cutscenes/bindings/ch00_pre.json"
+    test -f "$target/assets/music_catalog.json"
+    test -f "$target/assets/music_fm/FDMUS_010.ogg"
+    test -f "$target/assets/music_fm/FDMUS_018.ogg"
+    test -d "$target/assets/surfaces"
+    test -d "$target/assets/palette"
+    test -d "$target/assets/animations"
 
     cat >"$target/run-fd2-local-full.sh" <<'"'"'EOF'"'"'
 #!/bin/sh

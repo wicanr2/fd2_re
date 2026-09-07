@@ -224,12 +224,13 @@ type Game struct {
 	camp                       *campaign.Runner         // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
 	campSel                    int                      // choice 節點游標
 	// 開頭動畫/主選單(title.go,doc23)
-	titleAssets *titleAssets
-	titlePhase  string  // "scroll"→"menu"→""(進遊戲)
-	scrollY     float64 // 捲動來源列(535→0)
-	titleSel    int
-	titleFlash  int
-	titleTick   int
+	titleAssets    *titleAssets
+	titlePhase     string  // "scroll"→"menu"→""(進遊戲)
+	startupBlocked bool    // 正式標題素材失敗時阻擋輸入，禁止落入預載第一關
+	scrollY        float64 // 捲動來源列(535→0)
+	titleSel       int
+	titleFlash     int
+	titleTick      int
 	// 開場 AFM 過場(title.go cutscene phase)
 	cutIdx   int
 	cutFrame int
@@ -7014,6 +7015,9 @@ func (g *Game) tileAt(idx int) *ebiten.Image {
 
 func (g *Game) Update() error {
 	g.frame++
+	if g.startupBlocked {
+		return nil
+	}
 	g.stepSFXVoices()
 	g.stepActionOverlayLifecycle()
 	g.stepNativeSystemInfoUI()
@@ -7839,6 +7843,13 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			g.drawPlayerHelp(screen)
 		}
 	}()
+	if g.startupBlocked {
+		screen.Fill(color.RGBA{0x12, 0x16, 0x20, 0xff})
+		ebitenutil.DebugPrintAt(screen,
+			"FD2 remake cannot start\nRequired original assets are missing or invalid.\nImport a legal FD2 asset pack, then restart.\n\n"+g.loadErr,
+			24, 32)
+		return
+	}
 	if g.titlePhase != "" {
 		g.drawTitle(screen)
 		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
@@ -10214,6 +10225,7 @@ func loadGame() *Game {
 		ta, err := loadTitleAssets()
 		if err != nil {
 			g.loadErr = err.Error()
+			g.startupBlocked = true
 			return g
 		}
 		g.titleAssets = ta
@@ -10899,6 +10911,7 @@ func main() {
 		fmt.Printf("FD2 %s 封裝自我檢查通過\n", buildVersion)
 		return
 	}
+	applyPackagedPlayerDefaults()
 	ebiten.SetWindowSize(logicalW*2, logicalH*2)
 	ebiten.SetWindowTitle(fmt.Sprintf("炎龍騎士團2 重製 (fd2_re %s)", buildVersion))
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)

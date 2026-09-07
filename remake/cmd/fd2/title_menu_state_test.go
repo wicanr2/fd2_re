@@ -341,8 +341,8 @@ func TestTitleInitializationFailsClosedBeforePublishingState(t *testing.T) {
 	t.Setenv("FD2_ASSET_PACK", t.TempDir())
 	t.Setenv("FD2_MUTE", "1")
 	g := loadGame()
-	if g.loadErr == "" || g.titleAssets != nil || g.titlePhase != "" {
-		t.Fatalf("missing title pack published state: assets=%v phase=%q err=%q", g.titleAssets != nil, g.titlePhase, g.loadErr)
+	if g.loadErr == "" || g.titleAssets != nil || g.titlePhase != "" || !g.startupBlocked {
+		t.Fatalf("missing title pack published state: assets=%v phase=%q blocked=%v err=%q", g.titleAssets != nil, g.titlePhase, g.startupBlocked, g.loadErr)
 	}
 }
 
