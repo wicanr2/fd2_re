@@ -74,3 +74,20 @@ func TestNormalPackagedStartupOwnsTitleAndChapterZero(t *testing.T) {
 		t.Fatalf("START 未揭示第 0 章：phase=%q node=%q beats=%d", g.titlePhase, g.camp.NodeID(), len(g.beats))
 	}
 }
+
+func TestChapterZeroFastForwardReachesFirstBattle(t *testing.T) {
+	t.Setenv("FD2_TITLE", "0")
+	t.Setenv("FD2_MUTE", "1")
+	t.Setenv("FD2_CAMPAIGN", defaultPlayerCampaign)
+	t.Setenv("FD2_ASSET_PACK", filepath.Join("..", "..", "generated-assets", "fd2-original-b97caf22"))
+	g := loadGame()
+	if g.loadErr != "" {
+		t.Fatalf("載入第 0 章：%v", g.loadErr)
+	}
+	if err := g.fastForwardShotCampaign(); err != nil {
+		t.Fatal(err)
+	}
+	if g.camp == nil || g.camp.Node() == nil || g.camp.Node().Type != "battle" || g.camp.NodeID() != "battle_ch01" {
+		t.Fatalf("第 0 章未抵達第一關：node=%q", g.camp.NodeID())
+	}
+}

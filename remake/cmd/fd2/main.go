@@ -1309,6 +1309,26 @@ func (g *Game) fastForwardShotCampaign() error {
 		}
 		switch {
 		case len(g.dialog) > 0:
+			current := g.dialog[len(g.dialog)-1]
+			if current.NativeDialogue != nil {
+				// 原生對話現在具有開框、逐字、分頁與收框四個正式相位。
+				// 快轉仍逐步呼叫相同的 progress 與 input owner；不可再用舊的
+				// dlgAdvance 直接跳過逐字／收框，否則會永遠停在 progress=-1。
+				g.dlgPhase, g.dlgT, g.dlgScrollT = 0, 0, 0
+				if g.nativeDialogueClosingLive {
+					g.stepNativeStoryDialogueProgress()
+					continue
+				}
+				if g.dlgPage >= 0 && g.dlgPage < len(g.nativeDialogueProgressive) &&
+					g.nativeDialogueProgress < len(g.nativeDialogueProgressive[g.dlgPage])-1 {
+					g.stepNativeStoryDialogueProgress()
+					continue
+				}
+				if !g.handleNativeStoryInput(n, nativeStoryInput{enter: true}) {
+					return fmt.Errorf("shot fast-forward native dialogue input rejected at node=%q beat=%d", g.camp.Cur, g.beatIdx)
+				}
+				continue
+			}
 			// 逐頁、逐句重播 Enter 的狀態轉移；不可直接清空長句，否則
 			// 截圖雖然前進，卻無法證明對白腳本與頁數已被消費。
 			g.dlgScrollT = 0
@@ -1457,7 +1477,11 @@ func (g *Game) fastForwardShotCampaign() error {
 			return fmt.Errorf("shot fast-forward stuck at node=%q beat=%d", g.camp.Cur, g.beatIdx)
 		}
 	}
-	return errors.New("shot fast-forward exceeded campaign step bound")
+	return fmt.Errorf(
+		"shot fast-forward exceeded campaign step bound: node=%q beat=%d dialog=%d page=%d progress=%d opening=%d closing=%d closing_live=%v",
+		g.camp.Cur, g.beatIdx, len(g.dialog), g.dlgPage, g.nativeDialogueProgress,
+		len(g.nativeDialogueOpening), len(g.nativeDialogueClosing), g.nativeDialogueClosingLive,
+	)
 }
 
 // beatStart 依原語種類啟動目前這一拍(狀態掛到 g.camPan/g.storyWalks/g.dialog/g.actJob/
