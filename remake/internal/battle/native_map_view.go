@@ -172,12 +172,28 @@ func (s *State) MoveNativeMapCursor(dx, dy int) (moved, ok bool) {
 //
 // unitX／unitY 是這一步**開始前**單位所在的格。
 func (s *State) AdvanceNativeMapWalkStepView(unitX, unitY, dx, dy int) bool {
-	if s == nil || !s.HasNativeMapViewState || absInt(dx)+absInt(dy) != 1 {
+	if s == nil || !s.HasNativeMapViewState {
 		return false
 	}
-	view := s.NativeMapViewState
-	if err := validateNativeMapView(view, s.W, s.H); err != nil {
+	view, ok := AdvanceNativeMapWalkStepViewState(s.NativeMapViewState, s.W, s.H, unitX, unitY, dx, dy)
+	if !ok {
 		return false
+	}
+	s.NativeMapViewState = view
+	return true
+}
+
+// AdvanceNativeMapWalkStepViewState 是同一條規則的純函式版本。劇情走位的視圖
+// 不在 battle.State 裡（LOADCH 場景只有 storyNativeMapView），但走的是同一個
+// 0x13185 家族，不能各自再寫一份分支。
+func AdvanceNativeMapWalkStepViewState(
+	view NativeMapViewState, width, height, unitX, unitY, dx, dy int,
+) (NativeMapViewState, bool) {
+	if absInt(dx)+absInt(dy) != 1 {
+		return view, false
+	}
+	if err := validateNativeMapView(view, width, height); err != nil {
+		return view, false
 	}
 	relativeX, relativeY := unitX-view.CameraX, unitY-view.CameraY
 	switch {
@@ -188,7 +204,7 @@ func (s *State) AdvanceNativeMapWalkStepView(unitX, unitY, dx, dy int) bool {
 			view.CameraY--
 		}
 	case dy > 0: // 0x12EAA：unitY-camY <= 5 或鏡頭已到底 → 移可見游標
-		if relativeY <= 5 || view.CameraY == s.H-nativeMapViewHeight {
+		if relativeY <= 5 || view.CameraY == height-nativeMapViewHeight {
 			view.VisibleCursorY++
 		} else {
 			view.CameraY++
@@ -200,7 +216,7 @@ func (s *State) AdvanceNativeMapWalkStepView(unitX, unitY, dx, dy int) bool {
 			view.CameraX--
 		}
 	case dx > 0: // 0x13315
-		if relativeX <= 10 || view.CameraX == s.W-nativeMapViewWidth {
+		if relativeX <= 10 || view.CameraX == width-nativeMapViewWidth {
 			view.VisibleCursorX++
 		} else {
 			view.CameraX++
@@ -208,11 +224,10 @@ func (s *State) AdvanceNativeMapWalkStepView(unitX, unitY, dx, dy int) bool {
 	}
 	view.CursorX += dx
 	view.CursorY += dy
-	if err := validateNativeMapView(view, s.W, s.H); err != nil {
-		return false
+	if err := validateNativeMapView(view, width, height); err != nil {
+		return view, false
 	}
-	s.NativeMapViewState = view
-	return true
+	return view, true
 }
 
 // JumpNativeMapCursor 重現 `0x149F8..0x14B16`：直接把絕對游標設到指定格，

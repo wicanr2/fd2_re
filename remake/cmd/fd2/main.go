@@ -772,7 +772,7 @@ func (g *Game) stepStoryWalks() {
 			// 0x13185 與後續 0x15F84 共用同一組相機全域。scroll_step
 			// 完成後必須先發布最後一格 view，再讓 dialog 預建 indexed
 			// 背景；否則畫面會錯用 STEP 前的 LOADCH/PAN snapshot。
-			if w.scrollFollow && !g.syncStoryNativeMapScrollView() {
+			if w.scrollFollow && !g.syncStoryNativeMapScrollView(w) {
 				g.storyWalks = nil
 				return
 			}
@@ -856,18 +856,79 @@ func (g *Game) stepTransitionReveal() {
 // 在恆等式成立時才碰巧一致，而 0x149F8 只寫游標，恆等式會合法地被打破。
 // 收據：docs/data/ui-traces/fd2-story-pan-cursor-20260909.json。
 func (g *Game) syncStoryNativeMapPanView() bool {
-	return g.syncStoryNativeMapCameraMove(true)
+	return g.publishStoryNativeMapView(func(view battle.NativeMapViewState) (battle.NativeMapViewState, bool) {
+		cameraX, cameraY := int(g.camX)/g.m.TileW, int(g.camY)/g.m.TileH
+		view.CursorX += cameraX - view.CameraX
+		view.CursorY += cameraY - view.CameraY
+		view.CameraX, view.CameraY = cameraX, cameraY
+		return view, true
+	})
 }
 
 // syncStoryNativeMapScrollView 發布 0x13185（劇情走行捲動）整段走完之後的視圖。
-// 0x13185 讓絕對游標跟著走行單位一步一格，鏡頭吸收窗外的部分、可見游標吸收
-// 窗內的部分。重製端目前只在整段結束時發布一次，並沿用可見游標由鏡頭反推
-// 游標；那條反推沒有寫入端證據，開放項目見知識庫 104。
-func (g *Game) syncStoryNativeMapScrollView() bool {
-	return g.syncStoryNativeMapCameraMove(false)
+//
+// 0x13185 家族一格寫一次：絕對游標一定跟著走行單位動一格，另外二選一——單位
+// 還在安全帶內（`unitY - camY >= 2`，或鏡頭已到邊界）就動可見游標，否則捲鏡頭
+// 一格。三者的關係不是 `cursor = camera + visible` 反推得出來的：ch00_pre 的
+// 15 格捲動在原版走完之後是 camera_y 34→20、cursor_y 34→19、visible_y 0→-1
+// （收據 docs/data/ui-traces/fd2-story-pan-cursor-20260909.json，抓幀邊界在
+// 0x11CAC，整段捲動一次都沒進去，所以只取得端點），反推會少算第一格那次
+// 可見游標位移，把游標停在 20。
+//
+// 因此這裡逐格套用同一條規則（battle.AdvanceNativeMapWalkStepViewState），
+// 再核對逐格算出來的鏡頭與插值走完的鏡頭一致；不一致就失敗即關閉，不從兩個
+// 答案裡挑一個。
+func (g *Game) syncStoryNativeMapScrollView(w *storyWalkJob) bool {
+	if g == nil || w == nil {
+		return true
+	}
+	dx, dy := w.toX-w.fromX, w.toY-w.fromY
+	if (dx != 0 && dy != 0) || (dx == 0 && dy == 0) {
+		g.loadErr = fmt.Sprintf(
+			"native story map view: 走行捲動只支援單軸整段，(%d,%d)→(%d,%d)",
+			w.fromX, w.fromY, w.toX, w.toY)
+		return false
+	}
+	stepX, stepY := sgnInt(dx), sgnInt(dy)
+	return g.publishStoryNativeMapView(func(view battle.NativeMapViewState) (battle.NativeMapViewState, bool) {
+		x, y := w.fromX, w.fromY
+		for x != w.toX || y != w.toY {
+			next, ok := battle.AdvanceNativeMapWalkStepViewState(
+				view, g.m.W, g.m.H, x, y, stepX, stepY)
+			if !ok {
+				g.loadErr = fmt.Sprintf(
+					"native story map view: 走行捲動第 (%d,%d) 格的視圖更新被拒絕", x, y)
+				return view, false
+			}
+			view = next
+			x, y = x+stepX, y+stepY
+		}
+		cameraX, cameraY := int(g.camX)/g.m.TileW, int(g.camY)/g.m.TileH
+		if view.CameraX != cameraX || view.CameraY != cameraY {
+			g.loadErr = fmt.Sprintf(
+				"native story map view: 逐格鏡頭 (%d,%d) 與插值鏡頭 (%d,%d) 不一致",
+				view.CameraX, view.CameraY, cameraX, cameraY)
+			return view, false
+		}
+		return view, true
+	})
 }
 
-func (g *Game) syncStoryNativeMapCameraMove(cursorFollowsCamera bool) bool {
+func sgnInt(v int) int {
+	switch {
+	case v > 0:
+		return 1
+	case v < 0:
+		return -1
+	}
+	return 0
+}
+
+// publishStoryNativeMapView 是劇情／戰鬥事件共用的視圖發布邊界：取出目前追蹤
+// 的六個全域，交給 advance 依各自的原版家族算出新值，再原子地發布。
+func (g *Game) publishStoryNativeMapView(
+	advance func(battle.NativeMapViewState) (battle.NativeMapViewState, bool),
+) bool {
 	if g == nil {
 		return true
 	}
@@ -887,15 +948,10 @@ func (g *Game) syncStoryNativeMapCameraMove(cursorFollowsCamera bool) bool {
 	if !g.hasStoryNativeMapView {
 		view = g.st.NativeMapViewState
 	}
-	cameraX, cameraY := int(g.camX)/g.m.TileW, int(g.camY)/g.m.TileH
-	if cursorFollowsCamera {
-		view.CursorX += cameraX - view.CameraX
-		view.CursorY += cameraY - view.CameraY
-	} else {
-		view.CursorX = cameraX + view.VisibleCursorX
-		view.CursorY = cameraY + view.VisibleCursorY
+	view, ok := advance(view)
+	if !ok {
+		return false
 	}
-	view.CameraX, view.CameraY = cameraX, cameraY
 	carrier := &battle.State{W: g.m.W, H: g.m.H}
 	if err := carrier.MaterializeNativeMapViewState(view); err != nil {
 		g.loadErr = "native story map view: " + err.Error()

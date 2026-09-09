@@ -95,8 +95,8 @@
 `nativeMapFocusVisibleSeed` 把 `cursor − camera` 夾回視窗。四項錯誤訊息也各自
 分開（欄位太小／鏡頭出界／游標出界／可見游標出界），失敗時直接指出是哪一項。
 
-劇情 pan 的規則見下一節；走行捲動 `0x13185` 整段結束時的發布仍是反推，
-是目前這個家族唯一還沒有寫入端證據的一處。
+劇情 pan 與走行捲動的規則見下面兩節，兩者現在都由寫入端的規則產生，
+不再由 `cursor = camera + visible` 反推。
 
 ## 字串盤點的 review 怎麼跟上行號漂移
 
@@ -233,3 +233,34 @@ dosgolem 收據 [fd2-story-pan-cursor-20260909.json](../data/ui-traces/fd2-story
 **只數 FirstFrames 推進的次數**：`beginFirstFrames` 先推一次，之後 frame 1→68
 再推 67 次，合計 68。這是演出自己的迴圈保證的，與 pan 的時序無關；斷言的內容
 沒變（相位不被重設、每張推一次），但不再把時序寫成常數。
+
+## 走行捲動：三個全域各走各的
+
+`0x13185` 家族（下／左／上／右分別是 `0x12EAA`／`0x1300D`／`0x13185`／`0x13315`）
+一格寫一次：**絕對游標一定跟著走行單位動一格**，另外二選一——單位還在安全帶內
+（上是 `unitY - camY >= 2`，或鏡頭已到邊界）就動可見游標，否則捲鏡頭一格。
+判準是單位自己的相對列（`0x131DE` 的 `unitY - [0x53AAD]`），不是已存的可見游標。
+
+序章 `scroll_step`（`0x32351` 對 slot2 呼叫 15 次，緊接在 ACT99 把索爾從 Y42
+移到 Y36 之後）在原版走完是：
+
+| | 之前 | 之後 | 差 |
+|---|---|---|---|
+| camera_y | 34 | 20 | −14 |
+| cursor_y | 34 | 19 | −15 |
+| visible_y | 0 | −1 | −1 |
+
+逐格套用上面的規則會走出同一組端點：第一格 `unitY - camY = 2` 走可見游標，
+之後相對列一直是 1，每一格都捲鏡頭；絕對游標 15 格都跟著單位。
+`cursor = camera + visible` 反推會少算第一格那次可見游標位移，把游標停在 20。
+
+收據 [fd2-story-pan-cursor-20260909.json](../data/ui-traces/fd2-story-pan-cursor-20260909.json)
+的抓幀邊界設在 `0x11CAC`，而走行重繪不走那條路徑（地形＋單位＋前景，見
+[99](99-move-confirm-cursor-20260909.md)），所以整段捲動一次都沒被抓到——
+取得的是端點，不是逐格。逐格的部分由直接指令與
+`TestAdvanceNativeMapWalkStepViewMatchesCh00PreScroll` 用同一組端點閉合。
+
+重製端因此把 `syncStoryNativeMapScrollView` 改成逐格套用
+`battle.AdvanceNativeMapWalkStepViewState`（與戰鬥走行共用同一份實作，不再各寫
+一份分支），再核對逐格算出來的鏡頭與插值走完的鏡頭一致；不一致就失敗即關閉，
+不從兩個答案裡挑一個。

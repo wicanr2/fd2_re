@@ -565,8 +565,15 @@ func TestBeatScrollStepSlot2MatchesCh00ACT99Followup(t *testing.T) {
 	if g.camY != 20*24 {
 		t.Fatalf("0x13185 safe-band camera=%v, want original cam row 20", g.camY)
 	}
-	if g.storyNativeMapView.CameraY != 20 || g.storyNativeMapView.CursorY != 20 {
-		t.Fatalf("0x13185 published native story view=%+v, want camera/cursor row 20", g.storyNativeMapView)
+	// 原版走完這 15 格的三個全域：camera_y 34→20、cursor_y 34→19、
+	// visible_y 0→-1。第一格 `unitY - camY = 2` 走可見游標，之後每一格捲鏡頭，
+	// 而絕對游標 15 格都跟著單位。收據
+	// docs/data/ui-traces/fd2-story-pan-cursor-20260909.json（端點；抓幀邊界在
+	// 0x11CAC，走行重繪不走那條路徑，所以中間沒有取樣）。
+	wantView := battle.NativeMapViewState{CameraY: 20, CursorY: 19, VisibleCursorY: -1}
+	if g.storyNativeMapView != wantView {
+		t.Fatalf("0x13185 published native story view=%+v, want %+v",
+			g.storyNativeMapView, wantView)
 	}
 }
 

@@ -1011,4 +1011,6 @@ START 走完序章取到三次 pan 共 126 格逐格對上，收據見
 （`fdother.ActionOverlayOrigin`／`ActionOverlaySnapshotOrigin`、
 `native_unit_present`、`native_command_heal_presentation`）；`native_current_save`
 另有存檔標頭的 byte 範圍與恆等式閘門。
-走行捲動 `0x13185` 整段結束時的發布仍是 `cursor = camera + visible` 反推，未閉合。
+走行捲動 `0x13185` 家族的發布也改成逐格套用寫入端規則，與戰鬥走行共用
+`battle.AdvanceNativeMapWalkStepViewState`；序章 15 格捲動的端點
+（camera_y 34→20、cursor_y 34→19、visible_y 0→−1）由同一份收據背書。

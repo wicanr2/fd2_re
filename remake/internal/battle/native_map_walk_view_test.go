@@ -127,3 +127,32 @@ func TestAdvanceNativeMapWalkStepViewLeavesViewport(t *testing.T) {
 		t.Fatal("出界的可見游標被判成視窗內")
 	}
 }
+
+// TestAdvanceNativeMapWalkStepViewMatchesCh00PreScroll 用原版收據的端點釘住整段
+// 走行捲動。dosgolem 收據 docs/data/ui-traces/fd2-story-pan-cursor-20260909.json
+// 的抓幀邊界在 0x11CAC，而走行重繪不走那條路徑，所以整段捲動一次都沒被抓到；
+// 取得的是端點：序章 pan 到 (3,34) 之後 scroll_step 15 格，走完是
+// camera_y 34→20、cursor_y 34→19、visible_y 0→-1。
+//
+// 逐格套用 0x13185 的規則會走出同一組端點：主角在 (8,36)，第一格
+// `unitY - camY = 2` 走可見游標，之後 `unitY - camY = 1` 每一格都捲鏡頭，
+// 合計 1 次可見 + 14 次鏡頭，而絕對游標 15 格都跟著單位。
+func TestAdvanceNativeMapWalkStepViewMatchesCh00PreScroll(t *testing.T) {
+	const mapW, mapH = 18, 51 // map32
+	view := NativeMapViewState{CameraX: 3, CameraY: 34, CursorX: 3, CursorY: 34}
+	unitX, unitY := 8, 36
+	for step := 0; step < 15; step++ {
+		next, ok := AdvanceNativeMapWalkStepViewState(view, mapW, mapH, unitX, unitY, 0, -1)
+		if !ok {
+			t.Fatalf("第 %d 格被拒絕：view=%+v unit=(%d,%d)", step, view, unitX, unitY)
+		}
+		view, unitY = next, unitY-1
+	}
+	want := NativeMapViewState{
+		CameraX: 3, CameraY: 20, CursorX: 3, CursorY: 19,
+		VisibleCursorX: 0, VisibleCursorY: -1,
+	}
+	if view != want {
+		t.Fatalf("走完 15 格 view=%+v，原版收據 %+v", view, want)
+	}
+}

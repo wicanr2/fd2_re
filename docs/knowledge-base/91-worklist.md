@@ -69,8 +69,12 @@
 - 動畫引擎的 pan 是通用指令，四個發動點（beat `pan`、battle event `pan`、
   回合登場演出、截圖快轉）共用同一個 `camPanJob`，天空之鑰的專用 pan 逐格走同一條
   規則且終點預檢已對齊。仍是重製端自訂的：`frames` 模式的節奏（原版每格一幀）。
-- 待查：`0x13185` 走行捲動整段結束時的視圖發布仍是反推（`cursor = camera + visible`），
-  是這個家族最後一處沒有寫入端證據的地方。
+- RE-CLOSED／RUNTIME-E1：走行捲動 `0x13185` 家族的視圖發布也改成逐格套用寫入端規則
+  （絕對游標跟著單位一格，另外二選一：安全帶內動可見游標、否則捲鏡頭一格），
+  與戰鬥走行共用 `battle.AdvanceNativeMapWalkStepViewState`。序章 15 格捲動在原版
+  走完是 camera_y 34→20、cursor_y 34→19、visible_y 0→−1，逐格套用會走出同一組端點；
+  舊的 `cursor = camera + visible` 反推少算第一格那次可見游標位移，把游標停在 20。
+  這個家族至此沒有反推剩下。
 - RE-CLOSED／RUNTIME-E1：地圖走行每格是**六幀**，跨格提交與下一段的第一拍
   同幀，中間沒有 `+4 = 0`；只有整段抵達才是 pose 0／`+4` 0。`stepBattleWalk`
   已照這個契約改（`nativeMapGridMotionFrames = 6`、位移分母 6、第七次呼叫
