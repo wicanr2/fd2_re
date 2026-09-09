@@ -1,8 +1,34 @@
 # 91 — FD2 remake 有效工作佇列與歷史工作記錄
 
-> 2026-09-08 最新交接：使用者要求暫停自動對拍，其餘人工測試；v.1.0.19 完整包與本輪修正／未通過項目以 [94](94-ch01-town-parity-20260908.md) 為準，不宣稱開場至城鎮雙側驗收完成。
+> 2026-09-09 最新交接：2026-09-08 的未提交工作已收成三個 commit，工作樹清空；
+> 回歸基線固定於 [`regression-baseline-20260909.json`](../data/regression-baseline-20260909.json)
+> （完整素材根下 39 項已知失敗）。後續回歸以**與該清單的差異**判讀，不以總數判讀。
+> v.1.0.19 完整包與各項驗證狀態仍以 [94](94-ch01-town-parity-20260908.md) 為準，
+> 不宣稱開場至城鎮雙側驗收完成。
 
-2026-09-08 目前有效前沿（取代下列舊輪次）：
+2026-09-09 目前有效前沿（取代下列舊輪次）：
+
+- RE-CLOSED／RUNTIME-E1：指令環的選取提示是**閃爍**（`sub_179D5` 0x17A60..0x17A8B
+  ＋ `sub_17898` 0x178BF..0x178F8），方向鍵只接受 availability 為零的方向
+  （`sub_177FC` 0x17835..0x17897），起始選擇由 `sub_173E7` 決定。三項已接線並以
+  一般玩家路徑實拍驗證，證據見 [95](95-action-overlay-selection-20260908.md)。
+- RUNTIME-E1：回合橫幅先前被 `drawNativeMapFrame` 的整幀 blit 蓋掉，已移到其後。
+  橫幅本身仍是重製端近似呈現，原版回合字樣未解出。
+- 對拍工具鏈：原版側執行器改為 dosgolem `apps/fd2/cmd/oracle`，由受版控的
+  `tools/dosgolem_oracle.sh` 驅動；規則與缺口見
+  [96](96-parity-toolchain-20260909.md)。
+- **BLOCKED**：dosgolem 尚未繪製戰場單位 sprite。人物面向、戰鬥動畫、移動殘影
+  這三題在補上該能力之前拿不到原版收據；不可用 DOSBox 圖片替代。
+- 待查：開場無法以 ESC 跳過（`campInput` 的 story／cutscene 分支不收 Escape，
+  逐字期間 Enter 也不補完整句；實測從標題到第一關需 490–560 次 Enter／約 175 秒）。
+  是否加入跳過，要先用 oracle 確認原版有沒有這個能力。
+- 待查：對話觸發時的畫面位移與黑邊。`nativeMapFrameAdmission` 在 `legacyViewport`
+  為真時回 false，世界層從原生整幀切到正規化管線；原版視窗恆為 312×192 置於
+  (4,4)，位移量待實拍定量。
+- 待查：戰鬥後的傷害數字。`battle.attack.hit` 的 `source_string_id` 指向重製端
+  自己的 Go 原始碼，沒有 FDTXT 出處。
+
+2026-09-08 前沿（部分已被上列取代）：
 
 - RUNTIME-E1：普通物理 EXP 整數來源／寫回已修，v.1.0.14 普通操作已越過首次攻擊。
 - RUNTIME-E1：JOIN 先於登場的永久名冊來源已修，逐動作與長鏈回歸通過；
