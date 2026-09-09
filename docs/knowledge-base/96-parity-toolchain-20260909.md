@@ -54,6 +54,35 @@ tools/dosgolem_oracle.sh /tmp/fd2-oracle-run plan.jsonl
 `until: units_present` 要小心：單位陣列在開場就已經有內容，它判斷不了
 「已經進戰場」。
 
+## 逐幀擷取
+
+從狀態層判斷畫面不準：座標、姿態、動作三個欄位可以連續且正確，畫面上仍然
+多畫或少畫東西。逐幀擷取讓「多畫了什麼」直接看得到。
+
+mode13 沒有換頁這個動作——程式直接畫進 `0xA0000`——所以一幀的邊界得自己定。
+原版**開機之後完全不再讀 `0x3DA`**（讀取數從第一張到最後一張都是 519），
+沒有垂直回掃可以掛。實測三種取樣方式：
+
+| 方式 | 設定 | 結果 |
+|---|---|---|
+| 只看內容變化 | `stride 2000`、`settle 0` | 每 2 千指令就變一次，寫滿上限；多半是畫到一半的半成品 |
+| 遊戲自己的繪圖進入點 | `frame-eip 0x11CAC` | 間隔中位數 129998 指令，極穩定；但**移動動畫期間完全不進入這個位址** |
+| 取樣加穩定閘門 | `stride 2000`、`settle 4` | 移動視窗取到 15 張，間隔同樣約 13 萬指令，正好對上每格六個 motion 加抵達 |
+
+所以**原版一幀約 13 萬指令**（虛擬 130 毫秒），而且不必知道繪圖進入點：
+`settle` 要求內容連續相同幾次才寫出，就能把半成品濾掉、把幀節奏取回來。
+收據見
+[fd2-frame-boundary-20260909.json](../data/ui-traces/fd2-frame-boundary-20260909.json)。
+
+```sh
+FD2_ORACLE_FRAMES=1 FD2_ORACLE_FRAME_STRIDE=2000 FD2_ORACLE_FRAME_SETTLE=4 FD2_ORACLE_FRAME_FROM=189400000 FD2_ORACLE_FRAME_TO=191600000 FD2_ORACLE_FRAME_MAX=600   tools/dosgolem_oracle.sh /tmp/fd2-frames plan.jsonl
+```
+
+輸出是 `<輸出目錄>/frames/frame-NNNNNN.png` 加一份 `frames.jsonl`，每列帶指令
+數、EIP、畫面內容的 sha256、視圖全域、單位陣列基底與數量，以及 `0x3DA` 讀取
+數與調色盤寫入數。`FD2_ORACLE_FRAME_EIP` 可改用遊戲自己的繪圖進入點；
+`FROM`／`TO`／`MAX` 把輸出限在要看的那一段。
+
 每個控制邊界輸出一組 `checkpoint-NNNN.png`（320×200 索引畫面）與
 `checkpoint-NNNN.json`。JSON 帶 `runner`、`input_kind`、`state_injections`、
 指令步數、`eip`、暫存器，以及：

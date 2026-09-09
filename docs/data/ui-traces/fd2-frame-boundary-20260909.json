@@ -1,0 +1,299 @@
+{
+ "schema_version": 1,
+ "kind": "fd2_original_runtime_receipt",
+ "topic": "原版一幀的邊界，以及逐幀擷取的三種取樣方式",
+ "date": "2026-09-09",
+ "runner": "dosgolem apps/fd2/cmd/oracle",
+ "dosgolem_commit": "09aca58",
+ "driver": "tools/dosgolem_oracle.sh",
+ "executable": {
+  "file": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+ },
+ "entry": {
+  "path": "標題選單 right,down,down,enter 後由隨遊戲附帶的 FD2.SAV 進入第一關，選單位並確認移動兩格",
+  "evidence_grade": "RUNTIME 觀測；入口為附帶存檔",
+  "state_injections": [],
+  "input_kind": "normal BIOS keys"
+ },
+ "arms": {
+  "content_change_only": {
+   "settings": {
+    "frame_stride": 2000,
+    "frame_settle": 0,
+    "frame_max": 2000
+   },
+   "frames_written": 2000,
+   "port_3da_reads_first": 519,
+   "port_3da_reads_last": 519,
+   "note": "每 2 千指令內容就變一次，寫滿上限；直接畫進 0xA0000 的程式在取樣點多半畫到一半"
+  },
+  "game_draw_entry": {
+   "settings": {
+    "frame_eip": "0x11CAC",
+    "frame_stride": 0,
+    "frame_max": 3000
+   },
+   "frames_written": 961,
+   "median_step_gap": 129998,
+   "first_step": 55180408,
+   "last_step": 189650367,
+   "note": "間隔極穩定，約 13 萬指令一次；但移動動畫期間完全不再進入這個位址"
+  },
+  "settled_sampling": {
+   "settings": {
+    "frame_stride": 2000,
+    "frame_settle": 4,
+    "frame_from": 189400000,
+    "frame_to": 191600000,
+    "frame_max": 600
+   },
+   "frames_written": 15,
+   "frames": [
+    {
+     "index": 0,
+     "step": 189408000,
+     "eip": "0x4DD2B",
+     "cursor": [
+      8,
+      14
+     ],
+     "visible": [
+      7,
+      1
+     ],
+     "indexed_sha256": "2daacdac8d162c19fb43fecf745c7f9d7ce1f91d979c28798bb3cdd92996ea88"
+    },
+    {
+     "index": 1,
+     "step": 189618000,
+     "eip": "0x4E2AD",
+     "cursor": [
+      8,
+      14
+     ],
+     "visible": [
+      7,
+      1
+     ],
+     "indexed_sha256": "34bcff3d89037a49e73faf5da8ba538dc989d8e5c29ec96fdcb4c7f5093d314a"
+    },
+    {
+     "index": 2,
+     "step": 189784000,
+     "eip": "0x4DEF7",
+     "cursor": [
+      8,
+      16
+     ],
+     "visible": [
+      7,
+      2
+     ],
+     "indexed_sha256": "0d6c8613bea641f5aaa11eedeff7cf04e65dcab7e4bb82010f51383eefe513be"
+    },
+    {
+     "index": 3,
+     "step": 189916000,
+     "eip": "0x4DF02",
+     "cursor": [
+      8,
+      16
+     ],
+     "visible": [
+      7,
+      2
+     ],
+     "indexed_sha256": "1df240a0c8429c9d2cf149d586a0991d25d19cbf2ee34d5ec0125337672e41b3"
+    },
+    {
+     "index": 4,
+     "step": 190046000,
+     "eip": "0x4DEF7",
+     "cursor": [
+      8,
+      16
+     ],
+     "visible": [
+      7,
+      2
+     ],
+     "indexed_sha256": "bcfe3cd3e635ed26078968fd595b527f1745ace84ac3c18304f6a3fa9fd5f0e8"
+    },
+    {
+     "index": 5,
+     "step": 190178000,
+     "eip": "0x4DF2E",
+     "cursor": [
+      8,
+      16
+     ],
+     "visible": [
+      7,
+      2
+     ],
+     "indexed_sha256": "ffb771eacae4c346083be50ef66d58c82ca97e8af57a5fd0be69b73f8121f0d2"
+    },
+    {
+     "index": 6,
+     "step": 190308000,
+     "eip": "0x4DEF5",
+     "cursor": [
+      8,
+      16
+     ],
+     "visible": [
+      7,
+      2
+     ],
+     "indexed_sha256": "dbd5faa2615c14bd155fccfc8efa1f886a5ce8cb6e4050af2ecae7d03f60fd28"
+    },
+    {
+     "index": 7,
+     "step": 190440000,
+     "eip": "0x4DEF0",
+     "cursor": [
+      8,
+      16
+     ],
+     "visible": [
+      7,
+      2
+     ],
+     "indexed_sha256": "1e095f1bcf3757a15dfe1eacfe6631d8282fc2504ace177b4e9806f7542636c5"
+    },
+    {
+     "index": 8,
+     "step": 190570000,
+     "eip": "0x4DF23",
+     "cursor": [
+      8,
+      15
+     ],
+     "visible": [
+      7,
+      1
+     ],
+     "indexed_sha256": "f4cba64f2558e77e3f9c7dcdbef49850dac04d8e6467b4e70534b4bc8d44b100"
+    },
+    {
+     "index": 9,
+     "step": 190702000,
+     "eip": "0x4DEF3",
+     "cursor": [
+      8,
+      15
+     ],
+     "visible": [
+      7,
+      1
+     ],
+     "indexed_sha256": "c842b942b99bd1fd2646a58d0d35f0c6c302f9737dbe66eef23cfda33f5334ce"
+    },
+    {
+     "index": 10,
+     "step": 190832000,
+     "eip": "0x4DEFD",
+     "cursor": [
+      8,
+      15
+     ],
+     "visible": [
+      7,
+      1
+     ],
+     "indexed_sha256": "fb98649e7cf0f848801d769466b744e6018e46c6ef8d577825fbb40206fdafe3"
+    },
+    {
+     "index": 11,
+     "step": 190964000,
+     "eip": "0x4DF25",
+     "cursor": [
+      8,
+      15
+     ],
+     "visible": [
+      7,
+      1
+     ],
+     "indexed_sha256": "ae0c0443ccd1f2ea5332a5d0d27798d52d15a26315ef222d5e14fed6f739f095"
+    },
+    {
+     "index": 12,
+     "step": 191098000,
+     "eip": "0x4DF30",
+     "cursor": [
+      8,
+      15
+     ],
+     "visible": [
+      7,
+      1
+     ],
+     "indexed_sha256": "c3a6a57feb4a66243a31fe9e606c0db48e32c9b842e88d0234c4ece168bcac3b"
+    },
+    {
+     "index": 13,
+     "step": 191228000,
+     "eip": "0x4DF2A",
+     "cursor": [
+      8,
+      15
+     ],
+     "visible": [
+      7,
+      1
+     ],
+     "indexed_sha256": "7fcbb3615d36f516902c2dddee832e1cefdb1589b2b9bb02911ecb0fc2b3143a"
+    },
+    {
+     "index": 14,
+     "step": 191360000,
+     "eip": "0x148B1",
+     "cursor": [
+      8,
+      14
+     ],
+     "visible": [
+      7,
+      1
+     ],
+     "indexed_sha256": "29b9a395992344ea71d56e4e00b6cab8d7cf5bf81b53f34b880bd1f21d9bf96b"
+    }
+   ]
+  }
+ },
+ "conclusions": [
+  {
+   "claim": "原版開機之後完全不再讀 0x3DA，沒有垂直回掃可以當幀邊界",
+   "grade": "已證實",
+   "evidence": "port_3da_reads 從第一張到最後一張都是 519，涵蓋 88000 到 20616000 指令"
+  },
+  {
+   "claim": "原版一幀約 13 萬指令（虛擬 130 毫秒）",
+   "grade": "已證實",
+   "evidence": "0x11CAC 的間隔中位數 129998，且穩定取樣在移動視窗取到 15 張、間隔同為約 13 萬"
+  },
+  {
+   "claim": "0x11CAC 不是全域的幀邊界：移動動畫期間不經過它",
+   "grade": "已證實",
+   "evidence": "該臂最後一張在 189650367，而移動一直跑到 191400000 之後"
+  },
+  {
+   "claim": "取樣加穩定閘門可以在不知道繪圖進入點的情況下取回同一個幀節奏",
+   "grade": "已證實",
+   "evidence": "stride 2000／settle 4 在移動視窗取到 15 張，正好對上每格六個 motion 加抵達"
+  },
+  {
+   "claim": "確認移動後，原版整段動畫不畫游標白框，也不畫左下 HUD 面板",
+   "grade": "已證實",
+   "evidence": "frame-000001 有白框與面板；frame-000002 起到 frame-000014 都沒有"
+  }
+ ],
+ "not_claimed": [
+  "13 萬指令對應到實機的多少毫秒。oracle 的時間模型是每指令 1 微秒的近似",
+  "移動動畫實際由哪個位址繪製。只證明不是 0x11CAC"
+ ]
+}

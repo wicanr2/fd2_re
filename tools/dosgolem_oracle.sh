@@ -16,6 +16,15 @@
 #   FD2_ORIG_ROOT         原版資料目錄（預設本儲存庫的 org_game/…/FLAME2）
 #   FD2_ORACLE_CPUS       容器 CPU 上限（預設 2）
 #   FD2_ORACLE_STEPS      指令預算上限（預設 20000000000）
+#
+# 逐幀擷取（判斷畫面時比狀態可靠，狀態層看不出「多畫了什麼」）：
+#   FD2_ORACLE_FRAMES=1   啟用，輸出到 <輸出目錄>/frames/
+#   FD2_ORACLE_FRAME_STRIDE  取樣間隔指令數（預設 20000，約 20 虛擬毫秒）
+#   FD2_ORACLE_FRAME_SETTLE  內容連續相同幾次才寫出，用來濾掉畫到一半的畫面
+#   FD2_ORACLE_FRAME_MAX     張數上限（預設 4000）
+#   FD2_ORACLE_FRAME_EIP     改以遊戲自己的繪圖進入點為邊界，如 0x11CAC
+#   FD2_ORACLE_FRAME_FROM／FD2_ORACLE_FRAME_TO
+#                            只在這段指令區間取樣，用來把輸出限在要看的那一段
 set -euo pipefail
 
 repo=$(cd "$(dirname "$0")/.." && pwd)
@@ -25,6 +34,13 @@ dos=${FD2_DOSGOLEM_ROOT:-$HOME/cht/dosgolem}
 orig=${FD2_ORIG_ROOT:-$repo/org_game/炎龍騎士團/FLAME2}
 cpus=${FD2_ORACLE_CPUS:-2}
 budget=${FD2_ORACLE_STEPS:-20000000000}
+frames=${FD2_ORACLE_FRAMES:-}
+frame_stride=${FD2_ORACLE_FRAME_STRIDE:-20000}
+frame_settle=${FD2_ORACLE_FRAME_SETTLE:-0}
+frame_max=${FD2_ORACLE_FRAME_MAX:-4000}
+frame_eip=${FD2_ORACLE_FRAME_EIP:-}
+frame_from=${FD2_ORACLE_FRAME_FROM:-0}
+frame_to=${FD2_ORACLE_FRAME_TO:-0}
 
 test -d "$dos/apps/fd2/cmd/oracle" || { echo "找不到 dosgolem oracle：$dos" >&2; exit 2; }
 test -f "$orig/FD2.EXE" || { echo "找不到固定版本 FD2.EXE：$orig" >&2; exit 2; }
@@ -46,11 +62,31 @@ docker run --rm --network none --memory 4g --cpus "$cpus" --pids-limit 256 \
   -u "$(id -u):$(id -g)" "${mounts[@]}" \
   -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp \
   -e FD2_ORACLE_BUDGET="$budget" \
+  -e FD2_ORACLE_FRAMES="$frames" \
+  -e FD2_ORACLE_FRAME_STRIDE="$frame_stride" \
+  -e FD2_ORACLE_FRAME_SETTLE="$frame_settle" \
+  -e FD2_ORACLE_FRAME_MAX="$frame_max" \
+  -e FD2_ORACLE_FRAME_EIP="$frame_eip" \
+  -e FD2_ORACLE_FRAME_FROM="$frame_from" \
+  -e FD2_ORACLE_FRAME_TO="$frame_to" \
   -w /dos "${FD2_ORACLE_IMAGE:-golang:1.24-bookworm}" \
   bash -c '
 set -euo pipefail
+frameargs=()
+if [ -n "$FD2_ORACLE_FRAMES" ]; then
+  frameargs=(-frame-dir /out/frames
+             -frame-stride "$FD2_ORACLE_FRAME_STRIDE"
+             -frame-settle "$FD2_ORACLE_FRAME_SETTLE"
+             -frame-max "$FD2_ORACLE_FRAME_MAX"
+             -frame-from "$FD2_ORACLE_FRAME_FROM"
+             -frame-to "$FD2_ORACLE_FRAME_TO")
+  if [ -n "$FD2_ORACLE_FRAME_EIP" ]; then
+    frameargs+=(-frame-eip "$FD2_ORACLE_FRAME_EIP")
+  fi
+fi
 go run ./apps/fd2/cmd/oracle \
   -exe /orig/FD2.EXE -root /orig -run-dir /out \
+  "${frameargs[@]+"${frameargs[@]}"}" \
   -steps "$FD2_ORACLE_BUDGET" -heap-mib 32 >/out/oracle.log 2>&1 &
 oracle=$!
 cleanup() { kill "$oracle" 2>/dev/null || true; wait "$oracle" 2>/dev/null || true; }
