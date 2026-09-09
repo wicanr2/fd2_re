@@ -95,11 +95,8 @@
 `nativeMapFocusVisibleSeed` 把 `cursor − camera` 夾回視窗。四項錯誤訊息也各自
 分開（欄位太小／鏡頭出界／游標出界／可見游標出界），失敗時直接指出是哪一項。
 
-**仍未閉合**：劇情 pan 的 `syncStoryNativeMapPanView` 還是用
-`cursor = camera + visible` 反推游標。原版的劇情捲動 `0x135DD` 不寫可見游標，
-它對絕對游標做什麼尚未從指令解出，所以這條反推目前沒有寫入端證據撐著；界線
-檢查抓不到它（反推出來的值一定落在視窗內）。要閉合得回到 `0x135DD` 本體看它
-有沒有寫 `[0x53AB1]`／`[0x53AB5]`。
+劇情 pan 的規則見下一節；走行捲動 `0x13185` 整段結束時的發布仍是反推，
+是目前這個家族唯一還沒有寫入端證據的一處。
 
 ## 字串盤點的 review 怎麼跟上行號漂移
 
@@ -112,9 +109,50 @@
    （另跑一次 `-summary` 更新摘要）；
 3. `tools/migrate_string_review.py --old-inventory <上一份> --new-inventory <新的>
    --review <舊 review> --output <新 review>`，它以
-   `(role, text, file, function)` 簽章對應新舊 ID，字串已刪除的用 `--drop-id` 指名；
+   `(role, text, file, function)` 簽章對應新舊 ID，字串已刪除的用 `--drop-id` 指名。
+   同一個函式裡出現兩次的同一句話（例如 `FD2_SHOT_ATTACK` fixture 的
+   「亞雷斯」「盜賊」各兩次）簽章相同，工具會回報「遷移候選數 2」而停下；
+   這種要用 `--drop-id` 拿掉，再從新盤點按行列號補回去；
 4. 盤點新增的候選逐項分類。本輪 16 項：8 項失敗即關閉診斷歸
    `internal_diagnostic`、5 項（封裝自我檢查與 `FD2_SHOT_ATTACK` 截圖 fixture）歸
    `development`、3 項（視窗標題與兩個主題名）歸 `player_visible`。
 
 上一份盤點必須留著才有辦法做簽章對應；覆蓋掉它就只能從更早的產生物重建。
+
+## 劇情 pan：游標跟著鏡頭走，不是由可見游標反推
+
+`0x135DD` 的迴圈本體只有兩種寫法，X 與 Y 各一對：
+
+```text
+0x135F2  mov  [0x51A83], 0            ; overlay selector 關掉
+0x135FC  cmp  esi, [0x53AA9]          ; 目標鏡頭 X 到了沒
+0x13606  dec  [0x53AB1] / 0x1360C dec [0x53AA9]
+0x13614  inc  [0x53AB1] / 0x1361A inc [0x53AA9]
+0x13620  push 0 ; call 0x11CAC        ; 每格重繪一次
+0x1362A  call 0x4E031
+0x13631  cmp  edi, [0x53AAD]          ; 換 Y 軸，同一對寫法
+0x13181  pop  edi ; pop esi ; pop ebx ; ret
+```
+
+**游標的位移量就是鏡頭的位移量**，整段沒有一條寫可見游標。
+dosgolem 收據 [fd2-story-pan-cursor-20260909.json](../data/ui-traces/fd2-story-pan-cursor-20260909.json)
+從 START 走完序章，把抓幀邊界設在 `0x11CAC`，三次 pan 共 126 格逐格對上：
+
+| pan | 格數 | 之前 | 之後 |
+|---|---|---|---|
+| #1 | 37 | cam (0,0)、cur (0,0)、vis (0,0) | cam (3,34)、cur (3,34)、vis (0,0) |
+| #2 | 42 | cam (3,4)、cur (8,8)、vis (5,4) | cam (0,43)、cur (5,47)、vis (5,4) |
+| #3 | 47 | cam (0,0)、cur (0,0)、vis (0,0) | cam (5,42)、cur (5,42)、vis (0,0) |
+
+每格恰好一張抓幀，也就是**每格一次呈現**，而且 X 先走完才走 Y。
+`syncStoryNativeMapPanView` 因此改成把游標平移鏡頭的差量；
+`cursor = camera + visible` 只有在恆等式成立時才碰巧一致，而
+`0x149F8`（確認移動時只寫游標）會合法地打破它。差別由
+`TestStoryPanMovesAbsoluteCursorByCameraDelta` 釘住：起點刻意讓
+`visible ≠ cursor − camera`，兩條規則的結果不同。
+
+同一份收據另外量到一件事：`0x13185` 走行捲動 15 格之後
+`camera_y` 34→20、`cursor_y` 34→19、`visible_y` 0→**−1**——原版容許可見游標
+暫時離開 13×8 視窗。pan 與走行期間 overlay selector 都是 0，`0x1741C` 不會
+消費可見游標，所以那段期間沒有消費端會讀到出界值。重製端目前的界線檢查
+會拒絕這個狀態；要接這一段，界線得改成「只在有消費端時成立」。

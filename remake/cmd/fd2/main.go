@@ -772,7 +772,7 @@ func (g *Game) stepStoryWalks() {
 			// 0x13185 與後續 0x15F84 共用同一組相機全域。scroll_step
 			// 完成後必須先發布最後一格 view，再讓 dialog 預建 indexed
 			// 背景；否則畫面會錯用 STEP 前的 LOADCH/PAN snapshot。
-			if w.scrollFollow && !g.syncStoryNativeMapPanView() {
+			if w.scrollFollow && !g.syncStoryNativeMapScrollView() {
 				g.storyWalks = nil
 				return
 			}
@@ -844,11 +844,30 @@ func (g *Game) stepTransitionReveal() {
 	}
 }
 
-// syncStoryNativeMapPanView mirrors raw 0x135dd's proven camera/absolute
-// cursor lockstep.  The helper deliberately preserves the visible cursor:
-// IDA shows that 0x135dd writes [0x53aa9/0x53aad] and
-// [0x53ab1/0x53ab5], but not [0x53ab9/0x53abd].
+// syncStoryNativeMapPanView 發布 0x135DD（劇情 pan）走完之後的六個視圖全域。
+// 0x135DD 的迴圈對每一格同時寫鏡頭與絕對游標：X 先走完再走 Y，
+// 每格一次 0x11CAC(0) 重繪，可見游標整段不寫。
+//
+//	0x13606 dec [0x53AB1] / 0x1360C dec [0x53AA9]   ; 游標與鏡頭同減
+//	0x13614 inc [0x53AB1] / 0x1361A inc [0x53AA9]   ; 同加
+//	0x1363F/0x13645、0x1364D/0x13653                ; Y 軸同一對
+//
+// 因此游標的位移量就是鏡頭的位移量，不是由 camera + visible 反推——後者只有
+// 在恆等式成立時才碰巧一致，而 0x149F8 只寫游標，恆等式會合法地被打破。
+// 收據：docs/data/ui-traces/fd2-story-pan-cursor-20260909.json。
 func (g *Game) syncStoryNativeMapPanView() bool {
+	return g.syncStoryNativeMapCameraMove(true)
+}
+
+// syncStoryNativeMapScrollView 發布 0x13185（劇情走行捲動）整段走完之後的視圖。
+// 0x13185 讓絕對游標跟著走行單位一步一格，鏡頭吸收窗外的部分、可見游標吸收
+// 窗內的部分。重製端目前只在整段結束時發布一次，並沿用可見游標由鏡頭反推
+// 游標；那條反推沒有寫入端證據，開放項目見知識庫 104。
+func (g *Game) syncStoryNativeMapScrollView() bool {
+	return g.syncStoryNativeMapCameraMove(false)
+}
+
+func (g *Game) syncStoryNativeMapCameraMove(cursorFollowsCamera bool) bool {
 	if g == nil {
 		return true
 	}
@@ -868,9 +887,15 @@ func (g *Game) syncStoryNativeMapPanView() bool {
 	if !g.hasStoryNativeMapView {
 		view = g.st.NativeMapViewState
 	}
-	view.CameraX, view.CameraY = int(g.camX)/g.m.TileW, int(g.camY)/g.m.TileH
-	view.CursorX = view.CameraX + view.VisibleCursorX
-	view.CursorY = view.CameraY + view.VisibleCursorY
+	cameraX, cameraY := int(g.camX)/g.m.TileW, int(g.camY)/g.m.TileH
+	if cursorFollowsCamera {
+		view.CursorX += cameraX - view.CameraX
+		view.CursorY += cameraY - view.CameraY
+	} else {
+		view.CursorX = cameraX + view.VisibleCursorX
+		view.CursorY = cameraY + view.VisibleCursorY
+	}
+	view.CameraX, view.CameraY = cameraX, cameraY
 	carrier := &battle.State{W: g.m.W, H: g.m.H}
 	if err := carrier.MaterializeNativeMapViewState(view); err != nil {
 		g.loadErr = "native story map view: " + err.Error()

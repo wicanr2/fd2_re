@@ -48,10 +48,18 @@
   保留原樣，供之後仍以差異判讀。
 - 工具鏈：`fd2-go-test-local` 的 `xvfb-run` 會偶發卡死，映像改內建
   `with-xvfb`，回歸改由受版控的 `tools/remake_go_test.sh` 驅動。
-- 待查：劇情 pan 的 `syncStoryNativeMapPanView` 仍以 `cursor = camera + visible`
-  反推絕對游標。可見游標的寫入端已閉合，但 `0x135DD` 對 `[0x53AB1]`／`[0x53AB5]`
-  做什麼還沒從指令解出，這條反推因此沒有寫入端證據；13×8 界線檢查抓不到它。
+- RE-CLOSED／RUNTIME-E1：劇情 pan `0x135DD` 對每一格**同時**位移鏡頭與絕對游標，
+  位移量相同（`0x13606`／`0x1360C`、`0x13614`／`0x1361A` 與 Y 軸同一對），X 先走完
+  再走 Y，每格一次 `0x11CAC(0)`，整段不寫可見游標，進入時把 overlay selector 設 0
+  且不還原。dosgolem 從 START 走完序章取到三次 pan 共 126 格逐格對上，收據見
+  [fd2-story-pan-cursor-20260909.json](../data/ui-traces/fd2-story-pan-cursor-20260909.json)。
+  `syncStoryNativeMapPanView` 已改成平移鏡頭差量，不再由 `camera + visible` 反推。
   見 [104](104-regression-baseline-review-20260909.md)。
+- 待查：`0x13185` 走行捲動整段結束時的視圖發布仍是反推（`cursor = camera + visible`），
+  是這個家族最後一處沒有寫入端證據的地方。同一份收據另量到原版容許可見游標暫時
+  出界（15 格之後 `visible_y = −1`），重製端的 13×8 界線會拒絕該狀態；要接這一段，
+  界線得改成「只在有消費端時成立」（pan／走行期間 overlay selector 為 0，`0x1741C`
+  不消費）。
 - RE-CLOSED／RUNTIME-E1：地圖走行每格是**六幀**，跨格提交與下一段的第一拍
   同幀，中間沒有 `+4 = 0`；只有整段抵達才是 pose 0／`+4` 0。`stepBattleWalk`
   已照這個契約改（`nativeMapGridMotionFrames = 6`、位移分母 6、第七次呼叫

@@ -1,0 +1,247 @@
+{
+ "schema_version": 1,
+ "kind": "fd2_original_runtime_receipt",
+ "topic": "劇情 pan（0x135DD）期間鏡頭、絕對游標與可見游標的關係",
+ "date": "2026-09-09",
+ "runner": "dosgolem apps/fd2/cmd/oracle",
+ "dosgolem_commit": "f627cd1",
+ "driver": "tools/dosgolem_oracle.sh",
+ "executable": {
+  "file": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+ },
+ "entry": {
+  "path": "標題選單初始選項 START，之後以「上一次按鍵被取走才再送」的最快速率送 Enter 走完序章",
+  "evidence_grade": "RUNTIME 觀測；未修改的一般玩家路徑，無狀態注入",
+  "state_injections": [],
+  "input_kind": "normal BIOS keys"
+ },
+ "design": {
+  "plan": [
+   {
+    "key": "enter",
+    "steps": 300000,
+    "gate": "kbd_empty",
+    "repeat": 900
+   }
+  ],
+  "frame_boundary": "-frame-eip 0x11CAC、-frame-stride 0（只在遊戲自己的地圖重繪進入點取樣）",
+  "eip_watch": [
+   "0x135DD",
+   "0x11CAC",
+   "0x149F8",
+   "0x13185"
+  ],
+  "frame_max": 600,
+  "note": "0x135DD 的迴圈每格呼叫一次 0x11CAC(0)，所以「一張抓幀＝一格」"
+ },
+ "raw_field_offsets": {
+  "camera": "0x53AA9／0x53AAD",
+  "cursor": "0x53AB1／0x53AB5",
+  "visible": "0x53AB9／0x53ABD",
+  "overlay_selector": "0x51A83"
+ },
+ "static_evidence": {
+  "tool": "Capstone 5.0.3（fd2-cap-local:latest，tools/disasm_le.py range 135dd 13760）",
+  "entry": "0x135DD(arg1=目標鏡頭 X、arg2=目標鏡頭 Y)",
+  "instructions": [
+   "0x135F2 mov dword ptr [0x51A83], 0",
+   "0x135FC cmp esi, [0x53AA9] ; je 0x13631",
+   "0x13606 dec [0x53AB1] / 0x1360C dec [0x53AA9]",
+   "0x13614 inc [0x53AB1] / 0x1361A inc [0x53AA9]",
+   "0x13620 push 0 ; call 0x11CAC",
+   "0x1362A call 0x4E031",
+   "0x13631 cmp edi, [0x53AAD] ; je 0x13181",
+   "0x1363F dec [0x53AB5] / 0x13645 dec [0x53AAD]",
+   "0x1364D inc [0x53AB5] / 0x13653 inc [0x53AAD]",
+   "0x13181 pop edi ; pop esi ; pop ebx ; ret"
+  ],
+  "note": "整段沒有一條寫 [0x53AB9]／[0x53ABD]；進入時把 overlay selector 設 0，返回前不還原"
+ },
+ "trace": [
+  {
+   "call": 1,
+   "frames": [
+    1,
+    37
+   ],
+   "steps": 37,
+   "before": {
+    "camera": [
+     0,
+     0
+    ],
+    "cursor": [
+     0,
+     0
+    ],
+    "visible": [
+     0,
+     0
+    ]
+   },
+   "after": {
+    "camera": [
+     3,
+     34
+    ],
+    "cursor": [
+     3,
+     34
+    ],
+    "visible": [
+     0,
+     0
+    ]
+   },
+   "lockstep_ok": true
+  },
+  {
+   "call": 2,
+   "frames": [
+    207,
+    248
+   ],
+   "steps": 42,
+   "before": {
+    "camera": [
+     3,
+     4
+    ],
+    "cursor": [
+     8,
+     8
+    ],
+    "visible": [
+     5,
+     4
+    ]
+   },
+   "after": {
+    "camera": [
+     0,
+     43
+    ],
+    "cursor": [
+     5,
+     47
+    ],
+    "visible": [
+     5,
+     4
+    ]
+   },
+   "lockstep_ok": true
+  },
+  {
+   "call": 3,
+   "frames": [
+    376,
+    422
+   ],
+   "steps": 47,
+   "before": {
+    "camera": [
+     0,
+     0
+    ],
+    "cursor": [
+     0,
+     0
+    ],
+    "visible": [
+     0,
+     0
+    ]
+   },
+   "after": {
+    "camera": [
+     5,
+     42
+    ],
+    "cursor": [
+     5,
+     42
+    ],
+    "visible": [
+     0,
+     0
+    ]
+   },
+   "lockstep_ok": true
+  },
+  {
+   "call": 4,
+   "frames": [
+    500,
+    501
+   ],
+   "steps": 2,
+   "before": {
+    "camera": [
+     5,
+     42
+    ],
+    "cursor": [
+     15,
+     46
+    ],
+    "visible": [
+     10,
+     4
+    ]
+   },
+   "after": {
+    "camera": [
+     4,
+     41
+    ],
+    "cursor": [
+     12,
+     46
+    ],
+    "visible": [
+     8,
+     5
+    ]
+   },
+   "lockstep_ok": false
+  }
+ ],
+ "conclusions": [
+  {
+   "claim": "0x135DD 對每一格同時位移鏡頭與絕對游標，位移量相同",
+   "grade": "已證實",
+   "evidence": "pan#1／#2／#3 共 126 格，每一格的游標位移都等於鏡頭位移（逐格鎖定=true）；直接指令為 0x13606/0x1360C、0x13614/0x1361A 與 Y 軸同一對"
+  },
+  {
+   "claim": "0x135DD 整段不寫可見游標",
+   "grade": "已證實",
+   "evidence": "pan#2 起點 visible=(5,4)，走完 42 格之後仍是 (5,4)；反組譯範圍內沒有對 [0x53AB9]／[0x53ABD] 的寫入"
+  },
+  {
+   "claim": "每一格恰好呈現一次，X 先走完再走 Y",
+   "grade": "已證實",
+   "evidence": "抓幀邊界設在 0x11CAC，pan#1 得到 37 張＝3 格 X ＋ 34 格 Y，順序為先 X 後 Y"
+  },
+  {
+   "claim": "pan 期間 overlay selector 為 0",
+   "grade": "已證實",
+   "evidence": "0x135F2 明寫 0；三次 pan 的每一張抓幀 overlay_selector 均為 0"
+  }
+ ],
+ "not_claimed": [
+  "pan#4 只有 2 格且與其他演出重疊在同一個 0x11CAC 取樣區間，逐格位移不可用；本輪的結論只採 pan#1..#3",
+  "本輪沒有取到「可見游標與 cursor-camera 不一致時再 pan」的原版樣本。該狀態由 0x149F8 造成，需要先在戰鬥中確認移動、再進到有 pan 的 handler；三次 pan 的起點恆等式都成立",
+  "逐幀畫面比對。本收據只比狀態，不宣稱畫面逐像素一致"
+ ],
+ "side_observations": [
+  {
+   "note": "0x13185（劇情走行捲動）可以把可見游標寫到視窗外：15 格之後 camera_y 34→20、cursor_y 34→19、visible_y 0→-1",
+   "frame": "frames.jsonl idx=75",
+   "consequence": "重製端 validateNativeMapView 的 13×8 界線會拒絕這個狀態。pan 與走行期間 overlay selector 都是 0，0x1741C 不會消費可見游標，所以原版容許它暫時出界"
+  }
+ ]
+}

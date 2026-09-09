@@ -1950,6 +1950,46 @@ func TestChapter22PreLoadCHUsesSelectedPartyAndRawViewReset(t *testing.T) {
 	}
 }
 
+// 0x135DD 對每一格同時寫鏡頭與絕對游標（0x13606/0x1360C、0x13614/0x1361A 與
+// Y 軸的 0x1363F/0x13645、0x1364D/0x13653），可見游標整段不寫。可見游標會
+// 合法地與 cursor-camera 不一致——0x149F8 只寫絕對游標——所以由
+// camera + visible 反推游標會在那種狀態下把游標搬到錯的格。本測試就用那種
+// 狀態，兩條規則的結果不同。收據：
+// docs/data/ui-traces/fd2-story-pan-cursor-20260909.json。
+func TestStoryPanMovesAbsoluteCursorByCameraDelta(t *testing.T) {
+	g := &Game{}
+	if err := g.loadMap("assets/maps/map24"); err != nil {
+		t.Fatal(err)
+	}
+	g.hasStoryNativeMapView = true
+	g.storyNativeMapView = battle.NativeMapViewState{
+		CameraX: 3, CameraY: 20, CursorX: 8, CursorY: 24,
+		VisibleCursorX: 2, VisibleCursorY: 1,
+	}
+	g.camX, g.camY = float64(3*g.m.TileW), float64(20*g.m.TileH)
+	g.camPan = &camPanJob{
+		toX: float64(6 * g.m.TileW), toY: float64(17 * g.m.TileH), tileStep: true,
+	}
+	steps := 0
+	for ; g.camPan != nil && steps < 100; steps++ {
+		g.stepCamPan()
+	}
+	if g.camPan != nil || g.loadErr != "" {
+		t.Fatalf("pan 未走完 pan=%#v err=%q", g.camPan, g.loadErr)
+	}
+	// X 三格再 Y 三格，每格一次呈現；原版是每格一次 0x11CAC(0)。
+	if steps != 6 {
+		t.Fatalf("pan 用了 %d 次呈現，want 6（3 格 X + 3 格 Y）", steps)
+	}
+	want := battle.NativeMapViewState{
+		CameraX: 6, CameraY: 17, CursorX: 11, CursorY: 21,
+		VisibleCursorX: 2, VisibleCursorY: 1,
+	}
+	if g.storyNativeMapView != want {
+		t.Fatalf("pan 之後 view=%#v，want %#v", g.storyNativeMapView, want)
+	}
+}
+
 func TestCh15CandidateBindingCompilesForChapter16RuntimeButRemainsDataOnly(t *testing.T) {
 	bindingPath := assetPath("assets/cutscenes/bindings/ch15_post_candidate.json")
 	beats, issues, err := campaign.CompileHandlerBinding(bindingPath)

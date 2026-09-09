@@ -55,6 +55,19 @@ FD2 可見游標 [0x53AB9]／[0x53ABD] 的完整寫入端
 **沒有任何一處由 `cursor - camera` 重算可見游標。** 因此 `0x135DD` 或
 `0x149F8` 搬動游標之後，可見游標會合法地停在舊值。
 
+`0x135DD` 的兩個 `±1` 是**同一格的同一次位移**，不是兩個獨立的量：
+
+```text
+0x13606 dec dword_53AB1 / 0x1360C dec dword_53AA9   ; X 軸同減
+0x13614 inc dword_53AB1 / 0x1361A inc dword_53AA9   ; X 軸同加
+0x1363F dec dword_53AB5 / 0x13645 dec dword_53AAD   ; Y 軸同減
+0x1364D inc dword_53AB5 / 0x13653 inc dword_53AAD   ; Y 軸同加
+```
+
+每一格之間插一次 `push 0 ; call 0x11CAC` 與 `call 0x4E031`，X 迴圈走完才進
+Y 迴圈；進入時 `0x135F2 mov dword_51A83, 0`，返回的共用尾巴 `0x13181` 不還原它。
+執行期收據：`docs/data/ui-traces/fd2-story-pan-cursor-20260909.json`。
+
 安全帶規則（兩個家族相同）
 --------------------------
 

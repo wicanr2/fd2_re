@@ -992,3 +992,13 @@ LE fixup 清單一致）：四個鍵盤游標處理器 `0x11B48`／`0x11B9B`／`
 [`fd2_visible_cursor_writers_ida.txt`](../data/ida/fd2_visible_cursor_writers_ida.txt)，
 接線與界線見 [99](99-move-confirm-cursor-20260909.md)。本項不宣稱兩側逐像素
 一致，也沒有涵蓋 `0x53B0B`／`0x53AF1`／`0x53AF5` 的語意。
+
+劇情 pan `0x135DD` 同一輪也已閉合：迴圈對每一格同時位移鏡頭與絕對游標且位移量
+相同（`0x13606`／`0x1360C`、`0x13614`／`0x1361A` 與 Y 軸同一對），X 先走完再走 Y，
+每格一次 `0x11CAC(0)`，進入時 `mov [0x51A83], 0` 且返回前不還原。dosgolem 從
+START 走完序章取到三次 pan 共 126 格逐格對上，收據見
+[fd2-story-pan-cursor-20260909.json](../data/ui-traces/fd2-story-pan-cursor-20260909.json)。
+重製端 `syncStoryNativeMapPanView` 據此改成平移鏡頭差量。走行捲動 `0x13185`
+整段結束時的發布仍是 `cursor = camera + visible` 反推，未閉合；同一份收據另量到
+原版容許可見游標暫時離開 13×8 視窗（15 格之後 `visible_y = −1`），該狀態目前會被
+重製端的界線檢查拒絕。
