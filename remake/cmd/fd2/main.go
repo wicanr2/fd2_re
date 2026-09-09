@@ -4368,9 +4368,15 @@ func (g *Game) campInput() bool {
 	}
 	switch n.Type {
 	case "story":
-		return g.handleNativeStoryInput(n, nativeStoryInput{enter: enter})
+		return g.handleNativeStoryInput(n, nativeStoryInput{
+			enter:  enter,
+			escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+		})
 	case "cutscene":
-		return g.handleNativeStoryInput(n, nativeStoryInput{enter: enter})
+		return g.handleNativeStoryInput(n, nativeStoryInput{
+			enter:  enter,
+			escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape),
+		})
 	case "choice", "town":
 		nativeTown := n.Type == "town" && n.NativeTownVariant != nil
 		if nativeTown {

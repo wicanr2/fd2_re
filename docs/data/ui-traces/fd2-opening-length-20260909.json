@@ -1,0 +1,153 @@
+{
+ "schema_version": 1,
+ "kind": "fd2_original_runtime_receipt",
+ "topic": "從標題 START 到第一關玩家取得操作權所需的按鍵次數與虛擬時間",
+ "date": "2026-09-09",
+ "runner": "dosgolem apps/fd2/cmd/oracle",
+ "dosgolem_commit": "3179a8d",
+ "driver": "tools/dosgolem_oracle.sh（gate=kbd_empty）",
+ "executable": {
+  "file": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+ },
+ "entry": {
+  "path": "標題選單初始選項即 START，直接送 Enter 進入序幕",
+  "evidence_grade": "RUNTIME 觀測；一般玩家路徑",
+  "state_injections": [],
+  "input_kind": "normal BIOS keys"
+ },
+ "protocol": {
+  "plan": [
+   {
+    "key": "",
+    "steps": 2000000
+   },
+   {
+    "key": "enter",
+    "steps": 300000,
+    "repeat": 1400,
+    "gate": "kbd_empty"
+   }
+  ],
+  "gate": "每格只在 BIOS 環形緩衝已被遊戲取空時才再送一次 Enter，等於玩家「上一下被吃掉就立刻再按」的最快速率",
+  "why_gate": "固定每 0.3 虛擬秒送鍵會在遊戲消化不及時撐爆 15 格緩衝（Enqueue 回「緩衝已滿」）",
+  "clock": "oracle 的時間模型為每條指令 1 微秒；虛擬秒＝指令數／1e6"
+ },
+ "milestones": [
+  {
+   "control_seq": 0,
+   "steps": 52473882,
+   "virtual_seconds": 0.0,
+   "kbd_reads": 0,
+   "frame_sha256": "885edd19347628bdbe823bbf25d9de6180be59e766bdc9840a631083f44ec025"
+  },
+  {
+   "control_seq": 300,
+   "steps": 142173883,
+   "virtual_seconds": 89.7,
+   "kbd_reads": 57,
+   "frame_sha256": "577cb4d6f67fa99f4abfb47793953d6ac51228c933df5091637cdefde48e37c3"
+  },
+  {
+   "control_seq": 550,
+   "steps": 217173883,
+   "virtual_seconds": 164.7,
+   "kbd_reads": 102,
+   "frame_sha256": "3cfc8ec1a98cde4541ae761e0b4535e1560d8e555b9ba3d2d66634fc5117ece7"
+  },
+  {
+   "control_seq": 600,
+   "steps": 232173883,
+   "virtual_seconds": 179.7,
+   "kbd_reads": 108,
+   "frame_sha256": "c009697058f61a6b68aacb425fa89d3145b7e04926531fb111d6ac24c7349481"
+  },
+  {
+   "control_seq": 610,
+   "steps": 235173883,
+   "virtual_seconds": 182.7,
+   "kbd_reads": 114,
+   "frame_sha256": "d6fa98cac0acee51f4ea1f8a49edf745f640da008b0ab132cc9e54968187ee01"
+  },
+  {
+   "control_seq": 615,
+   "steps": 236673883,
+   "virtual_seconds": 184.2,
+   "kbd_reads": 117,
+   "frame_sha256": "ee335e914e4b27cdd1a09ae73f3b881a02751d9b1039877c9454241031469896"
+  },
+  {
+   "control_seq": 620,
+   "steps": 238173883,
+   "virtual_seconds": 185.7,
+   "kbd_reads": 118,
+   "frame_sha256": "ea251ed2551ae27acaa2d5a22285ef446f4a1b5c1fd3f9dfb062e7eb957882f9"
+  },
+  {
+   "control_seq": 625,
+   "steps": 239673883,
+   "virtual_seconds": 187.2,
+   "kbd_reads": 122,
+   "frame_sha256": "f1811486c6931d9a17290c9276ffc015b0e3a7ef0c9b8fa7ae237946f0cbc2fd"
+  },
+  {
+   "control_seq": 630,
+   "steps": 241173883,
+   "virtual_seconds": 188.7,
+   "kbd_reads": 124,
+   "frame_sha256": "d4e1d371a479f44ce283b9c09312691a5ba2541d2a1848b9e995b423353b4b4e"
+  },
+  {
+   "control_seq": 700,
+   "steps": 262173883,
+   "virtual_seconds": 209.7,
+   "kbd_reads": 194,
+   "frame_sha256": "98ab7ef28d6e0234595a6b069d3caa013709896c73b40f9f759c537dae462c20"
+  },
+  {
+   "control_seq": 1000,
+   "steps": 352173883,
+   "virtual_seconds": 299.7,
+   "kbd_reads": 494,
+   "frame_sha256": "67a0daeab8f27089e2eb0e6ed0357705bb828352ae01cf88ec5d74bbe066da7c"
+  },
+  {
+   "control_seq": 1401,
+   "steps": 472473883,
+   "virtual_seconds": 420.0,
+   "kbd_reads": 895,
+   "frame_sha256": "266d58a4746de990d8c7811577f128d5a3c9565a4fba0a9174237e1c8f495baf"
+  }
+ ],
+ "observation": {
+  "battlefield_dialogue_on_screen": {
+   "control_seq": 600,
+   "virtual_seconds": 179.7,
+   "kbd_reads": 108
+  },
+  "player_control_with_hud": {
+   "control_seq": 625,
+   "virtual_seconds": 187.2,
+   "kbd_reads": 122
+  },
+  "key_read_rate_change": "自 cp630 起每格必被取走一次，代表已離開故事等待進入選單輪詢"
+ },
+ "conclusions": [
+  {
+   "claim": "原版從 START 到第一關取得操作權需要約 118–122 次被接受的按鍵",
+   "grade": "已證實",
+   "evidence": "kbd_reads 在 cp600 為 108、cp625 為 122，畫面分別是戰場對白與戰場 HUD"
+  },
+  {
+   "claim": "以最快速率推進，這段的虛擬時間約 187 秒",
+   "grade": "強推論",
+   "evidence": "cp625 的 steps 減去起點；虛擬時鐘是每指令 1 微秒的近似，非實機牆鐘"
+  }
+ ],
+ "not_claimed": [
+  "實機牆鐘時間。oracle 的每指令 1 微秒相當於約 1 MIPS，遊戲中不由計時器節流的段落在實機上會更快",
+  "按鍵次數是否隨玩家速度改變。本輪只取最快速率一臂"
+ ]
+}

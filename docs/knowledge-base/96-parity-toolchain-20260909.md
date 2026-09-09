@@ -39,6 +39,21 @@ tools/dosgolem_oracle.sh /tmp/fd2-oracle-run plan.jsonl
 `key` 為 `up`／`down`／`left`／`right`／`enter`／`esc`，或空字串表示只前進不送鍵。
 原版目錄唯讀掛載，容器無網路，只有輸出目錄可寫。
 
+三個選用欄位讓「一直按到某件事發生」不必展開成幾百行計畫：
+
+| 欄位 | 作用 |
+|---|---|
+| `repeat` | 本行重複 N 次 |
+| `gate: kbd_empty` | 該格若還有未被遊戲取走的鍵就改送空鍵 |
+| `until: units_present` | 單位陣列一有內容就結束整份計畫 |
+
+`gate` 不是方便而是必要：BIOS 環形緩衝只有 15 格，固定速率送鍵在遊戲消化
+不及時會讓 `Enqueue` 回「緩衝已滿」而中斷整輪。設了閘門等於「玩家看到上一
+次按鍵被吃掉才再按」，也就是玩家能達到的最快速率。
+
+`until: units_present` 要小心：單位陣列在開場就已經有內容，它判斷不了
+「已經進戰場」。
+
 每個控制邊界輸出一組 `checkpoint-NNNN.png`（320×200 索引畫面）與
 `checkpoint-NNNN.json`。JSON 帶 `runner`、`input_kind`、`state_injections`、
 指令步數、`eip`、暫存器，以及：
@@ -47,6 +62,10 @@ tools/dosgolem_oracle.sh /tmp/fd2-oracle-run plan.jsonl
   `visible_y`／`round`，取自 `0x53AA9..0x53ABD` 與 `0x53BEF`。
 - `units`：`0x53A45` 單位陣列、`0x53BEB` 單位數；每筆保留完整 80 byte
   `raw_hex`，其餘欄位（x／y／pose／camp／hp…）只作導覽，不是證據層。
+- `kbd_pending`：BIOS 環形緩衝 `0x41A`／`0x41C` 的頭尾差，尚未被遊戲取走的
+  鍵數。
+- `kbd_reads`：遊戲實際取走的鍵數，也就是有效推進次數。它和送出的鍵數不是
+  同一件事——問「原版走完這段要按幾次」時要看這個。
 
 有界性有三重：`-steps` 的總上限、每段 `control.steps` 的 1..1e8、
 以及 `-wait-timeout` 的牆鐘上限。
@@ -111,3 +130,20 @@ docker run --rm --network none --memory 8g --cpus 4 --pids-limit 512 \
 
 素材根缺件會讓失敗數大幅膨脹，且失敗訊息看起來像功能缺陷。判讀前先確認
 `ui/action_cells`、`ui/fdother_014_church`、`locales/`、`palette/` 都在。
+
+`remake/generated-assets/fd2-original-b97caf22/` **沒有 `locales/`**，直接拿它
+當素材根會多出三項失敗，錯誤字串全是
+`read locale entities ".../locales/zh-Hant/entities.json"`。完整素材根要把
+儲存庫的 `remake/assets/locales` 疊上去。巢狀 bind mount 掛不進唯讀掛載點，
+可行的作法是在暫存目錄組一個符號連結根：
+
+```sh
+root=$(mktemp -d)
+for e in remake/generated-assets/fd2-original-b97caf22/*; do
+  ln -s "/src/${e}" "$root/$(basename "$e")"
+done
+ln -s /src/remake/assets/locales "$root/locales"
+# 之後 -v /home/anr2/cht/fd2:/src -v "$root":/pack:ro -e FD2_ASSET_PACK=/pack
+```
+
+符號連結的目標寫成容器內路徑，因為儲存庫本身也掛在 `/src`。

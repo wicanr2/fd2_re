@@ -1,0 +1,638 @@
+{
+ "schema_version": 1,
+ "kind": "fd2_original_runtime_receipt",
+ "topic": "開場故事等待對 ESC 與 Enter 的反應，以及不送鍵時的對照",
+ "date": "2026-09-09",
+ "runner": "dosgolem apps/fd2/cmd/oracle",
+ "dosgolem_commit": "6d3569302131a7134cf5912e24b1a1dbca1c009e",
+ "driver": "tools/dosgolem_oracle.sh",
+ "executable": {
+  "file": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+ },
+ "entry": {
+  "path": "標題選單初始選項即 START，直接送 Enter 進入序幕，不使用附帶存檔",
+  "evidence_grade": "RUNTIME 觀測；一般玩家路徑",
+  "state_injections": [],
+  "input_kind": "normal BIOS keys"
+ },
+ "design": {
+  "question": "原版開場的故事等待收到 ESC 時會發生什麼？",
+  "arms": [
+   {
+    "name": "esc",
+    "plan": [
+     {
+      "key": "",
+      "steps": 2000000
+     },
+     {
+      "key": "enter",
+      "steps": 8000000
+     },
+     {
+      "key": "esc",
+      "steps": 20000000
+     },
+     {
+      "key": "esc",
+      "steps": 20000000
+     },
+     {
+      "key": "esc",
+      "steps": 20000000
+     },
+     {
+      "key": "esc",
+      "steps": 20000000
+     },
+     {
+      "key": "esc",
+      "steps": 20000000
+     },
+     {
+      "key": "esc",
+      "steps": 20000000
+     },
+     {
+      "key": "esc",
+      "steps": 20000000
+     },
+     {
+      "key": "esc",
+      "steps": 20000000
+     },
+     {
+      "key": "esc",
+      "steps": 20000000
+     },
+     {
+      "key": "esc",
+      "steps": 20000000
+     },
+     {
+      "key": "esc",
+      "steps": 20000000
+     },
+     {
+      "key": "esc",
+      "steps": 20000000
+     },
+     {
+      "key": "esc",
+      "steps": 20000000
+     },
+     {
+      "key": "esc",
+      "steps": 20000000
+     },
+     {
+      "key": "esc",
+      "steps": 20000000
+     },
+     {
+      "key": "esc",
+      "steps": 20000000
+     }
+    ]
+   },
+   {
+    "name": "enter",
+    "plan": [
+     {
+      "key": "",
+      "steps": 2000000
+     },
+     {
+      "key": "enter",
+      "steps": 8000000
+     },
+     {
+      "key": "enter",
+      "steps": 20000000
+     },
+     {
+      "key": "enter",
+      "steps": 20000000
+     },
+     {
+      "key": "enter",
+      "steps": 20000000
+     },
+     {
+      "key": "enter",
+      "steps": 20000000
+     },
+     {
+      "key": "enter",
+      "steps": 20000000
+     },
+     {
+      "key": "enter",
+      "steps": 20000000
+     },
+     {
+      "key": "enter",
+      "steps": 20000000
+     },
+     {
+      "key": "enter",
+      "steps": 20000000
+     },
+     {
+      "key": "enter",
+      "steps": 20000000
+     },
+     {
+      "key": "enter",
+      "steps": 20000000
+     },
+     {
+      "key": "enter",
+      "steps": 20000000
+     },
+     {
+      "key": "enter",
+      "steps": 20000000
+     },
+     {
+      "key": "enter",
+      "steps": 20000000
+     },
+     {
+      "key": "enter",
+      "steps": 20000000
+     },
+     {
+      "key": "enter",
+      "steps": 20000000
+     },
+     {
+      "key": "enter",
+      "steps": 20000000
+     }
+    ]
+   },
+   {
+    "name": "none",
+    "plan": [
+     {
+      "key": "",
+      "steps": 2000000
+     },
+     {
+      "key": "enter",
+      "steps": 8000000
+     },
+     {
+      "key": "",
+      "steps": 20000000
+     },
+     {
+      "key": "",
+      "steps": 20000000
+     },
+     {
+      "key": "",
+      "steps": 20000000
+     },
+     {
+      "key": "",
+      "steps": 20000000
+     },
+     {
+      "key": "",
+      "steps": 20000000
+     },
+     {
+      "key": "",
+      "steps": 20000000
+     },
+     {
+      "key": "",
+      "steps": 20000000
+     },
+     {
+      "key": "",
+      "steps": 20000000
+     },
+     {
+      "key": "",
+      "steps": 20000000
+     },
+     {
+      "key": "",
+      "steps": 20000000
+     },
+     {
+      "key": "",
+      "steps": 20000000
+     },
+     {
+      "key": "",
+      "steps": 20000000
+     },
+     {
+      "key": "",
+      "steps": 20000000
+     },
+     {
+      "key": "",
+      "steps": 20000000
+     },
+     {
+      "key": "",
+      "steps": 20000000
+     },
+     {
+      "key": "",
+      "steps": 20000000
+     }
+    ]
+   }
+  ],
+  "note": "三臂只差在第 3 行起送的鍵；步數、順序、起點完全相同。每格 2 千萬指令（虛擬時間約 20 秒），遠長於逐字寫入，因此不會把「還沒寫完」誤讀成「不接受按鍵」。"
+ },
+ "frames": {
+  "esc": [
+   {
+    "control_seq": 0,
+    "steps": 52473882,
+    "eip": "0x36D98",
+    "frame_sha256": "885edd19347628bdbe823bbf25d9de6180be59e766bdc9840a631083f44ec025"
+   },
+   {
+    "control_seq": 1,
+    "steps": 52473883,
+    "eip": "0x36D98",
+    "frame_sha256": "885edd19347628bdbe823bbf25d9de6180be59e766bdc9840a631083f44ec025"
+   },
+   {
+    "control_seq": 2,
+    "steps": 60473883,
+    "eip": "0x121F4",
+    "frame_sha256": "7fde8479fe12a60b7f75884738bf8c4aefe4c606a77a74938ddc91dd1a1fafbc"
+   },
+   {
+    "control_seq": 3,
+    "steps": 80473883,
+    "eip": "0x36CF8",
+    "frame_sha256": "b1396bed28c4a85ab865fa5b25725777f5fd449f4493afbd1d89ec03646de169"
+   },
+   {
+    "control_seq": 4,
+    "steps": 100473883,
+    "eip": "0x4E8D5",
+    "frame_sha256": "0c46676cd42f2b4fa52a422d2c0eadd086b769c1d9d40f85949c8e762a874f10"
+   },
+   {
+    "control_seq": 5,
+    "steps": 120473883,
+    "eip": "0x16D18",
+    "frame_sha256": "b5792d584ba2d90f85ad0dd17e76a0e91b24f3e96a567ce9a7a5a562e4804886"
+   },
+   {
+    "control_seq": 6,
+    "steps": 140473883,
+    "eip": "0x4E927",
+    "frame_sha256": "bcc91017fe81707efdaa3e892cfb7b9c8e0dead38a714566eb207aa08e86463e"
+   },
+   {
+    "control_seq": 7,
+    "steps": 160473883,
+    "eip": "0x4E8CF",
+    "frame_sha256": "dfc4f16b2ba85bc470b75b3130bfc525a1cd866d3380ec89d48fa7b141851482"
+   },
+   {
+    "control_seq": 8,
+    "steps": 180473883,
+    "eip": "0x16D18",
+    "frame_sha256": "6b5df4a9f4365a94052dfd4af1678f6afb8667fbe55f90e5da3b841006d337fe"
+   },
+   {
+    "control_seq": 9,
+    "steps": 200473883,
+    "eip": "0x4E908",
+    "frame_sha256": "2490f1b9cc6daafe226d7ec31d6b4357fbfea1a6916cc5e9aa5ecf8569cb263c"
+   },
+   {
+    "control_seq": 10,
+    "steps": 220473883,
+    "eip": "0x4E8D5",
+    "frame_sha256": "68330f5f1547c9a28e7a5f0cd6883cc22e80c50ace02014f3c46247e154af728"
+   },
+   {
+    "control_seq": 11,
+    "steps": 240473883,
+    "eip": "0x16D05",
+    "frame_sha256": "b0c232a39465e31fa4ce85eddae621c4385cf827784832d2da58f0e30b6b6a2b"
+   },
+   {
+    "control_seq": 12,
+    "steps": 260473883,
+    "eip": "0x4E91E",
+    "frame_sha256": "a0f6e7b67741868d6ed0b908578b6be29a4f98c6d92a365e2157b8aeec311560"
+   },
+   {
+    "control_seq": 13,
+    "steps": 280473883,
+    "eip": "0x1064E",
+    "frame_sha256": "bee917f22d374dc8f7d7f4350c06d50bc7df82864b4a23bdeec54355032a334d"
+   },
+   {
+    "control_seq": 14,
+    "steps": 300473883,
+    "eip": "0x16D0D",
+    "frame_sha256": "139423ef363b0c29a0960d7c24d11fe7f39c6587ffedde3098cee4cd9b1f2847"
+   },
+   {
+    "control_seq": 15,
+    "steps": 320473883,
+    "eip": "0x4DFC3",
+    "frame_sha256": "8e0afa481661b87e1decaf3835b5e45e2648b4d2880673340bea6f19d3edab1b"
+   },
+   {
+    "control_seq": 16,
+    "steps": 340473883,
+    "eip": "0x4E925",
+    "frame_sha256": "1969d08754fc2e7d4e3027cd92b213c94967e7caac0aed109a94a3dad8729292"
+   },
+   {
+    "control_seq": 17,
+    "steps": 360473883,
+    "eip": "0x4E030",
+    "frame_sha256": "18e2b8aa30a5b9f5ae2763c927b5e2cf0049330baf3c7e6d36d0af594065765b"
+   },
+   {
+    "control_seq": 18,
+    "steps": 380473883,
+    "eip": "0x36CF0",
+    "frame_sha256": "75578d157384243223f5b6c8e671077621e246f93848295292c1c977b0c298c2"
+   }
+  ],
+  "enter": [
+   {
+    "control_seq": 0,
+    "steps": 52473882,
+    "eip": "0x36D98",
+    "frame_sha256": "885edd19347628bdbe823bbf25d9de6180be59e766bdc9840a631083f44ec025"
+   },
+   {
+    "control_seq": 1,
+    "steps": 52473883,
+    "eip": "0x36D98",
+    "frame_sha256": "885edd19347628bdbe823bbf25d9de6180be59e766bdc9840a631083f44ec025"
+   },
+   {
+    "control_seq": 2,
+    "steps": 60473883,
+    "eip": "0x121F4",
+    "frame_sha256": "7fde8479fe12a60b7f75884738bf8c4aefe4c606a77a74938ddc91dd1a1fafbc"
+   },
+   {
+    "control_seq": 3,
+    "steps": 80473883,
+    "eip": "0x36CF8",
+    "frame_sha256": "b1396bed28c4a85ab865fa5b25725777f5fd449f4493afbd1d89ec03646de169"
+   },
+   {
+    "control_seq": 4,
+    "steps": 100473883,
+    "eip": "0x4E8D5",
+    "frame_sha256": "0c46676cd42f2b4fa52a422d2c0eadd086b769c1d9d40f85949c8e762a874f10"
+   },
+   {
+    "control_seq": 5,
+    "steps": 120473883,
+    "eip": "0x16D18",
+    "frame_sha256": "b5792d584ba2d90f85ad0dd17e76a0e91b24f3e96a567ce9a7a5a562e4804886"
+   },
+   {
+    "control_seq": 6,
+    "steps": 140473883,
+    "eip": "0x4E927",
+    "frame_sha256": "bcc91017fe81707efdaa3e892cfb7b9c8e0dead38a714566eb207aa08e86463e"
+   },
+   {
+    "control_seq": 7,
+    "steps": 160473883,
+    "eip": "0x4E8CF",
+    "frame_sha256": "dfc4f16b2ba85bc470b75b3130bfc525a1cd866d3380ec89d48fa7b141851482"
+   },
+   {
+    "control_seq": 8,
+    "steps": 180473883,
+    "eip": "0x16D18",
+    "frame_sha256": "6b5df4a9f4365a94052dfd4af1678f6afb8667fbe55f90e5da3b841006d337fe"
+   },
+   {
+    "control_seq": 9,
+    "steps": 200473883,
+    "eip": "0x4E908",
+    "frame_sha256": "2490f1b9cc6daafe226d7ec31d6b4357fbfea1a6916cc5e9aa5ecf8569cb263c"
+   },
+   {
+    "control_seq": 10,
+    "steps": 220473883,
+    "eip": "0x4E8D5",
+    "frame_sha256": "68330f5f1547c9a28e7a5f0cd6883cc22e80c50ace02014f3c46247e154af728"
+   },
+   {
+    "control_seq": 11,
+    "steps": 240473883,
+    "eip": "0x16D05",
+    "frame_sha256": "b0c232a39465e31fa4ce85eddae621c4385cf827784832d2da58f0e30b6b6a2b"
+   },
+   {
+    "control_seq": 12,
+    "steps": 260473883,
+    "eip": "0x4E91E",
+    "frame_sha256": "a0f6e7b67741868d6ed0b908578b6be29a4f98c6d92a365e2157b8aeec311560"
+   },
+   {
+    "control_seq": 13,
+    "steps": 280473883,
+    "eip": "0x1064E",
+    "frame_sha256": "bee917f22d374dc8f7d7f4350c06d50bc7df82864b4a23bdeec54355032a334d"
+   },
+   {
+    "control_seq": 14,
+    "steps": 300473883,
+    "eip": "0x16D0D",
+    "frame_sha256": "139423ef363b0c29a0960d7c24d11fe7f39c6587ffedde3098cee4cd9b1f2847"
+   },
+   {
+    "control_seq": 15,
+    "steps": 320473883,
+    "eip": "0x4DFC3",
+    "frame_sha256": "8e0afa481661b87e1decaf3835b5e45e2648b4d2880673340bea6f19d3edab1b"
+   },
+   {
+    "control_seq": 16,
+    "steps": 340473883,
+    "eip": "0x4E925",
+    "frame_sha256": "1969d08754fc2e7d4e3027cd92b213c94967e7caac0aed109a94a3dad8729292"
+   },
+   {
+    "control_seq": 17,
+    "steps": 360473883,
+    "eip": "0x4E030",
+    "frame_sha256": "18e2b8aa30a5b9f5ae2763c927b5e2cf0049330baf3c7e6d36d0af594065765b"
+   },
+   {
+    "control_seq": 18,
+    "steps": 380473883,
+    "eip": "0x36CF0",
+    "frame_sha256": "75578d157384243223f5b6c8e671077621e246f93848295292c1c977b0c298c2"
+   }
+  ],
+  "none": [
+   {
+    "control_seq": 0,
+    "steps": 52473882,
+    "eip": "0x36D98",
+    "frame_sha256": "885edd19347628bdbe823bbf25d9de6180be59e766bdc9840a631083f44ec025"
+   },
+   {
+    "control_seq": 1,
+    "steps": 52473883,
+    "eip": "0x36D98",
+    "frame_sha256": "885edd19347628bdbe823bbf25d9de6180be59e766bdc9840a631083f44ec025"
+   },
+   {
+    "control_seq": 2,
+    "steps": 60473883,
+    "eip": "0x121F4",
+    "frame_sha256": "7fde8479fe12a60b7f75884738bf8c4aefe4c606a77a74938ddc91dd1a1fafbc"
+   },
+   {
+    "control_seq": 3,
+    "steps": 80473883,
+    "eip": "0x36CF8",
+    "frame_sha256": "b1396bed28c4a85ab865fa5b25725777f5fd449f4493afbd1d89ec03646de169"
+   },
+   {
+    "control_seq": 4,
+    "steps": 100473883,
+    "eip": "0x4E920",
+    "frame_sha256": "b7eba775c99cc0cb3c56ae7cce103fcdc958afe9fb2f05d968a3847720cc8947"
+   },
+   {
+    "control_seq": 5,
+    "steps": 120473883,
+    "eip": "0x1062D",
+    "frame_sha256": "de094f852dc5dcfd422ec681b36e79d0adee652b401a73065707691743bd4158"
+   },
+   {
+    "control_seq": 6,
+    "steps": 140473883,
+    "eip": "0x16D18",
+    "frame_sha256": "7a8475a00df9f3951d2a7603280a1e98412dbb77c430a830e17588f91ecdefdf"
+   },
+   {
+    "control_seq": 7,
+    "steps": 160473883,
+    "eip": "0x36CE0",
+    "frame_sha256": "7a8475a00df9f3951d2a7603280a1e98412dbb77c430a830e17588f91ecdefdf"
+   },
+   {
+    "control_seq": 8,
+    "steps": 180473883,
+    "eip": "0x1062A",
+    "frame_sha256": "0c7ffd33994717996038a64f5e909422906a1719711e856365801116577c1633"
+   },
+   {
+    "control_seq": 9,
+    "steps": 200473883,
+    "eip": "0x36CF2",
+    "frame_sha256": "0c7ffd33994717996038a64f5e909422906a1719711e856365801116577c1633"
+   },
+   {
+    "control_seq": 10,
+    "steps": 220473883,
+    "eip": "0x36CDB",
+    "frame_sha256": "0c7ffd33994717996038a64f5e909422906a1719711e856365801116577c1633"
+   },
+   {
+    "control_seq": 11,
+    "steps": 240473883,
+    "eip": "0x16D18",
+    "frame_sha256": "0c7ffd33994717996038a64f5e909422906a1719711e856365801116577c1633"
+   },
+   {
+    "control_seq": 12,
+    "steps": 260473883,
+    "eip": "0x16D0A",
+    "frame_sha256": "0c7ffd33994717996038a64f5e909422906a1719711e856365801116577c1633"
+   },
+   {
+    "control_seq": 13,
+    "steps": 280473883,
+    "eip": "0x4DFDE",
+    "frame_sha256": "0c7ffd33994717996038a64f5e909422906a1719711e856365801116577c1633"
+   },
+   {
+    "control_seq": 14,
+    "steps": 300473883,
+    "eip": "0x4DFC8",
+    "frame_sha256": "0c7ffd33994717996038a64f5e909422906a1719711e856365801116577c1633"
+   },
+   {
+    "control_seq": 15,
+    "steps": 320473883,
+    "eip": "0x4DFCD",
+    "frame_sha256": "0c7ffd33994717996038a64f5e909422906a1719711e856365801116577c1633"
+   },
+   {
+    "control_seq": 16,
+    "steps": 340473883,
+    "eip": "0x10651",
+    "frame_sha256": "0c7ffd33994717996038a64f5e909422906a1719711e856365801116577c1633"
+   },
+   {
+    "control_seq": 17,
+    "steps": 360473883,
+    "eip": "0x1063F",
+    "frame_sha256": "0c7ffd33994717996038a64f5e909422906a1719711e856365801116577c1633"
+   },
+   {
+    "control_seq": 18,
+    "steps": 380473883,
+    "eip": "0x1062D",
+    "frame_sha256": "0c7ffd33994717996038a64f5e909422906a1719711e856365801116577c1633"
+   }
+  ]
+ },
+ "comparison": {
+  "esc_equals_enter": true,
+  "checkpoints_compared": 19,
+  "first_divergence_from_none": 4,
+  "none_frozen_from_checkpoint": 8,
+  "none_frozen_through_checkpoint": 18,
+  "none_frozen_virtual_seconds": 220
+ },
+ "conclusions": [
+  {
+   "claim": "原版開場的故事等待接受 ESC，且與 Enter 完全同義",
+   "grade": "已證實",
+   "evidence": "esc 與 enter 兩臂 19 個控制邊界的畫面 PNG 逐格 sha256 相同"
+  },
+  {
+   "claim": "ESC 在原版不是「跳過整段」的捷徑",
+   "grade": "已證實",
+   "evidence": "若 ESC 會跳段，esc 臂應領先 enter 臂；兩臂逐格相同"
+  },
+  {
+   "claim": "不送鍵時開場不會自行前進",
+   "grade": "已證實",
+   "evidence": "none 臂自第 8 個邊界起 11 格畫面完全相同，涵蓋約 220 虛擬秒"
+  }
+ ],
+ "not_claimed": [
+  "戰鬥中的對白（battle event／回合起手）是否同樣接受 ESC——本輪未取樣",
+  "標題選單與各式選單對 ESC 的反應——本輪未取樣",
+  "ESC 之外的其他鍵是否也推進——本輪只比對 ESC 與 Enter"
+ ]
+}

@@ -25,9 +25,13 @@
   殘影要另外以細粒度收據比對確認是哪一段多畫。
 - 待查：全螢幕戰鬥演出（FIGANI）。那是與地圖層不同的呈現流程，尚未實測
   dosgolem 是否可產生收據，不由地圖層可用推定。
-- 待查：開場無法以 ESC 跳過（`campInput` 的 story／cutscene 分支不收 Escape，
-  逐字期間 Enter 也不補完整句；實測從標題到第一關需 490–560 次 Enter／約 175 秒）。
-  是否加入跳過，要先用 oracle 確認原版有沒有這個能力。
+- RE-CLOSED／RUNTIME-E1：原版的故事等待接受 ESC，且與 Enter 完全同義（三臂
+  對照逐格 sha256 相同），但**不是跳過整段**的捷徑。重製端已把 Escape 接進
+  `handleNativeStoryInput`。開場長度本身沒有退化：原版到取得操作權要約 120
+  次按鍵、約 187 虛擬秒，重製端是 101 次、122 秒。收據與量測見
+  [98](98-opening-esc-and-length-20260909.md)。
+- 待查：戰鬥中的對白（battle event、回合起手）是否同樣接受 ESC。本輪只取了
+  故事對白的樣本，那兩處仍只收 Enter／Space。
 - 待查：對話觸發時的畫面位移與黑邊。`nativeMapFrameAdmission` 在 `legacyViewport`
   為真時回 false，世界層從原生整幀切到正規化管線；原版視窗恆為 312×192 置於
   (4,4)，位移量待實拍定量。
