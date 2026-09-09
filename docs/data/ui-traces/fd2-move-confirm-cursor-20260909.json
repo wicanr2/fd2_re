@@ -1,0 +1,1441 @@
+{
+ "schema_version": 1,
+ "kind": "fd2_original_runtime_receipt",
+ "topic": "移動確認瞬間的游標、鏡頭與單位狀態（5 千指令粒度）",
+ "date": "2026-09-09",
+ "runner": "dosgolem apps/fd2/cmd/oracle",
+ "dosgolem_commit": "3179a8d",
+ "driver": "tools/dosgolem_oracle.sh",
+ "executable": {
+  "file": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+ },
+ "entry": {
+  "path": "標題選單 right,down,down,enter 後由隨遊戲附帶的 FD2.SAV 進入第一關",
+  "evidence_grade": "RUNTIME 觀測；入口為附帶存檔，非從 START 起的完整一般玩家路徑",
+  "state_injections": [],
+  "input_kind": "normal BIOS keys"
+ },
+ "design": {
+  "plan": [
+   {
+    "key": "right",
+    "steps": 3000000
+   },
+   {
+    "key": "down",
+    "steps": 3000000
+   },
+   {
+    "key": "down",
+    "steps": 3000000
+   },
+   {
+    "key": "enter",
+    "steps": 3000000
+   },
+   {
+    "key": "",
+    "steps": 30000000
+   },
+   {
+    "key": "",
+    "steps": 30000000
+   },
+   {
+    "key": "",
+    "steps": 30000000
+   },
+   {
+    "key": "",
+    "steps": 30000000
+   },
+   {
+    "key": "up",
+    "steps": 3000000
+   },
+   {
+    "key": "enter",
+    "steps": 5000000
+   },
+   {
+    "key": "up",
+    "steps": 3000000
+   },
+   {
+    "key": "up",
+    "steps": 3000000
+   },
+   {
+    "key": "enter",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   },
+   {
+    "key": "",
+    "steps": 5000
+   }
+  ],
+  "granularity_instructions": 5000,
+  "why": "每格 5 千指令（虛擬 5 毫秒）遠短於原版一幀，足以分辨「瞬間跳」與「逐幀滑動」"
+ },
+ "raw_field_offsets": {
+  "camera": "0x53AA9／0x53AAD",
+  "cursor": "0x53AB1／0x53AB5",
+  "visible": "0x53AB9／0x53ABD",
+  "unit_array_base": "0x53A45",
+  "+3": "pose",
+  "+4": "motion"
+ },
+ "trace": [
+  {
+   "control_seq": 0,
+   "steps": 52473882,
+   "camera": [
+    0,
+    0
+   ],
+   "cursor": [
+    0,
+    0
+   ],
+   "visible": [
+    0,
+    0
+   ],
+   "unit2": {
+    "x": null,
+    "y": null,
+    "pose": null,
+    "motion": null
+   }
+  },
+  {
+   "control_seq": 4,
+   "steps": 55483500,
+   "camera": [
+    1,
+    13
+   ],
+   "cursor": [
+    8,
+    17
+   ],
+   "visible": [
+    7,
+    4
+   ],
+   "unit2": {
+    "x": 8,
+    "y": 16,
+    "pose": 0,
+    "motion": 0
+   }
+  },
+  {
+   "control_seq": 9,
+   "steps": 178483500,
+   "camera": [
+    1,
+    13
+   ],
+   "cursor": [
+    8,
+    16
+   ],
+   "visible": [
+    7,
+    3
+   ],
+   "unit2": {
+    "x": 8,
+    "y": 16,
+    "pose": 0,
+    "motion": 0
+   }
+  },
+  {
+   "control_seq": 11,
+   "steps": 186483500,
+   "camera": [
+    1,
+    13
+   ],
+   "cursor": [
+    8,
+    15
+   ],
+   "visible": [
+    7,
+    2
+   ],
+   "unit2": {
+    "x": 8,
+    "y": 16,
+    "pose": 0,
+    "motion": 0
+   }
+  },
+  {
+   "control_seq": 12,
+   "steps": 189483500,
+   "camera": [
+    1,
+    13
+   ],
+   "cursor": [
+    8,
+    14
+   ],
+   "visible": [
+    7,
+    1
+   ],
+   "unit2": {
+    "x": 8,
+    "y": 16,
+    "pose": 0,
+    "motion": 0
+   }
+  },
+  {
+   "control_seq": 71,
+   "steps": 189778500,
+   "camera": [
+    1,
+    13
+   ],
+   "cursor": [
+    8,
+    16
+   ],
+   "visible": [
+    7,
+    2
+   ],
+   "unit2": {
+    "x": 8,
+    "y": 16,
+    "pose": 2,
+    "motion": 1
+   }
+  },
+  {
+   "control_seq": 97,
+   "steps": 189908500,
+   "camera": [
+    1,
+    13
+   ],
+   "cursor": [
+    8,
+    16
+   ],
+   "visible": [
+    7,
+    2
+   ],
+   "unit2": {
+    "x": 8,
+    "y": 16,
+    "pose": 2,
+    "motion": 2
+   }
+  },
+  {
+   "control_seq": 124,
+   "steps": 190043500,
+   "camera": [
+    1,
+    13
+   ],
+   "cursor": [
+    8,
+    16
+   ],
+   "visible": [
+    7,
+    2
+   ],
+   "unit2": {
+    "x": 8,
+    "y": 16,
+    "pose": 2,
+    "motion": 3
+   }
+  },
+  {
+   "control_seq": 150,
+   "steps": 190173500,
+   "camera": [
+    1,
+    13
+   ],
+   "cursor": [
+    8,
+    16
+   ],
+   "visible": [
+    7,
+    2
+   ],
+   "unit2": {
+    "x": 8,
+    "y": 16,
+    "pose": 2,
+    "motion": 4
+   }
+  },
+  {
+   "control_seq": 176,
+   "steps": 190303500,
+   "camera": [
+    1,
+    13
+   ],
+   "cursor": [
+    8,
+    16
+   ],
+   "visible": [
+    7,
+    2
+   ],
+   "unit2": {
+    "x": 8,
+    "y": 16,
+    "pose": 2,
+    "motion": 5
+   }
+  },
+  {
+   "control_seq": 202,
+   "steps": 190433500,
+   "camera": [
+    1,
+    13
+   ],
+   "cursor": [
+    8,
+    16
+   ],
+   "visible": [
+    7,
+    2
+   ],
+   "unit2": {
+    "x": 8,
+    "y": 16,
+    "pose": 2,
+    "motion": 6
+   }
+  },
+  {
+   "control_seq": 228,
+   "steps": 190563500,
+   "camera": [
+    1,
+    13
+   ],
+   "cursor": [
+    8,
+    15
+   ],
+   "visible": [
+    7,
+    1
+   ],
+   "unit2": {
+    "x": 8,
+    "y": 15,
+    "pose": 2,
+    "motion": 1
+   }
+  },
+  {
+   "control_seq": 255,
+   "steps": 190698500,
+   "camera": [
+    1,
+    13
+   ],
+   "cursor": [
+    8,
+    15
+   ],
+   "visible": [
+    7,
+    1
+   ],
+   "unit2": {
+    "x": 8,
+    "y": 15,
+    "pose": 2,
+    "motion": 2
+   }
+  }
+ ],
+ "conclusions": [
+  {
+   "claim": "確認移動時，游標由終點瞬間回到單位所在格，中間沒有任何一格",
+   "grade": "已證實",
+   "evidence": "cp0012 游標 (8,14)、cp0071 游標 (8,16)，5 毫秒粒度下沒有出現 (8,15)"
+  },
+  {
+   "claim": "整段移動期間鏡頭完全不動",
+   "grade": "已證實",
+   "evidence": "camera 全程 (1,13)"
+  },
+  {
+   "claim": "游標之後逐格跟著單位走",
+   "grade": "已證實",
+   "evidence": "cp0228 單位提交 (8,15) 的同一格，游標同時變成 (8,15)"
+  },
+  {
+   "claim": "visible 游標不是 cursor 減 camera",
+   "grade": "已證實",
+   "evidence": "cp0071 cursor (8,16)、camera (1,13) 但 visible 是 (7,2)，不是 (7,3)；它保留了確認前 cursor (8,15) 的值"
+  }
+ ],
+ "not_claimed": [
+  "visible 游標在移動期間的完整更新規則。本輪只證明它不等於 cursor 減 camera，未解出寫入端",
+  "使用者回報的「快速順移殘影」對應到哪一段。重製端的狀態序列連續、無跳格，本輪未能從狀態層重現該視覺現象"
+ ]
+}
