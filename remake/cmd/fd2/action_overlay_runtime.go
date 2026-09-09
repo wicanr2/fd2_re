@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
@@ -43,6 +44,7 @@ func (g *Game) beginActionOverlayOpen(selection int) {
 	g.actionOverlayAfter = nil
 	g.actionOverlayDrawn = false
 	g.actionOverlayShotHold = false
+	g.actionOverlayBlink = fdother.ActionOverlaySelectionBlink{}
 }
 
 // beginActionOverlayClose starts the independent four-present sequence from
@@ -99,6 +101,12 @@ func (g *Game) stepActionOverlayLifecycle() {
 		}
 		g.actionOverlayPhase = actionOverlayOpen
 		g.actionOverlayDrawn = false
+	case actionOverlayOpen:
+		// sub_17898 的等待迴圈每次都重新取樣 0x46C 再決定要不要翻相位；
+		// 開合動畫(sub_1741C／sub_176B4)不含這個加法，故只在此推進。
+		if tick, ok := g.nativeMapClock.Current(); ok {
+			g.actionOverlayBlink.Advance(tick)
+		}
 	case actionOverlayClosing:
 		if g.actionOverlayFrame < 3 {
 			g.actionOverlayFrame++
@@ -755,4 +763,29 @@ func (g *Game) drawNativeSystemEndTurn(screen *ebiten.Image) bool {
 	}
 	g.presentNativeClassFrame(screen, frame)
 	return true
+}
+
+// applyNativeOverlayDirectionInput 重現 sub_177FC 於 `0x17835..0x17897` 的四個
+// 方向分支：掃描碼只有在目前 caller 的 availability 為零時才寫入 `[0x53c57]`；
+// 不可用的方向按下去原版完全沒有反應，等待迴圈繼續。0x16F55、0x1728C、
+// 0x18D8C、0x19DF7 與 0x1BBDC 五個 chooser 共用這個閘門，各自帶自己的表。
+func (g *Game) applyNativeOverlayDirectionInput() {
+	state := g.nativeActionOverlayState()
+	for direction, key := range [4]ebiten.Key{
+		ebiten.KeyArrowUp, ebiten.KeyArrowLeft, ebiten.KeyArrowRight, ebiten.KeyArrowDown,
+	} {
+		if !inpututil.IsKeyJustPressed(key) {
+			continue
+		}
+		if fdother.ActionOverlayAcceptsDirection(state.Availability, direction) {
+			g.ringSel = direction
+		}
+	}
+}
+
+// beginBattleActionOverlay 依 sub_173E7（0x18E53／0x18ED6 各呼叫一次）挑起始
+// 方向：第一個 availability 為零的方向。硬寫 1 會讓起始選擇落在原版根本不會
+// 停留的不可用格上，方向鍵閘門一旦成立就再也移不開。
+func (g *Game) beginBattleActionOverlay() {
+	g.beginActionOverlayOpen(fdother.ActionOverlayInitialDirection(g.actionOverlayAvailability()))
 }

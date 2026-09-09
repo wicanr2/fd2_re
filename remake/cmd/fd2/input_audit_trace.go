@@ -18,7 +18,7 @@ func (g *Game) recordInputAuditState() {
 	if len(keys) == 0 && g.frame%120 != 0 {
 		return
 	}
-	r := map[string]any{"frame": g.frame, "keys": keys, "cursor": []int{g.curX, g.curY}, "camera": []float64{g.camX, g.camY}, "ring": g.ring, "moved": g.moved, "walking": g.walk != nil, "error": g.loadErr, "ai_busy": g.aiBusy, "dialogues": len(g.dialog), "move_preview": g.nativeMovePlan != nil}
+	r := map[string]any{"frame": g.frame, "keys": keys, "cursor": []int{g.curX, g.curY}, "camera": []float64{g.camX, g.camY}, "ring": g.ring, "ring_sel": g.ringSel, "ring_phase": g.actionOverlayPhase, "ring_blink": g.actionOverlayBlink.Phase, "banner": g.banner, "banner_t": g.bannerT, "moved": g.moved, "walking": g.walk != nil, "error": g.loadErr, "ai_busy": g.aiBusy, "dialogues": len(g.dialog), "move_preview": g.nativeMovePlan != nil}
 	if g.camp != nil {
 		r["node"] = g.camp.NodeID()
 	}

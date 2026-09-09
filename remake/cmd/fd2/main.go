@@ -515,6 +515,10 @@ type Game struct {
 	hasStoryNativeMapView bool                      // 僅在已證實的 LOADCH 視圖重設與 pan 步進後有效
 	storyNativeMapSource  *battle.State             // LOADCH 的完整 renderer source；只在 caller 要求原生對話時 materialize
 	storyNativeMapState   *battle.State             // LOADCH 場景的 indexed terrain/unit timing 載體；不含戰鬥規則或可見 HUD
+
+	// actionOverlayBlink 保存 sub_17898 直接讀寫的 [0x53c13]／[0x53c17]：
+	// 穩態重繪時選中格每四個 BIOS tick 在 base 與 base+1 之間閃爍。
+	actionOverlayBlink fdother.ActionOverlaySelectionBlink
 }
 
 // atkAnim 是重製端 E1 全螢幕戰鬥演出；土台、角色、斬擊弧與血條使用
@@ -4968,18 +4972,7 @@ func (g *Game) ringInput() bool {
 		if g.actionOverlayBlocksInput() {
 			return true
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
-			g.ringSel = 0
-		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
-			g.ringSel = 1
-		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
-			g.ringSel = 2
-		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
-			g.ringSel = 3
-		}
+		g.applyNativeOverlayDirectionInput()
 		if esc {
 			g.beginActionOverlayClose(func() {
 				g.nativeSystemOptionsOpen = false
@@ -5005,18 +4998,7 @@ func (g *Game) ringInput() bool {
 		if g.actionOverlayBlocksInput() {
 			return true
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
-			g.ringSel = 0
-		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
-			g.ringSel = 1
-		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
-			g.ringSel = 2
-		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
-			g.ringSel = 3
-		}
+		g.applyNativeOverlayDirectionInput()
 		if esc {
 			g.beginActionOverlayClose(func() {
 				g.nativeSystemNestedOpen = false
@@ -5066,18 +5048,7 @@ func (g *Game) ringInput() bool {
 		if g.actionOverlayBlocksInput() {
 			return true
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
-			g.ringSel = 0
-		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
-			g.ringSel = 1
-		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
-			g.ringSel = 2
-		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
-			g.ringSel = 3
-		}
+		g.applyNativeOverlayDirectionInput()
 		if esc {
 			g.beginActionOverlayClose(func() {
 				g.nativeSystemCursorOverlay = false
@@ -5334,19 +5305,9 @@ func (g *Game) ringInput() bool {
 	if g.actionOverlayBlocksInput() {
 		return true
 	}
-	// 環導航(doc13 [0x3C57]:↑0攻擊/←1法術/→2物品/↓3待機)
-	if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
-		g.ringSel = 0
-	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
-		g.ringSel = 1
-	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
-		g.ringSel = 2
-	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
-		g.ringSel = 3
-	}
+	// 環導航：方向寫入 [0x53c57] 的閘門在 sub_177FC 0x17835..0x17897，
+	// 該方向的 availability 不為零時原版根本不改變選擇。
+	g.applyNativeOverlayDirectionInput()
 	if esc { // ESC = 取消(doc13):先播放0x176b4四幀，再退回移動前位置
 		g.beginActionOverlayClose(func() {
 			g.msg = ""
@@ -5688,7 +5649,7 @@ func (g *Game) stepBattleWalk() {
 			w.then()
 		} else {
 			g.moved = true
-			g.beginActionOverlayOpen(1)
+			g.beginBattleActionOverlay()
 		}
 	}
 	if len(w.path) < 2 || w.seg >= len(w.path)-1 {
@@ -7030,7 +6991,7 @@ func (g *Game) confirm() {
 			g.clearNativePlayerMovement()
 			g.moved = true
 			g.reach = nil
-			g.beginActionOverlayOpen(1)
+			g.beginBattleActionOverlay()
 		case g.reach[cur] && g.st.UnitAt(g.curX, g.curY) == nil: // 移動到可達空格:沿路徑逐格走
 			p := g.st.Path(g.sel, g.curX, g.curY)
 			if g.nativeMovePlan != nil {
@@ -7048,7 +7009,7 @@ func (g *Game) confirm() {
 			} else { // 理論上不會(reach 內必可達),保底瞬移
 				g.sel.SetMapPlacement(g.curX, g.curY, g.sel.Dir)
 				g.moved = true
-				g.beginActionOverlayOpen(1)
+				g.beginBattleActionOverlay()
 			}
 			g.reach = nil
 		}
@@ -7853,7 +7814,14 @@ func (g *Game) Update() error {
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) || inpututil.IsKeyJustPressed(ebiten.KeyBackspace) {
 		if g.sel != nil && g.moved { // 已移動、正在選攻擊目標:退回指令環(取消一層,doc13;ring 的 ESC 才真正退回原位)
-			g.beginActionOverlayOpen(g.ringSel)
+			// 退回時沿用上一個選擇；它若已不可用就依 sub_173E7 回到第一個
+			// 可用方向，否則方向鍵閘門會把選擇鎖死在不可用格上。
+			// 0x18890 的完整重進場語意尚未閉合，不在此宣稱每次退回都重設。
+			if fdother.ActionOverlayAcceptsDirection(g.actionOverlayAvailability(), g.ringSel) {
+				g.beginActionOverlayOpen(g.ringSel)
+			} else {
+				g.beginBattleActionOverlay()
+			}
 			g.msg = ""
 		} else if g.sel == nil && g.st.HasNativeMapViewState && inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 			g.cycleNativePlayerUnit()
@@ -8535,9 +8503,6 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				g.st.Turn, g.st.AliveCount(battle.Own), g.st.AliveCount(battle.Ally), g.st.AliveCount(battle.Enemy), g.curX, g.curY), 6, 4)
 		}
 	}
-	if !legacyViewport && campaignBattleView {
-		g.drawPhaseBanner(screen) // 回合橫幅(PLAYER/ENEMY PHASE,transient)
-	}
 	// A complete original indexed frame supersedes the normalized map/unit/HUD
 	// layers for the verified drawable selectors 1..5. Target selection keeps
 	// g.sel as its actor, so explicitly admit those modal states. The recovered
@@ -8552,6 +8517,12 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	}
 	if nativeMapPresented {
 		g.drawNativeMovementPanel(screen)
+	}
+	// 回合橫幅(PLAYER/ENEMY PHASE，transient)必須畫在原生整幀之後：
+	// drawNativeMapFrame 是覆蓋全畫面的 320×200 blit，畫在它前面等於沒畫。
+	// 這一層是重製端的近似呈現，原版自己的回合字樣仍未解出，不宣稱一致。
+	if !legacyViewport && campaignBattleView {
+		g.drawPhaseBanner(screen)
 	}
 
 	nativeStoryDialogueDrawn := g.drawNativeStoryDialogue(screen)
@@ -8994,12 +8965,20 @@ func (g *Game) drawNativeActionOverlay(screen *ebiten.Image, cursorX, cursorY fl
 	if err != nil {
 		return false
 	}
-	if !g.actionOverlayBlocksInput() {
+	steady := !g.actionOverlayBlocksInput()
+	if steady {
 		// 0x179D5 的停留位置與 0x1741C 最後一張展開幀不同。
 		offsets = [4]int{-0x23a0, 0x378, 0x3a8, 0x2ac0}
 	}
 	for direction, offset := range offsets {
 		index, err := state.CellIndex(direction)
+		// 0x17A7D..0x17A8B：穩態重繪只對「等於 [0x53c57] 的方向」加上閃爍
+		// 相位。原版的選擇永遠停在可用方向（sub_173E7 起始 + sub_177FC
+		// 閘門），所以不可用的方向不套用，避免越界取到下一組圖示。
+		if steady && direction == g.ringSel &&
+			fdother.ActionOverlayAcceptsDirection(state.Availability, direction) {
+			index, err = state.SelectedCellIndex(direction, g.actionOverlayBlink.Phase)
+		}
 		if err != nil || index >= len(g.nativeActionCells) || g.nativeActionCells[index] == nil {
 			return false
 		}

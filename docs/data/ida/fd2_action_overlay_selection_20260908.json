@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_ida_evidence_export",
+  "topic": "action overlay selection cursor, availability gate and selected-cell blink",
+  "date": "2026-09-08",
+  "source": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "address_space": "DOS LE loader flat linear; not file offsets"
+  },
+  "tools": [
+    {
+      "name": "IDA Pro",
+      "version": "9.4",
+      "image": "fd2-ida-authorized-local:latest",
+      "script": "tools/ida_probe_functions.py",
+      "addresses": "0x1741c 0x173e7 0x177fc 0x17898 0x179d5 0x18d8c"
+    },
+    {
+      "name": "Capstone",
+      "version": "5.0.3",
+      "image": "fd2-cap-local:latest",
+      "script": "tools/disasm_le.py",
+      "ranges": ["0x173e0-0x174e0", "0x174e0-0x175a9", "0x177fc-0x178d0", "0x178c8-0x17920", "0x179e0-0x17ad0", "0x18e40-0x19070"]
+    }
+  ],
+  "functions": [
+    {"original_name": "sub_173E7", "start": "0x173e7", "end": "0x1741c", "role": "initial selection = first direction whose availability word is zero", "evidence": "confirmed"},
+    {"original_name": "sub_1741C", "start": "0x1741c", "end": "0x175a9", "role": "opening/steady four-cell present; cell = 3*first_table + 2*second_table", "evidence": "confirmed"},
+    {"original_name": "sub_177FC", "start": "0x177fc", "end": "0x17898", "role": "direction/confirm/cancel input; a direction is accepted only when its availability word is zero", "evidence": "confirmed"},
+    {"original_name": "sub_17898", "start": "0x17898", "end": "0x179d5", "role": "key wait loop; toggles the selected-cell blink phase and calls sub_179D5 each iteration", "evidence": "confirmed"},
+    {"original_name": "sub_179D5", "start": "0x179d5", "end": "0x17aa9", "role": "steady overlay redraw; adds the blink phase to the selected direction's cell index", "evidence": "confirmed"},
+    {"original_name": "sub_18D8C", "start": "0x18d8c", "end": "0x190ac", "role": "battle action wrapper; builds the availability table then dispatches on the selected direction", "evidence": "confirmed"}
+  ],
+  "globals": [
+    {"address": "0x53c57", "role": "selected direction index 0..3 (up, left, right, down)", "writers": ["0x173f5", "0x17401", "0x1783f", "0x17858", "0x17871", "0x1788a"], "readers": ["0x17407", "0x17410", "0x17a7d", "0x18f22", "0x19005", "0x1904c"], "evidence": "confirmed"},
+    {"address": "0x53c13", "role": "selected-cell blink phase, 0 or 1", "writers": ["0x178d7", "0x178e6"], "readers": ["0x17a85"], "evidence": "confirmed"},
+    {"address": "0x53c17", "role": "BIOS low-word timestamp of the last blink toggle", "writers": ["0x178f8"], "readers": ["0x178c8"], "evidence": "confirmed"},
+    {"address": "0x46c", "role": "BIOS timer low word sampled by sub_17898", "readers": ["0x178bf", "0x178f0"], "evidence": "confirmed"}
+  ],
+  "raw_bytes": [
+    {"address": "0x173e7", "length": 53, "hex": "68 04 00 00 00 e8 e6 f8 01 00 8b 54 24 04 c7 05 57 3c 00 00 00 00 00 00 eb 06 ff 05 57 3c 00 00 83 3d 57 3c 00 00 04 7d 0b a1 57 3c 00 00 83 3c 82 00 75 e6 c3"},
+    {"address": "0x17835", "length": 99, "hex": "83 f8 48 75 13 83 3b 00 75 55 c7 05 57 3c 00 00 00 00 00 00 31 c0 5b c3 83 f8 50 75 14 83 7b 0c 00 75 3c c7 05 57 3c 00 00 03 00 00 00 31 c0 5b c3 83 f8 4b 75 14 83 7b 04 00 75 23 c7 05 57 3c 00 00 01 00 00 00 31 c0 5b c3 83 f8 4d 75 10 83 7b 08 00 75 0a c7 05 57 3c 00 00 02 00 00 00 31 c0 5b c3"},
+    {"address": "0x178c8", "length": 53, "hex": "2b 05 17 3c 00 00 83 f8 03 7f 04 85 c0 7d 26 ff 05 13 3c 00 00 83 3d 13 3c 00 00 02 75 0a c7 05 13 3c 00 00 00 00 00 00 b8 6c 04 00 00 0f bf 00 a3 17 3c 00 00"},
+    {"address": "0x17a60", "length": 45, "hex": "89 f3 8b 44 24 2c 8b 14 98 89 d0 c1 e0 02 29 d0 89 c2 8b 44 24 30 8b 04 98 01 c0 01 d0 3b 35 57 3c 00 00 75 a9 03 05 13 3c 00 00 eb a1"}
+  ],
+  "conclusions": [
+    {
+      "id": "selection-blink",
+      "statement": "The steady overlay draws cell 3*first_table[d] + 2*second_table[d] for every direction, and adds [0x53c13] for the direction equal to [0x53c57].",
+      "instructions": "0x17a60..0x17a8b",
+      "evidence": "confirmed"
+    },
+    {
+      "id": "blink-cadence",
+      "statement": "[0x53c13] alternates between 0 and 1 whenever the BIOS low word at 0x46c has advanced by more than 3 ticks (or moved backwards) since [0x53c17]; the timestamp is then refreshed. One BIOS tick is 1193182/65536 Hz, so the alternation period is 4 ticks, about 219.7 ms.",
+      "instructions": "0x178bf..0x178f8",
+      "evidence": "confirmed"
+    },
+    {
+      "id": "direction-gate",
+      "statement": "Scan codes 0x48/0x4b/0x4d/0x50 write [0x53c57] only when the availability word for that direction is zero; otherwise the selection is unchanged and the loop keeps waiting.",
+      "instructions": "0x17835..0x17897",
+      "evidence": "confirmed"
+    },
+    {
+      "id": "initial-selection",
+      "statement": "sub_173E7 sets [0x53c57] to the first index 0..3 whose availability word is zero, stopping at 4 when every action is unavailable.",
+      "instructions": "0x173e7..0x1741b",
+      "evidence": "confirmed"
+    },
+    {
+      "id": "shared-callers",
+      "statement": "sub_177FC is called by 0x16f55, 0x1728c, 0x18d8c, 0x19df7 and 0x1bbdc, so the blink and the availability gate belong to every overlay chooser, not only the battle action menu.",
+      "instructions": "IDA code xrefs to sub_177FC",
+      "evidence": "confirmed"
+    }
+  ],
+  "not_claimed": [
+    "The battle availability producers themselves (0x1b8a6, 0x1c269, unit+0x27) are unchanged by this export.",
+    "No screen anchor, animation duration or same-state pixel comparison is claimed here."
+  ]
+}

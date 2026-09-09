@@ -290,3 +290,66 @@ func BlitActionOverlayFrame(cells []RawCell, state ActionOverlayState, dst []byt
 	}
 	return nil
 }
+
+// ActionOverlayBlinkThreshold 是 sub_17898 於 `0x178CE 83 F8 03` 使用的界線：
+// 只有 BIOS 低字差值大於 3、或為負（0x178D3 `85 C0` 後 `7D` 的 jge 不成立）時
+// 才翻動閃爍相位。四個 tick 約 219.7 ms。
+const ActionOverlayBlinkThreshold = 3
+
+// ActionOverlaySelectionBlink 保存 sub_17898 直接讀寫的兩個原始全域：
+// `[0x53c13]` 的閃爍相位與 `[0x53c17]` 的上次翻動時間戳。兩者都是 BSS，
+// 初值為零；此處不另行植入起始值，以保留原版第一次比較的行為。
+type ActionOverlaySelectionBlink struct {
+	Phase int // [0x53c13]
+	Tick  int // [0x53c17]
+}
+
+// Advance 重現 `0x178BF..0x178F8`：以 `0x46C` 的 BIOS 低字與上次時間戳相減，
+// 差值超過界線或為負就把相位在 0 與 1 之間翻動，並更新時間戳。
+func (b *ActionOverlaySelectionBlink) Advance(rawTick int) {
+	if b == nil {
+		return
+	}
+	delta := rawTick - b.Tick
+	if delta >= 0 && delta <= ActionOverlayBlinkThreshold {
+		return
+	}
+	b.Phase++
+	if b.Phase == 2 {
+		b.Phase = 0
+	}
+	b.Tick = rawTick
+}
+
+// SelectedCellIndex 重現 sub_179D5 於 `0x17A7D..0x17A8B` 的選中分支：穩態重繪
+// 對每個方向取 CellIndex，只有等於目前選擇的方向再加上閃爍相位。開合動畫
+// 由 sub_1741C／sub_176B4 擁有，兩者都沒有這個加法，呼叫端不可套用。
+func (s ActionOverlayState) SelectedCellIndex(direction, blinkPhase int) (int, error) {
+	base, err := s.CellIndex(direction)
+	if err != nil {
+		return 0, err
+	}
+	if blinkPhase < 0 || blinkPhase > 1 {
+		return 0, fmt.Errorf("fdother: action overlay blink phase %d is outside the proven 0..1 range", blinkPhase)
+	}
+	return base + blinkPhase, nil
+}
+
+// ActionOverlayInitialDirection 重現 sub_173E7（`0x173F5..0x1741B`）：從 0 起
+// 逐一往上找第一個 availability 為零的方向。四個方向都不可用時回傳 4，與
+// 原版把 `[0x53c57]` 停在 4 的結果一致。
+func ActionOverlayInitialDirection(availability [4]int) int {
+	for direction := 0; direction < len(availability); direction++ {
+		if availability[direction] == 0 {
+			return direction
+		}
+	}
+	return len(availability)
+}
+
+// ActionOverlayAcceptsDirection 重現 sub_177FC 的四個方向分支
+// （`0x17835..0x17897`）：掃描碼只有在該方向的 availability 為零時才會寫入
+// `[0x53c57]`；否則選擇不變，等待迴圈繼續。
+func ActionOverlayAcceptsDirection(availability [4]int, direction int) bool {
+	return direction >= 0 && direction < len(availability) && availability[direction] == 0
+}
