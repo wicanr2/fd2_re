@@ -17,8 +17,9 @@
 - 對拍工具鏈：原版側執行器改為 dosgolem `apps/fd2/cmd/oracle`，由受版控的
   `tools/dosgolem_oracle.sh` 驅動；規則與缺口見
   [96](96-parity-toolchain-20260909.md)。
-- **BLOCKED**：dosgolem 尚未繪製戰場單位 sprite。人物面向、戰鬥動畫、移動殘影
-  這三題在補上該能力之前拿不到原版收據；不可用 DOSBox 圖片替代。
+- dosgolem 的地圖層（地形＋單位 sprite）已可產生原版收據，量測見
+  [96](96-parity-toolchain-20260909.md)。人物面向與移動這兩題可以直接取收據；
+  全螢幕戰鬥演出（FIGANI）那條路徑尚未實測，需要時另取。
 - 待查：開場無法以 ESC 跳過（`campInput` 的 story／cutscene 分支不收 Escape，
   逐字期間 Enter 也不補完整句；實測從標題到第一關需 490–560 次 Enter／約 175 秒）。
   是否加入跳過，要先用 oracle 確認原版有沒有這個能力。
