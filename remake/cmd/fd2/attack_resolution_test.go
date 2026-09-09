@@ -111,3 +111,21 @@ func TestPlayerPhysicalAttackMessageFailsClosedWithoutNames(t *testing.T) {
 		})
 	}
 }
+
+// TestPhysicalAttackMessageStaysOutOfThePlayerPath 釘住「傷害數字不留在地圖上」。
+//
+// 原版沒有這一行：battle.attack.* 四筆的 source_string_id 都指向重製端自己的
+// Go 原始碼，而原版分離出的 FDTXT 全庫沒有任何「造成 N 傷害」型的戰鬥結果
+// 模板。字串保留作為語言包完整性檢查，但只有 F3 診斷模式才顯示。
+func TestPhysicalAttackMessageStaysOutOfThePlayerPath(t *testing.T) {
+	g := &Game{}
+	g.publishPhysicalAttackMessage("索爾 攻擊 盜賊，造成 12 傷害")
+	if g.msg != "" {
+		t.Fatalf("一般玩家路徑不得顯示戰鬥結果字串，實得 %q", g.msg)
+	}
+	g.debug = true
+	g.publishPhysicalAttackMessage("索爾 攻擊 盜賊，造成 12 傷害")
+	if g.msg == "" {
+		t.Fatal("F3 診斷模式應保留字串")
+	}
+}

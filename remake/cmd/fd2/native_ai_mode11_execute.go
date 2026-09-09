@@ -110,7 +110,7 @@ func (g *Game) executeNativeAIMode11Physical(plan *battle.AIPlan, after func()) 
 		g.aiBusy = false
 		return
 	}
-	g.msg = message
+	g.publishPhysicalAttackMessage(message)
 	attackerName, defenderName := actor.Name, target.Name
 	if attackerName == "" {
 		attackerName = actor.ClsName

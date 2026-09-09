@@ -6259,6 +6259,23 @@ func (g *Game) resolvePlayerPhysicalAttack(actor, target *battle.Unit) (battle.A
 	return g.resolvePhysicalAttack(actor, target)
 }
 
+// publishPhysicalAttackMessage 只在 F3 診斷模式顯示物理攻擊的結果字串。
+//
+// 原版沒有這一行。`battle.attack.hit`／`miss`／`critical_suffix`／`exp_suffix`
+// 四筆的 `source_string_id` 都指向重製端自己的 Go 原始碼，而原版分離出的
+// FDTXT 全庫沒有任何「造成 N 傷害」型的戰鬥結果模板（僅有的「傷害／造成」
+// 字樣都在劇情對白裡）。原版的傷害數字出現在全螢幕戰鬥演出**之內**，不是
+// 戰鬥結束後留在地圖底部的一行字。
+//
+// 字串本身保留：它同時是語言包完整性的前置檢查，缺條目要在改動 HP 之前就
+// 失敗。這裡只擋顯示。
+func (g *Game) publishPhysicalAttackMessage(message string) {
+	if g == nil || !g.debug {
+		return
+	}
+	g.msg = message
+}
+
 func playerPhysicalAttackMessage(catalog *localization.Catalog, actor, target *battle.Unit, result battle.AttackResult) (string, error) {
 	if catalog == nil || actor == nil || target == nil {
 		return "", errors.New("physical attack message context unavailable")
@@ -7063,7 +7080,7 @@ func (g *Game) confirm() {
 			g.loadErr = "physical attack locale: " + messageErr.Error()
 			return
 		}
-		g.msg = message
+		g.publishPhysicalAttackMessage(message)
 		actor := g.sel
 		g.atk = g.newAtkAnim(actor.BattleFig, tgt.BattleFig, anm, nm,
 			actor.HP, actor.MaxHP, actor.Lv, actor.MP, actor.MaxMP,
@@ -11112,7 +11129,7 @@ func (g *Game) aiStep() {
 				g.aiBusy = false
 				return
 			}
-			g.msg = message
+			g.publishPhysicalAttackMessage(message)
 			g.atk = g.newAtkAnim(u.BattleFig, tgt.BattleFig, anm, nm,
 				u.HP, u.MaxHP, u.Lv, u.MP, u.MaxMP,
 				tgt.Lv, tgt.MP, tgt.MaxMP,
