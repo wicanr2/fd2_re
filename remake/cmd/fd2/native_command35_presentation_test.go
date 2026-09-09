@@ -38,6 +38,7 @@ func TestStartNativeCommand35PresentationUsesOriginalAssetsEndToEnd(t *testing.T
 		t.Setenv(key, path)
 	}
 	g := &Game{rng: rand.New(rand.NewSource(35)), nativeUIPalette: loadNativeUIPalette()}
+	attachOfficialLocale(t, g)
 	if err := g.loadMap("assets/maps/map0"); err != nil {
 		t.Fatal(err)
 	}

@@ -58,6 +58,7 @@ func newNativeChurchClassPathGame(t *testing.T) (*Game, *ebiten.Image) {
 		shopItemStats: map[int]campaign.ItemStats{0x64: {AP: 3, DP: 2, HIT: 1, EV: 2, MV: 1}},
 		rng:           rand.New(rand.NewSource(1)),
 	}
+	attachOfficialLocale(t, g)
 	return g, ebiten.NewImage(640, 400)
 }
 

@@ -21,6 +21,7 @@ func TestAIStepConsumesEditableHealSpellThroughProductionLoop(t *testing.T) {
 		SpellBook: []battle.Spell{{ID: 13, Name: "回復", Dmg: 70, Dist: 3, MP: 5, Target: 1}},
 	}
 	g := &Game{st: state, aiBusy: true, rng: rand.New(rand.NewSource(7))}
+	attachOfficialLocale(t, g)
 
 	g.aiStep()
 	if g.loadErr != "" || caster.HP != 40 || ally.HP <= 10 || caster.MP != 5 || !caster.Acted {
@@ -52,6 +53,7 @@ func TestAIStepConsumesEditableAttackSpellAndMovesIntoRange(t *testing.T) {
 		m:  &MapData{W: 3, H: 1, TileW: 24, TileH: 24, Tiles: []int{0, 0, 0}},
 		st: state, aiBusy: true, rng: rand.New(rand.NewSource(11)),
 	}
+	attachOfficialLocale(t, g)
 
 	g.aiStep()
 	if g.loadErr != "" || g.walk == nil || len(g.walk.path) != 2 || g.walk.path[len(g.walk.path)-1] != (battle.Cell{X: 1, Y: 0}) {
@@ -82,6 +84,7 @@ func TestAIStepStopsSpellWithoutRNGBeforeMutation(t *testing.T) {
 	// planner 可以建立合法法術 route，但 production executor 在缺少決定性
 	// （deterministic）RNG 邊界時，必須在 CastArea 改寫 MP 或 HP 前拒絕。
 	g := &Game{st: state, aiBusy: true}
+	attachOfficialLocale(t, g)
 	g.aiStep()
 	if g.loadErr == "" || g.aiBusy || caster.Acted || caster.MP != 10 || ally.HP != 10 {
 		t.Fatalf("spell without RNG was not fail-closed: err=%q ai=%v acted=%v mp=%d allyHP=%d", g.loadErr, g.aiBusy, caster.Acted, caster.MP, ally.HP)

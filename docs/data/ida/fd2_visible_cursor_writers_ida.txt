@@ -1,0 +1,110 @@
+FD2 可見游標 [0x53AB9]／[0x53ABD] 的完整寫入端
+==============================================
+
+輸入與工具
+----------
+
+- 輸入：`FD2.EXE`，固定版本大小 357074 bytes。
+- MD5：`b97caf2239a27a896069d03549d96e1e`
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`
+- IDA：合法 IDA Pro 9.4，`fd2-ida-authorized-local:latest` 一次性容器，
+  `tools/ida_probe_data_xrefs.py`，`FD2_IDA_DATA_TARGETS="53ab9 53abd"`。
+  資料庫沿用既有 `.i64`（同一固定版執行檔），沒有更名任何物件。
+- 第二套獨立驗證：Capstone 5.0.3（`fd2-cap-local:latest`，
+  `tools/disasm_le.py refs` 以 LE fixup 列參照、`range` 讀直接指令）。
+  兩者的寫入端清單一致。
+- 線性位址是 LE loader 位址，不是檔案偏移。
+
+寫入端（IDA data xref，只列寫入）
+---------------------------------
+
+0x1040c function=0x10010..0x10620 mov     dword_53AB9, eax
+0x11c3f function=0x11bfa..0x11c59 inc     dword_53AB9
+0x11c92 function=0x11c59..0x11cac dec     dword_53AB9
+0x13076 function=0x1300d..0x13185 dec     dword_53AB9
+0x13385 function=0x13315..0x13460 inc     dword_53AB9
+0x20641 function=0x205da..0x2067d mov     dword_53AB9, 0
+0x23489 function=0x233c6..0x234bb mov     dword_53AB9, 0
+0x236d8 function=0x235f9..0x23790 mov     dword_53AB9, 0
+0x23f53 function=0x23e74..0x240fa mov     dword_53AB9, 0
+0x258a0 function=0x25757..0x25977 mov     dword_53AB9, 0
+
+0x10415 function=0x10010..0x10620 mov     dword_53ABD, eax
+0x11b81 function=0x11b48..0x11b9b dec     dword_53ABD
+0x11be0 function=0x11b9b..0x11bfa inc     dword_53ABD
+0x12f1b function=0x12eaa..0x1300d inc     dword_53ABD
+0x13205 function=0x13185..0x13315 dec     dword_53ABD
+0x2064b function=0x205da..0x2067d mov     dword_53ABD, 0
+0x23493 function=0x233c6..0x234bb mov     dword_53ABD, 0
+0x236e2 function=0x235f9..0x23790 mov     dword_53ABD, 0
+0x23f5d function=0x23e74..0x240fa mov     dword_53ABD, 0
+0x258aa function=0x25757..0x25977 mov     dword_53ABD, 0
+
+分類
+----
+
+| 家族 | 邊界 | 絕對游標 `[0x53AB1/0x53AB5]` | 鏡頭 `[0x53AA9/0x53AAD]` | 可見游標 `[0x53AB9/0x53ABD]` |
+|---|---|---|---|---|
+| 鍵盤游標（上／下／右／左）| `0x11B48`／`0x11B9B`／`0x11BFA`／`0x11C59` | ±1 | ±1 或不動 | 不動 或 ±1 |
+| 走行步進（下／左／上／右）| `0x12EAA`／`0x1300D`／`0x13185`／`0x13315` | ±1 | `add` 或不動 | 不動 或 ±1 |
+| 劇情捲動 | `0x135DD` | ±1 | ±1 | **不寫** |
+| 直接設定游標 | `0x149F8..0x14B16` | `mov`／`add` | **不寫** | **不寫** |
+| 章節重設 | `0x205DA`、`0x233C6`、`0x235F9`、`0x23E74`、`0x25757` | 設值 | 設值 | 歸零 |
+| 開機初始化 | `0x10010..0x10620` | 設值 | 設值 | 設值 |
+
+**沒有任何一處由 `cursor - camera` 重算可見游標。** 因此 `0x135DD` 或
+`0x149F8` 搬動游標之後，可見游標會合法地停在舊值。
+
+安全帶規則（兩個家族相同）
+--------------------------
+
+以向上為例，`0x11B48` 的直接指令：
+
+```text
+0x11B52 cmp dword_53AB5, 0      ; 絕對游標已在最上緣 → 只重繪
+0x11B59 je  0x11B90
+0x11B5B cmp dword_53ABD, 2      ; 可見游標 >= 2 → 在安全帶內
+0x11B62 jge 0x11B7B
+0x11B64 cmp dword_53AAD, 0      ; 鏡頭已到頂 → 也只能移可見游標
+0x11B6B je  0x11B7B
+0x11B6D dec dword_53AB5         ; 否則捲鏡頭：游標與鏡頭同減，可見不動
+0x11B73 dec dword_53AAD
+0x11B79 jmp 0x11B90
+0x11B7B dec dword_53AB5         ; 安全帶內：游標與可見同減，鏡頭不動
+0x11B81 dec dword_53ABD
+0x11B87 cmp dword_51A83, 0      ; overlay selector 為 0 時略過重繪
+0x11B8E je  0x11B9A
+0x11B90 push 0 ; call 0x11CAC
+```
+
+四個方向的門檻：上 `visible_y >= 2`、下 `visible_y <= 5`、
+左 `visible_x >= 2`、右 `visible_x <= 0x0A`；鏡頭端界線分別是
+`camera_y == 0`、`camera_y == [0x53AC5] - 8`、`camera_x == 0`、
+`camera_x == [0x53AC1] - 0x0D`。視窗是 13×8（同一組常數也出現在
+`0x174AE`／`0x174B0` 的 `push 8`／`push 0xD`）。
+
+走行步進以 `0x13185`（上）為例，同一分支結構：捲鏡頭時走
+`0x13304 add dword_53AAD, eax`，否則 `0x13205 dec dword_53ABD`；
+絕對游標一定由 `0x1330A dec dword_53AB5` 跟著單位走。
+
+可見游標的消費端
+----------------
+
+`0x1741C`（指令環展開）在 `0x1743F..0x1746A` 用它算出畫面位址：
+
+```text
+0x1743F imul edx, dword_53AB9, 0x18        ; visible_x * 24
+0x1744E mov  edx, dword_53ABD              ; visible_y
+0x17454..0x17468                            ; edx * 10944 (= 24 * 0x1C8)
+0x1744B lea  edi, [eax + edx]              ; [0x53A49] + 0x8088 + …
+```
+
+也就是「可見游標＝視窗內的格座標」，直接乘 24 與 24×456 得到 framebuffer
+位移。這是已證實的語意，不是命名推測。
+
+界線
+----
+
+- 本檔只列寫入端與安全帶規則。可見游標在**每一個** caller 的用途沒有全部盤點；
+  上表的「不寫」是對這兩個全域而言，不代表該函式沒有其他副作用。
+- 沒有未修改一般玩家 DOSBox 同狀態的逐幀畫面 E2。

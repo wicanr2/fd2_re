@@ -2,7 +2,14 @@ package battle
 
 import "testing"
 
-func TestNativeMapViewMaterializesSaveIdentity(t *testing.T) {
+// TestNativeMapViewMaterializesViewportBounds 釘住可見游標的界線契約。
+//
+// 原版沒有 `visible == cursor - camera` 這條恆等式：`[0x53AB9]`／`[0x53ABD]`
+// 的寫入端只有四個鍵盤游標處理器、四個走行步進，加上初始化與章節歸零
+// （IDA data xref，見 docs/data/ida/fd2_visible_cursor_writers_ida.txt）。
+// 劇情捲動 `0x135DD` 與直接設定游標的 `0x149F8` 都不碰它，所以確認移動之後
+// 可見游標會合法地停在舊值。能檢查的是「有沒有落在 13×8 視窗內」。
+func TestNativeMapViewMaterializesViewportBounds(t *testing.T) {
 	st := &State{W: 24, H: 24}
 	view := NativeMapViewState{
 		CameraX: 1, CameraY: 13, CursorX: 8, CursorY: 17,
@@ -11,9 +18,20 @@ func TestNativeMapViewMaterializesSaveIdentity(t *testing.T) {
 	if err := st.MaterializeNativeMapViewState(view); err != nil {
 		t.Fatal(err)
 	}
-	view.VisibleCursorX++
-	if err := st.MaterializeNativeMapViewState(view); err == nil {
-		t.Fatal("accepted broken cursor-camera identity")
+	stale := view
+	stale.VisibleCursorY-- // 確認跳格之後的舊值，原版走得到
+	if err := st.MaterializeNativeMapViewState(stale); err != nil {
+		t.Fatalf("拒絕了原版走得到的舊可見游標：%v", err)
+	}
+	outside := view
+	outside.VisibleCursorY = nativeMapViewHeight
+	if err := st.MaterializeNativeMapViewState(outside); err == nil {
+		t.Fatal("接受了視窗外的可見游標")
+	}
+	outside = view
+	outside.VisibleCursorX = -1
+	if err := st.MaterializeNativeMapViewState(outside); err == nil {
+		t.Fatal("接受了負的可見游標")
 	}
 }
 

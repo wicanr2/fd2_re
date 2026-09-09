@@ -188,18 +188,61 @@ FDICON native placement primitive 條目，三處數值一致。
 收據見
 [fd2-walk-frames-and-placement-20260909.json](../data/ui-traces/fd2-walk-frames-and-placement-20260909.json)。
 
-## 還沒收的一件事
+## `visible` 游標：寫入端只有八處
 
-`visible` 游標的更新規則還沒解出（上面那個 (7,2) 反例說明它不是簡單的減法）。
-依失敗即關閉，不憑推測把它寫進畫面組成。
+`[0x53AB9]`／`[0x53ABD]` 的完整寫入端由 IDA 9.4 data xref 列出（第二套
+Capstone 的 LE fixup 清單一致），證據檔
+[fd2_visible_cursor_writers_ida.txt](../data/ida/fd2_visible_cursor_writers_ida.txt)：
+
+| 家族 | 邊界 | 絕對游標 | 鏡頭 | 可見游標 |
+|---|---|---|---|---|
+| 鍵盤游標 上／下／右／左 | `0x11B48`／`0x11B9B`／`0x11BFA`／`0x11C59` | ±1 | ±1 或不動 | 不動 或 ±1 |
+| 走行步進 下／左／上／右 | `0x12EAA`／`0x1300D`／`0x13185`／`0x13315` | ±1 | `add` 或不動 | 不動 或 ±1 |
+| 劇情捲動 | `0x135DD` | ±1 | ±1 | **不寫** |
+| 直接設定游標 | `0x149F8..0x14B16` | `mov`／`add` | **不寫** | **不寫** |
+| 章節重設 | `0x205DA`、`0x233C6`、`0x235F9`、`0x23E74`、`0x25757` | 設值 | 設值 | 歸零 |
+| 開機初始化 | `0x10010..0x10620` | 設值 | 設值 | 設值 |
+
+**沒有一處由 `cursor - camera` 重算。** 上面那個 (7,2) 反例因此有解：確認移動
+時游標走的是 `0x149F8` 那條只寫絕對游標的路徑，可見游標留在最後一次由游標
+處理器寫下的值。
+
+安全帶規則兩個家族相同——上 `>= 2`、下 `<= 5`、左 `>= 2`、右 `<= 0x0A`，
+超出就改捲鏡頭——但**判準的來源不同**：鍵盤處理器讀已存的可見游標
+（`0x11B5B cmp dword_53ABD, 2`），走行步進算的是單位自己的相對列
+（`0x131DE` 的 `unitY - [0x53AAD]`）。可見游標是舊值時兩者會不一樣。
+
+消費端也確認了語意：`0x1741C` 在 `0x1743F..0x1746A` 用
+`visible_x * 24 + visible_y * 24 * 0x1C8` 算指令環的畫面位址，也就是
+「視窗內的格座標」。
+
+### 重製端接線
+
+- `validateNativeMapView` 不再強制 `visible == cursor - camera`，改成檢查
+  13×8 視窗界線。強制恆等式會讓原版真的走得到的狀態表達不出來。
+- 新增 `JumpNativeMapCursor`（`0x149F8`：只寫絕對游標）與
+  `AdvanceNativeMapWalkStepView`（走行步進在格邊界的效果，判準是單位相對列）。
+- 確認移動時游標瞬間跳到單位所在格；走行每提交一格，視圖跟著走一格。
+- 回歸 `TestJumpNativeMapCursorLeavesVisibleStale`、
+  `TestAdvanceNativeMapWalkStepViewUsesUnitRelativeBand`。
+
+## 劇情走位的每格幀數
+
+`0x13185` 的迴圈直接給出答案：計數器在 `0x1320B` 設成 1，條件在 `0x13274`
+是 `cmp [esp], 7 ; jge 離開`，遞增在迴圈尾端 `0x13271`，所以主體跑 1..6，
+`unit+4` 也寫 1..6；單位座標、絕對游標與鏡頭在 `0x132F5` 之後才提交。
+
+劇情走位（beat `scroll_step`）呼叫的就是同一支 `0x13185`，所以每格同樣是
+六幀。`handler_compile.go` 的幀預算由 `repeat * 7` 改成
+`repeat * nativeGridStepFrames`（6）。
 
 ## 尚未涵蓋
 
 - 走行重繪的進入點位址本身。只證明它不經過 `0x11CAC`，並量出它實際呼叫的
   三個繪圖層。
 - 抵達之後何時交還 `0x11CAC`。取樣視窗內原版一直沒有再進入它。
-- 兩側逐像素比對。這一輪比的是「有沒有畫」。
-- `visible` 游標在移動期間的寫入端。
-- 劇情走位（`storyWalks`／beat `scroll_step`）的每格幀數。那條路徑的 beat 目前
-  以每格七幀編列（15 格 = 105 幀），與戰場走行量到的六幀不同；要改動它得先取
-  劇情路徑自己的原版收據，不能直接套戰場那一份。
+- 兩側逐像素比對。這一輪比的是「有沒有畫」、raw 序列與單位位置。
+- `0x53B0B`／`0x53AF1`／`0x53AF5` 在走行步進裡的角色。只確認它們與捲動有關，
+  沒有解出語意，也沒有接進重製端。
+- 節點常數該不該同時涵蓋 START 與 CONTINUE 兩條入口的視圖，見
+  [104](104-regression-baseline-review-20260909.md)。

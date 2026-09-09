@@ -85,6 +85,7 @@ func TestPlayerPhysicalAttackLoadsDynamicSeparatedPairWithoutArchive(t *testing.
 		sel: actor, moved: true, curX: 1, curY: 0,
 		rng: rand.New(rand.NewSource(73)), nativeUIPalette: loadNativeUIPalette(),
 	}
+	attachOfficialLocale(t, g)
 	t.Setenv("FD2_ORIGINAL_FIGANI", filepath.Join(t.TempDir(), "missing-FIGANI.DAT"))
 	g.confirm()
 	if g.atk == nil || target.HP >= target.MaxHP || !actor.Acted {

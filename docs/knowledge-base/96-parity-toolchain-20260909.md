@@ -209,20 +209,22 @@ docker run --rm --network none --memory 8g --cpus 4 --pids-limit 512 \
   -e FD2_ASSET_PACK=/pack \
   -v /home/anr2/cht/fd2:/src -v <完整素材根>:/pack:ro -v <快取>:/gocache \
   -w /src/remake fd2-go-test-local:latest \
-  bash -c '
-mkdir -p "$HOME"
-export DISPLAY=:99
-Xvfb :99 -screen 0 1280x800x24 -nolisten tcp >/tmp/xvfb.log 2>&1 & xvfb_pid=$!
-trap "kill $xvfb_pid 2>/dev/null" EXIT
-for i in $(seq 1 100); do test -S /tmp/.X11-unix/X99 && break; sleep 0.1; done
-go test ./... -count=1
-'
+  with-xvfb go test ./... -count=1
 ```
 
-`fd2-go-test-local` 裡的 `xvfb-run` 不能用：它把 Xvfb 起起來之後就停住，
-`go test` 根本沒有被執行（容器內 `ps -ef` 只看得到 `xvfb-run` 與 `Xvfb`
-兩個行程，CPU 0%）。看起來像測試跑很久，實際上一行都沒跑。自己起 Xvfb
-再設 `DISPLAY` 就正常。
+平常直接用受版控的驅動，它會順便跟基線做差異比對：
+
+```sh
+tools/remake_go_test.sh <完整素材根> [輸出 log] [套件…]
+```
+
+**不要用 `xvfb-run`。** 它與 Xvfb 之間是 SIGUSR1 交握（`trap : USR1` 之後
+`wait`）；Xvfb 太早就緒時訊號會落在 `wait` 之前，`wait` 就再也不會回來，
+容器裡只剩 `xvfb-run` 與 `Xvfb` 兩個行程、CPU 0%，命令一行都沒跑——外面看
+起來像測試跑很久。反向也踩過：命令結束了 wrapper 卻沒收掉 Xvfb，留下無界
+背景行程。映像現在內建
+[`with-xvfb`](../../tools/docker/with-xvfb.sh)：明確 PID ＋ trap 擁有 Xvfb，
+等 X11 socket 出現才執行命令，命令結束就收掉。
 
 素材根缺件會讓失敗數大幅膨脹，且失敗訊息看起來像功能缺陷。判讀前先確認
 `ui/action_cells`、`ui/fdother_014_church`、`locales/`、`palette/` 都在。

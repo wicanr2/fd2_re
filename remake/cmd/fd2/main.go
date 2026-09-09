@@ -5698,6 +5698,11 @@ func (g *Game) stepBattleWalkSegment(w *walkAnim, finish func(pose int)) bool {
 	if !w.u.FinishNativeMapGridStep(pose, b.X, b.Y) {
 		w.u.SetMapPlacement(b.X, b.Y, pose)
 	}
+	// 走行步進家族在格邊界也搬視圖：絕對游標跟著單位走一格，可見游標或鏡頭
+	// 二選一。只有玩家自己的走行才跟；AI 與劇情走位由各自的 owner 決定。
+	if w.then == nil {
+		g.followNativeMapCursorStep(a.X, a.Y, b.X-a.X, b.Y-a.Y)
+	}
 	// 原版 0x13488 只有 path byte 1 進 0x1300D；該函式在第七拍
 	// 提交 x-1 後，才以新座標呼叫 0x13A44(..., selector0)。
 	// 其餘方向及整條路徑完成都不得泛化成 selector0。
@@ -7058,6 +7063,11 @@ func (g *Game) confirm() {
 			}
 			if len(p) >= 2 {
 				g.walk = &walkAnim{u: g.sel, path: p}
+				// 原版確認之後游標瞬間跳回單位所在格，走的是只寫絕對游標的
+				// 0x149F8 路徑：鏡頭與可見游標都不動，可見游標因此停在最後
+				// 一次游標處理器寫下的值。收據 fd2-move-confirm-cursor-20260909
+				// 的 cp0071 在 5 毫秒粒度下沒有中間格，是一次瞬跳。
+				g.jumpNativeMapCursorToUnit(g.sel)
 			} else { // 理論上不會(reach 內必可達),保底瞬移
 				g.sel.SetMapPlacement(g.curX, g.curY, g.sel.Dir)
 				g.moved = true
@@ -7952,6 +7962,35 @@ func (g *Game) moveMapCursor(dx, dy int) {
 	}
 	g.curX += dx
 	g.curY += dy
+}
+
+// jumpNativeMapCursorToUnit 重現 0x149F8：游標直接落到單位所在格，不動鏡頭
+// 也不動可見游標。
+func (g *Game) jumpNativeMapCursorToUnit(u *battle.Unit) {
+	if g == nil || u == nil || g.st == nil || !g.st.HasNativeMapViewState {
+		return
+	}
+	if !g.st.JumpNativeMapCursor(u.X, u.Y) {
+		return
+	}
+	g.syncNativeMapView()
+}
+
+// followNativeMapCursorStep 讓視圖跟著走行的單位走一格。判準是單位自己的
+// 相對列／行，不是已存的可見游標值；寫入端清單與安全帶規則見
+// docs/data/ida/fd2_visible_cursor_writers_ida.txt。
+func (g *Game) followNativeMapCursorStep(fromX, fromY, dx, dy int) {
+	if g == nil || g.st == nil || !g.st.HasNativeMapViewState {
+		return
+	}
+	if !g.st.AdvanceNativeMapWalkStepView(fromX, fromY, dx, dy) {
+		return
+	}
+	view := g.st.NativeMapViewState
+	if g.st.HasNativeMapHUDState {
+		g.st.AdvanceNativeMapHUDAnchor(view.VisibleCursorX, view.VisibleCursorY)
+	}
+	g.syncNativeMapView()
 }
 
 // positionScreenshotCursor drives the same recovered cursor/camera state

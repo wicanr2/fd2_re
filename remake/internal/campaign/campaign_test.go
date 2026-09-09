@@ -164,10 +164,21 @@ func TestFullCampaignCarriesVerifiedChapterOneNativeMapRuntime(t *testing.T) {
 	if n == nil || n.NativeMapView == nil || n.NativeMapHUD != nil || n.NativeMapHUDInherited == nil {
 		t.Fatal("battle_ch01 must carry the verified native map view and inherited HUD owner")
 	}
+	// 這組值是 START 那條路徑的：ch00 handler 走完之後聚焦 slot 0，
+	// 由 TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne
+	// 以完整 ch00→ch01 交接實跑驗證。
+	//
+	// 另有一組不同的原版觀測：由隨遊戲附帶的 FD2.SAV 走 CONTINUE 進第一關時，
+	// dosgolem 在取得操作權那一刻量到 camera (1,13)、cursor (8,17)、
+	// visible (7,4)（收據
+	// docs/data/ui-traces/fd2-move-confirm-cursor-20260909.json）。兩條入口
+	// 本來就可能不同——存檔會帶自己的視圖——目前沒有同時涵蓋兩條的收據，
+	// 所以節點常數跟著 START，CONTINUE 那組只作紀錄。見
+	// docs/knowledge-base/104-regression-baseline-review-20260909.md。
 	view := *n.NativeMapView
-	if view.CameraX != 1 || view.CameraY != 13 ||
-		view.CursorX != 8 || view.CursorY != 17 ||
-		view.VisibleCursorX != 7 || view.VisibleCursorY != 4 ||
+	if view.CameraX != 0 || view.CameraY != 13 ||
+		view.CursorX != 7 || view.CursorY != 14 ||
+		view.VisibleCursorX != 7 || view.VisibleCursorY != 1 ||
 		view.RangeMode == nil || *view.RangeMode != 1 {
 		t.Fatalf("battle_ch01 native map view=%+v", view)
 	}

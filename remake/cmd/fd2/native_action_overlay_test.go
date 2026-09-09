@@ -41,7 +41,11 @@ func TestNativeActionOffsetXYMatchesFinalOpenFrame(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := [4][2]int{{0, -13}, {-18, 2}, {18, 2}, {0, 17}}
+	// 0x1741C 的展開迴圈：四個位移在 0x1746C..0x17483 初始化為 0x390，計數器
+	// 在 0x1757C 與 4 比較，**先加一次差值再呈現**（0x17587..0x17598 的
+	// -0x8E8／-6／+6／+0x8E8，接著 0x175A0 呼叫 0x17643 並在 0x174F9 迴圈
+	// 貼四格），所以四張呈現幀分別是一到四倍差值。最後一張是四倍。
+	want := [4][2]int{{0, -18}, {-24, 2}, {24, 2}, {0, 22}}
 	for direction, offset := range offsets {
 		x, y := nativeActionOffsetXY(offset)
 		if got := [2]int{x, y}; got != want[direction] {
@@ -649,6 +653,7 @@ func TestPlayerNativeCommand0RunsIndexedPresentationThroughCursorConfirm(t *test
 		nativeRNGState: 1, nativeMapAssets: assets, nativeUIPalette: loadNativeUIPalette(),
 		nativeCommandScene: scene, nativeCommandPaletteFlash: flash,
 	}
+	attachOfficialLocale(t, g)
 
 	// 缺少原版 class resistance table 時，正式 confirm 必須保留 modal，
 	// 並在 MP、HP、acted 或 target field 之前失敗即關閉。

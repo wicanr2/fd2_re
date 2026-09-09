@@ -603,6 +603,7 @@ func TestChapter6PostJoins13PersistsPartyAndEntersTown7(t *testing.T) {
 		partyJoinOrder: append([]int(nil), order...),
 		partyDeploy:    make(map[int]bool, len(order)-1),
 	}
+	attachOfficialLocale(t, g)
 	for _, id := range order {
 		g.partyMembers[id] = true
 	}
@@ -925,7 +926,7 @@ func TestChapter10PostRunsExactPaletteAndDirectPatchBeforeTown11(t *testing.T) {
 			t.Setenv("XDG_DATA_HOME", t.TempDir())
 			userDataDirCached = ""
 			g.saveGameToSlot(1)
-			if g.msg != "已存檔(槽位2：town_ch11)" {
+			if g.msg != "已存檔（槽位 2：town_ch11）" {
 				t.Fatalf("town11 save message=%q", g.msg)
 			}
 			g.camp.Cur = "postbattle_ch10_persist"
@@ -1144,7 +1145,7 @@ func TestChapter20PostRoundGateControlsReinforcementAndJoinBeforeTown21(t *testi
 			t.Setenv("XDG_DATA_HOME", t.TempDir())
 			userDataDirCached = ""
 			g.saveGameToSlot(0)
-			if g.msg != "已存檔(槽位1：town_ch21)" {
+			if g.msg != "已存檔（槽位 1：town_ch21）" {
 				t.Fatalf("round%d town21 save message=%q", test.round, g.msg)
 			}
 			g.camp.Cur = "postbattle_ch20_persist"
@@ -1172,6 +1173,7 @@ func TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary(t
 		partyJoinOrder: append([]int(nil), order...),
 		partyDeploy:    make(map[int]bool, len(order)-1),
 	}
+	attachOfficialLocale(t, g)
 	for _, id := range order {
 		g.partyMembers[id] = true
 	}
@@ -1301,7 +1303,7 @@ func TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary(t
 	t.Setenv("XDG_DATA_HOME", t.TempDir())
 	userDataDirCached = ""
 	g.saveGameToSlot(2)
-	if g.msg != "已存檔(槽位3：town_ch26)" {
+	if g.msg != "已存檔（槽位 3：town_ch26）" {
 		t.Fatalf("town26 save message=%q", g.msg)
 	}
 	g.camp.Cur = "postbattle_ch25_persist"
@@ -1532,7 +1534,7 @@ func TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary(t *testing.T) {
 			t.Setenv("XDG_DATA_HOME", t.TempDir())
 			userDataDirCached = ""
 			g.saveGameToSlot(2)
-			if g.msg != "已存檔(槽位3：town_ch17)" {
+			if g.msg != "已存檔（槽位 3：town_ch17）" {
 				t.Fatalf("town17 save message=%q", g.msg)
 			}
 			g.camp.Cur = "postbattle_ch16_persist"
@@ -1674,7 +1676,7 @@ func TestChapter18PostJoins21And7Town19SaveBoundary(t *testing.T) {
 	t.Setenv("XDG_DATA_HOME", t.TempDir())
 	userDataDirCached = ""
 	g.saveGameToSlot(2)
-	if g.msg != "已存檔(槽位3：town_ch19)" {
+	if g.msg != "已存檔（槽位 3：town_ch19）" {
 		t.Fatalf("town19 save message=%q", g.msg)
 	}
 	g.camp.Cur = "postbattle_ch18_persist"
@@ -1794,7 +1796,7 @@ func TestChapter13PostNativeDialogueJoins3Town14SaveBoundary(t *testing.T) {
 	t.Setenv("XDG_DATA_HOME", t.TempDir())
 	userDataDirCached = ""
 	g.saveGameToSlot(1)
-	if g.msg != "已存檔(槽位2：town_ch14)" {
+	if g.msg != "已存檔（槽位 2：town_ch14）" {
 		t.Fatalf("town14 save message=%q", g.msg)
 	}
 	g.camp.Cur = "postbattle_ch13_persist"
@@ -1930,7 +1932,7 @@ func TestChapter17PostBranchJoin16Town18SaveBoundary(t *testing.T) {
 			t.Setenv("XDG_DATA_HOME", t.TempDir())
 			userDataDirCached = ""
 			g.saveGameToSlot(2)
-			if g.msg != "已存檔(槽位3：town_ch18)" {
+			if g.msg != "已存檔（槽位 3：town_ch18）" {
 				t.Fatalf("town18 save message=%q", g.msg)
 			}
 			g.camp.Cur = "postbattle_ch17_persist"

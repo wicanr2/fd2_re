@@ -63,6 +63,12 @@ type NativeDialogueLayout struct {
 
 // nativeDialogueLineGlyphLimit 保存固定原版FDTXT已觀察到的每種speaker control
 // 列寬。它是原始資料的接受上限，不是任意新文字的自動排版規則。
+
+// nativeGridStepFrames 是原版走行步進家族（`0x12EAA`／`0x1300D`／`0x13185`／
+// `0x13315`）一格的呈現幀數。計數器由 1 起、迴圈條件 `cmp [esp], 7 ; jge`、
+// 遞增在迴圈尾端，所以主體跑六次，`unit+4` 也寫 1..6。
+const nativeGridStepFrames = 6
+
 func nativeDialogueLineGlyphLimit(control string) (int, bool) {
 	switch control {
 	case "FFEC":
@@ -632,10 +638,17 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 			beat.Acting = frames
 			beats = append(beats, beat)
 		case "scroll_step":
-			// 0x13185(slot) is one complete grid step upward, including the
-			// seven sub-tile drawing ticks and camera follow. HandlerScript
-			// folds its counted loop into Repeat, so one runtime beat retains
-			// both the original slot identity and exact number of grid steps.
+			// 0x13185(slot) is one complete grid step upward, including its
+			// sub-tile drawing ticks and camera follow. HandlerScript folds the
+			// counted loop into Repeat, so one runtime beat retains both the
+			// original slot identity and exact number of grid steps.
+			//
+			// 一格是六張呈現幀，不是七張：`0x1320B` 把計數器設成 1，迴圈條件
+			// 在 `0x13274` 是 `cmp [esp], 7 ; jge 離開`，計數器在迴圈尾端
+			// `0x13271` 才遞增，所以主體跑 1..6，`unit+4` 也寫 1..6。單位座標、
+			// 絕對游標與鏡頭在 `0x132F5` 之後才提交。同一結論另有 dosgolem
+			// 收據（每格 `+4` 走 1..6，跨格直接重設為 1），見
+			// docs/knowledge-base/99-move-confirm-cursor-20260909.md。
 			if input.UnitSlot == nil || *input.UnitSlot < 0 || input.Repeat == nil || *input.Repeat <= 0 {
 				issue(i, input, "scroll_step requires a non-negative runtime slot and positive repeat count")
 				continue
@@ -647,7 +660,7 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 			beat := runtime(input, "scroll_step")
 			beat.Slot = input.UnitSlot
 			beat.Steps = *input.Repeat
-			beat.Frames = *input.Repeat * 7
+			beat.Frames = *input.Repeat * nativeGridStepFrames
 			beat.Follow = true
 			beats = append(beats, beat)
 		case "spawn":

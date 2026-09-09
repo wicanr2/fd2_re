@@ -215,7 +215,7 @@ func TestChapter23BattleResultRunsBoundPostbattleAndReachesPreparation24SaveBoun
 	}
 	drainNativeUI(g)
 	if !g.prepSelecting || g.prepSel != 0 || g.preparationSelected() != 0 ||
-		g.msg != "已存檔(槽位1：preparation_ch24)" {
+		g.msg != "已存檔（槽位 1：preparation_ch24）" {
 		t.Fatalf("preparation24 formal save selecting=%v cursor=%d selected=%d msg=%q",
 			g.prepSelecting, g.prepSel, g.preparationSelected(), g.msg)
 	}

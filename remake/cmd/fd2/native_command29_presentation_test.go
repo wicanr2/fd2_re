@@ -45,6 +45,7 @@ func newNativeCommand29PresentationTestGame(t *testing.T) (*Game, *battle.Unit, 
 		m:  &MapData{W: 3, H: 1, Tiles: []int{0, 0, 0}, NativeTerrainControl: []byte{0, 0, 4, 0}},
 		st: st, rng: rand.New(rand.NewSource(29)), nativeUIPalette: loadNativeUIPalette(),
 	}
+	attachOfficialLocale(t, g)
 	return g, actor, targets
 }
 

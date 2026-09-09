@@ -119,6 +119,7 @@ func TestInventoryRecipeInsufficientReturnsToTownAndSaveLoad(t *testing.T) {
 		partyDeploy: map[int]bool{0: true},
 		st:          &battle.State{Units: recipeUnits()},
 	}
+	attachOfficialLocale(t, g)
 	g.enterNode()
 	if g.camp.Cur != "insufficient" || g.loadErr != "" {
 		t.Fatalf("insufficient recipe branch = node %q err %q", g.camp.Cur, g.loadErr)
@@ -128,7 +129,7 @@ func TestInventoryRecipeInsufficientReturnsToTownAndSaveLoad(t *testing.T) {
 		t.Fatalf("insufficient recipe town boundary = node %q state=%#v roster=%#v", g.camp.NodeID(), g.st, g.partyRoster)
 	}
 	g.saveGameToSlot(0)
-	if g.msg != "已存檔(槽位1：town)" {
+	if g.msg != "已存檔（槽位 1：town）" {
 		t.Fatalf("insufficient recipe save message=%q", g.msg)
 	}
 	g.camp.Cur, g.gold = "recipe", 1

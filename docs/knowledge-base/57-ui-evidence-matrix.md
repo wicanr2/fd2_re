@@ -971,3 +971,24 @@ fixture 逐位元組不變，本項不提升演出時序或逐幀分鏡為 E2。
 與 [99](99-move-confirm-cursor-20260909.md)；圖見
 [`native-walk-placement-20260909.png`](../figures/native-walk-placement-20260909.png)。
 本項不宣稱兩側逐像素一致，也不涵蓋劇情走位的每格幀數。
+
+### 2026-09-09：可見游標的寫入端與走行步進的視圖跟隨（RE-CLOSED／RUNTIME-E1）
+
+`[0x53AB9]`／`[0x53ABD]` 的完整寫入端已列出（IDA 9.4 data xref，Capstone 的
+LE fixup 清單一致）：四個鍵盤游標處理器 `0x11B48`／`0x11B9B`／`0x11BFA`／
+`0x11C59`、四個走行步進 `0x12EAA`／`0x1300D`／`0x13185`／`0x13315`，加上
+`0x10010..0x10620` 的初始化與 `0x205DA`、`0x233C6`、`0x235F9`、`0x23E74`、
+`0x25757` 的歸零。沒有一處由 `cursor - camera` 重算；劇情捲動 `0x135DD` 與
+直接設定游標的 `0x149F8` 都不碰它，所以確認移動之後可見游標會合法地停在舊值。
+
+安全帶規則兩家族相同（上 `>= 2`、下 `<= 5`、左 `>= 2`、右 `<= 0x0A`，
+超出改捲鏡頭），但判準來源不同：鍵盤處理器讀已存的可見游標，走行步進算單位
+自己的相對列。消費端 `0x1741C` 以 `visible_x * 24 + visible_y * 24 * 0x1C8`
+定位指令環，證實它就是視窗內的格座標。
+
+重製端據此拿掉 `visible == cursor - camera` 的檢查（改檢查 13×8 視窗界線）、
+補上 `JumpNativeMapCursor` 與 `AdvanceNativeMapWalkStepView`，並讓確認移動時
+游標瞬間跳到單位所在格、走行每提交一格視圖跟著走一格。證據見
+[`fd2_visible_cursor_writers_ida.txt`](../data/ida/fd2_visible_cursor_writers_ida.txt)，
+接線與界線見 [99](99-move-confirm-cursor-20260909.md)。本項不宣稱兩側逐像素
+一致，也沒有涵蓋 `0x53B0B`／`0x53AF1`／`0x53AF5` 的語意。

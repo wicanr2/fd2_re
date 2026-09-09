@@ -177,6 +177,7 @@ func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing
 		partyJoinOrder: append([]int(nil), order...),
 		partyDeploy:    make(map[int]bool, 15),
 	}
+	attachOfficialLocale(t, g)
 	if len(order) < 16 {
 		t.Fatalf("第21戰永久名冊=%d，無法建立原版16名出戰前沿", len(order))
 	}

@@ -28,6 +28,23 @@
   [96](96-parity-toolchain-20260909.md)。
 - RE-CLOSED／RUNTIME-E1：移動抵達時 raw +3 姿態與 +4 動作回到 0，重製端先前停在
   最後一格的行走方向；收據與修正見 [97](97-map-walk-pose-20260909.md)。
+- RE-CLOSED：可見游標 `[0x53AB9]`／`[0x53ABD]` 的寫入端已全部列出（IDA data
+  xref ＋ Capstone LE fixup 雙證）：四個鍵盤游標處理器、四個走行步進，加上
+  開機初始化與五處章節重設歸零。**沒有一處由 `cursor - camera` 重算**，
+  劇情捲動 `0x135DD` 與直接設定游標的 `0x149F8` 都不碰它，所以確認移動之後
+  可見游標會合法地停在舊值。重製端因此拿掉恆等式檢查，改檢查 13×8 視窗界線，
+  並補上 `JumpNativeMapCursor` 與 `AdvanceNativeMapWalkStepView`。證據見
+  [fd2_visible_cursor_writers_ida.txt](../data/ida/fd2_visible_cursor_writers_ida.txt)，
+  接線見 [99](99-move-confirm-cursor-20260909.md)。
+- RE-CLOSED：劇情走位每格也是六幀。`0x13185` 的迴圈計數器由 1 起、
+  `cmp [esp], 7 ; jge` 離開、遞增在尾端，主體跑 1..6；beat `scroll_step` 的
+  幀預算由 `repeat * 7` 改成 `repeat * 6`。
+- 測試基線：39 項已知失敗裡有 24 項是「手工 `&Game{}` 沒有語系」，12 項是存檔
+  訊息期待值沒跟著語言包走，1 項是指令環展開最後一幀的期待值錯（以 `0x1741C`
+  的直接指令判定實作才是對的）。修完之後剩 10 項，逐項成因見
+  [104](104-regression-baseline-review-20260909.md)。
+- 工具鏈：`fd2-go-test-local` 的 `xvfb-run` 會偶發卡死，映像改內建
+  `with-xvfb`，回歸改由受版控的 `tools/remake_go_test.sh` 驅動。
 - RE-CLOSED／RUNTIME-E1：地圖走行每格是**六幀**，跨格提交與下一段的第一拍
   同幀，中間沒有 `+4 = 0`；只有整段抵達才是 pose 0／`+4` 0。`stepBattleWalk`
   已照這個契約改（`nativeMapGridMotionFrames = 6`、位移分母 6、第七次呼叫

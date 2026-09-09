@@ -37,6 +37,7 @@ func newNativeChurchRevivePathGame(t *testing.T, gold int) (*Game, *ebiten.Image
 		gold: gold, reviveFeeRates: []int{0, 7},
 		partyJoinOrder: []int{0}, partyRoster: map[int]battle.Unit{0: dead},
 	}
+	attachOfficialLocale(t, g)
 	return g, ebiten.NewImage(640, 400)
 }
 

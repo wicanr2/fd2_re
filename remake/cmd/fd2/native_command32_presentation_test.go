@@ -37,6 +37,7 @@ func TestStartNativeCommand32PresentationUsesOriginalAssetsEndToEnd(t *testing.T
 	}
 	t.Setenv("FD2_ORIGINAL_FIGANI", filepath.Join(t.TempDir(), "missing.dat"))
 	g := &Game{rng: rand.New(rand.NewSource(32)), nativeUIPalette: loadNativeUIPalette()}
+	attachOfficialLocale(t, g)
 	if err := g.loadMap("assets/maps/map0"); err != nil {
 		t.Fatal(err)
 	}

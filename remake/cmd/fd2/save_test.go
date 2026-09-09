@@ -128,11 +128,12 @@ func TestCampaignSaveLoadRestoresTownBoundaryAndParty(t *testing.T) {
 			HasDisplayGateA: true, HasAnchorX: true,
 		},
 	}
+	attachOfficialLocale(t, g)
 	options := g.currentNativeSystemOptions()
 	options.Raw53AF9, options.Raw51E61, options.Raw51E62 = 1, 0, 0
 	g.nativeSystemOptions = &options
 	g.saveGameToSlot(2)
-	if g.msg != "已存檔(槽位3：town_ch02)" {
+	if g.msg != "已存檔（槽位 3：town_ch02）" {
 		t.Fatalf("save boundary message=%q", g.msg)
 	}
 	g.camp.Cur, g.gold, g.items = "church_ch02", 1, nil

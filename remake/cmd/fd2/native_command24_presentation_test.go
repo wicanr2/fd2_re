@@ -47,6 +47,7 @@ func newNativeCommand24PresentationTestGame(t *testing.T) (*Game, *battle.Unit, 
 		st: st, rng: rand.New(rand.NewSource(2)), nativeUIPalette: loadNativeUIPalette(),
 		bg: ebiten.NewImage(320, 100), tai: ebiten.NewImage(1, 1), panel: ebiten.NewImage(149, 42),
 	}
+	attachOfficialLocale(t, g)
 	return g, actor, target
 }
 

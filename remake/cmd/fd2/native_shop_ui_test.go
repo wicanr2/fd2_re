@@ -60,6 +60,7 @@ func TestNativeShopProductionOwnerDrawsOriginalMenuAndPurchaseList(t *testing.T)
 		),
 		gold: 1234,
 	}
+	attachOfficialLocale(t, g)
 	if !g.setupNativeShop() || g.nativeShopMode != "menu" ||
 		g.nativeShopUIJob == nil || len(g.nativeShopUIJob.frames) != 4 {
 		t.Fatal("native shop did not claim the original node with four-frame service opening")
@@ -618,7 +619,7 @@ func TestNativeShopProductionOwnerDrawsOriginalMenuAndPurchaseList(t *testing.T)
 		t.Fatalf("native shop leave boundary=(%q,%d), want town/1", g.camp.NodeID(), g.campSel)
 	}
 	g.saveGameToSlot(2)
-	if g.msg != "已存檔(槽位3：town)" {
+	if g.msg != "已存檔（槽位 3：town）" {
 		t.Fatalf("native shop town save message=%q", g.msg)
 	}
 
@@ -745,7 +746,7 @@ func assertNativeShopTransactionTownRoundTrip(
 		t.Fatalf("shop transaction leave boundary=(%q,%d), want town/1", g.camp.NodeID(), g.campSel)
 	}
 	g.saveGameToSlot(slot)
-	if g.msg != "已存檔(槽位"+strconv.Itoa(slot+1)+"：town)" {
+	if g.msg != "已存檔（槽位 "+strconv.Itoa(slot+1)+"：town）" {
 		t.Fatalf("shop transaction save message=%q", g.msg)
 	}
 

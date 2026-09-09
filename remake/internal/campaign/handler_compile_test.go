@@ -716,11 +716,13 @@ func TestCompileCompleteChapter0Binding(t *testing.T) {
 	var slotAct bool
 	var directSlotAct bool
 	var act99, act100 bool
+	// 一格六幀：0x13185 的計數器由 1 起、`cmp [esp], 7 ; jge` 離開、遞增在
+	// 迴圈尾端，主體跑 1..6（見 handler_compile.go 的 nativeGridStepFrames）。
 	scrollSteps := map[string]struct {
 		slot, steps, frames int
 	}{
-		"0x32351": {slot: 2, steps: 15, frames: 105},
-		"0x3239a": {slot: 2, steps: 13, frames: 91},
+		"0x32351": {slot: 2, steps: 15, frames: 90},
+		"0x3239a": {slot: 2, steps: 13, frames: 78},
 	}
 	focusSlots := map[string]int{"0x32961": 0}
 	map31Spawns := map[string]int{

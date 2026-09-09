@@ -50,6 +50,7 @@ func newBeatTestGame(t *testing.T, beats []campaign.Beat) *Game {
 	g.storyBG = true
 	g.beats = beats
 	g.beatIdx = -1
+	attachOfficialLocale(t, g)
 	return g
 }
 
@@ -527,11 +528,13 @@ func TestChapter1PostRuntimeContextSpawnsAndActsOnCanonicalBattleSlots(t *testin
 
 func TestBeatScrollStepSlot2MatchesCh00ACT99Followup(t *testing.T) {
 	// ch00 handler 0x32351 calls 0x13185(slot2) 15 times immediately after
-	// direct ACT99 has moved Sol from Y42 to Y36.  Each original grid step has
-	// seven redraw ticks, so the complete scroll is exactly 105 ticks.
+	// direct ACT99 has moved Sol from Y42 to Y36.  One original grid step is
+	// six presented frames — 0x1320B seeds the counter at 1, 0x13274 leaves on
+	// `cmp [esp], 7`, and 0x13271 increments at the tail — so the complete
+	// scroll is exactly 90 ticks.
 	slot2 := 2
 	g := newBeatTestGame(t, []campaign.Beat{{
-		Op: "scroll_step", Slot: &slot2, Steps: 15, Frames: 105, Follow: true,
+		Op: "scroll_step", Slot: &slot2, Steps: 15, Frames: 90, Follow: true,
 	}})
 	g.m = &MapData{W: 20, H: 60, TileW: 24, TileH: 24, Cols: 8, Tiles: make([]int, 1200)}
 	g.storyActors = make([]battle.Unit, 3)
@@ -548,9 +551,9 @@ func TestBeatScrollStepSlot2MatchesCh00ACT99Followup(t *testing.T) {
 	if len(g.storyWalks) != 1 || g.followWalk {
 		t.Fatalf("scroll_step should use its original safe-band follow rather than centering, walks=%d follow=%v", len(g.storyWalks), g.followWalk)
 	}
-	g.tick(104)
+	g.tick(89)
 	if got := g.storyActors[2]; got.Y != 21 || got.Dir != 2 || got.OffY == 0 {
-		t.Fatalf("after 104/105 ticks slot2 should still interpolate toward Y21 facing up: %+v", got)
+		t.Fatalf("after 89/90 ticks slot2 should still interpolate toward Y21 facing up: %+v", got)
 	}
 	g.tick(1)
 	if got := g.storyActors[2]; got.X != 8 || got.Y != 21 || got.Dir != 2 || got.OffX != 0 || got.OffY != 0 {
