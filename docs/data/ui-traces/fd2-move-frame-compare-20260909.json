@@ -1,0 +1,405 @@
+{
+ "schema_version": 1,
+ "kind": "fd2_frame_comparison",
+ "topic": "移動動畫期間的游標白框與左下 HUD 面板：原版與重製端逐幀對照",
+ "date": "2026-09-09",
+ "original": {
+  "runner": "dosgolem apps/fd2/cmd/oracle",
+  "dosgolem_commit": "09aca58",
+  "driver": "tools/dosgolem_oracle.sh（FD2_ORACLE_FRAMES=1、stride 2000、settle 4）",
+  "executable": {
+   "file": "FD2.EXE",
+   "size": 357074,
+   "md5": "b97caf2239a27a896069d03549d96e1e",
+   "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "entry": "標題選單 right,down,down,enter 後由附帶 FD2.SAV 進第一關，單位 index 2 由 (8,16) 往上兩格",
+  "frames": [
+   {
+    "index": 0,
+    "step": 189008000,
+    "overlay_selector": 1,
+    "cursor": [
+     8,
+     14
+    ],
+    "indexed_sha256": "84f6431d6aa4c7afec24e27be9bf53e51e34535b2ab3487cc5bb1b1fa7d1ba5a"
+   },
+   {
+    "index": 1,
+    "step": 189078000,
+    "overlay_selector": 1,
+    "cursor": [
+     8,
+     14
+    ],
+    "indexed_sha256": "75e5cf942aa67779a5edd00b9e91f29800dbc97579e0d5a3b50c7797fff7c76b"
+   },
+   {
+    "index": 2,
+    "step": 189348000,
+    "overlay_selector": 1,
+    "cursor": [
+     8,
+     14
+    ],
+    "indexed_sha256": "2daacdac8d162c19fb43fecf745c7f9d7ce1f91d979c28798bb3cdd92996ea88"
+   },
+   {
+    "index": 3,
+    "step": 189618000,
+    "overlay_selector": 1,
+    "cursor": [
+     8,
+     14
+    ],
+    "indexed_sha256": "34bcff3d89037a49e73faf5da8ba538dc989d8e5c29ec96fdcb4c7f5093d314a"
+   },
+   {
+    "index": 4,
+    "step": 189784000,
+    "overlay_selector": 1,
+    "cursor": [
+     8,
+     16
+    ],
+    "indexed_sha256": "0d6c8613bea641f5aaa11eedeff7cf04e65dcab7e4bb82010f51383eefe513be"
+   },
+   {
+    "index": 5,
+    "step": 189916000,
+    "overlay_selector": 1,
+    "cursor": [
+     8,
+     16
+    ],
+    "indexed_sha256": "1df240a0c8429c9d2cf149d586a0991d25d19cbf2ee34d5ec0125337672e41b3"
+   },
+   {
+    "index": 6,
+    "step": 190046000,
+    "overlay_selector": 1,
+    "cursor": [
+     8,
+     16
+    ],
+    "indexed_sha256": "bcfe3cd3e635ed26078968fd595b527f1745ace84ac3c18304f6a3fa9fd5f0e8"
+   },
+   {
+    "index": 7,
+    "step": 190178000,
+    "overlay_selector": 1,
+    "cursor": [
+     8,
+     16
+    ],
+    "indexed_sha256": "ffb771eacae4c346083be50ef66d58c82ca97e8af57a5fd0be69b73f8121f0d2"
+   },
+   {
+    "index": 8,
+    "step": 190308000,
+    "overlay_selector": 1,
+    "cursor": [
+     8,
+     16
+    ],
+    "indexed_sha256": "dbd5faa2615c14bd155fccfc8efa1f886a5ce8cb6e4050af2ecae7d03f60fd28"
+   },
+   {
+    "index": 9,
+    "step": 190440000,
+    "overlay_selector": 1,
+    "cursor": [
+     8,
+     16
+    ],
+    "indexed_sha256": "1e095f1bcf3757a15dfe1eacfe6631d8282fc2504ace177b4e9806f7542636c5"
+   },
+   {
+    "index": 10,
+    "step": 190570000,
+    "overlay_selector": 1,
+    "cursor": [
+     8,
+     15
+    ],
+    "indexed_sha256": "f4cba64f2558e77e3f9c7dcdbef49850dac04d8e6467b4e70534b4bc8d44b100"
+   },
+   {
+    "index": 11,
+    "step": 190702000,
+    "overlay_selector": 1,
+    "cursor": [
+     8,
+     15
+    ],
+    "indexed_sha256": "c842b942b99bd1fd2646a58d0d35f0c6c302f9737dbe66eef23cfda33f5334ce"
+   },
+   {
+    "index": 12,
+    "step": 190832000,
+    "overlay_selector": 1,
+    "cursor": [
+     8,
+     15
+    ],
+    "indexed_sha256": "fb98649e7cf0f848801d769466b744e6018e46c6ef8d577825fbb40206fdafe3"
+   },
+   {
+    "index": 13,
+    "step": 190964000,
+    "overlay_selector": 1,
+    "cursor": [
+     8,
+     15
+    ],
+    "indexed_sha256": "ae0c0443ccd1f2ea5332a5d0d27798d52d15a26315ef222d5e14fed6f739f095"
+   },
+   {
+    "index": 14,
+    "step": 191098000,
+    "overlay_selector": 1,
+    "cursor": [
+     8,
+     15
+    ],
+    "indexed_sha256": "c3a6a57feb4a66243a31fe9e606c0db48e32c9b842e88d0234c4ece168bcac3b"
+   },
+   {
+    "index": 15,
+    "step": 191228000,
+    "overlay_selector": 1,
+    "cursor": [
+     8,
+     15
+    ],
+    "indexed_sha256": "7fcbb3615d36f516902c2dddee832e1cefdb1589b2b9bb02911ecb0fc2b3143a"
+   },
+   {
+    "index": 16,
+    "step": 191360000,
+    "overlay_selector": 1,
+    "cursor": [
+     8,
+     14
+    ],
+    "indexed_sha256": "29b9a395992344ea71d56e4e00b6cab8d7cf5bf81b53f34b880bd1f21d9bf96b"
+   }
+  ]
+ },
+ "remake": {
+  "producer": "remake/cmd/fd2 TestDumpChapterOneMoveFrames（生產端 composeNativeMapFrame）",
+  "entry": "完整戰役路徑快轉到 battle_ch01，選 (8,16) 的單位往右兩格到 (10,16)",
+  "frames": [
+   {
+    "index": 0,
+    "tag": "confirm-1",
+    "cursor": [
+     10,
+     16
+    ],
+    "walk_seg": -1,
+    "walk_tick": -1,
+    "indexed_sha256": "52ba1afebbacda617c0f14389f3e7129d454ee769886d6e092372156c91f8dd5"
+   },
+   {
+    "index": 1,
+    "tag": "confirm+0",
+    "cursor": [
+     10,
+     16
+    ],
+    "walk_seg": 0,
+    "walk_tick": 0,
+    "indexed_sha256": "a17caafa5ee7d34e8f790153b7d94fa5b1f543092b637f6f0aa4e6769ba3dc82"
+   },
+   {
+    "index": 2,
+    "tag": "f0",
+    "cursor": [
+     10,
+     16
+    ],
+    "walk_seg": 0,
+    "walk_tick": 1,
+    "indexed_sha256": "0fedbcc0b7f7470d6097b13203e9786a2875c1be7c7882e51634c0300869aa76"
+   },
+   {
+    "index": 3,
+    "tag": "f1",
+    "cursor": [
+     10,
+     16
+    ],
+    "walk_seg": 0,
+    "walk_tick": 2,
+    "indexed_sha256": "40a8c1d30e2069257515c96ce1a904f7ee02e6051bdf04892e60cd1ed981f7eb"
+   },
+   {
+    "index": 4,
+    "tag": "f2",
+    "cursor": [
+     10,
+     16
+    ],
+    "walk_seg": 0,
+    "walk_tick": 3,
+    "indexed_sha256": "073465375cf58d043812769de43bb648be991ba6d54a298f757a28660bebce09"
+   },
+   {
+    "index": 5,
+    "tag": "f3",
+    "cursor": [
+     10,
+     16
+    ],
+    "walk_seg": 0,
+    "walk_tick": 4,
+    "indexed_sha256": "c13498f4e681b1e23b8f558c051282f5aec5114bead3c1a543057155e2264778"
+   },
+   {
+    "index": 6,
+    "tag": "f4",
+    "cursor": [
+     10,
+     16
+    ],
+    "walk_seg": 0,
+    "walk_tick": 5,
+    "indexed_sha256": "2c8d8244c61eb6686cf0bd6f35d5d52cc1f34a374517827eaf73a3dacf4fee08"
+   },
+   {
+    "index": 7,
+    "tag": "f5",
+    "cursor": [
+     10,
+     16
+    ],
+    "walk_seg": 0,
+    "walk_tick": 6,
+    "indexed_sha256": "486fded8f22cd0ca00f273c1cafd064285b6a08c34976e95d055a444fb864319"
+   },
+   {
+    "index": 8,
+    "tag": "f6",
+    "cursor": [
+     10,
+     16
+    ],
+    "walk_seg": 1,
+    "walk_tick": 0,
+    "indexed_sha256": "486fded8f22cd0ca00f273c1cafd064285b6a08c34976e95d055a444fb864319"
+   },
+   {
+    "index": 9,
+    "tag": "f7",
+    "cursor": [
+     10,
+     16
+    ],
+    "walk_seg": 1,
+    "walk_tick": 1,
+    "indexed_sha256": "c0ab22f6c18f0663eb33280575c966b9b4f6b55401443606cafbaedef18e27c4"
+   },
+   {
+    "index": 10,
+    "tag": "f8",
+    "cursor": [
+     10,
+     16
+    ],
+    "walk_seg": 1,
+    "walk_tick": 2,
+    "indexed_sha256": "61facdd0f1aba56771f458a71807af436b183b4f28fba1f72d923357cc2a96f7"
+   },
+   {
+    "index": 11,
+    "tag": "f9",
+    "cursor": [
+     10,
+     16
+    ],
+    "walk_seg": 1,
+    "walk_tick": 3,
+    "indexed_sha256": "ccd6af4cfbfdb6ef4f2e7e10840aa6e8e5bae1cd29d5751bf91aaba6633f5668"
+   },
+   {
+    "index": 12,
+    "tag": "f10",
+    "cursor": [
+     10,
+     16
+    ],
+    "walk_seg": 1,
+    "walk_tick": 4,
+    "indexed_sha256": "1b2ef9e2cb42e0997d6370453941cd0e0335a0ea40047b1dd3c1c6e187d80510"
+   },
+   {
+    "index": 13,
+    "tag": "f11",
+    "cursor": [
+     10,
+     16
+    ],
+    "walk_seg": 1,
+    "walk_tick": 5,
+    "indexed_sha256": "3e5a2f9583e3e9897570e26ffd8f8b87a7a88eddb15624866b4c438817ce1402"
+   },
+   {
+    "index": 14,
+    "tag": "f12",
+    "cursor": [
+     10,
+     16
+    ],
+    "walk_seg": 1,
+    "walk_tick": 6,
+    "indexed_sha256": "a0ef6546de0e1ae1f9d9f65421fb14dc59905ec40d80bbf1a5ac8f6c55a13167"
+   },
+   {
+    "index": 15,
+    "tag": "f13",
+    "cursor": [
+     10,
+     16
+    ],
+    "walk_seg": -1,
+    "walk_tick": -1,
+    "indexed_sha256": "c2ddfa0a99822a517e5848cfc2a8387aac7ba324380e7b16b7c7e5339ba94ea6"
+   }
+  ]
+ },
+ "observation": {
+  "original_walking_frames": "index 4..15：畫面上沒有游標白框，也沒有左下 HUD 面板",
+  "original_before_confirm": "index 0..3：終點有白框，左下有 HUD 面板",
+  "original_overlay_selector": "整段都是 1，包含沒有畫白框的那些幀",
+  "remake_walking_frames": "index 1..14：白框仍畫在終點，左下 HUD 面板仍在",
+  "remake_before_confirm": "index 0：白框與面板都在，與原版同"
+ },
+ "conclusions": [
+  {
+   "claim": "原版在移動動畫期間不畫游標白框，也不畫左下 HUD 面板",
+   "grade": "已證實",
+   "evidence": "確認前後兩組畫面直接比對；共 17 張"
+  },
+  {
+   "claim": "這個差異在狀態層看不出來",
+   "grade": "已證實",
+   "evidence": "原版 [0x51A83] overlay selector 整段維持 1，重製端 NativeMapRangeMode 也是 1；兩側狀態相同，畫面不同"
+  },
+  {
+   "claim": "移動動畫不經過 0x11CAC",
+   "grade": "已證實",
+   "evidence": "以 0x11CAC 為邊界的那一輪，最後一張在 189650367，而移動跑到 191400000 之後"
+  },
+  {
+   "claim": "重製端在移動動畫期間多畫了游標白框與左下 HUD 面板",
+   "grade": "已證實",
+   "evidence": "重製端逐幀畫面 index 1..14 兩者都在"
+  }
+ ],
+ "not_claimed": [
+  "原版移動動畫由哪個位址繪製，以及那條路徑實際疊了哪幾層。只證明不是 0x11CAC，且沒有 overlay 與 HUD",
+  "兩側方向不同（原版往上、重製端往右）。這一輪比的是「有沒有畫」，不是逐像素"
+ ]
+}

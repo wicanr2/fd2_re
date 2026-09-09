@@ -79,9 +79,27 @@ FD2_ORACLE_FRAMES=1 FD2_ORACLE_FRAME_STRIDE=2000 FD2_ORACLE_FRAME_SETTLE=4 FD2_O
 ```
 
 輸出是 `<輸出目錄>/frames/frame-NNNNNN.png` 加一份 `frames.jsonl`，每列帶指令
-數、EIP、畫面內容的 sha256、視圖全域、單位陣列基底與數量，以及 `0x3DA` 讀取
-數與調色盤寫入數。`FD2_ORACLE_FRAME_EIP` 可改用遊戲自己的繪圖進入點；
-`FROM`／`TO`／`MAX` 把輸出限在要看的那一段。
+數、EIP、畫面內容的 sha256、視圖全域（含 `0x51A83` 的 overlay selector）、單位
+陣列基底與數量，以及 `0x3DA` 讀取數與調色盤寫入數。`FD2_ORACLE_FRAME_EIP` 可
+改用遊戲自己的繪圖進入點；`FROM`／`TO`／`MAX` 把輸出限在要看的那一段。
+
+重製端的對應工具是 `remake/cmd/fd2` 的 `TestDumpChapterOneMoveFrames`，用生產
+端的 `composeNativeMapFrame` 落地同格式的畫面：
+
+```sh
+docker run ... -e FD2_FRAME_DUMP=/frames -v <輸出目錄>:/frames:rw ... \
+  go test ./cmd/fd2 -run TestDumpChapterOneMoveFrames -count=1 -v
+```
+
+沒有 `FD2_FRAME_DUMP` 就略過，不影響一般回歸。
+
+### 為什麼非看畫面不可
+
+第一次用它比對就抓到一個狀態層看不出來的差異：移動動畫期間原版不畫游標白框
+也不畫左下 HUD 面板，重製端兩者都還畫著——而兩側的 overlay selector **都是
+1**。原版是走另一條不呼叫 `0x122DC` 的繪圖路徑，所以 selector 的值再怎麼對，
+白框也不會出現。只看狀態會判定兩側一致。細節見
+[99](99-move-confirm-cursor-20260909.md)。
 
 每個控制邊界輸出一組 `checkpoint-NNNN.png`（320×200 索引畫面）與
 `checkpoint-NNNN.json`。JSON 帶 `runner`、`input_kind`、`state_injections`、
