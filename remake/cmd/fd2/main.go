@@ -10536,31 +10536,49 @@ func loadGame() *Game {
 // endTurn 結束當前回合:觸發 on_turn_end 事件(增援等),回合 +1,清除已行動。
 // 回合無上限(doc 27);只由劇本事件決定勝負。
 // showBanner 觸發回合橫幅(~90 tick=1.5s;截圖模式不顯以免擋驗證畫面)。
+// phaseBannerFramesPerStep 是每個馬賽克步驟停留的重製端幀數。
+//
+// 原版的步距約 356,000 條指令，但 oracle 的時間模型是每指令 1 微秒的近似，
+// 換不回實機毫秒，所以停留時間是重製端自訂的節奏，不宣稱與原版一致；
+// 33 步 × 3 幀 ≈ 1.65 秒，與先前 90 tick 的長度相當。形狀（步數、方塊邊長
+// 曲線、對稱、不重繪、文字疊在最後）才是收據釘住的部分。
+const phaseBannerFramesPerStep = 3
+
+// phaseBannerTicks 是整段橫幅的重製端幀數。
+const phaseBannerTicks = indexedmap.PhaseBannerSteps * phaseBannerFramesPerStep
+
 func (g *Game) showBanner(s string) {
 	if g.shotPath != "" {
 		return
 	}
-	g.banner, g.bannerT = s, 90
+	g.banner, g.bannerT = s, phaseBannerTicks
 }
 
-// drawPhaseBanner 回合橫幅:暗化地圖 + 中央金字(對照原版 orig_08 PLAYER PHASE)。
+// phaseBannerStep 回傳目前的馬賽克步驟；沒有橫幅時回 -1。
+func (g *Game) phaseBannerStep() int {
+	if g == nil || g.bannerT <= 0 || g.banner == "" {
+		return -1
+	}
+	step := (phaseBannerTicks - g.bannerT) / phaseBannerFramesPerStep
+	if step < 0 {
+		step = 0
+	}
+	if step >= indexedmap.PhaseBannerSteps {
+		step = indexedmap.PhaseBannerSteps - 1
+	}
+	return step
+}
+
+// drawPhaseBanner 只畫回合字樣。原版整段期間不重繪地圖，畫面變化全部來自對
+// 保留幀重算的馬賽克（見 docs/knowledge-base/101-phase-banner-20260909.md），
+// 而且逐方塊取樣的顏色與原始幀完全相同——沒有暗化。字樣疊在馬賽克之後。
+// 原版字模尚未擷取，這裡沿用重製端字型。
 func (g *Game) drawPhaseBanner(screen *ebiten.Image) {
 	if g.bannerT <= 0 || g.banner == "" || g.font == nil {
 		return
 	}
-	a := 1.0
-	if g.bannerT < 20 { // 末段淡出
-		a = float64(g.bannerT) / 20
-	}
-	if g.dim == nil {
-		g.dim = ebiten.NewImage(logicalW, logicalH)
-		g.dim.Fill(color.RGBA{0, 0, 0, 0xff})
-	}
-	op := &ebiten.DrawImageOptions{}
-	op.ColorScale.ScaleAlpha(float32(0.45 * a)) // 暗化地圖
-	screen.DrawImage(g.dim, op)
 	w := g.font.Width(g.banner, 2.2)
-	c := color.RGBA{uint8(0xff * a), uint8(0xc8 * a), uint8(0x50 * a), uint8(0xff * a)} // 金字(ColorScale 已預乘)
+	c := color.RGBA{0xff, 0xc8, 0x50, 0xff}
 	g.font.Draw(screen, g.banner, (float64(logicalW)-w)/2, float64(logicalH)/2-24, 2.2, c)
 }
 
@@ -10669,6 +10687,16 @@ func (g *Game) drawNativeMapFrame(screen *ebiten.Image) bool {
 	}
 	img := image.NewPaletted(image.Rect(0, 0, 320, 200), palette)
 	copy(img.Pix, g.nativeMapVGA)
+	// 回合橫幅期間，原版不重繪地圖，而是對保留下來的已合成畫面逐步重算
+	// 馬賽克。這裡照同一個模型：來源永遠是這一幀的 nativeMapVGA，方塊邊長
+	// 由步驟決定，不累積。
+	if step := g.phaseBannerStep(); step >= 0 {
+		if err := indexedmap.MosaicNativeMapViewport(
+			img.Pix, g.nativeMapVGA, indexedmap.PhaseBannerBlock(step),
+		); err != nil {
+			return false
+		}
+	}
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(2, 2)
 	screen.DrawImage(ebiten.NewImageFromImage(img), op)
