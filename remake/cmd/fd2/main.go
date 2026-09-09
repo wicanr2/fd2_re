@@ -8527,7 +8527,11 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	// exceed six and target validation still consumes those values even when
 	// 0x122dc draws no overlay; those states retain the playable renderer until
 	// their complete presentation lifecycle is materialized.
-	if g.nativeMapFrameAdmission(legacyViewport, campaignBattleView) {
+	// 戰場對白不換世界層。原版逐幀收據（docs/knowledge-base/99 §對話）：對白
+	// 出現期間地圖仍由 0x11CAC 這條路重繪，層集合與平時相同，畫面四邊維持
+	// 4 px 黑邊、地圖不位移；只有對白框那一側因為框畫到邊界上而縮成 2 px。
+	// 因此只有 storyBG 場景背景才交給正規化管線，battle event 保留原生整幀。
+	if g.nativeMapFrameAdmission(g.storyBG, campaignBattleView) {
 		nativeMapPresented = g.drawNativeMapFrame(screen)
 	}
 	if nativeMapPresented {
