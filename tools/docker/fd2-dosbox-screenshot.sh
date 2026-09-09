@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+# 輔助診斷用，不是對拍執行器。
+#
+# FD2 的原版側對拍一律走 dosgolem（`tools/dosgolem_oracle.sh`）；這一支只在
+# dosgolem 尚未具備某項 CPU／DOS／顯示／音訊／輸入／時序能力時，用來定位那
+# 個缺口。它的擷取必須標成輔助基準，不得換名或登錄成 dosgolem 原版收據，
+# 也不能單獨宣稱同狀態或一般玩家路徑。規則見 AGENTS.md「原版側對拍執行器」。
+#
 # Run the user-owned FD2 DOS build inside Xvfb and execute a small input/
 # screenshot timeline. /game is a disposable writable sandbox; /shots is an
 # explicit output mount. The original game directory is never mounted here.

@@ -1,6 +1,10 @@
 #!/bin/sh
 # 在具 ImageMagick 的 FD2 Docker 映像內，從一段重製戰鬥逐幀 PNG 中找出
 # 與 320x200 原版 oracle 最接近的相位。這只量測 RGB 差異，不替畫格推論語意。
+#
+# 這裡的「原版 oracle」必須是 dosgolem `apps/fd2/cmd/oracle` 產生的畫面
+# （見 tools/dosgolem_oracle.sh）。要出具正式對拍報告時改用 dosgolem 的
+# `apps/fd2/cmd/parity`，它會一併記錄雜湊與 original_runner。
 set -eu
 
 if [ "$#" -ne 3 ]; then

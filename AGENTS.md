@@ -183,7 +183,8 @@
 - 私人庫與公開庫是兩個獨立提交；各自提交前都要檢查差異、雜湊、擁有權與
   Docker 清理狀態，並分別驗證遠端 HEAD。
 
-- 原始遊戲檔保持不可變；DOSBox 實驗與存檔修改只能使用複本沙箱或可寫覆蓋層。
+- 原始遊戲檔保持不可變。原版執行實驗與存檔修改只能使用可寫覆蓋層或複本沙箱
+  （dosgolem 用 `-state` 覆蓋層；輔助用的 DOSBox 用複本），不得就地改寫原檔。
 - Capstone 只可透過 `tools/docker/fd2-cap.Dockerfile` 與 `fd2-cap-local`
   在 Docker 中使用。禁止安裝到主機 Python、全域環境或主機虛擬環境；
   `/tmp/fd2cap` 不得存在。
@@ -225,15 +226,27 @@
   工具鏈保留一個目前可重現版本。不可全域清理而傷及其他專案。
 - 交接前必須記錄或驗證沒有非預期的 FD2 容器仍在執行。
 
-### dosgolem／DOSBox 對拍權威順序
+### 原版側對拍執行器
 
-- FD2 原版／重製對拍以 dosgolem 為主要執行器；正式原版畫面、輸入、虛擬
-  時間與可控亂數收據必須由 dosgolem 自行重生。
-- DOSBox／DOSBox-X 只用於補足、除錯及交叉驗證 dosgolem 尚未具備的 CPU、DOS、
-  顯示、音訊、輸入或時序功能。其擷取必須標成輔助基準，不可單獨宣稱最終
-  對拍、同狀態（same-state）、一般玩家路徑或 dosgolem 功能已完成。
-- DOSBox 協助定位缺口後，必須先把能力與證據回填 dosgolem，再由 dosgolem
+- FD2 原版／重製對拍只有一個執行器：dosgolem 的 `apps/fd2/cmd/oracle`，
+  在本儲存庫由 [`tools/dosgolem_oracle.sh`](tools/dosgolem_oracle.sh) 驅動。
+  正式原版畫面、輸入、虛擬時間、單位／視圖狀態與可控亂數收據必須由它重生。
+  影像比較走 dosgolem 的 `apps/fd2/cmd/parity`，它會把 `original_runner`
+  一併寫進報告。
+- **對拍工具必須受版控且可重跑。** 在容器內動態改寫來源檔、或只存在於
+  `work/` 的一次性執行器，不得作為收據來源；即使它跑得出畫面，下一個工作
+  階段也無法重生同一份結果，收據等於沒有出處。需要新能力時改 `oracle`
+  本體並提交，不要再產生第二份分身。
+- DOSBox／DOSBox-X 只用於診斷 dosgolem **尚未具備**的 CPU、DOS、顯示、音訊、
+  輸入或時序能力。使用時必須在同一份紀錄裡指名是哪一項能力缺口；其擷取
+  一律標成輔助基準，不可單獨宣稱最終對拍、同狀態（same-state）、一般玩家
+  路徑或 dosgolem 功能已完成。
+- DOSBox 協助定位缺口後，必須先把能力與證據回填 dosgolem，再由 `oracle`
   重跑正式對拍；不得把 DOSBox 圖片換名或登錄為 dosgolem 原版收據。
+- 目前已知且未關閉的 dosgolem 能力缺口：**戰場單位 sprite 尚未繪製**
+  （單位所在格輸出純黑或灰塊，地形正常）。凡是需要人物外觀、面向、
+  戰鬥動畫或移動殘影的題目，現階段都拿不到 dosgolem 收據，必須先補這項
+  能力，不可改用 DOSBox 圖片充當最終對拍。
 
 ## 實作與驗證
 
@@ -268,7 +281,9 @@
   新的可編輯垂直切片並通過真實回歸、完成原版比較／E2 玩家路徑，或修正
   高風險錯誤斷言並同步系統設計文件、證據矩陣及工作清單。純格式整理、單一
   猜測或零散反組譯筆記不構成重大更新。
-- 提交身分使用 `Codex <codex@openai.com>`。
+- 提交身分使用 `wicanr2 <wicanr2@gmail.com>`，以 repo-local 設定指定，不動
+  全域設定。公司信箱不得進入作者欄。歷史上的 `Codex <codex@openai.com>`
+  不改寫（那需要對 main force push）。
 - 提交前執行相關真實回歸、檢查整理過的圖片與連結、執行
   `git diff --check`，並審查 `git status` 與最終差異。
 - 重大且驗證成功的批次推送至 `origin/main`，再驗證本機 HEAD 與遠端相同。
