@@ -1,0 +1,762 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_original_runtime_receipt",
+  "topic": "地圖行走的 raw +3 姿態與 +4 動作，以及抵達時的靜止值",
+  "date": "2026-09-09",
+  "runner": "dosgolem apps/fd2/cmd/oracle",
+  "dosgolem_commit": "293e15c79007e5e839050a7eabdcad46bbb6f839",
+  "driver": "tools/dosgolem_oracle.sh",
+  "executable": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "entry": {
+    "path": "標題選單 right,down,down,enter 後由隨遊戲附帶的 FD2.SAV 進入第一關",
+    "evidence_grade": "RUNTIME 觀測；入口為附帶存檔，非從 START 起的完整一般玩家路徑",
+    "state_injections": [],
+    "input_kind": "normal BIOS keys"
+  },
+  "plan": [
+    {
+      "key": "right",
+      "steps": 3000000
+    },
+    {
+      "key": "down",
+      "steps": 3000000
+    },
+    {
+      "key": "down",
+      "steps": 3000000
+    },
+    {
+      "key": "enter",
+      "steps": 3000000
+    },
+    {
+      "key": "",
+      "steps": 30000000
+    },
+    {
+      "key": "",
+      "steps": 30000000
+    },
+    {
+      "key": "",
+      "steps": 30000000
+    },
+    {
+      "key": "",
+      "steps": 30000000
+    },
+    {
+      "key": "up",
+      "steps": 3000000
+    },
+    {
+      "key": "enter",
+      "steps": 5000000
+    },
+    {
+      "key": "up",
+      "steps": 3000000
+    },
+    {
+      "key": "up",
+      "steps": 3000000
+    },
+    {
+      "key": "enter",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 100000
+    },
+    {
+      "key": "",
+      "steps": 5000000
+    },
+    {
+      "key": "",
+      "steps": 5000000
+    }
+  ],
+  "raw_field_offsets": {
+    "+3": "pose",
+    "+4": "motion",
+    "record_stride": 80,
+    "unit_array_base": "0x53A45",
+    "unit_count": "0x53BEB"
+  },
+  "observation": {
+    "unit_index": 2,
+    "from": [
+      8,
+      16
+    ],
+    "to": [
+      8,
+      14
+    ],
+    "direction": "上",
+    "walking_pose": 2,
+    "walking_motion_cycle": "每格 1..6，跨格時重設",
+    "arrival_pose": 0,
+    "arrival_motion": 0,
+    "sampling_granularity_instructions": 100000
+  },
+  "trace": [
+    {
+      "control_seq": 4,
+      "steps": 55483500,
+      "eip": "0x11DBF",
+      "cursor": [
+        8,
+        17
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 5,
+      "steps": 85483500,
+      "eip": "0x4DF09",
+      "cursor": [
+        8,
+        17
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 6,
+      "steps": 115483500,
+      "eip": "0x1F1CB",
+      "cursor": [
+        8,
+        17
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 7,
+      "steps": 145483500,
+      "eip": "0x4DF30",
+      "cursor": [
+        8,
+        17
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 8,
+      "steps": 175483500,
+      "eip": "0x1222E",
+      "cursor": [
+        8,
+        17
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 9,
+      "steps": 178483500,
+      "eip": "0x4DEF7",
+      "cursor": [
+        8,
+        16
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 10,
+      "steps": 183483500,
+      "eip": "0x4DD2B",
+      "cursor": [
+        8,
+        16
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 11,
+      "steps": 186483500,
+      "eip": "0x4DD25",
+      "cursor": [
+        8,
+        15
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 12,
+      "steps": 189483500,
+      "eip": "0x4DD2B",
+      "cursor": [
+        8,
+        14
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 13,
+      "steps": 189583500,
+      "eip": "0x4DEF9",
+      "cursor": [
+        8,
+        14
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 14,
+      "steps": 189683500,
+      "eip": "0x4DEF0",
+      "cursor": [
+        8,
+        14
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 15,
+      "steps": 189783500,
+      "eip": "0x121CD",
+      "cursor": [
+        8,
+        16
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 2,
+        "motion": 1
+      }
+    },
+    {
+      "control_seq": 16,
+      "steps": 189883500,
+      "eip": "0x4DF28",
+      "cursor": [
+        8,
+        16
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 2,
+        "motion": 1
+      }
+    },
+    {
+      "control_seq": 17,
+      "steps": 189983500,
+      "eip": "0x4DEF5",
+      "cursor": [
+        8,
+        16
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 2,
+        "motion": 2
+      }
+    },
+    {
+      "control_seq": 18,
+      "steps": 190083500,
+      "eip": "0x4DF30",
+      "cursor": [
+        8,
+        16
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 2,
+        "motion": 3
+      }
+    },
+    {
+      "control_seq": 19,
+      "steps": 190183500,
+      "eip": "0x4DEF5",
+      "cursor": [
+        8,
+        16
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 2,
+        "motion": 4
+      }
+    },
+    {
+      "control_seq": 20,
+      "steps": 190283500,
+      "eip": "0x4DF3D",
+      "cursor": [
+        8,
+        16
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 2,
+        "motion": 4
+      }
+    },
+    {
+      "control_seq": 21,
+      "steps": 190383500,
+      "eip": "0x4DF43",
+      "cursor": [
+        8,
+        16
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 2,
+        "motion": 5
+      }
+    },
+    {
+      "control_seq": 22,
+      "steps": 190483500,
+      "eip": "0x12242",
+      "cursor": [
+        8,
+        16
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 16,
+        "pose": 2,
+        "motion": 6
+      }
+    },
+    {
+      "control_seq": 23,
+      "steps": 190583500,
+      "eip": "0x4DF07",
+      "cursor": [
+        8,
+        15
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 15,
+        "pose": 2,
+        "motion": 1
+      }
+    },
+    {
+      "control_seq": 24,
+      "steps": 190683500,
+      "eip": "0x4DF41",
+      "cursor": [
+        8,
+        15
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 15,
+        "pose": 2,
+        "motion": 1
+      }
+    },
+    {
+      "control_seq": 25,
+      "steps": 190783500,
+      "eip": "0x4DEF2",
+      "cursor": [
+        8,
+        15
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 15,
+        "pose": 2,
+        "motion": 2
+      }
+    },
+    {
+      "control_seq": 26,
+      "steps": 190883500,
+      "eip": "0x4DF23",
+      "cursor": [
+        8,
+        15
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 15,
+        "pose": 2,
+        "motion": 3
+      }
+    },
+    {
+      "control_seq": 27,
+      "steps": 190983500,
+      "eip": "0x4DF07",
+      "cursor": [
+        8,
+        15
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 15,
+        "pose": 2,
+        "motion": 4
+      }
+    },
+    {
+      "control_seq": 28,
+      "steps": 191083500,
+      "eip": "0x37412",
+      "cursor": [
+        8,
+        15
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 15,
+        "pose": 2,
+        "motion": 4
+      }
+    },
+    {
+      "control_seq": 29,
+      "steps": 191183500,
+      "eip": "0x121F8",
+      "cursor": [
+        8,
+        15
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 15,
+        "pose": 2,
+        "motion": 5
+      }
+    },
+    {
+      "control_seq": 30,
+      "steps": 191283500,
+      "eip": "0x4DF32",
+      "cursor": [
+        8,
+        15
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 15,
+        "pose": 2,
+        "motion": 6
+      }
+    },
+    {
+      "control_seq": 31,
+      "steps": 191383500,
+      "eip": "0x4DEF0",
+      "cursor": [
+        8,
+        14
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 14,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 32,
+      "steps": 191483500,
+      "eip": "0x4DF23",
+      "cursor": [
+        8,
+        14
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 14,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 33,
+      "steps": 191583500,
+      "eip": "0x4EA19",
+      "cursor": [
+        8,
+        14
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 14,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 34,
+      "steps": 191683500,
+      "eip": "0x4DF02",
+      "cursor": [
+        8,
+        14
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 14,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 35,
+      "steps": 191783500,
+      "eip": "0x4DEE3",
+      "cursor": [
+        8,
+        14
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 14,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 36,
+      "steps": 191883500,
+      "eip": "0x1222E",
+      "cursor": [
+        8,
+        14
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 14,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 37,
+      "steps": 191983500,
+      "eip": "0x4DF2C",
+      "cursor": [
+        8,
+        14
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 14,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 38,
+      "steps": 196983500,
+      "eip": "0x4DEDA",
+      "cursor": [
+        8,
+        14
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 14,
+        "pose": 0,
+        "motion": 0
+      }
+    },
+    {
+      "control_seq": 39,
+      "steps": 201983500,
+      "eip": "0x4DEF5",
+      "cursor": [
+        8,
+        14
+      ],
+      "unit2": {
+        "x": 8,
+        "y": 14,
+        "pose": 0,
+        "motion": 0
+      }
+    }
+  ],
+  "conclusions": [
+    {
+      "id": "walk-pose-is-direction",
+      "statement": "行走途中 raw +3 等於移動方向（本次為 2＝上），+4 每格由 1 數到 6 後提交下一格。",
+      "evidence": "confirmed(runtime)"
+    },
+    {
+      "id": "arrival-rest-pose-zero",
+      "statement": "整段移動抵達時 raw +3 與 +4 同時回到 0，並在等待玩家指令期間維持 0。",
+      "evidence": "confirmed(runtime)"
+    }
+  ],
+  "not_claimed": [
+    "只細取樣了往上一種方向；往左的靜止態亦為 0（未細取樣），往下與往右由同一收尾路徑推得，屬強推論。",
+    "AI 單位移動與全螢幕戰鬥演出不在本次取樣範圍。",
+    "未宣稱逐像素同狀態一致；本收據比較的是 raw 記錄欄位，不是畫面。"
+  ]
+}

@@ -5653,6 +5653,7 @@ func (g *Game) stepBattleWalk() {
 		}
 	}
 	if len(w.path) < 2 || w.seg >= len(w.path)-1 {
+		// 沒有實際走過任何一格：保留目前姿態，不憑空補一次寫入。
 		pose := w.u.Dir
 		if pose < 0 || pose > 3 {
 			pose = 0
@@ -5719,9 +5720,17 @@ func (g *Game) stepBattleWalk() {
 	w.seg++
 	w.tick = 0
 	if w.seg >= len(w.path)-1 {
-		finish(pose)
+		// 原版在整段移動抵達時把 raw +3 姿態重設為 0、+4 動作重設為 0，
+		// 不停在最後一格的行走方向。dosgolem 原版收據（10 萬指令粒度）：
+		// 走第一格 pose=2／motion 1..6、第二格 pose=2／motion 重設後 1..6、
+		// 抵達時 pose=0／motion=0 並保持到玩家下指令。
+		finish(nativeMapRestPose)
 	}
 }
+
+// nativeMapRestPose 是原版單位靜止時的 raw +3 值。移動抵達、等待指令期間都是
+// 這個值；行走途中才是移動方向。收據見 docs/knowledge-base/97-map-walk-pose-20260909.md。
+const nativeMapRestPose = 0
 
 // SFX 事件 index（doc36 第 9 輪對照）：index 0=游標移動已確認（5 處方向鍵
 // 分支證據）；0xc=「已選定」旗標伴隨音（疑確認，handle B 疊播）。戰鬥命中音

@@ -33,7 +33,11 @@ func TestBattleWalkPreservesNativeSevenTickRecordLifecycle(t *testing.T) {
 	if g.walk != nil || !g.moved || !g.ring {
 		t.Fatalf("seventh tick did not finish player walk: walk=%v moved=%v ring=%v", g.walk, g.moved, g.ring)
 	}
-	if u.NativeMapPresentation != (battle.NativeMapPresentationState{X: 3, Y: 3, Pose: 3}) ||
+	// 抵達時 raw +3 回到靜止值 0，不是最後一格的行走方向。tick 1..6 的
+	// 姿態與動作契約不變。dosgolem 原版收據以 10 萬指令粒度量到 pose 2→0、
+	// motion 1..6→0，見 docs/data/ui-traces/fd2-map-walk-pose-20260909.json；
+	// 先前這裡釘的 Pose: 3 沒有原版依據，屬重製端實作的自我一致。
+	if u.NativeMapPresentation != (battle.NativeMapPresentationState{X: 3, Y: 3, Pose: nativeMapRestPose}) ||
 		u.X != 3 || u.Y != 3 || u.OffX != 0 || u.OffY != 0 {
 		t.Fatalf("seventh tick raw=%+v normalized=(%d,%d,%v,%v)",
 			u.NativeMapPresentation, u.X, u.Y, u.OffX, u.OffY)
