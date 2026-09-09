@@ -192,6 +192,14 @@ func (g *Game) buildNativeUnitPresentJob(
 		return nil, err
 	}
 	view := source.NativeMapViewState
+	// 可見游標在這裡被當成視窗內的格座標用（24*visible 的 LUT 幾何），
+	// 與 0x1741C 同一類消費。狀態本身可以合法地出界（走行捲動會），所以界線
+	// 在消費端問，不在物化時擋。
+	if !view.VisibleCursorInViewport() {
+		return nil, fmt.Errorf(
+			"native 0x22253 可見游標 (%d,%d) 不在 13×8 視窗內，無法定位 LUT 幾何",
+			view.VisibleCursorX, view.VisibleCursorY)
+	}
 	lutFrames, err := fdother.NativeUnitPresentLUTFrames(view.VisibleCursorX, view.VisibleCursorY)
 	if err != nil {
 		return nil, err

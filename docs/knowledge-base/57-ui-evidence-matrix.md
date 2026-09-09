@@ -998,7 +998,13 @@ LE fixup 清單一致）：四個鍵盤游標處理器 `0x11B48`／`0x11B9B`／`
 每格一次 `0x11CAC(0)`，進入時 `mov [0x51A83], 0` 且返回前不還原。dosgolem 從
 START 走完序章取到三次 pan 共 126 格逐格對上，收據見
 [fd2-story-pan-cursor-20260909.json](../data/ui-traces/fd2-story-pan-cursor-20260909.json)。
-重製端 `syncStoryNativeMapPanView` 據此改成平移鏡頭差量。走行捲動 `0x13185`
-整段結束時的發布仍是 `cursor = camera + visible` 反推，未閉合；同一份收據另量到
-原版容許可見游標暫時離開 13×8 視窗（15 格之後 `visible_y = −1`），該狀態目前會被
-重製端的界線檢查拒絕。
+重製端 `syncStoryNativeMapPanView` 據此改成平移鏡頭差量，四個發動 pan 的地方
+（beat `pan`、battle event `pan`、回合登場演出、截圖快轉）共用同一個 `camPanJob`。
+
+同一份收據另量到原版容許可見游標暫時離開 13×8 視窗（15 格之後 `visible_y = −1`）；
+界線因此改成只在消費端成立：狀態層只擋「偏離超過場地」，13×8 由
+`NativeMapViewState.VisibleCursorInViewport()` 在 `fdother.ActionOverlayOrigin`／
+`ActionOverlaySnapshotOrigin`、`native_unit_present`、
+`native_command_heal_presentation` 與節點常數入口 `materializeNativeMapRuntime`
+把關。走行捲動 `0x13185` 整段結束時的發布仍是 `cursor = camera + visible` 反推，
+未閉合。

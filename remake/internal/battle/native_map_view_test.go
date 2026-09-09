@@ -8,7 +8,13 @@ import "testing"
 // 的寫入端只有四個鍵盤游標處理器、四個走行步進，加上初始化與章節歸零
 // （IDA data xref，見 docs/data/ida/fd2_visible_cursor_writers_ida.txt）。
 // 劇情捲動 `0x135DD` 與直接設定游標的 `0x149F8` 都不碰它，所以確認移動之後
-// 可見游標會合法地停在舊值。能檢查的是「有沒有落在 13×8 視窗內」。
+// 可見游標會合法地停在舊值。
+//
+// 原版也沒有把它夾在 13×8 內：走行步進在鏡頭已到邊界時照樣 `dec [0x53ABD]`，
+// dosgolem 收據 docs/data/ui-traces/fd2-story-pan-cursor-20260909.json
+// （frames idx=75）量到 15 格之後 visible_y = -1。13×8 是消費端
+// （0x1741C）的界線，由 VisibleCursorInViewport 與 fdother.ActionOverlayOrigin
+// 負責；物化只擋「偏離超過場地」這種結構性壞值。
 func TestNativeMapViewMaterializesViewportBounds(t *testing.T) {
 	st := &State{W: 24, H: 24}
 	view := NativeMapViewState{
@@ -18,20 +24,34 @@ func TestNativeMapViewMaterializesViewportBounds(t *testing.T) {
 	if err := st.MaterializeNativeMapViewState(view); err != nil {
 		t.Fatal(err)
 	}
+	if !view.VisibleCursorInViewport() {
+		t.Fatal("視窗內的可見游標被判成出界")
+	}
 	stale := view
 	stale.VisibleCursorY-- // 確認跳格之後的舊值，原版走得到
 	if err := st.MaterializeNativeMapViewState(stale); err != nil {
 		t.Fatalf("拒絕了原版走得到的舊可見游標：%v", err)
 	}
 	outside := view
-	outside.VisibleCursorY = nativeMapViewHeight
-	if err := st.MaterializeNativeMapViewState(outside); err == nil {
-		t.Fatal("接受了視窗外的可見游標")
+	outside.VisibleCursorY = -1 // 走行捲動在鏡頭到頂時走得到
+	if err := st.MaterializeNativeMapViewState(outside); err != nil {
+		t.Fatalf("拒絕了原版走得到的出界可見游標：%v", err)
+	}
+	if outside.VisibleCursorInViewport() {
+		t.Fatal("出界的可見游標被判成視窗內")
 	}
 	outside = view
-	outside.VisibleCursorX = -1
-	if err := st.MaterializeNativeMapViewState(outside); err == nil {
-		t.Fatal("接受了負的可見游標")
+	outside.VisibleCursorY = nativeMapViewHeight
+	if err := st.MaterializeNativeMapViewState(outside); err != nil {
+		t.Fatalf("拒絕了視窗外但仍在場地內的可見游標：%v", err)
+	}
+	if outside.VisibleCursorInViewport() {
+		t.Fatal("視窗外的可見游標被判成視窗內")
+	}
+	drifted := view
+	drifted.VisibleCursorY = st.H
+	if err := st.MaterializeNativeMapViewState(drifted); err == nil {
+		t.Fatal("接受了偏離超過場地的可見游標")
 	}
 }
 

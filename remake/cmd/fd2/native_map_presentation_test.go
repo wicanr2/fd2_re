@@ -355,8 +355,10 @@ func TestGameRejectsInvalidEditableNativeMapRuntime(t *testing.T) {
 	}
 	n := &campaign.Node{
 		NativeMapView: &campaign.NativeMapViewConfig{
-			// 可見游標落在 13×8 視窗外；原版沒有 visible == cursor - camera
-			// 的恆等式，能檢查的是視窗界線。
+			// 可見游標落在 13×8 視窗外。原版沒有 visible == cursor - camera
+			// 的恆等式，執行期也不夾這個全域；但節點常數是進場就要畫出來的
+			// 靜止視圖，游標框與指令環會立刻消費它，所以這條入口要求它在
+			// 視窗內。
 			CameraX: 1, CameraY: 13, CursorX: 8, CursorY: 17,
 			VisibleCursorX: 13, VisibleCursorY: 4,
 			RangeMode: &rangeMode,

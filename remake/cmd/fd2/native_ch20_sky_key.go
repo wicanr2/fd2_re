@@ -107,12 +107,14 @@ func (g *Game) startNativeCh20SkyKeySequence(spec campaign.NativeCh20SkyKeySeque
 	}
 	rollback := snapshotNativeCh20SkyKeyState(g)
 
-	// 0x135dd changes camera and absolute cursor together while preserving the
-	// visible cursor. Validate the final state before the first visible step.
+	// 0x135DD 對每一格同時位移鏡頭與絕對游標，位移量相同，可見游標不動。
+	// 先把整段走完的終點算出來驗一次，再走第一格；終點的算法必須與
+	// advancePan 逐格走出來的結果相同，所以這裡也用鏡頭差量，不用
+	// camera + visible 反推（那條只有恆等式成立時才一致）。
 	view := g.st.NativeMapViewState
+	view.CursorX += spec.PanGridX - view.CameraX
+	view.CursorY += spec.PanGridY - view.CameraY
 	view.CameraX, view.CameraY = spec.PanGridX, spec.PanGridY
-	view.CursorX = view.CameraX + view.VisibleCursorX
-	view.CursorY = view.CameraY + view.VisibleCursorY
 	carrier := &battle.State{W: g.st.W, H: g.st.H}
 	if err := carrier.MaterializeNativeMapViewState(view); err != nil {
 		return fmt.Errorf("native 0x24336 pan target: %w", err)

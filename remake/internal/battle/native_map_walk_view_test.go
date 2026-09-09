@@ -33,11 +33,11 @@ func TestJumpNativeMapCursorLeavesVisibleStale(t *testing.T) {
 // 單位自己的相對列／行（0x131DE 的 unitY-[0x53AAD]），不是已存的可見游標。
 func TestAdvanceNativeMapWalkStepViewUsesUnitRelativeBand(t *testing.T) {
 	cases := []struct {
-		name           string
-		start          NativeMapViewState
-		unitX, unitY   int
-		dx, dy         int
-		want           NativeMapViewState
+		name         string
+		start        NativeMapViewState
+		unitX, unitY int
+		dx, dy       int
+		want         NativeMapViewState
 	}{
 		{
 			name:  "上：單位在安全帶內只動可見游標",
@@ -96,5 +96,34 @@ func TestAdvanceNativeMapWalkStepViewUsesUnitRelativeBand(t *testing.T) {
 				t.Fatalf("視圖=%+v，預期 %+v", got, c.want)
 			}
 		})
+	}
+}
+
+// TestAdvanceNativeMapWalkStepViewLeavesViewport 釘住原版真的走得到的出界狀態。
+// dosgolem 收據 docs/data/ui-traces/fd2-story-pan-cursor-20260909.json 的
+// frames idx=75：序章走行捲動 15 格之後 camera_y 34→20、cursor_y 34→19、
+// visible_y 0→-1。單位還在安全帶內（unitY - camY >= 2）的那一步走的是
+// `0x13205 dec [0x53ABD]`，可見游標因此掉到視窗外；界線是消費端的事，
+// 這一步本身合法。
+func TestAdvanceNativeMapWalkStepViewLeavesViewport(t *testing.T) {
+	st := &State{W: 24, H: 24}
+	if err := st.MaterializeNativeMapViewState(NativeMapViewState{
+		CameraX: 1, CameraY: 13, CursorX: 8, CursorY: 15,
+		VisibleCursorX: 7, VisibleCursorY: 0,
+	}); err != nil {
+		t.Fatal(err)
+	}
+	if !st.AdvanceNativeMapWalkStepView(8, 15, 0, -1) {
+		t.Fatal("拒絕了原版走得到的出界可見游標")
+	}
+	want := NativeMapViewState{
+		CameraX: 1, CameraY: 13, CursorX: 8, CursorY: 14,
+		VisibleCursorX: 7, VisibleCursorY: -1,
+	}
+	if got := st.NativeMapViewState; got != want {
+		t.Fatalf("視圖=%+v，預期 %+v", got, want)
+	}
+	if st.NativeMapViewState.VisibleCursorInViewport() {
+		t.Fatal("出界的可見游標被判成視窗內")
 	}
 }

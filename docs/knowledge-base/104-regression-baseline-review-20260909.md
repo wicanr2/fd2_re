@@ -151,8 +151,47 @@ dosgolem 收據 [fd2-story-pan-cursor-20260909.json](../data/ui-traces/fd2-story
 `TestStoryPanMovesAbsoluteCursorByCameraDelta` 釘住：起點刻意讓
 `visible ≠ cursor − camera`，兩條規則的結果不同。
 
+## 可見游標的界線只在消費端成立
+
 同一份收據另外量到一件事：`0x13185` 走行捲動 15 格之後
 `camera_y` 34→20、`cursor_y` 34→19、`visible_y` 0→**−1**——原版容許可見游標
-暫時離開 13×8 視窗。pan 與走行期間 overlay selector 都是 0，`0x1741C` 不會
-消費可見游標，所以那段期間沒有消費端會讀到出界值。重製端目前的界線檢查
-會拒絕這個狀態；要接這一段，界線得改成「只在有消費端時成立」。
+暫時離開 13×8 視窗。pan 與走行期間 overlay selector `[0x51A83]` 都是 0，
+`0x1741C` 不會消費可見游標，所以那段期間沒有消費端會讀到出界值。
+
+界線因此分成兩層：
+
+| 層 | 由誰擋 | 擋什麼 |
+|---|---|---|
+| 狀態 | `validateNativeMapView` | 只擋結構性壞值：偏離超過場地本身。每個寫入端一次只動一格，且伴隨一次留在場內的絕對游標位移，所以偏離量不會超過場地。這是重製端的防溢位界線，不是原版契約 |
+| 消費端 | `NativeMapViewState.VisibleCursorInViewport()` | 13×8。任何把可見游標當畫面格座標的路徑都先問它 |
+
+目前的消費端有四處：`fdother.ActionOverlayOrigin`／`ActionOverlaySnapshotOrigin`
+（`0x1741C`／`0x179D5`／`0x175A9` 的位址式）、`native_unit_present` 的 LUT 幾何、
+`native_command_heal_presentation` 的 transition 幾何，以及節點常數入口
+`materializeNativeMapRuntime`——節點常數是「進場當下就要畫出來」的靜止視圖，
+游標框與指令環會立刻讀它，所以那條入口仍要求視窗內。
+
+`AdvanceNativeMapWalkStepView` 因此不再把 `visible_y = −1` 判成錯誤；
+`TestAdvanceNativeMapWalkStepViewLeavesViewport` 用收據裡的那一步釘住它。
+
+## pan 是通用指令，只有一個實作
+
+動畫引擎會發動鏡頭位移的地方有四處，全部走同一個 `camPanJob`，因此共用
+同一條規則：
+
+| 發動點 | 來源 |
+|---|---|
+| beat `pan` | handler 編譯出來的拍（`0x135DD`）|
+| battle event `pan` | 戰鬥事件動作（同一個 `0x135DD`）|
+| 回合登場演出 | `native_turn_staging` 的每一次 call |
+| 截圖用的快轉 | `fastForwardShotBeats` 直接跳到終點 |
+
+`tile_step` 的拍逐格發布（每格一次呈現，與原版每格一次 `0x11CAC(0)` 對齊），
+`frames` 的拍是重製端的插值近似，只在終點發布一次；兩者的終點相同。
+第五處是 `native_ch20_sky_key` 的專用 pan，它自己逐格走（`advancePan`），
+規則相同，整段開始前的終點預檢也改用鏡頭差量，兩邊算出來的終點才不會分岔。
+
+兩項已知限制：`frames` 模式的節奏是重製端自訂的（原版是每格一格一幀）；
+`loadch` 綁定的 `cam_x`／`cam_y` 是重製端的自由捲動鏡頭，可以不對齊格線，
+而 pan 的發布要求對齊——目前沒有任何綁定同時具備「非對齊 `cam_x`」與
+`tile_step` 的 pan，所以這個組合不會發生，但它不是被擋下來的，只是沒出現。

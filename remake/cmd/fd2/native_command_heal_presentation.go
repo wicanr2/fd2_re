@@ -104,6 +104,13 @@ func (g *Game) startNativeCommandHealPresentation(commandID int, targetUnits []*
 		return err
 	}
 	view := g.st.NativeMapViewState
+	// 同 0x1741C：可見游標在這裡是視窗內的格座標，乘 24 之後定位 transition
+	// 幾何。出界的狀態合法（走行捲動走得到），但這條消費端不接受。
+	if !view.VisibleCursorInViewport() {
+		return fmt.Errorf(
+			"native command heal 可見游標 (%d,%d) 不在 13×8 視窗內，無法定位 transition 幾何",
+			view.VisibleCursorX, view.VisibleCursorY)
+	}
 	centerX, centerY := 24*view.VisibleCursorX+12, 24*view.VisibleCursorY+16
 	frontFrames := make([][]byte, 0, len(front.Frames))
 	for index, spec := range front.Frames {

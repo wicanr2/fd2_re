@@ -129,6 +129,11 @@ const (
 	nativeActionOverlayBase = 0x8088
 	nativeActionOverlayStep = 0x18
 
+	// NativeMapViewportColumns/Rows 是 0x1741C 把可見游標當格座標時的視窗大小。
+	// 同一組常數也出現在 0x174AE／0x174B0 的 push 0xD／push 8。
+	NativeMapViewportColumns = 13
+	NativeMapViewportRows    = 8
+
 	// NativeActionOverlaySnapshotWidth/Height and Bytes are the exact private
 	// indexed backup size used by 0x175a9/0x17643.  The caller must provide the
 	// top-left rectangle explicitly; this package does not infer a screen
@@ -178,6 +183,11 @@ func ActionOverlaySnapshotOrigin(cursorColumn, cursorRow int) (int, error) {
 	if cursorColumn <= 0 || cursorRow <= 0 {
 		return 0, errors.New("fdother: action overlay snapshot cursor is invalid")
 	}
+	if cursorColumn >= NativeMapViewportColumns || cursorRow >= NativeMapViewportRows {
+		return 0, fmt.Errorf(
+			"fdother: action overlay snapshot cursor (%d,%d) is outside the %dx%d viewport",
+			cursorColumn, cursorRow, NativeMapViewportColumns, NativeMapViewportRows)
+	}
 	return nativeActionOverlayBase +
 		nativeActionOverlayStep*(cursorColumn-1) +
 		nativeActionOverlayStep*nativeFramebufferStride*(cursorRow-1), nil
@@ -204,9 +214,20 @@ func RestoreActionOverlaySnapshot(dst, snapshot []byte, stride, x, y int) error 
 // ActionOverlayOrigin implements the common 0x1741c/0x179d5 framebuffer
 // address expression. cursorColumn and cursorRow are the visible map cursor
 // coordinates; the separately tracked camera scroll globals are not used.
+//
+// 這裡是可見游標 13×8 界線的**消費端**。原版不夾這個全域——走行捲動在鏡頭
+// 到邊界時照樣把它減到 -1（收據
+// docs/data/ui-traces/fd2-story-pan-cursor-20260909.json，frames idx=75）——
+// 但這條位址式把它當視窗內的格座標，出界就會寫到 0x8088 起算的視窗之外。
+// 出界時失敗即關閉，不猜原版在那種狀態會畫成什麼。
 func ActionOverlayOrigin(cursorColumn, cursorRow int) (int, error) {
 	if cursorColumn < 0 || cursorRow < 0 {
 		return 0, errors.New("fdother: negative action overlay origin")
+	}
+	if cursorColumn >= NativeMapViewportColumns || cursorRow >= NativeMapViewportRows {
+		return 0, fmt.Errorf(
+			"fdother: action overlay cursor (%d,%d) is outside the %dx%d viewport",
+			cursorColumn, cursorRow, NativeMapViewportColumns, NativeMapViewportRows)
 	}
 	return nativeActionOverlayBase + nativeActionOverlayStep*cursorColumn + nativeActionOverlayStep*nativeFramebufferStride*cursorRow, nil
 }

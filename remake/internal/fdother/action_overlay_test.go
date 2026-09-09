@@ -109,6 +109,14 @@ func TestActionOverlayOriginMatchesNativeAddressExpression(t *testing.T) {
 	if _, err := ActionOverlayOrigin(-1, 0); err == nil {
 		t.Fatal("negative origin was accepted")
 	}
+	// 13×8 是這條位址式自己的界線（0x174AE／0x174B0 的 push 0xD／push 8）。
+	// 可見游標的狀態可以合法地出界——走行捲動在鏡頭到邊界時會把它減到 -1——
+	// 所以擋的地方在這裡，不在狀態物化時。
+	for _, cursor := range [][2]int{{13, 0}, {0, 8}} {
+		if _, err := ActionOverlayOrigin(cursor[0], cursor[1]); err == nil {
+			t.Fatalf("視窗外的可見游標 %v 被接受了", cursor)
+		}
+	}
 }
 
 func TestActionOverlaySnapshotOriginMatchesNativePredecessorCell(t *testing.T) {
@@ -120,7 +128,7 @@ func TestActionOverlaySnapshotOriginMatchesNativePredecessorCell(t *testing.T) {
 	if got != want {
 		t.Fatalf("snapshot origin=%#x, want %#x", got, want)
 	}
-	for _, cursor := range [][2]int{{0, 1}, {1, 0}, {-1, 1}} {
+	for _, cursor := range [][2]int{{0, 1}, {1, 0}, {-1, 1}, {13, 1}, {1, 8}} {
 		if _, err := ActionOverlaySnapshotOrigin(cursor[0], cursor[1]); err == nil {
 			t.Fatalf("invalid snapshot cursor %v was accepted", cursor)
 		}

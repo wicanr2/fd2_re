@@ -55,11 +55,20 @@
   [fd2-story-pan-cursor-20260909.json](../data/ui-traces/fd2-story-pan-cursor-20260909.json)。
   `syncStoryNativeMapPanView` 已改成平移鏡頭差量，不再由 `camera + visible` 反推。
   見 [104](104-regression-baseline-review-20260909.md)。
+- RE-CLOSED／RUNTIME-E1：可見游標的 13×8 界線改成**只在消費端成立**。原版不夾這個
+  全域——走行捲動 15 格之後 `visible_y = −1`（同一份收據 frames idx=75）——而 pan 與
+  走行期間 overlay selector `[0x51A83]` 是 0，`0x1741C` 不會讀它。狀態層
+  （`validateNativeMapView`）只留「偏離超過場地」這道防溢位界線；13×8 由
+  `NativeMapViewState.VisibleCursorInViewport()` 在四個消費端把關：
+  `fdother.ActionOverlayOrigin`／`ActionOverlaySnapshotOrigin`、
+  `native_unit_present` 的 LUT 幾何、`native_command_heal_presentation` 的
+  transition 幾何，以及節點常數入口 `materializeNativeMapRuntime`（進場即繪，
+  游標框與指令環會立刻消費）。
+- 動畫引擎的 pan 是通用指令，四個發動點（beat `pan`、battle event `pan`、
+  回合登場演出、截圖快轉）共用同一個 `camPanJob`，天空之鑰的專用 pan 逐格走同一條
+  規則且終點預檢已對齊。仍是重製端自訂的：`frames` 模式的節奏（原版每格一幀）。
 - 待查：`0x13185` 走行捲動整段結束時的視圖發布仍是反推（`cursor = camera + visible`），
-  是這個家族最後一處沒有寫入端證據的地方。同一份收據另量到原版容許可見游標暫時
-  出界（15 格之後 `visible_y = −1`），重製端的 13×8 界線會拒絕該狀態；要接這一段，
-  界線得改成「只在有消費端時成立」（pan／走行期間 overlay selector 為 0，`0x1741C`
-  不消費）。
+  是這個家族最後一處沒有寫入端證據的地方。
 - RE-CLOSED／RUNTIME-E1：地圖走行每格是**六幀**，跨格提交與下一段的第一拍
   同幀，中間沒有 `+4 = 0`；只有整段抵達才是 pose 0／`+4` 0。`stepBattleWalk`
   已照這個契約改（`nativeMapGridMotionFrames = 6`、位移分母 6、第七次呼叫
