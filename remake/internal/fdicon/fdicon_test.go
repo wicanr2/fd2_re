@@ -170,14 +170,19 @@ func TestSpriteForNativeSlotResolvesCacheKeyBeforeB24Selector(t *testing.T) {
 
 func TestNativePlacementOffsetMatches127E0(t *testing.T) {
 	const base = NativeUnitOriginBytes + 2*NativeSize*NativeMapStride + 3*NativeSize
+	// 方向位移用已閉合的原始數值釘死，不要再寫成實作那條算式的複述：
+	// handoff 2026-07-26 的 byte equation 是
+	// 0x75d8 + (Y-cameraY)*24*0x1c8 + (X-cameraX)*24 + unit[+4]*d，
+	// d 依 pose 下／左／上／右為 +0x720/-4/-0x720/+4（doc47 的方向表同值）。
+	// 0x720 是 456-byte stride 的四列，也就是每拍四像素、六拍剛好一格。
 	cases := []struct {
 		pose, motion, shift int
 		force               bool
 		want                int
 	}{
-		{0, 2, 0, false, base + 2*NativeSize*NativeMapStride},
+		{0, 2, 0, false, base + 2*0x720},
 		{1, 2, 0, false, base - 8},
-		{2, 2, 0, false, base - 2*NativeSize*NativeMapStride},
+		{2, 2, 0, false, base - 2*0x720},
 		{3, 2, 0, false, base + 8},
 		{3, 1, 1, true, base + 5},
 	}

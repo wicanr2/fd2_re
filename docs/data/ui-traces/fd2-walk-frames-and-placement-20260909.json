@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_remake_fix_receipt",
+  "topic": "地圖走行每格幀數，以及單位繪製的上下方向位移",
+  "date": "2026-09-09",
+  "original_evidence": {
+    "receipt": "docs/data/ui-traces/fd2-map-walk-pose-20260909.json",
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "sampling_granularity_instructions": 100000,
+    "sequence": [
+      {"samples": "15–22", "raw_xy": [8, 16], "pose": 2, "motion": [1, 1, 2, 3, 4, 4, 5, 6]},
+      {"samples": "23–30", "raw_xy": [8, 15], "pose": 2, "motion": [1, 1, 2, 3, 4, 4, 5, 6]},
+      {"samples": "31 起", "raw_xy": [8, 14], "pose": 0, "motion": [0]}
+    ],
+    "conclusion": "每格 +4 走 1..6；跨格那一幀 raw 座標換成新格、+4 同時重設為 1，中間沒有 +4 = 0；只有整段抵達才是 pose 0／+4 0"
+  },
+  "fixes": [
+    {
+      "file": "remake/cmd/fd2/main.go",
+      "symbol": "stepBattleWalk / stepBattleWalkSegment",
+      "before": "每格發七幀：1..6 之後多一幀 raw 新格 + +4 = 0",
+      "after": "nativeMapGridMotionFrames = 6；位移分母改 6，第七次呼叫提交新格之後在同一幀直接接上下一段的第一拍"
+    },
+    {
+      "file": "remake/internal/fdicon/fdicon.go",
+      "symbol": "NativePlacementOffset",
+      "before": "上下方向位移為 NativeSize * NativeMapStride = 24×456 = 0x2AC0（一整格高度）",
+      "after": "NativeMotionPixels * NativeMapStride = 4×456 = 0x720（四列＝四像素）",
+      "closed_equation": "0x75d8 + (Y-cameraY)*24*0x1c8 + (X-cameraX)*24 + unit[+4]*d，d = +0x720/-4/-0x720/+4",
+      "sources": [
+        "docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md 的 2026-07-26 FDICON placement closure",
+        "docs/knowledge-base/47-intro-handler-full-transcript.md 的方向表",
+        "docs/knowledge-base/91-worklist.md 的 FDICON native placement primitive 條目"
+      ],
+      "consistency": "四像素乘六拍剛好一格 24 px，與原版每格六幀互相印證"
+    }
+  ],
+  "remake_capture": {
+    "harness": "TestDumpChapterOneMoveFrames（FD2_FRAME_DUMP），以生產端 composeNativeMapFrame 落地 320×200 索引畫面",
+    "move": "第一關單位由 (8,16) 走到 (7,15)：先左一格（pose 1），再上一格（pose 2）",
+    "before": {
+      "movement_frames": 14,
+      "note": "seg 0 的 1..6 之後多一幀 (7,16) pose 1 +4 = 0；pose 2 的六拍裡單位被畫到 2..6 格之上，整個離開可見範圍，抵達才回到終點格"
+    },
+    "after": {
+      "total_records": 15,
+      "movement_frames": 13,
+      "sequence": [
+        {"index": 2, "raw": {"x": 8, "y": 16, "pose": 1, "motion": 1}},
+        {"index": 7, "raw": {"x": 8, "y": 16, "pose": 1, "motion": 6}},
+        {"index": 8, "raw": {"x": 7, "y": 16, "pose": 2, "motion": 1}, "indexed_sha256_prefix": "64a4fcd156595276"},
+        {"index": 13, "raw": {"x": 7, "y": 16, "pose": 2, "motion": 6}, "indexed_sha256_prefix": "b2b3bae67c1abef4"},
+        {"index": 14, "raw": {"x": 7, "y": 15, "pose": 0, "motion": 0}}
+      ],
+      "note": "跨格沒有 +4 = 0；13 張移動畫面與原版逐幀擷取數到的 13 張一致"
+    }
+  },
+  "figure": {
+    "path": "docs/figures/native-walk-placement-20260909.png",
+    "layout": "左欄修正前、右欄修正後；由上而下是同一段往上走的 +4 = 2／4／6",
+    "md5": "45ca8685a86eecb84214ae1d4cf885cb",
+    "sha256": "8a005bbfa76683c00dba2c126f108d26a252cf7d794cff037af0af3f96c8df0e"
+  },
+  "regression": {
+    "command": "go test ./... -count=1（fd2-go-test-local，自起 Xvfb，FD2_ASSET_PACK 指向完整分離素材根）",
+    "failing_tests": 39,
+    "baseline": "docs/data/regression-baseline-20260909.json",
+    "diff": "新增 0、修復 0"
+  },
+  "evidence_grade": "RE-CLOSED（幀數與位移數值皆有原始出處）／RUNTIME-E1（重製端逐幀擷取驗證）",
+  "not_claimed": [
+    "兩側逐像素比對。這一輪比的是 raw 序列與單位有沒有畫在該在的位置",
+    "劇情走位（storyWalks／beat scroll_step）的每格幀數，那條路徑仍以每格七幀編列",
+    "visible 游標在移動期間的寫入端"
+  ]
+}

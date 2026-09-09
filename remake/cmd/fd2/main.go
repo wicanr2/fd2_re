@@ -5622,7 +5622,7 @@ type walkAnim struct {
 	u    *battle.Unit
 	path []battle.Cell // 含起點
 	seg  int           // 目前段:path[seg] → path[seg+1]
-	tick int           // 原版 unit+4:每格 1..6，第7 tick提交目的格
+	tick int           // 原版 unit+4:每格 1..6，第7 tick提交目的格並直接接上下一段
 	then func()        // 走完回呼(nil=玩家預設:開指令環)
 	// nil 保留既有 selector0；全軍移動明確帶 selector1。
 	nativeEventSelector *byte
@@ -5658,6 +5658,23 @@ func (g *Game) stepBattleWalk() {
 			g.beginBattleActionOverlay()
 		}
 	}
+	for {
+		if !g.stepBattleWalkSegment(w, finish) {
+			return
+		}
+	}
+}
+
+// nativeMapGridMotionFrames 是原版每格發佈的 `+4` 動作幀數。dosgolem 收據
+// （docs/data/ui-traces/fd2-map-walk-pose-20260909.json，10 萬指令粒度）量到
+// 每格 `+4` 走 1..6，跨格那一幀 raw 座標換成新格、`+4` 同時重設為 1，中間
+// **沒有** `+4 = 0`；只有整段抵達才是 pose 0／`+4` 0。24 px 的格子配六幀等於
+// 每幀 4 px。
+const nativeMapGridMotionFrames = 6
+
+// stepBattleWalkSegment 推進一拍。回傳 true 表示這一拍只做了跨格提交、還要
+// 在同一幀接著發佈下一段的第一拍（原版沒有跨格的 `+4 = 0` 幀）。
+func (g *Game) stepBattleWalkSegment(w *walkAnim, finish func(pose int)) bool {
 	if len(w.path) < 2 || w.seg >= len(w.path)-1 {
 		// 沒有實際走過任何一格：保留目前姿態，不憑空補一次寫入。
 		pose := w.u.Dir
@@ -5665,18 +5682,18 @@ func (g *Game) stepBattleWalk() {
 			pose = 0
 		}
 		finish(pose)
-		return
+		return false
 	}
 	a, b := w.path[w.seg], w.path[w.seg+1]
 	pose := dirToward(a.X, a.Y, b.X, b.Y)
 	w.tick++
-	if w.tick < 7 {
+	if w.tick <= nativeMapGridMotionFrames {
 		w.u.X, w.u.Y = a.X, a.Y
 		w.u.SetMapPose(pose)
-		w.u.OffX = float64(b.X-a.X) * float64(g.m.TileW) * float64(w.tick) / 7
-		w.u.OffY = float64(b.Y-a.Y) * float64(g.m.TileH) * float64(w.tick) / 7
+		w.u.OffX = float64(b.X-a.X) * float64(g.m.TileW) * float64(w.tick) / nativeMapGridMotionFrames
+		w.u.OffY = float64(b.Y-a.Y) * float64(g.m.TileH) * float64(w.tick) / nativeMapGridMotionFrames
 		w.u.SetNativeMapGridMotion(pose, w.tick)
-		return
+		return false
 	}
 	if !w.u.FinishNativeMapGridStep(pose, b.X, b.Y) {
 		w.u.SetMapPlacement(b.X, b.Y, pose)
@@ -5694,7 +5711,7 @@ func (g *Game) stepBattleWalk() {
 			if _, err := battle.ApplyNativeFieldTurnActivationEvent(g.st, b.X, b.Y, 0); err != nil {
 				g.loadErr = "battle field event62: " + err.Error()
 				g.walk = nil
-				return
+				return false
 			}
 		} else if selector == 0 {
 			battle.ApplyNativeFieldModeEvent(g.st, w.u, b.X, b.Y, 0)
@@ -5707,7 +5724,7 @@ func (g *Game) stepBattleWalk() {
 				g.loadErr = "native system group-march event changed after atomic preflight"
 				g.walk = nil
 				g.nativeSystemGroupMarch = nil
-				return
+				return false
 			}
 			if planned {
 				event := w.nativeGroupMarchEvents[w.nativeGroupMarchEvent]
@@ -5719,7 +5736,7 @@ func (g *Game) stepBattleWalk() {
 					g.walk = nil
 					g.nativeSystemGroupMarch = nil
 				}
-				return
+				return false
 			}
 		}
 	}
@@ -5731,7 +5748,10 @@ func (g *Game) stepBattleWalk() {
 		// 走第一格 pose=2／motion 1..6、第二格 pose=2／motion 重設後 1..6、
 		// 抵達時 pose=0／motion=0 並保持到玩家下指令。
 		finish(nativeMapRestPose)
+		return false
 	}
+	// 還有下一段：原版跨格那一幀就是下一段的 `+4 = 1`，不會停在 0。
+	return true
 }
 
 // nativeMapRestPose 是原版單位靜止時的 raw +3 值。移動抵達、等待指令期間都是

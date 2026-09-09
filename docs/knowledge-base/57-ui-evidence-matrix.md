@@ -955,3 +955,19 @@ handler 進第一戰。七拍格線動作另由約 18.2065 Hz 硬體規格近似
 與 [`battle-pedestal-zorder-20260909.png`](../figures/battle-pedestal-zorder-20260909.png)，
 成因與規則見 [103](103-battle-pedestal-zorder-20260909.md)。我方攻擊方向的既有
 fixture 逐位元組不變，本項不提升演出時序或逐幀分鏡為 E2。
+
+### 2026-09-09：地圖走行幀數與單位上下位移（RE-CLOSED／RUNTIME-E1）
+
+原版每格發佈六幀 `+4`（1..6），跨格那一幀 raw 座標換成新格、`+4` 同時重設為
+1，中間沒有 `+4 = 0`；只有整段抵達才是 pose 0／`+4` 0。`stepBattleWalk` 依此
+改為 `nativeMapGridMotionFrames = 6`，第七次呼叫提交新格之後在同一幀直接接上
+下一段的第一拍。
+
+同一條線修正 `fdicon.NativePlacementOffset`：上下方向位移原本寫成一整格高度
+（24×456），已閉合的 byte equation 是 `unit[+4] × {+0x720,-4,-0x720,+4}`，
+`0x720` 是 456-byte stride 的四列＝四像素。四像素乘六拍剛好一格。修正前垂直
+移動每拍跳一整格，單位整段離開可見範圍、抵達才回到終點格。逐幀對照、收據與
+出處見 [`fd2-walk-frames-and-placement-20260909.json`](../data/ui-traces/fd2-walk-frames-and-placement-20260909.json)
+與 [99](99-move-confirm-cursor-20260909.md)；圖見
+[`native-walk-placement-20260909.png`](../figures/native-walk-placement-20260909.png)。
+本項不宣稱兩側逐像素一致，也不涵蓋劇情走位的每格幀數。

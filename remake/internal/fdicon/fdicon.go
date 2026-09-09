@@ -173,6 +173,14 @@ func NativeFrameIndex(motionOffset int, forceBase bool, idleCycle, movingCycle i
 	return cycle, nil
 }
 
+// NativeMotionPixels is one unit+4 step in pixels. The closed byte equation for
+// 0x127e0 is 0x75d8 + (Y-cameraY)*24*0x1c8 + (X-cameraX)*24 + unit[+4]*d, with d
+// = +0x720/-4/-0x720/+4 for pose down/left/up/right; 0x720 is four rows of the
+// 456-byte stride, so every pose steps four pixels. Six steps therefore cover
+// one 24-pixel cell, which is exactly the 1..6 motion cycle the original
+// publishes per cell.
+const NativeMotionPixels = 4
+
 // NativePlacementOffset reproduces 0x127e0's byte destination before it is
 // added to the native 0x53a49 framebuffer. Map cells are 24×24 indexed pixels
 // in a 456-byte stride. motionOffset is unit+4 and advances in byte space in
@@ -183,7 +191,10 @@ func NativePlacementOffset(x, y, cameraX, cameraY, pose, motionOffset, pixelShif
 	if pose < 0 || pose >= 4 || pixelShift < 0 || pixelShift > 1 {
 		return 0, errors.New("fdicon: invalid native placement")
 	}
-	directionOffset := [4]int{NativeSize * NativeMapStride, -4, -NativeSize * NativeMapStride, 4}
+	directionOffset := [4]int{
+		NativeMotionPixels * NativeMapStride, -NativeMotionPixels,
+		-NativeMotionPixels * NativeMapStride, NativeMotionPixels,
+	}
 	offset := NativeUnitOriginBytes + (y-cameraY)*NativeSize*NativeMapStride + (x-cameraX)*NativeSize + motionOffset*directionOffset[pose]
 	if forceBase {
 		offset += pixelShift
