@@ -1001,10 +1001,14 @@ START 走完序章取到三次 pan 共 126 格逐格對上，收據見
 重製端 `syncStoryNativeMapPanView` 據此改成平移鏡頭差量，四個發動 pan 的地方
 （beat `pan`、battle event `pan`、回合登場演出、截圖快轉）共用同一個 `camPanJob`。
 
-同一份收據另量到原版容許可見游標暫時離開 13×8 視窗（15 格之後 `visible_y = −1`）；
-界線因此改成只在消費端成立：狀態層只擋「偏離超過場地」，13×8 由
-`NativeMapViewState.VisibleCursorInViewport()` 在 `fdother.ActionOverlayOrigin`／
-`ActionOverlaySnapshotOrigin`、`native_unit_present`、
-`native_command_heal_presentation` 與節點常數入口 `materializeNativeMapRuntime`
-把關。走行捲動 `0x13185` 整段結束時的發布仍是 `cursor = camera + visible` 反推，
-未閉合。
+同一份收據另量到原版容許可見游標暫時離開 13×8 視窗（15 格之後 `visible_y = −1`）。
+原版的界線寫在寫入端自己的分支條件裡：`0x11B9B` 以 `[0x53AC5]-1` 夾絕對游標、
+以 `[0x53AC5]-8` 夾鏡頭，可見游標則只有 `inc`／`dec`，八個寫入端都不檢查範圍。
+重製端因此分三層：執行期狀態只夾鏡頭與絕對游標；節點常數走
+`campaign.NativeMapViewConfig.Validate`（進場即繪，都在界內且
+`visible = cursor − camera`）；13×8 由
+`NativeMapViewState.VisibleCursorInViewport()` 在三個把它當畫面格座標的消費端把關
+（`fdother.ActionOverlayOrigin`／`ActionOverlaySnapshotOrigin`、
+`native_unit_present`、`native_command_heal_presentation`）；`native_current_save`
+另有存檔標頭的 byte 範圍與恆等式閘門。
+走行捲動 `0x13185` 整段結束時的發布仍是 `cursor = camera + visible` 反推，未閉合。

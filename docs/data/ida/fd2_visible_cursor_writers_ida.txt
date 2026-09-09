@@ -96,6 +96,19 @@ Y 迴圈；進入時 `0x135F2 mov dword_51A83, 0`，返回的共用尾巴 `0x131
 `camera_x == [0x53AC1] - 0x0D`。視窗是 13×8（同一組常數也出現在
 `0x174AE`／`0x174B0` 的 `push 8`／`push 0xD`）。
 
+絕對游標也被夾住，以向下的 `0x11B9B` 為例：
+
+```text
+0x11BA5 mov eax, dword_53AC5 ; dec eax
+0x11BAB cmp eax, dword_53AB5 ; je 0x11BEF   ; 已在場地最下緣 → 只重繪
+0x11BBC mov eax, dword_53AC5 ; sub eax, 8
+0x11BC4 cmp eax, dword_53AAD ; je 0x11BDA   ; 鏡頭已到底
+```
+
+**只有可見游標沒有界線**：它在八個寫入端裡一律是 `inc`／`dec`／`mov`，
+沒有任何一處比對範圍。因此鏡頭與絕對游標的界線是原版契約，可見游標的
+13×8 只是消費端（`0x1741C`）的要求。
+
 走行步進以 `0x13185`（上）為例，同一分支結構：捲鏡頭時走
 `0x13304 add dword_53AAD, eax`，否則 `0x13205 dec dword_53ABD`；
 絕對游標一定由 `0x1330A dec dword_53AB5` 跟著單位走。

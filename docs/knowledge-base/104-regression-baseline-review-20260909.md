@@ -151,25 +151,52 @@ dosgolem 收據 [fd2-story-pan-cursor-20260909.json](../data/ui-traces/fd2-story
 `TestStoryPanMovesAbsoluteCursorByCameraDelta` 釘住：起點刻意讓
 `visible ≠ cursor − camera`，兩條規則的結果不同。
 
-## 可見游標的界線只在消費端成立
+## 三組全域各有各的界線，可見游標沒有
 
-同一份收據另外量到一件事：`0x13185` 走行捲動 15 格之後
-`camera_y` 34→20、`cursor_y` 34→19、`visible_y` 0→**−1**——原版容許可見游標
-暫時離開 13×8 視窗。pan 與走行期間 overlay selector `[0x51A83]` 都是 0，
-`0x1741C` 不會消費可見游標，所以那段期間沒有消費端會讀到出界值。
+原版的界線就寫在寫入端自己的分支條件裡。以向下的 `0x11B9B` 為例：
 
-界線因此分成兩層：
+```text
+0x11BA5  mov eax, [0x53AC5] ; dec eax
+0x11BAB  cmp eax, [0x53AB5] ; je 0x11BEF      ; 絕對游標已在場地最下緣 → 只重繪
+0x11BB3  cmp [0x53ABD], 5   ; jle 0x11BDA     ; 可見游標在安全帶內 → 走下面那條
+0x11BBC  mov eax, [0x53AC5] ; sub eax, 8
+0x11BC4  cmp eax, [0x53AAD] ; je 0x11BDA      ; 鏡頭已到底 → 也走下面那條
+0x11BCC  inc [0x53AB5] / 0x11BD2 inc [0x53AAD] ; 捲鏡頭：游標與鏡頭同加
+0x11BDA  inc [0x53AB5] / 0x11BE0 inc [0x53ABD] ; 安全帶內：游標與可見同加
+```
 
-| 層 | 由誰擋 | 擋什麼 |
+絕對游標被 `[0x53AC5] - 1` 夾住、鏡頭被 `[0x53AC5] - 8` 夾住，
+**可見游標只有 `inc`／`dec`，八個寫入端沒有一個檢查它的範圍**。
+走行捲動在鏡頭仍可捲動時照樣 `0x13205 dec [0x53ABD]`：dosgolem 收據
+[fd2-story-pan-cursor-20260909.json](../data/ui-traces/fd2-story-pan-cursor-20260909.json)
+的 frames idx=75 量到 15 格之後 `camera_y` 34→20、`cursor_y` 34→19、
+`visible_y` 0→**−1**。pan 與走行期間 overlay selector `[0x51A83]` 都是 0，
+`0x1741C` 不會讀它，所以出界期間沒有消費端。
+
+重製端照抄這條契約，分成三層：
+
+| 層 | 由誰檢查 | 檢查什麼 |
 |---|---|---|
-| 狀態 | `validateNativeMapView` | 只擋結構性壞值：偏離超過場地本身。每個寫入端一次只動一格，且伴隨一次留在場內的絕對游標位移，所以偏離量不會超過場地。這是重製端的防溢位界線，不是原版契約 |
+| 執行期狀態 | `battle.validateNativeMapView` | 只有鏡頭與絕對游標，界線與上面那兩條分支條件相同。可見游標**不夾** |
+| 節點常數 | `campaign.NativeMapViewConfig.Validate` | 進場即繪的靜止視圖：鏡頭、游標、可見游標都在界內，且 `visible = cursor − camera` |
 | 消費端 | `NativeMapViewState.VisibleCursorInViewport()` | 13×8。任何把可見游標當畫面格座標的路徑都先問它 |
 
-目前的消費端有四處：`fdother.ActionOverlayOrigin`／`ActionOverlaySnapshotOrigin`
+**節點常數與執行期狀態是兩種東西**，這是它們的差別：執行期狀態跟著原版的
+寫入端走，可見游標可以合法地出界；節點常數描述玩家進到那個節點時**立刻要
+畫出來**的畫面，游標框與指令環會馬上讀可見游標，而且章節重設 `0x205DA` 把
+六個全域一起歸零之後，鍵盤游標、走行步進與劇情 pan 每一次寫入都同時維持
+`visible = cursor − camera`——唯一打破它的 `0x149F8` 是玩家在戰鬥中確認移動的
+執行期路徑，不會是節點的進場常數。受版控的 13 筆節點視圖全部滿足這兩條，
+`TestVersionedNodeViewsSatisfyTheEntryContract` 讓資料自己驗一次。
+
+把可見游標當畫面格座標的消費端有三處，都問過
+`VisibleCursorInViewport()` 或等價的界線：
+`fdother.ActionOverlayOrigin`／`ActionOverlaySnapshotOrigin`
 （`0x1741C`／`0x179D5`／`0x175A9` 的位址式）、`native_unit_present` 的 LUT 幾何、
-`native_command_heal_presentation` 的 transition 幾何，以及節點常數入口
-`materializeNativeMapRuntime`——節點常數是「進場當下就要畫出來」的靜止視圖，
-游標框與指令環會立刻讀它，所以那條入口仍要求視窗內。
+`native_command_heal_presentation` 的 transition 幾何。
+`native_current_save` 是另一種消費端：六個值都要塞進存檔標頭的 byte 欄位，
+所以它要求 0..255 並額外要求 `visible = cursor − camera`；那條額外要求是重製端
+的保守閘門，還沒有原版存檔的證據支持，出界狀態會在存檔那一刻失敗即關閉。
 
 `AdvanceNativeMapWalkStepView` 因此不再把 `visible_y = −1` 判成錯誤；
 `TestAdvanceNativeMapWalkStepViewLeavesViewport` 用收據裡的那一步釘住它。
@@ -195,3 +222,14 @@ dosgolem 收據 [fd2-story-pan-cursor-20260909.json](../data/ui-traces/fd2-story
 `loadch` 綁定的 `cam_x`／`cam_y` 是重製端的自由捲動鏡頭，可以不對齊格線，
 而 pan 的發布要求對齊——目前沒有任何綁定同時具備「非對齊 `cam_x`」與
 `tile_step` 的 pan，所以這個組合不會發生，但它不是被擋下來的，只是沒出現。
+
+## 附帶：天空之鑰的相位斷言改成數次數
+
+`0x4DFCC` 是 process-global 的 0..15 相位，pan 期間的地圖重繪也會推進它，
+但推幾次由 `composeNativeMapFrameAt` 的 tick 閘門決定，隨執行時序而變——同一個
+測試單獨跑與整包跑會得到不同的數字。把「起點 + 總量」寫成常數等於在追時序。
+
+`TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary` 因此改成
+**只數 FirstFrames 推進的次數**：`beginFirstFrames` 先推一次，之後 frame 1→68
+再推 67 次，合計 68。這是演出自己的迴圈保證的，與 pan 的時序無關；斷言的內容
+沒變（相位不被重設、每張推一次），但不再把時序寫成常數。

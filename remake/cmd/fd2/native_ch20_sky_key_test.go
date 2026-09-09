@@ -258,7 +258,7 @@ func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing
 
 	seen := make(map[nativeCh20SkyKeyPhase]bool)
 	seenAct63, seenAct64 := false, false
-	skyPaletteStart := -1
+	skyPaletteStart, skyFirstFrameCycles := -1, 0
 	type nativeDialogueKey struct{ stringIndex, utterance int }
 	seenNativeDialogue := make(map[nativeDialogueKey]bool, 26)
 	screen := ebiten.NewImage(logicalW, logicalH)
@@ -275,8 +275,17 @@ func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing
 			seenAct64 = seenAct64 || len(job.acting) == 5
 		}
 		if job := g.nativeCh20SkyKey; job != nil {
-			if skyPaletteStart < 0 {
-				skyPaletteStart = g.nativeFDOTHERPalettePhase
+			// 0x4DFCC 只數 FirstFrames 推進的次數。pan 期間的地圖重繪也會推進
+			// 它，但那由 composeNativeMapFrameAt 的 tick 閘門決定，次數隨執行
+			// 時序而變；把它算進總量會讓斷言變成在追時序，不是在驗演出。
+			if job.phase == nativeCh20SkyKeyFirstFrames {
+				if skyPaletteStart < 0 {
+					// beginFirstFrames 自己那一次發生在第一次觀測之前。
+					skyPaletteStart, skyFirstFrameCycles = g.nativeFDOTHERPalettePhase, 1
+				} else {
+					skyFirstFrameCycles += (g.nativeFDOTHERPalettePhase - skyPaletteStart) & 15
+					skyPaletteStart = g.nativeFDOTHERPalettePhase
+				}
 			}
 			seen[job.phase] = true
 			if !g.drawNativeCh20SkyKey(screen) {
@@ -332,18 +341,14 @@ func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing
 			t.Errorf("天空之鑰演出未經過 phase=%d", phase)
 		}
 	}
-	// 0x4DFCC 是 process-global 的 0..15 相位，兩條路都會推進它：
-	// 演出的 FirstFrames 每幀推一次（`beginFirstFrames` 先推一次，之後
-	// frame 1→68 再推 67 次，合計 68），而 pan 期間的地圖重繪
-	// （`composeNativeMapFrameAt` 的 BIOS tick 閘門）在本 fixture 的取樣點
-	// 之後還會推一次。相位起點是在第一次看到演出 phase 時取的，所以總量是
-	// 68 + 1。程式只宣稱保住相對循環，逐相位對齊仍是另一項 dynamic-E2。
+	// 0x4DFCC 是 process-global 的 0..15 相位，演出的 FirstFrames 每張推一次：
+	// `beginFirstFrames` 先推一次，之後 frame 1→68 再推 67 次，合計 68。
+	// 程式只宣稱保住相對循環（不重設、每張推一次），逐相位對齊仍是另一項
+	// dynamic-E2。
 	const skyKeyFirstFrameCycles = 68
-	const panRedrawCyclesAfterSample = 1
-	wantPhase := (skyPaletteStart + skyKeyFirstFrameCycles + panRedrawCyclesAfterSample) & 15
-	if skyPaletteStart < 0 || g.nativeFDOTHERPalettePhase != wantPhase {
-		t.Errorf("0x4DFCC 相對循環 start=%d got=%d，want %d",
-			skyPaletteStart, g.nativeFDOTHERPalettePhase, wantPhase)
+	if skyPaletteStart < 0 || skyFirstFrameCycles != skyKeyFirstFrameCycles {
+		t.Errorf("0x4DFCC FirstFrames 推進 %d 次，want %d（取樣到 start=%d）",
+			skyFirstFrameCycles, skyKeyFirstFrameCycles, skyPaletteStart)
 	}
 	if !g.partyMembers[24] || !g.partyMembers[23] || len(g.partyJoinOrder) < 2 ||
 		g.partyJoinOrder[len(g.partyJoinOrder)-2] != 24 || g.partyJoinOrder[len(g.partyJoinOrder)-1] != 23 {

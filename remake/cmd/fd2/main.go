@@ -3294,23 +3294,18 @@ func (g *Game) materializeNativeMapRuntime(n *campaign.Node) bool {
 	// a separate persistent option and must not be fabricated.
 	candidate := &battle.State{W: g.st.W, H: g.st.H}
 	view := n.NativeMapView
-	entry := battle.NativeMapViewState{
-		CameraX: view.CameraX, CameraY: view.CameraY,
-		CursorX: view.CursorX, CursorY: view.CursorY,
-		VisibleCursorX: view.VisibleCursorX, VisibleCursorY: view.VisibleCursorY,
-	}
-	if err := candidate.MaterializeNativeMapViewState(entry); err != nil {
+	// 節點常數走它自己的入口契約（進場即繪的靜止視圖），不是執行期狀態的
+	// 那一套；兩者的差別寫在 campaign.NativeMapViewConfig.Validate。
+	if err := view.Validate(g.st.W, g.st.H); err != nil {
 		g.loadErr = "native map runtime view: " + err.Error()
 		return false
 	}
-	// 節點常數是「進場當下就要畫出來」的靜止視圖，游標框與指令環都會立刻消費
-	// 可見游標（0x1741C 以 visible*24 定位），所以這條入口要求它落在 13×8
-	// 視窗內。執行期的可見游標可以合法地出界——走行捲動在鏡頭到邊界時會把它
-	// 減到 -1——那是狀態層的事，界線只在消費端成立。
-	if !entry.VisibleCursorInViewport() {
-		g.loadErr = fmt.Sprintf(
-			"native map runtime view: 入口可見游標 (%d,%d) 不在 13×8 視窗內",
-			entry.VisibleCursorX, entry.VisibleCursorY)
+	if err := candidate.MaterializeNativeMapViewState(battle.NativeMapViewState{
+		CameraX: view.CameraX, CameraY: view.CameraY,
+		CursorX: view.CursorX, CursorY: view.CursorY,
+		VisibleCursorX: view.VisibleCursorX, VisibleCursorY: view.VisibleCursorY,
+	}); err != nil {
+		g.loadErr = "native map runtime view: " + err.Error()
 		return false
 	}
 	if view.RangeMode == nil || (*view.RangeMode != 0 && *view.RangeMode != 1) ||

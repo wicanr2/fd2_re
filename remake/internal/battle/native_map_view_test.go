@@ -43,15 +43,31 @@ func TestNativeMapViewMaterializesViewportBounds(t *testing.T) {
 	outside = view
 	outside.VisibleCursorY = nativeMapViewHeight
 	if err := st.MaterializeNativeMapViewState(outside); err != nil {
-		t.Fatalf("拒絕了視窗外但仍在場地內的可見游標：%v", err)
+		t.Fatalf("拒絕了視窗外的可見游標：%v", err)
 	}
 	if outside.VisibleCursorInViewport() {
 		t.Fatal("視窗外的可見游標被判成視窗內")
 	}
+	// 原版不夾這個全域，重製端也不夾：八個寫入端沒有一個檢查範圍。界線在
+	// 消費端，不在狀態層。
 	drifted := view
-	drifted.VisibleCursorY = st.H
-	if err := st.MaterializeNativeMapViewState(drifted); err == nil {
-		t.Fatal("接受了偏離超過場地的可見游標")
+	drifted.VisibleCursorX, drifted.VisibleCursorY = -st.W, st.H*4
+	if err := st.MaterializeNativeMapViewState(drifted); err != nil {
+		t.Fatalf("狀態層夾了可見游標：%v", err)
+	}
+	if drifted.VisibleCursorInViewport() {
+		t.Fatal("偏離很遠的可見游標被判成視窗內")
+	}
+	// 鏡頭與絕對游標則相反：原版自己在分支條件裡夾它們，這裡照樣擋。
+	badCamera := view
+	badCamera.CameraY = st.H - nativeMapViewHeight + 1
+	if err := st.MaterializeNativeMapViewState(badCamera); err == nil {
+		t.Fatal("接受了越界的鏡頭")
+	}
+	badCursor := view
+	badCursor.CursorX = st.W
+	if err := st.MaterializeNativeMapViewState(badCursor); err == nil {
+		t.Fatal("接受了場外的絕對游標")
 	}
 }
 

@@ -42,23 +42,20 @@ func validateNativeMapView(view NativeMapViewState, width, height int) error {
 		return fmt.Errorf("battle: native map cursor (%d,%d) is outside the %dx%d field",
 			view.CursorX, view.CursorY, width, height)
 	}
-	// 可見游標**不**在這裡夾成 13×8。原版沒有夾它：走行步進在鏡頭已到邊界時
-	// 照樣 `dec [0x53ABD]`，dosgolem 收據
+	// 可見游標沒有界線。原版的三組全域裡只有鏡頭與絕對游標被寫入端自己夾住
+	// （上面兩段就是那兩條分支條件）；`[0x53AB9]`／`[0x53ABD]` 是自由的 dword，
+	// 八個寫入端沒有一個檢查範圍，走行步進在鏡頭仍可捲動時照樣
+	// `0x13205 dec [0x53ABD]`。dosgolem 收據
 	// docs/data/ui-traces/fd2-story-pan-cursor-20260909.json（frames idx=75）
 	// 量到 15 格之後 camera_y 34→20、cursor_y 34→19、visible_y 0→-1。
+	//
 	// 13×8 是**消費端**的界線：0x1741C 以 visible*24／visible*24*0x1C8 把它當
 	// 視窗內的格座標定位，而 pan 與走行期間 overlay selector `[0x51A83]` 是 0，
-	// 那段沒有消費端會讀到出界值。界線因此移到消費端，見
-	// VisibleCursorInViewport 與 fdother.ActionOverlayOrigin。
+	// 那段沒有消費端會讀到出界值。判準見 VisibleCursorInViewport，把關的地方見
+	// fdother.ActionOverlayOrigin 等消費端。
 	//
-	// 這裡只留一道結構性上限：每個寫入端一次只動一格，且同一步一定伴隨一次
-	// 留在場內的絕對游標位移，所以偏離量不會超過場地本身。這是重製端的防溢位
-	// 界線，不是原版契約。
-	if view.VisibleCursorX <= -width || view.VisibleCursorX >= width ||
-		view.VisibleCursorY <= -height || view.VisibleCursorY >= height {
-		return fmt.Errorf("battle: native map visible cursor (%d,%d) drifted beyond the %dx%d field",
-			view.VisibleCursorX, view.VisibleCursorY, width, height)
-	}
+	// 節點常數是另一種東西，不走這條驗證：進場即繪的靜止視圖由
+	// campaign.NativeMapViewConfig.Validate 檢查它自己的契約。
 	return nil
 }
 
