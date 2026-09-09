@@ -16,6 +16,24 @@ func NativeAIPhysicalDestinations(
 	count, actor, selector, initialBudget int,
 	baseFlags, terrainMoveCodes, costRow []byte,
 ) ([]Cell, error) {
+	field, err := nativeMovementDestinationField(w, h, records, count, actor, selector, initialBudget, baseFlags, terrainMoveCodes, costRow)
+	if err != nil {
+		return nil, err
+	}
+	result := make([]Cell, 0)
+	for index, value := range field {
+		if value != 0xff {
+			result = append(result, Cell{X: index % w, Y: index / w})
+		}
+	}
+	return result, nil
+}
+
+// nativeMovementDestinationField 保留 0x4E040 的剩餘預算，供玩家地形繪圖與 AI 共用。
+func nativeMovementDestinationField(
+	w, h int, records []byte, count, actor, selector, initialBudget int,
+	baseFlags, terrainMoveCodes, costRow []byte,
+) ([]byte, error) {
 	if w <= 0 || h <= 0 || len(baseFlags) != w*h || len(terrainMoveCodes) != w*h {
 		return nil, fmt.Errorf("native AI destination grid is malformed")
 	}
@@ -81,15 +99,7 @@ func NativeAIPhysicalDestinations(
 		field[y*w+x] = 0xff
 	}
 
-	result := make([]Cell, 0)
-	for y := 0; y < h; y++ {
-		for x := 0; x < w; x++ {
-			if field[y*w+x] != 0xff {
-				result = append(result, Cell{X: x, Y: y})
-			}
-		}
-	}
-	return result, nil
+	return field, nil
 }
 
 var nativeAIDestinationNeighbours = [][2]int{

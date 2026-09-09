@@ -121,3 +121,17 @@ func NativeSystemInfoTransitionFrames(baseline, information []byte) (opening, cl
 	}
 	return opening, closing, nil
 }
+
+// NativeSystemInfoSteadyFrame 保留 sub_1B1E7 的戰場備份，只覆蓋四塊資訊面板。
+func NativeSystemInfoSteadyFrame(baseline, information []byte) ([]byte, error) {
+	if len(baseline) != NativeSystemInfoBytes || len(information) != NativeSystemInfoBytes {
+		return nil, errors.New("fdother: native system info steady surfaces must be 320x200")
+	}
+	frame := append([]byte(nil), baseline...)
+	for _, rect := range nativeSystemInfoOpenRects(12) {
+		if err := blitNativeSystemInfoRect(frame, information, rect); err != nil {
+			return nil, err
+		}
+	}
+	return frame, nil
+}

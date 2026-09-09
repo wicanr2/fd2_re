@@ -187,6 +187,47 @@ func nativeBattleSystemResponseFrames(
 	if err != nil {
 		return nil, err
 	}
+	return nativeBattleResponseWordFrames(question, font, words)
+}
+
+// ComposeNativeTreasureItemQuestion 消費 0x190AC 的可見／隱藏寶物問句。
+func ComposeNativeTreasureItemQuestion(dialogue []byte, portrait dato.Frame, strings *fdtxt.Strings, font *fdtxt.Font, hidden bool) ([]byte, error) {
+	index := 0x1a5
+	if hidden {
+		index = 0x1ac
+	}
+	return composeNativeBattleSystemQuestion(dialogue, portrait, strings, font, index)
+}
+
+// NativeTreasureItemResponseFrames 依 0x191DD 的 item+0xB5 展開 FFFC 名稱。
+func NativeTreasureItemResponseFrames(question []byte, strings *fdtxt.Strings, font *fdtxt.Font, item int, hidden bool) ([][]byte, error) {
+	if len(question) != 320*200 || strings == nil || font == nil || item < 0 || item > 255 {
+		return nil, errors.New("campaign: invalid treasure response source")
+	}
+	index := 0x1a6
+	if hidden {
+		index = 0x1ad
+	}
+	words, err := strings.Words(index)
+	if err != nil {
+		return nil, err
+	}
+	name, err := strings.Words(item + 0xb5)
+	if err != nil {
+		return nil, err
+	}
+	expanded := make([]uint16, 0, len(words)+len(name))
+	for _, word := range words {
+		if word == 0xfffc {
+			expanded = append(expanded, name...)
+		} else {
+			expanded = append(expanded, word)
+		}
+	}
+	return nativeBattleResponseWordFrames(question, font, expanded)
+}
+
+func nativeBattleResponseWordFrames(question []byte, font *fdtxt.Font, words []uint16) ([][]byte, error) {
 	frame := append([]byte(nil), question...)
 	frames := make([][]byte, 0, len(words))
 	line, column := 0, 0

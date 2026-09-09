@@ -153,7 +153,7 @@ func TestMaterializeNativeStoryMapStateUsesCurrentLOADCHTerrain(t *testing.T) {
 		t.Fatal(err)
 	}
 	if g.storyNativeMapState.W != g.m.W || g.storyNativeMapState.H != g.m.H ||
-		!bytes.Equal(g.storyNativeMapState.NativeTileBlitModes, g.m.NativeTileBlitModes) {
+		!bytes.Equal(g.storyNativeMapState.NativeTileBlitModes, bytes.Repeat([]byte{0xff}, g.m.W*g.m.H)) {
 		t.Fatalf("story terrain=%dx%d/%#v, LOADCH=%dx%d/%#v",
 			g.storyNativeMapState.W, g.storyNativeMapState.H, g.storyNativeMapState.NativeTileBlitModes,
 			g.m.W, g.m.H, g.m.NativeTileBlitModes)
@@ -173,6 +173,23 @@ func TestMaterializeNativeStoryMapStateRejectsIncompleteLOADCHTerrain(t *testing
 	}
 	if g.storyNativeMapState != nil {
 		t.Fatal("failed materialization published a partial story state")
+	}
+}
+
+func TestMaterializeNativeStoryMapStatePreservesActingPresentation(t *testing.T) {
+	g := storyStagingFixture(t)
+	source := completeNativeUnitPresentGame(t).st
+	actor := &g.storyActors[0]
+	if !actor.SetNativeMapGridMotion(2, 4) {
+		t.Fatal("fixture lacks native acting presentation")
+	}
+	want := actor.NativeMapPresentation
+	if err := g.materializeNativeStoryMapState(source); err != nil {
+		t.Fatal(err)
+	}
+	if actor.NativeMapPresentation != want || actor.Dir != 2 ||
+		g.storyNativeMapState.Units[0] != actor {
+		t.Fatalf("story cache reset ACT state: raw=%+v dir=%d want=%+v", actor.NativeMapPresentation, actor.Dir, want)
 	}
 }
 

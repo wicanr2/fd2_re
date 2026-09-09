@@ -48,8 +48,9 @@ docker run --rm --network none \
     rm -rf "$target"
     mkdir -p "$target/assets"
     cp -a /payload/. "$target/"
-    cp -a /repo/remake/assets/. "$target/assets/"
     cp -a /pack/. "$target/assets/"
+    # 分離包可能保存舊引擎資料；目前工作樹的正式劇本必須最後覆寫。
+    cp -a /repo/remake/assets/. "$target/assets/"
 
     test -f "$target/assets/cutscenes/bindings/ch00_pre.json"
     test -f "$target/assets/music_catalog.json"

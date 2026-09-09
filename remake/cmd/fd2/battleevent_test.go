@@ -88,17 +88,23 @@ func TestChapter1GlobalIntroEventsPresentThenRunExactFollowingActing(t *testing.
 		t.Fatal(err)
 	}
 
-	// Event0 establishes the exact 14-slot frontier consumed by ACTING(3).
-	st.Turn = 3
-	g.finishTurn()
-	if len(g.dialog) != 1 || len(st.Units) != 14 {
-		t.Fatalf("turn3 frontier/dialogue units=%d dialog=%#v", len(st.Units), g.dialog)
+	// 本例隔離登場的十二張呈現與後續 ACT；完整四事件／32 句對話另由 START 長鏈驗證。
+	spawnAction := func(group int) battle.Action {
+		for _, event := range sc.Events {
+			for _, a := range event.Do {
+				if a.Type == "spawn_group" && len(a.Groups) == 1 && a.Groups[0] == group {
+					return a
+				}
+			}
+		}
+		t.Fatalf("找不到登場組 %d", group)
+		return battle.Action{}
 	}
-	g.dialog = nil
-	g.advanceBattleEvent()
-	if st.Turn != 4 || g.battleEvent != nil {
-		t.Fatalf("turn3 completion turn=%d event=%#v", st.Turn, g.battleEvent)
+	g.startBattleEvent([]battle.Action{spawnAction(3), spawnAction(7)}, func() {})
+	if g.loadErr != "" || len(st.Units) != 14 {
+		t.Fatalf("登場前沿 units=%d err=%s", len(st.Units), g.loadErr)
 	}
+	st.Turn = 4
 	st.NativeMapCycleState.Idle, st.NativeMapCycleState.Moving = 2, 3
 	st.NativeTerrainPhaseState.Phase = 5
 	st.NativeTerrainFlipState.Value = 1
@@ -113,7 +119,7 @@ func TestChapter1GlobalIntroEventsPresentThenRunExactFollowingActing(t *testing.
 	badScenario.NativeActingResources = "assets/cutscenes/acting/missing.json"
 	g.sc = badScenario
 	beforeRoster, beforeCache := len(st.Roster), st.NativeMapSelectorCache
-	g.finishTurn()
+	g.startBattleEvent([]battle.Action{spawnAction(4)}, func() { st.Turn++ })
 	if g.loadErr == "" || len(st.Units) != 14 || len(st.Roster) != beforeRoster ||
 		st.NativeMapSelectorCache != beforeCache || st.Turn != 4 || g.battleEvent != nil {
 		t.Fatalf(
@@ -131,7 +137,7 @@ func TestChapter1GlobalIntroEventsPresentThenRunExactFollowingActing(t *testing.
 
 	// Event1 constructs group4 before pass0, presents exactly 12 frames, then
 	// executes the independent 0x342E7 ACTING(3) on slots14..17.
-	g.finishTurn()
+	g.startBattleEvent([]battle.Action{spawnAction(4)}, func() { st.Turn++ })
 	if len(st.Units) != 18 || g.spawnIntroTransition == nil || g.actJob != nil || st.Turn != 4 {
 		t.Fatalf("event1 start units=%d intro=%v acting=%v turn=%d", len(st.Units), g.spawnIntroTransition != nil, g.actJob != nil, st.Turn)
 	}
@@ -159,9 +165,8 @@ func TestChapter1GlobalIntroEventsPresentThenRunExactFollowingActing(t *testing.
 		t.Fatalf("event1 completion turn=%d event=%#v", st.Turn, g.battleEvent)
 	}
 
-	// Event2 repeats the same presentation boundary, then ACTING(4), and only
-	// after that exposes the authored boss dialogue.
-	g.finishTurn()
+	// 事件 2 保留相同登場／ACT 邊界；完整首領對話由 START 長鏈驗證。
+	g.startBattleEvent([]battle.Action{spawnAction(5)}, func() { st.Turn++ })
 	if len(st.Units) != 23 || g.spawnIntroTransition == nil || st.Turn != 5 {
 		t.Fatalf("event2 start units=%d intro=%v turn=%d", len(st.Units), g.spawnIntroTransition != nil, st.Turn)
 	}
@@ -178,11 +183,6 @@ func TestChapter1GlobalIntroEventsPresentThenRunExactFollowingActing(t *testing.
 			t.Fatalf("ACTING(4) slot%d=(%d,%d), start=%v delta=%v", 18+i, u.X, u.Y, before4[i], delta)
 		}
 	}
-	if len(g.dialog) != 1 || g.dialog[0].Speaker != 71 || st.Turn != 5 || g.battleEvent == nil {
-		t.Fatalf("event2 following dialogue=%#v turn=%d event=%#v", g.dialog, st.Turn, g.battleEvent)
-	}
-	g.dialog = nil
-	g.advanceBattleEvent()
 	if st.Turn != 6 || g.battleEvent != nil {
 		t.Fatalf("event2 completion turn=%d event=%#v", st.Turn, g.battleEvent)
 	}

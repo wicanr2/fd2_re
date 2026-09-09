@@ -1,5 +1,39 @@
 # 58 — `FD2.EXE` 反組譯覆蓋與重製閉合矩陣
 
+> 2026-09-08 最新交接：使用者要求暫停自動對拍，其餘人工測試；v.1.0.19 完整包與本輪修正／未通過項目以 [94](94-ch01-town-parity-20260908.md) 為準，不宣稱開場至城鎮雙側驗收完成。
+
+2026-09-08 援軍對話窄重開：v.1.0.15 普通路徑有對話狀態卻沒有對話框；
+`event_id_groups.json` 只列首關事件的登場，缺少對話／演出 consumer。
+重開 `sub_341DB`、`sub_342B5`、`sub_3431D`、`sub_34377` 的該段來源與呼叫順序，
+不重做已閉合 JOIN／登場建構器；證據與規格集中於 [94](94-ch01-town-parity-20260908.md)。
+
+2026-09-08 最新長鏈切片：普通物理 EXP 的 `sub_29F72` 來源／整數除法與
+`sub_1E292` byte 寫回已補最小充分證據，見
+[原始位址／bytes 匯出](../data/ida/fd2_physical_exp_20260908.json)及 [94](94-ch01-town-parity-20260908.md)。
+v.1.0.14 已由普通 START 越過首次攻擊阻塞，列 RUNTIME-E1，未宣稱完整雙側通關。
+援軍 JOIN 缺口沿用已閉合 `sub_112A5` 建構器，修正正式逐動作來源接線；
+不重解該函式，不把測試用戰果設定提升為 PLAYER-E2。dosgolem 平台補件與最新
+實跑停點同由 94 記錄，原版黑底已排除為 remake 缺陷。
+
+2026-09-08 延長對拍：v.1.0.13 已修鏡頭終點交接、跨頁保留前文、翻頁箭頭
+與捲動矩形，實際 START 前38頁完成；dosgolem 原版收據延伸至65頁。
+省略號字模碰撞與剩餘背景差異仍未關閉，全段一致未提升。
+唯一目前結果與各頁未遮罩收據見 [93](93-dialogue-cause-20260908.md)。
+
+2026-09-08 捲動窄重開：dosgolem 第 004 頁與重製後頁矛盾，現有
+`0x16E24` 摘要缺少它聲稱已具備的複製矩形，符合 consumer 證據缺漏條件。
+IDA 9.4 補出原函式，固定 208-byte 列寬、72 列、五次上移 3 像素再 4 像素；
+不得用控制碼允許字數推測複製寬度。原位址與 bytes 見
+`../data/ida/fd2_dialogue_scroll_20260908.json`，審查與驗收集中於 `93`。
+
+2026-09-08 窄重開：正常 START 第二句與 dosgolem／DOSBox 同時矛盾，且
+舊逐字頭像敘述缺少 `0x164A2 → 0x164E8` consumer，符合執行結果矛盾與
+主證據缺漏條件。`0x165D6 → 0x12CEA` 開框前聚焦、`0x1652A` 逐字頭像
+輪替已查明；v.1.0.10 已補接並通過正常 START 兩句抽樣與完整開場回歸，
+標為 RE-CLOSED／RUNTIME-E1，局部規格 CONFORMED；不重做五階段框還原。
+[最小指令證據](../data/ida/fd2_dialogue_cause_20260908.json)與
+[目前狀態](93-dialogue-cause-20260908.md)保留原始位址及勘誤原因。
+
 > **第一輪停止條件（2026-08-27）**：完整反編譯不是第一輪 remake 的交付門檻。
 > 已有最小充分證據並形成正式玩家可見消費端的位址不重做；剩餘 unknown 只有在
 > 會造成95%代表性抽樣失敗、破壞核心資料或違反失敗即關閉時才成為阻擋。原版
@@ -18,6 +52,21 @@
 > 雜湊不同時，本頁所有位址都只能當特徵線索，不能直接沿用。
 
 ## 一、先說結論
+
+2026-09-07 開場至第一關操作複核見
+[`92-opening-ch01-input-audit.md`](92-opening-ch01-input-audit.md)。正常 AppImage
+選角色縮小視野、缺資訊框與系統圖示位移差異構成新的執行期反證；只重開
+`0x1741c/0x176b4/0x179d5` 的動畫／停留消費端與 `0x18890` 玩家移動呈現。
+舊圖塊索引、地形核心、AI 路徑與對話解碼證據保留，不因本次對拍重新考古。
+同輪另發現 START 原生身分被舊姓名勝敗判斷漏認，導致滿血索爾在第一輪 END
+後誤判敗退；已按來源實體目錄修正並移除測試人工補姓名。這是執行期接線
+反證，不重開 `0x205b4` 未命名數值的原版結論。局部回歸通過只列
+`RUNTIME-E1`，完整操作一致性與 dosgolem 正式收據仍未關閉。
+同輪實際戰況面板斜線破圖再直接推翻舊 `0x1b41d` caller 的 codec 接線：
+四次 `sub_16886` 呼叫應消費既有 `0x4e63d` 四模式 Frame，而非高位 run。
+`fd2_nested_system_menu_ida.txt` 保留歷史並追加勘誤，新原始呼叫收據為
+`../data/ida/fd2_system_info_codec_20260907.json`。只修 #5 entries 133–136，
+完整私人包清冊重生與驗證通過；source resource 覆蓋不變，只更新 manifest 雜湊。
 
 > **第29戰產品裁決（2026-08-26）：** 依專案採用的玩家可見 **99% 相似門檻**，
 > 第29戰已列為 **remake 已完成**：正式 `CONTINUE` 入口、76-slot 戰況、玩家／敵方
@@ -157,6 +206,18 @@ writer／consumer 分類高 fan-in helper，不用 unknown 總數驅動無限 RE
 > `0x85..0x88` 已加入共用 mixed-codec bank，四筆幾何與 indexed pixels 對固定
 > 原版一致；正式資訊畫面 loader 不再讀取或檢查 `FDOTHER.DAT`。十二段展開／收合
 > 與巢狀選單聚焦回歸通過；BIOS input、DAC pulse及 `PLAYER-E2` 等級不變。
+> **2026-09-07 勘誤：**上述「對固定原版一致」當時沿用了錯誤高位 run 解碼器，
+> 不代表原版畫面；現已改為四模式 Frame／mask 並有實際 AppImage 補證，見 `92`。
+>
+> 本輪中立輸入窄補正：[`fd2_player_neutral_input_20260907.json`](../data/ida/fd2_player_neutral_input_20260907.json)
+> 保存 `0x53AE9` 初始化／回合歸零／循環寫入，以及 `0x12D7B`、`0x17AED`
+> 的既有控制流程；`0x117E7` 主證據仍是本輪 opening input 匯出。
+> 已審查語意與 READY 消費契約見 `92`「中立輸入與回合聚焦補正」，不重解 renderer。
+>
+> 第一關普通物品寶箱另由實際操作反證重開 UI 接線：
+> [`fd2_treasure_input_20260907.json`](../data/ida/fd2_treasure_input_20260907.json)
+> 保存 `0x190AC` 已知入口的問句、FFFC 名稱、YES／NO 與取得後確認；
+> 僅補有空格物品寶箱，滿欄交換與其他寶物分支未提升。READY 規格見 `92`。
 
 > **2026-08-29 共用物品／狀態面板追加：** `0x17EEF／0x17FC0` 所需的
 > FDOTHER #5 raw `1..17`、opaque `20..22`、bar／digit／icon entries已由同一
@@ -786,3 +847,11 @@ action overlay 以早／中／晚三組地圖視圖鎖定章節無關的游標�
 移動、139-update 時基與完整 ch00 handler 五項測試均通過。動態同段影片仍只列
 READY，不能由 runtime 測試提升為原版 E2。權威收據見
 [`action-overlay-and-ch01-march-20260830.json`](../data/ui-traces/action-overlay-and-ch01-march-20260830.json)。
+# 2026-09-08 補充：首關普通攻擊 EXP 邊界
+
+本輪普通 START 的實跑直接反證「攻擊後可繼續移動」：小數 EXP 使原生記錄
+拒絕建構。只重開 EXP writer／consumer，不重解已閉合的學習或傷害呈現。
+`sub_29F72`／`sub_1ECC7` 整數 EXP → `sub_117E7` 上限99 →
+`sub_1E292` byte 寫回的主證據與 READY 規格見
+[94：首關至城鎮對拍](94-ch01-town-parity-20260908.md)。
+本列為 RE-CLOSED／READY，尚未表示新版 AppImage 通關或 PLAYER-E2。

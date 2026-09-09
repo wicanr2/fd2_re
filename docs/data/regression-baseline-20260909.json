@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_remake_regression_baseline",
+  "date": "2026-09-09",
+  "purpose": "把 2026-09-08 那一輪未提交工作收成 commit 時的已知失敗清單；後續回歸以差異判讀，不以總數判讀",
+  "command": "go test ./... -count=1（在 fd2-go-test-local 內以 xvfb-run 包住，FD2_ASSET_PACK 指向完整分離素材根）",
+  "asset_pack": {
+    "note": "完整素材根需含 ui/action_cells、ui/fdother_014_church、locales、palette。分離素材不在公開庫，見 AGENTS.md 的私人素材保存庫。",
+    "manifest_sha256": "e92554d1269884c42c31d470c830c9c3f79b52c52e3d5d4ef9391ffc0713e716"
+  },
+  "totals": {
+    "failing_tests": 39,
+    "failing_packages": [
+      "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+      "github.com/wicanr2/fd2_re/remake/cmd/fd2-string-inventory",
+      "github.com/wicanr2/fd2_re/remake/internal/battle",
+      "github.com/wicanr2/fd2_re/remake/internal/campaign",
+      "github.com/wicanr2/fd2_re/remake/internal/indexedmap"
+    ]
+  },
+  "known_failures": [
+    "TestAIStepConsumesEditableAttackSpellAndMovesIntoRange",
+    "TestAIStepConsumesEditableHealSpellThroughProductionLoop",
+    "TestBeatActCyclesPosesThenAdvances",
+    "TestBeatActingNormalFrameMovesEachBeat",
+    "TestBeatDelayCountsDownThenAdvances",
+    "TestBeatDialogCountConsecutiveLines",
+    "TestBeatDialogResolvesOriginalRuntimeSpeakerSlot",
+    "TestBeatFadeBothDirectionsCallThen",
+    "TestBeatWalkMovesActorAndAdvances",
+    "TestCampaignSaveLoadRestoresTownBoundaryAndParty",
+    "TestChapter1Turn3JoinsHanoBeforeSpawningHisGroup",
+    "TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary",
+    "TestChapterThreePostBattleSpeakerControlCodes",
+    "TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary",
+    "TestCompileChapter27PostMapsFDTXT028StringSeven",
+    "TestFastForwardShotCampaignCompletesBlockingBeats",
+    "TestFullCampaignCarriesVerifiedChapterOneNativeMapRuntime",
+    "TestInventoryRecipeInsufficientReturnsToTownAndSaveLoad",
+    "TestNativeActionOffsetXYMatchesFinalOpenFrame",
+    "TestNativeChurchClassTypedInputSuccessPublishesCompleteUnit",
+    "TestNativeChurchReviveTypedInputSuccessReachesEmptyThenMenu",
+    "TestNativeCommand24PresentationDoesNotRequireLegacyRGBABases",
+    "TestNativeCommand24PresentationDrawsNine29164FramesBeforeActorEffect",
+    "TestNativeCommand24PresentationPublishesAtRawMarkers",
+    "TestNativeCommand24PresentationRunsTwentyBackgroundDrawsBeforeDamage",
+    "TestNativeCommand24PresentationUsesSeparatedActorTAIForNonzeroRawSide",
+    "TestNativeCommand29PresentationPublishesMultipleTargetsInOrder",
+    "TestNativeCommand29PresentationRollsBackAllTargetsOnLateFailure",
+    "TestNativeEvent61AttackWaitsForPresentationCompletion",
+    "TestNativeShopProductionOwnerDrawsOriginalMenuAndPurchaseList",
+    "TestPlayerNativeCommand0RunsIndexedPresentationThroughCursorConfirm",
+    "TestPlayerPhysicalAttackLoadsDynamicSeparatedPairWithoutArchive",
+    "TestReviewedChapterTwoCampaignTranslationsAndItemEntities",
+    "TestReviewedGoCandidatesMatchCurrentInventory",
+    "TestSeparatedNativeMapHUDFramesMatchFixedArchive",
+    "TestStartNativeCommand32PresentationUsesOriginalAssetsEndToEnd",
+    "TestStartNativeCommand33PresentationUsesOriginalAssetsEndToEnd",
+    "TestStartNativeCommand34PresentationUsesOriginalAssetsEndToEnd",
+    "TestStartNativeCommand35PresentationUsesOriginalAssetsEndToEnd"
+  ],
+  "notes": [
+    "同一份程式在不同素材根下的失敗數：完整素材根 39、僅 generated-assets 42、素材根拼湊錯誤 83、完全不指定 74。判讀前先確認素材根，否則會把取材問題讀成功能缺陷。",
+    "internal/fdother 在本基線為通過；量測當下工作樹另有一支尚未提交的測試檔造成建置失敗，已排除後重測確認。",
+    "TestNativeActionOffsetXYMatchesFinalOpenFrame 成因已定位：本批把 ActionOverlayFrameOffsets 改成 (frame+1)*delta，測試仍釘舊值。",
+    "多數 NativeChurch／NativeShop／NativeCommand 類失敗集中在原版分離素材與語系目錄的取得方式，不是各自獨立的功能缺陷。"
+  ]
+}

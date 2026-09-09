@@ -113,13 +113,17 @@ func (g *Game) prepareNativeSystemInfoUI() (*nativeSystemInfoUIState, error) {
 	if err != nil {
 		return nil, err
 	}
+	steady, err := fdother.NativeSystemInfoSteadyFrame(g.nativeMapVGA, information)
+	if err != nil {
+		return nil, err
+	}
 	dac := append([]byte(nil), g.nativeMapDAC...)
 	palette, err := fdother.VGAPaletteFromDAC(dac)
 	if err != nil {
 		return nil, err
 	}
 	return &nativeSystemInfoUIState{
-		opening: opening, steady: information, closing: closing,
+		opening: opening, steady: steady, closing: closing,
 		phase: "opening", dac: dac, palette: palette,
 	}, nil
 }

@@ -23,6 +23,7 @@ type nativeSystemEndTurnUIState struct {
 	saveStored                 []byte
 	loadCurrent                bool
 	loadCandidate              *Game
+	treasure                   *nativeTreasurePrompt
 }
 
 const (
@@ -594,6 +595,14 @@ func (g *Game) finishNativeSystemEndTurnChoice(accepted bool) {
 			response = g.nativeSystemEndTurnUI.accepted
 		}
 		g.nativeClassUIJob = &nativeClassUIJob{frames: response, after: func() {
+			if state.treasure != nil && accepted {
+				if g.commitNativeTreasurePrompt(state.treasure) {
+					state.treasure.awaitAck = true
+				} else {
+					g.nativeSystemEndTurnDelay = 1
+				}
+				return
+			}
 			if accepted && g.nativeSystemEndTurnUI != nil && g.nativeSystemEndTurnUI.exitProgram {
 				g.stopBGM()
 			}
@@ -619,6 +628,10 @@ func (g *Game) stepNativeSystemEndTurn() {
 		g.nativeClassUIJob = &nativeClassUIJob{frames: frames, restore: state.source, after: func() {
 			accepted := state.acceptedOutcome
 			g.nativeSystemEndTurnUI = nil
+			if state.treasure != nil {
+				g.finishNativeTreasurePrompt(state.treasure)
+				return
+			}
 			if accepted {
 				if state.loadCurrent {
 					if state.loadCandidate == nil {
@@ -728,7 +741,7 @@ func (g *Game) drawNativeSystemEndTurn(screen *ebiten.Image) bool {
 		if err != nil {
 			return false
 		}
-	} else if g.nativeSystemEndTurnDelay > 0 {
+	} else if g.nativeSystemEndTurnDelay > 0 || (state.treasure != nil && state.treasure.awaitAck) {
 		frames := state.canceled
 		if state.acceptedOutcome {
 			frames = state.accepted

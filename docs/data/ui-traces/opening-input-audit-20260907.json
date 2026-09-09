@@ -1,0 +1,266 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_local_input_audit",
+  "date": "2026-09-07",
+  "version": "v.1.0.9-20260907",
+  "appimage_sha256": "8fe7fccaa7af553c7fdba45c030223652c92cdb2307a61da962eb0d970bfdd4e",
+  "running_binary_sha256": "ff01164fdab4d67bfa1c2077086aab63b3bb02fb2f7d7c501409b8afc51a31b2",
+  "original_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "original_continue_save_sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f",
+  "original_runner": "DOSBox 輔助基準，非 dosgolem 自行執行",
+  "rng_synchronized": false,
+  "audio_verified": false,
+  "complete_parity": false,
+  "public_distribution": false,
+  "normal_start_path": {
+    "version": "v.1.0.7-20260907",
+    "entry": "START",
+    "end": "battle_ch01 TURN 003，父子登場前",
+    "actions": [
+      "完整序幕",
+      "選人與取消",
+      "Escape 循環",
+      "F2 狀態兩頁",
+      "移動待機",
+      "已行動狀態",
+      "兩次 END 與回合聚焦"
+    ],
+    "direct_entry": false,
+    "save_injection": false
+  },
+  "final_package_check": {
+    "version": "v.1.0.9-20260907",
+    "entry": "標題 → 合法原版 CONTINUE → 第一關 TURN 003",
+    "actions": [
+      "普通移動待機",
+      "寶箱 NO 不領取",
+      "END 後再開箱 YES",
+      "藥草名稱回覆與取得後確認",
+      "狀態物品欄",
+      "兩次 END",
+      "零金錢戰況面板"
+    ],
+    "save": "未修改的合法原版存檔，唯讀掛載",
+    "direct_entry": false,
+    "startup_regression": "完整 97 句開場與來源角色回歸通過；此最終版本未重跑完整序幕 GUI"
+  },
+  "comparison_class": "相近狀態／排版比較；未宣稱整幀逐像素或同亂數一致",
+  "remaining": [
+    "dosgolem 自行重生的正式 FD2 原版收據尚缺；精確按鍵重複速率、動畫相位與音訊未閉合",
+    "滿物品欄交換、金錢與特殊事件寶藏分支未以本次窄對話修正提升",
+    "F5/F9 為既有 JSON 節點重啟，不是原版目前戰況續存；真正 CONTINUE 另行驗證",
+    "整個 cmd/fd2 套件未全綠；限定回歸通過，五項既有失敗另有 HEAD 重現"
+  ],
+  "images": [
+    {
+      "file": "original-check-range.png",
+      "sha256": "9d747c363ebc761c0c2263a0d6a99440df95006e9003e6e00724877fa4280b03",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "original-check-turn2-info.png",
+      "sha256": "612db78077b364c39f188036206589c0e465ea1be25e7da8711116539c493a99",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "oracle-turn3-info.png",
+      "sha256": "7a5336756461b59508df2d6dec2a4f61f6ba11c39056dec511d2908d6a1707d5",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "oracle-after-end3.png",
+      "sha256": "9b10341e9c0ab489aef722799e57e902f1502fbc3e8d63607e0090a0ce3e6ae6",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "oracle-end2-prompt.png",
+      "sha256": "0ddb615b2a4a26b45019487bacaa863f6f4258f7325ad4504f5fac7645e0f558",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "oracle-neutral-cycle1.png",
+      "sha256": "57cb998820fe06f7f2909165f53c265f4eae47863b69743bff7f4a4d754ed7a1",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "oracle-neutral-cycle2.png",
+      "sha256": "059522b8560dbb9ac3f56e9325f0d50875bb7ad71240b5cbe67e9facc7847d0d",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "oracle-neutral-cycle3.png",
+      "sha256": "60b13c195f8e58e83afda67708b3e3b0479f0e79e54cc205406ab9a093601ee6",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "oracle-neutral-status.png",
+      "sha256": "97e20f4929139d3b189e42f27fbdb2c0ff8723585954361daf82fd054ba5082e",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "oracle-neutral-commands.png",
+      "sha256": "29e3b0378b85078ea53e46e7708352b9ec6df356c563bda11493ad1e7071420e",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "oracle-neutral-acted-status.png",
+      "sha256": "af9eaf52f6b0b52f59a62e95887c5ed565f0945c0fc600ebd02634237270809a",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "oracle-neutral-acted-sheet.png",
+      "sha256": "9b7895e590f3aec3f55fe39840a4619ceb7c9d04c12c86c5ae5d1a9923a1b576",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v107-first-control.png",
+      "sha256": "2d7b9bc8871d514d1da53fbfb6d0ac5b5b940fc9a16ce86b1db06c1c006e68e7",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v107-initial-range.png",
+      "sha256": "2788565f8de88b836eb89401e757e5f85a3671842cb4878f68013a21550d318f",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v107-cancel-range.png",
+      "sha256": "32d45987d6ffaf7f18460145a8796eb4624d819ff7961d7d80b2b7bdd7eb0656",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v107-cycle1.png",
+      "sha256": "78b4634b825342e50aa3213621d98ebc8b5528a7419d04d9631fe64f2b8f39f2",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v107-cycle2.png",
+      "sha256": "0677d43d3400c7f9565db370909c66c85add6e8c265b6078c736152b6005ab24",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v107-cycle3.png",
+      "sha256": "33ce4caad4b5deae80a4d29de529f942afb69e0b1a1370cc0757473a72a75bf1",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v107-cycle-skips-acted.png",
+      "sha256": "5d1034414ab72db532bd71f3ae2d40f5c36e961d74477fd45a506acce9eb5aec",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v107-yuni-status.png",
+      "sha256": "13af601e1413bf552afa30dc52a548ab382f6f36d9cd8b5d7c0a63e8a6025441",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v107-yuni-commands.png",
+      "sha256": "8bb34bd7dce562e6a4732ee3ad8a266dcb43a65302f368663bf2007695fb38ca",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v107-yuni-closed.png",
+      "sha256": "090f8ac912b6538fdf16f7db4cb4aab829a96f2e6278186f1d27ba664dddf022",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v107-movement-ring.png",
+      "sha256": "c78aa1e57f028154b8052edc67bd3af7b34c24329ce511185662ca5822f22c60",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v107-waited.png",
+      "sha256": "240405796bfb9709a4526f25d4c75c7e9d6d4b62d47c13993074550e0f161a50",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v107-acted-status.png",
+      "sha256": "38b4a7c3b056e012df3417b4ede30863c9c93617fb2c7cb6da0c90fd4e3eb1c4",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v107-end2-prompt.png",
+      "sha256": "7c538dad1686f3fb18f3538f444c703a8f84a9eb087044f4c3fab06522c81016",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v107-after-end1.png",
+      "sha256": "cdd21d5dff00146cd5660eb5308a13ea125040ce4c35b4b5fed57866461620a6",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v107-turn3-info.png",
+      "sha256": "bc742c8aadbe90e3a1a0942189309492244ce3fe046843ef29c875fa5964ef64",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v109-title.png",
+      "sha256": "54ad99c3aeac1bd50793119e4043cfc0470340554f44a960788e3cffec759531",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v109-loaded.png",
+      "sha256": "cb6e05bfa0eeee84653d344772934c5292889f94c7eca5eebe7f447eb012c96c",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v109-chest-question.png",
+      "sha256": "5b0e22578e3014c1f293e9ba98d85d869ef5d9bd4e7bf9cbbfdecbbcb633ad75",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v109-chest-no-selected.png",
+      "sha256": "7e861f6fa03821a0c256d8b4ca1e7b1b027fdc582ebb766fde1c825f64a82aea",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v109-chest-no-closed.png",
+      "sha256": "3b39a3a8f54e81ca5406be9be2ac6513daad7144318c50c19351b3025318de08",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v109-chest-question-again.png",
+      "sha256": "382ca9ea02ca07f3737f07b8aeebae10a741c1d631386a5c58076e2774eab554",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v109-chest-found-herb.png",
+      "sha256": "cff2bfc943a1ea702d35c9f9b4ce65b0ebe2b4ecacd60a3540bb9f1fe28cbac4",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v109-chest-yes-closed.png",
+      "sha256": "e320f49f8ae158709bc0c44ad451691f6bbb1130e9a5e04a21e02e13517fe3e2",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v109-chest-inventory.png",
+      "sha256": "b214a896446a0bd02ea0a86c25d7ab18f33d181460ecffc915175831f39ba49c",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v109-turn3-info.png",
+      "sha256": "a2b921f6d3f72dc4d8ef3888a0f1dbf7459b4deab10c1eb343df7489f40eecc4",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v109-end1-prompt.png",
+      "sha256": "55bdb91bbfb7c35c1a6d0d4d21e68501ecbc88ee00dfbd9cdf203b1ff63adb75",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v109-after-end1.png",
+      "sha256": "2afc40772a653c694b9d7aaee87ce43d6e14f3b049428b5ed58099e99c572928",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v109-end2-prompt.png",
+      "sha256": "9924d3d91587543921736d46ab52899159af26c96d8d2f4b30fb935d7a2d0bcf",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    },
+    {
+      "file": "v109-after-end2.png",
+      "sha256": "8a971e89517e40ca11dc0643c66a9bd128a7682cec71b18edad4762bfb29df0d",
+      "local_root": "dist-all/v.1.0.9-20260907/full/input-audit"
+    }
+  ]
+}

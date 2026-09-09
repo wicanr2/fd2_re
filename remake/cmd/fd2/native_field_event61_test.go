@@ -105,7 +105,10 @@ func TestNativeEvent61AttackWaitsForPresentationCompletion(t *testing.T) {
 	trigger.BattleFig = 4
 	target := &battle.Unit{
 		Name: "測試敵兵", BattleFig: 96, Camp: battle.Enemy, X: 2, Y: 46,
-		HP: 20, MaxHP: 20, OnField: true,
+		HP: 20, MaxHP: 20, OnField: true, HasBattleFig: true, Lv: 2,
+		// 原生 EXP 預檢需要實際 selector96 的 high_class 建構列。
+		NativeConstructor: &battle.NativeConstructorTable{Branch: "high_class", Index: 28,
+			Record: []byte{1, 7, 14, 0, 0, 7, 1, 1, 4, 21}},
 	}
 	g.st.Units = append(g.st.Units, target)
 	g.curX, g.curY = target.X, target.Y

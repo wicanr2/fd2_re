@@ -828,23 +828,27 @@ surface；缺包原子拒絕與兩條有界 Xvfb 聚焦回歸均通過。
 
 #### 戰場資訊 FDOTHER #5 entries `0x85..0x88` 契約
 
-> 狀態：**CONFORMED／RUNTIME-E1**（2026-08-29）；原版 caller、索引、幾何與
+> 狀態：**CONFORMED／RUNTIME-E1**（2026-09-07 codec 勘誤後）；2026-08-29 的
+> 高位 run 解碼通過只證明同一錯誤解碼器自洽，已由實際原版／AppImage 破圖反證推翻。
+> 原版 caller、索引、幾何與
 > 座標主證據見
 > [`fd2_nested_system_menu_ida.txt`](../data/ida/fd2_nested_system_menu_ida.txt)。
 
 既有 `ui/FDOTHER_005/item_panel` mixed-codec bank 必須追加原始 entries
-`133..136`，保留穩定原始 index及 LMI1 解碼後的 indexed PNG。四筆固定幾何依序
+`133..136`，保留穩定原始 index，以 `sub_16886→0x4e63d` 四模式解碼為
+indexed PNG／mask；不得使用 `DecodeLMI1Resource` 的高位 run。四筆固定幾何依序
 為 `102x17`、`170x117`、`170x16`、`63x15`；不替它們猜測高階美術名稱。
 
 `LoadSeparatedSystemInfoPanels` 必須以單一交易載入既有 strict #5 bank，確認四筆
 完整存在且幾何符合 `0x1B41D`；任一 metadata、entry、PNG或幾何不符即失敗即關閉。
 正式 `loadNativeSystemInfoAssets` 只能組合這四筆與已分離的數字、FDTXT及字型，
 不得再以 `nativeFDOTHERPath()` 檢查或讀取原始 archive。驗收包含四筆與固定原版
-`DecodeLMI1Resource(...,5)` 的逐 indexed pixel oracle、缺包拒絕及正式 loader 在
+`ParseLMI1FrameEntry` 的逐 indexed pixel／mask 比較、實際原版面板、缺包拒絕及正式 loader 在
 沒有 `FD2_ORIGINAL_FDOTHER` 時成功；不重解 BIOS／DAC 時序或提升 `PLAYER-E2`。
 
-實作結果：共用 #5 bank 已追加 entries `133..136`，四筆分離 PNG 與固定原版
-逐 indexed pixel 一致；`LoadSeparatedSystemInfoPanels` 會一次驗證完整 bank 與
+2026-09-07 實作結果：共用 #5 bank 的 entries `133..136` 改用既有
+`four_mode_frame`，舊 codec metadata 被拒絕；新 PNG／mask 與固定原版四模式
+解析一致，v.1.0.5／v.1.0.6 實際面板破圖已消失。`LoadSeparatedSystemInfoPanels` 會一次驗證完整 bank 與
 四筆精確幾何。正式 `loadNativeSystemInfoAssets` 已移除 `nativeFDOTHERPath()`，
 在清空 `FD2_ORIGINAL_FDOTHER` 時仍通過 loader、12 段展開／收合及巢狀選單
 聚焦回歸；缺包仍由共用 strict loader 拒絕。

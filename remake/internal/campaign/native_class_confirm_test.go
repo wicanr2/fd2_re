@@ -9,6 +9,19 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
 )
 
+func TestNativeTreasureResponseExpandsItemNameBeforePublishing(t *testing.T) {
+	question := make([]byte, 320*200)
+	for _, hidden := range []bool{false, true} {
+		frames, err := NativeTreasureItemResponseFrames(question, nativeClassListStrings(t), nativeClassListFont(t), 0xc0, hidden)
+		if err != nil || len(frames) != 4 {
+			t.Fatalf("hidden=%v frames=%d err=%v", hidden, len(frames), err)
+		}
+		if frames[3][146*320+99+3*16] != 205 || question[146*320+99] != 0 {
+			t.Fatal("name expansion changed placement or source")
+		}
+	}
+}
+
 func TestNativeBattleEndTurnFramesDoNotAliasAndRedrawPortrait(t *testing.T) {
 	dialogue := make([]byte, 320*200)
 	portrait := dato.Frame{Width: 3, Height: 1, Pixels: []byte{1, 2, 3}}

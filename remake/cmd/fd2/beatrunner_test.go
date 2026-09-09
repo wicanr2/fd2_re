@@ -536,6 +536,9 @@ func TestBeatScrollStepSlot2MatchesCh00ACT99Followup(t *testing.T) {
 	g.m = &MapData{W: 20, H: 60, TileW: 24, TileH: 24, Cols: 8, Tiles: make([]int, 1200)}
 	g.storyActors = make([]battle.Unit, 3)
 	g.storyActors[2] = battle.Unit{Fig: 0, X: 8, Y: 36, OnField: true}
+	if err := g.storyActors[2].MaterializeNativeMapPresentation(); err != nil {
+		t.Fatal(err)
+	}
 	g.camY = 34 * 24
 	g.hasStoryNativeMapView = true
 	g.storyNativeMapView = battle.NativeMapViewState{
@@ -552,6 +555,9 @@ func TestBeatScrollStepSlot2MatchesCh00ACT99Followup(t *testing.T) {
 	g.tick(1)
 	if got := g.storyActors[2]; got.X != 8 || got.Y != 21 || got.Dir != 2 || got.OffX != 0 || got.OffY != 0 {
 		t.Fatalf("15-step scroll should finish slot2 at (8,21), pose2, without offset: %+v", got)
+	}
+	if got := g.storyActors[2].NativeMapPresentation; got.X != 8 || got.Y != 21 || got.Pose != 2 || got.Motion != 0 {
+		t.Fatalf("completed scroll left stale native presentation: %+v", got)
 	}
 	if g.camY != 20*24 {
 		t.Fatalf("0x13185 safe-band camera=%v, want original cam row 20", g.camY)
@@ -1387,6 +1393,7 @@ func TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne(t *testin
 		t.Fatal(err)
 	}
 	g := &Game{camp: campaign.NewRunner(c), sfxSpawnIntro: []byte{1}}
+	attachOfficialTestLocale(t, g, "zh-Hant")
 	g.enterNode()
 	if g.loadErr != "" {
 		t.Fatalf("enter ch00 handler: %s", g.loadErr)
@@ -1404,10 +1411,22 @@ func TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne(t *testin
 	for frame := 0; frame < 240000 && g.camp.NodeID() != "battle_ch01"; frame++ {
 		if len(g.dialog) > 0 {
 			current := g.dialog[len(g.dialog)-1]
-			if current.NativeDialogue == nil || current.Upper == nil ||
+			if current.NativeDialogue == nil {
+				t.Fatal("ch00 對話缺少原生版面")
+			}
+			// 收框後沿目前游標飛回；先前固定五幀只涵蓋不移動的情況。
+			closingFrames := 5
+			view := g.storyNativeMapView
+			if g.st != nil && g.st.HasNativeMapViewState {
+				view = g.st.NativeMapViewState
+			}
+			if current.NativeDialogue.MotionTargetY != 0 && view.VisibleCursorX+view.VisibleCursorY > 0 {
+				closingFrames += view.VisibleCursorX + view.VisibleCursorY + 1
+			}
+			if current.Upper == nil ||
 				len(g.nativeDialogueProgressive) != len(current.NativeDialogue.Pages) ||
-				len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != 5 {
-				t.Fatalf("ch00 dialog lost indexed lifecycle: %#v", current)
+				len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != closingFrames {
+				t.Fatalf("ch00 dialog lost indexed lifecycle: progressive=%d pages=%d opening=%d closing=%d; %#v", len(g.nativeDialogueProgressive), len(current.NativeDialogue.Pages), len(g.nativeDialogueOpening), len(g.nativeDialogueClosing), current)
 			}
 			key := ch00DialogueKey{
 				source: current.NativeDialogue.SourceDAT, stringIndex: current.NativeDialogue.StringIndex,
@@ -1448,8 +1467,32 @@ func TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne(t *testin
 	if g.st == nil || g.sc == nil {
 		t.Fatalf("battle handoff did not materialize state/scenario: st=%v sc=%v", g.st != nil, g.sc != nil)
 	}
+	wantOpeningView := battle.NativeMapViewState{
+		CameraX: 0, CameraY: 13, CursorX: 7, CursorY: 14,
+		VisibleCursorX: 7, VisibleCursorY: 1,
+	}
+	if !g.st.HasNativeMapViewState || g.st.NativeMapViewState != wantOpeningView ||
+		g.curX != g.st.Units[0].X || g.curY != g.st.Units[0].Y {
+		t.Fatalf("START must focus slot 0 before the first command: view=%+v cursor=(%d,%d)",
+			g.st.NativeMapViewState, g.curX, g.curY)
+	}
 	if spawnIntroFrames != 24 {
 		t.Fatalf("two native spawn intros presented %d frames, want 2*12", spawnIntroFrames)
+	}
+	movePlan, err := g.st.PlanNativePlayerMovement(g.st.Units[0])
+	if err != nil {
+		t.Fatalf("normal START player movement preflight: %v", err)
+	}
+	path, err := movePlan.Path(battle.Cell{X: 7, Y: 13})
+	if err != nil || len(path) != 2 || path[0] != (battle.Cell{X: 7, Y: 14}) ||
+		path[1] != (battle.Cell{X: 7, Y: 13}) {
+		t.Fatalf("START northward path=%v error=%v", path, err)
+	}
+	if movePlan.Reach[battle.Cell{X: 8, Y: 16}] || movePlan.Field[16*g.st.W+8] != 0xff {
+		t.Fatal("movement preview allowed an occupied ally destination")
+	}
+	if _, err := movePlan.Path(battle.Cell{X: 8, Y: 16}); err == nil {
+		t.Fatal("movement path accepted an occupied ally destination")
 	}
 	if len(g.st.Units) != 12 {
 		t.Fatalf("handler runtime frontier=%d, want 4 party + two four-record groups = 12", len(g.st.Units))
@@ -1479,6 +1522,29 @@ func TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne(t *testin
 	if g.st.Units[9].NativeRecordByte5 != 1 {
 		t.Fatalf("ch00 deactivate(slot9) was not carried across battle handoff: %#v", g.st.Units[9])
 	}
+	// 普通 START 建構的索爾必須能開啟物品原生面板，不能只靠合成角色測試。
+	g.nativeUIPalette = loadNativeUIPalette()
+	if record, err := battle.NativeItemPanelRecordForUnit(g.st.Units[0]); err != nil {
+		t.Fatalf("START 物品記錄：%v", err)
+	} else if err := battle.RenderNativeItemPanelResources(separatedAssetPath(""), separatedAssetPath("portraits"), record, make([]byte, 64000)); err != nil {
+		t.Fatalf("START 物品素材：%v", err)
+	}
+	if !g.prepareNativeItemPanel(g.st.Units[0]) {
+		assets, assetsErr := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
+		rows, rowsErr := battle.LoadNativeItemEffectRowPrefix(assetPath("assets/data/native_item_effect_rows.json"))
+		record, _ := battle.NativeItemPanelRecordForUnit(g.st.Units[0])
+		slots := nativeItemRawSlots(g.st.Units[0])
+		var renderErr error
+		if len(slots) > 0 {
+			renderErr = battle.RenderNativeItemPanelRows(assets, record, slots[0], rows, make([]byte, 64000))
+		}
+		t.Fatalf("START 物品面板未完成：palette=%d slots=%v assets=%v rows=%v render=%v", len(g.nativeUIPalette), slots, assetsErr, rowsErr, renderErr)
+	}
+	g.clearNativeItemPanel()
+	g.checkResult()
+	if g.result != "" || g.loadErr != "" {
+		t.Fatalf("normal START falsely ended: result=%q error=%q lead=%+v", g.result, g.loadErr, g.st.Units[0])
+	}
 	for _, group := range []int{3, 4, 5, 6, 7} {
 		if !g.st.PendingGroups[group] {
 			t.Fatalf("adopted battle lost pending spawn group %d: %#v", group, g.st.PendingGroups)
@@ -1488,9 +1554,37 @@ func TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne(t *testin
 	// Continue through the real chapter-one join event, the compiled postbattle
 	// sync, town, and its editable exit. This is the normal campaign path that
 	// a direct FD2_CAMP_NODE jump deliberately does not reproduce.
-	g.st.Turn = 3
-	g.sc.Fire(g.st, "on_turn_end", "")
-	g.applyScenarioPartyJoins()
+	seenReinforcementDialogue := make(map[[2]int]bool)
+	for turn := 3; turn <= 6; turn++ {
+		// 這是正式生命週期的 E1 回歸；人工設定回合不列普通玩家 E2。
+		g.st.Turn = turn
+		g.startBattleEvent(g.sc.TriggerActions(g.st, "on_turn_end", ""), func() {})
+		for frame := 0; frame < 40000 && g.battleEvent != nil; frame++ {
+			if len(g.dialog) > 0 {
+				n := g.dialog[0].NativeDialogue
+				if n == nil || len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) < 5 {
+					t.Fatalf("第 %d 回合援軍缺少原生對話生命週期", turn)
+				}
+				seenReinforcementDialogue[[2]int{n.StringIndex, n.Utterance}] = true
+				g.handleBattleEventDialogueInput(g.nativeStoryDialogueAtInputWait())
+			}
+			if g.spawnIntroTransition != nil {
+				g.spawnIntroTransition.drawn = true
+			}
+			if err := g.Update(); err != nil {
+				t.Fatal(err)
+			}
+			if g.loadErr != "" {
+				t.Fatalf("第 %d 回合援軍：%s", turn, g.loadErr)
+			}
+		}
+		if g.battleEvent != nil {
+			t.Fatalf("第 %d 回合援軍未返回", turn)
+		}
+	}
+	if len(seenReinforcementDialogue) != 32 {
+		t.Fatalf("援軍原版對話 %d 句，應為 32", len(seenReinforcementDialogue))
+	}
 	if !g.partyMembers[1] ||
 		!reflect.DeepEqual(g.partyJoinOrder, []int{0, 9, 4, 30, 1}) {
 		t.Fatalf("chapter-one join chronology=%v members=%#v", g.partyJoinOrder, g.partyMembers)
@@ -1499,17 +1593,10 @@ func TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne(t *testin
 	// runner directly: a completed battle is represented by the normal Result
 	// predicate, then the same confirmation boundary used by Enter advances
 	// the authored on_win edge.
-	protected := false
 	for _, unit := range g.st.Units {
 		if unit != nil && unit.Camp != battle.Own {
 			unit.OnField = false
 			unit.HP = 0
-		} else if unit != nil && !protected {
-			// The chapter node's protect field uses the original text name;
-			// this fixture names the surviving lead so Result exercises that
-			// production guard instead of bypassing it.
-			unit.Name = "索爾"
-			protected = true
 		}
 	}
 	for group := range g.st.PendingGroups {
@@ -1576,14 +1663,15 @@ func TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne(t *testin
 	t.Setenv("XDG_DATA_HOME", t.TempDir())
 	userDataDirCached = ""
 	g.saveGameToSlot(0)
-	if g.msg != "已存檔(槽位1：preparation_ch02)" {
-		t.Fatalf("chapter2 preparation save=%q", g.msg)
+	if _, err := os.Stat(saveSlotPath(0)); err != nil {
+		t.Fatalf("chapter2 preparation save=%q: %v", g.msg, err)
 	}
 	coldCampaign, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	cold := &Game{camp: campaign.NewRunner(coldCampaign)}
+	attachOfficialTestLocale(t, cold, "zh-Hant")
 	cold.loadGameFromSlot(0)
 	if cold.loadErr != "" || cold.camp.NodeID() != "preparation_ch02" ||
 		!reflect.DeepEqual(cold.partyJoinOrder, []int{0, 9, 4, 30, 1}) || len(cold.partyRoster) != 5 {
@@ -1607,9 +1695,20 @@ func TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne(t *testin
 	for frame := 0; frame < 120000 && cold.camp.NodeID() != "battle_ch02"; frame++ {
 		if len(cold.dialog) > 0 {
 			current := cold.dialog[len(cold.dialog)-1]
-			if current.NativeDialogue == nil || current.Upper == nil ||
+			if current.NativeDialogue == nil {
+				t.Fatal("ch01_pre 對話缺少原生版面")
+			}
+			closingFrames := 5
+			view := cold.storyNativeMapView
+			if cold.st != nil && cold.st.HasNativeMapViewState {
+				view = cold.st.NativeMapViewState
+			}
+			if current.NativeDialogue.MotionTargetY != 0 && view.VisibleCursorX+view.VisibleCursorY > 0 {
+				closingFrames += view.VisibleCursorX + view.VisibleCursorY + 1
+			}
+			if current.Upper == nil ||
 				len(cold.nativeDialogueProgressive) != len(current.NativeDialogue.Pages) ||
-				len(cold.nativeDialogueOpening) != 5 || len(cold.nativeDialogueClosing) != 5 {
+				len(cold.nativeDialogueOpening) != 5 || len(cold.nativeDialogueClosing) != closingFrames {
 				t.Fatalf("ch01_pre dialog lost indexed lifecycle: %#v", current)
 			}
 			key := [3]int{current.NativeDialogue.StringIndex, current.NativeDialogue.Utterance, current.Speaker}

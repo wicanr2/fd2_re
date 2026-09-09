@@ -203,9 +203,25 @@ type Action struct {
 	// NativeTextIndex 是一次原版 0x15F84 呼叫的 FDTXT 索引；多句
 	// editable dialogue 可共用同一索引，但不能由文字內容反推。
 	NativeTextIndex *int `json:"native_text_index,omitempty"`
+	// NativeDialogueRef 將戰鬥事件接到同一份故事翻譯與原始逐句版面。
+	NativeDialogueRef *NativeEventDialogue `json:"native_dialogue_ref,omitempty"`
 	// EventStateIndex/Value 僅供已證實的 battle-local raw byte 寫入。
 	EventStateIndex *int `json:"event_state_index,omitempty"`
 	EventStateValue *int `json:"event_state_value,omitempty"`
+}
+
+// NativeEventDialogue 僅描述資料來源，原生顯示與輸入由 GUI 事件擁有者執行。
+type NativeEventDialogue struct {
+	Script      string       `json:"script"`
+	SceneIndex  int          `json:"scene_index"`
+	Line        int          `json:"line"`
+	SourceDAT   string       `json:"source_dat"`
+	StringIndex int          `json:"string_index"`
+	Utterance   int          `json:"utterance"`
+	Control     string       `json:"control"`
+	Operand     int          `json:"operand"`
+	Pages       [][]string   `json:"pages"`
+	GlyphPages  [][][]string `json:"glyph_pages,omitempty"`
 }
 
 // NativeSpawnCall 保存全域事件處理器的一個確切呼叫點。Group 是該排程回合
@@ -733,6 +749,9 @@ func (sc *Scenario) ExecuteActionChecked(st *State, a Action) (DialogLine, bool,
 	case "join_party":
 		sc.pendingJoins = append(sc.pendingJoins, a.CharID)
 	case "dialogue":
+		if a.NativeDialogueRef != nil {
+			return DialogLine{}, false, fmt.Errorf("原生事件對話必須由 GUI 生命週期執行")
+		}
 		return DialogLine{Speaker: a.Speaker, Text: a.Text}, true, nil
 	case "set_native_event_state":
 		if st == nil || a.EventStateIndex == nil || *a.EventStateIndex < 0 ||

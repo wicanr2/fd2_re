@@ -1,0 +1,70 @@
+{
+  "date": "2026-09-08",
+  "runtime_changed": false,
+  "translation_catalog_changed": false,
+  "appimage_rebuilt": false,
+  "fixes": [
+    "選人測試補齊原版 record 與六座標狀態，增加前置錯誤斷言。",
+    "多語測試分開姓名與對話條目，避免重複追加 /text；全部條目仍核對 reviewed 與本文。"
+  ],
+  "environment": {
+    "image": "fd2-go-test-local",
+    "network": "none",
+    "user": "1000:1000",
+    "asset_pack": "work/dialogue-cause-20260908/v109-source/squashfs-root/assets"
+  },
+  "commands": [
+    "go test -p 1 ./cmd/fd2 -run \"^(TestNativeContinueOpeningConfirmRejectsMovedCursor|TestReviewedOpeningTranslationsUseCanonicalLineIDs)$\" -count=1 -v",
+    "go test -p 1 ./cmd/fd2 -run \"TestNativeDialogue|Test.*Opening|Test.*Focus|Test.*Pan|TestNativeContinue|TestAllRuntimeStoriesMatchCanonicalLineIdentities|TestChapterOneStoryUsesAllOfficialContentCatalogs|TestStoryLocaleFailsClosedForMissingIdentity|TestBattleEmbeddedEventsUseOfficialStoryContent\" -count=1 -json",
+    "go test -p 1 ./internal/localization -count=1 -json"
+  ],
+  "receipts": [
+    {
+      "path": "work/dialogue-cause-20260908/fixed-fixtures-targeted.log",
+      "sha256": "9add4e89e39db36bde00f339ae6054248286648ef70d62fd423badca79011429"
+    },
+    {
+      "path": "work/dialogue-cause-20260908/fixed-fixtures-broad.jsonl",
+      "sha256": "2a8565532f84b953c4b7792f79562a0f10f49a844343ff6a096ed9c9395f716e",
+      "counts_including_subtests": {
+        "pass": 36,
+        "skip": 4
+      },
+      "skipped_tests": [
+        "TestNativeCommand24PresentationRejectsMissingPanelRawNameWithoutMutation",
+        "TestNativeContinueTitleCallerPublishesLateBattleCandidate",
+        "TestNativeContinueTitleCallerPublishesChapter29Candidate",
+        "TestNativeContinueLateBattleIndexedStages"
+      ],
+      "package_passed": true
+    },
+    {
+      "path": "work/dialogue-cause-20260908/fixed-fixtures-broad-assets.jsonl",
+      "sha256": "6a5e07f050b9d90a093a27f217af0470961d9f94d308350f8610abe04e72ea92",
+      "counts_including_subtests": {
+        "pass": 37,
+        "skip": 3
+      },
+      "skipped_tests": [
+        "TestNativeContinueTitleCallerPublishesLateBattleCandidate",
+        "TestNativeContinueTitleCallerPublishesChapter29Candidate",
+        "TestNativeContinueLateBattleIndexedStages"
+      ],
+      "package_passed": true
+    },
+    {
+      "path": "work/dialogue-cause-20260908/fixed-fixtures-localization.jsonl",
+      "sha256": "6e4438a240b61d2d824e82929d588fb3283b7f6f008e5d6dfacd061414fe2d3e",
+      "counts_including_subtests": {
+        "pass": 20
+      },
+      "skipped_tests": [],
+      "package_passed": true
+    }
+  ],
+  "limitations": [
+    "三項晚期／第29戰外部存檔整合測試未提供輸入而略過，不屬本次開場驗收。",
+    "本次為重製端回歸，不提升原版全段一致性。"
+  ],
+  "environment_retry": "補素材首次使用 bash -lc 重設 PATH，找不到 go；改用 bash -c 後相同映像與測試命令乾淨重跑通過。"
+}

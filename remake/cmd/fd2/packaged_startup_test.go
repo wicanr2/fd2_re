@@ -47,7 +47,9 @@ func TestNormalPackagedStartupOwnsTitleAndChapterZero(t *testing.T) {
 	})
 	t.Setenv("FD2_TITLE", "1")
 	t.Setenv("FD2_MUTE", "1")
-	t.Setenv("FD2_ASSET_PACK", filepath.Join("..", "..", "generated-assets", "fd2-original-b97caf22"))
+	if os.Getenv("FD2_ASSET_PACK") == "" {
+		t.Setenv("FD2_ASSET_PACK", filepath.Join("..", "..", "generated-assets", "fd2-original-b97caf22"))
+	}
 
 	applyPackagedPlayerDefaults()
 	g := loadGame()
@@ -56,6 +58,9 @@ func TestNormalPackagedStartupOwnsTitleAndChapterZero(t *testing.T) {
 	}
 	if g.camp == nil {
 		t.Fatal("標題後方未載入完整戰役")
+	}
+	if g.gold != 0 {
+		t.Fatalf("普通 START 保留了猜測金額 %d，原版戰況應為 0", g.gold)
 	}
 	if g.camp.NodeID() != "story_ch00_handler" || len(g.beats) == 0 {
 		t.Fatalf("標題後方未準備第 0 章：node=%q beats=%d", g.camp.NodeID(), len(g.beats))

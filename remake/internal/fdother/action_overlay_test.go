@@ -167,7 +167,7 @@ func TestActionOverlayFrameOffsets(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := [4]int{0x390 - 0x8e8, 0x390 - 6, 0x390 + 6, 0x390 + 0x8e8}
+	want := [4]int{0x390 - 2*0x8e8, 0x390 - 12, 0x390 + 12, 0x390 + 2*0x8e8}
 	if got != want {
 		t.Fatalf("opening offsets=%#x, want %#x", got, want)
 	}
@@ -175,7 +175,7 @@ func TestActionOverlayFrameOffsets(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got != [4]int{-0x23a0, 0x378, 0x3a8, 0x2ac0} {
+	if got != [4]int{-0x23a0 + 0x8e8, 0x378 + 6, 0x3a8 - 6, 0x2ac0 - 0x8e8} {
 		t.Fatalf("closing offsets=%#x", got)
 	}
 	if _, err := ActionOverlayFrameOffsets(4, false); err == nil {
@@ -195,7 +195,7 @@ func TestBlitActionOverlayFrameUsesNativeCellsAndTransparency(t *testing.T) {
 		DirectionState: [4]int{0x12, 0x14, 0x16, 0x18},
 	}
 	const stride = 500
-	dst := make([]byte, stride*20)
+	dst := make([]byte, stride*30)
 	for i := range dst {
 		dst[i] = 0xee
 	}

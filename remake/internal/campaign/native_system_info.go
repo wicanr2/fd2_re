@@ -10,7 +10,7 @@ import (
 )
 
 type NativeSystemInfoAssets struct {
-	Panels  [4]fdother.LMI1Entry
+	Panels  [4]fdother.Frame
 	Numbers battle.NativeItemPanelDataAssets
 	Font    *fdtxt.Font
 }
@@ -94,11 +94,10 @@ func ComposeNativeSystemInfoSurface(assets NativeSystemInfoAssets, input NativeS
 	positions := [4][2]int{{109, 19}, {75, 37}, {75, 155}, {129, 172}}
 	frame := make([]byte, fdother.NativeSystemInfoBytes)
 	for index, panel := range assets.Panels {
-		if panel.Width != wantGeometry[index][0] || panel.Height != wantGeometry[index][1] ||
-			len(panel.Pixels) != panel.Width*panel.Height {
+		if panel.Width != wantGeometry[index][0] || panel.Height != wantGeometry[index][1] {
 			return nil, fmt.Errorf("campaign: native system info panel %#x geometry is invalid", 0x85+index)
 		}
-		if err := panel.BlitAt(frame, 320, positions[index][0], positions[index][1], false); err != nil {
+		if err := panel.BlitAt(frame, 320, positions[index][1]*320+positions[index][0], -1); err != nil {
 			return nil, err
 		}
 	}

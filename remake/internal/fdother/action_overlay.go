@@ -249,14 +249,14 @@ func ActionOverlayFrameOffsets(frame int, closing bool) ([4]int, error) {
 		delta := [4]int{0x8e8, 6, -6, -0x8e8}
 		var offsets [4]int
 		for direction := range offsets {
-			offsets[direction] = start[direction] + frame*delta[direction]
+			offsets[direction] = start[direction] + (frame+1)*delta[direction]
 		}
 		return offsets, nil
 	}
 	delta := [4]int{-0x8e8, -6, 6, 0x8e8}
 	var offsets [4]int
 	for direction := range offsets {
-		offsets[direction] = 0x390 + frame*delta[direction]
+		offsets[direction] = 0x390 + (frame+1)*delta[direction]
 	}
 	return offsets, nil
 }

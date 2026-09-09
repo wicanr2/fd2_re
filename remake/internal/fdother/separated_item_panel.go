@@ -17,9 +17,9 @@ const (
 )
 
 var (
-	itemPanelOpaqueEntries = []int{20, 21, 22, 133, 134, 135, 136}
+	itemPanelOpaqueEntries = []int{20, 21, 22}
 	itemPanelRawEntries    = []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 23, 24, 25, 26, 27, 28, 29, 30, 53, 54, 55, 56, 57, 59, 60, 61, 62, 63, 64, 65, 66, 67, 92}
-	itemPanelFrameEntries  = []int{31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 93, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 137}
+	itemPanelFrameEntries  = []int{31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 93, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137}
 )
 
 type separatedItemPanelSource struct {
@@ -138,19 +138,19 @@ func LoadSeparatedItemPanelEntries(root string) (SeparatedItemPanelEntries, erro
 // LoadSeparatedSystemInfoPanels returns the four source-indexed entries used
 // by sub_1B1E7. The raw indices and geometry remain the evidence-bearing
 // identity; no modern semantic names are assigned to the artwork.
-func LoadSeparatedSystemInfoPanels(root string) ([4]LMI1Entry, error) {
+func LoadSeparatedSystemInfoPanels(root string) ([4]Frame, error) {
 	entries, err := LoadSeparatedItemPanelEntries(root)
 	if err != nil {
-		return [4]LMI1Entry{}, err
+		return [4]Frame{}, err
 	}
 	wantGeometry := [4][2]int{{102, 17}, {170, 117}, {170, 16}, {63, 15}}
-	var panels [4]LMI1Entry
+	var panels [4]Frame
 	for offset, geometry := range wantGeometry {
 		index := 0x85 + offset
-		entry, ok := entries.Opaque[index]
+		entry, ok := entries.Frames[index]
 		if !ok || entry.Width != geometry[0] || entry.Height != geometry[1] ||
-			len(entry.Pixels) != geometry[0]*geometry[1] {
-			return [4]LMI1Entry{}, fmt.Errorf("fdother: separated system info entry %#x is invalid", index)
+			len(entry.Indexed) != geometry[0]*geometry[1] || len(entry.Mask) != len(entry.Indexed) {
+			return [4]Frame{}, fmt.Errorf("fdother: separated system info entry %#x is invalid", index)
 		}
 		panels[offset] = entry
 	}

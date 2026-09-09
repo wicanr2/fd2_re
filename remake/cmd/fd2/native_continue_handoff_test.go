@@ -788,21 +788,27 @@ func TestNativeContinueOpeningConfirmHandsOffToSharedSystemOverlay(t *testing.T)
 }
 
 func TestNativeContinueOpeningConfirmRejectsMovedCursor(t *testing.T) {
-	unit := &battle.Unit{Camp: battle.Own, OnField: true, HP: 10, X: 7, Y: 17}
+	// 正常選人會先驗證原版 record；沿用完整測試載體，避免在
+	// 缺少原始欄位時提前返回，根本未測到讀檔確認的交接。
+	unit := nativeSystemGroupMarchUnit(7, 17)
 	g := &Game{
 		m: &MapData{W: 24, H: 24, TileW: 24, TileH: 24},
 		st: &battle.State{
 			W: 24, H: 24, Units: []*battle.Unit{unit},
 			HasNativeMapViewState: true,
-			NativeMapViewState:    battle.NativeMapViewState{CursorX: 8, CursorY: 17},
+			NativeMapViewState:    battle.NativeMapViewState{CameraY: 13, CursorX: 8, CursorY: 17, VisibleCursorX: 8, VisibleCursorY: 4},
 		},
 		curX: 7, curY: 17,
 		nativeContinueOpeningConfirm: true,
 		nativeActionCells:            nativeSystemOverlayTestCells(),
 	}
 	g.confirm()
+	if g.loadErr != "" {
+		t.Fatalf("正常選人前置驗證失敗：%s", g.loadErr)
+	}
 	if g.ring || g.sel != unit || g.moved || g.nativeContinueOpeningConfirm || g.nativeSystemCursorOverlay {
-		t.Fatalf("moved cursor must stay on normal selection path: %+v", g)
+		t.Fatalf("移動游標後未走正常選人：ring=%v selected=%v moved=%v opening=%v overlay=%v",
+			g.ring, g.sel == unit, g.moved, g.nativeContinueOpeningConfirm, g.nativeSystemCursorOverlay)
 	}
 }
 

@@ -128,5 +128,17 @@ input、DAC pulse、十二段展開／收合或一般玩家 `PLAYER-E2` 的既�
 
 ## 重開條件
 
+### 2026-09-07 追加勘誤：四個戰況面板的 codec
+
+保留上方 2026 年舊證據索引，但「entries 0x85..0x88 沿用
+DecodeLMI1Resource 的高位 run」斷言已被原版／AppImage 實際畫面推翻。
+固定雜湊 FD2.EXE、IDA Pro 9.4 LE 位址 `0x1b447/0x1b464/0x1b489/0x1b4ac`
+都直接呼叫 `sub_16886`，其既有契約是 `0x4e63d` 四模式繪圖。
+新證據見 `fd2_system_info_codec_20260907.json`，READY 修正見
+`../../knowledge-base/92-opening-ch01-input-audit.md`。原版輸入檔身分不變。
+舊測試將錯誤 PNG 與同一錯誤解碼器比較，僅證明自洽，不能提升原版一致性。
+正式分離 bank 改用既有 `four_mode_frame` 與 mask，保留 entry 20–22 的
+opaque 解碼；不改整個 LMI1 container 的解釋或其他未被本次玩家路徑消費的 entry。
+
 只有輸入雜湊不同、原始指令／table直接反證、同狀態執行矛盾，或主證據缺少
 上述writer／consumer時重開。畫面圖示或攻略名稱不足以推翻本分派。

@@ -1,0 +1,481 @@
+{
+  "schema": 1,
+  "date": "2026-09-08",
+  "tool": "IDA Pro 9.4",
+  "address_space": "IDA DOS LE loader linear",
+  "input": {
+    "name": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "scope": "只閉合普通物理 EXP；不外推傷害、成長、法術或整場原版一致性",
+  "sources": {
+    "physical-exp.json": {
+      "sha256": "e64c42620e1ca8a1a5d99ebb95aa055fd18ed76ca01acaa39fbdb76c608bf98a",
+      "local_path": "work/ch01-town-parity-20260908/ida/physical-exp.json"
+    },
+    "exp-functions.json": {
+      "sha256": "3a567b5c769e4e110fe50da7d457dac442d610fc4540dce1dbae55f6534ee459",
+      "local_path": "work/ch01-town-parity-20260908/ida/exp-functions.json"
+    }
+  },
+  "slices": [
+    {
+      "original_name": "sub_29F72",
+      "address": "0x29f72",
+      "grade": "已證實",
+      "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法",
+      "xrefs": [
+        {
+          "address": "0x294c8",
+          "instruction": "call    sub_29F72"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x2a209",
+          "bytes": "0fb64506",
+          "instruction": "movzx   eax, byte ptr [ebp+6]",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a20d",
+          "bytes": "83f802",
+          "instruction": "cmp     eax, 2",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a210",
+          "bytes": "7568",
+          "instruction": "jnz     short loc_2A27A",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a212",
+          "bytes": "0fb64707",
+          "instruction": "movzx   eax, byte ptr [edi+7]",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a216",
+          "bytes": "83f844",
+          "instruction": "cmp     eax, 44h ; 'D'",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a219",
+          "bytes": "7c5f",
+          "instruction": "jl      short loc_2A27A",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a21b",
+          "bytes": "83e844",
+          "instruction": "sub     eax, 44h ; 'D'",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a21e",
+          "bytes": "50",
+          "instruction": "push    eax",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a21f",
+          "bytes": "e8db420200",
+          "instruction": "call    sub_4E4FF",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a224",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a227",
+          "bytes": "0fb65520",
+          "instruction": "movzx   edx, byte ptr [ebp+20h]",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a22b",
+          "bytes": "83fa08",
+          "instruction": "cmp     edx, 8",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a22e",
+          "bytes": "7e05",
+          "instruction": "jle     short loc_2A235",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a230",
+          "bytes": "83fa19",
+          "instruction": "cmp     edx, 19h",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a233",
+          "bytes": "7c09",
+          "instruction": "jl      short loc_2A23E",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a235",
+          "bytes": "0fb65508",
+          "instruction": "movzx   edx, byte ptr [ebp+8]",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a239",
+          "bytes": "83fa1c",
+          "instruction": "cmp     edx, 1Ch",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a23c",
+          "bytes": "7505",
+          "instruction": "jnz     short loc_2A243",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a23e",
+          "bytes": "804424381e",
+          "instruction": "add     [esp+4Ch+var_14], 1Eh",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a243",
+          "bytes": "0fb64009",
+          "instruction": "movzx   eax, byte ptr [eax+9]",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a247",
+          "bytes": "0fb6542434",
+          "instruction": "movzx   edx, [esp+4Ch+var_18]",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a24c",
+          "bytes": "0fafd0",
+          "instruction": "imul    edx, eax",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a24f",
+          "bytes": "0fb65c2438",
+          "instruction": "movzx   ebx, [esp+4Ch+var_14]",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a254",
+          "bytes": "89d0",
+          "instruction": "mov     eax, edx",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a256",
+          "bytes": "c1fa1f",
+          "instruction": "sar     edx, 1Fh",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a259",
+          "bytes": "f7fb",
+          "instruction": "idiv    ebx",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a25b",
+          "bytes": "a3c83e0500",
+          "instruction": "mov     dword_53EC8, eax",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a260",
+          "bytes": "837c242800",
+          "instruction": "cmp     [esp+4Ch+var_24], 0",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a265",
+          "bytes": "7413",
+          "instruction": "jz      short loc_2A27A",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a267",
+          "bytes": "0faf442430",
+          "instruction": "imul    eax, [esp+4Ch+var_1C]",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a26c",
+          "bytes": "89c2",
+          "instruction": "mov     edx, eax",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a26e",
+          "bytes": "c1fa1f",
+          "instruction": "sar     edx, 1Fh",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a271",
+          "bytes": "f77c2408",
+          "instruction": "idiv    [esp+4Ch+var_44]",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a275",
+          "bytes": "a3c83e0500",
+          "instruction": "mov     dword_53EC8, eax",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        },
+        {
+          "address": "0x2a27a",
+          "bytes": "8b442430",
+          "instruction": "mov     eax, [esp+4Ch+var_1C]",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "普通物理攻擊 EXP 來源與兩階段整數除法"
+        }
+      ]
+    },
+    {
+      "original_name": "sub_117E7",
+      "address": "0x117e7",
+      "grade": "已證實",
+      "semantic_scope": "玩家交易的 99 上限及 JOIN 以外 EXP 消費端",
+      "xrefs": [
+        {
+          "address": "0x25dce",
+          "instruction": "call    sub_117E7"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x11959",
+          "bytes": "833dc83e050063",
+          "instruction": "cmp     dword_53EC8, 63h ; 'c'",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "玩家交易的 99 上限及 JOIN 以外 EXP 消費端"
+        },
+        {
+          "address": "0x11960",
+          "bytes": "7e0a",
+          "instruction": "jle     short loc_1196C",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "玩家交易的 99 上限及 JOIN 以外 EXP 消費端"
+        },
+        {
+          "address": "0x11962",
+          "bytes": "c705c83e050063000000",
+          "instruction": "mov     dword_53EC8, 63h ; 'c'",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "玩家交易的 99 上限及 JOIN 以外 EXP 消費端"
+        },
+        {
+          "address": "0x1196c",
+          "bytes": "56",
+          "instruction": "push    esi",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "玩家交易的 99 上限及 JOIN 以外 EXP 消費端"
+        },
+        {
+          "address": "0x1196d",
+          "bytes": "e820c90000",
+          "instruction": "call    sub_1E292",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "玩家交易的 99 上限及 JOIN 以外 EXP 消費端"
+        },
+        {
+          "address": "0x11972",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；physical-exp.json",
+          "semantic_scope": "玩家交易的 99 上限及 JOIN 以外 EXP 消費端"
+        }
+      ]
+    },
+    {
+      "original_name": "sub_1E292",
+      "address": "0x1e292",
+      "grade": "已證實",
+      "semantic_scope": "unit +0x3C byte 與整數交易累加器相加",
+      "xrefs": [
+        {
+          "address": "0x1196d",
+          "instruction": "call    sub_1E292"
+        },
+        {
+          "address": "0x1566a",
+          "instruction": "call    sub_1E292"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x1e309",
+          "bytes": "0fb6463c",
+          "instruction": "movzx   eax, byte ptr [esi+3Ch]",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；exp-functions.json",
+          "semantic_scope": "unit +0x3C byte 與整數交易累加器相加"
+        },
+        {
+          "address": "0x1e30d",
+          "bytes": "8b15c83e0500",
+          "instruction": "mov     edx, dword_53EC8",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；exp-functions.json",
+          "semantic_scope": "unit +0x3C byte 與整數交易累加器相加"
+        },
+        {
+          "address": "0x1e313",
+          "bytes": "01c2",
+          "instruction": "add     edx, eax",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；exp-functions.json",
+          "semantic_scope": "unit +0x3C byte 與整數交易累加器相加"
+        },
+        {
+          "address": "0x1e315",
+          "bytes": "89542404",
+          "instruction": "mov     [esp+1Ch+var_18], edx",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；exp-functions.json",
+          "semantic_scope": "unit +0x3C byte 與整數交易累加器相加"
+        }
+      ]
+    },
+    {
+      "original_name": "sub_1E292",
+      "address": "0x1e292",
+      "grade": "已證實",
+      "semantic_scope": "EXP 寫回 byte 並清除交易累加器",
+      "xrefs": [
+        {
+          "address": "0x1196d",
+          "instruction": "call    sub_1E292"
+        },
+        {
+          "address": "0x1566a",
+          "instruction": "call    sub_1E292"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x1e513",
+          "bytes": "8a442404",
+          "instruction": "mov     al, byte ptr [esp+1Ch+var_18]",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；exp-functions.json",
+          "semantic_scope": "EXP 寫回 byte 並清除交易累加器"
+        },
+        {
+          "address": "0x1e517",
+          "bytes": "88463c",
+          "instruction": "mov     [esi+3Ch], al",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；exp-functions.json",
+          "semantic_scope": "EXP 寫回 byte 並清除交易累加器"
+        },
+        {
+          "address": "0x1e51a",
+          "bytes": "c705c83e050000000000",
+          "instruction": "mov     dword_53EC8, 0",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；exp-functions.json",
+          "semantic_scope": "EXP 寫回 byte 並清除交易累加器"
+        },
+        {
+          "address": "0x1e524",
+          "bytes": "e9544cffff",
+          "instruction": "jmp     loc_1317D",
+          "grade": "已證實",
+          "source": "94-ch01-town-parity-20260908.md 的直接指令與來源／消費端審查；exp-functions.json",
+          "semantic_scope": "EXP 寫回 byte 並清除交易累加器"
+        }
+      ]
+    }
+  ]
+}

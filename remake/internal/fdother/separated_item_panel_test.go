@@ -50,6 +50,9 @@ func TestSeparatedItemPanelEntriesMatchOriginalCodecs(t *testing.T) {
 
 func TestSeparatedSystemInfoPanelsMatchFixedArchive(t *testing.T) {
 	uiRoot := filepath.Join("..", "..", "generated-assets", "fd2-original-b97caf22", "ui")
+	if pack := os.Getenv("FD2_ASSET_PACK"); pack != "" {
+		uiRoot = filepath.Join(pack, "ui")
+	}
 	archive := filepath.Join("..", "..", "..", "org_game", "炎龍騎士團", "FLAME2", "FDOTHER.DAT")
 	if _, err := os.Stat(filepath.Join(uiRoot, "fdother_005_item_panel", "resource.json")); os.IsNotExist(err) {
 		t.Skip("separated FDOTHER #5 bank is absent")
@@ -65,14 +68,22 @@ func TestSeparatedSystemInfoPanelsMatchFixedArchive(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want, err := DecodeLMI1Resource(archive, 5)
+	raw, err := ReadResource(archive, 5)
 	if err != nil {
 		t.Fatal(err)
 	}
 	for offset := range got {
 		index := 0x85 + offset
-		if got[offset].Width != want[index].Width || got[offset].Height != want[index].Height ||
-			!bytes.Equal(got[offset].Pixels, want[index].Pixels) {
+		want, err := ParseLMI1FrameEntry(raw, index)
+		if err != nil {
+			t.Fatal(err)
+		}
+		indexed, mask, err := want.IndexedLayers()
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got[offset].Width != want.Width || got[offset].Height != want.Height ||
+			!bytes.Equal(got[offset].Indexed, indexed) || !bytes.Equal(got[offset].Mask, mask) {
 			t.Fatalf("separated system info entry %#x differs from fixed archive", index)
 		}
 	}

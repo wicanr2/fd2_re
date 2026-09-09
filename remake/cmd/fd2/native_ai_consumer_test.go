@@ -90,9 +90,11 @@ func nativeAIConsumerMode5Grid(w, h int, eventCell battle.Cell, eventID byte) []
 
 func TestAIStepConsumesVerifiedMode2PhysicalPlan(t *testing.T) {
 	actor := nativeAIConsumerUnit(0, 0, 1, 2)
+	actor.Name = "測試敵兵"
 	actor.InventorySlots[0] = 1
 	actor.NativeInventoryFlags[0] = 0x40
 	target := nativeAIConsumerUnit(2, 0, 0, 0)
+	target.Name = "索爾"
 	target.Camp = battle.Own
 	target.AP, target.DP = 1, 1
 	state := &battle.State{
@@ -122,6 +124,11 @@ func TestAIStepConsumesVerifiedMode2PhysicalPlan(t *testing.T) {
 		figaniDelays: map[int][]int{3: {1, 1, 1}, 4: {1, 1, 1}},
 	}
 
+	catalog, err := loadOfficialLocale("zh-Hant")
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.localeCatalog = catalog
 	g.aiStep()
 	if g.loadErr != "" {
 		t.Fatalf("mode-2 aiStep rejected complete raw plan: %s", g.loadErr)

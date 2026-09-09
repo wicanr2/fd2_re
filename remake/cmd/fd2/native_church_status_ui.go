@@ -12,12 +12,20 @@ func (g *Game) prepareNativeChurchStatus(id int) ([]byte, []byte, bool) {
 	if !ok {
 		return nil, nil, false
 	}
+	return g.prepareNativeUnitStatus(&unit)
+}
+
+// prepareNativeUnitStatus 共用原版 0x17AED 的面板，不改呼叫者的角色或返回路徑。
+func (g *Game) prepareNativeUnitStatus(unit *battle.Unit) ([]byte, []byte, bool) {
+	if unit == nil {
+		return nil, nil, false
+	}
 	assetPackRoot := separatedAssetPath("")
 	portraitRoot := separatedAssetPath("portraits")
 	if assetPackRoot == "" {
 		return nil, nil, false
 	}
-	record, err := battle.NativeItemPanelRecordForUnit(&unit)
+	record, err := battle.NativeItemPanelRecordForUnit(unit)
 	if err != nil {
 		return nil, nil, false
 	}

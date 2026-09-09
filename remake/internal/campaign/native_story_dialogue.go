@@ -56,6 +56,26 @@ func NativeStoryDialogueTextGeometry(control string) (x, y, width, lineStep, vis
 var nativeStoryOpeningGridSizes = [...][2]int{{4, 2}, {8, 3}, {12, 4}, {16, 5}, {19, 5}}
 var nativeStoryClosingGridSizes = [...][2]int{{16, 5}, {12, 4}, {8, 3}, {4, 2}}
 
+// ComposeNativeStoryDialogueWaitArrow 使用已載入 FDFIELD 的 0x16C57 非零
+// composition 分支。只供故事地圖的 FFFD 等待頁；不推測無地圖 caller。
+func ComposeNativeStoryDialogueWaitArrow(stable []byte, cells []fdother.RawCell, layout *NativeDialogueLayout, phase int) ([]byte, error) {
+	if len(stable) != 320*200 || len(cells) < 20 || phase < 0 || phase > 1 {
+		return nil, errors.New("campaign: native story wait arrow assets are invalid")
+	}
+	if err := layout.Validate(); err != nil {
+		return nil, err
+	}
+	base := nativeStoryLowerText
+	if layout.Control == "FFEF" || layout.Control == "FFED" {
+		base = nativeStoryUpperText
+	}
+	frame := append([]byte(nil), stable...)
+	if err := cells[18+phase].BlitOpaqueAtOffset(frame, 320, base+0x47a0+0x640); err != nil {
+		return nil, err
+	}
+	return frame, nil
+}
+
 // ComposeNativeStoryDialogueOpeningFrames 保存 sub_165AC 五次 sub_168B6 的
 // columns/rows 順序。這些幀只有 FDOTHER #5 格網；portrait 與文字由後續
 // progressive frame0 接手，避免猜測中間 portrait 時序。
@@ -198,6 +218,34 @@ func ComposeNativeStoryDialogueMouthFrame(
 // ComposeNativeStoryDialogueProgressiveFrames 保存 0x15F84 每寫入一個普通
 // glyph 才前進目的位址的發布順序。第0張只有完整框與頭像；後續每張各新增一個
 // glyph。幀數不代表 DOS wall-clock，只是 caller 可決定性消費的順序契約。
+// NativeStoryDialogueGlyphSteps 分辨普通字形與捲動中間幀，供逐字計數器使用。
+func NativeStoryDialogueGlyphSteps(layout *NativeDialogueLayout, page int) ([]bool, error) {
+	if err := layout.Validate(); err != nil {
+		return nil, err
+	}
+	if page < 0 || page >= len(layout.Pages) {
+		return nil, errors.New("native dialogue page unavailable")
+	}
+	steps := []bool{false}
+	priorRows := 0
+	for _, rows := range layout.Pages[:page] {
+		priorRows += len(rows)
+	}
+	for row, text := range layout.Pages[page] {
+		if priorRows+row >= nativeStoryVisibleRows {
+			steps = append(steps, make([]bool, nativeStoryScrollFrames)...)
+		}
+		tokens, err := layout.glyphTokens(page, row, text)
+		if err != nil {
+			return nil, err
+		}
+		for range tokens {
+			steps = append(steps, true)
+		}
+	}
+	return steps, nil
+}
+
 func ComposeNativeStoryDialogueProgressiveFrames(
 	background []byte,
 	dialogueCells []fdother.RawCell,
@@ -215,6 +263,35 @@ func ComposeNativeStoryDialogueProgressiveFrames(
 	}
 	if page < 0 || page >= len(layout.Pages) {
 		return nil, fmt.Errorf("campaign: native story dialogue page %d is unavailable", page)
+	}
+	if page > 0 {
+		// FFFD 只暫停輸入；前文與行號仍由同一句擁有。重建完整前綴，
+		// 但只發布上一頁終點起的新畫格，不重新消費前文的字形時鐘。
+		prefix := *layout
+		prefix.Pages = [][]string{nil}
+		prefix.GlyphPages = nil
+		if len(layout.GlyphPages) != 0 {
+			prefix.GlyphPages = [][][]string{nil}
+		}
+		offset := 0
+		for i := 0; i <= page; i++ {
+			prefix.Pages[0] = append(prefix.Pages[0], layout.Pages[i]...)
+			if len(prefix.GlyphPages) != 0 {
+				prefix.GlyphPages[0] = append(prefix.GlyphPages[0], layout.GlyphPages[i]...)
+			}
+			if i < page {
+				steps, err := NativeStoryDialogueGlyphSteps(layout, i)
+				if err != nil {
+					return nil, err
+				}
+				offset += len(steps) - 1
+			}
+		}
+		frames, err := ComposeNativeStoryDialogueProgressiveFrames(background, dialogueCells, portrait, font, glyphIndex, &prefix, 0)
+		if err != nil {
+			return nil, err
+		}
+		return frames[offset:], nil
 	}
 	lineGlyphLimit, ok := nativeDialogueLineGlyphLimit(layout.Control)
 	if !ok {
@@ -239,22 +316,24 @@ func ComposeNativeStoryDialogueProgressiveFrames(
 			// 10幀近似，且每幀都只改框內三列文字窗口。
 			textX, textY := textOffset%320, textOffset/320
 			windowX := textX - 1 // 包含 0x4EA2A 左下 shadow
-			windowW := lineGlyphLimit*nativeStoryGlyphStep + 1
-			windowH := nativeStoryVisibleRows * nativeStoryLineStep
-			before := append([]byte(nil), frame...)
+			const windowW, windowH = 208, 72
+			// 0x16E24：五次3px再一次4px；每次複製72列，僅清理
+			// text base+0x5A00 的208 bytes。來源不是「三行字」矩形。
+			shifts := [...]int{3, 3, 3, 3, 3, 4}
+			pass := 0
 			for step := 1; step <= nativeStoryScrollFrames; step++ {
-				shift := nativeStoryLineStep * step / nativeStoryScrollFrames
 				next := append([]byte(nil), frame...)
-				for y := 0; y < windowH; y++ {
-					for x := 0; x < windowW; x++ {
-						dst := (textY+y)*320 + windowX + x
-						sourceY := y + shift
-						if sourceY < windowH {
-							next[dst] = before[(textY+sourceY)*320+windowX+x]
-						} else {
-							next[dst] = style.Background
-						}
+				for pass < len(shifts)*step/nativeStoryScrollFrames {
+					for y := 0; y < windowH; y++ {
+						dst := (textY+y)*320 + windowX
+						src := dst + shifts[pass]*320
+						copy(next[dst:dst+windowW], next[src:src+windowW])
 					}
+					clearAt := textOffset + 0x5a00
+					for x := 0; x < windowW; x++ {
+						next[clearAt+x] = style.Background
+					}
+					pass++
 				}
 				frames = append(frames, next)
 				frame = next

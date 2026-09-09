@@ -1,0 +1,1514 @@
+{
+  "schema": 1,
+  "input": {
+    "name": "FD2.EXE",
+    "size": 357074,
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "tool": "IDA Pro 9.4",
+  "address_space": "IDA DOS LE loader linear",
+  "functions": [
+    {
+      "address": "0x341db",
+      "end": "0x342b5",
+      "original_name": "sub_341DB",
+      "grade": "未知",
+      "source": "固定原版 IDA 直接指令與交叉參照",
+      "xrefs": [
+        {
+          "address": "0x1199c",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1712d",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x19511",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1a85a",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1ac1a",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1d890",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1d95c",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1d9ec",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x51b91",
+          "instruction": "dd offset sub_341DB, offset sub_342B5, offset sub_3431D"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x341db",
+          "bytes": "682c000000",
+          "instruction": "push    2Ch ; ','",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x341e0",
+          "bytes": "e8f22a0000",
+          "instruction": "call    sub_36CD7",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x341e5",
+          "bytes": "53",
+          "instruction": "push    ebx",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x341e6",
+          "bytes": "6a01",
+          "instruction": "push    1",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x341e8",
+          "bytes": "e8b8d0fdff",
+          "instruction": "call    sub_112A5",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x341ed",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x341f0",
+          "bytes": "6a03",
+          "instruction": "push    3",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x341f2",
+          "bytes": "e857c9fdff",
+          "instruction": "call    sub_10B4E",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x341f7",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x341fa",
+          "bytes": "6a08",
+          "instruction": "push    8",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x341fc",
+          "bytes": "6a05",
+          "instruction": "push    5",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x341fe",
+          "bytes": "e8daf3fdff",
+          "instruction": "call    sub_135DD",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34203",
+          "bytes": "83c408",
+          "instruction": "add     esp, 8",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34206",
+          "bytes": "6a01",
+          "instruction": "push    1",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34208",
+          "bytes": "e89fdafdff",
+          "instruction": "call    sub_11CAC",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3420d",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34210",
+          "bytes": "6a64",
+          "instruction": "push    64h ; 'd'",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34212",
+          "bytes": "e89b330000",
+          "instruction": "call    j___delay",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34217",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3421a",
+          "bytes": "6a07",
+          "instruction": "push    7",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3421c",
+          "bytes": "e849f4fdff",
+          "instruction": "call    sub_1366A",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34221",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34224",
+          "bytes": "e8089e0100",
+          "instruction": "call    sub_4E031",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34229",
+          "bytes": "6a01",
+          "instruction": "push    1",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3422b",
+          "bytes": "6a13",
+          "instruction": "push    13h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3422d",
+          "bytes": "6a4a",
+          "instruction": "push    4Ah ; 'J'",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3422f",
+          "bytes": "6a4c",
+          "instruction": "push    4Ch ; 'L'",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34231",
+          "bytes": "68cd000000",
+          "instruction": "push    0CDh",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34236",
+          "bytes": "6840010000",
+          "instruction": "push    140h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3423b",
+          "bytes": "6800000a00",
+          "instruction": "push    0A0000h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34240",
+          "bytes": "6a0b",
+          "instruction": "push    0Bh",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34242",
+          "bytes": "ff35793a0500",
+          "instruction": "push    dword_53A79",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34248",
+          "bytes": "e8371dfeff",
+          "instruction": "call    sub_15F84",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3424d",
+          "bytes": "83c424",
+          "instruction": "add     esp, 24h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34250",
+          "bytes": "c705831a050000000000",
+          "instruction": "mov     dword_51A83, 0",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3425a",
+          "bytes": "6a07",
+          "instruction": "push    7",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3425c",
+          "bytes": "e8edc8fdff",
+          "instruction": "call    sub_10B4E",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34261",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34264",
+          "bytes": "6a01",
+          "instruction": "push    1",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34266",
+          "bytes": "e841dafdff",
+          "instruction": "call    sub_11CAC",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3426b",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3426e",
+          "bytes": "6a64",
+          "instruction": "push    64h ; 'd'",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34270",
+          "bytes": "e83d330000",
+          "instruction": "call    j___delay",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34275",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34278",
+          "bytes": "6a08",
+          "instruction": "push    8",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3427a",
+          "bytes": "e8ebf3fdff",
+          "instruction": "call    sub_1366A",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3427f",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34282",
+          "bytes": "e8aa9d0100",
+          "instruction": "call    sub_4E031",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34287",
+          "bytes": "6a01",
+          "instruction": "push    1",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34289",
+          "bytes": "6a13",
+          "instruction": "push    13h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3428b",
+          "bytes": "6a4a",
+          "instruction": "push    4Ah ; 'J'",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3428d",
+          "bytes": "6a4c",
+          "instruction": "push    4Ch ; 'L'",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3428f",
+          "bytes": "68cd000000",
+          "instruction": "push    0CDh",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34294",
+          "bytes": "6840010000",
+          "instruction": "push    140h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34299",
+          "bytes": "6800000a00",
+          "instruction": "push    0A0000h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3429e",
+          "bytes": "6a03",
+          "instruction": "push    3",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342a0",
+          "bytes": "ff35793a0500",
+          "instruction": "push    dword_53A79",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342a6",
+          "bytes": "e8d91cfeff",
+          "instruction": "call    sub_15F84",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342ab",
+          "bytes": "83c424",
+          "instruction": "add     esp, 24h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342ae",
+          "bytes": "e831f2fdff",
+          "instruction": "call    sub_134E4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342b3",
+          "bytes": "5b",
+          "instruction": "pop     ebx",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342b4",
+          "bytes": "c3",
+          "instruction": "retn",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        }
+      ],
+      "navigation_only_pseudocode": "int sub_341DB()\n{\n  int v0; // eax\n  int v1; // eax\n  int v2; // eax\n\n  sub_36CD7(44);\n  sub_112A5(1);\n  sub_10B4E(3);\n  sub_135DD(5, 8);\n  sub_11CAC(1);\n  j___delay(100);\n  v0 = sub_1366A(7);\n  sub_4E031(v0);\n  sub_15F84(dword_53A79, 11, 655360, 320, 205, 76, 74, 19, 1);\n  dword_51A83 = 0;\n  sub_10B4E(7);\n  sub_11CAC(1);\n  j___delay(100);\n  v1 = sub_1366A(8);\n  sub_4E031(v1);\n  v2 = sub_15F84(dword_53A79, 3, 655360, 320, 205, 76, 74, 19, 1);\n  return sub_134E4(v2);\n}\n"
+    },
+    {
+      "address": "0x342b5",
+      "end": "0x3431d",
+      "original_name": "sub_342B5",
+      "grade": "未知",
+      "source": "固定原版 IDA 直接指令與交叉參照",
+      "xrefs": [
+        {
+          "address": "0x1199c",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1712d",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x19511",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1a85a",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1ac1a",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1d890",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1d95c",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1d9ec",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x51b91",
+          "instruction": "dd offset sub_341DB, offset sub_342B5, offset sub_3431D"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x342b5",
+          "bytes": "682c000000",
+          "instruction": "push    2Ch ; ','",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342ba",
+          "bytes": "e8182a0000",
+          "instruction": "call    sub_36CD7",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342bf",
+          "bytes": "53",
+          "instruction": "push    ebx",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342c0",
+          "bytes": "6a10",
+          "instruction": "push    10h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342c2",
+          "bytes": "6a0b",
+          "instruction": "push    0Bh",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342c4",
+          "bytes": "e814f3fdff",
+          "instruction": "call    sub_135DD",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342c9",
+          "bytes": "83c408",
+          "instruction": "add     esp, 8",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342cc",
+          "bytes": "6a04",
+          "instruction": "push    4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342ce",
+          "bytes": "e8c6e6ffff",
+          "instruction": "call    sub_32999",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342d3",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342d6",
+          "bytes": "e8569d0100",
+          "instruction": "call    sub_4E031",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342db",
+          "bytes": "6a01",
+          "instruction": "push    1",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342dd",
+          "bytes": "e8cad9fdff",
+          "instruction": "call    sub_11CAC",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342e2",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342e5",
+          "bytes": "6a03",
+          "instruction": "push    3",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342e7",
+          "bytes": "e87ef3fdff",
+          "instruction": "call    sub_1366A",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342ec",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342ef",
+          "bytes": "e8f0f1fdff",
+          "instruction": "call    sub_134E4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342f4",
+          "bytes": "6a01",
+          "instruction": "push    1",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342f6",
+          "bytes": "6a13",
+          "instruction": "push    13h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342f8",
+          "bytes": "6a4a",
+          "instruction": "push    4Ah ; 'J'",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342fa",
+          "bytes": "6a4c",
+          "instruction": "push    4Ch ; 'L'",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x342fc",
+          "bytes": "68cd000000",
+          "instruction": "push    0CDh",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34301",
+          "bytes": "6840010000",
+          "instruction": "push    140h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34306",
+          "bytes": "6800000a00",
+          "instruction": "push    0A0000h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3430b",
+          "bytes": "6a04",
+          "instruction": "push    4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3430d",
+          "bytes": "ff35793a0500",
+          "instruction": "push    dword_53A79",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34313",
+          "bytes": "e86c1cfeff",
+          "instruction": "call    sub_15F84",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34318",
+          "bytes": "83c424",
+          "instruction": "add     esp, 24h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3431b",
+          "bytes": "5b",
+          "instruction": "pop     ebx",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3431c",
+          "bytes": "c3",
+          "instruction": "retn",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        }
+      ],
+      "navigation_only_pseudocode": "int sub_342B5()\n{\n  int v0; // eax\n  int v1; // eax\n\n  sub_36CD7(44);\n  sub_135DD(11, 16);\n  v0 = sub_32999(4);\n  sub_4E031(v0);\n  sub_11CAC(1);\n  v1 = sub_1366A(3);\n  sub_134E4(v1);\n  return sub_15F84(dword_53A79, 4, 655360, 320, 205, 76, 74, 19, 1);\n}\n"
+    },
+    {
+      "address": "0x3431d",
+      "end": "0x34377",
+      "original_name": "sub_3431D",
+      "grade": "未知",
+      "source": "固定原版 IDA 直接指令與交叉參照",
+      "xrefs": [
+        {
+          "address": "0x1199c",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1712d",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x19511",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1a85a",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1ac1a",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1d890",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1d95c",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1d9ec",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x51b91",
+          "instruction": "dd offset sub_341DB, offset sub_342B5, offset sub_3431D"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x3431d",
+          "bytes": "682c000000",
+          "instruction": "push    2Ch ; ','",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34322",
+          "bytes": "e8b0290000",
+          "instruction": "call    sub_36CD7",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34327",
+          "bytes": "53",
+          "instruction": "push    ebx",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34328",
+          "bytes": "6a10",
+          "instruction": "push    10h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3432a",
+          "bytes": "6a00",
+          "instruction": "push    0",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3432c",
+          "bytes": "e8acf2fdff",
+          "instruction": "call    sub_135DD",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34331",
+          "bytes": "83c408",
+          "instruction": "add     esp, 8",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34334",
+          "bytes": "6a05",
+          "instruction": "push    5",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34336",
+          "bytes": "e85ee6ffff",
+          "instruction": "call    sub_32999",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3433b",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3433e",
+          "bytes": "e8ee9c0100",
+          "instruction": "call    sub_4E031",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34343",
+          "bytes": "6a01",
+          "instruction": "push    1",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34345",
+          "bytes": "e862d9fdff",
+          "instruction": "call    sub_11CAC",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3434a",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3434d",
+          "bytes": "6a04",
+          "instruction": "push    4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3434f",
+          "bytes": "e816f3fdff",
+          "instruction": "call    sub_1366A",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34354",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34357",
+          "bytes": "e888f1fdff",
+          "instruction": "call    sub_134E4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3435c",
+          "bytes": "6a01",
+          "instruction": "push    1",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3435e",
+          "bytes": "6a13",
+          "instruction": "push    13h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34360",
+          "bytes": "6a4a",
+          "instruction": "push    4Ah ; 'J'",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34362",
+          "bytes": "6a4c",
+          "instruction": "push    4Ch ; 'L'",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34364",
+          "bytes": "68cd000000",
+          "instruction": "push    0CDh",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34369",
+          "bytes": "6840010000",
+          "instruction": "push    140h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3436e",
+          "bytes": "6800000a00",
+          "instruction": "push    0A0000h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34373",
+          "bytes": "6a05",
+          "instruction": "push    5",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34375",
+          "bytes": "eb96",
+          "instruction": "jmp     short loc_3430D",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        }
+      ],
+      "navigation_only_pseudocode": "void sub_3431D()\n{\n  int v0; // eax\n  int v1; // eax\n\n  sub_36CD7(44);\n  sub_135DD(0, 16);\n  v0 = sub_32999(5);\n  sub_4E031(v0);\n  sub_11CAC(1);\n  v1 = sub_1366A(4);\n  sub_134E4(v1);\n  JUMPOUT(0x3430D);\n}\n"
+    },
+    {
+      "address": "0x34377",
+      "end": "0x343e2",
+      "original_name": "sub_34377",
+      "grade": "未知",
+      "source": "固定原版 IDA 直接指令與交叉參照",
+      "xrefs": [
+        {
+          "address": "0x1199c",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1712d",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x19511",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1a85a",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1ac1a",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1d890",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1d95c",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x1d9ec",
+          "instruction": "call    funcs_1199C[eax*4]"
+        },
+        {
+          "address": "0x51b91",
+          "instruction": "dd offset sub_341DB, offset sub_342B5, offset sub_3431D"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x34377",
+          "bytes": "682c000000",
+          "instruction": "push    2Ch ; ','",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3437c",
+          "bytes": "e856290000",
+          "instruction": "call    sub_36CD7",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34381",
+          "bytes": "53",
+          "instruction": "push    ebx",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34382",
+          "bytes": "6a0b",
+          "instruction": "push    0Bh",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34384",
+          "bytes": "6a0b",
+          "instruction": "push    0Bh",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34386",
+          "bytes": "e852f2fdff",
+          "instruction": "call    sub_135DD",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3438b",
+          "bytes": "83c408",
+          "instruction": "add     esp, 8",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3438e",
+          "bytes": "c605fa3a050001",
+          "instruction": "mov     byte_53AFA, 1",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34395",
+          "bytes": "6a06",
+          "instruction": "push    6",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x34397",
+          "bytes": "e8b2c7fdff",
+          "instruction": "call    sub_10B4E",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3439c",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x3439f",
+          "bytes": "c605fa3a050000",
+          "instruction": "mov     byte_53AFA, 0",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x343a6",
+          "bytes": "6a01",
+          "instruction": "push    1",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x343a8",
+          "bytes": "e8ffd8fdff",
+          "instruction": "call    sub_11CAC",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x343ad",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x343b0",
+          "bytes": "6a06",
+          "instruction": "push    6",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x343b2",
+          "bytes": "e8b3f2fdff",
+          "instruction": "call    sub_1366A",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x343b7",
+          "bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x343ba",
+          "bytes": "e825f1fdff",
+          "instruction": "call    sub_134E4",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x343bf",
+          "bytes": "e86d9c0100",
+          "instruction": "call    sub_4E031",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x343c4",
+          "bytes": "6a01",
+          "instruction": "push    1",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x343c6",
+          "bytes": "6a13",
+          "instruction": "push    13h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x343c8",
+          "bytes": "6a4a",
+          "instruction": "push    4Ah ; 'J'",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x343ca",
+          "bytes": "6a4c",
+          "instruction": "push    4Ch ; 'L'",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x343cc",
+          "bytes": "68cd000000",
+          "instruction": "push    0CDh",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x343d1",
+          "bytes": "6840010000",
+          "instruction": "push    140h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x343d6",
+          "bytes": "6800000a00",
+          "instruction": "push    0A0000h",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x343db",
+          "bytes": "6a06",
+          "instruction": "push    6",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        },
+        {
+          "address": "0x343dd",
+          "bytes": "e92bffffff",
+          "instruction": "jmp     loc_3430D",
+          "grade": "未知",
+          "source": "固定原版 IDA 直接指令；尚待資料流審查"
+        }
+      ],
+      "navigation_only_pseudocode": "void sub_34377()\n{\n  int v0; // eax\n  int v1; // eax\n\n  sub_36CD7(44);\n  sub_135DD(11, 11);\n  byte_53AFA = 1;\n  sub_10B4E(6);\n  byte_53AFA = 0;\n  sub_11CAC(1);\n  v0 = sub_1366A(6);\n  v1 = sub_134E4(v0);\n  sub_4E031(v1);\n  JUMPOUT(0x3430D);\n}\n"
+    }
+  ],
+  "exp_accumulator_xrefs": [
+    {
+      "address": "0x118ee",
+      "function": "sub_117E7",
+      "instruction": "mov     dword_53EC8, 0",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x11959",
+      "function": "sub_117E7",
+      "instruction": "cmp     dword_53EC8, 63h ; 'c'",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x11962",
+      "function": "sub_117E7",
+      "instruction": "mov     dword_53EC8, 63h ; 'c'",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x152fd",
+      "function": "sub_15055",
+      "instruction": "mov     dword_53EC8, 0",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x1546a",
+      "function": "sub_15311",
+      "instruction": "mov     dword_53EC8, 0",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x18dc4",
+      "function": "sub_18D8C",
+      "instruction": "mov     dword_53EC8, 0",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x19039",
+      "function": "sub_18D8C",
+      "instruction": "mov     eax, dword_53EC8",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x19045",
+      "function": "sub_18D8C",
+      "instruction": "mov     dword_53EC8, eax",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x1906b",
+      "function": "sub_18D8C",
+      "instruction": "mov     dword_53EC8, 0",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x1c8e2",
+      "function": "sub_1C81F",
+      "instruction": "add     dword_53EC8, eax",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x1c9cf",
+      "function": "sub_1C916",
+      "instruction": "add     dword_53EC8, eax",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x1e2c9",
+      "function": "sub_1E292",
+      "instruction": "cmp     dword_53EC8, 0",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x1e30d",
+      "function": "sub_1E292",
+      "instruction": "mov     edx, dword_53EC8",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x1e319",
+      "function": "sub_1E292",
+      "instruction": "mov     eax, dword_53EC8",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x1e51a",
+      "function": "sub_1E292",
+      "instruction": "mov     dword_53EC8, 0",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x1f024",
+      "function": "sub_1ECC7",
+      "instruction": "mov     dword_53EC8, eax",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x1f03c",
+      "function": "sub_1ECC7",
+      "instruction": "mov     dword_53EC8, eax",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x21046",
+      "function": "sub_20C6F",
+      "instruction": "mov     dword_53EC8, 0",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x221e0",
+      "function": "sub_2218A",
+      "instruction": "add     dword_53EC8, edx",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x22810",
+      "function": "sub_22721",
+      "instruction": "add     dword_53EC8, eax",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x22955",
+      "function": "sub_22866",
+      "instruction": "add     dword_53EC8, eax",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x22a66",
+      "function": "sub_22997",
+      "instruction": "add     dword_53EC8, edx",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x22baf",
+      "function": "sub_22AF6",
+      "instruction": "add     dword_53EC8, ebp",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x22c9b",
+      "function": "sub_22C04",
+      "instruction": "add     dword_53EC8, edx",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x22e0b",
+      "function": "sub_22D1B",
+      "instruction": "add     dword_53EC8, eax",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x2a25b",
+      "function": "sub_29F72",
+      "instruction": "mov     dword_53EC8, eax",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x2a275",
+      "function": "sub_29F72",
+      "instruction": "mov     dword_53EC8, eax",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x34b48",
+      "function": "sub_34A7A",
+      "instruction": "mov     dword_53EC8, 0",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    },
+    {
+      "address": "0x35478",
+      "function": "sub_353DA",
+      "instruction": "mov     dword_53EC8, 0",
+      "grade": "未知",
+      "source": "IDA dword_53EC8 直接交叉參照"
+    }
+  ],
+  "raw_export_sha256": "bbcf186001e214f0eaaf122bd1988275b9962e25478652325944de12cebc6159",
+  "scope": "首關四個回合事件的直接呼叫順序；不宣稱執行期逐像素或時序一致",
+  "reviewed_calls": [
+    {
+      "address": "0x34248",
+      "bytes": "e8371dfeff",
+      "instruction": "call    sub_15F84",
+      "grade": "已證實",
+      "source": "同檔保留的直接指令與參數堆疊",
+      "semantic": "原生文字呼叫／共用呼叫尾端"
+    },
+    {
+      "address": "0x342a6",
+      "bytes": "e8d91cfeff",
+      "instruction": "call    sub_15F84",
+      "grade": "已證實",
+      "source": "同檔保留的直接指令與參數堆疊",
+      "semantic": "原生文字呼叫／共用呼叫尾端"
+    },
+    {
+      "address": "0x34313",
+      "bytes": "e86c1cfeff",
+      "instruction": "call    sub_15F84",
+      "grade": "已證實",
+      "source": "同檔保留的直接指令與參數堆疊",
+      "semantic": "原生文字呼叫／共用呼叫尾端"
+    },
+    {
+      "address": "0x34375",
+      "bytes": "eb96",
+      "instruction": "jmp     short loc_3430D",
+      "grade": "已證實",
+      "source": "同檔保留的直接指令與參數堆疊",
+      "semantic": "原生文字呼叫／共用呼叫尾端"
+    },
+    {
+      "address": "0x343dd",
+      "bytes": "e92bffffff",
+      "instruction": "jmp     loc_3430D",
+      "grade": "已證實",
+      "source": "同檔保留的直接指令與參數堆疊",
+      "semantic": "原生文字呼叫／共用呼叫尾端"
+    }
+  ],
+  "data_inputs": [
+    {
+      "path": "extracted/raw/FDTXT/FDTXT_001.bin",
+      "sha256": "6023d15b7e54498bd7b77e6a0e6729b9a544c18a3c6718ba7496fb7b88cd94c1"
+    },
+    {
+      "path": "docs/data/glyph_map.json",
+      "sha256": "fff424b819d50bae7e2570c7fca1fec27dc670cf4832aeed7a32c2c2b4144731"
+    },
+    {
+      "path": "remake/assets/cutscenes/dialogue-index/count-aligned.json",
+      "sha256": "97311f52b3f150f0fdb37c35b2eff45c1b0f78bfc3f533f1d3a9035ded8970e9"
+    },
+    {
+      "path": "remake/assets/maps/map0/map0_units.json",
+      "sha256": "9600f5a879c7680c2ffb61b77085d8f1e95ac2bae0d78d1aa853142cfae5406f"
+    }
+  ]
+}

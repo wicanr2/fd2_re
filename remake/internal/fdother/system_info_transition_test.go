@@ -2,6 +2,32 @@ package fdother
 
 import "testing"
 
+func TestNativeSystemInfoSteadyPreservesBattlefieldOutsidePanels(t *testing.T) {
+	baseline := make([]byte, NativeSystemInfoBytes)
+	information := make([]byte, NativeSystemInfoBytes)
+	for i := range baseline {
+		baseline[i] = 17
+		information[i] = 31
+	}
+	frame, err := NativeSystemInfoSteadyFrame(baseline, information)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, p := range [][2]int{{0, 0}, {319, 199}, {74, 100}, {245, 100}, {108, 25}} {
+		if frame[p[1]*320+p[0]] != 17 {
+			t.Fatalf("battlefield changed at %v", p)
+		}
+	}
+	for _, p := range [][2]int{{109, 19}, {75, 37}, {75, 155}, {129, 172}} {
+		if frame[p[1]*320+p[0]] != 31 {
+			t.Fatalf("panel missing at %v", p)
+		}
+	}
+	if baseline[37*320+75] != 17 {
+		t.Fatal("baseline was mutated")
+	}
+}
+
 func TestNativeSystemInfoTransitionMatches1B1E7TwelvePassOrder(t *testing.T) {
 	baseline := make([]byte, NativeSystemInfoBytes)
 	information := make([]byte, NativeSystemInfoBytes)

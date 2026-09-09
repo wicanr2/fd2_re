@@ -20,6 +20,18 @@ if [[ ! -S /tmp/.X11-unix/X99 ]]; then
     exit 1
 fi
 
+# socket 出現早於 X server 完成初始化；先以真正 X11 round-trip 驗證就緒。
+display_ready=false
+for _ in $(seq 1 50); do
+    if xdotool getdisplaygeometry >/dev/null 2>&1; then display_ready=true; break; fi
+    sleep 0.1
+done
+if [[ "$display_ready" != true ]]; then
+    echo "Xvfb socket exists but display :99 is not ready" >&2
+    kill "$xvfb_pid" 2>/dev/null || true
+    exit 1
+fi
+
 cleanup() {
     kill "${dosbox_pid:-}" 2>/dev/null || true
     kill "$xvfb_pid" 2>/dev/null || true

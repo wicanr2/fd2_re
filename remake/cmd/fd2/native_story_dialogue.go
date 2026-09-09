@@ -11,6 +11,81 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
 )
 
+// startNativeDialogueFrames 接回 0x165D6 的開框前聚焦；背景須在聚焦後保存。
+func (g *Game) startNativeDialogueFrames() error {
+	if len(g.dialog) != 1 || g.dialog[0].NativeDialogue == nil {
+		return g.prepareNativeDialogueFrames()
+	}
+	n := g.dialog[0].NativeDialogue
+	if !n.HasMotionTargetY {
+		return errors.New("native story dialogue: focus provenance is unavailable")
+	}
+	if n.MotionTargetY == 0 {
+		return g.prepareNativeDialogueFrames()
+	}
+	if g.st == nil && g.storyNativeMapState == nil && g.storyNativeMapSource != nil {
+		if err := g.materializeNativeStoryMapState(g.storyNativeMapSource); err != nil {
+			return err
+		}
+	}
+	units := g.st
+	var candidates []*battle.Unit
+	if units != nil {
+		candidates = units.Units
+	} else {
+		for i := range g.storyActors {
+			candidates = append(candidates, &g.storyActors[i])
+		}
+	}
+	var speaker *battle.Unit
+	switch n.Control {
+	case "FFED", "FFEC":
+		if n.Operand >= 0 && n.Operand < len(candidates) {
+			speaker = candidates[n.Operand]
+		}
+	case "FFEF", "FFEE":
+		for _, u := range candidates {
+			if u == nil {
+				return errors.New("native story dialogue: nil speaker record")
+			}
+			identity, known := u.NativeIdentity, u.HasNativeIdentity
+			if u.HasNativeRecordByte8 {
+				identity, known = int(u.NativeRecordByte8), true
+			}
+			if known && identity == n.Operand && u.HasNativeRecordByte5 && u.NativeRecordByte5&1 == 0 {
+				speaker = u
+				break
+			}
+		}
+	}
+	if speaker == nil || !speaker.HasNativeMapPresentation || g.focusJob != nil {
+		return errors.New("native story dialogue: focus speaker or owner is unavailable")
+	}
+	if g.hasStoryNativeMapView {
+		g.curX, g.curY = g.storyNativeMapView.CursorX, g.storyNativeMapView.CursorY
+	} else if g.st != nil && g.st.HasNativeMapViewState {
+		g.curX, g.curY = g.st.NativeMapViewState.CursorX, g.st.NativeMapViewState.CursorY
+	} else {
+		return errors.New("native story dialogue: focus view is unavailable")
+	}
+	targetX, targetY := int(speaker.NativeMapPresentation.X), int(speaker.NativeMapPresentation.Y)
+	if _, _, _, err := g.nativeFocusEndpoint(targetX, targetY); err != nil {
+		return err
+	}
+	pending := g.dialog
+	g.dialog = nil
+	g.focusJob = &focusUnitJob{targetX: targetX, targetY: targetY, nativeView: true, then: func() {
+		g.dialog = pending
+		g.nativeMapVGA = nil
+		g.dlgShown, g.dlgPhase, g.dlgT = dlgNone, 0, 0
+		if err := g.prepareNativeDialogueFrames(); err != nil {
+			g.dialog = nil
+			g.loadErr = "native story dialogue: " + err.Error()
+		}
+	}}
+	return nil
+}
+
 func (g *Game) prepareNativeDialogueFrames() error {
 	g.nativeDialogueFrames = nil
 	g.nativeDialogueProgressive = nil
@@ -22,6 +97,10 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	g.nativeDialogueClosingLive = false
 	g.resetNativeStoryDialogueMouth()
 	g.nativeDialogueModernPortrait = nil
+	g.nativeDialogueSpeakingFrame = 0
+	g.nativeDialoguePortraits = nil
+	g.nativeDialogueLayout = nil
+	g.nativeDialogueGlyphSteps = nil
 	if len(g.dialog) == 0 || g.dialog[len(g.dialog)-1].NativeDialogue == nil {
 		return nil
 	}
@@ -141,6 +220,7 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	frames := make([][]byte, len(layout.Pages))
 	progressive := make([][][]byte, len(layout.Pages))
 	mouthOpen := make([][]byte, len(layout.Pages))
+	glyphSteps := make([][]bool, len(layout.Pages))
 	for page := range layout.Pages {
 		if g.localeID == "zh-Hant" {
 			progressive[page], err = campaign.ComposeNativeStoryDialogueProgressiveFrames(
@@ -154,6 +234,12 @@ func (g *Game) prepareNativeDialogueFrames() error {
 		}
 		if err != nil {
 			return fmt.Errorf("native story dialogue: page %d progressive frames: %w", page, err)
+		}
+		if g.localeID == "zh-Hant" {
+			glyphSteps[page], err = campaign.NativeStoryDialogueGlyphSteps(layout, page)
+			if err != nil || len(glyphSteps[page]) != len(progressive[page]) {
+				return fmt.Errorf("native story dialogue: glyph timeline mismatch: %v", err)
+			}
 		}
 		frames[page] = progressive[page][len(progressive[page])-1]
 		if g.localeID == "zh-Hant" {
@@ -173,6 +259,9 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	g.nativeDialogueMouthOpen = mouthOpen
 	g.nativeDialogueOpening = opening
 	g.nativeDialogueClosing = closing
+	g.nativeDialoguePortraits = portraits
+	g.nativeDialogueLayout = layout
+	g.nativeDialogueGlyphSteps = glyphSteps
 	return nil
 }
 
@@ -237,6 +326,19 @@ func (g *Game) stepNativeStoryDialogueProgress() {
 	frames := g.nativeDialogueProgressive[g.dlgPage]
 	if len(frames) > 0 && g.nativeDialogueProgress < len(frames)-1 {
 		g.nativeDialogueProgress++
+		if g.dlgPage < len(g.nativeDialogueGlyphSteps) &&
+			g.nativeDialogueProgress < len(g.nativeDialogueGlyphSteps[g.dlgPage]) &&
+			g.nativeDialogueGlyphSteps[g.dlgPage][g.nativeDialogueProgress] {
+			g.nativeDialogueSpeakingHalf++
+			if g.nativeDialogueSpeakingHalf == 2 {
+				g.nativeDialogueSpeakingHalf = 0
+				g.nativeDialogueSpeakingCycle = (g.nativeDialogueSpeakingCycle + 1) % 4
+				g.nativeDialogueSpeakingFrame = g.nativeDialogueSpeakingCycle
+				if g.nativeDialogueSpeakingFrame == 3 {
+					g.nativeDialogueSpeakingFrame = 1
+				}
+			}
+		}
 	}
 }
 
@@ -257,6 +359,7 @@ func (g *Game) resetNativeStoryDialogueMouth() {
 		return
 	}
 	g.nativeDialogueMouthReady = false
+	g.nativeDialogueArrowTicks = 0
 	g.mouthState = dato.MouthState{}
 	g.mouthOpen, g.mouthTimer = false, 0
 }
@@ -300,6 +403,7 @@ func (g *Game) stepDialogueMouth() {
 		g.mouthOpen, g.mouthTimer = false, g.mouthState.Countdown
 		return
 	}
+	g.nativeDialogueArrowTicks++
 	if g.frame%2 != 0 {
 		return
 	}
@@ -324,6 +428,10 @@ func (g *Game) finishNativeStoryDialogueClosing() {
 	}
 	g.dlgPage, g.dlgScrollT, g.dlgScrollFrom, g.nativeDialogueProgress = 0, 0, 0, -1
 	g.dlgShown, g.dlgPhase, g.dlgT = dlgNone, 0, 0
+	if g.battleEvent != nil {
+		g.advanceBattleEvent()
+		return
+	}
 	if g.camp != nil && g.camp.Node() != nil && g.camp.Node().Type == "cutscene" {
 		g.beatAdvance()
 	}
@@ -370,8 +478,28 @@ func (g *Game) drawNativeStoryDialogue(screen *ebiten.Image) bool {
 		progress = len(frames) - 1
 	}
 	frame := frames[progress]
+	if g.localeID == "zh-Hant" && progress > 0 && progress < len(frames)-1 &&
+		g.nativeDialogueSpeakingFrame > 0 && len(g.nativeDialoguePortraits) == 4 {
+		var err error
+		frame, err = campaign.ComposeNativeStoryDialogueMouthFrame(frame,
+			g.nativeDialoguePortraits[g.nativeDialogueSpeakingFrame],
+			g.nativeDialogueLayout)
+		if err != nil {
+			g.loadErr = "native story dialogue: " + err.Error()
+			return true
+		}
+	}
 	if g.mouthOpen && progress == len(frames)-1 && g.dlgPage < len(g.nativeDialogueMouthOpen) {
 		frame = g.nativeDialogueMouthOpen[g.dlgPage]
+	}
+	if g.nativeStoryDialogueAtInputWait() && g.dlgPage+1 < len(g.nativeDialogueProgressive) {
+		var err error
+		frame, err = campaign.ComposeNativeStoryDialogueWaitArrow(frame, g.nativeClassUI.dialogue,
+			g.nativeDialogueLayout, (g.nativeDialogueArrowTicks/6)%2)
+		if err != nil {
+			g.loadErr = "native story dialogue: " + err.Error()
+			return true
+		}
 	}
 	if g.nativeDialogueModernPortrait != nil {
 		rect, err := campaign.NativeStoryDialoguePortraitRect(

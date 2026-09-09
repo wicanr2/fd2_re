@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -126,13 +127,23 @@ func TestReviewedOpeningTranslationsUseCanonicalLineIDs(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		for lineID, want := range entries {
-			got, err := content.StoryText(lineID)
+		canonicalEntries := make(map[string]string, len(entries))
+		for entryID, want := range entries {
+			// 清單同時含完整條目 ID 與歷史 line ID；姓名是獨立條目，
+			// 不可交給會追加 /text 的對話查詢。
+			if !strings.HasSuffix(entryID, "/text") && !strings.HasSuffix(entryID, "/speaker-name") {
+				entryID += "/text"
+			}
+			canonicalEntries[entryID] = want
+			if strings.HasSuffix(entryID, "/speaker-name") {
+				continue
+			}
+			got, err := content.StoryText(strings.TrimSuffix(entryID, "/text"))
 			if err != nil || got != want {
-				t.Fatalf("%s %s=%q err=%v, want %q", localeID, lineID, got, err, want)
+				t.Fatalf("%s %s=%q err=%v, want %q", localeID, entryID, got, err, want)
 			}
 		}
-		assertReviewedContentEntries(t, localeID, entries)
+		assertReviewedContentEntryIDs(t, localeID, canonicalEntries)
 	}
 }
 

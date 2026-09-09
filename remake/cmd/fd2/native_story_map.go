@@ -18,11 +18,14 @@ func (g *Game) materializeNativeStoryMapState(source *battle.State) error {
 		return errors.New("native story map: LOADCH terrain renderer inputs are incomplete")
 	}
 	candidate := *source
-	// 劇情地圖的 terrain owner 是目前 LOADCH 的可編輯地圖，不是建立
-	// roster fixture 時所沿用的上一個 battle.State。逐格複製可避免後續
-	// overlay 修改回寫 MapData，也確保 buildNativeMapFrameInput 只收到同一張圖。
+	// 地形尺寸屬於目前 LOADCH；素材中的 cell +3 只作來源證據。
+	// 原版 0x4DBFC 在載入後逐格寫入 0xff，與 battle.LoadScenario 相同。
+	// 複製 serialized 值會讓整個故事背景誤走 0x11EEE 的亮色 LUT 分支。
 	candidate.W, candidate.H = g.m.W, g.m.H
-	candidate.NativeTileBlitModes = append([]byte(nil), g.m.NativeTileBlitModes...)
+	candidate.NativeTileBlitModes = make([]byte, len(g.m.NativeTileBlitModes))
+	for i := range candidate.NativeTileBlitModes {
+		candidate.NativeTileBlitModes[i] = 0xff
+	}
 	candidate.Units = nil
 	candidate.Roster = nil
 	candidate.NativeMapSelectorCache = nil
@@ -32,10 +35,20 @@ func (g *Game) materializeNativeStoryMapState(source *battle.State) error {
 	candidate.HasNativeMapBinaryTimingState = false
 	actors := make([]*battle.Unit, len(g.storyActors))
 	for index := range g.storyActors {
-		actors[index] = &g.storyActors[index]
+		// 快取重建不是再次建構角色；constructor 會把 pose/motion 清零。
+		// 私有複本只用來取得 slot，不覆蓋已完成的 ACT／scroll_step。
+		clone := g.storyActors[index]
+		actors[index] = &clone
 	}
 	if err := candidate.AppendNativeMapSelectorBatch(actors); err != nil {
 		return err
+	}
+	for index, actor := range actors {
+		original := &g.storyActors[index]
+		if !original.HasNativeMapPresentation &&
+			!actor.SetMapPlacement(original.X, original.Y, original.Dir) {
+			return errors.New("native story map: spawned actor placement is invalid")
+		}
 	}
 	if err := candidate.MaterializeNativeMapViewState(g.storyNativeMapView); err != nil {
 		return err
@@ -47,6 +60,15 @@ func (g *Game) materializeNativeStoryMapState(source *battle.State) error {
 	// 隱藏狀態誤解成不存在的版面資料。
 	if !candidate.MaterializeNativeMapHUDState(0, 0, 1) {
 		return errors.New("native story map: hidden HUD state is invalid")
+	}
+	for index, actor := range actors {
+		if !g.storyActors[index].HasNativeMapPresentation {
+			g.storyActors[index].NativeMapPresentation = actor.NativeMapPresentation
+			g.storyActors[index].HasNativeMapPresentation = true
+		}
+		g.storyActors[index].MapSelectorSlot = actor.MapSelectorSlot
+		g.storyActors[index].HasMapSelectorSlot = actor.HasMapSelectorSlot
+		candidate.Units[index] = &g.storyActors[index]
 	}
 	g.storyNativeMapState = &candidate
 	return nil

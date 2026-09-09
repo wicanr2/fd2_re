@@ -15,11 +15,12 @@ func nativeSystemInfoFixture(t *testing.T) NativeSystemInfoAssets {
 	}
 	geometry := [4][2]int{{102, 17}, {170, 117}, {170, 16}, {63, 15}}
 	for index, size := range geometry {
-		assets.Panels[index] = fdother.LMI1Entry{
-			Width: size[0], Height: size[1], Pixels: make([]byte, size[0]*size[1]),
+		assets.Panels[index] = fdother.Frame{
+			Width: size[0], Height: size[1], Indexed: make([]byte, size[0]*size[1]), Mask: make([]byte, size[0]*size[1]),
 		}
-		for pixel := range assets.Panels[index].Pixels {
-			assets.Panels[index].Pixels[pixel] = byte(0x80 + index)
+		for pixel := range assets.Panels[index].Indexed {
+			assets.Panels[index].Indexed[pixel] = byte(0x80 + index)
+			assets.Panels[index].Mask[pixel] = 255
 		}
 	}
 	for index := 31; index <= 51; index++ {

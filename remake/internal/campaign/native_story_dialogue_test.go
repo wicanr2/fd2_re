@@ -1418,7 +1418,7 @@ func TestComposeNativeStoryDialoguePageUsesOriginalIndexedAssets(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	wantFrames := 1
+	wantFrames := 1 + nativeStoryScrollFrames
 	for _, row := range layout.Pages[1] {
 		wantFrames += len([]rune(row))
 	}
@@ -1430,6 +1430,20 @@ func TestComposeNativeStoryDialoguePageUsesOriginalIndexedAssets(t *testing.T) {
 	}
 	if string(progressive[0]) == string(progressive[len(progressive)-1]) {
 		t.Fatal("progressive sequence did not publish any visible glyph")
+	}
+	if string(progressive[0]) != string(page0) {
+		t.Fatal("FFFD 後清空了前頁內容")
+	}
+	for y := 0; y < 2*nativeStoryLineStep; y++ {
+		for x := -1; x < 13*nativeStoryGlyphStep; x++ {
+			if page1[nativeStoryUpperText+y*320+x] != page0[nativeStoryUpperText+(y+nativeStoryLineStep)*320+x] {
+				t.Fatal("後頁未保留前頁後兩行")
+			}
+		}
+	}
+	steps, err := NativeStoryDialogueGlyphSteps(layout, 1)
+	if err != nil || len(steps) != len(progressive) {
+		t.Fatalf("跨頁普通字形與捲動時間軸不符: %v", err)
 	}
 	opening, err := ComposeNativeStoryDialogueOpeningFrames(background, cells, layout)
 	if err != nil {

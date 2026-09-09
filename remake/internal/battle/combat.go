@@ -36,7 +36,14 @@ func (s *State) Attack(a, d *Unit) int {
 // terrain.go/model.go EffectiveHIT/EffectiveEV。恆標記已行動,不論命中與否
 // (原版「攻擊」是一個已耗用的行動,miss 不退還行動權)。
 func (s *State) AttackWithRNG(a, d *Unit, rng *rand.Rand) AttackResult {
+	return s.attackWithExperience(a, d, rng, nil)
+}
+
+func (s *State) attackWithExperience(a, d *Unit, rng *rand.Rand, nativeEXP *nativePhysicalExperiencePlan) AttackResult {
 	a.Acted = true
+	if nativeEXP != nil && a.HasNativeRecordByte5 {
+		a.NativeRecordByte5 |= 0x80
+	}
 
 	// 命中率 = (攻方HIT − 守方EV)%;含風行術 HIT/EV 加成(EffectiveHIT/EffectiveEV)。
 	hitPct := a.EffectiveHIT() - d.EffectiveEV()
@@ -77,6 +84,9 @@ func (s *State) AttackWithRNG(a, d *Unit, rng *rand.Rand) AttackResult {
 			dmgForExp = d.MaxHP
 		}
 		exp = AttackExp(a.Lv, d.Lv, dmgForExp, d.MaxHP, d.ExpPerLevel)
+		if nativeEXP != nil {
+			exp = float64(nativeEXP.award(dmg, d.HP == 0))
+		}
 		levelUps = s.GainExp(a, exp, rng)
 	}
 

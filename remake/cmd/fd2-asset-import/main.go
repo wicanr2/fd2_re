@@ -1081,7 +1081,7 @@ func exportItemPanel(fdotherPath, outputRoot string) error {
 		Source: sourceID{File: "FDOTHER.DAT", Resource: 5, Size: fdotherSize,
 			MD5: fdotherMD5, SHA256: fdotherSHA256, RawSize: len(raw)},
 	}
-	for _, index := range []int{20, 21, 22, 133, 134, 135, 136} {
+	for _, index := range []int{20, 21, 22} {
 		entry, err := fdother.ParseLMI1OpaqueEntry(raw, index)
 		if err != nil {
 			return err
@@ -1116,7 +1116,7 @@ func exportItemPanel(fdotherPath, outputRoot string) error {
 	for index := 119; index <= 129; index++ {
 		frameIndexes = append(frameIndexes, index)
 	}
-	frameIndexes = append(frameIndexes, 130, 131, 132)
+	frameIndexes = append(frameIndexes, 130, 131, 132, 133, 134, 135, 136)
 	frameIndexes = append(frameIndexes, 137)
 	for _, index := range frameIndexes {
 		entry, err := fdother.ParseLMI1FrameEntry(raw, index)

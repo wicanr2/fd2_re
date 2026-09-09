@@ -34,7 +34,9 @@
           "action_id": "legacy/action/85ef61153e22/events/1/0",
           "extensions": {
             "legacy": {
-              "char_id": 1
+              "char_id": 1,
+              "native_event_id": 0,
+              "native_source": "0x341e8"
             }
           },
           "type": "join_party"
@@ -65,8 +67,93 @@
           "action_id": "legacy/action/85ef61153e22/events/1/2",
           "extensions": {
             "legacy": {
+              "grid": [
+                5,
+                8
+              ],
+              "native_event_id": 0,
+              "native_source": "0x341fe"
+            }
+          },
+          "type": "pan"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/3",
+          "extensions": {
+            "legacy": {
+              "native_event_id": 0,
+              "native_source": "0x34208"
+            }
+          },
+          "type": "redraw"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/4",
+          "extensions": {
+            "legacy": {
+              "ms": 100,
+              "native_event_id": 0,
+              "native_source": "0x34212"
+            }
+          },
+          "type": "delay"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/5",
+          "extensions": {
+            "legacy": {
+              "native_acting": {
+                "resource": 7,
+                "source": "0x3421c"
+              },
+              "native_event_id": 0,
+              "native_source": "0x3421c"
+            }
+          },
+          "type": "native_acting"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/6",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 1,
+                "operand": 1,
+                "pages": [
+                  [
+                    "『老爸！老爸！"
+                  ]
+                ],
+                "scene_index": 8,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 11,
+                "utterance": 0
+              },
+              "native_event_id": 0,
+              "native_source": "0x34248",
+              "native_text_index": 11
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/7",
+          "extensions": {
+            "legacy": {
+              "native_event_id": 0,
+              "native_source": "0x34250"
+            }
+          },
+          "type": "native_range_zero"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/8",
+          "extensions": {
+            "legacy": {
               "act_immediately": false,
-              "camp": "ally",
+              "camp": "own",
               "groups": [
                 7
               ],
@@ -84,14 +171,384 @@
           "type": "spawn_group"
         },
         {
-          "action_id": "legacy/action/85ef61153e22/events/1/3",
+          "action_id": "legacy/action/85ef61153e22/events/1/9",
           "extensions": {
             "legacy": {
-              "speaker": 3,
-              "text": "真是的,吵的要命,到底在搞什麼.."
+              "native_event_id": 0,
+              "native_source": "0x34266"
+            }
+          },
+          "type": "redraw"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/10",
+          "extensions": {
+            "legacy": {
+              "ms": 100,
+              "native_event_id": 0,
+              "native_source": "0x34270"
+            }
+          },
+          "type": "delay"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/11",
+          "extensions": {
+            "legacy": {
+              "native_acting": {
+                "resource": 8,
+                "source": "0x3427a"
+              },
+              "native_event_id": 0,
+              "native_source": "0x3427a"
+            }
+          },
+          "type": "native_acting"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/12",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 0,
+                "operand": 3,
+                "pages": [
+                  [
+                    "『真是的，吵的要命，",
+                    "　到底在搞什麼．』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 3,
+                "utterance": 0
+              },
+              "native_event_id": 0,
+              "native_source": "0x342a6",
+              "native_text_index": 3
             }
           },
           "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/13",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 1,
+                "operand": 1,
+                "pages": [
+                  [
+                    "『老爸，",
+                    "　有人在島上打架呢！』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 3,
+                "utterance": 1
+              },
+              "native_event_id": 0,
+              "native_source": "0x342a6",
+              "native_text_index": 3
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/14",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 2,
+                "operand": 3,
+                "pages": [
+                  [
+                    "『什麼？待我看看．",
+                    "　啊哈，可不是海盜",
+                    "　在打劫旅客嗎？"
+                  ],
+                  [
+                    "　居然在我們門前搶人，",
+                    "　膽子不小啊！』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 3,
+                "utterance": 2
+              },
+              "native_event_id": 0,
+              "native_source": "0x342a6",
+              "native_text_index": 3
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/15",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 3,
+                "operand": 1,
+                "pages": [
+                  [
+                    "『就是說啊！",
+                    "　老爸，您說這該怎麼辦？』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 3,
+                "utterance": 3
+              },
+              "native_event_id": 0,
+              "native_source": "0x342a6",
+              "native_text_index": 3
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/16",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 4,
+                "operand": 3,
+                "pages": [
+                  [
+                    "『小子啊，",
+                    "　這可是絕佳的歷練機會，",
+                    "　我們就幫他們一個忙吧！』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 3,
+                "utterance": 4
+              },
+              "native_event_id": 0,
+              "native_source": "0x342a6",
+              "native_text_index": 3
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/17",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 5,
+                "operand": 0,
+                "pages": [
+                  [
+                    "『老頭子，",
+                    "　你們是來幹什麼的？",
+                    "　若不想受傷就別過來",
+                    "　湊熱鬧！』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 3,
+                "utterance": 5
+              },
+              "native_event_id": 0,
+              "native_source": "0x342a6",
+              "native_text_index": 3
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/18",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 6,
+                "operand": 3,
+                "pages": [
+                  [
+                    "『別緊張，小伙子，",
+                    "　我們是來幫你們打退海盜",
+                    "　的。』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 3,
+                "utterance": 6
+              },
+              "native_event_id": 0,
+              "native_source": "0x342a6",
+              "native_text_index": 3
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/19",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 7,
+                "operand": 0,
+                "pages": [
+                  [
+                    "『什麼？就這一點海盜，",
+                    "　還用不著你們來幫忙！",
+                    "　回去回去！』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 3,
+                "utterance": 7
+              },
+              "native_event_id": 0,
+              "native_source": "0x342a6",
+              "native_text_index": 3
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/20",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 8,
+                "operand": 4,
+                "pages": [
+                  [
+                    "『哎，索爾，人家是好意",
+                    "　要幫忙，你也說幾句",
+                    "　好聽一點的吧！』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 3,
+                "utterance": 8
+              },
+              "native_event_id": 0,
+              "native_source": "0x342a6",
+              "native_text_index": 3
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/21",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 9,
+                "operand": 0,
+                "pages": [
+                  [
+                    "『這樣嗎？好吧，那就．喂，",
+                    "　老頭子，如果你要幫忙的話",
+                    "　就先說聲多謝了！』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 3,
+                "utterance": 9
+              },
+              "native_event_id": 0,
+              "native_source": "0x342a6",
+              "native_text_index": 3
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/22",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 10,
+                "operand": 3,
+                "pages": [
+                  [
+                    "『這些年輕人真有精神啊！",
+                    "　小子，我們上！』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 3,
+                "utterance": 10
+              },
+              "native_event_id": 0,
+              "native_source": "0x342a6",
+              "native_text_index": 3
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/23",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 11,
+                "operand": 1,
+                "pages": [
+                  [
+                    "『好的，老爸！』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 3,
+                "utterance": 11
+              },
+              "native_event_id": 0,
+              "native_source": "0x342a6",
+              "native_text_index": 3
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/1/24",
+          "extensions": {
+            "legacy": {
+              "native_event_id": 0,
+              "native_source": "0x342ae"
+            }
+          },
+          "type": "reset_pose"
         }
       ],
       "event_id": "legacy/event/85ef61153e22/events/1",
@@ -110,6 +567,20 @@
       "actions": [
         {
           "action_id": "legacy/action/85ef61153e22/events/2/0",
+          "extensions": {
+            "legacy": {
+              "grid": [
+                11,
+                16
+              ],
+              "native_event_id": 1,
+              "native_source": "0x342c4"
+            }
+          },
+          "type": "pan"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/2/1",
           "extensions": {
             "legacy": {
               "camp": "enemy",
@@ -132,6 +603,69 @@
             }
           },
           "type": "spawn_group"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/2/2",
+          "extensions": {
+            "legacy": {
+              "native_event_id": 1,
+              "native_source": "0x342ef"
+            }
+          },
+          "type": "reset_pose"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/2/3",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFED",
+                "line": 0,
+                "operand": 15,
+                "pages": [
+                  [
+                    "『咦，",
+                    "　弟兄們好像陷入苦戰呢！』"
+                  ]
+                ],
+                "scene_index": 3,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 4,
+                "utterance": 0
+              },
+              "native_event_id": 1,
+              "native_source": "0x34313",
+              "native_text_index": 4
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/2/4",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFED",
+                "line": 1,
+                "operand": 16,
+                "pages": [
+                  [
+                    "『那還等什麼！我們上吧！』"
+                  ]
+                ],
+                "scene_index": 3,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 4,
+                "utterance": 1
+              },
+              "native_event_id": 1,
+              "native_source": "0x34313",
+              "native_text_index": 4
+            }
+          },
+          "type": "dialogue"
         }
       ],
       "event_id": "legacy/event/85ef61153e22/events/2",
@@ -150,6 +684,20 @@
       "actions": [
         {
           "action_id": "legacy/action/85ef61153e22/events/3/0",
+          "extensions": {
+            "legacy": {
+              "grid": [
+                0,
+                16
+              ],
+              "native_event_id": 2,
+              "native_source": "0x3432c"
+            }
+          },
+          "type": "pan"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/3/1",
           "extensions": {
             "legacy": {
               "camp": "enemy",
@@ -174,11 +722,317 @@
           "type": "spawn_group"
         },
         {
-          "action_id": "legacy/action/85ef61153e22/events/3/1",
+          "action_id": "legacy/action/85ef61153e22/events/3/2",
           "extensions": {
             "legacy": {
-              "speaker": 71,
-              "text": "連這些小鬼都收拾不了,還要勞動老大我出馬!"
+              "native_event_id": 2,
+              "native_source": "0x34357"
+            }
+          },
+          "type": "reset_pose"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/3/3",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 2,
+                "operand": 97,
+                "pages": [
+                  [
+                    "『小子們，你們在搞些什麼！",
+                    "　連這些小鬼都收拾不了，",
+                    "　還要勞動老大我出馬，",
+                    "　不怕給別人笑話嗎？』"
+                  ]
+                ],
+                "scene_index": 3,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 5,
+                "utterance": 0
+              },
+              "native_event_id": 2,
+              "native_source": "0x34375",
+              "native_text_index": 5
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/3/4",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 3,
+                "operand": 0,
+                "pages": [
+                  [
+                    "『哼，這難看又吵人的傢伙",
+                    "　又是來幹什麼的？』"
+                  ]
+                ],
+                "scene_index": 3,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 5,
+                "utterance": 1
+              },
+              "native_event_id": 2,
+              "native_source": "0x34375",
+              "native_text_index": 5
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/3/5",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 4,
+                "operand": 4,
+                "pages": [
+                  [
+                    "『大概是海盜首領吧！",
+                    "　總算有個像樣的對手上場了",
+                    "　這傢伙就交給我來處理啦！",
+                    "　』"
+                  ]
+                ],
+                "scene_index": 3,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 5,
+                "utterance": 2
+              },
+              "native_event_id": 2,
+              "native_source": "0x34375",
+              "native_text_index": 5
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/3/6",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 5,
+                "operand": 0,
+                "pages": [
+                  [
+                    "『那怎麼可以！",
+                    "　對付這種麻煩的傢伙，",
+                    "　當然是非我莫屬了！",
+                    "　讓我來！』"
+                  ]
+                ],
+                "scene_index": 3,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 5,
+                "utterance": 3
+              },
+              "native_event_id": 2,
+              "native_source": "0x34375",
+              "native_text_index": 5
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/3/7",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 6,
+                "operand": 4,
+                "pages": [
+                  [
+                    "『索爾，你真是不夠朋友！",
+                    "　就為了在喜歡的女孩子",
+                    "　面前逞能，竟然．．』"
+                  ]
+                ],
+                "scene_index": 3,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 5,
+                "utterance": 4
+              },
+              "native_event_id": 2,
+              "native_source": "0x34375",
+              "native_text_index": 5
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/3/8",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 7,
+                "operand": 0,
+                "pages": [
+                  [
+                    "『你．你胡說些什麼！",
+                    "　再亂說的話，我可就．．』"
+                  ]
+                ],
+                "scene_index": 3,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 5,
+                "utterance": 5
+              },
+              "native_event_id": 2,
+              "native_source": "0x34375",
+              "native_text_index": 5
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/3/9",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 8,
+                "operand": 97,
+                "pages": [
+                  [
+                    "『喂！你們兩個到底在吵些",
+                    "　什麼！要吵的話，等進了",
+                    "　地獄後再吵也不遲！』"
+                  ]
+                ],
+                "scene_index": 3,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 5,
+                "utterance": 6
+              },
+              "native_event_id": 2,
+              "native_source": "0x34375",
+              "native_text_index": 5
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/3/10",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 9,
+                "operand": 0,
+                "pages": [
+                  [
+                    "『你煩什麼煩！",
+                    "　滾一邊去！』"
+                  ]
+                ],
+                "scene_index": 3,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 5,
+                "utterance": 7
+              },
+              "native_event_id": 2,
+              "native_source": "0x34375",
+              "native_text_index": 5
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/3/11",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 10,
+                "operand": 4,
+                "pages": [
+                  [
+                    "『這傢伙討厭得很，索爾，",
+                    "　我們不吵了，",
+                    "　先合力宰了他再說！』"
+                  ]
+                ],
+                "scene_index": 3,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 5,
+                "utterance": 8
+              },
+              "native_event_id": 2,
+              "native_source": "0x34375",
+              "native_text_index": 5
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/3/12",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 11,
+                "operand": 0,
+                "pages": [
+                  [
+                    "『好，就這麼辦！』"
+                  ]
+                ],
+                "scene_index": 3,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 5,
+                "utterance": 9
+              },
+              "native_event_id": 2,
+              "native_source": "0x34375",
+              "native_text_index": 5
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/3/13",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 12,
+                "operand": 97,
+                "pages": [
+                  [
+                    "『可惡啊！這兩個小子全不把",
+                    "　我放在眼裡！給我殺！",
+                    "　一個都別放過！』"
+                  ]
+                ],
+                "scene_index": 3,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 5,
+                "utterance": 10
+              },
+              "native_event_id": 2,
+              "native_source": "0x34375",
+              "native_text_index": 5
             }
           },
           "type": "dialogue"
@@ -202,6 +1056,20 @@
           "action_id": "legacy/action/85ef61153e22/events/4/0",
           "extensions": {
             "legacy": {
+              "grid": [
+                11,
+                11
+              ],
+              "native_event_id": 3,
+              "native_source": "0x34386"
+            }
+          },
+          "type": "pan"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/4/1",
+          "extensions": {
+            "legacy": {
               "act_immediately": true,
               "camp": "ally",
               "groups": [
@@ -221,11 +1089,204 @@
           "type": "spawn_group"
         },
         {
-          "action_id": "legacy/action/85ef61153e22/events/4/1",
+          "action_id": "legacy/action/85ef61153e22/events/4/2",
           "extensions": {
             "legacy": {
-              "speaker": 7,
-              "text": "消滅肆虐沿海的海盜是我們的職責,交給我們!"
+              "native_event_id": 3,
+              "native_source": "0x343a8"
+            }
+          },
+          "type": "redraw"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/4/3",
+          "extensions": {
+            "legacy": {
+              "native_acting": {
+                "resource": 6,
+                "source": "0x343b2"
+              },
+              "native_event_id": 3,
+              "native_source": "0x343b2"
+            }
+          },
+          "type": "native_acting"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/4/4",
+          "extensions": {
+            "legacy": {
+              "native_event_id": 3,
+              "native_source": "0x343ba"
+            }
+          },
+          "type": "reset_pose"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/4/5",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 0,
+                "operand": 68,
+                "pages": [
+                  [
+                    "『咦！又有海盜在此逞兇了，",
+                    "　現在正是我們海防隊建功",
+                    "　的良機！』"
+                  ]
+                ],
+                "scene_index": 4,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 6,
+                "utterance": 0
+              },
+              "native_event_id": 3,
+              "native_source": "0x343dd",
+              "native_text_index": 6
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/4/6",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 1,
+                "operand": 0,
+                "pages": [
+                  [
+                    "『今天可真是熱鬧啊！",
+                    "　你們又是來幹什麼的？』"
+                  ]
+                ],
+                "scene_index": 4,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 6,
+                "utterance": 1
+              },
+              "native_event_id": 3,
+              "native_source": "0x343dd",
+              "native_text_index": 6
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/4/7",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 2,
+                "operand": 68,
+                "pages": [
+                  [
+                    "『我們是亞克斯王國的海岸巡",
+                    "　防隊，消滅肆虐沿海的海盜",
+                    "　本是我們的職責，這些海盜"
+                  ],
+                  [
+                    "　就交給我們來處理，請各位",
+                    "　放心！』"
+                  ]
+                ],
+                "scene_index": 4,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 6,
+                "utterance": 2
+              },
+              "native_event_id": 3,
+              "native_source": "0x343dd",
+              "native_text_index": 6
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/4/8",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 3,
+                "operand": 0,
+                "pages": [
+                  [
+                    "『鬼扯，我們打的正高興，",
+                    "　才不需要你們來攪局！』"
+                  ]
+                ],
+                "scene_index": 4,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 6,
+                "utterance": 3
+              },
+              "native_event_id": 3,
+              "native_source": "0x343dd",
+              "native_text_index": 6
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/4/9",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 4,
+                "operand": 4,
+                "pages": [
+                  [
+                    "『索爾啊，",
+                    "　我們就要踏進人家的地盤，",
+                    "　至少對人家客氣點吧！』"
+                  ]
+                ],
+                "scene_index": 4,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 6,
+                "utterance": 4
+              },
+              "native_event_id": 3,
+              "native_source": "0x343dd",
+              "native_text_index": 6
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/85ef61153e22/events/4/10",
+          "extensions": {
+            "legacy": {
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 5,
+                "operand": 68,
+                "pages": [
+                  [
+                    "『沒關係！",
+                    "　我們這就來幫忙了！』"
+                  ]
+                ],
+                "scene_index": 4,
+                "script": "assets/story/ch01.json",
+                "source_dat": "FDTXT_001",
+                "string_index": 6,
+                "utterance": 5
+              },
+              "native_event_id": 3,
+              "native_source": "0x343dd",
+              "native_text_index": 6
             }
           },
           "type": "dialogue"
