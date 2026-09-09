@@ -35,9 +35,11 @@
 
 回歸 `TestPhysicalAttackMessageStaysOutOfThePlayerPath`。
 
-## 前半的「戰鬥動畫退化」：目前重現不出來
+## 前半的「戰鬥動畫退化」
 
-第 6 項的前半另外查了三件事，三件都沒有找到退化：
+具體症狀是**我方被攻擊時腳步被台座遮住**，成因與修正見
+[103](103-battle-pedestal-zorder-20260909.md)。以下三項檢查涵蓋的是另外三個
+面向——命中 fixture、版面、素材覆蓋——三項都沒有找到退化：
 
 **一、既有回歸 fixture 逐位元組重現。** `battle-impact-no-global-tint.json` 記
 的擷取條件（`FD2_SHOT_ATTACK=4`、`FD2_SHOT_FRAME=3`、`FD2_SHOT_SERIES`、
@@ -59,8 +61,6 @@
 
 ## 尚未涵蓋
 
-- 「戰鬥動畫退化」的具體症狀。以上三項都沒有重現出退化；要繼續查需要更具體的
-  現象描述，或指定是哪一個發行包、哪一組角色。
 - 原版演出的逐幀分鏡與時序，以及與重製端逐張對照。本輪只比對了版面與既有
   命中 fixture。
 - 音訊。

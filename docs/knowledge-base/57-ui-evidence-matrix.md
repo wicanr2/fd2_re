@@ -939,3 +939,19 @@ handler 進第一戰。七拍格線動作另由約 18.2065 Hz 硬體規格近似
 原版影片已定位 332–338 秒的相近狀態；本輪重製正常路徑錄影的自動按鍵未可靠
 命中同段，因此動態並排仍為 READY，不提升成 E2。證據與可重播驗收見
 [`action-overlay-and-ch01-march-20260830.json`](../data/ui-traces/action-overlay-and-ch01-march-20260830.json)。
+
+### 2026-09-09：我方被攻擊時台座蓋住腳步（RUNTIME-E1）
+
+全螢幕戰鬥演出的左右是資料決定的：FIGANI 幀標頭內嵌的絕對螢幕座標按陣營分邊
+（亞雷斯 12／13 在 x=89..178，盜賊 288／289 在 x=6..28），同一單位不論攻守都
+留在自己那一側。`TAI.DAT` 台座固定在右側 slice，因此會壓到台座的永遠是我方那
+張圖。`drawBattleScene` 先前固定畫成「守方 figure → 台座 → 攻方 figure」，敵方
+攻擊我方時我方成了守方、被畫在台座之前，腳步就被蓋住。現在由
+`battleSceneLayerOrder` 保證**台座緊接在我方 figure 之前**，兩個方向都有回歸釘。
+
+原版側的對照來自敵方攻擊我方那一段的 dosgolem 收據（我方索爾在右、背影、踩在
+台座上、腳沒有被蓋住），量測、擷取條件與前後畫面見
+[`fd2-battle-pedestal-zorder-20260909.json`](../data/ui-traces/fd2-battle-pedestal-zorder-20260909.json)
+與 [`battle-pedestal-zorder-20260909.png`](../figures/battle-pedestal-zorder-20260909.png)，
+成因與規則見 [103](103-battle-pedestal-zorder-20260909.md)。我方攻擊方向的既有
+fixture 逐位元組不變，本項不提升演出時序或逐幀分鏡為 E2。

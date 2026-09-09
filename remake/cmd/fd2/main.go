@@ -7607,8 +7607,24 @@ func (g *Game) Update() error {
 			if v := os.Getenv("FD2_SHOT_ATTACK"); v != "" { // 全螢幕戰鬥演出(驗證用):亞雷斯打盜賊
 				g.dialog = nil // 清開場對白(避免蓋住演出)
 				fig, _ := strconv.Atoi(v)
-				g.atk = g.newAtkAnim(fig, 96, "亞雷斯", "盜賊",
-					48, 48, 1, 0, 0, 2, 0, 0, 28, 8, 28, 0, true)
+				// FD2_SHOT_ATTACK_INCOMING 換成「盜賊打亞雷斯」。台座跟的是我方
+				// slice，不是當回合攻守，所以兩個方向都要能拍才驗得了圖層順序；
+				// 只翻 atkOwn 而不換攻守單位會拍出「面板寫我方、圖還是我方在攻」
+				// 的假樣本，驗不到真正的受擊側。
+				atkGroup, defGroup := fig, 96
+				atkName, defName := "亞雷斯", "盜賊"
+				atkHP, atkMax, atkLV := 48, 48, 1
+				defLV, defHP0, defHP1, defMax := 2, 28, 8, 28
+				atkOwn := true
+				if os.Getenv("FD2_SHOT_ATTACK_INCOMING") != "" {
+					atkGroup, defGroup = 96, fig
+					atkName, defName = "盜賊", "亞雷斯"
+					atkHP, atkMax, atkLV = 28, 28, 2
+					defLV, defHP0, defHP1, defMax = 1, 48, 38, 48
+					atkOwn = false
+				}
+				g.atk = g.newAtkAnim(atkGroup, defGroup, atkName, defName,
+					atkHP, atkMax, atkLV, 0, 0, defLV, 0, 0, defHP0, defHP1, defMax, 0, atkOwn)
 				if g.atk == nil {
 					g.loadErr = fmt.Sprintf("FD2_SHOT_ATTACK FIGANI presentation unavailable: %d", fig)
 				}
@@ -9795,22 +9811,37 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		}
 	}
 
-	// (2) 敵方盜賊 figure(正面;蓋住狀態欄):待機幀依 descriptor +6 排程循環，
-	// 貼各幀內嵌 (dx,dy)。缺少排程時 newAtkAnim 已失敗即關閉。
+	// (2)(2.5)(3) 三個圖層的順序由**陣營**決定，不由當回合攻／守決定：
+	// 台座必須緊接在我方 figure 之前畫。
+	//
+	// doc35 §3.2.5：台座跟隨我方 slice，我方是背影在右並帶 TAI 台座，敵方是
+	// 正面在左且沒有台座；該節並已註明「先前用攻方／守方描述左右是誤框架」。
+	// 反組譯側 `0x29164` 在 `0x28c46` 載入 TAI 後與 figure 一起畫在腳下。
+	//
+	// 左右由 FIGANI 幀標頭內嵌的絕對座標決定，而那組座標是按陣營分的：我方
+	// 亞雷斯（資源 12／13）待機與攻擊都落在 x=89..178，敵方盜賊（資源 288／289）
+	// 兩者都落在 x=6..28。同一個單位不論當回合攻或守都待在自己那一側，所以
+	// 會踩到台座的永遠是我方那張圖。原版收據
+	// （docs/data/ui-traces/fd2-physical-attack-presentation-20260909.json）
+	// 拍到敵方攻擊我方那一段：我方索爾仍在右邊、踩在台座上、腳沒有被蓋住。
+	// 守方幀先解析完才開始畫任何一層：排程解不出來時整幀都不畫。順序會隨陣營
+	// 變，若留在 blit 途中才失敗即關閉，敵方攻擊方向會漏出「只有台座與攻方」
+	// 的半成品畫面。
+	var defImg *ebiten.Image
+	defX, defY := 16.0, 41.0
 	if fr := g.figani[a.defFig]; len(fr) > 0 {
 		fi, ok := figaniFrameAtDisplayTick(g.figaniDelays[a.defFig], a.fpt, prog)
 		if !ok || fi >= len(fr) {
 			return
 		}
-		img := fr[fi]
+		defImg = fr[fi]
 		// E1 紅色剪影近似；原版 DAC 條件尚未由 raw presentation adapter 提供。
 		impactSilhouette := prog >= impactS && prog < impactE && (prog/2)%2 == 0
 		if impactSilhouette {
-			img = g.redSilhouette(img)
+			defImg = g.redSilhouette(defImg)
 		}
-		dx, dy := 16.0, 41.0
 		if m := g.figMeta[a.defFig]; fi < len(m) {
-			dx, dy = float64(m[fi][0]), float64(m[fi][1])
+			defX, defY = float64(m[fi][0]), float64(m[fi][1])
 		}
 		if impactSilhouette {
 			// 現有 AttackResult 尚未帶入 0x29F72 的 raw trigger，因此 E1
@@ -9818,39 +9849,47 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 			// 玩家攻擊位於 0x2939D 的 raw +6 非零（負向）視覺分支；
 			// 反向攻擊使用對稱正向分支。完整 5→0 生命週期待 raw owner。
 			if ox, oy, ok := nativeImpactDisplacement(5, a.atkOwn); ok {
-				dx += float64(ox)
-				dy += float64(oy)
+				defX += float64(ox)
+				defY += float64(oy)
 			}
 		}
+	}
+	blit := func(img *ebiten.Image, dx, dy float64) {
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(sc, sc)
 		op.GeoM.Translate(dx*sc, dy*sc)
 		screen.DrawImage(img, op)
 	}
-	// (2.5) 我方台座(TAI_004;模板匹配 orig 台座左上=(165,157)@320 → ×2=(330,314))
-	if g.tai != nil {
-		tb := g.tai.Bounds()
-		tw, th := float64(tb.Dx())*sc, float64(tb.Dy())*sc
-		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Scale(sc, sc)
-		op.GeoM.Translate(482-tw/2, 356-th/2)
-		screen.DrawImage(g.tai, op)
-	}
-	// (3) 我方亞雷斯 figure(背影,踩台座;蓋住狀態欄):攻擊幀序播放(停末幀=突刺收勢),
-	// 位置=各幀內嵌 (dx,dy)(f11 劈擊伸左、f12-14 突刺,走位在資料裡,不需 lunge 計算)
-	if len(atkFrames) > 0 {
-		img := atkFrames[atkFi]
-		// 原版 impact 參考圖（orig_05_attack_03_impact）只把守方受擊者
-		// 顯示為紅色剪影；攻方仍使用原本的 FIGANI 幀。未有 raw 旗標前，
-		// 不把攻方也染紅成未證實的對稱效果。
-		dx, dy := 141.0, 3.0
-		if m := g.figMeta[a.atkFig]; atkFi < len(m) {
-			dx, dy = float64(m[atkFi][0]), float64(m[atkFi][1])
+	for _, layer := range battleSceneLayerOrder(a.atkOwn) {
+		switch layer {
+		case battleLayerDefenderFigure:
+			if defImg != nil {
+				blit(defImg, defX, defY)
+			}
+		case battleLayerOwnPedestal:
+			// 我方台座(TAI_004;模板匹配 orig 台座左上=(165,157)@320 → ×2=(330,314))
+			if g.tai != nil {
+				tb := g.tai.Bounds()
+				tw, th := float64(tb.Dx())*sc, float64(tb.Dy())*sc
+				op := &ebiten.DrawImageOptions{}
+				op.GeoM.Scale(sc, sc)
+				op.GeoM.Translate(482-tw/2, 356-th/2)
+				screen.DrawImage(g.tai, op)
+			}
+		case battleLayerAttackerFigure:
+			// 攻方 figure(蓋住狀態欄):攻擊幀序播放(停末幀=突刺收勢),位置=各幀
+			// 內嵌 (dx,dy)(f11 劈擊伸左、f12-14 突刺,走位在資料裡,不需 lunge 計算)。
+			// 原版 impact 參考圖（orig_05_attack_03_impact）只把守方受擊者顯示
+			// 為紅色剪影；攻方仍使用原本的 FIGANI 幀。未有 raw 旗標前，不把攻方
+			// 也染紅成未證實的對稱效果。
+			if len(atkFrames) > 0 {
+				dx, dy := 141.0, 3.0
+				if m := g.figMeta[a.atkFig]; atkFi < len(m) {
+					dx, dy = float64(m[atkFi][0]), float64(m[atkFi][1])
+				}
+				blit(atkFrames[atkFi], dx, dy)
+			}
 		}
-		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Scale(sc, sc)
-		op.GeoM.Translate(dx*sc, dy*sc)
-		screen.DrawImage(img, op)
 	}
 	// (4) 原版的 VGA DAC 脈衝不能以 RGBA 全畫面紅罩替代。IDA 在
 	// 0x2939d 只證實它受 FIGANI frame flag、傷害步進及 sub_29f72 的

@@ -209,8 +209,20 @@ docker run --rm --network none --memory 8g --cpus 4 --pids-limit 512 \
   -e FD2_ASSET_PACK=/pack \
   -v /home/anr2/cht/fd2:/src -v <完整素材根>:/pack:ro -v <快取>:/gocache \
   -w /src/remake fd2-go-test-local:latest \
-  bash -c 'xvfb-run -a -s "-screen 0 1280x800x24 -nolisten tcp" go test ./... -count=1'
+  bash -c '
+mkdir -p "$HOME"
+export DISPLAY=:99
+Xvfb :99 -screen 0 1280x800x24 -nolisten tcp >/tmp/xvfb.log 2>&1 & xvfb_pid=$!
+trap "kill $xvfb_pid 2>/dev/null" EXIT
+for i in $(seq 1 100); do test -S /tmp/.X11-unix/X99 && break; sleep 0.1; done
+go test ./... -count=1
+'
 ```
+
+`fd2-go-test-local` 裡的 `xvfb-run` 不能用：它把 Xvfb 起起來之後就停住，
+`go test` 根本沒有被執行（容器內 `ps -ef` 只看得到 `xvfb-run` 與 `Xvfb`
+兩個行程，CPU 0%）。看起來像測試跑很久，實際上一行都沒跑。自己起 Xvfb
+再設 `DISPLAY` 就正常。
 
 素材根缺件會讓失敗數大幅膨脹，且失敗訊息看起來像功能缺陷。判讀前先確認
 `ui/action_cells`、`ui/fdother_014_church`、`locales/`、`palette/` 都在。
