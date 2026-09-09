@@ -25,6 +25,8 @@
 #   FD2_ORACLE_FRAME_EIP     改以遊戲自己的繪圖進入點為邊界，如 0x11CAC
 #   FD2_ORACLE_FRAME_FROM／FD2_ORACLE_FRAME_TO
 #                            只在這段指令區間取樣，用來把輸出限在要看的那一段
+#   FD2_ORACLE_EIP_WATCH     逗號分隔的十六進位位址（最多 16 個），每一幀記錄
+#                            各自的累計進入次數；用來回答「這一段是誰畫的」
 set -euo pipefail
 
 repo=$(cd "$(dirname "$0")/.." && pwd)
@@ -41,6 +43,7 @@ frame_max=${FD2_ORACLE_FRAME_MAX:-4000}
 frame_eip=${FD2_ORACLE_FRAME_EIP:-}
 frame_from=${FD2_ORACLE_FRAME_FROM:-0}
 frame_to=${FD2_ORACLE_FRAME_TO:-0}
+eip_watch=${FD2_ORACLE_EIP_WATCH:-}
 
 test -d "$dos/apps/fd2/cmd/oracle" || { echo "找不到 dosgolem oracle：$dos" >&2; exit 2; }
 test -f "$orig/FD2.EXE" || { echo "找不到固定版本 FD2.EXE：$orig" >&2; exit 2; }
@@ -69,6 +72,7 @@ docker run --rm --network none --memory 4g --cpus "$cpus" --pids-limit 256 \
   -e FD2_ORACLE_FRAME_EIP="$frame_eip" \
   -e FD2_ORACLE_FRAME_FROM="$frame_from" \
   -e FD2_ORACLE_FRAME_TO="$frame_to" \
+  -e FD2_ORACLE_EIP_WATCH="$eip_watch" \
   -w /dos "${FD2_ORACLE_IMAGE:-golang:1.24-bookworm}" \
   bash -c '
 set -euo pipefail
@@ -82,6 +86,9 @@ if [ -n "$FD2_ORACLE_FRAMES" ]; then
              -frame-to "$FD2_ORACLE_FRAME_TO")
   if [ -n "$FD2_ORACLE_FRAME_EIP" ]; then
     frameargs+=(-frame-eip "$FD2_ORACLE_FRAME_EIP")
+  fi
+  if [ -n "$FD2_ORACLE_EIP_WATCH" ]; then
+    frameargs+=(-eip-watch "$FD2_ORACLE_EIP_WATCH")
   fi
 fi
 go run ./apps/fd2/cmd/oracle \

@@ -8,6 +8,7 @@ import (
 	"image/png"
 	"os"
 	"path/filepath"
+	"sort"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -91,32 +92,31 @@ func TestDumpChapterOneMoveFrames(t *testing.T) {
 	if g.sel == nil {
 		t.Fatalf("沒有選到單位 err=%q", g.loadErr)
 	}
-	dest := battle.Cell{X: -1}
+	// g.reach 是 map，直接取第一個會讓每次跑的終點不同，收據就無法重現。
+	// 先收集距離 2 的可達空格再排序，固定取同一個。
+	candidates := []battle.Cell{}
 	for c := range g.reach {
-		if c.X == g.sel.X && c.Y == g.sel.Y-2 {
-			dest = c
-			break
+		dx, dy := c.X-g.sel.X, c.Y-g.sel.Y
+		if dx < 0 {
+			dx = -dx
+		}
+		if dy < 0 {
+			dy = -dy
+		}
+		if dx+dy == 2 && g.st.UnitAt(c.X, c.Y) == nil {
+			candidates = append(candidates, c)
 		}
 	}
-	if dest.X < 0 {
-		for c := range g.reach {
-			d := c.X - g.sel.X
-			if d < 0 {
-				d = -d
-			}
-			e := c.Y - g.sel.Y
-			if e < 0 {
-				e = -e
-			}
-			if d+e == 2 && g.st.UnitAt(c.X, c.Y) == nil {
-				dest = c
-				break
-			}
+	if len(candidates) == 0 {
+		t.Fatal("找不到距離 2 的可達空格")
+	}
+	sort.Slice(candidates, func(i, j int) bool {
+		if candidates[i].Y != candidates[j].Y {
+			return candidates[i].Y < candidates[j].Y
 		}
-	}
-	if dest.X < 0 {
-		t.Fatal("找不到距離 2 的可達格")
-	}
+		return candidates[i].X < candidates[j].X
+	})
+	dest := candidates[0]
 	if !g.positionScreenshotCursor(dest.X, dest.Y) {
 		t.Fatal("游標無法移到終點")
 	}

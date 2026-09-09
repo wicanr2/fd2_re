@@ -93,6 +93,21 @@ docker run ... -e FD2_FRAME_DUMP=/frames -v <輸出目錄>:/frames:rw ... \
 
 沒有 `FD2_FRAME_DUMP` 就略過，不影響一般回歸。
 
+### 找「這一段是誰畫的」
+
+`FD2_ORACLE_EIP_WATCH` 收逗號分隔的十六進位位址（最多 16 個），每一幀記錄各自
+的累計進入次數。逐幀畫面回答「有沒有畫」，這個計數器回答「誰被呼叫了」。
+
+```sh
+FD2_ORACLE_FRAMES=1 FD2_ORACLE_FRAME_STRIDE=2000 FD2_ORACLE_FRAME_SETTLE=4 \
+FD2_ORACLE_EIP_WATCH=0x11cac,0x122dc,0x11eee,0x127a9,0x127e0,0x1ad72 \
+  tools/dosgolem_oracle.sh /tmp/fd2-frames plan.jsonl
+```
+
+一次就問出走行重繪的層集合：地形與前景各一次、單位繪製公式十一次，而整幀
+排程、範圍圖示與 HUD 皆為零。細節見
+[99](99-move-confirm-cursor-20260909.md)。
+
 ### 為什麼非看畫面不可
 
 第一次用它比對就抓到一個狀態層看不出來的差異：移動動畫期間原版不畫游標白框

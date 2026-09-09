@@ -10720,7 +10720,15 @@ func (g *Game) composeNativeMapFrameAt(now time.Time) error {
 	if len(g.nativeMapVGA) != indexedmap.NativeMapVGASize {
 		g.nativeMapVGA = make([]byte, indexedmap.NativeMapVGASize)
 	}
-	if err := indexedmap.ComposeNativeFrame(g.nativeMapWork, g.nativeMapVGA, in); err != nil {
+	// 走行中的重繪是另一條路徑，不是整幀排程關掉幾層：原版每一幀只進地形、
+	// 單位與前景，完全不進 0x11CAC、0x122DC 與 0x1AD72，所以畫面上沒有游標
+	// 白框也沒有左下 HUD 面板。收據見
+	// docs/knowledge-base/99-move-confirm-cursor-20260909.md。
+	if g.walk != nil {
+		if err := indexedmap.ComposeNativeStepFrame(g.nativeMapWork, g.nativeMapVGA, in.Frame); err != nil {
+			return err
+		}
+	} else if err := indexedmap.ComposeNativeFrame(g.nativeMapWork, g.nativeMapVGA, in); err != nil {
 		return err
 	}
 	*g.st = candidateState

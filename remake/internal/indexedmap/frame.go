@@ -426,6 +426,57 @@ func ComposeNativeFrameObserved(work, vga []byte, in NativeFrameInput, observer 
 	}, observer)
 }
 
+// ComposeNativeStepFrame is the redraw the original runs while a unit is
+// walking. It is a different path from 0x11cac, not 0x11cac with layers
+// switched off.
+//
+// dosgolem 逐幀收據（docs/data/ui-traces/fd2-move-frame-compare-20260909.json
+// 與同日的 eip-watch 量測）：確認移動之後到抵達為止，每一幀
+// `0x11EEE`（地形）與 `0x127A9`（前景）各進入一次、`0x127E0`（單位繪製公式）
+// 進入十一次，而 `0x11CAC`（整幀排程）、`0x122DC`（範圍／游標圖示）與
+// `0x1AD72`（HUD）**一次都沒有**。畫面上因此沒有游標白框、也沒有左下 HUD
+// 面板，而 overlay selector `[0x51A83]` 整段仍是 1——這個差異只有看畫面才
+// 看得出來。
+//
+// 視窗複製沒有單獨量到位址，但走行期間畫面確實在更新，所以保留與整幀排程
+// 相同的 312×192 複製。章節輔助表面同樣沒有單獨量到，保留原本行為。
+func ComposeNativeStepFrame(work, vga []byte, in FrameInput) error {
+	if len(work)%workStride != 0 || len(vga) < NativeMapVGASize ||
+		in.MapWidth <= 0 || len(in.Cells)%in.MapWidth != 0 {
+		return errors.New("indexedmap: incomplete native step frame input")
+	}
+	if in.TerrainBank == nil || in.UnitBank == nil || in.ForegroundBank == nil || in.SelectorCache == nil {
+		return errors.New("indexedmap: missing native step frame bank")
+	}
+	frame := append([]byte(nil), work...)
+	baseX, baseY := workBase%workStride, workBase/workStride
+	if in.ChapterAux != nil {
+		if err := fdother.BlitNativeChapterAuxViewport(frame[workBase:], workStride, in.ChapterAux, in.ChapterAuxPhase); err != nil {
+			return fmt.Errorf("indexedmap: step chapter auxiliary surface: %w", err)
+		}
+	}
+	if err := in.TerrainBank.BlitNativeTerrainRegion(frame, workStride, baseX, baseY, in.MapWidth, in.Cells, in.Controls, in.CameraX, in.CameraY, 13, 8, in.Flip, in.TerrainCycle, in.LUT); err != nil {
+		return fmt.Errorf("indexedmap: step terrain: %w", err)
+	}
+	if err := in.UnitBank.BlitNativeUnitLayer(frame, workStride, in.SelectorCache, in.Units, in.CameraX, in.CameraY, 12, 7, in.IdleCycle, in.MovingCycle, in.PixelShift); err != nil {
+		return fmt.Errorf("indexedmap: step units: %w", err)
+	}
+	if err := in.ForegroundBank.BlitNativeForegroundLayer(frame, workStride, in.ForegroundUnits, in.MapWidth, in.Cells, in.Controls, in.CameraX, in.CameraY, 12, 7, in.Flip, in.LUT); err != nil {
+		return fmt.Errorf("indexedmap: step foreground: %w", err)
+	}
+	copyFrame := append([]byte(nil), vga...)
+	if err := fdicon.CopyNativeIndexedRegion(
+		copyFrame[steadyViewportOffset:], viewWidth,
+		frame[workBase:], workStride,
+		steadyViewportWidth, viewHeight,
+	); err != nil {
+		return fmt.Errorf("indexedmap: step viewport copy: %w", err)
+	}
+	copy(work, frame)
+	copy(vga, copyFrame)
+	return nil
+}
+
 // ComposeNativeTransitionFrame performs one verified indexed 0x24618 frame:
 // terrain redraw → first LUT pass → 0x127a9 unit/foreground redraw → second
 // LUT pass → centered rectangle LUT → 312×192 viewport copy. It clones the

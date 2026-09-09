@@ -616,3 +616,53 @@ func TestBuildNativeTerrainCellsRequiresExporterArrays(t *testing.T) {
 		}
 	}
 }
+
+// TestComposeNativeStepFrameOmitsRangeAndHUD 釘住走行重繪的層集合。
+//
+// 原版走行期間每一幀只進地形、單位與前景（`0x11EEE`／`0x127E0`／`0x127A9`），
+// `0x122DC` 與 `0x1AD72` 一次都沒有，即使 overlay selector 仍是 1。所以同一份
+// 輸入交給走行重繪，結果必須等於「range mode 0 ＋ 空 HUD」的整幀排程，而且
+// 與輸入的 RangeMode 無關。
+func TestComposeNativeStepFrameOmitsRangeAndHUD(t *testing.T) {
+	newInput := func(rangeMode int) FrameInput {
+		cache := &fdicon.NativeSelectorCache{}
+		if _, err := cache.SlotFor(0); err != nil {
+			t.Fatal(err)
+		}
+		foreground := bank(12, 0)
+		foreground.Sprites[1] = solid(4)
+		cells := make([]fdicon.NativeTerrainCell, 13*8)
+		for i := range cells {
+			cells[i].BlitMode = 0xff
+		}
+		return FrameInput{
+			TerrainBank: bank(12, 1), RangeBank: bank(20, 2), UnitBank: bank(12, 3), ForegroundBank: foreground,
+			SelectorCache: cache, Cells: cells, Controls: []byte{0x80, 0, 0, 0},
+			LUT: make([]byte, 256), MapWidth: 13, RangeMode: rangeMode,
+			// 單位與前景放在別格，游標格才看得到範圍圖示有沒有被畫上去；
+			// 疊在同一格會被後面的層蓋掉，比較就失去鑑別力。
+			Units:           []fdicon.NativeUnitLayerEntry{{X: 2, Y: 2, Slot: 0}},
+			ForegroundUnits: []fdicon.NativeForegroundLayerEntry{{X: 2, Y: 2}},
+		}
+	}
+	baseWork, baseVGA := make([]byte, 456*300), make([]byte, NativeMapVGASize)
+	if err := ComposeFrame(baseWork, baseVGA, newInput(0), func([]byte) error { return nil }); err != nil {
+		t.Fatal(err)
+	}
+	for _, mode := range []int{0, 1, 3, 5} {
+		stepWork, stepVGA := make([]byte, 456*300), make([]byte, NativeMapVGASize)
+		if err := ComposeNativeStepFrame(stepWork, stepVGA, newInput(mode)); err != nil {
+			t.Fatalf("range mode %d: %v", mode, err)
+		}
+		if !bytes.Equal(stepVGA, baseVGA) {
+			t.Fatalf("range mode %d 的走行重繪畫出了範圍／游標圖示或 HUD", mode)
+		}
+	}
+	withRange, rangeVGA := make([]byte, 456*300), make([]byte, NativeMapVGASize)
+	if err := ComposeFrame(withRange, rangeVGA, newInput(1), func([]byte) error { return nil }); err != nil {
+		t.Fatal(err)
+	}
+	if bytes.Equal(rangeVGA, baseVGA) {
+		t.Fatal("測試素材畫不出範圍圖示，這個比較沒有鑑別力")
+	}
+}
