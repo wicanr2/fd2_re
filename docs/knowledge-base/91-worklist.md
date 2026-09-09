@@ -14,8 +14,9 @@
   一般玩家路徑實拍驗證，證據見 [95](95-action-overlay-selection-20260908.md)。
 - RE-CLOSED：回合橫幅的原版呈現已解出——**對已合成畫面做的 33 步對稱馬賽克**，
   方塊邊長 `1 + min(f, 32 - f)`（1→17→1），整段期間地圖完全不重繪，文字保持
-  銳利置中。量測見 [101](101-phase-banner-20260909.md)。重製端目前只在原生
-  整幀之後畫一行字，缺整段呈現；字模亦未比對。
+  銳利置中；`PLAYER PHASE` 與 `ENEMY PHASE` 共用同一段排程。量測見
+  [101](101-phase-banner-20260909.md)。重製端目前只在原生整幀之後畫一行字，
+  缺整段呈現；字模亦未比對。
 - 對拍工具鏈：原版側執行器改為 dosgolem `apps/fd2/cmd/oracle`，由受版控的
   `tools/dosgolem_oracle.sh` 驅動；規則與缺口見
   [96](96-parity-toolchain-20260909.md)。
