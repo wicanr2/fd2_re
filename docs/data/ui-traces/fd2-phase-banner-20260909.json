@@ -1,0 +1,286 @@
+{
+ "schema_version": 1,
+ "kind": "fd2_original_runtime_receipt",
+ "topic": "ENEMY PHASE 回合橫幅的完整呈現：33 步對稱馬賽克",
+ "date": "2026-09-09",
+ "runner": "dosgolem apps/fd2/cmd/oracle",
+ "dosgolem_commit": "f627cd1",
+ "driver": "tools/dosgolem_oracle.sh（FRAMES=1、stride 4000、settle 4、EIP_WATCH）",
+ "executable": {
+  "file": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+ },
+ "entry": {
+  "path": "標題選單 right,down,down,enter 由附帶 FD2.SAV 進第一關，游標停在空格 enter 開系統面板、down 到 END、enter、enter(YES) 進敵方回合",
+  "evidence_grade": "RUNTIME 觀測；入口為附帶存檔，輸入全為一般 BIOS 按鍵",
+  "state_injections": [],
+  "input_kind": "normal BIOS keys"
+ },
+ "measurement": {
+  "method": "每張 320×200 索引畫面在地圖窗格 (4,4)-(316,196) 內取「同列連續同色長度」的眾數，即馬賽克方塊邊長",
+  "sequence": [
+   {
+    "frame": 0,
+    "step": 190016000,
+    "mosaic_block": 1,
+    "indexed_sha256": "f2b48057b8a89e6abb03db3712fe6bbd184facb0b40854c63effa95573caf4ec",
+    "file": "frame-000000.png"
+   },
+   {
+    "frame": 1,
+    "step": 190592000,
+    "mosaic_block": 2,
+    "indexed_sha256": "9ed3ad77ca0cf4d8769f33c2cf6b589658aaa9ca4103826e68d74f6187213f71",
+    "file": "frame-000001.png"
+   },
+   {
+    "frame": 2,
+    "step": 190980000,
+    "mosaic_block": 3,
+    "indexed_sha256": "54a24de5aa422c782868c91de9465cbc47fd70b2ba3148d5b55648b4c505ce9f",
+    "file": "frame-000002.png"
+   },
+   {
+    "frame": 3,
+    "step": 191352000,
+    "mosaic_block": 4,
+    "indexed_sha256": "2db7ccd6ee7db98717e6a99a56e5ce15304f8ca2bfd126be2d2e547d5bbc2e47",
+    "file": "frame-000003.png"
+   },
+   {
+    "frame": 4,
+    "step": 191724000,
+    "mosaic_block": 5,
+    "indexed_sha256": "e778673aeb6aa6c6bd6f7240dc98af0d659b87c92e33c9f1423fa52160813e6c",
+    "file": "frame-000004.png"
+   },
+   {
+    "frame": 5,
+    "step": 192084000,
+    "mosaic_block": 6,
+    "indexed_sha256": "2dc9d27753771fa86e9e61dc68e7ffed143ccc80fecfdb2342e428de3d67f2aa",
+    "file": "frame-000005.png"
+   },
+   {
+    "frame": 6,
+    "step": 192444000,
+    "mosaic_block": 7,
+    "indexed_sha256": "49db635e61023f1a07e4a17f18d454519846bb47d6d5c085e1d2c0397e17cfb8",
+    "file": "frame-000006.png"
+   },
+   {
+    "frame": 7,
+    "step": 192804000,
+    "mosaic_block": 8,
+    "indexed_sha256": "378dc9406903302c7289d05fba68ff695c9efa91be829a1988941f8add45e6e5",
+    "file": "frame-000007.png"
+   },
+   {
+    "frame": 8,
+    "step": 193160000,
+    "mosaic_block": 9,
+    "indexed_sha256": "3f0fb40d3ddd67603bfda2725a08b3496e3170ffce5aa2a94cdfccc5a0823ec4",
+    "file": "frame-000008.png"
+   },
+   {
+    "frame": 9,
+    "step": 193516000,
+    "mosaic_block": 10,
+    "indexed_sha256": "daf3a69f0fa5193f1339736a712ee84aadda623bfe21332eba0b4467cc26abdf",
+    "file": "frame-000009.png"
+   },
+   {
+    "frame": 10,
+    "step": 193868000,
+    "mosaic_block": 11,
+    "indexed_sha256": "4cf2af8eefc7c39b06a7c44ef961e665b724b0855a2afbe29365dd0ab02701b4",
+    "file": "frame-000010.png"
+   },
+   {
+    "frame": 11,
+    "step": 194224000,
+    "mosaic_block": 12,
+    "indexed_sha256": "d20d13bd47cc794858c306a99d83f753812b24007e2cd168083cb6439ef36dde",
+    "file": "frame-000011.png"
+   },
+   {
+    "frame": 12,
+    "step": 194576000,
+    "mosaic_block": 13,
+    "indexed_sha256": "f021c336b08335f615b1d4feb06f36b8d50c5e5e24bdf8b78c21716e1d9e8b18",
+    "file": "frame-000012.png"
+   },
+   {
+    "frame": 13,
+    "step": 194932000,
+    "mosaic_block": 14,
+    "indexed_sha256": "9901c45585481f5d032f92a2af1903796d0724f78335df75850db1b7f344e3df",
+    "file": "frame-000013.png"
+   },
+   {
+    "frame": 14,
+    "step": 195280000,
+    "mosaic_block": 15,
+    "indexed_sha256": "cf694453f533364510debeef2f5ef938d168cb48d391a0d4ade09f012503e0dd",
+    "file": "frame-000014.png"
+   },
+   {
+    "frame": 15,
+    "step": 195632000,
+    "mosaic_block": 16,
+    "indexed_sha256": "cfa4fbe74a4a2a8a0c1ab0829bd23e5b80792121262506896d7210e33611ef25",
+    "file": "frame-000015.png"
+   },
+   {
+    "frame": 16,
+    "step": 195980000,
+    "mosaic_block": 17,
+    "indexed_sha256": "e52ef39fcc3f750280696599556e3f1efb9f711975f5aebe7e563410b8817a71",
+    "file": "frame-000016.png"
+   },
+   {
+    "frame": 17,
+    "step": 196332000,
+    "mosaic_block": 16,
+    "indexed_sha256": "cfa4fbe74a4a2a8a0c1ab0829bd23e5b80792121262506896d7210e33611ef25",
+    "file": "frame-000017.png"
+   },
+   {
+    "frame": 18,
+    "step": 196680000,
+    "mosaic_block": 15,
+    "indexed_sha256": "cf694453f533364510debeef2f5ef938d168cb48d391a0d4ade09f012503e0dd",
+    "file": "frame-000018.png"
+   },
+   {
+    "frame": 19,
+    "step": 197032000,
+    "mosaic_block": 14,
+    "indexed_sha256": "9901c45585481f5d032f92a2af1903796d0724f78335df75850db1b7f344e3df",
+    "file": "frame-000019.png"
+   },
+   {
+    "frame": 20,
+    "step": 197384000,
+    "mosaic_block": 13,
+    "indexed_sha256": "f021c336b08335f615b1d4feb06f36b8d50c5e5e24bdf8b78c21716e1d9e8b18",
+    "file": "frame-000020.png"
+   },
+   {
+    "frame": 21,
+    "step": 197740000,
+    "mosaic_block": 12,
+    "indexed_sha256": "d20d13bd47cc794858c306a99d83f753812b24007e2cd168083cb6439ef36dde",
+    "file": "frame-000021.png"
+   },
+   {
+    "frame": 22,
+    "step": 198096000,
+    "mosaic_block": 11,
+    "indexed_sha256": "4cf2af8eefc7c39b06a7c44ef961e665b724b0855a2afbe29365dd0ab02701b4",
+    "file": "frame-000022.png"
+   },
+   {
+    "frame": 23,
+    "step": 198452000,
+    "mosaic_block": 10,
+    "indexed_sha256": "daf3a69f0fa5193f1339736a712ee84aadda623bfe21332eba0b4467cc26abdf",
+    "file": "frame-000023.png"
+   },
+   {
+    "frame": 24,
+    "step": 198808000,
+    "mosaic_block": 9,
+    "indexed_sha256": "3f0fb40d3ddd67603bfda2725a08b3496e3170ffce5aa2a94cdfccc5a0823ec4",
+    "file": "frame-000024.png"
+   },
+   {
+    "frame": 25,
+    "step": 199164000,
+    "mosaic_block": 8,
+    "indexed_sha256": "378dc9406903302c7289d05fba68ff695c9efa91be829a1988941f8add45e6e5",
+    "file": "frame-000025.png"
+   },
+   {
+    "frame": 26,
+    "step": 199524000,
+    "mosaic_block": 7,
+    "indexed_sha256": "49db635e61023f1a07e4a17f18d454519846bb47d6d5c085e1d2c0397e17cfb8",
+    "file": "frame-000026.png"
+   },
+   {
+    "frame": 27,
+    "step": 199888000,
+    "mosaic_block": 6,
+    "indexed_sha256": "2dc9d27753771fa86e9e61dc68e7ffed143ccc80fecfdb2342e428de3d67f2aa",
+    "file": "frame-000027.png"
+   },
+   {
+    "frame": 28,
+    "step": 200256000,
+    "mosaic_block": 5,
+    "indexed_sha256": "e778673aeb6aa6c6bd6f7240dc98af0d659b87c92e33c9f1423fa52160813e6c",
+    "file": "frame-000028.png"
+   },
+   {
+    "frame": 29,
+    "step": 200628000,
+    "mosaic_block": 4,
+    "indexed_sha256": "2db7ccd6ee7db98717e6a99a56e5ce15304f8ca2bfd126be2d2e547d5bbc2e47",
+    "file": "frame-000029.png"
+   },
+   {
+    "frame": 30,
+    "step": 201012000,
+    "mosaic_block": 3,
+    "indexed_sha256": "54a24de5aa422c782868c91de9465cbc47fd70b2ba3148d5b55648b4c505ce9f",
+    "file": "frame-000030.png"
+   },
+   {
+    "frame": 31,
+    "step": 201420000,
+    "mosaic_block": 2,
+    "indexed_sha256": "9ed3ad77ca0cf4d8769f33c2cf6b589658aaa9ca4103826e68d74f6187213f71",
+    "file": "frame-000031.png"
+   },
+   {
+    "frame": 32,
+    "step": 201884000,
+    "mosaic_block": 1,
+    "indexed_sha256": "f2b48057b8a89e6abb03db3712fe6bbd184facb0b40854c63effa95573caf4ec",
+    "file": "frame-000032.png"
+   }
+  ],
+  "median_step_gap": 356000
+ },
+ "conclusions": [
+  {
+   "claim": "回合橫幅是 33 步的對稱馬賽克，方塊邊長 1→17→1",
+   "grade": "已證實",
+   "evidence": "逐幀眾數：frame f 的邊長為 1+min(f, 32-f)，33 張全部吻合"
+  },
+  {
+   "claim": "整段橫幅期間地圖完全不重繪",
+   "grade": "已證實",
+   "evidence": "frame 0..31 的 0x11CAC／0x122DC／0x11EEE／0x127A9／0x127E0／0x1AD72 差值全為 0；frame 32 才恢復"
+  },
+  {
+   "claim": "橫幅文字在整段期間保持銳利、置中，不隨馬賽克糊掉",
+   "grade": "已證實",
+   "evidence": "frame 1／5／19／32 的畫面：地圖已成大方塊，ENEMY PHASE 字樣仍是清晰字形"
+  },
+  {
+   "claim": "馬賽克是對已合成畫面做的，不是重畫低解析地圖",
+   "grade": "強推論",
+   "evidence": "期間沒有任何地形／單位／前景繪製呼叫，畫面卻在變"
+  }
+ ],
+ "not_claimed": [
+  "馬賽克與文字的繪製位址。本輪只量畫面與既有繪圖位址的缺席",
+  "字形本身尚未擷取成資產；文字內容是英文 ENEMY PHASE",
+  "PLAYER PHASE 是否同一段排程。本輪只取到敵方回合",
+  "每步的實機毫秒。虛擬時鐘是每指令 1 微秒的近似"
+ ]
+}

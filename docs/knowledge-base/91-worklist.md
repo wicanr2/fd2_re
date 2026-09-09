@@ -12,8 +12,10 @@
   ＋ `sub_17898` 0x178BF..0x178F8），方向鍵只接受 availability 為零的方向
   （`sub_177FC` 0x17835..0x17897），起始選擇由 `sub_173E7` 決定。三項已接線並以
   一般玩家路徑實拍驗證，證據見 [95](95-action-overlay-selection-20260908.md)。
-- RUNTIME-E1：回合橫幅先前被 `drawNativeMapFrame` 的整幀 blit 蓋掉，已移到其後。
-  橫幅本身仍是重製端近似呈現，原版回合字樣未解出。
+- RE-CLOSED：回合橫幅的原版呈現已解出——**對已合成畫面做的 33 步對稱馬賽克**，
+  方塊邊長 `1 + min(f, 32 - f)`（1→17→1），整段期間地圖完全不重繪，文字保持
+  銳利置中。量測見 [101](101-phase-banner-20260909.md)。重製端目前只在原生
+  整幀之後畫一行字，缺整段呈現；字模亦未比對。
 - 對拍工具鏈：原版側執行器改為 dosgolem `apps/fd2/cmd/oracle`，由受版控的
   `tools/dosgolem_oracle.sh` 驅動；規則與缺口見
   [96](96-parity-toolchain-20260909.md)。
