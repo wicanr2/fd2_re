@@ -20,13 +20,20 @@ func (g *Game) nativeFocusEndpoint(targetX, targetY int) (int, int, battle.Nativ
 	}
 	originX, originY := int(g.camX)/g.m.TileW, int(g.camY)/g.m.TileH
 	cursorX, cursorY := g.curX, g.curY
-	screenX, screenY := cursorX-originX, cursorY-originY
-	if g.hasStoryNativeMapView {
+	// 可見游標一律沿用已追蹤的值；原版沒有任何一處由 cursor - camera 重算它
+	// （寫入端見 docs/data/ida/fd2_visible_cursor_writers_ida.txt）。鏡頭捲過
+	// 游標之後那個減法會給出負值，也就是視窗外的無效格。
+	screenX, screenY := nativeMapFocusVisibleSeed(cursorX-originX, cursorY-originY)
+	switch {
+	case g.hasStoryNativeMapView:
 		// The six globals are one typed state. Mixing the story-visible cursor
 		// with g.curX/g.curY from a preceding battle creates an impossible
 		// cursor-camera identity after LOADCH and PAN.
 		cursorX, cursorY = g.storyNativeMapView.CursorX, g.storyNativeMapView.CursorY
 		screenX, screenY = g.storyNativeMapView.VisibleCursorX, g.storyNativeMapView.VisibleCursorY
+	case g.st != nil && g.st.HasNativeMapViewState:
+		cursorX, cursorY = g.st.NativeMapViewState.CursorX, g.st.NativeMapViewState.CursorY
+		screenX, screenY = g.st.NativeMapViewState.VisibleCursorX, g.st.NativeMapViewState.VisibleCursorY
 	}
 	maxOriginX, maxOriginY := g.m.W-13, g.m.H-8
 	if maxOriginX < 0 {

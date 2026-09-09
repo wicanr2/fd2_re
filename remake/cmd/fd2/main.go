@@ -95,6 +95,7 @@ type Game struct {
 	nativeCh28PostPresent       *nativeCh28PostPresentJob          // blocking 0x1DB65 13+6+6 indexed presentation
 	nativeCh22Reload            *nativeCh22ReloadState             // atomic FDFIELD69/FDSHAP46/47/FDOTHER42 tail transaction
 	nativeFDOTHERPalettePhase   int                                // process-lifetime 0x4DFCC phase projection (0..15)
+	nativeMapHUDInputReason     string                             // 最近一次 nativeMapHUDInput 失敗即關閉的原因，只供診斷訊息
 	nativeFDOTHERPaletteTick    int                                // process-lifetime 0x4DFCC unsigned BIOS low-word snapshot
 	nativeFullDACWhite          bool                               // exact 0x11DF2(0,255,255) overlay for legacy RGB scenes
 	nativeFullDACBlack          bool                               // exact ch07 post 0x11D40(0,255,64)+mode-13h clear
@@ -1003,6 +1004,22 @@ func (g *Game) stepCamPan() {
 	}
 }
 
+// nativeMapFocusVisibleSeed 是「完全沒有已追蹤可見游標」時的重製端後備值：
+// 把 cursor - camera 夾回 13×8 視窗。原版永遠有一份可見游標可以沿用，這裡只
+// 是不讓直接進場的 renderer 因為缺少那份狀態而產生視窗外的座標。
+func nativeMapFocusVisibleSeed(x, y int) (int, int) {
+	clamp := func(v, limit int) int {
+		if v < 0 {
+			return 0
+		}
+		if v >= limit {
+			return limit - 1
+		}
+		return v
+	}
+	return clamp(x, 13), clamp(y, 8)
+}
+
 // stepFocusUnit 逐格重現 0x12cea 與 0x11b48/0x11b9b/0x11bfa/0x11c59。
 // 原版視窗游標的安全帶為 X=2..10、Y=2..5；超出安全帶後，能捲圖時保持
 // screen cursor 不動並移動 map origin，碰地圖邊界時才讓 screen cursor 靠邊。
@@ -1023,10 +1040,13 @@ func (g *Game) stepFocusUnit() {
 		}
 	}
 	originX, originY := int(g.camX)/g.m.TileW, int(g.camY)/g.m.TileH
-	screenX, screenY := g.curX-originX, g.curY-originY
-	if (g.ch28HandlerNativeMapViewContinuity() || j.nativeView) && g.hasStoryNativeMapView {
+	// 可見游標一律沿用已追蹤的值。原版沒有任何一處由 cursor - camera 重算它
+	// （寫入端清單見 docs/data/ida/fd2_visible_cursor_writers_ida.txt），鏡頭
+	// 一旦捲過游標，減法就會給出負值，而那是視窗外的無效格。
+	screenX, screenY := nativeMapFocusVisibleSeed(g.curX-originX, g.curY-originY)
+	if g.hasStoryNativeMapView {
 		screenX, screenY = g.storyNativeMapView.VisibleCursorX, g.storyNativeMapView.VisibleCursorY
-	} else if g.ch28HandlerNativeMapViewContinuity() && g.st != nil && g.st.HasNativeMapViewState {
+	} else if g.st != nil && g.st.HasNativeMapViewState {
 		screenX, screenY = g.st.NativeMapViewState.VisibleCursorX, g.st.NativeMapViewState.VisibleCursorY
 	}
 	if g.curX == j.targetX && g.curY == j.targetY {
@@ -10705,10 +10725,12 @@ func (g *Game) nativeMapHUDInput() (indexedmap.NativeMapHUDInput, bool) {
 	if !nativeMapAssetsAvailable(a) || g.m == nil || g.st == nil ||
 		!g.st.HasNativeMapHUDState || !g.st.HasNativeMapCycleState || g.st.NativeMapSelectorCache == nil ||
 		g.curX < 0 || g.curY < 0 || g.curX >= g.m.W || g.curY >= g.m.H {
+		g.nativeMapHUDInputReason = "資產、HUD／cycle 狀態、selector cache 或游標界線其一不成立"
 		return indexedmap.NativeMapHUDInput{}, false
 	}
 	tile := g.m.Tiles[g.curY*g.m.W+g.curX]
 	if tile < 0 || tile >= len(a.Controls)/4 || tile > 0x3ff {
+		g.nativeMapHUDInputReason = fmt.Sprintf("terrain descriptor %d outside 0..%d", tile, len(a.Controls)/4-1)
 		return indexedmap.NativeMapHUDInput{}, false
 	}
 	control := a.Controls[tile*4+1]
@@ -10727,6 +10749,11 @@ func (g *Game) nativeMapHUDInput() (indexedmap.NativeMapHUDInput, bool) {
 		if !u.HasMapSelectorSlot || !u.HasBattleFig || u.BattleFig < 0 || u.BattleFig > 0xff ||
 			!u.HasNativeRecordRace || !u.HasNativeRecordByte6 ||
 			!u.HasNativeRecordWord42 || u.HP < 0 || u.HP > 0xffff {
+			g.nativeMapHUDInputReason = fmt.Sprintf(
+				"游標下單位缺少 raw 出處：slot=%v fig=%v(%d) race=%v byte6=%v word42=%v hp=%d",
+				u.HasMapSelectorSlot, u.HasBattleFig, u.BattleFig,
+				u.HasNativeRecordRace, u.HasNativeRecordByte6, u.HasNativeRecordWord42, u.HP,
+			)
 			return indexedmap.NativeMapHUDInput{}, false
 		}
 		if indexedmap.NativeMapHUDOptionalUnitEligible(
@@ -10818,10 +10845,22 @@ func (g *Game) composeNativeMapFrame() error {
 // deterministic.
 func (g *Game) composeNativeMapFrameAt(now time.Time) error {
 	a := g.nativeMapAssets
+	if g.st == nil {
+		return errors.New("native map frame: battle state is unavailable")
+	}
 	hud, ok := g.nativeMapHUDInput()
-	if !ok || g.st == nil || !g.st.HasNativeMapRangeModeState ||
+	if !ok {
+		return fmt.Errorf(
+			"native map frame: HUD input unavailable（%s；assets=%v hud=%v cycle=%v selector_cache=%v cursor=(%d,%d) map=%v）",
+			g.nativeMapHUDInputReason,
+			nativeMapAssetsAvailable(a), g.st.HasNativeMapHUDState, g.st.HasNativeMapCycleState,
+			g.st.NativeMapSelectorCache != nil, g.curX, g.curY, g.m != nil,
+		)
+	}
+	if !g.st.HasNativeMapRangeModeState ||
 		g.st.NativeMapRangeMode < 0 || g.st.NativeMapRangeMode > 5 {
-		return errors.New("native map frame: HUD or drawable selector state unavailable")
+		return fmt.Errorf("native map frame: drawable selector state unavailable（has=%v mode=%d）",
+			g.st.HasNativeMapRangeModeState, g.st.NativeMapRangeMode)
 	}
 	candidateState := *g.st
 	candidateClock := g.nativeMapClock

@@ -2095,8 +2095,25 @@ func TestCompileChapter27PostMapsFDTXT028StringSeven(t *testing.T) {
 			dialogs = append(dialogs, beat)
 		}
 	}
-	if len(dialogs) != 1 || dialogs[0].Script != "ch28.json" || dialogs[0].SceneIndex == nil || *dialogs[0].SceneIndex != 1 || dialogs[0].Line != 11 || dialogs[0].Count != 5 {
-		t.Fatalf("ch27_post dialog=%#v", dialogs)
+	// FDTXT_028 的第 7 句在 ch28.json 對到 5 行，而 binding 的
+	// dialogue_overrides 為每一行各自帶了 native_dialogue（utterance 0..4、
+	// 不同的 control operand 與分頁）。因此編譯結果是五個 dialog 拍，不是一個
+	// count=5 的群組——折成群組會丟掉逐行的原生版面。
+	if len(dialogs) != 5 {
+		t.Fatalf("ch27_post dialogs=%d, want 5：%#v", len(dialogs), dialogs)
+	}
+	for i, beat := range dialogs {
+		if beat.Script != "ch28.json" || beat.SceneIndex == nil || *beat.SceneIndex != 1 ||
+			beat.Line != 11+i || beat.Count != 0 {
+			t.Fatalf("ch27_post dialog[%d]=%#v，want line=%d scene1 count=0", i, beat, 11+i)
+		}
+		if beat.NativeDialogue == nil ||
+			beat.NativeDialogue.SourceDAT != "FDTXT_028" ||
+			beat.NativeDialogue.StringIndex != 7 ||
+			beat.NativeDialogue.Utterance != i {
+			t.Fatalf("ch27_post dialog[%d] 原生版面=%#v，want FDTXT_028#7 utterance=%d",
+				i, beat.NativeDialogue, i)
+		}
 	}
 }
 

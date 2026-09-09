@@ -611,8 +611,11 @@ func TestChapter1Turn3JoinsHanoBeforeSpawningHisGroup(t *testing.T) {
 	if hano == nil || !hano.OnField || hano.Camp != Own {
 		t.Fatalf("Hano spawn = %#v, want recruited OWN unit", hano)
 	}
-	if hawat == nil || !hawat.OnField || hawat.Camp != Ally {
-		t.Fatalf("Hawat spawn = %#v, want allied NPC", hawat)
+	// 哈瓦特是我方，不是 allied NPC：map0 建構資料明列 group7 的 raw `+6 = 2`
+	// 且 camp 為 own，ch01 的 spawn_group 也寫 `"camp": "own"`。舊斷言來自手寫
+	// 的 `camp: ally`，與原版建構資料矛盾。
+	if hawat == nil || !hawat.OnField || hawat.Camp != Own {
+		t.Fatalf("Hawat spawn = %#v, want OWN unit", hawat)
 	}
 	if got := sc.TakePartyJoins(); len(got) != 0 {
 		t.Fatalf("party joins were not consumed: %#v", got)

@@ -29,14 +29,23 @@ type NativeMapViewState struct {
 // 不碰 visible，所以 visible 會合法地停在舊值。強制恆等式會讓那個狀態
 // 表達不出來，也會把原版真實走過的畫面判成錯誤。
 func validateNativeMapView(view NativeMapViewState, width, height int) error {
-	if width < nativeMapViewWidth || height < nativeMapViewHeight ||
-		view.CameraX < 0 || view.CameraX > width-nativeMapViewWidth ||
-		view.CameraY < 0 || view.CameraY > height-nativeMapViewHeight ||
-		view.CursorX < 0 || view.CursorX >= width ||
-		view.CursorY < 0 || view.CursorY >= height ||
-		view.VisibleCursorX < 0 || view.VisibleCursorX >= nativeMapViewWidth ||
+	if width < nativeMapViewWidth || height < nativeMapViewHeight {
+		return fmt.Errorf("battle: native map field %dx%d is smaller than the %dx%d viewport",
+			width, height, nativeMapViewWidth, nativeMapViewHeight)
+	}
+	if view.CameraX < 0 || view.CameraX > width-nativeMapViewWidth ||
+		view.CameraY < 0 || view.CameraY > height-nativeMapViewHeight {
+		return fmt.Errorf("battle: native map camera (%d,%d) is outside 0..%d/0..%d",
+			view.CameraX, view.CameraY, width-nativeMapViewWidth, height-nativeMapViewHeight)
+	}
+	if view.CursorX < 0 || view.CursorX >= width || view.CursorY < 0 || view.CursorY >= height {
+		return fmt.Errorf("battle: native map cursor (%d,%d) is outside the %dx%d field",
+			view.CursorX, view.CursorY, width, height)
+	}
+	if view.VisibleCursorX < 0 || view.VisibleCursorX >= nativeMapViewWidth ||
 		view.VisibleCursorY < 0 || view.VisibleCursorY >= nativeMapViewHeight {
-		return fmt.Errorf("battle: native map view is outside field or viewport")
+		return fmt.Errorf("battle: native map visible cursor (%d,%d) is outside the %dx%d viewport",
+			view.VisibleCursorX, view.VisibleCursorY, nativeMapViewWidth, nativeMapViewHeight)
 	}
 	return nil
 }

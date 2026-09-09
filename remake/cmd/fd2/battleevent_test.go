@@ -1225,8 +1225,30 @@ func TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary(t
 	// TestComposeNativeStoryDialoguePageUsesOriginalIndexedAssets 驗證；此橋接不構成
 	// 未修改一般玩家路徑的 E2 證據。
 	g.nativeMapVGA = make([]byte, 320*200)
-	if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{}); err != nil {
-		t.Fatal(err)
+	// 原生對話組幀（composeNativeMapFrame）需要 HUD、cycle 與 selector cache
+	// 三項都在位，正式路徑由 materializeNativeMapRuntime 從節點資料補齊；
+	// 這個 fixture 直接把 runner 指到 battle_ch25，沒有走 enterNode，所以照
+	// TestChapter13PostNativeDialogueJoins3Town14SaveBoundary 的同一組手動
+	// 前置補上。游標挑一個空格，避免順帶要求該格單位的完整 raw 出處。
+	// 鏡頭停在 (0,0)，所以空格要落在 13×8 視窗內，可見游標才在界線裡。
+	emptyX, emptyY, found := 0, 0, false
+	for y := 0; y < g.st.H && y < 8 && !found; y++ {
+		for x := 0; x < g.st.W && x < 13; x++ {
+			if g.st.UnitAt(x, y) == nil {
+				emptyX, emptyY, found = x, y, true
+				break
+			}
+		}
+	}
+	if !found {
+		t.Fatal("chapter25 視窗內沒有空的游標格")
+	}
+	g.curX, g.curY = emptyX, emptyY
+	if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{
+		CursorX: emptyX, CursorY: emptyY, VisibleCursorX: emptyX, VisibleCursorY: emptyY,
+	}); err != nil || !g.st.MaterializeNativeMapHUDState(1, 1, 1) ||
+		!g.st.MaterializeNativeMapRangeMode(1) {
+		t.Fatalf("chapter25 native view setup err=%v", err)
 	}
 	g.result = "win"
 	if !g.confirmBattleResult() || g.camp.NodeID() != "postbattle_ch25_persist" || g.loadErr != "" {

@@ -28,7 +28,10 @@ func nativeEvent61PlayerGame(t *testing.T, items ...int) (*Game, *battle.Unit) {
 		t.Skip("separated event61 pack unavailable")
 	}
 	t.Setenv("FD2_MUTE", "1")
-	t.Setenv("FD2_ASSET_PACK", assetPack)
+	// 分離素材包沒有 locales/，正式路徑會在載入官方語系時失敗即關閉。組一個
+	// 符號連結根把儲存庫的 locales 疊上去，與 tools/remake_go_test.sh 的作法
+	// 相同；巢狀 bind mount 掛不進唯讀掛載點，符號連結是可行的那一種。
+	t.Setenv("FD2_ASSET_PACK", assetPackRootWithLocales(t, assetPack))
 	t.Setenv("FD2_CAMPAIGN", "assets/scenarios/campaign_full.json")
 	t.Setenv("FD2_CAMP_NODE", "battle_ch26")
 	// Other native-map families are migrated separately and still need the
@@ -122,9 +125,11 @@ func TestNativeEvent61AttackWaitsForPresentationCompletion(t *testing.T) {
 	g.finishAttackPresentation()
 	if g.atk != nil || g.battleEvent == nil || len(g.dialog) != 1 ||
 		g.dialog[0].Text != "那是什麼奇怪的東西?頭部還開著?" {
+		eventID, bound := battle.NativeFieldEventIDAt(g.st, trigger.X, trigger.Y, 1)
 		t.Fatalf(
-			"post-presentation event=%#v dialog=%#v acted=%v",
-			g.battleEvent, g.dialog, trigger.Acted,
+			"post-presentation event=%#v dialog=%#v acted=%v err=%q trigger=(%d,%d) selector1=(%d,%v) job=%v state12=%d",
+			g.battleEvent, g.dialog, trigger.Acted, g.loadErr, trigger.X, trigger.Y,
+			eventID, bound, g.nativeFieldEvent61 != nil, g.st.NativeEventState[12],
 		)
 	}
 	g.dialog = nil
@@ -299,4 +304,35 @@ func TestNativeEvent61ProductionOwnersRejectMissingSeparatedBank(t *testing.T) {
 		!reflect.DeepEqual(trigger.Inventory, []int{0xD0, 0x20}) {
 		t.Fatal("missing event61 bank partially published the presentation or mutation")
 	}
+}
+
+// assetPackRootWithLocales 回傳一個把分離素材包與儲存庫語言包疊在一起的暫時
+// 根目錄。分離包本身不含 locales/，直接拿它當素材根會讓官方語系載入失敗。
+func assetPackRootWithLocales(t *testing.T, packRoot string) string {
+	t.Helper()
+	entries, err := os.ReadDir(packRoot)
+	if err != nil {
+		t.Fatal(err)
+	}
+	root := t.TempDir()
+	for _, entry := range entries {
+		if entry.Name() == "locales" {
+			continue
+		}
+		target, err := filepath.Abs(filepath.Join(packRoot, entry.Name()))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.Symlink(target, filepath.Join(root, entry.Name())); err != nil {
+			t.Fatal(err)
+		}
+	}
+	locales, err := filepath.Abs(assetPath("assets/locales"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Symlink(locales, filepath.Join(root, "locales")); err != nil {
+		t.Fatal(err)
+	}
+	return root
 }

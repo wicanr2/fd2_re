@@ -332,8 +332,18 @@ func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing
 			t.Errorf("天空之鑰演出未經過 phase=%d", phase)
 		}
 	}
-	if skyPaletteStart < 0 || g.nativeFDOTHERPalettePhase != (skyPaletteStart+68)&15 {
-		t.Errorf("0x4DFCC 相對循環 start=%d got=%d，want %d", skyPaletteStart, g.nativeFDOTHERPalettePhase, (skyPaletteStart+68)&15)
+	// 0x4DFCC 是 process-global 的 0..15 相位，兩條路都會推進它：
+	// 演出的 FirstFrames 每幀推一次（`beginFirstFrames` 先推一次，之後
+	// frame 1→68 再推 67 次，合計 68），而 pan 期間的地圖重繪
+	// （`composeNativeMapFrameAt` 的 BIOS tick 閘門）在本 fixture 的取樣點
+	// 之後還會推一次。相位起點是在第一次看到演出 phase 時取的，所以總量是
+	// 68 + 1。程式只宣稱保住相對循環，逐相位對齊仍是另一項 dynamic-E2。
+	const skyKeyFirstFrameCycles = 68
+	const panRedrawCyclesAfterSample = 1
+	wantPhase := (skyPaletteStart + skyKeyFirstFrameCycles + panRedrawCyclesAfterSample) & 15
+	if skyPaletteStart < 0 || g.nativeFDOTHERPalettePhase != wantPhase {
+		t.Errorf("0x4DFCC 相對循環 start=%d got=%d，want %d",
+			skyPaletteStart, g.nativeFDOTHERPalettePhase, wantPhase)
 	}
 	if !g.partyMembers[24] || !g.partyMembers[23] || len(g.partyJoinOrder) < 2 ||
 		g.partyJoinOrder[len(g.partyJoinOrder)-2] != 24 || g.partyJoinOrder[len(g.partyJoinOrder)-1] != 23 {

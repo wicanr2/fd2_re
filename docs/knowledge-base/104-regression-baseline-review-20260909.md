@@ -1,8 +1,9 @@
 # 104 — 回歸基線的 39 項失敗重新盤點（2026-09-09）
 
 `regression-baseline-20260909` 的 39 項失敗大多不是功能缺陷，而是**手工組出來的
-測試 Game 缺語系資料**。連同語言包字串、指令環幀數與第一關視圖一起修完之後
-剩 9 項，每一項都有各自的成因。
+測試 Game 缺語系資料**。連同語言包字串、指令環幀數與第一關視圖一起修掉 30 項，
+剩下的 9 項各有成因，也已逐項閉合：以
+`tools/remake_go_test.sh <素材根>` 對 `./...` 重跑，**39 項全部修復、沒有新增失敗**。
 
 ## 主因：`&Game{}` 沒有語系
 
@@ -19,12 +20,13 @@
 `attachOfficialLocale(t, g)`（`remake/cmd/fd2/locale_fixture_test.go`）：設
 `zh-Hant` 並載入三份官方資料，跟正式路徑一致。
 
-這一項就修掉 24 個。
+以 `./cmd/fd2` 單獨量：只改這一項，該套件的失敗由 34 降到 8，也就是**修掉 26 個**。
 
 ## 次因：存檔訊息的期待值沒跟著語言包走
 
 語言包的 `save.saved` 是 `已存檔（槽位 %d：%s）`（全形括號、槽位後有空格），
-12 處測試還寫著舊的半形形式。語言包是來源，測試跟著改。
+**12 處**測試還寫著舊的半形形式。語言包是來源，測試跟著改；這 12 處對應 3 個
+先前失敗的測試（其餘 9 處在更早就被別的原因擋住，改完才會走到）。
 
 ## 第三項：指令環展開的最後一幀
 
@@ -43,38 +45,33 @@
 計數器 0..3 共四張呈現幀，而**每一張都先加過差值**，所以是一到四倍；最後
 一張是四倍 `(0,-18) (-24,2) (24,2) (0,22)`。期待值改成四倍並註明出處。
 
-## 剩下的 9 項
+## 各自成因的 9 項
 
-| 測試 | 成因 |
-|---|---|
-| `TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary` | 手工 fixture 缺 HUD／drawable selector 狀態，原生對話組幀失敗即關閉 |
-| `TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary` | 先卡在 `story_ch21_post_sky_key_intro` 的視圖界線（見下），繞過之後是 `0x4DFCC` 相對循環 start=7 得 12、期待 11 |
-| `TestNativeEvent61AttackWaitsForPresentationCompletion` | 演出結束後 selector1 事件沒有被交還 |
-| `TestReviewedChapterTwoCampaignTranslationsAndItemEntities` | 英文審核稿與語言包內容不一致 |
-| `TestReviewedGoCandidatesMatchCurrentInventory` | 字串盤點的 review binding sha 過期 |
-| `TestChapter1Turn3JoinsHanoBeforeSpawningHisGroup` | 哈瓦特陣營改成 `own` 之後，測試仍期待 allied NPC |
-| `TestCompileChapter27PostMapsFDTXT028StringSeven` | ch27_post 對白編譯出 ch28.json 的第 11–15 句 |
-| `TestChapterThreePostBattleSpeakerControlCodes` | ch03 scene1 說話者 77 解成「刺客隊長」，期待「約」 |
-| `TestSeparatedNativeMapHUDFramesMatchFixedArchive` | 分離包 HUD 面板與固定封存不同 |
-
-前兩項是 fixture 與流程缺口，後面幾項各自需要原版證據才能判誰對誰錯；
-本輪不憑測試或資料任一側單方面改結論。
+| 測試 | 成因 | 修法 |
+|---|---|---|
+| `TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary` | 原生對話會把游標移到說話者所在格，HUD 因此要求那一格單位的完整 raw 出處；主角隊由可編輯腳本的 `party` 物化時沒有記錄 +0x42／+0x46 | `Scenario.PartyUnits` 沿用持久名冊、JOIN 與待登場三個建構子的同一條關係，把已授權的最大 HP／MP 標記為 +0x42／+0x46 |
+| `TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary` | `0x4DFCC` 是 process-global 相位，取樣點之後還會被推進 | 期待值寫成 68 次演出 FirstFrames ＋ 1 次 pan 重繪，兩個常數各自具名 |
+| `TestNativeEvent61AttackWaitsForPresentationCompletion` | 分離素材包沒有 `locales/`，戰鬥保護讀 entities 失敗即關閉 | fixture 改用疊上儲存庫語言包的符號連結根，與 `tools/remake_go_test.sh` 同一種作法 |
+| `TestReviewedChapterTwoCampaignTranslationsAndItemEntities` | 英文審核稿 5 句與語言包不一致 | 語言包是來源，審核稿跟著改 |
+| `TestReviewedGoCandidatesMatchCurrentInventory` | 字串盤點的 review 綁定過期（行號漂移＋新增候選）| 重生盤點後以 `tools/migrate_string_review.py` 依簽章遷移，再分類新候選（見下）|
+| `TestChapter1Turn3JoinsHanoBeforeSpawningHisGroup` | 舊斷言期待哈瓦特是 allied NPC | map0 建構資料的 group7 raw `+6 = 2`、ch01 的 spawn_group 也寫 `own`，測試改成 `Own` |
+| `TestCompileChapter27PostMapsFDTXT028StringSeven` | 舊斷言期待一個 `count=5` 的群組拍 | binding 為每一行各自帶 `native_dialogue`（utterance 0..4），編譯結果是五個 dialog 拍；折成群組會丟掉逐行版面 |
+| `TestChapterThreePostBattleSpeakerControlCodes` | 說話者 77 的舊期待值「約」是把 speaker id 當字模索引讀出來的 | 同場景另外四句都寫刺客隊長，期待值改成「刺客隊長」|
+| `TestSeparatedNativeMapHUDFramesMatchFixedArchive` | 比的是內部表示：封存經 `ParseSingleFrame` 帶 0x4E63D 的 RLE 位元組，分離包帶已展開的 Indexed+Mask | 兩邊各自 `Blit` 到同一張底圖再逐位元組比 |
 
 ## `battle_ch01` 的視圖：兩條入口，兩組值
 
-`campaign_full.json` 的節點常數是 `(0,13)`／`(7,14)`／`(7,1)`，
-`TestFullCampaignCarriesVerifiedChapterOneNativeMapRuntime` 原本釘
-`(1,13)`／`(8,17)`／`(7,4)`。兩組都有出處，但**指的不是同一條入口**：
+`battle_ch01` 的六個視圖全域有兩組值，兩組都有出處，但**指的不是同一條入口**：
 
 | 入口 | 值 | 出處 |
 |---|---|---|
 | START（走完 ch00 handler，聚焦 slot 0）| `(0,13)`／`(7,14)`／`(7,1)` | `TestCh00CompiledHandlerCarriesItsExactRuntimeRosterIntoChapterOne` 以完整 ch00→ch01 交接實跑 |
 | CONTINUE（隨遊戲附帶的 `FD2.SAV`）| `(1,13)`／`(8,17)`／`(7,4)` | dosgolem 收據 [fd2-move-confirm-cursor-20260909.json](../data/ui-traces/fd2-move-confirm-cursor-20260909.json) |
 
-存檔會帶自己的視圖，所以兩者不同是合理的。節點常數跟著 START——那一條有
-完整路徑的實跑在背書——靜態測試改成同一組並在原處註明 CONTINUE 的觀測。
-要判定節點常數是否也該覆蓋 CONTINUE，得再取一份「同一節點、兩條入口」的
-原版收據；本輪沒有。
+存檔會帶自己的視圖，所以兩者不同是合理的。`campaign_full.json` 的節點常數與
+`TestFullCampaignCarriesVerifiedChapterOneNativeMapRuntime` 都跟著 START，因為
+那一條有完整路徑的實跑在背書；CONTINUE 的觀測在測試原處註明。要判定節點常數
+是否也該涵蓋 CONTINUE，得再取一份「同一節點、兩條入口」的原版收據。
 
 ## 工具鏈
 
@@ -83,13 +80,41 @@
 [`tools/remake_go_test.sh`](../../tools/remake_go_test.sh) 驅動，它會直接跟
 基線做差異比對。細節見 [96](96-parity-toolchain-20260909.md)。
 
-## 拿掉恆等式之後新浮出來的一項
+## 視窗界線取代恆等式
 
-`validateNativeMapView` 改成檢查 13×8 視窗界線之後，`story_ch21_post_sky_key_intro`
-的視圖被擋下來：它的可見游標落在視窗外。舊的恆等式檢查抓不到這種狀態——
-只要 `cursor = camera + visible` 成立，visible 再大都會通過，而
-`syncStoryNativeMapPanView` 正是用那條式子反推 cursor，所以恆等式永遠成立。
+`validateNativeMapView` 檢查的是 13×8 視窗界線，不是
+`visible = cursor − camera` 的恆等式。界線有出處：消費端 `0x1741C` 以
+`visible_x * 24 + visible_y * 24 * 0x1C8` 把可見游標當成視窗內的格座標，
+超出就畫到視窗外。恆等式則沒有出處——原版沒有任何一處由 `cursor − camera`
+重算可見游標（寫入端清單見
+[`fd2_visible_cursor_writers_ida.txt`](../data/ida/fd2_visible_cursor_writers_ida.txt)），
+鏡頭捲過游標之後那個減法會給出負值。
 
-視窗界線是有出處的：消費端 `0x1741C` 以 `visible_x * 24 + visible_y * 24 * 0x1C8`
-把可見游標當成 13×8 視窗內的格座標，超出就畫到視窗外。這一項在該測試修好
-之前不會單獨浮出來，暫記於此。
+換成界線之後，`stepFocusUnit` 與 `nativeFocusEndpoint` 都改成沿用已追蹤的
+可見游標；只有「完全沒有那份狀態」的直接進場 renderer 才走
+`nativeMapFocusVisibleSeed` 把 `cursor − camera` 夾回視窗。四項錯誤訊息也各自
+分開（欄位太小／鏡頭出界／游標出界／可見游標出界），失敗時直接指出是哪一項。
+
+**仍未閉合**：劇情 pan 的 `syncStoryNativeMapPanView` 還是用
+`cursor = camera + visible` 反推游標。原版的劇情捲動 `0x135DD` 不寫可見游標，
+它對絕對游標做什麼尚未從指令解出，所以這條反推目前沒有寫入端證據撐著；界線
+檢查抓不到它（反推出來的值一定落在視窗內）。要閉合得回到 `0x135DD` 本體看它
+有沒有寫 `[0x53AB1]`／`[0x53AB5]`。
+
+## 字串盤點的 review 怎麼跟上行號漂移
+
+`docs/data/fd2-string-inventory.json` 是產生物（不進版控），`string_id` 內含
+檔名與行列號，任何非測試 Go 檔的編輯都會讓它漂移。
+`docs/data/fd2-string-review.json` 綁定該盤點的 SHA-256，所以流程固定是：
+
+1. 所有會動到 Go 的修改先做完；
+2. `go run ./cmd/fd2-string-inventory -repo /src -output docs/data/fd2-string-inventory.json`
+   （另跑一次 `-summary` 更新摘要）；
+3. `tools/migrate_string_review.py --old-inventory <上一份> --new-inventory <新的>
+   --review <舊 review> --output <新 review>`，它以
+   `(role, text, file, function)` 簽章對應新舊 ID，字串已刪除的用 `--drop-id` 指名；
+4. 盤點新增的候選逐項分類。本輪 16 項：8 項失敗即關閉診斷歸
+   `internal_diagnostic`、5 項（封裝自我檢查與 `FD2_SHOT_ATTACK` 截圖 fixture）歸
+   `development`、3 項（視窗標題與兩個主題名）歸 `player_visible`。
+
+上一份盤點必須留著才有辦法做簽章對應；覆蓋掉它就只能從更早的產生物重建。

@@ -56,7 +56,10 @@ func TestChapterThreePostBattleSpeakerControlCodes(t *testing.T) {
 		speaker     int
 		speakerName string
 	}{
-		{line: 0, speaker: 77, speakerName: "約"},
+		// 說話者 77 是刺客隊長。舊期待值「約」是把 speaker id 當成字模索引讀出來
+		// 的產物——unicode_to_glyph 裡「約」的索引剛好也是 77。同一場景另外四句
+		// 都寫刺客隊長，句子內容（敗給小鬼、呼喊葛雷大人）也對得上。
+		{line: 0, speaker: 77, speakerName: "刺客隊長"},
 		{line: 17, speaker: 6, speakerName: "萊汀"},
 	} {
 		got := story.Scenes[1].Lines[want.line]

@@ -1,7 +1,6 @@
 package indexedmap
 
 import (
-	"bytes"
 	"encoding/binary"
 	"errors"
 	"os"
@@ -25,9 +24,36 @@ func TestSeparatedNativeMapHUDFramesMatchFixedArchive(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	// 兩邊的內部表示本來就不一樣：原版封存經 ParseSingleFrame 之後帶的是
+	// 0x4E63D 的 RLE 位元組（Frame.Pixels），分離包帶的是已展開的
+	// Indexed+Mask。可比的是**畫出來的結果**，所以兩邊各自 blit 到同一張
+	// 底圖再逐位元組比。
+	render := func(t *testing.T, label string, frame fdother.Frame) []byte {
+		t.Helper()
+		stride := frame.X + frame.Width
+		dst := make([]byte, stride*(frame.Y+frame.Height))
+		for i := range dst {
+			dst[i] = 0xff // 透明哨兵；0x4E63D 的透明分支不會寫入這些位元組
+		}
+		if err := frame.Blit(dst, stride, -1); err != nil {
+			t.Fatalf("%s blit 失敗：%v", label, err)
+		}
+		return dst
+	}
 	compare := func(label string, got, want fdother.Frame) {
-		if got.Width != want.Width || got.Height != want.Height || !bytes.Equal(got.Indexed, want.Indexed) || !bytes.Equal(got.Mask, want.Mask) {
-			t.Fatalf("%s differs", label)
+		if got.Width != want.Width || got.Height != want.Height ||
+			got.X != want.X || got.Y != want.Y {
+			t.Fatalf("%s 版面 (%d,%d) %dx%d，封存 (%d,%d) %dx%d",
+				label, got.X, got.Y, got.Width, got.Height,
+				want.X, want.Y, want.Width, want.Height)
+		}
+		gotPixels := render(t, label+"（分離包）", got)
+		wantPixels := render(t, label+"（封存）", want)
+		for i := range gotPixels {
+			if gotPixels[i] != wantPixels[i] {
+				t.Fatalf("%s 第 %d 個像素不同：分離包 %#x、封存 %#x（共 %d）",
+					label, i, gotPixels[i], wantPixels[i], len(gotPixels))
+			}
 		}
 	}
 	compare("panel", got.Panel, want.Panel)

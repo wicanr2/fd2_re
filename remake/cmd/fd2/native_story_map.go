@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
@@ -51,7 +52,7 @@ func (g *Game) materializeNativeStoryMapState(source *battle.State) error {
 		}
 	}
 	if err := candidate.MaterializeNativeMapViewState(g.storyNativeMapView); err != nil {
-		return err
+		return fmt.Errorf("native story map state view %+v: %w", g.storyNativeMapView, err)
 	}
 	if !candidate.MaterializeNativeMapRangeMode(0) {
 		return errors.New("native story map: opening selector 0 is unavailable")
@@ -99,7 +100,7 @@ func (g *Game) composeNativeStoryMapFrame() error {
 		return errors.New("native story map: caller-owned scene state is unavailable")
 	}
 	if err := g.storyNativeMapState.MaterializeNativeMapViewState(g.storyNativeMapView); err != nil {
-		return err
+		return fmt.Errorf("native story map frame view %+v: %w", g.storyNativeMapView, err)
 	}
 	// map32 前兩筆特殊劇情角色不在目前閉合的 constructor table 範圍，
 	// 因而沒有 0x129EC gate 的 raw race/class。99% 玩家可見模式只在本次

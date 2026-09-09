@@ -826,6 +826,17 @@ func (sc *Scenario) PartyUnits(fallback []Cell) []*Unit {
 		// Party constructors use FDFIELD camp code 2 for native record +6.
 		u.NativeRecordByte6 = 2
 		u.HasNativeRecordByte6 = true
+		// 原版單位建構子把最大 HP／MP 寫進記錄 +0x42／+0x46；持久名冊
+		// (native_persistent_party)、JOIN(native_join_constructor) 與待登場
+		// (native_future_constructor) 三個建構子都是同一條關係。主角隊由可編輯
+		// 腳本物化時沿用同一份已授權的最大值，不另行猜測；超出 16 位元的資料
+		// 不標記出處，讓 HUD 依失敗即關閉拒絕。
+		if u.MaxHP >= 0 && u.MaxHP <= 0xffff {
+			u.NativeRecordWord42, u.HasNativeRecordWord42 = uint16(u.MaxHP), true
+		}
+		if u.MaxMP >= 0 && u.MaxMP <= 0xffff {
+			u.NativeRecordWord46, u.HasNativeRecordWord46 = uint16(u.MaxMP), true
+		}
 		if flags, flagErr := NativeInventoryFlagsFromSource(pm.InventorySlots); flagErr == nil {
 			u.NativeInventoryFlags = flags
 		}
