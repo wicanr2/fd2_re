@@ -40,11 +40,15 @@ def main():
             handle.write(body)
         os.replace(tmp, os.path.join(RUN, "control.json"))
         until = time.time() + STEP_TIMEOUT
+        # 輪詢間隔由短往長退避。固定 0.1 秒會讓細粒度追蹤的每一步都至少多等
+        # 一次輪詢，整段時間由等待而非執行決定。
+        poll = 0.0002
         while time.time() < until:
             try:
                 current = state()
             except (json.JSONDecodeError, FileNotFoundError):
-                time.sleep(0.1)
+                time.sleep(poll)
+                poll = min(poll * 2, 0.02)
                 continue
             if current["control_seq"] >= seq:
                 print(
@@ -53,7 +57,8 @@ def main():
                     flush=True,
                 )
                 break
-            time.sleep(0.1)
+            time.sleep(poll)
+            poll = min(poll * 2, 0.02)
         else:
             print(f"控制序列 {seq} 等待逾時", file=sys.stderr)
             return 5
