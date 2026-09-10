@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_exe_table",
+  "topic": "物理攻擊用的三張靜態表：職業暴擊率與地形攻防修正",
+  "date": "2026-09-10",
+  "source": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "tool": "IDA Pro 9.4（fd2-ida-authorized-local），tools/ida.sh ida_dump_bytes.py",
+    "address_space": "DOS LE loader 線性位址"
+  },
+  "consumer": "sub_29F72（0x29F72..0x2A289），見 docs/knowledge-base/106-physical-attack-counterattack-20260910.md",
+  "tables": {
+    "class_crit_pct": {
+      "address": "0x5239B",
+      "element": "uint8",
+      "count": 32,
+      "index": "職業 ID − 1（unit+0x20 減一）",
+      "raw_hex": "05 03 03 05 03 03 00 12 05 03 03 0c 03 03 0c 0a 06 03 03 07 03 03 1e 12 00 00 00 00 00 00 52 61",
+      "values": [
+        5,
+        3,
+        3,
+        5,
+        3,
+        3,
+        0,
+        18,
+        5,
+        3,
+        3,
+        12,
+        3,
+        3,
+        12,
+        10,
+        6,
+        3,
+        3,
+        7,
+        3,
+        3,
+        30,
+        18,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        82,
+        97
+      ],
+      "note": "第 25 個之後是 0，接著就是 funcs 指標表；已解職業只有 24 個。"
+    },
+    "terrain_ap_pct": {
+      "address": "0x51A12",
+      "element": "int32",
+      "count": 6,
+      "index": "地形碼，來自 sub_12E38 填的 buf[5]＝dword_53A69[4*tile+1]",
+      "values": [
+        5,
+        0,
+        -5,
+        -5,
+        -5,
+        0
+      ]
+    },
+    "terrain_dp_pct": {
+      "address": "0x51A2A",
+      "element": "int32",
+      "count": 6,
+      "index": "同上",
+      "values": [
+        0,
+        0,
+        10,
+        10,
+        -5,
+        0
+      ],
+      "note": "與 terrain_ap_pct 相鄰（0x51A12+0x18），兩張表各 6 格，之後就是 FDTXT.DAT 字串。"
+    }
+  },
+  "gate": {
+    "flying": "sub_1F183(unit) 為真時不套地形修正：unit+7 ≠ 28 且（職業＝19 或 unit+31 ∈ {4,5}）"
+  }
+}
