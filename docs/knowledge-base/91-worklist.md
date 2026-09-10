@@ -109,11 +109,11 @@ manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unk
 
 `remake-attack-missing-counterattack` · 仍未完成 · 還沒出現
 
-原版一次物理攻擊含兩次 HP 結算：攻方先打，約 1,200,000 指令後守方還手，兩次都走同一條 `sub_2A289`→`sub_18C6D`，整段 `sub_29164` 演出只進入一次。實測第一關同一組座標：原版攻方 48→31、守方 28→8；重製端 `attackWithExperience` 只結算一次，攻方 48→48、守方 28→6。反擊的**條件**還沒解（守方死亡、射程、職業是否影響），所以不能猜著接進正式路徑。
+原版一次物理攻擊含兩次結算：攻方先打，守方若存活且相鄰、且裝備的是近戰武器就還手。條件與傷害公式已解（`sub_28A6C`→兩次 `sub_2939D`→`sub_29F72`，見 106）；上一輪把它接到 `sub_2A6BD` 是走錯方向，實測整段那條路一次都沒進入。重製端 `attackWithExperience` 仍只結算一次，而且公式來自二手攻略：暴擊率用 `CritPct` 而不是職業表加武器加成、地形與暴擊減半的順序相反、隨機加成的取法也不同。實測第一關同一組座標：原版攻方 48→31、守方 28→8；重製端攻方 48→48、守方 28→6。
 
-怎樣算做完：解出反擊的條件與傷害公式（`sub_2A6BD` 內四處 `call 0x2A289` 各對應哪個分支），接進重製端後同一組座標的對拍兩側 HP 一致。
+怎樣算做完：依 106 接上 `sub_29F72` 的公式與反擊條件，走原版 RNG（`fdother.NativeRNGStep`），同一組座標的對拍兩側 HP 一致。
 
-證據：`docs/data/ui-traces/fd2-counterattack-20260910.json`
+證據：`docs/knowledge-base/106-physical-attack-counterattack-20260910.md`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
