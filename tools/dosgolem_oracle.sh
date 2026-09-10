@@ -16,6 +16,12 @@
 #   FD2_ORIG_ROOT         原版資料目錄（預設本儲存庫的 org_game/…/FLAME2）
 #   FD2_ORACLE_CPUS       容器 CPU 上限（預設 2）
 #   FD2_ORACLE_STEPS      指令預算上限（預設 20000000000）
+#   FD2_ORACLE_LOCK_ALLY_HP=1
+#                         作弊：把我方 HP 壓回歷史最高值，讓長關卡跑得完。
+#                         **這是修改路徑**：收據的 state_injections 會寫明注入了
+#                         什麼、寫了幾次，runner.json 也會記一筆。這種收據不得
+#                         當成一般玩家路徑（PLAYER-E2）證據，也不能用來談傷害、
+#                         存活或任何與我方 HP 有關的結論。
 #
 # 逐幀擷取（判斷畫面時比狀態可靠，狀態層看不出「多畫了什麼」）：
 #   FD2_ORACLE_FRAMES=1   啟用，輸出到 <輸出目錄>/frames/
@@ -49,6 +55,8 @@ fi
 orig=${FD2_ORIG_ROOT:-$repo/org_game/炎龍騎士團/FLAME2}
 cpus=${FD2_ORACLE_CPUS:-2}
 budget=${FD2_ORACLE_STEPS:-20000000000}
+lock_ally_hp=${FD2_ORACLE_LOCK_ALLY_HP:-}
+if [ -n "$lock_ally_hp" ]; then lock_ally_hp_json=true; else lock_ally_hp_json=false; fi
 frames=${FD2_ORACLE_FRAMES:-}
 frame_stride=${FD2_ORACLE_FRAME_STRIDE:-20000}
 frame_settle=${FD2_ORACLE_FRAME_SETTLE:-0}
@@ -82,7 +90,9 @@ cat > "$out/runner.json" <<JSON
   "dosgolem_tracked_dirty_files": $dos_dirty,
   "dosgolem_untracked_files": $dos_untracked,
   "original_root": "$orig",
-  "generated_at": "$(date -Iseconds)"
+  "generated_at": "$(date -Iseconds)",
+  "lock_ally_hp": $lock_ally_hp_json,
+  "evidence_note": "lock_ally_hp 為 true 時本輪是修改路徑，不得作為一般玩家路徑（PLAYER-E2）證據"
 }
 JSON
 if [ "$dos_dirty" -ne 0 ]; then
@@ -112,6 +122,7 @@ docker run --rm --network none --memory 4g --cpus "$cpus" --pids-limit 256 \
   -e FD2_ORACLE_FRAME_FROM="$frame_from" \
   -e FD2_ORACLE_FRAME_TO="$frame_to" \
   -e FD2_ORACLE_EIP_WATCH="$eip_watch" \
+  -e FD2_ORACLE_LOCK_ALLY_HP="$lock_ally_hp" \
   -w /dos "${FD2_ORACLE_IMAGE:-golang:1.24-bookworm}" \
   bash -c '
 set -euo pipefail
@@ -130,8 +141,13 @@ if [ -n "$FD2_ORACLE_FRAMES" ]; then
     frameargs+=(-eip-watch "$FD2_ORACLE_EIP_WATCH")
   fi
 fi
+cheatargs=()
+if [ -n "$FD2_ORACLE_LOCK_ALLY_HP" ]; then
+  cheatargs=(-lock-ally-hp)
+fi
 go run ./apps/fd2/cmd/oracle \
   -exe /orig/FD2.EXE -root /orig -run-dir /out \
+  "${cheatargs[@]+"${cheatargs[@]}"}" \
   "${frameargs[@]+"${frameargs[@]}"}" \
   -steps "$FD2_ORACLE_BUDGET" -heap-mib 32 >/out/oracle.log 2>&1 &
 oracle=$!

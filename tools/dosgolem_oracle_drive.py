@@ -210,9 +210,14 @@ def do_await(command):
     guard = command.get("abort_if")
     for _ in range(budget):
         current = state()
-        if guard and holds(current, guard)[0]:
+        # 守衛只在戰場上才算數。離開戰場之後 `units` 是垃圾，`ally_alive` 會讀成 0
+        # ——第一關實際打完進了戰後城鎮，卻被守衛判成「我方全滅」。
+        if guard and in_battle(current) and holds(current, guard)[0]:
             print(f"await {expression} 中止：{guard} 成立", file=sys.stderr)
             return False
+        if guard and not in_battle(current):
+            print(f"await {expression}：已離開戰場，視為這一場結束", flush=True)
+            return True
         ok, got = holds(current, expression)
         if ok:
             print(f"await {expression} 成立（實測 {got}）", flush=True)
