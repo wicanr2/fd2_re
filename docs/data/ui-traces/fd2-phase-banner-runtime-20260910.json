@@ -1,0 +1,804 @@
+{
+ "schema_version": 1,
+ "kind": "fd2_original_runtime_receipt",
+ "topic": "回合橫幅的呈現鏈在執行期逐幀對上：進場 16 步、delay、退場 17 步，前面七步是字樣滑入",
+ "date": "2026-09-10",
+ "runner": "dosgolem apps/fd2/cmd/oracle",
+ "runner_provenance": {
+  "schema_version": 1,
+  "kind": "fd2_oracle_runner_provenance",
+  "runner": "dosgolem apps/fd2/cmd/oracle",
+  "dosgolem_root": "/home/anr2/cht/dosgolem",
+  "dosgolem_commit": "c8aa69af3999fb6a9d6331dc50fb680b13779a2f",
+  "dosgolem_branch": "main",
+  "dosgolem_tracked_dirty_files": 0,
+  "dosgolem_untracked_files": 0,
+  "original_root": "/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2",
+  "generated_at": "2026-09-10T13:31:15+08:00"
+ },
+ "driver": "tools/dosgolem_oracle.sh（FRAMES=1、stride 4000、settle 4、FRAME_FROM/TO、EIP_WATCH 16 個位址）",
+ "executable": {
+  "file": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+ },
+ "entry": {
+  "path": "與 fd2-phase-banner-timing-20260910.json 同一份控制序列",
+  "control_plan": [
+   {
+    "key": "right",
+    "steps": 3000000
+   },
+   {
+    "key": "down",
+    "steps": 3000000
+   },
+   {
+    "key": "down",
+    "steps": 3000000
+   },
+   {
+    "key": "enter",
+    "steps": 3000000
+   },
+   {
+    "key": "",
+    "steps": 3000000,
+    "repeat": 60
+   },
+   {
+    "key": "enter",
+    "steps": 3000000
+   },
+   {
+    "key": "down",
+    "steps": 3000000
+   },
+   {
+    "key": "enter",
+    "steps": 3000000
+   },
+   {
+    "key": "enter",
+    "steps": 3000000
+   },
+   {
+    "key": "",
+    "steps": 3000000,
+    "repeat": 20
+   }
+  ],
+  "input_kind": "normal BIOS keys",
+  "state_injections": []
+ },
+ "eip_watch_addresses": [
+  "0x11CAC",
+  "0x11D40",
+  "0x11EB0",
+  "0x15F0E",
+  "0x17AA9",
+  "0x17AC4",
+  "0x1A30B",
+  "0x1ACF3",
+  "0x1F1CC",
+  "0x1F30A",
+  "0x1F42D",
+  "0x36CD7",
+  "0x373C4",
+  "0x375B2",
+  "0x4E031",
+  "0x4E809"
+ ],
+ "measurement": {
+  "method": "逐幀記錄十六個位址的累計進入次數，取相鄰幀差值",
+  "sequence": [
+   {
+    "index": 94,
+    "step": 245168000,
+    "step_gap": null,
+    "watch_delta": {},
+    "indexed_sha256": "c3241a5c1f5adde0bde9095105751e5c5f20db418038f22fbe1c6d5625442ba8"
+   },
+   {
+    "index": 95,
+    "step": 245212000,
+    "step_gap": 44000,
+    "watch_delta": {},
+    "indexed_sha256": "a946b68619397aa29f9bf8bb51b1adf60669596506a901c880f247a68dd96019"
+   },
+   {
+    "index": 96,
+    "step": 245256000,
+    "step_gap": 44000,
+    "watch_delta": {
+     "0x11CAC": 1,
+     "0x17AA9": 2,
+     "0x17AC4": 677,
+     "0x36CD7": 15,
+     "0x373C4": 256,
+     "0x375B2": 1
+    },
+    "indexed_sha256": "bffd9465ddf06ef882b09f88b99b1ced331a743809a126160d7b335b9cbda313"
+   },
+   {
+    "index": 97,
+    "step": 245516000,
+    "step_gap": 260000,
+    "watch_delta": {
+     "0x11CAC": 1,
+     "0x11EB0": 4,
+     "0x15F0E": 2,
+     "0x17AA9": 3,
+     "0x17AC4": 332,
+     "0x1A30B": 1,
+     "0x1ACF3": 2,
+     "0x1F1CC": 1,
+     "0x1F42D": 1,
+     "0x36CD7": 206,
+     "0x373C4": 769,
+     "0x4E031": 12
+    },
+    "indexed_sha256": "5e9c69b23a4766647b86fc3f8ba1badfea25245d31b3cde2abda95d1d45593d6"
+   },
+   {
+    "index": 98,
+    "step": 245548000,
+    "step_gap": 32000,
+    "watch_delta": {
+     "0x11EB0": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 510,
+     "0x1F42D": 1,
+     "0x36CD7": 7,
+     "0x373C4": 192
+    },
+    "indexed_sha256": "169aa8d7636c1b1aff7589a938e33ad947ef18a9f530e6ce1ace05a7d81c1d0c"
+   },
+   {
+    "index": 99,
+    "step": 245580000,
+    "step_gap": 32000,
+    "watch_delta": {
+     "0x11EB0": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 65,
+     "0x1F42D": 1,
+     "0x36CD7": 7,
+     "0x373C4": 192
+    },
+    "indexed_sha256": "13f5c5daf50990509122f8825ae3b3e1526058c555ce31d401a32d124af0f221"
+   },
+   {
+    "index": 100,
+    "step": 245608000,
+    "step_gap": 28000,
+    "watch_delta": {
+     "0x11EB0": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 64,
+     "0x1F42D": 1,
+     "0x36CD7": 7,
+     "0x373C4": 192
+    },
+    "indexed_sha256": "4006cba8a9a1972efbbc9fbc5415354409dfcc206369d4d2943a74ac14ffaf54"
+   },
+   {
+    "index": 101,
+    "step": 245640000,
+    "step_gap": 32000,
+    "watch_delta": {
+     "0x11EB0": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 65,
+     "0x1F42D": 1,
+     "0x36CD7": 7,
+     "0x373C4": 192
+    },
+    "indexed_sha256": "3d24bc3c2f9973e05781d9090997453ef568ffb211dd698f7b90916380c5c64b"
+   },
+   {
+    "index": 102,
+    "step": 245668000,
+    "step_gap": 28000,
+    "watch_delta": {
+     "0x11EB0": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 64,
+     "0x1F42D": 1,
+     "0x36CD7": 7,
+     "0x373C4": 192
+    },
+    "indexed_sha256": "f2b48057b8a89e6abb03db3712fe6bbd184facb0b40854c63effa95573caf4ec"
+   },
+   {
+    "index": 103,
+    "step": 245700000,
+    "step_gap": 32000,
+    "watch_delta": {
+     "0x11EB0": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 65,
+     "0x1F42D": 1,
+     "0x36CD7": 7,
+     "0x373C4": 192
+    },
+    "indexed_sha256": "e135c73826931658d7f1e9a4046a2f6c93c4a7967a62c7d0ac76b014f9d8ea2f"
+   },
+   {
+    "index": 104,
+    "step": 245728000,
+    "step_gap": 28000,
+    "watch_delta": {
+     "0x11EB0": 1,
+     "0x17AA9": 1,
+     "0x17AC4": 65,
+     "0x36CD7": 4,
+     "0x373C4": 193,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "f2b48057b8a89e6abb03db3712fe6bbd184facb0b40854c63effa95573caf4ec"
+   },
+   {
+    "index": 105,
+    "step": 246600000,
+    "step_gap": 872000,
+    "watch_delta": {
+     "0x11D40": 2,
+     "0x15F0E": 4,
+     "0x17AA9": 2,
+     "0x17AC4": 1088,
+     "0x36CD7": 8,
+     "0x373C4": 2,
+     "0x4E809": 2
+    },
+    "indexed_sha256": "9ed3ad77ca0cf4d8769f33c2cf6b589658aaa9ca4103826e68d74f6187213f71"
+   },
+   {
+    "index": 106,
+    "step": 246984000,
+    "step_gap": 384000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 574,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "54a24de5aa422c782868c91de9465cbc47fd70b2ba3148d5b55648b4c505ce9f"
+   },
+   {
+    "index": 107,
+    "step": 247360000,
+    "step_gap": 376000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 573,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "2db7ccd6ee7db98717e6a99a56e5ce15304f8ca2bfd126be2d2e547d5bbc2e47"
+   },
+   {
+    "index": 108,
+    "step": 247728000,
+    "step_gap": 368000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 23,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "e778673aeb6aa6c6bd6f7240dc98af0d659b87c92e33c9f1423fa52160813e6c"
+   },
+   {
+    "index": 109,
+    "step": 248088000,
+    "step_gap": 360000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 572,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "2dc9d27753771fa86e9e61dc68e7ffed143ccc80fecfdb2342e428de3d67f2aa"
+   },
+   {
+    "index": 110,
+    "step": 248452000,
+    "step_gap": 364000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 296,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "49db635e61023f1a07e4a17f18d454519846bb47d6d5c085e1d2c0397e17cfb8"
+   },
+   {
+    "index": 111,
+    "step": 248808000,
+    "step_gap": 356000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 569,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "378dc9406903302c7289d05fba68ff695c9efa91be829a1988941f8add45e6e5"
+   },
+   {
+    "index": 112,
+    "step": 249168000,
+    "step_gap": 360000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 129,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "3f0fb40d3ddd67603bfda2725a08b3496e3170ffce5aa2a94cdfccc5a0823ec4"
+   },
+   {
+    "index": 113,
+    "step": 249520000,
+    "step_gap": 352000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 292,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "daf3a69f0fa5193f1339736a712ee84aadda623bfe21332eba0b4467cc26abdf"
+   },
+   {
+    "index": 114,
+    "step": 249876000,
+    "step_gap": 356000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 455,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "4cf2af8eefc7c39b06a7c44ef961e665b724b0855a2afbe29365dd0ab02701b4"
+   },
+   {
+    "index": 115,
+    "step": 250228000,
+    "step_gap": 352000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 563,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "d20d13bd47cc794858c306a99d83f753812b24007e2cd168083cb6439ef36dde"
+   },
+   {
+    "index": 116,
+    "step": 250584000,
+    "step_gap": 356000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 672,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "f021c336b08335f615b1d4feb06f36b8d50c5e5e24bdf8b78c21716e1d9e8b18"
+   },
+   {
+    "index": 117,
+    "step": 250936000,
+    "step_gap": 352000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 63,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "9901c45585481f5d032f92a2af1903796d0724f78335df75850db1b7f344e3df"
+   },
+   {
+    "index": 118,
+    "step": 251288000,
+    "step_gap": 352000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 170,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "cf694453f533364510debeef2f5ef938d168cb48d391a0d4ade09f012503e0dd"
+   },
+   {
+    "index": 119,
+    "step": 251636000,
+    "step_gap": 348000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 225,
+     "0x1F30A": 1,
+     "0x36CD7": 5,
+     "0x373C4": 1,
+     "0x375B2": 1,
+     "0x4E031": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "cfa4fbe74a4a2a8a0c1ab0829bd23e5b80792121262506896d7210e33611ef25"
+   },
+   {
+    "index": 120,
+    "step": 251988000,
+    "step_gap": 352000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 262,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "e52ef39fcc3f750280696599556e3f1efb9f711975f5aebe7e563410b8817a71"
+   },
+   {
+    "index": 121,
+    "step": 252336000,
+    "step_gap": 348000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 225,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "cfa4fbe74a4a2a8a0c1ab0829bd23e5b80792121262506896d7210e33611ef25"
+   },
+   {
+    "index": 122,
+    "step": 252688000,
+    "step_gap": 352000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 171,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "cf694453f533364510debeef2f5ef938d168cb48d391a0d4ade09f012503e0dd"
+   },
+   {
+    "index": 123,
+    "step": 253040000,
+    "step_gap": 352000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 63,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "9901c45585481f5d032f92a2af1903796d0724f78335df75850db1b7f344e3df"
+   },
+   {
+    "index": 124,
+    "step": 253388000,
+    "step_gap": 348000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 672,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "f021c336b08335f615b1d4feb06f36b8d50c5e5e24bdf8b78c21716e1d9e8b18"
+   },
+   {
+    "index": 125,
+    "step": 253744000,
+    "step_gap": 356000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 563,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "d20d13bd47cc794858c306a99d83f753812b24007e2cd168083cb6439ef36dde"
+   },
+   {
+    "index": 126,
+    "step": 254100000,
+    "step_gap": 356000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 455,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "4cf2af8eefc7c39b06a7c44ef961e665b724b0855a2afbe29365dd0ab02701b4"
+   },
+   {
+    "index": 127,
+    "step": 254456000,
+    "step_gap": 356000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 292,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "daf3a69f0fa5193f1339736a712ee84aadda623bfe21332eba0b4467cc26abdf"
+   },
+   {
+    "index": 128,
+    "step": 254812000,
+    "step_gap": 356000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 128,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "3f0fb40d3ddd67603bfda2725a08b3496e3170ffce5aa2a94cdfccc5a0823ec4"
+   },
+   {
+    "index": 129,
+    "step": 255168000,
+    "step_gap": 356000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 569,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "378dc9406903302c7289d05fba68ff695c9efa91be829a1988941f8add45e6e5"
+   },
+   {
+    "index": 130,
+    "step": 255532000,
+    "step_gap": 364000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 297,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "49db635e61023f1a07e4a17f18d454519846bb47d6d5c085e1d2c0397e17cfb8"
+   },
+   {
+    "index": 131,
+    "step": 255896000,
+    "step_gap": 364000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 571,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "2dc9d27753771fa86e9e61dc68e7ffed143ccc80fecfdb2342e428de3d67f2aa"
+   },
+   {
+    "index": 132,
+    "step": 256264000,
+    "step_gap": 368000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 24,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "e778673aeb6aa6c6bd6f7240dc98af0d659b87c92e33c9f1423fa52160813e6c"
+   },
+   {
+    "index": 133,
+    "step": 256636000,
+    "step_gap": 372000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 573,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "2db7ccd6ee7db98717e6a99a56e5ce15304f8ca2bfd126be2d2e547d5bbc2e47"
+   },
+   {
+    "index": 134,
+    "step": 257020000,
+    "step_gap": 384000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 573,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "54a24de5aa422c782868c91de9465cbc47fd70b2ba3148d5b55648b4c505ce9f"
+   },
+   {
+    "index": 135,
+    "step": 257424000,
+    "step_gap": 404000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 571,
+     "0x36CD7": 4,
+     "0x373C4": 1,
+     "0x4E809": 1
+    },
+    "indexed_sha256": "9ed3ad77ca0cf4d8769f33c2cf6b589658aaa9ca4103826e68d74f6187213f71"
+   },
+   {
+    "index": 136,
+    "step": 257888000,
+    "step_gap": 464000,
+    "watch_delta": {
+     "0x11D40": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 568,
+     "0x36CD7": 5,
+     "0x373C4": 1
+    },
+    "indexed_sha256": "f2b48057b8a89e6abb03db3712fe6bbd184facb0b40854c63effa95573caf4ec"
+   },
+   {
+    "index": 137,
+    "step": 258032000,
+    "step_gap": 144000,
+    "watch_delta": {
+     "0x11EB0": 1,
+     "0x15F0E": 4,
+     "0x17AA9": 1,
+     "0x17AC4": 71,
+     "0x1F42D": 2,
+     "0x36CD7": 81,
+     "0x373C4": 192
+    },
+    "indexed_sha256": "1d6bd1a2264f6f6b4fce00bb22cbb20d9b660cb42a99858a4ef2bc211dffaaa9"
+   },
+   {
+    "index": 138,
+    "step": 258060000,
+    "step_gap": 28000,
+    "watch_delta": {
+     "0x11EB0": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 65,
+     "0x1F42D": 1,
+     "0x36CD7": 7,
+     "0x373C4": 192
+    },
+    "indexed_sha256": "1a39af2d58b5717da7625fc96284d97280c5c08df9201fc593eb765c03fa1214"
+   },
+   {
+    "index": 139,
+    "step": 258088000,
+    "step_gap": 28000,
+    "watch_delta": {
+     "0x11EB0": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 64,
+     "0x1F42D": 1,
+     "0x36CD7": 7,
+     "0x373C4": 192
+    },
+    "indexed_sha256": "5a9034bbb95e6a936070174219126512b1f06904a5752edd5b364c690c7ada64"
+   },
+   {
+    "index": 140,
+    "step": 258120000,
+    "step_gap": 32000,
+    "watch_delta": {
+     "0x11EB0": 1,
+     "0x15F0E": 2,
+     "0x17AA9": 1,
+     "0x17AC4": 65,
+     "0x1F42D": 1,
+     "0x36CD7": 7,
+     "0x373C4": 192
+    },
+    "indexed_sha256": "adc7f21cb57df0756fe3edc330db8b4a4b975856d6b607ea3fddd83c15af50bd"
+   }
+  ]
+ },
+ "conclusions": [
+  "進場 sub_1F1CC 在 idx 97 進入，隨後七幀各有一次 sub_1F42D（字樣滑入），與程式碼裡的七次呼叫數量相符。",
+  "馬賽克 sub_4E809 從 idx 104 起每幀一次，共 16 步；idx 119 同一幀出現 delay(0x375B2) 與 sub_1F30A，之後 17 步退場，合計 33 步。",
+  "每一步都伴隨 sub_11D40（DAC 暗化）與兩次 sub_15F0E（字樣兩塊），與靜態讀出的迴圈體一致。",
+  "一個 BIOS tick 在 dosgolem 的 LE 路徑上是 54,926 道指令（le_bios_clock.go 掛在 CPU.StepHook，一道指令一微秒；TestBIOSClockPeriodMaskAndRollover 釘住）。字樣滑入每步約 30,000 指令＝約半個 tick（sub_17AA9 每次重設基準，等的是「從現在到下一次進位」）；馬賽克每步約 356,000 指令＝6.5 個 tick，等待因此不生效。",
+  "基底從 f627cd1 換到 main 的 d351681 再到 c8aa69a，290 幀的 step 與 indexed_sha256 序列三次完全相同。"
+ ],
+ "not_claimed": [
+  "玩家回合橫幅（id 0x50、中段 150 毫秒）仍只有靜態指令證據。",
+  "等待迴圈 0x17AC4 的 -eip-watch 計數（每步 64～65 次）與平均等待 27,463 指令對不上，成因未查；不要用輪詢次數推算時間。",
+  "實機每步毫秒未在真機驗證。"
+ ]
+}

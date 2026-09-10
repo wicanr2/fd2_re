@@ -281,10 +281,26 @@ git worktree remove <暫存路徑>
 效能、`09aca58` 逐幀、`61a0f95` overlay selector、`f627cd1` `-eip-watch`）都已
 經由 `bbcdfe3` 合進 main，`git merge-base --is-ancestor` 七項全數確認。
 
-換基底之後跑過一次重現：同一份控制序列在 `main`（`d351681`）上，控制邊界的
-指令數逐格相同，290 幀的 `indexed_sha256` 序列與 `f627cd1` 那輪完全相同。所以
-`f627cd1` 之後進 main 的時鐘與 machine 改動沒有動到 FD2 這條路徑的指令流，
-既有收據仍然有效。
+換基底之後跑過兩次重現：同一份控制序列在 `main` 的 `d351681` 與 `c8aa69a`
+（A20／HMA 位址遮罩改動之後）上，控制邊界的指令數逐格相同，290 幀的 step 與
+`indexed_sha256` 序列與 `f627cd1` 那輪完全相同。所以 `f627cd1` 之後進 main 的
+時鐘、machine 與 CPU 定址改動都沒有動到 FD2 這條路徑的指令流，既有收據仍然
+有效。**換基底就重跑一次這份對照**，比事後解釋數字為什麼變了便宜得多。
+
+### 時鐘：LE 路徑一道指令一微秒
+
+FD2 走的是 LE（DOS/4GW 保護模式）那條路，它的 BIOS 時鐘由
+`InstallLEBIOSClock` 掛在 `CPU.StepHook`，每道指令推進一次、一次代表一微秒；
+PIT 分頻 65536 時要 **54,926 道指令**才讓 `0000:046C` 加一（dosgolem 的
+`TestBIOSClockPeriodMaskAndRollover` 釘住這個數字）。收據裡的指令步距要換算成
+毫秒就用它。
+
+`Machine.IRQ0Every`／`CycleClock`／`DefaultCPUHz` 是 real-mode 那條路的時鐘，
+與 LE 這條路是兩套，不要互相套用——2026-09-10 就因為套錯而把一段正確的敘述
+改成錯的，繞了兩圈才由程式碼糾正回來。
+
+`cmd/probe` 跑 FD2 也跑得動，但它不帶 `apps/fd2` 的平台設定（`0000:046C` 全程
+是 0），不能拿它的環境代表 oracle。
 
 ### 收據自己帶出處
 

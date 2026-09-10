@@ -35,6 +35,14 @@
 仍然成立的那些（網頁與 Android 封包、三個編輯器、各項 `PLAYER-E2`、四語機器
 初稿、素材清冊的 93 筆 unknown）已收進 `fd2-worklist.json`，每一條掛 verify。
 
+### 2026-09-10 當天關掉的條目
+
+- `dosgolem-tick-steps-unmeasured`（當天稍早才加進來）：一個 BIOS tick 在
+  dosgolem 的 LE 路徑上是 **54,926 道指令**，由 `le_bios_clock.go` 掛在
+  `CPU.StepHook` 的每指令一微秒模型與 `TestBIOSClockPeriodMaskAndRollover`
+  釘住。連帶解掉「馬賽克前那七幀是什麼」——`-eip-watch` 顯示它們就是
+  `sub_1F42D` 的字樣滑入。見 [`105`](105-phase-banner-timing-20260910.md)。
+
 ---
 
 > 2026-09-09 最新交接：2026-09-08 的未提交工作已收成三個 commit，工作樹清空；
