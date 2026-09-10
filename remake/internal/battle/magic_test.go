@@ -16,10 +16,10 @@ func mkUnit(camp Camp, x, y, hp, mp int) *Unit {
 func TestCastArea_AoE_HitsAllInRange(t *testing.T) {
 	st := newTestState()
 	caster := mkUnit(Own, 5, 5, 100, 50)
-	e1 := mkUnit(Enemy, 5, 5, 100, 0) // 中心,距離0
-	e2 := mkUnit(Enemy, 5, 6, 100, 0) // 距離1(範圍內)
-	e3 := mkUnit(Enemy, 4, 5, 100, 0) // 距離1(範圍內)
-	e4 := mkUnit(Enemy, 5, 8, 100, 0) // 距離3(範圍外)
+	e1 := mkUnit(Enemy, 5, 5, 100, 0)   // 中心,距離0
+	e2 := mkUnit(Enemy, 5, 6, 100, 0)   // 距離1(範圍內)
+	e3 := mkUnit(Enemy, 4, 5, 100, 0)   // 距離1(範圍內)
+	e4 := mkUnit(Enemy, 5, 8, 100, 0)   // 距離3(範圍外)
 	friend := mkUnit(Own, 6, 5, 100, 0) // 距離1,但同陣營 → 攻擊法術不應命中
 	st.Units = []*Unit{caster, e1, e2, e3, e4, friend}
 

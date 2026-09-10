@@ -196,3 +196,34 @@ func TestNativeCounterattackEligibleChecksEveryCondition(t *testing.T) {
 		})
 	}
 }
+
+// TestCounterattackReadsTheRealTransientByte 釘住反擊判定讀的是真正的
+// `+0x26`（六個暫時狀態剩餘回合數之一），不是恆為 0 的佔位值。原版
+// `sub_1F0DC` 讀 `unit+38`，同一個閘門也擋掉回合開始的自動回復。
+func TestCounterattackReadsTheRealTransientByte(t *testing.T) {
+	state := &State{}
+	defender := &Unit{X: 5, Y: 19, HP: 8}
+	if got := state.counterattackDefender(defender); got.Byte38 != 0 {
+		t.Fatalf("沒有狀態時 Byte38 是 %d，應為 0", got.Byte38)
+	}
+	if !defender.SetNativeTransientDuration(0x26, 3) {
+		t.Fatal("寫不進 +0x26")
+	}
+	got := state.counterattackDefender(defender)
+	if got.Byte38 != 3 {
+		t.Fatalf("+0x26 設成 3 之後 Byte38 是 %d", got.Byte38)
+	}
+	if NativeCounterattackEligible(6, 19, got) {
+		t.Fatal("+0x26 生效中仍判成可以反擊")
+	}
+	// 其他五個 transient 不該影響反擊——原版只讀 +0x26。
+	defender.SetNativeTransientDuration(0x26, 0)
+	for _, offset := range []int{0x22, 0x23, 0x24, 0x25, 0x27} {
+		defender.SetNativeTransientDuration(offset, 4)
+	}
+	other := state.counterattackDefender(defender)
+	other.HasWeapon, other.WeaponReach = true, 1
+	if !NativeCounterattackEligible(6, 19, other) {
+		t.Fatal("只有其他 transient 生效時就不能反擊了，原版只看 +0x26")
+	}
+}

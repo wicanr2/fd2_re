@@ -151,12 +151,17 @@ func (s *State) nativePhysicalExchange(a, d *Unit, rngState uint16) ([]NativePhy
 	return strikes, rng, nil
 }
 
-// counterattackDefender 把守方的狀態整理成反擊資格判定的輸入。`Byte38` 是原版
-// `unit+38`，重製端還沒有那個欄位，語意也未解，所以一律當 0（＝不阻擋反擊）。
+// counterattackDefender 把守方的狀態整理成反擊資格判定的輸入。
+//
+// 原版 `sub_1F0DC` 讀的 `unit+38` 就是 `+0x26`——六個暫時狀態剩餘回合數
+// （`+0x22..+0x27`）中的一個，由 `0x1A866` 的 camp-phase 掃描逐一遞減。非零代表
+// 那個狀態還在生效，同一組條件也擋掉回合開始的自動回復（`sub_1A30B` 的
+// `[ebx+25h]`／`[ebx+26h]` 兩個閘門）。
 func (s *State) counterattackDefender(d *Unit) NativeCounterattackDefender {
 	weapon, ok := s.nativeEquippedWeapon(d)
+	transient, _ := d.NativeTransientDuration(0x26)
 	return NativeCounterattackDefender{
-		X: d.X, Y: d.Y, AliveHP: d.HP,
+		X: d.X, Y: d.Y, AliveHP: d.HP, Byte38: int(transient),
 		HasWeapon: ok, WeaponReach: weapon.Reach,
 	}
 }

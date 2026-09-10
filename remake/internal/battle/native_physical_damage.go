@@ -119,7 +119,7 @@ func RollNativePhysicalDamage(in NativePhysicalRoll) (NativePhysicalRollResult, 
 // 已裝備第 0 類裝備的 record `+11`；沒有已裝備的第 0 類時 HasWeapon 為 false。
 type NativeCounterattackDefender struct {
 	X, Y        int
-	Byte38      int // record +38，非零就不反擊
+	Byte38      int // record +38 ＝ +0x26，六個暫時狀態之一；非零就不反擊
 	HasWeapon   bool
 	WeaponReach int
 	AliveHP     int

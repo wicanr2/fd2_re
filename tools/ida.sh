@@ -35,6 +35,7 @@ docker run --rm --network none --memory 8g --cpus "${FD2_IDA_CPUS:-2}" \
     -u "$(id -u):$(id -g)" \
     -v "$work:/work" -v "$repo_root/tools:/work/tools:ro" \
     -e HOME=/work -e FD2_IDA_ADDRESSES="$*" -e FD2_IDA_BYTE_RANGES="${FD2_IDA_BYTE_RANGES:-}" \
+    -e FD2_IDA_RECORD_OFFSETS="${FD2_IDA_RECORD_OFFSETS:-}" \
     -e FD2_IDA_OUTPUT=/work/out.txt \
     -w /work "$image" \
     idat -A "-S/work/tools/$(basename "$script")" /work/FD2.EXE >"$work/ida.log" 2>&1 || true

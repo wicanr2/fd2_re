@@ -137,6 +137,14 @@
       "why": "2026-09-10 只跑 ./cmd/fd2 就看到「修復 39 項」，其中包含 TestReviewedGoCandidatesMatchCurrentInventory——那支測試在 cmd/fd2-string-inventory，根本沒跑到，而且當時是失敗的。「新增: 無」是可信的（跑到的才會列），「修復」不是。",
       "date": "2026-09-10",
       "evidence": "tools/remake_go_test.sh"
+    },
+    {
+      "id": "check-project-records-before-unsolved",
+      "area": "紀律",
+      "rule": "要在文件裡寫「未解」「重製端沒有這個欄位」之前，先 grep docs/knowledge-base、docs/data/ida 與 remake/ 的程式碼。這個專案累積了幾百份結論，答案常常是自己或前幾輪早就解掉的。",
+      "why": "2026-09-10 寫 106 時一次踩兩下：把 `unit+38` 記成「重製端沒有對應欄位、語意未解」，實際上它是 `+0x26`，六個暫時狀態之一，重製端早有 `NativeTransientDuration`；又把物理攻擊的經驗值記成「本輪未解」，而 `sub_29F72` 尾段那一段 2026-09-08 就閉合了，重製端的 `award()` 正式路徑一直在用。兩句都會變成下一輪重做的理由。",
+      "date": "2026-09-10",
+      "evidence": "docs/knowledge-base/106-physical-attack-counterattack-20260910.md"
     }
   ]
 }
