@@ -171,7 +171,7 @@ def do_goto(command):
         current = state()
         mode = ui_mode(current)
         if mode not in CURSOR_MODES:
-            if mode in {"system", "status"} and escapes_left > 0:
+            if mode in ESCAPABLE - CURSOR_MODES and escapes_left > 0:
                 escapes_left -= 1
                 seq, current = send("esc", max(steps, 3_000_000))
                 report(seq, "esc", current, f" goto=leave-{mode}")
@@ -316,6 +316,7 @@ def resume_battle(steps, budget, confirm=3):
 # `0x16FAE` 落在 FD2 已知的系統選單 handler `0x16F55` 那支函式裡，`0x18EEF` 落在
 # action chooser `0x18D8C` 同一段；與專案既有的反組譯結論一致。
 UI_MODES = (
+    ("grid", "0x1BC8E"),      # 指令 grid（六格圖示，`0x1BBDC` 那組 chooser）
     ("status", "0x1BA37"),    # 單位狀態面板（能力值與裝備）：esc 退得掉
     ("ring", "0x18EEF"),      # 指令環：↑攻擊／←法術／→物品／↓待機
     ("system", "0x16FAE"),    # 空地上按 enter 開的系統選單（含 END）
@@ -338,6 +339,9 @@ DIALOGUE_RANGE = (0x1E400, 0x1E5FF)
 
 # 方向鍵會移動地圖游標的模式。其餘模式送方向鍵是在選選項，不會動游標。
 CURSOR_MODES = {"cursor", "target"}
+# esc 退得掉的選單。指令環不在裡面——它要選一項才離得開，而選哪一項是決策，
+# 不是清理。
+ESCAPABLE = {"system", "status", "grid", "target"}
 
 
 def ui_mode(current):
@@ -442,33 +446,35 @@ def engage_targets(current, origin, typical_move=6):
 
 
 def stand_by(steps, note=""):
-    """在指令環上選「待機」結束這個單位的行動。
+    """在指令環上結束這個單位的行動。
 
-    原版四向是 ↑0 攻擊／←1 法術／→2 物品／↓3 待機（`0x18D8C` 的 switch 釘死）。
-    只移動不待機的話這個單位的 record `+5` bit7 不會設起來，下一輪掃描又會選到
-    它，回合永遠推不掉。
+    四向的預設佈局是 ↑0 攻擊／←1 法術／→2 物品／↓3 待機（`0x18D8C` 的 switch）。
+    但可選項會隨單位而變——實測第一關第 3 回合加入的哈瓦特按 ↓ 開的是指令 grid，
+    不是待機。所以每個方向送完都檢查介面：開了 grid 或狀態面板就 esc 退回來換
+    下一個方向，回到地圖游標才算行動真的結束。
+
+    只移動不待機的單位 record `+5` bit7 不會設，掃描下一輪又會選到它，回合永遠
+    推不掉——所以這一步不能省。
     """
-    mode = wait_mode({"ring"}, steps)
-    if mode != "ring":
-        print(f"stand_by：介面是 {mode} 不是指令環，不送待機鍵", file=sys.stderr)
-        return state()
-    seq, current = send("down", steps)
-    report(seq, "down", current, f" standby{note}")
-    seq, current = send("enter", max(steps, 5_000_000))
-    report(seq, "enter", current, f" standby{note}")
-    return settle(steps, 4)
-
-def wait_mode(wanted, steps, budget=12):
-    """只前進不送鍵，等介面變成 wanted 之一。回傳實際模式。"""
-    mode = ui_mode(state())
-    for _ in range(budget):
-        if mode in wanted:
-            return mode
-        seq, current = send("", steps)
+    for key in ("down", "right", "left"):
+        mode = wait_mode({"ring"}, steps)
+        if mode != "ring":
+            if mode in {"cursor", "dialogue"}:
+                return state()      # 行動已經結束了
+            print(f"stand_by：介面是 {mode} 不是指令環，不送待機鍵", file=sys.stderr)
+            return state()
+        seq, current = send(key, steps)
+        report(seq, key, current, f" standby{note}")
+        seq, current = send("enter", max(steps, 5_000_000))
+        report(seq, "enter", current, f" standby{note}")
+        current = settle(steps, 4)
         mode = ui_mode(current)
-        report(seq, "", current, f" wait-mode{sorted(wanted)}")
-    return mode
-
+        if mode in ESCAPABLE - CURSOR_MODES:
+            seq, current = send("esc", max(steps, 3_000_000))
+            report(seq, "esc", current, f" standby{note}=wrong-option({mode})")
+            continue
+        return current
+    return state()
 
 def ensure_cursor_mode(steps, budget=60):
     """把介面退回「地圖游標自由移動」，或等到它回來。
@@ -486,7 +492,7 @@ def ensure_cursor_mode(steps, budget=60):
         mode = ui_mode(current)
         if mode == "cursor":
             return True
-        if mode in {"target", "system", "status"}:
+        if mode in ESCAPABLE:
             seq, current = send("esc", max(steps, 3_000_000))
             report(seq, "esc", current, f" back-to-cursor(from {mode})")
             continue
@@ -618,10 +624,10 @@ def do_engage(command):
             seq, current = send(key, max(steps, 3_000_000))
             report(seq, key, current, " engage=finish-dialogue")
             continue
-        if mode == "status":
-            # 指令環上按到「狀態」會開能力值面板。esc 退回去，行動還沒結束。
+        if mode in ESCAPABLE - CURSOR_MODES:
+            # 指令環上按到「狀態」或「物品」會開面板／grid。esc 退回去。
             seq, current = send("esc", max(steps, 3_000_000))
-            report(seq, "esc", current, " engage=finish-status")
+            report(seq, "esc", current, f" engage=finish-{mode}")
             continue
         if mode == "unknown":
             seq, current = send("", max(steps, 5_000_000))
