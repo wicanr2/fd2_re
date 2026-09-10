@@ -59,16 +59,24 @@ if (unit[0x23]) v9 = v9 * 1.15;   // 魔鎧
 
 ## 重製端現況
 
-機制層大多已接：`NativeTransientDuration`／`TickNativeTransientsRaw` 保存並遞減
-六個 byte，`NativeBattleEntryStep` 是 `0x1A30B` 的回合開始回復（同樣以 `+0x25`／
-`+0x26` 為閘門），`finishSelectedWait` 是 `0x13FD4` 的待機回復，
-`nativeCommandActionBlocked` 是 `+0x27` 的法術停用，反擊資格讀 `+0x26`。
+原版這條路整條都接了，分成兩端：
 
-**效果層還沒走這條路**：`EffectiveAP()`／`EffectiveDP()` 用的是可累加的
-`BuffAPPct`／`BuffDPPct` 加一個共用的 `BuffTurns` 計時器（`applyBuff` 自承是重製
-簡化）。數值本身對得上（15%／＋15），但兩點與原版不同：原版是「非零就套一次固定
-倍率」不會因為施兩次而變成 ＋30%，而且六個狀態各有各的剩餘回合數，不共用計時器。
-見工作清單 `remake-buff-uses-normalized-timer`。
+| 時機 | 原版 | 重製端 |
+|---|---|---|
+| 施加 | command 17／18／19 的 handler 直接改 `+0x48`／`+0x4A`（加 `trunc(值 × 0.15 + 1)`），並把剩餘回合數寫成 `RNG % 4 + 2` | `ApplyNativeRawWordStepAtOffsets` |
+| 重算 | `sub_1B750` 依 `+0x22`／`+0x23` 非零重新套 1.15、`+0x24` 加 15 | `nativeEquipmentTotals`（`runtimeModifiers` 為真那條） |
+| 遞減與到期 | `0x1A866` 逐一遞減，歸零重算 | `TickNativeTransientsRaw` ＋ `applyNativeTransientPhase` |
+
+倍率在重製端是精確有理數 `2589569785738035 / 2251799813685248`（`nativeScale115TowardZero`），
+不是浮點乘法——那是為了重現 x87 的向零截斷，`int(100 × 1.15)` 會得到 114 而不是 115。
+
+值得注意的是施加與重算用**不同算式**：handler 加的是 `15% + 1`，重算套的是乘
+1.15，所以一個單位在換裝備前後的有效值可以不一樣。那是原版的行為，不是重製端的
+近似。
+
+`Unit.BuffAPPct`／`BuffTurns` 那組是另一條路，服務沒有原版 raw record 的舊可編輯
+劇本（`magic.go` 的 `applyBuff`）。兩條各自服務不同的資料來源，不是同一件事的
+兩種寫法。
 
 ## 尚未涵蓋
 

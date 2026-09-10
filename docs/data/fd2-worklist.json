@@ -221,22 +221,6 @@
         "kind": "manual",
         "note": "要人耳。容器 nosound 驗不了。"
       }
-    },
-    {
-      "id": "remake-buff-uses-normalized-timer",
-      "layer": "runtime",
-      "title": "增益走重製端的共用計時器，不是原版的六個暫時狀態",
-      "body": "原版六個暫時狀態各有各的剩餘回合數（`+0x22..+0x27`，由 `0x1A866` 逐一遞減），`sub_1B750` 只看「非零與否」決定要不要套固定效果：`+0x22` 攻擊力 ×1.15、`+0x23` 防禦力 ×1.15、`+0x24` 命中與迴避各 +15（見 107）。重製端的 `EffectiveAP()`／`EffectiveDP()` 走可累加的 `BuffAPPct`／`BuffDPPct` 加一個共用的 `BuffTurns`（`applyBuff` 自承是重製簡化）。數值對得上，但施兩次魔刃在重製端會變成 +30%，原版不會；六個狀態的到期時間在重製端也是綁在一起的。機制層（保存、遞減、回復閘門、法術停用、反擊資格）都已經走原版那條。",
-      "acceptance": "`EffectiveAP`／`EffectiveDP`／`EffectiveHIT`／`EffectiveEV` 在有原版 raw 的單位上改由 `+0x22..+0x24` 決定，效果照 `sub_1B750` 的固定倍率與加法，六個狀態各自到期；normalized 那條只留給沒有 raw 的舊劇本。",
-      "evidence": "docs/knowledge-base/107-transient-status-semantics-20260910.md",
-      "verify": {
-        "kind": "present",
-        "paths": [
-          "remake/internal/battle/magic.go"
-        ],
-        "pattern": "重製簡化成單一共用計時器 BuffTurns",
-        "note": "applyBuff 的自承還在。"
-      }
     }
   ]
 }

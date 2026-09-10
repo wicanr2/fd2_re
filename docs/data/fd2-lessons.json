@@ -141,8 +141,8 @@
     {
       "id": "check-project-records-before-unsolved",
       "area": "紀律",
-      "rule": "要在文件裡寫「未解」「重製端沒有這個欄位」之前，先 grep docs/knowledge-base、docs/data/ida 與 remake/ 的程式碼。這個專案累積了幾百份結論，答案常常是自己或前幾輪早就解掉的。",
-      "why": "2026-09-10 寫 106 時一次踩兩下：把 `unit+38` 記成「重製端沒有對應欄位、語意未解」，實際上它是 `+0x26`，六個暫時狀態之一，重製端早有 `NativeTransientDuration`；又把物理攻擊的經驗值記成「本輪未解」，而 `sub_29F72` 尾段那一段 2026-09-08 就閉合了，重製端的 `award()` 正式路徑一直在用。兩句都會變成下一輪重做的理由。",
+      "rule": "要寫「未解」「重製端沒接」「沒有這個欄位」之前，先 grep docs/knowledge-base、docs/data/ida 與 remake/ 的產品碼。**而且不能只看一個入口就下結論**——同一個效果在重製端常常由另一條路徑寫進欄位，看起來沒接的那個函式只是另一種資料來源的服務窗口。",
+      "why": "2026-09-10 一天踩三次。(1) `unit+38` 記成「沒有對應欄位、語意未解」，實際上是 `+0x26`，重製端早有 `NativeTransientDuration`。(2) 物理攻擊的經驗值記成「本輪未解」，而 `sub_29F72` 尾段 2026-09-08 就閉合了。(3) 看到 `EffectiveAP()` 用 `BuffAPPct` 就斷定「原版的 `+0x22` 增益沒接」，還為此開了一條 worklist——實際上原版那條走的是另一組函式（施加 `ApplyNativeRawWordStepAtOffsets`、重算 `nativeEquipmentTotals`），連 x87 向零截斷都用精確有理數重現了；`BuffAPPct` 只是舊可編輯劇本的路徑。",
       "date": "2026-09-10",
       "evidence": "docs/knowledge-base/106-physical-attack-counterattack-20260910.md"
     }

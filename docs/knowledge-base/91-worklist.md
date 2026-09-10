@@ -25,7 +25,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 18 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 17 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 
@@ -92,18 +92,6 @@ manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unk
 `native-0`／`native-1`／`native-7`／`native-96` 有名稱衝突，目前保留直接來源、拒絕猜選。
 
 怎樣算做完：四筆各自解決或明確拆分，並在 canonical schema 記錄依據。
-
-## runtime — 還沒接進正式執行期
-
-### 增益走重製端的共用計時器，不是原版的六個暫時狀態
-
-`remake-buff-uses-normalized-timer` · 仍未完成 · 自承還在 remake/internal/battle/magic.go
-
-原版六個暫時狀態各有各的剩餘回合數（`+0x22..+0x27`，由 `0x1A866` 逐一遞減），`sub_1B750` 只看「非零與否」決定要不要套固定效果：`+0x22` 攻擊力 ×1.15、`+0x23` 防禦力 ×1.15、`+0x24` 命中與迴避各 +15（見 107）。重製端的 `EffectiveAP()`／`EffectiveDP()` 走可累加的 `BuffAPPct`／`BuffDPPct` 加一個共用的 `BuffTurns`（`applyBuff` 自承是重製簡化）。數值對得上，但施兩次魔刃在重製端會變成 +30%，原版不會；六個狀態的到期時間在重製端也是綁在一起的。機制層（保存、遞減、回復閘門、法術停用、反擊資格）都已經走原版那條。
-
-怎樣算做完：`EffectiveAP`／`EffectiveDP`／`EffectiveHIT`／`EffectiveEV` 在有原版 raw 的單位上改由 `+0x22..+0x24` 決定，效果照 `sub_1B750` 的固定倍率與加法，六個狀態各自到期；normalized 那條只留給沒有 raw 的舊劇本。
-
-證據：`docs/knowledge-base/107-transient-status-semantics-20260910.md`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
