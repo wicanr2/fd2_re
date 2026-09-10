@@ -51,7 +51,7 @@ type Unit struct {
 	AP, DP    int
 	HIT, EV   int // 命中/閃避基礎值(doc02 §2;doc03:EXE 內為「衍生值」非表格原始欄位,
 	// 敵/友單位 10B 表無此欄,export_units.py 暫用固定近似值,見該檔頭註解)
-	CritPct  int // 暴擊率；原版表在 0x5239B(每職業一個 byte，索引為職業 ID 減一)，
+	CritPct int // 暴擊率；原版表在 0x5239B(每職業一個 byte，索引為職業 ID 減一)，
 	// 由 resist_crit.json 承載，逐職業比對見 native_combat_tables_test.go。
 	// 原版 sub_29F72 的暴擊門檻還要加上武器 record +10 的加成，那一段尚未接。
 	MV       int // 移動力
