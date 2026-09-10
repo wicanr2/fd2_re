@@ -32,7 +32,20 @@ set -euo pipefail
 repo=$(cd "$(dirname "$0")/.." && pwd)
 out=${1:?需要輸出目錄}
 plan=${2:-}
-dos=${FD2_DOSGOLEM_ROOT:-$HOME/cht/dosgolem}
+# 預設用 FD2 對拍的專屬基底，不用共用的 ~/cht/dosgolem。共用那份隨時可能有別的
+# 工作階段改到一半（2026-09-10 就遇到 machine.go 編不過），而收據要能由 commit
+# 重現。專屬基底是一個 git worktree，固定在驗證過能重現既有收據的 commit：
+#
+#   git -C ~/cht/dosgolem worktree add --detach ~/cht/dosgolem-fd2-oracle <commit>
+#
+# 要跟上 dosgolem 的新功能，就把 worktree checkout 到新 commit，**然後先跑一次
+# 重現對照**（同一份控制序列、比對逐幀 indexed_sha256），確認指令流沒變再繼續。
+# 設 FD2_DOSGOLEM_ROOT 可以指回共用那份或任何別的路徑。
+dos=${FD2_DOSGOLEM_ROOT:-$HOME/cht/dosgolem-fd2-oracle}
+if [ ! -d "$dos/apps/fd2/cmd/oracle" ] && [ -d "$HOME/cht/dosgolem/apps/fd2/cmd/oracle" ]; then
+  echo "⚠ 找不到專屬基底 $dos，改用共用的 ~/cht/dosgolem（那份可能有人正在改）" >&2
+  dos=$HOME/cht/dosgolem
+fi
 orig=${FD2_ORIG_ROOT:-$repo/org_game/炎龍騎士團/FLAME2}
 cpus=${FD2_ORACLE_CPUS:-2}
 budget=${FD2_ORACLE_STEPS:-20000000000}

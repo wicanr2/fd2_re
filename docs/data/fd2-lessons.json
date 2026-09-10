@@ -19,7 +19,9 @@
       "evidence": "docs/data/fd2_delay_call_sites.txt",
       "guard": {
         "kind": "present",
-        "paths": ["docs/knowledge-base/96-parity-toolchain-20260909.md"],
+        "paths": [
+          "docs/knowledge-base/96-parity-toolchain-20260909.md"
+        ],
         "pattern": "`delay\\(ms\\)` 量不到，只能讀常數",
         "note": "工具鏈文件裡的那一節還在。"
       }
@@ -87,6 +89,30 @@
       "why": "回合橫幅用 0x1F1CC 兩幀就標出兩次起點；全螢幕戰鬥演出用 0x29164 一次掃出六段。大範圍逐幀掃是最貴又最容易撲空的做法。",
       "date": "2026-09-10",
       "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md"
+    },
+    {
+      "id": "own-worktree-for-shared-base",
+      "area": "工具鏈",
+      "rule": "對拍的 dosgolem 基底用自己的 git worktree（`~/cht/dosgolem-fd2-oracle`），不要直接用共用的工作區。",
+      "why": "2026-09-10 跑到一半共用工作區的 machine.go 編不過——另一個工作階段正在做 write8 重構。worktree 固定在驗證過能重現的 commit，不受別人影響，也不必去動別人的樹。要跟上新功能就 checkout 新 commit，然後先跑一次重現對照。",
+      "date": "2026-09-10",
+      "evidence": "tools/dosgolem_oracle.sh",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/dosgolem_oracle.sh"
+        ],
+        "pattern": "dosgolem-fd2-oracle",
+        "note": "驅動腳本的預設基底還指向專屬 worktree。"
+      }
+    },
+    {
+      "id": "offscreen-dump-needs-drawn-mark",
+      "area": "重製端",
+      "rule": "重製端的離屏逐幀擷取要自己呼叫 `markActionOverlayDrawn()`，指令環的開合動畫才會推進。",
+      "why": "`stepActionOverlayLifecycle` 的推進掛在「這一幀被畫過」，正式路徑由繪製那側標記；離屏 dump 不走 Draw，所以關環會永遠卡住，症狀是「指令環沒有關閉」而不是任何錯誤。",
+      "date": "2026-09-10",
+      "evidence": "remake/cmd/fd2/native_map_attack_dump_test.go"
     }
   ]
 }

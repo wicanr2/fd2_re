@@ -330,15 +330,35 @@ Watcom 的 `delay(ms)`（`0x375B2` → `0x3DCCD`）不看時鐘：它把毫秒�
 走 `delay(ms)` 的只能讀呼叫點的常數**。全庫 185 個 `delay` 呼叫點與毫秒參數見
 [`fd2_delay_call_sites.txt`](../data/fd2_delay_call_sites.txt)。
 
-### 控制序列還不會「打」
+### 玩家操作的對拍：兩側走同一組座標
 
-目前所有 FD2 控制序列的玩家回合都是「開系統面板→END→YES」，玩家自己不出手。
-這條路徑跑不到第五回合：2026-09-10 實測，玩家完全不操作的話**第 3 回合之後我方
-全滅戰敗**，畫面回到王座廳第 0 章對白。
+原版的完整操作流程（2026-09-10 實測確認）：
 
-要對拍第三回合以後的任何東西（包含玩家自己發動的攻擊、法術、物品，以及後段
-回合的地圖狀態），控制序列得真的會打：選單導覽到移動、選格、確認、選攻擊目標。
-這比推游標到角落複雜一個量級，目前還沒有。
+1. 方向鍵把游標移到我方單位 → **Enter：選中並進入移動模式**（可移動範圍出現）
+2. 方向鍵把游標移到目標格 → **Enter：確認移動**（單位走過去，有走行動畫）
+3. 走完自動出現**四向指令環**：↑0 攻擊／←1 法術／→2 物品／↓3 待機
+   （由 `0x18D8C` 的 switch 釘死；起始選擇由 `sub_173E7` 從方向 0 找第一個可用的，
+   不可用的方向按了完全沒反應——`sub_177FC` 的閘門）
+4. **Enter：確認攻擊** → 關環，游標自動跳到射程內的敵人
+5. **Enter：確認目標** → 全螢幕戰鬥演出 → 雙方 HP 結算
+
+序列收在 [`docs/data/parity-plans/ch01-move-attack.jsonl`](../data/parity-plans/ch01-move-attack.jsonl)。
+
+重製端那側由 `TestDumpChapterOneMoveAttackFrames`（`FD2_ATTACK_DUMP`）走**同一組
+座標**：直接驅動 `Game` 的同一條狀態機，不經過鍵盤層。兩側輸入層不同，但走過的
+節點與座標相同，逐幀畫面因此可以對照。
+
+```sh
+tools/dosgolem_oracle.sh <輸出> docs/data/parity-plans/ch01-move-attack.jsonl
+FD2_ATTACK_DUMP=<輸出> go test ./cmd/fd2 -run TestDumpChapterOneMoveAttackFrames
+```
+
+第一次對拍就抓到差異：原版攻方 HP 48→31（**受到反擊**）、守方 28→8；重製端攻方
+48→48（沒受傷）、守方 28→6。收據見
+[fd2-move-attack-parity-20260910.json](../data/ui-traces/fd2-move-attack-parity-20260910.json)。
+
+**玩家完全不操作跑不到第五回合**：實測每回合直接 END 的話，第 3 回合之後我方
+全滅戰敗，畫面回到王座廳第 0 章對白。要走到後段回合，控制序列就得真的會打。
 
 ### 找特定演出在哪一段：`-frame-eip` 加 `stride 0`
 

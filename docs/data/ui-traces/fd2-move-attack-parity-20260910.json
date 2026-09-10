@@ -1,0 +1,1062 @@
+{
+ "schema_version": 1,
+ "kind": "fd2_parity_receipt",
+ "topic": "第一關第 1 回合的移動＋攻擊：原版與重製端走同一組座標的對拍",
+ "date": "2026-09-10",
+ "original": {
+  "runner": "dosgolem apps/fd2/cmd/oracle",
+  "runner_provenance": {
+   "schema_version": 1,
+   "kind": "fd2_oracle_runner_provenance",
+   "runner": "dosgolem apps/fd2/cmd/oracle",
+   "dosgolem_root": "/home/anr2/cht/dosgolem-fd2-oracle",
+   "dosgolem_commit": "c8aa69af3999fb6a9d6331dc50fb680b13779a2f",
+   "dosgolem_branch": "HEAD",
+   "dosgolem_tracked_dirty_files": 0,
+   "dosgolem_untracked_files": 0,
+   "original_root": "/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2",
+   "generated_at": "2026-09-10T14:32:03+08:00"
+  },
+  "driver": "tools/dosgolem_oracle.sh",
+  "control_plan": "docs/data/parity-plans/ch01-move-attack.jsonl",
+  "input_kind": "normal BIOS keys",
+  "plan": [
+   {
+    "key": "right",
+    "steps": 3000000
+   },
+   {
+    "key": "down",
+    "steps": 3000000
+   },
+   {
+    "key": "down",
+    "steps": 3000000
+   },
+   {
+    "key": "enter",
+    "steps": 3000000
+   },
+   {
+    "key": "",
+    "steps": 10000000,
+    "repeat": 18
+   },
+   {
+    "key": "up",
+    "steps": 3000000,
+    "gate": "kbd_empty"
+   },
+   {
+    "key": "enter",
+    "steps": 5000000,
+    "gate": "kbd_empty"
+   },
+   {
+    "key": "left",
+    "steps": 3000000,
+    "gate": "kbd_empty"
+   },
+   {
+    "key": "left",
+    "steps": 3000000,
+    "gate": "kbd_empty"
+   },
+   {
+    "key": "down",
+    "steps": 3000000,
+    "gate": "kbd_empty"
+   },
+   {
+    "key": "down",
+    "steps": 3000000,
+    "gate": "kbd_empty"
+   },
+   {
+    "key": "down",
+    "steps": 3000000,
+    "gate": "kbd_empty"
+   },
+   {
+    "key": "enter",
+    "steps": 20000000,
+    "gate": "kbd_empty"
+   },
+   {
+    "key": "",
+    "steps": 10000000,
+    "repeat": 4
+   },
+   {
+    "key": "enter",
+    "steps": 10000000,
+    "gate": "kbd_empty"
+   },
+   {
+    "key": "",
+    "steps": 10000000,
+    "repeat": 4
+   },
+   {
+    "key": "enter",
+    "steps": 20000000,
+    "gate": "kbd_empty"
+   },
+   {
+    "key": "",
+    "steps": 10000000,
+    "repeat": 12
+   }
+  ],
+  "checkpoints": [
+   {
+    "checkpoint": 22,
+    "step": 235483500,
+    "cursor": [
+     8,
+     17
+    ],
+    "actor": {
+     "x": 8,
+     "y": 16,
+     "hp": 48
+    },
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 23,
+    "step": 238483500,
+    "cursor": [
+     8,
+     16
+    ],
+    "actor": {
+     "x": 8,
+     "y": 16,
+     "hp": 48
+    },
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 24,
+    "step": 243483500,
+    "cursor": [
+     8,
+     16
+    ],
+    "actor": {
+     "x": 8,
+     "y": 16,
+     "hp": 48
+    },
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 25,
+    "step": 246483500,
+    "cursor": [
+     7,
+     16
+    ],
+    "actor": {
+     "x": 8,
+     "y": 16,
+     "hp": 48
+    },
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 26,
+    "step": 249483500,
+    "cursor": [
+     6,
+     16
+    ],
+    "actor": {
+     "x": 8,
+     "y": 16,
+     "hp": 48
+    },
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 27,
+    "step": 252483500,
+    "cursor": [
+     6,
+     17
+    ],
+    "actor": {
+     "x": 8,
+     "y": 16,
+     "hp": 48
+    },
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 28,
+    "step": 255483500,
+    "cursor": [
+     6,
+     18
+    ],
+    "actor": {
+     "x": 8,
+     "y": 16,
+     "hp": 48
+    },
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 29,
+    "step": 258483500,
+    "cursor": [
+     6,
+     19
+    ],
+    "actor": {
+     "x": 8,
+     "y": 16,
+     "hp": 48
+    },
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 30,
+    "step": 278483500,
+    "cursor": [
+     6,
+     19
+    ],
+    "actor": {
+     "x": 6,
+     "y": 19,
+     "hp": 48
+    },
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 31,
+    "step": 288483500,
+    "cursor": [
+     6,
+     19
+    ],
+    "actor": {
+     "x": 6,
+     "y": 19,
+     "hp": 48
+    },
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 32,
+    "step": 298483500,
+    "cursor": [
+     6,
+     19
+    ],
+    "actor": {
+     "x": 6,
+     "y": 19,
+     "hp": 48
+    },
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 33,
+    "step": 308483500,
+    "cursor": [
+     6,
+     19
+    ],
+    "actor": {
+     "x": 6,
+     "y": 19,
+     "hp": 48
+    },
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 34,
+    "step": 318483500,
+    "cursor": [
+     6,
+     19
+    ],
+    "actor": {
+     "x": 6,
+     "y": 19,
+     "hp": 48
+    },
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 35,
+    "step": 328483500,
+    "cursor": [
+     5,
+     19
+    ],
+    "actor": {
+     "x": 6,
+     "y": 19,
+     "hp": 48
+    },
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 36,
+    "step": 338483500,
+    "cursor": [
+     5,
+     19
+    ],
+    "actor": {
+     "x": 6,
+     "y": 19,
+     "hp": 48
+    },
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 37,
+    "step": 348483500,
+    "cursor": [
+     5,
+     19
+    ],
+    "actor": {
+     "x": 6,
+     "y": 19,
+     "hp": 48
+    },
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 38,
+    "step": 358483500,
+    "cursor": [
+     5,
+     19
+    ],
+    "actor": {
+     "x": 6,
+     "y": 19,
+     "hp": 48
+    },
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 39,
+    "step": 368483500,
+    "cursor": [
+     5,
+     19
+    ],
+    "actor": {
+     "x": 6,
+     "y": 19,
+     "hp": 48
+    },
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 40,
+    "step": 388483500,
+    "cursor": [
+     5,
+     19
+    ],
+    "actor": {
+     "x": 6,
+     "y": 19,
+     "hp": 31
+    },
+    "target_hp": 8
+   },
+   {
+    "checkpoint": 41,
+    "step": 398483500,
+    "cursor": [
+     5,
+     19
+    ],
+    "actor": {
+     "x": 6,
+     "y": 19,
+     "hp": 31
+    },
+    "target_hp": 8
+   },
+   {
+    "checkpoint": 42,
+    "step": 408483500,
+    "cursor": [
+     5,
+     19
+    ],
+    "actor": {
+     "x": 6,
+     "y": 19,
+     "hp": 31
+    },
+    "target_hp": 8
+   },
+   {
+    "checkpoint": 43,
+    "step": 418483500,
+    "cursor": [
+     5,
+     19
+    ],
+    "actor": {
+     "x": 6,
+     "y": 19,
+     "hp": 31
+    },
+    "target_hp": 8
+   },
+   {
+    "checkpoint": 44,
+    "step": 428483500,
+    "cursor": [
+     5,
+     19
+    ],
+    "actor": {
+     "x": 6,
+     "y": 19,
+     "hp": 31
+    },
+    "target_hp": 8
+   },
+   {
+    "checkpoint": 45,
+    "step": 438483500,
+    "cursor": [
+     5,
+     19
+    ],
+    "actor": {
+     "x": 6,
+     "y": 19,
+     "hp": 31
+    },
+    "target_hp": 8
+   }
+  ]
+ },
+ "remake": {
+  "driver": "go test ./cmd/fd2 -run TestDumpChapterOneMoveAttackFrames（FD2_ATTACK_DUMP）",
+  "note": "直接驅動 Game 的同一條狀態機，不經過鍵盤層；走過的節點與座標與原版相同",
+  "frames": [
+   {
+    "index": 0,
+    "tag": "cursor-on-actor",
+    "cursor": [
+     8,
+     16
+    ],
+    "sel": null,
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 1,
+    "tag": "selected",
+    "cursor": [
+     8,
+     16
+    ],
+    "sel": [
+     8,
+     16
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 2,
+    "tag": "cursor-on-dest",
+    "cursor": [
+     6,
+     19
+    ],
+    "sel": [
+     8,
+     16
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 3,
+    "tag": "walk0",
+    "cursor": [
+     8,
+     16
+    ],
+    "sel": [
+     8,
+     16
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 4,
+    "tag": "walk1",
+    "cursor": [
+     8,
+     16
+    ],
+    "sel": [
+     8,
+     16
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 5,
+    "tag": "walk2",
+    "cursor": [
+     8,
+     16
+    ],
+    "sel": [
+     8,
+     16
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 6,
+    "tag": "walk3",
+    "cursor": [
+     8,
+     16
+    ],
+    "sel": [
+     8,
+     16
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 7,
+    "tag": "walk4",
+    "cursor": [
+     8,
+     16
+    ],
+    "sel": [
+     8,
+     16
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 8,
+    "tag": "walk5",
+    "cursor": [
+     8,
+     16
+    ],
+    "sel": [
+     8,
+     16
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 9,
+    "tag": "walk6",
+    "cursor": [
+     7,
+     16
+    ],
+    "sel": [
+     7,
+     16
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 10,
+    "tag": "walk7",
+    "cursor": [
+     7,
+     16
+    ],
+    "sel": [
+     7,
+     16
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 11,
+    "tag": "walk8",
+    "cursor": [
+     7,
+     16
+    ],
+    "sel": [
+     7,
+     16
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 12,
+    "tag": "walk9",
+    "cursor": [
+     7,
+     16
+    ],
+    "sel": [
+     7,
+     16
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 13,
+    "tag": "walk10",
+    "cursor": [
+     7,
+     16
+    ],
+    "sel": [
+     7,
+     16
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 14,
+    "tag": "walk11",
+    "cursor": [
+     7,
+     16
+    ],
+    "sel": [
+     7,
+     16
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 15,
+    "tag": "walk12",
+    "cursor": [
+     7,
+     17
+    ],
+    "sel": [
+     7,
+     17
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 16,
+    "tag": "walk13",
+    "cursor": [
+     7,
+     17
+    ],
+    "sel": [
+     7,
+     17
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 17,
+    "tag": "walk14",
+    "cursor": [
+     7,
+     17
+    ],
+    "sel": [
+     7,
+     17
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 18,
+    "tag": "walk15",
+    "cursor": [
+     7,
+     17
+    ],
+    "sel": [
+     7,
+     17
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 19,
+    "tag": "walk16",
+    "cursor": [
+     7,
+     17
+    ],
+    "sel": [
+     7,
+     17
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 20,
+    "tag": "walk17",
+    "cursor": [
+     7,
+     17
+    ],
+    "sel": [
+     7,
+     17
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 21,
+    "tag": "walk18",
+    "cursor": [
+     7,
+     18
+    ],
+    "sel": [
+     7,
+     18
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 22,
+    "tag": "walk19",
+    "cursor": [
+     7,
+     18
+    ],
+    "sel": [
+     7,
+     18
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 23,
+    "tag": "walk20",
+    "cursor": [
+     7,
+     18
+    ],
+    "sel": [
+     7,
+     18
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 24,
+    "tag": "walk21",
+    "cursor": [
+     7,
+     18
+    ],
+    "sel": [
+     7,
+     18
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 25,
+    "tag": "walk22",
+    "cursor": [
+     7,
+     18
+    ],
+    "sel": [
+     7,
+     18
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 26,
+    "tag": "walk23",
+    "cursor": [
+     7,
+     18
+    ],
+    "sel": [
+     7,
+     18
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 27,
+    "tag": "walk24",
+    "cursor": [
+     7,
+     19
+    ],
+    "sel": [
+     7,
+     19
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 28,
+    "tag": "walk25",
+    "cursor": [
+     7,
+     19
+    ],
+    "sel": [
+     7,
+     19
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 29,
+    "tag": "walk26",
+    "cursor": [
+     7,
+     19
+    ],
+    "sel": [
+     7,
+     19
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 30,
+    "tag": "walk27",
+    "cursor": [
+     7,
+     19
+    ],
+    "sel": [
+     7,
+     19
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 31,
+    "tag": "walk28",
+    "cursor": [
+     7,
+     19
+    ],
+    "sel": [
+     7,
+     19
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 32,
+    "tag": "walk29",
+    "cursor": [
+     7,
+     19
+    ],
+    "sel": [
+     7,
+     19
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 33,
+    "tag": "walk30",
+    "cursor": [
+     6,
+     19
+    ],
+    "sel": [
+     6,
+     19
+    ],
+    "ring": true,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 34,
+    "tag": "ring-open",
+    "cursor": [
+     6,
+     19
+    ],
+    "sel": [
+     6,
+     19
+    ],
+    "ring": true,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 35,
+    "tag": "target-mode",
+    "cursor": [
+     6,
+     19
+    ],
+    "sel": [
+     6,
+     19
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 36,
+    "tag": "cursor-on-target",
+    "cursor": [
+     5,
+     19
+    ],
+    "sel": [
+     6,
+     19
+    ],
+    "ring": false,
+    "attack_anim": false,
+    "units": []
+   },
+   {
+    "index": 37,
+    "tag": "attack0",
+    "cursor": [
+     5,
+     19
+    ],
+    "sel": null,
+    "ring": false,
+    "attack_anim": true,
+    "units": []
+   }
+  ]
+ },
+ "operation": {
+  "actor": [
+   8,
+   16
+  ],
+  "destination": [
+   6,
+   19
+  ],
+  "target": [
+   5,
+   19
+  ],
+  "keys": "原版：up → enter（選中）→ left,left,down,down,down → enter（確認移動）→ enter（指令環選攻擊）→ enter（確認目標）"
+ },
+ "conclusions": [
+  {
+   "claim": "兩側都能以一般玩家操作完成『選單位→移動→攻擊』，走同一組座標",
+   "grade": "已證實",
+   "evidence": "原版 checkpoint 23..40 的游標與單位座標；重製端 frames.jsonl 的 tag 序列"
+  },
+  {
+   "claim": "移動的結果相同：亞雷斯由 (8,16) 走到 (6,19)",
+   "grade": "已證實",
+   "evidence": "兩側收據的單位座標"
+  },
+  {
+   "claim": "攻擊的結果不同：原版攻方 HP 48→31（受到反擊），重製端攻方 48→48（沒受傷）",
+   "grade": "已證實",
+   "evidence": "原版 checkpoint 39→40；重製端測試輸出「攻方 HP 48→48」"
+  },
+  {
+   "claim": "傷害量也不同：原版守方 28→8（−20），重製端 28→6（−22）",
+   "grade": "已證實",
+   "evidence": "同上。差異可能來自反擊機制，也可能來自亂數不同步，本輪沒有分辨"
+  }
+ ],
+ "not_claimed": [
+  "逐幀畫面的像素比較。本輪比的是操作節點與狀態，兩側的取樣密度與時間軸還沒有對齊。",
+  "傷害差異的成因。要分辨是反擊機制缺失還是亂數不同步，得先讓兩側的亂數可控。",
+  "第 2 回合以後。"
+ ]
+}

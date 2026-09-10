@@ -50,6 +50,12 @@
   [`fd2-physical-attack-presentation-20260909.json`](../data/ui-traces/fd2-physical-attack-presentation-20260909.json)
   已經取到三段演出並記了 `0x29164`／`0x2A289`／`0x18C6D` 的進入次數。2026-09-10
   重新實測確認能取，條目改寫成真正的缺口：逐格分鏡與時序。
+- `playing-control-plan`：控制序列會打了。原版側送 BIOS 按鍵完成
+  「選單位→移動→指令環選攻擊→選目標→攻擊」，重製端側由
+  `TestDumpChapterOneMoveAttackFrames` 走同一組座標；序列收在
+  `docs/data/parity-plans/ch01-move-attack.jsonl`。第一次對拍就抓到重製端沒有
+  反擊（原版攻方 48→31，重製端 48→48），已另立條目
+  `remake-attack-missing-counterattack`。
 
 ---
 
