@@ -54,26 +54,46 @@ func localizedNativeDialogueLayout(text string, source *campaign.NativeDialogueL
 	return layout, nil
 }
 
+// wrapLocalizedNativeDialogue 依實際字寬斷行。
+//
+// 斷點以 textSegments 為單位，不是逐字元：中日韓每個字都能斷，但英文與日文
+// 譯文裡的拉丁單字要整串搬，否則會斷在單字中間。單一段落本身就超過一行寬度時
+// （超長的專有名詞、沒有空白的長串）才退回逐字元硬拆，總比整行溢出好。
+//
+// 行尾的空白保留不砍——逐字表示與換頁都靠「把每一行接回去等於原文」這個性質，
+// 少一個空格就等於漏字；空白畫出來本來就看不見。
 func wrapLocalizedNativeDialogue(text string, displayFont *Font, scale, maxWidth float64, runeLimit int) ([]string, error) {
 	if displayFont == nil || maxWidth <= 0 || runeLimit <= 0 {
 		return nil, errors.New("localized native dialogue wrap contract is invalid")
 	}
 	var rows []string
+	fits := func(s string) bool {
+		return len([]rune(s)) <= runeLimit && displayFont.Width(s, scale) <= maxWidth
+	}
 	for _, paragraph := range strings.Split(text, "\n") {
 		if paragraph == "" {
 			return nil, errors.New("localized native dialogue contains an empty row")
 		}
 		line := ""
-		for _, r := range paragraph {
-			candidate := line + string(r)
-			if line != "" && (len([]rune(candidate)) > runeLimit || displayFont.Width(candidate, scale) > maxWidth) {
+		for _, segment := range textSegments(paragraph) {
+			if line != "" && !fits(line+segment) {
 				rows = append(rows, line)
-				line = string(r)
-			} else {
-				line = candidate
+				line = ""
 			}
-			if displayFont.Width(line, scale) > maxWidth {
-				return nil, fmt.Errorf("localized native dialogue glyph %q exceeds %gpx", line, maxWidth)
+			if fits(line + segment) {
+				line += segment
+				continue
+			}
+			// 這一段自己就放不下：逐字元硬拆。
+			for _, r := range segment {
+				if line != "" && !fits(line+string(r)) {
+					rows = append(rows, line)
+					line = ""
+				}
+				line += string(r)
+				if !fits(line) {
+					return nil, fmt.Errorf("localized native dialogue glyph %q exceeds %gpx", line, maxWidth)
+				}
 			}
 		}
 		if line == "" {

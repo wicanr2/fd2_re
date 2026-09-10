@@ -14,6 +14,7 @@ import (
 	"math"
 	"os"
 	"strings"
+	"unicode"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text"
@@ -142,26 +143,83 @@ func (f *Font) Width(s string, scale float64) float64 {
 	return float64(text.BoundString(face, s).Dx())
 }
 
-// Wrap 依實際 glyph 寬度切行。繁中句子多半沒有空白，因此以 rune 為最小
-// 邊界；明示換行仍保留。這是 ending／說明頁使用的顯示工具，不改劇本文字。
+// Wrap 依實際 glyph 寬度切行。斷點以 textSegments 為單位：繁中每個字都能斷，
+// 英文與日文譯文裡的拉丁單字整串搬，不會斷在單字中間。明示換行仍保留。這是
+// ending／說明頁與商店訊息使用的顯示工具，不改劇本文字。
 func (f *Font) Wrap(s string, scale, maxWidth float64) []string {
 	return wrapTextByWidth(s, maxWidth, func(line string) float64 {
 		return f.Width(line, scale)
 	})
 }
 
+// runeBreakable 判斷這個字元自己就能當一個斷行單位。中日韓文字與全形標點
+// 每個字都可以斷，拉丁字母與數字不行——那會把英文單字切成兩半。
+func runeBreakable(r rune) bool {
+	if unicode.In(r, unicode.Han, unicode.Hiragana, unicode.Katakana, unicode.Hangul) {
+		return true
+	}
+	switch {
+	case r >= 0x3000 && r <= 0x303F: // 全形標點
+		return true
+	case r >= 0xFF00 && r <= 0xFFEF: // 全形英數與半形片假名
+		return true
+	}
+	return false
+}
+
+// textSegments 把一段文字切成不可拆的顯示單位。空白是斷點，黏在前一段的尾巴——
+// 留著不砍，把每一行接回去才會等於原文（逐字表示與分頁都靠這個性質）；斷在那裡
+// 時它落在行尾，畫出來本來就看不見。
+func textSegments(paragraph string) []string {
+	var segments []string
+	var current strings.Builder
+	flush := func() {
+		if current.Len() > 0 {
+			segments = append(segments, current.String())
+			current.Reset()
+		}
+	}
+	for _, r := range paragraph {
+		switch {
+		case r == ' ' || r == '\t':
+			if current.Len() == 0 && len(segments) > 0 {
+				segments[len(segments)-1] += string(r)
+			} else {
+				current.WriteRune(r)
+				flush()
+			}
+		case runeBreakable(r):
+			flush()
+			segments = append(segments, string(r))
+		default:
+			current.WriteRune(r)
+		}
+	}
+	flush()
+	return segments
+}
+
 func wrapTextByWidth(s string, maxWidth float64, width func(string) float64) []string {
 	var lines []string
 	for _, paragraph := range strings.Split(s, "\n") {
 		line := ""
-		for _, r := range paragraph {
-			candidate := line + string(r)
-			if line != "" && width(candidate) > maxWidth {
+		for _, segment := range textSegments(paragraph) {
+			if line != "" && width(line+segment) > maxWidth {
 				lines = append(lines, line)
-				line = string(r)
-			} else {
-				line = candidate
+				line = ""
 			}
+			if line == "" && width(segment) > maxWidth {
+				// 這一段自己就放不下：逐字元硬拆，總比整行溢出好。
+				for _, r := range segment {
+					if line != "" && width(line+string(r)) > maxWidth {
+						lines = append(lines, line)
+						line = ""
+					}
+					line += string(r)
+				}
+				continue
+			}
+			line += segment
 		}
 		lines = append(lines, line)
 	}
