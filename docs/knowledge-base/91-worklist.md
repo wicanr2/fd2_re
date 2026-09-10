@@ -25,7 +25,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 20 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 21 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 
@@ -210,5 +210,15 @@ manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unk
 包含對白與事件表單、商店設定，以及 campaign 節點圖（拖線、旗標、敗北路線）的可視化編輯。
 
 怎樣算做完：能編輯一個章節的對白與節點連線，存檔後由正式 runtime 走得通。
+
+### 對拍的控制序列還不會「打」，第三回合以後上不去
+
+`playing-control-plan` · 仍未完成 · 自承還在 docs/knowledge-base/96-parity-toolchain-20260909.md
+
+目前所有控制序列的玩家回合都是「開系統面板→END→YES」，玩家自己不出手。實測玩家完全不操作的話第 3 回合之後我方全滅戰敗，畫面回到王座廳第 0 章對白。所以第三回合以後的任何段落——玩家發動的攻擊／法術／物品、後段回合的地圖狀態、第五回合——目前都取不到原版收據。
+
+怎樣算做完：控制序列能完成一次玩家攻擊（選單導覽→移動→選格→確認→選目標→攻擊），並據此走到第五回合取得收據。
+
+證據：`docs/data/ui-traces/fd2-figani-fullscreen-20260910.json`
 
 <!-- END fd2_worklist.py render -->

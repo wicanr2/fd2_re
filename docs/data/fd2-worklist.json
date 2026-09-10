@@ -270,6 +270,22 @@
         "kind": "manual",
         "note": "要人耳。容器 nosound 驗不了。"
       }
+    },
+    {
+      "id": "playing-control-plan",
+      "layer": "tooling",
+      "title": "對拍的控制序列還不會「打」，第三回合以後上不去",
+      "body": "目前所有控制序列的玩家回合都是「開系統面板→END→YES」，玩家自己不出手。實測玩家完全不操作的話第 3 回合之後我方全滅戰敗，畫面回到王座廳第 0 章對白。所以第三回合以後的任何段落——玩家發動的攻擊／法術／物品、後段回合的地圖狀態、第五回合——目前都取不到原版收據。",
+      "acceptance": "控制序列能完成一次玩家攻擊（選單導覽→移動→選格→確認→選目標→攻擊），並據此走到第五回合取得收據。",
+      "evidence": "docs/data/ui-traces/fd2-figani-fullscreen-20260910.json",
+      "verify": {
+        "kind": "present",
+        "paths": [
+          "docs/knowledge-base/96-parity-toolchain-20260909.md"
+        ],
+        "pattern": "控制序列還不會「打」",
+        "note": "工具鏈文件裡的自承還在。做出會打的序列之後那一節會改寫。"
+      }
     }
   ]
 }
