@@ -129,13 +129,13 @@ manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unk
 
 ## release — 發行、平台與封包
 
-### 網頁版還載不到資產
+### 網頁版還沒在前景瀏覽器驗過，也還不能存檔
 
-`wasm-web-release` · 仍未完成 · 自承還在 tools/build_wasm.sh
+`wasm-web-release` · 仍未完成 · 自承還在 remake/web/index.html
 
-`tools/build_wasm.sh` 與 `.github/workflows/build-wasm.yml` 已經能產出可重現的 `fd2.wasm`（約 20 MB）、`wasm_exec.js` 與 `index.html`，WASM 目標也編得過。**還不能玩**：`assetGlob` 走 `filepath.Glob`，js/wasm 底下沒有檔案系統可掃，所以遊戲在缺資產時失敗即關閉。資產共 81 MB（其中 52 MB 是三套音樂），直接 `go:embed` 進 WASM 不切實際；HTTP 取用又沒有「列目錄」這回事，所以需要一層 `fs.FS` 抽象加一份受版控的資產清單。目前有 15 個檔案直接用 `os.ReadFile`／`filepath.Glob`／`os.Open`。
+建置與資產都通了：`tools/build_wasm.sh` 產出 `fd2.wasm`、資產打包檔（43047 個檔案、124 MB）與索引，`index.html` 補上 Go 的唯讀檔案系統轉接層，CI 走同一支。實測在瀏覽器裡跑到漢堂國際的開場 logo——資產包載入、原版圖形解碼與 Ebiten 渲染都正常。剩兩件：(1) 自動化分頁是 `visibilityState: hidden`，瀏覽器會暫停 requestAnimationFrame，所以 Ebiten 主迴圈不推進，「開場到第一關」要在前景視窗由人確認；(2) 存檔與設定還不能寫——`os.WriteFile` 在 js/wasm 下仍是 ENOSYS，轉接層只補了唯讀那幾個呼叫。
 
-怎樣算做完：網頁版能載到資產並跑起來：資產存取走可替換的 `fs.FS`，wasm 端由清單驅動 HTTP 取用，並在瀏覽器確認開場到第一關可玩。
+怎樣算做完：在前景瀏覽器確認開場走到第一關可操作，且存檔／設定能寫入並在重新載入後讀回（瀏覽器端儲存）。
 
 ### Android 封包沒有建置
 

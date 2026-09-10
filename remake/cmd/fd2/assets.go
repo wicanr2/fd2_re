@@ -130,41 +130,6 @@ func assetPath(rel string) string {
 	return rel
 }
 
-// assetGlob 同 assetPath 的五層查找,用於萬用字元批次載入(sprite/portrait/figani)。
-// 第一層有命中(非空)就整層採用,不同層的檔案不混拼。
-func assetGlob(pattern string) []string {
-	if m, _ := filepath.Glob(filepath.Join(userDataDir(), pattern)); len(m) > 0 {
-		return m
-	}
-	if appdir := os.Getenv("APPDIR"); appdir != "" {
-		if m, _ := filepath.Glob(filepath.Join(appdir, pattern)); len(m) > 0 {
-			return m
-		}
-	}
-	if resources := macBundleResourceDir(); resources != "" {
-		if m, _ := filepath.Glob(filepath.Join(resources, pattern)); len(m) > 0 {
-			return m
-		}
-	}
-	if d := exeDir(); d != "" {
-		if m, _ := filepath.Glob(filepath.Join(d, pattern)); len(m) > 0 {
-			return m
-		}
-	}
-	if cwd, err := os.Getwd(); err == nil {
-		for dir, i := cwd, 0; i < 5; dir, i = filepath.Dir(dir), i+1 {
-			if m, _ := filepath.Glob(filepath.Join(dir, pattern)); len(m) > 0 {
-				return m
-			}
-			parent := filepath.Dir(dir)
-			if parent == dir {
-				break
-			}
-		}
-	}
-	return nil
-}
-
 // packageSelfCheck 驗證正式封包必帶的可散布資料，也同時驗證 assetPath
 // 能從封包結構解析所有劇情引用。它刻意不要求玩家自行提供的原版衍生資產。
 func packageSelfCheck() error {

@@ -1,8 +1,7 @@
 # build-wasm.yml — 產出網頁版的可重現 WASM 產物。
 #
-# 這條流程只保證「編得出來、產物存在」。網頁版目前還載不到資產（見
-# tools/build_wasm.sh 的說明與工作清單 wasm-web-release），所以產物不是可玩的
-# 發行包，不要當成網頁版已完成。
+# 產物包含資產打包檔，但**不含原版衍生素材**——那要靠 FD2_ASSET_PACK 提供，公開
+# 庫裡沒有。所以 CI 產出的東西會停在「缺原版素材」畫面，那是正確行為，不是失敗。
 name: Build WebAssembly
 
 on:
@@ -28,7 +27,7 @@ jobs:
       - name: 檢查產物存在且非空
         run: |
           cd "$GITHUB_WORKSPACE/remake/web/dist"
-          for name in fd2.wasm wasm_exec.js index.html; do
+          for name in fd2.wasm wasm_exec.js index.html assets-manifest.json assets.pak; do
             test -s "$name" || { echo "缺少產物：$name"; exit 1; }
           done
           # wasm_exec.js 要是 Go 附的那一份，不是任何被改過的複本。

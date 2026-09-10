@@ -2,19 +2,10 @@ package main
 
 import (
 	"image/color"
-	"os"
-	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
-
-func separatedAssetPath(relative string) string {
-	if root := os.Getenv("FD2_ASSET_PACK"); root != "" {
-		return filepath.Join(root, filepath.FromSlash(relative))
-	}
-	return assetPath(filepath.ToSlash(filepath.Join("assets", relative)))
-}
 
 func loadNativeBattlePalette() ([]byte, color.Palette, error) {
 	return fdother.LoadSeparatedFDOTHERPalette(separatedAssetPath("palette"), 0)

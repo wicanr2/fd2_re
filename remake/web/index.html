@@ -1,10 +1,152 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
 <title>炎龍騎士團2 重製 (fd2_re)</title>
 <style>body{margin:0;background:#111;color:#ccc;font-family:sans-serif;text-align:center}
-canvas{image-rendering:pixelated}h3{padding:8px;margin:0}</style></head>
-<body><h3>炎龍騎士團2 重製 — Go/Ebiten WASM (序章戰場 MVP)</h3>
+canvas{image-rendering:pixelated}h3{padding:8px;margin:0}
+#status{padding:8px;font-size:14px;color:#999}</style></head>
+<body><h3>炎龍騎士團2 重製 — Go/Ebiten WASM</h3>
+<div id="status">載入中…</div>
 <script src="wasm_exec.js"></script>
 <script>
-const go=new Go();
-WebAssembly.instantiateStreaming(fetch("fd2.wasm"),go.importObject).then(r=>go.run(r.instance));
+// 檔案系統轉接層：Go 的 os.ReadFile 在 js/wasm 底下沒有東西可讀，wasm_exec.js 附的
+// fs polyfill 對 open／read／fstat 一律回 ENOSYS。這裡補上唯讀那幾個呼叫。
+//
+// **寫入還沒做**：os.WriteFile 在這裡仍然是 ENOSYS，所以網頁版存不了檔也存不了
+// 設定。那要另外接瀏覽器端的儲存，見工作清單 wasm-web-release。
+//
+// 資產走一個打包檔（tools/build_asset_pak.py）。**不要改回逐檔取用**：Go 的 fs
+// 介面是同步回呼，逐檔就只能用同步 XMLHttpRequest，而 Chrome 對主執行緒的同步請求
+// 節流到每秒兩個左右——這個遊戲光是啟動就要讀六千多個檔案。打包檔一次取回之後全部
+// 在記憶體裡，同步回呼就只是切一段 subarray。
+//
+// 包裡沒有的（音樂那幾個目錄體積大又要播到才需要）退回同步 XHR，數量少，可以接受。
+const assetPak = (() => {
+  let bytes = null;              // Uint8Array，整個包
+  let dataStart = 0;             // 資料區在包裡的起點
+  const index = new Map();       // 路徑 → [offset, length]
+
+  const load = async (url) => {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(url + " 取不到：HTTP " + response.status);
+    bytes = new Uint8Array(await response.arrayBuffer());
+    const magic = new TextDecoder().decode(bytes.subarray(0, 8));
+    if (magic !== "FD2PAK01") throw new Error(url + " 不是資產包（magic=" + magic + "）");
+    const view = new DataView(bytes.buffer, bytes.byteOffset);
+    const indexLength = view.getUint32(8, true);
+    const header = JSON.parse(new TextDecoder().decode(bytes.subarray(12, 12 + indexLength)));
+    dataStart = 12 + indexLength;
+    for (const [name, span] of Object.entries(header.files)) index.set(name, span);
+    return index.size;
+  };
+
+  const get = (path) => {
+    // Go 那邊的路徑是絕對的（工作目錄補成 "/"），包裡的索引不帶開頭斜線。
+    const key = path.replace(/^\/+/, "");
+    const span = index.get(key);
+    if (!span) return null;
+    return bytes.subarray(dataStart + span[0], dataStart + span[0] + span[1]);
+  };
+
+  return { load, get };
+})();
+
+(() => {
+  const fs = globalThis.fs;
+  const enosys = () => {
+    const err = new Error("not implemented");
+    err.code = "ENOSYS";
+    return err;
+  };
+  const enoent = (path) => {
+    const err = new Error("no such file or directory: " + path);
+    err.code = "ENOENT";
+    return err;
+  };
+  const files = new Map();   // fd → {path, bytes, pos}
+  let nextFd = 100;          // 0/1/2 留給 stdin/stdout/stderr
+
+  // 包裡沒有的檔案才走這條。同步是被 Go 的 fs 介面逼的，不是選擇。
+  const fetchSync = (path) => {
+    const request = new XMLHttpRequest();
+    request.open("GET", path, false);
+    request.overrideMimeType("text/plain; charset=x-user-defined");
+    try {
+      request.send(null);
+    } catch (e) {
+      return null;
+    }
+    if (request.status !== 200 && request.status !== 0) return null;
+    const text = request.responseText;
+    const out = new Uint8Array(text.length);
+    for (let i = 0; i < text.length; i++) out[i] = text.charCodeAt(i) & 0xff;
+    return out;
+  };
+
+  const read = (path) => assetPak.get(path) || fetchSync(path);
+
+  fs.open = (path, flags, mode, callback) => {
+    // 只服務唯讀開啟；帶寫入旗標的一律讓它照舊失敗。
+    if ((flags & 3) !== 0) return callback(enosys());
+    const bytes = read(path);
+    if (bytes === null) return callback(enoent(path));
+    const fd = nextFd++;
+    files.set(fd, { path, bytes, pos: 0 });
+    callback(null, fd);
+  };
+
+  fs.read = (fd, buffer, offset, length, position, callback) => {
+    const file = files.get(fd);
+    if (!file) return callback(enosys());
+    const start = position === null ? file.pos : position;
+    const end = Math.min(start + length, file.bytes.length);
+    const n = Math.max(0, end - start);
+    buffer.set(file.bytes.subarray(start, start + n), offset);
+    if (position === null) file.pos = start + n;
+    callback(null, n);
+  };
+
+  fs.close = (fd, callback) => {
+    files.delete(fd);
+    callback(null);
+  };
+
+  const stats = (size) => ({
+    dev: 0, ino: 0, mode: 33188, nlink: 1, uid: 0, gid: 0, rdev: 0,
+    size, blksize: 4096, blocks: Math.ceil(size / 512),
+    atimeMs: 0, mtimeMs: 0, ctimeMs: 0, birthtimeMs: 0,
+    isDirectory: () => false,
+  });
+
+  fs.fstat = (fd, callback) => {
+    const file = files.get(fd);
+    if (!file) return callback(enosys());
+    callback(null, stats(file.bytes.length));
+  };
+
+  fs.stat = (path, callback) => {
+    const bytes = read(path);
+    if (bytes === null) return callback(enoent(path));
+    callback(null, stats(bytes.length));
+  };
+  fs.lstat = fs.stat;
+
+  // 相對路徑要補工作目錄：syscall/fs_js.go 的 Open 在 path[0] != '/' 時呼叫
+  // process.cwd()，而 wasm_exec.js 附的 process polyfill 對它也是 ENOSYS。
+  globalThis.process.cwd = () => "/";
+})();
+
+const status = document.getElementById("status");
+(async () => {
+  try {
+    status.textContent = "載入資產包…";
+    const count = await assetPak.load("assets.pak");
+    status.textContent = `資產包 ${count} 個檔案，啟動中…`;
+    const go = new Go();
+    const wasm = await WebAssembly.instantiateStreaming(fetch("fd2.wasm"), go.importObject);
+    status.textContent = "";
+    await go.run(wasm.instance);
+  } catch (e) {
+    status.textContent = "載入失敗：" + e;
+    throw e;
+  }
+})();
 </script></body></html>
