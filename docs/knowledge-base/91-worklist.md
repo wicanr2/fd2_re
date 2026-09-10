@@ -25,7 +25,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 22 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 
@@ -40,6 +40,16 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 怎樣算做完：用 tools/dosgolem_oracle.sh 走到玩家回合橫幅，取到 33 步逐幀與 eip-watch，收據進 docs/data/ui-traces/。
 
 證據：`docs/data/ui-traces/fd2-phase-banner-timing-20260910.json`
+
+### dosgolem 的一個 BIOS tick 等於多少指令沒有量過
+
+`dosgolem-tick-steps-unmeasured` · 仍未完成 · 自承還在 docs/knowledge-base/105-phase-banner-timing-20260910.md
+
+FD2 這條路走 machine 預設的指令數時鐘（`IRQ0Every`），不是 CPU 週期時鐘。`DefaultIRQ0Every` 是 165,000，但那是分頻 65536 時的值，而常駐音效驅動幾乎一定會把分頻調快，實際值由 `RecalcIRQ0` 決定，oracle 收據也沒有輸出它。沒有這個數字，收據裡的指令步距就換不回毫秒。連帶有一項對不上：字樣滑入每步約 30,000 指令、馬賽克每步約 356,000 指令，兩者都呼叫 `sub_17AA9(1)`，差十倍以上。
+
+怎樣算做完：量出這條路徑上的 IRQ0 間隔（指令數），或讓 oracle 把它寫進收據；並用它判定那七幀的歸屬。
+
+證據：`docs/knowledge-base/105-phase-banner-timing-20260910.md`
 
 ### 全螢幕戰鬥演出（FIGANI）能不能由 oracle 產生收據還沒實測
 

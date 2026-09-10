@@ -273,3 +273,36 @@ git worktree remove <暫存路徑>
 不要按排序直接配對：同一段文字可能出現多次，只有「出現順序 ＋ 檔案 ＋ 文字」
 一起用才對得準。配對前先確認兩邊 `go_review` 的條目數相同，數量不同就是真的
 新增或刪掉了待審字串，那要逐筆判斷處置，不是重新綁定。
+
+## 對拍基底：dosgolem `main`
+
+2026-09-10 起，原版側對拍的基底是 dosgolem 的 `main` 分支。FD2 那批工作
+（`372698a` 平台能力、`293e15c` oracle 命令、`3179a8d` 按鍵緩衝、`6d35693`
+效能、`09aca58` 逐幀、`61a0f95` overlay selector、`f627cd1` `-eip-watch`）都已
+經由 `bbcdfe3` 合進 main，`git merge-base --is-ancestor` 七項全數確認。
+
+換基底之後跑過一次重現：同一份控制序列在 `main`（`d351681`）上，控制邊界的
+指令數逐格相同，290 幀的 `indexed_sha256` 序列與 `f627cd1` 那輪完全相同。所以
+`f627cd1` 之後進 main 的時鐘與 machine 改動沒有動到 FD2 這條路徑的指令流，
+既有收據仍然有效。
+
+### 收據自己帶出處
+
+掛進容器的是 dosgolem 的**工作區**，所以真正決定結果的是那個目錄當下 checkout
+的內容，不是誰記得自己切在哪一個分支。[`tools/dosgolem_oracle.sh`](../../tools/dosgolem_oracle.sh)
+現在每一輪都會寫一份 `runner.json` 到輸出目錄：
+
+```json
+{
+  "dosgolem_commit": "…", "dosgolem_branch": "main",
+  "dosgolem_tracked_dirty_files": 0, "dosgolem_untracked_files": 2
+}
+```
+
+已追蹤檔案有改動時它會在 stderr 警告——那一輪的收據無法由 commit 重現，不可
+登錄成正式對拍。未追蹤檔案（別的工作留下的產物）不影響建置，分開記。
+
+**dosgolem 是共用儲存庫，隨時可能有另一個工作階段在改它。** 2026-09-10 就遇到
+一次：驗證跑完幾分鐘後，`internal/cpu` 與 `internal/machine` 出現九個未提交的
+改動。跑對拍前先看 `runner.json` 的 dirty 計數，不要拿別人改到一半的樹當基底；
+也不要為了「乾淨」去 stash 或 checkout 別人的工作區。

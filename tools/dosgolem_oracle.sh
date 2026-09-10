@@ -49,6 +49,32 @@ test -d "$dos/apps/fd2/cmd/oracle" || { echo "找不到 dosgolem oracle：$dos" 
 test -f "$orig/FD2.EXE" || { echo "找不到固定版本 FD2.EXE：$orig" >&2; exit 2; }
 mkdir -p "$out"
 out=$(cd "$out" && pwd)
+
+# 收據要自己帶出處。掛進容器的是 dosgolem 的**工作區**，所以真正決定結果的是
+# 那個目錄當下 checkout 的內容，不是誰記得自己切在哪一個分支。這裡把 commit、
+# 分支與「已追蹤檔案有沒有被改過」寫進 runner.json；未追蹤檔案（別的工作留下
+# 的產物）不影響建置結果，分開記。
+dos_head=$(git -C "$dos" rev-parse HEAD 2>/dev/null || echo unknown)
+dos_branch=$(git -C "$dos" rev-parse --abbrev-ref HEAD 2>/dev/null || echo unknown)
+dos_dirty=$(git -C "$dos" status --porcelain --untracked-files=no 2>/dev/null | wc -l)
+dos_untracked=$(git -C "$dos" status --porcelain --untracked-files=all 2>/dev/null | grep -c '^??' || true)
+cat > "$out/runner.json" <<JSON
+{
+  "schema_version": 1,
+  "kind": "fd2_oracle_runner_provenance",
+  "runner": "dosgolem apps/fd2/cmd/oracle",
+  "dosgolem_root": "$dos",
+  "dosgolem_commit": "$dos_head",
+  "dosgolem_branch": "$dos_branch",
+  "dosgolem_tracked_dirty_files": $dos_dirty,
+  "dosgolem_untracked_files": $dos_untracked,
+  "original_root": "$orig",
+  "generated_at": "$(date -Iseconds)"
+}
+JSON
+if [ "$dos_dirty" -ne 0 ]; then
+  echo "⚠ dosgolem 有 $dos_dirty 個已追蹤檔案被改過，這一輪的收據無法由 commit 重現" >&2
+fi
 cache=$dos/workplace
 mkdir -p "$cache/gocache" "$cache/gomodcache"
 
