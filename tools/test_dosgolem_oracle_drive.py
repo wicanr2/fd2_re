@@ -214,6 +214,13 @@ class UIMode(unittest.TestCase):
         # 而 unknown 的處置是等，對白等不出結果。
         self.assertEqual(drive.ui_mode(self.chain("0x16CF8", "0x16039")), "dialogue")
 
+    def test_upper_frame_dialogue_counts_too(self):
+        """說話者頭像在右的上框對白是另一支 handler（哈諾加入的那段）。"""
+        self.assertEqual(
+            drive.ui_mode(self.chain("0x164C4", "0x3424D", "0x1A4CC", "0x135CA")),
+            "dialogue")
+        self.assertEqual(drive.ui_mode(self.chain("0x16D05", "0x164C4")), "dialogue")
+
     def test_dialogue_marker_is_disjoint_from_the_others(self):
         """實測 98 個對白檢查點都不含其他四個標記，反之亦然。"""
         for other in ("0x117F8", "0x117AE", "0x18EEF", "0x16FAE"):
@@ -241,6 +248,13 @@ class UIMode(unittest.TestCase):
     def test_no_chain_or_no_marker_is_unknown(self):
         self.assertEqual(drive.ui_mode({}), "unknown")
         self.assertEqual(drive.ui_mode(self.chain("0x12211", "0x45D91")), "unknown")
+
+    def test_status_panel_has_its_own_marker(self):
+        """單位狀態面板（能力值與裝備）：esc 退得掉，不是卡住。"""
+        self.assertEqual(
+            drive.ui_mode(self.chain("0x16D05", "0x1BA37", "0x1B961", "0x1BCE6")),
+            "status")
+        self.assertNotIn("status", drive.CURSOR_MODES)
 
     def test_dialogue_is_not_a_cursor_mode(self):
         """對白不吃方向鍵，也不會自己走完——每個等待迴圈都要送 enter 推它。"""

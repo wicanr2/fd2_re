@@ -171,10 +171,10 @@ def do_goto(command):
         current = state()
         mode = ui_mode(current)
         if mode not in CURSOR_MODES:
-            if mode == "system" and escapes_left > 0:
+            if mode in {"system", "status"} and escapes_left > 0:
                 escapes_left -= 1
                 seq, current = send("esc", max(steps, 3_000_000))
-                report(seq, "esc", current, " goto=leave-system-menu")
+                report(seq, "esc", current, f" goto=leave-{mode}")
                 continue
             if mode == "unknown":
                 # 演出或過場還在跑，等它收完再看一次。
@@ -316,6 +316,7 @@ def resume_battle(steps, budget, confirm=3):
 # `0x16FAE` 落在 FD2 已知的系統選單 handler `0x16F55` 那支函式裡，`0x18EEF` 落在
 # action chooser `0x18D8C` 同一段；與專案既有的反組譯結論一致。
 UI_MODES = (
+    ("status", "0x1BA37"),    # 單位狀態面板（能力值與裝備）：esc 退得掉
     ("ring", "0x18EEF"),      # 指令環：↑攻擊／←法術／→物品／↓待機
     ("system", "0x16FAE"),    # 空地上按 enter 開的系統選單（含 END）
     ("target", "0x117AE"),    # 選取之後的移動格／攻擊目標選擇
@@ -328,7 +329,11 @@ UI_MODES = (
 # 對白等待（升級訊息、事件台詞）不只一支 handler：實測看到 `0x1E44E`、`0x1E5A8`
 # 與 `0x1E464`，共同前綴是 `0x16039`。用範圍比對而不是單一位址，否則同一種畫面
 # 會有一部分掉進 unknown，而 unknown 的處置是「等」——對白等不出結果，要 enter。
-DIALOGUE_ENTRY = "0x16039"
+# 下框對白（一般台詞、升級訊息）走 `0x16039`＋`0x1E4xx`；上框對白（說話者頭像在
+# 右，例如第一關第 3 回合哈諾加入的「老爸！老爸！」）走 `0x164C4`＋事件自己的
+# native_source（`0x3424D` 落在 join_party 的 `0x341E8` 附近）。兩者共用 `0x16CF8`
+# 與 `0x16D05` 的框繪製。四個標記都實測與其他介面零衝突。
+DIALOGUE_MARKERS = ("0x16039", "0x164C4", "0x16CF8", "0x16D05")
 DIALOGUE_RANGE = (0x1E400, 0x1E5FF)
 
 # 方向鍵會移動地圖游標的模式。其餘模式送方向鍵是在選選項，不會動游標。
@@ -340,7 +345,7 @@ def ui_mode(current):
     for name, marker in UI_MODES:
         if marker in chain:
             return name
-    if DIALOGUE_ENTRY in chain:
+    if any(marker in chain for marker in DIALOGUE_MARKERS):
         return "dialogue"
     for address in chain:
         try:
@@ -481,7 +486,7 @@ def ensure_cursor_mode(steps, budget=60):
         mode = ui_mode(current)
         if mode == "cursor":
             return True
-        if mode in {"target", "system"}:
+        if mode in {"target", "system", "status"}:
             seq, current = send("esc", max(steps, 3_000_000))
             report(seq, "esc", current, f" back-to-cursor(from {mode})")
             continue
@@ -601,12 +606,28 @@ def do_engage(command):
     # 收尾判斷要等狀態穩定：介面還是 unknown 表示演出或過場正在播（第一關第 3
     # 回合哈諾與哈瓦特加入就是這樣），那時去讀 record `+5` bit7 會讀到還沒寫上去
     # 的值，判成「沒行動」。
-    for _ in range(int(command.get("finish_wait", 20))):
+    for _ in range(int(command.get("finish_wait", 30))):
         current = state()
-        if ui_mode(current) != "unknown" or measure(current, "round") > started_round:
+        if measure(current, "round") > started_round:
             break
-        seq, current = send("", max(steps, 5_000_000))
-        report(seq, "", current, " engage=finish-wait")
+        mode = ui_mode(current)
+        if mode == "dialogue":
+            # 攻擊之後常接一段升級訊息或事件台詞。它不會自己走完，而 record `+5`
+            # bit7 要等這段結束才寫上去——在對白上判「有沒有行動」一定判成沒有。
+            key = "" if current.get("kbd_pending", 0) > 0 else "enter"
+            seq, current = send(key, max(steps, 3_000_000))
+            report(seq, key, current, " engage=finish-dialogue")
+            continue
+        if mode == "status":
+            # 指令環上按到「狀態」會開能力值面板。esc 退回去，行動還沒結束。
+            seq, current = send("esc", max(steps, 3_000_000))
+            report(seq, "esc", current, " engage=finish-status")
+            continue
+        if mode == "unknown":
+            seq, current = send("", max(steps, 5_000_000))
+            report(seq, "", current, " engage=finish-wait")
+            continue
+        break
     current = state()
     if measure(current, "round") > started_round:
         # 這個單位就是本回合最後一個。它行動完原版立刻換手，新回合把所有
