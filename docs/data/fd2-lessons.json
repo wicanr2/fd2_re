@@ -113,6 +113,14 @@
       "why": "`stepActionOverlayLifecycle` 的推進掛在「這一幀被畫過」，正式路徑由繪製那側標記；離屏 dump 不走 Draw，所以關環會永遠卡住，症狀是「指令環沒有關閉」而不是任何錯誤。",
       "date": "2026-09-10",
       "evidence": "remake/cmd/fd2/native_map_attack_dump_test.go"
+    },
+    {
+      "id": "read-each-check-before-commit",
+      "area": "紀律",
+      "rule": "提交前的每一項檢查要各自看過結果，不要把測試與 `git commit` 串在同一個命令裡。",
+      "why": "2026-09-10 把 worklist 測試、diff --check、add、commit、push 串成一行，測試印了 FAILED 在最上面，後面的 commit 照樣跑完並推了出去。串起來的那一刻就等於放棄了「看結果再決定要不要提交」。",
+      "date": "2026-09-10",
+      "evidence": "tools/test_fd2_worklist.py"
     }
   ]
 }
