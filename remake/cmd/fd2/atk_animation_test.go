@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math"
 	"testing"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -115,5 +116,53 @@ func TestNativeImpactDisplacementPreserves2939DPhaseAndDirection(t *testing.T) {
 		if dx, dy, ok := nativeImpactDisplacement(phase, false); ok || dx != 0 || dy != 0 {
 			t.Fatalf("invalid phase %d=(%d,%d)/%v", phase, dx, dy, ok)
 		}
+	}
+}
+
+// TestAttackPresentationTickFollowsTheBiosTick 釘住演出的顯示 tick 長度來自
+// BIOS tick，不是 60 Hz 畫格。原版 `sub_2939D` 對每一格重複 `cell+6` 次
+// `sub_17AA9(1)`，所以一格是 `cell+6` 個 BIOS tick；照畫格算會讓整段快約 9%。
+func TestAttackPresentationTickFollowsTheBiosTick(t *testing.T) {
+	const biosTickMillis = 1000.0 / 18.2065097
+	for _, fpt := range []int{1, 2, 3, 6} {
+		got := attackPresentationTickMillis(fpt)
+		want := biosTickMillis / float64(fpt)
+		if math.Abs(got-want) > 1e-9 {
+			t.Fatalf("fpt=%d 的顯示 tick 是 %.4f 毫秒，應為 %.4f", fpt, got, want)
+		}
+		// 一個原版延遲單位（fpt 個顯示 tick）必須正好是一個 BIOS tick。
+		if unit := got * float64(fpt); math.Abs(unit-biosTickMillis) > 1e-9 {
+			t.Fatalf("fpt=%d 時一個原版延遲單位是 %.4f 毫秒，應為 %.4f",
+				fpt, unit, biosTickMillis)
+		}
+	}
+	// 60 Hz 一格是 16.67 毫秒，比 fpt=3 的 18.31 毫秒短，所以不是每一畫格都推進。
+	if attackPresentationTickMillis(3) <= 1000.0/60 {
+		t.Fatal("fpt=3 的顯示 tick 不該短於一個 60 Hz 畫格，否則就沒有累積的必要")
+	}
+}
+
+// TestAttackPresentationTicksKeepsTheRemainder 釘住餘數要留著：60 Hz 與 BIOS
+// tick 不整除，每一畫格丟掉餘數的話整段會愈跑愈短。
+func TestAttackPresentationTicksKeepsTheRemainder(t *testing.T) {
+	const fpt = 3
+	step := attackPresentationTickMillis(fpt)
+	accum, total := 0.0, 0
+	const frames = 600 // 10 秒
+	for i := 0; i < frames; i++ {
+		ticks, rest := attackPresentationTicks(accum+1000.0/60, fpt)
+		accum = rest
+		total += ticks
+	}
+	elapsed := float64(frames) * 1000.0 / 60
+	want := int(elapsed / step)
+	if total != want && total != want+1 {
+		t.Fatalf("%d 畫格推進了 %d 個顯示 tick，%.1f 毫秒應該是 %d 個",
+			frames, total, elapsed, want)
+	}
+	// 丟掉餘數的話會少推進；這裡確認差距真的存在，否則這支測試驗不到東西。
+	naive := frames * int(1000.0/60/step)
+	if naive == total {
+		t.Fatal("捨去餘數與保留餘數推進了同樣多，這組參數驗不到累積")
 	}
 }

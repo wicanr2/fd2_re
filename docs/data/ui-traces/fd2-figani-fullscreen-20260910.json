@@ -1,632 +1,642 @@
 {
- "schema_version": 1,
- "kind": "fd2_original_runtime_receipt",
- "topic": "全螢幕戰鬥演出（FIGANI）的執行期收據：oracle 取得到，節奏走 delay(ms) 所以量不到",
- "date": "2026-09-10",
- "runner": "dosgolem apps/fd2/cmd/oracle",
- "runner_provenance": {
   "schema_version": 1,
-  "kind": "fd2_oracle_runner_provenance",
+  "kind": "fd2_original_runtime_receipt",
+  "topic": "全螢幕戰鬥演出（FIGANI）的執行期收據：oracle 取得到，節奏走 delay(ms) 所以量不到",
+  "date": "2026-09-10",
   "runner": "dosgolem apps/fd2/cmd/oracle",
-  "dosgolem_root": "/home/anr2/cht/dosgolem",
-  "dosgolem_commit": "2e91533c02fdb72a01f765aed79578fcc7033a84",
-  "dosgolem_branch": "main",
-  "dosgolem_tracked_dirty_files": 0,
-  "dosgolem_untracked_files": 0,
-  "original_root": "/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2",
-  "generated_at": "2026-09-10T14:05:28+08:00"
- },
- "driver": "tools/dosgolem_oracle.sh（FRAMES=1、stride 8000、settle 4、FRAME_FROM 715000000／TO 741000000、EIP_WATCH 16 個位址）",
- "executable": {
-  "file": "FD2.EXE",
-  "size": 357074,
-  "md5": "b97caf2239a27a896069d03549d96e1e",
-  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
- },
- "entry": {
-  "path": "標題選單 right,down,down,enter 由附帶 FD2.SAV 進第一關；每回合先把游標推到地圖角落（30×down、20×right）再 enter→down(END)→enter→enter(YES)。敵方 AI 在第 2 回合接戰",
-  "control_plan": [
-   {
-    "key": "right",
-    "steps": 3000000
-   },
-   {
-    "key": "down",
-    "steps": 3000000
-   },
-   {
-    "key": "down",
-    "steps": 3000000
-   },
-   {
-    "key": "enter",
-    "steps": 3000000
-   },
-   {
-    "key": "",
-    "steps": 10000000,
-    "repeat": 18
-   },
-   {
-    "key": "down",
-    "steps": 1000000,
-    "repeat": 30,
-    "gate": "kbd_empty"
-   },
-   {
-    "key": "right",
-    "steps": 1000000,
-    "repeat": 20,
-    "gate": "kbd_empty"
-   },
-   {
-    "key": "enter",
-    "steps": 3000000,
-    "gate": "kbd_empty"
-   },
-   {
-    "key": "down",
-    "steps": 3000000,
-    "gate": "kbd_empty"
-   },
-   {
-    "key": "enter",
-    "steps": 3000000,
-    "gate": "kbd_empty"
-   },
-   {
-    "key": "enter",
-    "steps": 3000000,
-    "gate": "kbd_empty"
-   },
-   {
-    "key": "",
-    "steps": 10000000,
-    "repeat": 30
-   },
-   {
-    "key": "down",
-    "steps": 1000000,
-    "repeat": 30,
-    "gate": "kbd_empty"
-   },
-   {
-    "key": "right",
-    "steps": 1000000,
-    "repeat": 20,
-    "gate": "kbd_empty"
-   },
-   {
-    "key": "enter",
-    "steps": 3000000,
-    "gate": "kbd_empty"
-   },
-   {
-    "key": "down",
-    "steps": 3000000,
-    "gate": "kbd_empty"
-   },
-   {
-    "key": "enter",
-    "steps": 3000000,
-    "gate": "kbd_empty"
-   },
-   {
-    "key": "enter",
-    "steps": 3000000,
-    "gate": "kbd_empty"
-   },
-   {
-    "key": "",
-    "steps": 10000000,
-    "repeat": 30
-   }
+  "runner_provenance": {
+    "schema_version": 1,
+    "kind": "fd2_oracle_runner_provenance",
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "dosgolem_root": "/home/anr2/cht/dosgolem",
+    "dosgolem_commit": "2e91533c02fdb72a01f765aed79578fcc7033a84",
+    "dosgolem_branch": "main",
+    "dosgolem_tracked_dirty_files": 0,
+    "dosgolem_untracked_files": 0,
+    "original_root": "/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2",
+    "generated_at": "2026-09-10T14:05:28+08:00"
+  },
+  "driver": "tools/dosgolem_oracle.sh（FRAMES=1、stride 8000、settle 4、FRAME_FROM 715000000／TO 741000000、EIP_WATCH 16 個位址）",
+  "executable": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "entry": {
+    "path": "標題選單 right,down,down,enter 由附帶 FD2.SAV 進第一關；每回合先把游標推到地圖角落（30×down、20×right）再 enter→down(END)→enter→enter(YES)。敵方 AI 在第 2 回合接戰",
+    "control_plan": [
+      {
+        "key": "right",
+        "steps": 3000000
+      },
+      {
+        "key": "down",
+        "steps": 3000000
+      },
+      {
+        "key": "down",
+        "steps": 3000000
+      },
+      {
+        "key": "enter",
+        "steps": 3000000
+      },
+      {
+        "key": "",
+        "steps": 10000000,
+        "repeat": 18
+      },
+      {
+        "key": "down",
+        "steps": 1000000,
+        "repeat": 30,
+        "gate": "kbd_empty"
+      },
+      {
+        "key": "right",
+        "steps": 1000000,
+        "repeat": 20,
+        "gate": "kbd_empty"
+      },
+      {
+        "key": "enter",
+        "steps": 3000000,
+        "gate": "kbd_empty"
+      },
+      {
+        "key": "down",
+        "steps": 3000000,
+        "gate": "kbd_empty"
+      },
+      {
+        "key": "enter",
+        "steps": 3000000,
+        "gate": "kbd_empty"
+      },
+      {
+        "key": "enter",
+        "steps": 3000000,
+        "gate": "kbd_empty"
+      },
+      {
+        "key": "",
+        "steps": 10000000,
+        "repeat": 30
+      },
+      {
+        "key": "down",
+        "steps": 1000000,
+        "repeat": 30,
+        "gate": "kbd_empty"
+      },
+      {
+        "key": "right",
+        "steps": 1000000,
+        "repeat": 20,
+        "gate": "kbd_empty"
+      },
+      {
+        "key": "enter",
+        "steps": 3000000,
+        "gate": "kbd_empty"
+      },
+      {
+        "key": "down",
+        "steps": 3000000,
+        "gate": "kbd_empty"
+      },
+      {
+        "key": "enter",
+        "steps": 3000000,
+        "gate": "kbd_empty"
+      },
+      {
+        "key": "enter",
+        "steps": 3000000,
+        "gate": "kbd_empty"
+      },
+      {
+        "key": "",
+        "steps": 10000000,
+        "repeat": 30
+      }
+    ],
+    "input_kind": "normal BIOS keys",
+    "state_injections": [],
+    "locate_method": "先用 FD2_ORACLE_FRAME_EIP=0x29164、stride 0 掃出六次演出（round 2 三次於 step 716282968／728835807／739024933，round 3 三次），再對第一段精取"
+  },
+  "eip_watch_addresses": [
+    "0x11CAC",
+    "0x11EB0",
+    "0x13185",
+    "0x17AA9",
+    "0x18C6D",
+    "0x1A866",
+    "0x1ACF3",
+    "0x1F1CC",
+    "0x24618",
+    "0x276EC",
+    "0x29164",
+    "0x2A289",
+    "0x2A6BD",
+    "0x373C4",
+    "0x375B2",
+    "0x4E809"
   ],
-  "input_kind": "normal BIOS keys",
-  "state_injections": [],
-  "locate_method": "先用 FD2_ORACLE_FRAME_EIP=0x29164、stride 0 掃出六次演出（round 2 三次於 step 716282968／728835807／739024933，round 3 三次），再對第一段精取"
- },
- "eip_watch_addresses": [
-  "0x11CAC",
-  "0x11EB0",
-  "0x13185",
-  "0x17AA9",
-  "0x18C6D",
-  "0x1A866",
-  "0x1ACF3",
-  "0x1F1CC",
-  "0x24618",
-  "0x276EC",
-  "0x29164",
-  "0x2A289",
-  "0x2A6BD",
-  "0x373C4",
-  "0x375B2",
-  "0x4E809"
- ],
- "measurement": {
-  "method": "逐幀記錄十六個位址的累計進入次數，取相鄰幀差值",
-  "sequence": [
-   {
-    "index": 0,
-    "step": 715032000,
-    "step_gap": null,
-    "watch_delta": {},
-    "indexed_sha256": "aa70b7ad88ae8df697ab83d4981ced614d7944040dd1fba40430208c626866eb"
-   },
-   {
-    "index": 1,
-    "step": 716384000,
-    "step_gap": 1352000,
-    "watch_delta": {
-     "0x11EB0": 3,
-     "0x18C6D": 2,
-     "0x29164": 1,
-     "0x2A289": 2,
-     "0x373C4": 600,
-     "0x375B2": 57
+  "measurement": {
+    "method": "逐幀記錄十六個位址的累計進入次數，取相鄰幀差值",
+    "sequence": [
+      {
+        "index": 0,
+        "step": 715032000,
+        "step_gap": null,
+        "watch_delta": {},
+        "indexed_sha256": "aa70b7ad88ae8df697ab83d4981ced614d7944040dd1fba40430208c626866eb"
+      },
+      {
+        "index": 1,
+        "step": 716384000,
+        "step_gap": 1352000,
+        "watch_delta": {
+          "0x11EB0": 3,
+          "0x18C6D": 2,
+          "0x29164": 1,
+          "0x2A289": 2,
+          "0x373C4": 600,
+          "0x375B2": 57
+        },
+        "indexed_sha256": "e83a93a4e5b867ec0c0a961ab5ae696bac335b26590139997a5cbb88dc8707ff"
+      },
+      {
+        "index": 2,
+        "step": 716456000,
+        "step_gap": 72000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "4743714a4f3c8d995d892bee78b142d26fa53954a6ed94810af53a31df7722c0"
+      },
+      {
+        "index": 3,
+        "step": 716528000,
+        "step_gap": 72000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "b0a0873ce3dc02c5da29e5998698d377d479d410262310f00e5a803f6e21e67f"
+      },
+      {
+        "index": 4,
+        "step": 716600000,
+        "step_gap": 72000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "3011d89d8f04237150acb6c06798c3f8f4411f8365a063030a571484c281214f"
+      },
+      {
+        "index": 5,
+        "step": 716672000,
+        "step_gap": 72000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "3a5fdae752b7314d917b07ef9412eafbfbffc8d4a76578064dd0af6900157f7c"
+      },
+      {
+        "index": 6,
+        "step": 716736000,
+        "step_gap": 64000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "98ae1989b235a9535176f171985f23151f051d0373543a29c5feb79530600922"
+      },
+      {
+        "index": 7,
+        "step": 716808000,
+        "step_gap": 72000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "618191edcaaf8cb0642a9b478ab76e0100cce25620df357f7fb19908a349a9df"
+      },
+      {
+        "index": 8,
+        "step": 716880000,
+        "step_gap": 72000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "3f874e10b3864f6bd16ad974402f90627a2d2bcc1fc1e5d415bf2b611b26b5c0"
+      },
+      {
+        "index": 9,
+        "step": 716952000,
+        "step_gap": 72000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "5af40807e17e8f9854103ac5eb609233c4580171aae9fe2b8a8ba7cae611cc20"
+      },
+      {
+        "index": 10,
+        "step": 717024000,
+        "step_gap": 72000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x17AA9": 1,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "4f133be07c0aa761a89ec1ece833b250102f25002a4b9e89fedc3e1c06b0afac"
+      },
+      {
+        "index": 11,
+        "step": 717136000,
+        "step_gap": 112000,
+        "watch_delta": {
+          "0x11EB0": 4,
+          "0x17AA9": 2,
+          "0x373C4": 800
+        },
+        "indexed_sha256": "e67b4d1182542472237f735064cdf7a1a5eceaff221b3818a6f2337d1b554e3d"
+      },
+      {
+        "index": 12,
+        "step": 717248000,
+        "step_gap": 112000,
+        "watch_delta": {
+          "0x11EB0": 4,
+          "0x17AA9": 2,
+          "0x373C4": 800
+        },
+        "indexed_sha256": "2cbc9fae46b290f90063a67509bca62d60d45de96839c0477a1b316823fdb7ae"
+      },
+      {
+        "index": 13,
+        "step": 717360000,
+        "step_gap": 112000,
+        "watch_delta": {
+          "0x11EB0": 4,
+          "0x17AA9": 2,
+          "0x373C4": 800
+        },
+        "indexed_sha256": "f72ad387cfde646cb1ea837b52890c1b75b390fd344a5c1a1219f2c9056d5b51"
+      },
+      {
+        "index": 14,
+        "step": 717536000,
+        "step_gap": 176000,
+        "watch_delta": {
+          "0x11EB0": 4,
+          "0x17AA9": 2,
+          "0x18C6D": 1,
+          "0x2A289": 1,
+          "0x373C4": 800
+        },
+        "indexed_sha256": "dca0547df5cfa69ae935aadf106b0cbba9b1a73c5a7dfa5fdaef5371ffc7e8b6"
+      },
+      {
+        "index": 15,
+        "step": 717592000,
+        "step_gap": 56000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x17AA9": 1,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "b7ee39ae8015b294102aba81825b89dfb88ea81f298a519ff9a4b8476f96576c"
+      },
+      {
+        "index": 16,
+        "step": 717640000,
+        "step_gap": 48000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x17AA9": 1,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "7d82a6224c98e4b41f9a59ab6d94e5b6c1dd250ebdc735a8e99f73b589ed909f"
+      },
+      {
+        "index": 17,
+        "step": 717696000,
+        "step_gap": 56000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x17AA9": 1,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "11d9c5bd5e54990bfa7c700e1339c9019d29fe95a509229e85955e7738ba91e3"
+      },
+      {
+        "index": 18,
+        "step": 717752000,
+        "step_gap": 56000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x17AA9": 1,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "e1de0bb1a4f72bd9db04b471a5815fe80042538b4f08a0de2b9a985ed99895a9"
+      },
+      {
+        "index": 19,
+        "step": 717808000,
+        "step_gap": 56000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x17AA9": 1,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "0394291a6a5d1e11df3ca71452c45c8bcd69fa0646bb30f02ac36629103396c0"
+      },
+      {
+        "index": 20,
+        "step": 717856000,
+        "step_gap": 48000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x17AA9": 1,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "96abe6b77c2851b8bc0db99e2facd0988b65f3d5230cea1c3f423bad86cec6ec"
+      },
+      {
+        "index": 21,
+        "step": 717976000,
+        "step_gap": 120000,
+        "watch_delta": {
+          "0x11EB0": 4,
+          "0x17AA9": 2,
+          "0x373C4": 800
+        },
+        "indexed_sha256": "8683a9a10809201f411e53e2251db3c8cb734e2cd9cb1f80ac75200acf058586"
+      },
+      {
+        "index": 22,
+        "step": 718080000,
+        "step_gap": 104000,
+        "watch_delta": {
+          "0x11EB0": 4,
+          "0x17AA9": 2,
+          "0x373C4": 800
+        },
+        "indexed_sha256": "55877e292cac3e8d8f96ec199ae0600a8441de41476b967425fb23daa54690af"
+      },
+      {
+        "index": 23,
+        "step": 718192000,
+        "step_gap": 112000,
+        "watch_delta": {
+          "0x11EB0": 4,
+          "0x17AA9": 2,
+          "0x373C4": 800
+        },
+        "indexed_sha256": "5052a9530c610ccb45f60675d2f5be80d57e951686b0339fa9092ea84224c522"
+      },
+      {
+        "index": 24,
+        "step": 718304000,
+        "step_gap": 112000,
+        "watch_delta": {
+          "0x11EB0": 4,
+          "0x17AA9": 2,
+          "0x373C4": 800
+        },
+        "indexed_sha256": "818b2acfdfc8002a24867546344d10cb04e16710caf91c992de1c55aa4857272"
+      },
+      {
+        "index": 25,
+        "step": 718408000,
+        "step_gap": 104000,
+        "watch_delta": {
+          "0x11EB0": 4,
+          "0x17AA9": 2,
+          "0x373C4": 800
+        },
+        "indexed_sha256": "e0f5e92bd6a724dd76f85fb9a7cfce8875f2ff5a78eee45b0b44f29272856f7d"
+      },
+      {
+        "index": 26,
+        "step": 718520000,
+        "step_gap": 112000,
+        "watch_delta": {
+          "0x11EB0": 4,
+          "0x17AA9": 2,
+          "0x373C4": 800
+        },
+        "indexed_sha256": "3a4624c36cd4c6d6be1d9c4b803f9c4ab08e08d41180e2d2029117874ed4d66b"
+      },
+      {
+        "index": 27,
+        "step": 718704000,
+        "step_gap": 184000,
+        "watch_delta": {
+          "0x11EB0": 4,
+          "0x17AA9": 2,
+          "0x18C6D": 1,
+          "0x2A289": 1,
+          "0x373C4": 800
+        },
+        "indexed_sha256": "866414af1e68e7e0dba10f38b8516b55b0615cca71528f9ecb25ebfbf97b27c6"
+      },
+      {
+        "index": 28,
+        "step": 718760000,
+        "step_gap": 56000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x17AA9": 1,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "3b267e8f5668d41ed76b966ddabaf9e8c241c5275799b5e0c233b150b6cac690"
+      },
+      {
+        "index": 29,
+        "step": 718816000,
+        "step_gap": 56000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x17AA9": 1,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "66acf76a2d57ca6c0dc7587724b01307cc14c09db3c93cc38932ed4db288d0f5"
+      },
+      {
+        "index": 30,
+        "step": 718872000,
+        "step_gap": 56000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x17AA9": 1,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "4c74dade6ee3d96453b99a48f0e45a0bbaf77923d74703b326e0b623d9925ac7"
+      },
+      {
+        "index": 31,
+        "step": 718928000,
+        "step_gap": 56000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x17AA9": 1,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "f5c7d2ce9dd6f979ced759164d7d824a6023dd8789227b5fe5a37675ee5f838d"
+      },
+      {
+        "index": 32,
+        "step": 718984000,
+        "step_gap": 56000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x17AA9": 1,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "5329667a30fa28a06b62dd30fc412e8cb2fa9bff0e5426ddbd1d6867482f9da0"
+      },
+      {
+        "index": 33,
+        "step": 719040000,
+        "step_gap": 56000,
+        "watch_delta": {
+          "0x11EB0": 2,
+          "0x17AA9": 1,
+          "0x373C4": 400
+        },
+        "indexed_sha256": "6e713e5b88b166bccaf02541e88b74f405fea3238b9638e4f96caddfc8865f24"
+      },
+      {
+        "index": 34,
+        "step": 719144000,
+        "step_gap": 104000,
+        "watch_delta": {
+          "0x11EB0": 4,
+          "0x17AA9": 2,
+          "0x373C4": 800
+        },
+        "indexed_sha256": "d0a973302624edba955bea4c99a3fd3f9719eb0c0ac46189ca1960c2190180e5"
+      },
+      {
+        "index": 35,
+        "step": 719272000,
+        "step_gap": 128000,
+        "watch_delta": {
+          "0x11EB0": 3,
+          "0x17AA9": 2,
+          "0x373C4": 600
+        },
+        "indexed_sha256": "56bfc29491e77ebae858ac2f3b72b02901aecfb65cb650526cbf45bf27834e05"
+      },
+      {
+        "index": 36,
+        "step": 720504000,
+        "step_gap": 1232000,
+        "watch_delta": {
+          "0x11CAC": 1,
+          "0x375B2": 64
+        },
+        "indexed_sha256": "4f7988030a00d082fe445e00a2ac5dab502300ff1b80e8592dd569867b60ef74"
+      },
+      {
+        "index": 37,
+        "step": 720640000,
+        "step_gap": 136000,
+        "watch_delta": {
+          "0x11EB0": 1,
+          "0x1ACF3": 1,
+          "0x373C4": 192,
+          "0x375B2": 2
+        },
+        "indexed_sha256": "92bdda8a027c7fd0edda1b9c86cb1d8d8a072e99081d54041d1ed5ce795ea898"
+      },
+      {
+        "index": 38,
+        "step": 721992000,
+        "step_gap": 1352000,
+        "watch_delta": {
+          "0x11CAC": 2,
+          "0x11EB0": 1,
+          "0x1ACF3": 1,
+          "0x373C4": 192,
+          "0x375B2": 64
+        },
+        "indexed_sha256": "818a38256d17b6cf842fcc8cb5af491c2cbcfef40905e828c6311f404e4b8471"
+      },
+      {
+        "index": 39,
+        "step": 722128000,
+        "step_gap": 136000,
+        "watch_delta": {
+          "0x11EB0": 1,
+          "0x1ACF3": 1,
+          "0x373C4": 194
+        },
+        "indexed_sha256": "24d1059520884512048e3ccd49bc424f0ab666d189c8817ff4f165d254393aaf"
+      },
+      {
+        "index": 40,
+        "step": 722312000,
+        "step_gap": 184000,
+        "watch_delta": {
+          "0x17AA9": 3,
+          "0x373C4": 343
+        },
+        "indexed_sha256": "90e53621fa687bad7c66ff0ede90c7a58bb2c1d065b21a5759aa6bb87f50ecf0"
+      }
+    ]
+  },
+  "conclusions": [
+    {
+      "claim": "oracle 對全螢幕戰鬥演出產生得出收據，畫面、版面與呼叫順序都取得到",
+      "grade": "已證實",
+      "evidence": "round 2 與 round 3 各三次演出；frame-000014.png 是索爾（LV·01 HP 031）對盜賊（LV·02 HP 028）的命中瞬間，紅色剪影與劍光都在"
     },
-    "indexed_sha256": "e83a93a4e5b867ec0c0a961ab5ae696bac335b26590139997a5cbb88dc8707ff"
-   },
-   {
-    "index": 2,
-    "step": 716456000,
-    "step_gap": 72000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x373C4": 400
+    {
+      "claim": "每一段演出的結構：sub_29164 進入一次，sub_2A289 與 sub_18C6D 各二到四次，其間每一取樣幀有 600～800 次 sub_373C4（memcpy）組幀",
+      "grade": "已證實",
+      "evidence": "逐幀 watch 差值；三段演出（idx 1／74／130）形狀相同"
     },
-    "indexed_sha256": "4743714a4f3c8d995d892bee78b142d26fa53954a6ed94810af53a31df7722c0"
-   },
-   {
-    "index": 3,
-    "step": 716528000,
-    "step_gap": 72000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x373C4": 400
+    {
+      "claim": "演出的節奏由 Watcom delay(ms) 構成，不是 BIOS tick：每段演出 sub_375B2 累計 57～64 次，sub_17AA9 只有 2 次",
+      "grade": "已證實",
+      "evidence": "逐幀 watch 差值。delay 在 dosgolem 上不按毫秒消耗時間（見 fd2-phase-banner-player-20260910.json），所以這一段的時序量不到，只能讀呼叫點常數"
     },
-    "indexed_sha256": "b0a0873ce3dc02c5da29e5998698d377d479d410262310f00e5a803f6e21e67f"
-   },
-   {
-    "index": 4,
-    "step": 716600000,
-    "step_gap": 72000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x373C4": 400
+    {
+      "claim": "整段演出不經過 0x24618 轉場",
+      "grade": "已證實",
+      "evidence": "0x24618 差值全程為 0"
     },
-    "indexed_sha256": "3011d89d8f04237150acb6c06798c3f8f4411f8365a063030a571484c281214f"
-   },
-   {
-    "index": 5,
-    "step": 716672000,
-    "step_gap": 72000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x373C4": 400
-    },
-    "indexed_sha256": "3a5fdae752b7314d917b07ef9412eafbfbffc8d4a76578064dd0af6900157f7c"
-   },
-   {
-    "index": 6,
-    "step": 716736000,
-    "step_gap": 64000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x373C4": 400
-    },
-    "indexed_sha256": "98ae1989b235a9535176f171985f23151f051d0373543a29c5feb79530600922"
-   },
-   {
-    "index": 7,
-    "step": 716808000,
-    "step_gap": 72000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x373C4": 400
-    },
-    "indexed_sha256": "618191edcaaf8cb0642a9b478ab76e0100cce25620df357f7fb19908a349a9df"
-   },
-   {
-    "index": 8,
-    "step": 716880000,
-    "step_gap": 72000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x373C4": 400
-    },
-    "indexed_sha256": "3f874e10b3864f6bd16ad974402f90627a2d2bcc1fc1e5d415bf2b611b26b5c0"
-   },
-   {
-    "index": 9,
-    "step": 716952000,
-    "step_gap": 72000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x373C4": 400
-    },
-    "indexed_sha256": "5af40807e17e8f9854103ac5eb609233c4580171aae9fe2b8a8ba7cae611cc20"
-   },
-   {
-    "index": 10,
-    "step": 717024000,
-    "step_gap": 72000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x17AA9": 1,
-     "0x373C4": 400
-    },
-    "indexed_sha256": "4f133be07c0aa761a89ec1ece833b250102f25002a4b9e89fedc3e1c06b0afac"
-   },
-   {
-    "index": 11,
-    "step": 717136000,
-    "step_gap": 112000,
-    "watch_delta": {
-     "0x11EB0": 4,
-     "0x17AA9": 2,
-     "0x373C4": 800
-    },
-    "indexed_sha256": "e67b4d1182542472237f735064cdf7a1a5eceaff221b3818a6f2337d1b554e3d"
-   },
-   {
-    "index": 12,
-    "step": 717248000,
-    "step_gap": 112000,
-    "watch_delta": {
-     "0x11EB0": 4,
-     "0x17AA9": 2,
-     "0x373C4": 800
-    },
-    "indexed_sha256": "2cbc9fae46b290f90063a67509bca62d60d45de96839c0477a1b316823fdb7ae"
-   },
-   {
-    "index": 13,
-    "step": 717360000,
-    "step_gap": 112000,
-    "watch_delta": {
-     "0x11EB0": 4,
-     "0x17AA9": 2,
-     "0x373C4": 800
-    },
-    "indexed_sha256": "f72ad387cfde646cb1ea837b52890c1b75b390fd344a5c1a1219f2c9056d5b51"
-   },
-   {
-    "index": 14,
-    "step": 717536000,
-    "step_gap": 176000,
-    "watch_delta": {
-     "0x11EB0": 4,
-     "0x17AA9": 2,
-     "0x18C6D": 1,
-     "0x2A289": 1,
-     "0x373C4": 800
-    },
-    "indexed_sha256": "dca0547df5cfa69ae935aadf106b0cbba9b1a73c5a7dfa5fdaef5371ffc7e8b6"
-   },
-   {
-    "index": 15,
-    "step": 717592000,
-    "step_gap": 56000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x17AA9": 1,
-     "0x373C4": 400
-    },
-    "indexed_sha256": "b7ee39ae8015b294102aba81825b89dfb88ea81f298a519ff9a4b8476f96576c"
-   },
-   {
-    "index": 16,
-    "step": 717640000,
-    "step_gap": 48000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x17AA9": 1,
-     "0x373C4": 400
-    },
-    "indexed_sha256": "7d82a6224c98e4b41f9a59ab6d94e5b6c1dd250ebdc735a8e99f73b589ed909f"
-   },
-   {
-    "index": 17,
-    "step": 717696000,
-    "step_gap": 56000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x17AA9": 1,
-     "0x373C4": 400
-    },
-    "indexed_sha256": "11d9c5bd5e54990bfa7c700e1339c9019d29fe95a509229e85955e7738ba91e3"
-   },
-   {
-    "index": 18,
-    "step": 717752000,
-    "step_gap": 56000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x17AA9": 1,
-     "0x373C4": 400
-    },
-    "indexed_sha256": "e1de0bb1a4f72bd9db04b471a5815fe80042538b4f08a0de2b9a985ed99895a9"
-   },
-   {
-    "index": 19,
-    "step": 717808000,
-    "step_gap": 56000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x17AA9": 1,
-     "0x373C4": 400
-    },
-    "indexed_sha256": "0394291a6a5d1e11df3ca71452c45c8bcd69fa0646bb30f02ac36629103396c0"
-   },
-   {
-    "index": 20,
-    "step": 717856000,
-    "step_gap": 48000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x17AA9": 1,
-     "0x373C4": 400
-    },
-    "indexed_sha256": "96abe6b77c2851b8bc0db99e2facd0988b65f3d5230cea1c3f423bad86cec6ec"
-   },
-   {
-    "index": 21,
-    "step": 717976000,
-    "step_gap": 120000,
-    "watch_delta": {
-     "0x11EB0": 4,
-     "0x17AA9": 2,
-     "0x373C4": 800
-    },
-    "indexed_sha256": "8683a9a10809201f411e53e2251db3c8cb734e2cd9cb1f80ac75200acf058586"
-   },
-   {
-    "index": 22,
-    "step": 718080000,
-    "step_gap": 104000,
-    "watch_delta": {
-     "0x11EB0": 4,
-     "0x17AA9": 2,
-     "0x373C4": 800
-    },
-    "indexed_sha256": "55877e292cac3e8d8f96ec199ae0600a8441de41476b967425fb23daa54690af"
-   },
-   {
-    "index": 23,
-    "step": 718192000,
-    "step_gap": 112000,
-    "watch_delta": {
-     "0x11EB0": 4,
-     "0x17AA9": 2,
-     "0x373C4": 800
-    },
-    "indexed_sha256": "5052a9530c610ccb45f60675d2f5be80d57e951686b0339fa9092ea84224c522"
-   },
-   {
-    "index": 24,
-    "step": 718304000,
-    "step_gap": 112000,
-    "watch_delta": {
-     "0x11EB0": 4,
-     "0x17AA9": 2,
-     "0x373C4": 800
-    },
-    "indexed_sha256": "818b2acfdfc8002a24867546344d10cb04e16710caf91c992de1c55aa4857272"
-   },
-   {
-    "index": 25,
-    "step": 718408000,
-    "step_gap": 104000,
-    "watch_delta": {
-     "0x11EB0": 4,
-     "0x17AA9": 2,
-     "0x373C4": 800
-    },
-    "indexed_sha256": "e0f5e92bd6a724dd76f85fb9a7cfce8875f2ff5a78eee45b0b44f29272856f7d"
-   },
-   {
-    "index": 26,
-    "step": 718520000,
-    "step_gap": 112000,
-    "watch_delta": {
-     "0x11EB0": 4,
-     "0x17AA9": 2,
-     "0x373C4": 800
-    },
-    "indexed_sha256": "3a4624c36cd4c6d6be1d9c4b803f9c4ab08e08d41180e2d2029117874ed4d66b"
-   },
-   {
-    "index": 27,
-    "step": 718704000,
-    "step_gap": 184000,
-    "watch_delta": {
-     "0x11EB0": 4,
-     "0x17AA9": 2,
-     "0x18C6D": 1,
-     "0x2A289": 1,
-     "0x373C4": 800
-    },
-    "indexed_sha256": "866414af1e68e7e0dba10f38b8516b55b0615cca71528f9ecb25ebfbf97b27c6"
-   },
-   {
-    "index": 28,
-    "step": 718760000,
-    "step_gap": 56000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x17AA9": 1,
-     "0x373C4": 400
-    },
-    "indexed_sha256": "3b267e8f5668d41ed76b966ddabaf9e8c241c5275799b5e0c233b150b6cac690"
-   },
-   {
-    "index": 29,
-    "step": 718816000,
-    "step_gap": 56000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x17AA9": 1,
-     "0x373C4": 400
-    },
-    "indexed_sha256": "66acf76a2d57ca6c0dc7587724b01307cc14c09db3c93cc38932ed4db288d0f5"
-   },
-   {
-    "index": 30,
-    "step": 718872000,
-    "step_gap": 56000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x17AA9": 1,
-     "0x373C4": 400
-    },
-    "indexed_sha256": "4c74dade6ee3d96453b99a48f0e45a0bbaf77923d74703b326e0b623d9925ac7"
-   },
-   {
-    "index": 31,
-    "step": 718928000,
-    "step_gap": 56000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x17AA9": 1,
-     "0x373C4": 400
-    },
-    "indexed_sha256": "f5c7d2ce9dd6f979ced759164d7d824a6023dd8789227b5fe5a37675ee5f838d"
-   },
-   {
-    "index": 32,
-    "step": 718984000,
-    "step_gap": 56000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x17AA9": 1,
-     "0x373C4": 400
-    },
-    "indexed_sha256": "5329667a30fa28a06b62dd30fc412e8cb2fa9bff0e5426ddbd1d6867482f9da0"
-   },
-   {
-    "index": 33,
-    "step": 719040000,
-    "step_gap": 56000,
-    "watch_delta": {
-     "0x11EB0": 2,
-     "0x17AA9": 1,
-     "0x373C4": 400
-    },
-    "indexed_sha256": "6e713e5b88b166bccaf02541e88b74f405fea3238b9638e4f96caddfc8865f24"
-   },
-   {
-    "index": 34,
-    "step": 719144000,
-    "step_gap": 104000,
-    "watch_delta": {
-     "0x11EB0": 4,
-     "0x17AA9": 2,
-     "0x373C4": 800
-    },
-    "indexed_sha256": "d0a973302624edba955bea4c99a3fd3f9719eb0c0ac46189ca1960c2190180e5"
-   },
-   {
-    "index": 35,
-    "step": 719272000,
-    "step_gap": 128000,
-    "watch_delta": {
-     "0x11EB0": 3,
-     "0x17AA9": 2,
-     "0x373C4": 600
-    },
-    "indexed_sha256": "56bfc29491e77ebae858ac2f3b72b02901aecfb65cb650526cbf45bf27834e05"
-   },
-   {
-    "index": 36,
-    "step": 720504000,
-    "step_gap": 1232000,
-    "watch_delta": {
-     "0x11CAC": 1,
-     "0x375B2": 64
-    },
-    "indexed_sha256": "4f7988030a00d082fe445e00a2ac5dab502300ff1b80e8592dd569867b60ef74"
-   },
-   {
-    "index": 37,
-    "step": 720640000,
-    "step_gap": 136000,
-    "watch_delta": {
-     "0x11EB0": 1,
-     "0x1ACF3": 1,
-     "0x373C4": 192,
-     "0x375B2": 2
-    },
-    "indexed_sha256": "92bdda8a027c7fd0edda1b9c86cb1d8d8a072e99081d54041d1ed5ce795ea898"
-   },
-   {
-    "index": 38,
-    "step": 721992000,
-    "step_gap": 1352000,
-    "watch_delta": {
-     "0x11CAC": 2,
-     "0x11EB0": 1,
-     "0x1ACF3": 1,
-     "0x373C4": 192,
-     "0x375B2": 64
-    },
-    "indexed_sha256": "818a38256d17b6cf842fcc8cb5af491c2cbcfef40905e828c6311f404e4b8471"
-   },
-   {
-    "index": 39,
-    "step": 722128000,
-    "step_gap": 136000,
-    "watch_delta": {
-     "0x11EB0": 1,
-     "0x1ACF3": 1,
-     "0x373C4": 194
-    },
-    "indexed_sha256": "24d1059520884512048e3ccd49bc424f0ab666d189c8817ff4f165d254393aaf"
-   },
-   {
-    "index": 40,
-    "step": 722312000,
-    "step_gap": 184000,
-    "watch_delta": {
-     "0x17AA9": 3,
-     "0x373C4": 343
-    },
-    "indexed_sha256": "90e53621fa687bad7c66ff0ede90c7a58bb2c1d065b21a5759aa6bb87f50ecf0"
-   }
+    {
+      "claim": "玩家完全不操作（每回合直接 END）的話，第 3 回合之後我方全滅戰敗，畫面回到王座廳第 0 章對白",
+      "grade": "已證實",
+      "evidence": "同一序列跑到 1,799,579,299 指令時 view.round 回到 1、畫面是王座廳對白"
+    }
+  ],
+  "not_claimed": [
+    "演出的逐格分鏡（哪一格畫哪一張 FIGANI 幀）沒有解；本輪取的是取樣幀與呼叫順序。",
+    "演出的實機時序。它走 delay(ms)，模擬器上量不到；sub_2939D 有 delay(20)×2 與 delay(40)、sub_2A6BD 有 delay(500)、sub_2B659 有 delay(30)，但每段觀測到 57～64 次呼叫，代表多數來自迴圈，逐次對應還沒拆。",
+    "重製端同一段的逐幀對照。",
+    "音訊。"
+  ],
+  "corrections": [
+    {
+      "date": "2026-09-10",
+      "supersedes": "conclusions[2]「演出的節奏由 Watcom delay(ms) 構成，不是 BIOS tick：每段演出 sub_375B2 累計 57～64 次，sub_17AA9 只有 2 次」",
+      "claim": "逐格演出走的是 BIOS tick；delay(ms) 集中在進場滑入那一段",
+      "grade": "已證實",
+      "evidence": "本收據自己的 sequence：0x17AA9 全段累計 42 次、分佈在 27 個取樣幀；0x375B2 累計 187 次、只出現在 4 個幀（idx 1，也就是 sub_29164 進場那 1,352,000 指令）。原始指令面：sub_2939D 的前段對每一格呼叫 sub_17AA9(cell+6)，主迴圈則對每一格重複 cell+6 次 sub_17AA9(1)，每次之間重畫一次；delay 只在進場與過場。",
+      "why_it_was_wrong": "「只有 2 次」是取單一取樣幀的差值當成整段，沒有把 sequence 累加起來看。"
+    }
   ]
- },
- "conclusions": [
-  {
-   "claim": "oracle 對全螢幕戰鬥演出產生得出收據，畫面、版面與呼叫順序都取得到",
-   "grade": "已證實",
-   "evidence": "round 2 與 round 3 各三次演出；frame-000014.png 是索爾（LV·01 HP 031）對盜賊（LV·02 HP 028）的命中瞬間，紅色剪影與劍光都在"
-  },
-  {
-   "claim": "每一段演出的結構：sub_29164 進入一次，sub_2A289 與 sub_18C6D 各二到四次，其間每一取樣幀有 600～800 次 sub_373C4（memcpy）組幀",
-   "grade": "已證實",
-   "evidence": "逐幀 watch 差值；三段演出（idx 1／74／130）形狀相同"
-  },
-  {
-   "claim": "演出的節奏由 Watcom delay(ms) 構成，不是 BIOS tick：每段演出 sub_375B2 累計 57～64 次，sub_17AA9 只有 2 次",
-   "grade": "已證實",
-   "evidence": "逐幀 watch 差值。delay 在 dosgolem 上不按毫秒消耗時間（見 fd2-phase-banner-player-20260910.json），所以這一段的時序量不到，只能讀呼叫點常數"
-  },
-  {
-   "claim": "整段演出不經過 0x24618 轉場",
-   "grade": "已證實",
-   "evidence": "0x24618 差值全程為 0"
-  },
-  {
-   "claim": "玩家完全不操作（每回合直接 END）的話，第 3 回合之後我方全滅戰敗，畫面回到王座廳第 0 章對白",
-   "grade": "已證實",
-   "evidence": "同一序列跑到 1,799,579,299 指令時 view.round 回到 1、畫面是王座廳對白"
-  }
- ],
- "not_claimed": [
-  "演出的逐格分鏡（哪一格畫哪一張 FIGANI 幀）沒有解；本輪取的是取樣幀與呼叫順序。",
-  "演出的實機時序。它走 delay(ms)，模擬器上量不到；sub_2939D 有 delay(20)×2 與 delay(40)、sub_2A6BD 有 delay(500)、sub_2B659 有 delay(30)，但每段觀測到 57～64 次呼叫，代表多數來自迴圈，逐次對應還沒拆。",
-  "重製端同一段的逐幀對照。",
-  "音訊。"
- ]
 }

@@ -536,14 +536,17 @@ type atkAnim struct {
 	defHP0, defHP1   int // 守方攻擊前/後 HP(impact 抽乾動畫)
 	defMax           int
 	timer, total     int
-	fpt              int                      // 播放速度(tick/幀;FD2_BATTLE_FPT 可調)
-	atkOwn           bool                     // 攻方是否我方(狀態欄按陣營:我方欄右上/敵方欄左下)
-	terrain          int                      // 攻擊格地形索引(戰鬥背景 = 戰場地形,跟 FDFIELD 戰場資料有關)
-	figaniTimeline   *figani.DisplayScheduler // 已證實 FIGANI 幀延遲；不承載命中／傷害語意
-	nativeImpactRaw  *nativeImpactDACInput    // 尚未接線；缺 raw provenance 時保持 nil
-	frameIndex       int                      // 目前已呈現的 FIGANI 幀
-	bodyTicks        int                      // 幀本體的精確延遲總長，尾段停格另計
-	after            func()                   // 原版 action handler 完成後才進 selector1；不得在演出前提交
+	// accumMillis 是還沒換成顯示 tick 的毫秒。一個顯示 tick 是「一個 BIOS
+	// tick ÷ fpt」，不是一個 60 Hz 畫格；見 Update 裡的推進段。
+	accumMillis     float64
+	fpt             int                      // 播放速度(tick/幀;FD2_BATTLE_FPT 可調)
+	atkOwn          bool                     // 攻方是否我方(狀態欄按陣營:我方欄右上/敵方欄左下)
+	terrain         int                      // 攻擊格地形索引(戰鬥背景 = 戰場地形,跟 FDFIELD 戰場資料有關)
+	figaniTimeline  *figani.DisplayScheduler // 已證實 FIGANI 幀延遲；不承載命中／傷害語意
+	nativeImpactRaw *nativeImpactDACInput    // 尚未接線；缺 raw provenance 時保持 nil
+	frameIndex      int                      // 目前已呈現的 FIGANI 幀
+	bodyTicks       int                      // 幀本體的精確延遲總長，尾段停格另計
+	after           func()                   // 原版 action handler 完成後才進 selector1；不得在演出前提交
 }
 
 // nativeImpactDACInput 只保存原版 0x2939d 命中分支仍可回查的 raw 條件。
@@ -6032,6 +6035,77 @@ func (g *Game) nativeAttackPresentationAvailable(atkGroup, defGroup int) bool {
 	return err == nil
 }
 
+// attackPresentationTickMillis 是一個顯示 tick 的長度。原版 `sub_2939D` 對每一格
+// 重複 `cell+6` 次 `sub_17AA9(1)`，每次一個 BIOS tick；fpt 是重製端在一個原版延遲
+// 單位裡插幾個顯示 tick 的解析度，所以一個顯示 tick 就是 BIOS tick 除以 fpt。
+func attackPresentationTickMillis(fpt int) float64 {
+	if fpt <= 0 {
+		return indexedmap.PhaseBannerStepMillis
+	}
+	return indexedmap.PhaseBannerStepMillis / float64(fpt)
+}
+
+// attackPresentationTicks 把累積的毫秒換成這一畫格要推進幾個顯示 tick，並回傳
+// 還沒換掉的餘數。餘數要留著——丟掉的話 60 Hz 與 BIOS tick 的不整除會讓整段
+// 演出愈跑愈短。
+func attackPresentationTicks(accumMillis float64, fpt int) (ticks int, rest float64) {
+	step := attackPresentationTickMillis(fpt)
+	rest = accumMillis
+	for rest >= step {
+		rest -= step
+		ticks++
+	}
+	return ticks, rest
+}
+
+// errAttackPresentationYield 不是失敗：它表示這一幀要在演出收尾之後立刻交還，
+// 因為接手的事件流程（field event 61 或 battleEvent）已經接管。
+var errAttackPresentationYield = errors.New("attack presentation yielded to an event")
+
+// stepAttackPresentationTick 推進一個**顯示 tick**（不是一個畫格）：走一步
+// FIGANI 時間軸、判三段音效、時間到就收掉演出。
+func (g *Game) stepAttackPresentationTick() error {
+	a := g.atk
+	if a == nil {
+		return nil
+	}
+	a.timer--
+	prog := a.total - a.timer
+	if a.figaniTimeline != nil && prog <= a.bodyTicks {
+		frame, presented, _, err := a.figaniTimeline.Step()
+		if err != nil {
+			// The timeline was validated at load time; a runtime failure must
+			// not run the action continuation with an unpresented frame.
+			a.after = nil
+			g.atk = nil
+			g.loadErr = "FIGANI attack timeline: " + err.Error()
+			return err
+		}
+		if presented {
+			a.frameIndex = frame
+		}
+	}
+	if a.fpt > 0 { // 三段音效(== 比對每 tick 遞增的 prog,各觸發一次)
+		swingAt := (len(g.figani[a.atkFig]) - 4) * a.fpt
+		switch prog {
+		case swingAt: // 揮擊(蓄力揮出)
+			g.playRaw(g.sfxSwing)
+		case swingAt + 3*a.fpt: // 命中(劈中、守方 HP 抽乾)
+			g.playRaw(g.sfxImpact)
+		}
+	}
+	if a.timer == a.fpt && a.defHP1 <= 0 { // 收勢那幀:守方陣亡音
+		g.playRaw(g.sfxDeath)
+	}
+	if a.timer <= 0 {
+		g.finishAttackPresentation()
+		if g.nativeFieldEvent61 != nil || g.battleEvent != nil {
+			return errAttackPresentationYield
+		}
+	}
+	return nil
+}
+
 func (g *Game) finishAttackPresentation() {
 	if g.atk == nil {
 		return
@@ -7460,39 +7534,19 @@ func (g *Game) Update() error {
 		return nil
 	}
 	// 攻擊演出推進(FIGANI 全身分鏡;演出期間鎖玩家輸入)
+	//
+	// 一個顯示 tick 不是一個 60 Hz 畫格。原版 `sub_2939D` 對每一格重複
+	// `cell+6` 次 `sub_17AA9(1)`，也就是每格停留 `cell+6` 個 BIOS tick；
+	// fpt 是重製端在一個原版延遲單位裡插幾個顯示 tick 的解析度，所以一個顯示
+	// tick 的長度是「一個 BIOS tick ÷ fpt」。照 60 Hz 一格一 tick 會讓整段快
+	// 約 9%（50 對 54.925 毫秒）。BIOS tick 常數與回合橫幅同源，見
+	// docs/knowledge-base/105-phase-banner-timing-20260910.md。
 	if g.atk != nil {
-		g.atk.timer--
 		a := g.atk
-		prog := a.total - a.timer
-		if a.figaniTimeline != nil && prog <= a.bodyTicks {
-			frame, presented, _, err := a.figaniTimeline.Step()
-			if err != nil {
-				// The timeline was validated at load time; a runtime failure must
-				// not run the action continuation with an unpresented frame.
-				a.after = nil
-				g.atk = nil
-				g.loadErr = "FIGANI attack timeline: " + err.Error()
-				return nil
-			}
-			if presented {
-				a.frameIndex = frame
-			}
-		}
-		if a.fpt > 0 { // 三段音效(== 比對每 tick 遞增的 prog,各觸發一次)
-			swingAt := (len(g.figani[a.atkFig]) - 4) * a.fpt
-			switch prog {
-			case swingAt: // 揮擊(蓄力揮出)
-				g.playRaw(g.sfxSwing)
-			case swingAt + 3*a.fpt: // 命中(劈中、守方 HP 抽乾)
-				g.playRaw(g.sfxImpact)
-			}
-		}
-		if a.timer == a.fpt && a.defHP1 <= 0 { // 收勢那幀:守方陣亡音
-			g.playRaw(g.sfxDeath)
-		}
-		if g.atk.timer <= 0 {
-			g.finishAttackPresentation()
-			if g.nativeFieldEvent61 != nil || g.battleEvent != nil {
+		ticks, rest := attackPresentationTicks(a.accumMillis+1000.0/60, a.fpt)
+		a.accumMillis = rest
+		for ; ticks > 0 && g.atk != nil; ticks-- {
+			if err := g.stepAttackPresentationTick(); err != nil {
 				return nil
 			}
 		}
