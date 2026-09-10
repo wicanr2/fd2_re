@@ -169,6 +169,30 @@
         "pattern": "unresolved_speaker_identity",
         "note": "說話者碎片的阻擋分類還在清冊裡。"
       }
+    },
+    {
+      "id": "cursor-stuck-means-a-menu-is-open",
+      "area": "對拍",
+      "rule": "原版側送方向鍵而游標不動，先看 checkpoint 畫面再改程式——幾乎都是畫面上開著一個吃掉方向鍵的選單，不是演出沒收完。解法是送 esc 退回地圖游標。",
+      "why": "2026-09-10 閉環驅動在第一關第 2 回合連續卡在 (3,18)。先猜是攻擊演出還沒收完，加了「等演出再重試」，等過還是不動。看 checkpoint-0410.png 才知道畫面上開著系統選單（十字圖示＋END）——前一格的 enter 落在沒有可選單位的格上就會開它。狀態層完全看不出來：view 照樣回報游標座標，overlay_selector 恆為 1。",
+      "date": "2026-09-10",
+      "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md"
+    },
+    {
+      "id": "blind-enter-walks-through-menus",
+      "area": "對拍",
+      "rule": "推過場不要盲送 enter，也不要給大預算。過場播動畫時 `kbd_reads` 不動，鍵停在緩衝區；動畫一結束會一次全部灌進去，穿過戰敗畫面、標題選單、開場，重新開一局。",
+      "why": "2026-09-10 第一次實作給 200 格盲推。log 最後看起來很正常——round=1、ally=4、enemy=0、游標在 (8,16)——那正是第一關開局，要盯著 checkpoint 才看得出來已經是新的一局。改成以等待為主、每三格才送一次 enter、預算 30 格，推不回來就中止讓人判斷。",
+      "date": "2026-09-10",
+      "evidence": "tools/dosgolem_oracle_drive.py"
+    },
+    {
+      "id": "pgrep-pattern-matches-your-own-shell",
+      "area": "工具鏈",
+      "rule": "用 `pkill -f`／`pgrep -f` 停背景工作時，樣式會匹配到自己這個 shell 的命令行——整串命令在那一行就被殺掉，後面的改檔與重跑都沒執行。把樣式拆成兩段字串串接再比對。",
+      "why": "2026-09-10 連續兩次踩到：`pkill -f \"dosgolem_oracle.sh\"; python3 改檔; 重跑` 只跑到 pkill 就 exit 144，改動根本沒寫進檔案，然後拿舊程式重跑又得到一模一樣的失敗，白白繞一圈才發現檔案沒變。",
+      "date": "2026-09-10",
+      "evidence": "tools/dosgolem_oracle_drive.py"
     }
   ]
 }

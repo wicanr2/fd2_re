@@ -121,6 +121,131 @@ class EngageTargets(unittest.TestCase):
         self.assertEqual(drive.engage_targets(current, (7, 14)), [])
 
 
+class BattleGate(unittest.TestCase):
+    """戰場閘門：單位陣列基底一變，units 就不能信。"""
+
+    def tearDown(self):
+        drive.BATTLE_UNIT_BASE = None
+        drive.MAX_ROUND_SEEN = 0
+
+    def test_without_a_known_base_the_content_decides(self):
+        drive.BATTLE_UNIT_BASE = None
+        self.assertFalse(drive.in_battle({"unit_base": 0x1043D0}))
+        self.assertTrue(drive.in_battle({"unit_base": 0x1043D0, "units": [
+            unit(7, 14, drive.ALLY_CAMP, hp=42), unit(3, 18, drive.ENEMY_CAMP, hp=28)]}))
+
+    def test_matching_base_is_in_battle(self):
+        drive.BATTLE_UNIT_BASE = 0x1765F0
+        self.assertTrue(drive.in_battle({"unit_base": 0x1765F0}))
+
+    def test_garbage_units_are_not_a_battle_even_with_a_new_base(self):
+        drive.BATTLE_UNIT_BASE = 0x1765F0
+        # 實測第一關第 3 回合哈諾加入的過場：camp 跑出 63／34／54、座標超出地圖。
+        garbage = {"unit_base": 0x1043D0, "units": [
+            {"x": 63, "y": 39, "hp": 16139, "camp": 63, "raw_hex": "00" * 80},
+            {"x": 35, "y": 0, "hp": 14848, "camp": 34, "raw_hex": "00" * 80},
+        ]}
+        self.assertFalse(drive.in_battle(garbage))
+        self.assertEqual(drive.BATTLE_UNIT_BASE, 0x1765F0, "垃圾不該被採納成新基底")
+
+    def test_a_new_base_with_sane_units_is_adopted(self):
+        """過場後 spawn 新單位會重配置陣列，基底本來就會變。"""
+        drive.BATTLE_UNIT_BASE = 0x1765F0
+        fresh = {"unit_base": 0x175D30, "units": [
+            unit(7, 14, drive.ALLY_CAMP, hp=42), unit(3, 18, drive.ENEMY_CAMP, hp=28)]}
+        self.assertTrue(drive.in_battle(fresh))
+        self.assertEqual(drive.BATTLE_UNIT_BASE, 0x175D30)
+
+    def test_units_without_any_ally_are_not_a_battle(self):
+        drive.BATTLE_UNIT_BASE = None
+        self.assertFalse(drive.in_battle({"unit_base": 1, "units": [
+            unit(3, 18, drive.ENEMY_CAMP, hp=28)]}))
+        self.assertFalse(drive.in_battle({"unit_base": 1, "units": []}))
+
+
+class RoundMonotonicity(unittest.TestCase):
+    """回合倒退就是「view 也不可信」，比看 units 內容可靠。"""
+
+    def tearDown(self):
+        drive.BATTLE_UNIT_BASE = None
+        drive.MAX_ROUND_SEEN = 0
+
+    def battle(self, base, round_no, units=None):
+        return {"unit_base": base, "view": {"round": round_no},
+                "units": units if units is not None else [
+                    unit(7, 14, drive.ALLY_CAMP, hp=42),
+                    unit(3, 18, drive.ENEMY_CAMP, hp=28)]}
+
+    def test_round_going_backwards_is_never_in_battle(self):
+        drive.BATTLE_UNIT_BASE = 0x1765F0
+        self.assertTrue(drive.in_battle(self.battle(0x1765F0, 3)))
+        self.assertEqual(drive.MAX_ROUND_SEEN, 3)
+        # 過場：units 內容剛好合法，但回合掉回 1。
+        self.assertFalse(drive.in_battle(self.battle(0x1765F0, 1)))
+
+    def test_round_staying_or_advancing_is_in_battle(self):
+        drive.BATTLE_UNIT_BASE = 0x1765F0
+        drive.in_battle(self.battle(0x1765F0, 3))
+        self.assertTrue(drive.in_battle(self.battle(0x1765F0, 3)))
+        self.assertTrue(drive.in_battle(self.battle(0x1765F0, 4)))
+        self.assertEqual(drive.MAX_ROUND_SEEN, 4)
+
+
+class UIMode(unittest.TestCase):
+    """介面模式由 input_chain 的特徵位址決定——那是唯一分得出四種介面的訊號。"""
+
+    def chain(self, *addrs):
+        return {"input_chain": list(addrs)}
+
+    def test_each_interface_has_its_own_marker(self):
+        for addrs, want in (
+            (("0x11CED", "0x11AE4", "0x117F8", "0x25DD3"), "cursor"),
+            (("0x11CED", "0x12DD9", "0x117AE", "0x18C5D"), "target"),
+            (("0x17927", "0x17815", "0x18EEF", "0x25B3D"), "ring"),
+            (("0x17927", "0x17815", "0x16FAE", "0x118C6"), "system"),
+        ):
+            self.assertEqual(drive.ui_mode(self.chain(*addrs)), want, addrs)
+
+    def test_dialogue_covers_every_handler_variant(self):
+        """升級訊息與事件台詞不只一支 handler，實測看到三個位址。"""
+        for variant in ("0x1E44E", "0x1E5A8", "0x1E464"):
+            self.assertEqual(drive.ui_mode(self.chain("0x16039", variant)), "dialogue")
+        # 只有共同前綴也算——單一位址比對會讓同一種畫面有一部分掉進 unknown，
+        # 而 unknown 的處置是等，對白等不出結果。
+        self.assertEqual(drive.ui_mode(self.chain("0x16CF8", "0x16039")), "dialogue")
+
+    def test_dialogue_marker_is_disjoint_from_the_others(self):
+        """實測 98 個對白檢查點都不含其他四個標記，反之亦然。"""
+        for other in ("0x117F8", "0x117AE", "0x18EEF", "0x16FAE"):
+            self.assertNotEqual(other, "0x1E44E")
+            self.assertNotEqual(drive.ui_mode(self.chain(other)), "dialogue")
+
+    def test_the_moment_of_selection_counts_as_target(self):
+        """選取那一格還沒收到鍵，鏈是 0x18BF4／0x18978；漏了它就會永遠等不到。"""
+        self.assertEqual(
+            drive.ui_mode(self.chain("0x12225", "0x18BF4", "0x18978", "0x394B0")),
+            "target")
+
+    def test_ring_wins_over_the_selection_marker(self):
+        """指令環的鏈不含 0x18978，但順序仍要讓 0x18EEF 先判。"""
+        self.assertEqual(
+            drive.ui_mode(self.chain("0x17927", "0x17815", "0x18EEF", "0x18978")),
+            "ring")
+
+    def test_ring_and_system_share_a_menu_loop_but_stay_distinct(self):
+        """兩者的鏈都含 0x17927／0x17815，差別只在第三項。"""
+        self.assertNotEqual(
+            drive.ui_mode(self.chain("0x17927", "0x17815", "0x18EEF")),
+            drive.ui_mode(self.chain("0x17927", "0x17815", "0x16FAE")))
+
+    def test_no_chain_or_no_marker_is_unknown(self):
+        self.assertEqual(drive.ui_mode({}), "unknown")
+        self.assertEqual(drive.ui_mode(self.chain("0x12211", "0x45D91")), "unknown")
+
+    def test_only_cursor_and_target_move_the_map_cursor(self):
+        self.assertEqual(drive.CURSOR_MODES, {"cursor", "target"})
+
+
 class Conditions(unittest.TestCase):
     def setUp(self):
         self.current = {

@@ -49,6 +49,16 @@ STEP_TIMEOUT = float(os.environ.get("FD2_ORACLE_STEP_TIMEOUT", "180"))
 ALLY_CAMP = 2
 ENEMY_CAMP = 0
 
+# 戰場的單位陣列基底。戰鬥中途的過場（第一關第 3 回合哈諾與哈瓦特加入）會把
+# 指標換掉，那時 `units` 讀出來是垃圾——camp 會是 63／34／54 這種值，x／y 也
+# 超出地圖。基底一變就不能再信任 units，否則會挑到不存在的單位並把按鍵送去
+# 錯的地方。第一次進入戰場時記下來當閘門。
+BATTLE_UNIT_BASE = None
+# 戰場的回合數只會遞增。過場期間 `view` 也讀的是別的記憶體，`round` 會掉回 1；
+# 這比看 units 內容可靠得多——垃圾資料的 camp 與座標可以剛好落在合法範圍，
+# 回合倒退不會。
+MAX_ROUND_SEEN = 0
+
 CONDITION = re.compile(r"^\s*([a-z_]+)\s*(>=|<=|==|!=|>|<)\s*(-?\d+)\s*$")
 
 
@@ -130,20 +140,50 @@ def report(seq, key, current, note=""):
     print(
         f"seq={seq} key={key!r} eip={current['eip']} "
         f"pending={current.get('kbd_pending')} reads={current.get('kbd_reads')} "
-        f"steps={current['steps']} cursor=({view.get('cursor_x')},{view.get('cursor_y')}) "
+        f"steps={current['steps']} ui={ui_mode(current)} "
+        f"cursor=({view.get('cursor_x')},{view.get('cursor_y')}) "
         f"round={view.get('round')} ally={alive(current, ALLY_CAMP)} "
         f"enemy={alive(current, ENEMY_CAMP)}{note}",
         flush=True,
     )
 
 
+def settle(steps, count):
+    """只前進不送鍵，讓動畫或演出跑完。"""
+    for _ in range(count):
+        seq, current = send("", steps)
+    return current
+
+
 def do_goto(command):
+    """把地圖游標移到指定格。
+
+    先看 `input_chain` 判斷現在是哪一個介面在收鍵：只有地圖游標與目標選擇這兩種
+    模式下，方向鍵才會移動游標。在指令環或系統選單裡送方向鍵是在選選項，游標當然
+    不會動——那不是「卡住」，是模式不對。系統選單用 esc 退得掉；指令環要選一項才
+    離得開，這裡不替它決定選哪一項，直接回報讓呼叫者處理。
+    """
     target_x, target_y = command["goto"]
     steps = int(command.get("steps", 2_000_000))
     budget = int(command.get("max", 80))
-    stuck = 0
+    escapes_left = int(command.get("escape_retries", 2))
     for _ in range(budget):
         current = state()
+        mode = ui_mode(current)
+        if mode not in CURSOR_MODES:
+            if mode == "system" and escapes_left > 0:
+                escapes_left -= 1
+                seq, current = send("esc", max(steps, 3_000_000))
+                report(seq, "esc", current, " goto=leave-system-menu")
+                continue
+            if mode == "unknown":
+                # 演出或過場還在跑，等它收完再看一次。
+                seq, current = send("", steps)
+                report(seq, "", current, " goto=wait")
+                continue
+            print(f"goto ({target_x},{target_y})：目前介面是 {mode}，方向鍵不會移動"
+                  f"游標", file=sys.stderr)
+            return False
         view = current.get("view", {}) or {}
         x, y = int(view.get("cursor_x", -1)), int(view.get("cursor_y", -1))
         if (x, y) == (target_x, target_y):
@@ -156,15 +196,7 @@ def do_goto(command):
         if current.get("kbd_pending", 0) > 0:
             key = ""
         seq, current = send(key, steps)
-        view = current.get("view", {}) or {}
-        moved = (int(view.get("cursor_x", -1)), int(view.get("cursor_y", -1))) != (x, y)
         report(seq, key, current, f" goto=({target_x},{target_y})")
-        # 送了實鍵卻沒動：撞地圖邊界，或這一格的模式根本不吃方向鍵。
-        stuck = 0 if (moved or key == "") else stuck + 1
-        if stuck >= 3:
-            print(f"goto ({target_x},{target_y}) 卡在 ({x},{y})：連送三次 {key} 游標不動",
-                  file=sys.stderr)
-            return False
     print(f"goto ({target_x},{target_y}) 用完 {budget} 格仍未到位", file=sys.stderr)
     return False
 
@@ -185,6 +217,134 @@ def do_await(command):
         report(seq, send_key, current, f" await={expression}")
     print(f"await {expression} 在 {budget} 格內未成立", file=sys.stderr)
     return False
+
+
+# 已知的陣營編碼。過場期間 `units` 是垃圾，camp 會出現 63／34／54 這種值。
+KNOWN_CAMPS = {0, 1, 2, 3}
+# 地圖上限（第一關 map0 之外的圖也在這個量級內）。垃圾資料的 x／y 會遠超過。
+MAP_LIMIT_X, MAP_LIMIT_Y = 31, 63
+
+
+def plausible_battle(current):
+    """`units` 看起來像不像一組真的戰場單位。
+
+    過場會把單位陣列指標換掉，而**狀態欄位本身不會告訴你它失效了**：它照樣是
+    合法 JSON、照樣有 12 筆單位。只有內容看得出來——camp 跑出 63／34／54，
+    x／y 超出地圖，hp 是 16191 這種數量級。
+    """
+    units = [u for u in current.get("units", []) if u.get("hp", 0) > 0]
+    if not units:
+        return False
+    if any(u.get("camp") not in KNOWN_CAMPS for u in units):
+        return False
+    if any(u.get("x", 999) > MAP_LIMIT_X or u.get("y", 999) > MAP_LIMIT_Y for u in units):
+        return False
+    return any(u.get("camp") == ALLY_CAMP for u in units)
+
+
+def in_battle(current):
+    """在不在戰場。三個判準疊起來，任一不過就當作不在。
+
+    1. 回合數不得倒退。過場期間 `view` 讀的是別的記憶體，`round` 會掉回 1——
+       實測第 3 回合的過場就是這樣，而 units 的 camp 與座標剛好都落在合法範圍，
+       只看內容會誤判成「還在戰場」，然後把游標往 (8,42) 這種地方送。
+    2. 單位陣列基底與已知的相同就是同一場。
+    3. 基底變了要看內容：過場後 spawn 新單位會重配置陣列，基底本來就會變。
+    """
+    global BATTLE_UNIT_BASE, MAX_ROUND_SEEN
+    round_now = int((current.get("view") or {}).get("round", 0))
+    if round_now < MAX_ROUND_SEEN:
+        return False
+    here = (BATTLE_UNIT_BASE is not None
+            and current.get("unit_base") == BATTLE_UNIT_BASE)
+    if not here and plausible_battle(current):
+        BATTLE_UNIT_BASE = current.get("unit_base")
+        here = True
+    if here:
+        MAX_ROUND_SEEN = max(MAX_ROUND_SEEN, round_now)
+    return here
+
+
+def resume_battle(steps, budget, confirm=3):
+    """把戰鬥中途的過場推完，回到戰場；推不回來就回報 False。
+
+    兩件事都是實測換來的：
+
+    **狀態在過場期間會抖動。** 同一段過場裡連續取樣，`round` 會在 1 和 3 之間跳、
+    `units` 會在合理與垃圾之間跳——oracle 讀的那幾個位址在過場期間被複用。單次
+    取樣判不準，所以要連續 `confirm` 次都在戰場才採信，中間送空鍵讓遊戲往前走。
+
+    **budget 要小，而且不要一直送 enter。** 過場播動畫時 `kbd_reads` 根本不動，
+    送進去的鍵停在緩衝區沒人取；盲送 enter 只會在動畫結束的瞬間一次全部灌進去，
+    穿過任何選單。2026-09-10 第一次實作給了 200 格，我方全滅之後那些 enter 一路
+    推過戰敗畫面、標題選單、開場動畫，重新開了一局，log 最後看起來像「回到第一關
+    第 1 回合、敵方 0 隻」——收據還在，人卻要盯著 checkpoint 才看得出來跑錯了。
+    所以這裡以等待為主：每三格才送一次 enter，而且緩衝區還有鍵就不送。
+    """
+    stable = 0
+    for index in range(budget):
+        current = state()
+        if in_battle(current):
+            stable += 1
+            if stable >= confirm:
+                return True
+            seq, current = send("", steps)
+            report(seq, "", current, f" cutscene-confirm{stable}")
+            continue
+        stable = 0
+        # 認得出是對白就直接推，不必靠「每三格送一次」的節流猜。
+        if ui_mode(current) == "dialogue" and current.get("kbd_pending", 0) == 0:
+            seq, current = send("enter", steps)
+            report(seq, "enter", current, " cutscene-dialogue")
+            continue
+        key = "enter" if (index % 3 == 2 and current.get("kbd_pending", 0) == 0) else ""
+        seq, current = send(key, steps)
+        report(seq, key, current, " cutscene")
+    return False
+
+
+# 介面模式的特徵位址，取自 oracle 快照的 `input_chain`（等鍵盤時堆疊上的返回
+# 位址）。這四種介面在 eip、view 與 units 上完全一樣——overlay selector 恆為 1
+# ——只有這條鏈分得出來。方向鍵在四種狀態下的意義不同，分不出來就只能猜，猜錯
+# 會把方向鍵送進選單，然後游標「莫名其妙不動」。
+#
+# `0x16FAE` 落在 FD2 已知的系統選單 handler `0x16F55` 那支函式裡，`0x18EEF` 落在
+# action chooser `0x18D8C` 同一段；與專案既有的反組譯結論一致。
+UI_MODES = (
+    ("ring", "0x18EEF"),      # 指令環：↑攻擊／←法術／→物品／↓待機
+    ("system", "0x16FAE"),    # 空地上按 enter 開的系統選單（含 END）
+    ("target", "0x117AE"),    # 選取之後的移動格／攻擊目標選擇
+    ("cursor", "0x117F8"),    # 地圖游標自由移動
+    # 選取的那一格是過渡狀態：範圍已經畫好、但還沒收到第一個鍵，鏈長得不一樣。
+    # 少了這一條，「等它進 target」會永遠等不到——那個迴圈要收到一個鍵才會轉成
+    # 0x117AE，而等待送的是空鍵。順序放最後，才不會蓋掉 ring 的 0x18EEF。
+    ("target", "0x18978"),
+)
+# 對白等待（升級訊息、事件台詞）不只一支 handler：實測看到 `0x1E44E`、`0x1E5A8`
+# 與 `0x1E464`，共同前綴是 `0x16039`。用範圍比對而不是單一位址，否則同一種畫面
+# 會有一部分掉進 unknown，而 unknown 的處置是「等」——對白等不出結果，要 enter。
+DIALOGUE_ENTRY = "0x16039"
+DIALOGUE_RANGE = (0x1E400, 0x1E5FF)
+
+# 方向鍵會移動地圖游標的模式。其餘模式送方向鍵是在選選項，不會動游標。
+CURSOR_MODES = {"cursor", "target"}
+
+
+def ui_mode(current):
+    chain = current.get("input_chain") or []
+    for name, marker in UI_MODES:
+        if marker in chain:
+            return name
+    if DIALOGUE_ENTRY in chain:
+        return "dialogue"
+    for address in chain:
+        try:
+            value = int(address, 16)
+        except (TypeError, ValueError):
+            continue
+        if DIALOGUE_RANGE[0] <= value <= DIALOGUE_RANGE[1]:
+            return "dialogue"
+    return "unknown"
 
 
 def unit_at(current, x, y):
@@ -271,13 +431,6 @@ def engage_targets(current, origin, typical_move=6):
     return cells + approach
 
 
-def settle(steps, count):
-    """只前進不送鍵，讓動畫或演出跑完。"""
-    for _ in range(count):
-        seq, current = send("", steps)
-    return current
-
-
 def stand_by(steps, note=""):
     """在指令環上選「待機」結束這個單位的行動。
 
@@ -285,21 +438,84 @@ def stand_by(steps, note=""):
     只移動不待機的話這個單位的 record `+5` bit7 不會設起來，下一輪掃描又會選到
     它，回合永遠推不掉。
     """
+    mode = wait_mode({"ring"}, steps)
+    if mode != "ring":
+        print(f"stand_by：介面是 {mode} 不是指令環，不送待機鍵", file=sys.stderr)
+        return state()
     seq, current = send("down", steps)
     report(seq, "down", current, f" standby{note}")
     seq, current = send("enter", max(steps, 5_000_000))
     report(seq, "enter", current, f" standby{note}")
     return settle(steps, 4)
 
-def do_engage(command):
-    """選取一個我方單位，推進到貼著敵人的格，貼上就攻擊。
+def wait_mode(wanted, steps, budget=12):
+    """只前進不送鍵，等介面變成 wanted 之一。回傳實際模式。"""
+    mode = ui_mode(state())
+    for _ in range(budget):
+        if mode in wanted:
+            return mode
+        seq, current = send("", steps)
+        mode = ui_mode(current)
+        report(seq, "", current, f" wait-mode{sorted(wanted)}")
+    return mode
 
-    每一步都回讀狀態裁決：移動有沒有生效看單位座標變了沒，不看送了幾個鍵。
-    盲送方向鍵在多回合戰鬥裡必然錯位——起點每回合不同，地形還會改變成本。
+
+def ensure_cursor_mode(steps, budget=60):
+    """把介面退回「地圖游標自由移動」，或等到它回來。
+
+    sweep 每挑一個單位就要從自由移動狀態開始。上一個單位收尾之後介面可能停在
+    目標選擇或系統選單——那時方向鍵移不動地圖游標，goto 會一路送到用完預算。
+    esc 退得掉這兩種；指令環要選一項才離得開，不在這裡替它決定。
+
+    `unknown` 多半不是壞掉，是**敵方回合**：AI 在走位與演出，遊戲根本沒在等鍵盤，
+    堆疊上自然沒有輸入路徑。那只能等，而且要等得夠久——預算給小了會在換手的
+    當下判成「退不回地圖游標」。
+    """
+    for _ in range(budget):
+        current = state()
+        mode = ui_mode(current)
+        if mode == "cursor":
+            return True
+        if mode in {"target", "system"}:
+            seq, current = send("esc", max(steps, 3_000_000))
+            report(seq, "esc", current, f" back-to-cursor(from {mode})")
+            continue
+        if mode == "dialogue":
+            # 升級訊息與事件台詞。等它不會自己走，要送 enter；但緩衝區還有鍵就
+            # 別再送，否則多的鍵會被下一個介面吃掉。
+            key = "" if current.get("kbd_pending", 0) > 0 else "enter"
+            seq, current = send(key, max(steps, 3_000_000))
+            report(seq, key, current, " back-to-cursor(dialogue)")
+            continue
+        seq, current = send("", steps)
+        report(seq, "", current, f" back-to-cursor(from {mode})")
+    return ui_mode(state()) == "cursor"
+
+
+def do_engage(command):
+    """選取一個我方單位，推進到能打的位置，打得到就打，打不到就待機。
+
+    每一步都用 `input_chain` 的介面模式驗證，不用「座標變了沒」推測：
+
+    - 選取成功 → 介面從 cursor 變成 target（選移動格）。
+    - 移動成功 → 介面變成 ring（原版移動完就開指令環）。移動被拒絕時介面會留在
+      target，這比比對座標可靠——座標比對分不出「沒走成」與「走到別處」。
+    - ring 上：攻擊是直接 enter（預設就是攻擊，確認後游標自動跳到可打的敵人），
+      待機是 down 再 enter（↑0 攻擊／←1 法術／→2 物品／↓3 待機）。
     """
     ux, uy = command["engage"]
     steps = int(command.get("steps", 2_000_000))
     tries = int(command.get("tries", 10))
+    reach = int(command.get("reach", 2))
+    if not resume_battle(int(command.get("cutscene_steps", 5_000_000)),
+                         int(command.get("cutscene_max", 30))):
+        print("engage：目前不在戰場（過場推不回來）", file=sys.stderr)
+        return False
+    if not ensure_cursor_mode(max(steps, int(command.get("cursor_steps", 5_000_000))),
+                              int(command.get("cursor_wait", 80))):
+        print(f"engage ({ux},{uy})：介面退不回地圖游標（目前 {ui_mode(state())}）",
+              file=sys.stderr)
+        return False
     current = state()
     unit = unit_at(current, ux, uy)
     if unit is None:
@@ -313,65 +529,80 @@ def do_engage(command):
         return True
     if not do_goto({"goto": [ux, uy], "steps": steps, "max": command.get("max", 80)}):
         return False
+
     seq, current = send("enter", steps)
     report(seq, "enter", current, " engage=select")
+    mode = wait_mode({"target", "ring", "system"}, steps)
+    if mode == "system":
+        # 這一格沒有可選單位（走到之後被打死、或本來就選不了），enter 開了系統
+        # 選單。退出去，把這個單位交給下一輪。
+        seq, current = send("esc", max(steps, 3_000_000))
+        report(seq, "esc", current, " engage=select-missed")
+        print(f"engage ({ux},{uy}) 選取時開的是系統選單，這一格不是可選單位", flush=True)
+        return False
+    if mode != "target":
+        print(f"engage ({ux},{uy}) 選取之後介面是 {mode}，不是移動格選擇",
+              file=sys.stderr)
+        return False
 
     moved_to = (ux, uy)
-    for cell in engage_targets(current, (ux, uy),
-                               int(command.get("typical_move", 6)))[:tries]:
+    standing = [e for e in side(current, ENEMY_CAMP)
+                if distance((e["x"], e["y"]), (ux, uy)) <= reach]
+    candidates = [] if standing else engage_targets(
+        current, (ux, uy), int(command.get("typical_move", 6)))[:tries]
+    if standing:
+        # 已經站在射程內就原地確認，不必再走。
+        seq, current = send("enter", max(steps, 5_000_000))
+        report(seq, "enter", current, " engage=stay-in-reach")
+    for cell in candidates:
         if not do_goto({"goto": list(cell), "steps": steps, "max": 80}):
             continue
         seq, current = send("enter", max(steps, 5_000_000))
         report(seq, "enter", current, f" engage=move->{cell}")
-        current = settle(steps, int(command.get("move_settle", 8)))
-        if unit_at(current, cell[0], cell[1]) is not None and unit_at(current, ux, uy) is None:
+        if wait_mode({"ring"}, steps) == "ring":
             moved_to = cell
             break
-        print(f"  移動到 {cell} 沒有生效，換下一個候選格", flush=True)
-    if moved_to == (ux, uy):
-        # 走不動也要把這個單位的行動結束掉，否則 record `+5` bit7 不設，
-        # sweep 下一輪又選到同一個單位，回合永遠推不掉。
-        print(f"engage ({ux},{uy}) 所有候選格都到不了，改原地待機", flush=True)
-        if not do_goto({"goto": [ux, uy], "steps": steps, "max": 80}):
-            return False
-        seq, current = send("enter", max(steps, 5_000_000))
-        report(seq, "enter", current, " engage=stay")
-        current = settle(steps, int(command.get("move_settle", 8)))
-        current = stand_by(steps, "=stay")
-        unit = unit_at(current, ux, uy)
-        if unit is None or not acted(unit):
-            print(f"engage ({ux},{uy}) 原地待機之後仍未標記已行動", file=sys.stderr)
-            return False
-        return True
+        print(f"  移動到 {cell} 被拒絕（介面沒進指令環），換下一個候選格", flush=True)
+    mode = wait_mode({"ring"}, steps)
+    if mode != "ring":
+        print(f"engage ({ux},{uy}) 走完之後介面是 {mode}，指令環沒開", file=sys.stderr)
+        return False
 
-    # 射程不是恆等於 1：亞雷斯（騎士）的 atk_max 是 2，實測指令環會把游標自動
-    # 跳到距離 2 的敵人並命中。所以這裡用 reach（預設 2）判斷值不值得開指令環，
-    # 真正能打到誰由原版自己選。
-    reach = int(command.get("reach", 2))
     in_reach = [e for e in side(current, ENEMY_CAMP)
                 if distance((e["x"], e["y"]), moved_to) <= reach]
-    if not in_reach:
-        print(f"engage 走到 {moved_to} 但射程 {reach} 內沒有敵人，待機結束行動", flush=True)
+    if in_reach:
+        before_hp = sum(e.get("hp", 0) for e in side(state(), ENEMY_CAMP))
+        before_count = len(side(state(), ENEMY_CAMP))
+        seq, current = send("enter", max(steps, 5_000_000))
+        report(seq, "enter", current, " engage=ring-attack")
+        wait_mode({"target"}, steps)
+        seq, current = send("enter", max(steps, 10_000_000))
+        report(seq, "enter", current, " engage=strike")
+        current = settle(int(command.get("strike_steps", 10_000_000)),
+                         int(command.get("strike_settle", 14)))
+        if not in_battle(current):
+            print(f"engage {moved_to} 攻擊後離開戰場（可能敵方全滅或觸發過場）",
+                  flush=True)
+            return True
+        after = side(current, ENEMY_CAMP)
+        print(f"engage：{moved_to} 敵方總 HP {before_hp}→"
+              f"{sum(e.get('hp', 0) for e in after)}、存活 {before_count}→{len(after)}",
+              flush=True)
+    else:
+        print(f"engage 走到 {moved_to} 但射程 {reach} 內沒有敵人", flush=True)
         current = stand_by(steps, "=advance")
-        unit = unit_at(current, moved_to[0], moved_to[1])
-        if unit is None or not acted(unit):
-            print(f"engage 推進到 {moved_to} 之後仍未標記已行動", file=sys.stderr)
-            return False
+
+    current = state()
+    unit = unit_at(current, moved_to[0], moved_to[1])
+    if unit is None:
+        print(f"engage {moved_to} 收尾時該格已無單位（可能被反擊打死）", flush=True)
         return True
-    # 指令環開啟時預設就是攻擊，確認後游標自動跳到可攻擊的敵人，所以是 enter、enter。
-    seq, current = send("enter", max(steps, 5_000_000))
-    report(seq, "enter", current, " engage=ring")
-    current = settle(steps, int(command.get("ring_settle", 4)))
-    before = {(e["x"], e["y"]): e.get("hp") for e in side(current, ENEMY_CAMP)}
-    seq, current = send("enter", max(steps, 10_000_000))
-    report(seq, "enter", current, " engage=strike")
-    current = settle(int(command.get("strike_steps", 10_000_000)),
-                     int(command.get("strike_settle", 14)))
-    after = {(e["x"], e["y"]): e.get("hp") for e in side(current, ENEMY_CAMP)}
-    hurt = [c for c, hp in before.items() if after.get(c, 0) != hp]
-    print(f"engage 完成：{moved_to} 攻擊後改變的敵人格 {hurt}"
-          f"（敵方存活 {len(after)}）", flush=True)
+    if not acted(unit):
+        print(f"engage {moved_to} 之後仍未標記已行動（介面 {ui_mode(current)}）",
+              file=sys.stderr)
+        return False
     return True
+
 
 def do_sweep_round(command):
     """把這一回合所有還沒行動的我方單位依序接戰。
@@ -381,6 +612,11 @@ def do_sweep_round(command):
     """
     steps = int(command.get("steps", 2_000_000))
     for _ in range(int(command.get("max_units", 12))):
+        if not resume_battle(int(command.get("cutscene_steps", 5_000_000)),
+                             int(command.get("cutscene_max", 30))):
+            print("sweep_round：離開戰場且推不回來，中止（看 checkpoint 判斷是"
+                  "勝利演出、戰敗，還是過場沒推完）", file=sys.stderr)
+            return False
         current = state()
         pending = [u for u in side(current, ALLY_CAMP) if not acted(u)]
         if not pending:
@@ -409,10 +645,17 @@ def do_sweep_battle(command):
     回合推進不主動按 END——先確認全部行動完之後原版會不會自己換手；`await`
     逾時就代表要另外送結束回合，那時再處理，不要先假設。
     """
+    global BATTLE_UNIT_BASE, MAX_ROUND_SEEN
     steps = int(command.get("steps", 2_000_000))
     rounds = int(command.get("rounds", 30))
+    BATTLE_UNIT_BASE = state().get("unit_base")
+    MAX_ROUND_SEEN = int((state().get("view") or {}).get("round", 0))
+    print(f"sweep_battle：戰場單位陣列基底 {BATTLE_UNIT_BASE:#x}", flush=True)
     for index in range(rounds):
         current = state()
+        if not in_battle(current):
+            print(f"sweep_battle：第 {index} 輪之前已離開戰場，收工", flush=True)
+            return True
         if not side(current, ENEMY_CAMP):
             print(f"sweep_battle：敵方全滅（第 {index} 輪之前）", flush=True)
             return True
