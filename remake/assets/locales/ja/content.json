@@ -639,9 +639,9 @@
         "function": "reviveChurchUnit",
         "line": 4673
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4673-c23",
-      "text": "復活の役割は存在しないid>%d",
+      "text": "蘇生対象が存在しません id=%d",
       "variables": [
         "%d"
       ]
@@ -655,9 +655,9 @@
         "function": "reviveChurchUnit",
         "line": 4677
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4677-c23",
-      "text": "回復率が不足している.raw class>%d",
+      "text": "蘇生費用データが不足しています raw class=%d",
       "variables": [
         "%d"
       ]
@@ -705,9 +705,9 @@
         "function": "applyHotelServiceSelection",
         "line": 4726
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4726-c23",
-      "text": "ホテルraw selector %d効果がない",
+      "text": "宿屋の raw selector %d は無効です",
       "variables": [
         "%d"
       ]
@@ -721,9 +721,9 @@
         "function": "applyHotelServiceSelection",
         "line": 4731
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4731-c23",
-      "text": "ホテルraw selector %d海外の反応%05X→ 固定リンク%05X(お待ちください)UI callee海外の反応",
+      "text": "宿屋の raw selector %d：%05X→%05X（UI callee 未接続）",
       "variables": [
         "%d",
         "%05X",
@@ -739,9 +739,9 @@
         "function": "applyHotelServiceSelection",
         "line": 4733
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4733-c23",
-      "text": "ホテルraw selector %d海外の反応%05X(お待ちください)UI callee海外の反応",
+      "text": "宿屋の raw selector %d：%05X（UI callee 未接続）",
       "variables": [
         "%d",
         "%05X"
@@ -756,9 +756,9 @@
         "function": "ringInput",
         "line": 4832
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4832-c13",
-      "text": "旧バージョンのシステム設定は無効で変更されていません",
+      "text": "オリジナルのシステム設定値が無効なため、変更していません",
       "variables": []
     },
     {
@@ -770,9 +770,9 @@
         "function": "ringInput",
         "line": 4875
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4875-c14",
-      "text": "原作の戦場情報源は不完全で,画像が公開されていない",
+      "text": "オリジナルの戦場情報ソースが不完全なため、画面を開いていません",
       "variables": []
     },
     {
@@ -784,9 +784,9 @@
         "function": "ringInput",
         "line": 4887
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4887-c14",
-      "text": "原作は,不完全な資産を確認し,ゲームから外出していない.",
+      "text": "オリジナルの退出確認アセットが不完全なため、ゲームを終了していません",
       "variables": []
     },
     {
@@ -798,9 +798,9 @@
         "function": "ringInput",
         "line": 4893
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4893-c14",
-      "text": "原版は,現在の戦場を保持するために,原稿の情報源や資産が不完全である.",
+      "text": "オリジナルの現在戦況ロード元またはアセットが不完全なため、現在の戦場を保持します",
       "variables": []
     },
     {
@@ -812,9 +812,9 @@
         "function": "ringInput",
         "line": 4930
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4930-c14",
-      "text": "オリジナルの巣箱システム選定表や状態が不完全",
+      "text": "オリジナルの入れ子システムメニューのセルまたは状態が不完全です",
       "variables": []
     },
     {
@@ -826,9 +826,9 @@
         "function": "ringInput",
         "line": 4941
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4941-c14",
-      "text": "原版END資産が未完成で循環期を完了していないことを確認する",
+      "text": "オリジナルの END 確認アセットが不完全なため、ターンを終了していません",
       "variables": []
     },
     {
@@ -840,9 +840,9 @@
         "function": "ringInput",
         "line": 4947
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4947-c14",
-      "text": "オリジナルのシステム設定タグは不完全で,選択リストが開かれていない",
+      "text": "オリジナルのシステム設定セルが不完全なため、メニューを開いていません",
       "variables": []
     },
     {
@@ -1008,9 +1008,9 @@
         "function": "ringInput",
         "line": 5087
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5087-c14",
-      "text": "原始指令0: 抗体証拠は検証されていません",
+      "text": "オリジナルコマンド 0：耐性データが未検証です",
       "variables": []
     },
     {
@@ -1036,9 +1036,9 @@
         "function": "ringInput",
         "line": 5096
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5096-c27",
-      "text": "初めの指示は%d海外の反応target grid失敗は不可能ですmaterialize",
+      "text": "オリジナルコマンド %d：target grid を materialize できません",
       "variables": [
         "%d"
       ]
@@ -1293,9 +1293,9 @@
         "function": "playerPhysicalAttackMessage",
         "line": 5981
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5981-c27",
-      "text": "攻撃",
+      "text": "攻撃側",
       "variables": []
     },
     {
@@ -1307,7 +1307,7 @@
         "function": "playerPhysicalAttackMessage",
         "line": 5981
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5981-c37",
       "text": "目標",
       "variables": []
@@ -1527,9 +1527,9 @@
         "function": "confirm",
         "line": 6172
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6172-c24",
-      "text": "初めの指示は%d海外の反応cursor-confirm raw state完全ではない",
+      "text": "オリジナルコマンド %d：cursor-confirm raw state が不完全です",
       "variables": [
         "%d"
       ]
@@ -1543,9 +1543,9 @@
         "function": "confirm",
         "line": 6182
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6182-c24",
-      "text": "初めの指示は%d標識は違法だ",
+      "text": "オリジナルコマンド %d：カーソル確定が不正です",
       "variables": [
         "%d"
       ]
@@ -1559,9 +1559,9 @@
         "function": "confirm",
         "line": 6190
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6190-c13",
-      "text": "初期指示32:完成indexed command damage",
+      "text": "オリジナルコマンド 32：indexed command damage が完了",
       "variables": []
     },
     {
@@ -1573,9 +1573,9 @@
         "function": "confirm",
         "line": 6199
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6199-c25",
-      "text": "基本ガイドライン32:有効な目標を選択 (%v海外の反応",
+      "text": "オリジナルコマンド 32：有効な目標を選んでください（%v）",
       "variables": [
         "%v"
       ]
@@ -1589,9 +1589,9 @@
         "function": "confirm",
         "line": 6202
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6202-c12",
-      "text": "基本指示32indexed演出が進行中",
+      "text": "オリジナルコマンド 32：indexed 演出が進行中です",
       "variables": []
     },
     {
@@ -1603,9 +1603,9 @@
         "function": "confirm",
         "line": 6210
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6210-c13",
-      "text": "初期指示33:完了indexed清掃と回復",
+      "text": "オリジナルコマンド 33：indexed の解除と回復が完了",
       "variables": []
     },
     {
@@ -1617,9 +1617,9 @@
         "function": "confirm",
         "line": 6219
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6219-c25",
-      "text": "基本指示33:有効な目標を選択してください (%v海外の反応",
+      "text": "オリジナルコマンド 33：有効な目標を選んでください（%v）",
       "variables": [
         "%v"
       ]
@@ -1633,9 +1633,9 @@
         "function": "confirm",
         "line": 6222
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6222-c12",
-      "text": "原則第33条indexed演出が進行中",
+      "text": "オリジナルコマンド 33：indexed 演出が進行中です",
       "variables": []
     },
     {
@@ -1647,9 +1647,9 @@
         "function": "confirm",
         "line": 6230
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6230-c13",
-      "text": "初期指示34: 3段目の完成indexed modifier",
+      "text": "オリジナルコマンド 34：三段の indexed modifier が完了",
       "variables": []
     },
     {
@@ -1661,9 +1661,9 @@
         "function": "confirm",
         "line": 6239
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6239-c25",
-      "text": "基本指示34:有効な目標を選択する%v海外の反応",
+      "text": "オリジナルコマンド 34：有効な目標を選んでください（%v）",
       "variables": [
         "%v"
       ]
@@ -1677,9 +1677,9 @@
         "function": "confirm",
         "line": 6242
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6242-c12",
-      "text": "基本指示34:indexed演出が進行中",
+      "text": "オリジナルコマンド 34：indexed 演出が進行中です",
       "variables": []
     },
     {
@@ -1691,9 +1691,9 @@
         "function": "confirm",
         "line": 6250
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6250-c13",
-      "text": "基本指示35: 3つの段落が完成しましたindexed application",
+      "text": "オリジナルコマンド 35：三段の indexed application が完了",
       "variables": []
     },
     {
@@ -1705,9 +1705,9 @@
         "function": "confirm",
         "line": 6259
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6259-c25",
-      "text": "基本ガイドライン35:有効な目標を選択する%v海外の反応",
+      "text": "オリジナルコマンド 35：有効な目標を選んでください（%v）",
       "variables": [
         "%v"
       ]
@@ -1721,9 +1721,9 @@
         "function": "confirm",
         "line": 6262
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6262-c12",
-      "text": "基本指示35:indexed演出が進行中",
+      "text": "オリジナルコマンド 35：indexed 演出が進行中です",
       "variables": []
     },
     {
@@ -1735,9 +1735,9 @@
         "function": "confirm",
         "line": 6269
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6269-c25",
-      "text": "初めの指示は%d目標の設定をクリックしてください%v海外の反応",
+      "text": "オリジナルコマンド %d：有効な目標を選んでください（%v）",
       "variables": [
         "%d",
         "%v"
@@ -1752,9 +1752,9 @@
         "function": "confirm",
         "line": 6280
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6280-c25",
-      "text": "初めの指示は%d回復:%d",
+      "text": "オリジナルコマンド %d：回復 %d",
       "variables": [
         "%d",
         "%d"
@@ -1769,9 +1769,9 @@
         "function": "confirm",
         "line": 6289
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6289-c25",
-      "text": "初めの指示は%d海外の反応indexed演出は利用できない (%v海外の反応",
+      "text": "オリジナルコマンド %d：indexed 演出を利用できません（%v）",
       "variables": [
         "%d",
         "%v"
@@ -1786,9 +1786,9 @@
         "function": "confirm",
         "line": 6297
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6297-c25",
-      "text": "初めの指示は%d目標の設定をクリックしてください%v海外の反応",
+      "text": "オリジナルコマンド %d：有効な目標を選んでください（%v）",
       "variables": [
         "%d",
         "%v"
@@ -1803,9 +1803,9 @@
         "function": "confirm",
         "line": 6316
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6316-c25",
-      "text": "初めの指示は%d完成しました.raw modifier海外の反応%d targets海外の反応",
+      "text": "オリジナルコマンド %d：raw modifier が完了（%d targets）",
       "variables": [
         "%d",
         "%d"
@@ -1820,9 +1820,9 @@
         "function": "confirm",
         "line": 6325
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6325-c25",
-      "text": "初めの指示は%d海外の反応palette演出は利用できない (%v海外の反応",
+      "text": "オリジナルコマンド %d：palette 演出を利用できません（%v）",
       "variables": [
         "%d",
         "%v"
@@ -1837,9 +1837,9 @@
         "function": "confirm",
         "line": 6337
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6337-c25",
-      "text": "初めの指示は%d完成しました.palette海外の反応indexedビデオ:%d targets海外の反応",
+      "text": "オリジナルコマンド %d：palette と indexed の終段が完了（%d targets）",
       "variables": [
         "%d",
         "%d"
@@ -1854,9 +1854,9 @@
         "function": "confirm",
         "line": 6347
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6347-c25",
-      "text": "初めの指示は%d動画は,未公開です.%v海外の反応",
+      "text": "オリジナルコマンド %d：完全な演出を利用できません（%v）",
       "variables": [
         "%d",
         "%v"
@@ -1871,9 +1871,9 @@
         "function": "confirm",
         "line": 6355
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6355-c26",
-      "text": "基本指令25号:完成palette海外の反応indexedビデオ:%d targets海外の反応",
+      "text": "オリジナルコマンド 25：palette と indexed の終段が完了（%d targets）",
       "variables": [
         "%d"
       ]
@@ -1887,9 +1887,9 @@
         "function": "confirm",
         "line": 6362
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6362-c26",
-      "text": "初めの指示は%d完成しました.palette海外の反応indexedビデオ:%d targets海外の反応",
+      "text": "オリジナルコマンド %d：palette と indexed の終段が完了（%d targets）",
       "variables": [
         "%d",
         "%d"
@@ -1904,9 +1904,9 @@
         "function": "confirm",
         "line": 6373
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6373-c25",
-      "text": "初めの指示は%d動画は,未公開です.%v海外の反応",
+      "text": "オリジナルコマンド %d：完全な演出を利用できません（%v）",
       "variables": [
         "%d",
         "%v"
@@ -1921,9 +1921,9 @@
         "function": "confirm",
         "line": 6388
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6388-c25",
-      "text": "基本命令24:傷害%d",
+      "text": "オリジナルコマンド 24：ダメージ %d",
       "variables": [
         "%d"
       ]
@@ -1937,9 +1937,9 @@
         "function": "confirm",
         "line": 6397
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6397-c13",
-      "text": "基本指示24号:indexed演出は利用できない (",
+      "text": "オリジナルコマンド 24：indexed 演出を利用できません（",
       "variables": []
     },
     {
@@ -1965,9 +1965,9 @@
         "function": "confirm",
         "line": 6417
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6417-c25",
-      "text": "発射は3日前です.%d傷つけられた%d",
+      "text": "オリジナルコマンド 0：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -1982,9 +1982,9 @@
         "function": "confirm",
         "line": 6426
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6426-c13",
-      "text": "初期指示は0です.indexed演出は利用できない (",
+      "text": "オリジナルコマンド 0：indexed 演出を利用できません（",
       "variables": []
     },
     {
@@ -2010,9 +2010,9 @@
         "function": "confirm",
         "line": 6441
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6441-c25",
-      "text": "発射は1番目.%d傷つけられた%d",
+      "text": "オリジナルコマンド 1：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -2027,9 +2027,9 @@
         "function": "confirm",
         "line": 6450
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6450-c13",
-      "text": "原則1つindexed演出は利用できない (",
+      "text": "オリジナルコマンド 1：indexed 演出を利用できません（",
       "variables": []
     },
     {
@@ -2055,9 +2055,9 @@
         "function": "confirm",
         "line": 6465
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6465-c25",
-      "text": "2つ目の指令: 撃ち殺す%d傷つけられた%d",
+      "text": "オリジナルコマンド 2：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -2072,9 +2072,9 @@
         "function": "confirm",
         "line": 6474
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6474-c13",
-      "text": "2つ目の指令:indexed演出は利用できない (",
+      "text": "オリジナルコマンド 2：indexed 演出を利用できません（",
       "variables": []
     },
     {
@@ -2100,9 +2100,9 @@
         "function": "confirm",
         "line": 6489
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6489-c25",
-      "text": "3つ目の指令: 撃ち殺す%d傷つけられた%d",
+      "text": "オリジナルコマンド 3：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -2117,9 +2117,9 @@
         "function": "confirm",
         "line": 6498
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6498-c13",
-      "text": "3つ目の指令:indexed演出は利用できない (",
+      "text": "オリジナルコマンド 3：indexed 演出を利用できません（",
       "variables": []
     },
     {
@@ -2145,9 +2145,9 @@
         "function": "confirm",
         "line": 6513
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6513-c25",
-      "text": "5番目:撃たれ%d傷つけられた%d",
+      "text": "オリジナルコマンド 5：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -2162,9 +2162,9 @@
         "function": "confirm",
         "line": 6522
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6522-c13",
-      "text": "5つ目の指令:indexed演出は利用できない (",
+      "text": "オリジナルコマンド 5：indexed 演出を利用できません（",
       "variables": []
     },
     {
@@ -2190,9 +2190,9 @@
         "function": "confirm",
         "line": 6537
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6537-c25",
-      "text": "基本命令7:\"撃たれ\"%d傷つけられた%d",
+      "text": "オリジナルコマンド 7：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -2207,9 +2207,9 @@
         "function": "confirm",
         "line": 6546
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6546-c13",
-      "text": "原則7indexed演出は利用できない (",
+      "text": "オリジナルコマンド 7：indexed 演出を利用できません（",
       "variables": []
     },
     {
@@ -2235,9 +2235,9 @@
         "function": "confirm",
         "line": 6561
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6561-c25",
-      "text": "発射の8番目:%d傷つけられた%d",
+      "text": "オリジナルコマンド 8：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -2252,9 +2252,9 @@
         "function": "confirm",
         "line": 6570
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6570-c13",
-      "text": "原則8indexed演出は利用できない (",
+      "text": "オリジナルコマンド 8：indexed 演出を利用できません（",
       "variables": []
     },
     {
@@ -2280,9 +2280,9 @@
         "function": "confirm",
         "line": 6585
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6585-c25",
-      "text": "発射は9日でした%d傷つけられた%d",
+      "text": "オリジナルコマンド 9：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -2297,9 +2297,9 @@
         "function": "confirm",
         "line": 6594
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6594-c13",
-      "text": "原則9indexed演出は利用できない (",
+      "text": "オリジナルコマンド 9：indexed 演出を利用できません（",
       "variables": []
     },
     {
@@ -2325,9 +2325,9 @@
         "function": "confirm",
         "line": 6609
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6609-c25",
-      "text": "初めの指示は%d撃たれた%d傷つけられた%d",
+      "text": "オリジナルコマンド %d：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d",
@@ -2343,9 +2343,9 @@
         "function": "confirm",
         "line": 6618
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6618-c25",
-      "text": "初めの指示は%d海外の反応indexed演出は利用できない (%v海外の反応",
+      "text": "オリジナルコマンド %d：indexed 演出を利用できません（%v）",
       "variables": [
         "%d",
         "%v"
@@ -2360,9 +2360,9 @@
         "function": "confirm",
         "line": 6633
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6633-c25",
-      "text": "基本命令6:\"撃ち殺す\"%d傷つけられた%d",
+      "text": "オリジナルコマンド 6：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -2377,9 +2377,9 @@
         "function": "confirm",
         "line": 6642
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6642-c13",
-      "text": "原則6indexed演出は利用できない (",
+      "text": "オリジナルコマンド 6：indexed 演出を利用できません（",
       "variables": []
     },
     {
@@ -2405,9 +2405,9 @@
         "function": "confirm",
         "line": 6656
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6656-c25",
-      "text": "被害者への影響について%d",
+      "text": "オリジナルコマンド 29：ダメージ %d",
       "variables": [
         "%d"
       ]
@@ -2421,9 +2421,9 @@
         "function": "confirm",
         "line": 6665
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6665-c13",
-      "text": "基本指示29:indexed演出は利用できない (",
+      "text": "オリジナルコマンド 29：indexed 演出を利用できません（",
       "variables": []
     },
     {
@@ -2449,9 +2449,9 @@
         "function": "confirm",
         "line": 6681
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6681-c24",
-      "text": "初めの指示は%d目標の設定をクリックしてください%v海外の反応",
+      "text": "オリジナルコマンド %d：有効な目標を選んでください（%v）",
       "variables": [
         "%d",
         "%v"
@@ -2508,7 +2508,7 @@
         "function": "Update",
         "line": 7241
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7241-c48",
       "text": "盗賊",
       "variables": []
@@ -2536,7 +2536,7 @@
         "function": "Draw",
         "line": 7618
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7618-c38",
       "text": "presentation unavailable",
       "variables": []
@@ -2550,9 +2550,9 @@
         "function": "Draw",
         "line": 7619
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7619-c34",
-      "text": "native0x24336 presentation unavailable",
+      "text": "native 0x24336 presentation unavailable",
       "variables": []
     },
     {
@@ -2564,7 +2564,7 @@
         "function": "Draw",
         "line": 7629
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7629-c36",
       "text": "presentation unavailable",
       "variables": []
@@ -2578,7 +2578,7 @@
         "function": "Draw",
         "line": 7630
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7630-c34",
       "text": "native ch23 presentation unavailable",
       "variables": []
@@ -2592,7 +2592,7 @@
         "function": "Draw",
         "line": 7640
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7640-c33",
       "text": "presentation unavailable",
       "variables": []
@@ -2606,9 +2606,9 @@
         "function": "Draw",
         "line": 7641
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7641-c34",
-      "text": "native0x2189A presentation unavailable",
+      "text": "native 0x2189A presentation unavailable",
       "variables": []
     },
     {
@@ -2620,7 +2620,7 @@
         "function": "Draw",
         "line": 7651
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7651-c39",
       "text": "presentation unavailable",
       "variables": []
@@ -2634,9 +2634,9 @@
         "function": "Draw",
         "line": 7652
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7652-c34",
-      "text": "native0x22253 presentation unavailable",
+      "text": "native 0x22253 presentation unavailable",
       "variables": []
     },
     {
@@ -2648,7 +2648,7 @@
         "function": "Draw",
         "line": 7662
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7662-c43",
       "text": "presentation unavailable",
       "variables": []
@@ -2662,9 +2662,9 @@
         "function": "Draw",
         "line": 7663
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7663-c34",
-      "text": "native0x1DB65 presentation unavailable",
+      "text": "native 0x1DB65 presentation unavailable",
       "variables": []
     },
     {
@@ -2676,7 +2676,7 @@
         "function": "Draw",
         "line": 7673
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7673-c33",
       "text": "presentation unavailable",
       "variables": []
@@ -2690,9 +2690,9 @@
         "function": "Draw",
         "line": 7674
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7674-c34",
-      "text": "native0x24B4D presentation unavailable",
+      "text": "native 0x24B4D presentation unavailable",
       "variables": []
     },
     {
@@ -2704,9 +2704,9 @@
         "function": "Draw",
         "line": 7682
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7682-c33",
-      "text": "FD2改造されたMVP欠乏assets海外の反応tileset.png (笑)map.jsonフォトグラフィックスtoolsにまつりexport_engine_assets.py生まれました.",
+      "text": "FD2 リメイク MVP\nassets/（tileset.png + map.json）がありません\ntools/export_engine_assets.py で生成してください\n",
       "variables": []
     },
     {
@@ -2718,9 +2718,9 @@
         "function": "Draw",
         "line": 7691
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7691-c34",
-      "text": "native0x24618 transition unavailable",
+      "text": "native 0x24618 transition unavailable",
       "variables": []
     },
     {
@@ -2732,9 +2732,9 @@
         "function": "Draw",
         "line": 7701
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7701-c34",
-      "text": "native0x21EB1 presentation unavailable",
+      "text": "native 0x21EB1 presentation unavailable",
       "variables": []
     },
     {
@@ -2746,9 +2746,9 @@
         "function": "Draw",
         "line": 7711
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7711-c34",
-      "text": "native0x1D6C8 presentation unavailable",
+      "text": "native 0x1D6C8 presentation unavailable",
       "variables": []
     },
     {
@@ -2760,7 +2760,7 @@
         "function": "Draw",
         "line": 7721
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7721-c57",
       "text": "draw unavailable",
       "variables": []
@@ -2774,7 +2774,7 @@
         "function": "Draw",
         "line": 7722
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7722-c34",
       "text": "native AI modifier presentation unavailable",
       "variables": []
@@ -2788,7 +2788,7 @@
         "function": "Draw",
         "line": 7729
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7729-c48",
       "text": "draw unavailable",
       "variables": []
@@ -2802,7 +2802,7 @@
         "function": "Draw",
         "line": 7730
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7730-c34",
       "text": "native command0 presentation unavailable",
       "variables": []
@@ -2816,7 +2816,7 @@
         "function": "Draw",
         "line": 7740
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7740-c48",
       "text": "draw unavailable",
       "variables": []
@@ -2830,7 +2830,7 @@
         "function": "Draw",
         "line": 7741
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7741-c34",
       "text": "native command6 presentation unavailable",
       "variables": []
@@ -2844,7 +2844,7 @@
         "function": "Draw",
         "line": 7751
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7751-c48",
       "text": "draw unavailable",
       "variables": []
@@ -2858,7 +2858,7 @@
         "function": "Draw",
         "line": 7752
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7752-c34",
       "text": "native command1 presentation unavailable",
       "variables": []
@@ -2872,7 +2872,7 @@
         "function": "Draw",
         "line": 7762
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7762-c48",
       "text": "draw unavailable",
       "variables": []
@@ -2886,7 +2886,7 @@
         "function": "Draw",
         "line": 7763
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7763-c34",
       "text": "native command2 presentation unavailable",
       "variables": []
@@ -2900,7 +2900,7 @@
         "function": "Draw",
         "line": 7773
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7773-c48",
       "text": "draw unavailable",
       "variables": []
@@ -2914,7 +2914,7 @@
         "function": "Draw",
         "line": 7774
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7774-c34",
       "text": "native command3 presentation unavailable",
       "variables": []
@@ -2928,7 +2928,7 @@
         "function": "Draw",
         "line": 7784
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7784-c48",
       "text": "draw unavailable",
       "variables": []
@@ -2942,7 +2942,7 @@
         "function": "Draw",
         "line": 7785
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7785-c34",
       "text": "native command5 presentation unavailable",
       "variables": []
@@ -2956,7 +2956,7 @@
         "function": "Draw",
         "line": 7795
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7795-c48",
       "text": "draw unavailable",
       "variables": []
@@ -2970,7 +2970,7 @@
         "function": "Draw",
         "line": 7796
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7796-c34",
       "text": "native command7 presentation unavailable",
       "variables": []
@@ -2984,7 +2984,7 @@
         "function": "Draw",
         "line": 7806
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7806-c48",
       "text": "draw unavailable",
       "variables": []
@@ -2998,7 +2998,7 @@
         "function": "Draw",
         "line": 7807
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7807-c34",
       "text": "native command8 presentation unavailable",
       "variables": []
@@ -3012,7 +3012,7 @@
         "function": "Draw",
         "line": 7817
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7817-c54",
       "text": "draw unavailable",
       "variables": []
@@ -3026,7 +3026,7 @@
         "function": "Draw",
         "line": 7818
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7818-c34",
       "text": "native command9 player presentation unavailable",
       "variables": []
@@ -3040,7 +3040,7 @@
         "function": "Draw",
         "line": 7828
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7828-c50",
       "text": "draw unavailable",
       "variables": []
@@ -3054,7 +3054,7 @@
         "function": "Draw",
         "line": 7829
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7829-c34",
       "text": "native command9 AI presentation unavailable",
       "variables": []
@@ -3068,7 +3068,7 @@
         "function": "Draw",
         "line": 7839
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7839-c51",
       "text": "draw unavailable",
       "variables": []
@@ -3082,7 +3082,7 @@
         "function": "Draw",
         "line": 7840
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7840-c34",
       "text": "native command10-12 presentation unavailable",
       "variables": []
@@ -3096,7 +3096,7 @@
         "function": "Draw",
         "line": 7850
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7850-c49",
       "text": "draw unavailable",
       "variables": []
@@ -3110,9 +3110,9 @@
         "function": "Draw",
         "line": 7851
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7851-c34",
-      "text": "native0x276EC presentation unavailable",
+      "text": "native 0x276EC presentation unavailable",
       "variables": []
     },
     {
@@ -3124,7 +3124,7 @@
         "function": "Draw",
         "line": 7861
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7861-c49",
       "text": "draw unavailable",
       "variables": []
@@ -3138,7 +3138,7 @@
         "function": "Draw",
         "line": 7862
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7862-c34",
       "text": "native command29 presentation unavailable",
       "variables": []
@@ -3152,7 +3152,7 @@
         "function": "Draw",
         "line": 7872
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7872-c49",
       "text": "draw unavailable",
       "variables": []
@@ -3166,7 +3166,7 @@
         "function": "Draw",
         "line": 7873
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7873-c34",
       "text": "native command32 presentation unavailable",
       "variables": []
@@ -3180,7 +3180,7 @@
         "function": "Draw",
         "line": 7883
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7883-c49",
       "text": "draw input unavailable",
       "variables": []
@@ -3194,7 +3194,7 @@
         "function": "Draw",
         "line": 7890
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7890-c49",
       "text": "draw input unavailable",
       "variables": []
@@ -3208,7 +3208,7 @@
         "function": "Draw",
         "line": 7897
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7897-c49",
       "text": "draw input unavailable",
       "variables": []
@@ -3222,7 +3222,7 @@
         "function": "Draw",
         "line": 7904
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7904-c46",
       "text": "draw input unavailable",
       "variables": []
@@ -3236,7 +3236,7 @@
         "function": "Draw",
         "line": 7911
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7911-c34",
       "text": "native palette ramp unavailable",
       "variables": []
@@ -3250,9 +3250,9 @@
         "function": "Draw",
         "line": 7921
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7921-c34",
-      "text": "native0x35E5A palette pulse unavailable",
+      "text": "native 0x35E5A palette pulse unavailable",
       "variables": []
     },
     {
@@ -3264,9 +3264,9 @@
         "function": "Draw",
         "line": 7931
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7931-c34",
-      "text": "native0x32999 spawn-intro unavailable",
+      "text": "native 0x32999 spawn-intro unavailable",
       "variables": []
     },
     {
@@ -3278,7 +3278,7 @@
         "function": "Draw",
         "line": 7941
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7941-c34",
       "text": "native turn staging unavailable",
       "variables": []
@@ -3292,7 +3292,7 @@
         "function": "Draw",
         "line": 7951
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7951-c34",
       "text": "native event61 presentation unavailable",
       "variables": []
@@ -3306,9 +3306,9 @@
         "function": "Draw",
         "line": 7964
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7964-c16",
-      "text": "native AI0x13fd4 presentation unavailable",
+      "text": "native AI 0x13fd4 presentation unavailable",
       "variables": []
     },
     {
@@ -3320,9 +3320,9 @@
         "function": "Draw",
         "line": 7966
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7966-c34",
-      "text": "native AI0x13fd4 presentation unavailable",
+      "text": "native AI 0x13fd4 presentation unavailable",
       "variables": []
     },
     {
@@ -3334,9 +3334,9 @@
         "function": "Draw",
         "line": 8094
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8094-c49",
-      "text": "[ 固定リンク ]%d[ ]f%d海外の反応%d\"この日は,%d海外の反応d%d",
+      "text": "[%d]f%d(%d,%d)d%d",
       "variables": [
         "%d",
         "%d",
@@ -3368,9 +3368,9 @@
         "function": "Draw",
         "line": 8114
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8114-c48",
-      "text": "T%d own%d ally%d enemy%d cur海外の反応%d\"この日は,%d海外の反応",
+      "text": "T%d own%d ally%d enemy%d cur(%d,%d)",
       "variables": [
         "%d",
         "%d",
@@ -4086,7 +4086,7 @@
         "function": "drawCampaignUI",
         "line": 8802
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8802-c25",
       "text": "raw selector %d",
       "variables": [
@@ -4102,9 +4102,9 @@
         "function": "drawCampaignUI",
         "line": 8804
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8804-c25",
-      "text": "raw selector %d→%05X",
+      "text": "raw selector %d → %05X",
       "variables": [
         "%d",
         "%05X"
@@ -5051,9 +5051,9 @@
         "function": "drawBattleScene",
         "line": 9252
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l9252-c32",
-      "text": "%sにまつりframe_%02d海外の反応はpng",
+      "text": "%s/frame_%02d.png",
       "variables": [
         "%s",
         "%02d"
@@ -5130,9 +5130,9 @@
         "function": "loadGame",
         "line": 9814
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l9814-c49",
-      "text": "裁判官",
+      "text": "魔法使い",
       "variables": []
     },
     {
@@ -5162,9 +5162,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 101
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l101-c25",
-      "text": "3つ目の指令: 撃ち殺す%d傷つけられた%d",
+      "text": "オリジナルコマンド 3：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -5179,9 +5179,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 116
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l116-c25",
-      "text": "4つ目の指令:撃ち殺す%d傷つけられた%d",
+      "text": "オリジナルコマンド 4：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -5196,9 +5196,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 131
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l131-c25",
-      "text": "5番目:撃たれ%d傷つけられた%d",
+      "text": "オリジナルコマンド 5：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -5213,9 +5213,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 146
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l146-c25",
-      "text": "基本命令7:\"撃たれ\"%d傷つけられた%d",
+      "text": "オリジナルコマンド 7：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -5230,9 +5230,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 161
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l161-c25",
-      "text": "発射の8番目:%d傷つけられた%d",
+      "text": "オリジナルコマンド 8：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -5247,9 +5247,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 176
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l176-c25",
-      "text": "発射は9日でした%d傷つけられた%d",
+      "text": "オリジナルコマンド 9：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -5264,9 +5264,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 186
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l186-c25",
-      "text": "初めの指示は%d敵の戦いを終えるindexed演出",
+      "text": "オリジナルコマンド %d：敵側 indexed 演出が完了",
       "variables": [
         "%d"
       ]
@@ -5280,9 +5280,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 201
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l201-c25",
-      "text": "基本命令6:\"撃ち殺す\"%d傷つけられた%d",
+      "text": "オリジナルコマンド 6：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -5297,9 +5297,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 218
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l218-c25",
-      "text": "初めの指示は%d回復:%d",
+      "text": "オリジナルコマンド %d：回復 %d",
       "variables": [
         "%d",
         "%d"
@@ -5314,9 +5314,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 229
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l229-c25",
-      "text": "初めの指示は%d敵の戦いを終えるindexed modifier海外の反応%d targets海外の反応",
+      "text": "オリジナルコマンド %d：敵側 indexed modifier が完了（%d targets）",
       "variables": [
         "%d",
         "%d"
@@ -5331,9 +5331,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 236
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l236-c25",
-      "text": "初めの指示は%d敵の戦いを終えるindexedビデオ:%d targets海外の反応",
+      "text": "オリジナルコマンド %d：敵側 indexed の終段が完了（%d targets）",
       "variables": [
         "%d",
         "%d"
@@ -5348,9 +5348,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 248
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l248-c25",
-      "text": "基本指示22:敵を終わらせてindexedビデオ:%d targets海外の反応",
+      "text": "オリジナルコマンド 22：敵側 indexed の終段が完了（%d targets）",
       "variables": [
         "%d"
       ]
@@ -5364,9 +5364,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 260
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l260-c25",
-      "text": "初めの指示は%d敵の戦いを終えるindexedビデオ:%d targets海外の反応",
+      "text": "オリジナルコマンド %d：敵側 indexed の終段が完了（%d targets）",
       "variables": [
         "%d",
         "%d"
@@ -5381,9 +5381,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 280
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l280-c24",
-      "text": "原産物%02Xh目標リストを完成させました",
+      "text": "オリジナルアイテム %02Xh：目標リスト全体の効果が完了",
       "variables": [
         "%02X"
       ]
@@ -5397,9 +5397,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 293
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l293-c23",
-      "text": "原産物%02Xh目標リストを完成させました",
+      "text": "オリジナルアイテム %02Xh：目標リスト全体の効果が完了",
       "variables": [
         "%02X"
       ]
@@ -5413,9 +5413,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 56
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l56-c25",
-      "text": "発射は3日前です.%d傷つけられた%d",
+      "text": "オリジナルコマンド 0：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -5430,9 +5430,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 71
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l71-c25",
-      "text": "発射は1番目.%d傷つけられた%d",
+      "text": "オリジナルコマンド 1：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -5447,9 +5447,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 86
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l86-c25",
-      "text": "2つ目の指令: 撃ち殺す%d傷つけられた%d",
+      "text": "オリジナルコマンド 2：命中 %d、ダメージ %d",
       "variables": [
         "%d",
         "%d"
@@ -5464,7 +5464,7 @@
         "function": "renderNativeBattleNameIndexed",
         "line": 59
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_battle_name.l59-c32",
       "text": "native battle name assets are unavailable",
       "variables": []
@@ -5478,7 +5478,7 @@
         "function": "renderNativeBattleNameIndexed",
         "line": 66
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_battle_name.l66-c33",
       "text": "native battle name glyph %q is unavailable",
       "variables": [
@@ -5494,9 +5494,9 @@
         "function": "renderNativeBattleNameIndexed",
         "line": 69
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_battle_name.l69-c33",
-      "text": "native battle name glyph %q>%d is invalid",
+      "text": "native battle name glyph %q=%d is invalid",
       "variables": [
         "%q",
         "%d"
@@ -5511,7 +5511,7 @@
         "function": "prepareNativeCh23Draw",
         "line": 131
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ch23_post.l131-c21",
       "text": "native ch23 loop cursor is invalid",
       "variables": []
@@ -5525,9 +5525,9 @@
         "function": "prepareNativeCh23Draw",
         "line": 163
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ch23_post.l163-c21",
-      "text": "indexed draw海外の反応%w",
+      "text": "indexed draw: %w",
       "variables": [
         "%w"
       ]
@@ -5541,9 +5541,9 @@
         "function": "handleNativeChurchStatusInput",
         "line": 128
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_church_input.l128-c13",
-      "text": "役は原版に欠けている.statusにまつりcommand panel provenance",
+      "text": "ユニットにオリジナルの status/command panel の出所情報がありません",
       "variables": []
     },
     {
@@ -5569,9 +5569,9 @@
         "function": "applyNativeChurchTransfer",
         "line": 245
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_church_input.l245-c11",
-      "text": "ソース・ロール物件索引が失効",
+      "text": "移動元ユニットのアイテム索引が無効になりました",
       "variables": []
     },
     {
@@ -5583,9 +5583,9 @@
         "function": "applyNativeChurchTransfer",
         "line": 253
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_church_input.l253-c23",
-      "text": "作品の内容は,原版8-8に欠けている.byte商品欄の旗:%v",
+      "text": "移動先ユニットにオリジナルの 8 バイトのアイテム欄フラグがありません：%v",
       "variables": [
         "%v"
       ]
@@ -5599,9 +5599,9 @@
         "function": "applyNativeChurchTransfer",
         "line": 260
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_church_input.l260-c12",
-      "text": "原作商品の返却ができない 提示欄は満員",
+      "text": "オリジナルの「アイテム欄が満杯」表示を復元できません",
       "variables": []
     },
     {
@@ -5645,9 +5645,9 @@
         "function": "handleNativeChurchReviveInput",
         "line": 309
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_church_input.l309-c12",
-      "text": "旧版のリニューアル料金が欠けている",
+      "text": "オリジナルの蘇生費用データがありません",
       "variables": []
     },
     {
@@ -5659,9 +5659,9 @@
         "function": "handleNativeChurchClassInput",
         "line": 406
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_church_input.l406-c12",
-      "text": "転職目標の原稿が欠けている",
+      "text": "オリジナルの転職先データがありません",
       "variables": []
     },
     {
@@ -5729,9 +5729,9 @@
         "function": "stepNativeCommandModifierPresentation",
         "line": 96
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_command_modifier_presentation.l96-c11",
-      "text": "初めの指示はmodifier transaction失敗:",
+      "text": "オリジナルコマンドの modifier transaction が失敗しました：",
       "variables": []
     },
     {
@@ -5743,9 +5743,9 @@
         "function": "beginNativeFieldEvent61",
         "line": 58
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_field_event61.l58-c11",
-      "text": "61件の原件証拠は不完全で,記録が停止されています",
+      "text": "イベント 61 のオリジナル証拠が不完全なため、イベント書き込みを停止しました",
       "variables": []
     },
     {
@@ -5757,9 +5757,9 @@
         "function": "beginNativeFieldEvent75",
         "line": 56
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_field_event75.l56-c11",
-      "text": "75事件の原始証拠は不完全で,書き留められている",
+      "text": "イベント 75 のオリジナル証拠が不完全なため、イベント書き込みを停止しました",
       "variables": []
     },
     {
@@ -5771,9 +5771,9 @@
         "function": "applyNativeTargetItem",
         "line": 588
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_item_panel_ui.l588-c24",
-      "text": "商品について%02Xh原創傷演出が完了",
+      "text": "アイテム %02Xh：オリジナルのダメージ演出が完了",
       "variables": [
         "%02X"
       ]
@@ -5849,9 +5849,9 @@
         "function": "handleNativeShopEquipInput",
         "line": 35
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_equip_ui.l35-c14",
-      "text": "オンラインショップequip item panel返済できない",
+      "text": "オリジナル商店の equip item panel を復元できません",
       "variables": []
     },
     {
@@ -5863,9 +5863,9 @@
         "function": "handleNativeShopEquipInput",
         "line": 67
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_equip_ui.l67-c12",
-      "text": "オンラインショップequip transaction欠けている.rawビデオ:",
+      "text": "オリジナル商店の equip transaction に raw 対応がありません",
       "variables": []
     },
     {
@@ -5877,9 +5877,9 @@
         "function": "handleNativeShopRecipientInput",
         "line": 51
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_recipient_input.l51-c13",
-      "text": "購入した本ですrecipient標識が無効",
+      "text": "オリジナル購入の recipient カーソル状態が無効です",
       "variables": []
     },
     {
@@ -5891,9 +5891,9 @@
         "function": "handleNativeShopRecipientInput",
         "line": 72
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_recipient_input.l72-c15",
-      "text": "原作は,欄の情報を返却できない",
+      "text": "オリジナル購入の「欄が満杯」メッセージを復元できません",
       "variables": []
     },
     {
@@ -5905,9 +5905,9 @@
         "function": "handleNativeShopRecipientInput",
         "line": 85
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_recipient_input.l85-c14",
-      "text": "海外のメディアは,本棚に\"冊ずつ掲載しています.raw資料",
+      "text": "オリジナル購入の取引に raw データがありません",
       "variables": []
     },
     {
@@ -5919,9 +5919,9 @@
         "function": "beginNativeShopTransferDestinationCancel",
         "line": 51
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_transfer_ui.l51-c12",
-      "text": "オンラインショップtransfer source prompt返済できない",
+      "text": "オリジナル商店の transfer source prompt を復元できません",
       "variables": []
     },
     {
@@ -5933,9 +5933,9 @@
         "function": "returnToNativeShopPurchaseList",
         "line": 1407
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1407-c11",
-      "text": "商品のリストが返却できない",
+      "text": "オリジナル商店の商品リストを復元できません",
       "variables": []
     },
     {
@@ -6269,9 +6269,9 @@
         "function": "handleNativeShopInputState",
         "line": 1630
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1630-c13",
-      "text": "店内でのサービスが,production ownerまだ接続されていません",
+      "text": "このオリジナル商店サービスの production owner はまだ接続されていません",
       "variables": []
     },
     {
@@ -6283,9 +6283,9 @@
         "function": "handleNativeShopInputState",
         "line": 1645
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1645-c15",
-      "text": "オンラインショップsell roster返済できない",
+      "text": "オリジナル商店の sell roster を復元できません",
       "variables": []
     },
     {
@@ -6297,9 +6297,9 @@
         "function": "handleNativeShopInputState",
         "line": 1653
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1653-c15",
-      "text": "オンラインショップequip roster返済できない",
+      "text": "オリジナル商店の equip roster を復元できません",
       "variables": []
     },
     {
@@ -6311,9 +6311,9 @@
         "function": "handleNativeShopInputState",
         "line": 1659
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1659-c14",
-      "text": "オンラインショップtransfer owner返済できない",
+      "text": "オリジナル商店の transfer owner を復元できません",
       "variables": []
     },
     {
@@ -6325,9 +6325,9 @@
         "function": "handleNativeShopInputState",
         "line": 1700
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1700-c14",
-      "text": "Windowsが復元できないことを確認したオリジナル購入",
+      "text": "オリジナル購入の確認ウィンドウを復元できません",
       "variables": []
     },
     {
@@ -6339,9 +6339,9 @@
         "function": "handleNativeShopInputState",
         "line": 1750
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1750-c15",
-      "text": "購入した本ですrecipient欠けている.raw候補者情報",
+      "text": "オリジナル購入の recipient に raw 候補データがありません",
       "variables": []
     },
     {
@@ -6353,9 +6353,9 @@
         "function": "handleNativeShopInputState",
         "line": 1756
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1756-c16",
-      "text": "原作購入の不適切なキャラクター情報が復元できない",
+      "text": "オリジナル購入の「適した仲間がいない」メッセージを復元できません",
       "variables": []
     },
     {
@@ -6367,9 +6367,9 @@
         "function": "handleNativeShopInputState",
         "line": 1762
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1762-c15",
-      "text": "購入した本ですrecipientパネルは復元できない",
+      "text": "オリジナル購入の recipient パネルを復元できません",
       "variables": []
     },
     {
@@ -6381,9 +6381,9 @@
         "function": "handleNativeShopInputState",
         "line": 1843
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1843-c14",
-      "text": "オリジナルの購入で成功した演出が返品できない",
+      "text": "オリジナル購入の成功演出を復元できません",
       "variables": []
     },
     {
@@ -6395,9 +6395,9 @@
         "function": "handleNativeShopInputState",
         "line": 1888
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1888-c13",
-      "text": "原版sell inventory欠けている.raw資料",
+      "text": "オリジナルの sell inventory に raw データがありません",
       "variables": []
     },
     {
@@ -6409,9 +6409,9 @@
         "function": "handleNativeShopInputState",
         "line": 1895
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1895-c15",
-      "text": "原版sell emptyメッセージは返却できない",
+      "text": "オリジナルの sell empty メッセージを復元できません",
       "variables": []
     },
     {
@@ -6423,9 +6423,9 @@
         "function": "handleNativeShopInputState",
         "line": 1902
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1902-c14",
-      "text": "原版sell item list返済できない",
+      "text": "オリジナルの sell item list を復元できません",
       "variables": []
     },
     {
@@ -6437,9 +6437,9 @@
         "function": "handleNativeShopInputState",
         "line": 1956
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1956-c14",
-      "text": "原版sell confirmation返済できない",
+      "text": "オリジナルの sell confirmation を復元できません",
       "variables": []
     },
     {
@@ -6451,9 +6451,9 @@
         "function": "handleNativeShopInputState",
         "line": 1994
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1994-c14",
-      "text": "原版sell transaction返済できない",
+      "text": "オリジナルの sell transaction を復元できません",
       "variables": []
     },
     {
@@ -6465,9 +6465,9 @@
         "function": "handleNativeShopInputState",
         "line": 2021
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l2021-c14",
-      "text": "オンラインショップtransfer source prompt返済できない",
+      "text": "オリジナル商店の transfer source prompt を復元できません",
       "variables": []
     },
     {
@@ -6479,9 +6479,9 @@
         "function": "handleNativeShopInputState",
         "line": 2062
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l2062-c14",
-      "text": "オンラインショップtransfer destination cancel返済できない",
+      "text": "オリジナル商店の transfer destination cancel を復元できません",
       "variables": []
     },
     {
@@ -6493,9 +6493,9 @@
         "function": "handleNativeShopInputState",
         "line": 2076
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l2076-c15",
-      "text": "原版transfer source raw映像の不一致",
+      "text": "オリジナルの transfer source の raw 対応が一致しません",
       "variables": []
     },
     {
@@ -6507,9 +6507,9 @@
         "function": "handleNativeShopInputState",
         "line": 2102
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l2102-c14",
-      "text": "原版transfer destination flags証明できない",
+      "text": "オリジナルの transfer destination flags を検証できません",
       "variables": []
     },
     {
@@ -6521,9 +6521,9 @@
         "function": "handleNativeShopInputState",
         "line": 2116
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l2116-c14",
-      "text": "原版transfer transaction返済できない",
+      "text": "オリジナルの transfer transaction を復元できません",
       "variables": []
     },
     {
@@ -6535,7 +6535,7 @@
         "function": "drawNativeSystemInfoUI",
         "line": 179
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_system_info_ui.l179-c20",
       "text": "opening",
       "variables": []
@@ -6549,7 +6549,7 @@
         "function": "drawNativeSystemInfoUI",
         "line": 181
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_system_info_ui.l181-c27",
       "text": "closing",
       "variables": []
@@ -6563,9 +6563,9 @@
         "function": "drawNativeTurnStaging",
         "line": 390
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_turn_staging.l390-c28",
-      "text": "pan redraw海外の反応",
+      "text": "pan redraw: ",
       "variables": []
     },
     {
@@ -6577,9 +6577,9 @@
         "function": "loadGameFromSlot",
         "line": 194
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.save.l194-c12",
-      "text": "記録native HUD gate Aブリン原産の範囲を超えて",
+      "text": "セーブデータの native HUD gate A がオリジナルの真偽値の範囲外です",
       "variables": []
     },
     {
@@ -6591,9 +6591,9 @@
         "function": "loadGameFromSlot",
         "line": 211
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.save.l211-c12",
-      "text": "記録nativeシステム設定は原始のブリン範囲を超えて",
+      "text": "セーブデータの native システム設定がオリジナルの真偽値の範囲外です",
       "variables": []
     },
     {
@@ -6605,9 +6605,9 @@
         "function": "loadGameFromSlot",
         "line": 217
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.save.l217-c11",
-      "text": "記録nativeシステム設定が無効",
+      "text": "セーブデータの native システム設定が無効です",
       "variables": []
     },
     {
@@ -6618,9 +6618,9 @@
         "file": "remake/cmd/fd2/settings.go",
         "line": 27
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.settings.l27-c13",
-      "text": "中国語",
+      "text": "繁体字中国語",
       "variables": []
     },
     {
@@ -6631,9 +6631,9 @@
         "file": "remake/cmd/fd2/settings.go",
         "line": 28
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.settings.l28-c13",
-      "text": "簡潔な中国語",
+      "text": "簡体字中国語",
       "variables": []
     },
     {
@@ -6644,7 +6644,7 @@
         "file": "remake/cmd/fd2/settings.go",
         "line": 29
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.settings.l29-c13",
       "text": "日本語",
       "variables": []
@@ -6658,7 +6658,7 @@
         "function": "drawTitle",
         "line": 704
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l704-c7",
       "text": "cutscene",
       "variables": []
@@ -6672,7 +6672,7 @@
         "function": "drawTitle",
         "line": 711
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l711-c21",
       "text": "publisher",
       "variables": []
@@ -6686,7 +6686,7 @@
         "function": "drawTitle",
         "line": 717
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l717-c21",
       "text": "static",
       "variables": []
@@ -6700,7 +6700,7 @@
         "function": "drawTitle",
         "line": 721
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l721-c21",
       "text": "scroll",
       "variables": []
@@ -6728,7 +6728,7 @@
         "function": "drawTitle",
         "line": 735
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l735-c21",
       "text": "redfade",
       "variables": []
@@ -6742,7 +6742,7 @@
         "function": "drawTitle",
         "line": 743
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l743-c21",
       "text": "redhold",
       "variables": []
@@ -6756,7 +6756,7 @@
         "function": "drawTitle",
         "line": 745
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l745-c21",
       "text": "titlefade",
       "variables": []
@@ -6770,7 +6770,7 @@
         "function": "drawTitle",
         "line": 758
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l758-c7",
       "text": "scroll",
       "variables": []
@@ -6784,7 +6784,7 @@
         "function": "drawTitle",
         "line": 768
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l768-c7",
       "text": "logozoom",
       "variables": []
@@ -14771,9 +14771,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch03/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch03.town",
-      "text": "セルラ村へ向かう途中",
+      "text": "セラ村への道中",
       "variables": []
     },
     {
@@ -14855,9 +14855,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch04/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch04.town",
-      "text": "セルラ村前",
+      "text": "セラ村の前",
       "variables": []
     },
     {
@@ -14939,9 +14939,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch05/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch05.town",
-      "text": "セルラ村",
+      "text": "セラ村",
       "variables": []
     },
     {
@@ -15023,9 +15023,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch06/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch06.town",
-      "text": "プリーツ港",
+      "text": "プリズ港",
       "variables": []
     },
     {
@@ -15107,9 +15107,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch07/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch07.town",
-      "text": "キング城へ向かう途中",
+      "text": "王城への道中",
       "variables": []
     },
     {
@@ -15191,9 +15191,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch08/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch08.town",
-      "text": "王城前での戦闘",
+      "text": "王城前の戦い",
       "variables": []
     },
     {
@@ -15275,9 +15275,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch09/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch09.town",
-      "text": "騎士の選択",
+      "text": "騎士の決断",
       "variables": []
     },
     {
@@ -15359,9 +15359,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch10/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch10.town",
-      "text": "洞窟での激戦",
+      "text": "洞窟の激戦",
       "variables": []
     },
     {
@@ -15443,7 +15443,7 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch11/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch11.town",
       "text": "幻の森",
       "variables": []
@@ -15527,9 +15527,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch12/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch12.town",
-      "text": "北山道",
+      "text": "北の山道",
       "variables": []
     },
     {
@@ -15611,9 +15611,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch13/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch13.town",
-      "text": "ハスミール戦争",
+      "text": "ハスミールの戦い",
       "variables": []
     },
     {
@@ -15695,9 +15695,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch14/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch14.town",
-      "text": "平原戦",
+      "text": "平原の会戦",
       "variables": []
     },
     {
@@ -15779,9 +15779,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch15/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch15.town",
-      "text": "ラカ湖での激戦",
+      "text": "ラカ湖の激戦",
       "variables": []
     },
     {
@@ -15863,9 +15863,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch16/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch16.town",
-      "text": "氷河戦争",
+      "text": "氷原の戦い",
       "variables": []
     },
     {
@@ -15947,7 +15947,7 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch17/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch17.town",
       "text": "血と氷の刃",
       "variables": []
@@ -16031,9 +16031,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch18/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch18.town",
-      "text": "遠くの岸",
+      "text": "遥かな彼岸",
       "variables": []
     },
     {
@@ -16115,9 +16115,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch19/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch19.town",
-      "text": "暗闇で狙撃者",
+      "text": "闇の中の狙撃",
       "variables": []
     },
     {
@@ -16199,9 +16199,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch20/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch20.town",
-      "text": "死の寂しさ",
+      "text": "死のような静寂",
       "variables": []
     },
     {
@@ -16283,9 +16283,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch21/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch21.town",
-      "text": "アシニアの森",
+      "text": "アシュールの森",
       "variables": []
     },
     {
@@ -16367,9 +16367,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch22/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch22.town",
-      "text": "遠古の呼びかけ",
+      "text": "太古の呼び声",
       "variables": []
     },
     {
@@ -16451,9 +16451,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch26/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch26.town",
-      "text": "未知の廊下",
+      "text": "未知の回廊",
       "variables": []
     },
     {
@@ -16535,9 +16535,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch27/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch27.town",
-      "text": "運命の交差点",
+      "text": "運命の交わる場所",
       "variables": []
     },
     {
@@ -23411,9 +23411,9 @@
         "file": "remake/assets/story/ch00_meadow.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/15b3c967fb2b/ch00_meadow/location",
-      "text": "ロテリア郊外の草地ソール招待状アレスナイフが押しつぶされ,2人は昏睡状態で発見ユニ防犯部隊と周辺の空軍ガイア海外の反応ユニ記憶が失われ,自分が遠くから来たことを覚えていますマラ大陸\"この日は,ソール村に帰宅する決意ですアレス反対して,同行を同意した.",
+      "text": "ロテリア郊外の草地。ソールはアレスに手合わせを申し込むが断られ、二人は倒れているユニと、その傍らで警戒する機甲兵ガイアを見つける。ユニは記憶を失っており、遠いマラ大陸から来たことしか覚えていない。ソールは彼女を故郷へ送り届けると決め、アレスは一度反対したのち同行に同意する。",
       "variables": []
     },
     {
@@ -23423,9 +23423,9 @@
         "file": "remake/assets/story/ch00_meadow.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/15b3c967fb2b/scenes/0/label",
-      "text": "ナイフの誘い",
+      "text": "手合わせの誘い",
       "variables": []
     },
     {
@@ -23555,9 +23555,9 @@
         "file": "remake/assets/story/ch00_meadow.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/15b3c967fb2b/scenes/1/label",
-      "text": "発見したユニ海外の反応ガイア",
+      "text": "ユニとガイアを見つける",
       "variables": []
     },
     {
@@ -24167,9 +24167,9 @@
         "file": "remake/assets/story/ch00_meadow.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/15b3c967fb2b/scenes/2/label",
-      "text": "開始決定",
+      "text": "出発を決める",
       "variables": []
     },
     {
@@ -24431,9 +24431,9 @@
         "file": "remake/assets/story/ch00_palace.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/ae86adb52dac/ch00_palace/location",
-      "text": "ロテリア王宮ソール皇太子と王妃が2つの玉座に座っているのを見て,王位を継承する意向に告知され,権力を放棄し,退却した後は王城の一角で捕らえられた.アレス孤独に苦しんでいる.",
+      "text": "ロテリア王城の正殿。ソールは王妃と並んで双つの玉座に座る父王に謁見し、王位継承の意向を告げられる。固辞するも聞き入れられず、退出したあと王城の片隅で一人思い悩んでいるところをアレスに見つかる。",
       "variables": []
     },
     {
@@ -24443,9 +24443,9 @@
         "file": "remake/assets/story/ch00_palace.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ae86adb52dac/scenes/0/label",
-      "text": "宮廷,広場",
+      "text": "玉座の間、王位を譲る",
       "variables": []
     },
     {
@@ -24911,9 +24911,9 @@
         "file": "remake/assets/story/ch00_palace.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ae86adb52dac/scenes/1/label",
-      "text": "キング城の隅にアレス衝撃を受けた",
+      "text": "王城の片隅、アレスが行き合わせる",
       "variables": []
     },
     {
@@ -27755,9 +27755,9 @@
         "file": "remake/assets/story/ch02.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/5bf145f103fe/scenes/1/label",
-      "text": "戦闘中の強盗は2つの道に分けられた",
+      "text": "戦闘中、盗賊が二手に分かれる",
       "variables": []
     },
     {
@@ -28055,9 +28055,9 @@
         "file": "remake/assets/story/ch02.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/5bf145f103fe/scenes/2/label",
-      "text": "ヒリアが登場",
+      "text": "シリア登場",
       "variables": []
     },
     {
@@ -28619,9 +28619,9 @@
         "file": "remake/assets/story/ch02.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/5bf145f103fe/scenes/3/label",
-      "text": "戦闘は短文字で",
+      "text": "戦闘で傷を負ったときの短い台詞",
       "variables": []
     },
     {
@@ -28787,9 +28787,9 @@
         "file": "remake/assets/story/ch03.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/cac6c4f06aba/ch03/location",
-      "text": "医学的名前の高いセラ村です (神職の治療法は奇跡的なもので,治癒します)ユニティノが追いついて救われた.",
+      "text": "一行は医術で名高いセラ村へ向かう。祭司の治癒魔法なら、ユニの記憶喪失も治せるという。その道中、追われていたティエノを救い出す。",
       "variables": []
     },
     {
@@ -29759,9 +29759,9 @@
         "file": "remake/assets/story/ch04.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/750623f119b8/ch04/location",
-      "text": "シリア隊はサイラ村の近道に移動し,強盗\"\"が襲撃した.バナロシアやサンタトラスなどのドラゴンは,熱狂的に狩りをしたがったものの,仲間たち\"悪魔\"によって脅かされた.",
+      "text": "シリアは近道を通ってセラ村へ一行を導くが、途中で盗賊「豹」の手下に待ち伏せされる。通りかかったバナロシアやセント・コラスら竜人たちは面白がって加わろうとするが、仲間の「惡」に脅されて思いとどまる。",
       "variables": []
     },
     {
@@ -29867,9 +29867,9 @@
         "file": "remake/assets/story/ch04.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/750623f119b8/scenes/1/label",
-      "text": "道路に襲撃",
+      "text": "小道での襲撃",
       "variables": []
     },
     {
@@ -29999,9 +29999,9 @@
         "file": "remake/assets/story/ch04.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/750623f119b8/scenes/2/label",
-      "text": "ドラゴンは熱いを眺めている",
+      "text": "竜人たちの高みの見物",
       "variables": []
     },
     {
@@ -30299,9 +30299,9 @@
         "file": "remake/assets/story/ch05.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/ba1dd3abcf8e/ch05/location",
-      "text": "マリンと王国の正規軍隊が助けを求めた後,レイラ村に襲撃した\"矢\"の首領は軍勢を率い始めた.ユニユナ・マリンとヒリアは,南部のプリーツ港へ行き,賢者の探求を決意しました.",
+      "text": "盗賊団の首領「箭」が一味を率いてセラ村を攻め落とし、マリンと王国の正規軍が相次いで救援を求める。一行は加勢して盗賊を退けるが、神術ではユニの記憶喪失を治せないと知る。賢者ヨナを訪ねて南のプリズ港へ向かうことになり、マリンとシリアも同行を決める。",
       "variables": []
     },
     {
@@ -30311,9 +30311,9 @@
         "file": "remake/assets/story/ch05.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ba1dd3abcf8e/scenes/0/label",
-      "text": "盗賊が城を囲む",
+      "text": "盗賊による包囲",
       "variables": []
     },
     {
@@ -30467,9 +30467,9 @@
         "file": "remake/assets/story/ch05.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ba1dd3abcf8e/scenes/1/label",
-      "text": "軍団が戦場に参加",
+      "text": "一行が戦列に加わる",
       "variables": []
     },
     {
@@ -30719,9 +30719,9 @@
         "file": "remake/assets/story/ch05.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ba1dd3abcf8e/scenes/2/label",
-      "text": "キングダム正規軍",
+      "text": "王国の正規軍が参戦",
       "variables": []
     },
     {
@@ -30803,9 +30803,9 @@
         "file": "remake/assets/story/ch05.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ba1dd3abcf8e/scenes/3/label",
-      "text": "ドラゴンは劇を見ています",
+      "text": "竜人たちが見物に集まる",
       "variables": []
     },
     {
@@ -30959,9 +30959,9 @@
         "file": "remake/assets/story/ch05.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ba1dd3abcf8e/scenes/4/label",
-      "text": "盗賊が倒れた",
+      "text": "盗賊の敗走",
       "variables": []
     },
     {
@@ -30995,9 +30995,9 @@
         "file": "remake/assets/story/ch05.json",
         "json_pointer": "/scenes/5/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ba1dd3abcf8e/scenes/5/label",
-      "text": "マリン・ドローズ 失憶症の真実",
+      "text": "マリンの礼と、記憶喪失の真相",
       "variables": []
     },
     {
@@ -31535,9 +31535,9 @@
         "file": "remake/assets/story/ch06.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/84d776017867/ch06/location",
-      "text": "プリーツ港で賢者ジョナを探し出したが,王朝巡査隊が調査を怠った. エディ・シャリンズ (エディー・サランス) が護衛兵を守るために王国の軍隊と衝突した.",
+      "text": "一行はプリズ港で賢者ヨナを探すが会えず、逆に王国の巡回隊に誰何される。護衛（指名手配中のエディ・サリンズ）をかばったことで王国軍と衝突するが、ベックウェイの助けで事なきを得る。ヨナはすでに連日の失踪事件を調べるために港を離れており、王城で落ち合う約束を交わす。",
       "variables": []
     },
     {
@@ -31571,9 +31571,9 @@
         "file": "remake/assets/story/ch06.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/84d776017867/scenes/1/label",
-      "text": "巡査隊の調査",
+      "text": "巡回隊の誰何",
       "variables": []
     },
     {
@@ -31775,9 +31775,9 @@
         "file": "remake/assets/story/ch06.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/84d776017867/scenes/3/label",
-      "text": "警備隊の争い",
+      "text": "護衛たちの口論",
       "variables": []
     },
     {
@@ -32003,9 +32003,9 @@
         "file": "remake/assets/story/ch06.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/84d776017867/scenes/4/label",
-      "text": "レイは外出",
+      "text": "レイティンの登場",
       "variables": []
     },
     {
@@ -32351,9 +32351,9 @@
         "file": "remake/assets/story/ch06.json",
         "json_pointer": "/scenes/6/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/84d776017867/scenes/6/label",
-      "text": "ベックウィの封鎖",
+      "text": "ベックウェイの仲裁",
       "variables": []
     },
     {
@@ -32867,9 +32867,9 @@
         "file": "remake/assets/story/ch07.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/e82bb0feed5c/ch07/location",
-      "text": "キングダムへの進路には,王軍の警備隊が傍受され,軍勢に囲まれていた少女ケリーも助けられた. ケリーは軍隊に加わると,人々はすぐに王の城を問いかけることに決めた.",
+      "text": "王城へ向かう道中、一行は王国の守備軍に阻まれ、さらに兵士に囲まれていた少女ケリーを助ける。ケリーは仲間に加わり、一行は真相を問いただすため王城へ直行することを決める。",
       "variables": []
     },
     {
@@ -32927,9 +32927,9 @@
         "file": "remake/assets/story/ch07.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/e82bb0feed5c/scenes/1/label",
-      "text": "キングダム軍",
+      "text": "王国軍の阻止",
       "variables": []
     },
     {
@@ -33083,9 +33083,9 @@
         "file": "remake/assets/story/ch07.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/e82bb0feed5c/scenes/2/label",
-      "text": "ケリーが襲撃された",
+      "text": "ケリー、襲われる",
       "variables": []
     },
     {
@@ -33383,9 +33383,9 @@
         "file": "remake/assets/story/ch07.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/e82bb0feed5c/scenes/4/label",
-      "text": "カリーも参加",
+      "text": "ケリーの加入",
       "variables": []
     },
     {
@@ -33695,9 +33695,9 @@
         "file": "remake/assets/story/ch08.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/33476e2c304d/ch08/location",
-      "text": "アクスの王宮に到着し,軍長が護衛する部隊によって包囲された.ヒリアは女王の信条\"女神の涙\"を放出し,自分がアクス王国の公主であることを明らかにした;キャプテンはまだ王の命令で攻め続けていた.",
+      "text": "一行はアクス王城に到着するが、守備隊長が兵を率いて包囲する。シリアは王妃の証である「女神の涙」を示し、自らがアクス王国の王女であることを明かすが、隊長は王命だとして攻撃をやめない。スカーディ家のローナが王女を守って立ちはだかり、隊長を討ち取る。一行は王女とともに城へ入る。",
       "variables": []
     },
     {
@@ -33779,9 +33779,9 @@
         "file": "remake/assets/story/ch08.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/33476e2c304d/scenes/1/label",
-      "text": "カプテンが切断し,メッセージを発信",
+      "text": "隊長の阻止、証を示す",
       "variables": []
     },
     {
@@ -34079,9 +34079,9 @@
         "file": "remake/assets/story/ch08.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/33476e2c304d/scenes/2/label",
-      "text": "ロナが主人を擁護する",
+      "text": "ローナ、主を守って立ちはだかる",
       "variables": []
     },
     {
@@ -34163,9 +34163,9 @@
         "file": "remake/assets/story/ch08.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/33476e2c304d/scenes/3/label",
-      "text": "プリンセス入城",
+      "text": "王女、城へ入る",
       "variables": []
     },
     {
@@ -34379,9 +34379,9 @@
         "file": "remake/assets/story/ch09.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/725efc540ee1/ch09/location",
-      "text": "アックス王城に到着した隊員は,レイの指揮下で逮捕され,暗殺容疑者として誤認された.レイは王宮から外出し,夜中に刺客に変身して王宮を襲った.レイが命令を発行する際にゲレを押さえつけました.ライは自分がクレインによって騙されていることに気づき,グレゴと共に王女を殺す部隊に入りましたが,途中にはグレーが殺されたという知らせが届きました.",
+      "text": "一行はアクス王城に着くが、近衛軍の隊長レイティンに兵ごと阻まれ、国王暗殺の容疑者と誤解されて捕らえられる。刃を交えたのち、レイティンは宮中の異変を語る。刺客が夜に国王の寝所を襲い、それに乗じて近衛軍総帥グレイが王命を騙って号令を発していたのだ。グレイに欺かれていたと悟ったレイティンは寝返り、一行とともに王女を護衛して王城へ攻め入るが、その途中でグレイが暗殺されたという知らせが届く。",
       "variables": []
     },
     {
@@ -34439,9 +34439,9 @@
         "file": "remake/assets/story/ch09.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/725efc540ee1/scenes/1/label",
-      "text": "レイン切断で王妃の身分を疑う",
+      "text": "レイティンの阻止、王女の身分を疑う",
       "variables": []
     },
     {
@@ -34571,9 +34571,9 @@
         "file": "remake/assets/story/ch09.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/725efc540ee1/scenes/2/label",
-      "text": "宮廷が真相になった",
+      "text": "宮中の異変の真相",
       "variables": []
     },
     {
@@ -34847,9 +34847,9 @@
         "file": "remake/assets/story/ch09.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/725efc540ee1/scenes/3/label",
-      "text": "Yレイ・ディゴが訴える",
+      "text": "Yの告発、レイティンの寝返り",
       "variables": []
     },
     {
@@ -35099,9 +35099,9 @@
         "file": "remake/assets/story/ch09.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/725efc540ee1/scenes/4/label",
-      "text": "グレーが殺された",
+      "text": "グレイ殺害される",
       "variables": []
     },
     {
@@ -35243,9 +35243,9 @@
         "file": "remake/assets/story/ch10.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/29aac3e465f0/ch10/location",
-      "text": "レイクは,禁衛隊の指揮官グレが敵を暗殺し,カナーン3世王に自立する計画を誘拐して,滝の後ろの洞窟を見つけようとした. 人々は洞穴を守っていたソフィアを倒し,国王を救った.",
+      "text": "レイティンは、近衛軍の総帥グレイが敵と通じ、王位を狙って国王カナン三世を拉致したことを突き止め、その手がかりをたどって滝の裏の洞窟にたどり着く。一行は洞窟を守るソフィアを倒して国王を救い出し、敵が王家の至宝「黄金の紋章」を狙っていることを知る。国王は紋章を賢者ヨナに貸すことを承知し、シリアとシルファが一行に同行して陰謀を調べることも認める。",
       "variables": []
     },
     {
@@ -35255,9 +35255,9 @@
         "file": "remake/assets/story/ch10.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/29aac3e465f0/scenes/0/label",
-      "text": "洞窟の真実",
+      "text": "洞窟の真相",
       "variables": []
     },
     {
@@ -35411,9 +35411,9 @@
         "file": "remake/assets/story/ch10.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/29aac3e465f0/scenes/1/label",
-      "text": "ソフィアが守って,手渡す",
+      "text": "ソフィアの守り、刃を交える",
       "variables": []
     },
     {
@@ -35687,9 +35687,9 @@
         "file": "remake/assets/story/ch10.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/29aac3e465f0/scenes/2/label",
-      "text": "金章の謎",
+      "text": "黄金の紋章の謎",
       "variables": []
     },
     {
@@ -36251,9 +36251,9 @@
         "file": "remake/assets/story/ch10.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/29aac3e465f0/scenes/3/label",
-      "text": "ヒリアは同伴を求めた",
+      "text": "シリア、同行を願い出る",
       "variables": []
     },
     {
@@ -36659,9 +36659,9 @@
         "file": "remake/assets/story/ch11.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/74e73fb07ccb/ch11/location",
-      "text": "ソフィア北部のジョナを追いかけて,エルフ・フォレスト (旧名\"霧の森\") 周辺に野獣が襲撃した. ベクウィはエリンの子供たちと遊びながらサーンと出会い,エリンの長老たちの宝物を奪おうとした動物を反発しました.",
+      "text": "一行はソフィアとともに北へ向かい、ヨナの足取りを追うが、その途中、かつて「霧の森」と呼ばれたエルフの森のあたりでオークに襲われる。ベックウェイは精霊族の幼なじみシャンと再会し、力を合わせて精霊の長老たちの宝物庫を奪おうとするオークを退ける。シャンはベックウェイが止めるのも聞かず、一行への同行を押し通す。",
       "variables": []
     },
     {
@@ -36671,9 +36671,9 @@
         "file": "remake/assets/story/ch11.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/74e73fb07ccb/scenes/0/label",
-      "text": "北はヨナを探し,迷子になったようだ",
+      "text": "ヨナを求めて北へ、道に迷ったらしい",
       "variables": []
     },
     {
@@ -36779,9 +36779,9 @@
         "file": "remake/assets/story/ch11.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/74e73fb07ccb/scenes/1/label",
-      "text": "森林が動物と出会った",
+      "text": "森でオークと遭遇",
       "variables": []
     },
     {
@@ -36935,9 +36935,9 @@
         "file": "remake/assets/story/ch11.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/74e73fb07ccb/scenes/2/label",
-      "text": "精霊のサンは,共同で宝を育てる",
+      "text": "精霊シャンと出会い、力を合わせて宝を守る",
       "variables": []
     },
     {
@@ -37307,9 +37307,9 @@
         "file": "remake/assets/story/ch11.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/74e73fb07ccb/scenes/3/label",
-      "text": "サンは野獣を撃退し,軍に入隊した",
+      "text": "オークを退け、シャンが同行を押し通す",
       "variables": []
     },
     {
@@ -37619,9 +37619,9 @@
         "file": "remake/assets/story/ch12.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/3b87cf227f66/ch12/location",
-      "text": "米アストドは,昨夜獣部隊がハズミール市に襲撃を企てると聞いたと告白し,救助の急いで逃げ出した.",
+      "text": "北の森の精霊の町ハスミールへ向かう山道で、一行はオークに囲まれていた竜人ミアスドードを助ける。ミアスドードは、前夜にオーク部隊が精霊の都ハスミールへの攻撃を企てているのを聞いてしまったと明かし、一行は急ぎ救援に向かう。",
       "variables": []
     },
     {
@@ -37679,9 +37679,9 @@
         "file": "remake/assets/story/ch12.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/3b87cf227f66/scenes/1/label",
-      "text": "ミア・ストードが救いを求める",
+      "text": "ミアスドードの救援要請",
       "variables": []
     },
     {
@@ -37907,9 +37907,9 @@
         "file": "remake/assets/story/ch12.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/3b87cf227f66/scenes/2/label",
-      "text": "ミアストードを救うために野獣を撃退",
+      "text": "オークを退け、ミアスドードを救う",
       "variables": []
     },
     {
@@ -37967,9 +37967,9 @@
         "file": "remake/assets/story/ch12.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/3b87cf227f66/scenes/3/label",
-      "text": "ミアストッドの秘密:大獣軍が精霊都市を襲う",
+      "text": "ミアスドードの秘密：オークの大軍が精霊の都を襲う",
       "variables": []
     },
     {
@@ -38231,9 +38231,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/2931e1ff899c/ch13/location",
-      "text": "ハスミールに到着した時,精霊は住民を避難させました.ハノ父はハワード精霊は戦場に参加し,敵を撃退した後,精靈の蜜が感謝して ランディ平原に駐留していると伝えました.ソール田さん:",
+      "text": "一行がハスミールに駆けつけたとき、精霊族はすでに住民を退避させ、戦士だけが残ってオークの大軍を死守していた。ハノの父ハワット老人がたまたま訪れており、そのまま戦列に加わる。オークを退けたあと、精霊のミーは礼を述べ、オークの主力がなおランディ平原に駐屯していると伝える。一行は先手を打つことを決める。戦いのあとで、精霊族が全員犠牲になっていたことを知り、一人の長老が息を引き取る前に大切な宝物をソールに託す。",
       "variables": []
     },
     {
@@ -38243,9 +38243,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/2931e1ff899c/scenes/0/label",
-      "text": "箱を救出するために一歩遅れました",
+      "text": "一歩遅れ、宝箱を守る",
       "variables": []
     },
     {
@@ -38399,9 +38399,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/2931e1ff899c/scenes/1/label",
-      "text": "ハワード老が戦った",
+      "text": "ハワット老人の参戦",
       "variables": []
     },
     {
@@ -38603,9 +38603,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/2931e1ff899c/scenes/2/label",
-      "text": "血の戦いの精霊都市",
+      "text": "精霊の都での血戦",
       "variables": []
     },
     {
@@ -38759,9 +38759,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/2931e1ff899c/scenes/3/label",
-      "text": "精霊蜂が感謝し,大獣軍が動き回る",
+      "text": "精霊ミーの礼、オーク大軍の動向",
       "variables": []
     },
     {
@@ -38915,9 +38915,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/2931e1ff899c/scenes/4/label",
-      "text": "交渉の先駆者",
+      "text": "先手を打つ相談",
       "variables": []
     },
     {
@@ -39071,9 +39071,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/scenes/5/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/2931e1ff899c/scenes/5/label",
-      "text": "精霊の亡命者,秘宝が託された",
+      "text": "精霊族の滅亡、秘宝を託される",
       "variables": []
     },
     {
@@ -39191,9 +39191,9 @@
         "file": "remake/assets/story/ch14.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/f95eacdc314e/ch14/location",
-      "text": "捕虜を問いかけた後,サカは宝物のためにハスミルの精霊都市に襲撃するよう命じたと知りましたが,サッカ自身はその他の部隊をラカ湖へ連れて行って族への攻略を行いました.",
+      "text": "一行は休息中のオーク軍を見つけ、夜陰に紛れて近づき奇襲をかける。捕虜を問い詰めた結果、オークの首領サカが宝物のために精霊族の都ハスミールを攻めるよう命じ、サカ自身は別隊を率いてラカ湖の豹人族を襲っていると判明する。一行はまずラカ湖の救援へ向かうことを決める。",
       "variables": []
     },
     {
@@ -39203,9 +39203,9 @@
         "file": "remake/assets/story/ch14.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/f95eacdc314e/scenes/0/label",
-      "text": "捕虜を尋問する野獣軍に夜襲",
+      "text": "オーク軍への夜襲、捕虜の尋問",
       "variables": []
     },
     {
@@ -39647,9 +39647,9 @@
         "file": "remake/assets/story/ch14.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/f95eacdc314e/scenes/1/label",
-      "text": "族の支持を決定する陰謀論議",
+      "text": "一行は陰謀を論じ、豹人族の支援を決める",
       "variables": []
     },
     {
@@ -39839,9 +39839,9 @@
         "file": "remake/assets/story/ch15.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/f90f51692adf/ch15/location",
-      "text": "隊はラカ湖に駆けつけて,野獣軍が族を包囲しているのを目撃し,ケリーと失踪した長年の弟のサイコ・ボンレとの出会いからすぐに助け合いました.",
+      "text": "一行がラカ湖に着くと、オークの大軍が豹人族を包囲しており、ケリーは長く生き別れていた兄弟子サイコボンラーと再会する。一行はただちに加勢する。オークの剣士カイラスを倒したあと、「魔眼の宝石」を運ぶオークの使者たちが戦場に迷い込み、慌てて逃げ去る。豹人族のサイは礼を述べつつ、オークと狂戦士を操って精霊族と豹人族を滅ぼそうとする黒幕がいること、その一味が北の氷島に集結していることを明かす。一行は道すがら追跡することを決める。",
       "variables": []
     },
     {
@@ -39851,9 +39851,9 @@
         "file": "remake/assets/story/ch15.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/f90f51692adf/scenes/0/label",
-      "text": "ケリー・ショボーンラーと出会った",
+      "text": "ケリー、兄弟子サイコボンラーと再会",
       "variables": []
     },
     {
@@ -40175,9 +40175,9 @@
         "file": "remake/assets/story/ch15.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/f90f51692adf/scenes/1/label",
-      "text": "海外の反応はハワード支援者隊",
+      "text": "別路の救援：ハワットたちが豹人族に加勢",
       "variables": []
     },
     {
@@ -40403,9 +40403,9 @@
         "file": "remake/assets/story/ch15.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/f90f51692adf/scenes/2/label",
-      "text": "カラス・ファイナル戦,バレーのメッセージが誤った",
+      "text": "カイラスとの決戦、宝を運ぶ使者が迷い込む",
       "variables": []
     },
     {
@@ -40727,9 +40727,9 @@
         "file": "remake/assets/story/ch15.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/f90f51692adf/scenes/3/label",
-      "text": "魔法石の謎",
+      "text": "魔眼の宝石の謎",
       "variables": []
     },
     {
@@ -40859,9 +40859,9 @@
         "file": "remake/assets/story/ch15.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/f90f51692adf/scenes/4/label",
-      "text": "ケリー・ライン:セグアイ 幕後陰謀が明らかになった",
+      "text": "ケリー分岐：サイの礼、黒幕の陰謀を知る",
       "variables": []
     },
     {
@@ -41159,9 +41159,9 @@
         "file": "remake/assets/story/ch15.json",
         "json_pointer": "/scenes/5/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/f90f51692adf/scenes/5/label",
-      "text": "ベックウェイが反撃した後幕の陰謀を知った",
+      "text": "別路の分岐：ベックウェイがサイに応じ、陰謀を知る",
       "variables": []
     },
     {
@@ -41471,9 +41471,9 @@
         "file": "remake/assets/story/ch16.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/a24ca0f9187e/ch16/location",
-      "text": "寒い北の国境に到着したチームで,サイコボンラーと友達のサンミティは再び出会った.ソールミッティはみんなのチームを賛美し,最終的に勝利を得た.ソールアイス島は北部の氷の島です. この地域では,この海域を移動させることができません.",
+      "text": "一行は極寒の北境に着き、サイコボンラーは友人である剣聖ミティと再会する。ミティの高慢な態度にソールは我慢ならず、二人は一戦交える。ミティは一行の見事な連携に感心し、最後はソールの気概に心服して仲間に加わり、北のアイス島へ皆を導くことを決める。",
       "variables": []
     },
     {
@@ -41483,9 +41483,9 @@
         "file": "remake/assets/story/ch16.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/a24ca0f9187e/scenes/0/label",
-      "text": "北部の寒い天候でサンミティの剣が再び見つかる",
+      "text": "凍てつく北境、剣聖ミティとの再会",
       "variables": []
     },
     {
@@ -41879,9 +41879,9 @@
         "file": "remake/assets/story/ch16.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/a24ca0f9187e/scenes/1/label",
-      "text": "ミッティはチームを賛美し,戦力ライバル",
+      "text": "力戦の末、ミティが連携に感服する",
       "variables": []
     },
     {
@@ -42479,9 +42479,9 @@
         "file": "remake/assets/story/ch17.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/bafc75c19a8d/ch17/location",
-      "text": "ミッティが北アイスランドに着陸し,野獣や暗黒戦士などの大勢力が集まったことを目撃した. 悪魔の支配下にあるドラゴン剣家ケラスと対峙して\",氷の神\"を倒した後,ケラスが精神的に回復したと主張する.",
+      "text": "一行はミティとともに北の氷島へ上陸し、オークや闇の戦士たちの大軍がここに集結していることを知る。邪悪な力に操られた竜人の剣士カイラスと正面から刃を交え、「氷の魔神」を倒すとカイラスは正気を取り戻し、竜人族の王セント・コラスの命で調査に来たものの、捕らえられて利用されていたと語る。ミティはここで一行と別れて調査を続け、代わりにカイラスが仲間に加わる。",
       "variables": []
     },
     {
@@ -42491,9 +42491,9 @@
         "file": "remake/assets/story/ch17.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bafc75c19a8d/scenes/0/label",
-      "text": "アイスランドに到着し,大軍が集まった",
+      "text": "氷島へ上陸、大軍の集結を発見",
       "variables": []
     },
     {
@@ -42671,9 +42671,9 @@
         "file": "remake/assets/story/ch17.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bafc75c19a8d/scenes/1/label",
-      "text": "決勝戦が制御されたケラス",
+      "text": "操られたカイラスとの決戦",
       "variables": []
     },
     {
@@ -42923,9 +42923,9 @@
         "file": "remake/assets/story/ch17.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bafc75c19a8d/scenes/2/label",
-      "text": "氷の目と魔法の目の謎",
+      "text": "氷の眼の宝石と魔眼の謎",
       "variables": []
     },
     {
@@ -43055,9 +43055,9 @@
         "file": "remake/assets/story/ch17.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bafc75c19a8d/scenes/3/label",
-      "text": "ミッティ・ドーバーと賢者ヨナとの別れ",
+      "text": "ミティとの別れ、再び賢者ヨナを語る",
       "variables": []
     },
     {
@@ -43163,9 +43163,9 @@
         "file": "remake/assets/story/ch17.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bafc75c19a8d/scenes/4/label",
-      "text": "カラスは清醒で自滅した",
+      "text": "カイラス正気に戻り、身の上を語る",
       "variables": []
     },
     {
@@ -43715,9 +43715,9 @@
         "file": "remake/assets/story/ch18.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/e21a32c956d7/ch18/location",
-      "text": "軍団は高山の吊り橋で賢者ヨナと並ぶ一方,暗黒傭兵隊\"死の\"が急襲してヨナの命を奪おうとした.ユニ遺忘後,彼女の死は確認されることを約束した.ソール友人たちの説得を受けて,冒険を続けることにしました.",
+      "text": "高山の吊り橋で、一行は賢者ヨナたちと偶然出会うが、そこへ闇の傭兵団「死の骸骨」がヨナの命を狙って襲いかかる。激戦のなかカイラスとミアスドードが命を落とし、一行は力を合わせて敵の援軍を退ける。ヨナはユニの記憶喪失を治すことはできないが、いずれ彼女の出自を突き止めると約束する。仲間に説得され、ソールは冒険を続けることを決意する。",
       "variables": []
     },
     {
@@ -43727,9 +43727,9 @@
         "file": "remake/assets/story/ch18.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/e21a32c956d7/scenes/0/label",
-      "text": "ジュネーラ・ジョナ",
+      "text": "吊り橋での遭遇、賢者ヨナと出会う",
       "variables": []
     },
     {
@@ -44003,9 +44003,9 @@
         "file": "remake/assets/story/ch18.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/e21a32c956d7/scenes/1/label",
-      "text": "兵隊が襲撃した",
+      "text": "死の骸骨の傭兵団による奇襲",
       "variables": []
     },
     {
@@ -44327,9 +44327,9 @@
         "file": "remake/assets/story/ch18.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/e21a32c956d7/scenes/2/label",
-      "text": "カラスとミアストードが寄付した",
+      "text": "血みどろの苦戦、カイラスとミアスドード散る",
       "variables": []
     },
     {
@@ -44507,9 +44507,9 @@
         "file": "remake/assets/story/ch18.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/e21a32c956d7/scenes/3/label",
-      "text": "ヨナが訪ねて質問したユニ生命について",
+      "text": "ヨナの引見、ユニの出自を問う",
       "variables": []
     },
     {
@@ -44759,9 +44759,9 @@
         "file": "remake/assets/story/ch18.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/e21a32c956d7/scenes/4/label",
-      "text": "ソール選択を迫って,一緒にいて",
+      "text": "ソールの決断、旅を続ける",
       "variables": []
     },
     {
@@ -45047,9 +45047,9 @@
         "file": "remake/assets/story/ch19.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/4dd4fa178fb1/ch19/location",
-      "text": "北部のブラックフォレストに突入し,死滅したマージー隊が襲撃された.幸運なことにバーナロシアとケラスが敵を助けました.聖ラスが手がかりを発見したことを知ると,精霊の神社西塔にある聖魂タワーへと急いで行くことにしました.",
+      "text": "一行は北の黒い森に入るが、途中で死の骸骨の傭兵団に待ち伏せされる。幸いバナロシアとカイラスと出会い、その助けで敵を殲滅する。セント・コラスがすでに手がかりをつかみ、精霊の聖地の西にある高塔――聖霊の塔へ先に向かったと知り、一行は一刻も早く合流することを決める。",
       "variables": []
     },
     {
@@ -45059,9 +45059,9 @@
         "file": "remake/assets/story/ch19.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/4dd4fa178fb1/scenes/0/label",
-      "text": "ブラックフォレストで殺害された",
+      "text": "黒い森で死の骸骨に襲われる",
       "variables": []
     },
     {
@@ -45263,9 +45263,9 @@
         "file": "remake/assets/story/ch19.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/4dd4fa178fb1/scenes/1/label",
-      "text": "バナロシアでサンタトラスの追跡が判明",
+      "text": "バナロシアと出会い、セント・コラスの行方を知る",
       "variables": []
     },
     {
@@ -45671,9 +45671,9 @@
         "file": "remake/assets/story/ch20.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/81dd5ef66a56/ch20/location",
-      "text": "9人の精霊が忍者達によって護衛された後,彼らは敵軍から撤退し,暗黒軍が聖地神社塔に侵攻したことを知ると決定し,アジア森林への支援を決意した.",
+      "text": "死の沼を進む一行は、姿の見えない沼の怪物と闇の軍の手先に襲われ、忍者シエドが護送していた九人の精霊は壮絶な最期を遂げる。敵を退けたあと、闇の軍がすでに精霊の聖地である聖霊の塔に迫っていると知り、一行はアシュールの森へ援軍に向かうことを決める。シエドは同行を願い出、道中では囚われていた下級の魔族ダークセイも保護する。",
       "variables": []
     },
     {
@@ -45683,9 +45683,9 @@
         "file": "remake/assets/story/ch20.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/81dd5ef66a56/scenes/0/label",
-      "text": "死沼に襲われた忍者 精霊の死戦を救助",
+      "text": "死の沼での襲撃、忍者シエドが精霊を護り死闘",
       "variables": []
     },
     {
@@ -46127,9 +46127,9 @@
         "file": "remake/assets/story/ch20.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/81dd5ef66a56/scenes/1/label",
-      "text": "精霊の犠牲者全員,聖霊塔が潜ったことを知りました",
+      "text": "精霊族の全滅、聖霊の塔陥落の内情を知る",
       "variables": []
     },
     {
@@ -46595,9 +46595,9 @@
         "file": "remake/assets/story/ch20.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/81dd5ef66a56/scenes/2/label",
-      "text": "忍者団に参戦してくれてありがとう",
+      "text": "忍者シエド、仲間入りを願い出る",
       "variables": []
     },
     {
@@ -46727,9 +46727,9 @@
         "file": "remake/assets/story/ch20.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/81dd5ef66a56/scenes/3/label",
-      "text": "魔王ダクセが救われるためにソール包容的胸を表現する",
+      "text": "下級の魔族ダークセイを救い、ソールの度量が示される",
       "variables": []
     },
     {
@@ -47087,9 +47087,9 @@
         "file": "remake/assets/story/ch21.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/9bd82ef4e817/ch21/location",
-      "text": "アシオニアの森に到着した時,聖霊塔は崩壊し,死隊長\"狙い手\"が大法師ヒルファを捕まおうとしている.",
+      "text": "一行がアシュールの森に駆けつけたとき、聖霊の塔はすでに陥落し、死の骸骨の団長「狙」が大魔法使いシルファを連れ去ろうとしていた。一行は力を合わせて死の骸骨を打ち破る。団長は死に際に正体を現すが、それはレイティンのかつての恋人であり、近衛軍の旧知でもあるマールだった。シルファは集めた五つの魔法宝石と黄金の紋章で転送の杖を起動し、伝説の「空の鍵」を作り上げる。一行はただちに巨塔へ向かうことを決める。",
       "variables": []
     },
     {
@@ -47099,9 +47099,9 @@
         "file": "remake/assets/story/ch21.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/9bd82ef4e817/scenes/0/label",
-      "text": "聖霊塔が崩壊し,死者隊長\"狙い手\"が現れました",
+      "text": "聖霊の塔陥落、死の骸骨の団長「狙」現る",
       "variables": []
     },
     {
@@ -47519,9 +47519,9 @@
         "file": "remake/assets/story/ch21.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/9bd82ef4e817/scenes/1/label",
-      "text": "バン・ブラッド決勝,ボディキャプターが現身になった ハリウッド",
+      "text": "血みどろの決戦、団長の正体――レイティンの旧知マール",
       "variables": []
     },
     {
@@ -47939,9 +47939,9 @@
         "file": "remake/assets/story/ch21.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/9bd82ef4e817/scenes/2/label",
-      "text": "巨人塔に直ぐ (空の)",
+      "text": "巨塔へ直行を決断（空の鍵は未完成）",
       "variables": []
     },
     {
@@ -48047,9 +48047,9 @@
         "file": "remake/assets/story/ch21.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/9bd82ef4e817/scenes/3/label",
-      "text": "ヒルファは伝言を\"天空の\"に変えました",
+      "text": "シルファ、伝説の法器「空の鍵」を作り上げる",
       "variables": []
     },
     {
@@ -48455,9 +48455,9 @@
         "file": "remake/assets/story/ch22.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/8299dbce3ca6/ch22/location",
-      "text": "隊員は聖霊塔の頂上に登り,謎めいた闇軍ジャワダと古代空兵との激戦を繰り広げました.マラ大陸ヒルファは魔法陣を発動させ,敵に直撃し,地上勢力を集めた.",
+      "text": "一行は聖霊の塔の頂上へ登り、謎の闇の軍の手先「侶」と古代の機甲兵と激戦を繰り広げ、敵の主がここに転送点を築き、居城から大軍をマラ大陸へ送り込もうとしていることを知る。戦いのさなか、囚われていた竜騎士サラと出会い、力を合わせて「侶」の軍勢を退ける。シルファは転送魔法陣を起動して敵の本拠地へ乗り込むことを決め、一行はそろって同行を表明する。",
       "variables": []
     },
     {
@@ -48467,9 +48467,9 @@
         "file": "remake/assets/story/ch22.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/8299dbce3ca6/scenes/0/label",
-      "text": "塔の頂上には暗黒な戦士が\"ペア\"を撃った.",
+      "text": "塔頂で闇の軍の手先「侶」と遭遇",
       "variables": []
     },
     {
@@ -48815,9 +48815,9 @@
         "file": "remake/assets/story/ch22.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/8299dbce3ca6/scenes/1/label",
-      "text": "竜騎士 サラ・ケラスが倒れた",
+      "text": "囚われの竜騎士サラと出会い、カイラス敗れる",
       "variables": []
     },
     {
@@ -49067,9 +49067,9 @@
         "file": "remake/assets/story/ch22.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/8299dbce3ca6/scenes/2/label",
-      "text": "ヒルファは魔法を広めようと決意し,皆が一緒にいる",
+      "text": "シルファ、転送魔法の起動を決意、一行そろって同行",
       "variables": []
     },
     {
@@ -49403,9 +49403,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/1eb900572487/ch23/location",
-      "text": "マジック伝送が邪魔され,隊員が偶然地上に落下し,大陸北西部砂漠の古老な荒廃地帯に遭遇した.ソール海外の反応アレス古代の空軍兵士が遺跡を守った後,この荒廃は古人の\"飛行道具\"であり,天気と法王杖を伝達する力によって伝説的な黄金都市へ飛ぶことがわかった. メティドーは数年前にロッドマン軍の失敗を暗示し,ついに呪文を発揮した.",
+      "text": "転送魔法が乱れ、一行は大陸北西の砂漠にある古代遺跡のオアシスへ落下し、ソールとアレスの幼少期の師カリス、そしてヨナの旧知である辺境将軍ロッドマンと出会う。遺跡を守る古代の機甲兵を退けたあと、この遺跡が古代人の「飛行用具」であり、空の鍵と転送の杖の力があれば伝説の黄金城へ飛べることを知る。ミティは、何年も前にロッドマン将軍に片思いをして終わった過去を語る。一行はついに呪文を唱え、飛行岩は空へ舞い上がり、未知の目的地へ向かって飛び立つ。",
       "variables": []
     },
     {
@@ -49415,9 +49415,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/1eb900572487/scenes/0/label",
-      "text": "砂漠の荒れ野に墜落した緑地",
+      "text": "転送の狂い、砂漠の遺跡のオアシスへ墜落",
       "variables": []
     },
     {
@@ -49523,9 +49523,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/1eb900572487/scenes/1/label",
-      "text": "カリスとロッドマンとの出会い",
+      "text": "カリスとロッドマンに出会い、昔を語る",
       "variables": []
     },
     {
@@ -50039,9 +50039,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/1eb900572487/scenes/2/label",
-      "text": "古代空軍の攻撃でケラスとミアストードが墜落",
+      "text": "古代の機甲兵の襲撃、カイラスとミアスドード倒れる",
       "variables": []
     },
     {
@@ -50243,9 +50243,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/1eb900572487/scenes/3/label",
-      "text": "戦争後の残波Aカーリスは,同伴を頼んだ.",
+      "text": "戦後の余波（分岐A）：二つの宝物がそろい、カリスが同行を願い出る",
       "variables": []
     },
     {
@@ -50519,9 +50519,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/1eb900572487/scenes/4/label",
-      "text": "戦争後の残波Bカリスは町へ戻った.",
+      "text": "戦後の余波（分岐B）：宝物がそろわず、カリスは先に城へ戻る",
       "variables": []
     },
     {
@@ -50723,9 +50723,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/5/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/1eb900572487/scenes/5/label",
-      "text": "ロードマン選択 (支部1): 同僚を拒むこと,ミティが昔の恋愛について語る",
+      "text": "ロッドマンの選択（分岐1）：同行を辞退、ミティが昔の想いを語る",
       "variables": []
     },
     {
@@ -50999,9 +50999,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/6/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/1eb900572487/scenes/6/label",
-      "text": "ロッドマン選択 (支部2):陛下の命が差し迫ったまま,同行できない",
+      "text": "ロッドマンの選択（分岐2）：陛下の命で辺境を守り、同行できず",
       "variables": []
     },
     {
@@ -51107,9 +51107,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/7/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/1eb900572487/scenes/7/label",
-      "text": "ロードマン選択 (支部3): 喜ぶ同伴,偶然ヒリア王妃",
+      "text": "ロッドマンの選択（分岐3）：喜んで同行し、シリア王女と出会う",
       "variables": []
     },
     {
@@ -51263,9 +51263,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/8/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/1eb900572487/scenes/8/label",
-      "text": "ヒルファが飛ぶ岩を試し,人々は終焉を知らずに航海を開始",
+      "text": "シルファが飛行岩を起動、未知の目的地へ出航",
       "variables": []
     },
     {
@@ -51671,9 +51671,9 @@
         "file": "remake/assets/story/ch24.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/24442d1ead94/ch24/location",
-      "text": "ロッドマン (またはカリス) の部隊が撤退した後,飛行岩の高度は急に低下し,人々はパニックの中で互いに支え合いました.ソール海外の反応アレスユナとヒル・ローンは,キリアとロナを安撫し,少年たちを罵り合いました.",
+      "text": "飛行岩は悪魔の山へ向かって飛び続け、その空域を守る悪魔族の守備隊と遭遇する。ロッドマン（前章の分岐によってはカリス）が隊を率いて退けた直後、飛行岩の高度が突然下がりはじめる。混乱のなか、一行は互いに支え合う。ソールはシリアを、アレスはローナをなだめ、ヨナとシルファは若者たちのじゃれ合いをからかう。",
       "variables": []
     },
     {
@@ -51683,9 +51683,9 @@
         "file": "remake/assets/story/ch24.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/24442d1ead94/scenes/0/label",
-      "text": "空中で悪魔の部隊を撃った",
+      "text": "空中で悪魔族の守備隊と遭遇",
       "variables": []
     },
     {
@@ -52055,9 +52055,9 @@
         "file": "remake/assets/story/ch24.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/24442d1ead94/scenes/1/label",
-      "text": "暴風雨が激しく震撼しました",
+      "text": "高度が急降下、一行は動揺する",
       "variables": []
     },
     {
@@ -52319,9 +52319,9 @@
         "file": "remake/assets/story/ch25.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/89c3da909b32/ch25/location",
-      "text": "飛行岩は悪魔山の岩洞に墜落し,ドラゴン王聖が独りで火神カルゲンの身影と対峙した様子を見ました. 人々が間に合って助けを求めたため,火神を打ち破り,聖を救ったのです.",
+      "text": "飛行岩は悪魔の山の溶岩洞窟に墜落する。その途上、一行は竜人族の王セント・コラスがただ一人、火の魔神――悪魔族の王カルゲンの化身であり傀儡――と対峙しているのを目にする。間に合った一行は力を合わせて火の魔神を退け、セント・コラスを救い出し、悪魔族の王弟アキメージと出会う。アキメージは、悪魔族こそ邪法に操られ利用されているのだと明かし、自ら進んで一行に加わり、古代人の遺跡と黄金城への道案内を買って出る。",
       "variables": []
     },
     {
@@ -52331,9 +52331,9 @@
         "file": "remake/assets/story/ch25.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/89c3da909b32/scenes/0/label",
-      "text": "火の神が復活し,聖拉スは単独で戦った",
+      "text": "火の魔神の目覚め、セント・コラスが単身対峙",
       "variables": []
     },
     {
@@ -52511,9 +52511,9 @@
         "file": "remake/assets/story/ch25.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/89c3da909b32/scenes/1/label",
-      "text": "飛ぶ岩が降りてくるソール追いついた",
+      "text": "飛行岩の不時着、ソールたちが駆けつける",
       "variables": []
     },
     {
@@ -53051,9 +53051,9 @@
         "file": "remake/assets/story/ch25.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/89c3da909b32/scenes/2/label",
-      "text": "アーチメジが戦後再会して道案内を求めた",
+      "text": "戦いのあとの再会、アキメージが道案内を買って出る",
       "variables": []
     },
     {
@@ -53507,9 +53507,9 @@
         "file": "remake/assets/story/ch26.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/a6c95c58ac65/ch26/location",
-      "text": "アーチメジ隊は,古代の悪魔王が部族を禁止していた地下通路を通って進んだ.ユニアーチメジが疑いと尋問を投げかけていたのは,空軍兵士の異常な熟知によって\"ジェッド\"という敗戦機を再起動し,ディゴに助けてもらったことでした.ユニ戦闘機が発射コードを起動するユニ感情の崩れを否定するソール保護者:",
+      "text": "アキメージは、歴代の悪魔族の王が立ち入りを禁じてきた地下通路を通って一行を導き、その途中で古代人が残した機械の守衛（機甲兵）の群れに遭遇する。ユニは機甲兵に対して不自然なほどの知識を見せ、倒れた一体「ウッド」を再起動して味方に付ける。アキメージは不審を抱き、ユニの出自と機甲兵の起動コードを問い詰めるが、ユニは取り乱して否定し、ソールが彼女をかばう。",
       "variables": []
     },
     {
@@ -53519,9 +53519,9 @@
         "file": "remake/assets/story/ch26.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/a6c95c58ac65/scenes/0/label",
-      "text": "タブー通路で古代空軍と出会った",
+      "text": "禁じられた通路、古代の機甲兵と遭遇",
       "variables": []
     },
     {
@@ -53819,9 +53819,9 @@
         "file": "remake/assets/story/ch26.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/a6c95c58ac65/scenes/1/label",
-      "text": "ユニモチベーションの再起動",
+      "text": "ユニ、機甲兵ウッドを再起動する",
       "variables": []
     },
     {
@@ -54071,9 +54071,9 @@
         "file": "remake/assets/story/ch26.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/a6c95c58ac65/scenes/2/label",
-      "text": "アジメギは疑惑を抱いて,ユニブログに投稿された記事では,",
+      "text": "アキメージの疑念、取り乱すユニ（分岐台詞）",
       "variables": []
     },
     {
@@ -54443,9 +54443,9 @@
         "file": "remake/assets/story/ch26.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/a6c95c58ac65/scenes/3/label",
-      "text": "ヨナバースはゴールドシティとセテシスの最初の空軍を調査し,",
+      "text": "ヨナがウッドを問い詰め、黄金城と第一空中要塞の内情を探る",
       "variables": []
     },
     {
@@ -54887,9 +54887,9 @@
         "file": "remake/assets/story/ch26.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/a6c95c58ac65/scenes/4/label",
-      "text": "ソール落ち着いてユニ",
+      "text": "ソール、ユニをなだめる",
       "variables": []
     },
     {
@@ -55103,9 +55103,9 @@
         "file": "remake/assets/story/ch27.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/ce23f725c2f5/ch27/location",
-      "text": "地下通路の出口点にある古来の送電台にたどり着いた人々は,送料所の支配を待ち受けていました.ASR-07田さん:ASR-07侵攻者との連携を強要するユニ記憶の部分が衝撃を受けユニ久しぶりの記憶を粉塵に覆ったユニ涙を流して,自分が人間ではないと告白し,愛する人を守るために残るソール村内では,大騒ぎが起きています.ASR-07防犯部隊が攻撃した後,ユニ\"天空の\"で送電装置を起動し,一行列が伝説の金城である最初の空中砦に送られた.",
+      "text": "ウッドの案内に従い、一行は地下通路の出口にある古代の転送ステーションに着き、その制御中枢ASR-07と対峙する。ASR-07は侵入者に対抗するためユニの記憶部位に強制接続するが、かえって長く封じられていたユニの完全な記憶を呼び覚ましてしまう。ユニは泣きながら、自分が人間ではないこと、愛する人を守るためにソールたちのそばに留まっていたことを打ち明ける。ASR-07の防衛機甲兵を倒したあと、ユニは「空の鍵」で転送装置を起動し、一行は第一空中要塞――伝説の黄金城へと送られる。",
       "variables": []
     },
     {
@@ -55115,9 +55115,9 @@
         "file": "remake/assets/story/ch27.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ce23f725c2f5/scenes/0/label",
-      "text": "送料台にを入れましたASR-07戦闘",
+      "text": "転送ステーションの中枢ASR-07が迎え撃つ",
       "variables": []
     },
     {
@@ -55631,9 +55631,9 @@
         "file": "remake/assets/story/ch27.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ce23f725c2f5/scenes/1/label",
-      "text": "ユニ記憶が復活し,告白",
+      "text": "ユニの記憶が甦り、出自を打ち明ける",
       "variables": []
     },
     {
@@ -56195,9 +56195,9 @@
         "file": "remake/assets/story/ch27.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ce23f725c2f5/scenes/2/label",
-      "text": "海外のメディアは,日本語を広めるために",
+      "text": "空の鍵を欠いたままの別れ（分岐）",
       "variables": []
     },
     {
@@ -56615,9 +56615,9 @@
         "file": "remake/assets/story/ch27.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ce23f725c2f5/scenes/3/label",
-      "text": "黄金城の失われた道別映像 (疑いでは支部として紹介されています)ch30海外の反応",
+      "text": "付録：黄金城が消えていく別れの断片（分岐エンディングの予告か。ch30を参照）",
       "variables": []
     },
     {
@@ -56831,9 +56831,9 @@
         "file": "remake/assets/story/ch28.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/8355a97601cc/ch28/location",
-      "text": "発送者は金城の第一空軍砦に到着した.ユニこの場所では,古代人が空軍部隊を地上へ送った. 軍隊は敵が最終兵器\"闇の炎\"を発動するのを阻止するために時間を得るために,砦自衛隊に突破した.ASR-07防犯部隊が重圧を強め,砦の中心部に向かって進んだ.",
+      "text": "一行は転送によって第一空中要塞、すなわち黄金城へたどり着く。ユニは、ここが古代人が機甲兵団を地表へ送り出すための転送ステーションだと説明する。敵が最終兵器「闇の炎」を起動するのを阻む時間を稼ぐため、一行は要塞の自動防衛部隊（ASR-07と幾重もの防衛隊）の妨害を次々に突破し、要塞の中枢区域へと進んでいく。",
       "variables": []
     },
     {
@@ -56843,9 +56843,9 @@
         "file": "remake/assets/story/ch28.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/8355a97601cc/scenes/0/label",
-      "text": "ゴールドシティの初探検",
+      "text": "黄金城の初探索",
       "variables": []
     },
     {
@@ -56999,9 +56999,9 @@
         "file": "remake/assets/story/ch28.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/8355a97601cc/scenes/1/label",
-      "text": "防犯部隊を突破",
+      "text": "要塞防衛部隊を突破",
       "variables": []
     },
     {
@@ -57407,9 +57407,9 @@
         "file": "remake/assets/story/ch29.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/bc7266a893a1/ch29/location",
-      "text": "人々がユニ黄金城の中心部への潜入を誘導し,敵が手足の動きで中断システムを最終防衛状態に導くため,3つの巨龍形防御装置を目覚めさせました.ユニ中央政府は,中国軍を操縦する権限を取り戻すためには,防衛装置を破壊するために共同努力が必要だと説明しました.ユニ城の中断システムは,幕後にある主人公が使っていることを確認しました.ASR-06モンタギューユニ海外の反応ASR-07フォート・コア (Fort) の2つの核を制御する姉妹システムです.ASR-06人々の文明を破壊する意図の理由を明らかにし,30秒後に\"闇の炎\"が発動すると宣言した.マラ大陸田さん:",
+      "text": "ユニに導かれ、一行は黄金城の中枢区域へ潜入する。だが敵の細工によって中枢システムは最終防衛状態に入り、三体の巨竜型防衛装置が目を覚ます。ユニは、力を合わせて防衛装置を破壊しなければ中枢の制御権を取り戻せないと説明する。中枢を掌握したユニは、黒幕が要塞のもう一つの中枢システムASR-06――ユニ（ASR-07）と並ぶ要塞の二大制御核である姉妹システム――であることを突き止める。姿を現したASR-06は、人類文明の滅亡にこだわる理由を語り、三十秒後に「闇の炎」が起動し、標的はマラ大陸だと告げる。",
       "variables": []
     },
     {
@@ -57419,9 +57419,9 @@
         "file": "remake/assets/story/ch29.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bc7266a893a1/scenes/0/label",
-      "text": "中央システムは最終防衛状態に陥った",
+      "text": "中枢システムが最終防衛状態に入る",
       "variables": []
     },
     {
@@ -57719,9 +57719,9 @@
         "file": "remake/assets/story/ch29.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bc7266a893a1/scenes/1/label",
-      "text": "3つの巨龍防衛装置がユニ中央に奪い戻す",
+      "text": "三体の巨竜型防衛装置、ユニ中枢を奪還",
       "variables": []
     },
     {
@@ -58043,9 +58043,9 @@
         "file": "remake/assets/story/ch29.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bc7266a893a1/scenes/2/label",
-      "text": "送料無料ユニ担当者:",
+      "text": "ユニを護衛し中枢を掌握する",
       "variables": []
     },
     {
@@ -58319,9 +58319,9 @@
         "file": "remake/assets/story/ch29.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bc7266a893a1/scenes/3/label",
-      "text": "ASR-06暗闇の炎が逆勢を起こす",
+      "text": "ASR-06現る、闇の炎の起動カウントダウン",
       "variables": []
     },
     {
@@ -58643,9 +58643,9 @@
         "file": "remake/assets/story/ch29.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bc7266a893a1/scenes/4/label",
-      "text": "ユニ自殺した反逆反応炉",
+      "text": "ユニ、自らを犠牲にして原子炉を逆転させる",
       "variables": []
     },
     {
@@ -58955,9 +58955,9 @@
         "file": "remake/assets/story/ch30.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/b83b3b6f5814/ch30/location",
-      "text": "波が広がり,空気が膨張し,残りは荒れ果てた.ASR-06群衆が出てきて,地上の火の四つの神々を召集し (生物合成技術で複製された) 最後の捕獲戦を行いました.ユニメディアは,この事件の真似を明らかにした.ASR-06古代\"審判の日\"の戦いの遺跡を真似したこの城堡は,三万年もの間空の中で眠っている.ユニ人々が帰国すると約束マラ大陸黄金城は,この世界から永遠に離れることを選んだ.",
+      "text": "原子炉の過負荷による空間の歪みがまだ収まらないなか、一行は九死に一生を得る。大勢が決したと見たASR-06は、生化合成人の技術で複製した傀儡である地水風火の四魔神を呼び出し、最後の悪あがきを仕掛けるが、一行の力を合わせた反撃に敗れる。ユニは自分とASR-06（空の魔神）、そして要塞の本当の出自をすべて語る。それらは古代人の「審判の日」の戦争の遺物であり、三万年ものあいだ空でひとり眠り続けてきたのだった。危機が去ると、ユニは約束どおり一行をマラ大陸へ送り返し、自らは残ることを選び、黄金城をこの世界から永遠に連れ去る。",
       "variables": []
     },
     {
@@ -58967,9 +58967,9 @@
         "file": "remake/assets/story/ch30.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/b83b3b6f5814/scenes/0/label",
-      "text": "被害者は死亡しましたASR-064つの魔神を呼び出す",
+      "text": "九死に一生、ASR-06が四魔神を呼び最後の抵抗",
       "variables": []
     },
     {
@@ -59339,9 +59339,9 @@
         "file": "remake/assets/story/ch30.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/b83b3b6f5814/scenes/1/label",
-      "text": "4つの悪魔が戦いに集まって,一撃で死んだ",
+      "text": "四魔神そろい踏み、決死の一撃を再び",
       "variables": []
     },
     {
@@ -59759,9 +59759,9 @@
         "file": "remake/assets/story/ch30.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/b83b3b6f5814/scenes/2/label",
-      "text": "ユニ黄金都市と四つの悪魔の神についての真実",
+      "text": "ユニ、黄金城と四魔神の真相を語る",
       "variables": []
     },
     {
@@ -59915,9 +59915,9 @@
         "file": "remake/assets/story/ch30.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/b83b3b6f5814/scenes/3/label",
-      "text": "30万年の孤独を待ち,帰り道へマラ大陸",
+      "text": "三万年の孤独な守り、マラ大陸への帰路",
       "variables": []
     },
     {
@@ -60371,9 +60371,9 @@
         "file": "remake/assets/story/ch31.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/d0716167f600/ch31/location",
-      "text": "市民が安全で帰国マラ大陸幸運にも世界を守って,お互いから離れていきました.ソール黄金の都市が空に最後に現れ,永遠に消えていくのを見たときユニ劇場版は,伝統的\"名前:職業:\"レース馬灯格式で,各パートナーが戦後方向を切り替える.",
+      "text": "一行は無事にマラ大陸へ転送され、世界を守り抜けたことを喜び、別れの言葉を交わしてそれぞれの帰路に思いを馳せる。帰る途中、ソールたちは黄金城が空に最後に姿を見せ、そして永遠に消えていくのを目にし、ユニの別れの声を聞く。物語は伝統的な「名前：職業：」の流れる字幕形式で、仲間一人ひとりの戦後の行方を語って幕を閉じる。",
       "variables": []
     },
     {
@@ -60383,9 +60383,9 @@
         "file": "remake/assets/story/ch31.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/d0716167f600/scenes/0/label",
-      "text": "勝利,お互いを大切にする",
+      "text": "凱旋、互いに惜別の言葉を",
       "variables": []
     },
     {
@@ -60779,9 +60779,9 @@
         "file": "remake/assets/story/ch31.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/d0716167f600/scenes/1/label",
-      "text": "ゴールドシティの最後の別れ",
+      "text": "黄金城との最後の別れ",
       "variables": []
     },
     {
@@ -60983,9 +60983,9 @@
         "file": "remake/assets/story/ch31.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/d0716167f600/scenes/2/label",
-      "text": "フォローアップ・パートナーズ",
+      "text": "終幕：仲間たちのその後",
       "variables": []
     },
     {
@@ -61727,9 +61727,9 @@
         "file": "remake/assets/story/ch32.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/8cbcda4a2315/ch32/location",
-      "text": "ダンセ,アヒメジと関連する悪魔の役を交代し\",名前:職業:\"ランニング馬の灯光\"ガイア戦後,ドイツ軍が両機甲砲兵を撃退し,ユニ劇場版は\"少年が何年か前に生まれた\"と書かれています.ソール海外の反応ハノロッテリア郊外で少女が救われたとき,彼女は自称\",私はあなたのことを忘れていない.ユニ\"私は\"と話すための機械兵を身につけた.ガイアは,その通りです.ソール海外の反応ユニ運命を迎える始まり",
+      "text": "前章の「名前：職業：」という流れる字幕形式のナレーションを受け、悪魔族の関係者（ダークセイ、アキメージ）と、機甲兵ガイア・ウッドの戦後の行方を語り、ユニの独白で物語を締めくくる。そのあとに外伝の回想が続く。何年も前、少年時代のソールとハノはロテリア郊外で記憶を失った少女を助けた。少女は自らを「ユニ」と名乗り、そばには言葉を話す機甲兵「ガイア」がいた。ソールとユニの運命が出会った、まさにその始まりである。",
       "variables": []
     },
     {
@@ -61739,9 +61739,9 @@
         "file": "remake/assets/story/ch32.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/8cbcda4a2315/scenes/0/label",
-      "text": "悪魔と空軍との戦いの後続",
+      "text": "終幕の続き：悪魔族と機甲兵のその後",
       "variables": []
     },
     {
@@ -61895,9 +61895,9 @@
         "file": "remake/assets/story/ch32.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/8cbcda4a2315/scenes/1/label",
-      "text": "海外:剣の約束よりソール海外の反応ハノ海外の反応",
+      "text": "外伝：手合わせの約束（ソールとハノ）",
       "variables": []
     },
     {
@@ -62075,9 +62075,9 @@
         "file": "remake/assets/story/ch32.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/8cbcda4a2315/scenes/2/label",
-      "text": "郊外で少女を救った",
+      "text": "郊外で記憶を失った少女を助ける",
       "variables": []
     },
     {
@@ -62639,9 +62639,9 @@
         "file": "remake/assets/story/ch32.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/8cbcda4a2315/scenes/3/label",
-      "text": "ソール送って下さいユニ帰国する約束",
+      "text": "ソール、ユニを故郷へ送ると約束する",
       "variables": []
     },
     {
@@ -62903,9 +62903,9 @@
         "file": "remake/assets/story/ch33.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/73c4f2f23b11/ch33/location",
-      "text": "海外の反応は,ソール王は,王朝の秘密裏に父親と会いに招かれ 驚異的な決定を告げた.ソールロトリア王位継承者 (血統の兄ではない) と暗示した.ソールしかし,この国には王子の肉ではなく,養子で育った子供たちがいます.ソールキングは驚いて,彼に3日間の時間を与えました.",
+      "text": "もう一つの外伝の回想。ソールは父王に召され、王は寝所で内々に驚くべき決断を明かす。実弟ディーンではなくソールをロテリアの王位継承者に立てるというのだ。さらに王は、ソールが自分の実子ではなく、引き取って育てた子であることをほのめかす。ソールは衝撃を受け、王は三日の猶予を与える。",
       "variables": []
     },
     {
@@ -62915,9 +62915,9 @@
         "file": "remake/assets/story/ch33.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/73c4f2f23b11/scenes/0/label",
-      "text": "祖父が話してくれたことをご覧ください",
+      "text": "内々の謁見、父と子の語らい",
       "variables": []
     },
     {
@@ -63071,9 +63071,9 @@
         "file": "remake/assets/story/ch33.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/73c4f2f23b11/scenes/1/label",
-      "text": "王位継承者の衝撃的な決定",
+      "text": "王位継承をめぐる衝撃の決断",
       "variables": []
     },
     {

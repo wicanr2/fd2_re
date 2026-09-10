@@ -639,9 +639,9 @@
         "function": "reviveChurchUnit",
         "line": 4673
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4673-c23",
-      "text": "The resurrection role doesn't exist.id=%d",
+      "text": "The revive target does not exist id=%d",
       "variables": [
         "%d"
       ]
@@ -655,9 +655,9 @@
         "function": "reviveChurchUnit",
         "line": 4677
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4677-c23",
-      "text": "Recovery rates are missing.raw class=%d",
+      "text": "The revive fee table is missing raw class=%d",
       "variables": [
         "%d"
       ]
@@ -705,9 +705,9 @@
         "function": "applyHotelServiceSelection",
         "line": 4726
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4726-c23",
-      "text": "Hotel.raw selector %dInvalid",
+      "text": "Inn raw selector %d is invalid",
       "variables": [
         "%d"
       ]
@@ -721,9 +721,9 @@
         "function": "applyHotelServiceSelection",
         "line": 4731
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4731-c23",
-      "text": "Hotel.raw selector %d:%05XYeah.%05X♪ To be ♪UI calleeI'm not sure.",
+      "text": "Inn raw selector %d: %05X→%05X (UI callee pending)",
       "variables": [
         "%d",
         "%05X",
@@ -739,9 +739,9 @@
         "function": "applyHotelServiceSelection",
         "line": 4733
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4733-c23",
-      "text": "Hotel.raw selector %d:%05X♪ To be ♪UI calleeI'm not sure.",
+      "text": "Inn raw selector %d: %05X (UI callee pending)",
       "variables": [
         "%d",
         "%05X"
@@ -756,9 +756,9 @@
         "function": "ringInput",
         "line": 4832
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4832-c13",
-      "text": "Original system settings are invalid, unchanged",
+      "text": "The original system setting value is invalid; nothing was changed",
       "variables": []
     },
     {
@@ -770,9 +770,9 @@
         "function": "ringInput",
         "line": 4875
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4875-c14",
-      "text": "Original field information source incomplete. No image opened",
+      "text": "The original battlefield information source is incomplete; the screen did not open",
       "variables": []
     },
     {
@@ -784,9 +784,9 @@
         "function": "ringInput",
         "line": 4887
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4887-c14",
-      "text": "Original release confirmed asset incomplete and did not leave game",
+      "text": "Original exit confirmation assets are incomplete; the game was not left",
       "variables": []
     },
     {
@@ -798,9 +798,9 @@
         "function": "ringInput",
         "line": 4893
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4893-c14",
-      "text": "Current status file source or asset is incomplete.",
+      "text": "The original current-battle load source or assets are incomplete; keeping the current battlefield",
       "variables": []
     },
     {
@@ -812,9 +812,9 @@
         "function": "ringInput",
         "line": 4930
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4930-c14",
-      "text": "The original nest system menu box or state is incomplete",
+      "text": "Original nested system menu cells or state are incomplete",
       "variables": []
     },
     {
@@ -826,9 +826,9 @@
         "function": "ringInput",
         "line": 4941
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4941-c14",
-      "text": "OriginalENDConfirm that the asset is incomplete and has not ended the round",
+      "text": "Original END confirmation assets are incomplete; the turn did not end",
       "variables": []
     },
     {
@@ -840,9 +840,9 @@
         "function": "ringInput",
         "line": 4947
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l4947-c14",
-      "text": "The original system settings are incomplete, the menu is not open",
+      "text": "Original system setting cells are incomplete; the menu did not open",
       "variables": []
     },
     {
@@ -1008,9 +1008,9 @@
         "function": "ringInput",
         "line": 5087
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5087-c14",
-      "text": "Original command 0: Resistance data not validated",
+      "text": "Original command 0: resistance data is not verified",
       "variables": []
     },
     {
@@ -1036,9 +1036,9 @@
         "function": "ringInput",
         "line": 5096
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5096-c27",
-      "text": "Original Command%d:target gridI can't.materialize",
+      "text": "Original command %d: target grid cannot be materialized",
       "variables": [
         "%d"
       ]
@@ -1293,9 +1293,9 @@
         "function": "playerPhysicalAttackMessage",
         "line": 5981
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5981-c27",
-      "text": "Attack!",
+      "text": "Attacker",
       "variables": []
     },
     {
@@ -1307,7 +1307,7 @@
         "function": "playerPhysicalAttackMessage",
         "line": 5981
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5981-c37",
       "text": "Target",
       "variables": []
@@ -1527,9 +1527,9 @@
         "function": "confirm",
         "line": 6172
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6172-c24",
-      "text": "Original Command%d:cursor-confirm raw stateIncomplete",
+      "text": "Original command %d: cursor-confirm raw state is incomplete",
       "variables": [
         "%d"
       ]
@@ -1543,9 +1543,9 @@
         "function": "confirm",
         "line": 6182
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6182-c24",
-      "text": "Original Command%d_Other Organiser",
+      "text": "Original command %d: cursor confirmation is not legal",
       "variables": [
         "%d"
       ]
@@ -1559,9 +1559,9 @@
         "function": "confirm",
         "line": 6190
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6190-c13",
-      "text": "Original command 32: Completedindexed command damage",
+      "text": "Original command 32: indexed command damage completed",
       "variables": []
     },
     {
@@ -1573,9 +1573,9 @@
         "function": "confirm",
         "line": 6199
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6199-c25",
-      "text": "Original command 32: Select a valid target (%vI'm not sure.",
+      "text": "Original command 32: select a valid target (%v)",
       "variables": [
         "%v"
       ]
@@ -1589,9 +1589,9 @@
         "function": "confirm",
         "line": 6202
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6202-c12",
-      "text": "Original command 32:indexedThe show is in progress.",
+      "text": "Original command 32: indexed presentation in progress",
       "variables": []
     },
     {
@@ -1603,9 +1603,9 @@
         "function": "confirm",
         "line": 6210
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6210-c13",
-      "text": "Original instruction 33: CompletedindexedClear and Restore",
+      "text": "Original command 33: indexed clearing and restoration completed",
       "variables": []
     },
     {
@@ -1617,9 +1617,9 @@
         "function": "confirm",
         "line": 6219
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6219-c25",
-      "text": "Original command 33: Select a valid target (%vI'm not sure.",
+      "text": "Original command 33: select a valid target (%v)",
       "variables": [
         "%v"
       ]
@@ -1633,9 +1633,9 @@
         "function": "confirm",
         "line": 6222
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6222-c12",
-      "text": "Original instruction 33:indexedThe show is in progress.",
+      "text": "Original command 33: indexed presentation in progress",
       "variables": []
     },
     {
@@ -1647,9 +1647,9 @@
         "function": "confirm",
         "line": 6230
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6230-c13",
-      "text": "Original directive 34: 3 paragraphs completedindexed modifier",
+      "text": "Original command 34: three-stage indexed modifier completed",
       "variables": []
     },
     {
@@ -1661,9 +1661,9 @@
         "function": "confirm",
         "line": 6239
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6239-c25",
-      "text": "Original command 34: Select a valid target (%vI'm not sure.",
+      "text": "Original command 34: select a valid target (%v)",
       "variables": [
         "%v"
       ]
@@ -1677,9 +1677,9 @@
         "function": "confirm",
         "line": 6242
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6242-c12",
-      "text": "Original instruction 34:indexedThe show is in progress.",
+      "text": "Original command 34: indexed presentation in progress",
       "variables": []
     },
     {
@@ -1691,9 +1691,9 @@
         "function": "confirm",
         "line": 6250
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6250-c13",
-      "text": "Original directive 35: 3 paragraphs completedindexed application",
+      "text": "Original command 35: three-stage indexed application completed",
       "variables": []
     },
     {
@@ -1705,9 +1705,9 @@
         "function": "confirm",
         "line": 6259
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6259-c25",
-      "text": "Original command 35: Select a valid target (%vI'm not sure.",
+      "text": "Original command 35: select a valid target (%v)",
       "variables": [
         "%v"
       ]
@@ -1721,9 +1721,9 @@
         "function": "confirm",
         "line": 6262
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6262-c12",
-      "text": "Original command 35:indexedThe show is in progress.",
+      "text": "Original command 35: indexed presentation in progress",
       "variables": []
     },
     {
@@ -1735,9 +1735,9 @@
         "function": "confirm",
         "line": 6269
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6269-c25",
-      "text": "Original Command%d: Select a valid target (%1)%vI'm not sure.",
+      "text": "Original command %d: select a valid target (%v)",
       "variables": [
         "%d",
         "%v"
@@ -1752,9 +1752,9 @@
         "function": "confirm",
         "line": 6280
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6280-c25",
-      "text": "Original Command%d_Other Organiser%d",
+      "text": "Original command %d: restored %d",
       "variables": [
         "%d",
         "%d"
@@ -1769,9 +1769,9 @@
         "function": "confirm",
         "line": 6289
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6289-c25",
-      "text": "Original Command%d:indexedShow not available (%vI'm not sure.",
+      "text": "Original command %d: indexed presentation unavailable (%v)",
       "variables": [
         "%d",
         "%v"
@@ -1786,9 +1786,9 @@
         "function": "confirm",
         "line": 6297
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6297-c25",
-      "text": "Original Command%d: Select a valid target (%1)%vI'm not sure.",
+      "text": "Original command %d: select a valid target (%v)",
       "variables": [
         "%d",
         "%v"
@@ -1803,9 +1803,9 @@
         "function": "confirm",
         "line": 6316
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6316-c25",
-      "text": "Original Command%d_Other Organiserraw modifierI'm sorry.%d targetsI'm not sure.",
+      "text": "Original command %d: raw modifier completed (%d targets)",
       "variables": [
         "%d",
         "%d"
@@ -1820,9 +1820,9 @@
         "function": "confirm",
         "line": 6325
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6325-c25",
-      "text": "Original Command%d:paletteShow not available (%vI'm not sure.",
+      "text": "Original command %d: palette presentation unavailable (%v)",
       "variables": [
         "%d",
         "%v"
@@ -1837,9 +1837,9 @@
         "function": "confirm",
         "line": 6337
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6337-c25",
-      "text": "Original Command%d_Other OrganiserpaletteandindexedEnd (%2)%d targetsI'm not sure.",
+      "text": "Original command %d: palette and indexed tail stage completed (%d targets)",
       "variables": [
         "%d",
         "%d"
@@ -1854,9 +1854,9 @@
         "function": "confirm",
         "line": 6347
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6347-c25",
-      "text": "Original Command%d: Full performance not available (%vI'm not sure.",
+      "text": "Original command %d: full presentation unavailable (%v)",
       "variables": [
         "%d",
         "%v"
@@ -1871,9 +1871,9 @@
         "function": "confirm",
         "line": 6355
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6355-c26",
-      "text": "Original command 25: CompletedpaletteandindexedEnd (%2)%d targetsI'm not sure.",
+      "text": "Original command 25: palette and indexed tail stage completed (%d targets)",
       "variables": [
         "%d"
       ]
@@ -1887,9 +1887,9 @@
         "function": "confirm",
         "line": 6362
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6362-c26",
-      "text": "Original Command%d_Other OrganiserpaletteandindexedEnd (%2)%d targetsI'm not sure.",
+      "text": "Original command %d: palette and indexed tail stage completed (%d targets)",
       "variables": [
         "%d",
         "%d"
@@ -1904,9 +1904,9 @@
         "function": "confirm",
         "line": 6373
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6373-c25",
-      "text": "Original Command%d: Full performance not available (%vI'm not sure.",
+      "text": "Original command %d: full presentation unavailable (%v)",
       "variables": [
         "%d",
         "%v"
@@ -1921,9 +1921,9 @@
         "function": "confirm",
         "line": 6388
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6388-c25",
-      "text": "Original Command 24: Hurt%d",
+      "text": "Original command 24: %d damage",
       "variables": [
         "%d"
       ]
@@ -1937,9 +1937,9 @@
         "function": "confirm",
         "line": 6397
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6397-c13",
-      "text": "Original command 24:indexedShow not available (",
+      "text": "Original command 24: indexed presentation unavailable (",
       "variables": []
     },
     {
@@ -1965,9 +1965,9 @@
         "function": "confirm",
         "line": 6417
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6417-c25",
-      "text": "Original command 0: hit%dHurt.%d",
+      "text": "Original command 0: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -1982,9 +1982,9 @@
         "function": "confirm",
         "line": 6426
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6426-c13",
-      "text": "Original command 0:indexedShow not available (",
+      "text": "Original command 0: indexed presentation unavailable (",
       "variables": []
     },
     {
@@ -2010,9 +2010,9 @@
         "function": "confirm",
         "line": 6441
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6441-c25",
-      "text": "Original command 1: hit%dHurt.%d",
+      "text": "Original command 1: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -2027,9 +2027,9 @@
         "function": "confirm",
         "line": 6450
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6450-c13",
-      "text": "Original command 1:indexedShow not available (",
+      "text": "Original command 1: indexed presentation unavailable (",
       "variables": []
     },
     {
@@ -2055,9 +2055,9 @@
         "function": "confirm",
         "line": 6465
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6465-c25",
-      "text": "Original command 2: hit%dHurt.%d",
+      "text": "Original command 2: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -2072,9 +2072,9 @@
         "function": "confirm",
         "line": 6474
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6474-c13",
-      "text": "Original command 2:indexedShow not available (",
+      "text": "Original command 2: indexed presentation unavailable (",
       "variables": []
     },
     {
@@ -2100,9 +2100,9 @@
         "function": "confirm",
         "line": 6489
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6489-c25",
-      "text": "Original command 3: hit%dHurt.%d",
+      "text": "Original command 3: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -2117,9 +2117,9 @@
         "function": "confirm",
         "line": 6498
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6498-c13",
-      "text": "Original command 3:indexedShow not available (",
+      "text": "Original command 3: indexed presentation unavailable (",
       "variables": []
     },
     {
@@ -2145,9 +2145,9 @@
         "function": "confirm",
         "line": 6513
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6513-c25",
-      "text": "Original command 5: Hit%dHurt.%d",
+      "text": "Original command 5: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -2162,9 +2162,9 @@
         "function": "confirm",
         "line": 6522
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6522-c13",
-      "text": "Original command 5:indexedShow not available (",
+      "text": "Original command 5: indexed presentation unavailable (",
       "variables": []
     },
     {
@@ -2190,9 +2190,9 @@
         "function": "confirm",
         "line": 6537
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6537-c25",
-      "text": "Original command 7: Hit%dHurt.%d",
+      "text": "Original command 7: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -2207,9 +2207,9 @@
         "function": "confirm",
         "line": 6546
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6546-c13",
-      "text": "Original command 7:indexedShow not available (",
+      "text": "Original command 7: indexed presentation unavailable (",
       "variables": []
     },
     {
@@ -2235,9 +2235,9 @@
         "function": "confirm",
         "line": 6561
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6561-c25",
-      "text": "Original command 8: hit%dHurt.%d",
+      "text": "Original command 8: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -2252,9 +2252,9 @@
         "function": "confirm",
         "line": 6570
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6570-c13",
-      "text": "Original Command 8:indexedShow not available (",
+      "text": "Original command 8: indexed presentation unavailable (",
       "variables": []
     },
     {
@@ -2280,9 +2280,9 @@
         "function": "confirm",
         "line": 6585
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6585-c25",
-      "text": "Original command 9: Hit%dHurt.%d",
+      "text": "Original command 9: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -2297,9 +2297,9 @@
         "function": "confirm",
         "line": 6594
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6594-c13",
-      "text": "Original Command 9:indexedShow not available (",
+      "text": "Original command 9: indexed presentation unavailable (",
       "variables": []
     },
     {
@@ -2325,9 +2325,9 @@
         "function": "confirm",
         "line": 6609
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6609-c25",
-      "text": "Original Command%d: Hit%dHurt.%d",
+      "text": "Original command %d: %d hits, %d damage",
       "variables": [
         "%d",
         "%d",
@@ -2343,9 +2343,9 @@
         "function": "confirm",
         "line": 6618
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6618-c25",
-      "text": "Original Command%d:indexedShow not available (%vI'm not sure.",
+      "text": "Original command %d: indexed presentation unavailable (%v)",
       "variables": [
         "%d",
         "%v"
@@ -2360,9 +2360,9 @@
         "function": "confirm",
         "line": 6633
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6633-c25",
-      "text": "Original command 6: hit%dHurt.%d",
+      "text": "Original command 6: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -2377,9 +2377,9 @@
         "function": "confirm",
         "line": 6642
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6642-c13",
-      "text": "Original command 6:indexedShow not available (",
+      "text": "Original command 6: indexed presentation unavailable (",
       "variables": []
     },
     {
@@ -2405,9 +2405,9 @@
         "function": "confirm",
         "line": 6656
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6656-c25",
-      "text": "Original command 29: Hurt%d",
+      "text": "Original command 29: %d damage",
       "variables": [
         "%d"
       ]
@@ -2421,9 +2421,9 @@
         "function": "confirm",
         "line": 6665
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6665-c13",
-      "text": "Original command 29:indexedShow not available (",
+      "text": "Original command 29: indexed presentation unavailable (",
       "variables": []
     },
     {
@@ -2449,9 +2449,9 @@
         "function": "confirm",
         "line": 6681
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l6681-c24",
-      "text": "Original Command%d: Select a valid target (%1)%vI'm not sure.",
+      "text": "Original command %d: select a valid target (%v)",
       "variables": [
         "%d",
         "%v"
@@ -2508,9 +2508,9 @@
         "function": "Update",
         "line": 7241
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7241-c48",
-      "text": "Thief!",
+      "text": "Thief",
       "variables": []
     },
     {
@@ -2536,7 +2536,7 @@
         "function": "Draw",
         "line": 7618
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7618-c38",
       "text": "presentation unavailable",
       "variables": []
@@ -2550,9 +2550,9 @@
         "function": "Draw",
         "line": 7619
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7619-c34",
-      "text": "nativeCC BY-NC-ND 2.0x24336 presentation unavailable",
+      "text": "native 0x24336 presentation unavailable",
       "variables": []
     },
     {
@@ -2564,7 +2564,7 @@
         "function": "Draw",
         "line": 7629
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7629-c36",
       "text": "presentation unavailable",
       "variables": []
@@ -2578,7 +2578,7 @@
         "function": "Draw",
         "line": 7630
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7630-c34",
       "text": "native ch23 presentation unavailable",
       "variables": []
@@ -2592,7 +2592,7 @@
         "function": "Draw",
         "line": 7640
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7640-c33",
       "text": "presentation unavailable",
       "variables": []
@@ -2606,9 +2606,9 @@
         "function": "Draw",
         "line": 7641
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7641-c34",
-      "text": "nativeCC BY-NC-ND 2.0x2189A presentation unavailable",
+      "text": "native 0x2189A presentation unavailable",
       "variables": []
     },
     {
@@ -2620,7 +2620,7 @@
         "function": "Draw",
         "line": 7651
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7651-c39",
       "text": "presentation unavailable",
       "variables": []
@@ -2634,9 +2634,9 @@
         "function": "Draw",
         "line": 7652
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7652-c34",
-      "text": "nativeCC BY-NC-ND 2.0x22253 presentation unavailable",
+      "text": "native 0x22253 presentation unavailable",
       "variables": []
     },
     {
@@ -2648,7 +2648,7 @@
         "function": "Draw",
         "line": 7662
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7662-c43",
       "text": "presentation unavailable",
       "variables": []
@@ -2662,9 +2662,9 @@
         "function": "Draw",
         "line": 7663
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7663-c34",
-      "text": "nativeCC BY-NC-ND 2.0x1DB65 presentation unavailable",
+      "text": "native 0x1DB65 presentation unavailable",
       "variables": []
     },
     {
@@ -2676,7 +2676,7 @@
         "function": "Draw",
         "line": 7673
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7673-c33",
       "text": "presentation unavailable",
       "variables": []
@@ -2690,9 +2690,9 @@
         "function": "Draw",
         "line": 7674
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7674-c34",
-      "text": "nativeCC BY-NC-ND 2.0x24B4D presentation unavailable",
+      "text": "native 0x24B4D presentation unavailable",
       "variables": []
     },
     {
@@ -2704,9 +2704,9 @@
         "function": "Draw",
         "line": 7682
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7682-c33",
-      "text": "FD2RedoMVPMissingassets/(tileset.png+map.jsonI'm not sure.\nUsetoolsI'm sorry.export_engine_assets.pyGenerate\n",
+      "text": "FD2 remake MVP\nMissing assets/ (tileset.png + map.json)\nGenerate them with tools/export_engine_assets.py\n",
       "variables": []
     },
     {
@@ -2718,9 +2718,9 @@
         "function": "Draw",
         "line": 7691
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7691-c34",
-      "text": "nativeCC BY-NC-ND 2.0x24618 transition unavailable",
+      "text": "native 0x24618 transition unavailable",
       "variables": []
     },
     {
@@ -2732,9 +2732,9 @@
         "function": "Draw",
         "line": 7701
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7701-c34",
-      "text": "nativeCC BY-NC-ND 2.0x21EB1 presentation unavailable",
+      "text": "native 0x21EB1 presentation unavailable",
       "variables": []
     },
     {
@@ -2746,9 +2746,9 @@
         "function": "Draw",
         "line": 7711
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7711-c34",
-      "text": "nativeCC BY-NC-ND 2.0x1D6C8 presentation unavailable",
+      "text": "native 0x1D6C8 presentation unavailable",
       "variables": []
     },
     {
@@ -2760,7 +2760,7 @@
         "function": "Draw",
         "line": 7721
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7721-c57",
       "text": "draw unavailable",
       "variables": []
@@ -2774,7 +2774,7 @@
         "function": "Draw",
         "line": 7722
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7722-c34",
       "text": "native AI modifier presentation unavailable",
       "variables": []
@@ -2788,7 +2788,7 @@
         "function": "Draw",
         "line": 7729
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7729-c48",
       "text": "draw unavailable",
       "variables": []
@@ -2802,7 +2802,7 @@
         "function": "Draw",
         "line": 7730
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7730-c34",
       "text": "native command0 presentation unavailable",
       "variables": []
@@ -2816,7 +2816,7 @@
         "function": "Draw",
         "line": 7740
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7740-c48",
       "text": "draw unavailable",
       "variables": []
@@ -2830,7 +2830,7 @@
         "function": "Draw",
         "line": 7741
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7741-c34",
       "text": "native command6 presentation unavailable",
       "variables": []
@@ -2844,7 +2844,7 @@
         "function": "Draw",
         "line": 7751
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7751-c48",
       "text": "draw unavailable",
       "variables": []
@@ -2858,7 +2858,7 @@
         "function": "Draw",
         "line": 7752
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7752-c34",
       "text": "native command1 presentation unavailable",
       "variables": []
@@ -2872,7 +2872,7 @@
         "function": "Draw",
         "line": 7762
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7762-c48",
       "text": "draw unavailable",
       "variables": []
@@ -2886,7 +2886,7 @@
         "function": "Draw",
         "line": 7763
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7763-c34",
       "text": "native command2 presentation unavailable",
       "variables": []
@@ -2900,7 +2900,7 @@
         "function": "Draw",
         "line": 7773
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7773-c48",
       "text": "draw unavailable",
       "variables": []
@@ -2914,7 +2914,7 @@
         "function": "Draw",
         "line": 7774
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7774-c34",
       "text": "native command3 presentation unavailable",
       "variables": []
@@ -2928,7 +2928,7 @@
         "function": "Draw",
         "line": 7784
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7784-c48",
       "text": "draw unavailable",
       "variables": []
@@ -2942,7 +2942,7 @@
         "function": "Draw",
         "line": 7785
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7785-c34",
       "text": "native command5 presentation unavailable",
       "variables": []
@@ -2956,7 +2956,7 @@
         "function": "Draw",
         "line": 7795
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7795-c48",
       "text": "draw unavailable",
       "variables": []
@@ -2970,7 +2970,7 @@
         "function": "Draw",
         "line": 7796
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7796-c34",
       "text": "native command7 presentation unavailable",
       "variables": []
@@ -2984,7 +2984,7 @@
         "function": "Draw",
         "line": 7806
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7806-c48",
       "text": "draw unavailable",
       "variables": []
@@ -2998,7 +2998,7 @@
         "function": "Draw",
         "line": 7807
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7807-c34",
       "text": "native command8 presentation unavailable",
       "variables": []
@@ -3012,7 +3012,7 @@
         "function": "Draw",
         "line": 7817
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7817-c54",
       "text": "draw unavailable",
       "variables": []
@@ -3026,7 +3026,7 @@
         "function": "Draw",
         "line": 7818
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7818-c34",
       "text": "native command9 player presentation unavailable",
       "variables": []
@@ -3040,7 +3040,7 @@
         "function": "Draw",
         "line": 7828
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7828-c50",
       "text": "draw unavailable",
       "variables": []
@@ -3054,7 +3054,7 @@
         "function": "Draw",
         "line": 7829
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7829-c34",
       "text": "native command9 AI presentation unavailable",
       "variables": []
@@ -3068,7 +3068,7 @@
         "function": "Draw",
         "line": 7839
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7839-c51",
       "text": "draw unavailable",
       "variables": []
@@ -3082,7 +3082,7 @@
         "function": "Draw",
         "line": 7840
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7840-c34",
       "text": "native command10-12 presentation unavailable",
       "variables": []
@@ -3096,7 +3096,7 @@
         "function": "Draw",
         "line": 7850
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7850-c49",
       "text": "draw unavailable",
       "variables": []
@@ -3110,9 +3110,9 @@
         "function": "Draw",
         "line": 7851
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7851-c34",
-      "text": "nativeCC BY-NC-ND 2.0x276EC presentation unavailable",
+      "text": "native 0x276EC presentation unavailable",
       "variables": []
     },
     {
@@ -3124,7 +3124,7 @@
         "function": "Draw",
         "line": 7861
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7861-c49",
       "text": "draw unavailable",
       "variables": []
@@ -3138,7 +3138,7 @@
         "function": "Draw",
         "line": 7862
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7862-c34",
       "text": "native command29 presentation unavailable",
       "variables": []
@@ -3152,7 +3152,7 @@
         "function": "Draw",
         "line": 7872
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7872-c49",
       "text": "draw unavailable",
       "variables": []
@@ -3166,7 +3166,7 @@
         "function": "Draw",
         "line": 7873
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7873-c34",
       "text": "native command32 presentation unavailable",
       "variables": []
@@ -3180,7 +3180,7 @@
         "function": "Draw",
         "line": 7883
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7883-c49",
       "text": "draw input unavailable",
       "variables": []
@@ -3194,7 +3194,7 @@
         "function": "Draw",
         "line": 7890
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7890-c49",
       "text": "draw input unavailable",
       "variables": []
@@ -3208,7 +3208,7 @@
         "function": "Draw",
         "line": 7897
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7897-c49",
       "text": "draw input unavailable",
       "variables": []
@@ -3222,7 +3222,7 @@
         "function": "Draw",
         "line": 7904
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7904-c46",
       "text": "draw input unavailable",
       "variables": []
@@ -3236,7 +3236,7 @@
         "function": "Draw",
         "line": 7911
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7911-c34",
       "text": "native palette ramp unavailable",
       "variables": []
@@ -3250,9 +3250,9 @@
         "function": "Draw",
         "line": 7921
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7921-c34",
-      "text": "nativeCC BY-NC-ND 2.0x35E5A palette pulse unavailable",
+      "text": "native 0x35E5A palette pulse unavailable",
       "variables": []
     },
     {
@@ -3264,9 +3264,9 @@
         "function": "Draw",
         "line": 7931
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7931-c34",
-      "text": "nativeCC BY-NC-ND 2.0x32999 spawn-intro unavailable",
+      "text": "native 0x32999 spawn-intro unavailable",
       "variables": []
     },
     {
@@ -3278,7 +3278,7 @@
         "function": "Draw",
         "line": 7941
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7941-c34",
       "text": "native turn staging unavailable",
       "variables": []
@@ -3292,7 +3292,7 @@
         "function": "Draw",
         "line": 7951
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7951-c34",
       "text": "native event61 presentation unavailable",
       "variables": []
@@ -3306,9 +3306,9 @@
         "function": "Draw",
         "line": 7964
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7964-c16",
-      "text": "native AICC BY-NC-ND 2.0x13fd4 presentation unavailable",
+      "text": "native AI 0x13fd4 presentation unavailable",
       "variables": []
     },
     {
@@ -3320,9 +3320,9 @@
         "function": "Draw",
         "line": 7966
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l7966-c34",
-      "text": "native AICC BY-NC-ND 2.0x13fd4 presentation unavailable",
+      "text": "native AI 0x13fd4 presentation unavailable",
       "variables": []
     },
     {
@@ -3334,9 +3334,9 @@
         "function": "Draw",
         "line": 8094
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8094-c49",
-      "text": "[ Chuckles ]%d_f%dI'm sorry.%dI don't know.%dI'm not sure.d%d",
+      "text": "[%d]f%d(%d,%d)d%d",
       "variables": [
         "%d",
         "%d",
@@ -3368,9 +3368,9 @@
         "function": "Draw",
         "line": 8114
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8114-c48",
-      "text": "T%d own%d ally%d enemy%d curI'm sorry.%dI don't know.%dI'm not sure.",
+      "text": "T%d own%d ally%d enemy%d cur(%d,%d)",
       "variables": [
         "%d",
         "%d",
@@ -4086,7 +4086,7 @@
         "function": "drawCampaignUI",
         "line": 8802
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8802-c25",
       "text": "raw selector %d",
       "variables": [
@@ -4102,9 +4102,9 @@
         "function": "drawCampaignUI",
         "line": 8804
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8804-c25",
-      "text": "raw selector %dYeah.%05X",
+      "text": "raw selector %d → %05X",
       "variables": [
         "%d",
         "%05X"
@@ -5051,9 +5051,9 @@
         "function": "drawBattleScene",
         "line": 9252
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l9252-c32",
-      "text": "%sI'm sorry.frame_%02dI'm sorry.png",
+      "text": "%s/frame_%02d.png",
       "variables": [
         "%s",
         "%02d"
@@ -5130,9 +5130,9 @@
         "function": "loadGame",
         "line": 9814
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l9814-c49",
-      "text": "Master.",
+      "text": "Mage",
       "variables": []
     },
     {
@@ -5162,9 +5162,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 101
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l101-c25",
-      "text": "Original command 3: hit%dHurt.%d",
+      "text": "Original command 3: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -5179,9 +5179,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 116
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l116-c25",
-      "text": "Original command 4: hit%dHurt.%d",
+      "text": "Original command 4: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -5196,9 +5196,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 131
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l131-c25",
-      "text": "Original command 5: Hit%dHurt.%d",
+      "text": "Original command 5: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -5213,9 +5213,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 146
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l146-c25",
-      "text": "Original command 7: Hit%dHurt.%d",
+      "text": "Original command 7: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -5230,9 +5230,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 161
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l161-c25",
-      "text": "Original command 8: hit%dHurt.%d",
+      "text": "Original command 8: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -5247,9 +5247,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 176
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l176-c25",
-      "text": "Original command 9: Hit%dHurt.%d",
+      "text": "Original command 9: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -5264,9 +5264,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 186
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l186-c25",
-      "text": "Original Command%d: Complete enemyindexedPerformance",
+      "text": "Original command %d: enemy indexed presentation completed",
       "variables": [
         "%d"
       ]
@@ -5280,9 +5280,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 201
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l201-c25",
-      "text": "Original command 6: hit%dHurt.%d",
+      "text": "Original command 6: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -5297,9 +5297,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 218
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l218-c25",
-      "text": "Original Command%d_Other Organiser%d",
+      "text": "Original command %d: restored %d",
       "variables": [
         "%d",
         "%d"
@@ -5314,9 +5314,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 229
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l229-c25",
-      "text": "Original Command%d: Complete enemyindexed modifierI'm sorry.%d targetsI'm not sure.",
+      "text": "Original command %d: enemy indexed modifier completed (%d targets)",
       "variables": [
         "%d",
         "%d"
@@ -5331,9 +5331,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 236
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l236-c25",
-      "text": "Original Command%d: Complete enemyindexedEnd (%2)%d targetsI'm not sure.",
+      "text": "Original command %d: enemy indexed tail stage completed (%d targets)",
       "variables": [
         "%d",
         "%d"
@@ -5348,9 +5348,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 248
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l248-c25",
-      "text": "Original command 22: Enemies completedindexedEnd (%2)%d targetsI'm not sure.",
+      "text": "Original command 22: enemy indexed tail stage completed (%d targets)",
       "variables": [
         "%d"
       ]
@@ -5364,9 +5364,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 260
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l260-c25",
-      "text": "Original Command%d: Complete enemyindexedEnd (%2)%d targetsI'm not sure.",
+      "text": "Original command %d: enemy indexed tail stage completed (%d targets)",
       "variables": [
         "%d",
         "%d"
@@ -5381,9 +5381,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 280
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l280-c24",
-      "text": "Original items%02Xh_Other Organiser",
+      "text": "Original item %02Xh: full target-list effect completed",
       "variables": [
         "%02X"
       ]
@@ -5397,9 +5397,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 293
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l293-c23",
-      "text": "Original items%02Xh_Other Organiser",
+      "text": "Original item %02Xh: full target-list effect completed",
       "variables": [
         "%02X"
       ]
@@ -5413,9 +5413,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 56
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l56-c25",
-      "text": "Original command 0: hit%dHurt.%d",
+      "text": "Original command 0: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -5430,9 +5430,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 71
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l71-c25",
-      "text": "Original command 1: hit%dHurt.%d",
+      "text": "Original command 1: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -5447,9 +5447,9 @@
         "function": "executeNativeAIActionWithContinuation",
         "line": 86
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l86-c25",
-      "text": "Original command 2: hit%dHurt.%d",
+      "text": "Original command 2: %d hits, %d damage",
       "variables": [
         "%d",
         "%d"
@@ -5464,7 +5464,7 @@
         "function": "renderNativeBattleNameIndexed",
         "line": 59
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_battle_name.l59-c32",
       "text": "native battle name assets are unavailable",
       "variables": []
@@ -5478,7 +5478,7 @@
         "function": "renderNativeBattleNameIndexed",
         "line": 66
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_battle_name.l66-c33",
       "text": "native battle name glyph %q is unavailable",
       "variables": [
@@ -5494,7 +5494,7 @@
         "function": "renderNativeBattleNameIndexed",
         "line": 69
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_battle_name.l69-c33",
       "text": "native battle name glyph %q=%d is invalid",
       "variables": [
@@ -5511,7 +5511,7 @@
         "function": "prepareNativeCh23Draw",
         "line": 131
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ch23_post.l131-c21",
       "text": "native ch23 loop cursor is invalid",
       "variables": []
@@ -5525,9 +5525,9 @@
         "function": "prepareNativeCh23Draw",
         "line": 163
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_ch23_post.l163-c21",
-      "text": "indexed draw:%w",
+      "text": "indexed draw: %w",
       "variables": [
         "%w"
       ]
@@ -5541,9 +5541,9 @@
         "function": "handleNativeChurchStatusInput",
         "line": 128
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_church_input.l128-c13",
-      "text": "Role missing originalstatusI'm sorry.command panel provenance",
+      "text": "The unit lacks original status/command panel provenance",
       "variables": []
     },
     {
@@ -5569,9 +5569,9 @@
         "function": "applyNativeChurchTransfer",
         "line": 245
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_church_input.l245-c11",
-      "text": "Source character index invalid",
+      "text": "The source unit's item index is no longer valid",
       "variables": []
     },
     {
@@ -5583,9 +5583,9 @@
         "function": "applyNativeChurchTransfer",
         "line": 253
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_church_input.l253-c23",
-      "text": "Destination role missing original 8-byteItem column flag:%v",
+      "text": "The destination unit lacks the original 8-byte item slot flags: %v",
       "variables": [
         "%v"
       ]
@@ -5599,9 +5599,9 @@
         "function": "applyNativeChurchTransfer",
         "line": 260
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_church_input.l260-c12",
-      "text": "Could not restore original column full of hints",
+      "text": "The original item-slots-full notice cannot be reconstructed",
       "variables": []
     },
     {
@@ -5645,9 +5645,9 @@
         "function": "handleNativeChurchReviveInput",
         "line": 309
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_church_input.l309-c12",
-      "text": "Missing original recovery rate data",
+      "text": "The original revive fee data is missing",
       "variables": []
     },
     {
@@ -5659,9 +5659,9 @@
         "function": "handleNativeChurchClassInput",
         "line": 406
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_church_input.l406-c12",
-      "text": "Lack of original transfer target data",
+      "text": "The original class-change target data is missing",
       "variables": []
     },
     {
@@ -5729,9 +5729,9 @@
         "function": "stepNativeCommandModifierPresentation",
         "line": 96
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_command_modifier_presentation.l96-c11",
-      "text": "Original Commandmodifier transactionFailed:",
+      "text": "Original command modifier transaction failed: ",
       "variables": []
     },
     {
@@ -5743,9 +5743,9 @@
         "function": "beginNativeFieldEvent61",
         "line": 58
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_field_event61.l58-c11",
-      "text": "Event 61 original evidence incomplete, stopped writing",
+      "text": "Original evidence for event 61 is incomplete; event writes stopped",
       "variables": []
     },
     {
@@ -5757,9 +5757,9 @@
         "function": "beginNativeFieldEvent75",
         "line": 56
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_field_event75.l56-c11",
-      "text": "The original evidence of event 75 is incomplete and the incident has been stopped",
+      "text": "Original evidence for event 75 is incomplete; event writes stopped",
       "variables": []
     },
     {
@@ -5771,9 +5771,9 @@
         "function": "applyNativeTargetItem",
         "line": 588
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_item_panel_ui.l588-c24",
-      "text": "Items%02Xh: Original injury performance completed",
+      "text": "Item %02Xh: original damage presentation completed",
       "variables": [
         "%02X"
       ]
@@ -5849,9 +5849,9 @@
         "function": "handleNativeShopEquipInput",
         "line": 35
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_equip_ui.l35-c14",
-      "text": "Original store.equip item panelCannot Restore",
+      "text": "Original shop equip item panel cannot be reconstructed",
       "variables": []
     },
     {
@@ -5863,9 +5863,9 @@
         "function": "handleNativeShopEquipInput",
         "line": 67
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_equip_ui.l67-c12",
-      "text": "Original store.equip transactionMissingrawCollapse",
+      "text": "Original shop equip transaction is missing its raw mapping",
       "variables": []
     },
     {
@@ -5877,9 +5877,9 @@
         "function": "handleNativeShopRecipientInput",
         "line": 51
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_recipient_input.l51-c13",
-      "text": "Original purchase.recipientCursor Status Invalid",
+      "text": "The original purchase recipient cursor state is invalid",
       "variables": []
     },
     {
@@ -5891,9 +5891,9 @@
         "function": "handleNativeShopRecipientInput",
         "line": 72
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_recipient_input.l72-c15",
-      "text": "The original purchase of the column message cannot be restored.",
+      "text": "The original purchase full-slots message cannot be reconstructed",
       "variables": []
     },
     {
@@ -5905,9 +5905,9 @@
         "function": "handleNativeShopRecipientInput",
         "line": 85
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_recipient_input.l85-c14",
-      "text": "The original purchases are missing.rawData",
+      "text": "The original purchase transaction is missing raw data",
       "variables": []
     },
     {
@@ -5919,9 +5919,9 @@
         "function": "beginNativeShopTransferDestinationCancel",
         "line": 51
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_transfer_ui.l51-c12",
-      "text": "Original store.transfer source promptCannot Restore",
+      "text": "Original shop transfer source prompt cannot be reconstructed",
       "variables": []
     },
     {
@@ -5933,9 +5933,9 @@
         "function": "returnToNativeShopPurchaseList",
         "line": 1407
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1407-c11",
-      "text": "The original store list cannot be restored.",
+      "text": "The original shop item list cannot be reconstructed",
       "variables": []
     },
     {
@@ -6269,9 +6269,9 @@
         "function": "handleNativeShopInputState",
         "line": 1630
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1630-c13",
-      "text": "The original store service.production ownerNot connected yet",
+      "text": "The production owner for this original shop service is not wired yet",
       "variables": []
     },
     {
@@ -6283,9 +6283,9 @@
         "function": "handleNativeShopInputState",
         "line": 1645
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1645-c15",
-      "text": "Original store.sell rosterCannot Restore",
+      "text": "Original shop sell roster cannot be reconstructed",
       "variables": []
     },
     {
@@ -6297,9 +6297,9 @@
         "function": "handleNativeShopInputState",
         "line": 1653
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1653-c15",
-      "text": "Original store.equip rosterCannot Restore",
+      "text": "Original shop equip roster cannot be reconstructed",
       "variables": []
     },
     {
@@ -6311,9 +6311,9 @@
         "function": "handleNativeShopInputState",
         "line": 1659
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1659-c14",
-      "text": "Original store.transfer ownerCannot Restore",
+      "text": "Original shop transfer owner cannot be reconstructed",
       "variables": []
     },
     {
@@ -6325,9 +6325,9 @@
         "function": "handleNativeShopInputState",
         "line": 1700
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1700-c14",
-      "text": "Original Purchase Confirm Window Unrecoverable",
+      "text": "The original purchase confirmation window cannot be reconstructed",
       "variables": []
     },
     {
@@ -6339,9 +6339,9 @@
         "function": "handleNativeShopInputState",
         "line": 1750
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1750-c15",
-      "text": "Original purchase.recipientMissingrawOrganisation",
+      "text": "The original purchase recipient is missing raw candidate data",
       "variables": []
     },
     {
@@ -6353,9 +6353,9 @@
         "function": "handleNativeShopInputState",
         "line": 1756
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1756-c16",
-      "text": "The original purchase of inappropriate role messages cannot be restored.",
+      "text": "The original purchase no-eligible-unit message cannot be reconstructed",
       "variables": []
     },
     {
@@ -6367,9 +6367,9 @@
         "function": "handleNativeShopInputState",
         "line": 1762
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1762-c15",
-      "text": "Original purchase.recipientPanel cannot be restored",
+      "text": "The original purchase recipient panel cannot be reconstructed",
       "variables": []
     },
     {
@@ -6381,9 +6381,9 @@
         "function": "handleNativeShopInputState",
         "line": 1843
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1843-c14",
-      "text": "The original purchase was not restored.",
+      "text": "The original purchase success presentation cannot be reconstructed",
       "variables": []
     },
     {
@@ -6395,9 +6395,9 @@
         "function": "handleNativeShopInputState",
         "line": 1888
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1888-c13",
-      "text": "Originalsell inventoryMissingrawData",
+      "text": "Original sell inventory is missing raw data",
       "variables": []
     },
     {
@@ -6409,9 +6409,9 @@
         "function": "handleNativeShopInputState",
         "line": 1895
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1895-c15",
-      "text": "Originalsell emptyMessage cannot be restored",
+      "text": "Original sell empty message cannot be reconstructed",
       "variables": []
     },
     {
@@ -6423,9 +6423,9 @@
         "function": "handleNativeShopInputState",
         "line": 1902
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1902-c14",
-      "text": "Originalsell item listCannot Restore",
+      "text": "Original sell item list cannot be reconstructed",
       "variables": []
     },
     {
@@ -6437,9 +6437,9 @@
         "function": "handleNativeShopInputState",
         "line": 1956
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1956-c14",
-      "text": "Originalsell confirmationCannot Restore",
+      "text": "Original sell confirmation cannot be reconstructed",
       "variables": []
     },
     {
@@ -6451,9 +6451,9 @@
         "function": "handleNativeShopInputState",
         "line": 1994
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l1994-c14",
-      "text": "Originalsell transactionCannot Restore",
+      "text": "Original sell transaction cannot be reconstructed",
       "variables": []
     },
     {
@@ -6465,9 +6465,9 @@
         "function": "handleNativeShopInputState",
         "line": 2021
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l2021-c14",
-      "text": "Original store.transfer source promptCannot Restore",
+      "text": "Original shop transfer source prompt cannot be reconstructed",
       "variables": []
     },
     {
@@ -6479,9 +6479,9 @@
         "function": "handleNativeShopInputState",
         "line": 2062
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l2062-c14",
-      "text": "Original store.transfer destination cancelCannot Restore",
+      "text": "Original shop transfer destination cancel cannot be reconstructed",
       "variables": []
     },
     {
@@ -6493,9 +6493,9 @@
         "function": "handleNativeShopInputState",
         "line": 2076
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l2076-c15",
-      "text": "Originaltransfer source rawCollapse Inconsistent",
+      "text": "Original transfer source raw mapping is inconsistent",
       "variables": []
     },
     {
@@ -6507,9 +6507,9 @@
         "function": "handleNativeShopInputState",
         "line": 2102
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l2102-c14",
-      "text": "Originaltransfer destination flagsUnable to verify",
+      "text": "Original transfer destination flags cannot be verified",
       "variables": []
     },
     {
@@ -6521,9 +6521,9 @@
         "function": "handleNativeShopInputState",
         "line": 2116
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_shop_ui.l2116-c14",
-      "text": "Originaltransfer transactionCannot Restore",
+      "text": "Original transfer transaction cannot be reconstructed",
       "variables": []
     },
     {
@@ -6535,7 +6535,7 @@
         "function": "drawNativeSystemInfoUI",
         "line": 179
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_system_info_ui.l179-c20",
       "text": "opening",
       "variables": []
@@ -6549,7 +6549,7 @@
         "function": "drawNativeSystemInfoUI",
         "line": 181
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_system_info_ui.l181-c27",
       "text": "closing",
       "variables": []
@@ -6563,9 +6563,9 @@
         "function": "drawNativeTurnStaging",
         "line": 390
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.native_turn_staging.l390-c28",
-      "text": "pan redraw:",
+      "text": "pan redraw: ",
       "variables": []
     },
     {
@@ -6577,9 +6577,9 @@
         "function": "loadGameFromSlot",
         "line": 194
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.save.l194-c12",
-      "text": "Archivenative HUD gate ABeyond the original boolean.",
+      "text": "Save file native HUD gate A is outside the original boolean range",
       "variables": []
     },
     {
@@ -6591,9 +6591,9 @@
         "function": "loadGameFromSlot",
         "line": 211
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.save.l211-c12",
-      "text": "ArchivenativeSystem settings go beyond the original boolean range",
+      "text": "Save file native system settings are outside the original boolean range",
       "variables": []
     },
     {
@@ -6605,9 +6605,9 @@
         "function": "loadGameFromSlot",
         "line": 217
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.save.l217-c11",
-      "text": "ArchivenativeSystem Settings Invalid",
+      "text": "Save file native system settings are invalid",
       "variables": []
     },
     {
@@ -6618,9 +6618,9 @@
         "file": "remake/cmd/fd2/settings.go",
         "line": 27
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.settings.l27-c13",
-      "text": "Chinese",
+      "text": "Traditional Chinese",
       "variables": []
     },
     {
@@ -6631,9 +6631,9 @@
         "file": "remake/cmd/fd2/settings.go",
         "line": 28
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.settings.l28-c13",
-      "text": "Chinese",
+      "text": "Simplified Chinese",
       "variables": []
     },
     {
@@ -6644,7 +6644,7 @@
         "file": "remake/cmd/fd2/settings.go",
         "line": 29
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.settings.l29-c13",
       "text": "Japanese",
       "variables": []
@@ -6658,7 +6658,7 @@
         "function": "drawTitle",
         "line": 704
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l704-c7",
       "text": "cutscene",
       "variables": []
@@ -6672,7 +6672,7 @@
         "function": "drawTitle",
         "line": 711
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l711-c21",
       "text": "publisher",
       "variables": []
@@ -6686,7 +6686,7 @@
         "function": "drawTitle",
         "line": 717
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l717-c21",
       "text": "static",
       "variables": []
@@ -6700,7 +6700,7 @@
         "function": "drawTitle",
         "line": 721
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l721-c21",
       "text": "scroll",
       "variables": []
@@ -6728,7 +6728,7 @@
         "function": "drawTitle",
         "line": 735
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l735-c21",
       "text": "redfade",
       "variables": []
@@ -6742,7 +6742,7 @@
         "function": "drawTitle",
         "line": 743
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l743-c21",
       "text": "redhold",
       "variables": []
@@ -6756,7 +6756,7 @@
         "function": "drawTitle",
         "line": 745
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l745-c21",
       "text": "titlefade",
       "variables": []
@@ -6770,7 +6770,7 @@
         "function": "drawTitle",
         "line": 758
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l758-c7",
       "text": "scroll",
       "variables": []
@@ -6784,7 +6784,7 @@
         "function": "drawTitle",
         "line": 768
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.title.l768-c7",
       "text": "logozoom",
       "variables": []
@@ -14771,9 +14771,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch03/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch03.town",
-      "text": "On the way to Selah.",
+      "text": "On the Road to Sela Village",
       "variables": []
     },
     {
@@ -14855,9 +14855,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch04/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch04.town",
-      "text": "Before Sela",
+      "text": "Outside Sela Village",
       "variables": []
     },
     {
@@ -14939,9 +14939,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch05/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch05.town",
-      "text": "Sela village",
+      "text": "Sela Village",
       "variables": []
     },
     {
@@ -15023,9 +15023,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch06/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch06.town",
-      "text": "Port Pritz.",
+      "text": "Priz Port",
       "variables": []
     },
     {
@@ -15107,9 +15107,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch07/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch07.town",
-      "text": "On our way to the capital city.",
+      "text": "On the Road to the Royal Castle",
       "variables": []
     },
     {
@@ -15191,9 +15191,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch08/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch08.town",
-      "text": "The battle in front of Wang City.",
+      "text": "Battle Before the Royal Castle",
       "variables": []
     },
     {
@@ -15275,9 +15275,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch09/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch09.town",
-      "text": "A knight's choice.",
+      "text": "The Knight's Choice",
       "variables": []
     },
     {
@@ -15359,9 +15359,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch10/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch10.town",
-      "text": "War in the cave.",
+      "text": "Fierce Battle in the Cavern",
       "variables": []
     },
     {
@@ -15443,9 +15443,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch11/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch11.town",
-      "text": "Fantasy Forest",
+      "text": "The Forest of Illusions",
       "variables": []
     },
     {
@@ -15527,9 +15527,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch12/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch12.town",
-      "text": "North Mountain Road",
+      "text": "The North Mountain Road",
       "variables": []
     },
     {
@@ -15611,9 +15611,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch13/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch13.town",
-      "text": "The Battle of Hasmir.",
+      "text": "The Battle of Hasmir",
       "variables": []
     },
     {
@@ -15695,9 +15695,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch14/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch14.town",
-      "text": "The battle of the plain.",
+      "text": "Battle on the Plain",
       "variables": []
     },
     {
@@ -15779,9 +15779,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch15/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch15.town",
-      "text": "The War on Lake Lakha",
+      "text": "Fierce Battle at Lake Laka",
       "variables": []
     },
     {
@@ -15863,9 +15863,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch16/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch16.town",
-      "text": "The Cold War.",
+      "text": "Battle on the Ice Field",
       "variables": []
     },
     {
@@ -15947,9 +15947,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch17/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch17.town",
-      "text": "Blood and ice.",
+      "text": "Blade of Blood and Ice",
       "variables": []
     },
     {
@@ -16031,9 +16031,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch18/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch18.town",
-      "text": "Far across.",
+      "text": "The Distant Shore",
       "variables": []
     },
     {
@@ -16115,9 +16115,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch19/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch19.town",
-      "text": "Snipers in the dark.",
+      "text": "A Shot in the Dark",
       "variables": []
     },
     {
@@ -16199,9 +16199,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch20/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch20.town",
-      "text": "Dead silence.",
+      "text": "A Deathly Silence",
       "variables": []
     },
     {
@@ -16283,9 +16283,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch21/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch21.town",
-      "text": "Assyrian Forest",
+      "text": "Ashur Forest",
       "variables": []
     },
     {
@@ -16367,9 +16367,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch22/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch22.town",
-      "text": "It's an ancient call.",
+      "text": "The Call of the Ancients",
       "variables": []
     },
     {
@@ -16451,9 +16451,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch26/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch26.town",
-      "text": "Unknown gallery",
+      "text": "The Unknown Corridor",
       "variables": []
     },
     {
@@ -16535,9 +16535,9 @@
         "file": "remake/assets/scenarios/campaign_full.json",
         "json_pointer": "/nodes/town_ch27/town"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.campaign_full.nodes.town_ch27.town",
-      "text": "The meeting point of fate.",
+      "text": "Where Fates Meet",
       "variables": []
     },
     {
@@ -23411,9 +23411,9 @@
         "file": "remake/assets/story/ch00_meadow.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/15b3c967fb2b/ch00_meadow/location",
-      "text": "The lawn on the outskirts of Rotedia.SoleInvitationAresThe sword was turned down. The two men found out they were unconscious.YuniWith the men on guard.Gaia;YuniMemories. I just remember myself from far away.Mara ContinentI don't know.SoleShe decided to send her home.AresOne time, after opposing, he agreed to join.",
+      "text": "A meadow outside Rotedia. Sol invites Ares to spar and is turned down; then the two find Yuni lying unconscious with the mech soldier Gaia standing guard over her. Yuni has lost her memory and recalls only that she comes from the distant Mara Continent. Sol resolves to take her home; Ares objects at first, then agrees to come along.",
       "variables": []
     },
     {
@@ -24431,9 +24431,9 @@
         "file": "remake/assets/story/ch00_palace.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/ae86adb52dac/ch00_palace/location",
-      "text": "The Royal City of Rottia.SoleI've seen my father and Queen, and I've been told that the throne will succeed, that it will not succeed, and that it will fall upon the throne.AresIt's not like I'm alone.",
+      "text": "The great hall of Rotedia Castle. Sol comes before his father, who sits on the twin thrones beside the queen, and is told of the plan to make him heir. His refusal is not accepted, and after withdrawing he is found brooding alone in a corner of the castle by Ares.",
       "variables": []
     },
     {
@@ -24443,9 +24443,9 @@
         "file": "remake/assets/story/ch00_palace.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ae86adb52dac/scenes/0/label",
-      "text": "The Queen's Hall.",
+      "text": "The Throne Room; Passing On the Crown",
       "variables": []
     },
     {
@@ -24911,9 +24911,9 @@
         "file": "remake/assets/story/ch00_palace.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ae86adb52dac/scenes/1/label",
-      "text": "The city of kings.AresSee you.",
+      "text": "A Corner of the Castle; Ares Comes Upon Him",
       "variables": []
     },
     {
@@ -27755,9 +27755,9 @@
         "file": "remake/assets/story/ch02.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/5bf145f103fe/scenes/1/label",
-      "text": "In battle, the bandits split up.",
+      "text": "Mid-Battle: the Bandits Split in Two",
       "variables": []
     },
     {
@@ -28055,9 +28055,9 @@
         "file": "remake/assets/story/ch02.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/5bf145f103fe/scenes/2/label",
-      "text": "Celia is here.",
+      "text": "Celia Appears",
       "variables": []
     },
     {
@@ -28619,9 +28619,9 @@
         "file": "remake/assets/story/ch02.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/5bf145f103fe/scenes/3/label",
-      "text": "The battle was short.",
+      "text": "Short Line on Taking a Hit in Battle",
       "variables": []
     },
     {
@@ -28787,9 +28787,9 @@
         "file": "remake/assets/story/ch03.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/cac6c4f06aba/ch03/location",
-      "text": "To the village of Serra, known for its medical effects.YuniMemories. In the course of his journey, he saved Tenor, who was hunted down.",
+      "text": "The party heads for Sela Village, famous for its healing arts — its priests' magic is said to be able to cure Yuni's amnesia. On the way they rescue Tino, who is being hunted down.",
       "variables": []
     },
     {
@@ -29759,9 +29759,9 @@
         "file": "remake/assets/story/ch04.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/750623f119b8/ch04/location",
-      "text": "Celia took a shortcut to the village of Sera, where she was ambushed by the gang of the thief leopards. The passers-by dragons of Barna Rocía, St. Colás, and others, have been deterred by their companions' \"obsession\" when they see their desire to hunt.",
+      "text": "Celia leads the party along a shortcut to Sela Village, where they are ambushed by the henchmen of the bandit \"Panther\". Banalosia, Saint Colas and other dragonkin passing by are eager to join the fun, but their companion \"Evil\" scares them off the idea.",
       "variables": []
     },
     {
@@ -29867,9 +29867,9 @@
         "file": "remake/assets/story/ch04.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/750623f119b8/scenes/1/label",
-      "text": "Road hit.",
+      "text": "Ambushed on the Byway",
       "variables": []
     },
     {
@@ -29999,9 +29999,9 @@
         "file": "remake/assets/story/ch04.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/750623f119b8/scenes/2/label",
-      "text": "The dragons look at it.",
+      "text": "The Dragonkin Enjoy the Show",
       "variables": []
     },
     {
@@ -30299,9 +30299,9 @@
         "file": "remake/assets/story/ch05.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/ba1dd3abcf8e/ch05/location",
-      "text": "The thief's leader, \"Arrow\", led the attack on the village of Sera, and Marin and the regular army of the Kingdom requested help. The team helped to fight back the thieves, but learned that magic could not heal.YuniIllustrated to visit Jonah, a well-wished man in the south of Priz, and Marlene and Celia decided to go with him.",
+      "text": "The bandit leader \"Arrow\" storms Sela Village at the head of his band, and both Marlin and the kingdom's regular army call for help. The party joins the fight and drives the bandits off, only to learn that divine magic cannot cure Yuni's amnesia. They turn south to Priz Port in search of the sage Jonah, and Marlin and Celia decide to come along.",
       "variables": []
     },
     {
@@ -30311,9 +30311,9 @@
         "file": "remake/assets/story/ch05.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ba1dd3abcf8e/scenes/0/label",
-      "text": "The thief is surrounded.",
+      "text": "The Bandits Lay Siege",
       "variables": []
     },
     {
@@ -30467,9 +30467,9 @@
         "file": "remake/assets/story/ch05.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ba1dd3abcf8e/scenes/1/label",
-      "text": "Join the battle.",
+      "text": "The Party Joins the Battle",
       "variables": []
     },
     {
@@ -30719,9 +30719,9 @@
         "file": "remake/assets/story/ch05.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ba1dd3abcf8e/scenes/2/label",
-      "text": "The Royal Army is fighting.",
+      "text": "The Kingdom's Regular Army Joins the Battle",
       "variables": []
     },
     {
@@ -30803,9 +30803,9 @@
         "file": "remake/assets/story/ch05.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ba1dd3abcf8e/scenes/3/label",
-      "text": "The dragons are watching.",
+      "text": "The Dragonkin Gather to Watch",
       "variables": []
     },
     {
@@ -30959,9 +30959,9 @@
         "file": "remake/assets/story/ch05.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ba1dd3abcf8e/scenes/4/label",
-      "text": "The thief is defeated.",
+      "text": "The Bandits Are Driven Back",
       "variables": []
     },
     {
@@ -30995,9 +30995,9 @@
         "file": "remake/assets/story/ch05.json",
         "json_pointer": "/scenes/5/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ba1dd3abcf8e/scenes/5/label",
-      "text": "Marlene, thank you. The truth about amnesia.",
+      "text": "Marlin's Thanks, and the Truth About the Amnesia",
       "variables": []
     },
     {
@@ -31535,9 +31535,9 @@
         "file": "remake/assets/story/ch06.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/84d776017867/ch06/location",
-      "text": "The team is looking for a good man, Jonah, in the port of Prizren. To protect the guards, Eddie Charlings, and the Royal Army from a clash, Beckwell helped to defuse the incident and announced that Jonah had left Hong Kong to investigate the disappearance.",
+      "text": "The party looks for the sage Jonah at Priz Port without finding him, and is questioned by a kingdom patrol instead. Protecting their escort — the wanted man Eddie Salins — brings them into a clash with the kingdom troops, which Beckway helps defuse. They learn that Jonah has already left the port to look into a string of disappearances, and agree to meet again at the royal castle.",
       "variables": []
     },
     {
@@ -31571,9 +31571,9 @@
         "file": "remake/assets/story/ch06.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/84d776017867/scenes/1/label",
-      "text": "Patrol.",
+      "text": "Stopped by the Patrol",
       "variables": []
     },
     {
@@ -31775,9 +31775,9 @@
         "file": "remake/assets/story/ch06.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/84d776017867/scenes/3/label",
-      "text": "Guards fight.",
+      "text": "A Quarrel Among the Escorts",
       "variables": []
     },
     {
@@ -32003,9 +32003,9 @@
         "file": "remake/assets/story/ch06.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/84d776017867/scenes/4/label",
-      "text": "Lettin come out.",
+      "text": "Raiden Steps Forward",
       "variables": []
     },
     {
@@ -32351,9 +32351,9 @@
         "file": "remake/assets/story/ch06.json",
         "json_pointer": "/scenes/6/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/84d776017867/scenes/6/label",
-      "text": "Beckwell clears up.",
+      "text": "Beckway Defuses the Standoff",
       "variables": []
     },
     {
@@ -32867,9 +32867,9 @@
         "file": "remake/assets/story/ch07.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/e82bb0feed5c/ch07/location",
-      "text": "On their way to the capital city, they were stopped by the Royal Guards and helped the young girl, Kelly, who was surrounded by soldiers. Kelly joined the team and the people decided to break into King's City and ask for clarification.",
+      "text": "On the road to the royal castle the party is stopped by the kingdom garrison, and then steps in to help Kelly, a young woman surrounded by soldiers. Kelly joins them, and they decide to march straight to the castle for answers.",
       "variables": []
     },
     {
@@ -32927,9 +32927,9 @@
         "file": "remake/assets/story/ch07.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/e82bb0feed5c/scenes/1/label",
-      "text": "The Royal Army intercepts.",
+      "text": "Intercepted by the Kingdom Army",
       "variables": []
     },
     {
@@ -33083,9 +33083,9 @@
         "file": "remake/assets/story/ch07.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/e82bb0feed5c/scenes/2/label",
-      "text": "Kelly was attacked.",
+      "text": "Kelly Under Attack",
       "variables": []
     },
     {
@@ -33383,9 +33383,9 @@
         "file": "remake/assets/story/ch07.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/e82bb0feed5c/scenes/4/label",
-      "text": "Kelly's in.",
+      "text": "Kelly Joins",
       "variables": []
     },
     {
@@ -33695,9 +33695,9 @@
         "file": "remake/assets/story/ch08.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/33476e2c304d/ch08/location",
-      "text": "The team arrived in King Axe City and was surrounded by the commander-in-chief. The Queen's Queen, The Lady's Tears, appeared to reveal that she was the princess of the king's kingdom; the captain was still under the command of the king, and Lorna of the Scarlett family stood up to protect the princess and killed the captain and followed her to the city.",
+      "text": "The party reaches Axus Castle and is surrounded by the garrison captain and his troops. Celia produces the queen's token, the \"Tear of the Goddess\", revealing that she is the princess of Axus; the captain presses the attack anyway under royal orders. Lorna of House Scardi steps forward to protect the princess and cuts the captain down, and the party enters the castle with her.",
       "variables": []
     },
     {
@@ -33779,9 +33779,9 @@
         "file": "remake/assets/story/ch08.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/33476e2c304d/scenes/1/label",
-      "text": "Captain, intercept.",
+      "text": "The Captain Stops Them; the Token Is Shown",
       "variables": []
     },
     {
@@ -34079,9 +34079,9 @@
         "file": "remake/assets/story/ch08.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/33476e2c304d/scenes/2/label",
-      "text": "Lorna stood up to the master.",
+      "text": "Lorna Stands to Protect Her Lady",
       "variables": []
     },
     {
@@ -34163,9 +34163,9 @@
         "file": "remake/assets/story/ch08.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/33476e2c304d/scenes/3/label",
-      "text": "Princess into the city.",
+      "text": "The Princess Enters the Castle",
       "variables": []
     },
     {
@@ -34379,9 +34379,9 @@
         "file": "remake/assets/story/ch09.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/725efc540ee1/ch09/location",
-      "text": "The team arrived in King Axe City and was intercepted and arrested by the commander of the forbidden army, Laedin, who mistakenly identified them as suspects in the assassination of the King. After the fight, there was a change in the court — the assassins attacked the king's palace nightly, and Grey, the leader of the security forces, took advantage of the king's orders to give orders; Ladine found herself deceived by Grey and joined the team to escort the princess to King's city, but on the way he heard that Grey had been assassinated.",
+      "text": "The party reaches Axus Castle and is stopped and arrested by Raiden, captain of the royal guard, who takes them for the king's would-be assassins. After they cross swords, Raiden explains what has happened at court: assassins struck the king's bedchamber by night, and Grey, commander of the royal guard, has been issuing orders in the king's name ever since. Realizing Grey has deceived him, Raiden changes sides and escorts the princess into the castle with the party — and word arrives on the way that Grey has been assassinated.",
       "variables": []
     },
     {
@@ -34439,9 +34439,9 @@
         "file": "remake/assets/story/ch09.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/725efc540ee1/scenes/1/label",
-      "text": "Laedin intercepts.",
+      "text": "Raiden Stops Them and Doubts the Princess's Identity",
       "variables": []
     },
     {
@@ -34571,9 +34571,9 @@
         "file": "remake/assets/story/ch09.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/725efc540ee1/scenes/2/label",
-      "text": "The court has changed the truth.",
+      "text": "The Truth Behind the Upheaval at Court",
       "variables": []
     },
     {
@@ -34847,9 +34847,9 @@
         "file": "remake/assets/story/ch09.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/725efc540ee1/scenes/3/label",
-      "text": "YProsecution. Lettin's go.",
+      "text": "Y Accuses; Raiden Changes Sides",
       "variables": []
     },
     {
@@ -35099,9 +35099,9 @@
         "file": "remake/assets/story/ch09.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/725efc540ee1/scenes/4/label",
-      "text": "Gray was killed.",
+      "text": "Grey Is Murdered",
       "variables": []
     },
     {
@@ -35243,9 +35243,9 @@
         "file": "remake/assets/story/ch10.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/29aac3e465f0/ch10/location",
-      "text": "Laedin found out that the SS leader Grey had conspired against the enemy, kidnapped King Kanaan III, who intended to be king and followed the line to find the cave behind the waterfall. People defeated Sophia, who was guarding the cave, and rescued the king, and learned that the enemy was the King's family, to Bo's gold medal. The king promised to lend the gold medallion to Jonah, and he agreed that Celia and Hilfa would go with them to investigate the plot.",
+      "text": "Raiden uncovers that Grey, commander of the royal guard, has been working with the enemy and has abducted King Canaan III in order to take the throne himself; the trail leads to a cavern behind a waterfall. The party defeats Sophia, who guards it, and rescues the king, learning that the enemy is after the royal treasure, the \"Golden Emblem\". The king agrees to lend the emblem to the sage Jonah and lets Celia and Sylpha travel with the party to investigate the plot.",
       "variables": []
     },
     {
@@ -35255,9 +35255,9 @@
         "file": "remake/assets/story/ch10.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/29aac3e465f0/scenes/0/label",
-      "text": "The cave truth.",
+      "text": "The Truth in the Cavern",
       "variables": []
     },
     {
@@ -35411,9 +35411,9 @@
         "file": "remake/assets/story/ch10.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/29aac3e465f0/scenes/1/label",
-      "text": "Sophia's on guard. Fight.",
+      "text": "Sophia Stands Guard; Blades Are Crossed",
       "variables": []
     },
     {
@@ -35687,9 +35687,9 @@
         "file": "remake/assets/story/ch10.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/29aac3e465f0/scenes/2/label",
-      "text": "The mystery of the gold medal.",
+      "text": "The Riddle of the Golden Emblem",
       "variables": []
     },
     {
@@ -36251,9 +36251,9 @@
         "file": "remake/assets/story/ch10.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/29aac3e465f0/scenes/3/label",
-      "text": "Celia, please.",
+      "text": "Celia Asks to Come Along",
       "variables": []
     },
     {
@@ -36659,9 +36659,9 @@
         "file": "remake/assets/story/ch11.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/74e73fb07ccb/ch11/location",
-      "text": "The team followed Sofia's north track of Jonah and was attacked by the Orcs in the area of the Alf Forest (formerly known as the mist forest). Bekwich played with his companions when he met the children of the elves and joined forces against the orcs who tried to steal the treasures of the elders of the elves. Sun is willing to join the team with Beckwell's advice.",
+      "text": "The party travels north with Sophia on Jonah's trail and is attacked by orcs around Elf Forest, once known as the \"Misty Forest\". Beckway runs into Shan, an elf and his childhood playmate, and together they drive off the orcs trying to seize the elven elders' treasure vault. Over Beckway's objections, Shan insists on joining the party.",
       "variables": []
     },
     {
@@ -36671,9 +36671,9 @@
         "file": "remake/assets/story/ch11.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/74e73fb07ccb/scenes/0/label",
-      "text": "North looking for Jonah. Looks like he's lost.",
+      "text": "North in Search of Jonah, and Seemingly Lost",
       "variables": []
     },
     {
@@ -36779,9 +36779,9 @@
         "file": "remake/assets/story/ch11.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/74e73fb07ccb/scenes/1/label",
-      "text": "The forest has run into the Orcs.",
+      "text": "Orcs in the Forest",
       "variables": []
     },
     {
@@ -36935,9 +36935,9 @@
         "file": "remake/assets/story/ch11.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/74e73fb07ccb/scenes/2/label",
-      "text": "We'll be able to protect the treasure.",
+      "text": "Meeting the Elf Shan, and Guarding the Treasure Together",
       "variables": []
     },
     {
@@ -37307,9 +37307,9 @@
         "file": "remake/assets/story/ch11.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/74e73fb07ccb/scenes/3/label",
-      "text": "Get rid of the Orc. Sun wants to join the team.",
+      "text": "Driving Off the Orcs; Shan Insists on Joining",
       "variables": []
     },
     {
@@ -37619,9 +37619,9 @@
         "file": "remake/assets/story/ch12.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/3b87cf227f66/ch12/location",
-      "text": "The team rescued the dragon, Miasdod, who was surrounded by the Orcs, on the road to Hasmir, the town of the forest elves. Miastodek said that last night he heard a plot by the Orcs to attack Hasmir, the capital of Elf, and that people were rushing to rescue.",
+      "text": "On the mountain road to Hasmir, the elven town in the northern forest, the party rescues the dragonkin Miasdord from a band of orcs. Miasdord admits that the night before he overheard orc troops plotting an attack on the elven capital of Hasmir, and the party sets off at once to help.",
       "variables": []
     },
     {
@@ -37679,9 +37679,9 @@
         "file": "remake/assets/story/ch12.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/3b87cf227f66/scenes/1/label",
-      "text": "Miastoder, help!",
+      "text": "Miasdord Calls for Help",
       "variables": []
     },
     {
@@ -37907,9 +37907,9 @@
         "file": "remake/assets/story/ch12.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/3b87cf227f66/scenes/2/label",
-      "text": "Fight back the Orc and save Miastoder.",
+      "text": "Driving Off the Orcs and Rescuing Miasdord",
       "variables": []
     },
     {
@@ -37967,9 +37967,9 @@
         "file": "remake/assets/story/ch12.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/3b87cf227f66/scenes/3/label",
-      "text": "The secret of Miastod: the Orcs will attack the City of Elf.",
+      "text": "Miasdord's Secret: the Orc Host Will Strike the Elven City",
       "variables": []
     },
     {
@@ -38231,9 +38231,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/2931e1ff899c/ch13/location",
-      "text": "By the time the team arrived in Hasmir, the elves had withdrawn their inhabitants and only the remaining soldiers had died fighting against the Orcs.HanoFather.HowardDad just happened to come and join the war. When the Orcs were defeated, the elf thanked them and told them that the Orcs were still in the Rami plain, and they decided to strike first. It was only after the war that the elves had all died, and before the end of their lives, an elf elders entrusted important treasures to them.SoleI don't know.",
+      "text": "By the time the party reaches Hasmir the elves have evacuated their people, and only warriors remain to hold the line against the orc host. Hano's father, old Hawat, happens to be visiting and joins the fight. After the orcs are driven back, the elf Mi thanks the party and tells them the main orc force is still camped on Randy Plain, so they decide to strike first. Only after the battle do they learn that the elves have all perished; an elven elder entrusts an important treasure to Sol with his dying breath.",
       "variables": []
     },
     {
@@ -38243,9 +38243,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/2931e1ff899c/scenes/0/label",
-      "text": "We're late.",
+      "text": "A Step Too Late; Saving the Treasure Chest",
       "variables": []
     },
     {
@@ -38399,9 +38399,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/2931e1ff899c/scenes/1/label",
-      "text": "HowardDad's in the war.",
+      "text": "Old Hawat Joins the Fight",
       "variables": []
     },
     {
@@ -38603,9 +38603,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/2931e1ff899c/scenes/2/label",
-      "text": "Blood versus Spirit.",
+      "text": "A Bloody Battle for the Elven City",
       "variables": []
     },
     {
@@ -38759,9 +38759,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/2931e1ff899c/scenes/3/label",
-      "text": "Thank you, elf.",
+      "text": "The Elf Mi Gives Thanks; the Orc Host's Movements",
       "variables": []
     },
     {
@@ -38915,9 +38915,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/2931e1ff899c/scenes/4/label",
-      "text": "The deal is to pre-empt.",
+      "text": "Planning to Strike First",
       "variables": []
     },
     {
@@ -39071,9 +39071,9 @@
         "file": "remake/assets/story/ch13.json",
         "json_pointer": "/scenes/5/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/2931e1ff899c/scenes/5/label",
-      "text": "The Grims are extinct. The treasure is entrusted.",
+      "text": "The Elves Wiped Out; a Secret Treasure Entrusted",
       "variables": []
     },
     {
@@ -39191,9 +39191,9 @@
         "file": "remake/assets/story/ch14.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/f95eacdc314e/ch14/location",
-      "text": "The team found an Orc unit resting, approaching the night and raiding. After questioning the prisoners, it became clear to them that the Orc leader Saka had ordered the attack on Hasmir, the Elf capital, for treasures, while Saka himself led another group to attack the Panthers on Lake Raqqah. It was decided to go to Lake Raqqah first.",
+      "text": "The party spots an orc force at rest, closes in under cover of night and attacks. Questioning the prisoners, they learn that the orc chieftain Saka ordered the assault on the elven capital of Hasmir to seize a treasure, while Saka himself led another force to Lake Laka to attack the leopard folk. The party decides to go to Lake Laka first.",
       "variables": []
     },
     {
@@ -39203,9 +39203,9 @@
         "file": "remake/assets/story/ch14.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/f95eacdc314e/scenes/0/label",
-      "text": "Night assault on the Orcs, interrogation of prisoners.",
+      "text": "Night Raid on the Orc Army; Questioning the Prisoners",
       "variables": []
     },
     {
@@ -39647,9 +39647,9 @@
         "file": "remake/assets/story/ch14.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/f95eacdc314e/scenes/1/label",
-      "text": "The team discussed the plot and decided to support the leopards.",
+      "text": "The Party Debates the Plot and Decides to Aid the Leopard Folk",
       "variables": []
     },
     {
@@ -39839,9 +39839,9 @@
         "file": "remake/assets/story/ch15.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/f90f51692adf/ch15/location",
-      "text": "The team arrived at Lake Raqqah and saw the Orcs encircling the Panthers. Kelly happened to have a long-lost senior brother, Saikbong, who was immediately assisted. After defeating the Orc Kairas, a group of Orcs carrying the Eyestones broke into battle and fled. In addition to the thanks of the leopards, there were revelations that the black hands were manipulating the Orcs and the Warlords, the elves and the leopards.",
+      "text": "The party reaches Lake Laka to find an orc host besieging the leopard folk, and Kelly meets her long-lost senior fellow disciple Secobonler. They join the fight at once. After the orc swordsman Kylas is defeated, orc couriers carrying a \"Demon Eye Gem\" blunder into the battlefield and flee in a panic. Sai of the leopard folk gives his thanks and reveals that someone behind the scenes is using the orcs and berserkers to wipe out both the elves and the leopard folk, and that their followers are gathering on the northern ice isle. The party decides to travel that way and look into it.",
       "variables": []
     },
     {
@@ -39851,9 +39851,9 @@
         "file": "remake/assets/story/ch15.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/f90f51692adf/scenes/0/label",
-      "text": "Kali happened to meet Secoboro.",
+      "text": "Kelly Meets Her Senior Disciple Secobonler",
       "variables": []
     },
     {
@@ -40175,9 +40175,9 @@
         "file": "remake/assets/story/ch15.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/f90f51692adf/scenes/1/label",
-      "text": "Another way to help:HowardA team of helpers.",
+      "text": "Alternate relief: Hawat and Company Aid the Leopard Folk",
       "variables": []
     },
     {
@@ -40403,9 +40403,9 @@
         "file": "remake/assets/story/ch15.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/f90f51692adf/scenes/2/label",
-      "text": "Fight for Kairas, the messenger of the treasure is trespassing.",
+      "text": "Showdown with Kylas; Treasure Couriers Blunder In",
       "variables": []
     },
     {
@@ -40727,9 +40727,9 @@
         "file": "remake/assets/story/ch15.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/f90f51692adf/scenes/3/label",
-      "text": "The mystery of the jewels of the Eye.",
+      "text": "The Riddle of the Demon Eye Gem",
       "variables": []
     },
     {
@@ -40859,9 +40859,9 @@
         "file": "remake/assets/story/ch15.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/f90f51692adf/scenes/4/label",
-      "text": "Kerry Line: Thank you for the conspiracy.",
+      "text": "Kelly branch: Sai Gives Thanks, and the Plot Is Revealed",
       "variables": []
     },
     {
@@ -41159,9 +41159,9 @@
         "file": "remake/assets/story/ch15.json",
         "json_pointer": "/scenes/5/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/f90f51692adf/scenes/5/label",
-      "text": "Another route: Beckwell's response to the conspiracy.",
+      "text": "Alternate branch: Beckway Answers Sai, and the Plot Is Revealed",
       "variables": []
     },
     {
@@ -41471,9 +41471,9 @@
         "file": "remake/assets/story/ch16.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/a24ca0f9187e/ch16/location",
-      "text": "The team arrived in the cold north, where Secobonler and his friend, Sword, met again. Maddy is proud.SoleThere's a big deal going on. There's a fight between the two sides. Mitti's got the team on the line.SoleIn the end, the government decided to join the team and lead you to the northern island of Ace.",
+      "text": "The party arrives in the frozen north, where Secobonler is reunited with his friend, the sword saint Mitty. Mitty's haughty manner annoys Sol, and the two fight it out; impressed by how well the party works together and won over by Sol's spirit, Mitty decides to join them and lead them to Ais Island in the north.",
       "variables": []
     },
     {
@@ -41483,9 +41483,9 @@
         "file": "remake/assets/story/ch16.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/a24ca0f9187e/scenes/0/label",
-      "text": "It's freezing in the north.",
+      "text": "The Frozen North; Reunion with Sword Saint Mitty",
       "variables": []
     },
     {
@@ -41879,9 +41879,9 @@
         "file": "remake/assets/story/ch16.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/a24ca0f9187e/scenes/1/label",
-      "text": "Fighter. Mitty's got the team.",
+      "text": "A Hard-Fought Duel; Mitty Admires Their Teamwork",
       "variables": []
     },
     {
@@ -42479,9 +42479,9 @@
         "file": "remake/assets/story/ch17.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/bafc75c19a8d/ch17/location",
-      "text": "On the northern island of Iceland, Midydén, people found the great armies of Orcs, Dark Warriors and others gathered here. In the wake of the defeat of the Ice God, Kailas returned to his mind, saying that he had come to investigate at the behest of the Dragon King, Saint-Colas, and was exploited by captives. Mitty then left the team to follow up, and Kairas joined the team.",
+      "text": "The party lands with Mitty on the northern ice isle and finds orcs, dark warriors and other forces massing there. They face the dragonkin swordsman Kylas, who is under an evil power's control; once the \"Ice Demon God\" is defeated Kylas comes to his senses and explains that he came to investigate on the orders of Saint Colas, king of the dragonkin, only to be captured and used. Mitty leaves the party here to continue her own inquiry, and Kylas joins them instead.",
       "variables": []
     },
     {
@@ -42491,9 +42491,9 @@
         "file": "remake/assets/story/ch17.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bafc75c19a8d/scenes/0/label",
-      "text": "Landing on Iceland.",
+      "text": "Landing on the Ice Isle and Finding an Army Massing",
       "variables": []
     },
     {
@@ -42671,9 +42671,9 @@
         "file": "remake/assets/story/ch17.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bafc75c19a8d/scenes/1/label",
-      "text": "Keiras, who is being manipulated.",
+      "text": "Showdown with the Controlled Kylas",
       "variables": []
     },
     {
@@ -42923,9 +42923,9 @@
         "file": "remake/assets/story/ch17.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bafc75c19a8d/scenes/2/label",
-      "text": "♪ Ice-Eyed jewels and demon-eyed mystery ♪",
+      "text": "The Ice Eye Gem and the Riddle of the Demon Eye",
       "variables": []
     },
     {
@@ -43055,9 +43055,9 @@
         "file": "remake/assets/story/ch17.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bafc75c19a8d/scenes/3/label",
-      "text": "Mitty says good-bye. Say goodbye to Jonah the Goodman.",
+      "text": "Mitty Says Goodbye; Talk Returns to the Sage Jonah",
       "variables": []
     },
     {
@@ -43163,9 +43163,9 @@
         "file": "remake/assets/story/ch17.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bafc75c19a8d/scenes/4/label",
-      "text": "Kairas is awake.",
+      "text": "Kylas Comes to His Senses and Tells His Story",
       "variables": []
     },
     {
@@ -43715,9 +43715,9 @@
         "file": "remake/assets/story/ch18.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/e21a32c956d7/ch18/location",
-      "text": "On the bridge in the mountains, the team ran into a well-known man, Jonah, who was immediately attacked by the Dark mercenary \"Death\" to take Jonah's life. In the middle of the war, Kairas and Miastod were unfortunately given their lives, and they joined forces to repel the enemy's reinforcements. Jonah can't heal.YuniIgnorance, but after the promise day, I found out where she was.SoleIt was decided to continue to take risks with peer advice.",
+      "text": "On a suspension bridge high in the mountains the party runs into the sage Jonah and his companions, and the dark mercenary band \"Death's Skull\" attacks at once, out for Jonah's life. Kylas and Miasdord fall in the fighting, and the party drives off the enemy reinforcements together. Jonah cannot cure Yuni's amnesia, but promises to uncover her origins in time; urged on by his companions, Sol decides to carry on with the journey.",
       "variables": []
     },
     {
@@ -43727,9 +43727,9 @@
         "file": "remake/assets/story/ch18.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/e21a32c956d7/scenes/0/label",
-      "text": "It's a strange bridge. It's Jonah.",
+      "text": "An Encounter on the Bridge; Meeting the Sage Jonah",
       "variables": []
     },
     {
@@ -44003,9 +44003,9 @@
         "file": "remake/assets/story/ch18.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/e21a32c956d7/scenes/1/label",
-      "text": "The Death Dealers raid.",
+      "text": "The Death's Skull Mercenaries Strike",
       "variables": []
     },
     {
@@ -44327,9 +44327,9 @@
         "file": "remake/assets/story/ch18.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/e21a32c956d7/scenes/2/label",
-      "text": "A bloodbath.",
+      "text": "A Bloody, Bitter Fight; Kylas and Miasdord Give Their Lives",
       "variables": []
     },
     {
@@ -44507,9 +44507,9 @@
         "file": "remake/assets/story/ch18.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/e21a32c956d7/scenes/3/label",
-      "text": "Jonah, talk to you.YuniBorn.",
+      "text": "Jonah Is Introduced and Asks About Yuni's Origins",
       "variables": []
     },
     {
@@ -44759,9 +44759,9 @@
         "file": "remake/assets/story/ch18.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/e21a32c956d7/scenes/4/label",
-      "text": "SoleMake a choice. Keep going.",
+      "text": "Sol's Choice: to Journey On",
       "variables": []
     },
     {
@@ -45047,9 +45047,9 @@
         "file": "remake/assets/story/ch19.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/4dd4fa178fb1/ch19/location",
-      "text": "The group entered the Northern Black Forest and was ambushed by the Death Dealers, fortunately meeting Banarosia and Kairas to assist the enemy. When Saint-Colas found out, he went to the Western Tower of the Spirits, the Tower of the Spirit, and the people decided to join him as soon as possible.",
+      "text": "The party enters the northern Black Forest and is ambushed by the Death's Skull mercenaries, but Banalosia and Kylas happen along and help wipe them out. Learning that Saint Colas has picked up the trail and gone ahead to the tall tower west of the elves' holy ground — the Tower of Spirits — the party decides to join him as quickly as they can.",
       "variables": []
     },
     {
@@ -45059,9 +45059,9 @@
         "file": "remake/assets/story/ch19.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/4dd4fa178fb1/scenes/0/label",
-      "text": "The Black Forest has been attacked by a dead man.",
+      "text": "Ambushed by Death's Skull in the Black Forest",
       "variables": []
     },
     {
@@ -45263,9 +45263,9 @@
         "file": "remake/assets/story/ch19.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/4dd4fa178fb1/scenes/1/label",
-      "text": "I ran into Barna Rothia and learned of St. Colais' whereabouts.",
+      "text": "Meeting Banalosia, and Word of Saint Colas's Whereabouts",
       "variables": []
     },
     {
@@ -45671,9 +45671,9 @@
         "file": "remake/assets/story/ch20.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/81dd5ef66a56/ch20/location",
-      "text": "The team passed through the dead swamp and was raided by the invisible swamp monster and the Dark Army's claws, and the nine elves sent by the ninjas, Bedos, were destroyed. When the enemy was repelled, it became clear that the Dark Army had entered the Tower of the Spirit and decided to move to the Assyrian forest for reinforcement. He asked to join the team, and on his way, he also took in one of the imprisoned lower-class demons, Daxe.",
+      "text": "Crossing the Swamp of Death, the party is ambushed by invisible swamp creatures and dark-army henchmen, and all nine elves escorted by the ninja Seymour are killed. After driving off the enemy, they learn that the dark army has moved on the elves' holy site, the Tower of Spirits, and decide to head for Ashur Forest to reinforce it. Seymour asks to join them, and along the way they take in Darksey, a lesser demon who had been held prisoner.",
       "variables": []
     },
     {
@@ -45683,9 +45683,9 @@
         "file": "remake/assets/story/ch20.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/81dd5ef66a56/scenes/0/label",
-      "text": "The swamp of death is under attack. The ninjas thank you for sending the elves to death.",
+      "text": "Ambush in the Swamp of Death; the Ninja Seymour Fights to the Last for the Elves",
       "variables": []
     },
     {
@@ -46127,9 +46127,9 @@
         "file": "remake/assets/story/ch20.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/81dd5ef66a56/scenes/1/label",
-      "text": "All of the elves were killed.",
+      "text": "All the Elves Perish; the Truth of the Tower of Spirits' Fall",
       "variables": []
     },
     {
@@ -46595,9 +46595,9 @@
         "file": "remake/assets/story/ch20.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/81dd5ef66a56/scenes/2/label",
-      "text": "Ninja thanks for joining the team.",
+      "text": "The Ninja Seymour Asks to Join",
       "variables": []
     },
     {
@@ -46727,9 +46727,9 @@
         "file": "remake/assets/story/ch20.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/81dd5ef66a56/scenes/3/label",
-      "text": "It's not like we're going to have to save the next devil, Daxe.SoleShow some tolerance.",
+      "text": "Saving the Lesser Demon Darksey; Sol Shows His Generosity",
       "variables": []
     },
     {
@@ -47087,9 +47087,9 @@
         "file": "remake/assets/story/ch21.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/9bd82ef4e817/ch21/location",
-      "text": "By the time the team arrived in the Assyrian forest, the Tower of the Spirit had fallen, and the \"sniper\" of the dead commander was trying to take the Great Master, Hilfa. The leader of the group, who had appeared before his death, was the former lover of Laedin and the Old Guardian of Mar (St. Colas). With the five magic stones and gold badges gathered in Shiffa, the staff was activated to form the legendary \"key to the sky\" and people decided to go to the tower immediately.",
+      "text": "When the party arrives at Ashur Forest the Tower of Spirits has already fallen, and \"Sniper\", commander of Death's Skull, is about to carry off the archmage Sylpha. Together they crush Death's Skull, and as the commander dies the true form is revealed: Mar, Raiden's former love and an old comrade from the royal guard. Sylpha uses the five magic gems she has gathered together with the Golden Emblem to charge the Teleportation Staff and forge the fabled \"Key of the Sky\", and the party resolves to set out for the great tower at once.",
       "variables": []
     },
     {
@@ -47099,9 +47099,9 @@
         "file": "remake/assets/story/ch21.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/9bd82ef4e817/scenes/0/label",
-      "text": "The Tower of the Holy Spirit has fallen, and the Commander of the Dead is showing up.",
+      "text": "The Tower of Spirits Falls; \"Sniper\", Commander of Death's Skull, Appears",
       "variables": []
     },
     {
@@ -47519,9 +47519,9 @@
         "file": "remake/assets/story/ch21.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/9bd82ef4e817/scenes/1/label",
-      "text": "Bleed-out. The leader is real.",
+      "text": "A Bloody Showdown; the Commander's True Form — Mar, Raiden's Old Comrade",
       "variables": []
     },
     {
@@ -47939,9 +47939,9 @@
         "file": "remake/assets/story/ch21.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/9bd82ef4e817/scenes/2/label",
-      "text": "The decision goes straight to the tower.",
+      "text": "Deciding to Head Straight for the Great Tower (Key of the Sky Not Forged)",
       "variables": []
     },
     {
@@ -48047,9 +48047,9 @@
         "file": "remake/assets/story/ch21.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/9bd82ef4e817/scenes/3/label",
-      "text": "Helfa is a legend. \"Key to the sky.\"",
+      "text": "Sylpha Forges the Fabled \"Key of the Sky\"",
       "variables": []
     },
     {
@@ -48455,9 +48455,9 @@
         "file": "remake/assets/story/ch22.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/8299dbce3ca6/ch22/location",
-      "text": "On top of the towers of the Holy Spirit, fighting with the mysterious Dark Army's claws and the ancients.Mara ContinentI don't know. The battle coincided with the imprisoned dragon knight Sarah, who joined forces to fight back the couple. Helfa decided to launch a magic squad, to attack the enemy on the ground and to show solidarity.",
+      "text": "The party climbs to the top of the Tower of Spirits and fights the mysterious dark-army henchman \"Consort\" and ancient mech soldiers, learning that the enemy's master means to build a teleport point here and send an army from his own castle into the Mara Continent. During the battle they find the imprisoned dragon knight Sarah and, together, drive off the Consort's forces. Sylpha decides to activate the teleportation circle and strike at the enemy's base, and everyone declares they will go along.",
       "variables": []
     },
     {
@@ -48467,9 +48467,9 @@
         "file": "remake/assets/story/ch22.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/8299dbce3ca6/scenes/0/label",
-      "text": "The top of the tower is caught by the Dark Army.",
+      "text": "The Dark Army's Henchman \"Consort\" at the Tower Top",
       "variables": []
     },
     {
@@ -48815,9 +48815,9 @@
         "file": "remake/assets/story/ch22.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/8299dbce3ca6/scenes/1/label",
-      "text": "I ran into Sarah, the prisoner of the dragon.",
+      "text": "Finding the Imprisoned Dragon Knight Sarah; Kylas Falls",
       "variables": []
     },
     {
@@ -49067,9 +49067,9 @@
         "file": "remake/assets/story/ch22.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/8299dbce3ca6/scenes/2/label",
-      "text": "The Shilfa is determined to initiate the transmission of magic.",
+      "text": "Sylpha Resolves to Cast the Teleport; All Agree to Go",
       "variables": []
     },
     {
@@ -49403,9 +49403,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/1eb900572487/ch23/location",
-      "text": "Sending magic was disrupted and the team accidentally landed in an ancient ruins oasis in the North-West Desert.SoleandAresI'm sorry. When the ancient soldiers who defended the remains were repelled, they learned that the ruins were the “flying gear” of the ancients and that they were flying to the legendary Golden City with the keys to the sky and the carrying staff. Maddy said she was in love with General Rodman's past years ago, and people finally started the spell, flying the rocks up and heading for an unknown destination.",
+      "text": "The teleportation spell is disrupted and the party lands in an oasis of ancient ruins in the northwestern desert, where they meet Carlos — the childhood mentor of Sol and Ares — and Rodman, a border general who is an old acquaintance of Jonah. After driving off the ancient mech soldiers guarding the ruins, they learn that the ruins are a \"flying vehicle\" of the Ancients, able to reach the fabled Golden City with the Key of the Sky and the Teleportation Staff. Mitty confesses that years ago she was in love with General Rodman and never told him. The party finally speaks the incantation, and the Flying Rock rises into the air toward an unknown destination.",
       "variables": []
     },
     {
@@ -49415,9 +49415,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/1eb900572487/scenes/0/label",
-      "text": "We're sending out the wrong way.",
+      "text": "The Teleport Goes Wrong; a Fall into the Desert Ruins Oasis",
       "variables": []
     },
     {
@@ -49523,9 +49523,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/1eb900572487/scenes/1/label",
-      "text": "I ran into Charles and Rodman.",
+      "text": "Meeting Carlos and Rodman, and Talking of Old Times",
       "variables": []
     },
     {
@@ -50039,9 +50039,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/1eb900572487/scenes/2/label",
-      "text": "The ancient aircrews are coming.",
+      "text": "Ancient Mech Soldiers Attack; Kylas and Miasdord Fall",
       "variables": []
     },
     {
@@ -50243,9 +50243,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/1eb900572487/scenes/3/label",
-      "text": "The rest of the war.ABoth treasures are already in hand.",
+      "text": "Aftermath (branch A): Both Treasures in Hand; Carlos Asks to Come Along",
       "variables": []
     },
     {
@@ -50519,9 +50519,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/1eb900572487/scenes/4/label",
-      "text": "The rest of the war.BThe treasure has not yet been consolidated.",
+      "text": "Aftermath (branch B): The Treasures Are Not Yet Together; Carlos Returns to the City",
       "variables": []
     },
     {
@@ -50723,9 +50723,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/5/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/1eb900572487/scenes/5/label",
-      "text": "Rodeman chooses.",
+      "text": "Rodman's choice (branch 1): He Declines, and Mitty Tells of Her Old Feelings",
       "variables": []
     },
     {
@@ -50999,9 +50999,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/6/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/1eb900572487/scenes/6/label",
-      "text": "Rodeman chooses: by His Majesty's command, he cannot walk.",
+      "text": "Rodman's choice (branch 2): Bound to the Border by the King's Order",
       "variables": []
     },
     {
@@ -51107,9 +51107,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/7/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/1eb900572487/scenes/7/label",
-      "text": "Roderman's Choice: Walking happily, meeting Princess Celia.",
+      "text": "Rodman's choice (branch 3): He Gladly Comes Along and Meets Princess Celia",
       "variables": []
     },
     {
@@ -51263,9 +51263,9 @@
         "file": "remake/assets/story/ch23.json",
         "json_pointer": "/scenes/8/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/1eb900572487/scenes/8/label",
-      "text": "Helfa tried to fly the rock, and people started the unknown end.",
+      "text": "Sylpha Starts the Flying Rock; Setting Sail for an Unknown Destination",
       "variables": []
     },
     {
@@ -51671,9 +51671,9 @@
         "file": "remake/assets/story/ch24.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/24442d1ead94/ch24/location",
-      "text": "And the rocks continued in the direction of the Mountain of the Devil, and on their way they were confronted by the devils who were guarding the airspace. Rodeman (or Charles, in front of the chapter), led the team back, and the altitude of the flying rock suddenly began to decline, and people supported each other in panic.SoleandAresIn the last few years, I have been able to find a way to keep an eye on Celia and Lorna, while Jonah and Shilfa are flirting with young people.",
+      "text": "The Flying Rock keeps on toward Demon Mountain and meets the demon-folk guards holding that stretch of sky. Rodman — or Carlos, depending on the branch taken in the previous chapter — leads the party in driving them off, and then the Flying Rock suddenly begins to lose height. Amid the panic everyone steadies one another: Sol comforts Celia and Ares comforts Lorna, while Jonah and Sylpha tease the young ones for their flirting.",
       "variables": []
     },
     {
@@ -51683,9 +51683,9 @@
         "file": "remake/assets/story/ch24.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/24442d1ead94/scenes/0/label",
-      "text": "In the air, the demons were on guard.",
+      "text": "Meeting the Demon-Folk Guards in the Sky",
       "variables": []
     },
     {
@@ -52055,9 +52055,9 @@
         "file": "remake/assets/story/ch24.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/24442d1ead94/scenes/1/label",
-      "text": "The altitude is falling. People are panicking.",
+      "text": "A Sudden Drop in Altitude; Panic Aboard",
       "variables": []
     },
     {
@@ -52319,9 +52319,9 @@
         "file": "remake/assets/story/ch25.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/89c3da909b32/ch25/location",
-      "text": "Flying rocks fell in the lava caves of the Mountain of the Devil, and on the way saw the King of the Dragons, St. Colas, fighting the Fire God alone. The people came together in time to fight the Fire God, to save Saint Colas, and to meet Achmeji, the king of the demons. I don't know. Achimeghi revealed that the demons were in fact being manipulated by evil and voluntarily joined the team to lead the way to ancient monuments and the Golden City.",
+      "text": "The Flying Rock crashes into the lava caverns of Demon Mountain, and on the way the party sees Saint Colas, king of the dragonkin, standing alone against the Fire Demon God — an avatar and puppet of Kalgen, king of the demon folk. They arrive in time, drive the Fire Demon God back together and rescue Saint Colas, and there they meet Achimeji, the demon king's younger brother. Achimeji reveals that the demon folk are themselves being controlled and used by dark magic, and volunteers to guide the party to the ruins of the Ancients and the Golden City.",
       "variables": []
     },
     {
@@ -52331,9 +52331,9 @@
         "file": "remake/assets/story/ch25.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/89c3da909b32/scenes/0/label",
-      "text": "The Fire God wakes up and St. Colas confronts himself.",
+      "text": "The Fire Demon God Awakens; Saint Colas Faces It Alone",
       "variables": []
     },
     {
@@ -52511,9 +52511,9 @@
         "file": "remake/assets/story/ch25.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/89c3da909b32/scenes/1/label",
-      "text": "It's coming down.SoleWe're on our way.",
+      "text": "The Flying Rock Makes a Forced Landing; Sol and Company Arrive",
       "variables": []
     },
     {
@@ -53051,9 +53051,9 @@
         "file": "remake/assets/story/ch25.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/89c3da909b32/scenes/2/label",
-      "text": "After the war, Archie Meggie will lead the way.",
+      "text": "Reunion After the Battle; Achimeji Offers to Guide Them",
       "variables": []
     },
     {
@@ -53507,9 +53507,9 @@
         "file": "remake/assets/story/ch26.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/a6c95c58ac65/ch26/location",
-      "text": "The Achmejis marched through an underground passage, which had been banned by the kings of the past demons, and encountered a group of machine guards (aircrews) left behind by the ancients.YuniAn unexpected display of an unusual familiarity with the armored soldiers has re-energized a lost fighter, the Ward, and helped them to reverse. Archimegie has doubts about this.YuniThis post is part of our special coverage Syria Protests 2011.YuniThis is not the case.SoleSpeak up.",
+      "text": "Achimeji leads the party through an underground passage that generations of demon kings had forbidden their people to enter, and they run into the machine guards (mech soldiers) left behind by the Ancients. Yuni turns out to know the armored soldiers unnervingly well: she restarts a defeated one, \"Wood\", and turns it to their side. Achimeji grows suspicious and presses her about her origins and the activation codes; Yuni breaks down and denies everything, and Sol speaks up for her.",
       "variables": []
     },
     {
@@ -53519,9 +53519,9 @@
         "file": "remake/assets/story/ch26.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/a6c95c58ac65/scenes/0/label",
-      "text": "A forbidden passage, encountering ancient soldiers.",
+      "text": "The Forbidden Passage; Ancient Mech Soldiers",
       "variables": []
     },
     {
@@ -53819,9 +53819,9 @@
         "file": "remake/assets/story/ch26.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/a6c95c58ac65/scenes/1/label",
-      "text": "YuniReboot Armor Ward.",
+      "text": "Yuni Restarts the Armored Soldier Wood",
       "variables": []
     },
     {
@@ -54071,9 +54071,9 @@
         "file": "remake/assets/story/ch26.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/a6c95c58ac65/scenes/2/label",
-      "text": "Achmeji is skeptical.YuniEmotional breakdown.",
+      "text": "Achimeji Grows Suspicious; Yuni Breaks Down (branch dialogue)",
       "variables": []
     },
     {
@@ -54443,9 +54443,9 @@
         "file": "remake/assets/story/ch26.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/a6c95c58ac65/scenes/3/label",
-      "text": "Jonah asked Ward about Golden City and the first air fort.",
+      "text": "Jonah Questions Wood About the Golden City and the First Sky Fortress",
       "variables": []
     },
     {
@@ -54887,9 +54887,9 @@
         "file": "remake/assets/story/ch26.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/a6c95c58ac65/scenes/4/label",
-      "text": "SoleRestrain.Yuni",
+      "text": "Sol Comforts Yuni",
       "variables": []
     },
     {
@@ -55103,9 +55103,9 @@
         "file": "remake/assets/story/ch27.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/ce23f725c2f5/ch27/location",
-      "text": "The people followed Ward's lead to the ancient trans-shipment station at the exit of the underground passageway.ASR-07I don't know.ASR-07Forced connection to the invader.YuniIt's the memory, it's the impact.Yuniand a complete memory,YuniCrying to admit that you're not human to protect the people you love.SoleA line around. People are losing.ASR-07After the guards,YuniThe transmission device was activated with the Sky Key, and a line of people were sent to the first air fort, the legendary Golden City.",
+      "text": "Following Wood's directions, the party reaches the ancient transfer station at the end of the underground passage and meets its control core, ASR-07. To fight off the intruders, ASR-07 forces a link to Yuni's memory banks — and instead shocks her long-sealed memories back into place. In tears, Yuni admits that she is not human, and that she stayed with Sol's company to protect the people she loves. After the party defeats ASR-07's guardian mech soldiers, Yuni uses the \"Key of the Sky\" to start the transfer device, and they are sent to the First Sky Fortress — the fabled Golden City.",
       "variables": []
     },
     {
@@ -55115,9 +55115,9 @@
         "file": "remake/assets/story/ch27.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ce23f725c2f5/scenes/0/label",
-      "text": "Transfer stationASR-07Fight!",
+      "text": "ASR-07, Core of the Transfer Station, Gives Battle",
       "variables": []
     },
     {
@@ -55631,9 +55631,9 @@
         "file": "remake/assets/story/ch27.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ce23f725c2f5/scenes/1/label",
-      "text": "YuniReminder wakes up.",
+      "text": "Yuni's Memories Awaken; She Admits Who She Is",
       "variables": []
     },
     {
@@ -56195,9 +56195,9 @@
         "file": "remake/assets/story/ch27.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ce23f725c2f5/scenes/2/label",
-      "text": "Division of missing sky keys (division)",
+      "text": "Parting Without the Key of the Sky (branch)",
       "variables": []
     },
     {
@@ -56615,9 +56615,9 @@
         "file": "remake/assets/story/ch27.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/ce23f725c2f5/scenes/3/label",
-      "text": "Appendix: farewell to the disappearance of Golden City.ch30I'm not sure.",
+      "text": "Appendix: the farewell as the Golden City vanishes (likely a branch-ending preview; see ch30)",
       "variables": []
     },
     {
@@ -56831,9 +56831,9 @@
         "file": "remake/assets/story/ch28.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/8355a97601cc/ch28/location",
-      "text": "The first air fort arrived (Golden City).YuniThis site is a transfer point for the ancient aircrews to the surface. In order to gain time to prevent the enemy from launching the final weapon, the Dark Fire, and to break through the Fortress Auto-Defence Corps.ASR-07Many of the intercepts were made towards the core of the fort.",
+      "text": "The party teleports to the First Sky Fortress — the Golden City. Yuni explains that it is the transfer station the Ancients used to send armored soldier corps down to the surface. Racing to stop the enemy from firing the ultimate weapon, the \"Dark Flame\", they break through wave after wave of the fortress's automatic defences (ASR-07 and its squads) and press on toward the core.",
       "variables": []
     },
     {
@@ -56843,9 +56843,9 @@
         "file": "remake/assets/story/ch28.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/8355a97601cc/scenes/0/label",
-      "text": "First scout of Golden City.",
+      "text": "First Look at the Golden City",
       "variables": []
     },
     {
@@ -56999,9 +56999,9 @@
         "file": "remake/assets/story/ch28.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/8355a97601cc/scenes/1/label",
-      "text": "Break through fort guard.",
+      "text": "Breaking Through the Fortress Guard",
       "variables": []
     },
     {
@@ -57407,9 +57407,9 @@
         "file": "remake/assets/story/ch29.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/bc7266a893a1/ch29/location",
-      "text": "People.YuniGuided into the core of Golden City, while the enemy moved his hands and feet to bring the center system into the final defensive state and awakened the three dragon-shaped defenses;YuniThis means that a concerted effort must be made to destroy the defense in order to regain control of the center. After taking over,YuniMake sure it's the other center of the fort.ASR-06— andYuniI'm sorry.ASR-07It is also the sister system that controls the core of the fort.ASR-06Show yourself, give reasons for your determination to destroy human civilization, and declare that the Dark Fire will be activated and targeted in 30 seconds.Mara ContinentI don't know.",
+      "text": "Guided by Yuni, the party slips into the core of the Golden City. The enemy has tampered with the central system, putting it into final defence mode and waking three great dragon-shaped guardians; Yuni explains that they must destroy the guardians together to take back control. Once the core is theirs, Yuni confirms that the mastermind is the fortress's other central system, ASR-06 — her sister system, the second of the fortress's two control cores. ASR-06 appears, explains why it is set on destroying human civilization, and announces that the \"Dark Flame\" will fire in thirty seconds, with the Mara Continent as its target.",
       "variables": []
     },
     {
@@ -57419,9 +57419,9 @@
         "file": "remake/assets/story/ch29.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bc7266a893a1/scenes/0/label",
-      "text": "Central security is in the final state.",
+      "text": "The Central System Enters Final Defence Mode",
       "variables": []
     },
     {
@@ -57719,9 +57719,9 @@
         "file": "remake/assets/story/ch29.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bc7266a893a1/scenes/1/label",
-      "text": "Three dragon defenses.YuniTake back the center.",
+      "text": "Three Dragon Guardians; Yuni Retakes the Core",
       "variables": []
     },
     {
@@ -58043,9 +58043,9 @@
         "file": "remake/assets/story/ch29.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bc7266a893a1/scenes/2/label",
-      "text": "Passport.YuniTake over.",
+      "text": "Escorting Yuni to Take Over the Core",
       "variables": []
     },
     {
@@ -58319,9 +58319,9 @@
         "file": "remake/assets/story/ch29.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bc7266a893a1/scenes/3/label",
-      "text": "ASR-06Show yourself. The Dark Flames start the countdown.",
+      "text": "ASR-06 Appears; the Dark Flame Counts Down",
       "variables": []
     },
     {
@@ -58643,9 +58643,9 @@
         "file": "remake/assets/story/ch29.json",
         "json_pointer": "/scenes/4/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/bc7266a893a1/scenes/4/label",
-      "text": "YuniTo sacrifice himself to reverse the reactor.",
+      "text": "Yuni Turns the Reactor Back by Sacrificing Herself",
       "variables": []
     },
     {
@@ -58955,9 +58955,9 @@
         "file": "remake/assets/story/ch30.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/b83b3b6f5814/ch30/location",
-      "text": "After the reactor was overloaded, the space was distorted and the rest of the world was robbed.ASR-06And when the greatness of the earth is gone, the four gods of the earth, the puppets of bio-synthetic technology, are called upon to fight the last beast, and they are defeated together.YuniTo tell the people exactly who you are and who you are.ASR-06The true origins of the fortress, the legacy of the ancient war of the Day of Judgment, have slept alone in the sky for 30,000 years. After the crisis,YuniSend them back as promised.Mara ContinentHe chose to stay and keep Gold City away from the world forever.",
+      "text": "The reactor overload leaves space still warping around them, and the party barely survives. Seeing the battle lost, ASR-06 summons the four demon gods of earth, water, wind and fire — puppets it copied with bio-synthetic technology — for one last cornered struggle, and is defeated. Yuni finally tells the whole truth about herself, about ASR-06 (the sky demon god), and about the fortress: they are relics of the Ancients' \"Judgment Day\" war, asleep alone in the sky for thirty thousand years. With the crisis over, Yuni keeps her promise and sends everyone back to the Mara Continent, then chooses to stay behind and take the Golden City away from this world forever.",
       "variables": []
     },
     {
@@ -58967,9 +58967,9 @@
         "file": "remake/assets/story/ch30.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/b83b3b6f5814/scenes/0/label",
-      "text": "The rest of the day,ASR-06The battle of the beast calls for the Four Demons.",
+      "text": "Survivors of the Blast; ASR-06 Summons the Four Demon Gods in Its Last Stand",
       "variables": []
     },
     {
@@ -59339,9 +59339,9 @@
         "file": "remake/assets/story/ch30.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/b83b3b6f5814/scenes/1/label",
-      "text": "The Four Demons come out and kill each other.",
+      "text": "The Four Demon Gods Together; One Last Desperate Blow",
       "variables": []
     },
     {
@@ -59759,9 +59759,9 @@
         "file": "remake/assets/story/ch30.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/b83b3b6f5814/scenes/2/label",
-      "text": "YuniThe truth about Gold City and the Four Demons.",
+      "text": "Yuni Explains the Truth of the Golden City and the Four Demon Gods",
       "variables": []
     },
     {
@@ -59915,9 +59915,9 @@
         "file": "remake/assets/story/ch30.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/b83b3b6f5814/scenes/3/label",
-      "text": "30 thousand years alone, returning home.Mara Continent",
+      "text": "Thirty Thousand Years of Lonely Watch; Setting Out for the Mara Continent",
       "variables": []
     },
     {
@@ -60371,9 +60371,9 @@
         "file": "remake/assets/story/ch31.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/d0716167f600/ch31/location",
-      "text": "It's safe and sound.Mara ContinentFortunately, the world was saved, leaving each other apart and looking back. On the way home.SoleI'm looking forward to seeing the last golden city in the sky that has surfaced and disappeared forever.YuniThe voice of farewell. The whole show ended up in the traditional `name: profession:' in the form of a running light, one by one for each partner after the war.",
+      "text": "The party is teleported safely back to the Mara Continent, glad that the world still stands, and they say their goodbyes and look ahead to their journeys home. On the way, Sol and his companions see the Golden City surface in the sky one last time and vanish forever, and they hear Yuni's farewell. The story closes in the traditional \"name: class:\" scrolling format, telling where each companion went after the war.",
       "variables": []
     },
     {
@@ -60383,9 +60383,9 @@
         "file": "remake/assets/story/ch31.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/d0716167f600/scenes/0/label",
-      "text": "It's important to everyone.",
+      "text": "Triumph, and Fond Farewells",
       "variables": []
     },
     {
@@ -60779,9 +60779,9 @@
         "file": "remake/assets/story/ch31.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/d0716167f600/scenes/1/label",
-      "text": "Golden City's last farewell.",
+      "text": "A Last Farewell to the Golden City",
       "variables": []
     },
     {
@@ -60983,9 +60983,9 @@
         "file": "remake/assets/story/ch31.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/d0716167f600/scenes/2/label",
-      "text": "End: Follow-up of partners",
+      "text": "Epilogue: What Became of the Companions",
       "variables": []
     },
     {
@@ -61727,9 +61727,9 @@
         "file": "remake/assets/story/ch32.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/8cbcda4a2315/ch32/location",
-      "text": "\"Name: Profession: Queer\" to speak of the role of the demons (Daxe, Achimeji) andGaiaThe end of the war with the two Armored Wards.YuniIt's a whole story. It is accompanied by a flashback: many years ago.SoleandHanoRescued a girl who lost her memory on the outskirts of Rotedia.YuniI don't know. \"with a talking armored man.\"Gaia# That's right #SoleandYuniThe beginning of fate.",
+      "text": "Continuing the previous chapter's \"name: class:\" scrolling narration, this passage accounts for the demon-folk characters (Darksey and Achimeji) and for the two armored soldiers Gaia and Wood after the war, then closes the story with Yuni's inner monologue. A side-story flashback follows: years ago, the young Sol and Hano rescued a girl with no memory outside Rotedia. She called herself \"Yuni\" and had with her a talking armored soldier, \"Gaia\" — the very beginning of how Sol and Yuni's fates met.",
       "variables": []
     },
     {
@@ -61739,9 +61739,9 @@
         "file": "remake/assets/story/ch32.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/8cbcda4a2315/scenes/0/label",
-      "text": "End of story: the afterlife of the Devils and the Armours.",
+      "text": "Epilogue continued: What Became of the Demon Folk and the Armored Soldiers",
       "variables": []
     },
     {
@@ -61895,9 +61895,9 @@
         "file": "remake/assets/story/ch32.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/8cbcda4a2315/scenes/1/label",
-      "text": "Aside from that: the pact of the sword.SoleandHanoI'm not sure.",
+      "text": "Side story: A Promise to Duel (Sol and Hano)",
       "variables": []
     },
     {
@@ -62075,9 +62075,9 @@
         "file": "remake/assets/story/ch32.json",
         "json_pointer": "/scenes/2/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/8cbcda4a2315/scenes/2/label",
-      "text": "Save the memoryless girl in the suburbs.",
+      "text": "Rescuing a Girl With No Memory Outside Town",
       "variables": []
     },
     {
@@ -62639,9 +62639,9 @@
         "file": "remake/assets/story/ch32.json",
         "json_pointer": "/scenes/3/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/8cbcda4a2315/scenes/3/label",
-      "text": "SoleMake a promise.YuniA promise to go home.",
+      "text": "Sol Promises to Take Yuni Home",
       "variables": []
     },
     {
@@ -62903,9 +62903,9 @@
         "file": "remake/assets/story/ch33.json",
         "json_pointer": "/location"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/story/73c4f2f23b11/ch33/location",
-      "text": "Another flashback:SoleI was summoned to see my father, and the king told him in private in the palace of an amazing decision - to stand.SoleAs the heir to Rotedia's throne, and by implication,SoleIn fact, it is not the king's flesh and blood, but the adopted and raised children.SoleThe king gave him three days to think.",
+      "text": "Another side-story flashback: Sol is summoned before the king, who tells him privately in his bedchamber of a startling decision — he means to name Sol, rather than his own brother Dean, heir to the throne of Rotedia, and hints that Sol is not his natural son but a child he took in and raised. Sol is stunned; the king gives him three days to consider.",
       "variables": []
     },
     {
@@ -62915,9 +62915,9 @@
         "file": "remake/assets/story/ch33.json",
         "json_pointer": "/scenes/0/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/73c4f2f23b11/scenes/0/label",
-      "text": "I'll see you in private, Father and Son.",
+      "text": "A Private Audience; Father and Son Talk",
       "variables": []
     },
     {
@@ -63071,9 +63071,9 @@
         "file": "remake/assets/story/ch33.json",
         "json_pointer": "/scenes/1/label"
       },
-      "status": "machine_draft",
+      "status": "reviewed",
       "string_id": "legacy/scene/73c4f2f23b11/scenes/1/label",
-      "text": "The king's heirs made their decision.",
+      "text": "A Stunning Decision on the Succession",
       "variables": []
     },
     {

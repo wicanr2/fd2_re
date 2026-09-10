@@ -61,13 +61,13 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 ## data — 可編輯資料還沒就緒
 
-### 四語內容還有機器初稿沒有人工審校
+### 四語內容剩下的機器初稿都卡在來源證據
 
 `locale-machine-draft` · 仍未完成 · 自承還在 remake/assets/locales/en/content.json
 
-繁中全部是來源語，簡中、日文與英文仍有標 `machine_draft` 的條目。沒有人工審校的譯文不得冒稱正式翻譯。另有一批說話者名稱源自單字或 `?`，屬來源身分阻擋，不是未翻譯，不可為了全綠而猜定。
+繁中全部是來源語。2026-09-10 把日文與英文剩下的 387／390 筆機器初稿逐條審校定稿（runtime_ui 200、scene_label 120／123、location_name 55、go_review 7），專名沿用已審校的 character_name 與 chapter_title 對照。現在三個譯文包各只剩 5 筆 `machine_draft`，全是清冊上的對話本文阻擋項（來源截斷、專名衝突）；另有 170 筆說話者碎片為 `blocked`。這兩批都不是翻譯問題，要先在原版側閉合來源身分與句尾截斷才動得了。
 
-怎樣算做完：三語的 `machine_draft` 全部經人工審校改為定稿，或明確拆出「來源身分阻擋」另計。
+怎樣算做完：`docs/data/localization/review-blockers.json` 上的 5 筆對話本文取得原版側的來源證據（句尾截斷的真正內容、專名身分）之後才改譯文；在那之前維持失敗即關閉，不得為了全綠而猜定。
 
 ### 現代美術主題仍是原型狀態
 
