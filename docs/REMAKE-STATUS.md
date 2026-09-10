@@ -2,7 +2,8 @@
 
 > 更新日期：2026-09-08。這是面向貢獻者的動態進度頁；原版證據層級仍以
 > [`58-fd2-exe-re-coverage.md`](knowledge-base/58-fd2-exe-re-coverage.md)為準，
-> 有效工作前沿以 [`91-worklist.md`](knowledge-base/91-worklist.md)為準。
+> 未完成項以 [`fd2-worklist.json`](data/fd2-worklist.json) 為準，渲染在
+> [`91-worklist.md`](knowledge-base/91-worklist.md)。
 
 ## 2026-09-08 自評更新
 

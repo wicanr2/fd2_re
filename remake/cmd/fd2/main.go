@@ -10826,6 +10826,8 @@ func (g *Game) phaseBannerStep() int {
 // 0x10..0xFF，所以字樣不變暗)；見
 // docs/knowledge-base/105-phase-banner-timing-20260910.md。字樣疊在馬賽克之後。
 // 原版字模尚未擷取，這裡沿用重製端字型。
+// 原版在馬賽克前後另有字樣滑入 7 步與滑出 5 步(`sub_1F42D`，每步同樣等一個
+// BIOS tick)，這一段尚未接線。
 func (g *Game) drawPhaseBanner(screen *ebiten.Image) {
 	if g.bannerT <= 0 || g.banner == "" || g.font == nil {
 		return

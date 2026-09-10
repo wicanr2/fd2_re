@@ -50,8 +50,11 @@
    執行期與一般玩家驗證的唯一分層現況；同時指定已知位址的主證據與重開條件。
 3. `docs/knowledge-base/56-fd2-remake-sdd.md`：目前系統設計與證據政策。
 4. `docs/knowledge-base/57-ui-evidence-matrix.md`：介面覆蓋率與尚未關閉的關卡。
-5. `docs/knowledge-base/91-worklist.md`：檔首是目前工作佇列；後段勾選是歷史
-   工作記錄，不得用來推算總完成度。
+5. `docs/data/fd2-worklist.json`：目前未完成項的唯一權威，每一條掛一個
+   `verify`（`tools/fd2_worklist.py verify` 跑得動）。渲染結果在
+   `docs/knowledge-base/91-worklist.md`，那一節由工具產生，不要手改。各輪
+   工作記錄與勘誤在 `91-worklist-history.md`，裡面的 `[ ]`／`[~]` 是當時
+   快照，不是待辦，也不得用來推算完成度。
 6. `docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md`：時間序列證據紀錄；
    較晚的勘誤優先於較早的內容。
 
@@ -283,6 +286,9 @@
 - 提交身分使用 `wicanr2 <wicanr2@gmail.com>`，以 repo-local 設定指定，不動
   全域設定。公司信箱不得進入作者欄。歷史上的 `Codex <codex@openai.com>`
   不改寫（那需要對 main force push）。
+- 提交前跑 `tools/fd2_worklist.py verify`：它逐條檢查未完成項的訊號還在不在，
+  訊號消失代表那一條可能做完了而條目沒改，要當場確認並從 JSON 移走。條目做完
+  不是在 markdown 打勾——`91-worklist.md` 的產生區塊下一次 render 就會蓋掉。
 - 提交前執行相關真實回歸、檢查整理過的圖片與連結、執行
   `git diff --check`，並審查 `git status` 與最終差異。
 - 重大且驗證成功的批次推送至 `origin/main`，再驗證本機 HEAD 與遠端相同。

@@ -1,0 +1,271 @@
+{
+  "schema": "fd2-worklist/1",
+  "note": "未完成項的唯一權威。docs/knowledge-base/91-worklist.md 的『目前未完成項』一節由 tools/fd2_worklist.py render 產生，不要手改。條目做完就從這裡移走，不是在 markdown 打勾。",
+  "layers": {
+    "re": "原版證據還沒閉合",
+    "data": "可編輯資料還沒就緒",
+    "runtime": "還沒接進正式執行期",
+    "player": "缺未修改一般玩家路徑的驗收（PLAYER-E2）",
+    "release": "發行、平台與封包",
+    "tooling": "工具、編輯器與工作流程"
+  },
+  "verify_kinds": {
+    "present": "pattern 找得到 → 這一條仍然未完成（綁程式碼裡的自承）",
+    "absent": "pattern 找不到 → 這一條仍然未完成（綁接上時一定會出現的識別字）",
+    "json_len": "某份 JSON 的欄位長度 ≤ max → 仍然未完成",
+    "manual": "一律回報仍未完成並標出來；沒有機器訊號時的誠實選項"
+  },
+  "items": [
+    {
+      "id": "phase-banner-text-slide",
+      "layer": "runtime",
+      "title": "回合橫幅的字樣滑入滑出還沒接線",
+      "body": "原版在馬賽克前有 7 步字樣滑入、之後有 5 步滑出，都由 `sub_1F42D` 驅動，每步同樣以 `sub_17AA9(1)` 等一個 BIOS tick。位置是 x ＝ `0x55 − 參數`、y ＝ `0x52`，兩塊分別畫在 (89,86) 與 (169,86)。重製端目前只有 33 步馬賽克那一段。",
+      "acceptance": "重製端在馬賽克前後各跑完 7＋5 步，每步一個 BIOS tick，並有釘住步數與位置的回歸。",
+      "evidence": "docs/knowledge-base/105-phase-banner-timing-20260910.md",
+      "verify": {
+        "kind": "present",
+        "paths": ["remake/cmd/fd2/main.go"],
+        "pattern": "字樣滑入 7 步與滑出 5 步",
+        "note": "程式裡的自承還在。接上時這段註解會被刪掉，那時這一條就會開口。"
+      }
+    },
+    {
+      "id": "phase-banner-glyph-asset",
+      "layer": "data",
+      "title": "回合橫幅字模還沒擷取成資產",
+      "body": "原版字樣由 `sub_1F1CC` 兩次 `sub_15F0E` 從 `[0x53A81]` 取 id `0x50`（PLAYER PHASE）／`0x52`（ENEMY PHASE）畫出來。重製端目前用自己的字型畫同樣的英文字，字模沒有比對過。",
+      "acceptance": "兩個 id 的字模擷取成受版控資產、由正式路徑消費，並與原版同狀態畫面比對。",
+      "evidence": "docs/knowledge-base/105-phase-banner-timing-20260910.md",
+      "verify": {
+        "kind": "present",
+        "paths": ["remake/cmd/fd2/main.go"],
+        "pattern": "原版字模尚未擷取",
+        "note": "程式裡的自承還在。"
+      }
+    },
+    {
+      "id": "phase-banner-player-receipt",
+      "layer": "re",
+      "title": "玩家回合橫幅沒有執行期收據",
+      "body": "敵方回合橫幅（資源 id `0x52`、中段 20 毫秒）已有逐幀收據。玩家回合那一條路徑（id `0x50`、中段 150 毫秒）目前只有靜態指令證據，沒有取到同一輪的 oracle 逐幀。",
+      "acceptance": "用 tools/dosgolem_oracle.sh 走到玩家回合橫幅，取到 33 步逐幀與 eip-watch，收據進 docs/data/ui-traces/。",
+      "evidence": "docs/data/ui-traces/fd2-phase-banner-timing-20260910.json",
+      "verify": {
+        "kind": "manual",
+        "note": "要實際跑一輪 oracle 才知道。收據產生後可改綁『docs/data/ui-traces/ 下有玩家回合那份檔案』。"
+      }
+    },
+    {
+      "id": "figani-fullscreen-receipt",
+      "layer": "re",
+      "title": "全螢幕戰鬥演出（FIGANI）能不能由 oracle 產生收據還沒實測",
+      "body": "地圖層（地形＋單位 sprite）已確認可以由 dosgolem 產生原版收據。FIGANI 是另一條呈現流程，沒有量過；不可由地圖層可用推定它也可用。",
+      "acceptance": "以現行 oracle 取一次 FIGANI 段落的逐幀收據，或明確記錄它缺哪一項能力並回填 dosgolem。",
+      "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md",
+      "verify": {
+        "kind": "present",
+        "paths": ["docs/knowledge-base/96-parity-toolchain-20260909.md"],
+        "pattern": "尚未實測的是全螢幕戰鬥演出",
+        "note": "工具鏈文件裡的自承還在。實測之後那句話會被改寫。"
+      }
+    },
+    {
+      "id": "storybg-dialogue-receipt",
+      "layer": "re",
+      "title": "故事場景對白的原版收據還沒取",
+      "body": "戰場對白已確認原版不為對白換世界層，重製端照改。故事場景（`storyBG`）的對白仍走正規化管線，那條路徑沒有取過原版收據，所以不知道它與戰場對白是不是同一個契約。",
+      "acceptance": "取一段 storyBG 對白的原版逐幀收據，判定它是否也共用地圖層的重繪集合。",
+      "evidence": "docs/knowledge-base/100-dialogue-viewport-20260909.md",
+      "verify": {
+        "kind": "manual",
+        "note": "要跑 oracle 才知道。收據產生後改綁那份 ui-traces 檔案。"
+      }
+    },
+    {
+      "id": "battle-dialogue-esc-receipt",
+      "layer": "re",
+      "title": "戰鬥中的對白接不接受 ESC 還沒量",
+      "body": "故事對白已量到 ESC 與 Enter 完全同義（三臂逐格 sha256 相同），重製端已接。戰鬥事件對白與回合起手對白只取過 Enter／Space 的樣本。",
+      "acceptance": "對這兩處各取一次 ESC 與 Enter 的對照收據，相同就接線，不同就記錄差異。",
+      "evidence": "docs/knowledge-base/98-opening-esc-and-length-20260909.md",
+      "verify": {
+        "kind": "manual",
+        "note": "要跑 oracle 才知道。"
+      }
+    },
+    {
+      "id": "reinforcement-eax-source",
+      "layer": "re",
+      "title": "ch21／ch22 增援的 eax 來源還沒追",
+      "body": "六筆增援的來源運算元是暫存器或間接記憶體，靜態掃描停在 `$reg_or_mem`，沒有追到寫入端。",
+      "acceptance": "六筆各自找到寫入端與消費端，或明確記錄它們是同一個 producer 的不同分支。",
+      "verify": {
+        "kind": "manual",
+        "note": "沒有可靠的程式碼訊號可綁；追完之後會產生一份 docs/data/ida/ 證據檔，那時改綁它。"
+      }
+    },
+    {
+      "id": "locale-machine-draft",
+      "layer": "data",
+      "title": "四語內容還有機器初稿沒有人工審校",
+      "body": "繁中全部是來源語，簡中、日文與英文仍有標 `machine_draft` 的條目。沒有人工審校的譯文不得冒稱正式翻譯。另有一批說話者名稱源自單字或 `?`，屬來源身分阻擋，不是未翻譯，不可為了全綠而猜定。",
+      "acceptance": "三語的 `machine_draft` 全部經人工審校改為定稿，或明確拆出「來源身分阻擋」另計。",
+      "verify": {
+        "kind": "present",
+        "paths": ["remake/assets/locales"],
+        "pattern": "machine_draft",
+        "note": "語言包裡還有機器初稿標記。"
+      }
+    },
+    {
+      "id": "modern-theme-prototype-status",
+      "layer": "data",
+      "title": "現代美術主題仍是原型狀態",
+      "body": "現代主題 catalog 目前登錄 `\"status\": \"prototype\"`。逐組審查頭身比例、原版配色、輪廓與戰場尺寸可讀性尚未走完，早／中／晚期地圖的接縫、前景遮擋、人物、游標與 HUD 也還沒抽測。",
+      "acceptance": "catalog 轉為正式狀態，且抽測涵蓋早／中／晚期地圖與戰場尺寸可讀性。",
+      "verify": {
+        "kind": "present",
+        "paths": ["remake/assets/themes/modern/catalog.json"],
+        "pattern": "\"status\": \"prototype\"",
+        "note": "catalog 自己標的狀態。轉正時這個值會變，這一條就會開口。"
+      }
+    },
+    {
+      "id": "asset-manifest-unknown-dispositions",
+      "layer": "data",
+      "title": "素材清冊還有 93 筆 unknown 沒有交叉核對",
+      "body": "manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unknown` 的有 93 筆。正式 `Game` caller 稽核沒有發現它們有直接 archive consumer，所以不阻擋第一版；要確認的是有沒有尚未登記的玩家 consumer。",
+      "acceptance": "93 筆逐筆確認沒有玩家 consumer，或找到 consumer 後補 provenance 並重開對應切片。",
+      "verify": {
+        "kind": "manual",
+        "note": "manifest 在 remake/generated-assets/ 底下，不在版控裡，verify 綁不到。將來若把 disposition 統計匯出成受版控的摘要檔，再改綁那份摘要。"
+      }
+    },
+    {
+      "id": "editor-canonical-runtime-compiler",
+      "layer": "tooling",
+      "title": "canonical 文件還沒有通往正式執行期的 compiler",
+      "body": "版本化 bundle 已含 1 份 campaign、30 份 scenario、35 份 story 與 38 筆角色身份候選，deterministic exporter 與跨文件 validator 都已接。缺的是讓正式戰役規則直接消費編輯後文件的那一段。",
+      "acceptance": "至少一條正式 runtime 路徑直接讀 canonical 文件，且 load→write→reload 不遺失資料。",
+      "verify": {
+        "kind": "manual",
+        "note": "接上時會出現一個新的 compiler 型別，但現在猜它叫什麼會寫出永遠為真的 pattern。實作後改綁那個型別名。"
+      }
+    },
+    {
+      "id": "editor-identity-ambiguity",
+      "layer": "data",
+      "title": "四筆角色身份歧義還沒解",
+      "body": "`native-0`／`native-1`／`native-7`／`native-96` 有名稱衝突，目前保留直接來源、拒絕猜選。",
+      "acceptance": "四筆各自解決或明確拆分，並在 canonical schema 記錄依據。",
+      "verify": {
+        "kind": "manual",
+        "note": "沒有可靠訊號可綁；解掉之後身份候選數會變，那時可改綁 canonical bundle 的候選筆數。"
+      }
+    },
+    {
+      "id": "wasm-web-release",
+      "layer": "release",
+      "title": "網頁版沒有可重現的建置",
+      "body": "`remake/web/` 有 `index.html` 與 `wasm_exec.js`，但建置腳本與 CI 都沒有 WASM 目標，所以網頁版不是可重現產物。",
+      "acceptance": "建置腳本或 CI 產出 WASM 封包，並確認資產載入路徑可用。",
+      "verify": {
+        "kind": "absent",
+        "paths": [".github/workflows", "remake/packaging"],
+        "pattern": "GOOS=js|\\.wasm",
+        "note": "建置腳本與 CI 都沒有 WASM 目標。接上時一定會出現這兩個字樣之一。"
+      }
+    },
+    {
+      "id": "android-package",
+      "layer": "release",
+      "title": "Android 封包沒有建置",
+      "body": "觸控輸入已支援，但沒有 `ebitenmobile bind` → `.aar` → APK 的建置流程。",
+      "acceptance": "產出可安裝的 APK，並在實機確認啟動、存檔與音訊。",
+      "verify": {
+        "kind": "absent",
+        "paths": [".github/workflows", "remake/packaging"],
+        "pattern": "ebitenmobile",
+        "note": "建置腳本與 CI 都沒有它。"
+      }
+    },
+    {
+      "id": "release-platform-acceptance",
+      "layer": "release",
+      "title": "Windows 與 macOS 還沒有實機抽測",
+      "body": "三平台公開封包已由 CI 產出，Linux 經啟動與解包驗證。Windows 與 macOS 只做過 ZIP 內容驗證，沒有實機啟動、存檔與音訊抽測。",
+      "acceptance": "兩個平台各自在實機完成啟動、存檔／讀檔與音訊抽測並記錄結果。",
+      "verify": {
+        "kind": "manual",
+        "note": "要有實機才做得了。"
+      }
+    },
+    {
+      "id": "battlefield-editor-mvp",
+      "layer": "tooling",
+      "title": "戰場編輯器還沒有",
+      "body": "計畫是網頁單檔工具：圖塊繪製、單位擺放、部署格，讀寫 `assets/maps`。",
+      "acceptance": "能開啟一張原版地圖、改動後存回，並由正式 runtime 讀得起來。",
+      "verify": {
+        "kind": "manual",
+        "note": "還沒開始，沒有識別字可綁。開工後改綁那支工具的路徑。"
+      }
+    },
+    {
+      "id": "campaign-editor-ui",
+      "layer": "tooling",
+      "title": "劇情與節點圖編輯器還沒有",
+      "body": "包含對白與事件表單、商店設定，以及 campaign 節點圖（拖線、旗標、敗北路線）的可視化編輯。",
+      "acceptance": "能編輯一個章節的對白與節點連線，存檔後由正式 runtime 走得通。",
+      "verify": {
+        "kind": "manual",
+        "note": "還沒開始。"
+      }
+    },
+    {
+      "id": "battle-transaction-e2",
+      "layer": "player",
+      "title": "戰鬥交易缺代表性玩家路徑驗收",
+      "body": "正常 producer 的物品、command 與敵方 AI 都已達 `RUNTIME-E1`。缺的是代表性玩家與敵方回合的精確演出、音訊與未修改一般玩家路徑的 `PLAYER-E2`。",
+      "acceptance": "挑代表性的玩家與敵方回合，以未修改路徑取得同狀態逐幀與音訊對照。",
+      "verify": {
+        "kind": "manual",
+        "note": "E2 依定義要人實際走一遍未修改路徑。"
+      }
+    },
+    {
+      "id": "town-shop-ui-e2-sampling",
+      "layer": "player",
+      "title": "ch02 以外的戰間介面還沒抽樣",
+      "body": "城鎮、商店、教會、整備與祕密商店的原版 E2 目前只覆蓋 ch02。早、中、晚期章節都還沒以正常輸入抽樣。",
+      "acceptance": "早、中、晚期各挑一章，以正常輸入取得原版與重製端的同狀態對照。",
+      "verify": {
+        "kind": "manual",
+        "note": "要實際走一遍。"
+      }
+    },
+    {
+      "id": "campaign-postbattle-e2-full",
+      "layer": "player",
+      "title": "戰後節點缺完整玩家路徑驗收",
+      "body": "已綁定的章節各自有窄 `RUNTIME-E1`，但沒有每一章都以未修改一般玩家路徑走過戰後節點、城鎮與存檔邊界。長程漂移依 2026-08-23 的決定改由人工遊玩後回報。",
+      "acceptance": "人工遊玩回報的缺陷各自建立窄重現案例並修掉。",
+      "verify": {
+        "kind": "manual",
+        "note": "依使用者決定，全戰役長程通關不列為代理程式工作項目。"
+      }
+    },
+    {
+      "id": "bgm-sfx-listening",
+      "layer": "player",
+      "title": "曲號與音效還需要人耳確認",
+      "body": "開場配樂曲號、戰鬥曲與勝利曲的對應、以及 UI 音效 index 2..0xb 的語意畫面，都要實際聽辨才能定案。容器內無音訊裝置，驗不了。",
+      "acceptance": "逐項聽辨後修正曲號對映與音效語意記錄。",
+      "verify": {
+        "kind": "manual",
+        "note": "要人耳。容器 nosound 驗不了。"
+      }
+    }
+  ]
+}

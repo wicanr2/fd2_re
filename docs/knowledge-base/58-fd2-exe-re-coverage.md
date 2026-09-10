@@ -663,7 +663,7 @@ command30 producer，也不構成缺少AI executor的交付阻擋。
 - 本頁只回答整體覆蓋、主證據與下一個缺欄位。
 - [`56`](56-fd2-remake-sdd.md)只保存系統契約、證據規則與精確資料／執行期設計。
 - [`57`](57-ui-evidence-matrix.md)是 UI 與玩家可見差距的唯一狀態表。
-- [`91`](91-worklist.md)只在檔首列有效佇列；其後舊勾選是歷史工作記錄。
+- [`91`](91-worklist.md) 由 [`fd2-worklist.json`](../data/fd2-worklist.json) 產生；舊勾選在 [`91-worklist-history.md`](91-worklist-history.md)，是當時快照不是待辦。
 - [`SESSION-HANDOFF`](SESSION-HANDOFF-2026-07-06.md)只保存時間序列與勘誤，不能決定現況。
 - `docs/data/ida/` 與 `docs/data/fd2_*` 是位址主證據；`chapter_beats`、binding 與測試是
   產物或消費端，不得冒充原始二進位證據。

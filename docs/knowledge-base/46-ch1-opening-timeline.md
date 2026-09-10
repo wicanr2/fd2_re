@@ -4,7 +4,8 @@
 > 根因(team-lead 診斷):**先前每次都是單張截圖對單張截圖驗收,沒人建立過原版開場的完整時間軸**,
 > 順序/分段/時機才會一直錯。本篇前半是 2026-07 Phase 1 的歷史基線，當時**只分析,不寫程式碼,不 commit**；
 > 不可把第 0、3、5 節的舊版 remake 敘述當成今日現況。後續重製端接線與目前限制以 §8、§9、
-> `campaign_full.json`、`57-ui-evidence-matrix.md` 及 `91-worklist.md` 為準。
+> `campaign_full.json`、`57-ui-evidence-matrix.md` 及 `91-worklist.md` 為準
+> （未完成項的權威是 `docs/data/fd2-worklist.json`）。
 >
 > 來源:使用者提供原版錄影 `video/fd2-ch1.mp4`(1440×1080 30fps,共 71 分,本篇只看前 ~7 分鐘
 > 「遊戲開始→戰鬥玩家第一次可操作」那段)。方法:每 2 秒抽 1 幀縮圖拼 montage 粗掃定邊界,
