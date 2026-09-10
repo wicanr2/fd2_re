@@ -129,13 +129,13 @@ manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unk
 
 ## release — 發行、平台與封包
 
-### 網頁版還沒在前景瀏覽器驗過，也還不能存檔
+### 網頁版還沒在前景瀏覽器由人確認可玩
 
-`wasm-web-release` · 仍未完成 · 自承還在 remake/web/index.html
+`wasm-web-release` · 仍未完成 · 要人判
 
-建置與資產都通了：`tools/build_wasm.sh` 產出 `fd2.wasm`、資產打包檔（43047 個檔案、124 MB）與索引，`index.html` 補上 Go 的唯讀檔案系統轉接層，CI 走同一支。實測在瀏覽器裡跑到漢堂國際的開場 logo——資產包載入、原版圖形解碼與 Ebiten 渲染都正常。剩兩件：(1) 自動化分頁是 `visibilityState: hidden`，瀏覽器會暫停 requestAnimationFrame，所以 Ebiten 主迴圈不推進，「開場到第一關」要在前景視窗由人確認；(2) 存檔與設定還不能寫——`os.WriteFile` 在 js/wasm 下仍是 ENOSYS，轉接層只補了唯讀那幾個呼叫。
+建置、資產與存檔都通了：`tools/build_wasm.sh` 產出 `fd2.wasm`、資產打包檔（43047 個檔案、124 MB）與索引；`index.html` 的檔案系統轉接層讀走資產包、寫走 localStorage，實測跑完 Go 的存檔流程（建立暫存檔→寫→關→rename→讀回），而且寫過的檔案會蓋過資產包。瀏覽器實測跑到漢堂國際的開場 logo。剩下的是**互動驗證**：自動化分頁的 `visibilityState` 是 hidden，瀏覽器會暫停 requestAnimationFrame，Ebiten 主迴圈因此不推進，所以「開場走到第一關可操作」只能在前景視窗由人確認。
 
-怎樣算做完：在前景瀏覽器確認開場走到第一關可操作，且存檔／設定能寫入並在重新載入後讀回（瀏覽器端儲存）。
+怎樣算做完：在前景瀏覽器開 tools/build_wasm.sh 的產物，確認開場走到第一關可操作，存檔能寫入並在重新載入後讀回。
 
 ### Android 封包沒有建置
 

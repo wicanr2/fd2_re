@@ -7,11 +7,15 @@ canvas{image-rendering:pixelated}h3{padding:8px;margin:0}
 <div id="status">載入中…</div>
 <script src="wasm_exec.js"></script>
 <script>
-// 檔案系統轉接層：Go 的 os.ReadFile 在 js/wasm 底下沒有東西可讀，wasm_exec.js 附的
-// fs polyfill 對 open／read／fstat 一律回 ENOSYS。這裡補上唯讀那幾個呼叫。
+// 檔案系統轉接層：Go 的 os.ReadFile／os.WriteFile 在 js/wasm 底下沒有東西可讀寫，
+// wasm_exec.js 附的 fs polyfill 對 open／read／write／fstat 一律回 ENOSYS。
 //
-// **寫入還沒做**：os.WriteFile 在這裡仍然是 ENOSYS，所以網頁版存不了檔也存不了
-// 設定。那要另外接瀏覽器端的儲存，見工作清單 wasm-web-release。
+// 讀取走資產包（見下方說明），寫入走 localStorage——存檔與設定是少數幾個小 JSON，
+// 而 localStorage 是同步的，正好對得上 Go 那邊的同步回呼。寫入實測走完 Go 的存檔
+// 流程（建立暫存檔 → 寫 → 關 → rename → 讀回），寫過的檔案在讀取時蓋過資產包。
+//
+// 沒做的是目錄：mkdir 一律回成功、stat 一律回「不是目錄」。目前沒有程式碼需要列
+// 目錄（assetGlob 走索引），真的需要時要另外處理，不要以為它已經支援。
 //
 // 資產走一個打包檔（tools/build_asset_pak.py）。**不要改回逐檔取用**：Go 的 fs
 // 介面是同步回呼，逐檔就只能用同步 XMLHttpRequest，而 Chrome 對主執行緒的同步請求
@@ -49,6 +53,64 @@ const assetPak = (() => {
   return { load, get };
 })();
 
+// 可寫層：存檔與設定。localStorage 是同步的，所以 Go 的同步回呼可以直接用；
+// 容量大約 5 MB，而這裡放的是幾十 KB 的 JSON。
+const writableFS = (() => {
+  const PREFIX = "fd2fs:";
+  const cache = new Map();   // 路徑 → Uint8Array
+
+  const key = (path) => PREFIX + path.replace(/^\/+/, "");
+  const encode = (bytes) => {
+    let s = "";
+    for (let i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+    return btoa(s);
+  };
+  const decode = (text) => {
+    const s = atob(text);
+    const out = new Uint8Array(s.length);
+    for (let i = 0; i < s.length; i++) out[i] = s.charCodeAt(i);
+    return out;
+  };
+
+  return {
+    get(path) {
+      if (cache.has(path)) return cache.get(path);
+      let stored = null;
+      try {
+        stored = localStorage.getItem(key(path));
+      } catch (e) {
+        return null;   // 隱私模式之類；當成沒有這個檔案
+      }
+      if (stored === null) return null;
+      const bytes = decode(stored);
+      cache.set(path, bytes);
+      return bytes;
+    },
+    put(path, bytes) {
+      cache.set(path, bytes);
+      try {
+        localStorage.setItem(key(path), encode(bytes));
+        return true;
+      } catch (e) {
+        return false;  // 配額滿了；讓呼叫端把它當成寫入失敗
+      }
+    },
+    remove(path) {
+      cache.delete(path);
+      try {
+        localStorage.removeItem(key(path));
+      } catch (e) { /* 同上，刪不掉就算了 */ }
+    },
+    rename(from, to) {
+      const bytes = this.get(from);
+      if (bytes === null) return false;
+      if (!this.put(to, bytes)) return false;
+      this.remove(from);
+      return true;
+    },
+  };
+})();
+
 (() => {
   const fs = globalThis.fs;
   const enosys = () => {
@@ -61,8 +123,9 @@ const assetPak = (() => {
     err.code = "ENOENT";
     return err;
   };
-  const files = new Map();   // fd → {path, bytes, pos}
+  const files = new Map();   // fd → {path, bytes, pos, writable}
   let nextFd = 100;          // 0/1/2 留給 stdin/stdout/stderr
+  const originalWrite = fs.write.bind(fs);   // stdout/stderr 仍走它
 
   // 包裡沒有的檔案才走這條。同步是被 Go 的 fs 介面逼的，不是選擇。
   const fetchSync = (path) => {
@@ -81,17 +144,64 @@ const assetPak = (() => {
     return out;
   };
 
-  const read = (path) => assetPak.get(path) || fetchSync(path);
+  // 讀取的優先序：寫過的檔案 → 資產包 → 逐檔取用。寫過的要排最前面，否則存檔
+  // 之後讀回來的還是包裡那份。
+  const read = (path) => writableFS.get(path) || assetPak.get(path) || fetchSync(path);
+
+  // wasm_exec.js 的 constants 全是 -1（它自己註明 unused），所以旗標只能看 Go 傳
+  // 進來的原始 openmode：syscall/fs_js.go 在 O_WRONLY／O_RDWR 時才會併進那些 -1，
+  // 結果就是「低位有值」代表要寫。
+  const wantsWrite = (flags) => (flags & 3) !== 0 || flags < 0;
 
   fs.open = (path, flags, mode, callback) => {
-    // 只服務唯讀開啟；帶寫入旗標的一律讓它照舊失敗。
-    if ((flags & 3) !== 0) return callback(enosys());
+    const fd = nextFd++;
+    if (wantsWrite(flags)) {
+      const existing = writableFS.get(path);
+      files.set(fd, {
+        path,
+        bytes: existing && (flags & 512) === 0 ? existing : new Uint8Array(0),
+        pos: 0,
+        writable: true,
+      });
+      return callback(null, fd);
+    }
     const bytes = read(path);
     if (bytes === null) return callback(enoent(path));
-    const fd = nextFd++;
     files.set(fd, { path, bytes, pos: 0 });
     callback(null, fd);
   };
+
+  fs.write = (fd, buffer, offset, length, position, callback) => {
+    const file = files.get(fd);
+    if (!file || !file.writable) {
+      // 1/2 是 stdout/stderr，交還給原本的 polyfill。
+      if (fd === 1 || fd === 2) return originalWrite(fd, buffer, offset, length, position, callback);
+      return callback(enosys());
+    }
+    const start = position === null ? file.pos : position;
+    const chunk = buffer.subarray(offset, offset + length);
+    if (start + chunk.length > file.bytes.length) {
+      const grown = new Uint8Array(start + chunk.length);
+      grown.set(file.bytes);
+      file.bytes = grown;
+    }
+    file.bytes.set(chunk, start);
+    if (position === null) file.pos = start + chunk.length;
+    callback(null, length);
+  };
+
+  // 寫入的檔案在 close 時才落地，與 Go 那邊「寫暫存檔再 rename」的流程對得上。
+  fs.rename = (from, to, callback) => {
+    callback(writableFS.rename(from, to) ? null : enoent(from));
+  };
+  fs.unlink = (path, callback) => {
+    writableFS.remove(path);
+    callback(null);
+  };
+  fs.mkdir = (path, perm, callback) => callback(null);   // 沒有目錄的概念
+  fs.chmod = (path, mode, callback) => callback(null);
+  fs.fchmod = (fd, mode, callback) => callback(null);
+  fs.fsync = (fd, callback) => callback(null);
 
   fs.read = (fd, buffer, offset, length, position, callback) => {
     const file = files.get(fd);
@@ -105,7 +215,13 @@ const assetPak = (() => {
   };
 
   fs.close = (fd, callback) => {
+    const file = files.get(fd);
     files.delete(fd);
+    if (file && file.writable && !writableFS.put(file.path, file.bytes)) {
+      const err = new Error("no space left on device: " + file.path);
+      err.code = "ENOSPC";
+      return callback(err);
+    }
     callback(null);
   };
 
