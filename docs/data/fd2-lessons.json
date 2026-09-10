@@ -69,10 +69,18 @@
     {
       "id": "string-review-rebinding",
       "area": "回歸",
-      "rule": "改過 `remake/cmd/fd2/main.go` 就要重新綁定 docs/data/fd2-string-review.json，它的 string_id 是行號座標，插一行就整批位移。用（檔案, 文字）配對，不要按排序硬配。",
-      "why": "加兩行註解就讓 TestReviewedGoCandidatesMatchCurrentInventory 失敗，訊息長得像功能壞掉（review binds sha=… want sha=…），實際上處置內容一項都沒變。",
+      "rule": "改過任何被盤點的 Go 檔就要重綁 docs/data/fd2-string-review.json，用 `tools/rebind_string_review.sh`；**而且要在最後一次改 Go 檔之後才綁**。",
+      "why": "string_id 是「檔案＋行號＋欄位」座標，加兩行註解就讓 TestReviewedGoCandidatesMatchCurrentInventory 失敗，訊息長得像功能壞掉（review binds sha=… want sha=…），實際上處置內容一項都沒變。2026-09-10 還踩到後半段：先重綁、再改一行註解，綁定立刻又失效，而且當下會以為自己已經處理過了。同一輪裡第二次重綁時，舊盤點要用上一次留下的 inv-new.json（FD2_OLD_INVENTORY），不能讓腳本去 git 裡找。",
       "date": "2026-09-10",
-      "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md"
+      "evidence": "tools/rebind_string_review.sh",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/rebind_string_review.sh"
+        ],
+        "pattern": "要在最後一次改 Go 檔之後才做",
+        "note": "腳本開頭的警告還在。"
+      }
     },
     {
       "id": "enemy-contact-needs-cursor-push",
@@ -121,6 +129,14 @@
       "why": "2026-09-10 把 worklist 測試、diff --check、add、commit、push 串成一行，測試印了 FAILED 在最上面，後面的 commit 照樣跑完並推了出去。串起來的那一刻就等於放棄了「看結果再決定要不要提交」。",
       "date": "2026-09-10",
       "evidence": "tools/test_fd2_worklist.py"
+    },
+    {
+      "id": "partial-run-fakes-fixes",
+      "area": "回歸",
+      "rule": "`tools/remake_go_test.sh` 只跑部分套件時，「修復」那一欄不可信——基線裡沒跑到的測試會被當成修復。要下「這項好了」的結論，就得跑到它所在的套件。",
+      "why": "2026-09-10 只跑 ./cmd/fd2 就看到「修復 39 項」，其中包含 TestReviewedGoCandidatesMatchCurrentInventory——那支測試在 cmd/fd2-string-inventory，根本沒跑到，而且當時是失敗的。「新增: 無」是可信的（跑到的才會列），「修復」不是。",
+      "date": "2026-09-10",
+      "evidence": "tools/remake_go_test.sh"
     }
   ]
 }

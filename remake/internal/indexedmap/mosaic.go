@@ -56,9 +56,12 @@ const (
 // 100／75／50／25／0／1／0），`sub_1F30A` 在重繪地形之後跑五次（0／25／50／
 // 75／100）；每一步同樣以 `sub_17AA9(1)` 等一個 BIOS tick。
 //
-// 每一步的字樣畫在 x ＝ `0x55 − 參數`、y ＝ `0x52`（`sub_1F42D` 0x1F43F 的
-// `mov ebx, 0x55` 減去參數）。馬賽克期間則是另外兩塊，畫在 (0x59,0x56) 與
-// (0xA9,0x56)。量測見 docs/knowledge-base/105-phase-banner-timing-20260910.md。
+// 每一步畫的是兩塊，而且**相向移動**：第一塊（`PLAYER` 或 `ENEMY`）在
+// x ＝ `0x55 − 參數`，第二塊（固定 `PHASE`）在 x ＝ `參數 + 0xA5`，y 都是
+// `0x52`（`sub_1F42D` 0x1F43F 的 `mov ebx, 0x55` 與 0x1F473 的 `add eax, 0xa5`）。
+// 那是離屏緩衝區的座標，`sub_11EB0` 再整塊搬到 VGA 的 (4,4)，所以換算成 VGA
+// 就是停住時的 (0x59,0x56) 與 (0xA9,0x56)——與馬賽克期間那兩塊同一個位置。
+// 量測見 docs/knowledge-base/105-phase-banner-timing-20260910.md。
 var (
 	phaseBannerSlideInArgs  = [...]int{100, 75, 50, 25, 0, 1, 0}
 	phaseBannerSlideOutArgs = [...]int{0, 25, 50, 75, 100}
@@ -74,8 +77,8 @@ const (
 // 它偏移，偏移量就是 `sub_1F42D` 的參數。
 const PhaseBannerSlideOriginX = 0x55
 
-// PhaseBannerSlideInOffset 回傳滑入第 step 步相對停住位置的 x 偏移（負值代表
-// 還在左邊畫面外）。界外回 0，也就是停住的位置。
+// PhaseBannerSlideInOffset 回傳滑入第 step 步**第一塊**相對停住位置的 x 偏移
+// （負值代表還在左邊畫面外）。第二塊取相反數。界外回 0，也就是停住的位置。
 func PhaseBannerSlideInOffset(step int) int {
 	if step < 0 || step >= PhaseBannerSlideInSteps {
 		return 0

@@ -30,6 +30,7 @@ def main() -> None:
     new = load(args.new_inventory)
     review = load(args.review)
     old_by_id = {entry["string_id"]: entry for entry in old["entries"]}
+    new_by_id = {entry["string_id"]: entry for entry in new["entries"]}
     new_by_signature: dict[tuple, list[dict]] = defaultdict(list)
     for entry in new["entries"]:
         new_by_signature[signature(entry)].append(entry)
@@ -39,7 +40,17 @@ def main() -> None:
         for old_id in group["string_ids"]:
             if old_id in dropped:
                 continue
-            matches = new_by_signature[signature(old_by_id[old_id])]
+            old_entry = old_by_id[old_id]
+            # 先看原地：同一個 id 在新盤點裡還在，而且簽名一模一樣，那它就是
+            # 同一筆，不必再問簽名唯不唯一。行號漂移多半只影響改動點之後的
+            # 條目，前面那一大半原地不動；而同一支函式裡出現兩次同樣的字
+            # （例如 Update 裡的兩個「亞雷斯」）簽名天生就不唯一，逼它唯一
+            # 只會讓整批遷移卡在一個其實沒有動過的條目上。
+            same = new_by_id.get(old_id)
+            if same is not None and signature(same) == signature(old_entry):
+                migrated.append(old_id)
+                continue
+            matches = new_by_signature[signature(old_entry)]
             if len(matches) != 1:
                 raise SystemExit(f"{old_id}: 遷移候選數 {len(matches)}")
             migrated.append(matches[0]["string_id"])

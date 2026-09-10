@@ -71,13 +71,13 @@ oracle 對這條路徑產生得出收據：畫面、版面與呼叫順序都取�
 
 ## data — 可編輯資料還沒就緒
 
-### 回合橫幅字模還沒擷取成資產
+### 回合橫幅字樣還沒跟原版同狀態比對
 
 `phase-banner-glyph-asset` · 仍未完成 · 自承還在 remake/cmd/fd2/main.go
 
-原版字樣由 `sub_1F1CC` 兩次 `sub_15F0E` 從 `[0x53A81]` 取 id `0x50`（PLAYER PHASE）／`0x52`（ENEMY PHASE）畫出來。重製端目前用自己的字型畫同樣的英文字，字模沒有比對過。
+原版字樣是 FDOTHER #5 的三格 LMI1 cell（`0x50` PLAYER、`0x51` PHASE、`0x52` ENEMY），由 `sub_1F42D` 兩次 `sub_15F0E` 畫成相向滑動的兩塊。重製端已接上這三格，落點與滑動方向由原始指令推得並有測試釘住；還沒做的是拿原版同一步的畫面逐像素比對，確認落點與時機都對得上。
 
-怎樣算做完：兩個 id 的字模擷取成受版控資產、由正式路徑消費，並與原版同狀態畫面比對。
+怎樣算做完：用 dosgolem oracle 取橫幅同一步的原版幀，與重製端同狀態幀比對字樣區域，差異可解釋。
 
 證據：`docs/knowledge-base/105-phase-banner-timing-20260910.md`
 

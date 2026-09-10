@@ -10807,6 +10807,58 @@ func phaseBannerFrames(banner string) int {
 	return int(math.Ceil(phaseBannerTotalMillis(banner) * 60 / 1000))
 }
 
+// 橫幅字樣的原版來源：FDOTHER #5 的 LMI1 cell。`sub_1F1CC` 由 `[0x53A81]`
+// （`0x25CE5` 以 `sub_111BA("FDOTHER.DAT", …, 5)` 載入）取三格——`0x50` PLAYER、
+// `0x51` PHASE、`0x52` ENEMY——再用 `sub_15F0E` 畫成兩塊。
+//
+// 兩塊的座標寫在 `sub_1F42D`（0x1F43F 起）：第一塊 x ＝ `0x55 − 參數`，第二塊
+// （固定 `0x51` PHASE）x ＝ `參數 + 0xA5`，兩塊 y 都是 `0x52`。**兩塊是相向
+// 移動的**——參數由 100 遞減到 0，第一塊由左往右、第二塊由右往左，在中間會合。
+// 那組座標是離屏緩衝區的（`sub_11EB0` 之後整塊複製到 VGA 的 `0xA0504`，也就是
+// (4,4)），換算成 VGA 就是停住時的 (0x59,0x56) 與 (0xA9,0x56)。
+//
+// 索引 0 是透明：字身用 2..9（落在 DAC 暗化不動的 0x00..0x0F），左下的投影
+// 陰影用 0xFE。所以走 BlitAtClipped 的透明語意，不是 BlitOpaqueAt。
+const (
+	phaseBannerGlyphPlayer  = 0x50
+	phaseBannerGlyphPhase   = 0x51
+	phaseBannerGlyphEnemy   = 0x52
+	phaseBannerGlyphFirstX  = 0x59
+	phaseBannerGlyphSecondX = 0xA9
+	phaseBannerGlyphY       = 0x56
+)
+
+// blitPhaseBannerGlyphs 把兩塊原版字樣畫進索引畫面，回傳是否畫成。缺分離素材時
+// 回 false，由 drawPhaseBanner 用重製端字型頂著——那是可玩性的後備，不是原版
+// 版面。
+func (g *Game) blitPhaseBannerGlyphs(dst []byte, offset int) bool {
+	assets := g.nativeMapAssets
+	if assets == nil || len(assets.CommandHealDigits) <= phaseBannerGlyphEnemy {
+		return false
+	}
+	first := phaseBannerGlyphEnemy
+	if g.banner == phaseBannerPlayerText {
+		first = phaseBannerGlyphPlayer
+	}
+	// offset 是第一塊的偏移（負值＝還在左邊畫面外），第二塊取相反數往右退。
+	// 兩塊都可能落在畫面外，所以一律走 clipped 版本。
+	if err := assets.CommandHealDigits[first].BlitAtClipped(
+		dst, 320, phaseBannerGlyphFirstX+offset, phaseBannerGlyphY, false); err != nil {
+		return false
+	}
+	if err := assets.CommandHealDigits[phaseBannerGlyphPhase].BlitAtClipped(
+		dst, 320, phaseBannerGlyphSecondX-offset, phaseBannerGlyphY, false); err != nil {
+		return false
+	}
+	return true
+}
+
+// phaseBannerGlyphsAvailable 回報這一輪橫幅會不會用原版字樣。
+func (g *Game) phaseBannerGlyphsAvailable() bool {
+	return g.nativeMapAssets != nil &&
+		len(g.nativeMapAssets.CommandHealDigits) > phaseBannerGlyphEnemy
+}
+
 func (g *Game) showBanner(s string) {
 	if g.shotPath != "" {
 		return
@@ -10856,22 +10908,25 @@ func (g *Game) phaseBannerStep() int {
 	return step
 }
 
-// drawPhaseBanner 只畫回合字樣。原版整段期間不重繪地圖，畫面變化來自對進場時
-// 那張快照重算的馬賽克，以及每步套在 DAC 上的減量(`sub_11D40`，只動索引
-// 0x10..0xFF，所以字樣不變暗)；見
-// docs/knowledge-base/105-phase-banner-timing-20260910.md。字樣疊在馬賽克之後。
-// 原版字模尚未擷取，這裡沿用重製端字型。
-// 馬賽克前後另有字樣滑入 7 步與滑出 5 步(`sub_1F42D`)，每步同樣等一個 BIOS
-// tick，x 相對停住位置的偏移就是那七／五個參數(見 indexedmap 的
-// PhaseBannerSlideInOffset／PhaseBannerSlideOutOffset)。
+// drawPhaseBanner 是回合字樣的**後備路徑**：拿得到 FDOTHER #5 的三格字模時，
+// 字樣已經由 blitPhaseBannerGlyphs 畫進索引畫面，這裡直接讓開；只有分離素材
+// 缺件時才用重製端字型頂著，那時的字寬與落點都不是原版版面。
 //
-// 停住的位置仍是重製端自訂的置中：原版停在 x=0x55、馬賽克期間另有兩塊畫在
-// (0x59,0x56) 與 (0xA9,0x56)，但那是原版字模的版面，重製端用自己的字型、寬度
-// 不同，硬套原版座標只會更不像。字模擷取之後(worklist
-// phase-banner-glyph-asset)再一起改成原版版面。**滑動的步數與時序是收據釘住
-// 的，停住的位置不是。**
+// 原版整段期間不重繪地圖，畫面變化來自對進場時那張快照重算的馬賽克，以及每步
+// 套在 DAC 上的減量(`sub_11D40`，只動索引 0x10..0xFF，所以字樣不變暗)。馬賽克
+// 前後另有字樣滑入 7 步與滑出 5 步(`sub_1F42D`)，每步同樣等一個 BIOS tick，
+// 偏移就是那七／五個參數(見 indexedmap 的 PhaseBannerSlideInOffset／
+// PhaseBannerSlideOutOffset；兩塊是相向移動的)。
+// 見 docs/knowledge-base/105-phase-banner-timing-20260910.md。
+//
+// 落點與相向滑動由原始指令(`sub_1F42D` 的 `0x55 − 參數` 與 `參數 + 0xA5`)推得，
+// 字模落點尚未與原版同狀態畫面逐像素比對(worklist phase-banner-glyph-asset)。
 func (g *Game) drawPhaseBanner(screen *ebiten.Image) {
 	if g.bannerT <= 0 || g.banner == "" || g.font == nil {
+		return
+	}
+	if g.phaseBannerGlyphsAvailable() {
+		// 原版字樣已經畫進索引畫面了，不要再疊一層自訂字型。
 		return
 	}
 	offset, visible := g.phaseBannerSlideOffset()
@@ -11034,6 +11089,10 @@ func (g *Game) drawNativeMapFrame(screen *ebiten.Image) bool {
 		); err != nil {
 			return false
 		}
+	}
+	// 字樣疊在馬賽克之後，與原版同序（`sub_4E809` 之後才 `sub_15F0E`）。
+	if offset, visible := g.phaseBannerSlideOffset(); visible {
+		g.blitPhaseBannerGlyphs(img.Pix, offset)
 	}
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(2, 2)
