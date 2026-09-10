@@ -175,6 +175,10 @@ type Unit struct {
 	OffY                                    float64      // 進場時從邊緣滑入,漸減到 0
 
 	// ---- 輔助法術暫時狀態(doc02 §6.4;施放邏輯見 magic.go CastArea/applySpell)----
+	// BuffAPPct／BuffDPPct 是重製端的累加式增益。原版是 `unit+0x22`／`+0x23`
+	// 非零就在 sub_1B750 把攻防各乘一次 1.15（dbl_5018D），不隨施放次數累加；
+	// 見 docs/knowledge-base/107-transient-status-semantics-20260910.md 與工作
+	// 清單 remake-buff-uses-normalized-timer。
 	BuffAPPct int // 魔刃術:AP 加成百分比
 	BuffDPPct int // 魔鎧術:DP 加成百分比
 	BuffHit   int // 風行術:HIT 加成
@@ -421,7 +425,9 @@ func (u *Unit) RestoreNativeHP() {
 func (u *Unit) EffectiveAP() int { return u.AP + u.AP*u.BuffAPPct/100 }
 func (u *Unit) EffectiveDP() int { return u.DP + u.DP*u.BuffDPPct/100 }
 
-// EffectiveHIT/EffectiveEV 套用風行術(HIT+15,EV+15)暫時加成後的命中/閃避值(doc02 §6.4)。
+// EffectiveHIT/EffectiveEV 套用風行術(HIT+15,EV+15)暫時加成後的命中/閃避值。
+// 原版是 unit+0x24 非零時在 sub_1B750 對基礎值加 15，命中與迴避都從同一個
+// 基礎繼承，而且加在裝備加成之前（107）。
 func (u *Unit) EffectiveHIT() int { return u.HIT + u.BuffHit }
 func (u *Unit) EffectiveEV() int  { return u.EV + u.BuffEV }
 
