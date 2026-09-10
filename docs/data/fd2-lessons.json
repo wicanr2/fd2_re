@@ -1,0 +1,92 @@
+{
+  "schema": "fd2-lessons/1",
+  "note": "踩過的坑寫成規則，不是寫成事件。每一條的 rule 是現在式、可重用、不會因為當時那個 bug 被修好就變成假斷言；why 才放當時發生什麼。由 tools/fd2_lessons.py 在每個工作階段開始時印出來（.claude/settings.json 的 SessionStart hook），不靠任何人記得去讀。",
+  "lessons": [
+    {
+      "id": "read-constants-from-source",
+      "area": "對拍",
+      "rule": "節奏與模擬器常數去程式碼裡找，不要從觀測到的數字反推。",
+      "why": "2026-09-10 解回合橫幅時，先想從等待迴圈的輪詢次數推出一個 BIOS tick 有多長，繞了兩圈數字都對不上；最後是讀 dosgolem 的 le_bios_clock.go 掛載點與它的測試，才拿到 54,926 這個確切值，所有觀測一次全部對上。同一天還因為把 real-mode 的 IRQ0Every／CycleClock 套到 FD2 走的 LE 路徑，把一段正確的敘述改成錯的。",
+      "date": "2026-09-10",
+      "evidence": "docs/knowledge-base/105-phase-banner-timing-20260910.md"
+    },
+    {
+      "id": "delay-not-measurable",
+      "area": "對拍",
+      "rule": "走 `delay(ms)` 的節奏在 dosgolem 上量不到，只能讀呼叫點常數；走 `sub_17AA9`（等 BIOS tick）的才量得到。",
+      "why": "Watcom 的 delay 不看時鐘，它用開機校準值 [0x541B0] 算出要呼叫幾次 int 21h AH=2Ch，模擬器上那個校準值與真機無關。實測敵方 delay(20ms) 與玩家 delay(150ms) 的步距完全相同。全螢幕戰鬥演出每段有 57～64 次 delay、只有 2 次 tick 等待，所以整段時序都量不到。",
+      "date": "2026-09-10",
+      "evidence": "docs/data/fd2_delay_call_sites.txt",
+      "guard": {
+        "kind": "present",
+        "paths": ["docs/knowledge-base/96-parity-toolchain-20260909.md"],
+        "pattern": "`delay\\(ms\\)` 量不到，只能讀常數",
+        "note": "工具鏈文件裡的那一節還在。"
+      }
+    },
+    {
+      "id": "verify-reproduction-on-base-change",
+      "area": "對拍",
+      "rule": "換 dosgolem 基底之後，先用同一份控制序列跑一次重現對照再繼續；比事後解釋數字為什麼變了便宜得多。",
+      "why": "2026-09-10 基底從 f627cd1 換到 main 的 d351681 再到 c8aa69a（中間有時鐘改寫、Step 進入條件、CPU 位址遮罩等改動），每次都先比對 290 幀的 step 與 indexed_sha256，三次全同，既有收據才敢繼續用。",
+      "date": "2026-09-10",
+      "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md"
+    },
+    {
+      "id": "dosgolem-is-shared",
+      "area": "工具鏈",
+      "rule": "dosgolem 是共用儲存庫，隨時可能有另一個工作階段在改它。跑對拍前先看 runner.json 的 dirty 計數；不要拿別人改到一半的樹當基底，也不要為了「乾淨」去 stash 或 checkout 別人的工作區。",
+      "why": "2026-09-10 驗證跑完幾分鐘後，internal/cpu 與 internal/machine 出現九個未提交改動（另一個工作階段在做 A20／HMA）。收據若在那個狀態下產生，就無法由 commit 重現。",
+      "date": "2026-09-10",
+      "evidence": "tools/dosgolem_oracle.sh"
+    },
+    {
+      "id": "receipts-carry-provenance",
+      "area": "對拍",
+      "rule": "收據要自己帶出處。掛進容器的是工作區而不是某個 commit，所以決定結果的是那個目錄當下的內容，不是誰記得自己切在哪一個分支。",
+      "why": "換基底那一輪之前，收據裡的 dosgolem commit 是人工填的；一填錯就再也分不出「結果變了」是改動造成的還是基底不同造成的。",
+      "date": "2026-09-10",
+      "evidence": "tools/dosgolem_oracle.sh"
+    },
+    {
+      "id": "claims-follow-receipts",
+      "area": "紀律",
+      "rule": "取到新收據的當下就回頭改掉被它推翻的斷言，不要等下一輪稽核。",
+      "why": "96 寫著「尚未實測的是全螢幕戰鬥演出（FIGANI）」，而同一天稍早的 fd2-physical-attack-presentation 收據已經取到三段演出並記了三個位址的進入次數。那句話就這樣活了一天，還變成 worklist 上一條方向錯誤的待辦。",
+      "date": "2026-09-10",
+      "evidence": "docs/knowledge-base/91-worklist-history.md"
+    },
+    {
+      "id": "probe-is-not-oracle",
+      "area": "工具鏈",
+      "rule": "`cmd/probe` 跑得動 FD2，但它不帶 apps/fd2 的平台設定，不能拿它的環境代表 oracle。",
+      "why": "用 probe 讀 0000:046C 想量 BIOS tick，全程都是 0——那條路徑根本沒裝 LE BIOS 時鐘，而 oracle 裡的等待迴圈明明會通過。",
+      "date": "2026-09-10",
+      "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md"
+    },
+    {
+      "id": "string-review-rebinding",
+      "area": "回歸",
+      "rule": "改過 `remake/cmd/fd2/main.go` 就要重新綁定 docs/data/fd2-string-review.json，它的 string_id 是行號座標，插一行就整批位移。用（檔案, 文字）配對，不要按排序硬配。",
+      "why": "加兩行註解就讓 TestReviewedGoCandidatesMatchCurrentInventory 失敗，訊息長得像功能壞掉（review binds sha=… want sha=…），實際上處置內容一項都沒變。",
+      "date": "2026-09-10",
+      "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md"
+    },
+    {
+      "id": "enemy-contact-needs-cursor-push",
+      "area": "對拍",
+      "rule": "要讓第一關的敵方 AI 接戰，每回合先把游標推到地圖角落（30×down、20×right）再結束回合；敵方第 2 回合就會打過來。",
+      "why": "不推游標的控制序列跑到 739M 指令都沒有任何攻擊演出，白跑一輪。",
+      "date": "2026-09-10",
+      "evidence": "docs/data/ui-traces/fd2-figani-fullscreen-20260910.json"
+    },
+    {
+      "id": "locate-with-frame-eip",
+      "area": "對拍",
+      "rule": "要在幾億道指令裡找某段演出，用 `FD2_ORACLE_FRAME_EIP=<入口>` 配 `FRAME_STRIDE=0`，只在進入那個位址時取幀；定出 step 之後再設 FRAME_FROM／TO 精取。",
+      "why": "回合橫幅用 0x1F1CC 兩幀就標出兩次起點；全螢幕戰鬥演出用 0x29164 一次掃出六段。大範圍逐幀掃是最貴又最容易撲空的做法。",
+      "date": "2026-09-10",
+      "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md"
+    }
+  ]
+}

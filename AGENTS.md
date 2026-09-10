@@ -286,6 +286,11 @@
 - 提交身分使用 `wicanr2 <wicanr2@gmail.com>`，以 repo-local 設定指定，不動
   全域設定。公司信箱不得進入作者欄。歷史上的 `Codex <codex@openai.com>`
   不改寫（那需要對 main force push）。
+- 踩過的坑寫進 `docs/data/fd2-lessons.json`，由 `tools/fd2_lessons.py brief` 在
+  每個工作階段開始時自動印出來（`.claude/settings.json` 的 SessionStart hook）。
+  新教訓的 `rule` 要寫成**現在式、可重用的規則**，不是事件敘述——事件會過去，
+  規則不會；當時發生什麼放 `why`。有機器訊號可綁的另外掛 `guard`，
+  `tools/fd2_lessons.py check` 會驗那個訊號還在不在。
 - 提交前跑 `tools/fd2_worklist.py verify`：它逐條檢查未完成項的訊號還在不在，
   訊號消失代表那一條可能做完了而條目沒改，要當場確認並從 JSON 移走。條目做完
   不是在 markdown 打勾——`91-worklist.md` 的產生區塊下一次 render 就會蓋掉。
