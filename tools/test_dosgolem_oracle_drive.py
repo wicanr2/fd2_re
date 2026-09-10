@@ -242,6 +242,10 @@ class UIMode(unittest.TestCase):
         self.assertEqual(drive.ui_mode({}), "unknown")
         self.assertEqual(drive.ui_mode(self.chain("0x12211", "0x45D91")), "unknown")
 
+    def test_dialogue_is_not_a_cursor_mode(self):
+        """對白不吃方向鍵，也不會自己走完——每個等待迴圈都要送 enter 推它。"""
+        self.assertNotIn("dialogue", drive.CURSOR_MODES)
+
     def test_only_cursor_and_target_move_the_map_cursor(self):
         self.assertEqual(drive.CURSOR_MODES, {"cursor", "target"})
 

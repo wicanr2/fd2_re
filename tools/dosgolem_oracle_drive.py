@@ -202,6 +202,7 @@ def do_goto(command):
 
 
 def do_await(command):
+    """只前進不送鍵直到條件成立；遇到對白會送 enter 推它，否則永遠等不到。"""
     expression = command["await"]
     steps = int(command.get("steps", 10_000_000))
     budget = int(command.get("max", 120))
@@ -213,6 +214,10 @@ def do_await(command):
             print(f"await {expression} 成立（實測 {got}）", flush=True)
             return True
         send_key = "" if (key and current.get("kbd_pending", 0) > 0) else key
+        # 對白不會自己走完。等回合推進的時候中間常常插一段升級訊息或事件台詞，
+        # 只送空鍵會等到預算用完——實測第一關第 3 回合就卡在這裡 300 格。
+        if ui_mode(current) == "dialogue" and current.get("kbd_pending", 0) == 0:
+            send_key = "enter"
         seq, current = send(send_key, steps)
         report(seq, send_key, current, f" await={expression}")
     print(f"await {expression} 在 {budget} 格內未成立", file=sys.stderr)
@@ -527,6 +532,7 @@ def do_engage(command):
     if acted(unit):
         print(f"engage ({ux},{uy}) 本回合已行動，跳過", flush=True)
         return True
+    started_round = measure(current, "round")
     if not do_goto({"goto": [ux, uy], "steps": steps, "max": command.get("max", 80)}):
         return False
 
@@ -592,7 +598,23 @@ def do_engage(command):
         print(f"engage 走到 {moved_to} 但射程 {reach} 內沒有敵人", flush=True)
         current = stand_by(steps, "=advance")
 
+    # 收尾判斷要等狀態穩定：介面還是 unknown 表示演出或過場正在播（第一關第 3
+    # 回合哈諾與哈瓦特加入就是這樣），那時去讀 record `+5` bit7 會讀到還沒寫上去
+    # 的值，判成「沒行動」。
+    for _ in range(int(command.get("finish_wait", 20))):
+        current = state()
+        if ui_mode(current) != "unknown" or measure(current, "round") > started_round:
+            break
+        seq, current = send("", max(steps, 5_000_000))
+        report(seq, "", current, " engage=finish-wait")
     current = state()
+    if measure(current, "round") > started_round:
+        # 這個單位就是本回合最後一個。它行動完原版立刻換手，新回合把所有
+        # record `+5` bit7 清掉——那時去檢查「有沒有標記已行動」一定是 False，
+        # 但行動其實成功了。看回合數才分得出「沒行動」與「行動完換手了」。
+        print(f"engage {moved_to} 完成，回合已由 {started_round} 推進到 "
+              f"{measure(current, 'round')}", flush=True)
+        return True
     unit = unit_at(current, moved_to[0], moved_to[1])
     if unit is None:
         print(f"engage {moved_to} 收尾時該格已無單位（可能被反擊打死）", flush=True)
