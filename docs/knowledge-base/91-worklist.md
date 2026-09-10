@@ -25,7 +25,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 20 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 19 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 
@@ -70,16 +70,6 @@ oracle 對這條路徑產生得出收據：畫面、版面與呼叫順序都取�
 怎樣算做完：六筆各自找到寫入端與消費端，或明確記錄它們是同一個 producer 的不同分支。
 
 ## data — 可編輯資料還沒就緒
-
-### 回合橫幅字樣還沒跟原版同狀態比對
-
-`phase-banner-glyph-asset` · 仍未完成 · 自承還在 remake/cmd/fd2/main.go
-
-原版字樣是 FDOTHER #5 的三格 LMI1 cell（`0x50` PLAYER、`0x51` PHASE、`0x52` ENEMY），由 `sub_1F42D` 兩次 `sub_15F0E` 畫成相向滑動的兩塊。重製端已接上這三格，落點與滑動方向由原始指令推得並有測試釘住；還沒做的是拿原版同一步的畫面逐像素比對，確認落點與時機都對得上。
-
-怎樣算做完：用 dosgolem oracle 取橫幅同一步的原版幀，與重製端同狀態幀比對字樣區域，差異可解釋。
-
-證據：`docs/knowledge-base/105-phase-banner-timing-20260910.md`
 
 ### 四語內容還有機器初稿沒有人工審校
 

@@ -177,3 +177,31 @@ func TestPhaseBannerFallsBackWithoutTheOriginalBank(t *testing.T) {
 		t.Fatal("沒有資產時仍宣稱畫得出原版字樣")
 	}
 }
+
+// TestPhaseBannerGlyphsStayInsideTheCopiedViewport 釘住字樣裁在 `sub_11EB0` 的
+// 搬運窗格內。原版把字樣畫進離屏緩衝區再搬 312×192 到 VGA 的 (4,4)，所以四邊
+// 各四格黑邊留著先前的內容；照整幀去畫的話，滑入第一步的第一塊（x ＝ −11）就
+// 會多畫到左邊那四欄。原版逐幀收據見
+// docs/data/ui-traces/fd2-phase-banner-glyph-parity-20260910.json。
+func TestPhaseBannerGlyphsStayInsideTheCopiedViewport(t *testing.T) {
+	g, dst := phaseBannerGlyphFixture(phaseBannerEnemyText)
+	if !g.blitPhaseBannerGlyphs(dst, indexedmap.PhaseBannerSlideInOffset(0)) {
+		t.Fatal("滑入第一步沒有畫成")
+	}
+	for y := 0; y < 200; y++ {
+		for x := 0; x < 320; x++ {
+			inside := x >= indexedmap.NativeMapViewportX0 && x <= indexedmap.NativeMapViewportX1 &&
+				y >= indexedmap.NativeMapViewportY0 && y <= indexedmap.NativeMapViewportY1
+			if !inside && dst[y*320+x] != 0 {
+				t.Fatalf("窗格外的 (%d,%d) 被畫到了", x, y)
+			}
+		}
+	}
+	// 兩塊都要真的碰到窗格邊界，否則上面那圈檢查是空話。
+	if dst[phaseBannerGlyphY*320+indexedmap.NativeMapViewportX0] == 0 {
+		t.Fatal("第一塊沒有畫到窗格左緣，這一步根本沒有被裁到")
+	}
+	if dst[phaseBannerGlyphY*320+indexedmap.NativeMapViewportX1] == 0 {
+		t.Fatal("第二塊沒有畫到窗格右緣，這一步根本沒有被裁到")
+	}
+}

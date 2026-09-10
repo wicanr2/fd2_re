@@ -17,22 +17,6 @@
   },
   "items": [
     {
-      "id": "phase-banner-glyph-asset",
-      "layer": "data",
-      "title": "回合橫幅字樣還沒跟原版同狀態比對",
-      "body": "原版字樣是 FDOTHER #5 的三格 LMI1 cell（`0x50` PLAYER、`0x51` PHASE、`0x52` ENEMY），由 `sub_1F42D` 兩次 `sub_15F0E` 畫成相向滑動的兩塊。重製端已接上這三格，落點與滑動方向由原始指令推得並有測試釘住；還沒做的是拿原版同一步的畫面逐像素比對，確認落點與時機都對得上。",
-      "acceptance": "用 dosgolem oracle 取橫幅同一步的原版幀，與重製端同狀態幀比對字樣區域，差異可解釋。",
-      "evidence": "docs/knowledge-base/105-phase-banner-timing-20260910.md",
-      "verify": {
-        "kind": "present",
-        "paths": [
-          "remake/cmd/fd2/main.go"
-        ],
-        "pattern": "尚未與原版同狀態畫面逐像素比對",
-        "note": "程式裡的自承還在。"
-      }
-    },
-    {
       "id": "figani-fullscreen-receipt",
       "layer": "re",
       "title": "全螢幕戰鬥演出的逐格分鏡與時序還沒解",

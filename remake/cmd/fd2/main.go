@@ -10841,14 +10841,37 @@ func (g *Game) blitPhaseBannerGlyphs(dst []byte, offset int) bool {
 		first = phaseBannerGlyphPlayer
 	}
 	// offset 是第一塊的偏移（負值＝還在左邊畫面外），第二塊取相反數往右退。
-	// 兩塊都可能落在畫面外，所以一律走 clipped 版本。
-	if err := assets.CommandHealDigits[first].BlitAtClipped(
-		dst, 320, phaseBannerGlyphFirstX+offset, phaseBannerGlyphY, false); err != nil {
+	return blitPhaseBannerGlyph(dst, assets.CommandHealDigits[first],
+		phaseBannerGlyphFirstX+offset) &&
+		blitPhaseBannerGlyph(dst, assets.CommandHealDigits[phaseBannerGlyphPhase],
+			phaseBannerGlyphSecondX-offset)
+}
+
+// blitPhaseBannerGlyph 把一格字模畫在索引畫面的 y ＝ phaseBannerGlyphY 上，
+// **裁在 0x11EB0 的搬運窗格內**。
+//
+// 原版把字樣畫進離屏緩衝區，再由 `sub_11EB0` 把 312×192 搬到 VGA 的 (4,4)；
+// 超出窗格的部分不會出現在畫面上。滑入第一步的 `ENEMY` 落在 x ＝ −11，若照著
+// 整幀去畫就會多畫到左邊那四欄黑邊——原版那四欄留著先前的內容。
+func blitPhaseBannerGlyph(dst []byte, cell fdother.LMI1Entry, x int) bool {
+	if cell.Width <= 0 || cell.Height <= 0 || len(cell.Pixels) != cell.Width*cell.Height {
 		return false
 	}
-	if err := assets.CommandHealDigits[phaseBannerGlyphPhase].BlitAtClipped(
-		dst, 320, phaseBannerGlyphSecondX-offset, phaseBannerGlyphY, false); err != nil {
-		return false
+	for row := 0; row < cell.Height; row++ {
+		y := phaseBannerGlyphY + row
+		if y < indexedmap.NativeMapViewportY0 || y > indexedmap.NativeMapViewportY1 {
+			continue
+		}
+		for col := 0; col < cell.Width; col++ {
+			dx := x + col
+			if dx < indexedmap.NativeMapViewportX0 || dx > indexedmap.NativeMapViewportX1 {
+				continue
+			}
+			// 索引 0 是透明；字身 2..9 落在 DAC 暗化不動的 0x00..0x0F。
+			if v := cell.Pixels[row*cell.Width+col]; v != 0 {
+				dst[y*320+dx] = v
+			}
+		}
 	}
 	return true
 }
@@ -10919,8 +10942,9 @@ func (g *Game) phaseBannerStep() int {
 // PhaseBannerSlideOutOffset；兩塊是相向移動的)。
 // 見 docs/knowledge-base/105-phase-banner-timing-20260910.md。
 //
-// 落點與相向滑動由原始指令(`sub_1F42D` 的 `0x55 − 參數` 與 `參數 + 0xA5`)推得，
-// 字模落點尚未與原版同狀態畫面逐像素比對(worklist phase-banner-glyph-asset)。
+// 落點與相向滑動來自 `sub_1F42D` 的 `0x55 − 參數` 與 `參數 + 0xA5`，並由原版
+// 逐幀畫面逐像素比對確認(滑入 7 步、停留 33 步、滑出 5 步全中，收據
+// docs/data/ui-traces/fd2-phase-banner-glyph-parity-20260910.json)。
 func (g *Game) drawPhaseBanner(screen *ebiten.Image) {
 	if g.bannerT <= 0 || g.banner == "" || g.font == nil {
 		return

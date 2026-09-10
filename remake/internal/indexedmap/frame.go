@@ -21,6 +21,13 @@ const (
 	steadyViewportOffset = 0x504
 	steadyViewportWidth  = 312
 	NativeMapVGASize     = 320 * 200
+	// NativeMapViewport… 是 0x11EB0 實際搬到 VGA 的矩形（含端點）。窗格外那
+	// 四欄／四列留著先前的內容——原版的橫幅字樣畫在離屏緩衝區裡，搬過去時
+	// 超出窗格的部分就不會出現在畫面上。
+	NativeMapViewportX0 = steadyViewportOffset % viewWidth
+	NativeMapViewportY0 = steadyViewportOffset / viewWidth
+	NativeMapViewportX1 = NativeMapViewportX0 + steadyViewportWidth - 1
+	NativeMapViewportY1 = NativeMapViewportY0 + viewHeight - 1
 	// NativeUnitPresentWorkSize is 0x22253's exact temporary allocation.
 	NativeUnitPresentWorkSize = 0x25680
 )

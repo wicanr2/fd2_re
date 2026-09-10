@@ -1,0 +1,350 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_original_remake_parity_receipt",
+  "topic": "回合橫幅字樣：原版逐幀畫面與重製端落點模型逐像素比對",
+  "date": "2026-09-10",
+  "runner": "dosgolem apps/fd2/cmd/oracle",
+  "dosgolem_commit": "c8aa69af3999fb6a9d6331dc50fb680b13779a2f",
+  "driver": "tools/dosgolem_oracle.sh（FRAMES=1、FRAME_EIP=0x17AA9、STRIDE=0、FROM=255562771、TO=275000000）",
+  "control_plan": "docs/data/parity-plans/ch01-phase-banner.jsonl",
+  "executable": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "entry": {
+    "path": "標題選單 right,down,down,enter 由附帶 FD2.SAV 進第一關，enter 開系統面板、down×3 到 END、enter、enter(YES) 進敵方回合",
+    "evidence_grade": "RUNTIME 觀測；輸入全為一般 BIOS 按鍵",
+    "state_injections": [],
+    "input_kind": "normal BIOS keys",
+    "banner_entry_step": 255562771,
+    "note": "同一份序列的第二次 sub_1F1CC（玩家回合橫幅）在 step 328882154，本輪未取樣"
+  },
+  "glyph_source": {
+    "container": "FDOTHER.DAT 資源 5（[0x53A81]，由 0x25CE5 載入）",
+    "cells": {
+      "0x50": "PLAYER 75×14",
+      "0x51": "PHASE 63×14",
+      "0x52": "ENEMY 72×14"
+    },
+    "separated_assets": "remake/generated-assets/fd2-original-b97caf22/ui/fdother_005_lmi1_opaque"
+  },
+  "measurement": {
+    "method": "以分離素材的字模為模板，在原版索引畫面上逐像素比對預測落點；只比對落在 0x11EB0 搬運窗格 (4,4)-(315,195) 內的非透明像素（索引 0 為透明）",
+    "predicted_x": "第一塊 89 − 參數、第二塊 169 + 參數，y 固定 86；來自 sub_1F42D 的 `0x55 − 參數` 與 `參數 + 0xA5` 加上窗格原點 (4,4)",
+    "slide_args": [
+      100,
+      75,
+      50,
+      25,
+      0,
+      1,
+      0
+    ],
+    "slide_in_steps": [
+      {
+        "slide_step": 0,
+        "arg": 100,
+        "step": 255592045,
+        "file": "frame-000000.png",
+        "cells": {
+          "ENEMY": {
+            "predicted_x": -11,
+            "y": 86,
+            "pixels_compared": 559,
+            "pixels_matched": 559,
+            "clipped": true
+          },
+          "PHASE": {
+            "predicted_x": 269,
+            "y": 86,
+            "pixels_compared": 470,
+            "pixels_matched": 470,
+            "clipped": true
+          }
+        }
+      },
+      {
+        "slide_step": 1,
+        "arg": 75,
+        "step": 255625052,
+        "file": "frame-000001.png",
+        "cells": {
+          "ENEMY": {
+            "predicted_x": 14,
+            "y": 86,
+            "pixels_compared": 670,
+            "pixels_matched": 670,
+            "clipped": false
+          },
+          "PHASE": {
+            "predicted_x": 244,
+            "y": 86,
+            "pixels_compared": 627,
+            "pixels_matched": 627,
+            "clipped": false
+          }
+        }
+      },
+      {
+        "slide_step": 2,
+        "arg": 50,
+        "step": 255655056,
+        "file": "frame-000002.png",
+        "cells": {
+          "ENEMY": {
+            "predicted_x": 39,
+            "y": 86,
+            "pixels_compared": 670,
+            "pixels_matched": 670,
+            "clipped": false
+          },
+          "PHASE": {
+            "predicted_x": 219,
+            "y": 86,
+            "pixels_compared": 627,
+            "pixels_matched": 627,
+            "clipped": false
+          }
+        }
+      },
+      {
+        "slide_step": 3,
+        "arg": 25,
+        "step": 255685053,
+        "file": "frame-000003.png",
+        "cells": {
+          "ENEMY": {
+            "predicted_x": 64,
+            "y": 86,
+            "pixels_compared": 670,
+            "pixels_matched": 670,
+            "clipped": false
+          },
+          "PHASE": {
+            "predicted_x": 194,
+            "y": 86,
+            "pixels_compared": 627,
+            "pixels_matched": 627,
+            "clipped": false
+          }
+        }
+      },
+      {
+        "slide_step": 4,
+        "arg": 0,
+        "step": 255715057,
+        "file": "frame-000004.png",
+        "cells": {
+          "ENEMY": {
+            "predicted_x": 89,
+            "y": 86,
+            "pixels_compared": 670,
+            "pixels_matched": 670,
+            "clipped": false
+          },
+          "PHASE": {
+            "predicted_x": 169,
+            "y": 86,
+            "pixels_compared": 627,
+            "pixels_matched": 627,
+            "clipped": false
+          }
+        }
+      },
+      {
+        "slide_step": 5,
+        "arg": 1,
+        "step": 255745053,
+        "file": "frame-000005.png",
+        "cells": {
+          "ENEMY": {
+            "predicted_x": 88,
+            "y": 86,
+            "pixels_compared": 670,
+            "pixels_matched": 670,
+            "clipped": false
+          },
+          "PHASE": {
+            "predicted_x": 170,
+            "y": 86,
+            "pixels_compared": 627,
+            "pixels_matched": 627,
+            "clipped": false
+          }
+        }
+      },
+      {
+        "slide_step": 6,
+        "arg": 0,
+        "step": 255775053,
+        "file": "frame-000006.png",
+        "cells": {
+          "ENEMY": {
+            "predicted_x": 89,
+            "y": 86,
+            "pixels_compared": 670,
+            "pixels_matched": 670,
+            "clipped": false
+          },
+          "PHASE": {
+            "predicted_x": 169,
+            "y": 86,
+            "pixels_compared": 627,
+            "pixels_matched": 627,
+            "clipped": false
+          }
+        }
+      }
+    ],
+    "hold_steps": {
+      "frames": "idx 7..39（33 幀，正好是馬賽克的 33 步）",
+      "step_range": [
+        256641523,
+        268075308
+      ],
+      "result": "兩塊全部停在 (89,86) 與 (169,86)，每一幀 670/670 與 627/627 全中",
+      "note": "這一段每步都有 sub_11D40 的 DAC 減量，但那只改調色盤不改索引，所以索引畫面上的字樣像素不變"
+    },
+    "slide_out_steps": [
+      {
+        "slide_step": 0,
+        "arg": 0,
+        "step": 268075308,
+        "file": "frame-000039.png",
+        "cells": {
+          "ENEMY": {
+            "predicted_x": 89,
+            "y": 86,
+            "pixels_compared": 670,
+            "pixels_matched": 670,
+            "clipped": false
+          },
+          "PHASE": {
+            "predicted_x": 169,
+            "y": 86,
+            "pixels_compared": 627,
+            "pixels_matched": 627,
+            "clipped": false
+          }
+        }
+      },
+      {
+        "slide_step": 1,
+        "arg": 25,
+        "step": 268105242,
+        "file": "frame-000040.png",
+        "cells": {
+          "ENEMY": {
+            "predicted_x": 64,
+            "y": 86,
+            "pixels_compared": 670,
+            "pixels_matched": 670,
+            "clipped": false
+          },
+          "PHASE": {
+            "predicted_x": 194,
+            "y": 86,
+            "pixels_compared": 627,
+            "pixels_matched": 627,
+            "clipped": false
+          }
+        }
+      },
+      {
+        "slide_step": 2,
+        "arg": 50,
+        "step": 268135239,
+        "file": "frame-000041.png",
+        "cells": {
+          "ENEMY": {
+            "predicted_x": 39,
+            "y": 86,
+            "pixels_compared": 670,
+            "pixels_matched": 670,
+            "clipped": false
+          },
+          "PHASE": {
+            "predicted_x": 219,
+            "y": 86,
+            "pixels_compared": 627,
+            "pixels_matched": 627,
+            "clipped": false
+          }
+        }
+      },
+      {
+        "slide_step": 3,
+        "arg": 75,
+        "step": 268165243,
+        "file": "frame-000042.png",
+        "cells": {
+          "ENEMY": {
+            "predicted_x": 14,
+            "y": 86,
+            "pixels_compared": 670,
+            "pixels_matched": 670,
+            "clipped": false
+          },
+          "PHASE": {
+            "predicted_x": 244,
+            "y": 86,
+            "pixels_compared": 627,
+            "pixels_matched": 627,
+            "clipped": false
+          }
+        }
+      },
+      {
+        "slide_step": 4,
+        "arg": 100,
+        "step": 268195240,
+        "file": "frame-000043.png",
+        "cells": {
+          "ENEMY": {
+            "predicted_x": -11,
+            "y": 86,
+            "pixels_compared": 559,
+            "pixels_matched": 559,
+            "clipped": true
+          },
+          "PHASE": {
+            "predicted_x": 269,
+            "y": 86,
+            "pixels_compared": 470,
+            "pixels_matched": 470,
+            "clipped": true
+          }
+        }
+      }
+    ]
+  },
+  "conclusions": [
+    {
+      "claim": "橫幅字樣就是 FDOTHER #5 的 0x51／0x52 兩格，逐像素相同",
+      "grade": "已證實",
+      "evidence": "七步全部 100% 吻合，且模板匹配在整張畫面上給出唯一落點"
+    },
+    {
+      "claim": "兩塊相向移動：第一塊 x = 89 − 參數，第二塊 x = 169 + 參數",
+      "grade": "已證實",
+      "evidence": "參數 1 那一步落在 (88,86) 與 (170,86)——一塊往左一格、一塊往右一格"
+    },
+    {
+      "claim": "字樣裁在 0x11EB0 的 312×192 搬運窗格內，窗格外四欄／四列不更新",
+      "grade": "已證實",
+      "evidence": "參數 100 那一步第一塊落在 x = −11、第二塊落在 x = 269；限制在窗格內比對是 559/559 與 470/470 全中，不限制窗格改成整張畫面時，第一塊 596 個比對點裡有 37 個不吻合、第二塊 510 個裡有 40 個不吻合，全部落在窗格外那幾欄"
+    },
+    {
+      "claim": "馬賽克 33 步期間字樣停在滑入終點不動，退場再照同一組參數滑出",
+      "grade": "已證實",
+      "evidence": "idx 7..39 共 33 幀全部停在 (89,86)／(169,86) 且逐像素全中；idx 39..43 依參數 0／25／50／75／100 退開，預測落點全中"
+    }
+  ],
+  "not_claimed": [
+    "PLAYER PHASE（`0x50` 那一格）的畫面比對。本輪只走到敵方回合；玩家回合橫幅在同一份序列的 step 328882154，未取樣。",
+    "重製端輸出與原版幀的整幀比較。兩側的地圖底圖本來就不同（重製端自己畫），本輪比的是原版畫面上的字樣像素與落點；重製端那側由 phase_banner_glyph_test.go 釘住同一份字模與同一組座標。",
+    "每一步的實機毫秒。時序由 sub_17AA9(1) 的 BIOS tick 契約給出，不在本輪量測範圍。"
+  ]
+}
