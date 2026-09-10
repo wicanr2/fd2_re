@@ -7227,6 +7227,10 @@ func (g *Game) confirm() {
 		}
 		g.publishPhysicalAttackMessage(message)
 		actor := g.sel
+		// 反擊的傷害已經結算進 attackResult.Counter，但**演出只有主攻這一段**。
+		// 原版兩次結算在同一段全螢幕演出內（`sub_29164` 只滑入一次，兩次
+		// `sub_2939D` 相隔約 1,200,000 指令），所以不能只是再播一段 atkAnim；
+		// 分鏡要先解出來，見工作清單 remake-counterattack-presentation。
 		g.atk = g.newAtkAnim(actor.BattleFig, tgt.BattleFig, anm, nm,
 			actor.HP, actor.MaxHP, actor.Lv, actor.MP, actor.MaxMP,
 			tgt.Lv, tgt.MP, tgt.MaxMP,
