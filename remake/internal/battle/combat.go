@@ -39,6 +39,11 @@ func (s *State) AttackWithRNG(a, d *Unit, rng *rand.Rand) AttackResult {
 	return s.attackWithExperience(a, d, rng, nil)
 }
 
+// attackWithExperience 目前仍走上面檔頭那組二手公式，而且只結算一次。原版的
+// 一手證據（`sub_29F72` 的順序、武器暴擊加成、無傷害下限，以及守方存活且相鄰時
+// 的反擊）已經實作在 native_physical_damage.go，但**還沒接進這條正式路徑**；
+// 接線與兩側 HP 對拍見工作清單 remake-attack-missing-counterattack 與
+// docs/knowledge-base/106-physical-attack-counterattack-20260910.md。
 func (s *State) attackWithExperience(a, d *Unit, rng *rand.Rand, nativeEXP *nativePhysicalExperiencePlan) AttackResult {
 	a.Acted = true
 	if nativeEXP != nil && a.HasNativeRecordByte5 {

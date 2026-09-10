@@ -107,7 +107,7 @@ manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unk
 
 ### 重製端的攻擊沒有反擊
 
-`remake-attack-missing-counterattack` · 仍未完成 · 還沒出現
+`remake-attack-missing-counterattack` · 仍未完成 · 自承還在 remake/internal/battle/combat.go
 
 原版一次物理攻擊含兩次結算：攻方先打，守方若存活且相鄰、且裝備的是近戰武器就還手。條件與傷害公式已解（`sub_28A6C`→兩次 `sub_2939D`→`sub_29F72`，見 106）；上一輪把它接到 `sub_2A6BD` 是走錯方向，實測整段那條路一次都沒進入。重製端 `attackWithExperience` 仍只結算一次，而且公式來自二手攻略：暴擊率用 `CritPct` 而不是職業表加武器加成、地形與暴擊減半的順序相反、隨機加成的取法也不同。實測第一關同一組座標：原版攻方 48→31、守方 28→8；重製端攻方 48→48、守方 28→6。
 

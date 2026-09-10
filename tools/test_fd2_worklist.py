@@ -84,8 +84,6 @@ class RealWorklistBothDirections(unittest.TestCase):
         samples = {
             "wasm-web-release": "GOOS=js GOARCH=wasm go build ./cmd/fd2\n",
             "android-package": "ebitenmobile bind -target android ./mobile\n",
-            "remake-attack-missing-counterattack":
-                "func (s *State) counterAttack(a, d *Unit) {}\n",
         }
         for item in items:
             with self.subTest(item["id"]):

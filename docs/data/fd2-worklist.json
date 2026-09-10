@@ -247,12 +247,12 @@
       "acceptance": "依 106 接上 `sub_29F72` 的公式與反擊條件，走原版 RNG（`fdother.NativeRNGStep`），同一組座標的對拍兩側 HP 一致。",
       "evidence": "docs/knowledge-base/106-physical-attack-counterattack-20260910.md",
       "verify": {
-        "kind": "absent",
+        "kind": "present",
         "paths": [
-          "remake/internal/battle"
+          "remake/internal/battle/combat.go"
         ],
-        "pattern": "[Cc]ounterAttack|counterattack|反擊",
-        "note": "重製端的戰鬥套件裡還沒有反擊。接上時一定會出現這幾個字之一。"
+        "pattern": "還沒接進這條正式路徑",
+        "note": "正式結算路徑上的自承還在。"
       }
     }
   ]
