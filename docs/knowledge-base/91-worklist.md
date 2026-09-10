@@ -25,7 +25,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 
@@ -114,16 +114,6 @@ manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unk
 怎樣算做完：四筆各自解決或明確拆分，並在 canonical schema 記錄依據。
 
 ## runtime — 還沒接進正式執行期
-
-### 回合橫幅的字樣滑入滑出還沒接線
-
-`phase-banner-text-slide` · 仍未完成 · 自承還在 remake/cmd/fd2/main.go
-
-原版在馬賽克前有 7 步字樣滑入、之後有 5 步滑出，都由 `sub_1F42D` 驅動，每步同樣以 `sub_17AA9(1)` 等一個 BIOS tick。位置是 x ＝ `0x55 − 參數`、y ＝ `0x52`，兩塊分別畫在 (89,86) 與 (169,86)。重製端目前只有 33 步馬賽克那一段。
-
-怎樣算做完：重製端在馬賽克前後各跑完 7＋5 步，每步一個 BIOS tick，並有釘住步數與位置的回歸。
-
-證據：`docs/knowledge-base/105-phase-banner-timing-20260910.md`
 
 ### 重製端的攻擊沒有反擊
 

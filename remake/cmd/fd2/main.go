@@ -10767,11 +10767,38 @@ func phaseBannerHoldMillis(banner string) float64 {
 	return phaseBannerEnemyHoldMillis
 }
 
-// phaseBannerTotalMillis 是整段橫幅的原版長度：33 步各一個 BIOS tick，加上中段
-// 停留。
+// phaseBannerTotalMillis 是整段橫幅的原版長度：字樣滑入 7 步、馬賽克 33 步、
+// 滑出 5 步，各一個 BIOS tick，加上中段停留。
 func phaseBannerTotalMillis(banner string) float64 {
-	return indexedmap.PhaseBannerSteps*indexedmap.PhaseBannerStepMillis +
-		phaseBannerHoldMillis(banner)
+	steps := indexedmap.PhaseBannerSlideInSteps + indexedmap.PhaseBannerSteps +
+		indexedmap.PhaseBannerSlideOutSteps
+	return float64(steps)*indexedmap.PhaseBannerStepMillis + phaseBannerHoldMillis(banner)
+}
+
+// phaseBannerElapsedMillis 是這一段橫幅已經走了多少毫秒。
+func (g *Game) phaseBannerElapsedMillis() float64 {
+	return float64(phaseBannerFrames(g.banner)-g.bannerT) * 1000 / 60
+}
+
+// phaseBannerSlideOffset 回傳字樣相對停住位置的 x 偏移（原版像素），以及字樣
+// 這一刻要不要畫。滑入在馬賽克之前、滑出在馬賽克之後，都是每步一個 BIOS tick。
+func (g *Game) phaseBannerSlideOffset() (int, bool) {
+	if g == nil || g.bannerT <= 0 || g.banner == "" {
+		return 0, false
+	}
+	elapsed := g.phaseBannerElapsedMillis()
+	slideIn := float64(indexedmap.PhaseBannerSlideInSteps) * indexedmap.PhaseBannerStepMillis
+	if elapsed < slideIn {
+		return indexedmap.PhaseBannerSlideInOffset(
+			int(elapsed / indexedmap.PhaseBannerStepMillis)), true
+	}
+	mosaic := float64(indexedmap.PhaseBannerSteps)*indexedmap.PhaseBannerStepMillis +
+		phaseBannerHoldMillis(g.banner)
+	if elapsed < slideIn+mosaic {
+		return 0, true
+	}
+	return indexedmap.PhaseBannerSlideOutOffset(
+		int((elapsed - slideIn - mosaic) / indexedmap.PhaseBannerStepMillis)), true
 }
 
 // phaseBannerFrames 把原版長度換成 60 Hz 的重製端幀數(無條件進位，寧可多留一
@@ -10798,10 +10825,18 @@ func (g *Game) phaseBannerStep() int {
 	if g == nil || g.bannerT <= 0 || g.banner == "" {
 		return -1
 	}
-	total := phaseBannerFrames(g.banner)
-	elapsed := float64(total-g.bannerT) * 1000 / 60
+	// 馬賽克夾在字樣滑入與滑出之間，滑動那兩段畫的是正常地圖。
+	slideIn := float64(indexedmap.PhaseBannerSlideInSteps) * indexedmap.PhaseBannerStepMillis
+	elapsed := g.phaseBannerElapsedMillis() - slideIn
+	if elapsed < 0 {
+		return -1
+	}
 	enterMillis := indexedmap.PhaseBannerEnterSteps * indexedmap.PhaseBannerStepMillis
 	hold := phaseBannerHoldMillis(g.banner)
+	mosaic := float64(indexedmap.PhaseBannerSteps)*indexedmap.PhaseBannerStepMillis + hold
+	if elapsed >= mosaic {
+		return -1
+	}
 	var step int
 	switch {
 	case elapsed < enterMillis:
@@ -10826,15 +10861,28 @@ func (g *Game) phaseBannerStep() int {
 // 0x10..0xFF，所以字樣不變暗)；見
 // docs/knowledge-base/105-phase-banner-timing-20260910.md。字樣疊在馬賽克之後。
 // 原版字模尚未擷取，這裡沿用重製端字型。
-// 原版在馬賽克前後另有字樣滑入 7 步與滑出 5 步(`sub_1F42D`，每步同樣等一個
-// BIOS tick)，這一段尚未接線。
+// 馬賽克前後另有字樣滑入 7 步與滑出 5 步(`sub_1F42D`)，每步同樣等一個 BIOS
+// tick，x 相對停住位置的偏移就是那七／五個參數(見 indexedmap 的
+// PhaseBannerSlideInOffset／PhaseBannerSlideOutOffset)。
+//
+// 停住的位置仍是重製端自訂的置中：原版停在 x=0x55、馬賽克期間另有兩塊畫在
+// (0x59,0x56) 與 (0xA9,0x56)，但那是原版字模的版面，重製端用自己的字型、寬度
+// 不同，硬套原版座標只會更不像。字模擷取之後(worklist
+// phase-banner-glyph-asset)再一起改成原版版面。**滑動的步數與時序是收據釘住
+// 的，停住的位置不是。**
 func (g *Game) drawPhaseBanner(screen *ebiten.Image) {
 	if g.bannerT <= 0 || g.banner == "" || g.font == nil {
 		return
 	}
+	offset, visible := g.phaseBannerSlideOffset()
+	if !visible {
+		return
+	}
 	w := g.font.Width(g.banner, 2.2)
 	c := color.RGBA{0xff, 0xc8, 0x50, 0xff}
-	g.font.Draw(screen, g.banner, (float64(logicalW)-w)/2, float64(logicalH)/2-24, 2.2, c)
+	// 原版座標是 320 寬，重製端的邏輯畫布是它的兩倍。
+	x := (float64(logicalW)-w)/2 + float64(offset*logicalW/320)
+	g.font.Draw(screen, g.banner, x, float64(logicalH)/2-24, 2.2, c)
 }
 
 // drawUnitHUD 是 native full-frame admission 失敗時的 playable fallback，
@@ -10951,7 +10999,10 @@ func (g *Game) drawNativeMapFrame(screen *ebiten.Image) bool {
 	// 每一步都對那張快照重算馬賽克再整幀寫回。這裡照同一個模型：第一次繪製
 	// 時凍結一份，之後只從它取樣，不再跟著當前畫面走。
 	step := g.phaseBannerStep()
-	if step >= 0 && g.bannerFrame == nil && len(g.nativeMapVGA) >= indexedmap.NativeMapVGASize {
+	// 原版在 `sub_1F1CC` 一進來就 memcpy 螢幕，那是**字樣滑入之前**；滑入期間
+	// 地圖本身不重繪，所以在橫幅一開始就凍結與原版等價。
+	if g.bannerT > 0 && g.banner != "" && g.bannerFrame == nil &&
+		len(g.nativeMapVGA) >= indexedmap.NativeMapVGASize {
 		g.bannerFrame = append([]byte(nil), g.nativeMapVGA...)
 	}
 	// 每一步另外把 DAC 索引 0x10..0xFF 減去「方塊邊長 − 1」(`sub_11D40`)，

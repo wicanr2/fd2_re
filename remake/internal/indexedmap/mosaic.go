@@ -52,6 +52,45 @@ const (
 	PhaseBannerDimLastIndex  = 0xFF
 )
 
+// 字樣滑入與滑出。`sub_1F1CC` 在馬賽克之前跑七次 `sub_1F42D`（參數
+// 100／75／50／25／0／1／0），`sub_1F30A` 在重繪地形之後跑五次（0／25／50／
+// 75／100）；每一步同樣以 `sub_17AA9(1)` 等一個 BIOS tick。
+//
+// 每一步的字樣畫在 x ＝ `0x55 − 參數`、y ＝ `0x52`（`sub_1F42D` 0x1F43F 的
+// `mov ebx, 0x55` 減去參數）。馬賽克期間則是另外兩塊，畫在 (0x59,0x56) 與
+// (0xA9,0x56)。量測見 docs/knowledge-base/105-phase-banner-timing-20260910.md。
+var (
+	phaseBannerSlideInArgs  = [...]int{100, 75, 50, 25, 0, 1, 0}
+	phaseBannerSlideOutArgs = [...]int{0, 25, 50, 75, 100}
+)
+
+// PhaseBannerSlideInSteps 與 PhaseBannerSlideOutSteps 是兩段滑動的步數。
+const (
+	PhaseBannerSlideInSteps  = len(phaseBannerSlideInArgs)
+	PhaseBannerSlideOutSteps = len(phaseBannerSlideOutArgs)
+)
+
+// PhaseBannerSlideOriginX 是字樣停住時的原版 x（`0x55`）。滑動的每一步都相對
+// 它偏移，偏移量就是 `sub_1F42D` 的參數。
+const PhaseBannerSlideOriginX = 0x55
+
+// PhaseBannerSlideInOffset 回傳滑入第 step 步相對停住位置的 x 偏移（負值代表
+// 還在左邊畫面外）。界外回 0，也就是停住的位置。
+func PhaseBannerSlideInOffset(step int) int {
+	if step < 0 || step >= PhaseBannerSlideInSteps {
+		return 0
+	}
+	return -phaseBannerSlideInArgs[step]
+}
+
+// PhaseBannerSlideOutOffset 回傳滑出第 step 步的 x 偏移。
+func PhaseBannerSlideOutOffset(step int) int {
+	if step < 0 || step >= PhaseBannerSlideOutSteps {
+		return 0
+	}
+	return -phaseBannerSlideOutArgs[step]
+}
+
 // PhaseBannerBlock 回傳第 step 步的方塊邊長。
 func PhaseBannerBlock(step int) int {
 	if step < 0 || step >= PhaseBannerSteps {

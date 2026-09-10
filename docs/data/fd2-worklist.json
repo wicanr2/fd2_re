@@ -17,22 +17,6 @@
   },
   "items": [
     {
-      "id": "phase-banner-text-slide",
-      "layer": "runtime",
-      "title": "回合橫幅的字樣滑入滑出還沒接線",
-      "body": "原版在馬賽克前有 7 步字樣滑入、之後有 5 步滑出，都由 `sub_1F42D` 驅動，每步同樣以 `sub_17AA9(1)` 等一個 BIOS tick。位置是 x ＝ `0x55 − 參數`、y ＝ `0x52`，兩塊分別畫在 (89,86) 與 (169,86)。重製端目前只有 33 步馬賽克那一段。",
-      "acceptance": "重製端在馬賽克前後各跑完 7＋5 步，每步一個 BIOS tick，並有釘住步數與位置的回歸。",
-      "evidence": "docs/knowledge-base/105-phase-banner-timing-20260910.md",
-      "verify": {
-        "kind": "present",
-        "paths": [
-          "remake/cmd/fd2/main.go"
-        ],
-        "pattern": "字樣滑入 7 步與滑出 5 步",
-        "note": "程式裡的自承還在。接上時這段註解會被刪掉，那時這一條就會開口。"
-      }
-    },
-    {
       "id": "phase-banner-glyph-asset",
       "layer": "data",
       "title": "回合橫幅字模還沒擷取成資產",

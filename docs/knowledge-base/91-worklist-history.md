@@ -56,6 +56,9 @@
   `docs/data/parity-plans/ch01-move-attack.jsonl`。第一次對拍就抓到重製端沒有
   反擊（原版攻方 48→31，重製端 48→48），已另立條目
   `remake-attack-missing-counterattack`。
+- `phase-banner-text-slide`：字樣滑入 7 步與滑出 5 步已接進重製端。步數、每步
+  一個 BIOS tick、以及 x 相對停住位置的偏移（`sub_1F42D` 的七／五個參數）都由
+  收據釘住；停住的位置仍是重製端自訂的置中，等字模擷取之後再一起改成原版版面。
 
 ---
 

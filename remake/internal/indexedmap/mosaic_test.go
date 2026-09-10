@@ -95,3 +95,35 @@ func TestPhaseBannerDimFollowsTheBlockCurve(t *testing.T) {
 		t.Fatalf("每步停留 %.4f 毫秒，應為一個 BIOS tick", PhaseBannerStepMillis)
 	}
 }
+
+// TestPhaseBannerSlideOffsetsMatchTheCallArguments 釘住 `sub_1F42D` 的七次與
+// 五次呼叫參數：x 相對停住位置的偏移就是參數的負值。
+func TestPhaseBannerSlideOffsetsMatchTheCallArguments(t *testing.T) {
+	wantIn := []int{-100, -75, -50, -25, 0, -1, 0}
+	if len(wantIn) != PhaseBannerSlideInSteps {
+		t.Fatalf("滑入 %d 步，收據是 %d", PhaseBannerSlideInSteps, len(wantIn))
+	}
+	for step, want := range wantIn {
+		if got := PhaseBannerSlideInOffset(step); got != want {
+			t.Fatalf("滑入第 %d 步偏移 %d，收據是 %d", step, got, want)
+		}
+	}
+	wantOut := []int{0, -25, -50, -75, -100}
+	if len(wantOut) != PhaseBannerSlideOutSteps {
+		t.Fatalf("滑出 %d 步，收據是 %d", PhaseBannerSlideOutSteps, len(wantOut))
+	}
+	for step, want := range wantOut {
+		if got := PhaseBannerSlideOutOffset(step); got != want {
+			t.Fatalf("滑出第 %d 步偏移 %d，收據是 %d", step, got, want)
+		}
+	}
+	// 界外回停住的位置，不是憑空的偏移。
+	for _, step := range []int{-1, PhaseBannerSlideInSteps} {
+		if got := PhaseBannerSlideInOffset(step); got != 0 {
+			t.Fatalf("滑入界外第 %d 步回 %d", step, got)
+		}
+	}
+	if PhaseBannerSlideOriginX != 0x55 {
+		t.Fatalf("停住的 x 是 %d，原版是 0x55", PhaseBannerSlideOriginX)
+	}
+}
