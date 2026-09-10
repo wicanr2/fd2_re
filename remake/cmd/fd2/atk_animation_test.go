@@ -5,6 +5,8 @@ import (
 	"testing"
 
 	"github.com/hajimehoshi/ebiten/v2"
+
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
 
 func TestNewAtkAnimRequiresNativeDelayPairing(t *testing.T) {
@@ -164,5 +166,173 @@ func TestAttackPresentationTicksKeepsTheRemainder(t *testing.T) {
 	naive := frames * int(1000.0/60/step)
 	if naive == total {
 		t.Fatal("捨去餘數與保留餘數推進了同樣多，這組參數驗不到累積")
+	}
+}
+
+// counterFixture 造一個攻守雙方都有完整 FIGANI 資源的 Game。索引規則見
+// figaniIndex：fig×3 是待機、fig×3+1 是攻擊動作。
+func counterFixture(t *testing.T) *Game {
+	t.Helper()
+	t.Setenv("FD2_BATTLE_FPT", "2")
+	img := func(n int) []*ebiten.Image {
+		out := make([]*ebiten.Image, n)
+		for i := range out {
+			out[i] = ebiten.NewImage(1, 1)
+		}
+		return out
+	}
+	return &Game{
+		figani: map[int][]*ebiten.Image{
+			12: img(4), 13: img(3), // 亞雷斯（fig 4）待機／攻擊
+			288: img(4), 289: img(2), // 盜賊（fig 96）待機／攻擊
+		},
+		figaniDelays: map[int][]int{
+			12: {1, 1, 1, 1}, 13: {1, 2, 1},
+			288: {1, 1, 1, 1}, 289: {2, 3},
+		},
+	}
+}
+
+// TestCounterStageSwapsResourcesAndSides 釘住反擊那一段是「就地換裝」：資源、
+// 資訊條與陣營全部對調，時間軸重新開始，而且**不會**重新滑入——原版的
+// `sub_29164` 整段只跑一次，兩次 `sub_2939D` 共用同一段演出。
+func TestCounterStageSwapsResourcesAndSides(t *testing.T) {
+	g := counterFixture(t)
+	a := g.newAtkAnim(4, 96, "亞雷斯", "盜賊",
+		31, 48, 1, 0, 0, 2, 0, 0, 28, 8, 28, 0, true)
+	if a == nil {
+		t.Fatal("主攻演出沒有建立")
+	}
+	// 結算在演出之前，所以攻方 HP 已經是被反擊之後的 31；第一段要顯示 48。
+	actor := &battle.Unit{BattleFig: 4, HP: 31, MaxHP: 48}
+	target := &battle.Unit{BattleFig: 96, HP: 8, MaxHP: 28}
+	counter := battle.AttackResult{Amount: 17}
+	g.attachCounterPresentation(a, actor, target, battle.AttackResult{
+		Amount: 20, Counter: &counter,
+	})
+	if a.atkHP != 48 {
+		t.Fatalf("第一段攻方 HP 是 %d，應修回反擊前的 48", a.atkHP)
+	}
+	if a.counter == nil {
+		t.Fatal("反擊段沒有接上")
+	}
+	firstTotal, firstFig := a.total, a.atkFig
+	a.beginCounterStage()
+	if a.atkFig != 289 || a.defFig != 12 {
+		t.Fatalf("換裝後資源是 %d／%d，應為 289（盜賊攻擊）／12（亞雷斯待機）", a.atkFig, a.defFig)
+	}
+	if firstFig != 13 {
+		t.Fatalf("第一段攻方資源是 %d，應為 13", firstFig)
+	}
+	if a.atkName != "盜賊" || a.defName != "亞雷斯" {
+		t.Fatalf("資訊條沒有對調：%s／%s", a.atkName, a.defName)
+	}
+	if a.atkOwn {
+		t.Fatal("陣營沒有換邊")
+	}
+	if a.atkHP != 8 || a.atkMax != 28 {
+		t.Fatalf("第二段攻方 HP 是 %d/%d，應為第一段守方結算後的 8/28", a.atkHP, a.atkMax)
+	}
+	if a.defHP0 != 48 || a.defHP1 != 31 || a.defMax != 48 {
+		t.Fatalf("第二段守方 HP 是 %d→%d(max %d)，應為 48→31(max 48)",
+			a.defHP0, a.defHP1, a.defMax)
+	}
+	if a.timer != a.total || a.frameIndex != 0 {
+		t.Fatalf("時間軸沒有重新開始：timer=%d total=%d frame=%d", a.timer, a.total, a.frameIndex)
+	}
+	// 兩段長度各自等於自己那組延遲和×fpt，加上尾段停格。
+	if want := (1 + 2 + 1) * 2; firstTotal != want+4*2 {
+		t.Fatalf("第一段 total=%d，應為 %d", firstTotal, want+4*2)
+	}
+	if want := (2 + 3) * 2; a.total != want+4*2 {
+		t.Fatalf("第二段 total=%d，應為 %d", a.total, want+4*2)
+	}
+	if a.counter != nil {
+		t.Fatal("換裝之後 counter 應該清掉，否則會無限對打下去")
+	}
+}
+
+// TestCounterStageFailsClosedWithoutAssets 釘住反擊素材缺件時只是接不上第二段，
+// 主攻那一段照常演；傷害已經結算，不會因為演不出來就不算。
+func TestCounterStageFailsClosedWithoutAssets(t *testing.T) {
+	g := counterFixture(t)
+	delete(g.figaniDelays, 289) // 盜賊的攻擊動作沒有延遲表
+	a := g.newAtkAnim(4, 96, "亞雷斯", "盜賊",
+		31, 48, 1, 0, 0, 2, 0, 0, 28, 8, 28, 0, true)
+	if a == nil {
+		t.Fatal("主攻演出不該因為反擊素材缺件就建不起來")
+	}
+	counter := battle.AttackResult{Amount: 17}
+	g.attachCounterPresentation(a, &battle.Unit{BattleFig: 4, HP: 31, MaxHP: 48},
+		&battle.Unit{BattleFig: 96, HP: 8, MaxHP: 28},
+		battle.AttackResult{Amount: 20, Counter: &counter})
+	if a.counter != nil {
+		t.Fatal("缺延遲表時仍接上了反擊段")
+	}
+	if a.atkHP != 48 {
+		t.Fatalf("攻方 HP 還是要修回反擊前的 48，實際 %d", a.atkHP)
+	}
+	// 沒有反擊時完全不動。
+	b := g.newAtkAnim(4, 96, "亞雷斯", "盜賊", 48, 48, 1, 0, 0, 2, 0, 0, 28, 8, 28, 0, true)
+	g.attachCounterPresentation(b, &battle.Unit{BattleFig: 4, HP: 48, MaxHP: 48},
+		&battle.Unit{BattleFig: 96, HP: 8, MaxHP: 28}, battle.AttackResult{Amount: 20})
+	if b.counter != nil || b.atkHP != 48 {
+		t.Fatalf("沒有反擊時被動到了：counter=%v atkHP=%d", b.counter != nil, b.atkHP)
+	}
+}
+
+// TestAttackPresentationRunsBothStages 釘住推進真的會走到換裝：主攻段跑完不是
+// 收尾，而是接上反擊那一段，整段演出的長度是兩段之和。原版的兩次 `sub_2939D`
+// 就是這樣共用一段演出的。
+func TestAttackPresentationRunsBothStages(t *testing.T) {
+	g := counterFixture(t)
+	a := g.newAtkAnim(4, 96, "亞雷斯", "盜賊",
+		31, 48, 1, 0, 0, 2, 0, 0, 28, 8, 28, 0, true)
+	if a == nil {
+		t.Fatal("主攻演出沒有建立")
+	}
+	counter := battle.AttackResult{Amount: 17}
+	g.attachCounterPresentation(a, &battle.Unit{BattleFig: 4, HP: 31, MaxHP: 48},
+		&battle.Unit{BattleFig: 96, HP: 8, MaxHP: 28},
+		battle.AttackResult{Amount: 20, Counter: &counter})
+	firstTotal, secondTotal := a.total, a.counter.total
+
+	finished := false
+	a.after = func() { finished = true }
+	g.atk = a
+
+	swapped := -1
+	ticks := 0
+	for g.atk != nil && ticks < 10000 {
+		if err := g.stepAttackPresentationTick(); err != nil {
+			t.Fatal(err)
+		}
+		ticks++
+		if swapped < 0 && g.atk != nil && g.atk.atkFig == 289 {
+			swapped = ticks
+		}
+	}
+	if !finished {
+		t.Fatal("演出沒有收尾")
+	}
+	if swapped != firstTotal {
+		t.Fatalf("在第 %d 個 tick 換裝，應該在第一段跑完的第 %d 個", swapped, firstTotal)
+	}
+	if ticks != firstTotal+secondTotal {
+		t.Fatalf("整段跑了 %d 個 tick，應為兩段之和 %d＋%d", ticks, firstTotal, secondTotal)
+	}
+	// 沒有反擊時只跑一段——否則上面那個等式是碰巧成立的。
+	b := g.newAtkAnim(4, 96, "亞雷斯", "盜賊", 48, 48, 1, 0, 0, 2, 0, 0, 28, 8, 28, 0, true)
+	b.after = func() {}
+	g.atk = b
+	only := 0
+	for g.atk != nil && only < 10000 {
+		if err := g.stepAttackPresentationTick(); err != nil {
+			t.Fatal(err)
+		}
+		only++
+	}
+	if only != firstTotal {
+		t.Fatalf("沒有反擊時跑了 %d 個 tick，應為 %d", only, firstTotal)
 	}
 }

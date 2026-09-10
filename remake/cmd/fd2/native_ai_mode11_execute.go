@@ -122,6 +122,7 @@ func (g *Game) executeNativeAIMode11Physical(plan *battle.AIPlan, after func()) 
 		attackerName, defenderName, actor.HP, actor.MaxHP, actor.Lv, actor.MP,
 		actor.MaxMP, target.Lv, target.MP, target.MaxMP, defHP0, target.HP, target.MaxHP,
 		g.terrainAt(target.X, target.Y), actor.Camp == battle.Own)
+	g.attachCounterPresentation(g.atk, actor, target, attackResult)
 	if g.atk == nil {
 		g.loadErr = fmt.Sprintf("native AI mode 11 0x1548e FIGANI unavailable: %d -> %d", actor.BattleFig, target.BattleFig)
 		g.aiBusy = false

@@ -222,22 +222,6 @@
         "kind": "manual",
         "note": "要人耳。容器 nosound 驗不了。"
       }
-    },
-    {
-      "id": "remake-counterattack-presentation",
-      "layer": "runtime",
-      "title": "反擊沒有演出，只有數值變化",
-      "body": "原版一次物理攻擊的兩次結算在**同一段**全螢幕演出內：`sub_29164` 只滑入一次，`sub_2939D` 跑兩次（第二次攻守對調，用守方的攻擊資源與攻方的待機資源），`sub_2A289` 各跟一次。分鏡與節奏已解並與重製端的 delays.json 對拍一致（見 106 與 fd2-figani-tick-parity 收據）。重製端已照原版結算反擊的傷害，但畫面上只演主攻那一段，攻方的 HP 是突然變的。",
-      "acceptance": "讓一段 atkAnim 涵蓋兩次交鋒（第二段換成守方的攻擊資源與攻方的待機資源），總長度等於兩個資源的延遲和，並與原版同一段的呼叫順序對照。",
-      "evidence": "docs/knowledge-base/106-physical-attack-counterattack-20260910.md",
-      "verify": {
-        "kind": "present",
-        "paths": [
-          "remake/cmd/fd2/main.go"
-        ],
-        "pattern": "演出只有主攻這一段",
-        "note": "正式路徑上的自承還在。"
-      }
     }
   ]
 }

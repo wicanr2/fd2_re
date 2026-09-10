@@ -25,7 +25,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 18 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 17 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 
@@ -92,18 +92,6 @@ manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unk
 `native-0`／`native-1`／`native-7`／`native-96` 有名稱衝突，目前保留直接來源、拒絕猜選。
 
 怎樣算做完：四筆各自解決或明確拆分，並在 canonical schema 記錄依據。
-
-## runtime — 還沒接進正式執行期
-
-### 反擊沒有演出，只有數值變化
-
-`remake-counterattack-presentation` · 仍未完成 · 自承還在 remake/cmd/fd2/main.go
-
-原版一次物理攻擊的兩次結算在**同一段**全螢幕演出內：`sub_29164` 只滑入一次，`sub_2939D` 跑兩次（第二次攻守對調，用守方的攻擊資源與攻方的待機資源），`sub_2A289` 各跟一次。分鏡與節奏已解並與重製端的 delays.json 對拍一致（見 106 與 fd2-figani-tick-parity 收據）。重製端已照原版結算反擊的傷害，但畫面上只演主攻那一段，攻方的 HP 是突然變的。
-
-怎樣算做完：讓一段 atkAnim 涵蓋兩次交鋒（第二段換成守方的攻擊資源與攻方的待機資源），總長度等於兩個資源的延遲和，並與原版同一段的呼叫順序對照。
-
-證據：`docs/knowledge-base/106-physical-attack-counterattack-20260910.md`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

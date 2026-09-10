@@ -546,7 +546,21 @@ type atkAnim struct {
 	nativeImpactRaw *nativeImpactDACInput    // 尚未接線；缺 raw provenance 時保持 nil
 	frameIndex      int                      // 目前已呈現的 FIGANI 幀
 	bodyTicks       int                      // 幀本體的精確延遲總長，尾段停格另計
-	after           func()                   // 原版 action handler 完成後才進 selector1；不得在演出前提交
+	// counter 是反擊那一段。原版一次攻擊的兩次結算共用一段演出（`sub_29164` 只
+	// 滑入一次，`sub_2939D` 跑兩次，第二次攻守對調），所以這裡不另起一段演出，
+	// 而是在主攻段跑完時就地換上第二段的資源與資訊條。nil 表示沒有反擊。
+	counter *atkStage
+	after   func() // 原版 action handler 完成後才進 selector1；不得在演出前提交
+}
+
+// atkStage 是一段交鋒要換上的東西。欄位刻意只有「會變的那些」——資訊條的名字、
+// 等級與 MP 由 atkAnim 自己對調，不必再存一份。
+type atkStage struct {
+	atkFig, defFig   int // 這一段的攻方動作資源與守方待機資源
+	timeline         *figani.DisplayScheduler
+	bodyTicks, total int
+	defHP0, defHP1   int // 這一段守方（＝上一段的攻方）的 HP 變化
+	defMax           int
 }
 
 // nativeImpactDACInput 只保存原版 0x2939d 命中分支仍可回查的 raw 條件。
@@ -6012,6 +6026,45 @@ func (g *Game) newAtkAnim(atkGroup, defGroup int, atkName, defName string,
 		bodyTicks: bodyTicks}
 }
 
+// newCounterStage 建反擊那一段：攻方換成原守方的攻擊動作、守方換成原攻方的待機。
+// 資源或延遲表缺一不可——缺了就回 nil，呼叫端維持只有主攻的演出，而不是用猜的
+// 幀數硬演一段。defHP0／defHP1 是這一段守方（也就是原攻方）反擊前後的 HP。
+func (g *Game) newCounterStage(counterAtkGroup, counterDefGroup, defHP0, defHP1, defMax int) *atkStage {
+	if g == nil || !g.nativeAttackPresentationAvailable(counterAtkGroup, counterDefGroup) {
+		return nil
+	}
+	fpt := battleFPT()
+	af := figaniIndex(counterAtkGroup) + 1
+	delays, ok := g.figaniDelays[af]
+	if !ok || len(delays) != len(g.figani[af]) {
+		return nil
+	}
+	timeline, err := figani.NewDisplayScheduler(delays, fpt)
+	if err != nil {
+		return nil
+	}
+	bodyTicks := timeline.BodyTicks()
+	return &atkStage{
+		atkFig: af, defFig: figaniIndex(counterDefGroup), timeline: timeline,
+		bodyTicks: bodyTicks, total: bodyTicks + 4*fpt,
+		defHP0: defHP0, defHP1: defHP1, defMax: defMax,
+	}
+}
+
+// attachCounterPresentation 把反擊接成同一段演出的第二半，並把第一段顯示的攻方
+// HP 修回反擊之前的值——結算在演出之前就完成了，actor.HP 這時已經是被反擊之後的。
+//
+// 反擊的素材缺件時只接不上第二段，主攻那一段照常演；傷害本身已經結算，不會因為
+// 演不出來就不算。
+func (g *Game) attachCounterPresentation(a *atkAnim, actor, target *battle.Unit, result battle.AttackResult) {
+	if a == nil || actor == nil || target == nil || result.Counter == nil {
+		return
+	}
+	before := actor.HP + result.Counter.Amount
+	a.atkHP = before
+	a.counter = g.newCounterStage(target.BattleFig, actor.BattleFig, before, actor.HP, actor.MaxHP)
+}
+
 // nativeAttackPresentationAvailable 執行 newAtkAnim 所需的完整資產與排程檢查，
 // 但不消耗戰鬥亂數，也不修改 HP；敵方 AI 以此作為失敗即關閉的交易預檢。
 func (g *Game) nativeAttackPresentationAvailable(atkGroup, defGroup int) bool {
@@ -6098,12 +6151,39 @@ func (g *Game) stepAttackPresentationTick() error {
 		g.playRaw(g.sfxDeath)
 	}
 	if a.timer <= 0 {
+		if a.counter != nil {
+			a.beginCounterStage()
+			return nil
+		}
 		g.finishAttackPresentation()
 		if g.nativeFieldEvent61 != nil || g.battleEvent != nil {
 			return errAttackPresentationYield
 		}
 	}
 	return nil
+}
+
+// beginCounterStage 把演出換成反擊那一段：資源與 HP 變化換成第二次 `sub_2939D`
+// 的參數，資訊條左右對調（陣營換邊），時間軸重新開始。畫面不重新滑入——原版
+// 的 `sub_29164` 整段只跑一次。
+func (a *atkAnim) beginCounterStage() {
+	next := a.counter
+	if next == nil {
+		return
+	}
+	a.counter = nil
+	a.atkFig, a.defFig = next.atkFig, next.defFig
+	a.atkName, a.defName = a.defName, a.atkName
+	a.atkLV, a.defLV = a.defLV, a.atkLV
+	a.atkMP, a.defMP = a.defMP, a.atkMP
+	a.atkMaxMP, a.defMaxMP = a.defMaxMP, a.atkMaxMP
+	// 第二段的攻方就是上一段的守方，HP 停在上一段結算後的值。
+	a.atkHP, a.atkMax = a.defHP1, a.defMax
+	a.defHP0, a.defHP1, a.defMax = next.defHP0, next.defHP1, next.defMax
+	a.atkOwn = !a.atkOwn
+	a.figaniTimeline = next.timeline
+	a.bodyTicks, a.total, a.timer = next.bodyTicks, next.total, next.total
+	a.frameIndex = 0
 }
 
 func (g *Game) finishAttackPresentation() {
@@ -7301,14 +7381,12 @@ func (g *Game) confirm() {
 		}
 		g.publishPhysicalAttackMessage(message)
 		actor := g.sel
-		// 反擊的傷害已經結算進 attackResult.Counter，但**演出只有主攻這一段**。
-		// 原版兩次結算在同一段全螢幕演出內（`sub_29164` 只滑入一次，兩次
-		// `sub_2939D` 相隔約 1,200,000 指令），所以不能只是再播一段 atkAnim；
-		// 分鏡要先解出來，見工作清單 remake-counterattack-presentation。
 		g.atk = g.newAtkAnim(actor.BattleFig, tgt.BattleFig, anm, nm,
 			actor.HP, actor.MaxHP, actor.Lv, actor.MP, actor.MaxMP,
 			tgt.Lv, tgt.MP, tgt.MaxMP,
 			defHP0, tgt.HP, tgt.MaxHP, g.terrainAt(g.curX, g.curY), true) // 戰鬥背景 = 守方格地形
+		// 反擊接成同一段演出的第二半，與原版一樣不重新滑入。
+		g.attachCounterPresentation(g.atk, actor, tgt, attackResult)
 		if g.atk != nil {
 			g.atk.after = func() {
 				g.finishSuccessfulUnitAction(actor, nil)
@@ -11659,6 +11737,7 @@ func (g *Game) aiStep() {
 				u.HP, u.MaxHP, u.Lv, u.MP, u.MaxMP,
 				tgt.Lv, tgt.MP, tgt.MaxMP,
 				hp0, tgt.HP, tgt.MaxHP, g.terrainAt(tgt.X, tgt.Y), u.Camp == battle.Own)
+			g.attachCounterPresentation(g.atk, u, tgt, attackResult)
 			if g.atk != nil {
 				g.atk.after = finish
 			} else {
