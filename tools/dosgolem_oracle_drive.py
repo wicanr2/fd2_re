@@ -325,6 +325,8 @@ def resume_battle(steps, budget, confirm=3):
 # `0x16FAE` 落在 FD2 已知的系統選單 handler `0x16F55` 那支函式裡，`0x18EEF` 落在
 # action chooser `0x18D8C` 同一段；與專案既有的反組譯結論一致。
 UI_MODES = (
+    ("shop", "0x2D7D1"),      # 商店（店員對話與買賣圖示）：esc 退得掉
+    ("town", "0x2CE08"),      # 戰後城鎮的走動畫面；方向鍵移動角色、enter 進建築
     ("grid", "0x1BC8E"),      # 指令 grid（六格圖示，`0x1BBDC` 那組 chooser）
     ("status", "0x1BA37"),    # 單位狀態面板（能力值與裝備）：esc 退得掉
     ("ring", "0x18EEF"),      # 指令環：↑攻擊／←法術／→物品／↓待機
@@ -351,7 +353,7 @@ CURSOR_MODES = {"cursor", "target"}
 # esc 退得掉的介面。指令環也在裡面：回合改用系統選單的 END 結束之後，指令環不再
 # 需要「選一項」——打不到人的單位就退出來，讓它這一回合停在原地。退出會取消這次
 # 移動，單位回到原位；這一回合本來就不動它，沒有損失。
-ESCAPABLE = {"system", "status", "grid", "target", "ring"}
+ESCAPABLE = {"system", "status", "grid", "target", "ring", "shop"}
 
 
 def ui_mode(current):

@@ -16,6 +16,10 @@
 #   FD2_ORIG_ROOT         原版資料目錄（預設本儲存庫的 org_game/…/FLAME2）
 #   FD2_ORACLE_CPUS       容器 CPU 上限（預設 2）
 #   FD2_ORACLE_STEPS      指令預算上限（預設 20000000000）
+#   FD2_ORACLE_STATE      可寫檔案覆蓋目錄（接 oracle 的 -state）。原版目錄仍是
+#                         唯讀掛載，遊戲的寫入（FD2.SAV／FD2.TMP）落在這個目錄。
+#                         用它建立續跑點：打完一關在城鎮存檔，之後從標題 LOAD
+#                         直接接上，不必每次從頭跑幾十億指令。
 #   FD2_ORACLE_LOCK_ALLY_HP=1
 #                         作弊：把我方 HP 壓回歷史最高值，讓長關卡跑得完。
 #                         **這是修改路徑**：收據的 state_injections 會寫明注入了
@@ -55,6 +59,7 @@ fi
 orig=${FD2_ORIG_ROOT:-$repo/org_game/炎龍騎士團/FLAME2}
 cpus=${FD2_ORACLE_CPUS:-2}
 budget=${FD2_ORACLE_STEPS:-20000000000}
+state_dir=${FD2_ORACLE_STATE:-}
 lock_ally_hp=${FD2_ORACLE_LOCK_ALLY_HP:-}
 if [ -n "$lock_ally_hp" ]; then lock_ally_hp_json=true; else lock_ally_hp_json=false; fi
 frames=${FD2_ORACLE_FRAMES:-}
@@ -92,6 +97,7 @@ cat > "$out/runner.json" <<JSON
   "original_root": "$orig",
   "generated_at": "$(date -Iseconds)",
   "lock_ally_hp": $lock_ally_hp_json,
+  "state_directory": "${state_dir}",
   "evidence_note": "lock_ally_hp 為 true 時本輪是修改路徑，不得作為一般玩家路徑（PLAYER-E2）證據"
 }
 JSON
@@ -101,9 +107,16 @@ fi
 cache=$dos/workplace
 mkdir -p "$cache/gocache" "$cache/gomodcache"
 
+if [ -n "$state_dir" ]; then
+  mkdir -p "$state_dir"
+  state_dir=$(cd "$state_dir" && pwd)
+fi
 mounts=(-v "$dos:/dos:ro" -v "$orig:/orig:ro" -v "$out:/out:rw"
         -v "$repo/tools/dosgolem_oracle_drive.py:/drive.py:ro"
         -v "$cache/gocache:/gocache" -v "$cache/gomodcache:/gomodcache")
+if [ -n "$state_dir" ]; then
+  mounts+=(-v "$state_dir:/state:rw")
+fi
 if [ -n "$plan" ]; then
   test -f "$plan" || { echo "找不到控制序列檔：$plan" >&2; exit 2; }
   mounts+=(-v "$(cd "$(dirname "$plan")" && pwd)/$(basename "$plan"):/plan.jsonl:ro")
@@ -123,6 +136,7 @@ docker run --rm --network none --memory 4g --cpus "$cpus" --pids-limit 256 \
   -e FD2_ORACLE_FRAME_TO="$frame_to" \
   -e FD2_ORACLE_EIP_WATCH="$eip_watch" \
   -e FD2_ORACLE_LOCK_ALLY_HP="$lock_ally_hp" \
+  -e FD2_ORACLE_STATE="${state_dir:+/state}" \
   -w /dos "${FD2_ORACLE_IMAGE:-golang:1.24-bookworm}" \
   bash -c '
 set -euo pipefail
@@ -144,6 +158,9 @@ fi
 cheatargs=()
 if [ -n "$FD2_ORACLE_LOCK_ALLY_HP" ]; then
   cheatargs=(-lock-ally-hp)
+fi
+if [ -n "$FD2_ORACLE_STATE" ]; then
+  cheatargs+=(-state "$FD2_ORACLE_STATE")
 fi
 go run ./apps/fd2/cmd/oracle \
   -exe /orig/FD2.EXE -root /orig -run-dir /out \

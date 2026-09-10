@@ -282,6 +282,18 @@ class UIMode(unittest.TestCase):
         self.assertEqual(drive.ui_mode({}), "unknown")
         self.assertEqual(drive.ui_mode(self.chain("0x12211", "0x45D91")), "unknown")
 
+    def test_town_and_shop_have_their_own_markers(self):
+        """打完一關之後的戰後城鎮是走動畫面，enter 會進建築（例如商店）。"""
+        self.assertEqual(
+            drive.ui_mode(self.chain("0x1647C", "0x37391", "0x2CFFE", "0x2CE08")),
+            "town")
+        self.assertEqual(
+            drive.ui_mode(self.chain("0x4E9FC", "0x2DA83", "0x2D947", "0x2D7D1")),
+            "shop")
+        # 商店 esc 退得掉；城鎮本身不是選單，退不出去也不該去退它。
+        self.assertIn("shop", drive.ESCAPABLE)
+        self.assertNotIn("town", drive.ESCAPABLE)
+
     def test_status_panel_has_its_own_marker(self):
         """單位狀態面板（能力值與裝備）：esc 退得掉，不是卡住。"""
         self.assertEqual(
