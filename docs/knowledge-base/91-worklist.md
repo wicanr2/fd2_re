@@ -129,13 +129,13 @@ manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unk
 
 ## release — 發行、平台與封包
 
-### 網頁版沒有可重現的建置
+### 網頁版還載不到資產
 
-`wasm-web-release` · 仍未完成 · 還沒出現
+`wasm-web-release` · 仍未完成 · 自承還在 tools/build_wasm.sh
 
-`remake/web/` 有 `index.html` 與 `wasm_exec.js`，但建置腳本與 CI 都沒有 WASM 目標，所以網頁版不是可重現產物。
+`tools/build_wasm.sh` 與 `.github/workflows/build-wasm.yml` 已經能產出可重現的 `fd2.wasm`（約 20 MB）、`wasm_exec.js` 與 `index.html`，WASM 目標也編得過。**還不能玩**：`assetGlob` 走 `filepath.Glob`，js/wasm 底下沒有檔案系統可掃，所以遊戲在缺資產時失敗即關閉。資產共 81 MB（其中 52 MB 是三套音樂），直接 `go:embed` 進 WASM 不切實際；HTTP 取用又沒有「列目錄」這回事，所以需要一層 `fs.FS` 抽象加一份受版控的資產清單。目前有 15 個檔案直接用 `os.ReadFile`／`filepath.Glob`／`os.Open`。
 
-怎樣算做完：建置腳本或 CI 產出 WASM 封包，並確認資產載入路徑可用。
+怎樣算做完：網頁版能載到資產並跑起來：資產存取走可替換的 `fs.FS`，wasm 端由清單驅動 HTTP 取用，並在瀏覽器確認開場到第一關可玩。
 
 ### Android 封包沒有建置
 

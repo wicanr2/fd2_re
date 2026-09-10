@@ -1,0 +1,42 @@
+# build-wasm.yml — 產出網頁版的可重現 WASM 產物。
+#
+# 這條流程只保證「編得出來、產物存在」。網頁版目前還載不到資產（見
+# tools/build_wasm.sh 的說明與工作清單 wasm-web-release），所以產物不是可玩的
+# 發行包，不要當成網頁版已完成。
+name: Build WebAssembly
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v.*']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 建立鎖定的 Go 工具映像
+        run: |
+          docker build \
+            -f tools/docker/fd2-go-test.Dockerfile \
+            -t fd2-go-test-local:latest .
+
+      - name: 以一次性無網路容器建置 WASM
+        run: tools/build_wasm.sh "$GITHUB_WORKSPACE/remake/web/dist"
+
+      - name: 檢查產物存在且非空
+        run: |
+          cd "$GITHUB_WORKSPACE/remake/web/dist"
+          for name in fd2.wasm wasm_exec.js index.html; do
+            test -s "$name" || { echo "缺少產物：$name"; exit 1; }
+          done
+          # wasm_exec.js 要是 Go 附的那一份，不是任何被改過的複本。
+          grep -q "globalThis.Go" wasm_exec.js
+          ls -lh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fd2-wasm
+          path: remake/web/dist/
+          if-no-files-found: error
