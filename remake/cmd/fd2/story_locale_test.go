@@ -385,14 +385,16 @@ func TestReviewedChapterFourPostBattleScene(t *testing.T) {
 			"legacy/line/750623f119b8/scenes/3/lines/3/speaker-name": "Celia",
 			"legacy/line/750623f119b8/scenes/3/lines/3/text":         "Don't worry. There's a small village along the way where we can rest for a while. Let's go!",
 		},
+		// 說話者名採全語料多數且與詞表一致的寫法：希莉亞 シリア（113 筆對 2 筆
+		// セリア）、哈諾 ハノ（詞表明訂，63 筆對 1 筆 ハノー）。2026-09-10 統一。
 		"ja": {
 			"legacy/line/750623f119b8/scenes/3/lines/0/speaker-name": "ソール",
 			"legacy/line/750623f119b8/scenes/3/lines/0/text":         "おかしいな。この大陸では、どこへ行っても盗賊に出くわす！",
-			"legacy/line/750623f119b8/scenes/3/lines/1/speaker-name": "セリア",
+			"legacy/line/750623f119b8/scenes/3/lines/1/speaker-name": "シリア",
 			"legacy/line/750623f119b8/scenes/3/lines/1/text":         "違うわ、セラ村で何か起きたのかもしれない！急いで様子を見に行きましょう！",
-			"legacy/line/750623f119b8/scenes/3/lines/2/speaker-name": "ハノー",
+			"legacy/line/750623f119b8/scenes/3/lines/2/speaker-name": "ハノ",
 			"legacy/line/750623f119b8/scenes/3/lines/2/text":         "大きな戦いを終えたばかりなのに、少し休まないのか？",
-			"legacy/line/750623f119b8/scenes/3/lines/3/speaker-name": "セリア",
+			"legacy/line/750623f119b8/scenes/3/lines/3/speaker-name": "シリア",
 			"legacy/line/750623f119b8/scenes/3/lines/3/text":         "心配しないで。途中に少し休める小さな村があるわ。行きましょう！",
 		},
 		"zh-Hans": {

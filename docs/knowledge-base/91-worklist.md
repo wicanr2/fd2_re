@@ -25,7 +25,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 17 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 16 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 
@@ -60,14 +60,6 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 怎樣算做完：六筆各自找到寫入端與消費端，或明確記錄它們是同一個 producer 的不同分支。
 
 ## data — 可編輯資料還沒就緒
-
-### 四語內容剩下的機器初稿都卡在來源證據
-
-`locale-machine-draft` · 仍未完成 · 自承還在 remake/assets/locales/en/content.json
-
-繁中全部是來源語。2026-09-10 把日文與英文剩下的 387／390 筆機器初稿逐條審校定稿（runtime_ui 200、scene_label 120／123、location_name 55、go_review 7），專名沿用已審校的 character_name 與 chapter_title 對照。現在三個譯文包各只剩 5 筆 `machine_draft`，全是清冊上的對話本文阻擋項（來源截斷、專名衝突）；另有 170 筆說話者碎片為 `blocked`。這兩批都不是翻譯問題，要先在原版側閉合來源身分與句尾截斷才動得了。
-
-怎樣算做完：`docs/data/localization/review-blockers.json` 上的 5 筆對話本文取得原版側的來源證據（句尾截斷的真正內容、專名身分）之後才改譯文；在那之前維持失敗即關閉，不得為了全綠而猜定。
 
 ### 現代美術主題仍是原型狀態
 

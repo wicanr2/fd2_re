@@ -27,21 +27,26 @@ class LocaleReviewBlockerTests(unittest.TestCase):
         cls.translations = {locale: load_entries(locale) for locale in LOCALES}
         cls.allowed = {row["string_id"] for row in cls.manifest["blockers"]}
 
-    def test_manifest_counts_match_the_two_documented_categories(self):
-        """清冊不得無聲長大：兩類阻擋各自的筆數釘死，且沒有重複 string_id。"""
+    def test_manifest_holds_only_the_speaker_fragments(self):
+        """清冊不得無聲長大：只剩說話者碎片一類，筆數釘死，沒有重複 string_id。"""
         self.assertEqual(len(self.allowed), len(self.manifest["blockers"]))
-        by_role = {}
+        roles, reasons = set(), set()
         for row in self.manifest["blockers"]:
-            role = self.source[row["string_id"]]["role"]
-            by_role.setdefault(role, []).append(row["reason_code"])
-        self.assertEqual(sorted(by_role), ["character_name", "dialogue"])
-        # 對話本文：語意或專名邊界未閉合。原本還有一筆「來源截斷」，
-        # 2026-09-10 以場景證據推翻：那個「我..」是被下一行打斷，不是缺字。
-        self.assertEqual(len(by_role["dialogue"]), 4)
-        # 說話者欄位：來源只剩單一字模，身分未閉合。
-        self.assertEqual(len(by_role["character_name"]), 170)
-        self.assertEqual(
-            set(by_role["character_name"]), {"unresolved_speaker_identity"})
+            roles.add(self.source[row["string_id"]]["role"])
+            reasons.add(row["reason_code"])
+        self.assertEqual(roles, {"character_name"})
+        self.assertEqual(reasons, {"unresolved_speaker_identity"})
+        self.assertEqual(len(self.manifest["blockers"]), 170)
+
+    def test_no_dialogue_text_is_blocked_any_more(self):
+        """對話本文的 5 筆阻擋已於 2026-09-10 全部閉合，不該再有未審校的對話。"""
+        for locale, entries in self.translations.items():
+            remaining = sorted(
+                string_id for string_id, entry in entries.items()
+                if entry.get("role") in {"dialogue", "dialogue_or_system"}
+                and entry.get("status") != "reviewed"
+            )
+            self.assertEqual(remaining, [], f"{locale} 還有未審校的對話：{remaining}")
 
     def test_speaker_fragments_are_single_glyph_and_stay_blocked(self):
         """說話者碎片的判準要自己成立：來源真的只有一個字，而且沒被升格。"""

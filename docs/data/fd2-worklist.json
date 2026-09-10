@@ -52,21 +52,6 @@
       }
     },
     {
-      "id": "locale-machine-draft",
-      "layer": "data",
-      "title": "四語內容剩下的機器初稿都卡在來源證據",
-      "body": "繁中全部是來源語。2026-09-10 把日文與英文剩下的 387／390 筆機器初稿逐條審校定稿（runtime_ui 200、scene_label 120／123、location_name 55、go_review 7），專名沿用已審校的 character_name 與 chapter_title 對照。現在三個譯文包各只剩 4 筆 `machine_draft`，全是清冊上的對話本文阻擋項（3 筆「奈野啊捏?」語意未定、1 筆卡蘿娜專名身分未閉合）；另有 170 筆說話者碎片為 `blocked`。這兩批都不是翻譯問題，要先在原版側閉合來源身分與句尾截斷才動得了。",
-      "acceptance": "`docs/data/localization/review-blockers.json` 上的 4 筆對話本文取得原版側的來源證據（「奈野啊捏?」的語意、卡蘿娜的專名身分）之後才改譯文；在那之前維持失敗即關閉，不得為了全綠而猜定。",
-      "verify": {
-        "kind": "present",
-        "paths": [
-          "remake/assets/locales"
-        ],
-        "pattern": "machine_draft",
-        "note": "語言包裡還有機器初稿標記。"
-      }
-    },
-    {
       "id": "modern-theme-prototype-status",
       "layer": "data",
       "title": "現代美術主題仍是原型狀態",
