@@ -274,17 +274,17 @@
     {
       "id": "remake-attack-missing-counterattack",
       "layer": "runtime",
-      "title": "重製端的攻擊沒有反擊，傷害量也和原版不同",
-      "body": "第一關第 1 回合走同一組座標（(8,16) 的亞雷斯移到 (6,19)、攻擊 (5,19) 的盜賊）：原版攻方 HP 48→31（受到反擊）、守方 28→8；重製端攻方 48→48（沒受傷）、守方 28→6。反擊缺失是實質差異；傷害量差 2 點還分不出是反擊機制造成的還是亂數不同步。",
-      "acceptance": "重製端在同一組座標下攻方也會受到反擊，且傷害量差異能歸因（機制或亂數），必要時讓兩側亂數可控後重跑對拍。",
-      "evidence": "docs/data/ui-traces/fd2-move-attack-parity-20260910.json",
+      "title": "重製端的攻擊沒有反擊",
+      "body": "原版一次物理攻擊含兩次 HP 結算：攻方先打，約 1,200,000 指令後守方還手，兩次都走同一條 `sub_2A289`→`sub_18C6D`，整段 `sub_29164` 演出只進入一次。實測第一關同一組座標：原版攻方 48→31、守方 28→8；重製端 `attackWithExperience` 只結算一次，攻方 48→48、守方 28→6。反擊的**條件**還沒解（守方死亡、射程、職業是否影響），所以不能猜著接進正式路徑。",
+      "acceptance": "解出反擊的條件與傷害公式（`sub_2A6BD` 內四處 `call 0x2A289` 各對應哪個分支），接進重製端後同一組座標的對拍兩側 HP 一致。",
+      "evidence": "docs/data/ui-traces/fd2-counterattack-20260910.json",
       "verify": {
-        "kind": "present",
+        "kind": "absent",
         "paths": [
-          "docs/data/ui-traces/fd2-move-attack-parity-20260910.json"
+          "remake/internal/battle"
         ],
-        "pattern": "重製端攻方 48→48（沒受傷）",
-        "note": "對拍收據裡的結論還在。修好之後重跑對拍，那份收據會被新的取代。"
+        "pattern": "[Cc]ounterAttack|counterattack|反擊",
+        "note": "重製端的戰鬥套件裡還沒有反擊。接上時一定會出現這幾個字之一。"
       }
     }
   ]

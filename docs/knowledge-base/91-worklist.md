@@ -125,15 +125,15 @@ manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unk
 
 證據：`docs/knowledge-base/105-phase-banner-timing-20260910.md`
 
-### 重製端的攻擊沒有反擊，傷害量也和原版不同
+### 重製端的攻擊沒有反擊
 
-`remake-attack-missing-counterattack` · 仍未完成 · 自承還在 docs/data/ui-traces/fd2-move-attack-parity-20260910.json
+`remake-attack-missing-counterattack` · 仍未完成 · 還沒出現
 
-第一關第 1 回合走同一組座標（(8,16) 的亞雷斯移到 (6,19)、攻擊 (5,19) 的盜賊）：原版攻方 HP 48→31（受到反擊）、守方 28→8；重製端攻方 48→48（沒受傷）、守方 28→6。反擊缺失是實質差異；傷害量差 2 點還分不出是反擊機制造成的還是亂數不同步。
+原版一次物理攻擊含兩次 HP 結算：攻方先打，約 1,200,000 指令後守方還手，兩次都走同一條 `sub_2A289`→`sub_18C6D`，整段 `sub_29164` 演出只進入一次。實測第一關同一組座標：原版攻方 48→31、守方 28→8；重製端 `attackWithExperience` 只結算一次，攻方 48→48、守方 28→6。反擊的**條件**還沒解（守方死亡、射程、職業是否影響），所以不能猜著接進正式路徑。
 
-怎樣算做完：重製端在同一組座標下攻方也會受到反擊，且傷害量差異能歸因（機制或亂數），必要時讓兩側亂數可控後重跑對拍。
+怎樣算做完：解出反擊的條件與傷害公式（`sub_2A6BD` 內四處 `call 0x2A289` 各對應哪個分支），接進重製端後同一組座標的對拍兩側 HP 一致。
 
-證據：`docs/data/ui-traces/fd2-move-attack-parity-20260910.json`
+證據：`docs/data/ui-traces/fd2-counterattack-20260910.json`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

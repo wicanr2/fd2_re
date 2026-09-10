@@ -1,0 +1,102 @@
+{
+ "schema_version": 1,
+ "kind": "fd2_original_runtime_receipt",
+ "topic": "物理攻擊含反擊：一次攻擊在同一段演出內結算兩次，攻方先打、守方再還手",
+ "date": "2026-09-10",
+ "runner": "dosgolem apps/fd2/cmd/oracle",
+ "runner_provenance": {
+  "schema_version": 1,
+  "kind": "fd2_oracle_runner_provenance",
+  "runner": "dosgolem apps/fd2/cmd/oracle",
+  "dosgolem_root": "/home/anr2/cht/dosgolem-fd2-oracle",
+  "dosgolem_commit": "c8aa69af3999fb6a9d6331dc50fb680b13779a2f",
+  "dosgolem_branch": "HEAD",
+  "dosgolem_tracked_dirty_files": 0,
+  "dosgolem_untracked_files": 0,
+  "original_root": "/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2",
+  "generated_at": "2026-09-10T14:49:24+08:00"
+ },
+ "driver": "tools/dosgolem_oracle.sh，控制序列 docs/data/parity-plans/ch01-move-attack.jsonl（最後一格切成 20 萬指令一格以看清時序）",
+ "executable": {
+  "file": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+ },
+ "entry": {
+  "path": "第一關第 1 回合，(8,16) 的亞雷斯移到 (6,19) 攻擊 (5,19) 的盜賊",
+  "input_kind": "normal BIOS keys",
+  "state_injections": []
+ },
+ "measurement": {
+  "hp_timeline": [
+   {
+    "checkpoint": 4,
+    "step": 55483500,
+    "actor_hp": 48,
+    "target_hp": 28
+   },
+   {
+    "checkpoint": 59,
+    "step": 372483500,
+    "actor_hp": 48,
+    "target_hp": 8
+   },
+   {
+    "checkpoint": 65,
+    "step": 373683500,
+    "actor_hp": 31,
+    "target_hp": 8
+   }
+  ],
+  "damage_presentation_marks": [
+   {
+    "index": 11,
+    "step": 372512000,
+    "watch_delta": {
+     "0x11EB0": 4,
+     "0x18C6D": 1,
+     "0x2A289": 1,
+     "0x373C4": 903
+    }
+   },
+   {
+    "index": 24,
+    "step": 373788000,
+    "watch_delta": {
+     "0x11EB0": 4,
+     "0x18C6D": 1,
+     "0x2A289": 1,
+     "0x373C4": 800
+    }
+   }
+  ]
+ },
+ "conclusions": [
+  {
+   "claim": "一次物理攻擊含兩次 HP 結算：守方先掉 20（step 372,483,500），攻方 1,200,000 指令後掉 17（step 373,683,500）",
+   "grade": "已證實",
+   "evidence": "逐格 checkpoint 的 units HP，20 萬指令粒度"
+  },
+  {
+   "claim": "反擊在同一段演出內，不另起一段：整段 sub_29164 只進入一次，而 sub_2A289→sub_18C6D 進入兩次",
+   "grade": "已證實",
+   "evidence": "逐幀 eip-watch，兩次 0x2A289 分別在 step 372,512,000 與 373,788,000"
+  },
+  {
+   "claim": "HP 寫回在 sub_2A6BD 的 0x2AF09（`mov word ptr [edx+0x40], ax`），前面 0x2AEF5 的 idiv 與 0x2AEFE 的 sub 是逐步扣血；那一段在一個以 [esp+0x11c] 計數的迴圈裡",
+   "grade": "已證實",
+   "evidence": "Capstone 反組譯 sub_2A6BD（0x2A6BD..0x2B5E1，914 行）"
+  },
+  {
+   "claim": "sub_2A6BD 內共有四處 call 0x2A289（0x2A986、0x2A99A、0x2AF26、0x2B07B）",
+   "grade": "已證實",
+   "evidence": "同上"
+  }
+ ],
+ "not_claimed": [
+  "反擊的條件。守方死亡、射程不足、或特定職業會不會反擊都沒有測；四處 call 0x2A289 各自對應哪一個分支也沒有拆。",
+  "反擊的傷害公式是否與主攻擊相同。",
+  "兩次結算之間那 1,200,000 指令的內容（演出分鏡）。"
+ ]
+}
