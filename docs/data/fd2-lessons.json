@@ -145,6 +145,30 @@
       "why": "2026-09-10 一天踩三次。(1) `unit+38` 記成「沒有對應欄位、語意未解」，實際上是 `+0x26`，重製端早有 `NativeTransientDuration`。(2) 物理攻擊的經驗值記成「本輪未解」，而 `sub_29F72` 尾段 2026-09-08 就閉合了。(3) 看到 `EffectiveAP()` 用 `BuffAPPct` 就斷定「原版的 `+0x22` 增益沒接」，還為此開了一條 worklist——實際上原版那條走的是另一組函式（施加 `ApplyNativeRawWordStepAtOffsets`、重算 `nativeEquipmentTotals`），連 x87 向零截斷都用精確有理數重現了；`BuffAPPct` 只是舊可編輯劇本的路徑。",
       "date": "2026-09-10",
       "evidence": "docs/knowledge-base/106-physical-attack-counterattack-20260910.md"
+    },
+    {
+      "id": "status-name-is-not-runtime-behavior",
+      "area": "紀律",
+      "rule": "狀態欄的名字不等於執行期行為。要說「這個標記會擋住／會失敗即關閉」之前，先讀消費端那幾行程式。",
+      "why": "2026-09-10 README 與阻擋清冊都寫著那 5 筆對話「維持失敗即關閉」，實際上它們是 `machine_draft`，而 `StoryText` 只對 `blocked` 回錯誤——那幾句照樣顯示機器初稿。反過來也差點做錯：如果照字面把它們改標 `blocked`，`resolveCampaignDialogLine` 會帶著 loadErr 中止，整章對話就播不下去。同一個標記對 character_name 無害（那條路要求 role 是 dialogue），對 dialogue 是致命的。",
+      "date": "2026-09-10",
+      "evidence": "docs/data/localization/review-blockers.json"
+    },
+    {
+      "id": "machine-draft-may-be-broken-source",
+      "area": "資料",
+      "rule": "翻譯包裡的 `machine_draft` 不一定是「還沒翻」。逐筆看來源：來源本身壞掉的，翻得再好也是假的，要拆成阻擋項另計。",
+      "why": "2026-09-10 英日文各 170 筆 character_name 看起來像未翻譯，實際上來源的說話者欄位只剩單一字模，而且要跟相鄰行拼起來才成名字（ch27 連續兩行是 `索` 和 `爾`）。機器初稿把它們猜成 `惡`→\"Shit.\"、`米`→\"Rice\"、`索`→\"Thor.\"，比空著更糟。判斷邊界時 `珊`、`豹`、`X`、`Y` 這些真的是單字名，早已審校為 Shan／Panther／X／Y。",
+      "date": "2026-09-10",
+      "evidence": "docs/knowledge-base/49-character-id-name-table.md",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/localization/review-blockers.json"
+        ],
+        "pattern": "unresolved_speaker_identity",
+        "note": "說話者碎片的阻擋分類還在清冊裡。"
+      }
     }
   ]
 }

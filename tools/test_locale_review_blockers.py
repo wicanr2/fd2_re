@@ -35,8 +35,9 @@ class LocaleReviewBlockerTests(unittest.TestCase):
             role = self.source[row["string_id"]]["role"]
             by_role.setdefault(role, []).append(row["reason_code"])
         self.assertEqual(sorted(by_role), ["character_name", "dialogue"])
-        # 對話本文：語意、專名或來源截斷未閉合。
-        self.assertEqual(len(by_role["dialogue"]), 5)
+        # 對話本文：語意或專名邊界未閉合。原本還有一筆「來源截斷」，
+        # 2026-09-10 以場景證據推翻：那個「我..」是被下一行打斷，不是缺字。
+        self.assertEqual(len(by_role["dialogue"]), 4)
         # 說話者欄位：來源只剩單一字模，身分未閉合。
         self.assertEqual(len(by_role["character_name"]), 170)
         self.assertEqual(
