@@ -503,6 +503,7 @@ type Game struct {
 	dim                          *ebiten.Image                               // 全螢幕暗化/底板共用(回合橫幅、單位面板)
 	figMeta                      map[int][][2]int                            // FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(doc06;動畫走位全靠它)
 	font                         *Font                                       // 原版點陣中文字型(doc 08)
+	fontScale                    float64                                     // 玩家選的字級倍率(F7;settings.go fontScales)
 	localeID                     string                                      // 全域語系設定；不寫入戰役存檔
 	localeCatalog                *localization.Catalog                       // 已完整驗證的官方語言包
 	localeContent                *localization.ContentCatalog                // 已完整驗證的全量玩家內容目錄
@@ -7489,6 +7490,9 @@ func (g *Game) Update() error {
 	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF4) { // 全域：切換官方語系
 		g.cycleLocale()
 	}
+	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF7) { // 全域：切換字級
+		g.cycleFontScale()
+	}
 	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF6) { // 全域：音樂開關
 		if g.toggleNativeSystemOption(0) {
 			if g.currentNativeSystemOptions().MusicEnabled() {
@@ -10451,6 +10455,7 @@ func loadGame() *Game {
 	configured := loadSettings()
 	g.bgmSource = configured.BGMSource // 音源設定(預設 fm=Sound Blaster)
 	g.localeID = configured.LocaleID
+	g.applyFontScale(configured.FontScale)
 	if v := os.Getenv("FD2_LOCALE"); v != "" {
 		if localeDisplayName[v] == "" {
 			g.loadErr = "locale setting: unsupported locale " + v

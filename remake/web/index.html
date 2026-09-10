@@ -1,8 +1,12 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
 <title>炎龍騎士團2 重製 (fd2_re)</title>
 <style>body{margin:0;background:#111;color:#ccc;font-family:sans-serif;text-align:center}
-canvas{image-rendering:pixelated}h3{padding:8px;margin:0}
-#status{padding:8px;font-size:14px;color:#999}</style></head>
+h3{padding:8px;margin:0;font-size:16px}
+#status{padding:8px;font-size:14px;color:#999}
+/* 畫布跟著視窗縮放並保持比例。image-rendering: pixelated 讓放大時維持點陣感，
+   不要被瀏覽器平滑成糊的。 */
+canvas{image-rendering:pixelated;max-width:100vw;max-height:calc(100vh - 60px);
+  width:auto;height:auto;object-fit:contain}</style></head>
 <body><h3>炎龍騎士團2 重製 — Go/Ebiten WASM</h3>
 <div id="status">載入中…</div>
 <script src="wasm_exec.js"></script>

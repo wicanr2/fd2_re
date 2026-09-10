@@ -28,6 +28,34 @@ type Font struct {
 	base  float64 // Draw 的 scale=1.0 對應的像素尺寸
 	faces map[int]font.Face
 	ascs  map[int]float64
+	// userScale 是玩家在設定裡選的字級倍率，套在每一次 Draw／Width 的 scale 上。
+	// 英文與日文譯文比中文長得多，同一個對話框裡常常斷不完；把字級調小一格就能
+	// 多塞一行。0 視同 1.0。索引畫面用的是原版字模，不經過這裡，所以調整字級不會
+	// 動到與原版對拍的那些畫面。
+	userScale float64
+}
+
+// SetUserScale 設定字級倍率。超出合理範圍的值會被夾住——字太小讀不到、太大反而
+// 更容易溢出版面。
+func (f *Font) SetUserScale(scale float64) {
+	if f == nil {
+		return
+	}
+	if scale < 0.6 {
+		scale = 0.6
+	}
+	if scale > 1.6 {
+		scale = 1.6
+	}
+	f.userScale = scale
+}
+
+// effectiveScale 把呼叫端要的 scale 乘上玩家設定。
+func (f *Font) effectiveScale(scale float64) float64 {
+	if f == nil || f.userScale <= 0 {
+		return scale
+	}
+	return scale * f.userScale
 }
 
 // 字型搜尋路徑:打包用 assets 優先,否則用系統 Noto CJK(桌面)。
@@ -92,7 +120,7 @@ func (f *Font) faceFor(px int) (font.Face, float64) {
 
 // Draw 畫文字(支援 \n)。scale 相對 base 尺寸;內部用整數尺寸 face 直接 rasterize(銳利)。
 func (f *Font) Draw(dst *ebiten.Image, s string, x, y, scale float64, clr color.RGBA) float64 {
-	px := int(math.Round(f.base * scale))
+	px := int(math.Round(f.base * f.effectiveScale(scale)))
 	face, asc := f.faceFor(px)
 	if face == nil {
 		return y
@@ -106,7 +134,7 @@ func (f *Font) Draw(dst *ebiten.Image, s string, x, y, scale float64, clr color.
 
 // Width 估算一行寬(像素)。
 func (f *Font) Width(s string, scale float64) float64 {
-	px := int(math.Round(f.base * scale))
+	px := int(math.Round(f.base * f.effectiveScale(scale)))
 	face, _ := f.faceFor(px)
 	if face == nil {
 		return 0

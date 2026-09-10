@@ -7,6 +7,8 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
+	"math"
 	"os"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -32,17 +34,40 @@ var localeDisplayName = map[string]string{
 	"en":      "English",
 }
 
+// fontScales 是可選的字級倍率。英日文譯文比中文長，同一個框裡常常斷不完；
+// 調小一格能多塞一行。原版字模畫的索引畫面不受影響。
+var fontScales = []float64{0.8, 0.9, 1.0, 1.1, 1.25}
+
+const defaultFontScale = 1.0
+
 type settings struct {
-	BGMSource string `json:"bgm_source"` // "fm"(預設)或 "mt32"
-	LocaleID  string `json:"locale_id"`  // BCP 47；不屬於戰役存檔
+	BGMSource string  `json:"bgm_source"` // "fm"(預設)或 "mt32"
+	LocaleID  string  `json:"locale_id"`  // BCP 47；不屬於戰役存檔
+	FontScale float64 `json:"font_scale"` // 字級倍率；0 或不合法值視同 1.0
+}
+
+// normalizeFontScale 把設定值收斂到 fontScales 裡最接近的一格。舊的設定檔沒有
+// 這個欄位，讀出來是 0，這裡會變成預設值。
+func normalizeFontScale(v float64) float64 {
+	if v <= 0 {
+		return defaultFontScale
+	}
+	best, bestDiff := defaultFontScale, math.Inf(1)
+	for _, candidate := range fontScales {
+		if diff := math.Abs(candidate - v); diff < bestDiff {
+			best, bestDiff = candidate, diff
+		}
+	}
+	return best
 }
 
 // loadSettings 讀 fd2_settings.json；無檔或不合法時回重製端預設 FM。
 func loadSettings() settings {
-	s := settings{BGMSource: "fm", LocaleID: "zh-Hant"}
+	s := settings{BGMSource: "fm", LocaleID: "zh-Hant", FontScale: defaultFontScale}
 	if raw, err := os.ReadFile(settingsPath()); err == nil {
 		json.Unmarshal(raw, &s)
 	}
+	s.FontScale = normalizeFontScale(s.FontScale)
 	if bgmSourceName[s.BGMSource] == "" {
 		s.BGMSource = "fm"
 	}
@@ -126,4 +151,36 @@ func (g *Game) cycleLocale() {
 	if message, ok := g.localeMessage("system.locale.changed", localeDisplayName[next]); ok {
 		g.msg = message
 	}
+}
+
+// applyFontScale 把字級倍率套到所有以 TTF 繪製的字型。索引畫面用原版字模，不走
+// 這裡，所以調字級不會動到與原版對拍的畫面。
+func (g *Game) applyFontScale(scale float64) {
+	if g == nil {
+		return
+	}
+	g.fontScale = normalizeFontScale(scale)
+	g.font.SetUserScale(g.fontScale)
+	g.fontNm.SetUserScale(g.fontScale)
+}
+
+// cycleFontScale 依序切換字級並存進設定。英文與日文的譯文比中文長，同一個對話框
+// 常常斷不完；調小一格可以多塞一行。
+func (g *Game) cycleFontScale() {
+	if g == nil {
+		return
+	}
+	current := normalizeFontScale(g.fontScale)
+	next := fontScales[0]
+	for i, candidate := range fontScales {
+		if candidate == current {
+			next = fontScales[(i+1)%len(fontScales)]
+			break
+		}
+	}
+	g.applyFontScale(next)
+	configured := loadSettings()
+	configured.FontScale = next
+	saveSettings(configured)
+	g.msg = fmt.Sprintf("字級：%.0f%%", next*100)
 }
