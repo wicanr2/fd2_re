@@ -445,6 +445,18 @@ def engage_targets(current, origin, typical_move=6):
     return cells + approach
 
 
+def wait_mode(wanted, steps, budget=12):
+    """只前進不送鍵，等介面變成 wanted 之一。回傳實際模式。"""
+    mode = ui_mode(state())
+    for _ in range(budget):
+        if mode in wanted:
+            return mode
+        seq, current = send("", steps)
+        mode = ui_mode(current)
+        report(seq, "", current, f" wait-mode{sorted(wanted)}")
+    return mode
+
+
 def stand_by(steps, note=""):
     """在指令環上結束這個單位的行動。
 

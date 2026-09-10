@@ -32,6 +32,39 @@ def unit(x, y, camp, hp=10, acted=False):
     return {"x": x, "y": y, "camp": camp, "hp": hp, "raw_hex": "".join(raw)}
 
 
+class ModuleIntegrity(unittest.TestCase):
+    """每個被呼叫的模組級名稱都要存在。
+
+    這些函式大多要有 oracle 在跑才叫得動，單元測試碰不到它們的路徑；用整段字串
+    取代改檔時，很容易把相鄰的函式定義一起截掉，而錯誤要等實跑十分鐘後才以
+    NameError 現形。靜態掃一遍便宜得多。
+    """
+
+    def test_every_called_name_resolves(self):
+        import ast
+        import builtins
+        source = (ROOT / "dosgolem_oracle_drive.py").read_text(encoding="utf-8")
+        tree = ast.parse(source)
+        defined = {node.name for node in ast.walk(tree)
+                   if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))}
+        defined |= {target.id for node in ast.walk(tree)
+                    if isinstance(node, ast.Assign)
+                    for target in node.targets if isinstance(target, ast.Name)}
+        local = set()
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                local |= {a.arg for a in node.args.args}
+                local |= {n.id for n in ast.walk(node)
+                          if isinstance(n, ast.Name) and isinstance(n.ctx, ast.Store)}
+        known = defined | local | set(dir(builtins)) | {
+            "json", "os", "re", "sys", "time", "collections"}
+        missing = sorted({node.func.id for node in ast.walk(tree)
+                          if isinstance(node, ast.Call)
+                          and isinstance(node.func, ast.Name)
+                          and node.func.id not in known})
+        self.assertEqual(missing, [], f"呼叫了不存在的名稱：{missing}")
+
+
 class ActedFlag(unittest.TestCase):
     """record `+5` bit7 是「本回合已行動」。只看它，不看別的 byte。"""
 
