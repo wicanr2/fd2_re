@@ -25,21 +25,11 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 19 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 18 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 
 ## re — 原版證據還沒閉合
-
-### 全螢幕戰鬥演出的逐格分鏡與時序還沒解
-
-`figani-fullscreen-receipt` · 仍未完成 · 自承還在 docs/data/ui-traces/fd2-figani-fullscreen-20260910.json
-
-oracle 對這條路徑產生得出收據：畫面、版面與呼叫順序都取到了（`sub_29164` 一次、`sub_2A289`／`sub_18C6D` 各二到四次、每取樣幀 600～800 次 `sub_373C4` 組幀）。缺的是逐格分鏡（哪一格畫哪一張 FIGANI 幀）與時序——這一段的節奏幾乎全由 `delay(ms)` 構成（每段 57～64 次 `sub_375B2`，`sub_17AA9` 只有 2 次），而 `delay` 在 dosgolem 上不按毫秒消耗時間，所以時序只能從呼叫點常數重建。
-
-怎樣算做完：解出逐格分鏡與每格的 delay 常數，並讓重製端的演出照同一份排程走。
-
-證據：`docs/data/ui-traces/fd2-figani-fullscreen-20260910.json`
 
 ### 故事場景對白的原版收據還沒取
 
@@ -109,9 +99,9 @@ manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unk
 
 `remake-counterattack-presentation` · 仍未完成 · 自承還在 remake/cmd/fd2/main.go
 
-原版一次物理攻擊的兩次結算在**同一段**全螢幕演出內：`sub_29164` 只滑入一次，兩次 `sub_2939D` 相隔約 1,200,000 指令。重製端已經照原版結算反擊的傷害，但畫面上只演主攻那一段，攻方的 HP 是突然變的。直接再播一段 `newAtkAnim` 會滑入兩次，那不是原版的樣子。
+原版一次物理攻擊的兩次結算在**同一段**全螢幕演出內：`sub_29164` 只滑入一次，`sub_2939D` 跑兩次（第二次攻守對調，用守方的攻擊資源與攻方的待機資源），`sub_2A289` 各跟一次。分鏡與節奏已解並與重製端的 delays.json 對拍一致（見 106 與 fd2-figani-tick-parity 收據）。重製端已照原版結算反擊的傷害，但畫面上只演主攻那一段，攻方的 HP 是突然變的。
 
-怎樣算做完：解出兩次結算之間那段的分鏡（哪幾格 FIGANI、每格的 delay 常數），讓一段演出涵蓋兩次結算，並與原版同一段的逐幀畫面比對。
+怎樣算做完：讓一段 atkAnim 涵蓋兩次交鋒（第二段換成守方的攻擊資源與攻方的待機資源），總長度等於兩個資源的延遲和，並與原版同一段的呼叫順序對照。
 
 證據：`docs/knowledge-base/106-physical-attack-counterattack-20260910.md`
 

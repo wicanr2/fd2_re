@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_original_remake_parity_receipt",
+  "topic": "全螢幕戰鬥演出（FIGANI）的逐格節奏：原版 tick 呼叫次數與重製端延遲表對照",
+  "date": "2026-09-10",
+  "runner": "dosgolem apps/fd2/cmd/oracle",
+  "dosgolem_commit": "c8aa69af3999fb6a9d6331dc50fb680b13779a2f",
+  "driver": "tools/dosgolem_oracle.sh（FRAMES=1、STRIDE=200000、FROM=369500000、TO=376000000、EIP_WATCH 六個位址）",
+  "control_plan": "docs/data/parity-plans/ch01-move-attack.jsonl",
+  "executable": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "entry": {
+    "path": "第一關第 1 回合，(8,16) 的亞雷斯移到 (6,19) 攻擊 (5,19) 的盜賊",
+    "input_kind": "normal BIOS keys",
+    "state_injections": []
+  },
+  "method": {
+    "summary": "分開監看 sub_2939D 內三個 sub_17AA9 呼叫點，數整段演出各自的進入次數",
+    "call_sites": {
+      "0x295BA": "前段迴圈（`byte[unit+6] != 0` 分支）：每格一次 sub_17AA9(cell+6)",
+      "0x29696": "前段迴圈（另一分支）",
+      "0x29A30": "主迴圈：每格重複 cell+6 次 sub_17AA9(1)，每次之間重畫"
+    },
+    "note": "取幀會濾掉內容相同的畫面，所以幀數不等於呼叫次數；計數一律看 eip-watch 的累計差值。"
+  },
+  "measurement": {
+    "sequence": [
+      {
+        "index": 1,
+        "step": 370000000,
+        "watch_delta": {
+          "0x29164": 1,
+          "0x2A289": 2
+        }
+      },
+      {
+        "index": 5,
+        "step": 370800000,
+        "watch_delta": {
+          "0x2939D": 1
+        }
+      },
+      {
+        "index": 6,
+        "step": 371000000,
+        "watch_delta": {
+          "0x29A30": 3
+        }
+      },
+      {
+        "index": 7,
+        "step": 371200000,
+        "watch_delta": {
+          "0x29A30": 3
+        }
+      },
+      {
+        "index": 8,
+        "step": 371400000,
+        "watch_delta": {
+          "0x29A30": 3
+        }
+      },
+      {
+        "index": 9,
+        "step": 371600000,
+        "watch_delta": {
+          "0x29A30": 3
+        }
+      },
+      {
+        "index": 10,
+        "step": 371800000,
+        "watch_delta": {
+          "0x29A30": 3
+        }
+      },
+      {
+        "index": 11,
+        "step": 372000000,
+        "watch_delta": {
+          "0x29A30": 3
+        }
+      },
+      {
+        "index": 12,
+        "step": 372200000,
+        "watch_delta": {
+          "0x29A30": 3
+        }
+      },
+      {
+        "index": 13,
+        "step": 372400000,
+        "watch_delta": {
+          "0x29A30": 3,
+          "0x2A289": 1
+        }
+      },
+      {
+        "index": 14,
+        "step": 372600000,
+        "watch_delta": {
+          "0x29A30": 2
+        }
+      },
+      {
+        "index": 15,
+        "step": 372800000,
+        "watch_delta": {
+          "0x29A30": 4
+        }
+      },
+      {
+        "index": 16,
+        "step": 373000000,
+        "watch_delta": {
+          "0x29A30": 3
+        }
+      },
+      {
+        "index": 17,
+        "step": 373200000,
+        "watch_delta": {
+          "0x2939D": 1,
+          "0x29A30": 4
+        }
+      },
+      {
+        "index": 18,
+        "step": 373400000,
+        "watch_delta": {
+          "0x29A30": 3
+        }
+      },
+      {
+        "index": 19,
+        "step": 373600000,
+        "watch_delta": {
+          "0x29A30": 3
+        }
+      },
+      {
+        "index": 20,
+        "step": 373800000,
+        "watch_delta": {
+          "0x29A30": 2,
+          "0x2A289": 1
+        }
+      },
+      {
+        "index": 21,
+        "step": 374000000,
+        "watch_delta": {
+          "0x29A30": 3
+        }
+      },
+      {
+        "index": 22,
+        "step": 374200000,
+        "watch_delta": {
+          "0x29A30": 3
+        }
+      },
+      {
+        "index": 23,
+        "step": 374400000,
+        "watch_delta": {
+          "0x29A30": 1
+        }
+      }
+    ],
+    "observed_0x29A30_total": 52,
+    "front_loop_total": 0
+  },
+  "remake_reference": {
+    "source": "remake/assets/figani/delays.json（原版 descriptor +6，2026-08-09 匯出）",
+    "attacker_resource": {
+      "id": 13,
+      "who": "亞雷斯（BattleFig 4）的攻擊動作",
+      "frames": 15,
+      "delay_sum": 36
+    },
+    "counter_resource": {
+      "id": 289,
+      "who": "盜賊（BattleFig 96）的攻擊動作",
+      "frames": 8,
+      "delay_sum": 16
+    },
+    "expected_total": 52
+  },
+  "conclusions": [
+    {
+      "claim": "整段演出的 tick 呼叫次數（52）等於重製端兩個攻擊資源的延遲總和（36 + 16 = 52）",
+      "grade": "已證實",
+      "evidence": "逐取樣幀的 eip-watch 差值累加；主攻與反擊在同一段演出內，中間不重新滑入"
+    },
+    {
+      "claim": "這一案例的 tick 全部來自主迴圈；前段的兩個分支一次都沒走",
+      "grade": "已證實",
+      "evidence": "0x295BA 與 0x29696 全程差值為 0，也就是 sub_2939D 的 `a3[1] != 0` 條件不成立"
+    },
+    {
+      "claim": "一次物理攻擊的兩次結算共用一段演出",
+      "grade": "已證實",
+      "evidence": "sub_29164 只進入一次；sub_2939D 兩次（主攻、反擊），sub_2A289 各跟一次（守方 28→8、攻方 48→31）"
+    }
+  ],
+  "not_claimed": [
+    "逐格畫面的逐像素比對。原版全螢幕演出是 VGA 索引畫面，重製端走 Ebiten RGBA，本輪比的是節奏與呼叫結構。",
+    "進場滑入（sub_29164）與過場的時序。那一段走 delay(ms)，在 dosgolem 上量不到，只能讀呼叫點常數。",
+    "守方待機資源（12／288）在主迴圈裡的換格節奏；本輪只對攻方資源的 tick 總數。",
+    "音效觸發點。"
+  ]
+}

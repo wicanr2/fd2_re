@@ -80,6 +80,14 @@
   未解」——`sub_29F72` 尾段 `0x2A209` 起那一段 2026-09-08 就閉合了
   （`fd2_physical_exp_20260908.json`），而且重製端的 `award()` 正式路徑一直在用。
   兩句都是在寫入當下沒有先查專案自己的紀錄造成的。
+- `figani-fullscreen-receipt`（2026-09-10 關閉）：逐格分鏡與每格延遲已解，重製端
+  也照同一份排程走。這一輪推翻了原條目的前提——那份收據說「節奏由 delay(ms) 構成、
+  `sub_17AA9` 只有 2 次」，實際上它自己的 sequence 是 0x17AA9 累計 42 次分佈在 27 個
+  取樣幀；逐格走 BIOS tick，delay 只在進場與過場。分開監看 `sub_2939D` 的三個
+  `sub_17AA9` 呼叫點後，整段 52 次全部落在主迴圈 `0x29A30`，正好等於 delays.json 兩個
+  攻擊資源的延遲和（36 + 16）。順帶把重製端的顯示 tick 從 60 Hz 畫格改成 BIOS tick
+  推出的長度（原本整段快約 9%）。收據
+  [`fd2-figani-tick-parity-20260910.json`](../data/ui-traces/fd2-figani-tick-parity-20260910.json)。
 
 ---
 
