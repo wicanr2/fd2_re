@@ -42,6 +42,9 @@
   `CPU.StepHook` 的每指令一微秒模型與 `TestBIOSClockPeriodMaskAndRollover`
   釘住。連帶解掉「馬賽克前那七幀是什麼」——`-eip-watch` 顯示它們就是
   `sub_1F42D` 的字樣滑入。見 [`105`](105-phase-banner-timing-20260910.md)。
+- `phase-banner-player-receipt`：玩家回合橫幅的執行期收據已取到（step
+  318,822,150 起），結構與敵方回合逐項同構，並補到退場之後的字樣滑出五步。
+  收據見 [`fd2-phase-banner-player-20260910.json`](../data/ui-traces/fd2-phase-banner-player-20260910.json)。
 
 ---
 

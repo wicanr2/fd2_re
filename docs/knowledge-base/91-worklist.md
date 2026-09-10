@@ -25,21 +25,11 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 
 ## re — 原版證據還沒閉合
-
-### 玩家回合橫幅沒有執行期收據
-
-`phase-banner-player-receipt` · 仍未完成 · 要人判
-
-敵方回合橫幅（資源 id `0x52`、中段 20 毫秒）已有逐幀收據。玩家回合那一條路徑（id `0x50`、中段 150 毫秒）目前只有靜態指令證據，沒有取到同一輪的 oracle 逐幀。
-
-怎樣算做完：用 tools/dosgolem_oracle.sh 走到玩家回合橫幅，取到 33 步逐幀與 eip-watch，收據進 docs/data/ui-traces/。
-
-證據：`docs/data/ui-traces/fd2-phase-banner-timing-20260910.json`
 
 ### 全螢幕戰鬥演出（FIGANI）能不能由 oracle 產生收據還沒實測
 
