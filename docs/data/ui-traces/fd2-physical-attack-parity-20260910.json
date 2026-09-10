@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_original_remake_parity_receipt",
+  "topic": "物理攻擊與反擊：原版兩次結算的傷害由重製端公式重現",
+  "date": "2026-09-10",
+  "original_receipt": "docs/data/ui-traces/fd2-counterattack-20260910.json",
+  "re_reference": "docs/knowledge-base/106-physical-attack-counterattack-20260910.md",
+  "inputs": {
+    "provenance": "dosgolem checkpoint（攻擊前一格，step 368483500）的 80 位元組 unit record，加上 map0 的地形碼",
+    "attacker": {
+      "index": 2,
+      "name": "亞雷斯",
+      "cell": [
+        6,
+        19
+      ],
+      "hp": 48,
+      "ap": 26,
+      "dp": 6,
+      "hit": 92,
+      "ev": 2,
+      "class": 3,
+      "class_crit_pct": 3,
+      "terrain_code": 0
+    },
+    "defender": {
+      "index": 11,
+      "name": "盜賊",
+      "cell": [
+        5,
+        19
+      ],
+      "hp": 28,
+      "ap": 24,
+      "dp": 4,
+      "hit": 97,
+      "ev": 2,
+      "class": 7,
+      "class_crit_pct": 0,
+      "terrain_code": 0
+    },
+    "terrain_pct": {
+      "attack": 5,
+      "defence": 0,
+      "note": "地形碼 0 的 0x51A12[0]／0x51A2A[0]；兩格的碼由 map0 的 tiles×native_terrain_control 第 2 個位元組查出"
+    }
+  },
+  "original_observation": {
+    "main": {
+      "defender_hp": [
+        28,
+        8
+      ],
+      "damage": 20,
+      "step": 372483500
+    },
+    "counter": {
+      "attacker_hp": [
+        48,
+        31
+      ],
+      "damage": 17,
+      "step": 373683500
+    }
+  },
+  "remake_computation": {
+    "main": "9*(26+26*5/100 − 4)/10 ＝ 20，隨機加成跨距 2 → 傷害只可能是 20 或 21；暴擊時守方防禦 4→2，得 22 或 23",
+    "counter": "9*(24+24*5/100 − 6)/10 ＝ 17，隨機加成跨距 1 → 加成恆為 0；盜賊職業暴擊率 0，所以命中就是 17"
+  },
+  "conclusions": [
+    {
+      "claim": "反擊傷害與原版相同，而且不依賴挑選 RNG 種子",
+      "grade": "已證實",
+      "evidence": "窮舉全部 65536 個 RNG 狀態，命中的每一次傷害都是 17（TestNativeCounterDamageIsAlwaysSeventeen）"
+    },
+    {
+      "claim": "主攻傷害落在原版實測值上",
+      "grade": "已證實",
+      "evidence": "窮舉全部狀態，未暴擊得 20/21、暴擊得 22/23，原版實測 20；也就是那一次沒有暴擊（騎士暴擊率 3%）"
+    },
+    {
+      "claim": "公式與 RNG 的消耗順序和原版一致",
+      "grade": "已證實",
+      "evidence": "25597 個起始狀態能連續重現兩次結算（含兩次 sub_2939D 開頭的 3% 二連擊判定），TestNativeExchangeReproducesTheOriginalHPTimeline"
+    }
+  ],
+  "not_claimed": [
+    "原版當下的 RNG 狀態本身。oracle 沒有任意記憶體讀取，`0x627B8` 的值沒有直接取到；這裡驗的是「公式在任何狀態下都給出原版觀測到的值」，比對上單一種子更強但不等於逐次同步。",
+    "命中與否的重現。命中判定吃 RNG，兩側起始狀態不同就可能一邊命中一邊落空；本輪驗的是命中時的傷害。",
+    "演出時序。反擊在同一段全螢幕演出內，兩次結算相隔約 1,200,000 指令，重製端目前沒有第二段演出。",
+    "經驗值。原版的經驗鏈在 sub_28A6C 之外，本輪未解；重製端仍走既有規則。"
+  ]
+}

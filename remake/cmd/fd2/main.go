@@ -6383,10 +6383,16 @@ func (g *Game) resolvePhysicalAttack(actor, target *battle.Unit) (battle.AttackR
 	if g.rng == nil {
 		return battle.AttackResult{}, errors.New("physical attack RNG unavailable")
 	}
-	if actor.HasNativeRecordByte6 {
-		return g.st.AttackWithNativeExperience(actor, target, g.rng)
+	// 傷害與反擊走原版：`sub_28A6C` 的兩次 `sub_2939D`，擲骰用原版的全域
+	// `0x627B8`（g.nativeRNGState），不是 Go 的 RNG。經驗值那條仍是重製端既有
+	// 的規則，所以 g.rng 還是要傳進去。
+	result, err := g.st.AttackNativePhysicalWithExperience(
+		actor, target, g.nativeRNGState, g.rng)
+	if err != nil {
+		return battle.AttackResult{}, err
 	}
-	return g.st.AttackWithRNG(actor, target, g.rng), nil
+	g.nativeRNGState = result.RNGState
+	return result.Attack, nil
 }
 
 func (g *Game) resolvePlayerPhysicalAttack(actor, target *battle.Unit) (battle.AttackResult, error) {

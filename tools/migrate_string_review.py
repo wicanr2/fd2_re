@@ -34,6 +34,16 @@ def main() -> None:
     new_by_signature: dict[tuple, list[dict]] = defaultdict(list)
     for entry in new["entries"]:
         new_by_signature[signature(entry)].append(entry)
+    # 同一支函式裡出現兩次同樣的字時，簽名不足以分辨。盤點是照原始碼順序產生的，
+    # 而插入或刪除幾行不會改變它們彼此的先後，所以用「群組內的第幾個」配對。
+    old_by_signature: dict[tuple, list[dict]] = defaultdict(list)
+    for entry in old["entries"]:
+        old_by_signature[signature(entry)].append(entry)
+    old_rank = {
+        entry["string_id"]: rank
+        for group in old_by_signature.values()
+        for rank, entry in enumerate(group)
+    }
     dropped = set(args.drop_id)
     for group in review["dispositions"].values():
         migrated = []
@@ -50,10 +60,18 @@ def main() -> None:
             if same is not None and signature(same) == signature(old_entry):
                 migrated.append(old_id)
                 continue
-            matches = new_by_signature[signature(old_entry)]
-            if len(matches) != 1:
-                raise SystemExit(f"{old_id}: 遷移候選數 {len(matches)}")
-            migrated.append(matches[0]["string_id"])
+            sig = signature(old_entry)
+            matches = new_by_signature[sig]
+            if len(matches) == 1:
+                migrated.append(matches[0]["string_id"])
+                continue
+            if not matches:
+                raise SystemExit(f"{old_id}: 新盤點裡找不到同簽名的條目")
+            if len(matches) != len(old_by_signature[sig]):
+                raise SystemExit(
+                    f"{old_id}: 同簽名條目由 {len(old_by_signature[sig])} 個變成 "
+                    f"{len(matches)} 個，順序配對不安全")
+            migrated.append(matches[old_rank[old_id]]["string_id"])
         group["string_ids"] = sorted(migrated)
     raw = args.new_inventory.read_bytes()
     review["inventory_sha256"] = hashlib.sha256(raw).hexdigest()

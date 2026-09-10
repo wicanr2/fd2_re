@@ -25,7 +25,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 19 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 18 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 
@@ -102,18 +102,6 @@ manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unk
 `native-0`／`native-1`／`native-7`／`native-96` 有名稱衝突，目前保留直接來源、拒絕猜選。
 
 怎樣算做完：四筆各自解決或明確拆分，並在 canonical schema 記錄依據。
-
-## runtime — 還沒接進正式執行期
-
-### 重製端的攻擊沒有反擊
-
-`remake-attack-missing-counterattack` · 仍未完成 · 自承還在 remake/internal/battle/combat.go
-
-原版一次物理攻擊含兩次結算：攻方先打，守方若存活且相鄰、且裝備的是近戰武器就還手。條件與傷害公式已解（`sub_28A6C`→兩次 `sub_2939D`→`sub_29F72`，見 106）；上一輪把它接到 `sub_2A6BD` 是走錯方向，實測整段那條路一次都沒進入。重製端 `attackWithExperience` 仍只結算一次，而且公式來自二手攻略：暴擊率用 `CritPct` 而不是職業表加武器加成、地形與暴擊減半的順序相反、隨機加成的取法也不同。實測第一關同一組座標：原版攻方 48→31、守方 28→8；重製端攻方 48→48、守方 28→6。
-
-怎樣算做完：依 106 接上 `sub_29F72` 的公式與反擊條件，走原版 RNG（`fdother.NativeRNGStep`），同一組座標的對拍兩側 HP 一致。
-
-證據：`docs/knowledge-base/106-physical-attack-counterattack-20260910.md`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

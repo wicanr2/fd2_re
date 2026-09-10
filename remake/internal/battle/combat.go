@@ -1,6 +1,15 @@
-// combat.go — 戰鬥結算 + 敵方 AI + 勝負(M1)。
+// combat.go — 重製端的**近似**戰鬥結算 + 正規化 AI + 勝負(M1)。
 //
-// 傷害公式對映青衫/反組譯(doc 02 §4.1、doc 11、doc 27 checklist):
+// ⚠ 這個檔案裡的傷害公式**不是原版行為**，正式路徑也不再走它。玩家攻擊與原版
+// AI 走 native_physical_attack.go 的 AttackNativePhysicalWithExperience，那條照
+// `sub_29F72` 的順序、含武器暴擊加成、沒有傷害下限，而且會結算反擊。
+//
+// 這裡留下來的 Attack／AttackWithRNG 只有正規化 AI（AIStep／AITurn）與它們的
+// 測試在用，兩者都沒有產品消費者。差別有三處，別把這裡的行為當成原版：
+// 暴擊減半在地形修正**之前**（原版相反）、暴擊率只有職業表沒有武器加成、
+// 玩家命中硬給至少 1 點傷害。
+//
+// 以下是這條近似路徑自己的來源（青衫/反組譯 doc 02 §4.1、doc 11、doc 27）:
 //
 //	命中率 = (攻方HIT − 守方EV)%
 //	暴擊時 DP = 守方DP/2(取整)
@@ -22,6 +31,11 @@ type AttackResult struct {
 
 	ExpGained float64        // 攻方本次取得的經驗值(doc02 §4.5「攻擊」列;僅 Own/Ally 攻方會 >0,見 growth.go)
 	LevelUps  []LevelUpEvent // 攻方因本次經驗值連續升級的事件(通常 0 或 1 筆,經驗值夠大可多筆)
+
+	// Counter 是守方的反擊結果，nil 表示沒有反擊。原版一次物理攻擊含兩次結算
+	// （`sub_28A6C` 的兩次 `sub_2939D`），反擊不給守方經驗，所以這一筆的
+	// ExpGained 恆為 0。條件見 NativeCounterattackEligible。
+	Counter *AttackResult
 }
 
 // Attack 舊版相容介面(main.go 目前呼叫此簽名):結算一次近戰攻擊,回傳實際傷害
@@ -39,11 +53,8 @@ func (s *State) AttackWithRNG(a, d *Unit, rng *rand.Rand) AttackResult {
 	return s.attackWithExperience(a, d, rng, nil)
 }
 
-// attackWithExperience 目前仍走上面檔頭那組二手公式，而且只結算一次。原版的
-// 一手證據（`sub_29F72` 的順序、武器暴擊加成、無傷害下限，以及守方存活且相鄰時
-// 的反擊）已經實作在 native_physical_damage.go，但**還沒接進這條正式路徑**；
-// 接線與兩側 HP 對拍見工作清單 remake-attack-missing-counterattack 與
-// docs/knowledge-base/106-physical-attack-counterattack-20260910.md。
+// attackWithExperience 是近似路徑的結算：二手公式，只打一次，沒有反擊。
+// 正式路徑見 native_physical_attack.go；兩者的差異列在本檔檔頭。
 func (s *State) attackWithExperience(a, d *Unit, rng *rand.Rand, nativeEXP *nativePhysicalExperiencePlan) AttackResult {
 	a.Acted = true
 	if nativeEXP != nil && a.HasNativeRecordByte5 {
