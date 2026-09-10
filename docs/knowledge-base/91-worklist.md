@@ -31,15 +31,15 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 ## re — 原版證據還沒閉合
 
-### 全螢幕戰鬥演出（FIGANI）能不能由 oracle 產生收據還沒實測
+### 全螢幕戰鬥演出的逐格分鏡與時序還沒解
 
-`figani-fullscreen-receipt` · 仍未完成 · 自承還在 docs/knowledge-base/96-parity-toolchain-20260909.md
+`figani-fullscreen-receipt` · 仍未完成 · 自承還在 docs/data/ui-traces/fd2-figani-fullscreen-20260910.json
 
-地圖層（地形＋單位 sprite）已確認可以由 dosgolem 產生原版收據。FIGANI 是另一條呈現流程，沒有量過；不可由地圖層可用推定它也可用。
+oracle 對這條路徑產生得出收據：畫面、版面與呼叫順序都取到了（`sub_29164` 一次、`sub_2A289`／`sub_18C6D` 各二到四次、每取樣幀 600～800 次 `sub_373C4` 組幀）。缺的是逐格分鏡（哪一格畫哪一張 FIGANI 幀）與時序——這一段的節奏幾乎全由 `delay(ms)` 構成（每段 57～64 次 `sub_375B2`，`sub_17AA9` 只有 2 次），而 `delay` 在 dosgolem 上不按毫秒消耗時間，所以時序只能從呼叫點常數重建。
 
-怎樣算做完：以現行 oracle 取一次 FIGANI 段落的逐幀收據，或明確記錄它缺哪一項能力並回填 dosgolem。
+怎樣算做完：解出逐格分鏡與每格的 delay 常數，並讓重製端的演出照同一份排程走。
 
-證據：`docs/knowledge-base/96-parity-toolchain-20260909.md`
+證據：`docs/data/ui-traces/fd2-figani-fullscreen-20260910.json`
 
 ### 故事場景對白的原版收據還沒取
 

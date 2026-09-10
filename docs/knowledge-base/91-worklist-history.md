@@ -45,6 +45,11 @@
 - `phase-banner-player-receipt`：玩家回合橫幅的執行期收據已取到（step
   318,822,150 起），結構與敵方回合逐項同構，並補到退場之後的字樣滑出五步。
   收據見 [`fd2-phase-banner-player-20260910.json`](../data/ui-traces/fd2-phase-banner-player-20260910.json)。
+- `figani-fullscreen-receipt`（過期斷言，非做完）：條目寫「oracle 能不能對
+  FIGANI 產生收據還沒實測」，但同一天稍早的
+  [`fd2-physical-attack-presentation-20260909.json`](../data/ui-traces/fd2-physical-attack-presentation-20260909.json)
+  已經取到三段演出並記了 `0x29164`／`0x2A289`／`0x18C6D` 的進入次數。2026-09-10
+  重新實測確認能取，條目改寫成真正的缺口：逐格分鏡與時序。
 
 ---
 
