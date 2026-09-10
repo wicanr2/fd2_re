@@ -22,6 +22,7 @@ import (
 	"image/color"
 	"image/png"
 	"log"
+	"math"
 	"math/rand"
 	"os"
 	"path/filepath"
@@ -373,7 +374,8 @@ type Game struct {
 	unitLabels                bool                   // FD2_UNIT_LABELS=1:cutscene sprite 左上標 [idx]fig+名+座標(協助回報/對映原版 slot)
 	cutsceneLog               bool                   // FD2_CUTSCENE_LOG=1:過場 node/beat/走位逐步 log 到 stderr(協助對原版資料比對)
 	banner                    string                 // 回合橫幅文字(PLAYER/ENEMY PHASE)
-	bannerT                   int                    // 橫幅剩餘 tick
+	bannerT                   int                    // 橫幅剩餘幀(60 Hz)
+	bannerFrame               []byte                 // 橫幅進場時凍結的 320×200 索引畫面(對應 0x1F1CC 開頭的 memcpy(0xA0000))
 	sfx                       map[int][]byte         // SFX PCM（doc36 FDOTHER#31：14個目錄項目／13個非空樣本）
 	sfxVoices                 []sfxVoice             // 保留疊播播放器至自然結束，避免 Play 後立即失去生命週期
 	separatedCommandSFX       map[int]map[int][]byte // 已納入契約的 FDOTHER 指令音效；只讀分離 OGG
@@ -7339,6 +7341,9 @@ func (g *Game) Update() error {
 	}
 	if g.bannerT > 0 {
 		g.bannerT--
+		if g.bannerT == 0 {
+			g.bannerFrame = nil
+		}
 	}
 	if g.titlePhase != "" {
 		if g.titleUpdate() {
@@ -10740,31 +10745,73 @@ func loadGame() *Game {
 
 // endTurn 結束當前回合:觸發 on_turn_end 事件(增援等),回合 +1,清除已行動。
 // 回合無上限(doc 27);只由劇本事件決定勝負。
-// showBanner 觸發回合橫幅(~90 tick=1.5s;截圖模式不顯以免擋驗證畫面)。
-// phaseBannerFramesPerStep 是每個馬賽克步驟停留的重製端幀數。
+// showBanner 觸發回合橫幅(截圖模式不顯以免擋驗證畫面)。
 //
-// 原版的步距約 356,000 條指令，但 oracle 的時間模型是每指令 1 微秒的近似，
-// 換不回實機毫秒，所以停留時間是重製端自訂的節奏，不宣稱與原版一致；
-// 33 步 × 3 幀 ≈ 1.65 秒，與先前 90 tick 的長度相當。形狀（步數、方塊邊長
-// 曲線、對稱、不重繪、文字疊在最後）才是收據釘住的部分。
-const phaseBannerFramesPerStep = 3
+// 節奏由原版契約決定：`sub_1F1CC`／`sub_1F30A` 的每一步都以 `sub_17AA9(1)`
+// 等一個 BIOS tick(54.925 毫秒)，兩段之間再走 Watcom `delay()`——敵方回合
+// 20 毫秒(`0x1A52F`)、玩家回合 150 毫秒(`0x1A5D9`)。量測與原始指令見
+// docs/knowledge-base/105-phase-banner-timing-20260910.md。
+const (
+	phaseBannerEnemyHoldMillis  = 20
+	phaseBannerPlayerHoldMillis = 150
+	phaseBannerPlayerText       = "PLAYER PHASE"
+	phaseBannerEnemyText        = "ENEMY PHASE"
+)
 
-// phaseBannerTicks 是整段橫幅的重製端幀數。
-const phaseBannerTicks = indexedmap.PhaseBannerSteps * phaseBannerFramesPerStep
+// phaseBannerHoldMillis 回傳中段停留的毫秒數。未知字樣時採敵方回合的 20 毫秒，
+// 這是兩者中較短的一個，不會憑空拉長演出。
+func phaseBannerHoldMillis(banner string) float64 {
+	if banner == phaseBannerPlayerText {
+		return phaseBannerPlayerHoldMillis
+	}
+	return phaseBannerEnemyHoldMillis
+}
+
+// phaseBannerTotalMillis 是整段橫幅的原版長度：33 步各一個 BIOS tick，加上中段
+// 停留。
+func phaseBannerTotalMillis(banner string) float64 {
+	return indexedmap.PhaseBannerSteps*indexedmap.PhaseBannerStepMillis +
+		phaseBannerHoldMillis(banner)
+}
+
+// phaseBannerFrames 把原版長度換成 60 Hz 的重製端幀數(無條件進位，寧可多留一
+// 幀也不提前收掉最後一步)。
+func phaseBannerFrames(banner string) int {
+	return int(math.Ceil(phaseBannerTotalMillis(banner) * 60 / 1000))
+}
 
 func (g *Game) showBanner(s string) {
 	if g.shotPath != "" {
 		return
 	}
-	g.banner, g.bannerT = s, phaseBannerTicks
+	g.banner, g.bannerT = s, phaseBannerFrames(s)
+	// 原版在 `sub_1F1CC` 開頭 memcpy(0xA0000) 保存整幀，之後整段不重繪；快照
+	// 在橫幅第一次繪製時取，那時的 nativeMapVGA 才是玩家看到的那一張。
+	g.bannerFrame = nil
 }
 
 // phaseBannerStep 回傳目前的馬賽克步驟；沒有橫幅時回 -1。
+//
+// 三段對應原版的三段：進場 16 步、中段 `delay()`(畫面停在進場最後一步)、
+// 退場 17 步。
 func (g *Game) phaseBannerStep() int {
 	if g == nil || g.bannerT <= 0 || g.banner == "" {
 		return -1
 	}
-	step := (phaseBannerTicks - g.bannerT) / phaseBannerFramesPerStep
+	total := phaseBannerFrames(g.banner)
+	elapsed := float64(total-g.bannerT) * 1000 / 60
+	enterMillis := indexedmap.PhaseBannerEnterSteps * indexedmap.PhaseBannerStepMillis
+	hold := phaseBannerHoldMillis(g.banner)
+	var step int
+	switch {
+	case elapsed < enterMillis:
+		step = int(elapsed / indexedmap.PhaseBannerStepMillis)
+	case elapsed < enterMillis+hold:
+		step = indexedmap.PhaseBannerEnterSteps - 1
+	default:
+		step = indexedmap.PhaseBannerEnterSteps +
+			int((elapsed-enterMillis-hold)/indexedmap.PhaseBannerStepMillis)
+	}
 	if step < 0 {
 		step = 0
 	}
@@ -10774,9 +10821,10 @@ func (g *Game) phaseBannerStep() int {
 	return step
 }
 
-// drawPhaseBanner 只畫回合字樣。原版整段期間不重繪地圖，畫面變化全部來自對
-// 保留幀重算的馬賽克（見 docs/knowledge-base/101-phase-banner-20260909.md），
-// 而且逐方塊取樣的顏色與原始幀完全相同——沒有暗化。字樣疊在馬賽克之後。
+// drawPhaseBanner 只畫回合字樣。原版整段期間不重繪地圖，畫面變化來自對進場時
+// 那張快照重算的馬賽克，以及每步套在 DAC 上的減量(`sub_11D40`，只動索引
+// 0x10..0xFF，所以字樣不變暗)；見
+// docs/knowledge-base/105-phase-banner-timing-20260910.md。字樣疊在馬賽克之後。
 // 原版字模尚未擷取，這裡沿用重製端字型。
 func (g *Game) drawPhaseBanner(screen *ebiten.Image) {
 	if g.bannerT <= 0 || g.banner == "" || g.font == nil {
@@ -10897,14 +10945,39 @@ func (g *Game) drawNativeMapFrame(screen *ebiten.Image) bool {
 			palette = current
 		}
 	}
+	// 回合橫幅期間，原版在 `sub_1F1CC` 開頭 memcpy 整幀螢幕，之後整段不重繪，
+	// 每一步都對那張快照重算馬賽克再整幀寫回。這裡照同一個模型：第一次繪製
+	// 時凍結一份，之後只從它取樣，不再跟著當前畫面走。
+	step := g.phaseBannerStep()
+	if step >= 0 && g.bannerFrame == nil && len(g.nativeMapVGA) >= indexedmap.NativeMapVGASize {
+		g.bannerFrame = append([]byte(nil), g.nativeMapVGA...)
+	}
+	// 每一步另外把 DAC 索引 0x10..0xFF 減去「方塊邊長 − 1」(`sub_11D40`)，
+	// 索引 0x00..0x0F 不動，所以字樣不隨地圖變暗。
+	if step >= 0 {
+		if level := indexedmap.PhaseBannerDim(step); level > 0 &&
+			len(g.nativeMapDAC) == 256*3 && a != nil && len(a.PaletteDAC) == 256*3 {
+			dimmed := append([]byte(nil), g.nativeMapDAC...)
+			if err := fdother.ApplyVGAPaletteSubtraction(
+				dimmed, a.PaletteDAC,
+				indexedmap.PhaseBannerDimFirstIndex, indexedmap.PhaseBannerDimLastIndex,
+				level,
+			); err == nil {
+				if current, err := fdother.VGAPaletteFromDAC(dimmed); err == nil {
+					palette = current
+				}
+			}
+		}
+	}
 	img := image.NewPaletted(image.Rect(0, 0, 320, 200), palette)
 	copy(img.Pix, g.nativeMapVGA)
-	// 回合橫幅期間，原版不重繪地圖，而是對保留下來的已合成畫面逐步重算
-	// 馬賽克。這裡照同一個模型：來源永遠是這一幀的 nativeMapVGA，方塊邊長
-	// 由步驟決定，不累積。
-	if step := g.phaseBannerStep(); step >= 0 {
+	if step >= 0 {
+		src := g.bannerFrame
+		if len(src) < indexedmap.NativeMapVGASize {
+			src = g.nativeMapVGA
+		}
 		if err := indexedmap.MosaicNativeMapViewport(
-			img.Pix, g.nativeMapVGA, indexedmap.PhaseBannerBlock(step),
+			img.Pix, src, indexedmap.PhaseBannerBlock(step),
 		); err != nil {
 			return false
 		}

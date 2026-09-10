@@ -245,3 +245,31 @@ ln -s /src/remake/assets/locales "$root/locales"
 ```
 
 符號連結的目標寫成容器內路徑，因為儲存庫本身也掛在 `/src`。
+
+## 改過 `main.go` 之後的字串盤點重新綁定
+
+`TestReviewedGoCandidatesMatchCurrentInventory` 會在改動 Go 原始碼之後失敗，
+訊息長這樣：
+
+```
+review binds sha=<舊>, want sha=<新>
+```
+
+原因是 `docs/data/fd2-string-review.json` 的 `string_id` 是**行號座標**
+（`legacy.go.remake.cmd.fd2.main.l10682-c30`），在 `main.go` 插入任何一行，
+後面所有 ID 都會位移。這不是新增待審字串，處置內容也沒有變。
+
+重新綁定的作法是拿改動前後兩份盤點，用「檔案 ＋ 文字」配對：
+
+```sh
+git worktree add --detach <暫存路徑> HEAD          # 改動前的一份
+# 兩邊各跑一次（容器內）：
+#   go run ./cmd/fd2-string-inventory -repo <repo 根> -output <輸出.json>
+# 以 (source.file, text) 把舊 string_id 對到新 string_id，改寫
+# dispositions 的 string_ids，再把 inventory_sha256 換成新盤點的 sha256。
+git worktree remove <暫存路徑>
+```
+
+不要按排序直接配對：同一段文字可能出現多次，只有「出現順序 ＋ 檔案 ＋ 文字」
+一起用才對得準。配對前先確認兩邊 `go_review` 的條目數相同，數量不同就是真的
+新增或刪掉了待審字串，那要逐筆判斷處置，不是重新綁定。

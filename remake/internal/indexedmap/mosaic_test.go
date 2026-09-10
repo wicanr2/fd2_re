@@ -64,3 +64,34 @@ func TestMosaicNativeMapViewportTakesBlockTopLeftAndKeepsTheBorder(t *testing.T)
 		t.Fatal("邊長 1 應等同整幀複製")
 	}
 }
+
+// TestPhaseBannerDimFollowsTheBlockCurve 釘住 `sub_11D40` 的減量：level 就是
+// 方塊邊長減一，進場 0..15、退場 16..0。
+func TestPhaseBannerDimFollowsTheBlockCurve(t *testing.T) {
+	if PhaseBannerEnterSteps+PhaseBannerExitSteps != PhaseBannerSteps {
+		t.Fatalf("進場 %d ＋ 退場 %d ≠ %d 步",
+			PhaseBannerEnterSteps, PhaseBannerExitSteps, PhaseBannerSteps)
+	}
+	for step := 0; step < PhaseBannerSteps; step++ {
+		if got, want := PhaseBannerDim(step), PhaseBannerBlock(step)-1; got != want {
+			t.Fatalf("第 %d 步減量 %d，應為邊長減一 %d", step, got, want)
+		}
+	}
+	// 進場最後一步是 sub_1F1CC 的 ebp=16／edi=15；退場第一步是 sub_1F30A 的
+	// ebp=0x11／edi=0x10。
+	if got := PhaseBannerDim(PhaseBannerEnterSteps - 1); got != 15 {
+		t.Fatalf("進場最後一步減量 %d，收據是 15", got)
+	}
+	if got := PhaseBannerDim(PhaseBannerEnterSteps); got != 16 {
+		t.Fatalf("退場第一步減量 %d，收據是 16", got)
+	}
+	for _, step := range []int{-1, PhaseBannerSteps} {
+		if got := PhaseBannerDim(step); got != 0 {
+			t.Fatalf("界外第 %d 步減量 %d，應為 0", step, got)
+		}
+	}
+	// 一個 BIOS tick：18.2065097 Hz。
+	if PhaseBannerStepMillis < 54.9 || PhaseBannerStepMillis > 54.95 {
+		t.Fatalf("每步停留 %.4f 毫秒，應為一個 BIOS tick", PhaseBannerStepMillis)
+	}
+}

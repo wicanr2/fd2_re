@@ -1,0 +1,372 @@
+{
+ "schema_version": 1,
+ "kind": "fd2_original_runtime_receipt",
+ "topic": "回合橫幅的節奏、暗化與畫面凍結：33 步由 sub_1F1CC／sub_1F30A 驅動，每步等 1 個 BIOS tick",
+ "date": "2026-09-10",
+ "runner": "dosgolem apps/fd2/cmd/oracle",
+ "dosgolem_commit": "f627cd1",
+ "driver": "tools/dosgolem_oracle.sh（FRAMES=1、stride 4000、settle 4、FRAME_FROM/TO、EIP_WATCH 16 個位址）",
+ "executable": {
+  "file": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+ },
+ "entry": {
+  "path": "標題選單 right,down,down,enter 由附帶 FD2.SAV 進第一關；游標停在空格 enter 開系統面板、down 到 END、enter、enter(YES) 進敵方回合",
+  "control_plan": [
+   {
+    "key": "right",
+    "steps": 3000000
+   },
+   {
+    "key": "down",
+    "steps": 3000000
+   },
+   {
+    "key": "down",
+    "steps": 3000000
+   },
+   {
+    "key": "enter",
+    "steps": 3000000
+   },
+   {
+    "key": "",
+    "steps": 3000000,
+    "repeat": 60
+   },
+   {
+    "key": "enter",
+    "steps": 3000000
+   },
+   {
+    "key": "down",
+    "steps": 3000000
+   },
+   {
+    "key": "enter",
+    "steps": 3000000
+   },
+   {
+    "key": "enter",
+    "steps": 3000000
+   },
+   {
+    "key": "",
+    "steps": 3000000,
+    "repeat": 20
+   }
+  ],
+  "evidence_grade": "RUNTIME 觀測；入口為附帶存檔，輸入全為一般 BIOS 按鍵",
+  "state_injections": [],
+  "input_kind": "normal BIOS keys",
+  "note": "本序列與 2026-09-09 的 fd2-phase-banner-20260909.json 是獨立重建，逐幀 indexed_sha256 相同，兩份互為重現對照"
+ },
+ "eip_watch_addresses": [
+  "0x11CAC",
+  "0x11EB0",
+  "0x12D7B",
+  "0x190AC",
+  "0x19DF7",
+  "0x1A30B",
+  "0x1A813",
+  "0x1A866",
+  "0x1AA1D",
+  "0x1ACF3",
+  "0x1AD72",
+  "0x1CAC7",
+  "0x21548",
+  "0x24618",
+  "0x375B2",
+  "0x4E031"
+ ],
+ "measurement": {
+  "method": "逐幀 320×200 索引畫面 sha256 ＋ eip-watch 累計進入次數 ＋ DAC 寫入位元組數",
+  "mosaic_sequence": [
+   {
+    "frame": 0,
+    "step": 245728000,
+    "step_gap": null,
+    "mosaic_block": 1,
+    "dac_writes_since_previous": null,
+    "indexed_sha256": "f2b48057b8a89e6abb03db3712fe6bbd184facb0b40854c63effa95573caf4ec"
+   },
+   {
+    "frame": 1,
+    "step": 246600000,
+    "step_gap": 872000,
+    "mosaic_block": 2,
+    "dac_writes_since_previous": 1440,
+    "indexed_sha256": "9ed3ad77ca0cf4d8769f33c2cf6b589658aaa9ca4103826e68d74f6187213f71"
+   },
+   {
+    "frame": 2,
+    "step": 246984000,
+    "step_gap": 384000,
+    "mosaic_block": 3,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "54a24de5aa422c782868c91de9465cbc47fd70b2ba3148d5b55648b4c505ce9f"
+   },
+   {
+    "frame": 3,
+    "step": 247360000,
+    "step_gap": 376000,
+    "mosaic_block": 4,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "2db7ccd6ee7db98717e6a99a56e5ce15304f8ca2bfd126be2d2e547d5bbc2e47"
+   },
+   {
+    "frame": 4,
+    "step": 247728000,
+    "step_gap": 368000,
+    "mosaic_block": 5,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "e778673aeb6aa6c6bd6f7240dc98af0d659b87c92e33c9f1423fa52160813e6c"
+   },
+   {
+    "frame": 5,
+    "step": 248088000,
+    "step_gap": 360000,
+    "mosaic_block": 6,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "2dc9d27753771fa86e9e61dc68e7ffed143ccc80fecfdb2342e428de3d67f2aa"
+   },
+   {
+    "frame": 6,
+    "step": 248452000,
+    "step_gap": 364000,
+    "mosaic_block": 7,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "49db635e61023f1a07e4a17f18d454519846bb47d6d5c085e1d2c0397e17cfb8"
+   },
+   {
+    "frame": 7,
+    "step": 248808000,
+    "step_gap": 356000,
+    "mosaic_block": 8,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "378dc9406903302c7289d05fba68ff695c9efa91be829a1988941f8add45e6e5"
+   },
+   {
+    "frame": 8,
+    "step": 249168000,
+    "step_gap": 360000,
+    "mosaic_block": 9,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "3f0fb40d3ddd67603bfda2725a08b3496e3170ffce5aa2a94cdfccc5a0823ec4"
+   },
+   {
+    "frame": 9,
+    "step": 249520000,
+    "step_gap": 352000,
+    "mosaic_block": 10,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "daf3a69f0fa5193f1339736a712ee84aadda623bfe21332eba0b4467cc26abdf"
+   },
+   {
+    "frame": 10,
+    "step": 249876000,
+    "step_gap": 356000,
+    "mosaic_block": 11,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "4cf2af8eefc7c39b06a7c44ef961e665b724b0855a2afbe29365dd0ab02701b4"
+   },
+   {
+    "frame": 11,
+    "step": 250228000,
+    "step_gap": 352000,
+    "mosaic_block": 12,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "d20d13bd47cc794858c306a99d83f753812b24007e2cd168083cb6439ef36dde"
+   },
+   {
+    "frame": 12,
+    "step": 250584000,
+    "step_gap": 356000,
+    "mosaic_block": 13,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "f021c336b08335f615b1d4feb06f36b8d50c5e5e24bdf8b78c21716e1d9e8b18"
+   },
+   {
+    "frame": 13,
+    "step": 250936000,
+    "step_gap": 352000,
+    "mosaic_block": 14,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "9901c45585481f5d032f92a2af1903796d0724f78335df75850db1b7f344e3df"
+   },
+   {
+    "frame": 14,
+    "step": 251288000,
+    "step_gap": 352000,
+    "mosaic_block": 15,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "cf694453f533364510debeef2f5ef938d168cb48d391a0d4ade09f012503e0dd"
+   },
+   {
+    "frame": 15,
+    "step": 251636000,
+    "step_gap": 348000,
+    "mosaic_block": 16,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "cfa4fbe74a4a2a8a0c1ab0829bd23e5b80792121262506896d7210e33611ef25"
+   },
+   {
+    "frame": 16,
+    "step": 251988000,
+    "step_gap": 352000,
+    "mosaic_block": 17,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "e52ef39fcc3f750280696599556e3f1efb9f711975f5aebe7e563410b8817a71"
+   },
+   {
+    "frame": 17,
+    "step": 252336000,
+    "step_gap": 348000,
+    "mosaic_block": 16,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "cfa4fbe74a4a2a8a0c1ab0829bd23e5b80792121262506896d7210e33611ef25"
+   },
+   {
+    "frame": 18,
+    "step": 252688000,
+    "step_gap": 352000,
+    "mosaic_block": 15,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "cf694453f533364510debeef2f5ef938d168cb48d391a0d4ade09f012503e0dd"
+   },
+   {
+    "frame": 19,
+    "step": 253040000,
+    "step_gap": 352000,
+    "mosaic_block": 14,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "9901c45585481f5d032f92a2af1903796d0724f78335df75850db1b7f344e3df"
+   },
+   {
+    "frame": 20,
+    "step": 253388000,
+    "step_gap": 348000,
+    "mosaic_block": 13,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "f021c336b08335f615b1d4feb06f36b8d50c5e5e24bdf8b78c21716e1d9e8b18"
+   },
+   {
+    "frame": 21,
+    "step": 253744000,
+    "step_gap": 356000,
+    "mosaic_block": 12,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "d20d13bd47cc794858c306a99d83f753812b24007e2cd168083cb6439ef36dde"
+   },
+   {
+    "frame": 22,
+    "step": 254100000,
+    "step_gap": 356000,
+    "mosaic_block": 11,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "4cf2af8eefc7c39b06a7c44ef961e665b724b0855a2afbe29365dd0ab02701b4"
+   },
+   {
+    "frame": 23,
+    "step": 254456000,
+    "step_gap": 356000,
+    "mosaic_block": 10,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "daf3a69f0fa5193f1339736a712ee84aadda623bfe21332eba0b4467cc26abdf"
+   },
+   {
+    "frame": 24,
+    "step": 254812000,
+    "step_gap": 356000,
+    "mosaic_block": 9,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "3f0fb40d3ddd67603bfda2725a08b3496e3170ffce5aa2a94cdfccc5a0823ec4"
+   },
+   {
+    "frame": 25,
+    "step": 255168000,
+    "step_gap": 356000,
+    "mosaic_block": 8,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "378dc9406903302c7289d05fba68ff695c9efa91be829a1988941f8add45e6e5"
+   },
+   {
+    "frame": 26,
+    "step": 255532000,
+    "step_gap": 364000,
+    "mosaic_block": 7,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "49db635e61023f1a07e4a17f18d454519846bb47d6d5c085e1d2c0397e17cfb8"
+   },
+   {
+    "frame": 27,
+    "step": 255896000,
+    "step_gap": 364000,
+    "mosaic_block": 6,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "2dc9d27753771fa86e9e61dc68e7ffed143ccc80fecfdb2342e428de3d67f2aa"
+   },
+   {
+    "frame": 28,
+    "step": 256264000,
+    "step_gap": 368000,
+    "mosaic_block": 5,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "e778673aeb6aa6c6bd6f7240dc98af0d659b87c92e33c9f1423fa52160813e6c"
+   },
+   {
+    "frame": 29,
+    "step": 256636000,
+    "step_gap": 372000,
+    "mosaic_block": 4,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "2db7ccd6ee7db98717e6a99a56e5ce15304f8ca2bfd126be2d2e547d5bbc2e47"
+   },
+   {
+    "frame": 30,
+    "step": 257020000,
+    "step_gap": 384000,
+    "mosaic_block": 3,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "54a24de5aa422c782868c91de9465cbc47fd70b2ba3148d5b55648b4c505ce9f"
+   },
+   {
+    "frame": 31,
+    "step": 257424000,
+    "step_gap": 404000,
+    "mosaic_block": 2,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "9ed3ad77ca0cf4d8769f33c2cf6b589658aaa9ca4103826e68d74f6187213f71"
+   },
+   {
+    "frame": 32,
+    "step": 257888000,
+    "step_gap": 464000,
+    "mosaic_block": 1,
+    "dac_writes_since_previous": 720,
+    "indexed_sha256": "f2b48057b8a89e6abb03db3712fe6bbd184facb0b40854c63effa95573caf4ec"
+   }
+  ],
+  "median_step_gap": 356000,
+  "dac_writes_per_step": 720,
+  "blit_0x11EB0_during_mosaic": 0,
+  "redraw_0x11CAC_during_mosaic": 0,
+  "port_3da_reads_during_mosaic": 0
+ },
+ "conclusions": [
+  "馬賽克 33 步由兩支函式構成：sub_1F1CC 進場 16 步（方塊邊長 1..16），sub_1F30A 退場 17 步（邊長 17..1）；合起來就是既有收據量到的 1..17..1 對稱曲線。",
+  "每一步結尾都呼叫 sub_17AA9(1)，該函式輪詢 BIOS tick 計數 0000:046C 直到差值 ≥ 1，因此原版每步固定停留一個 BIOS tick（18.2065 Hz ＝ 54.925 毫秒）。",
+  "兩段之間有 Watcom delay()：敵方回合 20 毫秒（sub_1A30B 0x1A52F），玩家回合 150 毫秒（0x1A5D9）。",
+  "整段畫面來自 sub_1F1CC 開頭 memcpy(0xA0000, 64000) 的整幀快照；期間 0x11EB0 blit 與 0x11CAC 重繪都沒有執行，畫面每步由 memcpy 整幀寫回 0xA0000。",
+  "每一步另呼叫 sub_11D40(0x10, 0xFF, level)：把 DAC 索引 0x10..0xFF 的 R／G／B 各減 level（下限 0），level ＝ 方塊邊長 − 1。索引 0x00..0x0F 不變，所以橫幅字樣不隨地圖變暗。實測每步 720 個 DAC 位元組寫入（240 色 × 3）。",
+  "敵方回合橫幅開始那一刻的畫面沒有左下 HUD 面板，游標白框仍在；橫幅呈現的是進入那一刻的螢幕，不是重新組出來的畫面。"
+ ],
+ "not_claimed": [
+  "每步的實機毫秒未在真機驗證。結論成立的前提是當年目標機畫一步的時間小於一個 BIOS tick；dosgolem 的虛擬 CPU（1 微秒／指令）畫一步要約 356,000 指令＝356 毫秒，等待因此從不生效，量到的步距是模擬器工作量而非原版節奏。",
+  "玩家回合橫幅（資源 id 0x50、中段 150 毫秒）本輪只有靜態指令證據，沒有取到同一輪的執行期收據。",
+  "字樣資源 [0x53A81] 的 id 0x50／0x52 尚未擷取成資產，字模未比對。",
+  "sub_1F42D 的字樣滑入（7 步）與滑出（5 步）尚未接進重製端。"
+ ]
+}
