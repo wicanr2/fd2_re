@@ -1,62 +1,1762 @@
 {
-  "schema_version": 1,
-  "description": "四語對話本文與其直接說話者中，仍需保留 machine_draft 的原文證據阻擋項目；清冊不代表其他介面、實體名稱與來源碎片已完成審校。",
-  "source_locale": "zh-Hant",
   "blockers": [
     {
-      "string_id": "legacy/line/7ecb566a60db/scenes/8/lines/0/text",
-      "source_text": "奈野啊捏?",
-      "reason_code": "unresolved_name_or_utterance",
-      "reason_zh_hant": "原版短句的語意與人名邊界尚未由場景、字串索引及說話者證據閉合。",
       "locales": [
         "zh-Hans",
         "en",
         "ja"
-      ]
-    },
-    {
-      "string_id": "legacy/line/5bf145f103fe/scenes/1/lines/9/text",
-      "source_text": "奈野啊捏?",
-      "reason_code": "unresolved_name_or_utterance",
-      "reason_zh_hant": "原版短句的語意與人名邊界尚未由場景、字串索引及說話者證據閉合。",
-      "locales": [
-        "zh-Hans",
-        "en",
-        "ja"
-      ]
-    },
-    {
-      "string_id": "legacy/line/84d776017867/scenes/7/lines/0/text",
-      "source_text": "奈野啊捏?",
-      "reason_code": "unresolved_name_or_utterance",
-      "reason_zh_hant": "原版短句的語意與人名邊界尚未由場景、字串索引及說話者證據閉合。",
-      "locales": [
-        "zh-Hans",
-        "en",
-        "ja"
-      ]
-    },
-    {
-      "string_id": "legacy/line/cac6c4f06aba/scenes/1/lines/17/text",
-      "source_text": "卡蘿娜.....!",
+      ],
       "reason_code": "proper_name_conflict",
       "reason_zh_hant": "卡蘿娜的專名與其他角色／譯名索引仍有衝突，需先完成身分對照。",
-      "locales": [
-        "zh-Hans",
-        "en",
-        "ja"
-      ]
+      "source_text": "卡蘿娜.....!",
+      "string_id": "legacy/line/cac6c4f06aba/scenes/1/lines/17/text"
     },
     {
-      "string_id": "legacy/line/cac6c4f06aba/scenes/1/lines/8/text",
-      "source_text": "小姐,妳為什麼會知道這些事,我..",
-      "reason_code": "truncated_source_text",
-      "reason_zh_hant": "原版來源在句尾截斷，翻譯者無法可靠補寫未出現在來源中的語意。",
       "locales": [
         "zh-Hans",
         "en",
         "ja"
-      ]
+      ],
+      "reason_code": "truncated_source_text",
+      "reason_zh_hant": "原版來源在句尾截斷，翻譯者無法可靠補寫未出現在來源中的語意。",
+      "source_text": "小姐,妳為什麼會知道這些事,我..",
+      "string_id": "legacy/line/cac6c4f06aba/scenes/1/lines/8/text"
+    },
+    {
+      "locales": [
+        "zh-Hans",
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_name_or_utterance",
+      "reason_zh_hant": "原版短句的語意與人名邊界尚未由場景、字串索引及說話者證據閉合。",
+      "source_text": "奈野啊捏?",
+      "string_id": "legacy/line/5bf145f103fe/scenes/1/lines/9/text"
+    },
+    {
+      "locales": [
+        "zh-Hans",
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_name_or_utterance",
+      "reason_zh_hant": "原版短句的語意與人名邊界尚未由場景、字串索引及說話者證據閉合。",
+      "source_text": "奈野啊捏?",
+      "string_id": "legacy/line/7ecb566a60db/scenes/8/lines/0/text"
+    },
+    {
+      "locales": [
+        "zh-Hans",
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_name_or_utterance",
+      "reason_zh_hant": "原版短句的語意與人名邊界尚未由場景、字串索引及說話者證據閉合。",
+      "source_text": "奈野啊捏?",
+      "string_id": "legacy/line/84d776017867/scenes/7/lines/0/text"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "弓",
+      "string_id": "legacy/line/1eb900572487/scenes/2/lines/0/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "狂",
+      "string_id": "legacy/line/1eb900572487/scenes/2/lines/1/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "魔",
+      "string_id": "legacy/line/2931e1ff899c/scenes/2/lines/5/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蜜",
+      "string_id": "legacy/line/2931e1ff899c/scenes/3/lines/0/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蜜",
+      "string_id": "legacy/line/2931e1ff899c/scenes/3/lines/1/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蜜",
+      "string_id": "legacy/line/2931e1ff899c/scenes/3/lines/3/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蜜",
+      "string_id": "legacy/line/2931e1ff899c/scenes/3/lines/5/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "諾",
+      "string_id": "legacy/line/2931e1ff899c/scenes/5/lines/1/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "諾",
+      "string_id": "legacy/line/2931e1ff899c/scenes/5/lines/3/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "米",
+      "string_id": "legacy/line/29aac3e465f0/scenes/1/lines/6/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "米",
+      "string_id": "legacy/line/29aac3e465f0/scenes/1/lines/8/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蘭",
+      "string_id": "legacy/line/29aac3e465f0/scenes/2/lines/10/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "希",
+      "string_id": "legacy/line/29aac3e465f0/scenes/2/lines/12/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "希",
+      "string_id": "legacy/line/29aac3e465f0/scenes/2/lines/14/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "希",
+      "string_id": "legacy/line/29aac3e465f0/scenes/2/lines/16/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蘭",
+      "string_id": "legacy/line/29aac3e465f0/scenes/2/lines/17/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "希",
+      "string_id": "legacy/line/29aac3e465f0/scenes/2/lines/18/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蘭",
+      "string_id": "legacy/line/29aac3e465f0/scenes/2/lines/19/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "希",
+      "string_id": "legacy/line/29aac3e465f0/scenes/2/lines/20/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蘭",
+      "string_id": "legacy/line/29aac3e465f0/scenes/2/lines/21/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "希",
+      "string_id": "legacy/line/29aac3e465f0/scenes/2/lines/22/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蘭",
+      "string_id": "legacy/line/29aac3e465f0/scenes/2/lines/5/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蘭",
+      "string_id": "legacy/line/29aac3e465f0/scenes/2/lines/7/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "希",
+      "string_id": "legacy/line/29aac3e465f0/scenes/2/lines/9/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蘭",
+      "string_id": "legacy/line/29aac3e465f0/scenes/3/lines/1/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蘭",
+      "string_id": "legacy/line/29aac3e465f0/scenes/3/lines/11/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蘭",
+      "string_id": "legacy/line/29aac3e465f0/scenes/3/lines/3/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蘭",
+      "string_id": "legacy/line/29aac3e465f0/scenes/3/lines/5/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蘭",
+      "string_id": "legacy/line/29aac3e465f0/scenes/3/lines/8/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "聖",
+      "string_id": "legacy/line/33476e2c304d/scenes/1/lines/0/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "聖",
+      "string_id": "legacy/line/33476e2c304d/scenes/1/lines/11/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "聖",
+      "string_id": "legacy/line/33476e2c304d/scenes/1/lines/2/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "聖",
+      "string_id": "legacy/line/33476e2c304d/scenes/1/lines/4/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "聖",
+      "string_id": "legacy/line/33476e2c304d/scenes/1/lines/6/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "聖",
+      "string_id": "legacy/line/33476e2c304d/scenes/1/lines/9/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "聖",
+      "string_id": "legacy/line/33476e2c304d/scenes/2/lines/1/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "聖",
+      "string_id": "legacy/line/33476e2c304d/scenes/2/lines/2/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "法",
+      "string_id": "legacy/line/4dd4fa178fb1/scenes/0/lines/5/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "莎",
+      "string_id": "legacy/line/725efc540ee1/scenes/4/lines/0/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "莎",
+      "string_id": "legacy/line/725efc540ee1/scenes/4/lines/2/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "惡",
+      "string_id": "legacy/line/750623f119b8/scenes/2/lines/4/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "精",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/0/lines/11/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "莉",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/0/lines/17/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "妮",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/0/lines/5/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "琳",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/0/lines/6/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "精",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/0/lines/7/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "靈",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/0/lines/8/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "琳",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/0/lines/9/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "悠",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/1/lines/0/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "妮",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/1/lines/1/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蜜",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/1/lines/12/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蜜",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/1/lines/14/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蜜",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/1/lines/16/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蜜",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/1/lines/18/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "瑪",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/1/lines/2/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "琳",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/1/lines/3/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "菲",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/1/lines/4/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "凱",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/1/lines/5/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "麗",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/1/lines/6/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "貝",
+      "string_id": "legacy/line/81dd5ef66a56/scenes/1/lines/7/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "武",
+      "string_id": "legacy/line/8299dbce3ca6/scenes/0/lines/11/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "侶",
+      "string_id": "legacy/line/8299dbce3ca6/scenes/0/lines/12/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "武",
+      "string_id": "legacy/line/8299dbce3ca6/scenes/0/lines/13/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "侶",
+      "string_id": "legacy/line/8299dbce3ca6/scenes/0/lines/4/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "侶",
+      "string_id": "legacy/line/8299dbce3ca6/scenes/0/lines/6/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "侶",
+      "string_id": "legacy/line/8299dbce3ca6/scenes/0/lines/8/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "侶",
+      "string_id": "legacy/line/8299dbce3ca6/scenes/1/lines/7/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "弓",
+      "string_id": "legacy/line/8355a97601cc/scenes/1/lines/10/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "弓",
+      "string_id": "legacy/line/8355a97601cc/scenes/1/lines/6/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "弓",
+      "string_id": "legacy/line/8355a97601cc/scenes/1/lines/7/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "弓",
+      "string_id": "legacy/line/8355a97601cc/scenes/1/lines/8/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "弓",
+      "string_id": "legacy/line/8355a97601cc/scenes/1/lines/9/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "多",
+      "string_id": "legacy/line/84d776017867/scenes/2/lines/3/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "手",
+      "string_id": "legacy/line/84d776017867/scenes/4/lines/6/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "手",
+      "string_id": "legacy/line/84d776017867/scenes/4/lines/8/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "大",
+      "string_id": "legacy/line/89c3da909b32/scenes/0/lines/0/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "大",
+      "string_id": "legacy/line/89c3da909b32/scenes/0/lines/1/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "大",
+      "string_id": "legacy/line/89c3da909b32/scenes/0/lines/3/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "大",
+      "string_id": "legacy/line/89c3da909b32/scenes/0/lines/5/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "大",
+      "string_id": "legacy/line/89c3da909b32/scenes/1/lines/12/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "大",
+      "string_id": "legacy/line/89c3da909b32/scenes/1/lines/15/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "克",
+      "string_id": "legacy/line/89c3da909b32/scenes/1/lines/18/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "威",
+      "string_id": "legacy/line/89c3da909b32/scenes/1/lines/19/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "威",
+      "string_id": "legacy/line/89c3da909b32/scenes/1/lines/21/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "狙",
+      "string_id": "legacy/line/9bd82ef4e817/scenes/0/lines/11/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "狙",
+      "string_id": "legacy/line/9bd82ef4e817/scenes/0/lines/13/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "狙",
+      "string_id": "legacy/line/9bd82ef4e817/scenes/0/lines/15/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "狙",
+      "string_id": "legacy/line/9bd82ef4e817/scenes/0/lines/5/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "狙",
+      "string_id": "legacy/line/9bd82ef4e817/scenes/0/lines/8/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "狙",
+      "string_id": "legacy/line/9bd82ef4e817/scenes/1/lines/2/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "可",
+      "string_id": "legacy/line/a24ca0f9187e/scenes/1/lines/0/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "?",
+      "string_id": "legacy/line/a6c95c58ac65/scenes/0/lines/10/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "?",
+      "string_id": "legacy/line/a6c95c58ac65/scenes/0/lines/11/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "弓",
+      "string_id": "legacy/line/a6c95c58ac65/scenes/0/lines/3/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "狂",
+      "string_id": "legacy/line/a6c95c58ac65/scenes/0/lines/4/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "大",
+      "string_id": "legacy/line/b83b3b6f5814/scenes/1/lines/11/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "巫",
+      "string_id": "legacy/line/b83b3b6f5814/scenes/1/lines/5/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "僧",
+      "string_id": "legacy/line/b83b3b6f5814/scenes/1/lines/7/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "侶",
+      "string_id": "legacy/line/b83b3b6f5814/scenes/1/lines/9/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "箭",
+      "string_id": "legacy/line/ba1dd3abcf8e/scenes/0/lines/0/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "拉",
+      "string_id": "legacy/line/ba1dd3abcf8e/scenes/0/lines/1/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "箭",
+      "string_id": "legacy/line/ba1dd3abcf8e/scenes/0/lines/2/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "箭",
+      "string_id": "legacy/line/ba1dd3abcf8e/scenes/0/lines/4/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "箭",
+      "string_id": "legacy/line/ba1dd3abcf8e/scenes/1/lines/2/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "箭",
+      "string_id": "legacy/line/ba1dd3abcf8e/scenes/1/lines/5/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "箭",
+      "string_id": "legacy/line/ba1dd3abcf8e/scenes/1/lines/9/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "米",
+      "string_id": "legacy/line/ba1dd3abcf8e/scenes/2/lines/0/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "箭",
+      "string_id": "legacy/line/ba1dd3abcf8e/scenes/2/lines/1/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "米",
+      "string_id": "legacy/line/ba1dd3abcf8e/scenes/2/lines/2/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "萊",
+      "string_id": "legacy/line/ba1dd3abcf8e/scenes/3/lines/0/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "汀",
+      "string_id": "legacy/line/ba1dd3abcf8e/scenes/3/lines/1/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "蘭",
+      "string_id": "legacy/line/ba1dd3abcf8e/scenes/3/lines/2/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "希",
+      "string_id": "legacy/line/ba1dd3abcf8e/scenes/3/lines/3/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "惡",
+      "string_id": "legacy/line/ba1dd3abcf8e/scenes/3/lines/4/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "惡",
+      "string_id": "legacy/line/ba1dd3abcf8e/scenes/3/lines/5/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "箭",
+      "string_id": "legacy/line/ba1dd3abcf8e/scenes/4/lines/0/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "傭",
+      "string_id": "legacy/line/ba1dd3abcf8e/scenes/7/lines/1/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "拉",
+      "string_id": "legacy/line/bafc75c19a8d/scenes/1/lines/5/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "拉",
+      "string_id": "legacy/line/bafc75c19a8d/scenes/1/lines/7/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "?",
+      "string_id": "legacy/line/bc7266a893a1/scenes/0/lines/0/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "英",
+      "string_id": "legacy/line/bc7266a893a1/scenes/0/lines/10/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "英",
+      "string_id": "legacy/line/bc7266a893a1/scenes/0/lines/11/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "英",
+      "string_id": "legacy/line/bc7266a893a1/scenes/0/lines/9/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "索",
+      "string_id": "legacy/line/ce23f725c2f5/scenes/0/lines/12/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "索",
+      "string_id": "legacy/line/ce23f725c2f5/scenes/0/lines/16/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "爾",
+      "string_id": "legacy/line/ce23f725c2f5/scenes/0/lines/17/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "弓",
+      "string_id": "legacy/line/ce23f725c2f5/scenes/0/lines/2/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "弓",
+      "string_id": "legacy/line/ce23f725c2f5/scenes/0/lines/3/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "索",
+      "string_id": "legacy/line/ce23f725c2f5/scenes/0/lines/5/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "爾",
+      "string_id": "legacy/line/ce23f725c2f5/scenes/0/lines/6/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "索",
+      "string_id": "legacy/line/ce23f725c2f5/scenes/0/lines/9/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "?",
+      "string_id": "legacy/line/ce23f725c2f5/scenes/3/lines/1/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "?",
+      "string_id": "legacy/line/ce23f725c2f5/scenes/3/lines/2/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "?",
+      "string_id": "legacy/line/ce23f725c2f5/scenes/3/lines/3/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "?",
+      "string_id": "legacy/line/ce23f725c2f5/scenes/3/lines/4/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "?",
+      "string_id": "legacy/line/ce23f725c2f5/scenes/3/lines/5/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "?",
+      "string_id": "legacy/line/ce23f725c2f5/scenes/3/lines/6/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "?",
+      "string_id": "legacy/line/ce23f725c2f5/scenes/3/lines/7/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "武",
+      "string_id": "legacy/line/e21a32c956d7/scenes/1/lines/0/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "巴",
+      "string_id": "legacy/line/e21a32c956d7/scenes/1/lines/1/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "拿",
+      "string_id": "legacy/line/e21a32c956d7/scenes/1/lines/2/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "巴",
+      "string_id": "legacy/line/e21a32c956d7/scenes/2/lines/2/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "悠",
+      "string_id": "legacy/line/e21a32c956d7/scenes/2/lines/3/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "克",
+      "string_id": "legacy/line/e21a32c956d7/scenes/2/lines/4/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "悠",
+      "string_id": "legacy/line/e21a32c956d7/scenes/2/lines/5/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "克",
+      "string_id": "legacy/line/e21a32c956d7/scenes/2/lines/6/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "聖",
+      "string_id": "legacy/line/e82bb0feed5c/scenes/1/lines/0/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "聖",
+      "string_id": "legacy/line/e82bb0feed5c/scenes/1/lines/2/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "塞",
+      "string_id": "legacy/line/f90f51692adf/scenes/2/lines/1/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "羅",
+      "string_id": "legacy/line/f90f51692adf/scenes/2/lines/11/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "曼",
+      "string_id": "legacy/line/f90f51692adf/scenes/2/lines/12/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "羅",
+      "string_id": "legacy/line/f90f51692adf/scenes/2/lines/5/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "曼",
+      "string_id": "legacy/line/f90f51692adf/scenes/2/lines/6/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "莎",
+      "string_id": "legacy/line/f90f51692adf/scenes/2/lines/7/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "羅",
+      "string_id": "legacy/line/f90f51692adf/scenes/2/lines/9/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "塞",
+      "string_id": "legacy/line/f90f51692adf/scenes/4/lines/0/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "塞",
+      "string_id": "legacy/line/f90f51692adf/scenes/4/lines/2/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "塞",
+      "string_id": "legacy/line/f90f51692adf/scenes/4/lines/4/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "塞",
+      "string_id": "legacy/line/f90f51692adf/scenes/4/lines/6/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "塞",
+      "string_id": "legacy/line/f90f51692adf/scenes/4/lines/8/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "塞",
+      "string_id": "legacy/line/f90f51692adf/scenes/5/lines/0/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "塞",
+      "string_id": "legacy/line/f90f51692adf/scenes/5/lines/2/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "塞",
+      "string_id": "legacy/line/f90f51692adf/scenes/5/lines/4/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "塞",
+      "string_id": "legacy/line/f90f51692adf/scenes/5/lines/6/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "塞",
+      "string_id": "legacy/line/f90f51692adf/scenes/5/lines/8/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "惡",
+      "string_id": "legacy/line/f95eacdc314e/scenes/0/lines/11/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "惡",
+      "string_id": "legacy/line/f95eacdc314e/scenes/0/lines/13/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "惡",
+      "string_id": "legacy/line/f95eacdc314e/scenes/0/lines/15/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "惡",
+      "string_id": "legacy/line/f95eacdc314e/scenes/0/lines/17/speaker-name"
+    },
+    {
+      "locales": [
+        "en",
+        "ja"
+      ],
+      "reason_code": "unresolved_speaker_identity",
+      "reason_zh_hant": "來源的說話者欄位只剩單一字模，且與相鄰行拼在一起才成名字（例如 `索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）；身分未由字串索引與場景證據閉合前不得猜定譯名。見 docs/knowledge-base/49-character-id-name-table.md。",
+      "source_text": "惡",
+      "string_id": "legacy/line/f95eacdc314e/scenes/0/lines/9/speaker-name"
     }
-  ]
+  ],
+  "description": "四語中仍需保留失敗即關閉的原文證據阻擋項目，分兩類：對話本文的語意或專名邊界未閉合，以及說話者欄位在來源就只剩單一字模碎片。清冊不代表其他介面、實體名稱與來源碎片已完成審校。",
+  "schema_version": 1,
+  "source_locale": "zh-Hant"
 }

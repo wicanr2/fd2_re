@@ -55,8 +55,8 @@
       "id": "locale-machine-draft",
       "layer": "data",
       "title": "四語內容還有機器初稿沒有人工審校",
-      "body": "繁中全部是來源語，簡中、日文與英文仍有標 `machine_draft` 的條目。沒有人工審校的譯文不得冒稱正式翻譯。另有一批說話者名稱源自單字或 `?`，屬來源身分阻擋，不是未翻譯，不可為了全綠而猜定。",
-      "acceptance": "三語的 `machine_draft` 全部經人工審校改為定稿，或明確拆出「來源身分阻擋」另計。",
+      "body": "繁中全部是來源語。說話者欄位的碎片已於 2026-09-10 拆出另計：170 筆只剩單一字模、與相鄰行拼起來才成名字（`索`＋`爾`、`萊`＋`汀`、`悠`＋`妮`）的說話者改為 `blocked` 並登進 `docs/data/localization/review-blockers.json`，屬來源身分阻擋不是未翻譯。剩下的是真正的未審校譯文：英文 387 筆、日文 390 筆、簡中 5 筆，集中在 runtime_ui、scene_label、location_name 與 go_review。沒有人工審校的譯文不得冒稱正式翻譯。",
+      "acceptance": "剩餘的 `machine_draft` 全部經人工審校改為定稿；已拆出的來源身分阻擋維持 `blocked` 並留在清冊，不得為了全綠而猜定。",
       "verify": {
         "kind": "present",
         "paths": [
