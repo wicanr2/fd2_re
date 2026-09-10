@@ -207,8 +207,12 @@ def do_await(command):
     steps = int(command.get("steps", 10_000_000))
     budget = int(command.get("max", 120))
     key = command.get("key", "")
+    guard = command.get("abort_if")
     for _ in range(budget):
         current = state()
+        if guard and holds(current, guard)[0]:
+            print(f"await {expression} 中止：{guard} 成立", file=sys.stderr)
+            return False
         ok, got = holds(current, expression)
         if ok:
             print(f"await {expression} 成立（實測 {got}）", flush=True)
@@ -339,9 +343,10 @@ DIALOGUE_RANGE = (0x1E400, 0x1E5FF)
 
 # 方向鍵會移動地圖游標的模式。其餘模式送方向鍵是在選選項，不會動游標。
 CURSOR_MODES = {"cursor", "target"}
-# esc 退得掉的選單。指令環不在裡面——它要選一項才離得開，而選哪一項是決策，
-# 不是清理。
-ESCAPABLE = {"system", "status", "grid", "target"}
+# esc 退得掉的介面。指令環也在裡面：回合改用系統選單的 END 結束之後，指令環不再
+# 需要「選一項」——打不到人的單位就退出來，讓它這一回合停在原地。退出會取消這次
+# 移動，單位回到原位；這一回合本來就不動它，沒有損失。
+ESCAPABLE = {"system", "status", "grid", "target", "ring"}
 
 
 def ui_mode(current):
@@ -618,86 +623,137 @@ def do_engage(command):
               f"{sum(e.get('hp', 0) for e in after)}、存活 {before_count}→{len(after)}",
               flush=True)
     else:
-        print(f"engage 走到 {moved_to} 但射程 {reach} 內沒有敵人", flush=True)
-        current = stand_by(steps, "=advance")
+        # 不待機：待機要在六格 command grid 上選對格子，而選中的是哪一格從狀態層
+        # 看不出來——四個方向都試過仍停在 grid 上。這個單位這一回合就停在這裡，
+        # 回合改由系統選單的 END 結束。
+        print(f"engage 走到 {moved_to} 但射程 {reach} 內沒有敵人，退出指令環",
+              flush=True)
+        seq, current = send("esc", max(steps, 3_000_000))
+        report(seq, "esc", current, " engage=leave-ring")
 
-    # 收尾判斷要等狀態穩定：介面還是 unknown 表示演出或過場正在播（第一關第 3
-    # 回合哈諾與哈瓦特加入就是這樣），那時去讀 record `+5` bit7 會讀到還沒寫上去
-    # 的值，判成「沒行動」。
+    # 收尾只做清理：把介面退回地圖游標，讓下一個單位從已知狀態開始。
+    #
+    # 不再檢查 record `+5` bit7。它在好幾種情況下都不成立：本回合最後一個單位行動完
+    # 會立刻換手、新回合把整批清零；攻擊接的升級對白結束前還沒寫上去；打不到人而
+    # 退出指令環的單位根本沒行動過。改由 sweep 自己記「這一輪處理過誰」。
     for _ in range(int(command.get("finish_wait", 30))):
         current = state()
         if measure(current, "round") > started_round:
-            break
+            print(f"engage {moved_to} 完成，回合已由 {started_round} 推進到 "
+                  f"{measure(current, 'round')}", flush=True)
+            return True
         mode = ui_mode(current)
+        if mode == "cursor":
+            return True
         if mode == "dialogue":
-            # 攻擊之後常接一段升級訊息或事件台詞。它不會自己走完，而 record `+5`
-            # bit7 要等這段結束才寫上去——在對白上判「有沒有行動」一定判成沒有。
             key = "" if current.get("kbd_pending", 0) > 0 else "enter"
             seq, current = send(key, max(steps, 3_000_000))
             report(seq, key, current, " engage=finish-dialogue")
             continue
-        if mode in ESCAPABLE - CURSOR_MODES:
-            # 指令環上按到「狀態」或「物品」會開面板／grid。esc 退回去。
+        if mode in ESCAPABLE:
             seq, current = send("esc", max(steps, 3_000_000))
             report(seq, "esc", current, f" engage=finish-{mode}")
             continue
-        if mode == "unknown":
-            seq, current = send("", max(steps, 5_000_000))
-            report(seq, "", current, " engage=finish-wait")
-            continue
-        break
+        seq, current = send("", max(steps, 5_000_000))
+        report(seq, "", current, " engage=finish-wait")
+    print(f"engage {moved_to} 收尾之後介面停在 {ui_mode(state())}", file=sys.stderr)
+    return False
+
+
+def empty_cell(current, near):
+    """找一個沒有單位、離 near 最近的格，用來開系統選單。"""
+    taken = occupied_cells(current)
+    best, best_span = None, 1 << 30
+    for dx in range(-6, 7):
+        for dy in range(-6, 7):
+            cell = (near[0] + dx, near[1] + dy)
+            if cell[0] < 0 or cell[1] < 0 or cell in taken:
+                continue
+            span = abs(dx) + abs(dy)
+            if span and span < best_span:
+                best, best_span = cell, span
+    return best
+
+
+def end_turn(command):
+    """開系統選單選 END 結束我方回合。
+
+    比逐一讓單位待機可靠得多。指令環實際上是六格的 command grid，方向鍵在格子之間
+    移動，按幾次 down 會選到哪一格從狀態層看不出來——實測四個方向都試過還停在
+    grid 上。而系統選單的 END 是既有收據走過的路徑（`ch01-phase-banner.jsonl`：
+    在空地開面板、下三次、確認、再確認 YES）。
+    """
+    steps = int(command.get("steps", 2_000_000))
+    if not ensure_cursor_mode(max(steps, 5_000_000), int(command.get("cursor_wait", 80))):
+        print("end_turn：介面退不回地圖游標", file=sys.stderr)
+        return False
     current = state()
-    if measure(current, "round") > started_round:
-        # 這個單位就是本回合最後一個。它行動完原版立刻換手，新回合把所有
-        # record `+5` bit7 清掉——那時去檢查「有沒有標記已行動」一定是 False，
-        # 但行動其實成功了。看回合數才分得出「沒行動」與「行動完換手了」。
-        print(f"engage {moved_to} 完成，回合已由 {started_round} 推進到 "
-              f"{measure(current, 'round')}", flush=True)
-        return True
-    unit = unit_at(current, moved_to[0], moved_to[1])
-    if unit is None:
-        print(f"engage {moved_to} 收尾時該格已無單位（可能被反擊打死）", flush=True)
-        return True
-    if not acted(unit):
-        print(f"engage {moved_to} 之後仍未標記已行動（介面 {ui_mode(current)}）",
+    view = current.get("view", {}) or {}
+    cell = empty_cell(current, (int(view.get("cursor_x", 0)), int(view.get("cursor_y", 0))))
+    if cell is None:
+        print("end_turn：附近找不到空地開系統選單", file=sys.stderr)
+        return False
+    if not do_goto({"goto": list(cell), "steps": steps, "max": 40}):
+        return False
+    seq, current = send("enter", max(steps, 5_000_000))
+    report(seq, "enter", current, " end-turn=open")
+    if wait_mode({"system"}, steps) != "system":
+        print(f"end_turn：空地上 enter 開的不是系統選單（{ui_mode(state())}）",
               file=sys.stderr)
         return False
+    for _ in range(3):
+        seq, current = send("down", steps)
+        report(seq, "down", current, " end-turn=pick-END")
+    seq, current = send("enter", max(steps, 5_000_000))
+    report(seq, "enter", current, " end-turn=confirm")
+    settle(steps, 4)
+    seq, current = send("enter", max(steps, 5_000_000))
+    report(seq, "enter", current, " end-turn=yes")
     return True
 
 
 def do_sweep_round(command):
-    """把這一回合所有還沒行動的我方單位依序接戰。
+    """這一回合：讓打得到人的我方單位各打一次，然後用系統選單結束回合。
 
-    座標不能寫死：第一回合以後每個單位都在上一回合走到的位置。每一輪都重讀
-    `units` 找「camp 是我方、record `+5` bit7 還沒設」的單位。
+    打不到的單位不動它——推進之後要待機才算行動結束，而待機要在六格 command grid
+    上選對格子，那從狀態層看不出來。
+
+    挑單位不靠 record `+5` bit7：它在換手、升級對白與「退出指令環沒行動」這幾種
+    情況下都不成立，會讓同一個單位被反覆選中。驅動端自己記得這一輪處理過誰。
     """
     steps = int(command.get("steps", 2_000_000))
+    reach = int(command.get("reach", 2))
+    span = int(command.get("typical_move", 6))
+    handled_cells = set()
     for _ in range(int(command.get("max_units", 12))):
         if not resume_battle(int(command.get("cutscene_steps", 5_000_000)),
                              int(command.get("cutscene_max", 30))):
-            print("sweep_round：離開戰場且推不回來，中止（看 checkpoint 判斷是"
-                  "勝利演出、戰敗，還是過場沒推完）", file=sys.stderr)
+            print("sweep_round：離開戰場且推不回來，中止", file=sys.stderr)
             return False
         current = state()
-        pending = [u for u in side(current, ALLY_CAMP) if not acted(u)]
-        if not pending:
-            print("sweep_round：本回合我方單位都已行動", flush=True)
-            return True
-        if not side(current, ENEMY_CAMP):
+        enemies = [(e["x"], e["y"]) for e in side(current, ENEMY_CAMP)]
+        if not enemies:
             print("sweep_round：敵方已全滅", flush=True)
             return True
-        # 固定挑「離最近敵人最近」的那個單位，順序才可重現。
-        enemies = [(e["x"], e["y"]) for e in side(current, ENEMY_CAMP)]
-        pending.sort(key=lambda u: (min(distance((u["x"], u["y"]), e) for e in enemies),
-                                    u["x"], u["y"]))
-        pick = pending[0]
+        pending = [u for u in side(current, ALLY_CAMP)
+                   if not acted(u) and (u["x"], u["y"]) not in handled_cells]
+        # 只挑走得到敵人旁邊的：貼敵格離它不超過一般移動力加射程。
+        reachable = [u for u in pending
+                     if min(distance((u["x"], u["y"]), e) for e in enemies) <= span + reach]
+        if not reachable:
+            break
+        reachable.sort(key=lambda u: (min(distance((u["x"], u["y"]), e) for e in enemies),
+                                      u["x"], u["y"]))
+        pick = reachable[0]
+        handled_cells.add((pick["x"], pick["y"]))
         inner = dict(command)
         inner.pop("sweep_round", None)
         inner["engage"] = [pick["x"], pick["y"]]
         if not do_engage(inner):
             return False
-    print("sweep_round：用完單位上限仍有未行動單位", file=sys.stderr)
-    return False
+    print(f"sweep_round：這一回合處理了 {len(handled_cells)} 個單位，結束回合",
+          flush=True)
+    return end_turn(command)
 
 
 def do_sweep_battle(command):
@@ -714,6 +770,12 @@ def do_sweep_battle(command):
     print(f"sweep_battle：戰場單位陣列基底 {BATTLE_UNIT_BASE:#x}", flush=True)
     for index in range(rounds):
         current = state()
+        if in_battle(current) and not side(current, ALLY_CAMP):
+            # 我方全滅。原版接著跑戰敗流程，回合數再也不會推進——不先認出來的話
+            # 後面的 await 會空等三百格，log 最後看起來只是「等換手等不到」。
+            print(f"sweep_battle：第 {measure(current, 'round')} 回合我方全滅，戰敗",
+                  file=sys.stderr)
+            return False
         if not in_battle(current):
             print(f"sweep_battle：第 {index} 輪之前已離開戰場，收工", flush=True)
             return True
@@ -727,6 +789,7 @@ def do_sweep_battle(command):
             return False
         print(f"sweep_battle：第 {before} 回合我方行動完畢，等換手", flush=True)
         if not do_await({"await": f"round>={before + 1}",
+                         "abort_if": "ally_alive<=0",
                          "steps": int(command.get("turn_steps", 10_000_000)),
                          "max": int(command.get("turn_max", 200))}):
             return False

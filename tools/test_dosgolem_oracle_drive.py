@@ -324,6 +324,13 @@ class Conditions(unittest.TestCase):
             ok, _ = drive.holds(self.current, expression)
             self.assertEqual(ok, want, expression)
 
+    def test_ally_wipeout_is_expressible_as_a_guard(self):
+        """我方全滅之後回合再也不會推進，等待迴圈要認得出來而不是空等。"""
+        wiped = {"view": {"round": 5}, "units": [unit(3, 3, drive.ENEMY_CAMP)]}
+        self.assertTrue(drive.holds(wiped, "ally_alive<=0")[0])
+        alive = {"view": {"round": 5}, "units": [unit(1, 1, drive.ALLY_CAMP)]}
+        self.assertFalse(drive.holds(alive, "ally_alive<=0")[0])
+
     def test_unknown_variable_and_syntax_both_stop_the_run(self):
         with self.assertRaises(SystemExit):
             drive.holds(self.current, "morale>=1")
