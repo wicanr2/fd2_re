@@ -1756,7 +1756,7 @@
       "string_id": "legacy/line/f95eacdc314e/scenes/0/lines/9/speaker-name"
     }
   ],
-  "description": "四語中仍需保留失敗即關閉的原文證據阻擋項目，分兩類：對話本文的語意或專名邊界未閉合，以及說話者欄位在來源就只剩單一字模碎片。清冊不代表其他介面、實體名稱與來源碎片已完成審校。",
+  "description": "四語中仍需保留失敗即關閉的原文證據阻擋項目，分兩類：對話本文的語意或專名邊界未閉合，以及說話者欄位在來源就只剩單一字模。兩類的狀態不同：說話者碎片標 `blocked`（不經 StoryText，執行期不消費）；對話本文留在 `machine_draft`，因為 `StoryText` 對 `blocked` 是回錯誤，那幾句會讓整個劇情節點中止。清冊不代表其他介面、實體名稱與來源碎片已完成審校。",
   "schema_version": 1,
   "source_locale": "zh-Hant"
 }
