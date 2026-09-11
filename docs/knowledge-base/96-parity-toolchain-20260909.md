@@ -339,7 +339,13 @@ BIOS 掃描碼才會出現（`native_secret_gate`），一般切換到不了。
 [`tools/test_dosgolem_oracle_drive.py`](../../tools/test_dosgolem_oracle_drive.py)
 逐條驗兩個方向。改這支之後要先用既有的開環序列做重現對照：2026-09-10 以
 `ch01-move-attack.jsonl` 跑，53 個檢查點的 `steps`／`eip`／`view`／單位 raw 位元組
-雜湊全同，才敢用它產生新收據。
+雜湊全同，才敢用它產生新收據。2026-09-11 把 `esc` 語意、推進、待機與候選格排序
+整批改過之後再跑一次，
+[`fd2-move-attack-parity-20260910.json`](../data/ui-traces/fd2-move-attack-parity-20260910.json)
+登錄的 24 個檢查點在 `steps`、游標與行動單位 HP 上全同。
+
+開環序列走的是按鍵層，驗不到 `sweep_round` 那些決策函式——它證明的是基底沒被改壞，
+不是新決策是對的。新決策要靠單元測試加實跑的收據。
 
 實測值（第一關第 1 回合）：進場後四個單位各接戰一次、全員行動完原版**自己換手**
 到第 2 回合，不必送 END；整段約 8 億指令、78 秒。
