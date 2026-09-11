@@ -29,7 +29,7 @@ DATA_PATH = Path(os.environ.get("FD2_WORKLIST_DATA") or ROOT / "docs/data/fd2-wo
 RENDER_PATH = ROOT / "docs/knowledge-base/91-worklist.md"
 BEGIN = "<!-- BEGIN fd2_worklist.py render；不要手改這一段 -->"
 END = "<!-- END fd2_worklist.py render -->"
-SCANNED_SUFFIXES = {".go", ".py", ".sh", ".md", ".json", ".yml", ".yaml", ".html"}
+SCANNED_SUFFIXES = {".go", ".py", ".sh", ".md", ".json", ".jsonl", ".yml", ".yaml", ".html"}
 
 
 def scannable(path):

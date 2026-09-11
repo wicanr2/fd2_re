@@ -23,7 +23,7 @@ from pathlib import Path
 
 ROOT = Path(os.environ.get("FD2_LESSONS_ROOT") or Path(__file__).resolve().parent.parent)
 DATA_PATH = Path(os.environ.get("FD2_LESSONS_DATA") or ROOT / "docs/data/fd2-lessons.json")
-SCANNED_SUFFIXES = {".go", ".py", ".sh", ".md", ".json", ".yml", ".yaml"}
+SCANNED_SUFFIXES = {".go", ".py", ".sh", ".md", ".json", ".jsonl", ".yml", ".yaml"}
 
 
 def load():
