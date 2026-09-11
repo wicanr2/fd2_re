@@ -1,0 +1,764 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_asset_disposition_summary",
+  "note": "統計來自 pack 的 manifest.json（不在版控）。這份只有定位資訊，不含原始位元組。unknown_remaining 歸零代表 93 筆都交叉核對完了。",
+  "pack_id": "fd2-original-b97caf22",
+  "source_resource_count": 1005,
+  "disposition_counts": {
+    "confirmed_empty": 11,
+    "standardized": 901,
+    "unknown": 93
+  },
+  "unknown_remaining": 93,
+  "unknown_by_source_file": {
+    "FDFIELD.DAT": 79,
+    "FDMUS.DAT": 5,
+    "FDOTHER.DAT": 9
+  },
+  "unknown": [
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 0,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_000.bin",
+      "raw_bytes": 2308,
+      "raw_sha256": "9ac50ac06e721e9a7ab1cbdd5dcf8b0f64a5e9b7c742097d82afed22c75deea2",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 1,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_001.bin",
+      "raw_bytes": 937,
+      "raw_sha256": "6450d1136f8047605db06dc292f833ced8b923639a2f1a92553ce17216e659f3",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 2,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_002.bin",
+      "raw_bytes": 206,
+      "raw_sha256": "ee77586db1bafca8cc772d441696fef5344044171fa6042d573be8b4ec1e120f",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 3,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_003.bin",
+      "raw_bytes": 2272,
+      "raw_sha256": "68ed5d9dc78b621a3f0a21eb09c13242ca9ac231bb2eb8e697b986cd1bce5a93",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 4,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_004.bin",
+      "raw_bytes": 1171,
+      "raw_sha256": "4af32142dd1435104447e6f0707354842e9a2cbd4eab8af020525af2591dca26",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 5,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_005.bin",
+      "raw_bytes": 272,
+      "raw_sha256": "a669bcc500cfccafabc1645919fdc16d5a3741e080726dea3501768de30567ca",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 7,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_007.bin",
+      "raw_bytes": 1171,
+      "raw_sha256": "dcf9e6b8083516398365b7a9978589a2e469ff8f2e718fbbe1ef47b4543cb51e",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 8,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_008.bin",
+      "raw_bytes": 278,
+      "raw_sha256": "1c4eba9f15a0135bc5dd3ff9f61baf0f825438b42977dd731cf5a97f751e84b6",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 10,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_010.bin",
+      "raw_bytes": 1171,
+      "raw_sha256": "8eaeb8652ed269ddfa6d035e933dee680e0e3f4818a5e9fd1339bb97be53be80",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 11,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_011.bin",
+      "raw_bytes": 284,
+      "raw_sha256": "c3478f38d7e914f457823a48e9d3f336caa651c6351891fc3237aeaba8640c25",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 13,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_013.bin",
+      "raw_bytes": 1431,
+      "raw_sha256": "cb2c81f6d88a870d64cc5c43c9d7966d6f503c5e9421e7f34d086c214db7d567",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 14,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_014.bin",
+      "raw_bytes": 344,
+      "raw_sha256": "8322b65fee650233581691f7874f3e6d4603998ed406b77e3216e446bc0f63ac",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 15,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_015.bin",
+      "raw_bytes": 2084,
+      "raw_sha256": "159793e8c5290c2f4d593afbfe26933b8efa5b42b3b1e89655e409b48954e5ec",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 16,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_016.bin",
+      "raw_bytes": 1171,
+      "raw_sha256": "1071888a12ff877adcc5735f96a8de8a932513b0a546ee453cc754cdd5882b51",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 17,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_017.bin",
+      "raw_bytes": 290,
+      "raw_sha256": "f045bbed9d178d2ea2d351e1b065942187d087d1b3911de19270dc1efa864fac",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 19,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_019.bin",
+      "raw_bytes": 1171,
+      "raw_sha256": "e6ad1e7cf9980265d8aee7bf61e8ae76831d068e1231ca84615fd6dcec635e46",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 20,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_020.bin",
+      "raw_bytes": 296,
+      "raw_sha256": "1c4d26206aadc58af7f58ee2aa0ca6e88b74dd5073e6a4a4f13180c914308b43",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 21,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_021.bin",
+      "raw_bytes": 5224,
+      "raw_sha256": "e307c6c0b5f4b8a3eee10f2740653c9c50d5f8e46077646b915d819ff437b4e0",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 22,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_022.bin",
+      "raw_bytes": 1691,
+      "raw_sha256": "b23f4e1f65e4c7dfba25b2a942f41443d455aca716481164c9107d1c9d634d55",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 23,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_023.bin",
+      "raw_bytes": 422,
+      "raw_sha256": "f10c48ffe144db91f06712c6f7949924a2b4f38697c802da73f633ec57a6ff32",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 24,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_024.bin",
+      "raw_bytes": 3604,
+      "raw_sha256": "161d601fd80068bf74038ebb1aafce787d0e1fbab9e9492c7c1924c839123a81",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 25,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_025.bin",
+      "raw_bytes": 1691,
+      "raw_sha256": "418a7de54d0a9f37dca386d2747e946729230c0742636cb966b912f45d87c2e0",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 26,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_026.bin",
+      "raw_bytes": 428,
+      "raw_sha256": "71faca3a9642fa5efebd0b7b594aec27d8f87ed06811e10778c34e3fe02e5eec",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 27,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_027.bin",
+      "raw_bytes": 5584,
+      "raw_sha256": "130fae002f08243fe064f77297176e02e8d5ccfbb64b2cb38e4f0e0f21c0bca6",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 28,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_028.bin",
+      "raw_bytes": 1691,
+      "raw_sha256": "cee74ec8021c67f5197683657ec5f99b453529c46616d4c600513ce208eaf556",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 29,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_029.bin",
+      "raw_bytes": 428,
+      "raw_sha256": "7140bc1f6c77704ee3e92479cddc1da5d0593ebd63815904026b7549e4072314",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 31,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_031.bin",
+      "raw_bytes": 1171,
+      "raw_sha256": "5daf4d645211ae870b51713bdb730a2098d45ca1cd31e3f4ae02c4684b44bc8e",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 34,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_034.bin",
+      "raw_bytes": 1691,
+      "raw_sha256": "56b8dc754be4b11aebba5a7951cf1909547266cb47c4e53fb63d134d292464cb",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 35,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_035.bin",
+      "raw_bytes": 446,
+      "raw_sha256": "7e1b1693e82b729d4a7e98fd929d7073c4028ffe83528c913dc5b32f39c0ef95",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 36,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_036.bin",
+      "raw_bytes": 4004,
+      "raw_sha256": "1ed1418fcc47deb7a3626ad07036b9e6d741c4a5889481873a8cd5a8d7e9c653",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 37,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_037.bin",
+      "raw_bytes": 1951,
+      "raw_sha256": "8791204bb8311c20de164fe7d42c8c8255b6fd200c98dfbb735b93ab19d3e597",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 38,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_038.bin",
+      "raw_bytes": 512,
+      "raw_sha256": "1ebeb8b60d965a3a137dfa95a04003fb71825f85c2af1aa234b756433f67e183",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 40,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_040.bin",
+      "raw_bytes": 1951,
+      "raw_sha256": "9312f7eb0313a919fd7c13f461cf09d4ee4afe295e7f8f1121a65e4c44bbad00",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 41,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_041.bin",
+      "raw_bytes": 518,
+      "raw_sha256": "4db552e7251ed05a8bf71060c5bce055f17e23b6ad9247930c2485c097478bf5",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 42,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_042.bin",
+      "raw_bytes": 10004,
+      "raw_sha256": "8830298dfea1191baf2f52aa2a721252994a84b79b4ec186979f8b36d703f959",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 43,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_043.bin",
+      "raw_bytes": 2211,
+      "raw_sha256": "7eb442236eabdef2176ab82151f97a1270ce2b2f26292f3fb89dbd7bea468b24",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 44,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_044.bin",
+      "raw_bytes": 578,
+      "raw_sha256": "646be31431a91ebfed7649c0e84db52bee6c123209f3335ef06e94c0ed1a20f2",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 46,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_046.bin",
+      "raw_bytes": 1691,
+      "raw_sha256": "534849a460854e3706607f0c3e2159adf6f19a1f8ae54226505086719790162e",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 47,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_047.bin",
+      "raw_bytes": 458,
+      "raw_sha256": "7ace8d5863a42100aa30b83ad6bcdd8df6ff1b2caa54e7292b927c603071a557",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 49,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_049.bin",
+      "raw_bytes": 1691,
+      "raw_sha256": "62e6972110ae3baf0afbf89ee2c99e71b1722f00c690a584f7491185f1c1589e",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 50,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_050.bin",
+      "raw_bytes": 458,
+      "raw_sha256": "c6b6a2dc9d8db763075e6bd2c55603d3351eec1aa1417b2908e26140cc0a3f98",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 52,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_052.bin",
+      "raw_bytes": 1951,
+      "raw_sha256": "5ed30b29c0bc5236003a07d48643e1256268a154e99fa46a2099af5bd0b71c5d",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 53,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_053.bin",
+      "raw_bytes": 518,
+      "raw_sha256": "0f0409b690824b93e535ab3f33e14fab94e460b5b7630968cc238fc366ec3b50",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 54,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_054.bin",
+      "raw_bytes": 4004,
+      "raw_sha256": "cf8694c8198339deb69cd243e5c37d2e3d6944134f2fa68db0ebf26a50a24ce3",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 55,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_055.bin",
+      "raw_bytes": 1951,
+      "raw_sha256": "c8f94b9e27fad1ad661dfb1bd0be4a4a8deca69ca4d5617cec43280b3da41646",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 56,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_056.bin",
+      "raw_bytes": 518,
+      "raw_sha256": "d299737776b03d558cca556561212fc5088955fcb694fa790e18e59cdf82e5d4",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 57,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_057.bin",
+      "raw_bytes": 6404,
+      "raw_sha256": "c19b6c9b617ca850952cfc25fddc9a0a784b3c8f02b26b5968b5fb26811d1d7d",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 58,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_058.bin",
+      "raw_bytes": 1951,
+      "raw_sha256": "b094f00f04d9e4d4ccff18d3a5e7f960113067c39b0ca2c8afa6bbce8068503f",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 59,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_059.bin",
+      "raw_bytes": 518,
+      "raw_sha256": "690e45969db0de3798d23ba414783b88e285ce2ca5ebec2bc5ecb4c024da9ab2",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 61,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_061.bin",
+      "raw_bytes": 2211,
+      "raw_sha256": "3cc6167f0904e7cb81e9a60090df168d716959ead1381142a3be343a14489d28",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 62,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_062.bin",
+      "raw_bytes": 578,
+      "raw_sha256": "7b1402736790351e171e6dcc6f2b8110a418808dccc7978d1d8448a386057705",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 63,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_063.bin",
+      "raw_bytes": 9004,
+      "raw_sha256": "9cc8e97a4e0e963d48529cb85bb8a43ab305914eba0110a1d970cc773f22ae82",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 64,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_064.bin",
+      "raw_bytes": 1951,
+      "raw_sha256": "2338bf283917ae5f7e3155c1d57a6895d41862438b64ce46b720662708ab9241",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 65,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_065.bin",
+      "raw_bytes": 518,
+      "raw_sha256": "34a931a2870f6252593c41705509067718c773673882468e896922f4401ea57a",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 66,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_066.bin",
+      "raw_bytes": 6564,
+      "raw_sha256": "895d5737ef5cff40904d7a9c7c7b00d3e93e4976ca025544f002e17613b73420",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 67,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_067.bin",
+      "raw_bytes": 1951,
+      "raw_sha256": "38b7fff5f5473d40c5dff1336d67b8e599ad1ad4bafdafc7a57177b05f954b53",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 68,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_068.bin",
+      "raw_bytes": 518,
+      "raw_sha256": "5b9b1ddb947f95f25ed5701db39c4ffee5936b0900279033fd3bc6631342e458",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 70,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_070.bin",
+      "raw_bytes": 1951,
+      "raw_sha256": "82190a1f5399644bdc5ec32dc1a13a9b34530e5f43d872cb07fb938afc10828a",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 71,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_071.bin",
+      "raw_bytes": 518,
+      "raw_sha256": "3e43eb0713ecac095ce1571b8b522eb6758ee35bb62fc829a5c0f62a1a3b216e",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 72,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_072.bin",
+      "raw_bytes": 5304,
+      "raw_sha256": "66819c24192d40027fd43ee22a649bdbccc5f7f3022420146e0b01685d9ab0c4",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 73,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_073.bin",
+      "raw_bytes": 1951,
+      "raw_sha256": "433bc1a2146c22598b42a53b1fbd901bce54bc4328147613128f69ad483b177b",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 74,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_074.bin",
+      "raw_bytes": 518,
+      "raw_sha256": "7c9e438f9e65e80ee507d02460f14d6e4d2b2be728ce98835407c95bcb2ef490",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 75,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_075.bin",
+      "raw_bytes": 5832,
+      "raw_sha256": "2e803280c4dda87c67223c10efafb70219a82570c7070da3dfed529eecc268ec",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 76,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_076.bin",
+      "raw_bytes": 1951,
+      "raw_sha256": "6f8180b0fafbb978fc0e4e9d7a24ba035449bdae201466b6ae0a314250ca90c3",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 77,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_077.bin",
+      "raw_bytes": 518,
+      "raw_sha256": "6be9361d0159174ad1405ab8360544aedba1c85b6082962e46709a270db978f6",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 78,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_078.bin",
+      "raw_bytes": 7072,
+      "raw_sha256": "b84ed9cf17b13339b79f38f8ea6f8ff3727f694288ffb6e74ed2ecee1b6a2db4",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 79,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_079.bin",
+      "raw_bytes": 2211,
+      "raw_sha256": "57e149759bc0e538bf62e9fcf158ccb8e753c40c7d9773466369a91dae52def4",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 80,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_080.bin",
+      "raw_bytes": 578,
+      "raw_sha256": "67c04f13d47688ce490686fa6a22e6c0896f70421199c811cc8eb0d363569f9a",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 81,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_081.bin",
+      "raw_bytes": 4996,
+      "raw_sha256": "e2448229375bd37bc63b4f618eb626bdc9f12a833564a34df65e611188c25595",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 82,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_082.bin",
+      "raw_bytes": 1691,
+      "raw_sha256": "f843ec34677364c99050ee955ef447148fc71e29758276a48028290df0ef2395",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 83,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_083.bin",
+      "raw_bytes": 482,
+      "raw_sha256": "c8cddf2952fe16c057f38e458ec887aa7c77cc677c07a221147ee7ca1601908b",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 85,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_085.bin",
+      "raw_bytes": 2107,
+      "raw_sha256": "a01c382cc898063359afad816430f81629d4978feca2df93a7741f9aa13252fd",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 88,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_088.bin",
+      "raw_bytes": 1951,
+      "raw_sha256": "65ff721f680c9193511864c88aac5613c2fc204cd2459f219ce7b68c457d9093",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 89,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_089.bin",
+      "raw_bytes": 542,
+      "raw_sha256": "19f6b613709d6a6b2074d2f0e9b823df0ff44884fd1794380f0f8612ff666c52",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 94,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_094.bin",
+      "raw_bytes": 937,
+      "raw_sha256": "ac8fa7aa99fbe39aecad990e56d7cc5465ea43f575adfd7c73b74d7668d0bbff",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 95,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_095.bin",
+      "raw_bytes": 182,
+      "raw_sha256": "882f3f36b1c23cc673763d4efab08be74b1bef29f6ae69abc8efeb721ab4b8ec",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 96,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_096.bin",
+      "raw_bytes": 3676,
+      "raw_sha256": "7ae5cefa05ff4cadc66a99097e4f060df4bb554d96aac42595c23f91426f0ef5",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 97,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_097.bin",
+      "raw_bytes": 1171,
+      "raw_sha256": "71867fb896064dbadf126517aa38dac90cbc64085c831a1e15a4a2faa540260d",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDFIELD.DAT",
+      "source_resource": 98,
+      "raw_asset_id": "metadata/raw/fdfield/fdfield_098.bin",
+      "raw_bytes": 182,
+      "raw_sha256": "801f5acafb7c4ea86e1fc8488c63f77223e1dd5314c44ef6d84ad2672b24c20c",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDMUS.DAT",
+      "source_resource": 0,
+      "raw_asset_id": "metadata/raw/fdmus/fdmus_000.bin",
+      "raw_bytes": 3,
+      "raw_sha256": "6bdf66b5bf2a44e658bea2ee86695ab150a06e600bf67cd5cce245ad54962c61",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDMUS.DAT",
+      "source_resource": 2,
+      "raw_asset_id": "metadata/raw/fdmus/fdmus_002.bin",
+      "raw_bytes": 3,
+      "raw_sha256": "6bdf66b5bf2a44e658bea2ee86695ab150a06e600bf67cd5cce245ad54962c61",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDMUS.DAT",
+      "source_resource": 5,
+      "raw_asset_id": "metadata/raw/fdmus/fdmus_005.bin",
+      "raw_bytes": 3,
+      "raw_sha256": "6bdf66b5bf2a44e658bea2ee86695ab150a06e600bf67cd5cce245ad54962c61",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDMUS.DAT",
+      "source_resource": 7,
+      "raw_asset_id": "metadata/raw/fdmus/fdmus_007.bin",
+      "raw_bytes": 3,
+      "raw_sha256": "6bdf66b5bf2a44e658bea2ee86695ab150a06e600bf67cd5cce245ad54962c61",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDMUS.DAT",
+      "source_resource": 9,
+      "raw_asset_id": "metadata/raw/fdmus/fdmus_009.bin",
+      "raw_bytes": 3,
+      "raw_sha256": "6bdf66b5bf2a44e658bea2ee86695ab150a06e600bf67cd5cce245ad54962c61",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDOTHER.DAT",
+      "source_resource": 47,
+      "raw_asset_id": "metadata/raw/fdother/fdother_047.bin",
+      "raw_bytes": 17927,
+      "raw_sha256": "549e4283417d562ea946f37e1b25559bb6ed59e47d81015b2db9bb46cd39745a",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDOTHER.DAT",
+      "source_resource": 48,
+      "raw_asset_id": "metadata/raw/fdother/fdother_048.bin",
+      "raw_bytes": 24183,
+      "raw_sha256": "603859cadb3cb3c62a8efc07cbfcb7cc7798e31e9d2d5df0b995587acc821612",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDOTHER.DAT",
+      "source_resource": 49,
+      "raw_asset_id": "metadata/raw/fdother/fdother_049.bin",
+      "raw_bytes": 27871,
+      "raw_sha256": "c245a6db4307f9cdae32b988ed4a4381d8648d03e1657381396a8ed846de5181",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDOTHER.DAT",
+      "source_resource": 51,
+      "raw_asset_id": "metadata/raw/fdother/fdother_051.bin",
+      "raw_bytes": 28106,
+      "raw_sha256": "29851564dcbed6b16d252573d3126c7a14627cde36243cd332d671c255d069e7",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDOTHER.DAT",
+      "source_resource": 52,
+      "raw_asset_id": "metadata/raw/fdother/fdother_052.bin",
+      "raw_bytes": 26164,
+      "raw_sha256": "6c8db6a9a55e7fbb337f30f7a7c8815f0ddc2c32aaa5121a8dff54b6bf5d7b86",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDOTHER.DAT",
+      "source_resource": 64,
+      "raw_asset_id": "metadata/raw/fdother/fdother_064.bin",
+      "raw_bytes": 18791,
+      "raw_sha256": "2c88f904ba9581fab56acddeb5f699636a93308290291a0f76539f840935ba22",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDOTHER.DAT",
+      "source_resource": 81,
+      "raw_asset_id": "metadata/raw/fdother/fdother_081.bin",
+      "raw_bytes": 18710,
+      "raw_sha256": "ca8954fa1cb0b1ef0468789d65b937eef7012f693f4eca28a639777db90db2d5",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDOTHER.DAT",
+      "source_resource": 89,
+      "raw_asset_id": "metadata/raw/fdother/fdother_089.bin",
+      "raw_bytes": 15308,
+      "raw_sha256": "eec251a64fee1c2d1afdbce351df11c47a7a3c3418f0418b064eb9b45fd12459",
+      "reason_code": "no_standard_output"
+    },
+    {
+      "source_file": "FDOTHER.DAT",
+      "source_resource": 96,
+      "raw_asset_id": "metadata/raw/fdother/fdother_096.bin",
+      "raw_bytes": 24156,
+      "raw_sha256": "a70f5ded1ff98a533d58a13cd7e0fcfe6224239682bc2c4f05739425c04123a6",
+      "reason_code": "no_standard_output"
+    }
+  ]
+}
