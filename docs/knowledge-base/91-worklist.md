@@ -65,7 +65,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 ### 中毒等狀態致死時死亡效果何時分派還沒查清
 
-`status-death-effect-dispatch` · RE待解 · 仍未完成 · 自承還在 remake/cmd/fd2/native_death_program_runtime.go
+`status-death-effect-dispatch` · RE待解 · [#22](https://github.com/wicanr2/fd2_re/issues/22) · 仍未完成 · 自承還在 remake/cmd/fd2/native_death_program_runtime.go
 
 0x1B6B7 只由 0x1548E、0x18D8C、0x1CFF0、0x20C6F 四個行動結算點呼叫，收集條件是 +5 bit0 未設且 HP <= 0。狀態扣血致死若沒有同時設 +5 bit0，死亡效果可能延到下一次行動結算才被收集、以那次的行動者當擊殺者。重製端目前對沒有擊殺者的死亡一律不分派、也不給物品金錢。
 
@@ -101,7 +101,7 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 
 ### 第 27 關的事件 64 因故事腳本對不齊而不能執行
 
-`ch27-death-event64-text-alignment` · 缺陷 · 仍未完成 · 還沒出現
+`ch27-death-event64-text-alignment` · 缺陷 · [#20](https://github.com/wicanr2/fd2_re/issues/20) · 仍未完成 · 還沒出現
 
 第 27 關三名敵人（map26 單位 8／9／10）帶死亡效果 `[2, 64]`：第二名倒下時播第 1 句並以 0x35822 放出群組 3／4／5，第三名倒下時播第 2 句並從索引 16 起全員倒下。處理器已轉寫並核對，但 FDTXT_027 與 `assets/story/ch27.json` 在 `count-aligned.json` 裡句數對不上，無法產生原生對白參照，所以劇本沒有這個程式；執行期遇到時停下並指出 `2:64`，群組 3／4／5 也暫時維持開局在場。
 
@@ -113,7 +113,7 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 
 ### 死亡掉落物品時擊殺者背包已滿，沒有原版的轉交提示
 
-`death-reward-item-full-transfer` · 缺陷 · 仍未完成 · 自承還在 remake/cmd/fd2/native_death_program_runtime.go
+`death-reward-item-full-transfer` · 缺陷 · [#21](https://github.com/wicanr2/fd2_re/issues/21) · 仍未完成 · 自承還在 remake/cmd/fd2/native_death_program_runtime.go
 
 0x1AA1D 型態 0 在 0x1BB8C 回 -1（背包滿）時走 0x1AA56：顯示 FDTXT `0x1B1` 詢問是否交給同伴，選 YES 經 0x1B932／0x1B722／0x1B8E7 轉交，選 NO 或無人可收時顯示 `0x1B2`。重製端直接塞進隊伍空格。
 

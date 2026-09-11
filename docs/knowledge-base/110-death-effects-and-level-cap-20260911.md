@@ -163,7 +163,7 @@ map31 的事件 4／5 在劇情地圖上，不打仗，不轉進劇本。
 
 | 項目 | 原因 | issue |
 |---|---|---|
-| 第 27 關事件 64 | FDTXT_027 與故事腳本對不齊，產生不了對白參照；執行期遇到會停下 | `ch27-death-event64-text-alignment` |
-| 背包滿時的轉交提示 | `0x1AA56..0x1AB77` 還沒接，重製端直接放進隊伍空格 | `death-reward-item-full-transfer` |
-| 狀態致死的分派時機 | 收集端只在行動結算呼叫；狀態扣血致死是否設 `+5` bit0 未查 | `status-death-effect-dispatch` |
+| 第 27 關事件 64 | FDTXT_027 與故事腳本對不齊，產生不了對白參照；執行期遇到會停下 | [#20](https://github.com/wicanr2/fd2_re/issues/20) `ch27-death-event64-text-alignment` |
+| 背包滿時的轉交提示 | `0x1AA56..0x1AB77` 還沒接，重製端直接放進隊伍空格 | [#21](https://github.com/wicanr2/fd2_re/issues/21) `death-reward-item-full-transfer` |
+| 狀態致死的分派時機 | 收集端只在行動結算呼叫；狀態扣血致死是否設 `+5` bit0 未查 | [#22](https://github.com/wicanr2/fd2_re/issues/22) `status-death-effect-dispatch` |
 | 事件 30 的外觀 | 復活後 `+7`／`+8` 改成身分 6，名字與頭像是否跟著重建未逐幀比對 | — |
