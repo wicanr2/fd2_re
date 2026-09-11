@@ -46,7 +46,13 @@ func LoadNativeMovementCostRows(path string) ([][]byte, error) {
 // NativeRelocationDestinationAllowed reproduces 0x115b6 mode 6's Enter
 // predicate. targetUnit is excluded from occupancy; any other record on the
 // destination with raw +5 bit0 clear blocks it. The target's raw fields select
-// a 0x4e555 row, whose terrain entry must equal 20.
+// a 0x4e555 row; the destination is refused when that row's terrain entry is
+// 20（不可通行）。
+//
+// 原版：`0x11702 movzx eax,[ebx+eax]` 取 `costRow[地形碼]`，`0x11706 cmp eax,0x14`
+// 相等就 `je 0x117A9` 回到輸入迴圈（不接受），否則 `0x1170F mov eax,1` 接受。
+// 早先寫成「等於 20 才允許」是把極性寫反了；那時成本表本身也錯位（碼 2 變成 20），
+// 兩個錯誤在森林格上互相抵消，所以測不出來。
 func NativeRelocationDestinationAllowed(
 	records []byte,
 	count, targetUnit int,
@@ -88,5 +94,5 @@ func NativeRelocationDestinationAllowed(
 	if selector < 0 || selector >= len(costRows) {
 		return false, fmt.Errorf("native relocation selector=%d is out of bounds", selector)
 	}
-	return costRows[selector][terrainIndex] == 20, nil
+	return costRows[selector][terrainIndex] != 20, nil
 }

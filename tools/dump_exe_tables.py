@@ -192,10 +192,15 @@ def dump_native_movement_cost_rows(d):
     """0x4e555 selector→20-byte terrain-cost rows.
 
     The linear table is 0x61646..0x61889. In this anchored executable it maps
-    to file 0x55445; 0x6188a begins the separately exported compatibility
+    to file 0x55446; 0x6188a begins the separately exported compatibility
     table, proving an exact 29-row boundary.
+
+    對位依據：`18 01 12 00 17` 這串在檔案裡只出現一次，位於 0x55440，而反組譯
+    把它放在 linear 0x61640，所以 linear 0x61646 = file 0x55446。早先寫的
+    0x55445 讓每一列都早一個位元組，語意整個錯位：地形碼 1（不可移動）變成
+    成本 1、碼 2（森林）變成 20，海與房舍可以走、森林反而是牆。
     """
-    file_base = 0x55445
+    file_base = 0x55446
     linear_base = 0x61646
     stride = 20
     rows = []
