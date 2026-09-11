@@ -853,9 +853,19 @@ func (s *State) AliveCount(c Camp) int {
 }
 
 // PendingCount 某陣營尚未登場(待命)的單位數;>0 表示還有援軍沒出,不該判全滅。
+//
+// 原始記錄 +5 bit0 是「這一列不在場上」——寫入端與消費端都用它篩掉不啟用的列
+// （占位格網 0x145CD 的 `record[5]&1`、AI 目標掃描 0x12C60 同一個判準）。那種列
+// 不是「還沒登場的援軍」，是 FDFIELD 裡本來就不啟用的資料：第 1 章 group1+group2
+// 共八列，其中一列帶 bit0，所以原版戰前資訊顯示的是 ENEMY·07（收據見
+// docs/knowledge-base/46-ch1-opening-timeline.md §405–410s）。把它算成待命，敵方
+// 全滅之後永遠等不到勝利。
 func (s *State) PendingCount(c Camp) int {
 	n := 0
 	for _, u := range s.Units {
+		if u.HasNativeRecordByte5 && u.NativeRecordByte5&1 != 0 {
+			continue
+		}
 		if !u.OnField && u.Alive() && u.Camp == c {
 			n++
 		}

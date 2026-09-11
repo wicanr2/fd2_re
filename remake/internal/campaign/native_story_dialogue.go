@@ -149,9 +149,14 @@ func ComposeNativeStoryDialogueClosingFrames(
 	if motionTargetY == 0 {
 		return frames, nil
 	}
-	if visibleCursorX < 0 || visibleCursorY < 0 || len(dialogueCells) == 0 {
-		return nil, errors.New("campaign: native story dialogue closing motion provenance is invalid")
+	if len(dialogueCells) == 0 {
+		return nil, errors.New("campaign: native story dialogue closing motion has no cells")
 	}
+	// 可見游標**可以是負的**。原版那三組視圖全域裡只有鏡頭與絕對游標被寫入端夾住；
+	// 可見游標是自由的 dword，走行步進在鏡頭還能捲時照樣遞減，收據量到過 -1
+	// （docs/data/ui-traces/fd2-story-pan-cursor-20260909.json）。滑動終點因此可能
+	// 落在畫面外——那是合法狀態，不是錯誤。先前在這裡失敗即關閉，戰鬥中途只要
+	// 有單位往左走得夠遠、接著觸發對白，整場就停在這裡。
 	total := visibleCursorX + visibleCursorY
 	if total == 0 {
 		return frames, nil
@@ -161,7 +166,7 @@ func ComposeNativeStoryDialogueClosingFrames(
 		x := 5 - ((5-cursorX)*step)/total
 		y := motionTargetY - ((motionTargetY-cursorY)*step)/total
 		frame := append([]byte(nil), background...)
-		if err := dialogueCells[0].BlitAt(frame, 320, x, y); err != nil {
+		if err := dialogueCells[0].BlitAtClipped(frame, 320, x, y); err != nil {
 			return nil, err
 		}
 		frames = append(frames, frame)

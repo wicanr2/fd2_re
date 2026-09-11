@@ -167,9 +167,17 @@ func nativeAICostRowForRecord(record []byte, rows [][]byte) ([]byte, error) {
 	return rows[selector], nil
 }
 
+// nativeAIIsTerrainSpecialRecord 重現 `0x1F183`：`+7 == 0x1C` 時**回 0**
+// （`0x1F1A7 cmp edx,0x1C` / `0x1F1AA je 0x1F1C9` → `xor eax,eax`），只有
+// `+0x20 == 0x13` 或 `+0x1F` 是 4／5 才回 1。AI 兩個呼叫端（`0x1417B`、
+// `0x14BDB`）拿它的回傳值把成本列換成 19；`+7 == 0x1C` 在那兩處是另一條規則
+// （`+8 == 0x1C` → 列 1），玩家側 `0x188F9` 則是列 16。
+//
+// 早期把 `+7 == 0x1C` 也算成 true，等於讓那些單位在 AI 回合拿到「每種地形都
+// 只要 1」的列，走進自己走不出來的山地。
 func nativeAIIsTerrainSpecialRecord(record []byte) bool {
-	return len(record) >= nativeRecordSize &&
-		(record[7] == 0x1c || record[0x20] == 0x13 || record[0x1f] == 4 || record[0x1f] == 5)
+	return len(record) >= nativeRecordSize && record[7] != 0x1c &&
+		(record[0x20] == 0x13 || record[0x1f] == 4 || record[0x1f] == 5)
 }
 
 func (s *State) nativeAIPhysicalScoreInput(

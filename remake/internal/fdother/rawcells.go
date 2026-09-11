@@ -101,6 +101,42 @@ func (c RawCell) BlitAt(dst []byte, stride, x, y int) error {
 	return nil
 }
 
+// BlitAtClipped 是 BlitAt 的裁邊版本，給起點落在視窗外的原生滑動用。
+//
+// 可見游標（`[0x53AB9]`／`[0x53ABD]`）在原版是自由的 dword，八個寫入端沒有一個檢查
+// 範圍——走行步進在鏡頭還能捲時照樣遞減，收據量到過 -1。對白收框的滑動終點就是那個
+// 值，所以終點在畫面外是合法狀態，不是錯誤。嚴格的 BlitAt 契約維持不變。
+func (c RawCell) BlitAtClipped(dst []byte, stride, x, y int) error {
+	if c.Width <= 0 || c.Height <= 0 || len(c.Pixels) != c.Width*c.Height {
+		return errors.New("fdother: invalid raw cell")
+	}
+	if stride <= 0 || len(dst) < stride {
+		return errors.New("fdother: clipped raw cell surface is invalid")
+	}
+	// 整格落在畫面外是**合法**的中間狀態，不是錯誤。滑動終點是可見游標，而可見
+	// 游標可以是負的；x = 24×(-3)+4 = -68 時整格在左界外，那一幀原版也只是什麼
+	// 都沒畫。回錯誤等於把合法狀態當失敗，整場停在那裡。
+	if y >= len(dst)/stride || y+c.Height <= 0 || x >= stride || x+c.Width <= 0 {
+		return nil
+	}
+	for row := 0; row < c.Height; row++ {
+		dy := y + row
+		if dy < 0 || dy >= len(dst)/stride {
+			continue
+		}
+		for col := 0; col < c.Width; col++ {
+			dx := x + col
+			if dx < 0 || dx >= stride {
+				continue
+			}
+			if v := c.Pixels[row*c.Width+col]; v != 0 {
+				dst[dy*stride+dx] = v
+			}
+		}
+	}
+	return nil
+}
+
 // BlitOpaqueAtOffset reproduces 0x4e9bb's direct row copy. Unlike BlitAt,
 // zero bytes are written as literal indexed pixels because this is the
 // FDOTHER#5 dialogue-frame path, not the transparent 0x4e9e4 path.
