@@ -744,6 +744,12 @@ def do_engage(command):
         mode = ui_mode(current)
         if mode == "cursor":
             return True
+        if mode == "town":
+            # 打完最後一個敵人之後勝利演出會一路播到戰後城鎮。那是這一場結束，
+            # 不是收尾失敗——原本回報「收尾之後介面停在 town」而中止，序列後面
+            # 的存檔就沒跑到，整場的進度也跟著沒了。
+            print(f"engage {moved_to} 之後已經進到戰後城鎮，這一場結束", flush=True)
+            return True
         if mode == "dialogue":
             key = "" if current.get("kbd_pending", 0) > 0 else "enter"
             seq, current = send(key, max(steps, 3_000_000))
@@ -985,6 +991,9 @@ def do_sweep_round(command):
     span = int(command.get("typical_move", 6))
     handled = set()
     for _ in range(int(command.get("max_units", 12))):
+        if ui_mode(state()) == "town":
+            print("sweep_round：已經在戰後城鎮，這一場結束", flush=True)
+            return True
         if not resume_battle(int(command.get("cutscene_steps", 5_000_000)),
                              int(command.get("cutscene_max", 30))):
             print("sweep_round：離開戰場且推不回來，中止", file=sys.stderr)
