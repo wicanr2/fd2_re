@@ -55,6 +55,10 @@
    `docs/knowledge-base/91-worklist.md`，那一節由工具產生，不要手改。各輪
    工作記錄與勘誤在 `91-worklist-history.md`，裡面的 `[ ]`／`[~]` 是當時
    快照，不是待辦，也不得用來推算完成度。
+   每一條同步成一個 GitHub issue（`tools/fd2_worklist_issues.py`），issue 是
+   JSON 的鏡像：標題、內文與標籤由工具覆寫，討論與進度回報用留言。工作中發現
+   的重製端缺陷與原版 RE 待解題目也先寫進 JSON（`category` 標 `缺陷`／`RE待解`），
+   再同步成 issue；不要只在 GitHub 上開 issue。
 6. `docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md`：時間序列證據紀錄；
    較晚的勘誤優先於較早的內容。
 
@@ -294,6 +298,11 @@
 - 提交前跑 `tools/fd2_worklist.py verify`：它逐條檢查未完成項的訊號還在不在，
   訊號消失代表那一條可能做完了而條目沒改，要當場確認並從 JSON 移走。條目做完
   不是在 markdown 打勾——`91-worklist.md` 的產生區塊下一次 render 就會蓋掉。
+- 推送之後跑 `tools/fd2_worklist_issues.py plan` 看差異，再以 `apply` 同步
+  GitHub Issues：條目從 JSON 移走的會留言並關閉，仍在 JSON 的已關閉 issue 會
+  重開，verify 判「可能已完成」只掛標籤不關閉。它要 `gh` 登入與網路，在主機
+  執行；計畫本身是純函式，測試在容器內跑。新建 issue 的編號會寫回 JSON，要
+  重跑 render 並提交。
 - 提交前執行相關真實回歸、檢查整理過的圖片與連結、執行
   `git diff --check`，並審查 `git status` 與最終差異。
 - 重大且驗證成功的批次推送至 `origin/main`，再驗證本機 HEAD 與遠端相同。

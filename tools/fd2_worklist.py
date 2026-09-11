@@ -11,6 +11,8 @@ markdown 的 `- [ ]` 清單會長出過期斷言：東西做好了而沒有人�
   tools/fd2_worklist.py verify            逐條檢查，發現可能已完成就以 exit 1 收場
   tools/fd2_worklist.py render            重寫 91-worklist.md 的產生區塊
 
+GitHub Issues 是這份 JSON 的鏡像，由 tools/fd2_worklist_issues.py 同步。
+
 檢查只看產品程式碼：`*_test.*` 與 `test_*` 一律跳過。測試本來就會提到還沒接上
 的東西（為了釘住將來的行為，或為了測資料結構本身），把它們算進來，`absent`
 會因為測試裡有一行呼叫就判成「已經做了」，真缺口就這樣被蓋掉。
@@ -27,6 +29,7 @@ from pathlib import Path
 ROOT = Path(os.environ.get("FD2_WORKLIST_ROOT") or Path(__file__).resolve().parent.parent)
 DATA_PATH = Path(os.environ.get("FD2_WORKLIST_DATA") or ROOT / "docs/data/fd2-worklist.json")
 RENDER_PATH = ROOT / "docs/knowledge-base/91-worklist.md"
+ISSUE_URL = "https://github.com/wicanr2/fd2_re/issues/"
 BEGIN = "<!-- BEGIN fd2_worklist.py render；不要手改這一段 -->"
 END = "<!-- END fd2_worklist.py render -->"
 SCANNED_SUFFIXES = {".go", ".py", ".sh", ".md", ".json", ".jsonl", ".yml", ".yaml", ".html"}
@@ -90,6 +93,10 @@ def load():
             raise SystemExit(f'條目 {item["id"]} 的分層 {item["layer"]} 沒有定義')
         if item["verify"]["kind"] not in data["verify_kinds"]:
             raise SystemExit(f'條目 {item["id"]} 的 verify 種類沒有定義')
+        if "category" in item and item["category"] not in data.get("categories", {}):
+            raise SystemExit(f'條目 {item["id"]} 的類別 {item["category"]} 沒有定義')
+        if "issue" in item and (not isinstance(item["issue"], int) or item["issue"] <= 0):
+            raise SystemExit(f'條目 {item["id"]} 的 issue 編號不是正整數')
     return data
 
 
@@ -122,6 +129,8 @@ def render_block(data):
                  "本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。")
     lines.append("")
     lines.append("`要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。")
+    lines.append("每一條都同步成一個 GitHub issue（[`tools/fd2_worklist_issues.py`]"
+                 "(../../tools/fd2_worklist_issues.py)），討論可以在 issue 留言，內容仍以 JSON 為準。")
     lines.append("")
     for key, description in data["layers"].items():
         items = [i for i in data["items"] if i["layer"] == key]
@@ -134,7 +143,12 @@ def render_block(data):
             state = "仍未完成" if open_ else "**可能已完成，回去確認**"
             lines.append(f'### {item["title"]}')
             lines.append("")
-            lines.append(f'`{item["id"]}` · {state} · {why}')
+            meta = [f'`{item["id"]}`']
+            if item.get("category"):
+                meta.append(item["category"])
+            if item.get("issue"):
+                meta.append(f'[#{item["issue"]}]({ISSUE_URL}{item["issue"]})')
+            lines.append(" · ".join(meta + [state, why]))
             lines.append("")
             if item.get("body"):
                 lines.append(item["body"])
