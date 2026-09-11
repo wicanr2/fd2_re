@@ -573,5 +573,43 @@
         }
       ]
     }
-  ]
+  ],
+  "native_death_programs": {
+    "2:29": [
+      {
+        "type": "dialogue",
+        "native_source": "0x34a46",
+        "native_text_index": 2,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch08.json",
+          "scene_index": 2,
+          "line": 2,
+          "source_dat": "FDTXT_008",
+          "string_index": 2,
+          "utterance": 0,
+          "control": "FFEF",
+          "operand": 83,
+          "pages": [
+            [
+              "『公主殿下．．屬下也是遵命",
+              "　行事，冒犯之處，請您原諒",
+              "　．．啊．．』"
+            ]
+          ]
+        },
+        "native_event_id": 29
+      },
+      {
+        "type": "native_death_op",
+        "native_source": "0x34a6d",
+        "native_death_op": {
+          "op": "ai_byte_and_range",
+          "first": 10,
+          "last": 27,
+          "mask": 128
+        },
+        "native_event_id": 29
+      }
+    ]
+  }
 }

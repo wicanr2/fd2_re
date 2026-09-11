@@ -13,7 +13,8 @@ does, however, close three fields for every scripted roster entry:
 * constructor formulas -> runtime max HP +0x42 and max MP +0x46
 * roster b17/b18/b19 -> runtime +0x34/+0x35/+0x36
 * roster b22..b24 -> runtime +0x31..+0x33 death effect, plus the executable
-  reward lowered by export_units.native_death_reward
+  reward lowered by export_units.native_death_reward (types 0/1 only; a stale
+  death_reward left by an older lowering is removed)
 
 This tool preserves every existing asset field and updates only
 the fields above. The optional native table input adds the exact b1-selected
@@ -198,6 +199,12 @@ def sync_asset(
         for optional in ("death_effect", "death_reward"):
             if optional in native:
                 fields.append(optional)
+            elif optional in unit:
+                # 原生來源不再產生這一欄（例如型態 2 的物品改由死亡程式給），資產裡的
+                # 舊值就是過時的，留著會讓 runtime 重複發放。
+                if write:
+                    del unit[optional]
+                changed += 1
         if "native_record_word42" in native:
             fields.append("native_record_word42")
         if "native_record_word46" in native:

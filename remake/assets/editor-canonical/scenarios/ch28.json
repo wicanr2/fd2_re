@@ -155,6 +155,74 @@
       ],
       "map": 27,
       "name": "探索者",
+      "native_death_programs": {
+        "2:67": [
+          {
+            "native_death_op": {
+              "delta": 0,
+              "op": "control_turn",
+              "slot": 1
+            },
+            "native_event_id": 67,
+            "native_source": "0x35a39",
+            "type": "native_death_op"
+          }
+        ],
+        "2:71": [
+          {
+            "native_dialogue_ref": {
+              "control": "FFEF",
+              "line": 6,
+              "operand": 116,
+              "pages": [
+                [
+                  "『．嚴重受損，指揮控制不能",
+                  "　．系統關閉．．』"
+                ]
+              ],
+              "scene_index": 1,
+              "script": "assets/story/ch28.json",
+              "source_dat": "FDTXT_028",
+              "string_index": 2,
+              "utterance": 0
+            },
+            "native_event_id": 71,
+            "native_source": "0x35b80",
+            "native_text_index": 2,
+            "native_when": {
+              "state_ne": [
+                19,
+                0
+              ]
+            },
+            "type": "dialogue"
+          },
+          {
+            "native_death_op": {
+              "first": 20,
+              "op": "clear_hp_from"
+            },
+            "native_event_id": 71,
+            "native_source": "0x35ba7",
+            "native_when": {
+              "state_ne": [
+                19,
+                0
+              ]
+            },
+            "type": "native_death_op"
+          },
+          {
+            "native_death_op": {
+              "index": 19,
+              "op": "state_inc"
+            },
+            "native_event_id": 71,
+            "native_source": "0x35bb1",
+            "type": "native_death_op"
+          }
+        ]
+      },
       "runtime_append_groups": true
     }
   },

@@ -41,28 +41,18 @@ EXE_RESIST_CRIT = os.path.join(os.path.dirname(__file__), "..", "docs", "data", 
 DEFAULT_HIT = 90
 DEFAULT_EV = 5
 
-# FDFIELD death_effect type=2 會以 16-bit value 索引 EXE 特殊死亡 handler 表。
-# 0x34F74(id39) 把三位元組 00 D3 00 交給 reward dispatcher；
-# 0x34FF0(id41) 同理傳 00 D5 00。保留 raw effect，另把可執行 reward 資料化。
-SPECIAL_DEATH_REWARDS = {
-    39: {"type": 0, "value": 0xD3},
-    41: {"type": 0, "value": 0xD5},
-}
-
-
 def native_death_reward(effect):
-    """把 FDFIELD b22..b24 的死亡效果降成 runtime 可執行的獎勵；不認得的回 None。
+    """把 FDFIELD b22..b24 的死亡效果降成可直接執行的獎勵；其他型態回 None。
 
-    type 0 是物品、type 1 是金幣（值是 b23..b24 的 u16）；type 2 只有 id39／41
-    兩個已知 handler（交給同一個 reward dispatcher 的 00 D3 00／00 D5 00）。
-    其他型態（含 type 3）語意未全解，保持不可執行，runtime 不猜。
+    只有型態 0（物品）與型態 1（金幣，值是 b23..b24 的 u16）在 0x1AA1D 裡是直接
+    給的。型態 2 是全域事件處理器、型態 3 是章節對白，兩者都由
+    tools/extract_native_death_events.py 轉寫、tools/sync_native_death_programs.py
+    降成劇本的 native_death_programs 執行；事件 39／41／51 給的物品也在那裡。
     """
     if effect is None:
         return None
     if effect["type"] in (0, 1):
         return {"type": effect["type"], "value": effect["value"]}
-    if effect["type"] == 2 and effect["value"] in SPECIAL_DEATH_REWARDS:
-        return dict(SPECIAL_DEATH_REWARDS[effect["value"]])
     return None
 
 

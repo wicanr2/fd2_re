@@ -285,6 +285,44 @@
       ],
       "map": 7,
       "name": "王城前的戰鬥",
+      "native_death_programs": {
+        "2:29": [
+          {
+            "native_dialogue_ref": {
+              "control": "FFEF",
+              "line": 2,
+              "operand": 83,
+              "pages": [
+                [
+                  "『公主殿下．．屬下也是遵命",
+                  "　行事，冒犯之處，請您原諒",
+                  "　．．啊．．』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch08.json",
+              "source_dat": "FDTXT_008",
+              "string_index": 2,
+              "utterance": 0
+            },
+            "native_event_id": 29,
+            "native_source": "0x34a46",
+            "native_text_index": 2,
+            "type": "dialogue"
+          },
+          {
+            "native_death_op": {
+              "first": 10,
+              "last": 27,
+              "mask": 128,
+              "op": "ai_byte_and_range"
+            },
+            "native_event_id": 29,
+            "native_source": "0x34a6d",
+            "type": "native_death_op"
+          }
+        ]
+      },
       "runtime_append_groups": true
     }
   },

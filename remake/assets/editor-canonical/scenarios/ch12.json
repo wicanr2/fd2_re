@@ -117,12 +117,147 @@
         ]
       ],
       "initial_groups": [
-        1,
-        3,
-        4
+        1
       ],
       "map": 11,
-      "name": "北山道"
+      "name": "北山道",
+      "native_acting_resources": "assets/cutscenes/acting/map32.json",
+      "native_death_programs": {
+        "2:37": [
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 0,
+              "operand": 15,
+              "pages": [
+                [
+                  "『可惡．",
+                  "　但是還沒有結束．．』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch12.json",
+              "source_dat": "FDTXT_012",
+              "string_index": 1,
+              "utterance": 0
+            },
+            "native_event_id": 37,
+            "native_source": "0x34cd6",
+            "native_text_index": 1,
+            "type": "dialogue"
+          },
+          {
+            "grid": [
+              15,
+              34
+            ],
+            "native_event_id": 37,
+            "native_source": "0x34cfd",
+            "type": "pan"
+          },
+          {
+            "act_immediately": true,
+            "groups": [
+              3
+            ],
+            "native_event_id": 37,
+            "native_spawns": [
+              {
+                "group": 3,
+                "raw_placement_gate": 1,
+                "source": "0x34d09",
+                "via": "spawn_group"
+              }
+            ],
+            "type": "spawn_group"
+          },
+          {
+            "native_acting": {
+              "resource": 43,
+              "source": "0x34d21"
+            },
+            "native_event_id": 37,
+            "native_source": "0x34d21",
+            "type": "native_acting"
+          },
+          {
+            "native_event_id": 37,
+            "native_source": "0x34d2b",
+            "type": "reset_pose"
+          },
+          {
+            "grid": [
+              0,
+              26
+            ],
+            "native_event_id": 37,
+            "native_source": "0x34d30",
+            "type": "pan"
+          },
+          {
+            "act_immediately": true,
+            "groups": [
+              4
+            ],
+            "native_event_id": 37,
+            "native_spawns": [
+              {
+                "group": 4,
+                "raw_placement_gate": 1,
+                "source": "0x34d3c",
+                "via": "spawn_group"
+              }
+            ],
+            "type": "spawn_group"
+          },
+          {
+            "native_acting": {
+              "resource": 44,
+              "source": "0x34d54"
+            },
+            "native_event_id": 37,
+            "native_source": "0x34d54",
+            "type": "native_acting"
+          },
+          {
+            "native_event_id": 37,
+            "native_source": "0x34d5e",
+            "type": "reset_pose"
+          },
+          {
+            "native_death_op": {
+              "op": "range_one"
+            },
+            "native_event_id": 37,
+            "native_source": "0x35c18",
+            "type": "native_death_op"
+          }
+        ],
+        "3:2": [
+          {
+            "native_dialogue_ref": {
+              "control": "FFEF",
+              "line": 1,
+              "operand": 17,
+              "pages": [
+                [
+                  "『．．我不甘心．．",
+                  "　寶石的秘密．．",
+                  "　．．啊．．』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch12.json",
+              "source_dat": "FDTXT_012",
+              "string_index": 2,
+              "utterance": 0
+            },
+            "native_source": "0x1ac49",
+            "native_text_index": 2,
+            "type": "dialogue"
+          }
+        ]
+      }
     }
   },
   "kind": "scenario",

@@ -652,5 +652,31 @@
         }
       ]
     }
-  ]
+  ],
+  "native_death_programs": {
+    "3:1": [
+      {
+        "type": "dialogue",
+        "native_source": "0x1ac49",
+        "native_text_index": 1,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch16.json",
+          "scene_index": 1,
+          "line": 0,
+          "source_dat": "FDTXT_016",
+          "string_index": 1,
+          "utterance": 0,
+          "control": "FFED",
+          "operand": 65,
+          "pages": [
+            [
+              "『啊．．我太天真了，過於倚",
+              "　賴劍技，沒有考慮到．單打",
+              "　獨鬥還是不行的．．』"
+            ]
+          ]
+        }
+      }
+    ]
+  }
 }

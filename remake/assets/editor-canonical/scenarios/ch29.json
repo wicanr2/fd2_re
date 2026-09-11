@@ -149,6 +149,76 @@
       ],
       "map": 28,
       "name": "探索者(防衛)",
+      "native_death_programs": {
+        "2:72": [
+          {
+            "native_death_op": {
+              "group": 2,
+              "op": "staging",
+              "x": 4,
+              "y": 35
+            },
+            "native_event_id": 72,
+            "native_source": "0x35bfc",
+            "type": "native_death_op"
+          },
+          {
+            "native_death_op": {
+              "group": 3,
+              "op": "staging",
+              "x": 14,
+              "y": 35
+            },
+            "native_event_id": 72,
+            "native_source": "0x35c0a",
+            "type": "native_death_op"
+          },
+          {
+            "native_death_op": {
+              "op": "range_one"
+            },
+            "native_event_id": 72,
+            "native_source": "0x35c18",
+            "type": "native_death_op"
+          }
+        ],
+        "2:73": [
+          {
+            "native_death_op": {
+              "index": 18,
+              "op": "state_set",
+              "value": 1
+            },
+            "native_event_id": 73,
+            "native_source": "0x35aae",
+            "type": "native_death_op"
+          }
+        ],
+        "2:77": [
+          {
+            "native_death_op": {
+              "index": 19,
+              "op": "state_set",
+              "value": 1
+            },
+            "native_event_id": 77,
+            "native_source": "0x35ec8",
+            "type": "native_death_op"
+          }
+        ],
+        "2:78": [
+          {
+            "native_death_op": {
+              "index": 20,
+              "op": "state_set",
+              "value": 1
+            },
+            "native_event_id": 78,
+            "native_source": "0x35edc",
+            "type": "native_death_op"
+          }
+        ]
+      },
       "native_field_event_rules": [
         {
           "event_id": 75,

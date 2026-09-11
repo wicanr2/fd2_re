@@ -521,5 +521,120 @@
         }
       ]
     }
-  ]
+  ],
+  "native_death_programs": {
+    "2:34": [
+      {
+        "type": "dialogue",
+        "native_source": "0x34906",
+        "native_text_index": 3,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch10.json",
+          "scene_index": 1,
+          "line": 10,
+          "source_dat": "FDTXT_010",
+          "string_index": 3,
+          "utterance": 0,
+          "control": "FFED",
+          "operand": 11,
+          "pages": [
+            [
+              "『．怎．怎麼可能．我居然被",
+              "　你們這些無名小卒給打敗了",
+              "　．主人．救救我．』"
+            ]
+          ]
+        },
+        "native_event_id": 34
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x34906",
+        "native_text_index": 3,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch10.json",
+          "scene_index": 2,
+          "line": 0,
+          "source_dat": "FDTXT_010",
+          "string_index": 3,
+          "utterance": 1,
+          "control": "FFEE",
+          "operand": 4,
+          "pages": [
+            [
+              "『少討饒了！快告訴我們，你",
+              "　綁架國王、惹起這一切事端",
+              "　究竟有何目的？』"
+            ]
+          ]
+        },
+        "native_event_id": 34
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x34906",
+        "native_text_index": 3,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch10.json",
+          "scene_index": 2,
+          "line": 1,
+          "source_dat": "FDTXT_010",
+          "string_index": 3,
+          "utterance": 2,
+          "control": "FFED",
+          "operand": 11,
+          "pages": [
+            [
+              "『．為了．為了得到王家的至",
+              "　寶「黃金徽章」．那是．』"
+            ]
+          ]
+        },
+        "native_event_id": 34
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x34906",
+        "native_text_index": 3,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch10.json",
+          "scene_index": 2,
+          "line": 2,
+          "source_dat": "FDTXT_010",
+          "string_index": 3,
+          "utterance": 3,
+          "control": "FFEE",
+          "operand": 0,
+          "pages": [
+            [
+              "『怎樣！快說啊！』"
+            ]
+          ]
+        },
+        "native_event_id": 34
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x34906",
+        "native_text_index": 3,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch10.json",
+          "scene_index": 2,
+          "line": 3,
+          "source_dat": "FDTXT_010",
+          "string_index": 3,
+          "utterance": 4,
+          "control": "FFED",
+          "operand": 11,
+          "pages": [
+            [
+              "『．飛天的．戰車．鑰匙．",
+              "　啊．．』"
+            ]
+          ]
+        },
+        "native_event_id": 34
+      }
+    ]
+  }
 }

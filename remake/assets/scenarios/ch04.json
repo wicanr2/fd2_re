@@ -325,5 +325,92 @@
         }
       ]
     }
-  ]
+  ],
+  "native_death_programs": {
+    "2:12": [
+      {
+        "type": "native_death_op",
+        "native_source": "0x345ab",
+        "native_death_op": {
+          "op": "ai_mode_range",
+          "first": 24,
+          "last": 27,
+          "mode": 7
+        },
+        "native_event_id": 12,
+        "native_when": {
+          "state_eq": [
+            16,
+            0
+          ]
+        }
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x345b9",
+        "native_text_index": 3,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch04.json",
+          "scene_index": 2,
+          "line": 4,
+          "source_dat": "FDTXT_004",
+          "string_index": 3,
+          "utterance": 0,
+          "control": "FFEF",
+          "operand": 102,
+          "pages": [
+            [
+              "『好可怕！不玩了！不玩了",
+              "　！』"
+            ]
+          ]
+        },
+        "native_event_id": 12,
+        "native_when": {
+          "state_eq": [
+            16,
+            0
+          ]
+        }
+      },
+      {
+        "type": "native_death_op",
+        "native_source": "0x345e0",
+        "native_death_op": {
+          "op": "state_set",
+          "index": 16,
+          "value": 1
+        },
+        "native_event_id": 12,
+        "native_when": {
+          "state_eq": [
+            16,
+            0
+          ]
+        }
+      }
+    ],
+    "3:6": [
+      {
+        "type": "dialogue",
+        "native_source": "0x1ac49",
+        "native_text_index": 6,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch04.json",
+          "scene_index": 4,
+          "line": 1,
+          "source_dat": "FDTXT_004",
+          "string_index": 6,
+          "utterance": 0,
+          "control": "FFEF",
+          "operand": 97,
+          "pages": [
+            [
+              "『哇．啊．．！』"
+            ]
+          ]
+        }
+      }
+    ]
+  }
 }

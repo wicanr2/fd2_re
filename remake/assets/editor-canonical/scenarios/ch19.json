@@ -144,7 +144,32 @@
         0
       ],
       "map": 18,
-      "name": "黑暗中的狙擊"
+      "name": "黑暗中的狙擊",
+      "native_death_programs": {
+        "3:2": [
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 5,
+              "operand": 16,
+              "pages": [
+                [
+                  "『．為什麼．為什麼這些小鬼",
+                  "　竟然如此厲害．．』"
+                ]
+              ],
+              "scene_index": 1,
+              "script": "assets/story/ch19.json",
+              "source_dat": "FDTXT_019",
+              "string_index": 2,
+              "utterance": 0
+            },
+            "native_source": "0x1ac49",
+            "native_text_index": 2,
+            "type": "dialogue"
+          }
+        ]
+      }
     }
   },
   "kind": "scenario",

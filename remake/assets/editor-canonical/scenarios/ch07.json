@@ -249,6 +249,77 @@
       "map": 6,
       "name": "往王城途中",
       "native_acting_resources": "assets/cutscenes/acting/map32.json",
+      "native_death_programs": {
+        "2:24": [
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 0,
+              "operand": 33,
+              "pages": [
+                [
+                  "『可惡．國王陛下，我不能再",
+                  "　護衛您了．請原諒屬下的",
+                  "　無能．』"
+                ]
+              ],
+              "scene_index": 3,
+              "script": "assets/story/ch07.json",
+              "source_dat": "FDTXT_007",
+              "string_index": 3,
+              "utterance": 0
+            },
+            "native_event_id": 24,
+            "native_source": "0x34906",
+            "native_text_index": 3,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 1,
+              "operand": 8,
+              "pages": [
+                [
+                  "『你弄錯了，我們不是來加害",
+                  "　國王的！』"
+                ]
+              ],
+              "scene_index": 3,
+              "script": "assets/story/ch07.json",
+              "source_dat": "FDTXT_007",
+              "string_index": 3,
+              "utterance": 1
+            },
+            "native_event_id": 24,
+            "native_source": "0x34906",
+            "native_text_index": 3,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 2,
+              "operand": 33,
+              "pages": [
+                [
+                  "『是嗎？．那麼．前些日子到",
+                  "　底是誰．．啊．．』"
+                ]
+              ],
+              "scene_index": 3,
+              "script": "assets/story/ch07.json",
+              "source_dat": "FDTXT_007",
+              "string_index": 3,
+              "utterance": 2
+            },
+            "native_event_id": 24,
+            "native_source": "0x34906",
+            "native_text_index": 3,
+            "type": "dialogue"
+          }
+        ]
+      },
       "runtime_append_groups": true
     }
   },

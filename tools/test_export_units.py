@@ -105,22 +105,12 @@ class NativeDeathRewardTest(unittest.TestCase):
         self.assertEqual(export_units.native_death_reward({"type": 1, "value": 1000}),
                          {"type": 1, "value": 1000})
 
-    def test_type_two_only_known_special_handlers(self):
-        self.assertEqual(export_units.native_death_reward({"type": 2, "value": 39}),
-                         {"type": 0, "value": 0xD3})
-        self.assertEqual(export_units.native_death_reward({"type": 2, "value": 41}),
-                         {"type": 0, "value": 0xD5})
-        self.assertIsNone(export_units.native_death_reward({"type": 2, "value": 4}))
-
-    def test_unresolved_types_fail_closed(self):
-        # 第一關頭目是 [3, 8, 0]；type 3 的 handler 尚未閉合，不能猜成物品或金幣。
+    def test_event_and_text_effects_are_programs_not_rewards(self):
+        # 型態 2 的物品（事件 39／41／51）與型態 3 的台詞由死亡程式執行，這裡不給。
+        for value in (4, 39, 41, 51):
+            self.assertIsNone(export_units.native_death_reward({"type": 2, "value": value}))
         self.assertIsNone(export_units.native_death_reward({"type": 3, "value": 8}))
         self.assertIsNone(export_units.native_death_reward(None))
-
-    def test_returned_reward_is_not_shared_table_state(self):
-        reward = export_units.native_death_reward({"type": 2, "value": 39})
-        reward["value"] = 0
-        self.assertEqual(export_units.SPECIAL_DEATH_REWARDS[39]["value"], 0xD3)
 
 
 if __name__ == "__main__":

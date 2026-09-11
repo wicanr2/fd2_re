@@ -168,8 +168,7 @@ func (s *State) CastArea(caster *Unit, cx, cy int, sp Spell, rng *rand.Rand) []C
 		// 完整傳送機制,見 doc42 gap 追蹤。
 		exp, levelUps := 0.0, []LevelUpEvent(nil)
 		if sp.ID == 23 && (caster.Camp == Own || caster.Camp == Ally) {
-			exp = TeleportExp(caster.Lv, caster.Lv)
-			levelUps = s.GainExp(caster, exp, rng)
+			exp, levelUps = s.AwardExp(caster, TeleportExp(caster.Lv, caster.Lv), rng)
 		}
 		return []CastResult{{Target: caster, Amount: 0, Missed: false, ExpGained: exp, LevelUps: levelUps}}
 	}
@@ -191,7 +190,13 @@ func (s *State) CastArea(caster *Unit, cx, cy int, sp Spell, rng *rand.Rand) []C
 
 	if caster.Camp == Own || caster.Camp == Ally {
 		exp := awardCastExp(caster, sp, results)
-		levelUps := s.GainExp(caster, exp, rng)
+		for i := range results {
+			if s.killCancelsExp(results[i].Target) {
+				exp = 0
+				break
+			}
+		}
+		exp, levelUps := s.AwardExp(caster, exp, rng)
 		for i := range results {
 			results[i].ExpGained = exp
 			results[i].LevelUps = levelUps

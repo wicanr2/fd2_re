@@ -52,7 +52,10 @@ func (g *Game) startNativeDialogueFrames() error {
 			if u.HasNativeRecordByte8 {
 				identity, known = int(u.NativeRecordByte8), true
 			}
-			if known && identity == n.Operand && u.HasNativeRecordByte5 && u.NativeRecordByte5&1 == 0 {
+			// 正在分派死亡效果的單位在原版還沒被標死（0x1B6B7 只收 +5 bit0 未設的
+			// 記錄），重製端則在扣到 0 時就設了 bit0，所以這一筆照樣算在場。
+			alive := u.HasNativeRecordByte5 && (u.NativeRecordByte5&1 == 0 || u == g.deathProgramDead)
+			if known && identity == n.Operand && alive {
 				speaker = u
 				break
 			}

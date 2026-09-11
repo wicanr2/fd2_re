@@ -48,6 +48,12 @@ func (g *Game) nativeCh28PostFrameInput(state *battle.State) (indexedmap.NativeF
 }
 
 func (g *Game) startNativeCh28PostPresent(then func()) error {
+	return g.startNativeUnitDeathPresent(battle.ApplyNativeCh28PostRawPrelude, then)
+}
+
+// startNativeUnitDeathPresent 是 0x1DB65 的呈現；prelude 決定哪些記錄的 +0x40
+// 先被清零（第 28 關戰後的 0x35BBA(20)、死亡事件的 clear_hp_from）。
+func (g *Game) startNativeUnitDeathPresent(prelude func(*battle.State) error, then func()) error {
 	if g == nil || g.nativeCh28PostPresent != nil || g.nativeUnitPresent != nil ||
 		g.native2189A != nil || g.transitionReveal != nil || g.indexedTransition != nil ||
 		g.nativePaletteRamp != nil || g.nativePalettePulse != nil ||
@@ -74,7 +80,7 @@ func (g *Game) startNativeCh28PostPresent(then func()) error {
 	if err != nil {
 		return err
 	}
-	if err := battle.ApplyNativeCh28PostRawPrelude(candidate); err != nil {
+	if err := prelude(candidate); err != nil {
 		return err
 	}
 	view := candidate.NativeMapViewState

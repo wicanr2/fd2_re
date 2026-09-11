@@ -1194,25 +1194,138 @@
           }
         }
       ]
-    },
-    {
-      "id": "hawat_berserk",
-      "trigger": "on_unit_death",
-      "when": {
-        "unit_dead": "哈諾"
-      },
-      "do": [
-        {
-          "type": "set_ai",
-          "unit": "哈瓦特",
-          "mode": "berserk"
-        },
-        {
-          "type": "dialogue",
-          "text": "你們這些該死的海盜,竟敢砍傷我兒子,我和你們拼了!",
-          "speaker": 3
-        }
-      ]
     }
-  ]
+  ],
+  "native_death_programs": {
+    "2:4": [
+      {
+        "type": "native_death_op",
+        "native_source": "0x343ec",
+        "native_death_op": {
+          "op": "record_bytes",
+          "unit": 13,
+          "writes": [
+            [
+              6,
+              1,
+              1
+            ]
+          ]
+        },
+        "native_event_id": 4
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x343fa",
+        "native_text_index": 7,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch01.json",
+          "scene_index": 5,
+          "line": 0,
+          "source_dat": "FDTXT_001",
+          "string_index": 7,
+          "utterance": 0,
+          "control": "FFEF",
+          "operand": 1,
+          "pages": [
+            [
+              "『老爸，我．我不行啦！』"
+            ]
+          ]
+        },
+        "native_event_id": 4
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x343fa",
+        "native_text_index": 7,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch01.json",
+          "scene_index": 5,
+          "line": 1,
+          "source_dat": "FDTXT_001",
+          "string_index": 7,
+          "utterance": 1,
+          "control": "FFEF",
+          "operand": 3,
+          "pages": [
+            [
+              "『小子，你先回屋子裏休息一",
+              "　下吧！這裡有老爸擋著！』"
+            ]
+          ]
+        },
+        "native_event_id": 4
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x343fa",
+        "native_text_index": 7,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch01.json",
+          "scene_index": 5,
+          "line": 2,
+          "source_dat": "FDTXT_001",
+          "string_index": 7,
+          "utterance": 2,
+          "control": "FFEF",
+          "operand": 1,
+          "pages": [
+            [
+              "『老爸，那我就先回去了！』"
+            ]
+          ]
+        },
+        "native_event_id": 4
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x343fa",
+        "native_text_index": 7,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch01.json",
+          "scene_index": 5,
+          "line": 3,
+          "source_dat": "FDTXT_001",
+          "string_index": 7,
+          "utterance": 3,
+          "control": "FFEF",
+          "operand": 3,
+          "pages": [
+            [
+              "『你們這些該死的海盜，",
+              "　竟敢砍傷我兒子，",
+              "　我和你們拼了！』"
+            ]
+          ]
+        },
+        "native_event_id": 4
+      }
+    ],
+    "3:8": [
+      {
+        "type": "dialogue",
+        "native_source": "0x1ac49",
+        "native_text_index": 8,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch01.json",
+          "scene_index": 6,
+          "line": 0,
+          "source_dat": "FDTXT_001",
+          "string_index": 8,
+          "utterance": 0,
+          "control": "FFEF",
+          "operand": 97,
+          "pages": [
+            [
+              "『可恨啊！今日先碰上這群棘",
+              "　手的小子在先，又遇上王國",
+              "　海防隊，真是天亡我也！啊",
+              "　．．』"
+            ]
+          ]
+        }
+      }
+    ]
+  }
 }

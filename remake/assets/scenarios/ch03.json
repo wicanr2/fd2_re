@@ -345,5 +345,52 @@
         }
       ]
     }
-  ]
+  ],
+  "native_death_programs": {
+    "3:5": [
+      {
+        "type": "dialogue",
+        "native_source": "0x1ac49",
+        "native_text_index": 5,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch03.json",
+          "scene_index": 1,
+          "line": 0,
+          "source_dat": "FDTXT_003",
+          "string_index": 5,
+          "utterance": 0,
+          "control": "FFEF",
+          "operand": 77,
+          "pages": [
+            [
+              "『我竟然會敗在一批小鬼的手",
+              "　下．．葛雷大人．．』"
+            ]
+          ]
+        }
+      }
+    ],
+    "3:9": [
+      {
+        "type": "dialogue",
+        "native_source": "0x1ac49",
+        "native_text_index": 9,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch03.json",
+          "scene_index": 1,
+          "line": 17,
+          "source_dat": "FDTXT_003",
+          "string_index": 9,
+          "utterance": 0,
+          "control": "FFED",
+          "operand": 6,
+          "pages": [
+            [
+              "『卡蘿那．．．！』"
+            ]
+          ]
+        }
+      }
+    ]
+  }
 }

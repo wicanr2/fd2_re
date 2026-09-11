@@ -4,7 +4,6 @@
   "map": 5,
   "initial_groups": [
     0,
-    2,
     3
   ],
   "party": [
@@ -366,5 +365,231 @@
         }
       ]
     }
-  ]
+  ],
+  "native_death_programs": {
+    "2:23": [
+      {
+        "type": "native_death_op",
+        "native_source": "0x3484e",
+        "native_death_op": {
+          "op": "ai_mode_range",
+          "first": 8,
+          "last": 28,
+          "mode": 0
+        },
+        "native_event_id": 23
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x3485c",
+        "native_text_index": 4,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch06.json",
+          "scene_index": 4,
+          "line": 9,
+          "source_dat": "FDTXT_006",
+          "string_index": 4,
+          "utterance": 0,
+          "control": "FFED",
+          "operand": 8,
+          "pages": [
+            [
+              "『你．你們不是一般匪徒，",
+              "　你們．到底有何目的？．』"
+            ]
+          ]
+        },
+        "native_event_id": 23
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x3485c",
+        "native_text_index": 4,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch06.json",
+          "scene_index": 4,
+          "line": 10,
+          "source_dat": "FDTXT_006",
+          "string_index": 4,
+          "utterance": 1,
+          "control": "FFEE",
+          "operand": 0,
+          "pages": [
+            [
+              "『這一切只是誤會而已，我",
+              "　們─』"
+            ]
+          ]
+        },
+        "native_event_id": 23
+      },
+      {
+        "type": "spawn_group",
+        "groups": [
+          2
+        ],
+        "act_immediately": true,
+        "native_spawns": [
+          {
+            "group": 2,
+            "via": "spawn_group",
+            "source": "0x34890",
+            "raw_placement_gate": 0
+          }
+        ],
+        "native_event_id": 23,
+        "native_when": {
+          "round_lt": 15
+        }
+      },
+      {
+        "type": "pan",
+        "native_source": "0x3489a",
+        "grid": [
+          5,
+          17
+        ],
+        "native_event_id": 23,
+        "native_when": {
+          "round_lt": 15
+        }
+      },
+      {
+        "type": "native_acting",
+        "native_source": "0x348a6",
+        "native_acting": {
+          "resource": 25,
+          "source": "0x348a6"
+        },
+        "native_event_id": 23,
+        "native_when": {
+          "round_lt": 15
+        }
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x348b0",
+        "native_text_index": 5,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch06.json",
+          "scene_index": 5,
+          "line": 0,
+          "source_dat": "FDTXT_006",
+          "string_index": 5,
+          "utterance": 0,
+          "control": "FFEC",
+          "operand": 33,
+          "pages": [
+            [
+              "『隊．隊長！這．這是怎麼",
+              "　回事？！』"
+            ]
+          ]
+        },
+        "native_event_id": 23,
+        "native_when": {
+          "round_lt": 15
+        }
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x348b0",
+        "native_text_index": 5,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch06.json",
+          "scene_index": 5,
+          "line": 1,
+          "source_dat": "FDTXT_006",
+          "string_index": 5,
+          "utterance": 1,
+          "control": "FFED",
+          "operand": 8,
+          "pages": [
+            [
+              "『史恩！快去通報邊境守衛",
+              "　隊，叫他們追捕這批匪徒，",
+              "　我．我已經盡力了．．』"
+            ]
+          ]
+        },
+        "native_event_id": 23,
+        "native_when": {
+          "round_lt": 15
+        }
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x348b0",
+        "native_text_index": 5,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch06.json",
+          "scene_index": 5,
+          "line": 2,
+          "source_dat": "FDTXT_006",
+          "string_index": 5,
+          "utterance": 2,
+          "control": "FFEC",
+          "operand": 33,
+          "pages": [
+            [
+              "『隊．隊長！你放心，這件",
+              "　事我一定辦到！』"
+            ]
+          ]
+        },
+        "native_event_id": 23,
+        "native_when": {
+          "round_lt": 15
+        }
+      },
+      {
+        "type": "pan",
+        "native_source": "0x348d7",
+        "grid": [
+          5,
+          17
+        ],
+        "native_event_id": 23,
+        "native_when": {
+          "round_lt": 15
+        }
+      },
+      {
+        "type": "native_acting",
+        "native_source": "0x348e3",
+        "native_acting": {
+          "resource": 26,
+          "source": "0x348e3"
+        },
+        "native_event_id": 23,
+        "native_when": {
+          "round_lt": 15
+        }
+      },
+      {
+        "type": "native_death_op",
+        "native_source": "0x348ed",
+        "native_death_op": {
+          "op": "mark_inactive",
+          "unit": 33
+        },
+        "native_event_id": 23,
+        "native_when": {
+          "round_lt": 15
+        }
+      },
+      {
+        "type": "native_death_op",
+        "native_source": "0x35c18",
+        "native_death_op": {
+          "op": "range_one"
+        },
+        "native_event_id": 23,
+        "native_when": {
+          "round_lt": 15
+        }
+      }
+    ]
+  },
+  "native_acting_resources": "assets/cutscenes/acting/map32.json"
 }

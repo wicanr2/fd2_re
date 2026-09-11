@@ -243,11 +243,11 @@ func (u *Unit) applyGrowthRow(row GrowthRow, rng *rand.Rand) LevelUpEvent {
 		u.HIT += ev.DxGain
 		u.EV += ev.DxGain
 	}
+	// 0x1E529 只把擲出的增量加到傳入的欄位：0x1E4AD 傳 +0x42（MaxHP）、0x1E4C7 傳
+	// +0x46（MaxMP）。之後的 0x1B750 只重算 +0x48..+0x4E，整條升級路徑不碰目前 HP
+	// +0x40 與目前 MP +0x44，所以升級當下的 HP／MP 不變。
 	u.MaxHP += ev.HpGain
-	u.HP += ev.HpGain // 升級當下回滿新增的 HP(RPG 慣例;doc 未明講升級是否立即回血,
-	// 但「升級卻沒補血」在戰鬥中間發生會很怪,採用較合理的一種,已於報告誠實標記)
 	u.MaxMP += ev.MpGain
-	u.MP += ev.MpGain
 	return ev
 }
 
@@ -255,15 +255,27 @@ func (u *Unit) applyGrowthRow(row GrowthRow, rng *rand.Rand) LevelUpEvent {
 // 決定」)。只對 Own/Ally 生效(見檔頭說明);Enemy 呼叫此函式一律 no-op、回 nil。
 // amount<=0 也直接回 nil(miss、或 growthTable 查無資料等情形上游已算出 0,不必進來擲骰)。
 func GainExp(u *Unit, amount float64, rng *rand.Rand) []LevelUpEvent {
-	return gainExp(u, amount, rng, nil, legacyGrowthRow)
+	_, events := gainExp(u, amount, rng, nil, legacyGrowthRow)
+	return events
 }
 
-// GainExp applies the legacy standalone growth path. State.GainExp additionally
-// applies the exact portrait-indexed native command-learning table.
+// gainExp 重現 0x1E292 的經驗與升級流程，回傳實際收下的經驗值與升級事件。
+// 套件層的 GainExp 走舊名字表；State.AwardExp 另外套原版的 +7 成長列與指令學習。
 func gainExp(u *Unit, amount float64, rng *rand.Rand, learn func(*Unit) []int,
-	rowFor func(*Unit) (GrowthRow, bool)) []LevelUpEvent {
+	rowFor func(*Unit) (GrowthRow, bool)) (float64, []LevelUpEvent) {
 	if u == nil || (u.Camp != Own && u.Camp != Ally) || amount <= 0 {
-		return nil
+		return 0, nil
+	}
+	if u.HasNativeRecordByte5 && u.NativeRecordByte5&1 != 0 {
+		// 0x1E2D6 test byte [esi+5],1：原版的死亡旗標在就不收經驗。沒有原版 +5 的
+		// 單位維持舊行為（重製端自訂資料由呼叫端決定）。
+		return 0, nil
+	}
+	levelCap, machine, native := nativeLevelCap(u)
+	if native && u.Lv == levelCap {
+		// 0x1E2F2 je 0x1317D：等級剛好等於上限就整段返回，連經驗都不加，也不顯示
+		// 「得到經驗值」。比的是相等，不是大於等於。
+		return 0, nil
 	}
 	u.Exp += amount
 	var events []LevelUpEvent
@@ -283,12 +295,39 @@ func gainExp(u *Unit, amount float64, rng *rand.Rand, learn func(*Unit) []int,
 				learn(u)
 			}
 		}
+		// 0x1E3F3..0x1E40C 與 0x1E4F6：每升一級扣 100 之後，升到 30 級、或機兵升到
+		// 99 級，剩下的經驗歸零。30 級這一條是原版的錯誤（修改指南 modify1.md 第 13 條
+		// 把 `1E 0F 85` 改成 `28` 才是 40 級），忠實模式照原版。
+		if native && (u.Lv == 30 || (machine && u.Lv == 99)) {
+			u.Exp = 0
+		}
 	}
-	return events
+	return amount, events
+}
+
+// nativeLevelCap 重現 0x1E2E0..0x1E2F2 的升級上限：記錄 `+7` 為 0x1E／0x1F（機兵）
+// 時比 99，其餘比 40。三個常數在 FD2.EXE 的位元組是 `83 FA 1E`／`83 FA 1F`、
+// `83 F8 63`、`83 F8 28`，與修改指南 modify1.md 第 11、12 條改的是同一組位元組。
+// 沒有原版 `+7` 的單位（重製端自訂資料）沒有上限，第三個回傳值為 false。
+func nativeLevelCap(u *Unit) (levelCap int, machine bool, native bool) {
+	if u == nil || !u.HasBattleFig {
+		return 0, false, false
+	}
+	if u.BattleFig == 0x1e || u.BattleFig == 0x1f {
+		return 99, true, true
+	}
+	return 40, false, true
 }
 
 // GainExp applies level growth plus recovered native command learning.
 func (s *State) GainExp(u *Unit, amount float64, rng *rand.Rand) []LevelUpEvent {
+	_, events := s.AwardExp(u, amount, rng)
+	return events
+}
+
+// AwardExp 與 GainExp 相同，另外回傳實際收下的經驗值：上限、陣營不符或單位已陣亡
+// 時是 0。攻擊與法術的結果要用這個值顯示「得到經驗值」，原版在這些情況下整段不顯示。
+func (s *State) AwardExp(u *Unit, amount float64, rng *rand.Rand) (float64, []LevelUpEvent) {
 	return gainExp(u, amount, rng, s.learnNativeCommandsAtLevel, s.NativeGrowthRowFor)
 }
 

@@ -93,6 +93,32 @@
       ],
       "map": 15,
       "name": "冰原之戰",
+      "native_death_programs": {
+        "3:1": [
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 0,
+              "operand": 65,
+              "pages": [
+                [
+                  "『啊．．我太天真了，過於倚",
+                  "　賴劍技，沒有考慮到．單打",
+                  "　獨鬥還是不行的．．』"
+                ]
+              ],
+              "scene_index": 1,
+              "script": "assets/story/ch16.json",
+              "source_dat": "FDTXT_016",
+              "string_index": 1,
+              "utterance": 0
+            },
+            "native_source": "0x1ac49",
+            "native_text_index": 1,
+            "type": "dialogue"
+          }
+        ]
+      },
       "runtime_append_groups": true
     }
   },

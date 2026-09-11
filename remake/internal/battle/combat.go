@@ -103,7 +103,10 @@ func (s *State) attackWithExperience(a, d *Unit, rng *rand.Rand, nativeEXP *nati
 		if nativeEXP != nil {
 			exp = float64(nativeEXP.award(dmg, d.HP == 0))
 		}
-		levelUps = s.GainExp(a, exp, rng)
+		if s.killCancelsExp(d) {
+			exp = 0
+		}
+		exp, levelUps = s.AwardExp(a, exp, rng)
 	}
 
 	return AttackResult{Amount: dmg, Crit: crit, ExpGained: exp, LevelUps: levelUps}

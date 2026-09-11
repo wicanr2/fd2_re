@@ -352,5 +352,71 @@
         }
       ]
     }
-  ]
+  ],
+  "native_death_programs": {
+    "2:19": [
+      {
+        "type": "native_death_op",
+        "native_source": "0x34728",
+        "native_death_op": {
+          "op": "ai_mode_range",
+          "first": 7,
+          "last": 36,
+          "mode": 7
+        },
+        "native_event_id": 19
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x34736",
+        "native_text_index": 8,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch05.json",
+          "scene_index": 4,
+          "line": 0,
+          "source_dat": "FDTXT_005",
+          "string_index": 8,
+          "utterance": 0,
+          "control": "FFEF",
+          "operand": 117,
+          "pages": [
+            [
+              "『．啊．我居然就這樣被一群",
+              "　小鬼打敗了，",
+              "　我不甘心．．』"
+            ]
+          ]
+        },
+        "native_event_id": 19
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x34786",
+        "native_text_index": 11,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch05.json",
+          "scene_index": 7,
+          "line": 1,
+          "source_dat": "FDTXT_005",
+          "string_index": 11,
+          "utterance": 0,
+          "control": "FFEF",
+          "operand": 96,
+          "pages": [
+            [
+              "『糟啦！首領被打倒了！快逃",
+              "　啊！』"
+            ]
+          ]
+        },
+        "native_event_id": 19,
+        "native_when": {
+          "any_active": [
+            7,
+            36
+          ]
+        }
+      }
+    ]
+  }
 }

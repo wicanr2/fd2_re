@@ -152,6 +152,66 @@
       ],
       "map": 29,
       "name": "傳說的終章",
+      "native_death_programs": {
+        "2:81": [
+          {
+            "native_death_op": {
+              "index": 16,
+              "op": "state_inc"
+            },
+            "native_event_id": 81,
+            "native_source": "0x35f79",
+            "type": "native_death_op"
+          },
+          {
+            "native_death_op": {
+              "delta": 1,
+              "op": "control_turn",
+              "slot": 0
+            },
+            "native_event_id": 81,
+            "native_source": "0x35f81",
+            "type": "native_death_op"
+          }
+        ],
+        "2:83": [
+          {
+            "native_dialogue_ref": {
+              "control": "FFEF",
+              "line": 14,
+              "operand": 126,
+              "pages": [
+                [
+                  "『這怎麼可能．我是至高無上",
+                  "　的創造者和支配者．竟然會",
+                  "　被這些卑微的螻蟻給打倒．"
+                ],
+                [
+                  "　．不．．』"
+                ]
+              ],
+              "scene_index": 1,
+              "script": "assets/story/ch30.json",
+              "source_dat": "FDTXT_030",
+              "string_index": 8,
+              "utterance": 0
+            },
+            "native_event_id": 83,
+            "native_source": "0x36092",
+            "native_text_index": 8,
+            "type": "dialogue"
+          },
+          {
+            "native_death_op": {
+              "first": 20,
+              "op": "clear_hp_from"
+            },
+            "native_event_id": 83,
+            "native_source": "0x360b9",
+            "type": "native_death_op"
+          }
+        ]
+      },
       "runtime_append_groups": true
     }
   },

@@ -117,10 +117,10 @@
   {
    "id": "offscreen-dump-needs-drawn-mark",
    "area": "重製端",
-   "rule": "重製端的離屏逐幀擷取要自己呼叫 `markActionOverlayDrawn()`，指令環的開合動畫才會推進。",
-   "why": "`stepActionOverlayLifecycle` 的推進掛在「這一幀被畫過」，正式路徑由繪製那側標記；離屏 dump 不走 Draw，所以關環會永遠卡住，症狀是「指令環沒有關閉」而不是任何錯誤。",
+   "rule": "離屏測試與逐幀擷取不走 Draw，凡是掛在「這一幀被畫過」上推進的工作都要由測試端承認：指令環用 `markActionOverlayDrawn()`，其餘演出工作加進測試的 `ackPresents`。新增一種掛 `drawn` 的工作時，同時把它加進 `ackPresents`。",
+   "why": "正式路徑由繪製那側標記 `drawn`；離屏不走 Draw，漏承認的工作會永遠停在等待繪製，症狀是「指令環沒有關閉」「死亡程式沒有跑完」這類停住，而不是任何錯誤。2026-09-10 是指令環；2026-09-12 是死亡程式的 0x35822 閃白（非 indexed）與 0x1DB65 倒下呈現。",
    "date": "2026-09-10",
-   "evidence": "remake/cmd/fd2/native_map_attack_dump_test.go"
+   "evidence": "remake/cmd/fd2/native_map_attack_dump_test.go、remake/cmd/fd2/native_chapter_one_play_test.go（ackPresents）"
   },
   {
    "id": "read-each-check-before-commit",
@@ -361,6 +361,30 @@
    "why": "2026-09-11 以前的文件把影片裡第一關開局的「MAP·01 TURN·001」資訊畫面與「決定要行軍嗎?」當成開局制式畫面，列成重製端缺失。`0x1B1E7` 唯一的呼叫鏈是空游標系統選單（`0x118C1` 在游標下沒有單位時才進 `0x16F55`），行軍問句是同一選單的 selector 1。",
    "date": "2026-09-11",
    "evidence": "docs/knowledge-base/46-ch1-opening-timeline.md §5.4"
+  },
+  {
+   "id": "transcription-needs-coverage-check",
+   "area": "逆向",
+   "rule": "把原版處理器轉寫成資料時，除了核對寫出來的動作，還要從入口沿控制流走一遍，要求每一條非序言／收尾的指令都被某個動作認領。只核對寫出來的東西，漏掉的那一條永遠不會紅。",
+   "why": "2026-09-11 轉寫 23 個死亡事件處理器。反對照時刪掉事件 30 的 `[0x53EC8]=0`（取消經驗），逐動作核對照樣全綠；是覆蓋檢查抓到 `0x34B48` 沒有被任何動作認領。",
+   "date": "2026-09-11",
+   "evidence": "docs/knowledge-base/110-death-effects-and-level-cap-20260911.md §3",
+   "guard": {
+    "kind": "present",
+    "paths": [
+     "tools/extract_native_death_events.py"
+    ],
+    "pattern": "def check_coverage",
+    "note": "轉寫工具的覆蓋檢查還在。"
+   }
+  },
+  {
+   "id": "initial-groups-exclude-every-spawner",
+   "area": "資料",
+   "rule": "判斷開局在場的群組時，要扣掉所有會生成群組的來源（回合事件、死亡事件、欄位事件），不只回合事件。多出一個開局群組，後面每一筆 runtime 記錄的索引都會位移，寫死記錄索引的處理器就會改到錯的人。",
+   "why": "2026-09-11 劇本產生器只扣回合事件生成的群組，第六、九、十二關把頭目倒下才出現的群組放在開局。第六關事件 23 寫死「記錄 33 離場」，開局多一個群組就會讓錯的單位離場。",
+   "date": "2026-09-11",
+   "evidence": "docs/knowledge-base/110-death-effects-and-level-cap-20260911.md §4"
   }
  ]
 }

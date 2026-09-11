@@ -1,0 +1,911 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_native_death_events",
+  "source": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "generated_by": "tools/extract_native_death_events.py",
+  "dispatch": {
+    "collector": "0x1b6b7：+5 bit0 未設、+0x31 != 0xff、HP <= 0 的記錄依索引順序收集三個 byte",
+    "dispatcher": "0x1aa1d(擊殺者索引, 筆數, 緩衝)",
+    "event": {
+      "table": "0x51b91",
+      "delay_ms": 200,
+      "argument": "擊殺者索引",
+      "source": "0x1ac05"
+    },
+    "text": {
+      "bank": "FDTXT 資源 [0x53c03] + 1（0x101dc..0x101f6）",
+      "source": "0x1ac26"
+    }
+  },
+  "events": [
+    {
+      "id": 4,
+      "handler": "0x343e2",
+      "battle_units": [
+        {
+          "map": 0,
+          "unit": 9
+        }
+      ],
+      "ops": [
+        {
+          "op": "record_bytes",
+          "unit": 13,
+          "writes": [
+            [
+              6,
+              1,
+              1
+            ]
+          ],
+          "source": "0x343ec"
+        },
+        {
+          "op": "dialogue",
+          "text": 7,
+          "source": "0x343fa"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "handler": "0x34d68",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "spawn_group",
+          "group": 1,
+          "gate": 0,
+          "source": "0x34bec"
+        },
+        {
+          "op": "dialogue",
+          "text": 1,
+          "source": "0x34bf6"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "handler": "0x34594",
+      "battle_units": [
+        {
+          "map": 3,
+          "unit": 17
+        },
+        {
+          "map": 3,
+          "unit": 18
+        },
+        {
+          "map": 3,
+          "unit": 19
+        },
+        {
+          "map": 3,
+          "unit": 20
+        }
+      ],
+      "ops": [
+        {
+          "op": "ai_mode_range",
+          "first": 24,
+          "last": 27,
+          "mode": 7,
+          "when": {
+            "state_eq": [
+              16,
+              0
+            ]
+          },
+          "source": "0x345ab"
+        },
+        {
+          "op": "dialogue",
+          "text": 3,
+          "when": {
+            "state_eq": [
+              16,
+              0
+            ]
+          },
+          "source": "0x345b9"
+        },
+        {
+          "op": "state_set",
+          "index": 16,
+          "value": 1,
+          "when": {
+            "state_eq": [
+              16,
+              0
+            ]
+          },
+          "source": "0x345e0"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "handler": "0x34716",
+      "battle_units": [
+        {
+          "map": 4,
+          "unit": 5
+        }
+      ],
+      "ops": [
+        {
+          "op": "ai_mode_range",
+          "first": 7,
+          "last": 36,
+          "mode": 7,
+          "source": "0x34728"
+        },
+        {
+          "op": "dialogue",
+          "text": 8,
+          "source": "0x34736"
+        },
+        {
+          "op": "dialogue",
+          "text": 11,
+          "when": {
+            "any_active": [
+              7,
+              36
+            ]
+          },
+          "source": "0x34786"
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "handler": "0x34844",
+      "battle_units": [
+        {
+          "map": 5,
+          "unit": 0
+        }
+      ],
+      "ops": [
+        {
+          "op": "ai_mode_range",
+          "first": 8,
+          "last": 28,
+          "mode": 0,
+          "source": "0x3484e"
+        },
+        {
+          "op": "dialogue",
+          "text": 4,
+          "source": "0x3485c"
+        },
+        {
+          "op": "spawn_group",
+          "group": 2,
+          "gate": 0,
+          "when": {
+            "round_lt": 15
+          },
+          "source": "0x34890"
+        },
+        {
+          "op": "pan",
+          "x": 5,
+          "y": 17,
+          "when": {
+            "round_lt": 15
+          },
+          "source": "0x3489a"
+        },
+        {
+          "op": "acting",
+          "resource": 25,
+          "when": {
+            "round_lt": 15
+          },
+          "source": "0x348a6"
+        },
+        {
+          "op": "dialogue",
+          "text": 5,
+          "when": {
+            "round_lt": 15
+          },
+          "source": "0x348b0"
+        },
+        {
+          "op": "pan",
+          "x": 5,
+          "y": 17,
+          "when": {
+            "round_lt": 15
+          },
+          "source": "0x348d7"
+        },
+        {
+          "op": "acting",
+          "resource": 26,
+          "when": {
+            "round_lt": 15
+          },
+          "source": "0x348e3"
+        },
+        {
+          "op": "mark_inactive",
+          "unit": 33,
+          "when": {
+            "round_lt": 15
+          },
+          "source": "0x348ed"
+        },
+        {
+          "op": "range_one",
+          "when": {
+            "round_lt": 15
+          },
+          "source": "0x35c18"
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "handler": "0x348fc",
+      "battle_units": [
+        {
+          "map": 6,
+          "unit": 24
+        }
+      ],
+      "ops": [
+        {
+          "op": "dialogue",
+          "text": 3,
+          "source": "0x34906",
+          "tail_sources": [
+            "0x34c0f"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "handler": "0x34a3c",
+      "battle_units": [
+        {
+          "map": 7,
+          "unit": 0
+        }
+      ],
+      "ops": [
+        {
+          "op": "dialogue",
+          "text": 2,
+          "source": "0x34a46"
+        },
+        {
+          "op": "ai_byte_and_range",
+          "first": 10,
+          "last": 27,
+          "mask": 128,
+          "source": "0x34a6d",
+          "tail_sources": [
+            "0x34a19"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "handler": "0x34a7a",
+      "battle_units": [
+        {
+          "map": 8,
+          "unit": 0
+        }
+      ],
+      "ops": [
+        {
+          "op": "ai_byte_set_range",
+          "first": 12,
+          "last": 33,
+          "value": 0,
+          "source": "0x34a85"
+        },
+        {
+          "op": "control_turn",
+          "slot": 0,
+          "delta": 1,
+          "source": "0x34aa7"
+        },
+        {
+          "op": "control_turn",
+          "slot": 1,
+          "delta": 2,
+          "source": "0x34ab7"
+        },
+        {
+          "op": "record_bytes",
+          "unit": 11,
+          "writes": [
+            [
+              5,
+              0,
+              1
+            ],
+            [
+              6,
+              1,
+              1
+            ],
+            [
+              7,
+              6,
+              1
+            ],
+            [
+              8,
+              6,
+              1
+            ],
+            [
+              49,
+              255,
+              1
+            ],
+            [
+              52,
+              128,
+              1
+            ],
+            [
+              64,
+              1,
+              2
+            ]
+          ],
+          "source": "0x34ac8"
+        },
+        {
+          "op": "dialogue",
+          "text": 2,
+          "source": "0x34af0"
+        },
+        {
+          "op": "spawn_group",
+          "group": 1,
+          "gate": 0,
+          "source": "0x34b17"
+        },
+        {
+          "op": "dialogue",
+          "text": 3,
+          "source": "0x34b21"
+        },
+        {
+          "op": "exp_cancel",
+          "source": "0x34b48"
+        },
+        {
+          "op": "state_set",
+          "index": 16,
+          "value": 2,
+          "source": "0x34b52"
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "handler": "0x34c6c",
+      "battle_units": [
+        {
+          "map": 9,
+          "unit": 0
+        }
+      ],
+      "ops": [
+        {
+          "op": "dialogue",
+          "text": 3,
+          "source": "0x34906",
+          "tail_sources": [
+            "0x34c0f"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "handler": "0x34ccc",
+      "battle_units": [
+        {
+          "map": 11,
+          "unit": 1
+        }
+      ],
+      "ops": [
+        {
+          "op": "dialogue",
+          "text": 1,
+          "source": "0x34cd6"
+        },
+        {
+          "op": "pan",
+          "x": 15,
+          "y": 34,
+          "source": "0x34cfd"
+        },
+        {
+          "op": "spawn_group",
+          "group": 3,
+          "gate": 1,
+          "source": "0x34d09"
+        },
+        {
+          "op": "acting",
+          "resource": 43,
+          "source": "0x34d21"
+        },
+        {
+          "op": "reset_pose",
+          "source": "0x34d2b"
+        },
+        {
+          "op": "pan",
+          "x": 0,
+          "y": 26,
+          "source": "0x34d30"
+        },
+        {
+          "op": "spawn_group",
+          "group": 4,
+          "gate": 1,
+          "source": "0x34d3c"
+        },
+        {
+          "op": "acting",
+          "resource": 44,
+          "source": "0x34d54"
+        },
+        {
+          "op": "reset_pose",
+          "source": "0x34d5e"
+        },
+        {
+          "op": "range_one",
+          "source": "0x35c18"
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "handler": "0x34f74",
+      "battle_units": [
+        {
+          "map": 14,
+          "unit": 58
+        }
+      ],
+      "ops": [
+        {
+          "op": "reward",
+          "rodata": "0x52742",
+          "kind": 0,
+          "value": 211,
+          "source": "0x34f83",
+          "tail_sources": [
+            "0x34f8d"
+          ]
+        },
+        {
+          "op": "dialogue",
+          "text": 11,
+          "source": "0x34f9e"
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "handler": "0x34ff0",
+      "battle_units": [
+        {
+          "map": 16,
+          "unit": 0
+        }
+      ],
+      "ops": [
+        {
+          "op": "dialogue",
+          "text": 3,
+          "source": "0x35009"
+        },
+        {
+          "op": "reward",
+          "rodata": "0x52745",
+          "kind": 0,
+          "value": 213,
+          "source": "0x34fff",
+          "tail_sources": [
+            "0x35030"
+          ]
+        },
+        {
+          "op": "dialogue",
+          "text": 4,
+          "source": "0x35041",
+          "tail_sources": [
+            "0x34fb7"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "handler": "0x3529a",
+      "battle_units": [
+        {
+          "map": 21,
+          "unit": 0
+        }
+      ],
+      "ops": [
+        {
+          "op": "reward",
+          "rodata": "0x52748",
+          "kind": 0,
+          "value": 101,
+          "source": "0x352a9"
+        },
+        {
+          "op": "dialogue",
+          "text": 3,
+          "source": "0x352c4",
+          "tail_sources": [
+            "0x34fb7"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "handler": "0x35321",
+      "battle_units": [
+        {
+          "map": 22,
+          "unit": 2
+        }
+      ],
+      "ops": [
+        {
+          "op": "dialogue",
+          "text": 5,
+          "source": "0x3532b"
+        },
+        {
+          "op": "clear_hp_from",
+          "first": 18,
+          "source": "0x35352"
+        }
+      ]
+    },
+    {
+      "id": 64,
+      "handler": "0x358ea",
+      "battle_units": [
+        {
+          "map": 26,
+          "unit": 8
+        },
+        {
+          "map": 26,
+          "unit": 9
+        },
+        {
+          "map": 26,
+          "unit": 10
+        }
+      ],
+      "ops": [
+        {
+          "op": "dialogue",
+          "text": 1,
+          "when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "source": "0x35902"
+        },
+        {
+          "op": "staging",
+          "x": 9,
+          "y": 44,
+          "group": 3,
+          "when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "source": "0x35927"
+        },
+        {
+          "op": "staging",
+          "x": 0,
+          "y": 9,
+          "group": 4,
+          "when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "source": "0x35935"
+        },
+        {
+          "op": "staging",
+          "x": 17,
+          "y": 9,
+          "group": 5,
+          "when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "source": "0x35943"
+        },
+        {
+          "op": "range_one",
+          "when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "source": "0x35951"
+        },
+        {
+          "op": "dialogue",
+          "text": 2,
+          "when": {
+            "state_eq": [
+              16,
+              2
+            ]
+          },
+          "source": "0x35962"
+        },
+        {
+          "op": "clear_hp_from",
+          "first": 16,
+          "when": {
+            "state_eq": [
+              16,
+              2
+            ]
+          },
+          "source": "0x35988"
+        },
+        {
+          "op": "state_inc",
+          "index": 16,
+          "source": "0x35992"
+        }
+      ]
+    },
+    {
+      "id": 67,
+      "handler": "0x35a2f",
+      "battle_units": [
+        {
+          "map": 27,
+          "unit": 8
+        }
+      ],
+      "ops": [
+        {
+          "op": "control_turn",
+          "slot": 1,
+          "delta": 0,
+          "source": "0x35a39"
+        }
+      ]
+    },
+    {
+      "id": 71,
+      "handler": "0x35b6b",
+      "battle_units": [
+        {
+          "map": 27,
+          "unit": 0
+        },
+        {
+          "map": 27,
+          "unit": 1
+        }
+      ],
+      "ops": [
+        {
+          "op": "dialogue",
+          "text": 2,
+          "when": {
+            "state_ne": [
+              19,
+              0
+            ]
+          },
+          "source": "0x35b80"
+        },
+        {
+          "op": "clear_hp_from",
+          "first": 20,
+          "when": {
+            "state_ne": [
+              19,
+              0
+            ]
+          },
+          "source": "0x35ba7"
+        },
+        {
+          "op": "state_inc",
+          "index": 19,
+          "source": "0x35bb1"
+        }
+      ]
+    },
+    {
+      "id": 72,
+      "handler": "0x35bf2",
+      "battle_units": [
+        {
+          "map": 28,
+          "unit": 17
+        }
+      ],
+      "ops": [
+        {
+          "op": "staging",
+          "x": 4,
+          "y": 35,
+          "group": 2,
+          "source": "0x35bfc"
+        },
+        {
+          "op": "staging",
+          "x": 14,
+          "y": 35,
+          "group": 3,
+          "source": "0x35c0a"
+        },
+        {
+          "op": "range_one",
+          "source": "0x35c18"
+        }
+      ]
+    },
+    {
+      "id": 73,
+      "handler": "0x35c23",
+      "battle_units": [
+        {
+          "map": 28,
+          "unit": 0
+        }
+      ],
+      "ops": [
+        {
+          "op": "state_set",
+          "index": 18,
+          "value": 1,
+          "source": "0x35aae"
+        }
+      ]
+    },
+    {
+      "id": 77,
+      "handler": "0x35ebe",
+      "battle_units": [
+        {
+          "map": 28,
+          "unit": 1
+        }
+      ],
+      "ops": [
+        {
+          "op": "state_set",
+          "index": 19,
+          "value": 1,
+          "source": "0x35ec8"
+        }
+      ]
+    },
+    {
+      "id": 78,
+      "handler": "0x35ed2",
+      "battle_units": [
+        {
+          "map": 28,
+          "unit": 2
+        }
+      ],
+      "ops": [
+        {
+          "op": "state_set",
+          "index": 20,
+          "value": 1,
+          "source": "0x35edc"
+        }
+      ]
+    },
+    {
+      "id": 81,
+      "handler": "0x35f6f",
+      "battle_units": [
+        {
+          "map": 29,
+          "unit": 1
+        },
+        {
+          "map": 29,
+          "unit": 2
+        },
+        {
+          "map": 29,
+          "unit": 3
+        },
+        {
+          "map": 29,
+          "unit": 4
+        }
+      ],
+      "ops": [
+        {
+          "op": "state_inc",
+          "index": 16,
+          "source": "0x35f79"
+        },
+        {
+          "op": "control_turn",
+          "slot": 0,
+          "delta": 1,
+          "source": "0x35f81"
+        }
+      ]
+    },
+    {
+      "id": 83,
+      "handler": "0x36088",
+      "battle_units": [
+        {
+          "map": 29,
+          "unit": 0
+        }
+      ],
+      "ops": [
+        {
+          "op": "dialogue",
+          "text": 8,
+          "source": "0x36092"
+        },
+        {
+          "op": "clear_hp_from",
+          "first": 20,
+          "source": "0x360b9",
+          "tail_sources": [
+            "0x35354"
+          ]
+        }
+      ]
+    }
+  ]
+}

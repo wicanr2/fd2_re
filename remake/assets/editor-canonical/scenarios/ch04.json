@@ -92,7 +92,94 @@
         1
       ],
       "map": 3,
-      "name": "塞拉村前"
+      "name": "塞拉村前",
+      "native_death_programs": {
+        "2:12": [
+          {
+            "native_death_op": {
+              "first": 24,
+              "last": 27,
+              "mode": 7,
+              "op": "ai_mode_range"
+            },
+            "native_event_id": 12,
+            "native_source": "0x345ab",
+            "native_when": {
+              "state_eq": [
+                16,
+                0
+              ]
+            },
+            "type": "native_death_op"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEF",
+              "line": 4,
+              "operand": 102,
+              "pages": [
+                [
+                  "『好可怕！不玩了！不玩了",
+                  "　！』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch04.json",
+              "source_dat": "FDTXT_004",
+              "string_index": 3,
+              "utterance": 0
+            },
+            "native_event_id": 12,
+            "native_source": "0x345b9",
+            "native_text_index": 3,
+            "native_when": {
+              "state_eq": [
+                16,
+                0
+              ]
+            },
+            "type": "dialogue"
+          },
+          {
+            "native_death_op": {
+              "index": 16,
+              "op": "state_set",
+              "value": 1
+            },
+            "native_event_id": 12,
+            "native_source": "0x345e0",
+            "native_when": {
+              "state_eq": [
+                16,
+                0
+              ]
+            },
+            "type": "native_death_op"
+          }
+        ],
+        "3:6": [
+          {
+            "native_dialogue_ref": {
+              "control": "FFEF",
+              "line": 1,
+              "operand": 97,
+              "pages": [
+                [
+                  "『哇．啊．．！』"
+                ]
+              ],
+              "scene_index": 4,
+              "script": "assets/story/ch04.json",
+              "source_dat": "FDTXT_004",
+              "string_index": 6,
+              "utterance": 0
+            },
+            "native_source": "0x1ac49",
+            "native_text_index": 6,
+            "type": "dialogue"
+          }
+        ]
+      }
     }
   },
   "kind": "scenario",

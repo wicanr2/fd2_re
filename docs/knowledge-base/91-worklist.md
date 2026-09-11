@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 18 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 19 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -63,15 +63,15 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 怎樣算做完：六筆各自找到寫入端與消費端，或明確記錄它們是同一個 producer 的不同分支。
 
-### 死亡效果型態 3 與型態 2 的其他 id 還不可執行
+### 中毒等狀態致死時死亡效果何時分派還沒查清
 
-`native-death-effect-unresolved` · RE待解 · [#17](https://github.com/wicanr2/fd2_re/issues/17) · 仍未完成 · 自承還在 tools/export_units.py
+`status-death-effect-dispatch` · RE待解 · 仍未完成 · 自承還在 remake/cmd/fd2/native_death_program_runtime.go
 
-FDFIELD b22..b24 抄進 runtime `+0x31..+0x33`。型態 0（物品）、1（金幣）與型態 2 的 id 39／41 已資料化；型態 3 與型態 2 的其他 id 沒有閉合的 handler，地圖檔只保留原始 `death_effect`，不產生 `death_reward`。第一關就有兩筆：海盜頭目 `[3, 8]` 與哈諾 `[2, 4]`。原版進城金幣 1000 只說明頭目那筆不給金幣。
+0x1B6B7 只由 0x1548E、0x18D8C、0x1CFF0、0x20C6F 四個行動結算點呼叫，收集條件是 +5 bit0 未設且 HP <= 0。狀態扣血致死若沒有同時設 +5 bit0，死亡效果可能延到下一次行動結算才被收集、以那次的行動者當擊殺者。重製端目前對沒有擊殺者的死亡一律不分派、也不給物品金錢。
 
-怎樣算做完：追到型態 3 與其餘型態 2 handler 的 writer／consumer，資料化成可執行獎勵或明確的無效果，並加測試。
+怎樣算做完：追到狀態扣血致死的 writer 是否設 +5 bit0，決定分派時機與擊殺者，照結論實作並加測試。
 
-證據：`docs/knowledge-base/109-title-to-town-journey-20260911.md §3`
+證據：`docs/knowledge-base/110-death-effects-and-level-cap-20260911.md`
 
 ## data — 可編輯資料還沒就緒
 
@@ -99,17 +99,27 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 
 怎樣算做完：人複核四筆的分類；若有誤判就調整判準並重生 bundle。
 
+### 第 27 關的事件 64 因故事腳本對不齊而不能執行
+
+`ch27-death-event64-text-alignment` · 缺陷 · 仍未完成 · 還沒出現
+
+第 27 關三名敵人（map26 單位 8／9／10）帶死亡效果 `[2, 64]`：第二名倒下時播第 1 句並以 0x35822 放出群組 3／4／5，第三名倒下時播第 2 句並從索引 16 起全員倒下。處理器已轉寫並核對，但 FDTXT_027 與 `assets/story/ch27.json` 在 `count-aligned.json` 裡句數對不上，無法產生原生對白參照，所以劇本沒有這個程式；執行期遇到時停下並指出 `2:64`，群組 3／4／5 也暫時維持開局在場。
+
+怎樣算做完：逐句校對 ch27 故事腳本與 FDTXT_027，讓 count-aligned 對齊；重跑 `tools/sync_native_death_programs.py --write`，ch27 出現 `2:64` 程式、群組 3／4／5 移出開局，逐章死亡程式測試通過。
+
+證據：`docs/knowledge-base/110-death-effects-and-level-cap-20260911.md`
+
 ## runtime — 還沒接進正式執行期
 
-### 升級上限沒有實作
+### 死亡掉落物品時擊殺者背包已滿，沒有原版的轉交提示
 
-`native-level-cap` · 缺陷 · [#18](https://github.com/wicanr2/fd2_re/issues/18) · 仍未完成 · 還沒出現
+`death-reward-item-full-transfer` · 缺陷 · 仍未完成 · 自承還在 remake/cmd/fd2/native_death_program_runtime.go
 
-`0x1E2E0..0x1E2F2`：記錄 `+7` 為 0x1E／0x1F 時等級比 99，其餘比 40，相等就跳離升級處理。重製端 `gainExp` 沒有這道判斷，等級可以無限上升。第一關等級到不了上限，不影響目前的整段對照。
+0x1AA1D 型態 0 在 0x1BB8C 回 -1（背包滿）時走 0x1AA56：顯示 FDTXT `0x1B1` 詢問是否交給同伴，選 YES 經 0x1B932／0x1B722／0x1B8E7 轉交，選 NO 或無人可收時顯示 `0x1B2`。重製端直接塞進隊伍空格。
 
-怎樣算做完：`gainExp` 依 `+7` 套上 40／99 上限並加測試；跳離時經驗是否仍累積要先讀 `0x1E2F2` 的跳躍目標再決定。
+怎樣算做完：照 0x1AA56..0x1AB77 的問句、選擇與轉交順序接上正式介面，並加測試。
 
-證據：`docs/knowledge-base/109-title-to-town-journey-20260911.md §5`
+證據：`docs/knowledge-base/110-death-effects-and-level-cap-20260911.md`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

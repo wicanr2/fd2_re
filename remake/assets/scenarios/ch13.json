@@ -639,5 +639,118 @@
         }
       ]
     }
-  ]
+  ],
+  "native_death_programs": {
+    "3:3": [
+      {
+        "type": "dialogue",
+        "native_source": "0x1ac49",
+        "native_text_index": 3,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch13.json",
+          "scene_index": 2,
+          "line": 0,
+          "source_dat": "FDTXT_013",
+          "string_index": 3,
+          "utterance": 0,
+          "control": "FFED",
+          "operand": 15,
+          "pages": [
+            [
+              "『啊．．』"
+            ]
+          ]
+        }
+      }
+    ],
+    "3:4": [
+      {
+        "type": "dialogue",
+        "native_source": "0x1ac49",
+        "native_text_index": 4,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch13.json",
+          "scene_index": 2,
+          "line": 1,
+          "source_dat": "FDTXT_013",
+          "string_index": 4,
+          "utterance": 0,
+          "control": "FFED",
+          "operand": 17,
+          "pages": [
+            [
+              "『你們消滅不了精靈族的．．",
+              "　啊．．』"
+            ]
+          ]
+        }
+      }
+    ],
+    "3:5": [
+      {
+        "type": "dialogue",
+        "native_source": "0x1ac49",
+        "native_text_index": 5,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch13.json",
+          "scene_index": 2,
+          "line": 2,
+          "source_dat": "FDTXT_013",
+          "string_index": 5,
+          "utterance": 0,
+          "control": "FFED",
+          "operand": 19,
+          "pages": [
+            [
+              "『哇啊．．』"
+            ]
+          ]
+        }
+      }
+    ],
+    "3:6": [
+      {
+        "type": "dialogue",
+        "native_source": "0x1ac49",
+        "native_text_index": 6,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch13.json",
+          "scene_index": 2,
+          "line": 3,
+          "source_dat": "FDTXT_013",
+          "string_index": 6,
+          "utterance": 0,
+          "control": "FFED",
+          "operand": 21,
+          "pages": [
+            [
+              "『啊．．』"
+            ]
+          ]
+        }
+      }
+    ],
+    "3:7": [
+      {
+        "type": "dialogue",
+        "native_source": "0x1ac49",
+        "native_text_index": 7,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch13.json",
+          "scene_index": 2,
+          "line": 4,
+          "source_dat": "FDTXT_013",
+          "string_index": 7,
+          "utterance": 0,
+          "control": "FFED",
+          "operand": 23,
+          "pages": [
+            [
+              "『哇啊．．』"
+            ]
+          ]
+        }
+      }
+    ]
+  }
 }

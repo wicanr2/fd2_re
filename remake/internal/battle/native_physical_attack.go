@@ -238,7 +238,10 @@ func (s *State) awardNativePhysicalExperience(
 	if nativeEXP != nil {
 		exp = float64(nativeEXP.award(damage, d.HP == 0))
 	}
-	return exp, s.GainExp(a, exp, rng)
+	if s.killCancelsExp(d) {
+		exp = 0
+	}
+	return s.AwardExp(a, exp, rng)
 }
 
 // AttackNativePhysicalWithExperience 是正式物理入口：傷害與反擊照原版，經驗值在

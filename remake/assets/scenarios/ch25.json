@@ -1107,5 +1107,55 @@
         }
       ]
     }
-  ]
+  ],
+  "native_death_programs": {
+    "3:3": [
+      {
+        "type": "dialogue",
+        "native_source": "0x1ac49",
+        "native_text_index": 3,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch25.json",
+          "scene_index": 1,
+          "line": 17,
+          "source_dat": "FDTXT_025",
+          "string_index": 3,
+          "utterance": 0,
+          "control": "FFED",
+          "operand": 16,
+          "pages": [
+            [
+              "『約拿．你要代替我．打倒這",
+              "　幫傢伙，要不然．這世界會",
+              "　．．』"
+            ]
+          ]
+        }
+      }
+    ],
+    "3:4": [
+      {
+        "type": "dialogue",
+        "native_source": "0x1ac49",
+        "native_text_index": 4,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch25.json",
+          "scene_index": 1,
+          "line": 18,
+          "source_dat": "FDTXT_025",
+          "string_index": 4,
+          "utterance": 0,
+          "control": "FFED",
+          "operand": 61,
+          "pages": [
+            [
+              "『．可惡，主人不會放過你們",
+              "　的．．到時候你們就會和這",
+              "　世界一起毀滅．．』"
+            ]
+          ]
+        }
+      }
+    ]
+  }
 }

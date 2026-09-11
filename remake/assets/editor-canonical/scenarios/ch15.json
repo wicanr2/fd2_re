@@ -124,7 +124,212 @@
         0
       ],
       "map": 14,
-      "name": "拉卡湖的激戰"
+      "name": "拉卡湖的激戰",
+      "native_death_programs": {
+        "2:39": [
+          {
+            "native_death_op": {
+              "kind": 0,
+              "op": "reward",
+              "value": 211
+            },
+            "native_event_id": 39,
+            "native_source": "0x34f83",
+            "type": "native_death_op"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 0,
+              "operand": 17,
+              "pages": [
+                [
+                  "『咦？這．這不是「光之眼」",
+                  "　寶石嗎？為何獸人族也在收",
+                  "　集這些東西．．』"
+                ]
+              ],
+              "scene_index": 3,
+              "script": "assets/story/ch15.json",
+              "source_dat": "FDTXT_015",
+              "string_index": 11,
+              "utterance": 0
+            },
+            "native_event_id": 39,
+            "native_source": "0x34f9e",
+            "native_text_index": 11,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 1,
+              "operand": 14,
+              "pages": [
+                [
+                  "『傳說中的「魔眼寶石」嗎？",
+                  "　我聽老師說過，聽說它們有",
+                  "　強大的魔力，但這和獸人族"
+                ],
+                [
+                  "　有什麼關係？．．』"
+                ]
+              ],
+              "scene_index": 3,
+              "script": "assets/story/ch15.json",
+              "source_dat": "FDTXT_015",
+              "string_index": 11,
+              "utterance": 1
+            },
+            "native_event_id": 39,
+            "native_source": "0x34f9e",
+            "native_text_index": 11,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 2,
+              "operand": 17,
+              "pages": [
+                [
+                  "『妳也知道嗎？據說它們的償",
+                  "　值並不只是魔力而已，而是",
+                  "　和一件古代的秘密有很大的"
+                ],
+                [
+                  "　關係．．』"
+                ]
+              ],
+              "scene_index": 3,
+              "script": "assets/story/ch15.json",
+              "source_dat": "FDTXT_015",
+              "string_index": 11,
+              "utterance": 2
+            },
+            "native_event_id": 39,
+            "native_source": "0x34f9e",
+            "native_text_index": 11,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 3,
+              "operand": 0,
+              "pages": [
+                [
+                  "『你們在談些什麼？",
+                  "　好像很有趣的樣子！』"
+                ]
+              ],
+              "scene_index": 3,
+              "script": "assets/story/ch15.json",
+              "source_dat": "FDTXT_015",
+              "string_index": 11,
+              "utterance": 3
+            },
+            "native_event_id": 39,
+            "native_source": "0x34f9e",
+            "native_text_index": 11,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 4,
+              "operand": 17,
+              "pages": [
+                [
+                  "『不聊了，",
+                  "　先把仗打完再說！』"
+                ]
+              ],
+              "scene_index": 3,
+              "script": "assets/story/ch15.json",
+              "source_dat": "FDTXT_015",
+              "string_index": 11,
+              "utterance": 4
+            },
+            "native_event_id": 39,
+            "native_source": "0x34f9e",
+            "native_text_index": 11,
+            "type": "dialogue"
+          }
+        ],
+        "3:7": [
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 1,
+              "operand": 64,
+              "pages": [
+                [
+                  "『師父，",
+                  "　我對不起您．．』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch15.json",
+              "source_dat": "FDTXT_015",
+              "string_index": 7,
+              "utterance": 0
+            },
+            "native_source": "0x1ac49",
+            "native_text_index": 7,
+            "type": "dialogue"
+          }
+        ],
+        "3:9": [
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 3,
+              "operand": 16,
+              "pages": [
+                [
+                  "『．啊．主人，救救我．",
+                  "　你答應要給我．",
+                  "　給我力量和．"
+                ],
+                [
+                  "　永恆的．生命的．．』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch15.json",
+              "source_dat": "FDTXT_015",
+              "string_index": 9,
+              "utterance": 0
+            },
+            "native_source": "0x1ac49",
+            "native_text_index": 9,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 4,
+              "operand": 0,
+              "pages": [
+                [
+                  "『糟啦，這一下打得太重了些",
+                  "　等一下沒人可以問話了，",
+                  "　可惜可惜。』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch15.json",
+              "source_dat": "FDTXT_015",
+              "string_index": 9,
+              "utterance": 1
+            },
+            "native_source": "0x1ac49",
+            "native_text_index": 9,
+            "type": "dialogue"
+          }
+        ]
+      }
     }
   },
   "kind": "scenario",

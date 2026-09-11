@@ -120,7 +120,12 @@ func (g *Game) preflightNativeTurnStaging(event battle.NativeTurnEvent) (battle.
 		resolved.Staging.Calls = append([]battle.NativeTurnStagingCall(nil), event.Staging.Calls...)
 		resolved.Staging.Calls[0].Group = group
 	default:
-		return event, nil, nil, false, fmt.Errorf("event%d has no typed staging adapter", event.EventID)
+		if event.Handler != nativeDeathStagingHandler {
+			return event, nil, nil, false, fmt.Errorf("event%d has no typed staging adapter", event.EventID)
+		}
+		if err := validateNativeDeathStaging(event); err != nil {
+			return event, nil, nil, false, err
+		}
 	}
 	base, err := cloneNativeTurnStagingState(g.st)
 	if err != nil {
@@ -236,14 +241,23 @@ func (g *Game) startNativeRawCamp0TurnEvents() (bool, error) {
 		g.beginEnemyPhase()
 		return true, nil
 	}
-	resolved, states, frame, indexed, err := g.preflightNativeTurnStaging(events[0])
-	if err != nil {
+	if err := g.beginNativeStagingJob(events[0], g.beginEnemyPhase); err != nil {
 		return false, err
+	}
+	return true, nil
+}
+
+// beginNativeStagingJob 預檢全部 0x35822 呼叫後才開始第一個鏡頭 tick。回合事件與
+// 死亡事件共用同一個 job；then 在最後一個呼叫的重繪之後執行。
+func (g *Game) beginNativeStagingJob(event battle.NativeTurnEvent, then func()) error {
+	resolved, states, frame, indexed, err := g.preflightNativeTurnStaging(event)
+	if err != nil {
+		return err
 	}
 	job := &nativeTurnStagingJob{
 		event: resolved, states: states,
 		vga:     append([]byte(nil), frame...),
-		indexed: indexed, then: g.beginEnemyPhase,
+		indexed: indexed, then: then,
 	}
 	if indexed {
 		a := g.nativeMapAssets
@@ -251,7 +265,7 @@ func (g *Game) startNativeRawCamp0TurnEvents() (bool, error) {
 		job.baseline = append([]byte(nil), a.PaletteDAC...)
 		palette, err := fdother.VGAPaletteFromDAC(job.dac)
 		if err != nil {
-			return false, err
+			return err
 		}
 		job.palette = palette
 	}
@@ -259,7 +273,7 @@ func (g *Game) startNativeRawCamp0TurnEvents() (bool, error) {
 	g.nativeTurnStaging = job
 	g.sel, g.reach, g.moved = nil, nil, false
 	g.startNativeTurnStagingCall()
-	return true, nil
+	return nil
 }
 
 func (g *Game) startNativeTurnStagingCall() {

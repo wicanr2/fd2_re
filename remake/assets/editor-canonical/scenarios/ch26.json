@@ -469,6 +469,31 @@
       ],
       "map": 25,
       "name": "未知的迴廊",
+      "native_death_programs": {
+        "3:1": [
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 9,
+              "operand": 16,
+              "pages": [
+                [
+                  "『．嚴重受損，指揮控制不能",
+                  "　．系統關閉．．』"
+                ]
+              ],
+              "scene_index": 0,
+              "script": "assets/story/ch26.json",
+              "source_dat": "FDTXT_026",
+              "string_index": 1,
+              "utterance": 0
+            },
+            "native_source": "0x1ac49",
+            "native_text_index": 1,
+            "type": "dialogue"
+          }
+        ]
+      },
       "runtime_append_groups": true
     }
   },

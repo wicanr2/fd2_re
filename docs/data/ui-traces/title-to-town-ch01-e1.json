@@ -33,7 +33,8 @@
    "sha256": "d6960ee1608ecb5ed8bab7cce0734a9d92cc3aec139857a3d1fc0ada4100b43d"
   },
   "key_reads": "docs/data/ui-traces/fd2-opening-length-20260909.json",
-  "no_automatic_info_screen": "0x1B1E7（資訊畫面）唯一呼叫端 0x19F03 在 0x19DF7（巢狀系統選單）；0x19DF7 唯一呼叫端 0x16FED 在 0x16F55（空游標系統選單）；0x16F55 唯一呼叫端 0x118C1，條件是 0x118B3 的 0x12C0D（游標下單位）回 -1"
+  "no_automatic_info_screen": "0x1B1E7（資訊畫面）唯一呼叫端 0x19F03 在 0x19DF7（巢狀系統選單）；0x19DF7 唯一呼叫端 0x16FED 在 0x16F55（空游標系統選單）；0x16F55 唯一呼叫端 0x118C1，條件是 0x118B3 的 0x12C0D（游標下單位）回 -1",
+  "death_dialogues": "map0 單位 14（海盜首領）death_effect [3, 8]、單位 9（哈諾）[2, 4]；0x1B6B7 收集、0x1AA1D 型態 3 以 0x15F84([0x53A79], 8) 顯示（0x1AC2B..0x1AC49），[0x53A79] 是 FDTXT 資源 [0x53C03]+1 = FDTXT_001（0x101DC..0x101F6）；型態 2 事件 4（0x343E2）顯示第 7 句。轉寫與逐指令核對見 remake/assets/data/native_death_events.json"
  },
  "expected": {
   "opening_calls": [
@@ -272,6 +273,16 @@
   "original_key_reads_to_control": [
    118,
    122
-  ]
+  ],
+  "death_dialogues": {
+   "source": "FDTXT_001",
+   "required": [
+    8
+   ],
+   "allowed": [
+    7,
+    8
+   ]
+  }
  }
 }

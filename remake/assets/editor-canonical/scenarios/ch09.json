@@ -70,13 +70,616 @@
       ],
       "initial_groups": [
         0,
-        1,
         2,
         3,
         4
       ],
       "map": 8,
-      "name": "騎士的抉擇"
+      "name": "騎士的抉擇",
+      "native_death_programs": {
+        "2:30": [
+          {
+            "native_death_op": {
+              "first": 12,
+              "last": 33,
+              "op": "ai_byte_set_range",
+              "value": 0
+            },
+            "native_event_id": 30,
+            "native_source": "0x34a85",
+            "type": "native_death_op"
+          },
+          {
+            "native_death_op": {
+              "delta": 1,
+              "op": "control_turn",
+              "slot": 0
+            },
+            "native_event_id": 30,
+            "native_source": "0x34aa7",
+            "type": "native_death_op"
+          },
+          {
+            "native_death_op": {
+              "delta": 2,
+              "op": "control_turn",
+              "slot": 1
+            },
+            "native_event_id": 30,
+            "native_source": "0x34ab7",
+            "type": "native_death_op"
+          },
+          {
+            "native_death_op": {
+              "op": "record_bytes",
+              "unit": 11,
+              "writes": [
+                [
+                  5,
+                  0,
+                  1
+                ],
+                [
+                  6,
+                  1,
+                  1
+                ],
+                [
+                  7,
+                  6,
+                  1
+                ],
+                [
+                  8,
+                  6,
+                  1
+                ],
+                [
+                  49,
+                  255,
+                  1
+                ],
+                [
+                  52,
+                  128,
+                  1
+                ],
+                [
+                  64,
+                  1,
+                  2
+                ]
+              ]
+            },
+            "native_event_id": 30,
+            "native_source": "0x34ac8",
+            "type": "native_death_op"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 0,
+              "operand": 11,
+              "pages": [
+                [
+                  "『唔．公主殿下，您為何．",
+                  "　為何要帶這些人來加害",
+                  "　陛下．．』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 2,
+              "utterance": 0
+            },
+            "native_event_id": 30,
+            "native_source": "0x34af0",
+            "native_text_index": 2,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 1,
+              "operand": 8,
+              "pages": [
+                [
+                  "『萊汀，我怎麼會想要加害",
+                  "　父王！宮中到底發生了",
+                  "　什麼事？』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 2,
+              "utterance": 1
+            },
+            "native_event_id": 30,
+            "native_source": "0x34af0",
+            "native_text_index": 2,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 2,
+              "operand": 11,
+              "pages": [
+                [
+                  "『．前幾天有刺客夜襲陛下的",
+                  "　寢宮，想要抓走陛下，幸好",
+                  "　打鬥聲驚動了侍衛，"
+                ],
+                [
+                  "　衛兵衝進來救駕，陛下才倖",
+                  "　免於難．』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 2,
+              "utterance": 2
+            },
+            "native_event_id": 30,
+            "native_source": "0x34af0",
+            "native_text_index": 2,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 3,
+              "operand": 8,
+              "pages": [
+                [
+                  "『有這種事？！說下去！』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 2,
+              "utterance": 3
+            },
+            "native_event_id": 30,
+            "native_source": "0x34af0",
+            "native_text_index": 2,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 4,
+              "operand": 11,
+              "pages": [
+                [
+                  "『刺客臨走前還揚言，",
+                  "　幾天之內一定會再來．．",
+                  "　陛下遭到這種驚嚇，"
+                ],
+                [
+                  "　幾天來一直在床上休義．』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 2,
+              "utterance": 4
+            },
+            "native_event_id": 30,
+            "native_source": "0x34af0",
+            "native_text_index": 2,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 5,
+              "operand": 0,
+              "pages": [
+                [
+                  "『這件事又為何會扯到我們",
+                  "　身上？』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 2,
+              "utterance": 5
+            },
+            "native_event_id": 30,
+            "native_source": "0x34af0",
+            "native_text_index": 2,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 6,
+              "operand": 11,
+              "pages": [
+                [
+                  "『為了搜查可疑份子，我們在",
+                  "　王國各地派出調查隊，結果",
+                  "　又發現了不少怪事，例如普"
+                ],
+                [
+                  "　里茲港的失蹤事件，而你們",
+                  "　又惹上了調查隊，結果．』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 2,
+              "utterance": 6
+            },
+            "native_event_id": 30,
+            "native_source": "0x34af0",
+            "native_text_index": 2,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 7,
+              "operand": 8,
+              "pages": [
+                [
+                  "『大臣們一致認為我們就是刺",
+                  "　客？這太荒謬了！』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 2,
+              "utterance": 7
+            },
+            "native_event_id": 30,
+            "native_source": "0x34af0",
+            "native_text_index": 2,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 8,
+              "operand": 11,
+              "pages": [
+                [
+                  "『葛雷大人相當支持這種說法",
+                  "　所以命令我們禁衛軍派兵攻",
+                  "　擊你們．．』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 2,
+              "utterance": 8
+            },
+            "native_event_id": 30,
+            "native_source": "0x34af0",
+            "native_text_index": 2,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 9,
+              "operand": 8,
+              "pages": [
+                [
+                  "『不是父王下令的嗎？怎麼又",
+                  "　變成葛雷了？』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 2,
+              "utterance": 9
+            },
+            "native_event_id": 30,
+            "native_source": "0x34af0",
+            "native_text_index": 2,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 10,
+              "operand": 11,
+              "pages": [
+                [
+                  "『陛下多日來一直臥病在床，",
+                  "　軍令方面都是經由葛雷大人",
+                  "　發佈．』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 2,
+              "utterance": 10
+            },
+            "native_event_id": 30,
+            "native_source": "0x34af0",
+            "native_text_index": 2,
+            "type": "dialogue"
+          },
+          {
+            "act_immediately": true,
+            "groups": [
+              1
+            ],
+            "native_event_id": 30,
+            "native_spawns": [
+              {
+                "group": 1,
+                "raw_placement_gate": 0,
+                "source": "0x34b17",
+                "via": "spawn_group"
+              }
+            ],
+            "type": "spawn_group"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 0,
+              "operand": 34,
+              "pages": [
+                [
+                  "『禁衛軍隊長萊汀，想不到你",
+                  "　竟敢和盜匪勾結，我們奉葛",
+                  "　雷大人之命將你逮捕！"
+                ],
+                [
+                  "　趕快束手就擒吧！』"
+                ]
+              ],
+              "scene_index": 3,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 3,
+              "utterance": 0
+            },
+            "native_event_id": 30,
+            "native_source": "0x34b21",
+            "native_text_index": 3,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 1,
+              "operand": 11,
+              "pages": [
+                [
+                  "『可惡，我明白了，葛雷這個",
+                  "　該死的叛徒．．』"
+                ]
+              ],
+              "scene_index": 3,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 3,
+              "utterance": 1
+            },
+            "native_event_id": 30,
+            "native_source": "0x34b21",
+            "native_text_index": 3,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 2,
+              "operand": 8,
+              "pages": [
+                [
+                  "『萊汀，照這樣看來，父王處",
+                  "　境危險，我們先設法殺進去",
+                  "　再說！』"
+                ]
+              ],
+              "scene_index": 3,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 3,
+              "utterance": 2
+            },
+            "native_event_id": 30,
+            "native_source": "0x34b21",
+            "native_text_index": 3,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 3,
+              "operand": 11,
+              "pages": [
+                [
+                  "『殿下，屬下被奸人所騙，",
+                  "　有負保護陛下的使命，",
+                  "　請讓屬下和你們一起去！』"
+                ]
+              ],
+              "scene_index": 3,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 3,
+              "utterance": 3
+            },
+            "native_event_id": 30,
+            "native_source": "0x34b21",
+            "native_text_index": 3,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 4,
+              "operand": 8,
+              "pages": [
+                [
+                  "『你受傷這麼重，還是先．．",
+                  "　』"
+                ]
+              ],
+              "scene_index": 3,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 3,
+              "utterance": 4
+            },
+            "native_event_id": 30,
+            "native_source": "0x34b21",
+            "native_text_index": 3,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 5,
+              "operand": 0,
+              "pages": [
+                [
+                  "『喂！希莉亞，現在情況緊急",
+                  "　我看這傢伙蠻能打的，叫瑪",
+                  "　琳用法術給他治一下傷就可"
+                ],
+                [
+                  "　以上陣了，應該可以多少幫",
+                  "　上點忙吧！』"
+                ]
+              ],
+              "scene_index": 3,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 3,
+              "utterance": 5
+            },
+            "native_event_id": 30,
+            "native_source": "0x34b21",
+            "native_text_index": 3,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 6,
+              "operand": 8,
+              "pages": [
+                [
+                  "『索爾，你說話也客氣點．．",
+                  "　』"
+                ]
+              ],
+              "scene_index": 3,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 3,
+              "utterance": 6
+            },
+            "native_event_id": 30,
+            "native_source": "0x34b21",
+            "native_text_index": 3,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 7,
+              "operand": 11,
+              "pages": [
+                [
+                  "『公主殿下，請給屬下一個將",
+                  "　功贖罪的機會！』"
+                ]
+              ],
+              "scene_index": 3,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 3,
+              "utterance": 7
+            },
+            "native_event_id": 30,
+            "native_source": "0x34b21",
+            "native_text_index": 3,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 8,
+              "operand": 0,
+              "pages": [
+                [
+                  "『這不就好了嗎？』"
+                ]
+              ],
+              "scene_index": 3,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 3,
+              "utterance": 8
+            },
+            "native_event_id": 30,
+            "native_source": "0x34b21",
+            "native_text_index": 3,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 9,
+              "operand": 8,
+              "pages": [
+                [
+                  "『好吧，容我再借重一次大家",
+                  "　的力量！我們上！』"
+                ]
+              ],
+              "scene_index": 3,
+              "script": "assets/story/ch09.json",
+              "source_dat": "FDTXT_009",
+              "string_index": 3,
+              "utterance": 9
+            },
+            "native_event_id": 30,
+            "native_source": "0x34b21",
+            "native_text_index": 3,
+            "type": "dialogue"
+          },
+          {
+            "native_death_op": {
+              "op": "exp_cancel"
+            },
+            "native_event_id": 30,
+            "native_source": "0x34b48",
+            "type": "native_death_op"
+          },
+          {
+            "native_death_op": {
+              "index": 16,
+              "op": "state_set",
+              "value": 2
+            },
+            "native_event_id": 30,
+            "native_source": "0x34b52",
+            "type": "native_death_op"
+          }
+        ]
+      }
     }
   },
   "kind": "scenario",

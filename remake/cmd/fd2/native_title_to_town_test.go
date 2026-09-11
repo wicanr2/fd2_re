@@ -51,6 +51,7 @@ type journeyLine struct {
 	Pages     int    `json:"pages"`
 	Turn      int    `json:"turn,omitempty"`
 	Presses   int    `json:"presses_before"`
+	Death     bool   `json:"death,omitempty"` // 由死亡程式播出（0x1AA1D），不是回合事件
 }
 
 type journeyUnit struct {
@@ -170,7 +171,8 @@ func (j *journeyTrace) observe(g *Game) {
 		j.lastLineSig = ""
 	} else {
 		top := g.dialog[len(g.dialog)-1]
-		line := journeyLine{Node: node, Phase: journeyPhase(g), Presses: j.Presses, Turn: journeyTurn(g)}
+		line := journeyLine{Node: node, Phase: journeyPhase(g), Presses: j.Presses, Turn: journeyTurn(g),
+			Death: g.deathProgramRunning}
 		if top.NativeDialogue != nil {
 			nd := top.NativeDialogue
 			line.Source, line.String, line.Utterance = nd.SourceDAT, nd.StringIndex, nd.Utterance
@@ -527,7 +529,12 @@ type journeyEvidence struct {
 			HP       int `json:"hp"`
 		} `json:"turn1_runtime"`
 		BattleEventStrings [][2]int `json:"battle_event_strings"`
-		Postbattle         struct {
+		DeathDialogues     struct {
+			Source   string `json:"source"`
+			Required []int  `json:"required"`
+			Allowed  []int  `json:"allowed"`
+		} `json:"death_dialogues"`
+		Postbattle struct {
 			Source     string `json:"source"`
 			String     int    `json:"string"`
 			Utterances int    `json:"utterances"`
@@ -562,7 +569,17 @@ func compareJourneyToEvidence(t *testing.T, j *journeyTrace) {
 	utterances := 0
 	var post []journeyLine
 	var battleCalls [][2]int
+	var deathStrings []int
 	for _, l := range j.Lines {
+		if l.Node == journeyBattleNode && l.Death {
+			if l.Utterance == 0 {
+				deathStrings = append(deathStrings, l.String)
+			}
+			if l.Source != want.DeathDialogues.Source {
+				t.Errorf("死亡台詞來自 %s，第一關戰場文字庫是 %s", l.Source, want.DeathDialogues.Source)
+			}
+			continue
+		}
 		switch l.Node {
 		case journeyOpeningNode:
 			utterances++
@@ -615,6 +632,25 @@ func compareJourneyToEvidence(t *testing.T, j *journeyTrace) {
 	// 3. 四個回合事件的 (回合, 字串) 順序。
 	if fmt.Sprint(battleCalls) != fmt.Sprint(want.BattleEventStrings) {
 		t.Errorf("戰場事件對白與原版不同：重製 %v，原版 %v", battleCalls, want.BattleEventStrings)
+	}
+
+	// 3b. 死亡台詞：頭目 [3,8] 必定出現一次（勝利條件是敵方全滅）；哈諾的事件 4 會播
+	// 第 7 句，但哈諾倒不倒取決於戰局，所以只准出現、不強制。
+	allowed := map[int]bool{}
+	for _, s := range want.DeathDialogues.Allowed {
+		allowed[s] = true
+	}
+	counts := map[int]int{}
+	for _, s := range deathStrings {
+		counts[s]++
+		if !allowed[s] {
+			t.Errorf("死亡台詞出現字串 %d，第一關只有 %v", s, want.DeathDialogues.Allowed)
+		}
+	}
+	for _, s := range want.DeathDialogues.Required {
+		if counts[s] != 1 {
+			t.Errorf("死亡台詞字串 %d 出現 %d 次，應恰好一次", s, counts[s])
+		}
 	}
 
 	// 4. 戰後過場：FDTXT_001 字串 9、13 句。

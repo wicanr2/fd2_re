@@ -25,7 +25,10 @@ type Scenario struct {
 	Events                []Event                `json:"events"`
 	NativeFieldEventRules []NativeFieldEventRule `json:"native_field_event_rules,omitempty"`
 	NativeTurnEvents      []NativeTurnEvent      `json:"native_turn_events,omitempty"`
-	pendingJoins          []int
+	// NativeDeathPrograms 是死亡效果型態 2／3 降成的動作清單，鍵是「型態:值」。
+	// 來源與逐動作的原始位址見 native_death_program.go。
+	NativeDeathPrograms map[string][]Action `json:"native_death_programs,omitempty"`
+	pendingJoins        []int
 }
 
 // NativeTurnEvent preserves one live FDFIELD three-byte row consumer without
@@ -208,6 +211,10 @@ type Action struct {
 	// EventStateIndex/Value 僅供已證實的 battle-local raw byte 寫入。
 	EventStateIndex *int `json:"event_state_index,omitempty"`
 	EventStateValue *int `json:"event_state_value,omitempty"`
+	// NativeWhen 是原版處理器裡夾在動作之間的條件，執行到這個動作時才判斷。
+	NativeWhen *NativeActionWhen `json:"native_when,omitempty"`
+	// NativeDeathOp 承載死亡事件處理器裡沒有既有動作種類可表達的原語。
+	NativeDeathOp *NativeDeathOp `json:"native_death_op,omitempty"`
 }
 
 // NativeEventDialogue 僅描述資料來源，原生顯示與輸入由 GUI 事件擁有者執行。

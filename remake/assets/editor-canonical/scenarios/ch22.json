@@ -237,6 +237,90 @@
       ],
       "map": 21,
       "name": "遠古呼喚",
+      "native_death_programs": {
+        "2:51": [
+          {
+            "native_death_op": {
+              "kind": 0,
+              "op": "reward",
+              "value": 101
+            },
+            "native_event_id": 51,
+            "native_source": "0x352a9",
+            "type": "native_death_op"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 9,
+              "operand": 16,
+              "pages": [
+                [
+                  "『．這些卑賤的蟲蟻．為何會",
+                  "　如此厲害．．主人．．』"
+                ]
+              ],
+              "scene_index": 1,
+              "script": "assets/story/ch22.json",
+              "source_dat": "FDTXT_022",
+              "string_index": 3,
+              "utterance": 0
+            },
+            "native_event_id": 51,
+            "native_source": "0x352c4",
+            "native_text_index": 3,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 0,
+              "operand": 0,
+              "pages": [
+                [
+                  "『唉！又失手了，本來這回我",
+                  "　有更多話想問他．．』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch22.json",
+              "source_dat": "FDTXT_022",
+              "string_index": 3,
+              "utterance": 1
+            },
+            "native_event_id": 51,
+            "native_source": "0x352c4",
+            "native_text_index": 3,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 1,
+              "operand": 24,
+              "pages": [
+                [
+                  "『沒關係，我們得到了這傳送",
+                  "　法杖，只要啟動他們布下的",
+                  "　這個魔法陣，就可以直接傳"
+                ],
+                [
+                  "　送到他們的根據地了。』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch22.json",
+              "source_dat": "FDTXT_022",
+              "string_index": 3,
+              "utterance": 2
+            },
+            "native_event_id": 51,
+            "native_source": "0x352c4",
+            "native_text_index": 3,
+            "type": "dialogue"
+          }
+        ]
+      },
       "runtime_append_groups": true
     }
   },

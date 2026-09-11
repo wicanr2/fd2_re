@@ -94,11 +94,236 @@
       ],
       "initial_groups": [
         0,
-        2,
         3
       ],
       "map": 5,
-      "name": "普里茲港"
+      "name": "普里茲港",
+      "native_acting_resources": "assets/cutscenes/acting/map32.json",
+      "native_death_programs": {
+        "2:23": [
+          {
+            "native_death_op": {
+              "first": 8,
+              "last": 28,
+              "mode": 0,
+              "op": "ai_mode_range"
+            },
+            "native_event_id": 23,
+            "native_source": "0x3484e",
+            "type": "native_death_op"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 9,
+              "operand": 8,
+              "pages": [
+                [
+                  "『你．你們不是一般匪徒，",
+                  "　你們．到底有何目的？．』"
+                ]
+              ],
+              "scene_index": 4,
+              "script": "assets/story/ch06.json",
+              "source_dat": "FDTXT_006",
+              "string_index": 4,
+              "utterance": 0
+            },
+            "native_event_id": 23,
+            "native_source": "0x3485c",
+            "native_text_index": 4,
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEE",
+              "line": 10,
+              "operand": 0,
+              "pages": [
+                [
+                  "『這一切只是誤會而已，我",
+                  "　們─』"
+                ]
+              ],
+              "scene_index": 4,
+              "script": "assets/story/ch06.json",
+              "source_dat": "FDTXT_006",
+              "string_index": 4,
+              "utterance": 1
+            },
+            "native_event_id": 23,
+            "native_source": "0x3485c",
+            "native_text_index": 4,
+            "type": "dialogue"
+          },
+          {
+            "act_immediately": true,
+            "groups": [
+              2
+            ],
+            "native_event_id": 23,
+            "native_spawns": [
+              {
+                "group": 2,
+                "raw_placement_gate": 0,
+                "source": "0x34890",
+                "via": "spawn_group"
+              }
+            ],
+            "native_when": {
+              "round_lt": 15
+            },
+            "type": "spawn_group"
+          },
+          {
+            "grid": [
+              5,
+              17
+            ],
+            "native_event_id": 23,
+            "native_source": "0x3489a",
+            "native_when": {
+              "round_lt": 15
+            },
+            "type": "pan"
+          },
+          {
+            "native_acting": {
+              "resource": 25,
+              "source": "0x348a6"
+            },
+            "native_event_id": 23,
+            "native_source": "0x348a6",
+            "native_when": {
+              "round_lt": 15
+            },
+            "type": "native_acting"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEC",
+              "line": 0,
+              "operand": 33,
+              "pages": [
+                [
+                  "『隊．隊長！這．這是怎麼",
+                  "　回事？！』"
+                ]
+              ],
+              "scene_index": 5,
+              "script": "assets/story/ch06.json",
+              "source_dat": "FDTXT_006",
+              "string_index": 5,
+              "utterance": 0
+            },
+            "native_event_id": 23,
+            "native_source": "0x348b0",
+            "native_text_index": 5,
+            "native_when": {
+              "round_lt": 15
+            },
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 1,
+              "operand": 8,
+              "pages": [
+                [
+                  "『史恩！快去通報邊境守衛",
+                  "　隊，叫他們追捕這批匪徒，",
+                  "　我．我已經盡力了．．』"
+                ]
+              ],
+              "scene_index": 5,
+              "script": "assets/story/ch06.json",
+              "source_dat": "FDTXT_006",
+              "string_index": 5,
+              "utterance": 1
+            },
+            "native_event_id": 23,
+            "native_source": "0x348b0",
+            "native_text_index": 5,
+            "native_when": {
+              "round_lt": 15
+            },
+            "type": "dialogue"
+          },
+          {
+            "native_dialogue_ref": {
+              "control": "FFEC",
+              "line": 2,
+              "operand": 33,
+              "pages": [
+                [
+                  "『隊．隊長！你放心，這件",
+                  "　事我一定辦到！』"
+                ]
+              ],
+              "scene_index": 5,
+              "script": "assets/story/ch06.json",
+              "source_dat": "FDTXT_006",
+              "string_index": 5,
+              "utterance": 2
+            },
+            "native_event_id": 23,
+            "native_source": "0x348b0",
+            "native_text_index": 5,
+            "native_when": {
+              "round_lt": 15
+            },
+            "type": "dialogue"
+          },
+          {
+            "grid": [
+              5,
+              17
+            ],
+            "native_event_id": 23,
+            "native_source": "0x348d7",
+            "native_when": {
+              "round_lt": 15
+            },
+            "type": "pan"
+          },
+          {
+            "native_acting": {
+              "resource": 26,
+              "source": "0x348e3"
+            },
+            "native_event_id": 23,
+            "native_source": "0x348e3",
+            "native_when": {
+              "round_lt": 15
+            },
+            "type": "native_acting"
+          },
+          {
+            "native_death_op": {
+              "op": "mark_inactive",
+              "unit": 33
+            },
+            "native_event_id": 23,
+            "native_source": "0x348ed",
+            "native_when": {
+              "round_lt": 15
+            },
+            "type": "native_death_op"
+          },
+          {
+            "native_death_op": {
+              "op": "range_one"
+            },
+            "native_event_id": 23,
+            "native_source": "0x35c18",
+            "native_when": {
+              "round_lt": 15
+            },
+            "type": "native_death_op"
+          }
+        ]
+      }
     }
   },
   "kind": "scenario",

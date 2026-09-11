@@ -153,7 +153,12 @@ func TestSkyKeyMaterialAssetsMatchOriginalSources(t *testing.T) {
 			t.Fatalf("map%d material = %#v ok=%v", tc.mapID, got, ok)
 		}
 	}
-	for _, tc := range []struct{ mapID, unit, item int }{{14, 58, 0xd3}, {16, 0, 0xd5}} {
+	// 另外兩件素材由死亡事件 39／41 的 0x1AA1D 呼叫給出（rodata 0x52742／0x52745），
+	// 走劇本的死亡程式，不是單位的型態 0 死亡獎勵。
+	for _, tc := range []struct {
+		mapID, unit, item, event int
+		scenario                 string
+	}{{14, 58, 0xd3, 39, "ch15.json"}, {16, 0, 0xd5, 41, "ch17.json"}} {
 		id := strconv.Itoa(tc.mapID)
 		path := filepath.Join("../../assets/maps", "map"+id, "map"+id+"_units.json")
 		st, err := Load(path)
@@ -163,8 +168,25 @@ func TestSkyKeyMaterialAssetsMatchOriginalSources(t *testing.T) {
 		if tc.unit >= len(st.Units) || !containsItem(st.Units[tc.unit].Inventory, tc.item) {
 			t.Fatalf("map%d unit%d inventory missing %#x", tc.mapID, tc.unit, tc.item)
 		}
-		if st.Units[tc.unit].DeathReward == nil || st.Units[tc.unit].DeathReward.Type != 0 || st.Units[tc.unit].DeathReward.Value != tc.item {
-			t.Fatalf("map%d unit%d lowered death reward = %#v", tc.mapID, tc.unit, st.Units[tc.unit].DeathReward)
+		u := st.Units[tc.unit]
+		if kind, value, ok := NativeDeathEffectOf(u); !ok || kind != 2 || value != tc.event || u.DeathReward != nil {
+			t.Fatalf("map%d unit%d death effect = (%d,%d,%v) reward=%#v", tc.mapID, tc.unit, kind, value, ok, u.DeathReward)
+		}
+		sc, err := LoadScenario(filepath.Join("../../assets/scenarios", tc.scenario))
+		if err != nil {
+			t.Fatal(err)
+		}
+		rewards := 0
+		for _, action := range sc.NativeDeathPrograms["2:"+strconv.Itoa(tc.event)] {
+			if op := action.NativeDeathOp; op != nil && op.Op == "reward" {
+				if op.Kind != 0 || op.Value != tc.item {
+					t.Fatalf("%s event%d reward = %#v", tc.scenario, tc.event, op)
+				}
+				rewards++
+			}
+		}
+		if rewards != 1 {
+			t.Fatalf("%s event%d has %d reward ops, want 1", tc.scenario, tc.event, rewards)
 		}
 	}
 	sc, err := LoadScenario("../../assets/scenarios/ch11.json")

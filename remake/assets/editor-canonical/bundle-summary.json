@@ -2209,24 +2209,6 @@
           "message": "欄位已完整保留於 extensions.legacy",
           "path": "events[4]",
           "severity": "warning"
-        },
-        {
-          "code": "unmapped_field",
-          "message": "欄位已完整保留於 extensions.legacy",
-          "path": "events[5].actions[0]",
-          "severity": "warning"
-        },
-        {
-          "code": "unmapped_field",
-          "message": "欄位已完整保留於 extensions.legacy",
-          "path": "events[5].actions[1]",
-          "severity": "warning"
-        },
-        {
-          "code": "unmapped_field",
-          "message": "欄位已完整保留於 extensions.legacy",
-          "path": "events[5]",
-          "severity": "warning"
         }
       ],
       "kind": "scenario",
@@ -17195,11 +17177,11 @@
       "source": "remake/assets/scenarios/campaign_full.json"
     },
     {
-      "diagnostics": 69,
+      "diagnostics": 66,
       "document_id": "legacy/scenario/85ef61153e22/ch01",
       "kind": "scenario",
       "output": "scenarios/ch01.json",
-      "sha256": "bcee1f30c048d5d96fd7322d90858fd386b8ce4c1c4d8bdff2f7e183f87908cb",
+      "sha256": "963d59d1ee6ad058c70131a7988e97cacc7850c66c9974c93dc81345c917cc3a",
       "source": "remake/assets/scenarios/ch01.json"
     },
     {
@@ -17207,7 +17189,7 @@
       "document_id": "legacy/scenario/b1fa7b335f29/ch02",
       "kind": "scenario",
       "output": "scenarios/ch02.json",
-      "sha256": "7f333ecd3e648b151fe2bef59f0f9637a1617e41fe3eecd9e8951b18b923b5cc",
+      "sha256": "33ed9fa72da14d0eb74957509cd60fe8839c3f36664f33c26a3a65321f9579ad",
       "source": "remake/assets/scenarios/ch02.json"
     },
     {
@@ -17215,7 +17197,7 @@
       "document_id": "legacy/scenario/829350ab70eb/ch03",
       "kind": "scenario",
       "output": "scenarios/ch03.json",
-      "sha256": "a88289b1449dea449f65b2dde90bb4094a4e61c2618e1d1322f7741063c7c07f",
+      "sha256": "0a42019b04ceb9ab43f778465eb6fa209ff0029936e69db367211c23a58ea243",
       "source": "remake/assets/scenarios/ch03.json"
     },
     {
@@ -17223,7 +17205,7 @@
       "document_id": "legacy/scenario/a74122d27e06/ch04",
       "kind": "scenario",
       "output": "scenarios/ch04.json",
-      "sha256": "d322753ee0971a2401cff37ed11962e07c746e8fdacbf16eda784f3802b94595",
+      "sha256": "b9ab5f26d86a59714c34e19ce42cb591f5ad2c227db1677f66ff55a0bcedfa1f",
       "source": "remake/assets/scenarios/ch04.json"
     },
     {
@@ -17231,7 +17213,7 @@
       "document_id": "legacy/scenario/93c73d2f3c57/ch05",
       "kind": "scenario",
       "output": "scenarios/ch05.json",
-      "sha256": "6a7b4daece950b55862a46eb2fbe38066f1d1b683b0a41ee355c646b7b1f7081",
+      "sha256": "9a7234d4c49078135aef6bb573b2158a155485bc17249696caeb0371879b0888",
       "source": "remake/assets/scenarios/ch05.json"
     },
     {
@@ -17239,7 +17221,7 @@
       "document_id": "legacy/scenario/924f41dae3ae/ch06",
       "kind": "scenario",
       "output": "scenarios/ch06.json",
-      "sha256": "5312bcf0d916614f50805d4cdd500f76f7163b93106a0a30bc342d77b11c6efc",
+      "sha256": "c53c33d8920e34e6a52e4cea37999e623b7c54c9bdcde6bb48b4018415ca20b1",
       "source": "remake/assets/scenarios/ch06.json"
     },
     {
@@ -17247,7 +17229,7 @@
       "document_id": "legacy/scenario/60b92dc1691c/ch07",
       "kind": "scenario",
       "output": "scenarios/ch07.json",
-      "sha256": "1ab6f5f5a61753e16c1823a8a4490144da6221e8bf0b75dc94e64800fed6e6e0",
+      "sha256": "f89dc2de8278017f2bb64b6b177c7f5b15f06b34ee8ed39489d30f654158000c",
       "source": "remake/assets/scenarios/ch07.json"
     },
     {
@@ -17255,7 +17237,7 @@
       "document_id": "legacy/scenario/de12aba72aaa/ch08",
       "kind": "scenario",
       "output": "scenarios/ch08.json",
-      "sha256": "9b275833f6a733ef6985aecb51a2f3ab201db06b7b28c31ff5b6c7e5ef70d554",
+      "sha256": "d1e29d693da0e1118bc7bb3e1d5a578ca90f893af222e17a97826a5e70c8ae7b",
       "source": "remake/assets/scenarios/ch08.json"
     },
     {
@@ -17263,7 +17245,7 @@
       "document_id": "legacy/scenario/90ff910407c0/ch09",
       "kind": "scenario",
       "output": "scenarios/ch09.json",
-      "sha256": "98b079b0e89dbe26622b13651216fbe87ca6d0078100aea15edb999e5e88ed23",
+      "sha256": "815b3fdb5b809be01aefdb701547c0824e3d5b556772c38686100f0fb4e39261",
       "source": "remake/assets/scenarios/ch09.json"
     },
     {
@@ -17271,7 +17253,7 @@
       "document_id": "legacy/scenario/82293901dfcc/ch10",
       "kind": "scenario",
       "output": "scenarios/ch10.json",
-      "sha256": "c705be478ac6ef1328510b2644715c92d881cda310d0d05681332c4582b089d8",
+      "sha256": "135315b98967b05b5717c7cc116d0d9edb197b019048fc8a91366af2e04d5dd7",
       "source": "remake/assets/scenarios/ch10.json"
     },
     {
@@ -17287,7 +17269,7 @@
       "document_id": "legacy/scenario/d0652b895346/ch12",
       "kind": "scenario",
       "output": "scenarios/ch12.json",
-      "sha256": "176380af6ed7247a750d031e7e1f1374de8782449ba19a20b4698cfdcff84b9d",
+      "sha256": "51969d5efe91f8999a0c9364cda3e29be9be53626d72a93d7c7a48968ec0e952",
       "source": "remake/assets/scenarios/ch12.json"
     },
     {
@@ -17295,7 +17277,7 @@
       "document_id": "legacy/scenario/3f9cedff7b64/ch13",
       "kind": "scenario",
       "output": "scenarios/ch13.json",
-      "sha256": "39d751152dd9a6edba3282b0b5f1f39f0c6ad89be4305a75a8f11fc7e5b9db31",
+      "sha256": "f1897b2f96c74215e131c8e09eccb271219c54eefbc038874ccffaf1053ad7f2",
       "source": "remake/assets/scenarios/ch13.json"
     },
     {
@@ -17311,7 +17293,7 @@
       "document_id": "legacy/scenario/a24962ba3987/ch15",
       "kind": "scenario",
       "output": "scenarios/ch15.json",
-      "sha256": "2f9069d53306d2972e2a197b24916b74ab3419f416f4e2109192d71b43daca12",
+      "sha256": "353109835b26bdb6d8041864bcc2e616e87aa579fc6d4b87ffaedacd14e9d7ff",
       "source": "remake/assets/scenarios/ch15.json"
     },
     {
@@ -17319,7 +17301,7 @@
       "document_id": "legacy/scenario/273050bbe74e/ch16",
       "kind": "scenario",
       "output": "scenarios/ch16.json",
-      "sha256": "8b7a32201ce5218ea404388a98b85fb472aca60b80ff1c0ff86a30766dc123b0",
+      "sha256": "54c7d3d3f1fa92a4ce199768ad15d53c6874256e32a1fc3caa91b0715108f2ae",
       "source": "remake/assets/scenarios/ch16.json"
     },
     {
@@ -17327,7 +17309,7 @@
       "document_id": "legacy/scenario/7ba5d82bdc2a/ch17",
       "kind": "scenario",
       "output": "scenarios/ch17.json",
-      "sha256": "6dcc1f6a54d71d485805b60499c5b7e95760169fe438056208b471599142ff42",
+      "sha256": "e0d3065179bbafb98f7a44b8c793df8f442fa75ed404b9d3b96bac7d0215a2f7",
       "source": "remake/assets/scenarios/ch17.json"
     },
     {
@@ -17335,7 +17317,7 @@
       "document_id": "legacy/scenario/d07118eaa936/ch18",
       "kind": "scenario",
       "output": "scenarios/ch18.json",
-      "sha256": "abc920ffc7f2c7cfe0a2aece1526415969c7900cbda75ffaa80f79dac24b9d77",
+      "sha256": "4ecd50552807703ad528411e03760277866dfef4bd241b9557f5d8e546da1cc3",
       "source": "remake/assets/scenarios/ch18.json"
     },
     {
@@ -17343,7 +17325,7 @@
       "document_id": "legacy/scenario/288224cee9e2/ch19",
       "kind": "scenario",
       "output": "scenarios/ch19.json",
-      "sha256": "f9e5fb68011ae78927cc2c21d7fd028ff7c81a76a2adbd0fd5d359d0ff8a8692",
+      "sha256": "e20cfa8c4c4ff9a6df90b54be8bac0d75bab654d8bc4887e7a49177ff3df8b87",
       "source": "remake/assets/scenarios/ch19.json"
     },
     {
@@ -17351,7 +17333,7 @@
       "document_id": "legacy/scenario/3d772c70425d/ch20",
       "kind": "scenario",
       "output": "scenarios/ch20.json",
-      "sha256": "7f4f1d9fa7a9dc363c2bb4bfe94ebb9f687ab8493dd0a26e29124c2229dcca9d",
+      "sha256": "5d9b47fee67fae7e4cde23ae9a7b7e3ac0127d6ff2810dea03cc14aa73c495f9",
       "source": "remake/assets/scenarios/ch20.json"
     },
     {
@@ -17359,7 +17341,7 @@
       "document_id": "legacy/scenario/9f036d27e49e/ch21",
       "kind": "scenario",
       "output": "scenarios/ch21.json",
-      "sha256": "efebabe1ecb6528e2f19f5711765d54a22fc101d50a2dfc54c1a47b21cc9d3af",
+      "sha256": "9cbff66b6cc2cb484dff53dea4b0220326294b17729684daf3a887c28264fa45",
       "source": "remake/assets/scenarios/ch21.json"
     },
     {
@@ -17367,7 +17349,7 @@
       "document_id": "legacy/scenario/e10e06b3e6a5/ch22",
       "kind": "scenario",
       "output": "scenarios/ch22.json",
-      "sha256": "ade055ec7d146a7c609a002a89be9b7bc12dd808c0f63a990bb2e99a2c09bf01",
+      "sha256": "ccf631e46a7f6b2e675bdaf74415f7434adecee3a733c05981665020925432d3",
       "source": "remake/assets/scenarios/ch22.json"
     },
     {
@@ -17375,7 +17357,7 @@
       "document_id": "legacy/scenario/b383fb03ad0d/ch23",
       "kind": "scenario",
       "output": "scenarios/ch23.json",
-      "sha256": "cb32ef199dd8d9f275ce097c447e6e4bf391a1f4177cd4c423b9baadaf8cab45",
+      "sha256": "c71ec59b1a355457c3c209b65c0440476530ae4fca2d8ce4d4909def6b583756",
       "source": "remake/assets/scenarios/ch23.json"
     },
     {
@@ -17391,7 +17373,7 @@
       "document_id": "legacy/scenario/fcd0c18fc3ee/ch25",
       "kind": "scenario",
       "output": "scenarios/ch25.json",
-      "sha256": "0d50dd89bfb8a93ccc859a41ade76698b5198c4c3f8d0bfac25726eaaf865258",
+      "sha256": "a546cc41ad3b62a11a8998ea9f85c1b3399fc9135aae7bb595bf32ab4f0d943c",
       "source": "remake/assets/scenarios/ch25.json"
     },
     {
@@ -17399,7 +17381,7 @@
       "document_id": "legacy/scenario/68bb72c4e9c9/ch26",
       "kind": "scenario",
       "output": "scenarios/ch26.json",
-      "sha256": "ceaefa9d912c9b7ee9b759eaebea4a387a2c04175212385f5c9e58378d882452",
+      "sha256": "ffa1c21ba2938104ee9877a124f364db526b4391f0d8c3ce5b69e2ad9f6bcb78",
       "source": "remake/assets/scenarios/ch26.json"
     },
     {
@@ -17415,7 +17397,7 @@
       "document_id": "legacy/scenario/b374ae1a1cf1/ch28",
       "kind": "scenario",
       "output": "scenarios/ch28.json",
-      "sha256": "fa5e460520f4cf614b92323cde8d3da89b3ded8dbc2e6a679f88be16a32a456b",
+      "sha256": "d6e36b9c00dc8966f5630293622edb0aabd265ec9280f2a70b1c66f276d6458f",
       "source": "remake/assets/scenarios/ch28.json"
     },
     {
@@ -17423,7 +17405,7 @@
       "document_id": "legacy/scenario/577db3722319/ch29",
       "kind": "scenario",
       "output": "scenarios/ch29.json",
-      "sha256": "9a757c1c3628240a0d254ed121d560a7c1f833099df671c66258af3da7965fab",
+      "sha256": "5184997df964d56f3c3cf522864c658efac4e1accff5dfda2fb1c517bfb85b32",
       "source": "remake/assets/scenarios/ch29.json"
     },
     {
@@ -17431,7 +17413,7 @@
       "document_id": "legacy/scenario/b5693d71fbbb/ch30",
       "kind": "scenario",
       "output": "scenarios/ch30.json",
-      "sha256": "35278b9987cefe02b702943943ba872f4520680487b7c0136e27157c7e1f92a5",
+      "sha256": "ed83817faa5b05d7bd6312d8ef36bb3d4e603722bd4fc220b2a6f2d10ab7d056",
       "source": "remake/assets/scenarios/ch30.json"
     },
     {

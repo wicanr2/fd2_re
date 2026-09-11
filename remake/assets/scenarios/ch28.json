@@ -1204,5 +1204,73 @@
         }
       ]
     }
-  ]
+  ],
+  "native_death_programs": {
+    "2:67": [
+      {
+        "type": "native_death_op",
+        "native_source": "0x35a39",
+        "native_death_op": {
+          "op": "control_turn",
+          "slot": 1,
+          "delta": 0
+        },
+        "native_event_id": 67
+      }
+    ],
+    "2:71": [
+      {
+        "type": "dialogue",
+        "native_source": "0x35b80",
+        "native_text_index": 2,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch28.json",
+          "scene_index": 1,
+          "line": 6,
+          "source_dat": "FDTXT_028",
+          "string_index": 2,
+          "utterance": 0,
+          "control": "FFEF",
+          "operand": 116,
+          "pages": [
+            [
+              "『．嚴重受損，指揮控制不能",
+              "　．系統關閉．．』"
+            ]
+          ]
+        },
+        "native_event_id": 71,
+        "native_when": {
+          "state_ne": [
+            19,
+            0
+          ]
+        }
+      },
+      {
+        "type": "native_death_op",
+        "native_source": "0x35ba7",
+        "native_death_op": {
+          "op": "clear_hp_from",
+          "first": 20
+        },
+        "native_event_id": 71,
+        "native_when": {
+          "state_ne": [
+            19,
+            0
+          ]
+        }
+      },
+      {
+        "type": "native_death_op",
+        "native_source": "0x35bb1",
+        "native_death_op": {
+          "op": "state_inc",
+          "index": 19
+        },
+        "native_event_id": 71
+      }
+    ]
+  }
 }

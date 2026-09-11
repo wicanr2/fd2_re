@@ -1322,5 +1322,75 @@
         }
       ]
     }
-  ]
+  ],
+  "native_death_programs": {
+    "2:72": [
+      {
+        "type": "native_death_op",
+        "native_source": "0x35bfc",
+        "native_death_op": {
+          "op": "staging",
+          "x": 4,
+          "y": 35,
+          "group": 2
+        },
+        "native_event_id": 72
+      },
+      {
+        "type": "native_death_op",
+        "native_source": "0x35c0a",
+        "native_death_op": {
+          "op": "staging",
+          "x": 14,
+          "y": 35,
+          "group": 3
+        },
+        "native_event_id": 72
+      },
+      {
+        "type": "native_death_op",
+        "native_source": "0x35c18",
+        "native_death_op": {
+          "op": "range_one"
+        },
+        "native_event_id": 72
+      }
+    ],
+    "2:73": [
+      {
+        "type": "native_death_op",
+        "native_source": "0x35aae",
+        "native_death_op": {
+          "op": "state_set",
+          "index": 18,
+          "value": 1
+        },
+        "native_event_id": 73
+      }
+    ],
+    "2:77": [
+      {
+        "type": "native_death_op",
+        "native_source": "0x35ec8",
+        "native_death_op": {
+          "op": "state_set",
+          "index": 19,
+          "value": 1
+        },
+        "native_event_id": 77
+      }
+    ],
+    "2:78": [
+      {
+        "type": "native_death_op",
+        "native_source": "0x35edc",
+        "native_death_op": {
+          "op": "state_set",
+          "index": 20,
+          "value": 1
+        },
+        "native_event_id": 78
+      }
+    ]
+  }
 }

@@ -423,6 +423,10 @@ type Game struct {
 	prevCurX, prevCurY        int                    // 游標移動音偵測
 	aiBusy                    bool                   // AI 回合進行中(逐單位行走動畫)
 	deathRewarded             map[*battle.Unit]bool  // 每個死亡 transition 的 reward 只執行一次
+	pendingDeathPrograms      []pendingDeathProgram  // 本次行動擊倒、帶型態 2／3 死亡效果的單位
+	deathProgramKiller        *battle.Unit           // 正在執行的死亡程式的擊殺者（0x1AA1D 的第一個參數）
+	deathProgramRunning       bool                   // 死亡程式執行中；勝敗判定等它跑完
+	deathProgramDead          *battle.Unit           // 正在分派死亡效果的單位
 	rng                       *rand.Rand             // 施法擲骰(FD2_SEED 可固定,headless 重現)
 	gold                      int                    // 金幣(商店)
 	items                     []string               // 隊伍道具(名稱;道具效果待實裝)
@@ -3518,6 +3522,7 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 				adoptHandlerState = false
 			}
 			g.sc = sc
+			g.bindNativeDeathPrograms()
 			if adoptHandlerState {
 				// 只有 runtime-append scenario 可用 handler 前置陣列取代 authored state。
 				// 若在讀到 scenario 合約前就取代，後續 fallback 即使關閉採用旗標，
@@ -5686,6 +5691,13 @@ func (g *Game) finishSuccessfulUnitAction(actor *battle.Unit, after func()) {
 	if actor == nil {
 		return
 	}
+	// 死亡程式在攻擊演出之後、行動收尾之前執行（0x1CFF0 → 0x1B6B7／0x1AA1D）。
+	if g.runPendingDeathPrograms(func() {
+		g.finishSuccessfulUnitAction(actor, after)
+		g.checkResult()
+	}) {
+		return
+	}
 	finish := func() {
 		actor.Acted = true
 		if actor == g.sel && g.st != nil && g.st.HasNativeMapViewState && actor.HasNativeRecordByte5 {
@@ -5707,12 +5719,11 @@ func (g *Game) finishSuccessfulUnitAction(actor *battle.Unit, after func()) {
 	finish()
 }
 
-// awardDeathReward 執行 exporter 已 lower 的可編輯 death_reward。原版特殊 handler
-// id39/id41 分別把 00 D3 00／00 D5 00 交給同一 reward dispatcher；不是把敵人整個
-// inventory 搬給攻擊者。item 優先放入擊殺者，滿欄時暫用隊伍空格承接，直到物品
-// 使用／給予 UI 完成後再還原原版的互動轉移提示。
+// awardDeathReward 在擊倒當下處理死亡效果：型態 0／1 直接給（只給原版陣營 2 的
+// 擊殺者，見 grantNativeDeathReward），型態 2／3 登記成死亡程式，等行動收尾依記錄
+// 順序執行。每個死亡 transition 只處理一次。
 func (g *Game) awardDeathReward(dead, killer *battle.Unit) {
-	if dead == nil || dead.Alive() || dead.DeathReward == nil {
+	if dead == nil || dead.Alive() {
 		return
 	}
 	if g.deathRewarded == nil {
@@ -5722,30 +5733,10 @@ func (g *Game) awardDeathReward(dead, killer *battle.Unit) {
 		return
 	}
 	g.deathRewarded[dead] = true
-	r := dead.DeathReward
-	switch r.Type {
-	case 0:
-		awarded := false
-		if killer != nil && killer.Camp == battle.Own && len(killer.Inventory) < 8 {
-			awarded = killer.AddInventoryItem(r.Value, false)
-		} else {
-			awarded = g.grantItemToParty(r.Value)
-		}
-		if awarded {
-			if message, ok := g.localeMessage("battle.reward.item", r.Value); ok {
-				g.msg = message
-			}
-		} else {
-			if message, ok := g.localeMessage("battle.reward.item_full", r.Value); ok {
-				g.msg = message
-			}
-		}
-	case 1:
-		g.gold += r.Value
-		if message, ok := g.localeMessage("battle.reward.gold", r.Value); ok {
-			g.msg = message
-		}
+	if r := dead.DeathReward; r != nil && (r.Type == 0 || r.Type == 1) {
+		g.grantNativeDeathReward(r.Type, r.Value, killer)
 	}
+	g.queueNativeDeathProgram(dead, killer)
 }
 
 // walkAnim 沿路徑逐格行走(玩家/AI 移動;FDICON 方向走動幀 + OffX/OffY 內插)。
@@ -7415,6 +7406,10 @@ func (g *Game) confirm() {
 // checkResult 檢查勝負(失敗條件:索爾死;勝利:敵全滅,doc28 第1章)。
 func (g *Game) checkResult() {
 	if g.result != "" || g.sc == nil {
+		return
+	}
+	// 死亡程式還沒跑完（例如頭目的死亡台詞）就先不判；跑完的續行會再判一次。
+	if g.nativeDeathProgramsPending() {
 		return
 	}
 	protect := "索爾"
@@ -10556,6 +10551,7 @@ func loadGame() *Game {
 	if g.st != nil {
 		if sc, err := battle.LoadScenario(assetPath("assets/scenarios/ch01.json")); err == nil {
 			g.sc = sc
+			g.bindNativeDeathPrograms()
 			dialogue, setupErr := sc.SetupChecked(g.st)
 			if setupErr != nil {
 				g.loadErr = "scenario setup: " + setupErr.Error()
@@ -11446,6 +11442,16 @@ func (g *Game) advanceBattleEvent() {
 			return
 		}
 		action := run.actions[run.index]
+		if action.NativeWhen != nil {
+			ok, err := action.NativeWhen.Match(g.st)
+			if err != nil {
+				g.finishBattleEventWithError(err.Error())
+				return
+			}
+			if !ok {
+				continue
+			}
+		}
 		if action.Type == "dialogue" && action.NativeDialogueRef != nil {
 			if err := g.startNativeEventDialogue(action); err != nil {
 				g.finishBattleEventWithError(err.Error())
@@ -11453,6 +11459,11 @@ func (g *Game) advanceBattleEvent() {
 			return
 		}
 		switch action.Type {
+		case "native_death_op":
+			if g.runNativeDeathOp(action) {
+				return
+			}
+			continue
 		case "reset_pose":
 			if g.st == nil {
 				g.finishBattleEventWithError("重設姿態缺少戰場")

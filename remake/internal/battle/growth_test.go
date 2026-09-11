@@ -52,8 +52,9 @@ func TestGainExp_CrossesThreshold_MultiLevel(t *testing.T) {
 	if u.DP != 4+wantDPGain {
 		t.Errorf("DP = %d, want %d", u.DP, 4+wantDPGain)
 	}
-	if u.MaxHP != 42+wantHPGain || u.HP != 42+wantHPGain {
-		t.Errorf("HP/MaxHP = %d/%d, want %d(升級當下回滿新增HP)", u.HP, u.MaxHP, 42+wantHPGain)
+	// 原版升級只加 MaxHP（0x1E529 寫 +0x42），目前 HP +0x40 不變。
+	if u.MaxHP != 42+wantHPGain || u.HP != 42 {
+		t.Errorf("HP/MaxHP = %d/%d, want 42/%d(升級不補目前 HP)", u.HP, u.MaxHP, 42+wantHPGain)
 	}
 }
 

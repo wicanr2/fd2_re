@@ -253,40 +253,55 @@
       "issue": 16
     },
     {
-      "id": "native-death-effect-unresolved",
-      "layer": "re",
-      "category": "RE待解",
-      "title": "死亡效果型態 3 與型態 2 的其他 id 還不可執行",
-      "body": "FDFIELD b22..b24 抄進 runtime `+0x31..+0x33`。型態 0（物品）、1（金幣）與型態 2 的 id 39／41 已資料化；型態 3 與型態 2 的其他 id 沒有閉合的 handler，地圖檔只保留原始 `death_effect`，不產生 `death_reward`。第一關就有兩筆：海盜頭目 `[3, 8]` 與哈諾 `[2, 4]`。原版進城金幣 1000 只說明頭目那筆不給金幣。",
-      "acceptance": "追到型態 3 與其餘型態 2 handler 的 writer／consumer，資料化成可執行獎勵或明確的無效果，並加測試。",
-      "evidence": "docs/knowledge-base/109-title-to-town-journey-20260911.md §3",
-      "verify": {
-        "kind": "present",
-        "paths": [
-          "tools/export_units.py"
-        ],
-        "pattern": "其他型態（含 type 3）語意未全解",
-        "note": "降階規則自己的註解。閉合時這句會改掉。"
-      },
-      "issue": 17
-    },
-    {
-      "id": "native-level-cap",
-      "layer": "runtime",
+      "id": "ch27-death-event64-text-alignment",
+      "layer": "data",
       "category": "缺陷",
-      "title": "升級上限沒有實作",
-      "body": "`0x1E2E0..0x1E2F2`：記錄 `+7` 為 0x1E／0x1F 時等級比 99，其餘比 40，相等就跳離升級處理。重製端 `gainExp` 沒有這道判斷，等級可以無限上升。第一關等級到不了上限，不影響目前的整段對照。",
-      "acceptance": "`gainExp` 依 `+7` 套上 40／99 上限並加測試；跳離時經驗是否仍累積要先讀 `0x1E2F2` 的跳躍目標再決定。",
-      "evidence": "docs/knowledge-base/109-title-to-town-journey-20260911.md §5",
+      "title": "第 27 關的事件 64 因故事腳本對不齊而不能執行",
+      "body": "第 27 關三名敵人（map26 單位 8／9／10）帶死亡效果 `[2, 64]`：第二名倒下時播第 1 句並以 0x35822 放出群組 3／4／5，第三名倒下時播第 2 句並從索引 16 起全員倒下。處理器已轉寫並核對，但 FDTXT_027 與 `assets/story/ch27.json` 在 `count-aligned.json` 裡句數對不上，無法產生原生對白參照，所以劇本沒有這個程式；執行期遇到時停下並指出 `2:64`，群組 3／4／5 也暫時維持開局在場。",
+      "acceptance": "逐句校對 ch27 故事腳本與 FDTXT_027，讓 count-aligned 對齊；重跑 `tools/sync_native_death_programs.py --write`，ch27 出現 `2:64` 程式、群組 3／4／5 移出開局，逐章死亡程式測試通過。",
+      "evidence": "docs/knowledge-base/110-death-effects-and-level-cap-20260911.md",
       "verify": {
         "kind": "absent",
         "paths": [
-          "remake/internal/battle"
+          "remake/assets/scenarios/ch27.json"
         ],
-        "pattern": "0x1E2E0",
-        "note": "實作時註解一定會引用這個位址。"
-      },
-      "issue": 18
+        "pattern": "\"2:64\"",
+        "note": "同步工具產生程式後，劇本裡就會出現這個鍵。"
+      }
+    },
+    {
+      "id": "death-reward-item-full-transfer",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "死亡掉落物品時擊殺者背包已滿，沒有原版的轉交提示",
+      "body": "0x1AA1D 型態 0 在 0x1BB8C 回 -1（背包滿）時走 0x1AA56：顯示 FDTXT `0x1B1` 詢問是否交給同伴，選 YES 經 0x1B932／0x1B722／0x1B8E7 轉交，選 NO 或無人可收時顯示 `0x1B2`。重製端直接塞進隊伍空格。",
+      "acceptance": "照 0x1AA56..0x1AB77 的問句、選擇與轉交順序接上正式介面，並加測試。",
+      "evidence": "docs/knowledge-base/110-death-effects-and-level-cap-20260911.md",
+      "verify": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/native_death_program_runtime.go"
+        ],
+        "pattern": "原版的轉交提示尚未接",
+        "note": "重製端的自承註解。"
+      }
+    },
+    {
+      "id": "status-death-effect-dispatch",
+      "layer": "re",
+      "category": "RE待解",
+      "title": "中毒等狀態致死時死亡效果何時分派還沒查清",
+      "body": "0x1B6B7 只由 0x1548E、0x18D8C、0x1CFF0、0x20C6F 四個行動結算點呼叫，收集條件是 +5 bit0 未設且 HP <= 0。狀態扣血致死若沒有同時設 +5 bit0，死亡效果可能延到下一次行動結算才被收集、以那次的行動者當擊殺者。重製端目前對沒有擊殺者的死亡一律不分派、也不給物品金錢。",
+      "acceptance": "追到狀態扣血致死的 writer 是否設 +5 bit0，決定分派時機與擊殺者，照結論實作並加測試。",
+      "evidence": "docs/knowledge-base/110-death-effects-and-level-cap-20260911.md",
+      "verify": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/native_death_program_runtime.go"
+        ],
+        "pattern": "沒有擊殺者（中毒等狀態致死）不登記",
+        "note": "重製端目前的保守處理。"
+      }
     }
   ]
 }

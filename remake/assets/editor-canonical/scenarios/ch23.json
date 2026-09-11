@@ -142,6 +142,87 @@
       ],
       "map": 22,
       "name": "向天空之旅",
+      "native_death_programs": {
+        "2:53": [
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 5,
+              "operand": 18,
+              "pages": [
+                [
+                  "『嗶，指令系統失效．任務中",
+                  "　止．指令傳輸關閉．．』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch23.json",
+              "source_dat": "FDTXT_023",
+              "string_index": 5,
+              "utterance": 0
+            },
+            "native_event_id": 53,
+            "native_source": "0x3532b",
+            "native_text_index": 5,
+            "type": "dialogue"
+          },
+          {
+            "native_death_op": {
+              "first": 18,
+              "op": "clear_hp_from"
+            },
+            "native_event_id": 53,
+            "native_source": "0x35352",
+            "type": "native_death_op"
+          }
+        ],
+        "3:6": [
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 6,
+              "operand": 16,
+              "pages": [
+                [
+                  "『我怎能．在這種時候．倒下",
+                  "　．．』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch23.json",
+              "source_dat": "FDTXT_023",
+              "string_index": 6,
+              "utterance": 0
+            },
+            "native_source": "0x1ac49",
+            "native_text_index": 6,
+            "type": "dialogue"
+          }
+        ],
+        "3:7": [
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 7,
+              "operand": 17,
+              "pages": [
+                [
+                  "『可惡．我還沒．這廢墟的秘",
+                  "　密．．』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch23.json",
+              "source_dat": "FDTXT_023",
+              "string_index": 7,
+              "utterance": 0
+            },
+            "native_source": "0x1ac49",
+            "native_text_index": 7,
+            "type": "dialogue"
+          }
+        ]
+      },
       "runtime_append_groups": true
     }
   },

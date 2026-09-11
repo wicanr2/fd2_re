@@ -540,6 +540,13 @@ func ackPresents(g *Game) {
 	if g.nativeClassUIJob != nil {
 		g.nativeClassUIJob.drawn = true
 	}
+	// 死亡程式的 0x35822 閃白與 0x35BBA 接的 0x1DB65 呈現也掛在 drawn 上。
+	if g.nativeTurnStaging != nil {
+		g.nativeTurnStaging.drawn = true
+	}
+	if g.nativeCh28PostPresent != nil {
+		g.nativeCh28PostPresent.drawn = true
+	}
 }
 
 // answerNativeTreasurePrompt 回答踩到寶物時跳出的取得提示。單位待機在寶物格

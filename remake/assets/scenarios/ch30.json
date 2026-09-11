@@ -1201,5 +1201,65 @@
         }
       ]
     }
-  ]
+  ],
+  "native_death_programs": {
+    "2:81": [
+      {
+        "type": "native_death_op",
+        "native_source": "0x35f79",
+        "native_death_op": {
+          "op": "state_inc",
+          "index": 16
+        },
+        "native_event_id": 81
+      },
+      {
+        "type": "native_death_op",
+        "native_source": "0x35f81",
+        "native_death_op": {
+          "op": "control_turn",
+          "slot": 0,
+          "delta": 1
+        },
+        "native_event_id": 81
+      }
+    ],
+    "2:83": [
+      {
+        "type": "dialogue",
+        "native_source": "0x36092",
+        "native_text_index": 8,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch30.json",
+          "scene_index": 1,
+          "line": 14,
+          "source_dat": "FDTXT_030",
+          "string_index": 8,
+          "utterance": 0,
+          "control": "FFEF",
+          "operand": 126,
+          "pages": [
+            [
+              "『這怎麼可能．我是至高無上",
+              "　的創造者和支配者．竟然會",
+              "　被這些卑微的螻蟻給打倒．"
+            ],
+            [
+              "　．不．．』"
+            ]
+          ]
+        },
+        "native_event_id": 83
+      },
+      {
+        "type": "native_death_op",
+        "native_source": "0x360b9",
+        "native_death_op": {
+          "op": "clear_hp_from",
+          "first": 20
+        },
+        "native_event_id": 83
+      }
+    ]
+  }
 }

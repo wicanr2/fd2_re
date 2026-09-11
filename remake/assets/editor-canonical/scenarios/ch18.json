@@ -137,6 +137,79 @@
       ],
       "map": 17,
       "name": "遙遠的彼岸",
+      "native_death_programs": {
+        "3:3": [
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 0,
+              "operand": 16,
+              "pages": [
+                [
+                  "『唔，我畢竟是上了年紀，",
+                  "　玩不起這種運動了．．",
+                  "　啊．．』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch18.json",
+              "source_dat": "FDTXT_018",
+              "string_index": 3,
+              "utterance": 0
+            },
+            "native_source": "0x1ac49",
+            "native_text_index": 3,
+            "type": "dialogue"
+          }
+        ],
+        "3:4": [
+          {
+            "native_dialogue_ref": {
+              "control": "FFED",
+              "line": 1,
+              "operand": 17,
+              "pages": [
+                [
+                  "『約拿先生，",
+                  "　您自己要保重．．",
+                  "　我不行了．．』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch18.json",
+              "source_dat": "FDTXT_018",
+              "string_index": 4,
+              "utterance": 0
+            },
+            "native_source": "0x1ac49",
+            "native_text_index": 4,
+            "type": "dialogue"
+          }
+        ],
+        "3:5": [
+          {
+            "native_dialogue_ref": {
+              "control": "FFEF",
+              "line": 2,
+              "operand": 85,
+              "pages": [
+                [
+                  "『可惡．我的同伴們會為我報",
+                  "　仇的．．等著瞧吧．．』"
+                ]
+              ],
+              "scene_index": 2,
+              "script": "assets/story/ch18.json",
+              "source_dat": "FDTXT_018",
+              "string_index": 5,
+              "utterance": 0
+            },
+            "native_source": "0x1ac49",
+            "native_text_index": 5,
+            "type": "dialogue"
+          }
+        ]
+      },
       "runtime_append_groups": true
     }
   },

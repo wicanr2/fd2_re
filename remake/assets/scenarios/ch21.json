@@ -1029,5 +1029,145 @@
         }
       ]
     }
-  ]
+  ],
+  "native_death_programs": {
+    "3:1": [
+      {
+        "type": "dialogue",
+        "native_source": "0x1ac49",
+        "native_text_index": 1,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch21.json",
+          "scene_index": 1,
+          "line": 0,
+          "source_dat": "FDTXT_021",
+          "string_index": 1,
+          "utterance": 0,
+          "control": "FFED",
+          "operand": 16,
+          "pages": [
+            [
+              "『唔．我還不能倒下．還沒．",
+              "　奪回．聖靈之塔．．』"
+            ]
+          ]
+        }
+      }
+    ],
+    "3:2": [
+      {
+        "type": "dialogue",
+        "native_source": "0x1ac49",
+        "native_text_index": 2,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch21.json",
+          "scene_index": 1,
+          "line": 1,
+          "source_dat": "FDTXT_021",
+          "string_index": 2,
+          "utterance": 0,
+          "control": "FFED",
+          "operand": 17,
+          "pages": [
+            [
+              "『．神啊．請保佑我們精靈族",
+              "　．戰勝黑暗之力．．』"
+            ]
+          ]
+        }
+      }
+    ],
+    "3:4": [
+      {
+        "type": "dialogue",
+        "native_source": "0x1ac49",
+        "native_text_index": 4,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch21.json",
+          "scene_index": 1,
+          "line": 3,
+          "source_dat": "FDTXT_021",
+          "string_index": 4,
+          "utterance": 0,
+          "control": "FFED",
+          "operand": 26,
+          "pages": [
+            [
+              "『．哼，小伙子們還真有一手",
+              "　啊．．敗在你們手裏，我沒",
+              "　什麼話好說了．』"
+            ]
+          ]
+        }
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x1ac49",
+        "native_text_index": 4,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch21.json",
+          "scene_index": 1,
+          "line": 4,
+          "source_dat": "FDTXT_021",
+          "string_index": 4,
+          "utterance": 1,
+          "control": "FFEE",
+          "operand": 6,
+          "pages": [
+            [
+              "『瑪爾！．如果那時妳改過向",
+              "　善，就不會有今天的結果！",
+              "　．為什麼．．』"
+            ]
+          ]
+        }
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x1ac49",
+        "native_text_index": 4,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch21.json",
+          "scene_index": 1,
+          "line": 5,
+          "source_dat": "FDTXT_021",
+          "string_index": 4,
+          "utterance": 2,
+          "control": "FFED",
+          "operand": 26,
+          "pages": [
+            [
+              "『．萊汀，我對你說過，我的",
+              "　身上流著罪犯的血液，我們",
+              "　是注定不能並肩作戰的．你"
+            ],
+            [
+              "　以後可以放心了．．唔．．",
+              "　』"
+            ]
+          ]
+        }
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x1ac49",
+        "native_text_index": 4,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch21.json",
+          "scene_index": 1,
+          "line": 6,
+          "source_dat": "FDTXT_021",
+          "string_index": 4,
+          "utterance": 3,
+          "control": "FFEE",
+          "operand": 6,
+          "pages": [
+            [
+              "『瑪爾．．』"
+            ]
+          ]
+        }
+      }
+    ]
+  }
 }
