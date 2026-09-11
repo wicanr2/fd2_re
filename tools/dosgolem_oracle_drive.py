@@ -25,6 +25,8 @@
 * ``{"engage": [x, y]}``：選取該格的我方單位，推進到貼著敵人的格，貼上就攻擊。
   候選格由「與某敵人相鄰且未被佔用」產生，離單位近的先試；移動有沒有生效看
   單位座標變了沒，不看送了幾個鍵。
+* ``{"town_probe": {"moves": [...]}}``：在戰後城鎮沿方向序列走，每步 enter 看進到
+  哪裡，進了選單就 esc 退回。
 * ``{"sweep_round": true}``：把這一回合所有未行動的我方單位依序接戰。
 * ``{"sweep_battle": true, "rounds": 30}``：一路打到敵方全滅。
 * ``{"await": "round>=2"}``：反覆只前進不送鍵，直到條件成立。可用變數：
@@ -719,6 +721,100 @@ def end_turn(command):
     return True
 
 
+
+
+def do_town_probe(command):
+    """在戰後城鎮沿著給定的方向序列走，每一步按 enter 看進到哪裡。
+
+    城鎮沒有可讀座標——`view` 的 cursor 是戰場用的，在城鎮不動——所以位置只能用
+    「走了幾步」表示。每一步都回報當時的介面，進了商店那類選單就 esc 退回城鎮，
+    不會把後面的按鍵送進選單裡。
+
+    這是探索用的：一次執行問出周圍有什麼，免得為了找一個入口重跑七十幾億指令。
+    """
+    moves = command.get("moves") or ["down", "right", "up", "left"]
+    steps = int(command.get("steps", 8_000_000))
+    found = []
+    for index, move in enumerate(moves):
+        seq, current = send(move, steps)
+        report(seq, move, current, f" town-probe[{index}]")
+        seq, current = send("enter", max(steps, 10_000_000))
+        report(seq, "enter", current, f" town-probe[{index}]")
+        current = settle(steps, int(command.get("probe_settle", 5)))
+        mode = ui_mode(current)
+        if mode != "town":
+            found.append((index, move, mode))
+            print(f"town_probe[{index}] 往 {move} 之後 enter → {mode}", flush=True)
+            for _ in range(int(command.get("escape_max", 6))):
+                if ui_mode(state()) == "town":
+                    break
+                seq, current = send("esc", max(steps, 5_000_000))
+                report(seq, "esc", current, f" town-probe[{index}]=leave")
+                settle(steps, 3)
+    print(f"town_probe 完成：{found or '全程都留在城鎮走動畫面'}", flush=True)
+    return True
+
+
+
+
+
+
+STATE_DIR = os.environ.get("FD2_ORACLE_STATE", "")
+
+
+def saved_files():
+    """可寫覆蓋層目前有哪些檔。存檔成不成功看這裡，不用猜畫面。"""
+    if not STATE_DIR or not os.path.isdir(STATE_DIR):
+        return set()
+    return {name.upper() for name in os.listdir(STATE_DIR)}
+
+
+def do_shop_probe(command):
+    """進到店家（酒店／教會／商店）之後逐項按下去，看哪一項會寫出存檔。
+
+    FD2 的存檔在酒店。店內是一排功能圖示，方向鍵移動選擇、enter 確認，但選中的是
+    哪一個從狀態層看不出來——所以逐項試，用「可寫覆蓋層多了什麼檔」當判準：那是
+    檔案系統層的事實，比讀畫面可靠。
+    """
+    steps = int(command.get("steps", 8_000_000))
+    move = command.get("move", "right")
+    before = saved_files()
+    print(f"shop_probe：起始覆蓋層檔案 {sorted(before) or '（空）'}", flush=True)
+    for index in range(int(command.get("slots", 4))):
+        if index:
+            seq, current = send(move, steps)
+            report(seq, move, current, f" shop-probe[{index}]")
+        seq, current = send("enter", max(steps, 10_000_000))
+        report(seq, "enter", current, f" shop-probe[{index}]")
+        current = settle(steps, int(command.get("probe_settle", 6)))
+        # 選了一項之後常接一段確認對白（「要住宿嗎」「要存檔嗎」）。先前一律 esc
+        # 取消，所以永遠看不到它到底會不會寫檔。confirm 打開就按到底。
+        if command.get("confirm", True):
+            for _ in range(int(command.get("confirm_max", 4))):
+                if ui_mode(state()) != "dialogue":
+                    break
+                seq, current = send("enter", max(steps, 8_000_000))
+                report(seq, "enter", current, f" shop-probe[{index}]=confirm")
+                settle(steps, 3)
+        now = saved_files()
+        if now - before:
+            print(f"shop_probe[{index}]：覆蓋層多了 {sorted(now - before)}", flush=True)
+            before = now
+        else:
+            print(f"shop_probe[{index}]：介面 {ui_mode(current)}，覆蓋層沒有新檔",
+                  flush=True)
+        # 退回店家主畫面再試下一項。
+        for _ in range(int(command.get("escape_max", 4))):
+            mode = ui_mode(state())
+            if mode in {"shop", "town"}:
+                break
+            seq, current = send("esc", max(steps, 5_000_000))
+            report(seq, "esc", current, f" shop-probe[{index}]=leave")
+    return True
+
+
+
+
 def do_sweep_round(command):
     """這一回合：讓打得到人的我方單位各打一次，然後用系統選單結束回合。
 
@@ -831,6 +927,14 @@ def main():
         if "engage" in command:
             if not do_engage(command):
                 return 8
+            continue
+        if "shop_probe" in command:
+            if not do_shop_probe(command):
+                return 12
+            continue
+        if "town_probe" in command:
+            if not do_town_probe(command):
+                return 11
             continue
         if "sweep_round" in command:
             if not do_sweep_round(command):
