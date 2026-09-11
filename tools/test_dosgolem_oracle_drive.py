@@ -386,6 +386,15 @@ class ApproachWhenNothingIsInRange(unittest.TestCase):
         self.assertEqual(drive.distance(cells[0], (20, 14)), 6,
                          "先試最遠的一桶")
 
+    def test_hint_puts_the_known_distance_first(self):
+        """學到「這個單位走得了四格」之後就從四格開始試，不再從上限往下掃。"""
+        cells = drive.engage_targets(self.current, (20, 14),
+                                     typical_move=6, hint=4)
+        self.assertEqual(drive.distance(cells[0], (20, 14)), 4)
+        spans = [drive.distance(c, (20, 14)) for c in cells[:6]]
+        self.assertEqual(spans[:2], [4, 4], spans)
+        self.assertIn(spans[2], (3, 5), f"第二順位要是相鄰距離，實際 {spans}")
+
     def test_candidates_skip_occupied_cells(self):
         blocked = dict(self.current)
         blocked["units"] = self.current["units"] + [

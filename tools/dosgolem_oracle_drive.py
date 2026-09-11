@@ -410,6 +410,12 @@ def occupied_cells(current):
     return {(u["x"], u["y"]) for u in current.get("units", []) if u.get("hp", 0) > 0}
 
 
+# 每個單位實際走得成功的距離。移動力連同地形成本在狀態層看不到，只能從「哪一格
+# 走成了」學回來。學到之後下一次先試那個距離，省掉從移動力上限一路往下試的四五次
+# 試探——每次試探要送十幾個鍵、跑三千萬指令，第二關第 1 回合光在這上面就花了兩億。
+MOVE_SPAN = {}
+
+
 def unit_key(unit):
     """一輪之內辨識同一個我方單位用的鍵。
 
@@ -423,7 +429,7 @@ def unit_key(unit):
     return ("identity", identity)
 
 
-def engage_targets(current, origin, typical_move=6):
+def engage_targets(current, origin, typical_move=6, hint=None):
     """候選落腳格，由「最值得試」排到「最不值得試」。
 
     兩段：先試貼著敵人的格（走到就能打），再試沿路徑逼近的格。移動成本受地形
@@ -483,8 +489,13 @@ def engage_targets(current, origin, typical_move=6):
     buckets = {}
     for span, gain, cell in reachable:
         buckets.setdefault(span, []).append((gain, cell))
+    if hint:
+        # 這個單位上次走成了幾格就從幾格開始試，再往兩邊擴。
+        order = sorted(buckets, key=lambda span: (abs(span - hint), -span))
+    else:
+        order = sorted(buckets, reverse=True)
     approach = []
-    for span in sorted(buckets, reverse=True):
+    for span in order:
         for _, cell in sorted(buckets[span])[:2]:
             approach.append(cell)
     return cells + approach
@@ -639,7 +650,8 @@ def do_engage(command):
     standing = [e for e in side(current, ENEMY_CAMP)
                 if distance((e["x"], e["y"]), (ux, uy)) <= reach]
     candidates = [] if standing else engage_targets(
-        current, (ux, uy), int(command.get("typical_move", 6)))[:tries]
+        current, (ux, uy), int(command.get("typical_move", 6)),
+        MOVE_SPAN.get(unit_key(unit)))[:tries]
     if standing:
         # 已經站在射程內就原地確認，不必再走。
         seq, current = send("enter", max(steps, 5_000_000))
@@ -651,6 +663,7 @@ def do_engage(command):
         report(seq, "enter", current, f" engage=move->{cell}")
         if wait_mode({"ring"}, steps) == "ring":
             moved_to = cell
+            MOVE_SPAN[unit_key(unit)] = distance(cell, (ux, uy))
             break
         print(f"  移動到 {cell} 被拒絕（介面沒進指令環），換下一個候選格", flush=True)
     mode = wait_mode({"ring"}, steps)
@@ -696,7 +709,10 @@ def do_engage(command):
     # 不再檢查 record `+5` bit7。它在好幾種情況下都不成立：本回合最後一個單位行動完
     # 會立刻換手、新回合把整批清零；攻擊接的升級對白結束前還沒寫上去；打不到人而
     # 退出指令環的單位根本沒行動過。改由 sweep 自己記「這一輪處理過誰」。
-    for _ in range(int(command.get("finish_wait", 30))):
+    # 收尾預算要夠一段演出加一輪敵方回合。第二關第 3 回合一次攻擊觸發了增援
+    # （敵方 9→15），演出期間介面一直是 unknown；預算 30 格等不完就判成「收尾
+    # 之後介面停在 unknown」而中止，其實只是還沒播完。
+    for _ in range(int(command.get("finish_wait", 90))):
         current = state()
         if measure(current, "round") > started_round:
             print(f"engage {moved_to} 完成，回合已由 {started_round} 推進到 "
@@ -720,7 +736,7 @@ def do_engage(command):
             seq, current = send("esc", max(steps, 3_000_000))
             report(seq, "esc", current, f" engage=finish-{mode}")
             continue
-        seq, current = send("", max(steps, 5_000_000))
+        seq, current = send("", max(steps, 15_000_000))
         report(seq, "", current, " engage=finish-wait")
     print(f"engage {moved_to} 收尾之後介面停在 {ui_mode(state())}", file=sys.stderr)
     return False
