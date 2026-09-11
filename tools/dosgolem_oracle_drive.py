@@ -28,6 +28,8 @@
 * ``{"town_probe": {"moves": [...]}}``：在戰間城鎮沿方向序列切建築，每步 enter 看
   進到哪裡，進了選單就 esc 退回。城鎮是五格循環而不是走動畫面：left 遞增、
   right 遞減，up 與 down 不動。
+* ``{"town_save": true}``：在 0 號酒店存檔，建立下一關的續跑點。判準是覆蓋層裡
+  ``FD2.SAV`` 的內容雜湊變了沒，不是畫面。
 * ``{"sweep_round": true}``：把這一回合所有未行動的我方單位依序接戰。
 * ``{"sweep_battle": true, "rounds": 30}``：一路打到敵方全滅。
 * ``{"await": "round>=2"}``：反覆只前進不送鍵，直到條件成立。可用變數：
@@ -38,6 +40,7 @@
 失敗一律非零離開；盲目繼續會產生「看起來跑完了但走錯路」的收據。
 """
 
+import hashlib
 import json
 import os
 import re
@@ -847,6 +850,60 @@ def saved_files():
     return {name.upper() for name in os.listdir(STATE_DIR)}
 
 
+def save_fingerprint():
+    """覆蓋層裡每個檔的大小與內容雜湊。
+
+    第二關以後覆蓋層本來就有一份 FD2.SAV（是上一關的續跑點載進來的），所以
+    「多出一個檔」這個判準只在第一次成立。之後要看的是**內容變了沒**。
+    """
+    if not STATE_DIR or not os.path.isdir(STATE_DIR):
+        return {}
+    marks = {}
+    for name in os.listdir(STATE_DIR):
+        path = os.path.join(STATE_DIR, name)
+        if not os.path.isfile(path):
+            continue
+        with open(path, "rb") as handle:
+            marks[name.upper()] = (os.path.getsize(path),
+                                   hashlib.sha256(handle.read()).hexdigest())
+    return marks
+
+
+def do_town_save(command):
+    """在城鎮的酒店存檔，建立下一關的續跑點。
+
+    打完一關進城鎮之後跑這個：`enter` 進目前那一棟（載入或戰後都停在 0 號酒店）、
+    `right` 一次切到第二個圖示、`enter`、再 `enter` 確認，畫面回「記錄儲存完畢！」。
+    判準是覆蓋層裡 `FD2.SAV` 的內容雜湊變了沒——第二關以後覆蓋層本來就有一份
+    （上一關的續跑點載進來的），「多出一個檔」不再成立。
+
+    存不成功就失敗收場。默默往下走會讓下一輪從舊存檔起跑，而 log 看起來完全正常。
+    """
+    steps = int(command.get("steps", 10_000_000))
+    before = save_fingerprint()
+    print(f"town_save：存檔前 {sorted(before) or '（空）'}", flush=True)
+    for note, key in (("open", "enter"), ("slot", "right"),
+                      ("pick", "enter"), ("confirm", "enter")):
+        seq, current = send(key, max(steps, 20_000_000))
+        report(seq, key, current, f" town-save={note}")
+        settle(steps, int(command.get("settle", 4)))
+    after = save_fingerprint()
+    changed = [name for name, mark in after.items() if before.get(name) != mark]
+    if "FD2.SAV" not in changed:
+        print(f"town_save：FD2.SAV 沒有變（變的是 {changed or '（沒有）'}）",
+              file=sys.stderr)
+        return False
+    print(f"town_save：FD2.SAV 已更新，大小 {after['FD2.SAV'][0]}", flush=True)
+    # 退回城鎮，讓後面的建築切換從已知狀態開始。
+    for _ in range(int(command.get("escape_max", 4))):
+        if ui_mode(state()) == "town":
+            break
+        seq, current = send("esc", max(steps, 10_000_000))
+        report(seq, "esc", current, " town-save=leave")
+        settle(steps, 3)
+    return True
+
+
 def do_shop_probe(command):
     """進到店家（酒店／教會／商店）之後逐項按下去，看哪一項會寫出存檔。
 
@@ -1022,6 +1079,10 @@ def main():
         if "town_probe" in command:
             if not do_town_probe(command):
                 return 11
+            continue
+        if "town_save" in command:
+            if not do_town_save(command):
+                return 13
             continue
         if "sweep_round" in command:
             if not do_sweep_round(command):

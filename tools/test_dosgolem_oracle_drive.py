@@ -9,7 +9,10 @@
 """
 
 import importlib.util
+import os
 import pathlib
+import shutil
+import tempfile
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parent
@@ -336,6 +339,45 @@ class Conditions(unittest.TestCase):
             drive.holds(self.current, "round ~ 3")
         with self.assertRaises(SystemExit):
             drive.measure(self.current, "morale")
+
+
+class SaveFingerprint(unittest.TestCase):
+    """存檔判準：第二關以後「多出一個檔」不再成立，要看內容變了沒。"""
+
+    def setUp(self):
+        self.dir = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.dir, True)
+        self.previous = drive.STATE_DIR
+        drive.STATE_DIR = self.dir
+        self.addCleanup(setattr, drive, "STATE_DIR", self.previous)
+
+    def write(self, name, body):
+        with open(os.path.join(self.dir, name), "wb") as handle:
+            handle.write(body)
+
+    def test_same_bytes_same_fingerprint(self):
+        self.write("FD2.SAV", b"abc")
+        first = drive.save_fingerprint()
+        self.assertEqual(first, drive.save_fingerprint())
+
+    def test_rewriting_the_save_changes_the_fingerprint(self):
+        self.write("FD2.SAV", b"abc")
+        before = drive.save_fingerprint()
+        self.write("FD2.SAV", b"xyz")
+        self.assertNotEqual(before["FD2.SAV"], drive.save_fingerprint()["FD2.SAV"])
+
+    def test_same_size_different_content_is_still_a_change(self):
+        """存檔大小固定，只比大小會把「存了新進度」看成沒變。"""
+        self.write("FD2.SAV", b"abc")
+        before = drive.save_fingerprint()
+        self.write("FD2.SAV", b"abd")
+        after = drive.save_fingerprint()
+        self.assertEqual(before["FD2.SAV"][0], after["FD2.SAV"][0])
+        self.assertNotEqual(before["FD2.SAV"], after["FD2.SAV"])
+
+    def test_missing_state_dir_is_empty_not_an_error(self):
+        drive.STATE_DIR = os.path.join(self.dir, "nope")
+        self.assertEqual(drive.save_fingerprint(), {})
 
 
 class UnitIdentityKey(unittest.TestCase):
