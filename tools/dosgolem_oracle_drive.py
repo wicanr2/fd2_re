@@ -756,11 +756,18 @@ def do_engage(command):
             report(seq, key, current, " engage=finish-dialogue")
             continue
         if mode == "ring":
-            # 收尾階段不該還停在指令環——這裡的 esc 會取消整次行動，把單位送回
-            # 移動前那一格。停在這代表前面沒收乾淨，回報比清掉好。
-            print(f"engage {moved_to} 收尾時仍停在指令環，行動沒有結束",
-                  file=sys.stderr)
-            return False
+            # 停在指令環代表待機沒選中（單位開的是指令 grid，esc 只退得回這裡）。
+            # 先再試一次待機；真的選不到就用 esc 取消這個單位的行動——它會退回移動
+            # 前那一格，這一回合等於沒動，但整場還跑得下去。中止要留給「介面停在
+            # 猜不出來的狀態」，不是「某個單位的指令環長得跟別人不一樣」。
+            current = stand_by(steps, f"={moved_to}=finish")
+            if ui_mode(current) != "ring":
+                continue
+            print(f"engage {moved_to} 待機選不中，取消這個單位的行動", flush=True)
+            seq, current = send("esc", max(steps, 3_000_000))
+            report(seq, "esc", current, " engage=give-up")
+            settle(steps, 3)
+            continue
         if mode in ESCAPABLE:
             seq, current = send("esc", max(steps, 3_000_000))
             report(seq, "esc", current, f" engage=finish-{mode}")
