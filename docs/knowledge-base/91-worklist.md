@@ -77,13 +77,13 @@ manifest v2 的 source_resources 有 1,005 筆，disposition 為 unknown 的 93 
 
 怎樣算做完：93 筆逐筆確認沒有玩家 consumer，或找到 consumer 後補 provenance 並重開對應切片。
 
-### 四筆角色身份歧義還沒解
+### 四筆角色身份的多名稱已分類，剩人複核
 
-`editor-identity-ambiguity` · 仍未完成 · 要人判
+`editor-identity-ambiguity` · 仍未完成 · 自承還在 remake/assets/editor-canonical/character-identity.json
 
-`native-0`／`native-1`／`native-7`／`native-96` 有名稱衝突，目前保留直接來源、拒絕猜選。
+native-0／native-1／native-7／native-96 的多個候選名稱已由資料本身分成兩類：章節互不重疊的是同一身份在不同段落的稱呼（索爾／索爾(少年)、刺客／蘭斯洛特），同章且共同前綴加單一編號的是多個雜兵共用一個 sprite（強盜 B/C/L/M/N）。診斷都帶著章節依據，severity 從 error 降為 note，canonical 已無未分類衝突。剩下的是人複核那個分類對不對——判準是從資料算的，不是從劇情知識來的。
 
-怎樣算做完：四筆各自解決或明確拆分，並在 canonical schema 記錄依據。
+怎樣算做完：人複核四筆的分類；若有誤判就調整判準並重生 bundle。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

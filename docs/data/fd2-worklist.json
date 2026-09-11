@@ -84,12 +84,16 @@
     {
       "id": "editor-identity-ambiguity",
       "layer": "data",
-      "title": "四筆角色身份歧義還沒解",
-      "body": "`native-0`／`native-1`／`native-7`／`native-96` 有名稱衝突，目前保留直接來源、拒絕猜選。",
-      "acceptance": "四筆各自解決或明確拆分，並在 canonical schema 記錄依據。",
+      "title": "四筆角色身份的多名稱已分類，剩人複核",
+      "body": "native-0／native-1／native-7／native-96 的多個候選名稱已由資料本身分成兩類：章節互不重疊的是同一身份在不同段落的稱呼（索爾／索爾(少年)、刺客／蘭斯洛特），同章且共同前綴加單一編號的是多個雜兵共用一個 sprite（強盜 B/C/L/M/N）。診斷都帶著章節依據，severity 從 error 降為 note，canonical 已無未分類衝突。剩下的是人複核那個分類對不對——判準是從資料算的，不是從劇情知識來的。",
+      "acceptance": "人複核四筆的分類；若有誤判就調整判準並重生 bundle。",
       "verify": {
-        "kind": "manual",
-        "note": "沒有可靠訊號可綁；解掉之後身份候選數會變，那時可改綁 canonical bundle 的候選筆數。"
+        "kind": "present",
+        "paths": [
+          "remake/assets/editor-canonical/character-identity.json"
+        ],
+        "pattern": "\"severity\": \"note\"",
+        "note": "分類結果還在。複核完可以把這一條移走；判準本身由 tools/test_identity_classification.py 守住。"
       }
     },
     {
