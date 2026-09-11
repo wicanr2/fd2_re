@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import shutil
 from pathlib import Path
 from typing import Any
@@ -76,6 +77,67 @@ def _append_candidate(bucket: list[dict[str, Any]], value: Any, source: str, fie
             bucket.append(item)
 
 
+# 一個身份有多個候選名稱，不一定是身份判錯。原版就有三種合理的來源，分得開才不會
+# 逼人去「選一個」——選了就是把場景相依的稱呼壓成單一值，資料反而變差。
+#
+# 判準全部從資料本身算得出來，不靠人工裁決：
+#
+#   1. 各名稱出現的章節**互不重疊** → 場景相依的稱呼。索爾在 0–31 章、
+#      「索爾(少年)」在 32–33 章（回憶段）；蘭斯洛特第 3 章以「刺客」登場、
+#      第 18 章之後才用本名。
+#   2. 章節重疊但**共同前綴 ≥ 2 字、去掉前綴後各剩至多一個字** → 共用同一個
+#      sprite 的雜兵編號。強盜 B／C／L／M／N 全在第 2 章。
+#   3. 其餘 → 真的衝突，維持 error。
+#
+# 判準 2 要求「剩餘至多一個字」是為了不把不同角色併掉：「哈瓦特」與「哈諾」的共同
+# 前綴只有一個字，而且剩餘是兩個字，不會命中。
+_CHAPTER_IN_PATH = re.compile(r"ch(\d+)")
+
+
+def _chapters_of(item: dict[str, Any]) -> set[int]:
+    found = _CHAPTER_IN_PATH.search(str(item.get("source", "")))
+    return {int(found.group(1))} if found else set()
+
+
+def _shared_prefix(values: list[str]) -> str:
+    if not values:
+        return ""
+    prefix = values[0]
+    for value in values[1:]:
+        while prefix and not value.startswith(prefix):
+            prefix = prefix[:-1]
+    return prefix
+
+
+def _classify_multi_candidate(identity: dict[str, Any], field: str) -> dict[str, Any]:
+    items = identity[field]
+    by_value: dict[str, set[int]] = {}
+    for item in items:
+        key = json.dumps(item["value"], ensure_ascii=False, sort_keys=True)
+        by_value.setdefault(key, set()).update(_chapters_of(item))
+    base = {
+        "character_id": identity["character_id"],
+        "field": field,
+        "values": sorted(by_value),
+        "chapters": {key: sorted(value) for key, value in sorted(by_value.items())},
+    }
+    spans = [value for value in by_value.values() if value]
+    disjoint = len(spans) == len(by_value) and len(spans) > 1 and not any(
+        a & b for i, a in enumerate(spans) for b in spans[i + 1:])
+    if disjoint:
+        return {**base, "code": "scene_dependent_name", "severity": "note",
+                "message": "各候選出現的章節互不重疊：同一身份在不同段落的稱呼，不是身份衝突"}
+    plain = [json.loads(key) for key in by_value]
+    if all(isinstance(value, str) for value in plain):
+        prefix = _shared_prefix(plain)
+        if len(prefix) >= 2 and all(len(value) - len(prefix) <= 1 for value in plain):
+            return {**base, "code": "shared_extra_identity", "severity": "note",
+                    "shared_prefix": prefix,
+                    "message": "共同前綴加單一編號：多個雜兵共用這個身份，不是身份衝突"}
+    return {**base, "code": "conflicting_identity_candidates", "severity": "error",
+            "message": "同一身份有多個直接來源候選；保留全部候選，不選定語意值"}
+
+
 def build_character_identity_catalog(root: str | Path) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     """從 legacy party 與 story speaker 的直接欄位建立身份候選，不做猜測合併。"""
     root = Path(root).resolve()
@@ -122,14 +184,7 @@ def build_character_identity_catalog(root: str | Path) -> tuple[dict[str, Any], 
         for field in ("display_name_candidates", "portrait_selector_candidates", "map_sprite_selector_candidates", "battle_animation_selector_candidates"):
             values = {json.dumps(item["value"], ensure_ascii=False, sort_keys=True) for item in identity[field]}
             if len(values) > 1:
-                diagnostics.append({
-                    "code": "conflicting_identity_candidates",
-                    "character_id": identity["character_id"],
-                    "field": field,
-                    "values": sorted(values),
-                    "severity": "error",
-                    "message": "同一身份有多個直接來源候選；保留全部候選，不選定語意值",
-                })
+                diagnostics.append(_classify_multi_candidate(identity, field))
 
     catalog = {
         "schema_version": 1,
@@ -167,7 +222,15 @@ def validate_character_identity_catalog(catalog: dict[str, Any]) -> None:
     character_keys = {"character_id", "native_identity", *candidate_fields, "sources"}
     candidate_keys = {"value", "source", "field", "index", "evidence"}
     source_keys = {"path", "field", "index"}
+    # 分類過的診斷會多帶依據：chapters 是每個候選出現的章節，shared_prefix 是雜兵
+    # 共用的前綴。兩個都是「為什麼判成這一類」的證據，不是可選的裝飾——少了它們，
+    # note 就只是一句沒有來源的斷言。
     diagnostic_keys = {"code", "character_id", "field", "values", "severity", "message"}
+    diagnostic_extra = {
+        "scene_dependent_name": {"chapters"},
+        "shared_extra_identity": {"chapters", "shared_prefix"},
+        "conflicting_identity_candidates": {"chapters"},
+    }
 
     character_ids: set[str] = set()
     for character in catalog["characters"]:
@@ -238,19 +301,28 @@ def validate_character_identity_catalog(catalog: dict[str, Any]) -> None:
                 raise ValueError("character source provenance 無效")
 
     for diagnostic in catalog["diagnostics"]:
-        if not isinstance(diagnostic, dict) or set(diagnostic) != diagnostic_keys:
+        expected = diagnostic_keys | diagnostic_extra.get(
+            diagnostic.get("code") if isinstance(diagnostic, dict) else None, set())
+        if not isinstance(diagnostic, dict) or set(diagnostic) != expected:
             raise ValueError("character identity diagnostic 欄位不完整")
+        if diagnostic["code"] == "conflicting_identity_candidates" and diagnostic["severity"] != "error":
+            raise ValueError("未分類的候選衝突必須是 error")
+        if diagnostic["code"] in ("scene_dependent_name", "shared_extra_identity") \
+                and diagnostic["severity"] != "note":
+            raise ValueError("已分類的候選差異必須是 note")
         if (
-            diagnostic["code"] != "conflicting_identity_candidates"
+            diagnostic["code"] not in diagnostic_extra
             or diagnostic["character_id"] not in character_ids
             or not isinstance(diagnostic["field"], str)
             or not diagnostic["field"]
             or not isinstance(diagnostic["values"], list)
             or len(diagnostic["values"]) < 2
             or not all(isinstance(value, str) for value in diagnostic["values"])
-            or diagnostic["severity"] != "error"
             or not isinstance(diagnostic["message"], str)
             or not diagnostic["message"]
+            or not isinstance(diagnostic["chapters"], dict)
+            or set(diagnostic["chapters"]) != set(diagnostic["values"])
+            or not all(isinstance(value, list) for value in diagnostic["chapters"].values())
         ):
             raise ValueError("character identity diagnostic 無效")
 

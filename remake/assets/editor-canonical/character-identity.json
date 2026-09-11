@@ -31340,44 +31340,159 @@
   ],
   "diagnostics": [
     {
+      "chapters": {
+        "\"索爾\"": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31
+        ],
+        "\"索爾(少年)\"": [
+          32,
+          33
+        ]
+      },
       "character_id": "character/native-0",
-      "code": "conflicting_identity_candidates",
+      "code": "scene_dependent_name",
       "field": "display_name_candidates",
-      "message": "同一身份有多個直接來源候選；保留全部候選，不選定語意值",
-      "severity": "error",
+      "message": "各候選出現的章節互不重疊：同一身份在不同段落的稱呼，不是身份衝突",
+      "severity": "note",
       "values": [
         "\"索爾\"",
         "\"索爾(少年)\""
       ]
     },
     {
+      "chapters": {
+        "\"哈諾\"": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "\"哈諾(少年)\"": [
+          32
+        ]
+      },
       "character_id": "character/native-1",
-      "code": "conflicting_identity_candidates",
+      "code": "scene_dependent_name",
       "field": "display_name_candidates",
-      "message": "同一身份有多個直接來源候選；保留全部候選，不選定語意值",
-      "severity": "error",
+      "message": "各候選出現的章節互不重疊：同一身份在不同段落的稱呼，不是身份衝突",
+      "severity": "note",
       "values": [
         "\"哈諾\"",
         "\"哈諾(少年)\""
       ]
     },
     {
+      "chapters": {
+        "\"刺客\"": [
+          3
+        ],
+        "\"蘭斯洛特\"": [
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30
+        ]
+      },
       "character_id": "character/native-7",
-      "code": "conflicting_identity_candidates",
+      "code": "scene_dependent_name",
       "field": "display_name_candidates",
-      "message": "同一身份有多個直接來源候選；保留全部候選，不選定語意值",
-      "severity": "error",
+      "message": "各候選出現的章節互不重疊：同一身份在不同段落的稱呼，不是身份衝突",
+      "severity": "note",
       "values": [
         "\"刺客\"",
         "\"蘭斯洛特\""
       ]
     },
     {
+      "chapters": {
+        "\"強盜B\"": [
+          2
+        ],
+        "\"強盜C\"": [
+          2
+        ],
+        "\"強盜L\"": [
+          2
+        ],
+        "\"強盜M\"": [
+          2
+        ],
+        "\"強盜N\"": [
+          2
+        ]
+      },
       "character_id": "character/native-96",
-      "code": "conflicting_identity_candidates",
+      "code": "shared_extra_identity",
       "field": "display_name_candidates",
-      "message": "同一身份有多個直接來源候選；保留全部候選，不選定語意值",
-      "severity": "error",
+      "message": "共同前綴加單一編號：多個雜兵共用這個身份，不是身份衝突",
+      "severity": "note",
+      "shared_prefix": "強盜",
       "values": [
         "\"強盜B\"",
         "\"強盜C\"",
