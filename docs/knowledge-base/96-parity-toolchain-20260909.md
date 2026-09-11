@@ -106,6 +106,29 @@ tools/dosgolem_oracle.sh /tmp/fd2-oracle-run plan.jsonl
 `not acted(u)` 先把它濾掉了；只移動不攻擊的單位沒有這層保護。改成用 identity
 （record `+8`）記。
 
+### 「等待逾時」也可能是 executor 自己死了
+
+驅動端印出「控制序列 N 等待逾時」時，**先看 `<輸出目錄>/oracle.log` 的結尾**。
+executor 以 exit status 中止時，驅動端只看得到「等不到回應」，那和遊戲卡住長得一模
+一樣；而 oracle 的收據尾巴會直接寫出原因：
+
+```
+"error": "cpu386: EIP=0001E1C1 opcode=02：byte運算記憶體形式尚未支援",
+"cpu_eip_after_error": "0x1E1C3",
+exit status 2
+```
+
+2026-09-11 第三關連兩輪在同一格逾時。第一次歸因為 CPU 競爭（當時確實有一個 Go 全
+套件回歸在跑），把 `FD2_ORACLE_STEP_TIMEOUT` 從 180 秒放寬到 600 秒；第二次還是同
+一格。checkpoint 畫面完全正常——「要結束本回合的行動嗎？」正等 YES。放寬逾時對它
+一點用都沒有，因為根本不是在等。
+
+補法依專案定案：**把 dosgolem 補到涵蓋**，不是退回 DOSBox。`02` 是 `ADD r8, r/m8`、
+`22` 是 `AND r8, r/m8`，兩個原本只實作 ModRM mod=3 的暫存器形式；記憶體形式交給既有
+的 `decodeAddress32` 解位址，旗標沿用同一組 `add8`／`setLogicFlags8`，兩種形式只差在
+來源怎麼取。換基底之後照紀律先跑重現對照：`ch01-move-attack.jsonl` 的 24 個登錄檢查
+點全同，補指令沒有動到既有路徑。
+
 ### 走不到就原地行動，不要中止整場
 
 單位四周被自己人或敵人佔滿、或地形不通時，候選格會一個都走不到——第二關第 7 回合

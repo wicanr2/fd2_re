@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>炎龍騎士團 2 — 戰場編輯器</title>
+<style>
+:root {
+  --ink: #1b1b1b; --muted: #6b6b6b; --line: #d8d4cc; --bg: #faf9f6;
+  --panel: #ffffff; --accent: #8c3b2f; --own: #2f6f3f; --ally: #2f5f8c; --enemy: #8c3b2f;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 14px/1.6 "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+header {
+  display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+  padding: 12px 20px; border-bottom: 1px solid var(--line); background: var(--panel);
+}
+header h1 { margin: 0; font-size: 16px; font-weight: 600; }
+header .path { color: var(--muted); font-size: 13px; }
+main { display: flex; gap: 0; align-items: stretch; min-height: calc(100vh - 54px); }
+aside {
+  width: 260px; flex: none; padding: 14px 16px; border-right: 1px solid var(--line);
+  background: var(--panel); overflow-y: auto; max-height: calc(100vh - 54px);
+}
+aside.right { border-right: 0; border-left: 1px solid var(--line); width: 300px; }
+section.canvas { flex: 1; padding: 14px 16px; overflow: auto; }
+h2 { font-size: 13px; font-weight: 600; margin: 18px 0 8px; color: var(--muted); }
+h2:first-child { margin-top: 0; }
+button {
+  font: inherit; padding: 5px 12px; border: 1px solid var(--line); border-radius: 3px;
+  background: var(--panel); color: var(--ink); cursor: pointer;
+}
+button:hover:not(:disabled) { border-color: var(--ink); }
+button[aria-pressed="true"] { background: var(--ink); color: var(--panel); border-color: var(--ink); }
+button:disabled { color: var(--muted); cursor: not-allowed; }
+button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+label { display: block; margin-bottom: 6px; }
+label span { display: block; color: var(--muted); font-size: 12px; }
+input, select { font: inherit; width: 100%; padding: 4px 6px; border: 1px solid var(--line); border-radius: 3px; background: var(--panel); color: var(--ink); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 8px; }
+#tiles { border: 1px solid var(--line); image-rendering: pixelated; cursor: crosshair; display: block; max-width: 100%; }
+#board { border: 1px solid var(--line); image-rendering: pixelated; cursor: crosshair; display: block; }
+#log { margin-top: 12px; padding: 8px 10px; border-left: 3px solid var(--line); color: var(--muted); font-size: 13px; white-space: pre-wrap; min-height: 3em; }
+#log.bad { border-left-color: var(--accent); color: var(--accent); }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { text-align: left; padding: 3px 6px 3px 0; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 400; }
+.hint { color: var(--muted); font-size: 12px; margin: 6px 0 0; }
+.swatch { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: baseline; }
+</style>
+</head>
+<body>
+<header>
+  <h1>戰場編輯器</h1>
+  <span class="path" id="where">尚未開啟地圖</span>
+  <button id="open" class="primary">開啟地圖資料夾…</button>
+  <button id="save" disabled>存回</button>
+  <button id="undo" disabled>復原</button>
+</header>
+
+<main>
+<aside>
+  <h2>圖塊</h2>
+  <canvas id="tiles" width="16" height="16"></canvas>
+  <p class="hint" id="pick">選中 tile：—</p>
+
+  <h2>工具</h2>
+  <div class="row" id="tools">
+    <button data-tool="brush" aria-pressed="true">筆刷</button>
+    <button data-tool="rect">矩形</button>
+    <button data-tool="fill">填充</button>
+    <button data-tool="erase">橡皮擦</button>
+  </div>
+  <div class="row">
+    <button data-tool="unit">單位</button>
+    <button data-tool="deploy">部署格</button>
+  </div>
+  <p class="hint">單位工具：點空格新增、點單位選取。部署格工具：點一下切換。</p>
+
+  <h2>圖層</h2>
+  <label><input type="checkbox" id="showUnits" checked style="width:auto"> 單位</label>
+  <label><input type="checkbox" id="showDeploy" checked style="width:auto"> 部署格</label>
+  <label><input type="checkbox" id="showBlocked" style="width:auto"> 不可通行</label>
+
+  <h2>波次</h2>
+  <table id="groups"><tbody></tbody></table>
+  <p class="hint">group 同時決定初始在場與增援波次，戰場與劇情編輯器共用同一組編號。</p>
+</aside>
+
+<section class="canvas">
+  <canvas id="board" width="576" height="576"></canvas>
+  <div id="log">先按「開啟地圖資料夾…」，選 <code>remake/assets/maps/mapN</code>（裡面要有 map.json、tileset.png、mapN_units.json）。</div>
+</section>
+
+<aside class="right">
+  <div id="inspector">
+    <h2>格子</h2>
+    <p class="hint">點畫布看這一格的內容。</p>
+  </div>
+</aside>
+</main>
+
+<script>
+'use strict';
+
+// 移動成本與 tools/export_engine_assets.py 用同一張表：地形控制表每格 4 byte，
+// byte1 是移動資訊代碼。編輯器自己重算一次而不是沿用舊值——改了 tile 卻留著舊
+// 成本，畫面與玩法就對不起來，而那種錯誤要玩到那一格才會發作。
+const MOVE_CODE_TO_WALK_COST = { 0: 1, 1: 99, 2: 1, 3: 1, 4: 2, 5: 99 };
+const BLOCKED_COST = 99;
+const CAMPS = ['own', 'ally', 'enemy'];
+const CAMP_COLOR = { own: '#2f6f3f', ally: '#2f5f8c', enemy: '#8c3b2f' };
+// 單位表單只列引擎真的會讀的欄位；未列出的欄位原樣保留，不因為編輯器沒有欄位
+// 就被丟掉。
+const UNIT_FIELDS = [
+  ['cls', '職業 ID'], ['cls_name', '職業名'], ['lv', '等級'], ['hp', 'HP'], ['mp', 'MP'],
+  ['ap', 'AP'], ['dp', 'DP'], ['mv', '移動力'], ['hit', '命中'], ['ev', '迴避'],
+  ['crit', '爆擊'], ['portrait', '頭像'], ['fig', 'sprite'], ['group', '波次 group'],
+  ['ex', '經驗'],
+];
+
+const state = {
+  dir: null, name: '', map: null, units: null, tileset: null,
+  tool: 'brush', tile: 0, selectedUnit: -1, history: [], dragFrom: null, dirty: false,
+};
+
+const $ = (id) => document.getElementById(id);
+const board = $('board'), bctx = board.getContext('2d');
+const tiles = $('tiles'), tctx = tiles.getContext('2d');
+
+function say(text, bad) {
+  const log = $('log');
+  log.textContent = text;
+  log.className = bad ? 'bad' : '';
+}
+
+// 由 tile index 查移動成本。地形表比 tile 數少時保守回 1——和 exporter 的
+// 「寧可錯放不錯擋」一致。
+function costForTile(index) {
+  const control = state.map.native_terrain_control;
+  if (!Array.isArray(control)) return 1;
+  const at = index * 4 + 1;
+  if (at >= control.length) return 1;
+  const code = control[at];
+  return Object.prototype.hasOwnProperty.call(MOVE_CODE_TO_WALK_COST, code)
+    ? MOVE_CODE_TO_WALK_COST[code] : 1;
+}
+
+async function readJSON(handle) {
+  return JSON.parse(await (await handle.getFile()).text());
+}
+
+async function openMap() {
+  if (!window.showDirectoryPicker) {
+    say('這個瀏覽器沒有 File System Access API（showDirectoryPicker）。'
+      + 'Chrome 與 Edge 有；Firefox 與 Safari 目前沒有。', true);
+    return;
+  }
+  let dir;
+  try {
+    dir = await window.showDirectoryPicker({ mode: 'readwrite' });
+  } catch (err) {
+    if (err && err.name === 'AbortError') return;
+    say('開啟資料夾失敗：' + err, true);
+    return;
+  }
+  try {
+    const map = await readJSON(await dir.getFileHandle('map.json'));
+    let unitsName = '', units = null;
+    for await (const [entry] of dir.entries()) {
+      if (/_units\.json$/.test(entry)) { unitsName = entry; break; }
+    }
+    if (unitsName) units = await readJSON(await dir.getFileHandle(unitsName));
+    const png = await (await dir.getFileHandle('tileset.png')).getFile();
+    const sheet = await createImageBitmap(png);
+
+    state.dir = dir; state.name = dir.name; state.map = map;
+    state.units = units; state.unitsName = unitsName; state.tileset = sheet;
+    state.history = []; state.selectedUnit = -1; state.dirty = false;
+    $('where').textContent = `${dir.name}／${map.w}×${map.h} 格`
+      + (unitsName ? `、${unitsName}` : '、沒有單位檔');
+    $('save').disabled = false;
+    drawTileset(); resizeBoard(); draw(); renderGroups(); inspectNothing();
+    say(unitsName
+      ? `已載入 ${map.w}×${map.h} 地圖與 ${(units.units || []).length} 個單位。`
+      : `已載入 ${map.w}×${map.h} 地圖；這個資料夾沒有 *_units.json，只能編地形。`);
+  } catch (err) {
+    say('讀取失敗：' + err + '\n資料夾裡要有 map.json 與 tileset.png。', true);
+  }
+}
+
+function drawTileset() {
+  const sheet = state.tileset, m = state.map;
+  tiles.width = sheet.width; tiles.height = sheet.height;
+  tiles.style.width = Math.min(sheet.width * 2, 228) + 'px';
+  tctx.imageSmoothingEnabled = false;
+  tctx.drawImage(sheet, 0, 0);
+  const rows = Math.ceil((sheet.height / m.tileH));
+  tctx.strokeStyle = 'rgba(0,0,0,.25)'; tctx.lineWidth = 1;
+  for (let c = 1; c < m.cols; c++) {
+    tctx.beginPath(); tctx.moveTo(c * m.tileW + .5, 0); tctx.lineTo(c * m.tileW + .5, sheet.height); tctx.stroke();
+  }
+  for (let r = 1; r < rows; r++) {
+    tctx.beginPath(); tctx.moveTo(0, r * m.tileH + .5); tctx.lineTo(sheet.width, r * m.tileH + .5); tctx.stroke();
+  }
+  const sx = (state.tile % m.cols) * m.tileW, sy = Math.floor(state.tile / m.cols) * m.tileH;
+  tctx.strokeStyle = '#fff'; tctx.lineWidth = 2;
+  tctx.strokeRect(sx + 1, sy + 1, m.tileW - 2, m.tileH - 2);
+  tctx.strokeStyle = '#000'; tctx.lineWidth = 1;
+  tctx.strokeRect(sx + .5, sy + .5, m.tileW - 1, m.tileH - 1);
+  $('pick').textContent = `選中 tile：${state.tile}（成本 ${costForTile(state.tile)}）`;
+}
+
+function resizeBoard() {
+  const m = state.map;
+  board.width = m.w * m.tileW; board.height = m.h * m.tileH;
+}
+
+function draw() {
+  const m = state.map, sheet = state.tileset;
+  bctx.imageSmoothingEnabled = false;
+  for (let y = 0; y < m.h; y++) {
+    for (let x = 0; x < m.w; x++) {
+      const index = m.tiles[y * m.w + x] | 0;
+      const sx = (index % m.cols) * m.tileW, sy = Math.floor(index / m.cols) * m.tileH;
+      bctx.drawImage(sheet, sx, sy, m.tileW, m.tileH, x * m.tileW, y * m.tileH, m.tileW, m.tileH);
+    }
+  }
+  if ($('showBlocked').checked && Array.isArray(m.cost)) {
+    bctx.fillStyle = 'rgba(140,59,47,.42)';
+    for (let y = 0; y < m.h; y++) {
+      for (let x = 0; x < m.w; x++) {
+        if (m.cost[y * m.w + x] >= BLOCKED_COST) {
+          bctx.fillRect(x * m.tileW, y * m.tileH, m.tileW, m.tileH);
+        }
+      }
+    }
+  }
+  if ($('showDeploy').checked && state.units) {
+    bctx.strokeStyle = '#2f6f3f'; bctx.lineWidth = 2;
+    for (const cell of state.units.own_deploy || []) {
+      bctx.strokeRect(cell.x * m.tileW + 1, cell.y * m.tileH + 1, m.tileW - 2, m.tileH - 2);
+    }
+  }
+  if ($('showUnits').checked && state.units) {
+    const list = state.units.units || [];
+    list.forEach((unit, index) => {
+      const cx = unit.x * m.tileW + m.tileW / 2, cy = unit.y * m.tileH + m.tileH / 2;
+      bctx.beginPath(); bctx.arc(cx, cy, m.tileW * 0.33, 0, Math.PI * 2);
+      bctx.fillStyle = CAMP_COLOR[unit.camp] || '#555'; bctx.fill();
+      bctx.lineWidth = index === state.selectedUnit ? 3 : 1;
+      bctx.strokeStyle = index === state.selectedUnit ? '#fff' : 'rgba(0,0,0,.6)';
+      bctx.stroke();
+      bctx.fillStyle = '#fff'; bctx.font = `bold ${Math.round(m.tileW * 0.42)}px sans-serif`;
+      bctx.textAlign = 'center'; bctx.textBaseline = 'middle';
+      bctx.fillText(String(unit.group ?? ''), cx, cy + 1);
+    });
+  }
+  bctx.strokeStyle = 'rgba(0,0,0,.18)'; bctx.lineWidth = 1;
+  for (let x = 1; x < m.w; x++) {
+    bctx.beginPath(); bctx.moveTo(x * m.tileW + .5, 0); bctx.lineTo(x * m.tileW + .5, board.height); bctx.stroke();
+  }
+  for (let y = 1; y < m.h; y++) {
+    bctx.beginPath(); bctx.moveTo(0, y * m.tileH + .5); bctx.lineTo(board.width, y * m.tileH + .5); bctx.stroke();
+  }
+}
+
+// 每一次改動先把受影響的格子存起來，復原才不必整份快照。
+function snapshot(cells) {
+  state.history.push(cells);
+  if (state.history.length > 200) state.history.shift();
+  $('undo').disabled = false;
+  state.dirty = true;
+}
+
+function setTile(x, y, index, batch) {
+  const m = state.map, at = y * m.w + x;
+  if (m.tiles[at] === index) return;
+  batch.push({ at, tile: m.tiles[at], cost: Array.isArray(m.cost) ? m.cost[at] : undefined });
+  m.tiles[at] = index;
+  if (Array.isArray(m.cost)) m.cost[at] = costForTile(index);
+}
+
+function floodFill(x, y, index) {
+  const m = state.map, from = m.tiles[y * m.w + x];
+  if (from === index) return [];
+  const batch = [], queue = [[x, y]], seen = new Set();
+  while (queue.length) {
+    const [cx, cy] = queue.pop();
+    if (cx < 0 || cy < 0 || cx >= m.w || cy >= m.h) continue;
+    const at = cy * m.w + cx;
+    if (seen.has(at) || m.tiles[at] !== from) continue;
+    seen.add(at);
+    setTile(cx, cy, index, batch);
+    queue.push([cx + 1, cy], [cx - 1, cy], [cx, cy + 1], [cx, cy - 1]);
+  }
+  return batch;
+}
+
+function cellAt(event) {
+  const m = state.map, box = board.getBoundingClientRect();
+  const x = Math.floor((event.clientX - box.left) / (box.width / m.w));
+  const y = Math.floor((event.clientY - box.top) / (box.height / m.h));
+  if (x < 0 || y < 0 || x >= m.w || y >= m.h) return null;
+  return { x, y };
+}
+
+function unitAt(x, y) {
+  if (!state.units) return -1;
+  return (state.units.units || []).findIndex((u) => u.x === x && u.y === y);
+}
+
+function onBoardDown(event) {
+  if (!state.map) return;
+  const cell = cellAt(event);
+  if (!cell) return;
+  if (state.tool === 'rect') { state.dragFrom = cell; return; }
+  applyAt(cell, event);
+}
+
+function onBoardUp(event) {
+  if (state.tool !== 'rect' || !state.dragFrom) return;
+  const to = cellAt(event) || state.dragFrom, from = state.dragFrom;
+  state.dragFrom = null;
+  const batch = [];
+  for (let y = Math.min(from.y, to.y); y <= Math.max(from.y, to.y); y++) {
+    for (let x = Math.min(from.x, to.x); x <= Math.max(from.x, to.x); x++) {
+      setTile(x, y, state.tile, batch);
+    }
+  }
+  if (batch.length) { snapshot(batch); draw(); }
+}
+
+function applyAt(cell, event) {
+  const { x, y } = cell;
+  if (state.tool === 'brush' || state.tool === 'erase') {
+    const batch = [];
+    setTile(x, y, state.tool === 'erase' ? 0 : state.tile, batch);
+    if (batch.length) { snapshot(batch); draw(); }
+    inspectCell(x, y);
+    return;
+  }
+  if (state.tool === 'fill') {
+    const batch = floodFill(x, y, state.tile);
+    if (batch.length) { snapshot(batch); draw(); }
+    inspectCell(x, y);
+    return;
+  }
+  if (state.tool === 'deploy') { toggleDeploy(x, y); return; }
+  if (state.tool === 'unit') {
+    const found = unitAt(x, y);
+    if (found >= 0) { state.selectedUnit = found; draw(); inspectUnit(found); return; }
+    addUnit(x, y);
+    return;
+  }
+  const found = unitAt(x, y);
+  if (found >= 0) { state.selectedUnit = found; inspectUnit(found); } else { inspectCell(x, y); }
+}
+
+function onBoardMove(event) {
+  if (!state.map || event.buttons !== 1) return;
+  if (state.tool !== 'brush' && state.tool !== 'erase') return;
+  const cell = cellAt(event);
+  if (!cell) return;
+  const batch = [];
+  setTile(cell.x, cell.y, state.tool === 'erase' ? 0 : state.tile, batch);
+  if (batch.length) { snapshot(batch); draw(); }
+}
+
+function toggleDeploy(x, y) {
+  if (!state.units) { say('這張地圖沒有單位檔，改不了部署格。', true); return; }
+  const list = state.units.own_deploy || (state.units.own_deploy = []);
+  const at = list.findIndex((c) => c.x === x && c.y === y);
+  if (at >= 0) list.splice(at, 1); else list.push({ x, y });
+  state.dirty = true;
+  draw();
+  say(at >= 0 ? `移除部署格 (${x},${y})` : `加入部署格 (${x},${y})，目前 ${list.length} 格`);
+}
+
+function addUnit(x, y) {
+  if (!state.units) { say('這張地圖沒有單位檔，加不了單位。', true); return; }
+  const list = state.units.units || (state.units.units = []);
+  const template = list.length ? list[list.length - 1] : {};
+  const unit = {
+    camp: 'enemy', cls: template.cls ?? 1, cls_name: template.cls_name ?? '',
+    lv: 1, portrait: template.portrait ?? 0, group: 1,
+    hp: 10, mp: 0, ap: 10, dp: 1, mv: 4, hit: 90, ev: 5, crit: 5,
+    fig: template.fig ?? 0, ex: 0, x, y,
+  };
+  list.push(unit);
+  state.selectedUnit = list.length - 1;
+  state.dirty = true;
+  draw(); renderGroups(); inspectUnit(state.selectedUnit);
+  say(`在 (${x},${y}) 新增一個單位；記得改 camp、職業與數值。`);
+}
+
+function inspectNothing() {
+  $('inspector').innerHTML = '<h2>格子</h2><p class="hint">點畫布看這一格的內容。</p>';
+}
+
+function inspectCell(x, y) {
+  const m = state.map, at = y * m.w + x;
+  const index = m.tiles[at];
+  const cost = Array.isArray(m.cost) ? m.cost[at] : 1;
+  state.selectedUnit = -1;
+  $('inspector').innerHTML = `
+    <h2>格子 (${x}, ${y})</h2>
+    <table><tbody>
+      <tr><th>tile index</th><td>${index}</td></tr>
+      <tr><th>移動成本</th><td>${cost}${cost >= BLOCKED_COST ? '（不可通行）' : ''}</td></tr>
+    </tbody></table>
+    <p class="hint">成本由地形控制表按 tile index 查出來，不逐格編輯——同一張 tile
+    在不同地圖上要有同樣的行為。</p>`;
+  draw();
+}
+
+function inspectUnit(index) {
+  const unit = state.units.units[index];
+  const rows = UNIT_FIELDS.map(([key, label]) =>
+    `<label><span>${label}</span><input data-field="${key}" value="${unit[key] ?? ''}"></label>`).join('');
+  $('inspector').innerHTML = `
+    <h2>單位 #${index}</h2>
+    <label><span>陣營</span><select data-field="camp">${
+      CAMPS.map((c) => `<option value="${c}"${unit.camp === c ? ' selected' : ''}>${c}</option>`).join('')
+    }</select></label>
+    <div class="grid2">
+      <label><span>x</span><input data-field="x" value="${unit.x}"></label>
+      <label><span>y</span><input data-field="y" value="${unit.y}"></label>
+    </div>
+    <div class="grid2">${rows}</div>
+    <div class="row" style="margin-top:10px">
+      <button id="dropUnit">刪除這個單位</button>
+    </div>
+    <p class="hint">group 255 是保留槽位、不出場。沒列在表單裡的欄位原樣保留。</p>`;
+  $('inspector').querySelectorAll('[data-field]').forEach((input) => {
+    input.addEventListener('change', () => {
+      const key = input.dataset.field;
+      const raw = input.value.trim();
+      const before = unit[key];
+      unit[key] = (typeof before === 'number' || /^-?\d+$/.test(raw)) && raw !== '' && key !== 'cls_name' && key !== 'camp'
+        ? Number(raw) : raw;
+      state.dirty = true;
+      draw(); renderGroups();
+    });
+  });
+  $('dropUnit').addEventListener('click', () => {
+    state.units.units.splice(index, 1);
+    state.selectedUnit = -1; state.dirty = true;
+    draw(); renderGroups(); inspectNothing();
+    say('已刪除單位；還沒存回檔案。');
+  });
+}
+
+function renderGroups() {
+  const body = $('groups').querySelector('tbody');
+  if (!state.units) { body.innerHTML = '<tr><td class="hint">沒有單位檔</td></tr>'; return; }
+  const tally = new Map();
+  for (const unit of state.units.units || []) {
+    const key = unit.group ?? '—';
+    const seen = tally.get(key) || { own: 0, ally: 0, enemy: 0 };
+    seen[unit.camp] = (seen[unit.camp] || 0) + 1;
+    tally.set(key, seen);
+  }
+  const keys = [...tally.keys()].sort((a, b) => Number(a) - Number(b));
+  body.innerHTML = '<tr><th>group</th><th>編制</th></tr>' + keys.map((key) => {
+    const seen = tally.get(key);
+    const parts = CAMPS.filter((c) => seen[c]).map((c) =>
+      `<span class="swatch" style="background:${CAMP_COLOR[c]}"></span>${seen[c]}`).join(' ');
+    return `<tr><td>${key}${String(key) === '255' ? '（保留）' : ''}</td><td>${parts}</td></tr>`;
+  }).join('');
+}
+
+function undo() {
+  const batch = state.history.pop();
+  if (!batch) return;
+  const m = state.map;
+  for (const change of batch) {
+    m.tiles[change.at] = change.tile;
+    if (change.cost !== undefined && Array.isArray(m.cost)) m.cost[change.at] = change.cost;
+  }
+  $('undo').disabled = state.history.length === 0;
+  draw();
+}
+
+// 寫回時保留原檔的所有欄位：編輯器只改它認得的那幾個，其餘原樣送回去。少寫一個
+// 欄位不會報錯，只會讓那張地圖在遊戲裡少掉某個效果。
+async function writeJSON(name, value) {
+  const handle = await state.dir.getFileHandle(name, { create: false });
+  const stream = await handle.createWritable();
+  await stream.write(JSON.stringify(value, null, 2) + '\n');
+  await stream.close();
+}
+
+async function save() {
+  if (!state.dir) return;
+  try {
+    await writeJSON('map.json', state.map);
+    if (state.unitsName) await writeJSON(state.unitsName, state.units);
+    state.dirty = false;
+    say(`已存回 ${state.name}／map.json${state.unitsName ? '、' + state.unitsName : ''}。`
+      + '直接用引擎載入這張地圖即可，不需要任何轉換步驟。');
+  } catch (err) {
+    say('存檔失敗：' + err, true);
+  }
+}
+
+$('open').addEventListener('click', openMap);
+$('save').addEventListener('click', save);
+$('undo').addEventListener('click', undo);
+board.addEventListener('mousedown', onBoardDown);
+board.addEventListener('mousemove', onBoardMove);
+window.addEventListener('mouseup', onBoardUp);
+tiles.addEventListener('click', (event) => {
+  if (!state.map) return;
+  const m = state.map, box = tiles.getBoundingClientRect();
+  const x = Math.floor((event.clientX - box.left) / (box.width / m.cols));
+  const y = Math.floor((event.clientY - box.top) / (box.height / Math.ceil(state.tileset.height / m.tileH)));
+  state.tile = y * m.cols + x;
+  drawTileset();
+});
+document.querySelectorAll('[data-tool]').forEach((button) => {
+  button.addEventListener('click', () => {
+    state.tool = button.dataset.tool;
+    document.querySelectorAll('[data-tool]').forEach((other) =>
+      other.setAttribute('aria-pressed', String(other === button)));
+  });
+});
+['showUnits', 'showDeploy', 'showBlocked'].forEach((id) =>
+  $(id).addEventListener('change', () => { if (state.map) draw(); }));
+window.addEventListener('beforeunload', (event) => {
+  if (state.dirty) { event.preventDefault(); event.returnValue = ''; }
+});
+</script>
+</body>
+</html>

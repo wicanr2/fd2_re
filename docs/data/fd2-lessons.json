@@ -265,6 +265,30 @@
         "pattern": "指令環上的 esc 會取消行動",
         "note": "engage 的待機分支還寫著為什麼不能 esc。"
       }
+    },
+    {
+      "id": "oracle-needs-its-cpu-share",
+      "area": "對拍",
+      "rule": "oracle 在跑的時候不要同時起吃 CPU 的容器（Go 全套件回歸就會佔四核）。非跑不可就把 `FD2_ORACLE_STEP_TIMEOUT` 從預設 180 秒調大——單格等待逾時看起來像遊戲卡住，其實是排程問題。",
+      "why": "2026-09-11 第三關與 cmd/fd2 回歸同時跑，oracle 在第 2 回合的 seq 524 等待逾時中止。log 上只有一行「控制序列 524 等待逾時」，和邏輯錯誤長得一模一樣；當下畫面、狀態、序列都沒有問題，純粹是那一格在 180 秒內沒跑完。",
+      "date": "2026-09-11",
+      "evidence": "tools/dosgolem_oracle_drive.py"
+    },
+    {
+      "id": "oracle-exit-looks-like-a-hang",
+      "area": "對拍",
+      "rule": "驅動端回報「控制序列 N 等待逾時」時，先看 `<輸出目錄>/oracle.log` 的結尾。executor 自己以 exit status 中止時，驅動端只看得到「等不到回應」，和遊戲卡住長得一模一樣；`error` 欄位會直接寫出是哪一個 EIP 的哪一個 opcode 沒支援。",
+      "why": "2026-09-11 第三關連兩輪在同一格逾時，第一次歸因為 CPU 競爭、把逾時從 180 秒放寬到 600 秒，第二次還是同一格。checkpoint 畫面完全正常（「要結束本回合的行動嗎？」等 YES），真正的原因在 oracle.log 最後一行：`cpu386: EIP=0001E1C1 opcode=02：byte運算記憶體形式尚未支援`，exit status 2。放寬逾時對它一點用都沒有。",
+      "date": "2026-09-11",
+      "evidence": "tools/dosgolem_oracle.sh",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/dosgolem_oracle.sh"
+        ],
+        "pattern": "oracle",
+        "note": "驅動腳本還在，oracle.log 仍是它的輸出。"
+      }
     }
   ]
 }
