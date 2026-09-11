@@ -760,10 +760,10 @@ def empty_cell(current, near):
 def end_turn(command):
     """開系統選單選 END 結束我方回合。
 
-    比逐一讓單位待機可靠得多。指令環實際上是六格的 command grid，方向鍵在格子之間
-    移動，按幾次 down 會選到哪一格從狀態層看不出來——實測四個方向都試過還停在
-    grid 上。而系統選單的 END 是既有收據走過的路徑（`ch01-phase-banner.jsonl`：
-    在空地開面板、下三次、確認、再確認 YES）。
+    單位各自待機之後原版有時會自己換手，但「有時」不夠：打不到人而待機的單位、
+    推進到一半的單位，換手條件不一定成立，等回合推進會空等到預算用完。END 是既有
+    收據走過的路徑（`ch01-phase-banner.jsonl`：在空地開面板、下三次、確認、再確認
+    YES），用它收尾不必去猜換手條件。
     """
     steps = int(command.get("steps", 2_000_000))
     if not ensure_cursor_mode(max(steps, 5_000_000), int(command.get("cursor_wait", 80))):
