@@ -51,9 +51,18 @@ RUN = "/out"
 PLAN = "/plan.jsonl"
 STEP_TIMEOUT = float(os.environ.get("FD2_ORACLE_STEP_TIMEOUT", "180"))
 
-# 陣營編碼取自實際收據：第一關我方單位是 camp 2、敵方是 camp 0。
+# 陣營編碼共三種，取自重製端 `native_continue_runtime_units.go` 對 raw `+6` 的
+# 分派，與實際收據一致：0 敵方、1 友軍、2 我方。
+#
+# **camp 1 是友軍不是敵人**：AI 控制的盟友，第二關有六個。它們會自己打，敵方 HP
+# 因此有時在我方沒出手的回合也會掉。「敵方全滅」只算 camp 0 是對的——把 camp 1
+# 算進去會永遠打不完，漏掉 camp 0 的某些單位則會提早收工。
+#
+# 下面兩個常數的名字沿用既有序列檔裡的 `ally_alive`，指的是**我方**（camp 2），
+# 不是 camp 1 的友軍。
 ALLY_CAMP = 2
 ENEMY_CAMP = 0
+FRIENDLY_CAMP = 1
 
 # 戰場的單位陣列基底。戰鬥中途的過場（第一關第 3 回合哈諾與哈瓦特加入）會把
 # 指標換掉，那時 `units` 讀出來是垃圾——camp 會是 63／34／54 這種值，x／y 也

@@ -341,6 +341,27 @@ class Conditions(unittest.TestCase):
             drive.measure(self.current, "morale")
 
 
+class CampEncoding(unittest.TestCase):
+    """0 敵方、1 友軍、2 我方。友軍算進敵方就永遠打不完。"""
+
+    def test_friendly_camp_counts_as_neither_side(self):
+        current = {"view": {"round": 1},
+                   "units": [unit(1, 1, drive.ALLY_CAMP, identity=0),
+                             unit(2, 2, drive.FRIENDLY_CAMP),
+                             unit(3, 3, drive.ENEMY_CAMP)]}
+        self.assertEqual(len(drive.side(current, drive.ALLY_CAMP)), 1)
+        self.assertEqual(len(drive.side(current, drive.ENEMY_CAMP)), 1)
+        self.assertEqual(len(drive.side(current, drive.FRIENDLY_CAMP)), 1)
+
+    def test_clearing_the_enemy_camp_ends_the_battle(self):
+        """友軍還在場不影響「敵方全滅」。"""
+        current = {"view": {"round": 3},
+                   "units": [unit(1, 1, drive.ALLY_CAMP, identity=0),
+                             unit(2, 2, drive.FRIENDLY_CAMP)]}
+        self.assertTrue(drive.holds(current, "enemy_alive<=0")[0])
+        self.assertFalse(drive.holds(current, "ally_alive<=0")[0])
+
+
 class SaveFingerprint(unittest.TestCase):
     """存檔判準：第二關以後「多出一個檔」不再成立，要看內容變了沒。"""
 
