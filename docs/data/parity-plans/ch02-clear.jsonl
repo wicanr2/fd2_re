@@ -30,3 +30,7 @@
 # 判成「敵方全滅」直接收工。await 自己會按 enter 推對白。
 {"await":"enemy_alive>=1","steps":10000000,"max":80}
 {"sweep_battle":true,"steps":2000000,"rounds":40,"turn_max":300}
+# 打完會進第三章的城鎮。在那裡存檔，下一關就有續跑點——不存的話這一輪的
+# 進度隨容器一起消失，第三關又要從第二關重打一次。
+{"key":"","steps":20000000,"repeat":20}
+{"town_save":true,"steps":10000000}
