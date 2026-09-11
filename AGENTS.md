@@ -50,15 +50,16 @@
    執行期與一般玩家驗證的唯一分層現況；同時指定已知位址的主證據與重開條件。
 3. `docs/knowledge-base/56-fd2-remake-sdd.md`：目前系統設計與證據政策。
 4. `docs/knowledge-base/57-ui-evidence-matrix.md`：介面覆蓋率與尚未關閉的關卡。
-5. `docs/data/fd2-worklist.json`：目前未完成項的唯一權威，每一條掛一個
-   `verify`（`tools/fd2_worklist.py verify` 跑得動）。渲染結果在
-   `docs/knowledge-base/91-worklist.md`，那一節由工具產生，不要手改。各輪
-   工作記錄與勘誤在 `91-worklist-history.md`，裡面的 `[ ]`／`[~]` 是當時
-   快照，不是待辦，也不得用來推算完成度。
-   每一條同步成一個 GitHub issue（`tools/fd2_worklist_issues.py`），issue 是
-   JSON 的鏡像：標題、內文與標籤由工具覆寫，討論與進度回報用留言。工作中發現
-   的重製端缺陷與原版 RE 待解題目也先寫進 JSON（`category` 標 `缺陷`／`RE待解`），
-   再同步成 issue；不要只在 GitHub 上開 issue。
+5. GitHub Issues（`wicanr2/fd2_re`，標籤 `worklist`）：目前未完成項的唯一權威。每條
+   一個開著的 issue；標題、分層與類別標籤、內文說明，以及內文裡 `fd2-worklist`
+   區塊的 id、怎樣算做完、證據與 `verify`。issue 開著代表未完成，做完就關掉並留言
+   寫提交。工作中發現的重製端缺陷與原版 RE 待解題目也開成 issue（類別 `缺陷`／
+   `RE待解`），用 `tools/fd2_worklist_issues.py new` 開，保證區塊格式正確。
+   `docs/data/fd2-worklist.json` 是 `tools/fd2_worklist_issues.py pull` 拉下來的
+   快照，不要手改；它讓 `tools/fd2_worklist.py verify` 能離線跑。渲染結果在
+   `docs/knowledge-base/91-worklist.md`，那一節由工具產生，不要手改。各輪工作
+   記錄與勘誤在 `91-worklist-history.md`，裡面的 `[ ]`／`[~]` 是當時快照，不是
+   待辦，也不得用來推算完成度。
 6. `docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md`：時間序列證據紀錄；
    較晚的勘誤優先於較早的內容。
 
@@ -295,14 +296,12 @@
   新教訓的 `rule` 要寫成**現在式、可重用的規則**，不是事件敘述——事件會過去，
   規則不會；當時發生什麼放 `why`。有機器訊號可綁的另外掛 `guard`，
   `tools/fd2_lessons.py check` 會驗那個訊號還在不在。
-- 提交前跑 `tools/fd2_worklist.py verify`：它逐條檢查未完成項的訊號還在不在，
-  訊號消失代表那一條可能做完了而條目沒改，要當場確認並從 JSON 移走。條目做完
-  不是在 markdown 打勾——`91-worklist.md` 的產生區塊下一次 render 就會蓋掉。
-- 推送之後跑 `tools/fd2_worklist_issues.py plan` 看差異，再以 `apply` 同步
-  GitHub Issues：條目從 JSON 移走的會留言並關閉，仍在 JSON 的已關閉 issue 會
-  重開，verify 判「可能已完成」只掛標籤不關閉。它要 `gh` 登入與網路，在主機
-  執行；計畫本身是純函式，測試在容器內跑。新建 issue 的編號會寫回 JSON，要
-  重跑 render 並提交。
+- 開工前與提交前跑 `tools/fd2_worklist_issues.py pull`（主機，要 gh 登入）更新
+  快照，再跑 `tools/fd2_worklist.py verify`：它逐條檢查未完成項的訊號還在不在，
+  訊號消失代表那一條可能做完了而 issue 還開著，要當場確認並用
+  `fd2_worklist_issues.py close <id> <留言>` 關掉。條目做完不是在 markdown 打勾，
+  也不是改快照——`91-worklist.md` 的產生區塊與快照下一次 pull／render 都會被蓋掉。
+  `labels --apply` 會把 verify 的結果同步成 issue 上的狀態標籤。
 - 提交前執行相關真實回歸、檢查整理過的圖片與連結、執行
   `git diff --check`，並審查 `git status` 與最終差異。
 - 重大且驗證成功的批次推送至 `origin/main`，再驗證本機 HEAD 與遠端相同。

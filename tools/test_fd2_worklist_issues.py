@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""fd2_worklist_issues.py 的同步計畫測試；不碰網路。
+"""fd2_worklist_issues.py 的解析與快照測試；不碰網路。
 
-每一條規則都驗到「會做事」與「不會多做事」兩邊：沒有差異時計畫必須是空的，否則
-每次同步都會改一輪 issue，真正的變化就淹沒在雜訊裡。
+權威是 GitHub Issues，快照是從 issue 拉下來的。這裡驗兩件事：格式化之後再解析要
+拿回同一個條目（不然 pull 會悄悄改掉內容），以及任何一個讀不懂的 issue 都要讓
+整批 pull 失敗（不然快照會少一條而沒有人發現）。
 
 執行：python3 -m unittest discover -s tools -p 'test_fd2_worklist_issues.py'
 """
@@ -29,130 +30,105 @@ def restore_modules():
     importlib.reload(importlib.import_module("fd2_worklist_issues"))
 
 
-class PlanActions(unittest.TestCase):
+SCHEMA = {
+    "schema": "fd2-worklist/1",
+    "note": "快照",
+    "layers": {"runtime": "還沒接進正式執行期", "re": "原版證據還沒閉合"},
+    "categories": {"工作": "要做的", "缺陷": "做錯的", "RE待解": "沒閉合的"},
+    "verify_kinds": {"manual": "要人判", "present": "自承還在"},
+    "items": [],
+}
+
+
+def issue(number, item, state="OPEN", extra_labels=()):
+    return {"number": number, "title": item["title"], "state": state,
+            "labels": [{"name": "worklist"}, {"name": f"分層:{item['layer']}"},
+                       {"name": f"類別:{item['category']}"}] + [{"name": n} for n in extra_labels]}
+
+
+class IssueFormat(unittest.TestCase):
     def setUp(self):
         self.dir = tempfile.mkdtemp()
-        self.root = Path(self.dir)
         self.addCleanup(shutil.rmtree, self.dir)
         self.addCleanup(restore_modules)
+        self.root = Path(self.dir)
         (self.root / "src").mkdir()
         (self.root / "src" / "gap.go").write_text("// 還沒接上\n", encoding="utf-8")
         _, self.tool = load_modules(self.root)
-        self.data = {
-            "layers": {"runtime": "還沒接進正式執行期", "re": "原版證據還沒閉合"},
-            "categories": {"工作": "要做的", "缺陷": "做錯的", "RE待解": "沒閉合的"},
-            "verify_kinds": {"manual": "要人判", "present": "自承還在"},
-            "items": [
-                {"id": "alpha", "layer": "runtime", "category": "缺陷", "title": "甲",
-                 "body": "內文", "verify": {"kind": "present", "paths": ["src"],
-                                            "pattern": "還沒接上"}},
-                {"id": "beta", "layer": "re", "category": "RE待解", "title": "乙",
-                 "verify": {"kind": "manual"}},
-            ],
+        self.item = {
+            "id": "alpha", "layer": "runtime", "category": "缺陷", "title": "甲",
+            "body": "說明第一段。\n\n第二段。", "acceptance": "做完的樣子", "evidence": "docs/a.md §2",
+            "verify": {"kind": "present", "paths": ["src"], "pattern": "還沒接上"},
         }
 
-    def mirror(self, number, item, state="OPEN", extra_labels=()):
-        """一個與條目完全同步的既有 issue。"""
-        want = self.tool.desired_issue(item, self.data)
-        return {
-            "number": number, "title": want["title"], "body": want["body"], "state": state,
-            "labels": [{"name": name} for name in sorted(want["labels"]) + list(extra_labels)],
-        }
+    def as_issue(self, number=7, **kw):
+        found = issue(number, self.item, **kw)
+        found["body"] = self.tool.format_body(self.item)
+        return found
 
-    def test_creates_every_item_without_an_issue(self):
-        actions = self.tool.plan_actions(self.data, [])
-        self.assertEqual([a["op"] for a in actions], ["create", "create"])
-        alpha = actions[0]
-        self.assertTrue(alpha["body"].startswith("<!-- fd2-worklist: alpha -->"))
-        self.assertEqual(alpha["labels"], {"worklist", "分層:runtime", "類別:缺陷"})
-        self.assertIn("verify:要人判", actions[1]["labels"])
+    def test_format_then_parse_round_trips(self):
+        parsed, problem = self.tool.parse_issue(self.as_issue(), SCHEMA)
+        self.assertIsNone(problem)
+        self.assertEqual(parsed, {**self.item, "issue": 7})
 
-    def test_in_sync_plans_nothing(self):
-        for index, item in enumerate(self.data["items"], start=1):
-            item["issue"] = index
-        issues = [self.mirror(1, self.data["items"][0]), self.mirror(2, self.data["items"][1])]
-        self.assertEqual(self.tool.plan_actions(self.data, issues), [])
+    def test_human_edits_to_prose_survive(self):
+        found = self.as_issue()
+        found["body"] = "人改過的說明。\n\n" + found["body"].split("\n\n", 2)[2]
+        parsed, _ = self.tool.parse_issue(found, SCHEMA)
+        self.assertEqual(parsed["body"], "人改過的說明。")
 
-    def test_records_number_missing_from_json(self):
-        issues = [self.mirror(7, self.data["items"][0]), self.mirror(8, self.data["items"][1])]
-        actions = self.tool.plan_actions(self.data, issues)
-        self.assertEqual([(a["op"], a["id"], a["number"]) for a in actions],
-                         [("record", "alpha", 7), ("record", "beta", 8)])
+    def test_missing_block_or_labels_is_reported(self):
+        no_block = self.as_issue()
+        no_block["body"] = "只有文字"
+        self.assertIn("沒有 fd2-worklist 區塊", self.tool.parse_issue(no_block, SCHEMA)[1])
+        bad_json = self.as_issue()
+        bad_json["body"] = "```fd2-worklist\n{not json}\n```"
+        self.assertIn("不是 JSON", self.tool.parse_issue(bad_json, SCHEMA)[1])
+        two_layers = self.as_issue(extra_labels=("分層:re",))
+        self.assertIn("恰好一個分層", self.tool.parse_issue(two_layers, SCHEMA)[1])
 
-    def test_updates_changed_title_body_and_labels_but_keeps_human_labels(self):
-        self.data["items"][0]["issue"] = 3
-        self.data["items"][1]["issue"] = 4
-        stale = self.mirror(3, self.data["items"][0], extra_labels=("help wanted", "分層:re"))
-        stale["title"] = "舊標題"
-        stale["body"] = stale["body"].replace("內文", "舊內文")
-        issues = [stale, self.mirror(4, self.data["items"][1])]
-        actions = self.tool.plan_actions(self.data, issues)
-        self.assertEqual(len(actions), 1)
-        update = actions[0]
-        self.assertEqual(update["op"], "update")
-        self.assertEqual(update["title"], "甲")
-        self.assertIn("內文", update["body"])
-        self.assertEqual(update["remove_labels"], ["分層:re"])
-        self.assertNotIn("add_labels", update)
+    def test_unknown_verify_kind_is_rejected(self):
+        self.item["verify"] = {"kind": "json_len"}
+        self.assertIn("verify", self.tool.parse_issue(self.as_issue(), SCHEMA)[1])
 
-    def test_reopens_closed_issue_whose_item_is_still_listed(self):
-        self.data["items"][0]["issue"] = 5
-        self.data["items"][1]["issue"] = 6
-        issues = [self.mirror(5, self.data["items"][0], state="CLOSED"),
-                  self.mirror(6, self.data["items"][1])]
-        actions = self.tool.plan_actions(self.data, issues)
-        self.assertEqual([(a["op"], a["number"]) for a in actions], [("reopen", 5)])
+    def test_snapshot_keeps_open_issues_in_number_order(self):
+        beta = dict(self.item, id="beta", title="乙")
+        second = issue(3, beta)
+        second["body"] = self.tool.format_body(beta)
+        closed = self.as_issue(number=9, state="CLOSED")
+        snapshot = self.tool.build_snapshot(SCHEMA, [self.as_issue(), second, closed])
+        self.assertEqual([(i["issue"], i["id"]) for i in snapshot["items"]], [(3, "beta"), (7, "alpha")])
+        self.assertEqual(snapshot["layers"], SCHEMA["layers"])
 
-    def test_closes_issue_whose_item_was_removed(self):
-        removed = self.data["items"].pop(0)
-        self.data["items"][0]["issue"] = 2
-        issues = [self.mirror(1, removed), self.mirror(2, self.data["items"][0])]
-        actions = self.tool.plan_actions(self.data, issues, head="abc1234")
-        self.assertEqual([(a["op"], a["number"]) for a in actions], [("close", 1)])
-        self.assertIn("abc1234", actions[0]["comment"])
-        # 已經關掉的就不再動它。
-        issues[0]["state"] = "CLOSED"
-        self.assertEqual(self.tool.plan_actions(self.data, issues), [])
-
-    def test_stale_verify_adds_label_instead_of_closing(self):
-        self.data["items"][0]["issue"] = 1
-        self.data["items"][1]["issue"] = 2
-        issues = [self.mirror(1, self.data["items"][0]), self.mirror(2, self.data["items"][1])]
-        (self.root / "src" / "gap.go").write_text("// 已接上\n", encoding="utf-8")
-        actions = self.tool.plan_actions(self.data, issues)
-        self.assertEqual(len(actions), 1)
-        self.assertEqual(actions[0]["op"], "update")
-        self.assertEqual(actions[0]["add_labels"], ["verify:可能已完成"])
-        self.assertIn("可能已完成", actions[0]["body"])
-
-    def test_ignores_issues_without_marker(self):
-        stray = {"number": 9, "title": "人手開的", "body": "沒有標記", "state": "OPEN",
-                 "labels": [{"name": "worklist"}]}
-        actions = self.tool.plan_actions(self.data, [stray])
-        self.assertEqual([a["op"] for a in actions], ["create", "create"])
-
-    def test_rejects_two_issues_for_one_item(self):
-        issues = [self.mirror(1, self.data["items"][0]), self.mirror(2, self.data["items"][0])]
+    def test_one_unreadable_issue_fails_the_whole_pull(self):
+        broken = self.as_issue(number=8)
+        broken["body"] = "壞掉"
         with self.assertRaises(SystemExit):
-            self.tool.plan_actions(self.data, issues)
+            self.tool.build_snapshot(SCHEMA, [self.as_issue(), broken])
 
-    def test_evidence_links_to_main_and_keeps_section(self):
-        self.assertEqual(
-            self.tool.evidence_link("docs/a.md §3"),
-            "[`docs/a.md`](https://github.com/wicanr2/fd2_re/blob/main/docs/a.md) §3")
+    def test_duplicate_ids_fail_the_pull(self):
+        with self.assertRaises(SystemExit):
+            self.tool.build_snapshot(SCHEMA, [self.as_issue(number=1), self.as_issue(number=2)])
 
+    def test_stale_verify_plans_label_and_clears_it_again(self):
+        data = dict(SCHEMA, items=[{**self.item, "issue": 7}])
+        self.assertEqual(self.tool.plan_label_updates(data, [self.as_issue()]), [])
+        (self.root / "src" / "gap.go").write_text("// 已接上\n", encoding="utf-8")
+        updates = self.tool.plan_label_updates(data, [self.as_issue()])
+        self.assertEqual(updates, [{"number": 7, "id": "alpha", "add": ["verify:可能已完成"], "remove": []}])
+        stale = self.as_issue(extra_labels=("verify:可能已完成",))
+        (self.root / "src" / "gap.go").write_text("// 還沒接上\n", encoding="utf-8")
+        self.assertEqual(self.tool.plan_label_updates(data, [stale])[0]["remove"], ["verify:可能已完成"])
 
-class RealWorklistLabels(unittest.TestCase):
-    def test_every_label_the_real_worklist_needs_is_defined(self):
-        worklist, tool = load_modules(Path(__file__).resolve().parent.parent)
-        self.addCleanup(restore_modules)
-        data = worklist.load()
-        defined = tool.labels_needed(data)
-        for item in data["items"]:
-            with self.subTest(item["id"]):
-                self.assertIn("category", item, "每一條都要標類別")
-                for label in tool.desired_issue(item, data)["labels"]:
-                    self.assertIn(label, defined)
+    def test_migration_rewrites_only_old_marker_bodies(self):
+        data = dict(SCHEMA, items=[self.item])
+        old = issue(4, self.item)
+        old["body"] = "<!-- fd2-worklist: alpha -->\n舊的鏡像內文"
+        updates = self.tool.plan_migration(data, [old, self.as_issue(number=5)])
+        self.assertEqual([u["number"] for u in updates], [4])
+        parsed, problem = self.tool.parse_issue({**old, "body": updates[0]["body"]}, SCHEMA)
+        self.assertIsNone(problem)
+        self.assertEqual(parsed["verify"], self.item["verify"])
 
 
 if __name__ == "__main__":

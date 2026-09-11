@@ -1,19 +1,22 @@
 # 91 — FD2 remake 目前未完成項
 
-未完成項的唯一權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)。
-下面那一節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生，**不要
-手改**；改了下一次 render 就會被蓋掉。
+未完成項的唯一權威是 GitHub Issues（[`wicanr2/fd2_re`](https://github.com/wicanr2/fd2_re/issues?q=is%3Aissue+label%3Aworklist)，
+標籤 `worklist`）。[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是
+`tools/fd2_worklist_issues.py pull` 拉下來的快照；下面那一節由
+[`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 從快照產生，**不要手改**，
+改了下一次 pull／render 就會被蓋掉。
 
 每一條掛一個 `verify`：跑起來為真代表這一條仍然未完成，為假就是東西做好了而條目
 沒改。這樣「動手前先確認那條還成不成立」不必靠人記得。
 
 ```sh
-tools/fd2_worklist.py verify   # 逐條檢查，發現訊號消失的條目就以 exit 1 收場
-tools/fd2_worklist.py render   # 重寫下面的產生區塊
+tools/fd2_worklist_issues.py pull   # 從 GitHub 拉下開著的條目，重寫快照（主機，要 gh 登入）
+tools/fd2_worklist.py verify        # 逐條檢查，發現訊號消失的條目就以 exit 1 收場
+tools/fd2_worklist.py render        # 重寫下面的產生區塊
 python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 ```
 
-條目做完就從 JSON 移走，不是在這裡打勾。
+條目做完就在 GitHub 關掉那個 issue（`tools/fd2_worklist_issues.py close <id> <留言>`），不是在這裡打勾，也不是改快照。
 
 其他入口：
 
@@ -25,10 +28,10 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 18 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 18 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
-每一條都同步成一個 GitHub issue（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py)），討論可以在 issue 留言，內容仍以 JSON 為準。
+新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
 
 ## re — 原版證據還沒閉合
 

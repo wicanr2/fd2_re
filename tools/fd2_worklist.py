@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""fd2_worklist.py verify|render — 未完成項的權威是 docs/data/fd2-worklist.json。
+"""fd2_worklist.py verify|render — 讀未完成項的快照 docs/data/fd2-worklist.json。
 
 markdown 的 `- [ ]` 清單會長出過期斷言：東西做好了而沒有人回頭改那一條，然後
 有人照它去重做一遍、或拿它當「還剩多少」的依據。這支工具讓每一條未完成項都
@@ -11,7 +11,9 @@ markdown 的 `- [ ]` 清單會長出過期斷言：東西做好了而沒有人�
   tools/fd2_worklist.py verify            逐條檢查，發現可能已完成就以 exit 1 收場
   tools/fd2_worklist.py render            重寫 91-worklist.md 的產生區塊
 
-GitHub Issues 是這份 JSON 的鏡像，由 tools/fd2_worklist_issues.py 同步。
+未完成項的權威是 GitHub Issues（標籤 worklist）。這份 JSON 是
+tools/fd2_worklist_issues.py pull 拉下來的快照，讓這裡的檢查能離線跑、git diff 看得到
+條目何時被改；不要手改它，改 issue。
 
 檢查只看產品程式碼：`*_test.*` 與 `test_*` 一律跳過。測試本來就會提到還沒接上
 的東西（為了釘住將來的行為，或為了測資料結構本身），把它們算進來，`absent`
@@ -124,13 +126,13 @@ def verify(argv):
 
 def render_block(data):
     lines = [BEGIN, ""]
-    lines.append(f"共 {len(data['items'])} 條未完成項。權威是 "
-                 "[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，"
+    lines.append(f"共 {len(data['items'])} 條未完成項。權威是 GitHub Issues（標籤 `worklist`），"
+                 "[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，"
                  "本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。")
     lines.append("")
     lines.append("`要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。")
-    lines.append("每一條都同步成一個 GitHub issue（[`tools/fd2_worklist_issues.py`]"
-                 "(../../tools/fd2_worklist_issues.py)），討論可以在 issue 留言，內容仍以 JSON 為準。")
+    lines.append("新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`]"
+                 "(../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。")
     lines.append("")
     for key, description in data["layers"].items():
         items = [i for i in data["items"] if i["layer"] == key]

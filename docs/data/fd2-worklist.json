@@ -1,6 +1,6 @@
 {
   "schema": "fd2-worklist/1",
-  "note": "未完成項的唯一權威。docs/knowledge-base/91-worklist.md 的『目前未完成項』一節由 tools/fd2_worklist.py render 產生，不要手改。條目做完就從這裡移走，不是在 markdown 打勾。 GitHub Issues 是這份 JSON 的鏡像，由 tools/fd2_worklist_issues.py 同步，不要在 GitHub 上改內文。",
+  "note": "未完成項的權威是 GitHub Issues（標籤 worklist）。這份 JSON 是 tools/fd2_worklist_issues.py pull 拉下來的快照，不要手改；新增、修改、關閉都在 GitHub 上做，之後 pull 並提交。docs/knowledge-base/91-worklist.md 的產生區塊由 tools/fd2_worklist.py render 產生。",
   "layers": {
     "re": "原版證據還沒閉合",
     "data": "可編輯資料還沒就緒",
