@@ -680,6 +680,17 @@ def do_engage(command):
         print(f"  移動到 {cell} 被拒絕（介面沒進指令環），換下一個候選格", flush=True)
     mode = wait_mode({"ring"}, steps)
     if mode != "ring":
+        # 候選格一個都走不到：四周被自己人或敵人佔滿、或地形不通。第二關第 7 回合
+        # (13,12) 就是這樣。這不是錯誤，中止整場更不對——回到單位自己那一格原地
+        # 確認，讓它把行動結束掉，回合才推得動。
+        if do_goto({"goto": [ux, uy], "steps": steps, "max": 40}):
+            seq, current = send("enter", max(steps, 5_000_000))
+            report(seq, "enter", current, " engage=stay-put")
+            mode = wait_mode({"ring"}, steps)
+            if mode == "ring":
+                print(f"engage ({ux},{uy}) 走不到任何落腳格，原地行動", flush=True)
+                moved_to = (ux, uy)
+    if mode != "ring":
         print(f"engage ({ux},{uy}) 走完之後介面是 {mode}，指令環沒開", file=sys.stderr)
         return False
 
