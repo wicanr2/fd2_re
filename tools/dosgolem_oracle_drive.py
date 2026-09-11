@@ -1036,6 +1036,19 @@ def do_sweep_battle(command):
             print(f"sweep_battle：第 {index} 輪之前已離開戰場，收工", flush=True)
             return True
         if not side(current, ENEMY_CAMP):
+            # 增援是在回合中途登場的，打完最後一個敵人的那一瞬間場上可能真的是空
+            # 的，下一格就冒出六個。提早收工會把後面的城鎮動作送進戰場，而 log
+            # 看起來像正常結束。多等幾格再確認一次。
+            current = settle(int(command.get("turn_steps", 10_000_000)),
+                             int(command.get("clear_settle", 8)))
+            if not in_battle(current):
+                print(f"sweep_battle：敵方清空後離開戰場（第 {index} 輪）",
+                      flush=True)
+                return True
+            if side(current, ENEMY_CAMP):
+                print("sweep_battle：敵方看似全滅，等了幾格之後又有單位在場"
+                      "（增援），繼續打", flush=True)
+                continue
             print(f"sweep_battle：敵方全滅（第 {index} 輪之前）", flush=True)
             return True
         before = measure(current, "round")
