@@ -6,7 +6,7 @@
 | 檔案 | 範圍 | 狀態 |
 |---|---|---|
 | [`battlefield.html`](battlefield.html) | 戰場：圖塊繪製、單位擺放、部署格 | Phase 1 MVP |
-| [`campaign.html`](campaign.html) | 對白、戰場事件、商店品項、節點轉場 | Phase 2（節點圖 UI 仍是文字下拉）|
+| [`campaign.html`](campaign.html) | 對白、戰場事件、商店品項、節點轉場、節點圖 | Phase 2＋3 |
 
 ## 怎麼開
 
@@ -69,7 +69,8 @@ index 重算，用的是和 [`tools/export_engine_assets.py`](../export_engine_a
 | 對白 | `scenes[].lines[]` 的說話者與台詞 | `story/chNN.json` |
 | 戰場事件 | `events[]` 的 id、觸發、回合與動作 | `scenarios/chNN.json` |
 | 商店 | shop 節點的 `goods[]` | `scenarios/campaign_full.json` |
-| 節點轉場 | 每個節點的 `next`／`on_win`／`on_lose` | `scenarios/campaign_full.json` |
+| 節點轉場 | 每個節點的 `next`／`on_win`／`on_lose`（表格） | `scenarios/campaign_full.json` |
+| 節點圖 | 同上的圖形版，加上旗標、choice 選項與敗北路線 | `scenarios/campaign_full.json` |
 
 說話者下拉從那份檔案現有的台詞收集，不另外維護一張會漂的名單。轉場下拉只列得出
 現有節點——`campaign.Decode` 會拒絕斷裂的轉場，在這裡擋住比在遊戲啟動時失敗好。
@@ -77,6 +78,17 @@ index 重算，用的是和 [`tools/export_engine_assets.py`](../export_engine_a
 事件動作只有 `dialogue`、`spawn_group`、`spawn_party`、`pan`、`delay` 有表單；其餘
 型別給原始 JSON 編輯，欄位名不猜。猜錯會寫出引擎讀不動的事件，而那要玩到那一關
 才會發作。
+
+### 節點圖
+
+依章節分層畫出節點與轉場：next 灰、on_win 綠、**on_lose 紅虛線**、options 黃；會設
+旗標的節點標 ⚑；指到別章的轉場畫成節點右邊的文字（不畫會讓人以為那一章是死路）。
+
+改轉場用「按『改連到…』再點目標節點」，不是自由拖曳——299 個節點擠在一起時，拖到
+隔壁節點的機率比拖對還高，而接錯的轉場要玩到那一關才會發作。
+
+屬性面板還能勾選這個節點要設哪些旗標、新增旗標、編 choice 選項的顯示條件，以及直接
+加一個 choice 節點或替 battle 接一條敗北路線——那是 doc 38 Phase 3 驗收要的兩樣東西。
 
 ### 改到 campaign_full.json 之後要重生 canonical
 
