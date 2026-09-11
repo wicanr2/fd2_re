@@ -987,8 +987,9 @@ LE fixup 清單一致）：四個鍵盤游標處理器 `0x11B48`／`0x11B9B`／`
 定位指令環，證實它就是視窗內的格座標。
 
 重製端據此拿掉 `visible == cursor - camera` 的檢查（改檢查 13×8 視窗界線）、
-補上 `JumpNativeMapCursor` 與 `AdvanceNativeMapWalkStepView`，並讓確認移動時
-游標瞬間跳到單位所在格、走行每提交一格視圖跟著走一格。證據見
+補上 `FocusNativeMapCursor`（`0x12CEA`：先 X 後 Y 逐格走鍵盤處理器，確認移動
+由 `0x18A26` 走這條）與 `AdvanceNativeMapWalkStepView`，走行每提交一格視圖跟著
+走一格。證據見
 [`fd2_visible_cursor_writers_ida.txt`](../data/ida/fd2_visible_cursor_writers_ida.txt)，
 接線與界線見 [99](99-move-confirm-cursor-20260909.md)。本項不宣稱兩側逐像素
 一致，也沒有涵蓋 `0x53B0B`／`0x53AF1`／`0x53AF5` 的語意。

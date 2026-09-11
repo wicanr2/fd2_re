@@ -38,22 +38,22 @@ func validateNativeMapView(view NativeMapViewState, width, height int) error {
 		return fmt.Errorf("battle: native map camera (%d,%d) is outside 0..%d/0..%d",
 			view.CameraX, view.CameraY, width-nativeMapViewWidth, height-nativeMapViewHeight)
 	}
-	if view.CursorX < 0 || view.CursorX >= width || view.CursorY < 0 || view.CursorY >= height {
+	// 絕對游標留著場內檢查，但理由不是「原版會夾它」——原版沒有任何一處夾。
+	// 全部寫入端（全段掃描 0x53AB1／0x53AB5 的寫入形式）是：四個鍵盤處理器
+	// `0x11B6D`/`0x11B7B`/`0x11BCC`/`0x11BDA`/`0x11C2B`/`0x11C39`/`0x11C7E`/
+	// `0x11C8C`、四個走行步進 `0x12FEA`/`0x13149`/`0x1330A`/`0x13455`、劇情
+	// pan `0x13606`/`0x13614`/`0x1363F`/`0x1364D`、沿線掃描 helper
+	// `0x14A6F`..`0x14B0A`（結尾自己復原），以及開機與章節常數。
+	//
+	// 這些寫入端**成對搬動**三組全域，使 `visible == cursor - camera` 全程成立：
+	// 鍵盤與走行是「游標±1，可見±1 或鏡頭±1」，pan 是「游標與鏡頭同±1」。
+	// 鏡頭被自己的分支條件夾在 0..W-13／0..H-8，可見游標被安全帶維持在視窗內，
+	// 兩者相加就落在場內。所以場外的絕對游標代表**重製端**有一條路徑打破了那個
+	// 配對（例如只搬游標不搬可見游標），在這裡擋下來是重製端的自我檢查。
+	if !view.CursorInField(width, height) {
 		return fmt.Errorf("battle: native map cursor (%d,%d) is outside the %dx%d field",
 			view.CursorX, view.CursorY, width, height)
 	}
-	// 可見游標沒有界線。原版的三組全域裡只有鏡頭與絕對游標被寫入端自己夾住
-	// （上面兩段就是那兩條分支條件）；`[0x53AB9]`／`[0x53ABD]` 是自由的 dword，
-	// 八個寫入端沒有一個檢查範圍，走行步進在鏡頭仍可捲動時照樣
-	// `0x13205 dec [0x53ABD]`。dosgolem 收據
-	// docs/data/ui-traces/fd2-story-pan-cursor-20260909.json（frames idx=75）
-	// 量到 15 格之後 camera_y 34→20、cursor_y 34→19、visible_y 0→-1。
-	//
-	// 13×8 是**消費端**的界線：0x1741C 以 visible*24／visible*24*0x1C8 把它當
-	// 視窗內的格座標定位，而 pan 與走行期間 overlay selector `[0x51A83]` 是 0，
-	// 那段沒有消費端會讀到出界值。判準見 VisibleCursorInViewport，把關的地方見
-	// fdother.ActionOverlayOrigin 等消費端。
-	//
 	// 節點常數是另一種東西，不走這條驗證：進場即繪的靜止視圖由
 	// campaign.NativeMapViewConfig.Validate 檢查它自己的契約。
 	return nil
@@ -65,6 +65,12 @@ func validateNativeMapView(view NativeMapViewState, width, height int) error {
 // 0x1743F..0x1746A 以 `visible_x * 24 + visible_y * 24 * 0x1C8` 算 framebuffer
 // 位址，出界就會畫到視窗外。任何要把可見游標當畫面格座標用的路徑都要先問過
 // 這個函式再動手；狀態本身可以合法地出界（原版走行捲動就會）。
+// CursorInField 回報絕對游標有沒有落在地圖內。同 VisibleCursorInViewport，這是
+// 消費端的判準而不是狀態的合法性判準——劇情 pan 會合法地把它推出地圖。
+func (v NativeMapViewState) CursorInField(width, height int) bool {
+	return v.CursorX >= 0 && v.CursorX < width && v.CursorY >= 0 && v.CursorY < height
+}
+
 func (v NativeMapViewState) VisibleCursorInViewport() bool {
 	return v.VisibleCursorX >= 0 && v.VisibleCursorX < nativeMapViewWidth &&
 		v.VisibleCursorY >= 0 && v.VisibleCursorY < nativeMapViewHeight
@@ -230,20 +236,44 @@ func AdvanceNativeMapWalkStepViewState(
 	return view, true
 }
 
-// JumpNativeMapCursor 重現 `0x149F8..0x14B16`：直接把絕對游標設到指定格，
-// **不動鏡頭也不動可見游標**。確認移動之後游標瞬間跳到單位所在格走的就是
-// 這條路徑，所以可見游標會停在上一次由游標處理器或走行步進寫下的值。
-// 收據：docs/data/ui-traces/fd2-move-confirm-cursor-20260909.json 的 cp0071
-// （cursor (8,16)、camera (1,13)，visible 仍是 (7,2) 而不是 (7,3)）。
-func (s *State) JumpNativeMapCursor(x, y int) bool {
+// FocusNativeMapCursor 重現 `0x12CEA`：把絕對游標移到指定格，**先 X 後 Y**，
+// 每一格都呼叫對應的鍵盤游標處理器（`0x12D13→0x11C59` 左、`0x12D1A→0x11BFA`
+// 右、`0x12D4C→0x11B48` 上、`0x12D53→0x11B9B` 下），所以可見游標與鏡頭照同一
+// 套安全帶規則跟著走，不會脫節。玩家確認移動時走的就是這條路：`0x18A26`（以及
+// 目標無效時的 `0x189AA`）呼叫 `0x12CEA`，參數是 `0x18960` 存下來的游標值；
+// `0x12D7B` 是同一條路的包裝，先讀單位記錄的 x/y 再呼叫 `0x12CEA`。
+//
+// 原版每移一格重繪一次（`0x12D01`／`0x12D3B` 的 `0x11CAC(0)`），游標是「滑」
+// 回去的；這裡把整段迴圈在同一幀走完，狀態相同、少了中間那幾張畫面。
+//
+// 早期把這條路標成 `0x149F8` 並實作成「只寫絕對游標的瞬跳」是誤讀：
+// `0x149F8..0x14B16` 是沿直線收集單位的 helper，`0x14AFE` 結尾會把游標復原，
+// 淨效果是零。那個誤讀會讓可見游標每移動一次就累積一格偏差。
+func (s *State) FocusNativeMapCursor(x, y int) bool {
 	if s == nil || !s.HasNativeMapViewState {
 		return false
 	}
-	view := s.NativeMapViewState
-	view.CursorX, view.CursorY = x, y
-	if err := validateNativeMapView(view, s.W, s.H); err != nil {
+	if !s.NativeMapViewState.CursorInField(s.W, s.H) ||
+		x < 0 || x >= s.W || y < 0 || y >= s.H {
 		return false
 	}
-	s.NativeMapViewState = view
+	for s.NativeMapViewState.CursorX != x {
+		step := 1
+		if s.NativeMapViewState.CursorX > x {
+			step = -1
+		}
+		if _, ok := s.MoveNativeMapCursor(step, 0); !ok {
+			return false
+		}
+	}
+	for s.NativeMapViewState.CursorY != y {
+		step := 1
+		if s.NativeMapViewState.CursorY > y {
+			step = -1
+		}
+		if _, ok := s.MoveNativeMapCursor(0, step); !ok {
+			return false
+		}
+	}
 	return true
 }

@@ -27,14 +27,17 @@ SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
 
 三項結論：
 
-- **游標由終點瞬間回到單位所在格**，5 毫秒粒度下沒有出現中間的 (8,15)。
-  它是一次瞬跳，不是逐幀滑動。
+- **游標由終點回到單位所在格**。走的是 `0x18A26 → 0x12CEA`：先 X 後 Y 逐格移動，
+  每一格都呼叫鍵盤游標處理器。本輪的取樣落在控制序列邊界，中間那一格剛好沒被
+  抓到（見 [doc108 §2](108-terrain-cost-and-move-confirm-20260911.md)）。
 - **整段移動期間鏡頭完全不動**。
 - 游標接著逐格跟著單位走：單位提交 (8,15) 的同一格取樣，游標也變成 (8,15)。
 
-還有一個反直覺的細節：`visible` 游標不是 `cursor` 減 `camera`。cp0071 的
-cursor 是 (8,16)、camera 是 (1,13)，`visible` 卻是 (7,2) 而不是 (7,3)——它保留
-了確認前 cursor 為 (8,15) 時的值。寫入端還沒解出。
+cp0071 的 cursor 是 (8,16)、camera 是 (1,13)，`visible` 是 (7,2) 而不是 (7,3)：
+那是取樣落在走行步進中途。`0x13185` 在函式開頭扣可見游標（`0x13205`）、在結尾
+才扣游標（`0x1330A`），中間隔著六張動畫幀。把那一格算回去，`visible` 與
+`cursor − camera` 仍然相等——三組全域的每個執行期寫入端都成對搬動。寫入端與
+完整推導見 [doc108 §2](108-terrain-cost-and-move-confirm-20260911.md)。
 
 ## 畫面上看到什麼
 
@@ -198,14 +201,16 @@ Capstone 的 LE fixup 清單一致），證據檔
 |---|---|---|---|---|
 | 鍵盤游標 上／下／右／左 | `0x11B48`／`0x11B9B`／`0x11BFA`／`0x11C59` | ±1 | ±1 或不動 | 不動 或 ±1 |
 | 走行步進 下／左／上／右 | `0x12EAA`／`0x1300D`／`0x13185`／`0x13315` | ±1 | `add` 或不動 | 不動 或 ±1 |
-| 劇情捲動 | `0x135DD` | ±1 | ±1 | **不寫** |
-| 直接設定游標 | `0x149F8..0x14B16` | `mov`／`add` | **不寫** | **不寫** |
+| 劇情捲動 | `0x135DD` | ±1 | ±1 | **不寫**（與鏡頭同步，差值不變） |
+| 沿線收集單位 | `0x149F8..0x14B16` | 暫設後**還原**（`0x14AFE`） | 不寫 | 不寫 |
 | 章節重設 | `0x205DA`、`0x233C6`、`0x235F9`、`0x23E74`、`0x25757` | 設值 | 設值 | 歸零 |
 | 開機初始化 | `0x10010..0x10620` | 設值 | 設值 | 設值 |
 
-**沒有一處由 `cursor - camera` 重算。** 上面那個 (7,2) 反例因此有解：確認移動
-時游標走的是 `0x149F8` 那條只寫絕對游標的路徑，可見游標留在最後一次由游標
-處理器寫下的值。
+**沒有一處由 `cursor - camera` 重算**，但每一處都成對搬動，所以差值不變。
+上面那個 (7,2) 是取樣落在走行步進中途：可見游標在函式開頭扣、游標在結尾扣。
+確認移動走的是 `0x18A26 → 0x12CEA`（逐格呼叫鍵盤處理器），不是 `0x149F8`；
+`0x149F8` 是沿直線收集單位、結尾還原游標的 helper。見
+[doc108 §2](108-terrain-cost-and-move-confirm-20260911.md)。
 
 安全帶規則兩個家族相同——上 `>= 2`、下 `<= 5`、左 `>= 2`、右 `<= 0x0A`，
 超出就改捲鏡頭——但**判準的來源不同**：鍵盤處理器讀已存的可見游標
@@ -220,11 +225,13 @@ Capstone 的 LE fixup 清單一致），證據檔
 
 - `validateNativeMapView` 不再強制 `visible == cursor - camera`，改成檢查
   13×8 視窗界線。強制恆等式會讓原版真的走得到的狀態表達不出來。
-- 新增 `JumpNativeMapCursor`（`0x149F8`：只寫絕對游標）與
+- 新增 `FocusNativeMapCursor`（`0x12CEA`：先 X 後 Y 逐格走鍵盤處理器）與
   `AdvanceNativeMapWalkStepView`（走行步進在格邊界的效果，判準是單位相對列）。
-- 確認移動時游標瞬間跳到單位所在格；走行每提交一格，視圖跟著走一格。
-- 回歸 `TestJumpNativeMapCursorLeavesVisibleStale`、
-  `TestAdvanceNativeMapWalkStepViewUsesUnitRelativeBand`。
+- 確認移動時游標逐格回到單位所在格；走行每提交一格，視圖跟著走一格。
+- 回歸 `TestFocusNativeMapCursorStepsThroughKeyboardHandlers`、
+  `TestFocusNativeMapCursorScrollsCameraAtSafeBand`、
+  `TestAdvanceNativeMapWalkStepViewUsesUnitRelativeBand`、
+  `TestNativeMapViewKeepsVisibleCursorPairedWithCamera`。
 
 ## 劇情走位的每格幀數
 

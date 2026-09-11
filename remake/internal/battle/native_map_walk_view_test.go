@@ -2,30 +2,64 @@ package battle
 
 import "testing"
 
-// TestJumpNativeMapCursorLeavesVisibleStale 釘住 0x149F8 的契約：直接設定游標
-// 不動鏡頭也不動可見游標。收據 fd2-move-confirm-cursor-20260909 的 cp0071
-// 就是這個狀態——cursor (8,16)、camera (1,13)，visible 仍是 (7,2)。
-func TestJumpNativeMapCursorLeavesVisibleStale(t *testing.T) {
+// TestFocusNativeMapCursorStepsThroughKeyboardHandlers 釘住 0x12CEA 的契約：
+// 游標先 X 後 Y 逐格移到目標，每一格都走鍵盤處理器，所以可見游標與鏡頭跟著動。
+//
+// 玩家確認移動時走的就是這條路（0x18960 存游標 → 0x18A26 呼叫 0x12CEA），
+// 收據 fd2-move-confirm-cursor-20260909 的 cp0071 量到游標 (8,14)→(8,16) 的
+// 同時可見游標 1→2——第三格是接著開始的走行步進先扣掉的。這一條同時是反例：
+// 若確認是「只寫絕對游標的瞬跳」，可見游標會每動一次就累積一格偏差。
+func TestFocusNativeMapCursorStepsThroughKeyboardHandlers(t *testing.T) {
 	st := &State{W: 24, H: 24}
 	if err := st.MaterializeNativeMapViewState(NativeMapViewState{
-		CameraX: 1, CameraY: 13, CursorX: 8, CursorY: 15,
-		VisibleCursorX: 7, VisibleCursorY: 2,
+		CameraX: 1, CameraY: 13, CursorX: 8, CursorY: 14,
+		VisibleCursorX: 7, VisibleCursorY: 1,
 	}); err != nil {
 		t.Fatal(err)
 	}
-	if !st.JumpNativeMapCursor(8, 16) {
-		t.Fatal("跳格被拒絕")
+	if !st.FocusNativeMapCursor(8, 16) {
+		t.Fatal("focus 被拒絕")
 	}
 	got := st.NativeMapViewState
 	want := NativeMapViewState{
 		CameraX: 1, CameraY: 13, CursorX: 8, CursorY: 16,
-		VisibleCursorX: 7, VisibleCursorY: 2,
+		VisibleCursorX: 7, VisibleCursorY: 3,
 	}
 	if got != want {
-		t.Fatalf("跳格後視圖=%+v，預期 %+v", got, want)
+		t.Fatalf("focus 後視圖=%+v，預期 %+v", got, want)
 	}
-	if st.JumpNativeMapCursor(-1, 16) || st.JumpNativeMapCursor(8, 24) {
-		t.Fatal("接受了場外的游標")
+	// 三組全域成對搬動：visible 與 cursor-camera 的差在整條路上不變。
+	if got.VisibleCursorY != got.CursorY-got.CameraY {
+		t.Fatalf("focus 之後可見游標與 cursor-camera 脫節：%+v", got)
+	}
+	if st.FocusNativeMapCursor(-1, 16) || st.FocusNativeMapCursor(8, 24) {
+		t.Fatal("接受了場外的目標")
+	}
+}
+
+// TestFocusNativeMapCursorScrollsCameraAtSafeBand 是同一條路的捲動分支：目標在
+// 視窗外時，鏡頭跟著捲，可見游標停在安全帶邊界。
+func TestFocusNativeMapCursorScrollsCameraAtSafeBand(t *testing.T) {
+	st := &State{W: 24, H: 24}
+	if err := st.MaterializeNativeMapViewState(NativeMapViewState{
+		CameraX: 0, CameraY: 0, CursorX: 2, CursorY: 2,
+		VisibleCursorX: 2, VisibleCursorY: 2,
+	}); err != nil {
+		t.Fatal(err)
+	}
+	if !st.FocusNativeMapCursor(20, 20) {
+		t.Fatal("focus 被拒絕")
+	}
+	got := st.NativeMapViewState
+	if got.CursorX != 20 || got.CursorY != 20 {
+		t.Fatalf("游標=%d,%d，預期 20,20", got.CursorX, got.CursorY)
+	}
+	if !got.CursorInField(st.W, st.H) || !got.VisibleCursorInViewport() {
+		t.Fatalf("focus 之後游標或可見游標出界：%+v", got)
+	}
+	if got.VisibleCursorX != got.CursorX-got.CameraX ||
+		got.VisibleCursorY != got.CursorY-got.CameraY {
+		t.Fatalf("可見游標與 cursor-camera 脫節：%+v", got)
 	}
 }
 
@@ -76,8 +110,10 @@ func TestAdvanceNativeMapWalkStepViewUsesUnitRelativeBand(t *testing.T) {
 			want: NativeMapViewState{CameraX: 1, CameraY: 5, CursorX: 7, CursorY: 9, VisibleCursorX: 6, VisibleCursorY: 4},
 		},
 		{
-			name: "可見游標是舊值時仍以單位相對列判斷",
-			// cursor 已由 0x149F8 跳到 (8,16)，可見游標還停在 (7,2)。
+			name: "步進中途取樣時仍以單位相對列判斷",
+			// 收據 cp0071 的那一幀：走行步進先扣可見游標（0x13205），游標要到
+			// 函式結尾才扣（0x1330A），所以中途取樣會看到 visible 比
+			// cursor-camera 少一格。
 			start: NativeMapViewState{CameraX: 1, CameraY: 13, CursorX: 8, CursorY: 16, VisibleCursorX: 7, VisibleCursorY: 2},
 			unitX: 8, unitY: 16, dy: -1,
 			want: NativeMapViewState{CameraX: 1, CameraY: 13, CursorX: 8, CursorY: 15, VisibleCursorX: 7, VisibleCursorY: 1},

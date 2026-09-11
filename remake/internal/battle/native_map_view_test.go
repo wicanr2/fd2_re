@@ -4,11 +4,11 @@ import "testing"
 
 // TestNativeMapViewMaterializesViewportBounds 釘住可見游標的界線契約。
 //
-// 原版沒有 `visible == cursor - camera` 這條恆等式：`[0x53AB9]`／`[0x53ABD]`
-// 的寫入端只有四個鍵盤游標處理器、四個走行步進，加上初始化與章節歸零
-// （IDA data xref，見 docs/data/ida/fd2_visible_cursor_writers_ida.txt）。
-// 劇情捲動 `0x135DD` 與直接設定游標的 `0x149F8` 都不碰它，所以確認移動之後
-// 可見游標會合法地停在舊值。
+// `[0x53AB9]`／`[0x53ABD]` 的寫入端只有四個鍵盤游標處理器、四個走行步進，
+// 加上初始化與章節歸零（全段掃描，見
+// docs/data/ida/fd2_visible_cursor_writers_ida.txt）。劇情捲動 `0x135DD`
+// 不碰它，但它同時搬游標與鏡頭，所以差值不變。走行步進在函式頭尾分兩處寫
+// （`0x13205` 可見游標、`0x1330A` 游標），中途取樣會看到兩者差一格。
 //
 // 原版也沒有把它夾在 13×8 內：走行步進在鏡頭已到邊界時照樣 `dec [0x53ABD]`，
 // dosgolem 收據 docs/data/ui-traces/fd2-story-pan-cursor-20260909.json
@@ -58,17 +58,61 @@ func TestNativeMapViewMaterializesViewportBounds(t *testing.T) {
 	if drifted.VisibleCursorInViewport() {
 		t.Fatal("偏離很遠的可見游標被判成視窗內")
 	}
-	// 鏡頭與絕對游標則相反：原版自己在分支條件裡夾它們，這裡照樣擋。
+	// 鏡頭則相反：每個寫入端都在分支條件裡夾它（`0x11B64 cmp [0x53AAD],0`、
+	// `0x11BC4` 的 `[0x53AC5]-8`），pan 的終止條件也是鏡頭，所以這裡照樣擋。
 	badCamera := view
 	badCamera.CameraY = st.H - nativeMapViewHeight + 1
 	if err := st.MaterializeNativeMapViewState(badCamera); err == nil {
 		t.Fatal("接受了越界的鏡頭")
 	}
+	// 絕對游標留著場內檢查，理由是重製端的自我檢查而不是原版會夾它：原版的寫入端
+	// 成對搬動三組全域，鏡頭被夾在 0..W-13／0..H-8、可見游標被安全帶留在視窗內，
+	// 相加就落在場內。場外代表某條路徑打破了那個配對。
 	badCursor := view
 	badCursor.CursorX = st.W
 	if err := st.MaterializeNativeMapViewState(badCursor); err == nil {
 		t.Fatal("接受了場外的絕對游標")
 	}
+	if badCursor.CursorInField(st.W, st.H) {
+		t.Fatal("場外的絕對游標被判成場內")
+	}
+	if !view.CursorInField(st.W, st.H) {
+		t.Fatal("場內的絕對游標被判成場外")
+	}
+}
+
+// TestNativeMapViewKeepsVisibleCursorPairedWithCamera 是上一條的正對照：三組
+// 全域的寫入端成對搬動，所以整條互動路上 `visible == cursor - camera` 都成立。
+// 早期把移動確認實作成「只寫絕對游標的瞬跳」時，這個差每走一步就多累積一格，
+// 幾回合後鏡頭再也捲不到游標所在的列。
+func TestNativeMapViewKeepsVisibleCursorPairedWithCamera(t *testing.T) {
+	st := &State{W: 24, H: 24}
+	if err := st.MaterializeNativeMapViewState(NativeMapViewState{
+		CameraX: 0, CameraY: 0, CursorX: 3, CursorY: 3,
+		VisibleCursorX: 3, VisibleCursorY: 3,
+	}); err != nil {
+		t.Fatal(err)
+	}
+	paired := func(tag string) {
+		t.Helper()
+		v := st.NativeMapViewState
+		if v.VisibleCursorX != v.CursorX-v.CameraX || v.VisibleCursorY != v.CursorY-v.CameraY {
+			t.Fatalf("%s 之後脫節：%+v", tag, v)
+		}
+	}
+	for i := 0; i < 20; i++ { // 鍵盤推到右下角，途中會捲鏡頭
+		st.MoveNativeMapCursor(1, 0)
+		st.MoveNativeMapCursor(0, 1)
+		paired("鍵盤")
+	}
+	if !st.AdvanceNativeMapWalkStepView(st.NativeMapViewState.CursorX, st.NativeMapViewState.CursorY, -1, 0) {
+		t.Fatal("走行步進被拒絕")
+	}
+	paired("走行步進")
+	if !st.FocusNativeMapCursor(4, 5) {
+		t.Fatal("focus 被拒絕")
+	}
+	paired("focus")
 }
 
 func TestNativeMapCursorMovesCameraAtRecoveredThresholds(t *testing.T) {

@@ -145,11 +145,15 @@ dosgolem 收據 [fd2-story-pan-cursor-20260909.json](../data/ui-traces/fd2-story
 | #3 | 47 | cam (0,0)、cur (0,0)、vis (0,0) | cam (5,42)、cur (5,42)、vis (0,0) |
 
 每格恰好一張抓幀，也就是**每格一次呈現**，而且 X 先走完才走 Y。
-`syncStoryNativeMapPanView` 因此改成把游標平移鏡頭的差量；
-`cursor = camera + visible` 只有在恆等式成立時才碰巧一致，而
-`0x149F8`（確認移動時只寫游標）會合法地打破它。差別由
+`syncStoryNativeMapPanView` 因此改成把游標平移鏡頭的差量：游標的位移量是
+鏡頭的位移量，不是由 `camera + visible` 反推。差別由
 `TestStoryPanMovesAbsoluteCursorByCameraDelta` 釘住：起點刻意讓
 `visible ≠ cursor − camera`，兩條規則的結果不同。
+
+（本段原本把「確認移動時只寫游標的 `0x149F8`」當成打破恆等式的路徑。那個歸因
+已被推翻：`0x149F8` 是沿線收集單位、結尾會還原游標的 helper，確認移動走的是
+`0x12CEA`，而它逐格呼叫鍵盤處理器、可見游標跟著動。見
+[doc108 §2](108-terrain-cost-and-move-confirm-20260911.md)。）
 
 ## 三組全域各有各的界線，可見游標沒有
 
@@ -185,8 +189,9 @@ dosgolem 收據 [fd2-story-pan-cursor-20260909.json](../data/ui-traces/fd2-story
 寫入端走，可見游標可以合法地出界；節點常數描述玩家進到那個節點時**立刻要
 畫出來**的畫面，游標框與指令環會馬上讀可見游標，而且章節重設 `0x205DA` 把
 六個全域一起歸零之後，鍵盤游標、走行步進與劇情 pan 每一次寫入都同時維持
-`visible = cursor − camera`——唯一打破它的 `0x149F8` 是玩家在戰鬥中確認移動的
-執行期路徑，不會是節點的進場常數。受版控的 13 筆節點視圖全部滿足這兩條，
+`visible = cursor − camera`。執行期唯一會讓兩者看起來不等的是**取樣落在走行
+步進中途**（可見游標在函式開頭扣、游標在結尾扣），那是一幀之內的過渡，不會是
+節點的進場常數。受版控的 13 筆節點視圖全部滿足這兩條，
 `TestVersionedNodeViewsSatisfyTheEntryContract` 讓資料自己驗一次。
 
 把可見游標當畫面格座標的消費端有三處，都問過

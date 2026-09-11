@@ -3608,7 +3608,11 @@ target, any record at the destination with raw `+5 bit0==0` blocks admission.
 The 29×20 table returned by `0x4e555(selector)` is exported as editable
 `native_movement_cost_rows.json`; selector normally uses target class `+0x20`,
 is overridden to 1 for `+7==0x1c`, or to 19 for the recovered `0x1f183`
-class/race gate. The resolved terrain index must contain literal value20.
+class/race gate. The destination is **refused** when the resolved terrain index
+holds literal 20（不可通行）：`0x11702` 取 `costRow[地形碼]`，`0x11706 cmp eax,0x14`
+相等就 `je 0x117A9` 回到輸入迴圈。表本身在 2026-09-11 修正過一次整份錯位
+（linear `0x61646` 對到檔案 `0x55446`，不是 `0x55445`），詳見
+[108](108-terrain-cost-and-move-confirm-20260911.md) §1、§3。
 `NativeRelocationDestinationAllowed` preserves those gates and rejects
 malformed tables/counts. Terrain-index production through `0x12e38` is already
 the raw cursor/FDSHAP resolver boundary. Ebiten now keeps the selected first

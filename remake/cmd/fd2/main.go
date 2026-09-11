@@ -873,7 +873,7 @@ func (g *Game) stepTransitionReveal() {
 //	0x1363F/0x13645、0x1364D/0x13653                ; Y 軸同一對
 //
 // 因此游標的位移量就是鏡頭的位移量，不是由 camera + visible 反推——後者只有
-// 在恆等式成立時才碰巧一致，而 0x149F8 只寫游標，恆等式會合法地被打破。
+// 在恆等式成立時才碰巧一致；游標的位移要照 0x135DD 自己的寫法算。
 // 收據：docs/data/ui-traces/fd2-story-pan-cursor-20260909.json。
 func (g *Game) syncStoryNativeMapPanView() bool {
 	return g.publishStoryNativeMapView(func(view battle.NativeMapViewState) (battle.NativeMapViewState, bool) {
@@ -7333,11 +7333,13 @@ func (g *Game) confirm() {
 			}
 			if len(p) >= 2 {
 				g.walk = &walkAnim{u: g.sel, path: p}
-				// 原版確認之後游標瞬間跳回單位所在格，走的是只寫絕對游標的
-				// 0x149F8 路徑：鏡頭與可見游標都不動，可見游標因此停在最後
-				// 一次游標處理器寫下的值。收據 fd2-move-confirm-cursor-20260909
-				// 的 cp0071 在 5 毫秒粒度下沒有中間格，是一次瞬跳。
-				g.jumpNativeMapCursorToUnit(g.sel)
+				// 原版確認之後游標回到單位所在格：0x18960 先存下游標，
+				// 0x18A26 以那個值呼叫 0x12CEA，逐格走回去（每格一次
+				// 0x11CAC(0) 重繪）。走的是鍵盤處理器，所以可見游標與鏡頭
+				// 一起動——收據 fd2-move-confirm-cursor-20260909 的 cp0071
+				// 量到游標 14→16 的同時可見游標 1→2（第三格由接著開始的走行
+				// 步進先扣掉），正是「成對搬動」的形狀。
+				g.focusNativeMapCursorOnUnit(g.sel)
 			} else { // 理論上不會(reach 內必可達),保底瞬移
 				g.sel.SetMapPlacement(g.curX, g.curY, g.sel.Dir)
 				g.moved = true
@@ -8222,14 +8224,19 @@ func (g *Game) moveMapCursor(dx, dy int) {
 	g.curY += dy
 }
 
-// jumpNativeMapCursorToUnit 重現 0x149F8：游標直接落到單位所在格，不動鏡頭
-// 也不動可見游標。
-func (g *Game) jumpNativeMapCursorToUnit(u *battle.Unit) {
+// focusNativeMapCursorOnUnit 重現 0x12D7B→0x12CEA：讀單位記錄的 x/y，再把游標
+// 先 X 後 Y 逐格移過去。逐格走的是四個鍵盤處理器，所以可見游標與鏡頭跟著同一套
+// 安全帶規則，三組全域不會脫節。
+func (g *Game) focusNativeMapCursorOnUnit(u *battle.Unit) {
 	if g == nil || u == nil || g.st == nil || !g.st.HasNativeMapViewState {
 		return
 	}
-	if !g.st.JumpNativeMapCursor(u.X, u.Y) {
+	if !g.st.FocusNativeMapCursor(u.X, u.Y) {
 		return
+	}
+	if g.st.HasNativeMapHUDState {
+		view := g.st.NativeMapViewState
+		g.st.AdvanceNativeMapHUDAnchor(view.VisibleCursorX, view.VisibleCursorY)
 	}
 	g.syncNativeMapView()
 }
@@ -8263,20 +8270,16 @@ func (g *Game) positionScreenshotCursor(x, y int) bool {
 		g.curX, g.curY = x, y
 		return true
 	}
-	for g.st.NativeMapViewState.CursorX != x {
-		dx := 1
-		if g.st.NativeMapViewState.CursorX > x {
-			dx = -1
-		}
-		g.moveMapCursor(dx, 0)
+	// 與玩家確認移動同一條路（0x12CEA：先 X 後 Y，逐格走鍵盤處理器），
+	// 所以截圖與正式路徑產生的視圖狀態一致。
+	if !g.st.FocusNativeMapCursor(x, y) {
+		return false
 	}
-	for g.st.NativeMapViewState.CursorY != y {
-		dy := 1
-		if g.st.NativeMapViewState.CursorY > y {
-			dy = -1
-		}
-		g.moveMapCursor(0, dy)
+	if g.st.HasNativeMapHUDState {
+		view := g.st.NativeMapViewState
+		g.st.AdvanceNativeMapHUDAnchor(view.VisibleCursorX, view.VisibleCursorY)
 	}
+	g.syncNativeMapView()
 	return g.curX == x && g.curY == y
 }
 
