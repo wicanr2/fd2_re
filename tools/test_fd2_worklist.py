@@ -84,6 +84,8 @@ class RealWorklistBothDirections(unittest.TestCase):
         samples = {
             "wasm-web-release": "GOOS=js GOARCH=wasm go build ./cmd/fd2\n",
             "android-package": "ebitenmobile bind -target android ./mobile\n",
+            "parity-ch02-ch04-original-side": "# 第四關：從第三關的續跑點起跑\n",
+            "native-level-cap": "// 0x1E2E0：+7 為 0x1E／0x1F 時等級上限 99，其餘 40\n",
         }
         for item in items:
             with self.subTest(item["id"]):

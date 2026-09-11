@@ -214,6 +214,38 @@
         ],
         "note": "第四關的序列檔出現才代表這條推進完了。"
       }
+    },
+    {
+      "id": "native-death-effect-unresolved",
+      "layer": "re",
+      "title": "死亡效果型態 3 與型態 2 的其他 id 還不可執行",
+      "body": "FDFIELD b22..b24 抄進 runtime `+0x31..+0x33`。型態 0（物品）、1（金幣）與型態 2 的 id 39／41 已資料化；型態 3 與型態 2 的其他 id 沒有閉合的 handler，地圖檔只保留原始 `death_effect`，不產生 `death_reward`。第一關就有兩筆：海盜頭目 `[3, 8]` 與哈諾 `[2, 4]`。原版進城金幣 1000 只說明頭目那筆不給金幣。",
+      "acceptance": "追到型態 3 與其餘型態 2 handler 的 writer／consumer，資料化成可執行獎勵或明確的無效果，並加測試。",
+      "evidence": "docs/knowledge-base/109-title-to-town-journey-20260911.md §3",
+      "verify": {
+        "kind": "present",
+        "paths": [
+          "tools/export_units.py"
+        ],
+        "pattern": "其他型態（含 type 3）語意未全解",
+        "note": "降階規則自己的註解。閉合時這句會改掉。"
+      }
+    },
+    {
+      "id": "native-level-cap",
+      "layer": "runtime",
+      "title": "升級上限沒有實作",
+      "body": "`0x1E2E0..0x1E2F2`：記錄 `+7` 為 0x1E／0x1F 時等級比 99，其餘比 40，相等就跳離升級處理。重製端 `gainExp` 沒有這道判斷，等級可以無限上升。第一關等級到不了上限，不影響目前的整段對照。",
+      "acceptance": "`gainExp` 依 `+7` 套上 40／99 上限並加測試；跳離時經驗是否仍累積要先讀 `0x1E2F2` 的跳躍目標再決定。",
+      "evidence": "docs/knowledge-base/109-title-to-town-journey-20260911.md §5",
+      "verify": {
+        "kind": "absent",
+        "paths": [
+          "remake/internal/battle"
+        ],
+        "pattern": "0x1E2E0",
+        "note": "實作時註解一定會引用這個位址。"
+      }
     }
   ]
 }

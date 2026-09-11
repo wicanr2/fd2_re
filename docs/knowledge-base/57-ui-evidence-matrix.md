@@ -757,6 +757,13 @@ MAP/TURN text source 與 YES/NO input ABI；在此之前不新增猜測性 rende
 
 官方 `0x1a30b` 本體沒有 `0x15f84` 呼叫；它先以 raw unit-record gates 做 `+0x40` 向 `+0x42` 的 `max/5` transition，再進 indexed redraw 與 `0x1f1cc/#0x52` slide。故目前 D8 證據只支持 battle-entry indexed choreography，不支持 MAP/TURN/ENEMY/FRIEND/NPC 字串或 YES/NO input；那些欄位仍是缺口。
 
+> **2026-09-11 範圍再更正：** MAP/TURN/ENEMY/FRIEND/NPC 資訊畫面與「決定要行軍嗎?」YES/NO
+> 不屬於 battle-entry。前者只能經空游標系統選單 `0x16F55` → 巢狀選單 `0x19DF7` → `0x19F03`
+> 進 `0x1B1E7`，後者是 `0x16F55` 外層 selector 1（全軍行軍）的 FDTXT `0x1A1`；原版開局不會
+> 自動顯示（[doc46 §5.4](46-ch1-opening-timeline.md)、[doc109 §2](109-title-to-town-journey-20260911.md)）。
+> 兩者由既有的系統選單條目承接，D8 只剩 `0x1a30b` 的 indexed choreography，上一段列的欄位
+> 不再是 D8 的缺口。
+
 ### UI-04 geometry slice（2026-07-25，E0 partial）
 
 `0x14818` 先以固定的 table record 0（`0x61646`，20 bytes）呼叫 `0x4e040`，並將原始

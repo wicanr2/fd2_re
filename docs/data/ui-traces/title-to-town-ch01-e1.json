@@ -1,0 +1,277 @@
+{
+ "schema_version": 1,
+ "kind": "fd2_remake_journey_vs_original",
+ "topic": "重製端從標題 START 走到第一關之後的羅德鎮，逐項對原版證據",
+ "date": "2026-09-11",
+ "evidence_level": "RUNTIME-E1",
+ "executable": {
+  "file": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+ },
+ "remake_driver": {
+  "test": "remake/cmd/fd2/native_title_to_town_test.go TestPlayTitleStartThroughChapterOneToTown",
+  "seed": "20260911",
+  "input": "標題 applyTitleMenuEvent、故事 handleNativeStoryInput、戰場事件 handleBattleEventDialogueInput、勝敗 confirmBattleResult；只在 owner 等鍵那一幀送（相當於 kbd_empty 閘門）",
+  "battle": "測試自己的戰術啟發式，不是原版規則；離屏演出的「已呈現」由測試承認"
+ },
+ "original_sources": {
+  "opening_calls": "docs/data/chapter_beats/ch00_pre.json（處理器位元組碼的 19 次 0x15F84 呼叫；LOADCH 0x20/0x1f/0 切換 FDTXT_033/032/001）",
+  "opening_utterances": "docs/data/ui-traces/ch00-pre-native-dialogue-e1.json（97 句）",
+  "postbattle": "docs/data/chapter_beats/ch00_post.json + docs/data/ui-traces/ch00-post-native-dialogue-e1.json（FDTXT_001 字串 9、13 句）",
+  "battle_events": "docs/data/ida/fd2_ch01_turn_events_20260908.json 的呼叫點；字串索引取自呼叫前的 push imm（0x34242 前 6A 0B、0x342A0 前 6A 03、0x3430A 前 6A 04、0x34373 push 5、0x343DD 路徑 push 6）",
+  "turn1_snapshot": {
+   "what": "原版 FD2.SAV 的目前戰況快照（第 1 回合、12 筆 runtime、4 筆 persistent）",
+   "decoder": "remake/cmd/fd2-save-audit",
+   "note": "取自對拍覆蓋層 work/parity-state/ch01-cleared/FD2.SAV；與隨遊戲附帶的 FD2.SAV 只差章節槽區段（0x312B..0x3B34）與 3 byte 校驗，快照區段相同",
+   "sha256": "d6960ee1608ecb5ed8bab7cce0734a9d92cc3aec139857a3d1fc0ada4100b43d"
+  },
+  "town_slot": {
+   "what": "原版打完第一關在羅德鎮酒店存檔（章節槽 0）",
+   "decoder": "fdsave.InspectChapterSlot",
+   "sha256": "d6960ee1608ecb5ed8bab7cce0734a9d92cc3aec139857a3d1fc0ada4100b43d"
+  },
+  "key_reads": "docs/data/ui-traces/fd2-opening-length-20260909.json",
+  "no_automatic_info_screen": "0x1B1E7（資訊畫面）唯一呼叫端 0x19F03 在 0x19DF7（巢狀系統選單）；0x19DF7 唯一呼叫端 0x16FED 在 0x16F55（空游標系統選單）；0x16F55 唯一呼叫端 0x118C1，條件是 0x118B3 的 0x12C0D（游標下單位）回 -1"
+ },
+ "expected": {
+  "opening_calls": [
+   [
+    "FDTXT_033",
+    0
+   ],
+   [
+    "FDTXT_033",
+    1
+   ],
+   [
+    "FDTXT_033",
+    2
+   ],
+   [
+    "FDTXT_033",
+    3
+   ],
+   [
+    "FDTXT_033",
+    4
+   ],
+   [
+    "FDTXT_033",
+    5
+   ],
+   [
+    "FDTXT_032",
+    0
+   ],
+   [
+    "FDTXT_032",
+    1
+   ],
+   [
+    "FDTXT_032",
+    2
+   ],
+   [
+    "FDTXT_032",
+    3
+   ],
+   [
+    "FDTXT_032",
+    4
+   ],
+   [
+    "FDTXT_032",
+    5
+   ],
+   [
+    "FDTXT_032",
+    6
+   ],
+   [
+    "FDTXT_032",
+    7
+   ],
+   [
+    "FDTXT_032",
+    8
+   ],
+   [
+    "FDTXT_032",
+    9
+   ],
+   [
+    "FDTXT_001",
+    0
+   ],
+   [
+    "FDTXT_001",
+    1
+   ],
+   [
+    "FDTXT_001",
+    2
+   ]
+  ],
+  "opening_utterances": 97,
+  "turn1_runtime": [
+   {
+    "x": 7,
+    "y": 14,
+    "identity": 0,
+    "raw_camp": 2,
+    "byte5": 0,
+    "hp": 42,
+    "max_hp": 42
+   },
+   {
+    "x": 10,
+    "y": 15,
+    "identity": 9,
+    "raw_camp": 2,
+    "byte5": 0,
+    "hp": 28,
+    "max_hp": 28
+   },
+   {
+    "x": 8,
+    "y": 16,
+    "identity": 4,
+    "raw_camp": 2,
+    "byte5": 0,
+    "hp": 48,
+    "max_hp": 48
+   },
+   {
+    "x": 11,
+    "y": 17,
+    "identity": 30,
+    "raw_camp": 2,
+    "byte5": 0,
+    "hp": 50,
+    "max_hp": 50
+   },
+   {
+    "x": 1,
+    "y": 4,
+    "identity": 96,
+    "raw_camp": 0,
+    "byte5": 0,
+    "hp": 28,
+    "max_hp": 28
+   },
+   {
+    "x": 2,
+    "y": 2,
+    "identity": 96,
+    "raw_camp": 0,
+    "byte5": 0,
+    "hp": 28,
+    "max_hp": 28
+   },
+   {
+    "x": 4,
+    "y": 2,
+    "identity": 96,
+    "raw_camp": 0,
+    "byte5": 0,
+    "hp": 28,
+    "max_hp": 28
+   },
+   {
+    "x": 6,
+    "y": 1,
+    "identity": 96,
+    "raw_camp": 0,
+    "byte5": 0,
+    "hp": 28,
+    "max_hp": 28
+   },
+   {
+    "x": 3,
+    "y": 18,
+    "identity": 96,
+    "raw_camp": 0,
+    "byte5": 0,
+    "hp": 28,
+    "max_hp": 28
+   },
+   {
+    "x": 4,
+    "y": 23,
+    "identity": 96,
+    "raw_camp": 0,
+    "byte5": 1,
+    "hp": 28,
+    "max_hp": 28
+   },
+   {
+    "x": 2,
+    "y": 18,
+    "identity": 96,
+    "raw_camp": 0,
+    "byte5": 0,
+    "hp": 28,
+    "max_hp": 28
+   },
+   {
+    "x": 5,
+    "y": 19,
+    "identity": 96,
+    "raw_camp": 0,
+    "byte5": 0,
+    "hp": 28,
+    "max_hp": 28
+   }
+  ],
+  "battle_event_strings": [
+   [
+    3,
+    11
+   ],
+   [
+    3,
+    3
+   ],
+   [
+    4,
+    4
+   ],
+   [
+    5,
+    5
+   ],
+   [
+    6,
+    6
+   ]
+  ],
+  "postbattle": {
+   "source": "FDTXT_001",
+   "string": 9,
+   "utterances": 13
+  },
+  "town": {
+   "node": "town_ch02",
+   "name": "羅德鎮",
+   "gold": 1000,
+   "join_order": [
+    0,
+    9,
+    4,
+    30,
+    1
+   ],
+   "unlevelled_max_hp": {
+    "0": 42,
+    "9": 28,
+    "1": 36
+   }
+  },
+  "original_key_reads_to_control": [
+   118,
+   122
+  ]
+ }
+}

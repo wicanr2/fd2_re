@@ -337,6 +337,30 @@
    "why": "2026-09-11 跑 TestPlayChapterOneToVictory 一路撞出六個缺陷：對白收框拒絕負游標、戰場事件對白沒人按、演出工作在離屏不推進、可見游標累積偏差、地形成本表錯位、敵方全滅判定把不啟用的記錄當援軍。每一個都只在整關流程裡才會浮出來。",
    "date": "2026-09-11",
    "evidence": "docs/knowledge-base/108-terrain-cost-and-move-confirm-20260911.md §4"
+  },
+  {
+   "id": "edit-the-tool-that-owns-the-asset",
+   "area": "資料",
+   "rule": "要讓一個欄位進正式資產，先確認那份資產目前是由哪一支工具寫的，改那一支。兩支工具寫同一份資產時，任何一支重生都可能把另一支的欄位整批丟掉；重生之後要跑另一支的檢查。資產裡少一個欄位，runtime 看到的是「沒有這筆資料」，不會報錯。",
+   "why": "2026-09-11 從標題走到城鎮，進城金幣 0、原版 1000。`death_effect`／`death_reward` 早就寫在 `export_units.py`，但 24 張地圖的單位檔是由 `sync_native_selector_fields.py` 維護的，那支沒有這兩欄。反過來，map28／31／32 在 2026-08-12 被 `export_units.py` 重生過，同步工具寫的 `native_record_race`／`native_record_class` 整批消失，序章故事地圖因此一直走缺欄位的近似前景路徑。",
+   "date": "2026-09-11",
+   "evidence": "docs/knowledge-base/109-title-to-town-journey-20260911.md §3",
+   "guard": {
+    "kind": "present",
+    "paths": [
+     "tools/sync_native_selector_fields.py"
+    ],
+    "pattern": "native_death_reward",
+    "note": "同步工具與匯出工具共用同一條死亡獎勵降階規則。"
+   }
+  },
+  {
+   "id": "video-screen-may-be-player-opened",
+   "area": "逆向",
+   "rule": "從影片或截圖推論「原版會自動顯示某個畫面」之前，先查那個畫面函式的呼叫鏈。只經過玩家輸入分支的，就是影片裡的玩家自己按出來的。",
+   "why": "2026-09-11 以前的文件把影片裡第一關開局的「MAP·01 TURN·001」資訊畫面與「決定要行軍嗎?」當成開局制式畫面，列成重製端缺失。`0x1B1E7` 唯一的呼叫鏈是空游標系統選單（`0x118C1` 在游標下沒有單位時才進 `0x16F55`），行軍問句是同一選單的 selector 1。",
+   "date": "2026-09-11",
+   "evidence": "docs/knowledge-base/46-ch1-opening-timeline.md §5.4"
   }
  ]
 }

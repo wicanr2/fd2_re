@@ -294,9 +294,16 @@ func chooseDestination(g *Game, actor *battle.Unit) (battle.Cell, *battle.Unit) 
 	return best, bestTarget
 }
 
+// ch01FrameObserver 讓整條旅程的測試在每一幀記下節點、對白與戰況；單獨跑第一關
+// 時是 nil。
+var ch01FrameObserver func(g *Game)
+
 func pump(t *testing.T, g *Game, budget int, done func() bool) bool {
 	t.Helper()
 	for frame := 0; frame < budget; frame++ {
+		if ch01FrameObserver != nil {
+			ch01FrameObserver(g)
+		}
 		if done() {
 			return true
 		}
@@ -452,44 +459,7 @@ func TestPlayChapterOneToVictory(t *testing.T) {
 	rec := &ch01Recorder{out: out, log: log}
 	rec.note(g, "battle-start")
 
-	for round := 1; round <= ch01MaxRounds; round++ {
-		rec.round = round
-		if g.result != "" {
-			break
-		}
-		handled := map[*battle.Unit]bool{}
-		for step := 0; step < ch01MaxUnitsTurn; step++ {
-			if g.result != "" || len(livingEnemies(g)) == 0 {
-				break
-			}
-			var actor *battle.Unit
-			for _, u := range pendingOwn(g) {
-				if !handled[u] {
-					actor = u
-					break
-				}
-			}
-			if actor == nil {
-				break
-			}
-			handled[actor] = true
-			playUnit(t, g, actor, rec)
-		}
-		rec.note(g, "own-phase-done")
-		if g.result != "" {
-			break
-		}
-
-		g.endTurn()
-		if !pump(t, g, ch01FrameBudget*4, func() bool {
-			return g.result != "" || (!g.aiBusy && g.nativeTurnStaging == nil && len(pendingOwn(g)) > 0)
-		}) {
-			t.Fatalf("第 %d 回合：敵方回合沒有結束（aiBusy=%v staging=%v turn=%d）\n阻塞：%s\n單位：%s",
-				round, g.aiBusy, g.nativeTurnStaging != nil, g.st.Turn,
-				ch01Blockers(g), ch01UnitDump(g))
-		}
-		rec.note(g, "enemy-phase-done")
-	}
+	playChapterOneRounds(t, g, rec)
 
 	rec.note(g, "final")
 	if g.result != "win" {
@@ -591,5 +561,49 @@ func answerNativeTreasurePrompt(g *Game) {
 	}
 	if g.nativeSystemEndTurnConfirm {
 		g.confirmNativeSystemEndTurn()
+	}
+}
+
+// playChapterOneRounds 從玩家取得操作權那一刻打到分出勝負：每回合掃完我方未行動
+// 單位，結束回合，等敵方回合與回合末事件全部收掉。
+func playChapterOneRounds(t *testing.T, g *Game, rec *ch01Recorder) {
+	t.Helper()
+	for round := 1; round <= ch01MaxRounds; round++ {
+		rec.round = round
+		if g.result != "" {
+			break
+		}
+		handled := map[*battle.Unit]bool{}
+		for step := 0; step < ch01MaxUnitsTurn; step++ {
+			if g.result != "" || len(livingEnemies(g)) == 0 {
+				break
+			}
+			var actor *battle.Unit
+			for _, u := range pendingOwn(g) {
+				if !handled[u] {
+					actor = u
+					break
+				}
+			}
+			if actor == nil {
+				break
+			}
+			handled[actor] = true
+			playUnit(t, g, actor, rec)
+		}
+		rec.note(g, "own-phase-done")
+		if g.result != "" {
+			break
+		}
+
+		g.endTurn()
+		if !pump(t, g, ch01FrameBudget*4, func() bool {
+			return g.result != "" || (!g.aiBusy && g.nativeTurnStaging == nil && len(pendingOwn(g)) > 0)
+		}) {
+			t.Fatalf("第 %d 回合：敵方回合沒有結束（aiBusy=%v staging=%v turn=%d）\n阻塞：%s\n單位：%s",
+				round, g.aiBusy, g.nativeTurnStaging != nil, g.st.Turn,
+				ch01Blockers(g), ch01UnitDump(g))
+		}
+		rec.note(g, "enemy-phase-done")
 	}
 }

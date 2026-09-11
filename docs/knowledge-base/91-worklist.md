@@ -25,7 +25,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 16 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 18 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 
@@ -59,6 +59,16 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 怎樣算做完：六筆各自找到寫入端與消費端，或明確記錄它們是同一個 producer 的不同分支。
 
+### 死亡效果型態 3 與型態 2 的其他 id 還不可執行
+
+`native-death-effect-unresolved` · 仍未完成 · 自承還在 tools/export_units.py
+
+FDFIELD b22..b24 抄進 runtime `+0x31..+0x33`。型態 0（物品）、1（金幣）與型態 2 的 id 39／41 已資料化；型態 3 與型態 2 的其他 id 沒有閉合的 handler，地圖檔只保留原始 `death_effect`，不產生 `death_reward`。第一關就有兩筆：海盜頭目 `[3, 8]` 與哈諾 `[2, 4]`。原版進城金幣 1000 只說明頭目那筆不給金幣。
+
+怎樣算做完：追到型態 3 與其餘型態 2 handler 的 writer／consumer，資料化成可執行獎勵或明確的無效果，並加測試。
+
+證據：`docs/knowledge-base/109-title-to-town-journey-20260911.md §3`
+
 ## data — 可編輯資料還沒就緒
 
 ### 現代美術主題仍是原型狀態
@@ -84,6 +94,18 @@ manifest v2 的 source_resources 有 1,005 筆，disposition 為 unknown 的 93 
 native-0／native-1／native-7／native-96 的多個候選名稱已由資料本身分成兩類：章節互不重疊的是同一身份在不同段落的稱呼（索爾／索爾(少年)、刺客／蘭斯洛特），同章且共同前綴加單一編號的是多個雜兵共用一個 sprite（強盜 B/C/L/M/N）。診斷都帶著章節依據，severity 從 error 降為 note，canonical 已無未分類衝突。剩下的是人複核那個分類對不對——判準是從資料算的，不是從劇情知識來的。
 
 怎樣算做完：人複核四筆的分類；若有誤判就調整判準並重生 bundle。
+
+## runtime — 還沒接進正式執行期
+
+### 升級上限沒有實作
+
+`native-level-cap` · 仍未完成 · 還沒出現
+
+`0x1E2E0..0x1E2F2`：記錄 `+7` 為 0x1E／0x1F 時等級比 99，其餘比 40，相等就跳離升級處理。重製端 `gainExp` 沒有這道判斷，等級可以無限上升。第一關等級到不了上限，不影響目前的整段對照。
+
+怎樣算做完：`gainExp` 依 `+7` 套上 40／99 上限並加測試；跳離時經驗是否仍累積要先讀 `0x1E2F2` 的跳躍目標再決定。
+
+證據：`docs/knowledge-base/109-title-to-town-journey-20260911.md §5`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

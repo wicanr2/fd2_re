@@ -1648,6 +1648,11 @@ command bit；`remake/assets/data/command_learn.json` 是 runtime copy，
 `HasBattleFig`、selector row或command row時不學習，且不再以`Portrait`直接索引command table。
 selector32經row4在Lv4授予command24；optional selector50的row10不同，不可沿用。legacy standalone
 `GainExp`與`Spells`都不補造結果。
+升級的數值成長走同一個 raw selector：`0x1E2F8 movzx eax,[esi+7]` → `0x1E2FD call 0x4E4D1`。
+`State.NativeGrowthRows` 由同一份 `class_change_growth.json` 載入（每欄 [下限, 上限)），
+`NativeGrowthRowFor` 以 `BattleFig`（`+7`）選列；沒有 `+7` 的單位才退回舊名字表。
+升級上限 `0x1E2E0..0x1E2F2`（`+7` 為 0x1E／0x1F 比 99，其餘比 40）尚未實作，登記於
+worklist `native-level-cap`；見 [109](109-title-to-town-journey-20260911.md) §4。
 
 ### command 24 selector32 FIGANI演出契約（RUNTIME-E1 partial）
 
@@ -4342,6 +4347,9 @@ exact six-byte `native_position_record`、`native_record_byte3d`、
 三-byte `native_record_death_effect`、raw source `b3/b20/b25` 與
 b1-selected constructor table record；loader 與 CONTINUE runtime
 projection 亦保存對應 runtime raw 欄。
+死亡效果另有降階後的 `death_effect`／`death_reward`：同步工具與 `export_units.py`
+共用 `native_death_reward`，只把型態 0／1 與型態 2 的 id 39／41 寫成可執行獎勵，
+其餘型態只留原始效果（見 [109](109-title-to-town-journey-20260911.md) §3）。
 
 `NativeFutureGroupPlacement` 現以短生命週期 composition slice 精確執行
 兩次 `0x145CD` writer、raw `[0x53AFA]` 分支、全圖 row-major Manhattan
