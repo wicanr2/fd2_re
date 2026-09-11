@@ -1,9 +1,16 @@
-# 第一關「初試身手」打到敵方全滅。前四鍵是標題到戰場的固定路徑，之後交給
-# 閉環：sweep_battle 每回合重讀 units，挑還沒行動的我方單位接戰，全部行動完
-# 就等回合數推進（實測全員行動完原版自己換手，不必送 END）。
+# 第一關「初試身手」打到敵方全滅，再到城鎮存檔。
+#
+# 前四鍵是標題到戰場的固定路徑：標題選單停在 START，right 無效、down 兩次到
+# CONTINUE、enter 進去（第一關沒有存檔可載，走的是 CONTINUE 讀 FD2.TMP）。
+# 之後交給閉環：sweep_battle 每回合重讀 units，挑還沒行動的我方單位接戰，
+# 掃完送 END 收尾再等回合推進。
 {"key":"right","steps":3000000}
 {"key":"down","steps":3000000}
 {"key":"down","steps":3000000}
 {"key":"enter","steps":3000000}
 {"key":"","steps":10000000,"repeat":18}
 {"sweep_battle":true,"steps":2000000,"rounds":30,"turn_max":300}
+# 打完進第二章羅德鎮。在 0 號酒店存檔，這份 FD2.SAV 就是第二關以後的續跑點——
+# 掛 FD2_ORACLE_STATE 指一個可寫目錄，檔案會落在那裡。
+{"key":"","steps":20000000,"repeat":20}
+{"town_save":true,"steps":10000000}

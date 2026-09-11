@@ -11,7 +11,7 @@
 |---|---|---|
 | `ch01-move-attack.jsonl` | 第一關第 1 回合：選 (8,16) 的亞雷斯、移動到 (6,19)、攻擊 (5,19) 的盜賊 | `TestDumpChapterOneMoveAttackFrames`（`FD2_ATTACK_DUMP`） |
 | `ch01-phase-banner.jsonl` | 第一關第 1 回合：開系統面板、選 END、確認 YES，進敵方回合橫幅 | `phase_banner_glyph_test.go`（比的是字樣落點，不是整幀） |
-| `ch01-clear.jsonl` | 第一關打到敵方全滅（閉環，見下） | 待補 |
+| `ch01-clear.jsonl` | 第一關打到敵方全滅，再到城鎮存檔（閉環，見下）| 待補 |
 | `ch02-town-load.jsonl` | 從存檔載入第二章羅德鎮，走出口進第二關戰場 | 待補 |
 | `ch02-clear.jsonl` | 同上，接著打第二關到敵方全滅（閉環）| 待補 |
 
@@ -32,9 +32,10 @@ state=work/parity-state/ch01-cleared      # 覆蓋層，掛成 oracle 的 -state
 mkdir -p "$state"
 FD2_ORACLE_STATE=$state FD2_ORACLE_LOCK_ALLY_HP=1 \
   tools/dosgolem_oracle.sh <輸出目錄> docs/data/parity-plans/ch01-clear.jsonl
-# 打完進城鎮之後：enter 進 0 號酒店、right×1 切到第二個圖示、enter、
-# enter 確認（畫面回「記錄儲存完畢！」），"$state" 就會多出 FD2.SAV。
 ```
+
+序列尾端的 `town_save` 會在打完進城鎮之後自己存檔，`$state` 就會多出 `FD2.SAV`。
+約 73 億指令、20 分鐘。
 
 每一輪實驗用它的**複本**，不要直接掛這一份——遊戲會往覆蓋層寫東西，原地跑幾次
 之後續跑點就不是原來那個狀態了。
