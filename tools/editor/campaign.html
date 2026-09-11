@@ -20,7 +20,9 @@ nav button[aria-selected="true"] { color:var(--ink); border-bottom-color:var(--a
 main { display:flex; align-items:stretch; min-height:calc(100vh - 96px); }
 aside { width:230px; flex:none; padding:14px 16px; border-right:1px solid var(--line);
   background:var(--panel); overflow-y:auto; max-height:calc(100vh - 96px); }
-section { flex:1; padding:16px 20px; overflow-y:auto; max-height:calc(100vh - 96px); }
+/* 兩個方向都要捲動：線性的章節橫向拉得很長（第 1 章七個節點就超出視窗），只給
+   overflow-y 的話右邊的節點與跨章標籤會被切掉而且捲不到。 */
+section { flex:1; padding:16px 20px; overflow:auto; max-height:calc(100vh - 96px); }
 h2 { font-size:13px; font-weight:600; margin:16px 0 8px; color:var(--muted); }
 h2:first-child { margin-top:0; }
 h3 { font-size:14px; font-weight:600; margin:20px 0 6px; }
@@ -64,6 +66,7 @@ th { color:var(--muted); font-weight:400; }
   <button data-tab="events">戰場事件</button>
   <button data-tab="shops">商店</button>
   <button data-tab="graph">節點轉場</button>
+  <button data-tab="node-graph">節點圖</button>
 </nav>
 
 <div id="log">按「開啟 assets 資料夾…」，選 <code>remake/assets</code>（裡面要有 story/ 與 scenarios/）。</div>
@@ -128,7 +131,8 @@ async function openAssets() {
 
 function render() {
   renderFiles();
-  ({ story: renderStory, events: renderEvents, shops: renderShops, graph: renderGraph })[state.tab]();
+  ({ story: renderStory, events: renderEvents, shops: renderShops,
+     graph: renderGraph, 'node-graph': renderNodeGraph })[state.tab]();
 }
 
 function renderFiles() {
@@ -351,6 +355,337 @@ function renderGraph() {
     table.appendChild(row);
   }
   pane.appendChild(table);
+}
+
+// ── 節點圖 ───────────────────────────────────────────────────────────────
+// doc 38 Phase 3：拖線轉場、旗標管理、敗北路線可視化。連線用「點端點再點目標」
+// 而不是自由拖曳——299 個節點擠在一起時，拖到隔壁節點的機率比拖對還高，而接錯的
+// 轉場要玩到那一關才會發作。
+
+const NODE_FILL = {
+  battle: '#f3dcd7', story: '#e8e6e0', cutscene: '#e8e6e0', town: '#dce8dd',
+  shop: '#e3e6ef', church: '#e3e6ef', preparation: '#efe9dc', choice: '#f6efc9',
+  ending: '#e0dbe8',
+};
+const LINK_FIELDS = [
+  ['next', '#6b6b6b'], ['on_win', '#2f6f3f'], ['on_lose', '#8c3b2f'],
+];
+const NODE_W = 150, NODE_H = 34, GAP_X = 60, GAP_Y = 14;
+
+const graph = { chapter: '', selected: '', linking: null };
+
+function chapterOf(id) {
+  const match = /ch(\d+)/.exec(id);
+  return match ? match[1] : '—';
+}
+
+function chaptersInCampaign() {
+  const seen = new Set();
+  for (const id of Object.keys(state.campaign.nodes)) seen.add(chapterOf(id));
+  return [...seen].sort((a, b) => Number(a) - Number(b));
+}
+
+function nodesOfChapter(chapter) {
+  return Object.keys(state.campaign.nodes)
+    .filter((id) => chapterOf(id) === chapter).sort();
+}
+
+// 依「從沒有入邊的節點算起的距離」分層。原版戰役是線性的，分層後一眼看得出主線；
+// 自己接出來的分支會落在同一層的下方。
+function layout(ids) {
+  const inside = new Set(ids);
+  const targets = new Map(ids.map((id) => [id, linksOf(id).map((l) => l.to).filter((t) => inside.has(t))]));
+  const hasIncoming = new Set();
+  for (const list of targets.values()) for (const t of list) hasIncoming.add(t);
+  const depth = new Map();
+  const queue = ids.filter((id) => !hasIncoming.has(id));
+  for (const id of queue) depth.set(id, 0);
+  if (!queue.length && ids.length) { queue.push(ids[0]); depth.set(ids[0], 0); }
+  // 廣度優先、每個節點只定一次層。**不能改成「取最長路徑」**：敗北路線讓每一章都
+  // 有 retreat_chNN → battle_chNN 的環（原版 30 章每章都有），而「比較深就更新」在
+  // 環上每繞一圈就加一，永遠不收斂。
+  while (queue.length) {
+    const id = queue.shift();
+    for (const to of targets.get(id) || []) {
+      if (depth.has(to)) continue;
+      depth.set(to, depth.get(id) + 1);
+      queue.push(to);
+    }
+  }
+  for (const id of ids) if (!depth.has(id)) depth.set(id, 0);
+  const columns = new Map();
+  for (const id of ids) {
+    const column = depth.get(id);
+    if (!columns.has(column)) columns.set(column, []);
+    columns.get(column).push(id);
+  }
+  const place = new Map();
+  for (const [column, list] of columns) {
+    list.forEach((id, row) => place.set(id, {
+      x: 20 + column * (NODE_W + GAP_X),
+      y: 20 + row * (NODE_H + GAP_Y),
+    }));
+  }
+  return place;
+}
+
+function linksOf(id) {
+  const node = state.campaign.nodes[id];
+  const out = [];
+  for (const [key, color] of LINK_FIELDS) {
+    if (node[key]) out.push({ key, to: node[key], color });
+  }
+  (node.options || []).forEach((option, index) => {
+    if (option.to) out.push({ key: `options[${index}]`, to: option.to, color: '#8a7a2f', option: index });
+  });
+  return out;
+}
+
+function renderNodeGraph() {
+  const pane = $('pane');
+  if (!state.campaign) { pane.innerHTML = '<p class="hint">沒有 campaign_full.json。</p>'; return; }
+  const chapters = chaptersInCampaign();
+  // 預設跳過只有一個節點的章節（第 0 章只有 story_ch00_handler），第一眼看到一格
+  // 孤零零的方塊會讓人以為資料沒載進來。
+  if (!chapters.includes(graph.chapter)) {
+    graph.chapter = chapters.find((c) => nodesOfChapter(c).length > 1) || chapters[0];
+  }
+  const ids = nodesOfChapter(graph.chapter);
+  const place = layout(ids);
+  const width = Math.max(...[...place.values()].map((p) => p.x)) + NODE_W + 40;
+  const height = Math.max(...[...place.values()].map((p) => p.y)) + NODE_H + 40;
+
+  pane.innerHTML = `<div class="row">
+    <label style="width:auto"><span>章節</span>
+      <select id="chapterPick">${chapters.map((c) =>
+        `<option${c === graph.chapter ? ' selected' : ''}>${c}</option>`).join('')}</select></label>
+    <button id="addChoice" class="small">加一個 choice 節點</button>
+    <span class="hint" id="linkHint">${graph.linking
+      ? `選 ${graph.linking.id} 的 ${graph.linking.key} 要連到哪個節點（再按一次取消）`
+      : '點節點看屬性；在屬性面板按「改連到…」再點目標節點。'}</span>
+  </div>`;
+
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', width); svg.setAttribute('height', height);
+  svg.style.border = '1px solid var(--line)';
+  svg.style.background = 'var(--panel)';
+  svg.innerHTML = `<defs>${LINK_FIELDS.concat([['option', '#8a7a2f']]).map(([key, color]) =>
+    `<marker id="arrow-${key}" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7"
+      orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="${color}"/></marker>`).join('')}</defs>`;
+
+  for (const id of ids) {
+    const from = place.get(id);
+    for (const link of linksOf(id)) {
+      const to = place.get(link.to);
+      const marker = link.option !== undefined ? 'option' : link.key;
+      if (!to) {
+        // 目標在別的章節：畫一小段殘線加標籤，不要靜靜地不畫——看不見的轉場
+        // 會讓人以為這一章是死路。
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', from.x + NODE_W + 6);
+        text.setAttribute('y', from.y + NODE_H / 2 + 4);
+        text.setAttribute('font-size', '11'); text.setAttribute('fill', link.color);
+        text.textContent = `→ ${link.to}`;
+        svg.appendChild(text);
+        continue;
+      }
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      const x1 = from.x + NODE_W, y1 = from.y + NODE_H / 2;
+      const x2 = to.x, y2 = to.y + NODE_H / 2;
+      const mid = (x1 + x2) / 2;
+      path.setAttribute('d', `M${x1} ${y1} C${mid} ${y1} ${mid} ${y2} ${x2} ${y2}`);
+      path.setAttribute('fill', 'none'); path.setAttribute('stroke', link.color);
+      path.setAttribute('stroke-width', link.key === 'on_lose' ? '1.5' : '1.2');
+      if (link.key === 'on_lose') path.setAttribute('stroke-dasharray', '4 3');
+      path.setAttribute('marker-end', `url(#arrow-${marker})`);
+      svg.appendChild(path);
+    }
+  }
+  for (const id of ids) {
+    const at = place.get(id);
+    const node = state.campaign.nodes[id];
+    const box = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    box.style.cursor = 'pointer';
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', at.x); rect.setAttribute('y', at.y);
+    rect.setAttribute('width', NODE_W); rect.setAttribute('height', NODE_H);
+    rect.setAttribute('rx', '3');
+    rect.setAttribute('fill', NODE_FILL[node.type] || '#eee');
+    rect.setAttribute('stroke', id === graph.selected ? '#1b1b1b' : '#d8d4cc');
+    rect.setAttribute('stroke-width', id === graph.selected ? '2' : '1');
+    const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    label.setAttribute('x', at.x + 8); label.setAttribute('y', at.y + 15);
+    label.setAttribute('font-size', '11');
+    label.textContent = id.length > 22 ? id.slice(0, 21) + '…' : id;
+    const kind = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    kind.setAttribute('x', at.x + 8); kind.setAttribute('y', at.y + 27);
+    kind.setAttribute('font-size', '10'); kind.setAttribute('fill', '#6b6b6b');
+    kind.textContent = node.type + (node.set_flags ? '　⚑' : '');
+    box.append(rect, label, kind);
+    box.addEventListener('click', () => {
+      if (graph.linking) {
+        applyLink(graph.linking, id);
+        graph.linking = null;
+      } else {
+        graph.selected = id;
+      }
+      render();
+    });
+    svg.appendChild(box);
+  }
+  pane.appendChild(svg);
+
+  const legend = document.createElement('p');
+  legend.className = 'hint';
+  legend.innerHTML = 'next 灰、on_win 綠、<span style="color:#8c3b2f">on_lose 紅虛線</span>、'
+    + 'options 黃；⚑ 表示這個節點會設旗標。指到別章的轉場畫成節點右邊的文字。';
+  pane.appendChild(legend);
+
+  if (graph.selected && state.campaign.nodes[graph.selected]) renderNodeInspector(pane);
+
+  $('chapterPick').addEventListener('change', (event) => {
+    graph.chapter = event.target.value; graph.selected = ''; graph.linking = null; render();
+  });
+  $('addChoice').addEventListener('click', addChoiceNode);
+}
+
+function applyLink(linking, target) {
+  const node = state.campaign.nodes[linking.id];
+  const match = /^options\[(\d+)\]$/.exec(linking.key);
+  if (match) node.options[Number(match[1])].to = target;
+  else node[linking.key] = target;
+  mark('scenarios/campaign_full.json');
+  say(`${linking.id} 的 ${linking.key} 改連到 ${target}。`);
+}
+
+function renderNodeInspector(pane) {
+  const id = graph.selected;
+  const node = state.campaign.nodes[id];
+  const box = document.createElement('div');
+  box.className = 'event';
+  box.innerHTML = `<h3>${id}　<span class="hint">${node.type}</span></h3>`;
+
+  for (const [key] of LINK_FIELDS) {
+    if (node[key] === undefined && key !== 'next') continue;
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `<strong style="width:70px">${key}</strong>
+      <span>${node[key] || '（無）'}</span>`;
+    const relink = document.createElement('button');
+    relink.className = 'small'; relink.textContent = '改連到…';
+    relink.addEventListener('click', () => { graph.linking = { id, key }; render(); });
+    row.appendChild(relink);
+    if (node[key]) {
+      const clear = document.createElement('button');
+      clear.className = 'small'; clear.textContent = '清掉';
+      clear.addEventListener('click', () => {
+        delete node[key]; mark('scenarios/campaign_full.json'); render();
+      });
+      row.appendChild(clear);
+    }
+    box.appendChild(row);
+  }
+
+  // 敗北路線：battle 節點沒有 on_lose 就是戰敗即結束。doc 38 Phase 3 的驗收要求
+  // 至少接出一條，所以這裡給一個直接的入口。
+  if (node.type === 'battle' && node.on_lose === undefined) {
+    const add = document.createElement('button');
+    add.className = 'small'; add.textContent = '加一條敗北路線';
+    add.addEventListener('click', () => { graph.linking = { id, key: 'on_lose' }; render(); });
+    box.appendChild(add);
+  }
+
+  const flagBox = document.createElement('div');
+  flagBox.innerHTML = '<h3>旗標</h3>';
+  const flags = Object.keys(state.campaign.flags || {}).sort();
+  const setFlags = node.set_flags || {};
+  for (const flag of flags) {
+    const row = document.createElement('label');
+    row.style.display = 'flex'; row.style.gap = '6px'; row.style.alignItems = 'center';
+    const check = document.createElement('input');
+    check.type = 'checkbox'; check.style.width = 'auto';
+    check.checked = Object.prototype.hasOwnProperty.call(setFlags, flag);
+    check.addEventListener('change', () => {
+      if (check.checked) (node.set_flags || (node.set_flags = {}))[flag] = true;
+      else if (node.set_flags) {
+        delete node.set_flags[flag];
+        if (!Object.keys(node.set_flags).length) delete node.set_flags;
+      }
+      mark('scenarios/campaign_full.json'); render();
+    });
+    row.append(check, document.createTextNode(flag));
+    flagBox.appendChild(row);
+  }
+  const addFlag = document.createElement('button');
+  addFlag.className = 'small'; addFlag.textContent = '新增旗標';
+  addFlag.addEventListener('click', () => {
+    const name = prompt('旗標名稱（英數與底線）');
+    if (!name || !/^[A-Za-z0-9_]+$/.test(name)) { say('旗標名稱只接受英數與底線。', true); return; }
+    (state.campaign.flags || (state.campaign.flags = {}))[name] = false;
+    mark('scenarios/campaign_full.json'); render();
+  });
+  flagBox.appendChild(addFlag);
+  box.appendChild(flagBox);
+
+  if (node.type === 'choice' || node.type === 'town') {
+    const options = document.createElement('div');
+    options.innerHTML = '<h3>選項</h3>';
+    (node.options || []).forEach((option, index) => {
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.appendChild(field('標籤', option.label, (v) => {
+        option.label = v; mark('scenarios/campaign_full.json');
+      }));
+      const cond = document.createElement('label');
+      cond.innerHTML = '<span>顯示條件（旗標）</span>';
+      const pick = document.createElement('select');
+      pick.innerHTML = '<option value="">（無條件）</option>'
+        + flags.map((f) => `<option${f === option.if ? ' selected' : ''}>${f}</option>`).join('');
+      pick.addEventListener('change', () => {
+        if (pick.value === '') delete option.if; else option.if = pick.value;
+        mark('scenarios/campaign_full.json');
+      });
+      cond.appendChild(pick);
+      row.appendChild(cond);
+      const relink = document.createElement('button');
+      relink.className = 'small'; relink.textContent = `→ ${option.to || '未接'}`;
+      relink.addEventListener('click', () => {
+        graph.linking = { id, key: `options[${index}]` }; render();
+      });
+      row.appendChild(relink);
+      const drop = document.createElement('button');
+      drop.className = 'small'; drop.textContent = '刪除';
+      drop.addEventListener('click', () => {
+        node.options.splice(index, 1); mark('scenarios/campaign_full.json'); render();
+      });
+      row.appendChild(drop);
+      options.appendChild(row);
+    });
+    const add = document.createElement('button');
+    add.className = 'small'; add.textContent = '加一個選項';
+    add.addEventListener('click', () => {
+      (node.options || (node.options = [])).push({ label: '新選項', to: '' });
+      mark('scenarios/campaign_full.json'); render();
+    });
+    options.appendChild(add);
+    box.appendChild(options);
+  }
+  pane.appendChild(box);
+}
+
+function addChoiceNode() {
+  const id = prompt('新節點 id（建議帶章節，例如 choice_ch03_route）');
+  if (!id) return;
+  if (!/^[A-Za-z0-9_]+$/.test(id)) { say('節點 id 只接受英數與底線。', true); return; }
+  if (state.campaign.nodes[id]) { say(`節點 ${id} 已經存在。`, true); return; }
+  state.campaign.nodes[id] = {
+    type: 'choice', prompt: '要走哪一條路？',
+    options: [{ label: '選項一', to: '' }, { label: '選項二', to: '' }],
+  };
+  graph.selected = id;
+  mark('scenarios/campaign_full.json');
+  render();
+  say(`已加入 ${id}。選項要接到節點才走得通——campaign.Decode 會拒絕空目標。`);
 }
 
 async function writeInto(dirName, fileName, value) {

@@ -123,7 +123,7 @@ manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unk
 
 `parity-ch02-ch04-original-side` · 仍未完成 · 還沒出現
 
-續跑點（第一關打完後在酒店存的 FD2.SAV）與城鎮出口都通了，`ch02-clear.jsonl` 能載入羅德鎮、走出口、進第二關戰場並開始接戰，但還沒打完第二關，第三、四關也還沒開始。另外這條路徑上的每一輪都開著 `FD2_ORACLE_LOCK_ALLY_HP`（修改路徑），取得的收據不得當成 PLAYER-E2。
+第一至三關都通關並在城鎮存了檔（work/parity-state/chNN-cleared/）；第四關用同一份 ch02-clear.jsonl 從第三關的續跑點起跑中。這條路徑上的每一輪都開著 FD2_ORACLE_LOCK_ALLY_HP（修改路徑），取得的收據不得當成 PLAYER-E2。
 
 怎樣算做完：第二至四關各有一份可重跑的閉環序列與收據，並在 96 記錄命令、輸入與日期。
 
@@ -163,12 +163,12 @@ manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unk
 
 怎樣算做完：人用編輯器開一張原版地圖、改動後存回，並由正式 runtime 讀得起來。
 
-### 劇情編輯器缺節點圖 UI 與人實際走一次
+### 劇情編輯器缺人實際走一次
 
-`campaign-editor-ui` · 仍未完成 · 還沒出現
+`campaign-editor-ui` · 仍未完成 · 要人判
 
-tools/editor/campaign.html 已可用：對白（story）、戰場事件（scenario events）、商店品項與節點轉場都能編並寫回。轉場是**文字下拉**不是拖線的節點圖——doc 38 的 Phase 2 允許這樣，Phase 3 的圖形化節點圖（拖線、旗標、敗北路線可視化）還沒做。另外缺人實際走一次：編一個章節、存回、重生 canonical、在引擎裡玩過一輪。
+tools/editor/campaign.html 五個分頁都已可用：對白、戰場事件、商店品項、節點轉場，以及 doc 38 Phase 3 的節點圖（依章節分層、拖線改轉場、旗標管理、敗北路線畫成紅虛線、choice 選項的旗標條件）。32 個章節都畫得出來、零失敗。缺的是人實際走一次：編一個章節、存回、重生 canonical、在引擎裡玩過一輪，而且要做出一條原版沒有的分支（Phase 3 驗收）。
 
-怎樣算做完：Phase 3 的節點圖 UI 做出來，且人用編輯器編過一章並在引擎裡玩通。
+怎樣算做完：人用編輯器做出一條非原版路線（至少含一條 battle.on_lose 敗北路線與一個依旗標過濾的 choice 分支），存回並重生 canonical 後在引擎裡跑通首尾。
 
 <!-- END fd2_worklist.py render -->
