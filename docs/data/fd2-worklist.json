@@ -140,12 +140,16 @@
     {
       "id": "campaign-editor-ui",
       "layer": "tooling",
-      "title": "劇情與節點圖編輯器還沒有",
-      "body": "包含對白與事件表單、商店設定，以及 campaign 節點圖（拖線、旗標、敗北路線）的可視化編輯。",
-      "acceptance": "能編輯一個章節的對白與節點連線，存檔後由正式 runtime 走得通。",
+      "title": "劇情編輯器缺節點圖 UI 與人實際走一次",
+      "body": "tools/editor/campaign.html 已可用：對白（story）、戰場事件（scenario events）、商店品項與節點轉場都能編並寫回。轉場是**文字下拉**不是拖線的節點圖——doc 38 的 Phase 2 允許這樣，Phase 3 的圖形化節點圖（拖線、旗標、敗北路線可視化）還沒做。另外缺人實際走一次：編一個章節、存回、重生 canonical、在引擎裡玩過一輪。",
+      "acceptance": "Phase 3 的節點圖 UI 做出來，且人用編輯器編過一章並在引擎裡玩通。",
       "verify": {
-        "kind": "manual",
-        "note": "還沒開始。"
+        "kind": "absent",
+        "pattern": "node-graph",
+        "paths": [
+          "tools/editor"
+        ],
+        "note": "節點圖 UI 出現時會有這個識別字；目前是文字下拉。"
       }
     },
     {

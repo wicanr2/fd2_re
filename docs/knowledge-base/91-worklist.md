@@ -163,12 +163,12 @@ manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unk
 
 怎樣算做完：人用編輯器開一張原版地圖、改動後存回，並由正式 runtime 讀得起來。
 
-### 劇情與節點圖編輯器還沒有
+### 劇情編輯器缺節點圖 UI 與人實際走一次
 
-`campaign-editor-ui` · 仍未完成 · 要人判
+`campaign-editor-ui` · 仍未完成 · 還沒出現
 
-包含對白與事件表單、商店設定，以及 campaign 節點圖（拖線、旗標、敗北路線）的可視化編輯。
+tools/editor/campaign.html 已可用：對白（story）、戰場事件（scenario events）、商店品項與節點轉場都能編並寫回。轉場是**文字下拉**不是拖線的節點圖——doc 38 的 Phase 2 允許這樣，Phase 3 的圖形化節點圖（拖線、旗標、敗北路線可視化）還沒做。另外缺人實際走一次：編一個章節、存回、重生 canonical、在引擎裡玩過一輪。
 
-怎樣算做完：能編輯一個章節的對白與節點連線，存檔後由正式 runtime 走得通。
+怎樣算做完：Phase 3 的節點圖 UI 做出來，且人用編輯器編過一章並在引擎裡玩通。
 
 <!-- END fd2_worklist.py render -->

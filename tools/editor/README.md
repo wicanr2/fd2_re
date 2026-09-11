@@ -6,6 +6,7 @@
 | 檔案 | 範圍 | 狀態 |
 |---|---|---|
 | [`battlefield.html`](battlefield.html) | 戰場：圖塊繪製、單位擺放、部署格 | Phase 1 MVP |
+| [`campaign.html`](campaign.html) | 對白、戰場事件、商店品項、節點轉場 | Phase 2（節點圖 UI 仍是文字下拉）|
 
 ## 怎麼開
 
@@ -58,3 +59,35 @@ index 重算，用的是和 [`tools/export_engine_assets.py`](../export_engine_a
 
 單位表單只列引擎會讀的那些欄位。原檔的其他欄位在存回時原樣送回去——編輯器少寫一個
 欄位不會報錯，只會讓那張地圖在遊戲裡少掉某個效果，而那要玩到那一格才會發作。
+
+## 劇情編輯器
+
+開啟時選 `remake/assets`（裡面要有 `story/` 與 `scenarios/`）。四個分頁：
+
+| 分頁 | 改什麼 | 寫回 |
+|---|---|---|
+| 對白 | `scenes[].lines[]` 的說話者與台詞 | `story/chNN.json` |
+| 戰場事件 | `events[]` 的 id、觸發、回合與動作 | `scenarios/chNN.json` |
+| 商店 | shop 節點的 `goods[]` | `scenarios/campaign_full.json` |
+| 節點轉場 | 每個節點的 `next`／`on_win`／`on_lose` | `scenarios/campaign_full.json` |
+
+說話者下拉從那份檔案現有的台詞收集，不另外維護一張會漂的名單。轉場下拉只列得出
+現有節點——`campaign.Decode` 會拒絕斷裂的轉場，在這裡擋住比在遊戲啟動時失敗好。
+
+事件動作只有 `dialogue`、`spawn_group`、`spawn_party`、`pan`、`delay` 有表單；其餘
+型別給原始 JSON 編輯，欄位名不猜。猜錯會寫出引擎讀不動的事件，而那要玩到那一關
+才會發作。
+
+### 改到 campaign_full.json 之後要重生 canonical
+
+正式執行期讀的是 `remake/assets/editor-canonical` 這份 bundle（見
+[`60`](../../docs/knowledge-base/60-editor-separated-assets-spec.md) 四之二），不是
+legacy JSON。改完要重跑：
+
+```bash
+python3 tools/export_editor_canonical.py \
+  --output remake/assets/editor-canonical --without-animations
+```
+
+不重生的話遊戲裡看不到這次改動，而回歸會以「canonical 編出的戰役與 legacy 原檔
+不一致」失敗。編輯器存回時也會提醒。

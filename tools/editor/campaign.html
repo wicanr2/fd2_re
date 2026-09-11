@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>炎龍騎士團 2 — 劇情編輯器</title>
+<style>
+:root { --ink:#1b1b1b; --muted:#6b6b6b; --line:#d8d4cc; --bg:#faf9f6; --panel:#fff; --accent:#8c3b2f; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--ink);
+  font:14px/1.65 "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif; }
+header { display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;
+  padding:12px 20px; border-bottom:1px solid var(--line); background:var(--panel); }
+header h1 { margin:0; font-size:16px; font-weight:600; }
+header .path { color:var(--muted); font-size:13px; }
+nav { display:flex; gap:2px; padding:0 20px; border-bottom:1px solid var(--line); background:var(--panel); }
+nav button { border:0; border-bottom:2px solid transparent; background:none; padding:9px 14px;
+  font:inherit; color:var(--muted); cursor:pointer; }
+nav button[aria-selected="true"] { color:var(--ink); border-bottom-color:var(--accent); }
+main { display:flex; align-items:stretch; min-height:calc(100vh - 96px); }
+aside { width:230px; flex:none; padding:14px 16px; border-right:1px solid var(--line);
+  background:var(--panel); overflow-y:auto; max-height:calc(100vh - 96px); }
+section { flex:1; padding:16px 20px; overflow-y:auto; max-height:calc(100vh - 96px); }
+h2 { font-size:13px; font-weight:600; margin:16px 0 8px; color:var(--muted); }
+h2:first-child { margin-top:0; }
+h3 { font-size:14px; font-weight:600; margin:20px 0 6px; }
+button { font:inherit; padding:5px 12px; border:1px solid var(--line); border-radius:3px;
+  background:var(--panel); color:var(--ink); cursor:pointer; }
+button:hover:not(:disabled) { border-color:var(--ink); }
+button:disabled { color:var(--muted); cursor:not-allowed; }
+button.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+button.small { padding:2px 8px; font-size:12px; }
+input, select, textarea { font:inherit; width:100%; padding:4px 6px; border:1px solid var(--line);
+  border-radius:3px; background:var(--panel); color:var(--ink); }
+textarea { min-height:4.5em; resize:vertical; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:13px; }
+.files button { display:block; width:100%; text-align:left; border:0; border-bottom:1px solid var(--line);
+  border-radius:0; padding:6px 4px; color:var(--muted); }
+.files button[aria-current="true"] { color:var(--ink); font-weight:600; }
+.line { display:grid; grid-template-columns:150px 1fr auto; gap:8px; align-items:start; margin-bottom:6px; }
+.goods { display:grid; grid-template-columns:90px 1fr 110px auto; gap:8px; align-items:center; margin-bottom:6px; }
+.event { border:1px solid var(--line); border-radius:4px; padding:12px 14px; margin-bottom:12px; background:var(--panel); }
+.event .head { display:grid; grid-template-columns:1fr 1fr 90px auto; gap:8px; align-items:end; margin-bottom:10px; }
+label span { display:block; color:var(--muted); font-size:12px; }
+#log { margin:14px 20px; padding:8px 10px; border-left:3px solid var(--line); color:var(--muted);
+  white-space:pre-wrap; font-size:13px; }
+#log.bad { border-left-color:var(--accent); color:var(--accent); }
+.hint { color:var(--muted); font-size:12px; margin:6px 0 0; }
+.row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:10px 0; }
+table { border-collapse:collapse; width:100%; font-size:13px; }
+th, td { text-align:left; padding:4px 8px 4px 0; border-bottom:1px solid var(--line); vertical-align:top; }
+th { color:var(--muted); font-weight:400; }
+</style>
+</head>
+<body>
+<header>
+  <h1>劇情編輯器</h1>
+  <span class="path" id="where">尚未開啟 assets</span>
+  <button id="open" class="primary">開啟 assets 資料夾…</button>
+  <button id="save" disabled>存回</button>
+</header>
+
+<nav>
+  <button data-tab="story" aria-selected="true">對白</button>
+  <button data-tab="events">戰場事件</button>
+  <button data-tab="shops">商店</button>
+  <button data-tab="graph">節點轉場</button>
+</nav>
+
+<div id="log">按「開啟 assets 資料夾…」，選 <code>remake/assets</code>（裡面要有 story/ 與 scenarios/）。</div>
+
+<main>
+  <aside class="files" id="files"></aside>
+  <section id="pane"></section>
+</main>
+
+<script>
+'use strict';
+
+const TRIGGERS = ['on_battle_start', 'on_turn_end', 'on_unit_death'];
+// 動作型別取自現有 30 份 scenario 的實際用法。表單只認常見的幾種；其餘型別保留
+// 原始 JSON 編輯，不假裝看得懂——猜錯欄位名會寫出引擎讀不動的事件。
+const ACTION_FORMS = {
+  dialogue: [['speaker', '說話者 ID'], ['text', '台詞']],
+  spawn_group: [['groups', 'group 陣列（逗號分隔）'], ['camp', '陣營']],
+  spawn_party: [],
+  pan: [['x', 'x'], ['y', 'y']],
+  delay: [['frames', '幀數']],
+};
+
+const state = { dir: null, story: new Map(), scenarios: new Map(), campaign: null,
+  tab: 'story', file: '', dirty: new Set() };
+
+const $ = (id) => document.getElementById(id);
+function say(text, bad) { const l = $('log'); l.textContent = text; l.className = bad ? 'bad' : ''; }
+function mark(name) { state.dirty.add(name); $('save').disabled = false; }
+
+async function readJSON(handle) { return JSON.parse(await (await handle.getFile()).text()); }
+
+async function openAssets() {
+  if (!window.showDirectoryPicker) {
+    say('這個瀏覽器沒有 File System Access API（showDirectoryPicker）。Chrome 與 Edge 有。', true);
+    return;
+  }
+  let dir;
+  try { dir = await window.showDirectoryPicker({ mode: 'readwrite' }); }
+  catch (err) { if (!err || err.name !== 'AbortError') say('開啟失敗：' + err, true); return; }
+  try {
+    state.dir = dir; state.story.clear(); state.scenarios.clear(); state.dirty.clear();
+    const storyDir = await dir.getDirectoryHandle('story');
+    for await (const [name, handle] of storyDir.entries()) {
+      if (name.endsWith('.json')) state.story.set(name, await readJSON(handle));
+    }
+    const scenarioDir = await dir.getDirectoryHandle('scenarios');
+    for await (const [name, handle] of scenarioDir.entries()) {
+      if (name === 'campaign_full.json') state.campaign = await readJSON(handle);
+      else if (name.endsWith('.json')) state.scenarios.set(name, await readJSON(handle));
+    }
+    $('where').textContent = `${dir.name}／story ${state.story.size} 份、scenario ${state.scenarios.size} 份`
+      + (state.campaign ? `、campaign ${Object.keys(state.campaign.nodes).length} 個節點` : '、沒有 campaign_full.json');
+    $('save').disabled = true;
+    render();
+    say('已載入。改完按「存回」；campaign_full.json 改過之後要重跑 '
+      + 'tools/export_editor_canonical.py，正式執行期讀的是 canonical bundle。');
+  } catch (err) {
+    say('讀取失敗：' + err + '\n要選 remake/assets（裡面有 story/ 與 scenarios/）。', true);
+  }
+}
+
+function render() {
+  renderFiles();
+  ({ story: renderStory, events: renderEvents, shops: renderShops, graph: renderGraph })[state.tab]();
+}
+
+function renderFiles() {
+  const box = $('files');
+  if (state.tab === 'story' || state.tab === 'events') {
+    const table = state.tab === 'story' ? state.story : state.scenarios;
+    const names = [...table.keys()].sort();
+    if (!names.includes(state.file)) state.file = names[0] || '';
+    box.innerHTML = '<h2>' + (state.tab === 'story' ? '劇情檔' : '戰場檔') + '</h2>'
+      + names.map((name) =>
+        `<button data-file="${name}" aria-current="${name === state.file}">${name}</button>`).join('');
+    box.querySelectorAll('[data-file]').forEach((button) =>
+      button.addEventListener('click', () => { state.file = button.dataset.file; render(); }));
+  } else {
+    box.innerHTML = '<h2>範圍</h2><p class="hint">這一頁讀 scenarios/campaign_full.json。</p>';
+  }
+}
+
+function field(label, value, onInput, type) {
+  const wrap = document.createElement('label');
+  wrap.innerHTML = `<span>${label}</span>`;
+  const input = document.createElement(type === 'area' ? 'textarea' : 'input');
+  input.value = value ?? '';
+  input.addEventListener('change', () => onInput(input.value));
+  wrap.appendChild(input);
+  return wrap;
+}
+
+function renderStory() {
+  const pane = $('pane');
+  const doc = state.story.get(state.file);
+  if (!doc) { pane.innerHTML = '<p class="hint">沒有劇情檔。</p>'; return; }
+  pane.innerHTML = `<h3>${state.file}　${doc.title || ''}</h3>`;
+  // 說話者下拉從整份檔案現有的台詞收集，不另外維護一張會漂的名單。
+  const speakers = new Map();
+  for (const scene of doc.scenes || []) {
+    for (const line of scene.lines || []) {
+      if (line.speaker !== undefined) speakers.set(line.speaker, line.speaker_name || '');
+    }
+  }
+  (doc.scenes || []).forEach((scene, sceneIndex) => {
+    const box = document.createElement('div');
+    box.innerHTML = `<h3>場景 ${sceneIndex}${scene.label ? '：' + scene.label : ''}</h3>`;
+    (scene.lines || []).forEach((line, lineIndex) => {
+      const row = document.createElement('div');
+      row.className = 'line';
+      const pick = document.createElement('select');
+      pick.innerHTML = [...speakers.entries()]
+        .sort((a, b) => a[0] - b[0])
+        .map(([id, name]) => `<option value="${id}"${id === line.speaker ? ' selected' : ''}>${id}　${name}</option>`)
+        .join('');
+      pick.addEventListener('change', () => {
+        line.speaker = Number(pick.value);
+        line.speaker_name = speakers.get(line.speaker) || '';
+        mark(`story/${state.file}`);
+      });
+      const text = document.createElement('input');
+      text.value = line.text || '';
+      text.addEventListener('change', () => { line.text = text.value; mark(`story/${state.file}`); });
+      const drop = document.createElement('button');
+      drop.className = 'small'; drop.textContent = '刪除';
+      drop.addEventListener('click', () => {
+        scene.lines.splice(lineIndex, 1); mark(`story/${state.file}`); render();
+      });
+      row.append(pick, text, drop);
+      box.appendChild(row);
+    });
+    const add = document.createElement('button');
+    add.className = 'small'; add.textContent = '加一句';
+    add.addEventListener('click', () => {
+      const first = [...speakers.keys()][0] ?? 0;
+      (scene.lines || (scene.lines = [])).push(
+        { speaker: first, speaker_name: speakers.get(first) || '', text: '' });
+      mark(`story/${state.file}`); render();
+    });
+    box.appendChild(add);
+    pane.appendChild(box);
+  });
+}
+
+function renderEvents() {
+  const pane = $('pane');
+  const doc = state.scenarios.get(state.file);
+  if (!doc) { pane.innerHTML = '<p class="hint">沒有戰場檔。</p>'; return; }
+  pane.innerHTML = `<h3>${state.file}　第 ${doc.chapter ?? '?'} 章　${doc.name || ''}</h3>`;
+  (doc.events || []).forEach((event, index) => {
+    const box = document.createElement('div');
+    box.className = 'event';
+    const head = document.createElement('div');
+    head.className = 'head';
+    head.appendChild(field('事件 id', event.id, (v) => { event.id = v; mark(`scenarios/${state.file}`); }));
+    const trigger = document.createElement('label');
+    trigger.innerHTML = '<span>觸發</span>';
+    const pick = document.createElement('select');
+    pick.innerHTML = TRIGGERS.map((t) =>
+      `<option${t === event.trigger ? ' selected' : ''}>${t}</option>`).join('');
+    pick.addEventListener('change', () => { event.trigger = pick.value; mark(`scenarios/${state.file}`); });
+    trigger.appendChild(pick);
+    head.appendChild(trigger);
+    head.appendChild(field('回合（when.turn）', event.when && event.when.turn, (v) => {
+      if (v === '') delete event.when; else event.when = { ...(event.when || {}), turn: Number(v) };
+      mark(`scenarios/${state.file}`);
+    }));
+    const drop = document.createElement('button');
+    drop.className = 'small'; drop.textContent = '刪除事件';
+    drop.addEventListener('click', () => { doc.events.splice(index, 1); mark(`scenarios/${state.file}`); render(); });
+    head.appendChild(drop);
+    box.appendChild(head);
+
+    (event.do || []).forEach((action, actionIndex) => {
+      const row = document.createElement('div');
+      row.style.marginBottom = '10px';
+      const form = ACTION_FORMS[action.type];
+      row.innerHTML = `<strong>${action.type}</strong>`;
+      if (!form) {
+        // 不認得的型別給原始 JSON：猜欄位名會寫出引擎讀不動的事件。
+        row.appendChild(field('原始 JSON', JSON.stringify(action), (v) => {
+          try {
+            event.do[actionIndex] = JSON.parse(v);
+            mark(`scenarios/${state.file}`);
+            say(`${action.type} 已更新。`);
+          } catch (err) { say('這不是合法 JSON，沒有套用：' + err, true); }
+        }, 'area'));
+      } else {
+        for (const [key, label] of form) {
+          row.appendChild(field(label, Array.isArray(action[key]) ? action[key].join(',') : action[key], (v) => {
+            if (key === 'groups') action[key] = v.split(',').map((n) => Number(n.trim())).filter((n) => !isNaN(n));
+            else if (typeof action[key] === 'number' || /^-?\d+$/.test(v)) action[key] = Number(v);
+            else action[key] = v;
+            mark(`scenarios/${state.file}`);
+          }));
+        }
+      }
+      box.appendChild(row);
+    });
+    pane.appendChild(box);
+  });
+  const add = document.createElement('button');
+  add.textContent = '加一個事件';
+  add.addEventListener('click', () => {
+    (doc.events || (doc.events = [])).push({
+      id: 'new_event', trigger: 'on_turn_end', when: { turn: 1 }, once: true,
+      do: [{ type: 'dialogue', speaker: 0, text: '' }],
+    });
+    mark(`scenarios/${state.file}`); render();
+  });
+  pane.appendChild(add);
+  const note = document.createElement('p');
+  note.className = 'hint';
+  note.textContent = '表單只認得 ' + Object.keys(ACTION_FORMS).join('、')
+    + '；其他型別用原始 JSON 編輯，欄位名不猜。';
+  pane.appendChild(note);
+}
+
+function renderShops() {
+  const pane = $('pane');
+  if (!state.campaign) { pane.innerHTML = '<p class="hint">沒有 campaign_full.json。</p>'; return; }
+  const shops = Object.entries(state.campaign.nodes).filter(([, node]) => node.type === 'shop');
+  pane.innerHTML = `<h3>商店節點（${shops.length}）</h3>`;
+  for (const [id, node] of shops) {
+    const box = document.createElement('div');
+    box.className = 'event';
+    box.innerHTML = `<strong>${id}</strong>`;
+    (node.goods || []).forEach((item, index) => {
+      const row = document.createElement('div');
+      row.className = 'goods';
+      for (const [key, label] of [['id', '物品 ID'], ['name', '名稱'], ['price', '價格']]) {
+        row.appendChild(field(label, item[key], (v) => {
+          item[key] = key === 'name' ? v : Number(v);
+          mark('scenarios/campaign_full.json');
+        }));
+      }
+      const drop = document.createElement('button');
+      drop.className = 'small'; drop.textContent = '刪除';
+      drop.addEventListener('click', () => {
+        node.goods.splice(index, 1); mark('scenarios/campaign_full.json'); render();
+      });
+      row.appendChild(drop);
+      box.appendChild(row);
+    });
+    const add = document.createElement('button');
+    add.className = 'small'; add.textContent = '加一項';
+    add.addEventListener('click', () => {
+      (node.goods || (node.goods = [])).push({ id: 0, name: '', price: 0 });
+      mark('scenarios/campaign_full.json'); render();
+    });
+    box.appendChild(add);
+    pane.appendChild(box);
+  }
+}
+
+function renderGraph() {
+  const pane = $('pane');
+  if (!state.campaign) { pane.innerHTML = '<p class="hint">沒有 campaign_full.json。</p>'; return; }
+  const ids = Object.keys(state.campaign.nodes).sort();
+  pane.innerHTML = `<h3>節點轉場（${ids.length}）</h3>
+    <p class="hint">下拉只列得出現有節點，選不到不存在的目標——campaign.Decode 會拒絕
+    斷裂的轉場，在這裡擋住比在遊戲啟動時失敗好。</p>`;
+  const table = document.createElement('table');
+  table.innerHTML = '<tr><th>節點</th><th>型別</th><th>next</th><th>on_win</th><th>on_lose</th></tr>';
+  for (const id of ids) {
+    const node = state.campaign.nodes[id];
+    const row = document.createElement('tr');
+    row.innerHTML = `<td>${id}</td><td>${node.type}</td>`;
+    for (const key of ['next', 'on_win', 'on_lose']) {
+      const cell = document.createElement('td');
+      if (node[key] === undefined && key !== 'next') { cell.innerHTML = '<span class="hint">—</span>'; }
+      else {
+        const pick = document.createElement('select');
+        pick.innerHTML = '<option value="">（無）</option>'
+          + ids.map((other) => `<option${other === node[key] ? ' selected' : ''}>${other}</option>`).join('');
+        pick.addEventListener('change', () => {
+          if (pick.value === '') delete node[key]; else node[key] = pick.value;
+          mark('scenarios/campaign_full.json');
+        });
+        cell.appendChild(pick);
+      }
+      row.appendChild(cell);
+    }
+    table.appendChild(row);
+  }
+  pane.appendChild(table);
+}
+
+async function writeInto(dirName, fileName, value) {
+  const dir = await state.dir.getDirectoryHandle(dirName);
+  const handle = await dir.getFileHandle(fileName, { create: false });
+  const stream = await handle.createWritable();
+  await stream.write(JSON.stringify(value, null, 2) + '\n');
+  await stream.close();
+}
+
+async function save() {
+  try {
+    for (const key of state.dirty) {
+      const [dirName, fileName] = key.split('/');
+      const value = dirName === 'story' ? state.story.get(fileName)
+        : fileName === 'campaign_full.json' ? state.campaign : state.scenarios.get(fileName);
+      await writeInto(dirName, fileName, value);
+    }
+    const touchedCampaign = [...state.dirty].some((k) => k.endsWith('campaign_full.json'));
+    const count = state.dirty.size;
+    state.dirty.clear(); $('save').disabled = true;
+    say(`已存回 ${count} 份檔案。` + (touchedCampaign
+      ? '\n改到 campaign_full.json 了：**要重跑 tools/export_editor_canonical.py**，'
+        + '正式執行期讀的是 canonical bundle，不重生的話遊戲裡看不到這次改動'
+        + '（回歸會以「canonical 與 legacy 不一致」失敗）。'
+      : ''));
+  } catch (err) {
+    say('存檔失敗：' + err, true);
+  }
+}
+
+$('open').addEventListener('click', openAssets);
+$('save').addEventListener('click', save);
+document.querySelectorAll('[data-tab]').forEach((button) => {
+  button.addEventListener('click', () => {
+    state.tab = button.dataset.tab;
+    document.querySelectorAll('[data-tab]').forEach((other) =>
+      other.setAttribute('aria-selected', String(other === button)));
+    if (state.dir) render();
+  });
+});
+window.addEventListener('beforeunload', (event) => {
+  if (state.dirty.size) { event.preventDefault(); event.returnValue = ''; }
+});
+</script>
+</body>
+</html>
