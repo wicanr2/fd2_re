@@ -159,9 +159,9 @@ manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unk
 
 `battlefield-editor-mvp` · 仍未完成 · 要人判
 
-計畫是網頁單檔工具：圖塊繪製、單位擺放、部署格，讀寫 `assets/maps`。
+單檔網頁工具 tools/editor/battlefield.html 已可用：圖塊筆刷／矩形／填充／橡皮擦、單位擺放與表單、部署格、波次總覽、復原，存回 map.json 與 mapN_units.json。移動成本換算與匯出管線一致（tools/test_editor_terrain_cost.py 逐格對照所有受版控地圖）。缺的是**人實際走一次**：開一張原版地圖、改動、存回、由正式 runtime 讀起來——那需要在瀏覽器裡授權目錄，不是機器驗得掉的。
 
-怎樣算做完：能開啟一張原版地圖、改動後存回，並由正式 runtime 讀得起來。
+怎樣算做完：人用編輯器開一張原版地圖、改動後存回，並由正式 runtime 讀得起來。
 
 ### 劇情與節點圖編輯器還沒有
 
