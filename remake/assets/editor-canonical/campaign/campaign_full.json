@@ -232,6 +232,7 @@
           "cam_max_y": 808,
           "cam_x": 0,
           "cam_y": 0,
+          "map": "assets/maps/map32",
           "scene": "王座廳,傳位",
           "script": "assets/story/ch00_palace.json"
         },
@@ -411,6 +412,7 @@
             "to_x": 7,
             "to_y": 47
           },
+          "map": "assets/maps/map32",
           "scene": "王城一隅,亞雷斯撞見",
           "script": "assets/story/ch00_palace.json"
         },
@@ -448,6 +450,7 @@
           "bgm": "FDMUS_010",
           "cam_x": 160,
           "cam_y": 1020,
+          "map": "assets/maps/map31",
           "scene": "比劍邀約",
           "script": "assets/story/ch00_meadow.json"
         },
@@ -503,6 +506,7 @@
               "text": "第1章:初試身手"
             }
           ],
+          "map": "assets/maps/map31",
           "scene": "發現悠妮與蓋亞",
           "script": "assets/story/ch00_meadow.json"
         },
@@ -531,7 +535,8 @@
           "bgm": "FDMUS_010",
           "cam_x": 236,
           "cam_y": 104,
-          "follow_walk": true
+          "follow_walk": true,
+          "map": "assets/maps/map0"
         },
         "legacy_key": "story_ch01_march"
       },
@@ -552,6 +557,7 @@
               "text": "目標:敵全滅。"
             }
           ],
+          "map": "assets/maps/map0",
           "script": "assets/story/ch01.json"
         },
         "legacy_key": "story_ch01"
@@ -565,6 +571,7 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map0",
           "native_map_hud_inherited": {
             "display_gate_b": 1
           },
@@ -577,6 +584,7 @@
             "visible_cursor_x": 7,
             "visible_cursor_y": 1
           },
+          "scenario": "assets/scenarios/ch01.json",
           "units": "assets/maps/map0/map0_units.json"
         },
         "legacy_key": "battle_ch01"
@@ -708,6 +716,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map1",
+          "scenario": "assets/scenarios/ch02.json",
           "units": "assets/maps/map1/map1_units.json"
         },
         "legacy_key": "battle_ch02"
@@ -844,6 +854,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map2",
+          "scenario": "assets/scenarios/ch03.json",
           "units": "assets/maps/map2/map2_units.json"
         },
         "legacy_key": "battle_ch03"
@@ -1000,6 +1012,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map3",
+          "scenario": "assets/scenarios/ch04.json",
           "units": "assets/maps/map3/map3_units.json"
         },
         "legacy_key": "battle_ch04"
@@ -1151,6 +1165,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_003",
+          "map": "assets/maps/map4",
+          "scenario": "assets/scenarios/ch05.json",
           "units": "assets/maps/map4/map4_units.json"
         },
         "legacy_key": "battle_ch05"
@@ -1332,6 +1348,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map5",
+          "scenario": "assets/scenarios/ch06.json",
           "units": "assets/maps/map5/map5_units.json"
         },
         "legacy_key": "battle_ch06"
@@ -1518,6 +1536,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map6",
+          "scenario": "assets/scenarios/ch07.json",
           "units": "assets/maps/map6/map6_units.json"
         },
         "legacy_key": "battle_ch07"
@@ -1694,6 +1714,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map7",
+          "scenario": "assets/scenarios/ch08.json",
           "units": "assets/maps/map7/map7_units.json"
         },
         "legacy_key": "battle_ch08"
@@ -1860,6 +1882,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_003",
+          "map": "assets/maps/map8",
+          "scenario": "assets/scenarios/ch09.json",
           "units": "assets/maps/map8/map8_units.json"
         },
         "legacy_key": "battle_ch09"
@@ -2032,6 +2056,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_004",
+          "map": "assets/maps/map9",
+          "scenario": "assets/scenarios/ch10.json",
           "units": "assets/maps/map9/map9_units.json"
         },
         "legacy_key": "battle_ch10"
@@ -2199,6 +2225,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map10",
+          "scenario": "assets/scenarios/ch11.json",
           "units": "assets/maps/map10/map10_units.json"
         },
         "legacy_key": "battle_ch11"
@@ -2365,6 +2393,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map11",
+          "scenario": "assets/scenarios/ch12.json",
           "units": "assets/maps/map11/map11_units.json"
         },
         "legacy_key": "battle_ch12"
@@ -2542,6 +2572,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map12",
+          "scenario": "assets/scenarios/ch13.json",
           "units": "assets/maps/map12/map12_units.json"
         },
         "legacy_key": "battle_ch13"
@@ -2718,6 +2750,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map13",
+          "scenario": "assets/scenarios/ch14.json",
           "units": "assets/maps/map13/map13_units.json"
         },
         "legacy_key": "battle_ch14"
@@ -2884,6 +2918,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_003",
+          "map": "assets/maps/map14",
+          "scenario": "assets/scenarios/ch15.json",
           "units": "assets/maps/map14/map14_units.json"
         },
         "legacy_key": "battle_ch15"
@@ -3055,6 +3091,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map15",
+          "scenario": "assets/scenarios/ch16.json",
           "units": "assets/maps/map15/map15_units.json"
         },
         "legacy_key": "battle_ch16"
@@ -3231,6 +3269,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_004",
+          "map": "assets/maps/map16",
+          "scenario": "assets/scenarios/ch17.json",
           "units": "assets/maps/map16/map16_units.json"
         },
         "legacy_key": "battle_ch17"
@@ -3422,6 +3462,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map17",
+          "scenario": "assets/scenarios/ch18.json",
           "units": "assets/maps/map17/map17_units.json"
         },
         "legacy_key": "battle_ch18"
@@ -3613,6 +3655,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map18",
+          "scenario": "assets/scenarios/ch19.json",
           "units": "assets/maps/map18/map18_units.json"
         },
         "legacy_key": "battle_ch19"
@@ -3810,6 +3854,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_003",
+          "map": "assets/maps/map19",
+          "scenario": "assets/scenarios/ch20.json",
           "units": "assets/maps/map19/map19_units.json"
         },
         "legacy_key": "battle_ch20"
@@ -4006,6 +4052,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map20",
+          "scenario": "assets/scenarios/ch21.json",
           "units": "assets/maps/map20/map20_units.json"
         },
         "legacy_key": "battle_ch21"
@@ -5098,6 +5146,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_003",
+          "map": "assets/maps/map21",
+          "scenario": "assets/scenarios/ch22.json",
           "units": "assets/maps/map21/map21_units.json"
         },
         "legacy_key": "battle_ch22"
@@ -5166,6 +5216,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_004",
+          "map": "assets/maps/map22",
+          "scenario": "assets/scenarios/ch23.json",
           "units": "assets/maps/map22/map22_units.json"
         },
         "legacy_key": "battle_ch23"
@@ -5234,6 +5286,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map23",
+          "scenario": "assets/scenarios/ch24.json",
           "units": "assets/maps/map23/map23_units.json"
         },
         "legacy_key": "battle_ch24"
@@ -5302,6 +5356,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_003",
+          "map": "assets/maps/map24",
+          "scenario": "assets/scenarios/ch25.json",
           "units": "assets/maps/map24/map24_units.json"
         },
         "legacy_key": "battle_ch25"
@@ -5493,6 +5549,7 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map25",
           "native_map_hud_inherited": {
             "display_gate_b": 1
           },
@@ -5505,6 +5562,7 @@
             "visible_cursor_x": 6,
             "visible_cursor_y": 7
           },
+          "scenario": "assets/scenarios/ch26.json",
           "units": "assets/maps/map25/map25_units.json"
         },
         "legacy_key": "battle_ch26"
@@ -5686,6 +5744,7 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_004",
+          "map": "assets/maps/map26",
           "native_map_hud_inherited": {
             "display_gate_b": 1
           },
@@ -5698,6 +5757,7 @@
             "visible_cursor_x": 5,
             "visible_cursor_y": 5
           },
+          "scenario": "assets/scenarios/ch27.json",
           "units": "assets/maps/map26/map26_units.json"
         },
         "legacy_key": "battle_ch27"
@@ -5814,6 +5874,8 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map27",
+          "scenario": "assets/scenarios/ch28.json",
           "units": "assets/maps/map27/map27_units.json"
         },
         "legacy_key": "battle_ch28"
@@ -5882,6 +5944,7 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_019",
+          "map": "assets/maps/map28",
           "native_map_hud_inherited": {
             "display_gate_b": 1
           },
@@ -5894,6 +5957,7 @@
             "visible_cursor_x": 6,
             "visible_cursor_y": 7
           },
+          "scenario": "assets/scenarios/ch29.json",
           "units": "assets/maps/map28/map28_units.json"
         },
         "legacy_key": "battle_ch29"
@@ -5964,6 +6028,7 @@
         "legacy": {
           "bgm": "FDMUS_008",
           "ending_party_snapshot_on_win": true,
+          "map": "assets/maps/map29",
           "native_map_hud_inherited": {
             "display_gate_b": 1
           },
@@ -5976,6 +6041,7 @@
             "visible_cursor_x": 7,
             "visible_cursor_y": 4
           },
+          "scenario": "assets/scenarios/ch30.json",
           "units": "assets/maps/map29/map29_units.json"
         },
         "legacy_key": "battle_ch30"

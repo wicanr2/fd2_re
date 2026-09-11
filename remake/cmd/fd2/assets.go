@@ -147,7 +147,12 @@ func packageSelfCheck() error {
 			return fmt.Errorf("載入官方實體名稱 %s: %w", localeID, err)
 		}
 	}
-	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	// 這裡驗的是**封包帶的資料**完不完整，所以讀的是封包裡那一份戰役 JSON。
+	// 玩家實際跑的戰役由 loadPlayerCampaign 從 canonical 文件編出來；兩者不漂移
+	// 由回歸守住（TestCanonicalCampaignMatchesLegacyDocument），不在這裡比對——
+	// 封包自檢會被套用到只放了最小測試資料的假 bundle 上，那時兩份本來就不是
+	// 同一個戰役。
+	graph, err := campaign.Load(assetPath(legacyPlayerCampaign))
 	if err != nil {
 		return fmt.Errorf("載入完整戰役: %w", err)
 	}

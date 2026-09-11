@@ -25,7 +25,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 17 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 16 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 
@@ -154,14 +154,6 @@ manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unk
 怎樣算做完：兩個平台各自在實機完成啟動、存檔／讀檔與音訊抽測並記錄結果。
 
 ## tooling — 工具、編輯器與工作流程
-
-### canonical 文件還沒有通往正式執行期的 compiler
-
-`editor-canonical-runtime-compiler` · 仍未完成 · 要人判
-
-版本化 bundle 已含 1 份 campaign、30 份 scenario、35 份 story 與 38 筆角色身份候選，deterministic exporter 與跨文件 validator 都已接。缺的是讓正式戰役規則直接消費編輯後文件的那一段。
-
-怎樣算做完：至少一條正式 runtime 路徑直接讀 canonical 文件，且 load→write→reload 不遺失資料。
 
 ### 戰場編輯器還沒有
 

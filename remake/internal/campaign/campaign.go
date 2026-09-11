@@ -653,6 +653,13 @@ func Load(path string) (*Campaign, error) {
 	if err != nil {
 		return nil, err
 	}
+	return Decode(raw)
+}
+
+// Decode 走與 Load 相同的驗證，但來源是位元組。編輯器的 canonical 文件由
+// compiler 編成同一份 JSON 之後，要能走完全一樣的那道關卡——分開兩條驗證會讓
+// 「編輯器存得起來但遊戲讀不動」這種差異藏在兩份程式碼的縫裡。
+func Decode(raw []byte) (*Campaign, error) {
 	var c Campaign
 	if err := json.Unmarshal(raw, &c); err != nil {
 		return nil, err

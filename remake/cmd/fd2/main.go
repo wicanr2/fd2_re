@@ -10812,7 +10812,7 @@ func loadGame() *Game {
 		if cp == "1" {
 			cp = "assets/scenarios/campaign.json"
 		}
-		if c, err := campaign.Load(assetPath(cp)); err == nil {
+		if c, err := loadPlayerCampaign(cp); err == nil {
 			g.camp = campaign.NewRunner(c)
 			if os.Getenv("FD2_SHOT_LATE_PREPARATION") == "1" {
 				if err := g.prepareReviewedLatePreparationShot(); err != nil {

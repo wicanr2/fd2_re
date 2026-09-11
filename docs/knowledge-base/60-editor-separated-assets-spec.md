@@ -638,9 +638,32 @@ metadata 投影成四份 canonical 文件。穩定 ID 只由來源路徑、legac
 
 writer 採固定 UTF-8、排序 key 與縮排，load→write→reload 不改動來源、擴充欄位、
 穩定 ID 或戰役轉場。實際 `campaign_full.json`、ch01 scenario、ch01 story 與 AFM
-metadata 均已進 Docker 往返測試，並與既有跨文件 validator 一起通過。這一層仍是
-匯入／寫回基礎，不等於完整角色 identity catalog、全 35 章 canonical 產物、編輯器
-圖形介面或 runtime 已改讀 canonical 文件。
+metadata 均已進 Docker 往返測試，並與既有跨文件 validator 一起通過。這一層是匯入／
+寫回基礎，不等於完整角色 identity catalog 或編輯器圖形介面。
+
+#### 正式執行期改讀 canonical（2026-09-11）
+
+`FD2_CAMPAIGN` 的玩家預設值從 `assets/scenarios/campaign_full.json` 換成
+`canonical`：`loadPlayerCampaign` 由 `editorcanonical.CompileCampaignJSON` 把 bundle
+編回 legacy 形狀的 JSON，再交給 `campaign.Decode` 走**與直接讀檔完全同一道**驗證。
+不另開一條解析路徑——分兩條會讓「編輯器存得起來但遊戲讀不動」藏在兩份程式碼的縫
+裡，而那種差異要玩到那個節點才會發作。其餘值仍是明確路徑，測試與離屏 oracle 指定
+自己戰役檔的既有契約不變。
+
+驗收是**編譯結果與 legacy 原檔在 JSON 值域上完全相同**，不是「編得出東西」或「節點
+數一樣」——後兩者會放過欄位遺失。`packageSelfCheck` 另外比對兩份型別化戰役圖，任何
+一邊被單獨改到就失敗，免得 canonical 與 legacy 悄悄分岔。
+
+接上之前先修掉 importer 的兩處**有損映射**，否則編不回可執行的節點：
+
+| 欄位 | 原本 | 問題 |
+|---|---|---|
+| 節點的 `map`／`scenario`／`story` | 只產生 `map/map0` 這類跨文件參照 | 路徑前綴與副檔名沒了，而且因為被列為「已映射」，原值也沒進 `extensions.legacy` |
+| scenario 的 `chapter` | 列在 known 集合裡但沒有任何 canonical 欄位對應 | 既不在 canonical 欄位也不在 `extensions.legacy`，**直接消失** |
+
+兩者現在都把原值留在 `extensions.legacy`，回到這支工具自己的原則：無法無損映射的
+值原樣保留。`chapter` 那一筆是「欄位被列為已映射、實際上沒人接住」——嚴格解碼擋得
+住未知欄位，擋不住這種**已知卻被丟掉**的欄位，只有把來回接起來才看得到。
 
 ## 五、往返與相容性
 

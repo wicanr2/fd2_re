@@ -78,17 +78,6 @@
       }
     },
     {
-      "id": "editor-canonical-runtime-compiler",
-      "layer": "tooling",
-      "title": "canonical 文件還沒有通往正式執行期的 compiler",
-      "body": "版本化 bundle 已含 1 份 campaign、30 份 scenario、35 份 story 與 38 筆角色身份候選，deterministic exporter 與跨文件 validator 都已接。缺的是讓正式戰役規則直接消費編輯後文件的那一段。",
-      "acceptance": "至少一條正式 runtime 路徑直接讀 canonical 文件，且 load→write→reload 不遺失資料。",
-      "verify": {
-        "kind": "manual",
-        "note": "接上時會出現一個新的 compiler 型別，但現在猜它叫什麼會寫出永遠為真的 pattern。實作後改綁那個型別名。"
-      }
-    },
-    {
       "id": "editor-identity-ambiguity",
       "layer": "data",
       "title": "四筆角色身份歧義還沒解",

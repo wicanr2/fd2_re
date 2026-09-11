@@ -77,7 +77,10 @@ def _campaign(raw: dict[str, Any], source: str, diagnostics: list[dict[str, str]
     else:
         entries = []
         diagnostics.append(_diag("invalid_nodes", "nodes", "nodes 不是物件或陣列", "error"))
-    fields = {"type", "map", "scenario", "story", "next", "on_win", "on_lose", "asset_ids"}
+    # map／scenario／story 只產生跨文件參照（`map/map0`），路徑前綴與副檔名在那一步
+    # 就沒了。它們**不算已映射**，原值要跟著進 extensions.legacy，否則 canonical
+    # 編不回可執行的節點——這也是這支工具自己的原則：無法無損映射的值原樣保留。
+    fields = {"type", "next", "on_win", "on_lose", "asset_ids"}
     node_ids = {str(key): _id("node", source, key, index) for index, (key, _value) in enumerate(entries)}
     for index, (key, value) in enumerate(entries):
         if not isinstance(value, dict):
@@ -111,7 +114,9 @@ def _scenario(raw: dict[str, Any], source: str, diagnostics: list[dict[str, str]
     doc["scenario_id"] = _legacy_ref("scenario", Path(source).stem)
     doc["map_id"] = _legacy_ref("map", raw.get("map", "unknown"))
     doc["units"], doc["events"] = [], []
-    known_top = {"chapter", "map", "party", "events"}
+    # chapter 沒有對應的 canonical 欄位，map 只變成有損的參照。兩個都要留原值：
+    # 先前 chapter 既不在 canonical 欄位也不在 extensions.legacy，直接消失。
+    known_top = {"party", "events"}
     legacy = _unknown(raw, known_top, "$", diagnostics)
     for index, value in enumerate(raw.get("party", []) if isinstance(raw.get("party", []), list) else []):
         if not isinstance(value, dict):
