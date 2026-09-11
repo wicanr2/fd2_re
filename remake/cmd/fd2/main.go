@@ -363,6 +363,7 @@ type Game struct {
 	nativeCommandResistances  map[int]int
 	commandLearn              map[int][]battle.CommandLearnEntry // growth byte10 learn_idx -> command rows
 	commandLearnSelectors     map[int]int                        // raw unit+7 -> growth byte10 learn_idx
+	nativeGrowthRows          map[int]battle.GrowthRow           // native unit+7 selector -> 0x4E4D1 升級成長列
 	bgm                       *audio.Player                      // BGM(doc12 play_bgm 語意:同曲不重播)
 	bgmCur                    string
 	nativeSystemBGMTrack      string
@@ -3641,6 +3642,9 @@ func (g *Game) bindCommandLearn(st *battle.State) {
 	if st != nil && g.commandLearn != nil && g.commandLearnSelectors != nil {
 		st.CommandLearn = g.commandLearn
 		st.CommandLearnSelectors = g.commandLearnSelectors
+	}
+	if st != nil && g.nativeGrowthRows != nil {
+		st.NativeGrowthRows = g.nativeGrowthRows
 	}
 }
 
@@ -10686,6 +10690,12 @@ func loadGame() *Game {
 		g.commandLearnSelectors = selectors
 	} else if g.loadErr == "" {
 		g.loadErr = "command learn selectors: " + e.Error()
+	}
+	// 同一張 EXE 成長表的數值欄：升級時以記錄 +7 選列（0x1E292→0x4E4D1）。
+	if rows, e := battle.LoadNativeGrowthRows(learnSelectorPath); e == nil {
+		g.nativeGrowthRows = rows
+	} else if g.loadErr == "" {
+		g.loadErr = "native growth rows: " + e.Error()
 	}
 	g.bindCommandLearn(g.st)
 	if commands, e := campaign.LoadAICommandSpellMap(assetPath("assets/data/item.json")); e == nil && g.st != nil {

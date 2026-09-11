@@ -579,6 +579,7 @@ type State struct {
 	NativeCommandResistances map[int]int                 // verified class raw multiplier; nil means native command effects stay closed
 	CommandLearn             map[int][]CommandLearnEntry // growth-row byte10 learn_idx -> native level-up command pairs
 	CommandLearnSelectors    map[int]int                 // native unit+7 selector -> growth-row byte10 learn_idx
+	NativeGrowthRows         map[int]GrowthRow           // native unit+7 selector -> 0x4E4D1 升級成長列
 	AICommandSpell           map[int]int                 // editable item command byte -> spell id; AI ranking remains separate
 	Treasures                map[Cell]Treasure           // FDFIELD composition 地形旗標+slot 與 control chest table 的 join
 	NativeTreasureEventRules map[int]NativeTreasureEventRule

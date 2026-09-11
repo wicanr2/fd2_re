@@ -19,7 +19,12 @@
 // 玩家可見證據,doc42 gap 範圍亦僅指「玩家永遠停在初始等級」,故不對 Enemy 施加。
 package battle
 
-import "math/rand"
+import (
+	"encoding/json"
+	"fmt"
+	"math/rand"
+	"os"
+)
 
 // StatRange 升級時單一屬性的擲骰範圍(含端點)。
 type StatRange struct{ Min, Max int }
@@ -193,14 +198,26 @@ type LevelUpEvent struct {
 // 查無資料(如敵方雜兵、無名單位——growthTable 只收錄 doc02 §7.2 的玩家可操作角色)回
 // false、不改變任何數值,這不是錯誤,是「這個單位本來就沒有可用的成長曲線資料」。
 func (u *Unit) applyLevelUpGrowth(rng *rand.Rand) (LevelUpEvent, bool) {
+	row, ok := legacyGrowthRow(u)
+	if !ok {
+		return LevelUpEvent{}, false
+	}
+	return u.applyGrowthRow(row, rng), true
+}
+
+// legacyGrowthRow 是舊的「角色名×職業名」查法。原生戰場的單位不帶名字（身分走
+// NativeIdentity），所以原生路徑改用 NativeGrowthRowFor；這裡只留給沒有原版
+// +7 的舊 fixture。
+func legacyGrowthRow(u *Unit) (GrowthRow, bool) {
 	byCls, ok := growthTable[u.Name]
 	if !ok {
-		return LevelUpEvent{}, false
+		return GrowthRow{}, false
 	}
 	row, ok := byCls[u.ClsName]
-	if !ok {
-		return LevelUpEvent{}, false
-	}
+	return row, ok
+}
+
+func (u *Unit) applyGrowthRow(row GrowthRow, rng *rand.Rand) LevelUpEvent {
 	u.Lv++
 	ev := LevelUpEvent{
 		NewLv:  u.Lv,
@@ -231,19 +248,20 @@ func (u *Unit) applyLevelUpGrowth(rng *rand.Rand) (LevelUpEvent, bool) {
 	// 但「升級卻沒補血」在戰鬥中間發生會很怪,採用較合理的一種,已於報告誠實標記)
 	u.MaxMP += ev.MpGain
 	u.MP += ev.MpGain
-	return ev, true
+	return ev
 }
 
 // GainExp 讓單位取得經驗值,跨過 expThreshold 就連續升級(doc02 §4.6「升級屬性…以亂數
 // 決定」)。只對 Own/Ally 生效(見檔頭說明);Enemy 呼叫此函式一律 no-op、回 nil。
 // amount<=0 也直接回 nil(miss、或 growthTable 查無資料等情形上游已算出 0,不必進來擲骰)。
 func GainExp(u *Unit, amount float64, rng *rand.Rand) []LevelUpEvent {
-	return gainExp(u, amount, rng, nil)
+	return gainExp(u, amount, rng, nil, legacyGrowthRow)
 }
 
 // GainExp applies the legacy standalone growth path. State.GainExp additionally
 // applies the exact portrait-indexed native command-learning table.
-func gainExp(u *Unit, amount float64, rng *rand.Rand, learn func(*Unit) []int) []LevelUpEvent {
+func gainExp(u *Unit, amount float64, rng *rand.Rand, learn func(*Unit) []int,
+	rowFor func(*Unit) (GrowthRow, bool)) []LevelUpEvent {
 	if u == nil || (u.Camp != Own && u.Camp != Ally) || amount <= 0 {
 		return nil
 	}
@@ -251,7 +269,8 @@ func gainExp(u *Unit, amount float64, rng *rand.Rand, learn func(*Unit) []int) [
 	var events []LevelUpEvent
 	for u.Exp >= expThreshold {
 		u.Exp -= expThreshold
-		if ev, ok := u.applyLevelUpGrowth(rng); ok {
+		if row, ok := rowFor(u); ok {
+			ev := u.applyGrowthRow(row, rng)
 			if learn != nil {
 				ev.LearnedCommandIDs = learn(u)
 			}
@@ -270,7 +289,63 @@ func gainExp(u *Unit, amount float64, rng *rand.Rand, learn func(*Unit) []int) [
 
 // GainExp applies level growth plus recovered native command learning.
 func (s *State) GainExp(u *Unit, amount float64, rng *rand.Rand) []LevelUpEvent {
-	return gainExp(u, amount, rng, s.learnNativeCommandsAtLevel)
+	return gainExp(u, amount, rng, s.learnNativeCommandsAtLevel, s.NativeGrowthRowFor)
+}
+
+// NativeGrowthRowFor 重現 0x1E292 的成長列選擇：`0x1E2F8 movzx eax,[esi+7]`、
+// `0x1E2FD call 0x4E4D1`，而 `0x4E4D1` 回傳 `0x620A1 + 11 × selector`——成長列由
+// 記錄 +7 決定（初始職業 0..31 就是身分，轉職後改寫成 32..67），不是角色名。
+// 指令學習 learnNativeCommandsAtLevel 用的是同一個 +7。原生戰場的單位不帶名字，
+// 用名字查會一律查不到，升級就只加等級不長數值。
+//
+// 沒有綁定原生成長表、或單位沒有原版 +7 時退回舊的名字表。
+func (s *State) NativeGrowthRowFor(u *Unit) (GrowthRow, bool) {
+	if s != nil && u != nil && u.HasBattleFig && s.NativeGrowthRows != nil {
+		if row, ok := s.NativeGrowthRows[u.BattleFig]; ok {
+			return row, true
+		}
+	}
+	return legacyGrowthRow(u)
+}
+
+// LoadNativeGrowthRows 讀 EXE 升級成長表（docs/data/exe_tables/growth.json 或打包的
+// assets/data/class_change_growth.json，68 列、每列 11 byte）。檔案存的是
+// [min, max_exclusive)；轉成 StatRange 時上界減一，與手寫 growthTable 的慣例相同
+// （63 列已逐一比對過，見 growthTable 註解），min == max 的欄位就是固定值。
+func LoadNativeGrowthRows(path string) (map[int]GrowthRow, error) {
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	var rows []struct {
+		Idx                int `json:"idx"`
+		AP, DP, DX, HP, MP [2]int
+	}
+	if err := json.Unmarshal(raw, &rows); err != nil {
+		return nil, err
+	}
+	if len(rows) == 0 {
+		return nil, fmt.Errorf("native growth rows: empty table")
+	}
+	out := make(map[int]GrowthRow, len(rows))
+	for i, row := range rows {
+		if row.Idx != i {
+			return nil, fmt.Errorf("native growth rows: row %d has idx %d", i, row.Idx)
+		}
+		var ranges [5]StatRange
+		for k, r := range [][2]int{row.AP, row.DP, row.DX, row.HP, row.MP} {
+			if r[0] < 0 || r[1] < r[0] {
+				return nil, fmt.Errorf("native growth rows: invalid range %v at idx %d", r, i)
+			}
+			hi := r[1] - 1
+			if hi < r[0] {
+				hi = r[0]
+			}
+			ranges[k] = StatRange{Min: r[0], Max: hi}
+		}
+		out[i] = GrowthRow{AP: ranges[0], DP: ranges[1], DX: ranges[2], HP: ranges[3], MP: ranges[4]}
+	}
+	return out, nil
 }
 
 // ---- 經驗值公式(doc02 §4.5,逐條見檔頭表)----
