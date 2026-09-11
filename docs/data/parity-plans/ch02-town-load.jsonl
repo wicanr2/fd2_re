@@ -1,0 +1,27 @@
+# 從存檔載入第二章羅德鎮，走出口進第二關戰場。
+#
+# 續跑點：`work/parity-state/ch01-cleared/FD2.SAV`（打完第一關後在教會存的，
+# 掛成 FD2_ORACLE_STATE 的覆蓋層）。從標題重跑第一關要 73 億指令，載入只要
+# 2 億，所以第二關以後的迭代一律從這裡起跑。
+#
+# 標題選單三項：START／LOAD／CONTINUE，開機停在 START。
+#   - 一次 down 到 LOAD，enter 之後**還有一層四槽的存檔選擇**，要再一個 enter。
+#   - CONTINUE 讀的是 FD2.TMP，回到的是關卡開場而不是存檔，不要走那條。
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":8}
+# 城鎮不是走動畫面：五個建築排成一圈，left 遞增、right 遞減，up／down 無效。
+# 載入後停在 0 號酒店，left×2 到 2 號出口。順序見 campaign_full.json 的
+# town_ch02：0 酒店、1 武器店、2 出口、3 道具店、4 教會（存檔在教會）。
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"enter","steps":20000000}
+# 「要進入戰場嗎？」YES／NO，預設停在 YES。
+{"key":"","steps":20000000,"repeat":14}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":40}

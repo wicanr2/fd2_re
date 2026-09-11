@@ -25,8 +25,9 @@
 * ``{"engage": [x, y]}``：選取該格的我方單位，推進到貼著敵人的格，貼上就攻擊。
   候選格由「與某敵人相鄰且未被佔用」產生，離單位近的先試；移動有沒有生效看
   單位座標變了沒，不看送了幾個鍵。
-* ``{"town_probe": {"moves": [...]}}``：在戰後城鎮沿方向序列走，每步 enter 看進到
-  哪裡，進了選單就 esc 退回。
+* ``{"town_probe": {"moves": [...]}}``：在戰間城鎮沿方向序列切建築，每步 enter 看
+  進到哪裡，進了選單就 esc 退回。城鎮是五格循環而不是走動畫面：left 遞增、
+  right 遞減，up 與 down 不動。
 * ``{"sweep_round": true}``：把這一回合所有未行動的我方單位依序接戰。
 * ``{"sweep_battle": true, "rounds": 30}``：一路打到敵方全滅。
 * ``{"await": "round>=2"}``：反覆只前進不送鍵，直到條件成立。可用變數：
@@ -173,6 +174,12 @@ def do_goto(command):
         current = state()
         mode = ui_mode(current)
         if mode not in CURSOR_MODES:
+            if mode == "ring":
+                # 這裡不能 esc：指令環上的 esc 會取消行動。停在指令環代表上一個
+                # 單位沒收乾淨，回報比默默把它的移動抹掉好。
+                print(f"goto ({target_x},{target_y})：介面停在指令環，中止",
+                      file=sys.stderr)
+                return False
             if mode in ESCAPABLE - CURSOR_MODES and escapes_left > 0:
                 escapes_left -= 1
                 seq, current = send("esc", max(steps, 3_000_000))
@@ -328,7 +335,8 @@ def resume_battle(steps, budget, confirm=3):
 # action chooser `0x18D8C` 同一段；與專案既有的反組譯結論一致。
 UI_MODES = (
     ("shop", "0x2D7D1"),      # 商店（店員對話與買賣圖示）：esc 退得掉
-    ("town", "0x2CE08"),      # 戰後城鎮的走動畫面；方向鍵移動角色、enter 進建築
+    ("town", "0x2CE08"),      # 戰間城鎮：五個建築排成一圈，left 遞增／right 遞減，
+                              # up 與 down 無效，enter 進入目前那一棟
     ("grid", "0x1BC8E"),      # 指令 grid（六格圖示，`0x1BBDC` 那組 chooser）
     ("status", "0x1BA37"),    # 單位狀態面板（能力值與裝備）：esc 退得掉
     ("ring", "0x18EEF"),      # 指令環：↑攻擊／←法術／→物品／↓待機
@@ -402,17 +410,17 @@ def occupied_cells(current):
     return {(u["x"], u["y"]) for u in current.get("units", []) if u.get("hp", 0) > 0}
 
 
-def step_path(origin, target):
-    """origin 到 target 的逐格路徑（先走 x 再走 y），不含 origin、含 target。"""
-    x, y = origin
-    path = []
-    while (x, y) != tuple(target):
-        if x != target[0]:
-            x += 1 if target[0] > x else -1
-        else:
-            y += 1 if target[1] > y else -1
-        path.append((x, y))
-    return path
+def unit_key(unit):
+    """一輪之內辨識同一個我方單位用的鍵。
+
+    用 identity（record `+8`）不用座標：推進過的單位座標就變了，拿行動前的座標
+    比對等於什麼都沒記，同一個單位會被一直重選到預算用完。identity 缺席時才退回
+    座標——那時至少擋得住「原地沒動又被選中」。
+    """
+    identity = unit.get("identity")
+    if identity is None:
+        return ("cell", unit.get("x"), unit.get("y"))
+    return ("identity", identity)
 
 
 def engage_targets(current, origin, typical_move=6):
@@ -448,14 +456,37 @@ def engage_targets(current, origin, typical_move=6):
         seen.add(cell)
 
     nearest = min(enemies, key=lambda e: distance((e["x"], e["y"]), origin))
-    path = step_path(origin, (nearest["x"], nearest["y"]))[:-1]
-    approach = [c for c in path if c not in occupied and c not in seen]
-    def rank(cell):
-        reach = distance(cell, origin)
-        # 移動力內的由遠而近試（走最多算最多）；超出的排到最後當保險。
-        return (0, typical_move - reach) if reach <= typical_move else (1, reach)
+    goal = (nearest["x"], nearest["y"])
+    here = distance(origin, goal)
 
-    approach.sort(key=rank)
+    # 逼近格不沿單一直線。直線被地形擋住時那幾格會十試十敗——第二關 (23,16) 的
+    # 單位往西整列都走不了，一路試到 (13,16) 全被拒絕，整個回合白花三億指令。
+    # 改成掃 origin 周圍移動力內的格，留下比原地更靠近敵人的。
+    reachable = []
+    for dx in range(-typical_move, typical_move + 1):
+        for dy in range(-typical_move, typical_move + 1):
+            cell = (origin[0] + dx, origin[1] + dy)
+            if cell[0] < 0 or cell[1] < 0 or cell in occupied or cell in seen:
+                continue
+            span = distance(cell, origin)
+            if span == 0 or span > typical_move:
+                continue
+            gain = distance(cell, goal)
+            if gain >= here:
+                continue
+            reachable.append((span, gain, cell))
+
+    # 排序要同時涵蓋「走多遠」與「走得到沒」。實際移動力連同地形成本從狀態層看
+    # 不出來（第二關實測只走得了三格，而 typical_move 是 6），所以按距離分桶、
+    # 每桶只取最靠近敵人的幾格：先試最遠的一桶，走不到就退一格再試。全押在同一
+    # 個距離上，猜錯就整輪報銷。
+    buckets = {}
+    for span, gain, cell in reachable:
+        buckets.setdefault(span, []).append((gain, cell))
+    approach = []
+    for span in sorted(buckets, reverse=True):
+        for _, cell in sorted(buckets[span])[:2]:
+            approach.append(cell)
     return cells + approach
 
 
@@ -495,7 +526,12 @@ def stand_by(steps, note=""):
         report(seq, "enter", current, f" standby{note}")
         current = settle(steps, 4)
         mode = ui_mode(current)
+        if mode == "ring":
+            # 這一項不是待機（或按了沒生效），換下一個方向。**不要 esc**——
+            # 指令環上的 esc 是取消行動，會把單位送回移動前那一格。
+            continue
         if mode in ESCAPABLE - CURSOR_MODES:
+            # 開的是 grid 或狀態面板這類子面板：esc 只是退回指令環，行動還在。
             seq, current = send("esc", max(steps, 3_000_000))
             report(seq, "esc", current, f" standby{note}=wrong-option({mode})")
             continue
@@ -518,6 +554,15 @@ def ensure_cursor_mode(steps, budget=60):
         mode = ui_mode(current)
         if mode == "cursor":
             return True
+        if mode == "ring":
+            # 指令環上的 esc 是取消行動——單位會退回移動前那一格。要回到地圖游標
+            # 就得把這個單位的行動好好結束掉，不能一路 esc 退回去。
+            current = stand_by(steps, "=back-to-cursor")
+            if ui_mode(current) == "ring":
+                print("ensure_cursor_mode：指令環上找不到待機那一項",
+                      file=sys.stderr)
+                return False
+            continue
         if mode in ESCAPABLE:
             seq, current = send("esc", max(steps, 3_000_000))
             report(seq, "esc", current, f" back-to-cursor(from {mode})")
@@ -547,7 +592,9 @@ def do_engage(command):
     """
     ux, uy = command["engage"]
     steps = int(command.get("steps", 2_000_000))
-    tries = int(command.get("tries", 10))
+    # 分桶之後每個距離兩格，移動力 6 就是 12 格；預算少於這個數就試不到近的那幾桶，
+    # 而走不動的單位偏偏只有近格走得到。
+    tries = int(command.get("tries", 14))
     reach = int(command.get("reach", 2))
     if not resume_battle(int(command.get("cutscene_steps", 5_000_000)),
                          int(command.get("cutscene_max", 30))):
@@ -632,13 +679,17 @@ def do_engage(command):
               f"{sum(e.get('hp', 0) for e in after)}、存活 {before_count}→{len(after)}",
               flush=True)
     else:
-        # 不待機：待機要在六格 command grid 上選對格子，而選中的是哪一格從狀態層
-        # 看不出來——四個方向都試過仍停在 grid 上。這個單位這一回合就停在這裡，
-        # 回合改由系統選單的 END 結束。
-        print(f"engage 走到 {moved_to} 但射程 {reach} 內沒有敵人，退出指令環",
+        # 打不到人就待機。**不能用 esc**：esc 在指令環上是「取消這次行動」，原版
+        # 會把單位送回移動前那一格——實測走到 (17,15) 開了指令環，送 esc 之後單位
+        # 回到 (20,14)，推進整個作廢。第一關看不出來，因為那裡每個單位走一步就
+        # 接敵，幾乎不會走到這個分支。
+        print(f"engage 走到 {moved_to} 但射程 {reach} 內沒有敵人，改待機",
               flush=True)
-        seq, current = send("esc", max(steps, 3_000_000))
-        report(seq, "esc", current, " engage=leave-ring")
+        current = stand_by(steps, f"={moved_to}")
+        if ui_mode(current) == "ring":
+            print(f"engage {moved_to} 待機失敗，指令環上找不到待機那一項",
+                  file=sys.stderr)
+            return False
 
     # 收尾只做清理：把介面退回地圖游標，讓下一個單位從已知狀態開始。
     #
@@ -659,6 +710,12 @@ def do_engage(command):
             seq, current = send(key, max(steps, 3_000_000))
             report(seq, key, current, " engage=finish-dialogue")
             continue
+        if mode == "ring":
+            # 收尾階段不該還停在指令環——這裡的 esc 會取消整次行動，把單位送回
+            # 移動前那一格。停在這代表前面沒收乾淨，回報比清掉好。
+            print(f"engage {moved_to} 收尾時仍停在指令環，行動沒有結束",
+                  file=sys.stderr)
+            return False
         if mode in ESCAPABLE:
             seq, current = send("esc", max(steps, 3_000_000))
             report(seq, "esc", current, f" engage=finish-{mode}")
@@ -724,11 +781,16 @@ def end_turn(command):
 
 
 def do_town_probe(command):
-    """在戰後城鎮沿著給定的方向序列走，每一步按 enter 看進到哪裡。
+    """在戰間城鎮沿著給定的方向序列切建築，每一步按 enter 看進到哪裡。
 
-    城鎮沒有可讀座標——`view` 的 cursor 是戰場用的，在城鎮不動——所以位置只能用
-    「走了幾步」表示。每一步都回報當時的介面，進了商店那類選單就 esc 退回城鎮，
-    不會把後面的按鍵送進選單裡。
+    城鎮不是走動畫面。五棟建築排成一圈，`left` 把編號加一、`right` 減一、超出
+    0..4 就繞回去，`up` 與 `down` 完全無效——先前「四個方向各走十幾步都留在城鎮」
+    正是因為半數按鍵根本沒有意義，另外半數在原地繞圈。編號順序由原版決定：
+    0 酒店、1 武器店、2 出口（出戰整備，通往下一關）、3 道具店、4 教會（存檔）。
+
+    城鎮沒有可讀座標——`view` 的 cursor 是戰場用的，在城鎮不動——所以位置只能靠
+    畫面右下角那塊標籤判讀。每一步都回報當時的介面，進了商店那類選單就 esc 退回
+    城鎮，不會把後面的按鍵送進選單裡。
 
     這是探索用的：一次執行問出周圍有什麼，免得為了找一個入口重跑七十幾億指令。
     """
@@ -751,7 +813,7 @@ def do_town_probe(command):
                 seq, current = send("esc", max(steps, 5_000_000))
                 report(seq, "esc", current, f" town-probe[{index}]=leave")
                 settle(steps, 3)
-    print(f"town_probe 完成：{found or '全程都留在城鎮走動畫面'}", flush=True)
+    print(f"town_probe 完成：{found or '每一步都還在城鎮的建築選擇上'}", flush=True)
     return True
 
 
@@ -822,12 +884,13 @@ def do_sweep_round(command):
     上選對格子，那從狀態層看不出來。
 
     挑單位不靠 record `+5` bit7：它在換手、升級對白與「退出指令環沒行動」這幾種
-    情況下都不成立，會讓同一個單位被反覆選中。驅動端自己記得這一輪處理過誰。
+    情況下都不成立，會讓同一個單位被反覆選中。驅動端自己記得這一輪處理過誰，
+    而且記的是 identity 不是座標——推進過的單位座標就變了，拿座標比對等於沒記。
     """
     steps = int(command.get("steps", 2_000_000))
     reach = int(command.get("reach", 2))
     span = int(command.get("typical_move", 6))
-    handled_cells = set()
+    handled = set()
     for _ in range(int(command.get("max_units", 12))):
         if not resume_battle(int(command.get("cutscene_steps", 5_000_000)),
                              int(command.get("cutscene_max", 30))):
@@ -839,22 +902,29 @@ def do_sweep_round(command):
             print("sweep_round：敵方已全滅", flush=True)
             return True
         pending = [u for u in side(current, ALLY_CAMP)
-                   if not acted(u) and (u["x"], u["y"]) not in handled_cells]
+                   if not acted(u) and unit_key(u) not in handled]
         # 只挑走得到敵人旁邊的：貼敵格離它不超過一般移動力加射程。
         reachable = [u for u in pending
                      if min(distance((u["x"], u["y"]), e) for e in enemies) <= span + reach]
+        if not reachable and pending and command.get("advance", True):
+            # 一個都走不到：改成朝敵人推進。原版的關卡常把兩軍擺在地圖兩端——
+            # 第二關我方在東側 (20..24, 13..16)、敵方在西側，相距十幾格——只處理
+            # 「走得到」的話每一回合都是原地結束回合，戰鬥永遠不會開始。
+            # `engage_targets` 的第二段本來就會產生沿路逼近的落腳格，這裡只是
+            # 別把單位先擋在門外。
+            reachable = pending
         if not reachable:
             break
         reachable.sort(key=lambda u: (min(distance((u["x"], u["y"]), e) for e in enemies),
                                       u["x"], u["y"]))
         pick = reachable[0]
-        handled_cells.add((pick["x"], pick["y"]))
+        handled.add(unit_key(pick))
         inner = dict(command)
         inner.pop("sweep_round", None)
         inner["engage"] = [pick["x"], pick["y"]]
         if not do_engage(inner):
             return False
-    print(f"sweep_round：這一回合處理了 {len(handled_cells)} 個單位，結束回合",
+    print(f"sweep_round：這一回合處理了 {len(handled)} 個單位，結束回合",
           flush=True)
     return end_turn(command)
 

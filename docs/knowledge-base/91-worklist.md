@@ -25,7 +25,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 16 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 17 條未完成項。權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 
@@ -118,6 +118,14 @@ manifest v2 的 `source_resources` 有 1,005 筆，其中 `disposition` 為 `unk
 開場配樂曲號、戰鬥曲與勝利曲的對應、以及 UI 音效 index 2..0xb 的語意畫面，都要實際聽辨才能定案。容器內無音訊裝置，驗不了。
 
 怎樣算做完：逐項聽辨後修正曲號對映與音效語意記錄。
+
+### 原版側對拍只走到第二關入口
+
+`parity-ch02-ch04-original-side` · 仍未完成 · 還沒出現
+
+續跑點（第一關打完後在酒店存的 FD2.SAV）與城鎮出口都通了，`ch02-clear.jsonl` 能載入羅德鎮、走出口、進第二關戰場並開始接戰，但還沒打完第二關，第三、四關也還沒開始。另外這條路徑上的每一輪都開著 `FD2_ORACLE_LOCK_ALLY_HP`（修改路徑），取得的收據不得當成 PLAYER-E2。
+
+怎樣算做完：第二至四關各有一份可重跑的閉環序列與收據，並在 96 記錄命令、輸入與日期。
 
 ## release — 發行、平台與封包
 

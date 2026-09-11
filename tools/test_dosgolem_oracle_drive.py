@@ -26,10 +26,13 @@ def load():
 drive = load()
 
 
-def unit(x, y, camp, hp=10, acted=False):
+def unit(x, y, camp, hp=10, acted=False, identity=None):
     raw = ["00"] * 80
     raw[5] = "80" if acted else "00"
-    return {"x": x, "y": y, "camp": camp, "hp": hp, "raw_hex": "".join(raw)}
+    made = {"x": x, "y": y, "camp": camp, "hp": hp, "raw_hex": "".join(raw)}
+    if identity is not None:
+        made["identity"] = identity
+    return made
 
 
 class ModuleIntegrity(unittest.TestCase):
@@ -101,23 +104,6 @@ class Sides(unittest.TestCase):
         self.assertIsNotNone(drive.unit_at(self.current, 1, 1))
         self.assertIsNone(drive.unit_at(self.current, 2, 2))
         self.assertIsNone(drive.unit_at(self.current, 9, 9))
-
-
-class StepPath(unittest.TestCase):
-    def test_path_walks_x_then_y_and_ends_on_target(self):
-        self.assertEqual(drive.step_path((7, 14), (5, 16)),
-                         [(6, 14), (5, 14), (5, 15), (5, 16)])
-
-    def test_path_is_empty_when_already_there(self):
-        self.assertEqual(drive.step_path((3, 3), (3, 3)), [])
-
-    def test_每一步只動一格(self):
-        path = drive.step_path((0, 0), (4, 3))
-        previous = (0, 0)
-        for cell in path:
-            self.assertEqual(drive.distance(previous, cell), 1, path)
-            previous = cell
-        self.assertEqual(path[-1], (4, 3))
 
 
 class EngageTargets(unittest.TestCase):
@@ -283,7 +269,7 @@ class UIMode(unittest.TestCase):
         self.assertEqual(drive.ui_mode(self.chain("0x12211", "0x45D91")), "unknown")
 
     def test_town_and_shop_have_their_own_markers(self):
-        """打完一關之後的戰後城鎮是走動畫面，enter 會進建築（例如商店）。"""
+        """戰間城鎮上 enter 會進入目前選到的那一棟建築（例如商店）。"""
         self.assertEqual(
             drive.ui_mode(self.chain("0x1647C", "0x37391", "0x2CFFE", "0x2CE08")),
             "town")
@@ -350,6 +336,62 @@ class Conditions(unittest.TestCase):
             drive.holds(self.current, "round ~ 3")
         with self.assertRaises(SystemExit):
             drive.measure(self.current, "morale")
+
+
+class UnitIdentityKey(unittest.TestCase):
+    """一輪之內辨識同一個單位的鍵。"""
+
+    def test_identity_survives_the_unit_moving(self):
+        """推進過的單位座標會變；用座標記「處理過誰」等於沒記。"""
+        before = unit(20, 14, drive.ALLY_CAMP, identity=9)
+        after = unit(14, 16, drive.ALLY_CAMP, identity=9)
+        self.assertEqual(drive.unit_key(before), drive.unit_key(after))
+
+    def test_different_units_do_not_collide(self):
+        a = unit(20, 14, drive.ALLY_CAMP, identity=9)
+        b = unit(20, 14, drive.ALLY_CAMP, identity=30)
+        self.assertNotEqual(drive.unit_key(a), drive.unit_key(b))
+
+    def test_missing_identity_falls_back_to_the_cell(self):
+        """沒有 identity 時退回座標，至少擋得住原地沒動又被選中。"""
+        a = unit(20, 14, drive.ALLY_CAMP)
+        self.assertEqual(drive.unit_key(a), ("cell", 20, 14))
+        self.assertNotEqual(drive.unit_key(a),
+                            drive.unit_key(unit(21, 14, drive.ALLY_CAMP)))
+
+
+class ApproachWhenNothingIsInRange(unittest.TestCase):
+    """兩軍隔著半張地圖時，候選落腳格仍要沿路逼近。"""
+
+    def setUp(self):
+        self.current = {"view": {"round": 1},
+                        "units": [unit(20, 14, drive.ALLY_CAMP, identity=0),
+                                  unit(6, 14, drive.ENEMY_CAMP)]}
+
+    def test_targets_advance_toward_the_nearest_enemy(self):
+        cells = drive.engage_targets(self.current, (20, 14), typical_move=6)
+        self.assertTrue(cells, "十四格外的敵人也要產生逼近格")
+        for cell in cells:
+            self.assertLess(drive.distance(cell, (6, 14)),
+                            drive.distance((20, 14), (6, 14)),
+                            f"{cell} 沒有比原地更靠近敵人")
+            self.assertLessEqual(drive.distance(cell, (20, 14)), 6,
+                                 f"{cell} 超出一般移動力")
+
+    def test_candidates_cover_several_distances(self):
+        """走多遠才走得到是未知的，候選格不能全押在同一個距離上。"""
+        cells = drive.engage_targets(self.current, (20, 14), typical_move=6)
+        spans = {drive.distance(c, (20, 14)) for c in cells[:12]}
+        self.assertGreaterEqual(len(spans), 4, f"只涵蓋了 {sorted(spans)}")
+        self.assertEqual(drive.distance(cells[0], (20, 14)), 6,
+                         "先試最遠的一桶")
+
+    def test_candidates_skip_occupied_cells(self):
+        blocked = dict(self.current)
+        blocked["units"] = self.current["units"] + [
+            unit(14, 14, drive.ALLY_CAMP, identity=9)]
+        cells = drive.engage_targets(blocked, (20, 14), typical_move=6)
+        self.assertNotIn((14, 14), cells)
 
 
 if __name__ == "__main__":

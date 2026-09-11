@@ -193,6 +193,46 @@
       "why": "2026-09-10 連續兩次踩到：`pkill -f \"dosgolem_oracle.sh\"; python3 改檔; 重跑` 只跑到 pkill 就 exit 144，改動根本沒寫進檔案，然後拿舊程式重跑又得到一模一樣的失敗，白白繞一圈才發現檔案沒變。",
       "date": "2026-09-10",
       "evidence": "tools/dosgolem_oracle_drive.py"
+    },
+    {
+      "id": "grep-remake-before-probing-original",
+      "area": "對拍",
+      "rule": "要在原版側盲試某個介面的操作順序之前，先 grep 重製端的戰役資料與 `internal/` 程式碼。重製端實作過的東西，選項順序、按鍵語意與隱藏條件通常已經逐項寫在那裡了。",
+      "why": "2026-09-11 為了找城鎮通往第二關的出口，在原版側往四個方向各走十幾步試了三輪都留在城鎮。答案一直躺在 `remake/assets/scenarios/campaign_full.json`：每個 `town_chNN` 的 `options` 第三項就寫著「出口：出戰整備」，而 `native_town_scene.go` 也早就寫明是五格循環、`left` 遞增。",
+      "date": "2026-09-11",
+      "evidence": "remake/assets/scenarios/campaign_full.json"
+    },
+    {
+      "id": "town-is-five-slot-carousel",
+      "area": "對拍",
+      "rule": "戰間城鎮不是走動畫面：五棟建築排成一圈，`left` 遞增、`right` 遞減、0..4 繞回去，`up` 與 `down` 無效。順序是 0 酒店、1 武器店、2 出口、3 道具店、4 教會；下一關入口是 2 號出口；存檔在 0 號酒店內部的第二個圖示，不是建築本身。",
+      "why": "2026-09-11 把它當成走動畫面，四個方向各送十幾步都「留在城鎮」，看起來像沒找到出口，其實是半數按鍵沒有意義、另外半數在原地繞圈。目前選到哪一棟狀態層沒有欄位，只能讀畫面右下角的標籤。",
+      "date": "2026-09-11",
+      "evidence": "docs/data/parity-plans/ch02-town-load.jsonl"
+    },
+    {
+      "id": "save-probe-judges-by-file-not-screen",
+      "area": "對拍",
+      "rule": "找存檔點要用覆蓋層的檔案變化當判準，不是看畫面。每按一項就列一次 `FD2_ORACLE_STATE` 目錄，多出 `FD2.SAV` 才算數。",
+      "why": "2026-09-11 之前三輪都靠畫面判斷，而各建築的畫面長得一樣（同一個店員、同一句「還有事嗎？」），完全看不出誰寫了檔。改成比對目錄之後一輪就定位到酒店裡的第二個圖示。另外 `FD2.TMP` 一直在被寫、雜湊每次都不同，但它是 CONTINUE 讀的暫存檔不是玩家存檔，拿它當訊號會一直得到假陽性。",
+      "date": "2026-09-11",
+      "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md"
+    },
+    {
+      "id": "title-load-needs-two-enters",
+      "area": "對拍",
+      "rule": "標題的 LOAD 要按兩次 enter：第一次選 LOAD，接著跳出四槽的存檔選擇，第二次才載入。只送一個 enter 會停在槽位畫面，後面的方向鍵全部餵給它。",
+      "why": "2026-09-11 少送一個 enter，接下來的 56 個方向鍵全打在槽位選擇上。症狀不明顯——log 照常逐格輸出，只是 `steps` 幾乎不動、eip 一直停在 `0x36D98`。要對照 checkpoint 圖才看得出來畫面根本沒離開標題。",
+      "date": "2026-09-11",
+      "evidence": "docs/data/parity-plans/ch02-town-load.jsonl"
+    },
+    {
+      "id": "ring-esc-cancels-the-move",
+      "area": "對拍",
+      "rule": "戰場指令環上的 `esc` 是「取消這次行動」，單位會退回移動前那一格，不是「關掉選單」。要結束一個打不到人的單位只能待機（指令環的 ↓）。可以送 esc 的只有：取消選移動格、退系統選單、退狀態面板或指令 grid。",
+      "why": "2026-09-11 第二關的推進每一回合看起來都在走，回合結束時全隊卻還在原地。同一次執行的相鄰兩個檢查點就講完了：檢查點 151 單位在 (17,15)、介面是 ring，送 esc 之後的 152 回到 (20,14)。第一關看不出來，因為那裡兩軍一開始就貼在一起，單位走一步就打得到人，幾乎不會走到「移動完沒東西打」這個分支。",
+      "date": "2026-09-11",
+      "evidence": "tools/dosgolem_oracle_drive.py"
     }
   ]
 }

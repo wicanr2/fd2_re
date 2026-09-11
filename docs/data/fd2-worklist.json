@@ -202,6 +202,21 @@
         "kind": "manual",
         "note": "要人耳。容器 nosound 驗不了。"
       }
+    },
+    {
+      "id": "parity-ch02-ch04-original-side",
+      "layer": "player",
+      "title": "原版側對拍只走到第二關入口",
+      "body": "續跑點（第一關打完後在酒店存的 FD2.SAV）與城鎮出口都通了，`ch02-clear.jsonl` 能載入羅德鎮、走出口、進第二關戰場並開始接戰，但還沒打完第二關，第三、四關也還沒開始。另外這條路徑上的每一輪都開著 `FD2_ORACLE_LOCK_ALLY_HP`（修改路徑），取得的收據不得當成 PLAYER-E2。",
+      "acceptance": "第二至四關各有一份可重跑的閉環序列與收據，並在 96 記錄命令、輸入與日期。",
+      "verify": {
+        "kind": "absent",
+        "pattern": "ch04-clear.jsonl",
+        "paths": [
+          "docs/data/parity-plans"
+        ],
+        "note": "第四關的序列檔出現才代表這條推進完了。"
+      }
     }
   ]
 }
