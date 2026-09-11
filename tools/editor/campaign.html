@@ -58,6 +58,7 @@ th { color:var(--muted); font-weight:400; }
   <h1>劇情編輯器</h1>
   <span class="path" id="where">尚未開啟 assets</span>
   <button id="open" class="primary">開啟 assets 資料夾…</button>
+  <button id="openServer" hidden>用本機 server 開啟</button>
   <button id="save" disabled>存回</button>
 </header>
 
@@ -90,14 +91,62 @@ const ACTION_FORMS = {
   delay: [['frames', '幀數']],
 };
 
-const state = { dir: null, story: new Map(), scenarios: new Map(), campaign: null,
+// via 記的是資料從哪裡來：'fs' 是 File System Access API（只有 Chrome／Edge 有），
+// 'server' 是 tools/editor/serve.py 的白名單 API。存回要走同一條路——混著用會把
+// 改動寫到另一份檔案上。
+const state = { dir: null, via: '', story: new Map(), scenarios: new Map(), campaign: null,
   tab: 'story', file: '', dirty: new Set() };
+const API = { file: 'api/file?path=', list: 'api/list?prefix=' };
+const ASSETS = 'remake/assets';
 
 const $ = (id) => document.getElementById(id);
 function say(text, bad) { const l = $('log'); l.textContent = text; l.className = bad ? 'bad' : ''; }
 function mark(name) { state.dirty.add(name); $('save').disabled = false; }
 
 async function readJSON(handle) { return JSON.parse(await (await handle.getFile()).text()); }
+
+async function serverAvailable() {
+  try {
+    const response = await fetch(`${API.list}${ASSETS}/story`);
+    return response.ok;
+  } catch (err) { return false; }
+}
+
+async function serverRead(path) {
+  const response = await fetch(API.file + path);
+  if (!response.ok) throw new Error(`${path}：${response.status}`);
+  return (await response.json()).content;
+}
+
+async function serverList(prefix) {
+  const response = await fetch(API.list + prefix);
+  if (!response.ok) throw new Error(`${prefix}：${response.status}`);
+  return (await response.json()).files;
+}
+
+async function openViaServer() {
+  try {
+    state.via = 'server'; state.dir = null;
+    state.story.clear(); state.scenarios.clear(); state.dirty.clear();
+    for (const name of await serverList(`${ASSETS}/story`)) {
+      state.story.set(name, await serverRead(`${ASSETS}/story/${name}`));
+    }
+    for (const name of await serverList(`${ASSETS}/scenarios`)) {
+      const value = await serverRead(`${ASSETS}/scenarios/${name}`);
+      if (name === 'campaign_full.json') state.campaign = value;
+      else state.scenarios.set(name, value);
+    }
+    $('where').textContent = `本機 server／story ${state.story.size} 份、`
+      + `scenario ${state.scenarios.size} 份、campaign `
+      + `${state.campaign ? Object.keys(state.campaign.nodes).length : 0} 個節點`;
+    $('save').disabled = true;
+    render();
+    say('已由本機 server 載入。改完按「存回」；campaign_full.json 改過之後要重跑 '
+      + 'tools/export_editor_canonical.py，正式執行期讀的是 canonical bundle。');
+  } catch (err) {
+    say('由 server 讀取失敗：' + err, true);
+  }
+}
 
 async function openAssets() {
   if (!window.showDirectoryPicker) {
@@ -108,7 +157,8 @@ async function openAssets() {
   try { dir = await window.showDirectoryPicker({ mode: 'readwrite' }); }
   catch (err) { if (!err || err.name !== 'AbortError') say('開啟失敗：' + err, true); return; }
   try {
-    state.dir = dir; state.story.clear(); state.scenarios.clear(); state.dirty.clear();
+    state.dir = dir; state.via = 'fs';
+    state.story.clear(); state.scenarios.clear(); state.dirty.clear();
     const storyDir = await dir.getDirectoryHandle('story');
     for await (const [name, handle] of storyDir.entries()) {
       if (name.endsWith('.json')) state.story.set(name, await readJSON(handle));
@@ -689,6 +739,15 @@ function addChoiceNode() {
 }
 
 async function writeInto(dirName, fileName, value) {
+  if (state.via === 'server') {
+    const response = await fetch(API.file + `${ASSETS}/${dirName}/${fileName}`, {
+      method: 'PUT', body: JSON.stringify(value, null, 2) + '\n',
+    });
+    if (!response.ok) {
+      throw new Error(`${fileName}：${response.status} ${(await response.json()).error || ''}`);
+    }
+    return;
+  }
   const dir = await state.dir.getDirectoryHandle(dirName);
   const handle = await dir.getFileHandle(fileName, { create: false });
   const stream = await handle.createWritable();
@@ -718,6 +777,16 @@ async function save() {
 }
 
 $('open').addEventListener('click', openAssets);
+$('openServer').addEventListener('click', openViaServer);
+serverAvailable().then((ok) => {
+  if (!ok) return;
+  $('openServer').hidden = false;
+  if (!window.showDirectoryPicker) {
+    $('open').hidden = true;
+    say('這個瀏覽器沒有 File System Access API，但偵測到本機 server——按'
+      + '「用本機 server 開啟」。');
+  }
+});
 $('save').addEventListener('click', save);
 document.querySelectorAll('[data-tab]').forEach((button) => {
   button.addEventListener('click', () => {

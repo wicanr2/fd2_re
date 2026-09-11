@@ -10,19 +10,37 @@
 
 ## 怎麼開
 
-`file://` 開不了——Chrome 的 File System Access API 需要 secure context，而且瀏覽器
-自動化也擋 `file:`。起一個只服務這個目錄的本機 server：
-
 ```bash
-cd tools/editor
-python3 -m http.server 8765 --bind 127.0.0.1
-# 瀏覽器開 http://127.0.0.1:8765/battlefield.html
+python3 tools/editor/serve.py          # 預設 127.0.0.1:8765
+# 瀏覽器開 http://127.0.0.1:8765/battlefield.html 或 campaign.html
 ```
 
-`--bind 127.0.0.1` 不能省：不加會把目錄開給整個區網。用完把 server 關掉。
+`serve.py` 同時做兩件事：服務編輯器頁面，以及提供一個**白名單檔案橋**。有了它，
+Firefox 與 Safari 也能存檔——File System Access API 只有 Chrome 與 Edge 有。頁面會
+自己偵測 server 在不在：在的話多一顆「用本機 server 開啟」。
 
-需要 Chrome 或 Edge。Firefox 與 Safari 目前沒有 File System Access API，編輯器會在
-按下「開啟地圖資料夾…」時直接說明，不會靜默失敗。
+`file://` 開不了（File System Access API 需要 secure context，瀏覽器自動化也擋
+`file:`），所以一定要透過 server。用完把它關掉。
+
+### 檔案橋的邊界
+
+| 限制 | 為什麼 |
+|---|---|
+| 只綁 `127.0.0.1` | 不加會把目錄開給整個區網 |
+| 讀寫都限制在 `remake/assets/` 底下 | 解析後的真實路徑要仍在那裡，符號連結指出去一律拒絕 |
+| 寫入只允許 `.json`；`.png` 只讀不寫 | 戰場編輯器要拿 tileset，但不該改它 |
+| 只覆寫既有檔案 | 打錯路徑就多一個沒人讀的檔案 |
+| 寫入前驗 JSON 解析得動 | 寫進半份壞檔會讓遊戲在啟動時才失敗 |
+| **保不住格式就回 409** | 見下 |
+
+受版控的 JSON 格式不一致：story 用 1 空格縮排、scenario 用 2、`map.json` 是單行且
+完全緊湊、`map0_units.json` 連結尾換行都沒有。統一格式會讓每次存檔產生整份 diff，
+真正改到的那一行就埋在裡面。所以寫回時逐檔沿用原本的縮排、分隔符與結尾換行。
+
+有些檔案是**手工排版**的（`cutscenes/acting/*.json` 把 `{ "slot": 34, "pose": 2 }`
+寫在同一行），程式化的 dump 重現不了。那些一律拒絕寫入而不是硬寫——
+[`tools/test_editor_server.py`](../test_editor_server.py) 釘住「每一份要嘛保真、
+要嘛被拒，沒有第三種」。
 
 ## 素材不經過任何伺服器
 
