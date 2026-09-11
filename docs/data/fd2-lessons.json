@@ -1,302 +1,342 @@
 {
-  "schema": "fd2-lessons/1",
-  "note": "踩過的坑寫成規則，不是寫成事件。每一條的 rule 是現在式、可重用、不會因為當時那個 bug 被修好就變成假斷言；why 才放當時發生什麼。由 tools/fd2_lessons.py 在每個工作階段開始時印出來（.claude/settings.json 的 SessionStart hook），不靠任何人記得去讀。",
-  "lessons": [
-    {
-      "id": "read-constants-from-source",
-      "area": "對拍",
-      "rule": "節奏與模擬器常數去程式碼裡找，不要從觀測到的數字反推。",
-      "why": "2026-09-10 解回合橫幅時，先想從等待迴圈的輪詢次數推出一個 BIOS tick 有多長，繞了兩圈數字都對不上；最後是讀 dosgolem 的 le_bios_clock.go 掛載點與它的測試，才拿到 54,926 這個確切值，所有觀測一次全部對上。同一天還因為把 real-mode 的 IRQ0Every／CycleClock 套到 FD2 走的 LE 路徑，把一段正確的敘述改成錯的。",
-      "date": "2026-09-10",
-      "evidence": "docs/knowledge-base/105-phase-banner-timing-20260910.md"
-    },
-    {
-      "id": "delay-not-measurable",
-      "area": "對拍",
-      "rule": "走 `delay(ms)` 的節奏在 dosgolem 上量不到，只能讀呼叫點常數；走 `sub_17AA9`（等 BIOS tick）的才量得到。",
-      "why": "Watcom 的 delay 不看時鐘，它用開機校準值 [0x541B0] 算出要呼叫幾次 int 21h AH=2Ch，模擬器上那個校準值與真機無關。實測敵方 delay(20ms) 與玩家 delay(150ms) 的步距完全相同。全螢幕戰鬥演出每段有 57～64 次 delay、只有 2 次 tick 等待，所以整段時序都量不到。",
-      "date": "2026-09-10",
-      "evidence": "docs/data/fd2_delay_call_sites.txt",
-      "guard": {
-        "kind": "present",
-        "paths": [
-          "docs/knowledge-base/96-parity-toolchain-20260909.md"
-        ],
-        "pattern": "`delay\\(ms\\)` 量不到，只能讀常數",
-        "note": "工具鏈文件裡的那一節還在。"
-      }
-    },
-    {
-      "id": "verify-reproduction-on-base-change",
-      "area": "對拍",
-      "rule": "換 dosgolem 基底之後，先用同一份控制序列跑一次重現對照再繼續；比事後解釋數字為什麼變了便宜得多。",
-      "why": "2026-09-10 基底從 f627cd1 換到 main 的 d351681 再到 c8aa69a（中間有時鐘改寫、Step 進入條件、CPU 位址遮罩等改動），每次都先比對 290 幀的 step 與 indexed_sha256，三次全同，既有收據才敢繼續用。",
-      "date": "2026-09-10",
-      "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md"
-    },
-    {
-      "id": "dosgolem-is-shared",
-      "area": "工具鏈",
-      "rule": "dosgolem 是共用儲存庫，隨時可能有另一個工作階段在改它。跑對拍前先看 runner.json 的 dirty 計數；不要拿別人改到一半的樹當基底，也不要為了「乾淨」去 stash 或 checkout 別人的工作區。",
-      "why": "2026-09-10 驗證跑完幾分鐘後，internal/cpu 與 internal/machine 出現九個未提交改動（另一個工作階段在做 A20／HMA）。收據若在那個狀態下產生，就無法由 commit 重現。",
-      "date": "2026-09-10",
-      "evidence": "tools/dosgolem_oracle.sh"
-    },
-    {
-      "id": "receipts-carry-provenance",
-      "area": "對拍",
-      "rule": "收據要自己帶出處。掛進容器的是工作區而不是某個 commit，所以決定結果的是那個目錄當下的內容，不是誰記得自己切在哪一個分支。",
-      "why": "換基底那一輪之前，收據裡的 dosgolem commit 是人工填的；一填錯就再也分不出「結果變了」是改動造成的還是基底不同造成的。",
-      "date": "2026-09-10",
-      "evidence": "tools/dosgolem_oracle.sh"
-    },
-    {
-      "id": "claims-follow-receipts",
-      "area": "紀律",
-      "rule": "取到新收據的當下就回頭改掉被它推翻的斷言，不要等下一輪稽核。",
-      "why": "96 寫著「尚未實測的是全螢幕戰鬥演出（FIGANI）」，而同一天稍早的 fd2-physical-attack-presentation 收據已經取到三段演出並記了三個位址的進入次數。那句話就這樣活了一天，還變成 worklist 上一條方向錯誤的待辦。",
-      "date": "2026-09-10",
-      "evidence": "docs/knowledge-base/91-worklist-history.md"
-    },
-    {
-      "id": "probe-is-not-oracle",
-      "area": "工具鏈",
-      "rule": "`cmd/probe` 跑得動 FD2，但它不帶 apps/fd2 的平台設定，不能拿它的環境代表 oracle。",
-      "why": "用 probe 讀 0000:046C 想量 BIOS tick，全程都是 0——那條路徑根本沒裝 LE BIOS 時鐘，而 oracle 裡的等待迴圈明明會通過。",
-      "date": "2026-09-10",
-      "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md"
-    },
-    {
-      "id": "string-review-rebinding",
-      "area": "回歸",
-      "rule": "改過任何被盤點的 Go 檔就要重綁 docs/data/fd2-string-review.json，用 `tools/rebind_string_review.sh`；**而且要在最後一次改 Go 檔之後才綁**。",
-      "why": "string_id 是「檔案＋行號＋欄位」座標，加兩行註解就讓 TestReviewedGoCandidatesMatchCurrentInventory 失敗，訊息長得像功能壞掉（review binds sha=… want sha=…），實際上處置內容一項都沒變。2026-09-10 還踩到後半段：先重綁、再改一行註解，綁定立刻又失效，而且當下會以為自己已經處理過了。同一輪裡第二次重綁時，舊盤點要用上一次留下的 inv-new.json（FD2_OLD_INVENTORY），不能讓腳本去 git 裡找。",
-      "date": "2026-09-10",
-      "evidence": "tools/rebind_string_review.sh",
-      "guard": {
-        "kind": "present",
-        "paths": [
-          "tools/rebind_string_review.sh"
-        ],
-        "pattern": "要在最後一次改 Go 檔之後才做",
-        "note": "腳本開頭的警告還在。"
-      }
-    },
-    {
-      "id": "enemy-contact-needs-cursor-push",
-      "area": "對拍",
-      "rule": "要讓第一關的敵方 AI 接戰，每回合先把游標推到地圖角落（30×down、20×right）再結束回合；敵方第 2 回合就會打過來。",
-      "why": "不推游標的控制序列跑到 739M 指令都沒有任何攻擊演出，白跑一輪。",
-      "date": "2026-09-10",
-      "evidence": "docs/data/ui-traces/fd2-figani-fullscreen-20260910.json"
-    },
-    {
-      "id": "locate-with-frame-eip",
-      "area": "對拍",
-      "rule": "要在幾億道指令裡找某段演出，用 `FD2_ORACLE_FRAME_EIP=<入口>` 配 `FRAME_STRIDE=0`，只在進入那個位址時取幀；定出 step 之後再設 FRAME_FROM／TO 精取。",
-      "why": "回合橫幅用 0x1F1CC 兩幀就標出兩次起點；全螢幕戰鬥演出用 0x29164 一次掃出六段。大範圍逐幀掃是最貴又最容易撲空的做法。",
-      "date": "2026-09-10",
-      "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md"
-    },
-    {
-      "id": "own-worktree-for-shared-base",
-      "area": "工具鏈",
-      "rule": "對拍的 dosgolem 基底用自己的 git worktree（`~/cht/dosgolem-fd2-oracle`），不要直接用共用的工作區。",
-      "why": "2026-09-10 跑到一半共用工作區的 machine.go 編不過——另一個工作階段正在做 write8 重構。worktree 固定在驗證過能重現的 commit，不受別人影響，也不必去動別人的樹。要跟上新功能就 checkout 新 commit，然後先跑一次重現對照。",
-      "date": "2026-09-10",
-      "evidence": "tools/dosgolem_oracle.sh",
-      "guard": {
-        "kind": "present",
-        "paths": [
-          "tools/dosgolem_oracle.sh"
-        ],
-        "pattern": "dosgolem-fd2-oracle",
-        "note": "驅動腳本的預設基底還指向專屬 worktree。"
-      }
-    },
-    {
-      "id": "offscreen-dump-needs-drawn-mark",
-      "area": "重製端",
-      "rule": "重製端的離屏逐幀擷取要自己呼叫 `markActionOverlayDrawn()`，指令環的開合動畫才會推進。",
-      "why": "`stepActionOverlayLifecycle` 的推進掛在「這一幀被畫過」，正式路徑由繪製那側標記；離屏 dump 不走 Draw，所以關環會永遠卡住，症狀是「指令環沒有關閉」而不是任何錯誤。",
-      "date": "2026-09-10",
-      "evidence": "remake/cmd/fd2/native_map_attack_dump_test.go"
-    },
-    {
-      "id": "read-each-check-before-commit",
-      "area": "紀律",
-      "rule": "提交前的每一項檢查要各自看過結果，不要把測試與 `git commit` 串在同一個命令裡。",
-      "why": "2026-09-10 把 worklist 測試、diff --check、add、commit、push 串成一行，測試印了 FAILED 在最上面，後面的 commit 照樣跑完並推了出去。串起來的那一刻就等於放棄了「看結果再決定要不要提交」。",
-      "date": "2026-09-10",
-      "evidence": "tools/test_fd2_worklist.py"
-    },
-    {
-      "id": "partial-run-fakes-fixes",
-      "area": "回歸",
-      "rule": "`tools/remake_go_test.sh` 只跑部分套件時，「修復」那一欄不可信——基線裡沒跑到的測試會被當成修復。要下「這項好了」的結論，就得跑到它所在的套件。",
-      "why": "2026-09-10 只跑 ./cmd/fd2 就看到「修復 39 項」，其中包含 TestReviewedGoCandidatesMatchCurrentInventory——那支測試在 cmd/fd2-string-inventory，根本沒跑到，而且當時是失敗的。「新增: 無」是可信的（跑到的才會列），「修復」不是。",
-      "date": "2026-09-10",
-      "evidence": "tools/remake_go_test.sh"
-    },
-    {
-      "id": "check-project-records-before-unsolved",
-      "area": "紀律",
-      "rule": "要寫「未解」「重製端沒接」「沒有這個欄位」之前，先 grep docs/knowledge-base、docs/data/ida 與 remake/ 的產品碼。**而且不能只看一個入口就下結論**——同一個效果在重製端常常由另一條路徑寫進欄位，看起來沒接的那個函式只是另一種資料來源的服務窗口。",
-      "why": "2026-09-10 一天踩三次。(1) `unit+38` 記成「沒有對應欄位、語意未解」，實際上是 `+0x26`，重製端早有 `NativeTransientDuration`。(2) 物理攻擊的經驗值記成「本輪未解」，而 `sub_29F72` 尾段 2026-09-08 就閉合了。(3) 看到 `EffectiveAP()` 用 `BuffAPPct` 就斷定「原版的 `+0x22` 增益沒接」，還為此開了一條 worklist——實際上原版那條走的是另一組函式（施加 `ApplyNativeRawWordStepAtOffsets`、重算 `nativeEquipmentTotals`），連 x87 向零截斷都用精確有理數重現了；`BuffAPPct` 只是舊可編輯劇本的路徑。",
-      "date": "2026-09-10",
-      "evidence": "docs/knowledge-base/106-physical-attack-counterattack-20260910.md"
-    },
-    {
-      "id": "status-name-is-not-runtime-behavior",
-      "area": "紀律",
-      "rule": "狀態欄的名字不等於執行期行為。要說「這個標記會擋住／會失敗即關閉」之前，先讀消費端那幾行程式。",
-      "why": "2026-09-10 README 與阻擋清冊都寫著那 5 筆對話「維持失敗即關閉」，實際上它們是 `machine_draft`，而 `StoryText` 只對 `blocked` 回錯誤——那幾句照樣顯示機器初稿。反過來也差點做錯：如果照字面把它們改標 `blocked`，`resolveCampaignDialogLine` 會帶著 loadErr 中止，整章對話就播不下去。同一個標記對 character_name 無害（那條路要求 role 是 dialogue），對 dialogue 是致命的。",
-      "date": "2026-09-10",
-      "evidence": "docs/data/localization/review-blockers.json"
-    },
-    {
-      "id": "machine-draft-may-be-broken-source",
-      "area": "資料",
-      "rule": "翻譯包裡的 `machine_draft` 不一定是「還沒翻」。逐筆看來源：來源本身壞掉的，翻得再好也是假的，要拆成阻擋項另計。",
-      "why": "2026-09-10 英日文各 170 筆 character_name 看起來像未翻譯，實際上來源的說話者欄位只剩單一字模，而且要跟相鄰行拼起來才成名字（ch27 連續兩行是 `索` 和 `爾`）。機器初稿把它們猜成 `惡`→\"Shit.\"、`米`→\"Rice\"、`索`→\"Thor.\"，比空著更糟。判斷邊界時 `珊`、`豹`、`X`、`Y` 這些真的是單字名，早已審校為 Shan／Panther／X／Y。",
-      "date": "2026-09-10",
-      "evidence": "docs/knowledge-base/49-character-id-name-table.md",
-      "guard": {
-        "kind": "present",
-        "paths": [
-          "docs/data/localization/review-blockers.json"
-        ],
-        "pattern": "unresolved_speaker_identity",
-        "note": "說話者碎片的阻擋分類還在清冊裡。"
-      }
-    },
-    {
-      "id": "cursor-stuck-means-a-menu-is-open",
-      "area": "對拍",
-      "rule": "原版側送方向鍵而游標不動，先看 checkpoint 畫面再改程式——幾乎都是畫面上開著一個吃掉方向鍵的選單，不是演出沒收完。解法是送 esc 退回地圖游標。",
-      "why": "2026-09-10 閉環驅動在第一關第 2 回合連續卡在 (3,18)。先猜是攻擊演出還沒收完，加了「等演出再重試」，等過還是不動。看 checkpoint-0410.png 才知道畫面上開著系統選單（十字圖示＋END）——前一格的 enter 落在沒有可選單位的格上就會開它。狀態層完全看不出來：view 照樣回報游標座標，overlay_selector 恆為 1。",
-      "date": "2026-09-10",
-      "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md"
-    },
-    {
-      "id": "blind-enter-walks-through-menus",
-      "area": "對拍",
-      "rule": "推過場不要盲送 enter，也不要給大預算。過場播動畫時 `kbd_reads` 不動，鍵停在緩衝區；動畫一結束會一次全部灌進去，穿過戰敗畫面、標題選單、開場，重新開一局。",
-      "why": "2026-09-10 第一次實作給 200 格盲推。log 最後看起來很正常——round=1、ally=4、enemy=0、游標在 (8,16)——那正是第一關開局，要盯著 checkpoint 才看得出來已經是新的一局。改成以等待為主、每三格才送一次 enter、預算 30 格，推不回來就中止讓人判斷。",
-      "date": "2026-09-10",
-      "evidence": "tools/dosgolem_oracle_drive.py"
-    },
-    {
-      "id": "pgrep-pattern-matches-your-own-shell",
-      "area": "工具鏈",
-      "rule": "用 `pkill -f`／`pgrep -f` 停背景工作時，樣式會匹配到自己這個 shell 的命令行——整串命令在那一行就被殺掉，後面的改檔與重跑都沒執行。把樣式拆成兩段字串串接再比對。",
-      "why": "2026-09-10 連續兩次踩到：`pkill -f \"dosgolem_oracle.sh\"; python3 改檔; 重跑` 只跑到 pkill 就 exit 144，改動根本沒寫進檔案，然後拿舊程式重跑又得到一模一樣的失敗，白白繞一圈才發現檔案沒變。",
-      "date": "2026-09-10",
-      "evidence": "tools/dosgolem_oracle_drive.py"
-    },
-    {
-      "id": "grep-remake-before-probing-original",
-      "area": "對拍",
-      "rule": "要在原版側盲試某個介面的操作順序之前，先 grep 重製端的戰役資料與 `internal/` 程式碼。重製端實作過的東西，選項順序、按鍵語意與隱藏條件通常已經逐項寫在那裡了。",
-      "why": "2026-09-11 為了找城鎮通往第二關的出口，在原版側往四個方向各走十幾步試了三輪都留在城鎮。答案一直躺在 `remake/assets/scenarios/campaign_full.json`：每個 `town_chNN` 的 `options` 第三項就寫著「出口：出戰整備」，而 `native_town_scene.go` 也早就寫明是五格循環、`left` 遞增。",
-      "date": "2026-09-11",
-      "evidence": "remake/assets/scenarios/campaign_full.json"
-    },
-    {
-      "id": "town-is-five-slot-carousel",
-      "area": "對拍",
-      "rule": "戰間城鎮不是走動畫面：五棟建築排成一圈，`left` 遞增、`right` 遞減、0..4 繞回去，`up` 與 `down` 無效。順序是 0 酒店、1 武器店、2 出口、3 道具店、4 教會；下一關入口是 2 號出口；存檔在 0 號酒店內部的第二個圖示，不是建築本身。",
-      "why": "2026-09-11 把它當成走動畫面，四個方向各送十幾步都「留在城鎮」，看起來像沒找到出口，其實是半數按鍵沒有意義、另外半數在原地繞圈。目前選到哪一棟狀態層沒有欄位，只能讀畫面右下角的標籤。",
-      "date": "2026-09-11",
-      "evidence": "docs/data/parity-plans/ch02-town-load.jsonl",
-      "guard": {
-        "kind": "present",
-        "paths": [
-          "docs/data/parity-plans/ch02-town-load.jsonl"
-        ],
-        "pattern": "left 遞增、right 遞減",
-        "note": "城鎮序列裡的切換規則註解還在。"
-      }
-    },
-    {
-      "id": "save-probe-judges-by-file-not-screen",
-      "area": "對拍",
-      "rule": "找存檔點要用覆蓋層的檔案變化當判準，不是看畫面。每按一項就列一次 `FD2_ORACLE_STATE` 目錄，多出 `FD2.SAV` 才算數。",
-      "why": "2026-09-11 之前三輪都靠畫面判斷，而各建築的畫面長得一樣（同一個店員、同一句「還有事嗎？」），完全看不出誰寫了檔。改成比對目錄之後一輪就定位到酒店裡的第二個圖示。另外 `FD2.TMP` 一直在被寫、雜湊每次都不同，但它是 CONTINUE 讀的暫存檔不是玩家存檔，拿它當訊號會一直得到假陽性。",
-      "date": "2026-09-11",
-      "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md",
-      "guard": {
-        "kind": "present",
-        "paths": [
-          "tools/dosgolem_oracle_drive.py"
-        ],
-        "pattern": "def save_fingerprint",
-        "note": "用內容雜湊當存檔判準的函式還在。"
-      }
-    },
-    {
-      "id": "title-load-needs-two-enters",
-      "area": "對拍",
-      "rule": "標題的 LOAD 要按兩次 enter：第一次選 LOAD，接著跳出四槽的存檔選擇，第二次才載入。只送一個 enter 會停在槽位畫面，後面的方向鍵全部餵給它。",
-      "why": "2026-09-11 少送一個 enter，接下來的 56 個方向鍵全打在槽位選擇上。症狀不明顯——log 照常逐格輸出，只是 `steps` 幾乎不動、eip 一直停在 `0x36D98`。要對照 checkpoint 圖才看得出來畫面根本沒離開標題。",
-      "date": "2026-09-11",
-      "evidence": "docs/data/parity-plans/ch02-town-load.jsonl",
-      "guard": {
-        "kind": "present",
-        "paths": [
-          "docs/data/parity-plans/ch02-town-load.jsonl"
-        ],
-        "pattern": "還有一層四槽的存檔選擇",
-        "note": "載入序列的註解還寫著要按兩次。"
-      }
-    },
-    {
-      "id": "ring-esc-cancels-the-move",
-      "area": "對拍",
-      "rule": "戰場指令環上的 `esc` 是「取消這次行動」，單位會退回移動前那一格，不是「關掉選單」。要結束一個打不到人的單位只能待機（指令環的 ↓）。可以送 esc 的只有：取消選移動格、退系統選單、退狀態面板或指令 grid。",
-      "why": "2026-09-11 第二關的推進每一回合看起來都在走，回合結束時全隊卻還在原地。同一次執行的相鄰兩個檢查點就講完了：檢查點 151 單位在 (17,15)、介面是 ring，送 esc 之後的 152 回到 (20,14)。第一關看不出來，因為那裡兩軍一開始就貼在一起，單位走一步就打得到人，幾乎不會走到「移動完沒東西打」這個分支。",
-      "date": "2026-09-11",
-      "evidence": "tools/dosgolem_oracle_drive.py",
-      "guard": {
-        "kind": "present",
-        "paths": [
-          "tools/dosgolem_oracle_drive.py"
-        ],
-        "pattern": "指令環上的 esc 會取消行動",
-        "note": "engage 的待機分支還寫著為什麼不能 esc。"
-      }
-    },
-    {
-      "id": "oracle-needs-its-cpu-share",
-      "area": "對拍",
-      "rule": "oracle 在跑的時候不要同時起吃 CPU 的容器（Go 全套件回歸就會佔四核）。非跑不可就把 `FD2_ORACLE_STEP_TIMEOUT` 從預設 180 秒調大——單格等待逾時看起來像遊戲卡住，其實是排程問題。",
-      "why": "2026-09-11 第三關與 cmd/fd2 回歸同時跑，oracle 在第 2 回合的 seq 524 等待逾時中止。log 上只有一行「控制序列 524 等待逾時」，和邏輯錯誤長得一模一樣；當下畫面、狀態、序列都沒有問題，純粹是那一格在 180 秒內沒跑完。",
-      "date": "2026-09-11",
-      "evidence": "tools/dosgolem_oracle_drive.py"
-    },
-    {
-      "id": "oracle-exit-looks-like-a-hang",
-      "area": "對拍",
-      "rule": "驅動端回報「控制序列 N 等待逾時」時，先看 `<輸出目錄>/oracle.log` 的結尾。executor 自己以 exit status 中止時，驅動端只看得到「等不到回應」，和遊戲卡住長得一模一樣；`error` 欄位會直接寫出是哪一個 EIP 的哪一個 opcode 沒支援。",
-      "why": "2026-09-11 第三關連兩輪在同一格逾時，第一次歸因為 CPU 競爭、把逾時從 180 秒放寬到 600 秒，第二次還是同一格。checkpoint 畫面完全正常（「要結束本回合的行動嗎？」等 YES），真正的原因在 oracle.log 最後一行：`cpu386: EIP=0001E1C1 opcode=02：byte運算記憶體形式尚未支援`，exit status 2。放寬逾時對它一點用都沒有。",
-      "date": "2026-09-11",
-      "evidence": "tools/dosgolem_oracle.sh",
-      "guard": {
-        "kind": "present",
-        "paths": [
-          "tools/dosgolem_oracle.sh"
-        ],
-        "pattern": "oracle",
-        "note": "驅動腳本還在，oracle.log 仍是它的輸出。"
-      }
-    },
-    {
-      "id": "new-chapters-surface-new-cpu-gaps",
-      "area": "工具鏈",
-      "rule": "往新關卡推進時，「等待逾時」要先當成 dosgolem 的指令缺口處理：看 `oracle.log` 結尾的 `error` 欄位。**撞到第二次就別再一輪撞一個**——用 capstone 線性掃過 code 段把同一族的指令一次盤完（byte 運算、x87 各是一族），一次補齊。補的時候只認掃出來的實際形式，其餘明確拒絕。",
-      "why": "2026-09-11 從第三關推到第四關，連續撞到三個缺口：`02`（ADD r8, r/m8 記憶體形式）、`00`（ADD r/m8, r8 整組方向都沒有）、`DB /0`（FILD m32int）。每一個的表徵都是「控制序列 N 等待逾時」，畫面完全正常。補 `00` 時順手盤了整組 byte 運算，才發現缺的是「目的為 r/m8」那一半——逐個撞、逐個補要多跑好幾輪四十分鐘。 第三次（x87）改成先掃再補：整個執行檔只用 17 種 x87、75 條指令，一次補齊 10 種就不會再在 x87 上停。",
-      "date": "2026-09-11",
-      "evidence": "tools/dosgolem_oracle.sh"
-    }
-  ]
+ "schema": "fd2-lessons/1",
+ "note": "踩過的坑寫成規則，不是寫成事件。每一條的 rule 是現在式、可重用、不會因為當時那個 bug 被修好就變成假斷言；why 才放當時發生什麼。由 tools/fd2_lessons.py 在每個工作階段開始時印出來（.claude/settings.json 的 SessionStart hook），不靠任何人記得去讀。",
+ "lessons": [
+  {
+   "id": "read-constants-from-source",
+   "area": "對拍",
+   "rule": "節奏與模擬器常數去程式碼裡找，不要從觀測到的數字反推。",
+   "why": "2026-09-10 解回合橫幅時，先想從等待迴圈的輪詢次數推出一個 BIOS tick 有多長，繞了兩圈數字都對不上；最後是讀 dosgolem 的 le_bios_clock.go 掛載點與它的測試，才拿到 54,926 這個確切值，所有觀測一次全部對上。同一天還因為把 real-mode 的 IRQ0Every／CycleClock 套到 FD2 走的 LE 路徑，把一段正確的敘述改成錯的。",
+   "date": "2026-09-10",
+   "evidence": "docs/knowledge-base/105-phase-banner-timing-20260910.md"
+  },
+  {
+   "id": "delay-not-measurable",
+   "area": "對拍",
+   "rule": "走 `delay(ms)` 的節奏在 dosgolem 上量不到，只能讀呼叫點常數；走 `sub_17AA9`（等 BIOS tick）的才量得到。",
+   "why": "Watcom 的 delay 不看時鐘，它用開機校準值 [0x541B0] 算出要呼叫幾次 int 21h AH=2Ch，模擬器上那個校準值與真機無關。實測敵方 delay(20ms) 與玩家 delay(150ms) 的步距完全相同。全螢幕戰鬥演出每段有 57～64 次 delay、只有 2 次 tick 等待，所以整段時序都量不到。",
+   "date": "2026-09-10",
+   "evidence": "docs/data/fd2_delay_call_sites.txt",
+   "guard": {
+    "kind": "present",
+    "paths": [
+     "docs/knowledge-base/96-parity-toolchain-20260909.md"
+    ],
+    "pattern": "`delay\\(ms\\)` 量不到，只能讀常數",
+    "note": "工具鏈文件裡的那一節還在。"
+   }
+  },
+  {
+   "id": "verify-reproduction-on-base-change",
+   "area": "對拍",
+   "rule": "換 dosgolem 基底之後，先用同一份控制序列跑一次重現對照再繼續；比事後解釋數字為什麼變了便宜得多。",
+   "why": "2026-09-10 基底從 f627cd1 換到 main 的 d351681 再到 c8aa69a（中間有時鐘改寫、Step 進入條件、CPU 位址遮罩等改動），每次都先比對 290 幀的 step 與 indexed_sha256，三次全同，既有收據才敢繼續用。",
+   "date": "2026-09-10",
+   "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md"
+  },
+  {
+   "id": "dosgolem-is-shared",
+   "area": "工具鏈",
+   "rule": "dosgolem 是共用儲存庫，隨時可能有另一個工作階段在改它。跑對拍前先看 runner.json 的 dirty 計數；不要拿別人改到一半的樹當基底，也不要為了「乾淨」去 stash 或 checkout 別人的工作區。",
+   "why": "2026-09-10 驗證跑完幾分鐘後，internal/cpu 與 internal/machine 出現九個未提交改動（另一個工作階段在做 A20／HMA）。收據若在那個狀態下產生，就無法由 commit 重現。",
+   "date": "2026-09-10",
+   "evidence": "tools/dosgolem_oracle.sh"
+  },
+  {
+   "id": "receipts-carry-provenance",
+   "area": "對拍",
+   "rule": "收據要自己帶出處。掛進容器的是工作區而不是某個 commit，所以決定結果的是那個目錄當下的內容，不是誰記得自己切在哪一個分支。",
+   "why": "換基底那一輪之前，收據裡的 dosgolem commit 是人工填的；一填錯就再也分不出「結果變了」是改動造成的還是基底不同造成的。",
+   "date": "2026-09-10",
+   "evidence": "tools/dosgolem_oracle.sh"
+  },
+  {
+   "id": "claims-follow-receipts",
+   "area": "紀律",
+   "rule": "取到新收據的當下就回頭改掉被它推翻的斷言，不要等下一輪稽核。",
+   "why": "96 寫著「尚未實測的是全螢幕戰鬥演出（FIGANI）」，而同一天稍早的 fd2-physical-attack-presentation 收據已經取到三段演出並記了三個位址的進入次數。那句話就這樣活了一天，還變成 worklist 上一條方向錯誤的待辦。",
+   "date": "2026-09-10",
+   "evidence": "docs/knowledge-base/91-worklist-history.md"
+  },
+  {
+   "id": "probe-is-not-oracle",
+   "area": "工具鏈",
+   "rule": "`cmd/probe` 跑得動 FD2，但它不帶 apps/fd2 的平台設定，不能拿它的環境代表 oracle。",
+   "why": "用 probe 讀 0000:046C 想量 BIOS tick，全程都是 0——那條路徑根本沒裝 LE BIOS 時鐘，而 oracle 裡的等待迴圈明明會通過。",
+   "date": "2026-09-10",
+   "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md"
+  },
+  {
+   "id": "string-review-rebinding",
+   "area": "回歸",
+   "rule": "改過任何被盤點的 Go 檔就要重綁 docs/data/fd2-string-review.json，用 `tools/rebind_string_review.sh`；**而且要在最後一次改 Go 檔之後才綁**。",
+   "why": "string_id 是「檔案＋行號＋欄位」座標，加兩行註解就讓 TestReviewedGoCandidatesMatchCurrentInventory 失敗，訊息長得像功能壞掉（review binds sha=… want sha=…），實際上處置內容一項都沒變。2026-09-10 還踩到後半段：先重綁、再改一行註解，綁定立刻又失效，而且當下會以為自己已經處理過了。同一輪裡第二次重綁時，舊盤點要用上一次留下的 inv-new.json（FD2_OLD_INVENTORY），不能讓腳本去 git 裡找。",
+   "date": "2026-09-10",
+   "evidence": "tools/rebind_string_review.sh",
+   "guard": {
+    "kind": "present",
+    "paths": [
+     "tools/rebind_string_review.sh"
+    ],
+    "pattern": "要在最後一次改 Go 檔之後才做",
+    "note": "腳本開頭的警告還在。"
+   }
+  },
+  {
+   "id": "enemy-contact-needs-cursor-push",
+   "area": "對拍",
+   "rule": "要讓第一關的敵方 AI 接戰，每回合先把游標推到地圖角落（30×down、20×right）再結束回合；敵方第 2 回合就會打過來。",
+   "why": "不推游標的控制序列跑到 739M 指令都沒有任何攻擊演出，白跑一輪。",
+   "date": "2026-09-10",
+   "evidence": "docs/data/ui-traces/fd2-figani-fullscreen-20260910.json"
+  },
+  {
+   "id": "locate-with-frame-eip",
+   "area": "對拍",
+   "rule": "要在幾億道指令裡找某段演出，用 `FD2_ORACLE_FRAME_EIP=<入口>` 配 `FRAME_STRIDE=0`，只在進入那個位址時取幀；定出 step 之後再設 FRAME_FROM／TO 精取。",
+   "why": "回合橫幅用 0x1F1CC 兩幀就標出兩次起點；全螢幕戰鬥演出用 0x29164 一次掃出六段。大範圍逐幀掃是最貴又最容易撲空的做法。",
+   "date": "2026-09-10",
+   "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md"
+  },
+  {
+   "id": "own-worktree-for-shared-base",
+   "area": "工具鏈",
+   "rule": "對拍的 dosgolem 基底用自己的 git worktree（`~/cht/dosgolem-fd2-oracle`），不要直接用共用的工作區。",
+   "why": "2026-09-10 跑到一半共用工作區的 machine.go 編不過——另一個工作階段正在做 write8 重構。worktree 固定在驗證過能重現的 commit，不受別人影響，也不必去動別人的樹。要跟上新功能就 checkout 新 commit，然後先跑一次重現對照。",
+   "date": "2026-09-10",
+   "evidence": "tools/dosgolem_oracle.sh",
+   "guard": {
+    "kind": "present",
+    "paths": [
+     "tools/dosgolem_oracle.sh"
+    ],
+    "pattern": "dosgolem-fd2-oracle",
+    "note": "驅動腳本的預設基底還指向專屬 worktree。"
+   }
+  },
+  {
+   "id": "offscreen-dump-needs-drawn-mark",
+   "area": "重製端",
+   "rule": "重製端的離屏逐幀擷取要自己呼叫 `markActionOverlayDrawn()`，指令環的開合動畫才會推進。",
+   "why": "`stepActionOverlayLifecycle` 的推進掛在「這一幀被畫過」，正式路徑由繪製那側標記；離屏 dump 不走 Draw，所以關環會永遠卡住，症狀是「指令環沒有關閉」而不是任何錯誤。",
+   "date": "2026-09-10",
+   "evidence": "remake/cmd/fd2/native_map_attack_dump_test.go"
+  },
+  {
+   "id": "read-each-check-before-commit",
+   "area": "紀律",
+   "rule": "提交前的每一項檢查要各自看過結果，不要把測試與 `git commit` 串在同一個命令裡。",
+   "why": "2026-09-10 把 worklist 測試、diff --check、add、commit、push 串成一行，測試印了 FAILED 在最上面，後面的 commit 照樣跑完並推了出去。串起來的那一刻就等於放棄了「看結果再決定要不要提交」。",
+   "date": "2026-09-10",
+   "evidence": "tools/test_fd2_worklist.py"
+  },
+  {
+   "id": "partial-run-fakes-fixes",
+   "area": "回歸",
+   "rule": "`tools/remake_go_test.sh` 只跑部分套件時，「修復」那一欄不可信——基線裡沒跑到的測試會被當成修復。要下「這項好了」的結論，就得跑到它所在的套件。",
+   "why": "2026-09-10 只跑 ./cmd/fd2 就看到「修復 39 項」，其中包含 TestReviewedGoCandidatesMatchCurrentInventory——那支測試在 cmd/fd2-string-inventory，根本沒跑到，而且當時是失敗的。「新增: 無」是可信的（跑到的才會列），「修復」不是。",
+   "date": "2026-09-10",
+   "evidence": "tools/remake_go_test.sh"
+  },
+  {
+   "id": "check-project-records-before-unsolved",
+   "area": "紀律",
+   "rule": "要寫「未解」「重製端沒接」「沒有這個欄位」之前，先 grep docs/knowledge-base、docs/data/ida 與 remake/ 的產品碼。**而且不能只看一個入口就下結論**——同一個效果在重製端常常由另一條路徑寫進欄位，看起來沒接的那個函式只是另一種資料來源的服務窗口。",
+   "why": "2026-09-10 一天踩三次。(1) `unit+38` 記成「沒有對應欄位、語意未解」，實際上是 `+0x26`，重製端早有 `NativeTransientDuration`。(2) 物理攻擊的經驗值記成「本輪未解」，而 `sub_29F72` 尾段 2026-09-08 就閉合了。(3) 看到 `EffectiveAP()` 用 `BuffAPPct` 就斷定「原版的 `+0x22` 增益沒接」，還為此開了一條 worklist——實際上原版那條走的是另一組函式（施加 `ApplyNativeRawWordStepAtOffsets`、重算 `nativeEquipmentTotals`），連 x87 向零截斷都用精確有理數重現了；`BuffAPPct` 只是舊可編輯劇本的路徑。",
+   "date": "2026-09-10",
+   "evidence": "docs/knowledge-base/106-physical-attack-counterattack-20260910.md"
+  },
+  {
+   "id": "status-name-is-not-runtime-behavior",
+   "area": "紀律",
+   "rule": "狀態欄的名字不等於執行期行為。要說「這個標記會擋住／會失敗即關閉」之前，先讀消費端那幾行程式。",
+   "why": "2026-09-10 README 與阻擋清冊都寫著那 5 筆對話「維持失敗即關閉」，實際上它們是 `machine_draft`，而 `StoryText` 只對 `blocked` 回錯誤——那幾句照樣顯示機器初稿。反過來也差點做錯：如果照字面把它們改標 `blocked`，`resolveCampaignDialogLine` 會帶著 loadErr 中止，整章對話就播不下去。同一個標記對 character_name 無害（那條路要求 role 是 dialogue），對 dialogue 是致命的。",
+   "date": "2026-09-10",
+   "evidence": "docs/data/localization/review-blockers.json"
+  },
+  {
+   "id": "machine-draft-may-be-broken-source",
+   "area": "資料",
+   "rule": "翻譯包裡的 `machine_draft` 不一定是「還沒翻」。逐筆看來源：來源本身壞掉的，翻得再好也是假的，要拆成阻擋項另計。",
+   "why": "2026-09-10 英日文各 170 筆 character_name 看起來像未翻譯，實際上來源的說話者欄位只剩單一字模，而且要跟相鄰行拼起來才成名字（ch27 連續兩行是 `索` 和 `爾`）。機器初稿把它們猜成 `惡`→\"Shit.\"、`米`→\"Rice\"、`索`→\"Thor.\"，比空著更糟。判斷邊界時 `珊`、`豹`、`X`、`Y` 這些真的是單字名，早已審校為 Shan／Panther／X／Y。",
+   "date": "2026-09-10",
+   "evidence": "docs/knowledge-base/49-character-id-name-table.md",
+   "guard": {
+    "kind": "present",
+    "paths": [
+     "docs/data/localization/review-blockers.json"
+    ],
+    "pattern": "unresolved_speaker_identity",
+    "note": "說話者碎片的阻擋分類還在清冊裡。"
+   }
+  },
+  {
+   "id": "cursor-stuck-means-a-menu-is-open",
+   "area": "對拍",
+   "rule": "原版側送方向鍵而游標不動，先看 checkpoint 畫面再改程式——幾乎都是畫面上開著一個吃掉方向鍵的選單，不是演出沒收完。解法是送 esc 退回地圖游標。",
+   "why": "2026-09-10 閉環驅動在第一關第 2 回合連續卡在 (3,18)。先猜是攻擊演出還沒收完，加了「等演出再重試」，等過還是不動。看 checkpoint-0410.png 才知道畫面上開著系統選單（十字圖示＋END）——前一格的 enter 落在沒有可選單位的格上就會開它。狀態層完全看不出來：view 照樣回報游標座標，overlay_selector 恆為 1。",
+   "date": "2026-09-10",
+   "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md"
+  },
+  {
+   "id": "blind-enter-walks-through-menus",
+   "area": "對拍",
+   "rule": "推過場不要盲送 enter，也不要給大預算。過場播動畫時 `kbd_reads` 不動，鍵停在緩衝區；動畫一結束會一次全部灌進去，穿過戰敗畫面、標題選單、開場，重新開一局。",
+   "why": "2026-09-10 第一次實作給 200 格盲推。log 最後看起來很正常——round=1、ally=4、enemy=0、游標在 (8,16)——那正是第一關開局，要盯著 checkpoint 才看得出來已經是新的一局。改成以等待為主、每三格才送一次 enter、預算 30 格，推不回來就中止讓人判斷。",
+   "date": "2026-09-10",
+   "evidence": "tools/dosgolem_oracle_drive.py"
+  },
+  {
+   "id": "pgrep-pattern-matches-your-own-shell",
+   "area": "工具鏈",
+   "rule": "用 `pkill -f`／`pgrep -f` 停背景工作時，樣式會匹配到自己這個 shell 的命令行——整串命令在那一行就被殺掉，後面的改檔與重跑都沒執行。把樣式拆成兩段字串串接再比對。",
+   "why": "2026-09-10 連續兩次踩到：`pkill -f \"dosgolem_oracle.sh\"; python3 改檔; 重跑` 只跑到 pkill 就 exit 144，改動根本沒寫進檔案，然後拿舊程式重跑又得到一模一樣的失敗，白白繞一圈才發現檔案沒變。",
+   "date": "2026-09-10",
+   "evidence": "tools/dosgolem_oracle_drive.py"
+  },
+  {
+   "id": "grep-remake-before-probing-original",
+   "area": "對拍",
+   "rule": "要在原版側盲試某個介面的操作順序之前，先 grep 重製端的戰役資料與 `internal/` 程式碼。重製端實作過的東西，選項順序、按鍵語意與隱藏條件通常已經逐項寫在那裡了。",
+   "why": "2026-09-11 為了找城鎮通往第二關的出口，在原版側往四個方向各走十幾步試了三輪都留在城鎮。答案一直躺在 `remake/assets/scenarios/campaign_full.json`：每個 `town_chNN` 的 `options` 第三項就寫著「出口：出戰整備」，而 `native_town_scene.go` 也早就寫明是五格循環、`left` 遞增。",
+   "date": "2026-09-11",
+   "evidence": "remake/assets/scenarios/campaign_full.json"
+  },
+  {
+   "id": "town-is-five-slot-carousel",
+   "area": "對拍",
+   "rule": "戰間城鎮不是走動畫面：五棟建築排成一圈，`left` 遞增、`right` 遞減、0..4 繞回去，`up` 與 `down` 無效。順序是 0 酒店、1 武器店、2 出口、3 道具店、4 教會；下一關入口是 2 號出口；存檔在 0 號酒店內部的第二個圖示，不是建築本身。",
+   "why": "2026-09-11 把它當成走動畫面，四個方向各送十幾步都「留在城鎮」，看起來像沒找到出口，其實是半數按鍵沒有意義、另外半數在原地繞圈。目前選到哪一棟狀態層沒有欄位，只能讀畫面右下角的標籤。",
+   "date": "2026-09-11",
+   "evidence": "docs/data/parity-plans/ch02-town-load.jsonl",
+   "guard": {
+    "kind": "present",
+    "paths": [
+     "docs/data/parity-plans/ch02-town-load.jsonl"
+    ],
+    "pattern": "left 遞增、right 遞減",
+    "note": "城鎮序列裡的切換規則註解還在。"
+   }
+  },
+  {
+   "id": "save-probe-judges-by-file-not-screen",
+   "area": "對拍",
+   "rule": "找存檔點要用覆蓋層的檔案變化當判準，不是看畫面。每按一項就列一次 `FD2_ORACLE_STATE` 目錄，多出 `FD2.SAV` 才算數。",
+   "why": "2026-09-11 之前三輪都靠畫面判斷，而各建築的畫面長得一樣（同一個店員、同一句「還有事嗎？」），完全看不出誰寫了檔。改成比對目錄之後一輪就定位到酒店裡的第二個圖示。另外 `FD2.TMP` 一直在被寫、雜湊每次都不同，但它是 CONTINUE 讀的暫存檔不是玩家存檔，拿它當訊號會一直得到假陽性。",
+   "date": "2026-09-11",
+   "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md",
+   "guard": {
+    "kind": "present",
+    "paths": [
+     "tools/dosgolem_oracle_drive.py"
+    ],
+    "pattern": "def save_fingerprint",
+    "note": "用內容雜湊當存檔判準的函式還在。"
+   }
+  },
+  {
+   "id": "title-load-needs-two-enters",
+   "area": "對拍",
+   "rule": "標題的 LOAD 要按兩次 enter：第一次選 LOAD，接著跳出四槽的存檔選擇，第二次才載入。只送一個 enter 會停在槽位畫面，後面的方向鍵全部餵給它。",
+   "why": "2026-09-11 少送一個 enter，接下來的 56 個方向鍵全打在槽位選擇上。症狀不明顯——log 照常逐格輸出，只是 `steps` 幾乎不動、eip 一直停在 `0x36D98`。要對照 checkpoint 圖才看得出來畫面根本沒離開標題。",
+   "date": "2026-09-11",
+   "evidence": "docs/data/parity-plans/ch02-town-load.jsonl",
+   "guard": {
+    "kind": "present",
+    "paths": [
+     "docs/data/parity-plans/ch02-town-load.jsonl"
+    ],
+    "pattern": "還有一層四槽的存檔選擇",
+    "note": "載入序列的註解還寫著要按兩次。"
+   }
+  },
+  {
+   "id": "ring-esc-cancels-the-move",
+   "area": "對拍",
+   "rule": "戰場指令環上的 `esc` 是「取消這次行動」，單位會退回移動前那一格，不是「關掉選單」。要結束一個打不到人的單位只能待機（指令環的 ↓）。可以送 esc 的只有：取消選移動格、退系統選單、退狀態面板或指令 grid。",
+   "why": "2026-09-11 第二關的推進每一回合看起來都在走，回合結束時全隊卻還在原地。同一次執行的相鄰兩個檢查點就講完了：檢查點 151 單位在 (17,15)、介面是 ring，送 esc 之後的 152 回到 (20,14)。第一關看不出來，因為那裡兩軍一開始就貼在一起，單位走一步就打得到人，幾乎不會走到「移動完沒東西打」這個分支。",
+   "date": "2026-09-11",
+   "evidence": "tools/dosgolem_oracle_drive.py",
+   "guard": {
+    "kind": "present",
+    "paths": [
+     "tools/dosgolem_oracle_drive.py"
+    ],
+    "pattern": "指令環上的 esc 會取消行動",
+    "note": "engage 的待機分支還寫著為什麼不能 esc。"
+   }
+  },
+  {
+   "id": "oracle-needs-its-cpu-share",
+   "area": "對拍",
+   "rule": "oracle 在跑的時候不要同時起吃 CPU 的容器（Go 全套件回歸就會佔四核）。非跑不可就把 `FD2_ORACLE_STEP_TIMEOUT` 從預設 180 秒調大——單格等待逾時看起來像遊戲卡住，其實是排程問題。",
+   "why": "2026-09-11 第三關與 cmd/fd2 回歸同時跑，oracle 在第 2 回合的 seq 524 等待逾時中止。log 上只有一行「控制序列 524 等待逾時」，和邏輯錯誤長得一模一樣；當下畫面、狀態、序列都沒有問題，純粹是那一格在 180 秒內沒跑完。",
+   "date": "2026-09-11",
+   "evidence": "tools/dosgolem_oracle_drive.py"
+  },
+  {
+   "id": "oracle-exit-looks-like-a-hang",
+   "area": "對拍",
+   "rule": "驅動端回報「控制序列 N 等待逾時」時，先看 `<輸出目錄>/oracle.log` 的結尾。executor 自己以 exit status 中止時，驅動端只看得到「等不到回應」，和遊戲卡住長得一模一樣；`error` 欄位會直接寫出是哪一個 EIP 的哪一個 opcode 沒支援。",
+   "why": "2026-09-11 第三關連兩輪在同一格逾時，第一次歸因為 CPU 競爭、把逾時從 180 秒放寬到 600 秒，第二次還是同一格。checkpoint 畫面完全正常（「要結束本回合的行動嗎？」等 YES），真正的原因在 oracle.log 最後一行：`cpu386: EIP=0001E1C1 opcode=02：byte運算記憶體形式尚未支援`，exit status 2。放寬逾時對它一點用都沒有。",
+   "date": "2026-09-11",
+   "evidence": "tools/dosgolem_oracle.sh",
+   "guard": {
+    "kind": "present",
+    "paths": [
+     "tools/dosgolem_oracle.sh"
+    ],
+    "pattern": "oracle",
+    "note": "驅動腳本還在，oracle.log 仍是它的輸出。"
+   }
+  },
+  {
+   "id": "new-chapters-surface-new-cpu-gaps",
+   "area": "工具鏈",
+   "rule": "往新關卡推進時，「等待逾時」要先當成 dosgolem 的指令缺口處理：看 `oracle.log` 結尾的 `error` 欄位。**撞到第二次就別再一輪撞一個**——用 capstone 線性掃過 code 段把同一族的指令一次盤完（byte 運算、x87 各是一族），一次補齊。補的時候只認掃出來的實際形式，其餘明確拒絕。",
+   "why": "2026-09-11 從第三關推到第四關，連續撞到三個缺口：`02`（ADD r8, r/m8 記憶體形式）、`00`（ADD r/m8, r8 整組方向都沒有）、`DB /0`（FILD m32int）。每一個的表徵都是「控制序列 N 等待逾時」，畫面完全正常。補 `00` 時順手盤了整組 byte 運算，才發現缺的是「目的為 r/m8」那一半——逐個撞、逐個補要多跑好幾輪四十分鐘。 第三次（x87）改成先掃再補：整個執行檔只用 17 種 x87、75 條指令，一次補齊 10 種就不會再在 x87 上停。",
+   "date": "2026-09-11",
+   "evidence": "tools/dosgolem_oracle.sh"
+  },
+  {
+   "id": "table-offset-cross-check-semantics",
+   "area": "資料",
+   "rule": "從執行檔抽出來的表，語意先自己核一遍：每個索引的意思要對得上獨立來源（攻略的靜態定義、玩家實測的數值）。整份早一個位元組的錯位不會讓任何測試變紅，它只是把語意悄悄換掉。",
+   "why": "2026-09-11 發現 native_movement_cost_rows.json 整份早一個位元組（linear 0x61646 對到 0x55445，正解是 0x55446）。錯位之後地形碼 1（不可移動）成本變成 1、碼 2（森林）變成 20——海與房舍可以走進去、森林是牆。全套回歸都綠，因為沒有任何斷言檢查「碼 n 的意思」。修正後步行/騎兵/飛行的扣減與 modify2.md 的靜態定義、notes.md 的玩家實測完全吻合。",
+   "date": "2026-09-11",
+   "evidence": "docs/knowledge-base/108-terrain-cost-and-move-confirm-20260911.md §1",
+   "guard": {
+    "kind": "present",
+    "paths": [
+     "tools/dump_exe_tables.py"
+    ],
+    "pattern": "linear 0x61646 = file 0x55446",
+    "note": "匯出工具裡的對位依據還在。"
+   }
+  },
+  {
+   "id": "two-errors-can-cancel",
+   "area": "紀律",
+   "rule": "改對一個地方之後測試才紅，要先問「是不是有第二個錯誤本來在抵消它」，不要把新紅的那一條改回去遷就舊行為。",
+   "why": "2026-09-11 修好地形成本表之後，mode 6 移位的測試才紅。查原版 0x11706 `cmp eax,0x14 / je` 才發現重製端的判準極性本來就寫反（寫成「等於 20 才允許」）。兩個錯誤在森林格上互相抵消，所以那條測試一直是綠的。",
+   "date": "2026-09-11",
+   "evidence": "docs/knowledge-base/108-terrain-cost-and-move-confirm-20260911.md §3"
+  },
+  {
+   "id": "attribute-behaviour-to-the-writer",
+   "area": "逆向",
+   "rule": "把一個執行期行為歸因到某個函式之前，先確認那個函式真的**寫**得出那個結果，而且沒有在結尾還原。收據只證明「狀態變了」，不證明是誰改的。",
+   "why": "2026-09-11 發現「移動確認時游標瞬跳」被歸給 0x149F8，但那是沿直線收集單位的 helper，0x14AFE 結尾會把游標還原，淨效果是零。真正的路徑是 0x18A26→0x12CEA 逐格呼叫鍵盤處理器。錯誤實作讓可見游標每移動一次就累積一格偏差，四個回合後鏡頭再也追不上游標。",
+   "date": "2026-09-11",
+   "evidence": "docs/knowledge-base/108-terrain-cost-and-move-confirm-20260911.md §2"
+  },
+  {
+   "id": "drive-whole-chapter-to-find-gaps",
+   "area": "回歸",
+   "rule": "要找整關的缺口就把整關跑完，一次修一個失敗往下推。單一畫面或單一回合的測試看不到「第四回合才出現的援軍站到走不出去的格子」這種問題。",
+   "why": "2026-09-11 跑 TestPlayChapterOneToVictory 一路撞出六個缺陷：對白收框拒絕負游標、戰場事件對白沒人按、演出工作在離屏不推進、可見游標累積偏差、地形成本表錯位、敵方全滅判定把不啟用的記錄當援軍。每一個都只在整關流程裡才會浮出來。",
+   "date": "2026-09-11",
+   "evidence": "docs/knowledge-base/108-terrain-cost-and-move-confirm-20260911.md §4"
+  }
+ ]
 }
