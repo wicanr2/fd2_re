@@ -946,10 +946,11 @@ def do_sweep_round(command):
 
 
 def do_sweep_battle(command):
-    """一路打到敵方全滅：每回合掃完我方單位，再等回合數推進。
+    """一路打到敵方全滅：每回合掃完我方單位、送 END 收尾，再等回合數推進。
 
-    回合推進不主動按 END——先確認全部行動完之後原版會不會自己換手；`await`
-    逾時就代表要另外送結束回合，那時再處理，不要先假設。
+    `do_sweep_round` 收尾一定送 END。全員行動完原版有時會自己換手，但「有時」
+    不夠——打不到人而待機的單位、以及推進到一半的單位，換手條件不一定成立，
+    那時 `await` 會空等到預算用完。
     """
     global BATTLE_UNIT_BASE, MAX_ROUND_SEEN
     steps = int(command.get("steps", 2_000_000))
