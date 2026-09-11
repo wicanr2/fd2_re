@@ -95,5 +95,33 @@ class NativeConstructorProjectionTest(unittest.TestCase):
         self.assertIsInstance(export_units.native_record_word46_for_raw_unit_key(tables, 0, 1), int)
 
 
+class NativeDeathRewardTest(unittest.TestCase):
+    """b22..b24 的死亡效果只有已知的型態會降成可執行獎勵，其他一律不給。"""
+
+    def test_item_and_gold_pass_through(self):
+        self.assertEqual(export_units.native_death_reward({"type": 0, "value": 0xC0}),
+                         {"type": 0, "value": 0xC0})
+        # 第一關 group4 盜賊的 [1, 0xE8, 0x03]：原版酒店存檔記下 currency=1000。
+        self.assertEqual(export_units.native_death_reward({"type": 1, "value": 1000}),
+                         {"type": 1, "value": 1000})
+
+    def test_type_two_only_known_special_handlers(self):
+        self.assertEqual(export_units.native_death_reward({"type": 2, "value": 39}),
+                         {"type": 0, "value": 0xD3})
+        self.assertEqual(export_units.native_death_reward({"type": 2, "value": 41}),
+                         {"type": 0, "value": 0xD5})
+        self.assertIsNone(export_units.native_death_reward({"type": 2, "value": 4}))
+
+    def test_unresolved_types_fail_closed(self):
+        # 第一關頭目是 [3, 8, 0]；type 3 的 handler 尚未閉合，不能猜成物品或金幣。
+        self.assertIsNone(export_units.native_death_reward({"type": 3, "value": 8}))
+        self.assertIsNone(export_units.native_death_reward(None))
+
+    def test_returned_reward_is_not_shared_table_state(self):
+        reward = export_units.native_death_reward({"type": 2, "value": 39})
+        reward["value"] = 0
+        self.assertEqual(export_units.SPECIAL_DEATH_REWARDS[39]["value"], 0xD3)
+
+
 if __name__ == "__main__":
     unittest.main()

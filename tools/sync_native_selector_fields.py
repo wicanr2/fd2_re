@@ -12,6 +12,8 @@ does, however, close three fields for every scripted roster entry:
 * the bounded b1-selected constructor record -> runtime +0x1f/+0x20
 * constructor formulas -> runtime max HP +0x42 and max MP +0x46
 * roster b17/b18/b19 -> runtime +0x34/+0x35/+0x36
+* roster b22..b24 -> runtime +0x31..+0x33 death effect, plus the executable
+  reward lowered by export_units.native_death_reward
 
 This tool preserves every existing asset field and updates only
 the fields above. The optional native table input adds the exact b1-selected
@@ -116,6 +118,17 @@ def expected_units(raw, map_index, native_tables=None):
             "native_record_byte35": unit["native_record_byte35"],
             "native_record_byte36": unit["native_record_byte36"],
         }
+        # 死亡效果：b22..b24 由 0x10fa8..0x10fb2 抄到 runtime +0x31..+0x33。可執行的
+        # 那一份照 export_units 同一條降階規則產生；原版第一關後的酒店存檔記下
+        # currency=1000，正是 map0 group4 那名盜賊的 [1, 0xE8, 0x03]。
+        effect = parse_field.native_death_effect(
+            bytes([0] * 22) + bytes(unit["native_record_death_effect"]) + bytes(1)
+        )
+        if effect is not None:
+            item["death_effect"] = effect
+            reward = export_units.native_death_reward(effect)
+            if reward is not None:
+                item["death_reward"] = reward
         if native_tables is not None:
             constructor = export_units.native_constructor_for_raw_unit_key(
                 native_tables, raw_unit_key
@@ -182,6 +195,9 @@ def sync_asset(
                 "native_record_race",
                 "native_record_class",
             ))
+        for optional in ("death_effect", "death_reward"):
+            if optional in native:
+                fields.append(optional)
         if "native_record_word42" in native:
             fields.append("native_record_word42")
         if "native_record_word46" in native:

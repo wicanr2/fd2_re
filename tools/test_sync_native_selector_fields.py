@@ -48,5 +48,29 @@ class NativeTableVersionTest(unittest.TestCase):
             sync.validate_native_tables(bad, self.manifest)
 
 
+class MapAssetInvariantTest(unittest.TestCase):
+    """不需要原始 FDFIELD 也能驗的不變式：同步工具一次寫入的欄位要一起在。
+
+    `native_constructor` 與 `native_record_race`／`native_record_class` 來自同一筆
+    b1 選中的建構記錄，同步工具總是一起寫。只剩前者，代表有別的工具重生了這份
+    地圖檔、把後兩者丟掉了——`--check` 需要 extracted/raw 才跑得動，這裡先擋。
+    """
+
+    def test_constructor_record_keeps_race_and_class(self):
+        maps = Path(__file__).resolve().parent.parent / "remake" / "assets" / "maps"
+        assets = sorted(maps.glob("map*/map*_units.json"))
+        self.assertTrue(assets, "找不到地圖單位檔")
+        missing = []
+        for path in assets:
+            units = json.loads(path.read_text(encoding="utf-8"))["units"]
+            for index, unit in enumerate(units):
+                if "native_constructor" not in unit:
+                    continue
+                for field in ("native_record_race", "native_record_class"):
+                    if field not in unit:
+                        missing.append(f"{path.parent.name} unit {index} {field}")
+        self.assertEqual(missing, [], "有建構記錄卻缺種族／職業；跑 sync_native_selector_fields.py --write")
+
+
 if __name__ == "__main__":
     unittest.main()

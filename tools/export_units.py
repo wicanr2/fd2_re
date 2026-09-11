@@ -50,6 +50,22 @@ SPECIAL_DEATH_REWARDS = {
 }
 
 
+def native_death_reward(effect):
+    """把 FDFIELD b22..b24 的死亡效果降成 runtime 可執行的獎勵；不認得的回 None。
+
+    type 0 是物品、type 1 是金幣（值是 b23..b24 的 u16）；type 2 只有 id39／41
+    兩個已知 handler（交給同一個 reward dispatcher 的 00 D3 00／00 D5 00）。
+    其他型態（含 type 3）語意未全解，保持不可執行，runtime 不猜。
+    """
+    if effect is None:
+        return None
+    if effect["type"] in (0, 1):
+        return {"type": effect["type"], "value": effect["value"]}
+    if effect["type"] == 2 and effect["value"] in SPECIAL_DEATH_REWARDS:
+        return dict(SPECIAL_DEATH_REWARDS[effect["value"]])
+    return None
+
+
 def native_constructor_for_raw_unit_key(tables, raw_unit_key):
     """Return raw constructor table provenance for one proven FDFIELD b1.
 
@@ -273,11 +289,9 @@ def main(argv):
             rec[field] = u[field]
         if u.get("death_effect") is not None:
             rec["death_effect"] = u["death_effect"]
-            effect = u["death_effect"]
-            if effect["type"] in (0, 1):
-                rec["death_reward"] = effect
-            elif effect["type"] == 2 and effect["value"] in SPECIAL_DEATH_REWARDS:
-                rec["death_reward"] = SPECIAL_DEATH_REWARDS[effect["value"]]
+            reward = native_death_reward(u["death_effect"])
+            if reward is not None:
+                rec["death_reward"] = reward
         rec["native_source_byte25"] = u["native_source_byte25"]
         if i < len(positions):                       # 固定出場座標(我方會被引擎改放部署格)
             rec["x"], rec["y"] = positions[i][0], positions[i][1]
