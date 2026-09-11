@@ -138,7 +138,7 @@
       "id": "battlefield-editor-mvp",
       "layer": "tooling",
       "title": "戰場編輯器還沒有",
-      "body": "單檔網頁工具 tools/editor/battlefield.html 已可用：圖塊筆刷／矩形／填充／橡皮擦、單位擺放與表單、部署格、波次總覽、復原，存回 map.json 與 mapN_units.json。移動成本換算與匯出管線一致（tools/test_editor_terrain_cost.py 逐格對照所有受版控地圖）。缺的是**人實際走一次**：開一張原版地圖、改動、存回、由正式 runtime 讀起來——那需要在瀏覽器裡授權目錄，不是機器驗得掉的。",
+      "body": "tools/editor/battlefield.html 已可用：圖塊筆刷／矩形／填充／橡皮擦、單位擺放與表單、部署格、波次總覽、復原，存回 map.json 與 mapN_units.json。移動成本換算與匯出管線一致（tools/test_editor_terrain_cost.py 逐格對照所有受版控地圖），存回的格式保真也有測試（tools/test_editor_server.py）。缺的是人實際畫一張地圖並在引擎裡載入——那是美術與關卡設計判斷。",
       "acceptance": "人用編輯器開一張原版地圖、改動後存回，並由正式 runtime 讀得起來。",
       "verify": {
         "kind": "manual",
@@ -148,8 +148,8 @@
     {
       "id": "campaign-editor-ui",
       "layer": "tooling",
-      "title": "劇情編輯器缺人實際走一次",
-      "body": "tools/editor/campaign.html 五個分頁都已可用：對白、戰場事件、商店品項、節點轉場，以及 doc 38 Phase 3 的節點圖（依章節分層、拖線改轉場、旗標管理、敗北路線畫成紅虛線、choice 選項的旗標條件）。32 個章節都畫得出來、零失敗。缺的是人實際走一次：編一個章節、存回、重生 canonical、在引擎裡玩過一輪，而且要做出一條原版沒有的分支（Phase 3 驗收）。",
+      "title": "劇情編輯器缺人實際編一章玩過",
+      "body": "五個分頁都已可用：對白、戰場事件、商店品項、節點轉場，以及 doc 38 Phase 3 的節點圖（依章節分層、改轉場、旗標管理、敗北路線紅虛線、choice 選項的旗標條件）。32 個章節都畫得出來、零失敗。編輯來回已由 tools/editor/serve.py 走完並驗過：改 battle_ch01.on_win → 存回 → 重生 canonical → 引擎讀到新值 → 還原零 diff。缺的是**人實際做出一條原版沒有的路線並玩過**——那是設計判斷，不是機器驗得掉的。",
       "acceptance": "人用編輯器做出一條非原版路線（至少含一條 battle.on_lose 敗北路線與一個依旗標過濾的 choice 分支），存回並重生 canonical 後在引擎裡跑通首尾。",
       "verify": {
         "kind": "manual",
